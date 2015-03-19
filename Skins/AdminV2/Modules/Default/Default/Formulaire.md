@@ -1,0 +1,7 @@
+[INFO [!Query!]|I]
+[IF [!I::TypeSearch!]=Child]
+	[OBJ [!I::Module!]|[!I::ObjectType!]|O]
+[ELSE]
+	[STORPROC [!Query!]|O][/STORPROC]
+[/IF]
+[MODULE Systeme/Interfaces/Formulaire/Raw?O=[!O!]&Action=Modifier]

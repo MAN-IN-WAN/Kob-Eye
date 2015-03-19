@@ -1,0 +1,42 @@
+<SCHEMA>
+	<OBJECTCLASS title="Pays" driver="mysql" AccessPoint="1" master="1" Description="Pays" Icon="/Skins/AdminV2/Img/IconAqua/App1.png">
+		<PROPERTIES type="titre" length="100" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" length="10" searchOrder="2" unique="1">Code</PROPERTIES>
+		<PROPERTIES type="varchar" length="100">Capitale</PROPERTIES>
+		<PROPERTIES type="int">Superficie</PROPERTIES>
+		<PROPERTIES type="int" >Population</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Region" driver="mysql" AccessPoint="1" Description="Régions" Icon="/Skins/AdminV2/Img/IconAqua/App1.png">
+		<PROPERTIES type="varchar" length="100" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" length="10" searchOrder="2">Code</PROPERTIES>
+		<PROPERTIES type="varchar" length="100">Capitale</PROPERTIES>
+		<PROPERTIES type="varchar" length="100">CapitaleRegion</PROPERTIES>
+		<PROPERTIES type="int">Superficie</PROPERTIES>
+		<PROPERTIES type="int" >Population</PROPERTIES>
+		<FKEY card="1,1" data="Pays,Code" type="varchar" length="100">Pays</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Departement" driver="mysql" AccessPoint="1" Description="Départements" Icon="/Skins/AdminV2/Img/IconAqua/App1.png">
+		<PROPERTIES type="varchar" length="100" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" length="10" searchOrder="2">Code</PROPERTIES>
+		<FKEY card="1,1" data="Pays,Code" type="varchar" length="100">Pays</FKEY>
+		<FKEY card="0,1" data="Region,Code" type="varchar" length="100">Region</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Ville" driver="mysql" AccessPoint="1" Description="Villes" Icon="/Skins/AdminV2/Img/IconAqua/App1.png">
+		<PROPERTIES type="varchar" length="100" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" length="5">Prefixe</PROPERTIES>
+		<PROPERTIES type="varchar" length="10" searchOrder="2">Code</PROPERTIES>
+		<FKEY card="1,1" data="Pays,Code">Pays</FKEY>
+		<FKEY card="1,1" data="Departement,Id">Departement</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="CodePostal" driver="mysql" AccessPoint="1" Description="Codes Postaux" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<PROPERTIES type="varchar" length="100" searchOrder="1">Code</PROPERTIES>
+		<PROPERTIES type="int">Cedex</PROPERTIES>
+		<FKEY card="1,1" data="Ville,Code" behaviour="Integrated">Ville</FKEY>
+		<FKEY card="1,1" data="Pays,Code" behaviour="Integrated">Pays</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="GeoLoc" driver="mysql">
+		<PROPERTIES type="varchar" length="100" searchOrder="1">Latitude</PROPERTIES>
+		<PROPERTIES type="varchar" length="100" searchOrder="2">Longitude</PROPERTIES>
+		<FKEY card="1,1" data="CodePostal,Id" behaviour="Integrated">CodePostal</FKEY>
+	</OBJECTCLASS>
+</SCHEMA>

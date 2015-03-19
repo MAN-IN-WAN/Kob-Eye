@@ -1,0 +1,36 @@
+<SCHEMA>
+	<OBJECTCLASS title="Categorie" generateUrl="1" driver="mysql" master="1" AccessPoint="1" Description="Categorie publique" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+		<PROPERTIES type="varchar" length="200" searchOrder="1" category="Intitulé">Nom</PROPERTIES>
+		<PROPERTIES type="text" category="Descriptif">Description</PROPERTIES>
+		<PROPERTIES type="boolean" category="Descriptif" default="1">Publier</PROPERTIES>
+		<PROPERTIES type="file" length="255" category="Descriptif">Icone</PROPERTIES>
+		<FUNCTION>ImporterDossier</FUNCTION>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Portfolio" generateUrl="1" driver="mysql" master="1" AccessPoint="1" Description="Portfolio client" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+		<PROPERTIES type="varchar" length="200" searchOrder="1" category="Intitulé">Nom</PROPERTIES>
+		<PROPERTIES type="int" searchOrder="2" category="Gadget">LikeCompteur</PROPERTIES>
+		<PROPERTIES type="text" category="Descriptif">Description</PROPERTIES>
+		<PROPERTIES type="boolean" category="Descriptif" default="1">Public</PROPERTIES>
+		<PROPERTIES type="file" length="255" category="Descriptif">Icone</PROPERTIES>
+		<FKEY card="1,1" data="Categorie,Id">CategorieId</FKEY>
+		<FUNCTION>ImporterDossier</FUNCTION>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Image" driver="mysql" AccessPoint="1" Description="Images" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<PROPERTIES type="titre" searchOrder="1" category="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="image" category="Emplacement">Fichier</PROPERTIES>
+		<PROPERTIES type="text" special="multi" category="Emplacement">Description</PROPERTIES>
+		<PROPERTIES type="order" category="Emplacement">Ordre</PROPERTIES>
+		<FKEY card="1,n" data="Portfolio,Id" >PortfolioId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Video" driver="mysql" AccessPoint="1" Description="Vidéos" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<PROPERTIES type="titre" searchOrder="1" category="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="image" category="Publication">Preview</PROPERTIES>
+		<PROPERTIES type="order" category="Publication">Ordre</PROPERTIES>
+		<PROPERTIES type="image" category="Emplacement" description="Fichier standard (.f4v ou .flv)">Fichier</PROPERTIES>
+		<PROPERTIES type="image" category="Emplacement" description="Fichier HD (.f4v ou .flv)">FichierHD</PROPERTIES>
+		<PROPERTIES type="image" category="Emplacement" description="Fichier iPod / iPhone (.mp4 480x320)">FichierApple</PROPERTIES>
+		<PROPERTIES type="image" category="Emplacement" description="Fichier iPad (.mp4 1024x768)">FichierAppleHD</PROPERTIES>
+		<PROPERTIES type="image" category="Emplacement" description="Fichier HTML5 (.webm)">FichierHTML5</PROPERTIES>
+		<FKEY card="1,n" data="Portfolio,Id" >PortfolioId</FKEY>
+	</OBJECTCLASS>
+</SCHEMA>

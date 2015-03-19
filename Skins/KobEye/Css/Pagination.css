@@ -1,0 +1,197 @@
+/* PAGINATION BLOG */
+#Pagination{
+	margin-top:20px;
+	background-color:#EEDCFF;
+}
+
+#Pagination form{
+	width:400px;
+	margin:auto;
+}
+
+
+/*.FlechesG{
+	float:left;
+	margin-left:10px;
+}
+
+* html .FlechesG{
+	margin:0;
+	margin-left:5px;
+}
+
+.FlechesG input{
+	width:20px;
+	height:20px;
+	max-width:20px;
+}
+
+.Page1{
+	background:url(/Skins/NatomShop/Img/Pagination/PageFirst.jpg) no-repeat 0 0;
+	border:0pt none;
+	cursor:pointer;
+	text-indent:-9999px;
+}
+
+input.Page1:hover{
+	background-position:0 -20px;
+}
+
+* html .Page1{
+	display:block;
+	position:relative;
+	float:left;
+	padding-left:9999px;
+	overflow:hidden;
+	border:0;
+}
+
+*+html .Page1{
+	display:block;
+	position:relative;
+	float:left;
+	padding-left:9999px;
+	overflow:hidden;
+	border:0;
+}
+
+.PagePrec{
+	background:url(/Skins/NatomShop/Img/Pagination/PagePrec.jpg) no-repeat 0 0;
+	border:0pt none;
+	cursor:pointer;
+	text-indent:-9999px;
+}
+
+input.PagePrec:hover{
+	background-position:0 -20px;
+}
+
+* html .PagePrec{
+	display:block;
+	position:relative;
+	padding-left:9999px;
+	overflow:hidden;
+	border:0;
+}
+
+*+html .PagePrec{
+	display:block;
+	position:relative;
+	padding-left:9999px;
+	overflow:hidden;
+	border:0;
+}*/
+
+
+.NumPages{
+/* 	float:left; */
+	/*margin-left:5px;
+	margin-right:5px;*/
+	width:160px;
+	margin:auto;
+	text-align:center;
+}
+
+* html .NumPages{
+	width:150px;
+}
+
+.NumPages input{
+	font-size:16px;
+	width:16px;
+	height:20px;
+	color:#000;
+	border:none;
+	background:none;
+	cursor:pointer;
+}
+
+.NumPages span{
+	font-size:16px;
+	font-weight:bold;
+	color:#EDBCFF;
+}
+
+/*.FlechesD{
+	float:left;
+	margin-right:5px;
+}
+
+.FlechesD input{
+	width:20px;
+	height:20px;
+	max-width:20px;
+}
+
+.PageSuiv{
+	background:url(/Skins/NatomShop/Img/Pagination/PageSuiv.jpg) no-repeat 0 0;
+	border:0pt none;
+	cursor:pointer;
+	text-indent:-9999px;
+}
+
+input.PageSuiv:hover{
+	background-position:0 -20px;
+}
+
+
+* html .PageSuiv{
+	display:block;
+	position:relative;
+	float:left;
+	padding-left:9999px;
+	overflow:hidden;
+	border:0;
+}
+
+*+html .PageSuiv{
+	display:block;
+	position:relative;
+	float:left;
+	padding-left:9999px;
+	overflow:hidden;
+	border:0;
+}
+
+
+.Page2{
+	background:url(/Skins/NatomShop/Img/Pagination/PageLast.jpg) no-repeat 0 0;
+	border:0pt none;
+	cursor:pointer;
+	text-indent:-9999px;
+}
+
+input.Page2:hover{
+	background-position:0 -20px;
+}
+
+* html .Page2{
+	display:block;
+	position:relative;
+	padding-left:9999px;
+	overflow:hidden;
+	border:0;
+}
+
+*+html .Page2{
+	display:block;
+	position:relative;
+	padding-left:9999px;
+	overflow:hidden;
+	border:0;
+}*/
+
+
+/* PAGINATION FORUM */
+
+.pagination{
+	background-color:#E4E4E4;
+	text-align:center;
+}
+
+.pagination a{
+	font-family:georgia,times,Arial,Verdana,serif;
+	font-size:16px;
+	font-weight:bold;
+	color:#BA0000;
+}

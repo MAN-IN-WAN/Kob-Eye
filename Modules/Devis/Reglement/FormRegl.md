@@ -1,0 +1,94 @@
+{"form":{"type":"TitleWindow","id":"Reglement","title":"Saisie des règlements",
+"width":560,"kobeyeClass":{"module":"Devis","objectClass":"Reglement"},
+"localProxy":{
+	"actions":{
+		"TiersId":{"action":"invoke","method":"callMethod","params":{"method":"object","function":"GetReglements","args":[{"dataValue":["TiersId"]}]}},
+		"proxy_kobeye_validated":{"action":"invoke","method":"groupState","params":{"group":"validated","property":"enabled","validated":1}}
+	}
+},
+"components":[
+	{"type":"VBox","percentWidth":100,"percentHeight":100,"setStyle":{"paddingLeft":5,"paddingRight":5,"paddingTop":5,"paddingBottom":5},
+	"components":[
+		{"type":"EditContainer", "id":"edit", "percentWidth":100,
+		"components":[
+			{"type":"VGroup","percentWidth":100,"percentHeight":100,
+			"components":[
+				{"type":"HGroup",
+				"components":[
+					{"type":"Form","setStyle":{"labelWidth":110,"verticalGap":8,"paddingLeft":6,"paddingRight":6,"paddingTop":6,"paddingBottom":6},"width":350,
+					"components":[
+						{"type":"FormItem","labelWidth":60,"label":"Client","percentWidth":100,"components":[
+							{"type":"HGroup","id":"intitule","components":[
+								{"type":"TextInput","dataExo":"tiers.Intitule","percentWidth":100,
+								"validType":"string","required":1,"editable":0},
+								{"type":"PopupButton","dataField":"TiersId","icon":"dataBase",
+								"kobeyeClass":{"module":"Repertoire","objectClass":"Tiers","form":"PopupList.json","select":"Id,Intitule,Ville"},
+								"exoFields":{"exoName":"tiers"}}
+							]}
+						]},
+						{"type":"FormItem","labelWidth":60,"label":"Ville","percentWidth":100,"components":[
+							{"type":"TextInput","dataExo":"tiers.Ville","percentWidth":100,"editable":0}
+						]},
+						{"type":"FormItem","labelWidth":60,"label":"Date","percentWidth":100,"components":[
+							{"type":"DateField","dataField":"Date","defaultValue":"Now","validType":"date","required":1}
+						]},
+						{"type":"FormItem","labelWidth":60,"label":"Mode","percentWidth":100,"components":[
+							{"type":"TextInput","dataField":"Mode","maxChars":2,"width":30}
+						]},
+						{"type":"FormItem","labelWidth":60,"label":"Montant","percentWidth":100,"components":[
+							{"type":"TextInput","dataField":"Montant","width":100,"maxChars":10,"validType":"float","required":1}
+						]},
+						{"type":"Spacer","height":10},
+						{"type":"HGroup","percentWidth":100,"components":[
+							{"type":"Spacer"},
+							{"type":"Button","label":"Valider","id":"save","stateGroup":"validated","enabled":0},
+							{"type":"Button","label":"Annuler","id":"cancel","events":[
+								{"type":"click","action":"invoke","objectID":"parentForm","method":"closeForm"}
+							]}
+						]}
+					]},
+					{"type":"VGroup","percentWidth":100,"components":[
+						{"type":"AdvancedDataGrid","id":"reglist","dataField":"reglist","width":190,"updatedItems":1,
+						"columns":[
+							{"type":"column","dataField":"Id","visible":0},
+							{"type":"column","dataField":"Date","headerText":"Date","format":"date","width":60},
+							{"type":"column","dataField":"Mode","headerText":"M","width":30},
+							{"type":"column","dataField":"Montant","headerText":"Montant","width":100,"format":"2dec"},
+							{"type":"column","width":0}
+						]},
+						{"type":"Form","percentWidth":100,"setStyle":{"labelWidth":110,"verticalGap":8,"paddingLeft":6,"paddingRight":6,"paddingTop":6,"paddingBottom":6},
+						"components":[
+							{"type":"FormItem","labelWidth":75,"label":"Solde Client","percentWidth":100,"components":[
+								{"type":"TextInput","dataField":"soldeClient","width":80,"editable":0}
+							]}
+						]}
+					]}
+				]},
+				{"type":"AdvancedDataGrid","id":"faclist","dataField":"faclist","percentWidth":100,"percentHeight":100,"updatedItems":1,
+				"columns":[
+					{"type":"column","dataField":"Id","visible":0},
+					{"type":"column","dataField":"Solde","headerText":"S","format":"checkbox","width":20},
+					{"type":"column","dataField":"Reference","headerText":"Facture","width":60},
+					{"type":"column","dataField":"Type","headerText":"T","width":20},
+					{"type":"column","dataField":"Date","headerText":"Date","format":"date","width":60},
+					{"type":"column","dataField":"LivraisonIntitule","headerText":"Livraison","width":200},
+					{"type":"column","dataField":"LivraisonVille","headerText":"Ville","width":105},
+					{"type":"column","dataField":"MontantTTC","headerText":"TTC","width":80,"format":"2dec"},
+					{"type":"column","width":0}
+				]}
+			]}
+		],
+		"events":[
+			{"type":"proxy","triggers":[
+				{"trigger":"save","action":"invoke","method":"saveData"}
+//				{"trigger":"save","action":[
+//					{"action":"invoke","method":"callMethod","params":{"method":"query","function":"SavePayment",
+//					"args":[{"dataValue":["Mode","DateReglement","Montant","Solde"]}]}},
+//					{"action":"invoke","objectID":"parentForm","method":"closeForm"}
+//				]}
+			]}
+		]}
+	]}
+],
+"popup":"modal"
+}}

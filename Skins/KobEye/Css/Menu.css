@@ -1,0 +1,247 @@
+#Menu{
+	width:100%;
+	height:54px;
+	/*background-color:#8F8F8F;*/
+	font-family:Georgia,Arial,Verdana,Helvetica,sans-serif;
+}
+
+#Menu ul{
+	width:980px;
+	margin:auto;
+	font-family:Georgia,Arial,Verdana,Helvetica,sans-serif;
+}
+
+#Menu li{
+	display:block;
+	float:left;
+	width:11%;
+	background:url(/Skins/KobEye/Img/SeparationOutil.png) no-repeat right 0;
+	font-family:Georgia,Arial,Verdana,Helvetica,sans-serif;
+	margin:9px;
+	padding:0;
+}
+
+#Menu li a, #Menu li a:visited{
+	text-decoration:none;
+	color:#fff;
+	font-family:Georgia,Arial,Verdana,Helvetica,sans-serif;
+/*	height:25px;*/
+}
+
+#Menu li a.Actif, #Menu li a:hover, #Menu li a:visited.Actif{
+	color:#C9B785;
+	text-decoration:none;
+	font-family:Georgia,Arial,Verdana,Helvetica,sans-serif;
+/* 	background:url(/Skins/Gabarit1/Img/FlecheMenu.png) 50% bottom no-repeat; */
+	
+}
+
+/** html .BlocActif{
+	background:none;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/Skins/Gabarit1/Img/FlecheMenu.png', sizingMethod='scale');
+}*/
+
+#Menu li div {
+	position:relative;
+	display:table;
+	text-align:center;
+	padding-top:5px;
+	height:37px;
+	
+}
+
+#Menu ul li div:hover {
+	background:url(/Skins/Gabarit1/Img/FlecheMenu.png) 50% 103% no-repeat;
+	height:37px;
+/* 	width:10px; */
+}
+
+
+.BlocActif {
+	position:relative;
+	display:table;
+	background:url(/Skins/Gabarit1/Img/FlecheMenu.png) 50% 103% no-repeat;
+	height:37px;
+	width:1px;
+}
+
+* html .BlocActif {
+	background:none;
+}
+#Menu li div a {
+	vertical-align:middle;
+	display:table-cell;
+	padding-bottom:7px;
+	padding-right:5px;
+}
+
+*+html #Menu li div a, *+html #Menu li div, *+html .BlocActif{
+	vertical-align:middle;
+	display:table-cell;
+	zoom:1;
+	text-align:center;
+	padding:2px 5px 5px 0;
+}
+
+* html #Menu li div a, * html #Menu li div, * html .BlocActif{
+	display:inline;
+	zoom:1;
+	text-align:center;
+	padding:0;
+}
+
+/*---------------------------SOUS-MENUS : 1er NIVEAU--------------------*/
+
+#Menu ul ul{
+	visibility:hidden;
+	position:absolute;
+	height:0;
+	top:140px;
+	padding-top:13px;
+	width:150px;
+	z-index:10;
+	-moz-opacity:.90;
+	opacity:.90;
+	margin-left:-5px;
+}
+
+#Menu ul ul li{
+	display:block;
+	position:relative;
+	width:inherit;
+	border:none;
+	border:0;
+	border-bottom:1px solid #8F8F8F;
+	background-image:none;
+	background-color:#163047;
+	padding:5px;
+	filter:alpha(opacity=90);
+	-moz-opacity:.90;
+	opacity:.90;
+	 -khtml-opacity:.90; 
+	float:none;
+	width:150px;
+
+}
+
+*+html #Menu ul ul {
+	padding-top:15px;
+}
+
+#Menu ul ul li:hover {
+	background-color:#081F31;
+}
+/* make the second level visible when hover on first level list OR link */
+#Menu ul li:hover ul,#Menu ul a:hover ul{
+	visibility:visible; 
+}
+
+/* keep the third level hidden when you hover on first level list OR link */
+#Menu ul li:hover ul ul{
+	visibility:hidden;
+}
+
+/* make the third level visible when you hover over second level list OR link */
+#Menu ul li:hover ul li:hover ul{ 
+	visibility:visible;
+}
+* html #Menu ul ul{
+	/*top:35px;
+	t\op:25px;*/
+	left:0;
+	z-index:10;
+}
+
+* html #Menu{
+	z-index:100;
+}
+
+*+html #Menu{
+	z-index:100;
+}
+
+*+html #Menu ul ul{
+	z-index:100;
+}
+
+#Menu ul ul li a{
+	color:#fff;
+	display:block;
+	height:1%;
+}
+
+#Menu ul ul li:hover a{
+	color:#C9B785;width:150px;
+}
+
+/*#Menu li.Actif ul li a, #Menu ul ul li a, #Menu ul ul li a:visited{
+	color:#fff;
+	
+}
+
+#Menu li.Actif ul li:hover a, #Menu ul ul li:hover a, #Menu ul ul li:hover a:visited{
+	color:#C9B785;
+}*/
+
+/*
+* html #Menu ul ul a, * html #Menu ul ul a:visited{
+	background-color:#9EFFA4;
+}
+
+* html #Menu ul ul a:hover{
+	color:#00A0C6;
+	background-color:#212121;
+}*/
+
+/*Barre ACtion*/
+
+#MenuBarre {
+	width:980px;
+	margin:auto;
+	position:relative;
+	height:54px;
+	display:block;
+}
+#MenuBarre #MenuMilieu{
+	background-image:url(/Skins/KobEye/Img/BarreOutilMilieu.png);
+	position:absolute;
+	top:0;
+	float:left;
+	left:12px;
+	height:54px;
+	right:12px;
+}
+
+#MenuBarre #MenuGauche {
+	position:absolute;
+	top:0;
+	left:0px;
+	width:12px;
+	height:54px;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/Skins/AdminV2/Img/BarreAction/BarreOutilGauche.png', sizingMethod='scale');
+}
+
+
+div[id="MenuGauche"]{
+	filter: none;
+	background:url(/Skins/AdminV2/Img/BarreAction/BarreOutilGauche.png);
+}
+
+
+#MenuBarre #MenuDroite {
+	position:absolute;
+	top:0;
+	right:0px;
+	width:12px;
+	height:54px;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/Skins/AdminV2/Img/BarreAction/BarreOutilDroite.png', sizingMethod='scale');
+}
+
+
+div[id="MenuDroite"]{
+	filter: none;
+	background:url(/Skins/AdminV2/Img/BarreAction/BarreOutilDroite.png);
+}
+
+
+

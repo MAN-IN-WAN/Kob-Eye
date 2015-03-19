@@ -1,0 +1,41 @@
+<html>
+	<body>
+		<div align="center">
+			<table width="800" cellpadding="0" cellspacing="0" bgcolor="#E4f3f8">
+				<tr>	
+					<td align="left"  >
+						<img src="[!Domaine!]/Skins/[!Systeme::Skin!]/Img/BandeauMail.jpg" alt="Logo du site" />
+					</td>
+				</tr>			
+				<tr>
+					<td align="right">
+						<font face="arial" color="#000000" size="2">
+							<strong>
+								[STORPROC Redaction/Categorie/_Coordonnees|CatP|0|1]
+									[!CatP::Description!]
+								[/STORPROC]
+							</strong>
+						</font>
+					</td>
+				</tr>			
+				<tr>
+					<td style="padding-left:10px;" >
+						<br />
+						<font face="arial" color="#000000" size="2">[DATA]</font>
+						<br /><br />
+					</td>
+				</tr>
+				<tr>
+					<td  align="center" style="padding-left:10px;" >
+						<br />
+						<font face="arial" color="#000000" size="2"><strong>A bient&ocirc;t sur </strong></font>
+						<a href="[!Domaine!]"><font face="arial" color="#000000" size="2"><strong>notre site ! [!Domaine!]!</strong></font></a>
+						<br /><br />
+					</td>
+				</tr>
+			<table>
+		</div>
+	</body>
+</html>		
+
+

@@ -1,0 +1,217 @@
+
+.Pagination input {
+	width:20px;
+	height:18px;
+	float:left;
+	margin-left:1px;
+}
+
+.Pagination div.information{
+	background: none repeat-x scroll left top #EF6200;
+	border-radius: 5px 5px 5px 5px;
+    	color: white;
+    	display: block;
+}
+
+.Pagination .KEBouton {
+	margin:0 1px 0 1px;
+	padding: 0 5px 2px;
+	height: 18px;
+}
+
+.Pagination .CurrentPage {
+	background-color:white;
+	color:#ef6200;
+}
+
+* html .CotePagination{
+	padding:0;
+}
+
+*+html .CotePagination{
+	padding:0;
+}
+
+.FlechesG{
+	float:left;
+}
+
+.FlechesG input{
+/* 	width:20px; */
+	height:20px;
+/* 	max-width:20px; */
+}
+
+.Page1{
+	background:url(/Skins/AdminV2/Img/Pagination/PageFirst.png) no-repeat 0 0;
+	border:0pt none;
+	cursor:pointer;
+	text-indent:-9999px;
+}
+
+/*input.Page1:hover{
+	background-position:0 -20px;
+}*/
+
+* html .Page1{
+	display:block;
+	position:relative;
+	float:left;
+	padding-left:9999px;
+	overflow:hidden;
+	border:0;
+}
+
+*+html .Page1{
+	display:block;
+	position:relative;
+	float:left;
+	padding-left:9999px;
+	overflow:hidden;
+	border:0;
+}
+
+.PagePrec{
+	background:url(/Skins/AdminV2/Img/Pagination/PagePrec.png) no-repeat 0 0;
+	border:0pt none;
+	cursor:pointer;
+	text-indent:-9999px;
+}
+
+/*input.PagePrec:hover{
+	background-position:0 -20px;
+}*/
+
+* html .PagePrec{
+	display:block;
+	position:relative;
+	padding-left:9999px;
+	overflow:hidden;
+	border:0;
+}
+
+*+html .PagePrec{
+	display:block;
+	position:relative;
+	padding-left:9999px;
+	overflow:hidden;
+	border:0;
+}
+
+
+.NumPages{
+	float:left;
+	margin-left:5px;
+	margin-right:5px;
+}
+
+.NumPages input{
+	font-size:12px;
+	height:16px;
+	color:#08709B;
+	border:0;
+	background:transparent;
+	cursor:pointer;
+}
+
+.NumPages span{
+	font-size:13px;
+	height:16px;
+	color:white;
+	border:0px;
+	margin-right:5px;
+}
+
+.FlechesD{
+	float:left;
+	margin-right:5px;
+}
+
+.FlechesD input, .FlechesG input{
+ 	width:16px; 
+	height:16px;
+	margin-top:0px;
+/* 	max-width:20px; */
+}
+
+input.PageSuivD
+{
+   background:url(/Skins/AdminV2/Img/Pagination/PageSuivD.png) no-repeat 0 0; 
+   cursor:normal;
+}
+
+input.PagePrecD
+{
+   background:url(/Skins/AdminV2/Img/Pagination/PagePrecD.png) no-repeat 0 0; 
+   cursor:normal;
+}
+
+input.Page1D
+{
+   background:url(/Skins/AdminV2/Img/Pagination/PageFirstD.png) no-repeat 0 0;
+   cursor:normal; 
+}
+
+input.Page2D
+{
+   background:url(/Skins/AdminV2/Img/Pagination/PageLastD.png) no-repeat 0 0; 
+   cursor:normal;
+}
+
+.PageSuiv{
+	background:url(/Skins/AdminV2/Img/Pagination/PageSuiv.png) no-repeat 0 0;
+	border:0pt none;
+	cursor:pointer;
+	text-indent:-9999px;
+}
+
+/*input.PageSuiv:hover{
+	background-position:0 -20px;
+}*/
+
+
+* html .PageSuiv{
+	display:block;
+	position:relative;
+	float:left;
+	padding-left:9999px;
+	overflow:hidden;
+	border:0;
+}
+
+*+html .PageSuiv{
+	display:block;
+	position:relative;
+	float:left;
+	padding-left:9999px;
+	overflow:hidden;
+	border:0;
+}
+
+
+.Page2{
+	background:url(/Skins/AdminV2/Img/Pagination/PageLast.png) no-repeat 0 0;
+	border:0pt none;
+	cursor:pointer;
+	text-indent:-9999px;
+}
+
+/*input.Page2:hover{
+	background-position:0 -20px;
+}*/
+
+* html .Page2{
+	display:block;
+	position:relative;
+	padding-left:9999px;
+	overflow:hidden;
+	border:0;
+}
+
+*+html .Page2{
+	display:block;
+	position:relative;
+	padding-left:9999px;
+	overflow:hidden;
+	border:0;
+}

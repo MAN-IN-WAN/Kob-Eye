@@ -1,0 +1,162 @@
+/*-- Page de contact --*/
+.FormContact {border:1px solid #525252;}
+.FormContact h3{padding-left:5px;font-size: 13px;}
+.BlocEnvoi  {border:1px solid #525252;padding:10px;}
+
+.FormContact .LigneForm {display:block;overflow:hidden;position:relative;padding: 5px 0;}
+.FormContact label {  display: block; float: left; position:relative; padding-left: 5px;width: 100px;font-size:12px;}
+.FormContact input {border:1px solid #A9A9A9;width:300px;font-size:12px;}
+.FormContact select {border:1px solid #A9A9A9;width:300px;background:none;font-size:12px;}
+.FormContact textarea {border:1px solid #A9A9A9;width:300px;background:none;font-size:12px;}
+.FormContact file { float: left;width: 300px;}
+
+.FormContact .BoxCheck { float: left;width: 106px;}
+
+
+.FormContact label.Nature {  display: inline-block;padding-left: 5px;width: auto; padding-top: 2px;}
+.FormContact label.Partie2 {  display: inline-block;padding-left: 5px;width: 120px;font-size:12px;}
+
+.FormContact .BoxCheckSup { float: left;width: 152px;}
+
+.FormContact .obligatoire {color:#0070ba;}
+.BasPage {text-align:justify;font-style:italic;padding:20px 0 0 0;}
+.FormContact input.CodePos {width:100px;}
+
+
+.FormContact .InfosComplete {display:block;overflow:hidden;position:relative;width:100%;}
+
+.FormContact .InfosComplete .InfosEtatCivil {float:left;width:445px;margin:0 5px;}
+.FormContact .InfosComplete .InfosProjetImmobilier {float:left;width:445px;border-left:1px dotted #525252;margin:0 5px;padding-left:5px;}
+
+
+.FormContact .lienBtnCnt {
+	display:block;
+	overflow:hidden;
+	position:relative;
+	padding-left:426px;
+}
+.FormContact .lienBtnCnt  img {
+	float:left;
+	
+}
+.FormContact .lienBtnConx input {
+	display: block;
+	position: relative;
+	width: 75px;
+	height: 22px;
+	border: none;
+	background: url('../Img/sprite.png') -707px -1347px no-repeat;
+	cursor: pointer;
+	text-indent:-999px;
+	font-size: 0;
+	line-height: 0;
+}
+.FormContact .lienBtnConx input:hover {
+	background-position: -797px -1347px;
+}
+
+
+.FormContact .lienBtnCnt input {
+	display: block;
+	position: relative;
+	width: 75px;
+	height: 22px;
+	border: none;
+	background: url('../Img/sprite.png') -262px -1347px no-repeat;
+	cursor: pointer;
+	text-indent:-999px;
+	font-size: 0;
+	line-height: 0;
+}
+.FormContact .lienBtnCnt input:hover {
+	background-position: -352px -1347px;
+}
+
+
+.BlocError {
+	border:1px solid #BA0000;
+	padding:5px;
+	font-size:11px;
+	font-style:italic;
+	background-color:#FFBEBE;
+	color:#BA0000;
+	padding:10px;
+	margin-bottom: 10px;
+}
+
+.BlocError ul {
+	list-style:none;
+}
+div.BlocError li {font-size:12px;font-style:italic;list-style:outside;margin-left:20px}
+div.BlocError p {font-size:14px;font-style:italic;text-decoration:underline;font-weight:bold;margin-bottom:5px}
+.inputError { background-color:#FFBEBE;color:#BA0000;	border:1px solid #BA0000;
+}
+
+/*--Send To Friend -*/
+
+.FormContactSndf {border:1px solid #525252;}
+.FormContactSndf h3 {padding-left:5px;text-align:justify;}
+
+.FormContactSndf .LigneForm {display:block;overflow:hidden;position:relative;padding: 5px 0;}
+.FormContactSndf label {  display: block; float: left; position:relative; padding-left: 5px;width: 108px;font-size:12px;}
+.FormContactSndf input {border:1px solid #A9A9A9;width:300px;font-size:12px;cursor:pointer;}
+.FormContactSndf input:hover {text-decoration:underline;}
+.FormContactSndf select {border:1px solid #A9A9A9;width:300px;background:none;font-size:12px;}
+.FormContactSndf textarea {border:1px solid #A9A9A9;width:300px;background:none;font-size:12px;}
+
+.FormContactSndf .obligatoire {color:#0070ba;}
+
+
+.FormContactSndf .InfosComplete {display:block;overflow:hidden;position:relative;width:100%;}
+
+.sndtof { display:block; margin:5px 0;}
+
+.sndtof input {    
+	background-color: #FFFFFF;
+    	border: 1px dotted #525252;
+    	width: 925px; 
+}
+.FormContactSndf .InfosInternaute {float:left;width:445px;margin:0 5px;}
+.FormContactSndf .InfosAmi {float:left;width:445px;border-left:1px dotted #525252;margin:0 ; }
+
+.FormContactSndf .lienBtnSndf { 
+	padding-left:380px;	
+	display: block;
+	position: relative;
+	overflow:hidden;
+}
+.FormContactSndf .lienBtnSndf .BtnGauche { 
+	float:left;
+	display: block;
+	position: relative;
+}
+.FormContactSndf .lienBtnSndf .BtnDroit { 
+	float:left;
+	display: block;
+	position: relative;
+}
+
+.FormContactSndf .lienBtnSndf input {
+	display: block;
+	width: 75px;
+	height: 22px;
+	border: none;
+	background: url('../Img/sprite.png') -262px -1347px no-repeat;
+	cursor: pointer;
+	text-indent:-999px;
+}
+.FormContactSndf .lienBtnSndf input:hover {
+	background-position: -352px -1347px;
+}
+.FormContactSndf .lienBtnSndf a {
+	display: block;
+	width: 75px;
+	height: 22px;
+	border: none;
+	background: url('../Img/sprite.png') -487px -1347px no-repeat;
+	cursor: pointer;
+	text-indent:-999px;
+}
+.FormContactSndf .lienBtnSndf a:hover {
+	background-position: -577px -1347px;
+}

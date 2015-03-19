@@ -1,0 +1,205 @@
+.UnibioLabo {
+    	padding: 10px;
+	display:block;
+	overflow:hidden;
+	
+}
+.UnibioLabo h2, .UnibioLesLabo  h2{
+    	color: #66A7BC;
+    	font-size: 14px;
+    	font-weight: bold;
+    	text-transform: uppercase;
+	text-decoration:underline;
+}
+.UnibioLabo p{
+    	color: #474747;
+	border-bottom: 1px dotted #66A7BC;
+	padding:20px 0;
+}
+.UnibioLabo form{
+	padding:20px 0;
+	border-bottom: 1px dotted #66A7BC;
+	display:block;
+	overflow:hidden;
+}
+.UnibioLabo select{
+	border: 1px solid #474747;
+	background-color:#fff;
+	font-size:11px;
+	width:200px;
+	display:block;
+	float:left;
+	margin-right: 20px;
+    	margin-top: 2px;
+}
+
+.UnibioLesLabo {
+ 	display:block;
+	overflow:hidden;
+
+}
+
+.UnibioLesLabo h2{
+    	padding: 10px;
+	
+}
+
+/*--- LABOS ---*/
+div.LaboItem {
+	overflow: hidden;
+	padding: 10px 10px 0 10px;
+}
+
+div.centreL, div.LaboItemRight {
+    border-left: 1px dotted #66A7BC;
+}
+
+.LaboPhoto{
+margin-top:10px
+}
+
+.LaboPhotoFiligrane {
+	position:absolute;
+	bottom:0;
+	left:100px;
+	background: url("../../Public/Img/sprite.png") no-repeat -761px -1782px;
+	width: 81px;
+	height: 67px;
+}
+
+
+
+div.LaboItemLeft {
+	display: block;
+	float: left;
+	position: relative;
+	width: 300px;	
+}
+
+div.LaboNom {
+	text-transform: uppercase;
+	font-weight: bold;
+    color:#66A7BC;
+	
+}
+div.LaboPers  {
+	padding: 3px 0;overflow: hidden;
+
+}
+div.LaboPers div.LaboPersCivilite{
+	float:left;/*width: 150px;	*/
+}
+div.LaboPers div.LaboPersProfession{
+	float:left;width: 150px;	
+}
+
+div.LaboItemRight, div.LaboItemRightBis{
+	margin-left: 300px;
+	padding: 0 10px; 
+}
+
+div.LaboItemRightTop {
+	padding-bottom: 10px;
+}
+
+div.LaboItemRightBottom {
+	padding: 10px 0 30px;
+	position: relative;
+}
+div.LaboDescription {
+	margin-bottom:20px;
+}
+
+div.LaboMoreLinks {
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+}
+
+div.LaboMoreLinks a.LaboPlanAcces { 
+ 	background: url("../Img/sprite.png") no-repeat  -720px -1348px ;
+    	color: #474747;
+    	float: right;
+    	font-size: 10px;
+    	font-weight: normal;
+    	overflow: hidden;
+    	padding: 2px 5px 2px 25px;
+
+}
+
+div.LaboMoreLinks a.LaboPlusInfos { 
+ 	background: url("../Img/sprite.png") no-repeat  -720px -1426px ;
+    	color: #474747;
+    	float: right;
+    	font-size: 10px;
+    	font-weight: normal;
+    	overflow: hidden;
+    	padding: 2px 5px 2px 25px;
+
+}
+div.LaboMoreLinks a.LaboPlusInfos:hover { 
+	background: url("../Img/sprite.png") no-repeat  -720px -1461px;
+	color:#66A7BC;
+}
+
+div.LaboMoreLinks a.LaboPlanAcces:hover { 
+	background: url("../Img/sprite.png") no-repeat  -720px -1383px;
+	color:#66A7BC;
+}
+
+
+div.LaboMoreLinks .LaboMoreLinksPipe { 
+ 	color:#474747;
+	padding:2px 5px ;
+	overflow: hidden;
+	float:right;
+
+}
+div.LaboNums {
+	border-bottom: 1px dotted #66A7BC;
+	padding: 5px 0;
+}
+div.LaboHoraires {
+	
+	padding: 5px 0;
+}
+
+
+ div.LaboItemRight {
+	overflow: hidden;
+	padding: 10px;
+}
+ div.LaboItemRightBis {
+	border-left: none;
+}
+
+div.LaboItemPair {
+	background: #Eff6f8;
+}
+
+div.ButtonsLabo {
+	border-top: 1px dotted #66A7BC;
+	overflow: hidden;
+	padding: 10px;
+}
+
+div.HautdePage {
+     	padding-bottom: 10px;
+    	overflow: hidden;
+}
+
+div.HautdePage a{
+	background: url("../../Intranet/Img/sprite.png") no-repeat 57px -1510px;
+   	color: #474747;
+    	display: block;
+    	font-size: 10px;
+    	margin-top: 8px;
+    	padding-right: 27px;
+	float:right;
+}
+div.HautdePage a:hover {
+	background-position:  57px -1477px;
+	color:#66A7BC;
+	text-decoration:underline;
+
+}

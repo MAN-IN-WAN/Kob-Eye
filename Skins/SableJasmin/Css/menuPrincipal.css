@@ -1,0 +1,163 @@
+/*----- Menu -----*/
+div.MenuCentral {
+	position: relative;
+	z-index: 20;
+}
+
+div#MainMenu {
+	position: relative;
+	font-size: 14px;
+	text-transform: uppercase;
+}
+
+table#Menu {
+	width: 100%;
+	border-collapse:collapse;
+}
+
+table#Menu td {
+	border-left: 1px solid white;
+}
+
+table#Menu td.Last {
+	border-right: 1px solid white;
+}
+
+table#Menu a {
+	color: white;
+	display: block;
+	text-align: center;
+	padding: 4px;
+}
+
+/*----- Mega Menu -----*/
+div#MainMenu div.PaveMenu:hover, table#Menu td:hover > div.PaveMenu {
+	display: block;
+}
+
+div#MainMenu div.PaveMenu {
+	position: absolute;
+	overflow: hidden;
+	display: none;
+	top: 26px;
+	left: 5px;
+	right: 5px;
+	z-index: 50;
+}
+
+div#MainMenu div.PaveMasque {
+	overflow: hidden;
+	position: relative;
+}
+
+div#MainMenu div.PaveContenu {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+    background: white;
+    text-transform: none;
+}
+
+div#MainMenu div.PaveMenu a {
+	color: #C4BEA0;
+	display: inline;
+	text-align: left;
+}
+
+div#MainMenu div.PaveMenu a.VoirTout {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+}
+
+div#MainMenu div.PaveMenu a:hover {
+	text-decoration: underline;
+}
+
+ul.MenuSubCat {
+	position: absolute;
+	top: 40px;
+	left: 10px;
+	width: 400px;
+	text-align: left;
+	overflow: hidden;
+}
+
+ul.MenuSubCat li {
+	display: block;
+	position: relative;
+	float: left;
+	width: 150px;
+	padding: 8px 5px 4px 12px;
+	border-bottom: 1px solid #C4BEA0;
+	margin-right: 30px;
+	background: url("../Img/sprite.png") 0 -1882px;
+}
+
+div#MainMenu div.PaveMenu div.MenuCoupDeCoeur {
+	text-align: left;
+	position: absolute;
+	top: 10px;
+	bottom: 10px;
+	right: 10px;
+	width: 550px;
+	color: #C4BEA0;
+	border: 1px solid #C4BEA0;
+}
+
+div#MainMenu div.PaveMenu div.TitreCoupDeCoeur,
+div#MainMenu div.PaveMenu h4,
+div#MainMenu div.PaveMenu p,
+div#MainMenu div.PaveMenu div.PrixCoupDeCoeur,
+div#MainMenu div.PaveMenu a.VoirFicheCoupDeCoeur {
+    position: absolute;
+    left: 290px;
+    right: 20px;
+    overflow: hidden;
+}
+
+div#MainMenu div.PaveMenu div.TitreCoupDeCoeur {
+	background: url("../Img/sprite.png") 0 -1965px;
+    border-bottom: 1px solid #C4BEA0;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 5px 5px 2px 30px;
+    text-transform: uppercase;
+    top: 5px;
+}
+
+div#MainMenu div.PaveMenu h4 {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 2px;
+    text-transform: uppercase;
+    top: 40px;
+    height: 17px;
+}
+
+div#MainMenu div.PaveMenu p {
+	color: #C4BEA0;
+    padding: 2px;
+    top: 52px;
+    height: 68px;
+}
+
+div#MainMenu div.PaveMenu div.PrixCoupDeCoeur {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+    top: 140px;
+}
+
+div#MainMenu div.PaveMenu a.VoirFicheCoupDeCoeur {
+    background: url("../Img/sprite.png") repeat scroll 0 -2011px transparent;
+    bottom: 0;
+    font-size: 0;
+    height: 32px;
+    left: 432px;
+    line-height: 0;
+    right: 0;
+    text-indent: -999px;
+    padding: 0;
+}

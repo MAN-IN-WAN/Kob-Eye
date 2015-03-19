@@ -1,0 +1,10 @@
+.Error{
+	margin:5px;
+	padding:5px;
+	background:#ffc6c6;
+}
+.Success{
+	margin:5px;
+	padding:5px;
+	background:#bce9c9;
+}

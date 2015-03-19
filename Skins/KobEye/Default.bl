@@ -1,0 +1,19 @@
+[HEADER]
+	<link rel="icon" href="/Skins/KobEye/favicon.ico" type="image/x-icon"/> 
+[/HEADER]
+<div id="Entete">
+	[MODULE Systeme/Structure/Entete]
+</div>
+<div id="Menu">
+	[MODULE Systeme/Menu]
+</div>
+<div id="Generale">
+	<div id="Container">
+		<div id="Contenu">
+			[DATA]
+		</div>
+	</div>
+</div>	
+<div id="Pied">
+	[MODULE Systeme/Structure/Pied]
+</div>

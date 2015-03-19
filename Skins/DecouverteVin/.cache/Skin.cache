@@ -1,0 +1,89 @@
+O:4:"Bloc":23:{s:7:"RawData";s:0:"";s:7:"VarData";N;s:9:"RawLoaded";b:1;s:13:"ContentLoaded";b:1;s:7:"Content";N;s:9:"BlObjects";a:8:{i:0;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:37:"/Skins/Minceur/Js/jquery-1.7.2.min.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:1;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:34:"/Skins/Minceur/Js/styleswitcher.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:2;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:10:{i:0;s:148:"
+<script type="text/javascript">jQuery.noConflict();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+";i:1;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:36:"/Skins/Minceur/Css/bootstrap.min.css";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:3:"CSS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:2;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:47:"/Skins/Minceur/Css/bootstrap-responsive.min.css";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:3:"CSS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:3;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:29:"/Skins/Minceur/Css/custom.css";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:3:"CSS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:4;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:28:"/Skins/Minceur/Css/embed.css";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:3:"CSS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:5;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:45:"/Skins/Minceur/Css/bootstrap-lightbox.min.css";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:3:"CSS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:6;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:30:"/Skins/Minceur/Css/minceur.css";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:3:"CSS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:7;s:143:"
+
+
+
+
+
+
+<script type="text/javascript">
+	window.addEvent('load', function() {
+		new JCaption('img.caption');
+	}); 
+</script>
+
+
+<style>
+	body{
+		";i:8;O:8:"StorProc":24:{s:6:"Offset";N;s:5:"Limit";N;s:5:"Query";N;s:7:"TempVar";N;s:11:"LoopObjects";N;s:12:"ChildObjects";a:1:{i:0;O:8:"StorProc":24:{s:6:"Offset";N;s:5:"Limit";N;s:5:"Query";N;s:7:"TempVar";N;s:11:"LoopObjects";N;s:12:"ChildObjects";a:1:{i:0;O:8:"StorProc":24:{s:6:"Offset";N;s:5:"Limit";N;s:5:"Query";N;s:7:"TempVar";N;s:11:"LoopObjects";N;s:12:"ChildObjects";a:1:{i:0;O:9:"Condition":14:{s:7:"CaseTab";N;s:11:"CaseDefault";N;s:4:"Init";b:1;s:4:"Data";s:0:"";s:3:"Nom";s:9:"Condition";s:6:"Result";N;s:6:"Beacon";s:2:"IF";s:12:"ChildObjects";a:1:{i:0;a:1:{i:0;O:8:"StorProc":24:{s:6:"Offset";N;s:5:"Limit";N;s:5:"Query";N;s:7:"TempVar";N;s:11:"LoopObjects";N;s:12:"ChildObjects";N;s:8:"Recursiv";b:0;s:6:"NoLoop";b:0;s:6:"NoPost";b:1;s:6:"Module";N;s:7:"GroupBy";N;s:9:"OrderType";N;s:8:"OrderVar";N;s:6:"Select";N;s:4:"Init";b:1;s:3:"Nom";s:6:"Object";s:6:"Result";N;s:6:"Beacon";s:8:"STORPROC";s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:36:"Systeme/Menu/[!M::Id!]/Fichier|F|0|1";s:4:"Path";N;s:4:"Conf";N;s:12:"MasterBeacon";s:8:"STORPROC";}}}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:11:"[!M::Url!]=";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}}s:8:"Recursiv";b:0;s:6:"NoLoop";b:0;s:6:"NoPost";b:1;s:6:"Module";N;s:7:"GroupBy";N;s:9:"OrderType";N;s:8:"OrderVar";N;s:6:"Select";N;s:4:"Init";b:1;s:3:"Nom";s:6:"Object";s:6:"Result";N;s:6:"Beacon";s:8:"STORPROC";s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:24:"[!Systeme::Menus!]|M|0|1";s:4:"Path";N;s:4:"Conf";N;s:12:"MasterBeacon";s:8:"STORPROC";}}s:8:"Recursiv";b:0;s:6:"NoLoop";b:0;s:6:"NoPost";b:1;s:6:"Module";N;s:7:"GroupBy";N;s:9:"OrderType";N;s:8:"OrderVar";N;s:6:"Select";N;s:4:"Init";b:1;s:3:"Nom";s:6:"Object";s:6:"Result";N;s:6:"Beacon";s:8:"NORESULT";s:9:"ChildData";N;s:5:"Child";s:8:"STORPROC";s:4:"Vars";s:0:"";s:4:"Path";N;s:4:"Conf";N;s:12:"MasterBeacon";s:8:"STORPROC";}}s:8:"Recursiv";b:0;s:6:"NoLoop";b:0;s:6:"NoPost";b:1;s:6:"Module";N;s:7:"GroupBy";N;s:9:"OrderType";N;s:8:"OrderVar";N;s:6:"Select";N;s:4:"Init";b:1;s:3:"Nom";s:6:"Object";s:6:"Result";N;s:6:"Beacon";s:8:"STORPROC";s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:55:"Systeme/Menu/[!Systeme::CurrentMenu::Id!]/Fichier|F|0|1";s:4:"Path";N;s:4:"Conf";N;s:12:"MasterBeacon";s:8:"STORPROC";}i:9;s:89:"
+		background-image:url(/[!F::Fichier!]);
+		background-position:center top;
+		}
+</style>
+";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:0:"";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:3;s:359:"
+
+
+<!-- Navbar -->
+<div class="navbar navbar-fixed-top navbar-inverse">
+	<div class="navbar-inner">
+		<div class="container">
+			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a>
+			<div class="search visible-desktop">
+
+			</div>
+			";i:4;O:4:"Bloc":24:{s:7:"RawData";N;s:7:"VarData";N;s:9:"RawLoaded";b:0;s:13:"ContentLoaded";b:0;s:7:"Content";N;s:9:"BlObjects";N;s:6:"BlData";N;s:8:"PostData";N;s:11:"PostObjects";N;s:10:"PostBlData";N;s:7:"ObjVars";N;s:13:"PostBlObjects";N;s:12:"ChildObjects";N;s:9:"ChildData";N;s:4:"Path";N;s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"MODULE";s:5:"Child";N;s:4:"Vars";s:12:"Systeme/Menu";s:7:"TempVar";N;s:4:"Conf";N;s:6:"INITOK";s:4:"NB 0";}i:5;s:459:"
+		</div>
+	</div>
+</div>
+<div class="container">
+
+	<!-- Content -->
+
+	<div id="system-message-container"></div>
+
+	<!-- Search Module Position -->
+	<div class="search hidden-desktop">
+
+	</div>
+
+	<div id="main" class="row-fluid">
+		<!-- Component -->
+		<div id="content" class="span12">
+
+			<div class="blog-featured well">
+				<div class="items-leading row-fluid">
+					<div class="leading-0">
+						[DATA]
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+
+";i:6;O:4:"Bloc":24:{s:7:"RawData";N;s:7:"VarData";N;s:9:"RawLoaded";b:0;s:13:"ContentLoaded";b:0;s:7:"Content";N;s:9:"BlObjects";N;s:6:"BlData";N;s:8:"PostData";N;s:11:"PostObjects";N;s:10:"PostBlData";N;s:7:"ObjVars";N;s:13:"PostBlObjects";N;s:12:"ChildObjects";N;s:9:"ChildData";N;s:4:"Path";N;s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"MODULE";s:5:"Child";N;s:4:"Vars";s:14:"Systeme/Footer";s:7:"TempVar";N;s:4:"Conf";N;s:6:"INITOK";s:4:"NB 0";}i:7;s:717:"
+</div>
+<!-- Piwik -->
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(["trackPageView"]);
+  _paq.push(["enableLinkTracking"]);
+
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.abtel.fr/";
+    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+    _paq.push(["setSiteId", "13"]);
+    var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+    g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<!-- End Piwik Code -->
+
+
+<script src="/Skins/Minceur/Js/bootstrap.min.js"></script>
+<script src="/Skins/Minceur/Js/bootstrap-lightbox.min.js"></script>
+
+";}s:6:"BlData";N;s:8:"PostData";N;s:11:"PostObjects";N;s:10:"PostBlData";N;s:7:"ObjVars";N;s:13:"PostBlObjects";N;s:12:"ChildObjects";a:1:{i:0;s:6:"[DATA]";}s:9:"ChildData";N;s:4:"Path";s:7:"Default";s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:4:"BLOC";s:5:"Child";N;s:4:"Vars";s:7:"Default";s:7:"TempVar";N;s:4:"Conf";N;}

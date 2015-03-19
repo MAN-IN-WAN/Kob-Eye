@@ -1,0 +1,54 @@
+[Desktop Entry]
+Name=Steam
+Comment=Application for managing and playing games on Steam
+Exec=sh /home/enguer/steam.sh
+Icon=steam
+Terminal=false
+Type=Application
+Categories=Network;FileTransfer;Game;
+MimeType=x-scheme-handler/steam;
+Actions=Store;Community;Library;Servers;Screenshots;News;Settings;BigPicture;Friends;
+
+[Desktop Action Store]
+Name=Store
+Name[fr]=Magasin
+Exec=steam steam://store
+
+[Desktop Action Community]
+Name=Community
+Name[fr]=Communauté
+Exec=steam steam://url/SteamIDControlPage
+
+[Desktop Action Library]
+Name=Library
+Name[fr]=Bibliothèque
+Exec=steam steam://open/games
+
+[Desktop Action Servers]
+Name=Servers
+Name[fr]=Serveurs
+Exec=steam steam://open/servers
+
+[Desktop Action Screenshots]
+Name=Screenshots
+Name[fr]=Captures d'écran
+Exec=steam steam://open/screenshots
+
+[Desktop Action News]
+Name=News
+Name[fr]=Actualités
+Exec=steam steam://open/news
+
+[Desktop Action Settings]
+Name=Settings
+Name[fr]=Paramètres
+Exec=steam steam://open/settings
+
+[Desktop Action BigPicture]
+Name=Big Picture
+Exec=steam steam://open/bigpicture
+
+[Desktop Action Friends]
+Name=Friends
+Name[fr]=Amis
+Exec=steam steam://open/friends

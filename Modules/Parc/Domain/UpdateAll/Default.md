@@ -1,0 +1,4 @@
+UPDATEALL
+[STORPROC Parc/NS|N|0|10000]
+	[!N::Save()!]
+[/STORPROC]

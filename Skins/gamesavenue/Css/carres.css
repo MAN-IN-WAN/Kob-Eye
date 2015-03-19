@@ -1,0 +1,81 @@
+/*----Gestion des coins -------------*/
+/*--- COIN NOIR **/
+/* La ligne supprérieur et la ligne inférieure */
+.coinNoirbordertop, .coinNoirborderbottom {display:block; background:transparent; font-size:1px;}
+/* Style qui défini les coin arondi */
+/* Vous pouvez changer la couleur et la taille (mais avec prudence) */
+.coinNoir1, .coinNoir2, .coinNoir3, .coinNoir4 {display:block; overflow:hidden;}
+.coinNoir1, .coinNoir2, .coinNoir3 {height:1px;}
+.coinNoir2, .coinNoir3, .coinNoir4 {background:#000000; border-left:1px solid #000000; border-right:1px solid #000000;}
+.coinNoir1 {margin:0 5px; background:#000000;}
+.coinNoir2 {margin:0 3px; border-width:0 2px;}
+.coinNoir3 {margin:0 2px;}
+.coinNoir4 {height:2px; margin:0 1px;}
+/* Le contenu, pris entre la ligne supéruieure et la ligne inférieure */
+/* Vous pouvez changer la couleur */
+.coinNoircontent {display:block; background:#000000; border:0 solid #000000; border-width:0 1px;overflow:hidden;  padding: 5px 5px;}
+
+/*--- COIN NOIR FOND BLANC **/
+/* La ligne supprérieur et la ligne inférieure */
+.coinNoirFondBlancbordertop, .coinNoirFondBlancborderbottom {display:block; background:transparent; font-size:1px;}
+/* Style qui défini les coin arondi */
+/* Vous pouvez changer la couleur et la taille (mais avec prudence) */
+.coinNoirFondBlanc1, .coinNoirFondBlanc2, .coinNoirFondBlanc3, .coinNoirFondBlanc4 {display:block; overflow:hidden;}
+.coinNoirFondBlanc1, .coinNoirFondBlanc2, .coinNoirFondBlanc3 {height:1px;}
+.coinNoirFondBlanc2, .coinNoirFondBlanc3, .coinNoirFondBlanc4 {background:#ffffff; border-left:1px solid #000000; border-right:1px solid #000000;}
+.coinNoirFondBlanc1 {margin:0 5px; background:#000000;}
+.coinNoirFondBlanc2 {margin:0 3px; border-width:0 2px;}
+.coinNoirFondBlanc3 {margin:0 2px;}
+.coinNoirFondBlanc4 {height:2px; margin:0 1px;}
+/* Le contenu, pris entre la ligne supéruieure et la ligne inférieure */
+/* Vous pouvez changer la couleur */
+.coinNoirFondBlanccontent {display:block; background:#ffffff; border:0 solid #000000; border-width:0 1px;overflow:hidden;  padding: 5px 5px;}
+
+/*--- COIN fin Gris fond blanc **/
+/* La ligne supprérieur et la ligne inférieure */
+.coinFinGrisbordertop, .coinFinGrisborderbottom {display:block; background:transparent; font-size:1px;}
+/* Style qui défini les coin arondi */
+/* Vous pouvez changer la couleur et la taille (mais avec prudence) */
+.coinFinGris1, .coinFinGris2, .coinFinGris3, .coinFinGris4 {display:block; overflow:hidden;}
+.coinFinGris1, .coinFinGris2, .coinFinGris3 {height:1px;}
+.coinFinGris2, .coinFinGris3, .coinFinGris4 {background:#ffffff; border-left:1px solid #c4c4c4; border-right:1px solid #c4c4c4;}
+.coinFinGris1 {margin:0 5px; background:#c4c4c4;}
+.coinFinGris2 {margin:0 3px; border-width:0 2px;}
+.coinFinGris3 {margin:0 2px;}
+.coinFinGris4 {height:2px; margin:0 1px;}
+/* Le contenu, pris entre la ligne supéruieure et la ligne inférieure */
+/* Vous pouvez changer la couleur */
+.coinFinGriscontent {display:block; background:#ffffff; border:0 solid #c4c4c4; border-width:0 1px;overflow:hidden;  padding: 5px 5px;}
+
+/*--- COIN fin Gris fond gris**/
+/* La ligne supprérieur et la ligne inférieure */
+.coinfondFinGrisbordertop, .coinFinGrisborderbottom {display:block; background:transparent; font-size:1px;}
+/* Style qui défini les coin arondi */
+/* Vous pouvez changer la couleur et la taille (mais avec prudence) */
+.coinfondFinGris1, .coinfondFinGris2, .coinfondFinGris3, .coinfondFinGris4 {display:block; overflow:hidden;}
+.coinfondFinGris1, .coinfondFinGris2, .coinfondFinGris3 {height:1px;}
+.coinfondFinGris2, .coinfondFinGris3, .coinfondFinGris4 {background:#c4c4c4; border-left:1px solid #c4c4c4; border-right:1px solid #c4c4c4;}
+.coinfondFinGris1 {margin:0 5px; background:#c4c4c4;}
+.coinfondFinGris2 {margin:0 3px; border-width:0 2px;}
+.coinfondFinGris3 {margin:0 2px;}
+.coinfondFinGris4 {height:2px; margin:0 1px;}
+/* Le contenu, pris entre la ligne supéruieure et la ligne inférieure */
+/* Vous pouvez changer la couleur */
+.coinfondFinGriscontent {display:block; background:#c4c4c4; border:0 solid #c4c4c4; border-width:0 1px;overflow:hidden;  padding: 5px 5px;}
+
+
+/*--- COIN fin Gris fond gris #d6d6d6**/
+/* La ligne supprérieur et la ligne inférieure */
+.coinfondFinGrisd6bordertop, .coinFinGrisborderbottom {display:block; background:transparent; font-size:1px;}
+/* Style qui défini les coin arondi */
+/* Vous pouvez changer la couleur et la taille (mais avec prudence) */
+.coinfondFinGrisd61, .coinfondFinGrisd62, .coinfondFinGrisd63, .coinfondFinGrisd64 {display:block; overflow:hidden;}
+.coinfondFinGrisd61, .coinfondFinGrisd62, .coinfondFinGrisd63 {height:1px;}
+.coinfondFinGrisd62, .coinfondFinGrisd63, .coinfondFinGrisd64 {background:#d6d6d6; border-left:1px solid #d6d6d6; border-right:1px solid #d6d6d6;}
+.coinfondFinGrisd61 {margin:0 5px; background:#d6d6d6;}
+.coinfondFinGrisd62 {margin:0 3px; border-width:0 2px;}
+.coinfondFinGrisd63 {margin:0 2px;}
+.coinfondFinGrisd64 {height:2px; margin:0 1px;}
+/* Le contenu, pris entre la ligne supéruieure et la ligne inférieure */
+/* Vous pouvez changer la couleur */
+.coinfondFinGrisd6content {display:block; background:#d6d6d6; border:0 solid #d6d6d6; border-width:0 1px;overflow:hidden;  padding: 5px 5px;}

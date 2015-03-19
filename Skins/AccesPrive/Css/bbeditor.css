@@ -1,0 +1,73 @@
+.bbeditor img 
+{
+	border:0px none;
+	cursor:pointer;
+	height:16px;
+	margin-right:2px;
+	width:16px;
+}
+
+.bbeditortextbutton 
+{
+	background-color:#F0F0F0;
+	border:1px solid black;
+	color:black;
+	cursor:pointer;
+	float:left;
+	font-size:12px;
+	font-weight:bold;
+	margin:0 2px 2px 0;
+	text-align:center;
+	width:75px;
+}
+
+
+.bbeditortextbutton:hover 
+{
+	background-color:#9ACCF6;
+	border:1px solid #C0C0C0;
+}
+
+.bbeditorpreview
+{
+	background-color:white;
+	border:2px solid black;
+	font-size:12px;
+	position:absolute;
+	left:0pt;
+	top:0pt;
+}
+.bbcodepreviewframe
+{
+	height:100%;
+	width:100%;
+	border:0;
+}
+
+
+.bbeditorbuttonscontainer 
+{
+	overflow:hidden;
+	padding: 2px 0 2px 3px;
+	width:460px;
+}
+
+
+.bbeditorbuttons 
+{
+	background-color:#E9E4DB;
+	border-color:#CAC3AC rgb(202, 195, 172) rgb(202, 195, 172) rgb(183, 174, 145);
+	border-style:solid;
+	border-width:1px 1px 1px 3px;
+	float:left;
+	margin:2px 10px 2px 0;
+	padding:5px 2px 2px;
+}
+
+
+.bbeditorbuttonssimple 
+{
+	display:inline;
+	padding:2px;
+	white-space:nowrap;
+}

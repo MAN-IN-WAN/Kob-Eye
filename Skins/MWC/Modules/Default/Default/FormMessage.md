@@ -1,0 +1,1 @@
+[MODULE Mail/Message/FormBase?MC=1]

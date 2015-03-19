@@ -1,0 +1,8 @@
+<ACTIONS>
+	<ACTION Name="Porposals" Object="Proposal" Period="Y/m/d,Y/m,Y" TitrePeriod="Day,Month,Year">
+		<FUNCTION Name="TotalDureeConnexion" Type="Total" Event="Delete" Filter="[!INPUT::Session!]!="  Unit="Secondes" Description="DurÃ©es totales de connexion"  Graph="bar_glass">
+			[!OUTPUT:=[!TMS::Now!]!]!]
+			[!OUTPUT-=[!INPUT::tmsCreate!]!]
+		</FUNCTION>
+	</ACTION>
+</ACTIONS>

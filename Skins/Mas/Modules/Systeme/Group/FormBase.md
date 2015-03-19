@@ -1,0 +1,86 @@
+[INFO [!Query!]|I]
+[OBJ [!I::Module!]|[!I::TypeChild!]|O]
+{"form":{"type":"TitleWindow","id":"FD:[!I::Module!]/[!I::TypeChild!]","title":"Edition [!O::getDescription()!]",
+"kobeyeClass":{"module":"[!I::Module!]","objectClass":"[!I::TypeChild!]"},
+"localProxy":1,
+"components":[
+	{"type":"VBox","percentWidth":100,"percentHeight":100,"minWidth":500,"setStyle":{"paddingLeft":5,"paddingRight":5,"paddingTop":5,"paddingBottom":5},
+	"verticalScrollPolicy":"auto","minWidth":0,"minHeight":0,
+	"components":[
+		{"type":"EditContainer","id":"edit",//"percentWidth":100,"percentHeight":100,
+		"components":[
+			{"type":"VBox","setStyle":{"verticalGap":10,"paddingLeft":5,"paddingRight":5,"paddingTop":0,"paddingBottom":0},
+			"percentWidth":100,"percentHeight":100,"minWidth":500,
+			"components":[
+				{"type":"CollapsiblePanel","title":"Contact","percentWidth":100,"open":1,
+				"components":[
+					{"type":"VBox","percentWidth":100,"percentHeight":100,"setStyle":{"verticalGap":4,"paddingLeft":10,"paddingRight":10,"paddingTop":4,"paddingBottom":6},
+					"components":[	
+						{"type":"FormItem","percentLabel":20,"label":"Groupe","percentWidth":100,"components":[
+							{"type":"TextInput","dataField":"Nom","percentWidth":100}
+						]},
+						{"type":"FormItem","percentLabel":20,"label":"Rôles","percentWidth":100,"components":[
+							{"type":"KeyList","dataField":"Role.RoleId","percentWidth":100,"height":80,
+							"kobeyeClass":{"dirtyChild":1,"urlType":"parents","parentClass":"Role","keyName":"RoleId","form":"PopupList.json"},
+							"events":[
+								{"type":"start","action":"loadValues"}
+							]}
+						]},
+						[STORPROC Systeme/Group/Group/Nom=MAS_ALESTI|G][/STORPROC]
+						{"type":"FormItem","percentLabel":20,"label":"Groupe parent","percentWidth":100,"components":[
+							{"type":"Tree","dataField":"Group.GroupParent","id":"CB:GroupParent","checkBoxes":1,"percentWidth":100,"height":130,
+							"kobeyeClass":{
+								"module":"Systeme",
+								"objectClass":"Group",
+								"parentClass":"Group",
+								"parentId":"[!G::Id!]",
+								"children":["Group"],
+								"icon":"/Skins/AdminV2/Img/IconAqua/Chat2.png"
+							},
+							"checkKobeyeClass":{
+								"module":"Systeme",
+								"parentClass":"Group",
+								"dirtyChild":1,
+								"icon":"/Skins/AdminV2/Img/IconAqua/Chat2.png"
+							},
+							"events":[
+								{"type":"init", "action":"loadData"},
+								{"type":"start","action":"invoke","method":"loadCheckData"}
+							]}
+						]}
+					]}
+				]}
+			]}
+		],
+		"events":[
+			{"type":"start","action":"loadValues","params":{"needsId":1}},
+			{"type":"proxy","triggers":[
+				{"trigger":"save","action":"invoke","method":"callMethod","params":{
+				"method":"object","data":{"module":"Mas","objectClass":"Categorie"},
+				"function":"SaveGroup","args":"dv:*","closeForm":1}},
+				{"trigger":"delete","action":"invoke","method":"deleteData"}
+			]}
+		]},
+		{"type":"Spacer","percentHeight":100},
+		{"type":"HGroup","percentWidth":100,
+		"components":[
+			{"type":"Spacer"},
+			{"type":"Button","id":"save","label":"$__Ok__$","width":100
+			,"events":[
+				//{"type":"click", "action":"invoke","objectID":"edit","method":"saveData","params":{"closeForm":1}}
+			]},
+			{"type":"Button","id":"delete","label":"$__Delete__$","width":100,
+			"events":[
+				{"type":"click","action":"invoke","objectID":"edit","method":"deleteData"}
+			]},
+			{"type":"Button","id":"cancel","label":"$__Cancel__$","width":100,
+			"events":[
+				{"type":"click","action":"invoke","objectID":"parentForm","method":"closeForm"}
+			]}
+		]}		
+	]}
+],
+"popup":"modal",
+"actions":[{"type":"close","action":"confirmUpdate"}
+]}
+}

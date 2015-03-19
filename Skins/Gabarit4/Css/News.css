@@ -1,0 +1,36 @@
+/*----------------------------NEWS ACCUEIL--------------------------------*/
+#NewsColonne{
+	padding:5px;
+	background-color:#CCCCCC;
+}
+
+* html #NewsColonne h3{
+	position:relative;
+}
+
+.BlocActu{
+	margin:5px 0;
+}
+
+hr{
+	color:#8F8F8F;
+	background-color:#8F8F8F;
+	height:1px;
+	border:0;
+	margin-bottom:5px;
+}
+
+.ImgActu{
+	width:100px;
+	float:left;
+}
+
+.TextActu{
+	width:180px;
+	float:left;
+}
+
+.BlocActu p{
+	margin-top:5px;
+	margin-bottom:5px;
+}

@@ -1,0 +1,279 @@
+/*  PAGE D'ACCUEIL DU FORUM*/
+
+h1.TitreForum{
+	color:#0070A9;
+	font-size:24px;
+	font-weight:normal;
+	text-transform:none;
+	width:520px;
+}
+
+.AddTheme{
+	width:150px;
+	float:right;
+}
+
+h2.CatForum, h2.CatForum a,  h2.CatForum a:visited{
+	font-family:Arial,Verdana,serif;
+	font-weight:normal;
+	color:#3F3F3F;
+	background:none;
+	font-size:17px;
+	margin-bottom:0;
+	padding-bottom:0;
+	text-decoration:none;
+}
+
+* html h2.CatForum{
+	position:relative;
+}
+
+h2.CatForum a:hover{
+	text-decoration:underline;
+	color:#0070A9;
+}
+
+.SsCatForum{
+	margin-left:20px;
+}
+
+.SsCatForum h2.CatForum, .SsCatForum h2.CatForum a, .SsCatForum h2.CatForum a:visited{
+	font-size:14px;
+	text-decoration:none;
+}
+
+.SsCatForum h2.CatForum a:hover{
+	color:#BA0000;
+}
+
+table.LigneForum{
+	width:100%;
+}
+
+table.LigneForum td{
+	padding-right:10px;
+	padding-left:0;
+	border:0px solid #4d4d4d;
+	padding:0 5px;
+}
+
+.SsCatForum table.LigneForum td{
+	border:none;
+	background-color:#fff;
+}
+
+a.LienSupp, a.LienAjou{
+	display:block;
+	width:23px;
+	height:21px;
+}
+
+a.LienSupp{
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/Skins/Kobeye/Img/Forum/PetiteX.png', sizingMethod='crop');
+}
+
+a[class="LienSupp"]{
+	filter:none;
+	background:url(/Skins/Intranet/Img/Forum/PetiteX.png) no-repeat;
+}
+
+a.LienAjou{
+	float:left;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/Skins/Kobeye/Img/Forum/PetiteCroix.png', sizingMethod='crop');
+}
+
+a[class="LienAjou"]{
+	filter:none;
+	background:url(/Skins/Intranet/Img/PetiteCroix.png) no-repeat;
+}
+
+
+
+
+/* PAGE FORMULAIRE AJOUT (Catégorie ou sujet)  */
+.ForumF{
+	margin-top:10px;
+	margin-bottom:10px;
+	background-color:#5C5C5C;
+	padding-bottom:5px;
+	
+}
+
+.ForumF p{
+	font-family:georgia,times,Arial,Verdana,serif;
+	font-size:18px;
+	color:#fff;
+	background-color:#5C5C5C;
+	padding:3px;
+/* 	border-bottom:5px solid #FFFFFF; */
+}
+
+.ForumF span{
+	color:#fff;
+	font-weight:bold;
+}
+
+div[class="LigneForm"]{
+	overflow:auto;
+}
+
+* html .LigneForm{
+	clear:both;
+}
+
+.LigneForm{
+	margin-top:5px;
+}
+
+.ForumF label{
+	float:left;
+	width:80px;
+	font-size:11px;
+	color:#fff;
+	font-weight:bold;
+	margin-left:5px;
+	line-height:20px;
+}
+
+.ForumF .Text{
+	width:80%;
+	height:15px;
+	border:1px inset #E4E4E4;
+	padding-left:5px;
+}
+
+.ForumF textarea {
+	width:820px;
+	height:200px;
+	border:1px inset #E4E4E4;
+}
+
+/* PAGE AFFICHAGE CATÉGORIE FORUM */
+.TableSuj{
+	width:100%;
+	margin-bottom:5px;
+}
+
+.TableSuj{
+	width:100%;
+}
+
+.TableSuj td{
+	padding:5px;
+	text-align:left;
+}
+
+.TableSuj thead td{
+	background-color:#5C5C5C;
+	color:#fff;
+}
+
+.TableSuj tbody td{
+	background-color:#E4E4E4;
+}
+
+.TableSuj td.TdText{
+	width:400px;
+}
+
+.TableSuj td.TdText p{
+	margin-top:5px;
+}
+
+.TableSuj td.TdNbr{
+	width:20px;
+	text-align:center;
+}
+
+.TableSuj td.TdIco{
+	width:25px;
+	text-align:center;
+}
+
+.Infos{
+	color:#BA0000;
+	margin-top:10px;
+	margin-bottom:10px;
+	padding:5px;
+	font-size:12px;
+	font-style:italic;
+	background-color:#FFBEBE;
+}
+
+
+/* PAGE AFFICHAGE SUJET FORUM */
+
+td.TdAuteur{
+	vertical-align:top;
+	width:200px;
+}
+
+td.TdAuteur .FRight{
+	width:140px;
+	margin-left:10px;
+}
+
+td.TdAuteur .FRight a{
+	display:block;
+	font-weight:bold;
+	margin-bottom:5px;
+}
+
+.PostForum{
+	width:580px;
+}
+
+.PostForum p{
+	margin-bottom:5px;
+}
+
+p.TitreSuj, a.TitreSuj{
+	color:#0070A9;
+	font-weight:bold;
+}
+
+/* ACTIONS SUPPRIMER, AJOUTER, MODIFIER  */
+.PopBox{
+	padding:10px;
+	position:absolute;
+	width:310px;
+	background-color:#505050;
+	left:30%;
+	top:30%;
+}
+
+.PopBox h4{
+	text-align:center;
+}
+
+.PopBox a{
+	font-family:georgia,times,Arial,Verdana,serif;
+	font-size:14px;
+	font-weight:bold;
+	color:#fff;
+	display:block;
+	float:left;
+	width:40px;
+}
+
+.PopBox div{
+	width:80px;
+	margin:auto;
+	margin-top:10px;
+}
+
+/* PAGE FORMULAIRE MODIF POST */
+.FicPost{
+	float:left;
+	width:850px;
+	color:#fff;
+}
+
+.FicPost a, .FicPost a:visited{
+	color:#fff;
+}
+
+.FicPost input{
+	margin-left:5px;
+	margin-right:5px;
+}

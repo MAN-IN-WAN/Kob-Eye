@@ -1,0 +1,706 @@
+/*--- TOP ---*/
+table#MenuTab {
+	text-transform: uppercase;
+}
+
+
+div.Ariane {
+	background: #66a7bc;
+	padding: 5px;
+    font-size:10px;
+}
+.Ariane a:hover{
+color:#fff;
+}
+
+#MenuBar{
+background: url('../Img/sprite.png')0px -195px;
+height:36px;
+}
+
+/*table#MenuTab td.First {
+	border-left: 1px solid #000;
+}*/
+div#Menu table#MenuTab td {
+	padding: 11px 0;
+}
+
+div#Menu table#MenuTab td.Current {
+	background: #66a7bc;
+	
+	border: none;
+}
+
+div#Menu table#MenuTab td.Current a {
+	color: #fff;
+}
+
+#Menu a:hover{
+text-decoration:none;
+}
+
+/*---  ---*/
+div.centre {
+	border-top: 1px dotted #66A7BC;
+	margin-top:15px;
+}
+div.Left {
+	width: 180px;
+	padding: 0 10px;
+}
+
+div.centreL {
+	border-left: 1px dotted black;
+	margin-left: 200px;
+	padding:0;
+}
+
+div.BlocNavigation a {
+	display: block;
+}
+
+/*--- RIGHT ---*/
+div.EntoureComposant {
+	/*	padding-bottom: 20px;*/
+	overflow:hidden;
+
+}
+
+div.EnteteComposant {
+	font-size: 14px;
+	font-weight: bold;
+	text-transform: uppercase;
+	padding: 5px 0;
+}
+div.EntoureComposant .EnteteLiens{
+ 	background: url("../Img/sprite.png") no-repeat  -635px -900px ;
+    	padding: 27px 0 25px 44px; 
+	display:block;
+	text-transform: uppercase; font-size:14px;font-weight:bold;color:#66a7bc;
+}
+div.EntoureComposant .ContenuLiens {padding-bottom: 20px;padding-left: 15px;display:block;}
+
+div.EntoureComposant .ContenuLiens ul li{list-style:none;}
+div.EntoureComposant a.TousLesLiens  { 
+    	overflow: hidden;
+	color:#66a7bc;
+    	background: url("../Img/sprite.png") no-repeat  -8px -327px ;
+	padding:2px 0 10px 15px;
+  	margin-bottom: 10px;
+	font-size: 10px;
+    	font-weight: normal;
+	font-style:italic;
+	float:right;
+}
+html.MSIE div.EntoureComposant a.TousLesLiens  { 
+	font-size: 9px;
+}
+
+div.EntoureComposant a.TousLesLiens:hover  { 
+    	background-position: -162px -327px;
+	color:#474747;}
+
+
+div.EntoureComposant .EnteteRechercheLabo{
+ 	background: url("../Img/sprite.png") no-repeat  -635px -974px ;
+    	padding: 27px 0 25px 44px; 
+	display:block;
+	text-transform: uppercase; font-size:14px;font-weight:bold;color:#66a7bc;
+}
+
+div.EntoureComposant .ContenuRechercheLabo {
+	padding:10px 0 10px 15px;
+}
+ div.EntoureComposant .ContenuRechercheLabo form{
+	padding: 10px 0 0;overflow:hidden;
+}
+ div.EntoureComposant .ContenuRechercheLabo form select{
+	border:1px solid #474747;
+	color:#474747;
+	font-size:11px;
+	background-color:#fff;
+	width:224px;
+}
+
+ div.EntoureComposant .ContenuRechercheLabo form button{
+ 	background: url("../Img/sprite.png") no-repeat  -2px -1094px ;
+    	border: medium none;
+    	display: block;
+    	float: right;
+    	height: 25px;
+	margin: 10px 0 0;
+    	overflow: hidden;
+    	padding-bottom: 20px;
+    	text-indent: -1950px;
+    	width: 100px;
+}
+div.EntoureComposant .ContenuRechercheLabo form button:hover{
+	background-position: -141px -1094px;
+}
+
+div.EntoureComposant .ContenuRechercheLabo a.TousLesLabos   {
+ 	color:#66a7bc;
+    	background: url("../Img/sprite.png") no-repeat  -8px -327px ;
+	padding:2px 0 10px 15px;
+	font-size: 10px;
+    	font-weight: normal;
+	font-style:italic;
+	overflow: hidden;
+	float:right;
+	margin: 10px 0;
+}
+
+div.EntoureComposant .ContenuRechercheLabo a.TousLesLabos:hover   {
+background-position: -162px -327px;
+	color:#474747;
+ 	}
+
+
+
+
+
+/*--- TITRES ---*/
+div.TitreCategorie, div.EntoureNavigation {
+    background: url("../Img/sprite.png") no-repeat  -541px -1125px ;
+    font-size: 14px;
+    font-weight: bold;
+    overflow: hidden;
+    padding: 9px 0 9px 34px;
+    text-transform: uppercase;
+}
+
+.TitreReferentiel h1 {
+    background: url("../Img/sprite.png") no-repeat  -647px -708px ;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 9px 0 9px 34px;
+    text-transform: uppercase;
+}
+.TitreActus h1 {
+    background: url("../Img/sprite.png") no-repeat  -641px -498px ;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 9px 0 9px 34px;
+    text-transform: uppercase;
+}
+.TitreLabo h1 {
+    background: url("../Img/sprite.png") no-repeat  -641px -637px ;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 9px 0 9px 34px;
+    text-transform: uppercase;
+}
+.TitreFavoris h1 {
+    background: url("../Img/sprite.png") no-repeat  -650px -561px ;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 9px 0 9px 34px;
+    text-transform: uppercase;
+}
+.TitreArticleFavoris a {
+    background: url("../../Intranet/Img/sprite.png") no-repeat scroll -1px -1328px transparent;
+    padding-left:20px;
+}
+
+
+.val {
+    background: url("../Img/sprite.png") no-repeat  -8px -293px ;
+    color: #66A7BC;
+    font-size: 12px;
+    font-weight: normal;
+    padding: 3px 10px 3px 20px;
+    text-transform: uppercase;
+}
+    
+
+h1, div.TitreNavigation {
+	display: block;
+	float: left;
+	position: relative;
+}
+
+/*--- MAIN ---*/
+div#Main h1 {
+	font-size: 18px;
+}
+
+/*--- FOOTER ---*/
+div#Footer ul {
+	overflow: hidden;
+}
+
+div#Footer ul li {
+	display: block;
+	float: left;
+	width: 30%;
+	padding: 5px 0 5px 20px;
+}
+
+
+
+/*--- ANALYSES ---*/
+input#A_MotCle {
+	width: 300px;
+	margin: 15px 0;
+}
+
+select#A_Specialites {
+	width: 400px;
+}
+
+div.Resultats {
+	margin-top: 20px;
+	padding: 10px 0;
+}
+
+div.ResultatsTitre {
+	font-size: 14px;
+	font-weight: bold;
+}
+
+p.LastUpdateDB {
+	text-transform: uppercase;
+	font-style: italic;
+	font-weight: bold;
+	padding: 10px 0;
+	font-size: 12px;
+}
+
+
+/*--- COULEURS ---*/
+a {
+	color: #000;
+}
+
+h1, h3, h4, h5, h6, a:hover, div.TitreNavigation,
+div.LaboNom a, .blue, p.LastUpdateDB {
+	color: #66a7bc;
+}
+
+
+
+
+div.Resultats {
+	border-top: 1px dotted #3AB8D6;
+}
+
+div#Footer ul li a {
+	color: #fff;
+}
+
+
+
+.TitreAccesInternet {
+background: url('../Img/sprite.png') no-repeat -377px -398px;
+}
+
+.TitreReferentielExamins {
+background: url('../Img/sprite.png') no-repeat -8px -428px;
+}
+
+.TitreMesApplications {
+    background: url("../Img/sprite.png") no-repeat  -911px -427px ;
+}
+
+.TitreMessagerie {
+background: url('../Img/sprite.png') no-repeat -8px -368px;
+}
+
+.BlocTitre {
+    margin-bottom: 10px;
+    padding: 14px 0 0 41px;
+}
+.BlocTitre h2{
+border-bottom :1px solid #58585a;
+font-size:18px;
+color:#58585a;
+font-weight:normal;
+}
+
+.BlocContenu h3 {
+    background: url("../Img/sprite.png") no-repeat  -8px -745px       ;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 0 0 0 15px;
+    text-transform: uppercase;
+}
+.BlocContenuAppli{
+font-size: 11px;
+}
+
+
+.EntoureComposantNews img  {
+	border: 1px solid #CCCCCC;
+}
+
+a.mailunibio {
+   	background: url("../Img/sprite.png") no-repeat  55px -467px ;
+    	display: block;
+    	height: 100px;
+    	text-indent: -1911px;
+	width: 274px;
+}
+a.internetunibio {
+   	background: url("../Img/sprite.png") no-repeat  55px -597px ;
+    	display: block;
+    	height: 100px;
+    	text-indent: -1911px;
+	width: 274px;
+}
+a.mailunibio:hover {
+	background-position:-243px -467px;
+}
+a.internetunibio:hover {
+	background-position:-234px -597px;
+}
+
+
+form#AnalyseSearch {
+	overflow:hidden;
+	border-bottom:1px dotted #66a7bc;
+ 	height: 98px;
+}
+
+button.RechercherBtn{
+ 	background: url("../Img/sprite.png") no-repeat  -3px -1094px ;
+    	border: medium none;
+    	display: block;
+    	float: right;
+    	height: 25px;
+	margin: 10px 0;
+    	overflow: hidden;
+    	padding-bottom: 20px;
+    	text-indent: -1950px;
+    	width: 125px;
+}
+button.RechercherBtn:hover{
+	background-position: -142px -1094px;
+}
+
+
+a.Referentiel {
+ 	background: url("../Img/sprite.png") no-repeat  -3px -1137px ;
+    	border: medium none;
+    	display: block;
+    	float: right;
+    	height: 25px;
+	margin-top: 17px;
+    	overflow: hidden;
+    	padding-bottom: 20px;
+    	text-indent: -1950px;
+    	width: 225px;
+}
+
+a.Referentiel:hover{
+	background-position: -260px -1137px;
+}
+
+
+.BlocContenuAppli {
+   	overflow: hidden;
+
+}
+.BlocContenuAppli a.ToutesLeApplis {
+    background: url("../Img/sprite.png") no-repeat scroll -3px -790px transparent;
+    color: #66A7BC;
+    float: right;
+    height: 22px;
+    margin: 0;
+    overflow: hidden;
+    padding: 20px 0 0 25px;
+    text-indent: 0;
+    width: 140px;
+	display:block;
+}
+
+.BlocContenuAppli h3 {
+    background: url("../Img/sprite.png") no-repeat scroll -8px -294px   transparent;
+    color: #66A7BC;
+    font-size: 12px;
+    font-weight: normal;
+    padding: 1px 10px 0 20px;
+    text-transform: uppercase;
+}
+
+.BlocContenuAppli a.ToutesLeApplis:hover {
+    background-position: -496px -790px;
+    color: #474747;
+}
+
+/*--- Article Favoris ------*/
+ .TitreArticleFavoris a {
+	font-size:12px;
+	color:#474747;
+	display:block;
+	padding-bottom:10px;		
+}
+
+/*----- Article Default-*/
+.TitreArticle h2{
+    background: url("../Img/sprite.png") no-repeat  -8px -293px ;
+    color: #66A7BC;
+    font-size: 12px;
+    font-weight: normal;
+    padding: 3px 10px 3px 20px;
+    text-transform: uppercase;
+}
+.Redaction .Article {
+	margin:10px 0;
+}
+/*---------- news ----*/
+div.NewsColonne {
+	/*padding-bottom: 20px; */
+	overflow:hidden;
+}
+
+div.NewsColonne .AfficheInfo {padding-bottom: 20px;padding-left: 15px;}
+div.NewsColonne .BlocCadre .TitreBloc{
+ 	background: url("../Img/sprite.png") no-repeat  -635px -837px ;
+    	padding: 25px 0 12px 44px; 
+}
+div.NewsColonne .BlocCadre .TitreBloc h2{ text-transform: uppercase; font-size:14px;font-weight:bold;color:#66a7bc;}
+
+div.NewsColonne .TitreNews {padding-bottom:5px;}
+div.NewsColonne .TitreNews a{
+	font-size: 10px;
+    	font-weight: normal;
+	font-style:italic;
+	text-decoration:underline;
+    	overflow: hidden;
+	
+}
+div.NewsColonne .PartieInfo {padding-bottom:5px;overflow: hidden;}
+div.NewsColonne .PartieInfo .affichimage {
+ 	float: left;
+    	padding-right: 5px;
+}
+div.NewsColonne .Accroche {
+	background: url("../Img/sprite.png") no-repeat scroll -8px -294px transparent;
+    	color: #66A7BC;
+    	font-size: 12px;
+    	font-weight: normal;
+    	padding-bottom: 5px;
+    	padding-left: 15px;
+ 
+}
+div.NewsColonne div.TitreBloc .desc {
+	font-size: 10px;
+    	font-weight: normal;
+    	overflow: hidden;
+	padding-bottom:5px;
+}
+
+div.NewsColonne .accueilliennews a , div.NewsColonne .touteslesnews a {
+    	overflow: hidden;
+	color:#66a7bc;
+    	background: url("../Img/sprite.png") no-repeat  -8px -327px ;
+	padding:2px 0 10px 15px;
+  	/*margin-bottom: 10px;*/
+}
+html.MSIE div.NewsColonne .accueilliennews a ,html.MSIE div.NewsColonne .touteslesnews a  { 
+	font-size: 9px;
+}
+
+
+div.NewsColonne .accueilliennews a {
+	font-size: 10px;
+    	font-weight: normal;
+	font-style:italic;
+	float:right;
+}
+div.NewsColonne .accueilliennews a:hover , div.NewsColonne .touteslesnews a:hover{
+	background-position: -162px -327px;
+	color:#474747;
+}
+div.NewsColonne .touteslesnews a {
+	font-size: 10px;
+    	font-weight: normal;
+	font-style:italic;
+    	overflow: hidden;
+	color:#66a7bc;
+	float:right;
+}
+/*--- news -*/
+.ListeNews {
+	margin:10px 0;
+	border-bottom: 1px dotted #66A7BC;
+    	border-top: 1px dotted #66A7BC;
+	margin-top: 15px;
+    	overflow: hidden;
+    	margin-right: 11px;
+ 	
+}
+.ListeNews .Pair {
+	background-color:#eff6f8;
+	padding:20px 0;
+}
+.ListeNews .UneNews {
+	border-bottom:1px dotted #66a7bc;
+	margin-bottom:10px;
+}
+.ListeNews  .ContenuNews {
+	overflow: hidden;
+}
+.ContenuNews .ImageNews {
+	float:left;
+	padding:0 10px 0 0 ;
+	display:block;
+	
+}
+.ListeNews .Titre {
+	font-size: 12px;
+    	font-weight: normal;
+    	overflow: hidden;
+	color:#474747;
+	text-decoration:underline;
+	padding-bottom:5px;
+
+}
+.ListeNews h2 {
+	 background: url("../Img/sprite.png") no-repeat  -8px -293px ;
+    	color: #66A7BC;
+    	font-size: 12px;
+    	font-weight: normal;
+    	padding: 3px 10px 3px 20px;
+	text-transform:uppercase;
+}
+
+.ListeNews .Chapo {
+	color: #66A7BC;
+    	font-size: 13px;
+    	font-weight: normal;
+    	padding: 5px 10px ;
+	
+}
+.ListeNews a.listeactus   {
+ 	color:#474747;
+    	background: url("../Img/sprite.png") no-repeat  119px -1413px ;
+	padding:2px 25px 2px 0;
+	font-size: 10px;
+    	font-weight: normal;
+	font-style:italic;
+	overflow: hidden;
+	float:right;
+}
+.ListeNews a.listeactus:hover  {
+	background-position: 119px -1441px;
+}
+
+a.ToutesLesNews {
+    background: url("../Img/sprite.png") no-repeat  182px -790px ;
+    color: #66A7BC;
+    display: block;
+    font-size: 10px;
+    margin-top: 8px;
+    text-align: right;
+}
+
+/*----- Pagination ---*/
+
+div.Pagination {
+	text-align: center;
+	padding-bottom: 10px;
+	background: url("../../Intranet/Img/sprite.png") no-repeat 0 -1246px;
+	margin-right: 11px;
+}
+div.Pagination .CurrentPage {
+    	color: #66A7BC;
+    	font-size: 14px;
+	font-weight:bold;
+
+}
+/*----*/
+div.Pagination span.PaginationPagesWhite {
+	background: white;
+}
+div.Pagination span.PaginationPages {
+	background: white;
+}
+div.Pagination span.PaginationPagesBlue {
+	background: #DDECEF;
+}
+div.Pagination span.PaginationPagesEP {
+	background: #CCE2E8;
+}
+
+div.Pagination a, div.Pagination span {
+	padding: 0 10px;
+   	font-size: 12px;
+	color: #474747;
+
+}
+
+div.Pagination a.FirstPage {
+	background: url("../../Intranet/Img/sprite.png") no-repeat -4px -1271px;
+}
+
+div.Pagination a.PreviousPage {
+	background: url("../../Intranet/Img/sprite.png") no-repeat -1px -1299px;
+}
+
+div.Pagination a.NextPage {
+	background: url("../../Intranet/Img/sprite.png") no-repeat -1px -1328px;
+}
+
+div.Pagination a.LastPage {
+	background: url("../../Intranet/Img/sprite.png") no-repeat -4px -1355px;
+}
+
+
+li.bb_li {
+	background: url("../Img/sprite.png") no-repeat -10px -2034px;
+	padding-left: 15px;
+	padding-top: 10px;
+	list-style: none;
+}
+
+a.bb_a_url {
+	color: #69A7BB;
+}
+
+/*--- arbo à gauche --*/
+div.Left div.BlocNavigation a {
+	color: #69A7BB;
+	padding: 10px 0 0 20px;
+	font-weight: bold;
+	background: url('../../Public/Img/sprite.png') -306px -873px;
+}
+
+div.Left div.BlocNavigation a.CurrentArbo {
+	background: url('../../Public/Img/sprite.png') -602px -873px;
+	color: #58585a;
+}
+
+div.Left .BlocNavigation .EntoureNavigation{
+	background:none;
+	padding-left:0;
+padding-top:17px;
+}
+
+div.Left .EntoureNavigation .TitreNavigation {
+	overflow: hidden;
+    	padding: 5px 0;
+	font-weight: bold;
+	font-size: 14px;
+	text-transform: uppercase;
+
+}
+
+
+
+a.UnLien  { 
+    	overflow: hidden;
+	color:#66a7bc;
+    	background: url("../Img/sprite.png") no-repeat  -8px -327px ;
+	padding:2px 0 10px 15px;
+  	margin-bottom: 10px;
+	font-size: 10px;
+    	font-weight: normal;
+	font-style:italic;
+	float:right;
+	display:block;
+}
+
+a.UnLien:hover  { 
+    	background-position: -162px -327px;
+	color:#474747;}

@@ -1,0 +1,227 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="axenergie"
+targetNamespace="urn:axenergie"
+xmlns:impl="urn:axenergie"
+xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/"
+xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+xmlns:apachesoap="http://xml.apache.org/xml-soap"
+xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="urn:axenergie">
+			<element name="getRangeResponse">
+				<complexType>
+					<sequence>
+						<element name="getRangeReturn" type="impl:ReturnRange"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="getProductResponse">
+				<complexType>
+					<sequence>
+						<element name="getProductReturn" type="impl:Product"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="getModelResponse">
+				<complexType>
+					<sequence>
+						<element name="getModelReturn" type="impl:Model"/>
+					</sequence>
+				</complexType>
+			</element>
+			<simpleType name="RangeType">
+				<restriction base="xsd:string">
+					<enumeration value="Unknown"/>
+					<enumeration value="Regular"/>
+					<enumeration value="Promo"/>
+					<enumeration value="Service"/>
+				</restriction>
+			</simpleType>		
+			<complexType name="Range">
+				<sequence>
+					<element name="id" type="xsd:int"/>
+					<element maxOccurs="1" minOccurs="0" name="order" type="xsd:int"/>
+					<element maxOccurs="1" minOccurs="0" name="type" type="impl:RangeType"/>
+					<element maxOccurs="1" minOccurs="0" name="title" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="subTitle" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="colour" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="headerPicture" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="webHeaderPicture" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="webTitle" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="webDescription" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="logo" type="xsd:string"/>
+					<element name="rangeCount" type="xsd:int"/>
+					<element name="productCount" type="xsd:int"/>
+				</sequence>
+			</complexType>
+			<complexType name="Description">
+				<sequence>
+					<element name="id" type="xsd:int"/>
+					<element maxOccurs="1" minOccurs="0" name="order" type="xsd:int"/>
+					<element maxOccurs="1" minOccurs="0" name="label" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="text" type="xsd:string"/>
+				</sequence>
+			</complexType>
+			<complexType name="ReturnRange">
+				<sequence>
+					<element name="id" type="xsd:int"/>
+					<element maxOccurs="1" minOccurs="0" name="order" type="xsd:int"/>
+					<element maxOccurs="1" minOccurs="0" name="type" type="impl:RangeType"/>
+					<element maxOccurs="1" minOccurs="0" name="title" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="subTitle" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="colour" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="headerPicture" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="webHeaderPicture" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="webTitle" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="webDescription" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="logo" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="ranges" type="impl:RangeList"/>
+					<element maxOccurs="1" minOccurs="0" name="products" type="impl:ProductList"/>
+				</sequence>
+			</complexType>
+			<complexType name="Product">
+				<sequence>
+					<element name="id" type="xsd:int"/>
+					<element name="title" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="description" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="productPicture" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="inSitusPicture" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="webDescription" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="startingPrice" type="xsd:double"/>
+					<element maxOccurs="1" minOccurs="0" name="vatCode" type="xsd:int"/>
+					<element maxOccurs="1" minOccurs="0" name="brandName" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="brandLogo" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="descriptions" type="impl:DescriptionList"/>
+					<element maxOccurs="1" minOccurs="0" name="models" type="impl:ModelList"/>
+				</sequence>
+			</complexType>
+			<complexType name="Model">
+				<sequence>
+					<element name="id" type="xsd:int"/>
+					<element name="title" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="description" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="productPicture" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="inSitusPicture" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="cataloguePicture" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="service" type="xsd:int"/>
+					<element maxOccurs="1" minOccurs="0" name="pictureOnly" type="xsd:int"/>
+					<element maxOccurs="1" minOccurs="0" name="webDescription" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="price" type="xsd:double"/>
+					<element maxOccurs="1" minOccurs="0" name="vatCode" type="xsd:int"/>
+					<element maxOccurs="1" minOccurs="0" name="reference" type="xsd:string"/>
+					<element maxOccurs="1" minOccurs="0" name="height" type="xsd:double"/>
+					<element maxOccurs="1" minOccurs="0" name="width" type="xsd:double"/>
+					<element maxOccurs="1" minOccurs="0" name="depth" type="xsd:double"/>
+					<element maxOccurs="1" minOccurs="0" name="power" type="xsd:double"/>
+					<element maxOccurs="1" minOccurs="0" name="efficiency" type="xsd:double"/>
+					<element maxOccurs="1" minOccurs="0" name="output" type="xsd:double"/>
+					<element maxOccurs="1" minOccurs="0" name="descriptions" type="impl:DescriptionList"/>
+				</sequence>
+			</complexType>
+			
+			<complexType name='RangeList'>
+				<xsd:complexContent mixed='false'>
+					<xsd:restriction base='soapenc:Array'>
+						<xsd:attribute wsdl:arrayType='Range[]' ref='soapenc:arrayType' />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</complexType>
+			<complexType name='ProductList'>
+				<xsd:complexContent mixed='false'>
+					<xsd:restriction base='soapenc:Array'>
+						<xsd:attribute wsdl:arrayType='Product[]' ref='soapenc:arrayType' />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</complexType>
+			<complexType name='ModelList'>
+				<xsd:complexContent mixed='false'>
+					<xsd:restriction base='soapenc:Array'>
+						<xsd:attribute wsdl:arrayType='Model[]' ref='soapenc:arrayType' />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</complexType>
+			<complexType name='DescriptionList'>
+				<xsd:complexContent mixed='false'>
+					<xsd:restriction base='soapenc:Array'>
+						<xsd:attribute wsdl:arrayType='Description[]' ref='soapenc:arrayType' />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</complexType>
+		</schema>
+	</wsdl:types>
+	
+	<wsdl:message name="getRangeRequest">
+		<wsdl:part type="xsd:int" name="rangeId"/>
+	</wsdl:message>
+	<wsdl:message name="getRangeResponse">
+		<wsdl:part element="impl:getRangeResponse" name="result"/>
+	</wsdl:message>
+
+	<wsdl:message name="getProductRequest">
+		<wsdl:part type="xsd:int" name="productId"/>
+	</wsdl:message>
+	<wsdl:message name="getProductResponse">
+		<wsdl:part element="impl:getProductResponse" name="result"/>
+	</wsdl:message>
+	
+	<wsdl:message name="getModelRequest">
+		<wsdl:part type="xsd:int" name="modelId"/>
+	</wsdl:message>
+	<wsdl:message name="getModelResponse">
+		<wsdl:part element="impl:getModelResponse" name="result"/>
+	</wsdl:message>
+	
+	<wsdl:portType name="AxenergiePortType">
+		<wsdl:operation name="getRange">
+			<wsdl:input message="impl:getRangeRequest" name="getRangeRequest"/>
+			<wsdl:output message="impl:getRangeResponse" name="getRangeResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="getProduct">
+			<wsdl:input message="impl:getProductRequest" name="getProductRequest"/>
+			<wsdl:output message="impl:getProductResponse" name="getProductResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="getModel">
+			<wsdl:input message="impl:getModelRequest" name="getModelRequest"/>
+			<wsdl:output message="impl:getModelResponse" name="getModelResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	
+	<wsdl:binding name="AxenergieBinding" type="impl:AxenergiePortType">
+		<wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="getRange">
+			<wsdlsoap:operation soapAction="urn:getRangeAction"/>
+			<wsdl:input name="getRangeRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="getRangeResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getProduct">
+			<wsdlsoap:operation soapAction="urn:getProductAction"/>
+			<wsdl:input name="getProductRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="getProductResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getModel">
+			<wsdlsoap:operation soapAction="urn:getModelAction"/>
+			<wsdl:input name="getModelRequest">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="getModelResponse">
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	
+	<wsdl:service name="AxenergieService">
+		<wsdl:port binding="impl:AxenergieBinding" name="AxenergieService">
+			<wsdlsoap:address location="Axenergie.soap"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

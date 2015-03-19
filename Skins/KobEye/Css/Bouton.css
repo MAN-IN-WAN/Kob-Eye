@@ -1,0 +1,64 @@
+div[class="Btn"]{
+	overflow:auto;
+}
+
+* html div.Btn{
+	clear:both;
+}
+
+.BtnG{
+	width:17px;
+	height:33px;
+	background:url(/Skins/KobEye/Img/Boutons/BoutonGauche.png) no-repeat;
+	background-position:0 0;
+	float:left;
+}
+
+* html .BtnG{
+	background:url(/Skins/KobEye/Img/Boutons/BoutonGauche.gif) no-repeat;
+}
+
+div.Btn:hover .BtnG, div.Btn:hover .BtnM, div.Btn:hover .BtnD{
+	background-position:0 -33px;
+}
+
+.BtnM{
+	height:33px;
+	line-height:30px;
+	background:url(/Skins/KobEye/Img/Boutons/BoutonMilieu.png) repeat-x;
+	background-position:0 0;
+	float:left;
+	text-align:center;
+}
+
+* html .BtnM{
+	background:url(/Skins/KobEye/Img/Boutons/BoutonMilieu.gif) repeat-x;
+}
+
+.BtnD{
+	width:17px;
+	height:33px;
+	background:url(/Skins/KobEye/Img/Boutons/BoutonDroit.png) no-repeat;
+	background-position:0 0;
+	float:left;
+}
+
+* html .BtnD{
+	background:url(/Skins/KobEye/Img/Boutons/BoutonDroit.gif) no-repeat;
+}
+
+.BtnM a, .BtnM a:visited, .BtnM a:hover{
+/* 	font-family:georgia,times,Arial,Verdana,serif; */
+	text-decoration:none;
+	display:block;
+	color:#fff;
+}
+
+.BtnM input{
+	cursor:pointer;
+	border:none;
+	background:none;
+	line-height:30px;
+	color:#fff;
+/* 	font-family:georgia,times,Arial,Verdana,serif; */
+}

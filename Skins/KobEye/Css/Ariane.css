@@ -1,0 +1,21 @@
+#Ariane{
+	/*width:100%;*/
+	padding-top:5px;
+	padding-bottom:5px;
+}
+
+* html #Ariane{
+	text-align:left;
+}
+
+#Ariane a, #Ariane a:visited, #Ariane a:hover{
+	font-style:italic;
+	text-decoration:none;
+	font-family:Georgia,Arial,Verdana,Helvetica,sans-serif;
+	color:#3F3F3F;
+}
+
+#Ariane a.ActifAr{
+	color:#0070A9;
+	font-weight:normal;
+}

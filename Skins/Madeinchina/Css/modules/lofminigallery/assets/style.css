@@ -1,0 +1,162 @@
+/*icon featured*/
+.lof-module-slideshow .lof-featured-icon{
+    background:url(images/featured-iconpublic.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lof-featured-icones{
+    background:url(images/featured-iconpublic-es.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lof-featured-iconfr{
+    background:url(images/featured-iconpublic-fr.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lof-featured-iconit{
+    background:url(images/featured-iconpublic-it.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lof-featured-iconde{
+    background:url(images/featured-iconpublic-de.png) no-repeat scroll 0 0 transparent;
+}
+/*icon new*/
+.lof-module-slideshow .lof-new-icon{
+    background:url(images/new-iconpublic.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lof-new-icones{
+    background:url(images/new-iconpublic-es.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lof-new-iconfr{
+    background:url(images/new-iconpublic-fr.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lof-new-iconit{
+    background:url(images/new-iconpublic-it.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lof-new-iconde{
+    background:url(images/new-iconpublic-de.png) no-repeat scroll 0 0 transparent;
+}
+/*icon hot*/
+.lof-module-slideshow .lof-hot-icon{
+    background:url(images/hot-iconpublic.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lof-hot-icones{
+    background:url(images/hot-iconpublic-es.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lof-hot-iconfr{
+    background:url(images/hot-iconpublic-fr.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lof-hot-iconit{
+    background:url(images/hot-iconpublic-it.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lof-hot-iconde{
+    background:url(images/hot-iconpublic-de.png) no-repeat scroll 0 0 transparent;
+}
+
+/*icon saleoff*/
+.lof-module-slideshow .lof-saleoff-icon{
+    background:url(images/saleoff-iconpublic.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lof-saleoff-icones{
+    background:url(images/saleoff-iconpublic-es.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lof-saleoff-iconfr{
+    background:url(images/saleoff-iconpublic-fr.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lof-saleoff-iconde{
+    background:url(images/saleoff-iconpublic-de.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lof-saleoff-iconit{
+    background:url(images/saleoff-iconpublic-it.png) no-repeat scroll 0 0 transparent;
+}
+
+/*icon new*/
+.lof-module-slideshow .lofflexslider ul li .lof-new{
+    background: url(images/status_new.png) no-repeat transparent;   
+}
+.lof-module-slideshow .lofflexslider ul li .lof-newes{
+    background: url(images/status_new-es.png) no-repeat transparent;
+}
+.lof-module-slideshow .lofflexslider ul li .lof-newfr{
+    background: url(images/status_new-fr.png) no-repeat transparent;
+}
+.lof-module-slideshow .lofflexslider ul li .lof-newde{
+    background: url(images/status_new-de.png) no-repeat transparent;
+}
+.lof-module-slideshow .lofflexslider ul li .lof-newit{
+    background: url(images/status_new-it.png) no-repeat transparent;
+}
+/*icon new-bottom*/
+.lof-module-slideshow .lofflexslider ul li .lof-new-bottom{
+    background: url(images/status_new.png) no-repeat transparent;   
+}
+.lof-module-slideshow .lofflexslider ul li .lof-newes-bottom{
+    background: url(images/status_new-es.png) no-repeat transparent;
+}
+.lof-module-slideshow .lofflexslider ul li .lof-newfr-bottom{
+    background: url(images/status_new-fr.png) no-repeat transparent;
+}
+.lof-module-slideshow .lofflexslider ul li .lof-newde-bottom{
+    background: url(images/status_new-de.png) no-repeat transparent;
+}
+.lof-module-slideshow .lofflexslider ul li .lof-newit-bottom{
+    background: url(images/status_new-it.png) no-repeat transparent;
+}
+/*icon feature*/
+.lof-module-slideshow .lofflexslider ul li .lof-feature {
+    background: url(images/status_feature.png) no-repeat scroll 0 0 transparent;    
+}
+.lof-module-slideshow .lofflexslider ul li .lof-featurees {
+    background: url(images/status_feature-es.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lofflexslider ul li .lof-featurefr {
+    background: url(images/status_feature-fr.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lofflexslider ul li .lof-featurede {
+    background: url(images/status_feature-de.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lofflexslider ul li .lof-featureit {
+    background: url(images/status_feature-it.png) no-repeat scroll 0 0 transparent;
+}
+/*icon feature-bottom*/
+.lof-module-slideshow .lofflexslider ul li .lof-feature-bottom {
+    background: url(images/status_feature_bottom.png) no-repeat scroll 0 0 transparent;  
+}
+.lof-module-slideshow .lofflexslider ul li .lof-featurees-bottom{
+    background: url(images/status_feature_bottom-es.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lofflexslider ul li .lof-featurefr-bottom {
+    background: url(images/status_feature_bottom-fr.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lofflexslider ul li .lof-featurede-bottom {
+    background: url(images/status_feature_bottom-de.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lofflexslider ul li .lof-featureit-bottom {
+    background: url(images/status_feature_bottom-it.png) no-repeat scroll 0 0 transparent;
+}
+/*icon sale*/
+.lof-module-slideshow .lofflexslider ul li .lof-sale {
+    background: url(images/saleoff.png) no-repeat scroll 0 0 transparent;   
+}
+.lof-module-slideshow .lofflexslider ul li .lof-salees {
+    background: url(images/saleoff-es.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lofflexslider ul li .lof-salefr {
+    background: url(images/saleoff-fr.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lofflexslider ul li .lof-salede {
+    background: url(images/saleoff-de.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lofflexslider ul li .lof-saleit {
+    background: url(images/saleoff-it.png) no-repeat scroll 0 0 transparent;
+}
+/*icon bottom*/
+.lof-module-slideshow .lofflexslider ul li .lof-sale-bottom {
+    background: url(images/saleoff.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lofflexslider ul li .lof-salefr-bottom {
+    background: url(images/saleoff-fr.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lofflexslider ul li .lof-salees-bottom {
+    background: url(images/saleoff-es.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lofflexslider ul li .lof-salede-bottom {
+    background: url(images/saleoff-de.png) no-repeat scroll 0 0 transparent;
+}
+.lof-module-slideshow .lofflexslider ul li .lof-saleit-bottom {
+    background: url(images/saleoff-it.png) no-repeat scroll 0 0 transparent;
+}

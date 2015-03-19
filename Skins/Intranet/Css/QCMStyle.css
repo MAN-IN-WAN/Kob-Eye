@@ -1,0 +1,61 @@
+.QCMProjet h2 {
+	text-transform: none;
+}
+
+.QCMPage {
+	margin-top: 10px;
+}
+
+.QCMquestion {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.QCMreponse {
+	margin-top: 4px;
+}
+
+.QCMReponseLigne {
+}
+
+.QCMReponseLigneVertical {
+	display: block;
+}
+
+.QCMReponseLigneHorizontal {
+	display: inline;
+	margin-right: 10px;
+}
+
+.QCMImageReponse {
+	display: inline-block;
+}
+
+.QCMBoutons {
+	display: table;
+	margin-top: 20px;
+}
+
+.QCMProjet h2 {
+	font-size: 16px;
+}
+
+.QCMProjet h3 {
+	font-size: 14px;
+}
+
+.QCMProjet h4 {
+	font-size: 12px;
+}
+
+.QCMProjet h5 {
+	font-size: 10px;
+}
+
+.QCMProjet h6 {
+	font-size: 9px;
+	font-style: italic;
+}
+
+
+

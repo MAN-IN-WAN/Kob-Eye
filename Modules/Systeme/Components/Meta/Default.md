@@ -1,0 +1,38 @@
+[STORPROC Redaction/Categorie/1|Def|0|1][/STORPROC]
+[IF [!Meta::TitleMeta!]=]
+	[TITLE][!Def::TitleMeta!][/TITLE]
+[/IF]
+[IF [!Meta::DescriptionMeta!]=]
+	[DESCRIPTION][!Def::DescriptionMeta!][/DESCRIPTION]
+[/IF]
+[IF [!Meta::KeywordsMeta!]=]
+	[KEYWORDS][!Def::KeywordsMeta!][/KEYWORDS]
+[/IF]
+
+// META MENU EN COURS
+[!Men:=[!Systeme::CurrentMenu!]!]
+[IF [!Men::TitleMeta!]!=][TITLE][!Men::TitleMeta!][/TITLE][/IF]
+[IF [!Men::DescriptionMeta!]!=][DESCRIPTION][!Men::DescriptionMeta!][/DESCRIPTION][/IF]
+[IF [!Men::KeywordsMeta!]!=][KEYWORDS][!Men::KeywordsMeta!][/KEYWORDS][/IF]
+// METAS QUERY EN COURS
+[INFO [!Query!]|I]
+[IF [!I::TypeSearch!]=Direct]
+	[STORPROC [!Query!]|MetaQ]
+		[IF [!MetaQ::TitleMeta!]!=][TITLE][!MetaQ::TitleMeta!][/TITLE][/IF]
+		[IF [!MetaQ::DescriptionMeta!]!=][DESCRIPTION][!MetaQ::DescriptionMeta!][/DESCRIPTION][/IF]
+		[IF [!MetaQ::KeywordsMeta!]!=][KEYWORDS][!MetaQ::KeywordsMeta!][/KEYWORDS][/IF]
+	
+	[/STORPROC]
+[/IF]
+
+[IF [!Chemin!]!=]
+	[INFO [!Chemin!]|I]
+	[IF [!I::TypeSearch!]=Direct]
+		[STORPROC [!Chemin!]|MetaQ]
+			[IF [!MetaQ::TitleMeta!]!=][TITLE][!MetaQ::TitleMeta!][/TITLE][/IF]
+			[IF [!MetaQ::DescriptionMeta!]!=][DESCRIPTION][!MetaQ::DescriptionMeta!][/DESCRIPTION][/IF]
+			[IF [!MetaQ::KeywordsMeta!]!=][KEYWORDS][!MetaQ::KeywordsMeta!][/KEYWORDS][/IF]
+		[/STORPROC]
+	[/IF]
+[/IF]
+

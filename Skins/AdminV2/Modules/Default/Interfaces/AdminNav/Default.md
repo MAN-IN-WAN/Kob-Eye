@@ -1,0 +1,50 @@
+//Premier passage
+[INFO [!Query!]|Inf]
+[!BeUrl:=[!Module::Actuel::Nom!]!]
+[STORPROC [!Inf::Historique!]|H|0|10]
+	[!BeUrl+=/[!H::DataSource!]!]
+	[IF [!Pos!]!=[!NbResult!]]
+		[!BeUrl+=/[!H::Value!]!]
+	[/IF]
+[/STORPROC]
+[SWITCH [!Inf::TypeSearch!]|=]
+	[CASE Interface]
+		//AFFICHAGE DETAIL OBJET
+		[STORPROC [!Query!]|Obj|0|1]
+			[MODULE Systeme/Interfaces/Etat?Obj=[!Obj!]&Type=Min]
+		[/STORPROC]
+	[/CASE]
+	[CASE Child]
+		//Recherche de la paire precedente
+		[INFO [!Inf::LastDirect!]|Inf2]
+		[IF [!Visit[!QueryLastObject!]!]][!VisitQuery:=[!Visit[!QueryLastObject!]!]!][ELSE][!VisitQuery:=[!Inf::LastDirect!]!][/IF]
+		//Si c est une liste ou bien une arborescence
+		[IF [!Inf2::Reflexive!]]
+			//C est une arborescence
+			[MODULE Systeme/Interfaces/Arborescence?Chemin=[!Inf::LastDirect!]&TypeEnf=[!Inf2::ObjectType!]&Requete=[!Inf::LastDirect!]&Visit[!Inf2::ObjectType!]=[!Inf::LastDirect!]&Type=Full]
+		[ELSE]
+			//Si il y a un historique C est une liste
+			[MODULE Systeme/Interfaces/Liste?Chemin=[!BeUrl!]&NbChamp=0&TypeEnf=[!QueryLastObject!]&Type=Mini&NbChamp=2]
+		[/IF]
+	[/CASE]
+	[DEFAULT]
+		[IF [!Visit[!QueryLastObject!]!]][!VisitQuery:=[!Visit[!QueryLastObject!]!]!][ELSE][!VisitQuery:=[!Query!]!][/IF]
+		//Si c est une liste ou bien une arborescence
+		[IF [!Inf::Reflexive!]]
+			//C est une arborescence
+			[MODULE Systeme/Interfaces/Arborescence?Chemin=[!BeUrl!]&TypeEnf=[!Inf::TypeChild!]&Requete=[!Query!]&Visit[!Inf::TypeChild!]=[!VisitQuery!]&Type=Full]
+		[ELSE]
+			[STORPROC [!Inf::typesEnfant!]|Enf]
+				[IF [!Enf::container!]=1]
+					[STORPROC [!Inf::typesParent!]|Par]	
+					[IF [!Par::Title!]==[!Enf::Title!]]
+						[!Filter:=[!Par::Champ!]!]
+					[/IF]
+					[/STORPROC]
+				[/IF]
+			[/STORPROC]	
+			//Si il y a un historique C est une liste
+			[MODULE Systeme/Interfaces/Liste?Chemin=[!BeUrl!]&NbChamp=0&TypeEnf=[!QueryLastObject!]&Type=Mini&Filter=[!Filter!]&Target=Data&NbChamp=2]
+		[/IF]
+	[/DEFAULT]
+[/SWITCH]

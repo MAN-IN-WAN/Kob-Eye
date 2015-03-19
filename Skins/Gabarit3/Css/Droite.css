@@ -1,0 +1,23 @@
+#Droite h3, #Droite p{
+	color:#fff;
+	padding:10px;
+}
+
+hr{
+	color:#fff;
+	background-color:#fff;
+	height:1px;
+	border:0;
+	margin:10px 5px;
+}
+
+#NuageDeTag{
+	width:250px;
+	padding:10px;
+}
+
+#NuageDeTag a, #NuageDeTag a:hover, #NuageDeTag a:visited{
+	text-decoration:none;
+	color:#fff;
+	font-weight:bold;
+}

@@ -1,0 +1,70 @@
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/mootools.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/mootools-more.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/cal.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/datepicker.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/mooRainbow.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/HistoryManager.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/frameLoader2.class.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/frameLoader2.more.class.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/milkbox.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/morphlist.js[/HEADER]
+//[HEADER JS]Skins/[!Systeme::Skin!]/Js/tinyMce/tiny_mce.js[/HEADER]
+[HEADER JS]Tools/Js/CkEditor/ckeditor.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/mif.tree-v1.1.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/Swiff.Uploader.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/FancyUpload2.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/Fx.ProgressBar.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/swfobject.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/mochaui/mocha.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/initAdmin.js[/HEADER]
+
+[HEADER CSS]Skins/[!Systeme::Skin!]/Js/datepicker_vista/datepicker_vista.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Js/mochaui/themes/default/css/Core.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Js/mochaui/themes/default/css/Layout.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Js/mochaui/themes/default/css/Dock.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Js/mochaui/themes/default/css/Window.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Js/mochaui/themes/default/css/Tabs.css[/HEADER]
+
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/autocomplete.js[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Css/autocomplete.css[/HEADER]
+
+<div id="PopupOverlay"  style="left:0;right:0;top:0;bottom:0;z-index:5000;position:absolute;opacity:0.45;background:#454545;display:none;"></div>
+<div id="PopupContainer">
+	<div class="BarreTitre">
+		<div class="BarreOutils">
+			<a href="#" id="PopupMaximize" rel="nonFrame">
+				<img src="/Skins/AdminV2/Img/maximize.png"/>
+			</a>
+			<a href="" id="PopupClose" rel="nonFrame">
+				<img src="/Skins/AdminV2/Img/close.png"/>
+			</a>
+		</div>
+		<span>POPUP</span>
+	</div>
+	<div id="Popup"></div>
+</div>
+
+<div id="BarreEntete">
+	[MODULE Systeme/Interfaces/InfoUtilisateur]
+	[MODULE Systeme/Interfaces/ModuleBarre]
+	
+</div>
+<div id="Entete">
+    [MODULE Systeme/Interfaces/ObjectOnglets]
+</div>
+<form action="" method="post" enctype="multipart/form-data" id="mainform">
+	<div id="Global" style="display:none;"> 
+		[DATA]
+	</div>
+</form>
+
+
+
+<div id="Overlay" style="left:0;right:0;top:173px;bottom:0;z-index:102;position:absolute;background:#D4E1E7;"></div>
+
+<div id="Overlay2" style="left:50%;margin-left:-112px;top:49%;z-index:103;position:absolute;background:#ef6200;text-align:center;padding:2px;width:224px;-moz-border-radius:7px 7px;color:white;font-weight:bolder;">
+	<img src="/Skins/AdminV2/Img/ajax-loader2.gif" style="margin:3px;margin-left:2px;margin-bottom:-1px;"/><br/>
+	Veuillez patienter...
+</div>	
+
+

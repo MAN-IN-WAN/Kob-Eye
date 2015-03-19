@@ -1,0 +1,139 @@
+/*#Footer{
+	width:100%;
+	background-color:#0C0C0C;
+	border-top:10px solid #0c0c0c;
+}
+
+div[id="Footer"]{
+	overflow:auto;
+}
+
+* html #Footer{
+	clear:both;
+}
+
+#Footer a, #Footer a:visited{
+	text-decoration:none;	
+}
+
+#Footer a:hover{
+	text-decoration:underline;
+}
+
+#FooterG, #FooterD{
+	width:400px;
+	float:left;
+}
+
+#FooterG ul{
+	margin-bottom:50px;
+	padding-top:5px;
+	margin-left:5px;
+}
+
+#FooterG ul li{
+	display:block;
+	float:left;
+	padding:5px 10px 0 5px;
+}
+
+#FooterG ul li a{
+	display:block;
+	padding-left:15px;
+	background:url(/Skins/ArtfxBlog/Img/PictoRond.jpg) no-repeat;
+}
+
+#FooterD{
+	text-align:right;
+}
+
+#FooterD p{
+	display:block;
+	padding-top:5px;
+	padding-bottom:10px;
+	margin-right:10px;
+	
+}*/
+
+#Footer h2{
+	border:none;
+}
+
+.Center{
+	width:820px;
+	margin:auto;
+	padding-bottom:10px;
+	margin-top:10px;
+}
+
+.BlocFoot{
+	height:160px;
+	float:left;
+	/*width:148px;*/
+	width:auto;
+	padding-left:15px;
+	padding-right:10px;
+	border-right:1px solid #2C2C2C;
+}
+
+.BlocFoot h2{
+	margin-bottom:5px;
+}
+
+.BlocFoot li a, .BlocFoot li a:visited{
+	text-decoration:none;
+	display:block;
+	padding-left:15px;
+	background:url(/Skins/ArtfxBlog/Img/PictoRond.jpg) no-repeat;
+}
+
+.BlocFoot li a:hover, .BlocFoot li a:active{
+	text-decoration:underline;
+	display:block;
+	padding-left:15px;
+	background:url(/Skins/ArtfxBlog/Img/PictoRond.jpg) no-repeat;
+}
+
+.BlocFoot li{
+	display:block;
+	padding-bottom:5px;
+}
+
+/*.BlocFoot li a, .BlocFoot li a:visited{
+	text-decoration:none;
+}
+
+.BlocFoot li a:hover{
+	text-decoration:underline;
+}*/
+
+.Bordure{	
+	text-align:center;
+	background-color:#0C0C0C;
+	width:100%;
+	padding-top:5px;
+	padding-bottom:5px;
+}
+
+.Bordure p{
+	color:#fff;
+	padding:5px;
+}
+
+.Bordure p, .Bordure a, .Bordure a:visited{
+	color:#fff;
+	text-decoration:none;
+}
+
+.Bordure a:hover{
+	text-decoration:underline;
+}
+
+.BlocFoot li a.RssBas{
+	display:block;
+	height:35px;
+	width:70px;
+	background:url(/Skins/ArtfxBlog/Img/RssBas.jpg) no-repeat -10px  0;
+	padding-left:20px;
+}
+

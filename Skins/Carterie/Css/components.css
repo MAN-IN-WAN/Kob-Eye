@@ -1,0 +1,360 @@
+div.TitreNavigation {
+	padding: 5px 0;
+	font-weight: bold;
+	font-size: 14px;
+}
+
+div.BlocNavigation a {
+	display: block;
+}
+
+/* Accueil */
+	.ACCUEILARTDECOUPE {
+		overflow:hidden;position:relative;margin-top:10px;float:left;
+	}
+	.ACCUEILARTDECOUPE .Titre{
+		text-transform:uppercase;font-size:18px;font-weight:bold;color:#e2007a;
+	}
+	.ACCUEILARTDECOUPE .PubBlock{
+		overflow:hidden;position:relative;margin-top: 10px;
+	
+	}
+	
+	.PaveGaucheAccueil .PubBlock , .PaveDroitAccueil .PubBlock{
+		position:relative;
+	}
+.PaveGaucheAccueil .PubBlock a.lelien, .PaveDroitAccueil .PubBlock  a.lelien{
+	color:#393939;
+	font-size:18px;
+	text-align:left;
+	height:27px;
+	padding-top: 5px;
+	position:absolute;
+	bottom:0;
+	left:0;
+	background: none repeat scroll 0 0 rgba(255, 255, 255, 0.7);
+	width:490px;
+	top: 328px;
+}
+
+	.COEURACCUEIL {
+		overflow:hidden;position:relative;
+		border-left:1px dotted #393939;margin:10px;padding-left:10px;
+	}
+	
+	.COEURACCUEIL .Titre{
+		text-transform:uppercase;font-size:18px;font-weight:bold;color:#e2007a;
+	}
+	.COEURACCUEIL .PubBlock{
+		overflow:hidden;position:relative;margin-top: 10px;
+	
+	}
+	.COEURACCUEIL .PubBlock img {float:left;}
+	
+	.COEURACCUEIL .PubBlock p {
+		padding-left:5px;
+	}
+	
+	.COEURACCUEIL  .PubBlock p {
+		font-size:12px;font-weight:normal;color:#393939;
+	}
+	
+	
+	
+	.COEURACCUEIL  a.lelien{
+		background: url("../Img/sprite.png") no-repeat  0 -217px ;
+		bottom: 0;
+		color: #E2007A;
+		font-size: 11px;
+		font-weight: normal;
+		padding-left: 20px;
+		position: absolute;
+		right: 0;
+	
+	}
+	.COEURACCUEIL .BlocAfficher .LienAffiche a:hover{
+		color:#393939;
+	}
+	
+	.ZoomAccueil { margin:0 5px 5px 0;overflow:hidden;position:relative;float:left;color:#fff;}
+	.ZoomAccueil .EntoureComposantNews { 
+		width:320px;
+		height:252px;
+		background: url("../Img/Fond/FondZoom.png") no-repeat   ;
+	}
+	.ZoomAccueil .BlocCadre { 
+		overflow:hidden;position:relative;height:100%;margin:0 10px 10px;
+	}
+	.ZoomAccueil .BlocCadre .PartieInfo{ 
+		border-bottom:1px dotted #fff;padding-bottom:2px;
+	}
+	.ZoomAccueil .BlocCadre .PartieInfoNoborder{ 
+		padding-bottom:2px;
+	}
+	
+	.ZoomAccueil .TitreBloc h2{ 
+		text-transform:uppercase;font-size:18px;font-weight:bold;color:#fff; padding: 10px 0 5px;
+	}
+	
+	.ZoomAccueil .BlocCadre .affichimage { 
+		float:left;
+	}
+	.ZoomAccueil .BlocCadre .TitreNews a { 
+		color:#fff;font-size:14px;
+	}
+	
+	.ZoomAccueil .BlocCadre .Desc { 
+		color:#fff;font-size:14px;
+	}
+	.ZoomAccueil .touteslesnews a{ 
+		font-size:12px;font-weight:normal;color:#fff;
+		background: url("../Img/sprite.png") no-repeat  0 -292px ;
+		padding-left: 17px;margin-right:10px;
+		float:right;
+		
+	}
+
+	
+	/*----- composant de mise en avant -----*/
+	
+	
+	
+	.AccueilTopVente {
+		position:relative;
+		overflow:hidden;
+		color:#e2007a;
+		margin:5px 0;width: 652px;height:252px;
+		background: url("../Img/Fond/FondTopDesVentes.png") no-repeat ;
+	}
+	
+	
+	.AccueilTopVente .ContenuVisible{
+		
+		margin:auto;
+	}
+	.AccueilTopVente .TitreBloc  {
+	color: #e2007a;
+	font-size: 18px;
+	margin:10px 20px;
+	text-transform: uppercase;
+	}
+	.AccueilTopVente .Desc{ margin:5px 0; }
+	.AccueilTopVente  .NomMea { display:block; color: #e2007a;border-right:1px dotted #e2007a;font-size:14px;height: 34px;}
+	.AccueilTopVente .Accroche { margin-right: 80px;font-size:11px;}
+	.AccueilTopVente .Prix { 
+		padding: 2px 0 8px 5px; font-size:14px;float:right; text-align: right; display:block;position:relative; 
+	}
+	.AccueilTopVente .apartirde {
+		font-style:italic;
+		font-size:11px;
+		color:#e2007a;
+		text-align:right;
+		font-weight:normal;
+	}
+	
+	.AccueilTopVente .achat {
+		display:none;
+		height:0;
+		
+	}
+	.AccueilTopVente .pagination {width:auto;}
+	.AccueilTopVente .pagination .precedent {
+		background: url("../Img/sprite.png") no-repeat  0 -361px ;
+		border: medium none;
+		height: 55px;
+		left: 19px;
+		position: absolute;
+		text-indent: -999px;
+		font-size:0;
+		line-height:0;
+		top: 97px;
+		z-index: 400;
+		width:34px;
+	
+	}
+	.AccueilTopVente .pagination .suivant {
+		background: url("../Img/sprite.png") no-repeat  -405px -361px ;
+		border: medium none;
+		height: 55px;
+		position: absolute;
+		right: 21px;
+		text-indent: -999px;
+		font-size:0;
+		line-height:0;
+		top: 97px;
+		width: 34px;
+		z-index: 400;
+		text-indent: -999px;
+		font-size:0;
+		line-height:0;
+	}
+
+
+/** colonne de gauche ***/
+	
+	.GaucheSalons { 
+		padding:0 5px 5px 0;overflow:hidden;position:relative;float:left;
+	
+	}
+	.GaucheSalons .EntoureComposantNews { 
+		width:240px;margin-top:5px;	border:1px solid #ccc;
+	}
+	.GaucheSalons .BlocCadre { 
+		color:#fff;overflow:hidden;position:relative;height:100%;
+	}
+	.GaucheSalons .BlocCadre .PartieInfo{ 
+		border-bottom:1px dotted #393939;padding-bottom:2px;
+		padding:0 10px 10px;
+	}
+	.GaucheSalons .BlocCadre .PartieInfoNoborder{ 
+		padding-bottom:2px;padding:0 10px ;
+	}
+	
+	.GaucheSalons .TitreBloc h2{ 
+		background: url("../Img/maquette/salon.jpg") no-repeat scroll 0 0 #E2007A;
+		border-bottom: 1px solid #FFFFFF;
+		color: #FFFFFF;
+		font-size: 18px;
+		font-weight: normal;
+		margin-bottom: 8px;
+		padding: 0 0 0 32px;
+		text-transform: uppercase;
+	}
+	
+	.GaucheSalons .BlocCadre .affichimage { 
+		float:left;
+	}
+	.GaucheSalons .BlocCadre .TitreNews a { 
+		color:#393939;font-size:11px;font-weight:bold;padding-left:10px;margin-left:5px;
+		background: url("../Img/maquette/square.jpg") no-repeat ;
+	}
+	.GaucheSalons .BlocCadre .Desc { 
+		color:#393939;font-size:11px;
+	}
+	.GaucheSalons .touteslesnews a{ 
+		background: url("../Img/sprite.png") no-repeat  0 -218px ;
+		color: #E2007A;
+		float: right;
+		font-size: 12px;
+		font-weight: normal;
+		margin-right: 10px;
+		padding-left: 19px;
+		
+	}
+	
+	/*---- Navigation de la boutique ---*/
+	.NavigationBoutique {
+		margin-bottom:5px;
+	}
+	.NavigationBoutique .EnteteNavigation {
+		border-bottom:1px solid #b46ea0;
+		padding-bottom:10px;
+		font-size:14px;color:#b46ea0;
+		margin:5px;text-transform:uppercase;font-size:14px;
+	}
+	
+	.NavigationBoutique .ContenuComposantNavigation{
+		color:#393939;
+		font-size:14px;
+	}
+	.NavigationBoutique ul li {
+		list-style-type:none;
+		border-bottom:1px dotted #393939;
+		padding: 7px 0;
+		margin: 5px 5px 5px 17px;
+		text-transform: uppercase;	
+	}
+	.NavigationBoutique ul li a{
+		color:#393939;
+
+	}
+	.NavigationBoutique ul li a.current{
+		color:#b46ea0;
+		
+	}
+
+	.NavigationBoutique ul li ul li {
+		border:none;
+		list-style-type:square;
+		margin: 5px 2px -6px 23px;
+		text-transform:none;
+		
+		
+	}
+	.NavigationBoutique ul li  ul li a.Current{
+		color:#b46ea0;
+	}
+.NavigationBoutique ul li ul li ul li{
+		border:none;
+		list-style-type:none;
+		margin:5px 0;
+		font-size:12px;
+		padding:0px;
+		
+	}
+
+/*--- CentreL ---*/
+.SelectionProduit {
+	position:relative;
+	overflow:hidden;
+}
+
+
+/*  PavePubAccueil */
+.centre .PaveGaucheAccueil  {
+	background-color:#d6ccd5; float:left;
+}
+.centre .PaveDroitAccueil {
+	background-color:#d0a5c3;margin:10px 0 10px 490px; 
+}
+
+
+.PaveDroitAccueil .Titre{
+	position:absolute;bottom:50px;font-size:16px;color:#393939;    left: 150px;
+}
+.PaveGaucheAccueil  .Titre{
+	position:absolute;bottom:50px;font-size:16px;color:#393939;   right: 150px;
+}
+
+.centre .AcceuilCategorieUne {
+	position:relative;float:none;overflow:hidden;
+}
+.centre .AcceuilCategorieUne .CategoriesAccueil {
+	position:relative;float:none;overflow:hidden;
+}
+
+.centre .AcceuilCategorieUne .CategoriesAccueil .BlocCateg {
+	margin-bottom:20px;float:left;width:316px;height:220px;
+}
+.centre .AcceuilCategorieUne .CategoriesAccueil .BlocCategPair {
+	width:316px;height:220px;	
+	margin-bottom:20px;
+	margin-right:16px;float:left;margin-left:16px;
+	
+}
+
+.centre .AcceuilCategorieUne .CategoriesAccueil .BlocCateg .ImageCategorieUne, .centre .AcceuilCategorieUne .CategoriesAccueil .BlocCategPair .ImageCategorieUne {
+	margin:0;padding:0;width:316px;height:220px; position: relative;
+}
+.centre .AcceuilCategorieUne .CategoriesAccueil .BlocCateg .ImageCategorieUne a.LienCategorieTitreUne, .centre .AcceuilCategorieUne .CategoriesAccueil .BlocCategPair .ImageCategorieUne a.LienCategorieTitreUne{
+	color:#393939;font-size:18px;text-align:left;
+
+}
+.centre .AcceuilCategorieUne .CategoriesAccueil .BlocCateg .ImageCategorieUne a.LienCategorieTitreUneText, .centre .AcceuilCategorieUne .CategoriesAccueil .BlocCategPair .ImageCategorieUne a.LienCategorieTitreUneText{
+	color:#393939;
+	font-size:18px;
+	text-align:left;
+	height:27px;
+	padding-top: 5px;
+	position:absolute;
+	bottom:0;
+	left:0;
+	background: none repeat scroll 0 0 rgba(255, 255, 255, 0.7);
+	width:316px;
+}
+
+
+
+.centre .AcceuilCategorieUne .CategoriesAccueil .BlocCateg a.LienCategorieTitreUne:hover , .centre .AcceuilCategorieUne .CategoriesAccueil .BlocCategPair a.LienCategorieTitreUne:hover{ 
+	color:#393939;
+}

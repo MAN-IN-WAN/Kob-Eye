@@ -1,0 +1,62 @@
+/*-------- Menu du bas --------*/
+
+.FondNull {
+    	height: 30px;
+    	left: 0;
+    	position: absolute;
+    	right: 5px;
+    	text-align: right;
+    	top: 0;
+}
+.FondNull a {
+	font-size:11px;
+	font-style:italic;
+}
+
+.PiedContenu {
+	position: relative; 
+	background: url("../Img/sprite.png") no-repeat scroll 0 -4670px transparent;
+	width: 1000px;
+	border: none;
+	margin:auto;
+
+}
+
+
+/*---Pour un site à 980px ---------*/
+.MenuBas {
+	position: relative;
+	font-size:12px;
+	text-transform:uppercase;
+	height: 55px;
+	padding-left: 10px;
+	margin:auto;
+}
+
+.MenuBas ul {
+	position: relative;
+	overflow:hidden;
+	list-style:none;
+	height: 50px;
+
+}
+
+.MenuBas li{
+	border-right: 1px dotted #01ACCF;
+    	color: #01ACCF;
+    	float: left;
+    	margin: 5px;
+	width: auto;
+	height:25px;
+}
+
+.MenuBas a {
+	color: #01accf;
+	padding: 5px;
+	text-decoration:none;
+	display:block;
+	text-transform:uppercase;
+	font-size:12px;
+}
+.MenuBas a:hover {color:#4d4d4d;}
+}

@@ -1,0 +1,102 @@
+#Droite a, #Droite a:visited{
+	text-decoration:none;
+}
+
+#Droite a:hover{
+	text-decoration:underline;
+}
+
+#ColonneD{
+	width:110px;
+	padding:10px 5px 10px 5px;
+	float:right;
+}
+
+#ColonneG{
+	width:220px;
+	padding:10px 5px 10px 5px;
+	border-right:1px solid #2C2C2C;
+}
+
+* html #ColonneG{
+	padding:0;
+	padding:10px 0 10px 5px;
+}
+
+*+html #ColonneG{
+	padding:0;
+	padding:10px 0 10px 5px;
+}
+
+#ColonneD ul, #ColonneG ul{
+	display:block;
+	margin-bottom:40px;
+}
+
+#ColonneD ul.ListPostDate{
+	display:block;
+	margin-bottom:10px;
+}
+
+#ColonneD li, #ColonneG li{
+	padding-bottom:7px;
+	padding-top:7px;
+}
+
+#ColonneG li{
+	border-bottom:1px dashed #232323;
+}
+
+#ColonneD li a, #ColonneG li a{
+	font-size:11px;
+	display:block;
+	padding-left:15px;
+	background:url(/Skins/ArtfxBlog/Img/PictoRond.jpg) no-repeat;
+}
+
+#ColonneD li a span, #ColonneG li a span{
+	font-size:11px;
+	color:#FFBB00;
+}
+
+#BlocRss{
+	padding:5px;
+	background:url(/Skins/ArtfxBlog/Img/BlocRss.jpg) no-repeat;
+}
+
+#BlocRss h2{
+	border-color:#5f5f5d;
+}
+
+#BlocRss h2 a, #BlocRss h2 a:visited{
+	text-decoration:none;
+}
+
+#BlocRss h2 a:hover, #BlocRss h2 a:active{
+	text-decoration:none;
+}
+
+p.Rss{
+	display:block;
+	height:60px;
+	font-weight:bold;
+}
+
+#Droite p.Rss a, #Droite p.Rss a:visited{
+	font-weight:bold;
+	display:block;
+	padding-left:60px;
+}
+
+#Droite p.Rss a:hover, #Droite p.Rss a:active{
+	font-weight:bold;
+	display:block;
+	padding-left:60px;
+}
+
+* html #Droite p.Rss a{
+	width:120px;
+	height:25px;
+}
+
+

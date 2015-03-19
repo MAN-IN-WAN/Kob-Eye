@@ -1,0 +1,161 @@
+.LigneForm{
+	margin:10px 10px 10px 0;
+}
+
+* html .LigneForm{
+	clear:both;
+}
+
+div[class="LigneForm"]{
+	overflow:auto;	
+}
+
+/*--------------------FORM LOGIN----------------------------*/
+#Login{
+	margin:10px 0;
+	padding:5px;
+	background-color:#ccc;
+}
+
+* html #Login h3{
+	position:relative;
+}
+
+#Login .LigneForm input{
+	float:left;
+	width:95px;
+	margin-right:10px;
+}
+
+#Login .LigneForm input.Connexion{
+	cursor:pointer;
+	width:25px;
+	margin-right:0;
+}
+
+
+/*--------------------FORM OUBLI MDP---------------------------*/
+#OubliMdp label{
+	display:block;
+	width:100px;
+	float:left;
+}
+
+#OubliMdp p{
+	margin-top:10px;
+}
+
+#OubliMdp .LigneForm input{
+	width:200px;
+	margin-right:10px;
+	float:left;
+}
+
+#OubliMdp .LigneForm input.BtnMail{
+	width:100px;
+}
+
+
+/*--------------------FORM CONTACT----------------------------*/
+
+#FormContact label{
+	float:left;
+	display:block;
+	width:150px;
+}
+
+#FormContact input, #FormContact textarea, #FormContact select{
+	width:400px;
+}
+
+#FormContact input.BtnContact {
+	cursor:pointer;
+	width:100px;
+	margin-bottom:10px;
+}
+
+
+/*--------------------FORM NEWSLETTER----------------------------*/
+#Newsletter{
+	margin:10px 0;
+	padding:5px;
+	background-color:#ccc;
+}
+
+* html #Newsletter h3{
+	position:relative;
+}
+
+input.MailNew{
+	width:200px;
+	margin-right:10px;
+}
+
+/*--------------------FORM DESINSCRIPTION---------------------------*/
+#FormNewsLet{
+	width:450px;
+}
+
+#FormNewsLet input{
+	width:300px;
+}
+
+#FormNewsLet input.BtnNewsLet{
+	width:70px;
+}
+
+/*--------------------FORM AMI----------------------------*/
+#FormAmi label{
+	float:left;
+	display:block;
+	width:120px;
+}
+
+#FormAmi input{
+	width:340px;
+}
+
+#FormAmi p{
+	margin-top:10px;
+	margin-bottom:20px;
+}
+
+/*-------------------MESSAGES-------------------------*/
+
+.Error {
+	background-color:#FFBEBE;
+	border:2px solid #BA0000;
+}
+
+.BlocError{
+	padding:10px 20px 10px;
+	background-color:#FFBEBE;
+	margin-bottom:10px;
+	margin-top:10px;
+}
+
+.BlocError p{
+	color:#BF2B2E;
+	font-size:14px;
+	font-style:italic;
+/* 	margin-bottom:5px; */
+}
+
+.BlocError li{
+	font-weight:bold;
+	margin-left:10px;
+}
+
+.Obligatoire p{
+	margin-bottom:20px;
+	margin-left:150px;
+	font-style:italic;
+}
+
+.Message{
+	color:#BF2B2E;
+	font-size:14px;
+	font-style:italic;
+	margin-top:5px;
+	margin-bottom:5px;
+}

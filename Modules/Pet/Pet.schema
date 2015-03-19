@@ -1,0 +1,107 @@
+<SCHEMA>
+	<OBJECTCLASS title="PetUser" driver="mysql" order="Id" orderType="ASC" master="1" AccessPoint="1" Icon="[None]" Description="User" Heritage="0" Class="Modules/Pet/Class/PetUser.class.php">
+		<FKEY card="1,1" module="Systeme" data="User,Id" category="User" description="Utilisateur">PetUserUserId</FKEY>
+		<PROPERTIES type="int" obligatoire="1" default="0" query="Pet/Gender::Id::Gender" category="User" description="Gender">GenderId</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="User" description="Email checked">EmailChecked</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="User" description="Phone checked">PhoneChecked</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="User" description="Birth year">BirthYear</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="User" description="Score">Score</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="User" description="Announcements">Announcements</PROPERTIES>
+		<VIEW title="PetUserList" default="1">
+			<OBJECTCLASS title="PetUser" select="Id,EmailChecked,PhoneChecked,BirthDay,Score,Announcements" filters="">
+				<JOIN type="inner" title="Gender" on="GenderId" target="Id">
+					<PROPERTIES type="varchar" >Gender</PROPERTIES>
+				</JOIN>
+				<JOIN type="inner" module="Systeme" title="User" on="PetUserUserId" target="Id">
+					<PROPERTIES type="varchar" >Nom</PROPERTIES>
+					<PROPERTIES type="varchar" >Prenom</PROPERTIES>
+					<PROPERTIES type="varchar" >Initiales</PROPERTIES>
+					<PROPERTIES type="varchar" >Mail</PROPERTIES>
+					<PROPERTIES type="varchar" >Tel</PROPERTIES>
+					<PROPERTIES type="varchar" >Mobile</PROPERTIES>
+					<PROPERTIES type="varchar" >Nom</PROPERTIES>
+					<PROPERTIES type="text" >Informations</PROPERTIES>
+					<PROPERTIES type="image" >Avatar</PROPERTIES>
+					<PROPERTIES type="date" alias="Creation" >tmsCreate</PROPERTIES>
+					<PROPERTIES type="date" >LastConnection</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="AcceptedPet" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Accepted Pets" Heritage="0">
+		<FKEY card="1,1" data="PetUser,Id" category="Pet" description="Utilisateur">AcceptedPetPetUserId</FKEY>
+		<PROPERTIES type="int" obligatoire="1" default="0" query="Pet/PetType::Id::PetType" category="Pet" description="Pet type">PetTypeId</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Opinion" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Comments" Heritage="0">
+		<FKEY card="1,1" data="PetUser,Id" category="Opinion" description="From">OpinionFromPetUserId</FKEY>
+		<FKEY card="1,1" data="PetUser,Id" category="Opinion" description="To">OpinionToPetUserId</FKEY>
+		<PROPERTIES type="int" default="0" category="Opinion" description="Score">Score</PROPERTIES>
+		<PROPERTIES type="text" category="Opinion" description="Opinion">Opinion</PROPERTIES>
+		<PROPERTIES type="date" category="Opinion" description="Date">Date</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Vehicle" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Vehicle" Heritage="0" Class="Modules/Pet/Class/Vehicule.class.php">
+		<FKEY card="1,1" data="PetUser,Id" category="Vehicle" description="Utilisateur">VehiclePetUserId</FKEY>
+		<PROPERTIES type="int" obligatoire="1" default="0" query="Pet/VehicleType::Id::VehicleType" category="User" description="Vehicle type">VehicleTypeId</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" obligatoire="1" default="0" category="Vehicle" description="Vehicle maker">Maker</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" obligatoire="1" default="0" category="Vehicle" description="Vehicle model">Model</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" obligatoire="1" default="0" category="Vehicle" description="Vehicle colour">Colour</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" obligatoire="0" default="0" category="Vehicle" description="Number plate">Number plate</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="TravelAlert" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Comments" Heritage="0">
+		<FKEY card="1,1" data="PetUser,Id" category="Opinion" description="From">TravelAlertPetUserId</FKEY>
+		<PROPERTIES type="date" category="Opinion" description="Date">Date</PROPERTIES>
+		<PROPERTIES type="date" obligatoire="1" default="" category="Travel" description="DepartureTime">Departure</PROPERTIES>
+		<PROPERTIES type="date" obligatoire="1" default="" category="Travel" description="ArrivalTime">Arrival</PROPERTIES>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="VehiclePicture" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Vehicle pictures" Heritage="0">
+		<FKEY card="1,1" data="Vehicle,Id" category="Picture" description="Vehicle">VehiclePictureVehicleId</FKEY>
+		<PROPERTIES type="image" category="Picture" description="Picture">Picture</PROPERTIES>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="Travel" driver="mysql" order="Id" orderType="ASC" master="1" AccessPoint="1" Icon="[None]" Description="Travels" Heritage="0" Class="Modules/Pet/Class/Travel.class.php">
+		<FKEY card="1,1" data="PetUser,Id" category="Travel" description="Utilisateur">TravelPetUserId</FKEY>
+		<PROPERTIES type="int" obligatoire="1" default="0" query="Pet/TravelType::Id::TravelType" category="Travel" description="Travel type">TravelTypeIdId</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="1" default="0" query="Pet/PetType::Id::PetType" category="Travel" description="Pet type">PetTypeId</PROPERTIES>
+		<PROPERTIES type="float" obligatoire="0" default="0" category="Travel" description="Weight">Weight</PROPERTIES>
+		<PROPERTIES type="text" obligatoire="0" default="" category="Travel" description="Description">Description</PROPERTIES>
+		<PROPERTIES type="date" obligatoire="1" default="" category="Travel" description="DepartureTime">Departure</PROPERTIES>
+		<PROPERTIES type="date" obligatoire="1" default="" category="Travel" description="ArrivalTime">Arrival</PROPERTIES>
+		<PROPERTIES type="date" obligatoire="1" category="Travel" description="DepartureTime">DepartureTime</PROPERTIES>
+		<PROPERTIES type="date" obligatoire="0" category="Travel" description="ArrivalTime">ArrivalTime</PROPERTIES>
+		<PROPERTIES type="float" obligatoire="0" default="0" category="Travel" description="Price">Price</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="1" default="1" category="Travel" description="Number of animals">AnimalNumber</PROPERTIES>
+		<FKEY card="0,1" data="Vehicle,Id" category="Travel" description="Vehicle">TravelVehicleId</FKEY>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Stage" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Stages" Heritage="0">
+		<FKEY card="1,1" data="Travel,Id" category="Stage" description="Travel">StageTravelId</FKEY>
+		<PROPERTIES type="varchar" obligatoire="1" category="Stage" description="Stage">Stage</PROPERTIES>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="Gender" order="Id" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" hidden="0" Description="Genders" Icon="[None]">
+		<PROPERTIES category="Gender" type="varchar" length="32" searchOrder="1" >Gender</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="PetType" order="Id" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" hidden="0" Description="Pet types" Icon="[None]">
+		<PROPERTIES category="Type" type="varchar" length="32" searchOrder="1" >PetType</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="TravelType" order="Id" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" hidden="0" Description="Travel types" Icon="[None]">
+		<PROPERTIES category="Type" type="varchar" length="32" searchOrder="1" >TravelType</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="VehicleType" order="Id" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" hidden="0" Description="Vehicle types" Icon="[None]">
+		<PROPERTIES category="Type" type="varchar" length="32" searchOrder="1" >VehicleType</PROPERTIES>
+	</OBJECTCLASS>
+
+
+
+</SCHEMA>

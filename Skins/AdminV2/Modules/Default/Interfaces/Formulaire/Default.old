@@ -1,0 +1,259 @@
+[TITLE]Admin Kob-Eye | [!Action!] Objet [!Form_[!Prop::Nom!]_explore!][/TITLE]
+
+[IF [!SaveObject!]!=]
+	//Alors on enregistre les proprietes
+	[STORPROC [!CONF::GENERAL::LANGUAGE!]|Lang]
+		[STORPROC [!Objet::Proprietes([!Key!])!]|Prop]
+			[METHOD Objet|Set]
+				[PARAM][!Prop::Nom!][/PARAM]
+				[PARAM][!Form_[!Prop::Nom!]!][/PARAM]
+			[/METHOD]
+		[/STORPROC]
+	[/STORPROC]
+	//Sauvegarde l objet
+	[IF [!Objet::Verify!]]
+		[IF [!Clone!]>1]
+			[STORPROC [!Clone:-1!]|C]
+				[!Ob:=[!Objet::getClone()!]!]
+				[METHOD Ob|Save][/METHOD]
+			[/STORPROC]
+		[/IF]
+		[METHOD Objet|Save][/METHOD]
+		[STORPROC [!Objet::typesEnfant!]|Enf]
+		    [IF [!Enf::associated!]!=]
+			[STORPROC [!Form_Ass_[!Enf::Titre!]!]|A]
+			    [STORPROC [!Objet::Module!]/[!Enf::Titre!]/[!A!]|N]
+				[METHOD N|AddParent]
+				    [PARAM][!Objet::Module!]/[!Objet::ObjectType!]/[!Objet::Id!][/PARAM]
+				[/METHOD]
+				[METHOD N|Save]
+				[/METHOD]
+			    [/STORPROC]
+			[/STORPROC]
+			[STORPROC [!Objet::Module!]/[!Objet::ObjectType!]/[!Objet::Id!]/[!Enf::Titre!]|Other]
+			    [!Found:=False!]
+			    [STORPROC [!Form_Ass_[!Enf::Titre!]!]|A]
+				[IF [!A!]=[!Other::Id!]]
+				    [!Found:=True!]
+				[/IF]
+			    [/STORPROC]
+			    [IF [!Found!]=False]
+				[METHOD Other|DelParent]
+				    [PARAM][!Objet::Module!]/[!Objet::ObjectType!]/[!Objet::Id!][/PARAM]
+				[/METHOD]
+				[METHOD Other|Save]
+				[/METHOD]
+			    [/IF]
+			[/STORPROC]
+		    [/IF]
+		[/STORPROC]
+		[IF [!SaveObject!]!=Enregistrer]
+			[REDIRECT][!Lien!][/REDIRECT]
+		[ELSE]
+		    [INFO [!Query!]|Parent]
+		    [!Integrated:=False!]
+		    [STORPROC [!Objet::typesParent!]|Par]
+			[IF [!Par::Titre!]==[!Parent::ObjectType!]&&[!Par::Behaviour!]==Integrated]
+			    [!Integrated:=True!]	
+			[/IF]
+		    [/STORPROC]
+		    [IF [!Integrated!]=True]
+			[INFO [!Query!]|HistoObj]
+			[STORPROC [!HistoObj::Historique!]|Histo|0|1]
+			    [LIMIT 0|1]
+			    [!BackUrl:=[!HistoObj::Module!]/[!Histo::DataSource!]/[!Histo::Value!]!]
+			    [/LIMIT]
+			[/STORPROC]
+			[REDIRECT][!BackUrl!][/REDIRECT]
+		    [ELSE]
+			[IF [!BackUrl!]!=]
+			    [REDIRECT][!BackUrl!][/REDIRECT]
+			[ELSE]
+			    [REDIRECT][!Query!][/REDIRECT]
+			[/IF]
+		    [/IF]
+		[/IF]
+	[ELSE]
+		<ul class="Error">
+			<li><h1>Erreur d'enregistrement [!Objet::ObjectType!]</h1></li>
+		[STORPROC [!Objet::Error!]|E]
+			<li>[!E::Message!]</li>
+			//Generation d une variable d error pour informer le champ en question
+			[!C_[!E::Prop!]Cv_Error:=1!]
+		[/STORPROC]
+		</ul>		
+	[/IF]
+[/IF]
+
+<form enctype="multipart/form-data" action="" method="post" name="frm" id="frmSave">
+	//On repete maintenant l interface pour chaque langue
+	<div class="Errors">
+	    <a name="ShowErrors"></a>
+	    <div>Erreur d'insertion</div>
+	    <ul>
+	    </ul>
+	</div>    
+	[STORPROC [!CONF::GENERAL::LANGUAGE!]|Lang]
+	    [COUNT [!Objet::Proprietes([!Key!])!]|T]
+		//un onglet par langue differente
+		[!LangC:=[!Key!]!]
+		[IF [!T!]>0]
+		<div class="CatTitle">[!LangC!] : Propri&eacute;t&eacute;s</div>
+		<div style="overflow:hidden">
+		[STORPROC [!Objet::Proprietes([!Key!])!]|Prop]
+			//Cas des conditionnelles
+			[!DisplayReload:=False!]
+			[!Display:=True!]
+		        [STORPROC [!Objet::Conditions!]|Cond]
+			    [IF [!Cond::Name!]=[!Prop::Nom!]]
+				[!DisplayReload:=True!]
+			    [/IF]
+			    [!Concerne:=False!]
+			    [STORPROC [!Cond::PropsName!]|Name]
+				[IF [!Prop::Nom!]==[!Name!]]
+				    [!Concerne:=True!]
+				[/IF]
+			    [/STORPROC]
+			    [IF [!Concerne!]==True]
+				[!Display:=False!]
+				[IF [!Cond::About!]=]
+				    [IF [!Form_[!Cond::Name!]!]!=]
+					[!Value:=[!Form_[!Cond::Name!]!]!]
+				    [ELSE]
+					[!Value:=[!Objet::[!Cond::Name!]!]!]
+				    [/IF]
+				[ELSE]
+				    [INFO [!Query!]|T]
+				    [!Q:=!]
+				    [STORPROC [!T::Historique!]|THIST|0|100]
+					[IF [!Pos!]!=[!NbResult!]]
+					    [!Q+=/[!THIST::DataSource!]/[!THIST::Value!]!]
+					[/IF]
+				    [/STORPROC]
+				    [STORPROC [!Objet::Module!][!Q!]|P|0|1]
+					
+					[!Value:=[!P::[!Cond::Name!]!]!]
+				    [/STORPROC]
+				[/IF]
+				[IF [!Value!]!=]
+				    [STORPROC [!Cond::Value!]|V]
+					[IF [!V!]==[!Value!]]
+					    [!Display:=True!]
+					[/IF]
+				    [/STORPROC]
+				[/IF]
+			    [/IF]
+			[/STORPROC]
+			[IF [!Prop::auto!]=1]
+			    [!Display:=False!]
+			[/IF]
+			[IF [!Prop::hidden!]=1]
+			    [!Display:=False!]
+			[/IF]
+			
+			//Dabord les proprietes de type varchar ,private,titre,password
+			[IF [!Display!]==True]
+			[MODULE Systeme/Interfaces/Formulaire/ModifProprietes?ObjectTT=[!Objet::ObjectType!]&DisplayReload=[!DisplayReload!]&Prop=[!Prop!]&Type=[!Type!]]
+			[/IF]
+			[IF [!DisplayReload!]==True]
+			    <div class="condFieldBefore" style="display:none">Ce champ d&eacute;veloppe la page ! Merci de valider si il est modifi&eacute;
+			    <input type="submit" name="Reload" value="Valider"/></div>
+			[/IF]
+			[NORESULT]
+				Aucune propri&eacute;t&eacute;s ne n&eacute;c&eacute;ssite une traduction.
+			[/NORESULT]
+		[/STORPROC]
+		[STORPROC [!Objet::typesEnfant!]|Enf]
+		    [IF [!Enf::associated!]=1]
+			<div class="ProprieteModif">
+			    <div class="ProprieteTitreModif">
+				[!Enf::Description!]
+			    </div>
+			    <div class="ProprieteValeurModif" style="max-height:150px;overflow:auto;">
+				[STORPROC [!Objet::Module!]/[!Enf::Titre!]|E]
+				    <ul>
+					[LIMIT 0|1000]
+					    [IF [!Objet::Id!]!=]
+						[COUNT [!Objet::Module!]/[!Objet::ObjectType!]/[!Objet::Id!]/[!Enf::Titre!]/[!E::Id!]|N]
+					    [ELSE]
+						[!N:=0!]
+					    [/IF]
+					    <li style="list-style-type:none;width:150px;float:left;"><input type="checkbox" [IF [!N!]>0]checked="checked"[/IF] name="Form_Ass_[!Enf::Titre!][]" value="[!E::Id!]"/> [!E::getFirstSearchOrder!]</li>
+					[/LIMIT]
+				    </ul>
+				[/STORPROC]
+			    </div>
+			</div>
+		    [ELSE]
+			[IF [!Enf::associated!]!=]
+			    [INFO [!Query!]|T]
+			    [STORPROC [!T::Historique!]|THIST|0|100]
+				[IF [!Pos!]!=[!NbResult!]]
+				    [!Id:=[!THIST::Value!]!]
+				[/IF]
+			    [/STORPROC]
+			    [STORPROC [!Enf::associated!]/[!Id!]|TT|0|1]
+				[!TTN:=[!NbResult!]!]
+			    [/STORPROC]
+			    [IF [!TTN!]>0]
+			    <div class="ProprieteModif">
+				<div class="ProprieteTitreModif">
+				    [!Enf::Description!]
+				</div>
+				<div class="ProprieteValeurModif" style="max-height:150px;overflow:auto;">
+
+				    
+				    [STORPROC [!Enf::associated!]/[!Id!]|EE]
+					[STORPROC [!Objet::Module!]/[!EE::ObjectType!]/[!EE::Id!]/[!Enf::Titre!]|E]
+					    [IF [!Objet::Id!]!=]
+						[STORPROC [!Objet::Module!]/[!Objet::ObjectType!]/[!Objet::Id!]/[!Enf::Titre!]/[!E::Id!]|O]
+						    [!N:=[!NbResult!]!]
+						    [NORESULT]
+							[!N:=0!]
+						    [/NORESULT]
+						[/STORPROC]
+					    [ELSE]
+						[!N:=0!]
+					    [/IF]
+					    <li style="list-style-type:none;width:150px;float:left;">
+						<input type="checkbox" [IF [!N!]>0]checked="checked"[/IF] name="Form_Ass_[!Enf::Titre!][]" value="[!E::Id!]"/> [!E::getFirstSearchOrder!]
+						</li>
+					[/STORPROC]
+				    [/STORPROC]
+
+				    </div>
+				</div>
+			    [/IF]
+			[/IF]
+		    [/IF]
+		[/STORPROC]
+		</div>
+		[/IF]
+	[/STORPROC]
+	<div class="JSFormButton Bouton" style="margin-right:6%;float:right;overflow:hidden;width:330px;">
+	     <b class="b1" style="position:relative;float:left;"></b>
+	     <b class="b3" style="position:relative;float:right;"></b>
+	     <b class="b2" style="text-align:center;width:300px;">
+		 <input type="submit" class="OrangeButton SubmitButton" style="padding-top:3px;" VALUE="Enregistrer" name="SaveObject">
+	     </b>
+	</div>
+	[IF [!Action!]=Ajouter&&[!popup!]!=true]
+	<div class="Bouton" style="margin-right:6%;float:right;overflow:hidden;width:330px;clear:both;">
+	     <b class="b1" style="position:relative;float:left;"></b>
+	     <b class="b3" style="position:relative;float:right;"></b>
+	     <b class="b2" style="text-align:center;width:300px;">
+		 <input type="submit" class="OrangeButton SubmitButton" style="padding-top:3px;width:300px;" VALUE="Enregistrer et ajouter &agrave; nouveau" name="SaveObject">
+	     </b>
+	</div>
+    [/IF]
+</form>
+
+<script type="text/javascript">
+      Fl.toggleMce([IF [!Type!]=Popup]true[/IF]);
+      Fl.toggleConditionals([IF [!Type!]=Popup]true[/IF]);
+      Fl.toggleCalendars([IF [!Type!]=Popup]true[/IF]);
+      Fl.toggleColorPickers([IF [!Type!]=Popup]true[/IF]);
+      Fl.makePopup();
+      Fl.checkForm($('frmSave'),"[!Query!]","/Systeme/Interfaces/Formulaire/CheckForm.htm[IF [!Objet::Id!]!=]?Action=Modifier[/IF]"[IF [!Type!]=Popup],true[/IF]);
+</script>
+

@@ -1,0 +1,86 @@
+/* SLIMBOX */
+
+#lbOverlay {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	background-color: #000000;
+	cursor: pointer;
+}
+
+#lbCenter, #lbBottomContainer {
+	position: absolute;
+	left: 50%;
+	overflow: hidden;
+	/*background-color: #FF7F00;*/
+	border: 5px solid #FFFFFF;
+	z-index:11;
+}
+
+#lbBottomContainer { 
+	background-color: #fff;
+}
+
+.lbLoading {
+	background: #fff url(/Skins/Gabarit1/Img/Slimbox/loading.gif) no-repeat center;
+}
+
+#lbImage {
+	position: absolute;
+	left: 0;
+	top: 0;
+	background-repeat: no-repeat;
+	z-index:11;
+}
+
+#lbPrevLink, #lbNextLink {
+	display: block;
+	position: absolute;
+	top: 0;
+	width: 50%;
+	outline: none;
+}
+
+#lbPrevLink {
+	left: 0;
+}
+
+#lbPrevLink:hover {
+	background: transparent url(/Skins/Gabarit1/Img/Slimbox/prevlabel.gif) no-repeat 0% 15%;
+}
+
+#lbNextLink {
+	right: 0;
+}
+
+#lbNextLink:hover {
+	background: transparent url(/Skins/Gabarit1/Img/Slimbox/nextlabel.gif) no-repeat 100% 15%;
+}
+
+#lbBottom {
+	font-family: Verdana, Arial, Geneva, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #ffffff;
+	line-height: 1.4em;
+	text-align: left;
+}
+
+#lbCloseLink {
+	display: block;
+	float: right;
+	width: 86px;
+	height: 22px;
+	background: transparent url(/Skins/Gabarit1/Img/Slimbox/closelabel.gif) no-repeat center;
+	margin-right:10px;
+}
+
+#lbCaption, #lbNumber {
+	padding-top: 4px;
+	margin-left:20px;
+	margin-right: 20px;
+}
+
+#lbCaption {
+	font-weight: bold;
+}
+

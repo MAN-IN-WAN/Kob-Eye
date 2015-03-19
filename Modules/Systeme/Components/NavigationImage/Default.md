@@ -1,0 +1,22 @@
+[SWITCH [!TYPEMENU!]|=]
+	[CASE MenuBas]
+		[!Requete:=!]
+		[!Requete+=MenuBas=1&Affiche=1!]
+	[/CASE]
+	[CASE MenuHaut]
+		[!Requete:=!]
+		[!Requete+=MenuHaut=1&Affiche=1!]
+	[/CASE]
+	[DEFAULT]
+		[!Requete:=!]
+		[!Requete+=MenuPrincipal=1&Affiche=1!]
+	[/DEFAULT]
+[/SWITCH]
+<div class="BlocNavigation">
+	[STORPROC [!Systeme::Menus!]/[!Requete!]|Men1]
+		[STORPROC Systeme/Menu/[!Men1::Id!]/Donnee/Type=Image|Img]
+			[!Visuel:=[!Img::Lien!]!]
+		[/STORPROC]
+		<a href="[IF [!Men1::Url!]~http][ELSE]/[/IF][!Men1::Url!]" [IF [!Men::Url!]~http]target="_blank"[/IF] class="boutonMenu [IF [!Systeme::CurrentMenu::Url!]=[!Men1::Url!]]boutonMenucurrent[/IF]" style="[IF [!Visuel!]!=]background-image:url('[!Domaine!]/[!Visuel!]');background-repeat: no-repeat ;[/IF]" >[!M::Titre!]</a>
+	[/STORPROC]
+</div>

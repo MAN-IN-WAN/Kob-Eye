@@ -1,0 +1,45 @@
+[HEADER]
+<!--[if IE 7]>
+	 <link rel="stylesheet" type="text/css" href="/Skins/Areva/Css/ie7.css">
+<![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/js.js[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Css/style-user.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Css/creationcompte.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Css/user.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Css/style-commande.css[/HEADER]
+
+[MODULE Boutique/Produit/MajPanier]
+[MODULE Systeme/Structure/Meta]
+<div id="Site">
+	<div class="container-fluid">
+		<div id="Header" class="row-fluid">
+			[MODULE Systeme/Menu/MenuHaut]
+		</div>
+		<div class="separator"></div>
+		[COMPONENT Systeme/FilAriane/Default?]
+		<div id="Inner">
+			[DATA]
+		</div>
+		<div class="separator"></div>
+		<div id="Footer">
+			[MODULE Systeme/Menu/MenuBas]
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+ 	$("#slider4").responsiveSlides({
+        auto: false,
+        pager: false,
+        nav: true,
+        speed: 500,
+        namespace: "callbacks",
+        before: function () {
+          $('.events').append("<li>before event fired.</li>");
+        },
+        after: function () {
+          $('.events').append("<li>after event fired.</li>");
+        }
+      });
+</script> 

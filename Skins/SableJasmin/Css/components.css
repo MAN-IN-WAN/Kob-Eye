@@ -1,0 +1,874 @@
+/*-- Bordures pour bloc de l'accueil -*/
+.BlocTop {
+   	height:10px;
+	background: url("../Img/sprite_bas.png") no-repeat scroll -1px -2071px transparent;
+}
+
+.BlocBottom {
+   	height:10px;
+	background: url("../Img/sprite_bas.png") no-repeat scroll -1px -2132px transparent;
+}
+.BlocLine {
+    	background: url("../Img/accueil-centre.png") repeat-y 1px 0;
+  	padding:5px 10px 5px 10px;
+
+}
+div.Left div.EntoureComposant { 
+    border-bottom: 1px dotted #01ACCF;
+    margin: 9px 15px 0 5px;
+    padding-bottom: 5px;
+}
+/*--- Composant Recherche ---*/
+
+#Recherche {
+ padding: 0 1px;
+}
+#Recherche select {
+	border:1px solid #01accf;
+	height:16px;
+	width:auto;
+	font-size:11px;
+	background-color:#ffffff;
+	color:#4d4d4d;
+}
+#Recherche input {
+	border:1px solid #01accf;
+	height:12px;
+	width:auto;
+	font-size:11px;
+}
+
+input#submitRecherche {
+	background: url("../Img/sprite.png") no-repeat scroll 2px -697px transparent;
+    	margin-left: 25px;
+    	width: 30px;
+	height:12px;
+	border:none;
+	color:#ffffff;
+
+}
+input#submitRecherche:hover {
+	background-position:2px -737px;
+
+}
+div#Recherche div.LigneForm input#submitRecherche {
+	margin-left: 25px;
+	width: 30px;
+	height: 18px;
+}
+
+/*--- Composant CategorieUne ---*/
+.BlocUneCategories {
+	position:relative;
+	overflow:hidden;
+}
+
+.toutesAccueil {
+	padding:10px 0;
+	overflow:hidden; 
+	border-top:1px dotted #01accf;
+	border-bottom:1px dotted #01accf;
+}
+.BlocCateg {
+	float:left;
+	position:relative;
+	display:block;
+   	width: 50%;
+}
+.CategorieUne {
+	overflow:hidden;
+}
+
+.BlocDroite .CategorieUne{
+	border-bottom:1px dotted #01accf;
+	padding:10px 0 10px 30px;
+
+}
+.BlocGauche .CategorieUne{
+	border-bottom:1px dotted #01accf;
+	border-right:1px dotted #01accf;
+	padding:10px 30px 10px 0;
+}
+
+.LigneLast .CategorieUne{
+	border-bottom:none;
+
+}
+
+
+h1.BandeauTitreBlocUneCategorie {
+	border-bottom:1px dotted #01accf;
+	overflow:hidden;
+	margin: 0 10px;
+    	padding: 10px 0;
+}
+.TitreBlocUneCategorie {
+	background: url("../Img/sprite.png") no-repeat scroll 325px -1250px transparent;
+    	border-bottom: 1px solid #01accf;
+    	color: #01accf;
+    	display: inline-block;
+    	font-size: 18px;
+    	padding-top: 10px;
+    	padding-right: 40px;
+    	text-transform: uppercase;
+  	margin: 0 0 14px 0;
+}
+
+.CategorieContenuUne {
+	overflow:hidden;
+}
+
+.CategorieUne h2 {
+	background: url("../Img/sprite.png") no-repeat scroll 0 -1304px transparent;
+	height: 39px;
+	position:relative;
+
+}
+.ImageCategorieUne {
+	float:right;
+	margin-right:7px;
+	padding-left:8px;
+}
+.DescCategorieAccueil {
+	margin-right:170px;
+	width:auto;
+	color: #01ACCF;
+    	font-size: 12px;
+    	text-align: justify;
+	padding-top: 10px;
+}
+
+
+
+a.LienCategorieUne {
+    color: #FFFFFF;
+    right: 14px;
+    top: 5px;
+    position:absolute;
+    text-align: right;
+    font-size:14px;
+    font-variant:small-caps;
+}
+
+
+a.LienCategorieDetail {
+    	color: #FFFFFF;
+    	right: 39px;
+    	top: 5px;
+    	position:absolute;
+    	text-align: right;
+    	font-size:10px;
+    	text-transform:uppercase;
+	text-decoration:none;
+}
+
+
+a:hover.LienCategorieUne  {
+	color:#c4bea0;
+	text-decoration:none;
+}
+
+a.LienCategorieTitreUne {
+	color:#ffffff;
+/*	height:40px;*/
+    	text-transform: none;
+	font-weight:normal;
+	font-size:24px;
+ 	padding-left: 5px;
+	display:block;
+ 	padding-top: 5px;
+
+}
+
+a.LienCategorieTitreUneImg {
+	padding-top: 0;
+ 	background-color:#ff3300;
+	
+}
+
+a:hover.LienCategorieTitreUne  {
+	color:#c4bea0;
+	text-decoration:none;
+}
+
+/*----- composant de mise en avant -----*/
+
+
+
+.MiseEnAvant {
+	position:relative;
+	overflow:hidden;
+	color:#01accf;
+	margin-bottom:8px;
+}
+
+
+.MiseEnAvant .ContenuVisible{
+	margin:auto;
+}
+.MiseEnAvant .TitreBloc  {
+   background: url("../Img/sprite.png") no-repeat scroll 244px -783px transparent;
+    border-bottom: 1px solid #01ACCF;
+    color: #01ACCF;
+    display: inline-block;
+    font-size: 18px;
+    margin: 0 0 20px;
+    padding-top: 10px;
+    padding-right: 70px;
+    text-transform: uppercase;
+}
+.MiseEnAvant .Desc{ border-bottom:1px dotted #01accf; }
+.MiseEnAvant  .NomMea { display:block; height:38px;color: #01ACCF;border-right:1px dotted #01accf;}
+.MiseEnAvant .Accroche { margin-right: 80px;font-size:11px;}
+.MiseEnAvant .Prix { 
+	width:70px; padding: 2px 0 8px 5px; font-weight:bold;font-size:18px;float:right; text-align: right; display:block;position:relative; 
+}
+.MiseEnAvant .apartirde {
+	font-style:italic;
+	font-size:11px;
+	color:#01accf;
+	text-align:right;
+	font-weight:normal;
+}
+
+.MiseEnAvant .achat {
+	display:none;
+	height:0;
+	
+}
+.MiseEnAvant .pagination {width:auto;}
+.MiseEnAvant .pagination .precedent {
+    	background: url("../Img/sprite.png") no-repeat scroll 0 -885px transparent;
+    	border: medium none;
+    	height: 95px;
+    	left: 36px;
+    	position: absolute;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+    	top: 107px;
+    	z-index: 400;
+	width:42px;
+
+}
+.MiseEnAvant .pagination .suivant {
+	background: url("../Img/sprite.png") no-repeat scroll 0 -1073px transparent;
+	border: medium none;
+	height: 114px;
+	position: absolute;
+	right: 39px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+	top: 86px;
+	width: 42px;
+	z-index: 400;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+}
+/*----- composant de Id Cadeau -----*/
+.IdKdo {
+	position:relative;
+	overflow:hidden;
+	color:#01accf;
+	margin-bottom:5px;
+
+}
+.IdKdo .ContenuVisible {
+	margin:auto auto auto 1px;
+}
+.IdKdo .TitreBloc  {
+   	background: url("../Img/sprite_bas.png") no-repeat scroll -743px -431px #B9E8F2;
+	color: #01ACCF;
+    	font-size: 15px;
+    	font-weight: bold;
+    	height: 25px;
+    	/*margin: 9px 15px 0 5px;*/
+
+    	padding: 5px 0 0 35px;
+    	text-transform: uppercase;
+}
+.IdKdo .Desc{  display:block;z-index:100; }
+.IdKdo .AfficheInfo{  display:block;z-index:100; }
+
+
+/*.IdKdo .Accroche { 
+ 	color: #4D4D4D;
+    	display: block;
+    	left: 127px;
+    	margin-right: 100px;
+    	overflow: hidden;
+    	padding-right: 30px;
+    	position: absolute;
+    	right: -113px;
+    	top: 28px;
+	width:200px;
+    	z-index: 10;
+	font-size:10px;
+}*/
+
+.IdKdo .Accroche {
+    color: #4D4D4D;
+    display: block;
+    font-size: 10px;
+    left: 124px;
+    margin-right: 100px;
+    overflow: hidden;
+    padding-right: 30px;
+    position: absolute;
+    right: -113px;
+    top: 27px;
+    z-index: 10;
+}
+.IdKdo .NomMea { 
+	text-align:left;position:absolute;top:5px;left:5px;font-size:12px;
+	text-transform:uppercase;color: #01ACCF;font-weight:bold;
+}
+.IdKdo .Prix { 
+    background: url("../Img/sprite_bas.png") no-repeat scroll -828px -1082px transparent;
+    color: #FFFFFF;
+    font-family: arial;
+    font-size: 20px;
+    font-weight: bold;
+    height: 25px;
+    left: 90px;
+    margin-left: 40px;
+    padding-left: 30px;
+    padding-top: 20px;
+    position: absolute;
+    right: 30px;
+    top: 107px;
+    width: 80px;
+    z-index: 300;
+
+}
+.IdKdo  img {
+	padding: 30px 0 0;
+
+}
+
+
+.IdKdo .pagination {
+	position:relative;
+	display:block;
+	overflow:hidden;
+	height:30px;
+	z-index:400;
+}
+.IdKdo .pagination .precedent {
+	float:left;
+    	background: url("../Img/sprite_bas.png") no-repeat scroll 3px -685px transparent;    	
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+	border:none;
+	width:50%;
+	z-index:400;
+	height:50px;
+	display:block;
+
+}
+.IdKdo .pagination .suivant {
+	float:right;
+ 	background: url("../Img/sprite_bas.png") no-repeat scroll 55px -719px transparent;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+	border:none;
+	width:50%;
+	z-index:400;
+	height:50px;
+	display:block;
+}
+
+.IdKdo .achat {
+    	background-color: #B9E8F2;
+    	color: #01ACCF;
+    	font-size: 11px;
+    	height: 30px;
+	position:absolute;
+	top:180px;
+	width: 100%;
+}
+.IdKdo .achat a {
+	text-decoration:none;
+}
+
+.IdKdo .achat .voirfiche {
+   	background: url("../Img/sprite.png") repeat-x scroll 100px -214px transparent;
+    	display: block;
+	position:relative;
+    	float: left;
+    	padding-top: 3px;
+    	width: 46%;
+}
+
+.IdKdo .achat .ajoutpanier {
+    	float: right;
+	position:relative;
+   	border: medium none;
+    	display: block;
+     	padding-top: 3px;
+   	width: 50%;
+}
+
+
+.IdKdo .achat .voirfiche a {
+  background: url("../Img/sprite_bas.png") no-repeat scroll 0 -758px transparent;
+    border: medium none;
+    display: block;
+    height: 25px;
+    padding-left: 20px;
+    padding-top: 5px;
+}
+
+
+.IdKdo .achat .ajoutpanier a {
+     background: url("../Img/sprite_bas.png") no-repeat scroll 5px -433px transparent;
+    display: block;
+    height: 29px;
+    padding-left: 22px;
+    padding-right: 5px;
+    padding-top: 4px;
+    text-align: right;
+}
+
+.IdKdo .achat .ajoutpanier input {
+    	background: url("../Img/sprite_bas.png") no-repeat scroll 5px -433px transparent;
+    	border: medium none;
+    	color: #01ACCF;
+    	cursor: pointer;
+    	display: block;
+    	font-size: 11px;
+    	height: 23px;
+    	padding-left: 25px;
+    	padding-right: 5px;
+    	text-align: right;
+}
+
+
+/*----- composant de Coup Coeur-----*/
+.CoupCoeur {
+	position:relative;
+	overflow:hidden;
+	color:#01accf;
+	padding-bottom:30px;
+
+}
+.CoupCoeur .TitreBloc  {
+   	background: url("../Img/sprite_bas.png") no-repeat scroll -650px -794px #B9E8F2;
+	color: #01ACCF;
+    	font-size: 15px;
+    	font-weight: bold;
+    	height: 25px;
+    	/*margin: 9px 15px 0 5px;*/
+
+    	padding: 5px 0 0 35px;
+    	text-transform: uppercase;
+}
+
+.CoupCoeur .NomMea { display:block; border-bottom:1px dotted #01accf; overflow: hidden;height:38px;}
+.CoupCoeur .Accroche { text-align:left;position:absolute;top:10px;left:10px;font-size:12px;}
+.CoupCoeur .Prix { 
+	width:70px; padding: 8px 0 8px 5px; font-weight:bold;font-size:18px;float:right; text-align: right; display:block;position:relative; border-left:1px dotted #01accf;
+}
+
+
+/* --- Composant Panier Colonne ----*/
+.EntetePanier {
+   	background: url("../Img/sprite_bas.png") no-repeat scroll 4px -430px #B9E8F2;
+    	color: #01ACCF;
+    	font-size: 15px;
+    	font-weight: bold;
+    	height: 25px;
+	/*margin: 9px 15px 0 5px;*/
+    	padding: 5px 0 0 35px;
+    	text-transform: uppercase;
+}
+.ContenuComposantPanier {
+	 padding: 0 20px 0 10px;
+}
+
+table.Panier {
+	width:100%;
+	font-size:10px;
+}
+
+table.Panier th , table.tCommande td {
+	font-size:10px;
+	text-transform: uppercase;
+	color: #01ACCF;
+	border-right:1px dotted #01accf;
+	text-align:center;
+	font-weight:normal;
+}
+table.Panier td {
+	text-transform: none;
+	text-align:left;
+}
+
+div.Left table.Panier a {
+	color: #4D4D4D;
+}
+table.Panier div.ValiderCommande a,div.ValiderCommande a{
+	color: #01ACCF;
+   	cursor: pointer;
+	font-size:10px;
+	height:15px;
+	margin:2px 8px;
+}
+
+div.Left table.Panier tr.justAdded td, table.Panier tr.justAdded a {
+	color: #01ACCF;
+}
+
+div.Left table.Panier td {
+	border-right: 1px dotted #01ACCF;
+}
+
+div.Left table.Panier td.SupprimerItem {
+	border-right: none;
+}
+
+tr.panierentete th { border-bottom:1px solid #01accf;}
+tr.panierligne { border:none;}
+
+table.Panier th.NomProduit { width:99px;text-align:left;}
+table.Panier th.Quantite , table.Panier td.Quantite  { width:29px;text-align:center}
+table.Panier th.TotalTTC  , table.Panier td.TotalTTC { width:59px;text-align:center}
+table.Panier th.SupprimerItem { width:20px;border-right:none;}
+
+div.CommandeEtape1 table.Panier td.Quantite  { text-align:right;}
+div.CommandeEtape1 table.Panier td.TotalTTC  { text-align:right;}
+div.CommandeEtape1 table.Panier td.NomProduit a {color:#000000; }
+
+
+table.Panier td.SupprimerItem  { 
+	border-right:none;text-align:center;
+	border:none;
+}
+
+a.SupprimerItemPanier { 
+	background: url("../Img/sprite_bas.png") no-repeat scroll 6px -550px ;
+	height:22px;width:20px;
+	display:block;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+}
+
+
+
+.ActionsPanier {
+	display:block;overflow:hidden;margin-right: -3px;margin-top:3px;
+}
+
+div.ValiderCommande, div.ModifierCommande, div.ViderPanier {
+	text-align: right;
+	padding-top: 5px;
+  	padding:4px 18px 0 15px;
+}
+
+div.ValiderCommande input,div.ModifierCommande input, div.ViderPanier input {
+ 	border: none;
+	color: #01ACCF;
+   	cursor: pointer;
+	font-size:10px;
+	height:15px;
+	background: none;
+}
+
+div.ValiderCommande input:hover, div.ModifierCommande input:hover, div.ViderPanier input:hover {
+	text-decoration: underline;
+}
+
+div.ValiderCommande {
+ 	background: url("../Img/sprite_bas.png") no-repeat scroll 189px -570px  ;
+}
+
+div.ModifierCommande {
+ 	background: url("../Img/sprite_bas.png") no-repeat scroll 189px -595px ;
+}
+
+div.ViderPanier {
+ 	background: url("../Img/sprite_bas.png") no-repeat scroll 189px -618px ;
+}
+/* --- Composant BlocLien----*/
+
+
+
+.Promotions {
+	display:block;overflow:hidden;
+}
+.Promotions .EnteteBlocLien {
+   	background: url("../Img/sprite_bas.png") no-repeat scroll -243px -431px #B9E8F2;
+    	color: #01ACCF;
+    	font-size: 15px;
+    	font-weight: bold;
+    	height: 25px;
+    	padding: 5px 0 0 35px;
+    	text-transform: uppercase;
+}
+
+.Promotions .ContenuComposantBlocLien {
+	color: #4d4d4d;
+}.Promotions a.BlocLien {
+    background: url("../Img/sprite_bas.png") no-repeat scroll 36px -647px transparent;
+    color: #4D4D4D;
+    float: left;
+    font-weight: bold;
+    padding-left: 53px;
+    padding-top: 8px;
+}
+
+.Promotions .finbloclien { border-bottom:1px dotted #01accf;}
+
+.CoupCoeur .EnteteBlocLien {
+   	background: url("../Img/sprite_bas.png") no-repeat scroll -497px -431px #B9E8F2;
+    	color: #01ACCF;
+    	font-size: 15px;
+    	font-weight: bold;
+    	height: 25px;
+    	/*margin: 9px 15px 0 5px;*/
+
+    	padding: 5px 0 0 35px;
+    	text-transform: uppercase;
+}
+.CoupCoeur .ContenuComposantBlocLien {
+	color: #4d4d4d;
+}
+.CoupCoeur a.BlocLien {
+    background: url("../Img/sprite_bas.png") no-repeat scroll 36px -647px transparent;
+    color: #4D4D4D;
+    float: left;
+    font-weight: bold;
+    padding-left: 53px;
+    padding-top: 8px;
+}
+
+.Astucesdeco {
+	display:block;overflow:hidden;
+}
+.Astucesdeco .EnteteBlocLien {
+   	background: url("../Img/sprite_bas.png") no-repeat scroll -497px -431px #B9E8F2;
+    	color: #01ACCF;
+    	font-size: 15px;
+    	font-weight: bold;
+    	height: 25px;
+    	/*margin: 9px 15px 0 5px;*/
+
+    	padding: 5px 0 0 35px;
+    	text-transform: uppercase;
+}
+.Astucesdeco .ContenuComposantBlocLien {
+	color: #4d4d4d;
+}
+.Astucesdeco a.BlocLien {
+  	background: url("../Img/sprite_bas.png") no-repeat scroll 36px -654px transparent;
+    	color: #4D4D4D;
+    	float: left;
+    	padding-left:53px;
+}
+
+/* --- Composant Navigation----*/
+.Navigation {
+	display:block;overflow:hidden;
+}
+.Navigation .EnteteNavigation {
+   	background: url("../Img/sprite_bas.png") no-repeat scroll 8px -480px #B9E8F2;
+    	color: #01ACCF;
+    	font-size: 15px;
+    	font-weight: bold;
+    	height: 25px;
+    	/*margin: 9px 15px 0 5px;*/
+
+    	padding: 5px 0 0 35px;
+    	text-transform: uppercase;
+}
+
+.Navigation .ContenuComposantNavigation {
+	color: #4d4d4d;
+}
+/*.Navigation .ContenuComposantNavigation a {
+  	background: url("../Img/sprite.png") no-repeat scroll 48px -3150px transparent;
+    	color: #4D4D4D;
+    	padding-left:65px;
+	display:block;
+
+}*/
+.Navigation .ContenuComposantNavigation a {
+    background: url("../Img/sprite_bas.png") no-repeat scroll 36px -648px transparent;
+    color: #4D4D4D;
+    display: block;
+    font-weight: bold;
+    padding: 8px 0 0 53px;
+}
+
+/*--- composant Contact --*/
+.CpContact {
+	display:block;
+	position:relative;
+	overflow:hidden;
+	margin:20px 20px 40px 20px;
+	border:1px solid #c4bea0;
+}
+
+.CpContact form {
+	padding:20px;
+
+}
+.CpContact h1 {
+	font-weight:bold;
+	font-size:14px;
+	text-transform:uppercase;
+	color:#01accf;
+	margin-bottom:10px;
+	padding-bottom:10px;
+}
+
+.CpContact .Obligatoire { color:#01accf;}
+
+
+.CpContact  h2 {
+	font-weight:bold;
+	font-size:14px;
+	text-transform:uppercase;
+	color:#c4bea0;
+
+}
+.CpContact span.petittexte {
+	font-weight:bold;
+	font-size:11px;
+	font-style:italic;
+	color:#c4bea0;
+
+}
+
+.CpContact .LigneForm  {
+  	margin: 10px;
+	position:relative;
+	overflow:hidden;
+}
+
+.CpContact  label {
+	width:175px;
+
+}
+.CpContact input {
+	border:1px solid #c4bea0;
+	height:10px;
+	margin-left:10px;
+	float:right;
+	width:400px;
+	font-size:10px;
+}
+
+.CpContact  select {
+	border:1px solid #c4bea0;
+	height:20px;
+	margin-left:10px;
+	float:right;
+	width:402px;
+	font-size:11px;
+}
+.CpContact  textarea {
+	border:1px solid #c4bea0;
+	margin-left:10px;
+	float:right;
+	width:400px;
+	font-size:11px;
+}
+
+.CpContact .BoutonsCentre {
+	display:block;
+	position:relative;
+	padding-top:30px;
+
+}
+
+input.ValiderCpContact  {
+   	background: url("../Img/sprite_bas.png") no-repeat scroll 0 -1774px transparent;
+    	border: medium none;
+    	display: block;
+    	float: right;
+    	height: 38px;
+    	line-height: 0;
+    	text-indent: -999px;
+    	width: 104px;
+}
+
+input.ValiderCpContact:hover {
+	background-position:0 -1811px;
+}
+
+/*-------------- Block "Flash" ------------*/
+
+
+div#BlockFlashEtiquette {
+	background: url('../Img/sprite.png') no-repeat 0 -433px;
+}
+
+div.BlockFlashNumber {
+	background: url('../Img/sprite.png') no-repeat 0 -737px;
+}
+
+div.BlockFlashNumberActive {
+	background: url('../Img/sprite.png') no-repeat 0 -697px;
+}
+
+div#BlockFlashLegende {
+	background: url('../Img/legende_bg.png') repeat;
+}
+
+
+/*--- Sitemap ---*/
+.sitemap {
+	display:block;
+	overflow:hidden;
+	margin: 0 0 40px 20px;
+	position:relative;
+	height:auto;
+}
+
+/*----------Newsletter ------*/
+.NewsletterDesabo {
+	padding:5px; 
+	font-size: 12px;
+	font-family:Arial;
+	color:#4d4d4d;
+}
+.NewsletterDesabo input {width:200px;}
+.NewsletterDesabo input.ValiderNewsletterDesabo  {
+   	background: url("../Img/sprite_bas.png") no-repeat scroll 0 -1777px transparent;
+    	border: medium none;
+    	display: block;
+    	float: left;
+    	height: 35px;
+    	line-height: 0;
+    	text-indent: -999px;
+    	width: 104px;
+}
+
+.NewsletterDesabo input.ValiderNewsletterDesabo:hover {
+	background-position:0 -1812px;
+}
+
+.NewsletterDesabo .BlocError {
+	border:1px solid #01B5D2;
+	padding:5px;
+	font-size:11px;
+	font-style:italic;
+	background-color:#FFBEBE;
+	color:#01B5D2;
+	padding:10px;
+	margin: 20px;
+}
+
+.NewsletterDesabo .BlocError ul {
+	list-style:none;
+}
+.NewsletterDesabo.Error {
+	padding:0;margin:0;
+}
+

@@ -1,0 +1,59 @@
+/* CSS Document */
+	
+.ColorPicker1_positionnement { 
+	float : left ;
+	border : 1px solid #000 ; 
+	margin-right : 4px ; 
+	}
+	
+.ColorPicker1_picker {
+	width : 400px ; 
+	height : 600px ; 
+	border : 1px solid #000 ;
+	padding : 4px ; 
+	margin : 0px ;
+	background-color: #EEE ;
+	}
+	
+.ColorPicker1_palette1 {
+	/*cursor: crosshair;*/
+	}
+	
+.ColorPicker1_palette2 {
+	/*cursor: crosshair;*/
+	}
+		
+.ColorPicker1_selection  {
+	cursor: default;
+	font : bold 13px Arial ; 
+	vertical-align : middle ;
+	text-align : center ;
+	color : #000 ;
+	text-decoration : none ;
+	line-height : 24px ;
+ 	width : 27px ; 
+	height : 24px ;  
+	float : left ; 
+ 	margin : 0px ; 
+	padding : 0px ; 
+	}
+	
+.ColorPicker1_couleur_HEX {
+	cursor: default;
+	font : normal 12px Verdana, Sans-Serif ; 
+	margin-bottom : 4px ;
+	}
+
+a.ColorPicker1_bouton  {
+	width : 60px ; 
+	height : 17px ; 
+	display : block ;
+	background-color : #BBB ;
+	font : bold 12px Verdana, Sans-Serif ; 
+	color : #000 ;
+	line-height : 17px ;
+	text-decoration : none ;
+	vertical-align : middle ;
+	text-align : center
+	}
+

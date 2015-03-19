@@ -1,0 +1,104 @@
+body {
+	margin: 0px;
+	padding: 0px;
+	font-family: sans-serif;
+	color: #444;
+    background-color: #696969;
+    background-image: url(/Skins/LoginV3/Js/dojotoolkit/lucid/resources/themes/Minuit/wallpaper.png);
+	background-position: center center;
+}
+a {
+	color: #777;
+}
+
+.mainBox a {
+    font-size: 8pt;
+}
+
+#centerForm {
+	z-index: 100;
+	width: 350px;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	margin-top: 13%;
+	opacity: 0.75;
+}
+.desktop_message {
+	font-size: 14pt;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+.mainBox {
+	text-align: center;
+	background-color: white;
+	margin: 0px;
+}
+#top, #bottom {
+	width: 100%;
+	position: relative;
+	height: 20px;
+}
+.centerEdge {
+	position: absolute;
+	width: 310px;
+	height: 20px;
+	top: 0px;
+	left: 20px;
+	background-color: white;
+}
+#tr, #tl, #br, #bl {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	top: 0px;
+}
+#tr {
+	right: 0px;
+	background-image: url('/Skins/LoginV3/Img/tr.png');
+}
+#tl {
+	left: 0px;
+	background-image: url('/Skins/LoginV3/Img/tl.png');
+}
+#br {
+	right: 0px;
+	background-image: url('/Skins/LoginV3/Img/br.png');
+}
+#bl {
+	left: 0px;
+	background-image: url('/Skins/LoginV3/Img/bl.png');
+}
+
+#plink {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    color: #bbb;
+    z-index: 500;
+    text-decoration: none;
+}
+#plink:hover {
+    color: #ddd;
+}
+
+.desktopInputLabel {
+    display: block;
+    font-size: 8pt;
+    margin-left: 25px;
+    text-align: left;
+}
+
+.dijitTextBox {
+    display: block;
+    width: 300px !important;
+    margin-left: 25px !important;
+    font-size: 18pt !important;
+    margin-bottom: 5px !important;
+}
+
+.dijitRadio {
+    margin-bottom: 5px !important;
+    margin-top: 5px !important;
+}
+

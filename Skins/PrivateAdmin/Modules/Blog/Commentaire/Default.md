@@ -1,0 +1,6 @@
+[INFO [!Query!]|I]
+[IF [!I::TypeSearch!]=Child]
+	[MODULE [!Query!]/List]
+[ELSE]
+	[MODULE [!Query!]/Fiche]
+[/IF]

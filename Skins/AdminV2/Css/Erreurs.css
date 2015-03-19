@@ -1,0 +1,15 @@
+#errors{
+	display:block;
+	background-color:#ff0000;
+	color:white;
+	font-size:13px;
+	padding:5px;
+	border:5px solid white;
+}
+#errors h3{
+	margin:0;
+	padding:0;
+}
+#errors ul li{
+	list-style-type:disc;
+}

@@ -1,0 +1,154 @@
+{"form":{"type":"VBox","id":"StockLogistique/Tournee","label":"Feuille de Route","labelPrefix":"FDR:",
+"percentWidth":100,"percentHeight":100,"setStyle":{"paddingTop":0,"paddingLeft":5,"paddingRight":5},
+"kobeyeClass":{"module":"StockLogistique","objectClass":"Tournee"},"localProxy":1,"focusedID":"reference",
+"components":[
+	{"type":"MenuTab","id":"menuList", "menuItems":[
+		{"label":"$__File__$", "children":[
+			{"label":"$__Save__$", "icon":"save", "data":"save"},
+			{"type":"vseparator"},
+			{"label":"$__Save & Close__$", "icon":"save", "data":"saveClose"},
+			{"type":"vseparator"},
+			{"label":"Direction", "data":"map"}
+		]}
+	]},
+	{"type":"Box","percentWidth":100,"percentHeight":100,"setStyle":{"paddingTop":0}, 
+	"components":[
+		{"type":"EditContainer","id":"edit","percentWidth":100,"percentHeight":100,
+		"components":[
+			{"type":"VGroup","percentWidth":100,"percentHeight":100,
+			"components":[
+				{"type":"TitledBorderBox","title":"Feuille de Route",
+				"components":[
+					{"type":"Group","percentWidth":100,"layout":{"type":"HorizontalLayout","verticalAlign":"baseline","gap":4,"paddingLeft":6,"paddingRight":0,"paddingTop":0,"paddingBottom":4},
+					"components":[
+						{"type":"Label","text":"Référence"},
+						{"type":"TextInput","dataField":"Reference","width":50,"formLabel":1,"editable":0},
+						{"type":"Spacer","width":4},
+						{"type":"Label","text":"Date"},
+						{"type":"DateField","dataField":"Date","defaultValue":"Now"},
+						{"type":"Spacer","width":4},
+						{"type":"Label","text":"Effectué"},
+						{"type":"CheckBox","dataField":"Effectue"},
+						{"type":"Spacer","width":4},
+						{"type":"Label","text":"Chauffeur"},
+						{"type":"ComboBox","dataField":"ChauffeurId","width":200,"requireSelection":1,
+						"kobeyeClass":{"module":"Repertoire","objectClass":"Tiers","identifier":"Id","label":"Intitule","filter":"Livreur=1"},
+						"actions":[
+							{"type":"init","action":"loadData"}
+						]},
+						{"type":"Spacer","width":4},
+						{"type":"Label","text":"Véhicule"},
+						{"type":"ComboBox","dataField":"VehiculeId","width":200,"requireSelection":1,
+						"kobeyeClass":{"module":"StockLogistique","objectClass":"Vehicule","identifier":"Id","label":"Designation"},
+						"actions":[
+							{"type":"init","action":"loadData"}
+						]}
+					]}
+				]},
+				{"type":"HGroup","percentHeight":100,
+				"components":[
+					{"type":"VGroup","percentHeight":100,
+					"components":[
+						{"type":"AdvancedDataGrid","dataField":"livraison","id":"livraison","updatedItems":1,
+						"width":625,"percentHeight":100,"rowHeight":20,"variableRowHeight":1, 
+						"kobeyeClass":{"module":"StockLogistique","objectClass":"BLTete"},"hierarchical":1,
+						"events":[
+							{"type":"start", "action":"invoke","method":"callMethod",
+							"params":{"method":"object","data":{"module":"StockLogistique","objectClass":"BLTete"},
+							"function":"GetLivraison","args":[{"value":[2,"L"]}]}},
+							{"type":"dblclick","action":"invoke","objectID":"rightLiv","method":"move"}
+						],
+						"columns":[
+							{"type":"column","dataField":"DateLR","headerText":"Livraison","format":"date","width":85,"setStyle":{"paddingLeft":1,"paddingRight":1}},
+							{"type":"column","dataField":"Prepare","headerText":"P","format":"boolean","width":20,"setStyle":{"paddingLeft":0,"paddingRight":1}},
+							{"type":"column","dataField":"LivraisonId","headerText":"Magasin","width":150,"setStyle":{"paddingLeft":1,"paddingRight":1}},
+							{"type":"column","dataField":"CodPostal","headerText":"CP","width":40,"setStyle":{"paddingLeft":1,"paddingRight":1}},
+							{"type":"column","dataField":"Ville","headerText":"Ville","width":100,"setStyle":{"paddingLeft":1,"paddingRight":1}},
+							{"type":"column","dataField":"ClientId","headerText":"Client","width":120,"setStyle":{"paddingLeft":1,"paddingRight":1}},
+							{"type":"column","dataField":"Famille","headerText":"Famille","width":80,"setStyle":{"paddingLeft":1,"paddingRight":1}},
+							{"type":"column","dataField":"Quantite","headerText":"Qté","width":30,"format":"int","setStyle":{"paddingLeft":1,"paddingRight":1}},
+							{"type":"column","dataField":"Id","visible":0},
+							{"type":"column","width":0}
+						]},
+						{"type":"AdvancedDataGrid","dataField":"reprise","id":"reprise","updatedItems":1,
+						"width":625,"percentHeight":100,"rowHeight":20,"variableRowHeight":1, 
+						"kobeyeClass":{"module":"StockLogistique","objectClass":"BLTete"},"hierarchical":1,
+						"events":[
+							{"type":"start", "action":"invoke","method":"callMethod",
+							"params":{"method":"object","data":{"module":"StockLogistique","objectClass":"BLTete"},
+							"function":"GetLivraison","args":[{"value":[3,"R"]}]}},
+							{"type":"dblclick","action":"invoke","objectID":"rightRep","method":"move"}
+						],
+						"columns":[
+							{"type":"column","dataField":"DateLR","headerText":"Reprise","format":"date","width":85,"setStyle":{"paddingLeft":1,"paddingRight":1}},
+							{"type":"column","dataField":"LivraisonId","headerText":"Magasin","width":150,"setStyle":{"paddingLeft":1,"paddingRight":1}},
+							{"type":"column","dataField":"CodPostal","headerText":"CP","width":40,"setStyle":{"paddingLeft":1,"paddingRight":1}},
+							{"type":"column","dataField":"Ville","headerText":"Ville","width":100,"setStyle":{"paddingLeft":1,"paddingRight":1}},
+							{"type":"column","dataField":"ClientId","headerText":"Client","width":120,"setStyle":{"paddingLeft":1,"paddingRight":1}},
+							{"type":"column","dataField":"Famille","headerText":"Famille","width":80,"setStyle":{"paddingLeft":1,"paddingRight":1}},
+							{"type":"column","dataField":"Quantite","headerText":"Qté","width":30,"format":"int","setStyle":{"paddingLeft":1,"paddingRight":1}},
+							{"type":"column","dataField":"Id","visible":0},
+							{"type":"column","width":0}
+						]}
+					]},
+					{"type":"VGroup","width":22,"percentHeight":100,"setStyle":{"paddingLeft":1,"paddingRight":1},
+					"components":[
+						{"type":"MoveItemButton","label":">","width":20,"id":"rightLiv","visible":0,"params":{"origineID":"livraison","filtered":1,"destinations":[{"id":"tournee","filter":"Type","value":"L"}]}},
+						{"type":"MoveItemButton","label":">","width":20,"id":"rightRep","visible":0,"params":{"origineID":"reprise","filtered":1,"destinations":[{"id":"tournee","filter":"Type","value":"R"}]}},
+						{"type":"MoveItemButton","label":"<","width":20,"id":"left","visible":0,"params":{"origineID":"tournee","filtered":1,"destinations":[{"id":"livraison","filter":"Type","value":"L"},{"id":"reprise","filter":"Type","value":"R"}]}},
+						{"type":"Button","label":"^","width":20,"id":"up"},
+						{"type":"Button","label":"v","width":20,"id":"down"}
+					]},
+					{"type":"VGroup","percentHeight":100,
+					"components":[
+						{"type":"AdvancedDataGrid","dataField":"tournee","id":"tournee","updatedItems":0,
+						"width":645,"percentHeight":100,"rowHeight":20,"variableRowHeight":1, 
+						"kobeyeClass":{"dirtyParent":1,"objectClass":"BLTete"},"hierarchical":1,
+						"events":[
+							{"type":"start", "action":"invoke","method":"callMethod",
+							"params":{"method":"object",
+							"function":"GetLivraison","args":[{"value":[4]},{"id":["parentForm"]}]}},
+							{"type":"dblclick","action":"invoke","objectID":"left","method":"move"},
+							{"type":"proxy", "triggers":[
+								{"trigger":"up","action":"invoke","method":"itemUp"},
+								{"trigger":"down","action":"invoke","method":"itemDown"}
+							]}
+						],
+						"columns":[
+							{"type":"column","dataField":"DateLR","headerText":"Date","format":"date","width":85,"setStyle":{"paddingLeft":1,"paddingRight":1}},
+							{"type":"column","dataField":"Type","headerText":"T","width":20,"setStyle":{"paddingLeft":1,"paddingRight":1}},
+							{"type":"column","dataField":"Prepare","headerText":"P","format":"boolean","width":20,"setStyle":{"paddingLeft":0,"paddingRight":1}},
+							{"type":"column","dataField":"LivraisonId","headerText":"Magasin","width":150,"setStyle":{"paddingLeft":1,"paddingRight":1}},
+							{"type":"column","dataField":"CodPostal","headerText":"CP","width":40,"setStyle":{"paddingLeft":1,"paddingRight":1}},
+							{"type":"column","dataField":"Ville","headerText":"Ville","width":100,"setStyle":{"paddingLeft":1,"paddingRight":1}},
+							{"type":"column","dataField":"ClientId","headerText":"Client","width":120,"setStyle":{"paddingLeft":1,"paddingRight":1}},
+							{"type":"column","dataField":"Famille","headerText":"Famille","width":80,"setStyle":{"paddingLeft":1,"paddingRight":1}},
+							{"type":"column","dataField":"Quantite","headerText":"Qté","width":30,"format":"int","setStyle":{"paddingLeft":1,"paddingRight":1}},
+							{"type":"column","dataField":"Id","visible":0},
+							{"type":"column","width":0}
+						]},
+						{"type":"Maps","dataField":"map","width":645,"percentHeight":100,"key":"AIzaSyDSTf45AgPMbU0s2YpwPbasyNnwrjMHI9g",
+						"from":["LOC'ANIM","43.865723,4.444256"]}
+					]},
+					{"type":"Spacer","percentWidth":100}
+				]}
+			]}
+		],
+		"events":[
+			{"type":"start","action":"loadValues","params":{"needsParentId":1}},
+			{"type":"proxy","triggers":[
+				{"trigger":"saveClose","action":"invoke","method":"saveData","params":{"closeForm":1}},
+				{"trigger":"save","action":"invoke","method":"saveData"},
+				{"trigger":"close","action":"invoke","objectID":"parentForm","method":"closeForm"},
+				{"trigger":"cancel","action":"invoke","method":"cancelEdit"},
+				{"trigger":"map","action":"invoke","method":"callMethod","params":{
+				"method":"object","data":{"module":"StockLogistique","objectClass":"Tournee"},
+				"function":"GeoAdresses","args":[{"dataValues":["tournee"]}]}}
+			]}
+		]}
+	]}
+],
+"actions":[
+	{"type":"close","action":"confirmUpdate"}
+]}
+}

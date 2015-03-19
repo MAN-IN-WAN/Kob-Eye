@@ -1,0 +1,223 @@
+div.LigneForm input, div.LigneForm textarea, div.LigneForm select {
+	width: 400px;
+	border: 1px solid #ccc;
+}
+
+div.LigneForm {
+	overflow: hidden;
+	padding: 2px;
+}
+
+div.LigneForm label {
+	display: block;
+	float: left;
+	position: relative;
+	width: 150px;
+	padding-right: 10px;
+}
+
+.BlocError {
+	border: 1px solid #db2484;
+	padding: 5px;
+	font-style: italic;
+	background-color: #FADAEA;
+	color: #db2484;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+
+.Error {
+	border: 1px solid #db2484;
+	background-color: #FADAEA;
+}
+
+.BlocError ul {
+	list-style:none;
+}
+
+
+/*FicheProduit*/
+
+.FicheProduit{
+	margin-top: 10px;
+	position:relative;
+	overflow:hidden;
+	line-height:normal;
+}
+.FicheProduit .Photo {
+	/*width:413px;*/
+	height:335px;
+	margin-right:9px;
+	float:left;
+	border:1px #cccccc solid;
+}
+
+.FicheProduit .PhotoProduit {
+	/*width:413px;*/
+	height:335px;
+	margin-bottom: 28px;
+}
+.FicheProduit h2 {
+	line-height: normal;
+	font-size:18px;
+	text-transform:uppercase;
+}
+.FicheProduit h3 {
+	color: #db2484;
+	line-height:normal;
+	font-size:16px;
+	text-transform:none;
+	font-weight:normal;
+	 margin-left: -6px;
+}
+
+.FicheProduit .pointille{
+	border-bottom: 1px dotted #db2484;
+	padding-bottom: 10px;
+}
+.FicheProduit .fiche_descriptionhaut{
+	margin: 10px 0px;
+	font-size:14px;
+}
+.FicheProduit .DescriptionProduit {
+	float:left;
+	width:288px;
+}
+.FicheProduit .DescriptionProduit .fiche_DescriptionHaut h2{
+	color: #db2484;
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    width: 178px;
+}
+.FicheProduit .DescriptionProduit .fiche_DescriptionHaut h3{
+	font-size:18px;
+	color:#db2484;
+	border-bottom:1px dotted #db2484;
+	padding-bottom:3px;
+	margin-bottom:10px;
+}
+
+.FicheProduit .PromoProduit {
+	font-weight:bold;color:#db2484;font-style:italic; 
+}
+.FicheProduit .BlocFichPrix {
+	font-size:24px;
+	color:#db2484;
+	font-weight:bold;
+	text-align: right;
+}
+
+.FicheProduit .EspaceVente {
+	text-align:right;
+    margin-top: 10px;
+    padding-top: 3px;
+	overflow:hidden;/*width:280px;*/
+}
+.FicheProduit .EspaceVente .GestionQuantite {
+ /*  	width:280px;*/
+   	border-top:1px dotted #db2484;
+   	padding-top: 30px;
+}
+
+.FicheProduit .LibQte{ 
+	color: #DB2484;
+    	float: left;
+    	font-size: 14px;
+    	margin-left: 117px;
+    	margin-top: 2px;
+    	text-align: right;
+}
+
+.FicheProduit  .BoutonPlus,.FicheProduit  .BoutonMoins {
+    display: inline-block;
+    vertical-align: middle;
+    width: auto;
+}
+
+.FicheProduit  .InputBtnPlus { 
+	color:#db2484;border:1px solid #ccc;background:none;
+	width:24px;height:24px;font-weight:bold;
+
+}
+.FicheProduit  .InputBtnMoins{ 
+	color:#db2484;border:1px solid #ccc;background:none;
+	width:24px;height:24px;font-weight:bold;
+}
+.FicheProduit .FichQuantite input#Qte  {
+	width:34px;
+	height:24px;padding-top:2px;
+	border:1px solid #cccccc;
+	text-align:center;
+}
+.FicheProduit #AchatAjouterPanier{ 
+	margin-top:20px;
+}
+.FicheProduit .libelleTtc {
+	color:#db2484;
+	font-size:11px;
+	padding-top:3px;
+}
+.FicheProduit .RetourListe{
+	text-align:right;
+	padding-top:3px;
+}
+.FicheProduit .RetourListe a {
+	background: url("../Img/sprite.png") no-repeat  0 -1282px  ;
+	padding-left:30px;
+	color:#393939;
+	font-size:11px;
+}
+.FicheProduit .BlocFichLigneCaract{
+	text-align:justify;
+	line-height:20px;
+	display:block;
+	font-size:12px;
+	margin: 20px 0px;
+}
+
+.FicheProduit .TitreCaract{
+	color: #DB2484;
+    display: block;
+    font-size: 18px;
+    padding-bottom: 0px;
+}
+.img-thumbnail{
+	border:1px solid #ccc;
+}
+.ColonneCreationCompte .checkleft{
+	display:inline-block;
+	margin-left:10px;
+	padding-left:0px;
+}
+.ColonneCreationCompte span.checkleft{
+	display:inline-block;color: #ADADCD;
+    	font-size: 14px;
+    	font-weight: bold;
+
+}
+.CpContact {margin:20px 5px; }
+.CpContact form {margin: 0 171px;}
+.CpContact form button {
+	width:80px;
+	text-transform: uppercase;
+	color: #FFFFFF;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	background-color: #dc2786;
+	*background-color: #dc2786;
+	background-image: -moz-linear-gradient(top, #dc2786, #ce227c);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dc2786), to(#ce227c));
+	background-image: -webkit-linear-gradient(top, #dc2786, #ce227c);
+	background-image: -o-linear-gradient(top, #dc2786, #ce227c);
+	background-image: linear-gradient(to bottom, #dc2786, #ce227c);
+	background-repeat: repeat-x;
+	border-color: #dc2786;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#dc2786', endColorstr='#ce227c', GradientType=0);
+	filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+ 	margin: 10px 0 10px 345px;
+}
+.Contact30 { margin: 10px 0;}
+#FormContact { margin: 10px 0;}
+#FormContact .row { margin: 10px 0;}

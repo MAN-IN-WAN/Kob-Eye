@@ -1,0 +1,19 @@
+<html>
+	<body>
+		<table class="table"  >
+			<tr>
+				<td>[DATA]</td>
+			</tr>
+			<tr>
+				<td align="center" >
+					<font face="Arial" size="1" color="#000000">
+					<hr />
+					Vous recevez ce mail car vous avez fait une demande sur notre site [!Domaine!]
+					</font>
+				</td>
+			</tr>
+		<table>
+	</body>
+</html>		
+
+

@@ -1,0 +1,149 @@
+@import "Menu.css";
+@import "Structure.css";
+@import "Formulaire.css";
+@import "bbcode.css";
+@import "Pied.css";
+@import "Entete.css";
+@import "News.css";
+@import "Accueil.css";
+@import "Droite.css";
+@import "Contenu.css";
+@import "slimbox.css";
+@import "Pagination.css";
+
+*{
+	font-family:Arial,Verdana,Helvetica,sans-serif;
+	color:#000;
+	font-size:12px;
+	margin:0;
+	padding:0;
+}
+
+body{
+	width:100%;
+	border:0;
+	background-color:#1E1E1E;
+}
+
+* html body{
+	width:100%;
+	text-align:center;/* = margin-auto pour IE */
+	margin:0;
+	padding:0;
+}
+
+img{	
+	margin:0;
+	padding:0;
+	border:0;
+	outline:0;
+}
+
+a, a:visited, a:hover, a:active{
+	cursor:pointer;
+	outline:0;
+}
+
+
+/*--------TITRES-------*/
+h1{
+	font-size:20px;
+}
+
+h2{
+	font-size:18px;
+}
+
+h3{
+	font-size:16px;
+}
+
+h4{
+	font-size:14px;
+}
+
+h5{
+	font-size:;
+	color:;
+}
+
+p{
+	text-indent:0px;
+	font-weight:normal;
+}
+
+ul{
+	list-style-type:disc;
+}
+
+/*----STYLES GENERAUX----*/
+.FLeft{
+	float:left;
+}
+
+.FRight{
+	float:right;
+}
+
+.Clear {
+	clear:both;
+}
+
+.Bold{
+	font-weight:bold;
+}
+
+.Italic{
+	font-style:italic;
+}
+
+.Souligne{
+	text-decoration:underline;
+}
+
+input, textarea{
+	border:none;
+	border:1px inset #000;
+}
+
+input[type=radio]{
+	width:auto;
+	border:none;
+}
+
+input[type=checkbox]{
+	border:none;
+	width:13px;
+}
+
+/*----HACKX IE6----*/
+* html img{	
+	margin:0;
+	padding:0;
+	border:0;
+	outline:0;
+}
+
+* html input{
+	margin:0;
+	padding:0;
+	/*border:none;*/
+}
+
+* html ul{
+	padding:0;
+	margin:0px;
+	list-style-type:none;
+	list-style-image:none;
+}
+
+* html li{
+	padding:0;
+	margin:0px;
+}
+
+* html a{
+	padding:0;
+	margin:0px;
+}
+

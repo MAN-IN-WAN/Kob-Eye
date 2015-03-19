@@ -1,0 +1,82 @@
+[INFO [!Query!]|I]
+[OBJ [!I::Module!]|[!I::TypeChild!]|O]
+{"form":{"type":"TitleWindow","id":"FormOffer","title":"Buyer Offer",
+"kobeyeClass":{"module":"Murphy","objectClass":"Deal"},
+"localProxy":1,
+"components":[
+	{"type":"EditContainer","id":"edit","percentWidth":100,"percentHeight":100,
+	"components":[
+		{"type":"HBox","percentWidth":100,"percentHeight":100,"setStyle":{"backgroundColor":"#d9d9d9","paddingLeft":5,"paddingRight":5,"paddingTop":5,"paddingBottom":5,"horizontalGap":2},
+		"components":[
+			{"type":"VBox","width":280,"percentHeight":100,
+			"components":[	
+				{"type":"Panel","title":"Product","layout":{"type":"VerticalLayout"},"dividerVisible":0,"titleHeight":20,
+				"setStyle":{"backgroundColor":"#d9d9d9","color":"black"},
+				"components":[
+					{"type":"Form","setStyle":{"verticalGap":2,"paddingLeft":0,"paddingRight":0,"paddingTop":0,"paddingBottom":0},
+					"components":[
+						{"type":"FormItem","percentLabel":28,"label":"Dossier","percentWidth":100,"setStyle":{"indicatorGap":4},"components":[
+							{"type":"TextInput","dataField":"Reference","width":70}
+						]},
+						{"type":"FormItem","percentLabel":28,"label":"Varietal","percentWidth":100,"setStyle":{"indicatorGap":4},"components":[
+							{"type":"TextInput","dataField":"Varietal","percentWidth":100}
+						]},
+						{"type":"FormItem","percentLabel":28,"label":"Appellation","percentWidth":100,"setStyle":{"indicatorGap":4},"components":[
+							{"type":"TextInput","dataField":"Appellation","percentWidth":100}
+						]},
+						{"type":"FormItem","percentLabel":28,"label":"Vintage","percentWidth":100,"setStyle":{"indicatorGap":4},"components":[
+							{"type":"TextInput","dataField":"Vintage","width":70,"validType":"string","dataGroup":"searchGroup"}
+						]},
+						{"type":"FormItem","percentLabel":28,"label":"Filtration","percentWidth":100,"setStyle":{"indicatorGap":4},"components":[
+							{"type":"TextInput","dataField":"Filtration","percentWidth":100}
+						]},
+						{"type":"FormItem","percentLabel":28,"label":"Quantity","percentWidth":100,"setStyle":{"indicatorGap":4},"components":[
+							{"type":"TextInput","dataField":"Quantity","width":70}
+						]},
+						{"type":"FormItem","percentLabel":28,"label":"Volume","percentWidth":100,"setStyle":{"indicatorGap":4},"components":[
+							{"type":"TextInput","dataField":"Volume","width":70}
+						]},
+						{"type":"FormItem","percentLabel":28,"label":"Total","percentWidth":100,"setStyle":{"indicatorGap":4,"color":"#ff0000"},"components":[
+							{"type":"TextInput","dataField":"Total","width":70}
+						]}
+					]}
+				]},
+				{"type":"Spacer","percentHeight":100},
+				{"type":"HGroup","percentWidth":100,
+				"components":[
+					{"type":"Button","id":"send","label":"$__Send__$","width":100},
+					{"type":"Button","id":"cancel","label":"$__Cancel__$","width":100,
+					"events":[
+						{"type":"click","action":"invoke","objectID":"parentForm","method":"closeForm"}
+					]}
+				]}	
+			]},
+			{"type":"AdvancedDataGrid","dataField":"proposal","minHeight":350,"minWidth":355,"percentWidth":100,"percentHeight":100,
+			"kobeyeClass":{"module":"Murphy","objectClass":"Deal"},"checkBoxes":1,
+			"columns":[
+				{"type":"column","dataField":"Name","headerText":"Seller","width":200},
+				{"type":"column","dataField":"Town","headerText":"Town","width":100},
+				{"type":"column","dataField":"Country","headerText":"Country","width":100},
+				{"type":"column","dataField":"Varietal","headerText":"Varietal","width":120},
+				{"type":"column","dataField":"Appellation","headerText":"Appellation","width":120},
+				{"type":"column","dataField":"Vintage","headerText":"Vintage","width":50},
+				{"type":"column","dataField":"Filtration","headerText":"Filtration","width":120},
+				{"type":"column","dataField":"Quantity","headerText":"Quantity","width":70},
+				{"type":"column","dataField":"Volume","headerText":"Volume","width":70,"format":"0dec"},
+				{"type":"column","dataField":"Id","visible":0},
+				{"type":"column","width":0}
+			]}
+		]}
+	],
+	"events":[
+		{"type":"start", "action":"invoke","method":"callMethod",
+		"params":{"method":"object","function":"GetProposals"}},
+		{"type":"proxy", "triggers":[
+			{"trigger":"send","action":"invoke","method":"callMethod",
+			"params":{"method":"object","data":{"dirtyChild":1,"module":"Murphy","objectClass":"Deal"},
+			"function":"BuyerOffer","args":[{"selectedValues":["proposal"]}],"closeForm":1}}
+		]}
+	]}
+],
+"popup":"modal"
+}}

@@ -1,0 +1,185 @@
+@import "redaction.css";
+@import "unibio.css";
+@import "forms.css";
+@import "labo.css";
+@import "espacepro.css";
+
+/*--- RESET ---*/
+html, body, div, span, applet, object, iframe, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td { margin: 0; padding: 0; border: 0; outline: 0; font-size: 100%; vertical-align: baseline }
+blockquote, q { quotes: none }
+blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; }
+ins { text-decoration: none }
+del { text-decoration: line-through }
+table { border-collapse: collapse; border-spacing: 0 }
+a:active, input:active { outline: none }
+:-moz-any-link:focus { outline: none }
+
+/*-- GLOBAL ---*/
+
+
+.CategBordure {
+    border-bottom: 1px dotted #66A7BC;
+}
+.lirelasuite {
+    background: url("../../Intranet/Img/sprite.png") no-repeat scroll -63px -1352px transparent;
+    display: block;
+    font-size: 10px;
+    font-style: italic;
+    padding-right: 16px;
+    text-align: right;
+}
+a.lirelasuite:hover {
+    background: url("../../Intranet/Img/sprite.png") no-repeat scroll -63px -1387px transparent;
+}
+
+
+
+html,body {
+	padding:0;
+	margin:0;
+	font-family:Arial;
+	font-size:12px;
+        color:#474747;
+	background: url("../Img/pied_02.png") repeat-x  left bottom ;
+
+}
+
+input, textarea, select, button {
+	font-family:Arial;
+	font-size: 12px;
+    	color:#474747;
+}
+
+textarea {
+	overflow: auto;
+}
+
+a {
+	text-decoration: none;
+    color:#474747;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+.fullWidth {
+	width:986px;
+	margin:auto;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	padding: 0;
+	margin: 0;
+}
+
+h2 {
+	color:#66A7BC;
+	font-size: 14px;
+	text-transform: uppercase;
+}
+
+
+
+li {
+	list-style: disc inside;
+}
+p { text-align:left;}
+/*-- STRUCTURE ---*/
+div#Header {
+	height: 195px;
+}
+div#Bottom {
+ 	background: url("../Img/sprite.png") no-repeat scroll 5px -1576px transparent;
+
+}
+div#FooterAbtel {
+	background-color:#fff;color:#000;font-size:10px;font-style:italic;text-align:right;
+}
+
+div#Content div.Right{
+	width:240px;
+	margin: 5px 0 0;
+	border-left: 1px dotted #66A7BC;
+}
+
+div.centreR {
+    /*border-right: 1px dotted #66A7BC;*/
+    margin-right: 248px;
+    padding:0px;
+}
+div.centreL{
+	overflow: hidden;
+	padding: 10px;
+}
+
+div#Footer {
+	padding: 18px 0;
+	background: #b1b3b4;
+}
+
+div#Bando {
+	height: 131px;
+	background: url('../Img/sprite.png') no-repeat top center
+}
+div#Connecte {
+	height: 31px;
+   	padding-right: 69px;
+    	padding-top: 175px;
+    	text-align: right;
+    	width: 609px;
+	
+}
+table#MenuTab {
+	width: 100%;
+}
+
+table#MenuTab td {
+	text-align: center;
+    background: url('../Img/sprite.png') no-repeat -8px -251px;
+}
+
+table#MenuTab td.Current {
+	font-weight: normal;
+}
+
+table#MenuTab ul {
+	display: none;
+}
+
+div#Main {
+	/*min-height: 300px;*/
+}
+
+/*--- news --*/
+.ImageNews img {
+	border:1px solid #b1b3b4;
+	
+}
+.NewsColonne .PartieInfo .Desc { text-align: justify;
+}
+
+.lienfichenews{
+	  display: block;
+    	margin-top: 10px;
+	color:#66A7BC;
+	padding-left:10px;
+	background: url('../Img/sprite.png') no-repeat -8px -1328px;
+}
+
+
+div.RedactionJournal  .TitreArticleJournal{
+ 	background: url("../Img/sprite.png") no-repeat scroll -636px -714px rgba(0, 0, 0, 0);
+    	height: 32px;
+    	padding-left: 40px;
+    	padding-top: 6px;
+	text-transform: uppercase; font-size:14px;font-weight:bold;color:#66a7bc;
+	border-bottom: 1px dotted #66A7BC;margin:10px;
+}
+div.RedactionJournal .lienfichenews{
+	display: block;
+    	margin: 10px;
+	color:#66A7BC;
+	padding-left:10px;
+	background: url('../Img/sprite.png') no-repeat -8px -1328px;
+}

@@ -1,0 +1,121 @@
+.bb_bold {
+	font-weight:bold;
+}
+div.ArticleImages {
+	display: block;
+	float: left;
+	position: relative;
+}
+
+
+
+div.ImageArticleGauche {
+    	float:left;
+	position: relative;
+	display: block;
+	overflow: hidden;
+}
+
+div.ImageArticleDroite{
+    float:right;
+	position: relative;
+	display: block;
+	overflow: hidden;
+}
+
+
+.AccueilRedactionnel {
+	position:relative;width:100%;margin:10px 0 20px 0;
+}
+
+.AccueilRedactionnel .Cat_8{
+	width:320px;height:252px;
+	position:relative;
+	overflow:hidden;
+	color:#e2007a;font-size:14px;
+	background: url("../Img/Fond/FondAbonnements.png") no-repeat ;
+	padding: 0 10px;float:left;
+}
+.AccueilRedactionnel .Cat_8 .TitreArticle h2 {
+ 	color: #e2007a;
+    	font-size: 18px;
+    	text-transform: uppercase;
+}
+
+.AccueilRedactionnel .Cat_8 .ContenuArticle p {
+	text-align:justify;font-size:14px;
+	width:290px;margin-bottom:10px;
+
+}
+.AccueilRedactionnel .Cat_8 .LienArticle a.lelienarticle  {
+	background: url("../Img/sprite.png") no-repeat scroll -749px -397px transparent;
+    	color: #FFFFFF;
+    	display: block;
+    	font-size: 21px;
+    	font-weight: bold;
+    	height: 48px;
+    	margin: auto;
+	padding: 11px 0 0 24px;
+    	text-transform: uppercase;
+    	width: 242px;
+}
+
+.AccueilRedactionnel .Cat_9{
+	width:322px;height:252px;
+	position:relative;
+	overflow:hidden;
+	color:#393939;font-size:14px;
+	background: url("../Img/Fond/FondChoisissez.png") no-repeat ;
+	padding:0 10px;float:left;
+}
+.AccueilRedactionnel .Cat_9 .TitreArticle h2 {
+ 	color: #393939;
+    	font-size: 18px;
+    	text-transform: uppercase;
+}
+
+.AccueilRedactionnel .Cat_9 .ContenuArticle p {
+	text-align:justify;font-size:14px;
+	width:290px;margin-bottom:10px;
+
+}
+.AccueilRedactionnel .Cat_9 .LienArticle a.lelienarticle  {
+    	color: #393939;
+    	display: block;
+    	font-size: 21px;
+    	font-weight: bold;
+    	height: 48px;
+    	margin: auto;
+	padding: 11px 0 0 24px;
+    	text-transform: uppercase;
+    	width: 242px;
+
+}
+.AccueilRedactionnel .Cat_9 .ImageArticleGauche {
+    	float:left;
+	width:120px;margin-right:5px;
+}
+.AccueilRedactionnel .Cat_9 .ContenuArticleImage {
+	text-align:justify;font-size:14px;
+	width:170px;float:left;
+
+}
+
+.AccueilRedactionnel .Cat_9 .ContenuArticleImage p {
+	text-align:justify;font-size:14px;
+	
+
+}
+
+.AccueilRedactionnel .Cat_10{
+	width:272px;height:230px;
+	position:relative;
+	overflow:hidden;
+	color:#393939;font-size:14px;
+	padding:10px;
+
+	background-color:#fff;
+	
+	box-shadow:0px 2px 2px 0px rgba(39, 39, 39, 0.5),0px 2px 2px 0px rgba(39, 39, 39, 0.5) inset; 
+
+}

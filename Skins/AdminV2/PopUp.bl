@@ -1,0 +1,42 @@
+<div class="PopUp">
+
+	<style type="text/css">
+		#Data .Panneau{z-index:100;}
+		*+html #Data .Panneau{z-index:100;}
+	</style>
+
+
+	[BLOC Panneau|position:relative;padding-right:36px;padding-bottom:36px;||position:relative;]
+		[BLOC Rounded]
+				<div class="TitrePopUp">
+					<span>[1]</span>
+					<a href="/[!Query!]" style="display:block;">
+					<img src="/Skins/Pilote-Boutique/Img/PopUp/ListeFermer.jpg" alt="" style="position:absolute;right:5px;top:1px;"/>
+					</a>
+				</div>
+		[/BLOC]
+		<div class="PopUpImg" style="float:left;">
+			
+		</div>
+		<div style="padding-top:25px;padding-bottom:60px;padding-left:80px;">
+			[DATA]
+		</div>
+		<div>
+			<div class="Bouton" style="right:10%;">
+				<b class="b1"></b>
+				<b class="b2" style="width:100px;text-align:center;">
+					<input type="submit" name="detail" value="Valider" onfocus="this.blur()"/>
+				</b>
+				<b class="b3"></b>
+			</div>
+			<div class="Bouton" style="left:10%;">
+				<b class="b1"></b>
+				<b class="b2" style="width:100px;text-align:center;">
+					<a href="/[!Query!]">Annuler</a>
+				</b>
+				<b class="b3"></b>
+			</div>
+	
+		</div>
+	[/BLOC]
+</div>

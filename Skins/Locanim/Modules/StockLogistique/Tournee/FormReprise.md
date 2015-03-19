@@ -1,0 +1,59 @@
+{"form":{"type":"VBox","id":"StockLogistique/Reprise","label":"Retour en stock",
+"percentWidth":100,"percentHeight":100,"setStyle":{"paddingTop":0,"paddingLeft":5,"paddingRight":5},
+"kobeyeClass":{"module":"StockLogistique","objectClass":"Tournee"},"localProxy":1,
+"components":[
+	{"type":"MenuTab","id":"menuList","maxLines":1,
+	"menuItems":[
+		{"children":[
+			{"label":"Sauver", "icon":"save", "data":"save"},
+			{"label":"Rafraîchir", "icon":"refresh", "data":"refresh"}
+		]}
+	],
+	"actions":[
+		{"type":"itemClick","actions":{
+			"save":{
+				"action":"invoke","method":"callMethod","params":{
+				"interface":1,
+				"method":"object","data":{"module":"StockLogistique","objectClass":"Reprise","form":"Functions/SaveReprise.json"},
+				"function":"SaveReprise","args":"iv:Date,dv:elements"}
+			}
+		}}
+	]},
+	{"type":"Box","percentWidth":100,"percentHeight":100,"setStyle":{"paddingTop":0}, 
+	"components":[
+		{"type":"EditContainer","id":"edit","percentWidth":100,"percentHeight":100,
+		"components":[
+			{"type":"AdvancedDataGrid","dataField":"elements","id":"elements","updatedItems":1,
+			"percentHeight":100,"percentWidth":100,
+			"kobeyeClass":{"module":"StockLogistique","objectClass":"Reprise"},
+			"events":[
+				{"type":"start","action":"invoke","method":"callMethod",
+				"params":{"method":"object","function":"GetReprise","data":{"module":"StockLogistique","objectClass":"Reprise"}}},
+				{"type":"proxy","triggers":[
+					{"trigger":"refresh","action":"invoke","method":"restart"}
+				]}
+			],
+			"columns":[
+				{"type":"column","dataField":"Tournee","headerText":"Tournee","width":58},
+				{"type":"column","dataField":"Date","headerText":"Date","width":58,"format":"date"},
+				{"type":"column","dataField":"Reference","headerText":"Reference","width":130},
+				{"type":"column","dataField":"Article","headerText":"Article","width":100},
+				{"type":"column","dataField":"Quantite","headerText":"Qte","width":50,"format":"0dec"},
+				{"type":"column","dataField":"Panne","headerText":"Panne","format":"checkbox","width":50},
+				{"type":"column","dataField":"Stock","headerText":"Stock","format":"checkbox","width":50},
+				{"type":"column","dataField":"Livraison","headerText":"Magasin","width":140},
+				{"type":"column","dataField":"CodPostal","headerText":"CP","width":50},
+				{"type":"column","dataField":"Ville","headerText":"Ville","width":100},
+				{"type":"column","dataField":"Client","headerText":"Client","width":140},
+				{"type":"column","dataField":"Commentaire","headerText":"Commentaire","width":220},
+				{"type":"column","dataField":"ReferenceId","visible":0},
+				{"type":"column","dataField":"Id","visible":0},
+				{"type":"column","width":0}
+			]}
+		]}
+	]}
+],
+"actions":[
+	{"type":"close","action":"confirmUpdate"}
+]}
+}

@@ -1,0 +1,28 @@
+<li>QUERY: [!Query!]</li>
+//Generation de l'objet
+[INFO [!Query!]|I]
+[OBJ [!I::Module!]|[!I::TypeChild!]|O]
+//Recherche du nom de la fonction
+[!J:=[![!Lien!]://!]!]
+[STORPROC [!J!]|L][!Name:=[!L!]!][/STORPROC]
+<ul>
+[IF [!Name!]=]
+	[STORPROC [!O::getFunctions!]|F]
+		<li>[!F::name!]</li>
+		<ul>
+		[STORPROC [!F::properties!]|P]
+			<li>[!P::name!]</li>
+		[/STORPROC]
+		</ul>
+	[/STORPROC]
+[ELSE]
+	[STORPROC [!O::getFunction([!Name!])!]|F]
+		<li>[!F::name!]</li>
+		<ul>
+		[STORPROC [!F::properties!]|P]
+			<li>[!P::name!]</li>
+		[/STORPROC]
+		</ul>
+	[/STORPROC]
+[/IF]
+</ul>

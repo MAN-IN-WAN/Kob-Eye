@@ -1,0 +1,79 @@
+{"form":{"type":"TitleWindow","id":"FormSampleWine","title":"Wine sample","width":450,
+"kobeyeClass":{"module":"Murphy","objectClass":"SampleWine","createParent":1},
+"localProxy":1,
+"components":[
+	{"type":"VBox","id":"vbox","percentWidth":100,"percentHeight":100,"setStyle":{"paddingLeft":5,"paddingRight":5,"paddingTop":5,"paddingBottom":5},
+	"components":[
+		{"type":"EditContainer","id":"edit",
+		"components":[
+			{"type":"TextInput","dataField":"Acronym","includeInLayout":0,"visible":0,"editable":0},
+			{"type":"TextInput","dataField":"Varietal","includeInLayout":0,"visible":0,"editable":0},
+			{"type":"TextInput","dataField":"ColourIcon","includeInLayout":0,"visible":0,"editable":0},
+			{"type":"TextInput","dataField":"Appellation","includeInLayout":0,"visible":0,"editable":0},
+			{"type":"TextInput","dataField":"Filtration","includeInLayout":0,"visible":0,"editable":0},
+			{"type":"Form","id":"form","setStyle":{"verticalGap":2,"paddingLeft":6,"paddingRight":6,"paddingTop":0,"paddingBottom":2},
+			"components":[
+				{"type":"FormItem","percentLabel":28,"label":"Country","percentWidth":100,"components":[
+					{"type":"ComboBox","dataField":"CountryId","percentWidth":100,"exoFields":{"Acronym":0},
+					"kobeyeClass":{"module":"Murphy","objectClass":"Country","query":"Murphy/Country/WineProducer=1","identifier":"Id","label":"Country"},
+					"actions":[
+						{"type":"init","action":"loadData"}
+					]}
+				]},
+				{"type":"FormItem","percentLabel":28,"label":"Varietal","percentWidth":100,"components":[
+					{"type":"ComboBox","dataField":"VarietalId","percentWidth":100,"exoFields":{"Varietal":0},
+					"kobeyeClass":{"module":"Murphy","objectClass":"Varietal","query":"Murphy/Varietal","identifier":"Id","label":"Varietal"},
+					"actions":[
+						{"type":"init","action":"loadData"}
+					]}
+				]},
+				{"type":"FormItem","percentLabel":28,"label":"Colour","percentWidth":100,"components":[
+					{"type":"ComboBox","dataField":"ColourId","percentWidth":100,"exoFields":{"Icon":"ColourIcon"},
+					"kobeyeClass":{"module":"Murphy","objectClass":"Colour","query":"Murphy/Colour","identifier":"Id","label":"Colour"},
+					"actions":[
+						{"type":"init","action":"loadData"}
+					]}
+				]},
+				{"type":"FormItem","percentLabel":28,"label":"Appellation","percentWidth":100,"components":[
+					{"type":"ComboBox","dataField":"AppellationId","percentWidth":100,"exoFields":{"Appellation":0},
+					"kobeyeClass":{"module":"Murphy","objectClass":"Appellation","query":"Murphy/Appellation","identifier":"Id","label":"Appellation"},
+					"actions":[
+						{"type":"init","action":"loadData"}
+					]}
+				]},
+				{"type":"FormItem","percentLabel":28,"label":"Vintage","percentWidth":100,"components":[
+					{"type":"TextInput","dataField":"Vintage","width":100,"validType":"string" ,"maxChars":10}
+				]},
+				{"type":"FormItem","percentLabel":28,"label":"Filtration","percentWidth":100,"components":[
+					{"type":"ComboBox","dataField":"FiltrationId","percentWidth":100,"exoFields":{"Filtration":0},
+					"kobeyeClass":{"module":"Murphy","objectClass":"Filtration","query":"Murphy/Filtration","identifier":"Id","label":"Filtration"},
+					"actions":[
+						{"type":"init","action":"loadData"}
+					]}
+				]},
+				{"type":"FormItem","percentLabel":28,"label":"Number of bottles","percentWidth":100,"components":[
+					{"type":"TextInput","dataField":"Bottle","width":50,"maxChars":4,"defaultValue":1,"validType":"0dec","setStyle":{"textAlign":"end"}}
+				]}
+			]}
+		],
+		"events":[
+			{"type":"proxy","triggers":[
+				{"trigger":"save","action":"invoke","method":"postItem","params":{"closeForm":1}},
+				{"trigger":"delete","action":"invoke","method":"deleteItem"}
+//				{"trigger":"cancel","action":"invoke","method":"cancelEdit"}
+			]}
+		]},
+		{"type":"HGroup",
+		"components":[
+			{"type":"Spacer"},
+			{"type":"Button","id":"save","label":"Valider","width":100},
+			{"type":"Button","id":"delete","label":"Supprimer","width":100},
+			{"type":"Button","id":"cancel","label":"Annuler","width":100,
+			"events":[
+				{"type":"click","action":"invoke","objectID":"parentForm","method":"closeForm"}
+			]}
+		]}		
+	]}
+],
+"popup":"modal"
+}}

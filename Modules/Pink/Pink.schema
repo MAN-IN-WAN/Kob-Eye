@@ -1,0 +1,139 @@
+<SCHEMA>
+	<OBJECTCLASS title="PkUser" driver="mysql" master="1" AccessPoint="1" Icon="[None]" Description="Users" Heritage="0" Class="Modules/Pink/Class/PkUser.class.php">
+		<PROPERTIES type="int" default="0" category="User" hidden="1">UserId</PROPERTIES>
+		<PROPERTIES type="int" default="0" list="10" listDescr="Unités" listWidth="50" category="User" description="Units">Units</PROPERTIES>
+		<PROPERTIES type="int" default="0" list="11" listDescr="Total" listWidth="50" category="User" description="Total units">TotalUnits</PROPERTIES>
+		<VIEW title="PkUserList" default="1">
+			<OBJECTCLASS title="PkUser" select="Id,Units,UserId,TotalUnits" filters="">
+				<JOIN type="inner" module="Systeme" title="User" on="UserId" target="Id">
+					<PROPERTIES type="varchar" list="2" searchOrder="1">Mail</PROPERTIES>
+					<PROPERTIES type="varchar" list="3" listDescr="Téléphone" searchOrder="2">Tel</PROPERTIES>
+					<PROPERTIES type="boolean" list="1" listDescr="A" SearchOrder="20">Actif</PROPERTIES>
+					<PROPERTIES type="date" alias="Creation" >tmsCreate</PROPERTIES>
+					<PROPERTIES type="date" >LastConnection</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="Expert" driver="mysql" master="1" AccessPoint="1" Icon="[None]" Description="Experts" Heritage="0" Class="Modules/Pink/Class/Expert.class.php">
+		<PROPERTIES type="int" default="" category="Expert" hidden="1">UserId</PROPERTIES>
+		<PROPERTIES type="varchar" category="Expert" description="Présentation">Presentation</PROPERTIES>
+		<PROPERTIES type="Text" category="Expert" description="Description">Description</PROPERTIES>
+		<PROPERTIES type="file" category="Expert" description="Voice message">VoiceMessage</PROPERTIES>
+		<PROPERTIES type="int" list="10" listDescr="Coût" listWidth="50" category="Expert" description="Cost per minute">Cost</PROPERTIES>
+		<PROPERTIES type="int" default="0" list="11" listDescr="Total" listWidth="50" category="User" description="Total units">TotalUnits</PROPERTIES>
+		<PROPERTIES type="float" list="12" listDescr="Score" listWidth="50" category="Expert" description="Score">Score</PROPERTIES>
+		<PROPERTIES type="boolean" defaul="0" list="20" listDescr="D" category="Expert" description="Available">Available</PROPERTIES>
+		<PROPERTIES type="text" category="Expert" description="Availability">Availability</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" auto="1" list="21" listDescr="O" category="Expert" description="On line">OnLine</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" list="22" listDescr="P" category="Expert" description="Site privé">PrivateSite</PROPERTIES>
+		<PROPERTIES type="varchar" category="Expert" description="Site web">WebSite</PROPERTIES>
+		<VIEW title="ExpertList" default="1">
+			<OBJECTCLASS title="Expert" select="Id,VoiceMessage,Cost,Score,Available,Availability,OnLine,UserId,PrivateSite,WebSite,Presentation,Description" filters="">
+				<JOIN type="inner" module="Systeme" title="User" on="UserId" target="Id">
+					<PROPERTIES type="varchar" list="2" listWidth="120" searchOrder="1">Nom</PROPERTIES>
+					<PROPERTIES type="varchar" list="3" listWidth="100" >Prenom</PROPERTIES>
+					<PROPERTIES type="varchar" list="4" listWidth="100" >Initiales</PROPERTIES>
+					<PROPERTIES type="varchar" list="6" searchOrder="4">Mail</PROPERTIES>
+					<PROPERTIES type="varchar" list="7" listDescr="Téléphone" searchOrder="3">Tel</PROPERTIES>
+					<PROPERTIES type="varchar" >Mobile</PROPERTIES>
+					<PROPERTIES type="text" >Informations</PROPERTIES>
+					<PROPERTIES type="image" >Avatar</PROPERTIES>
+					<PROPERTIES type="varchar" >Pass</PROPERTIES>
+					<PROPERTIES type="boolean" list="1" listDescr="A" searchOrder="20">Actif</PROPERTIES>
+					<PROPERTIES type="date" alias="Creation" >tmsCreate</PROPERTIES>
+					<PROPERTIES type="date" >LastConnection</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Call" driver="mysql" master="0" AccessPoint="0" Icon="[None]" Description="Calls" Heritage="0" >
+		<FKEY card="1,1" module="Pink" data="PkUser,Id" noControl="1" description="User">CallPkUserId</FKEY>
+		<FKEY card="1,1" module="Pink" data="Expert,Id" noControl="1" description="Expert">CallExpertId</FKEY>
+		<PROPERTIES type="date" list="5" description="Date">Date</PROPERTIES>
+		<PROPERTIES type="int" default="0" list="6" description="Duration">Duration</PROPERTIES>
+		<PROPERTIES type="int" default="0" list="7" description="Units">Units</PROPERTIES>
+		<PROPERTIES type="varchar" list="10" description="A Number">ANumber</PROPERTIES>
+		<PROPERTIES type="int" default="0" list="11" description="A Duration">ADuration</PROPERTIES>
+		<PROPERTIES type="varchar" list="12" description="B Number">BNumber</PROPERTIES>
+		<PROPERTIES type="int" default="0" list="13" description="B Duration">BDuration</PROPERTIES>
+		<VIEW title="CallList" default="1">
+			<OBJECTCLASS title="Call" select="Id,Date,Duration,Units,ANumber,BNumber,ADuration,BDuration" filters="">
+				<JOIN type="inner" title="PkUser" on="CallPkUserId" target="Id">
+					<JOIN type="inner" module="Systeme" title="User" on="UserId" target="Id">
+						<PROPERTIES type="varchar" list="1" searchOrder="1">Mail</PROPERTIES>
+					</JOIN>
+				</JOIN>
+				<JOIN type="inner" title="Expert" on="CallExpertId" target="Id">
+					<JOIN type="inner" module="Systeme" title="User" on="UserId" target="Id">
+						<PROPERTIES type="varchar" list="2" searchOrder="1">Initiales</PROPERTIES>
+					</JOIN>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Message" driver="mysql" master="0" AccessPoint="0" Icon="[None]" Description="Messages" Heritage="0" >
+		<FKEY card="1,1" data="PkUser,Id" noControl="1" description="User">MessagePkUserId</FKEY>
+		<FKEY card="1,1" data="Expert,Id" noControl="1" description="Expert">MessageExpertId</FKEY>
+		<PROPERTIES type="date" list="6" description="Date">Date</PROPERTIES>
+		<PROPERTIES type="text" list="7" description="Message">Message</PROPERTIES>
+		<VIEW title="CallList" default="1">
+			<OBJECTCLASS title="Call" select="Id,Date,Message" filters="">
+				<JOIN type="inner" title="PkUser" on="MessagePkUserId" target="Id">
+					<JOIN type="inner" module="Systeme" title="User" on="UserId" target="Id">
+						<PROPERTIES type="varchar" list="1" searchOrder="1">Login</PROPERTIES>
+					</JOIN>
+				</JOIN>
+				<JOIN type="inner" title="Expert" on="MessageExpertId" target="Id">
+					<JOIN type="inner" module="Systeme" title="User" on="UserId" target="Id">
+						<PROPERTIES type="varchar" list="2" searchOrder="1">Initiales</PROPERTIES>
+					</JOIN>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Vote" driver="mysql" master="0" AccessPoint="0" Icon="[None]" Description="Votes" Heritage="0" >
+		<FKEY card="1,1" data="PkUser,Id" noControl="1" description="User">VotePkUserId</FKEY>
+		<FKEY card="1,1" data="Expert,Id" noControl="1" description="Expert">VoteExpertId</FKEY>
+		<PROPERTIES type="date" list="6" description="Date">Date</PROPERTIES>
+		<PROPERTIES type="text" list="7" description="Message">Message</PROPERTIES>
+		<PROPERTIES type="int" list="8" description="Score">Score</PROPERTIES>
+		<VIEW title="CallList" default="1">
+			<OBJECTCLASS title="Call" select="Id,Date,Message,Score" filters="">
+				<JOIN type="inner" title="PkUser" on="VotePkUserId" target="Id">
+					<JOIN type="inner" module="Systeme" title="User" on="UserId" target="Id">
+						<PROPERTIES type="varchar" list="1" searchOrder="1">Login</PROPERTIES>
+					</JOIN>
+				</JOIN>
+				<JOIN type="inner" title="Expert" on="VoteExpertId" target="Id">
+					<JOIN type="inner" module="Systeme" title="User" on="UserId" target="Id">
+						<PROPERTIES type="varchar" list="2" searchOrder="1">Initiales</PROPERTIES>
+					</JOIN>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Payment" driver="mysql" master="0" AccessPoint="0" Icon="[None]" Description="Payments" Heritage="0" >
+		<FKEY card="1,1" data="PkUser,Id" noControl="1" description="User">PaymentPkUserId</FKEY>
+		<PROPERTIES type="date" list="6" description="Date">Date</PROPERTIES>
+		<PROPERTIES type="float" default="0" list="7" description="Amount">Amount</PROPERTIES>
+		<PROPERTIES type="varchar" list="8" description="Transaction">Transaction</PROPERTIES>
+		<PROPERTIES type="int" default="0" list="9" description="Units">Units</PROPERTIES>
+		<VIEW title="CallList" default="1">
+			<OBJECTCLASS title="Call" select="Id,Date,Amount,Transaction,Units" filters="">
+				<JOIN type="inner" title="PkUser" on="PaymentPkUserId" target="Id">
+					<JOIN type="inner" module="Systeme" title="User" on="UserId" target="Id">
+						<PROPERTIES type="varchar" list="3" searchOrder="1">Login</PROPERTIES>
+					</JOIN>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+</SCHEMA>

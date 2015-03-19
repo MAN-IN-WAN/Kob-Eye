@@ -1,0 +1,214 @@
+
+/*---------------mon compte-------*/
+
+div.user {
+    margin:0;
+}
+.user .CommandeEtape2{
+	margin-top:0px;
+}
+a.oubli {
+    font-style: italic;
+    text-align:right;
+}
+a.oubli:hover{
+   color:#1a1a1a;
+}
+/*div.user input.Connexion {
+	float: right;
+    background-color: #B70F0F;
+    background-image: linear-gradient(to bottom, #CF1111, #B70F0F);
+    background-repeat: repeat-x;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    color: #FFFFFF;
+    font-size: 18px;
+    font-weight: 300;
+    margin-bottom: 12px;
+    padding: 3px 12px;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    text-transform: uppercase;
+}*/
+
+.Login h3{
+	border-bottom:1px solid #bbbbbb;
+	padding-bottom:7px;
+	margin-bottom:14px;
+    font-family: 'Source Sans Pro';
+    font-size: 20px;
+    font-weight: 200;
+    text-transform: uppercase;
+}
+/*div.user input, div.user textarea, div.user select {
+    border: 1px solid #bbbbbb;
+    font-family: 'Source Sans Pro';
+    float: none;
+    font-size: 14px;
+    margin-bottom: 5px;
+    margin-left: 0;
+    width: 366px;
+}
+.ColonneCreationCompte input, .ColonneCreationCompte select, .ColonneCreationCompte textarea { 
+     height: 27px;
+}*/
+div.user input.radioleft{
+	width:20px;
+}
+
+div.user input.Op{
+	width:30px;
+	margin-left:10px;
+	text-align:center;
+}
+.calcul{
+	padding:40px 0;
+}
+.CreeCompte h3{
+    border-bottom: 1px solid #BBBBBB;
+    font-family: 'Source Sans Pro';
+    font-size: 20px;
+    font-weight: 200;
+    margin: 0px;
+    padding-bottom:7px;
+    text-transform: uppercase;
+}
+.ColonneCreationCompte h3 {
+	font-family: 'Source Sans Pro';
+	border-bottom:none;
+    color: #1A1A1A;
+    font-weight: 400;
+    text-transform: none;
+    padding-bottom:0px;
+    padding-top:10px;
+}
+
+
+
+/*--- mon compte ---*/
+
+
+h3.moncompteinstruction{
+	color: #5E626B;
+	font-size:14px;
+}
+div.Message {
+}
+
+div#UserHome {
+    overflow: hidden;
+    padding: 40px 0px;
+    margin-bottom: 66px;
+    border-bottom:1px dotted #1a1a1a;
+}
+div#UserHome .Bloc{
+	display: inline-block;
+	margin-right:121px;
+	text-transform:uppercase;
+}
+div#UserHome a.ModifierMonCompte:hover, div#UserHome a.MesAdressesLivraison:hover, div#UserHome a.MesAdressesFacturation:hover, div#UserHome a.HistoriqueCommandes:hover{
+	color:#cf1111;
+}
+div#UserHome a.ModifierMonCompte {
+	padding-left:50px;
+	color:#1a1a1a;
+    background: url("/Skins/Public/Img/sprite.png") no-repeat scroll 4px -1007px rgba(0, 0, 0, 0);
+}
+div#UserHome a.MesAdressesLivraison {
+	padding-left:50px;
+	color:#1a1a1a;
+    background: url("/Skins/Public/Img/sprite.png") no-repeat scroll -3px -1130px rgba(0, 0, 0, 0);
+}
+div#UserHome a.MesAdressesFacturation {
+	padding-left:50px;
+	color:#1a1a1a;
+    background: url("/Skins/Public/Img/sprite.png") no-repeat scroll 10px -1243px rgba(0, 0, 0, 0);
+}
+div#UserHome a.HistoriqueCommandes {
+	padding-left:50px;
+	color:#1a1a1a;
+    background: url("/Skins/Public/Img/sprite.png") no-repeat scroll 12px -1352px rgba(0, 0, 0, 0);
+}
+
+
+/*input.MettreAJour {
+	width: 102px;
+	height: 28px;
+	overflow: hidden;
+	cursor: pointer;
+}
+
+input.MettreAJour:hover {
+	background-position: 0 -28px;
+}*/
+
+/* -- Historique de commande --*/
+
+table.HistoCommande td.HistoPDF, table.HistoCommande th.HistoPDF {
+	border-right: none;
+}
+.HistoPDF a{
+	background:url("/Skins/Public/Img/sprite.png") no-repeat scroll -4px -1582px transparent;
+	color: #5e626b;
+    font-weight: bold;
+    text-decoration: underline;
+    text-transform: uppercase;
+    padding-left:20px;
+}
+.HistoCommande {
+	margin:10px;
+}
+table.HistoCommande{
+    border: 1px solid #5e626b;
+    border-collapse: collapse;
+  	margin: 0 10px 0 0;
+    position: relative;
+    width: 100%;
+}
+table.HistoCommande th {
+    border-bottom: 1px solid #5e626b;
+    border-right: 1px dotted #5e626b;
+    color: #5e626b;
+    font-weight: bold;
+    padding: 10px;
+    text-transform: uppercase;
+}
+table.HistoCommande td {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-image: none;
+    border-style: none dotted none none;
+    border-width: medium 1px medium medium;
+    color: #5e626b;
+    font-size: 12px;
+    padding: 10px;
+    text-align: left;
+    text-transform: none;
+}
+/** ADRESSES **/
+
+
+
+
+@media (min-width:315px) and (max-width:500px){
+
+table.HistoCommande th {
+    font-size: 8px;
+    padding: 0;
+}
+table.HistoCommande td {
+    font-size: 8px;
+    padding: 5px;
+}	
+}
+@media (min-width:501px) and (max-width:615px){
+table.HistoCommande th {
+    font-size: 10px;
+    padding: 4px;
+}
+table.HistoCommande td {
+    font-size: 10px;
+    padding: 5px;
+}
+}
+

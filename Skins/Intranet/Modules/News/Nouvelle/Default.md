@@ -1,0 +1,6 @@
+[INFO [!Query!]|I]
+[IF [!I::TypeSearch!]=Child]
+	[MODULE News/Nouvelle/Liste]
+[ELSE]
+	[MODULE News/Nouvelle/Fiche]
+[/IF]

@@ -1,0 +1,458 @@
+@import "menuBlog.css";
+@import "menuBas.css";
+@import "menuHaut.css";
+@import "components.css";
+/*** GLOBAL ***/
+html, body {
+	padding:0; margin:0;
+	background:url('../Img/fond_site.png') repeat #E3F1F6;
+	font-size: 12px;
+	font-family:Arial;
+	color:#4d4d4d;
+
+}
+ul {	padding:0; margin:0; list-style:none;}
+
+a {	color: #01accf;
+	text-decoration:none;
+}
+a:hover {text-decoration:underline;}
+
+
+a::-moz-focus-inner, input::-moz-focus-inner, button::-moz-focus-inner {
+  border: 0;
+}
+
+
+p {
+	font-size:12px;
+	text-align:justify;
+	color: #01accf;
+}
+h1, h2 , h3 ,h4 ,h5 , h6{
+	font-weight:normal;
+	padding:0; 
+	margin:0; 
+	color:#01accf;
+	
+}
+img {	border:0;}
+
+
+
+}
+/*** STRUCTURE ***/
+
+.containerLR {position:relative; display:block; background:#ffffff; padding:20px;height:100%;width:100%;}
+
+.LeftLR {float:left; position:relative; width:250px; left:0px;background-color:#ffffff;}
+.RightLR {float:right; position:relative; width:200px; right:0px;background-color:#ffffff;}
+.centreLR {margin-right:200px;margin-left:250px; position:relative; display:block; background-color:red;
+height:100%;
+min-height:250px;}
+
+
+
+div.containerL {
+	position:relative;
+	display:block;
+	padding-left:258px;
+}
+
+div.innerL {
+	display:block;
+	margin-left:-258px;
+	overflow:hidden;
+}
+
+div.Left {
+	position:relative;
+	width:254px;
+	display: block;
+	float:left;
+	left:0;
+}
+
+div.centreL {
+	position:relative;
+	display:block;
+	height:1%;
+	margin-left:249px;
+	padding: 0;
+}
+
+
+
+.Site {
+	color: #4d4d4d;
+	position: relative;
+	z-index: 10;
+}
+
+.Entete {
+	background-color:#E4f3f8;
+	color: #4d4d4d;
+	border-bottom:1px solid #01accf;
+}
+
+.EntetePied{
+	width: 830px;
+	position:relative;
+	margin:auto;
+
+}
+
+div.Bandeau {
+	background:url('../Img/sprite.png') no-repeat;
+	height:146px;
+	position:relative;
+}
+
+div.MenuCentral {
+ /*   background: url("../Img/sprite.png") repeat-x scroll 0 -385px transparent;-*/
+	position:absolute;
+	bottom:0;
+	right:0;
+}
+
+.Contenu {
+	width: 830px;
+	border: none;
+	background: none;
+	margin:auto;
+	position:relative;
+
+}
+
+div#TopColonnes {
+    	background: url("../Img/sprite.png") no-repeat scroll -37px -995px transparent;
+   	height: 40px;
+	position:absolute;
+	top:0;
+	left:0;
+	right:0;
+}
+div#BottomColonnes {
+    	background: url("../Img/sprite.png") no-repeat scroll -37px  -1050px transparent;
+   	height: 40px;
+	position:absolute;
+	bottom:0;
+	left:0;
+	right:0;
+}
+div#MiddleColonnes {
+     background: url("../Img/fond-bloc_aveccolonnes.png") repeat-y scroll -1px 0 transparent;
+    bottom: 40px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 32px;
+}
+
+
+.SiteFond {
+	position:relative;
+	border-top:1px solid #01accf;
+	background-color:#e4f3f8;
+
+}
+
+
+/*-- Affichage de la liste des posts ---*/
+
+.BlocPost { margin:20px;}
+
+.BlocPost .TitrePost {
+	border-bottom:1px solid #01accf;
+	margin-bottom:5px;
+}
+.BlocPost .TitrePost .LigneTitrePost {
+	display:block;
+	overflow:hidden;
+	position:relative;
+
+}
+.BlocPost .TitrePost .LigneTitrePost h2 {
+	font-size:16px;
+	text-transform:uppercase;
+	color:#01accf;
+	float:left;
+	display:inline;
+	padding-top: 5px;
+}
+.BlocPost  .ImageCat {
+	float:left;
+	margin-right:5px;
+	display:inline;
+}
+
+.BlocPost .TitrePost .LigneTitrePostDate {
+	display:block;
+	overflow:hidden;
+	position:relative;
+/*	padding-left:10px;*/
+	font-size:11px;
+
+}
+
+
+.BlocPost .TitrePost .Auteur {
+	color:#01accf;
+}
+.BlocPost .Post .ContenuPost {
+	text-align:justify;
+	color:#4d4d4d;
+	font-size:12px;
+	padding:10px 10px 10px 0;
+}
+
+.BlocPost .Post ul {
+	list-style:none;
+	overflow:hidden;
+	border-top:1px dotted #01accf;
+	margin-top:5px;
+}
+.BlocPost .Post li {
+    	float: left;
+	display:block;
+    	margin: 2px;
+    	padding: 2px 10px 0 0;
+	border-right:1px dotted #01accf;
+
+}
+.BlocPost .Post li a{
+	font-size:11px;
+	color:#01accf;
+
+}
+
+
+
+
+/*--- composant Contact --*/
+.Commentaires {
+	display:block;
+	position:relative;
+	overflow:hidden;
+	margin:20px 20px 40px 20px;
+}
+
+.Commentaires form {
+	padding:20px;
+
+}
+.Commentaires h1 {
+	font-weight:bold;
+	font-size:14px;
+	text-transform:uppercase;
+	color:#01accf;
+	margin-bottom:10px;
+	padding-bottom:10px;
+}
+
+.Commentaires .Obligatoire { color:#01accf;}
+
+
+.Commentaires  h2 {
+	font-weight:bold;
+	font-size:14px;
+	text-transform:uppercase;
+	color:#c4bea0;
+
+}
+.Commentaires span.petittexte {
+	font-weight:bold;
+	font-size:11px;
+	font-style:italic;
+	color:#c4bea0;
+
+}
+
+.Commentaires .LigneForm  {
+  	margin-bottom: 5px;
+	position:relative;
+	overflow:hidden;
+}
+
+.Commentaires  label {
+	width:175px;
+
+}
+.Commentaires input {
+	border:1px solid #c4bea0;
+	height:10px;
+	margin-left:10px;
+	float:right;
+	width:400px;
+	font-size:10px;
+	color:#4d4d4d;
+}
+
+.Commentaires  select {
+	border:1px solid #c4bea0;
+	height:15px;
+	margin-left:10px;
+	float:right;
+	width:400px;
+	font-size:11px;
+}
+.Commentaires  textarea {
+	border:1px solid #c4bea0;
+	margin-left:10px;
+	float:right;
+	width:400px;
+	font-size:11px;
+}
+
+.Commentaires .BoutonsCentre {
+	display:block;
+	position:relative;
+	padding-top:30px;
+
+}
+
+input.ValiderCommentaires  {
+    background: url("../Img/sprite.png") no-repeat scroll -732px -609px transparent;
+    border: medium none;
+    display: block;
+    float: right;
+    height: 20px;
+    line-height: 0;
+    text-indent: -999px;
+    width: 100px;
+}
+
+
+
+input.ValiderCommentaires:hover {
+	background-position:-732px -631px;
+}
+.OkComment {
+	border:1px solid #01accf;
+	color:#01accf;
+	font-weight:bold;
+	font-size:12px;
+	font-style:italic;
+	margin:10px;
+	padding:10px;
+}
+.ErrorComment {
+	border:1px solid #01accf;
+	color:#4d4d4d;
+	font-size:11px;
+	font-style:italic;
+	margin:10px;
+	padding:10px;
+}
+a.Ancre {
+	color:#4d4d4d;
+	padding:10px 0;
+	text-decoration:underline;
+ 	display: block;
+}
+
+
+.Comments .LigneTitrePost {
+	display:block;
+	overflow:hidden;
+	position:relative;
+
+}
+
+
+.Comments .LigneTitrePostDate {
+	display:block;
+	overflow:hidden;
+	position:relative;
+	padding-left:10px;
+	font-size:13px;
+
+}
+.Comments .Contenu {
+	text-align:justify;	
+	padding:10px;
+	margin:10px;
+	border-bottom:1px dotted #4d4d4d;
+	margin-bottom:10px;
+	font-style:italic;
+
+}
+
+/* --Pagination ---*/
+.LignePagination {
+	display:block;
+	overflow:hidden;
+	position:relative;
+ 	margin:auto;
+	text-align:center;
+	padding: 10px 10px 20px;
+}
+.LignePagination a {
+	font-size:12px;
+	color:#01accf;
+	font-weight:bold;
+	padding:0 10px;
+}
+.LignePagination .current {font-size:14px;color:#4d4d4d;}
+.LignePagination a.pagedebut {
+	background: url("../Img/sprite.png") no-repeat scroll -35px -906px transparent;
+	height: 20px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+	padding:10px;
+}
+.LignePagination a.pagefin {
+	background: url("../Img/sprite.png") no-repeat scroll -35px -924px transparent;
+	height: 20px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+	padding:10px;
+}
+.LignePagination a.pagesuiv {
+	background: url("../Img/sprite.png") no-repeat scroll -35px -964px transparent;
+	height: 20px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+	padding:10px;
+}
+
+.LignePagination a.pageprec {
+	background: url("../Img/sprite.png") no-repeat scroll -35px -945px transparent;
+	height: 20px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+	padding:10px;
+}
+
+.pagination span.current {
+	color:#4d4d4d;
+	font-size:18px;
+}
+
+.Post li.SendFriend a{
+    	background: url("../Img/sprite.png") no-repeat scroll -60px -857px transparent;
+    	display: block;
+    	font-size: 0;
+    	height: 30px;
+    	line-height: 0;
+	margin-right: -10px;
+    	text-indent: -999px;
+    	width: 20px;
+}
+
+.Post a.SendFriend {
+    	background: url("../Img/sprite.png") no-repeat scroll -60px -854px transparent;
+    	display: block;
+    	font-size: 0;
+    	height: 30px;
+    	line-height: 0;
+	margin-right: -10px;
+    	text-indent: -999px;
+    	width: 20px;
+}
+
+.FichPost { margin:10px 0; }

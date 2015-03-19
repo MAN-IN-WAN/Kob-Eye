@@ -1,0 +1,368 @@
+<SCHEMA>
+	<OBJECTCLASS title="DevisTete" driver="mysql" master="1" AccessPoint="1" searchType="plaintext" Icon="[None]" labelPrefix="Dev:" description="Devis" Heritage="0" Class="Modules/Devis/Class/DevisTete.class.php">
+		<CONFIGURATION name="Interface">
+			<FORM hideDelete="1">FormList</FORM>
+		</CONFIGURATION>
+		<FUNCTION type="vseparator">s0</FUNCTION>
+		<FUNCTION name="printDevis" multi="1" icon="print" label="Imprimer" description="Impression des Devis">
+			<PROPERTIES type="boolean" default="0" category="Impression" description="Devis avec Fond">Fond</PROPERTIES>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"interface":1,
+						"method":"object","data":{"module":"Devis","objectClass":"DevisTete","form":"Functions/printDevis.json"},
+						"function":"PrintDocuments","selectionRequired":1,"args":[{"selectedValues":["dataGrid"]},{"interfaceValues":["Fond"]}]}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="DevisFacture" formOnly="1" icon="invoice" label="Facturer" description="Facturation des Devis">
+			<PROPERTIES type="date" obligatoire="1" category="Facturation" description="Date de facturation">Date</PROPERTIES>
+			<PROPERTIES type="boolean" defaultValue="1" category="Facturation" description="Facture cédée">Cedee</PROPERTIES>
+			<PROPERTIES type="boolean" defaultValue="0" category="Facturation" description="Déjà facturés inclus">Force</PROPERTIES>
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"interface":1,
+						"method":"object","data":{"module":"Devis","objectClass":"DevisTete","form":"Functions/DevisFacture.json"},
+						"function":"CreateInvoices","selectionRequired":1,"args":[{"selectedValues":["dataGrid"]},{"interfaceValues":["Date","Force","Cedee"]}]}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="DevisConfirme" formOnly="1" multi="1" icon="" label="Confirmer" description="Confirmation du Devis">
+			<PROPERTIES type="varchar" length="50" category="Confirmation" description="Chef de rayon">chef</PROPERTIES>
+			<PROPERTIES type="varchar" length="50" category="Confirmation" description="Téléphone">telephone</PROPERTIES>
+			<PROPERTIES type="text" category="Confirmation" description="Notes">notes</PROPERTIES>
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"interface":1,
+						"method":"object","data":{"module":"Devis","objectClass":"DevisTete","form":"Functions/DevisConfirme.json",
+						"proxyValues":{"vars":{
+							"chef":{"args":[{"dataValue":["formCreator.ChefRayon"]}]},
+							"telephone":{"args":[{"dataValue":["formCreator.TelephoneRayon"]}]},
+							"notes":{"args":[{"dataValue":["formCreator.Commentaires"]}]}}
+						}},
+						"function":"Validate","selectionRequired":1,"args":[{"interfaceValues":["chef","telephone","notes"]}]}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+
+		<!-- devis -->
+		<PROPERTIES type="varchar" length="8" obligatoire="0" searchOrder="1" category="Devis" description="Devis" list="1" listWidth="60" formLabel="1">Reference</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" obligatoire="1" searchOrder="2" category="Devis" description="Société" values="L::Locanim,B::Bopi" list="2" listWidth="20" listDescr="S">Societe</PROPERTIES>
+		<PROPERTIES type="date" defaultValue="Now" obligatoire="1" searchOrder="3" category="Devis" description="Date" list="3">Date</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="1" query="Systeme/Role/COMMERCIAL/Group/*/User::Id::Initiales" category="Devis" description="Commercial" >CommercialId</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" auto="1" obligatoire="0" category="Devis" description="Confirmé" listDescr="C" >Confirme</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" auto="1" obligatoire="0" category="Devis" description="Annulé" listDescr="A" >Annule</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" obligatoire="0" auto="1" searchOrder="5" category="Devis" description="Préparé" list="5" listDescr="P">Preparation</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" auto="1" obligatoire="0" searchOrder="6" category="Devis" description="Facturé" list="6" listDescr="F" >Facture</PROPERTIES>
+		<PROPERTIES type="int" defaultValue="1" searchOrder="4" query="Devis/Status/Type=0::Id::Status" category="Devis" description="Etat" >EtatDevis</PROPERTIES>
+		<PROPERTIES type="int" default="0" auto="1" obligatoire="0" category="Devis"  listDescr="Fact" >Factures</PROPERTIES>
+		<!-- client -->
+		<PROPERTIES type="int" obligatoire="1" query="Repertoire/Tiers::Id::Intitule" category="Client" description="Client" >ClientId</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" searchOrder="7" category="Client" filterMode="generic" description="Intitulé client" list="10" >ClientIntitule</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" category="Client" description="Adresse 1" >ClientAdresse1</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" category="Client" description="Adresse 2" >ClientAdresse2</PROPERTIES>
+<!--		<PROPERTIES type="varchar" obligatoire="0" category="Client" description="Adresse 3" >ClientAdresse3</PROPERTIES>
+-->
+		<PROPERTIES type="varchar" obligatoire="0" category="Client" description="CP" >ClientCodPostal</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" category="Client" description="Ville" >ClientVille</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" category="Client" description="Pays" >ClientPays</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="0" query="Repertoire/Contact::Id::Nom,Prenom" category="Client" description="Contact" >ClientContactId</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" category="Client" description="Téléphone" >ClientTelephone</PROPERTIES>
+		<!-- livraison -->
+		<PROPERTIES type="int" obligatoire="1" query="Repertoire/Tiers::Id::Intitule" category="Livraison" description="Livraison" >LivraisonId</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" searchOrder="8" category="Livraison" filterMode="generic" description="Intitulé livraison" list="11" >LivraisonIntitule</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" category="Livraison" description="Adresse 1" >LivraisonAdresse1</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" category="Livraison" description="Adresse 2" >LivraisonAdresse2</PROPERTIES>
+<!--		<PROPERTIES type="varchar" obligatoire="0" category="Livraison" description="Adresse 3" >LivraisonAdresse3</PROPERTIES>
+-->
+		<PROPERTIES type="varchar" obligatoire="0" category="Livraison" description="CP" >LivraisonCodPostal</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" category="Livraison" description="Ville" >LivraisonVille</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" category="Livraison" description="Pays" >LivraisonPays</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="0" query="Repertoire/Contact::Id::Nom,Prenom" category="Livraison" description="Contact" >LivraisonContactId</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" category="Livraison" description="Téléphone" >LivraisonTelephone</PROPERTIES>
+		<!-- location -->
+		<PROPERTIES type="date" obligatoire="0" searchOrder="9" category="Location" description="Date début" list="15" listDescr="Début">DateDebut</PROPERTIES>
+		<PROPERTIES type="date" obligatoire="0" searchOrder="10" category="Location" description="Date fin" list="16" listDescr="Fin">DateFin</PROPERTIES>
+		<PROPERTIES type="date" obligatoire="0" category="Location" description="Date livraison" listDescr="Dépôt">DateLivraison</PROPERTIES>
+		<PROPERTIES type="date" obligatoire="0" category="Location" description="Date reprise" listDescr="Reprise">DateReprise</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="0" default="0" query="StockLocatif/TarifDuree::Id::Jours" select="Id,Duree,Jours" category="Location" description="Durée" >TarifDureeId</PROPERTIES>
+		<!-- operation -->
+		<PROPERTIES type="int" default="0" query="Devis/OperationSpeciale::Id::Designation" category="Autre" description="Opération spéciale">OperationId</PROPERTIES>
+		<!-- finance -->
+		<PROPERTIES type="varchar" length="10" default="" query="Devis/ModeReglement::Code::Code" category="Finance" description="Règlement">ModeReglement</PROPERTIES>
+		<PROPERTIES type="price" default="0" category="Finance" description="Montant HT Brut">MontantHTBrut</PROPERTIES>
+		<PROPERTIES type="price" default="0" category="Finance" description="Remise ligne">RemiseLigne</PROPERTIES>
+		<PROPERTIES type="price" default="0" category="Finance" description="Remise %">RemiseTaux</PROPERTIES>
+		<PROPERTIES type="price" default="0" category="Finance" description="Remise montant">RemiseMontant</PROPERTIES>
+		<PROPERTIES type="price" default="0" category="Finance" description="Montant HT Net" list="17" listDescr="Total HT">MontantHTNet</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" obligatoire="0" default="1" query="Devis/TVA::Code::Taux" category="Finance" description="TVA">CodeTVA</PROPERTIES>
+		<PROPERTIES type="price" default="0" category="Finance" description="Montant TVA">MontantTVA</PROPERTIES>
+		<PROPERTIES type="price" default="0" category="Finance" description="Montant TTC">MontantTTC</PROPERTIES>
+		<PROPERTIES type="boolean" category="Finance" description="Mensualités">Mensualites</PROPERTIES>
+		<PROPERTIES type="date" category="Finance" description="Echéance" listDescr="Eché.">Echeance</PROPERTIES>
+		<PROPERTIES type="float" category="Finance" description="Nombre échéances" >NombreEcheance</PROPERTIES>
+		<PROPERTIES type="price" category="Finance" description="Première échéance">PremiereEcheance</PROPERTIES>
+		<PROPERTIES type="price" category="Finance" description="Autres échéances">AutresEcheance</PROPERTIES>
+		<PROPERTIES type="price" category="Finance" description="Dernière échéances">DerniereEcheance</PROPERTIES>
+		<!-- autre -->
+		<PROPERTIES type="varchar" length="50" obligatoire="0" category="Autres" description="Chef de rayon">ChefRayon</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" obligatoire="0" category="Autres" description="Téléphone">TelephoneRayon</PROPERTIES>
+		<PROPERTIES type="text" obligatoire="0" category="Autres" description="Commentaires">Commentaires</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" obligatoire="0" category="Autres" description="Archivé">Archive</PROPERTIES>
+
+		<VIEW title="DevisList" default="1">
+			<OBJECTCLASS title="DevisTete" select="Id,Societe,Preparation,Facture,Reference,Date,DateDebut,DateFin,MontantHTNet,ClientIntitule,LivraisonIntitule" filters="">
+				<!-- CAS FKEY  <JOIN key="{KEY_NAME}" filter=""/> -->
+				<!-- CAS JOIN  <JOIN type="inner|outer" title="{OBJECTCLASS_NAME}" on="{LOCAL_FIELD_NAME}" target="{DISTANT_FIELD_NAME}" select="Designation as Enseigne" filters="" /> -->
+				<JOIN type="outer" module="Systeme" title="User" on="CommercialId" target="Id">
+					<PROPERTIES type="varchar" length="10" searchOrder="11" query="Systeme/Role/COMMERCIAL/Group/*/User::Initiales::Initiales" list="20" listDescr="Comm." description="Commercial" listWidth="50">Initiales</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" module="Devis" title="Status" on="EtatDevis" target="Id">
+					<PROPERTIES type="varchar" query="Devis/Status/Type=0::Status::Status" description="Etat">Status</PROPERTIES>
+					<PROPERTIES type="image" list="4" listDescr="E" listWidth="20">Status_Icon</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+			<!-- CAS GROUPBY <GROUPBY>Enseigne.Id</GROUPBY> -->
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Status" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Etat Devis" Heritage="0" >
+		<PROPERTIES type="int" default="0" category="Etat">Type</PROPERTIES>
+		<PROPERTIES type="varchar" length="16" category="Etat">Status</PROPERTIES>
+		<PROPERTIES type="varchar" length="8" category="Etat">Status_Color</PROPERTIES>
+		<PROPERTIES type="varchar" length="16" category="Etat">Status_Icon</PROPERTIES>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="DevisLigne" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Lignes Devis" Heritage="0" Class="Modules/Devis/Class/DevisLigne.class.php">
+<!--		<PROPERTIES type="order" category="Ligne devis">Ordre</PROPERTIES>
+-->
+		<PROPERTIES type="int" default="0" query="StockLocatif/Famille::Id::Famille" category="Ligne devis" description="Famille">FamilleId</PROPERTIES>
+		<PROPERTIES type="text" category="Ligne devis" description="Désignation" >Designation</PROPERTIES>
+		<PROPERTIES type="float" category="Ligne devis" description="Quantité">Quantite</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" obligatoire="0" query="Devis/TVA::Code::Taux" category="Ligne devis" description="TVA" >CodeTVA</PROPERTIES>
+		<PROPERTIES type="price" default="0" category="Ligne devis" description="Prix UHT">PrixUnitaire</PROPERTIES>
+		<PROPERTIES type="price" default="0" category="Ligne devis" description="Remise">Remise</PROPERTIES>
+		<PROPERTIES type="price" default="0" category="Ligne devis" description="Prix Net">PrixNet</PROPERTIES>
+<!--		<PROPERTIES type="text" obligatoire="0" category="Ligne devis" description="Commentaires">Commentaires</PROPERTIES>
+-->
+		<FKEY data="DevisTete,Id" card="1,1" hidden="1">DevisId</FKEY>
+		<VIEW title="DevisLigneList" order="Id" orderType="ASC" default="1">
+			<OBJECTCLASS title="DevisLigne" select="Id,Designation,Quantite,PrixUnitaire,Remise,PrixNet,CodeTVA,FamilleId" filters="">
+				<JOIN type="outer" module="StockLocatif" title="Famille" on="FamilleId" target="Id" select="Famille,CategorieId,Transport" filters="">
+					<JOIN type="outer" module="StockLocatif" title="Categorie" on="CategorieId" target="Id" select="ModeTarif" filters="" />
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="DevisEcheance" driver="mysql" order="Echeance" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Echéances devis" Heritage="0" Class="Modules/Devis/Class/DevisEcheance.class.php">
+		<CONFIGURATION name="Interface">
+			<FORM hideNew="1" hideOpen="1" hideDelete="1">FormList</FORM>
+		</CONFIGURATION>
+		<FUNCTION name="ContractInvoices" multi="1" icon="invoice" label="Facturer" description="Facturation des Contrats">
+			<PROPERTIES type="date" obligatoire="1" category="Facturation" description="Date de facturation">Date</PROPERTIES>
+			<PROPERTIES type="boolean" defaultValue="0" category="Facturation" description="Déjà facturés inclus">Force</PROPERTIES>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"interface":1,
+						"method":"object","data":{"module":"Devis","objectClass":"DevisEcheance","form":"Functions/ContractInvoices.json"},
+						"function":"ContractInvoices","selectionRequired":1,"args":[{"interfaceValues":["Date","Force"]},{"selectedValues":["dataGrid"]}]}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FKEY data="DevisTete,Id" card="1,1" hidden="1">DevisId</FKEY>
+		<PROPERTIES type="date" searchOrder="1">Echeance</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" searchOrder="2">Facture</PROPERTIES>
+		<PROPERTIES type="int" default="0" >Numero</PROPERTIES>
+		<VIEW title="DevisEcheanceList" default="1">
+			<OBJECTCLASS title="DevisEcheance" select="Id,Echeance,Facture,Numero">
+				<JOIN type="outer" module="Devis" title="DevisTete" on="DevisId" target="Id" 
+					select="Reference,Societe,NombreEcheance,ClientIntitule,LivraisonIntitule,DateDebut,DateFin">
+					<JOIN type="outer" module="Systeme" title="User" on="CommercialId" target="Id" select="Initiales"/>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="TVA" driver="mysql" master="0" AccessPoint="0" Dico="1" Icon="[None]" Description="Taux de TVA" Heritage="0">
+		<PROPERTIES type="int" obligatoire="1" searchOrder="1" category="Description" description="Code TVA" listWidth="50">Code</PROPERTIES>
+		<PROPERTIES type="price" category="Description" description="Taux TVA" >Taux</PROPERTIES>
+		<PROPERTIES type="varchar" default="" category="Description" description="Compte comptable">CompteComptable</PROPERTIES>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="ProfilTVA" driver="mysql" master="0" AccessPoint="0" Dico="1" Icon="[None]" Description="Profil TVA" Heritage="0">
+		<PROPERTIES type="varchar" length="10" obligatoire="1" searchOrder="1" category="Description" description="Profil TVA" listWidth="80">Profil</PROPERTIES>
+		<PROPERTIES type="price" category="Description" description="Taux 1" >Taux1</PROPERTIES>
+		<PROPERTIES type="price" category="Description" description="Taux 2" >Taux2</PROPERTIES>
+		<PROPERTIES type="price" category="Description" description="Taux 3" >Taux3</PROPERTIES>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="FactureTete" driver="mysql" master="1" AccessPoint="1" searchType="plaintext" Icon="[None]" labelPrefix="Fac:" description="Factures" Heritage="0" Class="Modules/Devis/Class/FactureTete.class.php">
+		<CONFIGURATION name="Interface">
+			<FORM hideDelete="1">FormList</FORM>
+		</CONFIGURATION>
+		<FUNCTION type="vseparator">s0</FUNCTION>
+		<FUNCTION name="printInvoice" multi="1" icon="print" label="Imprimer" description="Impression des Facture">
+			<PROPERTIES type="boolean" default="0" category="Impression" description="Facture avec Fond">Fond</PROPERTIES>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"interface":1,
+						"method":"object","data":{"module":"Devis","objectClass":"FactureTete","form":"Functions/printInvoice.json"},
+						"function":"PrintDocuments","selectionRequired":1,"args":[{"selectedValues":["dataGrid"]},{"interfaceValues":["Fond"]}]}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<!-- facture -->
+		<PROPERTIES type="varchar" length="8" obligatoire="0" searchOrder="1" filterMode="left" category="Facture" description="Facture" list="1" listWidth="60" formLabel="1">Reference</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" obligatoire="1" searchOrder="2" category="Facture" description="Société" values="L::Locanim,B::Bopi" list="1" listWidth="20" listDescr="S">Societe</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" default="F" obligatoire="1" searchOrder="3" category="Facture" description="Type" values="F::Facture,A::Avoir" list="1" listWidth="20" listDescr="T">Type</PROPERTIES>
+		<PROPERTIES type="date" defaultValue="Now" obligatoire="1" searchOrder="4" category="Facture" description="Date" list="1">Date</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="0" query="Systeme/Role/COMMERCIAL/Group/*/User::Id::Initiales" category="Devis" description="Commercial">CommercialId</PROPERTIES>
+		<PROPERTIES type="boolean" obligatoire="0" category="Facture" description="Validée" listDescr="V" >Valide</PROPERTIES>
+		<PROPERTIES type="boolean" obligatoire="0" searchOrder="5" category="Facture" description="Imprimée" list="1" listDescr="I" >Imprime</PROPERTIES>
+		<PROPERTIES type="boolean" obligatoire="0" category="Facture" description="Compta" >Comptabilise</PROPERTIES>
+		<PROPERTIES type="boolean" obligatoire="0" searchOrder="7" category="Facture" description="Pointée" list="1" listDescr="P" >Solde</PROPERTIES>
+		<!-- client -->
+		<PROPERTIES type="int" obligatoire="1" query="Repertoire/Tiers::Id::Intitule" category="Client" description="Client" >ClientId</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" searchOrder="8" category="Client" filterMode="generic" description="Intitulé client" list="1" >ClientIntitule</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" category="Client" description="Adresse 1" >ClientAdresse1</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" category="Client" description="Adresse 2" >ClientAdresse2</PROPERTIES>
+<!--		<PROPERTIES type="varchar" obligatoire="0" category="Client" description="Adresse 3" >ClientAdresse3</PROPERTIES>
+-->
+		<PROPERTIES type="varchar" obligatoire="0" category="Client" description="CP" >ClientCodPostal</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" category="Client" description="Ville" >ClientVille</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" category="Client" description="Pays" >ClientPays</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="0" query="Repertoire/Contact::Id::Nom,Prenom" category="Client" description="Contact" >ClientContactId</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" category="Client" description="Téléphone" >ClientTelephone</PROPERTIES>
+		<!-- livraison -->
+		<PROPERTIES type="int" obligatoire="0" query="Repertoire/Tiers::Id::Intitule" category="Livraison" description="Livraison" >LivraisonId</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" searchOrder="9" category="Livraison" filterMode="generic" description="Intitulé livraison" list="1" >LivraisonIntitule</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" category="Livraison" description="Adresse 1" >LivraisonAdresse1</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" category="Livraison" description="Adresse 2" >LivraisonAdresse2</PROPERTIES>
+<!--		<PROPERTIES type="varchar" obligatoire="0" category="Livraison" description="Adresse 3" >LivraisonAdresse3</PROPERTIES>
+-->
+		<PROPERTIES type="varchar" obligatoire="0" category="Livraison" description="CP" >LivraisonCodPostal</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" category="Livraison" description="Ville" >LivraisonVille</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" category="Livraison" description="Pays" >LivraisonPays</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="0" query="Repertoire/Contact::Id::Nom,Prenom" category="Livraison" description="Contact" >LivraisonContactId</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" category="Livraison" description="Téléphone" >LivraisonTelephone</PROPERTIES>
+		<!-- finance -->
+		<PROPERTIES type="price" default="0" category="Finance" description="Montant HT Brut">MontantHTBrut</PROPERTIES>
+		<PROPERTIES type="price" default="0" category="Finance" description="Remise ligne">RemiseLigne</PROPERTIES>
+		<PROPERTIES type="price" default="0" category="Finance" description="% de Remise">RemiseTaux</PROPERTIES>
+		<PROPERTIES type="price" default="0" category="Finance" description="Montant de Remise">RemiseMontant</PROPERTIES>
+		<PROPERTIES type="price" default="0" category="Finance" description="Montant HT Net">MontantHTNet</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" obligatoire="0" default="1" query="Devis/TVA::Code::Taux" category="Finance" description="TVA">CodeTVA</PROPERTIES>
+		<PROPERTIES type="price" default="0" category="Finance" description="Montant TVA">MontantTVA</PROPERTIES>
+		<PROPERTIES type="price" default="0" category="Finance" description="Montant TTC" list="1">MontantTTC</PROPERTIES>
+		<PROPERTIES type="price" default="0" category="Finance" description="Acompte">Acompte</PROPERTIES>
+		<PROPERTIES type="varchar" length="10" default="" query="Devis/ModeReglement::Code::Code" category="Finance" description="Règlement">ModeReglement</PROPERTIES>
+		<PROPERTIES type="price" default="0" category="Finance" description="Règlé" >Reglement</PROPERTIES>
+		<PROPERTIES type="date" searchOrder="10" category="Finance" description="Echéance" list="1" listDescr="Eché.">Echeance</PROPERTIES>
+		<PROPERTIES type="int" category="Finance" description="Nombre échéances" >NombreEcheance</PROPERTIES>
+		<PROPERTIES type="price" category="Finance" description="Première échéance">PremiereEcheance</PROPERTIES>
+		<PROPERTIES type="price" category="Finance" description="Autres échéances">AutresEcheance</PROPERTIES>
+		<PROPERTIES type="price" category="Finance" description="Dernière échéances">DerniereEcheance</PROPERTIES>
+		<!-- autre -->
+		<PROPERTIES type="boolean" default="0" obligatoire="0" category="Autres" description="Archivé">Archive</PROPERTIES>
+		<VIEW title="FactureList" default="1">
+			<OBJECTCLASS title="FactureTete" select="Id,Reference,Societe,Type,Date,Imprime,Solde,Echeance,MontantTTC,ClientIntitule,LivraisonIntitule,LivraisonVille" filters="">
+				<!-- CAS FKEY  <JOIN key="{KEY_NAME}" filter=""/> -->
+				<!-- CAS JOIN  <JOIN type="inner|outer" title="{OBJECTCLASS_NAME}" on="{LOCAL_FIELD_NAME}" target="{DISTANT_FIELD_NAME}" select="Designation as Enseigne" filters="" /> -->
+				<JOIN type="outer" module="Systeme" title="User" on="CommercialId" target="Id">
+					<PROPERTIES type="varchar" length="10" searchOrder="11" query="Systeme/Role/COMMERCIAL/Group/*/User::Initiales::Initiales" list="1" description="Commercial" listWidth="80">Initiales</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+			<!-- CAS GROUPBY <GROUPBY>Enseigne.Id</GROUPBY> -->
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="FactureLigne" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Lignes Facture" Heritage="0" Class="Modules/Devis/Class/FactureLigne.class.php">
+<!--		<PROPERTIES type="order" category="Ligne facture">Ordre</PROPERTIES>
+-->
+		<PROPERTIES type="int" default="0" query="StockLocatif/Famille::Id::Famille" category="Ligne facture" description="Famille">FamilleId</PROPERTIES>
+		<PROPERTIES type="text" category="Ligne facture" description="Désignation">Designation</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Ligne facture" description="Quantité">Quantite</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" query="Devis/TVA::Code::Taux" category="Ligne facture" description="TVA">CodeTVA</PROPERTIES>
+		<PROPERTIES type="price" default="0" category="Ligne facture" description="Prix UHT">PrixUnitaire</PROPERTIES>
+		<PROPERTIES type="price" default="0" category="Ligne facture" description="Remise">Remise</PROPERTIES>
+		<PROPERTIES type="price" default="0" category="Ligne facture" description="Prix Net">PrixNet</PROPERTIES>
+		<FKEY data="FactureTete,Id" card="1,1" hidden="1">FactureId</FKEY>
+		<VIEW title="FactureLigneList" default="1">
+			<OBJECTCLASS title="FactureLigne" select="Id,Designation,Quantite,PrixUnitaire,Remise,PrixNet,CodeTVA,FamilleId" filters="">
+				<JOIN type="outer" module="StockLocatif" title="Famille" on="FamilleId" target="Id" select="Famille" filters="" />
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="ModeReglement" driver="mysql" order="Code" orderType="ASC" master="0" AccessPoint="0" Dico="1" Icon="[None]" Description="Modes Règlement" Heritage="0">
+		<PROPERTIES type="varchar" length="16" obligatoire="1" searchOrder="1" category="Description" description="Code TVA" listWidth="50">Code</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" category="Description" description="Désignation" >Designation</PROPERTIES>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="Reglement" driver="mysql" order="Date" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Règlements" Heritage="0" Class="Modules/Devis/Class/Reglement.class.php">
+		<FKEY data="Tiers,Id" module="Repertoire" card="1,1" select="Intitulé" category="Réglement" description="Client" hiddenChild="1">TiersId</FKEY>
+		<PROPERTIES type="date" defaulValue="Now" obligatoire="1" searchOrder="2" category="Réglement" >Date</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" searchOrder="3" filterMode="left" category="Réglement" listDescr="R" listWidth="20">Mode</PROPERTIES>
+		<PROPERTIES type="price" default="0" obligatoire="0" searchOrder="5" category="Réglement" >Montant</PROPERTIES>
+		<VIEW title="ReglementList" default="0">
+			<OBJECTCLASS title="Reglement" select="Id,Date,Mode,Montant" filters="">
+				<JOIN type="outer" title="Tiers" module="Repertoire" on="TiersId" target="Id" select="ClientIntitule" filters="" />
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="CodeTarif" order="CodeTarif" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" Icon="[None]" Description="Code Tarif" Heritage="0">
+		<PROPERTIES type="varchar" length="10" obligatoire="1" searchOrder="1" category="Description" description="Code tarif" width="50">CodeTarif</PROPERTIES>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="Societe" driver="mysql" master="0" AccessPoint="1" Icon="[None]" Description="Sociétés" Heritage="0">
+		<PROPERTIES type="varchar" length="10" obligatoire="1" searchOrder="1" category="Description" >Code</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" searchOrder="2" category="Description" >Intitulé</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" searchOrder="0" category="Description" >Adresse1</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" searchOrder="0" category="Description" >Adresse2</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" searchOrder="0" category="Description" >Adresse3</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" searchOrder="0" category="Description" >Web</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" searchOrder="0" category="Description" >Telephone</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" searchOrder="0" category="Description" >Fax</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" searchOrder="0" category="Description" >Siret</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" searchOrder="0" category="Description" >Ape</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" searchOrder="0" category="Description" >RCS</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" searchOrder="0" category="Description" >Capital</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="OperationSpeciale" driver="mysql" master="0" AccessPoint="0" Icon="[None]" Description="Opérations spéciales" Dico="1">
+		<PROPERTIES type="varchar" searchOrder="2" length="100" obligatoire="1" category="Intitulé" description="Désignation">Designation</PROPERTIES>
+		<PROPERTIES type="date" searchOrder="3" category="Intitulé" description="Période">Periode</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Constante" driver="mysql" master="0" AccessPoint="0" Icon="[None]" Description="Constantes" Dico="0">
+		<PROPERTIES type="varchar" length="20" searchOrder="1" obligatoire="1" category="Intitulé">Code</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" category="Intitulé" description="Désignation">Valeur</PROPERTIES>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="TexteLibre" driver="mysql" master="0" AccessPoint="0" Icon="[None]" Description="Texte libre" Dico="1">
+		<PROPERTIES type="varchar" length="16" searchOrder="1" obligatoire="1" listWidth="80">Code</PROPERTIES>
+		<PROPERTIES type="text" searchOrder="1" obligatoire="0" description="Texte">Texte</PROPERTIES>
+	</OBJECTCLASS>
+
+</SCHEMA>
+
+
+
+

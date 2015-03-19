@@ -1,0 +1,9 @@
+{"form":{"type":"VBox","id":"FromPrepar","label":"Préparation","percentWidth":100,"percentHeight":100,
+"localProxy":1,"components":[
+	{"type":"LocPrepa","params":{
+		"readMethod":{"method":"object","data":{"module":"StockLogistique","objectClass":"BLTete"},"function":"ReadPrepa"},
+		"removeMethod":{"method":"object","data":{"module":"StockLogistique","objectClass":"BLTete"},"function":"RemovePrepa"},
+		"saveMethod":{"method":"object","data":{"module":"StockLogistique","objectClass":"BLTete"},"function":"SavePrepa"}
+	}}
+]}
+}

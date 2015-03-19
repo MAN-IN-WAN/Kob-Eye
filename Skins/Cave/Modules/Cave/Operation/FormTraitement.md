@@ -1,0 +1,152 @@
+{"form":{"type":"TitleWindow","id":"FormTraitement","title":"TRAITEMENT",
+"kobeyeClass":{"module":"Cave","objectClass":"Operation"},
+"localProxy":{
+	"actions":{
+		"Volume":{"action":"invoke","method":"callMethod","params":{"method":"object","function":"ResteCuve","args":"dv:CuveId,dv:Volume,dv:CuveVide,dv:transfert"}},
+		"CuveId":{"action":"invoke","method":"callMethod","params":{"method":"object","function":"ResteCuve","args":"dv:CuveId,dv:Volume,dv:CuveVide,dv:transfert"}},
+		"CuveVide":{"action":[
+			{"action":"invoke","method":"callMethod","params":{"method":"object","function":"ResteCuve","args":"dv:CuveId,dv:Volume,dv:CuveVide,dv:transfert"}},
+			{"action":"invoke","method":"groupState","params":{"group":"ecart","property":"visible","conditions":[{"compare":"CuveVide=1&Ecart!=0"},{"hasID":1,"idle":1}]}}
+		]},
+		"proxy_kobeye_status":{"action":[
+			{"action":"invoke","method":"groupState","params":{"group":"updated","property":"enabled","updated":1}}
+		]},
+		"SousTypeId":{"action":[
+			{"action":"invoke","method":"groupState","params":{"group":"transfert","property":"enabled","conditions":[{"compare":"SousTypeId:Transfert=1"}]}},
+			{"action":"invoke","method":"groupState","params":{"group":"produit","property":"enabled","conditions":[{"compare":"SousTypeId:Transfert=0"}]}},
+			{"action":"invoke","method":"setValue","params":{"dataField":"transfert","conditions":[{"compare":"SousTypeId:Transfert=1"}],"values":[1,0]}},
+			{"action":"invoke","method":"groupState","params":{"group":"vide","property":"color","setStyle":1,"conditions":[{"compare":"SousTypeId:Transfert=1"}],"values":["0xffffff","0x505050"]}}
+		]}
+	}
+},
+"components":[
+	{"type":"VBox","percentWidth":100,"percentHeight":100,"minWidth":550,"setStyle":{"paddingLeft":5,"paddingRight":5,"paddingTop":5,"paddingBottom":5},
+	"verticalScrollPolicy":"auto","minWidth":0,"minHeight":0,
+	"components":[
+		{"type":"EditContainer","id":"edit",//"percentWidth":100,"percentHeight":100,
+		"components":[
+			{"type":"DataField","dataField":"transfert"},
+			{"type":"VBox","setStyle":{"verticalGap":2,"paddingLeft":6,"paddingRight":6,"paddingTop":0,"paddingBottom":2},
+			"percentWidth":100,"percentHeight":100,
+			"components":[
+				{"type":"DataField","dataField":"TypeId","defaultValue":3},
+				{"type":"FormItem","label":"Operateur","labelWidth":80,"components":[
+					{"type":"ComboBox","dataField":"OperateurId","width":222,"required":0,
+					"kobeyeClass":{"module":"Cave","objectClass":"Operateur","identifier":"Id","label":"Operateur","select":"Id,Operateur"},
+					"actions":[
+						{"type":"init","action":"loadData"}
+					]}
+				]},
+				{"type":"FormItem","label":"Date - Heure","labelWidth":80,"components":[
+					{"type":"DateTimeField","dataField":"Date","validType":"date","required":0,"defaultValue":"Now","startingHour":7,"increment":10}
+				]},
+				{"type":"Spacer","height":10},
+				{"type":"FormItem","label":"Sous type","labelWidth":80,"components":[
+					{"type":"ComboBox","dataField":"SousTypeId","width":222,"required":0,"exoFilters":{"Id":"ProduitId"},
+					"kobeyeClass":{"module":"Cave","objectClass":"SousType","setFilter":"TypeId=3","identifier":"Id","label":"SousType","select":"Id,SousType,Transfert"},
+					"actions":[
+						{"type":"init","action":"loadData"}
+					]}
+				]},
+				{"type":"Spacer","height":10},
+				{"type":"HGroup","gap":2,"components":[
+					{"type":"Spacer","width":92},
+					{"type":"Label","text":"Cuve","width":62,"setStyle":{"color":"0xffffff","fontWeight":"bold"}},
+					{"type":"Label","text":"Capacité","width":55,"setStyle":{"color":"0xffffff","fontWeight":"bold"}},
+					{"type":"Label","text":"Contenu","width":55,"setStyle":{"color":"0xffffff","fontWeight":"bold"}},
+					{"type":"Label","text":"Lot","width":60,"setStyle":{"color":"0xffffff","fontWeight":"bold"}},
+					{"type":"Label","text":"Catégorie","width":150,"setStyle":{"color":"0xffffff","fontWeight":"bold"}},
+					{"type":"Label","text":"Couleur","width":60,"setStyle":{"color":"0xffffff","fontWeight":"bold"}}
+				]},
+				{"type":"FormItem","labelWidth":80,"label":"Origine","percentWidth":100,"components":[
+					{"type":"HGroup","gap":2,"components":[
+						{"type":"TextInput","dataField":"Cuve","width":40,"editable":0},
+						{"type":"PopupButton","dataField":"CuveId","icon":"dataBase","height":20,
+						"kobeyeClass":{"module":"Cave","objectClass":"Cuve","setFilter":"EnService=1&EtatCuveId=11&EtatLotId<3","form":"PopupList.json"},
+						"exoFields":{"Cuve":"Cuve","Capacite":"Capacite","Volume":"Contenu","CuveLotId":"LotId","Lot":"Lot","Categorie":"Categorie","Couleur":"Couleur"}},
+						{"type":"TextInput","dataField":"Capacite","width":55,"setStyle":{"textAlign":"end"},"editable":0},
+						{"type":"TextInput","dataField":"Contenu","width":55,"setStyle":{"textAlign":"end"},"editable":0},
+						{"type":"TextInput","dataField":"Lot","width":60,"editable":0},
+						{"type":"TextInput","dataField":"Categorie","width":150},
+						{"type":"TextInput","dataField":"Couleur","width":60},
+						{"type":"DataField","dataField":"LotId","defaultValue":0}
+					]}
+				]},
+				{"type":"FormItem","labelWidth":80,"label":"Destination","percentWidth":100,"components":[
+					{"type":"HGroup","gap":2,"components":[
+						{"type":"TextInput","dataField":"CuveB","width":40,"editable":0,"enabled":0,"stateGroup":"transfert"},
+						{"type":"PopupButton","dataField":"CuveIdB","icon":"dataBase","height":20,"enabled":0,"stateGroup":"transfert",
+						"kobeyeClass":{"module":"Cave","objectClass":"Cuve","setFilter":"EnService=1&EtatCuveId<15&EtatLotId<3","form":"PopupList.json"},
+						"exoFields":{"Cuve":"CuveB","Capacite":"CapaciteB","Volume":"ContenuB","CuveLotId":"LotIdB","Lot":"LotB","Categorie":"CategorieB","Couleur":"CouleurB"}},
+						{"type":"TextInput","dataField":"CapaciteB","width":55,"setStyle":{"textAlign":"end"},"editable":0,"enabled":0,"stateGroup":"transfert"},
+						{"type":"TextInput","dataField":"ContenuB","width":55,"setStyle":{"textAlign":"end"},"editable":0,"enabled":0,"stateGroup":"transfert"},
+						{"type":"TextInput","dataField":"LotB","width":60,"editable":0,"enabled":0,"stateGroup":"transfert"},
+						{"type":"TextInput","dataField":"CategorieB","width":150,"enabled":0,"stateGroup":"transfert"},
+						{"type":"TextInput","dataField":"CouleurB","width":60,"enabled":0,"stateGroup":"transfert"},
+						{"type":"DataField","dataField":"LotIdB","defaultValue":0}
+					]}
+				]},
+				{"type":"Spacer","height":10},
+				{"type":"FormItem","label":"Volume","labelWidth":80,"components":[
+					{"type":"TextInput","dataField":"Volume","width":60,"maxChars":10,"validType":"float","setStyle":{"textAlign":"end"},"required":0}
+				]},
+				{"type":"FormItem","label":"Reste en cuve","labelWidth":80,"components":[
+					{"type":"TextInput","dataField":"Ecart","defaultValue":"0","width":60,"setStyle":{"textAlign":"end"},"editable":0}
+				]},
+				{"type":"FormItem","label":"Cuve vide","labelWidth":80,"components":[
+					{"type":"Group","layout":{"type":"HorizontalLayout","verticalAlign":"baseline","gap":6},"components":[
+						{"type":"CheckBox","dataField":"CuveVide","defaultValue":0},
+						{"type":"Label","dataField":"labelEcart","text":"","setStyle":{"color":"0xff4040","fontWeight":"bold"}}
+					]}
+				]},
+				{"type":"Spacer","height":10},
+				{"type":"FormItem","label":"Produit","labelWidth":80,"components":[
+					{"type":"ComboBox","dataField":"ProduitId","width":222,"required":0,"dataFilter":"SousTypeId=_filter_","enabled":0,"stateGroup":"produit",
+					"kobeyeClass":{"module":"Cave","objectClass":"Produit","identifier":"Id","label":"Produit","select":"Id,Produit,SousTypeId"},
+					"actions":[
+						{"type":"init","action":"loadData"}
+					]}
+				]},
+				{"type":"FormItem","label":"Lot produit","labelWidth":80,"components":[
+					{"type":"TextInput","dataField":"LotProduit","width":222,"enabled":0,"stateGroup":"produit"}
+				]},
+				{"type":"FormItem","label":"Dosage","labelWidth":80,"components":[
+					{"type":"TextInput","dataField":"Dosage","width":75,"setStyle":{"textAlign":"end"},"enabled":0,"stateGroup":"produit"}
+				]},
+				{"type":"Spacer","height":10},
+				{"type":"FormItem","label":"Notes","labelWidth":80,"components":[
+					{"type":"TextArea","dataField":"Notes","width":350,"height":70}
+				]}
+			]}
+		],
+		"events":[
+			{"type":"start","action":"loadValues","params":{"needsId":1}},
+			{"type":"proxy","triggers":[
+				{"trigger":"save","action":"invoke","method":"saveData","params":{"closeForm":1}}
+//				{"trigger":"delete","action":"invoke","method":"deleteData"}
+//				{"trigger":"cancel","action":"invoke","method":"cancelEdit"}
+			]}
+		]},
+		{"type":"Spacer","percentHeight":100},
+		{"type":"HGroup","percentWidth":100,
+		"components":[
+			{"type":"Spacer"},
+			{"type":"Button","id":"ok","label":"$__Ok__$","width":100,"enabled":0,"stateGroup":"updated",
+			"events":[
+				{"type":"click","action":"invoke","method":"callMethod","params":{"method":"object","function":"SaveOperation","args":"dv:*","closeForm":1}}
+			]},
+//			{"type":"Button","id":"delete","label":"$__Delete__$","width":100,
+//			"events":[
+//				{"type":"click","action":"invoke","objectID":"edit","method":"deleteData"}
+//			]},
+			{"type":"Button","id":"cancel","label":"$__Cancel__$","width":100,
+			"events":[
+				{"type":"click","action":"invoke","objectID":"parentForm","method":"closeForm"}
+			]}
+		]}		
+	]}
+],
+"popup":"modal",
+"actions":[{"type":"close","action":"confirmUpdate"}
+]}
+}

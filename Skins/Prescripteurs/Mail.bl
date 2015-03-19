@@ -1,0 +1,35 @@
+<html>
+	<body>
+		<table width="800" cellpadding="5" cellspacing="0" style="margin:auto;">
+			<tr>	
+				<td >
+					<img src="[!Domaine!]/Skins/[!Systeme::Skin!]/Img/LogoPragma.png" alt="Pragma Immobilier"/>
+				</td>
+				<td align="right" >
+					<p style="color:#fff;font-size:14px;font-family:Arial,Verdana,serif;">
+						[!CONF::MODULE::SYSTEME::SOCIETE!]<br />
+						[!CONF::MODULE::SYSTEME::ADRESSE!]<br />
+						[!CONF::MODULE::SYSTEME::VILLE!]<br />
+						[!CONF::MODULE::SYSTEME::TEL!]<br />
+						[!CONF::MODULE::SYSTEME::FAX!]
+					</p>
+				</td>
+			</tr>			
+			<tr>
+				<td colspan="2">[DATA]</td>
+			</tr>
+			<tr>
+				<td align="center" colspan="2">
+					<font face="Arial" size="1" color="#000000">
+					<hr />
+					Vous recevez ce mail car vous avez fait une demande sur notre site 
+					<br />Conformément à l'article 34 de la loi Informatique et Liberté du 6 janvier 1978, vous disposez d'un droit d'accès, de modification, de rectification et de suppression des données vous concernant.
+					Pour toutes demandes veuillez nous écrire à l'adresse suivante : [!CONF::MODULE::SYSTEME::CONTACTCOPIE!]
+					</font>
+				</td>
+			</tr>
+		<table>
+	</body>
+</html>		
+
+

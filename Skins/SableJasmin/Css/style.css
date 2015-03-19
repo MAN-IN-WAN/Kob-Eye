@@ -1,0 +1,2319 @@
+@import "templates.css";
+@import "components.css";
+@import "menus.css";
+@import "filariane.css";
+@import "formulaire.css";
+@import "redaction.css";
+@import "user.css";
+@import "boutons.css";
+
+/*** GLOBAL ***/
+html, body {
+	padding:0; margin:0;
+	background:url('../Img/fond_site.png') repeat #E3F1F6;
+	font-size: 12px;
+	font-family:Arial;
+	color:#4d4d4d;
+
+}
+ul {	padding:0; margin:0; }
+
+a {	color: #01accf;
+	text-decoration:none;
+}
+a:hover {text-decoration:underline;}
+
+
+a::-moz-focus-inner, input::-moz-focus-inner, button::-moz-focus-inner {
+  border: 0;
+}
+
+
+p {
+	font-size:12px;
+	text-align:justify;
+	color: #01accf;
+}
+h1, h2 , h3 ,h4 ,h5 , h6{
+	font-weight:normal;
+	padding:0; 
+	margin:0; 
+}
+img {	border:0;}
+
+
+
+td { vertical-align:top;}
+
+div.BoutonsValider input  {
+  	background: url("../Img/sprite.png") no-repeat scroll 10px -4271px transparent;
+    	border:  none;
+    	display: block;
+    	height: 35px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+	width:150px;
+   	margin-right: -38px;
+	cursor:pointer;
+
+}
+
+/*** STRUCTURE ***/
+
+div.containerL {
+	position:relative;
+	display:block;
+	padding-left:258px;
+}
+
+div.innerL {
+	display:block;
+	margin-left:-258px;
+	overflow:hidden;
+}
+
+div.Left {
+	position:relative;
+	width:254px;
+	display: block;
+	float:left;
+	left:0;
+}
+
+div.centreL {
+	position:relative;
+	display:block;
+	height:1%;
+	margin-left:249px;
+	padding: 0;
+}
+
+.Site {
+	color: #4d4d4d;
+	position: relative;
+	z-index: 10;
+}
+
+.Entete {
+	background-color:#E4f3f8;
+	color: #4d4d4d;
+}
+
+.EntetePied{
+	width: 990px;
+	position:relative;
+	margin:auto;
+
+}
+
+div.Bandeau {
+	background:url('../Img/sprite.png') no-repeat;
+	height:162px;
+}
+
+div.MenuCentral {
+    background: url("../Img/sprite.png") repeat-x scroll 0 -385px transparent;
+}
+
+.Contenu {
+	width: 1000px;
+	border: none;
+	background: none;
+	margin:auto;
+	position:relative;
+}
+
+div#TopColonnes {
+    	background: url("../Img/sprite.png") no-repeat scroll 0 -4351px transparent;
+   	 height: 70px;
+	position:absolute;
+	top:0;
+	left:0;
+	right:0;
+}
+div#BottomColonnes {
+    	background: url("../Img/sprite.png") no-repeat scroll 0 -4500px transparent;
+   	height: 40px;
+	position:absolute;
+	bottom:0;
+	left:0;
+	right:0;
+}
+div#MiddleColonnes {
+    	background: url("../Img/fond-bloc_aveccolonnes.png") repeat-y 1px 0;
+	position:absolute;
+	bottom:40px;
+	top:70px;
+	left:0;
+	right:0;
+}
+
+div#ContenuMen {
+	background: none;
+	position:relative;
+}
+
+.SiteFond {
+	position:relative;
+}
+
+
+a.HautDePage {
+    	background: url("../Img/sprite.png") no-repeat scroll 0 -2624px transparent;
+    	float: right;
+    	height: 40px;
+    	margin: 20px 0 0;
+    	padding-left: 27px;
+	display:block;
+	position:relative;
+}
+
+/*--- affichage des catégories dans la boutique -----*/
+
+/*--- Composant CategorieUne ---*/
+.BlocCategories {
+	position:relative;
+	overflow:hidden;
+	padding:5px;
+}
+.PromoCat {
+    background: url("../Img/sprite.png") no-repeat scroll -811px -481px transparent;
+    height: 85px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 110px;
+	
+}
+.PromoCatProd {
+ background: url("../Img/sprite.png") no-repeat scroll -811px -450px transparent;
+    height: 119px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 110px;
+	
+}
+.toutesCategories {
+	padding:10px 0;
+	overflow:hidden; 
+	border-top:1px dotted #01accf;
+	border-bottom:1px dotted #01accf;
+}
+.BlocCateg {
+	float:left;
+	position:relative;
+	display:block;
+   	width: 50%;
+}
+.Categorie {
+	overflow:hidden;
+}
+
+.BlocCateg .CategoriePrix {
+	color: #FFFFFF;float: right;padding-right: 34px;text-align: right;width: auto;
+}
+.BlocCateg .BlocProduitApartir {font-size:11px;text-transform: none;font-weight:normal;}
+.BlocCateg .BlocProduitPrix {font-size:18px;text-transform: uppercase;font-weight:bold;}
+
+h1.BandeauTitreBlocCategorie {
+	border-bottom:1px dotted #01accf;
+	overflow:hidden;
+	margin: 0 10px;
+	padding: 10px 0;
+}
+
+.TitreBlocCategorie {
+    	border-bottom: 1px solid #01accf;
+    	color: #01accf;
+    	display: inline-block;
+    	font-size: 20px;
+    	padding-top: 10px;
+    	padding-right: 5px;
+    	text-transform: uppercase;
+  	margin: 10px 0;
+ 	padding-left: 5px;
+
+}
+
+.CategorieContenu {
+	overflow:hidden;
+	height:165px;
+	margin:0 30px 30px 0;
+    	border-bottom: 1px dotted #ada88d;
+	
+}
+.CategorieTitreBlock {
+	background: url("../Img/sprite.png") no-repeat scroll 0 -2263px transparent;
+	height: 45px;
+	overflow:hidden;
+	display:block;
+}
+.Categorie h2 {
+    	text-transform:none;
+ 	padding-left: 5px;
+	padding-top: 7px;
+
+}
+.ImageCategorie {
+	float:left;
+	position:absolute;
+	top:37px;
+}
+.ImageCategorieRight {
+	float:right;
+	margin-right: 2px;
+}
+.DescCategorie {
+	width:auto;
+	color: #01ACCF;
+    	font-size: 10px;
+    	text-align: justify;
+	/*padding-top: 10px;*/
+	padding-left:185px;
+}
+.DescCategorieProduit {
+	width:auto;
+	color: #4d4d4d;
+    	font-size: 10px;
+/*    	text-align: justify;
+	padding-top: 10px;*/
+	padding-left:185px;
+}
+.DescCategorieCat {
+	margin-right:185px;
+	width:auto;
+	color: #01ACCF;
+   	font-size: 10px;
+    	text-align: justify;
+	padding-top: 10px;
+}
+
+
+
+a.LienBtnCategorieold {
+	background: url("../Img/sprite.png") no-repeat scroll 0 -2416px transparent;
+	float: right;
+	height: 20px;
+	padding-right: 107px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+}
+
+a.LienBtnCategorie {
+
+	background: url("../Img/sprite.png") no-repeat scroll 0 -2416px transparent;
+    	float: right;
+    	height: 20px;
+    	padding-right: 107px;
+    	position: absolute;
+    	right: 27px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+    	top: 185px;
+}
+
+a:hover.LienBtnCategorie  {
+	background-position:0 -2437px;
+}
+
+a.LienCategorie {
+    	color: #FFFFFF;
+    	float: right;
+    	padding-right: 14px;
+    	padding-top: 5px;
+    	text-align: right;
+    	text-decoration: none;
+    	text-transform: uppercase;
+    	width: auto;
+}
+a:hover.LienCategorie  {
+	color:#c4bea0;
+	text-decoration:none;
+}
+a.LienCategorieTitre {
+	color:#ffffff;
+	height:40px;
+    	text-transform: none;
+	font-weight:normal;
+	font-size:16px;
+	text-decoration:none;
+
+}
+
+a:hover.LienCategorieTitre  {
+	color:#c4bea0;
+	text-decoration:none;
+}
+
+.FicheProduit .pagination .suivant a:hover {
+	text-decoration:none;
+	border:none;
+}
+.FicheProduit .pagination .precedent a:hover {
+	text-decoration:none;
+	border:none;
+}
+
+/*--Achat gestion panier ---*/
+
+/*------- Etape1 ---*/
+.CommandeEtape1 {
+	 padding: 0 10px;
+}
+.CommandeEtape1 h1 {
+	font-weight:bold;
+	font-size:14px;
+	text-transform:uppercase;
+	color:#01accf;
+	margin-bottom:10px;
+	padding-bottom:10px;
+}
+
+/*** BOUTIQUE - ETAPES ***/
+.EtapesCommande  {
+	padding:0;
+	margin:-4px;
+}
+.EtapesCommande a {
+	display:inline-block;
+	height: 70px;
+	width:191px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+	margin-right: -4px;
+}
+
+a.Step1 {
+    	background: url("../Img/sprite.png") no-repeat scroll 0 -3373px transparent;
+
+}
+
+a.Step2 {
+    	background: url("../Img/sprite.png") no-repeat scroll -186px -3373px transparent;
+}
+
+a.Step3 {
+    	background: url("../Img/sprite.png") no-repeat scroll -391px -3373px transparent;
+}
+
+a.Step4 {
+    	background: url("../Img/sprite.png") no-repeat scroll -571px -3373px transparent;
+	margin-right: -14px;
+}
+
+a.Step1Active {
+    	background: url("../Img/sprite.png") no-repeat scroll 0 -3456px transparent;
+}
+
+a.Step2Active {
+    	background: url("../Img/sprite.png") no-repeat scroll -186px -3456px transparent;
+}
+
+a.Step3Active {
+    	background: url("../Img/sprite.png") no-repeat scroll -391px -3456px transparent;
+}
+
+a.Step4Active {
+    	background: url("../Img/sprite.png") no-repeat scroll -571px -3456px transparent;
+	margin-right: -14px;
+}
+
+table.tCommande {
+	width:100%;
+	border-bottom:1px solid #01accf;
+	border-top:1px solid #01accf;
+
+}
+
+table.tCommande th , table.tCommande td {
+	font-size:12px;
+    	text-transform: uppercase;
+	font-weight:normal;
+    	color: #000000;
+	border-right:1px dotted #01accf;
+	text-align:center;
+}
+table.tCommande th  {
+	border-bottom:1px dotted #01accf;
+}
+table.tCommande th.Produit{
+	text-align:left;
+}
+
+table.tCommande th.SupprimerItem {
+	border-right:none;
+
+}
+
+table.tCommande tr  {
+	height:40px;
+}
+table.tCommande td {
+   	color: #000000;
+	padding:5px 5px 0 0 ;
+    	text-transform: uppercase;
+	text-align:left;
+}
+table.tCommande td.Produit{
+	text-align:left;
+	width:368px;
+}
+
+table.tCommande td.Produit a{
+   	color: #000000;
+}
+table.tCommande td.PrixInitial {
+	text-align:right;
+}
+table.tCommande td.Remise {
+	text-align:right;
+}
+table.tCommande td.TotalTTC {
+	text-align:right;
+	color:#01accf;
+	font-weight:bold;
+}
+.LaQuantite {
+	float: left;
+	display:block;
+	position:relative;
+}
+.LesBoutons {
+	float: left;
+	display:block;
+	position:relative;
+}
+
+
+table.tCommande td.Quantite {
+	text-align: center; padding: 0 15px;
+}
+table.tCommande  td.Quantite .LaQuantite input {
+	border:1px solid #4d4d4d;
+    	float: left;
+    	height: 15px;
+    	text-align: right;
+    	width: 30px;
+}
+table.tCommande td.Quantite .LesBoutons {
+	margin-top: -6px;
+	float: left;
+	display:block;
+	position:relative;
+}
+
+table.tCommande td.Quantite .InputBtnPlus {
+    	background: url("../Img/sprite.png") no-repeat scroll 5px -3537px  transparent;
+    	border: medium none;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+    	width: 18px;
+	height: 10px;
+}
+
+table.tCommande td.Quantite .InputBtnMoins {
+    	background: url("../Img/sprite.png") no-repeat scroll 5px -3558px transparent;
+    	border: medium none;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+    	width: 18px;
+  	height: 10px;
+}
+
+
+table.Commande td.SupprimerItem { 
+	height:20px;width:20px;border-right:none;text-align:center;
+	background: url("../Img/sprite.png") no-repeat scroll 5px -3040px ;
+}
+
+.MontantTotal {
+	padding-top:30px;
+	background: url("../Img/sprite.png") no-repeat scroll 252px -3570px ;
+	height:30px;
+	width:100%;
+}
+table.TotalCommande   {
+    	float: right;
+}
+table.TotalCommande   td {
+   	color: #FFFFFF;
+    	font-weight: bold;
+    	text-transform: uppercase;
+}
+table.TotalCommande td.MontantTotalCmde {
+    	padding-right: 160px;
+	font-size:12px;
+}
+table.TotalCommande td.MontantTotalTTC {
+	width:100px;
+	border:none;
+	font-size:14px;
+   	text-align: right;
+}
+
+.LigneBoutons {
+	display:block;
+	overflow:hidden;
+	position:relative;
+}
+
+input.RecalculerPanier  {
+   	background: url("../Img/sprite.png") no-repeat scroll -371px -3848px transparent;
+    	border: medium none;
+    	display: block;
+    	float: right;
+    	height: 25px;
+    	margin-right: -4px;
+    	margin-top: 16px;
+ 	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+   	width: 70px;
+}
+input.RecalculerPanier:hover {
+	background-position:-371px -3875px;
+}
+
+
+input.ContinuerAchats  {
+	background: url("../Img/sprite.png") no-repeat scroll 0 -3665px transparent;
+    	border: medium none;
+    	display: block;
+    	float: right;
+    	height: 38px;
+    	margin-right: 10px;
+    	margin-top: 16px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+    	width: 180px;
+	cursor:pointer;
+}
+input.ContinuerAchats:hover {
+	background-position:0 -3702px;
+}
+
+input.ValiderCommande  {
+   	background: url("../Img/sprite.png") no-repeat scroll 0 -3749px transparent;
+    	border: medium none;
+    	display: block;
+    	float: right;
+    	height: 38px;
+    	margin-right: -4px;
+    	margin-top: 16px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+    	width: 180px;
+	cursor:pointer;
+
+}
+input.ValiderCommande:hover {
+	background-position:0 -3786px;
+}
+
+/*-------- Etape 2 ---*/
+
+.CommandeEtape2 {
+	 padding: 0 10px;
+}
+.CommandeEtape2 h1 {
+	font-weight:bold;
+	font-size:14px;
+	text-transform:uppercase;
+	color:#01accf;
+	margin-bottom:10px;
+	padding-bottom:10px;
+}
+
+.CommandeEtape2 .ColonneIdentification {
+	display:block;
+	position:relative;
+	overflow:hidden;
+	width:100%;
+}
+
+.CommandeEtape2 .ColonneIdentificationClient h2 {
+	font-weight:bold;
+	font-size:14px;
+	text-transform:uppercase;
+	color:#c4bea0;
+
+}
+.CommandeEtape2 .ColonneIdentificationClient span.petittexte {
+	font-weight:bold;
+	font-size:11px;
+	font-style:italic;
+	color:#c4bea0;
+
+}
+
+.CommandeEtape2 .ColonneIdentificationClient input {
+	border:1px solid #c4bea0;
+	height:15px;
+	font-size:10px;
+	float:right;
+	margin-right:5px;
+	width:200px;
+
+}
+.CommandeEtape2 .ColonneIdentificationClient {
+	float:left;
+	margin-right:5px;
+	border:1px solid #c4bea0;
+	padding:5px;
+	width:48%;
+	min-height:140px;
+
+}
+.CommandeEtape2 .ColonneIdentificationClient .BoutonsCentre {
+	display:block;
+	padding-top:30px;
+
+}
+
+
+.CommandeEtape2 .ColonneIdentificationClient .BoutonsCentre input.Connexion {
+    	background: url("../Img/sprite.png") no-repeat scroll 0 -3962px transparent;
+    	border: medium none;
+    	display: block;
+    	float: right;
+    	height: 38px;
+    	margin-right: -19px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+    	width:192px;
+	cursor:pointer;
+
+}
+.CommandeEtape2 .ColonneIdentificationClient .BoutonsCentre input.Connexion:hover {
+	background-position:0 -3925px;
+}
+
+
+.CommandeEtape2 .ColonneIdentificationNew h2 {
+	font-weight:bold;
+	font-size:14px;
+	text-transform:uppercase;
+	color:#01accf;
+
+}
+
+.CommandeEtape2 .ColonneIdentificationNew span.petittexte {
+	font-weight:bold;
+	font-size:11px;
+	font-style:italic;
+	color:#01accf;
+
+}
+.CommandeEtape2 .ColonneIdentificationNew .textecreation {
+	font-size:14px;
+	color:#4d4d4d;
+   	padding-top: 24px;
+	
+}
+.CommandeEtape2 .ColonneIdentificationNew .BoutonsCentre input {
+    	background: url("../Img/sprite.png") no-repeat scroll 0 -4014px transparent;
+    	border: medium none;
+    	display: block;
+    	float: right;
+    	height: 38px;
+    	margin-right: -19px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+	width:192px;
+	cursor:pointer;
+
+}
+.CommandeEtape2 .ColonneIdentificationNew .BoutonsCentre input:hover {
+	background-position:0 -4052px;
+}
+
+
+.CommandeEtape2 .ColonneIdentificationNew {
+	float:left;
+	border:1px solid #c4bea0;
+	padding:5px;
+	width:48%;
+	min-height:140px;
+
+}
+
+
+.CommandeEtape2 .ColonneCreationCompte .obligatoire {
+	color:#01accf;
+}
+
+.CommandeEtape2 .ColonneCreationCompte {
+	 padding: 10px 0 20px;
+}
+.CommandeEtape2 .ColonneCreationCompteBord {
+	border:1px solid #c4bea0;
+	margin: 10px 0 ;
+	padding:5px;
+
+}
+
+.CommandeEtape2 .ColonneCreationCompte h2 {
+	font-weight:bold;
+	font-size:14px;
+	text-transform:uppercase;
+	color:#01accf;
+
+}
+.CommandeEtape2 .ColonneCreationCompte .LigneForm  {
+	width:48%;
+  	margin-bottom: 5px;
+}
+
+.CommandeEtape2 .ColonneCreationCompte  label {
+	width:175px;
+
+}
+.CommandeEtape2 .ColonneCreationCompte   input {
+	border:1px solid #c4bea0;
+	height:10px;
+	margin-left:10px;
+	float:right;
+	width:190px;
+	font-size:10px;
+}
+
+.CommandeEtape2 .ColonneCreationCompte .Identifiants {
+	padding:10px 0 20px 0 ;
+	border-bottom:1px dotted #01accf;
+	display:block;
+	overflow:hidden;
+	position:relative;
+	width:100%;
+ 	margin-bottom: 10px;
+}
+.CommandeEtape2 .ColonneCreationCompte .Identifiants h3 {
+	font-weight:bold;font-size:12px;text-transform:uppercase;
+}
+
+.CommandeEtape2 .ColonneCreationCompte .LigneForm2 {
+	float:right;
+	width:49%;
+
+}
+
+.CommandeEtape2 .ColonneCreationCompte .Cordonnees {
+	padding:10px 0 20px 0 ;
+	border-bottom:1px dotted #01accf;
+	display:block;
+	overflow:hidden;
+	position:relative;
+	width:100%;
+ 	margin-bottom: 10px;
+}
+
+.CommandeEtape2 .ColonneCreationCompte .Cordonnees h3 {
+	font-weight:bold;font-size:12px;text-transform:uppercase;
+}
+
+.CommandeEtape2 .ColonneCreationCompte .Professionnel {
+	padding:10px 0 20px 0 ;
+	border-bottom:1px dotted #01accf;
+	overflow:hidden;
+	position:relative;
+	width:100%;
+ 	margin-bottom: 10px;
+	display:none;
+
+}
+
+.CommandeEtape2 .ColonneCreationCompte .Professionnel h3 {
+	font-weight:bold;font-size:12px;text-transform:uppercase;
+}
+
+.CommandeEtape2 .ColonneCreationCompte   select {
+	border:1px solid #c4bea0;
+	height:15px;
+	margin-left:10px;
+	float:right;
+	width:168px;
+	font-size:11px;
+}
+.CommandeEtape2 .ColonneCreationCompte   textarea {
+	border:1px solid #c4bea0;
+	height:45px;
+	margin-left:10px;
+	float:right;
+	width:190px;
+	font-size:11px;
+}
+
+
+.CommandeEtape2 .ColonneCreationCompte .Newsletter {
+	padding:10px 0 20px 0 ;
+	border-bottom:1px dotted #01accf;
+	overflow:hidden;
+	position:relative;
+	width:100%;
+ 	margin-bottom: 10px;
+	display:block;
+
+}
+.CommandeEtape2 .ColonneCreationCompte .Newsletter h3 {
+	font-weight:bold;font-size:12px;text-transform:uppercase;
+}
+
+.CommandeEtape2 .ColonneCreationCompte .BoutonsCentre {
+	padding:10px 0 20px 0 ;
+	overflow:hidden;
+	position:relative;
+	width:100%;
+ 	margin-bottom: 10px;
+	display:block;
+
+}
+
+.CommandeEtape2 .ColonneCreationCompte .BoutonsFin input  {
+  	background: url("../Img/sprite.png") no-repeat scroll 10px -4271px transparent;
+    	border: medium none;
+    	display: block;
+    	height: 35px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+	width:150px;
+   	margin-right: -38px;
+	cursor:pointer;
+
+}
+.CommandeEtape2 .ColonneCreationCompte .BoutonsFin input:hover {
+	background-position:10px -4307px;
+}
+
+.BoutonsFin {	
+	display:block;
+	padding: 0 0 30px;
+}
+
+
+
+/*-------- Etape 3 ---*/
+
+.CommandeEtape3 {
+	 padding: 0 10px;
+}
+
+.CommandeEtape3 .Etape3 {
+	display:block;
+	overflow:hidden;
+	position:relative;
+	margin-top:30px;
+
+
+}
+
+.CommandeEtape3 h1 {
+	font-weight:bold;
+	font-size:14px;
+	text-transform:uppercase;
+	color:#01accf;
+	margin-bottom:10px;
+	padding-bottom:10px;
+}
+
+.CommandeEtape3 table.Logistique  {
+	border-top:1px solid #01accf;
+	border-bottom:1px solid #01accf;
+	width: 100%;
+}
+.CommandeEtape3 .Logistique th {
+	border-right:1px dotted #01accf;
+	font-size:14px;
+	color:#4d4d4d;
+	text-transform:uppercase;
+	text-align:center;
+	height:30px;
+	border-bottom:1px dotted #01accf;
+	width:50%;
+}
+.CommandeEtape3 .Logistique td {
+	border-right:1px dotted #01accf;
+	font-size:14px;
+	color:#4d4d4d;
+	text-align:left;
+	height:30px;
+	padding:5px;
+	text-transform:none;
+	width:50%;
+}
+
+
+div.AdresseStep3 {
+	font-size:12px;
+	text-transform:none;
+	color:#4d4d4d;
+	overflow: hidden;
+	padding-bottom: 20px;
+	display:block;
+}
+
+div.AdresseSelect {
+	display: block;
+	float: left;
+	position: relative;
+	padding: 5px;
+}
+
+div.AdresseDesc {
+	margin-left: 30px;
+}
+a.lienadr {
+	font-size:14px;
+ 
+}
+a.lienadr:hover {
+	text-decoration:underline;
+	color:#4d4d4d;
+}
+
+div.MoreAdresses {
+	border: 1px solid #666;
+	background: #ccc;
+	padding: 10px;
+}
+
+a.ChooseMoreAdresses {
+  	background: url("../Img/sprite.png") no-repeat scroll 4px -3152px transparent;
+    	color: #4D4D4D;
+    	float: right;
+    	padding-left: 15px;
+    	text-decoration: none;
+	font-size:12px;
+
+}
+
+a.ChooseMoreAdresses:hover {
+	text-decoration:underline;
+}
+
+
+/*-- livraison ---*/
+.CommandeEtape3 div.LaLivraison{
+	display:block;
+	position:relative;
+	float:right;
+	border-collapse:collapse;
+	border-top:1px solid #01accf;
+	border-bottom:1px solid #01accf;
+	border-left:1px solid #01accf;
+	width: 300px;
+	padding: 10px;
+}
+
+div.TitreModeLivraison {
+	font-weight: bold;
+	text-transform:uppercase;
+	color:#4d4d4d;
+	text-align:left;
+	padding-top: 10px;
+}
+
+div.LivraisonDetails {
+	font-style: italic;
+	padding-bottom: 10px ;
+}
+
+div.NomTypeLivraison {
+	position: relative;
+}
+
+div.NomTypeLivraison div.PrixTypeLivraison {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	font-weight: bold;
+}
+
+div.NomTypeLivraison input.InputTypeLivraison {
+	margin: 0;
+	position: absolute;
+	top: 5px;
+	left: 0;
+}
+
+div.TitreTypeLivraison {
+	padding: 5px 60px 0 20px;
+	font-weight: bold;
+}
+
+p.DescTypeLivraison {
+	margin: 0;
+	padding: 0 60px 5px 20px;
+}
+
+table.ListeChoixLivraison {
+	width: 100%;
+	margin-left: 20px;
+	border-left: 1px solid #01ACCF;
+}
+
+table.ListeChoixLivraison td.SelChoixLivraison {
+	width: 20px;
+}
+
+table.ListeChoixLivraison td.LibelleChoixLivraison {
+	padding: 4px 0;
+}
+
+/*-- recap ----*/
+.CommandeEtape3 table.tCommande th {font-weight:bold;}
+
+
+.CommandeEtape3 table.TotalDetaille{
+	float:right;
+	display:block;
+	position:relative;
+	border:0;
+	background-color:#01accf;
+	width:300px;
+	margin:0;
+	padding:0;
+	border-collapse:collapse;
+}
+.CommandeEtape3 table.TotalDetaille td{
+	padding:5px;
+}
+
+.CommandeEtape3  table.TotalDetaille tr{
+	height:30px;
+}
+.CommandeEtape3  table.TotalDetaille td.label{
+	color:#ffffff;
+	text-transform:none;
+	font-size:12px;
+	text-align:left;
+	font-style:normal;
+	width:45%;
+
+}
+.CommandeEtape3 table.TotalDetaille td.val{
+	color:#ffffff;
+	text-transform:none;
+	font-size:12px;
+	font-weight:bold;
+	width:15%;
+
+}
+
+.CommandeEtape3  table.TotalDetaille tr.vide{
+	height:5px;
+	background-color:#ffffff;
+	width:300px;
+
+
+}
+.CommandeEtape3 table.TotalDetaille tr.TotalAPayer  td{ 
+	font-size:14px;
+	font-weight:bold;
+	text-transform:uppercase;
+}
+
+
+
+.NomPaiement {
+	text-transform:uppercase;color:#4d4d4d;
+}
+.DescPaiement {
+	text-transform:none;font-weight:normal;text-align:justify;
+}
+
+
+.AccepterCGV {
+	float:right;
+	padding-right:20px;
+}
+
+
+.Etape3 .LigneBoutons {
+	margin:20px 0;
+}
+.Etape3 .BoutonsDroite input {
+   	background: url("../Img/sprite.png") no-repeat scroll 10px  -3748px transparent;
+    	border: medium none;
+    	display: block;
+    	float: right;
+    	height: 38px;
+	margin: -2px -1px 10px 10px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+    	width: 180px;
+	cursor:pointer;
+}
+.Etape3 .BoutonsDroite input:hover {
+	background-position:10px -3786px;
+}
+.Etape3 .BoutonsGauche input {
+   	background: url("../Img/sprite.png") no-repeat scroll 0 -4181px transparent;
+    	border: medium none;
+    	display: block;
+    	height: 42px;
+	margin: -9px -5px 10px 331px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+    	width: 215px;
+	float:left;
+	cursor:pointer;
+}
+.Etape3 .BoutonsGauche input:hover {
+	background-position:0 -4216px;
+}
+
+
+/*-- Etapes 4----*/
+.CommandeEtape4 {
+	 padding: 0 10px;
+}
+
+.CommandeEtape4 .Etape4 {
+	display:block;
+	overflow:hidden;
+	position:relative;
+	margin-top:30px;
+
+
+}
+
+.CommandeEtape4 h1 {
+	font-weight:bold;
+	font-size:14px;
+	text-transform:uppercase;
+	color:#01accf;
+	margin-bottom:10px;
+	padding-bottom:10px;
+}
+
+.Etape4 table.Logistique{
+	display:block;
+	position:relative;
+	float:right;
+	border-collapse:collapse;
+	border-top:1px solid #01accf;
+	border-bottom:1px solid #01accf;
+	border-left:1px solid #01accf;
+}
+.Etape4 table.Logistique tr {
+
+}
+
+.Etape4 table.Logistique th {
+	font-weight:bold;text-transform:uppercase;color:#4d4d4d;border-right:none;
+	border-bottom:1px dotted #01accf;
+	border-right:1px dotted #4d4d4d;
+	padding:10px;
+	
+}
+.Etape4 table.Logistique td {
+	padding:5px;text-align:left;
+	border-right:1px dotted #4d4d4d;
+	padding:10px;
+
+}
+
+
+
+.Etape4 td.Adresses {
+	font-size:12px;
+	text-transform:none;
+	color:#4d4d4d;
+
+}
+.Etape4 td.Adresses span.nom {
+	text-transform:uppercase;
+	font-weight:bold;
+
+}
+
+.CommandeEtape4 table.ModeDePaiement {
+	display:block;
+	position:relative;
+	float:right;
+	border-collapse:collapse;
+	border-top:1px solid #01accf;
+	border-bottom:1px solid #01accf;
+	border-left:1px solid #01accf;
+ 	width: 300px;
+}
+.CommandeEtape4 table.ModeDePaiement th {
+	font-weight:bold;text-transform:uppercase;color:#4d4d4d;border-bottom:1px dotted #01accf;
+}
+.CommandeEtape4 table.ModeDePaiement td {
+	font-weight:bold;text-transform:uppercase;color:#4d4d4d;padding:5px;border-right:1px dotted #01accf;text-align:left;
+}
+.CommandeEtape4 .PaiementEtape4 { 
+	display:block;
+	overflow:hidden;
+	position:relative;
+	margin:30px 0;
+}
+
+
+.CommandeEtape4 table.TotalDetaille{
+	float:right;
+	display:block;
+	position:relative;
+	border:0;
+	background-color:#01accf;
+	width:300px;
+	margin:0;
+	padding:0;
+	border-collapse:collapse;
+}
+.CommandeEtape4 table.TotalDetaille td{
+	padding:5px;
+}
+
+.CommandeEtape4  table.TotalDetaille tr{
+	height:30px;
+}
+.CommandeEtape4  table.TotalDetaille td.label{
+	color:#ffffff;
+	text-transform:none;
+	font-size:12px;
+	text-align:left;
+	font-style:normal;
+	width:45%;
+
+}
+.CommandeEtape4 table.TotalDetaille td.val{
+	color:#ffffff;
+	text-transform:none;
+	font-size:12px;
+	font-weight:bold;
+	width:15%;
+	text-align:right;
+	margin-right:5px;
+
+}
+
+.CommandeEtape4  table.TotalDetaille tr.vide{
+	height:5px;
+	background-color:#ffffff;
+	width:300px;
+
+
+}
+.CommandeEtape4 table.TotalDetaille tr.TotalAPayer  td{ 
+	font-size:14px;
+	font-weight:bold;
+	text-transform:uppercase;
+}
+
+
+.CommandeEtape4 table.TCodePromo{
+	display:block;
+	position:relative;
+	float:right;
+	border-collapse:collapse;
+	border-top:1px solid #01accf;
+	border-bottom:1px solid #01accf;
+	border-left:1px solid #01accf;
+}
+.CommandeEtape4 table.TCodePromo tr {
+
+}
+
+.CommandeEtape4 table.TCodePromo th {
+	font-weight:bold;text-transform:uppercase;color:#4d4d4d;border-right:none;
+	border-bottom:1px dotted #01accf;
+	padding:10px;
+	
+}
+.CommandeEtape4 table.TCodePromo td {
+	font-weight:bold;text-transform:uppercase;color:#4d4d4d;padding:5px;text-align:left;
+	border:none;
+	padding:10px;
+
+} 
+
+
+.Etape4 .LigneBoutons {
+	margin:20px 0;
+}
+.Etape4 .BoutonsDroite input {
+    	background: url("../Img/sprite.png") no-repeat scroll 0 -4101px transparent;
+    	border: medium none;
+    	display: block;
+    	float: right;
+	font-size: 0;
+    	height: 38px;
+    	line-height: 0;
+    	margin: -2px 2px 0 0;
+    	text-indent: -999px;
+    	width: 196px;
+	cursor:pointer;
+}
+.Etape4 .BoutonsDroite input:hover {
+	background-position:0 -4136px;
+}
+.Etape4 .BoutonsGauche input {
+   	background: url("../Img/sprite.png") no-repeat scroll 0 -4182px transparent;
+    	border: medium none;
+    	display: block;
+    	height: 42px;
+	margin: -9px -5px 10px 281px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+    	width: 215px;
+	float:left;
+	cursor:pointer;
+}
+.Etape4 .BoutonsGauche input:hover {
+	background-position:0 -4216px;
+}
+
+/*----------Etape 5 ---*/
+
+.CommandeEtape5 {
+	padding: 10px;
+}
+.CommandeEtape5 h1 {
+	font-weight:bold;
+	font-size:14px;
+	text-transform:uppercase;
+	color:#01accf;
+	margin-bottom:10px;
+	padding-bottom:10px;
+}
+.CommandeEtape5 h3 {
+	font-weight:bold;
+	font-size:14px;
+	text-transform:none;
+	color:#01accf;
+	margin-bottom:10px;
+	padding-bottom:10px;
+	text-decoration:underline;
+}
+
+.CommandeEtape5 .Desc {
+	padding-top:10px;
+	font-size:14px;
+	color:#4d4d4d;
+}
+.CommandeEtape5 .nom {
+	font-size:14px;
+	color:#4d4d4d;
+	font-weight:bold;
+}
+
+.CommandeEtape5 .LigneBoutons {
+	margin:20px 0;
+	display:block;
+	position:relative;
+	overflow:hidden;
+	font-size:14px;
+}
+.CommandeEtape5 .BoutonsGauche { display:block;float:left; margin: 0 30px;}
+.CommandeEtape5 .ConfirmationCommande { 
+	color:#4d4d4d;
+	font-size:18px;
+	text-transform:none;
+}
+/*--- mon compte ---*/
+h1.moncompte{
+	color:#01accf;
+	font-size:20px;
+	text-transform:uppercase;
+	padding:20px;
+}
+h2.moncompte{
+	color:#4d4d4d;
+	font-size:18px;
+	text-transform:none;
+	text-decoration:underline;
+	padding:20px 10px;
+}
+
+div.Message {
+	color:#01accf;
+	font-size:18px;
+	text-transform:none;
+	padding:0 10px;
+}
+div#UserHome {
+	overflow: hidden;
+	padding: 0 10px 0 10px;
+}
+
+div#UserHome a.Bloc {
+	float: left;
+	position: relative;
+	padding: 40px 0 23px 0;
+	text-align: center;
+	width: 170px;
+}
+
+a.ModifierMonCompte {
+	background:url('../Img/sprite.png') no-repeat -602px -4063px;
+ 	height: 2px;
+}
+
+a.MesAdressesLivraison {
+	background:url('../Img/sprite.png') no-repeat -602px -4127px;
+	height: 2px;
+}
+
+a.MesAdressesFacturation {
+	background:url('../Img/sprite.png') no-repeat -602px -4190px;
+ 	height: 2px;
+}
+
+a.HistoriqueCommandes {
+	background:url('../Img/sprite.png') no-repeat -602px -4253px;
+ 	height: 2px;
+}
+
+input.MettreAJour {
+	width: 102px;
+	height: 28px;
+	border: 0;
+	line-height: 0;
+	text-indent: -999px;
+	overflow: hidden;
+	cursor: pointer;
+	background: url('../Img/Btn/mettre-a-jour-2.png') no-repeat;
+}
+
+input.MettreAJour:hover {
+	background-position: 0 -28px;
+}
+
+/* -- Historique de commande --*/
+
+table.HistoCommande td.HistoPDF, table.HistoCommande th.HistoPDF {
+	border-right: none;
+}
+
+.HistoCommande {
+	margin:10px;
+	
+}
+.HistoCommande h1{
+	font-weight:bold;
+	font-size:14px;
+	text-transform:uppercase;
+	color:#01accf;
+	padding-bottom:10px;
+}
+
+table.HistoCommande{
+    	border: 1px solid #01ACCF;
+    	border-collapse: collapse;
+  	margin: 0 10px 0 0;
+    	position: relative;
+    	width: 100%;
+}
+
+table.HistoCommande th {
+	font-weight:bold;text-transform:uppercase;color:#4d4d4d;border-right:none;
+	border-bottom:1px solid #01accf;
+	padding:10px;
+	border-right:1px dotted #01accf;
+	
+}
+table.HistoCommande td {
+	font-size:12px;
+	text-transform:none;color:#4d4d4d;padding:5px;text-align:left;
+	border:none;
+	padding:10px;
+	border-right:1px dotted #01accf;
+
+}
+
+
+
+
+
+/** ADRESSES **/
+div.Adresse {
+	margin-top: 10px;
+	border: 1px solid #01accf;
+	padding: 10px;
+	overflow: hidden;
+}
+
+a.ModifierAdresse {
+	display: block;
+	text-align: right;
+}
+
+div.buttons {
+	text-align: center;
+	padding-top: 20px;
+}
+
+
+/*--- Affichage de liste de produits suite à une recherche par exemple ----*/
+.RechercheProduit {
+	margin:10px;
+	font-size:11px;
+	
+}
+.RechercheProduit h1{
+	font-weight:bold;
+	font-size:14px;
+	text-transform:uppercase;
+	color:#01accf;
+	padding-bottom:10px;
+}
+.RechercheProduit h2{
+	font-size:14px;
+	text-decoration:underline;
+	padding-bottom:5px;
+}
+.RechercheProduit h3{
+	font-size:12px;
+	padding-bottom:5px;
+	text-align:justify;
+}
+
+table.RechercheProduit{
+    border: 1px solid #01ACCF;
+    border-collapse: collapse;
+    margin: 0 10px 0 0;
+    position: relative;
+    width: 100%;
+}
+table.RechercheProduit tr {
+   border-bottom: 1px dotted #01ACCF;
+}
+table.RechercheProduit th {
+	font-weight:bold;text-transform:uppercase;color:#4d4d4d;border-right:none;
+	border-bottom:1px solid #01accf;
+	padding:10px;
+	border-right:1px dotted #01accf;
+	
+}
+table.RechercheProduit td {
+	font-size:12px;
+	text-transform:none;color:#4d4d4d;padding:5px;text-align:left;
+	border:none;
+	padding:10px;
+	border-right:1px dotted #01accf;
+
+}
+table.RechercheProduit td.Imgrecherche {
+	width:60px;
+}
+table.RechercheProduit td.Achat {
+	width:100px;
+}
+table.RechercheProduit td.Prix {
+	width:100px;
+	font-size: 13px;
+}
+
+a.AddToCartRecherche {
+     background: url("../Img/sprite.png") no-repeat scroll 5px -2929px transparent;
+    display: block;
+    height: 18px;
+    padding-left: 27px;
+    padding-top: 4px;
+}
+input.AddToCartRecherche {
+    	background: url("../Img/sprite.png") no-repeat scroll 5px -2929px transparent;
+    	display: block;
+    	height: 24px;
+	font-size:12px;
+	color:#01accf;
+    	padding-left: 27px;
+    	padding-top: 4px;
+	border:none;
+	cursor:pointer;
+}
+ a.voirDetailRecherche {
+    background: url("../Img/sprite.png") no-repeat scroll 8px -3254px transparent;
+    display: block;
+    height: 19px;
+    padding-left: 27px;
+    padding-top: 4px;
+}
+
+/*--------- Redaction ------*/
+.Redaction {
+	margin:10px;
+	
+}
+.Redaction h1{
+	font-weight:bold;
+	font-size:14px;
+	text-transform:uppercase;
+	color:#01accf;
+	padding-bottom:10px;
+}
+.Redaction h2{
+	font-weight:bold;
+	font-size:14px;
+	text-transform:none;
+	text-decoration:underline;
+	color:#01accf;
+	padding:10px 0 0 10px;
+}
+.Redaction p{
+	color:#4d4d4d;
+	text-align:justify;
+	padding:0 10px 10px;
+}
+
+
+/* --Pagination ---*/
+.LignePagination {
+	display:block;
+	overflow:hidden;
+	position:relative;
+ 	margin:auto;
+	text-align:center;
+	padding:10px;
+}
+.LignePagination a {
+	font-size:12px;
+	color:#01accf;
+	font-weight:bold;
+	padding:0 10px;
+}
+.LignePagination .current {font-size:14px;color:#4d4d4d;}
+.LignePagination a.pagedebut {
+	background: url("../Img/sprite.png") no-repeat scroll 0 -2214px transparent;
+	height: 20px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+	padding:10px;
+}
+.LignePagination a.pagefin {
+	background: url("../Img/sprite.png") no-repeat scroll 0 -2168px transparent;
+	height: 20px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+	padding:10px;
+}
+.LignePagination a.pagesuiv {
+	background: url("../Img/sprite.png") no-repeat scroll 0 -2146px transparent;
+	height: 20px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+	padding:10px;
+}
+
+.LignePagination a.pageprec {
+	background: url("../Img/sprite.png") no-repeat scroll 0 -2190px transparent;
+	height: 20px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+	padding:10px;
+}
+
+.pagination span.current {
+	color:#4d4d4d;
+	font-size:18px;
+}
+.bb_li {
+	margin-left: 13px;
+}
+
+
+/*bb_coloured { font-weight:bold;}*/
+
+
+/*--- GESTION DES FICHES PRODUITS SUIVANT LE TYPE DE PRODUIT ---*/
+/*--- TEMPLATE 1- PRODUIT AVEC DES RÉFÉRENCES UNIQUES--*/
+
+.BlocHaut_1 {
+	display:block;
+	position:relative;
+	height:100%;
+	width:100%;
+	overflow:hidden;
+	margin-top:6px;
+ 	margin-bottom: 9px;
+}
+.BlocGauche_1 {
+	float:left;
+	display:block;
+	position:relative;
+	width: 330px;
+/*	background-color:#ffffff;*/
+	height:100%;
+}
+.BlocDroit_1{ 
+	float:left;
+	display:block;
+	position:relative;
+	width:400px;
+    	margin: 5px 5px 0 5px;
+}
+.BlocBas_1 { 
+	display:block;
+	position:relative;
+	width:100%;
+/* 	overflow:hidden; */
+}
+/*--- TEMPLATE 2--PRODUIT AVEC DES RÉFÉRENCES DÉCLINÉES -*/
+
+.BlocHaut_2 {
+	display:block;
+	position:relative;
+	width:100%;
+	height:100%;
+	overflow:hidden;
+	padding-bottom: 10px;
+	margin-top:6px;
+}
+.BlocGauche_2 {
+	float:left;
+	display:block;
+	position:relative;
+	width: 330px;
+	background-color:#ffffff;
+	height:100%;
+	/*margin-top:5px;*/
+}
+.BlocDroit_2{ 
+	float:left;
+	display:block;
+	position:relative;
+	width:400px;
+    	margin: 5px 5px 0 5px;
+}
+.BlocDroit_2 .EspacefbtwLv{ 
+	margin-left: 123px;
+	position:relative; height:20px;
+	display:block;
+}
+
+/*--- TEMPLATE 3--PRODUIT UNIQUE AVEC UNE REFERENCE UNIQUE (CREATION UNIQUE VENDU UNE SEULE FOIS)-*/
+
+.BlocHaut_3 {
+	display:block;
+	position:relative;
+	width:100%;
+	overflow:hidden;
+
+}
+.BlocGauche_3 {
+	float:left;
+	display:block;
+	position:relative;
+	width:50%;
+}
+.BlocDroit_3{ 
+	float:left;
+	display:block;
+	position:relative;
+	width:50%;
+}
+.BlocBas_3 { 
+	display:block;
+	position:relative;
+	width:100%;
+	overflow:hidden;
+
+}
+
+.FicheProduit {
+	 display:block;overflow:hidden;position:relative;
+}
+.FicheProduit .CategoriePrix {
+	color: #FFFFFF;float: right;padding-right: 30px;text-align: right;width: auto;
+}
+.FicheProduit .BlocProduitApartir {font-size:11px;text-transform: none;font-weight:normal;}
+.FicheProduit .BlocProduitPrix {font-size:18px;text-transform: uppercase;font-weight:bold;}
+
+.FicheProduit .BlocFichProduit {
+	padding-top:5px;
+	display:block;
+	overflow:hidden;
+	position:relative;
+	border-bottom:1px dotted #01accf;
+}
+
+.FicheProduit .BlocFichImage {
+	float:left;
+	padding:15px;
+	display:block;
+	position:relative;
+	width:300px;
+	z-index:15;
+	margin: 0 20px 10px 0;
+   	border-bottom: 1px dotted #01accf;
+
+}
+.FicheProduit .BlocGauche_1  .BlocFichImage {
+	border:none;
+}
+.FicheProduit .BlocFichContenu {
+	display:block;position:relative;
+}
+
+
+.FicheProduit .FinFicheProduit {
+	display:block;
+	position:relative;
+	border-top:1px dotted #01accf;
+	margin-top:5px;
+}
+
+
+.FicheProduit .BlocFichTitre {
+	border-bottom:1px solid #01accf;
+ 	/*margin: 5px 5px 5px 325px;*/
+}
+
+.FicheProduit .TitreArticle h1 {
+	color:#01accf;
+	font-size:20px;
+	text-transform:uppercase;
+}
+
+.FicheProduit .BlocDescription {
+	border-top:1px dotted #01accf;
+	margin-top:10px;
+	padding:10px;
+	text-align:justify;
+}
+.FicheProduit .BlocFichProduitDescription {
+	display:block;position:relative;
+	padding:17px;
+	color:#4d4d4d;
+	font-size:12px;
+	text-align:justify;
+
+}
+.FicheProduit .BlocAcroche {
+	border-bottom:1px dotted #01accf;
+	margin-bottom: 5px;
+	text-align:justify;
+	padding:10px 0;
+	min-height:50px;
+	display:block;
+}
+.FicheProduit .BlocFichCaracteristique {
+	min-height:100px;
+}
+.FicheProduit .BlocFichDeclinaisons {
+	display:block;position:relative;
+	
+}
+.PromoProduit {
+  background: url("../Img/sprite.png") no-repeat scroll -810px -595px transparent;
+    height: 130px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 184px;
+	
+}
+
+
+
+.FicheProduit .BlocFichPrix {
+ 	background: url("../Img/sprite.png") no-repeat scroll 0 -2599px transparent;
+    	float: right;
+    	font-weight: bold;
+    	height: 52px;
+    	width: 100px;
+  	position: relative;
+
+}
+.FicheProduit .APartirPrixDansFiche {
+	color: #01ACCF;
+    	font-size: 11px;
+	font-style:italic;
+    	font-weight:normal;
+    	position: absolute;
+  	right: 6px;
+    	top: -1px;
+}
+
+.FicheProduit .PrixDansFiche {
+  border-bottom: 1px dotted #01ACCF;
+    color: #01ACCF;
+    font-size: 20px;
+    font-weight: bold;
+    padding-bottom: 2px;
+    position: absolute;
+    right: 5px;
+    top: 12px;
+}
+
+
+.FicheProduit .EspaceVente {
+ 	display:block;
+	margin-top:10px;
+	padding:10px 10px 10px 2px;
+
+}
+
+.FicheProduit .FichLibelle {
+	font-size:11px;
+	font-weight:bold;
+	color:#4d4d4d;
+}
+.FicheProduit .BlocFichLigneCaract {
+	margin-bottom:10px;
+}
+.FicheProduit .FichValeurCaract {
+	font-weight:normal;
+	margin-bottom:10px;
+
+}
+
+
+.FicheProduit .EspaceVente {
+	display:block;
+	position:relative;
+	overflow:hidden;	
+
+}
+.FicheProduit .EspaceVente select {
+ 	width:150px;
+	border:1px solid #4d4d4d;
+	color:#4d4d4d;
+}
+
+.FicheProduit .LibQte {
+    	float: left;
+	padding:5px 5px 0 0;
+}
+
+.FicheProduit .FichQuantite input {
+	border:1px solid #4d4d4d;
+    	float: left;
+    	height: 15px;
+    	text-align: right;
+    	width: 30px;
+}
+.FicheProduit .LesBoutons {
+	float: left;
+	display:block;
+	position:relative;
+}
+
+.FicheProduit .InputBtnPlus {
+  background: url("../Img/sprite.png") no-repeat scroll 0 -2471px transparent;
+    	border: medium none;
+    	height: 10px;
+    	left: 10px;
+    	position: absolute;
+    	top: -2px;
+    	width: 10px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+}
+
+.FicheProduit .InputBtnMoins {
+    	background: url("../Img/sprite.png") no-repeat scroll 0 -2480px transparent;
+    	border: medium none;
+    	height: 20px;
+    	left: 10px;
+    	position: absolute;
+    	top: 3px;
+    	width: 6px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+
+}
+.FicheProduit .AchatHaut input {
+	float:right;
+  	background: url("../Img/sprite.png") no-repeat scroll 10px -2799px transparent;
+    	border: medium none;
+    	display: block;
+    	float: right;
+    	height: 42px;
+   	margin-top: -10px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+    	width: 180px;
+	cursor:pointer;
+}
+.FicheProduit .AchatHaut input:hover {
+	background-position:10px -2842px;
+}
+
+.FicheProduit .Achat input {
+  	background: url("../Img/sprite.png") no-repeat scroll 10px -2799px transparent;
+    	border: medium none;
+    	display: block;
+    	float: right;
+    	height: 42px;
+    	margin-right: -5px;
+    	margin-top: 27px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+    	width: 180px;
+	cursor:pointer;
+
+}
+.FicheProduit .Achat input:hover {
+	background-position:10px -2842px;
+}
+
+.FicheProduit .EspacefbtwLv {
+	display:block;
+	position:relative;
+	overflow:hidden;
+	margin-top:20px;
+/*	padding:10px;*/
+
+}
+
+.FicheProduit .EspacefbtwLv a.SocialEA {
+ 	background: url("../Img/sprite.png") no-repeat scroll -142px -2673px transparent;
+ 	width: 20px;
+	height:20px;
+	text-indent: -999px;
+	overflow: hidden;
+	font-size: 0;
+	line-height: 0;
+	display: block;
+}
+
+.FicheProduit a.RetourListe {
+   	background: url("../Img/sprite.png") no-repeat scroll 0 -2710px transparent;
+    	display: block;
+    	float: right;
+    	height: 30px;
+    	margin-right: 20px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+    	width: 120px;
+}
+
+.FicheProduit a.RetourListe:hover {
+	background-position:0 -2741px;
+}
+
+
+
+.FicheProduit .ContenuDeplace{
+	margin:auto;
+	position:absolute;
+	right:25px;
+	left:25px;
+	bottom:0;
+	top:0;
+	overflow:hidden;
+}
+
+.FicheProduit .precedent {
+    background: url("../Img/sprite.png") no-repeat scroll 0 -2563px transparent;
+    border: medium none;
+    height: 35px;
+    left: 0;
+    position: absolute;
+    top: 10px;
+    width: 15px;
+    z-index: 400;
+
+}
+.FicheProduit .suivant {
+    background: url("../Img/sprite.png") no-repeat scroll 0 -2515px transparent;
+    border: medium none;
+    height: 35px;
+    right: 10px;
+    position: absolute;
+    top: 10px;
+    width: 15px;
+    z-index: 400;
+
+}
+div.BlocFichDeclinaisonsLibelle {     margin-left: 5px;}
+
+div.BlocFichDeclinaisonsLibelle  select {
+
+    width: auto;
+}
+div.AttributGraphiqueTout {
+	display:block;
+	position:relative;overflow:hidden;
+	width:100%;
+}
+div.AttributGraphique {
+	float:left;
+	display:block;
+	position:relative;
+	width:76px;
+	padding-left:4px;
+}
+
+.AttributGraphiqueNom{
+	font-weight:normal;
+	font-size:10px;
+	color:#4d4d4d;
+	text-align:center;
+	display:block;
+}
+.AttributGraphiqueImg {
+	text-align:center;
+	display:block;
+	padding-left:11px;
+}
+.AttributGraphiqueImg  a  { border:1px solid #828282; }
+
+div.AttributGraphiqueChoix{
+	text-align:center;
+	display:block;
+	border:none;	
+}
+div.AttributGraphiqueChoix input { height:10px;}
+div.BlocFichDeclinaisons .BlocFichDeclinaisonsLibelle {
+	font-size:11px;
+	font-weight:bold;
+	color:#4d4d4d;
+}
+
+div.BlocFichDeclinaisonsLibelle select.AttributTexte {
+    background-color: #FFFFFF;
+    border: 1px solid #01ACCF;
+    color: #4D4D4D;
+    font-size: 11px;
+    height: 16px;
+    width: auto;
+}
+
+table.ListeReferences { 
+   	border-top: 1px dotted #01ACCF;
+/*    	margin: 10px 0;*/
+	padding: 0 10px;
+    	width: 100%;
+}
+table.ListeReferences tr {
+	border-bottom: 1px dotted #01ACCF;
+	padding: 5px 0;
+	min-height:120px;
+	
+}
+table.ListeReferences td {
+	padding: 5px 11px 0 0;
+	
+}
+table.ListeReferences td.Photo {
+	width:125px;
+	height: 120px;
+	text-align:center;
+
+}
+table.ListeReferences td.Desc {ftp://sable-et-jasmin.com/www/Skins/SableJasmin/Css/style.css
+	text-align:left;
+
+}
+table.ListeReferences td.Achat {
+	display:block;
+	position:relative;
+	width:125px;
+	float:right;
+ 	padding-top: 12px;
+
+}
+.AchatListeReferences {
+	display:block;
+	position:relative;
+
+}
+table.ListeReferences .TitreReference {
+	color:#01accf;
+	text-transform:uppercase;
+	font-size:14px;
+
+
+}
+table.ListeReferences .DescReference {
+	color:#4d4d4d;
+}
+
+table.ListeReferences .BlocFichPrix {
+ 	background: url("../Img/sprite.png") no-repeat scroll 0 -2599px transparent;
+   	font-weight: bold;
+    	height: 52px;
+    	position: absolute;
+    	right: 0;
+    	top: -20px;
+    	width: 100px;
+}
+
+
+table.ListeReferences .PrixDansFiche {
+  	border-bottom: 1px dotted #01ACCF;
+    	color: #01ACCF;
+    	font-size: 20px;
+    	font-weight: bold;
+    	padding-bottom: 2px;
+    	position: absolute;
+    	right: 5px;
+    	top: 12px;
+}
+
+
+input#inputCodePromo {
+	background: url("../Img/sprite.png") no-repeat scroll 2px -697px transparent;
+    	margin-left: 25px;
+    	width: 30px;
+	height:25px;
+	border:none;
+	color:#ffffff;
+
+}
+input#inputCodePromo:hover {
+	background-position:2px -737px;
+
+}
+
+.BlockInfo {
+	display:block;
+	position:relative;
+	margin:10px 0;
+}
+.BlockInfo h1{
+	font-weight:bold;
+	font-size:14px;
+	text-transform:uppercase;
+	color:#01accf;
+	padding:10px;
+}
+
+form.paiement4b {
+	background: url('../Img/paiement.jpg') no-repeat 50% 0;
+	text-align: center;
+	padding-top: 200px; 
+}
+form.paiement4b  input {
+	background: url("../Img/sprite.png") no-repeat scroll -320px -4101px transparent;
+    	width: 210px;
+	height:38px;
+	border:none;
+	color:#ffffff;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+	cursor:pointer;
+
+}
+form.paiement4b  input:hover {
+	background-position:-320px -4136px;
+
+}

@@ -1,0 +1,64 @@
+[HEADER]
+	<link rel="icon" href="/Skins/[!Systeme::Skin!]/favicon.ico" type="image/x-icon"/> 
+	<link rel="shortcut icon" href="/Skins/[!Systeme::Skin!]/favicon.ico" type="image/x-icon"/>
+	
+	// GOOGLE ANALYTICS
+	<meta name="verify-v1" content="QlurhrWsienYWG9Jb/0SONdR506RyMB5BMe974haIeA=" />
+	<meta name="verify-v1" content="EqQM416Z2qSv3wFOx/UqwSoKM7ZJmw1fAaxH8e/jVRw=" />
+	<meta name="google-site-verification" content="3sX7QkEnbqgCM-Yd2Sr0fdEMH84K_2LW0LOD4YFoo4o" />
+	<meta name="y_key" content="58e1feb7af568c57" />
+	<meta name="msvalidate.01" content="2CBBC07DF7DF17895C01254B50C729DB" />
+	<meta name="alexaVerifyID" content="HeXGQZYTE6bkKfVPnTzKJmlPlJg" />
+	<meta name="viewport" content="width=1000" />
+
+	<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-16916219-1']);
+	_gaq.push(['_trackPageview']);
+	
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+	</script>
+[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/mootools.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/mootools-more.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/functions.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/suivi_variable.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/swfobject.js[/HEADER]
+
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/budget.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/simulateur.js[/HEADER]
+
+[HEADER CSS]Skins/[!Systeme::Skin!]/Css/slickmap.css[/HEADER]
+
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/overlay.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/multiBox.js[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Css/multiBox.css[/HEADER]
+
+// Ambiance
+[INFO [!Query!]|I]
+[IF [!I::TypeChild!]=Residence]
+	[STORPROC [!Query!]|ResReferente][/STORPROC]
+[ELSE]
+	[STORPROC ParcImmobilier/Residence/AmbianceReferente=1|ResReferente|0|1|tmsEdit|DESC][/STORPROC]
+	//[STORPROC ParcImmobilier/Residence/159|ResReferente|0|1|tmsEdit|DESC][/STORPROC]
+[/IF]
+
+<div id="Header" class="fullWidth">
+	<div id="Bando" style="background-image:url('/[!ResReferente::BanniereHTML!]');background-repeat: no-repeat;">
+		<a href="/" class="RetourAccueil"></a>
+		[MODULE Systeme/Structure/Header]
+	</div>
+	[MODULE Systeme/Menu]
+</div>
+
+<div id="Main" class="fullWidth [IF [!Lien!]!=] blancTournant arial[/IF]" style="min-height:400px">
+	[DATA]
+</div>
+
+<div id="Footer" class="fullWidth">
+	[MODULE Systeme/Structure/Footer]
+</div>

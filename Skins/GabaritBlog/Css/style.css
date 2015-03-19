@@ -1,0 +1,141 @@
+@import "slimbox.css";
+@import "Formulaire.css";
+@import "bbcode.css";
+@import "Structure.css";
+@import "Droite.css";
+@import "Pied.css";
+@import "Pagination.css";
+@import "Post.css";
+@import "Menu.css";
+@import "multibox.css";
+
+*{
+	font-family:Arial,Verdana,Helvetica,sans-serif;
+	color:#1E1E1E;
+	font-size:12px;
+	word-spacing:2px;
+	margin:0;
+	padding:0;
+}
+
+body{
+	width:100%;
+	background:#1E1E1E;
+	border:0;
+	
+}
+
+* html body{
+	width:100%;
+	text-align:center;/* = margin-auto pour IE */
+	margin:0;
+	padding:0;
+}
+
+* html html {overflow-x:auto; overflow-y:hidden;}
+
+
+img{	
+	border:0;
+	outline:0;
+}
+
+* html img{	
+	margin:0;
+	padding:0;
+	border:0;
+	outline:0;
+}
+
+a, a:visited, a:hover, a:active{
+	cursor:pointer;
+	outline:0;
+}
+
+* html a{
+	margin:0;
+	padding:0;
+}
+
+h1{
+	font-size:20px;
+	padding-bottom:5px;
+	border-bottom:1px dashed #1E1E1E;
+}
+
+h1 a, h1 a:visited {
+	font-size:20px;
+	text-decoration:none;
+}
+
+h1 a:hover, h1 a:active {
+	color:#B2B2B2;
+}
+
+h2{
+	font-size:18px;
+	padding-bottom:5px;
+	border-bottom:1px dashed #1E1E1E;
+}
+
+h2 a, h2 a:visited {
+	font-size:18px;
+	padding-bottom:5px;
+	text-decoration:none;
+}
+
+h2 a:hover, h2 a:active {
+	color:#B2B2B2;
+	text-decoration:line-through;
+}
+
+h3{
+	font-size:16px;
+}
+
+h4{
+	font-size:14px;	
+}
+
+h5{
+	
+}
+
+p{
+	text-indent:0px;
+	font-weight:normal;
+}
+
+.FLeft{
+	float:left;
+}
+
+.FRight{
+	float:right;
+}
+
+.Clear {
+	clear:both;
+}
+
+.Bold{
+	font-weight:bold;
+}
+
+.Italic{
+	font-style:italic;
+}
+
+* html input, * html ul, * html li{
+	margin:0;
+	padding:0;
+}
+
+input[type=radio]{
+	width:auto;
+	border:none;
+}
+
+input[type=checkbox]{
+	width:13px;
+}

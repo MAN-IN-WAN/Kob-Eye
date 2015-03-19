@@ -1,0 +1,172 @@
+/*--- RESET MULTIBOX ---*/
+div#PragmaReferencesMain a.mb {
+	float: none;
+	margin: 0;
+}
+
+div#PragmaReferencesMain a.mb img {
+	display: inline;
+}
+
+/*--- STRUCTURE ---*/
+div#PragmaReferencesMain {
+	position:relative;
+	overflow: auto;
+	height: 600px;
+}
+
+div#PragmaReferencesContainer {
+	position: absolute;
+	left: 32px;
+}
+
+div#PragmaReferencesMain button {
+	position: relative;
+	display: none;
+	margin-top: 280px;
+	padding: 5px;
+	width:48px;
+	height: 48px;
+	cursor: pointer;
+	border: none;
+}
+
+div#PragmaReferencesMain button:hover {
+	background-position: 0 -48px;
+}
+
+button#PragmaReferencesLeftBtn {
+	float: left;
+	background: url('../Img/refG.png');
+}
+
+button#PragmaReferencesRightBtn {
+	float: right;
+	background: url('../Img/refD.png');
+}
+
+div.PragmaReferencesItem {
+	position: relative;
+	margin: 20px 0;
+	padding: 20px 10px;
+	height: 530px;
+	width: 840px;
+	border: 1px solid #CCCCCC;
+    border-radius: 5px;
+    box-shadow: 1px 1px 5px rgba(125, 125, 125, 0.5);
+	overflow: auto;	
+}
+
+div#PragmaReferencesMinis {
+	overflow: hidden;
+	background: #525252;
+	color: #FFFFFF;
+	display: none;
+	background: url('../Img/fond-diapo_73.jpg') repeat-x;
+}
+
+div#PragmaReferencesMinisDefile {
+	height: 120px;
+	position: relative;
+}
+
+div#PragmaReferencesMinis img {
+	margin: 5px;
+	cursor: pointer;
+}
+
+div#PragmaReferencesMinis div.PragmaReferencesDate {
+	position: absolute;
+	top: 85px;
+	width: 94px;
+	text-align: center;
+} 
+
+/*--- LEFT ---*/
+div.PragmaReferencesLeft {
+	position: relative;
+}
+
+div.PragmaReferencesLeft img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 5px;
+	border: 1px solid #CCCCCC;
+    border-radius: 5px;
+    box-shadow: 1px 1px 5px rgba(125, 125, 125, 0.5);
+}
+
+/*--- RIGHT ---*/
+div.PragmaReferencesLeft, div.PragmaReferencesRight {
+	display: block;
+	position: relative;
+	width: 400px;
+	margin: 0 10px;
+}
+
+div.PragmaReferencesLeft {
+	float: left;
+}
+
+div.PragmaReferencesRight {
+	float: right;
+}
+
+div.PragmaReferencesRight h2 {
+	margin: 0;
+	padding: 5px 0;
+	font-weight: bold;
+	font-size: 20px;
+}
+
+div.PragmaReferencesRight h3 {
+	margin: 0;
+	font-weight: normal;
+	font-style: italic;
+	font-size: 16px;
+	font-family: Georgia;
+	border-bottom: 1px solid #000;
+	padding: 5px 0;
+	color: #0070BA;
+}
+
+div.PragmaReferencesSubInfo {
+	padding: 5px 0;
+	overflow: hidden;
+	border-bottom: 1px solid #ccc;
+	font-size: 14px;
+	font-family: Georgia;
+}
+
+div.PragmaReferencesSubInfo dt {
+	font-weight: bold;
+	display: block;
+	position: relative;
+	float: left;
+}
+
+div.PragmaReferencesSubInfo dt:after {
+	content: " :";
+}
+
+div.PragmaReferencesSubInfo dd {
+	display: block;
+	text-align: right;
+	color: #999;
+}
+
+div.PragmaReferencesOtherPictures {
+	padding-top: 30px;
+}
+
+div.PragmaReferencesOtherPictures img {
+	padding: 5px;
+	border: 1px solid #CCCCCC;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 1px 1px 5px rgba(125, 125, 125, 0.5);
+}
+
+div.PragmaReferencesOtherPictures img:nth-child(1) {
+	margin-right: 10px;
+}

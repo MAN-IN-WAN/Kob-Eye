@@ -1,0 +1,204 @@
+/*-------- Menu du bas --------*/
+
+.FondBleu {
+	height:180px;position:absolute;top:0;left:0;right:0;
+	background: url("../Img/sprite.png") repeat-x scroll 0 -1442px transparent;
+}
+.FondBeige {
+	background-color:#c4bfa1;height:195px;position:absolute;top:190px;left:0;right:0;
+
+
+}
+.FBleuLogos {
+	position:relative;
+	height:55px;
+	border-bottom:1px dotted #ffffff;
+}
+
+.FondNull {
+    	height: 30px;
+    	left: 0;
+    	position: absolute;
+    	right: 5px;
+    	text-align: right;
+    	top: 400px;
+}
+.FondNull a {
+	font-size:11px;
+	font-style:italic;
+}
+
+.PiedContenu {
+	position: relative; 
+	background: url("../Img/sprite.png") no-repeat scroll 0 -4670px transparent;
+	width: 1000px;
+	border: none;
+	margin:auto;
+
+}
+
+
+/*---Pour un site à 980px ---------*/
+.MenuBasEtage1Bleu {
+	position: relative;
+	font-size:16px;
+	text-transform:uppercase;
+	height: 55px;
+	padding-left: 10px;
+}
+
+.MenuBasEtage1Bleu ul {
+	position: relative;
+	overflow:hidden;
+	list-style:none;
+	height: 50px;
+
+}
+
+.MenuBasEtage1Bleu li{
+	height: 50px;
+	color: #ffffff;
+ 	float: left;
+	padding: 5px 0;
+	width:25%;
+}
+
+.MenuBasEtage1Bleu a {
+	color: #ffffff;
+	padding: 5px 0 0 45px;
+	text-decoration:none;
+	display:block;
+}
+
+.MenuBasEtage1Bleu a.bascoupcoeur {
+	background: url("../Img/sprite.png") no-repeat scroll -850px -3662px transparent;
+
+}
+.MenuBasEtage1Bleu a.promos { 
+	background: url("../Img/sprite.png") no-repeat scroll -850px -3775px transparent;
+}
+.MenuBasEtage1Bleu a.kdo {
+	background: url("../Img/sprite.png") no-repeat scroll -850px -3898px transparent;
+}
+.MenuBasEtage1Bleu a.visitesplus {
+	background: url("../Img/sprite.png") no-repeat scroll -850px -4020px transparent;
+	padding-left:30px;
+}
+
+
+.MenuBasEtage1Bleu a:hover, .MenuBasEtage1Bleu li.current  {
+	color: #c4bea0;
+	text-decoration:none;
+}
+.MenuBasEtage1Bleu li.current  {
+	color: #c4bea0;
+}
+
+
+
+/*-- Menu du bas listage des catégories --*/
+
+.MenuBasEtage2Bleu {
+	position: relative;
+	font-size:13px;
+	text-transform:none;
+	height:124px;
+	padding-left: 10px;
+}
+
+.MenuBasEtage2Bleu ul {
+	list-style:none;
+	overflow:hidden;
+}
+
+.MenuBasEtage2Bleu li.colonne {
+	color: #ffffff;
+ 	float: left;
+    	width: 25%;
+	padding: 5px 0;	
+}
+.MenuBasEtage2Bleu li li {
+	color: #ffffff;
+	padding: 2px 0;
+}
+
+.MenuBasEtage2Bleu  a {
+	color: #ffffff;
+   	padding-left: 10px;
+ 	text-decoration:none;
+	background: url("../Img/sprite.png") no-repeat scroll 0 -1858px transparent;
+	font-size:12px;
+	font-style:normal;
+}
+
+.MenuBasEtage2Bleu a:hover, .MenuBasEtage2Bleu a.current {
+	color: #c4bea0;
+	text-decoration:none;
+}
+.MenuBasEtage2Bleu a.current  {
+	color: #c4bea0;
+}
+
+/*---- Menu dans le bandeau beige ----*/
+
+.MenuBasBeige {
+	font-size:16px;
+	text-transform:uppercase;
+	height:205px;
+	color: #ffffff;
+	padding-left: 10px;
+}
+
+.MenuBasBeige ul {
+	list-style:none;
+	overflow:hidden;
+	padding: 10px 0;
+}
+
+.MenuBasBeige li.colonne {
+	color: #ffffff;
+ 	float: left;
+    	width: 50%;
+}
+.MenuBasBeige li li {
+	color: #ffffff;
+	height: 46px;
+    	margin: 12px 0;
+    	padding: 7px 0 0 55px;
+}
+
+.MenuBasBeige  a {
+	color: #ffffff;
+	text-decoration:none;
+}
+
+.MenuBasBeige li li.contact {background: url("../Img/sprite.png") no-repeat scroll 0 -1650px transparent;}
+.MenuBasBeige li li.moncompte {background: url("../Img/sprite.png") no-repeat scroll 0 -1712px transparent;}
+.MenuBasBeige li li.blog {background: url("../Img/sprite.png") no-repeat scroll 0 -1770px transparent;}
+.MenuBasBeige li li.plansite {background: url("../Img/sprite.png") no-repeat scroll -305px -1650px transparent;}
+.MenuBasBeige li li.cgv {background: url("../Img/sprite.png") no-repeat scroll -305px -1714px transparent;padding-top:0;}
+.MenuBasBeige li li.menleg {background: url("../Img/sprite.png") no-repeat scroll -305px -1770px transparent;}
+
+li.retourSav {
+	background: url("../Img/sprite.png") no-repeat scroll -650px -1648px transparent;
+    	height: 55px;
+    	padding: 0 0 0 55px;
+    	position: absolute;
+    	right: 198px;
+    	top: 210px;
+    	width: 70px;
+}
+
+
+.MenuBasBeige a:hover, .MenuBasBeige a.current {
+	color: #4d4d4d;
+	text-decoration:none;
+}
+.MenuBasBeige a.current  {
+	color: #4d4d4d;
+}
+
+
+.colissimo {position:absolute;top:270px;right:210px;height:107px;width:100px;}
+
+.paiement {position:absolute;top:215px;right:50px;height:162px;width:100px;}

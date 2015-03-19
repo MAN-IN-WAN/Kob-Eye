@@ -1,0 +1,45 @@
+/*----- Menu -----*/
+div.MenuCentral {
+	position: relative;
+	z-index: 20;
+}
+
+div#MainMenu {
+	position: relative;
+	font-size: 14px;
+	text-transform: uppercase;
+	overflow:hidden;
+	display:block;
+}
+
+table#Menu {
+	border-collapse:collapse;
+ 	float: right;
+}
+
+table#Menu td {
+	background: url("../Img/sprite.png") repeat-x scroll -36px -334px transparent;
+	width:123px;
+	height:27px;
+
+
+}
+
+table#Menu td.Last {
+}
+
+table#Menu a {
+	color: white;
+	display: block;
+	text-align: center;
+	padding: 5px;
+	text-decoration:none;
+
+
+}
+table#Menu td:hover {
+	background-position:-36px -365px;
+	text-decoration:none;
+
+}
+table#Menu a:hover {text-decoration:none;}

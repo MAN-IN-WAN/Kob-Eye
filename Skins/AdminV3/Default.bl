@@ -1,0 +1,26 @@
+[TITLE]Administration V3 - Kobeye[/TITLE]
+
+[HEADER CSS]Skins/[!Systeme::Skin!]/Css/bootstrap.min.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Css/bootstrap-responsive.min.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Css/style.css[/HEADER]
+
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/jquery.172.min.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/bootstrap.min.js[/HEADER]
+
+[HEADER]
+    <link rel="icon" href="[!Domaine!]/Skins/[!Systeme::Skin!]/favicon.ico" type="image/x-icon"/> 
+    <link rel="shortcut icon" href="[!Domaine!]/Skins/[!Systeme::Skin!]/favicon.ico" type="image/x-icon"/>
+[/HEADER]
+
+<div id="Header">
+    [MODULE Systeme/Menu]    
+    [MODULE Systeme/Ariane]
+</div>
+
+<div id="Content">
+    [IF [!Lien!]=]
+        <img src="[!Domaine!]/Skins/[!Systeme::Skin!]/Img/Logo.jpg" alt="" style="display:block; margin:10px auto" />
+    [ELSE]
+        [DATA]
+    [/IF]
+</div>

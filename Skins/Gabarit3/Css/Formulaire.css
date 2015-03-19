@@ -1,0 +1,108 @@
+.LigneForm{
+	margin:10px 10px 10px 0;
+}
+
+* html .LigneForm{
+	clear:both;
+}
+
+div[class="LigneForm"]{
+	overflow:auto;	
+}
+
+/*--------------------FORM CONTACT----------------------------*/
+
+#FormContact label{
+	float:left;
+	display:block;
+	width:150px;
+}
+
+#FormContact input, #FormContact textarea, #FormContact select{
+	width:400px;
+}
+
+#FormContact input.BtnContact {
+	cursor:pointer;
+	width:100px;
+	margin-bottom:10px;
+}
+
+* html #FormContact p.Italic{
+	width:620px;
+}
+
+
+/*--------------------FORM RECHERCHE----------------------------*/
+#FormSearch{
+	margin-left:10px;
+	margin-bottom:10px;
+	width:250px;
+}
+
+#FormSearch input{
+	width:200px;
+}
+
+#FormSearch input.OK{
+	margin-bottom:-20px;
+	width:30px;
+	margin-left:20px;
+	float:right;
+}
+
+/*--------------------FORM AMI----------------------------*/
+#FormAmi label{
+	float:left;
+	display:block;
+	width:120px;
+}
+
+#FormAmi input{
+	width:340px;
+}
+
+#FormAmi p{
+	margin-top:10px;
+	margin-bottom:20px;
+}
+
+/*-------------------MESSAGES-------------------------*/
+
+.Error {
+	background-color:#FFBEBE;
+	border:2px solid #BA0000;
+}
+
+.BlocError{
+	padding:10px 20px 10px;
+	background-color:#FFBEBE;
+	margin-bottom:10px;
+	margin-top:10px;
+}
+
+.BlocError p{
+	color:#BF2B2E;
+	font-size:14px;
+	font-style:italic;
+/* 	margin-bottom:5px; */
+}
+
+.BlocError li{
+	font-weight:bold;
+	margin-left:10px;
+}
+
+.Obligatoire p{
+	margin-bottom:20px;
+	margin-left:150px;
+	font-style:italic;
+}
+
+.Message{
+	color:#BF2B2E;
+	font-size:14px;
+	font-style:italic;
+	margin-top:5px;
+	margin-bottom:5px;
+}

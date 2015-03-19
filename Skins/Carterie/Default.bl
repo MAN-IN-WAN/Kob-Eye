@@ -1,0 +1,86 @@
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/suivi_variable.js[/HEADER]
+
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/jquery.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/bootstrap.min.js[/HEADER]
+
+//[HEADER JS]Tools/Js/Jquery/1.9.2/jquery.min.js[/HEADER]
+//[HEADER JS]Tools/Bootstrap/3.0/js/bootstrap.min.js[/HEADER]
+
+[HEADER CSS]Skins/[!Systeme::Skin!]/Css/bootstrap.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Css/bootstrap-responsive.css[/HEADER]
+//[HEADER CSS]Tools/Css/Bootstrap/3.0/css/bootstrap.css[/HEADER]
+
+[HEADER JS]Skins/BoutiqueDefault/Js/toastr.js[/HEADER]
+[HEADER CSS]Skins/BoutiqueDefault/Css/toastr.css[/HEADER]
+[HEADER CSS]Skins/BoutiqueDefault/Css/toastr-responsive.css[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Shadowbox/shadowbox.js[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Shadowbox/shadowbox.css[/HEADER]
+[HEADER CSS]Skins/BoutiqueDefault/Css/style-user.css[/HEADER]
+[HEADER CSS]Skins/BoutiqueDefault/Css/creationcompte.css[/HEADER]
+[HEADER CSS]Skins/BoutiqueDefault/Css/user.css[/HEADER]
+[HEADER CSS]Skins/BoutiqueDefault/Css/style-commande.css[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/swfobject.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/overlay.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/functions.js[/HEADER]
+
+[MODULE Systeme/Structure/Meta]
+[MODULE Boutique/Produit/MajPanier]
+<div class="SiteWidth" >
+	<div class="container-fluid ">
+		<div id="Header">
+			<div id="Bando" >
+				<a href="/" style="position:absolute;top:0;left:0;bottom:0;right:0" title="Retour à l'accueil"></a>
+				[MODULE Systeme/Menu/MenuHaut]
+			</div>
+		</div>
+		<div id="MenuBar">
+			<div id="Menu" >
+				[MODULE Systeme/Menu/MenuPrincipal]
+			</div>
+		</div>
+	</div>
+	
+	<div id="Main">
+		<div id="Content" >
+			[IF [!Lien!]!=][COMPONENT Systeme/FilAriane/Default?][/IF]
+			[DATA]
+		</div>
+	</div>
+	
+	<div class="SiteWidth container-fluid" >
+		<div id="Englobe_Footer">
+			<div id="Footer">
+				[MODULE Systeme/Structure/Footer]
+			</div>
+			<div id="FooterNiveau2" class=" row-fluid ">
+				[MODULE Systeme/Structure/FooterMenuBas]
+			</div>
+		</div>			
+		<div id="FooterAbtel"   ><a href="http://agence-web.abtel.fr" target="_blank">Abtel agence web @ 2013</a></div>
+	</div>
+	////////////////////////////
+	// MODAL
+	////////////////////////////
+
+	<div id="lemodal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel"></h3>
+		</div>
+		<div class="modal-body">
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Fermer</button>
+		</div>
+	</div> 
+	
+	<script type="text/javascript">
+		/**
+		* supression du contenu lors de la disparition du popup
+		*/
+		$("#lemodal").on("hidden", function() { 
+			$(this).removeData('modal');
+		});
+	</script>
+
+</div>	

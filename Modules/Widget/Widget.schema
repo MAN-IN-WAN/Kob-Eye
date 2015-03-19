@@ -1,0 +1,32 @@
+<SCHEMA>
+	<OBJECTCLASS title="Accueil" driver="mysql" master="1" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png" Heritage="0" browseable="1">
+		<PROPERTIES type="varchar" searchOrder="1">Titre</PROPERTIES>
+		<PROPERTIES type="varchar">Accroche</PROPERTIES>
+		<PROPERTIES type="varchar">Lien</PROPERTIES>
+		<PROPERTIES type="file">LienFichier</PROPERTIES>
+		<PROPERTIES type="file">Image</PROPERTIES>
+		<PROPERTIES type="date" Description="Expire le">DateExpiration</PROPERTIES>
+		<PROPERTIES type="boolean"  Description="A la Une">Publier</PROPERTIES>
+		<PROPERTIES type="boolean"  Description="ExtraitSonoreAccueil">ExtraitSonore</PROPERTIES>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="Teaser" driver="mysql" master="1" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png" browseable="1">
+		<PROPERTIES type="varchar" searchOrder="1">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" query="Explorateur/_Dossier/Modules/Widget/Modeles/_Fichier::Mod">Modele</PROPERTIES>
+		<PROPERTIES type="varchar" description="NomDiv">NomDiv</PROPERTIES>
+		<PROPERTIES type="varchar">Accroche</PROPERTIES>
+		<PROPERTIES type="varchar" description="style accroche">CssAccroche</PROPERTIES>
+		<PROPERTIES type="bbcode">Texte</PROPERTIES>
+		<PROPERTIES type="varchar" description="style texte">CssTexte</PROPERTIES>
+		<PROPERTIES type="varchar" >LienHaut</PROPERTIES>
+		<PROPERTIES type="varchar" >TexteLienHaut</PROPERTIES>
+		<PROPERTIES type="varchar" >Lien</PROPERTIES>
+		<PROPERTIES type="varchar" >TexteLien</PROPERTIES>
+		<PROPERTIES type="date" Description="Expire le">DateExpiration</PROPERTIES>
+		<PROPERTIES type="boolean" >Chrono</PROPERTIES>
+		<PROPERTIES type="date" Description="Expire le">DateExpirationChrono</PROPERTIES>
+		<PROPERTIES type="boolean"  Description="A la Une">Publier</PROPERTIES>
+		<PROPERTIES type="file">Image</PROPERTIES>
+		<PROPERTIES type="file">ImageFond</PROPERTIES>
+	</OBJECTCLASS>
+</SCHEMA>

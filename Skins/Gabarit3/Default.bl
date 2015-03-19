@@ -1,0 +1,17 @@
+[HEADER]
+	<link rel="icon" href="/Skins/Gabarit1/favicon.ico" type="image/x-icon"/>
+	<link rel="shortcut icon" href="/Skins/Gabarit3/favicon.ico" type="image/x-icon"/>
+	<script type="text/javascript" src="/Skins/Gabarit3/Js/mootools.js"></script>
+	<script type="text/javascript" src="/Skins/Gabarit3/Js/slimbox.js"></script>
+[/HEADER]
+<div id="Generale">
+	[MODULE Systeme/Structure/Entete]
+	<div id="Container">
+		<div id="Contenu">
+			[DATA]
+		</div>
+	</div>
+	[MODULE Systeme/Structure/Pied]
+</div>
+
+

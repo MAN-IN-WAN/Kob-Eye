@@ -1,0 +1,14 @@
+/* footer */
+#footer .block_various_links {}
+
+/* Block CMS links */
+.informations_block_left li {border-bottom:1px dotted #dddddd}
+.informations_block_left li.last {border:none;}
+.informations_block_left li a {
+    display:block;
+    
+}
+    
+tr.subitem > td:first-child + td {
+    padding-left: 10px;
+}

@@ -1,0 +1,79 @@
+<SCHEMA>
+	<OBJECTCLASS title="TypeLivraison" driver="mysql" AccessPoint="1" master="1" Description="TypeLivraisons"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/LivraisonStock/Class/TypeLivraison.class.php" plugin="1">
+		<PROPERTIES searchOrder="1" description="Nom" type="varchar" length="100"   >Nom</PROPERTIES>
+		<PROPERTIES Order="2"  description="description" type="bbcode"  special="multi">Description</PROPERTIES>
+		<PROPERTIES searchOrder="3"  description="Defaut" type="boolean"  >Defaut</PROPERTIES>
+		<PROPERTIES searchOrder="4"  description="Actif" type="boolean" default="1">Actif</PROPERTIES>
+		<PROPERTIES description="Délai de livraison (nb jours)" type="int" default="7" >LivreEn</PROPERTIES>
+		<PROPERTIES Order="5"  description="Logo"    type="file" >Logo</PROPERTIES>
+		<PROPERTIES Order="6" description="Tva"      type="float"  default="19.6" >TvaLivr</PROPERTIES>
+		<PROPERTIES type="boolean" >SelectionPoids</PROPERTIES>
+		<PROPERTIES type="boolean" >SelectionQuantite</PROPERTIES>
+		<PROPERTIES type="boolean" >SelectionVolume</PROPERTIES>
+		<PROPERTIES type="boolean" >SelectionMontant</PROPERTIES>
+		<FUNCTION >GetZone</FUNCTION>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="ZoneLivraison" driver="mysql" AccessPoint="0" master="0" >
+		<PROPERTIES type="varchar" length="30" searchOrder="1">Code</PROPERTIES>
+		<PROPERTIES type="boolean" >AutoriseLivraison</PROPERTIES>
+		<PROPERTIES type="boolean" >Default</PROPERTIES>
+		<PROPERTIES searchOrder="2" description="Livré en (nb jours ouvrés)"      type="float"   >LivreEn</PROPERTIES>
+		<RKEY module="Geographie" data="Pays,Code" card="0,n">ZonePays</RKEY>
+		<RKEY module="Geographie" data="Departement,Code" card="0,n">ZoneDepartement</RKEY>
+		<RKEY module="Geographie" data="Ville,Code" card="0,n">ZoneVille</RKEY>
+		<FKEY card="1,1" data="TypeLivraison,Id">TypeLivraisonId</FKEY>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="TarifLivraison" driver="mysql" AccessPoint="0" Dico="0" master="0" Description="TarifLivraisons"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+		<PROPERTIES searchOrder="1" description="Description"   type="varchar"  special="multi"  >Description</PROPERTIES>
+		<PROPERTIES searchOrder="2" description="Tarif"      type="price"   >Tarif</PROPERTIES>
+		<PROPERTIES Order="3"  description="Actif" type="boolean"  >Actif</PROPERTIES>
+		<PROPERTIES Order="15"   description="Borne Maximale Poids en kg 0.xxx" type="float"  default="-1">MaxiPoids</PROPERTIES>
+		<PROPERTIES Order="25"   description="Borne Maximale Volume cm3 0.xxx" type="float"  default="-1">MaxiVolume</PROPERTIES>
+		<PROPERTIES Order="35"   description="Borne Maximale Quantite" type="float"  default="-1">MaxiQuantite</PROPERTIES>
+		<PROPERTIES Order="45"   description="Borne Maximale Montant" type="float"  default="-1">MaxiMontant</PROPERTIES>
+		<PROPERTIES Order="55" description="Ordre"    type="int"    >Ordre</PROPERTIES>
+		<FKEY card="1,1" data="ZoneLivraison,Id">ZoneLivraisonId</FKEY>
+	</OBJECTCLASS>
+	
+	
+	<OBJECTCLASS title="BonLivraison" driver="mysql" AccessPoint="1" master="0" Description="BonLivraison"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/LivraisonStock/Class/BonLivraison.class.php" >
+		<PROPERTIES searchOrder="1"	description="Numéro Bon Livraison" type="varchar">NumBL</PROPERTIES>
+		<PROPERTIES searchOrder="2"	description="Montant Livraison TTC" type="price" >MontantLivraisonTTC</PROPERTIES>
+		<PROPERTIES description="Statut" type="int" default="1" values="1::Non Préparé,2::Préparé,3::Expédié,4:Annulé" >Statut</PROPERTIES>
+		<PROPERTIES Order="6" 		description="Tva"      type="float"  default="19.6" >TxTvaBonLivr</PROPERTIES>
+		<PROPERTIES Order="10"     	description="Type Livraison" type="varchar">TypeLivraison</PROPERTIES>
+		<PROPERTIES Order="10"     	description="Zone Livraison" type="varchar">ZoneLivraison</PROPERTIES>
+		<PROPERTIES Order="15"		description="Choix Complémentaire" type="text">ChoixLivraison</PROPERTIES>
+		<PROPERTIES Order="20"		description="Choix Complémentaire Identifiant" type="int">ChoixLivraisonId</PROPERTIES>
+		<PROPERTIES Order="25"		description="Tranche livraison choisie" type="varchar">TrancheLivraison</PROPERTIES>
+		<PROPERTIES Order="30"		description="Numéro colis" type="varchar"  length="250" >NumColis</PROPERTIES>
+		<PROPERTIES Order="30"		description="Url de l'étiquette colis" type="varchar"  length="250" >Etiquette</PROPERTIES>
+		<PROPERTIES Order="35"		description="Date Livraison Prévue" type="date">DateLivPrev</PROPERTIES>
+		<PROPERTIES Order="40"		description="Date Expédition" type="date" >DateExpedition</PROPERTIES>
+		<PROPERTIES Order="45"		description="Date Livraison" type="date">DateLivraison</PROPERTIES>
+		<PROPERTIES Order="50"	 type="boolean" >AdresseLivraisonAlternative</PROPERTIES>
+		<FKEY module="Boutique" data="Commande,Id" card="1,1">CommandeId</FKEY>
+		<FKEY  data="TypeLivraison,Id" card="1,1">TypeLivraisonId</FKEY>
+		<FUNCTION >Impression</FUNCTION>
+		<FUNCTION >Expedier</FUNCTION>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="LigneBonLivraison" driver="mysql" AccessPoint="0" master="0" Description="LigneBonLivraison"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" >
+		<PROPERTIES searchOrder="1" description="Produit" type="varchar">Produit</PROPERTIES>
+		<PROPERTIES searchOrder="2" description="Reference" type="varchar">Reference</PROPERTIES>
+		<PROPERTIES searchOrder="1" description="Produit Identifiant" type="varchar">ProduitId</PROPERTIES>
+		<PROPERTIES searchOrder="2" description="Reference Identifiant" type="varchar">ReferenceId</PROPERTIES>
+		<PROPERTIES Order="10" description="Quantite commandée"  type="int" default="1">QuantiteCde</PROPERTIES>
+		<PROPERTIES Order="20" description="Quantite livrée"  type="int" default="1">QuantiteLivre</PROPERTIES>
+		<PROPERTIES Order="30" description="Poids"      type="float" category="Descriptif" >Poids</PROPERTIES>
+		<PROPERTIES Order="40" description="Largeur"    type="float" category="Descriptif">Largeur</PROPERTIES>
+		<PROPERTIES Order="50" description="Hauteur"    type="float" category="Descriptif">Hauteur</PROPERTIES>
+		<PROPERTIES Order="60" description="Profondeur" type="float" category="Descriptif">Profondeur</PROPERTIES>
+		<FKEY card="1,1" data="BonLivraison,Id">BonLivraisonId</FKEY>
+	</OBJECTCLASS>
+	
+	
+	
+</SCHEMA>

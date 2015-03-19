@@ -1,0 +1,126 @@
+/*-------- Menu du bas --------*/
+/*---Pour un site à 980px avec colonne gauche 258px et deux autres colonnes---------*/
+.MenuHautR {
+	font-size:11px;
+	background-color:#FFFFFF;
+    	height: 30px;
+    	position: absolute;
+	display: block;
+    	right: 0;
+    	top: 0;
+	
+}
+.MenuHautR ul  {
+	list-style:none;
+   	height: 30px;
+ 	color: #47b5d8;
+	font-size:11px;
+	overflow:hidden;
+	display:block;
+}
+.MenuHautR  li{
+    background: url("../Img/sprite.png") repeat-x scroll 0 -212px transparent;
+    float: left;
+    padding: 0 5px;
+ 	
+}
+
+.MenuHautR a {
+	color: #47b5d8;
+	text-decoration:none;
+	display:block;
+	width:25px;
+	height:15px;
+	margin:5px 2px;
+    	font-size: 0;
+    	line-height: 0;
+
+}
+
+.MenuHautR a.MiniContact {
+   	background: url("../Img/sprite.png") repeat-x scroll 0 -180px transparent;
+
+}
+.MenuHautR a.MiniBlog {
+    	background: url("../Img/sprite.png") repeat-x scroll -64px -180px transparent;
+}
+
+.MenuHautR a.Facebook {
+    	background: url("../Img/sprite.png") repeat-x scroll -140px -180px transparent;
+	
+}
+
+.MenuHautR a.Twitter {
+    	background: url("../Img/sprite.png") repeat-x scroll -209px -180px transparent;
+}
+
+.MenuHautR a.SendFriend {
+    	background: url("../Img/sprite.png") repeat-x scroll -280px -180px transparent;
+
+}
+
+.MenuHautR a.HConnexion {
+    	background: url("../Img/sprite.png") repeat-x scroll -353px -178px transparent;
+    	font-size: 12px;
+    	padding-left: 25px;
+    	width: auto;
+	height:30px;
+    	line-height: 15px;
+
+}
+
+
+/*.EnteteTel {
+	background: url("../Img/sprite.png") repeat-x scroll 0 -255px transparent;
+    	color: #01ACCF;
+    	font-family: Arial;
+    	font-size: 18px;
+    	height: 30px;
+    	padding: 2px 30px;
+    	position: absolute;
+    	right: 245px;
+    	top: 130px;
+}*/
+
+
+.EnteteTel {
+	background: url("../Img/sprite.png") repeat-x scroll 0 -255px transparent;
+    color: #01ACCF;
+    font-family: Arial;
+    font-size: 19px;
+    height: 30px;
+    padding: 2px 30px;
+    position: absolute;
+    right: -27px;
+    top: 32px;
+}
+
+.EnteteTelCout { 
+	font-size:10px;color:#01accf;
+	text-align: right; margin-right:2px;
+
+}
+
+
+.EnteteConnexion {
+   color: #01ACCF;
+    font-family: Arial;
+    font-size: 11px;
+    position: absolute;
+    right: 170px;
+    text-align: right;
+    top: 146px;
+    width: 400px;
+}
+
+.PanierTop {
+    	color: #01ACCF;
+    	font-family: Arial;
+    	font-size: 11px;
+	font-weight:bold;
+    	height: 30px;
+    	padding: 2px 30px;
+    	position: absolute;
+  	right: -8px;
+    	top: 115px;
+}

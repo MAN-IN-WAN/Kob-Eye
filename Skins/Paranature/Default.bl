@@ -1,0 +1,139 @@
+[HEADER]
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
+<meta name="description" content="Boutique propulsée par Kob-Eye" />
+<meta name="keywords" content="boutique, kob-eye" />
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+<meta http-equiv="content-language" content="en-br-de-es-fr-it" />
+<meta name="generator" content="Kob-Eye" />
+<meta name="robots" content="index,follow" />
+<link rel="icon" type="image/vnd.microsoft.icon" href="/Skins/Paranature/Js/img/favicon.ico?1368585042" />
+<link rel="shortcut icon" type="image/x-icon" href="/Skins/Paranature/Js/img/favicon.ico?1368585042" />
+<script type="text/javascript">
+	var baseDir = '/';
+	var baseUri = '/';
+	var static_token = '32f4b0bcca875efdf13c8b259373d259';
+	var token = 'b39f2b4fd96f8342b202bc8abc6e8e50';
+	var priceDisplayPrecision = 2;
+	var priceDisplayMethod = 0;
+	var roundMode = 2; 
+</script>
+[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/bootstrap.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/base.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/global.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/carriercompare/style.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/blockbestsellers/blockbestsellers.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/blockpermanentlinks/blockpermanentlinks.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/blockviewed/blockviewed.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/blocksocial/blocksocial.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/blockcart/blockcart.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/blockcontact/blockcontact.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/blockcategories/blockcategories.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/blockspecials/blockspecials.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/blockcurrencies/blockcurrencies.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/blocknewproducts/blocknewproducts.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/blockmyaccountfooter/blockmyaccount.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/blockuserinfo/blockuserinfo.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/blocklanguages/blocklanguages.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/blockmanufacturer/blockmanufacturer.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/blockcms/blockcms.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/blocktags/blocktags.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Js/jquery/plugins/autocomplete/jquery.autocomplete.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/product_list.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/blocksearch/blocksearch.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/blockcontactinfos/blockcontactinfos.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/favoriteproducts/favoriteproducts.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/homefeatured/homefeatured.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/blocknewsletter/blocknewsletter.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/blocksupplier/blocksupplier.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/themes/leobeau/info/assets/form.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/leobtslider/themes/default/assets/styles.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/leobootstrapmenu/themes/default/assets/styles.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/blockleorelatedproducts/blockleorelatedproducts.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/lofadvancecustom/tmpl/default/assets/style.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/lofminigallery/assets/style.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/lofminigallery/tmpl/basic/assets/style.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/lofminigallery/assets/css/prettyPhoto.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/loftwitter/tmpl/default/assets/css/style.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/loftwitter/tmpl/default/assets/css/jScrollPane15.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/blockwishlist/blockwishlist.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/blockleocategoriestabs/blockleocategoriestabs.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/lofmanufacturerscroll/assets/jquery.jcarousel.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/modules/lofmanufacturerscroll/assets/skin.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/themes/leobeau/css/bootstrap-responsive.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/themes/leobeau/css/theme-responsive.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/menu.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/product_detail.css[/HEADER]
+[HEADER CSS]Skins/Paranature/Css/panier.css[/HEADER]
+[IF [!skin!]=][!skin:=violet!][/IF]
+[HEADER CSS]Skins/Paranature/Css/themes/leobeau/skins/[!skin!]/css/skin.css[/HEADER]
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+
+<script type="text/javascript" src="/Skins/Paranature/Js/jquery/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="/Skins/Paranature/Js/tools.js"></script>
+<script type="text/javascript" src="/Skins/Paranature/Js/jquery/plugins/jquery.easing.js"></script>
+<script type="text/javascript" src="/Skins/Paranature/Js/jquery.serialScroll.js"></script>
+<script type="text/javascript" src="/Skins/Paranature/Js/jquery.scrollTo.js"></script>
+<script type="text/javascript" src="/Skins/Paranature/Js/jquery.jqzoom.js"></script>
+
+[HEADER CSS]Skins/Paranature/Js/jquery/plugins/fancybox/jquery.fancybox.css[/HEADER]
+<script type="text/javascript" src="/Skins/Paranature/Js/jquery/plugins/fancybox/jquery.fancybox.js"></script>
+
+<script type="text/javascript" src="/Skins/Paranature/Js/jquery.idTabs.js"></script>
+
+<script type="text/javascript" src="/Skins/Paranature/Js/modules/carriercompare/carriercompare.js"></script>
+<script type="text/javascript" src="/Skins/Paranature/Js/modules/blockcart/ajax-cart.js"></script>
+<script type="text/javascript" src="/Skins/Paranature/Js/themes/leobeau/js/tools/treeManagement.js"></script>
+<script type="text/javascript" src="/Skins/Paranature/Js/jquery/plugins/autocomplete/jquery.autocomplete.js"></script>
+<script type="text/javascript" src="/Skins/Paranature/Js/modules/favoriteproducts/favoriteproducts.js"></script>
+<script type="text/javascript" src="/Skins/Paranature/Js/modules/leotempcp/bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript" src="/Skins/Paranature/Js/themes/leobeau/info/assets/form.js"></script>
+<script type="text/javascript" src="/Skins/Paranature/Js/modules/lofminigallery/assets/jquery.prettyPhoto.js"></script>
+<script type="text/javascript" src="/Skins/Paranature/Js/modules/loftwitter/assets/jScrollPane15/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="/Skins/Paranature/Js/modules/loftwitter/assets/jScrollPane15/jquery.jscrollpane.min.js"></script>
+<script type="text/javascript" src="/Skins/Paranature/Js/modules/loftwitter/assets/jScrollPane15/mwheelIntent.js"></script>
+<script type="text/javascript" src="/Skins/Paranature/Js/modules/loftwitter/assets/jtweetsanywhere.js"></script>
+<script type="text/javascript" src="/Skins/Paranature/Js/modules/loftwitter/assets/script.js"></script>
+<script type="text/javascript" src="/Skins/Paranature/Js/modules/blockwishlist/js/ajax-wishlist.js"></script>
+<script type="text/javascript" src="/Skins/Paranature/Js/modules/lofmanufacturerscroll/assets/jquery.jcarousel.js"></script>
+<script type="text/javascript" src="/Skins/Paranature/Js/product.js"></script>
+<script type="text/javascript" src="/Skins/Paranature/Js/themes/leobeau/js/custom.js"></script>
+
+<!--[if lt IE 9]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<script type="text/javascript">
+	var favorite_products_url_add = 'http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?process=add&fc=module&module=favoriteproducts&controller=actions&id_lang=5';
+	var favorite_products_url_remove = 'http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?process=remove&fc=module&module=favoriteproducts&controller=actions&id_lang=5';
+
+</script>
+
+<link rel="alternate" type="application/rss+xml" title="leo beauty" href="/Skins/Paranature/modules/feeder/rss.php?id_category=0&amp;orderby=position&amp;orderway=asc" />
+<script type="text/javascript" src="http://platform.twitter.com/anywhere.js?id=18sTEQuTSqkRAXQuFQg&amp;v=1"></script>
+<div [IF [!Lien!]=] id="index"[/IF]>
+	<div id="page" class="clearfix">
+		[MODULE Systeme/Header]
+		//[IF [!Lien!]=]
+			[MODULE Systeme/Interfaces/SlideShow]
+		//[/IF]
+		[MODULE Systeme/Interfaces/TopMessage]
+		[DATA]
+		[MODULE Systeme/Footer]
+	</div>
+
+	<script type="text/javascript">
+		var classBody = ".png";
+		$("body").addClass(classBody.replace(/\.\w+$/, ""));
+		
+		/* desactivation des liens */
+/*		$('a').each(function (index,item){
+			$(item).attr('a','#nogo');
+			$(item).click(function (e){
+				e.preventDefault();
+				alert('les liens sont désactivés. Il ne s\'agit que d\'une maquette de démonstration.');
+			});
+		});*/
+
+	</script>
+</div>
+

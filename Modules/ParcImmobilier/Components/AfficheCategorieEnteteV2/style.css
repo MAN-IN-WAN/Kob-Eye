@@ -1,0 +1,108 @@
+div#Animation {
+	z-index: 5;
+	height:322px;
+	margin-bottom:10px;padding-bottom:10px;
+	}
+div#SommaireListeFond{
+	background: rgba(255, 255, 255, 0.71);
+	height: 198px;
+	left: 14px;
+	position: absolute;
+	top: 68px;
+	width: 180px;
+	z-index: 100;
+}	
+
+
+ul#sommdiv {
+	left: 14px;
+	position: absolute;z-index:200;
+	top: 83px;
+	width: 220px;list-style:none; margin: 0 ;padding:0;
+	background: url('./fleche-accueil.png') no-repeat;
+}
+
+
+
+
+	
+ul.SommaireListe   li.AnimTxtGauche {
+	height: 45px;padding-left: 10px;padding-top:10px;
+	color: #393939;text-transform:uppercase;
+	text-decoration: none;
+	font-size: 17px;
+	width: 193px;
+	vertical-align: middle;
+	display: inline-block;
+	line-height: normal;
+	
+}
+
+ul.SommaireListe   li.AnimTxtGauche a {
+	color: #333333;text-transform:uppercase;
+	text-decoration: none;
+	font-size: 17px;
+	width: 195px;
+	vertical-align: middle;
+	display: inline-block;
+	line-height: normal;
+}
+
+ul.SommaireListe  li.AnimActive {
+	color: #fff;
+	width: 220px;
+
+	/*border-top: 1px dotted white;
+	border-bottom: 1px dotted white;
+	width:170px;*/
+}
+
+
+div#BlockFlash {
+	padding:0;
+	margin: 0;
+	position: relative;
+	overflow: hidden;
+}
+
+div#BlockFlashEtiquette {
+	position: absolute;
+	top: 0;
+	left: 20px;
+	width: 46px;
+	height: 156px;
+}
+
+div#BlockFlashDefile {
+	overflow: hidden;
+}
+
+div#BlockFlashLegende {
+	color: white;
+	position: absolute;
+	top: 23px;
+	bottom: 10px;
+	padding: 25px 15px 15px 60px;
+	text-align: center;
+	font-weight: bold;
+}
+
+div#BlockFlashPages {
+    bottom: 15px;
+    right: 0;
+    overflow: hidden;
+    position: absolute;
+}
+
+div.BlockFlashNumber {
+	display: block;
+	float: left;
+	padding: 3px 0;
+	position: relative;
+	text-align: center;
+	width: 27px;
+	margin-right: 5px;
+	color: white;
+	cursor: pointer;
+	font-size: 16px;
+}

@@ -1,0 +1,101 @@
+[OBJ [!I::Module!]|[!I::TypeChild!]|O]
+[STORPROC [!O::Proprietes!]|P]
+[!nom:=[!P::Nom!]!]
+[!req:=[!P::obligatoire!]!]
+[IF [!Pos!]>1],[!Comma:=1!][/IF]
+{"type":"FormItem", "label":"[!P::Nom!]", "components":[
+[SWITCH [!P::Type!]|=]
+	[CASE text]
+		{"type":"TextArea", "id":"[!nom!]", "dataField":"[!nom!]", "percentWidth":100, "height":100, "validType":"string", "required":[!req!]}
+	[/CASE]
+	[CASE txt]
+		{"type":"TextArea", "id":"[!nom!]", "dataField":"[!nom!]", "percentWidth":100, "height":100, "validType":"string", "required":[!req!]}
+	[/CASE]
+	[CASE html]
+		{"type":"TextArea", "id":"[!nom!]", "dataField":"[!nom!]", "percentWidth":100, "height":100, "validType":"string", "required":[!req!]}
+	[/CASE]
+	[CASE bbcode][/CASE]
+	[CASE file][/CASE]
+	[CASE int]
+		[IF [!Utils::isArray([!P::Values!])!]]
+			{"type":"ComboBox", "id":"[!nom!]", "dataField":"[!nom!]", "width":200, "dataProvider":[
+				[STORPROC [!P::Values!]|Val]
+					[LIMIT 0|100]
+						[IF [!Pos!]>1],[/IF]
+						[!T:=[![!Val!]:/::!]!]	
+						[COUNT [!T!]|S]
+						[IF [!S!]>1]
+							{"data":"[!T::0!]", "label":"[!T::1!]"}
+						[ELSE]
+							{"data":"[!Val!]", "label":"[!Val!]"}
+						[/IF]
+					[/LIMIT]
+					[NORESULT]
+					[/NORESULT]
+				[/STORPROC]
+			]}
+		[ELSE]
+			[IF [!P::query!]]
+				{"type":"ComboBox", "id":"[!nom!]", "dataField":"[!nom!]", "width":200, "query":{"query":"[!P::query!]"},
+				"actions":[
+					{"type":"init", "action":"loadData"}
+				]}
+			[ELSE]
+				{"type":"TextInput", "id":"[!nom!]", "dataField":"[!nom!]", "width":100, "maxChars":10, "validType":"int", "required":[!req!]}
+			[/IF]
+		[/IF]
+	[/CASE]
+	[CASE date]
+			{"type":"DateField", "id":"[!nom!]", "dataField":"[!nom!]", "width":10, "validType":"date", "required":[!req!]}
+	[/CASE]
+	[CASE float]
+		{"type":"TextInput", "id":"[!nom!]", "dataField":"[!nom!]", "width":100, "maxChars":10, "validType":"float", "required":[!req!]}
+	[/CASE]
+	[CASE boolean]
+		{"type":"CheckBox", "id":"[!nom!]", "dataField":"[!nom!]"}
+	[/CASE]
+	[DEFAULT]
+		[IF [!Utils::isArray([!P::Values!])!]]
+			{"type":"ComboBox", "id":"[!nom!]", "dataField":"[!nom!]", "width":200, "dataProvider":[
+				[STORPROC [!P::Values!]|Val]
+					[LIMIT 0|100]
+						[IF [!Pos!]>1],[/IF]
+						[!T:=[![!Val!]:/::!]!]	
+						[COUNT [!T!]|S]
+						[IF [!S!]>1]
+							{"data":"[!T::0!]", "label":"[!T::1!]"}
+						[ELSE]
+							{"data":"[!Val!]", "label":"[!Val!]"}
+						[/IF]
+					[/LIMIT]
+					[NORESULT]
+					[/NORESULT]
+				[/STORPROC]
+			]}
+		[ELSE]
+			{"type":"TextInput", "id":"[!nom!]", "dataField":"[!nom!]", "width":200, "validType":"string", "required":[!req!]}
+		[/IF]
+	[/DEFAULT]
+[/SWITCH]
+]}
+[/STORPROC]
+
+[STORPROC [!O::typesEnfant!]|Enf]
+	[OBJ [!O::Module!]|[!Enf::Titre!]|E]
+	[IF [!Comma!]=1],[ELSE][!Comma:=1!][/IF]
+	{"type":"FormItem", "label":"[!Enf::Titre!]", "components":[
+		{"type":"AdvancedDataGrid", "id":"DG:[!Enf::Titre!]", "dataField":"[!Enf::Titre!]", "percentWidth":100, "height":130, "query":{"query":"[!Query!]/[!Enf::Titre!]"},
+		"events":[
+			{"type":"dblclick", "action":"loadFormForID", "containerID":"tabNav", "url":"[!Query!]/[!Enf::Titre!]/FormBase.json", "updateMe":1}
+		],
+		"actions":[
+			{"type":"init", "action":"loadData"}
+		],
+		"columns":[
+			{"type":"column", "dataField":"Id", "headerText":"Id", "width":10, "visible":0}
+			[STORPROC [!E::getSearchOrder()!]|P]
+				,{"type":"column", "dataField":"[!P::Nom!]", "headerText":"[!P::Nom!]", "width":100}
+			[/STORPROC]
+		]}
+	]}
+[/STORPROC]

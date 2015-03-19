@@ -1,0 +1,73 @@
+/*--- STRUCTUREL - A NE PAS MODIFIER ---*/
+ul.cssMenu ul {
+	display: none;
+	padding: 0;
+	margin: 0;
+}
+ul.cssMenu li:hover > ul {
+    display: block;
+}
+ul.cssMenu ul {
+	left: 0;
+	position: absolute;
+	top: 100%;
+}
+ul.cssMenu ul ul {
+	left: 100%;
+	position: absolute;
+	top: 0;
+}
+ul.cssMenu {
+	display: block;
+	float: left;
+}
+ul.cssMenu li {
+	list-style: none;
+	position: relative;
+	z-index: 10;
+	display: block;
+	float: left;
+	padding: 0;
+    margin: 0;
+}
+ul.cssMenu a:active, ul.cssMenu a:focus {
+    	outline-style: none;
+}
+ul.cssMenu span {
+    overflow: hidden;
+}
+ul.cssMenu ul li {
+    float: none;
+}
+ul.cssMenu ul a {
+    text-align: left;
+    white-space: nowrap;
+}
+ul.cssMenu li:hover {
+    position: relative;
+}
+
+/*--- STYLE - MODIFIER ICI ---*/
+ul.cssMenu li {
+	padding: 5px;
+}
+
+/* LEVEL 1 */
+ul.cssMenu {
+	background: blue;
+}
+
+ul.cssMenu a {
+	color: white;
+	background: green;
+}
+
+/* LEVEL 2 */
+ul.cssMenu ul {
+	background: black;
+}
+
+/* LEVEL 3 */
+ul.cssMenu ul ul {
+	background: red;
+}

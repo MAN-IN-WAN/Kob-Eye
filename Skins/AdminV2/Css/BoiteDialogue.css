@@ -1,0 +1,117 @@
+.PetiteBoiteDeDialogue{
+	display:block;
+	position:absolute;
+	padding:3px;
+	margin:auto;
+	top:40%;
+	font-size:8pt;
+	width:500px;
+	height:150px;
+	z-index:100000;
+	border-top: 4px solid #CDCDCD;
+	border-bottom: 4px solid #D4D4D4;
+	border-right: 4px solid #787878;
+	border-left: 4px solid white;
+	background-color:#EFEFEF;
+	/*background-image : url(/Skins/Pilote-Boutique/Img/TraitBack.jpg);*/
+}
+.PetiteBoiteDeDialogue .Message{
+	width:100%;
+	font-size:9pt;
+	text-align:center;
+}
+.PetiteBoiteDeDialogue .Nav{
+	width:100%;
+	height:40px;
+	font-size:9pt;
+	text-align:center;
+}
+.PetiteBoiteDeDialogue .Titre{
+	font-size:10pt;
+	text-align:left;
+	background-color: #8A0000;
+	margin-bottom:5px;
+	color: white;
+	padding-left: 5px;
+}
+
+.GrosseBoiteDeDialogue{
+/* 	display:block; */
+	position:absolute;
+	padding:3px;
+	margin:auto;
+	top:50px;
+	bottom:50px;
+	right:50px;
+	left:50px;
+	font-size:9pt;
+/* 	height:600px; */
+	z-index:100000;
+	border-top: 4px solid #CDCDCD;
+	border-bottom: 4px solid #4E4E4E;
+	border-right: 4px solid #787878;
+	border-left: 4px solid #CDCDCD;
+	background-color:white;
+	/*background-image : url(/Skins/Pilote-Boutique/Img/TraitBack.jpg);*/
+}
+.GrosseBoiteDeDialogue .Message{
+	width:100%;
+	height:60px;
+	font-size:9pt;
+	text-align:left;
+}
+.GrosseBoiteDeDialogue .Arborescence{
+	width:95%;
+	margin:auto;
+	overflow:auto;
+	background-color:white;
+	height:480px;
+	font-size:9pt;
+	text-align:left;
+	border-top: 2px solid #CDCDCD;
+	border-bottom: 2px solid #D4D4D4;
+	border-left: 2px solid #787878;
+	border-right: 2px solid white;
+}
+.GrosseBoiteDeDialogue h1 {
+	margin:0;
+	font-size:8pt;
+	margin-bottom:1%;
+	background-image:url('/Skins/AdminV2/Img/Tabs/select_m.png');
+	padding-top:10px;
+}
+
+.Nav{
+	left:0;
+	right:0;
+	height:40px;
+	position:absolute;
+	bottom:5px;
+/* 	font-size:9pt; */
+	text-align:center;
+	border:1px solid #97A5B0;
+	background-color:#E7E7E7;
+}
+.Nav input{
+	width:80%;
+	margin:5px;
+	font-size:10px;
+	text-align:center;
+}
+.Nav input:hover{
+	background-color:#E1E1E1;
+}
+
+.Nav .boutonGauche{
+	width:50%;
+	float:left;
+	font-size:9pt;
+	text-align:center;
+}
+.Nav .boutonDroite{
+	width:50%;
+	float:left;
+	font-size:9pt;
+	text-align:center;
+}
+

@@ -1,0 +1,140 @@
+.LigneForm{
+	margin:10px 0;
+}
+
+* html .LigneForm{
+	clear:both;
+}
+
+div[class="LigneForm"]{
+	overflow:auto;	
+}
+
+.Obligatoire{
+	font-style:italic;
+	margin-left:110px;
+}
+
+.Error {
+	background-color:#FFBEBE;
+}
+
+.Error2 {
+	color:#FFBEBE;
+	font-weight:bold;
+}
+
+.Error3 {
+	background-color:#FFBEBE;
+	font-weight:bold;
+	color:#000;
+	padding-left:2px;
+	margin-bottom:5px;
+}
+
+.BlocError{
+	padding:10px 20px 10px;
+	background-color:#FFBEBE;
+	margin-bottom:10px;
+}
+
+.BlocError p{
+	color:#BA0000;
+	font-weight:bold;
+	font-style:italic;
+	margin-bottom:5px;
+}
+
+.BlocError li{
+	color:#1E1E1E;
+	font-weight:bold;
+	margin-left:10px;
+}
+
+/*-----------------------------PAGE COMMENTAIRES----------------------------*/
+#AddComment{
+	margin-top:20px;
+}
+
+* html #AddComment p{
+	position:relative;
+	
+}
+
+#AddComment label{
+	display:block;
+	float:left;
+	width:110px;
+}
+
+#AddComment input, #AddComment textarea{
+	float:left;
+	width:350px;
+}
+
+#AddComment input.BtnComment{
+	float:none;
+	margin-left:360px;
+	background:none;
+	background-color:#1E1E1E;
+	color:#FFFFFF;
+	font-weight:bold;
+	border:none;
+	cursor:pointer;
+	width:100px;
+	height:20px;
+	outline:0;
+}
+
+
+/*-----------------------------FORM LOGIN----------------------------*/
+
+#Login{
+	padding:5px;
+	margin-bottom:10px;
+}
+
+#Login label{
+	display:block;
+	width:85px;
+	float:left;
+	color:#fff;
+}
+
+#Login input{
+	width:115px;
+	float:left;
+}
+
+#Login input.Connexion{
+	font-size:11px;
+	float:none;
+	width:60px;
+	margin-left:145px;
+	border:none;
+	color:#FFF;
+	font-weight:bold;
+	background-color:#1E1E1E;
+	height:20px;
+	cursor:pointer;
+}
+
+
+/*--------------------FORM CONTACT----------------------------*/
+
+#FormContact label{
+	float:left;
+	display:block;
+	width:110px;
+}
+
+#FormContact input, #FormContact textarea, #FormContact select{
+	width:350px;
+}
+
+#FormContact input.BtnContact {
+	cursor:pointer;
+	width:100px;
+	margin-bottom:10px;
+	margin-left:370px;
+}

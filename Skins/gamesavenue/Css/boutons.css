@@ -1,0 +1,92 @@
+div.CBleft { text-align:left }
+div.CBcenter { text-align:center }
+div.CBright { text-align:right }
+
+/* Liens */
+html>/**/body a.button {
+	background: url('../Images/bg_button_a.gif') no-repeat scroll top right;
+	color: #444;
+	font: normal 12px arial, sans-serif;
+	padding: 5px 10px 5px 0;
+	text-decoration: none;
+}
+
+
+html>/**/body a.button span {
+	background: url('../Images/bg_button_span.gif') no-repeat;
+	padding: 5px 0 5px 12px;
+}
+
+a.button:hover {
+	background-position: bottom right;
+	color: #000;
+}
+
+a.button:hover span {
+	background-position: bottom left;
+}
+
+a.button:active, a.button:focus {
+	outline: none;
+}
+
+/* Liens IE7 et inférieurs */
+*+html a.button {
+	background-color: #444;
+	padding: 2px 4px;
+	text-decoration: none;
+}
+
+*+html a.button:hover {
+	background-color: #666;
+}
+
+*+html a.button span {
+	color: white;
+}
+
+/* Submit */
+span.button {
+	background: transparent url('../Images/bg_button_a.gif') no-repeat scroll top right;
+	color: #444;
+	font: normal 12px arial, sans-serif;
+	padding: 5px 10px 5px 0;
+	text-decoration: none;
+
+}
+
+span.button input {
+	background: transparent url('../Images/bg_button_span.gif') no-repeat;
+	font: 12px arial,sans-serif;
+	padding: 4px 0 4px 12px;
+	border: none;
+	cursor: pointer;
+}
+
+span.button:hover {
+	background-position: bottom right;
+	color: #000;
+}
+
+span.button:hover input {
+	background-position: bottom left;
+}
+
+/* Submit IE7 et inférieurs */
+*+html span.button {
+	background-color: #444;
+	padding: 2px 4px;
+	text-decoration: none;
+}
+
+*+html span.button:hover {
+	background-color: #666;
+}
+
+*+html span.button input {
+	color: white;
+}
+
+span.button:active, span.button:focus {
+	outline: none;
+}

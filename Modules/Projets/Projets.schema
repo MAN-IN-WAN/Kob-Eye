@@ -1,0 +1,103 @@
+<SCHEMA>
+	<OBJECTCLASS title="Projet" driver="mysql" AccessPoint="1" searchType="plaintext"  master="0" Description="Projets"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" className="Projets_Projet" Class="Modules/Projets/Class/Projet.class.php">
+		<INTERFACES name="accordion">
+			<FORM form="WidgetTaskGantt" module="Projets" objectClass="Tache" dirtyParent="1">Gantt</FORM>
+			<!--<FORM form="WidgetChildrenList" module="Projets" objectClass="Tache" dirtyParent="1">Liste des Taches</FORM>-->
+			<FORM form="WidgetChildrenList" module="Projets" objectClass="Reglement" dirtyParent="1">Règlements</FORM>
+		</INTERFACES>
+		<FILTER name="Tous les projets" color="0xF0AD4E"></FILTER>
+		<FILTER name="Projets actifs" color="0x5CB85C"><![CDATA[StatusId>1&StatusId<4]]></FILTER>
+		<FILTER name="Projets en retard" color="0xD9534F"><![CDATA[StatusId=4]]></FILTER>
+		<FILTER name="Projets terminée" color="0x428BCA"><![CDATA[StatusId>4]]></FILTER>
+		<FILTER name="Projets Brouillons" color="0x999999"><![CDATA[StatusId=1]]></FILTER>
+		<PROPERTIES type="varchar" searchOrder="1" category="Descriptif" list="1" description="Titre" formLabel="1">Nom</PROPERTIES>
+		<PROPERTIES type="date" searchOrder="2" category="Descriptif" description="Date de départ souhaitée" list="2" listDescr="Départ">DateDepart</PROPERTIES>
+		<PROPERTIES type="date" searchOrder="3" category="Descriptif" description="Date limite de fin" list="3" listDescr="DeadLine">DeadLine</PROPERTIES>
+		<PROPERTIES type="text" category="Descriptif">Description</PROPERTIES>
+		<PROPERTIES type="price" category="Descriptif" description="Budget Total" list="4" listDescr="Budget">Budget</PROPERTIES>
+		<PROPERTIES type="price" category="Descriptif" description="Déjà réglé" list="5"  listDescr="Réglé">DejaRegle</PROPERTIES>
+		<PROPERTIES type="price" category="Descriptif" description="Reste à facturer" list="6"  listDescr="A facturer">ResteAFacturer</PROPERTIES>
+		<PROPERTIES type="float" category="Descriptif" description="Temps total facturé">TempsTotal</PROPERTIES>
+		<PROPERTIES type="float" category="Descriptif" description="Temps déjà effectué">TempsEffectue</PROPERTIES>
+		<PROPERTIES type="pourcent" category="Descriptif" description="Etat d'avancement" list="7" hidden="1" listDescr="Progression">AvancementReel</PROPERTIES>
+		<PROPERTIES type="pourcent" category="Descriptif" description="Etat du règlement" list="8" hidden="1" listDescr="Règlement">AvancementBudget</PROPERTIES>
+		<PROPERTIES category="Descriptif" type="int"	defaultValue="1" query="Projets/Status/Type=1::Id::Status"	default="1"	>Status</PROPERTIES>
+		<FKEY card="1,1" data="Client,Id">ClientId</FKEY>
+		<VIEW title="ProjetList" default="1">
+			<OBJECTCLASS title="Projet" select="Id,Nom,DateDepart,DeadLine,Budget,DejaRegle,ResteAFacturer,AvancementReel,AvancementBudget" filters="">
+				<JOIN type="outer" title="Client" on="ClientId" target="Id">
+					<PROPERTIES type="varchar" alias="Client" list="9" description="Client">Nom</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Status" on="Status" target="Id">
+					<PROPERTIES type="int" alias="StatusId">Code</PROPERTIES>
+					<PROPERTIES type="varchar" query="Projets/Status/Type=1::Status::Status" description="Status" searchOrder="3">Status</PROPERTIES>
+					<PROPERTIES type="color" list="0" listWidth="20" alias="StatusColor" listDescr=".">Color</PROPERTIES>
+					<PROPERTIES type="varchar" listDescr="StatusToolTip" alias="StatusIconToolTip">Status</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Reglement" driver="mysql" AccessPoint="0" master="0" Description="Règlements"  Icon="/Skins/AdminV2/Img/IconAqua/Forum.png">
+		<PROPERTIES type="date" searchOrder="1" category="Descriptif" obligatoire="1">Date</PROPERTIES>
+		<PROPERTIES type="price" searchOrder="2" category="Descriptif" obligatoire="1">Montant</PROPERTIES>
+		<FKEY card="1,1" data="Projet,Id">Projet</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Client" driver="mysql" AccessPoint="1" master="0" Description="Clients"  Icon="/Skins/AdminV2/Img/IconAqua/Forum.png">
+		<PROPERTIES type="varchar" searchOrder="1" category="Descriptif" obligatoire="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="5" category="Descriptif" obligatoire="1">Code</PROPERTIES>
+		<PROPERTIES type="varchar" category="Descriptif">Adresse1</PROPERTIES>
+		<PROPERTIES type="varchar" category="Descriptif">Adresse2</PROPERTIES>
+		<PROPERTIES type="varchar" category="Descriptif">CodPos</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" category="Descriptif">Ville</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="3" category="Descriptif">IntraCom</PROPERTIES>
+		<PROPERTIES type="varchar" category="Descriptif">Telephone</PROPERTIES>
+		<PROPERTIES type="varchar" category="Descriptif">Fax</PROPERTIES>
+		<PROPERTIES type="mail" searchOrder="4" category="Descriptif">Email</PROPERTIES>
+		<PROPERTIES type="varchar" category="Descriptif">Web</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Tache" driver="mysql" AccessPoint="1" master="0" Description="Taches"  Icon="/Skins/AdminV2/Img/IconAqua/Tasks.png" order="DateDebut" orderType="ASC">
+		<PROPERTIES type="varchar" searchOrder="1" category="Descriptif" list="1" listWidth="200">Nom</PROPERTIES>
+		<PROPERTIES type="text" category="Descriptif">Description</PROPERTIES>
+		<PROPERTIES type="date" searchOrder="2" category="Descriptif" list="2">DateDebut</PROPERTIES>
+		<PROPERTIES type="date" searchOrder="2" category="Descriptif" list="3">DateFin</PROPERTIES>
+		<PROPERTIES type="pourcent" category="Descriptif" list="5" description="Etat d'avancement" hidden="1" listDescr="Progression">AvancementReel</PROPERTIES>
+		<PROPERTIES category="Descriptif" type="int"	defaultValue="1" query="Projets/Status/Type=1::Id::Status"	default="1"	>Status</PROPERTIES>
+		<FKEY card="1,1" data="Projet,Id">ProjetId</FKEY>
+		<FKEY card="1,1" data="Collaborateur,Id">CollaborateurId</FKEY>
+		<FKEY card="0,1" data="Competence,Id">CompetenceId</FKEY>
+		<VIEW title="TacheList" default="1">
+			<OBJECTCLASS title="Tache" select="Id,Nom,DateDebut,DateFin,AvancementReel" filters="">
+				<JOIN type="outer" title="Collaborateur" on="CollaborateurId" target="Id">
+					<PROPERTIES type="varchar" alias="Collaborateur" list="8" description="Collaborateur" listWidth="80">Nom</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Competence" on="CompetenceId" target="Id">
+					<PROPERTIES type="varchar" alias="Competence" list="9" description="Compétence" listWidth="80">Nom</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Status" on="Status" target="Id">
+					<PROPERTIES type="int" alias="StatusId">Code</PROPERTIES>
+					<PROPERTIES type="varchar" query="Projets/Status/Type=1::Status::Status" description="Status" searchOrder="3">Status</PROPERTIES>
+					<PROPERTIES type="color" list="0" listWidth="20" alias="StatusColor" listDescr=".">Color</PROPERTIES>
+					<PROPERTIES type="varchar" listDescr="StatusToolTip" alias="StatusIconToolTip">Status</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Collaborateur" driver="mysql" AccessPoint="1" master="0" Description="Collaborateurs"  Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png">
+		<PROPERTIES type="varchar" searchOrder="1" category="Descriptif">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" category="Descriptif">Prenom</PROPERTIES>
+		<FKEY card="0,n" data="Competence,Id">CompetenceId</FKEY>
+		<FKEY card="1,1" data="User,Id" module="Systeme">Utilisateur</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Competence" driver="mysql" AccessPoint="0" master="0" Dico="0" Description="Competences"  Icon="/Skins/AdminV2/Img/IconAqua/App.png">
+		<PROPERTIES type="varchar" searchOrder="1" category="Descriptif">Nom</PROPERTIES>
+		<PROPERTIES type="price" searchOrder="2" category="Descriptif">TarifHoraire</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Status" order="Id" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" hidden="1" Icon="[None]">
+		<PROPERTIES category="Status" type="varchar" searchOrder="1" length="1" values="1::Projet,2::Client,3::Tache,4::Collaborateur" >Type</PROPERTIES>
+		<PROPERTIES category="Status" type="varchar" searchOrder="2"  length="16" special="multi"							>Status</PROPERTIES>
+		<PROPERTIES category="Status" type="varchar" searchOrder="3"  length="16"						>Code</PROPERTIES>
+		<PROPERTIES category="Status" type="int" length="1"													>Order</PROPERTIES>
+		<PROPERTIES category="Status" type="color" length="16"	searchOrder="3"										>Color</PROPERTIES>
+		<PROPERTIES category="Status" type="varchar" length="64"											>Icon</PROPERTIES>
+	</OBJECTCLASS>
+</SCHEMA>

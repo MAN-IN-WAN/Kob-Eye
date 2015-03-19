@@ -1,0 +1,11 @@
+div.InscriptionNeswletter {
+	margin-bottom: 5px;
+}
+
+input#InscriptionNewsletterMail {
+	width: 190px;
+}
+
+div.MessageNewsletter {
+	color: red;
+}

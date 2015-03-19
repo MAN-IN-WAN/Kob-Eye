@@ -1,0 +1,7 @@
+<div class="Btn" style="[1]">
+	<div class="BtnG" style="[2]"></div>
+	<div class="BtnM" style="[3]">
+		[DATA]
+	</div>
+	<div class="BtnD" style="[4]"></div>
+</div>

@@ -1,0 +1,58 @@
+[HEADER]
+	<link rel="icon" href="favicon.ico" type="image/x-icon"/> 
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/> 
+
+	
+
+
+[/HEADER]
+
+[HEADER CSS]Skins/[!Systeme::Skin!]/Css/style.css[/HEADER]
+
+[HEADER JS]Skins/Default/Js/mootools.js[/HEADER]
+[HEADER JS]Skins/Default/Js/mootools-more.js[/HEADER]
+[HEADER CSS]Skins/Default/Css/multiBox.css[/HEADER]
+[HEADER JS]Skins/Default/Js/morphlist.js[/HEADER]
+[HEADER JS]Skins/Default/Js/overlay.js[/HEADER]
+[HEADER JS]Skins/Default/Js/multiBox.js[/HEADER]
+
+// Chargement notamment de multibox
+[HEADER JS]Skins/Default/Js/functions.js[/HEADER]
+
+
+[MODULE Systeme/Meta]
+
+<div class="Entete">	
+	[MODULE Systeme/Structure/Top]
+	
+</div>
+
+<div class="Site">
+	<div class="Contenu">
+		<div id="TopColonnes"></div>
+		<div id="MiddleColonnes"></div>
+		<div id="BottomColonnes"></div>
+		[DATA]
+	</div>
+</div>
+
+<div class="Pied">	
+
+	[MODULE Systeme/Structure/Bottom]
+</div>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-27529730-1']);
+  _gaq.push(['_setDomainName', 'sable-et-jasmin.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+
+
+</script>

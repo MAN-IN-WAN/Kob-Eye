@@ -1,0 +1,14 @@
+<SCHEMA>
+	<OBJECTCLASS title="Bug" driver="mysql" master="1" AccessPoint="1" order="Active,Id" orderType="DESC">
+		<PROPERTIES type="varchar" category="Bug" searchOrder="1" description="Bug title" listWidth="520" formLabel="1">Name</PROPERTIES>
+		<PROPERTIES type="text" category="Bug" description="Bug description" >Description</PROPERTIES>
+		<PROPERTIES type="boolean" category="Bug" searchOrder="2" default="1" description="Active bug" listWidth="15" listDescr="A">Active</PROPERTIES>
+		<PROPERTIES type="boolean" category="Bug" searchOrder="3" default="0" description="Bug solved" listWidth="15" listDescr="S">Solved</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Comment" driver="mysql" AccessPoint="1" order="Nom" orderType="ASC">
+		<PROPERTIES type="varchar" length="250" category="Comment" searchOrder="1" formLabel="1" description="Comment Title">Name</PROPERTIES>
+		<PROPERTIES type="text" category="Comment" description="Comment">Description</PROPERTIES>
+		<PROPERTIES type="boolean" category="Bug" searchOrder="2" default="0" description="Bug solved" listWidth="15">Solved</PROPERTIES>
+		<FKEY card="1,1" data="Bug,Id" category="Comment" description="Bug related" action="Link">BugId</FKEY>
+	</OBJECTCLASS>
+</SCHEMA>

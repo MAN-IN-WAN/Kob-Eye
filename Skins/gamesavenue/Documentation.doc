@@ -1,0 +1,23 @@
+Documentation pour le site Games-Avenue
+Pour que le site s'affiche, il faut qu'il y ait un groupe de type Public avec un MENU OBLIGATOIRE
+	le menu accueil : correspond à la page d'accueil il renvoie donc au repertoire qui affichera la page d'accueil dans l'alias on doit mettre
+		Boutique/Accueil
+
+la gestion des menus
+	il y a le menu dit systeme, ou l'on trouvera la connexion ..., ce menu est fixé dans le code il n'est pas paramétrable par l'utilisateur
+	il y a le menu dit principal ce sont les catégories de type menu, elles apparaissent en fonction de l'ordre des univers qui est le guide d'affichage.
+	il y a le menu dit pied : il est composé de trois colonnes :
+		colonne 1 : c'est le reflet du menu principal
+		colonne 2 : c'est un menu fixé dans le code il n'est pas paramétrable par l'utilisateur
+		colonne 3 : ici l'on trouve les catégories publiées dans le module de rédaction
+
+Administration/Boutique
+	Les Univers permettent de mettre en place la gestion des couleurs des catégories de la boutique
+	les catégories sont créées, elles sont accessibles par le menu principal ou non et doivent être classer dans un univers afin de personnaliser leur style.
+
+
+
+
+
+
+

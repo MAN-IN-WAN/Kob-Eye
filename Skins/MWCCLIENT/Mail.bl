@@ -1,0 +1,51 @@
+<html>
+<style>
+td a {
+    	background-color: #E9B425;font-weight:bold;
+    	color: #FFFFFF;
+    	cursor: pointer;
+    	display: block;
+    	font-size: 14px;
+    	height: 24px;
+    	padding: 10px;
+    	text-align: center;
+    	text-decoration: none;
+    	width: 90px;
+	font-family:aria;
+}
+</style>
+
+	<body>
+		<table width="700" cellpadding="5" cellspacing="0" style="margin:auto;font-family:arial;" bgcolor="#5e183c">
+			<tr>	
+				<td style="text-align:left;vertical-align:top;">
+					<img src="http://client.murphywinecompany.com/Skins/MWC/Img/Logo-mail_03.png"/>
+				</td>
+			</tr>			
+			<tr>
+				<td align="center" style="color:#fff;font-size:12px;font-weight:bold;" >
+					Murphy Wine Company has sent you a message.  To read it, please click on the link below.<br />
+				</td>
+			</tr>
+			<tr>
+				<td align="center" style="color:#fff;font-size:12px;font-weight:bold;font-style:italic;" >
+					Murphy Wine Company le ha enviado un mensaje. Para leerlo, por favor haga click en el siguiente enlace.<br />
+				</td>
+			</tr>
+			<tr>
+				<td align="center" style="color:#fff;font-size:12px;font-weight:normal;" >
+					Murphy Wine Company vous a envoyé un message.  Pour y accéder, merci de cliquer sur le lien ci-dessous.<br />
+				</td>
+			</tr>
+			<tr> 
+				<td  align="center"><font color="#ffffff">[DATA]</font></td>
+				
+			</tr>
+			//<tr> 
+			//	<td  align="center" style="color:#fff;font-size:12px;text-transform:uppercase;text-align:center;font-weight:bold;">THE //EX-CHANGE WINE BULK</td>
+			//</tr>
+		<table>
+	</body>
+</html>		
+
+

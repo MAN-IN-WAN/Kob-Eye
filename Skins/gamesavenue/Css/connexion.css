@@ -1,0 +1,49 @@
+.TitrePage {
+	border-bottom:1px #ff0000 solid;
+	padding-top:5px;
+	margin-left:250px;
+	background:url(/Skins/gamesavenue/Images/carre-titre.png) no-repeat 5px 60%;
+}
+.TitrePage h1{
+	font-family: Arial;
+	font-size: 14px;
+	font-weight:bold;
+	text-transform:uppercase;
+	padding:5px;
+	padding-left:40px;
+}
+div.connexion { float:left;width:250px; text-align:left; /*padding-left:20px;*/padding-top:10px;}
+span.connecte {text-decoration:underline;color:#ff0000;}
+}
+div.connexion_liste { 
+	font-weight:normal;
+	font-family: Arial;
+	font-size: 12px;
+	margin-left:20px;
+	padding-top:10px;
+
+}
+div.connexion_liste ul { padding:5px 25px 25px 5px;}
+
+div.connexion_liste ul li{
+	color: #000000;
+	font-weight:normal;
+	font-family: Arial;
+	font-size: 12px;
+	margin-left:20px;
+	list-style:circle;
+}
+div.connexion_liste a{
+	color: #000000;
+	font-weight:normal;
+	font-family: Arial;
+	font-size: 12px;
+	text-decoration:none;
+}
+div.Bienvenue h2 {
+	color: #ff0000;
+	font-weight:bold;
+	font-family: Arial;
+	font-size: 10px;
+	padding-bottom:10px;
+}

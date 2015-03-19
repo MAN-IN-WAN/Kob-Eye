@@ -1,0 +1,21 @@
+div.ArticleImages {
+	display: block;
+	float: left;
+	position: relative;
+}
+
+
+
+div.ImageArticleGauche {
+    float:left;
+	position: relative;
+	display: block;
+	overflow: hidden;
+}
+
+div.ImageArticleDroite{
+    float:right;
+	position: relative;
+	display: block;
+	overflow: hidden;
+}

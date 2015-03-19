@@ -1,0 +1,21 @@
+#Entete ul.FRight{
+	width:150px;
+	list-style-type:none;
+	margin:5px;
+}
+
+#Entete ul.FRight li{
+	display:block;
+	float:left;
+	padding:2px 5px;
+	border-right:1px solid #000;
+}
+
+#Entete img{
+	margin-bottom:-3px;
+}
+
+#Logo{
+	display:block;
+	padding:5px;
+}

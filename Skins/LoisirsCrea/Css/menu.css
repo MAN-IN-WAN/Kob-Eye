@@ -1,0 +1,318 @@
+/*--- STRUCTUREL - A NE PAS MODIFIER ---*/
+ul.cssMenu ul {
+	display: none;
+	padding: 0;
+	margin: 0;
+}
+ul.cssMenu li:hover > ul {
+    display: block;
+}
+ul.cssMenu ul {
+	left: 0;
+	position: absolute;
+	top: 100%;
+}
+ul.cssMenu ul ul {
+	left: 100%;
+	position: absolute;
+	top: 0;
+}
+ul.cssMenu {
+	display: block;
+	float: left;
+}
+ul.cssMenu li {
+	list-style: none;
+	position: relative;
+	z-index: 10;
+	display: block;
+	float: left;
+	padding: 0;
+    margin: 0;
+}
+ul.cssMenu a:active, ul.cssMenu a:focus {
+    	outline-style: none;
+}
+ul.cssMenu span {
+    overflow: hidden;
+}
+ul.cssMenu ul li {
+    float: none;
+}
+ul.cssMenu ul a {
+    text-align: left;
+    white-space: nowrap;
+}
+ul.cssMenu li:hover {
+    position: relative;
+}
+
+/*--- STYLE - MODIFIER ICI ---*/
+ul.cssMenu li {
+	font-size:14px;font-weight:bold;
+    padding: 7px 17px 0;
+	height: 30px;
+}
+ul.cssMenu li.Last {
+	border-right:none;
+}
+/* LEVEL 1 */
+ul.cssMenu {
+	background: #fadaea;height: 30px;width:100%;
+}
+ul.cssMenu li a {
+	font-size:14px;font-weight:bold;color:#393939;
+
+}
+ul.cssMenu li a:hover{
+	color:#fff;text-decoration:none;
+}
+
+ul.cssMenu li.Current {
+	background: url("../Img/sprite.png") no-repeat scroll 50% -181px transparent;
+    	display: block;
+    	height: 30px;
+ 
+	
+}
+
+/* LEVEL 2 */
+ul.cssMenu ul {
+	border: 3px solid #84a82b;
+    	color:#4C4D4D;
+}
+ul.cssMenu ul li {	
+	list-style:none;
+   	border-bottom:1px dotted #96BF31;
+   	height:auto;
+	background-color:#fff;
+	z-index:200;
+  
+}
+ul.cssMenu ul li:hover {
+	
+}
+
+ul.cssMenu ul a {
+	color:#4C4D4D;
+}
+
+ul.cssMenu ul li a.Current, ul.cssMenu ul li a:hover{	
+    color:#96BF31;
+}
+/* LEVEL 3 */
+ul.cssMenu ul ul {
+	background: none;
+}
+
+
+
+/*--- menu bas ----*/
+div#Footer  .MenuBas {
+	border: 1px solid #393939;
+    	color: #393939;
+    	height: 171px;
+    	right:0;
+    	padding:5px;
+    	position: absolute;
+    	top: 84px;
+	width:300px;
+}
+
+div#Footer .MenuBas .Titre{
+	text-decoration:underline;text-transform:uppercase;color: #393939;font-size:13px;padding-bottom:10px;
+}
+
+div#Footer .MenuBas ul li {
+	list-style:none;float:left;width:45%;
+}
+
+div#Footer .MenuBas ul li a {
+	list-style:none;
+	background: url("../Img/sprite.png") no-repeat  0 -675px ;
+	padding-left:15px;
+	color:#393939;
+}
+
+
+
+div#Header .MenuDroit .MenuDroitHaut {
+	position:absolute;
+	right:345px;
+	z-index:100;
+}
+
+div#Header .MenuDroit .MenuDroitHaut a{ color:#393939; border-right:1px solid #393939;padding-right:5px;z-index:100;}
+div#Header .MenuDroit .MenuDroitHaut a:hover{ color:#393939;}
+
+div#Header .MenuDroit .MenuDroitHautBtn {
+	position:absolute;
+	right:0;z-index:100;
+}
+div#Header .MenuDroit .MenuDroitHautBtn a {
+	color:#393939;border-right:none;margin-right:27px;float:left;z-index:100;
+}
+
+
+
+div#Header .MenuDroit .MenuSousDroitHaut {
+	position: absolute;
+	right: 426px;
+	top: 26px;
+	color:#db2484;
+	font-weight:bold;
+	z-index:100;
+}
+div#Header .MenuDroit .MenuSousDroitHaut span {
+	color:#db2484;
+	font-weight:normal;
+	
+}
+
+div#Header .MenuDroit .MenuDroitBas {
+	position:absolute;
+	right:204px;
+	bottom:0;
+	z-index:100;
+}
+
+div#Header .MenuDroitTitrePanier {
+	position:absolute;
+	bottom:50px;right:15px;
+	color:#db2484;
+	font-size:14px;
+	z-index:200;
+}
+div#Header .MenuDroitContenuPanier {
+	position:absolute;
+	width:70px;
+	bottom:7px;
+	right:10px;
+	z-index:200;
+	color:#db2484;
+	font-size:12px;
+	text-align:right;
+	line-height:normal;
+}
+
+
+
+/* --- MEGAMENU ---*/
+/*.navbar-inner {
+  background-color: #fadaea; /* fallback color, place your own */
+  /* Gradients for modern browsers, replace as you see fit */
+ /* background-image: -moz-linear-gradient(top, #fadaea, #fadaea);
+  background-image: -ms-linear-gradient(top, #fadaea, #fadaea);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#fadaea), to(#fadaea));
+  background-image: -webkit-linear-gradient(top, #fadaea, #fadaea);
+  background-image: -o-linear-gradient(top, #fadaea, #fadaea);
+  background-image: linear-gradient(top, #fadaea, #fadaea);
+  background-repeat: repeat-x;
+  border:none;
+  border-radius:0px;
+	box-shadow:none;  
+*/
+.navbar-inner {
+  background-color: #FCF2F7; /* fallback color, place your own */
+  /* Gradients for modern browsers, replace as you see fit */
+  background-image: -moz-linear-gradient(top, #FCF2F7, #FCF2F7);
+  background-image: -ms-linear-gradient(top, #FCF2F7, #FCF2F7);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#FCF2F7), to(#FCF2F7));
+  background-image: -webkit-linear-gradient(top, #FCF2F7, #FCF2F7);
+  background-image: -o-linear-gradient(top, #FCF2F7, #FCF2F7);
+  background-image: linear-gradient(top, #FCF2F7, #FCF2F7);
+  background-repeat: repeat-x;
+  border:none;
+  border-radius:0px;
+	box-shadow:none;  
+}
+.navbar {
+    margin-bottom: 0px;
+
+}
+.navbar .nav > li > a {
+   color: #393939;
+	font-size:14px;
+	font-weight:bold;
+	float: none;
+	padding: 10px 13px;
+	text-decoration: none;
+	text-shadow: none;
+}
+
+
+.menu-content {
+	background-repeat:no-repeat;
+	background-position:bottom left;
+ 	height: 270px;font-family:arial;
+}
+/*li.item-menu {margin-left:35px;}*/
+li.parent  .dropdown-menu  , li.parent .row-fluid{ 
+	min-width:971px;padding: 0;height: 320px;
+}
+li.parent  .row-fluid  .span8 , li.parent  .row-fluid .span12{ 
+	padding:10px 0 10px 0;height: 270px;
+}
+li.parent  .row-fluid  .span4 { 
+	height: 320px; 
+	padding: 0 0 0 2px;
+	margin:0;
+	float:right;
+}
+
+li.parent .row-fluid  .span8 li.item-menu , li.parent .row-fluid  .span12 li.item-menu { 
+	text-transform:uppercase;font-size:14px;font-weight:bold;margin-bottom:15px;
+}
+.level1 { padding:0;
+}
+li.parent .level1 a{ 
+	background: url("../Img/sprite.png") no-repeat scroll 0 -623px transparent;
+	color: #393939;
+	font-size: 12px;
+	font-weight: bold;
+	padding-left: 13px;
+	text-transform: uppercase;
+}
+
+.navbar .nav li.dropdown.open a.fondbleu {
+	background-color:#33bdef;
+	color: #393939;
+}
+
+.navbar .nav li.dropdown.open a.fondorange {
+	background-color:#ffbc00;
+	color: #393939;
+}
+.navbar .nav li a:hover {
+	background-color:#db2484;
+	color:#393939;
+}
+#container2 ul.level0 li a:hover {
+	background:none;
+	color:#393939;
+}
+#container2 ul.level0 ul.level1 li a:hover {
+	background: url("../Img/sprite.png") no-repeat scroll 0 -623px transparent;
+	color:#393939;
+}
+#container3 ul.level0 li a:hover {
+	color:#393939;
+	background:none;
+}
+.navbar .nav li.dropdown a.fondbleu:hover {
+	background-color:#33bdef;
+	color: #393939;
+}
+
+.navbar .nav li.dropdown a.fondorange:hover {
+	background-color:#ffbc00;
+	color: #393939;
+}
+.navbar .nav li a:hover.imgMenu{
+	background:none;
+}
+.imgMenu{
+   height: 313px;
+    width: 303px;
+	
+}

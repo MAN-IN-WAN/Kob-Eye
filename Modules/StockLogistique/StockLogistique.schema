@@ -1,0 +1,441 @@
+<SCHEMA>
+	<OBJECTCLASS title="CommandeTete" driver="mysql" order="DateLivraison" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Commandes" Heritage="0" Class="Modules/StockLogistique/Class/CommandeTete.class.php">
+		<FUNCTION type="vseparator">s0</FUNCTION>
+		<FUNCTION name="SaveDestockage" multi="1" listOnly="1" icon="save" label="Création BL" description="Création des BL">
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"confirm":{"text":"Création des BL"},
+						"method":"object","data":{"module":"StockLogistique","objectClass":"CommandeTete"},
+						"function":"SaveDestockage","selectionRequired":1,"args":[{"selectedValues":["dataGrid"]}]}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FKEY data="DevisTete,Id" module="Devis" card="1,1" description="Devis" category="Commande" hidden="1">DevisId</FKEY>
+		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" category="Commande" description="N°" width="60" formLabel="1" listWidth="60" list="1">Reference</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="1" length="1" searchOrder="2" default="L" category="Commande" description="Société" values="L::Locanim,B::Bopi" listWidth="20" listDescr="S" list="3">Societe</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="1" query="Repertoire/Tiers::Id::Intitule" category="Commande" description="Client" listWidth="150">ClientId</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="1" query="Repertoire/Tiers::Id::Intitule" category="Commande" description="Magasin" listWidth="150">LivraisonId</PROPERTIES>
+		<PROPERTIES type="date" obligatoire="1" category="Commande" description="Date début" listDescr="Début" list="3">DateDebut</PROPERTIES>
+		<PROPERTIES type="date" obligatoire="1" category="Commande" description="Date fin" listDescr="Fin" list="4">DateFin</PROPERTIES>
+		<PROPERTIES type="date" obligatoire="1" searchOrder="4" category="Commande" description="Date livraison" listDescr="Livraison" list="5">DateLivraison</PROPERTIES>
+		<PROPERTIES type="date" obligatoire="1" searchOrder="5" category="Commande" description="Date reprise" listDescr="Reprise" list="6">DateReprise</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" searchOrder="3" category="Commande" description="Déstockage" listDescr="D" listWidth="20" list="2">Destockage</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Commande" description="Livré">Livre</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Commande" description="Repris">Repris</PROPERTIES>
+		<VIEW title="CommandeTeteList" default="1">
+			<OBJECTCLASS title="CommandeTete" select="Id,Reference,Societe,DateDebut,DateFin,DateLivraison,DateReprise,Destockage,Livre,Repris" filters="">
+				<JOIN type="outer" module="Devis" title="DevisTete" on="DevisId" target="Id">
+					<PROPERTIES type="varchar" searchOrder="9" filterMode="generic" category="Description" description="Client" list="10">ClientIntitule</PROPERTIES>
+					<PROPERTIES type="varchar" searchOrder="6" filterMode="generic" category="Description" description="Magasin" list="7">LivraisonIntitule</PROPERTIES>
+					<PROPERTIES type="varchar" searchOrder="7" category="Description" description="CP" listWidth="50" list="8">LivraisonCodPostal</PROPERTIES>
+					<PROPERTIES type="varchar" searchOrder="8" filterMode="generic" category="Description" description="Ville" list="9">LivraisonVille</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="CommandeLigne" driver="mysql" master="0" AccessPoint="0" Icon="[None]" Description="Lignes de Commande" Heritage="0">
+		<PROPERTIES type="varchar" category="Description" description="Désignation" listwidth="250">Designation</PROPERTIES>
+		<PROPERTIES type="float" category="Description" description="Quantité">Quantite</PROPERTIES>
+		<PROPERTIES type="date" searchOrder="4" category="Description" description="Date début" listDescr="Début">DateDebut</PROPERTIES>
+		<PROPERTIES type="date" searchOrder="5" category="Description" description="Date fin" listDescr="Fin">DateFin</PROPERTIES>
+		<PROPERTIES type="date" searchOrder="6" category="Description" description="Date livraison" listDescr="Départ">DateLivraison</PROPERTIES>
+		<PROPERTIES type="date" searchOrder="7" category="Description" description="Date reprise" listDescr="Retour">DateReprise</PROPERTIES>
+		<PROPERTIES type="date" category="Description" description="Départ réel">DateDepart</PROPERTIES>
+		<PROPERTIES type="date" category="Description" description="Retour réel">DateRetour</PROPERTIES>
+		<PROPERTIES type="date" category="Description" description="Stock">DateStock</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" >ModeTarif</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Description" description="Prolongation">Prolongation</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Description" description="Préparation">Preparation</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Description" description="Livré">Livre</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Description" description="Repris">Repris</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Description" description="Anticipé" listDescr="E">Anticipe</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Description" description="Echange" listDescr="E">Echange</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Description" description="Panne" listDescr="P">Panne</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" query="StockLocatif/Famille::Id::Famille" description="Famille">FamilleId</PROPERTIES>
+<!--
+		<FKEY data="Famille,Id" module="StockLocatif" card="1,1" hidden="1">FamilleId</FKEY>
+		<FKEY data="Reference,Id" module="StockLocatif" card="1,1" hidden="1">ReferenceId</FKEY>
+-->
+		<FKEY data="Tiers,Id" module="Repertoire" card="1,1" hidden="1">ClientId</FKEY>
+		<FKEY data="Tiers,Id" module="Repertoire" card="1,1" hidden="1">LivraisonId</FKEY>
+		<FKEY data="BLTete,Id" card="1,1" >BLTeteId</FKEY>
+		<FKEY data="RepriseTete,Id" card="1,1" hidden="1">RepriseTeteId</FKEY>
+		<FKEY data="DevisTete,Id" module="Devis" card="1,1" hidden="1">DevisId</FKEY>
+		<VIEW title="CommandeLigneList" default="1">
+			<OBJECTCLASS title="CommandeLigne" select="" filters="" order="DateLivraison,DevisId" orderType="ASC,ASC">
+				<PROPERTIES type="int">Id</PROPERTIES>
+				<PROPERTIES type="int">FamilleId</PROPERTIES>
+				<PROPERTIES type="int">DevisId</PROPERTIES>
+				<PROPERTIES type="varchar" list="2" listWidth="250">Designation</PROPERTIES>
+				<PROPERTIES type="float" list="3" listWidth="50" listDescr="Qté">Quantite</PROPERTIES>
+				<PROPERTIES type="date" list="4">DateDebut</PROPERTIES>
+				<PROPERTIES type="date" list="5">DateFin</PROPERTIES>
+				<PROPERTIES type="date" list="4">DateLivraison</PROPERTIES>
+				<PROPERTIES type="date" list="4">DateReprise</PROPERTIES>
+				<PROPERTIES type="int" >ModeTarif</PROPERTIES>
+				<JOIN type="outer" title="DevisTete" module="Devis" on="DevisId" target="Id">
+					<PROPERTIES type="varchar" alias="Devis">Reference</PROPERTIES>
+					<PROPERTIES type="boolean" >Confirme</PROPERTIES>
+					<PROPERTIES type="boolean" >EtatDevis</PROPERTIES>
+					<PROPERTIES type="boolean" >Preparation</PROPERTIES>
+					<PROPERTIES type="varchar" alias="Client">ClientIntitule</PROPERTIES>
+					<PROPERTIES type="varchar" alias="Livraison">LivraisonIntitule</PROPERTIES>
+					<PROPERTIES type="varchar" alias="CodPostal">LivraisonCodPostal</PROPERTIES>
+					<PROPERTIES type="varchar" alias="Ville">LivraisonVille</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Famille" module="StockLocatif" on="FamilleId" target="Id">
+					<PROPERTIES type="varchar" list="1" listWidth="100">Famille</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Reference" module="StockLocatif" on="ReferenceId" target="Id">
+					<PROPERTIES type="varchar" list="1" listWidth="100">Reference</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Element" driver="mysql" master="0" AccessPoint="0" Icon="[None]" Description="Element de Commande" Heritage="0">
+		<PROPERTIES type="date" >DateDepart</PROPERTIES>
+		<PROPERTIES type="date" >DateRetour</PROPERTIES>
+		<PROPERTIES type="date" >DateLivraison</PROPERTIES>
+		<PROPERTIES type="date" >DateReprise</PROPERTIES>
+		<PROPERTIES type="date" >DateStock</PROPERTIES>
+		<PROPERTIES type="float" list="3" description="Quantité">Quantite</PROPERTIES>
+		<PROPERTIES type="int" default="0" >ReferenceId</PROPERTIES>
+		<PROPERTIES type="int" default="0" >Etat</PROPERTIES>
+		<FKEY data="CommandeLigne,Id" card="1,1" hidden="1">CommandeLigneId</FKEY>
+		<FKEY data="BLTete,Id" card="0,1" >BLTeteId</FKEY>
+		<FKEY data="DevisTete,Id" card="0,1" >DevisId</FKEY>
+		<FKEY data="RepriseTete,Id" card="0,1" >RepriseTeteId</FKEY>
+		<VIEW title="ElementList" default="1">
+			<OBJECTCLASS title="Element" select="Id,Quantite,CommandeLigneId,ReferenceId,BLTeteId,RepriseTeteId,DevisId,DateLivraison,DateReprise,DateDepart,DateRetour,DateStock,Etat" filters="" order="DateReprise" orderType="ASC">
+				<JOIN type="outer" title="CommandeLigne" on="CommandeLigneId" target="Id">
+					<PROPERTIES type="varchar" description="Désignation" list="2" listwidth="250">Designation</PROPERTIES>
+					<PROPERTIES type="int" >FamilleId</PROPERTIES>
+					<JOIN type="outer" module="StockLocatif" title="Famille" on="FamilleId" target="Id">
+						<PROPERTIES type="varchar" list="1" listWidth="100">Famille</PROPERTIES>
+					</JOIN>
+					<JOIN type="outer" module="Devis" title="DevisTete" on="DevisId" target="Id" order="Reference" orderType="ASC">
+						<PROPERTIES type="varchar" alias="DevisId">Id</PROPERTIES>
+						<PROPERTIES type="varchar" alias="Devis">Reference</PROPERTIES>
+						<PROPERTIES type="varchar" alias="Client">ClientIntitule</PROPERTIES>
+						<PROPERTIES type="varchar" alias="Livraison">LivraisonIntitule</PROPERTIES>
+						<PROPERTIES type="varchar" alias="CodPostal">LivraisonCodPostal</PROPERTIES>
+						<PROPERTIES type="varchar" alias="Ville">LivraisonVille</PROPERTIES>
+					</JOIN>
+				</JOIN>
+				<JOIN type="outer" module="StockLocatif" title="Reference" on="ReferenceId" target="Id">
+					<PROPERTIES type="varchar" description="Référence">Reference</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" module="StockLogistique" title="Status" on="Etat" target="Code">
+					<PROPERTIES type="varchar" alias="Status">Etat</PROPERTIES>
+					<PROPERTIES type="varchar" alias="Status_Color">Couleur</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="BLTete" driver="mysql" order="DateLivraison" orderType="DESC" master="0" AccessPoint="1" Icon="[None]" Description="Bon de livraison" Heritage="0" Class="Modules/StockLogistique/Class/BLTete.class.php">
+		<CONFIGURATION name="Interface">
+			<FORM hideNew="1" hideDelete="1" hierarchical="1" getDataFunction="{&quot;method&quot;:&quot;object&quot;,&quot;function&quot;:&quot;GetBlTete&quot;}">FormList</FORM>
+			<FORM showNew="0">FormBase</FORM>
+		</CONFIGURATION>
+		<FUNCTION type="vseparator">s0</FUNCTION>
+		<FUNCTION name="SaveDestockage" hidden="1" icon="print" label="Bons de préraration" description="Bons de préraration">
+			<PROPERTIES type="boolean" defaultValue="1" description="Fiche de préparation">fiche</PROPERTIES>
+			<PROPERTIES type="boolean" defaultValue="1" description="Etiquettes">etiquette</PROPERTIES>
+			<PROPERTIES type="boolean" defaultValue="0" description="Etiquettes laser">laser</PROPERTIES>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"interface":"1",
+						"method":"object","data":{"module":"StockLogistique","objectClass":"BLTete","form":"Functions/SaveDestockage.json"},
+						"function":"SaveDestockage","selectionRequired":1,"args":"dv:dataGrid,iv:fiche,iv:etiquette,iv:laser"}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="PrintPreparations" multi="1" listOnly="1" icon="print" label="Fiches préraration" description="Fiches de préraration">
+			<PROPERTIES type="boolean" defaultValue="1" description="Fiche de préparation">fiche</PROPERTIES>
+			<PROPERTIES type="boolean" defaultValue="1" description="Etiquettes">etiquette</PROPERTIES>
+			<PROPERTIES type="boolean" defaultValue="0" description="Etiquettes laser">laser</PROPERTIES>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"interface":"1",
+						"method":"object","data":{"module":"StockLogistique","objectClass":"BLTete","form":"Functions/PrintPreparations.json"},
+						"function":"PrintPreparations","selectionRequired":1,"args":"sv:dataGrid,iv:fiche,iv:etiquette,iv:laser"}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="EchangePanne" hidden="1" icon="print" label="Echange Panne" description="Echange Panne">
+			<PROPERTIES type="date" defaultValue="Now" obligatoire="1" description="Date d'échange">Date</PROPERTIES>
+			<ACTION>
+				<![CDATA[
+				"action":"invoke","method":"callMethod","params":{
+					"interface":1,
+					"method":"object","data":{"module":"StockLogistique","objectClass":"BLTete","form":"Functions/EchangePanne.json"},
+					"function":"EchangePanne","args":"idv:items,iv:Date"
+				}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="RemiseEnStock" hidden="1" icon="print" label="Remise en Stock" description="Remise en Stock">
+			<PROPERTIES type="date" defaultValue="Now" obligatoire="1" description="Date">Date</PROPERTIES>
+			<PROPERTIES type="boolean" defaultValue="1" description="Contrôle">Controle</PROPERTIES>
+			<ACTION>
+				<![CDATA[
+				"action":"invoke","method":"callMethod","params":{
+					"interface":1,
+					"method":"object","data":{"module":"StockLogistique","objectClass":"BLTete","form":"Functions/RemiseEnStock.json"},
+					"function":"RemiseEnStock","args":"idv:items,iv:Date,iv:Controle"
+				}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<PROPERTIES type="varchar" length="8" obligatoire="1" searchOrder="1" category="Livraison" description="Livraison" width="60" formLabel="1" listWidth="60" list="1">Reference</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" default="L" obligatoire="1" category="Livraison" description="Société" values="L::Locanim,B::Bopi" listWidth="20" listDescr="S">Societe</PROPERTIES>
+		<PROPERTIES type="date" obligatoire="0" category="Livraison" description="Date" >Date</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="1" key="1" query="Repertoire/Tiers::Id::Intitule" category="Livraison" description="Client" >ClientId</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="1" key="1" query="Repertoire/Tiers::Id::Intitule" category="Livraison" description="Livraison" >LivraisonId</PROPERTIES>
+		<PROPERTIES type="date" searchOrder="4" category="Description" description="Date début" listDescr="Début">DateDebut</PROPERTIES>
+		<PROPERTIES type="date" searchOrder="5" category="Description" description="Date fin" listDescr="Fin">DateFin</PROPERTIES>
+		<PROPERTIES type="date" searchOrder="5" category="Description" description="Date livraison"  listDescr="Livraison" list="7">DateLivraison</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Etat" description="Destockage" listDescr="D">Destockage</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Etat" description="Préparé" listDescr="P">Prepare</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" searchOrder="3" category="Etat" description="Tournée" listDescr="T" listWidth="20" list="3">Tournee</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Etat" description="Livré" >Livre</PROPERTIES>
+		<PROPERTIES type="int" default="0" searchOrder="4" category="Etat" query="StockLogistique/Status/Type=L::Code::Etat" >Etat</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Etat" hidden="1">Ordre</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Etat" auto="1" hidden="1">Action</PROPERTIES>
+		<PROPERTIES type="varchat" length="50" category="Etat" auto="1" listWidth="150" list="25" description="Action">ActionTexte</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Etat" auto="1" description="Action traitée" >ActionTraite</PROPERTIES>
+		<FKEY data="DevisTete,Id" module="Devis" card="1,1" category="Etat" description="Devis" hidden="1">DevisId</FKEY>
+		<PROPERTIES type="int" default="0" category="Etat" hidden="1">TourneeId</PROPERTIES>
+		<VIEW title="BLList" default="1">
+			<OBJECTCLASS title="BLTete" select="Id,Reference,Societe,Date,DateDebut,DateFin,DateLivraison,Prepare,Tournee,Etat,TourneeId,Ordre,LivraisonId,ActionTexte,Action,ActionTraite" filters="">
+				<JOIN type="outer" module="Devis" title="DevisTete" on="DevisId" target="Id">
+					<PROPERTIES type="varchar" searchOrder="11" filterMode="generic" category="Description" description="Devis" list="15" listWidth="60" alias="Devis">Reference</PROPERTIES>
+					<PROPERTIES type="varchar" searchOrder="10" filterMode="generic" category="Description" description="Client" list="12">ClientIntitule</PROPERTIES>
+					<PROPERTIES type="varchar" searchOrder="7" filterMode="generic" category="Description" description="Magasin" list="9">LivraisonIntitule</PROPERTIES>
+					<PROPERTIES type="varchar" searchOrder="8" category="Description" description="CP" listWidth="50" list="10">LivraisonCodPostal</PROPERTIES>
+					<PROPERTIES type="varchar" searchOrder="9" filterMode="generic" category="Description" description="Ville" list="11">LivraisonVille</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" module="StockLogistique" title="Status" on="Etat" target="Code">
+					<PROPERTIES type="varchar" description="Etat" listWidth="75" list="4" alias="Status">Etat</PROPERTIES>
+					<PROPERTIES type="varchar" alias="Status_Color">Couleur</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="RepriseTete" driver="mysql" order="DateReprise" orderType="DESC" master="0" AccessPoint="1" Icon="[None]" Description="Bon de reprise" Heritage="0" Class="Modules/StockLogistique/Class/RepriseTete.class.php">
+		<CONFIGURATION name="Interface">
+			<FORM hideNew="1" hideDelete="1" hierarchical="1" getDataFunction="{&quot;method&quot;:&quot;object&quot;,&quot;function&quot;:&quot;GetRepriseTete&quot;}">FormList</FORM>
+			<FORM showNew="0">FormBase</FORM>
+		</CONFIGURATION>
+		<PROPERTIES type="varchar" length="8" obligatoire="1" searchOrder="1" category="Description" description="Reprise" width="60" listWidth="60" list="1" formLabel="1">Reference</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" default="L" obligatoire="1" category="Description" description="Société" values="L::Locanim,B::Bopi" listWidth="20" listDescr="S">Societe</PROPERTIES>
+		<PROPERTIES type="date" obligatoire="0" category="Description" description="Date" >Date</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="1" key="1" query="Repertoire/Tiers::Id::Intitule" category="Description" description="Client">ClientId</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="1" key="1" query="Repertoire/Tiers::Id::Intitule" category="Description" description="Livraison" >LivraisonId</PROPERTIES>
+		<PROPERTIES type="date" searchOrder="4" category="Description" description="Date début" listDescr="Début">DateDebut</PROPERTIES>
+		<PROPERTIES type="date" searchOrder="5" category="Description" description="Date fin" listDescr="Fin">DateFin</PROPERTIES>
+		<PROPERTIES type="date" obligatoire="1" searchOrder="9" category="Description" description="Date reprise" list="7" listDescr="Reprise">DateReprise</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Etat" description="Tournée" list="3" listDescr="T">Tournee</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Etat" description="Repris">Repris</PROPERTIES>
+		<PROPERTIES type="int" default="0" searchOrder="4" category="Etat"  query="StockLogistique/Status/Type=R::Code::Etat" >Etat</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Etat" hidden="1">Ordre</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Etat" auto="1" hidden="1">Action</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" category="Etat" auto="1" listWidth="150" list="25" description="Action">ActionTexte</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Etat" auto="1" description="Action traitée" >ActionTraite</PROPERTIES>
+		<FKEY data="DevisTete,Id" module="Devis" card="1,1" description="Devis" hidden="1">DevisId</FKEY>
+		<PROPERTIES type="int" default="0" query="StockLogistique/Tournee::Id::Reference">TourneeId</PROPERTIES>
+		<VIEW title="RepriseList" default="1">
+			<OBJECTCLASS title="RepriseTete" select="Id,Reference,Societe,Date,DateDebut,DateFin,DateReprise,Tournee,Etat,TourneeId,Ordre,LivraisonId,ActionTexte,Action,ActionTraite" filters="">
+				<JOIN type="outer" module="Devis" title="DevisTete" on="DevisId" target="Id">
+					<PROPERTIES type="varchar" searchOrder="10" filterMode="generic" category="Description" description="Client" list="12">ClientIntitule</PROPERTIES>
+					<PROPERTIES type="varchar" searchOrder="7" filterMode="generic" category="Description" description="Magasin" list="9">LivraisonIntitule</PROPERTIES>
+					<PROPERTIES type="varchar" searchOrder="8" category="Description" description="CP" listWidth="50" list="10">LivraisonCodPostal</PROPERTIES>
+					<PROPERTIES type="varchar" searchOrder="9" filterMode="generic" category="Description" description="Ville" list="11">LivraisonVille</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" module="StockLogistique" title="Status" on="Etat" target="Code">
+					<PROPERTIES type="varchar" description="Etat" listWidth="75" list="4" alias="Status">Etat</PROPERTIES>
+					<PROPERTIES type="varchar" alias="Status_Color">Couleur</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+
+
+	<OBJECTCLASS title="Vehicule" driver="mysql" master="0" AccessPoint="1" Dico="0" Icon="[None]" Description="Véhicules" Heritage="0">
+		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" category="Description" description="Désignation"  formLabel="1">Designation</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" searchOrder="2" category="Description" >Type</PROPERTIES>
+		<PROPERTIES type="varchar" default=""  searchOrder="3" category="Description" >Marque</PROPERTIES>
+		<PROPERTIES type="varchar" length="20"  searchOrder="4" default="" category="Description" >Immatriculation</PROPERTIES>
+		<PROPERTIES type="date"  searchOrder="5" category="Description" >ProchaineRevision</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Description" >Volume</PROPERTIES>
+		<PROPERTIES type="text" category="Description" >Commentaire</PROPERTIES>
+	</OBJECTCLASS>
+
+
+
+	<OBJECTCLASS title="Tournee" driver="mysql" order="Date" orderType="DESC" master="0" AccessPoint="1" Icon="[None]" Description="Feuilles de Route" labelPrefix="FdR:" Heritage="0" Class="Modules/StockLogistique/Class/Tournee.class.php">
+		<CONFIGURATION name="Interface">
+			<FORM hideDelete="1">FormList</FORM>
+		</CONFIGURATION>
+		<FUNCTION type="vseparator">s0</FUNCTION>
+		<FUNCTION name="printTournee" formOnly="1" icon="print" label="Imprimer" description="Feuille de route et BL">
+			<PROPERTIES type="boolean" defaultValue="1" category="Impression" description="Feuille de route">Tournee</PROPERTIES>
+			<PROPERTIES type="boolean" defaultValue="0" category="Impression" description="Bons de livraison">BL</PROPERTIES>
+			<PROPERTIES type="boolean" defaultValue="0" category="Impression" description="BL avec Fond">Fond</PROPERTIES>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"interface":1,
+						"method":"object","data":{"module":"StockLogistique","objectClass":"Tournee","form":"Functions/printTournee.json"},
+						"function":"PrintDocuments","selectionRequired":1,"args":[{"selectedValues":["dataGrid"]},{"interfaceValues":["Tournee","BL","Fond","Date"]}]}
+					}
+				]]>
+			</ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"interface":1,
+						"method":"query","data":{"module":"StockLogistique","objectClass":"Tournee","form":"Functions/printTournee.json"},
+						"function":"PrintDocuments","args":[{"value":[null]},{"interfaceValues":["Tournee","BL","Fond"]}]}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="valideTournee" formOnly="1" icon="" label="Valider" description="Validation des BL">
+			<PROPERTIES type="date" obligatoire="1" defaultValue="Now" description="Date de Tournée">Date</PROPERTIES>
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"interface":1,
+						"method":"query","data":{"dirtyChild":1,"module":"StockLogistique","objectClass":"Tournee","form":"Functions/valideTournee.json",
+						"proxyValues":{"vars":{"Date":{"args":"dv:formCreator#Date"}}}},
+						"function":"ValideTournee","args":[{"value":[null]},{"interfaceValues":["Date"]}]}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="valideRetour" formOnly="1" icon="" label="Valider" description="Validation du Retour">
+			<PROPERTIES type="date" obligatoire="1" defaultValue="Now" description="Date de Tournée">Date</PROPERTIES>
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"confirm":{"text":"Valider la tournée}",
+						"method":"query","data":{"dirtyChild":1,"module":"StockLogistique","objectClass":"Tournee","form":"Functions/valideRetour.json",
+						"proxyValues":{"vars":{"Date":{"args":"dv:formCreator#Date"}}}},
+						"function":"ValideRetour","args":[{"value":[null]},{"interfaceValues":["Date"]}]}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="ControleReprise" formOnly="1" icon="print" label="Contrôle" description="Contrôle des retours">
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"method":"object","data":{"module":"StockLogistique","objectClass":"Tournee"},
+						"function":"ControleReprise","args":[{"selectedValues":["elements"]}]}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<PROPERTIES type="varchar" length="8" searchOrder="1" category="Description" description="N° Feuille de route" listDescr="N°" width="60" formLabel="1" list="1" listWidth="60">Reference</PROPERTIES>
+		<PROPERTIES type="date" obligatoire="1" searchOrder="2" category="Description" description="Date" list="1">Date</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Description" description="Validée">Valide</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Description" description="Effectué">Effectue</PROPERTIES>
+		<PROPERTIES type="int" defaultValue="30" searchOrder="3" category="Etat"  query="StockLogistique/Status/Type=T::Code::Etat" >Etat</PROPERTIES>
+		<PROPERTIES type="int" default="0" obligatoire="0" searchOrder="4" query="Repertoire/Tiers/Livreur=1::Id::Intitule" category="Description" description="Chauffeur" list="3" listWidth="150">ChauffeurId</PROPERTIES>
+		<PROPERTIES type="int" default="0" obligatoire="0" searchOrder="5" query="StockLogistique/Vehicule::Id::Designation" category="Description" description="Véhicule" list="4" listWidth="150">VehiculeId</PROPERTIES>
+		<PROPERTIES type="text" category="Description">Commentaires</PROPERTIES>
+
+		<VIEW title="TourneeList" default="1">
+			<OBJECTCLASS title="Tournee" select="Id,Reference,Date,Valide,Effectue" filters="">
+				<JOIN type="outer" module="Repertoire" title="Tiers" on="ChauffeurId" target="Id" select="Intitule as ChauffeurId" filters="" />
+				<JOIN type="outer" title="Vehicule" on="VehiculeId" target="Id" select="Designation as VehiculeId" filters="" />
+				<JOIN type="outer" module="StockLogistique" title="Status" on="Etat" target="Code">
+					<PROPERTIES type="varchar" description="Etat" listWidth="80" list="2" alias="Status">Etat</PROPERTIES>
+					<PROPERTIES type="varchar" alias="Status_Color">Couleur</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="Reprise" driver="mysql" master="0" AccessPoint="0" Dico="0" Icon="[None]" Description="Véhicules" Heritage="0" Class="Modules/StockLogistique/Class/Reprise.class.php">
+		<FUNCTION name="SaveReprise" formOnly="1" icon="save" label="Sauver" description="Remise en stock / Panne">
+			<PROPERTIES type="date" obligatoire="1" defaultValue="Now" description="Date de remise en stock / Panne">Date</PROPERTIES>
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+					"interface":1,
+					"method":"object","data":{"module":"StockLogistique","objectClass":"RepriseTete","form":"Functions/SaveReprise.json"},
+					"function":"SaveReprise","args":"iv:Date,dv:elements"}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FKEY data="Tournee,Id" card="1,1" hidden="1">TourneeId</FKEY>
+		<PROPERTIES type="varchar" length="20" >Reference</PROPERTIES>
+		<PROPERTIES type="int" default="0">Quantite</PROPERTIES>
+		<PROPERTIES type="int" default="0">Anomalie</PROPERTIES>
+		<PROPERTIES type="date" >Date</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" >Commentaire</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" >Panne</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" >Stock</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" >Controle</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" >NonRepris</PROPERTIES>
+		<PROPERTIES type="int" default="0" >ReferenceId</PROPERTIES>
+		<PROPERTIES type="int" default="0" >ElementId</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" >ActionTexte</PROPERTIES>
+		<PROPERTIES type="int" default="0" >Action</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" >ActionTraite</PROPERTIES>
+		
+		<VIEW title="RepriseList" default="1">
+			<OBJECTCLASS title="Reprise" select="Id,Reference,ReferenceId,ElementId,TourneeId,Quantite,Date,Commentaire,Panne,Stock,Controle,Anomalie,Action,ActionTexte,ActionTraite" filters="">
+				<JOIN type="outer" module="StockLocatif" title="Reference" on="ReferenceId" target="Id" select="ArticleId" filters="" >
+					<JOIN type="outer" module="StockLocatif" title="Article" on="ArticleId" target="Id" select="Article" filters="" />
+				</JOIN>
+				<JOIN type="outer" module="StockLocatif" title="Tournee" on="TourneeId" target="Id">
+					<PROPERTIES type="varchar" alias="Tournee">Reference</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" module="StockLogistique" title="Element" on="ElementId" target="Id" select="DevisId" filters="" >
+					<JOIN type="outer" module="Devis" title="DevisTete" on="DevisId" target="Id">
+						<PROPERTIES type="varchar" alias="DevisId">Id</PROPERTIES>
+						<PROPERTIES type="varchar" alias="Devis">Reference</PROPERTIES>
+						<PROPERTIES type="varchar" alias="Client">ClientIntitule</PROPERTIES>
+						<PROPERTIES type="varchar" alias="Livraison">LivraisonIntitule</PROPERTIES>
+						<PROPERTIES type="varchar" alias="CodPostal">LivraisonCodPostal</PROPERTIES>
+						<PROPERTIES type="varchar" alias="Ville">LivraisonVille</PROPERTIES>
+					</JOIN>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Status" driver="mysql" order="Code" orderType="ASC" master="0" AccessPoint="0" Dico="0" Icon="[None]" Description="Etat des element" Heritage="0">
+		<PROPERTIES type="varchar" length="1" >Type</PROPERTIES>
+		<PROPERTIES type="int" >Code</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" >Etat</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" >Couleur</PROPERTIES>
+	</OBJECTCLASS>
+
+</SCHEMA>
+
+
+
+

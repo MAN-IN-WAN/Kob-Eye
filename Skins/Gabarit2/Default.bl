@@ -1,0 +1,27 @@
+[HEADER]
+	<link rel="icon" href="/Skins/Gabarit1/favicon.ico" type="image/x-icon"/>
+	<link rel="shortcut icon" href="/Skins/Gabarit2/favicon.ico" type="image/x-icon"/>
+	<script type="text/javascript" src="/Skins/Gabarit2/Js/mootools.js"></script>
+	<script type="text/javascript" src="/Skins/Gabarit2/Js/overlay.js"></script>
+	<script type="text/javascript" src="/Skins/Gabarit2/Js/multibox.js"></script>
+	<script type="text/javascript">
+		var box = {};
+		window.addEvent('domready', function(){
+			box = new MultiBox('mb', {useOverlay: true});
+		});
+	</script>
+	<link type="application/rss+xml" rel="alternate" href="[!Domaine!]/News/Nouvelle/Rss.xml" title="Gabarit2 News" />
+[/HEADER]
+<div id="Generale">
+	[MODULE Systeme/Structure/Entete]
+	<div id="Container">
+		<div id="Contenu">
+			[MODULE Systeme/Structure/Gauche]
+			[DATA]	
+		</div>
+	</div>
+</div>
+[MODULE Systeme/Structure/Pied]
+<script type="text/javascript">
+	new MultiBox('mb',{container:"Multibox"});
+</script>

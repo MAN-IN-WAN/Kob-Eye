@@ -1,0 +1,190 @@
+[TITLE]Passions - Emotions - Photographie[/TITLE]
+[HEADER]
+	<!-- enable responsive -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  	<meta name="apple-mobile-web-app-capable" content="yes" /> 
+  	  	
+ 	<!-- Place favicon.ico and apple-touch-icon.png in the root directory: mathiasbynens.be/notes/touch-icons -->
+ 	<link rel="shortcut icon" type="image/x-icon" href="/Skins/JPhotolio/images/jlio.ico"/> 	 	 
+ 	<link rel="apple-touch-icon-precomposed" href="/Skins/JPhotolio/images/touchicon.png"/> 
+  	<!-- Load required stylesheet -->
+	<link rel="stylesheet" href="/Skins/JPhotolio/css/bootstrap.css">
+	<link rel="stylesheet" href="/Skins/JPhotolio/css/bootstrap-responsive.css">		
+	<link rel="stylesheet" href="/Skins/JPhotolio/css/style.css">	
+	<link rel="stylesheet" href="/Skins/JPhotolio/css/style-responsive.css">
+	<link rel="stylesheet" href="/Skins/JPhotolio/css/plugin.css">
+	<link rel="stylesheet" href="/Skins/JPhotolio/css/mediaelement/mediaelementplayer.css">
+	<link rel="stylesheet" href="/Skins/JPhotolio/css/blue.monday/jplayer.blue.monday.css"> 	 	
+	<link rel="stylesheet" href="/Skins/JPhotolio/css/control.css">
+	<!--FONTS-->
+	<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:700&amp;v1' rel='stylesheet' type='text/css'>	
+	<link href='http://fonts.googleapis.com/css?family=Overlock:italic&amp;v1' rel='stylesheet' type='text/css'>	
+	<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:regular&amp;v1' rel='stylesheet' type='text/css'>	
+	<!-- Load Required Javascript -->
+  	<script type="text/javascript">
+  		var base_url	 = "/Skins/JPhotolio/",
+			contact_url	 = "/Systeme/Contact/Response.json",
+			template_css = "css/",			
+			ajax_url	 = "/",
+			jcurtain	 = "1",
+			curtainstyle = "fade";		
+  	</script>
+	
+	<script type='text/javascript' src='/Skins/JPhotolio/js/jquery.js'></script>
+	<script type='text/javascript' src='/Skins/JPhotolio/js/modernizr.js'></script>
+	<script type='text/javascript' src='/Skins/JPhotolio/js/plugins.js'></script>
+	<script type='text/javascript' src='/Skins/JPhotolio/js/script.js'></script>
+	
+	<script type='text/javascript' src='http://www.youtube.com/player_api?ver=3.4'></script>
+	<script type='text/javascript' src='http://maps.google.com/maps/api/js?sensor=false&#038;ver=3.4'></script>
+	<script type='text/javascript' src='http://connect.facebook.net/en_US/all.js?ver=3.4#xfbml=1'></script>
+	<script type='text/javascript' src='http://platform.twitter.com/widgets.js?ver=3.4'></script>
+[/HEADER]
+
+  <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you support IE 6.
+       chromium.org/developers/how-tos/chrome-frame-getting-started -->
+  <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]--> 
+  <header>		
+		[MODULE Systeme/Navigation]
+  </header>  
+  <div class="notification">
+	<div class="notification-wrapper">
+		<div class="notification-belt">&nbsp;</div>
+		<div class="notification-content"></div>
+		<div class="closeme" style="display: block;">
+			<div class="icon-remove"></div>
+		</div>
+	</div>
+  </div>
+  
+  	
+  <div role="main" id="mainouter"> 
+  	<div id="main">
+  		[DATA]
+	 </div>
+</div>
+ 
+
+  <!-- curtain call :p -->
+  <div class="curtain">
+	<div class="curtainhead"></div>
+	<div class="curtainbg"></div>  
+	<div class="curtain-loader"></div>	
+  </div>
+  
+  <div class="mpnotif"></div>
+  
+  <div id="mplist">
+  	<div id="jquery_jplayer" class="jp-jplayer"></div>
+	<div id="jp_container" class="jp-audio">
+		<div class="musicplaylist">
+			<h2>Music Player</h2>
+			<div class="pwdcls mpcls" alt="Close">
+				<div class="icon-remove icon-white">&nbsp;</div>
+			</div>
+		</div>
+		<div class="jp-type-playlist">
+			<div class="jp-gui jp-interface">
+				<ul class="jp-controls">
+					<li><div href="javascript:;" data-tourl="false" class="jp-play" tabindex="1">&nbsp;</div></li>
+					<li><div href="javascript:;" data-tourl="false" class="jp-pause" tabindex="1">&nbsp;</div></li>
+				</ul>
+				
+				<div class="jp-current-time"></div>
+				
+				<div class="jp-progress">
+					<div class="jp-seek-bar">
+						<div class="jp-play-bar"></div>
+					</div>
+				</div>
+				
+				<div class="jp-duration"></div>
+				
+				<div href="javascript:;" data-tourl="false" class="jp-mute" tabindex="1" title="mute">&nbsp;</div>
+				
+				<div class="jp-volume-bar">
+					<div class="jp-volume-bar-value"></div>
+				</div>
+				<ul class="jp-toggles">
+					<li><div href="javascript:;" class="jp-shuffle" tabindex="1" title="shuffle">&nbsp;</div></li>
+					<li><div href="javascript:;" class="jp-shuffle-off" tabindex="1" title="shuffle off">&nbsp;</div></li>
+					<li><div href="javascript:;" class="jp-repeat" tabindex="1" title="repeat">&nbsp;</div></li>
+					<li><div href="javascript:;" class="jp-repeat-off" tabindex="1" title="repeat off">&nbsp;</div></li>
+				</ul>
+			</div>
+			<div class="jp-playlist">
+				<ul>
+					<li></li>
+				</ul>
+			</div>
+			<div class="jp-no-solution">
+				<span>Update Required</span>
+				To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
+			</div>
+		</div>
+	</div>
+  </div>
+  
+[MODULE Systeme/Player]  
+  
+  <footer>
+  	  	
+	<nav class="foot-left">
+		<ul>
+			<li>				
+				<a href="index.html">
+					<i class="misc-home"></i>
+					<div class="text-social">home</div>
+				</a>
+			</li>
+			<li>				
+				<a href="contact.html">
+					<i class="misc-mail"></i>
+					<div class="text-social">contact</div>
+				</a>
+			</li>		
+			<li>				
+				<a href="#" class="openplaylist" data-tourl="false">
+					<i class="misc-headphone"></i>
+					<div class="text-social">playlist</div>
+				</a>
+			</li>
+		</ul>
+	</nav>
+	<nav class="foot-right">
+		<ul>		
+			<li>
+				<a href="http://facebook.com/home.jsf">
+					<i class="social-facebook"></i>
+					<div class="text-social">facebook</div>
+				</a>
+			</li>
+			<li>
+				<a href="http://youtube.com/jegbagus">
+					<i class="social-youtube"></i>
+					<div class="text-social">Youtube</div>
+				</a>
+			</li>
+			<li>
+				<a href="http://twitter.com/#!/jegbagus">
+					<i class="social-twitter"></i>
+					<div class="text-social">twitter</div>
+				</a>
+			</li>		
+			<li>
+				<a href="http://decilicous.com">
+					<i class="social-delicious"></i>
+					<div class="text-social">Delicious</div>
+				</a>
+			</li>
+		</ul>
+	</nav>	
+  </footer>
+
+  <!-- JavaScript at the bottom for fast page loading -->
+  
+  <!-- scripts concatenated and minified via build script --> 
+  <!-- end scripts -->
+    
+  </body>
+</html>

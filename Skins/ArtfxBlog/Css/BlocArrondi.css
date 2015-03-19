@@ -1,0 +1,32 @@
+.BlocRound{
+	display:block;
+	position:relative;
+	padding-bottom:2px;
+	padding-top:2px;
+}
+
+.rtop{
+	display:block;
+	height: 1px;
+	margin-top:0;
+	margin-bottom:0;
+	margin-left:1px;
+	margin-right:1px;
+}
+
+.rbottom{
+	display:block;
+	height: 1px;
+	margin-top:0;
+	margin-bottom:0;
+	margin-left:1px;
+	margin-right:1px;
+}
+
+
+.round{
+	display:block;
+	position:inherit;
+	z-index:0;
+	overflow:hidden;
+}

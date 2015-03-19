@@ -1,0 +1,181 @@
+<SCHEMA>
+	<!-- Enseigne -->
+	<OBJECTCLASS title="Enseigne" logEvent="1" driver="mysql" master="1" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/App2.png">
+		<PROPERTIES type="varchar" category="Configuration" description="Name" searchOrder="1" formLabel="1">Nom</PROPERTIES>
+		<PROPERTIES type="file" category="Configuration" description="Name" searchOrder="1" formLabel="1">Logo</PROPERTIES>
+	</OBJECTCLASS>
+	
+	<!-- Transporteur professionnel -->
+	<OBJECTCLASS title="Professionnel" logEvent="1" driver="mysql" master="1" AccessPoint="1" logevent="1" Icon="/Skins/AdminV2/Img/IconAqua/Forum.png">
+		<INTERFACES name="accordion2">
+			<FORM form="WidgetContact" module="TransportsInternationaux" objectClass="Contact" dirtyParent="1">Contacts</FORM>)
+			<FORM form="WidgetComments" module="TransportsInternationaux" objectClass="Comments" dirtyParent="1">Comments</FORM>
+			<FORM form="WidgetDocument" module="TransportsInternationaux" objectClass="Document" dirtyParent="1">Documents</FORM>
+			<FORM form="WidgetTask" module="TransportsInternationaux" objectClass="Professionnel" dirtyParent="1">Tasks</FORM>
+		</INTERFACES>
+		<FILTER name="Tous" color="0x468847"></FILTER>
+		<FILTER name="Routiers" color="0x3A87AD"><![CDATA[Routier=1]]></FILTER>
+		<FILTER name="Maritimes" color=""><![CDATA[Maritime=1]]></FILTER>
+		<FILTER name="Fluviaux" color="0x468847"><![CDATA[Fluvial=1]]></FILTER>
+		<FILTER name="Aériens" color="0x999999"><![CDATA[Aerien=1]]></FILTER>
+		<PROPERTIES type="varchar" category="Désignation" description="Intitulé de l'entreprise" searchOrder="1" formLabel="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" category="Spécifité" description="Type d'établissement" searchOrder="1" formLabel="1" values="Siège social, Succursale, Entrepot">TypeEtablissement</PROPERTIES>
+		<PROPERTIES type="boolean" category="Spécifité" description="Routier" searchOrder="1" formLabel="1">Routier</PROPERTIES>
+		<PROPERTIES type="boolean" category="Spécifité" description="Maritime" searchOrder="1" formLabel="1">Maritime</PROPERTIES>
+		<PROPERTIES type="boolean" category="Spécifité" description="Fluvial" searchOrder="1" formLabel="1">Fluvial</PROPERTIES>
+		<PROPERTIES type="boolean" category="Spécifité" description="Aérien" searchOrder="1" formLabel="1">Aerien</PROPERTIES>
+		<PROPERTIES type="boolean" category="Spécifité" description="Ferroviaire" searchOrder="1" formLabel="1">Ferroviaire</PROPERTIES>
+		<FKEY card="0,1" category="Désignation" data="Enseigne,Id" parentDescription="Enseigne générale de l'entreprise'">EnseigneEntete</FKEY>
+		<FKEY card="0,n" category="Configuration" data="PointDePresence,Id" parentDescription="Point de présence disponibles">PointDePresence</FKEY>
+		<FKEY card="0,n" category="Configuration" data="Activite,Id" parentDescription="Activités professionnelles">ProfessionnelActivite</FKEY>
+		<FKEY card="0,1" category="Préférence" data="User,Id" module="Systeme" parentDescription="Utilisateur de connexion">Utilisateur</FKEY>
+	</OBJECTCLASS>
+	
+	
+	<!-- Contacts -->
+	<OBJECTCLASS title="Contact" logEvent="1" driver="mysql" master="1" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png" className="TransportsInternationaux_Contact" Class="Modules/TransportsInternationaux/Class/Contact.class.php">
+		<PROPERTIES category="Identity"	type="varchar" 															>Nom</PROPERTIES>
+		<PROPERTIES category="Identity"	type="varchar" description="First name"									>Prenom</PROPERTIES>
+		<PROPERTIES category="Identity"	type="varchar" auto="1" searchOrder="1" filterMode="generic" list="3" formLabel="1" description="Full name"	>NomComplet</PROPERTIES>
+		<PROPERTIES category="Identity"	type="varchar" length="30" searchOrder="3" list="4" description="Titre"	listWidth="100">Titre</PROPERTIES>
+		<PROPERTIES category="Identity"	type="varchar"		values="English,Français"							>Langage</PROPERTIES>
+		<PROPERTIES category="Contact"	type="varchar"		length="20"	list="5" listWidth="100"				>Tel</PROPERTIES>
+		<PROPERTIES category="Contact"	type="varchar"		length="20"	list="6" listWidth="100"				>Mobile</PROPERTIES>
+		<PROPERTIES category="Contact"	type="varchar"		length="20"	description="Téléphone maison"				>TelMaison</PROPERTIES>
+		<PROPERTIES category="Contact"	type="varchar"		length="20"											>Fax</PROPERTIES>
+		<PROPERTIES category="Contact"	type="varchar" searchOrder="6" list="7" filterMode="generic" description="eMail" >Email</PROPERTIES>
+		<PROPERTIES category="Other"	type="date"																>Anniversaire</PROPERTIES>
+		<PROPERTIES category="Other"	type="text"																>Commentaires</PROPERTIES>
+		<FKEY card="0,1" category="Désignation" data="Professionnel,Id" parentDescription="Entreprise">Entreprise</FKEY>
+	</OBJECTCLASS>
+	
+	<!-- Point de présence -->
+	<OBJECTCLASS title="PointDePresence" logEvent="1" driver="mysql" master="1" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/App.png">
+		<PROPERTIES type="varchar" category="Désignation" description="Titre" searchOrder="1" formLabel="1">Nom</PROPERTIES>
+		<PROPERTIES type="boolean" category="Spécifité" description="Routier" searchOrder="1" formLabel="1">Routier</PROPERTIES>
+		<PROPERTIES type="boolean" category="Spécifité" description="Maritime" searchOrder="1" formLabel="1">Maritime</PROPERTIES>
+		<PROPERTIES type="boolean" category="Spécifité" description="Fluvial" searchOrder="1" formLabel="1">Fluvial</PROPERTIES>
+		<PROPERTIES type="boolean" category="Spécifité" description="Aérien" searchOrder="1" formLabel="1">Aerien</PROPERTIES>
+		<PROPERTIES type="boolean" category="Spécifité" description="Ferroviaire" searchOrder="1" formLabel="1">Ferroviaire</PROPERTIES>
+		<PROPERTIES type="varchar" category="Adresse" description="Adresse" searchOrder="1" formLabel="1">Adresse</PROPERTIES>
+		<PROPERTIES type="varchar" category="Adresse" description="Code Postal" searchOrder="1" formLabel="1">CodePostal</PROPERTIES>
+		<PROPERTIES type="varchar" category="Adresse" description="Ville" searchOrder="1" formLabel="1">Ville</PROPERTIES>
+		<PROPERTIES type="varchar" category="Adresse" description="Pays" searchOrder="1" formLabel="1">Pays</PROPERTIES>
+	</OBJECTCLASS>
+	
+	<!-- Activités -->
+	<OBJECTCLASS title="Activite" logEvent="1" driver="mysql" master="1" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Spreadsheet.png">
+		<PROPERTIES type="varchar" category="Désignation" description="Name" searchOrder="1" formLabel="1">Nom</PROPERTIES>
+		<PROPERTIES type="boolean" category="Spécifité" description="Routier" searchOrder="1" formLabel="1">Routier</PROPERTIES>
+		<PROPERTIES type="boolean" category="Spécifité" description="Maritime" searchOrder="1" formLabel="1">Maritime</PROPERTIES>
+		<PROPERTIES type="boolean" category="Spécifité" description="Fluvial" searchOrder="1" formLabel="1">Fluvial</PROPERTIES>
+		<PROPERTIES type="boolean" category="Spécifité" description="Aérien" searchOrder="1" formLabel="1">Aerien</PROPERTIES>
+		<PROPERTIES type="boolean" category="Spécifité" description="Ferroviaire" searchOrder="1" formLabel="1">Ferroviaire</PROPERTIES>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="Document" driver="mysql" Icon="[None]" Interface="FormDetail" description="Documents">
+		<FKEY card="0,1" data="Professionnel,Id" category="Document"	documentx="Doc" position="accordion" description="Third"		>DocumentProfessionnel</FKEY>
+		<PROPERTIES category="Document" type="date" defaultValue="Now" searchOrder="1"											>Date</PROPERTIES>
+		<PROPERTIES category="Document" type="varchar" searchOrder="2" 															>Nom</PROPERTIES>
+		<PROPERTIES category="Document" type="file" searchOrder="3" description="Document"										>Doc</PROPERTIES>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="Comments" driver="mysql" Icon="[None]" order="m.`tmsCreate`" orderType="DESC">
+		<PROPERTIES category="" type="date" list="1" 	searchOrder="1"	default="[!TMS::Now!]"							>Date</PROPERTIES>
+		<PROPERTIES category="" type="text" list="2" 	searchOrder="2"								>Commentaires</PROPERTIES>
+		<FKEY card="0,1" data="Professionnel,Id" position="accordion" >CommentsProfessionnel</FKEY>
+		<VIEW title="CommentsList" default="1">
+			<OBJECTCLASS title="Comments">
+				<PROPERTIES category="" type="int" searchOrder="1"								>Id</PROPERTIES>
+				<PROPERTIES category="" type="date" list="1" 	searchOrder="1"								>Date</PROPERTIES>
+				<PROPERTIES category="" type="text" list="2" 	searchOrder="2"								>Commentaires</PROPERTIES>
+				<JOIN type="inner" module="Systeme" title="User" on="userCreate" target="Id">
+					<PROPERTIES type="date" searchOrder="3" list="5" >Nom</PROPERTIES>
+					<PROPERTIES type="varchar" searchOrder="4" list="6" >Prenom</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+	
+	<!-->
+	<OBJECTCLASS title="Produit" logEvent="1" driver="mysql" AccessPoint="1" order="Nom" orderType="ASC" Class="Modules/Vitrine/Class/Produit.class.php" >
+		<PROPERTIES type="titre" length="250" category="Product" searchOrder="1" formLabel="1" description="Name" obligatoire="1">Nom</PROPERTIES>
+		<PROPERTIES category="Product" description="Product version" type="int" default="1" searchOrder="2" hidden="1">Version</PROPERTIES>
+		<PROPERTIES type="image" length="250" category="Product" searchOrder="2" width="150" description="Front picture" iconField="1">Image</PROPERTIES>
+		<PROPERTIES type="image" length="250" category="Product" description="Bottom picture">ImageBottom</PROPERTIES>
+		<PROPERTIES type="image" length="250" category="Product" description="Full texture" hidden="0" >Texture</PROPERTIES>
+		<FKEY card="1,n" data="Categorie,Id" category="Product" parentDescription="Associated range" childDescription="Products list">CategorieId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Modele" logEvent="1" driver="mysql" AccessPoint="0" Class="Modules/Vitrine/Class/Modele.class.php" order="Order" orderType="ASC">
+		<PROPERTIES category="Format" description="Name" type="varchar" searchOrder="1" formLabel="1" obligatoire="1">Nom</PROPERTIES>
+		<FKEY card="1,1" category="Format" data="Packaging,Id" parentDescription="Associated packaging" childDescription="Formats list">PackagingId</FKEY>
+		<PROPERTIES category="Format" description="Format version" type="int" default="1" hidden="1">Version</PROPERTIES>
+		<PROPERTIES category="Format" description="Gencode (EAN)" type="varchar" searchOrder="3" obligatoire="0">GenCode</PROPERTIES>
+		<PROPERTIES category="Format" description="Barcode" type="image" searchOrder="2" iconField="1">CodeBarre</PROPERTIES>
+		<PROPERTIES category="Format" description="Unit per box" type="int" searchOrder="4" obligatoire="0">UcPerBox</PROPERTIES>
+		<FKEY card="1,n" category="Format" parentDescription="Associated product" childDescription="Associated formats" listHeight="50" data="Produit,Id">ProduitId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Packaging" logEvent="1" driver="mysql" AccessPoint="1" order="Order" orderType="ASC" Icon="[None]">
+		<PROPERTIES category="Packaging" description="Packaging name" type="varchar" searchOrder="1" formLabel="1" listWidth="250">Nom</PROPERTIES>
+		<PROPERTIES category="Packaging" description="Packaging width" type="float" searchOrder="2">Largeur</PROPERTIES>
+		<PROPERTIES category="Packaging" description="Packaging height" type="float" searchOrder="3">Hauteur</PROPERTIES>
+		<PROPERTIES category="Packaging" description="Packaging depth" type="float" searchOrder="4">Profondeur</PROPERTIES>
+		<PROPERTIES category="Packaging" description="Unit per box" type="int" >UcPerBox</PROPERTIES>
+		<PROPERTIES category="Packaging" description="Order" type="int"  searchOrder="5">Order</PROPERTIES>
+		<PROPERTIES category="SubFormat" description="Format 3d model" type="varchar" default="StandardPack" query="Vitrine/3dmodels::Nom">3dmodel</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Universe" logEvent="1" driver="mysql" AccessPoint="1" order="Nom" orderType="ASC">
+		<PROPERTIES category="Universe" description="Universe name" type="varchar" searchOrder="1" formLabel="1">Nom</PROPERTIES>
+		<PROPERTIES category="Universe" description="Universe color" type="color" searchOrder="2" >Color</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Database" logEvent="1" driver="mysql" AccessPoint="1" order="Nom" orderType="ASC" Class="Modules/Vitrine/Class/Database.class.php">
+		<PROPERTIES category="Database" description="Database name" type="varchar" searchOrder="1" formLabel="1">Nom</PROPERTIES>
+		<PROPERTIES category="Database" description="Country name" type="varchar" searchOrder="2" formLabel="1">Pays</PROPERTIES>
+		<PROPERTIES category="Database" description="Auto administration" type="boolean" default="1" searchOrder="3" formLabel="1">Auto</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="SubRange" logEvent="0" driver="mysql" AccessPoint="1" order="Nom" orderType="ASC" Class="Modules/Vitrine/Class/SubRange.class.php">
+		<PROPERTIES category="SubRange" description="Range title" type="varchar" searchOrder="1" formLabel="1">Nom</PROPERTIES>
+		<PROPERTIES category="SubRange" description="Range version" type="int" default="1" searchOrder="2" hidden="1">Version</PROPERTIES>
+		<FKEY card="0,1" category="SubRange" data="Categorie,Id" hidden="1">CategorieId</FKEY>
+		<FKEY card="1,1" category="SubRange" data="Database,Id" hidden="1">DataBaseId</FKEY>
+		<FKEY card="0,1" category="SubRange" data="SubRange,Id" hidden="1">SubRangeId</FKEY>
+		<VIEW title="SubRangeTree" default="1">
+			<OBJECTCLASS title="SubRange" select="Id,Nom,Version" filters="" order="Nom" orderType="ASC">
+				<JOIN type="outer" module="Vitrine" title="Categorie" on="CategorieId" target="Id" select="Id as CategorieId,Version as SubVersion" filters="" />
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="SubProduct" logEvent="0" driver="mysql" AccessPoint="1" order="Nom" orderType="ASC" Class="Modules/Vitrine/Class/SubProduct.class.php">
+		<PROPERTIES category="SubProduct" description="Product title" type="varchar" searchOrder="1" formLabel="1">Nom</PROPERTIES>
+		<PROPERTIES category="SubProduct" description="Product version" type="int" default="1" searchOrder="2" hidden="1">Version</PROPERTIES>
+		<PROPERTIES category="SubProduct" description="Product picture" type="file">Image</PROPERTIES>
+		<FKEY card="0,1" category="SubProduct" data="Produit,Id" hidden="1">ProduitId</FKEY>
+		<FKEY card="0,1" category="SubProduct" data="SubRange,Id" hidden="1">SubRangeIdProduct</FKEY>
+		<VIEW title="SubProductTree" default="1">
+			<OBJECTCLASS title="SubProduct" select="Id,Nom,Version" filters="" order="Nom" orderType="ASC" >
+				<JOIN type="outer" module="Vitrine" title="Produit" on="ProduitId" target="Id" select="Id as ProduitId,Image,Texture,Version as SubVersion" filters="" />
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="SubModel" logEvent="0" driver="mysql" AccessPoint="1" order="Nom" orderType="ASC" Class="Modules/Vitrine/Class/SubModel.class.php">
+		<PROPERTIES category="SubFormat" description="Format title" type="varchar" searchOrder="1" formLabel="1">Nom</PROPERTIES>
+		<PROPERTIES category="SubFormat" description="Format version" type="int" default="1" searchOrder="2" hidden="1">Version</PROPERTIES>
+		<PROPERTIES category="SubFormat" description="Format gencode(EAN13)" type="varchar" searchOrder="3" hidden="1">GenCode</PROPERTIES>
+		<PROPERTIES category="SubFormat" description="Format barcode" type="image" hidden="1">CodeBarre</PROPERTIES>
+		<PROPERTIES category="Format" description="Order" type="order" searchOrder="4" adminOnly="1" hidden="1">Order</PROPERTIES>
+		<FKEY card="0,1" category="SubFormat" data="Modele,Id" hidden="1">ModeleId</FKEY>
+		<FKEY card="0,1" category="SubFormat" data="SubProduct,Id" hidden="1">SubProductId</FKEY>
+		<VIEW title="SubModelTree" default="1">
+			<OBJECTCLASS title="SubModel" select="Id,Nom,Version,GenCode,CodeBarre" filters="" >
+				<JOIN type="outer" module="Vitrine" title="Modele" on="ModeleId" target="Id" select="Id as ModeleId,Version as SubVersion,Nom as ModeleName" filters="">
+					<JOIN type="outer" module="Vitrine" title="Packaging" on="PackagingId" target="Id" select="3dmodel,Largeur,Hauteur,Profondeur,UcPerBox,Order as Order" filters=""/>
+				</JOIN>
+				<JOIN type="outer" module="Vitrine" title="SubProduct" on="SubProductId" target="Id" select="Id as SubProductId,Nom as ProductName" filters=""/>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="3dmodels" driver="mysql" AccessPoint="1" order="Nom" orderType="ASC">
+		<PROPERTIES category="3dmodel" description="Format title" type="varchar" searchOrder="1" formLabel="1">Nom</PROPERTIES>
+	</OBJECTCLASS>
+-->
+</SCHEMA>

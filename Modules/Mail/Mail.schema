@@ -1,0 +1,107 @@
+<SCHEMA>
+	<!-- EMAIL -->
+
+	<OBJECTCLASS title="Message" order="Date" orderType="DESC" AccessPoint="1" driver="mysql" Icon="[None]" Class="Modules/Mail/Class/Message.class.php">
+		<PROPERTIES category="Mail" type="varchar" hidden="1"											>IdMessage</PROPERTIES>
+		<PROPERTIES category="Mail" type="varchar" length="1024"										>FromAddress</PROPERTIES>
+		<PROPERTIES category="Mail" type="varchar" length="1024"										>ToAddress</PROPERTIES>
+		<PROPERTIES category="Mail" type="varchar" length="1024"										>CcAddress</PROPERTIES>
+		<PROPERTIES category="Mail" type="varchar" length="1024"										>CciAddress</PROPERTIES>
+		<PROPERTIES category="Mail" type="varchar"	list="2" listWidth="150" searchOrder="1"			>From</PROPERTIES>
+		<PROPERTIES category="Mail" type="text"  	list="3" listWidth="150" searchOrder="2"			>To</PROPERTIES>
+		<PROPERTIES category="Mail" type="text"  searchOrder="3"										>Cc</PROPERTIES>
+		<PROPERTIES category="Mail" type="varchar"  searchOrder="4"										>Cci</PROPERTIES>
+		<PROPERTIES category="Mail" type="date"		list="1" format="time"								>Date</PROPERTIES>
+		<PROPERTIES category="Mail" type="varchar"	list="4" listWidth="300" searchOrder="5"			>Subject</PROPERTIES>
+		<PROPERTIES category="Mail" type="text" searchOrder="6"											>Body</PROPERTIES>
+		<PROPERTIES category="Mail" type="html" searchOrder="7"											>HtmlBody</PROPERTIES>
+		<PROPERTIES category="Mail" type="text"															>MiniBody</PROPERTIES>
+		<PROPERTIES category="Mail" type="int"															>InReplyTo</PROPERTIES>
+		<PROPERTIES category="Mail" type="int" default="0"												>Attachments</PROPERTIES>
+		<VIEW title="MessageList" default="0">
+			<OBJECTCLASS title="Message" select="Id" filters="MailUserUserId=[!Systeme::User::Id!]">
+				<JOIN type="outer" title="Status" on="Attachments" target="Id">
+					<PROPERTIES type="image" list="7" listWidth="20" listDescr="S" alias="AttachIcon">Icon</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="MailUser" on="Id" target="MailUserMessageId">
+					<PROPERTIES type="boolean" >Read</PROPERTIES>
+					<PROPERTIES type="int" >MailUserUserId</PROPERTIES>
+					<JOIN type="outer" title="Status" on="Status" target="Id">
+						<PROPERTIES type="int" alias="StatusId">Id</PROPERTIES>
+						<PROPERTIES type="varchar" searchOrder="3">Status</PROPERTIES>
+						<PROPERTIES type="varchar" alias="StatusColor">Color</PROPERTIES>
+						<PROPERTIES type="image" list="6" listWidth="20" listDescr="S" alias="StatusIcon">Icon</PROPERTIES>
+					</JOIN>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Attachment" driver="mysql" Icon="[None]" Class="Modules/Mail/Class/Attachment.class.php">
+		<FKEY card="1,1" data="Message,Id" category="Attachment"	description="Mail"					>MessageId</FKEY>
+		<PROPERTIES category="Attachment" type="varchar" searchOrder="1"	description="Attachment"	>Name</PROPERTIES>
+		<PROPERTIES category="Attachment" type="varchar" description="Attachment"	>Doc</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="MailUser" description="Mail" AccessPoint="0" driver="mysql" Icon="[None]" Class="Modules/Mail/Class/MailUser.class.php">
+		<FKEY card="1,1" data="Message,Id" category="Mail"												>MailUserMessageId</FKEY>
+		<FKEY card="1,1" module="Systeme" data="User,Id" category="Mail" description="User"				>MailUserUserId</FKEY>
+<!--		<FKEY card="1,1" data="Folder,Id" category="Mail"											>MailUserFolderId</FKEY>-->
+		<PROPERTIES category="Mail" type="int" default="0"												>Folder</PROPERTIES>
+		<PROPERTIES category="Mail" type="boolean" default="0"											>Read</PROPERTIES>
+		<PROPERTIES category="Mail" type="boolean" default="0" 											>Sent</PROPERTIES>
+		<PROPERTIES category="Mail" type="boolean" default="0" 											>Answered</PROPERTIES>
+		<PROPERTIES category="Mail" type="boolean" default="0" 											>Forwarded</PROPERTIES>
+		<PROPERTIES category="Mail" type="boolean" default="0"											>Deleted</PROPERTIES>
+		<PROPERTIES category="Mail" type="int" default="0"												>Status</PROPERTIES>
+		<PROPERTIES category="Mail" type="date"															>Date</PROPERTIES>
+		<VIEW title="MailUserList" default="1">
+			<OBJECTCLASS title="MailUser" select="Id,MailUserUserId" filters="">
+				<JOIN type="outer" title="Message" on="MailUserMessageId" target="Id">
+					<PROPERTIES type="Date" list="2" >Date</PROPERTIES>
+					<PROPERTIES type="varchar" list="3" searchOrder="1">From</PROPERTIES>
+					<PROPERTIES type="varchar" list="4" searchOrder="2">To</PROPERTIES>
+					<PROPERTIES type="varchar" list="5" searchOrder="3" >Subject</PROPERTIES>
+					<PROPERTIES type="int" list="6" alias="MessageId">Id</PROPERTIES>
+					<JOIN type="outer" title="Status" on="Attachments" target="Id">
+						<PROPERTIES type="image" listWidth="20" listDescr="S" alias="AttachIcon">Icon</PROPERTIES>
+					</JOIN>
+				</JOIN>
+				<JOIN type="outer" title="Status" on="Status" target="Id">
+					<PROPERTIES type="int" alias="StatusId">Id</PROPERTIES>
+					<PROPERTIES type="varchar" >Status</PROPERTIES>
+					<PROPERTIES type="varchar" alias="StatusColor">Color</PROPERTIES>
+					<PROPERTIES type="image" listWidth="20" listDescr="S" alias="StatusIcon">Icon</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+	
+<!--
+	<OBJECTCLASS title="Folder" order="Order" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Icon="[None]" Description="Folders" Dico="1">
+		<PROPERTIES type="varchar" length="32" searchOrder="1" obligatoire="1" >Name</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" >Icon</PROPERTIES>
+		<PROPERTIES type="int" >Order</PROPERTIES>
+		<PROPERTIES type="int" values="0::Any,1::Inbox,2::Outbox,3::Trash">Type</PROPERTIES>
+		<FKEY card="0,1" data="Folder,Id">FolderFolderId</FKEY>
+	</OBJECTCLASS>
+-->
+
+	<OBJECTCLASS title="Status" driver="mysql" master="0" AccessPoint="0" Dico="1" hidden="1" Icon="[None]">
+		<PROPERTIES category="Status" type="varchar" length="16" special="multi"							>Status</PROPERTIES>
+		<PROPERTIES category="Status" type="varchar" length="16"											>Color</PROPERTIES>
+		<PROPERTIES category="Status" type="varchar" length="64"											>Icon</PROPERTIES>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="Account" driver="mysql" master="0" AccessPoint="0" Dico="1" hidden="0" Icon="[None]">
+		<PROPERTIES category="Account" type="varchar" length="255" default=""							>Login</PROPERTIES>
+		<PROPERTIES category="Account" type="varchar" length="255" default=""							>Password</PROPERTIES>
+		<PROPERTIES category="Account" type="varchar" length="255" default=""							>Host</PROPERTIES>
+		<PROPERTIES category="Account" type="varchar" length="255" default=""							>Port</PROPERTIES>
+		<PROPERTIES category="Account" type="varchar" length="255" default=""							>Method</PROPERTIES>
+		<PROPERTIES category="Account" type="varchar" length="20"										>Stamp</PROPERTIES>
+		<PROPERTIES category="Account" type="boolean" default="1"										>Active</PROPERTIES>
+	</OBJECTCLASS>
+
+</SCHEMA>

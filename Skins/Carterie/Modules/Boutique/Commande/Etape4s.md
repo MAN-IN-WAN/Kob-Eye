@@ -1,0 +1,10 @@
+[STORPROC Boutique/TypePaiement/Actif=1|TP]
+	[!Plg:=[!TP::getPlugin()!]!]
+	[!PaiementID:=[!Plg::retrouvePaiementEtape4s()!]!]
+	<h2>PAIEMENT [!PaiementID!]</h2>
+	[IF [!PaiementID!]>0]
+		[STORPROC Boutique/Paiement/[!PaiementID!]|P|0|1]
+			[METHOD P|CheckPaiement][/METHOD]
+		[/STORPROC]
+	[/IF]
+[/STORPROC]

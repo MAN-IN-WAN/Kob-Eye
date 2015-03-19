@@ -1,0 +1,44 @@
+// Composant Navigation
+// Module Redaction
+// Version 1
+// 12 aout 2011
+
+// Menu, Query...
+[!Base:=[!Systeme::CurrentMenu::Alias!]!]
+[!Menu:=[!Systeme::CurrentMenu::Url!]!]
+[IF [!Base!]=]
+	[!Base:=[!Lien!]!]
+	[!Menu:=[!Systeme::getMenu([!Lien!])!]!]
+[/IF]
+
+// Catégorie courante...
+[INFO [!Query!]|I]
+[IF [!Niveau!]=][!Niveau:=1!][/IF]
+[STORPROC [!I::Historique!]|H|[!Niveau!]|1][/STORPROC]
+
+// Affichage des données...
+[IF [!Base!]~Redaction]
+[STORPROC [!Base!]|CatParent|0|1][/STORPROC]
+[STORPROC [!Base!]/Categorie/Publier=1|Cat]
+	<div class="Composant ComposantNavigation">
+
+		<h3 class="Composant ComposantNavigation [IF [!Lien!]!=[!Systeme::CurrentMenu::Url!]]Open[/IF]">[!CatParent::Nom!]</h3>
+
+		<div class="ContenuComposant ContenuComposantNavigation">
+			<ul>
+				[LIMIT 0|20]
+					<li class="[IF [!Pos!]=1]First[/IF] [IF [!Pos!]=[!NbResult!]]Last[/IF]">
+						[IF [!Cat::Url!]=[!H::Value!]]
+							<a href="/[!Menu!]/[!Cat::Url!]" class="CurrentArbo [IF [!Menu!]/[!Cat::Url!]=[!Lien!]] Current [/IF]">[!Cat::Nom!]</a>
+							[COMPONENT Redaction/Navigation/SNavigation?Url=/[!Menu!]/[!Cat::Url!]&CatId=[!Cat::Id!]&Niveau=[!Niveau:+1!]]
+						[ELSE]
+							<a href="/[!Menu!]/[!Cat::Url!]">[!Cat::Nom!]</a>
+						[/IF]
+					</li>
+				[/LIMIT]
+			</ul>
+		</div>
+
+	</div>
+[/STORPROC]
+[/IF]

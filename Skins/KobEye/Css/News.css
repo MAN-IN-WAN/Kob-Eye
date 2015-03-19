@@ -1,0 +1,65 @@
+/*----------------------------NEWS ACCUEIL--------------------------------*/
+.ColonneDroite{
+	padding:5px;
+	/*background-color:#ff3300;*/
+	margin-top:-5px;
+	background:#0A2133 url(/Skins/Gabarit1/Img/Placard.jpg) repeat-x scroll 0 0;
+}
+
+h3.NewsColonne{
+	color:#ffffff;
+	font-family:Georgia,Arial,Verdana,Helvetica,sans-serif;
+	font-weight:normal;
+	font-size:21px;
+}
+
+h4.NewsColonne{
+	color:#C9B785;
+	font-family:Georgia,Arial,Verdana,Helvetica,sans-serif;
+	text-transform:uppercase;
+	font-weight:normal;
+}
+
+* html .ColonneDroite h3{
+	position:relative;
+}
+
+.BlocActu{
+	margin:5px 0;
+}
+
+.BlocActu a, .BlocActu a:visited{
+	color:#ffffff;
+	text-decoration:none;
+	text-align:right;
+}
+
+.BlocActu a:hover, .BlocActu a:active{
+	color:#ffffff;
+	text-decoration:underline;
+	text-align:right;
+}
+
+hr{
+	color:#8F8F8F;
+	background-color:#8F8F8F;
+	height:1px;
+	border:0;
+	margin-bottom:5px;
+}
+
+.ImgActu{
+	width:100px;
+	float:left;
+}
+
+.TextActu{
+	width:180px;
+	float:left;
+}
+
+.BlocActu p{
+	margin-top:5px;
+	margin-bottom:5px;
+	color:#ffffff;
+}

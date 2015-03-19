@@ -1,0 +1,73 @@
+/*--------- Accueil ---------*/
+p {
+	text-align:justify;
+	padding: 5px 10px 5px 5px;
+}
+.Accueil {margin:auto;padding:5px;}
+.TitreCategorie {overflow:hidden;border-bottom:1px solid #7d003e;}
+.CateIcone {float:left;}
+.CateIcone img {
+	width:32px;
+	height:30px;
+}
+.CateAccueil h1{
+    float:left;
+    color: #9d4680;
+    font-family: arial;
+    font-size: 12px;
+    font-weight: bold;
+    text-align:left;
+    text-transform:uppercase;
+    padding-top:10px;
+}
+
+.CateAccueilContenu {
+    color: #000000;
+    font-family: arial;
+    font-size: 12px;
+    text-align:justify;
+    padding:5px;
+}
+.ArticleUne {
+	padding:5px 15px 5px 15px ;
+}
+
+.Article {}
+
+.TitreArticle {
+	border-bottom:1px solid #7d003e;
+}
+.TitreArticle h2 {
+	color:#7d003e;
+}
+.TitreLogo { float:right;}
+.TitreLogo span {}
+
+.ArtCont_Img {
+	float:left;
+	display:block;
+	width:210px;
+}
+.ArtCont_Contenu {
+    text-align:justify;
+    padding:0 5px 5px;
+}
+
+.finContenu {
+	border-bottom:1px dotted #7d003e;
+	margin:5px;
+}/*--- Redaction -*/
+
+.ArticleContenu {
+	position:relative;
+	overflow:hidden;
+	display:block;
+	text-align:justify;
+	font-size:12px;
+    
+}
+.ArticleContenuLeft {
+	float:left;
+	width:50%;
+
+}

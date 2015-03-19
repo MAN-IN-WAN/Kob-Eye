@@ -1,0 +1,87 @@
+/*-----------------------------------MENU-----------------------*/
+
+/* style the outer div to give it width */
+.menu{
+	position:absolute;
+	left:18px;
+	right:18px;
+	height:54px;
+	z-index:1;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/Skins/AdminV2/Img/BarreAction/BarreOutilMilieu.png', sizingMethod='scale');
+} 
+
+div[class="menu"]{
+	filter: none;
+	background: url(/Skins/AdminV2/Img/BarreAction/BarreOutilMilieu.png) repeat-x;
+}
+
+
+/* hack to correct IE5.5 faulty box model */
+* html .menu {width:97%;w\idth:97%;display:block;}
+
+/* remove all the bullets, borders and padding from the default list styling */
+.menu ul {padding:0;margin:0px;list-style-type:none;}
+
+/* style the sub-level lists */
+.menu ul ul {
+	width:190px;background:#C2C2C2;-moz-opacity:.80;opacity:.80;
+}
+.menu ul ul ul{
+	-moz-opacity:1.00;opacity:1.00;
+}
+
+/* float the top list items to make it horizontal and a relative positon so that you can control the dropdown menu positon */
+.menu  li {float:left;height:55px;line-height:55px;width:112px;background-position:right top;background-repeat:no-repeat;position:relative;}
+/* Style the last menu */
+.menu ul li.last{background:none;float:left;height:35px;line-height:55px;display:block;width:112px;}
+/* style the links for the top level */
+.menu a, .menu a:visited {display:block;height:55px; width:112px;text-decoration:none;color:black;text-align:center; }
+/* hack IE5.x to get the correct the faulty box model and get the width right */
+* html .menu a, * html .menu a:visited {width:112px;}
+/* Style the last menu */
+.menu ul ul li{background:none;height:25px;width:210px;background:#C2C2C2 url(/Skins/AdminV2/Img/SousMenu.jpg);background-position:center center;background-repeat:no-repeat;padding:0;margin:0;border:0;padding-left:10px;}
+
+
+
+/* style the second level background */
+.menu ul ul a, .menu ul ul a:visited {font-size:9px;text-align:left;color:black;}
+/* style the second level hover */
+.menu ul ul a:hover,.menu ul ul a:hover:visited{color:black;background:#C2C2C2 url(/Skins/AdminV2/Img/SousMenuOver.jpg) center center no-repeat;}
+/* style the third level background */
+.menu ul ul ul a, .menu ul ul ul a:visited {font-size:9px;text-align:left;}
+/* style the third level hover */
+.menu ul ul ul a:hover,.menu ul ul ul a:visited:hover {color:black;background:#C2C2C2 url(/Skins/AdminV2/Img/SousMenuOver.jpg) center center no-repeat;}
+
+
+/* hide the sub levels and give them a positon absolute so that they take up no room */
+.menu ul ul {visibility:hidden;position:absolute;height:0;top:45px;left:0; width:210px;}
+/* another hack for IE5.5 */
+* html .menu ul ul {top:30px;t\op:31px;}
+
+/* position the third level flyout menu */
+.menu ul ul ul{left:210px; top:0; width:210px;}
+
+/* position the third level flyout menu for a left flyout */
+.menu ul ul ul.left {left:-210px;}
+
+/* style the table so that it takes no ppart in the layout - required for IE to work */
+.menu table {position:absolute; top:0; left:0; border-collapse:collapse;}
+
+/* style the second level links */
+.menu ul ul a, .menu ul ul a:visited {display:block;background:url(/Skins/AdminV2/Img/SousMenu.jpg);background-position:center center;background-repeat:no-repeat;padding:0;margin:0;border:0;line-height:25px;height:25px;width:210px;}
+/* yet another hack for IE5.5 */
+* html .menu ul ul a, * html .menu ul ul a:visited {width:210px;w\idth:210px;}
+
+/* style the top level hover */
+.menu a:hover{color:#FFBA00; background:none;}
+/* .menu :hover > a, .menu ul ul :hover > a {color:#fff;background:none;} */
+
+
+/* make the second level visible when hover on first level list OR link */
+.menu ul li:hover ul,
+.menu ul a:hover ul{visibility:visible; }
+/* keep the third level hidden when you hover on first level list OR link */
+.menu ul :hover ul ul{visibility:hidden;}
+/* make the third level visible when you hover over second level list OR link */
+.menu ul :hover ul :hover ul{ visibility:visible;}
+

@@ -1,0 +1,3 @@
+[STORPROC Systeme/Page|P]
+[METHOD P|Delete][/METHOD]
+[/STORPROC]

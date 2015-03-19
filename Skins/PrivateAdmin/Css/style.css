@@ -1,0 +1,38 @@
+/** Configuratio ngénérale **/
+#page-content{
+	min-height:600px;
+}
+body{
+	zoom:.9;
+}
+/** Formulaires **/
+@media screen and (min-width: 1001px) {
+	.masonry-item{
+		width: 25%;
+		padding: 0;
+	}
+}
+@media screen and (max-width: 1000px) {
+	.masonry-item{
+		width: 98%;
+		padding: 0;
+	}
+}
+.form-horizontal .control-label {
+	width: 30%;
+}
+.form-horizontal .controls {
+	margin-left: 30%;
+}
+/** Elements de formulaire **/
+.dataItem-item{
+	cursor:pointer;
+}
+.dataItem-item:hover{
+	background-color:#dedede;
+}
+
+.tab-content{
+	overflow:hidden;
+}
+

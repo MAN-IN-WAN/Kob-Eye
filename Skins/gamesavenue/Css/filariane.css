@@ -1,0 +1,31 @@
+/* Fil d'ariane */
+div.fildariane { 
+	height:15px;
+	padding-left:15px;
+	color: #000000;
+	font-family: Arial;
+	border-bottom:1px solid #000000;
+}
+div.fildariane ul { float:left;}
+div.fildariane ul li{
+	padding-right:2px;
+	padding-left:2px;
+	color: #000000;
+	font-weight:bold;
+	font-family: Arial;
+	font-size: 10px;
+	float:left;
+	list-style:none;
+}
+.fildarianeCurrent li{
+	padding-right:10px;
+	padding-left:10px;
+	color: #ff0000;
+	font-weight:bold;
+	font-family: Arial;
+	font-size: 10px;
+	float:left;
+	list-style:none;
+}
+
+/* fin fil d'ariane */

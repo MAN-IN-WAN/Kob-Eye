@@ -1,0 +1,66 @@
+Install Prereq software
+
+    yum install java-1.6.0-openjdk java-1.6.0-openjdk-devel
+    yum install tomcat6
+    chkconfig tomcat6 on
+    cd /usr/share/tomcat6/lib
+        wget http://www.java2s.com/Code/JarDownload/tomcat-6.0.16-jasper-jdt.jar.zip
+        unzip tomcat-6.0.16-jasper-jdt.jar.zi
+        rm tomcat-6.0.16-jasper-jdt.jar.zip
+
+Download and install CAS Server
+
+    mkdir /opt/cas
+    cd /opt/cas
+    wget http://downloads.jasig.org/cas/cas-server-3.4.7-release.zip
+    unzip cas-server-3.4.7-release.zip
+    cd cas-server-3.4.7
+    cp modules/cas-server-webapp-3.4.7.war /usr/share/tomcat6/webapps
+    Restart tomcat6
+        service tomcat6 restart
+        Test CAS Server login page
+        http://<hostname>:8080/cas-server-webapp-3.4.7/login
+
+Setup custom authentication
+
+    cd /opt/cas/cas-server-3.4.7
+    cp modules/cas-server-support-generic-3.4.7.jar /usr/share/tomcat6/webapps/cas-server-webapp-3.4.7/WEB-INF/lib
+    Edit /usr/share/tomcat6/webapps/cas-server-webapp-3.4.7/WEB-INF/lib/deployerConfigContext.xml
+        Comment out bean definition for SimpleTestUsernamePasswordAuthenticationHandler
+        Add the following bean definition replace username and password with appropriate value.
+
+        <bean class="org.jasig.cas.adaptors.generic.AcceptUsersAuthenticationHandler">
+            <property name="users">
+               <map>
+                  <entry key="<username>" value="<password>" />
+               </map>
+            </property>
+        </bean>
+
+         
+
+Setup SSL support using Self-Signed Certificates
+
+    Follow instructions for using the keytool utility to generate a keystore. The keystore should be created under /usr/share/tomcat6/.keystore using keystore password “changeit”.
+        http://tomcat.apache.org/tomcat-6.0-doc/ssl-howto.html#Configuration
+
+	— Change the server.xml and add the following:
+
+	<!– Define a SSL HTTP/1.1 Connector on port 8443
+
+	This connector uses the JSSE configuration, when using APR, the
+
+	connector should be using the OpenSSL style configuration
+
+	described in the APR documentation –>
+
+	<Connector port=”8443″ protocol=”HTTP/1.1″ SSLEnabled=”true”
+
+	maxThreads=”150″ scheme=”https” secure=”true”
+
+	clientAuth=”false” sslProtocol=”TLS” keystorePass=”changeit”/>
+
+	— More details at http://tomcat.apache.org/tomcat-6.0-doc/ssl-howto.html#Configuration
+
+	    Restart Tomcat
+		service tomcat6 restart

@@ -1,0 +1,3 @@
+<div id="Flipbook" class="BlocError">
+	Mettre le FlipBook correspondant...
+</div>

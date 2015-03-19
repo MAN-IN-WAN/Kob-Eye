@@ -1,0 +1,157 @@
+<SCHEMA>
+	<OBJECTCLASS title="Projet" driver="mysql" browseable="1" searchType="plaintext" order="Nom" orderType="ASC" master="1" AccessPoint="1" Icon="[None]" Description="Projets" Heritage="0" Class="Modules/QCM/Class/Projet.class.php">
+		<FUNCTION name="PrintProjet" formOnly="1" icon="print" label="Imprimer" description="Imprimer" stateGroup="savedIdle">
+			<PROPERTIES type="boolean" defaultValue="0" category="Imprimer" description="Avec réponses">reponse</PROPERTIES>
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"interface":1,
+						"method":"query","data":{"dirtyChild":1,"module":"QCM","objectClass":"Projet","form":"Functions/PrintProjet.json"},
+						"function":"PrintProjet","args":"iv:reponse"}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="SendProjet" formOnly="1" icon="print" label="Envoyer" description="Envoyer par email" stateGroup="savedIdle">
+			<PROPERTIES type="varchar" query="QCM/Adresse::Adresse::Adresse" category="Envoyer" description="Adresse">address</PROPERTIES>
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"interface":1,
+						"method":"query","data":{"dirtyChild":1,"module":"QCM","objectClass":"Projet","form":"Functions/SendProjet.json"},
+						"function":"SendProjet","args":"iv:address"}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="Dupliquer" listOnly="1" icon="duplicate" label="Dupliquer" description="Dupliquer" >
+			<PROPERTIES type="boolean" defaultValue="1" category="Imprimer" description="Avec réponses">reponse</PROPERTIES>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"confirm":{"text":"Confirmer la dupliquation"},
+						"method":"object","data":{"module":"QCM","objectClass":"Projet"},
+						"function":"Dupliquer","args":"idv:dataGrid"}
+					}
+				]]>
+			</ACTION>
+			<ACTION></ACTION>
+		</FUNCTION>
+		<PROPERTIES type="varchar" length="100" parentData="1" searchOrder="1" displayOrder="1" filterMode="generic" obligatoire="1" category="Projet" listWidth="150" list="1" formLabel="1">Nom</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="1" default="0" query="QCM/TypeProjet::Id::TypeProjet" category="Projet" description="Type de projet">TypeProjetId</PROPERTIES>
+		<PROPERTIES type="varchar" list="3" category="Projet" description="Titre" listWidth="300">Description</PROPERTIES>
+		<PROPERTIES type="date" category="Projet" listDescr="Date" list="10" description="Date">Date</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Projet" listDescr="Validité" description="Validité en jours">Validite</PROPERTIES>
+		<PROPERTIES type="date" category="Projet" auto="1" list="11" listDescr="Limite" description="Date limite">DateLimite</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="0" default="0" query="Systeme/Group/Nom=QCM_ADMIN/User::Id::Nom" category="Projet" description="Gestionnaire">GestionnaireId</PROPERTIES>
+		<PROPERTIES type="text" default="" category="Projet" >Commentaires</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" searchOrder="5" list="20" listExtra="iconGrey,iconRed" category="Projet" description="Archivé" listDescr="A" >Archive</PROPERTIES>
+		<VIEW title="ProjetList" default="1">
+			<OBJECTCLASS title="Projet" select="Id,Nom,Description,Date,Validite,DateLimite,Archive,GestionnaireId" filters="">
+				<JOIN type="inner" title="TypeProjet" on="TypeProjetId" target="Id">
+					<PROPERTIES type="image" list="2" listWidth="20" description="T" alias="TypeProjet1.Icon">Icon</PROPERTIES>
+					<PROPERTIES type="varchar" alias="TypeProjet1.Icon_ToolTip">TypeProjet</PROPERTIES>
+					<PROPERTIES type="varchar" filterMode="equal" query="QCM/TypeProjet::Id::TypeProjet" searchOrder="2" description="Type de projet" alias="TypeProjetId">Id</PROPERTIES>
+				</JOIN>
+				<JOIN type="inner" module="Systeme" title="User" on="userCreate" target="Id">
+					<PROPERTIES type="varchar" searchOrder="3" list="4" listWidth="120" description="Créateur" alias="Createur">Login</PROPERTIES>
+				</JOIN>
+				<JOIN type="inner" module="Systeme" title="User" on="userEdit" target="Id">
+					<PROPERTIES type="varchar" searchOrder="4" list="5" listWidth="120" description="Editeur" alias="Editeur">Login</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Page" driver="mysql" searchType="plaintext" order="Numero" orderType="ASC" master="1" AccessPoint="1" Icon="[None]" Description="Pages" Heritage="0" className="QCMPage" Class="Modules/QCM/Class/QCMPage.class.php">
+		<PROPERTIES type="int" searchOrder="1" obligatoire="1" category="Description" list="1" description="Ordre">Numero</PROPERTIES>
+		<PROPERTIES type="varchar" length="100" searchOrder="1" displayOrder="1" filterMode="generic" obligatoire="1" category="Description" listWidth="200" list="2">Nom</PROPERTIES>
+		<FKEY card="1,1" data="Projet,Id" noControl="3" category="Description" description="Projet">PageProjetId</FKEY>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Question" driver="mysql" searchType="plaintext" order="Numero" orderType="ASC" master="1" AccessPoint="1" Icon="[None]" Description="Question" Heritage="0" Class="Modules/QCM/Class/Question.class.php">
+		<PROPERTIES type="int" searchOrder="1" displayOrder="1" obligatoire="1" category="Question" list="1">Numero</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="1" default="0" query="QCM/TypeQuestion::Id::TypeQuestion" category="Question" description="Type de question">TypeQuestionId</PROPERTIES>
+		<PROPERTIES type="boolean" default="1" category="Question" description="Text en gras">Gras</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Question" description="Horizontal">Horizontal</PROPERTIES>
+		<PROPERTIES type="text" obligatoire="1" searchOrder="1" list="1" category="Question" >Question</PROPERTIES>
+		<PROPERTIES type="text" obligatoire="0" category="Question" >Explication</PROPERTIES>
+		<PROPERTIES type="varchar" category="Question" description="Réponse" >Reponse</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="0" default="0" query="QCM/Dictionnaire::Id::Dictionnaire" category="Question" description="Dictionnaire">DictionnaireId</PROPERTIES>
+		<PROPERTIES type="image" category="Question" >Image</PROPERTIES>
+		<FKEY card="1,1" data="Page,Id" noControl="3" category="Question" description="Page">QuestionPageId</FKEY>
+		<VIEW title="QuestionList" default="1">
+			<OBJECTCLASS title="Question" select="Id,Numero,Question,TypeQuestionId,Horizontal,Gras,Reponse,DictionnaireId,Explication,Image" filters="">
+				<JOIN type="inner" title="TypeQuestion" on="TypeQuestionId" target="Id">
+					<PROPERTIES type="image" list="5" >Icon</PROPERTIES>
+					<PROPERTIES type="varchar" >TypeQuestion</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Reponse" driver="mysql" searchType="plaintext" order="Numero" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Réponses" Heritage="0">
+		<PROPERTIES type="int" searchOrder="1" displayOrder="1" obligatoire="1" category="Description" list="1">Numero</PROPERTIES>
+		<PROPERTIES type="text" obligatoire="0" category="Description" >Reponse</PROPERTIES>
+		<PROPERTIES type="image" category="Description" >Image</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Description" >BonneReponse</PROPERTIES>
+		<FKEY card="1,1" data="Question,Id" noControl="3" category="Description" description="Question">ReponseQuestionId</FKEY>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="Participation" logEvent="1" driver="mysql" master="0" AccessPoint="0" Icon="[None]" Description="Participation au QCM" Heritage="0" Class="Modules/QCM/Class/Participation.class.php">
+		<FKEY card="1,1" data="Projet,Id" position="accordion" category="Description" description="Projet">ParticipationProjetId</FKEY>
+		<FKEY card="1,1" module="ProxyCas" data="Host,Id" category="Description" description="Utilisateur">ParticipationHostId</FKEY>
+		<PROPERTIES type="boolean" default="0" category="Description" >Valide</PROPERTIES>
+		<PROPERTIES type="date" category="Description" description="Date de validation">DateValidation</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Note" >Note</PROPERTIES>
+		<VIEW title="ParticipationList" default="1">
+			<OBJECTCLASS title="Participation" select="Id,Valide,DateValidation,Note" filters="">
+				<JOIN type="inner" title="Projet" on="ParticipationProjetId" target="Id">
+					<PROPERTIES type="varchar" >Nom</PROPERTIES>
+					<PROPERTIES type="varchar" >Description</PROPERTIES>
+					<PROPERTIES type="varchar" alias="UrlProjet">Url</PROPERTIES>
+				</JOIN>
+				<JOIN type="inner" title="Host" on="ParticipationHostId" target="Id">
+					<PROPERTIES type="varchar" >Prenom</PROPERTIES>
+					<PROPERTIES type="varchar" >NomFamille</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Resultat" driver="mysql" master="0" AccessPoint="0" Icon="[None]" Description="Résultats" Heritage="0">
+		<FKEY card="1,1" data="Participation,Id" category="Description" description="Participation">ResultatParticipationId</FKEY>
+		<PROPERTIES type="int" default="0" category="Description" >QuestionId</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" >ReponseId</PROPERTIES>
+		<PROPERTIES type="text" obligatoire="0" category="Description" >Reponse</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="TypeProjet" order="Id" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" hidden="1" Description="Types de projet" Icon="[None]">
+		<PROPERTIES category="Type"	type="varchar" length="32" searchOrder="1" >TypeProjet</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="TypeQuestion" order="Id" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" hidden="1" Description="Types de question" Icon="[None]">
+		<PROPERTIES category="Type"	type="varchar" length="32"  searchOrder="1" >TypeQuestion</PROPERTIES>
+		<PROPERTIES category="Type"	type="varchar" length="32" >Icon</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Dictionnaire" order="Dictionnaire" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="0" Description="Dictionnaires" Icon="[None]" Class="Modules/QCM/Class/Dictionnaire.class.php">
+		<PROPERTIES type="varchar" length="32" searchOrder="1" obligatoire="1" category="Description" listWidth="200" formLabel="1">Dictionnaire</PROPERTIES>
+		<RKEY card="0,1" data="Entree,Id" useKeyName="1" childrenGrid="1" hideChild="1" category="Description" description="Entrées" confirm="Effacer toutes les réponses">DictionnaireEntreeId</RKEY>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Entree" order="Ordre" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="0" Description="Entrées dictionnaires" Icon="[None]">
+		<PROPERTIES category="Type"	type="int" default="0" auto="1" hidden="1">Ordre</PROPERTIES>
+		<PROPERTIES category="Type"	type="varchar" length="255" listWidth="400" description="Réponse">Reponse</PROPERTIES>
+		<PROPERTIES category="Type"	type="boolean" default="0" description="Bonne réponse">BonneReponse</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Adresse" order="Adresse" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Interface="FormDetail" Dico="1" Description="Adresses" Icon="[None]" >
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Description" listWidth="300" formLabel="1">Adresse</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" searchOrder="2" category="Description" description="Administrateur" listDescr="A">Admin</PROPERTIES>
+	</OBJECTCLASS>
+
+</SCHEMA>

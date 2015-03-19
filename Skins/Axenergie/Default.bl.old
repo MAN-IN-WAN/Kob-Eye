@@ -1,0 +1,13 @@
+	
+[HEADER]
+<script type="text/javascript" src="/Skins/LoginApaloosa/Js/swfobject.js"></script>
+<script type="text/javascript">
+	swfobject.embedSWF("/Skins/LoginApaloosa/swf/Appaloosa.swf", "myContent", "100%", "100%", "10.1.0", "expressInstall.swf",{},{scale:'noscale',allowFullScreen:'true',wmode:'direct'},{});
+</script>
+[/HEADER]
+
+<div id="myContent">
+	LOCANIM: ICI DU TEXT ALTERNATIF
+</div>
+
+

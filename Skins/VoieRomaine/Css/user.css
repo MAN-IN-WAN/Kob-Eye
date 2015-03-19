@@ -1,0 +1,95 @@
+/*** ESPACE EN HAUT ***/
+div#userEspace {
+	float: right;
+	position:relative;
+	display: block;
+	padding-top:1px;
+}
+
+/*** ESPACE MEMBRE ***/
+div#UserHome {
+	overflow: hidden;
+	padding: 20px 10px 0 10px;
+}
+
+div#UserHome a.Bloc {
+	display: block;
+	float: left;
+	position: relative;
+	padding:55px 0 15px 0;
+	text-align: center;
+	width: 200px;
+}
+
+a.ModifierMonCompte {
+	background:url('../Img/User/modif-compte_145.png') no-repeat 50% 0;
+}
+
+a.MesAdressesLivraison {
+	background:url('../Img/User/modif-adresse-liv.png') no-repeat 50% 0;
+}
+
+a.MesAdressesFacturation {
+	background:url('../Img/User/modif-adresse-fact_142.png') no-repeat 50% 0;
+}
+
+a.HistoriqueCommandes {
+	background:url('../Img/User/historique-commande_147.png') no-repeat 50% 0;
+}
+
+/** FOMRULAIRES **/
+div.user fieldset {
+	margin-top: 10px;
+}
+
+div.user div.LigneForm {
+	padding: 1px;
+}
+
+div.user label {
+	width: 200px;
+	padding: 4px 10px;
+}
+
+div.user input, div.user textarea, div.user select {
+	width: 360px;
+}
+
+div.user input.cree_compte {
+	width: 173px;
+}
+
+div.user input.identifiervous {
+	width: 105px;
+}
+
+div.user input.mettreajour {
+	width: 102px;
+}
+
+div.user textarea {
+	overflow: auto;
+}
+
+div.user select {
+	width: 364px;
+}
+
+/** ADRESSES **/
+div.Adresse {
+	margin-top: 10px;
+	border: 1px solid #7D003E;
+	background-color: #ECE9E6;
+	padding: 10px;
+	overflow: hidden;
+}
+
+a.ModifierAdresse {
+	display: block;
+	text-align: right;
+}
+
+div.buttons {
+	text-align: center;
+	padding-top: 20px;
+}

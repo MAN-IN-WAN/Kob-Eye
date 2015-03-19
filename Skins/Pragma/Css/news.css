@@ -1,0 +1,314 @@
+/*-- Liste news ---*/
+#News .contenuCatDesc { font-size:12px; text-align:justify;border-bottom:1px dotted #0070ba; padding-bottom:10px;}
+#News .BlocNouvelle {
+	display:block;
+	overflow:hidden;
+	position:relative;
+	border-bottom:1px dotted #0070ba;
+
+}
+#News .BlocNouvelle .NouvelleEtImg {
+	display:block;
+	overflow:hidden;
+	position:relative;
+}
+#News .BlocNouvelle .LigneTitre {
+	display:block;
+	overflow:hidden;
+	position:relative;
+	background-color:#ffffff;
+	z-index:2;
+}
+#News h3 { margin-top:30px;}
+#News h4 {
+	margin:10px 0;
+	text-transform:uppercase;
+	color:#525252;
+	font-size:12px;
+	font-weight:normal;
+	text-decoration:underline;
+}
+h2.NewsH2  {
+	margin:10px 0;
+	text-transform:uppercase;
+	color:#0070BA;
+	font-size:12px;
+	font-weight:normal;
+	font-weight:bold;
+}
+#News .BlocNouvelle .ContenuNouvelle .contenuNe a { 
+	background:none;
+   	 color: #0070BA;
+   	 text-decoration: none;
+}
+#News .BlocNouvelle .ContenuNouvelle .contenuNe a:hover { 
+    text-decoration: underline;
+}
+#News .BlocNouvelle .Buttons .OuvreNouvelle {
+	background:url("../Img/sprite.png") no-repeat 0 -220px;
+	border:none;
+	height: 20px;
+    	width: 20px;
+}
+
+#News .BlocNouvelle .Buttons .FermeNouvelle {
+	background:url("../Img/sprite.png") no-repeat -28px -220px;
+	border:none;
+	height: 20px;
+    	width: 20px;
+}
+
+/*-- Une nouvelle ---*/
+#NewsUne .contenuCatDesc { font-size:12px; text-align:justify;border-bottom:1px dotted #0070ba; padding-bottom:10px;}
+#NewsUne .BlocNouvelleUne {
+	display:block;
+	overflow:hidden;
+	position:relative;
+	border-bottom:1px dotted #0070ba;
+ 	padding-bottom:10px;
+}
+#NewsUne .BlocNouvelleUne .NouvelleEtImg {
+	overflow:hidden;
+}
+#NewsUne .BlocNouvelleUne .LigneTitre {
+	overflow:hidden;
+}
+
+.BlocNouvelle .Buttons {
+	float:left;
+	display:block;position:relative;
+	padding: 11px 0 0 18px;
+}
+.BlocNouvelle .Buttons button{ cursor:pointer;}
+
+.BlocNouvelle .TitreNouvelle {
+	float:left;
+	display:block;position:relative;
+	
+}
+.LigneTitre .TitreNouvelle h3 {
+	color:#525252;font-size:12px;text-transform:uppercase;
+}
+.BlocNouvelle a {
+	color:#0070ba;text-decoration:none;
+	background:url("../Img/sprite.png") no-repeat 0 -863px;
+	margin:5px 0;
+}
+.BlocNouvelle a:hover { text-decoration:underline;}
+
+.BlocNouvelle .enPlus {
+	padding:10px 0;
+}
+.BlocNouvelle .enPlus a {
+	color:#0070ba;text-decoration:none;
+	background:url("../Img/sprite.png") no-repeat 0 -863px;
+	margin:5px 0;
+	padding-left:15px;
+}
+.BlocNouvelle .enPlus a:hover { text-decoration:underline;}
+
+
+/*-- Liens pour affichage résidences dans news ---*/
+
+div.NewsResidenceDonnee a {
+	background: url("../Img/sprite.png") no-repeat scroll 0 -858px transparent;
+	/* demande de val qui me dit qu'on aura jamais un lien long !  */
+	width:585px;
+	/*---*/
+    	display: block;
+    	padding: 5px 15px;
+}
+
+div.NewsLienResidence a {
+	display: block;
+	padding-left:20px;
+	height:20px;
+	background: url("../Img/sprite.png") no-repeat;
+}
+
+div.NewsLienResidence a.VoirResidence {
+	background-position: -616px -850px;
+}
+
+div.NewsLienResidence a.Simulateurs {
+	background-position: -616px -876px;
+}
+
+div.NewsLienResidence a.Contact {
+	background-position: -616px -902px;
+}
+
+div.NewsLienResidence a.EnvoyerAmi {
+	background-position: -616px -926px;
+}
+/*-- composant de mise en avant ---*/
+.EntoureComposantNews {
+	display:block;
+	float:left;
+	position:relative;
+
+}
+.ActusPragma {
+	display:block;
+	overflow:hidden;
+	position:relative;
+	margin-left:30px;
+
+}
+
+.BlocCadre { 
+   	background: url("../Img/sprite.png") no-repeat 25px -246px ;
+    	height: 238px;
+    	padding: 5px 10px 10px 5px;
+    	width: 315px;
+}
+
+.ActusPragma .TitreBloc {display:block;overflow:hidden;position:relative;  text-align:center;height: 40px;padding-left: 45px;}
+.ActusPragma .TitreBloc h2{
+	margin-top:12px;
+	font-weight:bold;
+	font-size:16px;
+	float:left;
+	display:block;
+	position:relative;
+	color:#0070ba;
+	text-transform:uppercase;
+}
+.ActusPragma .TitreBloc .paginationAccueilActusPragma { 
+   	display: block;
+    	float: left;
+    	padding-left: 10px;
+    	padding-top: 14px;
+    	position: relative;
+	width:50px;
+}
+
+.ActusPragma .TitreBloc .paginationAccueilActusPragma .precedent {
+    	background: url("../Img/sprite.png") no-repeat  1px -218px ;
+    	display: block;
+    	float: left;
+    position: relative;	height: 20px;
+    	text-indent: -999px;
+    	width: 20px;
+}
+.ActusPragma .TitreBloc .paginationAccueilActusPragma .suivant {
+    	display: block;
+    	float: left;
+    	position: relative;height: 20px;
+    	text-indent: -999px;
+    	width: 20px;
+ 	background:url("../Img/sprite.png") no-repeat -29px -218px; width:20px;height:20px;
+}
+
+.ActusPragma .Desc {
+	padding: 0 10px 8px;
+
+}
+.ActusPragma .Desc .TitreNews { 	
+	font-weight:bold;
+	font-size:11px;
+	color:#0070ba;
+	text-transform:uppercase;
+	display:block;
+	overflow:hidden;
+	position:relative;
+ text-align: justify;
+}
+.ActusPragma .Desc .Accroche { 
+	font-weight:normal;
+	font-size:11px;
+	color:#525252;
+	display:block;
+	overflow:hidden;
+	position:relative;
+ text-align: justify;
+}
+.ActusPragma a.accueilliennews {
+	display:block;
+	position:relative;
+	float:right;
+    	margin-right: 11px;
+    	padding-left: 12px;
+	color:#0070ba;
+	font-weight:normal;
+	font-size:9px; margin-top: -6px;
+ 	background:url("../Img/sprite.png") no-repeat 2px -863px; 
+
+}
+
+.ActusPragma a.accueilliennews:hover { text-decoration:underline;}
+.ActusPragma .affichimage {  text-align: center;}
+/*-- composant block liste de news -*/
+.OpportunitePragma {
+	display:block;
+	overflow:hidden;
+	position:relative;
+
+}
+
+.OpportunitePragma .BlocCadre { 
+   	background: url("../Img/sprite.png") no-repeat 10px -246px ;
+    	height: 238px;
+    	padding: 5px 10px 10px 0;
+    	width: 308px;
+}
+
+.OpportunitePragma .TitreBloc {display:block;overflow:hidden;position:relative; text-align:center;  height: 40px;}
+.TitreBloc h2{
+	margin-top:12px;
+	font-weight:bold;
+	font-size:16px;
+	color:#0070ba;
+	text-transform:uppercase;
+}
+.OpportunitePragma .AfficheInfo { 	
+	display:block;
+	overflow:hidden;
+	position:relative;
+	border:none;
+    	margin: 0 0 4px 10px;
+}
+
+.OpportunitePragma .Desc {
+	overflow: hidden;
+    	padding: 0 7px 6px;	
+}
+.OpportunitePragma .Desc .TitreNewsFleche { 	
+	font-weight:normal;
+	font-size:12px;
+	background: url("../Img/sprite.png") no-repeat -854px -1182px ;
+	text-transform:uppercase;
+	padding:3px 0 1px 17px;
+	border:1px dotted #0070ba;
+	border-right:none;
+	border-left:none;
+	color:#0070ba;
+
+}
+.OpportunitePragma .Desc .Accroche { 
+	font-weight:normal;
+	font-size:11px;
+	color:#525252;
+	padding-top:2px;  height: 22px;
+}
+.OpportunitePragma .Desc  a.accueilliennews {
+	float:right;
+    	padding-left: 12px;
+	color:#0070ba;
+	font-weight:normal;
+	font-size:9px;
+ 	background:url("../Img/sprite.png") no-repeat 2px -863px; 
+
+}
+
+.OpportunitePragma a.accueilliennews:hover { text-decoration:underline;}
+
+a.NewsLienContenu {
+	padding:15px 10px 10px 0;
+	color:#0070ba;
+
+}
+a.NewsLienContenu :hover { text-decoration:underline;}
+
+/* utilisé pour news, je ne sais pas pourquoi c'était en display:none , est ce utiliser ailleurs ? */
+/*div.NewsImage a img{ display:none } */

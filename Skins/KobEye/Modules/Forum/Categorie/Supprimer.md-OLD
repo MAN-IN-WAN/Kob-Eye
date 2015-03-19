@@ -1,0 +1,20 @@
+[STORPROC [!Query!]|S|0|1]
+	[IF [!conf!]="OK"]
+		[IF [!Systeme::User::Admin!]]
+			[STORPROC Forum/Categorie/[!S::Id!]/Categorie|Cat]
+				[!Cat::Delete!]
+			[/STORPROC]
+			[!S::Delete!]
+			[REDIRECT]Forum[/REDIRECT]
+		[/IF]
+	[ELSE]
+		<div class="infosBox">
+			<p style="text-align:center;color:#444444;">
+			&Ecirc;tes vous s&ucirc;r de vouloir supprimer "[!S::getFirstSearchOrder!]" ?</p>
+				<div style="text-align:center"><a href="/[!Lien!]?conf=OK" class="button" style="float:left;margin-right:10px;margin-left:30%;">OUI</a>
+				<a href="[!Systeme::Connection::Ref!]" class="button" style="float:left;">NON</a>
+				<div style="clear:both;"></div>
+			</div>
+		</div>
+	[/IF]
+[/STORPROC]

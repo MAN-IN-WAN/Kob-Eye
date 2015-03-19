@@ -1,0 +1,113 @@
+[TITLE]Admin Kob-Eye | Informations Objet[/TITLE]
+[HEADER]
+<script src="/Skins/[!Systeme::User::Skin!]/Js/jquery.history_remote.pack.js" type="text/javascript"></script>
+<script src="/Skins/[!Systeme::User::Skin!]/Js/jquery.tabs.pack.js" type="text/javascript"></script>
+<script type="text/javascript">
+	$(function() {
+		$('#TabObjet').tabs({ fxSlide: false, fxFade: false, fxSpeed: 'fast'});
+	});
+</script>
+<link rel="stylesheet" href="/Skins/[!Systeme::User::Skin!]/Css/jquery.tabs.css" type="text/css" media="print, projection, screen">
+[/HEADER]
+
+[STORPROC [!Query!]|Obj|0|1]
+	[BLOC Rounded|background:#8C8C8C;color:#FFFFFF;|margin-bottom:5px;]
+		<img src="/Skins/Pilote-Boutique/Img/Liste/ListeFlecheTitre.jpg" style="float:left;margin-top:0px;">
+		<span style="margin-left:5px;">[!Obj::getFirstSearchOrder!]</span>
+	[/BLOC]
+	//[!DEBUG::Obj!]
+<div id="TabObjet">
+	//ON definit les onglets
+	<ul>
+	[STORPROC [!Obj::typesEnfant!]|Enf]
+		[IF [!Enf::Titre!]!=[!Obj::ObjectType!]&&[!Enf::Behaviour!]!=Integrated]	
+			[OBJ [!Obj::Module!]|[!Enf::Titre!]|Enfa]
+			//un onglet par type d enfant
+			<li><a href="#[!Enf::Titre!]"><span><img height="16" src="[!Enfa::getIcon!]" style="margin-bottom:-4px;">&nbsp;[!Enf::Titre!]</span></a></li>
+		[/IF]
+	[/STORPROC]
+	[STORPROC [!CONF::GENERAL::LANGUAGE!]|Lang]
+		//un onglet par langue differente
+		[IF [!Lang::DEFAULT!]]
+			<li><a href="#[!Key!]"><span><img height="16" src="[!Lang::ICON!]" style="margin-bottom:-4px;">&nbsp;Propriétés</span></a></li>
+		[ELSE]
+			<li><a href="#[!Key!]"><span><img height="16" src="[!Lang::ICON!]" style="margin-bottom:-4px;">&nbsp;[!Lang::TITLE!]</span></a></li>
+		[/IF]
+	[/STORPROC]
+		<li><a href="#SysInfo"><span>Informations Systèmes</span></a></li>		
+	</ul>
+
+	[STORPROC [!Obj::typesEnfant!]|Enf]
+		[IF [!Enf::Titre!]!=[!Obj::ObjectType!]&&[!Enf::Behaviour!]!=Integrated]
+			//un onglet par type d enfant
+			<div id="[!Enf::Titre!]">
+				[OBJ [!Obj::Module!]|[!Enf::Titre!]|Enft]
+				[IF [!Enft::isReflexive()!]]
+					[MODULE Systeme/Interfaces/Arborescence?Chemin=[!Obj::getUrl!]/[!Enf::Titre!]&NbChamp=4&TypeEnf=[!Enf::Titre!]]
+				[ELSE]
+					[MODULE Systeme/Interfaces/Liste?Chemin=[!Obj::getUrl!]/[!Enf::Titre!]&NbChamp=4&TypeEnf=[!Enf::Titre!]]
+				[/IF]
+			</div>
+		[/IF]
+	[/STORPROC]
+	//On repete maintenant l interface pour chaque langue
+	[STORPROC [!CONF::GENERAL::LANGUAGE!]|Lang]
+			//un onglet par langue differente
+		<div id="[!Key!]">
+			<div class="Panel" >
+				[!LangC:=[!Key!]!]
+				<h1>Propiétés</h1>
+				[STORPROC [!Obj::Proprietes([!Key!])!]|Prop]
+					//Dabord les proprietes de type varchar ,private,titre,password
+					[MODULE Systeme/Interfaces/Objet/LignePropriete?Prop=[!Prop!]]
+					[NORESULT]
+						Aucune propriétés ne nécéssite une traduction.
+					[/NORESULT]
+				[/STORPROC]
+				[STORPROC [!Obj::typesEnfant!]|Enf]
+					[IF [!Enf::Titre!]!=[!Obj::ObjectType!]&&[!Enf::Behaviour!]=Integrated]
+						<h1>[!Enf::Titre!]</h1>
+							[OBJ [!Obj::Module!]|[!Enf::Titre!]|Enft]
+							[IF [!Enft::isReflexive()!]]
+								[MODULE Systeme/Interfaces/Arborescence?Chemin=[!Obj::getUrl!]/[!Enf::Titre!]&NbChamp=4&TypeEnf=[!Enf::Titre!]&Affich=Simple&Lang=[!LangC!]]
+							[ELSE]
+								[MODULE Systeme/Interfaces/Liste?Chemin=[!Obj::getUrl!]/[!Enf::Titre!]&NbChamp=4&TypeEnf=[!Enf::Titre!]&Affich=Simple&Lang=[!LangC!]]
+							[/IF]
+					[/IF]
+				[/STORPROC]
+			</div>
+		</div>
+	[/STORPROC]
+	//Un onglet pour les droits et les informations Systemes
+	<div id="SysInfo">
+		[IF [!Obj::isHeritage!]]
+		<div id="Heritage">
+			<div class="Panel">
+				<h1>Cet élément distribue les propriétés suivantes</h1>
+				[STORPROC [!Obj::getHeritages!]|Heri]
+					[MODULE Systeme/Interfaces/Heritage/PetiteLigneHeritage?Heri=[!Heri!]]
+				[/STORPROC]
+			</div>
+		</div>
+		[/IF]
+		[STORPROC [!Query!]::Droits|Prop|0|1]
+			<div class="Panel">
+				<h1>Informations propriétaires</h1>
+				//Affichage des Droits
+				[LIMIT 0|100]
+					[MODULE Systeme/Interfaces/Objet/LignePropriete?Prop=[!Prop!]]
+				[/LIMIT]
+			</div>
+		[/STORPROC]
+		[STORPROC [!Query!]::infoSysteme|Prop|0|1]
+			<div class="Panel">
+				<h1>Informations systèmes</h1>
+				[LIMIT 0|100]
+					[MODULE Systeme/Interfaces/Objet/LignePropriete?Prop=[!Prop!]]
+				[/LIMIT]
+			</div>
+		[/STORPROC]
+	</div>
+	//Un onglet pour les Heritages si il y a
+[/STORPROC]
+</div>

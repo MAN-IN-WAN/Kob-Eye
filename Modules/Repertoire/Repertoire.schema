@@ -1,0 +1,145 @@
+<SCHEMA>
+	<OBJECTCLASS title="Tiers" driver="mysql" searchType="plaintext" order="CodeTiers" orderType="ASC" master="1" AccessPoint="1" Icon="[None]" Description="Tiers" Heritage="0" Class="Modules/Repertoire/Class/Tiers.class.php">
+		<FUNCTION type="vseparator">s0</FUNCTION>
+		<FUNCTION name="MergeTiers" multi="1" listOnly="1" icon="favorite" label="Fusion des tiers" description="Fusion des tiers">
+			<ACTION>
+				<![CDATA[
+					{"action":"loadForm","params":{"kobeyeClass":{"module":"Repertoire","objectClass":"Tiers","form":"FormMerge.json"}}}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<!--Description-->
+		<PROPERTIES type="varchar" length="10" parentData="1" searchOrder="1" displayOrder="1" obligatoire="1" category="Description" description="Code tiers" listDescr="Code" listWidth="100" formLabel="1">CodeTiers</PROPERTIES>
+		<PROPERTIES type="varchar" length="100" parentData="1" searchOrder="2" displayOrder="1" filterMode="generic" obligatoire="1" category="Description" description="Intitulé" listWidth="150">Intitule</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="1" default="0" query="Repertoire/TypeTiers::Id::Designation" category="Description" description="Type tiers">TypeTiers</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="0" default="0" query="Repertoire/SousTypeTiers::Id::Designation" category="Description" description="Sous type">SousTypeTiers</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="0" default="0" query="Repertoire/Enseigne::Id::Designation" category="Description">Enseigne</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="0" default="0" query="Systeme/Group/21/User::Id::Initiales" category="Description" description="Commercial">CommercialId</PROPERTIES>
+		<!--Adresse-->
+		<PROPERTIES type="varchar" length="255" obligatoire="0" category="Adresse" description="Adresse 1">Adresse1</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" obligatoire="0" category="Adresse" description="Adresse 2">Adresse2</PROPERTIES>
+<!--		<PROPERTIES type="varchar" length="255" obligatoire="0" category="Adresse" description="Adresse 3">Adresse3</PROPERTIES>
+-->
+		<PROPERTIES type="varchar" length="6"  searchOrder="3" obligatoire="0" category="Adresse" description="Code postal" listDescr="CP" listWidth="50">CodPostal</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" searchOrder="4" filterMode="generic" obligatoire="0" category="Adresse" listWidth="150">Ville</PROPERTIES>
+<!--		<PROPERTIES type="varchar" length="50" obligatoire="0" category="Adresse" >Cedex</PROPERTIES>
+-->
+		<PROPERTIES type="varchar" length="50" obligatoire="0" category="Adresse">Pays</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" obligatoire="0" category="Adresse">GPS</PROPERTIES>
+		<!--Facturation-->
+		<PROPERTIES type="varchar" length="255" obligatoire="0" category="Facturation" description="Adresse 1">AdresseFac1</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" obligatoire="0" category="Facturation" description="Adresse 2">AdresseFac2</PROPERTIES>
+<!--		<PROPERTIES type="varchar" length="255" obligatoire="0" category="Facturation" description="Adresse 3">AdresseFac3</PROPERTIES>
+-->
+		<PROPERTIES type="varchar" length="6"   obligatoire="0" category="Facturation" description="Code postal">CodPostalFac</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" obligatoire="0" category="Facturation">VilleFac</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" obligatoire="0" category="Facturation" >CedexFac</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" obligatoire="0" category="Facturation">PaysFac</PROPERTIES>
+		<!--Contact-->
+		<PROPERTIES type="varchar" length="20"  obligatoire="0" category="Contact" description="Téléphone">Telephone</PROPERTIES>
+		<PROPERTIES type="varchar" length="20"  obligatoire="0" category="Contact">Fax</PROPERTIES>
+		<PROPERTIES type="mail" length="50"     obligatoire="0" category="Contact">Email</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" obligatoire="0" category="Contact" description="Site Web">SiteWeb</PROPERTIES>
+		<!--Administratif-->
+		<PROPERTIES type="varchar" length="150" obligatoire="0" category="Administratif">Rcs</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" category="Administratif">Ape</PROPERTIES>
+		<PROPERTIES type="float" obligatoire="0" category="Administratif">Capital</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" category="Administratif" description="Compte comptable">CompteComptable</PROPERTIES>
+		<PROPERTIES type="int" default="0" query="Devis/CodeTarif::Id::CodeTarif" category="Administratif" description="Code tarif">CodeTarif</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" obligatoire="0" category="Administratif" description="Factures groupées">FactureGroupee</PROPERTIES>
+		<PROPERTIES type="varchar" length="10" query="Devis/ModeReglement::Code::Designation" category="Administratif" description="Règlement">ModeReglement</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" obligatoire="0" category="Administratif" description="Numéro TVA">NumTva</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" obligatoire="0" default="1" defaultValue="1" query="Devis/TVA::Code::Taux" category="Administratif" description="TVA">CodeTVA</PROPERTIES>
+		<PROPERTIES type="float" obligatoire="0" category="Administratif">Remise</PROPERTIES>
+		<!--Configuration-->		
+		<PROPERTIES type="boolean" default="0" obligatoire="0" category="Configuration">Client</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" obligatoire="0" category="Configuration">Magasin</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" obligatoire="0" category="Configuration">Fournisseur</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" obligatoire="0" category="Configuration">Autre</PROPERTIES>	
+		<PROPERTIES type="boolean" default="0" obligatoire="0" category="Configuration">Livreur</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" obligatoire="0" category="Configuration">Transporteur</PROPERTIES>
+		<!--Autres-->
+		<PROPERTIES type="text" obligatoire="0" category="Autres">Commentaires</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" obligatoire="0" category="Autres">Archive</PROPERTIES>
+		<!--Clefs-->
+		<!--<FKEY data="TypeTiers,Id" card="1,1">TypeTiersId</FKEY>-->
+		<!--<FKEY data="SousTypeTiers,Id" card="1,1">SousTypeTiersId</FKEY>-->
+		<!--<FKEY data="Enseigne,Id" card="1,1" description="Enseigne" field="Designation">EnseigneId</FKEY>-->
+		<VIEW title="TiersList" default="1">
+			<!-- CAS SQL <SQL>select * from test where gnagnagna</SQL> -->
+			<OBJECTCLASS title="Tiers" select="Id,CodeTiers,Intitule,CodPostal,Ville" filters="">
+				<!-- CAS FKEY  <JOIN key="{KEY_NAME}" filter=""/> -->
+				<!-- CAS JOIN  <JOIN type="inner|outer" [module="{MODULE_NAME}"] title="{OBJECTCLASS_NAME}" on="{LOCAL_FIELD_NAME}" target="{DISTANT_FIELD_NAME}" select="Designation as Enseigne" filters="" /> -->
+				<JOIN type="outer" title="Enseigne" on="Enseigne" target="Id">
+					<PROPERTIES type="varchar" searchOrder="5" query="Repertoire/Enseigne::Designation::Designation" length="100" description="Enseigne" listWidth="80" alias="Enseigne">Designation</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="TypeTiers" on="TypeTiers" target="Id">
+					<PROPERTIES type="varchar" searchOrder="6" query="Repertoire/TypeTiers::Designation::Designation" length="100" description="Type" listWidth="80" alias="Type">Designation</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="SousTypeTiers" on="SousTypeTiers" target="Id">
+					<PROPERTIES type="varchar" searchOrder="7" query="Repertoire/SousTypeTiers::Designation::Designation" length="100" description="Sous type" listWidth="120" alias="SousType" >Designation</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" module="Systeme" title="User" on="CommercialId" target="Id">
+					<PROPERTIES type="varchar" length="10" searchOrder="8" query="Systeme/Group/21/User::Initiales::Initiales" description="Commercial" listWidth="80" alias="Commercial">Initiales</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+			<!-- CAS GROUPBY <GROUPBY>Enseigne.Id</GROUPBY> -->
+		</VIEW>
+	</OBJECTCLASS>
+	
+	
+	<OBJECTCLASS title="Contact" driver="mysql" searchType="plaintext" order="Nom" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Contacts" Heritage="0">
+		<FKEY data="Tiers,Id" card="1,1" category="Tiers" description="Tiers" readOnly="1">TiersId</FKEY>
+		<!--Intitule-->
+		<PROPERTIES type="varchar" length="100" searchOrder="2" filterMode="generic" obligatoire="0" category="Intitulé" listWidth="120" formLabel="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" length="100" searchOrder="3" filterMode="generic" obligatoire="0" category="Intitulé" listWidth="100" description="Prénom">Prenom</PROPERTIES>
+		<PROPERTIES type="varchar" length="10" obligatoire="0" default="Mr" values="M,Mme,Mlle,Dr,Me" category="Intitulé">Civilite</PROPERTIES>
+		<!--Description-->
+		<PROPERTIES type="int" obligatoire="0" query="Repertoire/Rayon::Id::Designation" category="Description">Rayon</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" obligatoire="0" category="Description" listWidth="80">Fonction</PROPERTIES>
+		<!--Contact-->
+		<PROPERTIES type="varchar" length="20" searchOrder="5" obligatoire="0" category="Contact" listWidth="100" description="Téléphone">Telephone</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" searchOrder="6" obligatoire="0" category="Contact" listWidth="50" description="Poste">TelephonePoste</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" obligatoire="0" category="Contact">TelephonePortable</PROPERTIES>
+		<PROPERTIES type="mail" length="50" obligatoire="0" category="Contact">Email</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" obligatoire="0" category="Contact">Fax</PROPERTIES>
+		<!--Autres-->
+		<PROPERTIES type="text" obligatoire="0" category="Autres">Commentaires</PROPERTIES>
+		<!--Clefs-->
+		<VIEW title="ContactList" default="1">
+			<!-- CAS SQL <SQL>select * from test where gnagnagna</SQL> -->
+			<OBJECTCLASS title="Contact" select="Id,Nom,Prenom,Telephone,TelephonePoste" filters="">
+				<JOIN type="outer" title="Tiers" on="TiersId" target="Id">
+					<PROPERTIES type="varchar" searchOrder="1" description="Tiers" alias="Tiers">Intitule</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Rayon" on="Rayon" target="Id">
+					<PROPERTIES type="varchar" searchOrder="4" query="Repertoire/Rayon::Designation::Designation" description="Rayon" listWidth="80" alias="rayon">Designation</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Note" driver="mysql" order="Date" orderType="DESC" master="0" AccessPoint="0" Icon="[None]" Description="Notes" Dico="0" Interface="FormDetail" Class="Modules/Repertoire/Class/Note.class.php">
+		<FKEY data="Tiers,Id" card="1,1" category="Notes" description="Tiers">TiersId</FKEY>
+		<PROPERTIES type="date" searchOrder="1" obligatoire="1" defaultValue="[!TMS::Now!]" category="Notes">Date</PROPERTIES>
+		<PROPERTIES type="text" searchOrder="4" category="Notes" listWidth="300">Note</PROPERTIES>
+		<PROPERTIES type="date" searchOrder="2" category="Notes">Rappel</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" searchOrder="3" category="Notes" description="Traité" listDescr="T" >Traite</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Notes" hidden="1">Alerte</PROPERTIES>
+	</OBJECTCLASS>
+
+	<!--Dictionnaires-->
+	<OBJECTCLASS title="TypeTiers" driver="mysql" order="Designation" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Type de tiers" Dico="1">
+		<PROPERTIES type="varchar" searchOrder="1" length="100" obligatoire="1" category="Intitulé" description="Désignation">Designation</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="SousTypeTiers" driver="mysql" order="Designation" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Sous-type de tiers" Dico="1">
+		<PROPERTIES type="varchar" searchOrder="1" length="100" obligatoire="1" category="Intitulé" description="Désignation">Designation</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Enseigne" driver="mysql" order="Designation" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Enseignes" Dico="1">
+		<PROPERTIES type="varchar" searchOrder="1" length="100" obligatoire="1" category="Intitulé" description="Désignation">Designation</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Rayon" driver="mysql" order="Designation" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Rayons" Dico="1">
+		<PROPERTIES type="varchar" searchOrder="1" length="100" obligatoire="1" category="Intitulé" description="Désignation">Designation</PROPERTIES>
+	</OBJECTCLASS>
+	
+</SCHEMA>

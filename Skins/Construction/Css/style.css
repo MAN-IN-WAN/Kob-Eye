@@ -1,0 +1,175 @@
+/*
+Theme Name: Coming Soon Theme
+Theme URI: http://www.curtziegler.com/
+Description: Coming Soon / Under Construction theme designed by <a href="http://www.curtziegler.com/">Curt Ziegler</a>.
+Version: 1.0
+Author: Curt Ziegler
+Author URI: http://www.curtziegler.com/
+Tags: coming soon, placeholder, under construction
+*/
+
+html, body, form,
+h1, h2, h3, h4, h5, h6,
+p, img, a
+{
+	margin:0;
+	padding:0;
+	outline:0;
+	border:0;
+}
+html,body
+{
+	height:100%;
+}
+body
+{
+
+	font-size:0.8em;
+	color:#222;
+	font-family:Arial, Helvetica, sans-serif;
+	background:#fff url(images/backgrounds/default.jpg) no-repeat top center;
+}	
+
+h1 { font-size:2.4em; }
+h2 { font-size:2.2em; }
+h3 { font-size:2em; }
+h4 { font-size:1.8m;  }
+h5 { font-size:1.6em; }
+h6 { font-size:1.2em; }
+h1, h2, h3, h4, h5, h6
+{
+	letter-spacing:-0.02em;
+	word-spacing:-0.04em;
+}
+h1, h2, h3, h4, h5, h6, p
+{
+	margin:0 0 8px 0;
+}
+p
+{
+	line-height:155%;
+}
+a
+{
+	color:#829569;
+}
+a:hover
+{
+	color:#333;
+}
+a:active
+{
+	color:#990000;
+}
+#header
+{
+	line-height:12px;
+	height:12px;
+	background:#4b4b4b;
+	border-bottom:1px solid #dadada;
+	width:100%;
+	top:0;
+	position:fixed;
+}
+#footer
+{
+	background:#f9f8f7;
+	border-top:1px solid #dfdfde;
+	position:fixed;
+	bottom:0;
+	left:0;
+	width:100%;
+}
+#footer p
+{
+	padding:20px 0 10px 0;
+	font-size:85%;
+}
+
+#main
+{
+	padding:80px 0;
+}
+
+
+/* Social Icon setup */
+.social
+{
+	margin:50px 0 0 0;
+}
+.social UL
+{
+	padding:0 0 0 8px;
+	background:#e1e2d6 url(images/social_bg.gif);
+	border:1px solid #dbd7d2;
+	margin:0 0 5px 0;
+}
+.social UL LI
+{
+	float:left;
+	list-style-type:none;
+}
+.social UL LI a
+{
+	display:block;
+	padding:8px 8px 8px 0;
+}
+.social UL LI a:hover
+{
+	padding-top:5px;
+	padding-bottom:11px;
+}
+.social UL LI a:active
+{
+	padding-top:2px;
+	padding-bottom:14px;
+}
+
+
+.widget
+{
+	padding-left:40px;
+	margin:0 0 30px 0;
+}
+
+.contentwidth
+{
+	width:840px;
+	margin:0 auto;
+}
+
+
+/* Column Setup */
+.leftCol
+{
+	float:left;
+	width:460px;
+	padding-right:40px;
+	
+}
+.rightCol
+{
+	float:left;
+	width:340px;
+}
+
+
+/* clearfix start */ 
+.clearfix:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+.clearfix {
+    display: inline-block;
+}
+html[xmlns] .clearfix {
+    display: block;
+}
+* html .clearfix {
+    height: 1%;
+}
+/* clearfix end */ 

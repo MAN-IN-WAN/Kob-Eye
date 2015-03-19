@@ -1,0 +1,96 @@
+#Milieu ul{
+	margin-left:15px;
+}
+
+#Milieu li{
+	margin-top:5px;
+}
+
+#Milieu h1, #Milieu h2, #Milieu h3{
+	margin:10px 0;
+}
+
+#Ariane{
+	padding:5px;
+	margin:5px 0;
+	background-color:#CCCCCC;
+}
+
+* html .ImgMenu{
+	margin-left:-3px;
+}
+
+#Options{
+	width:100%;
+	margin:10px 0;
+	background-color:#CCCCCC;
+}
+
+div[id="Options"]{
+	overflow:auto;
+}
+
+* html #Options{
+	clear:both;
+}
+
+#Options a{
+	display:block;
+	width:100px;
+	float:left;
+	padding:5px;
+}
+
+.Description{
+	font-style:italic;
+	margin:5px 0;
+}
+
+.Chapo{
+	font-weight:bold;
+	margin:5px 0;
+}
+
+.Article{
+	width:100%;
+	margin:15px 0;
+}
+
+div[class="Article"]{
+	overflow:auto;
+}
+
+* html .Article{
+	clear:both;
+}
+
+.Article div{
+	margin-top:10px;
+}
+
+.ImgArt{
+	float:left;
+	width:130px;
+}
+
+.TextImg{
+	float:left;
+	width:500px;
+}
+
+.Text{
+
+}
+
+/* LIENS */
+
+.Lien{
+	display:block;
+	margin:5px 0;
+}
+
+.HautPage{
+	display:block;
+	width:100%;
+	text-align:right;
+}

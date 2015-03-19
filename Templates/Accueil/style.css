@@ -1,0 +1,46 @@
+div.containerR  {
+	position:relative;
+	display:block;
+	padding-right:200px;
+}
+
+div.innerR {
+	display:block;
+	margin-right:-200px;
+	overflow:hidden;
+}
+
+div.Right {
+	position:relative;
+	width:200px;
+	display: block;
+	float:right;
+	right:0;
+}
+
+div.centreR {
+	position:relative;
+	display:block;
+	height:1%;
+	margin-right:201px;
+	padding: 0 5px;
+}
+
+div.lesblocks {
+	overflow:hidden;
+	position:relative;
+	display:block;
+	width:100%;
+}
+
+div.blockR {
+	display:block;
+	float:left;
+	border:1px solid #ff0000;
+}
+
+div.blockL {
+	display:block;
+	float:left;
+	border:1px solid #ff0000;
+}

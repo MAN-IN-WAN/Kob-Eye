@@ -1,0 +1,276 @@
+/*--- STRUCTUREL - A NE PAS MODIFIER ---*/
+ul.cssMenu ul {
+	display: none;
+	padding: 0;
+	margin: 0;
+}
+ul.cssMenu li:hover > ul {
+    display: block;
+}
+ul.cssMenu ul {
+	left: 0;
+	position: absolute;
+	top: 100%;
+}
+ul.cssMenu ul ul {
+	left: 100%;
+	position: absolute;
+	top: 0;
+}
+ul.cssMenu {
+	display: block;
+	float: left;
+}
+ul.cssMenu li {
+	list-style: none;
+	position: relative;
+	z-index: 10;
+	display: block;
+	float: left;
+	padding: 0;
+    	margin: 0;
+}
+
+ul.cssMenu a:active, ul.cssMenu a:focus {
+    	outline-style: none;
+}
+ul.cssMenu span {
+    overflow: hidden;
+}
+
+ul.cssMenu ul li {
+    float: none;
+}
+ul.cssMenu ul a {
+    text-align: left;
+    white-space: nowrap;
+}
+ul.cssMenu li:hover {
+    position: relative;
+}
+
+/*--- STYLE - MODIFIER ICI ---*/
+/* LEVEL 1 */
+ul.cssMenu {
+	height: 30px;width:100%;
+}
+ul.cssMenu li {
+	font-size:14px;font-weight:bold;
+    	padding: 0 9px 0;height:28px;
+	
+}
+ul.cssMenu li.Last {
+	border-right:none;
+}
+
+ul.cssMenu li.Menu0_1 {
+	width:330px;text-align:center;margin-right:10px;margin-top:3px;
+}
+ul.cssMenu li.Menu0_2 {
+	width:418px;text-align:center;margin-right:10px;margin-top:3px;
+}
+ul.cssMenu li.Menu0_3 {
+	width:158px;text-align:center;margin-top:3px;
+}
+
+ul.cssMenu li.Menu0_1 a{
+	color:#9a5b86;text-transform:uppercase;font-size:14px;
+}
+ul.cssMenu li.Menu0_2 a{
+	color:#ab96a7;text-transform:uppercase;font-size:14px;
+}
+ul.cssMenu li.Menu0_3 a{
+	color:#9f9d9e;text-transform:uppercase;font-size:14px;
+}
+
+
+/* LEVEL 2 */
+ul.cssMenu li ul {
+	display: block;
+	padding: 0;
+	margin: 0;
+	height: 30px;width:100%;
+}
+
+ul.cssMenu li ul.Menu1_1 {
+	background-color:#9a5b86;margin-right:10px;
+}
+ul.cssMenu li ul.Menu1_2 {
+	background-color:#d0a5c3;margin-right:10px;
+}ul.cssMenu li ul.Menu1_3 {
+	background-color:#9f9d9e;
+}
+
+ul.cssMenu li ul li ,  ul.cssMenu li ul.Menu1_1 li,  ul.cssMenu li ul.Menu1_2 li, ul.cssMenu li ul.Menu1_3 li {
+	list-style: none;
+	position: relative;
+	z-index: 10;
+	display: block;
+	float: left;
+   	margin: 0;
+	color:#393939;
+	font-weight:normal;
+}
+ul.cssMenu li ul.Menu1_1 li {
+	   padding: 4px ;
+ 
+}
+ul.cssMenu li ul.Menu1_2 li {
+	   padding: 4px 6px;
+ 
+}
+ ul.cssMenu li ul.Menu1_3 li {
+	   padding: 4px 8px;
+ 
+}
+ul.cssMenu li ul.Menu1_1 a, ul.cssMenu li ul.Menu1_2 a, ul.cssMenu li ul.Menu1_3 a{
+	font-size:14px;color:#393939;text-transform:none;font-weight:normal;
+	border-right:1px solid #393939;padding-right:10px;
+}
+ul.cssMenu li ul.Menu1_1 a:hover{
+	color:#ffffff;
+	text-decoration:none;
+}
+
+ul.cssMenu li ul.Menu1_1 a.Last, ul.cssMenu li ul.Menu1_2 a.Last, ul.cssMenu li ul.Menu1_3 a.Last{
+	border-right:none;
+}
+
+ul.cssMenu li ul li.Current {
+	background: url("../Img/sprite.png") no-repeat  50% -231px ;
+    	display: block;
+    	height: 30px;
+    	color:#ffffff;
+}
+ul.cssMenu li ul li.Current a{
+    	color:#ffffff;
+}
+
+/* LEVEL 3 */
+ul.cssMenu li ul li ul {
+	background: none;
+	border:1px solid #9a5b86;
+	position:relative;
+	margin-top:30px;
+	z-index:500;
+	display:none;
+
+}
+ul.cssMenu li ul.Menu1_1 li ul {
+	background: none;
+	border:1px solid #9a5b86;
+
+}
+ul.cssMenu li ul.Menu1_1 ul li a {
+	color:#9a5b86;font-size:12px;padding:5px;
+}
+ul.cssMenu li ul.Menu1_2  ul li a {
+	color:#d0a5c3;font-size:12px;padding:5px;
+}ul.cssMenu li ul.Menu1_3  ul li a {
+	color:#9f9d9e;font-size:12px;padding:5px;
+}
+
+/*--- menu bas ----*/
+div#Footer  .MenuBas {
+	border: 1px solid #393939;
+    	color: #393939;
+    	height: 160px;
+    	right:0;
+    	padding:5px;
+    	position: absolute;
+    	top: 84px;
+	width:300px;
+}
+
+div#Footer .MenuBas .Titre {
+	text-decoration:underline;text-transform:uppercase;color: #393939;font-size:13px;
+}
+
+div#Footer .MenuBas ul li  {
+	list-style:none;float:left;width:45%;
+}
+
+div#Footer .MenuBas ul li a {
+	list-style:none;
+	background: url("../Img/sprite.png") no-repeat  0 -675px ;
+	padding-left:15px;
+	color:#393939;
+}
+
+div#FooterNiveau2 .MenuBas {
+	color:#393939;margin-top:10px;
+}
+div#FooterNiveau2 .MenuBas ul li{
+	list-style:none;font-size:12px;text-transform:uppercase;margin-left:5px;color:#393939;font-weight:bold;
+}
+div#FooterNiveau2 .MenuBas ul li a  {
+	font-weight:bold;font-size:12px;text-transform:uppercase;color:#393939
+
+}
+div#FooterNiveau2 .MenuBas ul li ul li  {
+	margin-left:0;
+}
+div#FooterNiveau2 .MenuBas ul li ul li a {
+	font-size:12px;font-weight:normal;color:#393939;margin-left:0;text-transform:none;
+}
+
+
+
+div#Header .MenuDroit .MenuDroitHaut {
+	position:absolute;
+	right:345px;
+}
+
+div#Header .MenuDroit a{ color:#393939; border-right:1px solid #393939;padding-right:5px;}
+div#Header .MenuDroit a:hover{ color:#393939;}
+
+div#Header .MenuDroit .MenuDroitHautBtn {
+	position:absolute;
+	right:0;
+}
+div#Header .MenuDroit .MenuDroitHautBtn a {
+	color:#393939;border-right:none;
+}
+
+
+
+div#Header .MenuDroit .MenuDroitHautBtn a.onglet1{
+	color: #393939;
+    	position: absolute;
+    	right: 218px;
+    	text-align: center;
+    	top: 0;
+    	width: 123px;
+	font-weight:normal;
+}
+div#Header .MenuDroit .MenuDroitHautBtn a.onglet2{
+	color: #393939;
+    	position: absolute;
+    	right: 25px;
+    	top: 0;
+    	width: 186px;
+}
+
+div#Header .MenuSousDroitHaut  {
+	position: absolute;
+    	right: 447px;
+    	top: 20px;
+	color:#393939;font-weight:normal;font-size:11px;font-style:italic;
+}
+
+div#Header .MenuDroit .MenuDroitBas {
+	position:absolute;
+	right:204px;bottom: 0;
+}
+
+div#Header .MenuDroitTitrePanier {
+	position:absolute;
+	right: 6px;bottom: 53px;
+	color:#393939;font-size:14px;
+}
+div#Header .MenuDroitContenuPanier {
+	position:absolute;width:70px;
+	bottom:7px;right:10px;
+	color:#393939;font-size:12px;text-align:right;line-height:normal;
+}
+

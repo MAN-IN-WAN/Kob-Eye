@@ -1,0 +1,326 @@
+<SCHEMA>
+	<OBJECTCLASS title="Categorie" logEvent="1" driver="mysql" searchType="plaintext" master="1" AccessPoint="1" order="Ordre" orderType="ASC" description="Catégories" Class="Modules/Axenergie/Class/Categorie.class.php" Icon="packaging">
+		<CONFIGURATION name="Interface">
+			<FORM hideMore="1" hideAdd="1">FormBase</FORM>
+		</CONFIGURATION>
+		<FUNCTION name="UploadProduct" formOnly="1" icon="levelDown" label="Importation" description="Importation">
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"loadForm","params":{"kobeyeClass":{"module":"Axenergie","objectClass":"Categorie","form":"UploadProduct.json"}}}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<PROPERTIES type="varchar" category="Catégorie" description="Titre" searchOrder="1" displayOrder="1" formLabel="1" obligatoire="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" category="Catégorie" description="Sous-titre" >SousTitre</PROPERTIES>
+		<PROPERTIES type="int" category="Catégorie" description="Ordre" >Ordre</PROPERTIES>
+		<PROPERTIES type="int" default="1" category="Catégorie" values="1::Catalogue,2::Promos,3::Services,4::Photos" description="Type catégorie" >Type</PROPERTIES>
+		<PROPERTIES category="Catégorie" description="Catégorie version" type="int" default="1" hidden="1">Version</PROPERTIES>
+		<PROPERTIES type="color" category="Catégorie" description="Couleur">Couleur</PROPERTIES>
+		<PROPERTIES type="varchar" category="Catégorie" description="Titre web" >TitreWeb</PROPERTIES>
+		<PROPERTIES type="html" default="" category="Catégorie" description="Description web" >DescriptionWeb</PROPERTIES>
+		<PROPERTIES type="image" length="250" category="Catégorie" searchOrder="2" width="150" description="Image entête">ImageEntete</PROPERTIES>
+		<PROPERTIES type="image" length="250" category="Catégorie" searchOrder="2" width="150" description="Logo" iconField="0">Logo</PROPERTIES>
+		<PROPERTIES type="image" length="250" category="Catégorie" searchOrder="2" width="150" description="Image entête web">ImageEnteteWeb</PROPERTIES>
+		<PROPERTIES type="boolean" category="Catégorie" default="0" hidden="1" description="Hidden">Affiche</PROPERTIES>
+		<PROPERTIES type="int" category="Catégorie" default="0" hidden="1" description="Visibility" values="0::Range available for validation of local database managers,1::Range by default in local database">Prive</PROPERTIES>
+		<RKEY card="0,n" data="CatDescription,Id" useKeyName="1" height="200" childrenGrid="1" hideChild="1" category="Catégorie" description="Description" confirm="Initialisation de la description">CategorieDescr</RKEY>
+		<FKEY card="0,1" category="Catégorie" data="Categorie,Id" hideChild="1" height="200" parentDescription="Catégorie associée">CategorieId</FKEY>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="Produit" logEvent="1" driver="mysql" AccessPoint="0" description="Produits" Class="Modules/Axenergie/Class/Produit.class.php" order="Order" orderType="ASC">
+		<PROPERTIES type="titre" length="250" category="Produit" searchOrder="1" displayOrder="1" formLabel="1" list="1" listWidth="250" description="Nom" obligatoire="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" category="Produit" description="Description produit" list="2">Description</PROPERTIES>
+		<PROPERTIES category="Produit" description="Version" type="int" default="1" hidden="1">Version</PROPERTIES>
+		<PROPERTIES type="image" length="250" category="Produit" list="10" width="150" listDescr="I" listWidth="20" description="Image produit" iconField="0">ImageProduit</PROPERTIES>
+		<PROPERTIES type="image" length="250" category="Produit" description="Image ambiance">ImageAmbiance</PROPERTIES>
+		<PROPERTIES type="html" default="" category="Produit" description="Description web" >DescriptionWeb</PROPERTIES>
+		<PROPERTIES type="price" category="Produit" default="0" description="Prix de départ">PrixHT</PROPERTIES>
+		<PROPERTIES type="int" category="Produit" default="1" query="Axenergie/CodeTVA::Id::Code" description="Code TVA">CodeTVA</PROPERTIES>
+		<FKEY card="1,1" data="Categorie,Id" category="Produit" hideChild="1" parentDescription="Catégorie" childDescription="Produits" height="150">CategorieId</FKEY>
+		<FKEY card="1,1" data="Marque,Id" category="Produit" hideChild="1" parentDescription="Marque" childDescription="Produits">MarqueId</FKEY>
+		<RKEY card="0,n" data="ProDescription,Id" useKeyName="1" childrenGrid="1::Categorie::CatDescription::CategorieId" hideChild="1" category="Produit" description="Description" confirm="Initialisation de la description">ProduitDescr</RKEY>
+		<VIEW title="ProduitList" default="1">
+			<OBJECTCLASS title="Produit" select="Id,Nom,Service,Version,ImageProduit,Description,PrixHT,CodeTVA" filters="" order="Marque1.Ordre,m.Nom,m.Description" orderType="ASC,ASC,ASC">
+				<JOIN type="outer" module="Axenergie" title="Marque" on="MarqueId" target="Id">
+					<PROPERTIES description="Marque" type="varchar" searchOrder="2" hidden="1" listWidth="100" alias="Marque" list="6">Nom</PROPERTIES>
+					<PROPERTIES description="Ordre" type="int" >Ordre</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" module="Axenergie" title="CodeTVA" on="CodeTVA" target="Id">
+					<PROPERTIES description="TVA" type="price" alias="TauxTVA">Taux</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Modele" logEvent="1" driver="mysql" searchType="plaintext" AccessPoint="1" order="Nom" orderType="ASC" description="Modèles" Class="Modules/Axenergie/Class/Modele.class.php" Icon="[None]">
+		<CONFIGURATION name="Interface">
+			<FORM hideMore="1" hideAdd="1">FormBase</FORM>
+		</CONFIGURATION>
+		<FUNCTION name="PopupImage" multi="1" formOnly="0" icon="print" label="Image catalogue" description="Image catalogue" stateGroup="savedIdle">
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"loadForm","params":{"kobeyeClass":{"module":"Axenergie","objectClass":"Modele","form":"FormImagesMulti.json"}}}
+				]]>
+			</ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"loadFormWithID","params":{"kobeyeClass":{"module":"Axenergie","objectClass":"Modele","form":"FormImageCatalogue.json"}}}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="localProxy" formOnly="1" localProxy="1" description="filters inactive data in dicos">
+			<ACTION>
+				<![CDATA[
+					"imageCatalogue":{"action":"invoke","method":"setValue","params":{"dataField":"ImageCatalogue","args":"pv:ImageCatalogue"}}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<PROPERTIES type="titre" length="250" category="Modèle" searchOrder="1" displayOrder="1" formLabel="1" list="1" listWidth="250" description="Nom" obligatoire="1">Nom</PROPERTIES>
+		<PROPERTIES type="boolean" category="Modèle" default="0" list="5" listDescr="Img" listWidth="40" description="Image seule">ImageSeule</PROPERTIES>
+		<PROPERTIES type="boolean" category="Modèle" default="0" list="4" listDescr="Serv" listWidth="40" description="Prestation de services">Service</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" category="Modèle" description="Description produit" list="2">Description</PROPERTIES>
+		<PROPERTIES category="Modèle" description="Version" type="int" default="1" hidden="1">Version</PROPERTIES>
+		<PROPERTIES type="image" length="250" category="Modèle" list="10" width="150" listDescr="I" listWidth="20" description="Image produit" iconField="0">ImageProduit</PROPERTIES>
+		<PROPERTIES type="image" length="250" category="Modèle" description="Image ambiance">ImageAmbiance</PROPERTIES>
+		<PROPERTIES type="html" default="" category="Modèle" description="Description web" >DescriptionWeb</PROPERTIES>
+		<PROPERTIES type="price" category="Modèle" default="0" description="Prix HT">PrixHT</PROPERTIES>
+		<PROPERTIES type="varchar" length="30" category="Modèle" searchOrder="3" list="3" listWidth="100" description="Référence">Reference</PROPERTIES>
+		<FKEY card="1,1" data="Produit,Id" category="Modèle" hideChild="1" parentDescription="Produit" childDescription="Modèles" height="150">ProduitId</FKEY>
+		<PROPERTIES type="image" length="250" category="Modèle" hidden="0" description="Image catalogue">ImageCatalogue</PROPERTIES>
+		<PROPERTIES type="float" category="Modèle" default="0" description="Hauteur (mm)">Hauteur</PROPERTIES>
+		<PROPERTIES type="float" category="Modèle" default="0" description="Largeur (mm)">Largeur</PROPERTIES>
+		<PROPERTIES type="float" category="Modèle" default="0" description="Profondeur (mm)">Profondeur</PROPERTIES>
+		<PROPERTIES type="float" category="Modèle" default="0" description="Puissance (kWh)">Puissance</PROPERTIES>
+		<PROPERTIES type="float" category="Modèle" default="0" description="Rendement sur PCI à 100% (%)">Rendement</PROPERTIES>
+		<PROPERTIES type="float" category="Modèle" default="0" description="Débit sanitaire (L/mn)">Debit</PROPERTIES>
+		<RKEY card="0,n" data="ModDescription,Id" useKeyName="1" childrenGrid="1::Produit::ProDescription::ProduitId" hideChild="1" category="Modèle" description="Description" confirm="Initialisation de la description">ModeleDescr</RKEY>
+		<VIEW title="ModeleList" default="1">
+			<OBJECTCLASS title="Modele" select="Id,Nom,Reference,Version,ImageProduit,ImageCatalogue,Description,PrixHT" filters="" order="m.Nom,m.Description" orderType="ASC,ASC">
+				<JOIN type="outer" module="Axenergie" title="Produit" on="ProduitId" target="Id" select="MarqueId">
+					<JOIN type="outer" module="Axenergie" title="Marque" on="MarqueId" target="Id">
+						<PROPERTIES description="Marque" type="varchar" searchOrder="2" hidden="1" listWidth="100" alias="Marque" list="6">Nom</PROPERTIES>
+						<PROPERTIES description="Ordre" type="int" >Ordre</PROPERTIES>
+					</JOIN>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+
+<!--
+	<OBJECTCLASS title="Produit" logEvent="1" driver="mysql" searchType="plaintext" AccessPoint="1" order="Nom" orderType="ASC" description="Produits" Class="Modules/Axenergie/Class/Produit.class.php" Icon="products">
+		<CONFIGURATION name="Interface">
+			<FORM hideMore="1" hideAdd="1">FormBase</FORM>
+		</CONFIGURATION>
+		<FUNCTION name="PopupImage" multi="1" formOnly="0" icon="print" label="Image catalogue" description="Image catalogue" stateGroup="savedIdle">
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"loadForm","params":{"kobeyeClass":{"module":"Axenergie","objectClass":"Produit","form":"FormImagesMulti.json"}}}
+				]]>
+			</ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"loadFormWithID","params":{"kobeyeClass":{"module":"Axenergie","objectClass":"Produit","form":"FormImageCatalogue.json"}}}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="localProxy" formOnly="1" localProxy="1" description="filters inactive data in dicos">
+			<ACTION>
+				<![CDATA[
+					"imageCatalogue":{"action":"invoke","method":"setValue","params":{"dataField":"ImageCatalogue","args":"pv:ImageCatalogue"}}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<PROPERTIES type="titre" length="250" category="Produit" searchOrder="1" displayOrder="1" formLabel="1" list="1" listWidth="250" description="Nom" obligatoire="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" category="Produit" description="Description produit" list="2">Description</PROPERTIES>
+		<PROPERTIES category="Produit" description="Version" type="int" default="1" hidden="1">Version</PROPERTIES>
+		<PROPERTIES type="boolean" category="Produit" default="0" list="5" listDescr="Img" listWidth="40" description="Image seule">ImageSeule</PROPERTIES>
+		<PROPERTIES type="image" length="250" category="Produit" list="10" width="150" listDescr="I" listWidth="20" description="Image produit" iconField="0">ImageProduit</PROPERTIES>
+		<PROPERTIES type="image" length="250" category="Produit" description="Image ambiance">ImageAmbiance</PROPERTIES>
+		<PROPERTIES type="boolean" category="Produit" default="0" list="4" listDescr="Serv" listWidth="40" description="Prestation de services">Service</PROPERTIES>
+		<PROPERTIES type="text" category="Produit" description="Entête prestation">Prestation</PROPERTIES>
+		<PROPERTIES type="text" category="Produit" description="Corps prestation">Prestation1</PROPERTIES>
+		<PROPERTIES type="varchar" category="Produit" description="Enpied prestation">Prestation2</PROPERTIES>
+		<PROPERTIES type="html" default="" category="Produit" description="Description web" >DescriptionWeb</PROPERTIES>
+		<PROPERTIES type="price" category="Produit" default="0" description="Prix HT">PrixHT</PROPERTIES>
+		<PROPERTIES type="int" category="Produit" default="1" query="Axenergie/CodeTVA::Id::Code" description="Code TVA">CodeTVA</PROPERTIES>
+		<PROPERTIES type="varchar" length="30" category="Produit" searchOrder="3" list="3" listWidth="100" description="Référence">Reference</PROPERTIES>
+		<FKEY card="1,1" data="Categorie,Id" category="Produit" hideChild="1" parentDescription="Catégorie" childDescription="Produits" height="150">CategorieId</FKEY>
+		<FKEY card="1,1" data="Marque,Id" category="Produit" hideChild="1" parentDescription="Marque" childDescription="Produits">MarqueId</FKEY>
+		<PROPERTIES type="image" length="250" category="Description" hidden="0" description="Image catalogue">ImageCatalogue</PROPERTIES>
+		<PROPERTIES type="float" category="Description" default="0" description="Hauteur (mm)">Hauteur</PROPERTIES>
+		<PROPERTIES type="float" category="Description" default="0" description="Largeur (mm)">Largeur</PROPERTIES>
+		<PROPERTIES type="float" category="Description" default="0" description="Profondeur (mm)">Profondeur</PROPERTIES>
+		<PROPERTIES type="float" category="Description" default="0" description="Puissance (kWh)">Puissance</PROPERTIES>
+		<PROPERTIES type="float" category="Description" default="0" description="Rendement sur PCI à 100% (%)">Rendement</PROPERTIES>
+		<PROPERTIES type="float" category="Description" default="0" description="Débit sanitaire (L/mn)">Debit</PROPERTIES>
+		<RKEY card="0,n" data="Description,Id" useKeyName="1" childrenGrid="1::Categorie::CatDescription::CategorieId" hideChild="1" category="Description" description="Description" confirm="Initialisation de la description">ProduitDescr</RKEY>
+		<VIEW title="ProduitList" default="1">
+			<OBJECTCLASS title="Produit" select="Id,Nom,Reference,Service,Version,ImageProduit,ImageCatalogue,Description,PrixHT,CodeTVA" filters="" order="Marque1.Ordre,m.Nom,m.Description" orderType="ASC,ASC,ASC">
+				<JOIN type="outer" module="Axenergie" title="Marque" on="MarqueId" target="Id">
+					<PROPERTIES description="Marque" type="varchar" searchOrder="2" hidden="1" listWidth="100" alias="Marque" list="6">Nom</PROPERTIES>
+					<PROPERTIES description="Ordre" type="int" >Ordre</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" module="Axenergie" title="CodeTVA" on="CodeTVA" target="Id">
+					<PROPERTIES description="TVA" type="price" alias="TauxTVA">Taux</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="Modele" logEvent="1" driver="mysql" AccessPoint="0" description="Modèles" Class="Modules/Axenergie/Class/Modele.class.php" order="Order" orderType="ASC">
+		<PROPERTIES category="Modèle" description="Nom" type="varchar" searchOrder="1" formLabel="1" obligatoire="1">Nom</PROPERTIES>
+		<PROPERTIES category="Modèle" description="Version" type="int" default="1" hidden="1">Version</PROPERTIES>
+		<PROPERTIES type="varchar" length="30" category="Modèle" searchOrder="2" description="Référence">Reference</PROPERTIES>
+		<PROPERTIES category="Modèle" description="Gencode (EAN)" type="varchar" searchOrder="3" obligatoire="0">GenCode</PROPERTIES>
+		<PROPERTIES category="Modèle" description="Barcode" type="image" iconField="1">CodeBarre</PROPERTIES>
+		<FKEY card="1,1" category="Modèle" parentDescription="Produit" childDescription="Modèles" listHeight="50" data="Produit,Id" hidden="1">ProduitId</FKEY>
+	</OBJECTCLASS>
+-->
+	<OBJECTCLASS title="Marque" logEvent="1" driver="mysql" searchType="plaintext" AccessPoint="0" description="Marques" order="Ordre" orderType="ASC">
+		<PROPERTIES category="Marque" description="Nom" type="varchar" searchOrder="1" list="1" formLabel="1" obligatoire="1">Nom</PROPERTIES>
+		<PROPERTIES category="Marque" description="Logo" type="image" list="2" listDescr="L" listWidth="20" >Logo</PROPERTIES>
+		<PROPERTIES category="Marque" description="Ordre" type="int" default="0" list="3" listWidth="40" >Ordre</PROPERTIES>
+	</OBJECTCLASS>
+<!--	
+	<OBJECTCLASS title="Description" Interface="FormDetail" order="Ordre" orderType="ASC" logEvent="0" driver="mysql" AccessPoint="0">
+		<PROPERTIES category="Description" description="Libellé" type="varchar" listWidth="150" searchOrder="1" >Libelle</PROPERTIES>
+		<PROPERTIES category="Description" description="Texte" type="varchar" listWidth="300" searchOrder="2" >Texte</PROPERTIES>
+		<PROPERTIES type="int" category="Description" default="0" description="Ordre" hidden="1">Ordre</PROPERTIES>
+	</OBJECTCLASS>
+-->	
+	<OBJECTCLASS title="CatDescription" Interface="FormDetail" order="Ordre" orderType="ASC" logEvent="0" driver="mysql" AccessPoint="0">
+		<PROPERTIES category="Description" description="Libellé" type="varchar" listWidth="150" searchOrder="1" >Libelle</PROPERTIES>
+		<PROPERTIES category="Description" description="Texte" type="varchar" listWidth="300" searchOrder="2" >Texte</PROPERTIES>
+		<PROPERTIES type="int" category="Description" default="0" description="Ordre" hidden="1">Ordre</PROPERTIES>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="ProDescription" Interface="FormDetail" order="Ordre" orderType="ASC" logEvent="0" driver="mysql" AccessPoint="0">
+		<PROPERTIES category="Description" description="Libellé" type="varchar" default="" listWidth="150" searchOrder="1" >Libelle</PROPERTIES>
+		<PROPERTIES category="Description" description="Texte" type="varchar" default="" listWidth="300" searchOrder="2" >Texte</PROPERTIES>
+		<PROPERTIES type="int" category="Description" default="0" description="Ordre" hidden="1">Ordre</PROPERTIES>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="ModDescription" Interface="FormDetail" order="Ordre" orderType="ASC" logEvent="0" driver="mysql" AccessPoint="0">
+		<PROPERTIES category="Description" description="Libellé" type="varchar" default="" listWidth="150" searchOrder="1" >Libelle</PROPERTIES>
+		<PROPERTIES category="Description" description="Texte" type="varchar" default="" listWidth="300" searchOrder="2" >Texte</PROPERTIES>
+		<PROPERTIES type="int" category="Description" default="0" description="Ordre" hidden="1">Ordre</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Database" logEvent="1" driver="mysql" AccessPoint="1" order="Nom" orderType="ASC" Class="Modules/Axenergie/Class/Database.class.php">
+		<PROPERTIES category="Database" description="Nom de la base" type="varchar" searchOrder="1" formLabel="1">Nom</PROPERTIES>
+		<PROPERTIES category="Database" description="Titre" type="varchar" >Titre</PROPERTIES>
+		<PROPERTIES category="Database" description="Validité" type="Text">Validite</PROPERTIES>
+		<PROPERTIES category="Database" description="Administration auto" type="boolean" default="1" searchOrder="3" formLabel="1">Auto</PROPERTIES>
+		<FKEY card="1,1" category="Database" data="Adherent,Id" hidden="1">AdherentId</FKEY>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="SubRange" logEvent="0" driver="mysql" searchType="plaintext" AccessPoint="1" order="Nom" orderType="ASC" Class="Modules/Axenergie/Class/SubRange.class.php">
+		<PROPERTIES category="Catégorie" description="Nom" type="varchar" searchOrder="1" formLabel="1">Nom</PROPERTIES>
+		<PROPERTIES category="Catégorie" description="Range version" type="int" default="1" searchOrder="2" hidden="1">Version</PROPERTIES>
+		<FKEY card="0,1" category="Catégorie" data="Categorie,Id" hidden="1">CategorieId</FKEY>
+		<FKEY card="1,1" category="Catégorie" data="Database,Id" hidden="1">DataBaseId</FKEY>
+		<FKEY card="0,1" category="Catégorie" data="SubRange,Id" hidden="1">SubRangeId</FKEY>
+		<VIEW title="SubRangeTree" default="1">
+			<OBJECTCLASS title="SubRange" select="Id,Nom,Version" filters="" order="Categorie1.Ordre" orderType="ASC">
+				<JOIN type="outer" module="Axenergie" title="Categorie" on="CategorieId" target="Id" select="Id as CategorieId,Version as SubVersion,ImageEntete,Couleur,Type" filters="" />
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="SubProduct" logEvent="0" driver="mysql" searchType="plaintext" AccessPoint="1" description="Produit" Class="Modules/Axenergie/Class/SubProduct.class.php">
+		<PROPERTIES category="Produit" description="Nom" type="varchar" searchOrder="1" auto="1" formLabel="1">Nom</PROPERTIES>
+		<PROPERTIES category="Produit" description="Product version" type="int" default="1" searchOrder="2" hidden="1">Version</PROPERTIES>
+		<FKEY card="0,1" category="Produit" data="Produit,Id" hidden="1">ProduitId</FKEY>
+		<FKEY card="0,1" category="Produit" data="SubRange,Id" hidden="1">SubRangeId</FKEY>
+		<VIEW title="SubProductTree" default="1">
+			<OBJECTCLASS title="SubProduct" select="Id,Nom" filters="" order="Marque2.Ordre,m.Nom,Produit1.Description" orderType="ASC,ASC,ASC">
+				<JOIN type="outer" module="Axenergie" title="Produit" on="ProduitId" target="Id" select="Id as ProduitId,Version as SubVersion,MarqueId,ImageProduit,ImageSeule,Description,CodeTVA" filters="">
+					<JOIN type="outer" module="Axenergie" title="Marque" on="MarqueId" target="Id">
+						<PROPERTIES description="Marque" type="varchar" alias="Marque">Nom</PROPERTIES>
+					</JOIN>
+					<JOIN type="outer" module="Axenergie" title="CodeTVA" on="CodeTVA" target="Id">
+						<PROPERTIES description="TVA" type="price" alias="TauxTVA">Taux</PROPERTIES>
+					</JOIN>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="SubModel" logEvent="0" driver="mysql" searchType="plaintext" AccessPoint="1" description="Modèle" Class="Modules/Axenergie/Class/SubModel.class.php">
+		<PROPERTIES category="Modèle" description="Nom" type="varchar" searchOrder="1" auto="1" formLabel="1">Nom</PROPERTIES>
+		<PROPERTIES category="Modèle" description="Description" type="varchar" auto="1">Description</PROPERTIES>
+		<PROPERTIES type="price" category="Modèle" default="0" auto="1" description="Prix HT">PrixHT</PROPERTIES>
+		<PROPERTIES type="price" category="Modèle" default="0" description="Prix HT Adhérent">PrixAdherent</PROPERTIES>
+		<PROPERTIES type="boolean" category="Modèle" default="0" listDescr="P" description="Promotion">Promo</PROPERTIES>
+		<PROPERTIES type="price" category="Modèle" default="0" description="Prix promo HT">PrixPromo</PROPERTIES>
+		<PROPERTIES type="text" category="Modèle" description="Texte promo">TextePromo</PROPERTIES>
+		<PROPERTIES type="image" length="250" default="" category="Modèle" description="Image catalogue">ImageCatalogue</PROPERTIES>
+		<PROPERTIES type="image" length="250" default="" category="Modèle" description="Image promo">ImagePromo</PROPERTIES>
+		<PROPERTIES category="Modèle" description="Product version" type="int" default="1" searchOrder="2" hidden="1">Version</PROPERTIES>
+		<FKEY card="1,1" category="Modèle" data="Modele,Id" hidden="1">ModeleId</FKEY>
+		<FKEY card="1,1" category="Modèle" data="SubProduct,Id" hidden="1">SubProductId</FKEY>
+		<FKEY card="1,1" category="Modèle" data="SubRange,Id" hidden="1">SubRangeId</FKEY>
+		<VIEW title="SubModelTree" default="1">
+			<OBJECTCLASS title="SubModel" select="Id,Nom,Version,PrixAdherent,ImageCatalogue,ImagePromo,Promo" filters="" order="Marque3.Ordre,m.PrixAdherent,m.Nom,Modele1.Description" orderType="ASC,ASC,ASC,ASC">
+				<JOIN type="outer" module="Axenergie" title="Modele" on="ModeleId" target="Id" select="Id as ModeleId,ProduitId,Version as SubVersion,MarqueId,ImageSeule,Description,Reference,CodeTVA,ImageProduit" filters="">
+					<JOIN type="outer" module="Axenergie" title="Produit" on="ProduitId" target="Id" select="MarqueId">
+						<JOIN type="outer" module="Axenergie" title="Marque" on="MarqueId" target="Id">
+							<PROPERTIES description="Marque" type="varchar" alias="Marque">Nom</PROPERTIES>
+						</JOIN>
+					</JOIN>
+					<JOIN type="outer" module="Axenergie" title="CodeTVA" on="CodeTVA" target="Id">
+						<PROPERTIES description="TVA" type="price" alias="TauxTVA">Taux</PROPERTIES>
+					</JOIN>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="Parametre" order="Id" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" hidden="1" Icon="[None]">
+		<PROPERTIES category="Paramètre"	type="varchar"	searchOrder="1"			>Code</PROPERTIES>
+		<PROPERTIES category="Paramètre"	type="text" 							>Texte</PROPERTIES>
+		<PROPERTIES category="Paramètre"	type="image" 							>Image</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="CodeTVA" order="Id" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" hidden="1" Icon="[None]">
+		<PROPERTIES category="TVA"	type="varchar" length="16"			>Code</PROPERTIES>
+		<PROPERTIES category="TVA"	type="price"						>Taux</PROPERTIES>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="Adherent" driver="mysql" searchType="plaintext" master="1" AccessPoint="1" order="Ordre" orderType="ASC" description="Adhérents" Class="Modules/Axenergie/Class/Adherent.class.php">
+<!--
+		<FUNCTION name="UploadUser" listOnly="1" icon="levelDown" label="Importation" description="Importation">
+			<ACTION>
+				<![CDATA[
+					{"action":"loadForm","params":{"kobeyeClass":{"module":"Axenergie","objectClass":"Adherent","form":"UploadUser.json"}}}
+				]]>
+			</ACTION>
+		</FUNCTION>
+-->
+		<PROPERTIES type="varchar"  length="255" searchOrder="2" obligatoire="1" category="Contact" list="1">Enseigne</PROPERTIES>
+		<PROPERTIES type="varchar"  length="255" searchOrder="3" obligatoire="1" category="Contact" list="2">Nom</PROPERTIES>
+		<PROPERTIES type="varchar"  length="255" obligatoire="0" category="Contact">Adresse</PROPERTIES>
+		<PROPERTIES type="varchar"  length="10" width="100" obligatoire="0" category="Contact" description="Code postal">CodPos</PROPERTIES>
+		<PROPERTIES type="varchar"  length="100" obligatoire="0" category="Contact">Ville</PROPERTIES>
+		<PROPERTIES type="mail" length="255" obligatoire="1" searchOrder="4" unique="1" category="Contact" list="3">Mail</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" obligatoire="0" category="Contact" description="Téléphone">Tel</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Contact">Fax</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Contact">Portable</PROPERTIES>
+		<PROPERTIES type="varchar" length="100" values="France" category="Contact">Pays</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" obligatoire="0" category="Contact" description="Site web">SiteWeb</PROPERTIES>
+		<PROPERTIES type="image" category="Contact" description="Logo">Logo</PROPERTIES>
+		<PROPERTIES type="varchar" length="100" searchOrder="1" obligatoire="1" category="Connexion" description="Utilisateur" formLabel="1" list="4">Login</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" obligatoire="1" category="Connexion" description="Mot de passe" list="5">Pass</PROPERTIES>
+		<FKEY card="1,1" category="Connexion" module="Systeme" data="User,Id" >UserId</FKEY>
+		<FKEY card="1,1" category="Connexion" module="Flipbook" data="Book,Id" >BookId</FKEY>
+	</OBJECTCLASS>
+
+</SCHEMA>
+
+

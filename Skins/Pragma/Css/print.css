@@ -1,0 +1,35 @@
+html .nodisplay {
+	display: block;
+}
+
+html {
+	background: none !important;
+}
+
+html.Firefox, html.MSIE, html.Chrome, html.Chromium, html.Opera, html.Safari {
+	background: none;
+}
+
+html body {
+	background-image: none;
+	padding: 10px;
+}
+
+/*---- Tous les trucs à ne pas afficher ----*/
+html div#MenuResidence,
+html table#Onglets,
+html div#FooterResidence,
+html div#AnimDetail {
+	display: none;
+}
+
+
+/*---- Detail residence ----*/
+html div#ContenuResidence {
+	border: none;
+	margin: 10px 0;
+}
+
+html div.BlocDetailResidence {
+	padding: 0;
+}

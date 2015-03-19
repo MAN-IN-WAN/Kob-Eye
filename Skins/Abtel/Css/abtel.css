@@ -1,0 +1,85 @@
+@import "component.news.css";
+a{
+	text-decoration:none;
+}
+p {
+	text-align:justify;
+}
+
+
+.well,.breadcrumb{
+	margin-bottom:10px;
+    box-shadow: 0 0px 10px rgba(0, 0, 0, 0.50);
+    padding: 10px;
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.4);
+}
+.form-horizontal .control-group {
+    margin-bottom: 10px;
+}
+.form-horizontal .control-label {
+    text-align:right;
+}
+.form-horizontal .last {
+	margin-bottom:0px;
+}
+.alert{
+    box-shadow: 0 0px 10px rgba(0, 0, 0, 0.75);
+	opacity:.75;
+}
+.custom{
+    box-shadow: 0 0px 10px rgba(0, 0, 0, 0.75);
+}
+textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+    background-color: #000000;
+    border: 1px solid #656565;
+    box-shadow: 0 0px 5px rgba(255, 255, 255, 0.35);
+    transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+}
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+    border-radius: 3px 3px 3px 3px;
+    color: #ffffff;
+}
+.Current{
+	background: none repeat scroll 0 0 rgba(121, 100, 0, 0.6);
+}
+.nav > li > a:hover{
+	background: none repeat scroll 0 0 rgba(121, 100, 100, 0.6);
+}
+.nav > li > a.active{
+    background-image: -moz-linear-gradient(center top , #fd8924, #e86d00);
+    background-repeat: repeat-x;
+}
+
+/** produits */
+	
+.BlocCateg{
+	height:200px;
+}
+.well blockquote {
+    border-color: rgba(100, 100, 100, 0.66);
+}
+.btn-primary {
+    background-color: #fd8924;
+    background-image: -moz-linear-gradient(center top , #fd8924, #e86d00);
+    background-repeat: repeat-x;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    color: #FFFFFF;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+.btn-primary:hover {
+    background-color: #fd8924;
+    background-image: -moz-linear-gradient(center top , #fd8924, #fd8924);
+    background-repeat: repeat-x;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    color: #FFFFFF;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+
+.price{
+	    font-size: 18px;
+	    padding:7px;
+}
+.breadcrumb li {
+    text-shadow: 1px 1px 0 #4F4F4E;
+}
+

@@ -1,0 +1,148 @@
+[TITLE]-=Fonekite=- -::- DEALER ACCESS[/TITLE]
+
+[HEADER]
+	<!-- ************ SENCHA ************ -->
+    <!-- ** CSS ** -->
+    <link rel="stylesheet" type="text/css" href="/Skins/[!Systeme::Skin!]/Js/resources/css/ext-all.css" />
+    <link rel="stylesheet" type="text/css" href="/Skins/[!Systeme::Skin!]/Js/ux/css/ux-all.css" />
+    <link rel="stylesheet" type="text/css" href="/Skins/[!Systeme::Skin!]/Css/style.css">
+
+    <!-- ** Javascript ** -->
+    <script type="text/javascript" src="/Skins/[!Systeme::Skin!]/Js/adapter/ext/ext-base.js"></script>
+    <script type="text/javascript" src="/Skins/[!Systeme::Skin!]/Js/ext-all.js"></script>
+    <script type="text/javascript" src="/Skins/[!Systeme::Skin!]/Js/ux/ux-all.js"></script>
+
+	<!-- ************ MOOTOOLS ************ -->
+	<script type="text/javascript" src="/Skins/[!Systeme::Skin!]/Js/mootools-core-1.3-full-compat-yc.js"></script>
+
+	<!-- ************ FANCY UPLOAD ************ -->
+    <script type="text/javascript" src="/Skins/[!Systeme::Skin!]/Js/fancy/Fx.ProgressBar.js"></script>
+    <script type="text/javascript" src="/Skins/[!Systeme::Skin!]/Js/fancy/Swiff.Uploader.js"></script>
+    <script type="text/javascript" src="/Skins/[!Systeme::Skin!]/Js/fancy/FancyUpload3.Attach.js"></script>
+    <script type="text/javascript" src="/Systeme/Interface/LaunchUpload.htm"></script>
+
+	<!-- ************ TINY MCE ************ -->
+    <script type="text/javascript" src="/Skins/[!Systeme::Skin!]/Js/tiny_mce/tiny_mce.js"></script>
+    //<script type="text/javascript" src="/Skins/[!Systeme::Skin!]/Js/tinyMce/themes/advanced/editor_template.js"></script>
+    //<script type="text/javascript" src="/Skins/[!Systeme::Skin!]/Js/tinyMce/mce_plugins.js"></script>
+    <script type="text/javascript" src="/Systeme/Interface/InitTinyMCE.htm"></script>
+
+[/HEADER]
+
+<script type="text/javascript">
+
+	/**
+	 * Initialisation de l'interface globale
+	 * En haut un simple bandeau
+	 * A gauche le menu
+	 * Au centre l'espace réservé aux pages
+	 **/
+	Ext.onReady( function() {
+	
+		var mainLayout = new Ext.Viewport({
+			layout: "border",
+			renderTo: Ext.getBody(),
+			items: [
+				{
+					height: 30,
+					border: false,
+					region: "north",
+					html: '<div id="header"><h1>F.One Special Dealer Access<a href="[!Domaine!]/Systeme/Deconnexion.htm" id="Logout">Logout</a></h1></div>'
+				},
+				{
+					id: "menu",
+					width: 130,
+					margins: "5",
+					region: "west",
+					autoScroll: true,
+					bodyBorder: false,
+					layout: "accordion",
+					title: "Access List",
+					defaults: {
+						bodyStyle: "padding:15px",
+						autoScroll: true,
+						border: false
+					},
+					layoutConfig: {
+						animate: true
+					},
+					items: [MODULE Systeme/Menu]
+				},
+				{
+					region: "center",
+					xtype: "tabpanel",
+					id: "mainContent",
+					plain: true,
+					margins: "5 5 5 0",
+					enableTabScroll: true,
+					autoScroll: true,
+					bodyStyle: "padding: 5px"
+				}
+			]
+		});
+
+	});
+
+	/**
+	 * Ouvre un onglet à partir d'un panneau pré-défini à une URL
+	 * @param	string		URL du panneau
+	 * @param	string		Libellé de l'onglet
+	 * @param	TabPanel	Onglet d'où on vient (peut-être nul)
+	 * @param	boolean		Si TRUE l'onglet ne pourra pas être fermé
+	 */
+	function openTab(url, title, parentTab, persistant) {
+		// On vérifie s'il est déjà ouvert -> alors on y accède simplement
+		var tabs = Ext.getCmp("mainContent");
+		var existing = tabs.getComponent(title);
+		if(existing != null) {
+			tabs.activate(existing);
+			return;
+		}
+
+		// On ouvre un nouvel onglet que l'on charge ensuite
+		var panel = new Ext.Panel({
+			title: title,
+			urlSource: url,
+			parentTab: parentTab,
+			closable: !persistant
+		});
+		tabs.add(panel).show();
+		loadTab(panel);
+	}
+
+	/**
+	 * Mise à jour d'un panneau
+	 * @param	panel Panneau à mettre à jour
+	 * @return	void
+	 */
+	function loadTab( panel ) {
+		// L'onglet dont on demande le reload n'existe pas
+		if(panel == null) return;
+		Ext.Ajax.request({
+			url: panel.urlSource,
+			scripts: true,
+			success: function(xhr, options) {
+				if(xhr.responseText == "") {
+					alert("Aucun contenu pour l'url " + url);
+					return false;
+				}
+				// On essaie de décoder le JSON, s'il est corrompu on l'affiche simplement en text brut
+				try {
+					var retour = xhr.responseText.replace(/[\n]/gi, "" );
+					var json = Ext.util.JSON.decode(retour);
+				}
+				catch(err) {
+					var json = [{
+						xtype: 'container',
+						html: '<pre>' + xhr.responseText + '</pre>'
+					}];
+				}
+				// Mise à jour du panneau
+				panel.removeAll(true);
+				panel.add(json);
+				panel.doLayout();
+			}
+		});
+	}
+
+</script>

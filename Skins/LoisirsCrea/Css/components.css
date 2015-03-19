@@ -1,0 +1,379 @@
+div.TitreNavigation {
+	padding: 5px 0;
+	font-weight: bold;
+	font-size: 14px;
+}
+
+div.BlocNavigation a {
+	display: block;
+}
+
+/* Accueil */
+.ACCUEILARTDECOUPE {
+	overflow:hidden;
+	position:relative;
+	/*margin-top:10px;*/
+	float:left;
+	margin-right:10px;
+}
+.ACCUEILARTDECOUPE .Titre{
+	text-transform:uppercase;
+	font-size:18px;
+	font-weight:bold;
+	color:#db2484;
+}
+.ACCUEILARTDECOUPE .PubBlock{
+	overflow:hidden;
+	height:193px;
+	position:relative;
+	margin-top: 10px;
+}
+.COEURACCUEIL {
+	overflow:hidden;
+	position:relative;
+	border-left:1px dotted #cccccc;
+	margin:10px;
+	padding-left:10px;
+}
+
+.COEURACCUEIL .Titre{
+	text-transform:uppercase;
+	font-size:18px;
+	font-weight:bold;
+	color:#db2484;
+}
+.COEURACCUEIL .PubBlock{
+	overflow:hidden;
+	position:relative;
+	margin-top: 10px;
+	height:193px;
+}
+.COEURACCUEIL .PubBlock img {float:left;margin-right:10px;}
+
+.COEURACCUEIL .PubBlock p {
+	padding-left:5px;
+}
+
+.COEURACCUEIL  .PubBlock p {
+	font-size:12px;font-weight:normal;color:#393939;text-align:justify;
+}
+
+.COEURACCUEIL  .PubBlock a:hover {
+	text-decoration:none;
+}
+
+
+.COEURACCUEIL  a.lelien{
+	background: url("../Img/sprite.png") no-repeat  0 -217px ;
+	bottom: 0;
+	color: #db2484;
+	font-size: 11px;
+	font-weight: normal;
+	padding-left: 20px;
+	position: absolute;
+	right: 0;
+
+}
+.COEURACCUEIL .BlocAfficher .LienAffiche a:hover{
+	color:#393939;
+}
+
+.ZoomAccueil { 
+	margin:0 5px 5px 0;
+	overflow:hidden;
+	position:relative;
+	float:left;
+	color:#fff;
+}
+.ZoomAccueil .EntoureComposantNews { 
+	width:320px;
+	height:252px;
+	background-color:#f2f2f2;
+	/*background: url("../Img/Fond/FondZoom2.png") no-repeat;*/
+}
+.ZoomAccueil .BlocCadre { 
+	overflow:hidden;position:relative;height:100%;margin:0 10px 10px;
+}
+.ZoomAccueil .BlocCadre .PartieInfo{ 
+	
+	padding-bottom:2px;
+}
+.ZoomAccueil .BlocCadre .PartieInfoNoborder{ 
+	padding-bottom:2px;
+}
+
+/*.ZoomAccueil .TitreBloc h2{ 
+	text-transform:uppercase;
+	font-size:18px;
+	font-weight:bold;
+	color:#fff; 
+	padding: 10px 0 5px;
+}*/
+.ZoomAccueil .TitreBloc h2{ 
+	text-transform:uppercase;
+	font-size:18px;
+	font-weight:bold; 
+	padding: 10px 0 5px;
+}
+.ZoomAccueil .BlocCadre .affichimage { 
+	float:left;
+}
+.ZoomAccueil .BlocCadre .TitreNews a { 
+	color:#393939;
+	font-size:14px;
+	font-weight:bold; 
+}
+.ZoomAccueil .BlocCadre .Desc { 
+	color:#393939;
+	font-size:14px;
+}
+.ZoomAccueil .touteslesnews a{ 
+	font-size:12px;
+	font-weight:normal;color:#393939;
+	background: url("../Img/sprite.png") no-repeat  0 -292px ;
+	padding-left: 17px;
+	margin-right:10px;
+	float:right;
+	
+}
+.ZoomAccueil .AfficheInfo{
+	border-bottom:1px dotted #393939;
+}
+
+/*----- composant de mise en avant -----*/
+
+
+
+.AccueilTopVente {
+	position:relative;
+	overflow:hidden;
+	color:#db2484;
+	margin:5px 0;width: 652px;height:252px;
+	background: url("../Img/Fond/FondTopDesVentes2.jpg") no-repeat ;
+}
+
+	
+.AccueilTopVente .ContenuVisible{
+	
+	margin:auto;
+}
+.AccueilTopVente .TitreBloc  {
+	color: #db2484;
+	font-size: 18px;
+	margin:10px 20px;
+	text-transform: uppercase;
+}
+.AccueilTopVente .Desc{ 
+	margin:5px 0; 
+	line-height:normal;
+}
+.AccueilTopVente  .NomMea { 
+	display:block; 
+	color: #db2484;
+	/*border-right:1px dotted #db2484;*/
+	font-size:12px;
+	height: 34px;
+}
+	.AccueilTopVente .Accroche { margin-right: 80px;font-size:11px;}
+	.AccueilTopVente .Prix { 
+		padding: 2px 0 8px 5px; font-size:14px;float:right; text-align: right; display:block;position:relative; 
+	}
+	.AccueilTopVente .apartirde {
+		font-style:italic;
+		font-size:11px;
+		color:#db2484;
+		text-align:right;
+		font-weight:normal;
+	}
+	
+	.AccueilTopVente .achat {
+		display:none;
+		height:0;
+		
+	}
+	.AccueilTopVente .pagination {width:auto;}
+	.AccueilTopVente .pagination .precedent {
+		background: url("../Img/sprite.png") no-repeat  0 -361px ;
+		border: medium none;
+		height: 95px;
+		left: 19px;
+		position: absolute;
+		text-indent: -999px;
+		font-size:0;
+		line-height:0;
+		top: 97px;
+		z-index: 400;
+		width:34px;
+	
+	}
+	.AccueilTopVente .pagination .suivant {
+		background: url("../Img/sprite.png") no-repeat  -405px -361px ;
+		border: medium none;
+		height: 92px;
+		position: absolute;
+		right: 21px;
+		text-indent: -999px;
+		font-size:0;
+		line-height:0;
+		top: 97px;
+		width: 34px;
+		z-index: 400;
+		text-indent: -999px;
+		font-size:0;
+		line-height:0;
+	}
+
+
+/** colonne de gauche ***/
+.PubBlock{
+	height:256px;
+	}
+.FormuleUne .Titre{
+	background: url("../Img/maquette/Alaune.png") no-repeat scroll 2px 2px #DB2484;
+    color: #FFFFFF;
+    display: block;
+    font-size: 20px;
+    font-weight: normal;
+    height: 35px;
+    padding: 18px 0 0 39px;
+    text-transform: uppercase;
+}	
+.GaucheSalons { 
+	padding:0 0 5px 0;
+	overflow:hidden;
+	position:relative;
+	float:left;
+
+}
+.GaucheSalons .EntoureComposantNews { 
+	width:100%;
+	margin-top:5px;
+	border:1px solid #ccc;
+}
+.GaucheSalons .BlocCadre { 
+	color:#fff;
+	overflow:hidden;
+	position:relative;
+	height:100%;
+}
+.GaucheSalons .BlocCadre .PartieInfo{ 
+	border-bottom:1px dotted #393939;
+	margin:0 10px 10px;
+	line-height: normal;
+}
+.GaucheSalons .BlocCadre .PartieInfoNoborder{ 
+	padding-bottom:2px;
+	padding:0 10px ;
+}
+
+.GaucheSalons .TitreBloc h2{ 
+	background: url("../Img/maquette/salon.png") no-repeat 2px 6px #db2484;
+	border-bottom: 1px solid #FFFFFF;
+	color: #FFFFFF;
+	font-size: 18px;
+	font-weight: normal;
+	margin-bottom: 8px;
+	padding: 0 0 0 32px;
+	text-transform: uppercase;
+}
+	
+.GaucheSalons .BlocCadre .affichimage { 
+	float:left;
+}
+.GaucheSalons .BlocCadre .TitreNews a { 
+	color:#393939;
+	font-size:12px;
+	font-weight:bold;
+	padding-left:10px;
+	margin-left:5px;
+	background: url("../Img/maquette/square.jpg") no-repeat ;
+}
+	.GaucheSalons .BlocCadre .Desc { 
+		color:#393939;font-size:12px;
+	}
+	.GaucheSalons .touteslesnews a{ 
+		background: url("../Img/sprite.png") no-repeat  0 -218px ;
+		color: #db2484;
+		float: right;
+		font-size: 12px;
+		font-weight: normal;
+		margin-right: 10px;
+		padding-left: 19px;
+		
+	}
+	
+	/*---- Navigation de la boutique ---*/
+	.NavigationBoutique {
+		border:1px solid #cccccc;
+		background-color:#FCF2F7;
+		margin-bottom:5px;
+		min-height:296px;
+	}
+	.NavigationBoutique .EnteteNavigation {
+		background: url("../Img/sprite.png") no-repeat  0 -734px ;
+		border-bottom:1px solid #db2484;
+		padding-bottom:10px;
+		font-size:14px;
+		color:#db2484;
+		margin:5px;
+		padding-left:32px;
+		padding-top:5px;
+		text-transform:uppercase;
+		
+	}
+	.NavigationBoutique .EnteteNavigation img{
+	/*	background: url("../Img/sprite.png") no-repeat  0 -734px ;*/
+		padding-right: 5px;
+		
+		
+	}
+	.NavigationBoutique .EnteteNavigation span{
+		padding-top:2px;font-size:14px;color:#db2484;margin:5px;
+	}
+	.NavigationBoutique .ContenuComposantNavigation{
+		color:#393939;
+	}
+	/*.NavigationBoutique ul {
+		list-style:square;
+		
+	}*/
+	.NavigationBoutique ul li {
+		border-bottom:1px dotted #393939;
+		margin:10px 5px;
+		font-weight:bold;
+		
+	}
+	.NavigationBoutique ul li a{
+		color:#393939;
+		
+	}
+	.NavigationBoutique ul li a.current{
+		color:#db2484;
+	}
+	.NavigationBoutique ul li ul {
+		list-style:none;
+		margin:5px 15px;
+		
+	}
+	.NavigationBoutique ul li ul li {
+		border:none;
+		margin:5px 0;
+		list-style:none;
+		font-weight:normal;
+		line-height:10px;
+	
+	}
+	.NavigationBoutique ul li  ul li a.Current{
+		color:#db2484;
+	}
+
+
+/*--- CentreL ---*/
+.SelectionProduit {
+	position:relative;
+	overflow:hidden;
+}
+.FormuleALaUne{
+	border:1px solid #ccc;
+}
+

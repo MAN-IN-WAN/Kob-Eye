@@ -1,0 +1,76 @@
+[INFO [!tmpQuery!]|I]
+[STORPROC [!I::Historique!]|H|0|1][!QueryData:=[!H::Query!]!][/STORPROC]
+[OBJ [!I::Module!]|[!I::TypeChild!]|O]
+{"form":
+	{"type":"VBox", "id":"FL:[!I::Module!]/[!I::TypeChild!]", "label":"[!O::getDescription()!]", "percentWidth":100, "percentHeight":100, "styleName":"ViewStackStyle",
+	"setStyle":{"closable":0, "paddingTop":0, "paddingLeft":5, "paddingRight":5}, 
+	"components":[
+		{"type":"MenuTab", "id":"menuList", "menuItems":[
+			{"label":"File", "children":[
+				{"label":"Ouvrir", "icon":"open", "data":"open"},
+				{"label":"Nouveau", "icon":"iconNew", "data":"new"},
+				{"type":"vseparator"},
+				{"label":"Chercher", "icon":"dataBase", "data":"search"},
+				{"label":"Effacer", "icon":"remove", "data":"clear"},
+				{"type":"vseparator"},
+				{"label":"Imprimer", "icon":"print", "data":"print"},
+				{"label":"Imprimer sélection", "icon":"open", "data":"printSel"}
+			]}
+		],
+		"actions":[
+			{"type":"itemClick", "actions":{
+				"new":{"type":"click", "action":"loadForm", "containerID":"tabNav", "url":"[!QueryData!]/FormBase.json", "updateList":["FL:[!I::Module!]/[!I::TypeChild!].dataGrid"]},
+				"search":{"type":"click", "action":"filterFields", "componentID":"dataGrid", "editContainer":"searchBox"},
+				"clear":{"type":"click", "action":[
+					{"action":"invoke", "objectID":"searchBox", "method":"clearData", "params":{}},
+					{"action":"filterFields", "componentID":"dataGrid"}
+				]}
+			}}
+		]},
+		{"type":"HBox", "id":"listBox", "label":"Liste", "percentWidth":100, "percentHeight":100, "setStyle":{"closable":0, "paddingTop":0}, 
+		"components":[
+			// formulaire de recherche
+			{"type":"EditContainer", "id":"searchBox", "width":200, "percentHeight":100,
+			"components":[
+				{"type":"VBox", "setStyle":{"paddingTop":5},
+				"components":[
+					[!select:=Id!]
+					[!columns:={"type":"column","dataField":"Id","headerText":"ID","visible":0}!]
+					[STORPROC [!O::getSearchOrder()!]|P]
+						[!select+=,[!P::Nom!]!]
+						[IF [!Pos!]>1],[/IF]
+						{"type":"Label","text":"[!P::description!]"},
+						{"type":"TextInput","dataField":"[!P::Nom!]","width":190}
+						[!columns+=,{"type":"column","dataField":"[!P::Nom!]","headerText":!]
+						[IF [!P::description!]][!columns+="[!P::description!]"!][ELSE][!columns+="[!P::Nom!]"!][/IF]
+						[SWITCH [!P::Type!]|=]
+							[CASE file]
+								[!columns+=,"format":"image"!]
+								[IF [!P::width!]][!columns+=,"width":[!P::width!]!][ELSE][!columns+=,"width":150!][/IF]
+							[/CASE]
+							[CASE date]
+								[!columns+=,"format":"date","width":65!]
+							[/CASE]
+							[DEFAULT]
+								[IF [!P::width!]][!columns+=,"width":[!P::width!]!][ELSE][!columns+=,"width":150!][/IF]
+							[/DEFAULT]
+						[/SWITCH]
+						[!columns+=}!]
+					[/STORPROC]
+				]}
+			]},
+			// grille de donnees
+			{"type":"PictureList","id":"PL_Vitrine_Produit", "percentWidth":100, "percentHeight":100,"pictureField":"Image","pictureLabel":"Nom","pictureSuffix":".limit.100x100.jpg","columnWidth":150,"rowHeight":150, "pictureFolder":"/", "query":{"query":"Vitrine/Produit", "select":"Id,Nom,Image"},
+			"events":[
+				{"type":"dblclick","action":"invoke","objectID":"PL_Vitrine_Produit","method":"loadFormWithID",
+				"params":{"containerID":"tabNav","url":"Vitrine/Produit/{0}/FormBase.json","updateMe":1}}
+			],
+			"actions":[
+				{"type":"init", "action":"loadData"}
+			]}
+		]}
+	],
+	"actions":[
+	]
+	}
+}

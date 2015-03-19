@@ -1,0 +1,159 @@
+.BlocPost{
+	padding:10px 10px 20px 5px;
+}
+
+.BlocPost h1{
+	margin-bottom:5px;
+}
+
+.ListArchives {
+	float:left;
+	margin-bottom:40px;
+	width:220px;
+	margin-left:2px;
+}
+/*.BlocPost li, .BlocPost li{
+	padding-bottom:7px;
+	padding-top:7px;
+}*/
+
+/*.BlocPost li{
+	border-bottom:1px dashed #232323;
+}*/
+
+
+#Archives {
+	padding:10px 10px 20px 5px;
+	display:block;
+	position:relative;
+}
+
+#Archives li{
+	padding-bottom:7px;
+}
+
+#Archives li a, #Archives li a:visited{
+	text-decoration:none;
+	display:block;
+	padding-left:15px;
+	background:url(/Skins/ArtfxBlog/Img/PictoRond.jpg) no-repeat;
+}
+
+#Archives li a:hover, #Archives li a:active{
+	text-decoration:underline;
+	display:block;
+	padding-left:15px;
+	background:url(/Skins/ArtfxBlog/Img/PictoRond.jpg) no-repeat;
+}
+
+p.Date, p.Date span{
+	color:#B2B2B2;
+}
+
+p.Date a, p.Date:visited {
+	border-bottom:1px dotted #ffbb00;
+	text-decoration:none;
+	color:#ffbb00;
+}
+
+p.Date a:hover, p.Date:active {
+	color:#ffbb00;
+	border-bottom:1px solid #ffbb00;
+}
+
+.Post{
+	margin-left:40px;
+	margin-top:10px;
+}
+
+.FichPost{
+	text-align:center;
+	margin-top:5px;
+	margin-bottom:10px;
+}
+
+* html .FichPost{
+	width:380px;
+}
+
+.FichPost a{
+	display:block;
+}
+
+.FichPost img{
+	display:block;
+	border:10px solid #0C0C0C;
+}
+.FichPost img:hover{
+	filter:alpha(opacity=50);
+	-moz-opacity:.50;
+	opacity:.50;
+	 -khtml-opacity:.50; 
+	cursor:pointer;
+}
+* html .FichPost img{
+	border:none;
+	border:5px solid #0C0C0C;
+}
+
+.Border{
+	margin-top:5px;
+	padding-bottom:10px;
+	border-bottom:1px dashed #574513;
+	line-height:18px;
+	text-align:justify;
+}
+
+ul.BasPost{
+	display:block;
+	margin-top:5px;
+	width:100%;
+	margin-bottom:40px;
+}
+
+ul[class="BasPost"]{
+	overflow:auto;
+}
+
+* html ul.BasPost{
+	clear:both;
+}
+
+ul.BasPost li{
+	display:block;
+	float:left;
+	color:#FFBB00;
+	padding-right:10px;
+	margin-right:10px;
+}
+
+ul.BasPost li a, ul.BasPost li a:visited{
+	color:#FFBB00;
+	text-decoration:none;
+	font-size:11px;
+}	
+
+ul.BasPost li a:hover, ul.BasPost li a:active{
+	font-size:11px;
+	text-decoration:underline;
+}
+
+.Comments{
+	margin-left:40px;
+	margin-top:40px;
+}
+
+.Comments div.Border{
+	margin-bottom:10px;
+}
+
+
+a.Ancre, a.Ancre:visited {
+	cursor:default;
+}
+
+a.Ancre:hover, a.Ancre:active {
+	cursor:auto;
+	text-decoration:none;
+	color:#FFBB00;
+}

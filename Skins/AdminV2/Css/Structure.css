@@ -1,0 +1,267 @@
+#BarreEntete
+{
+	background-color:#000000;
+	height:30px;
+	top:0;
+	right:0;
+	left:0;
+/* 	padding-top:5px; */
+	color:#fff;
+	padding-right:3px;
+	position:absolute;
+	background:url('/Skins/AdminV2/Img/Structure/BarreBas.jpg');
+}
+
+* html #BarreEntete{
+	width:100%;
+	display:block;
+	padding:0;
+	margin:0;
+	padding-right:3px;
+}
+
+#Entete
+{
+/* 	background-color:#FFFFFF; */
+	height:155px;
+	top:30px;
+	left:0;
+	right:0;
+	position:absolute;
+	background:url('/Skins/AdminV2/Img/Structure/Degrade.jpg') repeat-x;
+}
+
+* html #Entete{
+	width:100%;
+	display:block;
+	padding:0;
+	margin:0;
+}
+
+.LogoEntete{
+	background:url('/Skins/AdminV2/Img/Structure/Logo.jpg') top left  no-repeat;
+	position:absolute;
+	top:0;
+	left:0;
+	bottom:0;
+	right:0;
+}
+
+* html .LogoEntete{
+	width:100%;
+	height:143px;
+	display:block;
+}
+
+.ArabesqueEntete{
+	background:url('/Skins/AdminV2/Img/Structure/Arabesque.jpg') top right  no-repeat;
+	position:absolute;
+	top:0;
+	right:0;
+	bottom:0;
+	left:0;
+}
+
+* html .ArabesqueEntete{
+	width:100%;
+	height:143px;
+	display:block;
+}
+
+#Ariane{
+	position:absolute;
+	top:0px;
+	padding-top:3px;
+	padding-left:5px;
+	left:0;
+	right:0;
+	height:20px;
+	line-height:17px;
+	background-color:#057390;
+	z-index:100;
+	margin-bottom:-20px;
+	font-style:italic;
+}
+
+#Ariane span.Separator{
+    padding:0 5px 0 5px;
+    font-weight:bold;
+}
+
+* html #OngletObj {
+	width:100%;
+	display:block;
+	top:127px;
+	padding:0;
+	margin:0;
+	padding-left:5px;
+	padding-top:3px;
+}
+
+#Global{
+	position:absolute;
+	top:145px;
+	right:0;
+	left:0;
+	bottom:0px;
+	background:white;
+}
+
+* html #Global{
+	width:100%;
+	height:75%;
+	display:block;
+	top:178px;
+	padding:0;
+	margin:0;
+}
+
+#Container
+{
+    position:absolute;
+    top:25px;
+    left:0px;
+    right:0px;
+    bottom:0px;
+}
+
+#Data{
+	top:0px;
+	right:0;
+	bottom:0px;
+	left:350px;
+	position:absolute;
+}
+
+* html #Data{
+	position:relative;
+	width:915px; 
+	height:570px;
+	display:block;
+	padding:0;
+	margin:0;
+}
+
+#Arbo{
+/* 	background-color:#F0F0F0; */
+	top:0;
+	bottom:0;
+	width:350px;
+	left:0;
+	position:absolute;
+}
+
+* html #Arbo{
+	padding:0;
+	margin:0;
+	display:block;
+	height:616px;
+	overflow:auto;
+}
+
+#Modules{
+	background-color:#000000;
+	height: 30px;
+	bottom:0;
+	right:0;
+	left:0;
+	position:absolute;
+	background:url(/Skins/AdminV2/Img/Structure/BarreBas.jpg);
+}
+
+* html #Modules{
+	width:100%;
+	display:block;
+	padding:0;
+	margin:0;
+}
+
+#AjaxIcon{
+    z-index:100;
+    position:absolute;
+    right:50px;
+    top:30px;
+    background:url(/Skins/AdminV2/Img/ajax-loader2.gif);
+    width:220px;
+    height:19px;
+    display:none;
+}
+
+/* n2select */
+
+.n2Select{
+}
+a:link.n2Select-anchor, a:visited.n2Select-anchor{
+	position:absolute;
+	overflow:hidden;
+	padding:0 25px 0 4px;
+	border:1px solid #ccc;
+	color:#000;
+	text-decoration:none;
+	background:url(/Skins/AdminV2/Img/arrow1.gif) no-repeat right center #fff;
+	/*outline:none;*/
+}
+a:hover.n2Select-anchor, a:active.n2Select-anchor, a:focus.n2Select-anchor{
+	border:1px solid #4096EE;
+	text-decoration:none;
+	background:url(/Skins/AdminV2/Img/arrow2.gif) no-repeat right center #fff;
+	/*outline:none;*/
+}
+.n2Select-list{
+	position:absolute;
+	margin:0;
+	padding:0;
+	border:1px solid #ccc;
+	overflow-y:auto;
+	z-index:100;
+}
+.n2Select-even{
+	background-color:#fff;
+}
+.n2Select-odd{
+	background-color:#F2F8FF;
+}
+.n2Select-group{
+	font-weight:bold;
+	font-style:italic;
+	padding:0 8px;
+	color:#000;
+	cursor:default;
+	/* more style for select groups */
+	background-image:url(n2Select/item2.gif);
+	background-repeat:no-repeat;
+	background-position:3px 8px;
+	padding-left:14px;
+}
+.n2Select-item{
+	padding:0 8px;
+	color:#000;
+	cursor:pointer;
+	/* more style for select options */
+
+	background-repeat:no-repeat;
+	background-position:left 4px;
+	padding-left:14px
+	background:url(/Skins/AdminV2/Img/Structure/BarreBas.jpg);
+}
+.n2Select-sub{
+	padding:0 8px 0 16px;
+	color:#000;
+	cursor:pointer;
+	/* more style for select options */
+	background-image:url(n2Select/item3.gif);
+	background-repeat:no-repeat;
+	background-position:8px 4px;
+	padding-left:22px;
+}
+.n2Select-disabled{
+	/*background-image:none;*/
+	color:#ccc;
+	cursor:default;
+}
+.n2Select-selected{
+	background-color:#4096EE;
+	color:#fff;
+}
+
+

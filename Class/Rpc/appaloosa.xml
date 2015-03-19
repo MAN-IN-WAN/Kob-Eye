@@ -1,0 +1,288 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<definitions name="mydata"
+targetNamespace="urn:mydata"
+xmlns:tns="urn:mydata"
+xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+xmlns="http://schemas.xmlsoap.org/wsdl/"
+xmlns:xsd1="urn:mydata/schema">
+
+	<types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema"
+		targetNamespace="urn:mydata/schema"
+		xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+		xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+
+			<complexType name="ArrayOfString">
+				<complexContent>
+					<restriction base="soapenc:Array">
+						<attribute ref="soapenc:arrayType"
+						wsdl:arrayType="string[]"/>
+					</restriction>
+				</complexContent>
+			</complexType>
+			<complexType name="ArrayOfArrayOfString">
+				<complexContent>
+					<restriction base="soapenc:Array">
+						<attribute ref="soapenc:arrayType" wsdl:arrayType="xsd1:ArrayOfString[]"></attribute>
+					</restriction>
+				</complexContent>
+			</complexType>
+		</schema>
+	</types>
+	
+	<message name="getUser">
+		<part name="getUserRequest" type="xsd:string"/>
+	</message>
+	<message name="getUserResponse">
+		<part name="getUserReturn" type="xsd:string"/>
+	</message>
+	<message name="getInfo">
+		<part name="getInfoRequest" type="xsd:string"/>
+	</message>
+	<message name="getInfoResponse">
+		<part name="getInfoReturn" type="xsd:string"/>
+	</message>
+	<message name="getMenu">
+		<part name="getMenuRequest" type="xsd:string"/>
+	</message>
+	<message name="getMenuResponse">
+		<part name="getMenuReturn" type="xsd:string"/>
+	</message>
+	<message name="getCount">
+		<part name="getCountRequest" type="xsd:string"/>
+	</message>
+	<message name="getCountResponse">
+		<part name="getCountReturn" type="xsd:string"/>
+	</message>
+	<message name="getAlerts">
+		<part name="getAlertsRequest" type="xsd:string"/>
+	</message>
+	<message name="getAlertsResponse">
+		<part name="getAlertsReturn" type="xsd:string"/>
+	</message>
+	<message name="getData">
+		<part name="getDataRequest" type="xsd1:ArrayOfString"/>
+	</message>
+	<message name="getDataResponse">
+		<part name="getDataReturn" type="xsd:string"/>
+	</message>
+	<message name="WDgetData">
+		<part name="WDgetDataRequest" type="xsd:String"/>
+	</message>
+	<message name="WDgetDataResponse">
+		<part name="WDgetDataReturn" type="xsd1:ArrayOfArrayOfstring"/>
+	</message>
+	<message name="getNode">
+		<part name="getNodeRequest" type="xsd1:ArrayOfArrayOfString"/>
+	</message>
+	<message name="getNodeResponse">
+		<part name="getNodeReturn" type="xsd:string"/>
+	</message>
+	<message name="getMethod">
+		<part name="getMethodRequest" type="xsd:string"/>
+	</message>
+	<message name="getMethodResponse">
+		<part name="getMethodReturn" type="xsd:string"/>
+	</message>
+	<message name="remoteSave">
+		<part name="remoteSaveRequest" type="xsd:string"/>
+	</message>
+	<message name="remoteSaveResponse">
+		<part name="remoteSaveReturn" type="xsd:string"/>
+	</message>
+	<message name="remoteDelete">
+		<part name="remoteDeleteRequest" type="xsd:string"/>
+	</message>
+	<message name="remoteDeleteResponse">
+		<part name="remoteDeleteReturn" type="xsd:string"/>
+	</message>
+	<message name="changeRights">
+		<part name="changeRightsRequest" type="xsd:string"/>
+	</message>
+	<message name="changeRightsResponse">
+		<part name="changeRightsReturn" type="xsd:string"/>
+	</message>
+	
+	<portType name="DataServicePortType">
+		<documentation>Kob-eye port type</documentation>
+		<operation name="getUser">
+			<documentation>User Function</documentation>
+			<input message="tns:getUser"/>
+			<output message="tns:getUserResponse"/>
+		</operation>
+		<operation name="getInfo">
+			<documentation>Info Function</documentation>
+			<input message="tns:getInfo"/>
+			<output message="tns:getInfoResponse"/>
+		</operation>
+		<operation name="getMenu">
+			<documentation>Menu Function</documentation>
+			<input message="tns:getMenu"/>
+			<output message="tns:getMenuResponse"/>
+		</operation>
+		<operation name="getCount">
+			<documentation>Count Function</documentation>
+			<input message="tns:getInfo"/>
+			<output message="tns:getInfoResponse"/>
+		</operation>
+		<operation name="getAlerts">
+			<documentation>Alerts Function</documentation>
+			<input message="tns:getAlerts"/>
+			<output message="tns:getAlertsResponse"/>
+		</operation>
+		<operation name="getData">
+			<documentation>Data Function</documentation>
+			<input message="tns:getData"/>
+			<output message="tns:getDataResponse"/>
+		</operation>
+		<operation name="WDgetData">
+			<documentation>Windev Data Function</documentation>
+			<input message="tns:WDgetData"/>
+			<output message="tns:WDgetDataResponse"/>
+		</operation>
+		<operation name="getNode">
+			<documentation>Data Node Function</documentation>
+			<input message="tns:getNode"/>
+			<output message="tns:getNodeResponse"/>
+		</operation>
+		<operation name="getMethod">
+			<documentation>Method Function</documentation>
+			<input message="tns:getMethod"/>
+			<output message="tns:getMethodResponse"/>
+		</operation>
+		<operation name="remoteSave">
+			<documentation>Save Function</documentation>
+			<input message="tns:remoteSave"/>
+			<output message="tns:remoteSaveResponse"/>
+		</operation>
+		<operation name="remoteDelete">
+			<documentation>Delete Function</documentation>
+			<input message="tns:remoteDelete"/>
+			<output message="tns:remoteDeleteResponse"/>
+		</operation>
+		<operation name="changeRights">
+			<documentation>Change rights Function</documentation>
+			<input message="tns:changeRights"/>
+			<output message="tns:changeRightsResponse"/>
+		</operation>
+	</portType>
+	
+	<binding name="DataServiceBinding" type="tns:DataServicePortType">
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<operation name="getUser">
+			<soap:operation soapAction="urn:UserServiceAction"/>
+			<input>
+				<soap:body namespace="urn:mydata" use="literal"/>
+			</input>
+			<output>
+				<soap:body namespace="urn:mydata" use="literal"/>
+			</output>
+		</operation>
+		<operation name="getInfo">
+			<soap:operation soapAction="urn:InfoServiceAction"/>
+			<input>
+				<soap:body namespace="urn:mydata" use="literal"/>
+			</input>
+			<output>
+				<soap:body namespace="urn:mydata" use="literal"/>
+			</output>
+		</operation>
+		<operation name="getMenu">
+			<soap:operation soapAction="urn:MenuServiceAction"/>
+			<input>
+				<soap:body namespace="urn:mydata" use="literal"/>
+			</input>
+			<output>
+				<soap:body namespace="urn:mydata" use="literal"/>
+			</output>
+		</operation>
+		<operation name="getCount">
+			<soap:operation soapAction="urn:CountServiceAction"/>
+			<input>
+				<soap:body namespace="urn:mydata" use="literal"/>
+			</input>
+			<output>
+				<soap:body namespace="urn:mydata" use="literal"/>
+			</output>
+		</operation>
+		<operation name="getAlerts">
+			<soap:operation soapAction="urn:AlertsServiceAction"/>
+			<input>
+				<soap:body namespace="urn:mydata" use="literal"/>
+			</input>
+			<output>
+				<soap:body namespace="urn:mydata" use="literal"/>
+			</output>
+		</operation>
+		<operation name="getData">
+			<soap:operation soapAction="urn:DataServiceAction"/>
+			<input>
+				<soap:body namespace="urn:mydata" use="literal"/>
+			</input>
+			<output>
+				<soap:body namespace="urn:mydata" use="literal"/>
+			</output>
+		</operation>
+		<operation name="WDgetData">
+			<soap:operation soapAction="urn:WDDataServiceAction"/>
+			<input>
+				<soap:body namespace="urn:mydata" use="literal"/>
+			</input>
+			<output>
+				<soap:body namespace="urn:mydata" use="literal"/>
+			</output>
+		</operation>
+		<operation name="getNode">
+			<soap:operation soapAction="urn:NodeServiceAction"/>
+			<input>
+				<soap:body namespace="urn:mydata" use="literal"/>
+			</input>
+			<output>
+				<soap:body namespace="urn:mydata" use="literal"/>
+			</output>
+		</operation>
+		<operation name="getMethod">
+			<soap:operation soapAction="urn:MethodServiceAction"/>
+			<input>
+				<soap:body namespace="urn:mydata" use="literal"/>
+			</input>
+			<output>
+				<soap:body namespace="urn:mydata" use="literal"/>
+			</output>
+		</operation>
+		<operation name="remoteSave">
+			<soap:operation soapAction="urn:MethodServiceAction"/>
+			<input>
+				<soap:body namespace="urn:mydata" use="literal"/>
+			</input>
+			<output>
+				<soap:body namespace="urn:mydata" use="literal"/>
+			</output>
+		</operation>
+		<operation name="remoteDelete">
+			<soap:operation soapAction="urn:MethodServiceAction"/>
+			<input>
+				<soap:body namespace="urn:mydata" use="literal"/>
+			</input>
+			<output>
+				<soap:body namespace="urn:mydata" use="literal"/>
+			</output>
+		</operation>
+		<operation name="changeRights">
+			<soap:operation soapAction="urn:MethodServiceAction"/>
+			<input>
+				<soap:body namespace="urn:mydata" use="literal"/>
+			</input>
+			<output>
+				<soap:body namespace="urn:mydata" use="literal"/>
+			</output>
+		</operation>
+	</binding>
+	
+	<service name="mydataService">
+		<port name="DataServicePort" binding="tns:DataServiceBinding">
+			<soap:address location="Systeme.soap"/>
+		</port>
+	</service>
+</definitions>

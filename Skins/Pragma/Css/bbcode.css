@@ -1,0 +1,80 @@
+.bb_bold{font-weight:bold;}
+.bb_italic{font-style:italic;color:#3f3d3e;display:block;padding-top:0;margin-top:0;}
+.bb_italic .bb_bold{font-size:12px;}
+.bb_underline{text-decoration:underline;}
+.bb_strike{text-decoration:line-through;}
+.bb_quote{margin:20px;border:1px dotted black;}
+.bb_spoiler{margin:20px;border:1px dotted black;color:white;background-color:white;}
+.bb_uppercase{text-transform:uppercase;}
+.bb_lowercase{text-transform:lowercase;}
+
+		.bb_a_url{
+			text-decoration:none;
+			color:#0072bb;
+			font-size:11px;
+		}
+		.bb_a_url:hover{
+			text-decoration:underline;
+			
+		}
+		
+		li a.bb_a_url{
+			text-decoration:none;
+			color:#ffffff;
+		}
+		
+		ul.bb_ul {
+			overflow:auto;
+			margin:0;
+			list-style-type:none;
+			padding-left:20px;
+		}
+
+.bb_accrochebleu {
+	text-decoration:none;
+	color:#0027eb;
+	font-size:14px;
+	font-variant:small-caps;
+	
+
+}
+
+span.bb_accrochejaune  {
+	color:#ffde01;
+	font-size:14px;
+	font-variant:small-caps;
+	
+
+}
+
+/*.bb_a_url{text-decoration:none;color:#ffffff;}
+.bb_a_url:hover{text-decoration:underline;}
+
+li a.bb_a_url{text-decoration:none;color:#ffffff;}
+
+ul.bb_ul {
+	overflow:auto;
+	margin:0;
+
+	padding:0;
+	list-style-type:none;
+}*/
+
+
+li.bb_li {
+	display:block;
+/*	margin-bottom:5px;*/
+	padding:5px 0 5px 12px;
+/*--- NE PAS TOUCHER LE CALAGE !!!!---------*/
+	background:url("../Img/puce-gris-clair.jpg") no-repeat 0 10px;
+}
+
+ul.SousMenu {
+	display:none;
+	
+}
+
+ul.SousMenu li{
+	padding-left:0;
+	margin-left:-40px;
+}

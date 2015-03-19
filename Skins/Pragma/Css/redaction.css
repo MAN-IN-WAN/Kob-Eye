@@ -1,0 +1,103 @@
+
+#Redaction .contenuCatDesc { font-size:12px; text-align:justify;border-bottom:1px dotted #0070ba; padding-bottom:10px;}
+#Redaction .BlocArticle {
+	display:block;
+	overflow:hidden;
+	position:relative;
+	border-bottom:1px dotted #0070ba;
+/*	padding: 10px 0;*/
+}
+#Redaction .BlocArticle .ArticleEtImg {
+	overflow:hidden;
+}
+#Redaction .BlocArticle .LigneTitre {
+	display:block;
+	overflow:hidden;
+	position:relative;
+	background-color:#ffffff;
+	z-index:2;
+}
+.BlocArticle .Buttons {
+	float:left;
+	display:block;position:relative;
+	padding: 11px 0 0 18px;
+}
+.BlocArticle .Buttons button{ cursor:pointer;}
+
+.BlocArticle .TitreArticle {
+	float:left;
+	display:block;position:relative;
+	
+}
+.LigneTitre .TitreArticle h3 {
+	color:#525252;font-size:12px;text-transform:uppercase;
+}
+.BlocArticle a {
+	color:#0070ba;text-decoration:none;
+	background:url("../Img/sprite.png") no-repeat 0 -863px;
+	margin:5px 0;
+}
+.BlocArticle a:hover { text-decoration:underline;}
+
+#Redaction h1 {
+	color:#0070ba;
+	font-size:14px;
+	
+}
+
+#Redaction h3 {
+	text-transform:uppercase;
+	color:#525252;
+	font-size:12px;
+	font-weight:bold;
+	margin-top:12px;
+}
+
+
+#Redaction .BlocArticle .ContenuArticle .contenuArt a { 
+	background:none;
+   	 color: #0070BA;
+   	 text-decoration: none;
+}
+#Redaction .BlocArticle .ContenuArticle .contenuArt a:hover { 
+    text-decoration: underline;
+}
+#Redaction .BlocArticle .Buttons .OuvreArticle {
+	background:url("../Img/sprite.png") no-repeat 0 -220px;
+	border:none;
+	height: 20px;
+    	width: 20px;
+}
+
+#Redaction .BlocArticle .Buttons .FermeArticle {
+	background:url("../Img/sprite.png") no-repeat -28px -220px;
+	border:none;
+	height: 20px;
+    	width: 20px;
+}
+.BlocArticle .enPlus {
+	padding:10px 0;
+}
+.BlocArticle .enPlus a {
+	color:#0070ba;text-decoration:none;
+	background:url("../Img/sprite.png") no-repeat 0 -863px;
+	margin:5px 0;
+	padding-left:15px;
+}
+.BlocArticle .enPlus a:hover { text-decoration:underline;}
+
+#Redaction .centreContenu {text-align:center; }
+
+
+.Lienpartenaires {
+	display:block;
+	overflow:hidden;
+	position:relative;
+	padding: 10px 0;
+}
+.Lienpartenaires a {
+	color:#0070ba;text-decoration:none;
+	background:url("../Img/sprite.png") no-repeat 0 -858px;
+	padding:5px 0 5px 15px;
+}
+.Lienpartenaires a:hover { text-decoration:underline;}

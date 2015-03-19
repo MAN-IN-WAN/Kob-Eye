@@ -1,0 +1,68 @@
+/* table filter */
+.sortable {
+	cursor:pointer;
+	background-image:url("../images/icons/sortable.gif");
+	background-position:center right;
+	background-repeat:no-repeat;
+	padding-right:12px;
+}
+.sorted-asc {
+	background-image:url("../images/icons/sorted_up.gif");
+	background-position:center right;
+	background-repeat:no-repeat;
+}
+.sorted-desc {
+	background-image:url("../images/icons/sorted_down.gif");
+	background-position:center right;
+	background-repeat:no-repeat;
+}
+.filtered {
+	background-image:url("../images/icons/filter.gif");
+	background-position:center right;
+	background-repeat:no-repeat;
+}
+.lightSortable {
+	background-color: #cccccc;
+}
+.sorted-col {
+	background-color: #F0EfEf;
+}
+.filter {
+	font-size:smaller;
+}
+.filterRow {
+	padding-right:12px;
+}
+a {
+	cursor:pointer;
+}
+
+.menu {
+	position:absolute;
+	z-index:1000;
+	display: none;
+}
+.menu ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  }
+.menu li {
+	position: relative;
+	width : 130px;
+	padding: 2px 2px 2px 4px;
+	cursor: pointer;
+}
+.menu li ul {
+	display: none;
+	position: absolute; 
+	bottom: -1px;
+	left: 136px;
+  }
+.menu li.over > ul { 
+	display: block; 
+}
+.menu li.submenu td { 
+	padding-left:10px;
+}
+

@@ -1,0 +1,42 @@
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/mootools.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/mootools-more.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/suivi_variable.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/swfobject.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/overlay.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/multiBox.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/functions.js[/HEADER]
+
+[MODULE Systeme/Structure/Meta]
+
+<div id="Header">
+	<div id="Bando" class="fullWidth" style="position:relative">
+		<a href="/" style="position:absolute;top:0;left:0;bottom:0;right:0" title="Retour à l'accueil"></a>
+		[MODULE Systeme/Structure/Header]
+	</div>
+</div>
+
+<div id="MenuBar">
+	<div id="Menu" class="fullWidth">
+		[MODULE Systeme/Menu]
+	</div>
+</div>
+
+<div style="clear:both"></div>
+
+<div id="Main">
+	<div id="Content" class="fullWidth">
+		[DATA]
+	</div>
+</div>
+
+<div style="clear:both"></div>
+
+<div id="Footer">
+	<div id="Bottom" class="fullWidth">
+		[MODULE Systeme/Structure/Footer]
+	</div>
+</div>
+
+<div id="FooterAbtel" class="fullWidth">
+	<a href="http://agence-web.abtel.fr" target="_blank">Abtel agence web @ 2012</a>
+</div>

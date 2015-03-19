@@ -1,0 +1,82 @@
+#Generale{
+	width:950px;
+	margin:auto;
+	padding-top:20px;
+}
+
+* html #Generale{
+	text-align:left;
+	width:950px;
+}
+
+#Entete{
+	width:100%;
+}
+
+#Entete{
+	background-color:#ccc;
+}
+
+#Container{
+	position:relative;
+	display:block;
+	border-left:265px solid #8F8F8F;
+	background-color:#fff;
+	z-index:0;
+}
+
+* html #Container{
+	text-align:left;
+}
+
+#Contenu{
+	display:block;
+	margin-left:-265px;
+	overflow:hidden;
+}
+
+#Gauche{
+	float:left;
+	position:relative;
+	width:265px;
+	left:0px;
+	padding-bottom:10px;
+}
+
+* html #Gauche{
+	background-color:#8F8F8F;
+}
+
+#Milieu{
+	margin-left:265px;
+	position:relative;
+	display:block;
+	height:1%;
+	top:0;
+}
+
+#Data{
+	padding:10px;
+}
+
+#Pied{
+	width:100%;
+}
+
+.Centre{
+	width:950px;
+	margin:auto;
+}
+
+* html #Pied{
+	text-align:left;
+}
+
+*+html #Pied{
+	width:100%;
+}
+
+#Pied .Centre{
+	background-color:#cccccc;
+	padding:10px 0;
+}

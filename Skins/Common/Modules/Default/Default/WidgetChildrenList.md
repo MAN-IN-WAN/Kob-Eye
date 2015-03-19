@@ -1,0 +1,8 @@
+[INFO [!Query!]|I]
+[OBJ [!I::Module!]|[!I::ObjectType!]|P]
+[OBJ [!Int::module!]|[!Int::objectClass!]|O]
+[STORPROC [!P::getChildElements!]|Enf]
+	[IF [!Enf::objectName!]=[!Int::objectClass!]]
+		[MODULE Systeme/formChildren?O=[!O!]&Enf=[!Enf!]]
+	[/IF]
+[/STORPROC]

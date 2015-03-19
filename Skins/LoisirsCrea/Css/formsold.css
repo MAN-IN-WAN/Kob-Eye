@@ -1,0 +1,140 @@
+div.LigneForm input, div.LigneForm textarea, div.LigneForm select {
+	width: 400px;
+	border: 1px solid #ccc;
+}
+
+div.LigneForm {
+	overflow: hidden;
+	padding: 2px;
+}
+
+div.LigneForm label {
+	display: block;
+	float: left;
+	position: relative;
+	width: 150px;
+	padding-right: 10px;
+}
+
+.BlocError {
+	border: 1px solid #db2484;
+	padding: 5px;
+	font-style: italic;
+	background-color: #FADAEA;
+	color: #db2484;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+
+.Error {
+	border: 1px solid #db2484;
+	background-color: #FADAEA;
+}
+
+.BlocError ul {
+	list-style:none;
+}
+
+
+/*FicheProduit*/
+.FicheProduit { 
+	position:relative;overflow:hidden;
+}
+
+.FicheProduit .Photo {
+	width:413px;height:335px;margin-right:9px;float:left;
+border:1px #cccccc solid;
+}
+
+
+.FicheProduit .PhotoProduit {
+	width:413px;height:335px;
+}
+
+.FicheProduit .DescriptionProduit {
+	float:left;width:288px;
+}
+.FicheProduit .DescriptionProduit .DescriptionHaut h2{
+	color: #db2484;
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    width: 178px;
+}
+.FicheProduit .DescriptionProduit .DescriptionHaut h3{
+	font-size:18px;color:#db2484;border-bottom:1px dotted #db2484;padding-bottom:3px;margin-bottom:10px;
+}
+
+.FicheProduit .PromoProduit {
+	font-weight:bold;color:#db2484;font-style:italic; 
+}
+.FicheProduit .BlocFichPrix {
+	position:absolute;right:3px;top:10px;
+	font-size:28px;color:#db2484;font-weight:bold;
+}
+
+.FicheProduit .EspaceVente {
+	
+    	margin-top: 10px;
+    	padding-top: 3px;
+	overflow:hidden;width:280px;
+}
+.FicheProduit .EspaceVente .GestionQuantite {
+   	position: absolute;bottom: 100px;width:280px;border-top:1px dotted #db2484;   padding-top: 10px;
+}
+
+
+.FicheProduit  .LibQte{ 
+    	position: absolute;right:110px;
+	font-size:11px;color:#db2484;
+
+}
+.FicheProduit  .InputBtnPlus { 
+    	position: absolute;right:71px;
+	color:#db2484;border:1px solid #ccc;background:none;
+	width:20px;height:20px;font-weight:bold;
+
+}
+.FicheProduit  .InputBtnMoins{ 
+	position:absolute;right:20px;
+	color:#db2484;border:1px solid #ccc;background:none;
+	width:20px;height:20px;font-weight:bold;
+}
+
+.FicheProduit .FichQuantite input#Qte  {
+	position:absolute;right:42px;
+	width:24px;height:16px;border:1px solid #393939;text-align:right;
+}
+
+
+.FicheProduit #AchatAjouterPanier{ 
+	position:absolute;right:17px;bottom:41px;
+	
+}
+.FicheProduit .libelleTtc {
+	position:absolute;right:20px;bottom:22px;
+	color:#db2484;font-size:10px;
+
+}
+.FicheProduit .RetourListe a {
+	position:absolute;right:20px;bottom:5px;
+	background: url("../Img/sprite.png") no-repeat  0 -1278px  ;
+	padding-left:30px;
+	color:#393939;font-size:10px;
+
+}
+
+
+.ColonneCreationCompte .checkleft{
+	display:inline-block;
+	margin-left:10px;
+	padding-left:0px;
+}
+.ColonneCreationCompte span.checkleft{
+	display:inline-block;color: #ADADCD;
+    	font-size: 14px;
+    	font-weight: bold;
+
+}
+.CpContact {margin:20px 5px; }

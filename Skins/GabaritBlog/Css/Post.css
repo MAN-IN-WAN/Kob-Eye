@@ -1,0 +1,142 @@
+.BlocPost{
+	padding:5px;
+	background-color:#C8C8C8;
+	margin-top:10px;
+}
+
+.BlocPost h1{
+	margin-bottom:5px;
+}
+
+.Post{
+	margin-top:10px;
+}
+
+* html .BlocPost div{
+	position:relative;
+}
+
+* html .BlocPost p{
+	position:relative;
+}
+
+.FichPost{
+	text-align:center;
+	margin-top:5px;
+	margin-bottom:10px;
+}
+
+* html .FichPost{
+	width:380px;
+}
+
+.FichPost a{
+	display:block;
+}
+
+.FichPost img:hover{
+	filter:alpha(opacity=50);
+	-moz-opacity:.50;
+	opacity:.50;
+	 -khtml-opacity:.50; 
+	cursor:pointer;
+}
+
+ul.BasPost{
+	display:block;
+	padding:5px;
+	margin:10px 0;
+	background-color:white;
+}
+
+ul[class="BasPost"]{
+	overflow:auto;
+}
+
+* html ul.BasPost{
+	clear:both;
+	width:470px;
+}
+
+ul.BasPost li{
+	display:block;
+	float:left;
+	padding-right:10px;
+	margin-right:10px;
+	font-size:11px;
+	border-right:1px solid #5C5C5C;
+}
+
+ul.BasPost li a, ul.BasPost li a:visited{
+	text-decoration:none;
+	font-size:11px;
+}	
+
+ul.BasPost li a:hover, ul.BasPost li a:active{
+	font-size:11px;
+	text-decoration:underline;
+}
+
+
+/* CATEGORIES */
+
+.PageCat .BlocPost, .PageCat h4{
+	margin-bottom:20px;
+}
+
+* html .PageCat .BlocPost{
+	position:relative;
+}
+
+.PageCat .BlocPost h1 a{
+	font-size:16px;
+}
+
+/* PAGE ARCHIVES */
+
+#ListArchives{
+	margin-top:10px;
+}
+
+#ListArchives h2{
+	border:none;
+}
+
+#ListArchives ul{
+	margin-left:15px;
+	list-style-type:none;
+}
+
+#ListArchives ul li{
+	margin-top:5px;
+}
+
+#ListArchives ul li a{
+	text-decoration:none;
+	font-weight:bold;
+}
+
+#ListArchives ul li a:hover{
+	text-decoration:underline;
+}
+
+#ListArchives ul li ul li a{
+	font-weight:normal;
+}
+
+#ListArchives ul li ul{
+	list-style-type:disc;
+}
+
+
+/* COMMENTAIRES */
+
+.Comments{
+	margin:10px 0;
+	padding:5px;
+	background-color:#8F8F8F;
+}
+
+.Comments p, .Comments h3, .Comments span{
+	color:#fff;
+}

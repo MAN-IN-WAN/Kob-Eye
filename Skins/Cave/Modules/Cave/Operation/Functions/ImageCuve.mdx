@@ -1,0 +1,64 @@
+{"form":{"type":"TitleWindow","id":"FF:Cave/Cuve:ImageCuve","title":"0","width":450,
+"kobeyeClass":{"module":"Cave","objectClass":"Cuve"},
+"localProxy":{
+	"actions":{
+		"proxy_kobeye_status":{"action":"invoke","method":"groupState","params":{"group":"validated","property":"enabled","validated":1}}
+	}
+},
+"components":[
+	{"type":"VBox","percentWidth":100,"percentHeight":100,"setStyle":{"paddingLeft":5,"paddingRight":5,"paddingTop":5,"paddingBottom":5}, 
+	"components":[
+		{"type":"EditContainer","id":"edit","defaultButtonID":"ok","percentWidth":100,"components":[
+			{"type":"Form", "percentWidth":100,
+			"components":[
+				
+				
+	{"type":"FormItem","percentLabel":35,"label":"Date","percentWidth":100,"components":[
+
+			{"type":"DateField","dataField":"Date","validType":"date" }
+	
+	]}
+,
+	{"type":"FormItem","percentLabel":35,"label":"Cuve","percentWidth":100,"components":[
+
+
+				{"type":"ComboBox","dataField":"CuveId","percentWidth":100 ,
+
+				
+				"kobeyeClass":{"module":"Cave","objectClass":"Cuve","query":"Cave/Cuve","identifier":"Id","label":"Cuve"
+					},				
+
+					"actions":[
+						{"type":"init","action":"loadData"}
+					]
+				
+				
+				
+				}
+			
+	]}
+
+			]}
+		],
+		"events":[
+
+		]},
+
+		{"type":"HGroup",
+		"components":[
+			{"type":"Spacer"},
+			{"type":"Button","id":"yes","label":"Valider","width":80,"stateGroup":"validated","enabled":0,
+			"events":[
+				{"type":"click", "action":"invoke","objectID":"parentForm","method":"closeForm"}
+			]},
+			{"type":"Button","id":"no","label":"Annuler","width":80,
+			"events":[
+				{"type":"click","action":"invoke","objectID":"parentForm","method":"closeForm"}
+			]}
+		]}		
+	]}
+],
+"popup":"modal",
+"actions":[{"type":"close","action":"dispatchValues"}
+]}
+}

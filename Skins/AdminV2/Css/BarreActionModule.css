@@ -1,0 +1,174 @@
+/*-----------------------------------M-----------------------*/
+.BarreAction {
+	position:absolute;
+	width:100%;
+	height:54px;
+}
+
+* html .BarreAction {
+	width:100%;
+	display:block;
+	padding:0;
+	margin:0;
+}
+
+.BarreAction .BarreActionGauche {
+	position:absolute;
+	left:0px;
+	width:18px;
+	height:54px;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/Skins/AdminV2/Img/BarreAction/BarreOutilGauche.png', sizingMethod='scale');
+}
+
+
+div[class="BarreActionGauche"]{
+	filter: none;
+	background:url(/Skins/AdminV2/Img/BarreAction/BarreOutilGauche.png);
+}
+
+
+
+.BarreAction .BarreActionDroite {
+	position:absolute;
+	right:0px;
+	width:18px;
+	height:54px;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/Skins/AdminV2/Img/BarreAction/BarreOutilDroite.png', sizingMethod='scale');
+}
+
+
+div[class="BarreActionDroite"]{
+	filter: none;
+	background:url(/Skins/AdminV2/Img/BarreAction/BarreOutilDroite.png);
+}
+
+
+
+.BarreAction .BarreActionContenu {
+	position:absolute;
+	left:18px;
+	right:18px;
+	height:54px;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/Skins/AdminV2/Img/BarreAction/BarreOutilMilieu.png', sizingMethod='scale');
+}
+
+
+div[class="BarreActionContenu"]{
+	filter: none;
+	background:url(/Skins/AdminV2/Img/BarreAction/BarreOutilMilieu.png) repeat-x;
+}
+
+* html .BarreAction .BarreActionContenu{
+	width:97%;
+	left:18px;
+	right:18px;
+	display:block;
+	padding:0;
+	margin:0;
+}
+
+.BarreAction .BarreActionContenu a,.BarreActionFunction {
+	display:block;
+	float:left;
+	font-size:11px;
+	font-weight:bold;
+	height:23px;
+	margin-top:10px;
+	outline-color:-moz-use-text-color;
+	outline-style:none;
+	outline-width:0;
+	padding-left:115px;
+	padding-right:5px;
+	padding-top:12px;
+	text-align:left;
+	text-decoration:none;
+	background:url(/Skins/AdminV2/Img/IconAqua/Settings1.png);
+	background-repeat:no-repeat;
+	background-position:-10px -10px;
+}
+
+.BarreAction .BarreActionContenu a:hover,.BarreActionFunction:hover {
+	background-position:-20px -20px;
+	background-color:#DDDDDD;
+}
+.BarreAction .BarreActionContenu a b {
+	display:none;
+}
+.BarreAction #Contenu a:hover >b {
+	display:block;
+}
+.BarreAction .BarreActionContenu #BarreActionModifier {
+	background:url(/Skins/AdminV2/Img/BarreAction/BoutonModifier.jpg);
+	background-repeat:no-repeat;
+	background-position:0 9px;
+}
+
+.BarreAction .BarreActionContenu #BarreActionModifier:hover {
+	background:url(/Skins/AdminV2/Img/BarreAction/BoutonModifierOver.jpg);
+	background-repeat:no-repeat;
+	background-position:0 9px;
+}
+
+.BarreAction .BarreActionContenu #BarreActionAjouter  {
+	background:url(/Skins/AdminV2/Img/BarreAction/BoutonAjouter.jpg);
+	background-repeat:no-repeat;
+	background-position:0 9px;
+}
+
+.BarreAction .BarreActionContenu #BarreActionAjouter:hover {
+	background:url(/Skins/AdminV2/Img/BarreAction/BoutonAjouterOver.jpg);
+	background-repeat:no-repeat;
+	background-position:0 9px;
+}
+
+.BarreAction .BarreActionContenu #BarreActionSupprimer {
+	background:url(/Skins/AdminV2/Img/BarreAction/BoutonSupprimer.jpg);
+	background-repeat:no-repeat;
+	background-position:0 9px;
+}
+
+.BarreAction .BarreActionContenu #BarreActionSupprimer:hover {
+	background:url(/Skins/AdminV2/Img/BarreAction/BoutonSupprimerOver.jpg);
+	background-repeat:no-repeat;
+	background-position:0 9px;
+}
+
+.BarreAction .BarreActionContenu img {
+	float:left;
+	margin-left:10px;
+	margin-top:9px;
+}
+
+.BarreAction .BarreActionContenu #BarreActionBack {
+	background:url(/Skins/AdminV2/Img/BarreAction/BoutonPrecedent.jpg);
+	background-repeat:no-repeat;
+	background-position:0 9px;
+}
+
+.BarreAction .BarreActionContenu #BarreActionBack:hover {
+	background:url(/Skins/AdminV2/Img/BarreAction/BoutonPrecedentOver.jpg);
+	background-repeat:no-repeat;
+	background-position:0 9px;
+}
+
+.BarreAction .BarreActionContenu #BarreActionNext {
+	background:url(/Skins/AdminV2/Img/BarreAction/BoutonSuivant.jpg);
+	background-repeat:no-repeat;
+	background-position:0 9px;
+}
+
+.BarreAction .BarreActionContenu #BarreActionNext:hover {
+	background:url(/Skins/AdminV2/Img/BarreAction/BoutonSuivantOver.jpg);
+	background-repeat:no-repeat;
+	background-position:0 9px;
+}
+
+.BarreAction .BarreActionContenu #BarreActionDisplayPanier {
+	float:right;
+	background:url(/Skins/AdminV2/Img/PopUp/ListePanier.jpg);
+	background-repeat:no-repeat;
+	background-position:10px;
+	display:block;
+}
+
+

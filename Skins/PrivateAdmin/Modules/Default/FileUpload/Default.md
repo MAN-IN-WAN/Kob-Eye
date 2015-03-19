@@ -1,0 +1,7 @@
+[LIB UploadHandler|UH]
+[INFO [!Query!]|I]
+[!OPT::0:=1!]
+[!OPT::upload_dir:=Home/[!Systeme::User::Id!]/!]
+[!OPT::upload_url:=Home/[!Systeme::User::Id!]/!]
+[!UH::setOptions([!OPT!])!]
+[!UH::initialize()!]

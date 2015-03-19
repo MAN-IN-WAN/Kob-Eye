@@ -1,0 +1,1 @@
+[STORPROC [!Query!]|C][UTIL PARSE][!C::Contenu!][/UTIL][/STORPROC]

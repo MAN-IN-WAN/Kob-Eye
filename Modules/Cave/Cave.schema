@@ -1,0 +1,442 @@
+<SCHEMA>
+	<OBJECTCLASS title="Tiers" driver="mysql" searchType="plaintext" order="Nom" orderType="ASC" master="1" AccessPoint="1" Icon="[None]" Description="Tiers" Heritage="0">
+		<CONFIGURATION name="Interface">
+			<FORM hideDelete="1">FormList</FORM>
+			<FORM hideDelete="admin">FormBase</FORM>
+		</CONFIGURATION>
+		<PROPERTIES type="varchar" length="100" parentData="1" searchOrder="1" displayOrder="1" filterMode="generic" obligatoire="1" category="Description" description="Code Grenat" listWidth="150" list="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" length="100" parentData="1" searchOrder="2" displayOrder="2" filterMode="generic" obligatoire="0" category="Description" description="Société" formLabel="1" listWidth="200" list="2">Societe</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="1" default="0" filterMode="equal" searchOrder="6" query="Cave/TypeTiers::Id::TypeTiers" category="Description" description="Type tiers">TypeTiersId</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" obligatoire="0" category="Description" description="Adresse 1">Adresse1</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" obligatoire="0" category="Description" description="Adresse 2">Adresse2</PROPERTIES>
+		<PROPERTIES type="varchar" length="6"  searchOrder="3" obligatoire="0" category="Description" description="Code postal" listDescr="CP" listWidth="50" list="3">CodPostal</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" searchOrder="4" filterMode="generic" obligatoire="0" category="Description" listWidth="150" list="4">Ville</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" obligatoire="0" category="Description">Pays</PROPERTIES>
+		<PROPERTIES type="varchar" length="20"  obligatoire="0" category="Contact" description="Téléphone 1" listWidth="100" list="5">Telephone1</PROPERTIES>
+		<PROPERTIES type="varchar" length="20"  obligatoire="0" category="Contact" description="Téléphone 2" listWidth="100" list="6">Telephone2</PROPERTIES>
+		<PROPERTIES type="varchar" length="20"  obligatoire="0" category="Contact">Fax</PROPERTIES>
+		<PROPERTIES type="mail" length="50"     obligatoire="0" category="Contact" list="7">Email</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" obligatoire="0" category="Contact" description="Site Web">SiteWeb</PROPERTIES>
+		<PROPERTIES type="text" obligatoire="0" category="Contact" description="Notes">Notes</PROPERTIES>
+		<VIEW title="TiersList" default="1">
+			<OBJECTCLASS title="Tiers" select="Id,Societe,Nom,Telephone1,Telephone2,Email,CodPostal,Ville" filters="">
+				<JOIN type="outer" title="TypeTiers" on="TypeTiersId" target="Id">
+					<PROPERTIES type="varchar" listWidth="80" list="8" description="Type" alias="TypeTiers1.TypeTiers">TypeTiers</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="TypeTiers" driver="mysql" order="Designation" orderType="ASC" master="0" AccessPoint="0" hidden="1" Icon="[None]" Description="Type de tiers" Dico="1">
+		<CONFIGURATION name="Interface">
+			<FORM hideDelete="admin">FormDico</FORM>
+		</CONFIGURATION>
+		<PROPERTIES type="varchar" searchOrder="1" length="32" obligatoire="1" category="Description" description="Type tiers">TypeTiers</PROPERTIES>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="Cuve" driver="mysql" order="Cuve" orderType="ASC" master="1" AccessPoint="1" Icon="[None]" labelPrefix="Cuve:" Description="Cuves" Heritage="0" Class="Modules/Cave/Class/Cuve.class.php">
+		<CONFIGURATION name="Interface">
+			<FORM hideDelete="1" hideNew="admin">FormList</FORM>
+			<FORM hideDelete="admin">FormBase</FORM>
+			<FORM hideDelete="1" hideNew="1" hideSearch="1">FormChildren</FORM>
+			<FORM hideDelete="1">FormDetail</FORM>
+		</CONFIGURATION>
+		<FUNCTION name="ImageCave" listOnly="1" icon="oeil3" label="Image cave">
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"loadForm","params":{"kobeyeClass":{"module":"Cave","objectClass":"Cuve","form":"FormImageCave.json"},"containerID":"tabNav"}}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="Stock" listOnly="1" icon="oeil2" label="Stock">
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{"data":{"module":"Cave","objectClass":"Cuve"},"method":"object","function":"PrintStock"}}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<PROPERTIES type="varchar" length="16" searchOrder="1" displayOrder="1" list="1" obligatoire="1" formLabel="1" category="Description" description="Code de la cuve" listDescr="Cuve" listWidth="40">Cuve</PROPERTIES>
+		<PROPERTIES type="float" default="0" obligatoire="1" list="2" format="3dec" listWidth="65" category="Description" description="Capacité" >Capacite</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="0" default="0" query="Cave/Matiere::Id::Matiere" category="Description" description="Matière">MatiereId</PROPERTIES>
+<!--
+		<PROPERTIES type="boolean" default="1" category="Description" searchOrder="3" description="En service" list="3" listDescr="S" >EnService</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Description" searchOrder="3" description="Fermentation" list="3" listDescr="F" >Fermentation</PROPERTIES>
+-->
+		<PROPERTIES type="boolean" default="0" category="Description" searchOrder="3" description="Cuve vide" list="3" listDescr="V" >Vide</PROPERTIES>
+		<PROPERTIES type="int" default="0" searchOrder="2" filterMode="equal" query="Cave/Etat/Type=1::Id::Etat" category="Description" description="Etat de la cuve">EtatCuveId</PROPERTIES>
+		<PROPERTIES type="text" default="" obligatoire="0" category="Description" list="50" description="Notes">Notes</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" hidden="1">InventaireId</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" hidden="1">OperationId</PROPERTIES>
+		<FKEY card="0,1" module="Cave" data="Lot,Id" category="Description" obligatoire="0" description="Lot" noControl="0" >CuveLotId</FKEY>
+		<PROPERTIES type="float" default="0" obligatoire="0" list="5" auto="0" listDescr="Volume" format="3dec" listWidth="65" category="Description" description="Volume en cuve" >Volume</PROPERTIES>
+		<PROPERTIES type="pourcent" default="0" list="6" auto="1" listDescr="Volume" listWidth="100" category="Description" description="Occupation" >Occupation</PROPERTIES>
+		<VIEW title="CuveList" default="1">
+			<OBJECTCLASS title="Cuve" select="Id,Cuve,Capacite,Volume,Occupation,Vide,CuveLotId,EtatCuveId,Notes" filters="">
+				<JOIN type="outer" title="Etat" on="EtatCuveId" target="Id">
+					<PROPERTIES type="varchar" list="4" listWidth="80" description="Etat" alias="Etat1.Etat">Etat</PROPERTIES>
+					<PROPERTIES type="varchar" alias="Etat1.Etat_Color">Couleur</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Lot" on="CuveLotId" target="Id">
+					<PROPERTIES type="varchar" description="Lot" listWidth="60" list="11" alias="Lot2.Lot">Lot</PROPERTIES>
+					<PROPERTIES type="varchar" searchOrder="4" filterMode="generic" description="Lot" >Lot</PROPERTIES>
+					<PROPERTIES type="float" listDescr="D°" list="15" listWidth="40" format="2dec">Degre</PROPERTIES>
+					<PROPERTIES type="float" listDescr="AV" list="16" listWidth="40" format="2dec">AV</PROPERTIES>
+					<PROPERTIES type="int" searchOrder="7" filterMode="equal" query="Cave/Etat/Type=0::Id::Etat" description="Etat du lot">EtatLotId</PROPERTIES>
+					<JOIN type="outer" title="Categorie" on="CategorieId" target="Id">
+						<PROPERTIES type="varchar" filterMode="equal" query="Cave/Categorie::Id::Categorie" searchOrder="5" description="Catégorie" alias="CategorieId">Id</PROPERTIES>
+						<PROPERTIES type="varchar" list="13" listWidth="150" description="Catégorie" alias="Categorie3.Categorie">Categorie</PROPERTIES>
+						<PROPERTIES type="varchar" >Categorie</PROPERTIES>
+					</JOIN>
+					<JOIN type="outer" title="Couleur" on="CouleurId" target="Id">
+						<PROPERTIES type="image" list="14" listDescr="C" listWidth="20" alias="Couleur4.Icon">Icon</PROPERTIES>
+						<PROPERTIES type="varchar" alias="Couleur4.Icon_ToolTip">Couleur</PROPERTIES>
+						<PROPERTIES type="varchar" filterMode="equal" query="Cave/Couleur::Id::Couleur" searchOrder="6" description="Couleur" alias="CouleurId">Id</PROPERTIES>
+						<PROPERTIES type="varchar" alias="Categorie3.Categorie_backgroundColor">Color</PROPERTIES>
+						<!-- Couleur pour image cave et stock -->
+						<PROPERTIES type="varchar" alias="Couleur4.Id">Id</PROPERTIES>
+						<PROPERTIES type="varchar" >Couleur</PROPERTIES>
+					</JOIN>
+					<JOIN type="outer" title="Etat" on="EtatLotId" target="Id">
+						<PROPERTIES type="image" list="12" listDescr="E" listWidth="20" alias="Etat5.Icon">Icon</PROPERTIES>
+						<PROPERTIES type="varchar" alias="Etat5.Icon_ToolTip">Etat</PROPERTIES>
+					</JOIN>
+				</JOIN>
+				<JOIN type="outer" title="Operation" on="OperationId" target="Id">
+					<PROPERTIES type="date" list="6" listWidth="90" format="time" description="Opération" alias="Operation6.Date">Date</PROPERTIES>
+					<PROPERTIES type="date" list="9" listWidth="65" format="3dec" description="Vol. op." alias="Operation6.Volume">VolumeReel</PROPERTIES>
+					<JOIN type="outer" title="Type" on="TypeId" target="Id">
+						<PROPERTIES type="varchar" description="Type" listWidth="80" list="7" alias="Type7.Type">Type</PROPERTIES>
+					</JOIN>
+					<JOIN type="outer" title="SousType" on="SousTypeId" target="Id">
+						<PROPERTIES type="varchar" listDescr="Sous-type" listWidth="80" list="8" alias="SousType8.SousType">SousType</PROPERTIES>
+					</JOIN>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Matiere" driver="mysql" order="Matiere" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Matières" Dico="1">
+		<CONFIGURATION name="Interface">
+			<FORM hideDelete="admin">FormDico</FORM>
+		</CONFIGURATION>
+		<PROPERTIES type="varchar" searchOrder="1" length="32" obligatoire="1" category="Description" description="Matière">Matiere</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Lot" driver="mysql" order="Lot" orderType="DESC" master="1" AccessPoint="1" Icon="[None]" Description="Lots" Heritage="0" Class="Modules/Cave/Class/Lot.class.php">
+		<CONFIGURATION name="Interface">
+			<FORM hideDelete="1">FormList</FORM>
+			<FORM hideDelete="admin">FormBase</FORM>
+			<FORM hideDelete="1" hideNew="1" hideSearch="1">FormChildren</FORM>
+			<FORM hideDelete="1">FormDetail</FORM>
+		</CONFIGURATION>
+		<PROPERTIES type="varchar" length="16" searchOrder="1" displayOrder="1" list="1" auto="1" formLabel="1" category="Description" description="Numero de lot" listDescr="Lot" listWidth="60">Lot</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="1" default="0" filterMode="equal" searchOrder="3" query="Cave/Categorie::Id::Categorie" category="Description" description="Categorie">CategorieId</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="1" default="0" filterMode="equal" searchOrder="4" query="Cave/Couleur::Id::Couleur" category="Description" description="Couleur">CouleurId</PROPERTIES>
+		<PROPERTIES type="date" obligatoire="0" defaultValue="Now" searchOrder="5" category="Description" description="Date" list="10" listWidth="90" format="time">Date</PROPERTIES>
+		<PROPERTIES type="float" obligatoire="0" default="0" category="Description" description="Degré" list="5" listWidth="40" listDescr="D°" format="2dec">Degre</PROPERTIES>
+		<PROPERTIES type="float" obligatoire="0" default="0" category="Description" description="AV" list="6" listWidth="40" listDescr="AV" format="2dec">AV</PROPERTIES>
+		<PROPERTIES type="float" obligatoire="0" default="0" category="Description" description="Volume réalisé" list="7" listDescr="Réalisé" format="3dec" >VolumeReel</PROPERTIES>
+		<PROPERTIES type="float" obligatoire="0" default="0" category="Description" description="Volume restant" list="8" listDescr="Restant" format="3dec" >VolumeRestant</PROPERTIES>
+		<PROPERTIES type="int" default="0" defaultValue="1" searchOrder="2" filterMode="equal" query="Cave/Etat/Type=0::Id::Etat" category="Description" description="Etat du lot">EtatLotId</PROPERTIES>
+		<PROPERTIES type="text" default="" category="Description" description="Notes" >Notes</PROPERTIES>
+		<VIEW title="LotList" default="1">
+			<OBJECTCLASS title="Lot" select="Id,Lot,Date,Degre,VolumeRestant,VolumeReel,CategorieId,CouleurId" filters="">
+				<JOIN type="outer" title="Categorie" on="CategorieId" target="Id">
+					<PROPERTIES type="varchar" list="3" listWidth="150" description="Catégorie" alias="Categorie1.Categorie">Categorie</PROPERTIES>
+					<PROPERTIES type="varchar" >Categorie</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Couleur" on="CouleurId" target="Id">
+					<PROPERTIES type="image" list="4" listDescr="C" listWidth="20" alias="Couleur2.Icon">Icon</PROPERTIES>
+					<PROPERTIES type="varchar" alias="Couleur2.Icon_ToolTip">Couleur</PROPERTIES>
+					<PROPERTIES type="varchar" >Couleur</PROPERTIES>
+					<PROPERTIES type="varchar" alias="Categorie1.Categorie_backgroundColor">Color</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Etat" on="EtatLotId" target="Id">
+					<PROPERTIES type="image" list="2" listDescr="E" listWidth="20" alias="Etat3.Icon">Icon</PROPERTIES>
+					<PROPERTIES type="varchar" alias="Etat3.Icon_ToolTip">Etat</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Categorie" driver="mysql" order="Categorie" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Categories" Dico="1">
+		<CONFIGURATION name="Interface">
+			<FORM hideDelete="admin">FormDico</FORM>
+		</CONFIGURATION>
+		<PROPERTIES type="varchar" searchOrder="1" length="32" obligatoire="1" category="Description" description="Catégorie">Categorie</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Couleur" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Couleurs" hidden="1" Dico="1">
+		<PROPERTIES type="varchar" searchOrder="1" length="32" obligatoire="1" category="Description" description="Couleur">Couleur</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Couleur" >Icon</PROPERTIES>
+		<PROPERTIES type="varchar" length="16" category="Color" >Color</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Etat" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Etats des lots" hidden="1" Dico="1">
+		<PROPERTIES type="int" default="0" obligatoire="1" values="0::Lot,1::Cuve" category="Description" description="Type">Type</PROPERTIES>
+		<PROPERTIES type="varchar" default="" searchOrder="1" length="32" obligatoire="1" category="Description" description="Etat">Etat</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Couleur" >Icon</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Operation" driver="mysql" order="Date,Id" orderType="DESC,DESC" master="1" AccessPoint="1" Icon="[None]" Description="Opérations" Heritage="0" Class="Modules/Cave/Class/Operation.class.php">
+		<CONFIGURATION name="Interface">
+			<FORM hideDelete="1" hideNew="1" moreLabel="Nouveau" >FormList</FORM>
+			<FORM hideDelete="admin">FormBase</FORM>
+			<FORM hideDelete="1" hideNew="1" hideSearch="1">FormChildren</FORM>
+			<FORM hideDelete="1">FormDetail</FORM>
+		</CONFIGURATION>
+		<FUNCTION name="Analyse" listOnly="1" icon="" label="Analyse">
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"createForm","params":{"kobeyeClass":{"module":"Cave","objectClass":"Operation","form":"FormAnalyse.json"}}}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="StockEntree" listOnly="1" icon="" label="Entrée en stock">
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"createForm","params":{"kobeyeClass":{"module":"Cave","objectClass":"Operation","form":"FormStockEntree.json"}}}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="StockSortie" listOnly="1" icon="" label="Sortie de stock">
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"createForm","params":{"kobeyeClass":{"module":"Cave","objectClass":"Operation","form":"FormStockSortie.json"}}}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="Transfert" listOnly="1" icon="" label="Transfert">
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"createForm","params":{"kobeyeClass":{"module":"Cave","objectClass":"Operation","form":"FormTransfert.json"}}}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="Traitement" listOnly="1" icon="" label="Traitement">
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"createForm","params":{"kobeyeClass":{"module":"Cave","objectClass":"Operation","form":"FormTraitement.json"}}}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="Nettoyage" listOnly="1" icon="" label="Nettoyage">
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"createForm","params":{"kobeyeClass":{"module":"Cave","objectClass":"Operation","form":"FormNettoyage.json"}}}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="Labellisation" listOnly="1" icon="" label="Labellisation">
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"createForm","params":{"kobeyeClass":{"module":"Cave","objectClass":"Operation","form":"FormLabellisation.json"}}}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="Déclassement" listOnly="1" icon="" label="Déclassement">
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"createForm","params":{"kobeyeClass":{"module":"Cave","objectClass":"Operation","form":"FormDeclassement.json"}}}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="Inventaire" listOnly="1" icon="" label="Inventaire">
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"createForm","params":{"kobeyeClass":{"module":"Cave","objectClass":"Operation","form":"FormInventaire.json"}}}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FKEY card="0,1" module="Cave" data="Cuve,Id" category="Opération" description="Cuve" >OperationCuveId</FKEY>
+		<FKEY card="0,1" module="Cave" data="Lot,Id" category="Opération" description="Lot" >OperationLotId</FKEY>
+		<PROPERTIES type="date" searchOrder="3" category="Opération" description="Date" format="time" listWidth="90" list="3">Date</PROPERTIES>
+		<PROPERTIES type="int" default="0" searchOrder="4" filterMode="equal" query="Cave/Type::Id::Type" exoFilters="Id::SousTypeId" category="Opération" description="Type d'opération">TypeId</PROPERTIES>
+		<PROPERTIES type="int" default="0" query="Cave/SousType::Id::SousType" dataFilter="TypeId=_filter_" category="Opération" description="Sous Type">SousTypeId</PROPERTIES>
+		<PROPERTIES type="int" default="0" query="Cave/Operateur::Id::Operateur" category="Opération" description="Opérateur">OperateurId</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Opération" listDescr="D°" list="15" listWidth="40" format="2dec" description="Degré">Degre</PROPERTIES>
+		<FKEY card="0,1" module="Cave" data="Tiers,Id" category="Traitement" description="Tiers" >OperationTiersId</FKEY>
+		<PROPERTIES type="int" default="0" query="Cave/Cuve::Id::Cuve" category="Traitement" description="Origine Destination">AutreCuveId</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Traitement" description="Volume théorique" >VolumeTheorique</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Traitement" list="7" listWidth="65" listDescr="Volume" format="3dec" description="Volume réel" >VolumeReel</PROPERTIES>
+		<PROPERTIES type="int" default="0" query="Cave/Produit::Id::Produit" category="Traitement" description="Produit utilisé">ProduitId</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Traitement" description="Dosage g/hl" >Dosage</PROPERTIES>
+		<PROPERTIES type="varchar" default="" length="50" category="Traitement" description="Lot du Produit" >LotProduit</PROPERTIES>
+		<PROPERTIES type="varchar" default="" length="32" category="Traitement" description="Numéro DAE" >NumeroDae</PROPERTIES>
+		<PROPERTIES type="text" default="" category="Traitement" description="Notes" >Notes</PROPERTIES>
+		<PROPERTIES type="int" default="0" hidden="1" >TransfertId</PROPERTIES>
+		<PROPERTIES type="int" default="0" hidden="1" >AnalyseId</PROPERTIES>
+		<VIEW title="OperationList" default="1">
+			<OBJECTCLASS title="Operation" select="Id,Date,VolumeReel,Degre,TypeId,SousTypeId,OperationLotId,OperationCuveId" filters="">
+				<JOIN type="outer" title="Cuve" on="OperationCuveId" target="Id">
+					<PROPERTIES type="varchar" description="Cuve" listWidth="40" list="1" alias="Cuve1.Cuve">Cuve</PROPERTIES>
+					<PROPERTIES type="varchar" searchOrder="1" filterMode="equal" query="Cave/Cuve::Id::Cuve" description="Cuve" alias="CuveId">Id</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Lot" on="OperationLotId" target="Id">
+					<PROPERTIES type="varchar" description="Lot" listWidth="60" list="11" alias="Lot2.Lot">Lot</PROPERTIES>
+					<PROPERTIES type="varchar" searchOrder="4" filterMode="generic" description="Lot" >Lot</PROPERTIES>
+					<PROPERTIES type="varchar" filterMode="equal" query="Cave/Categorie::Id::Categorie" searchOrder="5" description="Catégorie">CategorieId</PROPERTIES>
+					<PROPERTIES type="varchar" filterMode="equal" query="Cave/Couleur::Id::Couleur" searchOrder="6" description="Couleur">CouleurId</PROPERTIES>
+					<PROPERTIES type="int" searchOrder="7" filterMode="equal" query="Cave/Etat/Type=0::Id::Etat" description="Etat du lot">EtatLotId</PROPERTIES>
+					<JOIN type="outer" title="Categorie" on="CategorieId" target="Id">
+						<PROPERTIES type="varchar" list="13" listWidth="150" description="Catégorie" alias="Categorie3.Categorie">Categorie</PROPERTIES>
+						<PROPERTIES type="varchar" >Categorie</PROPERTIES>
+					</JOIN>
+					<JOIN type="outer" title="Couleur" on="CouleurId" target="Id">
+						<PROPERTIES type="image" list="14" listDescr="C" listWidth="20" alias="Couleur4.Icon">Icon</PROPERTIES>
+						<PROPERTIES type="varchar" alias="Couleur4.Icon_ToolTip">Couleur</PROPERTIES>
+						<PROPERTIES type="varchar" alias="Categorie3.Categorie_backgroundColor">Color</PROPERTIES>
+					</JOIN>
+					<JOIN type="outer" title="Etat" on="EtatLotId" target="Id">
+						<PROPERTIES type="image" list="12" listDescr="E" listWidth="20" alias="Etat5.Icon">Icon</PROPERTIES>
+						<PROPERTIES type="varchar" alias="Etat5.Icon_ToolTip">Etat</PROPERTIES>
+					</JOIN>
+				</JOIN>
+				<JOIN type="outer" title="Type" on="TypeId" target="Id">
+					<PROPERTIES type="varchar" description="Type" listWidth="90" list="4" alias="Type6.Type">Type</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="SousType" on="SousTypeId" target="Id">
+					<PROPERTIES type="varchar" listDescr="Sous-type" listWidth="90" list="5" alias="SousType7.SousType">SousType</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Tiers" on="OperationTiersId" target="Id">
+					<PROPERTIES type="varchar" listDescr="Tiers" listWidth="150" list="20" alias="Tiers8.Societe">Societe</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Operateur" on="OperateurId" target="Id">
+					<PROPERTIES type="varchar" listDescr="Opérateur" listWidth="80" list="21" alias="Operateur9.Operateur">Operateur</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Cuve" on="AutreCuveId" target="Id">
+					<PROPERTIES type="varchar" listDescr="O/D" listWidth="40" list="6" alias="Cuve10.Cuve">Cuve</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Operateur" driver="mysql" order="Operateur" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Opérateurs" Dico="1">
+		<CONFIGURATION name="Interface">
+			<FORM hideDelete="admin">FormDico</FORM>
+		</CONFIGURATION>
+		<PROPERTIES type="varchar" searchOrder="1" length="50" obligatoire="1" category="Description" description="Nom">Operateur</PROPERTIES>
+		<PROPERTIES type="int" default="0" values="1::Empolyé,2::Intérimaire,3::Externe" category="Description" description="Type">Type</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Type" driver="mysql" order="Type" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Types opération" Dico="1" hidden="1">
+		<PROPERTIES type="varchar" searchOrder="1" length="32" obligatoire="1" category="Description" description="Type opération">Type</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="SousType" driver="mysql" order="SousType" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Sous-types opération" Dico="1" hidden="1">
+		<PROPERTIES type="varchar" searchOrder="1" length="32" obligatoire="1" category="Description" description="Sous-type opération" list="1">SousType</PROPERTIES>
+		<PROPERTIES type="int" default="0" obligatoire="1" query="Cave/Type::Id::Type" category="Description" description="Type opération">TypeId</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" description="Transfert">Transfert</PROPERTIES>
+		<VIEW title="SousTypeList" default="1">
+			<OBJECTCLASS title="SousType" select="Id,SousType,TypeId" filters="" order="SousType" orderType="ASC">
+				<JOIN type="outer" title="Type" on="TypeId" target="Id">
+					<PROPERTIES type="varchar" list="2" listWidth="100" description="Type" alias="Type1.Type">Type</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Produit" driver="mysql" order="Produit" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Produits" Dico="1">
+		<CONFIGURATION name="Interface">
+			<FORM hideDelete="admin">FormDico</FORM>
+		</CONFIGURATION>
+		<PROPERTIES type="varchar" searchOrder="1" length="32" list="1" obligatoire="1" category="Description" description="Produit">Produit</PROPERTIES>
+		<PROPERTIES type="int" default="0" query="Cave/SousType/TypeId=3+TypeId=4::Id::SousType" obligatoire="1" category="Description" description="Type">SousTypeId</PROPERTIES>
+		<VIEW title="ProduitList" default="1">
+			<OBJECTCLASS title="Produit" select="Id,Produit,SousTypeId" filters="" order="Produit" orderType="ASC">
+				<JOIN type="outer" title="SousType" on="SousTypeId" target="Id">
+					<PROPERTIES type="varchar" list="2" listWidth="100" description="Type" alias="SousType1.SousType">SousType</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="TypeProduit" driver="mysql" order="Type" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Types produit" Dico="1" hidden="1">
+		<PROPERTIES type="varchar" searchOrder="1" length="32" obligatoire="1" category="Description" description="Type produit">Type</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Analyse" driver="mysql" master="1" AccessPoint="1" Icon="[None]" Description="Analyses" Heritage="0">
+		<CONFIGURATION name="Interface">
+			<FORM hideDelete="1" hideNew="1" moreLabel="Nouveau">FormList</FORM>
+			<FORM hideDelete="admin">FormBase</FORM>
+			<FORM hideDelete="1" hideNew="1" hideSearch="1">FormChildren</FORM>
+			<FORM hideDelete="1">FormDetail</FORM>
+		</CONFIGURATION>
+		<FKEY card="1,1" module="Cave" data="Cuve,Id" category="Analyse" obligatoire="1" description="Cuve" >AnalyseCuveId</FKEY>
+		<FKEY card="1,1" module="Cave" data="Lot,Id" category="Analyse" obligatoire="1" description="Lot" >AnalyseLotId</FKEY>
+		<PROPERTIES type="float" default="0" category="Analyse" list="10" listWidth="50" format="2dec" description="TAV" >TAV</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Analyse" list="11" listWidth="50" format="2dec" description="AV" >AV</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Analyse" list="12" listWidth="50" format="2dec" description="AT" >AT</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Analyse" list="13" listWidth="50" format="1dec" description="AM" >AM</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Analyse" list="14" listWidth="50" format="2dec" description="IC" >IC</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Analyse" list="15" listWidth="50" format="2dec" description="pH" >pH</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Analyse" list="16" listWidth="50" format="0dec" listDescr="SO2 L" description="SO2 libre" >SO2Lib</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Analyse" list="17" listWidth="50" format="0dec" listDescr="SO2 T" description="SO2 total" >SO2Tot</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Analyse" list="18" listWidth="50" format="2dec" listDescr="Turbid" description="Tubidité" >Turbidite</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Analyse" list="19" listWidth="50" listDescr="Stab P" description="Stabilité Protéique" >StabPro</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Analyse" listWidth="50" format="0dec" description="CO2" >CO2</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Analyse" listWidth="50" format="5dec" description="D" >D</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Analyse" listWidth="50" format="1dec" description="SR&lt;5" >SRinf</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Analyse" listWidth="50" format="1dec" description="SR&gt;5" >SRsup</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Analyse" listWidth="50" format="1dec" description="GF&lt;5" >GFinf</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Analyse" listWidth="50" format="1dec" description="GF&gt;5" >GFsup</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Analyse" listWidth="50" format="1dec" description="AL" >AL</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Analyse" listWidth="50" format="1dec" description="ATar" >ATar</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Analyse" listWidth="50" format="0dec" description="IPT" >IPT</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Analyse" hidden="1">OperationId</PROPERTIES>
+		<VIEW title="AnalyseList" default="1">
+			<OBJECTCLASS title="Analyse" select="Id,OperationId,CO2,D,TAV,SRinf,SRsup,GFinf,GFsup,AT,pH,AV,AM,AL,ATar,IPT,IC,SO2Lib,SO2Tot,Turbidite,StabPro" filters="">
+				<JOIN type="outer" title="Operation" on="OperationId" target="Id">
+					<PROPERTIES type="date" list="1" listDescr="Date" format="time" listWidth="90" alias="Operation1.Date">Date</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Tache" driver="mysql" master="1" AccessPoint="1" Icon="[None]" Description="Tâches" Heritage="0" Class="Modules/Cave/Class/Tache.class.php">
+		<FUNCTION name="Planning" listOnly="1" icon="justify" label="Planning">
+			<PROPERTIES type="int" category="Planning" query="Cave/Operateur::Id::Operateur" description="Opérateur">Operateur</PROPERTIES>
+			<PROPERTIES type="date" obligatoire="1" category="Planning" description="Debut">Debut</PROPERTIES>
+			<PROPERTIES type="date" obligatoire="1" category="Planning" description="Fin">Fin</PROPERTIES>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+					"interface":1,
+					"method":"object","data":{"module":"Cave","objectClass":"Tache","form":"Functions/Planning.json"},
+					"function":"PrintPlanning","args":"iv:Operateur,iv:Debut,iv:Fin"}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+	<CATEGORY title="Description">
+		<PROPERTIES type="int" default="0" searchOrder="1" filterMode="equal" query="Cave/Operateur::Id::Operateur" description="Opérateur">OperateurId</PROPERTIES>
+		<PROPERTIES type="date" searchOrder="2" list="2" description="Date" >Date</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" default="" list="3" listDescr="M/A" listWidth="30" values="M::Matin,A::Après-midi" description="Matin/A-M" >Heure</PROPERTIES>
+		<PROPERTIES type="varchar" default="" list="4" listWidth="350" description="Description" >Description</PROPERTIES>
+<!--
+		<PROPERTIES type="int" default="0" query="Cave/Type::Id::Type" exoFilters="Id::SousTypeId" description="Type d'opération">TypeId</PROPERTIES>
+		<PROPERTIES type="int" default="0" query="Cave/SousType::Id::SousType" dataFilter="TypeId=_filter_" description="Sous Type">SousTypeId</PROPERTIES>
+		<PROPERTIES type="int" default="0" query="Cave/Cuve::Id::Cuve" description="Cuve origine">CuveId</PROPERTIES>
+		<PROPERTIES type="int" default="0" query="Cave/Cuve::Id::Cuve" description="Cuve destination">AutreCuveId</PROPERTIES>
+-->
+		<FKEY card="0,1" module="Cave" data="Cuve,Id" description="Cuve origine" hideChild="1" >TacheCuveId</FKEY>
+		<FKEY card="0,1" module="Cave" data="Cuve,Id" description="Cuve destination" hideChild="1" >TacheAutreCuveId</FKEY>
+		<PROPERTIES type="text" default="" description="Observations" >Observations</PROPERTIES>
+	</CATEGORY>
+	<CATEGORY title="Réalisation">
+		<PROPERTIES type="boolean" default="0" description="Réalisé" >Realise</PROPERTIES>
+		<PROPERTIES type="text" default="" description="Commentaires" >Commentaires</PROPERTIES>
+	</CATEGORY>
+		<VIEW title="TacheList" default="1">
+			<OBJECTCLASS title="Tache" select="Id,Date,Heure,Description,OperateurId,TacheCuveId,TacheAutreCuveId" filters="">
+				<JOIN type="outer" title="Operateur" on="OperateurId" target="Id">
+					<PROPERTIES type="varchar" listDescr="Opérateur" listWidth="100" list="1" alias="Operateur1.Operateur">Operateur</PROPERTIES>
+					<PROPERTIES type="varchar" >Operateur</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Cuve" on="TacheCuveId" target="Id">
+					<PROPERTIES type="varchar" description="Orig" listWidth="40" list="6" alias="Cuve2.Cuve">Cuve</PROPERTIES>
+					<PROPERTIES type="varchar" searchOrder="5" filterMode="equal" query="Cave/Cuve::Id::Cuve" description="Cuve origine" alias="CuveId">Id</PROPERTIES>
+					<PROPERTIES type="varchar" >Cuve</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Cuve" on="TacheAutreCuveId" target="Id">
+					<PROPERTIES type="varchar" description="Dest" listWidth="40" list="7" alias="Cuve3.Cuve">Cuve</PROPERTIES>
+					<PROPERTIES type="varchar" searchOrder="6" filterMode="equal" query="Cave/Cuve::Id::Cuve" description="Cuve origine" alias="AutreCuveId">Id</PROPERTIES>
+					<PROPERTIES type="varchar" alias="AutreCuve">Cuve</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+
+	
+</SCHEMA>

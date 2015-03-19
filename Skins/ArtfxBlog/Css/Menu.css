@@ -1,0 +1,32 @@
+#Menu{
+	width:820px;
+	margin:auto;
+}
+
+#Menu li{
+	display:block;
+	float:left;
+	margin-right:5px;
+}
+
+#Menu li a, #Menu li a:visited{
+	display:block;
+	width:89px;
+	height:31px;
+	line-height:30px;
+	text-align:center;
+	text-decoration:none;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/Skins/ArtfxBlog/Img/Onglet.png', sizingMethod='crop');
+}
+
+div[id="Menu"] li a{
+	filter:none;
+	background:url(/Skins/ArtfxBlog/Img/Onglet.png) no-repeat;
+}
+
+#Menu li a:hover, #Menu li a.Actif{
+	font-weight:bold;
+	color:#FFBB00;
+	text-decoration:none;
+}
+

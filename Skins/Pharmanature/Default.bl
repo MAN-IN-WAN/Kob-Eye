@@ -1,0 +1,102 @@
+[HEADER JS]/Skins/Pharmanature/Js/jquery-1.7.2.min.js[/HEADER]
+[HEADER JS]/Skins/Pharmanature/js/styleswitcher.js[/HEADER]
+[HEADER]
+<script type="text/javascript">jQuery.noConflict();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+[HEADER CSS]/Skins/Pharmanature/Css/bootstrap.min.css[/HEADER]
+[HEADER CSS]/Skins/Pharmanature/Css/bootstrap-responsive.min.css[/HEADER]
+
+[HEADER CSS]/Skins/Pharmanature/Css/custom.css" type="text/css[/HEADER]
+//[HEADER CSS]/Skins/Pharmanature/Css/customred.css" type="text/css[/HEADER]
+//<link rel="alternate stylesheet" href="/Skins/Pharmanature/Css/customgreen.css" type="text/css" media="screen" title="green" disabled="">
+//<link rel="alternate stylesheet" href="/Skins/Pharmanature/Css/custombrown.css" type="text/css" media="screen" title="brown" disabled="">
+//<link rel="alternate stylesheet" href="/Skins/Pharmanature/Css/customgrey.css" type="text/ccss" media="screen" title="brown" disabled="">
+//<base href=".">
+
+[HEADER CSS]/Skins/Pharmanature/Css/embed.css[/HEADER]
+
+
+[HEADER CSS]/Skins/Pharmanature/Css/pharma.css" type="text/css[/HEADER]
+<script type="text/javascript">
+	window.addEvent('load', function() {
+		new JCaption('img.caption');
+	}); 
+</script>
+
+<script type="text/javascript">
+	window.addEvent('load', function() {
+		new JCaption('img.caption');
+	}); 
+</script>
+<style>
+	body{
+		[STORPROC Systeme/Menu/[!Systeme::CurrentMenu::Id!]/Fichier|F|0|1]
+			[NORESULT]
+				[STORPROC [!Systeme::Menus!]|M|0|1]
+					[IF [!M::Url!]=]
+						//Fond par défaut
+						[STORPROC Systeme/Menu/[!M::Id!]/Fichier|F|0|1][/STORPROC]
+					[/IF]
+				[/STORPROC]
+			[/NORESULT]
+		[/STORPROC]
+		background-image:url(/[!F::Fichier!]);
+		}
+</style>
+[/HEADER]
+<!-- Navbar -->
+<div class="navbar navbar-fixed-top navbar-inverse">
+	<div class="navbar-inner">
+		<div class="container">
+			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a>
+			<div class="search visible-desktop">
+
+			</div>
+			[MODULE Systeme/Menu]
+		</div>
+	</div>
+</div>
+<div class="container">
+
+	<!-- Content -->
+
+	<div id="system-message-container"></div>
+
+	<!-- Search Module Position -->
+	<div class="search hidden-desktop">
+
+	</div>
+
+	<div id="main" class="row-fluid">
+		<!-- Component -->
+		<div id="content" class="span12">
+
+			<div class="blog-featured well">
+				<div class="items-leading row-fluid">
+					<div class="leading-0">
+						[DATA]
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+[MODULE Boutique/Produit/Random]
+[MODULE Systeme/Footer]
+</div>
+<!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://piwik.abtel.fr/" : "http://piwik.abtel.fr/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 10);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://piwik.abtel.fr/piwik.php?idsite=10" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code -->
+
+<script src="/Skins/Pharmanature/Js/bootstrap.min.js"></script>
+

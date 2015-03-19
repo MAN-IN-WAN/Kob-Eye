@@ -1,0 +1,89 @@
+<SCHEMA>
+	<OBJECTCLASS title="Region" driver="mysql" AccessPoint="1" master="1" Icon="/Skins/AdminV2/Img/IconAqua/Wiki2.png" generateUrl="1">
+		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" description="Classe CSS (pour la carte)">Class</PROPERTIES>
+		<PROPERTIES type="boolean" description="Afficher sur le site public" default="0">Public</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Laboratoire" driver="mysql" AccessPoint="1" master="1" Icon="/Skins/AdminV2/Img/IconAqua/App.png" generateUrl="1">
+		<PROPERTIES type="varchar" searchOrder="1" category="Coordonnées">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" values="Unibio,Biomed" category="Coordonnées"  description="Entité" default="Unibio">Entite</PROPERTIES>		
+		<PROPERTIES type="bbcode" category="Coordonnées">Adresse</PROPERTIES>
+		<PROPERTIES type="varchar" category="Coordonnées" description="Gps (lat,lon ex:xx.xx,xx.xx)">GPS</PROPERTIES>
+		<PROPERTIES type="varchar" category="Coordonnées">Tel</PROPERTIES>
+		<PROPERTIES type="varchar" category="Coordonnées">Fax</PROPERTIES>
+		<PROPERTIES type="bbcode" category="Informations">Horaires</PROPERTIES>
+		<PROPERTIES type="bbcode" category="Informations">Description</PROPERTIES>
+		<PROPERTIES type="image" category="Informations">Photo</PROPERTIES>
+		<PROPERTIES type="image" category="Informations">PlanAcces</PROPERTIES>
+		<FKEY card="1,1" data="Region,Id">RegionId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Professionel" driver="mysql" AccessPoint="1" master="1" Icon="/Skins/AdminV2/Img/IconAqua/Forum.png" generateUrl="1">
+		<PROPERTIES type="varchar" searchOrder="1" category="Coordonnées">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" category="Coordonnées">Prenom</PROPERTIES>
+		<PROPERTIES type="varchar" category="Coordonnées">Mail</PROPERTIES>
+		<PROPERTIES type="varchar" category="Coordonnées">Profession</PROPERTIES>
+		<FKEY card="1,1" data="Laboratoire,Id">LaboratoireId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Analyse" driver="mysql" AccessPoint="1" master="1" Icon="/Skins/AdminV2/Img/IconAqua/Search1.png" generateUrl="1" Class="Modules/Unibio/Class/Analyse.class.php">
+		<PROPERTIES type="varchar" Order="101" searchOrder="1" category="Principal" niveau="Internet" genKeywords="1">Examen</PROPERTIES>
+		<PROPERTIES type="varchar" Order="102" searchOrder="2" category="Principal" niveau="Internet" genKeywords="1">Synonymes</PROPERTIES>
+		<PROPERTIES type="varchar" Order="103" searchOrder="3" category="Principal" niveau="Intranet" description="Code d'appel" genKeywords="1">CodeAppel</PROPERTIES>
+		<PROPERTIES type="text" Order="104" category="Principal" niveau="Intranet">Remarques</PROPERTIES>
+		<PROPERTIES type="text" Order="105" category="Principal" niveau="Internet">Renseignements</PROPERTIES>
+		<PROPERTIES type="text" Order="106" category="Principal" niveau="Internet">Facturation</PROPERTIES>
+		<PROPERTIES type="text" Order="201" category="Pre-Analytique" niveau="Internet" description="Conditions de recueil">ConditionsRecueil</PROPERTIES>
+		<PROPERTIES type="int" Order="202" query="Unibio/Materiel::Id::Nom" category="Pre-Analytique" niveau="Internet" description="Matériel de recueil principal">MaterielRecueilPrincipal</PROPERTIES>
+		<PROPERTIES type="text" Order="203" category="Pre-Analytique" niveau="Internet" description="Matériels alternatifs autorisés">MaterielsAlternatifs</PROPERTIES>
+		<PROPERTIES type="text" Order="204" category="Pre-Analytique" niveau="Internet" description="Volume minimum">VolumeMinimum</PROPERTIES>
+		<PROPERTIES type="text" Order="205" category="Pre-Analytique" description="Délai maximum entre prélèvement et arrivée labo" niveau="Internet">DelaiMaxPrelevementArrivee</PROPERTIES>
+		<PROPERTIES type="boolean" Order="206" default="0" category="Pre-Analytique" niveau="Internet" description="Examen instable = prélèvement au labo conseillé">ExamenInstable</PROPERTIES>
+		<PROPERTIES type="int" Order="207" query="Unibio/Traitement::Id::Nom" category="Pre-Analytique" niveau="Intranet" description="Traitement pré-analytique">TraitementPreAnalytique</PROPERTIES>
+		<PROPERTIES type="boolean" Order="208" default="0" category="Pre-Analytique" niveau="Intranet" description="Aliquotage / étiquette secondaire">Aliquotage</PROPERTIES>
+		<PROPERTIES type="varchar" Order="209" values="1::Température ambiante,2::Réfrigéré,3::Congelé" category="Pre-Analytique" niveau="Intranet" description="Température de transport pour envoi">TemperatureEnvoi</PROPERTIES>
+		<PROPERTIES type="text" Order="210" category="Pre-Analytique" niveau="Intranet">Commentaires</PROPERTIES>
+
+		<PROPERTIES type="text" Order="301" category="Analytique" niveau="Internet" description="Délai de rendu résultats">DelaiRenduResultats</PROPERTIES>
+		<PROPERTIES type="int" Order="302" query="Unibio/Site::Id::Nom" category="Analytique" niveau="Intranet" description="Site / Labo exécutant principal">ExecutantPrincipal</PROPERTIES>
+		<PROPERTIES type="boolean" Order="303" default="0" category="Analytique" niveau="Intranet" description="Sites d'Urgence">SitesUrgence</PROPERTIES>
+		<PROPERTIES type="varchar" Order="304" category="Analytique" niveau="Intranet" description="Automate / paillasse">Automate</PROPERTIES>
+		<PROPERTIES type="text" Order="305" category="Analytique" niveau="Intranet" description="Principe de la méthode">PrincipeMethode</PROPERTIES>
+		<PROPERTIES type="int" Order="306" query="Unibio/Specialite::Id::Nom" category="Analytique" niveau="Intranet" description="Spécialité">Specialite</PROPERTIES>
+
+		<PROPERTIES type="text" Order="401" category="Post-Analytique" niveau="Intranet" description="Conditions de conservation pour reprise">ConditionsConservation</PROPERTIES>
+		<PROPERTIES type="text" Order="402" category="Post-Analytique" niveau="Intranet" description="Intérêt clinique">InteretClinique</PROPERTIES>
+		<PROPERTIES type="text" Order="403" category="Post-Analytique" niveau="Intranet" description="Interférences">Interferences</PROPERTIES>
+		<PROPERTIES type="varchar" Order="404" category="Post-Analytique" niveau="Intranet" description="Fiche réactif fournisseur">FicheReactifFournisseur</PROPERTIES>
+		<PROPERTIES type="boolean" Order="405" default="0" category="Post-Analytique" niveau="Intranet" description="Critère d'alerte">CritereAlerte</PROPERTIES>
+<!--		<PROPERTIES type="boolean" Order="406" default="0" category="Post-Analytique" niveau="Internet" description="Examen accrédité" >ExamenAccredite</PROPERTIES>-->
+		<PROPERTIES type="boolean" Order="407" default="0" category="Post-Analytique" niveau="Admin" description="Fiche vérifiée ?">FicheVerifiee</PROPERTIES>
+		<PROPERTIES type="text" Order="408" category="Post-Analytique" niveau="Admin" description="Objet de la modification">ObjetModification</PROPERTIES>
+		
+	</OBJECTCLASS>
+	<OBJECTCLASS title="MotClef" driver="mysql" AccessPoint="0" Dico="0" master="0" Description="MotClefs"  Icon="/Skins/AdminV2/Img/IconAqua/Search1.png">
+		<PROPERTIES searchOrder="1" description="Nom" type="varchar" length="50" special="multi">Nom</PROPERTIES>
+		<PROPERTIES description="Forme Canonique du Nom" type="canon" length="50">Canon</PROPERTIES>
+		<FKEY card="0,n" data="Analyse,Id">AnalyseId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Document" driver="mysql" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<PROPERTIES type="titre" searchOrder="1" category="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="file" length="255" searchOrder="2" special="multi" category="Emplacement">URL</PROPERTIES>
+		<PROPERTIES type="boolean" description="Afficher sur le site public" default="0">Public</PROPERTIES>
+		<FKEY card="1,1" data="Analyse,Id">AnalyseId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Materiel" description="Matériels de recueil" driver="mysql" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Tasks.png">
+		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES type="order">Ordre</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Traitement" description="Traitements pré-analytique" driver="mysql" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Settings1.png">
+		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES type="order">Ordre</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Specialite" description="Spécialités" driver="mysql" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Settings2.png">
+		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES type="order">Ordre</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Site" description="Site / Labo exécutant" driver="mysql" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Home.png">
+		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES type="order">Ordre</PROPERTIES>
+	</OBJECTCLASS>
+</SCHEMA>

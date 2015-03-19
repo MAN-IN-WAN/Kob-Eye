@@ -1,0 +1,43 @@
+O:4:"Bloc":23:{s:7:"RawData";s:0:"";s:7:"VarData";N;s:9:"RawLoaded";b:1;s:13:"ContentLoaded";b:1;s:7:"Content";N;s:9:"BlObjects";a:23:{i:0;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:1149:"
+	<link rel="icon" href="/Skins/[!Systeme::Skin!]/favicon.ico" type="image/x-icon"/> 
+	<link rel="shortcut icon" href="/Skins/[!Systeme::Skin!]/favicon.ico" type="image/x-icon"/>
+	
+	
+	<meta name="verify-v1" content="QlurhrWsienYWG9Jb/0SONdR506RyMB5BMe974haIeA=" />
+	<meta name="verify-v1" content="EqQM416Z2qSv3wFOx/UqwSoKM7ZJmw1fAaxH8e/jVRw=" />
+	<meta name="google-site-verification" content="3sX7QkEnbqgCM-Yd2Sr0fdEMH84K_2LW0LOD4YFoo4o" />
+	<meta name="y_key" content="58e1feb7af568c57" />
+	<meta name="msvalidate.01" content="2CBBC07DF7DF17895C01254B50C729DB" />
+	<meta name="alexaVerifyID" content="HeXGQZYTE6bkKfVPnTzKJmlPlJg" />
+	<meta name="viewport" content="width=1000" />
+
+	<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-16916219-1']);
+	_gaq.push(['_trackPageview']);
+	
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+	</script>
+";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:0:"";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:1;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:38:"Skins/[!Systeme::Skin!]/Js/mootools.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:2;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:43:"Skins/[!Systeme::Skin!]/Js/mootools-more.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:3;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:39:"Skins/[!Systeme::Skin!]/Js/functions.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:4;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:44:"Skins/[!Systeme::Skin!]/Js/suivi_variable.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:5;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:39:"Skins/[!Systeme::Skin!]/Js/swfobject.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:6;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:36:"Skins/[!Systeme::Skin!]/Js/budget.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:7;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:40:"Skins/[!Systeme::Skin!]/Js/simulateur.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:8;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:40:"Skins/[!Systeme::Skin!]/Css/slickmap.css";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:3:"CSS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:9;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:37:"Skins/[!Systeme::Skin!]/Js/overlay.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:10;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:38:"Skins/[!Systeme::Skin!]/Js/multiBox.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:11;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:40:"Skins/[!Systeme::Skin!]/Css/multiBox.css";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:3:"CSS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:12;O:4:"Info":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:4:"INFO";s:12:"ChildObjects";N;s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:11:"[!Query!]|I";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:13;O:9:"Condition":14:{s:7:"CaseTab";N;s:11:"CaseDefault";N;s:4:"Init";b:1;s:4:"Data";s:0:"";s:3:"Nom";s:9:"Condition";s:6:"Result";N;s:6:"Beacon";s:2:"IF";s:12:"ChildObjects";a:2:{i:0;a:2:{i:0;O:8:"StorProc":24:{s:6:"Offset";N;s:5:"Limit";N;s:5:"Query";N;s:7:"TempVar";N;s:11:"LoopObjects";N;s:12:"ChildObjects";N;s:8:"Recursiv";b:0;s:6:"NoLoop";b:0;s:6:"NoPost";b:1;s:6:"Module";N;s:7:"GroupBy";N;s:9:"OrderType";N;s:8:"OrderVar";N;s:6:"Select";N;s:4:"Init";b:1;s:3:"Nom";s:6:"Object";s:6:"Result";N;s:6:"Beacon";s:8:"STORPROC";s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:22:"[!Query!]|ResReferente";s:4:"Path";N;s:4:"Conf";N;s:12:"MasterBeacon";s:8:"STORPROC";}i:1;s:1:"
+";}i:1;a:2:{i:0;s:2:"
+	";i:1;O:8:"StorProc":24:{s:6:"Offset";N;s:5:"Limit";N;s:5:"Query";N;s:7:"TempVar";N;s:11:"LoopObjects";N;s:12:"ChildObjects";N;s:8:"Recursiv";b:0;s:6:"NoLoop";b:0;s:6:"NoPost";b:1;s:6:"Module";N;s:7:"GroupBy";N;s:9:"OrderType";N;s:8:"OrderVar";N;s:6:"Select";N;s:4:"Init";b:1;s:3:"Nom";s:6:"Object";s:6:"Result";N;s:6:"Beacon";s:8:"STORPROC";s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:74:"ParcImmobilier/Residence/AmbianceReferente=1|ResReferente|0|1|tmsEdit|DESC";s:4:"Path";N;s:4:"Conf";N;s:12:"MasterBeacon";s:8:"STORPROC";}}}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:26:"[!I::TypeChild!]=Residence";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:14;s:193:"
+
+<div id="Header" class="fullWidth">
+	<div id="Bando" style="background-image:url('/[!ResReferente::BanniereHTML!]');background-repeat: no-repeat;">
+		<a href="/" class="RetourAccueil"></a>
+		";i:15;O:4:"Bloc":24:{s:7:"RawData";N;s:7:"VarData";N;s:9:"RawLoaded";b:0;s:13:"ContentLoaded";b:0;s:7:"Content";N;s:9:"BlObjects";N;s:6:"BlData";N;s:8:"PostData";N;s:11:"PostObjects";N;s:10:"PostBlData";N;s:7:"ObjVars";N;s:13:"PostBlObjects";N;s:12:"ChildObjects";N;s:9:"ChildData";N;s:4:"Path";N;s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"MODULE";s:5:"Child";N;s:4:"Vars";s:24:"Systeme/Structure/Header";s:7:"TempVar";N;s:4:"Conf";N;s:6:"INITOK";s:4:"NB 0";}i:16;s:10:"
+	</div>
+	";i:17;O:4:"Bloc":24:{s:7:"RawData";N;s:7:"VarData";N;s:9:"RawLoaded";b:0;s:13:"ContentLoaded";b:0;s:7:"Content";N;s:9:"BlObjects";N;s:6:"BlData";N;s:8:"PostData";N;s:11:"PostObjects";N;s:10:"PostBlData";N;s:7:"ObjVars";N;s:13:"PostBlObjects";N;s:12:"ChildObjects";N;s:9:"ChildData";N;s:4:"Path";N;s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"MODULE";s:5:"Child";N;s:4:"Vars";s:12:"Systeme/Menu";s:7:"TempVar";N;s:4:"Conf";N;s:6:"INITOK";s:4:"NB 0";}i:18;s:41:"
+</div>
+
+<div id="Main" class="fullWidth ";i:19;O:9:"Condition":14:{s:7:"CaseTab";N;s:11:"CaseDefault";N;s:4:"Init";b:1;s:4:"Data";s:0:"";s:3:"Nom";s:9:"Condition";s:6:"Result";N;s:6:"Beacon";s:2:"IF";s:12:"ChildObjects";a:1:{i:0;a:1:{i:0;s:20:" blancTournant arial";}}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:10:"[!Lien!]!=";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:20;s:81:"" style="min-height:400px">
+	[DATA]
+</div>
+
+<div id="Footer" class="fullWidth">
+	";i:21;O:4:"Bloc":24:{s:7:"RawData";N;s:7:"VarData";N;s:9:"RawLoaded";b:0;s:13:"ContentLoaded";b:0;s:7:"Content";N;s:9:"BlObjects";N;s:6:"BlData";N;s:8:"PostData";N;s:11:"PostObjects";N;s:10:"PostBlData";N;s:7:"ObjVars";N;s:13:"PostBlObjects";N;s:12:"ChildObjects";N;s:9:"ChildData";N;s:4:"Path";N;s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"MODULE";s:5:"Child";N;s:4:"Vars";s:24:"Systeme/Structure/Footer";s:7:"TempVar";N;s:4:"Conf";N;s:6:"INITOK";s:4:"NB 0";}i:22;s:7:"
+</div>";}s:6:"BlData";N;s:8:"PostData";N;s:11:"PostObjects";N;s:10:"PostBlData";N;s:7:"ObjVars";N;s:13:"PostBlObjects";N;s:12:"ChildObjects";a:1:{i:0;s:6:"[DATA]";}s:9:"ChildData";N;s:4:"Path";s:7:"Default";s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:4:"BLOC";s:5:"Child";N;s:4:"Vars";s:7:"Default";s:7:"TempVar";N;s:4:"Conf";N;}

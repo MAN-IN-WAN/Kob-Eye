@@ -1,0 +1,89 @@
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/suivi_variable.js[/HEADER]
+
+//IL FAUDRA PEUT ETRE APPELE UN PLUS RECENT ?????
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/jquery.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/bootstrap.min.js[/HEADER]
+
+[HEADER CSS]Tools/Css/Bootstrap/3.0/css/bootstrap.css[/HEADER]
+//[HEADER CSS]Skins/[!Systeme::Skin!]/Css/style-user.css[/HEADER]
+
+//[HEADER JS]Skins/[!Systeme::Skin!]/Shadowbox/shadowbox.js[/HEADER]
+//[HEADER CSS]Skins/[!Systeme::Skin!]/Shadowbox/shadowbox.css[/HEADER]
+
+//[HEADER JS]Skins/[!Systeme::Skin!]/Js/Zoombox/zoombox.js[/HEADER]
+//[HEADER CSS]/Skins/[!Systeme::Skin!]/Js/Zoombox/zoombox.css[/HEADER]
+
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/swfobject.js[/HEADER]
+//[HEADER JS]Skins/[!Systeme::Skin!]/Js/functions.js[/HEADER]
+
+[HEADER]
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+		<script src="/Skins/[!Systeme::Skin!]/assets/js/html5shiv.js"></script>
+		<script src="/Skins/[!Systeme::Skin!]/assets/js/respond.min.js"></script>
+	<![endif]-->
+[/HEADER]
+
+//[MODULE Systeme/Structure/Meta]
+<div class="SiteWidth" >
+	<div class="container ">
+		<div id="Header" class="row">
+			<div id="Bando" class="col-md-4">
+				<a href="/" style="position:absolute;top:0;left:0;bottom:0;right:0" title="Retour à l'accueil"></a>
+			</div>
+			<div class="col-md-4">
+			</div>
+			<div class="col-md-4">
+				[MODULE Systeme/Menu/MenuHaut]
+			</div>
+		</div>
+//		<div id="MenuBar">
+//			<div id="Menu" >
+//				[MODULE Systeme/Menu/MenuPrincipal]
+//			</div>
+//		</div>
+		<div id="Main">
+			[DATA]
+		</div>
+	</div>
+	
+//	<div class="SiteWidth container" >
+//		<div id="Englobe_Footer">
+//			<div id="Footer">
+//				[MODULE Systeme/Structure/Footer]
+//			</div>
+//			<div id="FooterNiveau2" class=" row ">
+//				[MODULE Systeme/Structure/FooterMenuBas]
+//			</div>
+//		</div>			
+//	</div>
+
+	////////////////////////////
+	// MODAL pour popup panier
+	////////////////////////////
+	<div id="lemodal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel"></h3>
+		</div>
+		<div class="modal-body" style="width:100%;"></div>
+	</div> 
+	
+	
+	<script type="text/javascript">
+		/**
+		* supression du contenu lors de la disparition du popup
+		*/
+		$("#lemodal").on("hidden", function() { 
+			$(this).removeData('modal');
+		});
+		
+		$("#lemodal").on("close", function() { 
+			$(this).removeData('modal');
+		});
+		
+	
+	
+	</script>
+
+</div>	

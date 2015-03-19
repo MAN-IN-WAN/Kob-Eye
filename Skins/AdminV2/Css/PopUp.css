@@ -1,0 +1,69 @@
+div.PopUp {
+	display: block;
+/*         z-index: 4; */
+	cursor:default;
+	position:fixed;
+	margin:auto;
+	width:33%;
+	right:33%;
+	top:33%;
+	z-index:1000;
+}
+
+div.Larger {
+    width:70%;
+    right:15%;
+    top:10%;
+}
+
+div.Larger .FormContains
+{
+    height:550px;
+    overflow:auto;
+}
+
+
+
+
+.PopUp .Bouton{
+	position:absolute;
+        z-index: 4;
+	bottom:-5px;
+}
+.TitrePopUp {
+	font-weight:bold;
+}
+
+.PopUpImg {
+	width:75px;
+	height:100px;
+	background-image:url(/Skins/AdminV2/Img/PopUp/IconeAttention.jpg);
+	background-repeat:no-repeat;
+	background-position:0 9px;
+}
+
+div.Explorer {
+	display: block;
+        z-index: 1000;
+	cursor:default;
+	position:fixed;
+	margin:auto;
+	width:90%;
+	right:5%;
+	height:90%;
+	top:5%;
+	bottom:5%;
+}
+.Explorer .Bouton{
+	position:absolute;
+        z-index: 200001;
+	bottom:-5px;
+}
+
+.ExplorerBouton{
+	background:url(/Skins/AdminV2/Img/folder_explore.png) no-repeat;height:16px;width:16px;text-indent:20px;margin-bottom:-1px;
+}
+
+*+html .ExplorerBouton{
+	padding-left:9999px;
+}

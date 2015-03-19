@@ -1,0 +1,107 @@
+#Ariane{
+	padding:5px;
+	margin:5px 0;
+}
+
+
+#Options{
+	margin:20px 0 0 0;
+	float:right;
+	width:10%;
+	text-align:right;
+}
+
+div[id="Options"]{
+	overflow:hidden;
+}
+
+* html #Options{
+	float:right;
+	width:10%;
+}
+
+.Description{
+/* 	font-style:italic; */
+	margin:5px 0;
+}
+
+.Chapo{
+	font-weight:bold;
+	margin:5px 0;
+}
+.TitreArt{
+	font-weight:bold;
+	margin:5px 0;
+	color:#0070A9;
+}
+
+.Article{
+	width:100%;
+	margin:15px 0;
+}
+
+div[class="Article"]{
+	overflow:hidden;
+}
+
+* html .Article{
+	clear:both;
+}
+
+.Article div{
+	margin-top:10px;
+}
+
+.ImgArt{
+	float:left;
+	border:1px solid #E0E1E3;
+	float:left;
+	margin-bottom:10px;
+	overflow:auto;
+	padding:3px 3px 0;
+	margin:5px;
+}
+
+.TextImg{
+	float:left;
+	width:500px;
+}
+
+.Text{
+
+}
+
+.TitreCat {
+	display:block;
+	overflow:hidden;
+/* 	position:relative; */
+	border-bottom:dashed 1px #3F3F3F;
+}
+
+.TextDefault{
+	width:90% !important;
+	width:80%;
+	position:relative;
+	/*border-bottom:dashed 1px #3F3F3F;*/
+	height:68px;
+}
+
+.TextDefault h2{
+	position:absolute;
+	left:65px;
+	bottom:10px;
+	font-weight:normal;
+}
+
+/* LIENS */
+
+.Lien{
+	display:block;
+	margin:5px 0;
+}
+
+.HautPage{
+	display:block;
+	width:100%;
+	text-align:right;
+}

@@ -1,0 +1,134 @@
+<SCHEMA>
+	<OBJECTCLASS title="Categorie" driver="mysql" master="1" AccessPoint="1" Description="Afficher les categories"  Icon="/Skins/AdminV2/Img/folder.png" browseable="1">
+		<PROPERTIES  type="titre" length="250" searchOrder="1" obligatoire="1">Titre</PROPERTIES>
+		<PROPERTIES  type="html">Description</PROPERTIES>
+		<PROPERTIES type="file">Icone</PROPERTIES>
+		<PROPERTIES type="boolean" default="1">Publier</PROPERTIES>
+		<PROPERTIES description="Ordre" type="order" category="Descriptif">Ordre</PROPERTIES>
+		<PROPERTIES type="metat">TitleMeta</PROPERTIES>
+		<PROPERTIES type="metad">DescriptionMeta</PROPERTIES>
+		<PROPERTIES type="metak">KeywordsMeta</PROPERTIES>
+		<VIEW title="CategorieList" default="1">
+			<OBJECTCLASS title="Categorie">
+				<PROPERTIES type="varchar">Url</PROPERTIES>
+				<PROPERTIES type="int">Id</PROPERTIES>
+				<PROPERTIES type="varchar" length="250" searchOrder="1" obligatoire="1" list="1">Titre</PROPERTIES>
+				<PROPERTIES type="html"  obligatoire="0"  searchOrder="2" list="1">Description</PROPERTIES>
+				<PROPERTIES type="boolean" default="0" list="1">Publier</PROPERTIES>
+				<PROPERTIES type="date"  list="1" alias="Date">tmsCreate</PROPERTIES>
+				<JOIN type="inner" module="Systeme" title="User" on="userCreate" target="Id">
+					<PROPERTIES type="varchar" length="250"  list="1" alias="Auteur">Login</PROPERTIES>
+				</JOIN>
+				<COUNT module="Blog" title="Post" on="Id" target="CategorieId" alias="NbPost" list="1"></COUNT>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="Post" driver="mysql" AccessPoint="1" Description="Afficher les posts" Icon="/Skins/AdminV2/Img/bbedit/bbcode_check.png" Class="Modules/Blog/Class/Post.class.php" browseable="1">
+		<PROPERTIES type="varchar" length="250" searchOrder="1" obligatoire="1" list="1">Titre</PROPERTIES>
+		<PROPERTIES type="html"  obligatoire="0" >Contenu</PROPERTIES>
+		<PROPERTIES type="html"  obligatoire="0" >Resume</PROPERTIES>
+		<PROPERTIES type="boolean" default="0">Brouillon</PROPERTIES>
+		<PROPERTIES type="boolean" default="0">Actif</PROPERTIES>
+		<PROPERTIES type="boolean" default="0">Valide</PROPERTIES>
+		<PROPERTIES type="date" default="[!TMS::Now!]" list="1" searchOrder="2">Date</PROPERTIES>
+		<PROPERTIES type="metat">TitleMeta</PROPERTIES>
+		<PROPERTIES type="metad">DescriptionMeta</PROPERTIES>
+		<PROPERTIES type="metak">KeywordsMeta</PROPERTIES>
+		<FKEY card="1,1" data="Categorie,Id" >CategorieId</FKEY>
+		<VIEW title="PostList" default="1">
+			<OBJECTCLASS title="Post">
+				<PROPERTIES type="int">Id</PROPERTIES>
+				<PROPERTIES type="int">userCreate</PROPERTIES>
+				<PROPERTIES type="varchar">Url</PROPERTIES>
+				<PROPERTIES type="varchar" length="250" searchOrder="1" obligatoire="1" list="1">Titre</PROPERTIES>
+				<PROPERTIES type="html"  obligatoire="0" list="1">Contenu</PROPERTIES>
+				<PROPERTIES type="html"  obligatoire="0" list="1">Resume</PROPERTIES>
+				<PROPERTIES type="boolean" default="0" list="1">Brouillon</PROPERTIES>
+				<PROPERTIES type="boolean" default="0" list="1">Actif</PROPERTIES>
+				<PROPERTIES type="boolean" default="0" list="1">Valide</PROPERTIES>
+				<PROPERTIES type="date" default="[!TMS::Now!]" searchOrder="2" list="1">Date</PROPERTIES>
+				<JOIN type="inner" module="Systeme" title="User" on="userCreate" target="Id">
+					<PROPERTIES type="varchar" length="250"  list="1" alias="Auteur">Login</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" module="Blog" title="Categorie" on="CategorieId" target="Id">
+					<PROPERTIES type="varchar" length="250"  list="1" alias="Categorie">Titre</PROPERTIES>
+				</JOIN>
+				<COUNT module="Blog" title="Commentaire" on="Id" target="PostId" alias="NbCommentaire" list="1"></COUNT>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="Donnees" driver="mysql" AccessPoint="1" browseable="1" Description="Lier des données à un post" >
+		<PROPERTIES  type="varchar" length="250" searchOrder="1" obligatoire="1">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" values="Image,Video,Son,Fichier,Lien" default="Image">Type</PROPERTIES>
+		<PROPERTIES type="file" searchOrder="2">Fichier</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" >Url</PROPERTIES>
+		<PROPERTIES type="order"  >Ordre</PROPERTIES>
+		<FKEY card="1,1" data="Post,Id">PostId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Commentaire" driver="mysql" AccessPoint="1" >
+		<PROPERTIES  type="titre" length="250" searchOrder="1" obligatoire="1">Pseudo</PROPERTIES>
+		<PROPERTIES  type="date" >Date</PROPERTIES>
+		<PROPERTIES  type="bbcode"  obligatoire="1">Comment</PROPERTIES>
+		<PROPERTIES  type="titre"  obligatoire="1">Mail</PROPERTIES>
+		<PROPERTIES  type="titre">Site</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" searchOrder="2">Publier</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" searchOrder="2">Moderer</PROPERTIES>
+		<FKEY card="1,1" data="Post,Id">PostId</FKEY>
+		<VIEW title="CommentaireList" default="1">
+			<OBJECTCLASS title="Commentaire">
+				<PROPERTIES type="int">Id</PROPERTIES>
+				<PROPERTIES type="int">tmsCreate</PROPERTIES>
+				<PROPERTIES  type="titre" length="250" searchOrder="1" obligatoire="1"  list="1">Pseudo</PROPERTIES>
+				<PROPERTIES  type="bbcode"  obligatoire="1"  list="1">Comment</PROPERTIES>
+				<PROPERTIES  type="titre"  obligatoire="1"  list="1">Mail</PROPERTIES>
+				<PROPERTIES  type="titre"  list="1">Site</PROPERTIES>
+				<PROPERTIES type="boolean" default="0" searchOrder="2"  list="1">Publier</PROPERTIES>
+				<PROPERTIES type="boolean" default="0" searchOrder="2"  list="1">Moderer</PROPERTIES>
+				<PROPERTIES type="date"  list="1" alias="Date">tmsCreate</PROPERTIES>
+				<JOIN type="inner" module="Blog" title="Post" on="PostId" target="Id">
+					<PROPERTIES type="varchar" length="250"  list="1" alias="TitrePost">Titre</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="CategorieLien" driver="mysql" master="1" AccessPoint="1" browseable="1" Description="Categories de lien"  Icon="/Skins/AdminV2/Img/folder.png" >
+		<PROPERTIES  type="titre" length="250" searchOrder="1" obligatoire="1">Titre</PROPERTIES>
+		<PROPERTIES  type="bbcode">Description</PROPERTIES>
+		<PROPERTIES type="file">Icone</PROPERTIES>
+		<PROPERTIES description="Ordre" type="order" category="Descriptif">Ordre</PROPERTIES>
+		<VIEW title="LienCategorieList" default="1">
+			<OBJECTCLASS title="CategorieLien">
+				<PROPERTIES type="int">Id</PROPERTIES>
+				<PROPERTIES type="varchar" length="250" searchOrder="1" obligatoire="1" list="1">Titre</PROPERTIES>
+				<PROPERTIES  type="bbcode" list="1">Description</PROPERTIES>
+				<PROPERTIES type="file" list="1">Icone</PROPERTIES>
+				<PROPERTIES description="Ordre" type="order" category="Descriptif" list="1">Ordre</PROPERTIES>
+				<COUNT module="Blog" title="Lien" on="Id" target="CategorieLienId" alias="NbLien" list="1"></COUNT>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="Lien" driver="mysql" AccessPoint="1" Description="Les liens" Icon="/Skins/AdminV2/Img/bbedit/bbcode_check.png" >
+		<PROPERTIES type="varchar" length="250" searchOrder="1" obligatoire="1">Titre</PROPERTIES>
+		<PROPERTIES Order="3" description="Url"      type="varchar" length="255"   category="Autre">Url</PROPERTIES>
+		<PROPERTIES Order="4" description="Ordre" type="order" category="Autre">Ordre</PROPERTIES>		
+		<PROPERTIES type="metat">TitleMeta</PROPERTIES>
+		<PROPERTIES type="metad">DescriptionMeta</PROPERTIES>
+		<PROPERTIES type="metak">KeywordsMeta</PROPERTIES>
+		<FKEY card="1,1" data="CategorieLien,Id" >CategorieLienId</FKEY>
+		<VIEW title="LienList" default="1">
+			<OBJECTCLASS title="Lien">
+				<PROPERTIES type="int">Id</PROPERTIES>
+				<PROPERTIES type="varchar" length="250" searchOrder="1" obligatoire="1" list="1">Titre</PROPERTIES>
+				<PROPERTIES Order="3" description="Url"      type="varchar" length="255"  list="1"  category="Autre">Url</PROPERTIES>
+				<PROPERTIES Order="4" description="Ordre" type="order" category="Autre" list="1">Ordre</PROPERTIES>		
+				<JOIN type="outer" module="Blog" title="CategorieLien" on="CategorieLienId" target="Id">
+					<PROPERTIES type="varchar" length="250"  list="1" alias="Categorie">Titre</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+</SCHEMA>

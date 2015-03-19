@@ -1,0 +1,67 @@
+/*----- MENU PRINCIPAL -----*/
+#Menu {
+	margin: 0 auto 2px;
+	font-size:14px;
+	z-index:10;
+}
+
+#Menu td {
+	vertical-align:bottom;
+	background:url("../Img/Separateur.png") no-repeat 0 14px;
+}
+
+#Menu a {
+	text-align:center;
+	color: white;
+	border:0 solid #0172BE;
+	display:block;
+	padding:7px 10px;
+	font-weight: bold;
+}
+
+#Menu td.last a {
+	background:url("../Img/Separateur.png") no-repeat 100% 7px;
+}
+
+#Menu a:hover {
+	text-decoration: none;
+	border-top-width:6px;
+}
+
+#Menu td.current a {
+	border-top-width:6px;
+}
+
+#Menu td a + ul {
+	display: none;
+	padding-bottom: 5px;
+	margin-left: 1px;
+}
+
+#Menu td a:hover + ul, #Menu td ul:hover, #Menu td ul.hover {
+	display: block;
+	position: absolute;
+	top: 175px;
+	background: url("../Img/fond-menu.png") repeat;
+	z-index: 10;
+}
+
+/*html.MSIE #Menu td a:hover + ul, html.MSIE #Menu td ul:hover {
+	top: 36px;
+}*/
+
+#Menu td ul li {
+	list-style: none;
+}
+
+#Menu td ul a {
+	border: none;
+	padding: 5px 20px;
+	text-align: left;
+	font-weight: normal;
+	font-size: 12px;
+}
+
+#Menu td ul a:hover {
+	text-decoration: underline;
+}

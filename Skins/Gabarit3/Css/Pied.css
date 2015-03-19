@@ -1,0 +1,22 @@
+#Pied ul{
+	margin:0;
+	list-style-type:none;
+}
+
+#Pied li{
+	display:block;
+	float:left;
+	padding-left:10px;
+}
+
+#Pied p{
+	margin-right:10px;
+}
+
+#Pied a, #Pied a:visited{
+	text-decoration:none;
+}
+
+#Pied a:hover{
+	text-decoration:underline;
+}

@@ -1,0 +1,25 @@
+/*--- GLOBAL ---*/
+body {
+    background: #D5E2E8; 
+}
+
+div#Content {
+    padding: 5px;
+}
+
+/*--- HEADER ---*/
+div#InfosConnexion {
+    padding: 10px;
+}
+
+div#Header .navbar-inner {
+    border-radius: 0;
+}
+
+div#Header .navbar {
+    margin: 0;
+}
+
+div#Ariane {
+    padding: 5px;
+}

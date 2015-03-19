@@ -1,0 +1,176 @@
+.BlocAcces ul{
+	margin:0;
+	padding:0;
+	list-style-type:none;
+	width:130px;
+	float:left;
+}
+
+ul.Foot, ul.Foot li{
+	margin:0;
+	padding:0;
+	padding:5px 0px 1px 0px;
+	list-style-type:none;
+	background-image:none;
+}
+
+ul.Foot {
+	padding-bottom:15px;
+}
+
+
+.BlocAcces img{
+	margin-bottom:-5px;
+}
+
+.BlocAcces a, .BlocAcces a:visited{
+	color:#ffffff;
+	display:block;
+	line-height:15px;
+}
+
+.BlocAcces a, .BlocFoot a, .BlocFoot a:visited, .BlocAcces a:hover, .BlocFoot a:hover{
+	text-decoration:none;
+	color:#ffffff;
+	width:200px;
+}
+
+.BlocAcces a:hover, .BlocAcces a:active, .BlocFoot a:hover, .BlocFoot a:active{
+	text-decoration:underline;
+}
+
+.BlocFoot, .BlocAcces{
+/* 	height:170px; */
+	padding-top:5px;
+	float:left;
+	width:200px;
+/*	background:url(/Skins/Fnaezus/Img/SeparationBasdePage.jpg) no-repeat right 5px;*/
+}
+
+*+html .BlocFoot, *+html .BlocAcces{
+	padding-bottom:10px;
+}
+
+.BlocFoot{
+	padding-left:10px;
+	text-align:right;
+}
+
+.BlocFoot ul{
+	list-style-type:none;
+}
+
+.BlocAcces h2{
+	/*font-size:12px;*/
+	color:#C9B785;
+	font-family:Georgia,Arial,Verdana,Helvetica,sans-serif;
+	font-weight:normal;
+	border-bottom:1px solid #C9B785;
+	width:180px;
+
+}
+/* ICI LA PARTIE CONTACT DU PIED */
+.BlocAcces2 h2{
+	/*font-size:12px;*/
+	color:#C9B785;
+	font-family:Georgia,Arial,Verdana,Helvetica,sans-serif;
+	font-weight:normal;
+	border-bottom:1px solid #C9B785;
+	margin-bottom:5px;
+
+}
+
+.BlocAcces2 h2 a, .BlocAcces2 h2 a:visited{
+	color:#C9B785;
+	cursor:pointer;
+}
+
+.BlocAcces2 h2 a:hover, .BlocAcces2 h2 a:active{
+	color:#fff;
+}
+.BlocAcces2 h3{
+	font-size:11px;
+	color:#C9B785;
+	font-family:Georgia,Arial,Verdana,Helvetica,sans-serif;
+	font-style:italic;
+	font-weight:normal;
+	border-bottom:1px solid #C9B785;
+	margin-bottom:5px;
+	margin-top:15px;
+	padding:0;
+
+}
+
+.BlocAcces2{
+/* 	height:170px; */
+	padding-top:5px;
+	float:right;
+/*	background-color:#ff3300;*/
+	text-align:right;
+	color:#ffffff;
+/*	background:url(/Skins/Fnaezus/Img/SeparationBasdePage.jpg) no-repeat right 5px;*/
+}
+
+.BlocAcces2 a, .BlocAcces2 a:visited{
+	text-decoration:none;
+	color:#ffffff;
+}
+
+.BlocAcces2 a:hover, .BlocAcces2 a:active{
+	text-decoration:underline;
+}
+
+/* FIN DE LA PARTIE CONTACT DU PIED */
+.BlocFoot h2{
+	/*font-size:12px;*/
+	color:#C9B785;
+	font-family:Georgia,Arial,Verdana,Helvetica,sans-serif;
+	font-weight:normal;
+	text-align:right;
+}
+
+.BlocFoot ul{
+	margin-top:10px;
+	width:210px;
+}
+
+.BlocFoot ul li{
+	display:block;
+	margin-bottom:0px;
+	padding:0px;
+}
+
+.BlocFoot form{
+	margin-top:10px;
+	width:250px;
+}
+
+.BlocFoot form div{
+	margin-bottom:5px;
+}
+
+.BlocFoot form a.fFonBleu{
+	margin-left:115px;
+	width:80px;
+}
+
+/*-------------- Autres styles du form dans Formulaire.css------------*/
+
+#BandeFoot{
+	padding-top:5px;
+/*	padding-bottom:5px;*/
+	height:25px;
+	/*background:#021528;*/
+	background:transparent url(/Skins/AdminV2/Img/Structure/BarreBas.jpg) repeat scroll 0 0;
+}
+
+#BandeFoot p, #BandeFoot a, #BandeFoot a:visited{
+	color:#fff;
+	font-family:Georgia,Arial,Verdana,Helvetica,sans-serif;
+	text-decoration:none;
+/*	font-style:italic;*/
+}
+
+#BandeFoot a:hover, #BandeFoot a:active{
+	color:#C9B785;
+}

@@ -1,0 +1,12 @@
+div.fildariane  {
+	height: 17px;
+	padding: 5px 0 0 5px;
+}
+
+div.fildariane, div.fildariane a {
+	color: #2f2f2f;
+}
+
+div.fildariane ul li{
+	padding: 0 2px;
+}

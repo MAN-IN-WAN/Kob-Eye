@@ -1,0 +1,245 @@
+.LigneForm{
+	display:block;
+	width:100%;
+	margin-bottom:10px;
+}
+
+div[class="LigneForm"]{
+	overflow:auto;
+}
+
+* html .LigneForm{
+	clear:both;
+}
+
+.Obligatoire{
+	color:#FFBB00;
+	font-style:italic;
+	margin-left:100px;
+}
+
+.Error {
+	background-color:#FFBB00;
+}
+
+.Error2 {
+	color:#FFBB00;
+	font-weight:bold;
+}
+
+.Error3 {
+	background-color:#FFBB00;
+	font-weight:bold;
+	color:#000;
+	padding-left:2px;
+	margin-bottom:5px;
+}
+
+.BlocError{
+	padding:10px 20px 10px;
+	background-color:#FFBEBE;
+	margin-bottom:10px;
+}
+
+.BlocError p{
+	color:#BA0000;
+	font-weight:bold;
+	font-style:italic;
+	margin-bottom:5px;
+}
+
+.BlocError li{
+	color:#1E1E1E;
+	font-weight:bold;
+	margin-left:10px;
+}
+
+/*-----------------------------PAGE COMMENTAIRES----------------------------*/
+#AddComment{
+	margin-top:40px;
+}
+
+#AddComment label{
+	display:block;
+	float:left;
+	width:100px;
+	font-size:11px;
+}
+
+#AddComment p{
+	font-size:11px;
+}
+
+#AddComment input, #AddComment textarea{
+	float:left;
+	width:250px;
+}
+
+#AddComment input.BtnComment{
+	float:none;
+	margin-left:258px;
+	background:none;
+	border:none;
+	cursor:pointer;
+	background-image:url(/Skins/ArtfxPrivate/Img/BoutonEnregister.png);
+	background-repeat:no-repeat;
+	background-color:transparent;
+	width:92px;
+	height:20px;
+	outline:0;
+}
+
+#AddComment input.BtnComment:hover{
+	float:none;
+	margin-left:258px;
+	background:none;
+	border:none;
+	cursor:pointer;
+	background-image:url(/Skins/ArtfxPrivate/Img/BoutonEnregistrerOver.png);
+	background-repeat:no-repeat;
+	background-color:transparent;
+	width:92px;
+	height:20px;
+	outline:0;
+}
+
+
+#AddComment .LigneForm:hover >label {
+	color:#ffbb00;
+}
+
+
+/*-----------------------------FORM LOGIN----------------------------*/
+
+#Login{
+	padding:5px;
+	margin-bottom:10px;
+	background:url(/Skins/ArtfxBlog/Img/BlocLogin.jpg) no-repeat;
+}
+
+#Login h2{
+	border-color:#5f5f5d;
+}
+
+#Login label{
+	font-size:11px;
+	display:block;
+	width:80px;
+	float:left;
+}
+
+#Login .LigneForm:hover >label {
+	color:#ffbb00;
+}
+
+* html #Login label{
+	width:70px;
+}
+
+#Login input{
+	width:130px;
+	float:left;
+}
+
+* html #Login input{
+	width:120px;
+}
+
+#Login input.Connexion{
+	font-size:11px;
+	float:none;
+	width:60px;
+	margin-left:145px;
+	border:none;
+	color:#FFF;
+	padding-left:25px;
+	height:25px;
+	text-decoration:underline;
+	cursor:pointer;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/Skins/ArtfxBlog/Img/Fleche.png', sizingMethod='crop');
+}
+
+* html #Login input.Connexion{
+	background-color:#161616;
+}
+
+div[id="Login"] input.Connexion{
+	filter:none;
+	background:url(/Skins/ArtfxBlog/Img/Fleche.png) no-repeat;
+}
+
+div[id="Login"] input.Connexion:hover{
+	filter:alpha(opacity=50);
+	-moz-opacity:.50;
+	opacity:.50;
+	 -khtml-opacity:.50; 
+	cursor:pointer;
+	background:url(/Skins/ArtfxBlog/Img/Fleche.png) no-repeat;
+}
+
+* html #Login input.Connexion{
+	background-position:0 3px;
+	margin-left:130px;
+}
+
+/*-----------------------------FORM CONTACT----------------------------*/
+
+#Contact{
+	padding:10px;
+}
+
+#Contact p{
+	margin-bottom:10px;
+	margin-top:10px;
+}
+
+#Contact label{
+	display:block;
+	float:left;
+	width:100px;
+}
+
+#Contact input, #Contact textarea{
+	float:left;
+	width:300px;
+}
+
+#Contact input.BoutonContact{
+	float:none;
+	width:60px;
+	margin-left:335px;
+	background:none;
+	border:none;
+	color:#FFBB00;
+	font-weight:bold;
+	padding-left:20px;
+	background:url(/Skins/ArtfxBlog/Img/PuceJaune.jpg) no-repeat;
+}
+
+#Contact input.BtnComment{
+	float:none;
+	margin-left:308px;
+	background:none;
+	border:none;
+	cursor:pointer;
+	background-image:url(/Skins/ArtfxPrivate/Img/BoutonEnregister.png);
+	background-repeat:no-repeat;
+	background-color:transparent;
+	width:92px;
+	height:20px;
+	outline:0;
+}
+
+#Contact input.BtnComment:hover{
+	float:none;
+	margin-left:308px;
+	background:none;
+	border:none;
+	cursor:pointer;
+	background-image:url(/Skins/ArtfxPrivate/Img/BoutonEnregistrerOver.png);
+	background-repeat:no-repeat;
+	background-color:transparent;
+	width:92px;
+	height:20px;
+	outline:0;
+}

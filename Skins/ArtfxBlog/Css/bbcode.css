@@ -1,0 +1,61 @@
+.bb_bold{font-weight:bold;color:#FFBB00;}
+.bb_italic{font-style:italic;}
+.bb_underline{text-decoration:underline;}
+.bb_strike{text-decoration:line-through;}
+.bb_quote{margin:20px;border:1px dotted black;}
+.bb_spoiler{margin:20px;border:1px dotted black;color:white;background-color:white;}
+.bb_uppercase{text-transform:uppercase;}
+.bb_lowercase{text-transform:lowercase;}
+
+a.bb_a_url, a.bb_a_url:visited {
+	color:#FFBB00;
+	text-decoration:none;
+	border-bottom:1px dotted #FFBB00;
+}
+
+a.bb_a_url:hover, a.bb_a_url:active {
+	text-decoration:none;
+	border-bottom:1px solid #FFBB00;
+}
+
+ul.bb_ul{
+	margin-top:10px;
+	margin-bottom:10px;
+	margin-left:5px;
+}
+img.bb_img{
+	width:auto !important;
+	max-width:420px;
+	width:420px;
+	border:10px solid #0C0C0C;
+
+}
+
+img.bb_img:hover{
+	width:auto !important;
+	max-width:420px;
+	width:420px;
+	border:10px solid #0C0C0C;
+	filter:alpha(opacity=50);
+	-moz-opacity:.50;
+	opacity:.50;
+	 -khtml-opacity:.50; 
+
+}
+
+li.bb_li{
+	display:block;
+	padding-left:20px;
+	margin-bottom:5px;
+	text-align:justify;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/Skins/ArtfxBlog/Img/PictoRond.png', sizingMethod='crop');
+}
+
+* html li.bb_li{
+	width:430px;
+}
+
+li[class="bb_li"]{
+	filter:none;
+	background:url(/Skins/ArtfxBlog/Img/PictoRond.png) no-repeat;
+}

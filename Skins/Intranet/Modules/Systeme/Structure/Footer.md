@@ -1,0 +1,3 @@
+<div style="color: #FFFFFF;padding:28px 0 0 301px;text-align:justify;">
+	Agde - Alès - Anduze - Arles - Balaruc les bains - Bédarieux - Béziers - Cap d'Agde - Frontignan - La Calmette - La Grand Combe - Lamalou les bains - Marguerittes - Marseillan - Mireval - Nîmes - Pézenas - Saint-Ambroix - Saint-Christol les Alès - Saint-Martin de Crau - Saint Pons de Thomières - Saint-Rémy de Provence - Saint Thibery - Sète - Villeneuve les Maguelones
+</div>

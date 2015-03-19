@@ -1,0 +1,45 @@
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/mootools.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/mootools-more.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/functions.js[/HEADER]
+[STORPROC Systeme/Group/User/[!Systeme::User::Id!]|Grp]
+	[STORPROC Systeme/Group/Group/[!Grp::Id!]|Grp2]
+	[/STORPROC]
+[/STORPROC]
+[!OkGrp:=0!]
+[IF  [!Grp::Id!]=7||[!Grp2::Id!]=7]
+	[!OkGrp:=1!]
+[ELSE]
+	[STORPROC Systeme/Group/7/User/[!Systeme::User::Id!]|Grp]
+		[NORESULT]
+			[!OkGrp:=0!]
+		[/NORESULT]
+	[/STORPROC]
+[/IF]
+
+[IF [!OkGrp!]!=1||[!Systeme::User::Id!]=163||[!Systeme::User::Skin!]!=Prescripteurs]
+	<div id="Header" class="fullWidth">
+		<div id="Bando">
+			Vous n'avez pas droit d'accès à ce site, merci de contacter Pragma
+		</div>
+	</div>	
+[ELSE]
+	<div id="Header" class="fullWidth">
+		<div id="Bando">
+			<a href="/" class="RetourAccueil" title="Retour à l'accueil"></a>
+			[MODULE Systeme/Structure/Header]
+		</div>
+		[MODULE Systeme/Menu]
+	</div>
+	<div id="Main" class="fullWidth">
+		<div id="Data">
+			[DATA]
+	//SITE EN MAINTENANCE MERCI DE REVENIR DANS QUELQUES MINUTES
+		</div>
+	</div>
+	<div id="Footer" class="fullWidth">
+		[MODULE Systeme/Structure/Footer]
+	</div>
+[/IF]
+
+
+// voir dans skin public residence/updateaction pour la mise à jour des options

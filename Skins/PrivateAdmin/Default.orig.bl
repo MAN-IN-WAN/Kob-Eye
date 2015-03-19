@@ -1,0 +1,1202 @@
+	<!--// OPTIONAL & CONDITIONAL CSS FILES //-->   
+	<!-- date picker css -->
+	[HEADER CSS]Skins/PrivateAdmin/Css/datepicker.css[/HEADER]
+	<!-- full calander css -->
+	[HEADER CSS]Skins/PrivateAdmin/Css/fullcalendar.css[/HEADER]
+	<!-- data tables extended CSS -->
+	[HEADER CSS]Skins/PrivateAdmin/Css/TableTools.css[/HEADER]
+	<!-- bootstrap wysimhtml5 editor -->
+	[HEADER CSS]Skins/PrivateAdmin/Css/bootstrap-wysihtml5.css[/HEADER]
+	[HEADER CSS]Skins/PrivateAdmin/Css/wysiwyg-color.css[/HEADER]
+	<!-- custom/responsive growl messages -->
+	[HEADER CSS]Skins/PrivateAdmin/Css/toastr.css[/HEADER]
+	[HEADER CSS]Skins/PrivateAdmin/Css/toastr-responsive.css[/HEADER]
+	[HEADER CSS]Skins/PrivateAdmin/Css/jquery.css[/HEADER]
+	
+	<!-- // DO NOT REMOVE OR CHANGE ORDER OF THE FOLLOWING // -->
+	<!-- bootstrap default css (DO NOT REMOVE) -->
+	[HEADER CSS]Skins/PrivateAdmin/Css/bootstrap.css[/HEADER]
+	[HEADER CSS]Skins/PrivateAdmin/Css/bootstrap-responsive.css[/HEADER]
+	<!-- font awsome and custom icons -->
+	[HEADER CSS]Skins/PrivateAdmin/Css/font-awesome.css[/HEADER]
+	[HEADER CSS]Skins/PrivateAdmin/Css/cus-icons.css[/HEADER]
+	<!-- jarvis widget css -->
+	[HEADER CSS]Skins/PrivateAdmin/Css/jarvis-widgets.css[/HEADER]
+	<!-- Data tables, normal tables and responsive tables css -->
+	[HEADER CSS]Skins/PrivateAdmin/Css/DT_bootstrap.css[/HEADER]
+	[HEADER CSS]Skins/PrivateAdmin/Css/responsive-tables.css[/HEADER]
+	<!-- used where radio, select and form elements are used -->
+	[HEADER CSS]Skins/PrivateAdmin/Css/uniform.css[/HEADER]
+	[HEADER CSS]Skins/PrivateAdmin/Css/select2.css[/HEADER]
+	<!-- main theme files -->
+	[HEADER CSS]Skins/PrivateAdmin/Css/theme.css[/HEADER]
+	[HEADER CSS]Skins/PrivateAdmin/Css/theme-responsive.css[/HEADER]
+    
+	<!-- // THEME CSS changed by javascript: the CSS link below will override the rules above // -->
+	<!-- For more information, please see the documentation for "THEMES" -->
+	[HEADER CSS]Skins/PrivateAdmin/Css/green.css[/HEADER]
+	
+   	<!-- To switch to full width -->
+	[HEADER CSS]Skins/PrivateAdmin/Css/full-width.css[/HEADER]
+    
+	<!-- Webfonts -->
+	[HEADER CSS]Skins/PrivateAdmin/Css/css.css[/HEADER]
+[HEADER]
+	
+	<!-- All javascripts are located at the bottom except for HTML5 Shim -->
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+   		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+   		<script src="js/include/respond.min.js"></script>
+   	<![endif]-->
+	
+	<!-- For Modern Browsers -->
+	<link rel="shortcut icon" href="http://wbpreview.com/previews/WB09MR0M6/img/favicons/favicon.png">
+	<!-- For everything else -->
+	<link rel="shortcut icon" href="http://wbpreview.com/previews/WB09MR0M6/img/favicons/favicon.ico">
+	<!-- For retina screens -->
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://wbpreview.com/previews/WB09MR0M6/img/favicons/apple-touch-icon-retina.png">
+	<!-- For iPad 1-->
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://wbpreview.com/previews/WB09MR0M6/img/favicons/apple-touch-icon-ipad.png">
+	<!-- For iPhone 3G, iPod Touch and Android -->
+	<link rel="apple-touch-icon-precomposed" href="http://wbpreview.com/previews/WB09MR0M6/img/favicons/apple-touch-icon.png">
+	
+	<!-- iOS web-app metas -->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+	<!-- Startup image for web apps -->
+	<link rel="apple-touch-startup-image" href="http://wbpreview.com/previews/WB09MR0M6/img/splash/ipad-landscape.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)">
+	<link rel="apple-touch-startup-image" href="http://wbpreview.com/previews/WB09MR0M6/img/splash/ipad-portrait.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)">
+	<link rel="apple-touch-startup-image" href="http://wbpreview.com/previews/WB09MR0M6/img/splash/iphone.png" media="screen and (max-device-width: 320px)">
+	
+  <style type="text/css">.jqstooltip { position: absolute;left: 0px;top: 0px;visibility: hidden;background: rgb(0, 0, 0) transparent;background-color: rgba(0,0,0,0.6);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";color: white;font: 10px arial, san serif;text-align: left;white-space: nowrap;padding: 5px;border: 1px solid white;z-index: 10000;}.jqsfield { color: white;font: 10px arial, san serif;text-align: left;}</style></head>
+
+[/HEADER]
+  	<!-- .height-wrapper -->
+	<div class="height-wrapper">
+		
+		<!-- header -->
+		<header>
+			<!-- tool bar -->
+			<div id="header-toolbar" class="container-fluid">
+				<!-- .contained -->
+				<div class="contained">
+					
+					<!-- theme name -->
+					<h1> {JARVIS} <span class="hidden-phone">- Smart Admin Template</span> </h1>
+					<!-- end theme name -->
+					
+					<!-- span4 -->
+					<div class="pull-right">
+						<!-- demo theme switcher-->
+						<div id="theme-switcher" class="btn-toolbar">
+							
+							<!-- search and log off button for phone devices -->
+							<div class="btn-group pull-right visible-phone">
+								<a href="javascript:void(0)" class="btn btn-inverse btn-small"><i class="icon-search"></i></a>
+								<a href="http://wbpreview.com/previews/WB09MR0M6/login.html" class="btn btn-inverse btn-small"><i class="icon-off"></i></a>
+							</div>
+							<!-- end buttons for phone device -->
+							
+							<!-- dropdown mini-inbox-->
+							<div class="btn-group">
+								<!-- new mail ticker -->
+								<a href="javascript:void(0)" class="btn btn-small btn-inverse dropdown-toggle" data-toggle="dropdown">
+									<span class="mail-sticker">3</span>
+									<i class="cus-email"></i>
+								</a>
+								<!-- end new mail ticker -->
+								
+								<!-- email lists -->
+								<div class="dropdown-menu toolbar pull-right">
+									<h3>Inbox</h3>
+									<div style="position: relative; overflow: hidden; width: 240px; height: 277px;" class="slimScrollDiv"><ul style="overflow: hidden; width: 240px; height: 277px;" id="mailbox-slimscroll-js" class="mailbox">
+										<li>
+											<a href="javascript:void(0)" class="unread">
+												<img src="/Skins/PrivateAdmin/Admin_fichiers/email-important.png" alt="important mail">
+												From: David Simpson
+												<i class="icon-paper-clip"></i>
+												<span>Dear Victoria, Congratulations! Your work has been uploaded to wrapbootstrap.com...</span>
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0)" class="unread attachment">
+												
+												<img src="/Skins/PrivateAdmin/Admin_fichiers/email-unread.png" alt="important mail">
+												Re:Last Year sales
+												<i class="icon-paper-clip"></i>
+												<span>Hey Vicky, find attached! Thx :-)</span>
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0)" class="unread">
+												<img src="/Skins/PrivateAdmin/Admin_fichiers/email-unread.png" alt="important mail">
+												Company Party
+												<i class="icon-paper-clip"></i>
+												<span>Hi, You have been cordially invited to join new year after party.</span>
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0)" class="read">
+												<img src="/Skins/PrivateAdmin/Admin_fichiers/email-read.png" alt="important mail">
+												RE: 2 Bugs found...
+												<i class="icon-paper-clip"></i>
+												<span>I have found two more bugs in this your beta version, maybe its not working...</span>
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0)" class="read">
+												<img src="/Skins/PrivateAdmin/Admin_fichiers/email-read.png" alt="important mail">
+												2 Bugs found...
+												<i class="icon-paper-clip"></i>
+												<span>Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales.</span>
+											</a>
+										</li>
+										<li>
+											<a href="javascript:void(0)" class="read">
+												<img src="/Skins/PrivateAdmin/Admin_fichiers/email-read.png" alt="important mail">
+												Welcome to Jarvis!
+												<i class="icon-paper-clip"></i>
+												<span>Feugiat a, tellus. Phasellus viverra nulla ut metus varius. Quisque rutrum. Aenean imperdiet... </span>
+											</a>
+										</li>
+									</ul><div style="background: none repeat scroll 0% 0% rgb(0, 0, 0); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px 7px 7px 7px; z-index: 99; right: 3px;" class="slimScrollBar ui-draggable"></div><div style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px 7px 7px 7px; background: none repeat scroll 0% 0% rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 3px;" class="slimScrollRail"></div></div>
+									<a href="javascript:void(0);" id="go-to-inbox">Go to Inbox <i class="icon-double-angle-right"></i></a>
+								</div>
+								<!-- end email lists -->
+							</div>
+							<!-- end dropdown mini-inbox-->
+							
+							<!-- Tasks -->
+							<div class="btn-group hidden-phone">
+								<a href="javascript:void(0)" class="btn btn-inverse btn-small">My Tasks</a>
+								<a href="javascript:void(0)" class="btn btn-inverse dropdown-toggle btn-small" data-toggle="dropdown"><span class="caret"></span></a>
+					
+								<div class="dropdown-menu toolbar pull-right">
+									<h3>Showing All Tasks</h3>
+									<ul class="progressbox">
+						                <li>
+						                    <strong><i class="online pull-left"></i>Urgent Bug Fixes</strong><b>Complete</b>
+						                    <div class="progress progress-success slim"><div class="bar" style="width: 100%;"></div></div>
+						                </li>
+						                <li>
+						                    <strong>Added functionality</strong><b>70%</b>
+						                    <div class="progress progress-info slim"><div class="bar" style="width: 70%;"></div></div>
+						                </li>
+						                <li>
+						                    <strong>CAD Changes</strong><b>50%</b>
+						                    <div class="progress progress-info slim"><div class="bar" style="width: 50%;"></div></div>
+						                </li>
+						                <li>
+						                    <strong>Marketing Campaign Mocup</strong><b>22%</b>
+						                    <div class="progress progress-danger slim"><div class="bar" style="width: 22%;"></div></div>
+						                </li>
+						                <li>
+						                    <strong><i class="offline pull-left"></i>Proposal</strong><b>Pending</b>
+						                    <div class="progress progress-info slim"><div class="bar" style="width: 0%;"></div></div>
+						                </li>
+						            </ul>
+								</div>
+
+							</div>
+							<!-- end Tasks -->
+							
+							<!-- theme dropdown -->
+							<div class="btn-group hidden-phone">
+								<a href="javascript:void(0)" class="btn btn-small btn-inverse" id="reset-widget"><i class="icon-refresh"></i></a>
+								<a href="javascript:void(0)" class="btn btn-small btn-inverse dropdown-toggle" data-toggle="dropdown">Themes <span class="caret"></span></a>
+								<ul id="theme-links-js" class="dropdown-menu toolbar pull-right">
+									<li>
+										<a href="javascript:void(0)" data-rel="purple"><i class="icon-sign-blank purple-icon"></i>Royal Purple</a>
+									</li>
+									<li>
+										<a href="javascript:void(0)" data-rel="blue"><i class="icon-sign-blank navyblue-icon"></i>Navy Blue</a>
+									</li>
+									<li>
+										<a href="javascript:void(0)" data-rel="green"><i class="icon-sign-blank green-icon "></i>Emerald</a>
+									</li>
+									<li>
+										<a href="javascript:void(0)" data-rel="darkred"><i class="icon-sign-blank red-icon "></i>Dark Rose</a>
+									</li>
+									<li>
+										<a href="javascript:void(0)" data-rel="default"><i class="icon-sign-blank grey-icon"></i>Default</a>
+									</li>
+								</ul>
+							</div>
+							<!-- end theme dropdown-->
+							
+						</div>
+					  	<!-- end demo theme switcher-->
+					</div>
+					<!-- end span4 -->
+				</div>
+				<!-- end .contained -->
+			</div><select class="selectnav" id="selectnav1"><option selected="selected" value="">Quick Menu </option><option value="javascript:void(0)">Dashboard 2</option><option value="http://wbpreview.com/previews/WB09MR0M6/index.html">- Dashboard</option><option value="javascript:void(0);">- Logout</option><option value="http://wbpreview.com/previews/WB09MR0M6/inbox.html">Inbox</option><option value="javascript:void(0)">Forms3</option><option value="http://wbpreview.com/previews/WB09MR0M6/forms.html">- Form Elements</option><option value="http://wbpreview.com/previews/WB09MR0M6/validation.html">- Validation</option><option value="http://wbpreview.com/previews/WB09MR0M6/wizard.html">- Wizards</option><option value="javascript:void(0)">Interface3</option><option value="http://wbpreview.com/previews/WB09MR0M6/interface.html">- Interface Elements</option><option value="http://wbpreview.com/previews/WB09MR0M6/buttons.html">- Buttons &amp; Icons</option><option value="http://wbpreview.com/previews/WB09MR0M6/tables.html">- Tables</option><option value="javascript:void(0)">Charts &amp; Graphs2</option><option value="http://wbpreview.com/previews/WB09MR0M6/basic_charts.html">- Basic Charts</option><option value="http://wbpreview.com/previews/WB09MR0M6/adv_charts.html">- Advanced Charts</option><option value="http://wbpreview.com/previews/WB09MR0M6/widgets.html">Smart Widgets</option><option value="javascript:void(0)">Bonus3</option><option value="http://wbpreview.com/previews/WB09MR0M6/invoice.html">- Invoice</option><option value="http://wbpreview.com/previews/WB09MR0M6/typography.html">- Typography</option><option value="http://wbpreview.com/previews/WB09MR0M6/chat.html">- Chat</option></select>
+			<!-- end tool bar -->
+			
+		</header>
+		<!-- end header -->
+		
+	    <div id="main" role="main" class="container-fluid">
+			<div class="contained">
+				<!-- aside -->	
+				<aside>	
+					
+					<!-- search box -->
+					<div class="main-search">
+						<label for="main-search"><i class="icon-search"></i></label>
+	                    <input id="main-search" placeholder="Search..." type="text">
+                	</div>
+					<div class="divider"></div>
+					<!-- end search box -->
+										
+					<!-- aside item: Mini profile -->
+					<div class="my-profile">
+						<a href="javascript:void(0)" class="my-profile-pic">
+							<img src="/Skins/PrivateAdmin/Admin_fichiers/avatar_0.jpg" alt="">
+						</a>
+						<span class="first-child">Welcome <strong>Victoria!</strong></span>
+						<span><a href="javascript:void(0);">Edit Profile </a></span>
+					</div>
+					<div class="divider"></div>
+					<!-- end aside item: Mini profile -->
+
+					<!-- aside item: Menu -->
+					<div class="sidebar-nav-fixed">
+						
+						<ul style="" class="menu ctAccordion" id="accordion-menu-js">
+							<li class="current open">
+								<a class="head" href="javascript:void(0)"><i class="icon-off"></i>Dashboard <span class="badge">2</span></a>
+								<ul style="display: block;">
+									<li class="open">
+										<a href="http://wbpreview.com/previews/WB09MR0M6/index.html" class="expanded">Dashboard</a>
+									</li>
+									<li class="closed">
+										<a href="javascript:void(0);" class="logout-js" data-rel="login.html">Logout</a>
+									</li>
+								</ul>
+							</li>
+							<li class="">
+								<a href="http://wbpreview.com/previews/WB09MR0M6/inbox.html"><i class="icon-envelope"></i>Inbox</a>
+							</li>
+							<li class="">
+								<a class="head" href="javascript:void(0)"><i class="icon-check"></i>Forms<span class="badge">3</span></a>
+								<ul style="display: none;">
+									<li class="closed">
+										<a href="http://wbpreview.com/previews/WB09MR0M6/forms.html">Form Elements</a>
+									</li>
+									<li class="closed">
+										<a href="http://wbpreview.com/previews/WB09MR0M6/validation.html">Validation</a>
+									</li>
+									<li class="closed">
+										<a href="http://wbpreview.com/previews/WB09MR0M6/wizard.html">Wizards</a>
+									</li>
+								</ul>
+							</li>
+							<li class="">
+								<a class="head" href="javascript:void(0)"><i class="icon-user"></i>Interface<span class="badge">3</span></a>
+								<ul style="display: none;">
+									<li class="closed">
+										<a href="http://wbpreview.com/previews/WB09MR0M6/interface.html">Interface Elements</a>
+									</li>
+									<li class="closed">
+										<a href="http://wbpreview.com/previews/WB09MR0M6/buttons.html">Buttons &amp; Icons</a>
+									</li>
+									<li class="closed">
+										<a href="http://wbpreview.com/previews/WB09MR0M6/tables.html">Tables</a>
+									</li>
+								</ul>
+							</li>
+							<li class="">
+								<a class="head" href="javascript:void(0)"><i class="icon-signal"></i>Charts &amp; Graphs<span class="badge">2</span></a>
+								<ul style="display: none;">
+									<li class="closed">
+										<a href="http://wbpreview.com/previews/WB09MR0M6/basic_charts.html">Basic Charts</a>
+									</li>
+									<li class="closed">
+										<a href="http://wbpreview.com/previews/WB09MR0M6/adv_charts.html">Advanced Charts</a>
+									</li>
+								</ul>
+							</li>
+							<li class="">
+								<a href="http://wbpreview.com/previews/WB09MR0M6/widgets.html"><i class="icon-refresh"></i>Smart Widgets</a>
+							</li>
+							<li class="">
+								<a class="head" href="javascript:void(0)"><i class="icon-plus"></i>Bonus<span class="badge">3</span></a>
+								<ul style="display: none;">
+									<li class="closed">
+										<a href="http://wbpreview.com/previews/WB09MR0M6/invoice.html">Invoice</a>
+									</li>
+									<li class="closed">
+										<a href="http://wbpreview.com/previews/WB09MR0M6/typography.html">Typography</a>
+									</li>
+									<li class="closed">
+										<a href="http://wbpreview.com/previews/WB09MR0M6/chat.html">Chat</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+						
+					</div>
+					<div class="divider"></div>
+					<!-- end aside item: Menu -->
+					
+					<!-- aside item: Inbox -->
+					<!-- inbox message 1-->
+					<div class="mini-inbox">
+						<div class="alert inbox">
+							<button type="button" class="close" data-dismiss="alert">
+								×
+							</button>
+							
+							<a href="javascript:void(0)">
+								<img src="/Skins/PrivateAdmin/Admin_fichiers/email-important.png" alt="important mail" height="18" width="22">
+								From:David S...
+							</a>
+							Dear Victoria, Congratulations! You work has been uploade...
+						</div>
+						<!-- inbox message 2-->
+						<div class="alert inbox">
+							<button type="button" class="close" data-dismiss="alert">
+								×
+							</button>
+							<a href="javascript:void(0)">
+								<img src="/Skins/PrivateAdmin/Admin_fichiers/email-unread.png" alt="important mail" height="18" width="22">
+								Re:Last Year...
+							</a>
+							Hey Vicky, find attached! Thx :-)
+						</div>
+						<!-- inbox message 3-->
+						<div class="alert inbox last-child">
+							<button type="button" class="close" data-dismiss="alert">
+								×
+							</button>
+							<a href="javascript:void(0)">
+								<img src="/Skins/PrivateAdmin/Admin_fichiers/email-unread.png" alt="important mail" height="18" width="22">
+								Company Party
+							</a>
+							Hi, You have been cordially invited to join new year...
+						</div>
+						
+					</div>
+					<div class="divider"></div>
+					<!-- end aside item: Inbox -->
+					
+					<!-- aside item: Tiny Stats -->
+					<div class="number-stats">
+				    	<ul>
+				        	<li>4579<span>visitors</span></li>
+				            <li>571<span>orders</span></li>
+				            <li>879<span>reviews</span></li>
+				        </ul>
+				    </div>
+				    <div class="divider"></div>
+					<!-- end aside item: Tiny Stats -->
+					
+					<!-- aside buttons -->
+					<div class="aside-buttons">
+		                <a href="javascript:void(0)" title="" class="btn btn-primary">Create an Invoice</a>
+		            </div>
+		            <div class="divider"></div>
+		            <!-- end aside buttons -->
+				</aside>
+				<!-- aside end -->
+				
+				<!-- main content -->
+				<div id="page-content">
+					<!-- page header -->
+					<h1 id="page-header">Dashboard</h1>	
+
+					<div class="alert adjusted alert-info">
+						<button class="close" data-dismiss="alert">×</button>
+						<i class="cus-exclamation"></i>
+						<strong>Welcome to {Jarvis}Admin</strong> Please don't forget to check out all the pages and the features.
+					</div>
+					
+					<div class="fluid-container">
+						
+						<!-- start icons -->
+						<div id="start">
+							<ul>
+								<li>
+									<label>+548 </label>
+									<a href="javascript:void(0)" title="">
+										<img src="/Skins/PrivateAdmin/Admin_fichiers/add-user.png" alt="">
+										<span>Add New User</span>
+									</a>
+								</li>
+								<li>
+									<label>246 </label>
+									<a href="javascript:void(0)" title="">
+										<img src="/Skins/PrivateAdmin/Admin_fichiers/orders.png" alt="">
+										<span>View Orders</span>
+									</a>
+								</li>
+								<li>
+									<a href="javascript:void(0)" title="">
+										<img src="/Skins/PrivateAdmin/Admin_fichiers/mass.png" alt="">
+										<span>Broadcast</span>
+									</a>
+								</li>
+								<li>
+									<label>new</label>
+									<a href="javascript:void(0)" title="">
+										<img src="/Skins/PrivateAdmin/Admin_fichiers/stats.png" alt="">
+										<span>Show Statistics</span>
+									</a>
+								</li>
+								<li>
+									<label>657</label>
+									<a href="javascript:void(0)" title="">
+										<img src="/Skins/PrivateAdmin/Admin_fichiers/pending-message.png" alt="">
+										<span>Comments</span>
+									</a>
+								</li>
+								<li>
+									<a href="javascript:void(0)" title="">
+										<img src="/Skins/PrivateAdmin/Admin_fichiers/upgrade.png" alt="">
+										<span>Service Upgrade</span>
+									</a>
+								</li>
+							</ul>
+
+						</div>						
+						<!-- end start icons -->
+						
+						<!-- widget grid -->
+						<section id="widget-grid" class="">
+							
+							<!-- row-fluid -->
+							<div class="row-fluid">
+								<article class="span12 sortable-grid ui-sortable">
+									
+									<!-- new widget -->
+									
+									<!-- end widget -->
+
+								<div role="widget" style="position: relative; opacity: 1; left: 0px; top: 0px;" class="jarviswidget jarviswidget-sortable" id="widget-id-0">
+									    <header role="heading">
+									        <h2>Campaign Monitor</h2>                           
+									    <div role="menu" class="jarviswidget-ctrls"> <a href="#" class="button-icon jarviswidget-delete-btn"><span class="trashcan-10"></span></a>  <a href="#" class="button-icon jarviswidget-edit-btn"><span class="pencil-10 "></span></a> <a href="#" class="button-icon jarviswidget-fullscreen-btn"><span class="fullscreen-10 "></span></a> <a href="#" class="button-icon jarviswidget-toggle-btn"><span class="min-10 "></span></a></div><span style="display: none;" class="jarviswidget-loader"></span></header>
+									    
+									    <!-- widget div-->
+									    <div role="content">
+									    	<!-- widget edit box -->
+									        <div class="jarviswidget-editbox">
+									            <div>
+									                <label>Title:</label>
+									                <input value="Campaign Monitor" type="text">
+									            </div>
+									            <div>
+									                <label>Styles:</label>
+									                <span data-widget-setstyle="purple" class="purple-btn"></span>
+									                <span data-widget-setstyle="navyblue" class="navyblue-btn"></span>
+									                <span data-widget-setstyle="green" class="green-btn"></span>
+									                <span data-widget-setstyle="yellow" class="yellow-btn"></span>
+									                <span data-widget-setstyle="orange" class="orange-btn"></span>
+									                <span data-widget-setstyle="pink" class="pink-btn"></span>
+									                <span data-widget-setstyle="red" class="red-btn"></span>
+									                <span data-widget-setstyle="darkgrey" class="darkgrey-btn"></span>
+									                <span data-widget-setstyle="black" class="black-btn"></span>
+									            </div>
+									        </div>
+									        <!-- end widget edit box -->
+            
+									        <div class="inner-spacer"> 
+									        <!-- content -->	
+												<div class="widget alert alert-success adjusted">
+													<button class="btn btn-mini pull-right btn-success">New Campaign</button>
+													<i class="cus-accept"></i>
+													<strong>Congratulations!</strong> Your last campaign was a success. Your goal was reached on <strong>28-12-12 @ 4:23 AM</strong>. Would you like to set up a new campaign?
+												</div>
+												<!-- sales chart -->
+								        		<div style="padding: 0px; position: relative;" id="saleschart" class="chart"><canvas height="250" width="862" class="base"></canvas><canvas style="position: absolute; left: 0px; top: 0px;" height="250" width="862" class="overlay"></canvas><div class="tickLabels" style="font-size:smaller"><div class="xAxis x1Axis" style="color:#545454"><div class="tickLabel" style="position:absolute;text-align:center;left:1px;top:230px;width:66px">Dec 1</div><div class="tickLabel" style="position:absolute;text-align:center;left:68px;top:230px;width:66px">Dec 8</div><div class="tickLabel" style="position:absolute;text-align:center;left:144px;top:230px;width:66px">Dec 16</div><div class="tickLabel" style="position:absolute;text-align:center;left:220px;top:230px;width:66px">Dec 24</div><div class="tickLabel" style="position:absolute;text-align:center;left:296px;top:230px;width:66px">Jan 1</div><div class="tickLabel" style="position:absolute;text-align:center;left:362px;top:230px;width:66px">Jan 8</div><div class="tickLabel" style="position:absolute;text-align:center;left:439px;top:230px;width:66px">Jan 16</div><div class="tickLabel" style="position:absolute;text-align:center;left:515px;top:230px;width:66px">Jan 24</div><div class="tickLabel" style="position:absolute;text-align:center;left:591px;top:230px;width:66px">Feb 1</div><div class="tickLabel" style="position:absolute;text-align:center;left:657px;top:230px;width:66px">Feb 8</div><div class="tickLabel" style="position:absolute;text-align:center;left:724px;top:230px;width:66px">Feb 15</div><div class="tickLabel" style="position:absolute;text-align:center;left:790px;top:230px;width:66px">Feb 22</div></div><div class="yAxis y1Axis" style="color:#545454"><div class="tickLabel" style="position:absolute;text-align:right;top:205px;right:838px;width:24px">0</div><div class="tickLabel" style="position:absolute;text-align:right;top:164px;right:838px;width:24px">1000</div><div class="tickLabel" style="position:absolute;text-align:right;top:123px;right:838px;width:24px">2000</div><div class="tickLabel" style="position:absolute;text-align:right;top:82px;right:838px;width:24px">3000</div><div class="tickLabel" style="position:absolute;text-align:right;top:41px;right:838px;width:24px">4000</div><div class="tickLabel" style="position:absolute;text-align:right;top:0px;right:838px;width:24px">5000</div></div></div></div>
+										       		
+											<!-- end content -->	
+									        </div>
+									        
+									    </div>
+									    <!-- end widget div -->
+									</div><div role="widget" style="position: relative; opacity: 1; left: 0px; top: 0px;" class="jarviswidget jarviswidget-sortable" id="widget-id-2">
+									    <header role="heading">
+									        <h2>Chat Interface</h2>                           
+									    <div role="menu" class="jarviswidget-ctrls"> <a href="#" class="button-icon jarviswidget-delete-btn"><span class="trashcan-10"></span></a>  <a href="#" class="button-icon jarviswidget-edit-btn"><span class="pencil-10 "></span></a> <a href="#" class="button-icon jarviswidget-fullscreen-btn"><span class="fullscreen-10 "></span></a> <a href="#" class="button-icon jarviswidget-toggle-btn"><span class="min-10 "></span></a></div><span style="display: none;" class="jarviswidget-loader"></span></header>
+									    
+									    <!-- widget div-->
+									    <div role="content">
+									    	<!-- widget edit box -->
+									        <div class="jarviswidget-editbox">
+									            <div>
+									                <label>Title:</label>
+									                <input value="Chat Interface" type="text">
+									            </div>
+									            <div>
+									                <label>Styles:</label>
+									                <span data-widget-setstyle="purple" class="purple-btn"></span>
+									                <span data-widget-setstyle="navyblue" class="navyblue-btn"></span>
+									                <span data-widget-setstyle="green" class="green-btn"></span>
+									                <span data-widget-setstyle="yellow" class="yellow-btn"></span>
+									                <span data-widget-setstyle="orange" class="orange-btn"></span>
+									                <span data-widget-setstyle="pink" class="pink-btn"></span>
+									                <span data-widget-setstyle="red" class="red-btn"></span>
+									                <span data-widget-setstyle="darkgrey" class="darkgrey-btn"></span>
+									                <span data-widget-setstyle="black" class="black-btn"></span>
+									            </div>
+									        </div>
+									        <!-- end widget edit box -->
+
+									        <!-- content -->	            
+									        <div class="inner-spacer chat-widget widget-content-padding"> 
+									        	
+									        	<!-- chat tabs -->
+												<ul id="myChat" class="nav nav-tabs chat-tabs">
+									              <li class="active">
+									              	<button class="btn btn-mini pull-right chat-close-btn">x</button>
+									              	<a href="#user1" data-toggle="tab"><i class="online"></i>Nicolas Cage</a>
+									              	</li>
+									              <li class="">
+									              	<button class="btn btn-mini pull-right chat-close-btn">x</button>
+									              	<a href="#user2" data-toggle="tab"><i class="away"></i>David Simpson</a>
+									              </li>
+									              <li class="pull-right">
+									              	
+													<div id="chat-user-control" class="btn-group hidden-phone">
+		                                                <button class="btn dropdown-toggle btn-small btn-link" data-toggle="dropdown"><i class="cus-status-online"></i></button>
+		                                                <ul class="dropdown-menu btn-small pull-right">
+															<li>
+																<a href="javascript:void(0);"><i class="cus-status-online"></i> Available</a>
+															</li>
+															<li>
+																<a href="javascript:void(0);"><i class="cus-cross-shield-2"></i> Busy</a>
+															</li>
+															<li>
+																<a href="javascript:void(0);"><i class="cus-clock"></i> Away</a>
+															</li>
+															<li class="divider"></li>
+															<li>
+																<a href="javascript:void(0);"><i class="cus-disconnect"></i> Disconnect</a>
+															</li>
+		                                                </ul>
+		                                            </div>
+
+							
+									              </li>
+									            </ul>
+									            <!-- end chat tabs -->
+									            
+									            <!-- chat box -->
+									            <div id="myChatTab" class="tab-content chat-content">
+									              
+									              <!-- chat user1 -->	
+									              <div class="tab-pane fade active in" id="user1">
+									              	
+									              	<!-- chat messages -->
+									              	<div style="position: relative; overflow: hidden; width: auto; height: 370px;" class="slimScrollDiv"><div style="overflow: hidden; width: auto; height: 370px;" class="chat-messages">
+									              		
+									              		<!-- message-id-1 -->
+														<p id="message-id-1" class="message-box">
+															<img src="/Skins/PrivateAdmin/Admin_fichiers/avatar_1.jpg" alt="">
+															<span class="message">
+																<strong>Nicolas Cage</strong> 
+																<span class="message-time">14:23pm, 4th Jan 2013</span>
+																<span class="message-text">Hehehe....sem quam semper libero, sit amet adipiscing sem neque sed ipsum. <i class="cus-emoticon-tongue"></i></span>
+															</span>
+														</p>
+														<!-- end message-id-1 -->
+														
+														<!-- message-id-2 -->
+														<p id="message-id-2" class="message-box you">
+															<img src="/Skins/PrivateAdmin/Admin_fichiers/avatar_0.jpg" alt="">
+															<span class="message">
+																<strong>Me</strong> 
+																<span class="message-time">14:25pm, 4th Jan 2013</span>
+																<span class="message-text"> Faucibus! Nullam quis ante. 
+Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed 
+fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed 
+consequat, leo eget bibendum sodales, augue velit cursus nunc <i class="cus-emoticon-smile"></i></span>
+															</span>
+														</p>
+									              		<!-- end message-id-2 -->
+									              		
+									              		<!-- message-id-3 -->
+														<p id="message-id-3" class="message-box">
+															<img src="/Skins/PrivateAdmin/Admin_fichiers/avatar_1.jpg" alt="">
+															<span class="message">
+																<strong>Nicolas Cage</strong> 
+																<span class="message-time">14:23pm, 4th Jan 2013</span>
+																<span class="message-text">Hey Vicky! Etiam ultricies 
+nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. 
+Etiam rhoncus. LOLOL!  Maecenas tempus, tellus eget condimentum rhoncus.
+ </span>
+															</span>
+														</p>
+														<!-- end message-id-3 -->
+									              	
+									             	</div><div style="background: none repeat scroll 0% 0% rgb(0, 0, 0); width: 7px; position: absolute; top: 0px; opacity: 0.4; border-radius: 7px 7px 7px 7px; z-index: 99; right: 3px; height: 370px; display: none;" class="slimScrollBar ui-draggable"></div><div style="width: 7px; height: 100%; position: absolute; top: 0px; border-radius: 7px 7px 7px 7px; background: none repeat scroll 0% 0% rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 3px; display: none;" class="slimScrollRail"></div></div>
+									              	<!-- end chat messages -->
+									              	
+									              </div>
+									              <!-- end chat user1 -->
+									              
+									              <!-- chat user2 -->
+									              <div class="tab-pane fade" id="user2">
+									              	
+									              	<!-- chat messages -->
+									              	<div style="position: relative; overflow: hidden; width: auto; height: 370px;" class="slimScrollDiv"><div style="overflow: hidden; width: auto; height: 370px;" class="chat-messages">
+									              		
+									              		<!-- message-id-1 -->
+														<p id="message-id-4" class="message-box">
+															<img src="/Skins/PrivateAdmin/Admin_fichiers/avatar_2.jpg" alt="">
+															<span class="message">
+																<strong>David Simpson</strong> 
+																<span class="message-time">14:23pm, 4th Jan 2013</span>
+																<span class="message-text">Hi Victoria, Yes you have uploaded it and its currently in que. I will have a look at it and send you an email shortly.</span>
+															</span>
+														</p>
+														<!-- end message-id-1 -->
+														
+														<!-- message-id-2 -->
+														<p id="message-id-5" class="message-box you">
+															<img src="/Skins/PrivateAdmin/Admin_fichiers/avatar_0.jpg" alt="">
+															<span class="message">
+																<strong>Me</strong> 
+																<span class="message-time">14:25pm, 4th Jan 2013</span>
+																<span class="message-text">Hi David, I just submitted a theme on wrapbootstrap, not sure if it went through. Did I do it right? :S</span>
+															</span>
+														</p>
+														<!-- end message-id-2 -->
+														
+									              	</div><div style="background: none repeat scroll 0% 0% rgb(0, 0, 0); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px 7px 7px 7px; z-index: 99; right: 3px;" class="slimScrollBar ui-draggable"></div><div style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px 7px 7px 7px; background: none repeat scroll 0% 0% rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 3px;" class="slimScrollRail"></div></div>
+									              	<!-- end chat messages -->
+									              	
+									              </div>
+									              <!-- end chat user2 -->
+									              
+									            </div>
+									            <!-- end chat box -->
+									            
+									            <div class="row-fluid chat-box">
+									            	
+									            	<textarea name="enter-message" rows="3" cols="1" placeholder="Enter your message..." id="chat-box-textarea"></textarea>
+													<div class="row-fluid">
+		                                                <div class="span6 type-effect" style="display:none"><img src="/Skins/PrivateAdmin/Admin_fichiers/16-2.gif" alt=""> Victoria is typing...</div>
+		                                                <div class="span6 chat-box-buttons pull-right">
+		                                                	<input name="chat-box-textarea" class="btn medium btn-danger pull-right" value="Send" id="send-msg-js" type="submit">
+		                                                    <a href="javascript:void(0);" title="" class="pull-right"><i class="icon-camera"></i></a>
+		                                                </div>
+		                                            </div>
+
+									            </div>
+										       		
+											
+									        </div>
+									        <!-- end content -->	
+									        
+									    </div>
+									    <!-- end widget div -->
+									</div></article>
+							</div>
+							
+							<!-- end row-fluid -->
+							
+							<!-- row-fluid -->
+							
+							<div class="row-fluid">
+
+								<article class="span6 sortable-grid ui-sortable">
+									<!-- new widget -->
+									
+									<!-- end widget -->
+								</article>
+										
+								<article class="span6 sortable-grid ui-sortable">
+									
+									<!-- new widget -->
+									
+									<!-- end widget -->
+									
+								<div role="widget" style="position: relative; opacity: 1; left: 0px; top: 0px;" class="jarviswidget jarviswidget-sortable" id="widget-id-1">
+									    <header role="heading">
+									        <h2>Calendar</h2>                           
+									    <div role="menu" class="jarviswidget-ctrls"> <a href="#" class="button-icon jarviswidget-delete-btn"><span class="trashcan-10"></span></a>  <a href="#" class="button-icon jarviswidget-edit-btn"><span class="pencil-10 "></span></a> <a href="#" class="button-icon jarviswidget-fullscreen-btn"><span class="fullscreen-10 "></span></a> <a href="#" class="button-icon jarviswidget-toggle-btn"><span class="min-10 "></span></a></div><span style="display: none;" class="jarviswidget-loader"></span></header>
+									    
+									    <!-- widget div-->
+									    <div role="content">
+									    	<!-- widget edit box -->
+									        <div class="jarviswidget-editbox">
+									            <div>
+									                <label>Title:</label>
+									                <input value="Calendar" type="text">
+									            </div>
+									            <div>
+									                <label>Styles:</label>
+									                <span data-widget-setstyle="purple" class="purple-btn"></span>
+									                <span data-widget-setstyle="navyblue" class="navyblue-btn"></span>
+									                <span data-widget-setstyle="green" class="green-btn"></span>
+									                <span data-widget-setstyle="yellow" class="yellow-btn"></span>
+									                <span data-widget-setstyle="orange" class="orange-btn"></span>
+									                <span data-widget-setstyle="pink" class="pink-btn"></span>
+									                <span data-widget-setstyle="red" class="red-btn"></span>
+									                <span data-widget-setstyle="darkgrey" class="darkgrey-btn"></span>
+									                <span data-widget-setstyle="black" class="black-btn"></span>
+									            </div>
+									        </div>
+									        <!-- end widget edit box -->
+            
+									        <div class="inner-spacer"> 
+									        <!-- content goes here -->
+												<div class="widget alert alert-info adjusted">
+													<button class="close" data-dismiss="alert">×</button>
+													<i class="cus-exclamation"></i>
+													<strong>Helpful Hint:</strong> Did you know you can click on the <strong>Calendar Cell</strong> to add a new event? Try to add an event and see how easy it is!
+												</div>
+												<!-- calnedar container -->
+									        	<div id="calendar-container">
+										        	<div id="calendar-buttons">
+														<div class="btn-group">
+															<a href="javascript:void(0)" class="btn btn-small" id="btn-today">Today</a>
+															<a href="javascript:void(0)" class="btn dropdown-toggle btn-small" data-toggle="dropdown"><span class="caret"></span></a>
+															<ul class="dropdown-menu btn-small pull-right">
+																<li>
+																	<a href="javascript:void(0);" id="btn-month">Month</a>
+																</li>
+																<li>
+																	<a href="javascript:void(0);" id="btn-agenda">Agenda</a>
+																</li>
+																<li>
+																	<a href="javascript:void(0);" id="btn-day">Today</a>
+																</li>
+															</ul>
+														</div>
+														<div class="btn-group">
+															<a href="javascript:void(0)" class="btn btn-small" id="btn-prev"><i class="icon-chevron-left"></i></a>
+															<a href="javascript:void(0)" class="btn btn-small" id="btn-next"><i class="icon-chevron-right"></i></a>
+														</div>
+													</div>
+										        	<div class="dt-header calender-spacer"></div>
+										        	<div class="fc" id="calendar"><table class="fc-header" style="width:100%"><tbody><tr><td class="fc-header-left"><span class="fc-header-title"><h2>March 2013</h2></span></td><td style="display: none;" class="fc-header-center"><span class="fc-button fc-button-prev fc-state-default fc-corner-left fc-corner-right"><span class="fc-button-inner"><span class="fc-button-content">&nbsp;◄&nbsp;</span><span class="fc-button-effect"><span></span></span></span></span><span class="fc-header-space"></span><span class="fc-button fc-button-next fc-state-default fc-corner-left fc-corner-right"><span class="fc-button-inner"><span class="fc-button-content">&nbsp;►&nbsp;</span><span class="fc-button-effect"><span></span></span></span></span><span class="fc-header-space"></span><span class="fc-button fc-button-today fc-state-default fc-corner-left fc-corner-right fc-state-disabled"><span class="fc-button-inner"><span class="fc-button-content">today</span><span class="fc-button-effect"><span></span></span></span></span></td><td style="display: none;" class="fc-header-right"><span class="fc-button fc-button-month fc-state-default fc-corner-left fc-corner-right fc-state-active"><span class="fc-button-inner"><span class="fc-button-content">month</span><span class="fc-button-effect"><span></span></span></span></span><span class="fc-header-space"></span><span class="fc-button fc-button-agendaWeek fc-state-default fc-corner-left fc-corner-right"><span class="fc-button-inner"><span class="fc-button-content">week</span><span class="fc-button-effect"><span></span></span></span></span><span class="fc-header-space"></span></td></tr></tbody></table><div class="fc-content" style="position: relative; min-height: 1px;"><div unselectable="on" class="fc-view fc-view-month fc-grid" style="position: relative; -moz-user-select: none;"><table class="fc-border-separate" style="width:100%" cellspacing="0"><thead><tr class="fc-first fc-last"><th style="width: 40px;" class="fc-sun fc-widget-header fc-first">Sun</th><th style="width: 39px;" class="fc-mon fc-widget-header">Mon</th><th style="width: 39px;" class="fc-tue fc-widget-header">Tue</th><th style="width: 39px;" class="fc-wed fc-widget-header">Wed</th><th style="width: 39px;" class="fc-thu fc-widget-header">Thu</th><th style="width: 39px;" class="fc-fri fc-widget-header">Fri</th><th class="fc-sat fc-widget-header fc-last">Sat</th></tr></thead><tbody><tr class="fc-week0 fc-first"><td class="fc-sun fc-widget-content fc-day0 fc-first fc-other-month"><div style="min-height: 47px;"><div class="fc-day-number">24</div><div class="fc-day-content"><div style="position: relative; height: 40px;">&nbsp;</div></div></div></td><td class="fc-mon fc-widget-content fc-day1 fc-other-month"><div><div class="fc-day-number">25</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-tue fc-widget-content fc-day2 fc-other-month"><div><div class="fc-day-number">26</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-wed fc-widget-content fc-day3 fc-other-month"><div><div class="fc-day-number">27</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-thu fc-widget-content fc-day4 fc-other-month"><div><div class="fc-day-number">28</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-fri fc-widget-content fc-day5"><div><div class="fc-day-number">1</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-sat fc-widget-content fc-day6 fc-last"><div><div class="fc-day-number">2</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td></tr><tr class="fc-week1"><td class="fc-sun fc-widget-content fc-day7 fc-first"><div style="min-height: 46px;"><div class="fc-day-number">3</div><div class="fc-day-content"><div style="position: relative; height: 0px;">&nbsp;</div></div></div></td><td class="fc-mon fc-widget-content fc-day8"><div><div class="fc-day-number">4</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-tue fc-widget-content fc-day9"><div><div class="fc-day-number">5</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-wed fc-widget-content fc-day10"><div><div class="fc-day-number">6</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-thu fc-widget-content fc-day11"><div><div class="fc-day-number">7</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-fri fc-widget-content fc-day12"><div><div class="fc-day-number">8</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-sat fc-widget-content fc-day13 fc-last"><div><div class="fc-day-number">9</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td></tr><tr class="fc-week2"><td class="fc-sun fc-widget-content fc-day14 fc-first"><div style="min-height: 46px;"><div class="fc-day-number">10</div><div class="fc-day-content"><div style="position: relative; height: 85px;">&nbsp;</div></div></div></td><td class="fc-mon fc-widget-content fc-day15"><div><div class="fc-day-number">11</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-tue fc-widget-content fc-day16"><div><div class="fc-day-number">12</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-wed fc-widget-content fc-day17"><div><div class="fc-day-number">13</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-thu fc-widget-content fc-day18"><div><div class="fc-day-number">14</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-fri fc-widget-content fc-day19"><div><div class="fc-day-number">15</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-sat fc-widget-content fc-day20 fc-last"><div><div class="fc-day-number">16</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td></tr><tr class="fc-week3"><td class="fc-sun fc-widget-content fc-day21 fc-first fc-state-highlight fc-today"><div style="min-height: 46px;"><div class="fc-day-number">17</div><div class="fc-day-content"><div style="position: relative; height: 90px;">&nbsp;</div></div></div></td><td class="fc-mon fc-widget-content fc-day22"><div><div class="fc-day-number">18</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-tue fc-widget-content fc-day23"><div><div class="fc-day-number">19</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-wed fc-widget-content fc-day24"><div><div class="fc-day-number">20</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-thu fc-widget-content fc-day25"><div><div class="fc-day-number">21</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-fri fc-widget-content fc-day26"><div><div class="fc-day-number">22</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-sat fc-widget-content fc-day27 fc-last"><div><div class="fc-day-number">23</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td></tr><tr class="fc-week4"><td class="fc-sun fc-widget-content fc-day28 fc-first"><div style="min-height: 46px;"><div class="fc-day-number">24</div><div class="fc-day-content"><div style="position: relative; height: 24px;">&nbsp;</div></div></div></td><td class="fc-mon fc-widget-content fc-day29"><div><div class="fc-day-number">25</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-tue fc-widget-content fc-day30"><div><div class="fc-day-number">26</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-wed fc-widget-content fc-day31"><div><div class="fc-day-number">27</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-thu fc-widget-content fc-day32"><div><div class="fc-day-number">28</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-fri fc-widget-content fc-day33"><div><div class="fc-day-number">29</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-sat fc-widget-content fc-day34 fc-last"><div><div class="fc-day-number">30</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td></tr><tr class="fc-week5 fc-last"><td class="fc-sun fc-widget-content fc-day35 fc-first"><div style="min-height: 51px;"><div class="fc-day-number">31</div><div class="fc-day-content"><div style="position: relative; height: 0px;">&nbsp;</div></div></div></td><td class="fc-mon fc-widget-content fc-day36 fc-other-month"><div><div class="fc-day-number">1</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-tue fc-widget-content fc-day37 fc-other-month"><div><div class="fc-day-number">2</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-wed fc-widget-content fc-day38 fc-other-month"><div><div class="fc-day-number">3</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-thu fc-widget-content fc-day39 fc-other-month"><div><div class="fc-day-number">4</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-fri fc-widget-content fc-day40 fc-other-month"><div><div class="fc-day-number">5</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td><td class="fc-sat fc-widget-content fc-day41 fc-last fc-other-month"><div><div class="fc-day-number">6</div><div class="fc-day-content"><div style="position:relative">&nbsp;</div></div></div></td></tr></tbody></table><div style="position:absolute;z-index:8;top:0;left:0"><div class="fc-event fc-event-skin fc-event-hori fc-event-draggable fc-corner-left fc-corner-right" style="position: absolute; z-index: 8; left: 303px; width: 53px; top: 51px;"><div class="fc-event-inner fc-event-skin"><span class="fc-event-title">All Day Event</span></div><div class="ui-resizable-handle ui-resizable-e">&nbsp;&nbsp;&nbsp;</div></div><div unselectable="on" class="fc-event fc-event-skin fc-event-hori fc-event-draggable fc-corner-left fc-corner-right ui-draggable" style="position: absolute; z-index: 8; left: 123px; width: 233px; top: 162px; -moz-user-select: none;"><div class="fc-event-inner fc-event-skin"><span class="fc-event-title">Long Event</span></div><div class="ui-resizable-handle ui-resizable-e">&nbsp;&nbsp;&nbsp;</div></div><div class="fc-event fc-event-skin fc-event-hori fc-event-draggable fc-corner-left fc-corner-right" style="position: absolute; z-index: 8; left: 243px; width: 53px; top: 186px;"><div class="fc-event-inner fc-event-skin"><span class="fc-event-time">4p</span><span class="fc-event-title">Repeating Event</span></div><div class="ui-resizable-handle ui-resizable-e">&nbsp;&nbsp;&nbsp;</div></div><div class="fc-event fc-event-skin fc-event-hori fc-event-draggable fc-corner-left fc-corner-right" style="position: absolute; z-index: 8; left: 2px; width: 54px; top: 271px;"><div class="fc-event-inner fc-event-skin"><span class="fc-event-time">10:30a</span><span class="fc-event-title">Meeting</span></div><div class="ui-resizable-handle ui-resizable-e">&nbsp;&nbsp;&nbsp;</div></div><div class="fc-event fc-event-skin fc-event-hori fc-event-draggable fc-corner-left fc-corner-right" style="position: absolute; z-index: 8; left: 243px; width: 53px; top: 271px;"><div class="fc-event-inner fc-event-skin"><span class="fc-event-time">4p</span><span class="fc-event-title">Repeating Event</span></div><div class="ui-resizable-handle ui-resizable-e">&nbsp;&nbsp;&nbsp;</div></div><div class="fc-event fc-event-skin fc-event-hori fc-event-draggable fc-corner-left fc-corner-right" style="position: absolute; z-index: 8; left: 63px; width: 53px; top: 271px;"><div class="fc-event-inner fc-event-skin"><span class="fc-event-time">7p</span><span class="fc-event-title">Birthday Party</span></div><div class="ui-resizable-handle ui-resizable-e">&nbsp;&nbsp;&nbsp;</div></div><div class="fc-event fc-event-skin fc-event-hori fc-event-draggable fc-corner-left fc-corner-right" style="position: absolute; z-index: 8; left: 2px; width: 54px; top: 316px;"><div class="fc-event-inner fc-event-skin"><span class="fc-event-time">12p</span><span class="fc-event-title">Lunch</span></div><div class="ui-resizable-handle ui-resizable-e">&nbsp;&nbsp;&nbsp;</div></div><a href="http://google.com/" class="fc-event fc-event-skin fc-event-hori fc-event-draggable fc-corner-left fc-corner-right" style="position: absolute; z-index: 8; left: 243px; width: 113px; top: 385px;"><div class="fc-event-inner fc-event-skin"><span class="fc-event-title">Click for Google</span></div><div class="ui-resizable-handle ui-resizable-e">&nbsp;&nbsp;&nbsp;</div></a></div></div></div></div>
+									        	</div>
+									        	<!-- end calendar container -->
+									        </div>
+									        
+									    </div>
+									    <!-- end widget div -->
+									</div></article>
+								
+							</div>
+							
+							<!-- end row-fluid -->
+							
+							<!-- row-fluid -->
+							
+							<div class="row-fluid">
+								<article class="span12 sortable-grid ui-sortable">
+									<!-- new widget -->
+									
+									<!-- end widget -->
+								<div role="widget" style="" class="jarviswidget jarviswidget-sortable" id="widget-id-3">
+									    <header role="heading">
+									        <h2>Chart</h2>                           
+									    <div role="menu" class="jarviswidget-ctrls"> <a href="#" class="button-icon jarviswidget-delete-btn"><span class="trashcan-10"></span></a>  <a href="#" class="button-icon jarviswidget-edit-btn"><span class="pencil-10 "></span></a> <a href="#" class="button-icon jarviswidget-fullscreen-btn"><span class="fullscreen-10 "></span></a> <a href="#" class="button-icon jarviswidget-toggle-btn"><span class="min-10 "></span></a></div><span class="jarviswidget-loader"></span></header>
+									    <div role="content">
+									    
+									        <div class="jarviswidget-editbox">
+									            <div>
+									                <label>Title:</label>
+									                <input value="Chart" type="text">
+									            </div>
+									            <div>
+									                <label>Styles:</label>
+									                <span data-widget-setstyle="purple" class="purple-btn"></span>
+									                <span data-widget-setstyle="navyblue" class="navyblue-btn"></span>
+									                <span data-widget-setstyle="green" class="green-btn"></span>
+									                <span data-widget-setstyle="yellow" class="yellow-btn"></span>
+									                <span data-widget-setstyle="orange" class="orange-btn"></span>
+									                <span data-widget-setstyle="pink" class="pink-btn"></span>
+									                <span data-widget-setstyle="red" class="red-btn"></span>
+									                <span data-widget-setstyle="darkgrey" class="darkgrey-btn"></span>
+									                <span data-widget-setstyle="black" class="black-btn"></span>
+									            </div>
+									        </div>
+            
+									        <div class="inner-spacer"> 
+									        <!-- content goes here -->
+												<div class="widget alert adjusted">
+													<button class="btn btn-mini pull-right btn-warning" id="refresh-js">refresh</button>
+													<i class="cus-exclamation-octagon-fram"></i>
+													<strong>Showing all collective data since setup date.</strong> Allocate specific dates, from the options menu, for faster loading
+												</div>
+												
+												<!-- sin chart -->
+								        		<div style="padding: 0px; position: relative;" id="sin-chart" class="chart has-legend"><canvas height="250" width="862" class="base"></canvas><canvas style="position: absolute; left: 0px; top: 0px;" height="250" width="862" class="overlay"></canvas><div class="tickLabels" style="font-size:smaller"><div class="xAxis x1Axis" style="color:#545454"><div class="tickLabel" style="position:absolute;text-align:center;left:-19px;top:230px;width:95px">0</div><div class="tickLabel" style="position:absolute;text-align:center;left:90px;top:230px;width:95px">2</div><div class="tickLabel" style="position:absolute;text-align:center;left:200px;top:230px;width:95px">4</div><div class="tickLabel" style="position:absolute;text-align:center;left:310px;top:230px;width:95px">6</div><div class="tickLabel" style="position:absolute;text-align:center;left:420px;top:230px;width:95px">8</div><div class="tickLabel" style="position:absolute;text-align:center;left:530px;top:230px;width:95px">10</div><div class="tickLabel" style="position:absolute;text-align:center;left:640px;top:230px;width:95px">12</div><div class="tickLabel" style="position:absolute;text-align:center;left:750px;top:230px;width:95px">14</div></div><div class="yAxis y1Axis" style="color:#545454"><div class="tickLabel" style="position:absolute;text-align:right;top:200px;right:844px;width:18px">-1.0</div><div class="tickLabel" style="position:absolute;text-align:right;top:153px;right:844px;width:18px">-0.5</div><div class="tickLabel" style="position:absolute;text-align:right;top:105px;right:844px;width:18px">0.0</div><div class="tickLabel" style="position:absolute;text-align:right;top:57px;right:844px;width:18px">0.5</div><div class="tickLabel" style="position:absolute;text-align:right;top:10px;right:844px;width:18px">1.0</div></div></div><div class="legend"><div style="position: absolute; width: 122px; height: 22px; top: -22px; right: 5px; opacity: 1;"> </div><table style="position:absolute;top:-22px;right:5px;;font-size: 11px; color:#545454"><tbody><tr><td class="legendColorBox"><div style=""><div style="border:2px solid rgb(75,153,203);overflow:hidden"></div></div></td><td class="legendLabel"><span>sin(x)</span></td><td class="legendColorBox"><div style=""><div style="border:2px solid rgb(135,186,23);overflow:hidden"></div></div></td><td class="legendLabel"><span>cos(x)</span></td></tr></tbody></table></div></div>
+
+									        </div>
+									        
+									    </div>
+									</div></article>
+							</div>
+							
+							<!-- end row-fluid -->
+							
+							<!-- row-fluid -->
+							
+							<div class="row-fluid">
+								
+								<article class="span6 sortable-grid ui-sortable">
+									<!-- new widget -->
+									
+									<!-- end widget -->
+								<div role="widget" style="" class="jarviswidget jarviswidget-sortable" id="widget-id-4">
+									    <header role="heading">
+									        <h2>Bootstrap WYSIHTML5 Editor</h2>                           
+									    <div role="menu" class="jarviswidget-ctrls"> <a href="#" class="button-icon jarviswidget-delete-btn"><span class="trashcan-10"></span></a>  <a href="#" class="button-icon jarviswidget-edit-btn"><span class="pencil-10 "></span></a> <a href="#" class="button-icon jarviswidget-fullscreen-btn"><span class="fullscreen-10 "></span></a> <a href="#" class="button-icon jarviswidget-toggle-btn"><span class="min-10 "></span></a></div><span class="jarviswidget-loader"></span></header>
+									    <div role="content">
+									    
+									        <div class="jarviswidget-editbox">
+									            <div>
+									                <label>Title:</label>
+									                <input value="Bootstrap WYSIHTML5 Editor" type="text">
+									            </div>
+									            <div>
+									                <label>Styles:</label>
+									                <span data-widget-setstyle="purple" class="purple-btn"></span>
+									                <span data-widget-setstyle="navyblue" class="navyblue-btn"></span>
+									                <span data-widget-setstyle="green" class="green-btn"></span>
+									                <span data-widget-setstyle="yellow" class="yellow-btn"></span>
+									                <span data-widget-setstyle="orange" class="orange-btn"></span>
+									                <span data-widget-setstyle="pink" class="pink-btn"></span>
+									                <span data-widget-setstyle="red" class="red-btn"></span>
+									                <span data-widget-setstyle="darkgrey" class="darkgrey-btn"></span>
+									                <span data-widget-setstyle="black" class="black-btn"></span>
+									            </div>
+									        </div>
+            
+									        <div class="inner-spacer wysihtml5-widget"> 
+									        <!-- content -->	
+												<ul style="" class="wysihtml5-toolbar"><li class="dropdown"><a class="btn dropdown-toggle btn-small" data-toggle="dropdown" href="#"><i class="icon-font"></i>&nbsp;<span class="current-font">Normal text</span>&nbsp;<b class="caret"></b></a><ul class="dropdown-menu"><li><a unselectable="on" href="javascript:;" data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="div">Normal text</a></li><li><a unselectable="on" href="javascript:;" data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h1">Heading 1</a></li><li><a unselectable="on" href="javascript:;" data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2">Heading 2</a></li><li><a unselectable="on" href="javascript:;" data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h3">Heading 3</a></li></ul></li><li class="dropdown"><a class="btn dropdown-toggle btn-small" data-toggle="dropdown" href="#"><i class="cus-color-swatch-2"></i><span class="current-color">Black</span>&nbsp;<b class="caret"></b></a><ul class="dropdown-menu"><li><div class="wysihtml5-colors" data-wysihtml5-command-value="black"></div><a unselectable="on" href="javascript:;" class="wysihtml5-colors-title" data-wysihtml5-command="foreColor" data-wysihtml5-command-value="black">Black</a></li><li><div class="wysihtml5-colors" data-wysihtml5-command-value="silver"></div><a unselectable="on" href="javascript:;" class="wysihtml5-colors-title" data-wysihtml5-command="foreColor" data-wysihtml5-command-value="silver">Silver</a></li><li><div class="wysihtml5-colors" data-wysihtml5-command-value="gray"></div><a unselectable="on" href="javascript:;" class="wysihtml5-colors-title" data-wysihtml5-command="foreColor" data-wysihtml5-command-value="gray">Grey</a></li><li><div class="wysihtml5-colors" data-wysihtml5-command-value="maroon"></div><a unselectable="on" href="javascript:;" class="wysihtml5-colors-title" data-wysihtml5-command="foreColor" data-wysihtml5-command-value="maroon">Maroon</a></li><li><div class="wysihtml5-colors" data-wysihtml5-command-value="red"></div><a unselectable="on" href="javascript:;" class="wysihtml5-colors-title" data-wysihtml5-command="foreColor" data-wysihtml5-command-value="red">Red</a></li><li><div class="wysihtml5-colors" data-wysihtml5-command-value="purple"></div><a unselectable="on" href="javascript:;" class="wysihtml5-colors-title" data-wysihtml5-command="foreColor" data-wysihtml5-command-value="purple">Purple</a></li><li><div class="wysihtml5-colors" data-wysihtml5-command-value="green"></div><a unselectable="on" href="javascript:;" class="wysihtml5-colors-title" data-wysihtml5-command="foreColor" data-wysihtml5-command-value="green">Green</a></li><li><div class="wysihtml5-colors" data-wysihtml5-command-value="olive"></div><a unselectable="on" href="javascript:;" class="wysihtml5-colors-title" data-wysihtml5-command="foreColor" data-wysihtml5-command-value="olive">Olive</a></li><li><div class="wysihtml5-colors" data-wysihtml5-command-value="navy"></div><a unselectable="on" href="javascript:;" class="wysihtml5-colors-title" data-wysihtml5-command="foreColor" data-wysihtml5-command-value="navy">Navy</a></li><li><div class="wysihtml5-colors" data-wysihtml5-command-value="blue"></div><a unselectable="on" href="javascript:;" class="wysihtml5-colors-title" data-wysihtml5-command="foreColor" data-wysihtml5-command-value="blue">Blue</a></li><li><div class="wysihtml5-colors" data-wysihtml5-command-value="orange"></div><a unselectable="on" href="javascript:;" class="wysihtml5-colors-title" data-wysihtml5-command="foreColor" data-wysihtml5-command-value="orange">Orange</a></li></ul></li><li><div class="btn-group"><a unselectable="on" href="javascript:;" class="btn btn-small" data-wysihtml5-command="bold" title="CTRL+B">B</a><a unselectable="on" href="javascript:;" class="btn btn-small" data-wysihtml5-command="italic" title="CTRL+I">I</a><a unselectable="on" href="javascript:;" class="btn btn-small" data-wysihtml5-command="underline" title="CTRL+U">U</a></div></li><li><div class="btn-group"><a unselectable="on" href="javascript:;" class="btn btn-small" data-wysihtml5-command="insertUnorderedList" title="Unordered list"><i class="icon-list"></i></a><a unselectable="on" href="javascript:;" class="btn btn-small" data-wysihtml5-command="insertOrderedList" title="Ordered list"><i class="icon-th-list"></i></a><a unselectable="on" href="javascript:;" class="btn btn-small" data-wysihtml5-command="Outdent" title="Outdent"><i class="icon-indent-right"></i></a><a unselectable="on" href="javascript:;" class="btn btn-small" data-wysihtml5-command="Indent" title="Indent"><i class="icon-indent-left"></i></a></div></li><li><div class="bootstrap-wysihtml5-insert-link-modal modal hide fade"><div class="modal-header"><a class="close" data-dismiss="modal">×</a><h3>Insert link</h3></div><div class="modal-body"><input value="http://" class="bootstrap-wysihtml5-insert-link-url input-xlarge"></div><div class="modal-footer"><a href="#" class="btn btn-small" data-dismiss="modal">Cancel</a><a href="#" class="btn btn-primary btn-small" data-dismiss="modal">Insert link</a></div></div><a unselectable="on" href="javascript:;" class="btn btn-small" data-wysihtml5-command="createLink" title="Insert link"><i class="cus-application-link"></i></a></li><li><div class="bootstrap-wysihtml5-insert-image-modal modal hide fade"><div class="modal-header"><a class="close" data-dismiss="modal">×</a><h3>Insert image</h3></div><div class="modal-body"><input value="http://" class="bootstrap-wysihtml5-insert-image-url input-xlarge"></div><div class="modal-footer"><a href="#" class="btn btn-small" data-dismiss="modal">Cancel</a><a href="#" class="btn btn-primary btn-small" data-dismiss="modal">Insert image</a></div></div><a unselectable="on" href="javascript:;" class="btn btn-small" data-wysihtml5-command="insertImage" title="Insert image"><i class="cus-picture"></i></a></li></ul><textarea placeholder="Enter text ..." id="wysihtml5" style="width: 100%; height: 200px; display: none;"></textarea><input value="1" name="_wysihtml5_mode" type="hidden"><iframe style="background-color: rgb(255, 255, 255); border-collapse: separate; border-color: rgb(204, 204, 204); border-style: solid; border-width: 1px; clear: none; display: inline-block; float: none; margin: 0px 0px 10px; outline: 0px none rgb(85, 85, 85); outline-offset: 0px; padding: 4px 6px; position: static; z-index: auto; vertical-align: middle; text-align: start; -moz-box-sizing: content-box; box-shadow: none; border-radius: 4px 4px 4px 4px; width: 100%; height: 200px; top: auto; left: auto; right: auto; bottom: auto;" marginheight="0" marginwidth="0" allowtransparency="true" security="restricted" class="wysihtml5-sandbox" frameborder="0" height="0" width="0"></iframe>
+												
+											    <div class="pull-right post-msg">
+											    	<a href="javascript:void(0)" class="btn medium" id="save-notes-btn-js">Save to notes</a>
+											    	<a href="javascript:void(0)" class="btn medium btn-primary" id="post-btn-js">Post Message</a>
+											    </div>   		
+											<!-- end content -->	
+									        </div>
+									        <!-- end inner spacer -->
+									    </div>
+									</div></article>
+							
+								<article class="span6 sortable-grid ui-sortable">
+									
+									<!-- new widget -->
+									
+									<!-- end widget -->
+								<div role="widget" style="" class="jarviswidget jarviswidget-sortable" id="widget-id-5">
+									    <header role="heading">
+									        <h2>Tasks in progress</h2>                           
+									    <div role="menu" class="jarviswidget-ctrls"> <a href="#" class="button-icon jarviswidget-delete-btn"><span class="trashcan-10"></span></a>  <a href="#" class="button-icon jarviswidget-edit-btn"><span class="pencil-10 "></span></a> <a href="#" class="button-icon jarviswidget-fullscreen-btn"><span class="fullscreen-10 "></span></a> <a href="#" class="button-icon jarviswidget-toggle-btn"><span class="min-10 "></span></a></div><span class="jarviswidget-loader"></span></header>
+									    <div role="content">
+									    
+									        <div class="jarviswidget-editbox">
+									            <div>
+									                <label>Title:</label>
+									                <input value="Tasks in progress" type="text">
+									            </div>
+									            <div>
+									                <label>Styles:</label>
+									                <span data-widget-setstyle="purple" class="purple-btn"></span>
+									                <span data-widget-setstyle="navyblue" class="navyblue-btn"></span>
+									                <span data-widget-setstyle="green" class="green-btn"></span>
+									                <span data-widget-setstyle="yellow" class="yellow-btn"></span>
+									                <span data-widget-setstyle="orange" class="orange-btn"></span>
+									                <span data-widget-setstyle="pink" class="pink-btn"></span>
+									                <span data-widget-setstyle="red" class="red-btn"></span>
+									                <span data-widget-setstyle="darkgrey" class="darkgrey-btn"></span>
+									                <span data-widget-setstyle="black" class="black-btn"></span>
+									            </div>
+									        </div>
+            
+									        <div class="inner-spacer"> 
+									        <!-- content goes here -->
+												<div class="progress-stats">
+			                                        <div class="widget-content-padding">
+			                                            <strong>Hot Fixes</strong><strong class="pull-right">51%</strong>
+			                                            <div class="progress progress-danger value"><div style="width: 51%;" class="bar" data-percentage="30" data-amount-part="784" data-amount-total="1544">784 / 1544</div></div>
+			                                            
+			                                            <div class="semi-block">
+			                                                <strong>Urgent Tasks</strong><strong class="pull-right">87%</strong>
+			                                                <div class="progress progress-info value"><div style="width: 72%;" class="bar" data-percentage="40" data-amount-part="456" data-amount-total="631">456 / 631</div></div>
+			                                            </div>
+			                                            
+			                                            <div class="semi-block">
+			                                                <strong>Other tasks</strong><strong class="pull-right">41%</strong>
+			                                                <div class="progress progress-success value"><div style="width: 36%;" class="bar" data-percentage="79" data-amount-part="51" data-amount-total="141">51 / 141</div></div>
+			                                            </div>
+			                                            
+			                                            <div class="semi-block">
+			                                                <strong>Pending tasks</strong><strong class="pull-right">33%</strong>
+			                                                <div class="progress progress-warning value"><div style="width: 33%;" class="bar" data-percentage="33" data-amount-part="33" data-amount-total="100">33 / 100</div></div>
+			                                            </div>
+			                                        </div>
+			                                    </div>
+									        <!-- end content -->
+									        </div>
+									        
+									        
+									    </div>
+									</div></article>
+								
+							</div>
+							
+							<!-- end row-fluid -->
+
+						</section>
+						<!-- end widget grid -->
+					</div>		
+				</div>
+				<!-- end main content -->
+			
+				<!-- aside right on high res -->
+				<aside class="right">
+					
+					<!-- sparkline stats -->
+					<ul class="mystats indented">
+		                <li class="first">
+		                    <h1><span>My Balance:</span>$17,349</h1>
+		                    <div class="mychart" id="balance" style="width:35px"><canvas height="30" width="82" style="display: inline-block; width: 82px; height: 30px; vertical-align: top;"></canvas></div>
+		                </li>
+		                <li>
+		                    <h1><span>Impressions:</span>145k+</h1>
+		                    <div class="mychart" id="clicks" style="width:35px"><canvas height="30" width="82" style="display: inline-block; width: 82px; height: 30px; vertical-align: top;"></canvas></div>
+		                </li>
+		                <li>
+		                    <h1><span>Subscribers:</span>1,120</h1>
+		                    <div class="mychart" id="subscribe" style="width:35px"><canvas height="30" width="82" style="display: inline-block; width: 82px; height: 30px; vertical-align: top;"></canvas></div>
+		                </li>
+		                <li class="last">
+		                    <h1><span>Support Ticket:</span>945+</h1>
+		                    <div class="mychart" id="support" style="width:35px"><canvas height="30" width="82" style="display: inline-block; width: 82px; height: 30px; vertical-align: top;"></canvas></div>
+		                </li>
+		            </ul>
+		            <div class="divider"></div>
+		            <!-- end sparkline stats -->
+
+					<!-- aside progress bars -->
+					<ul class="indented aside-progress-stats">
+						<li>
+							<!-- easy pie chart -->
+							<div class="easypie">
+								<div style="width: 150px; height: 150px; line-height: 150px;" class="percentage easyPieChart" data-percent="68">
+									<span>68</span>%
+								<canvas width="150" height="150"></canvas></div>
+								<div class="easypie-text">
+									Server load
+								</div>
+							</div>
+							<!-- end easy pie chart -->
+						</li>
+		                <li>
+		                    <strong>Data Restored</strong><strong class="pull-right">90%</strong>
+		                    <div class="progress progress-danger slim"><div style="width: 90%;" class="bar" data-percentage="90"></div></div>
+		                </li>
+		                <li>
+		                    <strong>Recovering IDE</strong><strong class="pull-right">66%</strong>
+		                    <div class="progress progress-info slim"><div style="width: 66%;" class="bar" data-percentage="66"></div></div>
+		                </li>
+		                <li>
+		                    <strong>DLL Construction</strong><strong class="pull-right">48%</strong>
+		                    <div class="progress progress-info slim"><div style="width: 48%;" class="bar" data-percentage="48"></div></div>
+		                </li>
+		                <li>
+		                    <strong>Machine Req</strong><strong class="pull-right">33%</strong>
+		                    <div class="progress progress-info slim"><div style="width: 33%;" class="bar" data-percentage="33"></div></div>
+		                </li>
+		            </ul>
+		            <div class="divider"></div>
+		            <!-- end aside progress bars -->
+					
+					<!-- date picker -->
+					<div id="datepicker"><div class="datepicker datepicker-inline"><div style="display: block;" class="datepicker-days"><table class=" table-condensed"><thead><tr><th style="visibility: visible;" class="prev"><i class="icon-arrow-left"></i></th><th colspan="5" class="switch">March 2013</th><th style="visibility: visible;" class="next"><i class="icon-arrow-right"></i></th></tr><tr><th class="dow">Su</th><th class="dow">Mo</th><th class="dow">Tu</th><th class="dow">We</th><th class="dow">Th</th><th class="dow">Fr</th><th class="dow">Sa</th></tr></thead><tbody><tr><td class="day old">24</td><td class="day old">25</td><td class="day old">26</td><td class="day old">27</td><td class="day old">28</td><td class="day">1</td><td class="day">2</td></tr><tr><td class="day">3</td><td class="day">4</td><td class="day">5</td><td class="day">6</td><td class="day">7</td><td class="day">8</td><td class="day">9</td></tr><tr><td class="day">10</td><td class="day">11</td><td class="day">12</td><td class="day">13</td><td class="day">14</td><td class="day">15</td><td class="day">16</td></tr><tr><td class="day active">17</td><td class="day">18</td><td class="day">19</td><td class="day">20</td><td class="day">21</td><td class="day">22</td><td class="day">23</td></tr><tr><td class="day">24</td><td class="day">25</td><td class="day">26</td><td class="day">27</td><td class="day">28</td><td class="day">29</td><td class="day">30</td></tr><tr><td class="day">31</td><td class="day new">1</td><td class="day new">2</td><td class="day new">3</td><td class="day new">4</td><td class="day new">5</td><td class="day new">6</td></tr></tbody><tfoot><tr><th style="display: none;" colspan="7" class="today">Today</th></tr></tfoot></table></div><div style="display: none;" class="datepicker-months"><table class="table-condensed"><thead><tr><th style="visibility: visible;" class="prev"><i class="icon-arrow-left"></i></th><th colspan="5" class="switch">2013</th><th style="visibility: visible;" class="next"><i class="icon-arrow-right"></i></th></tr></thead><tbody><tr><td colspan="7"><span class="month">Jan</span><span class="month">Feb</span><span class="month active">Mar</span><span class="month">Apr</span><span class="month">May</span><span class="month">Jun</span><span class="month">Jul</span><span class="month">Aug</span><span class="month">Sep</span><span class="month">Oct</span><span class="month">Nov</span><span class="month">Dec</span></td></tr></tbody><tfoot><tr><th style="display: none;" colspan="7" class="today">Today</th></tr></tfoot></table></div><div style="display: none;" class="datepicker-years"><table class="table-condensed"><thead><tr><th style="visibility: visible;" class="prev"><i class="icon-arrow-left"></i></th><th colspan="5" class="switch">2010-2019</th><th style="visibility: visible;" class="next"><i class="icon-arrow-right"></i></th></tr></thead><tbody><tr><td colspan="7"><span class="year old">2009</span><span class="year">2010</span><span class="year">2011</span><span class="year">2012</span><span class="year active">2013</span><span class="year">2014</span><span class="year">2015</span><span class="year">2016</span><span class="year">2017</span><span class="year">2018</span><span class="year">2019</span><span class="year old">2020</span></td></tr></tbody><tfoot><tr><th style="display: none;" colspan="7" class="today">Today</th></tr></tfoot></table></div></div></div>
+					<div class="divider"></div>
+					<!-- end date picker -->
+					
+					<!-- aside buttons -->
+					<div class="aside-buttons">
+		                <a href="javascript:void(0);" title="" class="btn btn-info">Create an Invoice</a>
+		                <a href="javascript:void(0);" title="" class="btn btn-success">New Campaign</a>
+		                <a href="javascript:void(0);" title="" class="btn btn-danger">Delete Progress</a>
+		            </div>
+		            <div class="divider"></div>
+		            <!-- end aside buttons -->
+				</aside>
+				
+				<!-- end aside right -->
+			</div>
+			
+	    </div><!--end fluid-container-->
+		<div class="push"></div>
+	</div>
+	<!-- end .height wrapper -->
+	
+	<!-- footer -->
+	
+	<!-- if you like you can insert your footer here -->
+	
+	<!-- end footer -->
+
+    <!--================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    
+    <!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
+    <script src="/Skins/PrivateAdmin/Admin_fichiers/jquery.js"></script>
+    <script>window.jQuery || document.write('<script src="js/libs/jquery.min.js"><\/script>')</script>
+    <script src="/Skins/PrivateAdmin/Admin_fichiers/jquery-ui.js"></script>
+    <script>window.jQuery.ui || document.write('<script src="js/libs/jquery.ui.min.js"><\/script>')</script>
+    
+    <!-- IMPORTANT: Jquery Touch Punch is always placed under Jquery UI -->
+    <script src="/Skins/PrivateAdmin/Admin_fichiers/jquery_012.js"></script>
+    
+    <!-- REQUIRED: Mobile responsive menu generator -->
+	<script src="/Skins/PrivateAdmin/Admin_fichiers/selectnav.js"></script>
+
+	<!-- REQUIRED: Datatable components -->
+    <script src="/Skins/PrivateAdmin/Admin_fichiers/jquery_011.js"></script>
+
+	<!-- REQUIRED: Toastr & Jgrowl notifications  -->
+    <script src="/Skins/PrivateAdmin/Admin_fichiers/toastr.js"></script>
+    <script src="/Skins/PrivateAdmin/Admin_fichiers/jquery_009.js"></script>
+    
+    <!-- REQUIRED: Sleek scroll UI  -->
+    <script src="/Skins/PrivateAdmin/Admin_fichiers/slimScroll.js"></script>
+	
+	<!-- REQUIRED: Datatable components -->
+	<!-- DISABLED <script src="js/include/jquery.dataTables.min.js"></script> -->
+	<!-- DISABLED <script src="js/include/DT_bootstrap.min.js"></script> -->
+
+    <!-- REQUIRED: Form element skin  -->
+    <script src="/Skins/PrivateAdmin/Admin_fichiers/jquery_007.js"></script>
+
+	<script type="text/javascript">
+		var ismobile = (/iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase()));	
+	    if(!ismobile){
+	    	
+	    	/** ONLY EXECUTE THESE CODES IF MOBILE DETECTION IS FALSE **/
+	    	
+	    	/* REQUIRED: Datatable PDF/Excel output componant */
+	    	
+	    	/*-- document.write('<script src="js/include/ZeroClipboard.min.js"><\/script>'); --*/
+	    	/*-- document.write('<script src="js/include/TableTools.min.js"><\/script>'); --*/
+	    	/*-- document.write('<script src="js/include/select2.min.js"><\/script>'); --*/
+	    	document.write('<script src="js/include/jquery.excanvas.min.js"><\/script>');
+	    	document.write('<script src="js/include/jquery.placeholder.min.js"><\/script>');
+	    	
+			/** DEMO SCRIPTS **/
+	        $(function() {
+	            /* show tooltips */
+				$.jGrowl("I am the <strong>smartest Admin Template</strong> on <strong>wrapbootstrap.com</strong>. Don't forget to check out all my pages.", { 
+					header: 'Welcome, I am Jarvis!', 
+					sticky: false,
+					life: 5000,
+					speed: 500,
+					theme: 'with-icon',
+					position: 'top-right', //this is default position
+					easing: 'easeOutBack',
+					animateOpen: { 
+						height: "show"
+					},
+					animateClose: { 
+						opacity: 'hide' 
+					}
+				});	
+	        });
+	        /** end DEMO SCRIPTS **/
+	        
+	    }else{
+	    	
+	    	/** ONLY EXECUTE THESE CODES IF MOBILE DETECTION IS TRUE **/
+	    	
+			document.write('<script src="js/include/selectnav.min.js"><\/script>');
+	    }
+	</script><script src="/Skins/PrivateAdmin/Admin_fichiers/jquery_005.js"></script><script src="/Skins/PrivateAdmin/Admin_fichiers/jquery_010.js"></script>
+
+    <!-- REQUIRED: iButton -->
+    <!-- DISABLED <script src="js/include/jquery.ibutton.min.js"></script> -->
+	
+	<!-- REQUIRED: Justgage animated charts -->
+    <!-- DISABLED <script src="js/include/justgage.min.js"></script> -->
+    <!-- DISABLED <script src="js/include/raphael.2.1.0.min.js"></script> -->
+    
+    <!-- REQUIRED: Animated pie chart -->
+    <script src="/Skins/PrivateAdmin/Admin_fichiers/jquery_002.js"></script>
+    
+    <!-- REQUIRED: Functional Widgets -->
+    <script src="/Skins/PrivateAdmin/Admin_fichiers/jarvis.js"></script>
+    <script src="/Skins/PrivateAdmin/Admin_fichiers/mobiledevices.js"></script>
+    <!-- DISABLED (only needed for IE7 <script src="js/include/json2.js"></script> -->
+	
+	<!-- REQUIRED: Full Calendar -->
+    <script src="/Skins/PrivateAdmin/Admin_fichiers/jquery_008.js"></script>		
+    
+    <!-- REQUIRED: Flot Chart Engine -->
+    <script src="/Skins/PrivateAdmin/Admin_fichiers/jquery_006.js"></script>			
+    <script src="/Skins/PrivateAdmin/Admin_fichiers/jquery_013.js"></script>		
+    <script src="/Skins/PrivateAdmin/Admin_fichiers/jquery_003.js"></script>		
+    <!-- DISABLED <script src="js/include/jquery.flot.orderBar.min.js"></script> -->	
+    <!-- DISABLED <script src="js/include/jquery.flot.fillbetween.min.js"></script> -->	
+    <!-- DISABLED <script src="js/include/jquery.flot.pie.min.js"></script> --> 	 
+    
+    <!-- REQUIRED: Sparkline Charts -->
+    <script src="/Skins/PrivateAdmin/Admin_fichiers/jquery_004.js"></script>
+
+	<!-- REQUIRED: Infinite Sliding Menu (used with inbox page) -->
+	<!-- DISABLED  <script src="js/include/jquery.inbox.slashc.sliding-menu.js"></script> -->
+
+	<!-- REQUIRED: Form validation plugin -->
+    <!-- DISABLED <script src="js/include/jquery.validate.min.js"></script> -->
+    
+    <!-- REQUIRED: Progress bar animation -->
+    <script src="/Skins/PrivateAdmin/Admin_fichiers/bootstrap-progressbar.js"></script>
+    
+    <!-- REQUIRED: wysihtml5 editor -->
+    <script src="/Skins/PrivateAdmin/Admin_fichiers/wysihtml5-0.js"></script>
+    <script src="/Skins/PrivateAdmin/Admin_fichiers/bootstrap-wysihtml5.js"></script>
+
+	<!-- REQUIRED: Masked Input -->
+    <!-- DISABLED  <script src="js/include/jquery.maskedinput.min.js"></script> -->
+    
+    <!-- REQUIRED: Bootstrap Date Picker -->
+    <script src="/Skins/PrivateAdmin/Admin_fichiers/bootstrap-datepicker.js"></script>
+
+    <!-- REQUIRED: Bootstrap Wizard -->
+    <!-- DISABLED  <script src="js/include/bootstrap.wizard.min.js"></script> -->
+    
+	<!-- REQUIRED: Bootstrap Color Picker -->
+    <!-- DISABLED  <script src="js/include/bootstrap-colorpicker.min.js"></script> -->
+
+    
+	<!-- REQUIRED: Bootstrap Time Picker -->
+    <!-- DISABLED  <script src="js/include/bootstrap-timepicker.min.js"></script> -->
+    
+    <!-- REQUIRED: Bootstrap Prompt -->
+    <!-- DISABLED  <script src="js/include/bootbox.min.js"></script> -->
+    
+    <!-- REQUIRED: Bootstrap engine -->
+    <script src="/Skins/PrivateAdmin/Admin_fichiers/bootstrap.js"></script>
+    
+    <!-- DO NOT REMOVE: Theme Config file -->
+    <script src="/Skins/PrivateAdmin/Admin_fichiers/config.js"></script>
+    
+    <!-- d3 library placed at the bottom for better performance -->
+    <!-- DISABLED  <script src="js/include/d3.v3.min.js"></script> -->
+    <!-- DISABLED  <script src="js/include/adv_charts/d3-chart-1.js"></script> -->
+    <!-- DISABLED  <script src="js/include/adv_charts/d3-chart-2.js"></script> -->
+
+    <!-- Google Geo Chart -->
+    <!-- DISABLED <script src="http://maps.google.com/maps/api/js?sensor=true" type="text/javascript"></script> -->
+    <!-- DISABLED <script type='text/javascript' src='https://www.google.com/jsapi'></script>-->
+    <!-- DISABLED <script src="js/include/adv_charts/geochart.js"></script> -->
+    
+    <!-- end scripts -->
+  
+
+<div class="top-right jGrowl" id="jGrowl"><div class="jGrowl-notification"></div></div><div style="display: none; position: absolute;" id="flotTip"></div>

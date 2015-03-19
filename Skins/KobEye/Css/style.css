@@ -1,0 +1,189 @@
+@import "Menu.css";
+@import "Structure.css";
+@import "Formulaire.css";
+@import "bbcode.css";
+@import "Pied.css";
+@import "News.css";
+@import "Galerie.css";
+@import "Droite.css";
+@import "Contenu.css";
+@import "slimbox.css";
+@import "Pagination.css";
+@import "Ariane.css";
+@import "BarreAction.css";
+@import "Forum.css";
+@import "Login.css";
+
+
+*{
+	font-family:Arial,Verdana,Helvetica,sans-serif;
+	color:#3F3F3F;
+	font-size:12px;
+	margin:0;
+	padding:0;
+}
+
+body{
+	width:100%;
+	border:0;
+	background-color:#ffffff;
+}
+
+* html body{
+	width:100%;
+	text-align:center;/* = margin-auto pour IE */
+	margin:0;
+	padding:0;
+}
+
+img{	
+	margin:0;
+	padding:0;
+	border:0;
+	outline:0;
+}
+
+a, a:visited, a:hover, a:active{
+	cursor:pointer;
+	outline:0;
+}
+
+
+/*--------TITRES-------*/
+h1 {
+	/*border-bottom:1px dashed #B2B2B2;*/
+	color:#3F3F3F;
+	font-family:Georgia,Arial,Verdana,Helvetica,sans-serif;
+	font-size:20px;
+	font-weight:normal;
+	/*height:40px;*/
+	padding-top:15px;
+	}
+
+
+h2{
+	font-size:16px;
+	color:#0070A9;
+}
+
+h2 a, h2 a:visited, h2 a:hover, h2 a:active {
+	font-size:16px;
+	color:#0070A9;
+	outline:0;
+	cursor:default;
+}
+
+h3{
+	font-size:16px;
+}
+
+h4{
+	font-size:14px;
+}
+
+h5{
+	font-size:;
+	color:;
+}
+
+p{
+	text-indent:0px;
+	font-weight:normal;
+}
+
+ul{
+	list-style-type:none;
+	margin:10px;
+}
+
+li{
+	margin-bottom:5px;
+	list-style-image:none;
+	background:url(/Skins/Gabarit1/Img/PuceBleu.png) no-repeat;
+	display:block;
+	padding:3px 0 0 20px;
+}
+
+a, a:visited {
+	text-decoration:none;
+	color:#0070A9;
+}
+
+a:hover, a:active {
+	text-decoration:none;
+/*	color:#97992E;*/
+}
+
+/*----STYLES GENERAUX----*/
+.FLeft{
+	float:left;
+}
+
+.FRight{
+	float:right;
+}
+
+.Clear {
+	clear:both;
+}
+
+.Bold{
+	font-weight:bold;
+}
+
+.Italic{
+	font-style:italic;
+}
+
+.Souligne{
+	text-decoration:underline;
+}
+
+input, textarea{
+	border:none;
+	border:1px inset #000;
+}
+
+input[type=radio]{
+	width:auto;
+	border:none;
+}
+
+input[type=checkbox]{
+	border:none;
+	width:13px;
+}
+
+
+/*----HACKX IE6----*/
+* html img{	
+	margin:0;
+	padding:0;
+	border:0;
+	outline:0;
+}
+
+* html input{
+	margin:0;
+	padding:0;
+	/*border:none;*/
+}
+
+* html ul{
+	padding:0;
+	margin:0px;
+	list-style-type:none;
+	list-style-image:none;
+}
+
+* html li{
+	padding:0;
+	margin:0px;
+}
+
+* html a{
+	padding:0;
+	margin:0px;
+}
+
+

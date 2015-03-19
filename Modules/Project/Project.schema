@@ -1,0 +1,11 @@
+<SCHEMA>
+	<OBJECTCLASS title="Projet" driver="mysql"  AccessPoint="1" master="0">
+		<PROPERTIES type="varchar" length="250" searchOrder="1" unique="1">Titre</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Tache" driver="mysql"  AccessPoint="1" master="0">
+		<PROPERTIES type="varchar" length="250"  searchOrder="1">Titre</PROPERTIES>
+		<PROPERTIES type="text">Description</PROPERTIES>
+		<PROPERTIES type="date" default="[!TMS::Now!]">DateDebut</PROPERTIES>
+		<PROPERTIES type="date" default="[!TMS::Now:+86400!]">DateFin</PROPERTIES>
+	</OBJECTCLASS>
+</SCHEMA>

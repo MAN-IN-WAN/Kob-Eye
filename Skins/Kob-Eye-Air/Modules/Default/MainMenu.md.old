@@ -1,0 +1,31 @@
+"label":"OPEN", "id":"MAIN_MENU",
+"menuItems":
+[	[STORPROC [!Systeme::User::Menus!]|M]
+		{"label":"[!M::Titre!]", "data":"action[!M::Id!]"
+			[STORPROC [!M::Menus!]|M2]
+			 ,"children":[
+				[LIMIT 0|20]
+					[IF [!Pos!]>1],[/IF]{"label":"[!M2::Titre!]", "data":"action[!M2::Id!]"}
+				[/LIMIT]
+			]
+			[/STORPROC]
+		},
+	[/STORPROC]
+	{"type":"separator"},
+	{"label":"Gestion des Devis", "type":"check", "data":"devis"},
+	{"label":"Gestion des Factures", "type":"check", "data":"factures"},
+	{"type":"separator"},
+	{"label":"Choix 1", "type":"radio", "groupName":"g1", "data":"c1"},
+	{"label":"Choix 2", "type":"radio", "groupName":"g1", "toggled":1, "data":"c2"},
+	{"label":"Choix 3", "type":"radio", "groupName":"g1", "data":"c3"}
+],
+"actions":[
+	{"type":"itemClick", "actions":{
+		[STORPROC [!Systeme::User::Menus!]|M]
+		[IF [!Pos!]>1],[/IF]"action[!M::Id!]":{"type":"click", "action":"loadForm", "url":"[!M::Alias!].json"}
+			[STORPROC [!M::Menus!]|M2]
+				,"action[!M2::Id!]":{"type":"click", "action":"loadForm", "url":"[!M2::Alias!].json"}
+			[/STORPROC]
+		[/STORPROC]
+	}}
+]

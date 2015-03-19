@@ -1,0 +1,83 @@
+table{
+	background-color:transparent;
+}
+table.Panier{
+	width:100%;
+}
+
+div.carousel-inner > .item > img, div.carousel-inner > .item > a > img {
+	min-height:300px;
+}
+
+/* BTN TEL ADRESSE */
+.tel-adresse .btn{
+	min-height:30px;
+}
+
+div.copyright{
+	margin:5px;
+}
+
+/*LOGO*/
+@media screen and (max-width: 979px){
+	#header_right {
+		width: 85%;
+		float:left;
+		padding-left: 20px;
+	}
+	a#header_logo{
+		position: absolute;
+		width: 26%;
+		top: 0px; 
+		padding: 22px;
+	}
+	#header_right #search_block_top input.button{
+		width: 5%;
+	}
+	#header_right #search_block_top input.search_query {
+		width: 95%;
+		padding-left: 40px;
+		line-height: 1.3;
+	}
+	#header_right > div {
+		width: 100%;
+		
+	}
+	#header_right #search_block_top div.input-append{
+		width: 100%;
+	}
+	header#header .topbar .container #header_user {
+		margin-left: 0;
+	}
+}
+@media screen and (max-width: 767px){
+	img.logo{
+		width: 90%;
+		margin:5%;
+	}
+	a#header_logo{
+		position: relative;
+		width: 100%;
+		top: 0px; 
+		padding: 0;
+	}
+	#header_right {
+		width: 95%;
+		float:none;
+		padding: 10px;
+	}
+	.tel-adresse a.btn{
+		float: none;
+		margin: 10px 0;
+		font-size: 1.5em;
+	}
+}
+@media screen and (max-width: 480px) {
+	#header_right #search_block_top input.button{
+		width: 10%;
+	}
+	#header_right #search_block_top input.search_query {
+		width: 90%;
+	}
+
+}

@@ -1,0 +1,1 @@
+<h1>Site configuré</h1>

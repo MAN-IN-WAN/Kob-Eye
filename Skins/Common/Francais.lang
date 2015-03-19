@@ -1,0 +1,63 @@
+$__Open__$|Ouvrir
+$__OPEN__$|OUVRIR
+$__New__$|Nouveau
+$__Edit__$|Modifier
+$__Save__$|Sauver
+$__Close__$|Fermer
+$__Save & Close__$|Sauver & Fermer
+$__Delete__$|Supprimer
+$__Cancel__$|Annuler
+$__Refresh__$|Rafraîchir
+$__File__$|Fichier
+$__Alert__$|Alerte
+$__AddAlert__$|L'élément {0} de type {1} a été ajouté par l'utilisateur {2}
+$__EditAlert__$|L'élément {0} de type {1} a été édité par l'utilisateur {2}
+$__DeleteAlert__$|L'élément {0} de type {1} a été supprimé par l'utilisateur {2}
+$__Profile__$|Profil
+$__Permissions__$|Permissions
+$__Login__$|Connexion
+$__Logout__$|Déconnexion
+$__List__$|Liste
+$__Clear__$|Effacer
+$__Link__$|Lier
+$__Unlink__$|Délier
+$__All__$|Tout
+$__Yes__$|Oui
+$__No__$|Non
+$__Add__$|Ajouter
+$__Ok__$|Ok
+$__Dictionaries__$|Dictionnaires
+$__Check selection__$|Cocher la selection
+$__Uncheck selection__$|Décocher la selection
+$__Check all__$|Cocher tout
+$__Uncheck all__$|Décocher tout
+$__Forward__$|Transférer
+$__Reply__$|Répondre
+$__Reply all__$|Répondre à tous
+$__Send__$|Envoyer
+$__Unread__$|Non lu
+$__Username__$|Utilisateur
+$__Password__$|Mot de passe
+$__BadLogin__$|Code utilisateur ou mot de passe invalide
+$__confirmLogout__$|Voulez-vous vous déconnecter ?
+$__Alerts__$|Alertes
+$__More__$|Plus...
+$__Confirm__$|Confirmer
+$__Update__$|Actualiser
+$__Reach__$|Atteindre
+$__Inbox__$|Reçus
+$__Sent__$|Envoyés
+$__Trash__$|Supprimés
+$__Advanced search__$|Recherche avancée
+$__All read__$|Tout lu
+$__All done__$|Tout fait
+$__R__$|L
+$__D__$|F
+$__Date__$|Date
+$__Title__$|Titre
+$__Date__$|Date
+$__Author__$|Auteur
+$__Search__$|Recherche
+$__Copy__$|Copier
+$__Paste__$|Coller
+$__Cut__$|Couper

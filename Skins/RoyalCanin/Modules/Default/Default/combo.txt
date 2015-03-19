@@ -1,0 +1,54 @@
+		[IF [!Utils::isArray([!Prop::Values!])!]]
+			[STORPROC [!Prop::Values!]|Val]
+				<select name="[!Prefixe!][!Prop::Nom!]" class="[IF [!DisplayReload!]=True] ChangeOnReload[/IF] Champ">
+					<option value="">...</option>
+					[LIMIT 0|100]
+						[!T:=[![!Val!]:/::!]!]
+						
+						[COUNT [!T!]|S]
+						[IF [!S!]>1]
+							<option value="[!T::0!]" [IF [!Prop::Valeur!]=[!T::0!]]selected="selected"[/IF]>[!T::1!]</option>
+						[ELSE]
+							<option value="[!Val!]" [IF [!Prop::Valeur!]=[!Val!]]selected="selected"[/IF]>[!Val!]</option>
+						[/IF]
+					[/LIMIT]
+				</select>
+				[NORESULT]
+				[/NORESULT]
+			[/STORPROC]
+		[ELSE]
+			[IF [!Prop::query!]]
+				[STORPROC [![!Prop::query!]:/::!]|Q|0|1][/STORPROC]
+				[STORPROC [![!Prop::query!]:/::!]|Ov|1|1][/STORPROC]
+				[COUNT [!Q!]|Con]
+				[IF [!Con!]>100]
+					//Popup recherche
+					[!T:=[![!Prefixe!][!Prop::Nom!]!]!]
+					[IF [!Utils::isArray([!T!])!]]
+						[STORPROC [!T!]|E]
+							[!VAL:=[!E!]!]
+						[/STORPROC]
+					[/IF]
+					[IF [!VAL!]=][!VAL:=[!Prop::Valeur!]!][/IF]
+					<a href="" style="display:block;float:right;margin-right:5%;padding-top:5px;" class="makePopup" rel="/Systeme/Interfaces/Explorer/Popup.htm?Prop=[!Prop::Nom!]&Obj=[!ObjectTT!]&Module=[!Module::Actuel::Nom!]&Prefixe=[!Q!]&InputId=[!Prefixe!][!Prop::Nom!]::/[!Query!]::false"><img style="margin-top:3px;" src="/Skins/AdminV2/Img/folder_explore.png"/></a>
+					<input type="text" class="Champ [IF [!DisplayReload!]=True] ChangeOnReload[/IF]" name="[!Prefixe!][!Prop::Nom!]" id="[!Prefixe!][!Prop::Nom!]" value="[!VAL!]" style="width:90%">
+					//<input type="submit" name="[!Prefixe!][!Prop::Nom!]_explore" value="OK" class="ExplorerBouton" />
+				
+					[IF [![!Prefixe!][!Prop::Nom!]_explore!]=OK]
+						[MODULE Systeme/Interfaces/Explorer?Prop=[!Prop!]]
+					[/IF]
+				[ELSE]
+					//Affichage combobox
+					<select class="Champ" name="[!Prefixe!][!Prop::Nom!]">
+						<option value="">...</option>
+						[!DEBUG::Prop::query!]
+						[STORPROC [!Prop::query!]|Val|0|100|[!Ov!]|ASC]
+							[IF [!Key!]!=[!Pos:-1!]][!Valeur:=[!Key!]!][ELSE][!Valeur:=[!Val!]!][/IF]
+							<option value="[!Valeur!]" [IF [!Valeur!]=[!Prop::Valeur!]]selected="selected"[/IF]>[!Val!]</option>
+						[/STORPROC]
+					</select>
+				[/IF]
+			[ELSE]
+				<input type="text" class="Champ" name="[!Prefixe!][!Prop::Nom!]" value="[UTIL SPECIALCHARS][!Prop::Valeur!][/UTIL]">
+			[/IF]
+		[/IF]

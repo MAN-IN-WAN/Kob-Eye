@@ -1,0 +1,49 @@
+/*Le cadre en lui meme*/
+.Panel {
+	background-color:#FFFFFF;
+/* 	margin:auto; */
+/*	border-top: 2px solid #CDCDCD;
+	border-bottom: 2px solid #D4D4D4;
+	border-right: 2px solid #787878;
+	border-left: 2px solid #CACACA;*/
+	right:3px;
+	left:3px;
+	padding:3px;
+	padding-bottom:10px;
+}
+
+/*Le nom de la page, tout en haut*/
+.Panel h1 {
+	margin:0;
+	padding:0;
+	height:24px;
+	font-size:8pt;
+	background-image:url('/Skins/AdminV2/Img/Structure/hover_m.png');
+	padding-top:8px;
+	color:#057390;
+	padding-left:5px;
+}
+/*Le cadre en lui meme*/
+.SousPanel {
+	background-color:#EDEDED;
+/*	border-top: 1px solid #CDCDCD;
+	border-bottom: 1px solid #D4D4D4;
+	border-right: 1px solid #787878;
+	border-left: 1px solid #D4D4D4;*/
+	right:3px;
+	left:3px;
+	padding:3px;
+	padding-bottom:5px;
+}
+
+/*Le nom de la page, tout en haut*/
+.SousPanel h1 {
+	margin:0;
+	padding-top:0px;
+	font-size:7pt;
+	height:14px;
+	background-image : url(/Skins/AdminV2/Img/TraitBack.jpg);
+/* 	border-bottom: 1px solid black; */
+	padding-left:2%;
+	margin-bottom:1em;
+}

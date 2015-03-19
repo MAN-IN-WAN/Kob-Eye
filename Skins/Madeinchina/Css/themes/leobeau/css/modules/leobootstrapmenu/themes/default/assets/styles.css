@@ -1,0 +1,86 @@
+.dropdown-submenu > a:after {
+	border: none;
+}
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus, .dropdown-submenu:hover > a, .dropdown-submenu:focus > a{
+	background: none;
+}
+.navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle{
+	background: none;
+}
+.dropdown-submenu > .dropdown-menu{border-radius: 6px;}
+
+.megamenu .menu-icon{
+	background-position:center center;
+	padding-left:23px;
+	display:block;
+}
+	.megamenu .menu-title{
+		display:block;
+		font-size: 12px;
+	}	
+	.megamenu .menu-desc{
+		display:block;
+		font-size:11px
+	}
+.megamenu  .menu-content{
+	padding:9px
+}
+
+.megamenu .caret{
+	position:absolute;
+	top:30%;
+	right:1px;
+}
+.megamenu .level1 .caret{
+	
+}
+
+
+.megamenu ul{
+}
+.megamenu ul li{
+	list-style:none;
+	 line-height: 18px;
+}
+.megamenu .mega-col{
+
+}
+.megamenu .cols1{
+
+}
+.megamenu .cols2{
+	min-width:400px;
+}
+.megamenu .cols3{
+	min-width:600px;
+}
+.fullwidth {
+
+}
+.megamenu .menu-content p {
+    color: #787676;
+}
+.megamenu .mega-group  > a .caret {display: none;}
+.megamenu .mega-group  > a:hover .menu-title{background: none; color: #26A7E5;}
+.megamenu .mega-group  > a .menu-title {
+	color: #333333;
+    font-size: 16px;
+	padding-left: 0;
+	margin-bottom: 10px;
+	background: none;
+}
+.dropdown-menu a .menu-title{
+	background: url("bullet.png") no-repeat scroll 5px center transparent;
+    font-size: 12px;
+    padding: 5px 0 5px 25px;
+    text-transform: capitalize;
+}
+.dropdown-menu a:hover .menu-title{
+	background: url("bullet-hover.png") no-repeat scroll 5px center #f46553;
+	color: #fff;
+}
+/*
+.nav > .dropdown:hover > .dropdown-menu {
+    display: block;
+}
+*/

@@ -1,0 +1,45 @@
+######HEADER#####
+__DEFAULT_WELCOME_MESSAGE__|Bienvenue sur la boutique 
+__CONNECTION__|Connexion
+__MY_WISHLIST__|
+__BOOKMARK__|
+
+######PANIER######
+__MY_CART__|Mon panier
+__CHECKOUT__|Commander
+
+######PRODUCT LIST#####
+__THERE_IS__|Il y a 
+__PRODUCTS__|Produits
+__SUBCATEGORIES__|Sous-catégories
+__SELECT_TO_COMPARE__|Sélectionner pour comparer
+__ADD_TO_CART__|Ajouter au panier
+__NEW__|New
+__VIEW_AS__|Affichage
+__SORT_BY__|Trier par
+__COMPARE__|Comparer
+__MORE__|Plus
+__PRICE_LOWER_FIRST__|Prix: Le plus bas en premier
+__PRICE_HIGHEST_FIRST__|Prix: Le plus haut en premier
+__PRODUCT_NAME_A_TO_Z__|Nom du produit de a à z
+__PRODUCT_NAME_Z_TO_A__|Nom du produit de z à a
+__IN_STOCK_FIRST__|Produits disponible en stock en premier
+__PLEASE_SELECT_AT_LEAST_ONE_PRODUCT__|Veuillez sélectionner au moins un produit
+__YOU_CANNOT_ADD_MORE_THAN_5_PRODUCTS__|Vous ne pouvez ajouter plus de 5 produits à comparer
+__PROMO__|Promotion
+__A_PARTIR_DE__|A partir de
+__AVAILABLE__|Disponible
+__ITEMS__|Eléments
+
+#######PRODUCT DETAIL######
+__VIEW_FULL_SIZE__|Zoomer
+__QUICK_OVERVIEW__|Description rapide
+__RELATED_PRODUCTS__|Produits associés
+__ADD_TO_MY_WISHLIST__|Ajouter à ma liste de souhait
+__PRINT__|Imprimer
+__SHARE_ON_FACEBOOK__|Partager sur Facebook
+
+#######ORDONNANCES#########
+__BROWSE__|Parcourir
+__LE_CHAMP__|Le champ
+__EST_OBLIGATOIRE__|est obligatoire

@@ -1,0 +1,66 @@
+#Droite a, #Droite span, #Droite p, #Droite h2{
+	color:#fff;
+}
+
+#Droite a, #Droite a:visited{
+	text-decoration:none;
+}
+
+#Droite a:hover{
+	text-decoration:underline;
+}
+
+#ColonneD{
+	width:110px;
+	padding:10px 5px 10px 5px;
+	float:right;
+}
+
+#ColonneG{
+	width:220px;
+	padding:10px 5px 10px 5px;
+	border-right:1px solid #1E1E1E;
+}
+
+* html #ColonneG{
+	padding:0;
+	padding:10px 0 10px 5px;
+}
+
+*+html #ColonneG{
+	padding:0;
+	padding:10px 0 10px 5px;
+}
+
+#ColonneD ul, #ColonneG ul{
+	display:block;
+	margin-bottom:40px;
+}
+
+#ColonneD li, #ColonneG li{
+	padding:5px 0;
+}
+
+
+#ColonneD ul, #ColonneG ul{
+	list-style-type:disc;
+	margin-left:15px;
+}
+
+#BlocRss{
+	padding:5px;
+}
+
+#BlocRss a{
+	display:block;
+	margin-top:10px;
+	font-weight:bold;
+}
+
+p.Year{
+	margin-top:5px;
+	font-weight:bold;
+}
+
+
+

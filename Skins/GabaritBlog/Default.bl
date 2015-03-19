@@ -1,0 +1,33 @@
+[HEADER]
+	<script type="text/javascript" src="/Skins/GabaritBlog/Js/mootools.js"></script>
+	<script type="text/javascript" src="/Skins/GabaritBlog/Js/bb.js"></script>
+	<script type="text/javascript" src="/Skins/GabaritBlog/Js/multibox.js"></script>
+	<script type="text/javascript" src="/Skins/GabaritBlog/Js/overlay.js"></script>
+	<script type="text/javascript">
+		var box = {};
+		window.addEvent('domready', function(){
+			box = new MultiBox('mb', {useOverlay: true});
+		});
+	</script>
+	<link href="[!Domaine!]/Blog/Post/Rss.xml" rel="alternate" title="GabaritBlog" type="application/rss+xml" />
+[/HEADER]
+<div>
+<div id="Entete">
+	[MODULE Systeme/Menu]
+</div>
+<div id="Generale">
+	<div id="Container">
+		<div id="Contenu">
+			<div id="Droite">
+				[MODULE Systeme/Structure/Droite]
+			</div>
+			<div id="Milieu">
+				[DATA]
+			</div>
+			<div class="Clear"></div>
+		</div>
+	</div>
+</div>
+<div id="Pied">
+	[MODULE Systeme/Structure/Pied]
+</div>

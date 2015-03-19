@@ -1,0 +1,1 @@
+[STORPROC [!Query!]|T|0|1][!T::getFileDownload()!][/STORPROC]

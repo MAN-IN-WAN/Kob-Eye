@@ -1,0 +1,40 @@
+<SCHEMA>
+	<OBJECTCLASS title="Categorie" driver="mysql" AccessPoint="1" master="1" Description="Catégories" Display="Fiche" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+		<PROPERTIES type="varchar" searchOrder="1" category="Descriptif">Nom</PROPERTIES>
+		<FKEY card="1,1" data="Categorie,Id">CategorieId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Question" driver="mysql" master="0" AccessPoint="1" Description="Questions"  Icon="/Skins/AdminV2/Img/IconAqua/Text-Edit.png">
+		<PROPERTIES type="varchar" searchOrder="1" category="Intitulé" description="definition de la question">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" category="Intitulé" description="référence de la question">Reference</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" category="Intitulé" description="Titre pour le client">TitreClient</PROPERTIES>
+		<PROPERTIES type="bbcode" category="Definition">Description</PROPERTIES>
+		<PROPERTIES type="int" searchOrder="3" category="Definition" query="Audit/Niveau::Id::Titre">Niveau</PROPERTIES>
+		<PROPERTIES type="order" category="Intitulé">Ordre</PROPERTIES>
+		<FKEY card="1,1" data="Categorie,Id">CategorieId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Reponse" driver="mysql" master="0" AccessPoint="0" Description="Reponses"  Icon="/Skins/AdminV2/Img/IconAqua/Tasks.png">
+		<PROPERTIES type="varchar" searchOrder="1" category="Definition">Titre</PROPERTIES>
+		<PROPERTIES type="bbcode" category="Definition">Description</PROPERTIES>
+		<PROPERTIES type="int" searchOrder="2" category="Definition" query="Audit/Niveau::Id::Titre">Niveau</PROPERTIES>
+		<PROPERTIES type="varchar" length="30" searchOrder="3" category="Definition" query="Audit/TypeChamp::Titre::Type">Type</PROPERTIES>
+		<FKEY card="1,1" data="Question,Id">QuestionId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Methode" driver="mysql" master="0" AccessPoint="0" Description="Methodes"  Icon="/Skins/AdminV2/Img/IconAqua/App.png">
+		<PROPERTIES type="varchar" searchOrder="1" category="Definition">Titre</PROPERTIES>
+		<PROPERTIES type="bbcode" category="Definition">Description</PROPERTIES>
+		<PROPERTIES type="int" searchOrder="2" category="Definition" query="Audit/Niveau::Id::Titre">Niveau</PROPERTIES>
+		<PROPERTIES type="varchar" length="30" searchOrder="3" category="Definition" query="Audit/TypeChamp::Titre::Type">Type</PROPERTIES>
+		<FKEY card="1,1" data="Question,Id">QuestionId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Niveau" driver="mysql" master="0" Dico="1" Description="Niveau"  Icon="/Skins/AdminV2/Img/IconAqua/Calendar.png">
+		<PROPERTIES type="varchar" searchOrder="1" category="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="bbcode" category="Intitulé">Description</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="TypeChamp" driver="mysql" master="0" Dico="1" Description="Type de champ"  Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png">
+		<PROPERTIES type="varchar" searchOrder="1" category="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" category="Intitulé">Type</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="TypePropriete" driver="mysql" master="0" Dico="1" Description="Type de propriete"  Icon="/Skins/AdminV2/Img/IconAqua/Search1.png">
+		<PROPERTIES type="varchar" searchOrder="1" category="Intitulé">Titre</PROPERTIES>
+	</OBJECTCLASS>
+</SCHEMA>

@@ -1,0 +1,97 @@
+@import "components.css";
+@import "redaction.css";
+@import "forms.css";
+@import "multiBox.css";
+@import "menu.css";
+
+/*--- RESET ---*/
+html, body, div, span, applet, object, iframe, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td { margin: 0; padding: 0; border: 0; outline: 0; font-size: 100%; vertical-align: baseline }
+blockquote, q { quotes: none }
+blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; }
+ins { text-decoration: none }
+del { text-decoration: line-through }
+table { border-collapse: collapse; border-spacing: 0 }
+a:active, input:active { outline: none }
+:-moz-any-link:focus { outline: none }
+
+/*-- GLOBAL ---*/
+html,body {
+	padding:0;
+	margin:0;
+	font-family: Arial;
+	font-size:12px;
+}
+
+input, textarea, select, button {
+	font-family: Arial;
+	font-size: 12px;
+}
+
+a {
+	text-decoration: none;
+	color: #77a;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+.fullWidth {
+	width:986px;
+	margin:auto;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	padding: 0;
+	margin: 0;
+}
+
+li {
+	list-style: disc inside;
+}
+
+/*-- STRUCTURE ---*/
+div#Header, div#Footer {
+	height: 130px;
+	background: #ccc;
+	position: relative;
+	z-index: 10;
+}
+
+div#Bando {
+	height: 130px;
+	background: #888;
+}
+
+table#MenuTab {
+	width: 100%
+}
+
+table#MenuTab td {
+	text-align: center;
+	padding: 2px;
+	border-right: 1px solid #000;
+}
+
+table#MenuTab td.Last {
+	border-right: none;
+}
+
+table#MenuTab td.Current {
+	font-weight: bold
+}
+
+table#MenuTab ul {
+	display: none;
+}
+
+div#Main {
+	min-height: 300px;
+	position: relative;
+	z-index: 1;
+}
+
+div#FooterAbtel {
+	padding: 5px;
+	text-align: right;
+}

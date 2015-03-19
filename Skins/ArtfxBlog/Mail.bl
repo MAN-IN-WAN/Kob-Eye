@@ -1,0 +1,26 @@
+<html>
+	<body>
+		<table width="800" cellpadding="5" cellspacing="5" style="margin:auto;" bgcolor="#030303">
+			<tr>	
+				<td>
+					<img src="[!Domaine!]/Skins/ArtfxBlog/Img/Logo.jpg" />
+				</td>
+				<td align="right">
+					<p style="font-family:Arial,Verdana,Helvetica,sans-serif;color:#FFBB00;font-size:11px;font-weight:bold;">[!CONF::MODULE::SYSTEME::SOCIETE!]&nbsp;&nbsp;<br />[!CONF::MODULE::SYSTEME::ADRESSE!]&nbsp;&nbsp;<br />[!CONF::MODULE::SYSTEME::VILLE!]&nbsp;&nbsp;<br />[!CONF::MODULE::SYSTEME::TEL!]&nbsp;&nbsp;<br />[!CONF::MODULE::SYSTEME::FAX!]&nbsp;&nbsp;</p>
+				</td>
+			</tr>			
+			<tr>
+				<td colspan="2" align="center">
+					<p style="font-family:Arial,Verdana,Helvetica,sans-serif;color:#FFFFFF;font-size:11px;font-weight:bold;">[DATA]</p>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center" border="#fffff">
+					<p style="font-family:Arial,Verdana,Helvetica,sans-serif;color:#FFBB00;font-size:11px;font-weight:bold;">A bient&ocirc;t sur <a href="[!CONF::MODULE::SYSTEME::SITE!]" style="text-decoration:underline;font-family:Arial,Verdana,Helvetica,sans-serif;color:#FFBB00;font-size:11px;font-weight:bold;">notre site.</a></p>
+				</td>
+			</tr>
+		<table>
+	</body>
+</html>		
+
+

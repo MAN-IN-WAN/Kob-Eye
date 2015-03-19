@@ -1,0 +1,1 @@
+[MODULE Systeme/Interfaces/Deplacer?Class=[!lastObject!]]

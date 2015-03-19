@@ -1,0 +1,32 @@
+/*--------Menu Principal -----*/
+.MenuPrincipal {
+	overflow:hidden;
+	height:30px;
+	position: relative;
+}
+
+.MenuPrincipal li {
+	color: #2f2f2f;
+}
+
+.MenuPrincipal a {
+	color: #2f2f2f;
+        padding: 5px 37px;
+	background: url('../Img/separateur_menu.jpg') no-repeat right 50%;
+}
+
+.MenuPrincipal a:hover, .MenuPrincipal li.current a {
+	color: #9d4680;
+}
+.MenuPrincipal li.current  {
+	
+	background: url('../Img/fleche-menu-actif.png') no-repeat center 0;
+}
+.MenuPrincipal li.background {
+	background: url('../Img/fleche-menu-actif.png') no-repeat center 0;
+}
+.MenuPrincipal a.last_a {
+	
+	background:none;
+
+}

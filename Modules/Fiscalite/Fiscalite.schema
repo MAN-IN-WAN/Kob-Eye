@@ -1,0 +1,45 @@
+<SCHEMA>
+	<OBJECTCLASS title="ZoneFiscale" driver="mysql" AccessPoint="1" master="0" Class="Modules/Fiscalite/Class/ZoneFiscale.class.php">
+		<PROPERTIES type="varchar" length="30" searchOrder="1">Code</PROPERTIES>
+		<PROPERTIES type="pourcent">TauxAssujettiLivraison</PROPERTIES>
+		<PROPERTIES type="pourcent">TauxNonAssujettiLivraison</PROPERTIES>
+		<PROPERTIES type="pourcent">TauxAssujettiTelechargement</PROPERTIES>
+		<PROPERTIES type="pourcent">TauxNonAssujettiTelechargement</PROPERTIES>
+		<PROPERTIES type="boolean" >Default</PROPERTIES>
+		<PROPERTIES type="bbcode">Commentaire</PROPERTIES>
+		<RKEY module="Geographie" data="Pays,Code" card="0,n">ZonePays</RKEY>
+		<RKEY module="Geographie" data="Departement,Code" card="0,n">ZoneDepartement</RKEY>
+		<RKEY module="Geographie" data="Ville,Code" card="0,n">ZoneVille</RKEY>
+		<FUNCTION Icon="/Skins/AdminV2/Img/marker.png">GetZone</FUNCTION>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="TypeTva" driver="mysql" AccessPoint="0" Dico="1" master="0" Description="TypeTva"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/Fiscalite/Class/TypeTva.class.php">
+		<PROPERTIES searchOrder="1" description="Nom" type="varchar" length="100"   >Nom</PROPERTIES>
+		<PROPERTIES Order="2"  description="description" type="bbcode"  special="multi">Description</PROPERTIES>
+		<PROPERTIES searchOrder="3"  description="Defaut" type="boolean"  >Defaut</PROPERTIES>
+		<PROPERTIES searchOrder="4"  description="Actif" type="boolean"  >Actif</PROPERTIES>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="TauxTva" driver="mysql" AccessPoint="0" Dico="1" master="0" Description="TauxTva"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+		<PROPERTIES searchOrder="1" description="Description"   type="bbcode"  special="multi"  >Description</PROPERTIES>
+		<PROPERTIES searchOrder="2" description="Taux en pourcentage"      type="float"   >Taux</PROPERTIES>
+		<PROPERTIES description="Compte comptable" type="varchar" length="16">CompteComptable</PROPERTIES>
+		<PROPERTIES Order="6"  description="Actif" type="boolean"  >Actif</PROPERTIES>
+		<PROPERTIES type="date" description="Début de Validité">Debut</PROPERTIES>
+		<PROPERTIES type="date" description="Fin de Validité">Fin</PROPERTIES>
+		<FKEY card="1,1" data="TypeTva,Id">TypeTvaId</FKEY>
+		<FKEY card="0,n" data="ZoneFiscale,Id">ZoneFiscaleId</FKEY>
+		<VIEW title="ListTauxTva" default="0">
+			<OBJECTCLASS title="TauxTva" select="Id,Taux,Debut,Fin,Actif,CompteComptable">
+				<JOIN type="inner" title="TypeTva" on="TypeTvaId" target="Id">
+					<PROPERTIES type="int"  alias="TypeTvaId" >Id</PROPERTIES>
+					<PROPERTIES type="boolean"  alias="TypeTvaActif" >Actif</PROPERTIES>
+					<PROPERTIES type="boolean"  alias="TypeTvaDefaut" >Defaut</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+	
+
+</SCHEMA>

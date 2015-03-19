@@ -1,0 +1,265 @@
+/*** GLOBAL ***/
+
+html {
+ 	background:url('../Img/fond-bando.png') repeat-x 0 26px #FFF; 
+}
+
+a {
+	color: #9d4680;
+}
+
+h1, h2 {
+	color: #7D003a;
+	text-transform: uppercase;
+}
+
+
+
+
+/*** STRUCTURE ***/
+div.centreL {
+	border-right: 1px solid #ccc;
+	padding-bottom: 5px;
+}
+
+div.Contenu {
+	width: 885px;
+	border: none;
+	background: none;
+}
+
+div#ContenuMen {
+	margin-top: -3px;
+	height: 30px;
+	border-bottom: 1px solid #7E003F;
+	background: none;
+}
+
+
+/*** ESPACE UTILISATEUR ***/
+a.Mon_panier  {
+	background:url('../Img/panier-top.png') no-repeat 0 50%;
+	padding: 1px 0 1px 20px;
+}
+a.Mon_compte  {
+	background:url('../Img/mon-compte-top.png') no-repeat 0 50%;
+	padding: 1px 0 1px 20px;
+}
+
+
+/*** MENU PRINCIPAL ***/
+div.MenuPrincipal {
+	overflow:hidden;
+	height:30px;
+	position: relative;
+}
+
+div.MenuPrincipal li {
+	color: #2f2f2f;
+}
+
+div.MenuPrincipal a {
+	color: #2f2f2f;
+	padding: 5px 39px;
+	background: url('../Img/separateur_menu.jpg') no-repeat right 50%;
+}
+
+div.MenuPrincipal a:hover, div.MenuPrincipal li.MenuEnCours a {
+	color: #9d4680;
+}
+
+div.MenuPrincipal li.current  {
+	background: url('../Img/fleche-menu-actif.png') no-repeat center 0;
+}
+
+div.MenuPrincipal li.background {
+	background: url('../Img/fleche-menu-actif.png') no-repeat center 0;
+}
+
+div.MenuPrincipal a.last_a {
+	background:none;
+}
+
+
+/*** MENU BAS ***/
+div.SiteFond {
+	background: #7d003e;
+}
+
+div#MenuBas, div#MentionsBottom {
+	background: none;
+}
+
+div#MenuBas h4 {
+	display: inline;
+	padding-bottom: 3px;
+	border-bottom: 1px solid white;
+}
+
+div#MenuBas ul, div#MenuBas p {
+	margin-top: 10px;
+}
+
+div#MenuBas ul {
+	list-style: disc inside;
+}
+
+div#MenuBas a {
+	color: white;
+}
+
+div#AdresseSociete {
+	color: white;
+	border-top: 1px dashed white;
+	border-bottom: 1px dashed white;
+	padding: 10px 0;
+}
+
+a#CopyrightAbtel {
+	color: white;
+}
+
+/*** COMPONENTS ***/
+div.ContenuComposant {
+	padding: 0 0 10px;
+	margin: 5px 5px 10px;
+	border-bottom: 1px dotted #7e003f;
+}
+
+div.EnteteComposant {
+	color: #FFF;
+	background-color: #7e003f;
+	padding: 7px 0 7px 36px;
+}
+
+div.EntetePanier {
+ 	background: url('../Img/Components/picto-panier.png') no-repeat 5px 2px #7e003f; 
+}
+
+div.EnteteNavigationBoutique {
+ 	background: url('../Img/Components/picto-produit.png') no-repeat 5px 2px #7e003f; 
+}
+
+div.EntetePromotions {
+ 	background: url('../Img/Components/picto-promotion.png') no-repeat 5px 2px #7e003f; 
+}
+
+div.EnteteNavigation {
+ 	background: url('../Img/Components/picto-produit.png') no-repeat 5px 2px #7e003f; 
+}
+
+div.EnteteNewsletter {
+ 	background: url('../Img/Components/picto-newsletter.png') no-repeat 5px 2px #7e003f; 
+}
+
+div.ContenuComposantNewsletter {
+	border-bottom: none;
+}
+
+div.Left li {
+	padding: 5px 0 5px 16px;
+	text-transform: uppercase;
+	background: url('../Img/Components/puce_fleche.png') no-repeat 0 7px;
+}
+
+div.Left a {
+	color: #470026;
+}
+
+div.Left li:hover {
+	background-position: 0 -14px;
+}
+
+div.Left li:hover a {
+	color: #9D4680;
+}
+
+/*** PANIER ***/
+a.SupprimerItemPanier {
+	background: url('../Img/Components/supprimer-ligne.png') no-repeat 50% 50%;
+	display: block;
+	text-indent: -9999px;
+}
+
+div.ValiderCommande input, div.ModifierCommande input, div.ViderPanier input {
+    border: none;
+  	text-align: right;
+	padding-right:20px;
+	color: #4a0026;
+   	cursor: pointer;
+}
+
+div.ValiderCommande input:hover, div.ModifierCommande input:hover, div.ViderPanier input:hover {
+	text-decoration: underline;
+}
+
+div.ValiderCommande input {
+	background: url('../Img/Components/valider-ma-commande.png') no-repeat 100% 2px;
+}
+
+div.ModifierCommande input {
+	background: url('../Img/Components/modifier-ma-commande.png') no-repeat 100% 2px;
+}
+
+div.ViderPanier input {
+	background: url('../Img/Components/vider-mon-panier.png') no-repeat 100% 2px;
+}
+
+
+/*** ACCUEIL ***/
+div.BlocProduitUne {
+	background:url('../Img/Fond_ProduitUne.jpg') no-repeat;
+	height: 181px;
+	border-left: 1px solid #7D003a;
+	border-right: 1px solid #7D003a;
+}
+
+div.BlocProduitUneImage {
+	border-top: 1px solid #7D003A;
+}
+
+div.BlocProduitUnePrix {
+	background: none;
+	color: #7D003a;
+	width: 140px;
+}
+
+a.ALaUneProfiter {
+	background:url('../Img/ic-panierrose.png') no-repeat 90% 50% #7D003a;
+	color: white;
+}
+
+div.ImageCategorieUne {
+	background: url('../Img/bandodroite-cat.jpg') no-repeat 100% 0;
+}
+
+div.BlocUneCategories a.ReadMore {
+	color: white;
+	text-align:center;
+	padding: 6px 3px 6px 35px;
+	font-size: 10px;
+	text-transform: uppercase;
+	background: url('../Img/ic-louperose.png') no-repeat 15px 4px #7D003a;
+}
+
+div.BlocUneCategories p {
+	color: #7D003a;
+	padding: 5px;
+}
+
+
+/*** REDACTION ***/
+div.ArticleImgLeft {
+	float: right;
+	margin: 0 0 5px 5px;
+}
+
+/*** FORMULAIRES ***/
+div.BlocError {
+    border: 1px solid #7D003A
+}
+
+span.Obligatoire {
+	color: #4a0026;
+}
+

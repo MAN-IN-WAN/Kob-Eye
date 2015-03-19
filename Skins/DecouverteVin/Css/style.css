@@ -1,0 +1,9 @@
+
+@import "component.news.css";
+p {
+	text-align:justify;
+}
+.form-horizontal .control-group {
+	margin-bottom:0px;
+}
+

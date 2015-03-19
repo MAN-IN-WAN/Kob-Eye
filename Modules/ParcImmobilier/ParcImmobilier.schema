@@ -1,0 +1,388 @@
+<SCHEMA>
+	<OBJECTCLASS title="Residence" driver="mysql"  AccessPoint="1" Class="Modules/ParcImmobilier/Class/Residence.class.php" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<PROPERTIES type="boolean" default="0"  category="Gestion Affichage" description="Apparait dans le menu"  >SuperMenu</PROPERTIES>
+		<PROPERTIES type="int" default=""  category="Gestion Affichage"  description="ordre dans le menu"  >OrdreSuperMenu</PROPERTIES>
+		<PROPERTIES type="boolean" default="0"  category="Gestion Affichage"  list="5"  searchOrder="10">AlaUne</PROPERTIES>
+		<PROPERTIES type="varchar"  values="1,2,3"  category="Gestion Affichage"  description="Ordre AlaUne"  >OrdreAlaUne</PROPERTIES>	
+		<PROPERTIES type="boolean" description="Visible dans Extranet Partenaires" default="1"  category="Gestion Affichage">Prescripteur</PROPERTIES>
+		<PROPERTIES type="boolean" default="1"  category="Gestion Affichage" searchOrder="4" list="2" description="Apparait dans liste résidence" >Logement</PROPERTIES>
+		<PROPERTIES type="order" category="Gestion Affichage" description="Si ordre grand - résidence en haut de liste" default="0">Ordre</PROPERTIES>
+		<PROPERTIES type="boolean" default="0"  category="Gestion Affichage" description="Apparait dans le flash référence si cocher" Order="10">Reference</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Gestion Affichage" description="apparait dans espace client"  searchOrder="7">Client</PROPERTIES>
+		<PROPERTIES type="boolean" default="0"  category="Gestion Affichage" description="Lier à tous les prescripteurs" >LiePrescripteur</PROPERTIES>
+		<PROPERTIES type="varchar" query="ParcImmobilier/ResidenceVille::Id::Nom" category="Catégorisation de la Résidence" description="Ville Pragma">ResidenceVille</PROPERTIES>
+		<PROPERTIES type="varchar" query="ParcImmobilier/ResidenceVille::Id::Nom" category="Catégorisation de la Résidence" description="Ville de Regroupement">VilleDeRegroupement</PROPERTIES>
+		<PROPERTIES type="varchar" query="ParcImmobilier/ResidenceRegion::Id::Nom" category="Catégorisation de la Résidence" description="Region Pragma">ResidenceRegion</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" values="Tous,Habiter,Investir" description="Type de projet" default="Tous"  category="Catégorisation de la Résidence" >TypeProjet</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" values="Tous,STANDING,AIDEE,DUFLOT,LMNP,PINEL" description="Type 2 de projet" default="Tous"  category="Catégorisation de la Résidence" >Type2Projet</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" values="Duflot,Scellier,Pinel" description="Cette résidence est assujettie à loi"  category="Catégorisation de la Résidence" >LoiResidence</PROPERTIES>
+		<PROPERTIES type="boolean" category="Catégorisation de la Résidence" default="0" description="Habiter" >ProjetHabiter</PROPERTIES>
+		<PROPERTIES type="boolean" category="Catégorisation de la Résidence" default="0" description="Investir"  >ProjetInvestir</PROPERTIES>
+		<PROPERTIES type="boolean" category="Catégorisation de la Résidence" default="0" description="Standing"  >Projet2Standing</PROPERTIES>
+		<PROPERTIES type="boolean" category="Catégorisation de la Résidence" default="0" description="Aidée" >Projet2Aidee</PROPERTIES>
+		<PROPERTIES type="boolean" category="Catégorisation de la Résidence" default="0" description="Duflot"  >Projet2Duflot</PROPERTIES>
+		<PROPERTIES type="boolean" category="Catégorisation de la Résidence" default="0" description="LMNP"  >Projet2LMNP</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" searchOrder="1" list="1"  category="Informations générales de la résidence">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" length="255"  category="Informations générales de la résidence" description="Chapo : apparait dans la fiche résidence à coté du titre">Chapo</PROPERTIES>
+		<PROPERTIES type="varchar" length="150" searchOrder="2"  category="Informations générales de la résidence" description="Url de la residence">Lien</PROPERTIES>
+		<PROPERTIES type="varchar" length="255"   category="Informations générales de la résidence">SousTitreCcial</PROPERTIES>
+		<PROPERTIES type="varchar" length="100"  category="Informations générales de la résidence" list="7">DateLivraison</PROPERTIES>
+		<PROPERTIES type="varchar" length="255"   category="Informations générales de la résidence" descriptif="Prescripteurs Sous-Titre Ccial" >SousTitreCcialPartenaire</PROPERTIES>
+		<PROPERTIES type="file" length="255" category="Informations générales de la résidence" description="Visuel Accueil residence">ImgAccueil</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Fiche résidence - Espace de vente" description="Adresse Espace de vente">EspaceVente</PROPERTIES>
+		<PROPERTIES type="int" query="Systeme/User::Id::Nom" category="Fiche résidence - Espace de vente" description="Contact Espace de vente">ContactEspaceVente</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Fiche résidence - Espace de vente" description="Contact residence externe pragma">MailContactResidence</PROPERTIES>
+		<PROPERTIES type="bbcode" category="Fiche résidence - Onglet Descriptif">Descriptif</PROPERTIES>
+		<PROPERTIES type="file" length="255" category="Document Public">Plan</PROPERTIES>
+		<PROPERTIES type="file" length="255" category="Document Public">PlanMasse</PROPERTIES>
+		<PROPERTIES type="file" length="255"  category="Document Public">PlanSitu</PROPERTIES>
+		<PROPERTIES type="file" length="255" category="Document Public" description="Plaquette Résidence">Doc</PROPERTIES>
+		<PROPERTIES type="varchar" length="255"  category="Document Public" description="Plaquette en ligne">DocHtml</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Acces Prescripteur" description="Gestionnaire">Gestionnaire</PROPERTIES>
+		<PROPERTIES type="file" length="255" category="Acces Prescripteur" description="Contrat générique Réservation">ContratReservation</PROPERTIES>
+		<PROPERTIES type="file" length="255" category="Acces Prescripteur" description="Compromis de vente">CompromisVente</PROPERTIES>
+		<PROPERTIES type="bbcode"  category="Espace Client" description="Accroche : Apparait dans onglet informations de résidence client">Accroche</PROPERTIES>
+		<PROPERTIES type="bbcode"  category="Espace Client" description="Texte : Apparait dans onglet informations de résidence client après Accroche">Texte</PROPERTIES>
+		<PROPERTIES type="varchar" length="255"  category="Apparait dans flash reference" description="Architecte :">Architecte</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Apparait dans flash reference" description="NbApparts ">NbApparts</PROPERTIES>
+		<PROPERTIES type="metat"   category="Referencement">MetaTitle</PROPERTIES>
+		<PROPERTIES type="metad"   category="Referencement">MetaDescription</PROPERTIES>
+		<PROPERTIES type="metak" category="Referencement">MetaKeywords</PROPERTIES>
+
+		<PROPERTIES type="file" category="Informations obsolètes" description="Fichier Descriptif de vente">DescriptifPDF</PROPERTIES>
+		<PROPERTIES type="boolean" category="Informations obsolètes"  searchOrder="5">AmbianceReferente</PROPERTIES>
+		<PROPERTIES type="file" category="Informations obsolètes" description="Masque Accueil ">MasqueHTMLAccueil</PROPERTIES>
+		<PROPERTIES type="file" category="Informations obsolètes" description="Banniere ">BanniereHTML</PROPERTIES>
+		<PROPERTIES type="file" category="Informations obsolètes" description="Masque ">MasqueHTML</PROPERTIES>
+
+		<PROPERTIES type="file" length="255" category="Informations obsolètes" description="Visuel de la liste des residences">Icone</PROPERTIES>
+		<PROPERTIES type="image" length="255" category="Informations obsolètes" list="8" description="Visuel liste residence" hidden="1">ImgListe</PROPERTIES>
+		<PROPERTIES type="bbcode" category="Informations obsolètes" description="Developpement durable">DevDurable</PROPERTIES>
+		<PROPERTIES type="file" category="Informations obsolètes" description="Zone de la loi">IconeLoiResidence</PROPERTIES>
+		<PROPERTIES type="varchar" length="255"  description="Actabilité" category="Informations obsolètes">Actabilite</PROPERTIES>
+		<PROPERTIES type="boolean" description="residence assujettie BBC" default="0"  category="Informations obsolètes">BBC</PROPERTIES>
+		<PROPERTIES type="file" category="Informations obsolète" description="Visuel : Plan Type 1" hidden="1">PlanT1</PROPERTIES>
+		<PROPERTIES type="file" category="Informations obsolète" description="Visuel : Plan Type 2" hidden="1">PlanT2</PROPERTIES>
+		<PROPERTIES type="file" category="Informations obsolète" description="Visuel : Plan Type 3" hidden="1">PlanT3</PROPERTIES>
+		<PROPERTIES type="file" category="Informations obsolète" description="Visuel : Plan Type 4" hidden="1">PlanT4</PROPERTIES>
+		<PROPERTIES type="file" category="Informations obsolète" description="Visuel : Plan Type 5" hidden="1">PlanT5</PROPERTIES>
+		<PROPERTIES type="file" category="Informations obsolète" description="Visuel : Plan Type 6" hidden="1">PlanT6</PROPERTIES>
+		<PROPERTIES type="file" category="Informations obsolète" description="Visuel : Plan Type Studio" hidden="1">Studio</PROPERTIES>
+		<PROPERTIES type="file" category="Informations obsolète" description="Visuel : Plan Type Villa" hidden="1">Villa</PROPERTIES>
+		<PROPERTIES type="int"  category="Residence" hidden="1">Superficie</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Residence" hidden="1">Adresse</PROPERTIES>
+		<PROPERTIES type="file" length="255" category="Residence" description="image entete pour cette residence"  hidden="1" >ImageEntete</PROPERTIES>
+		<PROPERTIES type="file" length="255" category="Residence"  hidden="1">MasqueEntete</PROPERTIES>
+		<PROPERTIES type="file" length="255" category="Residence"  hidden="1">LogoBandeau</PROPERTIES>
+		<PROPERTIES type="varchar" length="15" category="Residence"  hidden="1">CouleurFond</PROPERTIES>
+		<PROPERTIES type="varchar" length="15" default="#FFFFFF" category="Residence"  hidden="1">CouleurTexte</PROPERTIES>
+		<PROPERTIES type="int"  category="Residence"  hidden="1">NumeroRue</PROPERTIES>
+		<PROPERTIES type="varchar" length="10" searchOrder="3" category="Residence"  hidden="1">Identifiant</PROPERTIES>
+		<PROPERTIES type="file" length="255" category="Residence" description="logo en haut de la fiche"  hidden="1">Logo</PROPERTIES>
+		<PROPERTIES type="file" length="255"  category="Residence"  hidden="1">Photo1</PROPERTIES>
+		<PROPERTIES type="file" length="255"  category="Residence"  hidden="1">Photo2</PROPERTIES>
+		<PROPERTIES type="file" length="255"  category="Residence"  hidden="1">Video</PROPERTIES>
+		<PROPERTIES type="file" length="250"  category="Residence"  hidden="1">Etat</PROPERTIES>
+		<PROPERTIES type="file" length="255"  category="Residence"  hidden="1">ImgUne</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Residence"  hidden="1">AfficheDep</PROPERTIES>
+		<PROPERTIES type="boolean" default="1" category="Residence"  hidden="1">LogoNF</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Residence"  hidden="1">LogoBBC</PROPERTIES>
+		<PROPERTIES type="bbcode"   category="Residence" hidden="1">texteBBC</PROPERTIES>
+		<PROPERTIES type="int"   hidden="1">CategorieId</PROPERTIES>
+		<PROPERTIES type="boolean" default="0"  category="Residence"  hidden="1">Commerce</PROPERTIES>
+		<PROPERTIES type="boolean" default="0"  category="Residence"  hidden="1">Bureau</PROPERTIES>
+		<PROPERTIES type="boolean" default="0"  category="Residence"  hidden="1">LocalActivite</PROPERTIES>
+		<PROPERTIES type="bbcode"  category="Residence" hidden="1">InfoClient</PROPERTIES>
+		<PROPERTIES type="float"  category="Informations obsolètes"  >Latitude</PROPERTIES>
+		<PROPERTIES type="float"  category="Informations obsolètes"  >Longitude</PROPERTIES>
+		<PROPERTIES type="boolean" default="0"  category="Residence"  hidden="1">StreetView</PROPERTIES>
+		<PROPERTIES type="float"  category="Residence"  hidden="1">SVLatitude</PROPERTIES>
+		<PROPERTIES type="float"  category="Residence"  hidden="1">SVLongitude</PROPERTIES>
+		<PROPERTIES type="float"   category="Residence"  hidden="1">Yaw</PROPERTIES>
+		<PROPERTIES type="float"   default="-20" category="Residence"  hidden="1">Pitch</PROPERTIES>
+		<PROPERTIES type="file" length="255"  category="Residence"  hidden="1">PhotoCommerce</PROPERTIES>
+		<PROPERTIES type="text"   category="Residence"  hidden="1">TexteCommerce</PROPERTIES>
+		<PROPERTIES type="boolean" description="residence assujettie à la loi scellier" default="0"  category="Residence"  hidden="1">Loiscellier</PROPERTIES>
+		<PROPERTIES type="bbcode"   category="Residence"  description="texteScellier si vide prise en compte article 501 ou 511" hidden="1">textescellier</PROPERTIES>
+		<FKEY card="1,1" category="Residence" data="Ville,Id">VilleId</FKEY>
+		<FKEY card="0,n" category="Residence" hidden="1" data="Categorie,Id" action="Link" behaviour="Integrated">CategorieId</FKEY>
+		<FKEY card="0,1" category="Residence" hidden="1" data="TypeLocal,Id">TypeLocalId</FKEY>
+		<FKEY card="0,n" category="Residence" data="PictoResidence,Id">PictoResidenceId</FKEY>
+		<FKEY card="0,n" category="Residence" data="Pastille,Id">PastilleId</FKEY>
+		<FKEY module="Systeme" category="Residence" data="User,Id" card="0,n">Prescripteur</FKEY>
+		<VIEW title="ResidenceList" default="0">
+			<OBJECTCLASS title="Residence" select="Titre,AlaUne,Logement,DateLivraison,ImgListe">
+				<JOIN type="outer" title="ResidenceVille" target="Id" on="ResidenceVille">
+					<PROPERTIES type="varchar" length="150" list="6" searchOrder="1" alias="Ville">Nom</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="ResidenceRegion" target="Id" on="ResidenceRegion">
+					<PROPERTIES type="varchar" length="150" list="7"  searchOrder="1" alias="Region">Nom</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+		<FUNCTION Icon="/Skins/AdminV2/Img/bbedit/bbcode_preview.png" >AffectePrescripteurMontpellier</FUNCTION>
+		<FUNCTION Icon="/Skins/AdminV2/Img/bbedit/bbcode_preview.png">AffectePrescripteurToulouse</FUNCTION>
+		<FUNCTION Icon="/Skins/AdminV2/Img/bbedit/bbcode_preview.png">AffectePrescripteurMarseille</FUNCTION>
+		<FUNCTION Icon="/Skins/AdminV2/Img/bbedit/bbcode_preview.png">ListePrescripteurAffectes</FUNCTION>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Pastille" driver="mysql" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Dico="1">
+		<PROPERTIES type="titre" searchOrder="1">Titre</PROPERTIES>
+		<PROPERTIES type="file">Picto</PROPERTIES>
+		<PROPERTIES type="file">Picto2013</PROPERTIES>
+		<PROPERTIES type="ordre">Ordre</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Donnee" driver="mysql" Icon="/Skins/AdminV2/Img/IconAqua/App2.png">
+		<PROPERTIES type="titre" searchOrder="1" Description="Titre (pour les perspectives apparait sur le site)">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" values="Plan,Fichier,Lien,ImageBandeau,Image,MiniSite,References,Animation,Client,Commerce,DocCommerciaux,Perspective,ImageAccueil" searchOrder="2">Type</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" values="T1::Plan type appartement 1 pièce,T2::Plan type appartement 2 pièces,T3::Plan type appartement 3 pièces,T4::Plan type appartement 4 pièces,T5::Plan type appartement 5 pièces,T6::Plan type appartement 6 pièces,Villa::Plan type Villa,Studio::Plan type Studio,Ccial::locaux commerciaux" searchOrder="2">TypePlan</PROPERTIES>
+		<PROPERTIES type="file">URL</PROPERTIES>
+		<FKEY card="1,1" data="Residence,Id" >ResidenceId</FKEY>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="PictoResidence" driver="mysql" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Dico="1">
+		<PROPERTIES type="titre" searchOrder="1">Titre</PROPERTIES>
+		<PROPERTIES type="bbcode" >Commentaire</PROPERTIES>
+		<PROPERTIES type="file">Picto</PROPERTIES>
+		<PROPERTIES type="file">Picto2013</PROPERTIES>
+		<PROPERTIES type="ordre">Ordre</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="TypeLogement" driver="mysql"  Dico="1" Class="Modules/ParcImmobilier/Class/TypeLogement.class.php">
+		<PROPERTIES type="titre" length="150" searchOrder="1" >Titre</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" values="T1::Plan type appartement 1 pièce,T2::Plan type appartement 2 pièces,T3::Plan type appartement 3 pièces,T4::Plan type appartement 4 pièces,T5::Plan type appartement 5 pièces,Villa::Plan type Villa,Studio::Plan type Studio,Ccial::locaux commerciaux" searchOrder="2">Type</PROPERTIES>
+		<PROPERTIES type="varchar" length="150" searchOrder="2">Nombre</PROPERTIES>
+		<PROPERTIES type="varchar" length="150">Lien</PROPERTIES>
+		<PROPERTIES type="varchar" length="150">SuperficieMin</PROPERTIES>
+		<PROPERTIES type="varchar" length="150">SuperficieMax</PROPERTIES>
+		<PROPERTIES type="varchar" length="150">PrixMin</PROPERTIES>
+		<PROPERTIES type="varchar" length="150">PrixMax</PROPERTIES>
+		<PROPERTIES type="file" description="Plan témoin">URL</PROPERTIES>
+		<FKEY card="1,1" data="Residence,Id">ResidenceId</FKEY>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="TypeLocal" driver="mysql"  Dico="1">
+		<PROPERTIES type="varchar" length="255" searchOrder="1" >Nom</PROPERTIES>
+		<PROPERTIES type="titre" length="150" searchOrder="2" >Lien</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="TypeLot" driver="mysql"  Dico="1">
+		<PROPERTIES type="varchar" length="4" searchOrder="2">Code</PROPERTIES>
+		<PROPERTIES type="titre" length="150" searchOrder="1" >Nom</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Lot" driver="mysql"  AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Home.png" Class="Modules/ParcImmobilier/Class/Lot.class.php">
+		<PROPERTIES type="varchar" length="20" searchOrder="1" descriptif="Numéro de Lot" category="Descriptif" >Identifiant</PROPERTIES>
+		<PROPERTIES type="boolean">Publier</PROPERTIES>
+		<PROPERTIES type="varchar" default="1" values="1::Libre,2::Optionné,3::Réservé,4::Acté" category="Descriptif"  >Statut</PROPERTIES>
+		<PROPERTIES type="bbcode" category="Accroche Commercial">AccrocheCCial</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" searchOrder="2" category="Descriptif" descriptif="Numéro Batiment"  >Batiment</PROPERTIES>
+		<PROPERTIES type="varchar" length="100" descriptif="Numéro Stationnement" category="Descriptif" >Stationnement</PROPERTIES>
+		<PROPERTIES type="varchar" length="10" category="Descriptif" >Etage</PROPERTIES>
+		<PROPERTIES type="int" category="Descriptif" >NombrePiece</PROPERTIES>
+		<PROPERTIES type="pourcent" descriptif="SurfaceLogement en m2" category="Surface">SurfaceLogement</PROPERTIES>
+		<PROPERTIES type="pourcent" descriptif="SurfaceBalcon en m2" category="Surface">SurfaceBalcon</PROPERTIES>
+		<PROPERTIES type="pourcent" descriptif="SurfaceLoggia en m2" category="Surface"  hidden="1">SurfaceLoggia</PROPERTIES>
+		<PROPERTIES type="pourcent" descriptif="SurfaceTerrasse en m2" category="Surface">SurfaceTerrasse</PROPERTIES>
+		<PROPERTIES type="pourcent" descriptif="SurfaceSHON en m2"  category="Surface" hidden="1">SurfaceSHON</PROPERTIES>
+		<PROPERTIES type="pourcent" descriptif="SurfaceUtile en m2"  category="Surface"  hidden="1">SurfaceUtile</PROPERTIES>
+		<PROPERTIES type="varchar" length="150" descriptif="Orientation du lot" category="Autre">Orientation</PROPERTIES>
+		<PROPERTIES type="varchar" length="150" descriptif="Annexes" category="Autre">Annexes</PROPERTIES>
+		<PROPERTIES type="varchar" length="150" description="Vente effective par" category="Autre">VentePrescripteur</PROPERTIES>
+		<PROPERTIES type="date" length="50" category="Autre"  >DateVente</PROPERTIES>
+		<PROPERTIES type="varchar" length="150" description="Contact particulier" default="commercial@pragma-immobilier.com" category="Autre">ContactParticulier</PROPERTIES>
+		<PROPERTIES type="varchar" length="150" category="Descriptif" hidden="1" >DateLivraison</PROPERTIES>
+		<FKEY card="1,1" data="TypeLogement,Id">TypeLogementId</FKEY>
+		<FKEY module="Systeme" data="User,Id" card="0,n">Prescripteur</FKEY>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Action" driver="mysql"  Dico="1">
+		<PROPERTIES type="varchar" searchOrder="1" values="Optionner,Reserver,Vendu">Type</PROPERTIES>
+		<FKEY card="1,1" data="Lot,Id">LotId</FKEY>
+		<FKEY module="Systeme" data="User,Id" card="0,n">Prescripteur</FKEY>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="GrillePrix" driver="mysql"  AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Home.png" Class="Modules/ParcImmobilier/Class/GrillePrix.class.php">
+		<PROPERTIES type="boolean" default="1" >Actif</PROPERTIES>
+		<PROPERTIES type="float" searchOrder="1" descriptif="Prix Logement TTC">TarifLogement</PROPERTIES>
+		<PROPERTIES type="float" descriptif="Prix Logement TTC m2">TarifLogementMC</PROPERTIES>
+		<PROPERTIES  type="float" descriptif="Prix Stationnement"  >TarifStationnement</PROPERTIES>
+		<PROPERTIES type="float" descriptif="Prix Total"  searchorder="1">Tarif</PROPERTIES>
+		<PROPERTIES type="float" descriptif="Prix Total m2" >TarifMC</PROPERTIES>
+		<PROPERTIES type="float" descriptif="Loyer Stationnement" >LoyerStationnement</PROPERTIES>
+		<PROPERTIES type="float" descriptif="Loyer Total" >LoyerTotal</PROPERTIES>
+		<PROPERTIES type="float" descriptif="Loyer m2" >LoyerMC</PROPERTIES>
+		<PROPERTIES type="float" descriptif="Rentabilite" >Rentabilite</PROPERTIES>
+		<PROPERTIES type="float" descriptif="Loyer Foncia" hidden="1">LoyerFoncia</PROPERTIES>
+		<PROPERTIES type="float" descriptif="Honoraires Primaxia" hidden="1">HonorairesPrimaxia</PROPERTIES>
+		<PROPERTIES type="float" descriptif="Honoraires Helenis" hidden="1">HonorairesHelenis</PROPERTIES>
+		<PROPERTIES type="float" descriptif="Honoraires PragmaVP" hidden="1">HonorairesPragmaVP</PROPERTIES>
+		<PROPERTIES type="float" descriptif="Honoraires PragmaVA" hidden="1">HonorairesPragmaVA</PROPERTIES>
+		<FKEY card="1,1" data="Lot,Id">LotId</FKEY>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="DonneeLot" driver="mysql" Icon="/Skins/AdminV2/Img/IconAqua/App2.png">
+		<PROPERTIES type="titre" searchOrder="1">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" values="Plan,Fichier,DocCommerciaux,ContratSpecifique,AppelFond" searchOrder="2">Type</PROPERTIES>
+		<PROPERTIES type="file">URL</PROPERTIES>
+		<FKEY card="1,1" data="Lot,Id" >LotId</FKEY>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Commercial" driver="mysql"  Dico="1">
+		<PROPERTIES type="boolean" default="0"  Descriptif="Prescripteur de Référence">Referent</PROPERTIES>
+		<PROPERTIES type="varchar"  length="255" searchOrder="2" >Nom</PROPERTIES>	
+		<PROPERTIES type="varchar"  length="100" obligatoire="0" >Prenom</PROPERTIES>
+		<PROPERTIES type="varchar"  length="100" obligatoire="0" values="Commercial(e)">Fonction</PROPERTIES>
+		<PROPERTIES type="mail" length="255" obligatoire="1" searchOrder="3" >Mail</PROPERTIES>
+		<PROPERTIES type="varchar"  length="255" obligatoire="0" >Ville</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" obligatoire="0">Telephone</PROPERTIES>
+		<FKEY module="Systeme" data="User,Id" card="0,n">Prescripteur</FKEY>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="Denonciation" driver="mysql" AccessPoint="1" >
+		<PROPERTIES type="boolean" category="Contact" default="0"  searchOrder="2">Obsolete</PROPERTIES>
+		<PROPERTIES type="boolean"  category="Contact" default="1" searchOrder="4" >Archiver</PROPERTIES>
+		<PROPERTIES type="varchar"  length="255" category="Contact" values="M.,MMe,Mlle">Civilite</PROPERTIES>	
+		<PROPERTIES type="varchar"  length="255" searchOrder="1" category="Contact">Nom</PROPERTIES>	
+		<PROPERTIES type="varchar"  length="100" searchOrder="3" category="Contact">Prenom</PROPERTIES>
+		<PROPERTIES type="varchar"  length="255" category="Contact">Adresse1</PROPERTIES>
+		<PROPERTIES type="varchar"  length="255"  category="Contact">Adresse2</PROPERTIES>
+		<PROPERTIES type="int"  category="Contact">CodePostal</PROPERTIES>
+		<PROPERTIES type="varchar"  length="100"  category="Contact">Ville</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Contact">Telephone1</PROPERTIES>
+		<PROPERTIES type="varchar" length="20"  category="Contact">Telephone2</PROPERTIES>
+		<PROPERTIES type="varchar" length="20"  category="Contact">Telephone3</PROPERTIES>
+		<PROPERTIES type="varchar" length="20"  category="Contact">Fax</PROPERTIES>
+		<PROPERTIES type="mail" length="255"  searchOrder="4"  category="Contact">Mail</PROPERTIES>
+		<PROPERTIES type="varchar"  length="255"   category="Recherche" Descriptif="Type Recherché">TypeLot</PROPERTIES>	
+		<PROPERTIES type="varchar"  length="255"   category="Recherche">Surface</PROPERTIES>	
+		<PROPERTIES type="varchar"  length="255"   category="Recherche">VilleRecherche</PROPERTIES>	
+		<PROPERTIES type="varchar"  length="255"   category="Recherche">Quartier</PROPERTIES>	
+		<PROPERTIES type="varchar"  length="255"   category="Recherche">Residence</PROPERTIES>	
+		<PROPERTIES type="varchar"  length="255"   category="Recherche" Descriptif="Montant investissement envisagé">Budget</PROPERTIES>	
+		<PROPERTIES type="varchar"  length="255"   category="Recherche">Motifs</PROPERTIES>
+		<PROPERTIES type="varchar"  length="255"   category="Recherche" Descriptif="Date Livraison souhaitée">Livraison</PROPERTIES>	
+		<PROPERTIES type="bbcode"   category="Autre" Descriptif="Autre renseignement">AutreRenseignement</PROPERTIES>	
+		<FKEY card="0,1" data="Commercial,Id" >CommercialId</FKEY>
+		<FKEY module="Systeme" data="User,Id" card="0,1">Prescripteur</FKEY>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="ArchivDenonciation" driver="mysql" AccessPoint="0" Dico="1" >
+		<PROPERTIES type="boolean" category="Contact" default="1" >Obsolete</PROPERTIES>
+		<PROPERTIES type="varchar"  length="255" category="Contact" values="M.,MMe,Mlle">Civilite</PROPERTIES>	
+		<PROPERTIES type="varchar"  length="255" searchOrder="1" category="Contact">Nom</PROPERTIES>	
+		<PROPERTIES type="varchar"  length="100" searchOrder="2" category="Contact">Prenom</PROPERTIES>
+		<PROPERTIES type="varchar"  length="255" category="Contact">Adresse1</PROPERTIES>
+		<PROPERTIES type="varchar"  length="255"  category="Contact">Adresse2</PROPERTIES>
+		<PROPERTIES type="int"  category="Contact">CodePostal</PROPERTIES>
+		<PROPERTIES type="varchar"  length="100"  category="Contact">Ville</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Contact">Telephone1</PROPERTIES>
+		<PROPERTIES type="varchar" length="20"  category="Contact">Telephone2</PROPERTIES>
+		<PROPERTIES type="varchar" length="20"  category="Contact">Telephone3</PROPERTIES>
+		<PROPERTIES type="varchar" length="20"  category="Contact">Fax</PROPERTIES>
+		<PROPERTIES type="mail" length="255"    category="Contact">Mail</PROPERTIES>
+		<PROPERTIES type="varchar"  length="255"   category="Recherche" Descriptif="Type Recherché">TypeLot</PROPERTIES>	
+		<PROPERTIES type="varchar"  length="255"   category="Recherche">Surface</PROPERTIES>	
+		<PROPERTIES type="varchar"  length="255"   category="Recherche">VilleRecherche</PROPERTIES>	
+		<PROPERTIES type="varchar"  length="255"   category="Recherche">Quartier</PROPERTIES>	
+		<PROPERTIES type="varchar"  length="255"   category="Recherche">Residence</PROPERTIES>	
+		<PROPERTIES type="varchar"  length="255"   category="Recherche" Descriptif="Montant investissement envisagé">Budget</PROPERTIES>	
+		<PROPERTIES type="varchar"  length="255"   category="Recherche">Motifs</PROPERTIES>
+		<PROPERTIES type="varchar"  length="255"   category="Recherche" Descriptif="Date Livraison souhaitée">Livraison</PROPERTIES>	
+		<PROPERTIES type="bbcode"   category="Autre" Descriptif="Autre renseignement">AutreRenseignement</PROPERTIES>	
+		<PROPERTIES type="date" length="50" category="Contact"  searchOrder="3" >DateDenonciation</PROPERTIES>
+		<PROPERTIES type="int"   	category="Autre" Descriptif="Id Commercial">CommercialId</PROPERTIES>	
+		<PROPERTIES type="int"   	category="Autre" Descriptif="Id Prescripteur" >PrescripteurId</PROPERTIES>	
+		<PROPERTIES type="varchar"  length="255" category="Autre" Descriptif="Nom du prescripteur" searchOrder="4">Prescripteur</PROPERTIES>	
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Departement" driver="mysql"  Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Workspace1.png">
+		<PROPERTIES type="varchar" length="150" searchOrder="1" >Nom</PROPERTIES>
+		<PROPERTIES type="varchar" length="150" searchOrder="2">Lien</PROPERTIES>
+		<PROPERTIES type="varchar" length="3">Code</PROPERTIES>
+		<PROPERTIES type="order">Ordre</PROPERTIES>
+		<PROPERTIES type="metat">MetaTitle</PROPERTIES>
+		<PROPERTIES type="metad">MetaDescription</PROPERTIES>
+		<PROPERTIES type="metak">MetaKeywords</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Categorie" driver="mysql" Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png">
+		<PROPERTIES type="titre" length="150" searchOrder="1" >Nom</PROPERTIES>
+		<PROPERTIES type="link" length="150" searchOrder="2"  >Lien</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Ville" driver="mysql"  Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Workspace2.png" >
+		<PROPERTIES type="varchar" length="150"  searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" length="5" searchOrder="3">CodePostal</PROPERTIES>
+		<PROPERTIES type="varchar" length="150"  searchOrder="2">Lien</PROPERTIES>
+		<PROPERTIES type="text" >Texte</PROPERTIES>
+		<PROPERTIES type="ordre">Ordre</PROPERTIES>
+		<PROPERTIES type="metat"  >MetaTitle</PROPERTIES>
+		<PROPERTIES type="metad"  >MetaDescription</PROPERTIES>
+		<PROPERTIES type="metak" >MetaKeywords</PROPERTIES>
+		<FKEY card="1,1" data="Departement,Id">DepartementId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="DonneeVille" driver="mysql" Icon="/Skins/AdminV2/Img/IconAqua/App2.png">
+		<PROPERTIES type="titre" searchOrder="1" >Titre</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" values="Image" searchOrder="2">Type</PROPERTIES>
+		<PROPERTIES type="file">URL</PROPERTIES>
+		<FKEY card="1,1" data="Ville,Id" behaviour="Integrated">VilleId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="IPVille" Dico="1" description="Ville IP" driver="mysql" Icon="/Skins/AdminV2/Img/IconAqua/App2.png">
+		<PROPERTIES type="varchar">CountryCode</PROPERTIES>
+		<PROPERTIES type="varchar">Region</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1">Ville</PROPERTIES>
+		<PROPERTIES type="varchar">PostalCode</PROPERTIES>
+		<PROPERTIES type="varchar">Latitude</PROPERTIES>
+		<PROPERTIES type="varchar">Longitude</PROPERTIES>
+		<PROPERTIES type="varchar">MetroCode</PROPERTIES>
+		<PROPERTIES type="varchar">AreaCode</PROPERTIES>
+		<FKEY card="1,n" data="Residence,Id">ResidenceId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="IPBloc" description="Bloc IP" driver="mysql" Icon="/Skins/AdminV2/Img/IconAqua/App2.png">
+		<PROPERTIES type="int" searchOrder="1">StartIpNum</PROPERTIES>
+		<PROPERTIES type="int" searchOrder="2">EndIpNum</PROPERTIES>
+		<FKEY card="1,1" data="IPVille,Id">IPVilleId</FKEY>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="CategorieHeader" driver="mysql" AccessPoint="1" master="1" Description="Catégories Entete"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" generateUrl="1">
+		<PROPERTIES type="titre" searchOrder="1" category="Descriptif">Nom</PROPERTIES>
+ 		<PROPERTIES type="order" category="Publication">Ordre</PROPERTIES>
+		<PROPERTIES type="file" category="Informations">Icone</PROPERTIES>
+		<PROPERTIES type="bbcode"  special="multi" category="Informations">Description</PROPERTIES>
+		<FKEY card="1,1" data="CategorieHeader,Id">CategorieHeaderId</FKEY>
+
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="Header" driver="mysql"  Description="En-têtes Accueil" Icon="/Skins/AdminV2/Img/IconAqua/App2.png">
+		<PROPERTIES type="varchar" length="250" searchOrder="1" 	category="Description">Nom</PROPERTIES>
+		<PROPERTIES type="image" 	category="Description">FondAnimation</PROPERTIES>
+		<PROPERTIES type="bbcode" 	category="Description">TexteGauche</PROPERTIES>
+		<PROPERTIES type="image" 	category="Description">Bandeau</PROPERTIES>
+		<PROPERTIES type="image" 	category="Description">BandeauNew</PROPERTIES>
+		<PROPERTIES type="varchar" 	category="Description">Lien</PROPERTIES>
+		<PROPERTIES type="order" 	category="Publication">Ordre</PROPERTIES>
+		<PROPERTIES type="boolean" 	category="Publication">Publier</PROPERTIES>
+		<FKEY card="1,1" data="CategorieHeader,Id">CategorieHeaderId</FKEY>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="ResidenceVille" driver="mysql"  Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Workspace2.png" >
+		<PROPERTIES type="varchar" length="150"  searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" length="5" searchOrder="3">CodePostal</PROPERTIES>
+		<PROPERTIES type="boolean" 	category="Publication">Filtre</PROPERTIES>
+		<PROPERTIES type="boolean" 	category="Publication">Publier</PROPERTIES>
+		<FKEY card="0,n" data="Ville,Id">VilleId</FKEY>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="ResidenceRegion" driver="mysql"  Dico="1" Icon="/Skins/AdminV2/Img/IconAqua/Workspace2.png" >
+		<PROPERTIES type="varchar" length="5"  searchOrder="1">Code</PROPERTIES>
+		<PROPERTIES type="varchar" length="150" searchOrder="3">Nom</PROPERTIES>
+		<PROPERTIES type="order" 	category="Publication">Ordre</PROPERTIES>
+		<PROPERTIES type="boolean" 	category="Publication">Menu</PROPERTIES>
+		<PROPERTIES type="boolean" 	category="Publication">Publier</PROPERTIES>
+	</OBJECTCLASS>
+
+
+
+
+</SCHEMA>

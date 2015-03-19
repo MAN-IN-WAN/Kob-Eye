@@ -1,0 +1,411 @@
+<!--// OPTIONAL & CONDITIONAL CSS FILES //-->
+<!-- date picker css -->
+[HEADER CSS]Skins/PrivateAdmin/Css/datepicker.css[/HEADER]
+<!-- full calander css -->
+[HEADER CSS]Skins/PrivateAdmin/Css/fullcalendar.css[/HEADER]
+<!-- data tables extended CSS -->
+[HEADER CSS]Skins/PrivateAdmin/Css/TableTools.css[/HEADER]
+<!-- bootstrap wysimhtml5 editor -->
+[HEADER CSS]Skins/PrivateAdmin/Css/bootstrap-wysihtml5.css[/HEADER]
+[HEADER CSS]Skins/PrivateAdmin/Css/wysiwyg-color.css[/HEADER]
+<!-- custom/responsive growl messages -->
+[HEADER CSS]Skins/PrivateAdmin/Css/toastr.css[/HEADER]
+[HEADER CSS]Skins/PrivateAdmin/Css/toastr-responsive.css[/HEADER]
+[HEADER CSS]Skins/PrivateAdmin/Css/jquery.css[/HEADER]
+
+<!-- // DO NOT REMOVE OR CHANGE ORDER OF THE FOLLOWING // -->
+<!-- bootstrap default css (DO NOT REMOVE) -->
+[HEADER CSS]Skins/PrivateAdmin/Css/bootstrap.css[/HEADER]
+[HEADER CSS]Skins/PrivateAdmin/Css/bootstrap-responsive.css[/HEADER]
+<!-- font awsome and custom icons -->
+[HEADER CSS]Skins/PrivateAdmin/Css/font-awesome.css[/HEADER]
+[HEADER CSS]Skins/PrivateAdmin/Css/cus-icons.css[/HEADER]
+<!-- jarvis widget css -->
+[HEADER CSS]Skins/PrivateAdmin/Css/jarvis-widgets.css[/HEADER]
+<!-- Data tables, normal tables and responsive tables css -->
+[HEADER CSS]Skins/PrivateAdmin/Css/DT_bootstrap.css[/HEADER]
+[HEADER CSS]Skins/PrivateAdmin/Css/bootstrap-modal.css[/HEADER]
+[HEADER CSS]Skins/PrivateAdmin/Css/responsive-tables.css[/HEADER]
+<!-- used where radio, select and form elements are used -->
+[HEADER CSS]Skins/PrivateAdmin/Css/uniform.css[/HEADER]
+[HEADER CSS]Skins/PrivateAdmin/Css/select2.css[/HEADER]
+<!-- main theme files -->
+[HEADER CSS]Skins/PrivateAdmin/Css/theme.css[/HEADER]
+[HEADER CSS]Skins/PrivateAdmin/Css/theme-responsive.css[/HEADER]
+
+<!-- // THEME CSS changed by javascript: the CSS link below will override the rules above // -->
+<!-- For more information, please see the documentation for "THEMES" -->
+[HEADER CSS]Skins/PrivateAdmin/Css/green.css[/HEADER]
+
+<!-- Bootstrap Vertical tabs -->
+[HEADER CSS]Skins/PrivateAdmin/Css/bootstrap-verticaltabs.css[/HEADER]
+
+<!-- To switch to full width -->
+[HEADER CSS]Skins/PrivateAdmin/Css/full-width.css[/HEADER]
+
+<!-- Webfonts -->
+[HEADER CSS]Skins/PrivateAdmin/Css/css.css[/HEADER]
+
+<!-- Prettify -->
+[HEADER CSS]Tools/Js/Prettify/1.0/prettify.css[/HEADER]
+
+<!-- file upload -->
+[HEADER CSS]Skins/PrivateAdmin/Css/blueimp-gallery.css[/HEADER]
+[HEADER CSS]Skins/PrivateAdmin/Css/jquery.fileupload-ui.css[/HEADER]
+[HEADER CSS]Skins/PrivateAdmin/Css/bootstrap-switch.css[/HEADER]
+
+
+[HEADER]
+
+<!-- All javascripts are located at the bottom except for HTML5 Shim -->
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<script src="/Skins/PrivateAdmin/Js/respond.min.js"></script>
+<![endif]-->
+
+<!-- For Modern Browsers -->
+<link rel="shortcut icon" href="http://wbpreview.com/previews/WB09MR0M6/img/favicons/favicon.png">
+<!-- For everything else -->
+<link rel="shortcut icon" href="http://wbpreview.com/previews/WB09MR0M6/img/favicons/favicon.ico">
+<!-- For retina screens -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://wbpreview.com/previews/WB09MR0M6/img/favicons/apple-touch-icon-retina.png">
+<!-- For iPad 1-->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://wbpreview.com/previews/WB09MR0M6/img/favicons/apple-touch-icon-ipad.png">
+<!-- For iPhone 3G, iPod Touch and Android -->
+<link rel="apple-touch-icon-precomposed" href="http://wbpreview.com/previews/WB09MR0M6/img/favicons/apple-touch-icon.png">
+
+<!-- iOS web-app metas -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<!-- Startup image for web apps -->
+<link rel="apple-touch-startup-image" href="http://wbpreview.com/previews/WB09MR0M6/img/splash/ipad-landscape.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)">
+<link rel="apple-touch-startup-image" href="http://wbpreview.com/previews/WB09MR0M6/img/splash/ipad-portrait.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)">
+<link rel="apple-touch-startup-image" href="http://wbpreview.com/previews/WB09MR0M6/img/splash/iphone.png" media="screen and (max-device-width: 320px)">
+
+<style type="text/css">
+	.jqstooltip {
+		position: absolute;
+		left: 0px;
+		top: 0px;
+		visibility: hidden;
+		background: rgb(0, 0, 0) transparent;
+		background-color: rgba(0,0,0,0.6);
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
+		color: white;
+		font: 10px arial, san serif;
+		text-align: left;
+		white-space: nowrap;
+		padding: 5px;
+		border: 1px solid white;
+		z-index: 10000;
+	}
+	.jqsfield {
+		color: white;
+		font: 10px arial, san serif;
+		text-align: left;
+	}
+</style></head>
+
+[/HEADER]
+<!-- .height-wrapper -->
+<div class="height-wrapper">
+
+	<!-- header -->
+	<header>
+		<!-- tool bar -->
+		<div id="header-toolbar" class="container-fluid">
+			<!-- .contained -->
+			<div class="contained">
+
+				<!-- theme name -->
+				<h1><span class="hidden-phone">KOB-EYE Back Orifice</span></h1>
+				<!-- end theme name -->
+				<a href="/Systeme/Deconnexion" class="btn btn-danger pull-right">Déconnexion</a>
+				<div class="my-profile pull-right" style="width:250px;">
+					<a href="javascript:void(0)" class="my-profile-pic"> <img src="/[IF [!Systeme::User::Avatar!]][!Systeme::User::Avatar!].mini.40x40.jpg[ELSE]Skins/PrivateAdmin/img/defaultprofil.jpg.mini.40x40.jpg[/IF]" alt=""> </a>
+					<span class="first-child"><strong>[!Systeme::User::Nom!] [!Systeme::User::Prenom!]</strong></span>
+				</div>
+				<!--<a href="ProgrammeMinceur/Profil" class="btn btn-primary pull-right">Editer mon profil </a>-->
+			</div>
+			<!-- end .contained -->
+		</div>
+		//			[MODULE Systeme/Menu/Mobile]
+		<!-- end tool bar -->
+
+	</header>
+	<!-- end header -->
+
+	<div id="main" role="main" class="container-fluid">
+		<div class="contained">
+			<!-- aside -->
+			<aside>
+
+				<!-- search box -->
+				<!--	<div class="main-search">
+				<label for="main-search"><i class="icon-search"></i></label>
+				<input id="main-search" placeholder="Search..." type="text">
+				</div>-->
+				<!-- 					<div class="divider"></div> -->
+				<!-- end search box -->
+				<div class="my-profile">
+					<a href="/ProgrammeMinceur/Profil" class="my-profile-pic"> <img src="/[IF [!Systeme::User::Avatar!]][!Systeme::User::Avatar!].mini.40x40.jpg[ELSE]Skins/PrivateAdmin/img/defaultprofil.jpg.mini.40x40.jpg[/IF]" alt=""> </a>
+					<span class="first-child">Bonjour, <strong>[!Systeme::User::Nom!] [!Systeme::User::Prenom!]</strong></span>
+				</div>
+
+				<!-- aside item: Mini profile -->
+				<div class="divider"></div>
+				<!-- end aside item: Mini profile -->
+				[MODULE Systeme/Menu]
+				<!-- end aside item: Menu -->
+				<div class="divider"></div>
+
+				<!-- end aside buttons -->
+			</aside>
+			<!-- aside end -->
+
+			<!-- main content -->
+			<div id="page-content">
+				[DATA]
+			</div>
+			<!-- end main content -->
+
+			<!-- aside right on high res -->
+			<!--<aside class="right">
+				//[MODULE Systeme/Structure/Widgets]
+			</aside>-->
+
+			<!-- end aside right -->
+		</div>
+
+	</div><!--end fluid-container-->
+	<div class="push"></div>
+</div>
+<!-- end .height wrapper -->
+
+<!-- footer -->
+
+<!-- if you like you can insert your footer here -->
+
+<!-- end footer -->
+
+<!--================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+[HEADER JS]Tools/Js/CkEditor/ckeditor.js[/HEADER]
+[HEADER JS]Tools/Js/Jquery/1.9.2/jquery.min.js[/HEADER]
+<!--tinyMce -->
+//[HEADER JS]Skins/[!Systeme::Skin!]/Js/tinymce/tinymce.min.js[/HEADER]
+[HEADER JS]Tools/Js/CkEditor/adapters/jquery.js[/HEADER]
+//<script>window.jQuery || document.write('<script src="js/libs/jquery.min.js"><\/script>')</script>
+<script src="/Skins/PrivateAdmin/Admin_fichiers/jquery-ui.js"></script>
+//<script>window.jQuery.ui || document.write('<script src="js/libs/jquery.ui.min.js"><\/script>')</script>
+
+<!-- IMPORTANT: Jquery Touch Punch is always placed under Jquery UI -->
+<script src="/Skins/PrivateAdmin/Admin_fichiers/jquery_012.js"></script>
+
+<!-- REQUIRED: Mobile responsive menu generator -->
+<script src="/Skins/PrivateAdmin/Admin_fichiers/selectnav.js"></script>
+
+<!-- REQUIRED: Datatable components -->
+<script src="/Skins/PrivateAdmin/Admin_fichiers/jquery_011.js"></script>
+
+<!-- REQUIRED: Toastr & Jgrowl notifications  -->
+<script src="/Skins/PrivateAdmin/Admin_fichiers/toastr.js"></script>
+<script src="/Skins/PrivateAdmin/Admin_fichiers/jquery_009.js"></script>
+
+<!-- REQUIRED: Sleek scroll UI  -->
+<script src="/Skins/PrivateAdmin/Admin_fichiers/slimScroll.js"></script>
+
+<!-- REQUIRED: Datatable components -->
+<script src="/Skins/PrivateAdmin/Js/jquery.dataTables.min.js"></script>
+<script src="/Skins/PrivateAdmin/Js/DT_bootstrap.min.js"></script>
+
+<!-- REQUIRED: Form element skin  -->
+<script src="/Skins/PrivateAdmin/Admin_fichiers/jquery_007.js"></script>
+
+<script type="text/javascript">
+	var ismobile = (/iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase()));
+	if (!ismobile) {
+
+		/** ONLY EXECUTE THESE CODES IF MOBILE DETECTION IS FALSE **/
+
+		/* REQUIRED: Datatable PDF/Excel output componant */
+
+		document.write('<script src="/Skins/PrivateAdmin/Js/ZeroClipboard.min.js"><\/script>');
+		document.write('<script src="/Skins/PrivateAdmin/Js/TableTools.min.js"><\/script>');
+		document.write('<script src="/Skins/PrivateAdmin/Js/select2.min.js"><\/script>');
+		document.write('<script src="/Skins/PrivateAdmin/Js/jquery.excanvas.min.js"><\/script>');
+		document.write('<script src="/Skins/PrivateAdmin/Js/jquery.placeholder.min.js"><\/script>');
+
+		/** DEMO SCRIPTS **/
+/*		$(function() {
+			$.jGrowl("Bienvenue sur le système de coaching du site <strong>www.minceur-sgl.com</strong>.", {
+				header : 'Bienvenue [!Systeme::User::Nom!] [!Systeme::User::Prenom!]!',
+				sticky : false,
+				life : 5000,
+				speed : 500,
+				theme : 'without-icon',
+				position : 'top-right', //this is default position
+				easing : 'easeOutBack',
+				animateOpen : {
+					height : "show"
+				},
+				animateClose : {
+					opacity : 'hide'
+				}
+			});
+		});*/
+		/** end DEMO SCRIPTS **/
+
+	} else {
+
+		/** ONLY EXECUTE THESE CODES IF MOBILE DETECTION IS TRUE **/
+
+		document.write('<script src="/Skins/PrivateAdmin/Js/selectnav.min.js"><\/script>');
+	}
+</script><script src="/Skins/PrivateAdmin/Admin_fichiers/jquery_005.js"></script><script src="/Skins/PrivateAdmin/Admin_fichiers/jquery_010.js"></script>
+
+<script src="/Skins/PrivateAdmin/Js/justgage.min.js"></script>
+<script src="/Skins/PrivateAdmin/Js/raphael.2.1.0.min.js"></script>
+
+<!-- REQUIRED: Animated pie chart -->
+<script src="/Skins/PrivateAdmin/Admin_fichiers/jquery_002.js"></script>
+
+<!-- REQUIRED: Functional Widgets -->
+<script src="/Skins/PrivateAdmin/Admin_fichiers/jarvis.js"></script>
+<script src="/Skins/PrivateAdmin/Admin_fichiers/mobiledevices.js"></script>
+<!-- DISABLED (only needed for IE7 <script src="/Skins/PrivateAdmin/Js/json2.js"></script> -->
+
+<!-- REQUIRED: Full Calendar -->
+<script src="/Skins/PrivateAdmin/Admin_fichiers/jquery_008.js"></script>
+
+<!-- REQUIRED: Flot Chart Engine -->
+<script src="/Skins/PrivateAdmin/Admin_fichiers/jquery_006.js"></script>
+<script src="/Skins/PrivateAdmin/Admin_fichiers/jquery_013.js"></script>
+<script src="/Skins/PrivateAdmin/Admin_fichiers/jquery_003.js"></script>
+<!-- DISABLED <script src="/Skins/PrivateAdmin/Js/jquery.flot.orderBar.min.js"></script> -->
+<!-- DISABLED <script src="/Skins/PrivateAdmin/Js/jquery.flot.fillbetween.min.js"></script> -->
+<!-- DISABLED <script src="/Skins/PrivateAdmin/Js/jquery.flot.pie.min.js"></script> -->
+
+<!-- REQUIRED: Sparkline Charts -->
+<script src="/Skins/PrivateAdmin/Admin_fichiers/jquery_004.js"></script>
+
+<!-- REQUIRED: Infinite Sliding Menu (used with inbox page) -->
+<!-- DISABLED  <script src="/Skins/PrivateAdmin/Js/jquery.inbox.slashc.sliding-menu.js"></script> -->
+
+<!-- REQUIRED: Form validation plugin -->
+<script src="/Skins/PrivateAdmin/Js/jquery.validate.min.js"></script>
+
+<!-- REQUIRED: Progress bar animation -->
+<script src="/Skins/PrivateAdmin/Admin_fichiers/bootstrap-progressbar.js"></script>
+
+<!-- REQUIRED: wysihtml5 editor -->
+<script src="/Skins/PrivateAdmin/Admin_fichiers/wysihtml5-0.js"></script>
+<script src="/Skins/PrivateAdmin/Admin_fichiers/bootstrap-wysihtml5.js"></script>
+
+<!-- REQUIRED: Masked Input -->
+<script src="/Skins/PrivateAdmin/Js/jquery.maskedinput.min.js"></script>
+
+<!-- REQUIRED: Bootstrap Date Picker -->
+<script src="/Skins/PrivateAdmin/Admin_fichiers/bootstrap-datepicker.js"></script>
+
+<!-- REQUIRED: Bootstrap Wizard -->
+<script src="/Skins/PrivateAdmin/Js/bootstrap.wizard.min.js"></script>
+
+<!-- REQUIRED: Bootstrap Color Picker -->
+<script src="/Skins/PrivateAdmin/Js/bootstrap-colorpicker.min.js"></script>
+
+<!-- REQUIRED: Bootstrap Time Picker -->
+<script src="/Skins/PrivateAdmin/Js/bootstrap-timepicker.min.js"></script>
+
+<!-- REQUIRED: Bootstrap Prompt -->
+<script src="/Skins/PrivateAdmin/Js/bootbox.min.js"></script>
+
+<!-- REQUIRED: Bootstrap engine -->
+<script src="/Skins/PrivateAdmin/Admin_fichiers/bootstrap.js"></script>
+<script src="/Skins/PrivateAdmin/Js/bootstrap-modal.js"></script>
+<script src="/Skins/PrivateAdmin/Js/bootstrap-modalmanager.js"></script>
+
+<!-- JQUERY INHERITANCE PLUGIN -->
+<script src="/Skins/PrivateAdmin/Js/jquery.inherit.min.js"></script>
+
+<script src="/Skins/PrivateAdmin/Js/load-image.min.js"></script>
+
+<!-- REQUIRED JQuery File Upload -->
+<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+<script src="/Tools/Js/jQuery-File-Upload/js/jquery.iframe-transport.js"></script>
+<!-- The basic File Upload plugin -->
+<script src="/Tools/Js/jQuery-File-Upload/js/jquery.fileupload.js"></script>
+<script src="/Tools/Js/jQuery-File-Upload/js/vendor/jquery.ui.widget.js"></script>
+<!-- The File Upload processing plugin -->
+//<script src="/Tools/Js/jQuery-File-Upload/js/jquery.fileupload-process.js"></script>
+<!-- The File Upload image preview & resize plugin -->
+//<script src="/Tools/Js/jQuery-File-Upload/js/jquery.fileupload-image.js"></script>
+<!-- The File Upload audio preview plugin -->
+//<script src="/Tools/Js/jQuery-File-Upload/js/jquery.fileupload-audio.js"></script>
+<!-- The File Upload video preview plugin -->
+//<script src="/Tools/Js/jQuery-File-Upload/js/jquery.fileupload-video.js"></script>
+<!-- The File Upload validation plugin -->
+//<script src="/Tools/Js/jQuery-File-Upload/js/jquery.fileupload-validate.js"></script>
+<!-- The File Upload user interface plugin -->
+//<script src="/Tools/Js/jQuery-File-Upload/js/jquery.fileupload-ui.js"></script>
+
+<!-- MASONRY -->
+<script src="/Tools/Js/imagesLoaded/3.0.4/imagesLoaded.min.js"></script>
+<script src="/Tools/Js/Masonry/masonry.min.js"></script>
+
+<!-- PRETTIFY -->
+<script src="/Tools/Js/Prettify/1.0/prettify.js"></script>
+
+<!-- SWITCH -->
+<script src="/Skins/PrivateAdmin/Js/bootstrap-switch.js"></script>
+
+<!-- DO NOT REMOVE: Theme Config file -->
+<script src="/Skins/PrivateAdmin/Js/config.js"></script>
+
+<!-- JQUERY KOB-EYE COMPONENTS -->
+<script src="/Skins/PrivateAdmin/Js/kob-eye.component.dataItem.js"></script>
+<script src="/Skins/PrivateAdmin/Js/kob-eye.component.modal.js"></script>
+
+<!-- JQUERY CHECKBOX REPLACEMENT -->
+<script src="jquery.tzCheckbox/jquery.tzCheckbox.js"></script>
+
+<!-- d3 library placed at the bottom for better performance -->
+<!-- DISABLED  <script src="/Skins/PrivateAdmin/Js/d3.v3.min.js"></script> -->
+<!-- DISABLED  <script src="/Skins/PrivateAdmin/Js/adv_charts/d3-chart-1.js"></script> -->
+<!-- DISABLED  <script src="/Skins/PrivateAdmin/Js/adv_charts/d3-chart-2.js"></script> -->
+
+<!-- Google Geo Chart -->
+<!-- DISABLED <script src="http://maps.google.com/maps/api/js?sensor=true" type="text/javascript"></script> -->
+<!-- DISABLED <script type='text/javascript' src='https://www.google.com/jsapi'></script>-->
+<!-- DISABLED <script src="/Skins/PrivateAdmin/Js/adv_charts/geochart.js"></script> -->
+<script src="/Skins/PrivateAdmin/Js/custom.js"></script>
+<!-- end scripts -->
+
+<div class="top-right jGrowl" id="jGrowl">
+	<div class="jGrowl-notification"></div>
+</div><div style="display: none; position: absolute;" id="flotTip"></div>
+
+<!-- MODAL FORM -->
+<div id="modalForm" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="ajouterLien" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+			×
+		</button>
+		<h3 id="modalFormLabel">[TITRE]</h3>
+	</div>
+	<form class="form-horizontal themed modal-form" method="post">
+		<div class="modal-body">
+			<!-- remote form load -->
+		</div>
+		<div class="modal-footer">
+			<a type="reset" class="btn medium btn-danger"  class="close" data-dismiss="modal"> Annuler </a>
+			<button type="submit" class="btn medium btn-primary save">
+				Enregistrer
+			</button>
+		</div>
+	</form>
+</div>
+

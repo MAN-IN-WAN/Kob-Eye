@@ -1,0 +1,61 @@
+[HEADER]
+	<meta name="revisit-after" content="daily"/>
+	<meta name="verify-v1" content="53pGWfuIk/2nV+XfzcOnJlJU767ZFVYhR1xqPKr+xxI=" />
+	<script type="text/javascript" src="/Skins/ArtfxBlog/Js/mootools.v1.11.js"></script>
+	<script type="text/javascript" src="/Skins/ArtfxBlog/Js/scanlink.js"></script>
+	<script type="text/javascript" src="/Skins/ArtfxBlog/Js/bb.js"></script>
+	<script type="text/javascript" src="/Skins/ArtfxBlog/Js/multibox.js"></script>
+	<script type="text/javascript" src="/Skins/ArtfxBlog/Js/overlay.js"></script>
+	<script type="text/javascript">
+		var box = {};
+		window.addEvent('domready', function(){
+			box = new MultiBox('mb', {useOverlay: true});
+		});
+	</script>
+	<link href="[!Domaine!]/Blog/Post/Rss.xml" rel="alternate" title="ArtFx le blog, &eacute;cole 3D - Les articles du blog" type="application/rss+xml" />
+[/HEADER]
+<div>
+<a href="http://www.artfx.fr" title="Artfx : &eacute;cole 3D, formation 3D, cin&eacute;ma d'animation 3D, effets sp&eacute;ciaux num&eacute;riques" onclick="window.open(this.href); return false;"
+ class="BandeauFixe"></a>
+<a href="/" title="Veille et partage d&acute;informations sur le monde de l'imagerie num&eacute;rique" id="Cache"></a>
+</div>
+<div id="Header">
+	[MODULE Systeme/Menu]
+</div>
+<table cellpadding="0" cellspacing="0" id="Contour">
+	<tr>
+		<td class="CoteG"></td>
+		<td>
+			<div id="Generale">
+				<div id="Container">
+					<div id="Contenu">
+						<div id="Droite">
+							//[BLOC Rounded1|background-color:#141414;|padding-top:0;]
+								[MODULE Systeme/Structure/Droite]
+							//[/BLOC]
+						</div>
+						<div id="Milieu">
+							//[BLOC Rounded1|background-color:#1E1E1E;|margin-right:350px;position:relative;display:block;height:1%;border-top:1px solid #2C2C2C;padding-top:0;|padding-bottom:20px;]
+								[DATA]
+							//[/BLOC]
+						</div>
+						<div class="Clear"></div>
+					</div>
+				</div>
+			</div>
+		</td>
+		<td class="CoteD"></td>
+	</tr>
+</table>
+<div id="Footer">
+	[MODULE Systeme/Structure/Footer]
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-130403-14");
+pageTracker._trackPageview();
+} catch(err) {}</script>

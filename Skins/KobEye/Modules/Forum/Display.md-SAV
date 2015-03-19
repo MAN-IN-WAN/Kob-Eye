@@ -1,0 +1,51 @@
+//On prend le numero du plus recent
+[!bestid:=0!]
+[!nbMessage:=0!]
+[!besttms:=0!]
+[!nbSujet:=0!]
+
+[STORPROC Forum/Categorie/[!Cat2::Id!]/Sujet|Suj]
+	[!nbSujet+=1!]
+	[STORPROC Forum/Sujet/[!Suj::Id!]/Post|Pst]
+		[IF [!Pst::tmsCreate!]>[!besttms!]]
+			[!besttms:=[!Pst::tmsCreate!]!]
+			[!bestid:=[!Pst::Id!]!]
+		[/IF]
+		[!nbMessage+=1!]
+	[/STORPROC]
+[/STORPROC]
+
+//On affiche
+<tr>
+	<td>
+		<img src="/Skins/Intranet/Img/Forum/petitTheme.gif" alt="" title=""/>
+	</td>
+	<td class="TdText">
+		<a href="/Forum/Categorie/[!Cat::Id!]/[!Cat2::Id!]" title="[!Cat2::Nom!]">[!Cat2::Nom!]</a>
+	</td>
+	<td class="TdNbr">[!nbSujet!]</td>
+	<td class="TdNbr">[!nbMessage!]</td>
+	<td class="TdText">
+		[IF [!bestid!]!=0]
+			[STORPROC Forum/Post/[!bestid!]|Pst]
+				Le [UTIL NUMERICDATE][!Pst::tmsCreate!][/UTIL] par 
+				[STORPROC Systeme/User/[!Pst::userCreate!]|Usr]
+					[IF [!Pst::userCreate!]==[!Systeme::User::Id!]]
+						<a href="/Systeme/User/MonCompte" title="Mon compte">[!Usr::Login!]</a>
+					[ELSE]
+						<a href="/Fiche-Membre/[!Usr::Id!]">[!Usr::Login!]</a>
+					[/IF]
+				[/STORPROC]
+			[/STORPROC]
+		[ELSE]
+			Pas de message
+		[/IF]
+	</td>
+	[IF [!Systeme::User::Admin!]]
+		<td>
+			<a href="/Forum/Categorie/[!Cat2::Id!]/Supprimer">
+				<img src="/Skins/Intranet/Img/BoutonDeco.jpg" title="Supprimer la cat&eacute;gorie" alt="Supprimer la cat&eacute;gorie" />
+			</a>
+		</td>
+	[/IF]
+</tr>

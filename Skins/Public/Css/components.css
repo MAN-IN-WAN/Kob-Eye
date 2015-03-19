@@ -1,0 +1,9 @@
+div.TitreNavigation {
+	padding: 5px 0;
+	font-weight: bold;
+	font-size: 14px;
+}
+
+div.BlocNavigation a {
+	display: block;
+}

@@ -1,0 +1,17 @@
+[!Page:=!]
+[!Edit:=!]
+[STORPROC [!Query!]/Page|Pages|0|10000|Id|ASC]
+	[!Page+=[!Pages::Image!];!]
+	[!Edit+=[!Pages::tmsEdit!];!]
+[/STORPROC]
+
+[STORPROC [!Query!]|Book][/STORPROC]
+
+[OBJ Flipbook|Book|Pdf]
+	[METHOD Pdf|saveToPdf]
+		[PARAM][!Page!][/PARAM]
+		[PARAM][!Edit!][/PARAM]
+		[PARAM][!Book::Titre!][/PARAM]
+		[PARAM]true[/PARAM]
+		[PARAM][/PARAM]
+	[/METHOD]

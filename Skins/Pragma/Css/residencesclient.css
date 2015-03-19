@@ -1,0 +1,72 @@
+.BlocDetailResidenceClient .accroche {
+	font-weight: normal;
+	padding: 10px;
+	color:#0070ba;
+	font-size:12px;
+}
+.BlocDetailResidenceClient .infosRes {
+	font-weight: normal;
+	padding: 10px;
+	color:#525252;
+	font-size:12px;
+}
+
+.BlocDetailResidenceClient li, .BlocDetailResidenceClient a {
+    background: url("../Img/sprite.png") no-repeat scroll 0 -1170px transparent;
+    display: block;
+    padding: 5px 11px;
+}
+
+.BlocDetailResidenceClient .infosclients {
+	font-weight: normal;
+	padding: 10px;
+	color:#525252;
+	font-size:12px;
+	display:block;
+	overflow:hidden;
+	position:relative;
+	width:100%;
+}
+
+.BlocDetailResidenceClient .infosclients .Item{
+	float:left;
+	display:block;
+	position:relative;
+	width:33%;
+}
+
+
+div#MenuResidenceClient {
+	position: relative;
+	display: block;
+	float: left;
+	width: 160px;
+}
+
+div#MenuResidenceClient li {
+	list-style: none;
+}
+
+div#MenuResidenceClient li.current a.lvl1 {
+	color: #0070ba;
+}
+
+
+div#MenuResidenceClient li.lvl1 {
+	padding: 0 0 5px;
+}
+
+
+div#MenuResidenceClient a.lvl1 {
+	background: url("../Img/sprite.png") no-repeat scroll 0 -858px transparent;
+    	color: #525252;
+    	display: block;
+    	height: 19px;
+    	padding: 5px 13px;
+	width:155px;
+}
+
+div#MenuResidenceClient ul.lvl1 {
+	margin-left: 15px;
+
+}

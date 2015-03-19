@@ -1,0 +1,7 @@
+[INFO [!Query!]|I]
+[IF [!I::TypeSearch!]=Child]
+	[MODULE Murphy/Invoice/NavBar]
+    	[MODULE [!I::Module!]/[!I::TypeChild!]/Liste]
+[ELSE]
+    //[MODULE [!I::Module!]/[!I::TypeChild!]/Fiche]
+[/IF]

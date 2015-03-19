@@ -1,0 +1,61 @@
+/* theme color blue
+color: #1ba1e2
+*/
+.sidebar .block:nth-child(2n+1) .title_block,
+.dropdown-menu a:hover .menu-title,
+#header_right #search_block_top input.button,
+#header_logo {
+    background-color: #1ba1e2;
+}
+
+#shopping_cart a{
+    background-image: url(../images/icon-cart.png); 
+}
+
+.banner-welcome-wrap .buytheme a {
+    background-image: url("../images/bt_custom.png")
+}
+a:hover, a:focus,
+.idTabs .selected,
+.breadcrumb,
+.sidebar .block .block_content ul li a.selected, .sidebar .block .block_content ul li a:hover,
+.breadcrumb > .active,
+.navbar .nav > li > a:focus, .navbar .nav > li > a:hover,
+#header .topbar{
+    color: #1ba1e2;
+}
+
+.navbar .nav li.dropdown > a:hover .caret, .navbar .nav li.dropdown > a:focus .caret {
+    border-bottom-color: #1ba1e2;
+    border-top-color: #1ba1e2;
+}
+
+.leocustomhomepos1 .span6 {
+    background: none repeat scroll 0 0 #1ba1e2;
+}
+.leocustomhomepos1 .row-fluid .span6:nth-child(2) {
+    background: none repeat scroll 0 0 #E671B8;
+}
+.banner-welcome-wrap .buytheme a{text-shadow: 0 1px 0 #1ba1e2}
+
+.blockleocategoriestabs .htabs li a:hover, .blockleocategoriestabs .htabs li.active a {
+	background-image: url("../images/icon-tabcate-hover.png");
+	color: #1ba1e2;
+}
+.content-bottom .wishlist{
+	background-color: #E671B8!important;
+}
+.content-bottom .btn{background-color:#1ba1e2 }
+
+#cart_block #cart-buttons .button_small,
+#footer #newsletter_block_left input.button_mini,
+#add_to_cart:hover, input[type="button"]:hover, input[type="submit"]:hover, input[type="reset"]:hover, .button:hover, button:hover, input.button_mini:hover, input.button_small:hover, input.button:hover, input.button_large:hover, input.button_mini_disabled, input.button_small_disabled, input.button_disabled, input.button_large_disabled, input.exclusive_mini:hover, input.exclusive_small:hover, input.exclusive:hover, input.exclusive_large:hover, input.exclusive_mini_disabled:hover, input.exclusive_small_disabled:hover, input.exclusive_disabled:hover, input.exclusive_large_disabled:hover, a.button_mini:hover, a.button_small:hover, a.button:hover, a.button_large:hover, a.exclusive_mini:hover, a.exclusive_small:hover, a.exclusive:hover, a.exclusive_large:hover, span.button_mini:hover, span.button_small:hover, span.button:hover, span.button_large:hover, span.exclusive_mini:hover, span.exclusive_small:hover, span.exclusive:hover, span.exclusive_large:hover, span.exclusive_large_disabled:hover{
+	background-image: url(../images/bg-button-hover.png);
+	background-position: 0 0;
+	border-color: #1ba1e2
+}
+
+
+#footer-bottom a {
+    color: #1ba1e2;
+}

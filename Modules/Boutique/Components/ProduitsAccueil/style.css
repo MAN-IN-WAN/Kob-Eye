@@ -1,0 +1,23 @@
+div.BlocUneCategories {
+	overflow: hidden;
+}
+
+div.BlocUneCategories div.ColonneCateg {
+	float: left;
+	display: block;
+	position: relative;
+	width: 30%;
+	padding: 1%;
+}
+
+div.BlocUneCategories {
+	overflow: hidden;
+}
+
+div.BlocUneCategories div.ColonneCateg {
+	float: left;
+	display: block;
+	position: relative;
+	width: 30%;
+	padding: 1%;
+}

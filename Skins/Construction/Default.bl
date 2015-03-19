@@ -1,0 +1,34 @@
+<div id="header" class="clearfix"></div>
+<div class="contentwidth">
+	<div id="main">
+		<div class="leftCol">
+			<div class="logo">
+				<h1><img src="/[!Systeme::User::Avatar!]" alt="[!Systeme::User::Nom!]"></h1>
+			</div>
+			<div class="social">
+				<ul class="clearfix"><li><a href="#blogger" target="_blank"><img src="/Skins/Construction/elements/twitter-trans.png" alt="Follow Us!"></a></li><li><a href="#flickr" target="_blank"><img src="/Skins/Construction/elements/flickr-trans.png" alt="Follow Us!"></a></li><li><a href="#facebook" target="_blank"><img src="/Skins/Construction/elements/facebook-trans.png" alt="Follow Us!"></a></li><li><a href="#youtube" target="_blank"><img src="/Skins/Construction/elements/youtube-trans.png" alt="Follow Us!"></a></li><li><a href="#linkedin" target="_blank"><img src="/Skins/Construction/elements/linkedin-trans.png" alt="Follow Us!"></a></li><li><a href="#del" target="_blank"><img src="/Skins/Construction/elements/delicious-trans.png" alt="Follow Us!"></a></li><li><a href="#fm" target="_blank"><img src="/Skins/Construction/elements/lastfm-trans.png" alt="Follow Us!"></a></li><li><a href="#rss" target="_blank"><img src="/Skins/Construction/elements/rss-trans.png" alt="Follow Us!"></a></li></ul>			</div>
+		</div>
+		<div class="rightCol">
+			<h3>[!Systeme::User::Informations!]</h3>
+			<div class="widget">
+				<h4>Dernières mises à jour</h4>
+				<div class="textwidget">[!Systeme::User::Commentaire!]</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div id="footer" class="clearfix">
+	<div class="contentwidth">
+		<p>Pharma nature SA - RCS Marseille 13000</p>
+	</div>
+</div>
+	
+	
+	
+	
+	
+	
+	
+	<!--[if lt IE 7]><script src="http://ie7-js.googlecode.com/svn/version/2.0(beta3)/IE7.js" type="text/javascript"></script><![endif]-->

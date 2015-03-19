@@ -1,0 +1,236 @@
+// fichier de traduction en anglais
+//$$|
+
+#FORMS
+$MSGERR_OBLIG$|Please fill out the following mandatory fields
+$MSGERR_MERCINOM$|Thank you for informing your Name
+$MSGERR_MERCIPRENOM$|Thank you for informing your first name
+$MSGERR_MERCIMAIL$|Thank you for informing your e-mail address
+$MSGERR_MERCITEL$|Thank you for informing your phone number
+$MSGERR_MERCISUJET$|Thank you for informing the subject of your demand
+$MSGERR_MERCIMESS$|Thank you for leaving a message
+$MSGCNT_MESSDE$|Message of
+$MSGMAIL_ADRESSIP$|Address Ip
+$MSGMAIL_OBJETDEM$|Object of the demand
+$MSGMAIL_ENVOYE$|Send by
+$MSGMAIL_NUMTEL$|Phone number
+$MSGMAIL_MAIL$|Email adress
+$SUJET$|Subject
+$MESSAGE$|Message
+$MSGMAIL_CONFBONJOUR$|Hello
+$MSGMAIL_CONFCORPS$|We have received your request by email and thank you for your confidence
+$MSGMAIL_CONFFIN$|We process your application as quickly as possible
+$MSG_MAILSUCCES$|Message succesfully sent
+$MSGMAIL_CONFIRMATION$|Un mail de confirmation vous a &eacute;t&eacute; adress&eacute;
+$NOM$|Name
+$PRENOM$|First name
+$MGS_CHPMARQUES$|The marked fields
+$MGS_SONTOBLIGATOIRES$|Are compulsory
+$CONTACT_LEGALCORPS$|According to the law n°78-17 of January 6th, 1978 relative to the computing, to the files and to the liberties, you have a right of access, rectification, abolition(deletion) of the information which concern you, which you can exercise by sending to you in
+$CONTACT_ADMINSITES$|Web master
+$ACCES_PAGE$|Go to page
+$$TITLE_CONTACT$$|Contact US
+$TITLE_HOME$|Go Home
+$ABTEL$|Abtel web agency @ 2012
+$BTN_CONTACT$|Send
+__YES__|Yes
+__NO__|No
+__PLEASE_SELECT__|- Please select -
+__SUBMIT__|Submit
+__CANCEL__|Cancel
+__ACCEPT__|Accept
+__REFUSE__|Refused
+__REFUSER__|Refuse
+__REFERENCE__|Reference
+__N/A__|Not available
+__N/P__|Not provided
+__SEE__|See
+__DATE_FORMAT__|m/d/Y
+__CREATE_ANOTHER__|Submit and make another offer
+
+#HOME
+__HOME_DEMANDES__|My last enquiry
+__SEE_ALL__|See all
+__HOME_PROPOSALS__|My last offers
+__HOME_CONTRACTS__|My last contracts
+__MY_ALERTS__|My alerts
+__MY_PROFILE__|My profile
+__MY_ALERTS
+
+#ACTIONS
+__DATE__|Date
+__DETAILS__|Details
+__CONFIRM_REFUS__|Confirm refusal ?
+__INFORMATIONS__|Informations
+__REVISE__|Confirm revisal
+__PRINT__|Print
+
+#THIRD 
+__COMPANY__|Company
+__ADRESS__|Address
+__CA_CONTACT__|CA Contact
+__VAT__|VAT Infos
+__BUYER_COUNTRY__|Buyer country
+
+
+#ENQUIRY
+__DEMANDE__|Enquiry
+__NOUVELLE_DEMANDE__|Create Enquiry
+__LISTE_DEMANDES__|Enquiry list
+__DEMANDE_FICHE__|Enquiry details
+__DEMANDE_ACTIVE__|Active Enquiry
+__DEMANDE_ARCHIVE__|Archived Enquiry
+__ACTIVE_ENQUIRY__|Pending enquiry
+__CURRENT_ENQUIRY__|Confirmed enquiry
+__COMPLETED_ENQUIRY__|Completed enquiry
+__ABANDONNED_ENQUIRY__|Closed enquiry
+__LIST_WAITING_ENQUIRY__|Pending enquiry list
+__LIST_ENQUIRY_CURRENT__|Confirmed enquiry list
+__LISTE_ENQUIRY_ACCEPTED__|Accepted enquiry list
+__LISTE_ENQUIRY_ABANDONNED__|Cancelled enquiry list
+__LISTE_ENQUIRY_COMPLETED__|Completed enquiry list
+__LISTE_ENQUIRY_CLOSED__|Closed enquiry list
+__NO_RESULT__|No result
+__COMMISSION__|Commission
+__PLEASE_SPECIFY_IN_COMMENT__|Other, please specify in comments
+__30_DAYS__|30 Days
+__60_DAYS__|60 Days
+__OFFER_DEADLINE__|Offer deadline
+__MY_ENQUIRY__|My enquiry
+__MY_PROPOSALS__|My offers
+__SUBJECT_TO_SAMPLE_APPROVAL__|subject to sample approval
+__OTHER_COUNTRY__|Any other country, please specify in comments
+
+#DIVERS
+__VARIETEE__|Varietal
+__APPELLATION__|Appellation
+__MILLESIME__|Vintage
+__QUANTITY__|Purchasing unit
+__FILTRATION__|Filtration
+__VOLUME__|Maximum Volume
+__DATE_LIMITE__|Shipment (all by)
+__BUYER_CONTACT__|Buyer contact
+__COMMENTAIRES__|Comments
+__COMMENTAIRES_BUYER__| Buyer's comments
+__DEMANDE_SOUMISE__|Your enquiry has been succesfully submited
+__TRANSPORTATION__|Transportation
+__INCO_TERMS__|Incoterms
+__PAYMENT__|Payment conditions
+__BUYER_REFERENCE__|Buyer reference
+__INCO__|Incoterms
+__SUPPLIER_REF__|Supplier reference
+__CONTACT__|Email
+__DATE_CREATION__|Creation date
+__PAYS__|Country
+__COLOR__|Colour
+__NOM_ACHETEUR__|Buyer
+__PRICE_NOT_FILLED__|Please fill the unit price
+__REVISER__|Revise
+
+#PROPOSALS
+__ACTIVE_PROPOSAL__|Requests
+__ARCHIVED_PROPOSAL__|Archived offer
+__EDIT_PROPOSAL__|Edit offer
+__REVISE_PROPOSAL__|Revise offer
+__REVISE_REASON__|Please explain your revision
+__PROPOSAL_UPDATED__|offer has been successfully updated
+__WAITING_PROPOSAL__|Ongoing offers
+__ACCEPTED_PROPOSAL__|Closed
+__ABANDONNED_PROPOSAL__|Cancelled offers
+__LISTE_PROPOSALS_WAITING__|Ongoing offers
+__NO_PROPOSAL_WAITING__|No pending offer
+__LISTE_PROPOSALS_ACCEPTED__|List of closed offers
+__NO_PROPOSAL_ACCEPTED__|No accepted offers
+__LISTE_PROPOSALS_ABANDONNED__|List of cancelled offers
+__NO_PROPOSAL_ABANDONNED__|No cancelled offer
+__LISTE_PROPOSALS_ACTIVE__|List of offers requests
+__NO_ACTIVE_PROPOSAL__|No active offer
+__LISTE_PROPOSALS__|Offer list
+__PROPOSAL__|Offer
+__NO_PROPOSAL__|No offer available
+__MAKE_PROPOSAL__|Answer a offer
+__REMAKE_PROPOSAL__|Create an other offer
+__CANCEL_PROPOSAL__|Cancel offer
+__UNIT_PRICE__|Unit price
+__UNIT__|Sale unit
+__CURRENCY__|Currency
+__TOTAL__|Total
+__CA_CONTACT__|CA Contact
+__VALID_UNTIL__|Offer valid until
+__TRUCKS_COUNT__|Number of trucks
+__PROPOSAL_REFUSED__|Offer refused
+__PROPOSAL_ACCEPTED__|Offer accepted
+__PROPOSAL_REVISED__|Offer revised
+__PROPOSAL_ACCEPTED_WITH_APPROVAL__|Offer accepted subject to sample approval
+__SUBMIT_AND_SEND_TO_BUYER__|Submit
+__THE_ENQUIRY__|The enquiry
+__MY_PROPOSAL__|My offer(s)
+
+#CONTRACTS
+__CONTRACTS__|Contracts list
+__CONTRACT__|Contract
+__CURRENT_CONTRACT__|Pending contracts
+__ACCEPTED_CONTRACT__|Accepted contracts
+__COMPLETED_CONTRACT__|Completed contracts
+__CANCELLED_CONTRACT__|Cancelled contracts
+__BUYER__|Buyer
+__SUPPLIER__|Supplier
+__CONTRACT_DETAIL__|Contract detail
+__CLOSED_CONTRACT__|Closed contracts
+__SHIPMENT_STATUS__|Shipments status
+__CONFIRM_DETAILS__|Confirm details
+
+
+
+#SHIPMENTS
+__SHIPMENT_LIST__|Shipments list
+__LOADING_DATE__|Loading date
+__PURCHASE_ORDER__|Ordre d' achat
+__REMAINS__|Remaining
+__LOADED__|Loaded
+
+
+
+#INVOICES
+__COMPLETED_INVOICE__|Invoices
+__TOTAL_TE__|Total tax excluded
+__VAT_AMOUNT__|VAT amount
+__VAT_RATE__|VAT rate
+__TOTAL_TI__|Total tax included
+__PAID__|Paid
+__NOT_PAID__|Outstanding
+__DATE_PAYMENT__|Payment date
+
+#ERRORS
+__ERR_NO_THIRD__|Error : No third linked to current user.
+__ERR_NO_AUTH__|Error : You dont have enough right access to do that.
+__ERR_NO_ENQ_PROPOSAL__|Error : This offer is not related to any enquiry.
+__ERR_NO_PROPOSAL__|Error : This offer doesnt exists.
+__LE_CHAMP__|The field
+__EST_OBLIGATOIRE__|is required
+__LA_VALEUR_DU_CHAMP__|the field value
+__INVALID_CHAR__|is not a valid string
+__NOT_INT__|is not an integer
+__FORMAT_DATE_INVALID__|is not a valid date format
+__INVALID__|is not valid
+__ALREADY_EXISTS__|already exists
+
+#SAMPLE REQUEST
+__SAMPLE_REQUEST__|Sample request
+
+#MENU
+__HOME__|Home
+
+# RUSTINETTE
+Draft|Draft
+Answered|Answered
+Refused|Refused
+Revised|Revised
+Rejected|Rejected
+Confirmed|Confirmed
+Completed|Completed
+Cancelled|Cancelled
+
+#SAMPLE
+__REQUEST_SAMPLE__|Request sample
+__SAMPLE_REQUESTED__|Sample requested

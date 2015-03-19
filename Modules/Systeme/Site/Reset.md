@@ -1,0 +1,4 @@
+[STORPROC [!Query!]/Page|P|0|10000]
+    [METHOD P|Delete][/METHOD]
+[/STORPROC]
+ [REDIRECT][!Query!][/REDIRECT]

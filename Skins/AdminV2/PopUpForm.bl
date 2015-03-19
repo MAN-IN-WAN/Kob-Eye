@@ -1,0 +1,31 @@
+<div class="PopUp [2]" >
+[IF [3]=]
+    [!BackUrl:=[!Lien!]!]
+[ELSE]
+    [!BackUrl:=[3]!]
+[/IF]
+
+	<style type="text/css">
+		#Data .Panneau{z-index:100;}
+		*+html #Data .Panneau{z-index:100;}
+	</style>
+
+
+	<form action="" method="post">
+	[BLOC Panneau|position:relative;padding-right:36px;padding-bottom:36px;||position:relative;]
+		[BLOC Rounded]
+				<div class="TitrePopUp" style="height:15px;line-height:15px;">
+				     <div style="float:right;padding-top:5px;">
+				     	  <a href="/[!BackUrl!]" <img src="/Skins/AdminV2/Img/delete.png"/></a></div>
+					<span>[1]</span>
+					<a href="/[!Query!]" style="display:block;">
+					<img src="/Skins/Pilote-Boutique/Img/PopUp/ListeFermer.jpg" alt="" style="position:absolute;right:5px;top:1px;"/>
+					</a>
+				</div>
+		[/BLOC]
+		<div class="FormContains" style="padding-top:15px;padding-bottom:30px;">
+			[DATA]
+		</div>
+	[/BLOC]
+	</form>
+</div>

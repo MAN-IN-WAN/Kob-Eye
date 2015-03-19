@@ -1,0 +1,68 @@
+html, body {
+	font-size: 12px;
+	font-family: Trebuchet MS;
+	margin: 0;
+	padding: 0;
+}
+
+div.Header {
+	padding: 6px;
+	background: url("/Skins/AdminV2/Img/Structure/BarreBas.jpg") repeat-x;
+	color: #EE6100;
+}
+
+div.Header a {
+	color: white;
+}
+
+div.Header a#Deco {
+	position: absolute;
+	top: 6px;
+	right: 6px;
+}
+
+a {
+	color: black;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #EE6100;
+}
+
+div.Ariane {
+	padding: 2px 6px;
+	color: #fff;
+	background: #EE6100;
+}
+
+table.Pages {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+table.Pages th {
+	background: #ccc;
+}
+
+table.Pages tr.hover td {
+	background-color: #fb8;
+}
+
+table.Pages td {
+	border: 1px solid #ccc;
+}
+
+table.Pages td.load {
+	text-align: center;
+}
+
+table.Pages td input, table.Pages td textarea {
+	border: none;
+	overflow: auto;
+	height: 20px;
+	width: 95%;
+	background: none;
+	outline: none;
+}
+

@@ -1,0 +1,21 @@
+/*** AUTOCOMPLETION ***/
+
+div#proposals_ac {
+	position:absolute;
+	z-index:100;
+	background:#fff;
+	border:1px solid #ccc;
+}
+
+div#proposals_ac div {
+	padding: 2px;
+	cursor: pointer;
+}
+
+div#proposals_ac div.active {
+	background: #ddf;
+}
+
+input.AC {
+	background: #E9F1F4;
+}

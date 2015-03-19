@@ -1,0 +1,47 @@
+[HEADER]
+	<link rel="icon" href="favicon.ico" type="image/x-icon"/> 
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/> 
+
+	<link type="text/css" rel="stylesheet" href="/Skins/Default/Css/style.css" />
+	<link type="text/css" rel="stylesheet" href="/Skins/Default/Css/multiBox.css" />
+	<link type="text/css" rel="stylesheet" href="/Skins/VoieRomaine/Css/style.css" />
+
+	<script type="text/javascript" src="/Skins/Default/Js/mootools.js"></script>
+	<script type="text/javascript" src="/Skins/Default/Js/mootools-more.js"></script>
+	<script type="text/javascript" src="/Skins/Default/Js/morphlist.js"></script>
+	<script type="text/javascript" src="/Skins/Default/Js/overlay.js"></script>
+	<script type="text/javascript" src="/Skins/Default/Js/multiBox.js"></script>
+
+	<script type="text/javascript">
+		//------------CONFIG TESTER / MULTIBOX ------------
+		window.addEvent('domready', function(){
+			var initMultiBox = new multiBox({
+				mbClass: '.mb',
+				container: $(document.body),
+				descClassName: 'multiBoxDesc',
+				useOverlay: true,
+				maxSize: {w:800, h:600},
+				addRollover: true
+			});
+		});
+		// Surcouche JS
+		window.addEvent('domready', function() {
+			var item = $('ContenuMen').getElement('li.current');
+			if(item != null) {
+				new MorphList('MenuMorph');
+				item.removeClass('current');
+			}
+		});
+		window.addEvent('domready', function () {
+			var jsToMask = $('javascriptehoh');
+			if(jsToMask != null) jsToMask.setStyle('display','none');
+		});
+		
+	</script>
+
+[/HEADER]
+[MODULE Systeme/Structure/Top]
+<div class="Contenu">	
+	[DATA]
+</div>
+[MODULE Systeme/Structure/Bottom]

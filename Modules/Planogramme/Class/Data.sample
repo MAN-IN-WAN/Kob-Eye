@@ -1,0 +1,2178 @@
+Array
+(
+    [NomGammeTitre] => DOG VDIET DRY
+    [Lineaires] => Array
+        (
+            [0] => Array
+                (
+                    [Name] => Vet 2012( 1 )
+                    [Packs] => Array
+                        (
+                            [42] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [id] => 1252
+                                            [label] => 4 kg
+                                            [Nom] => Urinary S/O SD - 4 kg
+                                            [GenCode] => 
+                                            [Photo] => Home/Products/VDDURISD.jpg
+                                            [Poids] => 4
+                                            [CodeBarre] => 
+                                            [UcPerBox] => 0
+                                            [Description] => 3 to 5 kg Facing
+                                            [Largeur] => 24.5
+                                            [Hauteur] => 49
+                                            [Profondeur] => 14
+                                            [X] => 100.51866319444
+                                            [Y] => 0
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Profondeur] => Profondeur
+                                            [Hauteur] => Hauteur
+                                            [Largeur] => Largeur
+                                            [InfoBulle] => Nom
+                                            [Var] => 0
+                                            [drag] => 1
+                                            [Affich] => Stretch
+                                            [Type] => img
+                                            [Field] => Photo
+                                        )
+
+                                    [X] => 100.51866319444
+                                    [Y] => 10.974392361111
+                                    [Etag] => 
+                                    [EtageNum] => 2
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 2
+                                            [Profondeur] => 80
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-97
+                                )
+
+                            [41] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [id] => 1252
+                                            [label] => 4 kg
+                                            [Nom] => Urinary S/O SD - 4 kg
+                                            [GenCode] => 
+                                            [Photo] => Home/Products/VDDURISD.jpg
+                                            [Poids] => 4
+                                            [CodeBarre] => 
+                                            [UcPerBox] => 0
+                                            [Description] => 3 to 5 kg Facing
+                                            [Largeur] => 24.5
+                                            [Hauteur] => 49
+                                            [Profondeur] => 14
+                                            [X] => 72.87109375
+                                            [Y] => 0
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Profondeur] => Profondeur
+                                            [Hauteur] => Hauteur
+                                            [Largeur] => Largeur
+                                            [InfoBulle] => Nom
+                                            [Var] => 0
+                                            [drag] => 1
+                                            [Affich] => Stretch
+                                            [Type] => img
+                                            [Field] => Photo
+                                        )
+
+                                    [X] => 72.87109375
+                                    [Y] => 10.974392361111
+                                    [Etag] => 
+                                    [EtageNum] => 2
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 2
+                                            [Profondeur] => 80
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-97
+                                )
+
+                            [40] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [id] => 1342
+                                            [label] => 12 kg Bottom
+                                            [Nom] => Starter - 12 kg Bottom
+                                            [GenCode] => 3182550781923
+                                            [Photo] => Home/Models/CDSPST12.jpg
+                                            [Poids] => 12
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550781923.png
+                                            [UcPerBox] => 0
+                                            [Description] => 12 to 15 kg Bottom
+                                            [Largeur] => 39
+                                            [Hauteur] => 12
+                                            [Profondeur] => 65
+                                            [X] => 30.638020833333
+                                            [Y] => 33
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Profondeur] => Profondeur
+                                            [Hauteur] => Hauteur
+                                            [Largeur] => Largeur
+                                            [InfoBulle] => Nom
+                                            [Var] => 0
+                                            [drag] => 1
+                                            [Affich] => Stretch
+                                            [Type] => img
+                                            [Field] => Photo
+                                        )
+
+                                    [X] => 30.638020833333
+                                    [Y] => 14.98046875
+                                    [Etag] => 
+                                    [EtageNum] => 2
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 2
+                                            [Profondeur] => 80
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-97
+                                )
+
+                            [39] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [id] => 635
+                                            [label] => 10 kg Bottom
+                                            [Nom] => Junior - 10 kg Bottom
+                                            [GenCode] => 3182550760294
+                                            [Photo] => Home/Models/CDSPJU.jpg
+                                            [Poids] => 10
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550760294.png
+                                            [UcPerBox] => 0
+                                            [Description] => 6 to 10 kg Bottom
+                                            [Largeur] => 39
+                                            [Hauteur] => 11
+                                            [Profondeur] => 60
+                                            [X] => 30.638020833333
+                                            [Y] => 22
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Profondeur] => Profondeur
+                                            [Hauteur] => Hauteur
+                                            [Largeur] => Largeur
+                                            [InfoBulle] => Nom
+                                            [Var] => 0
+                                            [drag] => 1
+                                            [Affich] => Stretch
+                                            [Type] => img
+                                            [Field] => Photo
+                                        )
+
+                                    [X] => 30.638020833333
+                                    [Y] => 26.998697916667
+                                    [Etag] => 
+                                    [EtageNum] => 2
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 2
+                                            [Profondeur] => 80
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-97
+                                )
+
+                            [38] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [Y] => 11
+                                            [X] => 30.638020833333
+                                            [Profondeur] => 60
+                                            [Hauteur] => 11
+                                            [Largeur] => 39
+                                            [Description] => 6 to 10 kg Bottom
+                                            [UcPerBox] => 0
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550760324.png
+                                            [Poids] => 10
+                                            [Photo] => Home/Models/CDSAD.jpg
+                                            [GenCode] => 3182550760324
+                                            [Nom] => Adult - 10 kg Bottom
+                                            [label] => 10 kg Bottom
+                                            [id] => 633
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Field] => Photo
+                                            [Type] => img
+                                            [Affich] => Stretch
+                                            [drag] => 1
+                                            [Var] => 0
+                                            [InfoBulle] => Nom
+                                            [Largeur] => Largeur
+                                            [Hauteur] => Hauteur
+                                            [Profondeur] => Profondeur
+                                        )
+
+                                    [X] => 30.638020833333
+                                    [Y] => 37.973090277778
+                                    [Etag] => 
+                                    [EtageNum] => 2
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 2
+                                            [Profondeur] => 80
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-97
+                                )
+
+                            [37] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [id] => 2273
+                                            [label] => 10 kg Bottom
+                                            [Nom] => Mature - 10 kg Bottom
+                                            [GenCode] => 3182550782043
+                                            [Photo] => Home/Models/CDSSCMA10.jpg
+                                            [Poids] => 10
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550782043.png
+                                            [UcPerBox] => 0
+                                            [Description] => 6 to 10 kg Bottom
+                                            [Largeur] => 39
+                                            [Hauteur] => 11
+                                            [Profondeur] => 60
+                                            [X] => 30.638020833333
+                                            [Y] => 0
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Profondeur] => Profondeur
+                                            [Hauteur] => Hauteur
+                                            [Largeur] => Largeur
+                                            [InfoBulle] => Nom
+                                            [Var] => 0
+                                            [drag] => 1
+                                            [Affich] => Stretch
+                                            [Type] => img
+                                            [Field] => Photo
+                                        )
+
+                                    [X] => 30.638020833333
+                                    [Y] => 48.975694444444
+                                    [Etag] => 
+                                    [EtageNum] => 2
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 2
+                                            [Profondeur] => 80
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-97
+                                )
+
+                            [36] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [Y] => 44
+                                            [X] => -4.9088541666667
+                                            [Profondeur] => 60
+                                            [Hauteur] => 11
+                                            [Largeur] => 39
+                                            [Description] => 6 to 10 kg Bottom
+                                            [UcPerBox] => 0
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550781893.png
+                                            [Poids] => 8.5
+                                            [Photo] => Home/Models/CDSPSTSD85.jpg
+                                            [GenCode] => 3182550781893
+                                            [Nom] => Starter Small dog - 8,5 kg Bottom
+                                            [label] => 8,5 kg Bottom
+                                            [id] => 645
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Field] => Photo
+                                            [Type] => img
+                                            [Affich] => Stretch
+                                            [drag] => 1
+                                            [Var] => 0
+                                            [InfoBulle] => Nom
+                                            [Largeur] => Largeur
+                                            [Hauteur] => Hauteur
+                                            [Profondeur] => Profondeur
+                                        )
+
+                                    [X] => -4.9088541666667
+                                    [Y] => 4.9934895833333
+                                    [Etag] => 
+                                    [EtageNum] => 2
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 2
+                                            [Profondeur] => 80
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-97
+                                )
+
+                            [35] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [Y] => 33
+                                            [X] => -4.9088541666667
+                                            [Profondeur] => 60
+                                            [Hauteur] => 11
+                                            [Largeur] => 39
+                                            [Description] => 6 to 10 kg Bottom
+                                            [UcPerBox] => 0
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550781893.png
+                                            [Poids] => 8.5
+                                            [Photo] => Home/Models/CDSPSTSD85.jpg
+                                            [GenCode] => 3182550781893
+                                            [Nom] => Starter Small dog - 8,5 kg Bottom
+                                            [label] => 8,5 kg Bottom
+                                            [id] => 645
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Field] => Photo
+                                            [Type] => img
+                                            [Affich] => Stretch
+                                            [drag] => 1
+                                            [Var] => 0
+                                            [InfoBulle] => Nom
+                                            [Largeur] => Largeur
+                                            [Hauteur] => Hauteur
+                                            [Profondeur] => Profondeur
+                                        )
+
+                                    [X] => -4.9088541666667
+                                    [Y] => 15.99609375
+                                    [Etag] => 
+                                    [EtageNum] => 2
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 2
+                                            [Profondeur] => 80
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-97
+                                )
+
+                            [34] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [Y] => 22
+                                            [X] => -4.9088541666667
+                                            [Profondeur] => 60
+                                            [Hauteur] => 11
+                                            [Largeur] => 39
+                                            [Description] => 6 to 10 kg Bottom
+                                            [UcPerBox] => 0
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550760423.png
+                                            [Poids] => 8
+                                            [Photo] => Home/Models/CDSADSD.jpg
+                                            [GenCode] => 3182550760423
+                                            [Nom] => Adult Small dog - 8 kg Bottom
+                                            [label] => 8 kg Bottom
+                                            [id] => 639
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Field] => Photo
+                                            [Type] => img
+                                            [Affich] => Stretch
+                                            [drag] => 1
+                                            [Var] => 0
+                                            [InfoBulle] => Nom
+                                            [Largeur] => Largeur
+                                            [Hauteur] => Hauteur
+                                            [Profondeur] => Profondeur
+                                        )
+
+                                    [X] => -4.9088541666667
+                                    [Y] => 26.998697916667
+                                    [Etag] => 
+                                    [EtageNum] => 2
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 2
+                                            [Profondeur] => 80
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-97
+                                )
+
+                            [33] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [Y] => 11
+                                            [X] => -4.9088541666667
+                                            [Profondeur] => 60
+                                            [Hauteur] => 11
+                                            [Largeur] => 39
+                                            [Description] => 6 to 10 kg Bottom
+                                            [UcPerBox] => 0
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550761826.png
+                                            [Poids] => 10
+                                            [Photo] => Home/1/Vitrine/Modele/neuteredjuniore_10kg_cul.jpg
+                                            [GenCode] => 3182550761826
+                                            [Nom] => Neutered Junior - 10 kg Bottom
+                                            [label] => 10 kg Bottom
+                                            [id] => 656
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Field] => Photo
+                                            [Type] => img
+                                            [Affich] => Stretch
+                                            [drag] => 1
+                                            [Var] => 0
+                                            [InfoBulle] => Nom
+                                            [Largeur] => Largeur
+                                            [Hauteur] => Hauteur
+                                            [Profondeur] => Profondeur
+                                        )
+
+                                    [X] => -4.9088541666667
+                                    [Y] => 37.973090277778
+                                    [Etag] => 
+                                    [EtageNum] => 2
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 2
+                                            [Profondeur] => 80
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-97
+                                )
+
+                            [32] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [id] => 654
+                                            [label] => 10 kg Bottom
+                                            [Nom] => Neutered Adult - 10 kg Bottom
+                                            [GenCode] => 3182550761857
+                                            [Photo] => Home/1/Vitrine/Modele/neuteredadulte_10kg_cul.jpg
+                                            [Poids] => 10
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550761857.png
+                                            [UcPerBox] => 0
+                                            [Description] => 6 to 10 kg Bottom
+                                            [Largeur] => 39
+                                            [Hauteur] => 11
+                                            [Profondeur] => 60
+                                            [X] => -4.9088541666667
+                                            [Y] => 0
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Profondeur] => Profondeur
+                                            [Hauteur] => Hauteur
+                                            [Largeur] => Largeur
+                                            [InfoBulle] => Nom
+                                            [Var] => 0
+                                            [drag] => 1
+                                            [Affich] => Stretch
+                                            [Type] => img
+                                            [Field] => Photo
+                                        )
+
+                                    [X] => -4.9088541666667
+                                    [Y] => 48.975694444444
+                                    [Etag] => 
+                                    [EtageNum] => 2
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 2
+                                            [Profondeur] => 80
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-97
+                                )
+
+                            [31] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [id] => 512
+                                            [label] => 14 kg Bottom
+                                            [Nom] => Urinary U/C LP - 14 kg Bottom
+                                            [GenCode] => 3182550748315
+                                            [Photo] => Home/Models/VDDURIUCLPCDS.jpg
+                                            [Poids] => 14
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550748315.png
+                                            [UcPerBox] => 0
+                                            [Description] => 12 to 15 kg Bottom
+                                            [Largeur] => 39
+                                            [Hauteur] => 12
+                                            [Profondeur] => 65
+                                            [X] => 86.497395833333
+                                            [Y] => 48
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Profondeur] => Profondeur
+                                            [Hauteur] => Hauteur
+                                            [Largeur] => Largeur
+                                            [InfoBulle] => Nom
+                                            [Var] => 0
+                                            [drag] => 1
+                                            [Affich] => Stretch
+                                            [Type] => img
+                                            [Field] => Photo
+                                        )
+
+                                    [X] => 86.497395833333
+                                    [Y] => 0
+                                    [Etag] => 
+                                    [EtageNum] => 0
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 0
+                                            [Profondeur] => 90
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-96
+                                )
+
+                            [30] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [id] => 512
+                                            [label] => 14 kg Bottom
+                                            [Nom] => Urinary U/C LP - 14 kg Bottom
+                                            [GenCode] => 3182550748315
+                                            [Photo] => Home/Models/VDDURIUCLPCDS.jpg
+                                            [Poids] => 14
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550748315.png
+                                            [UcPerBox] => 0
+                                            [Description] => 12 to 15 kg Bottom
+                                            [Largeur] => 39
+                                            [Hauteur] => 12
+                                            [Profondeur] => 65
+                                            [X] => 86.497395833333
+                                            [Y] => 36
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Profondeur] => Profondeur
+                                            [Hauteur] => Hauteur
+                                            [Largeur] => Largeur
+                                            [InfoBulle] => Nom
+                                            [Var] => 0
+                                            [drag] => 1
+                                            [Affich] => Stretch
+                                            [Type] => img
+                                            [Field] => Photo
+                                        )
+
+                                    [X] => 86.497395833333
+                                    [Y] => 11.990017361111
+                                    [Etag] => 
+                                    [EtageNum] => 0
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 0
+                                            [Profondeur] => 90
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-96
+                                )
+
+                            [29] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [id] => 512
+                                            [label] => 14 kg Bottom
+                                            [Nom] => Urinary U/C LP - 14 kg Bottom
+                                            [GenCode] => 3182550748315
+                                            [Photo] => Home/Models/VDDURIUCLPCDS.jpg
+                                            [Poids] => 14
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550748315.png
+                                            [UcPerBox] => 0
+                                            [Description] => 12 to 15 kg Bottom
+                                            [Largeur] => 39
+                                            [Hauteur] => 12
+                                            [Profondeur] => 65
+                                            [X] => 86.497395833333
+                                            [Y] => 24
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Profondeur] => Profondeur
+                                            [Hauteur] => Hauteur
+                                            [Largeur] => Largeur
+                                            [InfoBulle] => Nom
+                                            [Var] => 0
+                                            [drag] => 1
+                                            [Affich] => Stretch
+                                            [Type] => img
+                                            [Field] => Photo
+                                        )
+
+                                    [X] => 86.497395833333
+                                    [Y] => 23.980034722222
+                                    [Etag] => 
+                                    [EtageNum] => 0
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 0
+                                            [Profondeur] => 90
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-96
+                                )
+
+                            [28] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [id] => 207
+                                            [label] => 14 kg Bottom
+                                            [Nom] => Weight Control - 14 kg Bottom
+                                            [GenCode] => 3182550711326
+                                            [Photo] => Home/Models/VDDWEIGHTCDS.jpg
+                                            [Poids] => 14
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550711326.png
+                                            [UcPerBox] => 0
+                                            [Description] => 12 to 15 kg Bottom
+                                            [Largeur] => 39
+                                            [Hauteur] => 12
+                                            [Profondeur] => 65
+                                            [X] => 86.497395833333
+                                            [Y] => 12
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Profondeur] => Profondeur
+                                            [Hauteur] => Hauteur
+                                            [Largeur] => Largeur
+                                            [InfoBulle] => Nom
+                                            [Var] => 0
+                                            [drag] => 1
+                                            [Affich] => Stretch
+                                            [Type] => img
+                                            [Field] => Photo
+                                        )
+
+                                    [X] => 86.497395833333
+                                    [Y] => 35.998263888889
+                                    [Etag] => 
+                                    [EtageNum] => 0
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 0
+                                            [Profondeur] => 90
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-96
+                                )
+
+                            [27] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [id] => 207
+                                            [label] => 14 kg Bottom
+                                            [Nom] => Weight Control - 14 kg Bottom
+                                            [GenCode] => 3182550711326
+                                            [Photo] => Home/Models/VDDWEIGHTCDS.jpg
+                                            [Poids] => 14
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550711326.png
+                                            [UcPerBox] => 0
+                                            [Description] => 12 to 15 kg Bottom
+                                            [Largeur] => 39
+                                            [Hauteur] => 12
+                                            [Profondeur] => 65
+                                            [X] => 86.497395833333
+                                            [Y] => 0
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Profondeur] => Profondeur
+                                            [Hauteur] => Hauteur
+                                            [Largeur] => Largeur
+                                            [InfoBulle] => Nom
+                                            [Var] => 0
+                                            [drag] => 1
+                                            [Affich] => Stretch
+                                            [Type] => img
+                                            [Field] => Photo
+                                        )
+
+                                    [X] => 86.497395833333
+                                    [Y] => 47.98828125
+                                    [Etag] => 
+                                    [EtageNum] => 0
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 0
+                                            [Profondeur] => 90
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-96
+                                )
+
+                            [26] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [id] => 1692
+                                            [label] => 1,5 kg
+                                            [Nom] => Diabetic - 1,5 kg
+                                            [GenCode] => 3182550798945
+                                            [Photo] => Home/Products/VDDDIABETIC1.jpg
+                                            [Poids] => 1.5
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550798945.png
+                                            [UcPerBox] => 6
+                                            [Description] => 2 kg Facing
+                                            [Largeur] => 18.5
+                                            [Hauteur] => 40
+                                            [Profondeur] => 12
+                                            [X] => 114.82204861111
+                                            [Y] => 0
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Profondeur] => Profondeur
+                                            [Hauteur] => Hauteur
+                                            [Largeur] => Largeur
+                                            [InfoBulle] => Nom
+                                            [Var] => 0
+                                            [drag] => 1
+                                            [Affich] => Stretch
+                                            [Type] => img
+                                            [Field] => Photo
+                                        )
+
+                                    [X] => 114.82204861111
+                                    [Y] => 19.973958333333
+                                    [Etag] => 
+                                    [EtageNum] => 1
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 1
+                                            [Profondeur] => 90
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-98
+                                )
+
+                            [25] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [id] => 1692
+                                            [label] => 1,5 kg
+                                            [Nom] => Diabetic - 1,5 kg
+                                            [GenCode] => 3182550798945
+                                            [Photo] => Home/Products/VDDDIABETIC1.jpg
+                                            [Poids] => 1.5
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550798945.png
+                                            [UcPerBox] => 6
+                                            [Description] => 2 kg Facing
+                                            [Largeur] => 18.5
+                                            [Hauteur] => 40
+                                            [Profondeur] => 12
+                                            [X] => 96.202256944444
+                                            [Y] => 0
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Profondeur] => Profondeur
+                                            [Hauteur] => Hauteur
+                                            [Largeur] => Largeur
+                                            [InfoBulle] => Nom
+                                            [Var] => 0
+                                            [drag] => 1
+                                            [Affich] => Stretch
+                                            [Type] => img
+                                            [Field] => Photo
+                                        )
+
+                                    [X] => 96.202256944444
+                                    [Y] => 19.973958333333
+                                    [Etag] => 
+                                    [EtageNum] => 1
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 1
+                                            [Profondeur] => 90
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-98
+                                )
+
+                            [24] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [id] => 1692
+                                            [label] => 1,5 kg
+                                            [Nom] => Diabetic - 1,5 kg
+                                            [GenCode] => 3182550798945
+                                            [Photo] => Home/Products/VDDDIABETIC1.jpg
+                                            [Poids] => 1.5
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550798945.png
+                                            [UcPerBox] => 6
+                                            [Description] => 2 kg Facing
+                                            [Largeur] => 18.5
+                                            [Hauteur] => 40
+                                            [Profondeur] => 12
+                                            [X] => 78.146701388889
+                                            [Y] => 0
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Profondeur] => Profondeur
+                                            [Hauteur] => Hauteur
+                                            [Largeur] => Largeur
+                                            [InfoBulle] => Nom
+                                            [Var] => 0
+                                            [drag] => 1
+                                            [Affich] => Stretch
+                                            [Type] => img
+                                            [Field] => Photo
+                                        )
+
+                                    [X] => 78.146701388889
+                                    [Y] => 19.973958333333
+                                    [Etag] => 
+                                    [EtageNum] => 1
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 1
+                                            [Profondeur] => 90
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-98
+                                )
+
+                            [23] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [id] => 1692
+                                            [label] => 1,5 kg
+                                            [Nom] => Diabetic - 1,5 kg
+                                            [GenCode] => 3182550798945
+                                            [Photo] => Home/Products/VDDDIABETIC1.jpg
+                                            [Poids] => 1.5
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550798945.png
+                                            [UcPerBox] => 6
+                                            [Description] => 2 kg Facing
+                                            [Largeur] => 18.5
+                                            [Hauteur] => 40
+                                            [Profondeur] => 12
+                                            [X] => 115.38628472222
+                                            [Y] => 0
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Profondeur] => Profondeur
+                                            [Hauteur] => Hauteur
+                                            [Largeur] => Largeur
+                                            [InfoBulle] => Nom
+                                            [Var] => 0
+                                            [drag] => 1
+                                            [Affich] => Stretch
+                                            [Type] => img
+                                            [Field] => Photo
+                                        )
+
+                                    [X] => 115.38628472222
+                                    [Y] => 19.973958333333
+                                    [Etag] => 
+                                    [EtageNum] => 3
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 3
+                                            [Profondeur] => 60
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-99
+                                )
+
+                            [22] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [id] => 1692
+                                            [label] => 1,5 kg
+                                            [Nom] => Diabetic - 1,5 kg
+                                            [GenCode] => 3182550798945
+                                            [Photo] => Home/Products/VDDDIABETIC1.jpg
+                                            [Poids] => 1.5
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550798945.png
+                                            [UcPerBox] => 6
+                                            [Description] => 2 kg Facing
+                                            [Largeur] => 18.5
+                                            [Hauteur] => 40
+                                            [Profondeur] => 12
+                                            [X] => 96.202256944444
+                                            [Y] => 0
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Profondeur] => Profondeur
+                                            [Hauteur] => Hauteur
+                                            [Largeur] => Largeur
+                                            [InfoBulle] => Nom
+                                            [Var] => 0
+                                            [drag] => 1
+                                            [Affich] => Stretch
+                                            [Type] => img
+                                            [Field] => Photo
+                                        )
+
+                                    [X] => 96.202256944444
+                                    [Y] => 19.973958333333
+                                    [Etag] => 
+                                    [EtageNum] => 3
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 3
+                                            [Profondeur] => 60
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-99
+                                )
+
+                            [21] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [id] => 1692
+                                            [label] => 1,5 kg
+                                            [Nom] => Diabetic - 1,5 kg
+                                            [GenCode] => 3182550798945
+                                            [Photo] => Home/Products/VDDDIABETIC1.jpg
+                                            [Poids] => 1.5
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550798945.png
+                                            [UcPerBox] => 6
+                                            [Description] => 2 kg Facing
+                                            [Largeur] => 18.5
+                                            [Hauteur] => 40
+                                            [Profondeur] => 12
+                                            [X] => 76.453993055556
+                                            [Y] => 0
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Profondeur] => Profondeur
+                                            [Hauteur] => Hauteur
+                                            [Largeur] => Largeur
+                                            [InfoBulle] => Nom
+                                            [Var] => 0
+                                            [drag] => 1
+                                            [Affich] => Stretch
+                                            [Type] => img
+                                            [Field] => Photo
+                                        )
+
+                                    [X] => 76.453993055556
+                                    [Y] => 19.973958333333
+                                    [Etag] => 
+                                    [EtageNum] => 3
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 3
+                                            [Profondeur] => 60
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-99
+                                )
+
+                            [20] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [Y] => 36
+                                            [X] => 38.537326388889
+                                            [Profondeur] => 65
+                                            [Hauteur] => 12
+                                            [Largeur] => 39
+                                            [Description] => 12 to 15 kg Bottom
+                                            [UcPerBox] => 0
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550761895.png
+                                            [Poids] => 12
+                                            [Photo] => Home/1/Vitrine/Modele/neuteredjuniorld_15kg_cul1.jpg
+                                            [GenCode] => 3182550761895
+                                            [Nom] => Neutered Junior LD - 12 kg Bottom
+                                            [label] => 12 kg Bottom
+                                            [id] => 650
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Field] => Photo
+                                            [Type] => img
+                                            [Affich] => Stretch
+                                            [drag] => 1
+                                            [Var] => 0
+                                            [InfoBulle] => Nom
+                                            [Largeur] => Largeur
+                                            [Hauteur] => Hauteur
+                                            [Profondeur] => Profondeur
+                                        )
+
+                                    [X] => 38.537326388889
+                                    [Y] => 11.990017361111
+                                    [Etag] => 
+                                    [EtageNum] => 0
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 0
+                                            [Profondeur] => 90
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-96
+                                )
+
+                            [19] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [Y] => 24
+                                            [X] => 38.537326388889
+                                            [Profondeur] => 65
+                                            [Hauteur] => 12
+                                            [Largeur] => 39
+                                            [Description] => 12 to 15 kg Bottom
+                                            [UcPerBox] => 0
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550761925.png
+                                            [Poids] => 12
+                                            [Photo] => Home/1/Vitrine/Modele/neuteredadultld15kg_cul1.jpg
+                                            [GenCode] => 3182550761925
+                                            [Nom] => Neutered Adult LD - 12 kg Bottom
+                                            [label] => 12 kg Bottom
+                                            [id] => 647
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Field] => Photo
+                                            [Type] => img
+                                            [Affich] => Stretch
+                                            [drag] => 1
+                                            [Var] => 0
+                                            [InfoBulle] => Nom
+                                            [Largeur] => Largeur
+                                            [Hauteur] => Hauteur
+                                            [Profondeur] => Profondeur
+                                        )
+
+                                    [X] => 38.537326388889
+                                    [Y] => 23.980034722222
+                                    [Etag] => 
+                                    [EtageNum] => 0
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 0
+                                            [Profondeur] => 90
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-96
+                                )
+
+                            [18] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [Y] => 12
+                                            [X] => 38.537326388889
+                                            [Profondeur] => 65
+                                            [Hauteur] => 12
+                                            [Largeur] => 39
+                                            [Description] => 12 to 15 kg Bottom
+                                            [UcPerBox] => 0
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550761949.png
+                                            [Poids] => 14
+                                            [Photo] => Home/Models/CDSPJUGI.jpg
+                                            [GenCode] => 3182550761949
+                                            [Nom] => Junior Giant dog - 14 kg Bottom
+                                            [label] => 14 kg Bottom
+                                            [id] => 621
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Field] => Photo
+                                            [Type] => img
+                                            [Affich] => Stretch
+                                            [drag] => 1
+                                            [Var] => 0
+                                            [InfoBulle] => Nom
+                                            [Largeur] => Largeur
+                                            [Hauteur] => Hauteur
+                                            [Profondeur] => Profondeur
+                                        )
+
+                                    [X] => 38.537326388889
+                                    [Y] => 35.998263888889
+                                    [Etag] => 
+                                    [EtageNum] => 0
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 0
+                                            [Profondeur] => 90
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-96
+                                )
+
+                            [17] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [id] => 619
+                                            [label] => 14 kg Bottom
+                                            [Nom] => Adult Giant dog - 14 kg Bottom
+                                            [GenCode] => 3182550761932
+                                            [Photo] => Home/Models/CDSADGI.jpg
+                                            [Poids] => 14
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550761932.png
+                                            [UcPerBox] => 0
+                                            [Description] => 12 to 15 kg Bottom
+                                            [Largeur] => 39
+                                            [Hauteur] => 12
+                                            [Profondeur] => 65
+                                            [X] => 38.537326388889
+                                            [Y] => 0
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Profondeur] => Profondeur
+                                            [Hauteur] => Hauteur
+                                            [Largeur] => Largeur
+                                            [InfoBulle] => Nom
+                                            [Var] => 0
+                                            [drag] => 1
+                                            [Affich] => Stretch
+                                            [Type] => img
+                                            [Field] => Photo
+                                        )
+
+                                    [X] => 38.537326388889
+                                    [Y] => 47.98828125
+                                    [Etag] => 
+                                    [EtageNum] => 0
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 0
+                                            [Profondeur] => 90
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-96
+                                )
+
+                            [16] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [Y] => 0
+                                            [X] => 30.355902777778
+                                            [Profondeur] => 9
+                                            [Hauteur] => 27.5
+                                            [Largeur] => 17
+                                            [Description] => 800 to 1000 g Facing
+                                            [UcPerBox] => 10
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550761772.png
+                                            [Poids] => 0.8
+                                            [Photo] => Home/1/Vitrine/Modele/neuteredaduldsd_1kg.jpg
+                                            [GenCode] => 3182550761772
+                                            [Nom] => Neutered Adult SD - 800 g
+                                            [label] => 800 g
+                                            [id] => 662
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Field] => Photo
+                                            [Type] => img
+                                            [Affich] => Stretch
+                                            [drag] => 1
+                                            [Var] => 0
+                                            [InfoBulle] => Nom
+                                            [Largeur] => Largeur
+                                            [Hauteur] => Hauteur
+                                            [Profondeur] => Profondeur
+                                        )
+
+                                    [X] => 30.355902777778
+                                    [Y] => 32.5
+                                    [Etag] => 
+                                    [EtageNum] => 4
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 4
+                                            [Profondeur] => 60
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-100
+                                )
+
+                            [15] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [id] => 1192
+                                            [label] => 400 g
+                                            [Nom] => Babydog Milk - 400 g
+                                            [GenCode] => 3182550768641
+                                            [Photo] => Home/Models/BBDMILK400GFACING.JPG
+                                            [Poids] => 0.4
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550768641.png
+                                            [UcPerBox] => 18
+                                            [Description] => Boite pour Babydog and cat milk notamment
+                                            [Largeur] => 12
+                                            [Hauteur] => 22.2
+                                            [Profondeur] => 12
+                                            [X] => 16.50390625
+                                            [Y] => 0
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Profondeur] => Profondeur
+                                            [Hauteur] => Hauteur
+                                            [Largeur] => Largeur
+                                            [InfoBulle] => Nom
+                                            [Var] => 0
+                                            [drag] => 1
+                                            [Affich] => Stretch
+                                            [Type] => img
+                                            [Field] => Photo
+                                        )
+
+                                    [X] => 16.50390625
+                                    [Y] => 37.775607638889
+                                    [Etag] => 
+                                    [EtageNum] => 4
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 4
+                                            [Profondeur] => 60
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-100
+                                )
+
+                            [14] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [Y] => 0
+                                            [X] => 51.063368055556
+                                            [Profondeur] => 12
+                                            [Hauteur] => 40
+                                            [Largeur] => 18.5
+                                            [Description] => 2 kg Facing
+                                            [UcPerBox] => 6
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550781886.png
+                                            [Poids] => 1.5
+                                            [Photo] => Home/Models/VCNDFACVDS2010D2Page11.jpg
+                                            [GenCode] => 3182550781886
+                                            [Nom] => Starter Small dog - 1,5 kg
+                                            [label] => 1,5 kg
+                                            [id] => 646
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Field] => Photo
+                                            [Type] => img
+                                            [Affich] => Stretch
+                                            [drag] => 1
+                                            [Var] => 0
+                                            [InfoBulle] => Nom
+                                            [Largeur] => Largeur
+                                            [Hauteur] => Hauteur
+                                            [Profondeur] => Profondeur
+                                        )
+
+                                    [X] => 51.063368055556
+                                    [Y] => 19.973958333333
+                                    [Etag] => 
+                                    [EtageNum] => 4
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 4
+                                            [Profondeur] => 60
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-100
+                                )
+
+                            [13] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [id] => 643
+                                            [label] => 2 kg
+                                            [Nom] => Junior Small dog - 2 kg
+                                            [GenCode] => 3182550760188
+                                            [Photo] => Home/Products/JUNIORVCNDFACING.jpg
+                                            [Poids] => 2
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550760188.png
+                                            [UcPerBox] => 6
+                                            [Description] => 2 kg Facing
+                                            [Largeur] => 18.5
+                                            [Hauteur] => 40
+                                            [Profondeur] => 12
+                                            [X] => 73.6328125
+                                            [Y] => 0
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Profondeur] => Profondeur
+                                            [Hauteur] => Hauteur
+                                            [Largeur] => Largeur
+                                            [InfoBulle] => Nom
+                                            [Var] => 0
+                                            [drag] => 1
+                                            [Affich] => Stretch
+                                            [Type] => img
+                                            [Field] => Photo
+                                        )
+
+                                    [X] => 73.6328125
+                                    [Y] => 19.973958333333
+                                    [Etag] => 
+                                    [EtageNum] => 4
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 4
+                                            [Profondeur] => 60
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-100
+                                )
+
+                            [12] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [Y] => 0
+                                            [X] => 93.381076388889
+                                            [Profondeur] => 12
+                                            [Hauteur] => 40
+                                            [Largeur] => 18.5
+                                            [Description] => 2 kg Facing
+                                            [UcPerBox] => 6
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550760225.png
+                                            [Poids] => 2
+                                            [Photo] => Home/1/Vitrine/Modele/adultsd_2kg.jpg
+                                            [GenCode] => 3182550760225
+                                            [Nom] => Adult Small dog - 2 kg
+                                            [label] => 2 kg
+                                            [id] => 641
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Field] => Photo
+                                            [Type] => img
+                                            [Affich] => Stretch
+                                            [drag] => 1
+                                            [Var] => 0
+                                            [InfoBulle] => Nom
+                                            [Largeur] => Largeur
+                                            [Hauteur] => Hauteur
+                                            [Profondeur] => Profondeur
+                                        )
+
+                                    [X] => 93.381076388889
+                                    [Y] => 19.973958333333
+                                    [Etag] => 
+                                    [EtageNum] => 4
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 4
+                                            [Profondeur] => 60
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-100
+                                )
+
+                            [11] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [id] => 638
+                                            [label] => 1,5 kg
+                                            [Nom] => Mature Small dog - 1,5 kg
+                                            [GenCode] => 3182550781992
+                                            [Photo] => Home/1/Vitrine/Modele/maturesd_4kg.jpg
+                                            [Poids] => 1.5
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550781992.png
+                                            [UcPerBox] => 6
+                                            [Description] => 2 kg Facing
+                                            [Largeur] => 18.5
+                                            [Hauteur] => 40
+                                            [Profondeur] => 12
+                                            [X] => 112.56510416667
+                                            [Y] => 0
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Profondeur] => Profondeur
+                                            [Hauteur] => Hauteur
+                                            [Largeur] => Largeur
+                                            [InfoBulle] => Nom
+                                            [Var] => 0
+                                            [drag] => 1
+                                            [Affich] => Stretch
+                                            [Type] => img
+                                            [Field] => Photo
+                                        )
+
+                                    [X] => 112.56510416667
+                                    [Y] => 19.973958333333
+                                    [Etag] => 
+                                    [EtageNum] => 4
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 4
+                                            [Profondeur] => 60
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-100
+                                )
+
+                            [10] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [Y] => 48
+                                            [X] => -2.6519097222222
+                                            [Profondeur] => 65
+                                            [Hauteur] => 12
+                                            [Largeur] => 39
+                                            [Description] => 12 to 15 kg Bottom
+                                            [UcPerBox] => 0
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550781954.png
+                                            [Poids] => 14
+                                            [Photo] => Home/Models/CDSPSTLD14.jpg
+                                            [GenCode] => 3182550781954
+                                            [Nom] => Starter Large dog - 14 kg Bottom
+                                            [label] => 14 kg Bottom
+                                            [id] => 1345
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Field] => Photo
+                                            [Type] => img
+                                            [Affich] => Stretch
+                                            [drag] => 1
+                                            [Var] => 0
+                                            [InfoBulle] => Nom
+                                            [Largeur] => Largeur
+                                            [Hauteur] => Hauteur
+                                            [Profondeur] => Profondeur
+                                        )
+
+                                    [X] => -2.6519097222222
+                                    [Y] => 0
+                                    [Etag] => 
+                                    [EtageNum] => 0
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 0
+                                            [Profondeur] => 90
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-96
+                                )
+
+                            [9] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [id] => 629
+                                            [label] => 14 kg Bottom
+                                            [Nom] => Junior Large dog - 14 kg Bottom
+                                            [GenCode] => 3182550760379
+                                            [Photo] => Home/Models/CDSPJULD.jpg
+                                            [Poids] => 14
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550760379.png
+                                            [UcPerBox] => 0
+                                            [Description] => 12 to 15 kg Bottom
+                                            [Largeur] => 39
+                                            [Hauteur] => 12
+                                            [Profondeur] => 65
+                                            [X] => -2.6519097222222
+                                            [Y] => 36
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Profondeur] => Profondeur
+                                            [Hauteur] => Hauteur
+                                            [Largeur] => Largeur
+                                            [InfoBulle] => Nom
+                                            [Var] => 0
+                                            [drag] => 1
+                                            [Affich] => Stretch
+                                            [Type] => img
+                                            [Field] => Photo
+                                        )
+
+                                    [X] => -2.6519097222222
+                                    [Y] => 11.990017361111
+                                    [Etag] => 
+                                    [EtageNum] => 0
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 0
+                                            [Profondeur] => 90
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-96
+                                )
+
+                            [8] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [id] => 629
+                                            [label] => 14 kg Bottom
+                                            [Nom] => Junior Large dog - 14 kg Bottom
+                                            [GenCode] => 3182550760379
+                                            [Photo] => Home/Models/CDSPJULD.jpg
+                                            [Poids] => 14
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550760379.png
+                                            [UcPerBox] => 0
+                                            [Description] => 12 to 15 kg Bottom
+                                            [Largeur] => 39
+                                            [Hauteur] => 12
+                                            [Profondeur] => 65
+                                            [X] => -2.6519097222222
+                                            [Y] => 24
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Profondeur] => Profondeur
+                                            [Hauteur] => Hauteur
+                                            [Largeur] => Largeur
+                                            [InfoBulle] => Nom
+                                            [Var] => 0
+                                            [drag] => 1
+                                            [Affich] => Stretch
+                                            [Type] => img
+                                            [Field] => Photo
+                                        )
+
+                                    [X] => -2.6519097222222
+                                    [Y] => 23.980034722222
+                                    [Etag] => 
+                                    [EtageNum] => 0
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 0
+                                            [Profondeur] => 90
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-96
+                                )
+
+                            [7] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [Y] => 12
+                                            [X] => -2.6519097222222
+                                            [Profondeur] => 65
+                                            [Hauteur] => 12
+                                            [Largeur] => 39
+                                            [Description] => 12 to 15 kg Bottom
+                                            [UcPerBox] => 0
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550760409.png
+                                            [Poids] => 14
+                                            [Photo] => Home/Models/CDSADLD.jpg
+                                            [GenCode] => 3182550760409
+                                            [Nom] => Adult Large dog - 14 kg Bottom
+                                            [label] => 14 kg Bottom
+                                            [id] => 625
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Field] => Photo
+                                            [Type] => img
+                                            [Affich] => Stretch
+                                            [drag] => 1
+                                            [Var] => 0
+                                            [InfoBulle] => Nom
+                                            [Largeur] => Largeur
+                                            [Hauteur] => Hauteur
+                                            [Profondeur] => Profondeur
+                                        )
+
+                                    [X] => -2.6519097222222
+                                    [Y] => 35.998263888889
+                                    [Etag] => 
+                                    [EtageNum] => 0
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 0
+                                            [Profondeur] => 90
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-96
+                                )
+
+                            [6] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [Y] => 0
+                                            [X] => -2.6519097222222
+                                            [Profondeur] => 65
+                                            [Hauteur] => 12
+                                            [Largeur] => 39
+                                            [Description] => 12 to 15 kg Bottom
+                                            [UcPerBox] => 0
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550760409.png
+                                            [Poids] => 14
+                                            [Photo] => Home/Models/CDSADLD.jpg
+                                            [GenCode] => 3182550760409
+                                            [Nom] => Adult Large dog - 14 kg Bottom
+                                            [label] => 14 kg Bottom
+                                            [id] => 625
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Field] => Photo
+                                            [Type] => img
+                                            [Affich] => Stretch
+                                            [drag] => 1
+                                            [Var] => 0
+                                            [InfoBulle] => Nom
+                                            [Largeur] => Largeur
+                                            [Hauteur] => Hauteur
+                                            [Profondeur] => Profondeur
+                                        )
+
+                                    [X] => -2.6519097222222
+                                    [Y] => 47.98828125
+                                    [Etag] => 
+                                    [EtageNum] => 0
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 0
+                                            [Profondeur] => 90
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-96
+                                )
+
+                            [5] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [Y] => 0
+                                            [X] => 25.475260416667
+                                            [Profondeur] => 14
+                                            [Hauteur] => 49
+                                            [Largeur] => 24.5
+                                            [Description] => 3 to 5 kg Facing
+                                            [UcPerBox] => 4
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550781947.png
+                                            [Poids] => 4
+                                            [Photo] => Home/Models/VCNDFACCDS2010D2Page3.jpg
+                                            [GenCode] => 3182550781947
+                                            [Nom] => Starter Large dog - 4 kg
+                                            [label] => 4 kg
+                                            [id] => 1343
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Field] => Photo
+                                            [Type] => img
+                                            [Affich] => Stretch
+                                            [drag] => 1
+                                            [Var] => 0
+                                            [InfoBulle] => Nom
+                                            [Largeur] => Largeur
+                                            [Hauteur] => Hauteur
+                                            [Profondeur] => Profondeur
+                                        )
+
+                                    [X] => 25.475260416667
+                                    [Y] => 10.974392361111
+                                    [Etag] => 
+                                    [EtageNum] => 1
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 1
+                                            [Profondeur] => 90
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-98
+                                )
+
+                            [4] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [Y] => 0
+                                            [X] => 51.994357638889
+                                            [Profondeur] => 14
+                                            [Hauteur] => 49
+                                            [Largeur] => 24.5
+                                            [Description] => 3 to 5 kg Facing
+                                            [UcPerBox] => 4
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550760362.png
+                                            [Poids] => 4
+                                            [Photo] => Home/Products/JUNIORVCNDFACINGPage3.jpg
+                                            [GenCode] => 3182550760362
+                                            [Nom] => Junior Large dog - 4 kg
+                                            [label] => 4 kg
+                                            [id] => 630
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Field] => Photo
+                                            [Type] => img
+                                            [Affich] => Stretch
+                                            [drag] => 1
+                                            [Var] => 0
+                                            [InfoBulle] => Nom
+                                            [Largeur] => Largeur
+                                            [Hauteur] => Hauteur
+                                            [Profondeur] => Profondeur
+                                        )
+
+                                    [X] => 51.994357638889
+                                    [Y] => 10.974392361111
+                                    [Etag] => 
+                                    [EtageNum] => 1
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 1
+                                            [Profondeur] => 90
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-98
+                                )
+
+                            [3] => Array
+                                (
+                                    [Clip] => 
+                                    [Values] => Array
+                                        (
+                                            [id] => 649
+                                            [label] => 3,5 kg
+                                            [Nom] => Neutered Adult LD - 3,5 kg
+                                            [GenCode] => 3182550761918
+                                            [Photo] => Home/1/Vitrine/Modele/neuteredadultld_4kg.jpg
+                                            [Poids] => 3.5
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550761918.png
+                                            [UcPerBox] => 4
+                                            [Description] => 3 to 5 kg Facing
+                                            [Largeur] => 24.5
+                                            [Hauteur] => 49
+                                            [Profondeur] => 14
+                                            [X] => -0.47960069444444
+                                            [Y] => 0
+                                        )
+
+                                    [Conf] => Array
+                                        (
+                                            [Profondeur] => Profondeur
+                                            [Hauteur] => Hauteur
+                                            [Largeur] => Largeur
+                                            [InfoBulle] => Nom
+                                            [Var] => 0
+                                            [drag] => 1
+                                            [Affich] => Stretch
+                                            [Type] => img
+                                            [Field] => Photo
+                                        )
+
+                                    [X] => -0.47960069444444
+                                    [Y] => 10.974392361111
+                                    [Etag] => 
+                                    [EtageNum] => 1
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 1
+                                            [Profondeur] => 90
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [ClipEtag] => Etag-98
+                                )
+
+                            [2] => Array
+                                (
+                                    [ClipEtag] => Etag-99
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 3
+                                            [Profondeur] => 60
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [EtageNum] => 3
+                                    [Etag] => 
+                                    [Y] => 10.977040816327
+                                    [X] => -0.79591836734694
+                                    [Conf] => Array
+                                        (
+                                            [Profondeur] => Profondeur
+                                            [Hauteur] => Hauteur
+                                            [Largeur] => Largeur
+                                            [InfoBulle] => Nom
+                                            [Var] => 0
+                                            [drag] => 1
+                                            [Affich] => Stretch
+                                            [Type] => img
+                                            [Field] => Photo
+                                        )
+
+                                    [Values] => Array
+                                        (
+                                            [id] => 657
+                                            [label] => 4 kg
+                                            [Nom] => Neutered Junior - 4 kg
+                                            [GenCode] => 3182550761819
+                                            [Photo] => Home/1/Vitrine/Modele/neuteredjunior_4kg.jpg
+                                            [Poids] => 4
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550761819.png
+                                            [UcPerBox] => 4
+                                            [Description] => 3 to 5 kg Facing
+                                            [Largeur] => 24.5
+                                            [Hauteur] => 49
+                                            [Profondeur] => 14
+                                            [X] => -0.79591836734694
+                                            [Y] => 0
+                                        )
+
+                                    [Clip] => 
+                                )
+
+                            [1] => Array
+                                (
+                                    [ClipEtag] => Etag-99
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 3
+                                            [Profondeur] => 60
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [EtageNum] => 3
+                                    [Etag] => 
+                                    [Y] => 10.977040816327
+                                    [X] => 24.408163265306
+                                    [Conf] => Array
+                                        (
+                                            [Field] => Photo
+                                            [Type] => img
+                                            [Affich] => Stretch
+                                            [drag] => 1
+                                            [Var] => 0
+                                            [InfoBulle] => Nom
+                                            [Largeur] => Largeur
+                                            [Hauteur] => Hauteur
+                                            [Profondeur] => Profondeur
+                                        )
+
+                                    [Values] => Array
+                                        (
+                                            [Y] => 0
+                                            [X] => 24.408163265306
+                                            [Profondeur] => 14
+                                            [Hauteur] => 49
+                                            [Largeur] => 24.5
+                                            [Description] => 3 to 5 kg Facing
+                                            [UcPerBox] => 4
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550781916.png
+                                            [Poids] => 4
+                                            [Photo] => Home/Models/VCNDFACCDS2010D2Page22.jpg
+                                            [GenCode] => 3182550781916
+                                            [Nom] => Starter - 4 kg
+                                            [label] => 4 kg
+                                            [id] => 1340
+                                        )
+
+                                    [Clip] => 
+                                )
+
+                            [0] => Array
+                                (
+                                    [ClipEtag] => Etag-99
+                                    [EtageObjet] => Array
+                                        (
+                                            [Num] => 3
+                                            [Profondeur] => 60
+                                            [Hauteur] => 60
+                                            [Clip] => 
+                                        )
+
+                                    [EtageNum] => 3
+                                    [Etag] => 
+                                    [Y] => 10.977040816327
+                                    [X] => 50.275510204082
+                                    [Conf] => Array
+                                        (
+                                            [Profondeur] => Profondeur
+                                            [Hauteur] => Hauteur
+                                            [Largeur] => Largeur
+                                            [InfoBulle] => Nom
+                                            [Var] => 0
+                                            [drag] => 1
+                                            [Affich] => Stretch
+                                            [Type] => img
+                                            [Field] => Photo
+                                        )
+
+                                    [Values] => Array
+                                        (
+                                            [id] => 636
+                                            [label] => 4 kg
+                                            [Nom] => Junior - 4 kg
+                                            [GenCode] => 3182550760287
+                                            [Photo] => Home/Products/JUNIORVCNDFACINGPage2.jpg
+                                            [Poids] => 4
+                                            [CodeBarre] => Home/CodeBarre/CB-3182550760287.png
+                                            [UcPerBox] => 4
+                                            [Description] => 3 to 5 kg Facing
+                                            [Largeur] => 24.5
+                                            [Hauteur] => 49
+                                            [Profondeur] => 14
+                                            [X] => 50.275510204082
+                                            [Y] => 0
+                                        )
+
+                                    [Clip] => 
+                                )
+
+                        )
+
+                    [Etages] => Array
+                        (
+                            [0] => Array
+                                (
+                                    [Num] => 4
+                                    [Profondeur] => 60
+                                    [Hauteur] => 60
+                                    [Clip] => 
+                                )
+
+                            [1] => Array
+                                (
+                                    [Num] => 3
+                                    [Profondeur] => 60
+                                    [Hauteur] => 60
+                                    [Clip] => 
+                                )
+
+                            [2] => Array
+                                (
+                                    [Num] => 1
+                                    [Profondeur] => 90
+                                    [Hauteur] => 60
+                                    [Clip] => 
+                                )
+
+                            [3] => Array
+                                (
+                                    [Num] => 2
+                                    [Profondeur] => 80
+                                    [Hauteur] => 60
+                                    [Clip] => 
+                                )
+
+                            [4] => Array
+                                (
+                                    [Num] => 0
+                                    [Profondeur] => 90
+                                    [Hauteur] => 60
+                                    [Clip] => 
+                                )
+
+                        )
+
+                    [HauteurCm] => 325
+                    [LargeurCm] => 133
+                    [Echelle] => 1.7723076923077
+                    [Largeur] => 235.71692307692
+                    [Hauteur] => 576
+                )
+
+        )
+
+    [LargLin] => 133
+    [NomGamme] => 19
+    [NomProjet] => mantenimiento y breed perro
+    [Id] => 4486
+    [Gamme] => 11
+)

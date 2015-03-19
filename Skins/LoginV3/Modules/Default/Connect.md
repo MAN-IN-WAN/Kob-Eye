@@ -1,0 +1,1 @@
+[IF [!Systeme::User::Public!]]1[ELSE]0[/IF]

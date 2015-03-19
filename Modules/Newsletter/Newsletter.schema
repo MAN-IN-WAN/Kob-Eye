@@ -1,0 +1,83 @@
+<SCHEMA>
+	<OBJECTCLASS title="GroupeEnvoi" driver="mysql" AccessPoint="1" master="1" Description="Groupes de contact"  Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png">
+		<PROPERTIES type="varchar" searchOrder="1" category="Intitulé">Titre</PROPERTIES>
+		<FUNCTION Icon="/Skins/AdminV2/Img/database_go.png">Importer</FUNCTION>
+		<FUNCTION Icon="/Skins/AdminV2/Img/database_go.png">DesImporter</FUNCTION>
+		<FUNCTION Icon="/Skins/AdminV2/Img/database_go.png">ActivTous</FUNCTION>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Contact" driver="mysql"  Icon="/Skins/AdminV2/Img/IconAqua/Contact.png" className="NewsletterContact" Class="Modules/Newsletter/Class/Contact.class.php">
+		<PROPERTIES type="email" searchOrder="1" category="Contact">Email</PROPERTIES>
+		<PROPERTIES type="varchar" length="150" searchOrder="2" category="Identité">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" category="Intitulé">Libelle</PROPERTIES>
+		<PROPERTIES type="varchar" length="30" category="Contact">Fax</PROPERTIES>
+		<PROPERTIES type="varchar" length="30" category="Contact">Telephone</PROPERTIES>
+		<PROPERTIES type="varchar" length="100" category="Identié">Prenom</PROPERTIES>
+		<PROPERTIES type="varchar" length="150" category="Identité">Fonction</PROPERTIES>
+		<PROPERTIES type="varchar" length="150" category="Identité">Societe</PROPERTIES>
+		<PROPERTIES type="varchar" length="150" category="Identité">Services</PROPERTIES>
+		<PROPERTIES type="int" category="Adresse">CodePostal</PROPERTIES>
+		<PROPERTIES type="int" category="Adresse">Departement</PROPERTIES>
+		<PROPERTIES type="varchar" length="150" category="Adresse">Ville</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" category="Adresse">Adresse</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" category="Adresse">Adresse2</PROPERTIES>
+		<PROPERTIES type="varchar" length="30" category="Contact">Mobile</PROPERTIES>
+		<PROPERTIES type="boolean" default="1" searchOrder="2" category="Publication">Actif</PROPERTIES>
+		<FKEY card="1,n" data="GroupeEnvoi,Id">GroupeEnvoi</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Reception" driver="mysql" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Mail1.png">
+		<PROPERTIES type="varchar" length="200" searchOrder="1" category="Contenu">Sujet</PROPERTIES>
+		<PROPERTIES type="text" category="Contenu">Contenu</PROPERTIES>
+		<FKEY card="0,1" data="Contact,Id">ContactId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Lettre" driver="mysql" AccessPoint="1" Description="Lettres"  Icon="/Skins/AdminV2/Img/IconAqua/Mail1.png">
+		<PROPERTIES type="varchar" length="200" searchOrder="1" category="Contenu">Sujet</PROPERTIES>
+		<PROPERTIES type="bbcode" category="Contenu">Intro</PROPERTIES>
+		<PROPERTIES type="bbcode" category="Contenu">Conclu</PROPERTIES>
+		<PROPERTIES type="varchar"  query="Explorateur/_Dossier/Modules/Newsletter/Modeles/_Fichier::Mod" category="Publication">Modele</PROPERTIES>
+		<PROPERTIES type="file" category="Configuration">Image</PROPERTIES>
+		<PROPERTIES type="varchar" category="Configuration">Lien</PROPERTIES>
+		<PROPERTIES type="varchar" query="Systeme/Site::Domaine" category="Configuration">Domaine</PROPERTIES>
+		<PROPERTIES type="varchar"  length="20" description="Couleur Titre Lettre"              default="#ffffff" category="ConfigurationLettre" >CouleurTitreLettre</PROPERTIES>
+		<PROPERTIES type="varchar"  length="20" description="Couleur du fond de la lettre"      default="#000000" category="ConfigurationLettre">CouleurFond</PROPERTIES>
+		<PROPERTIES type="varchar"  length="20" description="Couleur de la police de la lettre" default="#ffffff" category="ConfigurationLettre">CouleurPolice</PROPERTIES>
+		<PROPERTIES type="varchar"  length="20" description="Couleur de la police du sommaire"  default="#ffffff" category="ConfigurationLettre">CouleurSommaire</PROPERTIES>
+		<PROPERTIES type="varchar"  length="10" description="Taille des titres en pixel"        default="12px"    category="ConfigurationArticle">TailleTitre</PROPERTIES>
+		<PROPERTIES type="boolean"  default="0" description="Titre en majuscule"                                  category="ConfigurationArticle">UppercaseTitre</PROPERTIES>
+		<PROPERTIES type="boolean"  default="0" description="Titre en gras" 									  category="ConfigurationArticle">BoldTitre</PROPERTIES>
+		<PROPERTIES type="boolean"  default="0" description="Titre en italic"                                     category="ConfigurationArticle">ItalicTitre</PROPERTIES>
+		<PROPERTIES type="varchar"  length="10" description="Couleur des titres"                default="#ffffff" category="ConfigurationArticle">CouleurTitre</PROPERTIES>
+		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png">Envoyer</FUNCTION>
+		<FUNCTION Icon="/Skins/AdminV2/Img/bbedit/bbcode_preview.png">Apercu</FUNCTION>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Article" driver="mysql" AccessPoint="1"  Description="Article"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<PROPERTIES type="varchar" length="250" searchOrder="1" category="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" searchOrder="2" category="Intitulé">Chapo</PROPERTIES>
+		<PROPERTIES type="bbcode" category="Contenu">Contenu</PROPERTIES>
+		<PROPERTIES type="file" category="Contenu">Image</PROPERTIES>
+		<PROPERTIES type="order" category="Publication">Ordre</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" category="Publication">Lien</PROPERTIES>
+		<FKEY card="1,n" data="Lettre,Id">LettreId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Fichier" driver="mysql" AccessPoint="1" Description="Fichiers"  Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png">
+		<PROPERTIES type="titre" searchOrder="1" category="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="file" length="255">Fichier</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" >URL</PROPERTIES>
+		<PROPERTIES type="varchar" values="Image,Video,Fichier,Lien" length="20">Type</PROPERTIES>
+		<PROPERTIES type="varchar" values="CorpsLettre,FondLettre" length="20">Positionnement</PROPERTIES>
+		<PROPERTIES type="order">Ordre</PROPERTIES>
+		<FKEY card="0,1" data="Article,Id" >ArticleId</FKEY>
+		<FKEY card="0,1" data="Lettre,Id" >LettreId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Envoi" driver="mysql" AccessPoint="1"  Description="Historique"  Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png">
+		<PROPERTIES type="varchar" searchOrder="2" category="Informations">DateEnvoi</PROPERTIES>
+		<PROPERTIES type="text" category="Envoi">Erreurs</PROPERTIES>
+		<PROPERTIES type="varchar"  category="Envoi">Progression</PROPERTIES>
+		<PROPERTIES type="html" category="Informations">Contenu</PROPERTIES>
+		<PROPERTIES type="varchar" category="Informations">Sujet</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Envoi">Busy</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" category="Envoi">Liste</PROPERTIES>
+		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png">ReprendreEnvoi</FUNCTION>
+		<FKEY card="1,1" data="Lettre,Id">LettreId</FKEY>
+		<FKEY card="1,1" data="GroupeEnvoi,Id">GroupeEnvoi</FKEY>
+	</OBJECTCLASS>
+</SCHEMA>

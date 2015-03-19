@@ -1,0 +1,8 @@
+{
+"status":1,
+"content":"<div class=\"item-detail\">\n\t<div class=\"item-gallery theme-default\">\n\t\t\t\t\n\t\t<div class=\"video-youtube-container\" src=\"http:\/\/www.youtube.com\/watch?v=2HAUmII_hcg\"><\/div>\n\t<\/div>\n\t<div class=\"item-description\">\n\t\t<div class=\"item-desc-wrapper\">\n\t\t\t<h2>Wedding Dresses (Youtube)<\/h2>\n\t\t\t\t\t\t<span><\/span>\n\t\t\t<div class=\"wrapper-text\"><p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#8217;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.<\/p>\n<p>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<\/p>\n<div class='hideme'><\/div>\n<\/div>\n\t\t<\/div>\n\t\t<div class=\"item-navigator\">\n\t\t\t<a href=\"\" data-tourl=\"false\">\n\t\t\t\t<div class=\"item-prev\">\n\t\t\t\t\t<div class=\"icon-chevron-left item-icon-prev\">&nbsp;<\/div>\n\t\t\t\t<\/div>\n\t\t\t<\/a>\n\t\t\t<a href=\"\" data-tourl=\"false\">\n\t\t\t\t<div class=\"item-next\">\t\t\t\n\t\t\t\t\t<div class=\"icon-chevron-right item-icon-next\">&nbsp;<\/div>\n\t\t\t\t<\/div>\n\t\t\t<\/a>\n\t\t<\/div>\n\t<\/div>\n<\/div>",
+"title":"Wedding Dresses (Youtube)",
+"type":"youtube",
+"love":770,
+"voted":false
+}

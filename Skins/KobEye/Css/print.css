@@ -1,0 +1,340 @@
+*{
+	font-family:Arial,Verdana,Helvetica,sans-serif;
+	color:#000;
+	font-size:12px;
+	margin:0;
+	padding:0;
+}
+
+body{
+	width:100%;
+	border:0;
+	
+}
+
+* html body{
+	width:100%;
+	text-align:center;/* = margin-auto pour IE */
+	margin:0;
+	padding:0;
+}
+
+img{	
+	margin:0;
+	padding:0;
+	border:0;
+	outline:0;
+}
+
+
+/*--------TITRES-------*/
+h1{
+	font-size:20px;
+}
+
+h2{
+	font-weight:normal;
+	font-size:16px;
+	color:#0070A9;
+}
+
+
+h3{
+	font-size:16px;
+}
+
+h4{
+	font-size:14px;
+}
+
+h5{
+	font-size:;
+	color:;
+}
+
+p{
+	text-indent:0px;
+	font-weight:normal;
+}
+
+ul{
+	list-style-type:disc;
+	margin:10px;
+}
+
+li{
+	margin-bottom:5px;
+}
+
+/*----STYLES GENERAUX----*/
+.FLeft{
+	float:left;
+}
+
+.FRight{
+	float:right;
+}
+
+.Clear {
+	clear:both;
+}
+
+.Bold{
+	font-weight:bold;
+}
+
+.Italic{
+	font-style:italic;
+}
+
+.Souligne{
+	text-decoration:underline;
+}
+
+/*----HACKX IE6----*/
+* html img{	
+	margin:0;
+	padding:0;
+	border:0;
+	outline:0;
+}
+
+* html input{
+	margin:0;
+	padding:0;
+	border:none;
+}
+
+* html ul{
+	padding:0;
+	margin:0px;
+	list-style-type:none;
+	list-style-image:none;
+}
+
+* html li{
+	padding:0;
+	margin:0px;
+}
+
+* html a{
+	padding:0;
+	margin:0px;
+}
+
+
+/* STYLES IMPRESSION */
+
+.LogoPrint {
+	background-color:#071C2F;
+	position:relative;
+	width:100%;
+	background-image:url(/Skins/Gabarit1/Img/FondEntete.jpg);
+	height:105px;
+}
+.DescriPrint{
+	font-style:italic;
+	margin:5px 0;
+}
+
+.ChapoPrint{
+	font-weight:bold;
+	margin:5px 0;
+}
+
+.PagePrint{
+	padding:10px;
+	border:1px solid #000;
+	width:600px;
+	margin:auto;
+	margin-top:10px;
+}
+
+* html .PagePrint{
+	text-align:left;
+}
+
+*+html .PagePrint{
+	text-align:left;
+}
+
+.EntetePrint{
+/*	text-align:center;
+	width:100%;
+	margin-bottom:10px;
+	background:#ccc;
+	height:50px;*/
+}
+
+.ArtPrint{
+	margin-bottom:20px;
+	overflow:hidden;
+}
+
+.TextPrint {
+	overflow:hidden;
+}
+
+div[class="ArtPrint"]{
+	overflow:auto;
+}
+
+* html .ArtPrint{
+	clear:both;
+}
+
+.ImgPrint{
+	width:110px;
+	float:left;
+}
+
+.TextImgPrint{
+	width:490px;
+	float:left;
+}
+
+.ArtPrint h2{
+	margin-bottom:10px;
+	font-size:16px;
+	font-weight:normal;
+}
+
+.PiedPrint{
+	margin-top:20px;
+	padding-bottom:10px;
+	padding-top:10px;
+	text-align:center;
+	background-color:#071C2F;
+}
+
+.PiedPrint h3{
+	color:#fff;
+	font-weight:normal;
+}
+
+.PagePrint h1{
+	font-weight:normal;
+}
+
+.bb_bold{font-weight:bold;color:#019AD6;font-style:italic;}
+.bb_italic{font-style:italic;}
+.bb_underline{text-decoration:underline;}
+.bb_strike{text-decoration:line-through;}
+.bb_quote{margin:20px;border:1px dotted black;}
+.bb_spoiler{margin:20px;border:1px dotted black;color:white;background-color:white;}
+.bb_uppercase{text-transform:uppercase;}
+.bb_lowercase{text-transform:lowercase;}
+
+.bb_a_url, .bb_a_url:visited{
+	text-decoration:none;
+	color:#000;
+}
+
+.bb_a_url:hover{
+	text-decoration:underline;
+}
+
+ul.bb_ul{
+	margin:0;
+	padding:0;
+	margin-top:5px;
+	list-style-type:none;
+}
+
+
+li.bb_li{
+	margin:0;
+	padding:0;
+	display:block;
+	margin-bottom:5px;
+}
+
+* html li.bb_li{
+	width:400px;
+}
+
+/*Salles réunions*/
+
+table.Salle-Reunion {
+/* 	margin-top:10px; */
+	width:100%;
+	overflow:hidden;
+	border-left:1px solid #97992E;
+	margin-left:5px;
+	border-collapse:collapse;
+}
+
+table.Salle-Reunion thead >tr td {
+	background-color:#C9B785;
+	border:2px solid #fff;
+	font-style:italic;
+	color:#0070A9;
+	font-family:Georgia,Arial,Verdana,Helvetica,sans-serif;	color:#0070A9;
+}
+
+table.Salle-Reunion thead >tr:hover td {
+	background-color:#C9B785;
+	color:#0070A9;
+}
+
+table.Salle-Reunion td {
+	width:auto;
+	padding:10px;
+	border:2px solid #fff;
+	background-color:#E0E1E3;
+	text-align:center;
+	font-family:Georgia,Arial,Verdana,Helvetica,sans-serif;
+	color:#0070A9;
+	
+}
+
+table.Salle-Reunion tr:hover td {
+	background-color:#0070A9;
+	color:#fff;
+}
+
+table.Salle-Reunion caption {
+	width:auto;
+	padding:5px;
+	/*background-color:#CCECFF;*/
+	border:2px solid #fff;
+	border-bottom:none;
+	background-color:#031529;
+}
+
+table.Salle-Reunion caption a{
+	font-family:Georgia,Arial,Verdana,Helvetica,sans-serif;
+	font-weight:bold;
+	color:#fff;
+}
+
+/*Location bureaux*/
+
+table.Location-Bureaux {
+/* 	margin-top:10px; */
+	width:100%;
+	border-left:1px solid #97992E;
+	border-collapse:collapse;
+}
+
+table.Location-Bureaux td {
+	width:auto;
+	padding:5px;
+	border:1px solid #97992E;
+	border-left:none;
+	text-align:left;
+	/*padding:2px 0 2px;*/
+}
+
+table.Location-Bureaux caption {
+	width:auto;
+	color:#fff;
+	padding:5px;
+	border-left:1px solid #97992E;
+	background-color:#97992E;
+}
+
+table.Location-Bureaux caption a{
+	font-weight:bold;
+	color:#D9DCEC;
+}

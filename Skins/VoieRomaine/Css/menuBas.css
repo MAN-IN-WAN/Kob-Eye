@@ -1,0 +1,69 @@
+/*-------- Menu du bas --------*/
+/*---Pour un site à 980px avec colonne gauche 258px et deux autres colonnes---------*/
+.MenuBas {
+font-size:11px;
+}
+.MenuBas p{
+font-size:11px;
+}
+.MenuBasColonneR {
+	width:258px;
+}
+
+.MenuBasColonneLC {
+ 	float:left;
+	width:720px;
+}
+.MenuBasColonneC {
+}
+
+.MenuBasColonneLCplt {
+}
+
+.MenuBasColonneL {
+}
+
+.MenuBasColonneL ul  {
+}
+
+
+.MenuBasColonneL {
+ 	float:none;
+	width:99%;
+     	text-decoration: none;
+   	font-size: 11px;
+}
+.MenuBasColonneL a {
+	color: #ffffff;
+	font-size: 11px;
+
+}
+.MenuBasColonneL li  {
+	float:none;
+	color: #ffffff;
+}
+
+.MenuBasColonneL a {
+	float:none;
+	color: #ffffff;
+}
+
+
+
+.MenuBasColonneL a:hover, .MenuBasColonneL li.current a {
+	color: #ffffff;
+
+
+}
+.MenuBasEntree {
+	padding:0 5px 6px 0;
+	color:#ffffff;
+}
+
+.MenuBasEntreeAC {
+	color:#ffffff;
+    	font-size: 10px;
+  	margin:0px 21px 0;
+
+}
+

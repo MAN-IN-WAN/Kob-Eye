@@ -1,0 +1,24 @@
+[HEADER]
+	<link rel="icon" href="/Skins/Gabarit1/favicon.ico" type="image/x-icon"/>
+	<link rel="shortcut icon" href="/Skins/Gabarit1/favicon.ico" type="image/x-icon"/>
+	<script type="text/javascript" src="/Skins/Gabarit1/Js/mootools.js"></script>
+	<script type="text/javascript" src="/Skins/Gabarit1/Js/slimbox.js"></script>
+	<link type="application/rss+xml" rel="alternate" href="[!Domaine!]/News/Nouvelle/Rss.xml" title="Gabarit1 News" />
+[/HEADER]
+<div id="Entete">
+	[MODULE Systeme/Structure/Entete]
+</div>
+<div id="Generale">
+	[MODULE Systeme/Menu]
+	<div id="Container">
+		<div id="Contenu">
+			[MODULE Systeme/Structure/Gauche]
+			[DATA]
+		</div>
+	</div>
+</div>	
+</div>
+<div id="Pied">
+	[MODULE Systeme/Structure/Pied]
+</div>
+

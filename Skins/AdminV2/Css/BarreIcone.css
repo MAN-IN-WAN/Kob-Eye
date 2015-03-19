@@ -1,0 +1,40 @@
+/*-----------------------------------Barre Icone-----------------------*/
+.BarreIcone {
+	height:100%;
+	width:100%;
+	background-color:#ffffff;
+}
+.BarreIcone div {
+	background-color:#d4d4d4;
+	height:80px;
+	width:80px;
+}
+.BarreIcone div:hover{
+	background-color:#f4f4f4;
+}
+.BarreIcone div a {
+	height:76px;
+	width:76px;
+	border-top: 2px solid #CDCDCD;
+	border-bottom: 2px solid #D4D4D4;
+	border-right: 2px solid #787878;
+	border-left: 2px solid white;
+	display:block;
+	text-align:center;
+}
+.BarreIcone div a img{
+	display:block;
+	margin-left:auto;
+	margin-right:auto;
+	padding-top : 25px;
+}
+.BarreIcone .ItemSelected {
+	border-bottom: 2px solid #CDCDCD;
+	border-top: 2px solid #D4D4D4;
+	border-left: 2px solid #787878;
+	border-right: 2px solid white;
+	background-color:white;
+}
+.BarreIcone .ItemSelected div {
+	background-color:#DEDEDE;
+}

@@ -1,0 +1,229 @@
+[TITLE]Admin Kob-Eye | [!Action!] O [!Form_[!Prop::Nom!]_explore!][/TITLE]
+//SAUVEGARDE DE L URL REFERENTE
+[IF [!LAST_URL!]=]
+	[!LAST_URL:=[!Systeme::Connection::LastUrl!]!]
+[/IF]
+[IF [!SaveObject!]!=]
+	//Alors on enregistre les proprietes
+	[STORPROC [!CONF::GENERAL::LANGUAGE!]|Lang]
+		[STORPROC [!O::Proprietes([!Key!])!]|Prop]
+			[METHOD O|Set]
+				[PARAM][!Prop::Nom!][/PARAM]
+				[PARAM][!Form_[!Prop::Nom!]!][/PARAM]
+			[/METHOD]
+		[/STORPROC]
+	[/STORPROC]
+	//Sauvegarde l objet
+	[IF [!O::Verify!]]
+		[IF [!Clone!]>1]
+			[STORPROC [!Clone:-1!]|C]
+				[!Ob:=[!O::getClone()!]!]
+				[METHOD Ob|Save][/METHOD]
+			[/STORPROC]
+		[/IF]
+		[METHOD O|Save][/METHOD]
+		<div id="redirect"></div>
+		<script type="text/javascript">
+			//alert('TEST');
+			window.addEvent('onFrameLoad', function(){
+				window.removeEvents('onFrameLoad');
+				var el = $('redirect');
+				var mf = el.getParent('form');
+				[IF [!SaveObject!]!=Enregistrer]
+					mf.set('action','/[!Lien!]');
+					//[REDIRECT][!Lien!][/REDIRECT]
+				[ELSE]
+					mf.set('action','/[!LAST_URL!]');
+					//[REDIRECT][!LAST_URL!][/REDIRECT]
+				[/IF]
+				var Inputs = mf.getElements('input[type=submit]');
+				for (var i = 0;i < Inputs.length ; i++){
+					Inputs[i].set('value',Inputs[i].get('name')+'/'+Inputs[i].get('value'));
+					Inputs[i].set('name','FRAMELOADER_DISABLED');
+				}
+				mf.fireEvent('submit');
+			});
+		</script>
+	[ELSE]
+		<ul class="Error">
+		<li><h1>Erreur d'enregistrement [!O::ObjectType!]</h1></li>
+		[STORPROC [!O::Error!]|E]
+			<li>[!E::Message!]</li>
+			//Generation d une variable d error pour informer le champ en question
+			[!C_[!E::Prop!]Cv_Error:=1!]
+		[/STORPROC]
+		</ul>		
+	[/IF]
+[/IF]
+
+//<form enctype="multipart/form-data" action="" method="post" name="frm" id="frmSave">
+	//On repete maintenant l interface pour chaque langue
+	<div class="Errors">
+		<a name="ShowErrors"></a>
+		<div>Erreur d'insertion</div>
+		<ul>
+		</ul>
+	</div>
+	<div class="JSFormButton" style="overflow:hidden;height:25px;margin-right:6px;">
+		<a href="[IF [!popup!]=true]#[ELSE][!Query!][/IF]" class="KEBouton" [IF [!popup!]=true]  onclick="Fl.closePopup();return false;"[/IF] style="width:75px;float:left;margin-left:7px;">Annuler</a>
+		<input type="submit" class="KEBouton SubmitButton"  VALUE="Enregistrer" name="SaveObject" style="float:right;"/>
+		[IF [!Action!]=Ajouter&&[!popup!]!=true]
+			<input type="submit" class="KEBouton SubmitButton" VALUE="Enregistrer et ajouter &agrave; nouveau" name="SaveObject" style="float:right;margin-right:10px;"/>
+		[/IF]
+	</div>
+	[STORPROC [!CONF::GENERAL::LANGUAGE!]|Lang]
+		[INFO [!Query!]|HistoObj]
+		[STORPROC [!HistoObj::Historique!]|Histo|0|100]
+			[IF [!Pos!]!=[!NbResult!]]
+				[!BackUrl:=[!HistoObj::Module!]/[!Histo::DataSource!]/[!Histo::Value!]!]
+			[/IF]
+		[/STORPROC]
+		[!Test:=[!O::getOrderedProperties([!BackUrl!],[!Key!])!]!]
+		[STORPROC [!Test!]|C]
+			<div class="BigTitle">Saisie des propri&eacute;t&eacute;s de langue [!Key!]</div>
+			[LIMIT 0|1000]
+				[BLOC Panneau|background:white;position:relative;overflow:hidden;padding:0px;padding-bottom:5px;]
+					<div class="BigTitle" style="text-align:center;font-variant:small-caps;-moz-border-radius:5px 5px 0px 0px;">[!Key!]</div>
+					<div style="margin:5px">
+					[STORPROC [!C!]|T]
+						[!K:=[!Key!]!]
+						[STORPROC [!T!]|P]
+						[IF [!K!]=media||[!K!]=block]
+							<div style="clear:both"></div>
+						[/IF]
+						[LIMIT 0|1000]
+							[MODULE Systeme/Interfaces/Formulaire/ModifProprietes?ObjectTT=[!O::ObjectType!]&DisplayReload=[!DisplayReload!]&Prop=[!P!]&Type=[!Type!]]
+						[/LIMIT]
+						[/STORPROC]
+					[/STORPROC]
+					</div>
+				[/BLOC]
+			[/LIMIT]
+		[/STORPROC]
+	[/STORPROC]
+
+    [STORPROC [!O::typesEnfant!]|Enf]
+	[IF [!Enf::associated!]=1]
+	    <div class="ProprieteModif">
+		<div class="ProprieteTitreModif">
+		    [!Enf::Description!]
+		</div>
+		<div class="ProprieteValeurModif" style="max-height:150px;overflow:auto;">
+		    [STORPROC [!O::Module!]/[!Enf::Titre!]|E]
+			<ul>
+			    [LIMIT 0|1000]
+				[IF [!O::Id!]!=]
+				    [COUNT [!O::Module!]/[!O::ObjectType!]/[!O::Id!]/[!Enf::Titre!]/[!E::Id!]|N]
+				[ELSE]
+				    [!N:=0!]
+				[/IF]
+				[!P:=False!]
+				[STORPROC [!Form_Ass_[!Enf::Titre!]!]|U]
+						[IF [!U!]=[!E::Id!]]
+						[!P:=True!]
+						[/IF]
+						[NORESULT]
+						[IF [!N!]>0]
+							[!P:=True!]
+						[/IF]
+						[/NORESULT]
+				[/STORPROC]
+					
+				<li style="list-style-type:none;width:150px;float:left;"><input type="checkbox" class="ChangeOnReload"  [IF [!P!]!=True]checked="checked"[/IF] name="Form_Ass_[!Enf::Titre!][]" value="[!E::Id!]"/>[!E::getFirstSearchOrder!]</li>
+			[/LIMIT]
+			</ul>
+		[/STORPROC]
+		</div>
+	</div>
+	[ELSE]
+		[IF [!Enf::associated!]!=]
+		    [INFO [!Query!]|T]
+		    [IF [!O::Id!]!=]
+		    	//Vieille triche
+			[STORPROC [!Query!]|W|0|1]
+			[STORPROC Boutique/Produit/ProduitReel/[!W::Id!]|P]
+				  [!Id:=[!P::Id!]!]
+			[/STORPROC]
+			[/STORPROC]
+		    [ELSE]
+		    [STORPROC [!T::Historique!]|THIST|0|100]
+			[IF [!Pos!]!=[!NbResult!]]
+			    [!Id:=[!THIST::Value!]!]
+			[/IF]
+		    [/STORPROC]
+		    [/IF]
+		    [STORPROC [!Enf::associated!]/[!Id!]|TT|0|1]
+			[!TTN:=[!NbResult!]!]
+		    [/STORPROC]
+		    [IF [!TTN!]>0]
+			<div class="ProprieteModif">
+			    <div class="ProprieteTitreModif">
+				[!Enf::Description!]
+			    </div>
+			    <div class="ProprieteValeurModif" style="max-height:150px;overflow:auto;">
+
+				
+				[STORPROC [!Enf::associated!]/[!Id!]|EE]
+				    [STORPROC [!O::Module!]/[!EE::ObjectType!]/[!EE::Id!]/[!Enf::Titre!]|E]
+					[IF [!O::Id!]!=]
+					    [STORPROC [!O::Module!]/[!O::ObjectType!]/[!O::Id!]/[!Enf::Titre!]/[!E::Id!]|O]
+						[!N:=[!NbResult!]!]
+						[NORESULT]
+						    [!N:=0!]
+						[/NORESULT]
+					    [/STORPROC]
+					[ELSE]
+					    [!N:=0!]
+					[/IF]
+					[!P:=False!]
+					[STORPROC [!Form_Ass_[!Enf::Titre!]!]|U]
+						  [IF [!U!]=[!E::Id!]]
+						      [!P:=True!]
+						  [/IF]
+						  [NORESULT]
+							[IF [!sent!]=true]
+							[ELSE]
+								[IF [!N!]>0]
+							    	    [!P:=True!]
+								[/IF]
+							[/IF]
+						  [/NORESULT]
+					[/STORPROC]
+					<li style="list-style-type:none;width:150px;float:left;">
+					    <input type="checkbox" class="ChangeOnReload"
+					    [IF [!P!]=True]checked="checked"[/IF]
+					    name="Form_Ass_[!Enf::Titre!][]" value="[!E::Id!]"/> 
+					    [!E::getFirstSearchOrder!]
+					</li>
+					<input type="hidden" name="sent" value="true"/>
+				    [/STORPROC]
+				[/STORPROC]
+
+			    </div>
+			</div>
+		    [/IF]
+		[/IF]
+	    [/IF]
+	[/STORPROC]
+
+	<div class="JSFormButton" style="overflow:hidden;height:60px;margin-right:6px;">
+		<a href="[IF [!popup!]=true]#[ELSE][!Query!][/IF]" class="KEBouton" [IF [!popup!]=true]  onclick="Fl.closePopup();return false;"[/IF] style="width:75px;float:left;margin-left:7px;">Annuler</a>
+		<input type="submit" class="KEBouton SubmitButton"  VALUE="Enregistrer" name="SaveObject" style="float:right;"/>
+		[IF [!Action!]=Ajouter&&[!popup!]!=true]
+			<input type="submit" class="KEBouton SubmitButton" VALUE="Enregistrer et ajouter &agrave; nouveau" name="SaveObject" style="float:right;margin-right:10px;"/>
+		[/IF]
+	</div>
+
+	<input type="hidden" name="LAST_URL" value="[!LAST_URL!]" />
+//</form>
+</div>
+
+<script type="text/javascript">
+	Fl.toggleMce([IF [!Type!]=Popup]true[/IF]);
+	Fl.toggleConditionals([IF [!Type!]=Popup]true[/IF]);
+	Fl.toggleCalendars([IF [!Type!]=Popup]true[/IF]);
+	Fl.toggleColorPickers([IF [!Type!]=Popup]true[/IF]);
+	Fl.makePopup();
+	Fl.checkForm($('frmSave'),"[!Query!]","/Systeme/Interfaces/Formulaire/CheckForm.json[IF [!O::Id!]!=]?Action=Modifier[/IF]"[IF [!Type!]=Popup],true[/IF]);
+</script>
+

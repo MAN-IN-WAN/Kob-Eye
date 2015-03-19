@@ -1,0 +1,36 @@
+[INFO [!Query!]|I]
+[IF [!I::TypeChild!]=Nouvelle]
+	[STORPROC [!Query!]|NeSel]
+		[STORPROC News/Categorie/Nouvelle/[!NeSel::Id!]|CatNeSel][/STORPROC]
+	[/STORPROC]
+[/IF]
+<h1>Liste des actualités Pragma</h1> 
+<div id="News">
+	[IF [!I::TypeChild!]=Nouvelle]
+		[STORPROC News/Categorie/Publier=1&&Id=[!CatNeSel::Id!]|CatNe]
+			// Titre Categorie
+			[COUNT News/Categorie/[!CatNe::Id!]/Nouvelle/Publier=1|NbNe]
+			[IF [!NbNe!]]<h3>[!CatNe::Nom!]</h3>[/IF]
+			[STORPROC News/Categorie/[!CatNe::Id!]/Nouvelle/Publier=1|Ne|||Ordre,tmsCreate|DESC]
+				[MODULE News/Default/InsereActus]
+			[/STORPROC]
+		[/STORPROC]
+		[STORPROC News/Categorie/Publier=1&&Id!=[!CatNeSel::Id!]|CatNe]
+			// Titre Categorie
+			[COUNT News/Categorie/[!CatNe::Id!]/Nouvelle/Publier=1|NbNe]
+			[IF [!NbNe!]]<h3>[!CatNe::Nom!]</h3>[/IF]
+			[STORPROC News/Categorie/[!CatNe::Id!]/Nouvelle/Publier=1|Ne|||Ordre,tmsCreate|DESC]
+				[MODULE News/Default/InsereActus]
+			[/STORPROC]
+		[/STORPROC]
+	[ELSE]
+		[STORPROC News/Categorie/Publier=1|CatNe]
+			// Titre Categorie
+			[COUNT News/Categorie/[!CatNe::Id!]/Nouvelle/Publier=1|NbNe]
+			[IF [!NbNe!]]<h3>[!CatNe::Nom!]</h3>[/IF]
+			[STORPROC News/Categorie/[!CatNe::Id!]/Nouvelle/Publier=1|Ne|||Ordre,tmsCreate|DESC]
+				[MODULE News/Default/InsereActus]				
+			[/STORPROC]
+		[/STORPROC]
+	[/IF]
+</div>

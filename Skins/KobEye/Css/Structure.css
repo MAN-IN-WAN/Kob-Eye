@@ -1,0 +1,395 @@
+#Entete{
+	position:relative;
+	width:100%;
+	/*background-image:url(/Skins/Gabarit1/Img/FondEntete.jpg);*/
+	height:145px;
+	background-color:#D4E1E7;
+/*	background:transparent url(/Skins/KobEye/Img/Arabesque.jpg) no-repeat scroll right top;*/
+	background:transparent url(/Skins/AdminV2/Img/Structure/Degrade.jpg) repeat-x scroll 0 0;
+}
+
+
+* html #Entete{
+	text-align:left;
+	margin-top:0px;
+}
+
+.EnteteDroite {
+	display:block;
+	position:relative;
+	float:right;
+	padding:5px 10px 0 0;
+	font-style:italic;
+	color:#8F8F8F;
+/*	background:url(/Skins/Gabarit1/Img/Tel.png) no-repeat;
+	background-position:0 35px !important;*/
+	height:100px !important;
+	height:40px;
+}
+
+.EnteteDroite a, .EnteteDroite a:visited {
+	color:#000;
+	font-family:Georgia,Arial,Verdana,Helvetica,sans-serif;
+	text-decoration:none;
+	padding:5px 5px 0 5px;
+}
+
+.EnteteDroite a:hover, .EnteteDroite a:active {
+	color:#C9B785;
+}
+
+#SsBandeau {
+	background-color:#C9B785;
+	height:6px;
+	margin-left:0;
+	position:relative;
+}
+
+* html #SsBandeau{
+	margin:0;
+	padding-left:50%;
+}
+
+
+#Generale, .Centre{
+	display:block;
+	position:relative;
+	overflow:hidden;
+	width:980px;
+	margin:auto;
+	margin-top:0;
+}
+
+#Generale, .CentreBas{
+	width:980px;
+	margin:auto;
+	background-color:#fff;
+}
+
+* html #Generale{
+	width:960px;
+}
+
+#Container{
+	position:relative;
+	display:block;
+	border-right:308px solid #fff;
+	background-color:#fff;
+	padding:0;
+	margin:0;
+}
+
+* html #Container{
+	text-align:left;
+}
+
+#Contenu{
+	display:block;
+	margin-right:-308px;
+/* 	margin-top:6px; */
+}
+
+#Droite{
+	float:right;
+	width:308px;
+	padding:0;
+	min-height:450px;
+	background-color:#ffffff;
+	position:relative;
+	right:0px;
+	border-top:1px solid #fff;
+}
+
+#Droite img{
+	/*border-top:7px solid #fff;*/
+}
+
+#Droite ul, #Droite li{
+	margin:0;
+	padding:0;
+	background:none;
+}
+
+#Milieu{
+	margin-right:309px;
+	position:relative;
+	display:block;
+	height:1%;
+/*	border-right:15px solid #FFFFFF;*/
+}
+
+#Data {
+	display:block;
+	position:relative;
+	width:inherit;
+	margin-right:15px;
+	margin-top:7px;
+	margin:7px 15px 10px 0;
+/* 	background:#C7C7C7; */
+}
+
+#Pied{
+	width:100%;
+/*	background:#D4E1E7;*/
+	border-top:4px solid #C9B785;
+	background:transparent url(/Skins/AdminV2/Img/Structure/Degrade.jpg) repeat-x scroll 0 0;
+}
+
+* html #Pied{
+	text-align:left;
+}
+
+/*Mise en page Accueil*/
+
+.MenuImg {
+	height:245px;
+	background:#0D2738 url(/Skins/Gabarit1/Img/Placard.jpg) repeat-x;
+/* 	margin-bottom:5px; */
+}
+.MenuImg img#GrosseImage{
+	float:left;
+	height:245px;
+	width:672px !important;
+	width:652px;
+}
+
+.LienEntete {
+	width:210px;
+	padding-bottom:15px;
+}
+
+.LienEntete img{
+	float:left;
+}
+
+.ArtEntete {
+	position:relative;
+	float:right;
+	width:308px !important;
+	width:295px;
+	text-align:center;
+	height:245px;
+}
+
+.ArtEnteteButton {
+	position:absolute;
+	bottom:0px;
+	left:0;
+	right:0;
+}
+
+
+* html .ArtEnteteButton {
+	bottom:-60px;
+	left:20px;
+}
+
+.ArtLien img {
+	width:210px !important;
+	width:210px;
+	text-align:center;
+}
+
+.ArtEntete h1, .ArtEntete span{
+	color:#fff;
+	border-bottom:solid 1px #3F3F3F;
+	margin-left:15px;
+	margin-right:15px;
+	margin-bottom:15px;
+	padding-bottom:30px;
+}
+
+.LienEntete a{
+	width:210px;
+}
+
+.ArtEntete p{
+	font-size:14px;
+	color:#C9B785;
+	padding:0 5px 0 5px;
+}
+
+div[id="BlocAccueil"] {
+	display:block;
+	position:relative !important;
+	background-image:url(/Skins/Gabarit1/Img/PlacardGris.png) !important;
+	background-repeat:no-repeat !important;
+	padding:10px !important;
+	margin-top:20px;
+}
+
+* html #BlocAccueil {
+	width:620px;
+	height:150px;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/Skins/Gabarit1/Img/PlacardGris.png', sizingMethod='scale');
+	display:block;
+	position:relative;
+	width:625px;
+	padding:10px;
+	background-repeat:no-repeat;
+}
+
+#BlocAccueil h1 {
+	border:none;
+	border:0;
+	padding:0;
+	margin:0;
+	height:auto;
+	color:#0070A9;
+	font-weight:none;
+}
+
+#BlocAccueil h2 {
+	
+
+}
+
+#BlocAccueil p{
+	padding-top:5px;
+	width:78%;
+	font-size:12px;
+}
+
+#Services {
+	display:block;
+	position:relative;
+	overflow:hidden;
+	width:100%;
+	padding:10px 0 0 0;
+}
+
+.Prestations {
+	overflow:hidden;
+	display:block;
+	position:relative;
+	float:left;
+	width:47%;
+	padding:0 8px 20px 0;
+	margin:0;
+	margin-right:5px;
+}
+
+div[class="Prestations"] img{
+	float:left;
+	margin:0;
+	padding:0;
+}
+
+.Prestations img {
+	margin-left:10px;
+	width:40px;
+}
+
+.Prestations h2{
+	margin-left:60px;
+	padding-top:10px;
+	font-weight:normal;
+}
+
+.Prestations p{
+	padding:10px 0 10px 10px;
+}
+
+.Prestations span {
+	margin-left:12px;
+	font-family:Georgia,Arial,Verdana,Helvetica,sans-serif;
+}
+
+* html .Prestations span {
+	font-size:10px;
+}
+
+
+
+* html a.PrestaLien, a.PrestaLien:visited {
+	background-image:url(/Skins/Gabarit1/Img/PuceBleu.png);
+	background: none;
+	*filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/Skins/Gabarit1/Img/PuceBeige.png');
+	background-repeat:no-repeat;
+	background-position:0 0;
+/* 	height:30px; */
+}
+
+a.PrestaLien, a.PrestaLien:visited {
+	display:block;
+	position:relative;
+	font-weight:bold;
+	color:#000;
+	margin:0;
+	padding:0;
+	background:url(/Skins/Gabarit1/Img/PuceBleu.png) no-repeat;
+	background-position:0 5px;
+	border-top:1px dashed #B2B2B2;
+	padding:8px 0 5px 18px;
+	margin-left:5px;
+	text-decoration:none;
+}
+
+a.PrestaLien:hover, a.PrestaLien:active {
+	color:#0070A9;
+}
+
+.LienIcone {
+	display:block;
+	position:absolute;
+	right:0;float:right;
+}
+
+* html .LienIcone {
+	float:right;
+}
+
+.TabOffres{
+	border:none;
+	width:100%;
+	margin-bottom:10px;
+	margin-top:10px;
+}
+
+.TabOffres td{
+	text-align:center;
+	vertical-align:top;
+	padding:4px;
+	border:0px #D9DCEC solid;
+}
+
+.TabOffres td.FirstTd{
+	/*display:block;*/
+	width:100px;
+}
+
+.TabOffres td.OtherTd{
+	/*display:block;*/
+	width:50px;
+}
+
+
+.TabOffres td span.Rouge{
+	color:#F20606;
+	font-weight:bold;
+}
+
+.TabOffres tr.Thead{
+	background-color:#031529;
+}
+
+.TabOffres tr.Thead td{
+	color:#ffffff;
+	font-weight:bold;
+}
+
+.TabOffres tr.TBody{
+	background-color:#B2C2DD;
+}
+
+
+
+
+
+
+
+
+
+
+
+

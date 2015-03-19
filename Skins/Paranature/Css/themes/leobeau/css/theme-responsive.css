@@ -1,0 +1,91 @@
+@media (min-width: 940px) {
+	#topnavigation ul.nav > li.dropdown:hover > .dropdown-menu{
+		display: block;
+	}
+}
+@media (max-width: 979px) {
+	 
+}
+@media (max-width: 768px) {
+	.lofadvafooter #lofadva-pos-2 .lof-block {
+		width: 33.33% !important;
+	}
+	.megamenu .cols2{
+		min-width:inherit;
+	}
+	.megamenu .cols3{
+		min-width:inherit;
+	}
+	.nav-collapse, .nav-collapse.collapse{margin-left: 50px;}
+	.megamenu .row-fluid [class*="span"]{width: 100%;margin: 0}
+	.slide-info{width: 50%;}
+	/*#lofadva-pos-1 .lof-block-wrap{width: 720px;}*/
+}
+@media (max-width: 767px) {
+	.content-bottom{width: 100%}
+	#index .header-wrap {
+	    position: relative;
+	    background: url("../img/default/bg-header.png") no-repeat scroll center 0 #3E4144;
+	} 
+	#index .header-wrap:before{
+		background: url("../img/default/shape-slideshow.png") repeat scroll 0 0 transparent;
+	}
+}
+@media (max-width: 600px) {
+	.nav-collapse, .nav-collapse.collapse{margin-left: 0px;}
+	#header_logo{position: relative;display: inline-block;}
+ 
+	.leo-customhtml-bottom img,
+	.leocustomhomepos1 img{width: 100%}
+	/*#lofadva-pos-1 .lof-block-wrap {
+	    width: 529px;
+	}*/
+	.lofadvafooter #lofadva-pos-2 .lof-block {
+		width: 50% !important;
+	}
+	.leocustomhomepos1 .span6 {
+	    margin-bottom: 10px;
+	}
+
+	.navbar .btn-navbar{float: none;}
+	.block-search-top {
+		margin-right: 0 !important;
+	}
+	#pb-left-column #short_description_block,
+	#pb-left-column #buy_block,
+	#usefull_link_block,
+	#pb-left-column h1{padding-left: 15px;}
+
+}
+@media (max-width: 480px) {	
+	 #topminibasket{position: relative;}
+	 .block-search-top {
+	    margin-right: 0 !important;
+	}
+	.buytheme {
+	    text-align: center;
+	}
+	.banner-welcome-wrap .buytheme a{
+		float: none;
+		margin-top: 15px;
+	}
+	#footer #newsletter_block_left input.inputNew{width: 160px;}
+}
+@media (max-width: 320px) {
+	 
+	body{padding: 0 5px!important;}
+	.lofadvafooter #lofadva-pos-2 .lof-block {
+		width: 100% !important;
+	}
+	#header_logo{width: 100%;}
+	.htabs-title, .htabs-content{width: 100%;}
+	.lof-position-wrap{padding: 10px;}
+	#lofadva-pos-1 .lof-block-wrap {
+	    margin-top: -115px;
+	}
+	#header_right > div{margin-right: 72px;}
+	
+}	
+@media (max-width: 318px) {
+	#header_right #search_block_top input.search_query{width: 150px;}
+}

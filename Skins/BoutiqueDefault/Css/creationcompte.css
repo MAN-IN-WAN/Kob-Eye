@@ -1,0 +1,212 @@
+/*
+ * Structure
+ */
+.ColonneCreationCompte .obligatoire {
+    color: #5E626B;
+}
+.ColonneCreationCompte {
+	 padding: 10px 0 20px;
+}
+.ColonneCreationCompteBord {
+    border:none;
+    margin: 0px 0 0 8px;
+    padding: 5px 0px 15px 0px ;
+}
+
+p.LesChamps {
+    color: #5E626B;
+    margin:0px;
+    padding-left:38px;
+}
+/*
+ * Reset
+ 
+.ColonneCreationCompte h2 {
+    border-bottom: 1px solid #5e626b;
+    color:#5e626b;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 0px 0 5px;
+    padding-bottom: 5px;
+    text-transform: uppercase; 
+}*/
+.user .ColonneCreationCompte h2 {
+    border-bottom: 1px solid #BBBBBB;
+    font-family:  Arial;
+    font-size: 20px;
+    font-weight: 200;
+    margin-bottom: 18px;
+    padding-bottom: 7px;
+    text-transform: uppercase;
+}
+
+
+
+
+
+.ColonneCreationCompteBord h2{
+   color: #5E626B;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-decoration:none;
+}
+
+.ColonneCreationCompte h3 {
+	
+	margin-bottom: 18px;
+	border-bottom:1px solid #bbbbbb;
+	padding-bottom:7px;
+	
+    font-family:  Arial;
+    font-size: 20px;
+    font-weight: 200;
+    text-transform: uppercase;
+	
+	
+	
+	
+	
+	
+	
+}
+.ColonneCreationCompteBord h3 {
+	font-weight:bold;
+	font-size:14px;
+	text-transform:uppercase;
+	margin: 10px 0px -12px 19px;
+	text-align:left;
+	color:#5e626b;
+}
+
+
+/*.ColonneCreationCompte input,.ColonneCreationCompte   select,.ColonneCreationCompte   textarea {
+	border:1px solid #9e9f99;
+	height:10px;
+	margin:0 10px;
+	float:right;
+	width:175px;
+	font-size:12px;
+}*/
+
+/*.ColonneCreationCompteBord input {
+	border:1px solid #9e9f99;
+	height: 21px;
+	margin:0 10px;
+	float:right;
+	width:300px;
+	font-size:12px;
+}
+.ColonneCreationCompteBord select {
+	border:1px solid #9e9f99;
+	height: 21px;
+	margin:0 10px;
+	float:right;
+	width:300px;
+	font-size:12px;
+}
+.ColonneCreationCompteBord textarea {
+	border:1px solid #9e9f99;
+	height: 21px;
+	margin:0 10px;
+	float:right;
+	width:300px;
+	font-size:12px;
+}
+/*
+ * Class
+ */
+.ColonneCreationCompte .LigneForm {
+    display: inline-block;
+    margin-bottom: 2px;
+    width: 59%;
+}
+.ColonneCreationCompte .Long {
+    float: left;
+    width: 35%;
+}
+.ColonneCreationCompte .Panel {
+	color:#5e626b;
+    margin: 5px 0px 0px 20px;
+    overflow: hidden;
+    padding-top: 10px;
+}
+.ColonneCreationCompte .Border {
+    border-bottom: 1px dotted #5E626B;
+    display: block;
+    margin-bottom: 15px;
+    overflow: hidden;
+    padding-bottom: 15px;
+    width: 100%;
+}
+.ColonneCreationCompte .Radio{
+	display:inline-block;
+	margin-left:0px;
+	padding-left:0px;
+}
+.ColonneCreationCompte label{
+	margin: 0 0 5px 0;
+}
+.ColonneCreationCompte .Radio input{
+	float:none;
+	margin:0;
+	border:none;
+}
+.ColonneCreationCompteBord input.radioleft {
+	float:left;
+	width:20px;
+	
+}
+.ColonneCreationCompteBord label.radioleft{
+	margin: 0 10px 5px 10px;
+	width:222px;
+}
+#Professionnel {
+	display:none;
+}
+.ColonneCreationCompte select {
+    height: 24px;
+}
+.ColonneCreationCompte   textarea {
+	height:45px;
+}
+
+
+.ColonneCreationCompte .BoutonsCentre {
+	padding:10px 0 20px 0 ;
+	overflow:hidden;
+	position:relative;
+	width:100%;
+ 	margin-bottom: 10px;
+	display:block;
+
+}
+.ColonneCreationCompte .BoutonsFin input {
+    cursor: pointer;
+    display: block;
+    font-size: 15px;
+    height: 35px;
+    margin-left: 37px;
+    width: 150px;
+}
+.ColonneCreationCompte .BoutonsFin input:hover {
+	background-position:10px -1811px;
+}
+@media (min-width:315px) and (max-width:450px){
+	
+.ColonneCreationCompte .LigneForm {
+    display: inline-block;
+    margin-bottom: 2px;
+    text-align: center;
+    width: 77%;
+}
+.ColonneCreationCompte .Long {
+    float: left;
+    width: 89%;
+}
+.ColonneCreationCompte .Radio {
+    display: inline-block;
+    float: left;
+}
+}

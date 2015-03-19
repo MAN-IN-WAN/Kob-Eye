@@ -1,0 +1,6 @@
+[INFO [!Query!]|I]
+[IF [!I::TypeSearch!]=Child]
+	[MODULE Blog/Categorie/List?Chemin=Blog/Categorie/*]
+[ELSE]
+	[MODULE Blog/Categorie/List?Chemin=[!Query!]]
+[/IF]

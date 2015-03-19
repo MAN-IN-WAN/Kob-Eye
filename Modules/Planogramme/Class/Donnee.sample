@@ -1,0 +1,465 @@
+{
+    "projectName": "ENGUER PROJECT 2",
+    "stands": [
+        {
+            "levels": [
+                {
+                    "depth": 90,
+                    "height": 90,
+                    "packs": [
+                        {
+                            "name": "15 kg Bottom",
+                            "depth": 65,
+                            "x": 19.5,
+                            "model3d": "BottomPack",
+                            "y": 0,
+                            "height": 12,
+                            "image": "Home/Products/ADTRCLUBFACING.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "15 kg Bottom",
+                            "depth": 65,
+                            "x": 19.5,
+                            "model3d": "BottomPack",
+                            "y": 12,
+                            "height": 12,
+                            "image": "Home/Products/ADTRCLUBFACING.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "15 kg Bottom",
+                            "depth": 65,
+                            "x": 19.5,
+                            "model3d": "BottomPack",
+                            "y": 24,
+                            "height": 12,
+                            "image": "Home/Products/ADTRCLUBFACING.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "15 kg Bottom",
+                            "depth": 65,
+                            "x": 19.5,
+                            "model3d": "BottomPack",
+                            "y": 60,
+                            "height": 12,
+                            "image": "Home/Products/ADTRCLUBFACING.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "15 kg Bottom",
+                            "depth": 65,
+                            "x": 19.5,
+                            "model3d": "BottomPack",
+                            "y": 48,
+                            "height": 12,
+                            "image": "Home/Products/ADTRCLUBFACING.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "15 kg Bottom",
+                            "depth": 65,
+                            "x": 19.5,
+                            "model3d": "BottomPack",
+                            "y": 36,
+                            "height": 12,
+                            "image": "Home/Products/ADTRCLUBFACING.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "15 kg Bottom",
+                            "depth": 65,
+                            "x": 19.5,
+                            "model3d": "BottomPack",
+                            "y": 72,
+                            "height": 12,
+                            "image": "Home/Products/ADTRCLUBFACING.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "15 kg Bottom",
+                            "depth": 65,
+                            "x": 63.166666666666664,
+                            "model3d": "BottomPack",
+                            "y": 36,
+                            "height": 12,
+                            "image": "Home/Products/NRJ4800FACINGCHN.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "15 kg Bottom",
+                            "depth": 65,
+                            "x": 63.166666666666664,
+                            "model3d": "BottomPack",
+                            "y": 12,
+                            "height": 12,
+                            "image": "Home/Products/NRJ4800FACINGCHN.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "15 kg Bottom",
+                            "depth": 65,
+                            "x": 63.166666666666664,
+                            "model3d": "BottomPack",
+                            "y": 24,
+                            "height": 12,
+                            "image": "Home/Products/NRJ4800FACINGCHN.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "15 kg Bottom",
+                            "depth": 65,
+                            "x": 63.166666666666664,
+                            "model3d": "BottomPack",
+                            "y": 0,
+                            "height": 12,
+                            "image": "Home/Products/NRJ4800FACINGCHN.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "15 kg Bottom",
+                            "depth": 65,
+                            "x": 63.166666666666664,
+                            "model3d": "BottomPack",
+                            "y": 48,
+                            "height": 12,
+                            "image": "Home/Products/NRJ4800FACINGCHN.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "15 kg Bottom",
+                            "depth": 65,
+                            "x": 63.166666666666664,
+                            "model3d": "BottomPack",
+                            "y": 60,
+                            "height": 12,
+                            "image": "Home/Products/NRJ4800FACINGCHN.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "15 kg Bottom",
+                            "depth": 65,
+                            "x": 63.166666666666664,
+                            "model3d": "BottomPack",
+                            "y": 72,
+                            "height": 12,
+                            "image": "Home/Products/NRJ4800FACINGCHN.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "10 kg Bottom",
+                            "depth": 60,
+                            "x": 106.83333333333333,
+                            "model3d": "BottomPack",
+                            "y": 33,
+                            "height": 11,
+                            "image": "Home/Products/B_KIttenPersian4.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "10 kg Bottom",
+                            "depth": 60,
+                            "x": 106.83333333333333,
+                            "model3d": "BottomPack",
+                            "y": 11,
+                            "height": 11,
+                            "image": "Home/Products/B_KIttenPersian4.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "10 kg Bottom",
+                            "depth": 60,
+                            "x": 106.83333333333333,
+                            "model3d": "BottomPack",
+                            "y": 22,
+                            "height": 11,
+                            "image": "Home/Products/B_KIttenPersian4.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "10 kg Bottom",
+                            "depth": 60,
+                            "x": 106.83333333333333,
+                            "model3d": "BottomPack",
+                            "y": 0,
+                            "height": 11,
+                            "image": "Home/Products/B_KIttenPersian4.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "10 kg Bottom",
+                            "depth": 60,
+                            "x": 106.83333333333333,
+                            "model3d": "BottomPack",
+                            "y": 44,
+                            "height": 11,
+                            "image": "Home/Products/B_KIttenPersian4.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "10 kg Bottom",
+                            "depth": 60,
+                            "x": 106.83333333333333,
+                            "model3d": "BottomPack",
+                            "y": 55,
+                            "height": 11,
+                            "image": "Home/Products/B_KIttenPersian4.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "10 kg Bottom",
+                            "depth": 60,
+                            "x": 106.83333333333333,
+                            "model3d": "BottomPack",
+                            "y": 66,
+                            "height": 11,
+                            "image": "Home/Products/B_KIttenPersian4.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "10 kg Bottom",
+                            "depth": 60,
+                            "x": 106.83333333333333,
+                            "model3d": "BottomPack",
+                            "y": 77,
+                            "height": 11,
+                            "image": "Home/Products/C_DIGEST400.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "8 kg Bottom",
+                            "depth": 60,
+                            "x": 150.5,
+                            "model3d": "BottomPack",
+                            "y": 11,
+                            "height": 11,
+                            "image": "Home/Products/c_O400.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "10 kg Bottom",
+                            "depth": 60,
+                            "x": 150.5,
+                            "model3d": "BottomPack",
+                            "y": 22,
+                            "height": 11,
+                            "image": "Home/Products/C_HS400.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "10 kg Bottom",
+                            "depth": 60,
+                            "x": 150.5,
+                            "model3d": "BottomPack",
+                            "y": 33,
+                            "height": 11,
+                            "image": "Home/Products/C_L400.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "10 kg Bottom",
+                            "depth": 60,
+                            "x": 150.5,
+                            "model3d": "BottomPack",
+                            "y": 44,
+                            "height": 11,
+                            "image": "Home/Products/C_DIGEST400.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "10 kg Bottom",
+                            "depth": 60,
+                            "x": 150.5,
+                            "model3d": "BottomPack",
+                            "y": 55,
+                            "height": 11,
+                            "image": "Home/Products/C_HS400.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "10 kg Bottom",
+                            "depth": 60,
+                            "x": 150.5,
+                            "model3d": "BottomPack",
+                            "y": 66,
+                            "height": 11,
+                            "image": "Home/Products/C_HS400.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "10 kg Bottom",
+                            "depth": 60,
+                            "x": 150.5,
+                            "model3d": "BottomPack",
+                            "y": 77,
+                            "height": 11,
+                            "image": "Home/Products/C_HS400.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "10 kg Bottom",
+                            "depth": 60,
+                            "x": 150.5,
+                            "model3d": "BottomPack",
+                            "y": 0,
+                            "height": 11,
+                            "image": "Home/Products/C_HB400.jpg",
+                            "width": 39
+                        }
+                    ],
+                    "width": 170
+                },
+                {
+                    "depth": 90,
+                    "height": 70,
+                    "packs": [
+                        {
+                            "name": "15 kg",
+                            "depth": 12,
+                            "x": 19.5,
+                            "model3d": "StandardPack",
+                            "y": 0,
+                            "height": 65,
+                            "image": "Home/Products/ADTRCLUBFACING.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "4 kg",
+                            "depth": 14,
+                            "x": 51.25,
+                            "model3d": "StandardPack",
+                            "y": 0,
+                            "height": 49,
+                            "image": "Home/Products/C_DIGEST400.jpg",
+                            "width": 24.5
+                        },
+                        {
+                            "name": "4 kg",
+                            "depth": 14,
+                            "x": 75.75,
+                            "model3d": "StandardPack",
+                            "y": 0,
+                            "height": 49,
+                            "image": "Home/Products/C_HS400.jpg",
+                            "width": 24.5
+                        },
+                        {
+                            "name": "4 kg",
+                            "depth": 14,
+                            "x": 100.25,
+                            "model3d": "StandardPack",
+                            "y": 0,
+                            "height": 49,
+                            "image": "Home/Products/C_HS400.jpg",
+                            "width": 24.5
+                        },
+                        {
+                            "name": "4 kg",
+                            "depth": 14,
+                            "x": 124.75,
+                            "model3d": "StandardPack",
+                            "y": 0,
+                            "height": 49,
+                            "image": "Home/Products/C_HS400.jpg",
+                            "width": 24.5
+                        },
+                        {
+                            "name": "12 x 85 g Side view",
+                            "depth": 9.5,
+                            "x": 152.92384338378906,
+                            "model3d": "StandardPack",
+                            "y": 0,
+                            "height": 14.5,
+                            "image": "Home/Products/AGE12GRAVYFACING1.jpg",
+                            "width": 19.6
+                        },
+                        {
+                            "name": "12 x 85 g Side view",
+                            "depth": 9.5,
+                            "x": 152.92384338378906,
+                            "model3d": "StandardPack",
+                            "y": 14.5,
+                            "height": 14.5,
+                            "image": "Home/Products/AGE12GRAVYFACING1.jpg",
+                            "width": 19.6
+                        },
+                        {
+                            "name": "12 x 85 g Side view",
+                            "depth": 9.5,
+                            "x": 152.92384338378906,
+                            "model3d": "StandardPack",
+                            "y": 29,
+                            "height": 14.5,
+                            "image": "Home/Products/AGE12GRAVYFACING1.jpg",
+                            "width": 19.6
+                        },
+                        {
+                            "name": "12 x 85 g Side view",
+                            "depth": 9.5,
+                            "x": 152.92384338378906,
+                            "model3d": "StandardPack",
+                            "y": 43.5,
+                            "height": 14.5,
+                            "image": "Home/Products/AGE12GRAVYFACING1.jpg",
+                            "width": 19.6
+                        }
+                    ],
+                    "width": 170
+                },
+                {
+                    "depth": 60,
+                    "height": 90,
+                    "packs": [
+                        {
+                            "name": "15 kg",
+                            "depth": 12,
+                            "x": 19.5,
+                            "model3d": "StandardPack",
+                            "y": 0,
+                            "height": 65,
+                            "image": "Home/Products/CROCSEFACING.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "15 kg",
+                            "depth": 12,
+                            "x": 63.166666666666664,
+                            "model3d": "StandardPack",
+                            "y": 0,
+                            "height": 65,
+                            "image": "Home/Products/CPLUSSEFACING.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "15 kg",
+                            "depth": 12,
+                            "x": 106.83333333333333,
+                            "model3d": "StandardPack",
+                            "y": 0,
+                            "height": 65,
+                            "image": "Home/Products/JUSEFACING.jpg",
+                            "width": 39
+                        },
+                        {
+                            "name": "15 kg",
+                            "depth": 12,
+                            "x": 150.5,
+                            "model3d": "StandardPack",
+                            "y": 0,
+                            "height": 65,
+                            "image": "Home/Products/SEL7SEFACING.jpg",
+                            "width": 39
+                        }
+                    ],
+                    "width": 170
+                }
+            ],
+            "depth": 90,
+            "height": 274,
+            "standName": "Enguer 1",
+            "range": "POS",
+            "width": 170
+        }
+    ]
+}

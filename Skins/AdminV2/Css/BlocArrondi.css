@@ -1,0 +1,70 @@
+/*BLOC ARRONDI*/
+/*.BlocRound {
+	display:block;
+	position:relative;
+	padding-bottom:1px;
+	padding-top:1px;
+}*/
+b.rtop , b.rbottom {
+	display:block;
+	height: 1px;
+	margin-top:0;
+	margin-bottom:0;
+	margin-left:2px;
+	margin-right:2px;
+	background: #fff;
+}
+
+* html b.rtop, b.rbottom{
+	font-size:0;
+}
+
+div.BlocRound{
+	display:block;
+	padding:3px;
+	margin:1px 0;
+	background: #fff;
+	position:relative;
+/* 	height:100%; */
+	z-index:3;
+	overflow:hidden;
+	-moz-border-radius:3px 3px;
+	height:18px;
+	line-height:15px;
+}
+
+/*------ARBORESCENCE--------*/
+
+* html .ArboItem .round{	
+	height:16px;
+	
+}
+
+* html .ArboExpand .round{	
+	height:16px;
+}
+
+* html .ArboLast .round{	
+	height:16px;
+}
+
+/*----------LISTE-----------*/
+
+.EnteteMilieuListe div[class="BlocRound"]{
+	width:333px;
+}
+
+.ListeMiniImg
+{
+    margin:0;padding:0;border:0;margin-bottom:-4px;margin-top:-2px;
+}
+
+.ListeCheckbox
+{
+    padding:0;margin:0;border:0;float:left;margin-bottom:-1px;margin-top:-1px;
+}
+
+.ListeSubmit
+{
+    text-indent:2000px;border:0;margin:0;padding:0;background:url(/Skins/AdminV2/Img/accept.png) transparent no-repeat;margin-top:-4px;margin-bottom:-1px;width:100%;
+}

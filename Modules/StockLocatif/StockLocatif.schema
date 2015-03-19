@@ -1,0 +1,172 @@
+<SCHEMA>
+	<OBJECTCLASS title="Famille" driver="mysql" searchType="plaintext" order="Famille" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Familles" Heritage="0" Class="Modules/StockLocatif/Class/Famille.class.php">
+		<FUNCTION type="vseparator" listOnly="1">s0</FUNCTION>
+		<FUNCTION name="UploadTarif" listOnly="1" icon="levelDown" label="Importation tarif" description="Importation tarif">
+			<ACTION>
+				<![CDATA[
+					{"action":"loadForm","params":{"kobeyeClass":{"module":"StockLocatif","objectClass":"Famille","form":"UploadTarif.json"}}}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<PROPERTIES type="varchar" length="16" obligatoire="1" searchOrder="1" category="Description" description="Famille" formLabel="1">Famille</PROPERTIES>
+		<PROPERTIES type="text" obligatoire="1" searchOrder="2" category="Description" filterMode="generic" description="Désignation">Designation</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="1" query="StockLocatif/Categorie::Id::Designation" category="Description" description="Catégorie">CategorieId</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" obligatoire="1" defaultValue="1" values="1,2,3" category="Configuration" description="Code TVA">CodeTVA</PROPERTIES>
+		<PROPERTIES type="float"  default="0" obligatoire="0" category="Configuration" description="Prix Unitaire">PrixUnitaire</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" obligatoire="0" category="Configuration" >Transport</PROPERTIES>
+		<PROPERTIES type="text" obligatoire="0" category="Autres" description="Commentaires">Commentaires</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" obligatoire="0" category="Autres" description="Archivé">Archive</PROPERTIES>
+		<VIEW title="FamilleList" default="1">
+			<OBJECTCLASS title="Famille" select="Id,Famille,Designation" filters="">
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Categorie" driver="mysql" order="Categorie" orderType="ASC" master="0" AccessPoint="1" Dico="0" Icon="[None]" Description="Categories" Heritage="0">
+		<PROPERTIES type="varchar" length="16" obligatoire="1" searchOrder="1" filterMode="left" category="Description" description="Catégorie" formLabel="1">Categorie</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="2" searchOrder="2" category="Description" description="Désignation">Designation</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" default="0" values="0,1,2" category="Configuration" description="Mode tarif">ModeTarif</PROPERTIES>
+		<PROPERTIES type="varchar" default="" category="Configuration" description="Compte comptable">CompteComptable</PROPERTIES>
+		<VIEW title="Categorie" default="1">
+			<OBJECTCLASS title="Categorie" select="Id,Categorie,Designation" filters="">
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Article" driver="mysql" searchType="plaintext" order="Article" orderType="ASC" master="1" AccessPoint="1" Dico="0" Icon="[None]" Description="Articles" Heritage="0">
+		<PROPERTIES type="varchar" length="16" obligatoire="1" searchOrder="1" filterMode="left" category="Description" description="Article" width="80" formLabel="1">Article</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" filterMode="generic" category="Description" description="Désignation" >Designation</PROPERTIES>
+		<FKEY data="Famille,Id" card="1,n" labelField="Famille" category="Description" parentDescription="Familles">FamilleId</FKEY>
+		<PROPERTIES type="int" default="0" category="Description" description="Quantité">Quantite</PROPERTIES>
+		<VIEW title="Article" default="1">
+			<OBJECTCLASS title="Article" select="Id,Article,Designation" filters="">
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="Reference" driver="mysql" searchType="plaintext" order="Reference" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Références" Heritage="0" className="StockLocatifReference" Class="Modules/StockLocatif/Class/Reference.class.php">
+		<FUNCTION type="vseparator">s0</FUNCTION>
+		<FUNCTION name="printLabel" listOnly="1" multi="1" icon="print" label="Etiquettes" description="Impression des étiquettes">
+			<PROPERTIES type="boolean" default="0" category="Impression" description="Imprimante laser">A4</PROPERTIES>
+			<PROPERTIES type="int" default="" category="Impression" width="30" description="Premère étiquette">First</PROPERTIES>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"interface":1,
+						"method":"object","data":{"module":"StockLocatif","objectClass":"Reference","form":"Functions/printLabel.json"},
+						"function":"PrintLabel","selectionRequired":1,"args":[{"selectedValues":["dataGrid"]},{"interfaceValues":["A4","First"]}]}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FKEY data="Article,Id" card="1,1" category="Article" childDescription="Références" parentDescription="Article">ArticleId</FKEY>
+		<PROPERTIES type="varchar" length="16" obligatoire="1" searchOrder="2" filterMode="left" displayOrder="1" list="2" category="Description" description="Référence" formLabel="1">Reference</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="3" filterMode="generic" list="3" category="Description" description="N° de série">NSerie</PROPERTIES>
+		<PROPERTIES type="date" default="" category="Description" description="Date création">DateCreation</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" searchOrder="4" list="4" listDescr="S" category="Description" description="Sorti">Sorti</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" searchOrder="5" auto="1" category="Description" description="En panne" list="5" listDescr="P">Panne</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" searchOrder="6" category="Autres" description="Hors service" list="6" listDescr="H">HS</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" searchOrder="7" category="Autres" description="Vendu" list="7" listDescr="V">Vendu</PROPERTIES>
+		<PROPERTIES type="date" default="" category="Autres" description="Date de vente">DateVente</PROPERTIES>
+		<PROPERTIES type="varchar" category="Autres" description="Acheteur">Acheteur</PROPERTIES>
+		<PROPERTIES type="text" category="Autres" description="Commentaires">Commentaires</PROPERTIES>
+		<VIEW title="Reference" default="1">
+			<OBJECTCLASS title="Reference" select="Id,Reference,NSerie,ArticleId,Sorti,Panne,HS,Vendu" filters="">
+				<JOIN type="outer" title="Article" on="ArticleId" target="Id">
+					<PROPERTIES type="varchar" searchOrder="1" filterMode="left" list="1" description="Article">Article</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="Image" driver="mysql" master="0" AccessPoint="0" Dico="1" Icon="[None]" Description="Image" Heritage="0">
+		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" category="Description" description="Titre" width="50">Title</PROPERTIES>
+		<PROPERTIES type="varchar" category="Description" description="Logo" >thumbnailImage</PROPERTIES>
+		<PROPERTIES type="varchar" category="Description" description="Image" >fullImage</PROPERTIES>
+	</OBJECTCLASS>
+	
+	
+	<OBJECTCLASS title="Tarif" order="DureeId" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Interface="FormDetail" Dico="1" Icon="[None]" Description="Tarifs" Heritage="0">
+		<FKEY data="Famille,Id" card="1,1" obligatoire="1" hidden="0" category="Description" description="Famille">FamilleId</FKEY>
+		<FKEY data="CodeTarif,Id" module="Devis" card="0,1" hidden="0" category="Description" description="Code tarif">CodeTarifId</FKEY>
+<!--		<FKEY data="Enseigne,Id" module="Repertoire" card="0,1" hidden="0" category="Description" description="Enseigne">EnseigneId</FKEY>
+-->
+		<PROPERTIES type="int" default="0" obligatoire="1" query="StockLocatif/TarifDuree::Id::Duree" category="Description" description="Durée" >DureeId</PROPERTIES>
+		<PROPERTIES type="price" searchOrder="2" category="Description" description="Prix" >Prix</PROPERTIES>
+		<VIEW title="TarifList" default="1">
+			<OBJECTCLASS title="Tarif" select="Id,Prix" filters="">
+				<JOIN type="outer" title="TarifDuree" on="DureeId" target="Id">
+					<PROPERTIES type="varchar" searchOrder="1" category="Description" description="Durée" width="50">Duree</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="TarifDuree" order="Jours" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" Icon="[None]" Description="Tarif Durée" Heritage="0">
+		<PROPERTIES type="varchar" length="10" obligatoire="1" searchOrder="1" category="Description" description="Durée" width="50">Duree</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" description="Jours" >Jours</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Description" description="Mois" >Mois</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Description" description="Demi Mois" >DemiMois</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Description" description="Echeances" >Echeances</PROPERTIES>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="Transport" order="Departement" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" Icon="[None]" Description="Transport" Heritage="0">
+		<FKEY data="Tiers,Id" card="0,1" module="Repertoire" default="0" searchOrder="2" category="Client" description="Client">ClientId</FKEY>
+		<PROPERTIES type="varchar" length="2" obligatoire="1" searchOrder="1" category="Description" description="Département" width="50">Departement</PROPERTIES>
+<!--		<PROPERTIES type="int" obligatoire="0" searchOrder="2" query="Repertoire/Tiers::Id::Intitule" category="Description" description="Client" >ClientId</PROPERTIES>
+-->
+		<PROPERTIES type="price" default="0" searchOrder="3" category="Description" description="Prix" >Prix</PROPERTIES>
+		<PROPERTIES type="price" default="0" searchOrder="4" category="Description" description="Supplément" >Supplement</PROPERTIES>
+		<VIEW title="TransportList" default="1">
+			<OBJECTCLASS title="Transport" select="Id,Departement,Prix,Supplement" filters="">
+				<JOIN type="outer" module="Repertoire" title="Tiers" on="ClientId" target="Id" select="Intitule" filters=""/>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="Panne" driver="mysql" master="0" AccessPoint="1" Icon="[None]" Description="Pannes" Heritage="0" Class="Modules/StockLocatif/Class/Panne.class.php">
+		<CONFIGURATION name="Interface">
+			<FORM getDataFunction="{&quot;method&quot;:&quot;object&quot;,&quot;function&quot;:&quot;GetPanne&quot;}">FormList</FORM>
+			<FORM hideMore="1">FormBase</FORM>
+		</CONFIGURATION>
+		<FUNCTION name="finDePanne" formOnly="1" stateGroup="savedIdle" icon="levelDown" label="Fin de panne" description="Fin de panne">
+			<PROPERTIES type="date" obligatoire="1" defaultValue="Now" description="Fin de panne">Date</PROPERTIES>
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+					"interface":1,
+					"method":"query","data":{"module":"StockLocatif","objectClass":"Panne","form":"Functions/finDePanne.json"},
+					"function":"FinDePanne","args":"iv:Date"}}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FKEY data="Reference,Id" card="1,1" category="Description" description="Référence" >ReferenceId</FKEY>
+		<PROPERTIES type="varchar" searchOrder="3" category="Description" description="Libellé" list="10" listWidth="200">Libelle</PROPERTIES>
+		<PROPERTIES type="date" defaultValue="Now" category="Description" description="Date de panne" list="5" listDescr="Date">Date</PROPERTIES>
+		<PROPERTIES type="int" default="1" category="Description" description="Durée">Duree</PROPERTIES>
+		<PROPERTIES type="date" default="" category="Description" description="Fin de panne" list="6" listDescr="Fin">DateFin</PROPERTIES>
+		<PROPERTIES type="text" category="Autres" description="Commentaires">Commentaires</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Autres" description="Archivé">Archive</PROPERTIES>
+		<VIEW title="PanneList" default="1">
+			<OBJECTCLASS title="Panne" select="Id,Date,Libelle,DateFin,Duree" filters="">
+				<JOIN type="outer" module="StockLocatif" title="Reference" on="ReferenceId" target="Id">
+					<PROPERTIES type="varchar" searchOrder="1" list="1" listWidth="150" description="Référence">Reference</PROPERTIES>
+					<JOIN type="outer" title="Article" on="ArticleId" target="Id">
+						<PROPERTIES type="varchar" searchOrder="2" filterMode="left" list="2" listWidth="120" description="Article">Article</PROPERTIES>
+					</JOIN>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+
+</SCHEMA>
+
+
+
+

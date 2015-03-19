@@ -1,0 +1,29 @@
+.ag_tbl{
+	margin:0px;
+	border-spacing:0px;
+
+}
+.ag_tbl div{
+	text-align: right;
+}
+.Aggregator_row td{
+	border-top:1px solid black;
+	text-align: right;
+	padding:0px;
+}
+.ag_cell{
+	padding:0px;
+	text-align: right;
+}
+.ag_p, .ag_v {
+	border: 0px;
+}
+.ag_p td, .ag_v td {
+	border: 0px;
+	padding:2px 0px 2px 2px;
+	text-align: right;
+	cursor:pointer;
+}
+.ag_cell div{
+	text-align:right;
+}

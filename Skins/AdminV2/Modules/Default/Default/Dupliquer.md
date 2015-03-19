@@ -1,0 +1,5 @@
+[STORPROC [!Query!]|Objet|0|1]
+	[!Ob:=[!Objet::getClone()!]!]
+	[METHOD Ob|Save][/METHOD]
+[/STORPROC]
+[REDIRECT][!Ob::Module!]/[!Ob::ObjectType!]/[!Ob::Id!][/REDIRECT]  

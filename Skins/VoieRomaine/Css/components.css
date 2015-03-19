@@ -1,0 +1,214 @@
+
+/*** COLONNE ***/
+div.enteteComposant {
+	background-color:#7e003f;
+	line-height:30px;
+}
+
+div.titreNavigation {
+	background:url('../Img/Components/picto-produit.png') no-repeat 5px 5px; 
+	padding-left:35px;
+	line-height:35px;
+}
+
+div.contenuComposantNavigation {
+	padding-left:30px;
+	line-height:15px;
+}
+
+
+div.navigation_item a {
+	background:url('../Img/Components/puce_fleche.png') no-repeat 0 8px;
+	color:#4a0026;
+	padding-top:5px;
+	padding-left:15px;
+}
+
+.navigation_item a {
+	background:url('../Img/Components/puce_fleche.png') no-repeat 0 8px;
+	color:#4a0026;
+	padding-top:5px;
+	padding-left:15px;
+}
+
+.navigation_item a:hover {
+	background:url('../Img/Components/puce_fleche-active.png') no-repeat 0 8px;
+	color:#9d3f80;
+}
+
+.navigation_item_current {
+	font-weight:bold;
+	text-transform:uppercase;
+	color:#9d3f80;
+	padding-top:5px;
+}
+
+.navigation_item_current a{
+	background:url('../Img/Components/puce_fleche-active.png') no-repeat 0 8px;
+	color:#9d3f80;
+	padding-top:5px;
+	padding-left:15px;
+}
+
+.navigation_item_current a:hover {
+	background:url('../Img/Components/puce_fleche-active.png') no-repeat 0 8px;
+	color:#9d3f80;
+}
+
+/* panier*/
+.titrePanier {
+ 	background:url('../Img/Components/picto-panier.png') no-repeat 5px 5px; 
+	padding-left:35px;
+	line-height:35px;
+	color:#ffffff;
+}
+
+.entetecolonneTableau {
+	color:#4a0026;
+	margin:2px 0  ;
+	border-bottom:1px solid #7e003f;
+}
+
+.colonneTableau {
+	color:#4a0026;
+}
+
+.contenucolonneTableau {
+	color:#4a0026;
+}
+
+.panier_produits {
+	width:120px;
+}
+
+.panier_Qte {
+	width:30px;
+	border-left:1px dotted #7e003f;
+}
+
+.panier_Montant {
+	width:60px;
+	border-left:1px dotted #7e003f;
+}
+
+.panier_Del {
+	width:30px;
+	border-left:1px dotted #7e003f;
+}
+
+/* Promos */
+.titrePromotions {
+	background:url('../Img/Components/picto-promotion.png') no-repeat 5px 5px; 
+	padding-left:35px;
+	line-height:35px;
+	color:#ffffff;
+
+}
+.contenuComposantPromotions {
+	padding-left:20px;
+	line-height:20px;
+
+}
+
+.Promotions_item a {
+	background:url('../Img/Components/puce_fleche.png') no-repeat 0 8px;
+	color:#4a0026;
+	padding-top:5px;
+	padding-left:15px;
+}
+
+.Promotions_item a:hover {
+	background:url('../Img/Components/puce_fleche-active.png') no-repeat 0 8px;
+	color:#9d3f80;
+}
+/* News Colonne */
+.colTitreNews {
+    color: #ffffff;
+    border-bottom:1px dotted #7e003f;
+    background:url('../Img/Components/picto-information.png') no-repeat 5px 5px; 
+    padding-left:35px;
+    line-height:35px;
+
+}
+.colUneNews {
+	border-bottom:1px solid #7D003a;
+	overflow:hidden;
+	display:block;
+	position:relative;	
+	margin-bottom:5px;
+
+ 
+}
+.colUneNewsEC {
+	border-bottom:1px solid #7D003a;
+ 	padding-bottom:10px;
+}
+
+.dateNews {
+    background: url("../Img/Components/puce_fleche.png") no-repeat 0 2px;
+    color: #4a0026;
+    margin-top:12px;
+    padding-left:15px;
+}
+
+
+.soustitreNews {
+    color: #4a0026;
+    margin-top:5px;
+
+}
+
+.NewsLien a {
+    	color: #4a0026;
+    	float:right;
+    	background: url("../Img/Components/fleche-en-savoir-plus.png") no-repeat left 10px;
+    	padding-top:5px;
+    	padding-left:15px;
+    	padding-right:15px;
+    	height:19px;
+	font-weight:bold;
+}
+
+.NewsLien a:hover {
+    text-decoration:underline;
+}
+
+.NewsLienToutes a {
+    color: #4a0026;
+    float:right;
+    background: url("../Img/Components/fleche-en-savoir-plus.png") no-repeat left 15px;
+    padding-top:10px;
+    padding-left:15px;
+    padding-right:15px;
+    height:19px;
+
+}
+.NewsLienToutes a:hover {
+    text-decoration:underline;
+}
+
+
+/* News Liste */
+.colonne_news {
+    margin: 5px 21px 0;
+}
+
+
+
+.dateNewsCorps {
+    color: #2F2F2F;
+    padding: 2px 10px 0;
+}
+
+
+.texteNews {
+    color: #2F2F2F;
+    margin: 5px 0;
+}
+
+
+
+/* Newsletter */
+.titreInscription {
+	background:url('../Img/Components/picto-newsletter.png') no-repeat 5px 5px; 
+}

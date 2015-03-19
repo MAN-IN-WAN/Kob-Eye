@@ -1,0 +1,439 @@
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace mx "library://ns.adobe.com/flex/mx";
+@namespace ft "flexlib.mdi.containers.*";
+@namespace fb "flexlib.containers.*";
+@namespace ap "com.appaloosa.components.*";
+
+cssAssets {
+	appBackground: Embed("assets/clebs.jpg");
+	alert: Embed("assets/icons/alert.png");
+	cadenas: Embed("assets/icons/cadena.png");
+	dataBase: Embed("assets/icons/data-base.png");
+	iconDelete: Embed("assets/icons/delete.jpg");
+	duplicate: Embed("assets/icons/duplicate.png");
+	invertSelection: Embed("assets/icons/invert-selection.png");
+	mail: Embed("assets/icons/mail.png");
+	management: Embed("assets/icons/management.png");
+	martin: Embed("assets/icons/martin.png");
+	iconNew: Embed("assets/icons/news.png");
+	open: Embed("assets/icons/open.png");
+	packaging: Embed("assets/icons/packaging.jpg");
+	print: Embed("assets/icons/print.png");
+	products: Embed("assets/icons/products.png");
+	remove: Embed("assets/icons/remove.png");
+	rename: Embed("assets/icons/rename.png");
+	save: Embed("assets/icons/save.png");
+	saveAs: Embed("assets/icons/save-as.png");
+	tel: Embed("assets/icons/tel.png");
+	unselect: Embed("assets/icons/unselect.png");
+	user: Embed("assets/icons/user.png");
+	iconTrue: Embed("assets/icons/true.png");
+	iconFalse: Embed("assets/icons/false.png");
+	t1024: Embed("assets/t1024.jpg");
+	testtext: Embed("assets/obj/texturetest.jpg");
+	texturemontant: Embed("assets/obj/texturemontant.png");
+}
+
+/**
+ * 	GLOBAL
+ */
+global
+{
+	color: #505153;
+	modalTransparency: 0.0;
+	modalTransparencyColor: white;
+	modalTransparencyBlur: 0;
+	modalTransparencyDuration: 0;
+	kerning:false;
+	fontFamily: Arial;
+	fontSize: 12;
+	fontWeight: normal;
+	color: #505153;
+}
+/** 
+ * 	Boutons
+ */
+
+s|Button,mx|Button {
+	cornerRadius:0;
+	chromeColor: #ac0710;
+	color: #ffffff;
+	leading:0;
+}
+s|Button:over, mx|Button:over{
+	chromeColor: #e3e3e3;
+	color: #e30613;
+}
+s|Button:down, mx|Button:down{
+	chromeColor: #8d383d;
+	color: #fff;
+}
+/**
+ * 	ScrollBars
+ */
+
+s|VScrollBar s|Button:up {
+	chromeColor:#cdcdcd;
+	symbolColor:black;
+}
+s|VScrollBar s|Button:over {
+	chromeColor:#cdcdcd;
+	symbolColor:black;
+}
+s|VScrollBar s|Button:down {
+	chromeColor:white;
+	symbolColor:black;
+}
+
+
+/**
+ * 	Control bar
+ */
+mx|ApplicationControlBar {
+	color: #ffffff;
+	backgroundColor:#e6e7e8;
+	borderColor:#bcbec0;
+	borderStyle:solid;
+	borderThickness:1;
+	dropShadowEnabled:false;
+	cornerRadius:0;
+	paddingTop:1;
+	paddingBottom:1;
+	paddingLeft:1;
+	paddingRight:1;
+	horizontalGap:2;
+}
+/** 
+ * 	Main menu
+ */
+
+#mainMenu s|Button{
+	chromeColor: #e3e3e3;
+	color: #e30613;
+
+}
+#mainMenu s|Button:over{
+	chromeColor: #ac0710;
+	color: #ffffff;
+}
+#mainMenu s|Button:down{
+	chromeColor: #8d383d;
+	color: #fff;
+}
+#mainMenu{
+	popupSkin: ClassReference("com.appaloosa.skins.StartBorderContainer");
+	color:white;
+	buttonFontSize:14;
+}
+#mainMenu s|BorderContainer s|Button,#mainMenu s|BorderContainer s|Button:over{
+	skinClass: ClassReference("com.appaloosa.skins.MenuButton");
+}
+/**
+ * 	taskBar
+ */
+#taskBar{
+	percentHeight:100;
+}
+#taskBar s|Button{
+	skinClass: ClassReference("com.appaloosa.skins.TaskBarButton");
+	percentHeight:100;
+}
+/**
+ * 	toolBar
+ */
+ap|appMenuTab {
+	horizontalGap:1;
+	tabWidth:100;
+	tabStyleName: appMenuTabTabStyle;
+	firstTabStyleName: appMenuTabTabStyle;
+	lastTabStyleName: appMenuTabTabStyle;
+	selectedTabTextStyleName: appMenuTabSelectedTabTextStyle
+}
+.appMenuTabTabStyle {
+	chromeColor: white;
+	backgroundColor: white;
+	fontFamily: Arial;
+	color: #e30613;
+	fontSize: 12;
+	fontWeight: bold;
+}
+.appMenuTabSelectedTabTextStyle {
+	color: #e30613;
+	fontFamily: Arial;
+	fontSize: 12;
+	fontWeight: bold;
+}
+ap|appMenuTab mx|LinkButton {
+	color: black;
+}
+/**
+ * 	tabNavigator
+ */
+fb|SuperTabNavigator {
+	horizontalGap:1;
+	tabStyleName: tabNavigatorTabStyle;
+	firstTabStyleName: tabNavigatorTabStyleFirst;
+	lastTabStyleName: tabNavigatorTabStyleLast;
+	tab-close-button-style-name: iconDelete;  
+}
+.tabNavigatorTabStyle{
+	skin: ClassReference("com.appaloosa.skins.TabBarButton");
+	upSkin: ClassReference("com.appaloosa.skins.TabBarButton");
+	overSkin: ClassReference("com.appaloosa.skins.TabBarButton");
+	downSkin: ClassReference("com.appaloosa.skins.TabBarButton");
+	tab-close-button-style-name: iconDelete;  
+}
+.tabNavigatorTabStyleLast,.tabNavigatorTabStyleFirst{
+	skin: ClassReference("com.appaloosa.skins.TabBarButton");
+	upSkin: ClassReference("com.appaloosa.skins.TabBarButton");
+	overSkin: ClassReference("com.appaloosa.skins.TabBarButton");
+	downSkin: ClassReference("com.appaloosa.skins.TabBarButton");
+	tab-close-button-style-name: iconDelete;  
+}
+.tabNavigatorSelectedTabTextStyle {
+	/*color: #ffffff;
+	textRollOverColor: #000000;
+	fontFamily: VerdanaEmbedded;
+	fontSize: 13;
+	fontWeight: bold;*/
+	skin: ClassReference("com.appaloosa.skins.TabBarButton");
+}
+
+/**
+ * 	ViewStack
+ */
+.ViewStackStyle {
+	borderSkin:ClassReference("com.appaloosa.skins.ViewStackSkin");	
+}
+
+/**
+ * 	profileButton
+ */
+#profileButton{
+	buttonSkin:ClassReference("com.appaloosa.skins.ProfileButton");
+	popupSkin: ClassReference("com.appaloosa.skins.ProfileBorderContainer");
+	buttonIcon:Embed("assets/icons/cadena.png");
+	color:white;
+}
+/**
+ * 	dateButton
+ */
+#dateButton{
+	chromeColor:#e3e3e3;
+	color:#505153;
+}
+/**
+ * 	appTree
+ */
+ap|appTree {
+	/* these three styles are inherited by the itemRenderer */
+	line-alpha: 1;    
+	line-color: #808080;
+	line-style: dotted;
+	line-thickness: 1;
+	/* these two styles make the tree lines look better */
+	padding-top: 0;        /* default is 2 */
+	padding-bottom: 0;    /* default is 2 */
+	/* define embed assets */
+	disclosureClosedIcon:Embed("assets/tree/plus.gif");
+	disclosureOpenIcon:Embed("assets/tree/minus.gif");
+	folderOpenIcon:Embed("assets/icons/open.png");
+	folderClosedIcon:Embed("assets/icons/open.png");
+	defaultLeafIcon:Embed("assets/icons/open.png");
+	
+	backgroundAlpha: 1;
+	backgroundColor: #ffffff;
+	alternatingItemColors: #ffffff, #f6f7f8;
+	headerColors: #e93a44, #ac0710;
+	horizontalGridLines: true;
+	letterSpacing: 0;
+	horizontalGridLineColor: #cccccc;
+	verticalGridLineColor: #ffffff;
+	rollOverColor: #909092;
+	textRollOverColor: #ffffff;
+	borderThickness: 0;
+	border-style:solid;
+	selectionColor: #393a3b;
+	color: #000000;
+	textSelectedColor: #ffffff;
+	textIndent: 0;
+	dropShadowEnabled: false;
+	fontFamily: "Arial ";
+	fontSize: 11;
+	text-align:left;
+	fontWeight: normal;
+	headerStyleName: "MyDataGridStyleHeader";
+
+}
+
+
+/**
+ * 	VBox Accordion
+ */
+.AccordionStyle {
+	borderSkin:ClassReference("com.appaloosa.skins.VBoxSkin");
+}
+/**
+ * 	Accordion
+ */
+mx|Accordion {
+	headerStyleName:customAccordionHeadStyles;
+}
+.customAccordionHeadStyles{
+	skin: ClassReference("com.appaloosa.skins.AccordionHeaderSkin");
+	color: black;
+	fontFamily: Arial;
+	fontSize: 12;
+	fontWeight: normal;
+	paddingLeft:28;
+}
+.customAccordionHeadStyles:over{
+	color: black;
+}
+
+/**
+ * 	DataGrid
+ */
+mx|AdvancedDataGrid {
+   backgroundAlpha: 1;
+   backgroundColor: #ffffff;
+   alternatingItemColors: #ffffff, #e6e7e8;
+   headerColors: #e93a44, #ac0710;
+   horizontalGridLines: true;
+   letterSpacing: 0;
+   horizontalGridLineColor: #cccccc;
+   verticalGridLineColor: #ffffff;
+   rollOverColor: #909092;
+   textRollOverColor: #ffffff;
+   borderThickness: 0;
+   border-style:solid;
+   selectionColor: #393a3b;
+   color: #000000;
+   textSelectedColor: #ffffff;
+   textIndent: 0;
+   dropShadowEnabled: false;
+   fontFamily: "Arial ";
+   fontSize: 12;
+   text-align:left;
+   fontWeight: normal;
+   headerStyleName: "MyDataGridStyleHeader";
+
+}
+
+.MyDataGridStyleHeader,.MyDataGridStyleHeader:over {
+   color: #ffffff;
+   fontFamily: Arial ;
+   fontSize: 12;
+   fontWeight: bold;
+   textAlign:left;
+   fontStyle: normal;
+   textDecoration: none;
+	paddingBottom:-3;
+	paddingTop:5;
+}
+
+
+
+
+
+
+
+
+
+
+
+s|Panel #titleDisplay {
+	chromeColor: #dcdcdc;
+	color: #e30613;
+	fontFamily: Arial;
+	fontSize: 14;
+	fontWeight: normal;
+}
+
+
+mx|Panel {
+	titleStyleName: panelTitleStyle;
+}
+
+.panelTitleStyle {
+	chromeColor: #dcdcdc;
+/*	color: #e30613;
+	fontFamily: Arial;
+	fontSize: 14;
+	fontWeight: bold;*/
+}
+
+
+
+
+
+
+/** Accès Menu **/
+mx|ApplicationControlBar {
+	chromeColor: #e30613;
+	color: #ffffff;
+}
+
+
+mx|ScrollBar {
+	chromeColor: #cdcdcd;
+}
+
+
+s|ComboBox {
+	symbolColor: white;
+}
+
+
+
+
+
+.mdiWindowFocus{
+	borderColor: #0053E1;
+	borderAlpha: 1;
+	borderThicknessLeft: 5;
+	borderThicknessTop: 0;
+	borderThicknessBottom: 0;
+	borderThicknessRight: 5;
+	roundedBottomCorners: false;
+	cornerRadius: 0;
+	dropShadowEnabled: true;
+	headerHeight: 28;
+	backgroundAlpha: 1; 
+	backgroundColor: #FFFFFF;
+	titleStyleName: "mdiWindowTitleStyle";
+	
+	controlButtonWidth: 21;
+	controlButtonHeight: 21;
+	controlButtonGap: 4;
+}
+
+.mdiWindowNoFocus{
+	borderColor: #7B97E0;
+	borderAlpha: 1;
+	borderThicknessLeft: 5;
+	borderThicknessTop: 0;
+	borderThicknessBottom: 0;
+	borderThicknessRight: 5;
+	roundedBottomCorners: false;
+	cornerRadius: 0;
+	dropShadowEnabled: false;
+	headerHeight: 28;
+	backgroundAlpha: 1; 
+	backgroundColor: #FFFFFF;
+	titleStyleName: "mdiWindowTitleStyle";
+	
+	controlButtonWidth: 21;
+	controlButtonHeight: 21;
+	controlButtonGap: 4;
+}
+
+.mdiWindowTitleStyle
+{
+	fontFamily: Arial;
+	fontSize: 14;
+	fontWeight: normal;
+	color: #e30613;
+}
+
+

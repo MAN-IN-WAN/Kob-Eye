@@ -1,0 +1,1419 @@
+@import "contact.css";
+
+@font-face {
+    font-family: "Trebuchet MS";
+    src: url('../Fonts/trebuc.ttf');
+}
+
+@font-face {
+    font-family: "Trebuchet MS";
+    font-weight: bold;
+    src: url('../Fonts/trebucbd.ttf');
+}
+
+@font-face {
+    font-family: "Trebuchet MS";
+    font-style: italic;
+    src: url('../Fonts/trebucit.ttf');
+}
+
+@font-face {
+    font-family: "Trebuchet MS";
+    font-style: italic;
+    font-weight: bold;
+    src: url('../Fonts/trebucbi.ttf');
+}
+
+/*----- Reset ----*/
+html, body, div, span, applet, object, iframe, p, h1, h2, h3, h4, h5, h6, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td { margin: 0; padding: 0; border: 0; outline: 0; font-size: 100%; vertical-align: baseline }
+blockquote, q { quotes: none }
+blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; }
+ins { text-decoration: none }
+del { text-decoration: line-through }
+table { border-collapse: collapse; border-spacing: 0 }
+a:active, input:active { outline: none }
+:-moz-any-link:focus { outline: none }
+
+/*----- GLOBAL -----*/
+html,body {
+	padding:0;
+	margin:0
+}
+
+html {
+	background: url("../Img/Html.png") no-repeat 53% 100px;
+}
+
+body {
+	background: url("../Img/Body.png") repeat-y 50%;
+	font-family:Trebuchet MS;
+	font-size:12px;
+	color: #525252;
+}
+
+button {
+	cursor:pointer;
+}
+
+input, textarea {
+	font-family:Trebuchet MS;
+}
+
+textarea {
+	overflow: auto;
+}
+
+a {
+	text-decoration: none;
+	color: #0070BA;
+}
+a:hover {
+	text-decoration: underline;
+	color: #0070ba;
+}
+
+h1 {
+	color:#434343;
+	text-transform:uppercase;
+	font-size:14px;
+	padding-bottom:6px;
+	border-bottom: 1px #434343 dotted;
+	margin: 10px 0;
+	font-weight: normal;
+}
+
+h2 {
+	color: #0070BA;
+	font-weight: bold;
+	text-transform: uppercase;
+	margin: 0;
+}
+ul.bb_ul { margin-left:10px; }
+.fullWidth {
+	width:980px;
+	margin:auto;
+	background: white;
+}
+
+div.centre {
+	overflow: hidden;
+}
+
+div.containerL {
+	padding-left:205px;
+}
+
+div.innerL {
+	margin-left:-205px;
+}
+
+div.Left {
+	width:205px;
+	font-family:Arial;
+}
+
+div.centreL {
+	margin-left:214px;
+	font-family:Arial;
+}
+
+div#Data {
+	padding: 20px;
+	font-family:Arial;
+}
+
+div#Main {
+	z-index: 5;
+	overflow:hidden;
+}
+
+.Ariane {
+	display: none;
+}
+.Pair { background-color:#eeeeee; }
+/*----- HEADER -----*/
+#Header{
+	background:url("../Img/sprite.png") no-repeat;
+	position:relative;
+	z-index: 10;
+	height: 160px;
+}
+
+a.RetourAccueil {
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 220px;
+	bottom: 35px;
+}
+
+div#Bando {
+	height:126px;
+	background-position: 50% 0;
+}
+
+#Deconnect {
+	background:url("../Img/sprite.png") -692px -1106px;
+	display:block;
+	position:absolute;
+	top:0;
+	left: 554px;
+	height: 20px;
+	width: 93px;	
+}
+
+#Deconnect:hover {
+	background-position: -692px -1136px;
+}
+
+#WelcomeUser {
+	color: #0070BA;
+	position: absolute;
+	top: 5px;
+	left: 220px;
+}
+
+#Welcome {
+	color: #0070BA;
+	position: absolute;
+	right: 447px;
+	top: 30px;
+	font-size: 30px;
+	text-align: right;
+	width: 330px;
+}
+
+#BlocTopRight {
+	position: absolute;	
+	top: 0;
+	right: 0;
+	background: #0070BA;
+	color: #fff;
+	padding: 5px 10px;
+	width: 311px;
+	height: 99px;
+}
+
+#YourContact {
+	position: relative;
+	font-weight: bold;
+	text-transform: uppercase;
+	border-bottom: 1px solid #fff;
+	padding-bottom: 2px;
+	margin-bottom: 5px;
+}
+
+#SendMailYourContact {
+	position: absolute;
+	bottom: 5px;
+	right: 10px;
+	width: 120px;
+	height: 20px;
+	background:url("../Img/sprite.png") -831px -1105px;
+}
+
+#SendMailYourContact:hover {
+	background-position: -831px -1135px;
+}
+
+table#Menu {
+	width: 920px;
+	margin: -6px auto 0 ;
+}
+
+/*----- MENU PRINCIPAL -----*/
+#Menu {
+	margin: 0 auto 2px;
+	font-size:14px;
+	z-index:10;
+}
+
+#Menu td {
+    	background: url("../Img/Separateur.png") no-repeat scroll 0 14px transparent;
+    	vertical-align: bottom;
+    	width: 25%;
+}
+
+#Menu a {
+	text-align:center;
+	color: white;
+	border:0 solid #0172BE;
+	display:block;
+	padding:7px 10px;
+	font-weight: bold;
+}
+
+#Menu td.last a {
+	background:url("../Img/Separateur.png") no-repeat 100% 7px;
+}
+
+#Menu a:hover {
+	text-decoration: none;
+	border-top-width:6px;
+}
+
+#Menu td.current a {
+	border-top-width:6px;
+}
+
+#Menu td a + ul {
+	display: none;
+	padding-bottom: 5px;
+	margin-left: 1px;
+}
+
+#Menu td a:hover + ul, #Menu td ul:hover, #Menu td ul.hover {
+	display: block;
+	position: absolute;
+	top: 175px;
+	background: url("../Img/fond-menu.png") repeat;
+	z-index: 10;
+
+}
+
+#Menu td ul li {
+	list-style: none;
+}
+
+#Menu td ul a {
+	border: none;
+	padding: 5px 20px;
+	text-align: left;
+	font-weight: normal;
+	font-size: 12px;
+}
+
+#Menu td ul a:hover {
+	text-decoration: underline;
+}
+
+div.TitreBloc {
+	padding: 8px 0 5px 35px;
+	font-size: 16px;
+	font-weight: bold;
+	font-family: arial;
+	color: #0070BA;
+	background: url("../Img/sprite.png") no-repeat;
+	border-bottom: 1px dotted #0070BA;
+	margin-bottom: 10px;
+}
+
+/*--- ACCUEIL ---*/
+/*--- Bloc 1 ---*/
+div.BlocEncours {
+	background: url("../Img/sprite.png") no-repeat -27px -183px;
+	height: 280px;
+	margin: 5px;
+	padding: 10px;
+	position: relative;
+	display: block;
+	float: left;
+	width: 335px;
+}
+
+div.BlocEncours div.TitreBloc {
+	background-position: -34px -834px;
+}
+
+div.BlocEncours div.BlocContent {
+	padding: 8px;	
+}
+
+div.BlocEncours div.BlocBlanc {
+	background: #ffffff;
+	padding: 10px;	
+}
+
+div.BlocEncours div.BlocCpt {
+	border-bottom: 1px dotted #0070BA;
+	padding: 10px 0;
+	position: relative;
+	overflow: hidden;
+}
+
+div.BlocEncours div.BlocDenonciations {
+	border-bottom: none;
+}
+
+div.BlocEncours a.BlocButton {
+	width: 144px;
+	height: 31px;
+	display: block;
+	float: left;
+	position: relative;
+	background: url("../Img/sprite.png") no-repeat;
+}
+
+div.BlocEncours div.BlocCount {
+	margin-left: 150px;
+	padding-top: 8px;
+	color: #0070BA;
+	font-size:13px;
+}
+
+div.BlocEncours div.BlocOptions a.BlocButton {
+	background-position: -553px -255px;
+}
+
+div.BlocEncours div.BlocOptions a.BlocButton:hover {
+	background-position: -703px -255px;
+}
+
+div.BlocEncours div.BlocReservations a.BlocButton {
+	background-position: -553px -310px;
+}
+
+div.BlocEncours div.BlocReservations a.BlocButton:hover {
+	background-position: -703px -310px;
+}
+
+div.BlocEncours div.BlocVentes a.BlocButton {
+	background-position: -553px -365px;
+}
+
+div.BlocEncours div.BlocVentes a.BlocButton:hover {
+	background-position: -703px -365px;
+}
+
+div.BlocEncours div.BlocDenonciations a.BlocButton {
+	background-position: -553px -420px;
+}
+
+div.BlocEncours div.BlocDenonciations a.BlocButton:hover {
+	background-position: -703px -420px;
+}
+
+/*--- Bloc 2 ---*/
+#Anim {
+	position: relative;
+	height:279px;
+	margin: 5px;
+	display: block;
+	float: right;
+}
+
+#AnimCadre {
+	position: relative;
+	overflow: hidden;
+}
+
+#Anim .AnimCadreAccueil img {
+	position: absolute;
+	top: 0;
+	right: 30px;
+	bottom: 0;
+	left: 30px;
+}
+
+#AnimMasque {
+	display: none;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	left: 0;
+}
+
+#AnimLegende {
+	background: url("../Img/Legende.png");
+    bottom: 10px;
+    font-size: 18px;
+    font-family: Arial;
+    left: 0;
+    padding: 5px 12px 5px 45px;
+    position: absolute;
+    right: 0;
+}
+
+#AnimPages {
+	position: absolute;
+	right: 5px;
+	bottom: 15px;
+}
+
+#AnimPages div.AnimNumber {
+	display: block;
+	float: left;
+	position: relative;
+	width: 19px;
+	text-align: center;
+	padding: 1px 0;
+	margin-right: 5px;
+	background:url("../Img/Btn.png") no-repeat;
+	color: white;
+	cursor: pointer;
+}
+
+#AnimPages div.AnimNumberActive {
+	background:url("../Img/BtnActif.png") no-repeat;
+	cursor: auto;
+}
+
+#AnimDefile a {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+#Anim #LogoBBC {
+	background: url("../Img/sprite.png") no-repeat -904px -257px;
+	height: 53px;
+	position: absolute;
+	right: 10px;
+	top: 5px;
+	width: 53px;
+}
+
+
+/*----- ANIM -----*/
+#AnimDetail {
+	position: relative;
+	height:345px;
+}
+
+#AnimCadre {
+	position: relative;
+	overflow: hidden;
+	height:345px;
+}
+
+#AnimCadre img {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+
+#AnimDetailMasque {
+	position: absolute;
+	right: -30px;
+	bottom: -8px;
+	top: 0;
+	left: -30px;
+}
+
+#AnimDetailLegende {
+	background: url("../Img/Legende.png");
+	bottom: 0;
+	font-size: 13px;
+	text-transform: uppercase;
+	font-weight: bold;
+	color: #0070BA;
+	left: -30px;
+	padding: 8px;
+	position: absolute;
+	right: -30px;
+}
+
+#AnimDetailLegende div.DateLivraison {
+	background: url("../Img/sprite.png") no-repeat 30px -1225px;
+	padding-left: 54px;
+}
+
+#AnimDetailLegende div.Pictos {
+    bottom: 2px;
+    position: absolute;
+    right: 35px;
+}
+
+#AnimPages div.AnimNumber {
+	display: block;
+	float: left;
+	position: relative;
+	width: 19px;
+	text-align: center;
+	padding: 1px 0;
+	margin-right: 5px;
+	background:url("../Img/Btn.png") no-repeat;
+	color: white;
+	cursor: pointer;
+}
+
+#AnimPages div.AnimNumberActive {
+	background:url("../Img/BtnActif.png") no-repeat;
+	cursor: auto;
+}
+
+#AnimDetail #LogoBBC {
+	background: url("../Img/sprite.png") no-repeat -904px -257px;
+	height: 53px;
+	position: absolute;
+	right: -20px;
+	top: -20px;
+	width: 53px;
+}
+
+/*--- Bloc 3 ---*/
+div#RecherchePrescripteurs {
+	background: url("../Img/sprite.png") no-repeat -27px -503px;
+	height: 295px;
+	margin: 5px;
+	padding: 10px;
+	position: relative;
+	display: block;
+	float: left;
+	clear: left;
+	width: 535px;
+}
+
+div#RecherchePrescripteurs input.checkbox {
+	border: none;
+	width: auto;
+}
+
+div#RecherchePrescripteursTitre {
+	background-position: -34px -888px;
+}
+
+div#RecherchePrescripteursTitre2 {
+	background-position: -34px -943px;
+}
+
+div.LigneRecherche {
+	padding-bottom: 10px;
+}
+
+div.LigneRecherche select {
+	width: 400px;
+}
+
+button.BtnRecherche {
+	background: url("../Img/sprite.png") no-repeat -27px -1103px;
+	display:block;
+	height: 25px;
+	width: 123px;
+	display: block;
+	border:none;
+}
+
+button.BtnRecherche:hover {
+	background-position: -27px -1133px;
+}
+
+div#RecherchePrescripteurs button.BtnRecherche {
+	margin-top: 1px;
+	float: right;
+}
+
+
+div.LigneForm {
+	font-size: 13px;
+    overflow: hidden;
+    padding-bottom: 10px;
+}
+div#RecherchePrescripteurs div.LigneForm { padding-bottom: 2px;}
+
+div.LigneForm1, div.LigneForm2 {
+	width: 250px;
+}
+
+div.LigneForm1 label, div.LigneForm2 label {
+	display: block;
+	float: none;
+	text-transform: uppercase;
+	padding-left: 5px;
+	padding-bottom: 3px;
+	
+}
+
+div.LigneForm1 select, div.LigneForm2 select {
+	width: 248px;
+	text-transform: capitalize;
+	overflow: hidden;
+}
+
+div.LigneForm1 {
+	display: block;
+	float: left;
+	position: relative;
+}
+
+div.LigneForm2 {
+	display: block;
+	float: right;
+	position: relative;
+}
+
+div#RecherchePrescripteurs div.LigneForm2 button.BtnRecherche {
+	margin-top: 20px;
+}
+
+/*--- Bloc 3 dans la colonne de gauche ---*/
+
+div.Left div#RecherchePrescripteurs {
+	width: 185px;
+	border: 1px solid #bad9ec;
+	background: #ddecf6;
+	height: auto;
+}
+
+div.Left div#RecherchePrescripteursTitre2 {
+	margin-top: 20px;
+}
+
+div.Left div#RecherchePrescripteurs select  {
+	width: 180px;
+}
+
+div.Left div.LigneForm1, div.Left div.LigneForm2 {
+	float: none;
+	 padding-bottom: 23px;
+	width: 180px;
+}
+
+div.Left div.LigneForm {
+	padding: 0;
+}
+
+div.LigneRecherche select {
+	margin-bottom: 10px;
+}
+
+/*--- Bloc 4 ---*/
+div#EntoureComposantimageArea {
+	background: url("../Img/sprite.png") no-repeat -602px -503px;
+	display:block;
+	float:right;
+	position:relative;
+	width:332px;
+	height:295px;
+	padding: 10px;
+	margin: 5px;
+}
+
+div#EntoureComposantimageArea div.TitreBloc {
+	background-position: -34px -1006px;
+}
+
+div#CartePS {
+	width: 359px;
+	height: 212px;
+	margin-top: 20px;
+	margin-left: -14px;
+	cursor: pointer;
+	background: url('../Img/carteEP_02.png');
+}
+
+div#ImageAreaTout {
+    position: absolute;
+    padding-left: 30px;
+	background: url("../Img/sprite.png") no-repeat -30px -1307px;
+    bottom: 15px;
+    right: 15px;
+}
+
+div#ImageAreaTout a {
+	border-bottom: 1px solid #FFFFFF;
+    padding-bottom: 2px;
+    color: #FFFFFF;
+    font-family: Arial;
+}
+
+div#ImageAreaTout a:hover {
+	text-decoration: none;
+}
+
+div#PopupBulle {
+	background: url("../Img/bulle-carte_20.png") no-repeat;
+	position: absolute;
+	width: 120px;
+	padding: 5px 9px 15px 5px;
+	height: 32px;
+	font-size: 11px;
+}
+
+/*--- RESIDENCES ---*/
+div.Tabs {
+	border-bottom: 1px solid #888;
+	/*margin-bottom: 10px;*/
+	overflow: hidden;
+	background: none;
+}
+
+div.Tab {
+	font-weight: bold;
+	border: 1px solid #888;
+	border-bottom: none;
+	position: relative;
+	display: block;
+	float: left;
+	padding: 5px;
+	background: none;
+}
+
+div.Tab a {
+	color: #0070BA;
+}
+
+div.TabActive {
+	background: #0070BA;
+}
+
+div.TabActive a {
+	color: #fff;
+}
+
+
+
+/*--- FOOTER ---*/
+#Pied {
+	background: url("../Img/sprite.png") no-repeat 0 -126px;
+	font-size: 14px;
+	color: #fff;
+	font-weight: bold;
+	position: relative;
+	height: 33px;
+}
+
+#ContactFooter {
+	background:  url("../Img/sprite.png") no-repeat -24px -1787px;
+	display: block;
+	color: #fff;
+	position: absolute;
+	right: 10px;
+	padding: 8px 0 8px 35px;
+}
+
+#TelFooter {
+	background:  url("../Img/sprite.png") no-repeat -20px -1820px;
+	padding-left: 35px;
+	position: absolute;
+	right: 160px;
+	padding: 8px 0 8px 35px;
+}
+
+a#AAW {
+	font-family:arial;
+	font-style:italic;
+	text-align: right;
+	display: block;
+	padding: 5px 10px 5px 0;
+	font-size: 11px;
+}
+
+/*--- Liste RESIDENCES ---*/
+/* Onglet lots */
+.LoiResidence {
+	font-size:11px;font-weight:bold;color: #888888;
+	margin:10px 0;
+}
+.LoiResidence Img { padding-right:10px;}
+.StatutLot {
+	font-size:12px;color: #14bb5b;
+	margin:10px 0;
+	font-weight:bold;
+}
+.CcialLotTable {
+	font-size:18px;color: #ff0000;
+	margin:10px 0;
+	font-weight:bold;
+}
+.CcialLotTableListe {
+	font-size:14px;color: #ff0000;
+	margin:10px 0;
+	font-weight:bold;
+}
+
+.StatutLot span.optionne {color:#f38230;}
+.StatutLot span.reserve {color:#db3452;}
+.StatutLot span.acte {color:#430303;}
+
+
+
+table.ListeLots {
+	width: 100%;
+}
+
+table.ListeLots th, table.ListeLots td {
+	padding: 4px;
+	border: 1px dotted #888;
+	vertical-align: top;
+	text-align:left;
+}
+
+
+table.ListeLots th {
+	background: #eee;
+	border-top: none;
+	height: 28px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+table.ListePrix th {
+	background: #eee;
+	border-top: none;
+}
+
+
+table.ListeLots td.ListeLotsDescription, table.ListeLots th.ListeLotsDescription {
+	border-left: none;
+	height: 28px;
+    text-align: left;
+     width: 230px;
+}
+
+
+th.ListeLotsPrix ,th.ListeLotsActabilite {
+	background: #eee;
+	border-top: none;
+	width:55px;
+}
+td.ListeLotsPrix {
+	border-top: none;
+	width:55px;
+	text-align:right;
+}
+td.ListeLotsActabilite  {
+	border-top: none;
+	width:55px;
+	text-align:center;
+}
+table.ListeLots td.ListeLotsAction, table.ListeLots th.ListeLotsAction {
+	border-right: none;
+	width: 124px;
+}
+th.ListeLotsLivraison {
+	background: #eee;
+	border-top: none;
+	width:55px;
+}
+
+td.ListeLotsLivraison{
+	border-top: none;
+	width:77px;
+	text-align:center;
+}
+table.ListeLots td.ListeLotsAction, table.ListeLots th.ListeLotsAction {
+	border-right: none;
+	width: 124px;
+}
+/*-- les lots dans programmes --*/
+
+
+table.ListeLotsPgm {
+	border:none;
+}
+
+table.ListeLotsPgm td {
+	padding: 4px;
+	border: 1px dotted #888;
+	vertical-align: top;
+	border-top: none;
+
+}
+
+
+table.ListeLotsPgm th {
+	background: none repeat scroll 0 0 #EEEEEE;
+    border-bottom: 1px dotted #525252;
+    border-left: 1px dotted #525252;
+    height: 28px;
+    padding-left: 4px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+table.ListeLotsPgm td {
+	    border-bottom: 1px dotted #525252;
+
+}
+table.ListeLotsPgm td.ListeLotsDescription{
+	text-align:left;
+	border-left: none;
+	width:280px;
+}
+
+table.ListeLotsPgm td.ListeLotsResidence{
+	text-align:left;
+	border-left: none;
+	width:110px;
+}
+
+table.ListeLotsPgm td.ListeLotsPrix {
+	width:60px;
+	text-align:right;
+}
+
+table.ListeLotsPgm td.ListeLotsActabilite  {
+	width:90px;
+	text-align:center;
+}
+table.ListeLotsPgm td.ListeLotsAction {
+	text-align:left;
+	border-right: none;
+}
+
+
+table.SousOption {
+	 height:100%; border:none; 
+}
+table.SousOption  tr.bottom {
+	height:15px;vertical-align:bottom;
+}
+table.SousOption  td{
+	text-align: left;
+	border:none;
+	padding:4px 0 0 4px;
+}
+
+
+a.BtnReserverLot {
+	background: url("../Img/sprite.png") no-repeat -206px -1103px;
+	display:block;
+	height: 25px;
+	width: 123px;
+	display: block;
+	border:none;
+	margin-top: 5px;
+	}
+
+a.BtnReserverLot:hover {
+	background: url("../Img/sprite.png") no-repeat -206px -1133px;
+}
+
+a.BtnOptionnerLot {
+	background: url("../Img/sprite.png") no-repeat -370px -1103px;
+	display:block;
+	height: 25px;
+	width: 123px;
+	display: block;
+	border:none;
+	margin-top: 5px;
+}
+
+a.BtnOptionnerLot:hover {
+	background: url("../Img/sprite.png") no-repeat -370px -1133px;
+}
+a.BtnDesOptionnerLot {
+	background: url("../Img/sprite.png") no-repeat -831px -1804px;
+	display:block;
+	height: 25px;
+	width: 123px;
+	display: block;
+	border:none;
+	margin-top: 5px;
+}
+
+a.BtnDesOptionnerLot:hover {
+	background: url("../Img/sprite.png") no-repeat -831px -1834px;
+}
+
+a.Loading {
+	background: url("../Img/ajax-loader.gif") no-repeat 50% 50%;
+}
+
+div.ConfirmationMsg {
+	color: #F38230;
+    font-size: 11px;
+    font-style: italic;
+   
+}
+
+a.DetailLot {
+	display: block;
+	text-align: right;
+	background: url("../Img/sprite.png") no-repeat 21px -1257px;
+	font-size:10px
+}
+
+a.DetailLot:hover{
+	text-decoration:underline;
+}
+
+a.DetailLotProgramme {
+   background: url("../Img/sprite.png") no-repeat scroll 21px -1258px transparent;
+    display: block;
+    text-align: right;
+    font-size:10px
+}
+/* Fiche Liste Onglet Programmes*/
+
+div.ResidenceBloc { 
+	position:relative;display:block;overflow:hidden;
+	border-bottom:1px dotted #bfbfbf;margin-bottom:20px;
+
+}
+	div.ResidenceBloc .UneResidence {  position:relative;display:block;overflow:hidden; }
+	div.ResidenceBloc .FinResidence {  position:relative;display:block;overflow:hidden;  }
+		div.FinResidence .Pictos {  float:left;  margin-left:5px;width:428px; }
+		div.FinResidence .RetourLot { display: block;float: right;padding: 14px 0 0;}
+			div.FinResidence .RetourLot a{ 
+				color:#0070ba;
+				background:url("../Img/sprite.png") no-repeat -32px -1253px;
+				display:block;
+				height: 25px;
+				display: block;
+				border:none;
+  				padding-left: 19px;
+  				font-size:10px;
+  				padding-top:4px;
+			}
+			div.ResidenceBloc .RetourLot a:hover{ color:#525252;}
+	
+	div.Descriptif { 
+		position:relative;display:block;overflow:hidden;
+		width:428px; border-right:1px solid #b5b5b5;margin-right:5px;
+		float:left;
+		padding-top:5px;
+	
+	}
+		div.VisuelResidence { 
+			position:relative;display:block;overflow:hidden;
+			float:left;
+			width:165px;
+		
+		}
+		div.Presentation { 	
+			position:relative;float:left;width:255px;
+		}
+			div.Presentation .NomResidence { font-size:12px; font-weight:bold; font-family:arial; text-transform:uppercase; color:#0070ba;}
+			div.Presentation .Ville { 
+				font-size:12px; font-weight:bold; font-family:arial; text-transform:uppercase; color:#525252; 
+				margin-bottom:5px;
+			}
+			div.Presentation .Contenu{ 
+					height: 58px; text-align:justify;font-size:11px; color:#525252; margin: 0 5px 0 0;overflow:hidden;
+					position: relative;line-height:1.3em;
+			}
+			div.Presentation .LoiResidence { 
+				font-size:11px; color:#525252;  font-weight:bold; overflow:hidden;position: relative;display:block;
+			}
+	
+	
+		div.Pictos { 
+			position:relative;display:block;overflow:hidden;
+			padding:10px 0;
+		}
+	
+	div.TypeLogement { position:relative;display:block;overflow:hidden;}
+		div.TypeLogement .Appartement { font-size:12px; font-weight:bold; font-family:arial; text-transform:uppercase; color:#0070ba;   padding: 5px 0;}
+		div.TypeLogement .Livraison { font-size:12px;font-family:arial; color:#525252;   padding: 5px 0; }
+		div.TypeLogement .AppartType { position:relative;display:block;overflow:hidden;  padding: 5px 0 0;}
+			div.AppartType .AppartNb { float:left;font-size:12px;font-weight:bold;font-family:arial; color:#db3452;width:167px;}
+			div.AppartType .AppartNb span.Nb{ display: block;float: left;overflow: hidden;padding-right: 4px;text-align: right;width: 12px;}
+			div.AppartType .LibelleApartir { font-size:12px;font-weight:bold;font-family:arial;width:30px;color:#db3452; padding-right: 1px;}
+			div.AppartType .TarifAppart { font-size:12px;font-weight:bold;font-family:arial; color:#db3452;}
+			div.AppartType .TarifAppart .LeTarif { float:right;}
+						
+	
+
+/*--- PAGINATION ---*/
+div.Pagination {
+    background: url("../../Public/Img/sprite.png") repeat-x 0 -1401px;
+    margin-top: 10px;
+    text-align: center;
+}
+div.PaginationBody {
+    background: none repeat scroll 0 0 white;
+    display: inline;
+    padding: 0 2px;
+}
+div.Pagination a {
+	color: #525252;
+    margin: 0 1px;
+    padding: 0 5px;
+}
+div.Pagination a.bleu {
+	color: #0070BA;
+}
+div.Pagination a.PagiFirst, div.Pagination a.PagiPrev, div.Pagination a.PagiNext, div.Pagination a.PagiLast {
+    background: url("../../Public/Img/sprite.png") no-repeat 0 0 white;
+}
+div.Pagination a.PagiFirst {
+    background-position: -1px -921px;
+}
+div.Pagination a.PagiPrev {
+    background-position: 5px -940px;
+}
+div.Pagination a.PagiNext {
+    background-position: 5px -979px;
+}
+div.Pagination a.PagiLast {
+    background-position: 0 -961px;
+}
+div.Pagination span.current {
+	color: #0070BA;
+}
+/*-- Détail d'un lot **/
+/* Colonne de droite --*/
+div#ColonneResidence {
+	background-color:#f1f1f1;
+	width:205px;
+	position: relative;
+	display: block;
+	float: left;
+	clear: left;
+}
+div#ColonneResidence .Interieur{ padding:5px;}
+div#ColonneResidence .Visuel { text-align:center;}
+div#ColonneResidence .NomResidence { font-size:12px; font-weight:bold; font-family:arial; text-transform:uppercase; color:#0070ba; }
+div#ColonneResidence .Ville {font-size:12px;  font-family:arial; text-transform:uppercase; color:#525252; margin-bottom:5px; }
+div#ColonneResidence .Livraison {font-size:12px;font-family:arial; font-weight:bold; color:#525252;   padding: 5px 0; }
+div#ColonneResidence .Contenu {font-size:11px; color:#525252; text-align:justify;height: 151px;overflow:hidden;position: relative;text-align: justify;text-overflow: ellipsis; }
+div#ColonneResidence .Pictos { position:relative;display:block;overflow:hidden;padding:10px 0;}
+
+div.borderb {border-bottom:1px dotted #525252; }
+div.RetourListe { position: relative;display: block;overflow:hidden;}
+div.RetourListe a { 
+	background: url("../Img/sprite.png") repeat  4px -1197px ;
+    float: right;
+    height: 30px;
+    text-indent: 3000px;
+    width: 100px;
+}
+
+div.RetourListe a:hover { 
+	background: url("../Img/sprite.png") repeat  -93px -1197px ;
+    float: right;
+    height: 30px;
+    text-indent: 3000px;
+    width: 100px;
+}
+
+div.DetailLot{ position: relative;display: block;overflow:hidden; margin-bottom:10px;}
+
+	div.DetailLot .ColonneDetails{position: relative;display: block;overflow:hidden;float:left;width:498px;margin-bottom:10px; }
+		div.DetailLot .ColonneDetails .InfoPrincipales{ border-bottom:1px dotted #525252;}
+			div.DetailLot .InfoPrincipales .NomLot{ font-size:14px; font-weight:bold; font-family:arial; text-transform:uppercase; color:#0070ba; }
+		
+
+			div.DetailLot .InfoPrincipales .TarifEtCCial{overflow:hidden; }
+
+			div.DetailLot .InfoPrincipales .TarifLot{ font-size:18px; font-weight:bold; font-family:arial; text-transform:uppercase; color:#525252; margin-bottom:5px; float:left;}
+
+			div.DetailLot .InfoPrincipales .CcialLot{   color: #FF0000;float: left;font-family: arial;font-size: 16px;font-weight: bold;margin:0 0 0 20px;padding-top: 1px;}
+
+			div.DetailLot .InfoPrincipales .Options{ color: #F38230;padding: 5px 2px;  overflow: hidden;text-align: left;    padding-right: 10px;}
+			div.DetailLot .InfoPrincipales .Livraison {color: #525252;font-family: arial;font-size: 12px;font-weight: bold;padding: 5px 0;}
+			
+			div.DetailLot .InfoPrincipales .LesBoutons{ display: block; overflow: hidden; padding: 10px 0; position: relative; }
+			div.DetailLot .InfoPrincipales .BtnReserverLot { float:left;}
+			div.DetailLot .InfoPrincipales .BtnOptionnerLot {float:left;  }
+		div.DetailLot .ColonneDetails .InfoSurfaces{position:relative;display:block;overflow:hidden;margin:5px;}
+			div.DetailLot .ColonneDetails .InfoSurfaces .Titre, div.InfoSurfaces .Fiscales { font-size:12px;font-family:arial; font-weight:bold; color:#525252;   padding: 5px 0;text-decoration:underline;}
+			div.DetailLot .ColonneDetails .InfoSurfaces .LesSurfaces{font-size:12px;font-family:arial; color:#525252;   padding: 5px 0; }
+			div.DetailLot .ColonneDetails .InfoSurfaces .Options{ }
+	
+
+#doc-lot{
+	margin-top: 15px;
+	border-top:dotted 1px #0070BA;
+	padding-top:10px;
+
+}
+
+
+	
+	div.DetailLot .ColonneDocs{
+		position: relative;display: block;float:right;
+		background: none repeat scroll 0 0 #DDECF6;
+   		border: 1px solid #BAD9EC;
+   		height: auto;
+   		width: 205px;
+   		padding: 10px 0;
+	}
+
+		div.DetailLot .ColonneDocs h2 {
+			background:url("../Img/sprite.png") -36px -1383px;height:20px;padding-left: 18px;border-bottom:1px solid #0070ba;margin-bottom:5px;
+			font-size:12px; font-weight:bold; font-family:arial; text-transform:uppercase; color:#0070ba;
+		}
+		div.DetailLot .ColonneDocs .Vide { margin:10px;}
+
+		div.DetailLot .ColonneDocs .Plaquette {display:block;overflow:hidden;margin-bottom:8px;	}
+		div.DetailLot .ColonneDocs .Plaquette a{ background:url("../Img/sprite.png") -22px -1596px;height:3px ;display:block;text-indent:3000px; width:180px;padding:10px;}
+		div.DetailLot .ColonneDocs .Plaquette a:hover { background-position: -22px -1620px;}
+
+		div.DetailLot .ColonneDocs .Situation {display:block;overflow:hidden;margin-bottom:8px;	}
+		div.DetailLot .ColonneDocs .Situation a{ background:url("../Img/sprite.png") -230px -1596px;height:3px ;display:block;text-indent:3000px; width:180px;padding:10px;}
+		div.DetailLot .ColonneDocs .Situation a:hover { background-position: -230px -1620px;}
+
+
+		div.DetailLot .ColonneDocs .Masse {display:block;overflow:hidden;margin-bottom:15px;	}
+		div.DetailLot .ColonneDocs .Masse a{ background:url("../Img/sprite.png") -487px -1596px;height:3px ;display:block;text-indent:3000px; width:180px;padding:10px;}
+		div.DetailLot .ColonneDocs .Masse a:hover { background-position: -487px -1620px;}
+
+	
+		div.DetailLot .ColonneDocs .Reservation {display:block;overflow:hidden;margin-bottom:5px;	}
+		div.DetailLot .ColonneDocs .Reservation a{ background:url("../Img/sprite.png") -751px -1600px;height:3px ;display:block;text-indent:3000px; width:180px;padding:10px;}
+		div.DetailLot .ColonneDocs .Reservation a:hover { background-position: -751px -1623px;}
+
+		div.DetailLot .ColonneDocs .PlanLot {display:block;overflow:hidden;margin-bottom:5px;	}
+		div.DetailLot .ColonneDocs .PlanLot a{ background:url("../Img/sprite.png") -23px -1497px;height:3px ;display:block;text-indent:3000px; width:180px;padding:10px;}
+		div.DetailLot .ColonneDocs .PlanLot a:hover { background-position: -23px -1520px;}
+
+		div.DetailLot .ColonneDocs .AppelFond {display:block;overflow:hidden;margin-bottom:5px;	}
+		div.DetailLot .ColonneDocs .AppelFond a{ background:url("../Img/sprite.png") -803px -1498px;height:3px ;display:block;text-indent:3000px; width:180px;padding:10px;}
+		div.DetailLot .ColonneDocs .AppelFond a:hover { background-position: -803px -1521px;}
+
+
+		div.DetailLot .ColonneDocs .ReservationSpecif {display:block;overflow:hidden;margin-bottom:5px;	}
+		div.DetailLot .ColonneDocs .ReservationSpecif a{ background:url("../Img/sprite.png") -347px -1498px;height:3px ;display:block;text-indent:3000px; width:180px;padding:10px;}
+		div.DetailLot .ColonneDocs .ReservationSpecif a:hover { background-position: -347px -1520px;}
+
+
+		div.DetailLot .ColonneDocs .DocCommerciaux {display:block;overflow:hidden;margin-bottom:5px;	}
+		div.DetailLot .ColonneDocs .DocCommerciaux a{  display:block; width:180px;padding:0 10px;}
+		div.DetailLot .ColonneDocs .DocCommerciaux a:hover {text-decoration:underline;}
+
+
+div.DetailProgramme {position: relative;display: block;overflow:hidden; }
+	div.DetailProgramme .ColonneDocs{
+		position: relative;display: block;float:right;
+		background: none repeat scroll 0 0 #DDECF6;
+   		border: 1px solid #BAD9EC;
+   		height: auto;
+   		width: 205px;
+   		padding: 10px 0;
+	}	
+	
+	div.DetailProgramme div.ColonneDocs h2{
+		background:url("../Img/sprite.png") -36px -1383px;height:20px;padding-left: 18px;border-bottom:1px solid #0070ba;margin-bottom:5px;
+		font-size:12px; font-weight:bold; font-family:arial; text-transform:uppercase; color:#0070ba;
+	}
+	
+	div.DetailProgramme div.Vide{margin:10px;}
+	div.DetailProgramme .ColonneDocs .Plaquette {display:block;overflow:hidden;margin-bottom:5px;	}
+		div.DetailProgramme .ColonneDocs .Plaquette a{ background:url("../Img/sprite.png") -22px -1596px;height:3px ;display:block;text-indent:3000px; width:180px;padding:10px;}
+		div.DetailProgramme .ColonneDocs .Plaquette a:hover { background-position: -22px -1620px;}
+
+		div.DetailProgramme .ColonneDocs .Situation {display:block;overflow:hidden;margin-bottom:5px;	}
+		div.DetailProgramme .ColonneDocs .Situation a{ background:url("../Img/sprite.png") -230px -1596px;height:3px ;display:block;text-indent:3000px; width:180px;padding:10px;}
+		div.DetailProgramme .ColonneDocs .Situation a:hover { background-position: -230px -1620px;}
+
+
+		div.DetailProgramme .ColonneDocs .Masse {display:block;overflow:hidden;margin-bottom:15px;	}
+		div.DetailProgramme .ColonneDocs .Masse a{ background:url("../Img/sprite.png") -487px -1596px;height:3px ;display:block;text-indent:3000px; width:180px;padding:10px;}
+		div.DetailProgramme .ColonneDocs .Masse a:hover { background-position: -487px -1620px;}
+
+	
+		div.DetailProgramme .ColonneDocs .Reservation {display:block;overflow:hidden;margin-bottom:5px;	}
+		div.DetailProgramme .ColonneDocs .Reservation a{ background:url("../Img/sprite.png") -751px -1600px;height:3px ;display:block;text-indent:3000px; width:180px;padding:10px;}
+		div.DetailProgramme .ColonneDocs .Reservation a:hover { background-position: -751px -1623px;}
+
+		div.DetailProgramme .ColonneDocs .Compromis a{
+    			 display: block;   padding: 0 10px; width: 180px;color:#0070ba;
+    			font-weight:bold;margin-bottom:10px;font-size:14px;
+		}
+		div.DetailProgramme .ColonneDocs .Compromis a:hover { color:#525252;}
+
+		div.DetailProgramme .ColonneDocs .DocCommerciaux {display:block;overflow:hidden;margin-bottom:5px;	}
+		div.DetailProgramme .ColonneDocs .DocCommerciaux a{ display:block;width:180px;padding:0 10px;}
+		div.DetailProgramme .ColonneDocs .DocCommerciaux a:hover { text-decoration:underline;}
+		
+	div.DetailProgramme div.ColonneDetails{}
+		div.DetailProgramme div.ColonneDetails div.InfoPrincipales{display:block;overflow:hidden;margin-bottom:5px;padding-right:10px;}
+			div.DetailProgramme div.ColonneDetails div.Visuel{float:left; margin-right:10px;}
+			div.DetailProgramme div.ColonneDetails div.NomResidence{ font-size:12px; font-weight:bold; font-family:arial; text-transform:uppercase; color:#0070ba; }
+			div.DetailProgramme div.ColonneDetails div.Ville{ font-size:12px; font-family:arial; text-transform:uppercase; color:#525252; margin-bottom:5px;}
+			div.DetailProgramme div.ColonneDetails div.Livraison{font-size:12px;font-family:arial; color:#525252;   padding: 5px 0; font-weight:bold;}
+			div.DetailProgramme div.ColonneDetails div.Fiscales{ font-size:12px;font-family:arial; font-weight:bold; color:#525252;   padding: 5px 0;text-decoration:underline;}
+			
+			div.DetailProgramme div.ColonneDetails .Appartement { font-size:12px; font-weight:bold; font-family:arial; text-transform:uppercase; color:#0070ba;   padding: 5px 0;}
+
+			div.DetailProgramme div.ColonneDetails div.AppartType{position:relative;display:block;overflow:hidden;  padding: 5px 0 0; margin-right:5px;}
+				div.DetailProgramme div.ColonneDetails div.AppartType div.AppartNb{float:left;font-size:12px;font-weight:bold;font-family:arial; color:#db3452;width:159px;}
+				div.DetailProgramme div.ColonneDetails div.AppartType .AppartNb span.Nb{ display: block;float: left;overflow: hidden;padding-right: 4px;text-align: right;width: 12px;}
+				div.DetailProgramme div.ColonneDetails div.AppartType .LibelleApartir { font-size:12px;font-weight:bold;font-family:arial;width:30px;color:#db3452;}
+				div.DetailProgramme div.ColonneDetails div.AppartType .TarifAppart { font-size:12px;font-weight:bold;font-family:arial; color:#db3452;}
+						
+
+
+
+div.LotDetailOnglet{}
+div.ContenuOnglet{ border-right:1px solid #b5b5b5;border-left:1px solid #b5b5b5;border-bottom:1px solid #b5b5b5;}
+		div.ContenuOnglet div.Contenu{text-align:justify;padding:10px;}
+
+
+span.colorrouge { color:#db3452;}
+span.colorBleu { color:#0070ba;}
+span.colororange { color:#F38230;}
+
+.BlocEnvoi {
+    min-height: 250px;
+  
+}
+
+/* Denonciations */
+.Denonciation {
+	display:block;overflow:hidden;position:relative; margin:10px; min-height: 350px;
+}
+table.ListeDenonciations {
+	width: 100%;
+	margin-top:20px;
+	
+}
+
+table.ListeDenonciations th, table.ListeDenonciations td {
+	padding: 5px;
+	border: 1px dotted #888;
+	vertical-align: top;
+}
+table.ListeDenonciations td.noresult {
+		font-size:18px;color:#525252; text-align: left;padding:10px;
+}
+
+
+
+div.CreationDenonciation a.BlocButton {
+	width: 144px;
+	height: 31px;
+	display: block;
+	float: right;
+	position: relative;
+	background: url("../Img/sprite.png") no-repeat;
+}
+div.ExportDenonciation a.BlocButton {
+	width: 144px;
+	height: 31px;
+	display: block;
+	float: right;
+	position: relative;
+
+}
+div.CreationDenonciation a.BlocButton {
+	background-position: -808px -1354px;
+}
+
+div.CreationDenonciation  a.BlocButton:hover {
+	background-position: -808px -1385px;
+}
+
+.BlocEnvoiDenonciation {
+	border:none;
+  
+}
+
+
+input.FormCommercialMaj {
+	background: url("../Img/sprite.png") no-repeat scroll -871px -1231px transparent;
+    border: medium none;
+    cursor: pointer;
+    display: block;
+    height: 38px;
+    text-indent: -999px;
+    width: 81px;
+     float: right;
+}
+input.FormCommercialMaj:hover {
+	background-position: -871px -1282px;
+}
+
+select.Joli {
+	background-color: #fff;
+	display:block;
+	float:right;
+	margin-bottom:5px;
+	border: 1px solid #525252;
+	color:#525252;
+	width:180px;
+	text-align:right;
+	
+
+}
+
+

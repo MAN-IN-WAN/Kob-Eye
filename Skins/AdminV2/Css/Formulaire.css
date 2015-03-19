@@ -1,0 +1,67 @@
+.BoutonBlanc
+{
+	border:1px solid black;
+	color:#000000;
+	background-color:#FFFFFF;
+}
+
+.FauxBoutonBlanc
+{
+	border:1px solid black;
+	color:#000000;
+	text-decoration:none;
+	background-color:#FFFFFF;
+	padding:1px;
+	padding-left:5px;
+	padding-right:5px;
+	cursor:default;
+	font-size:10pt;
+}
+/*-----------------modifier/ajouter----------------*/
+.Champ{
+	width:95%;
+}
+
+.nomPropriete
+{
+	width:30%;
+	font-size:9pt;
+}
+
+.valeurPropriete
+{
+	width:70%;
+	font-size:9pt;
+}
+
+/*------------------------------------------------*/
+
+* html .FormRech{
+	width:97%;
+}
+
+.ProprieteModif
+{
+    overflow:hidden;
+    min-height:20px;
+/*    margin:1px; */
+    width:100%;
+}
+
+.ProprieteTitreModif
+{
+    width:25%;
+    float:left;
+    text-align:right;
+    background:#9A9EA0;
+    margin-right:5px;
+    line-height:18px;
+    color:white;
+    padding-right:10px;
+    -moz-border-radius:3px 3px;
+}
+.ProprieteValeurModif
+{
+    width:70%;
+    float:left;
+}

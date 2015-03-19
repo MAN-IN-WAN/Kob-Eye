@@ -1,0 +1,47 @@
+
+/*** COMPTE UTILISATEUR ***/
+button.Connexion, a.Connexion { background:url('../Img/Btn/je-midentifie-2.jpg') no-repeat; width:105px; height:28px; border:none; }
+button.Connexion:hover, a.Connexion:hover { background-position:0 -28px; }
+
+button.CreerCompte, a.CreerCompte { background:url('../Img/Btn/je-cree-mon-compte-2.jpg') no-repeat; width:173px; height:28px; border:none; }
+button.CreerCompte:hover, a.CreerCompte:hover { background-position:0 -28px; }
+
+button.MettreAJour, a.MettreAJour { background:url('../Img/Btn/mettre-a-jour-2.png') no-repeat; width:102px; height:26px; border:none; }
+button.MettreAJour:hover, a.MettreAJour:hover { background-position:0 -26px; }
+
+/*** BOUTIQUE ***/
+button.ContinuerAchats, a.ContinuerAchats { background:url('../Img/Btn/continue_achats-2.jpg') no-repeat; width:173px; height:28px; border:none; }
+button.ContinuerAchats:hover, a.ContinuerAchats:hover { background-position:0 -28px; }
+
+button.ImpressionCmde, a.ImpressionCmde { background:url('../Img/Btn/impression-commande-2.jpg') no-repeat; width:173px; height:28px; border:none; }
+button.ImpressionCmde:hover, a.ImpressionCmde:hover { background-position:0 -28px; }
+
+button.ConfirmerPaiement, a.ConfirmerPaiement { background:url('../Img/Btn/je-confirme-mon-paiement-2.jpg') no-repeat; width:173px; height:28px; border:none; }
+button.ConfirmerPaiement:hover, a.ConfirmerPaiement:hover { background-position:0 -28px; }
+
+button.ModifierCmde, a.ModifierCmde { background:url('../Img/Btn/je-modifie-commande-2.jpg') no-repeat; width:173px; height:28px; border:none; }
+button.ModifierCmde:hover, a.ModifierCmde:hover { background-position:0 -28px; }
+
+button.ValiderCmde, a.ValiderCmde { background:url('../Img/Btn/je-valide-2.jpg') no-repeat; width:173px; height:28px; border:none; }
+button.ValiderCmde:hover, a.ValiderCmde:hover { background-position:0 -28px; }
+
+button.RecalculerPanier, a.RecalculerPanier { background:url('../Img/Btn/recalcul-panier-2.jpg') no-repeat; width:173px; height:28px; border:none; }
+button.RecalculerPanier:hover, a.RecalculerPanier:hover { background-position:0 -28px; }
+
+button.RetourAccueil, a.RetourAccueil { background:url('../Img/Btn/retour-accueil-2.jpg') no-repeat; width:173px; height:28px; border:none; }
+button.RetourAccueil:hover, a.RetourAccueil:hover { background-position:0 -28px; }
+
+button.Retour, a.Retour { background:url('../Img/Btn/retour-2.png') no-repeat; width:74px; height:28px; border:none; }
+button.Retour:hover, a.Retour:hover { background-position:0 -28px; }
+
+button.Valider, a.Valider { background:url('../Img/Btn/valider-2.png') no-repeat; width:77px; height:25px; border:none; }
+button.Valider:hover, a.Valider:hover { background-position:0 -25px; }
+
+button.AjouterPanier, a.AjouterPanier { background:url('../Img/Btn/ajouter-panier-2.jpg') no-repeat; width:120px; height:46px; border:none; }
+button.AjouterPanier:hover, a.AjouterPanier:hover { background-position:0 -46px; }
+
+button.ModifierAdresseFacturation, a.ModifierAdresseFacturation { background:url('../Img/Btn/modifier-facturation-2.jpg') no-repeat; width:124px; height:50px; border:none; }
+button.ModifierAdresseFacturation:hover, a.ModifierAdresseFacturation:hover { background-position:0 -50px; }
+
+button.ModifierAdresseLivraison, a.ModifierAdresseLivraison { background:url('../Img/Btn/modifier-livraison-2.jpg') no-repeat; width:124px; height:50px; border:none; }
+button.ModifierAdresseLivraison:hover, a.ModifierAdresseLivraison:hover { background-position:0 -50px; }

@@ -1,0 +1,16 @@
+[INFO [!Query!]|I]
+[SWITCH [!action!]|=]
+	[DEFAULT]
+		[IF [!I::TypeSearch!]=Child]
+			[MODULE Murphy/Proposal/NavBar]
+			[MODULE Murphy/Proposal/List]
+			[MODULE Murphy/Proposal/List?filter=waiting]
+			[MODULE Murphy/Proposal/List?filter=accepted]
+		[ELSE]
+			[MODULE Murphy/Proposal/NavBar?Last=__MAKE_PROPOSAL__]
+			[MODULE Murphy/Proposal/Edit]
+		[/IF]
+	[/DEFAULT]
+[/SWITCH]
+
+

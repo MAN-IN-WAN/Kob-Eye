@@ -1,0 +1,32 @@
+#Menu{
+	width:850px;
+	margin:auto;
+}
+
+#Menu ul{
+	list-style-type:none;
+}
+
+#Menu li{
+	display:block;
+	float:left;
+	margin-right:5px;
+}
+
+#Menu li a, #Menu li a:visited{
+	display:block;
+	width:100px;
+	height:30px;
+	line-height:30px;
+	color:#fff;
+	background-color:#1E1E1E;
+	text-align:center;
+	text-decoration:none;
+}
+
+#Menu li a:hover, #Menu li a.Actif{
+	color:#1E1E1E;
+	background-color:white;
+	text-decoration:none;
+}
+

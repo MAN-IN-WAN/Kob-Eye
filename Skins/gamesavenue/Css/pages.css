@@ -1,0 +1,250 @@
+/*---- LA PAGE PRODUIT -------------*/
+div.bordureProduit {overflow:hidden;padding-right:5px;}
+div.colProduit {padding-top:5px;border-right:1px solid #ffffff;	width:100%;}
+div.ligneListeProduits{overflow:hidden;padding-bottom:10px;}
+div.ColListeProduits{width:50%;	float:left;overflow:hidden;}
+/*---- Le bloc produit ---*/
+div.blocProduitImageMini {float:left;width:80px;padding-top:10px}
+div.blocProduitDescriptif {float:left;width:190px;border-right:1px dotted #c4c4c4;padding-right:5px;padding-bottom:15px;padding-top:10px}
+div.blocProduitAchatVente {float:right;width:80px;text-align:center;padding-bottom:20px;}
+a.blocProduitTitre {font-size:14px; text-decoration:none}
+a.blocProduitTitre:hover {text-decoration:underline}
+span.blocProduitTexte {font-family:Arial, Helvetica, sans-serif;font-size:10px;font-weight:normal;color:#000000;}
+span.blocProduitPrix  {font-family:Arial, Helvetica, sans-serif;font-size:20px;font-weight:bold;}
+span.blocProduitPrixAp  {font-family:Arial, Helvetica, sans-serif;font-size:10px;font-weight:italic;color:#000000;}
+img.blocProduitImageMini {border:1px solid #595959;}
+
+/*---- LES PAGES AUTRES QUE LA PAGE PRODUIT-------------*/
+/*-- Bloc descriptif du produit ---*/
+div.BlocProduitPages {/*overflow:hidden;*/}
+div.CoteProduitPagesG {float:left;width:9px;}
+div.CoteProduitPagesD{float:right;width:9px;}
+div.ProduitPagesCentre {/*float:left;width:724px;*/height:127px;background:url(/Skins/gamesavenue/Images/block_centre_prod.jpg) repeat-x; overflow:hidden;padding-top:10px;}
+div.blocProduitPagesImage {float:left;width:160px;padding-right:10px;text-align:right}
+img.blocProduitPagesImage {border:1px solid #595959;}
+span.blocProduitPagesTitre {font-family:Arial, Helvetica,sans-serif;font-size:14px;font-weight:bold;}
+div.blocProduitPagesDescription {overflow:hidden}
+div.blocProduitPagesDescriptif {float:left;width:190px;border-right:1px dotted #c4c4c4;padding-right:15px;overfloax:hidden}
+div.blocProduitPagesDescriptioncol {width:400px;float:left;vertical-align:baseline;border-right:1px dotted #c4c4c4;padding-top:10px;}
+div.blocProduitPagesDescriptioncol1 {width:210px;float:left;vertical-align:baseline;}
+div.blocProduitPagesDescriptioncol2 {width:190px;float:left;vertical-align:baseline;}
+div.blocProduitPagesColPrix {width:140px;float:right;text-align:center;border-left:1px dotted #c4c4c4;margin-top:25px;overflow:hidden;}
+
+div.blocProduitPagesCol1 {float:left;vertical-align:baseline;}
+div.blocProduitPagesCol2 {float:left;vertical-align:baseline;}
+
+span.btndessinescurrent {font-family:Arial, Helvetica, sans-serif;font-size:12px;font-weight:bold;color:#ff0000;text-transform:uppercase;}
+span.btndessines {font-family:Arial, Helvetica, sans-serif;font-size:12px;font-weight:bold;color:#000000;text-transform:uppercase;}
+/*-- Bloc central qui contient les informations demandées en fonction des pages---*/
+div.ContenuPages  {width:750px;overflow:hidden;padding-top:10px;}
+	div.ligneCotePageG {float:left;width:9px;}
+	div.ligneCotePageD {float:right;width:9px;}
+	div.lignePageCentre {/*float:left;width:724px;*/background:url(/Skins/gamesavenue/Images/block_centre_ref.jpg) repeat-x; overflow:hidden;padding-top:10px}
+div.blocPagestexte {font-family:Arial, Helvetica, sans-serif;font-size:12px;font-weight:normal;color:#000000;}
+span.blocPagestexte {font-family:Arial, Helvetica, sans-serif;font-size:12px;font-weight:normal;color:#000000;text-align:justify;}
+span.blocPagestexte10 {font-family:Arial, Helvetica, sans-serif;font-size:10px;font-weight:normal;color:#000000;text-align:justify;}
+
+/*---- LA PAGE REFERENCE  -------------*/
+/*- styles spécifiques ---------*/
+div.blocReferenceAnnonce {width:400px;overflow:hidden}
+div.blocReferenceDescriptif {width:200px;float:left;padding-right:10px;border-right:1px dotted #C4C4C4;}
+div.blocReferenceAchatVente {text-align:center;float:right;margin-top:10px;padding-left:10px;width:90px;}
+div.ReferenceBlocGauche {float:left;width:420px;}
+	div.BoutonsReference {overflow:hidden;width:100%;text-align:center}
+		div.Bouton3colonnes {width:130px;margin:5px;float:left}
+
+div.BlocAnnonces {width:420px;margin-top:10px;	}
+	div.Bloc1Annonce {width:420px;	}
+
+div.ReferenceBlocDroite {float:right;border-left:1px #c4c4c4 dotted;width:285px;padding-left:10px;height:100%;overflow:hidden}
+div.Bouton1colonne {width:275px;margin:5px;}
+div.BlocDernierAvisReference {width:285px;padding-right:10px}
+div.BlocDernierAvisContenuReference {width:275px;margin:5px;}
+div.titreBlocDernierAvisReference {font-size:12px;font-weight:bold;padding-bottom:10px;}
+div.identifiantBlocDernierAvisReference {font-size:12px;}
+div.descriptionBlocDernierAvisReference{font-size:10px;color:#000000;padding-top:10px;}
+div.BlocGaleriesReference {width:275px; margin:5px;}
+div.BlocGaleriesTitre{font-size:12px;font-weight:bold;color:#ffffff;text-transform:uppercase;text-align:left;}
+div.GaleriesReference {text-align:center;margin:5px;width:275px}
+div.bloccarrepubReference {	float:right;background-color:#FFFFFF;border:2px solid #5B5B5B;height:200px;margin-left:5px;margin-right:5px;margin-top:5px;width:250px;}
+
+
+/*---- LA PAGE Detail d'une annonce  page: Boutique/reference/detail-------------*/
+/*- styles spécifiques ---------*/
+div.blocRefDetailImage {float:left;width:130px;padding-right:10px;text-align:right}
+div.blocRefDetailTitreColonnes { overflow:hidden;}
+div.blocRefDetailTitrecol1 {width:380px;float:left}
+div.blocRefDetailTitrecol2 {width:100px;float:left;padding-left:40px;}
+div.blocRefDetailTitrecol {width:400px;float:left;border-right:1px dotted #C4C4C4;}
+
+div.blocRefDetailColPrix {
+	border-left:1px dotted #C4C4C4;
+	overflow:hidden;
+	text-align:center;
+}
+div.blocRefDetailColPrixLigne {
+	padding-left:5px;
+	width:180px;
+	margin-top:2px;
+	overflow:hidden;
+	text-align:left;
+
+}
+div.blocAvatar { width:50px;float:left;}
+div.blocDescriptionVendeur { width:120px;float:left;}
+/* --- pages Fiche VENDEUR ---*/
+div.BlockVendeur {border-bottom:1px dotted #c4c4c4;margin:5px;overflow:hidden;margin-bottom:5px;}
+div.VendeurBlocDroite {float:right;border-left:1px #c4c4c4 dotted;width:260px;padding-left:10px;height:100%;overflow:hidden;}
+
+div.BlocEnteteNoirVendeur {border-right:1px solid #000000;border-left:1px solid #000000;overflow:hidden;}
+	div.BlocEnteteNoirVendeurCentre {width:440px;margin-top:5px;margin-left:5px;	}
+
+div.VendeurBlocGauche {float:left;width:450px;}
+	div.BoutonsVendeur {overflow:hidden;width:100%;text-align:center;margin:5px 0px ;}
+		div.Bouton3colonnesVendeur {width:140px;float:left}
+		div.InterBoutonVendeur {width:14px;float:left}
+
+div.VendeurBlocCentre {width:450px;margin-top:10px;	}
+
+div.VendeurBlocNoirCote {float:left;width:6px;height:25px;}
+
+div.VendeurBlocNoirCentre {float:left;width:438px;background:url(/Skins/gamesavenue/Images/bando-vendeur-centre.png) repeat-x; overflow:hidden;color:#ffffff;font-size:12px;font-weight:bold;height:25px;}
+
+span.blocVendeurTitre {font-family:Arial, Helvetica,sans-serif;font-size:14px;font-weight:bold;color:#ff0000;}
+div.blocVendeurImage {float:left;width:110px;padding-right:5px;}
+img.blocVendeurImage {border:1px solid #c4c4c4;}
+div.blocVendeurDescription {float:left;width:300px;padding-bottom:5px;}
+span.blocVendeurtexte {font-family:Arial, Helvetica, sans-serif;font-size:12px;font-weight:normal;color:#000000;text-align:justify;}
+
+div.blocVendeurAnnonce {width:430px;overflow:hidden}
+div.blocVendeurAnnonceDescriptif {width:220px;float:left;padding-right:10px;border-right:1px dotted #C4C4C4;}
+div.blocReferenceAchatVente {text-align:center;float:right;margin-top:10px;padding-left:10px;width:90px;}
+div.TitreVendeur {float:left;padding-top:2px; color:#ffffff;font-size:12px;font-weight:bold;line-height:25px;
+vertical-align:middle;}
+div.NbVendu {float:right;padding-top:2px; color:#ffffff;font-size:12px;font-weight:bold;line-height:25px;
+vertical-align:middle;}
+
+table.tableEval {width:100%;}
+tr.tableEval {width:100%;height:25px;}
+td.tableEvalEnteteCote {border:none;width:6px;height:25px;}
+td.tableEvalEntete { height:25px;background:url(/Skins/gamesavenue/Images/bando-vendeur-centre.png) repeat-x;color:#ffffff;text-align:center;font-size:11px;font-weight:bold;vertical-align:middle;border-right:1px solid #c4c4c4; padding:0px 5px;} 
+td.tableEvalContenuCoteLeft { border-left:1px solid #c4c4c4;}
+td.tableEvalContenuCoteRight { border-right:1px solid #c4c4c4;}
+td.tableEvalContenu { padding-left:5px;padding-right:5px;color:#000000;text-align:left;font-size:12px;font-weight:normal;vertical-align:middle;border-right:1px solid #c4c4c4;}
+td.tableEvalContenuCoche { color:#000000;text-align:center;vertical-align:middle;border-right:1px solid #c4c4c4;width:60px;}
+
+
+/*--- Pages des annonces --------*/
+div.RechercheAnnonce {
+	overflow:hidden;
+	margin:10px;
+	text-align:left;
+	border-bottom:1px dotted #c4c4c4;
+	padding-bottom:15px;
+}
+div.reference { float:left;padding-top:10px;}
+div.blocAnnonce {font-family:Arial, Helvetica, sans-serif;font-size:12px;font-weight:bold;color:#000000;}
+
+div.blocProduitAnnoncesDescription {overflow:hidden;margin:5px;}
+div.blocProduitAnnoncecol1 {width:330px;float:left;vertical-align:baseline;}
+div.blocProduitAnnoncecol2 {width:330px;float:right;vertical-align:baseline;}
+
+
+
+
+/*-------Pages Avis -------------*/
+
+div.blocColonneAvis { float:left;vertical-align:top; margin:5px;}
+
+
+
+/*---------------- Affichage ligne filtre selection est en fond gris ------------*/
+div.ligneSelectGris {/*width:750px;*/height:33px;overflow:hidden;padding-top:5px;}
+div.ligneSelectGrisCoteG {float:left;width:4px;height:33px;}
+div.ligneSelectGrisCoteD{float:right;width:4px;height:33px;}
+div.ligneSelectGrisCentre {/*float:left;width:735px;*/height:33px;background:url(/Skins/gamesavenue/Images/fondbarreproduits.png) repeat-x;}
+
+
+div.ligneSelectGrisCentreBlocResults {overflow:hidden;border:1px solid #c4c4c4;}
+div.ligneSelectGrisCentreBlocResultsPair {overflow:hidden;border-left:1px solid #c4c4c4;border-right:1px solid #c4c4c4;background-color:#ffffff;height:18px;border-bottom:1px solid #c4c4c4}
+div.ligneSelectGrisCentreBlocResultsImPair {overflow:hidden;border:1px solid #c4c4c4;background-color:#cccccc;height:18px;border-bottom:1px solid #c4c4c4}
+
+div.ligneSelectGrisCentreElements {float:left;padding-top:3px;text-align:center;margin-top:3px;height:18px;
+/*width:710px*/
+}
+div.ligneSelectGrisLeftElements {float:left;padding-top:3px;text-align:left;margin-top:3px;height:18px;padding-right:10px;
+/*width:710px*/
+}
+div.ligneSelectGrisElementsResultatsCaseacocher {float:left;text-align:center;height:18px;width:18px;padding-top:2px;padding-left:2px;}
+div.colonnevendre {text-align:center;
+/*width:50px;*/
+height:33px;float:right;padding-top:10px;padding-left:2px;font-weight:bold;border-left:1px solid #c4c4c4;}
+div.ligneSelectGrisElementsResultats {float:left;height:18px;padding:0px 5px;
+/*width:705px;*/
+border-right:1px solid #c4c4c4;}
+
+select.selectfin {
+font-size:10px;
+height:20px;
+margin-right:0;
+/* vertical-align:middle; */
+
+}
+
+span.titreligneselect {font-family:Arial, Helvetica, sans-serif;font-size:12px;font-weight:bold;color:#000000;}
+
+/*---------- PAGINATION -------------*/
+div.LignePagination {
+	text-align:center;
+	background:url(/skins/gamesavenue/Images/ligne-pagination.png) repeat-x  0 50%;
+	margin:5px;
+}
+div.LignePagination span{
+	border:1px solid #000000;
+	font-family: Arial;
+	font-size: 10px;
+	font-weight:normal;
+	padding:4px 4px 2px;
+}
+	div.LignePagination span.ResultatPagination {
+		background:white;
+		border:none;
+		padding:2px 20px;
+
+	 }
+	div.LignePagination span.current {
+		border:none;
+		font-size: 12px;
+		font-weight:bold;
+		padding-left:10px;
+		padding-right:10px;
+		
+	 }
+	a.LesPages  { text-decoration:none; padding-left:10px;	padding-right:10px;	}
+
+/*- Pages Confirmation achat -*/
+div.cmdeenreg {
+	font-family: Arial;
+	font-size: 14px;
+	font-weight:bold;
+	color:#ff0000;
+	padding-left:5px;
+
+}
+div.cmdeconfirmtext {
+	font-family: Arial;
+	font-size: 12px;
+	font-weight:normal;
+	color:#000000;
+	padding-left:5px;
+	padding-top:5px;
+
+}
+div.cmdeconfirmtextbold {
+	font-family: Arial;
+	font-size: 12px;
+	font-weight:bold;
+	color:#000000;
+	padding-left:5px;
+	padding-top:5px;
+}

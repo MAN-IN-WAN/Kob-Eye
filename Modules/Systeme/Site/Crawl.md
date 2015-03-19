@@ -1,0 +1,6 @@
+[STORPROC [!Query!]|S|0|1]
+	[METHOD S|Crawl]
+		[PARAM]http://[!S::Domaine!][/PARAM]
+		[PARAM]1[/PARAM]
+	[/METHOD]
+[/STORPROC]

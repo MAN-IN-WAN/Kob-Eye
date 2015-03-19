@@ -1,0 +1,149 @@
+#Menu{
+	width:100%;
+	background-color:#8F8F8F;
+	position:relative;
+	border-bottom:1px solid #fff;
+}
+
+#Menu li{
+	display:block;
+	float:left;
+	width:115px;
+	border-right:1px solid #fff;
+}
+
+#Menu li a, #Menu li a:visited{
+	font-weight:bold;
+	text-align:center;
+	display:block;
+	height:35px;
+	line-height:35px;
+	text-decoration:none;
+	color:#fff;
+}
+
+#Menu li.Actif a, #Menu li a:hover, #Menu li.Actif a:visited{
+	background-color:#fff;
+	color:#8F8F8F;
+	text-decoration:none;
+}
+
+* html #Menu a:hover{
+	font-weight:lighter;
+}
+
+/*---------------------------SOUS-MENUS : 1er NIVEAU--------------------*/
+
+#Menu ul ul{
+	visibility:hidden;
+	position:absolute;
+	height:0;
+	top:35px;
+	z-index:10;
+	filter:alpha(opacity=90);
+	-moz-opacity:.90;
+	opacity:.90;
+	 -khtml-opacity:.90; 
+}
+
+* html #Menu ul ul{
+	/*top:35px;
+	t\op:25px;*/
+	left:0;
+	z-index:10;
+}
+
+* html #Menu{
+	z-index:100;
+}
+
+*+html #Menu{
+	z-index:100;
+}
+
+*+html #Menu ul ul{
+	z-index:100;
+}
+
+#Menu ul ul li{
+	display:block;
+	position:relative;
+	float:none;
+	width:115px;
+	text-align:center;
+	border-right:none;
+	border-top:1px solid #fff;
+}
+
+#Menu ul ul li:hover a{
+	color:#9EFFA4;
+	background-color:#5D9661;
+}
+
+#Menu li.Actif ul li a, #Menu ul ul li a, #Menu ul ul li a:visited{
+	color:#fff;
+	background-color:#8F8F8F;
+}
+
+#Menu li.Actif ul li:hover a, #Menu ul ul li:hover a, #Menu ul ul li:hover a:visited{
+	background-color:#fff;
+	color:#8F8F8F;
+}
+
+/*
+* html #Menu ul ul a, * html #Menu ul ul a:visited{
+	background-color:#9EFFA4;
+}
+
+* html #Menu ul ul a:hover{
+	color:#00A0C6;
+	background-color:#212121;
+}*/
+
+/*---------------------------SOUS-MENUS : 2eme NIVEAU--------------------*/
+
+#Menu ul ul ul{
+	visibility:hidden;
+	position:absolute;
+	height:0;
+	top:0;
+	left:115px;
+	z-index:10;
+	-moz-opacity:.90;
+	opacity:.90;
+}
+
+* html #Menu ul ul ul{
+	z-index:1000;
+}
+
+#Menu ul ul ul li{
+	display:block;
+	position:relative;
+	float:none;
+	width:115px;
+	text-align:center;
+	border-right:none;
+}
+
+#Menu ul ul ul li:hover a{
+	color:#9EFFA4;
+	background-color:#5D9661;
+}
+
+
+/* make the second level visible when hover on first level list OR link */
+#Menu ul li:hover ul,#Menu ul a:hover ul{
+	visibility:visible; 
+}
+
+/* keep the third level hidden when you hover on first level list OR link */
+#Menu ul li:hover ul ul{
+	visibility:hidden;
+}
+
+/* make the third level visible when you hover over second level list OR link */
+#Menu ul li:hover ul li:hover ul{ 
+	visibility:visible;
+
+

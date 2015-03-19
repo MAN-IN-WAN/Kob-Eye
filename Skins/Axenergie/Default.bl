@@ -1,0 +1,36 @@
+[HEADER] <!-- loginAppaloosa -->
+<script type="text/javascript" src="/Skins/LoginApaloosa/Js/swfobject.js"></script>
+<script type="text/javascript">
+	function cancelFunction() {
+		alert("Express Install was cancelled");
+	}
+
+	if (swfobject.hasFlashPlayerVersion("11")) {
+		var fn = function() {
+			var flashvars = {appaloosaStyle:"[!Systeme::User::Style!]",language:"[!Systeme::CurrentLanguage!]",background:"[!Systeme::User::backgroundImage()!]"};
+			swfobject.embedSWF("/Skins/LoginApaloosa/swf/Appaloosa.swf", "myContent", "100%", "100%", "11.2.0", "/Skins/LoginApaloosa/Js/expressInstall.swf",flashvars,{scale:'noscale',allowFullScreen:'true',wmode:'direct',background:000000},{});
+		};
+
+	} else {
+		var fn = function() {
+			var att = {
+				data : "/Skins/LoginApaloosa/Js/expressInstall.swf",
+				width : "600",
+				height : "240"
+			};
+			var par = {
+				menu : false
+			};
+			var id = "myContent";
+			swfobject.createSWF(att,par,id);
+		}
+	}
+	swfobject.addDomLoadEvent(fn); 
+</script>
+[/HEADER]
+
+<div id="myContent">
+
+	Flash player plugin not present. please install it or upgrade it on <a href="http://www.adobe.com">adobe website</a>. <a href="http://www.adobe.com/go/getflashplayer"> <img src="http://www.adobe.com/images/shared/download_buttons/
+	get_flash_player.gif" alt="Get Adobe Flash player" /> </a>
+</div>

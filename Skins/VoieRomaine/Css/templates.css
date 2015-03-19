@@ -1,0 +1,818 @@
+/*** POSITION COLONNES ***/
+
+div.containerL {background:url('../Img/fond-colonne-gauche.png') repeat-y;}
+
+div.centreL {margin-left:265px;}
+
+
+
+/* liste des produits d'une categorie */
+.blocCategorie { width:620px;margin:5px 10px 0 5px ;overflow:hidden;} 
+.blocProduit { 
+	float:left;
+	overflow:hidden;
+	position:relative;
+	display:block;
+} 
+.blocProduitavantBouton { 
+	height:234px;
+	width:300px;
+	border-bottom:1px dotted #000000;
+	border-top:1px dotted #000000;
+	margin:5px; 
+} 
+.BlocContenu { float:right;width:195px;position:relative; height: 100%;} 
+.BlocPrix  { position:absolute; text-align:right;left:0;right:0;bottom:0;} 
+
+.TitreListeArticle h3 { font-size:13px;text-transform:uppercase;color:#7d003e;font-weight:bold;margin:5px 10px;} 
+.AccrocheArticle { text-align:justify;font-size:12px;color:#4a0026;margin: 10px 20px 10px 5px;padding-bottom:20px;border-bottom:1px dotted #000000;} 
+.DescArticle { font-size:11px;text-align:justify;color:#9d3f80;margin:10px;   } 
+.DescArticlePromo { font-size:11px;text-align:justify;color:#9d3f80;margin:10px;  } 
+.PromoArticle { overflow:hidden;position:relative;display:block; margin:10px 5px;} 
+.PromoArticleContenu { float:right;font-size:16px;color:#ffffff;padding-right:15px;background-color:#4a0026;line-height:25px;padding-top: 1px;font-weight:bold;} 
+.PromoArticleImage { background:url('../Img/Components/pointe-fleche-promo.png') no-repeat 4px 0; width:27px;height:26px;float:right; } 
+.PrixArticle { font-size:15px;text-align:right;text-transform:uppercase;color:#4a0026;margin-right:5px;font-weight:bold; } 
+.UniteArticle { font-size:10px;text-align:right;font-style:italic;color:#4a0026;margin-right:5px; } 
+.CalculPRCond {font-size:10px;text-align:right;font-style:italic;color:#4a0026;margin-right:5px; } 
+.BlocImage { width:105px;} 
+
+
+.blocProduitBouton {overflow:hidden;position:relative;display:block;position:relative;margin:0 5px 5px 5px;width: 300px;}
+.AddPanier{background-color:#7E003F;float:right;height:29px;padding-right:5px;padding:10px 5px 0 5px;width:130px;}
+.AddPanierImage{float:right;}
+.AddPanierContenu{color:#ffffff;font-size:14px;font-weight:bold;font-variant:small-caps;}
+.VoirFicheProduit{background-color:#7E003F;height:29px;padding-right:5px;padding:10px 5px 0 5px;float:left;width:95px;}
+.VoirFicheProduitImage{float:right;}
+.VoirFicheProduitContenu{color:#ffffff;font-size:14px;font-weight:bold;font-variant:small-caps;}
+.VoirFicheProduitContenu a {color:#ffffff;font-size:14px;font-weight:bold;font-variant:small-caps;}
+.VoirFicheProduitContenu a:hover {color:#9d3f80;font-size:14px;font-weight:bold;font-variant:small-caps;}
+
+
+
+.AddPanierImage {background:url('../Img/ic-panierrose.png') no-repeat 0 -1px ;width:19px;height:18px; }
+
+.VoirFicheProduitImage {background:url('../Img/ic-louperose.png') no-repeat 0 -1px;width:19px;height:18px; }
+
+
+
+/* fiche produit */
+.finfiche {
+	float:right;
+	padding:10px 0;
+	overflow:hidden;position:relative;display:block;
+
+
+}
+.finfiche a{
+	background:url('../Img/retour-liste.png') no-repeat right;
+	padding-right:25px;
+	color:#4a0026;
+	font-size:11px;
+	text-decoration:underline;
+	font-style:italic;
+}
+.blocFichProduit {overflow:hidden;position:relative;display:block;border-top:1px dotted #4a0026;width:100% ;}
+.BlocFichImage {float:left;width:110px;margin:5px ;}
+.BlocFichContenu {overflow:hidden;position:relative;display:block;float:left;width:500px ;}
+.BlocFichContenuNiv2 {width:100%;border-bottom:1px dotted #4a0026;overflow:hidden;position:relative;display:block ;}
+.TitreFichePromo {float:right;padding:0 ;}
+.BlocFichContenuNiv3 {overflow:hidden;position:relative;display:block ;}
+.BlocFichPrix {text-align:right;margin-right:5px;float:right;width:150px ;}	
+.Fichprixbarre {text-align:right;font-size:12px;font-weight:bold;text-transform:uppercase;color:#4a0026 ;}
+.Fichprix {text-align:right;margin:10px 0 0 10px;font-size:18px;font-weight:bold;text-transform:uppercase;color:#9d3f80 ;}
+.FichCalculPRCond {font-size:10px;font-style:italic;color:#4a0026;text-align:right;}
+.quantite {text-align:right ;}
+.FichLibelle {font-size:12px; color:#7d003e ;}
+.FichInput {font-size:13px; color:#4a0026 ;}
+
+.BlocFichCaracteristique {float:left;margin:5px;border-right:1px dotted #4a0026; width:330px ;}	
+.BlocFichLigneCaract {margin-bottom:5px;  margin-right: 10px ;}
+.FichValeurCaract {font-size:13px; color:#4a0026 ;}
+
+.btnpanier {
+	padding:10px 0 10px 0;
+	overflow:hidden;position:relative;display:block;
+	float:right;
+
+}
+
+a:hover input.btnPanier {
+	cursor:pointer;
+	background-image: url('../Img/Btn/ajouter-panier-hover.jpg');
+}
+input.btnPanier {
+	background:url('../Img/Btn/ajouter-panier.jpg') no-repeat;
+   	border: medium none;
+   	cursor: pointer;
+   	text-indent: -9999px;
+    	width: 120px;
+	height:46px;
+
+}
+
+.FormBoutonPanierListe {
+    	background: none repeat scroll 0 0 transparent;
+    	border: medium none;
+   	cursor: pointer;
+	color:#ffffff;
+	font-size:13px;
+	font-weight:bold;
+	font-variant:small-caps;
+
+}
+.FormBoutonPanier {
+    	background: none repeat scroll 0 0 transparent;
+    	border: medium none;
+   	cursor: pointer;
+	color: #ffffff;
+	text-transform:uppercase;
+	font-size:13px;
+	font-weight:bold;
+}
+.btnPanierD {
+	background:url('../Img/ajouter-au-panier-droite.png') no-repeat;
+	height:46px;
+ 	width: 8px;
+	float:left;
+}
+
+/* fiche produit onglets */
+.onglets {
+	/* ligne complete de tous les onglets */
+	margin:10px 0 0 0 ;
+	overflow:hidden;position:relative;
+	display:none;
+}
+
+.ongletBloc {
+	/* bloc pour un onglet */
+	overflow:hidden;float:left;position:relative;display:block;cursor:pointer;
+}
+
+.ongletG {
+	height: 29px;
+	width: 7px;
+	background:url('../Img/onglet-gauche.png') no-repeat;
+	float:left;
+}
+
+.ongletM {
+	background:url('../Img/onglet-centre.png') repeat-x;
+	float:left;
+	height: 19px;
+	color:#ffffff;
+	font-size:12px;
+	padding: 5px;	
+
+}
+
+.ongletD {
+	background:url('../Img/onglet-droite.png') no-repeat;
+	height: 29px;
+	width: 7px;
+	float:left;
+	padding-right:3px;
+}
+
+.onglet_actif {cursor:auto;}
+
+.onglet_actif .ongletG {
+	background:url('../Img/onglet-actif-gauche.png') no-repeat;
+}
+
+.onglet_actif .ongletM{
+	background:url('../Img/onglet-actif-centre.png') repeat-x;
+	color:#4a0026;
+}
+
+.onglet_actif .ongletD {
+	background:url('../Img/onglet-actif-droite.png') no-repeat;
+
+}
+
+.ongletDesc {
+	margin:10px 0 0 0 ;
+	overflow:hidden;position:relative;display:block;
+}
+
+
+.ongletContenu {
+	border:1px solid #4a0026;
+	color:#4a0026;
+	font-size:12px;
+	padding: 5px;	
+	min-height:120px;
+}
+
+/*fiche produit UneAccueil*/
+.blocProduitUne {
+	overflow:hidden;position:relative;display:block;width:100% ;
+	background:url('../Img/Fond_ProduitUne.jpg') no-repeat;
+	height:181px;
+	margin:5px;
+	margin-bottom:20px;
+}
+.BlocProduitUneImage {float:left;width:150px; display:block;margin:1px; }
+.BlocProduitUneContenu {
+	float:left; 
+	width:310px ;
+	height:170px;
+}
+.CategorieProduitUne {
+	font-size:16px;text-transform:uppercase;color:#7D003a;
+	padding:20px 0 15px 0;
+	margin-right:10px;
+	border-bottom:1px dotted #7d003e;
+}
+.NomProduitUne {
+	font-size:16px;font-weight:bold;text-transform:uppercase;color:#7D003a;
+	padding:10px 0 0 0;
+}
+.AccrocheProduitUne { 
+	text-align:left;font-size:14px;color:#4a0026;padding:20px 10px 20px 0;
+} 
+
+
+.BlocProduitUnePrix {text-align:right;margin-right:5px;float:right;width:139px;}	
+
+.BlocProduitUnePrixContenu {
+    float: right;
+    height: 100%;
+    position: relative;
+    width: 139px;
+    padding-top: 15px;
+}
+.ConditionnementUne {
+	text-align:center;font-size:12px;color:#4a0026;font-weight:bold;
+}
+.BlocPrixProduitUne{float:right;width:139px;}
+
+.PrixUne {
+	text-align:center;font-size:22px;color:#4a0026;font-weight:bold;
+	padding-right: 20px;
+    	text-align: right;
+}
+.PrixUneUnite {
+	text-align:center;font-size:10px;color:#4a0026;
+	padding-right: 20px;
+    	text-align: right;
+	padding-bottom: 15px;
+}
+
+
+
+.BlocProduitUneBottom {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    text-align: right;
+
+}
+
+.AddPanierAccueil{
+ 	background-color: #7E003F;
+    	float: right;
+    	height: 20px;
+    	margin-right: 10px;
+    	padding: 5px 5px 0;
+    	width: 139px;
+}
+.AddPanierImageAccueil{float:right;}
+.AddPanierImageAccueil{background:url('../Img/ic-panierrose.png') no-repeat 0 -1px ; width:19px;height:18px; }
+.AddPanierContenuAccueil{color:#ffffff;font-size:14px;font-weight:bold;font-variant:small-caps;padding-right: 30px;}
+.AddPanierContenuAccueil a{color:#ffffff;font-size:14px;}
+.AddPanierContenuAccueil a:hover{color:#ffffff;font-size:14px;text-decoration:underline;}
+
+
+.accrocheAccueil { font-size:16px;text-transform:uppercase;color:#7D003a;font-weight:bold;margin:5px;}
+
+.voirCategorieAccueil{background-color:#7E003F;height:30px;text-transform:uppercase;color:#ffffff;font-size:12px;}
+.voirCategorieImageAccueil{float:left;}
+.voirCategorieImageAccueil{background:url('../Img/ic-louperose.png') no-repeat 5px 4px ; width:29px;height:28px; }
+.voirCategorieContenuAccueil{color:#ffffff;font-size:12px;font-weight:bold;text-transform:uppercase;padding-left: 25px; padding-top: 5px;}
+.voirCategorieContenuAccueil a{color:#ffffff;font-size:12px;}
+.voirCategorieContenuAccueil a:hover{color:#ffffff;font-size:12px;text-decoration:underline;}
+
+
+
+
+
+.BlocbottomCategorieUne {text-align:right;margin-right:5px;}
+
+.BlocCategorieUneBottom  {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    text-align: right;
+
+}
+.BlocUneCategories {
+	overflow:hidden;position:relative;display:block;width:100%;padding-left:5px;
+}
+.ColonneCateg {float:left;width:30%;}
+.titreCategorieUne {padding-left:5px;font-size:15px;text-transform:uppercase;color:#7d003e;}
+.imageCategorieUne {overflow:hidden;position:relative;border:none;}
+.contenuetboutonUneCateg {margin-bottom:10px;padding:5px 5px 5px 0;}
+.contenuCategorieUne {font-size:12px;text-align:justify;color:#7d003e;height:180px;}
+
+input.formInputPrixNone  {
+	background: none repeat scroll 0 0 transparent;
+    	border: medium none;
+	color: #9D3F80;
+    	font-size: 18px;
+    	font-weight: bold;
+ 	text-align: right;
+	width:80px;
+	
+}
+
+input.formInputNone  {
+	background: none repeat scroll 0 0 transparent;
+    	border: medium none;
+    	width: 50px;
+	color:#4A0026;
+  	text-align: right;
+	
+}
+input.formInputCadre {
+	background: none repeat scroll 0 0 transparent;
+    	border: 1px solid #4A0026;
+    	width: 26px;
+	color:#4A0026;
+  	text-align: right;
+	
+}
+
+input.InputBtnPlus  {
+	background: url('../Img/quantite-plus.png') no-repeat;
+    	border: medium none;
+  	text-align: right;
+	width:12px;
+	height:13px;
+}
+input.InputBtnMoins  {
+	background: url('../Img/quantite-moins.png') no-repeat;
+    	border: medium none;
+  	text-align: right;
+	width:12px;
+	height:13px;
+}
+/*-- Gestion Panier en colonne -----*/
+input.Panier_Valid  {
+	background: url('../Img/Components/valider-ma-commande.png') no-repeat 99% 0;
+    	border: medium none;
+  	text-align: right;
+	width:150px;
+	padding-right:20px;
+	color: #4a0026;
+   	cursor: pointer;
+	margin-right:10px;
+}
+input.Panier_Modify  {
+	background: url('../Img/Components/modifier-ma-commande.png') no-repeat 99% 0;
+    	border: medium none;
+  	text-align: right;
+	width:150px;
+	padding-right:20px;
+	color: #4a0026;
+   	cursor: pointer;
+	margin-right:10px;
+}
+input.Panier_Vider  {
+	background: url('../Img/Components/vider-mon-panier.png') no-repeat 99% 0;
+    	border: medium none;
+  	text-align: right;
+	width:150px;
+	padding-right:20px;
+	color: #4a0026;
+   	cursor: pointer;
+	margin-right:10px;
+}
+input.Panier_Lig_Sup  {
+	background: url('../Img/Components/suplig-mon-panier.png') no-repeat ;
+    	border: medium none;
+   	cursor: pointer;
+
+}
+
+input.Panier_Supr {
+	background:url('../Img/Components/supprimer-ligne.png') no-repeat;
+   	border: medium none;
+   	cursor: pointer;
+   	text-indent: -9999px;
+    	width: 16px;
+}
+/*--- Gestion des étapes de commandes ----*/
+.ligneBoutons {
+	overflow:hidden;
+	position:relative; 
+	display:block; 
+	margin-top:20px;
+}
+
+input.continue_Achats {
+	background:url('../Img/Btn/continue_achats.jpg') no-repeat;
+   	border: medium none;
+   	cursor: pointer;
+   	text-indent: -9999px;
+    	width: 173px;
+	height:28px;
+
+}
+
+a:hover input.continue_Achats {
+	cursor:pointer;
+	background-image: url('../Img/Btn/continue_achats-hover.jpg');
+}
+input.recalcul_Achats {
+	background:url('../Img/Btn/recalcul-panier.png') no-repeat;
+   	border: medium none;
+   	cursor: pointer;
+   	text-indent: -9999px;
+    	width: 173px;
+	height:28px;
+
+}
+
+a:hover input.recalcul_Achats {
+	cursor:pointer;
+	background-image: url('../Img/Btn/recalcul-panier-hover.png');
+}
+
+input.Etapesuivante {
+	background:url('../Img/Btn/je-valide.jpg') no-repeat;
+   	border: medium none;
+   	cursor: pointer;
+   	text-indent: -9999px;
+    	width: 173px;
+	height:28px;
+
+}
+
+a:hover input.Etapesuivante {
+	cursor:pointer;
+	background-image: url('../Img/Btn/je-valide-over.jpg');
+}
+
+.etapeCommande1 {
+	background:url('../Img/etapeCommande1.jpg') no-repeat;
+ 	height: 31px;
+    	margin: 10px 0;
+}
+.titreEtape {
+	text-transform:uppercase;
+	font-size:13px;
+	margin-bottom:10px;
+	border-bottom:1px solid #7d003e;
+	color: #4a0026;
+}
+div.listeEtapeCmde  {
+	margin-top:10px;
+
+}
+table.listeEtapeCmde  {
+	border-top:1px solid #4a0026;
+	width:100%;
+	border-spacing: 0px;
+	border-collapse: collapse; 
+	background-color:#ece9e6;
+}
+
+tr.entetelisteEtapeCmde  td {
+	border-bottom:1px dotted #4a0026;
+	padding-bottom: 5px;
+}
+
+
+tr.fondEtapeCmde  td {
+	border-bottom:1px solid #4a0026;
+	padding-bottom: 5px;
+}
+
+td.entetecolonnelisteEtapeCmde  {
+	border-right:1px dotted #4a0026;
+	color:#000000;
+	text-transform:uppercase;
+	font-size:12px;
+	font-weight:bold;
+	padding: 5px 5px 0;
+	text-align:center;
+}
+
+td.detaillisteEtapeCmde {
+	border-bottom:1px dotted #4a0026;
+	padding-bottom: 5px;
+	border-right:1px dotted #4a0026;
+	text-align:right;
+	padding:5px 2px;
+}
+.entetelisteEtapeCmde_text td {
+	border-right:1px dotted #4a0026;
+	color:#000000;
+	text-transform:uppercase;
+	font-size:12px;
+	font-weight:bold;
+
+}
+.colonnelisteEtapeCmde_text {
+	color:#000000;
+	font-size:12px;
+
+}
+.colonnelisteEtapeCmde_textColor {
+	color:#4a0026;
+	font-size:12px;
+
+}
+.colonnelisteEtapeCmde_textColorb {
+	color:#4a0026;
+	font-size:12px;
+	font-weight:bold;
+}
+
+/*-- ligne blanche entre panier et total --*/
+tr.ligneblanche td { background-color:#ffffff;border:none;height:30px;}
+tr.ligneblanchepetite td { background-color:#ffffff;border:none;height:10px;}
+/*-- gestion deu total du panier --*/
+tr.lignetotalvide  td {
+	border-top:1px dotted #4a0026;
+	background-color:#7D003E;
+	height:15px;
+}
+tr.lignetotal  td {
+	border-bottom:1px dotted #4a0026;
+	border-right:1px dotted #ffffff;
+	background-color:#7D003E;
+	color:#ffffff;
+	text-transform:uppercase;
+	font-size:14px;
+	font-weight:bold;
+	text-align:right;
+	height:20px;
+	padding-right:5px;
+	margin:5px 0;
+}
+
+
+
+/*- Inscription Identification--*/
+.etapeCommande2 {
+	background:url('../Img/etapeCommande2.jpg') no-repeat;
+ 	height: 31px;
+    	margin: 10px 0;
+}
+.ColonneIdent form {
+	font-size:10px;
+
+}
+.ColonneIdent .LigneForm {
+	margin:0;
+
+}
+.ColonneIdent label {
+	width:90px;
+	padding:0;
+	padding-right:5px;
+	text-align:left;
+}
+.ColonneIdent input, .ColonneIdent textarea , .ColonneIdent select {
+	width:180px;
+}
+
+input.cree_compte {
+	background:url('../Img/Btn/je-cree-mon-compte-2.jpg') no-repeat;
+    width: 173px;
+}
+
+input.identifiervous {
+	background:url('../Img/Btn/je-midentifie-2.jpg') no-repeat;
+    width: 105px;
+}
+
+input.mettreajour {
+	background:url('../Img/Btn/mettre-a-jour-2.png') no-repeat;
+    width: 102px;
+}
+
+input.cree_compte:hover, input.identifiervous:hover, input.mettreajour:hover {
+	background-position: 0 -28px;
+}
+
+input.cree_compte, input.identifiervous, input.mettreajour {
+   	border: none;
+   	cursor: pointer;
+   	text-indent: -999px;
+	height:28px;
+	display:block;
+	line-height: 0;
+	margin: auto;
+}
+
+/*---- etape commande paiement -*/
+.etapeCommande3 {
+	background:url('../Img/etapeCommande3.jpg') no-repeat;
+ 	height: 31px;
+    	margin: 10px 0;
+}
+
+a:hover input.adrLiv {
+	cursor:pointer;
+	background-image: url('../Img/Btn/modifier-livraison-hover.png');
+}
+input.adrLiv {
+	background:url('../Img/Btn/modifier-livraison.png') no-repeat;
+   	border: medium none;
+   	cursor: pointer;
+   	text-indent: -9999px;
+    	width: 124px;
+	height:50px;
+
+}
+a:hover input.adrFac {
+	cursor:pointer;
+	background-image: url('../Img/Btn/modifier-facturation-hover.png');
+}
+input.adrFac {
+	background:url('../Img/Btn/modifier-facturation.png') no-repeat;
+   	border: medium none;
+   	cursor: pointer;
+   	text-indent: -9999px;
+    	width: 124px;
+	height:50px;
+}
+
+
+
+.lignetotalvide {
+	border:none;background-color:#ffffff;
+	height:30px;
+}
+
+.lignetotalcouleur {
+	border:1px solid #7d003a;
+	background-color:#7D003a;
+	font-size:14px;
+	font-weight:bold;
+	color:#ffffff;
+	text-align:right;
+	padding-right:5px;
+	height:30px;
+}
+.lignetotalreduction {
+	border:1px solid #7d003a;
+	background-color:#7D003a;
+	font-size:14px;
+	font-weight:bold;
+	color:#9d3f80;
+	text-align:right;
+	padding-right:5px;
+	height:30px;
+}
+.lignetotalgeneral{
+	border:1px solid #7d003a;
+	font-size:14px;
+	font-weight:bold;
+	color:#7d003a;
+	text-transform:uppercase;
+	text-align:right;
+	padding-right:5px;
+	height:30px;
+}
+
+.lignetotalcouleurG {
+	background-color:#ECE9E6;
+	height:30px;
+}
+
+
+tr.listeEtapeCmdePaiement {
+	background-color:#ECE9E6;
+}
+.entetelistePaiement {
+	border-top:1px solid #4a0026;
+	border-bottom:1px dotted #4a0026;
+	font-size:12px;
+	font-weight:bold;
+	color:#000000;
+	text-transform:uppercase;
+	text-align:left;
+	padding:5px;
+}
+
+.lignelistePaiement {
+	border-right:1px dotted #4a0026;
+	padding:10px;
+	font-size:12px;
+	font-weight:bold;
+	color:#000000;
+	text-transform:uppercase;
+	text-align:left;
+}
+.Condigenerales {
+	padding:10px;
+	font-size:12px;
+	font-weight:bold;
+	color:#000000;
+	text-align:right;
+}
+
+input.modifiecommande {
+	background:url('../Img/Btn/je-modifie-commande.jpg') no-repeat;
+   	border: medium none;
+   	cursor: pointer;
+   	text-indent: -9999px;
+    	width: 173px;
+	height:28px;
+
+}
+
+a:hover input.modifiecommande {
+	cursor:pointer;
+	background-image: url('../Img/Btn/je-modifie-commande-hover.jpg');
+}
+input.confirmepaiement {
+	background:url('../Img/Btn/je-confirme-mon-paiement.jpg') no-repeat;
+   	border: medium none;
+   	cursor: pointer;
+   	text-indent: -9999px;
+    	width: 173px;
+	height:28px;
+
+}
+
+a:hover input.confirmepaiement {
+	cursor:pointer;
+	background-image: url('../Img/Btn/je-confirme-mon-paiement-hover.jpg');
+}
+/*-- Etape 4 confirmation commande ------*/
+.etapeCommande4 {
+	background:url('../Img/etapeCommande4.jpg') no-repeat;
+ 	height: 31px;
+    	margin: 10px 0;
+}
+div.ligneCmdeEtape4 div{
+	font-size:12px;
+	color:#000000;
+	text-align:justify;
+}
+.textevaleur {
+	font-weight:bold;
+	padding:5px 0;
+}
+.texteLibelle {
+	margin-right:10px;
+	padding:5px 0;
+}
+.messagerose {
+	color:#9d3f80;
+	padding:5px 0;
+	font-size:14px;
+
+}
+input.impessionCmde {
+	background:url('../Img/Btn/impression-commande.jpg') no-repeat;
+   	border: medium none;
+   	cursor: pointer;
+   	text-indent: -9999px;
+    	width: 173px;
+	height:28px;
+
+}
+
+a:hover input.impessionCmde {
+	cursor:pointer;
+	background-image: url('../Img/Btn/impression-commande-hover.jpg');
+
+}
+
+input.valider {
+	background:url('../Img/Btn/valider.png') no-repeat;
+   	border: medium none;
+   	cursor: pointer;
+   	text-indent: -9999px;
+    	width: 77px;
+	height:25px;
+
+}
+
+a:hover input.valider {
+	cursor:pointer;
+	background-image: url('../Img/Btn/valider-hover.png');
+}
+input.retour-accueil {
+	background:url('../Img/Btn/retour-accueil.jpg') no-repeat;
+   	border: medium none;
+   	cursor: pointer;
+   	text-indent: -9999px;
+    	width: 173px;
+	height:28px;
+
+}
+
+a:hover input.retour-accueil {
+	cursor:pointer;
+	background-image: url('../Img/Btn/retour-accueil-hover.jpg');
+
+}

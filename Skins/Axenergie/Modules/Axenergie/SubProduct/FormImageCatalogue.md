@@ -1,0 +1,1 @@
+[MODULE Axenergie/Produit/FormImageCatalogue?Promo=1]

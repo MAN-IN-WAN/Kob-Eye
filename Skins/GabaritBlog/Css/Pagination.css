@@ -1,0 +1,159 @@
+#Pagination{
+	width:100%;
+	background-color:#B2B2B2;
+}
+
+.FlechesG{
+	float:left;
+	margin-left:5px;
+	margin-top:2px;
+}
+
+* html .FlechesG{
+	margin:0;
+	margin-left:5px;
+}
+
+.FlechesG input{
+	width:15px;
+	height:11px;
+	max-width:20px;
+}
+
+.Page1{
+	background:url(/Skins/ArtfxBlog/Img/Pagination/PageFirst.jpg) no-repeat 0 0;
+	border:0pt none;
+	cursor:pointer;
+	text-indent:-9999px;
+}
+
+* html .Page1{
+	display:block;
+	position:relative;
+	float:left;
+	padding-left:9999px;
+	overflow:hidden;
+	border:0;
+}
+
+*+html .Page1{
+	display:block;
+	position:relative;
+	float:left;
+	padding-left:9999px;
+	overflow:hidden;
+	border:0;
+}
+
+.PagePrec{
+	background:url(/Skins/ArtfxBlog/Img/Pagination/PagePrec.jpg) no-repeat 0 0;
+	border:0pt none;
+	cursor:pointer;
+	text-indent:-9999px;
+}
+
+* html .PagePrec{
+	display:block;
+	position:relative;
+	padding-left:9999px;
+	overflow:hidden;
+	border:0;
+}
+
+*+html .PagePrec{
+	display:block;
+	position:relative;
+	padding-left:9999px;
+	overflow:hidden;
+	border:0;
+}
+
+
+.NumPages{
+/* 	float:left; */
+	width:160px;
+	margin:auto;
+	text-align:center;
+}
+
+* html .NumPages{
+	width:150px;
+}
+
+.NumPages input{
+	font-size:12px;
+	width:16px;
+	height:16px;
+	color:#B2B2B2;
+	border:0;
+	background:transparent;
+	cursor:pointer;
+}
+
+.NumPages span{
+	font-size:12px;
+	font-weight:bold;
+	color:#FFBB00;
+	text-decoration:underline;
+}
+
+.FlechesD{
+	float:right;
+	margin-right:5px;
+	margin-top:2px;
+}
+
+.FlechesD input{
+	width:15px;
+	height:11px;
+	max-width:20px;
+}
+
+.PageSuiv{
+	background:url(/Skins/ArtfxBlog/Img/Pagination/PageSuiv.jpg) no-repeat 0 0;
+	border:0pt none;
+	cursor:pointer;
+	text-indent:-9999px;
+}
+
+* html .PageSuiv{
+	display:block;
+	position:relative;
+	float:left;
+	padding-left:9999px;
+	overflow:hidden;
+	border:0;
+}
+
+*+html .PageSuiv{
+	display:block;
+	position:relative;
+	float:left;
+	padding-left:9999px;
+	overflow:hidden;
+	border:0;
+}
+
+
+.Page2{
+	background:url(/Skins/ArtfxBlog/Img/Pagination/PageLast.jpg) no-repeat 0 0;
+	border:0pt none;
+	cursor:pointer;
+	text-indent:-9999px;
+}
+
+* html .Page2{
+	display:block;
+	position:relative;
+	padding-left:9999px;
+	overflow:hidden;
+	border:0;
+}
+
+*+html .Page2{
+	display:block;
+	position:relative;
+	padding-left:9999px;
+	overflow:hidden;
+	border:0;
+}

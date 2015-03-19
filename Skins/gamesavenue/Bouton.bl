@@ -1,0 +1,7 @@
+<div class="CB CB[1]">
+	[IF [2]=Submit]
+		<span class="button"><input type="submit" value="[DATA]" /></span>
+	[ELSE]
+		<a class="button" href="[2]"><span>[DATA]</span></a>
+	[/IF]
+</div>

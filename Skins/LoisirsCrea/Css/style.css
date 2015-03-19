@@ -1,0 +1,1239 @@
+@import "menu.css";
+@import "components.css";
+@import "redaction.css";
+@import "forms.css";
+
+/*--- RESET ---*/
+html, body, div, span, applet, object, iframe, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td { margin: 0; padding: 0; border: 0; outline: 0; font-size: 100%; vertical-align: baseline }
+blockquote, q { quotes: none }
+blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; }
+ins { text-decoration: none }
+del { text-decoration: line-through }
+table { 
+	border-collapse: collapse; 
+	border-spacing: 0; 
+}
+.row [class*="span"]  {
+    min-height: 0;padding:0;
+}
+
+
+a:active, input:active { outline: none }
+:-moz-any-link:focus { outline: none }
+
+/*-- GLOBAL ---*/
+html,body {
+	padding:0;
+	margin:0;
+	font-family: Arial;
+	font-size:12px;
+	color: #393939;
+}
+.container {
+    margin-left: 0px;
+    margin-right: 0px;width:980px;
+}
+
+input, textarea, select, button {
+	font-family: Arial;
+	font-size: 12px;
+}
+div.centreL {
+    margin-top:10px;
+}
+a {
+	text-decoration: none;
+	color: #db2484;
+}
+
+a:hover {
+	text-decoration: underline;
+	color: #db2484;
+}
+.Ariane {
+	color: #393939;
+	font-size:10px;
+}
+.Ariane a{
+	color: #393939;
+	font-size:10px;
+}
+.Ariane a.Last{
+	color: #db2484;
+}
+
+.btn.btn-kirigami {
+	text-transform: uppercase;
+	color: #FFFFFF;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	background-color: #dc2786;
+	*background-color: #dc2786;
+	background-image: -moz-linear-gradient(top, #dc2786, #ce227c);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dc2786), to(#ce227c));
+	background-image: -webkit-linear-gradient(top, #dc2786, #ce227c);
+	background-image: -o-linear-gradient(top, #dc2786, #ce227c);
+	background-image: linear-gradient(to bottom, #dc2786, #ce227c);
+	background-repeat: repeat-x;
+	border-color: #dc2786;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#dc2786', endColorstr='#ce227c', GradientType=0);
+	filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+.btn.btn-kirigami:hover,
+.btn.btn-kirigami:focus,
+.btn.btn-kirigami:active,
+.btn.btn.btn-kirigami.active,
+.btn.btn-kirigami.disabled,
+.btn.btn-kirigami[disabled] ,
+{
+    background-position: 0 -15px;
+    color: #FFFFFF;background-color: #959494;
+    text-decoration: none;
+    transition: background-position 0.1s linear 0s;
+}
+.btn.btn-success {
+	text-transform: uppercase;
+	color: #FFFFFF;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	background-color: #dc2786;
+	*background-color: #dc2786;
+	background-image: -moz-linear-gradient(top, #dc2786, #ce227c);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dc2786), to(#ce227c));
+	background-image: -webkit-linear-gradient(top, #dc2786, #ce227c);
+	background-image: -o-linear-gradient(top, #dc2786, #ce227c);
+	background-image: linear-gradient(to bottom, #dc2786, #ce227c);
+	background-repeat: repeat-x;
+	border-color: #dc2786;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#dc2786', endColorstr='#ce227c', GradientType=0);
+	filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+.btn.btn-success:hover,
+.btn.btn-success:focus,
+.btn.btn-success:active,
+.btn.btn.btn-success.active,
+.btn.btn-success.disabled,
+.btn.btn-success[disabled] ,
+{
+    background-position: 0 -15px;
+    color: #FFFFFF;background-color: #959494;
+    text-decoration: none;
+    transition: background-position 0.1s linear 0s;
+}
+
+
+.btn.btn-red{
+	text-transform: uppercase;
+	color: #FFFFFF;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	background-color: #dc2786;
+	*background-color: #dc2786;
+	background-image: -moz-linear-gradient(top, #dc2786, #ce227c);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dc2786), to(#ce227c));
+	background-image: -webkit-linear-gradient(top, #dc2786, #ce227c);
+	background-image: -o-linear-gradient(top, #dc2786, #ce227c);
+	background-image: linear-gradient(to bottom, #dc2786, #ce227c);
+	background-repeat: repeat-x;
+	border-color: #dc2786;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#dc2786', endColorstr='#ce227c', GradientType=0);
+	filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+.btn.btn-red:hover,
+.btn.btn-red:focus,
+.btn.btn-red:active,
+.btn.btn.btn-red.active,
+.btn.btn-red.disabled,
+.btn.btn-red[disabled] ,
+{
+    background-position: 0 -15px;
+    color: #FFFFFF;background-color: #959494;
+    text-decoration: none;
+    transition: background-position 0.1s linear 0s;
+}
+
+
+.btn.btn-grisfonce {
+	color: #FFFFFF;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	background-color: #393939;
+	*background-color: #393939;
+	background-image: -moz-linear-gradient(top, #393939, #393939);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#393939), to(#393939));
+	background-image: -webkit-linear-gradient(top, #393939, #393939);
+	background-image: -o-linear-gradient(top, #393939, #393939);
+	background-image: linear-gradient(to bottom, #393939, #393939);
+	background-repeat: repeat-x;
+	border-color: #dc2786;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#393939', endColorstr='#393939', GradientType=0);
+	filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+.btn.btn-grisfonce:hover,
+.btn.btn-grisfonce:focus,
+.btn.btn-grisfonce:active,
+.btn.btn.btn-grisfonce.active,
+.btn.btn-grisfonce.disabled,
+.btn.btn-grisfonce[disabled] ,
+{
+    background-position: 0 -15px;
+    color: #FFFFFF;background-color: #393939;
+    text-decoration: none;
+    transition: background-position 0.1s linear 0s;
+}
+
+.btn-gris {
+ 	text-transform: uppercase;
+	color: #FFFFFF;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	background-color: #ccc;
+	*background-color: #ccc;
+	background-image: -moz-linear-gradient(top, #ababab, #959494);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ababab), to(#959494));
+	background-image: -webkit-linear-gradient(top, #ababab, #959494);
+	background-image: -o-linear-gradient(top, #ababab, #959494);
+	background-image: linear-gradient(to bottom, #ababab, #959494);
+	background-repeat: repeat-x;
+	border-color: #ccc;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ababab', endColorstr='#959494', GradientType=0);
+	filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+.btn-gris:hover,
+.btn-gris:focus,
+.btn-gris:active,
+.btn-gris.active,
+.btn-gris.disabled,
+.btn-gris[disabled] {
+	color: #FFFFFF;
+	background-color: #959494;
+	*background-color: #003bb3;
+}
+
+.btn-loupe {
+	background: url("../Img/sprite.png") no-repeat  -504px -943px  #DDDDDD ;
+	width:20px;height:30px;
+}
+.btn-loupe:hover { background: url("../Img/sprite.png") no-repeat  -504px -943px #EEEEEE;}
+
+.SiteWidth {
+	width:980px;
+	margin:auto; 
+}
+
+#javascriptehoh {display:none;}
+
+h1, h2, h3, h4, h5, h6 {
+	padding: 0;
+	margin: 0;
+}
+h1 {
+	color:#db2484;
+	font-size:18px;
+	text-transform:uppercase;
+	font-weight:bold;
+	border-bottom:1px solid #db2484;
+	padding-bottom:10px;
+	margin-bottom: 10px;
+}
+h2 {
+	color:#db2484;
+	font-size:14px;
+	font-weight:bold;
+}
+
+li {
+	list-style: square inside;
+}
+
+/*-- STRUCTURE ---*/
+
+div.Left {
+	margin-top:10px;
+    width: 240px;
+}
+.FormuleUne{
+	border:1px solid #ccc;
+}
+div.centreL .GaucheSalons {
+	display:none;
+}
+/*div.centre {width:980px;}*/
+
+div#Header {
+	height: 140px;width:980px;
+	position: relative;
+	z-index: 10;
+}
+
+div#Bando {
+	height: 140px;z-index:10;
+	background: url("../Img/sprite.png") no-repeat  0 0 ;
+}
+
+/* MegaMenu */
+#MenuBar {
+	width:980px;
+	position:relative;
+}
+
+div#Main {
+	min-height: 300px;
+	position: relative;
+	z-index: 1;
+}
+div#Footer {
+	height: 260px;
+	position: relative;
+	background: url("../Img/sprite.png") no-repeat  0 -1580px ;
+}
+
+div#Footer .MoyensPaiements {
+	position:absolute;top:70px;left:4px;
+	color:#393939;font-weight:bold;font-size:16px; width: 100%;
+}
+
+div#Footer .Coordonnees {
+	position:absolute;top:160px;left:4px;
+
+}
+div#Footer .Coordonnees .Titre{
+	color:#393939;font-weight:bold;font-size:16px;
+}
+div#Footer .Coordonnees .DeuxColonnes{
+}
+div#Footer .Coordonnees .DeuxColonnes .Gauche{
+	float: left;
+	padding: 5px;
+	text-align: center;
+	width: 154px;
+}
+div#Footer .Coordonnees .DeuxColonnes .Gauche .LeContact{
+	font-size:14px;
+}
+div#Footer .Coordonnees .DeuxColonnes .Gauche .Tel {
+	color:#db2484;
+	font-weight:bold;
+	font-size:18px;
+	padding-top:6px;
+}
+div#Footer .Coordonnees .DeuxColonnes .Droite {
+	float: left;
+	padding: 5px;
+	text-align: center;
+	width: 154px;
+}
+div#Footer .Coordonnees .DeuxColonnes .Droite .LeContact{
+	font-size:14px;
+	line-height:13px;
+	margin-bottom:6px;
+}
+	
+
+div#Footer .InscriptionNewsletter {
+	background-color: #f2f2f2;
+	border: 1px solid #393939;
+	height: 80px;
+/*	left: 330px;*/
+	padding: 5px;
+	position: absolute;
+	top: 84px;
+	width: 100%;
+}
+
+div#Footer input#EmailNewsletter { 
+	height:22px;
+	width:185px;
+}
+.NewsletterAccueil{
+	padding: 0px 6px;
+}
+div#Footer .InscriptionNewsletter .Titre{
+    color: #db2484;
+	font-weight:bold;
+	font-size:14px;
+}
+
+div#Footer .InscriptionNewsletter .SousTitre{
+    color: #393939;
+    text-transform:uppercase;
+	font-size:12px;
+	font-weight:normal;
+	margin-bottom:5px;
+}
+div#Footer .InscriptionNewsletter .btnlien {
+	color:#383838;
+   	background: url("../Img/sprite.png") no-repeat  0 -671px ;
+	padding-left: 10px;
+	width:83px;
+	float: right;
+	position: absolute;
+	right: 5px; 
+	bottom: 0;
+}
+div#Footer .InscriptionNewsletter .btnlien a {
+	color:#383838;
+	font-size:10px;
+}
+div#Footer .InscriptionNewsletter .btnlien button{
+	bottom: 0;
+	color: #393939;
+	font-size: 10px;
+	font-weight: bold;	
+	background:none;border:none;
+}
+div#Footer .Abonnes {
+	background-color: #fdeef5;
+    border: 1px solid #393939;   
+    height: 78px;
+ /*   left: 330px;*/
+    padding: 5px;
+    position: absolute;
+    top: 177px;
+    width: 100%;
+}
+	div#Footer .Abonnes .Titre{
+		color:#db2484;
+		font-size:14px;
+		font-weight:bold;
+		text-transform:uppercase;
+}
+div#Footer .Abonnes .Article{
+	color:#393939;
+	font-size:12px;
+	line-height:12px;
+}
+div#Footer .Abonnes .Lien {
+	text-align:right;
+}
+
+div#Footer .Abonnes .Lien a{
+color:#393939;
+font-size:10px;
+padding-left:17px;
+background: url("../Img/sprite.png") no-repeat  0 -295px ;
+}
+
+div#FooterAbtel{
+	padding: 5px;
+	text-align: right;
+	position: relative;
+	overflow:hidden;
+}
+div#FooterAbtel a{
+	font-size:11px;
+	font-style:italic;
+	color:#393939;
+}
+
+/*---------- La Boutique -----*/
+
+
+.SelectionProduits {
+	position:relative;overflow:hidden;
+	margin:20px 0;
+}
+.SelectionProduits .Titre{
+	color: #db2484;
+	font-weight:bold;
+	font-size:18px;
+	border-bottom:1px solid #db2484;
+	padding-bottom:10px;
+	text-transform:uppercase;
+}
+.SelectionProduits .NomProduit h2 {
+	 color: #DB2484;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: normal;
+    margin: 24px 0 0;
+    text-transform: uppercase;
+}
+.SelectionProduits .AccrocheProduit {
+	color: #393939;font-weight:normal;font-size:12px;height:17px;height: 20px;
+}
+.SelectionProduits img {
+	border:1px solid #ccc;
+}
+.SelectionProduits .Details {
+	position:relative;overflow:hidden;
+}
+.SelectionProduits .LesDetails:hover {
+	background-color:#f8f8f8;
+}
+.SelectionProduits .LesDetails {
+	height: 45px;
+    margin-top: -5px;
+    margin-bottom:15px;
+    width: 216px;
+}
+.SelectionProduits .Details .Tarif {
+	float:right;
+	margin-right:1px;
+	color: #db2484;
+	font-weight:bold;
+	font-size:18px;
+}
+.SelectionProduits .DetailsSous  {
+	position:relative;overflow:hidden;
+}
+.SelectionProduits .DetailsSous a.loupelien {
+	float:left;
+	color: #db2484;font-weight:normal;font-size:12px;
+	padding-left:12px;
+	background: url("../Img/sprite.png") no-repeat  0 -943px ;
+}
+.SelectionProduits .DetailsSous a.panierliste {
+	background: url("../Img/sprite.png") no-repeat  0 -978px ;
+	float:right;
+	color: #db2484; font-weight:normal; font-size:12px;
+	padding-left:15px;
+	
+}
+
+
+/*--- Gestion du compte --*/
+div#UserHome a.Bloc {
+    width: 202px;
+}
+div.user {
+	overflow:hidden;
+	position:relative;width:980px;margin:0;padding:0;
+}
+.user h1{
+	color:#db2484;
+	font-weight:bold;
+	text-transform:uppercase;
+	font-size:14px;
+	border-bottom:none;
+	text-decoration:none;
+}
+.user h2, .user h3{
+	color:#393939;
+	font-weight:bold;
+	font-size:16px;
+	padding-top:0;
+}
+div.user .Login , div.user .CreeCompte{
+     	border: 1px solid #cccccc;
+    	display: block;
+    	margin-top: 10px;width:935px;
+	padding:10px;overflow:hidden;
+}
+
+.user .Login .BoutonsCentre {
+	float:right;
+}
+div.user .Login .BoutonsCentre  input.Connexion {
+    margin: 20px 0 8px 50px;overflow:hidden;display: block;
+
+}
+/** mon compte --*/
+h2.moncompte  {
+	color:#db2484;
+	border-top:1px dotted #db2484;
+	padding:0;
+	margin:0;
+}
+div.AdresseGene {
+	margin:60px 0;
+}
+div.Adresse {
+	border-bottom:1px solid #cccccc;
+	border-top:none;
+	border-right:none;
+	border-left:none;
+	margin: 10px 0px 10px 0px;
+	overflow: hidden;
+	padding: 0;
+	color:#393939;
+}
+div.Adresse .Buttons {
+	margin-top:20px;
+}
+div.AdresseGene a.btn {
+	text-transform:uppercase;
+	color:#fff;
+	font-size:12px;
+}
+
+div#UserHome a.Bloc {
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	text-align: center;
+	border-right:1px solid #db2484;
+	color:#393939;
+}
+a.ModifierAdresse {
+	text-align:center;
+	text-transform:uppercase;
+	color:#fff;
+	margin-top: 40px;
+}
+a.ModifierAdresse:hover{
+	color:#fff;
+}
+a.ModifierMonCompte , a.MesAdressesLivraison, a.MesAdressesFacturation, a.HistoriqueCommandes  {
+	background:url("../Img/sprite.png") no-repeat;
+	padding-left:40px;
+	height:40px;
+	float:left;
+	text-align:justify;
+}
+a.ModifierMonCompte {
+	background-position:-14px -1887px;
+}
+a.MesAdressesLivraison {
+	background-position:-265px -1882px;
+}
+a.MesAdressesFacturation {
+	background-position:-549px -1887px;
+}
+a.HistoriqueCommandes {
+	background-position:-805px -1887px;
+}
+div.Message {
+    color: #393939;
+    padding: 0px;
+}
+.CommandeEtape2 .ColonneIdentificationNew .textecreation {
+    color: #393939;
+    font-size: 14px;
+    padding-top: 28px;
+}
+
+.CommandeEtape2 .ColonneIdentificationNew h2 {
+    color: #db2484;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;margin-bottom:0;line-height:1em;
+}
+
+.CommandeEtape2 .ColonneIdentificationNew span.petittexte {
+   color: #db2484;
+}
+
+.CommandeEtape2 .ColonneIdentificationNew .textecreation {
+    border-top:1px dotted #db2484;
+}
+
+#connexion {
+  padding-top:0px;
+}
+.ColonneCreationCompte .obligatoire {
+    color: #db2484;
+}
+
+.ColonneCreationCompteBord h2 {
+    border-bottom: none;
+    color: #db2484;
+}
+.ColonneCreationCompteBord {
+    margin: 0 ;
+    padding:0;
+}
+.ColonneCreationCompte .Border {
+    border-bottom: 1px dotted #db2484;
+}
+a.oubli {
+   /* margin-left: 0px;*/
+}
+.ColonneCreationCompte .Panel {
+    margin: 0;
+    padding: 0;
+}
+.ColonneCreationCompteBord h3 {
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.ColonneCreationCompte .LigneForm {
+    display: inline-block;
+    margin-bottom: 2px;
+    width: 49%;
+}
+.ColonneCreationCompte .LigneForm label {
+    display: block;
+    float: left;
+    padding-right: 10px;
+    position: relative;
+    width: 112px;
+}
+.ColonneCreationCompte div.LigneForm input, .ColonneCreationCompte div.LigneForm textarea, .ColonneCreationCompte div.LigneForm select {
+    border: 1px solid #dcdcdc;
+    width: 312px;float:left;
+}
+.ColonneCreationCompte div.LigneForm input{
+    height:10px;
+}
+.ColonneCreationCompte ul li {
+	list-style:none;
+	background: url("../Img/sprite.png") no-repeat  0 -883px;
+	padding-left:10px;margin:5px;
+}
+.ColonneCreationCompte .BoutonsFin input {
+    cursor: pointer;
+    display: block;
+    font-size: 15px;
+    height: 35px;
+    margin-left: 0px;
+    width: 150px;
+}
+BoutonsFin {
+    padding: 0px;
+}
+p.LesChamps {
+    color: #393939;
+    margin: 0;
+    padding-left: 0px;
+}
+
+/*MODIF ADRESSES*/
+.BlockInfo h1 {
+    border-bottom: medium none;
+    padding: 0 0 20px;
+    font-size: 14px;
+}
+div.LigneForm label {
+    padding: 4px 0px;
+   
+}
+.ModifAd{
+	margin-bottom:44px;
+}
+div.buttons {
+    padding: 44px 0 0px;
+    text-align: center;
+}
+div.user input.Valider {
+    display: block;
+    float: left;
+    font-size: 12px;
+    height: 30px;
+    width: 120px;
+    text-transform:uppercase;
+}
+div.user input.Retour {
+    display: block;
+    float: left;
+    font-size: 12px;
+    height: 30px;
+    width: 120px;
+    text-transform:uppercase;
+
+}
+
+/* Liste News **/
+.ListeNews .UneNews {
+	border-bottom:1px solid #db2484;
+	padding-bottom:10px;
+	margin-bottom:10px;
+	font-size:13px;
+}
+
+ul.ListeNews li {
+	list-style:none;
+	background: url("../Img/sprite.png") no-repeat  0 -883px;
+	padding-left:10px;
+}
+.lienNews{
+	color:#393939;
+	font-size:13px;
+}
+ul.ListeNews li.currentPage a {
+	color:#db2484;
+	font-weight:bold;
+}
+/* -- Etapes de commandes ---*/
+
+.col-md-3.FondStep1Active , .col-md-3.FondStep1{ padding-left:0;}
+.col-md-3.FondStep2Active , .col-md-3.FondStep2{ padding-left:0;}
+.col-md-3.FondStep3Active , .col-md-3.FondStep3{ padding-left:0;}
+.col-md-3.FondStep4Active , .col-md-3.FondStep4{ padding-left:0;}
+
+/*#FicheProduit .col-md-5 {  padding: 0;}
+.row .fiche_nomproduit {   padding: 0;}
+*/
+.fiche_nomproduit .col-md-8 {   padding-right: 9px;padding-left: 2px;}
+.col-md-4.prix  {   
+	padding-left: 0;
+    	padding-right: 16px;
+}
+
+
+.table th , .table td  { text-align:center;}
+
+.table th.SupprimerItem {
+    background: url("../Img/sprite.png") no-repeat scroll 6px -1221px transparent;
+    padding-left: 18px;
+}
+.InputBtnPlus, .InputBtnMoins {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #CCCCCC;
+    border-radius: 0;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0.1) inset;
+    color: #FF0000;
+    font-family: 'Open Sans Condensed',sans-serif;
+    font-weight: 700;
+}
+
+.CommandeEtape1 {
+    	margin-top: 10px;
+    	padding: 0 ;
+
+}
+
+.LaQuantite input{
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0.1) inset;
+    font-size: 18px;   border: 1px solid #000000;
+    max-width: 50px;
+    text-align: center;
+}
+ table.table.TotalDetaille {
+	margin:20px 0;
+}
+.Total , table.table.TotalDetaille ,  table.table.TotalDetaille tr td,  table.table.TotalDetaille tr.TotalCommande  td ,  table.table.TotalDetaille tr.TotalAPayer  td {
+    	background-color: #db2484;
+    	color: #FFFFFF;
+    	font-size: 12px;
+   	text-transform:uppercase;
+	font-weight:bold;padding:10px;
+}
+
+
+
+
+.CommandeEtape1 .MontantTotal span.MontantTotalCmde{
+	float:left;
+	padding-right:0;
+}
+.CommandeEtape1 .MontantTotal span.MontantTotalTTC{
+	font-size:14px;
+	float:right;
+	padding-right:5px;
+}
+.EtapesCommande  {
+	padding:0;
+	margin:10px 0 0 0 ;
+	text-align: center;
+	overflow:hidden;
+}
+.CommandeEtape1 h1,.CommandeEtape2 h1,.CommandeEtape3 h1,.CommandeEtape4 h1 { 
+	border:none;
+	font-size:14px;
+}
+div.FondStep1 a,div.FondStep2 a,div.FondStep3 a,div.FondStep4 a,   div.FondStep1Active a, div.FondStep2Active a, div.FondStep3Active a, div.FondStep4Active a  {
+    	background: url("../Img/sprite.png") no-repeat  ;
+     	height:71px;
+    	position:relative;
+    	float: left;
+	z-index:200;
+	font-size:0;
+	width:245px;
+}
+
+
+div.FondStep1  a{
+	background-position:0 -1112px;
+}
+div.FondStep2  a{
+	background-position:-245px -1112px;
+}
+div.FondStep3  a{
+	background-position:-491px -1112px;
+}
+div.FondStep4  a{
+	background-position:-731px -1112px;
+}
+
+div.FondStep1Active  a{
+	background-position:0 -1028px;
+}
+div.FondStep2Active a{
+	background-position:-245px -1028px;
+}
+div.FondStep3Active  a{
+	background-position:-491px -1028px;
+}
+div.FondStep4Active a{
+	background-position:-731px -1028px;
+}
+.ColonneCreationCompte {
+}
+.CommandeEtape2 .ColonneIdentificationNew {
+       width: 48%;min-height: 140px;
+}
+.CommandeEtape2 .ColonneIdentificationClient .BoutonsCentre {
+     padding-top: 0;
+}
+.CommandeEtape2 .ColonneIdentificationClient .BoutonsCentre input.Connexion {
+    float: right;
+ 
+}
+.CommandeEtape2 .ColonneIdentificationNew .BoutonsCentre input {
+     margin-top:30px;
+     float:right;
+}
+
+.Etape1  , .Etape3 , .Etape4 {
+	 margin-top:10px;   
+	 overflow: hidden;
+	 }
+#CommandeEtape3 table.Logistique { 
+	width:100%;
+	border:1px solid #cccccc;
+ }
+#CommandeEtape3 a.ChooseMoreAdresses { 
+	/*width:140px;*/
+	float: right; 
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+#CommandeEtape3 div.LaLivraison {
+    border: 1px solid #CCCCCC;
+    float: right;
+    padding: 10px;
+}
+
+.Etape3 table.TotalDetaille  {
+	background:none;
+	padding-top: 10px;
+ 	float: right;
+}
+
+.Etape3 table.TotalDetaille tr {
+	background-color:#db2484; 
+}
+
+
+.CommandeEtape3 table.TotalDetaille td.label {width: 230px;}
+.CommandeEtape3 table.TotalDetaille td.val {
+	border-left:1px dotted #fff; margin-left:5px;
+}
+.CommandeEtape3 table.TotalDetaille tr.vide  {
+	height:20px;background-color:transparent;
+}
+
+.Etape1 .LigneBoutons .BoutonsDroite input { margin-right:0;}
+.Etape3 .LigneBoutons .BoutonsDroite input { margin-right:0;}
+
+
+
+.Etape4 table.TCodePromo , .Etape4 table.TotalDetaille , .Etape4 table.ModeDePaiement , .Etape4 table.AccepterCGV {
+	width:450px;
+}
+
+
+.Etape4 table.TotalDetaille  {
+	background:none;
+	padding-top: 10px;    float: right;
+}
+
+.Etape4 table.TotalDetaille tr {
+	background-color:#db2484; 
+}
+
+.CommandeEtape4 table.TotalDetaille td.label, .CommandeEtape4 table.TotalDetaille td.val {color:#fff;font-weight:bold;background:none;}
+.CommandeEtape4 table.TotalDetaille td.label {width: 264px;}
+.CommandeEtape4 table.TotalDetaille td.val {
+	border-left:1px dotted #fff; margin-left:5px;
+}
+.CommandeEtape4 table.TotalDetaille tr.vide  {
+	height:20px;background-color:transparent;
+}
+.Etape4 .LigneBoutons  { margin:0;}
+
+.Etape4 .BoutonsGauche {
+    margin-right: 0px;
+}
+.Etape4 .BoutonsDroite {
+    margin-right: 0px;
+}
+.Etape4 .LigneBoutons .BoutonsGauche input { 
+	margin-top:30px; 
+	margin-right:0px;
+}
+.Etape4 .LigneBoutons .BoutonsDroite input { 
+	margin-right:92px; 
+	margin-top:0;
+}
+
+/*--- Popup Panier---*/
+/* Affichage popup */
+#lemodal {
+	max-width:630px;background-color:#fff;max-height:500px;
+}
+.modal {
+    	bottom: 0;
+    	display: none;
+    	left: 0;
+   	margin: auto;
+    	overflow: hidden; 
+	position: fixed;
+    	right: 0;
+    	top: 0;
+    	z-index: 1040;
+}
+
+.modal-body {
+	max-height: 400px;
+ 	padding: 5px;
+	position: relative;
+	max-width: 600px;
+	overflow:hidden;
+	text-align:center;
+}
+
+.modal-header {
+    border-bottom: none;
+    padding: 9px 15px 20px;
+}
+
+
+.PopupPanier {
+    	max-width: 600px;
+    	padding: 10px;
+    	position: relative;
+	text-align:center;
+	background-color: #fff;
+	color:#db2484;font-size:14px;
+}
+
+.PopupPanier h3{ font-size:20px;}
+
+/*div.PopupBack {
+	position:fixed;
+	background-color:#000000;
+	width:100%;height:100%;
+	top:0;
+	left:0;
+	display:block;
+	z-index:200;
+	opacity:0.5;
+}
+.PopupPanier { position:relative;overflow:hidden;width: 625px;}
+.PopupPanier h3 { color:#393939;font-weight:bold;font-size:18px;}
+.PopupPanier .Image {
+	float:left
+	;margin-right:10px;
+	 margin-top: 10px;
+}
+.PopupPanier .Accro{
+	color: #DB2484;
+    font-size: 16px;
+	border-bottom:1px dotted #db2484;
+}
+.PopupPanier .BlocPanier { float:none;margin-right:10px; position:relative;overflow:hidden;}
+.PopupPanier .BlocPanier .NomTarif { 
+	position:relative;
+	overflow:hidden;
+	width:370px;
+}
+.PopupPanier .BlocPanier h2 {
+	text-transform:uppercase;
+	color:#db2484;
+	font-size:20px;
+	float:left;
+	width: 280px;
+}
+.PopupPanier .BlocPanier .Tarif { 
+	color: #db2484;
+    	float: right;
+    	font-size: 28px;
+    	font-weight: bold;
+    	margin-right: 10px;
+    	padding-top: 8px;}
+.PopupPanier .BlocPanier .Desc{ color:#db2484;font-size:18px;}
+.PopupPanier .BlocPanier .Decli { 
+	color:#db2484;
+	font-size:14px;
+	font-weight:bold;
+}
+.Popinfo{
+	height:60px;
+	margin-top: 15px;
+}
+.PopupPanier .BlocPanier .Qte { color:#db2484;font-size:14px; font-weight:bold;}
+
+*/
+.btnRight { 
+	position:relative;
+	text-align:right;
+	margin:10px;
+}
+/***********************************
+ * 	MENU
+ ***********************************/
+
+
+.nav li{list-style: none;}
+
+.navbar .nav > li > .dropdown-menu:before {
+    border-bottom: 7px solid rgba(0, 0, 0, 0.2);
+    border-left: 7px solid rgba(0, 0, 0, 0);
+    border-right: 7px solid rgba(0, 0, 0, 0);
+    content: "";
+    
+}
+.nav-collapse.collapse {
+    	height: auto !important;
+    	overflow: visible !important;
+	min-height: 40px;
+    	padding-left: 20px;
+    	padding-right: 20px;
+}
+.nav-collapse.collapse {
+   display:block;height:40px;
+}
+
+.navbar .nav > li {
+    float: left;
+}
+.nav li {
+    list-style: none outside none;
+}
+
+.navbar .nav > li > a {
+    color: #393939;
+    float: none;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px 13px;
+    text-decoration: none;
+    text-shadow: none;
+}
+
+.navbar .nav li.dropdown > .dropdown-toggle .caret {
+    border-bottom-color: #777777;
+    border-top-color: #777777;
+}
+.navbar .nav .dropdown-toggle .caret {
+    margin-top: 8px;
+}
+.navbar .btn-navbar {
+    background-color: #EDEDED;
+    background-image: linear-gradient(to bottom, #F2F2F2, #E5E5E5);
+    background-repeat: repeat-x;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1) inset, 0 1px 0 rgba(255, 255, 255, 0.075);
+    color: #FFFFFF;
+    display: none;
+    float: right;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 7px 10px;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+.nav > li {
+	position:inherit;
+}
+.dropdown-menu {
+	position: absolute;
+	top: 44px;
+	left: 0;
+	z-index: 1000;
+	display: none;
+	float: left;
+	min-width: 100%;
+	padding: 9px 0;
+	margin: -4px 0 0;
+	list-style: none;
+	background-color: #ffffff;
+	border: 1px solid #ccc;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius:0px;
+	-webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+	-webkit-background-clip: padding-box;
+	-moz-background-clip: padding;
+	background-clip: padding-box;
+}
+.dropup, .dropdown,.navbar .nav,.collapse  {
+	position: inherit;
+}
+.navbar .nav > li > .dropdown-menu:after{
+	border-right:0px solid transparent;
+	border-left:0px solid transparent;
+}
+.navbar .nav > li > .dropdown-menu:before{
+	border-right:0px solid transparent;
+	border-left:0px solid transparent;
+}
+
+
+
+/*plan du site*/
+ul.SitemapLvl1 li {
+    list-style: none outside none;
+}
+#Sitemap{
+	margin-top:20px;
+	width:20%;
+}
+a.SitemapLvl1 {
+   border-bottom:1px dotted #cccccc;
+    display: block;
+    font-size: 13px;
+    margin-bottom: 10px;
+    padding: 2px 0;
+}
+.fiche_retourliste{
+	margin-bottom:20px;
+}
+/** Fiche produit **/
+.prix{
+	text-align:right;
+}
+ span.barre{
+	text-decoration: line-through;
+}
+
+
+
+
+div.Pagination {
+	margin: 10px 0;padding:0 10px 0 0;
+	text-align: center;
+	background: url('../Img/sprite.png') repeat-x 0 -1321px ;
+}
+
+div.PaginationBody {
+	background: white;
+	display: inline;
+	padding: 0 10px;
+}
+
+div.Pagination a {
+	padding: 0 10px;
+	margin: 0 1px;
+}
+
+div.Pagination a.PagiFirst, div.Pagination a.PagiPrev, div.Pagination a.PagiNext, div.Pagination a.PagiLast {
+	background: url("../Img/sprite.png") no-repeat white;width:46px;
+}
+
+div.Pagination a.PagiFirst {
+	background-position:0 -1358px;
+}
+
+div.Pagination a.PagiPrev {
+	background-position:  -23px -1358px  ;
+}
+
+div.Pagination a.PagiNext {
+	background-position:-126px -1358px  ;
+}
+
+div.Pagination a.PagiLast {
+	background-position:   -148px -1358px  ;
+}
+

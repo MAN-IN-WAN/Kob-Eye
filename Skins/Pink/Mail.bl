@@ -1,0 +1,38 @@
+<html>
+<style>
+td a {
+    	background-color: #E9B425;
+    	font-weight:bold;
+    	color: #FFFFFF;
+    	cursor: pointer;
+    	display: block;
+    	font-size: 14px;
+    	height: 24px;
+    	padding: 10px;
+    	text-align: center;
+    	text-decoration: none;
+    	width: 90px;
+	font-family:aria;
+}
+</style>
+
+	<body>
+		<table width="700" cellpadding="5" cellspacing="0" style="margin:auto;font-family:arial;" bgcolor="#5e183c">
+			<tr>	
+				<td style="text-align:left;vertical-align:top;">
+					<img src="[!Domaine!]/[!CONF::MODULE::QCM::QCMLOGO!]"/>
+				</td>
+			</tr>			
+			<tr>
+				<td align="center" style="color:#fff;font-size:12px;font-weight:normal;" >
+					Une enquête vous à été soumise.  Pour y accéder, merci de cliquer sur le lien ci-dessous.<br />
+				</td>
+			</tr>
+			<tr> 
+				<td  align="center"><font color="#ffffff">[DATA]</font></td>
+			</tr>
+		<table>
+	</body>
+</html>		
+
+

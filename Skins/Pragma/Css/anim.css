@@ -1,0 +1,79 @@
+#Anim {
+	position: relative;
+	height:279px;
+}
+
+#AnimCadre {
+	position: relative;
+	overflow: hidden;
+}
+
+#Anim .AnimCadreAccueil img {
+	position: absolute;
+	top: 0;
+	right: 30px;
+	bottom: 0;
+	left: 30px;
+}
+
+#AnimMasque {
+	background: url("../Img/Masque.png") no-repeat;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	left: 0;
+}
+
+#AnimLegende {
+	background: url("../Img/Legende.png");
+    bottom: 0;
+    font-size: 18px;
+    font-family: Arial;
+    left: 0;
+    padding: 5px 12px 5px 45px;
+    position: absolute;
+    right: 0;
+        height: 20px;
+}
+
+#AnimPages {
+	position: absolute;
+	right: 35px;
+	bottom: 5px;
+}
+
+#AnimPages div.AnimNumber {
+	display: block;
+	float: left;
+	position: relative;
+	width: 19px;
+	text-align: center;
+	padding: 1px 0;
+	margin-right: 5px;
+	background:url("../Img/Btn.png") no-repeat;
+	color: white;
+	cursor: pointer;
+}
+
+#AnimPages div.AnimNumberActive {
+	background:url("../Img/BtnActif.png") no-repeat;
+	cursor: auto;
+}
+
+#AnimDefile a {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+#Anim #LogoBBC {
+	background: url("../Img/sprite.png") no-repeat -904px -257px;
+	height: 53px;
+	position: absolute;
+	right: 10px;
+	top: 5px;
+	width: 53px;
+}

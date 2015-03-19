@@ -1,0 +1,6 @@
+<ACTIONS>
+	<ACTION Name="Plano" Object="Projet" Period="Y/m/d,Y/m,Y" TitrePeriod="Jour,Mois,Annee">
+		<FUNCTION Name="NbProjets" Type="Total" Event="New" Filter="" Unit="Projet" Description="Activité des planogrammes"  Graph="bar_glass" />
+		<FUNCTION Name="ClassementProjets" Type="Classement" Identifier="userCreate" Increment="1" GroupBy="userCreate"  Total="Total" Event="New" Filter="" Description="Planogramme par utilisateur" IdUnit="User"/>
+	</ACTION>
+</ACTIONS>

@@ -1,0 +1,1494 @@
+<SCHEMA>
+
+	<!-- THIRD -->
+
+	<OBJECTCLASS title="Third" order="Company" orderType="ASC" logEvent="1" color="0x4444aa" searchType="plaintext" description="Third Party" driver="mysql" AccessPoint="1" Icon="[None]" Class="Modules/Murphy/Class/Third.class.php">
+		<INTERFACES name="accordion2">
+			<FORM form="WidgetWorkFlow" module="Murphy" objectClass="Third" dirtyParent="1">WorkFlow</FORM>
+		</INTERFACES>
+		<INTERFACES name="accordion">
+			<FORM form="WidgetContact" module="Murphy" objectClass="Contact" dirtyParent="1">Contacts</FORM>
+			<FORM form="WidgetDocument" module="Murphy" objectClass="Document" dirtyParent="1">Documents</FORM>
+			<FORM form="WidgetComments" module="Murphy" objectClass="Comments" dirtyParent="1">Comments</FORM>
+			<FORM form="WidgetMail" module="Mail" objectClass="Message" dirtyParent="1">Mails</FORM>
+			<FORM form="WidgetTask" module="Murphy" objectClass="Third" dirtyParent="1">Tasks</FORM>
+			<FORM form="formChildren" module="Murphy" objectClass="SampleRequest" keyName="SampleRequestThirdId" dirtyParent="1">Samples Requests</FORM>
+		</INTERFACES>
+		<FILTER name="My clients">Initiales=[!Systeme::User::Initiales!]</FILTER>
+		<FILTER name="Everybody" view="NOVIEW" color="0x468847"></FILTER>
+		<FILTER name="Transporters" view="NOVIEW" color="0x468847"><![CDATA[Transporter=1]]></FILTER>
+		<FILTER name="Suppliers" view="NOVIEW" color="0x468847"><![CDATA[Supplier=1]]></FILTER>
+		<FILTER name="Buyers" view="NOVIEW" color="0x468847"><![CDATA[Buyer=1]]></FILTER>
+		<FILTER name="Partners" view="NOVIEW" color="0x468847"><![CDATA[Partner=1]]></FILTER>
+		<FUNCTION type="vseparator" formOnly="1">s0</FUNCTION>
+		<FUNCTION name="CreateUser" formOnly="1" icon="user" label="Create user" description="Create user" stateGroup="savedIdle">
+			<PROPERTIES type="varchar" length="255" obligatoire="1" category="New user" description="Login">login</PROPERTIES>
+			<PROPERTIES type="varchar" length="255" obligatoire="1" category="New user" description="Password">password</PROPERTIES>
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"interface":1,
+						"method":"query","data":{"dirtyChild":1,"module":"Murphy","objectClass":"Third","form":"Functions/CreateUser.json"},
+						"function":"CreateUser","args":"iv:login,iv:password"}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="ChangeBroker" formOnly="1" icon="mwc_proposal" label="Change broker on documents" description="" stateGroup="savedIdle">
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"confirm":{"text":"Update enquiries, proposals and contracts with new broker"},
+						"method":"query","data":{"dirtyChild":1,"module":"Murphy","objectClass":"Third"},
+						"function":"ChangeBroker"}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<PROPERTIES category="Third"	type="varchar" lenght="5" list="1" searchOrder="1" displayOrder="1" listWidth="50" auto="1"		>Reference</PROPERTIES>
+		<PROPERTIES category="Third"	type="varchar"		list="1" searchOrder="1" displayOrder="1" formLabel="1" listWidth="250" filterMode="generic" obligatoire="1"		>Company</PROPERTIES>
+		<PROPERTIES category="Third"	type="text"																						>Address</PROPERTIES>
+		<PROPERTIES category="Third"	type="varchar"		description=" "																>Address2</PROPERTIES>
+		<PROPERTIES category="Third"	type="varchar"		list="2" searchOrder="2"	filterMode="generic"							>Town</PROPERTIES>
+		<PROPERTIES category="Third"	type="varchar"		description="Post code"														>PostCode</PROPERTIES>
+		<PROPERTIES category="Third"	type="int"			query="Murphy/Country/Inactive=0::Id::Country"											>Country</PROPERTIES>
+		<PROPERTIES category="Contact"	type="int" default="0" query="Systeme/Role/MWC_BROKER/Group/*/User::Id::Initiales" description="Broker"		>BrokerId</PROPERTIES>
+		<PROPERTIES category="Contact"	type="int"	default="0"	query="Murphy/Contact::Id::FullName" masterObject="Third" masterField="Id" description="CA contact">ContactId</PROPERTIES>
+		<PROPERTIES category="Contact"	type="int"	default="0"	query="Murphy/Contact::Id::FullName" masterObject="Third" masterField="Id" description="Financial contact">FIContactId</PROPERTIES>
+		<PROPERTIES category="Contact"	type="varchar"																					>Phone</PROPERTIES>
+		<PROPERTIES category="Contact"	type="varchar"																					>Fax</PROPERTIES>
+		<PROPERTIES category="Contact"	type="email"																					>Email</PROPERTIES>
+		<PROPERTIES category="Contact"	type="varchar"																					>WebSite</PROPERTIES>
+		<FKEY card="0,1" module="Systeme" data="User,Id" category="Contact" description="MWC User" hidden="1"							>ThirdUserId</FKEY>
+		<PROPERTIES category="Contact"	type="varchar"																					>Login</PROPERTIES>
+		<PROPERTIES category="Contact"	type="varchar"																					>Password</PROPERTIES>
+		<PROPERTIES category="Finance"	type="int"	default="0"	query="Murphy/Currency::Id::Currency"									>Currency</PROPERTIES>
+		<PROPERTIES category="Finance"	type="varchar"	lentgh="30"	description="VAT number"											>VATNumber</PROPERTIES>
+		<PROPERTIES category="Finance"	type="boolean"	description="VAT charged"														>VATCharged</PROPERTIES>
+		<PROPERTIES category="Finance"	type="varchar"	length="30"								description="Excise"					>Excise</PROPERTIES>
+		<PROPERTIES category="Finance"	type="varchar"	length="30"								description="FDA"						>FDA</PROPERTIES>
+		<PROPERTIES category="Finance"	type="text"												description="Bank information"			>BankInfo</PROPERTIES>
+		<PROPERTIES category="Finance"	type="varchar"	length="30"								description="IBAN"						>Iban</PROPERTIES>
+		<PROPERTIES category="Finance"	type="varchar"	length="30"								description="SWIFT"						>Swift</PROPERTIES>
+		<PROPERTIES category="Type"		type="boolean"	default="0"	searchOrder="6"	listDescr="By"										>Buyer</PROPERTIES>
+		<PROPERTIES category="Type"		type="boolean"	default="0"	searchOrder="7"	listDescr="Su"										>Supplier</PROPERTIES>
+		<PROPERTIES category="Type"		type="boolean"	default="0"	searchOrder="8"	listDescr="Tr"										>Transporter</PROPERTIES>
+		<PROPERTIES category="Type"		type="boolean"	default="0"	searchOrder="9"	listDescr="Br"										>Broker</PROPERTIES>
+		<PROPERTIES category="Type"		type="boolean"	default="0"	searchOrder="10" listDescr="HR"	description="Hotel / Restaurant"	>Hotel</PROPERTIES>
+		<PROPERTIES category="Type"		type="boolean"	default="0"	searchOrder="11" listDescr="Ad"										>Administration</PROPERTIES>
+		<PROPERTIES category="Type"		type="boolean"	default="0"	 searchOrder="12" listDescr="Pn"									>Partner</PROPERTIES>
+		<PROPERTIES category="Type"		type="boolean"	default="0"	 searchOrder="13" listDescr="Ac"									>Accreditation</PROPERTIES>
+		<PROPERTIES category="hidden"	type="int"	hidden="1">oldId</PROPERTIES>
+		<VIEW title="ThirdList" default="1">
+			<OBJECTCLASS title="Third" select="Id,Reference,Company,Town" filters="">
+				<JOIN type="outer" module="Murphy" title="Country" on="Country" target="Id">
+					<PROPERTIES type="image" list="3" listWidth="20" listDescr=".">Acronym</PROPERTIES>
+					<PROPERTIES type="varchar" alias="Acronym_ToolTip">Country</PROPERTIES>
+					<PROPERTIES type="varchar" query="Murphy/Country/Inactive=0::Country::Country" searchOrder="3" list="3" >Country</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" module="Murphy" title="Contact" on="ContactId" target="Id">
+					<PROPERTIES type="varchar" searchOrder="5" list="5" listWidth="200" filterMode="generic" description="Contact">FullName</PROPERTIES>
+					<PROPERTIES type="varchar" list="6" description="eMail">Email</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" module="Systeme" title="User" on="BrokerId" target="Id">
+					<PROPERTIES type="varchar" length="10" query="Systeme/Role/MWC_BROKER/Group/*/User::Initiales::Initiales" searchOrder="4" list="4" description="Broker" listWidth="80">Initiales</PROPERTIES>
+				</JOIN>
+				<ORDERBY>Date</ORDERBY>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Contact" order="FullName" orderType="ASC" logEvent="1" searchType="plaintext" driver="mysql" description="Contacts" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png" Class="Modules/Murphy/Class/Contact.class.php">
+		<FKEY card="0,1" data="Third,Id" useKeyName="1" category="Identity" position="accordion" description="Third party" 			>ContactThirdId</FKEY>
+		<PROPERTIES category="Identity"	type="varchar" 															>Surname</PROPERTIES>
+		<PROPERTIES category="Identity"	type="varchar" description="First name"									>FirstName</PROPERTIES>
+		<PROPERTIES category="Identity"	type="varchar" auto="1" searchOrder="1" filterMode="generic" list="3" formLabel="1" description="Full name"	>FullName</PROPERTIES>
+		<PROPERTIES category="Identity"	type="varchar" length="30" searchOrder="3" list="4" description="Job title"	listWidth="100">JobTitle</PROPERTIES>
+		<PROPERTIES category="Identity"	type="varchar"		values="English,Français"							>Language</PROPERTIES>
+		<PROPERTIES category="Contact"	type="varchar"		length="20"	list="5" listWidth="100"				>Phone</PROPERTIES>
+		<PROPERTIES category="Contact"	type="varchar"		length="20"	list="6" listWidth="100"				>Mobile</PROPERTIES>
+		<PROPERTIES category="Contact"	type="varchar"		length="20"	description="Home number"				>HomeNumber</PROPERTIES>
+		<PROPERTIES category="Contact"	type="varchar"		length="20"											>Fax</PROPERTIES>
+		<PROPERTIES category="Contact"	type="varchar" searchOrder="6" list="7" filterMode="generic" description="eMail" >Email</PROPERTIES>
+		<PROPERTIES category="Other"	type="date"																>Birthday</PROPERTIES>
+		<PROPERTIES category="Other"	type="boolean" default="0" hidden="1" list="1"	description="CA contact" readOnly="1" listDescr="Ca">CAContact</PROPERTIES>
+		<PROPERTIES category="Other"	type="boolean" default="0" hidden="1" list="2"	description="FI contact" readOnly="1" listDescr="Fi">FIContact</PROPERTIES>
+		<PROPERTIES category="Other"	type="text"																>Comments</PROPERTIES>
+		<RKEY card="0,n" module="Mail" data="Message,Id" useKeyName="1" hidden="1" category="Other" description="Mail" >ContactIdMessage</RKEY>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="Comments" driver="mysql" Icon="[None]" order="m.`tmsCreate`" orderType="DESC">
+		<PROPERTIES category="" type="date" list="1" 	searchOrder="1"	default="[!TMS::Now!]"							>Date</PROPERTIES>
+		<PROPERTIES category="" type="text" list="2" 	searchOrder="2"								>Comments</PROPERTIES>
+		<FKEY card="0,1" data="Third,Id" position="accordion" description="Third">CommentsThirdId</FKEY>
+		<VIEW title="CommentsList" default="1">
+			<OBJECTCLASS title="Comments">
+				<PROPERTIES category="" type="int" searchOrder="1"								>Id</PROPERTIES>
+				<PROPERTIES category="" type="date" list="1" 	searchOrder="1"								>Date</PROPERTIES>
+				<PROPERTIES category="" type="text" list="2" 	searchOrder="2"								>Comments</PROPERTIES>
+				<JOIN type="inner" module="Systeme" title="User" on="userCreate" target="Id">
+					<PROPERTIES type="date" searchOrder="3" list="5" >Nom</PROPERTIES>
+					<PROPERTIES type="varchar" searchOrder="4" list="6" >Prenom</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Notation" driver="mysql" Icon="[None]" >
+		<PROPERTIES category="Note"		type="int"		order="11"	searchOrder="1"						>Notation</PROPERTIES>
+		<PROPERTIES category="Note"		type="text"		order="12"										>Comments</PROPERTIES>
+		<FKEY card="1,1" data="Third,Id" >NotationThirdId</FKEY>
+	</OBJECTCLASS>
+
+<!--
+	<OBJECTCLASS title="MailContact" description="Mail" driver="mysql" Icon="[None]" Interface="FormMessage" Class="Modules/Murphy/Class/MailContact.class.php">
+		<PROPERTIES category="Mail" type="varchar" length="5" 												>Type</PROPERTIES>
+		<FKEY card="1,1" data="Contact,Id" category="Mail" description="Contact"  position="accordion" childDescription="Mail"	>MailContactContactId</FKEY>
+		<FKEY card="1,1" module="Mail" data="Message,Id" category="Mail" hidden="1"							>MailContactMessageId</FKEY>
+		<FKEY card="1,1" module="Systeme" data="User,Id" category="Mail" description="User"				 	>MailContactUsertId</FKEY>
+		<PROPERTIES category="Mail" type="boolean" default="0" listDescr="R"		>Read</PROPERTIES>
+		<PROPERTIES category="Mail" type="boolean" default="0" listDescr="A"		>Answered</PROPERTIES>
+		<PROPERTIES category="Mail" type="boolean" default="0" listDescr="D"		>Deleted</PROPERTIES>
+		<VIEW title="MailList" default="1">
+			<OBJECTCLASS title="MailContact" select="Id,Read,Answered,Deleted" filters="">
+				<JOIN type="outer" module="Mail" title="Message" on="MailContactMessageId" target="Id">
+					<PROPERTIES type="date" searchOrder="5" list="5" format="time" listWidth="95">Date</PROPERTIES>
+					<PROPERTIES type="varchar" searchOrder="6" list="6" >From</PROPERTIES>
+					<PROPERTIES type="varchar" searchOrder="7" list="7" >To</PROPERTIES>
+					<PROPERTIES type="varchar" searchOrder="8" list="8" listWidth="300" >Subject</PROPERTIES>
+				</JOIN>
+				<ORDERBY>Date</ORDERBY>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+-->
+
+	<!-- GESTION COMMERCIALE -->
+
+	<OBJECTCLASS title="Enquiry" order="Id" orderType="DESC" color="0x468847" logEvent="1" labelPrefix="Dos:" description="Inquiries" driver="mysql" searchType="plaintext" AccessPoint="1" master="1" Icon="[None]" Class="Modules/Murphy/Class/Enquiry.class.php">
+		<INTERFACES name="accordion2">
+			<FORM form="WidgetWorkFlow" module="Murphy" objectClass="Enquiry" dirtyParent="1">WorkFlow</FORM>
+		</INTERFACES>
+		<INTERFACES name="accordion">
+			<FORM form="WidgetMail" module="Mail" objectClass="Message" dirtyParent="1">Mails</FORM>
+			<FORM form="WidgetDocument" module="Murphy" objectClass="Document" dirtyParent="1">Documents</FORM> 
+			<FORM form="WidgetTask" module="Murphy" objectClass="Enquiry" dirtyParent="1">Tasks</FORM>
+		</INTERFACES>
+		<FILTER name="My enquiries" view="BROKER">Initiales=[!Systeme::User::Initiales!]</FILTER>
+		<FILTER name="All enquiries" view="NOVIEW" color="0x468847"></FILTER>
+		<FILTER name="Current enquiries" view="NOVIEW" color="0x3A87AD"><![CDATA[Status<4]]></FILTER>
+		<FILTER name="Archived enquiries" view="NOVIEW" color="0x999999"><![CDATA[Status>=4]]></FILTER>
+		<FUNCTION type="vseparator" formOnly="1">s0</FUNCTION>
+		<FUNCTION name="supplierProposal" formOnly="1" icon="mwc_proposal" label="Request offer from supplier" description="Ask supplier for proposal" stateGroup="savedIdle">
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"loadFormWithID","params":{"kobeyeClass":{"module":"Murphy","objectClass":"Enquiry","form":"FormProposal.json"}}}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION type="vseparator" formOnly="1">s1</FUNCTION>
+		<FUNCTION name="sampleRequest" formOnly="1" icon="mwc_wineType" label="Sample request" description="Sample request" stateGroup="savedIdle">
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"loadFormWithID","params":{"kobeyeClass":{"module":"Murphy","objectClass":"Enquiry","form":"FormSampleReq.json"}}}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="localProxy" formOnly="1" localProxy="1" description="filters inactive data in dicos">
+			<ACTION>
+				<![CDATA[
+					"oldId":{"action":"invoke","method":"groupState","params":{"group":"oldId","property":"applyFilter","conditions":[{"compare":"oldId<=0"}]}}
+				]]>
+			</ACTION>
+		</FUNCTION>
+	<CATEGORY title="Enquiry">
+		<FKEY category="Enquiry" card="1,1" data="Third,Id" obligatoire="1" exoFields="ContactId::,BrokerId::,Company::BuyerCompany" dataFilter="Buyer=1"	
+													description="Buyer" childDescription="Enquiry: Buyer" access="1"		>EnquiryBuyerId</FKEY>
+		<PROPERTIES category="Enquiry" type="varchar" notInLayout="1" formLabel="1">BuyerCompany</PROPERTIES>
+		<PROPERTIES category="Enquiry" type="int" default="0" query="Murphy/Contact::Id::FullName" obligatoire="1"
+										masterObject="Third" masterField="Third.EnquiryBuyerId" description="Buyer contact" >ContactId</PROPERTIES>
+		<PROPERTIES category="Enquiry" type="int" default="0" query="Systeme/Role/MWC_BROKER/Group/*/User::Id::Initiales" description="Broker"			>BrokerId</PROPERTIES>
+		<PROPERTIES category="Enquiry" type="varchar" searchOrder="1"	displayOrder="1" readOnly="1" formToolTip="1" list="20" listWidth="105">Reference</PROPERTIES>
+		<PROPERTIES category="Enquiry" type="date" defaultValue="Now" searchOrder="2"	list="3"							>Date</PROPERTIES>
+		<PROPERTIES category="Enquiry" type="varchar" 									description="Buyer reference"		>BuyerRef</PROPERTIES>
+		<PROPERTIES category="Enquiry" type="int"	defaultValue="1" query="Murphy/Status/Type=0::Id::Status"				>Status</PROPERTIES>
+	</CATEGORY>
+	<CATEGORY title="Product">
+		<PROPERTIES category="Product"	type="int"	default="0" query="Murphy/Country/WineProducer=1::Id::Country" exoFilters="Id::Appellation" description="Country"	>CountryWine</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0"	query="Murphy/Varietal::Id::Varietal" dataFilter="Inactive=0" exoFilters="Colours::Colour"	>Varietal</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0" query="Murphy/Colour::Id::Colour" dataFilter="Id~_filter_"	>Colour</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0"	query="Murphy/Appellation::Id::Appellation" dataFilter="Country=_filter_"	>Appellation</PROPERTIES>
+		<PROPERTIES category="Product"	type="varchar" length="10" list="9" width="100"						listWidth="50" 	>Vintage</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0"	query="Murphy/Filtration::Id::Filtration" 					>Filtration</PROPERTIES>
+		<PROPERTIES category="Product"	type="float" format="0dec"	list="10" listWidth="80" obligatoire="1" 
+																		description="Volume / Quantity" listDescr="Volume"	>Volume</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0"	query="Murphy/Quantity::Id::Quantity"  dataFilter="Inactive=0" stateGroup="oldId"
+														defaultValue="1" obligatoire="1" 				description="Purchasing unit"	>Quantity</PROPERTIES>
+		<PROPERTIES category="Product"	type="float" format="2dec" auto="1" description="Volume in litres"					>Litres</PROPERTIES>
+	</CATEGORY>
+	<CATEGORY title="Shipment">
+		<PROPERTIES category="Shipment"	type="date" description="Shipping (All by)" list="11" listDescr="Shipping" obligatoire="0" >ShippingDate</PROPERTIES>
+		<PROPERTIES category="Shipment"	type="int"	default="0"	query="Murphy/Transportation::Id::Transportation" defaultValue="1"			>Transportation</PROPERTIES>
+		<PROPERTIES category="Shipment"	type="int"	default="0"	query="Murphy/IncoTerm::Id::Inco" description="INCO Term"	>Inco</PROPERTIES>
+	</CATEGORY>
+	<CATEGORY title="Finance">
+		<FKEY category="Finance" card="0,1" data="Third,Id" hideChild="1" description="Billing third part" dataFilter="Partner=1"	
+																		childDescription="Enquiry: Third"					>EnquiryBillingId</FKEY>
+		<PROPERTIES category="Finance"	type="boolean" description="Buyer billed"											>BuyerBilled</PROPERTIES>
+		<PROPERTIES category="Finance"	type="price" description="Commission rate" default="2"								>TotalCom</PROPERTIES>
+		<PROPERTIES category="Finance"	type="price" description="Unit price" obligatoire="0"								>UnitPrice</PROPERTIES>
+		<PROPERTIES category="Finance"	type="int"	default="0"	query="Murphy/Currency::Id::Currency" obligatoire="0"		>Currency</PROPERTIES>
+		<PROPERTIES category="Finance"	type="int"	hidden="1" default="0"	query="Murphy/Unit::Id::Unit" dataFilter="Inactive=0" stateGroup="oldId"
+																					description="Sale unit" obligatoire="0"	>Unit</PROPERTIES>
+
+		<PROPERTIES category="Finance"	type="int"	default="0"	query="Murphy/PaymentTerm::Id::Payment"						>Payment</PROPERTIES>
+	</CATEGORY>
+	<CATEGORY title="Other">
+		<PROPERTIES category="Other"	type="text"	description="Public notes"												>PublicNotes</PROPERTIES>
+		<PROPERTIES category="Other"	type="text"	description="Internal notes"											>InternalNotes</PROPERTIES>
+		<RKEY card="1,1" module="Mail" data="Message,Id" useKeyName="1" category="Other" description="Mail" hidden="1" position="accordion"	>EnquiryIdEnquiry</RKEY>
+		<PROPERTIES category="Other"	type="int" default="0" defaultValue="0" notInLayout="1" forceEvent="1"				>oldId</PROPERTIES>
+		<PROPERTIES category="Other"	type="date" description="Offer deadline" list="12" listDescr="Deadline" obligatoire="0" default="[!TMS::Now:+2592000!]">OfferDeadline</PROPERTIES>
+	</CATEGORY>
+		<VIEW title="EnquiryList" default="1" filters="Initiales=[!Systeme::User::Initiales!]">
+			<OBJECTCLASS title="Enquiry" select="Id,Reference,Date,Vintage,Volume,ShippingDate,Quantity,Filtration">
+				<JOIN type="inner" title="Status" on="Status" target="Id">
+					<PROPERTIES type="int" alias="StatusId">Id</PROPERTIES>
+					<PROPERTIES type="varchar" query="Murphy/Status/Type=0::Status::Status" searchOrder="3">Status</PROPERTIES>
+					<PROPERTIES type="varchar" alias="StatusColor">Color</PROPERTIES>
+					<PROPERTIES type="image" list="1" listWidth="20" listDescr="." alias="StatusIcon">Icon</PROPERTIES>
+					<PROPERTIES type="varchar" listDescr="Status_ToolTip" alias="StatusIcon_ToolTip">Status</PROPERTIES>
+				</JOIN>
+				<JOIN type="inner" title="Third" on="EnquiryBuyerId" target="Id">
+					<PROPERTIES type="varchar" searchOrder="4" list="4" filterMode="generic" listWidth="200" description="Buyer">Company</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Country" on="CountryWine" target="Id">
+					<PROPERTIES type="image" list="5" listWidth="20" listDescr=".">Acronym</PROPERTIES>
+					<PROPERTIES type="varchar" searchOrder="5" query="Murphy/Country/WineProducer=1::Country::Country" filterMode="generic" listWidth="100" >Country</PROPERTIES>
+					<PROPERTIES type="varchar" alias="Acronym_ToolTip">Country</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Varietal" on="Varietal" target="Id">
+					<PROPERTIES type="varchar" query="Murphy/Varietal::Varietal::Varietal" searchOrder="6" list="6" filterMode="generic" listWidth="150" >Varietal</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Colour" on="Colour" target="Id">
+					<PROPERTIES type="image" list="7" listDescr="C" listWidth="20" alias="ColourIcon">Icon</PROPERTIES>
+					<PROPERTIES type="varchar" query="Murphy/Colour::Colour::Colour" searchOrder="7" listWidth="60" >Colour</PROPERTIES>
+					<PROPERTIES type="varchar" alias="ColourIcon_ToolTip">Colour</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Appellation" on="Appellation" target="Id">
+					<PROPERTIES type="varchar" list="8" filterMode="generic" listWidth="150" >Appellation</PROPERTIES>
+				</JOIN>
+                <JOIN type="outer" title="Filtration" on="Filtration" target="Id">
+                	<PROPERTIES type="varchar" >Filtration</PROPERTIES>
+        		</JOIN>
+                <JOIN type="outer" title="Quantity" on="Quantity" target="Id">
+        			<PROPERTIES type="varchar" list="11" listWidth="70" listDescr="Unit" >Quantity</PROPERTIES>
+                </JOIN>
+                <JOIN type="outer" module="Systeme" title="User" on="BrokerId" target="Id">
+                    <PROPERTIES type="varchar" length="12" query="Systeme/Role/MWC_BROKER/Group/*/User::Initiales::Initiales" searchOrder="8" list="12" description="Broker" listWidth="50">Initiales</PROPERTIES>
+                </JOIN>
+			</OBJECTCLASS>
+			<!-- CAS GROUPBY <GROUPBY>Enseigne.Id</GROUPBY> -->
+		</VIEW>
+		<VIEW title="BROKER" default="0" filters="Initiales=[!Systeme::User::Initiales!]">
+			<OBJECTCLASS title="Enquiry" select="Id">
+                <JOIN type="outer" module="Systeme" title="User" on="BrokerId" target="Id">
+                    <PROPERTIES type="varchar" >Initiales</PROPERTIES>
+                </JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Proposal" order="Id" orderType="DESC" color="0x5D183B" searchType="plaintext" logEvent="1" labelPrefix="Pro:" description="Supplier Offers" driver="mysql" Icon="[None]" Class="Modules/Murphy/Class/Proposal.class.php">
+		<INTERFACES name="accordion">
+			<FORM form="formChildren" module="Murphy" objectClass="SampleRequest" keyName="SampleRequestProposalId" dirtyParent="1">Samples Requests</FORM>
+		</INTERFACES>
+		<FILTER name="My proposals" view="BROKER" >Initiales=[!Systeme::User::Initiales!]</FILTER>
+		<FILTER name="All proposals" view="NOVIEW" color="0x468847"></FILTER>
+		<FILTER name="Current proposals" view="NOVIEW" color="0x3A87AD"><![CDATA[Status<27]]></FILTER>
+		<FILTER name="Archived proposals" view="NOVIEW" color="0x999999"><![CDATA[Status>=27]]></FILTER>
+		<FUNCTION type="vseparator" formOnly="1">s0</FUNCTION>
+		<FUNCTION name="AnswerProposal" formOnly="1" icon="mwc_proposal" label="Answer proposal" description="Answer proposal" stateGroup="savedIdle">
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"method":"query","data":{"dirtyChild":1,"module":"Murphy","objectClass":"Proposal"},
+						"function":"AnswerProposal"}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="ValidateProposal" formOnly="1" icon="validate" label="Validate and send to buyer" description="Validate" stateGroup="savedIdle">
+			<PROPERTIES type="boolean" category="Validation" description="Show supplier to buyer">showSupplier</PROPERTIES>
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"interface":1,
+						"method":"query","data":{"dirtyChild":1,"module":"Murphy","objectClass":"Proposal","form":"Functions/ValidateProposal.json"},
+						"function":"ValidateProposal","args":[{"interfaceValues":["showSupplier"]}]}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION type="vseparator" formOnly="1">s1</FUNCTION>
+		<FUNCTION name="AcceptProposal" formOnly="1" icon="contract" label="Accept proposal" description="Accept proposal" stateGroup="savedIdle">
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"confirm":{"text":"Accept proposal"},
+						"method":"query","data":{"dirtyChild":1,"module":"Murphy","objectClass":"Proposal"},
+						"function":"AcceptProposal"}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+<!--
+		<FUNCTION name="AcceptWithApproval" formOnly="1" icon="contract" label="Accept with approval" description="Accept with approval" stateGroup="savedIdle">
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"confirm":{"text":"Accept proposal"},
+						"method":"query","data":{"dirtyChild":1,"module":"Murphy","objectClass":"Proposal"},
+						"function":"AcceptWithApproval"}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+-->
+		<FUNCTION name="RefuseProposal" formOnly="1" icon="mwc_proposal" label="Refuse proposal" description="Refuse proposal" stateGroup="savedIdle">
+			<PROPERTIES type="text" category="Confirmation" description="Comments to supplier">comments</PROPERTIES>
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"interface":1,
+						"method":"query","data":{"dirtyChild":1,"module":"Murphy","objectClass":"Proposal","form":"Functions/RefuseProposal.json"},
+						"function":"RefuseProposal","args":[{"interfaceValues":["comments"]}]}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+<!--		<FUNCTION name="ReviseProposal" formOnly="1" icon="mwc_proposal" label="Revise proposal" description="Revise proposal" stateGroup="savedIdle">
+			<PROPERTIES type="text" category="Confirmation" description="Comments to supplier">comments</PROPERTIES>
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"interface":1,
+						"method":"query","data":{"dirtyChild":1,"module":"Murphy","objectClass":"Proposal","form":"Functions/ReviseProposal.json"},
+						"function":"ReviseProposal","args":[{"interfaceValues":["comments"]}]}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+-->
+		<FUNCTION type="vseparator" formOnly="1">s2</FUNCTION>
+		<FUNCTION name="CreateContract" formOnly="1" icon="mwc_proposal" label="Create contract" description="Create contract" stateGroup="savedIdle">
+			<ACTION>
+			</ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"confirm":{"text":"Create contract"},
+						"method":"query","data":{"dirtyChild":1,"module":"Murphy","objectClass":"Proposal"},
+						"function":"CreateContract"}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION type="vseparator" formOnly="1">s3</FUNCTION>
+		<FUNCTION name="sampleRequest" formOnly="1" icon="mwc_wineType" label="New sample request" description="Sample request" stateGroup="savedIdle">
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"loadFormWithID","params":{"kobeyeClass":{"module":"Murphy","objectClass":"Proposal","form":"FormSampleReq.json"}}}
+				]]>
+			</ACTION>
+		</FUNCTION>
+<!--
+		<FUNCTION name="CreateSampleRequest" formOnly="1" icon="mwc_wineType" label="Sample request" description="Sample request" stateGroup="savedIdle">
+			<PROPERTIES type="varchar" category="Confirmation" description="Buyer reference">BuyerRef</PROPERTIES>
+			<PROPERTIES type="date" category="Confirmation" description="Dead line">DeadLine</PROPERTIES>
+			<PROPERTIES type="int" defaultValue="1" category="Confirmation" description="Number of bottles">Bottles</PROPERTIES>
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"interface":1,
+						"method":"query","data":{"dirtyChild":1,"module":"Murphy","objectClass":"Proposal","form":"Functions/CreateSampleRequest.json"},
+						"function":"CreateSampleRequest","args":[{"interfaceValues":["BuyerRef","DeadLine","Bottles"]}]}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+-->
+		<FKEY card="1,1" data="Enquiry,Id" category="Proposal"	description="Dossier" access="1"						>ProposalEnquiryId</FKEY>
+		<PROPERTIES category="Proposal"	type="varchar" searchOrder="1" formToolTip="1" list="20" listWidth="120" displayOrder="1"	>Reference</PROPERTIES>
+		<PROPERTIES category="Proposal"	type="date"	defaultValue="Now" searchOrder="2" list="2"								>Date</PROPERTIES>
+		<PROPERTIES category="Proposal"	type="date"	defaultValue="" description="Supplier answer"							>SupplierDate</PROPERTIES>
+		<PROPERTIES category="Proposal"	type="date"	defaultValue="" description="Sent to buyer"									>ValidateDate</PROPERTIES>
+		<PROPERTIES category="Proposal" type="int" default="0" query="Systeme/Role/MWC_BROKER/Group/*/User::Id::Initiales" description="Broker"	>BrokerId</PROPERTIES>
+		<PROPERTIES category="Proposal"	type="int"	default="21" query="Murphy/Status/Type=2::Id::Status" readOnly="1"		>Status</PROPERTIES>
+		<FKEY card="1,1" data="Third,Id" category="Proposal" description="Buyer" obligatoire="0" dataFilter="Buyer=1"		>ProposalBuyerId</FKEY>
+		<FKEY card="1,1" data="Third,Id" category="Proposal" description="Supplier" exoFields="ContactId::,Currency::" dataFilter="Supplier=1"	>ProposalSupplierId</FKEY>
+		<PROPERTIES category="Proposal" type="varchar" notInLayout="1" formLabel="1">SupplierCompany</PROPERTIES>
+		<PROPERTIES category="Proposal" type="varchar" notInLayout="1" formToolTip="1">BuyerCompany</PROPERTIES>
+		<PROPERTIES category="Proposal"	type="int"	default="0"	query="Murphy/Contact::Id::FullName" masterObject="Third" masterField="Third.ProposalSupplierId" 
+																							description="Supplier contact"	>ContactId</PROPERTIES>
+		<PROPERTIES category="Proposal" type="varchar" 									description="Supplier reference"	>SupplierRef</PROPERTIES>
+
+		<PROPERTIES category="Product"	type="int"	default="0" query="Murphy/Country/WineProducer=1::Id::Country" exoFilters="Id::Appellation" description="Country"	>CountryWine</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0"	query="Murphy/Varietal::Id::Varietal" dataFilter="Inactive=0" exoFilters="Colours::Colour"	>Varietal</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0" query="Murphy/Colour::Id::Colour" dataFilter="Id~_filter_"	>Colour</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0"	query="Murphy/Appellation::Id::Appellation" dataFilter="Country=_filter_"	>Appellation</PROPERTIES>
+		<PROPERTIES category="Product"	type="varchar" length="10" list="9" width="100"						listWidth="50" 	>Vintage</PROPERTIES>
+
+
+<!--		<PROPERTIES category="Product"	type="int"	default="0" query="Murphy/Country/WineProducer=1::Id::Country" description="Country"	>CountryWine</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0"	query="Murphy/Varietal::Id::Varietal" dataFilter="Inactive=0" exoFilters="Colours::Colour"	>Varietal</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0" query="Murphy/Colour::Id::Colour" dataFilter="Id~_filter_"	>Colour</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0"	query="Murphy/Appellation::Id::Appellation" obligatoire="0" >Appellation</PROPERTIES>
+		<PROPERTIES category="Product"	type="varchar" length="10" 	list="10" listWidth="50" obligatoire="0"				>Vintage</PROPERTIES>
+-->
+		<PROPERTIES category="Product"	type="int"	default="0"	query="Murphy/Filtration::Id::Filtration" obligatoire="0"	>Filtration</PROPERTIES>
+		<PROPERTIES category="Product"	type="float" format="0dec"	list="12" listWidth="80" obligatoire="0" description="Volume / Quantity" listDescr="Volume">Volume</PROPERTIES>
+		<PROPERTIES category="Product"	type="float" default="0" auto="1" description="Number of trucks"					>Trucks</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0"	query="Murphy/Quantity/Inactive=0::Id::Quantity" obligatoire="0" 
+																	defaultValue="1"		description="Purchasing unit"	>Quantity</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0"	query="Murphy/Product::Id::Product" hidden="1"				>Product</PROPERTIES>
+		<PROPERTIES category="Product"	type="varchar"			description="Sample reference"								>SampleRef</PROPERTIES>
+		<PROPERTIES category="Finance"	type="price" description="Unit price" obligatoire="0" list="14" listDescr="Price" listWidth="60" format="4dec"	>UnitPrice</PROPERTIES>
+		<PROPERTIES category="Finance"	type="int"	default="0"	query="Murphy/Currency::Id::Currency" obligatoire="0"		>Currency</PROPERTIES>
+<!--		<PROPERTIES category="Finance"	type="int"	idden="0" default="0"	query="Murphy/Unit/Inactive=0::Id::Unit" description="Sale unit" defaultValue="1" obligatoire="0">Unit</PROPERTIES
+-->
+		<PROPERTIES category="Finance"	type="int"	default="0"	query="Murphy/PaymentTerm::Id::Payment" obligatoire="0"		>Payment</PROPERTIES>
+		<PROPERTIES category="Finance"	type="price" auto="1"																>Total</PROPERTIES>
+		<PROPERTIES category="Finance"	type="date" description="Proposition valid until"		default="[!TMS::Now:+2592000!]"										>ValidUntil</PROPERTIES>
+		<PROPERTIES category="Shipment"	type="date" description="Shipping (All by)" obligatoire="0" 						>ShippingDate</PROPERTIES>
+		<PROPERTIES category="Shipment"	type="int"	default="0"	query="Murphy/Transportation::Id::Transportation" defaultValue="1"	>Transportation</PROPERTIES>
+		<PROPERTIES category="Shipment"	type="int"	default="0"	query="Murphy/IncoTerm::Id::Inco" description="INCO Term"	>Inco</PROPERTIES>
+		<PROPERTIES category="Other"	type="text"									description="Supplier comments"			>Comments</PROPERTIES>
+		<PROPERTIES category="Other"	type="boolean" description="Show supplier"											>ShowSupplier</PROPERTIES>
+		<PROPERTIES category="Other"	type="boolean" description="Show buyer"												>ShowBuyer</PROPERTIES>
+		<PROPERTIES category="Other"	type="date"	defaultValue="" description="Buyer answer"								>BuyerDate</PROPERTIES>
+		<PROPERTIES category="Other"	type="text"									description="Buyer comments"			>BuyerComments</PROPERTIES>
+		<VIEW title="ProposalList" default="1" filters="Initiales=[!Systeme::User::Initiales!]">
+			<OBJECTCLASS title="Proposal" select="Id,Reference,Date,Vintage,Volume,UnitPrice,Currency">
+				<JOIN type="outer" title="Status" on="Status" target="Id">
+					<PROPERTIES type="int" alias="StatusId">Id</PROPERTIES>
+					<PROPERTIES type="varchar" query="Murphy/Status/Type=2::Status::Status" searchOrder="4">Status</PROPERTIES>
+					<PROPERTIES type="varchar" alias="StatusColor">Color</PROPERTIES>
+					<PROPERTIES type="image" list="1" listWidth="20" listDescr="." alias="StatusIcon">Icon</PROPERTIES>
+					<PROPERTIES type="varchar" listDescr="Status_ToolTip" alias="StatusIcon_ToolTip">Status</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Third" on="ProposalSupplierId" target="Id">
+					<PROPERTIES type="varchar" searchOrder="5" list="5" filterMode="generic" listWidth="200" alias="Supplier">Company</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Third" on="ProposalBuyerId" target="Id">
+					<PROPERTIES type="varchar" searchOrder="5" list="5" filterMode="generic" listWidth="200" alias="Buyer">Company</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Country" on="CountryWine" target="Id">
+					<PROPERTIES type="image" list="6" listWidth="20" listDescr=".">Acronym</PROPERTIES>
+					<PROPERTIES type="varchar" alias="Acronym_ToolTip">Country</PROPERTIES>
+					<PROPERTIES type="varchar" query="Murphy/Country/WineProducer=1::Country::Country" searchOrder="6" filterMode="generic" listWidth="100" >Country</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Varietal" on="Varietal" target="Id">
+					<PROPERTIES type="varchar" query="Murphy/Varietal::Varietal::Varietal" searchOrder="7" list="7" filterMode="generic" listWidth="100">Varietal</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Colour" on="Colour" target="Id">
+					<PROPERTIES type="image" list="8" listDescr="C" listWidth="20" alias="ColourIcon">Icon</PROPERTIES>
+					<PROPERTIES type="varchar" query="Murphy/Colour::Colour::Colour" searchOrder="8" listWidth="60" >Colour</PROPERTIES>
+					<PROPERTIES type="varchar" alias="ColourIcon_ToolTip">Colour</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Appellation" on="Appellation" target="Id">
+					<PROPERTIES type="varchar" list="9" filterMode="generic" listWidth="100">Appellation</PROPERTIES>
+				</JOIN>
+<!--
+				<JOIN type="outer" title="Enquiry" on="ProposalEnquiryId" target="Id">
+					<JOIN type="outer" title="Third" on="EnquiryBuyerId" target="Id">
+						<PROPERTIES type="varchar" searchOrder="5" list="5" filterMode="generic" listWidth="200" alias="Buyer">Company</PROPERTIES>
+					</JOIN>
+				</JOIN>
+-->
+				<JOIN type="outer" module="Systeme" title="User" on="BrokerId" target="Id">
+					<PROPERTIES type="varchar" length="12" query="Systeme/Role/MWC_BROKER/Group/*/User::Initiales::Initiales" searchOrder="15" list="19" description="Broker" listWidth="50">Initiales</PROPERTIES>
+				</JOIN>
+<!--
+                <JOIN type="outer" title="Filtration" on="Filtration" target="Id">
+                    <PROPERTIES type="varchar" >Filtration</PROPERTIES>
+                </JOIN>
+				<JOIN type="outer" title="Quantity" on="Quantity" target="Id">
+					<PROPERTIES type="varchar" list="13" listWidth="70" listDescr="Unit">Quantity</PROPERTIES>
+				</JOIN>
+                <JOIN type="outer" title="Unit" on="Unit" target="Id">
+                    <PROPERTIES type="varchar" >Unit</PROPERTIES>
+                </JOIN>
+-->
+                <JOIN type="outer" title="Currency" on="Currency" target="Id">
+                    <PROPERTIES type="varchar" list="15" listDescr="Cur" listWidth="30" >Currency</PROPERTIES>
+                </JOIN>
+			</OBJECTCLASS>
+			<!-- CAS GROUPBY <GROUPBY>Enseigne.Id</GROUPBY> -->
+		</VIEW>
+		<VIEW title="BROKER" default="0" filters="Initiales=[!Systeme::User::Initiales!]">
+			<OBJECTCLASS title="Proposal" select="Id">
+                <JOIN type="outer" module="Systeme" title="User" on="BrokerId" target="Id">
+                    <PROPERTIES type="varchar" >Initiales</PROPERTIES>
+                </JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+
+
+
+
+
+	<OBJECTCLASS title="Contract" order="Id" orderType="DESC" color="0xffb933" searchType="plaintext" logEvent="1" description="Contracts" driver="mysql" Icon="[None]" Class="Modules/Murphy/Class/Contract.class.php">
+		<INTERFACES name="accordion2">
+			<FORM form="WidgetWorkFlow" module="Murphy" objectClass="Contract" dirtyParent="1">WorkFlow</FORM>
+		</INTERFACES>
+		<INTERFACES name="accordion">
+			<FORM form="WidgetDocument" module="Murphy" objectClass="Document" dirtyParent="1">Documents</FORM>
+			<FORM form="WidgetMail" module="Mail" objectClass="Message" dirtyParent="1">Mails</FORM>
+			<FORM form="WidgetTask" module="Murphy" objectClass="Contract" dirtyParent="1">Tasks</FORM>
+			<FORM form="formChildren" module="Murphy" objectClass="SampleRequest" keyName="SampleRequestContractId" dirtyParent="1">Samples Requests</FORM>
+		</INTERFACES>
+		<FILTER name="My contracts" view="BROKER">Initiales=[!Systeme::User::Initiales!]</FILTER>
+		<FILTER name="All contracts" view="NOVIEW" color="0x468847"></FILTER>
+		<FILTER name="Current contracts" view="NOVIEW" color="0x3A87AD"><![CDATA[Status<45]]></FILTER>
+		<FILTER name="Archived contracts" view="NOVIEW" color="0x999999"><![CDATA[Status>=45]]></FILTER>
+		<FUNCTION name="PrintContract" formOnly="1" icon="print" label="Print contract" description="Print" stateGroup="savedIdle">
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"method":"query","data":{"dirtyChild":1,"module":"Murphy","objectClass":"Contract"},
+						"function":"PrintContract"}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION type="vseparator" formOnly="1" >s0</FUNCTION>
+		<FUNCTION name="SendToBuyer" formOnly="1" icon="mail" label="Send to buyer" description="Send to buyer" stateGroup="savedIdle">
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"confirm":{"text":"Send to buyer"},
+						"method":"query","data":{"dirtyChild":1,"module":"Murphy","objectClass":"Contract"},
+						"function":"SendToBuyer"}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="SendToSupplier" formOnly="1" icon="mail" label="Send to supplier" description="Send to supplier" stateGroup="savedIdle">
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"confirm":{"text":"Send to supplier"},
+						"method":"query","data":{"dirtyChild":1,"module":"Murphy","objectClass":"Contract"},
+						"function":"SendToSupplier"}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION type="vseparator" formOnly="1">s1</FUNCTION>
+		<FUNCTION name="BuyerAcceptance" formOnly="1" icon="validate" label="Buyer accepts" description="Buyer accepts" stateGroup="savedIdle">
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"confirm":{"text":"Confirm acceptance"},
+						"method":"query","data":{"dirtyChild":1,"module":"Murphy","objectClass":"Contract"},
+						"function":"BuyerAcceptance"}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="BuyerRefusal" formOnly="1" icon="cancel" label="Buyer refuses" description="Buyer refuses" stateGroup="savedIdle">
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"confirm":{"text":"Confirm refusal"},
+						"method":"query","data":{"dirtyChild":1,"module":"Murphy","objectClass":"Contract"},
+						"function":"BuyerAcceptance"}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION type="vseparator" formOnly="1">s2</FUNCTION>
+		<FUNCTION name="SupplierAcceptance" formOnly="1" icon="validate" label="Supplier accepts" description="Supplier accepts" stateGroup="savedIdle">
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"confirm":{"text":"Confirm acceptance"},
+						"method":"query","data":{"dirtyChild":1,"module":"Murphy","objectClass":"Contract"},
+						"function":"SupplierAcceptance"}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="SupplierRefusal" formOnly="1" icon="cancel" label="Supplier refuses" description="Supplier refuses" stateGroup="savedIdle">
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"confirm":{"text":"Confirm refusal"},
+						"method":"query","data":{"dirtyChild":1,"module":"Murphy","objectClass":"Contract"},
+						"function":"SupplierAcceptance"}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION type="vseparator" formOnly="1">s3</FUNCTION>
+		<FUNCTION name="sampleRequest" formOnly="1" icon="mwc_wineType" label="Sample request" description="Sample request" stateGroup="savedIdle">
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"loadFormWithID","params":{"kobeyeClass":{"module":"Murphy","objectClass":"Contract","form":"FormSampleReq.json"}}}
+				]]>
+			</ACTION>
+		</FUNCTION>
+	<CATEGORY title="Contract">
+		<FKEY card="1,1" data="Enquiry,Id" category="Contract"	description="Dossier" obligatoire="1"	access="1"									>ContractEnquiryId</FKEY>
+		<PROPERTIES category="Contract"	type="varchar"	searchOrder="1"	formLabel="1" list="20" listWidth="120" displayOrder="1" auto="1"	>Reference</PROPERTIES>
+		<PROPERTIES category="Contract"	type="date"	searchOrder="2"	list="2" obligatoire="1"	default="[!TMS::Now!]"						>Date</PROPERTIES>
+		<PROPERTIES category="Contract"	type="date"																							>Revised</PROPERTIES>
+		<PROPERTIES category="Contract" type="int" default="0" query="Systeme/Role/MWC_BROKER/Group/*/User::Id::Initiales" description="Broker" obligatoire="1"			>BrokerId</PROPERTIES>
+		<PROPERTIES category="Contract"	type="boolean"	description="Contract subject to sample approval"									>Approval</PROPERTIES>
+		<PROPERTIES category="Contract"	type="int"	default="40" query="Murphy/Status/Type=4::Id::Status" obligatoire="1" description="Contract status"	>Status</PROPERTIES>
+		<PROPERTIES category="Contract"	type="int"	default="0" query="Murphy/Status/Type=7::Id::Status" readOnly="1" description="Buyer status"			>BuyerStatus</PROPERTIES>
+		<PROPERTIES category="Contract"	type="int"	default="0" query="Murphy/Status/Type=7::Id::Status" readOnly="1" description="Supplier status"		>SupplierStatus</PROPERTIES>
+		<FKEY card="1,1" data="Third,Id" useKeyName="1" category="Contract" description="Buyer" exoFields="ContactId::BuyerContactId,BrokerId::"  obligatoire="1" dataFilter="Buyer=1"
+																						childDescription="Contract: Buyer"					>ContractBuyerId</FKEY>
+		<PROPERTIES category="Contract" type="varchar" 									description="Buyer reference"						>BuyerRef</PROPERTIES>
+		<PROPERTIES category="Contract"	type="int"	default="0"	query="Murphy/Contact::Id::FullName" masterObject="Third" masterField="Third.ContractBuyerId" 
+																						description="Buyer contact"  obligatoire="1"		>BuyerContactId</PROPERTIES>
+		<FKEY card="1,1" data="Third,Id" useKeyName="1" category="Contract" description="Supplier" exoFields="ContactId::SupplierContactId" obligatoire="1" dataFilter="Supplier=1"
+																						childDescription="Contract: Supplier"				>ContractSupplierId</FKEY>
+		<PROPERTIES category="Contract" type="varchar" notInLayout="1" formToolTip="1">SupplierCompany</PROPERTIES>
+		<PROPERTIES category="Contract" type="varchar" notInLayout="1" formLabel="1">BuyerCompany</PROPERTIES>
+		<PROPERTIES category="Contract" type="varchar" 									description="Supplier reference"					>SupplierRef</PROPERTIES>
+		<PROPERTIES category="Contract"	type="int"	default="0"	query="Murphy/Contact::Id::FullName" masterObject="Third" masterField="Third.ContractSupplierId" 
+											 obligatoire="1" description="Supplier contact" 												>SupplierContactId</PROPERTIES>
+	</CATEGORY>
+	<CATEGORY title="Product">
+		<PROPERTIES category="Product"	type="int"	default="0" query="Murphy/Country/WineProducer=1::Id::Country" exoFilters="Id::Appellation" description="Country"	>CountryWine</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0"	query="Murphy/Varietal::Id::Varietal" dataFilter="Inactive=0" exoFilters="Colours::Colour"	>Varietal</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0" query="Murphy/Colour::Id::Colour" dataFilter="Id~_filter_"	>Colour</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0"	query="Murphy/Appellation::Id::Appellation" dataFilter="Country=_filter_"	>Appellation</PROPERTIES>
+		<PROPERTIES category="Product"	type="varchar" length="10" list="9" width="100"						listWidth="50" 	>Vintage</PROPERTIES>
+
+<!--		<PROPERTIES category="Product"	type="int"	default="0"	query="Murphy/Product::Id::Product" hidden="1"								>Product</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0" query="Murphy/Country/WineProducer=1::Id::Country" description="Country"					>CountryWine</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0"	query="Murphy/Varietal::Id::Varietal" dataFilter="Inactive=0" exoFilters="Colours::Colour"	>Varietal</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0" query="Murphy/Colour::Id::Colour" dataFilter="Id~_filter_"	>Colour</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0"	query="Murphy/Appellation::Id::Appellation"									>Appellation</PROPERTIES>
+		<PROPERTIES category="Product"	type="varchar" length="10" 											listWidth="50" 					>Vintage</PROPERTIES>
+-->
+		<PROPERTIES category="Product"	type="int"	default="0"	query="Murphy/Filtration::Id::Filtration"									>Filtration</PROPERTIES>
+		<PROPERTIES category="Product"	type="float" format="0dec"	list="16" obligatoire="1" listWith="65"									>Volume</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0"	query="Murphy/Quantity::Id::Quantity" dataFilter="Inactive=0" stateGroup="oldId"
+																		defaultValue="1"	 obligatoire="1" description="Purchasing unit"	>Quantity</PROPERTIES>
+		<PROPERTIES category="Product"	type="varchar"			description="Sample reference"												>SampleRef</PROPERTIES>
+	</CATEGORY>
+	<CATEGORY title="Shipment">
+		<PROPERTIES category="Shipment"	type="float" format="0dec"	list="17"	description="P/O received"	auto="1" listWidth="65" listDescr="P/O rec"	>Delivered</PROPERTIES>
+		<PROPERTIES category="Shipment"	type="float" format="0dec"	list="18"	auto="1" listWidth="65"										>Remains</PROPERTIES>
+		<PROPERTIES category="Shipment"	type="date" description="Shipping (Allby)" list="8" obligatoire="1" searchOrder="21"				>ShippingDate</PROPERTIES>
+		<PROPERTIES category="Shipment"	type="int"	default="0"	query="Murphy/Transportation::Id::Transportation" obligatoire="1" defaultValue="1"		>Transportation</PROPERTIES>
+		<PROPERTIES category="Shipment"	type="int"	default="0"	query="Murphy/IncoTerm::Id::Inco" description="INCO Term" obligatoire="1"	>Inco</PROPERTIES>
+		<PROPERTIES category="Shipment"	type="boolean" description="Preloading samples"														>PreloadingSample</PROPERTIES>
+		<PROPERTIES category="Shipment"	type="boolean" description="MWC loading samples"													>MWCLoadingSample</PROPERTIES>
+		<PROPERTIES category="Shipment"	type="boolean" description="Shipping booked"														>ShippingBooked</PROPERTIES>
+		<FKEY card="1,1" data="Third,Id" useKeyName="1" category="Shipment" description="Transporter" hiddeChild="1" dataFilter="Transporter=1"	>ContractTransporterId</FKEY>
+	</CATEGORY>
+	<CATEGORY title="Finance">
+		<FKEY card="1,1" data="Account,Id" category="Finance"	description="Account"														>ContractAccountId</FKEY>
+		<FKEY category="Finance" card="0,1" data="Third,Id" hideChild="1" description="Billing third part" dataFilter="Partner=1"			
+																								childDescription="Contract: Third"			>ContractBillingId</FKEY>
+		<PROPERTIES category="Finance"	type="boolean" description="Buyer billed"															>BuyerBilled</PROPERTIES>
+		<PROPERTIES category="Finance"	type="price" description="Unit price"  obligatoire="1"												>UnitPrice</PROPERTIES>
+		<PROPERTIES category="Finance"	type="int"	default="0"	query="Murphy/Currency::Id::Currency" obligatoire="1"						>Currency</PROPERTIES>
+<!--		<PROPERTIES category="Finance"	type="int"	hidden="0" default="0"	query="Murphy/Unit::Id::Unit" dataFilter="Inactive=0" stateGroup="oldId"
+																				defaultValue="1" obligatoire="1" description="Sale unit"	>Unit</PROPERTIES>
+-->
+		<PROPERTIES category="Finance"	type="price" auto="1"																				>Total</PROPERTIES>
+		<PROPERTIES category="Finance"	type="int"	default="0"	query="Murphy/PaymentTerm::Id::Payment" obligatoire="1"						>Payment</PROPERTIES>
+		<PROPERTIES category="Finance"	type="int" default="0" values="0::Percent,1::Flat rate,2::Flat / Unit" description="Com. mode"		>ComMode</PROPERTIES>
+		<PROPERTIES category="Finance"	type="price" description="Com. MWC"																	>ComMWC</PROPERTIES>
+		<PROPERTIES category="Finance"	type="price" description="Com. other"																>ComOther</PROPERTIES>
+		<PROPERTIES category="Finance"	type="price" auto="1" description="Total com." list="18"											>TotalCom</PROPERTIES>
+<!--
+		<PROPERTIES category="Finance"	type="price" description="Com. extra" readOnly="1"													>ComExtra</PROPERTIES>
+		<PROPERTIES category="Finance"	type="int"	default="0"	query="Murphy/Currency::Id::Currency" description="Currency extra" 			>CurExtra</PROPERTIES>
+-->
+	</CATEGORY>
+	<CATEGORY title="Other">
+<!--
+		<PROPERTIES category="Other"	type="date"																							>Alert</PROPERTIES>
+		<PROPERTIES category="Other"	type="varchar"											description="Alert message"					>AlertMessage</PROPERTIES>
+-->
+		<PROPERTIES category="Other"	type="text"																							>Comments</PROPERTIES>
+		<RKEY card="1,1" module="Mail" data="Message,Id" useKeyName="1" category="Other" description="Mail" hidden="1" position="accordion"			>ContractIdContract</RKEY>
+		<PROPERTIES category="Other"	type="int" default="0" defaultValue="0" hidden="0" notInLayout="1" forceEvent="1" >oldId</PROPERTIES>
+	</CATEGORY>
+		<VIEW title="ContractList" default="1" filters="Initiales=[!Systeme::User::Initiales!]">
+			<OBJECTCLASS title="Contract" select="Id,Reference,Date,Vintage,Volume,ShippingDate,Delivered,Remains,Currency,Quantity,TotalCom,Total" filters="">
+				<JOIN type="outer" title="Status" on="Status" target="Id">
+					<PROPERTIES type="int" alias="StatusId">Id</PROPERTIES>
+					<PROPERTIES type="varchar" query="Murphy/Status/Type=4::Status::Status" searchOrder="3">Status</PROPERTIES>
+					<PROPERTIES type="varchar" alias="StatusColor">Color</PROPERTIES>
+					<PROPERTIES type="image" list="1" listWidth="20" listDescr="." alias="StatusIcon">Icon</PROPERTIES>
+					<PROPERTIES type="varchar" listDescr="Status_ToolTip" alias="StatusIcon_ToolTip">Status</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Status" on="BuyerStatus" target="Id">
+					<PROPERTIES type="int" alias="BuyerStatusId">Id</PROPERTIES>
+					<PROPERTIES type="image" list="3" listWidth="20" listDescr="B" alias="BuyerStatusIcon">Icon</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Status" on="SupplierStatus" target="Id">
+					<PROPERTIES type="int" alias="SupplierStatusId">Id</PROPERTIES>
+					<PROPERTIES type="image" list="5" listWidth="20" listDescr="S" alias="SupplierStatusIcon">Icon</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Third" on="ContractSupplierId" target="Id">
+					<PROPERTIES type="varchar" searchOrder="4" list="6" filterMode="generic" listWidth="150" description="Supplier" alias="Supplier">Company</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Third" on="ContractBuyerId" target="Id">
+					<PROPERTIES type="varchar" searchOrder="5" list="3" filterMode="generic" listWidth="150" description="Buyer" alias="Buyer">Company</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Country" on="CountryWine" target="Id">
+					<PROPERTIES type="image" list="9" listWidth="20" listDescr=".">Acronym</PROPERTIES>
+					<PROPERTIES type="varchar" alias="Acronym_ToolTip">Country</PROPERTIES>
+					<PROPERTIES type="varchar" query="Murphy/Country/WineProducer=1::Country::Country" searchOrder="7" filterMode="generic" listWidth="100" >Country</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Varietal" on="Varietal" target="Id">
+					<PROPERTIES type="varchar" query="Murphy/Varietal::Varietal::Varietal" searchOrder="8" list="10" filterMode="generic" listWidth="140" >Varietal</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Colour" on="Colour" target="Id">
+					<PROPERTIES type="image" list="11" listWidth="20" listDescr="C" alias="ColourIcon">Icon</PROPERTIES>
+					<PROPERTIES type="varchar" query="Murphy/Colour::Colour::Colour" searchOrder="9" listWidth="60" >Colour</PROPERTIES>
+					<PROPERTIES type="varchar" alias="ColourIcon_ToolTip">Colour</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Appellation" on="Appellation" target="Id">
+					<PROPERTIES type="varchar" list="12" filterMode="generic" listWidth="100">Appellation</PROPERTIES>
+				</JOIN>
+                <JOIN type="outer" module="Systeme" title="User" on="BrokerId" target="Id">
+                    <PROPERTIES type="varchar" length="12" query="Systeme/Role/MWC_BROKER/Group/*/User::Initiales::Initiales" searchOrder="19" list="19" description="Broker" listWidth="50">Initiales</PROPERTIES>
+                </JOIN>
+			</OBJECTCLASS>
+			<!-- CAS GROUPBY <GROUPBY>Enseigne.Id</GROUPBY> -->
+		</VIEW>
+		<VIEW title="ContractList2" default="0">
+			<OBJECTCLASS title="Contract" select="Id" filters="">
+			</OBJECTCLASS>
+		</VIEW>
+		<VIEW title="BROKER" default="0" filters="Initiales=[!Systeme::User::Initiales!]">
+			<OBJECTCLASS title="Contract" select="Id">
+                <JOIN type="outer" module="Systeme" title="User" on="BrokerId" target="Id">
+                    <PROPERTIES type="varchar" >Initiales</PROPERTIES>
+                </JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Offer" order="Reference" orderType="DESC" searchType="plaintext" logEvent="1" labelPrefix="Off:" description="Commercial Offers" driver="mysql" Icon="[None]">
+		<FKEY card="1,1" data="Enquiry,Id" category="Offer"	description="Dossier" hidden="1"								>OfferEnquiryId</FKEY>
+		<PROPERTIES category="Offer"	type="varchar"	searchOrder="1"	formLabel="1" list="1" listWidth="90"				>Reference</PROPERTIES>
+		<PROPERTIES category="Offer"	type="date"	searchOrder="2"	list="2"												>SendDate</PROPERTIES>
+		<PROPERTIES category="Offer"	type="int"	default="0" query="Murphy/Status::Id::Status"							>Status</PROPERTIES>
+		<FKEY card="1,1" data="Third,Id" category="Offer" description="Buyer" hidden="1"									>OfferBuyerId</FKEY>
+		<PROPERTIES category="Offer"	type="text"																			>Comments</PROPERTIES>
+		<PROPERTIES category="Answer"	type="date"	searchOrder="3"	list="3"												>ReadDate</PROPERTIES>
+		<PROPERTIES category="Answer"	type="date"	searchOrder="4"	list="4"												>AnswerDate</PROPERTIES>
+		<PROPERTIES category="Answer"	type="text"																			>AnswerComments</PROPERTIES>
+		<PROPERTIES category="Answer"	type="text"	readOnly="1"															>Connection</PROPERTIES>
+
+		<VIEW title="OfferList" default="1">
+			<OBJECTCLASS title="Offer" select="Id,Reference,SendDate,ReadDate,AnswerDate" filters="">
+				<JOIN type="outer" title="Status" on="Status" target="Id">
+					<PROPERTIES type="varchar" searchOrder="5" list="5" listWidth="70" >Status</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Third" on="OfferBuyerId" target="Id">
+					<PROPERTIES type="varchar" searchOrder="6" list="6" filterMode="generic" listWidth="250" description="Buyer">Company</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+			<!-- CAS GROUPBY <GROUPBY>Enseigne.Id</GROUPBY> -->
+		</VIEW>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="Action" driver="mysql" Icon="[None]" Dico="1" hidden="1" >
+		<PROPERTIES category="Action"	type="varchar"	order="11"	searchOrder="1"						>Title</PROPERTIES>
+		<PROPERTIES category="Action"	type="date"		order="12"	searchOrder="2"						>Date</PROPERTIES>
+		<PROPERTIES category="Action"	type="varchar"	order="13"										>Object</PROPERTIES>
+		<PROPERTIES category="Action"	type="int"		order="14"										>ObjectId</PROPERTIES>
+		<PROPERTIES category="Action"	type="int"		order="15"	values="1::xxx,2::yyy"				>Type</PROPERTIES>
+		<FKEY card="1,1" data="Third,Id">ActionThirdId</FKEY>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Product" driver="mysql" Icon="[None]">
+		<PROPERTIES category="Product"	type="varchar"	order="11"	searchOrder="1"						>Product</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0"	order="12"	searchOrder="2"	query="Murphy/Country/WineProducer=1::Id::Country">CountryWine</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0"	order="12"	searchOrder="2"	query="Murphy/Varietal::Id::Varietal">Varietal</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0"	order="12"	searchOrder="2"	query="Murphy/Colour::Id::Colour">Colour</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0"	order="12"	searchOrder="3"	query="Murphy/Appellation::Id::Appellation">Appellation</PROPERTIES>
+		<PROPERTIES category="Product"	type="varchar"	length="10"	order="13"	searchOrder="4"			>Vintage</PROPERTIES>
+		<PROPERTIES category="Comments"	type="text"		order="21"										>Comments</PROPERTIES>
+		<PROPERTIES category="Comments"	type="text"		order="22"										>Description</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="SupplierProduct" driver="mysql" Icon="[None]">
+		<FKEY card="1,1" data="Third,Id" category="Product" hidden="1">SupplierProductSupplierId</FKEY>
+		<FKEY card="1,1" data="Product,Id" category="Product">SupplierProductProductId</FKEY>
+		<PROPERTIES category="Product"	type="int"	default="0"	>Volume</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0"	>Ordered</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0"	>Shipped</PROPERTIES>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="Article" driver="mysql" Icon="[None]">
+		<PROPERTIES category="Article"	type="varchar"	order="11"	searchOrder="1"						>Reference</PROPERTIES>
+		<PROPERTIES category="Article"	type="float"	order="12"										>Alcohol</PROPERTIES>
+		<PROPERTIES category="Article"	type="varchar"	order="13"										>Treatment</PROPERTIES>
+		<PROPERTIES category="Article"	type="float"	order="14"										>Volume</PROPERTIES>
+		<PROPERTIES category="Article"	type="date"		order="15"	searchOrder="2"						>Date</PROPERTIES>
+		<PROPERTIES category="Article"	type="date"		order="16"										>DueDate</PROPERTIES>
+		<PROPERTIES category="Costs"	type="float"	order="21"										>Price</PROPERTIES>
+		<PROPERTIES category="Costs"	type="int"		order="22"	query="Murphy/Currency::Id::Nom"	>Currency</PROPERTIES>
+		<PROPERTIES category="Costs"	type="float"	order="23"	values="1::xxx,2::yyy"				>CommissionType</PROPERTIES>
+		<PROPERTIES category="Costs"	type="float"	order="24"										>CommissionRate</PROPERTIES>
+		<PROPERTIES category="Costs"	type="boolean"	order="25"										>CommissionIncluded</PROPERTIES>
+		<FKEY card="1,1" data="Product,Id">ArticleProductId</FKEY>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="SampleRequest" driver="mysql" Icon="[None]" description="Sample request" Class="Modules/Murphy/Class/SampleRequest.class.php">
+		<INTERFACES name="accordion">
+			<FORM form="formChildren" module="Murphy" objectClass="Sample" keyName="SampleSampleRequestId" dirtyParent="1">Samples</FORM>
+		</INTERFACES>
+		<FUNCTION name="PrintRequest" formOnly="1" icon="print" label="Print request" description="Print" stateGroup="savedIdle">
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+					"method":"query","data":{"dirtyChild":1,"module":"Murphy","objectClass":"SampleRequest"},
+					"function":"PrintRequest"}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FKEY card="0,1" data="Enquiry,Id" category="Sample"	description="Enquiry"		>SampleRequestEnquiryId</FKEY>
+		<FKEY card="0,1" data="Proposal,Id" category="Sample"	description="Proposal"		>SampleRequestProposalId</FKEY>
+		<FKEY card="0,1" data="Contract,Id" category="Sample"	description="Contract"		>SampleRequestContractId</FKEY>
+<!--		<FKEY card="0,1" data="Shipment,Id" category="Sample"	description="Shipment"		>SampleRequestShipmentId</FKEY>
+-->
+		<FKEY card="0,1" data="Third,Id" category="Sample" description="Buyer" exoFields="ContactId::" childDescription="Sample request" access="1"	>SampleRequestBuyerId</FKEY>
+		<PROPERTIES category="Sample" type="varchar" notInLayout="1" formLabel="1">BuyerCompany</PROPERTIES>
+		<PROPERTIES category="Sample" type="varchar" searchOrder="1" displayOrder="1" readOnly="1" formToolTip="1" list="2" listWidth="50" >Reference</PROPERTIES>
+		<PROPERTIES category="Sample" type="date" defaultValue="Now" list="3"												>Date</PROPERTIES>
+		<PROPERTIES category="Sample" type="varchar" description="Buyer ref"  searchOrder="2" list="4"						>BuyerRef</PROPERTIES>
+		<PROPERTIES category="Sample" type="date" searchOrder="3" list="5" description="Dead line" listDescr="Dead lin"		>DeadLine</PROPERTIES>
+		<PROPERTIES category="Sample" type="date" 																			>Alert</PROPERTIES>
+		<PROPERTIES category="Sample" type="int"	default="61" query="Murphy/Status/Type=6::Id::Status"					>Status</PROPERTIES>
+		<PROPERTIES category="Sample" type="int"	default="0" query="Murphy/SamplePurpose::Id::Purpose"					>Purpose</PROPERTIES>
+		<PROPERTIES category="Sample" type="int"	default="0" query="Murphy/SampleDelivery::Id::Delivery"					>Delivery</PROPERTIES>
+		<VIEW title="SampleRequestList" default="1">
+			<OBJECTCLASS title="SampleRequest" select="Id,Reference,Date,DeadLine,BuyerCompany">
+				<JOIN type="outer" title="Status" on="Status" target="Id">
+					<PROPERTIES type="int" alias="StatusId">Id</PROPERTIES>
+					<PROPERTIES type="varchar" query="Murphy/Status/Type=6::Status::Status" searchOrder="4">Status</PROPERTIES>
+					<PROPERTIES type="varchar" alias="StatusColor">Color</PROPERTIES>
+					<PROPERTIES type="image" list="1" listWidth="20" listDescr="." alias="StatusIcon">Icon</PROPERTIES>
+					<PROPERTIES type="varchar" listDescr="Status_ToolTip" alias="StatusIcon_ToolTip">Status</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Third" on="SampleRequestBuyerId" target="Id">
+					<PROPERTIES type="varchar" searchOrder="6" list="6" filterMode="generic" listWidth="250" description="Buyer">Company</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+			<!-- CAS GROUPBY <GROUPBY>Enseigne.Id</GROUPBY> -->
+		</VIEW>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="Sample" driver="mysql" Icon="[None]" Class="Modules/Murphy/Class/Sample.class.php">
+		<FKEY card="1,1" data="SampleRequest,Id" category="Sample" description="Samples request"		>SampleSampleRequestId</FKEY>
+		<FKEY card="1,1" data="Third,Id" category="Sample" description="Supplier" exoFields="ContactId::"					>SampleSupplierId</FKEY>
+		<PROPERTIES category="Sample" type="varchar" notInLayout="0" auto="1" formLabel="1" description="Buyer">BuyerCompany</PROPERTIES>
+		<PROPERTIES category="Sample" type="varchar" notInLayout="1" formToolTip="1">SupplierCompany</PROPERTIES>
+		<PROPERTIES category="Sample" type="varchar" searchOrder="15" list="15" description="Sample ref" listWidth="80"		>SampleRef</PROPERTIES>
+		<PROPERTIES category="Sample" type="int"	default="81" query="Murphy/Status/Type=8::Id::Status"					>Status</PROPERTIES>
+		<PROPERTIES category="Sample" type="int"	default="1" 															>Bottles</PROPERTIES>
+		<PROPERTIES category="Product" type="int"	default="0" query="Murphy/Country/WineProducer=1::Id::Country" description="Country"	>CountryWine</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0"	query="Murphy/Varietal::Id::Varietal" dataFilter="Inactive=0" exoFilters="Colours::Colour"	>Varietal</PROPERTIES>
+		<PROPERTIES category="Product"	type="int"	default="0" query="Murphy/Colour::Id::Colour" dataFilter="Id~_filter_"	>Colour</PROPERTIES>
+		<PROPERTIES category="Product" type="int"	default="0"	query="Murphy/Appellation::Id::Appellation"					>Appellation</PROPERTIES>
+		<PROPERTIES category="Product" type="varchar" length="10" list="14" width="100"						listWidth="50" 	>Vintage</PROPERTIES>
+		<PROPERTIES category="Product"	type="float" format="0dec"	listWith="65"											>Volume</PROPERTIES>
+
+		<PROPERTIES category="Product" type="float" default="0"	>Alc</PROPERTIES>
+		<PROPERTIES category="Product" type="float" default="0"	>TA</PROPERTIES>
+		<PROPERTIES category="Product" type="float" default="0"	>PH</PROPERTIES>
+		<PROPERTIES category="Product" type="float" default="0"	>VI</PROPERTIES>
+		<PROPERTIES category="Product" type="float" default="0"	>RS</PROPERTIES>
+
+		<PROPERTIES category="Finance" type="float" description="Unit Price"												>UnitPrice</PROPERTIES>
+		<PROPERTIES category="Finance" type="int"	default="0"	query="Murphy/Currency::Id::Currency" 						>Currency</PROPERTIES>
+		<PROPERTIES category="Courier" type="int" default="0" query="Murphy/Courier::Id::Courier"							>Courier</PROPERTIES>
+		<PROPERTIES category="Courier" type="varchar" description="AB number"												>ABNumber</PROPERTIES>
+		<PROPERTIES category="Courier" type="date" description="Send date"													>SendDate</PROPERTIES>
+		<PROPERTIES category="Courier" type="date" description="Receive date"												>ReceiveDate</PROPERTIES>
+		<PROPERTIES category="Other" type="text"																			>Comments</PROPERTIES>
+		<PROPERTIES category="Other" type="file"																			>Document</PROPERTIES>
+		<VIEW title="SampleList" default="1">
+			<OBJECTCLASS title="Sample" select="Id,Bottles,Vintage,Volume,SampleRef,UnitPrice,Currency,Courier,ABNumber,SendDate,Alc,BuyerCompany,SupplierCompany">
+				<JOIN type="outer" title="Status" on="Status" target="Id">
+					<PROPERTIES type="int" alias="StatusId">Id</PROPERTIES>
+					<PROPERTIES type="varchar" query="Murphy/Status/Type=8::Status::Status" searchOrder="1">Status</PROPERTIES>
+					<PROPERTIES type="varchar" alias="StatusColor">Color</PROPERTIES>
+					<PROPERTIES type="image" list="1" listWidth="20" listDescr="." alias="StatusIcon">Icon</PROPERTIES>
+					<PROPERTIES type="varchar" listDescr="Status_ToolTip" alias="StatusIcon_ToolTip">Status</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="SampleRequest" on="SampleSampleRequestId" target="Id">
+					<PROPERTIES type="int" >SampleRequestBuyerId</PROPERTIES>
+					<PROPERTIES type="varchar" searchOrder="20" list="30" listWidth="50" description="Request">Reference</PROPERTIES>
+					<PROPERTIES type="date" list="2" >Date</PROPERTIES>
+					<PROPERTIES type="varchar" searchOrder="4" list="4" filterMode="generic" listWidth="80" alias="Buyer ref">BuyerRef</PROPERTIES>
+					<JOIN type="outer" title="Third" on="SampleRequestBuyerId" target="Id">
+						<PROPERTIES type="varchar" searchOrder="3" list="3" filterMode="generic" listWidth="150" alias="Buyer">Company</PROPERTIES>
+					</JOIN>
+				</JOIN>
+				<JOIN type="outer" title="Third" on="SampleSupplierId" target="Id">
+					<PROPERTIES type="varchar" searchOrder="5" list="5" filterMode="generic" listWidth="150" alias="Supplier">Company</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Country" on="CountryWine" target="Id">
+					<PROPERTIES type="image" list="10" listWidth="20" listDescr="Cy">Acronym</PROPERTIES>
+					<PROPERTIES type="varchar" alias="Acronym_ToolTip">Country</PROPERTIES>
+					<PROPERTIES type="varchar" query="Murphy/Country/WineProducer=1::Country::Country" searchOrder="10" filterMode="generic" listWidth="100" >Country</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Varietal" on="Varietal" target="Id">
+					<PROPERTIES type="varchar" query="Murphy/Varietal::Varietal::Varietal" searchOrder="11" list="11" filterMode="generic" listWidth="100" >Varietal</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Colour" on="Colour" target="Id">
+					<PROPERTIES type="image" list="12" listWidth="20" listDescr="Cl" alias="ColourIcon">Icon</PROPERTIES>
+					<PROPERTIES type="varchar" query="Murphy/Colour::Colour::Colour" searchOrder="12" listWidth="60" >Colour</PROPERTIES>
+					<PROPERTIES type="varchar" alias="ColourIcon_ToolTip">Colour</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Appellation" on="Appellation" target="Id">
+					<PROPERTIES type="varchar" list="13" filterMode="generic" listWidth="100">Appellation</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+			<!-- CAS GROUPBY <GROUPBY>Enseigne.Id</GROUPBY> -->
+		</VIEW>
+	</OBJECTCLASS>
+
+	<!-- GESTION LOGISTIQUE -->
+
+	<OBJECTCLASS title="Shipment" driver="mysql" color="0x999999" Icon="[None]" Class="Modules/Murphy/Class/Shipment.class.php">
+		<CONFIGURATION name="Interface">
+			<FORM hideNew="1" >FormList</FORM>
+			<FORM showNew="0">FormBase</FORM>
+			<FORM getDataFunction="{&quot;method&quot;:&quot;object&quot;,&quot;function&quot;:&quot;GetCalendarList&quot;}">FormCalendar</FORM>
+		</CONFIGURATION>
+		<INTERFACES name="accordion2">
+			<FORM form="WidgetContainer" module="Murphy" objectClass="Container" dirtyParent="1">Containers</FORM>
+		</INTERFACES>
+		<INTERFACES name="accordion">
+			<FORM form="WidgetDocument" module="Murphy" objectClass="Document" dirtyParent="1">Documents</FORM>
+		</INTERFACES>
+                <FILTER name="All shipments" view="NOVIEW" color="0x999999"></FILTER>
+                <FILTER name="Planned shipments" view="NOVIEW" color="0x3A87AD"><![CDATA[Status=51]]></FILTER>
+                <FILTER name="Booked shipments" view="NOVIEW" color="0xffcc33"><![CDATA[Status=52]]></FILTER>
+                <FILTER name="Loaded shipments" view="NOVIEW"><![CDATA[Status=53]]></FILTER>
+                <FILTER name="Delivered shipments" view="NOVIEW" color="0x468847"><![CDATA[Status=54]]></FILTER>
+		<FKEY card="1,1" data="Contract,Id" category="Shipment"	description="Contract"	access="1" noControl="1"			>ShipmentContractId</FKEY>
+		<PROPERTIES category="Shipment"	type="int"	default="51" query="Murphy/Status/Type=5::Id::Status" obligatoire="1"	>Status</PROPERTIES>
+		<PROPERTIES category="Shipment"	type="varchar" description="Purchase order" list="20" searchOrder="20" listWidth="100" 	>PurchaseOrder</PROPERTIES>
+		<PROPERTIES category="Shipment"	type="date" searchOrder="5" list="5" description="Loading date" listDescr="Loading" obligatoire="1"	>LoadingDate</PROPERTIES>
+		<PROPERTIES category="Shipment"	type="float" default="0" format="0dec" list="10" obligatoire="1"						>Volume</PROPERTIES>
+		<PROPERTIES category="Delivery"	type="varchar" searchOrder="6" list="11" description="Supplier contract" listWidth="100">SupplierContract</PROPERTIES>
+		<PROPERTIES category="Delivery"	type="varchar" searchOrder="7" list="12" description="Supplier invoice" listWidth="100"	>SupplierInvoice</PROPERTIES>
+		<PROPERTIES category="Delivery"	type="boolean"	default="0" list="7" listDescr="I" searchOrder="14"	auto="0"	description="MWC Invoice"	>Invoice</PROPERTIES>
+		<PROPERTIES category="Delivery"	type="boolean"	default="0" listExtra="iconGrey,iconRed" list="8" listDescr="B" searchOrder="13"	description="Blocked"	>Retained</PROPERTIES>
+		<PROPERTIES category="Delivery"	type="date" list="6" description="Delivery date" listDescr="Delivery"				>DeliveryDate</PROPERTIES>
+		<PROPERTIES category="Delivery"	type="date" description="Invoice date"													>NoteDate</PROPERTIES>
+		<FKEY card="1,1" data="Invoice,Id" category="Delivery" hideParent="1" description="Invoice">ShipmentInvoiceId</FKEY>
+		<VIEW title="ShipmentList" default="1">
+			<OBJECTCLASS title="Shipment" select="Id,LoadingDate,DeliveryDate,Volume,NoteReference,SupplierContract,SupplierInvoice,Invoice,Retained,PurchaseOrder" filters="">
+				<JOIN type="outer" title="Status" on="Status" target="Id">
+					<PROPERTIES type="int" alias="StatusId">Id</PROPERTIES>
+					<PROPERTIES type="varchar" query="Murphy/Status/Type=5::Id::Status" searchOrder="1">Status</PROPERTIES>
+					<PROPERTIES type="varchar" alias="StatusColor">Color</PROPERTIES>
+					<PROPERTIES type="image" list="1" listWidth="20" listDescr="." alias="StatusIcon">Icon</PROPERTIES>
+					<PROPERTIES type="varchar" listDescr="Status_ToolTip" alias="StatusIcon_ToolTip">Status</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Contract" on="ShipmentContractId" target="Id">
+					<PROPERTIES type="varchar" searchOrder="2" list="2" listWidth="120" alias="Contract">Reference</PROPERTIES>
+					<PROPERTIES type="varchar" alias="label">Reference</PROPERTIES>
+					<PROPERTIES type="int" >ContractSupplierId</PROPERTIES>
+					<PROPERTIES type="int" >ContractAccountId</PROPERTIES>
+					<PROPERTIES type="float" >UnitPrice</PROPERTIES>
+					<PROPERTIES type="float" >ComMWC</PROPERTIES>
+					<PROPERTIES type="int" >Currency</PROPERTIES>
+					<PROPERTIES type="int" >Payment</PROPERTIES>
+					<JOIN type="outer" title="Third" on="ContractBuyerId" target="Id">
+						<PROPERTIES type="varchar" searchOrder="11" list="13" listWidth="150" formLabel="1" alias="Buyer">Company</PROPERTIES>
+					</JOIN>
+					<JOIN type="outer" title="Third" on="ContractSupplierId" target="Id">
+						<PROPERTIES type="varchar" searchOrder="12" list="14" listWidth="150" formTooTip="1" alias="Supplier">Company</PROPERTIES>
+					</JOIN>
+					<JOIN type="outer" title="Varietal" on="Varietal" target="Id">
+						<PROPERTIES type="varchar" list="15" listWidth="100" >Varietal</PROPERTIES>
+					</JOIN>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Document" driver="mysql" Icon="[None]" Interface="FormDetail" description="Documents">
+		<FKEY card="0,1" data="Third,Id" category="Document"	documentx="Doc" position="accordion" description="Third"		>DocumentThirdId</FKEY>
+		<FKEY card="0,1" data="Enquiry,Id" category="Document"	documentx="Doc" position="accordion" description="Enquiry"		>DocumentEnquiryId</FKEY>
+<!--		<FKEY card="0,1" data="Proposal,Id" category="Document"	documentx="Doc" position="accordion" description="Proposal"		>DocumentProposalId</FKEY>
+-->
+		<FKEY card="0,1" data="Contract,Id" category="Document"	documentx="Doc" position="accordion" description="Contract"		>DocumentContractId</FKEY>
+		<FKEY card="0,1" data="Shipment,Id" category="Document"	documentx="Doc" position="accordion" description="Shipment"		>DocumentShipmentId</FKEY>
+		<PROPERTIES category="Document" type="date" defaultValue="Now" searchOrder="1"											>Date</PROPERTIES>
+		<PROPERTIES category="Document" type="varchar" searchOrder="2" 															>Name</PROPERTIES>
+		<PROPERTIES category="Document" type="file" searchOrder="3" description="Document"										>Doc</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Container" driver="mysql" Icon="[None]" Interface="FormDetail">
+		<CONFIGURATION name="Interface">
+			<FORM hideNew="1">FormList</FORM>
+		</CONFIGURATION>
+		<FKEY card="1,1" data="Shipment,Id" category="Container" description="Shipment" position="accordion" access="1" noControl="1"	>ContainerShipmentId</FKEY>
+		<PROPERTIES category="Container" type="varchar" length="50"	searchOrder="2" list="2" description="Container number" obligatoire="1"		>ContainerNumber</PROPERTIES>
+		<PROPERTIES category="Container" type="float" default="0" format="0dec"	list="3" obligatoire="1"						>Volume</PROPERTIES>
+		<VIEW title="ContainerList" default="1">
+			<OBJECTCLASS title="Container" select="Id,ContainerNumber,Volume" filters="">
+				<JOIN type="outer" title="Shipment" on="ContainerShipmentId" target="Id">
+					<JOIN type="outer" title="Contract" on="ShipmentContractId" target="Id">
+						<PROPERTIES type="varchar" searchOrder="1" list="1" listWidth="120" description="Contract">Reference</PROPERTIES>
+					</JOIN>
+				</JOIN>
+			</OBJECTCLASS>
+			<!-- CAS GROUPBY <GROUPBY>Enseigne.Id</GROUPBY> -->
+		</VIEW>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="StockMovement" driver="mysql" Icon="[None]">
+		<PROPERTIES category="Entity"	type="date"		order="11"	searchOrder="1"						>Date</PROPERTIES>
+		<PROPERTIES category="Entity"	type="text"		order="12"										>Comments</PROPERTIES>
+		<PROPERTIES category="Entity"	type="varchar"	order="13"										>StorageFacility</PROPERTIES>
+		<PROPERTIES category="Entity"	type="float"	order="14"										>Volume</PROPERTIES>
+		<PROPERTIES category="Entity"	type="boolean"	order="15"	searchOrder="2"						>Incoming</PROPERTIES>
+		<PROPERTIES category="Entity"	type="boolean"	order="16"	searchOrder="3"						>Outgoing</PROPERTIES>
+		<PROPERTIES category="Entity"	type="float"	order="17"										>Cost</PROPERTIES>
+	</OBJECTCLASS>
+
+
+
+
+
+	<!-- GESTION ADMINISTRATIVE -->
+
+	<OBJECTCLASS title="CommissioningEnquiry" driver="mysql" Icon="[None]">
+		<PROPERTIES category="Enquiry"		type="varchar"	order="11"	searchOrder="1"						>Reference</PROPERTIES>
+		<PROPERTIES category="Enquiry"		type="boolean"	order="12"	searchOrder="2"						>Status</PROPERTIES>
+		<PROPERTIES category="Enquiry"		type="boolean"	order="13"	searchOrder="3"						>Confirmed</PROPERTIES>
+		<PROPERTIES category="Enquiry"		type="date"		order="14"										>Date</PROPERTIES>
+		<PROPERTIES category="Enquiry"		type="date"		order="15"										>LoadingDate</PROPERTIES>
+		<PROPERTIES category="Enquiry"		type="text"		order="16"										>Comments</PROPERTIES>
+		<PROPERTIES category="Enquiry"		type="float"	order="21"										>Amount</PROPERTIES>
+		<PROPERTIES category="Enquiry"		type="float"	order="22"										>VATRate</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Invoice" driver="mysql" color="0x3A87AD" Icon="[None]" Class="Modules/Murphy/Class/Invoice.class.php">
+		<CONFIGURATION name="Interface">
+			<FORM hideNew="1" hideDelete="1" formBase="FormInvoice">FormList</FORM>
+			<FORM showNew="0">FormBase</FORM>
+		</CONFIGURATION>
+		<INTERFACES name="accordion">
+			<FORM form="WidgetDocument" module="Murphy" objectClass="Document" dirtyParent="1">Documents</FORM>
+		</INTERFACES>
+               <FILTER name="All invoices" color="0x468847"></FILTER>
+                <FILTER name="Europe" color="0x468847"><![CDATA[Account=Europe]]></FILTER>
+                <FILTER name="USA" color="0x468847"><![CDATA[Account=USA]]></FILTER>
+                <FILTER name="Chile" color="0x468847"><![CDATA[Account=CHile]]></FILTER>
+		<FUNCTION name="localProxy" formOnly="1" localProxy="1" description="filters inactive data in dicos">
+			<ACTION>
+				<![CDATA[
+					"VATRate":{"action":"invoke","method":"callMethod","params":{"method":"object","function":"ComputeInvoice","args":[{"dataValue":["TotalTE","VATRate"]}]}},
+					"Paid":{"action":"invoke","method":"callMethod","params":{"method":"object","function":"InvoicePaid","args":[{"dataValue":["Paid","PaymentDate"]}]}}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION type="vseparator" >s0</FUNCTION>
+		<FUNCTION name="CreateInvoices" listOnly="1" icon="invoice" label="Create invoices" description="Create invoices" stateGroup="savedIdle">
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"loadForm","params":{"kobeyeClass":{"module":"Murphy","objectClass":"Enquiry","form":"FormInvoices.json"}}}
+				]]>
+			</ACTION>
+			<ACTION></ACTION>
+		</FUNCTION>
+		<FUNCTION name="ValidateInvoice" formOnly="1" icon="validate" label="Validate invoice" description="Validate" stateGroup="savedIdle">
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"confirm":{"text":"Validate invoice"},
+						"method":"query","data":{"dirtyChild":1,"module":"Murphy","objectClass":"Invoice"},
+						"function":"ValidateInvoice"}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="PrintInvoices" listOnly="1" multi="1" icon="print" label="Print invoices" description="Print" stateGroup="savedIdle">
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"method":"object","data":{"module":"Murphy","objectClass":"Invoice"},
+						"function":"PrintInvoices","selectionRequired":1,"args":[{"selectedValues":["dataGrid"]}]}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="PrintInvoice" formOnly="1" icon="print" label="Print invoice" description="Print" stateGroup="savedIdle">
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"method":"query","data":{"dirtyChild":1,"module":"Murphy","objectClass":"Invoice"},
+						"function":"PrintInvoices"}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="SendInvoice" formOnly="1" icon="mail" label="Send invoice" description="Send invoice">
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"method":"query","data":{"dirtyChild":1,"module":"Murphy","objectClass":"Invoice"},
+						"function":"SendInvoices"}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION type="vseparator" listOnly="1">s2</FUNCTION>
+		<FUNCTION name="SalesJournal" listOnly="1" icon="print" label="Sales journal" description="Sales journal">
+			<PROPERTIES type="date" category="Validation" obligatoire="1" description="First date">firstDate</PROPERTIES>
+			<PROPERTIES type="date" category="Validation" obligatoire="1" description="Last date">lastDate</PROPERTIES>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"interface":1,
+						"method":"object","data":{"module":"Murphy","objectClass":"Invoice","form":"Functions/SalesJournal.json"},
+						"function":"SalesJournal","args":[{"interfaceValues":["firstDate","lastDate"]}]}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<FUNCTION name="UnpaidInvoices" listOnly="1" icon="print" label="Unpaid invoices" description="Unpaid invoices">
+			<PROPERTIES type="date" category="Validation" obligatoire="1" description="Due date">dueDate</PROPERTIES>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"interface":1,
+						"method":"object","data":{"module":"Murphy","objectClass":"Invoice","form":"Functions/UnpaidInvoices.json"},
+						"function":"UnpaidInvoices","args":[{"interfaceValues":["dueDate"]}]}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<PROPERTIES category="Invoice"	type="varchar"	length="20" searchOrder="1" formLabel="1" list="1" listWidth="80" auto="1"	>Reference</PROPERTIES>
+		<FKEY card="1,1" data="Third,Id" category="Invoice"	description="Supplier"	access="0"										>InvoiceSupplierId</FKEY>
+		<FKEY card="1,1" data="Account,Id" category="Invoice" description="Account" exoFields="VATRate::"					>InvoiceAccountId</FKEY>
+		<PROPERTIES category="Invoice"	type="varchar" length="1" default="I" values="I::Invoice,C::Credit note" 			>Type</PROPERTIES>
+		<PROPERTIES category="Invoice"	type="date"					searchOrder="2" list="2"								>Date</PROPERTIES>
+		<PROPERTIES category="Invoice"	type="boolean" default="0" auto="1" listDescr="V"									>Valid</PROPERTIES>
+		<PROPERTIES category="Invoice"	type="boolean" default="0" auto="1"	listDescr="Pr"									>Printed</PROPERTIES>
+		<PROPERTIES category="Invoice"	type="boolean" default="0" auto="1"	list="3" listDescr="S"							>Sent</PROPERTIES>
+		<PROPERTIES category="Finance"	type="int"				query="Murphy/Currency::Id::Currency"						>Currency</PROPERTIES>
+		<PROPERTIES category="Finance"	type="price" auto="1"	description="Total tax excluded"							>TotalTE</PROPERTIES>
+		<PROPERTIES category="Finance"	type="price"			description="VAT rate"										>VATRate</PROPERTIES>
+		<PROPERTIES category="Finance"	type="price" auto="1"	description="VAT amount"									>VATAmount</PROPERTIES>
+		<PROPERTIES category="Finance"	type="price" auto="1"	description="Total tax included" listDescr="Total" list="5"	>TotalTI</PROPERTIES>
+		<PROPERTIES category="Finance"	type="int"	default="0"	query="Murphy/PaymentTerm::Id::Payment"						>Payment</PROPERTIES>
+		<PROPERTIES category="Finance"	type="date"		searchOrder="7" list="7" description="Due date" listDescr="Due"		>DueDate</PROPERTIES>
+		<PROPERTIES category="Finance"	type="boolean" default="0"	searchOrder="8" list="8" listDescr="Pa"					>Paid</PROPERTIES>
+		<PROPERTIES category="Finance"	type="date"				description="Payment"										>PaymentDate</PROPERTIES>
+		<VIEW title="InvoiceList" default="1">
+			<OBJECTCLASS title="Invoice" select="Id,Reference,Date,Valid,Printed,Sent,Paid,TotalTI,DueDate" filters="">
+				<JOIN type="outer" title="Third" on="InvoiceSupplierId" target="Id">
+					<PROPERTIES type="varchar" searchOrder="4" list="4" listWidth="200" >Company</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Account" on="InvoiceAccountId" target="Id">
+					<PROPERTIES type="varchar" searchOrder="10" list="10" listWidth="60" alias="Account">Code</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Currency" on="Currency" target="Id">
+					<PROPERTIES type="varchar" list="6" searchOrder="6" listWidth="30" listDescr="Cur">Currency</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Cost" driver="mysql" Icon="[None]">
+		<PROPERTIES category="Costs"	type="varchar"	order="11"	searchOrder="1"						>Title</PROPERTIES>
+		<PROPERTIES category="Costs"	type="varchar"	order="12"										>Type</PROPERTIES>
+		<PROPERTIES category="Costs"	type="date"		order="13"										>Date</PROPERTIES>
+		<PROPERTIES category="Costs"	type="float"	order="14"										>Price</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Payment" driver="mysql" Icon="[None]">
+		<PROPERTIES category="Costs"	type="varchar"	order="11"	searchOrder="1"						>Title</PROPERTIES>
+		<PROPERTIES category="Costs"	type="date"		order="12"	searchOrder="2"						>Date</PROPERTIES>
+		<PROPERTIES category="Costs"	type="price"	order="13"										>Amount</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Account" driver="mysql" Dico="1" Description="Accounts" Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png">
+		<PROPERTIES category="Company"	type="varchar"	searchOrder="1"							>Code</PROPERTIES>
+		<PROPERTIES category="Company"	type="varchar"	searchOrder="2" displayOrder="1"		>Name</PROPERTIES>
+		<PROPERTIES category="Company"	type="int"		query="Murphy/Country::Id::Country"		>Country</PROPERTIES>
+		<PROPERTIES category="Company"	type="int"		query="Murphy/Currency::Id::Currency"	>Currency</PROPERTIES>
+		<PROPERTIES category="Company"	type="float" description="VAT rate"						>VATRate</PROPERTIES>
+		<PROPERTIES category="Company"	type="text"												>Address</PROPERTIES>
+		<PROPERTIES category="Bank"	type="varchar" description="Bank instructions"				>Instructions</PROPERTIES>
+		<PROPERTIES category="Bank"	type="varchar" description="Bank name"						>BankName</PROPERTIES>
+		<PROPERTIES category="Bank"	type="varchar" length="50" description="Bank number"		>BankNumber</PROPERTIES>
+		<PROPERTIES category="Bank"	type="varchar" length="50" description="Branch code"		>BranchCode</PROPERTIES>
+		<PROPERTIES category="Bank"	type="varchar" length="50" description="Account number"		>AccountNumber</PROPERTIES>
+		<PROPERTIES category="Bank"	type="varchar" length="50" description="Account name"		>AccountName</PROPERTIES>
+		<PROPERTIES category="Bank"	type="varchar" length="50" description="ID code"			>IdCode</PROPERTIES>
+		<PROPERTIES category="Bank"	type="varchar" length="50" description="IBAN"				>Iban</PROPERTIES>
+		<PROPERTIES category="Bank"	type="varchar" length="50" description="BIC / SWIFT"		>BicSwift</PROPERTIES>
+		<PROPERTIES category="Bank"	type="varchar" length="50" description="Fed routing number"	>FRNumber</PROPERTIES>
+		<PROPERTIES category="Bank"	type="varchar" length="50" description="ACH"				>Ach</PROPERTIES>
+		<PROPERTIES category="Invoice"	type="varchar" length="4" description="Invoice prefix"	>InvoicePrefix</PROPERTIES>
+	</OBJECTCLASS>
+
+
+
+	<!-- TOURNEE COMMECIALE -->
+
+	<OBJECTCLASS title="Trip" driver="mysql" Icon="[None]">
+		<PROPERTIES category="Trip"		type="varchar"	order="11"	searchOrder="1"						>Title</PROPERTIES>
+		<PROPERTIES category="Trip"		type="varchar"	order="12"	searchOrder="2"						>Reference</PROPERTIES>
+		<PROPERTIES category="Trip"		type="float"	order="13"										>Budget</PROPERTIES>
+		<PROPERTIES category="Trip"		type="int"		order="14"										>Users</PROPERTIES>
+		<PROPERTIES category="Trip"		type="date"		order="15"										>StartDate</PROPERTIES>
+		<PROPERTIES category="Trip"		type="date"		order="16"										>EndDate</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Stage" driver="mysql" Icon="[None]">
+		<PROPERTIES category="Stage"	type="varchar"	order="11"	searchOrder="1"						>Title</PROPERTIES>
+		<PROPERTIES category="Stage"	type="varchar"	order="12"										>Position</PROPERTIES>
+		<PROPERTIES category="Stage"	type="float"	order="13"										>Cost</PROPERTIES>
+		<PROPERTIES category="Stage"	type="text"		order="14"										>Comments</PROPERTIES>
+		<PROPERTIES category="Stage"	type="date"		order="15"										>StartDate</PROPERTIES>
+		<PROPERTIES category="Stage"	type="date"		order="16"										>EndDate</PROPERTIES>
+		<FKEY card="0,1" data="Trip,Id">StageTripId</FKEY>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Transport" driver="mysql" Icon="[None]">
+		<PROPERTIES category="Entity"	type="varchar"	order="11"	searchOrder="1"						>Title</PROPERTIES>
+		<PROPERTIES category="Entity"	type="float"	order="12"										>Cost</PROPERTIES>
+		<PROPERTIES category="Entity"	type="int"		order="13"										>Type</PROPERTIES>
+		<PROPERTIES category="Entity"	type="date"		order="14"										>ETA</PROPERTIES>
+		<PROPERTIES category="Entity"	type="date"		order="15"										>ETD</PROPERTIES>
+		<FKEY card="0,1" data="Trip,Id">TransportTripId</FKEY>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Visit" driver="mysql" Icon="[None]">
+		<PROPERTIES category="Visit"	type="varchar"	order="11"	searchOrder="1"						>Title</PROPERTIES>
+		<PROPERTIES category="Visit"	type="text"		order="12"										>Comments</PROPERTIES>
+		<FKEY card="0,1" data="Trip,Id">VisitTripId</FKEY>
+	</OBJECTCLASS>
+
+
+
+
+	<!-- AUTRES PERIMETRES -->
+
+	<OBJECTCLASS title="Vacation" driver="mysql" Icon="[None]">
+		<PROPERTIES category="Entity"	type="float"	order="11"	searchOrder="1"						>Balance</PROPERTIES>
+		<FKEY module="Systeme" card="0,1" data="User,Id">VacationUserId</FKEY>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Process" driver="mysql" Icon="[None]">
+		<PROPERTIES category="Process"	type="varchar"	order="11"	searchOrder="1"						>Title</PROPERTIES>
+		<PROPERTIES category="Process"	type="text"		order="12"										>Content</PROPERTIES>
+		<PROPERTIES category="Process"	type="int"		order="13"										>Type</PROPERTIES>
+		<PROPERTIES category="Process"	type="float"	order="14"										>Volume</PROPERTIES>
+		<PROPERTIES category="Process"	type="int"		order="15"	query="Murphy/Country::Id::Name"	>Country</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Media" driver="mysql" Icon="[None]">
+		<PROPERTIES category="Media"	type="varchar"	order="11"	searchOrder="1"						>Title</PROPERTIES>
+		<PROPERTIES category="Media"	type="varchar"	order="12"	values="Image,Video,Doc"			>Type</PROPERTIES>
+		<PROPERTIES category="Media"	type="file"		order="13"										>File</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="News" driver="mysql" Icon="[None]">
+		<PROPERTIES category="News"		type="varchar"	order="11"	searchOrder="1"						>Title</PROPERTIES>
+		<PROPERTIES category="News"		type="date"		order="12"										>Date</PROPERTIES>
+		<PROPERTIES category="News"		type="text"		order="13"										>Content</PROPERTIES>
+	</OBJECTCLASS>
+
+
+
+
+
+	<!-- DICTIONNAIRES -->
+
+	<OBJECTCLASS title="Currency" order="Currency" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" Description="Currencies" Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png">
+		<PROPERTIES category="Currency"	type="varchar"	order="11"	searchOrder="1"						>Currency</PROPERTIES>
+		<PROPERTIES category="Currency"	type="varchar"	order="12"										>Acronym</PROPERTIES>
+		<PROPERTIES category="Currency" type="varchar" length="64"										>Icon</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Country" order="Country" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" Description="Countries" Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png">
+		<PROPERTIES category="Country"	type="varchar"	order="11"	searchOrder="1"  special="multi" list="2"						>Country</PROPERTIES>
+		<PROPERTIES category="Country"	type="varchar"	order="12" list="3" asImage="1" listWidth="20"								>Acronym</PROPERTIES>
+		<PROPERTIES category="Country"	type="int"	default="0"	query="Murphy/Currency::Id::Currency"								>Currency</PROPERTIES>
+<!--		<PROPERTIES category="Country" 	type="file" length="64" description="Flag icon"					>FlagIcon</PROPERTIES>
+-->
+		<PROPERTIES category="Country" 	type="boolean" default="0" description="Wine producer" listDescr="WP" listWidth="30"	 	>WineProducer</PROPERTIES>
+		<PROPERTIES category="Country" 	type="boolean" default="0" description="Number of trucks" listDescr="Trk" listWidth="30"	>Trucks</PROPERTIES>
+		<PROPERTIES category="Country"	type="boolean" default="0" listExtra="iconGreen,iconRed"			list="1"			>Inactive</PROPERTIES>
+		<PROPERTIES category="Country"	type="int"	query="Murphy/Country::Id::Country" description="New country"			>convId</PROPERTIES>
+		<VIEW title="CountryList" default="1">
+			<OBJECTCLASS title="Country" select="Id,Country,Acronym,WineProducer,Trucks,Inactive" filters="">
+				<JOIN type="outer" title="Currency" on="Currency" target="Id">
+					<PROPERTIES type="varchar" list="4" listWidth="40" alias="Curr">Currency</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Country" on="convId" target="Id">
+					<PROPERTIES type="varchar" list="5" alias="Conv" listDescr="New country">Country</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Varietal" order="Varietal" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" Description="Varietals" Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png" Class="Modules/Murphy/Class/Varietal.class.php">
+		<PROPERTIES category="Varietal" type="varchar"		searchOrder="1" list="2"		 	>Varietal</PROPERTIES>
+		<PROPERTIES category="Varietal" type="boolean"	list="3" listDescr="Rd"					>Red</PROPERTIES>
+		<PROPERTIES category="Varietal" type="boolean"	list="4" listDescr="W"					>White</PROPERTIES>
+		<PROPERTIES category="Varietal" type="boolean"	list="5" listDescr="Rs"					>Rose</PROPERTIES>
+		<PROPERTIES category="Varietal" type="varchar" length="8" hidden="1" auto="1"			>Colours</PROPERTIES>
+		<PROPERTIES category="Varietal"	type="boolean" default="0" listExtra="iconGreen,iconRed"			list="1"			>Inactive</PROPERTIES>
+		<PROPERTIES category="Varietal"		type="int"	order="999"	hidden="1"					>oldId</PROPERTIES>
+		<PROPERTIES category="Varietal"	type="int"	query="Murphy/Varietal/Inactive=0::Id::Varietal" description="New varietal"	>convId</PROPERTIES>
+		<VIEW title="VarietalList" default="1">
+			<OBJECTCLASS title="Varietal" select="Id,Varietal,Red,White,Rose,Colours,Inactive" filters="">
+				<JOIN type="outer" title="Varietal" on="convId" target="Id">
+					<PROPERTIES type="varchar" list="6" alias="Conv" listDescr="New varietal">Varietal</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Appellation" order="Appellation" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" Description="Appellations" Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png">
+		<PROPERTIES category="Appellation"	type="varchar"	searchOrder="1" list="2"							>Appellation</PROPERTIES>
+		<PROPERTIES category="Appellation"	type="boolean" default="0" listExtra="iconGreen,iconRed"			list="1"			>Inactive</PROPERTIES>
+		<PROPERTIES category="Appellation"	type="int"	hidden="1"												>oldId</PROPERTIES>
+		<PROPERTIES category="Appellation"	type="int"	hidden="1"												>newId</PROPERTIES>
+		<PROPERTIES category="Appellation"	type="int"	query="Murphy/Country/WineProducer=1::Id::Country"		>Country</PROPERTIES>
+		<PROPERTIES category="Appellation"	type="int"	query="Murphy/Appellation/Country!=0::Id::Appellation" description="New appellation"	>convId</PROPERTIES>
+<!--		<FKEY card="0,1" data="Country,Id" category="Country"								>CountryId</FKEY>
+-->
+		<VIEW title="AppellationList" default="1">
+			<OBJECTCLASS title="Appellation" select="Id,Appellation,Country,Inactive" filters="">
+				<JOIN type="outer" title="Appellation" on="convId" target="Id">
+					<PROPERTIES type="varchar" list="4" alias="New appellation">Appellation</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="Country" on="Country" target="Id">
+					<PROPERTIES type="image" listWidth="20" list="3" listDescr="Cy">Acronym</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Filtration" order="Filtration" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" Description="Filtrations" Icon="[None]">
+		<PROPERTIES category="Filtration"	type="varchar" special="multi" order="11"	searchOrder="1"		>Filtration</PROPERTIES>
+		<PROPERTIES category="Filtration"		type="int"	order="999"	hidden="1"							>oldId</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="IncoTerm" order="Inco" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" Description="Inco terms" Icon="[None]">
+		<PROPERTIES category="Inco Term"	type="varchar" special="multi" order="11"	searchOrder="1"		>Inco</PROPERTIES>
+		<PROPERTIES category="Inco Term"	type="varchar" length="64"										>Icon</PROPERTIES>
+		<PROPERTIES category="Inco Term"	type="int"	order="999"	hidden="1"	>oldId</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="PaymentTerm" order="Payment" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" Description="Payment terms" Icon="[None]">
+		<PROPERTIES category="Payment Term"	type="varchar" special="multi" order="11"	searchOrder="1"		>Payment</PROPERTIES>
+		<PROPERTIES category="Payment Term"	type="int"	order="12"											>Duration</PROPERTIES>
+		<PROPERTIES category="Payment Term"		type="int"	order="999"	hidden="1"	>oldId</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Transportation" order="Transportation" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" Description="Transportation" Icon="[None]">
+		<PROPERTIES category="Transportation"	type="varchar" special="multi" order="11" searchOrder="1"	>Transportation</PROPERTIES>
+		<PROPERTIES category="Transportation"	type="boolean" default="0"									>Default</PROPERTIES>
+		<PROPERTIES category="Transportation"	type="int"	query="Murphy/Quantity::Id::Quantity" description="Quantity"		>QuantityId</PROPERTIES>
+<!--		<FKEY card="1,1" data="Quantity,Id" category="Transportation"										>QuantityId</FKEY>
+-->
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Quantity" order="Id" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" Description="Purchasing units" Icon="[None]">
+		<PROPERTIES category="Quantity"	type="varchar" special="multi" searchOrder="1" list="2"				>Quantity</PROPERTIES>
+		<PROPERTIES category="Quantity"	type="varchar" special="multi" 										>Unit</PROPERTIES>
+		<PROPERTIES category="Quantity"	type="float" default="1"											>Coefficient</PROPERTIES>
+		<PROPERTIES category="Quantity"	type="boolean" default="0"											>Default</PROPERTIES>
+		<PROPERTIES category="Quantity"	type="boolean" default="0" listExtra="iconGreen,iconRed" list="1"									>Inactive</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Unit" order="Id" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" Description="Selling units" Icon="[None]">
+		<PROPERTIES category="Unit"	type="varchar" special="multi" order="11" searchOrder="1" list="2"		>Unit</PROPERTIES>
+		<PROPERTIES category="Unit"	type="boolean" default="0"												>Default</PROPERTIES>
+		<PROPERTIES category="Quantity"	type="boolean" default="0" listExtra="iconGreen,iconRed" list="1"									>Inactive</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Colour" order="Id" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" hidden="1" Icon="[None]">
+		<PROPERTIES category="Colour"	type="varchar"	order="11"	searchOrder="1"  special="multi"			>Colour</PROPERTIES>
+		<PROPERTIES category="Colour"	type="varchar" 															>Icon</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="BottleType" order="Id" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" hidden="1" Icon="[None]">
+		<PROPERTIES category="BottleType"	type="varchar"	order="11"	searchOrder="1"  special="multi"			>BottleType</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="SamplePurpose" order="Id" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" hidden="1" Icon="[None]">
+		<PROPERTIES category="Purpose"	type="varchar"	order="11"	searchOrder="1"  special="multi"			>Purpose</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="SampleDelivery" order="Id" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" hidden="1" Icon="[None]">
+		<PROPERTIES category="Delivery"	type="varchar"	order="11"	searchOrder="1"  special="multi"			>Delivery</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Courier" order="Id" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" hidden="1" Icon="[None]">
+		<PROPERTIES category="Courier"	type="varchar"	order="11"	searchOrder="1"  special="multi"			>Courier</PROPERTIES>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="Status" order="Id" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" Description="Status" Icon="[None]">
+		<PROPERTIES category="Status" type="varchar" length="1" values="0::Enquiry,2::Proposal,4::Contract,5::Shipment,6::Sample Request,7::Third status in contract,8::Sample" searchOrder="2" listWidth="30" auto="1">Type</PROPERTIES>
+		<PROPERTIES category="Status" type="varchar" length="50" special="multi" searchOrder="1"			>Status</PROPERTIES>
+		<PROPERTIES category="Status" type="int" length="1"  auto="1"										>Order</PROPERTIES>
+		<PROPERTIES category="Status" type="varchar" length="16" auto="1"									>Color</PROPERTIES>
+		<PROPERTIES category="Status" type="varchar" length="64" auto="1"											>Icon</PROPERTIES>
+	</OBJECTCLASS>
+
+
+</SCHEMA>

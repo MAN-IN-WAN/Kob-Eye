@@ -1,0 +1,125 @@
+/* contenu */
+/*--indentation de 10 d'un texte-----*/
+.p10 {
+	text-align:justify;
+	padding-left:10px;
+	padding-right:10px;
+	padding-top:5px;
+
+}
+.m5 {
+	text-align:justify;
+	margin-left:5px;
+
+}
+.aumilieu {text-align:center;}
+/* -- pour faire des lignes après les titres */
+div.LigneTitreBlanc   {
+	/* titre element titre*/
+	width:300px;
+	overflow: hidden;
+	background-color:#000000;
+}
+div.TitreArticleBlanc  {
+	/* titre */
+	float:left;
+	background-color:#000000;
+}
+div.TitreArticleBlanc h1 {
+	font-family: Arial;
+	font-size: 14px;
+	font-weight:normal;
+	color: #ffffff;
+	margin-top:4px;
+	margin-right:10px;
+	margin-left:10px;
+
+}
+div.traitBlanc {
+	/* fin ligne titre le trait  vert */
+	border-bottom:1px solid #ffffff;
+	margin-right:10px;
+
+}
+
+/* Gestion de l'entete */
+div.contenuCentral {
+	margin-top:5px;
+	overflow:hidden;
+}
+	/* colonne grise avec border gris */
+	div.grise {
+		border:1px #acacac solid;
+		background-color:#FFFFFF;
+		margin-top:5px;
+		margin-bottom:5px;
+		margin-right:10px;
+	}
+	
+	/*-FIN colonne grise avec border gris*/
+	/* colonne de gauche */
+	div.colonneGauche {
+		width:225px;
+		float:left;
+		margin-right:10px;
+	}
+
+		
+		
+		/* FIN navigation gauche*/
+		/* pub gauche */
+		div.colonne220 {
+			width:220px;
+			background-color:#ffffff;
+			color:#000000;
+		}
+		/* FIN pub gauche*/
+
+	/* FIN Colonne de gauche */
+
+	/* centre */
+	#contenuCentral {
+		margin-left:240px;
+	}
+		div.centre {
+			background-color:#FFFFFF;
+			/*margin-left:240px;*/
+			overflow:hidden;
+
+		}
+	
+		/* centre etage du haut*/
+		div.centrePartieHaut {
+			background:url(/Skins/gamesavenue/Images/flash.jpg) no-repeat 0 40px;
+			height:380px;
+			background-color:#FFFFFF;
+			margin-left:240px;
+
+		}
+		/* FIN centre etage du haut */
+		/* centre etage du bas*/
+		div.centrePartieBas {
+			margin-left:240px;
+
+		}
+		
+		
+			/* FIN colonnes alignées */
+			
+		/* FIN centre etage du bas */
+
+		
+		
+	/* FIN centre */
+
+/* FIN contenu*/
+.MonCompte h1 {
+	font-family: Arial;
+	font-size: 14px;
+	font-weight:bold;
+	text-transform:uppercase;
+	padding:10px 5px;
+	padding-left:50px;
+	background:url(/Skins/gamesavenue/Images/fleche-titre-utilisateur.png) no-repeat 5px 50%;
+
+}

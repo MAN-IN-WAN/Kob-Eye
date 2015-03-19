@@ -1,0 +1,82 @@
+div.BlocProduitUne {
+	position: relative;
+	margin-bottom: 10px;
+	background: #DDD;
+	height: 180px;
+}
+
+div.BlocProduitUneImage {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+
+div.BlocProduitUneContenu {
+	position: absolute;
+	top: 25px;
+	left: 155px;
+	right: 185px;
+}
+
+div.CategorieProduitUne {
+	font-size: 16px;
+	font-weight: bold;
+	margin-bottom: 10px;
+	text-transform: uppercase;
+}
+
+div.NomProduitUne {
+	font-size: 16px;
+	margin-bottom: 20px;
+	text-transform: uppercase;
+}
+
+
+div.BlocProduitUnePrix {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 180px;
+	background: #444;
+	color: #FFF;
+	padding: 5px;
+	text-align: center;
+	padding-top: 20px;
+}
+
+div.DescriptionPrixUne {
+	font-weight: bold;
+}
+
+div.PrixBarreUne {
+	text-decoration:line-through;
+}
+
+div.PrixUne {
+	padding: 15px 0;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+div.PrixUneUnite {
+	font-style: italic;
+}
+
+a.ALaUneProfiter {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	padding: 5px;
+	display: block;
+	background: #000;
+	text-align: center;
+	font-variant: small-caps;
+	font-size: 14px;
+}
+div.apartirde {
+	font-style:italic;
+	font-size:11px;
+}

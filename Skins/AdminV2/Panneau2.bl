@@ -1,0 +1,13 @@
+<div class="Panneau" style="[1]">
+	<b class="p11" style="[2]"></b>
+	<b class="p12" style="[2]"></b>
+	<b class="p13" style="[2]"></b>
+	<b class="p21" style="[2]"></b>
+	<div class="p22" style="[3];"> 
+		[DATA]
+	</div>
+	<b class="p23" style="[2]"></b>
+	<b class="p31" style="[2]"></b>
+	<b class="p32" style="[2]"></b>
+	<b class="p33" style="[2]"></b>
+</div>

@@ -1,0 +1,64 @@
+/*------------------------------ENTETE--------------------------------*/
+#Entete{
+	width:100%;
+	padding-top:30px;
+	background-color:#B2B2B2;
+}
+
+/*------------------------------CONTENU---------------------------------*/
+#Generale{
+	width:850px;
+	margin:auto;
+}
+
+* html #Generale{
+	text-align:left;
+}
+
+#Container{
+	border-right:350px solid #8F8F8F;
+	display:block;
+	position:relative;
+	background-color:#fff;
+}
+
+#Contenu{
+	display:block;
+	margin-right:-350px;
+}
+
+#Droite{
+	float:right;
+	position:relative;
+	width:350px;
+	right:0px;
+}
+
+* html #Droite{
+	position:absolute;
+}
+
+#Milieu{
+	margin-right:350px;
+	position:relative;
+	display:block;
+	height:1%;
+	padding:10px;
+}
+
+* html #Milieu{
+	height:600px;
+}
+
+#Pied{
+	width:100%;
+	background-color:#B2B2B2;
+}
+
+* html #Pied{
+	text-align:left;
+}
+
+#Pied .Centre{
+	padding:10px 0;
+}

@@ -1,0 +1,31 @@
+[HEADER]
+	<style type="text/css">
+		#Milieu{
+			margin-right:0;
+			padding-bottom:20px;
+		}
+	</style>
+[/HEADER]
+[MODULE Systeme/Ariane]
+<div id="Milieu">
+	<div class="AddTheme">
+		[IF [!Systeme::User::Admin!]]
+			[BLOC Bouton|width:140px;||width:105px;]
+				<a href="/Forum?act=newCat">Ajouter un th&egrave;me</a>
+			[/BLOC]
+		[/IF]
+	</div>
+	<h1 class="TitreForum">Le forum de la Fiduciaire Parisienne</h1>
+	[IF [!act!]=="newCat"]
+		//Formulaire ajout categorie
+		[MODULE Forum/Categorie/AjouterForm?parent=[!parent!]]
+	[/IF]
+	//Si il y a ajout de cat
+	[IF [!confCategorie!]="Ajouter"][MODULE Forum/Categorie/Ajouter?Adr=[!Query!]][/IF]
+	[STORPROC Forum/Categorie|Cat|0|100|Id|ASC]
+		[BLOC Rounded|background-color:#E4E4E4;|margin-top:20px;|padding:5px;]
+			[MODULE Forum/Categorie/[!Cat::Id!]/Ligne]
+		[/BLOC]
+	[/STORPROC]
+</div>
+<div class="Clear"></div>

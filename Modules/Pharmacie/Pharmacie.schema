@@ -1,0 +1,78 @@
+<SCHEMA>
+	<OBJECTCLASS title="Ordonnance" driver="mysql" logEvent="1" AccessPoint="1" master="0" Description="Ordonnances"  Icon="/Skins/AdminV2/Img/IconAqua/rss.jpg" Class="Modules/Pharmacie/Class/Ordonnance.class.php">
+		<INTERFACES name="accordion">
+			<FORM form="WidgetDocument" module="Pharmacie" objectClass="Document" dirtyParent="1">Documents</FORM>
+			<FORM form="WidgetComments" module="Pharmacie" objectClass="Comments" dirtyParent="1">Comments</FORM>
+		</INTERFACES>
+		<FILTER name="Toutes les ordonnances"></FILTER>
+		<FILTER name="En attente" color="0xD9534F"><![CDATA[Etat=1]]></FILTER>
+		<FILTER name="En cours" color="0xF0AD4E"><![CDATA[Etat=2]]></FILTER>
+		<FILTER name="Preparée" color="0x5BC0DE"><![CDATA[Etat=3]]></FILTER>
+		<FILTER name="Livré" color="0x5CB85C"><![CDATA[Etat=4]]></FILTER>
+		<FILTER name="Litiges" color="0x428BCA"><![CDATA[Etat=5]]></FILTER>
+		<FUNCTION type="vseparator" formOnly="1">s0</FUNCTION>
+		<FUNCTION name="CreateUser" formOnly="1" icon="user" label="Create user" description="Create user" stateGroup="savedIdle">
+			<PROPERTIES type="varchar" length="255" obligatoire="1" category="New user" description="Login">login</PROPERTIES>
+			<PROPERTIES type="varchar" length="255" obligatoire="1" category="New user" description="Password">password</PROPERTIES>
+			<ACTION></ACTION>
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"interface":1,
+						"method":"query","data":{"dirtyChild":1,"module":"Murphy","objectClass":"Third","form":"Functions/CreateUser.json"},
+						"function":"CreateUser","args":"iv:login,iv:password"}
+					}
+				]]>
+			</ACTION>
+		</FUNCTION>
+		<PROPERTIES type="varchar" searchOrder="1" category="Personne" obligatoire="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" category="Personne" obligatoire="1">Prenom</PROPERTIES>
+		<PROPERTIES type="email"  searchOrder="3" category="Personne" obligatoire="1">Email</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="4" category="Personne" obligatoire="1">Telephone</PROPERTIES>
+		<PROPERTIES type="image" category="Ordonnace" listWidth="150" obligatoire="1">Image</PROPERTIES>
+		<PROPERTIES type="int" searchOrder="5" category="Ordonnace" values="1::Non traitée,2::En cours de traitement,3::Traitée,4::Livrée,5::Litige" default="1">Etat</PROPERTIES>
+		<VIEW title="OrdonnanceList" default="1" filters="">
+			<OBJECTCLASS title="Ordonnance" select="">
+				<PROPERTIES type="varchar" list="5" searchOrder="1" category="Personne" obligatoire="1">Nom</PROPERTIES>
+				<PROPERTIES type="varchar" list="6" searchOrder="2" category="Personne" obligatoire="1">Prenom</PROPERTIES>
+				<PROPERTIES type="email" list="4" searchOrder="3" category="Personne" obligatoire="1">Email</PROPERTIES>
+				<PROPERTIES type="varchar" list="3" searchOrder="4" category="Personne" obligatoire="1">Telephone</PROPERTIES>
+				<PROPERTIES type="image" list="2" category="Ordonnace" listWidth="150" obligatoire="1">Image</PROPERTIES>
+				<PROPERTIES type="int" searchOrder="5"  list="1" category="Ordonnace" values="1::Non traitée,2::En cours de traitement,3::Traitée,4::Livrée,5::Litige" default="1">Etat</PROPERTIES>
+				<PROPERTIES type="date" list="5" listWidth="100" listDescr="Date création">tmsCreate</PROPERTIES>
+				<PROPERTIES type="int" >Id</PROPERTIES>
+				<JOIN type="outer" title="Couleur" on="Etat" target="Id">
+					<PROPERTIES type="color" list="1" alias="Couleur">Couleur</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Couleur" driver="mysql" Icon="[None]" order="m.`tmsCreate`" orderType="DESC" Dico="1">
+		<PROPERTIES type="varchar" list="1" searchOrder="1" category="Couleur" obligatoire="1">Titre</PROPERTIES>
+		<PROPERTIES type="color" list="2" searchOrder="2" category="Couleur" obligatoire="1">Couleur</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Comments" driver="mysql" Icon="[None]" order="m.`tmsCreate`" orderType="DESC">
+		<PROPERTIES category="" type="date" list="1" 	searchOrder="1"	default="[!TMS::Now!]"							>Date</PROPERTIES>
+		<PROPERTIES category="" type="text" list="2" 	searchOrder="2"								>Comments</PROPERTIES>
+		<FKEY card="0,1" data="Ordonnance,Id" position="accordion" description="Ordonnance">CommentsOrdonnanceId</FKEY>
+		<VIEW title="CommentsList" default="1">
+			<OBJECTCLASS title="Comments">
+				<PROPERTIES category="" type="int" searchOrder="1"								>Id</PROPERTIES>
+				<PROPERTIES category="" type="date" list="1" 	searchOrder="1"								>Date</PROPERTIES>
+				<PROPERTIES category="" type="text" list="2" 	searchOrder="2"								>Comments</PROPERTIES>
+				<JOIN type="inner" module="Systeme" title="User" on="userCreate" target="Id">
+					<PROPERTIES type="date" searchOrder="3" list="5" >Nom</PROPERTIES>
+					<PROPERTIES type="varchar" searchOrder="4" list="6" >Prenom</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Document" driver="mysql" Icon="[None]" Interface="FormDetail" description="Documents">
+		<FKEY card="0,1" data="Ordonnance,Id" category="Document"	documentx="Doc" position="accordion" description="Document"		>DocumentOrdonnanceId</FKEY>
+		<PROPERTIES category="Document" type="date" defaultValue="Now" searchOrder="1"											>Date</PROPERTIES>
+		<PROPERTIES category="Document" type="varchar" searchOrder="2" 															>Name</PROPERTIES>
+		<PROPERTIES category="Document" type="file" searchOrder="3" description="Document"										>Doc</PROPERTIES>
+	</OBJECTCLASS>
+
+</SCHEMA>

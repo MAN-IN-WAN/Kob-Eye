@@ -1,0 +1,1 @@
+[MODULE Systeme/Interfaces/InfoObjet]

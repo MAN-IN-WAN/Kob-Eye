@@ -1,0 +1,371 @@
+[INFO [!Query!]|I]
+[OBJ [!I::Module!]|[!I::TypeChild!]|O]
+{"form":{"type":"VBox","id":"DevisTete?","label":"Devis","labelPrefix":"Dev:","percentHeight":100,
+"setStyle":{"verticalGap":0,"paddingTop":0},
+"kobeyeClass":{"module":"[!I::Module!]","objectClass":"[!I::TypeChild!]"},"clipContent":0,
+"localProxy":{
+	"actions":{
+		"DateDebut":{"action":"invoke","method":"callMethod","params":{"method":"object","function":"DateDebut","args":[{"dataValue":["DateDebut","DateFin"]}]}},
+		"DateFin":{"action":"invoke","method":"callMethod","params":{"method":"object","function":"DateFin","args":[{"dataValue":["DateDebut","DateFin"]}]}},
+		"DevisLigne":{"action":"invoke","method":"callMethod","params":{"method":"object","function":"TotalDevis","args":[{"dataValue":["DevisLigne","RemiseTaux","CodeTVA","RemiseMontant","NombreEcheance","Mensualites"]},{"value":[0]}]}},
+		"RemiseTaux":{"action":"invoke","method":"callMethod","params":{"method":"object","function":"TotalDevis","args":[{"dataValue":["DevisLigne","RemiseTaux","CodeTVA","RemiseMontant","NombreEcheance","Mensualites"]},{"value":[1]}]}},
+		"RemiseMontant":{"action":"invoke","method":"callMethod","params":{"method":"object","function":"TotalDevis","args":[{"dataValue":["DevisLigne","RemiseTaux","CodeTVA","RemiseMontant","NombreEcheance","Mensualites"]},{"value":[2]}]}},
+		"CodeTVA":{"action":"invoke","method":"callMethod","params":{"method":"object","function":"TotalDevis","args":[{"dataValue":["DevisLigne","RemiseTaux","CodeTVA","RemiseMontant","NombreEcheance","Mensualites"]},{"value":[0]}]}},
+		"EtatDevis":{"action":[
+			{"action":"invoke","method":"groupState","params":{"group":"confirme","property":"enabled","conditions":[{"compare":"EtatDevis<3"},{"hasID":1,"idle":1}]}},
+			{"action":"invoke","method":"groupState","params":{"group":"facture","property":"enabled","conditions":[{"compare":"EtatDevis=2&Mensualites=0"},{"hasID":1,"idle":1}]}}
+		]},
+		"Mensualites":{"action":"invoke","method":"groupState","params":{"group":"facture","property":"enabled","conditions":[{"compare":"EtatDevis=2&Mensualites=0"},{"hasID":1,"idle":1}]}},
+		"proxy_kobeye_status":{"action":[
+			{"action":"invoke","method":"groupState","params":{"group":"saved","property":"enabled","hasID":1}},
+			{"action":"invoke","method":"groupState","params":{"group":"idle","property":"enabled","idle":1}},
+			{"action":"invoke","method":"groupState","params":{"group":"updated","property":"enabled","updated":1}},
+			{"action":"invoke","method":"groupState","params":{"group":"savedIdle","property":"enabled","hasID":1,"idle":1}},
+			//{"action":"invoke","method":"groupState","params":{"group":"confirm","property":"enabled","conditions":[{"compare":"Confirme=0"},{"hasID":1,"idle":1}]}}
+			{"action":"invoke","method":"groupState","params":{"group":"confirme","property":"enabled","conditions":[{"compare":"EtatDevis<3"},{"hasID":1,"idle":1}]}},
+			{"action":"invoke","method":"groupState","params":{"group":"facture","property":"enabled","conditions":[{"compare":"EtatDevis=2&Mensualites=0"},{"hasID":1,"idle":1}]}}
+		]},
+		"confirm":{"action":"invoke","method":"callMethod","params":{
+			"interface":1,
+			"method":"query","data":{"dirtyChild":1,"module":"Devis","objectClass":"DevisTete","form":"Functions/DevisConfirme.json",
+			"proxyValues":{"vars":{
+				"chef":{"args":[{"dataValue":["formCreator#ChefRayon"]}]},
+				"telephone":{"args":[{"dataValue":["formCreator#TelephoneRayon"]}]},
+				"notes":{"args":[{"dataValue":["formCreator#Commentaires"]}]}}}
+			},
+			"function":"DevisConfirme","args":[{"interfaceValues":["chef","telephone","notes"]}]}
+		},
+		"annule":{"action":"invoke","method":"callMethod","params":{
+			"confirm":{"text":"Voulez-vous annuler ce devis ?"},
+			"method":"query","data":{"dirtyChild":1,"module":"Devis","objectClass":"DevisTete"},
+			"function":"DevisAnnule"}
+		},
+		"invoice":{
+			"action":"invoke","method":"callMethod","params":{
+			"interface":1,
+			"method":"query","data":{"dirtyChild":1,"module":"Devis","objectClass":"DevisTete","form":"Functions/DevisFacture.json"},
+			"function":"CreateInvoices","args":[{"value":[null]},{"interfaceValues":["Date","Force"]}]}
+		},
+		"printDevis":{
+			"action":"invoke","method":"callMethod","params":{
+			"interface":1,
+			"method":"query","data":{"dirtyChild":1,"module":"Devis","objectClass":"DevisTete","form":"Functions/printDevis.json"},
+			"function":"PrintDocuments","args":[{"value":[null]},{"interfaceValues":["Fond"]}]}
+		}
+	}
+},
+//"swfName":"Devis",
+"components":[
+	{"type":"MenuTab","id":"menu","maxLines":1,"menuItems":[
+		{"children":[
+			{"label":"Sauver","icon":"save","data":"save","stateGroup":"updated"},
+			{"label":"Effacer","icon":"iconDelete","data":"delete","stateGroup":"saved"},
+			{"label":"Annuler","icon":"back","data":"cancel","stateGroup":"updated"},
+			{"label":"Fermer","icon":"close","data":"close"},
+			{"type":"vseparator"},
+			{"label":"Imprimer","icon":"print", "data":"printDevis","stateGroup":"savedIdle"},
+			{"label":"Confirmer","icon":"validate", "data":"confirm","stateGroup":"confirme"},
+			{"label":"Annuler","icon":"cancel", "data":"annule","stateGroup":"confirme"},
+			{"label":"Facturer","icon":"invoice", "data":"invoice","stateGroup":"facture"}
+		]}
+	]},
+	{"type":"Box","percentWidth":100,"percentHeight":100,"minHeight":0,"minWidth":0,
+	"components":[
+		{"type":"EditContainer","id":"edit","percentWidth":100,"percentHeight":100,
+		"components":[
+			{"type":"Group","percentWidth":100,"percentHeight":100,
+			"layout":{"type":"VerticalLayout","gap":4,"paddingLeft":6,"paddingRight":6,"paddingTop":4,"paddingBottom":4},
+			"components":[
+// DEVIS --------------------------------
+				{"type":"Panel","titleHeight":15,"title":"Devis","minWidth":752,"percentWidth":100,"setStyle":{"dropShadowVisible":0},
+				"components":[
+					{"type":"Group","percentWidth":100,"layout":{"type":"HorizontalLayout","verticalAlign":"baseline","gap":6,"paddingLeft":6,"paddingRight":6,"paddingTop":2,"paddingBottom":2},
+					"components":[
+						{"type":"Label","text":"Société"},
+						{"type":"ComboBox","dataField":"Societe","width":35,"required":1,"dataProvider":[
+							{"data":"L","label":"L"},
+							{"data":"B","label":"B"}
+						]},
+						{"type":"Spacer","width":8},
+						{"type":"Label","text":"N°"},
+						{"type":"TextInput","dataField":"Reference","editable":0,"tabEnabled":0,"width":55,"formLabel":1},
+						{"type":"Spacer","width":8},
+						{"type":"Label","text":"Date"},
+						{"type":"DateField","dataField":"Date","required":1,"defaultValue":"Now"},
+						{"type":"Spacer","width":8},
+						{"type":"Label","text":"Commercial"},
+						{"type":"ComboBox","dataField":"CommercialId","width":75,"required":1,"defaultValue":[!Systeme::User::Id!],
+						"kobeyeClass":{"module":"Systeme","query":"Systeme/Group/Nom=GESTION/User::Id::Initiales","objectClass":"User","identifier":"Id","label":"Initiales"},
+						"actions":[
+							{"type":"init","action":"loadData"}
+						]},
+						{"type":"Spacer","width":8},
+						//{"type":"Label","text":"Confirmé"},
+						//{"type":"CheckBox","dataField":"Confirme","editable":0,"visible":0,"includeInLayout":0,"tabEnabled":0,"forceEvent":1},
+						{"type":"Label","text":"Etat"},
+						{"type":"ComboBox","dataField":"EtatDevis","width":80,"editable":0,"tabEnabled":0,"forceEvent":1,
+						"kobeyeClass":{"module":"Devis","objectClass":"Status","query":"Devis/Status/Type=0","identifier":"Id","label":"Status"},
+						"actions":[
+							{"type":"init","action":"loadData"}
+						]},
+						{"type":"Spacer","width":8},
+						{"type":"Label","text":"Préparation"},
+						{"type":"CheckBox","dataField":"Preparation","editable":0,"tabEnabled":0},
+						{"type":"Spacer","width":8},
+						{"type":"Label","text":"Factures"},
+						{"type":"TextInput","width":20,"setStyle":{"color":"red"},"dataField":"Factures","editable":0,"tabEnabled":0}
+					]}
+				]},
+				{"type":"HGroup",
+				"components":[
+// CLIENT ---------------------------
+					{"type":"Panel","titleHeight":15,"title":"Client","minWidth":280,"percentWidth":38,"setStyle":{"dropShadowVisible":0},
+					"components":[
+						{"type":"Form","id":"client","setStyle":{"verticalGap":1,"paddingLeft":6,"paddingRight":6,"paddingTop":2,"paddingBottom":2},
+						"components":[
+							{"type":"FormItem","label":"Intitule","labelWidth":55,"components":[
+								{"type":"HGroup","gap":2,"components":[
+									{"type":"TextInput","dataField":"ClientIntitule","percentWidth":100,"validType":"string","required":1},
+									{"type":"PopupButton","dataField":"ClientId","icon":"dataBase","height":20,
+									"kobeyeClass":{"module":"Repertoire","objectClass":"Tiers","form":"PopupList.json"},
+									"exoFields":{"Intitule":"ClientIntitule","Adresse1":"ClientAdresse1","Adresse2":"ClientAdresse2",
+									"Adresse3":"ClientAdresse3","CodPostal":"ClientCodPostal","Ville":"ClientVille","Pays":"ClientPays",
+									"Remise":"RemiseLigne","CodeTVA":"CodeTVA"}}
+								]}
+							]},
+							{"type":"FormItem","label":"Adresse","labelWidth":55,"setStyle":{"verticalGap":1},"components":[
+								{"type":"TextInput","dataField":"ClientAdresse1","percentWidth":100},
+								{"type":"TextInput","dataField":"ClientAdresse2","percentWidth":100}
+							]},
+							{"type":"FormItem","label":"Ville","labelWidth":55,"components":[
+								{"type":"HGroup","components":[
+									{"type":"TextInput","dataField":"ClientCodPostal","width":50},
+									{"type":"TextInput","dataField":"ClientVille","percentWidth":100}
+								]}
+							]},
+							{"type":"FormItem","label":"Pays","labelWidth":55,"components":[
+								{"type":"TextInput","dataField":"ClientPays","percentWidth":100}
+							]}							
+						]}
+					]},
+// LIVRAISON --------------------------
+					{"type":"Panel","titleHeight":15,"title":"Livraison","minWidth":280,"percentWidth":38,"setStyle":{"dropShadowVisible":0},
+					"components":[
+						{"type":"Form","id":"livraison","setStyle":{"verticalGap":1,"paddingLeft":6,"paddingRight":6,"paddingTop":2,"paddingBottom":2},
+						"components":[
+							{"type":"FormItem","label":"Intitule","labelWidth":55,"components":[
+								{"type":"HGroup","gap":2,"components":[
+									{"type":"TextInput","dataField":"LivraisonIntitule","percentWidth":100,"validType":"string","required":1},
+									{"type":"PopupButton","dataField":"LivraisonId","icon":"dataBase","height":20,
+									"kobeyeClass":{"module":"Repertoire","objectClass":"Tiers","form":"PopupList.json"},
+									"exoFields":{"Intitule":"LivraisonIntitule","Adresse1":"LivraisonAdresse1","Adresse2":"LivraisonAdresse2",
+									"Adresse3":"LivraisonAdresse3","CodPostal":"LivraisonCodPostal","Ville":"LivraisonVille","Pays":"LivraisonPays"}}
+								]}
+							]},
+							{"type":"FormItem","label":"Adresse","labelWidth":55,"setStyle":{"verticalGap":1},"components":[
+								{"type":"TextInput","dataField":"LivraisonAdresse1","percentWidth":100},
+								{"type":"TextInput","dataField":"LivraisonAdresse2","percentWidth":100}
+							]},
+							{"type":"FormItem","label":"Ville","labelWidth":55,"components":[
+								{"type":"HGroup","components":[
+									{"type":"TextInput","dataField":"LivraisonCodPostal","width":50},
+									{"type":"TextInput","dataField":"LivraisonVille","percentWidth":100}
+								]}
+							]},
+							{"type":"FormItem","label":"Pays","labelWidth":55,"components":[
+								{"type":"TextInput","dataField":"LivraisonPays","percentWidth":100}
+							]}							
+						]}
+					]},
+// LOCATION ---------------------------
+					{"type":"Panel","titleHeight":15,"title":"Location","minWidth":180,"percentWidth":24,"setStyle":{"dropShadowVisible":0},
+					"components":[
+						{"type":"Form","setStyle":{"verticalGap":1,"paddingLeft":6,"paddingRight":6,"paddingTop":2,"paddingBottom":2},
+						"components":[
+							{"type":"FormItem","label":"Début","labelWidth":74,"components":[
+								{"type":"DateField","dataField":"DateDebut","required":0}
+							]},
+							{"type":"FormItem","label":"Fin","labelWidth":74,"components":[
+								{"type":"DateField","dataField":"DateFin","required":0}
+							]},
+							{"type":"FormItem","label":"Livraison","labelWidth":74,"components":[
+								{"type":"DateField","dataField":"DateLivraison","required":0}
+							]},
+							{"type":"FormItem","label":"Reprise","labelWidth":74,"components":[
+								{"type":"DateField","dataField":"DateReprise","required":0}
+							]},
+							{"type":"FormItem","label":"Durée","labelWidth":74,"components":[
+								{"type":"ComboBox","dataField":"TarifDureeId","width":82,
+								"kobeyeClass":{"module":"StockLocatif","objectClass":"TarifDuree","identifier":"Id","label":"Duree","select":"Id,Duree,Jours"},
+								"actions":[
+									{"type":"init","action":"loadData"}
+								]}
+							]}
+						]}
+					]}
+				]},
+// AUTRE ----------------------------------
+				{"type":"HGroup",
+				"components":[
+					{"type":"Panel","titleHeight":15,"title":"Opération Spéciale","minWidth":280,"percentWidth":38,"setStyle":{"dropShadowVisible":0},
+					"components":[
+						{"type":"Form","setStyle":{"verticalGap":1,"paddingLeft":6,"paddingRight":6,"paddingTop":2,"paddingBottom":2},
+						"components":[
+							{"type":"FormItem","label":"Opération","labelWidth":65,"components":[
+								{"type":"ComboBox","dataField":"OperationId","percentWidth":100,
+								"kobeyeClass":{"module":"Devis","objectClass":"OperationSpeciale","identifier":"Id","label":"Designation"},
+								"actions":[
+									{"type":"init","action":"loadData"}
+								]}
+							]},
+							{"type":"FormItem","label":"Chef rayon","labelWidth":65,"components":[
+								{"type":"TextInput","dataField":"ChefRayon","percentWidth":100}
+							]},
+							{"type":"FormItem","label":"Téléphone","labelWidth":65,"components":[
+								{"type":"TextInput","dataField":"TelephoneRayon","percentWidth":100}
+							]},
+							{"type":"FormItem","label":"Notes","labelWidth":65,"components":[
+								{"type":"TextArea","dataField":"Commentaires","percentWidth":100,"height":44}
+							]}
+						]}
+					]},
+// FINANCE ----------------------------------
+					{"type":"Panel","titleHeight":15,"title":"Totaux","minWidth":466,"percentWidth":62,"setStyle":{"dropShadowVisible":0},
+					"components":[
+						{"type":"HGroup",
+						"components":[
+							{"type":"Form","percentWidth":33,"setStyle":{"verticalGap":1,"paddingLeft":6,"paddingRight":6,"paddingTop":2,"paddingBottom":2},
+							"components":[
+								{"type":"FormItem","label":"Total HT brut","labelWidth":98,"components":[
+									{"type":"TextInput","dataField":"MontantHTBrut","width":80,"setStyle":{"textAlign":"end"},"editable":0}
+								]},
+								{"type":"FormItem","label":"Remise ligne","labelWidth":98,"components":[
+									{"type":"TextInput","dataField":"RemiseLigne","width":80,"validType":"float","setStyle":{"textAlign":"end"}}
+								]},
+								{"type":"FormItem","label":"Remise %","labelWidth":98,"components":[
+									{"type":"TextInput","dataField":"RemiseTaux","width":80,"validType":"float","setStyle":{"textAlign":"end"}}
+								]},
+								{"type":"FormItem","label":"Remise montant","labelWidth":98,"components":[
+									{"type":"TextInput","dataField":"RemiseMontant","width":80,"validType":"float","setStyle":{"textAlign":"end"}}
+								]},
+								{"type":"FormItem","label":"Total HT Net","labelWidth":98,"components":[
+									{"type":"TextInput","dataField":"MontantHTNet","width":80,"setStyle":{"textAlign":"end"},"editable":0}
+								]}
+							]},
+							{"type":"Form","percentWidth":33,"setStyle":{"verticalGap":1,"paddingLeft":6,"paddingRight":6,"paddingTop":2,"paddingBottom":2},
+							"components":[
+								{"type":"FormItem","label":"Taux TVA","labelWidth":80,"direction":"horizontal","components":[
+									{"type":"ComboBox","dataField":"CodeTVA","defaultValue":"1","width":60,"maxChars":5,
+									"kobeyeClass":{"module":"Devis","objectClass":"TVA","identifier":"Code","label":"Taux"},
+									"actions":[
+										{"type":"init","action":"loadData"}
+									]}
+								]},
+								{"type":"FormItem","label":"montant TVA","labelWidth":80,"direction":"horizontal","components":[
+									{"type":"TextInput","dataField":"MontantTVA","width":80,"setStyle":{"textAlign":"end"},"editable":0}
+								]},
+								{"type":"FormItem","label":"Total TTC","labelWidth":80,"components":[
+									{"type":"TextInput","dataField":"MontantTTC","width":80,"setStyle":{"textAlign":"end"},"editable":0}
+								]},
+								{"type":"FormItem","label":"Règlement","labelWidth":80,"components":[
+									{"type":"ComboBox","dataField":"ModeReglement","width":80,
+									"kobeyeClass":{"module":"Devis","objectClass":"ModeReglement","identifier":"Code","label":"Code"},
+									"actions":[
+										{"type":"init","action":"loadData"}
+									]}
+								]}
+							]},
+							{"type":"Form","percentWidth":33,"setStyle":{"verticalGap":1,"paddingLeft":6,"paddingRight":6,"paddingTop":2,"paddingBottom":2},
+							"components":[
+								{"type":"FormItem","label":"Mensualités","labelWidth":78,"components":[
+									{"type":"CheckBox","dataField":"Mensualites","editable":1,"forceEvent":1}
+								]},
+								{"type":"FormItem","label":"Echéances","labelWidth":78,"components":[
+									{"type":"TextInput","dataField":"NombreEcheance","width":30,"validType":"float","setStyle":{"textAlign":"end"},"editable":1}
+								]},
+								{"type":"FormItem","label":"Première","labelWidth":78,"components":[
+									{"type":"TextInput","dataField":"PremiereEcheance","width":80,"validType":"float","setStyle":{"textAlign":"end"},"editable":1}
+								]},
+								{"type":"FormItem","label":"Suivantes","labelWidth":78,"components":[
+									{"type":"TextInput","dataField":"AutresEcheance","width":80,"validType":"float","setStyle":{"textAlign":"end"},"editable":1}
+								]},
+								{"type":"FormItem","label":"Dernière","labelWidth":78,"components":[
+									{"type":"TextInput","dataField":"DerniereEcheance","width":80,"validType":"float","setStyle":{"textAlign":"end"},"editable":1}
+								]}
+							]}
+							
+						]}
+					]}
+				]},
+// LIGNES -------------------------
+				{"type":"HGroup","percentHeight":100,"percentWidth":100,"gap":0,
+				"components":[
+					{"type":"VGroup","percentHeight":100,"width":32,"gap":0,
+					"components":[
+						{"type":"ImageButton","width":30,"height":30,"cornerRadius":15,"id":"up","image":"up"},
+						{"type":"ImageButton","width":30,"height":30,"cornerRadius":15,"id":"down","image":"down"}
+					]},
+					{"type":"VGroup","percentHeight":100,"percentWidth":100,
+					"components":[
+						{"type":"AdvancedDataGrid","id":"lignes","dataField":"DevisLigne","percentHeight":100,"minWidth":752,"percentWidth":100,"changeEvent":1,"variableRowHeight":1,
+//						"stateGroup":"saved","enabled":0,
+						"kobeyeClass":{"dirtyParent":1,"objectClass":"DevisLigne","form":"FormDetail.json"},
+						"events":[
+							{"type":"start","action":"loadValues","params":{"needsParentId":1}},
+							{"type":"dblclick","action":"invoke","method":"loadFormWithItem"},
+							{"type":"proxy", "triggers":[
+								{"trigger":"editLine","action":"invoke","method":"loadFormWithItem"},
+								{"trigger":"deleteLine","action":"invoke","method":"deleteItem"},
+								{"trigger":"up","action":"invoke","method":"itemUp"},
+								{"trigger":"down","action":"invoke","method":"itemDown"}
+							]}
+						],
+						"columns":[
+							{"type":"column","dataField":"Id","visible":0},
+							{"type":"column","dataField":"Famille","headerText":"Famille","width":100},
+							{"type":"column","dataField":"Designation","headerText":"Désignation","width":280},
+							{"type":"column","dataField":"Quantite","headerText":"Qté","width":50,"format":"2dec"},
+							{"type":"column","dataField":"PrixUnitaire","headerText":"PU HT","width":100,"format":"2dec"},
+							{"type":"column","dataField":"Remise","headerText":"Remise","width":80,"format":"2dec"},
+							{"type":"column","dataField":"PrixNet","headerText":"PU Net","width":100,"format":"2dec"},
+							{"type":"column","dataField":"CodeTVA","headerText":"T","width":30},
+							{"type":"column","dataField":"FamilleId","visible":0}
+						]},
+						{"type":"HGroup","width":752,
+//						"stateGroup":"saved",
+						"components":[
+							{"type":"Button","id":"transport","label":"Transport","width":100},
+							{"type":"Spacer"},
+							{"type":"Button","id":"newLine","label":"Nouveau","width":100,
+							"events":[
+								{"type":"click","action":"loadForm","params":{"kobeyeClass":{"dirtyParent":1,"objectClass":"DevisLigne","form":"FormDetail.json",
+								"proxyValues":{"vars":{"Remise":{"args":[{"dataValue":["RemiseLigne"]}]}}}}}}
+							]},
+							{"type":"Button","id":"editLine","label":"Modifier","width":100},
+							{"type":"Button","id":"deleteLine","label":"Supprimer","width":100}
+						]}
+					]}
+				]}
+			]}
+		],
+		"events":[
+			{"type":"start","action":"loadValues"},
+			{"type":"proxy","triggers":[
+				{"trigger":"save","action":"invoke","method":"saveData"},
+				{"trigger":"delete","action":"invoke","method":"deleteData"},
+				{"trigger":"close","action":"invoke","objectID":"parentForm","method":"closeForm"},
+				{"trigger":"cancel","action":"invoke","method":"restart"},
+				{"trigger":"transport","action":"invoke","method":"callMethod",
+				"params":{"method":"object","function":"Transport",
+				"args":[{"dataValue":["LivraisonCodPostal","DevisLigne","ClientId"]}]}}
+			]}
+		]}
+	]}
+]
+,
+"actions":[
+	{"type":"close", "action":"confirmUpdate"}
+]}
+}
+
+

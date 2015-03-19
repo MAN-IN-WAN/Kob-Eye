@@ -1,0 +1,8 @@
+<ACTIONS>
+	<ACTION Name="Paiement" Object="Paiement" Period="Y/m/d,Y/m,Y" TitrePeriod="Jour,Mois,Annee">
+		<FUNCTION Name="CommandeJour" Type="Total" Event="Save" Category="Commande-Calcul" Filter="[!INPUT::Etat!]=1" Unit="Paiement"  Description="Nombre de commandes"/>
+		<FUNCTION Name="ChiffreAffaire" Type="Total" Event="Save" Category="Commande-Calcul" Filter="[!INPUT::Etat!]=1"  Unit="Euros" Description="Chiffre d'affaire"  Graph="bar_glass">
+			[!OUTPUT+=[!INPUT::Montant!]!]
+		</FUNCTION>
+	</ACTION>
+</ACTIONS>

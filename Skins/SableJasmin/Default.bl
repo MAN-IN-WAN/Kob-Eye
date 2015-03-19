@@ -1,0 +1,46 @@
+[HEADER]
+	<link rel="icon" href="favicon.ico" type="image/x-icon"/> 
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/> 
+	[IF [!fbl!]=1]
+		<script type="text/javascript" src="http://getfirebug.com/releases/lite/1.3/firebug-lite.js"></script>
+	[/IF]
+[/HEADER]
+
+[HEADER CSS]Skins/[!Systeme::Skin!]/Css/style.css[/HEADER]
+
+[HEADER JS]Skins/BoutiqueDefault/Js/mootools.js[/HEADER]
+[HEADER JS]Skins/BoutiqueDefault/Js/mootools-more.js[/HEADER]
+[HEADER CSS]Skins/BoutiqueDefault/Css/multiBox.css[/HEADER]
+[HEADER JS]Skins/BoutiqueDefault/Js/morphlist.js[/HEADER]
+[HEADER JS]Skins/BoutiqueDefault/Js/overlay.js[/HEADER]
+[HEADER JS]Skins/BoutiqueDefault/Js/multiBox.js[/HEADER]
+
+// Chargement notamment de multibox
+[HEADER JS]Skins/BoutiqueDefault/Js/functions.js[/HEADER]
+
+[MODULE Boutique/Produit/MajPanier]
+
+[MODULE Systeme/Meta]
+
+//[!Query!]
+<div class="Entete">	
+	[MODULE Systeme/Structure/Top]
+</div>
+<div class="MenuCentral">
+	[MODULE Systeme/Menu]
+</div>
+<div class="Site">
+	<div class="Contenu">
+		[IF [!Lien!]!=]
+			<div id="TopColonnes"></div>
+			<div id="MiddleColonnes"></div>
+			<div id="BottomColonnes"></div>
+		[/IF] 
+		[DATA]
+	</div>
+</div>
+
+<div class="Pied">	
+	[MODULE Systeme/Structure/Bottom]
+</div>
+

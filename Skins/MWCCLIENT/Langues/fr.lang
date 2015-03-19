@@ -1,0 +1,233 @@
+// fichier de traduction en anglais
+//$$|
+
+#FORMS
+$MSGERR_OBLIG$|Veuillez saisir tous les champs obligatoires
+$MSGERR_MERCINOM$|Merci de saisir votre nom
+$MSGERR_MERCIPRENOM$|Merci de saisir votre prénom
+$MSGERR_MERCIMAIL$|Merci de saisir votre adresse email
+$MSGERR_MERCITEL$|Merci de saisir votre numéro de téléphone
+$MSGERR_MERCISUJET$|Thank you for informing the subject of your demand
+$MSGERR_MERCIMESS$|Thank you for leaving a message
+$MSGCNT_MESSDE$|Message of
+$MSGMAIL_ADRESSIP$|Address Ip
+$MSGMAIL_OBJETDEM$|Object of the demand
+$MSGMAIL_ENVOYE$|Send by
+$MSGMAIL_NUMTEL$|Phone number
+$MSGMAIL_MAIL$|Email adress
+$SUJET$|Subject
+$MESSAGE$|Message
+$MSGMAIL_CONFBONJOUR$|Hello
+$MSGMAIL_CONFCORPS$|We have received your request by email and thank you for your confidence
+$MSGMAIL_CONFFIN$|We process your application as quickly as possible
+$MSG_MAILSUCCES$|Message envoy&eacute; avec succ&egrave;s.
+$MSGMAIL_CONFIRMATION$|Un mail de confirmation vous a &eacute;t&eacute; adress&eacute;
+$NOM$|Name
+$PRENOM$|First name
+$MGS_CHPMARQUES$|The marked fields
+$MGS_SONTOBLIGATOIRES$|Are compulsory
+$CONTACT_LEGALCORPS$|According to the law n°78-17 of January 6th, 1978 relative to the computing, to the files and to the liberties, you have a right of access, rectification, abolition(deletion) of the information which concern you, which you can exercise by sending to you in
+$CONTACT_ADMINSITES$|Web master
+$ACCES_PAGE$|Go to page
+$$TITLE_CONTACT$$|Contact US
+$TITLE_HOME$|Go Home
+$ABTEL$|Abtel web agency @ 2012
+$BTN_CONTACT$|Send
+__YES__|Oui
+__NO__|Non
+__PLEASE_SELECT__|- Veuillez sélectionner -
+__SUBMIT__|Soumettre
+__CANCEL__|Annuler
+__ACCEPT__|Accepter
+__REFUSE__|Refuser
+__REFUSER__|Refuser
+__REFERENCE__|Référence
+__N/A__|Non disponible
+__N/P__|Non précisé
+__SEE__|Voir
+__DATE_FORMAT__|d/m/Y
+__CREATE_ANOTHER__|Faire une autre proposition
+
+#HOME
+__HOME_DEMANDES__|Mes dernières demandes
+__SEE_ALL__|Voir tout
+__HOME_PROPOSALS__|Mes dernières propositions
+__HOME_CONTRACTS__|Mes derniers contrats
+__MY_ALERTS__|Mes alertes
+__MY_PROFILE__|Mon profil
+
+#ACTIONS
+__DATE__|Date
+__DETAILS__|Détails
+__CONFIRM_REFUS__|Voulez-vous vraiment refuser ?
+__INFORMATIONS__|Informations
+__REVISE__|Demande de révision
+__PRINT__|Imprimer
+
+#THIRD 
+__COMPANY__|Société
+__ADRESS__|Adresse
+__CA_CONTACT__|CA Contact
+__VAT__|TVA Infos
+__BUYER_COUNTRY__|Pays de l'acheteur
+
+#ENQUIRY
+__DEMANDE__|Demande
+__NOUVELLE_DEMANDE__|Nouvelle demande
+__DEMANDE_FICHE__|Fiche demande
+__LISTE_DEMANDES__|Liste des demandes
+__DEMANDE_ACTIVE__|Demandes actives
+__DEMANDE_ARCHIVE__|Demandes archivées
+__ACTIVE_ENQUIRY__|Demandes en attente
+__CURRENT_ENQUIRY__|Demandes en cours
+__COMPLETED_ENQUIRY__|Demandes complêtés
+__ACCEPTED_ENQUIRY__|Demandes acceptées
+__ABANDONNED_ENQUIRY__|Demandes abandonnées
+__LIST_WAITING_ENQUIRY__|Liste des demandes en attente
+__LIST_ENQUIRY_CURRENT__|Liste des demandes confirmées
+__LISTE_ENQUIRY_ACCEPTED__|Liste des demandes acceptées
+__LISTE_ENQUIRY_ABANDONNED__|Liste des demandes abandonnées
+__LISTE_ENQUIRY_COMPLETED__|Liste des demandes complêtées
+__LISTE_ENQUIRY_CLOSED__|Liste des demandes fermées
+__NO_RESULT__|Pas de résultat
+__COMMISSION__|Commission
+__PLEASE_SPECIFY_IN_COMMENT__|Autre, veuillez préciser dans les commentaires
+__30_DAYS__|30 Jours
+__60_DAYS__|60 Jours
+__OFFER_DEADLINE__|Validité de la demande
+__MY_ENQUIRY__|Ma demande
+__MY_PROPOSALS__|Mes offres
+__SUBJECT_TO_SAMPLE_APPROVAL__|sous réserve de la validation de l'échantillon
+__OTHER_COUNTRY__|Autre pays, veuillez préciser dans les commentaires
+
+#DIVERS 
+__VARIETEE__|Variétée
+__APPELLATION__|Appellation
+__MILLESIME__|Millesime
+__QUANTITY__|Unité d'achat
+__FILTRATION__|Filtration
+__VOLUME__|Quantité / Volume Maximum
+__DATE_LIMITE__|Date limite (tout livré)
+__BUYER_CONTACT__|Contact
+__COMMENTAIRES__|Commentaires
+__COMMENTAIRES_BUYER__| Commentaires de l'acheteur
+__DEMANDE_SOUMISE__|Votre demande a bien été enregistrée.
+__TRANSPORTATION__|Mode de transport
+__INCO_TERMS__|Incoterms
+__PAYMENT__|Mode de réglement
+__BUYER_REFERENCE__|Reference client
+__INCO__|Incoterms
+__SUPPLIER_REF__|Référence fournisseur
+__CONTACT__|Email
+__DATE_CREATION__|Date de création
+__PAYS__|Pays
+__COLOR__|Couleur
+__NOM_ACHETEUR__|Nom de l'acheteur
+__PRICE_NOT_FILLED__|Veuillez saisir un prix unitaire
+__REVISER__|Reviser
+
+#PROPOSALS
+__ACTIVE_PROPOSAL__|A traiter
+__ARCHIVED_PROPOSAL__|Propositions archivées
+__EDIT_PROPOSAL__|Édition d'une proposition
+__REVISE_PROPOSAL__|Demande de révision
+__REVISE_REASON__|Pourquoi cette demande de révision ?
+__PROPOSAL_UPDATED__|La proposition a bien été mise à jour.
+__WAITING_PROPOSAL__|En attente
+__ACCEPTED_PROPOSAL__|Acceptées
+__ABANDONNED_PROPOSAL__|Abandonnées
+__LISTE_PROPOSALS_WAITING__|Liste des propositions en attente
+__NO_PROPOSAL_WAITING__|Aucune proposition en attente
+__LISTE_PROPOSALS_ACCEPTED__|Liste des propositions acceptées
+__NO_PROPOSAL_ACCEPTED__|Aucune proposition acceptées
+__LISTE_PROPOSALS_ABANDONNED__|Liste des propositions abandonnées
+__NO_PROPOSAL_ABANDONNED__|Pas de propositions abandonnées
+__LISTE_PROPOSALS_ACTIVE__|Liste des propositions à traiter
+__NO_ACTIVE_PROPOSAL__|Pas de proposition à traiter
+__LISTE_PROPOSALS__|Liste des propositions en cours
+__PROPOSAL__|Proposition
+__NO_PROPOSAL__|Aucune proposition pour le moment.
+__MAKE_PROPOSAL__|Faire une proposition
+__REMAKE_PROPOSAL__|Refaire une proposition
+__CANCEL_PROPOSAL__|Annuler une proposition
+__UNIT_PRICE__|Prix unitaire
+__UNIT__|Unité de vente
+__CURRENCY__|Devise
+__TOTAL__|Total
+__CA_CONTACT__|CA Contact
+__VALID_UNTIL__|Offre valable jusqu' à
+__TRUCKS_COUNT__|Nombre de camions
+__PROPOSAL_REFUSED__|Proposition refusée
+__PROPOSAL_ACCEPTED__|Proposition acceptée
+__PROPOSAL_REVISED__|Proposition révisée
+__PROPOSAL_ACCEPTED_WITH_APPROVAL__|Proposition acceptée sous réserver de validation d'échantillon
+__SUBMIT_AND_SEND_TO_BUYER__|Soumettre et envoyer à l'acheteur
+__THE_ENQUIRY__|La demande
+__MY_PROPOSAL__|Mon offre
+
+
+#CONTRACTS
+__CONTRACTS__|Liste des contrats
+__CONTRACT__|Contrat
+__CURRENT_CONTRACT__|Contrat en cours
+__ACCEPTED_CONTRACT__|Contrat acceptés
+__COMPLETED_CONTRACT__|Contrat complètés
+__CANCELLED_CONTRACT__|Contrat abandonnés
+__BUYER__|Acheteur
+__SUPPLIER__|Vendeur
+__CONTRACT_DETAIL__|Détail du contrat
+__CLOSED_CONTRACT__|Contrats terminés
+__SHIPMENT_STATUS__|Etat des chargements
+__CONFIRM_DETAILS__|Confirmer les détails
+
+#SHIPMENTS
+__SHIPMENT_LIST__|Liste des expeditions
+__LOADING_DATE__|Date de chargement
+__PURCHASE_ORDER__|Ordre d' achat
+__REMAINS__|Reste à livrer
+__LOADED__|Livré
+
+#INVOICES
+__COMPLETED_INVOICE__|Factures
+__TOTAL_TE__|Total HT
+__VAT_AMOUNT__|Montant TVA
+__VAT_RATE__|Taux de TVA
+ __TOTAL_TI__|Total TTC
+__PAID__|Payée
+__NOT_PAID__|Impayée
+__DATE_PAYMENT__|Date de paiement
+
+#ERRORS
+__ERR_NO_THIRD__|Erreur : aucun tiers relié à l'utilisateur courant.
+__ERR_NO_AUTH__|Erreur : vous n'avez pas l'autorisation de faire cela.
+__ERR_NO_ENQ_PROPOSAL__|Erreur : la proposition n'est pas liée à une demande.
+__ERR_NO_PROPOSAL__|Erreur : la proposition n'existe pas.
+__LE_CHAMP__|Le champ
+__EST_OBLIGATOIRE__|est obligatoire
+__LA_VALEUR_DU_CHAMP__|La valeur du champ
+__INVALID_CHAR__|n'est pas une chaîne de caractère valide
+__NOT_INT__|n'est pas un entier
+__FORMAT_DATE_INVALID__|n'est pas valide. Format : jj/mm/aaaa
+__INVALID__|n'est pas valide
+__ALREADY_EXISTS__|est d&eacute;ja utilis&eacute;
+
+#SAMPLE REQUEST
+__SAMPLE_REQUEST__|Demande d'échantillon
+
+#MENU
+__HOME__|Accueil
+
+
+# RUSTINETTE
+Draft|brouillon
+Answered|envoyée
+Refused|refusée
+Revised|révisée
+Rejected|ignorée
+Confirmed|confirmée
+Completed|terminée
+Cancelled|annulée
+
+#SAMPLE
+__REQUEST_SAMPLE__|Demande échantillon
+__SAMPLE_REQUESTED__|Echantillon demandé avec succés

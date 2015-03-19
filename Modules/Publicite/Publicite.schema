@@ -1,0 +1,12 @@
+<SCHEMA>
+	<OBJECTCLASS title="Produit" driver="mysql" AccessPoint="1"  master="0" Description="Produit" Icon="/Skins/AdminV2/Img/IconAqua/Workspace1.png">
+		<PROPERTIES searchOrder="1" type="varchar">Titre</PROPERTIES>
+		<PROPERTIES type="image" category="Illustrations">Image</PROPERTIES>
+		<PROPERTIES type="image" category="Illustrations">Picto</PROPERTIES>
+		<PROPERTIES type="image" category="Illustrations">ImgTexte</PROPERTIES>
+		<PROPERTIES type="varchar" category="Lien">Lien</PROPERTIES>
+		<PROPERTIES type="boolean" category="Lien" default="0">Popup</PROPERTIES>
+		<PROPERTIES type="boolean" category="Publication" default="1">Publier</PROPERTIES>
+		<PROPERTIES type="order" category="Publication">Ordre</PROPERTIES>
+	</OBJECTCLASS>
+</SCHEMA>

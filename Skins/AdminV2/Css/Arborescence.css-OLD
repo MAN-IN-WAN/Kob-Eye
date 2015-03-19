@@ -1,0 +1,106 @@
+/*-----------------------------------l'arborescence-----------------------*/
+.HistoItem {
+	width:94%;
+	margin-left:3%;
+	margin-bottom:5px;;
+	height:26px;
+	font-size:8pt;
+}
+
+.HistoItem a{
+	width:100%;
+	display:block;
+	padding-top:8px;
+	padding-left:3px;
+	height:100%;
+	background-image:url('/Skins/AdminV2/Img/Tabs/select_m.png');
+	font-size:8pt;
+}
+.HistoItem a:hover {
+	width:100%;
+	padding-top:8px;
+	padding-left:3px;
+	display:block;
+	height:100%;
+	color:#ffffff;
+	background-image:url('/Skins/AdminV2/Img/Tabs/hover_m.png');
+	font-size:8pt;
+}
+
+
+.Arborescence
+{
+	width:98%;
+	padding:1%;
+}
+/*Propriete des (+) et des (-) dans l'arbo*/
+.Defilement
+{
+	margin-right: 5px;
+	border:0px;
+}
+
+/*Decalage qui apparait a chaque nouvel historique*/
+.Decale
+{
+	padding-left:10px;
+	margin-left:2px;
+	border-left:1px dashed black;
+}
+
+/*Affichage d'un Objet dans l'arborescence. On prevoit la possibilite d'une infobulle*/
+.Objet
+{
+	color:#000000;
+	display:block;
+	text-decoration:none;
+}
+
+a.Objet{
+	position:relative;
+}
+
+/*Bloc entourant les resultats de l'arborescence*/
+.ArboResult
+{
+	margin-top:3px;
+	border:1px dashed black;
+	background-color:#FFFFFF;
+}
+
+
+/*L'Objet en cours, il contient l'Objet
+(h1), ses types d'enfants (h2) et leurs occurences*/
+.objetEnCours
+{
+	margin:3px 0px 5px 0px;
+	min-width:90%;
+	padding:3px;
+	border-top: 2px solid #CDCDCD;
+	border-bottom: 2px solid #D4D4D4;
+	border-right: 2px solid #787878;
+	border-left: 2px solid white;
+}
+
+.objetEnCours h1
+{
+	font-size:8pt;
+	margin:0px;
+	padding-top:0px;
+	height:12px;
+	background:url();;
+	padding-left:0px;
+	margin-left:0px;
+	padding-top:0px;
+	margin-bottom:5px;
+	border-bottom: 1px solid #d4d4d4;
+}
+
+.objetEnCours h2
+{
+	padding-left:2%;
+	margin-bottom:3px;
+	font-size:8pt;
+	border-bottom: 1px solid #d4d4d4;
+}
+

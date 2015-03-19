@@ -1,0 +1,941 @@
+/*** RESET ***/
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small,
+strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form,
+label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details,
+embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+
+ol, ul {
+	list-style: none;
+}
+
+blockquote, q {
+	quotes: none;
+}
+
+blockquote:before, blockquote:after, q:before, q:after {
+	content: '';
+	content: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+
+
+/*** GLOBAL ***/
+
+a.ReadMore {
+	display: block;
+	text-align: right;
+	margin-top: 5px;
+}
+
+a.HautDePage {
+	display: block;
+	text-align: right;
+	margin-top: 20px;
+	margin-bottom: 10px;
+	padding-right: 10px;
+}
+
+a.RetourListe {
+	display: block;
+	text-align: right;
+	margin-top: 20px;
+}
+
+p {
+	text-align: justify;
+}
+
+strong {
+	font-weight: bold;
+}
+
+h1 {
+	text-transform: uppercase;
+	font-size: 16px;
+	font-weight: bold;
+	margin: 5px 0;
+}
+
+h2 {
+	font-size: 14px;
+	font-weight: bold;
+	margin: 5px 0;
+}
+
+
+
+
+/*** BBCODE ***/
+.bb_bold {
+	font-weight:bold;
+}
+
+.bb_italic {
+	font-style:italic;
+}
+
+.bb_underline {
+	text-decoration:underline;
+}
+
+.bb_strike {
+	text-decoration:line-through;
+}
+
+.bb_quote {
+	margin:20px;
+	border:1px dotted black;
+}
+
+.bb_spoiler {
+	margin:20px;
+	border:1px dotted black;
+	color:white;
+	background-color:white;
+}
+
+.bb_uppercase {
+	text-transform:uppercase;
+}
+
+.bb_lowercase {
+	text-transform:lowercase;
+}
+
+
+
+
+/*** COLONNES ***/
+div.EnteteComposant {
+	background: #CCC;
+	padding: 5px;
+	text-transform: uppercase;
+	font-size: 14px;
+}
+
+div.ContenuComposant {
+	padding: 5px 5px 10px 5px;
+}
+
+
+/*** FORMULAIRES ***/
+div.LigneForm {
+	overflow: hidden;
+	padding: 2px;
+}
+
+div.CompenseField {
+	display: block;
+	float: left;
+	position: relative;
+}
+
+label {
+	float: left;
+	display: block;
+	position: relative;
+	width: 200px;
+}
+
+textarea {
+	overflow: auto;
+}
+
+fieldset {
+	border: 1px solid #888;
+	padding: 10px;
+}
+
+legend {
+	padding: 5px;
+}
+
+input, textarea, select {
+	font-family: Arial,Helvetica,sans-serif;
+	font-size: 12px;
+}
+
+div.LigneForm input, div.LigneForm textarea, div.LigneForm select, div.CompenseField {
+	width: 360px;
+}
+
+div.LigneForm input, div.LigneForm textarea, div.LigneForm select {
+	border: 1px solid #ccc;
+}
+
+div.BlocError {
+	padding: 10px 20px;
+	background-color: #F692C3;
+	margin: 10px 0;
+}
+
+.Error {
+	background-color: #F692C3;
+	border: 1px solid #F692C3;
+}
+
+
+
+/*** MENU HAUT ***/
+div.MenuHaut {
+	overflow:hidden;
+	padding:5px;
+}
+
+div.MenuHaut li{
+	list-style:none;
+	display:block;
+	position:relative;
+	float:left;
+	padding: 1px 5px;
+}
+
+ul.MenuHautR {
+	overflow: hidden;
+	float: right;
+	position: relative;
+	display: block;
+}
+
+
+
+/*** MENU PRINCIPAL ***/
+.MenuPrincipal {
+	font-size:14px;
+	background-color: #444;
+}
+
+.MenuPrincipal ul {
+	overflow: hidden;
+}
+
+.MenuPrincipal li {
+	position: relative;
+	display: block;
+	float: left;
+	text-align: center;
+	font-weight: normal;
+    padding: 3px 0;
+}
+
+.MenuPrincipal a {
+    padding: 6px 16px;
+	font-weight: normal;
+	display: block;
+	position: relative;
+	z-index:100;
+}
+
+.MenuPrincipal li.MenuEnCours a {
+	color: #FFF;
+	text-decoration: none;
+}
+
+.MenuPrincipal a:hover {
+	color: #CCC;
+	text-decoration: none;
+}
+
+.MenuPrincipal li.background {
+	padding:0;
+	position:absolute;
+}
+
+
+/*** MENU BAS ***/
+div#MenuBas, div#MentionsBottom {
+	overflow: hidden;
+	background: #444;
+	color: #FFF;
+}
+
+div.MenuBasColonne {
+	float: left;
+	display: block;
+	position: relative;
+	padding: 5px;
+}
+
+div#MenuBas h4 {
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 12px;
+	padding-bottom: 5px;
+}
+
+div#MenuBas a:hover {
+	color: #CCC;
+}
+
+div#MentionsBottom {
+	border-top: 1px solid #ccc;
+	padding: 5px;
+}
+
+div#Paiements {
+	float: left;
+}
+
+div#Alcool {
+	float: right;
+	padding-top: 7px;
+}
+
+div#AdresseSociete {
+	padding: 5px;
+	text-align: center;
+}
+
+
+/*** MENU ABTEL ***/
+a#CopyrightAbtel {
+	display: block;
+	font-style: italic;
+	padding: 5px;
+	text-align: right;
+}
+
+
+
+
+
+/*** REDACTION ***/
+div.Article {
+	padding-top: 20px;
+}
+
+div.ArticleContenu {
+	overflow: hidden;
+}
+
+div.ArticleImgLeft {
+	float: left;
+	margin: 0 5px 5px 0;
+}
+
+
+
+
+
+.Accueil {
+	margin:auto;
+	padding:5px;
+}
+.TitreCategorie {
+	overflow:hidden;
+ 	border-bottom:1px solid #7d003e;
+}
+.CateIcone {
+	float:left;
+}
+.CateIcone img {
+	width:32px;
+	height:30px;
+}
+.CateAccueil h1{
+    float:left;
+    color: #9d4680;
+    font-family: arial;
+    font-size: 12px;
+    font-weight: bold;
+    text-align:left;
+    text-transform:uppercase;
+    padding-top:10px;
+}
+
+.CateAccueilContenu {
+    color: #000000;
+    font-family: arial;
+    font-size: 12px;
+    text-align:justify;
+    padding:5px;
+}
+.ArticleUne {
+	padding:5px 15px 5px 15px ;
+	
+
+}
+.ArticleContenu {
+	text-align:justify;
+}
+
+.TitreArticle {
+	text-align:left;
+	padding:5px;
+	margin:5px;
+	border-bottom:1px solid #7d003e;
+	overflow:hidden;
+}
+.TitreArticle h2 {
+	font-size:12px;
+	font-weight:bold;
+	color:#7d003e;
+
+}
+.TitreLogo { 
+	float:right;
+}
+
+.TitreLogo span {
+	padding:0 5px;
+}
+.finContenu {
+	clear: both;	
+}
+
+
+
+
+/*** BOUTIQUE ***/
+div.ProduitsBoutique {
+	overflow: hidden;
+}
+
+div.BlocProduit {
+	overflow: hidden;
+	float: left;
+	display: block;
+	position: relative;
+	height: 260px;
+	width: 48%;
+	margin: 0 1% 10px 1%;
+}
+
+div.BlocProduit div.ImageProduit {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+div.BlocProduit div.ContentProduit {
+	position: absolute;
+	top: 0;
+	left: 110px;
+	right: 0;
+}
+
+div.BlocProduit div.ContentProduit div.IntituleProduit {
+	height: 70px;
+	border-bottom: 1px solid #888;
+	padding-top:5px;
+}
+
+div.BlocProduit div.ContentProduit div.DescrProduit {
+	padding-top:5px;
+	height: 60px;
+	border-bottom: 1px solid #888;
+	margin-bottom: 10px;
+}
+
+div.BlocProduit div.ContentProduit div.PromoArticle {
+	background: red;
+	color: white;
+}
+
+div.BlocProduit div.ContentProduit div.PrixProduit {
+	text-align: right;
+}
+
+div.BlocProduit div.LigneBoutons {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 20px;
+	padding: 5px 0;
+	background: #ccc;
+}
+
+
+div.BlocProduit div.LigneBoutons a {
+	display: block;
+	position: relative;
+	width: 44%;
+	padding: 3px 7px;
+}
+
+div.BlocProduit a.VoirFiche {
+	float: left;
+}
+
+div.BlocProduit a.AddToCart {
+	float: right;
+	text-align: right;
+}
+
+
+/*** BOUTIQUE - ETAPE 1 ***/
+div.TotalNotLines {
+	text-align: right;
+	padding: 5px 0;
+}
+
+
+/** BOUTIQUE - ETAPE 2 ***/
+div.Identification div.LigneForm input, div.Identification div.LigneForm textarea, div.Identification div.LigneForm select, div.Identification div.CompenseField {
+	width: 330px;
+}
+
+div.Identification h2 {
+	text-transform: none;
+	text-decoration: underline;
+}
+
+div.ColonneIdentification, div.ColonneCreationCompte {
+	display: block;
+	width: 48%;
+	padding: 5px;
+	position: relative;
+	border: 1px solid #ccc;
+}
+
+div.ColonneIdentification {
+	float: left;
+}
+
+div.ColonneCreationCompte {
+	float: right;
+}
+
+/*** BOUTIQUE - ETAPE 3 ***/
+table.Recap {
+	width: 100%;
+}
+
+table.Recap th {
+	background-color: #666666;
+	text-transform: uppercase;
+	text-align: left;
+	color: #fff;
+	font-weight: bold;
+	text-align: center;
+}
+
+
+table.Logistique th {
+	width: 33%;
+}
+
+table.RecapitulatifCommande {
+	margin-top: 20px;
+}
+
+table.RecapitulatifCommande th {
+	width: 18%;
+}
+
+table.RecapitulatifCommande td {
+	text-align: center;
+}
+
+table.RecapitulatifCommande th.RecapCommande {
+	width: 30%;
+	text-align: left;
+}
+
+table.RecapitulatifCommande td.RecapCommande {
+	text-align: left;
+}
+
+table.Recap td, table.Recap th {
+	padding: 5px;
+	border: 1px solid #666;
+}
+
+div.AdresseStep3 {
+	overflow: hidden;
+	padding-bottom: 20px;
+}
+
+div.AdresseSelect {
+	display: block;
+	float: left;
+	position: relative;
+	padding: 5px;
+}
+
+div.AdresseDesc {
+	margin-left: 30px;
+}
+
+div.MoreAdresses {
+	border: 1px solid #666;
+	background: #ccc;
+	padding: 10px;
+}
+
+a.ChooseMoreAdresses {
+	text-align: right;
+	padding-bottom: 10px;
+}
+
+div.FinEtape3 {
+	margin-top: 20px;
+}
+
+table.TotalDetaille {
+	width: 100%;
+	background: #666;
+	border: 1px solid #666;
+	color: white;
+}
+
+table.TotalDetaille td {
+	padding: 10px;
+}
+
+table.TotalDetaille td.label {
+	width: 70%;
+}
+
+table.TotalDetaille td.val {
+	width: 30%;
+	text-align: right;
+}
+
+table.TotalDetaille tr.Reduction td {
+	color: #ccc;
+	font-style: italic;
+}
+
+table.TotalDetaille tr.TotalAPayer td {
+	background-color: white;
+	padding-top:20px;
+	padding-bottom:20px;
+	font-size: 14px;
+	color: black;
+}
+
+table.ModeDePaiement {
+	margin-top: 20px;
+}
+
+table.ModeDePaiement td.CB {
+	background: url('../Images/carte_bancaire.png') no-repeat 200px 50%
+}
+
+table.ModeDePaiement td.Cheque {
+	background: url('../Images/cheque.png') no-repeat 200px 50%
+}
+
+div.AccepterCGV {
+	text-align: right;
+	margin-top: 10px;
+	margin-bottom:50px;
+}
+
+
+
+/*** BOUTIQUE - ETAPE 4 ***/
+div#Etape4 {
+	padding: 10px;
+}
+
+div.ConfirmationCommande {
+	padding: 10px 0;
+	font-weight: bold;
+}
+
+p.InfosConfirmation {
+	margin: 20px 0;
+	padding: 5px;
+	background-color: #EEE;
+	border: 1px solid #666;
+}
+
+/*** BOUTIQUE - PRODUIT ***/
+div.BlocFichProduit {
+	overflow:hidden;
+}
+
+div.BlocFichImage {
+	display: block;
+	float: left;
+	position: relative;
+	width:110px;
+	margin:5px;
+}
+
+div.BlocFichTitre {
+	overflow:hidden;
+	padding: 5px 0;
+}
+
+div.PromoArticle {
+	padding: 5px;
+	font-size: 14px;
+	position:relative;
+	display:block;
+	float: right;
+	background-color: red;
+	color: white;
+}
+
+div.BlocFichContent {
+	overflow:hidden;
+}
+
+div.BlocFichCaracteristique {
+	margin-right: 170px;
+}
+
+div.BlocFichLigneCaract {
+	padding: 2px;
+}
+
+span.FichLibelle {
+	font-weight: bold;
+}
+
+div.BlocFichPrix {
+	padding-top: 10px;
+	text-align:right;
+	float:right;
+	width:160px;
+}
+
+div.EspaceVente {
+	padding-top: 10px;
+}
+
+div.Fichprix {
+	font-size: 18px;
+	font-weight:bold;
+	text-transform:uppercase;
+}
+
+
+/*** BOUTIQUE - PRODUITS - ONGLETS ***/
+div.onglets {
+	margin:10px 0 0 0;
+	overflow:hidden;
+	display:none;
+}
+
+div.ongletBloc {
+	overflow:hidden;
+	float:left;
+	position:relative;
+	display:block;
+	cursor:pointer;
+}
+
+div.ongletG {
+	height: 25px;
+	width: 7px;
+	background:url('../Images/onglet-actif-gauche.png') no-repeat;
+	float:left;
+}
+
+div.ongletM {
+	background:url('../Images/onglet-actif-centre.png') repeat-x;
+	float:left;
+	height: 15px;
+	font-size:12px;
+	padding: 5px;	
+}
+
+div.ongletD {
+	background:url('../Images/onglet-actif-droite.png') no-repeat;
+	height: 25px;
+	width: 7px;
+	float:left;
+	padding-right:3px;
+}
+
+div.onglet_actif {
+	cursor:auto;
+	font-weight: bold;
+}
+
+div.ongletDesc {
+	margin:10px 0 0 0 ;
+	overflow:hidden;
+}
+
+div.ongletContenu {
+	border:1px solid #000;
+	padding: 5px;	
+	min-height:120px;
+}
+
+
+
+/*** BOUTIQUE - COMMANDE ***/
+div.EtapesCommande {
+	overflow: hidden;
+	margin: 10px 0;
+}
+
+div.EtapesCommande a {
+	display: block;
+	position: relative;
+	float: left;
+	width: 25%;
+	text-align: center;
+	padding: 5px 0;
+}
+
+div.EtapesCommande a.Active {
+	color: black;
+	font-weight: bold;
+}
+
+
+/*** USER ***/
+div#userEspace {
+	float: left;
+	position:relative;
+	display: block;
+	padding-top:1px;
+}
+
+
+div#UserHome a.Bloc {
+	display: block;
+}
+
+div.user fieldset {
+	margin-top: 10px;
+}
+
+div.user div.LigneForm {
+	padding: 1px;
+}
+
+div.user label {
+	padding: 4px 10px;
+}
+
+div.Adresse {
+	margin-top: 10px;
+	border: 1px solid #888;
+	background-color: #ECE9E6;
+	padding: 10px;
+	overflow: hidden;
+}
+
+a.ModifierAdresse {
+	display: block;
+	text-align: right;
+}
+
+div.buttons {
+	text-align: center;
+	padding-top: 20px;
+}
+
+table.HistoCommande td {
+	text-align: center;
+}
+
+table.HistoCommande td.HistoContenu {
+	text-align: left;
+}
+
+span.Valid {
+	color: #080;
+}
+
+span.Invalid {
+	color: #800;
+}
+
+
+
+/*** BOUTIQUE - PANIER ***/
+table.Panier, table.ChoixModeLivraison {
+	width: 100%;
+	border: 1px solid #666;
+}
+
+table.Panier td, table.ChoixModeLivraison td {
+	padding: 2px;
+}
+
+table.Panier th, table.ChoixModeLivraison th, table.Panier td.MontantTotalCmde {
+	background-color: #666;
+	color: #FFF;
+	font-weight: bold;
+	padding: 2px;
+}
+
+table.Panier td.MontantTotalCmde {
+	text-align: right;
+	padding: 5px 2px;
+}
+
+table.Panier td.MontantTotalTTC {
+	padding-right: 15px;
+}
+
+table.Panier th.NomProduit, table.Panier td.NomProduit {
+	text-align: left;
+}
+
+table.Panier th.Quantite, table.Panier th.TotalTTC, table.Panier th.SupprimerItem, table.Panier td.Quantite, table.Panier td.TotalTTC, table.Panier td.SupprimerItem,
+table.Panier td.PrixInitial, table.Panier td.Remise {
+	text-align: center;
+}
+
+div.ActionsPanier {
+	margin-top: 10px;
+}
+
+div.ValiderCommande, div.ModifierCommande, div.ViderPanier {
+	text-align: right;
+	padding: 2px;
+}
+
+
+
+/*** BOUTIQUE - RECHERCHE ***/
+div.Pagination {
+	margin-top: 10px;
+	padding: 5px;
+	text-align:center;
+	background: #EEE;
+	border: 1px solid #666;
+}
+
+.Pagination span.current  {
+    font-weight: bold;
+}
+
+
+div.Pagination a , div.Pagination span {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+
+/*** BOUTONS ***/
+div.BoutonsGauche, div.BoutonsCentre, div.BoutonsDroite { padding:10px }
+div.BoutonsCentre { text-align:center; }
+div.BoutonsDroite { text-align:right; }
+
+div.LigneBoutons { overflow:hidden }
+div.LigneBoutons div.BoutonsGauche { float:left; position:relative; display:block }
+div.LigneBoutons div.BoutonsDroite { float:right; position:relative; display:block }
+
+button, button:focus button:active, button:hover, a, a:focus a:active, a:hover { outline:0 }
+button::-moz-focus-inner{ border:0; }

@@ -1,0 +1,164 @@
+[HEADER]
+	<style type="text/css">
+		#Milieu{
+			margin-right:0;
+			padding-bottom:20px;
+		}
+	</style>
+[/HEADER]
+//Nombre de suj par page
+[!PPP:=15!]
+[!Adr:=[!Query!]!]
+[MODULE Forum/Ariane?Query=[!Adr!]]
+<div id="Milieu">
+	[STORPROC [!Query!]|this]
+		<h1 class="TitreCat">[!this::getFirstSearchOrder!]</h1>
+	[/STORPROC]
+	[IF [!confCategorie!]="Ajouter"][MODULE Forum/Categorie/Ajouter][/IF]
+	[IF [!confSujet!]=Ajouter][MODULE Forum/Sujet/Ajouter][/IF]
+	[STORPROC [!Adr!]|this]
+	//	[STORPROC Forum/Categorie/[!this::Id!]/Categorie|Cat2]
+	//		<table class="SousCat">
+	//			<thead>
+	//				<tr>
+	//					<td></td>
+	//					<td>Th&egrave;mes</td>
+	//					<td>Sujets</td>
+	//					<td>Messages</td>
+	//					<td>Dernier message</td>
+	//					[IF [!Systeme::User::Admin!]]
+	//						<td></td>
+	//					[/IF]
+	//				</tr>
+	//			</thead>
+	//			<tbody>
+	//				//<h2>[!this::Nom!]</h2>
+	//				[LIMIT 0|100]
+	//					[MODULE Forum/Display?Cat=[!this!]]
+	//				[/LIMIT]
+	//			<tbody>
+	//		</table>
+	//		[NORESULT]
+				[IF [!Page!]=EMPTY]
+					[!Page:=1!]
+				[/IF]
+				<table class="SousCat">
+					[STORPROC Forum/Categorie/[!this::Id!]/Sujet|Suj|[![![!Page!]:*[!PPP!]!]:-[!PPP!]!]|[!PPP!]|tmsCreate|DESC]
+						<thead>
+							<tr>
+								<td></td>
+								<td>Sujets</td>
+								<td>R&eacute;ponses</td>
+								<td>Vus</td>
+								<td>Dernier message</td>
+								[IF [!Systeme::User::Admin!]]
+									<td></td>
+								[/IF]
+							</tr>
+						</thead>
+						<tbody>
+							[LIMIT 0|100]
+								<tr>
+									<td class="TdIco">
+										<img src="/Skins/Intranet/Img/Forum/petitSujet.gif" alt="" title=""/>
+									</td>
+									<td class="TdText">
+										<a href="/[!Adr!]/Sujet/[!Suj::Id!]">[!Suj::Titre!]</a><br />
+										[SUBSTR 30|...][!Suj::Description!][/SUBSTR]
+									</td>
+									<td class="TdNbr">
+										[STORPROC Forum/Sujet/[!Suj::Id!]/Post|Pst]
+											[!NbPost:=[!NbResult!]!]
+											[LIMIT 0|1]
+												[IF [!NbPost!]!=1]
+													[!NbPost!]
+												[ELSE]
+													0
+												[/IF]
+											[/LIMIT]
+										[/STORPROC]
+									</td>
+									<td class="TdNbr"></td>
+									<td class="TdText">
+										[STORPROC Forum/Sujet/[!Suj::Id!]/Post|Pst|0|1|tmsCreate|DESC]
+											Dernier message le [UTIL NUMERICDATE][!Pst::tmsCreate!][/UTIL] par 
+											[STORPROC Systeme/User/[!Pst::userCreate!]|Usr]
+												[IF [!Pst::userCreate!]==[!Systeme::User::Id!]]
+												<a href="/Systeme/User/MonCompte" title="Mon compte">[!Usr::Login!]</a>
+												[ELSE]
+												<a href="#nogo">[!Usr::Login!]</a>
+												[/IF]
+											[/STORPROC]
+										[/STORPROC]
+									</td>
+									[IF [!Systeme::User::Admin!]]
+										<td class="TdIco">
+											<a href="/Forum/Sujet/[!Suj::Id!]/Supprimer">
+												<img src="/Skins/Intranet/Img/Forum/PetiteX.png" title="Supprimer la cat&eacute;gorie" alt="Supprimer la cat&eacute;gorie" />
+											</a>
+										</td>
+									[/IF]
+								</tr>
+							[/LIMIT]
+						</tbody>
+					[/STORPROC]
+				</table>
+				[STORPROC Forum/Categorie/[!this::Id!]/Sujet|NbSj]
+					<div class="pagination">
+						[Pages 
+						[!NbSuj:=[!NbResult!]!]
+						[LIMIT 0|1]
+							[IF [![!NbSuj!]:%[!PPP!]!] != 0]
+								[STORPROC [![!NbSuj!]:/[!PPP!]!] |NbPage]
+									<a href="/[!Lien!]?Page=[!NbPage!]" title="page [!NbPage:+1!]">[!NbPage!]</a>
+								[/STORPROC]
+								<a href="/[!Lien!]?Page=[!NbPage:+1!]" title="page [!NbPage:+1!]">[!NbPage:+1!]</a> ]
+							[ELSE]
+								[STORPROC [![!NbSuj!]:/[!PPP!]!] |NbPage]
+									<a href="/[!Lien!]?Page=[!NbPage!]" title="page [!NbPage:+1!]">[!NbPage!]</a> ]
+								[/STORPROC]
+							[/IF]
+						[/LIMIT]
+					</div>
+				[/STORPROC]
+	//		[/NORESULT]
+	//	[/STORPROC]
+	[/STORPROC]
+	[IF [!Systeme::User::Admin!]]
+		<div class="Actions">
+			//[INFO [!Query!]|I]
+			// On cherche le nombre de niveau de catégorie
+			[COUNT Forum/Categorie/[!this::Id!]/Sujet|NbSuj]
+			// On regarde s il y a déjà des sujets dans la catégorie
+			[IF [!NbSuj!]=0]
+				// S il n y a pas de sujets, alors on peut ajouter une catégorie
+				[BLOC Bouton|width:140px;||width:105px;]
+					<a href="/[!Adr!]?act=newCat">Ajouter une Cat&eacute;gorie</a>
+				[/BLOC]
+			[/IF]
+			[COUNT Forum/Categorie/[!this::Id!]/Categorie|NbssCat]
+			[IF [!NbssCat!]=0]
+				[BLOC Bouton|width:140px;||width:105px;]
+					<a href="/[!Adr!]?act=newSubject">Ajouter un Sujet</a>
+				[/BLOC]
+			[/IF]
+		</div>
+	[ELSE]
+		[IF [!NbssCat!]=0]
+			<div class="Actions">
+				[BLOC Bouton|width:140px;||width:105px;]
+					<a href="/[!Adr!]?act=newSubject">Ajouter un Sujet</a>
+				[/BLOC]
+			</div>
+		[/IF]
+	[/IF]
+	[IF [!act!]=="newSubject"]
+		//Formulaire ajout sujet
+		[MODULE Forum/Sujet/AjouterForm?parent=[!this::Id!]]
+	[/IF]
+	[IF [!act!]=="newCat"]
+		//Formulaire ajout categorie	
+		[MODULE Forum/Categorie/AjouterForm?parent=[!this::Id!]]
+	[/IF]
+</div>
+<div class="Clear"></div>

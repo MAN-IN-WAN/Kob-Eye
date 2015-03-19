@@ -1,0 +1,5 @@
+[IF [!Affichage!]=Client]
+	[MODULE ParcImmobilier/Residence/DetailClient]
+[ELSE]
+	[MODULE ParcImmobilier/Residence/DetailResidence]
+[/IF]

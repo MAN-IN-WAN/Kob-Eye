@@ -1,0 +1,52 @@
+[INFO [!Query!]|I]
+[OBJ [!I::Module!]|[!I::TypeChild!]|O]
+{"form":
+	{"type":"VBox", "id":"FL:[!I::Module!]/[!I::TypeChild!]", "label":"[!O::getDescription()!]", "percentWidth":100, "percentHeight":100, 
+	"setStyle":{"closable":0, "paddingTop":0, "paddingLeft":5, "paddingRight":5}, 
+	"components":[
+		{"type":"MenuTab", "id":"menuList", "menuItems":[
+			{"label":"File", "children":[
+				{"label":"Open", "icon":"open", "data":"open"},
+				{"label":"New", "icon":"iconNew", "data":"new"},
+				{"type":"vseparator"},
+				{"label":"Delete", "icon":"remove", "data":"delete"}
+			]}
+		],
+		"actions":[
+			{"type":"itemClick", "actions":{
+				"open":{"type":"click", "action":"invoke","objectID":"tree_range","method":"loadFormWithID",
+					"params":{"containerID":"tabNav","url":"Vitrine/Categorie/{0}/FormBase.json","updateMe":1,"form":"FormBase.json"}},
+				"new":{"type":"click", "action":"loadForm", "containerID":"tabNav", "url":"[!Query!]/FormBase.json", "updateList":["FL:[!I::Module!]/[!I::TypeChild!].tree_range"]},
+				"delete":{"type":"click", "action":[
+					{"action":"invoke", "objectID":"searchBox", "method":"clearData", "params":{}},
+					{"action":"filterFields", "componentID":"dataGrid"}
+				]}
+			}}
+		]},
+		{"type":"DividedBox","direction":"horizontal", "id":"listBox", "label":"Liste", "percentWidth":100, "percentHeight":100, "setStyle":{"closable":0, "paddingTop":0}, 
+		"components":[
+			{"type":"Tree","id":"tree_range", "percentWidth":100, "percentHeight":100,
+				"query":{
+					"query":"[!I::Module!]/[!I::TypeChild!]",
+					"tree":{
+						"Categorie":{"labelField":"Nom", "icon":"products", "children":["Produit","Categorie"]},
+						"Produit":{"labelField":"Nom", "iconField":"Image","height":"100","width":"150", "children":["Modele"]},
+						"Modele":{"labelField":"Nom", "iconField":"CodeBarre","height":"100","width":"150"}
+					}
+				},
+			"events":[
+				{"type":"dblclick","action":"invoke","objectID":"tree_range","method":"loadFormWithID",
+				"params":{"containerID":"tabNav","url":"Vitrine/Categorie/{0}/FormBase.json","updateMe":1,"form":"FormBase.json"}},
+				{"type":"change","action":"invoke","objectID":"tree_range","method":"loadFormWithID",
+				"params":{"containerID":"obj_state","updateMe":1,"form":"FormMini.json","clearContainer":1}}
+			],
+			"actions":[
+				{"type":"init", "action":"loadData"}
+			]},
+			{"type":"VBox","id":"obj_state","percentWidth":100,"percentHeight":100}
+		]}
+	],
+	"actions":[
+	]
+	}
+}

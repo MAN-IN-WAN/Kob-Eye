@@ -1,0 +1,80 @@
+.BarreModule{
+ 	background:url(/Skins/AdminV2/Img/Structure/BarreHaut.jpg) repeat-x; 
+	margin:0;
+	padding:0;
+	border:0;
+}
+
+.BarreModule li {
+	background:none;
+	width:100px;
+	margin:0;
+	display:block;
+	padding:0;
+	float:left;
+}
+
+.BarreModule li a{
+	border:0;
+	outline:0;
+	display:block;
+	background:none;
+	color:white;
+	margin:0;
+	padding-top:10px;
+/*	padding-left:36px;*/
+	padding-bottom:5px;
+	text-align:center;
+}
+
+.BarreModule li a:hover,.BarreModule li a:active,.BarreModule li a:visited{
+	border:0;
+	outline:0;
+	color:white;
+	text-decoration:none;
+}
+
+#UserInfo
+{
+    float:right;
+    margin-right:40px;
+    line-height:30px;
+    font-size:8pt;
+}
+
+
+li.background{
+    position:absolute;
+    visibility:hidden;
+    background:url(/Skins/AdminV2/Img/bg_menu_right.png) no-repeat scroll right top;
+    z-index:100;
+    height:30px;
+}
+
+div.inner{
+    background:white;
+    height:30px;
+    z-index:1;
+    background:url(/Skins/AdminV2/Img/bg_menu.png) no-repeat scroll left top;
+    margin-right:7px;
+}
+
+ul.BarreModule li a
+{
+    z-index:101;
+    display:block;
+    width:100%;
+    height:30px;
+    line-height:10px;
+    font-size:9pt;
+    font-weight:bold;
+    color:white;
+    position:relative;
+    font-variant:small-caps;
+}
+
+ul.BarreModule li a:hover,
+ul.BarreModule li a:visited
+{
+    color:white;
+}

@@ -1,0 +1,222 @@
+body, html, *{
+    font: Arial, sans-serif;
+    font-size: 11px;
+    text-shadow: 2px 2px 5px #cdcdcd;
+}
+body{
+    padding-top:39px;
+    background-color:#efefef;
+    background-image: none;
+    overflow-x:hidden;
+}
+#top-bar{
+    background-color: #3e3e3e;
+    padding:5px 10px 5px 15px;
+    border:0;
+    min-height:40px;
+    box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.3); 
+}
+#top-bar h4{
+    text-shadow: 4px 3px 5px #000000;
+    margin:5px 0 5px 0;
+}
+#side-bar{
+    background-color: #4a4c50;
+    padding-right:1px;
+    /*min-height: 1000px;*/
+    box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.7); 
+    background-image: linear-gradient(#4a4c50, #E5E5E5);
+}
+@media screen and (min-width: 970px) {
+    #side-bar{
+        position: fixed;
+        top: 39px;
+        bottom: 0;
+        z-index: 1;
+    }
+}
+
+.breadcrumb {
+    padding: 8px 15px;
+    margin-bottom: 10px;
+    list-style: none;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    -o-box-shadow: 0px 0 4px rgba(0,0,0,.2);
+    -ms-box-shadow: 0px 0 4px rgba(0,0,0,.2);
+    -moz-box-shadow: 0px 0 4px rgba(0,0,0,.2);
+    -webkit-box-shadow: 0px 0 4px rgba(0,0,0,.2);
+    box-shadow: 0px 0 4px rgba(0,0,0,.2);
+
+}
+
+
+#content{
+    background-color: #efefef;
+    padding: 10px 15px 0 7px;
+}
+.white{
+    color:white;
+}
+
+/** glyphicons **/
+.glyph.ok{
+    background:url(../Img/glyphicons/glyphicons_198_ok.png);
+}
+.glyph.nok{
+    background:url(../Img/glyphicons/glyphicons_197_remove.png);
+}
+}
+.badge-danger{
+    background-color:#d9534f;
+}
+    
+/** HACK KENDO GRID **/
+div.k-grid.k-widget div.k-grid-content {
+    height: auto;
+    overflow: hidden;
+}
+.k-grid-content table tr:hover{
+    background-color:#efefef;
+}
+/** HACK KENDO POPUP **/
+#details-container{
+    padding: 10px;
+}
+
+#details-container h2{
+    margin: 0;
+}
+
+#details-container em{
+    color: #8c8c8c;
+}
+
+#details-container dt{
+    margin:0;
+    display: inline;
+}
+
+/** HACK BOOTSTRAP **/
+.btn, .badge{
+    box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.1);
+    font-size: 11px;
+    font-weight: 200;
+}
+.btn:hover,.badge:hover{
+    box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.1) inset;
+}
+.btn{
+    padding: 2px 12px;
+    border: 0;
+    border-radius:10px;
+}
+.glyphicon{
+    font-weight: 200;
+    font-size:9px;
+}
+.btn.btn-success,.badge-success{
+    background: #a5cd4e;
+    /*background: -moz-linear-gradient(top,  #a5cd4e 0%, #6b8f1a 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#a5cd4e), color-stop(100%,#6b8f1a));
+    background: -webkit-linear-gradient(top,  #a5cd4e 0%,#6b8f1a 100%);
+    background: -o-linear-gradient(top,  #a5cd4e 0%,#6b8f1a 100%);
+    background: -ms-linear-gradient(top,  #a5cd4e 0%,#6b8f1a 100%);
+    background: linear-gradient(top,  #a5cd4e 0%,#6b8f1a 100%);*/
+
+}
+.tabbable.custom-tabs.shadow.tabs-left > .tab-content {
+    -o-box-shadow: -6px 0 4px rgba(0,0,0,.2);
+    -ms-box-shadow: -6px 0 4px rgba(0,0,0,.2);
+    -moz-box-shadow: -6px 0 4px rgba(0,0,0,.2);
+    -webkit-box-shadow: -6px 0 4px rgba(0,0,0,.2);
+    box-shadow: -6px 0 4px rgba(0,0,0,.2);
+    margin: 0 2px 0 0;
+}
+
+.tabbable.custom-tabs.shadow.tabs-left > .nav-tabs > li.active > a {
+    -o-box-shadow: inset 0 0 0 0 rgba(0,0,0,.2), -3px -2px 5px -2px rgba(0,0,0,.2);
+    -ms-box-shadow: inset 0 0 0 0 rgba(0,0,0,.2), -3px -2px 5px -2px rgba(0,0,0,.2);
+    -moz-box-shadow: inset 0 0 0 0 rgba(0,0,0,.2), -3px -2px 5px -2px rgba(0,0,0,.2);
+    -webkit-box-shadow: inset 0 0 0 0 rgba(0,0,0,.2), -3px -2px 5px -2px rgba(0,0,0,.2);
+    box-shadow: inset 0 0 0 0 rgba(0,0,0,.2), -4px -2px 5px -2px rgba(0,0,0,.2);
+    border-radius: 5px 0 0 0;
+}
+.tabbable.custom-tabs.shadow.tabs-left > .nav-tabs > li > a {
+    -o-box-shadow: inset -8px 0 7px -9px rgba(0,0,0,.4), -2px -2px 5px -2px rgba(0,0,0,.4);
+    -ms-box-shadow: inset -8px 0 7px -9px rgba(0,0,0,.4), -2px -2px 5px -2px rgba(0,0,0,.4);
+    -moz-box-shadow: inset -8px 0 7px -9px rgba(0,0,0,.4), -2px -2px 5px -2px rgba(0,0,0,.4);
+    -webkit-box-shadow: inset -8px 0 7px -9px rgba(0,0,0,.4), -2px -2px 5px -2px rgba(0,0,0,.4);
+    box-shadow: inset -11px 0 7px -9px rgba(0,0,0,.3), -2px -2px 5px -2px rgba(0,0,0,.4);
+}
+
+
+/* PANEL */
+.jarviswidget {
+    box-shadow: 0px 0 8px rgba(0,0,0,.2);
+    margin: 5px;
+}
+.jarviswidget > header {
+    border: 0;
+    border-radius: 5px;
+}
+.jarviswidget > div {
+    border:0;
+}
+section#widget-grid div.jarviswidget {
+    margin:0 2px 0 0;
+}
+.dataTables_processing{
+    display: none;
+}
+
+/** FORMULAIRE **/
+.form-horizontal .form-actions.affix {
+    padding-left: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    box-shadow: 0px 0 8px rgba(0,0,0,.2);
+    background-color: rgba(0, 0, 0, 0.6);
+}
+.control-group {
+    margin-bottom: 0;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #EAEAEA;
+    padding: 4px 8px;
+    background: #FDFDFD;
+}
+input {
+        min-height: 27px;
+}
+label {
+    font-weight: normal;
+    font-size: 11px;
+}
+.form-horizontal .control-label {
+    font-size: 11px;
+}
+.form-horizontal .controls {
+    margin-left: 140px;
+}
+.form-horizontal .control-label {
+    width: 127px;
+}
+/* TAB */
+.tabbable {
+margin-bottom: 70px;
+}
+
+/* JARVISWIDGET */
+.jarviswidget > header {
+    height: 27px;
+}
+.jarviswidget > header h2, .fc-header-title h2 {
+    height: 100%;
+    width: auto;
+    float: left;
+    font-size: 12px;
+    position: relative;
+    margin: 0;
+    line-height: 25px;
+}

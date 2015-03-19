@@ -1,0 +1,26 @@
+	<div class="bbeditorbuttonscontainer">
+		<div class="bbeditorbuttons">
+			<img src="[2]/bbcode_bold.png" onclick="TabBBEdit['[1]'].addTag('[b]', '[/b]');" alt="Gras [b]Texte[/b]" title="Gras [b]Texte[/b]" />
+			<img src="[2]/bbcode_italic.png" onclick="TabBBEdit['[1]'].addTag('[i]','[/i]');" alt="Italique [i]Italique[/i]" title="Italique [i]Italique[/i]" />
+			<img src="[2]/bbcode_underline.png" onclick="TabBBEdit['[1]'].addTag('[s]','[/s]');" alt="Soulign� [s]Soulign�[/s]" title="Soulign� [s]Soulign�[/s]" />
+			<img src="[2]/bbcode_strikeout.png" onclick="TabBBEdit['[1]'].addTag('[barre]','[/barre]');" alt="Barr� [strike]Barr�[/strike]" title="Barr� [barre]Barr�[/barre]" />
+			<img src="[2]/bbcode_uppercase.png" onclick="TabBBEdit['[1]'].addTag('[uppercase]', '[/uppercase]');" alt="Tout en majuscules [uppercase]Texte[/uppercase]" title="Tout en majuscules [uppercase]Texte[/uppercase]" />
+			<img src="[2]/bbcode_lowercase.png" onclick="TabBBEdit['[1]'].addTag('[lowercase]', '[/lowercase]');" alt="Tout en minuscules [lowercase]Texte[/lowercase]" title="Tout en minuscules [lowercase]Texte[/lowercase]" />
+			<img src="[2]/bbcode_fontsize.png" onclick="TabBBEdit['[1]'].addTag('[size=]', '[/size]');" alt="augmente la taille de la police [size=]Texte[/size]" title="augmente la taille de la police [size=]Texte[/size]" />
+			<img src="[2]/bbcode_color.png" onclick="TabBBEdit['[1]'].addTag('[color=]', '[/color]');" alt="change la couleur en mettant une valeur hexadecimale [color=#000000]Texte[/color]" title="change la couleur en mettant une valeur hexadecimale [color=#000000]Texte[/color]" />
+			<img src="[2]/bbcode_superscript.png" onclick="TabBBEdit['[1]'].addTag('[sup]', '[/sup]');" alt="Mettre le texte en exposant [sup]Texte[/sup]" title="Mettre le texte en exposant [sup]Texte[/sup]" />
+			<img src="[2]/bbcode_subscript.png" onclick="TabBBEdit['[1]'].addTag('[sub]', '[/sub]');" alt="Mettre le texte en indice [sub]Texte[/sub]" title="Mettre le texte en indice [sub]Texte[/sub]" />
+			<img src="[2]/bbcode_list.png" onclick="TabBBEdit['[1]'].addTag('[list=square][item]', '[/item][/list]');" alt="Liste [list=square][item]BlaBla[/item][/list]" title="Liste [list=square][item]BlaBla[/item][/list]" />
+			<img src="[2]/bbcode_listdecimal.png" onclick="TabBBEdit['[1]'].addTag('[list=decimal][item]', '[/item][/list]');" alt="Liste Num�rot�e [list=decimal][item]BlaBla[/item][/list]" title="Liste Num�rot�e [list=decimal][item]BlaBla[/item][/list]" />
+			<img src="[2]/bbcode_mail.png" onclick="TabBBEdit['[1]'].addTag('[email]','[/email]');" alt="Courriel [email=nobody@nobody.org]Nom[/email]" title="Courriel [email=nobody@nobody.org]Nom[/email]" />
+			<img src="[2]/bbcode_link.png" onclick="TabBBEdit['[1]'].addTag('[url]','[/url]');" alt="Lien [url=http://www.website.com]Texte[/url]" title="Lien [url=http://www.website.com]Texte[/url]" />
+			<img src="[2]/bbcode_preview.png" onclick="TabBBEdit['[1]'].preview();" alt="Pr�visualisation" title="Pr�visualisation" />
+			<img src="[2]/bbcode_quote.png" onclick="TabBBEdit['[1]'].addTag('[quote]', '[/quote]');" alt="Citation [quote=name]Texte[/quote]" title="Citation [quote=name]Texte[/quote]" />
+			<img src="[2]/bbcode_selectall.png" onclick="TabBBEdit['[1]'].selectAll();" alt="Tout s�lectionner" title="Tout s�lectionner" /> 
+			<img src="[2]/bbcode_clear.png" onclick="TabBBEdit['[1]'].clear()" alt="Tout effacer" title="Tout effacer" />
+		</div>
+	</div>
+	<textarea id="text[1]" name="[3]" style="width:97%;height:200px;">[DATA]</textarea>
+	<script type="text/javascript">
+	TabBBEdit['[1]'] = new bbEditor("text[1]");
+	</script>

@@ -1,0 +1,54 @@
+[INFO [!Query!]|I]
+[OBJ [!I::Module!]|[!I::TypeChild!]|O]
+{"form":{"type":"VBox","id":"[!I::TypeChild!]?","label":"[!O::getDescription()!]","percentHeight":100,"setStyle":{"paddingLeft":6,"paddingRight":6},"query":{"query":"[!Query!]"},"styleName":"ViewStackStyle",
+"components":[
+	{"type":"MenuTab", "menuItems":[
+		{"label":"File", "children":[
+			{"label":"Save", "icon":"save", "data":"save"},
+			{"label":"Delete", "icon":"iconDelete", "data":"delete"},
+			{"label":"Cancel", "icon":"unselect", "data":"cancel"},
+			{"type":"vseparator"},
+			{"label":"Print Current", "icon":"print", "data":"printCurrent"},
+			{"label":"Print All Displays", "icon":"open", "data":"printAll"},
+			{"type":"vseparator"},
+			{"label":"Copy"},
+			{"label":"Cut"},
+			{"label":"Paste"}
+		]}
+	],
+	"actions":[
+		{"type":"itemClick", "actions":{
+			"save":{"type":"click", "action":"invoke", "objectID":"edit", "method":"saveData"},
+			"delete":{"type":"click", "action":"invoke", "objectID":"edit", "method":"deleteData"},
+			"cancel":{"type":"click", "action":"invoke", "objectID":"edit", "method":"cancelEdit"}
+		}}
+	]},
+	{"type":"Scroller", "id":"scroller",
+	"viewport":
+		{"type":"Group", "percentWidth":100,
+		"components":[
+			{"type":"EditContainer", "id":"edit",
+			"components":[
+				{"type":"Group", "percentWidth":100, "layout":{"type":"VerticalLayout", "gap":6, "paddingLeft":6, "paddingRight":6},
+				"components":[
+					//[MODULE Systeme/formElements?I=[!I!]]					
+					,{"type":"PictureList","id":"PL_Vitrine_Produit","pictureField":"Image","pictureSuffix":".limit.100x100.jpg","columnWidth":150,"rowHeight":150, "percentWidth":100, "percentHeight":100, "pictureFolder":"/", "query":{"query":"Vitrine/Produit", "select":"Id,Nom,Image"},
+					"events":[
+						{"type":"dblclick","action":"invoke","objectID":"PL_Vitrine_Produit","method":"loadFormWithID",
+						"params":{"containerID":"tabNav","url":"Vitrine/Produit/{0}/FormBase.json","updateMe":1}}
+					],
+					"actions":[
+						{"type":"init", "action":"loadData"}
+					]}
+				]}
+			]}
+		]}
+	}
+]
+,
+"actions":[
+	{"type":"close", "action":"confirmUpdate"}
+]}
+}
+
+

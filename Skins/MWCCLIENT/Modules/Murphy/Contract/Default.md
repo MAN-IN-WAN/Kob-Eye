@@ -1,0 +1,8 @@
+[INFO [!Query!]|I]
+[IF [!I::TypeSearch!]=Child]
+	[MODULE Murphy/Contract/NavBar]
+	[MODULE [!I::Module!]/[!I::TypeChild!]/Liste]
+[ELSE]
+	[MODULE Murphy/Contract/NavBar?Last=__CONTRACT_DETAIL__]
+	[MODULE [!I::Module!]/[!I::TypeChild!]/Fiche]
+[/IF]

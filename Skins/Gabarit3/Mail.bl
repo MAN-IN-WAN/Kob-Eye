@@ -1,0 +1,41 @@
+<html>
+	<body>
+		<div align="center">
+			<table width="800" cellpadding="0" cellspacing="0">
+				<tr>	
+					<td align="left" bgcolor="#cccccc">
+						<br />
+						&nbsp;&nbsp;<img src="" alt="Logo du site" />
+						<br /><br />
+					</td>
+					<td align="right" bgcolor="#cccccc">
+						<font face="arial" color="#000000" size="2">
+							<strong>
+								[!CONF::MODULE::SYSTEME::SOCIETE!]&nbsp;&nbsp;<br />[!CONF::MODULE::SYSTEME::ADRESSE!]&nbsp;&nbsp;<br />[!CONF::MODULE::SYSTEME::VILLE!]&nbsp;&nbsp;<br />
+								T&eacute;l : [!CONF::MODULE::SYSTEME::TEL!]&nbsp;&nbsp;<br />
+								Fax : [!CONF::MODULE::SYSTEME::FAX!]
+							</strong>
+						</font>
+					</td>
+				</tr>			
+				<tr>
+					<td colspan="2">
+						<br />
+						<font face="arial" color="#000000" size="2">[DATA]</font>
+						<br /><br />
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" align="center" bgcolor="#cccccc">
+						<br />
+						<font face="arial" color="#000000" size="2"><strong>A bient&ocirc;t sur </strong></font>
+						<a href="[!Domaine!]"><font face="arial" color="#000000" size="2"><strong>notre site !</strong></font></a>
+						<br /><br />
+					</td>
+				</tr>
+			<table>
+		</div>
+	</body>
+</html>		
+
+

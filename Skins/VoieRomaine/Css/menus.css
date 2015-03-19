@@ -1,0 +1,17 @@
+@import "menuBas.css";
+@import "menuPrincipal.css";
+
+#ContenuMen {
+	margin-top: -3px;
+}
+
+/*** MENU HAUT ***/
+
+a.Mon_panier  {
+	background:url('../Img/panier-top.png') no-repeat 0 50%;
+	padding: 1px 0 1px 20px;
+}
+a.Mon_compte  {
+	background:url('../Img/mon-compte-top.png') no-repeat 0 50%;
+	padding: 1px 0 1px 20px;
+}

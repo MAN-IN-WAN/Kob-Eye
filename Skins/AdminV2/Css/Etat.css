@@ -1,0 +1,370 @@
+.PropModif
+{
+    width:35px;
+}
+
+html
+{
+    overflow:hidden;
+}
+
+/*----------------------------Affichage des proprietes------------------------*/
+
+*+html .ProprieteValeur input{
+	border:none;
+}
+.Filter select{
+	width:100px;
+}
+
+.ProprieteDisplay{
+    margin:1px;
+    float:left;
+    width:49%;
+    -moz-border-radius:0px 2px 2px 0px;
+    background:#EFEFEF;
+}
+
+.ProprieteTitre
+{
+    float:left;
+    width:32%;
+    -moz-border-radius:2px 0px 0px 2px;
+    min-height:15px;
+    padding:2px;
+    padding-left:10px;
+    background:#9A9EA0;
+    line-height:15px;
+    color:white;
+}
+
+.ProprieteValeur
+{
+    float:left;
+    width:58%;
+    -moz-border-radius:0px 2px 2px 0px;
+    min-height:15px;
+    line-height:15px;
+    padding:2px;
+    background:#EFEFEF;
+    padding-left:10px;
+}
+
+.Typeline .ProprieteValeur{font-weight:bold;}
+
+.Typeblock .ProprieteTitre{
+    float:none;
+    -moz-border-radius:2px 2px 0px 0px;
+}
+
+.Typeblock .ProprieteValeur{
+    float:none;
+    width:98%;
+    -moz-border-radius:0px 0px 2px 2px;
+}
+
+.Typemedia .ProprieteValeur img
+{
+    margin-top:1px;
+}
+
+.Typemedia .ProprieteTitre{
+    height:60px;
+}
+
+.Typemedia .ProprieteValeur{
+    height:60px;
+    padding-top:3px;
+}
+
+/*.Typenormal .ProprieteValeur{text-align:right;padding-right:10px;}
+
+.Typemedia .ProprieteTitre{
+    float:none;
+    width:99%;
+    -moz-border-radius:2px 2px 0px 0px;
+}
+
+.Typemedia .ProprieteValeur{
+    float:none;
+    width:99%;
+    text-align:center;
+    -moz-border-radius:0px 0px 2px 2px;
+}
+
+.Typeline .ProprieteValeur{
+    text-align:center;
+    font-weight:bold;
+    width:80.1%;
+}
+
+.Typeline .ProprieteTitre{
+    width:17.9%;
+}
+
+
+
+.Typeblock .ProprieteTitre{
+    float:none;
+    width:99%;
+    margin-top:2px;
+    -moz-border-radius:2px 2px 0px 0px;
+}
+
+.Typeblock .ProprieteValeur{
+    float:none;
+    width:99%;
+    padding:2px;
+    -moz-border-radius:0px 0px 2px 2px;
+}
+*/
+
+
+/*----------------------------Affichage des proprietes--PETIT----------------------*/
+.ProprieteTitrePetit {
+	width:50%;
+	text-align:right;
+	float:left;
+	height:20px;
+/* 	margin-right:2%; */
+}
+.ProprieteValeurPetit {
+	text-align:left;
+	display:block;
+	margin-left:51%;
+	line-height:16px;
+/* 	height:20px; */
+}
+
+.ProprieteValeurDoublePetit {
+	margin-left:1%;
+	text-align:left;
+	display:block;
+	float:left;
+	width:31%;
+	margin-bottom:5px;
+/* 	height:20px; */
+}
+.ProprieteValeurTxtPetit {
+	text-align:left;
+	display:block;
+	background-color:#F8F8F8;
+	margin-left:32%;
+	height:50px;
+}
+/*----------------------------Le Contenu------------------------*/
+.Contenu {
+	height:100%;
+	width:100%;
+}
+/* ---------- */
+.ContenuEntete {
+	height:75px;
+	background-color:#E0E0E0;
+	position:absolute;
+	width:100%;
+	z-index:200;
+}
+.ContenuData {
+	top:75px;
+	bottom:0;
+	right:0;
+	left:0;
+	position:absolute;
+	z-index:100;
+/* 	overflow:auto; */
+/* 	background-color:#E0E0E0; */
+/* 	text-align:center; */
+}
+/*----PROPRIETES------*/
+.Propriete {
+	clear:both;
+/* 	margin:5px; */
+/* 	margin-bottom:10px; */
+}
+.ContenuPropriete {
+	width:100%;
+	float:left;
+	height:100%;
+	overflow:auto;
+/* 	background-color:#E0E0E0; */
+}
+.ContenuLiaison {
+	height:100%;
+	width:40%;
+	overflow:auto;
+}
+/* LISTE */
+.ListeLine{
+	width:100%;
+	height:20px;
+	margin:2px;
+	background-color:#E0E0E0;
+}
+.ListeLine:hover{
+	width:100%;
+	height:20px;
+	margin:2px;
+	background-color:#C6C6C6;
+}
+.ListeEntete{
+	width:100%;
+	height:20px;
+	margin:2px;
+	color:white;
+	background-color:#ADADAD;
+}
+.ListeEntete .ListeItem{
+	float:left;
+	height:16px;
+	padding-top:3px;
+	border-left:1px solid #E0E0E0;
+	background-color:#ADADAD;
+	text-align:center;
+}
+.ListeItem{
+	float:left;
+	height:16px;
+	padding-top:3px;
+	border-left:1px solid #ADADAD;
+	text-align:left;
+}
+.ListeProprietes
+{
+	margin-left:40px;
+	border:1px solid black;
+	margin-top:20px;
+}
+
+.Infos
+{
+	padding-left:5px;
+	padding-right:5px;
+	font-size:8pt;
+	font-style:italic;
+}
+/*TABLEAU LISTE */
+.TabListe {
+	border:0;
+}
+.TabListe .header{
+	background-color:#DADADA;
+}
+.TabListe .header td{
+	border:1px solid #fff;
+}
+.TabListe tr {
+	background-color:#F0F0F0;
+}
+.TabListe tr:hover {
+	background-color:#FFFFFF;
+}
+.TabListe tr td{
+	border:1px solid #fff;
+}
+.TabListe a{
+	width:100%;
+	height:100%;
+	display:block;
+}
+/* PAGE NAV */
+.Page {
+	height:20px;
+	width:100%;
+	margin-bottom:5px;
+	text-align:center;
+}
+.Page div{
+	float:left;
+	text-align:right;
+	width:45%;
+	margin-top:8px;
+}
+.Page #First {
+	margin-left:10px;
+	float:left;
+}
+.Page #Prev {
+	margin-left:10px;
+	float:left;
+}
+.Page #Next {
+	margin-right:10px;
+	float:right;
+}
+.Page #Last {
+	margin-right:10px;
+	float:right;
+}
+
+.Enregistrer{
+	width:100%;
+	text-align:center;
+}
+
+.Enregistrer input{
+	width:80%;
+	margin:5px;
+	font-size:10px;
+	text-align:center;
+	
+}
+
+.Enregistrer input:hover{
+	background-color:#E1E1E1;
+}
+
+div.CatTitle
+{
+    margin:1px 2px 3px 2px;
+    color:#FFFFFF;
+    margin-bottom:5px;
+    padding:2px;
+    padding-left:5px;
+    height:13px;
+    line-height:13px;
+    -moz-border-radius:2px 2px;
+    background:url(/Skins/AdminV2/Img/Liste/ListeFlecheTitre.jpg) no-repeat 5px center #8C8C8C;
+/*    padding:3px; */
+}
+
+div.CatTitle div
+{
+    width:11px;
+    float:left;
+    height:15px;
+}
+
+div.BigTitle
+{
+    -moz-border-radius:3px 3px;
+    background:#057390;
+    margin-bottom:5px;
+    color:white;
+    padding:1px;
+    padding-left:5px;
+    height:15px;
+    line-height:14px;
+    overflow:hidden;
+   
+}
+
+div.BigTitle div
+{
+    width:11px;
+    float:left;
+    margin-right:5px;
+    background:url(/Skins/AdminV2/Img/Liste/ListeFlecheTitre.jpg) no-repeat top left;
+    height:18px;
+}
+
+div.BigTitle img
+{
+    float:left;margin-top:0px;
+}
+
+div.BigTitle span
+{
+    margin-left:5px;
+}
+

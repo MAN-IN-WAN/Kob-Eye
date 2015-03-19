@@ -1,0 +1,36 @@
+[HEADER]
+<script type="text/javascript" src="/Skins/AdminV3/Js/dojotoolkit/dojo/dojo.js"></script>
+<script type="text/javascript">
+			var djConfig = {
+				usePlainJson: true
+			};
+
+			(function(){
+				var matches = document.cookie.match(new RegExp("(?:^|; )desktopLocale=([^;]*)"));
+				//console.log("cookie="+matches[1]);
+				var cookie = matches ? decodeURIComponent(matches[1]) : false;
+				if (cookie !== false && cookie != "NONE") 
+					djConfig.locale = cookie;
+			})();
+
+	dojo.require("lucid.login.Form");
+</script>
+<link href="/Skins/AdminV3/Js/dojotoolkit/dojo/resources/dojo.css" rel="stylesheet" type="text/css" />
+<link href="/Skins/AdminV3/Js/dojotoolkit/dijit/themes/dijit.css" rel="stylesheet" type="text/css" />
+<link href="/Skins/AdminV3/Js/dojotoolkit/dijit/themes/tundra/tundra.css" rel="stylesheet" type="text/css" />
+[/HEADER]
+[BODY]class="tundra"[/BODY]
+[DATA]
+<div id="centerForm">
+	<div id="top">
+	<div id="tl"></div>
+	<div class="centerEdge"></div>
+	<div id="tr"></div>
+	</div>
+	<form id="psychdesktop_login" class="mainBox" dojoType="lucid.login.Form" focusOnLoad="true" autoRedirect="true"></form>
+	<div id="bottom">
+	<div id="bl"></div>
+	<div class="centerEdge"></div>
+	<div id="br"></div>
+	</div>
+</div>

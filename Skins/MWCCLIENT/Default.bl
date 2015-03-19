@@ -1,0 +1,45 @@
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/jquery.183.min.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/bootstrap.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/bootstrap-datetimepicker.min.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/functions.js[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Css/bootstrap.min.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Css/bootstrap-responsive.min.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Css/bootstrap-datetimepicker.min.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Css/style.css[/HEADER]
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+[IF [!returnUrl!]!=]
+    // Redirection
+    [REDIRECT][!Utils::UrlDecode([!returnUrl!])!][/REDIRECT]
+[/IF]
+   [MODULE Systeme/Structure/Header]	
+<div id="Site" class="container">
+        <div class="row" style="min-height:600px;">
+            <div class="span3 bs-docs-sidebar">
+		<div id="navigation">
+                	[MODULE Systeme/Navigation/Default]
+		</div>
+            </div>
+            <div class="span9">
+
+                [DATA]
+            </div>
+        </div>
+	
+</div>	
+	
+<script>
+/*$(document).ready(function() {
+	if ($('#Site').width()>1000){
+		var pos = $('#navigation').position();
+		$('#navigation').css('width',$('#navigation').width()+'px');
+		$('#navigation').affix({offset:{top:$('#navigation').position().top-70}});
+		$('#navigation').css('top','70px');
+		$('#navigation').scrollspy();
+	}
+})*/;
+</script>
+[MODULE Systeme/Structure/Footer]

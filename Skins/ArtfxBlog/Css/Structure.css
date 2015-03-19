@@ -1,0 +1,117 @@
+a.BandeauFixe{
+	display:block;
+	position:fixed;
+	width:131px;
+	height:130px;
+	left:0;
+	top:0;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/Skins/ArtfxBlog/Img/Sans-titre-3.png', sizingMethod='crop');
+}
+
+a[class="BandeauFixe"]{
+	filter:none;
+	background:url(/Skins/ArtfxBlog/Img/Sans-titre-3.png) no-repeat;
+}
+
+* html a.BandeauFixe{
+	position:absolute;
+}
+
+#Cache {
+	display:block;
+	position:absolute;
+	top:22px;
+	left:25%;
+	right:58.5%;
+	height:80px;
+	border:0;
+	outline:0;
+}
+
+/*------------------------------COTÉS--------------------------------*/
+#Contour{
+	width:850px;
+	margin:auto;
+}
+
+td.CoteG{
+	width:15px;
+	background:url(/Skins/ArtfxBlog/Img/BordGauche.png) repeat-y;
+}
+
+td.CoteD{
+	width:15px;
+	background:url(/Skins/ArtfxBlog/Img/BordDroite.png) repeat-y;
+}
+
+* html td.CoteG{
+	background:none;
+}
+
+* html td.CoteD{
+	background:none;
+}
+
+/*------------------------------ENTETE--------------------------------*/
+#Header{
+	width:100%;
+	padding-top:130px;
+/* 	background:url(/Skins/ArtfxBlog/Img/FondMenu.jpg) repeat-x; */
+}
+
+/*------------------------------CONTENU---------------------------------*/
+#Generale{
+	width:850px;
+	margin:auto;
+}
+
+* html #Generale{
+	text-align:left;
+}
+
+#Container{
+	border-right:350px solid #0C0C0C;
+	display:block;
+	position:relative;
+	background-color:#1E1E1E;
+}
+
+#Contenu{
+	display:block;
+	margin-right:-350px;
+}
+
+#Droite{
+	float:right;
+	position:relative;
+	width:350px;
+	right:0px;
+	border-top:1px solid #2C2C2C;
+}
+ * html #Droite{
+	position:absolute;
+}
+#Milieu{
+	margin-right:350px;
+	position:relative;
+	display:block;
+	height:1%;
+	padding-bottom:20px;
+	border-top:1px solid #2C2C2C;
+}
+
+#Footer{
+	width:100%;
+	background-color:#000;
+	border-top:4px solid #B2B2B2;
+}
+
+div[id="Footer"]{
+	overflow:auto;
+}
+
+* html #Footer{
+	clear:both;
+	text-align:left;
+}
+

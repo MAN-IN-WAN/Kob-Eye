@@ -1,0 +1,60 @@
+/*#Droite a, #Droite a:visited {
+	text-decoration:underline;	
+}
+
+#Droite a:hover, #Droite a:active {
+	text-decoration:none;	
+}*/
+
+#SousCat{
+	display:block;
+	position:relative;
+	margin:7px 0 7px 0;
+	background-color:#e3e3e3;
+}
+
+#SousCat h3, #SousCat a{
+	color:#3F3F3F;
+}
+
+#SousCat li {
+	margin:0;
+	padding:0;
+	background:none;
+	border-bottom:1px solid #F2E8E7;
+	display:block;
+	position:relative;
+	overflow:hidden;
+	width:auto !important;
+	width:100%;
+	padding-bottom:10px;
+	padding-top:5px;
+	/*list-style-image: url(/Skins/Gabarit1/Img/PuceBeige.png);*/
+}
+
+#SousCat li a.ActifDr {
+	color:#C9B785;
+	font-weight:none;
+	text-decoration:none;
+	font-family:Georgia,Arial,Verdana,Helvetica,sans-serif;
+}
+
+#SousCat li a, #SousCat li a:visited {
+	/*background:transparent url(/Skins/Gabarit1/Img/PuceBeige.png) no-repeat scroll 0 -3px;*/
+	display:block;
+	padding-left:10px;
+	text-decoration:none;
+	font-family:Georgia,Arial,Verdana,Helvetica,sans-serif;
+	padding-top:5px;
+}
+
+
+#SousCat li a:hover, #SousCat li a:active {
+	color:#C9B785;
+	font-family:Georgia,Arial,Verdana,Helvetica,sans-serif;
+}
+
+#SousCat img{
+/*	border:1px solid #ff3300;*/
+	padding-right:10px;
+}

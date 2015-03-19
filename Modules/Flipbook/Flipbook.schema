@@ -1,0 +1,19 @@
+<SCHEMA>
+	<OBJECTCLASS title="Book" driver="mysql" master="1" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png" generateUrl="1" Class="Modules/Flipbook/Class/Book.class.php">
+		<PROPERTIES type="varchar" length="100" searchOrder="1">Titre</PROPERTIES>
+		<FUNCTION>ImporterDossier</FUNCTION>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Chapitre" driver="mysql" master="1" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png">
+		<PROPERTIES type="varchar" length="100" searchOrder="1">Titre</PROPERTIES>
+		<PROPERTIES type="order">Ordre</PROPERTIES>
+		<FKEY card="0,1" data="Book,Id">BookId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Page" driver="mysql" order="Id" orderType="ASC" master="1" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<PROPERTIES type="varchar" length="100" searchOrder="1">Titre</PROPERTIES>
+		<PROPERTIES type="bbcode">Contenu</PROPERTIES>
+		<PROPERTIES type="image" searchOrder="2">Image</PROPERTIES>
+		<PROPERTIES type="order">Ordre</PROPERTIES>
+		<FKEY card="0,1" data="Book,Id">BookId</FKEY>
+		<FKEY card="0,1" data="Chapitre,Id">ChapitreId</FKEY>
+	</OBJECTCLASS>
+</SCHEMA>

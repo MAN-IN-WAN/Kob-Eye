@@ -1,0 +1,153 @@
+<SCHEMA>
+	<OBJECTCLASS title="Client" driver="mysql" AccessPoint="1" master="0" Description="Clients" Icon="/Skins/AdminV2/Img/IconAqua/Forum.png" className="Parc_Client" Class="Modules/Parc/Class/Client.class.php">
+		<PROPERTIES category="Intitulé" type="varchar" obligatoire="1" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES category="Gestion" type="varchar" obligatoire="0" searchOrder="2" description="Code client de la gestion Abtel Web">CodeClient</PROPERTIES>
+		<PROPERTIES category="Gestion" type="varchar" obligatoire="0" searchOrder="3" description="Code client de la gestion Abtel Informatique">CodeClientInfo</PROPERTIES>
+		<PROPERTIES category="Accès client" type="boolean" obligatoire="0" searchOrder="4" description="Activation Accès web">AccesActif</PROPERTIES>
+		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="5" description="Identifiant Accès web">AccesUser</PROPERTIES>
+		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="6" description="Mot de passe Accès Web">AccesPass</PROPERTIES>
+		<PROPERTIES category="Coordonnées" type="varchar" description="Adresse e-mail">Email</PROPERTIES>
+		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de téléphone">Tel</PROPERTIES>
+		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de fax">Fax</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" obligatoire="1" unique="1" description="Nom sous LDAP">NomLDAP</PROPERTIES>
+		<PROPERTIES category="LDAP" type="int" auto="1">LdapGid</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
+		<FUNCTION>MailAvertissement</FUNCTION>
+		<FUNCTION>EnvoyerRecapitulatif</FUNCTION>
+		<FUNCTION>ImporterPlusieursDomaines</FUNCTION>
+		<FKEY card="0,1" module="Systeme" data="User,Id">UserId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Domain" driver="mysql" AccessPoint="1" master="0" Description="Domaines" Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png" Class="Modules/Parc/Class/Domain.class.php">
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Url du domaine">Url</PROPERTIES>
+		<PROPERTIES type="boolean" default="1" description="Auto-completion à la sauvegarde">updateOnSave</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">DNSSerial</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
+		<FKEY card="0,1" data="Client,Id">ClientId</FKEY>
+		<FUNCTION>Synchroniser</FUNCTION>
+		<FUNCTION>Check</FUNCTION>
+		<FUNCTION>UpdateAll</FUNCTION>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Subdomain" driver="mysql" Description="Sous Domaines" Icon="/Skins/AdminV2/Img/IconAqua/Search.png" Class="Modules/Parc/Class/Subdomain.class.php">
+		<PROPERTIES type="varchar" searchOrder="1" description="Prefixe Sous Domaine">Url</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" description="Adresse IP du sous domaine">IP</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
+		<FKEY card="1,1" data="Domain,Id">DomainId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="MX" driver="mysql" Description="Configuration MX" Icon="/Skins/AdminV2/Img/IconAqua/Tasks_mini.png" Class="Modules/Parc/Class/MX.class.php">
+		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2">Dnscname</PROPERTIES>
+		<PROPERTIES type="varchar" values="1,5,10,15,20,25,30,35" default="10">Poids</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
+		<FKEY card="1,1" data="Domain,Id">DomainId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="NS" driver="mysql" Description="Configuration NS" Icon="/Skins/AdminV2/Img/IconAqua/Tasks_mini.png" Class="Modules/Parc/Class/NS.class.php">
+		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
+		<FKEY card="1,1" data="Domain,Id">DomainId</FKEY>
+		<FKEY card="1,1" data="Server,Id">NameServerId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="TXT" driver="mysql" Description="Configuration SPF" Icon="/Skins/AdminV2/Img/IconAqua/Tasks_mini.png" Class="Modules/Parc/Class/TXT.class.php">
+		<PROPERTIES type="varchar" searchOrder="1" values="TXT,TXT2,TXT3,TXT4,SPF,SPF2,SPF3,SPF4">Nom</PROPERTIES>
+		<PROPERTIES type="varchar">Dnsdomainname</PROPERTIES>
+		<PROPERTIES type="varchar">Dnstxt</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
+		<FKEY card="1,1" data="Domain,Id">DomainId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="CNAME" driver="mysql" Description="Configuration CNAME" Icon="/Skins/AdminV2/Img/IconAqua/Tasks_mini.png" Class="Modules/Parc/Class/CNAME.class.php">
+		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2">Dnscname</PROPERTIES>
+		<PROPERTIES type="varchar">Dnsdomainname</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
+		<FKEY card="1,1" data="Domain,Id">DomainId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Server" driver="mysql" AccessPoint="1" master="0" Description="Serveurs" Icon="/Skins/AdminV2/Img/IconAqua/App1.png" Class="Modules/Parc/Class/Server.class.php">
+		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="4">DNSNom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="3">LDAPNom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2">IP</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="7">Web</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="5">Dns</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="6">Mail</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="6">Sql</PROPERTIES>
+		<CATEGORY title="Informations">
+			<PROPERTIES type="varchar" description="SSH: Nom d'utilisateur" default="root">SshUser</PROPERTIES>
+			<PROPERTIES type="varchar" description="SSH: Mot de passe">SshPassword</PROPERTIES>
+			<PROPERTIES type="int" description="Nombre de cpu">NbCpu</PROPERTIES>
+			<PROPERTIES type="int" description="Nombre de giga de RAM">NbRam</PROPERTIES>
+			<PROPERTIES type="int" description="Espace provisionné (en Mo)">EspaceProvisionne</PROPERTIES>
+			<PROPERTIES type="text">Commentaire</PROPERTIES>
+		</CATEGORY>
+		<FKEY card="0,1" data="Client,Id">ClientId</FKEY>
+		
+		<FUNCTION>MailAvertissement</FUNCTION>
+		<FUNCTION>EnvoyerRecapitulatif</FUNCTION>
+		<FUNCTION>Synchroniser</FUNCTION>
+		<FUNCTION>Update</FUNCTION>
+		<FUNCTION>AjouterSPF</FUNCTION>
+		<FUNCTION>Majdomaine</FUNCTION>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Host" driver="mysql" Dico="1" description="Hébergement" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Class="Modules/Parc/Class/Host.class.php">
+		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="gestion commerciale" searchOrder="2" description="En production">Production</PROPERTIES>
+		<PROPERTIES type="boolean" default="1" category="gestion commerciale" searchOrder="3" description="Nécessite une facturation">Facturable</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="gestion commerciale" searchOrder="4" description="Hébergement au profit de l'agence">Interne</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" category="gestion commerciale" searchOrder="5" description="Numéro de contrat">NumContrat</PROPERTIES>
+		<PROPERTIES type="text" category="gestion commerciale">Commentaires</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="1" default="1000" description="Quota (en Mo)">Quota</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" obligatoire="1" default="default" description="Version de php" query="Parc/PHPVersion::Valeur">PHPVersion</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
+		<PROPERTIES category="LDAP" type="int" auto="1">LdapGid</PROPERTIES>
+		<PROPERTIES category="LDAP" type="int" auto="1">LdapUid</PROPERTIES>
+		<FKEY card="1,1" data="Server,Id">ServerId</FKEY>
+		<FKEY card="0,1" data="Client,Id">ClientId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Apache" driver="mysql" Dico="1" Description="Config Apache" Icon="/Skins/AdminV2/Img/IconAqua/Tasks.png" Class="Modules/Parc/Class/Apache.class.php">
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1">DocumentRoot</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" obligatoire="1">ApacheServerName</PROPERTIES>
+		<PROPERTIES type="text" searchOrder="3">ApacheServerAlias</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
+		<PROPERTIES category="Protection" type="boolean" description="Protéger avec un mot de passe">PasswordProtected</PROPERTIES>
+		<PROPERTIES category="Protection" type="varchar" description="Nom d'utilisateur">HtaccessUser</PROPERTIES>
+		<PROPERTIES category="Protection" type="varchar" description="Mot de passe">HtaccessPassword</PROPERTIES>
+		<FKEY card="1,1" data="Host,Id">HostId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Ftpuser" driver="mysql" Dico="1" Description="Accès FTP" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Ftpuser.class.php">
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Identifiant">Identifiant</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="1">Password</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="1">DocumentRoot</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
+		<FKEY card="1,1" data="Host,Id">HostId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="PHPVersion" driver="mysql" Dico="1" Description="Version de php" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png">
+                <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Titre de la version">Titre</PROPERTIES>
+                <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Version (ex: 5.5-15)">Valeur</PROPERTIES>
+        </OBJECTCLASS>
+	<OBJECTCLASS title="ClefSsh" driver="mysql" Dico="1" Description="Clefs ssh" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" >
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de l'utilisateur">Nom</PROPERTIES>
+		<PROPERTIES type="text" obligatoire="1">Clef</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="FichierConfiguration" driver="mysql" browseable="1" Dico="1" Description="Fichier template de configuration" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" >
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom du fichier">Nom</PROPERTIES>
+		<PROPERTIES type="text" obligatoire="1">Contenu</PROPERTIES>
+	</OBJECTCLASS>
+</SCHEMA>

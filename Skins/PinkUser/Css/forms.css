@@ -1,0 +1,382 @@
+/*div.LigneForm input, div.LigneForm textarea, div.LigneForm select {
+	width: 400px;
+	border: 1px solid #ccc;
+}
+
+div.LigneForm {
+	overflow: hidden;
+	padding: 2px;
+}
+
+div.LigneForm label {
+	display: block;
+	float: left;
+	position: relative;
+	width: 150px;
+	padding-right: 10px;
+}
+
+.BlocError {
+	border: 1px solid #BA0000;
+	padding: 5px;
+	font-style: italic;
+	background-color: #FFBEBE;
+	color: #BA0000;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+
+.Error {
+	border: 1px solid #BA0000;
+	background-color: #FFBEBE;
+}
+
+.BlocError ul {
+	list-style:none;
+}
+
+
+/*FicheProduit*/
+/*.FicheProduit .pointille {
+    border-bottom: 1px dotted #b46ea0;
+    padding-bottom: 10px;
+}
+.FicheProduit { 
+	position:relative;
+	overflow:hidden;
+}
+
+.FicheProduit .Photo {
+	width:413px;height:335px;margin-right:10px;float:left;
+}
+.FicheProduit .PhotoProduit {
+	width:413px;height:335px;
+}
+.FicheProduit h2 {
+    font-size: 18px;
+    line-height: normal;
+    text-transform: uppercase;
+}
+.FicheProduit .DescriptionProduit {
+	float:left;width:288px;
+}
+.FicheProduit .DescriptionProduit .DescriptionHaut h2{
+	color: #b46ea0;
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    width: 178px;
+}
+.FicheProduit h3 {
+    color: #b46ea0;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: normal;
+    margin-left: -6px;
+    text-transform: none;
+}
+
+.FicheProduit .PromoProduit {
+	font-weight:bold;
+	color:#b46ea0;
+	font-style:italic; 
+}
+.FicheProduit .BlocFichPrix {
+	color: #b46ea0;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: right;
+}
+.FicheProduit .descriptionhaut {
+    font-size: 14px;
+    margin: 10px 0;
+}
+.FicheProduit .EspaceVente { 	
+    	margin-top: 10px;
+    	padding-top: 3px;
+	overflow:hidden;width:280px;
+}
+.FicheProduit .EspaceVente .GestionQuantite {
+   	position: absolute;bottom: 100px;width:280px;border-top:1px dotted #b46ea0;   padding-top: 10px;
+}
+
+
+.FicheProduit  .LibQte{ 
+    position: absolute;right:110px;
+	font-size:11px;color:#b46ea0;
+
+}
+.FicheProduit  .InputBtnPlus { 
+    	position: absolute;right:71px;
+	color:#b46ea0;border:1px solid #ccc;background:none;
+	width:20px;height:20px;font-weight:bold;
+
+}
+.FicheProduit  .InputBtnMoins{ 
+	position:absolute;right:20px;
+	color:#b46ea0;border:1px solid #ccc;background:none;
+	width:20px;height:20px;font-weight:bold;
+}
+
+.FicheProduit .FichQuantite input#Qte  {
+	position:absolute;right:42px;
+	width:24px;height:16px;border:1px solid #393939;text-align:right;
+}
+
+
+.FicheProduit #AchatAjouterPanier{ 
+	position:absolute;right:17px;bottom:41px;
+	
+}
+.FicheProduit .libelleTtc {
+	position:absolute;right:20px;bottom:22px;
+	color:#b46ea0;font-size:10px;
+
+}
+.FicheProduit .RetourListe a {
+	position:absolute;right:20px;bottom:5px;
+	background: url("../Img/sprite.png") no-repeat  0 -1278px  ;
+	padding-left:30px;
+	color:#393939;font-size:10px;
+
+}*/
+
+div.LigneForm input, div.LigneForm textarea, div.LigneForm select {
+	width: 400px;
+	border: 1px solid #ccc;
+}
+
+div.LigneForm {
+	overflow: hidden;
+	padding: 2px;
+}
+
+div.LigneForm label {
+	display: block;
+	float: left;
+	position: relative;
+	width: 150px;
+	padding-right: 10px;
+}
+
+.BlocError {
+	border: 1px solid #db2484;
+	padding: 5px;
+	font-style: italic;
+	background-color: #FADAEA;
+	color: #db2484;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+
+.Error {
+	border: 1px solid #db2484;
+	background-color: #FADAEA;
+}
+
+.BlocError ul {
+	list-style:none;
+}
+
+
+/*FicheProduit*/
+
+.FicheProduit{
+	margin-top: 10px;
+	position:relative;
+	overflow:hidden;
+	line-height:normal;
+}
+.FicheProduit .Photo {
+/*	width:413px;*/
+	height:335px;
+	margin-right:9px;
+	float:left;
+	border:1px #cccccc solid;
+}
+
+.FicheProduit .PhotoProduit {
+/*	width:413px;*/
+	height:335px;
+	margin-bottom: 20px;
+}
+.FicheProduit h2 {
+	line-height: normal;
+	font-size:18px;
+	text-transform:uppercase;
+}
+.FicheProduit h3 {
+	color: #b46ea0;
+	line-height:normal;
+	font-size:16px;
+	text-transform:none;
+	font-weight:normal;
+/*	 margin-left: -6px;*/
+}
+.FicheProduit .pointille{
+	border-bottom: 1px dotted #b46ea0;
+	/*padding-top: 10px;*/
+}
+.FicheProduit .fiche_photoplus{
+	margin-top:10px;
+}
+.FicheProduit .descriptionhaut, .FicheProduit .fiche_descriptionhaut{
+	margin: 10px 0px;
+	font-size:14px;
+}
+
+.FicheProduit .DescriptionProduit {
+	float:left;
+	width:288px;
+}
+.FicheProduit .DescriptionProduit .DescriptionHaut h2{
+	color: #b46ea0;
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    width: 178px;
+}
+.FicheProduit .DescriptionProduit .DescriptionHaut h3{
+	font-size:18px;
+	color:#b46ea0;
+	border-bottom:1px dotted #b46ea0;
+	padding-bottom:3px;
+	margin-bottom:10px;
+}
+
+.FicheProduit .PromoProduit {
+	font-weight:bold;color:#b46ea0;font-style:italic; 
+}
+.FicheProduit .BlocFichPrix {
+	font-size:16px;
+	color:#b46ea0;
+	font-weight:bold;
+	text-align: right;
+}
+.FicheProduit .PrixALunite {
+	font-size:9px;
+	color:#b46ea0;
+	text-align: right;
+}
+
+
+.FicheProduit .EspaceVente {
+	text-align:right;
+    margin-top: 10px;
+    padding-top: 3px;
+	overflow:hidden;/*width:280px;*/
+/*border-top :1px dotted #b46ea0;*/
+}
+.FicheProduit .EspaceVente .GestionQuantite {
+   	/*width:280px;*/
+   	padding-top: 10px;
+}
+
+.FicheProduit .LibQte{ 
+	color: #b46ea0;
+    	float: left;
+    	font-size: 14px;
+    	/*margin-left: 136px;*/
+    	margin-top: 12px;
+    	text-align: right;
+}
+.FicheProduit  .InputBtnPlus { 
+	color:#b46ea0;border:1px solid #ccc;background:none;
+	width:20px;height:20px;font-weight:bold;
+
+}
+.FicheProduit  .InputBtnMoins{ 
+	color:#b46ea0;border:1px solid #ccc;background:none;
+	width:20px;height:20px;font-weight:bold;
+}
+.FicheProduit .FichQuantite input#Qte  {
+	width:24px;
+	height:16px;
+	border:1px solid #cccccc;
+	text-align:center;
+}
+.FicheProduit .fiche_attributs{
+		/*border-bottom :1px dotted #b46ea0;*/
+		padding-bottom: 10px;
+}
+.FicheProduit #AchatAjouterPanier{ 
+	/*margin-top:20px;*/
+}
+.FicheProduit .libelleTtc {
+	color:#b46ea0;
+	font-size:11px;
+	padding-top:3px;
+}
+.FicheProduit .RetourListe{
+	text-align:right;
+	padding-top:5px;
+	padding-bottom:15px;
+}
+.FicheProduit .RetourListe a {
+	background: url("../Img/sprite.png") no-repeat  0 -1282px  ;
+	padding-left:10px;
+	color:#393939;
+	font-size:11px;
+}
+
+
+.FicheProduit .BlocFichLigneCaract{
+	text-align:justify;
+	font-size:12px;
+	margin-top:20px;
+}
+
+.FicheProduit .CadreDonnees {
+    	background-color: #000;
+    	border: 1px solid #fff;
+    	border-radius: 10px;
+    	color: #fff;
+    	font-size: 11px;
+    	padding: 10px 10px 0;
+    	text-align: justify;
+}
+
+.FicheProduit .TitreCaract{
+	color: #b46ea0;
+    display: block;
+    font-size: 16px;
+    padding-bottom: 0px;
+}
+.img-thumbnail{
+	border:1px solid #ccc;
+}
+.ColonneCreationCompte .checkleft{
+	display:inline-block;
+	margin-left:10px;
+	padding-left:0px;
+}
+.ColonneCreationCompte span.checkleft{
+	display:inline-block;color: #ADADCD;
+    	font-size: 14px;
+    	font-weight: bold;
+
+}
+.CpContact {margin:20px 5px; }
+.CpContact form {margin: 0 171px;}
+
+.CpContact form button {
+	width:80px;
+	color: #FFFFFF;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	background-color: #b46fa0;
+	*background-color: #b46fa0;
+	background-image: -moz-linear-gradient(top, #D0A5C4, #b46fa0);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#D0A5C4), to(#b46fa0));
+	background-image: -webkit-linear-gradient(top, #D0A5C4, #b46fa0);
+	background-image: -o-linear-gradient(top, #D0A5C4, #b46fa0);
+	background-image: linear-gradient(to bottom, #D0A5C4, #b46fa0);
+	background-repeat: repeat-x;
+	border-color: #b46fa0;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#D0A5C4', endColorstr='#b46fa0', GradientType=0);
+	filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+ 	margin: 10px 0 10px 345px;
+}
+

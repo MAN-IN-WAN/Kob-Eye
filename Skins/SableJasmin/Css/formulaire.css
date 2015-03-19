@@ -1,0 +1,24 @@
+fieldset {
+	border: 1px solid #01accf;
+}
+
+legend {
+	color: #01accf;
+}
+
+span.AFCA0B {
+	color:#01accf;
+}
+
+.BlocError {
+	border:1px solid #01accf;
+	padding:5px;
+	font-size:11px;
+	font-style:italic;
+	color:#01accf;
+	padding:10px;
+}
+
+.BlocError ul {
+	list-style:none;
+}

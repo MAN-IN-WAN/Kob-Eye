@@ -1,0 +1,26 @@
+/*--- Composant Recherche ---*/
+#Recherche {
+	position:relative;
+	overflow:hidden;
+	display:block;
+	padding: 5px;
+
+}
+div#Recherche div.LigneForm {
+	padding: 2px 0;
+}
+
+div#Recherche div.LigneForm input {
+	width: auto;
+font-style:normal;
+}
+
+div#Recherche div.LigneForm select {
+	width: auto;
+	margin-left: 25px;
+}
+
+div#Recherche div.LigneForm input#submitRecherche {
+	margin-left: 25px;
+	width: 30px;
+}

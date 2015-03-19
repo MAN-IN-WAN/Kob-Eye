@@ -1,0 +1,234 @@
+
+
+/*************************************************************************/
+
+.Panneau {
+	position:absolute;
+	top:0;
+	bottom:0;
+	right:0;
+	left:0;
+	background:#DEE0DF;
+	padding:5px;
+	margin:7px;
+	-moz-border-radius:5px 5px;
+}
+
+* html .Panneau{
+	display:block;
+	width:100%;
+	height:100%;
+}
+
+#Data .Panneau{
+	z-index:0;
+}
+
+
+*+html #Data .Panneau{
+	z-index:-100;
+}
+
+
+/* LIGNE HAUT*/
+.p11{
+	position:absolute;
+	top:0;
+	left:0;
+	height:18px;
+	width:18px;	
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/Skins/AdminV2/Img/Panneau/CoinHautGauche.png', sizingMethod='scale');
+}
+
+
+b[class="p11"]{
+	filter: none;
+	background: url(/Skins/AdminV2/Img/Panneau/CoinHautGauche.png);
+}
+
+* html .p11{
+	display:block;
+}
+
+
+.p12 {
+	position:absolute;
+	top:0;
+	left:18px;
+	height:18px;
+	right:18px;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/Skins/AdminV2/Img/Panneau/MilieuHaut.png', sizingMethod='scale');
+	
+}
+
+b[class="p12"]{
+	filter: none;
+	background:url(/Skins/AdminV2/Img/Panneau/MilieuHaut.png);
+}
+
+* html .p12{
+	/*height:0;*/
+	display:block;
+	width:97%;
+	right:18px;
+	left:18px;
+}
+
+* html #Arbo .p12{
+	width:315px;
+}
+
+.p13 {
+	position:absolute;
+	top:0;
+	right:0;
+	height:18px;
+	width:18px;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/Skins/AdminV2/Img/Panneau/CoinHautDroit.png', sizingMethod='scale');
+}
+
+b[class="p13"]{
+	filter: none;
+	background:url(/Skins/AdminV2/Img/Panneau/CoinHautDroit.png);
+}
+
+* html .p13{
+	display:block;
+}
+
+/* LIGNE MILIEU*/
+.p21 {
+	position:absolute;
+	top:18px;
+	left:0;
+	bottom:18px;
+	width:18px;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/Skins/AdminV2/Img/Panneau/MilieuGauche.png', sizingMethod='scale');
+}
+
+b[class="p21"]{
+	filter: none;
+	background:url(/Skins/AdminV2/Img/Panneau/MilieuGauche.png);
+}
+
+* html .p21{
+	display:block;
+	height:542px;
+}
+
+* html #Arbo .p21{
+	height:580px;
+}
+
+.p22 {
+	position:absolute;
+	top:18px;
+	left:18px;
+	bottom:18px;
+	right:18px;
+	background:#DEE0DF;
+/* 	overflow:auto; */
+}
+
+* html .p22{
+	display:block;
+	height:542px;
+	/*margin-top:-10px;*/
+	/*top:0;*/
+	right:18px;
+	left:18px;
+	width:97%;
+}
+
+* html #Arbo .p22{
+	height:580px;
+	width:315px;
+}
+
+.Panneau .p23 {
+	position:absolute;
+	top:18px;
+	right:0;
+	bottom:18px;
+	width:18px;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/Skins/AdminV2/Img/Panneau/MilieuDroit.png', sizingMethod='scale') no-re;
+}
+
+b[class="p23"]{
+	filter: none;
+	background:url(/Skins/AdminV2/Img/Panneau/MilieuDroit.png);
+}
+
+* html .p23{
+	display:block;
+	height:542px;
+}
+
+* html #Arbo .p23{
+	height:580px;
+}
+
+/* LIGNE BAS*/
+.Panneau .p31 {
+	position:absolute;
+	bottom:0;
+	left:0;
+	height:18px;
+	width:18px;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/Skins/AdminV2/Img/Panneau/CoinBasGauche.png', sizingMethod='scale');
+	
+}
+
+b[class="p31"]{
+	filter: none;
+	background:url(/Skins/AdminV2/Img/Panneau/CoinBasGauche.png);
+}
+
+* html .p31{
+	display:block;
+}
+
+.Panneau .p32 {
+	position:absolute;
+	bottom:0;
+	left:18px;
+	height:18px;
+	right:18px;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/Skins/AdminV2/Img/Panneau/MilieuBas.png', sizingMethod='scale');
+}
+
+b[class="p32"]{
+	filter: none;
+	background:url(/Skins/AdminV2/Img/Panneau/MilieuBas.png);
+}
+
+* html .p32{
+	/*height:0;*/
+	display:block;
+	width:97%;
+	left:18px;
+	right:18px;
+}
+
+* html #Arbo .p32{
+	width:315px;
+}
+
+.Panneau .p33 {
+	position:absolute;
+	bottom:0;
+	right:0;
+	height:18px;
+	width:18px;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/Skins/AdminV2/Img/Panneau/CoinBasDroit.png', sizingMethod='scale');
+}
+
+
+b[class="p33"]{
+	filter: none;
+	background:url(/Skins/AdminV2/Img/Panneau/CoinBasDroit.png);
+}
+
+* html .p33{
+	display:block;
+}

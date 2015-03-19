@@ -1,0 +1,694 @@
+.LigneForm{
+	margin:10px 0 0 0;
+}
+
+* html .LigneForm{
+	clear:both;
+}
+
+div[class="LigneForm"]{
+	overflow:hidden;	
+}
+
+/*--------------------FORM INFOS----------------------------*/
+#FormInfos label{
+	font-weight:bold;
+}
+
+.CheckInfos{
+	width:350px;
+	margin-left:115px;
+}
+
+.CheckInfos td{
+	width:50%;
+}
+
+.CheckInfos input{
+	margin-right:5px;
+}
+
+
+/*--------------------FORM LOGIN----------------------------*/
+#Login{
+	margin:10px 0;
+	padding:5px;
+	background-color:#fff;
+	width:290px;
+	float:right;
+}
+
+#Login .LigneForm input{
+	float:left;
+	width:110px;
+	margin-right:10px;
+}
+
+#Login .LigneForm input.Connexion{
+	cursor:pointer;
+	width:22px;
+	margin-right:0;
+}
+
+
+/*--------------------FORM OUBLI MDP---------------------------*/
+#OubliMdp label{
+	display:block;
+	width:100px;
+	float:left;
+}
+
+#OubliMdp p{
+	margin-top:10px;
+}
+
+#OubliMdp .LigneForm input{
+	width:200px;
+	margin-right:10px;
+	float:left;
+}
+
+#OubliMdp .LigneForm input.BtnMail{
+	width:100px;
+}
+
+
+/*--------------------FORM CONTACT----------------------------*/
+
+.FormContact {
+	padding:0 0 20px 5px;
+}
+
+.FormContact label{
+	float:left;
+	display:block;
+	width:150px;
+	
+}
+
+.FormContact input, .FormContact textarea, .FormContact select{
+	width:499px;
+}
+
+.FormContact input.BtnContact {
+	cursor:pointer;
+	width:100px;
+	margin-bottom:10px;
+}
+
+* html .FormContact p.Italic{
+	width:620px;
+}
+
+
+/*--------------------FORM NEWSLETTER----------------------------*/
+#Newsletter{
+	margin:10px 0;
+	padding:5px;
+	background-color:#CCCCCC;
+}
+
+
+/*--------------------FORM DESINSCRIPTION---------------------------*/
+#FormNewsLet{
+	width:450px;
+}
+
+#FormNewsLet input{
+	width:300px;
+}
+
+#FormNewsLet input.BtnNewsLet{
+	width:70px;
+}
+
+/*--------------------FORM AMI----------------------------*/
+#FormAmi label{
+	float:left;
+	display:block;
+	width:120px;
+}
+
+#FormAmi input{
+	width:340px;
+}
+
+#FormAmi p{
+	margin-top:10px;
+	margin-bottom:20px;
+}
+
+/*-------------------MESSAGES-------------------------*/
+
+.Error {
+	background-color:#FFBEBE;
+	border:2px solid #BA0000;
+}
+
+.Error3 {
+	background-color:#FFBEBE;
+	font-weight:bold;
+	color:#000;
+	padding-left:2px;
+	margin-bottom:5px;
+}
+
+
+.BlocError{
+	padding:10px 20px 10px;
+	background-color:#FFBEBE;
+	margin-bottom:10px;
+	margin-top:10px;
+}
+
+.BlocError p{
+	color:#BF2B2E;
+	font-size:14px;
+	font-style:italic;
+/* 	margin-bottom:5px; */
+}
+
+.BlocError li{
+	font-weight:bold;
+	margin-left:10px;
+}
+
+.Obligatoire p{
+	margin-bottom:20px;
+	margin-left:150px;
+	font-style:italic;
+}
+
+.Message{
+	color:#BF2B2E;
+	font-size:14px;
+	font-style:italic;
+	margin-top:5px;
+	margin-bottom:5px;
+}
+
+/*Bouton*/
+
+/*a.BoutonContact, a.BoutonContact:visited {
+	display:block;
+	position:relative;
+	background:url(/Skins/Gabarit1/Img/BoutonContact.png) no-repeat;
+	width:210px;
+	height:44px;
+	margin:auto;
+	cursor:pointer;
+}
+
+a.BoutonContact:hover, a.BoutonContact:active {
+	filter:alpha(opacity=95);
+	-moz-opacity:.95;
+	opacity:.95;
+	 -khtml-opacity:.95; 
+	cursor:pointer;
+
+}*/
+
+/*input.BoutonContact {
+	width:100px;
+	margin-left:58px;
+	border:2px solid #061B2E;
+	background:#fff;
+	font-weight:bold;
+	cursor:pointer;
+}
+
+input.BoutonContact:hover, input.BoutonContact:focus {
+	border:2px solid #C9B785;
+	color:#C9B785;
+	outline:0;
+	outline:none;
+}*/
+
+input.BoutonContact{
+	/*display:block;
+	position:relative;*/
+	outline:0;
+	outline:none;
+	border:0;
+	background:url(/Skins/Gabarit1/Img/BoutonEnvoyer.jpg) no-repeat;
+	width:210px;
+	height:44px;
+	border:none;
+	cursor:pointer;
+}
+
+/*Salles réunions*/
+
+table.Salle-Reunion {
+/* 	margin-top:10px; */
+	width:100%;
+	overflow:hidden;
+	border-left:1px solid #fff;
+	margin-left:5px;
+	border-collapse:collapse;
+}
+
+* html table.Salle-Reunion {
+	width:95%;
+}
+
+table.Salle-Reunion thead >tr td {
+	background-color:#C9B785;
+	border:2px solid #fff;
+	font-style:italic;
+	color:#0070A9;
+	font-family:Georgia,Arial,Verdana,Helvetica,sans-serif;	color:#0070A9;
+}
+
+table.Salle-Reunion thead >tr:hover td {
+	background-color:#C9B785;
+	color:#0070A9;
+}
+
+table.Salle-Reunion td {
+	width:auto;
+	padding:10px;
+	border:2px solid #fff;
+	background-color:#E0E1E3;
+	text-align:left;
+	font-family:Georgia,Arial,Verdana,Helvetica,sans-serif;
+	color:#0070A9;
+	
+}
+
+table.Salle-Reunion tr:hover td {
+	background-color:#0070A9;
+	color:#fff;
+}
+
+table.Salle-Reunion caption {
+	width:auto;
+	padding:5px;
+	/*background-color:#CCECFF;*/
+	border-left:1px solid #97992E;
+	background-color:#031529;
+}
+
+table.Salle-Reunion caption a{
+	font-family:Georgia,Arial,Verdana,Helvetica,sans-serif;
+	font-weight:bold;
+	color:#fff;
+}
+
+/*Location bureaux*/
+
+table.Location-Bureaux {
+/* 	margin-top:10px; */
+	width:100%;
+	border-left:1px solid #97992E;
+	border-collapse:collapse;
+}
+
+table.Location-Bureaux td {
+	width:auto;
+	padding:5px;
+	border:1px solid #97992E;
+	border-left:none;
+	text-align:left;
+	/*padding:2px 0 2px;*/
+}
+
+table.Salle-Reunion caption {
+	width:auto;
+	padding:5px;
+	border:2px solid #fff;
+	border-bottom:1px solid #fff;
+	border-left:1px solid #fff;
+	background-color:#031529;
+}
+
+table.Location-Bureaux caption a{
+	font-weight:bold;
+	color:#D9DCEC;
+}
+
+/*---------------TEMPLATE COMPTE---------------------*/
+
+/* LOGIN */
+.Connexion{
+	margin-top:15px;
+}
+
+div[class="Connexion"]{
+	overflow:auto;
+}
+
+* html .Connexion{
+	clear:both;
+}
+
+.LoginBloc{
+	float:left;
+	width:40%;
+	margin-right:5px;
+	padding-top:5px;
+}
+
+* html .LoginBloc{
+	width:260px;
+}
+
+/*.LoginBloc input{
+	width:130px;
+}*/
+
+.LoginBloc label{
+	width:115px;
+	display:block;
+	float:left;
+}	
+
+.BoutonConnexion{
+	outline:0;
+	border:none;
+	background:none;
+	cursor:pointer;
+	outline:0;
+	color:#fff;
+}
+
+* html .BoutonConnexion{
+	display:block;
+	padding-top:5px;
+/* 	padding-left:9999px; */
+}
+
+*+html .BoutonConnexion{
+	display:block;
+	padding-top:5px;
+/* 	padding-left:9999px; */
+}
+
+.MailBloc{
+	float:left;
+	margin-top:10px;
+}
+
+.MailBloc input{
+	width:200px;
+}
+
+.BoutonMail{
+	float:left;
+	background:url(/Skins/NatomShop/Img/Boutons/BoutonEnvoyer.jpg) no-repeat 0 0;
+	border:none;
+	cursor:pointer;
+	height:47px;
+	text-indent:-9999px;
+	width:112px;
+}
+
+* html .BoutonMail{
+	display:block;
+	padding-left:9999px;
+}
+
+*+html .BoutonMail{
+	display:block;
+	padding-left:9999px;
+}
+
+.BoutonMail:hover{
+	background-position:0 -47px;
+}
+
+
+/* INSCRIPTION */
+p.Obligatoire{
+	font-style:italic;
+	color:#288E44;
+}
+
+.Inscription input{
+	margin-left:5px;
+}
+
+* html .Inscription input{
+	padding-top:8px;
+}
+
+.Inscription span{
+	font-weight:bold;
+}
+
+* html .Inscription .BlocRound{
+	clear:both;
+	z-index:-10;
+}
+
+.TitreIdentif{
+	background:url(/Skins/NatomShop/Img/PuceVerte.jpg) no-repeat 0 7px;
+	display:block;
+	height:30px;
+	line-height:30px;
+	padding-left:20px;
+	color:#288E44;
+	margin-top:10px;
+	font-weight:bold;
+}
+
+.TitreAdresse{
+	border-top:1px solid #38362F;
+	padding-top:3px;
+	background:url(/Skins/NatomShop/Img/PuceVerte.jpg) no-repeat 0 10px;
+	display:block;
+	height:30px;
+	line-height:30px;
+	padding-left:20px;
+	color:#288E44;
+	margin-top:15px;
+	font-weight:bold;
+}
+
+
+.LigneCompte{
+	overflow:auto;
+	margin-top:5px;
+}
+
+* html .LigneCompte{
+	clear:both;
+}
+
+p.TexteInscription{
+	margin:10px 0 10px 0;
+}
+
+.CompteBloc{
+	float:left;
+	width:50%;
+}
+
+* html .CompteBloc{
+	width:320px;
+}
+
+.CompteBloc input{
+	width:185px;
+}
+
+.CompteBloc select{
+	margin-left:5px;
+	width:195px;
+}
+
+* html .CompteBloc select{
+	margin:0;
+	margin-left:5px;
+	width:190px;
+}
+
+.CompteBloc label{
+	width:115px;
+	display:block;
+	float:left;
+}
+
+.CompteBlocDroite{
+	float:left;
+	width:50%;
+}
+
+* html .CompteBlocDroite{
+	width:320px;
+}
+
+.CompteBlocDroite input{
+	width:190px;
+}
+
+.CompteBlocDroite label{
+	width:80px;
+	display:block;
+	float:left;
+	margin-left:35px;
+}
+
+* html .CompteBlocDroite label{
+	margin:0;
+	margin-left:15px;
+}
+
+.CompteBlocTVA{
+	margin-top:15px;
+	margin-bottom:5px;
+}
+
+.CompteBlocTVA label{
+	width:150px;
+	display:block;
+	float:left;
+}
+
+.CompteBlocTVA input{
+	width:190px;
+}
+
+input.Checkbox{
+	margin:0;
+	margin-right:10px;
+	float:left;
+}
+
+* html input.Checkbox{
+	height:13px;
+	width:13px;
+}
+
+.Inscription a{
+	margin-top:5px;
+	margin-left:20px;
+	display:block;
+	height:14px;
+	background:url(/Skins/NatomShop/Img/PuceVerteFond.jpg) no-repeat;
+	padding-left:20px;
+	color:#288e44;
+	text-decoration:underline;
+}
+
+.Inscription a:visited{
+	text-decoration:none;
+	font-style:italic;
+}
+
+.Inscription a:hover{
+	text-decoration:none;
+}
+
+.LigneInfos{
+	overflow:auto;
+	margin-top:5px;
+	padding-left:5px;
+}
+
+.LigneInfos p{
+	margin-left:23px;
+}
+
+.LigneNumNatom{
+	margin-bottom:20px;
+	margin-top:20px;
+}
+
+.LigneNumNatom input{
+	width:50px;
+	margin:0;
+}
+
+.LigneNumNatom span{
+	font-weight:normal;
+	font-style:italic;
+}
+
+.LigneUtilisateur{
+	margin-top:20px;
+	padding-bottom:10px;
+}
+
+* html .LigneUtilisateur{
+	margin-bottom:10px;
+}
+
+.LigneUtilisateur label{
+	display:block;
+	margin-left:10px;
+	width:100px;
+}
+
+* html .LigneUtilisateur input{
+	width:13px;
+	z-index:100;
+}
+
+
+.BoutonEnvoyer{
+	background:none;
+	border:none;
+	cursor:pointer;
+	color:#fff;
+}
+
+* html .BoutonEnvoyer{
+	display:block;
+/* 	padding-left:9999px; */
+}
+
+*+html .BoutonEnvoyer{
+	display:block;
+	padding-top:7px;
+/* 	padding-left:9999px; */
+}
+
+
+.FormModif input.BoutonValider{
+	background:none;
+	border:none;
+	cursor:pointer;
+	text-indent:-160px;
+	width:112px;
+	height:42px;
+	margin-left:0;
+	padding-left:0;
+	position:absolute;
+	left:0;
+	top:0;
+}
+
+* html .BoutonValider{
+	display:block;
+/* 	padding-left:9999px; */
+}
+
+*+html .BoutonValider{
+	display:block;
+/* 	padding-left:9999px; */
+}
+
+/*MON COMPTE*/
+
+.Deconnexion{
+	border:none;
+	background:none;
+	cursor:pointer;
+	color:#fff;
+}
+
+* html .Deconnexion{
+	display:block;
+/* 	padding-left:9999px; */
+}
+
+*+html .Deconnexion{
+	display:block;
+/* 	padding-left:9999px; */
+}
+
+
+
+
+

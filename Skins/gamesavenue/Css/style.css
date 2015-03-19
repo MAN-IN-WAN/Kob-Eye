@@ -1,0 +1,831 @@
+@import "menu.css";
+@import "filariane.css";
+@import "contenu.css";
+@import "carres.css";
+@import "pages.css";
+@import "connexion.css";
+@import "Formulaire.css";
+@import "multibox.css";
+@import "boutons.css";
+*{
+	font-family:Arial,Verdana,Helvetica,sans-serif;
+	color:#000;
+	font-size:12px;
+	margin:0;
+	padding:0;
+	text-align:left;
+}
+
+body{
+	width:100%;
+	border:0;
+	background-color:#ffffff;
+	overflow-x: hidden;
+}
+
+* html body{
+	width:100%;
+	text-align:center;/* = margin-auto pour IE */
+	margin:0;
+	padding:0;
+}
+
+img{	
+	margin:0;
+	padding:0;
+	border:0;
+	outline:0;
+
+}
+p {
+	text-align:justify;
+	
+}
+a, a:visited, a:hover, a:active{
+	cursor:pointer;
+	outline:0;
+}
+
+* html hr {
+	margin:0;
+	padding:0;
+	border:0;
+}
+
+*+html hr {
+	margin:0;
+	padding:0;
+	border:0;
+	margin-top:-7px;
+}
+.Clear {
+	clear:both;
+}
+div.site {
+	width:983px;
+	font-family: Arial;
+	font-size: 12px;
+	color: #000000;
+	margin:auto;
+}
+/*---------*/
+div.topm10 {margin-top:10px;}
+div.topp10 {padding-top:10px;}
+span.topm10 {margin-top:10px;}
+span.topp10 {padding-top:10px;}
+
+div.entete {
+	display:block;
+	text-align:center;
+	margin-top:5px;
+	overflow:hidden;
+	width:983px;
+	height:133px;
+}
+div.bando {
+	background:url(/Skins/gamesavenue/Images/div-bando.jpg) no-repeat;
+	float:left;
+	width:983px;
+
+}
+div.publicite {
+	float:right;
+	background-color:#FFFFFF;
+	width:700px;
+	height:80px;
+	margin-top:20px;
+	margin-bottom:5px;
+	margin-right:15px;
+}
+
+div.recherche {
+	float:left;
+	padding-top:5px;
+	margin-left:15px;
+}
+
+
+input.search-button {
+	font-family: Arial;
+	font-size: 11px;
+	font-weight:bold;
+	color: #000000;
+	border-style:outset;
+}
+input.search-text {
+	font-family: Arial;
+	font-size: 11px;
+	font-weight:bold;
+	color: #000000;
+
+}
+
+/* FIN Gestion de l'entete */
+
+/*-------------------------------------------------------*/
+
+/*---------------------------------------------------*/
+/*  Pied */
+#pied {
+	border:1px solid #000000;
+	background-color:#000000;
+	color:#FFFFFF;
+	margin-top:5px;
+	clear:both;
+	overflow:hidden;
+}
+.colonnePiedBlanc{
+	overflow: hidden;
+	margin:5px;
+	float:left;
+	border-right:1px solid #ffffff;
+	width:300px;
+	
+}
+.colonnePiedRouge{
+	margin:5px;
+	float:right;
+	border-left:1px solid #ff0000;
+	width:345px;
+
+}
+.ColSousMenuDroite {
+	float:left;
+	width:50%;
+	margin-top:5px;
+}
+.ColSousMenuGauche {
+	float:left;
+	width:50%;
+	margin-top:5px;
+}
+div.elementMenuPied {
+font-family: Arial;
+font-size: 10px;
+font-weight:normal;
+color: #ffffff;
+margin-right:10px;
+margin-left:10px;
+}
+div.elementMenuPied a{
+font-family: Arial;
+font-size: 10px;
+font-weight:normal;
+color: #ffffff;
+text-decoration:none;
+}
+	
+	
+a.PiedAbtel  {
+	font-family: Arial;
+	font-size: 10px;
+	font-weight:normal;
+	font-style:italic;
+	color: #ffffff;
+	padding-top:15px;
+	float:right;
+}
+/*  Fin Pied */
+
+/*---------------------------------------------------*/
+div.titreDernierAvis{
+	background:url(/Skins/gamesavenue/Images/titre-DernierAvis.jpg) no-repeat 40% 90%;
+	border-right:1px solid #c4c4c4;
+	border-left:1px solid #c4c4c4;
+	height:35px;
+	padding-top:5px;
+}
+/* colonne coins gris en images */
+	div.interieurColonneGrise{
+		background:url(/Skins/gamesavenue/Images/border-col-gche.png) repeat-y;
+	}
+	div.fincolonneGrise{
+		background:url(/Skins/gamesavenue/Images/block_fin_genre.jpg) no-repeat ;
+		height:22px;
+	}
+	div.titreColonneGrise{
+		font-size:18px;
+		font-style:normal;
+		font-weight:bold;
+		font-variant:small-caps;
+		text-transform:uppercase;
+		padding-left:15px;	
+	}
+	div.titreColonneGrise a{
+		font-size:20px;
+		font-style:normal;
+		font-weight:bold;
+		font-variant:small-caps;
+		text-transform:uppercase;
+		text-decoration:none;
+	}
+
+
+/*---*/
+div.colonne225 {
+	width:225px;
+	background-color:#ffffff;
+	color:#000000;
+}
+
+div.titreGenre{
+	background:url(/Skins/gamesavenue/Images/titre-Genre.jpg) no-repeat 40% 90%;
+	height:29px;
+	padding-top:5px;
+}
+div.titreAccessoires{
+	background:url(/Skins/gamesavenue/Images/titre-Accessoires.jpg) no-repeat 40% 90%;
+	border-right:1px solid #c4c4c4;
+	border-left:1px solid #c4c4c4;
+	height:35px;
+	padding-top:5px;
+}
+div.titreConsole{
+	background:url(/Skins/gamesavenue/Images/titre-Console.jpg) no-repeat 40% 90%;
+	border-right:1px solid #c4c4c4;
+	border-left:1px solid #c4c4c4;
+	height:35px;
+	padding-top:5px;
+}
+/*--- COLONNE AVEC COIN Gris ET FOND GRIS **/
+	/* --- colonnes alignées */
+	div.colonne {
+		width:240px;
+		float:left;
+		margin-right:4px;
+	}
+
+	div.titreTopdesVentes{
+		background:url(/Skins/gamesavenue/Images/titre-TopdesVentes.jpg) no-repeat ;
+		height:46px;
+		margin-top:5px;
+		margin-right:5px;
+	}
+	div.titreTopdesPromos{
+		background:url(/Skins/gamesavenue/Images/titre-TopdesPromos.jpg) no-repeat ;
+		height:46px;
+		margin-top:5px;
+		margin-right:5px;
+	}
+	
+	div.contenuColonneGrise{
+		background:url(/Skins/gamesavenue/Images/top-centre.png) repeat-y;
+		padding-top:5px;
+		margin-right:5px;
+		height:300px;
+	}
+	div.BasTop{
+		background:url(/Skins/gamesavenue/Images/top-bas.jpg) no-repeat ;
+		height:17px;
+		margin-bottom:5px;
+		margin-right:5px;
+	}
+	/* colonne coup de coeur */
+	div.colonne255 {
+		width:255px;
+		float:left;
+	}
+	.bloccarregris{
+		border:2px #5b5b5b solid;
+		background-color:#ffffff;
+		margin-left:5px;
+		margin-right:3px;
+		margin-top:5px;
+		height:200px;
+	}
+	
+	div.titreCoupCoeur{
+		background:url(/Skins/gamesavenue/Images/titre-coupCoeur.jpg) no-repeat ;
+		height:46px;
+		margin-top:5px;
+		margin-left:5px;
+	}
+	div.titreNews{
+		background:url(/Skins/gamesavenue/Images/titre-news.jpg) no-repeat ;
+		height:44px;
+		margin-top:5px;
+		margin-left:5px;
+	}
+	div.contenuColonneCoeurNews{
+		background:url(/Skins/gamesavenue/Images/coup-de-coeur-centre.png) repeat-y;
+		margin-left:5px;
+/*		height:80px;*/
+		height:100%;
+		padding-top:5px;
+		overflow:hidden;
+	}
+	div.BasCoeurNews{
+		background:url(/Skins/gamesavenue/Images/coup-de-coeur-bas.jpg) no-repeat ;
+		height:10px;
+		margin-left:5px;
+	
+	}
+	div.imageacoupcoeur{ float:left;padding-left:5px;}
+	div.textecoupcoeur{ float:left;padding-left:5px;text-align:justify;}
+	
+	
+/* titre dans colonne avec pointillés */
+div.LigneTOP {
+	overflow:hidden;
+	padding:0 10px;
+}
+div.titreTOP   {
+	/* titre element titre*/
+	font-family: Arial;
+	font-size: 11px;
+	font-weight:normal;
+	color: #000000;
+	text-transform:uppercase;
+	padding-top:5px;
+}
+div.titreTopDroite   {
+	/* titre element titre*/
+	float:right;
+	font-family: Arial;
+	font-size: 11px;
+	font-weight:normal;
+	color: #000000;
+	text-transform:uppercase;
+}
+div.DescriptifVente{
+	font-family: Arial;
+	font-size: 8px;
+	font-weight:italic;
+	color: #ff0000;
+	padding:0 10px;
+}
+div.DescriptifPromos{
+	font-family: Arial;
+	font-size: 10px;
+	font-weight:normal;
+	color: #ff0000;
+}
+
+/*---- div avec image et texte alignés */
+div.contenuColonneAvis {
+	margin-left:5px;
+	overflow:hidden;
+	padding-top:5px;
+	height:100%;
+}
+div.TexteDsCadreAvis {
+	font-family: Arial;
+	text-transform:none;
+	font-size: 10px;
+	font-weight:normal;
+	color: #000000;
+	text-align:justify;
+}
+div.imageaccoletexte {
+	font-family: Arial;
+	font-size: 12px;
+	font-weight:normal;
+	color: #ffffff;
+	padding:0 5px;	
+	float:left;
+	overflow:hidden;
+}
+div.titreAvis {
+	font-family: Arial;
+	font-size: 12px;
+	font-weight:bold;
+	color: #ff0000;
+	text-transform:uppercase;
+	text-decoration:none;
+	padding-left:15px;
+}
+div.texteaccoleimage {
+	font-family: Arial;
+	font-size: 11px;
+	text-transform:uppercase;
+	font-weight:normal;
+	color: #000000;
+	margin-right:5px;
+	padding-right:5px;
+
+}
+
+div.texteaccoleimageblanc a {
+	font-family: Arial;
+	font-size: 12px;
+	font-weight:normal;
+	color: #ffffff;
+
+}
+div.imgNews {
+	font-family: Arial;
+	font-size: 12px;
+	font-weight:normal;
+	color: #ffffff;
+	width:50px;
+	padding:0 10px;	
+	float:left;
+	overflow:hidden;
+}
+div.dateNews {
+	font-family: Arial;
+	font-size: 9px;
+	font-style:italic;
+	text-decoration:underline;
+	color: #ffffff;
+	padding-left:10px;
+
+}
+div.soustitreNews {
+	font-family: Arial;
+	font-size: 12px;
+	font-weight:normal;
+	text-transform:uppercase;
+	color: #ff0000;
+	padding:5px 10px 0 ;
+}
+div.texteNews {
+	font-family: Arial;
+	font-size: 10px;
+	font-style:italic;
+	color: #ffffff;
+	padding:0 10px;
+	text-align:justify;
+
+
+}
+div.NewsLien{
+	overflow:hidden;
+}
+a.lienNews {
+	font-family: Arial;
+	font-size: 9px;
+	font-style:italic;
+	color: #ff0000;
+	text-decoration:none;
+	background:url(/Skins/gamesavenue/Images/lire-la-suite.png) no-repeat 1px 50% ;
+	float:right;
+	padding-top:0px;
+	padding-right:10px;
+	padding-left:20px;
+	margin-top:2px;
+
+
+}
+a.lienToutesNews {
+	font-family: Arial;
+	font-size: 10px;
+	font-style:italic;
+	color: #ff0000;
+	text-decoration:none;
+	background:url(/Skins/gamesavenue/Images/voir-ttes-les-news.png) 0 50% no-repeat ;
+	float:right;
+	padding-left:140px;
+	padding-right:10px;
+	text-decoration:none;
+
+}
+
+div.imagedsCadre {
+	padding-left:5px;
+		border:1px solid #FFFFFF;
+}
+
+div.liendsCadre {padding-left:75px;}
+div.TexteDsCadre {
+	font-family: Arial;
+	font-size: 11px;
+	font-weight:normal;
+	color: #000000;
+	padding-left:75px;
+	text-align:justify;
+}
+div.TexteDsCadreCoeurs {
+	font-family: Arial;
+	font-size: 9px;
+	font-weight:italic;
+	color: #ffffff;
+	text-align:justify;
+}
+
+/*-----------------*/
+
+a.lienBlancMaj11 {
+	font-family: Arial;
+	font-size: 11px;
+	font-weight:normal;
+	color: #ffffff;
+	text-transform:uppercase;
+	text-decoration:none;
+
+}
+
+.lienBlancMaj11 a:hover{
+	font-family: Arial;
+	font-size: 11px;
+	font-weight:normal;
+	color: #ffffff;
+	text-transform:uppercase;
+	text-decoration:underline;
+
+}
+a.lienRougeMaj12 {
+	font-family: Arial;
+	font-size: 12px;
+	font-weight:bold;
+	color: #ff0000;
+	text-transform:uppercase;
+	text-decoration:none;
+	padding-left:15px;
+
+}
+
+.lienRougeMaj12 a:hover{
+	font-family: Arial;
+	font-size: 12px;
+	font-weight:bold;
+	color: #ff0000;
+	text-transform:uppercase;
+	text-decoration:underline;
+
+}
+/* colonne centrale pour page comment ça marche */
+div.colonne255_Right {
+		width:255px;
+		float:right;
+	}
+div.colonne470 {
+		background:url("/Skins/gamesavenue/Images/fond-comment-ca-marche.png") repeat-y;
+		width:470px;
+		float:left;
+		margin:5px;
+		border:#666666 1px solid;
+		height:800px;
+	}
+/* Connexion */
+div.login {
+		border:1px #ffffff solid;
+		background-color:#FFFFFF;
+		margin-top:5px;
+		margin-bottom:5px;
+		margin-right:10px;
+	}
+/*------ Affichage des articles du module de rédaction---*/
+div.RedactionnelFond {
+	background:url(/Skins/gamesavenue/Images/fond-comment-ca-marche.png) repeat-x;
+
+}
+div.Categorie {
+	font-family: Arial;
+	font-size: 14px;
+	font-weight:bold;
+	padding-left:10px;
+
+}
+div.Categorie h1{
+	font-family: Arial;
+	font-size: 14px;
+	font-weight:bold;
+	text-transform:uppercase;
+	border-bottom:1px #ff0000 solid;
+	padding:5px;
+	padding-left:40px;
+	background:url(/Skins/gamesavenue/Images/carre-titre.png) no-repeat 5px 50%;
+}
+div.Categorie h3{
+	font-family: Arial;
+	font-size: 12px;
+	font-weight:normal;
+	padding:5px;
+	padding-left:40px;
+}
+
+div.descCateg {
+	font-family: Arial;
+	font-size: 12px;
+	font-weight:normal;
+	color:#000000;
+	padding:5px 15px;
+
+}
+
+div.Article {
+	font-family: Arial;
+	font-size: 12px;
+	color: #000000;
+	padding-left:10px;
+	padding-top:10px;
+}
+div.Article h1{
+	padding-top:10px;
+	font-weight:bold;
+	color: #ff0000;
+	text-transform:uppercase;
+	text-decoration:none;
+	border:none;
+}
+div.Article p{
+	padding-top:5px;
+	padding-bottom:5px;
+	text-align:justify;
+}
+div.chapoettitre{ overflow:hidden;}
+div.chapoleft {float:left;padding-right:10px;}
+
+
+div.ArtText {
+	padding-right:10px;
+	overflow:hidden;
+}
+a.ArticleLien {
+	font-family: Arial;
+	font-size: 12px;
+	font-weight:normal;
+	font-style:italic;
+	color:#ff0000;
+	padding-left:20px;
+	background:url(/Skins/gamesavenue/Images/fleche-lien.png) no-repeat 5px 50%;
+}
+/*--------------- Liens avec couleurs univers ----------------*/
+a.lienColor12 {
+	font-family: Arial;
+	font-size: 12px;
+	font-weight:bold;
+	color: #ff0000;
+	text-decoration:none;
+}
+
+.lienColor12 a:hover{
+	font-family: Arial;
+	font-size: 12px;
+	font-weight:bold;
+	color: #ff0000;
+	text-decoration:underline;
+
+}
+a.lienColor14 {
+	font-family: Arial;
+	font-size: 14px;
+	font-weight:bold;
+	text-decoration:none;
+}
+
+.lienColor14 a:hover{
+	font-family: Arial;
+	font-size: 14px;
+	font-weight:bold;
+	color: #ff0000;
+	text-decoration:underline;
+
+}
+/*-------Boutons  Vendre et acheter et autres boutons gris foncé et gris clair et noir ------*/
+div.btnGrisFonce {
+	margin:auto;
+	overflow:hidden;
+	text-align:center;
+
+/*	width:80px;*/
+}
+a.btnGrisFonce {text-decoration:none;color:#ffffff;font-family:arial;font-size:11px;font-weight:bold;}
+div.btnGrisFonceDroite {float:right;width:5px;height:20px;background:url(/Skins/gamesavenue/Images/btn-vendre-droite.png) no-repeat;}
+div.btnGrisFonceGauche {float:left;width:5px;height:20px;background:url(/Skins/gamesavenue/Images/btn-vendre-gauche.png) no-repeat;}
+div.btnGrisFonceCentre {/*float:left;*/	padding:1px 10px;/*width:70px;*/height:20px;text-align:center;background:url(/Skins/gamesavenue/Images/btn-vendre-centre.png) repeat-x;}
+input.btnGrisFonceCentre {
+	font-family:arial;font-size:11px;color:#ffffff;font-weight:bold;/*padding-top:2px;*/
+	background:transparent;border:none;text-align:center;
+}
+
+
+div.btnGrisClair {
+	margin:auto;
+	overflow:hidden;
+	text-align:center;
+/*	width:80px;*/
+	font-weight:bold;
+}
+a.btnGrisClair {text-decoration:none;font-family:arial;font-size:11px;}
+div.btnGrisClairDroite {float:right;width:5px;height:20px;background:url(/Skins/gamesavenue/Images/btn-acheter-droite.png) no-repeat;}
+div.btnGrisClairGauche {float:left;width:5px;height:20px;background:url(/Skins/gamesavenue/Images/btn-acheter-gauche.png) no-repeat;}
+div.btnGrisClairCentre {/*float:left;*/padding:1px 10px;/*width:70px;*/height:20px;text-align:center;background:url(/Skins/gamesavenue/Images/btn-acheter-centre.png) repeat-x;}
+input.btnGrisClairCentre {
+	font-family:arial;font-size:11px;color:#ffffff;font-weight:bold;padding-top:2px;
+	background:transparent;border:none;text-align:center;
+}
+
+div.btnNoir {
+	margin:auto;
+	overflow:hidden;
+	text-align:center;
+	margin-top:15px;
+}
+a.btnNoir {text-decoration:none;color:#ffffff;font-family:arial;font-size:11px;font-weight:bold;}
+div.btnNoirDroite {float:left;width:11px;height:25px;background:url(/Skins/gamesavenue/Images/btn-noir-droite.png) no-repeat;}
+div.btnNoirGauche {float:left;width:9px;height:25px;background:url(/Skins/gamesavenue/Images/btn-noir-gauche.png) no-repeat;}
+div.btnNoirCentre {float:left;padding-top:3px;width:100px;height:25px;text-align:center;background:url(/Skins/gamesavenue/Images/btn-noir-centre.png) repeat-x;}
+input.btnNoirCentre {
+	font-family:arial;font-size:11px;color:#ffffff;font-weight:bold;padding-top:2px;
+	background:transparent;border:none;text-align:center;
+}
+
+/*------ bouton rouge --------*/
+div.btnRouge {height:30px;text-align:center;float:right;font-family:arial;font-size:11px;color:#ffffff;}
+a.btnRouge  {text-decoration:none;font-family:arial;font-size:11px;color:#ffffff;font-weight:bold;}
+div.btnRougeDroite {float:left;width:8px;height:30px;background:url(/Skins/gamesavenue/Images/btn-rouge-droite.png) no-repeat;}
+div.btnRougeGauche {float:left;width:8px;height:30px;background:url(/Skins/gamesavenue/Images/btn-rouge-gauche.png) no-repeat;}
+div.btnRougeCentre {float:left;height:30px;padding-top:2px;background:url(/Skins/gamesavenue/Images/btn-rouge-centre.png) repeat-x;}
+input.btnRougeCentre {
+	font-family:arial;font-size:11px;color:#ffffff;font-weight:bold;padding-top:2px;
+	background:transparent;border:none;text-align:center;
+}
+a.btnRougeCentre {
+	font-family:arial;font-size:11px;color:#ffffff;font-weight:bold;padding-top:2px;
+	background:transparent;border:none;text-align:center;text-decoration:none;
+}
+
+div.btnGrisGrand {
+	margin:auto;
+	overflow:hidden;
+}
+a.btnGrisGrand {text-decoration:none;color:#ffffff;font-family:arial;font-size:11px;font-weight:bold;}
+div.btnGrisGrandDroite {float:left;width:10px;height:30px;background:url(/Skins/gamesavenue/Images/btn-gris-droite_grand.png) no-repeat;}
+div.btnGrisGrandGauche {float:left;width:10px;height:30px;background:url(/Skins/gamesavenue/Images/btn-gris-gauche_grand.png) no-repeat;}
+div.btnGrisGrandCentre {float:left;height:30px;text-align:center;background:url(/Skins/gamesavenue/Images/btn-gris-centre_grand.jpg) repeat-x;}
+input.btnGrisGrandCentre {
+	font-family:arial;font-size:11px;color:#ffffff;font-weight:bold;padding-top:2px;
+	background:transparent;border:none;
+}
+a.btnGrisGrandCentre {
+	font-family:arial;font-size:11px;color:#ffffff;font-weight:bold;padding-top:2px;
+	background:transparent;border:none;text-align:center;text-decoration:none;
+}
+
+
+
+/*------------ Site Map ---*/
+div.sitemap ul li{
+	color: #ff0000;
+	font-weight:normal;
+	font-family: Arial;
+	font-size: 14px;
+	margin-left:20px;
+	list-style:url(/Skins/gamesavenue/Images/puce-nav.png) ;
+}
+
+/*-------------- Contact ------*/
+div.contact {
+width:500px;
+vertical-align:top;
+}
+
+div.texteItalic11R {
+	padding-left:20px;
+	font-family: Arial;
+	font-size: 11px;
+	color: #ff0000;
+	font-style:italic;
+
+}
+div.texteItalic11n {
+	padding-left:20px;
+	font-family: Arial;
+	font-size: 11px;
+	color: #000000;
+	font-style:italic;
+
+}
+
+div.colonnecentre {
+	float:left;
+	width:475px;
+	margin-right:5px;
+	margin-left:5px;
+	overflow:hidden;
+}
+div.colonnedroite {
+	width:255px;
+	float:left;
+	margin-left:5px;
+}
+
+
+
+/*--- Gestion des images -------*/
+.img_detail{	
+	margin:0;
+	padding:0;
+	border:0;
+	outline:0;
+	height:100px;
+
+}
+.img_50{	
+	margin:0;
+	padding:0;
+	border:0;
+	outline:0;
+	width:50px;
+
+}
+.img_liste{	
+	margin:0;
+	padding:0;
+	border:0;
+	outline:0;
+	height:50px;
+
+}

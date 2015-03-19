@@ -1,0 +1,6 @@
+[COUNT [!Query!]/Categorie/Actif=1|NbCat]
+[IF [!NbCat!]]
+	[MODULE Boutique/Categorie/ListeSousCat]
+[ELSE]
+	[MODULE Boutique/Categorie/ListeProduit]
+[/IF]

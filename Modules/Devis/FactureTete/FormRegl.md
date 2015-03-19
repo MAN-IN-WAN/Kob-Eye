@@ -1,0 +1,59 @@
+{"form":{"type":"TitleWindow","id":"Reglement","title":"Saisie des règlements",
+"width":400,"kobeyeClass":{"module":"Devis","objectClass":"FactureTete"},
+"components":[
+	{"type":"VBox","percentWidth":100,"percentHeight":100,"setStyle":{"paddingLeft":5,"paddingRight":5,"paddingTop":5,"paddingBottom":5},
+	"localProxy":{
+		"proxy_kobeye_validated":{"action":"invoke","method":"groupState","params":{"group":"validated","property":"enabled","validated":1}}
+	},
+	"components":[
+		{"type":"EditContainer", "id":"edit",
+		"components":[
+			{"type":"Form","setStyle":{"labelWidth":110,"verticalGap":8,"paddingLeft":6,"paddingRight":6,"paddingTop":6,"paddingBottom":6},"percentWidth":100,
+			"components":[
+				{"type":"FormItem","labelWidth":80,"label":"Facture","percentWidth":100,"components":[
+					{"type":"TextInput","dataField":"Reference","width":"80","editable":0}
+				]},
+				{"type":"FormItem","labelWidth":80,"label":"Date facture","percentWidth":100,"components":[
+					{"type":"DateField","dataField":"Date","validType":"date","editable":0}
+				]},
+				{"type":"FormItem","labelWidth":80,"label":"Client","percentWidth":100,"components":[
+					{"type":"TextInput","dataField":"ClientIntitule","percentWidth":100,"editable":0}
+				]},
+				{"type":"FormItem","labelWidth":80,"label":"Montant TTC","percentWidth":100,"components":[
+					{"type":"TextInput","dataField":"MontantTTC","width":100,"maxChars":10,"validType":"float","editable":0}
+				]},
+				{"type":"FormItem","labelWidth":80,"label":"Date règlement","percentWidth":100,"components":[
+					{"type":"DateField","dataField":"DateReglement","defaultValue":"Now","validType":"date","required":1}
+				]},
+				{"type":"FormItem","labelWidth":80,"label":"Mode","percentWidth":100,"components":[
+					{"type":"TextInput","dataField":"Mode","maxChars":1,"width":30}
+				]},
+				{"type":"FormItem","labelWidth":80,"label":"Règlement","percentWidth":100,"components":[
+					{"type":"TextInput","dataField":"Montant","width":100,"maxChars":10,"validType":"float","required":1}
+				]},
+				{"type":"FormItem","labelWidth":80,"label":"Soldé","percentWidth":100,"components":[
+					{"type":"CheckBox","dataField":"Solde"}
+				]},
+				{"type":"Spacer","height":10},
+				{"type":"HGroup","percentWidth":100,"components":[
+					{"type":"Spacer"},
+					{"type":"Button","label":"Valider","id":"save","stateGroup":"validated","enabled":0},
+					{"type":"Button","label":"Annuler","id":"cancel","events":[
+						{"type":"click","action":"invoke","objectID":"parentForm","method":"closeForm"}
+					]}
+				]}
+			]}
+		],
+		"events":[
+			{"type":"start","action":"invoke","method":"callMethod","params":{"method":"query","function":"NewPayment"}},
+			{"type":"proxy","triggers":[
+				{"trigger":"save","action":[
+					{"action":"invoke","method":"callMethod","params":{"method":"query","function":"SavePayment","args":[{"dataValue":["Mode","DateReglement","Montant","Solde"]}]}},
+					{"action":"invoke","objectID":"parentForm","method":"closeForm"}
+				]}
+			]}
+		]}
+	]}
+],
+"popup":"modal"
+}}

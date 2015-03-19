@@ -1,0 +1,36 @@
+<script type="text/javascript">
+    window.onload=function()
+    {
+    document.getElementById("loginField").focus();
+    };
+</script>
+
+<div class="PetiteBoiteDeDialogue">
+    <div class="header">
+	<div class="logo"></div>
+    </div>
+    <form action="" method="post" name="login">
+	<div class="Message" style="background:white;margin:5px;-moz-border-radius:4px 4px 4px 4px;margin-top:20px;padding-bottom:7px;border:1px solid #BBCDDE;">
+	    <div style="text-align:center;">Veuillez entrer vos identifiants afin de vous connecter à l'application.
+	    </div>
+	    <div class="Form" style="margin-top:16px;">
+		<div class="Texte">Nom d'utilisateur </div>
+		<div class="Valeur">
+		    <input type="text" name="login" id="loginField" value="[!login!]" />
+		</div>
+	    </div>
+		<div class="Form">
+		    <div class="Texte">Mot de passe </div>
+		    <div class="Valeur">
+			<input type="password" name="pass" value="[!pass!]" />
+		    </div>
+		</div>
+		    <input type="submit" name="CONNEXION" value="Connexion" class="KEBouton"/>
+		    <div style="clear:both"></div>
+		</div>
+	    </div>
+	</div>
+    </form>
+</div>
+//    <div id="KELogo" style="position:absolute;top:0px;left:50%;margin-left:-140px;width:280px;background:url(/Skins/AdminV2/Img/Structure/Logo.jpg);height:145px;z-index:40000"></div>
+

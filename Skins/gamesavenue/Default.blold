@@ -1,0 +1,17 @@
+<div class="site">
+	<div class="bando">
+		<div class="entete">
+			<div class="publicite">Bienvenue sur le site de Games-avenue</div>
+			<div class="recherche">[MODULE Boutique/Recherche]</div>
+			<div class="menuhaut">[MODULE Systeme/Menu]</div>
+			<div class="menuprincipal">[MODULE Boutique/Menu]</div>
+		</div> <!-- fin entete -->
+	</div> <!-- fin bando -->
+	<div class="fildariane">[MODULE Systeme/Ariane]</div>
+	<div class="contenuCentral">[DATA]</div>
+	<div id="pied">
+		<div class="colonnePiedBlanc">[MODULE Boutique/Menu/Pied]</div>
+		<div class="colonnePiedBlanc"  style="border:none">[MODULE Systeme/Menu/Pied]</div>
+		<div class="colonnePiedRouge">[MODULE Redaction/Menu/Pied]</div>
+	</div>		
+</div>

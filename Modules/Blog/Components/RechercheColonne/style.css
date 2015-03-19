@@ -1,0 +1,8 @@
+/*--- Composant Recherche ---*/
+#Recherche {
+	position:relative;
+	overflow:hidden;
+	display:block;
+	padding: 5px;
+
+}

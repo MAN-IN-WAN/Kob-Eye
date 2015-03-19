@@ -1,0 +1,43 @@
+.bb_bold
+{
+	font-weight:bold;
+}
+
+.bb_italic
+{
+	font-style:italic;
+}
+
+.bb_underline
+{
+	text-decoration:underline;
+}
+
+.bb_strike
+{
+	text-decoration:line-through;
+}
+
+.bb_quote
+{
+	margin:20px;
+	border:1px dotted black;
+}
+
+.bb_spoiler
+{
+	margin:20px;
+	border:1px dotted black;
+	color:white;
+	background-color:white;
+}
+
+.bb_uppercase
+{
+	text-transform:uppercase;
+}
+
+.bb_lowercase
+{
+	text-transform:lowercase;
+}

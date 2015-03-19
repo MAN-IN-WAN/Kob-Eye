@@ -1,0 +1,47 @@
+<SCHEMA>
+	<OBJECTCLASS title="Projet" driver="mysql"  order="tmsCreate" orderType="DESC"  AccessPoint="1" master="0" Class="Modules/Planogramme/Class/Projet.class.php" Description="Project">
+		<PROPERTIES type="varchar" length="250" searchOrder="1" unique="0" listWidth="300"  formLabel="1" description="Project name">Nom</PROPERTIES>
+		<PROPERTIES type="longtext">Data</PROPERTIES>
+		<PROPERTIES type="longtext">Donnee</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="2" listWidth="35">POS</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="3" listWidth="35">VET</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="4" listWidth="50" description="Model">Modele</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="5" listWidth="50" description="Hidden">Hidden</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" unique="0">Gamme</PROPERTIES>
+		<PROPERTIES type="text" >Details</PROPERTIES>
+		<PROPERTIES type="file" >ScreenShotFirst</PROPERTIES>
+		<PROPERTIES type="file" >ScreenShot</PROPERTIES>
+		<FKEY card="1,1" category="Format" parentDescription="Associated database" childDescription="Project list" listHeight="50" module="Vitrine" data="Database,Id">DatabaseId</FKEY>
+	<!--	<FUNCTION label="unSerialize" description="unSerialize">unSerialize</FUNCTION>-->
+		<VIEW title="ProjectList" default="0">
+			<OBJECTCLASS title="Projet" filters="">
+				<PROPERTIES type="int" >Id</PROPERTIES>
+				<PROPERTIES type="file" >ScreenShotFirst</PROPERTIES>
+				<PROPERTIES type="file" >ScreenShot</PROPERTIES>
+				<PROPERTIES type="text" >Details</PROPERTIES>
+				<PROPERTIES type="boolean" searchOrder="2" listWidth="35">POS</PROPERTIES>
+				<PROPERTIES type="boolean" searchOrder="3" listWidth="35">VET</PROPERTIES>
+				<PROPERTIES type="boolean" searchOrder="4" listWidth="50" description="Model">Modele</PROPERTIES>
+				<PROPERTIES type="boolean" description="Hidden">Hidden</PROPERTIES>
+				<PROPERTIES type="varchar" length="255" unique="0">Gamme</PROPERTIES>
+				<PROPERTIES type="varchar" length="250" searchOrder="1" unique="0" listWidth="300"  formLabel="1" description="Project name">Nom</PROPERTIES>
+				<PROPERTIES type="date"  searchOrder="5" obligatoire="0" category="Contact" listWidth="100" description="Creation date">tmsCreate</PROPERTIES>
+				<PROPERTIES type="date"  searchOrder="6" obligatoire="0" category="Contact" listWidth="150" description="Last modification date">tmsEdit</PROPERTIES>
+				<PROPERTIES type="int" description="Owner ID">userCreate</PROPERTIES>
+				<JOIN type="outer" title="User" module="Systeme" on="uid" target="Id" filters="">
+					<PROPERTIES type="varchar"  length="255" searchOrder="7" obligatoire="0" category="Contact" alias="AutorName" description="Owner">Nom</PROPERTIES>
+					<PROPERTIES type="varchar"  length="100" obligatoire="0" category="Contact" alias="AutorFirstName" description="Autor FirstName">Prenom</PROPERTIES>
+					<PROPERTIES type="varchar" length="100" searchOrder="8" category="Contact" alias="Country">Pays</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Version" driver="mysql"  AccessPoint="1" master="0">
+		<PROPERTIES type="varchar" length="250"  searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES type="text">Description</PROPERTIES>
+		<PROPERTIES type="file">Planogramme</PROPERTIES>
+		<PROPERTIES type="file">RoyalAdmin</PROPERTIES>
+		<PROPERTIES type="boolean" length="250" default="1">Release</PROPERTIES>
+		<PROPERTIES type="boolean" length="250" default="1">Actif</PROPERTIES>
+	</OBJECTCLASS>
+</SCHEMA>

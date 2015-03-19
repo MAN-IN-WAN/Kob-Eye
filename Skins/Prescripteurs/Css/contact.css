@@ -1,0 +1,238 @@
+/*-- Page de contact --*/
+.FormContact {border:1px solid #525252;}
+.FormContact h3{padding-left:5px;font-size: 13px;}
+.BlocEnvoi  {border:1px solid #525252;padding:10px;}
+
+.FormContact .LigneForm {display:block;overflow:hidden;position:relative;padding: 5px 0;}
+.FormContact label {  display: block; float: left; position:relative; padding-left: 5px;width: 100px;font-size:12px;}
+.FormContact input {border:1px solid #A9A9A9;width:300px;font-size:12px;}
+.FormContact select {border:1px solid #A9A9A9;width:300px;background:none;font-size:12px;}
+.FormContact textarea {border:1px solid #A9A9A9;width:300px;background:none;font-size:12px;}
+.FormContact file { float: left;width: 300px;}
+
+.FormContact .BoxCheck { float: left;width: 106px;}
+
+.FormContact .BoxCheckReduit { float: left;width: 50px; padding-left:2px;}
+
+
+.FormContact label.Nature {  display: inline-block;padding-left: 5px;width: auto; padding-top: 2px;}
+.FormContact label.Partie2 {  display: inline-block;padding-left: 5px;width: 120px;font-size:12px;}
+
+.FormContact .BoxCheckSup { float: left;width: 152px;}
+
+.FormContact .obligatoire {color:#0070ba;}
+.BasPage {text-align:justify;font-style:italic;padding:20px 0 0 0;}
+.FormContact input.CodePos {width:100px;}
+
+
+.FormContact .InfosComplete {display:block;overflow:hidden;position:relative;width:100%;}
+
+.FormContact .InfosComplete .InfosEtatCivil {float:left;width:445px;margin:0 5px;}
+.FormContact .InfosComplete .InfosProjetImmobilier {float:left;width:445px;border-left:1px dotted #525252;margin:0 5px;padding-left:5px;}
+
+
+.FormContact .lienBtnCnt {
+	display:block;
+	overflow:hidden;
+	position:relative;
+	/*padding-left:426px;*/
+	float:right;
+	padding-right:10px;
+}
+.FormContact .lienBtnCnt  img {
+	float:left;
+	
+}
+
+.FormContact .lienBtnCnt input {
+	background: url("../Img/sprite.png") no-repeat scroll -871px -1231px transparent;
+    border: medium none;
+    cursor: pointer;
+    display: block;
+    height: 38px;
+    text-indent: -999px;
+    width: 81px;
+}
+.FormContact .lienBtnCnt input:hover {
+background-position: -871px -1282px;
+}
+
+
+.BlocError {
+	border:1px solid #0070ba;
+	padding:5px;
+	font-size:11px;
+	font-style:italic;
+	background-color:#ccc;
+	color:#0070ba;
+	padding:10px;
+	margin-bottom: 10px;
+}
+
+.BlocError ul {
+	list-style:none;
+}
+div.BlocError li {font-size:12px;font-style:italic;list-style:outside;margin-left:20px}
+div.BlocError p {font-size:14px;font-style:italic;text-decoration:underline;font-weight:bold;margin-bottom:5px}
+.inputError { background-color:#FFBEBE;color:#BA0000;	border:1px solid #BA0000;
+}
+
+/*--Send To Friend -*/
+
+.FormContactSndf {border:1px solid #525252;}
+.FormContactSndf h3 {padding-left:5px;text-align:justify;}
+
+.FormContactSndf .LigneForm {display:block;overflow:hidden;position:relative;padding: 5px 0;}
+.FormContactSndf label {  display: block; float: left; position:relative; padding-left: 5px;width: 108px;font-size:12px;}
+.FormContactSndf input {border:1px solid #A9A9A9;width:300px;font-size:12px;cursor:pointer;}
+.FormContactSndf input:hover {text-decoration:underline;}
+.FormContactSndf select {border:1px solid #A9A9A9;width:300px;background:none;font-size:12px;}
+.FormContactSndf textarea {border:1px solid #A9A9A9;width:300px;background:none;font-size:12px;}
+
+.FormContactSndf .obligatoire {color:#0070ba;}
+
+
+.FormContactSndf .InfosComplete {display:block;overflow:hidden;position:relative;width:100%;}
+
+.sndtof { display:block; margin:5px 0;}
+
+.sndtof input {    
+	background-color: #FFFFFF;
+    	border: 1px dotted #525252;
+    	width: 925px; 
+}
+.FormContactSndf .InfosInternaute {float:left;width:445px;margin:0 5px;}
+.FormContactSndf .InfosAmi {float:left;width:445px;border-left:1px dotted #525252;margin:0 ; }
+
+.FormContactSndf .lienBtnSndf { 
+	padding-left:380px;	
+	display: block;
+	position: relative;
+	overflow:hidden;
+}
+.FormContactSndf .lienBtnSndf .BtnGauche { 
+	float:left;
+	display: block;
+	position: relative;
+}
+.FormContactSndf .lienBtnSndf .BtnDroit { 
+	float:left;
+	display: block;
+	position: relative;
+}
+
+.FormContactSndf .lienBtnSndf input {
+	display: block;
+	width: 75px;
+	height: 22px;
+	border: none;
+	background: url('../Img/sprite.png') -262px -1347px no-repeat;
+	cursor: pointer;
+	text-indent:-999px;
+}
+.FormContactSndf .lienBtnSndf input:hover {
+	background-position: -352px -1347px;
+}
+.FormContactSndf .lienBtnSndf a {
+	display: block;
+	width: 75px;
+	height: 22px;
+	border: none;
+	background: url('../Img/sprite.png') -487px -1347px no-repeat;
+	cursor: pointer;
+	text-indent:-999px;
+}
+.FormContactSndf .lienBtnSndf a:hover {
+	background-position: -577px -1347px;
+}
+/*-- Page Dénonciation --*/
+.DivFormDenonce {
+	display: block;position:relative;overflow:hidden;margin:5px auto;width: 550px;
+}
+.FormDenonce h3{padding-left:5px;font-size: 13px;}
+
+.FormDenonce .BlocEnvoiDenonciation h3 {
+	border: 1px solid #0070BA;
+	color: #0070BA;
+    	font-family: arial;
+    	font-size: 14px;
+    	font-weight: normal;
+    	line-height: 18px;
+    	padding: 10px;
+    	text-align: center;
+}
+
+.FormDenonce .LigneForm {display:block;overflow:hidden;position:relative;padding: 10px 0;}
+.FormDenonce input {border:1px solid #0070ba;width:400px;font-size:12px;}
+.FormDenonce select {border:1px solid #0070ba;width:400px;background:none;font-size:12px;}
+.FormDenonce textarea {border:1px solid #0070ba;width:400px;background:none;font-size:12px;}
+
+.FormDenonce .Partie1 input , .FormDenonce .Partie2 input  {border:1px solid #0070ba;width:300px;font-size:12px;}
+.FormDenonce .Partie1 select , .FormDenonce .Partie2 select {border:1px solid #0070ba;width:300px;background:none;font-size:12px;}
+.FormDenonce .Partie1 textarea, .FormDenonce .Partie2 textarea  {border:1px solid #0070ba;width:300px;background:none;font-size:12px;}
+.FormDenonce .Partie1 { float:left;position:relative;overflow:hidden; width:49%;}
+.FormDenonce .Partie1 label, .FormDenonce  label {  
+	display: block; float: left; position:relative; padding-left: 5px;width: 120px;font-size:12px;
+}
+.FormDenonce .Partie1 .BoxCheck { float: left;width: 106px;}
+.FormDenonce .Partie1 .BoxCheck label { 
+	display: block; float: left; position:relative; padding-left: 5px;width: auto;font-size:12px;
+}
+.FormDenonce fieldset {
+	border:1px dotted #1f1f1f;
+	width:540px;
+}
+.FormDenonce fieldset legend {margin-left:20px;color: #0070ba; font-weight:bold;font-size:14px;}
+
+.FormDenonce .Partie2 {  
+	position:relative;overflow:hidden;width:49%;border-left:1px solid #0070ba;margin-left:5px;
+}
+
+.FormDenonce .Partie2  label {  
+	display: block; float: left; position:relative; padding-left: 5px;width: 153px;font-size:12px;
+}
+.FormDenonce .Partie2 .BoxCheck { float: left;/*width: 70px; padding-left:5px;*/}
+.FormDenonce .Partie2 .BoxCheck label { 
+	display: block; float: left; position:relative; padding-left: 5px;width: auto;font-size:12px; padding-top:5px;
+}
+.FormDenonce .PartieBas { display: block; position:relative;overflow:hidden;width:100%;}
+
+
+
+
+
+
+
+.FormDenonce .obligatoire {color:#0070ba;}
+.FormDenonce input.CodePos {width:100px;}
+
+
+.FormDenonce .InfosComplete {display:block;overflow:hidden;position:relative;width:100%;}
+
+.FormFormDenonceContact .InfosComplete .InfosEtatCivil {float:left;width:445px;margin:0 5px;}
+
+
+.FormDenonce .lienBtnCnt {
+	display:block;
+	overflow:hidden;
+	position:relative;
+	float:right;
+	padding-right:10px;
+}
+.FormDenonce .lienBtnCnt  img {
+	float:left;
+	
+}
+
+.FormDenonce .lienBtnCnt input {
+	display: block;
+	width: 75px;
+	height: 22px;
+	border: none;
+	background: url('../Img/sprite.png') -875px -1247px no-repeat;
+	cursor: pointer;
+	text-indent:-999px;
+}
+.FormDenonce .lienBtnCnt input:hover {
+	background-position: -875px -1298px;
+}

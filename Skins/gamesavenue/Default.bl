@@ -1,0 +1,46 @@
+[HEADER]
+	<link rel="icon" href="favicon.ico" type="image/x-icon" /> 
+	<link rel="shortcut icon" href="/Skins/[!Systeme::Skin!]/Images/favicon.ico" type="image/x-icon"/>
+	<meta name="verify-v1" content="QlurhrWsienYWG9Jb/0SONdR506RyMB5BMe974haIeA=" />
+	<meta name="verify-v1" content="EqQM416Z2qSv3wFOx/UqwSoKM7ZJmw1fAaxH8e/jVRw=" />
+	<meta name="y_key" content="6bf96b48d67381a0" />
+	<script type="text/javascript" src="/Skins/[!Systeme::Skin!]/Js/mootools.js"></script>
+	<script type="text/javascript" src="/Skins/[!Systeme::Skin!]/Js/overlay.js"></script>
+	<script type="text/javascript" src="/Skins/[!Systeme::Skin!]/Js/multibox.js"></script>
+	<script type="text/javascript" src="/Skins/[!Systeme::Skin!]/Js/AjaxKit.js"></script>
+	<script type="text/javascript" src="/Skins/[!Systeme::Skin!]/Js/BrowserDetect.js"></script>
+	<script type="text/javascript" src="/Skins/[!Systeme::Skin!]/Js/swfobject.js"></script>
+	<link title="test" type="text/css" rel="stylesheet" href="/Skins/[!Systeme::Skin!]/Css/multibox.css" />
+	<script type="text/javascript">
+		//------------CONFIG TESTER / MULTIBOX ------------
+		window.addEvent('domready', function () {
+			var box = {};
+			box = new MultiBox('mb', {descClassName: 'multiBoxDesc', useOverlay: true});
+		});
+	</script>
+[/HEADER]
+<div class="site">
+	<div class="entete">
+		<div class="bando"><a href="/Accueil">
+			<img src="/Skins/gamesavenue/Images/logo.jpg"></a>
+			<div class="publicite">Bienvenue sur le site de Games-avenue</div>
+	</div>
+		
+	</div> <!-- fin entete -->
+	<div class="Lesmenus">
+		<div class="Lesmenus_debut"></div>
+		<div class="Lesmenus_centre">
+			<div class="connexion">[MODULE Systeme/Structure/Bienvenue]</div>
+			<div class="menuhaut">[MODULE Systeme/Menu]</div>
+			<div class="menuprincipal">[MODULE Boutique/Menu]</div>
+		</div>
+		<div class="Lesmenus_fin"></div>
+	</div>
+	<div class="fildariane">[MODULE Systeme/Ariane]</div>
+	<div class="contenuCentral">[DATA]</div>
+	<div id="pied">
+		<div class="colonnePiedBlanc">[MODULE Boutique/Menu/Pied]</div>
+		<div class="colonnePiedBlanc"  style="border:none">[MODULE Systeme/Menu/Pied]</div>
+		<div class="colonnePiedRouge">[MODULE Redaction/Menu/Pied]</div>
+	</div>		
+</div>

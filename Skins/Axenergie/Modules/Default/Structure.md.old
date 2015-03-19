@@ -1,0 +1,31 @@
+{
+"form":{"type":"VBox", "percentHeight":100,
+"components":[
+	{"type":"ApplicationControlBar", "height":30,
+	"components":[
+		{"type":"MenuButton", "id":"mainMenu", "percentHeight":"100", [MODULE Systeme/MainMenu]},
+		{"type":"TaskBar", "id":"taskBar", "percentWidth":100, "percentHeight":100, "actions":[
+			{"type":"MDICanvas", "id":"canvas"}
+		]},
+		{"type":"ProfileButton", "id":"profileButton","percentHeight":"100","label":"[!Systeme::User::Prenom!] [!Systeme::User::Nom!]", "components":[
+			{"type":"HBox", "setStyle":{"backgroundColor":65280}, "components":[
+					{"type":"Label", "text":"xxxxxxxxxxxxxxxxxxxxxxxxxx", "visible":1},
+					{"type":"Button", "id":"logout2", "label":"blahblah", "events":[
+						{"type":"click", "action":"submit", "url":"Systeme/Deconnexion.json"}
+					]}
+			]},
+			{"type":"Button", "id":"logout", "width":20, "label":"Logout", "events":[
+				{"type":"click", "action":"submit", "url":"Systeme/Deconnexion.json"}
+			]},
+			{"type":"Button", "id":"logout3", "label":"Logoutdfgsfsf", "events":[
+				{"type":"click", "action":"submit", "url":"Systeme/Deconnexion.json"}
+			]}
+		]},
+		{"type":"Button", "id":"dateButton","percentHeight":"100","label":"Vendredi 09:02:01","mouseEnabled":"false"}
+	]},
+	{"type":"MDICanvas", "id":"canvas"}
+],
+"container":"application"}
+}
+
+

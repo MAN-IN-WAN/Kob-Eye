@@ -1,0 +1,22 @@
+<ACTIONS>
+	<ACTION Name="Visiteurs" Object="Connexion" Period="Y/m/d,Y/m,Y" TitrePeriod="Jour,Mois,Annee">
+		<FUNCTION Name="Visite" Type="Total" Event="New" Filter="[!INPUT::Session!]!="  Category="Connexion-Visite" Unit="Visites"  Description="Nombre de visites"/>
+		<FUNCTION Name="Connexions" Type="Total" Event="Save" Filter="" Category="Connexion-Visite"  Unit="Hits" Description="Nombre de hits"  Graph="bar_glass"/>
+		<FUNCTION Name="Ip" Type="Classement" Identifier="Ip" Increment="1" GroupBy="Ip"  Total="Total" Event="New" Filter="" Unit="Ips" Description="Liste des hôtes"/>
+		<FUNCTION Name="Navigateur" Type="Classement" Identifier="Navigateur" Increment="1" GroupBy="Navigateur" Total="Total" Event="New" Filter="" Description="Liste des navigateurs"/>
+		<FUNCTION Name="TotalDureeConnexion" Type="Total" Event="Delete" Filter="[!INPUT::Session!]!="  Unit="Secondes" Description="Durées totales de connexion"  Graph="bar_glass">
+			[!OUTPUT:=[!TMS::Now!]!]!]
+			[!OUTPUT-=[!INPUT::tmsCreate!]!]
+		</FUNCTION>
+		<FUNCTION Name="ClassementDureeConnexion" Type="Classement" Identifier="userCreate" GroupBy="userCreate" Total="TotalDureeConnexion"  Event="Delete" Filter="[!INPUT::Session!]!=" Increment="1" Link="JournalConnexion/[!INPUT::userCreate!]" Unit="Secondes" Description="Durée des connexions par utilisateur" IdUnit="User">
+			[!OUTPUT:=[!TMS::Now!]!]!]
+			[!OUTPUT-=[!INPUT::tmsCreate!]!]
+		</FUNCTION>
+		<FUNCTION Name="JournalConnexionPrive" Type="Journal" Identifier="userCreate" Event="Save" Filter="[!INPUT::Session!]!=" Description="Journal des connexions">
+			[!OUTPUT:=[!Utils::getDate(d/m/Y H:i:s,[!TMS::Now!])!]|[!INPUT::LastUrl!]!]
+		</FUNCTION>
+		<FUNCTION Name="JournalConnexionPublic" Type="Journal" Identifier="Ip" Event="Save" Filter="[!INPUT::Session!]=" Description="Journal des connexions">
+			[!OUTPUT:=[!Utils::getDate(d/m/Y H:i:s,[!TMS::Now!])!]|[!INPUT::LastUrl!]!]
+		</FUNCTION>
+	</ACTION>
+</ACTIONS>

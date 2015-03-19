@@ -1,0 +1,113 @@
+div.ArticleImages {
+	display: block;
+	float: left;
+	position: relative;
+}
+
+/*--- HOME ---*/
+div.BlocsAccueil {
+    overflow: hidden;
+    padding-top: 10px;
+}
+
+div.BlocHome {
+   background: url("../Img/sprite.png") no-repeat scroll -8px -839px transparent;
+    display: block;
+    float: left;
+    height: 215px;
+    padding: 12px 19px 0;
+    position: relative;
+    width: 330px;
+}
+.ImageArticleGauche img {
+	border:1px solid #b1b3b4;
+	
+}
+.ImageArticleGauche {
+	float:left;
+	
+}
+.ImageArticleDroite {
+	float:right;
+	
+}
+div.LienArticle {
+	padding:10px 0;
+}
+div.LienArticle a.lelienarticle {
+    	overflow: hidden;
+	color:#66a7bc;
+    	background: url("../Img/sprite.png") no-repeat  -8px -327px ;
+	padding:2px 0 10px 15px;
+}
+
+
+div.LienArticle a.lelienarticle {
+	font-size: 10px;
+    	font-weight: normal;
+	font-style:italic;
+	float:right;
+}
+div.LienArticle a.lelienarticle:hover {
+	background-position: -162px -327px;
+	color:#474747;
+}
+/*---- article intranet---*/
+.Redaction {
+    	/*border-bottom: 1px dotted #66A7BC;*/
+    	border-top: 1px dotted #66A7BC;
+    	margin-right: 11px;
+    	margin-top: 15px;
+	overflow:hidden;
+	padding-bottom:15px;
+}
+
+.Redaction a.lirearticle , .ListeNews a.lirearticle   {
+ 	color:#66a7bc;
+    	background: url("../Img/sprite.png") no-repeat  -8px -327px ;
+	padding:2px 0 10px 15px;
+	font-size: 10px;
+    	font-weight: normal;
+	font-style:italic;
+	overflow: hidden;
+	float:right;
+}
+div.Redaction a.lirearticle:hover , .ListeNews a.lirearticle:hover {
+	background-position: -162px -327px;
+	color:#474747;
+}
+
+.ArticleAvecImage {
+	overflow:hidden;
+}
+div.Redaction h2 { margin-top:10px; }
+
+.RedactionAccueil {
+    	border-bottom: 1px dotted #66A7BC;
+    	border-top: 1px dotted #66A7BC;
+    	margin-right: 11px;
+    	margin-top: 15px;
+	overflow:hidden;
+	padding-bottom:15px;
+}
+
+.RedactionAccueil a.lirearticle   {
+ 	color:#66a7bc;
+    	background: url("../Img/sprite.png") no-repeat  -8px -327px ;
+	padding:2px 0 10px 15px;
+	font-size: 10px;
+    	font-weight: normal;
+	font-style:italic;
+	overflow: hidden;
+	float:right;
+}
+div.Redaction a.lirearticle:hover  {
+	background-position: -162px -327px;
+	color:#474747;
+}
+
+
+div.RedactionAccueil h2 { margin-top:10px; }
+
+
+

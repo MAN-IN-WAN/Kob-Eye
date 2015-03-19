@@ -1,0 +1,69 @@
+.Aide{
+	position:absolute;
+	left:5px;
+	top:5px;
+	right:5px;
+	bottom:5px;
+}
+
+* html .Aide{
+	display:block;
+	padding:0;
+	margin:0;
+}
+
+.BlocIcone {
+	width:90%;
+	height:75px;
+}
+.BlocIcone img {
+	margin-top:-10px;
+	float:left;
+	top:0;
+	left:0;
+}
+
+* html .BlocIcone img {
+	margin:0;
+}
+
+/*Le nom de la page, tout en haut*/
+.BlocIcone h1 {
+	background:none;
+	margin:0;
+	text-transform:uppercase;
+	padding:0;
+	font-size:8pt;
+	margin-top:15px;
+	margin-left:80px;
+	color:black;
+}
+.BlocIcone div{
+	margin-left:80px;
+}
+.AideArticle {
+	width:90%;
+}
+.AideArticle img {
+	float:left;
+	margin-top:-15px;
+	left:0;
+}
+
+/*Le nom de la page, tout en haut*/
+.AideArticle h1 {
+	background:none;
+	margin:0;
+	padding:0;
+	font-size:7pt;
+	margin-top:15px;
+	margin-left:40px;
+	color:black;
+}
+.AideArticle div{
+	margin-left:40px;
+	font-size:7pt;
+}
+.AideContenu {
+	width:100%;
+}

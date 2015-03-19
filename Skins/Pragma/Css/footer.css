@@ -1,0 +1,72 @@
+#Footer {
+	color: white;
+	background: #525252;
+	overflow: hidden;
+	position: relative;
+	font-size: 10px;
+}
+
+#Footer li {
+	list-style: none;
+	padding-left: 10px;
+	background: url("../Img/sprite.png");
+	background-position: 0 -598px;
+}
+
+#Footer a {
+	color: white;
+}
+
+#Footer h3 {
+	border-bottom: 1px solid white;
+	text-transform: uppercase;
+	padding-bottom: 2px;
+	display: inline-block;
+	margin: 5px 0;
+	font-size: 10px;
+}
+
+#Footer div.BlocFooter {
+	display: block;
+	float: left;
+	position: relative;
+	padding: 5px 85px 25px 20px;
+}
+
+a#LogoSogeprom, div#LogoNF, a#ContactFooter {
+	position: absolute;
+	background: url("../Img/sprite.png");
+}
+
+a#LogoSogeprom {
+	display: block;
+	left: 592px;
+	top: 15px;
+	height: 24px;
+	width: 127px;
+	background-position: 0 -635px;
+}
+
+div#LogoNF {
+	left: 592px;
+	top: 55px;
+	height: 30px;
+	width: 200px;
+	background-position: 0 -669px;
+}
+
+a#ContactFooter {
+	top: 0;
+	right: 0;
+	width: 202px;
+	height: 52px;
+	background-position: 0 -708px;
+}
+
+a#AAW {
+	font-family:arial;
+	font-style:italic;
+	position: absolute;
+	bottom: 5px;
+	right: 20px;
+}

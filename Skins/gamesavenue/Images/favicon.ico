@@ -1,0 +1,9 @@
+<br />
+<b>Notice</b>:  Undefined index:  http://webophil.net/erreur404.php in <b>/home/webo51/public_html/generateur-favicons-gratuit/phpthumb.functions.php</b> on line <b>682</b><br />
+
+**Headers already sent in file "/home/webo51/public_html/generateur-favicons-gratuit/phpthumb.functions.php" on line "682", dumping error message as text:**<br><pre>
+
+phpThumb() v1.7.7-200612252156
+
+Unknown image type identified by "<!DO" ( 0x3c 0x21 0x44 0x4f) in SourceImageToGD()[3019]
+</pre>

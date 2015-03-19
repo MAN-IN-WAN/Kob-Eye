@@ -1,0 +1,32 @@
+#PubAnim, #PubAnimApercu {
+	overflow: hidden;
+	position: relative;
+}
+
+#PubAnimList {
+	display: block;
+	position: relative;
+}
+
+#PubAnimList li {
+	list-style: none;
+}
+
+#PubAnimList a {
+	background-repeat: no-repeat;
+	background-position: right top;
+}
+
+#PubAnimList a, #PubAnimList li {
+	padding: 0;
+	margin: 0;
+}
+
+#PubAnimList li.PubAnimActive a {
+	background-position: left top;
+}
+
+img.PubAnimMainTxt {
+	position:absolute;
+	top:0;
+}

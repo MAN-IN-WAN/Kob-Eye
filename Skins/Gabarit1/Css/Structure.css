@@ -1,0 +1,61 @@
+#Entete{
+	width:100%;
+	background:#ccc;
+}
+
+* html #Entete{
+	text-align:left;
+}
+
+#Generale, .Centre{
+	width:950px;
+	margin:auto;
+}
+
+* html #Generale{
+	width:960px;
+}
+
+#Container{
+	position:relative;
+	display:block;
+	background-color:#fff;
+}
+
+* html #Container{
+	text-align:left;
+}
+
+#Contenu{
+	display:block;
+	overflow:hidden;
+}
+
+#Droite{
+	float:right;
+	width:290px;
+	padding:5px;
+	min-height:450px;
+	background-color:#8F8F8F;
+	position:relative;
+	right:0px;
+	border-top:1px solid #fff;
+}
+
+#Milieu{
+	padding:10px;
+	margin-right:300px;
+	position:relative;
+	display:block;
+	height:1%;
+}
+
+#Pied{
+	width:100%;
+	background:#ccc;
+	padding:10px 0;
+}
+
+* html #Pied{
+	text-align:left;
+}

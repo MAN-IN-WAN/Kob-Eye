@@ -1,0 +1,50 @@
+#Membres{
+	background-color:#d1d1d1;
+	width:340px;
+	padding:10px;
+	margin-left:116px;
+}
+
+#Membres h2{
+	margin-bottom:5px;
+	border-bottom:1px dotted #3F3F3F;
+}
+
+.BlocMembres{
+	float:left;
+}
+
+.BlocMembres input{
+	border:1px inset #000000;
+	margin-right:10px;
+}
+
+a.Mdp, a.Mdp:visited{
+	display:block;
+	color:#0070A9;
+	text-decoration:underline;
+	text-align:right;
+}
+
+a.Mdp:hover{
+	text-decoration:none;
+}
+
+input.Connexion{
+	margin-right:0;
+	margin-top:-5px;
+	cursor:pointer;
+	width:36px;
+	height:29px;
+	background:none;
+	border:none;
+	background:url(/Skins/KobEye/Img/BoutonOk.jpg) no-repeat;
+}
+
+input.Connexion:hover{
+	background-position:0 -29px;
+}
+
+.OubliMdp{
+	padding:10px;
+}

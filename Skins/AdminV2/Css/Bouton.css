@@ -1,0 +1,58 @@
+
+
+.Bouton {
+	float:right;
+	
+/*	padding-right:22px;	
+	margin-top:-10px;*/
+	
+}
+
+ .Bouton .b1{
+	float:left;
+	display:block;
+	width:15px;
+	height:33px;
+	background-image:url(/Skins/AdminV2/Img/BoutonGauche.png);
+	background-repeat:no-repeat;
+	border:0;
+}
+ .Bouton .b2{
+	float:left;
+	display:block;
+	background-image:url(/Skins/AdminV2/Img/BoutonMilieu.png);
+	left:15px;
+	padding-top:10px;
+	height:23px;
+	color:white;
+	border:0;
+}
+.OrangeButton, .Bouton .b2 a,.Bouton .b2 a:hover,.Bouton .b2 a:visited{
+	text-decoration:none;
+	font-weight:normal;
+	width:100px;
+	text-align:center;
+	display:block;
+	font-size:10px;
+	color:white;
+}
+ .Bouton .b2 input{
+	background:none;
+	color:#FFFFFF;
+	height:29px;
+	padding-bottom:20px;
+	margin-top:-5px;
+	text-align:center;
+	border:none;
+	outline:0;
+	cursor:pointer;
+}
+ .Bouton .b3{
+	float:left;
+	display:block;
+	width:15px;
+	height:33px;
+	background-image:url(/Skins/AdminV2/Img/BoutonDroite.png);
+	background-repeat:no-repeat;
+	border:0;
+}

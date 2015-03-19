@@ -1,0 +1,8 @@
+div#CartePS {
+	width: 264px;
+	height: 173px;
+	margin-top: 45px;
+	margin-left: 25px;
+	cursor: pointer;
+	background: url('./carte_02.png');
+}

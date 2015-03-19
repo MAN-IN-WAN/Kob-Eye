@@ -1,0 +1,119 @@
+html, body
+{
+	margin:0;
+	padding:0;
+	width:100%;
+	height:100%;
+	font-size:7pt;
+	font-family:Arial;
+	background:url(/Skins/AdminV2/Img/TraitBack.jpg);
+
+}
+input,textarea {
+	font: 6pt Verdana, Geneva, Arial, Helvetica, sans-serif;
+	background-color: #D4D4D4;
+	border: 1px solid #787878;
+	padding-bottom:2px;
+	margin-top: 2px;
+	width:200px;
+	padding-left:5px;
+	margin-bottom: 5px;
+	
+}
+#Global{
+	width:100%;
+	height:100%;
+}
+/*-----------------modifier/ajouter----------------*/
+
+.PetiteBoiteDeDialogue .header .logo
+{
+	background:url(/Skins/AdminV2/Img/Structure/Logo.jpg) left no-repeat;
+	height:130px;
+}
+
+.PetiteBoiteDeDialogue .header
+{
+	background:url(/Skins/AdminV2/Img/Structure/Arabesque.jpg) right no-repeat;
+}
+
+.PetiteBoiteDeDialogue{
+	display:block;
+	position:absolute;
+	-moz-border-radius:5px 5px;
+
+	margin:-139px auto 0px -300px;
+	top:50%;
+	left:50%;
+	font-size:8pt;
+	width:600px;
+	height:278px;
+	z-index:25;
+	border:1px solid #BBCDDE;
+	background-color:white;
+	background:url(/Skins/AdminV2/Img/Structure/Degrade.jpg) repeat-x #D4E1E7;
+	/*background-image : url(/Skins/AdminV2/Img/TraitBack.jpg);*/
+}
+.PetiteBoiteDeDialogue .Message{
+        padding-top:10px;
+	font-size:8pt;
+
+}
+.PetiteBoiteDeDialogue .Nav{
+	width:100%;
+	height:40px;
+	font-size:9pt;
+	text-align:center;
+}
+.PetiteBoiteDeDialogue .Titre{
+    background:#057390;
+    color:white;
+    padding:1px;
+    padding-left:2px;
+    height:18px;
+    line-height:18px;
+    margin:0px;
+    padding:0px;
+    padding-left:5px;
+    overflow:hidden;
+    margin-bottom:10px;
+}
+/* -------------------------Formulaire-------------------------- */
+.Form {
+	text-align:center;
+	font-size:7pt;
+
+	background:white;
+}
+.Form .Texte{
+    float:left;
+    width:40%;
+    text-align:right;
+	padding-top:5px;
+	padding-bottom:3px;
+	color:black;
+	font-size:8pt;
+}
+.Form .Valeur{
+	padding-left:10px;
+
+
+}
+
+input.KEBouton,a.KEBouton
+{
+    background:#ef6200 repeat-x top left;
+    -moz-border-radius:5px 5px;
+    border:0px;
+    color:white;
+    padding:0px 16px 0px 16px;
+    display:block;
+    text-align:center;
+    margin:2px auto 5px auto;
+    border:0px;
+    width:auto;
+    font-size:8pt;
+    float:right;
+    margin-right:12%;
+    cursor:pointer;
+}

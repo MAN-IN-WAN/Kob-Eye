@@ -1,0 +1,67 @@
+<SCHEMA>
+
+	<OBJECTCLASS title="Categorie" driver="mysql" AccessPoint="1" master="1" Description="Categories"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" className="MasCategorie" Class="Modules/Mas/Class/MasCategorie.class.php">
+		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" category="Catégorie" description="Catégorie">Categorie</PROPERTIES>
+		<PROPERTIES type="text" category="Catégorie">Description</PROPERTIES>
+		<PROPERTIES type="file" category="Catégorie">Icone</PROPERTIES>
+		<PROPERTIES type="boolean" default="1" category="Catégorie">Publier</PROPERTIES>
+		<PROPERTIES type="order" category="Catégorie">Ordre</PROPERTIES>
+		<FKEY card="0,1" data="Categorie,Id" category="Catégorie" description="Catégorie mère">CategorieId</FKEY>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Document" driver="mysql" logEvent="1" AccessPoint="1" Description="Articles" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" className="MasDocument" Class="Modules/Mas/Class/MasDocument.class.php">
+		<FUNCTION name="Reaffectation" listOnly="1" icon="userManagement" label="Réaffectation" description="Réaffectation">
+			<ACTION>
+				<![CDATA[
+					{"action":"invoke","method":"callMethod","params":{
+						"method":"object","data":{"module":"Mas","objectClass":"Document"},
+						"function":"SaveAll"}
+					}
+				]]>
+			</ACTION>
+			<ACTION></ACTION>
+		</FUNCTION>
+		<PROPERTIES type="varchar" searchOrder="1" filterMode="generic" obligatoire="1" category="Document" listWidth="400" list="1">Titre</PROPERTIES>
+		<PROPERTIES type="text" category="Document">Description</PROPERTIES>
+		<PROPERTIES type="date" obligatoire="1" defaultValue="Now" searchOrder="2" category="Document" description="Date de publication" listDescr="Date" list="2">DatePublication</PROPERTIES>
+		<PROPERTIES type="date" obligatoire="0" searchOrder="3" category="Document" description="Date d'expiration" listDescr="Expire" list="3">DateExpiration</PROPERTIES>
+		<PROPERTIES type="file" obligatoire="1" category="Document">Document</PROPERTIES>
+		<FKEY card="1,1" data="Categorie,Id" height="160" category="Document" description="Catégorie">CategorieId</FKEY>
+		<RKEY card="0,n" module="Systeme" data="Role,Id" height="160" hideChild="1" category="Document" description="Rôles">RoleId</RKEY>
+		<VIEW title="DocumentUser" default="0" filters="">
+			<OBJECTCLASS title="Document" select="Id,Titre,Description,DatePublication,DateExpiration,userCreate" filters="" order="Titre" orderType="ASC">
+				<JOIN type="outer" title="UserDocument" on="Id" target="DocumentId" filters="">
+					<PROPERTIES type="date" >DateConsultation</PROPERTIES>
+					<PROPERTIES type="int" alias="UserDocumentId">Id</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="PieceJointe" driver="mysql" logEvent="1" AccessPoint="1" Description="Articles"  Icon="[None]" >
+		<PROPERTIES type="file" >Fichier</PROPERTIES>
+		<FKEY card="1,1" data="Document,Id" hidden="1">DocumentId</FKEY>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="UserDocument" driver="mysql" AccessPoint="1" Description="Articles"  Icon="[None]" >
+		<FKEY card="1,1" module="Systeme" data="User,Id" hidden="1">UserId</FKEY>
+		<FKEY card="1,1" data="Document,Id" hidden="1">DocumentId</FKEY>
+		<PROPERTIES type="date" category="Document" description="Date de consultation">DateConsultation</PROPERTIES>
+		<VIEW title="DocumentList" default="0" filters="">
+			<OBJECTCLASS title="UserDocument" select="Id,DateConsultation" filters="">
+				<JOIN type="outer" title="Document" on="DocumentId" target="Id" filters="" order="Titre" orderType="ASC">
+					<PROPERTIES type="varchar" >Titre</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>		
+		<VIEW title="UserList" default="0" filters="">
+			<OBJECTCLASS title="UserDocument" select="Id,DateConsultation" filters="">
+				<JOIN type="outer" module="Systeme" title="User" on="UserId" target="Id" filters="" order="Nom" orderType="ASC">
+					<PROPERTIES type="varchar" >Nom</PROPERTIES>
+					<PROPERTIES type="varchar" >Prenom</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>		
+	</OBJECTCLASS>
+
+</SCHEMA>

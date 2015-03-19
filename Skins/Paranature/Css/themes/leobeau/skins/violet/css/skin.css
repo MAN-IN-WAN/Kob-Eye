@@ -1,0 +1,277 @@
+/* theme color green
+ color: #82b064
+ */
+body{
+	background-image: url(../images/motifcarbone2.jpg);
+	background-color:#191919;
+	background-position: center 250px;
+	background-repeat: repeat-y;
+}
+.sidebar .block:nth-child(2n+1) .title_block, .dropdown-menu a:hover .menu-title, #header_right #search_block_top input.button, #header_logo ,
+.sidebar .block:nth-child(even) .title_block{
+/*	background-color: #82b064;*/
+	background-color: #B1599e;
+}
+
+#shopping_cart a {
+	background-image: url(../images/icon-cart.png);
+}
+
+.banner-welcome-wrap .buytheme a {
+	background-image: url("../images/bt_custom.png")
+}
+a:hover, a:focus, .idTabs .selected, .breadcrumb, .sidebar .block .block_content ul li a.selected, .sidebar .block .block_content ul li a:hover, .breadcrumb > .active, .navbar .nav > li > a:focus, .navbar .nav > li > a:hover, #header .topbar {
+	/*color: #82b064;*/
+	color: #B1599e;
+}
+
+.navbar .nav li.dropdown > a:hover .caret, .navbar .nav li.dropdown > a:focus .caret {
+	border-bottom-color: #B1599e;
+	border-top-color: #B1599e;
+}
+
+.leocustomhomepos1 .span6 {
+	background: none repeat scroll 0 0 #B1599e;
+}
+.leocustomhomepos1 .row-fluid .span6:nth-child(2) {
+	background: none repeat scroll 0 0 #B1599e;
+}
+.banner-welcome-wrap .buytheme a {
+	text-shadow: 0 1px 0 #B1599e
+}
+
+.blockleocategoriestabs .htabs li a:hover, .blockleocategoriestabs .htabs li.active a {
+	background-image: url("../images/icon-tabcate-hover.png");
+	color: #82b064;
+}
+.content-bottom .wishlist {
+	background-color: #B1599e !important;
+}
+/*.content-bottom .btn {
+	background-color: #B1599e
+}
+
+#cart_block #cart-buttons .button_small, #footer #newsletter_block_left input.button_mini, #add_to_cart:hover, input[type="button"]:hover, input[type="submit"]:hover, input[type="reset"]:hover, .button:hover, button:hover, input.button_mini:hover, input.button_small:hover, input.button:hover, input.button_large:hover, input.button_mini_disabled, input.button_small_disabled, input.button_disabled, input.button_large_disabled, input.exclusive_mini:hover, input.exclusive_small:hover, input.exclusive:hover, input.exclusive_large:hover, input.exclusive_mini_disabled:hover, input.exclusive_small_disabled:hover, input.exclusive_disabled:hover, input.exclusive_large_disabled:hover, a.button_mini:hover, a.button_small:hover, a.button:hover, a.button_large:hover, a.exclusive_mini:hover, a.exclusive_small:hover, a.exclusive:hover, a.exclusive_large:hover, span.button_mini:hover, span.button_small:hover, span.button:hover, span.button_large:hover, span.exclusive_mini:hover, span.exclusive_small:hover, span.exclusive:hover, span.exclusive_large:hover, span.exclusive_large_disabled:hover {
+	background-image: url(../images/bg-button-hover.png);
+	background-position: 0 0;
+	border-color: #B1599e
+}
+.content-bottom .btn {
+	background-color: #B1599e;
+}
+#cart_block #cart-buttons .button_small, #footer #newsletter_block_left input.button_mini, #add_to_cart:hover, input[type="button"]:hover, input[type="submit"]:hover, input[type="reset"]:hover, .button:hover, button:hover, input.button_mini:hover, input.button_small:hover, input.button:hover, input.button_large:hover, input.button_mini_disabled, input.button_small_disabled, input.button_disabled, input.button_large_disabled, input.exclusive_mini:hover, input.exclusive_small:hover, input.exclusive:hover, input.exclusive_large:hover, input.exclusive_mini_disabled:hover, input.exclusive_small_disabled:hover, input.exclusive_disabled:hover, input.exclusive_large_disabled:hover, a.button_mini:hover, a.button_small:hover, a.button:hover, a.button_large:hover, a.exclusive_mini:hover, a.exclusive_small:hover, a.exclusive:hover, a.exclusive_large:hover, span.button_mini:hover, span.button_small:hover, span.button:hover, span.button_large:hover, span.exclusive_mini:hover, span.exclusive_small:hover, span.exclusive:hover, span.exclusive_large:hover, span.exclusive_large_disabled:hover {
+	background-image: url("../images/bg-button-hover.png");
+	background-position: 0 0;
+	border-color: #B1599e;
+}*/
+#page .container .btn{
+	color:white;
+}
+#page .container .btn:hover{
+	color:#B1599e;
+}
+
+#footer-bottom a {
+	color: #B1599e;
+}
+
+.sidebar .block:nth-child(2n+1) .title_block, .dropdown-menu a:hover .menu-title, #header_right #search_block_top input.button, #header_logo {
+	background-color: #B1599e;
+}
+#shopping_cart a {
+	background-image: url("../images/icon-cart.png");
+}
+.banner-welcome-wrap .buytheme a {
+	background-image: url("../images/bt_custom.png");
+}
+a:hover, a:focus, .idTabs .selected, .breadcrumb, .sidebar .block .block_content ul li a.selected, .sidebar .block .block_content ul li a:hover, .breadcrumb > .active, .navbar .nav > li > a:focus, .navbar .nav > li > a:hover, #header .topbar {
+	color: #B1599e;
+}
+.navbar .nav li.dropdown > a:hover .caret, .navbar .nav li.dropdown > a:focus .caret {
+	border-bottom-color: #B1599e;
+	border-top-color: #B1599e;
+}
+.leocustomhomepos1 .span6 {
+	background: none repeat scroll 0 0 #B1599e;
+}
+.leocustomhomepos1 .row-fluid .span6:nth-child(2) {
+	background: none repeat scroll 0 0 #B1599e;
+}
+.banner-welcome-wrap .buytheme a {
+	text-shadow: 0 1px 0 #B1599e;
+}
+.blockleocategoriestabs .htabs li a:hover, .blockleocategoriestabs .htabs li.active a {
+	background-image: url("../images/icon-tabcate-hover.png");
+	color: #B1599e;
+}
+.content-bottom .wishlist {
+	background-color: #B1599e !important;
+}
+
+#footer-bottom a {
+	color: #B1599e;
+}
+
+/*BombeBarre*/
+#promotetop, #top-breadcrumb {
+background: url("../images/bombebarre.png") repeat-x scroll 0 bottom #2e2e2e;
+border-bottom: 0;
+color: white;
+
+}
+.customhtml {
+	margin:0;
+}
+
+/* Menu */
+#page header#header .header .container .row-fluid{
+	background: #2e2e2e;
+	color: white;
+}
+
+.nav.megamenu .menu-title{
+	color:white;
+}
+.dropdown-menu{
+	background: #2e2e2e;
+}
+
+/* Top menu */
+header#header .topbar .container{
+	background: #2e2e2e;
+	line-height:50px;
+	opacity: 0.8;
+}
+header#header .topbar .container #header_user{
+	margin-left:316px;
+}
+header#header .topbar .container #topminibasket{
+	margin-right:10px;
+}
+header#header .topbar .container #header_nav .kenyan_coffee_rg{
+	padding:9px 0 8px 35px;
+}
+
+/* HEADER LOGO */
+a#header_logo{
+	position: absolute;
+	width: 300px;
+	top:-50px;
+	padding:22px 0;
+}
+
+/* Block centre */
+#center_column .title_block {
+	background: #B1599e;
+	border: 0;
+	color: white;
+}
+ /* Carousel */
+ .carousel-control:hover, .carousel-control:focus {
+	background-image: url("../images/bt-next-prev-hover.png");
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	filter: alpha(opacity=100);
+	opacity: 1;
+}
+ .carousel-control, .carousel-control {
+	background-image: url("../images/bt-next-prev1.png");
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	filter: alpha(opacity=100);
+	opacity: 1;
+}
+/** Footer **/
+#footer {
+	background: url("../images/bombebarre.png") repeat-x scroll 0 0 #2e2e2e;
+	border-top: 0;
+	color: #FFFFFF;
+	padding-top: 76px;
+	position: relative;
+}
+#footer-bottom{
+	background: url("../images/bombebarre.png") repeat-x scroll 0 0 #2e2e2e;
+	border-top: 0;
+	color: #FFFFFF;
+	position: relative;
+	padding:0;
+}
+
+#footer #newsletter_block_left {
+	margin: 3px 15px;
+}
+footer#footer section.footer div.overlay-kb {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	/*background: url(../images/shape-slideshow.png) repeat 0 0;*/
+	background:black;
+	opacity: 0.6;
+	top: 0;
+	left: 0;
+}
+footer#footer section.footer div.container{position:relative;}
+footer#footer section.footer{
+	background-image: url(../images/motifcarbone2.jpg);
+	background-color:#191919;
+	background-position: center top;
+	background-repeat: repeat-y;
+	border:0;
+	position: relative;
+}
+li.lof-text > p {
+	padding:8px 0 15px 40px;
+}
+#lofadva-pos-1 .lof-block-wrap {
+	margin-top: -63px;
+}
+.lofadvafooter {
+	color: #bec1c6;
+	padding: 5px 0;
+}
+
+/* Carousel */
+
+#myCarousel .carousel-inner > .item {
+	padding:0;
+}
+.carousel-control{
+	z-index:1;
+}
+/* Images */
+.img-accueil{
+	margin-bottom:5px;
+}
+
+/* MEGAMENU */
+.nav.megamenu .dropdown-menu.menu-content.mega-cols{
+	left: -295px;
+	float: none;
+	top: 45px;
+	right: 5px;
+}
+.level0 > .item-menu > a > span.menu-title{
+	font-size: 1.4em;
+	text-decoration: underline;
+	margin: 10px 0 0 0;
+	background: none;
+	padding: 0 0 0 5px;
+}
+.level1 > .item-menu > a > span.menu-title{
+	font-size: 1.1em;
+	font-weight: normal;
+}
+
+/* PRODUITS */
+.carousel .carousel-inner .product-container h5.s_title_block{
+	min-height:50px;
+	max-height:50px;
+}
+
+.megamenu .cols3 {
+	background: black;
+}
+
+/** BREADCRUMBS **/
+.breadcrumb a {
+	color: white;
+	text-shadow: none;
+}

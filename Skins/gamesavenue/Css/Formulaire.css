@@ -1,0 +1,184 @@
+/*--------------------FORM CONTACT----------------------------*/
+#FormContact {
+	vertical-align:top;
+}
+div.LigneForm {
+	font-family: Arial;
+	font-size: 12px;
+	color: #000000;
+	padding-left:10px;
+	padding-right:10px;
+	padding-top:10px;
+	overflow:hidden;
+	font-weight:normal;
+	overflow:hidden;
+}
+div.LigneForm label {
+	font-family: Arial;
+	font-size: 11px;
+	color: #000000;
+	padding-left:10px;
+	padding-right:10px;
+	padding-top:10px;
+	overflow:hidden;
+}
+div.LigneForm input{
+	float:right;
+}
+div.LigneForm select {
+	float:right;
+}
+div.LigneForm textarea{
+	float:right;
+}
+
+#FormContact input.BtnContact {
+	background:url(/Skins/gamesavenue/Images/BoutonEnvoyer.png) no-repeat;
+	width:122px;
+	height:36px;
+	border:none;
+	outline:0;
+	cursor:pointer;
+	float:right;
+}
+
+
+.Adresse{
+	margin-bottom:20px;
+}
+
+
+#FormContact label{
+/*	color:#51143D;*/
+/*	color:#ffffff;*/
+	color:#000000;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	float:left;
+	display:block;
+/*	width:120px;*/
+}
+
+* html #FormContact label{
+	position:relative;
+}
+
+#FormContact input,  #FormContact select{
+/* 	float:left; */
+	width:340px;
+}
+ #FormContact textarea{
+/* 	float:left; */
+	width:340px;
+	color:#000000;
+}
+#FormContact .BtnContact{
+	padding-left:290px;
+}
+
+#FormContact .BtnContact input{
+/* 	float:none; */
+	cursor:pointer;
+	border:none;
+	background:none;
+	width:179px;
+	height:36px;
+}
+
+* html #FormContact .BtnContact input{
+	padding-left:250px;
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/Skins/ArtfxTrainingV2/Img/BoutonEnvoyer.png', sizingMethod='crop');
+}
+
+#FormContact div[class="BtnContact"] input{
+	text-indent:-250px;
+	background:url(/Skins/ArtfxTrainingV2/Img/BoutonEnvoyer.png) no-repeat;
+}
+
+#FormContact div[class="BtnContact"] input:hover{
+	background-position:0 -36px;
+}
+
+*+html #FormContact .BtnContact input{
+	text-indent:0;
+	padding-left:250px;
+}
+/*-------------------MESSAGES-------------------------*/
+
+.Error {
+	background-color:#FFBEBE;
+	border:2px solid #BA0000;
+}
+
+.BlocError{
+	padding:10px 20px 10px;
+	background-color:#FFBEBE;
+	margin-bottom:10px;
+	margin-top:10px;
+}
+
+.BlocError p{
+	color:#BF2B2E;
+	font-size:14px;
+	font-style:italic;
+/* 	margin-bottom:5px; */
+}
+
+.BlocError li{
+	font-weight:bold;
+	margin-left:10px;
+}
+
+.Obligatoire p{
+	margin-bottom:20px;
+	margin-left:120px;
+	color:#c30b0b;
+	font-style:italic;
+}
+
+.Message{
+	color:#BF2B2E;
+	font-size:14px;
+	font-style:italic;
+	margin-top:10px;
+}
+div[id="Login"]{
+	overflow:auto;
+}
+
+#Login{
+	float:right;
+	margin-top:10px;
+}
+
+.BlocLogin{
+	float:left;
+	margin-right:5px;
+}
+
+.BlocLogin input{
+	width:120px;
+}
+
+input.Connexion{
+	background-color:#ffffff;
+	border:none;
+	height:20px;
+	margin-left:320px;
+	margin-top:5px;
+	padding-left:5px;
+	text-align:left;
+	width:90px;
+	color:#000000;
+	cursor:pointer;
+}
+
+* html .BlocLogin input.Connexion{
+	display:block;
+	padding-left:20px;
+}
+
+*+html .BlocLogin input.Connexion{
+	display:block;
+	padding-left:20px;
+}

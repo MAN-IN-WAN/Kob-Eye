@@ -1,0 +1,542 @@
+/*---- RECHERCHE ----*/
+div#RechercheResidence select {
+	width: 135px;
+	border: 1px solid #525252;
+	background: white;
+	margin: 2px 15px 0 0;
+}
+
+div.RechercheListeResidence {
+	padding-bottom: 10px;
+}
+
+div.RechercheListeResidence select {
+	text-transform: uppercase;
+	font-size: 10px;
+	font-family: arial;
+}
+
+div.RechercheListeResidence button {
+	display: block;
+	float: right;
+	position: relative;
+	width: 100px;
+	height: 22px;
+	border: none;
+	background: url('../Img/sprite.png') 0 -1347px no-repeat;
+	cursor: pointer;
+}
+div.RechercheListeResidence button:hover {
+	background-position: -117px -1347px;
+}
+
+/*---- RECHERCHE ACCUEIL ----*/
+div#RechercheAccueil {
+	background: url('../Img/sprite.png') 0 -145px no-repeat;
+	padding: 5px 30px 0;
+}
+
+div#RechercheAccueil div.RechercheListeResidence select {
+	width: 160px;
+}
+
+div#RechercheAccueil div.RechercheListeResidence button {
+	width: 200px;
+	background-position: 0 -787px;
+}
+
+div#RechercheAccueil div.RechercheListeResidence button:hover {
+	width: 200px;
+	background-position: -220px -787px;
+}
+
+/*---- LISTE ----*/
+
+div#MenuResidence {
+	position: relative;
+	display: block;
+	float: left;
+	width: 165px;
+}
+
+div#MenuResidence li {
+	list-style: none;
+}
+
+div#MenuResidence li.current a.lvl1 {
+	color: #0070ba;
+}
+
+
+div#MenuResidence ul li ul li.current a.lvl2 {
+	color: #0070ba;
+}
+
+div#MenuResidence li.lvl1 {
+	padding: 0 0 2px;
+}
+
+
+div#MenuResidence a.lvl1 {
+	display: block;
+	padding: 5px 15px;
+	background: url("../Img/sprite.png") no-repeat 0 -857px;
+}
+
+div#MenuResidence ul.lvl2 {
+	margin-left: 15px;
+	border-top: 1px dotted #525252;
+}
+
+div#MenuResidence li.lvl2 {
+	padding: 2px 0 2px 12px;
+	background: url("../Img/sprite.png") no-repeat 0 -882px;
+}
+
+div#ListeResidence {
+	margin-left: 200px;
+}
+
+div#ListeResidenceBordered {
+	border-top: 1px dotted #0070ba;
+}
+
+div.BlocResidence {
+	height: 115px;
+	position: relative;
+	border-bottom: 1px dotted #525252;
+	border-left: 1px dotted #525252;
+}
+
+div.BRPair {
+	background: #EEE;
+}
+
+div.BlocResidence img.Icone {
+	position: absolute;
+	top: 10px;
+	left: 5px;
+}
+
+div.BlocResidence div.Pictos {
+	position: absolute;
+	bottom: 2px;
+	left: 5px;
+}
+
+div.BlocResidence h2, div.BlocResidence h3, div.BlocResidence div.Livraison, div.BlocResidence div.SousTitreCommercial {
+	position: absolute;
+	left: 120px;
+	margin: 0;
+	font-size: 12px;
+	font-family:Arial;
+}
+
+div.BlocResidence h3 {
+	top: 10px;
+}
+
+div.BlocResidence h2 {
+	text-transform: uppercase;
+	color: #0070ba;
+	top: 30px;
+}
+
+div.BlocResidence div.Livraison {
+	top: 50px;
+}
+
+div.BlocResidence div.SousTitreCommercial {
+	top: 70px;
+	color: red;
+	text-transform: uppercase;
+}
+
+div.BlocResidence div.ActionsResidence {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+div.ActionsResidence a {
+	display: block;
+	padding: 10px 20px 3px;
+	background: url("../Img/sprite.png") no-repeat;
+}
+
+div.ActionsResidence a.VoirResidence {
+	background-position: -616px -841px;
+}
+
+div.ActionsResidence a.Simulateurs {
+	background-position: -616px -867px;
+}
+
+div.ActionsResidence a.Contact {
+	background-position: -616px -893px;
+}
+
+div.ActionsResidence a.EnvoyerAmi {
+	background-position: -616px -919px;
+}
+
+div.Pagination {
+	margin-top: 10px;
+	text-align: center;
+	background: url('../Img/sprite.png') repeat-x 0 -1401px;
+}
+
+div.PaginationBody {
+	background: white;
+	display: inline;
+	padding: 0 2px;
+}
+
+div.Pagination a {
+	padding: 0 5px;
+	margin: 0 1px;
+}
+
+div.Pagination a.PagiFirst, div.Pagination a.PagiPrev, div.Pagination a.PagiNext, div.Pagination a.PagiLast {
+	background: url("../Img/sprite.png") no-repeat white;
+}
+
+div.Pagination a.PagiFirst {
+	background-position: -1px -921px;
+}
+
+div.Pagination a.PagiPrev {
+	background-position: 5px -940px;
+}
+
+div.Pagination a.PagiNext {
+	background-position: 5px -979px;
+}
+
+div.Pagination a.PagiLast {
+	background-position: 0 -961px;
+}
+
+
+/*---- DETAIL ----*/
+div#ContenuResidence {
+	margin-left: 200px;
+	border-left: 1px dotted #525252;
+}
+
+table#Onglets {
+	width: 100%;
+	border-bottom: 1px dotted #525252;
+}
+
+table#Onglets td {
+	width: 25%;
+	text-align: center;
+	text-transform: uppercase;
+	padding: 5px 0;
+	background: url("../Img/sprite.png") no-repeat 0 -1108px;
+}
+
+table#Onglets td.first {
+	background: none;
+}
+
+table#Onglets td.current {
+	background: #0070ba;
+}
+
+table#Onglets td.current a {
+	color: white;
+	cursor: auto;
+}
+
+table#Onglets td.current a:hover {
+	text-decoration: none;
+}
+
+div.BlocDetailResidence {
+	padding: 15px;
+	overflow: hidden;
+}
+
+/*----- ANIM -----*/
+#AnimDetail {
+	position: relative;
+	height:345px;
+}
+
+#AnimCadre {
+	position: relative;
+	overflow: hidden;
+	height:345px;
+}
+
+#AnimCadre img {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+
+#AnimDetailMasque {
+	position: absolute;
+	right: -30px;
+	bottom: -8px;
+	top: 0;
+	left: -30px;
+}
+
+#AnimDetailLegende {
+	background: url("../Img/Legende.png");
+	bottom: 0;
+	font-size: 13px;
+	text-transform: uppercase;
+	font-weight: bold;
+	color: #0070BA;
+	left: -30px;
+	padding: 8px;
+	position: absolute;
+	right: -30px;
+}
+
+#AnimDetailLegende div.DateLivraison {
+	background: url("../Img/sprite.png") no-repeat 30px -1225px;
+	padding-left: 54px;
+}
+
+#AnimDetailLegende div.Pictos {
+    bottom: 2px;
+    position: absolute;
+    right: 35px;
+}
+
+#AnimPages div.AnimNumber {
+	display: block;
+	float: left;
+	position: relative;
+	width: 19px;
+	text-align: center;
+	padding: 1px 0;
+	margin-right: 5px;
+	background:url("../Img/Btn.png") no-repeat;
+	color: white;
+	cursor: pointer;
+}
+
+#AnimPages div.AnimNumberActive {
+	background:url("../Img/BtnActif.png") no-repeat;
+	cursor: auto;
+}
+
+#AnimDetail #LogoBBC {
+	background: url("../Img/sprite.png") no-repeat -904px -257px;
+	height: 53px;
+	position: absolute;
+	right: -20px;
+	top: -20px;
+	width: 53px;
+}
+
+
+/*---- LOGEMENTS ----*/
+table.Logements, table.Logements table {
+	width: 100%;
+}
+
+table.Logements th {
+	padding: 5px 0;
+	background: #d6d4d4;
+	border-top: 1px dotted #525252;
+	border-bottom: 1px dotted #525252;
+}
+
+table.Logements table td {
+	background: none;
+	border: none;
+	border-left: 1px dotted #525252;
+	width: 25%;
+	font-size: 11px;
+}
+
+table.Logements th table td {
+	text-transform: uppercase;
+	font-weight: normal;
+	padding: 0;
+}
+
+table.Logements td table td {
+	text-align:center;
+	padding: 3px 0;
+}
+
+table.Logements table td.noborder, table.Logements table td.noborder {
+	border: none;
+}
+
+table.Logements td {
+	padding: 5px 0;
+	background: #f0f0f0;
+	border-top: 1px dotted #525252;
+	border-bottom: 1px dotted #525252;
+}
+
+/*---- PLANS ----*/
+div.BlocPlan {
+	display: block;
+	float: left;
+	position: relative;
+	width: 165px;
+	padding: 5px 30px;
+}
+
+div.BlocPlan h4 {
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 12px;
+}
+
+ul.ListePlans {
+	padding: 10px;
+	overflow: hidden;
+	border: 1px solid #8b8b8b;
+	border-top: none;
+}
+
+ul.ListePlans li {
+	list-style: none;
+	display: block;
+	float: left;
+	position: relative;
+	width: 170px;
+}
+
+#PopupPlan {
+	position: absolute;
+	width: 690px;
+	background: white;
+}
+
+div.ClosePopup {
+	background: url('../Img/sprite.png') no-repeat 0 -1386px;
+	cursor: pointer;
+	height: 16px;
+	width: 16px;
+	position: absolute;
+	right: 0;
+	top: 20px;
+}
+
+div.TopPopup0 {
+	background: url('../Img/infobulle-1.jpg') repeat-x;
+	height: 16px;
+}
+
+div.TopPopup1 {
+	background: url('../Img/infobulle-2.jpg') repeat-x;
+	height: 16px;
+}
+
+div.TopPopup2 {
+	background: url('../Img/infobulle-3.jpg') repeat-x;
+	height: 16px;
+}
+
+div.BlocPlan a.VoirPlans {
+	display: block;
+	text-align: right;
+	padding: 5px 10px;
+	background: url('../Img/sprite.png') no-repeat 35px -1144px;
+}
+
+div.MasquePlans {
+	background: url("../Img/fond-plan.png") repeat;
+	bottom: 0;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+/*---- LOCALISER ----*/
+div#Localiser {
+	position: relative;
+	padding: 0 10px 0 0;
+	text-align: center;
+	min-height:90px;
+}
+
+
+div.Localiser {
+	margin-bottom: 20px;
+}
+
+div#ChangeCarte {
+	position: absolute;
+	top: 0;
+	right: 30px;
+}
+
+div#Localiser a.changeCarte {
+	display: block;
+    font-weight: bold;
+    margin: 3px;
+    padding: 1px 6px 3px;
+	color: white;
+	background:url("../Img/Btn.png") no-repeat;
+}
+
+div#Localiser a.currentCarte {
+	background:url("../Img/BtnActif.png") no-repeat;
+}
+
+div#Localiser a.currentCarte {
+	color: white;
+	cursor: auto;
+}
+
+div#Localiser a.currentCarte:hover {
+	text-decoration: none;
+}
+
+img.Plan {
+	border: 1px solid #bebebe;
+}
+
+a.TelechargerDV {
+	display: block;
+	text-transform: uppercase;
+	padding: 15px 0 5px 30px;
+	background: url('../Img/sprite.png') no-repeat 6px -1280px;
+}
+
+/*---- FOOTER ----*/
+div#FooterResidence {
+	position: relative;
+	height: 30px;
+}
+
+div#EspaceVente {
+	padding-left: 20px;
+	padding-left: 242px;
+	background: url("../Img/sprite.png") no-repeat 220px -1257px;
+	font-size: 12px;
+	line-height: 15px;
+}
+
+div#FooterResidence a.Print {
+	padding: 10px 0 10px 30px;
+	background: url('../Img/sprite.png') no-repeat -413px -542px;
+	position: absolute;
+	right: 170px;
+	top: 0;
+}
+
+div#FooterResidence a.RetourRecherche {
+	padding: 10px 0 10px 30px;
+	background: url('../Img/sprite.png') no-repeat -413px -573px;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+

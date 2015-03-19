@@ -1,0 +1,54 @@
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/mootools.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/mootools-more.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/suivi_variable.js[/HEADER]
+//[HEADER JS]Skins/[!Systeme::Skin!]/Js/swfobject.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/overlay.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/multiBox.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/functions.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/utils.js[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Css/multiBox.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Css/bootstrap.btn.css[/HEADER]
+[HEADER CSS]Skins/Public/Css/slickmap.css[/HEADER]
+
+//[HEADER JS]Skins/[!Systeme::Skin!]/Js/jquery.172.min.js[/HEADER]
+//[HEADER JS]Skins/[!Systeme::Skin!]/Js/jquery.fancybox-1.3.4.pack.js[/HEADER]
+//[HEADER CSS]Skins/[!Systeme::Skin!]/Css/jquery.fancybox-1.3.4.css[/HEADER]
+
+//[LIB libCas|LB]
+//[!M:=[!LB::check()!]!]
+
+<link rel="shortcut icon" href="http://intranet.unibio.fr/Skins/Intranet/Img/favicon.png">
+
+<div id="Header">
+	<div id="Bando" class="fullWidth" style="position:relative">
+		//<a href="/" style="position:absolute;top:155px;right:5px;" title="Définir comme page d'accueil">Définir comme page d'accueil</a>
+		<a href="/" style="position:absolute;top:0;right:0;left:0;bottom:0;display:block;" title="Retour à l'accueil"></a>
+		//<div id="Connecte" class="fullWidth">Bienvenue [!Systeme::User::Prenom!] [!Systeme::User::Nom!]</div>
+	</div>
+</div>
+
+<div id="MenuBar">
+	
+	<div id="Menu" class="fullWidth">
+		[MODULE Systeme/Menu]
+	</div>
+</div>
+
+<div id="Main">
+	<div id="Content" class="fullWidth">
+		[COMPONENT Systeme/FilAriane/Default?]
+		[DATA]
+	</div>
+</div>
+
+//<div id="Footer">
+//	<div id="Bottom" class="fullWidth">
+//	        [IF [!Lien!]!=]
+//			[MODULE Systeme/Version]
+//		[/IF]
+//		[MODULE Systeme/Structure/Footer]
+//	</div>
+//</div>
+<div id="FooterAbtel" >
+	<div class="fullWidth"><a href="http://agence-web.abtel.fr" target="_blank">Abtel agence web @ 2012</a></div>
+</div>

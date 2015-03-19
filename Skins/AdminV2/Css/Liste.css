@@ -1,0 +1,145 @@
+/* LISTE */
+
+.TabListeLien,.TabListeLien:hover{
+	text-decoration:none;
+	display:block;
+	height:16px;
+	clear:both;
+}
+
+*+html .TabListeLien,.TabListeLien:hover{
+/* 	margin-top:5px; */
+}
+
+
+
+.TabListeLien:hover div div a{
+	text-decoration:none;
+	color:white;
+	
+}
+.TabListeLien a,.TabListeLien a:hover.TabListeLien a:visited {
+	text-decoration:none;
+	display:block;
+	font-weight:normal;
+	font-size:7pt;
+}
+.TabListeCache {
+	display:none;	
+	margin-left:152px;
+}
+.AjoutPanier{
+	position:relative;
+	display:block;
+	margin-top:-11px;
+}
+.TabListeLien:hover  div.TabListeCache,.TabListeLien:focus  div.TabListeCache{
+	font-weight:bold;
+	position:fixed;
+	display:block;
+	top:280px;
+	left:-133px;
+	bottom:0px;
+	width:312px;
+	z-index:1500;
+}
+/*.TabListeLien:visited + div.TabListeCache.TabListeLien:active + div.TabListeCache,div.TabListeCache:target{
+	display:block;
+	margin-left:152px;
+	font-weight:normal;
+}*/
+.TabListeLien:hover > div.BlocRound div ,.TabListeLien:hover > div.BlocRound b ,.TabListeLien:hover > div div.BlocRound b ,.TabListeLien:hover > div div.BlocRound div {
+	background-color:#8BB2C2;
+	color:white;
+	text-decoration:none;
+	margin-top:0;
+	margin-bottom:0;
+}
+/*  */
+
+table.Liste{
+    width:100%;
+}
+
+table.Liste thead tr th
+{
+/*    background:url(/Skins/AdminV2/Img/Liste/ListeFlecheTitre.jpg) no-repeat;*/
+    background-color:#057390;
+    color:white;
+    padding-left:3px;
+    -moz-border-radius:3px 3px;
+    height:18px;
+    text-align:left;
+}
+
+table.Liste tbody tr td
+{
+    background-color:white;
+    text-align:left;
+    -moz-border-radius:3px 3px;
+    height:18px;
+    padding-left:5px;
+}
+
+table.ListeFull .NumCol,
+table.ListeFull .UsersCol{
+    width:5%;
+}
+table.ListeFull .CreaCol,
+table.ListeFull .ModifCol{
+    width:10%;
+}
+table.ListeFull .ActionsCol{
+    width:8%;
+}
+table.ListeCol .NumCol,
+table.ListeMini .NumCol
+{
+    width:20%;
+}
+
+table.ListeCol .NomCol
+{
+    width:60%;
+}
+
+table.ListeMini .NomCol
+{
+    width:65%;
+}
+
+table.ListeMini .ActionsCol
+{
+    width:15%;
+}
+
+table.ListeSelect .CreaCol,
+table.ListeSelect .ModifCol
+{
+    width:10%;
+}
+
+table.ListeSelect .NumCol
+{
+    width:10%;
+}
+
+table.ListeSelect .ActionsCol
+{
+    width:12%;
+}
+
+table.ListeSelect .UsersCol
+{
+    width:10%;
+}
+
+table.ListeSelect .NomCol
+{
+    width:55%;
+}
+
+table.Liste tbody tr:hover td
+{
+    background:#D4E1E7;
+}

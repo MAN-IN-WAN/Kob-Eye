@@ -1,0 +1,118 @@
+{"form":{"type":"TitleWindow","id":"FormStockEntree","title":"ENTREE EN STOCK",
+"kobeyeClass":{"module":"Cave","objectClass":"Operation"},
+"localProxy":{
+	"actions":{
+		"proxy_kobeye_status":{"action":[
+			{"action":"invoke","method":"groupState","params":{"group":"updated","property":"enabled","updated":1}}
+		]}
+	}
+},
+"components":[
+	{"type":"VBox","percentWidth":100,"percentHeight":100,"minWidth":550,"setStyle":{"paddingLeft":5,"paddingRight":5,"paddingTop":5,"paddingBottom":5},
+	"verticalScrollPolicy":"auto","minWidth":0,"minHeight":0,
+	"components":[
+		{"type":"EditContainer","id":"edit",//"percentWidth":100,"percentHeight":100,
+		"components":[
+			{"type":"VBox","setStyle":{"verticalGap":2,"paddingLeft":6,"paddingRight":6,"paddingTop":0,"paddingBottom":2},
+			"percentWidth":100,"percentHeight":100,
+			"components":[
+				{"type":"DataField","dataField":"TypeId","defaultValue":1},
+				{"type":"DataField","dataField":"SousTypeId","defaultValue":1},
+				{"type":"FormItem","label":"Operateur","labelWidth":80,"components":[
+					{"type":"ComboBox","dataField":"OperateurId","width":222,"required":0,
+					"kobeyeClass":{"module":"Cave","objectClass":"Operateur","identifier":"Id","label":"Operateur","select":"Id,Operateur"},
+					"actions":[
+						{"type":"init","action":"loadData"}
+					]}
+				]},
+				{"type":"FormItem","label":"Date - Heure","labelWidth":80,"components":[
+					{"type":"DateTimeField","dataField":"Date","validType":"date","required":0,"defaultValue":"Now","startingHour":7,"increment":10}
+				]},
+				{"type":"Spacer","height":10},
+				{"type":"HGroup","gap":2,"components":[
+					{"type":"Spacer","width":92},
+					{"type":"Label","text":"Cuve","width":62,"setStyle":{"color":"0xffffff","fontWeight":"bold"}},
+					{"type":"Label","text":"Capacité","width":55,"setStyle":{"color":"0xffffff","fontWeight":"bold"}},
+					{"type":"Label","text":"Contenu","width":55,"setStyle":{"color":"0xffffff","fontWeight":"bold"}},
+					{"type":"Label","text":"Lot","width":82,"setStyle":{"color":"0xffffff","fontWeight":"bold"}},
+					{"type":"Label","text":"Catégorie","width":170,"setStyle":{"color":"0xffffff","fontWeight":"bold"}},
+					{"type":"Label","text":"Couleur","width":80,"setStyle":{"color":"0xffffff","fontWeight":"bold"}}
+				]},
+				{"type":"FormItem","labelWidth":80,"label":"Origine","percentWidth":100,"components":[
+					{"type":"HGroup","gap":2,"components":[
+						{"type":"TextInput","dataField":"Cuve","width":40,"editable":0},
+						{"type":"PopupButton","dataField":"CuveId","icon":"dataBase","height":20,
+						"kobeyeClass":{"module":"Cave","objectClass":"Cuve","setFilter":"EtatCuveId<20","form":"PopupList.json"},
+						"exoFields":{"Cuve":"Cuve","Capacite":"Capacite","Volume":"Contenu","CuveLotId":"LotId","Lot":"Lot","CategorieId":"CategorieId","CouleurId":"CouleurId"}},
+						{"type":"TextInput","dataField":"Capacite","width":55,"setStyle":{"textAlign":"end"},"editable":0},
+						{"type":"TextInput","dataField":"Contenu","width":55,"setStyle":{"textAlign":"end"},"editable":0},
+						{"type":"HGroup","gap":2,"components":[
+							{"type":"TextInput","dataField":"Lot","width":60,"editable":0},
+							{"type":"PopupButton","dataField":"LotId","icon":"dataBase","height":20,
+							"kobeyeClass":{"module":"Cave","objectClass":"Lot","setFilter":"EtatLotId=1","form":"PopupList.json"},
+							"exoFields":{"Lot":"Lot","CategorieId":"CategorieId","CouleurId":"CouleurId"}}
+						]},
+						{"type":"ComboBox","dataField":"CategorieId","width":170,"required":0,
+						"kobeyeClass":{"module":"Cave","objectClass":"Categorie","identifier":"Id","label":"Categorie","select":"Id,Categorie"},
+						"actions":[
+							{"type":"init","action":"loadData"}
+						]},
+						{"type":"ComboBox","dataField":"CouleurId","width":80,"required":0,
+						"kobeyeClass":{"module":"Cave","objectClass":"Couleur","identifier":"Id","label":"Couleur","select":"Id,Couleur"},
+						"actions":[
+							{"type":"init","action":"loadData"}
+						]}
+					]}
+				]},
+				{"type":"Spacer","height":10},
+				{"type":"FormItem","label":"Volume","labelWidth":80,"components":[
+					{"type":"TextInput","dataField":"Volume","id":"Volume","width":75,"maxChars":10,"validType":"float","setStyle":{"textAlign":"end"},"required":0}
+				]},
+				{"type":"FormItem","label":"Producteur","labelWidth":80,"components":[
+					{"type":"HGroup","gap":2,"components":[
+						{"type":"TextInput","dataField":"Societe","width":200,"editable":0},
+						{"type":"PopupButton","dataField":"TiersId","icon":"dataBase","height":20,
+						"kobeyeClass":{"module":"Cave","objectClass":"Tiers","setFilter":"TypeTiersId=1","form":"PopupList.json"},
+						"exoFields":{"Societe":"Societe"}}
+					]}
+				]},
+				{"type":"FormItem","label":"Numero DAE","labelWidth":80,"components":[
+					{"type":"TextInput","dataField":"NumeroDae","width":222,"required":0}
+				]},
+				{"type":"Spacer","height":10},
+				{"type":"FormItem","label":"Notes","labelWidth":80,"components":[
+					{"type":"TextArea","dataField":"Notes","width":350,"height":70,"required":0}
+				]}
+			]}
+		],
+		"events":[
+			{"type":"start","action":"loadValues","params":{"needsId":1}},
+			{"type":"proxy","triggers":[
+				{"trigger":"save","action":"invoke","method":"saveData","params":{"closeForm":1}}
+//				{"trigger":"delete","action":"invoke","method":"deleteData"}
+//				{"trigger":"cancel","action":"invoke","method":"cancelEdit"}
+			]}
+		]},
+		{"type":"Spacer","percentHeight":100},
+		{"type":"HGroup","percentWidth":100,
+		"components":[
+			{"type":"Spacer"},
+			{"type":"Button","id":"ok","label":"$__Ok__$","width":100,"enabled":0,"stateGroup":"updated",
+			"events":[
+				{"type":"click","action":"invoke","method":"callMethod","params":{"method":"object","function":"SaveOperation","args":"dv:*","closeForm":1}}
+			]},
+//			{"type":"Button","id":"delete","label":"$__Delete__$","width":100,"stateGroup":"admin",
+//			"events":[
+//				{"type":"click","action":"invoke","objectID":"edit","method":"deleteData"}
+//			]},
+			{"type":"Button","id":"cancel","label":"$__Cancel__$","width":100,
+			"events":[
+				{"type":"click","action":"invoke","objectID":"parentForm","method":"closeForm"}
+			]}
+		]}		
+	]}
+],
+"popup":"modal",
+"actions":[{"type":"close","action":"confirmUpdate"}
+]}
+}

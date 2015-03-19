@@ -1,0 +1,43 @@
+/*----------------------------Onglet Module------------------------*/
+
+.tabs {list-style:none; padding:0px 0 0 23px; margin:0px 23px 0px 0;height:42px;overflow:hidden;}
+.tabs li {display:block; float:left; margin:0 -5px -0px 0;}
+.tabs li a {display:block; text-decoration:none; position:relative;}
+
+.tabs li a b.p1 {display:block; width:16px; height:42px; background:url(/Skins/AdminV2/Img/Structure/normal_l.png); float:left;}
+.tabs li a b.p2 {display:block; height:42px; padding:0 23px; background:url(/Skins/AdminV2/Img/Structure/normal_m.png) repeat-x; float:left; text-align:center; line-height:42px; color:#000; font-weight:normal; font-family:verdana; font-size:7pt;}
+.tabs li a b.p3 {display:block; width:16px; height:42px; background:url(/Skins/AdminV2/Img/Structure/normal_r.png); float:left; position:relative; z-index:100;}
+
+.tabs li a:hover,
+.tabs li a:focus,
+.tabs li a:active
+{border:0; z-index:700;}
+.tabs li a:hover b.p1,
+.tabs li a:focus b.p1,
+.tabs li a:active b.p1
+{position:relative; z-index:100; background:url(/Skins/AdminV2/Img/Structure/hover_l.png); cursor:pointer;}
+.tabs li a:hover b.p2,
+.tabs li a:focus b.p2,
+.tabs li a:active b.p2
+{position:relative; z-index:100; background:url(/Skins/AdminV2/Img/Structure/hover_m.png) repeat-x; color:#000; cursor:pointer;}
+.tabs li a:hover b.p3,
+.tabs li a:focus b.p3,
+.tabs li a:active b.p3
+{position:relative; z-index:100; background:url(/Skins/AdminV2/Img/Structure/hover_r.png); cursor:pointer;}
+
+.tabs li.Selected a {z-index:800;}
+.tabs li.Selected a b.p1,
+.tabs li.Selected a:hover b.p1,
+.tabs li.Selected a:active b.p1
+{position:relative; z-index:200; background:url(/Skins/AdminV2/Img/Structure/select_l.png); cursor:default;color:#fff;}
+.tabs li.Selected a b.p2,
+.tabs li.Selected a:hover b.p2,
+.tabs li.Selected a:active b.p2
+{position:relative; z-index:200; background:url(/Skins/AdminV2/Img/Structure/select_m.png) repeat-x; color:#fff; cursor:default;}
+.tabs li.Selected a b.p3,
+.tabs li.Selected a:hover b.p3,
+.tabs li.Selected a:active b.p3
+{position:relative; z-index:200; background:url(/Skins/AdminV2/Img/Structure/select_r.png); cursor:default;}
+
+
+

@@ -1,0 +1,7 @@
+[STORPROC [!Query!]|P]
+	[METHOD P|Set]
+		[PARAM]Publier[/PARAM]
+		[PARAM][!State!][/PARAM]
+	[/METHOD]
+	[METHOD P|Save][/METHOD]
+[/STORPROC]

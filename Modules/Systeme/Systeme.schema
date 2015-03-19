@@ -1,0 +1,248 @@
+<SCHEMA>
+	<OBJECTCLASS title="Group" driver="mysql" logEvent="1" master="1" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png" Description="Groupes" Heritage="0" Class="Modules/Systeme/Class/Group.class.php">
+		<PROPERTIES type="private"  searchOrder="1" obligatoire="1" category="Intitulé" formLabel="1">Nom</PROPERTIES>
+		<PROPERTIES type="private"  searchOrder="2" category="Intitulé">Commentaire</PROPERTIES>
+		<PROPERTIES type="varchar" query="Explorateur/_Dossier/Skins/_Dossier::Nom::Nom" category="Intégration">Skin</PROPERTIES>
+		<PROPERTIES type="image" category="Intégration" description="Arrière plan">ArrierePlan</PROPERTIES>
+		<PROPERTIES type="color" category="Intégration" description="Couleur Arrière plan">Couleur</PROPERTIES>
+		<FKEY card="0,n" data="Role,Id" category="Intégration" description="Rôles">RoleId</FKEY>
+		<FKEY card="0,1" data="Group,Id" category="Intégration" description="Groupe parent">GroupParent</FKEY>
+		<FUNCTION>exportMenus</FUNCTION>
+		<FUNCTION>importMenus</FUNCTION>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="User" driver="mysql" logEvent="1" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Contact.png" Description="Utilisateurs" Heritage="0" Class="Modules/Systeme/Class/User.class.php">
+		<PROPERTIES type="varchar" length="100" searchOrder="1" obligatoire="1" category="Connexion"  formLabel="1" list="1">Login</PROPERTIES>
+		<PROPERTIES type="varchar"  length="255" searchOrder="2" obligatoire="0" category="Contact" list="2">Nom</PROPERTIES>
+		<PROPERTIES type="varchar"  length="10" searchOrder="3" obligatoire="0" category="Contact">Initiales</PROPERTIES>
+		<PROPERTIES type="mail" length="255" obligatoire="1" searchOrder="4" unique="1" category="Contact" list="4">Mail</PROPERTIES>
+		<PROPERTIES type="varchar"  length="100" obligatoire="0" category="Contact" list="3">Prenom</PROPERTIES>
+		<PROPERTIES type="varchar"  length="255" obligatoire="0" category="Contact">Adresse</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="0" category="Contact">CodPos</PROPERTIES>
+		<PROPERTIES type="varchar"  length="100" obligatoire="0" category="Contact">Ville</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" obligatoire="0" category="Contact">Tel</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" obligatoire="0" category="Contact">Mobile</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Contact">Fax</PROPERTIES>
+		<PROPERTIES type="varchar" length="100" values="France" category="Contact">Pays</PROPERTIES>
+		<PROPERTIES type="text" category="Description">Commentaire</PROPERTIES>
+		<PROPERTIES type="text" category="Description">Informations</PROPERTIES>
+		<PROPERTIES type="image" category="Description">Avatar</PROPERTIES>
+		<PROPERTIES type="varchar" query="Explorateur/_Dossier/Skins/_Dossier::Nom::Nom" category="Intégration">Skin</PROPERTIES>
+		<PROPERTIES type="varchar" query="Explorateur/_Dossier/Skins/LoginApaloosa/swf/_Fichier::Nom::Nom" category="Appaloosa">Style</PROPERTIES>
+		<PROPERTIES type="image" category="Description" description="Image Arrière plan">ArrierePlan</PROPERTIES>
+		<PROPERTIES type="color" category="Description" description="Couleur Arrière plan">Couleur</PROPERTIES>
+		<PROPERTIES type="conf" query="GENERAL::LANGUAGE" category="Intégration">Langue</PROPERTIES>
+		<PROPERTIES type="random" hidden="1">CodeVerif</PROPERTIES>
+		<PROPERTIES type="password" obligatoire="1" category="Connexion">Pass</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Connexion" list="5">Admin</PROPERTIES>
+		<PROPERTIES type="boolean" default="1" category="Connexion" list="6">Actif</PROPERTIES>
+		<PROPERTIES type="date" category="Connexion" description="Date d'Expiration" >DateExpiration</PROPERTIES>
+		<PROPERTIES type="date" category="Connexion" description="Dernière connexion">LastConnection</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Connexion">ExternalAuth</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Connexion">Privilege</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Connexion" list="7" listDescr="Dev">Developper</PROPERTIES>
+		<PROPERTIES type="order" category="Intégration">Ordre</PROPERTIES>
+		<FKEY card="1,n" data="Group,Id">GroupId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Site" driver="sqlite" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Wiki2.png" generateUrl="0" Class="Modules/Systeme/Class/Site.class.php">
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé" list="1">Domaine</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" description="Mettre UA" values="Mobile,Desktop">UserAgent</PROPERTIES>
+		<PROPERTIES type="text" description="Contenu du robots.txt">Robots</PROPERTIES>
+		<PROPERTIES type="text" category="Code Google Analytics">AnalyticsCode</PROPERTIES>
+		<PROPERTIES type="text" category="Clé Piwik">PiwikCle</PROPERTIES>
+		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png">Motsclefs</FUNCTION>
+		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png">Sitemap</FUNCTION>
+		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png">Reset</FUNCTION>
+		<FKEY card="1,1" data="User,Id" inherit="Group">UserId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Page" driver="sqlite" Icon="/Skins/AdminV2/Img/IconAqua/Wiki2.png" generateUrl="0" Class="Modules/Systeme/Class/Page.class.php">
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé" list="2">Url</PROPERTIES>
+      		<PROPERTIES type="varchar" auto="1">FromUrl</PROPERTIES>
+		<PROPERTIES type="varchar" auto="1">MD5</PROPERTIES>
+		<PROPERTIES type="varchar">LastMod</PROPERTIES>
+		<PROPERTIES type="metat" list="4">Title</PROPERTIES>
+		<PROPERTIES type="metad">Description</PROPERTIES>
+		<PROPERTIES type="metak">Keywords</PROPERTIES>
+		<PROPERTIES type="image" list="1">Image</PROPERTIES>
+		<PROPERTIES category="Clef" type="varchar"  searchOrder="2" list="5">PageModule</PROPERTIES>
+		<PROPERTIES category="Clef" type="varchar"  searchOrder="3" list="6">PageObject</PROPERTIES>
+		<PROPERTIES category="Clef" type="int"  searchOrder="4" list="7">PageId</PROPERTIES>
+		<PROPERTIES type="varchar" values="daily,weekly,monthly" default="monthly">ChangeFreq</PROPERTIES>
+		<PROPERTIES type="varchar" default="0.5">Priority</PROPERTIES>
+		<PROPERTIES type="boolean" default="1" list="3">Publier</PROPERTIES>
+		<PROPERTIES type="boolean" default="1">Valid</PROPERTIES>
+		<FKEY card="1,1" data="Site,Id">SiteId</FKEY>
+		<FKEY card="0,n" data="Tag,Id">Tags</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Menu" logEvent="1" driver="mysql" AccessPoint="0" Icon="/Skins/AdminV2/Img/folder.gif" Class="Modules/Systeme/Class/Menu.class.php">
+		<PROPERTIES type="varchar" searchOrder="2" category="Intitulé">Url</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé" special="multi">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" category="Intitulé" special="multi">SousTitre</PROPERTIES>
+		<PROPERTIES type="varchar" category="Emplacement">Lien</PROPERTIES>
+		<PROPERTIES type="boolean" default="1" category="Publication">Affiche</PROPERTIES>
+		<PROPERTIES type="alias" category="Emplacement">Alias</PROPERTIES>
+		<PROPERTIES type="varchar" category="Emplacement">Filters</PROPERTIES>
+		<PROPERTIES type="varchar" category="Emplacement" description="Préfixe Codebarre">PrefixeCodebarre</PROPERTIES>
+		<!-- style -->
+		<PROPERTIES type="file" category="Style" description="Icone du menu">Icone</PROPERTIES>
+		<PROPERTIES type="image" category="Style" description="Image de fond">BackgroundImage</PROPERTIES>
+		<PROPERTIES type="color" category="Style">BackgroundColor</PROPERTIES>
+		<PROPERTIES type="varchar" category="Style" description="Css Classe">ClassCss</PROPERTIES>
+		<!-- configuration -->
+		<PROPERTIES type="order" category="Publication">Ordre</PROPERTIES>
+		<PROPERTIES type="boolean" category="Position" default="0" >MenuHaut</PROPERTIES>
+		<PROPERTIES type="boolean" category="Position" default="0">MenuBas</PROPERTIES>
+		<PROPERTIES type="boolean" category="Position" default="1">MenuPrincipal</PROPERTIES>
+		<PROPERTIES type="boolean" category="Position" default="0" description="Tente de générer automatiquement les sous menus dans la navigation">AutoSubGen</PROPERTIES>
+		<!-- meta -->
+		<PROPERTIES type="metat" special="multi">Title</PROPERTIES>
+		<PROPERTIES type="metad" special="multi">Description</PROPERTIES>
+		<PROPERTIES type="metak">Keywords</PROPERTIES>
+		<PROPERTIES type="modele" category="Configuration" query="Systeme/ActiveTemplate::Id::Nom">Template</PROPERTIES>
+		<FKEY card="0,1" data="Menu,Id">MenuParent</FKEY>
+		<FKEY card="0,n" data="User,Id" inherit="Group">UserId</FKEY>
+		<FKEY card="0,n" data="Group,Id">GroupId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Access" logEvent="1" driver="mysql" AccessPoint="1" Icon="/Skins/AdminV2/Img/brick.png">
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" values="Systeme,Vitrine,Planogramme" category="Definition" description="Module">ObjectModule</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="3" category="Definition">ObjectClass</PROPERTIES>
+		<PROPERTIES type="varchar" category="Definition">Alias</PROPERTIES>
+		<PROPERTIES type="varchar" category="Definition">Filters</PROPERTIES>
+		<PROPERTIES type="order" category="Definition">Ordre</PROPERTIES>
+		<PROPERTIES type="int" values="0::ACCEPT,1::REJECT" default="0" category="Definition">Type</PROPERTIES>
+		<PROPERTIES type="int" values="0::READ,1::READ-WRITE" default="0" category="Definition">Rights</PROPERTIES>
+		<FKEY card="0,n" data="User,Id" description="User list" category="Config">UserId</FKEY>
+		<FKEY card="0,n" data="Group,Id" description="Group list" category="Config">GroupId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Config" driver="mysql" AccessPoint="0" Icon="/Skins/AdminV2/Img/brick.png">
+		<PROPERTIES type="varchar" searchOrder="1" query="Explorateur/_Dossier/Skins/_Dossier::Nom">Skin</PROPERTIES>
+		<PROPERTIES type="text">Data</PROPERTIES>
+		<FKEY card="1,1" data="User,Id" behaviour="Integrated">UserId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Role" driver="mysql" order="Title" orderType="ASC" AccessPoint="0" Description="Rôles" Icon="/Skins/AdminV2/Img/brick.png" Dico="1">
+		<PROPERTIES type="varchar" unique="1" searchOrder="1">Title</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Event" driver="mysql" AccessPoint="0" Dico="1" Icon="/Skins/AdminV2/Img/brick.png" Class="Modules/Systeme/Class/Event.class.php">
+		<PROPERTIES type="varchar" searchOrder="1" listWidth="350" description="Name">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" length="30" searchOrder="2" description="Type">EventType</PROPERTIES>
+		<PROPERTIES type="varchar" length="30" searchOrder="3">EventModule</PROPERTIES>
+		<PROPERTIES type="varchar" length="30" searchOrder="4">EventObjectClass</PROPERTIES>
+		<PROPERTIES type="int" searchOrder="5">EventId</PROPERTIES>
+		<PROPERTIES type="text">Data</PROPERTIES>
+		<FKEY card="1,1" data="User,Id" >UserId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Donnee" driver="mysql" AccessPoint="0" Icon="/Skins/AdminV2/Img/brick.png">
+		<PROPERTIES type="titre" searchOrder="1" obligatoire="1" category="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="file" searchOrder="2" category="Emplacement">Lien</PROPERTIES>
+		<PROPERTIES type="file" searchOrder="3" category="Emplacement">Alternatif</PROPERTIES>
+		<PROPERTIES type="varchar" values="Image,Video,Son,Defaut,Plugin,Html,Pub" length="20" searchOrder="3" category="Intitulé">Type</PROPERTIES>
+		<PROPERTIES type="text"  >Html</PROPERTIES>
+		<PROPERTIES type="order"  >Ordre</PROPERTIES>
+		<FKEY card="1,n" data="Menu,Id" behaviour="Integrated">MenuParent</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Fichier" driver="mysql" AccessPoint="0">
+		<PROPERTIES type="titre" length="50" searchOrder="1" obligatoire="1" category="Informations">Titre</PROPERTIES>
+		<PROPERTIES type="file" length="255" searchOrder="2" special="multi" category="Informations">Fichier</PROPERTIES>
+		<FKEY card="1,1" data="Menu,Id" >MenuId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Connexion" driver="sqlite" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Tasks.png">
+		<PROPERTIES type="varchar" length="16" searchOrder="1" category="Connexion">Ip</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" category="Connexion">Host</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" category="Connexion">Session</PROPERTIES>
+		<PROPERTIES type="varchar" length="25" category="Informations">Langue</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" category="Informations">Navigateur</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" category="Informations">Referent</PROPERTIES>
+		<PROPERTIES type="varchar" length="25" category="Informations">LangueSite</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" category="Informations">LastUrl</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" category="Informations">FirstUrl</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" searchOrder="2" category="Connexion">Utilisateur</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" category="Connexion">Domaine</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="ActiveTemplate" AccessPoint="0" Dico="0" driver="mysql" Icon="/Skins/AdminV2/Img/IconAqua/Wiki2.png" Class="Modules/Systeme/Class/ActiveTemplate.class.php">
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="0" category="Intitulé">Nom</PROPERTIES>
+		<PROPERTIES type="template" searchOrder="3" obligatoire="0" category="Definition">Template</PROPERTIES>
+		<PROPERTIES type="templateconfig" category="Definition">TemplateConfig</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="4" category="Intitulé">Default</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Alert" driver="mysql" Icon="[None]">
+		<PROPERTIES category="Alert"	type="varchar"																>Title</PROPERTIES>
+		<PROPERTIES category="Alert"	type="date"																	>Date</PROPERTIES>
+		<PROPERTIES category="Alert"	type="varchar"																>Tag</PROPERTIES>
+		<PROPERTIES category="Alert"	type="varchar"																>AlertModule</PROPERTIES>
+		<PROPERTIES category="Alert"	type="varchar"																>AlertObject</PROPERTIES>
+		<PROPERTIES category="Alert"	type="int"																	>ObjectId</PROPERTIES>
+		<PROPERTIES category="Alert"	type="varchar" lenght="16"	values="Moderate,Critical"						>Urgency</PROPERTIES>
+		<PROPERTIES category="Alert"	type="boolean" default="0"													>Done</PROPERTIES>
+		<PROPERTIES category="Alert"	type="varchar"																>Icon</PROPERTIES>
+		<PROPERTIES category="Alert"	type="varchar" length="50"													>Author</PROPERTIES>
+		<PROPERTIES category="Alert"	type="int" default="0"														>UserId</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="AlertUser" driver="mysql" Icon="[None]"  Class="Modules/Systeme/Class/AlertUser.class.php">
+		<PROPERTIES type="int"											>AlertId</PROPERTIES>
+		<PROPERTIES type="double"										>Time</PROPERTIES>
+		<PROPERTIES type="boolean" default="0"							>Read</PROPERTIES>
+		<VIEW title="AlertUserList" default="1">
+			<OBJECTCLASS title="AlertUser" select="" filters="">
+				<JOIN type="outer" title="Alert" on="AlertId" target="Id">
+					<PROPERTIES type="image" list="1" >Icon</PROPERTIES>
+					<PROPERTIES type="boolean" list="2" >Done</PROPERTIES>
+					<PROPERTIES type="date" list="3" >Date</PROPERTIES>
+					<PROPERTIES type="varchar" list="4" >Title</PROPERTIES>
+					<PROPERTIES type="varchar" >Tag</PROPERTIES>
+					<PROPERTIES type="int" >ObjectId</PROPERTIES>
+					<PROPERTIES type="varchar" list="5">Author</PROPERTIES>
+					<PROPERTIES type="int" >UserId</PROPERTIES>
+					<JOIN type="outer" title="User" on="UserId" target="Id">
+						<PROPERTIES type="varchar" >Nom</PROPERTIES>
+						<PROPERTIES type="varchar" >Initiales</PROPERTIES>
+					</JOIN>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="AlertTime" driver="mysql" Icon="[None]">
+		<PROPERTIES type="double">Time</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="AlertTask" driver="mysql" Icon="[None]"  Class="Modules/Systeme/Class/AlertTask.class.php">
+		<CATEGORY title="Task">
+			<PROPERTIES type="varchar"																>Title</PROPERTIES>
+			<PROPERTIES type="text"																	>Detail</PROPERTIES>
+			<PROPERTIES type="date"																	>StartDate</PROPERTIES>
+			<PROPERTIES type="date"																	>EndDate</PROPERTIES>
+			<PROPERTIES type="int"	description="Delai en seconde pour le rappel"								>Reminder</PROPERTIES>
+			<PROPERTIES type="date" auto="1"														>RemindDate</PROPERTIES>
+			<PROPERTIES type="varchar" description="Module"											>TaskModule</PROPERTIES>
+			<PROPERTIES type="varchar" description="Object class"									>TaskObject</PROPERTIES>
+			<PROPERTIES type="int" description="Object Id"											>ObjectId</PROPERTIES>
+			<PROPERTIES type="int" 	values="1::Dossiers,2::Holidays"																>TypeId</PROPERTIES>
+			<PROPERTIES type="boolean" default="0"													>Private</PROPERTIES>
+			<PROPERTIES type="boolean" default="0"													>Alert</PROPERTIES>
+			<FKEY card="1,1" data="User,Id" description="User">UserId</FKEY>
+			<FKEY card="1,1" data="Role,Id" description="Role">RoleId</FKEY>
+		</CATEGORY>
+		<VIEW title="AlertTaskList" default="1">
+			<OBJECTCLASS title="AlertTask" select="Id,Title,Detail,StartDate,EndDate,RemindDate,TaskModule,TaskObject,ObjectId,Private,TypeId" filters="">
+				<JOIN type="outer" title="TaskType" on="TypeId" target="Id">
+					<PROPERTIES type="varchar">Type</PROPERTIES>
+					<PROPERTIES type="varchar">Color</PROPERTIES>
+					<PROPERTIES type="varchar">Icon</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="TaskType" order="Id" orderType="ASC" driver="mysql" master="0" AccessPoint="0" Dico="1" Icon="[None]">
+		<PROPERTIES category="Task type" type="varchar" length="32" 					>Type</PROPERTIES>
+		<PROPERTIES category="Task type" type="varchar"									>Color</PROPERTIES>
+		<PROPERTIES category="Task type" type="varchar" 								>Icon</PROPERTIES>
+	</OBJECTCLASS>
+
+	<!--TAGS -->
+	<OBJECTCLASS title="Tag" driver="sqlite" master="0" AccessPoint="0" Dico="1" Icon="[None]">
+		<PROPERTIES category="Description" type="varchar" length="32" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES category="Description" type="varchar" searchOrder="2">Canonic</PROPERTIES>
+	</OBJECTCLASS>
+    	<OBJECTCLASS title="TagBlackList" Description="Liste des mots à exclure de la recherche" driver="sqlite"  Dico="1">
+        	<PROPERTIES type="varchar" length="30" searchOrder="1" obligatoire="1">Titre</PROPERTIES>
+    	</OBJECTCLASS>
+
+</SCHEMA>

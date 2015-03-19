@@ -1,0 +1,409 @@
+/*
+ * jTweetsAnywhere V1.2.1
+ * http://thomasbillenstein.com/jTweetsAnywhere/
+ *
+ * Copyright 2010, Thomas Billenstein
+ * Licensed under the MIT license.
+ * http://thomasbillenstein.com/jTweetsAnywhere/license.txt
+ */
+
+.jta-tweet-list
+{
+    padding: 0;
+    list-style: none;
+}
+
+.jta-tweet-list-item
+{
+   display: inline;
+    float: left;
+    overflow: hidden;
+	margin-bottom: 15px;
+	padding-bottom: 15px;
+}
+
+.jta-tweet-list-item:last-child
+{
+	border-bottom: none!important;
+}
+
+.jta-tweet-profile-image
+{
+	width: 48px;
+	display: inline;
+	float: left;
+}
+
+.jta-tweet-profile-image-link
+{
+}
+
+.jta-tweet-profile-image img
+{
+	width: 38px;
+	height: 38px;
+	 border: 2px solid #EEEEEE;
+    margin: 0 2px 2px 0;
+}
+
+.jta-tweet-body
+{
+}
+
+.jta-tweet-body-list-profile-image-present
+{
+	margin-left: 58px;
+}
+
+.jta-tweet-user-name
+{
+	font-weight: bold;
+}
+
+.jta-tweet-user-screen-name
+{
+}
+
+.jta-tweet-user-full-name
+{
+    color: #900;
+}
+
+.jta-tweet-text
+{
+}
+
+.jta-tweet-user-screen-name-link,
+.jta-tweet-user-full-name-link,
+.jta-tweet-a,
+.twitter-anywhere-user
+{
+    color: #00BBFF;
+	outline:medium none;
+	text-decoration: none;
+}
+
+.jta-tweet-user-screen-name-link:hover,
+.jta-tweet-user-full-name-link:hover,
+.jta-tweet-a:hover,
+.twitter-anywhere-user:hover
+{
+    color: #900;
+	text-decoration: underline;
+}
+
+.jta-tweet-link
+{
+}
+
+.jta-tweet-link:hover
+{
+}
+
+.jta-tweet-hashtag
+{
+}
+
+.jta-tweet-hashtag:hover
+{
+}
+
+.jta-tweet-attributes
+{
+	display: block;
+    color: #999;
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+.jta-tweet-timestamp
+{
+}
+
+.jta-tweet-source
+{
+}
+
+.jta-tweet-inreplyto
+{
+}
+
+.jta-tweet-location
+{
+}
+
+.jta-tweet-retweeter
+{
+}
+
+.jta-tweet-timestamp-link,
+.jta-tweet-source-link a,
+.jta-tweet-inreplyto-link,
+.jta-tweet-location-link,
+.jta-tweet-retweeter-link
+{
+    color: #999;
+	text-decoration: none;
+}
+
+.jta-tweet-timestamp-link:hover,
+.jta-tweet-source-link a:hover,
+.jta-tweet-inreplyto-link:hover,
+.jta-tweet-location-link:hover,
+.jta-tweet-retweeter-link:hover
+{
+    color: #999;
+	text-decoration: underline;
+}
+
+.jta-tweet-list-controls
+{
+	margin-top: 20px;
+}
+
+.jta-tweet-list-controls-button
+{
+	padding: 5px;
+	padding-left: 20px;
+	padding-right: 20px;
+	text-align: center;
+    border: 1px solid #999;
+}
+
+.jta-tweet-list-controls-button:hover
+{
+	color: black;
+	background-color: #999;
+	cursor: pointer;
+}
+
+.jta-tweet-list-controls-button-more
+{
+}
+
+.jta-tweet-list-controls-button-prev
+{
+}
+
+.jta-tweet-list-controls-button-next
+{
+	margin-left: 10px;
+}
+
+.jta-tweet-list-autorefresh-trigger
+{
+	padding: 8px 0px 8px 0px;
+	margin-bottom: 10px;
+	text-align: center;
+    border: 1px solid #999;
+}
+
+.jta-tweet-list-autorefresh-trigger:hover
+{
+	color: black;
+	background-color: #999;
+	cursor: pointer;
+}
+
+.jta-tweet-list-autorefresh-trigger-content
+{
+}
+
+.jta-follow-button
+{
+}
+
+
+.jta-tweet-box
+{
+}
+
+
+.jta-connect-button
+{
+}
+
+
+.jta-login-info
+{
+}
+
+.jta-login-info-profile-image
+{
+	width: 48px;
+	display: inline;
+	float: left;
+}
+
+.jta-login-info-profile-image img
+{
+	width: 48px;
+	height: 48px;
+}
+
+.jta-login-info-block
+{
+	margin-left: 58px;
+}
+
+.jta-login-info-screen-name
+{
+}
+
+.jta-login-info-sign-out
+{
+	width: 97px;
+	margin-top: 2px;
+	padding: 1px;
+	text-align: center;
+    border: 1px solid #999;
+}
+
+.jta-login-info-sign-out:hover
+{
+	color: black;
+	background-color: #999;
+	cursor: pointer;
+}
+
+
+.jta-loading
+{
+	margin: 0;
+    padding: 8px 0px 8px 0px;
+}
+
+.jta-error
+{
+	margin: 0;
+    padding: 8px;
+    color: #000;
+    background-color: #f00
+}
+
+.jta-nodata
+{
+	margin: 0;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.jta-clear
+{
+	clear: both;
+	display: block;
+	overflow: hidden;
+	visibility: hidden;
+	width: 0;
+	height: 0;
+}
+
+.lof-wrapper {
+    -moz-border-radius:5px; 
+	-webkit-border-radius:5px;
+	border-radius:5px;
+    font-family: Helvetica Neue,Arial,Helvetica,'Liberation Sans',FreeSans,sans-serif;
+    font-size: 11px;
+    height: 60px;
+    overflow: hidden;
+}
+
+.lof-wrapper .lof-logo {
+    float: left;
+    height: 60px;
+    width: 170px;
+}
+
+.lof-wrapper .lof-stage {
+    float: left;
+    height: 60px;
+    overflow: hidden;
+    position: relative;
+    width: 630px;
+}
+.lof-wrapper .lof-fadeleft {
+    height: 60px;
+    position: absolute;
+    width: 85px;
+    z-index: 2;
+}
+.lof-wrapper .lof-faderight {
+   -moz-border-radius:5px; -webkit-border-radius:5px; border-radius:5px;
+    height: 60px;
+    margin: 0 0 0 440px;
+    position: absolute;
+    width: 85px;
+    z-index: 2;
+}
+ul.newsticker li {
+	float: left; /* important: display inline gives incorrect results when you check for elem's width */
+	margin: 0;
+	padding: 0;
+	background: none;
+	display:inline;
+}
+.lof-wrapper .lof-logo {
+    float: left;
+    height: 60px;
+    width: 170px;
+}
+
+.twitter-ticker h2.tut{
+	color:white;
+	font-family:"Myriad Pro",Arial,Helvetica,sans-serif;
+	font-size:16px;
+	padding:12px 0 0 58px;
+	text-transform:uppercase;
+	background:none;
+	text-shadow:2px 1px 6px #333;
+}
+.twitter-ticker{
+    display: none;
+    height: 190px;
+    text-align: left;
+    width: 230px;
+	margin: 0;
+    overflow: hidden;
+}
+
+.tweet-container{
+	height:600px;
+	width:245px!important;
+	overflow:hidden;
+}
+.twitIcon{
+	position:absolute;
+	top:-25px;
+	left:-10px;
+	width:64px;
+	height:64px;
+}
+
+.top-bar{
+	height:45px;
+	background:url(../images/top_bar.png) repeat-x;
+	border-bottom:1px solid white;
+	position:relative;
+	margin-bottom:8px;
+	display: none;
+	-moz-border-radius:6px 6px 0 0;
+}
+.twitter-ticker .jta-tweet-list-item:before {
+	background: url("../images/icon-twitter.png") no-repeat scroll 0 0;
+    content: "";
+    height: 30px;
+    left: 0;
+    position: absolute;
+    top: 3px;
+    width: 30px;
+}
+.twitter-ticker .jta-tweet-list-item {
+    padding-left: 45px;
+	position: relative;
+	
+}
+
+.newsticker-jcarousellite { width:300px; }
+.newsticker-jcarousellite ul li{ list-style:none; display:block; padding-bottom:1px; margin-bottom:5px; }
+
+.clear { clear: both; }

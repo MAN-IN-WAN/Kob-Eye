@@ -1,0 +1,84 @@
+div.Arborescence{
+
+}
+div.Arborescence ul, div.Arborescence ul ul{
+	list-style-type:none;
+	padding:0;
+	margin:0;
+	display:block;
+}
+div.Arborescence ul li,.ArboLast,.ArboExpand,.ArboExpandLast,.ArboItem{
+/* 	padding:4px; */
+/*	padding-bottom:5px;
+	margin-bottom:5px;*/
+	padding-left:18px;
+/* 	margin:1px; */
+/* 	vertical-align:top; */
+	margin-bottom:1px;
+	margin-top:1px;
+}
+
+* html .ArboLast .BlocRound, * html .ArboExpand .BlocRound, * html .ArboExpandLast .BlocRound, * html .ArboItem .BlocRound{
+	margin-top:-8px;
+}
+
+
+*+html .ArboLast .BlocRound, *+html .ArboExpand .BlocRound, *+html .ArboExpandLast .BlocRound, *+html .ArboItem .BlocRound{
+	margin-top:-8px;
+}
+
+
+div.ArborescenceTitre{
+	cursor: default;
+}
+/*div.ArborescenceTitre:before{
+	content: '>>'
+}*/
+div.ArborescenceTitre:hover{
+	background-color: yellow;
+	display:inline;
+	clear:both;
+}
+.ArboNav{height:16px;width:16px;background:transparent;border:0;float:left;margin:0;padding:0;margin-top:-3px;margin-left:-16px;color:none;text-indent:-9999px;}
+
+* html .ArboNav{
+	padding-left:9999px;
+	overflow:hidden;
+}
+
+*+html .ArboNav{
+	padding-left:9999px;
+	overflow:hidden;
+}
+
+.ArboItem{background:url(/Skins/AdminV2/Img/black/tv-item.gif) no-repeat;}
+.ArboLast {background:url(/Skins/AdminV2/Img/black/tv-item-last.gif) no-repeat;}
+.ArboExpand {background:url(/Skins/AdminV2/Img/black/tv-expandable.gif) no-repeat;}
+.ArboExpandLast {background:url(/Skins/AdminV2/Img/black/tv-expandable-last.gif) no-repeat;}
+.ArboCollapse {background:url(/Skins/AdminV2/Img/black/tv-collapsable.gif) no-repeat;}
+.ArboCollapseLast {background:url(/Skins/AdminV2/Img/black/tv-collapsable-last.gif) no-repeat;}
+
+.ArboItem img{
+	margin:0;
+	padding:0;
+	border:0;
+	margin-bottom:-4px;
+	margin-top:-2px;
+}
+
+.ArboExpand img{
+	margin:0;
+	padding:0;
+	border:0;
+	margin-bottom:-4px;
+	margin-top:-2px;
+}
+
+.ArboLast img{
+	margin:0;
+	padding:0;
+	border:0;
+	margin-bottom:-4px;
+	margin-top:-2px;
+}
+

@@ -1,0 +1,27 @@
+div.containerL {
+	position:relative;
+	display:block;
+	padding-left:258px;
+}
+
+div.innerL {
+	display:block;
+	margin-left:-258px;
+	overflow:hidden;
+}
+
+div.Left {
+	position:relative;
+	width:258px;
+	display: block;
+	float:left;
+	left:0;
+}
+
+div.centreL {
+	position:relative;
+	display:block;
+	height:1%;
+	margin-left:258px;
+	padding: 0 5px;
+}

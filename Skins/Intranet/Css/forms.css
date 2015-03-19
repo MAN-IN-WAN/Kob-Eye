@@ -1,0 +1,36 @@
+div.LigneForm input, div.LigneForm textarea, div.LigneForm select {
+	width: 400px;
+	border: 1px solid #ccc;
+}
+
+div.LigneForm {
+	overflow: hidden;
+	padding: 2px;
+}
+
+div.LigneForm label {
+	display: block;
+	float: left;
+	position: relative;
+	width: 150px;
+	padding-right: 10px;
+}
+
+.BlocError {
+	border: 1px solid #BA0000;
+	padding: 5px;
+	font-style: italic;
+	background-color: #FFBEBE;
+	color: #BA0000;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+
+.Error {
+	border: 1px solid #BA0000;
+	background-color: #FFBEBE;
+}
+
+.BlocError ul {
+	list-style:none;
+}

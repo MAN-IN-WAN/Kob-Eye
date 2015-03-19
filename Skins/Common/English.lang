@@ -1,0 +1,62 @@
+$__Open__$|Open
+$__OPEN__$|OPEN
+$__New__$|New
+$__Edit__$|Edit
+$__Save__$|Save
+$__Close__$|Close
+$__Save & Close__$|Save & Close
+$__Delete__$|Delete
+$__Cancel__$|Cancel
+$__Refresh__$|Refresh
+$__File__$|File
+$__Alert__$|Alert
+$__AddAlert__$|The item {0} {1}-type has been added by the user {2}
+$__EditAlert__$|The item {0} {1}-type has been edited by the user {2}
+$__DeleteAlert__$|The item {0} {1}-type has been deleted by the user {2}
+$__Profile__$|Profile
+$__Permissions__$|Permissions
+$__Login__$|Login
+$__Logout__$|Logout
+$__List__$|List
+$__Clear__$|Clear
+$__Link__$|Link
+$__Unlink__$|Unlink
+$__All__$|All
+$__Yes__$|Yes
+$__No__$|No
+$__Add__$|Add
+$__Ok__$|Ok
+$__Dictionaries__$|Dictionaries
+$__Check selection__$|Check selection
+$__Uncheck selection__$|Uncheck selection
+$__Check all__$|Check all
+$__Uncheck all__$|Uncheck all
+$__Forward__$|Forward
+$__Reply__$|Reply
+$__Reply all__$|Reply all
+$__Send__$|Send
+$__Unread__$|Unread
+$__Username__$|Username
+$__Password__$|Password
+$__BadLogin__$|Invalid username or password
+$__confirmLogout__$|Are you sure you want to logout ?
+$__Alerts__$|Alerts
+$__More__$|More...
+$__Confirm__$|Confirm
+$__Update__$|Update
+$__Reach__$|Reach
+$__Inbox__$|Inbox
+$__Sent__$|Sent
+$__Trash__$|Trash
+$__Advanced search__$|Advanced search
+$__All read__$|All read
+$__All done__$|All done
+$__R__$|R
+$__D__$|D
+$__Date__$|Date
+$__Title__$|Title
+$__Author__$|Author
+$__Search__$|Search
+$__Copy__$|Copy
+$__Paste__$|Paste
+$__Cut__$|Cut

@@ -1,0 +1,49 @@
+/*----------------------------ICONES TITRES CAT-------------------------------*/
+
+.TitreCineFx{
+	padding-left:40px;
+	background:url(/Skins/ArtfxBlog/Img/IconeCine.jpg) no-repeat;
+}
+
+.TitreCoupCoeur{
+	padding-left:40px;
+	background:url(/Skins/ArtfxBlog/Img/IconeCoeur.jpg) no-repeat;
+}
+
+.TitrePortraits{
+	padding-left:40px;
+	background:url(/Skins/ArtfxBlog/Img/IconePhotos.jpg) no-repeat;
+}
+
+.TitreManifs{
+	padding-left:40px;
+	background:url(/Skins/ArtfxBlog/Img/IconeImages.jpg) no-repeat;
+}
+
+.TitreTechniques{
+	padding-left:40px;
+	background:url(/Skins/ArtfxBlog/Img/IconeTechnique.jpg) no-repeat;
+}
+
+.TitreDivers{
+	padding-left:40px;
+	background:url(/Skins/ArtfxBlog/Img/Icone1.jpg) no-repeat;
+}
+
+/*----------------------------AFFICHAGE CONTENU CAT-------------------------------*/
+.PageCat .BlocPost h1{
+	font-size:16px;
+	color:#FFBB00;
+}
+
+.PageCat .BlocPost .TitreCineFx, .PageCat .BlocPost .TitreCoupCoeur, .PageCat .BlocPost .TitrePortraits, .PageCat .BlocPost .TitreManifs, .PageCat .BlocPost .TitreTechniques, .PageCat .BlocPost .TitreDivers{
+	background:none;
+}
+
+.PageCat .BlocPost{
+	padding:10px 0 20px 0;
+}
+
+.PageCat{
+	padding:10px 10px 20px 5px;
+}
