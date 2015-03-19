@@ -1,19 +1,19 @@
 		<div class="container">
 			<div class="row-fluid">
 				<div class="span4 well">
-                                    <a href="http://ansm.sante.fr/" target="_blank">
+                                    //<a href="http://payplug.fr/" target="_blank">
                                         <img class="img-responsive" src="/Skins/[!Systeme::Skin!]/logos/illustration-paiments-3.png">
-                                    </a>
+                                    //</a>
                                 </div>
 				<div class="span4 well">
-                                    <a href="http://www.ars.paca.sante.fr/" target="_blank">
+                                    //<a href="http://www.ars.paca.sante.fr/" target="_blank">
                                         <img class="img-responsive" src="/Skins/[!Systeme::Skin!]/logos/livraison.jpg">
-                                    </a>
+                                    //</a>
                                 </div>
 				<div class="span4 well">
-                                    <a href="http://www.ordre.pharmacien.fr/" target="_blank">
+                                    //<a href="http://www.ordre.pharmacien.fr/" target="_blank">
                                         <img class="img-responsive" src="/Skins/[!Systeme::Skin!]/logos/logo_paiement_securise.jpg">
-                                    </a>
+                                   // </a>
                                 </div>
 			</div>
 		</div>
