@@ -28,7 +28,8 @@ class ZoneFiscale extends genericClass {
 		$Zd = Sys::$Modules["Fiscalite"]->callData("ZoneFiscale/Default=1",false,0,1);
 		if (is_array($Zd))return Array(genericClass::createInstance('Fiscalite',$Zd[0]));
 		//Sinon false
-		return false;
+		$zoneDefault =genericClass::createInstance('Fiscalite','ZoneFiscale');
+		return $zoneDefault;
 	}
 }
 ?>

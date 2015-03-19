@@ -340,7 +340,7 @@ class Process extends Root{
 							else $Data=false;
 						}
 					}
-					
+
 				break;
 				case "ObjectClass":
 					//Alors on genere un genericClassVide et on l interroge
