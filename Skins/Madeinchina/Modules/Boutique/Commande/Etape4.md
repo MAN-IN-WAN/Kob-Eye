@@ -1,5 +1,9 @@
-[OBJ Boutique|Magasin|Magasin]
-[!Mag:=[!Magasin::getCurrentMagasin()!]!]
+[!Mag:=[!CurrentMagasin!]!]
+[!De:=[!CurrentDevise!]!]
+// Acheteur connecté
+[!CLCONN:=[!CurrentClient!]!]
+
+
 // Vérification que l on est bien connecté à ce stade
 [IF [!Systeme::User::Public!]]
 	[REDIRECT][!Systeme::getMenu(Boutique/Commande/Etape2)!][/REDIRECT]
@@ -9,8 +13,6 @@
 [IF [!ModifierCommande!]]
 	[REDIRECT][!Systeme::getMenu(Boutique/Commande/Etape1)!][/REDIRECT]
 [/IF]
-// Acheteur connecté
-[STORPROC Boutique/Client/UserId=[!Systeme::User::Id!]|CLCONN|0|1][/STORPROC] 
 
 // Récupère le panier du client
 [!Panier:=[!CLCONN::getPanier()!]!]
@@ -20,7 +22,6 @@
 		[REDIRECT][!Systeme::getMenu(Boutique/Commande/Etape1)!][/REDIRECT]
 	[/NORESULT]
 [/STORPROC]
-[STORPROC Boutique/Devise/Defaut=1|De][/STORPROC]
 
 //VERIFICATION ADRESSE LIVRAISON
 [IF [!Mag::EtapeLivraison!]]

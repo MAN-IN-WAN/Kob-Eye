@@ -1,5 +1,8 @@
-[OBJ Boutique|Magasin|Magasin]
-[!Mag:=[!Magasin::getCurrentMagasin()!]!]
+[!Mag:=[!CurrentMagasin!]!]
+[!De:=[!CurrentDevise!]!]
+// Acheteur connecté
+[!CLCONN:=[!CurrentClient!]!]
+
 // Utilisateur (Connecté ou non ?)
 [IF [!Systeme::User::Public!]=1]
 	[OBJ Boutique|Client|Cli]

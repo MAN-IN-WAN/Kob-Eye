@@ -1,10 +1,12 @@
+[!Mag:=[!CurrentMagasin!]!]
+[!De:=[!CurrentDevise!]!]
+// Acheteur connecté
+[!CLCONN:=[!CurrentClient!]!]
+
 // Vérification que l on est bien connecté à ce stade
 [IF [!Systeme::User::Public!]]
 	[REDIRECT][!Systeme::getMenu(Boutique/Commande/Etape2)!][/REDIRECT]
 [/IF]
-
-// Acheteur connecté
-[STORPROC Boutique/Client/UserId=[!Systeme::User::Id!]|CLCONN|0|1][/STORPROC] 
 
 // Récupère la commande du client
 [!Com:=[!CLCONN::getPanier()!]!]

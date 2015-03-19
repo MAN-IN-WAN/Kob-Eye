@@ -1,5 +1,8 @@
-[OBJ Boutique|Magasin|Magasin]
-[!Mag:=[!Magasin::getCurrentMagasin()!]!]
+[!Mag:=[!CurrentMagasin!]!]
+[!De:=[!CurrentDevise!]!]
+// Acheteur connecté
+[!CLCONN:=[!CurrentClient!]!]
+
 // On redirige automatiquement à l'étape 3 si on est déjà connecté
 [IF [!Systeme::User::Public!]=0]
 	[REDIRECT][!Systeme::getMenu(Boutique/Commande/Etape3)!][/REDIRECT]
