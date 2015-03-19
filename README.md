@@ -21,10 +21,10 @@ La gestion des interfaces est organisé en Skin dont voici un bref apercu des fo
 - Les intégrateurs n'écrivent pas de PHP ni de SQL. Mais uniquement HTML/JS/CSS/KEML.
 
 ## Avantages
-- Modification du modèle et application des changements sur les interfaces quasi instantanés. L'ajout d'un champ ou d'une clef dans le fchier XML est très rapide, ansuite la synchronisation des modèles corrige automatiquement les interfaces du FRONT et du BACK.
+- Modification du modèle et application des changements sur les interfaces quasi instantanés. L'ajout d'un champ ou d'une clef dans le fchier XML est très rapide, ensuite la synchronisation des modèles corrige automatiquement les interfaces du FRONT et du BACK.
 - Le poste intégrateur est protégé par l'utilisation du language de macro. Une skin n'a pas à être maintenue en cas de mise à jour du coeur.
 - Le systeme de requete interne (ORM) permet une abstration totale de la gestion des bases de données.
-- Systeme de pilote (Mysql/ Sqlite / Flat file / Ldap / Sql Server etc ...) permettant un design des appels en toute liberté en fonction des besions de volume et/ou de performance.
+- Systeme de pilote (Mysql/ Sqlite / Flat file / Ldap / Sql Server etc ...) permettant un design des appels en toute liberté en fonction des besoins de volume et/ou de performance.
 - Gestion des médias : redimensionnement / echelle / optimisation et cache intégrés (appel du type /monfichier.jpg.mini.80x80.jpg). transtypage également disponible (ex: monfichier.jpg.mini.80x80.png)
 - Secuité : La gestion des routes est obligatoire, il est impossible d'appeler un fichier php en direct.
 - Plusieurs interfaces de back office dynamique déjà disponibles: Bootstrap.2.3 / Bootstrap.3.0 / XHTML / Sencha / Sencha Touch / Flex (appaloosa)
@@ -44,5 +44,5 @@ La gestion des interfaces est organisé en Skin dont voici un bref apercu des fo
 - 10 ans d'ancienneté.
 
 ## A venir
-- Documentation à terminée (ex: http://wiki.kob-eye.com)
+- Documentation à terminer (ex: http://wiki.kob-eye.com)
 - API à faire
