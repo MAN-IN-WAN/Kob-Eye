@@ -1,0 +1,19 @@
+<SCHEMA>
+	<OBJECTCLASS title="Dossier" driver="file" master="1" AccessPoint="1" Description="Dossiers"  Icon="/Skins/AdminV2/Img/IconAqua/Folder.png" Default="1">
+		<PROPERTIES type="varchar" length="100" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" length="250">Path</PROPERTIES>
+		<PROPERTIES type="varchar" length="250">Size</PROPERTIES>
+		<FKEY card="1,1" data="Dossier,Id">DossierId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Fichier" driver="file" Default="2">
+		<PROPERTIES type="varchar" length="100" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES type="text">Contenu</PROPERTIES>
+		<PROPERTIES type="int">Modif</PROPERTIES>
+		<PROPERTIES type="int" length="100">Creation</PROPERTIES>
+		<PROPERTIES type="varchar" length="250">Url</PROPERTIES>
+		<PROPERTIES type="varchar" length="250">Type</PROPERTIES>
+		<PROPERTIES type="varchar" length="250">Mime</PROPERTIES>
+		<PROPERTIES type="varchar" length="250">Temp</PROPERTIES>
+		<FKEY card="1,n" data="Dossier,Id">DossierId</FKEY>
+	</OBJECTCLASS>
+</SCHEMA>
