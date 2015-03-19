@@ -297,7 +297,7 @@
 				<option value="[!Tx::Taux!]" >[!Tx::Taux!]</option>
 			[/STORPROC]
 		</select>
-		TTC : <input type="text" class="Champ" name="TarifTTC" id="[!Prefixe!][!Prop::Nom!]TarifTTC" value="[!Prop::Valeur:*1.196!]" onkeypress="calculHT_TTC('TTC');"  onchange="calculHT_TTC('TTC');" style="width:100px;" >
+		TTC : <input type="text" class="Champ" name="TarifTTC" id="[!Prefixe!][!Prop::Nom!]TarifTTC" value="[!Prop::Valeur:*1.2!]" onkeypress="calculHT_TTC('TTC');"  onchange="calculHT_TTC('TTC');" style="width:100px;" >
 		<script type="text/javascript" >
 			function calculHT_TTC (type) {
 				var tva =$('[!Prefixe!][!Prop::Nom!]Tva').value;
