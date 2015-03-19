@@ -14,7 +14,96 @@ class Facture extends genericClass {
 			$this->AddParent( $this->Commande );
 		}
 		parent::Save();
+
 		if ($this->NumFac=='') $this->NumFac = sprintf("FA".Date('Y').Date('m')."%05d",$this->Id);
+		// Mise à jour des base ht de la facture
+		$cdet= $this->getParents('Commande') ;
+		$cde=$cdet[0];
+		$arr = array(
+			1 => array(
+				'HT' => 0,
+				'TTC' => 0
+			),
+			2 => array(
+				'HT' => 0,
+				'TTC' => 0
+			)
+		);
+		$cde->initTableTvaFacture();
+		if (isset($cde -> LignesCommandes) && is_array($cde -> LignesCommandes))
+			foreach ($cde->LignesCommandes as $k=>$LC) {
+				$tabletva = unserialize($LC->TableTva);
+				$arr[1]['HT'] += $tabletva['T20']['Base'];
+				$arr[2]['HT'] += $tabletva['T5.5']['Base'];
+				
+				$this->TxTva1 = $tabletva['T20']['Taux'];;
+				$this->TxTva2 = $tabletva['T5.5']['Taux'];
+
+/*				$ref = $LC->getReference();
+				$prod = $ref->getProd();
+				if ($LC->Config!=''){
+					$remisetx = 1 - ($ref->getRemiseProduit($LC->Quantite)/100);
+					$cps = $prod->getChildren('ConfigPack');
+					if (is_array($cps))foreach ($cps as $cp){
+						$refcp = $cp->getChildren('Reference');
+						if ($cp->TauxTva!=0) {
+							$TxTva = $cp->TauxTva;
+						}else{
+//							$TxTva = $prod->getTauxTva($cp->TauxTva);
+							// tva de la ref du config pack
+							$prodcp = $refcp[0] ->getParents('Produit');
+							$TxTva = $prodcp[0] ->TypeTvaInterne;
+						}
+						// je vais rechercher le taux actif
+						$letaux = $tabtva[$TxTva]/100+1;
+
+						$refs=Sys::getData('Boutique','Reference/'.$LC->Config[$cp->Id]);
+						if (!isset($arr[$TxTva ])) $arr[$TxTva ] = array( 'HT' => 0);
+						
+						if ($refs[0]->TarifPack!=$refs[0]->Tarif){
+							$arr[$TxTva]['HT'] += $refs[0]->TarifPack * $remisetx;
+							$arr[$TxTva]['TTC'] += ($refs[0]->TarifPack * $remisetx)* $letaux;
+							
+						} else {
+							$arr[$TxTva]['HT'] += $cp -> TarifHT * $remisetx;
+							$arr[$TxTva]['TTC'] += ($cp -> TarifHT * $remisetx )* $letaux;
+						}
+						
+					}
+
+				}else{
+					if (!isset($arr[$prod->TypeTvaInterne])) $arr[$prod->TypeTvaInterne] = array('HT' => 0);
+					$arr[$prod->TypeTvaInterne]['HT'] += $LC -> MontantHT;
+					$arr[$prod->TypeTvaInterne]['TTC'] += $LC -> MontantTTC;
+				}
+				*/
+			}
+		
+			$liv = $cde->getChildren('BonLivraison');
+				
+			if ($liv[0]->MontantLivraisonHT!=0) {
+				
+				$this->HtLivr= $liv[0]->MontantLivraisonHT;
+				$this->TTCLiv=round($this->HtLivr * $this->TxTva1 ,2);
+				$this->MtTvaLiv =round($this->HtLivr * ($this->TxTva1  / 100), 2);
+				$this->TxTvaLiv = $liv[0]->TxTvaBonLivr;
+			}
+
+			//$this->TxTva1 = 20;
+			//$this->TxTva2 = 5.5;
+
+			$this->BaseHTTx1= round($arr[1]['HT'],2) ;
+			$this->MtTva1 =round($this->BaseHTTx1 * ($this->TxTva1 / 100), 2);
+			$this->TTC1= $this->BaseHTTx1 + $this->MtTva1;
+
+			$this->BaseHTTx2= round($arr[2]['HT'],2) ;
+			$this->MtTva2 =round($this->BaseHTTx2 * ($this->TxTva2 / 100), 2);
+			$this->TTC2= $this->BaseHTTx2+ $this->MtTva2;
+			
+
+
+		
+
 		parent::Save();
 	}
 
@@ -65,7 +154,6 @@ class Facture extends genericClass {
 		$err = '';
 		$files = array();
 		$fps = array();
-
 		$fin += 86400;
 		$facs = Sys::getData('Boutique',"Facture/tmsCreate>=$deb&tmsCreate<$fin",0,99999,'ASC','tmsCreate');
 		foreach($facs as $fac) {

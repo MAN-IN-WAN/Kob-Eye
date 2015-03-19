@@ -3,10 +3,43 @@
 	[REDIRECT][!Systeme::CurrentMenu::Url!][/REDIRECT]
 [ELSE]
 	[STORPROC [!Query!]|FA][/STORPROC]
+
+	// CALCUL DES TOTAUX FACTURE
+	[!TotHtFacture:=0!]
+	[!TxtVA1:=0!]
+	[!TxtVA1:=0!]
+	[!TotBaseTva1:=0!]
+	[!TotBaseTva2:=0!]
+	[!MtTva1:=0!]
+	[!MtTva2:=0!]
+	
+	[!TotHtFacture:=[!FA::BaseHTTx1!]!]
+	[!TotHtFacture+=[!FA::BaseHTTx2!]!]
+	[!TotHtFacture+=[!FA::HtLivr!]!]
+
+	[!TxtVA1:=[!FA::TxTva1!]!]
+	[!TxtVA2:=[!FA::TxTva2!]!]
+
+	[!TotBaseTva1:=[!FA::BaseHTTx1!]!]
+	[!TotBaseTva2:=[!FA::BaseHTTx2!]!]
+	
+	[!MtTva1:=[!FA::MtTva1!]!]
+	[!MtTva2:=[!FA::MtTva2!]!]
+
+	[IF [!FA::TxTva1!]=[!FA::TxTvaLiv!]]
+		[!MtTva1+=[!FA::MtTvaLiv!]!]
+		[!TotBaseTva1+=[!FA::HtLivr!]!]
+	[ELSE]
+		[!MtTva2+=[!FA::MtTvaLiv!]!]
+		[!TotBaseTva2+=[!FA::HtLivr!]!]
+	[/IF]
+
+	[!totTVA:=[!MtTva1!]!]
+	[!totTVA+=[!MtTva2!]!]
+
+
 	[STORPROC Boutique/Commande/Facture/[!FA::Id!]|CDE|0|1][/STORPROC]
 	[STORPROC Boutique/Devise/Defaut=1|De][/STORPROC]
-	// Pas accès à cette commande
-	//[IF [!CDE::UserId!]!=[!Systeme::User::Id!]][REDIRECT][!Systeme::CurrentMenu::Url!][/REDIRECT][/IF]
 	
 	[STORPROC Boutique/Client/Commande/[!CDE::Id!]|CLI|0|1][/STORPROC]
 	
@@ -43,7 +76,7 @@
 				.TitrePdf {font-size:16px;font-weight:bold;}
 	
 			</style>
-			<page pageset="old" backtop="10mm" backbottom="5mm" backleft="10mm" backright="10mm" >
+			<page pageset="old" backtop="14mm" backbottom="1mm" backleft="10mm" backright="10mm" style="font-size: 12pt">
 				<table class="page_header" cellspacing="0" cellspadding="0">
 					<tr>	
 						// bloc logo adresse boutique
@@ -52,15 +85,12 @@
 							[IF [!Mag::Logo!]!=]
 								<img src="[!Domaine!]/[!Mag::Logo!].limit.300x200.jpg" alt="[!Mag::Nom!]" title="[!Mag::Nom!]" /><br />
 							[ELSE]
-								<img src="[!Domaine!]/Skins/LoisirsCrea/Img/bando-mail.jpg.limit.300x200.jpg"/><br />
+							//	<img src="[!Domaine!]/Skins/LoisirsCrea/Img/bando-mail.jpg.limit.300x200.jpg"/><br />
 							[/IF]
 							<div class="TitrePdf">
-								//[!Mag::Nom!]<br />
 								LOVE PAPER<br />[!Mag::Adresse!]<br />
 								[!Mag::CodePostal!] [!Mag::Ville!]<br />
 								[IF  [!Mag::Tel!]!=] Tél : [!Mag::Tel!][/IF]
-								//[IF  [!Mag::Tel!]!=&&[!Mag::Fax!]!=]<br />[/IF]
-								//[IF  [!Mag::Fax!]!=] Fax : [!Mag::Fax!]<br />[/IF] <br />
 								[IF  [!Mag::Pays!]!=][!Mag::Pays!]<br />[/IF] <br />
 								<span style="font-weight:bold;color:#ff0000;font-size:14px;text-decoration:underline;">Facture [!FA::NumFac!]</span> du [!Utils::getDate(d/m/Y,[!FA::tmsCreate!])!] <br />
 								Commande [!CDE::RefCommande!] du [!Utils::getDate(d/m/Y,[!CDE::DateCommande!])!]
@@ -110,17 +140,14 @@
 					<thead>
 						<tr><td colspan="5" style="text-align:center;border:none;"><h1 >FACTURE</h1></td></tr>
 						<tr style="height:5mm;"  cellspacing="0" cellpadding="0">
-							<td style="padding:1mm;width:25mm;text-align:center;border-left:solid;border-top:solid;border-bottom:solid;" class="SousTitreRes">Référence</td>
-							<td style="width:90mm;border-left:solid;border-top:solid;border-bottom:solid;"  class="SousTitreRes">&nbsp;Libellé</td>
-							<td style="width:15mm;text-align:center;border-left:solid;border-top:solid;border-bottom:solid;"   class="SousTitreRes">Quantité</td>
-							<td style="width:27mm;text-align:center;border-left:solid;border-top:solid;border-bottom:solid;"   class="SousTitreRes">Prix Unit. HT</td>
-							<td style="width:27mm;text-align:center;border-left:solid;border-right:solid;border-top:solid;border-bottom:solid;"  class="SousTitreRes">Total HT</td>
-						</tr>
+						<td style="padding:1mm;width:25mm;text-align:center;border-left:solid;border-top:solid;border-bottom:solid;" class="SousTitreRes">Référence</td>
+						<td style="width:90mm;border-left:solid;border-top:solid;border-bottom:solid;"  class="SousTitreRes">&nbsp;Libellé</td>
+						<td style="width:15mm;text-align:center;border-left:solid;border-top:solid;border-bottom:solid;"   class="SousTitreRes">Quantité</td>
+						<td style="width:27mm;text-align:center;border-left:solid;border-top:solid;border-bottom:solid;"   class="SousTitreRes">Prix Unit. HT</td>
+						<td style="width:27mm;text-align:center;border-left:solid;border-right:solid;border-top:solid;border-bottom:solid;"  class="SousTitreRes">Total HT</td>
+					</tr>
 					</thead>
-
-					[!TotCdeHt:=0!]
 					[STORPROC Boutique/Commande/[!CDE::Id!]/LigneCommande|LC|||tmsCreate|ASC]
-						[!TotCdeHt+=[!LC::MontantHT!]!]
 						[!TableComplete-=1!]
 						[!TableCompleteCpt:=0!]
 						[STORPROC Boutique/Reference/LigneCommande/[!LC::Id!]|R|0|1]
@@ -133,42 +160,31 @@
 							[/IF]
 						[/IF]
 						<tr style="margin:0;padding:0;height:5mm;"  cellspacing="0" cellpadding="0" >
-							<td style="padding:1mm;width:25mm;text-align:center;border-left:solid;border-top:none;border-bottom:none;"  class="ResDescription">
-								<p style="font-size:10px;">[SUBSTR |20][!LC::Reference!][/SUBSTR]</p>
+							<td style="padding:1mm;width:25mm;text-align:center;border-left:solid;border-top:none;border-bottom:none;"  class="ResDescription">[!LC::Reference!]</td>
+							<td style="width:90mm;border-left:solid;border-top:none;border-bottom:none;" class="ResDescription">&nbsp;<strong>[!LC::Titre!]</strong>
+								<p style="font-size:10px;">[UTIL BBCODE][!LC::Description!][/UTIL]</p>
 							</td>
-							<td style="width:90mm;border-left:solid;border-top:none;border-bottom:none;" class="ResDescription">
-								[STORPROC Boutique/Categorie/Produit/[!P::Id!]|Cat|0|1][/STORPROC]
-								<p style="font-size:10px;">&nbsp;<strong>[!Cat::Nom!] - [!LC::Titre!]</strong>[!Accro!]
-									[IF [!LC::Description!]!=]
-										[UTIL BBCODE][!LC::Description!][/UTIL] 
-									[/IF]
-								</p>
-							</td>
-							<td style="width:15mm;text-align:right;border-left:solid;border-top:none;border-bottom:none;"  class="ResDescription"><p style="font-size:10px;">[!LC::Quantite!]&nbsp;&nbsp;</p></td>
-							<td style="width:27mm;text-align:right;border-left:solid;border-top:none;border-bottom:none;"  class="ResDescription">
-								<p style="font-size:10px;">[!Math::PriceV([!LC::MontantUnitaireHT!])!]&nbsp;&nbsp;</p>
-			   				</td>
-							<td style="width:27mm;text-align:right;border-left:solid;border-top:none;border-bottom:none;border-right:solid;"  class="ResDescription">
-								<p style="font-size:10px;">[!Math::PriceV([!LC::MontantHT!])!]&nbsp;&nbsp;</p>
-							</td>
+							<td style="width:15mm;text-align:right;border-left:solid;border-top:none;border-bottom:none;"  class="ResDescription">[!LC::Quantite!]&nbsp;&nbsp;</td>
+							<td style="width:27mm;text-align:right;border-left:solid;border-top:none;border-bottom:none;"  class="ResDescription">[!Math::PriceV([!LC::MontantUnitaireHT!])!]&nbsp;&nbsp;</td>
+							<td style="width:27mm;text-align:right;border-left:solid;border-top:none;border-bottom:none;border-right:solid;"  class="ResDescription">[!Math::PriceV([!LC::MontantHT!])!]&nbsp;&nbsp;</td>
 
 						</tr>
-						[IF [!TableComplete!]<=0]
-							[!TableComplete:=25!]
-							</table></page>
-							<page pageset="old" backtop="10mm" backbottom="5mm" backleft="10mm" backright="10mm" ><table class="page_header" cellspacing="0" cellpadding="0" style="margin-top:10mm;border-bottom:solid;">
-								<thead>
-									<tr><td colspan="5" style="text-align:center;border:none;"><span style="font-weight:bold;color:#ff0000;font-size:14px;text-decoration:underline;">Facture [!FA::NumFac!]</span> <br /></td></tr>
-									<tr style="height:5mm;"  cellspacing="0" cellpadding="0">
-											<td style="padding:1mm;width:25mm;text-align:center;border-left:solid;border-top:solid;border-bottom:solid;" class="SousTitreRes">Référence</td>
-										<td style="width:90mm;border-left:solid;border-top:solid;border-bottom:solid;"  class="SousTitreRes">&nbsp;Libellé</td>
-										<td style="width:15mm;text-align:center;border-left:solid;border-top:solid;border-bottom:solid;"   class="SousTitreRes">Quantité</td>
-										<td style="width:27mm;text-align:center;border-left:solid;border-top:solid;border-bottom:solid;"   class="SousTitreRes">Prix Unit. HT</td>
-										<td style="width:27mm;text-align:center;border-left:solid;border-right:solid;border-top:solid;border-bottom:solid;"  class="SousTitreRes">Total HT</td>
-									</tr>
-								</thead>
-						[/IF]
 					[/STORPROC]
+					[IF [!TableComplete!]<=0]
+						[!TableComplete:=25!]
+						</table></page>
+						<page pageset="old" backtop="10mm" backbottom="5mm" backleft="10mm" backright="10mm" ><table class="page_header" cellspacing="0" cellpadding="0" style="margin-top:10mm;border-bottom:solid;">
+							<thead>
+								<tr><td colspan="5" style="text-align:center;border:none;"><span style="font-weight:bold;color:#ff0000;font-size:14px;text-decoration:underline;">Facture [!FA::NumFac!]</span> <br /></td></tr>
+								<tr style="height:5mm;"  cellspacing="0" cellpadding="0">
+										<td style="padding:1mm;width:25mm;text-align:center;border-left:solid;border-top:solid;border-bottom:solid;" class="SousTitreRes">Référence</td>
+									<td style="width:90mm;border-left:solid;border-top:solid;border-bottom:solid;"  class="SousTitreRes">&nbsp;Libellé</td>
+									<td style="width:15mm;text-align:center;border-left:solid;border-top:solid;border-bottom:solid;"   class="SousTitreRes">Quantité</td>
+									<td style="width:27mm;text-align:center;border-left:solid;border-top:solid;border-bottom:solid;"   class="SousTitreRes">Prix Unit. HT</td>
+									<td style="width:27mm;text-align:center;border-left:solid;border-right:solid;border-top:solid;border-bottom:solid;"  class="SousTitreRes">Total HT</td>
+								</tr>
+							</thead>
+					[/IF]
 					// Ajout de la ligne sur la livraison
 					[STORPROC Boutique/Commande/[!CDE::Id!]/BonLivraison|LV|0|1]
 						[!InfoLiv:=[!LV::getInfoCdeFac()!]!]
@@ -188,7 +204,6 @@
 									</tr>
 								</thead>
 						[/IF]
-
 						<tr style="margin:0;padding:0;"  cellspacing="0" cellpadding="0" >
 							<td style="padding:1mm;width:25mm;text-align:center;border-left:solid;border-top:none;border-bottom:none;"  class="ResDescription">Livraison-[!TotHtLiv!]</td>
 							<td style="width:90mm;border-left:solid;border-top:none;border-bottom:none;" class="ResDescription">&nbsp;[!InfoLiv::Nom!]</td>
@@ -198,47 +213,50 @@
 	
 						</tr>
 					[/STORPROC]
-					// Lignes pour arriver en bas
-					[STORPROC [!TableComplete!]|tt]
-						<tr style="height:5mm;"  cellspacing="0" cellpadding="0">
-							<td style="width:25mm;border-left:solid;border-top:none;border-bottom:none;" >&nbsp;</td>
-							<td style="width:90mm;border-left:solid;border-top:none;border-bottom:none;"  >&nbsp;</td>
-							<td style="width:15mm;border-left:solid;border-top:none;border-bottom:none;"   >&nbsp;</td>
-							<td style="width:27mm;border-left:solid;border-top:none;border-bottom:none;"  >&nbsp;</td>
-							<td style="width:27mm;border-left:solid;border-right:solid;border-top:none;border-bottom:none;" >&nbsp;</td>
-						</tr>
-					[/STORPROC]
 				</table>
-	<page_footer >
+				// EN FAIT ON NE LE FAIT PAS AFFICHER CAR LES PRIX TIENNENT DEJA COMPTE DE LA REMISE DANS LE TABLEAU DÉTAIL PAR LIGNE
+				//[!TotRemise:=[!CDE::Remise!]!] 
+				[!TotRemise:=0!]
+				<page_footer >
 					<table class="page_footer" cellspacing="0" cellspadding="0">
 						// Lecture objet TVA alimentation des totaux
 						<tr>
 							<td style=text-align:left">
 								<table cellspacing="0" cellspadding="0" >
-									<tr style="height:10mm;margin:30mm">
-										<td style="width:10mm;text-align:center;" class="ResDescription" border="1">Taux</td>
-										<td style="width:20mm;text-align:center;" class="ResDescription" border="1">Base HT</td>
-										<td style="width:20mm;text-align:center;" class="ResDescription" border="1">Montant Taxe</td>
-										<td style="width:70mm;text-align:center;" class="ResDescription" border="1">Reglement par</td>
-										<td style="border:none;width:36mm;text-align:right;">Total HT&nbsp;&nbsp;</td>
-										<td style="width:30mm;text-align:right;" border="1">
-											//[!Math::PriceV([!CDE::MontantHT!])!] 
-											[!Math::PriceV([!TotCdeHt!])!] [!De::Sigle!]&nbsp;&nbsp;</td>
-									</tr>
-									// Lecture objet TVA
-									[STORPROC [!CDE::getTableTvaFacture()!]|TvaTx]
-										[!mtTva:=[!CDE::getTVA([!TvaTx::Base!],[!TvaTx::Taux!])!]!]
-										//[!totTVA+=[!Math::Round2([!mtTva!])!]!]
-										//[!totTVA+=[!mtTva!]!]
-										[!totTVA+=[!Math::Price([!mtTva!])!]!]
+									[IF [!totTVA!]!=0]
 										<tr style="height:10mm;margin:30mm">
-											<td style="width:10mm;text-align:center;" class="ResDescription" border="1"> [!TvaTx::Taux!] %</td>
-											<td style="width:20mm;text-align:right;" class="ResDescription" border="1">[!Math::PriceV([!TvaTx::Base!])!] [!De::Sigle!]&nbsp;&nbsp;</td>
-											<td style="width:20mm;text-align:right;" class="ResDescription" border="1">
-												[!Math::PriceV([!mtTva!])!] [!De::Sigle!]&nbsp;&nbsp;
-											</td>
-											<td style="width:70mm;text-align:center;" class="ResDescription" border="1">[!MP::Nom!]</td>
-											[IF [!Pos!]=[!NbResult!]]
+											<td style="width:10mm;text-align:center;" class="ResDescription" border="1">Taux</td>
+											<td style="width:20mm;text-align:center;" class="ResDescription" border="1">Base HT</td>
+											<td style="width:20mm;text-align:center;" class="ResDescription" border="1">Montant Taxe</td>
+											<td style="width:70mm;text-align:center;" class="ResDescription" border="1">Reglement par</td>
+											<td style="border:none;width:36mm;text-align:right;">Total HT&nbsp;&nbsp;</td>
+											<td style="width:30mm;text-align:right;" border="1">[!Math::PriceV([!TotHtFacture!])!] [!De::Sigle!]&nbsp;&nbsp;</td>
+										</tr>
+									[ELSE]
+										<tr style="height:10mm;margin:30mm">
+											<td style="width:50mm;text-align:center;" class="ResDescription" border="1" >Mentions obigatoires</td>
+											<td style="width:70mm;text-align:center;" class="ResDescription" border="1">Reglement par</td>
+											
+											[IF [!TotRemise!]!=0]
+												<td style="border:none;width:36mm;text-align:right;">Total HT&nbsp;&nbsp;</td>
+												<td style="width:30mm;text-align:right;" border="1">[!Math::PriceV([!FA::MontantTTC!])!] [!De::Sigle!]&nbsp;&nbsp;</td>
+											[ELSE]
+												<td style="border:none;width:36mm;" colspan="2">&nbsp;&nbsp;</td>
+											[/IF]
+										</tr>
+									[/IF]
+									[IF [!totTVA!]!=0]
+										// Lecture objet TVA
+										<tr style="height:10mm;margin:30mm">
+											[IF [!TotBaseTva1!]!=0]
+												<td style="width:10mm;text-align:center;" class="ResDescription" border="1"> [!TxtVA1!] %</td>
+												<td style="width:20mm;text-align:right;" class="ResDescription" border="1">[!Math::PriceV([!TotBaseTva1!])!] [!De::Sigle!]&nbsp;&nbsp;</td>
+												<td style="width:20mm;text-align:right;" class="ResDescription" border="1">
+													[!Math::PriceV([!MtTva1!])!] [!De::Sigle!]&nbsp;&nbsp;
+												</td>
+											[/IF]
+											<td style="width:70mm;text-align:center;" class="ResDescription" border="1" [IF [!TotBaseTva2!]!=0]rowspan="2"[/IF]>[!MP::Nom!] </td>
+											[IF [!TotBaseTva2!]=0]
 												<td style="border:none;width:36mm;text-align:right;">
 													Total TVA&nbsp;&nbsp;
 												</td>
@@ -249,28 +267,56 @@
 												<td style="border:none;width:36mm;" colspan="2">&nbsp;&nbsp;</td>
 											[/IF]
 										</tr>
-									[/STORPROC]
-									[!totGene:=[!CDE::MontantHT!]!]
-									[!totGene+=[!totTVA!]!]
-									[IF [!CDE::Remise!]!=0]
+										[IF [!TotBaseTva2!]!=0]
+											<tr style="height:10mm;margin:30mm">
+												<td style="width:10mm;text-align:center;" class="ResDescription" border="1"> [!TxtVA2!] %</td>
+												<td style="width:20mm;text-align:right;" class="ResDescription" border="1">[!Math::PriceV([!TotBaseTva2!])!] [!De::Sigle!]&nbsp;&nbsp;</td>
+												<td style="width:20mm;text-align:right;" class="ResDescription" border="1">
+													[!Math::PriceV([!MtTva2!])!] [!De::Sigle!]&nbsp;&nbsp;
+												</td>
+												<td style="border:none;width:36mm;text-align:right;">
+													Total TVA&nbsp;&nbsp;
+												</td>
+												<td style="width:30mm;text-align:right;" border="1">
+													[!Math::PriceV([!totTVA!])!] €&nbsp;&nbsp;
+												</td>
+											</tr>
+										[/IF]
+										[IF [!TotRemise!]!=0]
+											<tr style="width:200mm;height:10mm;margin:30mm">
+												<td colspan="2" border="0"></td>
+												<td style="border:none;width:36mm;text-align:right;">Remise&nbsp;&nbsp;</td>
+												<td style="width:30mm;text-align:right;" border="1">- [!Math::PriceV([!CDE::Remise!])!] [!De::Sigle!]&nbsp;&nbsp;</td>
+											</tr>
+										[/IF]
 										<tr style="width:200mm;height:10mm;margin:30mm">
-											<td colspan="4" border="0"></td>
-											<td style="border:none;width:36mm;text-align:right;font-weight:bold;">Sous-Total&nbsp;&nbsp;</td>
-											<td style="width:30mm;text-align:right;" border="1"> [!Math::PriceV([!totGene!])!] [!De::Sigle!]&nbsp;&nbsp;</td>
+											<td colspan="2" border="0"></td>
+											<td style="border:none;width:36mm;text-align:right;font-weight:bold;font-size:14px;">Total Facture&nbsp;&nbsp;</td>
+											<td style="width:30mm;text-align:right;font-weight:bold;font-size:14px;" border="1">[!Math::PriceV([!FA::MontantTTC!])!] [!De::Sigle!]&nbsp;&nbsp;</td>
 										</tr>
-										<tr style="width:200mm;height:10mm;margin:30mm">
-											<td colspan="4" border="0"></td>
-											<td style="border:none;width:36mm;text-align:right;">Remise&nbsp;&nbsp;</td>
-											<td style="width:30mm;text-align:right;" border="1">- [!Math::PriceV([!CDE::Remise!])!] [!De::Sigle!]&nbsp;&nbsp;</td>
-										</tr>
-										[!totGene-=[!CDE::Remise!]!]
-	
+									[ELSE]
+										[IF [!TotRemise!]!=0]
+											<tr style="height:10mm;margin:30mm">
+												<td style="width:50mm;text-align:center;" class="ResDescription" border="1" >yo</td>
+												<td style="width:70mm;text-align:center;" class="ResDescription" border="1" >[!MP::Nom!] </td>
+												<td style="border:none;width:36mm;text-align:right;">Total HT&nbsp;&nbsp;</td>
+												<td style="width:30mm;text-align:right;" border="1">[!Math::PriceV([!TotHtFacture!])!] [!De::Sigle!]&nbsp;&nbsp;</td>
+											</tr>
+											<tr style="width:200mm;height:10mm;margin:30mm">
+												<td colspan="2" border="0"></td>
+												<td style="border:none;width:36mm;text-align:right;font-weight:bold;font-size:14px;">Total Facture&nbsp;&nbsp;</td>
+												<td style="width:30mm;text-align:right;font-weight:bold;font-size:14px;" border="1">[!Math::PriceV([!FA::MontantTTC!])!] [!De::Sigle!]&nbsp;&nbsp;</td>
+											</tr>
+
+										[ELSE]
+											<tr style="height:10mm;margin:30mm">
+												<td style="width:50mm;text-align:center;" class="ResDescription" border="1" >yo</td>
+												<td style="width:70mm;text-align:center;" class="ResDescription" border="1" >[!MP::Nom!] </td>
+												<td style="border:none;width:36mm;text-align:right;font-weight:bold;font-size:14px;">Total Facture&nbsp;&nbsp;</td>
+												<td style="width:30mm;text-align:right;font-weight:bold;font-size:14px;" border="1">[!Math::PriceV([!FA::MontantTTC!])!] [!De::Sigle!]&nbsp;&nbsp;</td>
+											</tr>		
+										[/IF]
 									[/IF]
-									<tr style="width:200mm;height:10mm;margin:30mm">
-										<td colspan="4" border="0"></td>
-										<td style="border:none;width:36mm;text-align:right;font-weight:bold;font-size:14px;">Total Commande&nbsp;&nbsp;</td>
-										<td style="width:30mm;text-align:right;font-weight:bold;font-size:14px;" border="1">[!Math::PriceV([!PA::Montant!])!] [!De::Sigle!]&nbsp;&nbsp;</td>
-									</tr>
 								</table>
 							</td>
 						</tr>
@@ -279,7 +325,6 @@
 								<br /><br />LOVE PAPER<br />[!Mag::Adresse!]- [!Mag::CodePostal!] [!Mag::Ville!]<br />Siret : [!Mag::Siret!]
 							</td>
 						</tr>
-	
 	
 					</table>
 				</page_footer>

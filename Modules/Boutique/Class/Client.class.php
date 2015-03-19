@@ -217,7 +217,7 @@ class Client extends genericClass {
 	 */
 	public function getPanier() {
 		if(!is_object($this->Panier)) $this->initPanier();
-		$this->Panier->recalculer();
+		//$this->Panier->recalculer();
 		return $this->Panier;
 	}
 
@@ -250,7 +250,7 @@ class Client extends genericClass {
 					$this->Panier->initFromBDD();
 				}else{
 					//Si pas de commande par defaut on recherche la commande non paye, non valide et on la définit par defaut
-					$C = $this->storproc('Boutique/Client/'.$this->Id.'/Commande/Paye=0&Valide=0&Current=1',false,0,1,'DESC','tmsCreate');
+					$C = $this->storproc('Boutique/Client/'.$this->Id.'/Commande/Paye=0&Valide=0',false,0,1,'DESC','tmsCreate');
 					if(isset($C[0])) {
 						$this->Panier = genericClass::createInstance('Boutique',$C[0]);
 						$this->Panier->initFromBDD();
@@ -582,8 +582,35 @@ class Client extends genericClass {
 	      return $remises;
 	}
 
-	
+	// Mars 2015 function qui permet d'initialiser un tableau de taux de tva à utiliser
+	// dans le contexte	
+	function clientTableauTva() {
 
+		//INIT DES TAUX UTILISABLES 
+		// ATTENTION IL FAUDRA AJUSTÉ CE SYSTEME POUR LES PROFESSIONNELS !!!!!!!!!!
+		// recherche la zone fiscale du client connecté
+		$adrclient= Sys::getData('Boutique','Client/' . $this->Id .'/Adresse/Type=Livraison&Default=1');
+		// on recherche adresse de Livraison
+		if (is_array($adrclient)) {
+			$lazone=ZoneFiscale::getZone($adrclient[0]->Pays,$adrclient[0]->CodePostal);
+		} else {
+			// si pas d'adresse trouvée on prend celle du client
+			$lazone=ZoneFiscale::getZone($this->Pays,$this->CodePostal);
+		}
+		$tauxtva= Sys::getData('Fiscalite','ZoneFiscale/' .$lazone[0]->Id .'/TauxTva/Actif=1&Debut<='. time().'&Fin>='.time() );
+		$tabarray=array();
+		if (sizeof($tauxtva)) {
+			foreach ($tauxtva as $t) {
+				$type = $t->getParents('TypeTva');
+				if (sizeof($type)) {
+					$tabarray[$type[0]->Id] = $t->Taux;
+				} 
+				// prévoir le renvoie d'une erreur
+			}
+			//$GLOBALS["Systeme"]->registerVar("TX_TVA", $tabarray);
+		}
+		return($tabarray);
 
+	}
 
 }

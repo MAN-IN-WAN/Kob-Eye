@@ -20,20 +20,6 @@ class LigneCommande extends genericClass {
 
 		parent::Save();
 
-		/*$P = Sys::$Modules['Boutique']->callData('Boutique/Reference/LigneCommande/'.$this->Id,false,0,1);
-		if (!empty($P)&&is_array($P[0])){
-			$P = genericClass::createInstance('Boutique',$P[0]);
-			$this->Titre = $P->Reference." - ".$P->Nom;
-			$this->Reference = $P->Reference;
-			//$this->Quantite = ;
-			$this->MontantHT = $P->Tarif;
-			$this->MontantPromoHT = $P->PrixPromotion;
-			$this->Taxe= $P->TypeTva;
-		}
-		parent::Save();*/
-
-
-		
 	}
 
 	/**
@@ -138,6 +124,7 @@ class LigneCommande extends genericClass {
 	
 	}
 	
+	// tableau vers chaine
 	public function restoreConfig(){
 		if (is_array($this->Config)&&sizeof($this->Config)){
 			$cfg = "";
@@ -150,7 +137,7 @@ class LigneCommande extends genericClass {
 			$this->Config = $cfg;
 		}
 	}
-	
+	// Chaine vers tabelau
 	public function initConfig(){
 		if (is_string($this->Config)&&!empty($this->Config)){
 			$tmp = explode("::",$this->Config);
@@ -169,62 +156,81 @@ class LigneCommande extends genericClass {
 	 * Recalcule des éléments à afficher dans le panier
 	 * @return	void
 	 */
-	public function Recalculer($otva=null) {
+	public function Recalculer() {
 		
 		$this->initConfig();
 		
 		$Ref = $this->getReference();
 		$prod = $Ref->getProd();
-
-//		if($otva) $this->Taxe=$otva->getTaux($prod->TypeTvaInterne);
-//		else $this->Taxe=$prod->getTauxTva();
-//		$puttc = $Ref->getTarifHorsPromoTTC($this->Config, 1, $otva);
-
-		// FAIRE UNE FONCTION QUI VA CHERCHER  LA DECLINAISON AVEC LE NOM PUBLIC : 
-		//$this->Titre=$prod->Nom;
-		// SI PAS D'ATTRIBUT ON MET LE NOM DE LA REFERENCE
 		$this->Titre=$Ref->Nom;
-		$this->MontantUnitaireHorsPromoHT=$Ref->getTarifHorsPromoHT($this->Config);
-		$this->MontantHorsPromoHT=$this->MontantUnitaireHorsPromoHT*$this->Quantite;
-		$this->MontantUnitaireHorsPromoTTC=$prod->applyTva($this->MontantUnitaireHorsPromoHT,$this->Config);
-		$this->MontantHorsPromoTTC=$this->MontantUnitaireHorsPromoTTC*$this->Quantite;
 
-		$this->MontantUnitaireHT=$Ref->getTarifHT($this->Quantite,$this->Config,true);
-		
 		//calcul taux de remise
 		$remisetx = 1 - ($Ref->getRemiseProduit($this->Quantite)/100);
+		$this->TauxRemise = $remisetx;
+		$this->Taxe=$prod->getTauxTva();
 
-//septembre2014 pour config pack et carte personnalisée --> ça à l'air de fonctionner
-		//$this->MontantUnitaireHT=$Ref->getTarifHT($this->Config);
+		$this->TableTva = serialize($this->getTableTva($remisetx));
 
+		// ==> mars2015
 
-		// attention meme si on veut le montant unitaire il faut mettre la quantité pour les promotions en fonction des quantités
-		  //  par contre on met true dans dernier argument pour dire qu'on veut le prix unitaire
-//		$this->MontantUnitaireHT=$Ref->getTarifSpeHTFloat($this->Quantite,$this->Config,true);
-		$this->MontantHT=$this->MontantUnitaireHT*$this->Quantite;
+		// GESTION DES ARRONDIS !!!	
+
+		// tarif ht Unitaire  hors promo
+		$this->MontantUnitaireHorsPromoHT=$Ref->getTarifHorsPromoHT($this->Config);
+		// tarif ttc Unitaire hors promo
+		$this->MontantUnitaireHorsPromoTTC=$prod->applyTva($this->MontantUnitaireHorsPromoHT,$this->Config);
+		// tarif ttc de la ligne
+		$this->MontantHorsPromoTTC=$this->MontantUnitaireHorsPromoTTC*$this->Quantite;
+		
+		
+		// tarif unitaire Ht réél
+		$this->MontantUnitaireHT=$Ref->getTarifHT(1,$this->Config,true);
+		
+		// tarif  TTC  unitaire réel
 		$this->MontantUnitaireTTC=$prod->applyTva($this->MontantUnitaireHT,$this->Config,$remisetx);
-		$this->MontantTTC=$this->MontantUnitaireTTC*$this->Quantite;
-		$this->MontantRemiseHT=$this->MontantHorsPromoHT -$this->MontantHT ;
-		$this->MontantRemiseTTC=$this->MontantHorsPromoTTC -$this->MontantTTC ;
+		
+		// tarif  TTC payé
+		$this->MontantTTC=round($this->MontantUnitaireTTC*$this->Quantite,2);
 
-/*klog::l("MontantUnitaireHorsPromoHT", $this->MontantUnitaireHorsPromoHT);
-klog::l("MontantUnitaireHorsPromoTTC", $this->MontantUnitaireHorsPromoTTC);
-klog::l("MontantUnitaireHT", $this->MontantUnitaireHT);
-klog::l("MontantUnitaireTTC", $this->MontantUnitaireTTC);
-klog::l("MontantTTC", $this->MontantTTC);
-klog::l("MontantRemiseHT", $this->MontantRemiseHT);
-klog::l("MontantRemiseTTC", $this->MontantRemiseTTC);*/
+		// tarif  Ht payé 
+//		$this->MontantHT=round($this->MontantUnitaireHT*$this->Quantite,2);
 
-		// decembre 2013 pris en compte de type de tva avec taux et zone 
 
-		if($otva) $this->Taxe=$otva->getTaux($prod->TypeTvaInterne);
-		else $this->Taxe=$prod->getTauxTva();
+
+		if ($prod->TypeProduit==5||$prod->TypeProduit==4) {
+			//$this->MontantHT=round($this->MontantUnitaireHT,2);
+			$this->MontantHT=$this->MontantUnitaireHT;
+			// tarif  Ht  de la ligne hors promo
+			$this->MontantHorsPromoHT=$this->MontantUnitaireHorsPromoHT;
+
+		} else {
+			$letaux=($this->Taxe/100)+1;
+
+			//$this->MontantHT=round($this->MontantTTC/$letaux,2);
+			$this->MontantHT=$this->MontantTTC/$letaux;
+			$this->MontantHorsPromoHT=$this->MontantHorsPromoTTC/$letaux;
+
+
+		}
+
+		
+		
+		// total ht remise
+		$this->MontantRemiseHT=$this->MontantHorsPromoHT - $this->MontantHT ;
+		
+		//total ttc remise
+		$this->MontantRemiseTTC=round($this->MontantHorsPromoTTC - $this->MontantTTC,2) ;
+		
+
+		
+		//mars 2015======>
 
 		$this->Image="";
 		$this->RefEnvoi="";
 		$this->Livre=0;
 		$this->Expedie=0;
 		$this->Poids=$Ref->Poids*$this->Quantite;
+
 		if (empty($Ref->Poids))  $this->Poids = $prod->Poids*$this->Quantite;
 		$this->Largeur=$Ref->Largeur*$this->Quantite;
 		if (empty($Ref->Largeur))  $this->Largeur = $prod->Largeur*$this->Quantite;
@@ -233,14 +239,42 @@ klog::l("MontantRemiseTTC", $this->MontantRemiseTTC);*/
 		$this->Profondeur=$Ref->Profondeur*$this->Quantite;
 		if (empty($Ref->Profondeur))  $this->Profondeur = $prod->Profondeur*$this->Quantite;
 	}
-	/**
-	 * Retourne le prix TTC d'un élément
-	 * @return	PRIX en euros
-	 */
-	/*function getTTC () {
-		return number_format(round($this->Montant * (1 + $this->Taxe / 100), 2), 2);
-	}*/
-
+	
+	function getTableTva ($remisetx=1) {
+		$refProduitPrincipal = $this->getReference();
+		$tabletva=array();
+		if ($this->TypeProduit==4){
+			//$this->recalculer();
+			//alors il faut traiter tous les taux de tva
+			//recupération du produit
+			$ht=0;
+			$prod = $refProduitPrincipal->getProd();
+			$cps = $prod->getChildren('ConfigPack');
+			if (is_array($cps))foreach ($cps as $cp){
+				$re2 = genericClass::createInstance('Boutique','Reference');
+				$re2->initFromId($this->Config[$cp->Id]);
+				if ($cp->TarifPack){
+					$Montant = $re2->TarifPack * $remisetx;
+				} else {
+					$Montant = $cp->TarifHT * $remisetx;
+				}
+				if($Montant) {
+					$P = $re2->getProd();
+					$TxTva = $P->getTauxTva($P->TypeTva);
+					if (isset($tabletva["T".$TxTva]) ){
+						 $tabletva["T".$TxTva]['Base']+=$Montant;
+					}
+					else $tabletva["T".$TxTva] = array( 'Base' => $Montant ,"Taux"=> $TxTva);
+				}
+			}
+		}else{
+			//$this->updateTableTvaFacture($lc->Taxe,$lc->MontantHT);
+			$tabletva["T".$this->Taxe] = array( 'Base' => $this->MontantHT ,"Taux"=> $this->Taxe);
+			
+		}
+		return $tabletva;
+	}
+	
 	/**
 	 * Raccourci vers callData
 	 * @return	Résultat de la requete

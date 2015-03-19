@@ -352,25 +352,9 @@ class BoutiqueProduit extends genericClass {
 		$Montant= $prixMini *(100-$remise)/100;
 		$letaux =$this->getTauxTva();
 		if ($letaux>0) 	$Montant+= (($Montant * $letaux )/100);
-//		$Montant= $prixMini + (($prixMini * $this->TypeTva )/100);
 		return sprintf('%.2f',$Montant) ;
 	}
 
-/*	public function getTarifTTC_Mouli($tarif,$taux) {
-		// Calcul du prix parmi les références dispos
-		$prixMini =  $tarif;
-		$letaux =$taux;
-		if ($letaux>0) 	$Montant= $prixMini +(($prixMini * $letaux )/100);
-//		$Montant= $prixMini + (($prixMini * $this->TypeTva )/100);
-		return sprintf('%.2f',$Montant) ;
-	}
-
-	public function getTarifHT_Mouli($montantttc) {
-		// Calcul du prix parmi les références dispos
-		$prixMini =  $montantttc/1.2;
-		return $prixMini;
-	}
-*/	
 
 	/**
 	 * Retourne le prix minimum d'une référence de ce produit hors promotion
@@ -388,7 +372,6 @@ class BoutiqueProduit extends genericClass {
 		$Montant= $prixMini ;
 		$letaux =$this->getTauxTva();
 		if ($letaux>0) 	$Montant+= (($prixMini * $letaux )/100);
-		//$Montant= $prixMini + (($prixMini * $this->TypeTva )/100);
 		return sprintf('%.2f',$Montant) ;
 	}
 	/**
@@ -492,48 +475,12 @@ class BoutiqueProduit extends genericClass {
 		return $re;
 	}
 
-/**
-	 * Retourne le prix minimum d'une référence de ce produit
-	 * 
-	 * @return	Prix 
-	 */
-/*	public function getTarifListe() {
-		// Calcul du prix parmi les références dispos
-		$prixMini =  $this->Tarif;
-		$prixMini = $this->applyPromoQte($prixMini,1);
-		$emb= $this->GetEmballage();
-		if (is_object($emb)&&$emb->Surcout >0) $prixMini +=$emb->Surcout;
-		
-		//gestion des remises si client connecté
-		if (isset($GLOBALS["Systeme"]->RegVars["CurrentClient"])&&is_object($GLOBALS["Systeme"]->RegVars["CurrentClient"])){
-			$cl = $GLOBALS["Systeme"]->RegVars["CurrentClient"];
-			$remises = $cl->_Remises;
-			//récupération des remises pour ce produit
-			$remises = array_merge($remises,$cl->checkRemiseProduit($this));
-			//application de la plus grosse remise
-			$re = 0;
-			foreach ($remises as $k=>$r){
-				if ($re<$r)$re=$r;
-			}
-			//application de la remise
-			$prixMini = $prixMini * ((100 - $re)/100);
-		}
-
-		// decembre 2013 pris en compte de type de tva avec taux et zone 
-		$Montant= $prixMini ;
-		$letaux =$this->getTauxTva();
-		if ($letaux>0) 	$Montant+= (($prixMini * $letaux )/100);
-//		$Montant= $prixMini + (($prixMini * $this->TypeTva )/100);
-		return sprintf('%.2f',$Montant) ;
-	}
-*/
-
-	/**
+	 /**
 	 * Retourne l'objet promotion pour un produit
 	 * TODO	
 	 * @return	Objet Promo ou 0
 	 */
-	public function GetPromoQte($Qte=1) {
+	 public function GetPromoQte($Qte=1) {
 		$promos = $this->storproc('Boutique/Produit/' . $this->Id . '/Promotion/DateDebutPromo<=' . time() .'&&DateFinPromo>=' . time(),'','','','DESC','APartirNbUnite');
 		$yapromo=false;
 		$prixRef=$this->Tarif;
@@ -753,6 +700,124 @@ class BoutiqueProduit extends genericClass {
 
 	}
 	
+	// version qui est active dans boutique février 2015
+
+	public function getCloneV2($NomP='',$RefP='',$PrefixeNomRef='',$PrefixeRefRef='') {
+
+		$prod = parent::getClone();
+	
+		if ($NomP!='') $prod->Nom=$NomP;
+
+		if ($RefP!='') $prod->Reference=$RefP;
+
+		$prod->Save();
+
+		//provisionning children
+		$donnees = $this->getChildren('Donnee');
+		foreach ($donnees as $d){
+			$d2 = $d->getClone();
+			$d2->addParent($prod);
+			$d2->Save();
+		}
+
+		$attrs = $this->getChildren('Attribut');
+		foreach ($attrs as $a){
+			$a->addParent($prod);
+			$a->Save();
+		}
+
+		$promos = $this->getChildren('Promotion');
+		foreach ($promos as $pm){
+			$pm->addParent($prod);
+			$pm->Save();
+		}
+
+		$cps = $this->getChildren('ConfigPack');
+		foreach ($cps as $cp){
+
+			$cp2 = $cp->getClone();
+			$cp2->addParent($prod);
+			$cp2->Save();
+
+			$refs2 = $cp->getChildren('Reference');
+			foreach ($refs2 as $ref2){ 
+				$ref2->addParent($cp2);
+				$ref2->Save();
+			}
+			// les options ne sont pas clonées mais juste liées
+			// donc pas besoin de faire options détails car déjà liées à otions
+			$opts = $cp->getChildren('Options');
+			foreach ($opts as $opt){
+				$opt->addParent($cp2);
+				$opt->Save();
+			}
+		}
+
+		$marques = $this->getChildren('Marque');
+		foreach ($marques as $m){
+			$m->addParent($prod);
+			$m->Save();
+		}
+
+		$refs = $this->getChildren('Reference');
+		
+		foreach ($refs as $r){
+
+			//klog::l("IdRefe",$r->Id);
+			$r2 = $r->getClone();
+
+			$r2->addParent($prod);
+
+			$decls = $r->getParents('Declinaison');
+			
+			$nom=$r->Nom;
+			$ref=$r->Reference;
+			$first = 0;
+			foreach ($decls as $decl) {
+				$r2->addParent($decl);
+				if ($PrefixeNomRef!='') {
+					if(!$first){
+						$nom =  $PrefixeNomRef . ' "'.$NomP . '" '. $decl->Code;
+					} else{
+						if(!strpos($decl->Code,$nom)){
+							$nom .= ' ' . $decl->Code;
+						}
+					}
+				}
+				if ($PrefixeRefRef!='')	{
+					$attr = $decl->getParents('Attribut');
+					
+					if(!$first){
+						$ref =  $PrefixeRefRef  . '-'. $attr[0]->Id . '-'.$decl->Id;
+					} else{
+						if(!strpos($decl->Code,$nom)){
+							$ref .= '-'. $attr[0]->Id . '-'.$decl->Id;
+						}
+					}
+				}
+				$first++;
+			}
+
+			$ref .= '-'.$prod->Id;
+			
+			$r2->Nom = $nom;
+			$r2->Reference = $ref;
+			
+			$r2->Save();
+		}
+
+		//positionning
+		$cat = $this->getParents('Categorie');
+		foreach ($cat as $c) $prod->addParent($c);
+		$cond = $this->getParents('Conditionnement');
+		foreach ($cond as $co) $prod->addParent($co);
+		$prod->Actif=0;
+		//$prod->Display=0;
+		$prod->Save();
+
+	}
+	
+
 
 	public function getCloneMathilde($prod) {
 		
@@ -851,47 +916,139 @@ class BoutiqueProduit extends genericClass {
 	 * @return	void
 	 */
 	public function getTauxTva($typetaux=null) {
+
+
+		// le champ TypeTvaInterne est le champ tva de la fiche produit 
+		// on stocke le type de tva et dans type tva on a les taux actifs
 		$letaux=0;$lazone=0;
 		if (!$typetaux){
-			// cela veut dire que je n'ai pas de type de tva 
-			if ( $this->TypeTvaInterne == ''||$this->TypeTvaInterne==0) return 0;
+			// changement du nom du champ
+//			if ( $this->TypeTvaInterne == ''||$this->TypeTvaInterne==0) return 0;
+			if ( $this->TypeTva == ''||$this->TypeTva==0) return 0;
 			//------- //
 			// recherche classique on le fait par défaut car on l'utilisera le plus souvent
-			$typetaux=$this->TypeTvaInterne;
+			$typetaux=$this->TypeTva;
 		}
-		$tauxtva= Sys::getData('Fiscalite','TypeTva/' . $typetaux  . '/TauxTva/Actif=1'  );
-		foreach ($tauxtva as $t) {
-			if ($t->Debut <= time() && $t->Fin >= time() ) {
-				$letaux = $t->Taux;
-			}
-		}
-//		echo "1- " . $letaux;
-		//------- //
-		// utilisateur connecté
-		if (!Sys::$User->Public){
-			// je RECHERCHE LE CLIENT
-			$leclient= Sys::getData('Boutique','Client/UserId=' . Sys::$User->Id );
-			if (is_array($leclient)) {
-				$adrclient= Sys::getData('Boutique','Client/' . $leclient[0]->Id . '/Adresse/Type=Facturation');
-				// on recherche adresse de facturation
-				if (is_array($adrclient)) {
-					$lazone=ZoneFiscale::getZone($adrclient[0]->Pays,$adrclient[0]->CodePostal);
-				} else {
-					// si pas d'adresse trouvée on prend celle du client
-					$lazone=ZoneFiscale::getZone($leclient[0]->Pays,$leclient[0]->CodePostal);
-				}
-				if (sizeof($lazone)){
-					// je recherche la tva pour la zone avec le type tva du produit
-					$tauxtvaz= Sys::getData('Fiscalite','ZoneFiscale/' . $lazone[0]->Id  .'/TauxTva/Actif=1&TypeTvaId='. $typetaux    );
-					if (is_array($tauxtvaz)&&sizeof($tauxtvaz)) {
-						if ($tauxtvaz[0]->Debut <= time() && $tauxtvaz[0]->Fin >= time() ) {
-							$letaux =$tauxtvaz[0]->Taux;
+		
+		Boutique::initTableauTva();
+		$tabtva=$GLOBALS['Systeme']->getRegVars('TX_TVA');
+
+		$letaux = $tabtva[$typetaux];
+		return $letaux;
+		
+	}		
+
+
+	/**
+	 * checkReference
+	 */
+	public function genererReferences() {
+		//si le produit possède des références alors il faut faire une boucle
+		if (Sys::getCount('Boutique','Produit/'.$this->Id.'/Attribut')){
+			//génération des attributs et declinaisons
+			$attrs = $this->getChildren('Attribut');
+			$refs = Array();
+			$first = 1;
+			for ($i=0;$i<sizeof($attrs);$i++){
+				//klog::l('- attribut '.$attrs[$i]->Nom);
+				$attrs[$i]->Declinaisons = $attrs[$i]->getChildren('Declinaison');
+				$beginrefs = $refs;
+				$refs = Array();
+				for ($j=0; $j<sizeof($attrs[$i]->Declinaisons);$j++){
+					//klog::l('- declinaison '.$attrs[$i]->Declinaisons[$j]->Nom);
+					if ($first) {
+						$o = genericClass::createInstance('Boutique','Reference');
+						//$o->Reference = $this->Reference . "-" . $attrs[$i]->Code .  "-" . $attrs[$i]->Declinaisons[$j]->Code;
+						$o->Reference = $this->Reference . "-" . $this->Id . "-" . $attrs[$i]->Id .  "-" . $attrs[$i]->Declinaisons[$j]->Id;
+						$o->Actif =1;
+						$o->StockPermanent =1;
+						$o->AddParent($this);
+						$o->AddParent($attrs[$i]->Declinaisons[$j]);
+						$refs[] = $o;
+					}else{
+						$tmpref = unserialize(serialize($beginrefs));
+						//a chaque declinaison on clone le tableau d'origine
+						for ($k=0; $k<sizeof($tmpref);$k++){
+//							$tmpref[$k]->Reference.= "-" . $attrs[$i]->Code .  "-" . $attrs[$i]->Declinaisons[$j]->Code;
+							$tmpref[$k]->Reference.= "-" . $attrs[$i]->Id .  "-" . $attrs[$i]->Declinaisons[$j]->Id;
+							$tmpref[$k]->AddParent($attrs[$i]->Declinaisons[$j]);
+							$refs[] = $tmpref[$k];
 						}
 					}
 				}
+				$first=0;
 			}
-		} 
+			//génération des références
+			//klog::l('*********génération reference*********');
+			//foreach ($refs as $ref){
+			//	klog::l('   - '.$ref->Reference);
+			//}
+			//recherche des références existantes
+			$origrefs = $this->getChildren('Reference');
+			//on désactive toutes les références par défaut
+			for ($i=0;$i<sizeof($origrefs);$i++){
+				$origrefs[$i]->Actif = 0;
+			}
+			//on vérifie l'existence de chaque référence
+			// - on active quand ca correspond.
+			// - on ajoute quand ca n'existe pas.
+			//klog::l('*********comparaison reference*********');
+			for ($i=0;$i<sizeof($refs);$i++){
+				$exists = false;
+				for ($j=0;$j<sizeof($origrefs);$j++){
+					if ($refs[$i]->Reference==$origrefs[$j]->Reference){
+						//si existe on active
+						//klog::l('   - on active '.$origrefs[$j]->Reference);
+						$exists = true;
+						$origrefs[$j]->Actif = 1;
+					}
+				}
+				if (!$exists){
+					//ajout de la référence
+					$refs[$i]->Actif = true;
+					$origrefs[] = $refs[$i];
+					//klog::l('   - on ajoute '.$ref->Reference);
+				}
+			}
+			//on sauvegarde toutes les références
+			//klog::l('*********sauvegarde reference*********');
+			for ($i=0;$i<sizeof($origrefs);$i++){
+				//klog::l('   - on sauvegarde '.$origrefs[$i]->Reference.' Actif: '.$origrefs[$i]->Actif);
+				$origrefs[$i]->Save();
+			}
+			return true;
+		}else{
+			if (!Sys::getCount('Boutique','Produit/'.$this->Id.'/Reference')){
+				//génération de la première référence
+				$o = genericClass::createInstance('Boutique','Reference');
+				$o->Reference = $this->Reference;
+				$o->AddParent($this);
+				$o->Save();
+				//klog::l('génération reference');
+			}else{
+				//vérification des références
+			}
+		}
+	}
 
+	/*
+	 * SURCHARGE SANS RIEN CHANGER SUELEMENT POUR CHANGER LE CONTEXTE D'APPEL DE $this -> executeQuery($Query);
+	 */
+	public function getChildren($Type) {
+		//Renvoie un tableau contenant les enfants de l'objet en cours
+		if ($this -> Id) {
+			$Query = $this -> ObjectType . '/' . $this -> Id . '/' . $Type;
+			$Chi = $this -> executeQuery($Query);
+			$Childs = Array();
+			if (is_array($Chi))
+				foreach ($Chi as $k => $Ch) {
+					if (strlen($Ch["Module"])) {
+						$Childs[] = genericClass::createInstance($Ch["Module"], $Ch);
+					}
+				}
+		}
+		return $Childs;
+	}
 
 //		echo  "2- " . $letaux;
 

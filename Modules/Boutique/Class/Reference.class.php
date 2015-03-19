@@ -547,7 +547,13 @@ class Reference extends genericClass {
 		$prod = $this->getProd();
 		$prixRef=$this->Tarif;
 		if($prixRef == 0) $prixRef =  $prod->Tarif;
-		if($otva) $taux = $otva->getTaux($prod->TypeTvaInterne);
+
+		//==>mars2015 
+		//if($otva) $taux = $otva->getTaux($prod->TypeTvaInterne);
+		$taux =$prod->getTauxTva();
+		//mars 2015======>
+
+
 		$ttc = round($prixRef * (1 + $taux / 100), 2);
 		
 		//$prixRef = $prod->applyPromo($prixRef);
@@ -562,7 +568,7 @@ class Reference extends genericClass {
 				$re = $re[0];
 				$pr = Sys::$Modules['Boutique']->callData('Produit/Reference/'.$re['Id'], false, 0, 1);
 				$pr = $pr[0];
-				$taux = $otva->getTaux($pr->TypeTvaInterne);
+				$taux = $otva->getTaux($pr->TypeTva);
 				if($cp['TarifPack']) $ttc += round($re['TarifPack'] * (1 + $taux / 100), 2);
 				else $ttc += round($cp['TarifHT'] * (1 + $taux / 100), 2);
 			}

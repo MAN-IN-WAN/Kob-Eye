@@ -50,7 +50,7 @@
 								[IF [!Mag::Logo!]!=]
 									<img src="[!Domaine!]/[!Mag::Logo!].limit.300x250.jpg" alt="[!Mag::Nom!]" title="[!Mag::Nom!]" />
 								[ELSE]
-									<img src="[!Domaine!]/Skins/LoisirsCrea/Img/bando-mail.jpg.limit.300x250.jpg"/>
+								//	<img src="[!Domaine!]/Skins/LoisirsCrea/Img/bando-mail.jpg.limit.300x250.jpg"/>
 								[/IF]
 								<br />
 								[!Mag::Nom!]<br />[!Mag::Adresse!]<br />
@@ -110,15 +110,13 @@
 					</thead>
 					[!TotCdeHt:=0!]
 					[STORPROC Boutique/Commande/[!CDE::Id!]/LigneCommande|LC|||tmsCreate|ASC]
-						[!TotCdeHt+=[!LC::MontantHT!]!]
-//						[LOG][!LC::Id!] - [!LC::MontantHT!][/LOG]
 						[STORPROC Boutique/Reference/LigneCommande/[!LC::Id!]|R|0|1]
 							[STORPROC Boutique/Produit/Reference/[!R::Id!]|P|0|1][/STORPROC]
 						[/STORPROC]
 						[!TableComplete-=1!]
 						// ajout ou modification objet tabletva
 						<tr style="margin:0;padding:0;height:5mm;"  cellspacing="0" cellpadding="0" >
-							<td style="padding:1mm;width:25mm;text-align:center;border-left:solid;border-top:none;border-bottom:none;font-size:10px;word-wrap:break-word;"  class="ResDescription"><p style="font-size:10px;">[SUBSTR |20][!LC::Reference!][/SUBSTR]</p></td>
+							<td style="padding:1mm;width:25mm;text-align:center;border-left:solid;border-top:none;border-bottom:none;font-size:10px;word-wrap:break-word;"  class="ResDescription">[SUBSTR |20][!LC::Reference!][/SUBSTR]</td>
 							<td style="width:90mm;border-left:solid;border-top:none;border-bottom:none;" class="ResDescription">
 								[STORPROC Boutique/Categorie/Produit/[!P::Id!]|Cat|0|1][/STORPROC]
 								[!Accro:=!]
@@ -129,7 +127,10 @@
 							<td style="width:15mm;text-align:right;border-left:solid;border-top:none;border-bottom:none;"  class="ResDescription"><p style="font-size:10px;">[!LC::Quantite!]&nbsp;&nbsp;</p></td>
 							<td style="width:27mm;text-align:right;border-left:solid;border-top:none;border-bottom:none;"  class="ResDescription"><p style="font-size:10px;">[!Math::PriceV([!LC::MontantUnitaireHT!])!]&nbsp;&nbsp;</p></td>
 							<td style="width:27mm;text-align:right;border-left:solid;border-top:none;border-bottom:none;border-right:solid;"  class="ResDescription"><p style="font-size:10px;">[!Math::PriceV([!LC::MontantHT!])!]&nbsp;&nbsp;</p></td>
+
 						</tr>
+					
+						[!TotCdeHt+=[!LC::MontantHT!]!]
 					[/STORPROC]
 					// Ajout de la ligne sur la livraison
 					[STORPROC Boutique/Commande/[!CDE::Id!]/BonLivraison|LV|0|1]
@@ -166,8 +167,6 @@
 									// Lecture objet TVA
 									[STORPROC [!CDE::getTableTvaFacture()!]|TvaTx]
 										[!mtTva:=[!CDE::getTVA([!TvaTx::Base!],[!TvaTx::Taux!])!]!]
-										//[!totTVA+=[!Math::Round2([!mtTva!])!]!]
-										//[!totTVA+=[!mtTva!]!]
 										[!totTVA+=[!Math::Price([!mtTva!])!]!]
 										<tr style="height:10mm;margin:30mm">
 											<td style="width:10mm;text-align:center;" class="ResDescription" border="1"> [!TvaTx::Taux!] %</td>

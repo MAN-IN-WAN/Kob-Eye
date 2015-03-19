@@ -149,7 +149,7 @@
 	<OBJECTCLASS title="ConfigPack" driver="mysql" AccessPoint="0" Dico="0" master="0" Description="Unité de configuration d'un pack"   Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png" Class="Modules/Boutique/Class/ConfigPack.class.php">
 		<PROPERTIES searchOrder="1" description="Intitulé" type="varchar" length="100"  category="Principale" >Nom</PROPERTIES>
 		<PROPERTIES searchOrder="3" description="Etape Visualisée" type="int" default="0"  values="0::Pas de visualisation,1::Popup,2::CouleurPopup,3::Couverture,4::Couleur Couverture,7::Feuillet,8::Couleur Feuillet" category="Principale" >EtapeVisu</PROPERTIES>
-		<PROPERTIES description="Taux de Tva"  category="Tarif"  type="int"  query="Fiscalite/TypeTva/Actif=1::Id::Nom" >TauxTva</PROPERTIES>
+		<PROPERTIES description="Type de Tva"  category="Tarif"  type="int"  query="Fiscalite/TypeTva/Actif=1::Id::Nom" >TauxTva</PROPERTIES>
 		<PROPERTIES description="Le choix de cette étape est obligatoire" type="boolean" default="1"  category="Principale"  >ChoixObligatoire</PROPERTIES>
 		<PROPERTIES searchOrder="2" description="Tarif HT dans le pack (tarif permettant le décompte de la tva pour la formule)" type="price" default="" list="6" category="Tarif">TarifHT</PROPERTIES>
 		<PROPERTIES description="Afficher le choix Popup meme si une seule reference" type="boolean" default="0"  category="Comportement" >AffichePopup</PROPERTIES>
@@ -199,7 +199,7 @@
 		<PROPERTIES searchOrder="1" description="Intitulé" type="varchar" length="100"   >Nom</PROPERTIES>
 		<PROPERTIES description="Sigle" type="varchar" length="10"   >Sigle</PROPERTIES>
 		<PROPERTIES  searchOrder="2" description="Taux"  type="float"  >Taux</PROPERTIES>
-		<PROPERTIES  description="Defaut" type="boolean" default="0" >Defaut</PROPERTIES>
+		<PROPERTIES  description="Defaut" type="boolean" default="0" >Default</PROPERTIES>
 		
 	</OBJECTCLASS>
 	
@@ -373,8 +373,9 @@
 		<RKEY card="0,n" data="Produit,Id">ProduitId</RKEY>
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="Adresse" driver="mysql" AccessPoint="0" master="0" Description="Adresses : Livraisons Facturations"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png"  >
+	<OBJECTCLASS title="Adresse" driver="mysql" AccessPoint="0" master="0" Description="Adresses : Livraisons Facturations"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png"  Class="Modules/Boutique/Class/Adresse.class.php">
 		<PROPERTIES searchOrder="1" description="Type d'adresse"   type="varchar" values="Facturation,Livraison" default="Livraison">Type</PROPERTIES>
+		<PROPERTIES description="Adresse par defaut"    type="boolean"  default="1">Default</PROPERTIES>
 		<PROPERTIES Order="2" description="Civilite"   type="varchar" values="Mademoiselle,Madame,Monsieur" obligatoire="0">Civilite</PROPERTIES>
 		<PROPERTIES searchOrder="3" description="Nom"        type="varchar" length="100"   >Nom</PROPERTIES>
 		<PROPERTIES Order="4" description="Prénom"     type="varchar" length="100"   >Prenom</PROPERTIES>
@@ -391,11 +392,13 @@
 			<FORM showNew="0" hideDelete="1">FormBase</FORM>
 		</CONFIGURATION>
 		<PROPERTIES searchOrder="1" description="Référence de la commande" type="varchar" auto="1" length="16" list="2" listDescr="Référence" listWidth="100">RefCommande</PROPERTIES>
+		<PROPERTIES description="Montant HT (Hors Promotion)" type="price" format="2dec">MontantHorsPromoHT</PROPERTIES>
+		<PROPERTIES description="Montant TTC (Hors Promotion)" type="price">MontantHorsPromoTTC</PROPERTIES>
 		<PROPERTIES description="Montant HT" type="float" list="4" format="2dec">MontantHT</PROPERTIES>
-		<PROPERTIES description="Montant TTC" type="float">MontantTTC</PROPERTIES>
-		<PROPERTIES description="Remise TTC" type="float">Remise</PROPERTIES>
-		<PROPERTIES description="Montant TTC Payé " type="float">MontantPaye</PROPERTIES>
-		<PROPERTIES description="Montant TTC Livraison " type="float">MontantLivraison</PROPERTIES>
+		<PROPERTIES description="Montant TTC" type="float" format="2dec">MontantTTC</PROPERTIES>
+		<PROPERTIES description="Remise TTC" type="float" format="2dec">Remise</PROPERTIES>
+		<PROPERTIES description="Montant TTC Payé " type="float" format="2dec">MontantPaye</PROPERTIES>
+		<PROPERTIES description="Montant TTC Livraison " type="float" format="2dec">MontantLivraison</PROPERTIES>
 		<PROPERTIES  searchOrder="2" description="Valide" type="boolean" default="0">Valide</PROPERTIES>
 		<PROPERTIES  searchOrder="3" description="Expedié" type="boolean" default="0">Expedie</PROPERTIES>
 		<PROPERTIES description="Date Expédition" type="date" list="40">ExpedieLe</PROPERTIES>
@@ -407,6 +410,18 @@
 		<PROPERTIES  searchOrder="8" description="Cloturé" type="boolean" default="0">Cloture</PROPERTIES>
 		<PROPERTIES description="Date Cloture" type="date">ClotureLe</PROPERTIES>
 		<PROPERTIES description="Date Commande" type="date" list="5" listDescr="Date" searchOrder="9">DateCommande</PROPERTIES>
+		<PROPERTIES searchOrder="110"	description="Total HT Tx Normal" type="price"   format="2dec" category="BaseNormale">BaseHTTx1</PROPERTIES>
+		<PROPERTIES Order="112"	description="Taux TVA Normal" type="price"   format="2dec" category="BaseNormale">TxTva1</PROPERTIES>
+		<PROPERTIES Order="115"	description="Montant total Tva Normal" type="price"   format="2dec" category="BaseNormale">MtTva1</PROPERTIES>
+		<PROPERTIES Order="120"	description="Total TTC Normal" type="price"   format="2dec" category="BaseNormale">TTC1</PROPERTIES>
+		<PROPERTIES Order="125"	description="Total HT Tx Reduit" type="price"   format="2dec" category="BaseReduite">BaseHTTx2</PROPERTIES>
+		<PROPERTIES Order="165"	description="Taux TVA Reduit" type="price"   format="2dec" category="BaseReduite">TxTva2</PROPERTIES>
+		<PROPERTIES Order="150"	description="Montant total Tva Reduit" type="price"   format="2dec" category="BaseReduite">MtTva2</PROPERTIES>
+		<PROPERTIES Order="160"	description="Total TTC Reduit" type="price"   format="2dec" category="BaseReduite">TTC2</PROPERTIES>
+		<PROPERTIES Order="170"	description="Total HT Livraison" type="price"   format="2dec" category="LIvraison">HtLivr</PROPERTIES>
+		<PROPERTIES Order="175"	description="Taux Tva Liv" type="price"   format="2dec" category="LIvraison">TxTvaLiv</PROPERTIES>
+		<PROPERTIES Order="180"	description="Montant total Tva Liv" type="price"   format="2dec" category="LIvraison">MtTvaLiv</PROPERTIES>
+		<PROPERTIES Order="185"	description="Total TTC Liv" type="price"   format="2dec" category="LIvraison">TTCLiv</PROPERTIES>
 		<FKEY card="0,n" data="Adresse,Id">AdresseId</FKEY>
 		<FKEY card="0,n" data="CodePromo,Id">CodePromoId</FKEY>
 		<FKEY card="1,1" data="Client,Id">ClientId</FKEY>
@@ -443,16 +458,18 @@
 	<OBJECTCLASS title="LigneCommande" driver="mysql" AccessPoint="0" master="0" Description="LigneCommande"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/Boutique/Class/LigneCommande.class.php">
 		<PROPERTIES searchOrder="1" description="Produit" type="varchar" list="2">Titre</PROPERTIES>
 		<PROPERTIES searchOrder="2" description="Reference" type="varchar" list="1" listDescr="100">Reference</PROPERTIES>
-		<PROPERTIES description="Montant Unitaire HT (Hors Promotion)" type="price">MontantUnitaireHorsPromoHT</PROPERTIES>
-		<PROPERTIES description="Montant Total HT (Hors Promotion)" type="price">MontantHorsPromoHT</PROPERTIES>
+		<PROPERTIES description="Montant Unitaire HT (Hors Promotion)" type="price" format="2dec">MontantUnitaireHorsPromoHT</PROPERTIES>
+		<PROPERTIES description="Montant Total HT (Hors Promotion)" type="price" format="2dec">MontantHorsPromoHT</PROPERTIES>
 		<PROPERTIES description="Montant Unitaire TTC (Hors Promotion)" type="price">MontantUnitaireHorsPromoTTC</PROPERTIES>
 		<PROPERTIES description="Montant Total TTC (Hors Promotion)" type="price">MontantHorsPromoTTC</PROPERTIES>
-		<PROPERTIES description="Montant Unitaire HT" type="price" >MontantUnitaireHT</PROPERTIES>
-		<PROPERTIES description="Montant Total HT" type="price">MontantHT</PROPERTIES>
-		<PROPERTIES description="Montant Unitaire TTC" type="price">MontantUnitaireTTC</PROPERTIES>
+		<PROPERTIES description="Montant Unitaire HT" type="price" format="2dec">MontantUnitaireHT</PROPERTIES>
+		<PROPERTIES description="Montant Total HT" type="price" format="2dec">MontantHT</PROPERTIES>
+		<PROPERTIES description="Montant Unitaire TTC" type="price" format="2dec">MontantUnitaireTTC</PROPERTIES>
 		<PROPERTIES description="Montant Total TTC" type="price" list="3" format="2dec" listDescr="Total TTC">MontantTTC</PROPERTIES>
-		<PROPERTIES description="Montant Remise HT" type="price">MontantRemiseHT</PROPERTIES>
-		<PROPERTIES description="Montant Remise TTC" type="price">MontantRemiseTTC</PROPERTIES>
+		<PROPERTIES description="TauxRemise" type="float">TauxRemise</PROPERTIES>
+		<PROPERTIES description="Table de tva" type="text">TableTva</PROPERTIES>
+		<PROPERTIES description="Montant Remise HT" type="price" format="2dec">MontantRemiseHT</PROPERTIES>
+		<PROPERTIES description="Montant Remise TTC" type="price" format="2dec">MontantRemiseTTC</PROPERTIES>
 		<PROPERTIES description="Taxe" type="float">Taxe</PROPERTIES>
 		<PROPERTIES description="Image" type="image">Image</PROPERTIES>
 		<PROPERTIES description="Quantite"  type="int" default="1" list="4" format="0dec" listDescr="Qté">Quantite</PROPERTIES>
@@ -501,8 +518,20 @@
 			<FORM hideNew="1" hideDelete="1">FormList</FORM>
 			<FORM showNew="0" hideDelete="1">FormBase</FORM>
 		</CONFIGURATION>
-		<PROPERTIES searchOrder="1"	description="Numéro Facture" type="varchar" list="2" listDescr="Numéro" listWidth="100">NumFac</PROPERTIES>
-		<PROPERTIES searchOrder="2"	description="Total Facture TTC" type="price" list="3" listDescr="TTC" format="2dec">MontantTTC</PROPERTIES>
+		<PROPERTIES searchOrder="1"	description="Numéro Facture" type="varchar" list="2" listDescr="Numéro" listWidth="100" category="Total Facture">NumFac</PROPERTIES>
+		<PROPERTIES searchOrder="2"	description="Total Facture TTC" type="price" list="3" listDescr="TTC" format="2dec" category="Total Facture">MontantTTC</PROPERTIES>
+		<PROPERTIES searchOrder="10"	description="Total HT Tx Normal" type="price"   format="2dec" category="BaseNormale">BaseHTTx1</PROPERTIES>
+		<PROPERTIES Order="12"	description="Taux TVA Normal" type="price"   format="2dec" category="BaseNormale">TxTva1</PROPERTIES>
+		<PROPERTIES Order="15"	description="Montant total Tva Normal" type="price"   format="2dec" category="BaseNormale">MtTva1</PROPERTIES>
+		<PROPERTIES Order="20"	description="Total TTC Normal" type="price"   format="2dec" category="BaseNormale">TTC1</PROPERTIES>
+		<PROPERTIES Order="25"	description="Total HT Tx Reduit" type="price"   format="2dec" category="BaseReduite">BaseHTTx2</PROPERTIES>
+		<PROPERTIES Order="65"	description="Taux TVA Reduit" type="price"   format="2dec" category="BaseReduite">TxTva2</PROPERTIES>
+		<PROPERTIES Order="50"	description="Montant total Tva Reduit" type="price"   format="2dec" category="BaseReduite">MtTva2</PROPERTIES>
+		<PROPERTIES Order="60"	description="Total TTC Reduit" type="price"   format="2dec" category="BaseReduite">TTC2</PROPERTIES>
+		<PROPERTIES Order="70"	description="Total HT Livraison" type="price"   format="2dec" category="LIvraison">HtLivr</PROPERTIES>
+		<PROPERTIES Order="75"	description="Taux Tva Liv" type="price"   format="2dec" category="LIvraison">TxTvaLiv</PROPERTIES>
+		<PROPERTIES Order="80"	description="Montant total Tva Liv" type="price"   format="2dec" category="LIvraison">MtTvaLiv</PROPERTIES>
+		<PROPERTIES Order="85"	description="Total TTC Liv" type="price"   format="2dec" category="LIvraison">TTCLiv</PROPERTIES>
 		<FKEY card="1,1" data="Commande,Id">CommandeId</FKEY>
 		<FKEY card="1,1" data="Client,Id">ClientId</FKEY>
 		<FUNCTION listOnly="1" multi="1" name="printFacture" icon="left" label="Impression Factures" description="Iprimer les factures">Impression

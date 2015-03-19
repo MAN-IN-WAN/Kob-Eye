@@ -38,7 +38,6 @@ class Commande extends genericClass {
 	 */
 	public function Save() {
 		$this -> getFacture();
-
 		$this -> getBonLivraison();
 
 		//==>  empeche de mettre expedié
@@ -63,13 +62,34 @@ class Commande extends genericClass {
 		//Sauvegarde
 		parent::Save();
 
+		// ==> Mars 2015
+		// Recalcul de l'entete de commande par rapport au ligne
+		if (!isset($this -> LignesCommandes)) $this -> getLignesCommande();
+		if (isset($this -> LignesCommandes) && is_array($this -> LignesCommandes)) {
+			$this->MontantTTC=0;
+			$this->MontantHT =0;
+			$this->MontantHorsPromoTTC=0;
+			$this->MontantHorsPromoHT =0;
+			foreach ($this->LignesCommandes as $obj) :
+				$this->MontantTTC += $obj->MontantTTC;
+				$this->MontantHT += $obj->MontantHT;
+				$this->MontantHorsPromoTTC += $obj->MontantHorsPromoTTC;
+				$this->MontantHorsPromoHT += $obj->MontantHorsPromoHT;
+			endforeach;
 
+		}
+
+			
+		// Mars 2015 ===>
+			
 		//Definition du montant à payer avec la livraison
 		if (isset($this -> BonLivraison) && is_object($this -> BonLivraison) && $this->getMontantLivrable()>0) {
-
-
 			//on passe toujours ici car on a toujours un bon de livraison
-			$this -> MontantPaye = $this -> MontantTTC - $this -> Remise + $this -> BonLivraison -> MontantLivraisonTTC;
+			//$this -> MontantPaye = $this -> MontantTTC - $this -> Remise + $this -> BonLivraison -> MontantLivraisonTTC;
+			//erreur mars 2015 la remise était déduite deux fois
+			$this -> MontantPaye = $this -> MontantTTC + $this -> BonLivraison -> MontantLivraisonTTC;
+			
+
 			$this -> MontantLivraison = $this -> BonLivraison -> MontantLivraisonTTC;
 			$this -> BonLivraison -> AddParent($this);
 			$this -> BonLivraison -> Save();
@@ -127,6 +147,55 @@ class Commande extends genericClass {
 				}
 			}
 		}
+		
+		
+		
+		$arr = array(
+			1 => array(
+				'HT' => 0,
+				'TTC' => 0
+			),
+			2 => array(
+				'HT' => 0,
+				'TTC' => 0
+			)
+		);
+		$this->initTableTvaFacture();
+		if (isset($this -> LignesCommandes) && is_array($this -> LignesCommandes))
+			foreach ($this->LignesCommandes as $k=>$LC) {
+				$tabletva = unserialize($LC->TableTva);
+				$arr[1]['HT'] += $tabletva['T20']['Base'];
+				$arr[2]['HT'] += $tabletva['T5.5']['Base'];
+				
+				if(isset($tabletva['T20']['Taux']))
+					$this->TxTva1 = $tabletva['T20']['Taux'];
+				if(isset($tabletva['T5.5']['Taux']))
+					$this->TxTva2 = $tabletva['T5.5']['Taux'];
+			}
+		
+		$liv = $this->getChildren('BonLivraison');
+			
+		if ($liv[0]->MontantLivraisonHT!=0) {
+			
+			$this->HtLivr= $liv[0]->MontantLivraisonHT;
+			$this->TTCLiv=round($this->HtLivr * $this->TxTva1/100 ,2);
+			$this->MtTvaLiv =round($this->HtLivr * ($this->TxTva1  / 100), 2);
+			$this->TxTvaLiv = $liv[0]->TxTvaBonLivr;
+		}
+
+		//$this->TxTva1 = 20;
+		//$this->TxTva2 = 5.5;
+
+		$this->BaseHTTx1= round($arr[1]['HT'],2) ;
+		$this->MtTva1 =round($this->BaseHTTx1 * ($this->TxTva1 / 100), 2);
+		$this->TTC1= $this->BaseHTTx1 + $this->MtTva1;
+
+		$this->BaseHTTx2= round($arr[2]['HT'],2) ;
+		$this->MtTva2 =round($this->BaseHTTx2 * ($this->TxTva2 / 100), 2);
+		$this->TTC2= $this->BaseHTTx2+ $this->MtTva2;
+		
+
+
 		//Sauvegarde
 		parent::Save();
 	}
@@ -309,7 +378,8 @@ class Commande extends genericClass {
 			if (sizeof($ser)){
 				// modification 2 janvier 2015 pour tester la fin de l'abonnement
 				foreach($ser as $servi){
-					if($servi->DateFin > time()){ //SI l'abonnement est périmé on peut en contracter un nouveau sinon on se fait refouler
+					if($servi->DateFin > time()){ 
+						//SI l'abonnement est périmé on peut en contracter un nouveau sinon on se fait refouler
 						//Si il y a deja un service on refuse l'ajout de ce type de produit
 						$this->AddError(Array("Message" => "Vous avez déjà un abonnement actif $ref->Nom."));
 						return false;
@@ -435,70 +505,22 @@ class Commande extends genericClass {
 		$this -> MontantTTC = 0;
 		$this -> Remise = 0;
 		$this -> Qte = 0;
-		$this -> Poids = 0;
+		$this -> Poids = 0.1;
 		$this -> Volume = 0;
-
-		$arr = array();
-		$otva = $this->getObjetTva();
 		$this -> initTableTvaFacture();
-		if (isset($this -> LignesCommandes) && is_array($this -> LignesCommandes))
+
+		if (isset($this -> LignesCommandes) && is_array($this -> LignesCommandes)) {
 			foreach ($this->LignesCommandes as $k=>$LC) {
-			
-				//recalcul des lines commandes
-				$LC->recalculer($otva);
-				//recupération du produit
-				$ref = $LC->getReference();
-				//calcul taux de remise
-				$remisetx = 1 - ($ref->getRemiseProduit($LC->Quantite)/100);
-				if ($LC->TypeProduit==4){
-					//alors il faut traiter tous les taux de tva
-					$prod = $ref->getProd();
-					$cps = $prod->getChildren('ConfigPack');
-
-					if (is_array($cps))foreach ($cps as $cp){
-//						$TxTva = Sys::getData('Fiscalite','TypeTva/'.$cp->TauxTva);
-//						$TxTva = $TxTva[0]->getTaux();
-						$TxTva = $otva->getTaux($cp->TauxTva);
-						
-						if (!isset($arr[$TxTva]))
-							$arr[$TxTva] = array('HTHorsPromo' => 0, 'HT' => 0);
-						
-//						$arr[$TxTva]['HTHorsPromo'] += $cp -> TarifHT;
-//						$arr[$TxTva]['HT'] += $cp -> TarifHT * $remisetx;
-						
-						if ($cp->TarifPack){
-							$re = genericClass::createInstance('Boutique','Reference');
-							$re->initFromId($LC->Config[$cp->Id]);
-						//	klog::l("cp id " . $cp->Id . " config " , $LC->Config );
-	
-							$arr[$TxTva]['HTHorsPromo'] += $re->TarifPack;
-							$arr[$TxTva]['HT'] += $re->TarifPack * $remisetx;
-						//	klog::l($cp ->Nom . "HTHorsPromo 2 : " . $re->Tarif);
-
-						} else {
-							$arr[$TxTva]['HTHorsPromo'] += $cp -> TarifHT;
-							$arr[$TxTva]['HT'] += $cp -> TarifHT * $remisetx;
-						}
-					}
-
-
-				}else{
-					if (!isset($arr[$LC -> Taxe]))
-						$arr[$LC -> Taxe] = array('HTHorsPromo' => 0, 'HT' => 0);
-					$arr[$LC -> Taxe]['HTHorsPromo'] += $LC -> MontantHorsPromoHT;
-					$arr[$LC -> Taxe]['HT'] += $LC -> MontantHT;
-				}
-
+				$LC->Recalculer();
+				$this -> MontantHTHorsPromo += $LC->MontantHorsPromoHT;
+				$this -> MontantTTCHorsPromo += $LC->MontantHorsPromoTTC;
+				$this -> MontantHT += $LC->MontantHT;
+				$this -> MontantTTC += $LC->MontantTTC;
+				$this -> Remise += $LC->MontantRemiseTTC;
 				$this -> Qte += $LC -> Quantite;
 				$this -> Poids += $LC -> Poids;
 				$this -> Volume += ($LC -> Largeur * $LC -> Hauteur * $LC -> Profondeur);
 			}
-
-		foreach ($arr as $taux => $data) {
-			$this -> MontantHTHorsPromo += $data['HTHorsPromo'];
-			$this -> MontantHT += $data['HT'];
-			$this -> MontantTTCHorsPromo += $data['HTHorsPromo'] * (1 + $taux / 100);
-			$this -> MontantTTC += $data['HT'] * (1 + $taux / 100);
 		}
 		//recuperation du bon de livraison
 		$this -> getBonLivraison();
@@ -527,8 +549,131 @@ class Commande extends genericClass {
 				}
 			}
 		}
-
 	}
+
+//	public function recalculer() {
+//		$this -> MontantHTHorsPromo = 0;
+//		$this -> MontantTTCHorsPromo = 0;
+//		$this -> MontantHT = 0;
+//		$this -> MontantTTC = 0;
+//		$this -> Remise = 0;
+//		$this -> Qte = 0;
+//		$this -> Poids = 0.1;
+//		$this -> Volume = 0;
+//
+//
+//		$arr = array();
+//		// ==> mars 2015 
+//		//$otva = $this->getObjetTva();
+//		// mars 2015 ==> 
+//
+//		$this -> initTableTvaFacture();
+//
+//		if (isset($this -> LignesCommandes) && is_array($this -> LignesCommandes))
+//			foreach ($this->LignesCommandes as $k=>$LC) {
+//				//recalcul des lines commandes
+//
+//				// ==> mars 2015 
+//				//$LC->recalculer($otva);
+//				// EST CE QU'ON MET LA BONNE FONCTION ?
+//				//===> car la fonction n'existe pas ou alors avec R !!!!$LC->recalculer();
+//				// mars 2015 ==> 
+//
+//				//recupération du produit
+//				$ref = $LC->getReference();
+//				if ($LC->TypeProduit==4){
+////				if ($LC->TypeProduit==4||$LC->TypeProduit==5){
+//					//calcul taux de remise
+//					$remisetx = 1 - ($ref->getRemiseProduit($LC->Quantite)/100);
+//					//alors il faut traiter tous les taux de tva
+//					$prod = $ref->getProd();
+//					$cps = $prod->getChildren('ConfigPack');
+//
+//					if (is_array($cps))foreach ($cps as $cp){
+//						// ==> mars 2015 
+//						//$TxTva = $otva->getTaux($cp->TauxTva);
+//						$TxTva = $prod->getTauxTva($cp->TauxTva);
+//						// mars 2015 ==> 
+//				
+//						if (!isset($arr[$TxTva]))
+//							$arr[$TxTva] = array('HTHorsPromo' => 0, 'HT' => 0);
+//						
+//						
+//						if ($cp->TarifPack){
+//							$re = genericClass::createInstance('Boutique','Reference');
+//							$re->initFromId($LC->Config[$cp->Id]);
+//	
+//							$arr[$TxTva]['HTHorsPromo'] += $re->TarifPack;
+//							$arr[$TxTva]['HT'] += $re->TarifPack * $remisetx;
+//						//	klog::l($cp ->Nom . "HTHorsPromo 2 : " . $re->Tarif);
+//
+//						} else {
+//							$arr[$TxTva]['HTHorsPromo'] += $cp -> TarifHT;
+//							$arr[$TxTva]['HT'] += $cp -> TarifHT * $remisetx;
+//						}
+//					}
+//
+//
+//				}else{
+//					if (!isset($arr[$LC -> Taxe]))
+//						$arr[$LC -> Taxe] = array('HTHorsPromo' => 0, 'HT' => 0);
+//					$arr[$LC -> Taxe]['HTHorsPromo'] += $LC -> MontantHorsPromoHT;
+//					$arr[$LC -> Taxe]['HT'] += $LC -> MontantHT;
+//				}
+//
+//				$this -> Qte += $LC -> Quantite;
+//				$this -> Poids += $LC -> Poids;
+//				$this -> Volume += ($LC -> Largeur * $LC -> Hauteur * $LC -> Profondeur);
+//			}
+//
+//			foreach ($arr as $taux => $data) {
+//				$this -> MontantHTHorsPromo += $data['HTHorsPromo'];
+//				$this -> MontantHT += $data['HT'];
+//				$this -> MontantTTCHorsPromo += $data['HTHorsPromo'] * (1 + $taux / 100);
+//				$this -> MontantTTC += $data['HT'] * (1 + $taux / 100);
+//	
+//			}
+//	
+//	
+//			//recuperation du bon de livraison
+//			$this -> getBonLivraison();
+//			$fraisDePortOffert = false;
+//	
+//			// ajouter la reduction d'offre speciale
+//			if (isset($this -> OffreSpeciale)) {
+//				if ($this -> OffreSpeciale -> TypeVariation != 3) {
+//					$this -> Remise += $this -> OffreSpeciale -> getReducMontant($this -> MontantTTC);
+//				} else {
+//					//soustraction du frais de port
+//					$fraisDePortOffert = true;
+//					$this -> Remise += $this -> BonLivraison -> MontantLivraisonTTC;
+//				}
+//			}
+//	
+//			// ajouter la reduction CodePromo
+//			if (isset($this -> CodePromo)) {
+//				if ($this -> CodePromo -> TypeVariation != 3) {
+//					$this -> Remise += $this -> CodePromo -> getReducMontant($this -> MontantTTC);
+//				} else {
+//					if (!$fraisDePortOffert) {
+//						//soustraction du frais de port
+//						$this -> Remise += $this -> BonLivraison -> MontantLivraisonTTC;
+//					} else {
+//						unset($this -> CodePromo);
+//					}
+//				}
+//			}
+//			
+//			//Ajout de la livraison
+//			/*if (isset($this->BonLivraison)&&is_object($this->BonLivraison)){
+//				$this->MontantHT += $this->BonLivraison->MontantLivraisonHT;
+//				$this->MontantTTC += $this->BonLivraison->MontantLivraisonTTC;
+//			}*/
+//		// fin ===> if (isset($this -> LignesCommandes) && is_array($this -> LignesCommandes))
+//	}
+
+	
+
 	public function getClient() {
 		if (isset($this -> Client) && is_object($this -> Client))
 			return $this -> Client;
@@ -862,7 +1007,7 @@ class Commande extends genericClass {
 	 * @return	void
 	 */
 	function initTableTvaFacture() {
-		$otva = $this->getObjetTva();
+
 		$this -> tabletva = array();
 		$this->getLignesCommande();
 		//Lignes commandes
@@ -871,7 +1016,6 @@ class Commande extends genericClass {
 		if (!isset($cl->_Remises)) $cl = Client::getCurrentClient($cl->UserId);
 		$mini=0;
 		if (is_array($cl->_Remises)&&sizeof($cl->_Remises))foreach ($cl->_Remises as $clR) {
-//			if($clR> $mini) $mini=$clR;
 			// mars 2015 BUG ON APPLIQUÉ LA REMISE ALORS QU'ELLE N'ÉTAIT PAS ENCORE SUR CETTE COMMANDE
 			// ajout du test est ce que l'abonnement est actif au moment de la commande
 			$ser = $cl->getChildren('Service');
@@ -882,75 +1026,40 @@ class Commande extends genericClass {
 					}
 				}
 			}
-
 		}
 		$remisetx = 1 - ($mini/100);
 
 		$tht = 0;
 		if (isset($this->LignesCommandes)&&is_array($this->LignesCommandes))foreach ($this->LignesCommandes as $lc){
 			// RECALCULER TRES IMPORTANT  --> SINON ON N'A PAS LES VALEURS DES CONFIG
-			
-			$refProduitPrincipal = $lc->getReference();
-			//calcul taux de remise
-			if ($lc->TypeProduit==4){
-				$lc->recalculer();
-				//alors il faut traiter tous les taux de tva
-				//recupération du produit
-				$ht=0;
-				$prod = $refProduitPrincipal->getProd();
-				$cps = $prod->getChildren('ConfigPack');
-				if (is_array($cps))foreach ($cps as $cp){
-					$re2 = genericClass::createInstance('Boutique','Reference');
-					$re2->initFromId($lc->Config[$cp->Id]);
-
-					if ($cp->TarifPack){
-						$Montant = $re2->TarifPack * $remisetx;
-					} else {
-						$Montant = $cp->TarifHT * $remisetx;
-					}
-
-					if($Montant) {
-						$P = $re2->getProd();
-						$TxTva = $otva->getTaux($P->TypeTvaInterne);
-						$this->updateTableTvaFacture($TxTva,$Montant);
-						$ht += $Montant;
-					}
-				}
-				$tht += $ht;
-				//klog::l('Myr Reference produit : ' .$prod->Reference . ' le ht ' . $ht);
-
-			}else{
-				//klog::l('Myr ligne hors pac le ht ' . $lc->MontantHT);
-				$this->updateTableTvaFacture($lc->Taxe,$lc->MontantHT);
-				$tht += $lc->MontantHT;
+			$tabletva = $lc->getTableTva($remisetx);
+			//calcul des bases ht
+			foreach($tabletva as $tk => $tt) {
+				$tht += $tt['Base'];
+				$this->updateTableTvaFacture( $tt['Taux'],$tt['Base']);
 			}
-			
 		}
-//		klog::l('===========================Fin Facture : =================' );
-//klog::l(">>>>>",$this->tabletva);
-
+		
 		$this->getBonLivraison();
 		if (isset($this->BonLivraison)&&is_object($this->BonLivraison)){
 			$this->updateTableTvaFacture($this->BonLivraison->TxTvaBonLivr,$this->BonLivraison->MontantLivraisonHT);
 			$tht += $this->BonLivraison->MontantLivraisonHT;
 		}
-//return;
 
-		// ajuste les bases tva pour correspondre au tht
-		$max = 0;
-		$amax = '';
-		$tbas = 0;
-		$rbas = 0;
-		foreach($this->tabletva as $tk => $tt) {
-			$b = $tt['Base'];
-			$tbas += $b;
-			$rbas += $this->tabletva[$tk]['Base'] = $b = round($b, 2);
-			if($b>$max) {$max = $b; $amax = $tk;}
-		}
-		$tbas = round($tbas, 2);
-		$diff = round($tbas - $rbas, 2);
-		$this->tabletva[$amax]['Base'] += $diff;
-//klog::l(">>>>>",$this->tabletva);
+// 		// ajuste les bases tva pour correspondre au tht
+// 		$max = 0;
+// 		$amax = '';
+// 		$tbas = 0;
+// 		$rbas = 0;
+// 		foreach($this->tabletva as $tk => $tt) {
+// 			$b = $tt['Base'];
+// 			$tbas += $b;
+// 			$rbas += $this->tabletva[$tk]['Base'] = $b = round($b, 2);
+// 			if($b>$max) {$max = $b; $amax = $tk;}
+// 		}
+// 		$tbas = round($tbas, 2);
+// 		$diff = round($tbas - $rbas, 2);
+// 		$this->tabletva[$amax]['Base'] += $diff;
 
 	}
 
@@ -965,10 +1074,6 @@ class Commande extends genericClass {
 			 $this->tabletva["T".$taux]['Base']+=$base;
 		}
 		else $this->tabletva["T".$taux] = array( 'Base' => $base ,"Taux"=> $taux);
-
-		//klog::l("updateTableTvaFacture base :", $base  );
-
-
 	}
 
 	/**
