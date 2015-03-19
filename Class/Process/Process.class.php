@@ -334,8 +334,6 @@ class Process extends Root{
 							preg_match('#([^\(]*?)\(([^\)]*?)\)#', $Tab[$i], $Out);
 							if(empty($Out)) $Out[1] = $Tab[$i];
 							if (method_exists($Obj,$Out[1])){
-                                print_r($Out);
-                                print_r((isset($Out[2]))?explode(',',$Out[2]):'');
 								return call_user_func_array(array($Obj,$Out[1]),(isset($Out[2]))?explode(',',$Out[2]):Array());
 								//return $Obj->$Out[1]( (isset($Out[2]))?$Out[2]:'' );
 							}
