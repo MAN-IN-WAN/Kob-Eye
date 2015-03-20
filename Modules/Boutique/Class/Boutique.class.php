@@ -5,7 +5,9 @@ class Boutique extends Module {
 	 * Avant l'authentification de l'utilisateur
 	 * @void 
 	 */
-	static $_Client;
+    static $_Client;
+    static $_Magasin;
+
 
 	function init (){
 		parent::init();

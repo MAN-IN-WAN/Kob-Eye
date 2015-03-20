@@ -175,7 +175,7 @@ class Commande extends genericClass {
 		
 		$liv = $this->getChildren('BonLivraison');
 			
-		if ($liv[0]->MontantLivraisonHT!=0) {
+		if (sizeof($liv)&&$liv[0]->MontantLivraisonHT!=0) {
 			
 			$this->HtLivr= $liv[0]->MontantLivraisonHT;
 			$this->TTCLiv=round($this->HtLivr * $this->TxTva1/100 ,2);
@@ -904,8 +904,7 @@ class Commande extends genericClass {
 	 * @return	void
 	 */
 	public function setMagasin($Magasin = 1) {
-		$Mag = $this -> storproc('Boutique/Magasin/' . $Magasin);
-		$this -> Magasin = genericClass::createInstance('Boutique', $Mag[0]);
+		$this -> Magasin = Magasin::getCurrentMagasin();
 
 	}
 
