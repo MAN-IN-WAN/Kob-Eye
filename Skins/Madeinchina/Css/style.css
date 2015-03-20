@@ -159,11 +159,11 @@ div.copyright{
 
 .ColonneCreationCompte {
 }
-.CommandeEtape2, .CommandeEtape3, .CommandeEtape4, .CommandeEtape5{
-	margin-bottom:50px;
+.CommandeEtape1,.CommandeEtape2, .CommandeEtape3, .CommandeEtape4, .CommandeEtape5{
 	border: 0;
 	background: #F6F6F6;
 	padding: 10px;
+    min-height: 400px;
 }
 .CommandeEtape2 h2{
 	font-size: 14px;
@@ -235,6 +235,15 @@ p.DescTypeLivraison {
     border: 1px solid #CCCCCC;
     float: right;
     padding: 10px;
+    margin: 0 0 10px 0;
+    width: 245px;
+}
+input[type="radio"], input[type="checkbox"] {
+    margin: 0px 10px 2px;
+    line-height: normal;
+}
+.InputTypeLivraison, .AdresseRadioLivraison, .AdresseRadioFacturation{
+    float: left;
 }
 h2.CDE_OFFRESPEC { 
 	display:block;
@@ -256,7 +265,6 @@ div.TitreModeLivraison {
 div.TitreTypeLivraison {
     color: #393939;
     font-size: 12px;
-    padding: 2px 74px 0 26px;
 }
 .Etape3 table.TotalDetaille  {
 	background:none;

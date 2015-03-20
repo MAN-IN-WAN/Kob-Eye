@@ -207,9 +207,9 @@ class BoutiqueProduit extends genericClass
         if (Sys::$User->Public) {
             return parent::getUrl();
         } elseif (!Sys::$User->Admin) {
-            //if (isset($this->_getUrl)&&!empty($this->_getUrl)) return $this->_getUrl;
+            if (isset($this->_getUrl)&&!empty($this->_getUrl)) return '/'.$this->_getUrl;
             //recherche des categorie
-            //$cat = $this->storproc('Boutique/Categorie/* /Categorie/Produit/'.$this->Id);
+            $cat = $this->storproc('Boutique/Categorie/*/Categorie/Produit/'.$this->Id);
             //on verifie qu'il n'y pas de menu sur chacune des categories
             $M = false;
             $lastCat = -1;
@@ -218,43 +218,42 @@ class BoutiqueProduit extends genericClass
             if (is_array($cat)) foreach ($cat as $c) {
                 if ('Boutique/Categorie/' . $c["Id"] != $GLOBALS["Systeme"]->getMenu('Boutique/Categorie/' . $c["Id"])) {
                     $this->_getUrl = $GLOBALS["Systeme"]->getMenu('Boutique/Categorie/' . $c["Id"]) . '/' . $U;
-                    return $this->_getUrl;
+                    return '/'.$this->_getUrl;
                 } elseif ($lastCat == -1 || ($lastCat['Bg'] > $c['Bg'] && $lastCat['Bd'] < $c['Bd'])) {
                     $U = $c["Url"] . '/' . $U;
                     $lastCat = $c;
                 }
             }
-            $U = 'Categorie/' . $U;
+//            $U = 'Categorie/' . $U;
             //recherche du magasin
             if (!isset($c)) return false;
             $mag = Magasin::getCurrentMagasin();
+
             if (is_object($mag) && 'Boutique/Magasin/' . $mag->Id != $GLOBALS["Systeme"]->getMenu('Boutique/Magasin/' . $mag->Id . '/Categorie')) {
-                $this->_getUrl = $GLOBALS["Systeme"]->getMenu('Boutique/Magasin/' . $mag->Id) . '/' . $U;
-                return $this->_getUrl;
+                $this->_getUrl = $GLOBALS["Systeme"]->getMenu('Boutique/Magasin/' . $mag->Id.'/Categorie') . '/' . $U;
+                return '/'.$this->_getUrl;
             }
             //recherche du magasin plus la categorie
             $Uc = 'Produit/' . $this->Url;
             $C = '/Categorie';
             if (is_array($cat)) for ($i = sizeof($cat) - 1; $i >= 0; $i--) {
                 $C .= '/' . $cat[$i]["Id"];
-
                 if (is_object($mag) && 'Boutique/Magasin/' . $mag->Id . $C != $GLOBALS["Systeme"]->getMenu('Boutique/Magasin/' . $mag->Id . $C)) {
                     $this->_getUrl = $GLOBALS["Systeme"]->getMenu('Boutique/Magasin/' . $mag->Id . $C) . '/Categorie';
                     for ($j = $i - 1; $j >= 0; $j--) $this->_getUrl .= '/' . $cat[$j]["Url"];
                     $this->_getUrl .= '/' . $Uc;
-                    return $this->_getUrl;
+                    return '/'.$this->_getUrl;
                 }
                 //recherche du magasin plus la categorie
                 $Uc = 'Produit/' . $this->Url;
                 $C = '/Categorie';
                 if (is_array($cat)) for ($i = sizeof($cat) - 1; $i >= 0; $i--) {
                     $C .= '/' . $cat[$i]["Id"];
-
                     if ('Boutique/Magasin/' . $mag->Id . $C != $GLOBALS["Systeme"]->getMenu('Boutique/Magasin/' . $mag->Id . $C)) {
                         $this->_getUrl = $GLOBALS["Systeme"]->getMenu('Boutique/Magasin/' . $mag->Id . $C) . '/Categorie';
                         for ($j = $i - 1; $j >= 0; $j--) $this->_getUrl .= '/' . $cat[$j]["Url"];
                         $this->_getUrl .= '/' . $Uc;
-                        return $this->_getUrl;
+                        return '/'.$this->_getUrl;
                     }
                 }
                 return 'Boutique/' . $U;
@@ -262,7 +261,6 @@ class BoutiqueProduit extends genericClass
             return parent::getUrl();
 
         } else return parent::getUrl();
-        // LE RETURN, il manquait le RETURN ^^ so6+
     }
 
     /**

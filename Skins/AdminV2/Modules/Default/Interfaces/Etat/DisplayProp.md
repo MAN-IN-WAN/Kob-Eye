@@ -61,7 +61,6 @@
 				[/STORPROC]
 				[IF [!Etn!]>0]
 					[IF [!Etn!]<=50]
-						[!DEBUG::[!Query!]/[!Enf::Titre!]!]
 						[STORPROC [!Query!]/[!Enf::Titre!]|Et|0|50]
 							[LIMIT 0|1]
 							<table width="100%" >

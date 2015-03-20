@@ -1,13 +1,8 @@
 [IF [!Systeme::User::Public!]=1]
 	[OBJ Boutique|Client|Cli]
 [ELSE]
-	[STORPROC Boutique/Client/UserId=[!Systeme::User::Id!]|Cli|0|1]
-		[NORESULT]
-			[OBJ Boutique|Client|Cli]
-		[/NORESULT]
-	[/STORPROC]
+        [!Cli:=[!CurrentClient!]!]
 [/IF]
-//[MODULE Boutique/Produit/MajPanier]
 
 
 // Ajout au panier
@@ -76,6 +71,15 @@
 	<div class="alert alert-danger">
 		<b>Erreur :</b>
 		<ul>
+            [IF [!Reference!]=]
+            <li>Aucune référence</li>
+            [/IF]
+            [IF [!Qte!]=]
+            <li>Aucune Quantité</li>
+            [/IF]
+            [IF [!Cli!]=]
+            <li>Client introuvable</li>
+            [/IF]
 		[STORPROC [!T!]|E]
 			<li>[!E::Message!]</li>
 		[/STORPROC]

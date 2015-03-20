@@ -1,6 +1,7 @@
 <?php
 
 class BonLivraison extends genericClass {
+    var $MontantLivraisonHT = 0;
 
 	public function Save() {
 		parent::Save();

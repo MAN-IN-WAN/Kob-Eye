@@ -3,12 +3,11 @@
 		<div class=" jcarousel-wrap">
 			<div id="wrap">
 				<ul id="lofjcarousel" class="jcarousel-skin-tango">
-				[OBJ Boutique|Magasin|Mag]
-				[!Mag:=[!Mag::getCurrentMagasin()!]!]
-				[STORPROC Boutique/Magasin/[!Mag::Id!]/Categorie/Actif=1/Produit/Coeur=1|Prod|0|20|Ordre|ASC]
+				[STORPROC Boutique/Magasin/[!CurrentMagasin::Id!]/Categorie/*/Produit/Actif=1&Tarif>0&Coeur=1|Prod|0|20|Ordre|ASC]
 					<li class="lof-item">
-						<a href="/[!Prod::getUrl()!]">
-							<img src="/[!Prod::Image!].mini.143x94.jpg" alt="[!Prod::Titre!]" vspace="0" border="0" />
+						<a href="[!Prod::getUrl()!]">
+							<img src="/[!Prod::Image!].mini.143x150.jpg" alt="[!Prod::Titre!]" vspace="0" border="0" />
+                            <p>[!Prod::Nom!]</p>
 						</a>
 					</li>
 				[/STORPROC]

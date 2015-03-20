@@ -44,7 +44,7 @@
 													<span class="price"> [!Prod::getTarif()!] </span>
 												</p>
 
-												<a class="exclusive ajax_add_to_cart_button" rel="ajax_id_product_9" href=/Skins/Paranature/index.php?controller=cart?qty=1&amp;id_product=9&amp;token=32f4b0bcca875efdf13c8b259373d259&amp;add" title="Add to cart">Add to cart</a>
+												<a class="exclusive ajax_add_to_cart_button" rel="ajax_id_product_9" href="/[!Prod::getUrl()!]" title="Add to cart">Plus de détails</a>
 												<div class="content-bottom">
 													<div class="product_desc">
 														<a href="/[!Prod::getUrl()!]" title="Plus	">[SUBSTR 0|25][!Prod::Descripion!][/SUBSTR]</a>
@@ -76,7 +76,7 @@
 													<span class="price"> [!Prod::getTarif()!] </span>
 												</p>
 
-												<a class="exclusive ajax_add_to_cart_button" rel="ajax_id_product_9" href=/Skins/Paranature/index.php?controller=cart?qty=1&amp;id_product=9&amp;token=32f4b0bcca875efdf13c8b259373d259&amp;add" title="Add to cart">Add to cart</a>
+                                                <a class="exclusive ajax_add_to_cart_button" rel="ajax_id_product_9" href="/[!Prod::getUrl()!]" title="Add to cart">Plus de détails</a>
 												<div class="content-bottom">
 													<div class="product_desc">
 														<a href="/[!Prod::getUrl()!]" title="Plus	">[SUBSTR 0|25][!Prod::Descripion!][/SUBSTR]</a>

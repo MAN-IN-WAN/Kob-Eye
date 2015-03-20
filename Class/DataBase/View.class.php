@@ -140,7 +140,7 @@ class View extends Root{
 			$found=false;
 			//recherche de la propriete
 			foreach ($oldSel as $os){
-				if ($os["Alias"]==$se[0]){
+				if (isset($os["Alias"])&&$os["Alias"]==$se[0]){
 					$newSel[] = $os;
 					$found=true;
 				}
@@ -183,7 +183,10 @@ class View extends Root{
 						"Nom" => "m.".$s[0],
 						"Alias" => $s[1]
 					);
-				}else $Sel[] = Array(
+				}elseif ($s=="*")$Sel[] = Array(
+                    "Nom" => "m.".$s
+                );
+                else $Sel[] = Array(
 					"Nom" => "m.".$s,
 					"Alias" => $s
 				);

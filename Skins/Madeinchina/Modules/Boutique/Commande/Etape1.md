@@ -64,9 +64,8 @@
 [/IF]
 <noscript><div id="javascriptehoh">Vous devez activer javascript pour modifier votre panier</div></noscript>
 <div class="CommandeEtape1">
-	[IF [!Mag::EtapeAffiche!]=0]<div class="row"><div class="col-md-12"><h2>Mon Panier</h2></div></div>[/IF]
+	[IF [!Mag::EtapeAffiche!]=0]<div class="row-fluid"><div class="span12"><h2>Mon Panier</h2></div></div>[/IF]
 	[COUNT [!Panier::LignesCommandes!]|NB]
-	[IF [!NB!]>0]
 		<form action ="/[!Lien!]" name="Commande" method="post" >
 			<div class="table-responsive">
 				<table class="table table-bordered table-hover">
@@ -126,6 +125,14 @@
 							</td>
 						</tr>
 						[!TotGene+=[!Math::PriceV([!Pan::MontantTTC!])!]!]
+                        [NORESULT]
+                        <tr class="ReferenceLine" data-ref="[!Pan::Reference!]" data-conf="[!Pan::Config!]">
+                            <td class="gauche"  colspan="6">
+                                Votre panier est vide.<br />
+                            </td>
+                        </tr>
+
+                        [/NORESULT]
 					[/STORPROC]
 				</table>
 			</div>
@@ -156,13 +163,7 @@
 				</div>
 			</div>
 		</form>
-	[ELSE]
-		<div class="row MsgPanierVide"><div class="col-md-12">
-			Votre panier est vide.<br />
-			<a href="/" >Cliquez ici pour continuer vos achats</a>.
-		</div></div>
-	[/IF]
-	
+
 </div>
 	//Détection des packs
 	[!Packs:=[!Panier::detectionPacks()!]!]
