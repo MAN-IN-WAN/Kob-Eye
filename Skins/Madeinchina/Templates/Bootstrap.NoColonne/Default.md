@@ -1,9 +1,9 @@
 <div class="container">
     <div class="row-fluid">
-        <div class="span7">
+        <div class="span6">
             [HAUTGAUCHE]
         </div>
-        <div class="span5">
+        <div class="span6">
             [HAUTDROIT]
         </div>
     </div>
