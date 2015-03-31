@@ -275,7 +275,7 @@ class Facture extends genericClass {
 					$tht += $ht;
 				}
 				elseif($l->MontantHT) {
-					$tva = $otva->getTaux($pro->TypeTvaInterne);
+					$tva = $otva->getTaux($pro->TypeTva);
 					$hts[$tva] += $l->MontantHT;
 					$acc = $this->findAccount($pro, $typCpt);
 //klog::l("$numFac : ACC $acc : PROD $pro->Reference : HT $l->MontantHT : TVA $tva");

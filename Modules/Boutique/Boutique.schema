@@ -323,6 +323,7 @@
 	
 	<OBJECTCLASS title="TypeCaracteristique" driver="mysql" AccessPoint="0" Dico="1" master="0" Description="TypeCaracteristique"  Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png" >
 		<PROPERTIES searchOrder="1" description="TypeCaracteristique" type="varchar" length="50"   >Nom</PROPERTIES>
+		<PROPERTIES searchOrder="2" description="Libelle" type="varchar" length="255"   >Libelle</PROPERTIES>
 	</OBJECTCLASS>
 	
 	<OBJECTCLASS title="Client" driver="mysql" AccessPoint="1" Class="Modules/Boutique/Class/Client.class.php" master="0" Description="Clients" browseable="1"  Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png">

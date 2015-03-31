@@ -54,6 +54,7 @@ class Boutique extends Module {
 				Sys::$User->Menus = $usr->Menus;
 				$GLOBALS["Systeme"]->Menus = $usr->Menus;
 			}
+			
 		}
 
 		Boutique::initTableauTva();
