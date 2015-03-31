@@ -508,7 +508,7 @@ class Commande extends genericClass {
 		$this -> MontantTTC = 0;
 		$this -> Remise = 0;
 		$this -> Qte = 0;
-		$this -> Poids = 0.1;
+		$this -> Poids = 0;
 		$this -> Volume = 0;
 		$this -> initTableTvaFacture();
 

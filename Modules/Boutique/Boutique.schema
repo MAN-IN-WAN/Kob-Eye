@@ -114,7 +114,7 @@
 		<PROPERTIES searchOrder="3" description="Plusieurs tarifs" type="boolean" default="0" auto="1"  category="Descriptif" >MultiTarif</PROPERTIES>
 		<PROPERTIES description="Tarif HT Générique" type="price" default="" list="6" category="Descriptif">Tarif</PROPERTIES>
 		<PROPERTIES description="Prix public conseillé TTC" type="float" category="Descriptif" hidden="1">PPC</PROPERTIES>
-		<PROPERTIES description="Taux de Tva"  category="Descriptif"  type="float"  query="Fiscalite/TauxTva/Actif=1::Taux" hidden="1">TypeTva</PROPERTIES>
+		<PROPERTIES description="Taux de Tva"  category="Descriptif"  type="float"  query="Fiscalite/TauxTva/Actif=1::Id::Taux">TypeTva</PROPERTIES>
 		<PROPERTIES description="Ordre dans le flash" type="int" category="MisEnAvant">OrdreFlash</PROPERTIES>
 		<PROPERTIES description="Ordre" type="order" category="Descriptif">Ordre</PROPERTIES>
 		<FKEY card="1,n" data="Categorie,Id" >CategorieId</FKEY>
