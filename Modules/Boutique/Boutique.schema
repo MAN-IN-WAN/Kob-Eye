@@ -78,6 +78,11 @@
 		<PROPERTIES type="bbcode" special="multi" category="Contenu">Description</PROPERTIES>
 		<PROPERTIES description="Compte comptable particuliers" type="varchar" length="16" category="Desc">CompteComptable</PROPERTIES>
 		<PROPERTIES description="Compte comptable professionnels" type="varchar" length="16" category="Desc">CompteComptablePro</PROPERTIES>
+        <CATEGORY title="Synchro">
+            <PROPERTIES description="Id de catégorie distante" type="int" >RemoteId</PROPERTIES>
+            <PROPERTIES description="Numéro de page distante" type="int" >RemotePage</PROPERTIES>
+        </CATEGORY>
+        <FUNCTION Icon="/Skins/AdminV2/Img/group_link.png">Parser</FUNCTION>
 		<FKEY card="0,n" data="Magasin,Id">MagasinId</FKEY>
 		<FKEY card="0,1" data="Categorie,Id">CategorieId</FKEY>
 		<FKEY card="0,1" data="Univers,Id">UniversId</FKEY>
@@ -117,6 +122,9 @@
 		<PROPERTIES description="Taux de Tva"  category="Descriptif"  type="float"  query="Fiscalite/TauxTva/Actif=1::Taux" hidden="1">TypeTva</PROPERTIES>
 		<PROPERTIES description="Ordre dans le flash" type="int" category="MisEnAvant">OrdreFlash</PROPERTIES>
 		<PROPERTIES description="Ordre" type="order" category="Descriptif">Ordre</PROPERTIES>
+        <CATEGORY title="Synchro">
+            <PROPERTIES description="id de produit distante" type="int" >RemoteId</PROPERTIES>
+        </CATEGORY>
 		<FKEY card="1,n" data="Categorie,Id" >CategorieId</FKEY>
 		<FKEY card="0,n" data="Conditionnement,Id">ConditionnementId</FKEY> 
 		<FUNCTION Icon="/Skins/AdminV2/Img/group_add.png">clonageProduit</FUNCTION>

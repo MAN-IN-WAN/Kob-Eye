@@ -1,8 +1,6 @@
 #product-detail {
 }
 #product-detail .row-fluid > div {
-	background: none repeat scroll 0 0 #F6F6F6;
-	border: 1px solid #D2D2D2;
 	margin-bottom: 15px;
 	overflow: hidden
 }
@@ -30,13 +28,13 @@
 	bottom: 10px;
 	left: 20%;
 	display: block;
-	padding: 0 12px 0 30px;
+	/*padding: 0 12px 0 30px;*/
 	line-height: 20px;
 	color: #fff;
 	text-shadow: 0 1px 0 #000;
 	text-align: center;
 	text-transform: uppercase;
-	background-image: url(http://demo4leotheme.com/prestashop/leo_beauty_store/themes/leobeau/css/../img/icon/zoom.png);
+	/*background-image: url(http://demo4leotheme.com/prestashop/leo_beauty_store/themes/leobeau/css/../img/icon/zoom.png);*/
 	background-repeat: no-repeat;
 	background-position: 10px 2px;
 	background-color: #000;
@@ -92,7 +90,7 @@ span.view_scroll_spacer {
 	right: 0
 }
 #view_scroll_left, #view_scroll_right {
-	background-image: url("http://demo4leotheme.com/prestashop/leo_beauty_store/themes/leobeau/css/../img/default/bt-next-prev.png");
+	background-image: url("/Skins/Paranature/img/default/bt-next-prev.png");
 	background-repeat: no-repeat;
 	float: left;
 	height: 50%;
@@ -250,7 +248,7 @@ span.view_scroll_spacer {
 	border: 1px solid #D2D2D2;
 	line-height: 28px;
 	padding: 10px;
-	text-align: left
+	text-align: right;
 }
 #buy_block p.price {
 	padding: 0

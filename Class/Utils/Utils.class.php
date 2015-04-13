@@ -146,11 +146,15 @@ class Utils {
 	}
 
 	static function KEAddSlashes($P) {
-		return str_replace('/', '\\!#!\\', $P[0]);
+        $tmp =  str_replace('/', '\\!#!\\', $P[0]);
+        $tmp =  str_replace('&', '\\!##!\\', $tmp);
+        return $tmp;
 	}
 
 	static function KEStripSlashes($P) {
-		return str_replace('\\!#!\\', '/', $P[0]);
+        $tmp =  str_replace('\\!#!\\', '/', $P[0]);
+        $tmp = str_replace('\\!##!\\', '&', $tmp);
+		return $tmp;
 	}
 
 	static function  strReplace($P) {

@@ -6,6 +6,8 @@ __BOOKMARK__|
 
 ######PANIER######
 __MY_CART__|Mon panier
+__MY_ORDER__|Ma commande
+__OTHERS_CARTS__|Autres paniers
 __CHECKOUT__|Commander
 
 ######PRODUCT LIST#####
@@ -38,6 +40,7 @@ __RELATED_PRODUCTS__|Produits associés
 __ADD_TO_MY_WISHLIST__|Ajouter à ma liste de souhait
 __PRINT__|Imprimer
 __SHARE_ON_FACEBOOK__|Partager sur Facebook
+__DESCRIPTIF__|Description
 
 #######ORDONNANCES#########
 __BROWSE__|Parcourir

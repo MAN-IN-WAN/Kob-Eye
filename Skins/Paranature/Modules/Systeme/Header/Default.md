@@ -24,7 +24,7 @@
 		<div class="container" >
 			<div class="row-fluid">
 				<div class="span4 logo-wrapper text-center">
-					<a id="header_logo" href="[IF [!Lien!]]/[ELSE]/Systeme/Cat[/IF]" title="leo beauty"> <img class="logo img-responsive" src="/[!Systeme::User::Avatar!]" alt="leo beauty" /> </a>
+					<a id="header_logo" href="[IF [!Lien!]]/[ELSE]/Systeme/Cat[/IF]" title="[!CurrentMagasin::Nom!]"> <img class="logo img-responsive" src="/[!Systeme::User::Avatar!]" alt="[!CurrentMagasin::Nom!]" /> </a>
 				</div>
 				<div class="span8">
 					<div id="header_right" class="row">

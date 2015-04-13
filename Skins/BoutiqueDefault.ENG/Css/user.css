@@ -1,0 +1,263 @@
+/*** ESPACE EN HAUT ***/
+div#userEspace {
+	float: right;
+	position:relative;
+	display: block;
+	padding-top:1px;
+}
+/*div.user {
+  display: block;
+    margin: 20px 20px 40px;
+    overflow: hidden;
+    position: relative;
+}*/
+.BlockInfo h1 {
+     font-family:  Arial;
+    font-size: 22px;
+    font-weight: 700;
+    padding-bottom: 10px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+.user h1 {
+     font-family:  Arial;
+    font-size: 22px;
+    font-weight: 700;
+    padding-bottom: 10px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+/*.user h2 {
+    font-size: 14px;
+    color: #333333;
+}*/
+/** FOMRULAIRES **/
+div.user fieldset {
+	margin-top: 10px;
+	border: none;
+	background:none;
+}
+
+div.user div.LigneForm {
+    display: block;
+    overflow: hidden;
+    padding: 1px;
+    width: 100%;
+    text-align: left;
+}
+.BoutonsCentre a {
+    /*margin-left: 12px;*/
+    color:#5e626b;
+}
+/*a.oubli {
+	font-style:italic;
+	display:block;
+	margin-left:50px;
+}*/
+a.oubliConnexion {
+	font-style:italic;
+	float:right;
+	margin-right:50px;
+}
+/*.BoutonsCentre a:hover {
+    color:#5e626b;
+}*/
+.btn btn-info Connexion{
+	padding:0px;
+}
+div.user label {
+    display: inline-block;
+    padding: 4px 10px;
+    width: 229px;
+}
+/*div.user input, div.user textarea, div.user select {
+    width: 366px;
+}*/
+div.user input[type="submit"] {
+    width: auto;
+}
+/*div.user textarea, div.user select {
+	border: 1px solid #cccccc;
+    font-size: 10px;
+    height: 12px;
+    margin-left: 10px;
+    width: 250px;
+	margin-bottom:5px;
+	float:none;
+}*/
+#connexion{
+	padding-top: 10px;
+}
+.Connexion {
+	float:right;
+    width: auto;
+    margin-top: 20px;
+}
+.ConnexionConnexion{
+	float:right;
+    width: auto;
+    margin-top: 20px;
+    margin-right:55px;
+}
+/*div.user input.Connexion {
+    display: block;
+    float: none;
+    font-size: 14px;
+    height: 30px;
+    margin: 20px 0 20px 50px;
+    width: 129px;
+}
+div.user input.Connexion:hover {
+	background-position:0 -1429px;
+}
+*/
+	
+div.user input.cree_compte {
+	width: 173px;
+}
+
+div.user input.identifiervous {
+	width: 105px;
+}
+
+div.user input.mettreajour {
+	width: 102px;
+}
+
+/*div.user textarea {
+	overflow: auto;
+    	height: 45px;
+
+}
+
+div.user select {
+    height: 25px;
+    width: 263px;
+}*/
+/** ADRESSES **/
+div.Adresse {
+	margin-bottom:20px;
+	border-bottom: 1px solid #1a1a1a;
+	overflow: hidden;
+	color:#1a1a1a;
+	font-size:16px;
+}
+.AjouterAdresse {
+	float:right;
+	margin-left:10px;
+}
+.RetourCompte{
+	float:right;
+	margin-left:10px;
+}
+.ModifierAdresse {
+	float:right;
+}
+.Retourvalidation{
+	float:right;
+}
+.SupprimerAdresse {
+	float:right;
+	margin-right:10px;
+}
+.user h2{
+	margin-bottom: 18px;
+	padding-bottom: 7px;
+	font-family:  Arial;
+	font-size: 20px;
+	font-weight: 200;
+	text-transform: uppercase;
+}
+legend{
+	margin-bottom: 18px;
+	padding-bottom: 7px;
+	font-family:  Arial;
+	font-size: 20px;
+	font-weight: 200;
+	text-transform: uppercase;
+}
+div.buttons {
+	text-align: center;
+}
+div.user input.Valider {
+    display: block;
+    float: left;
+    font-size: 15px;
+    height: 35px;
+    width: 120px;
+}
+div.user input.Valider:hover {
+	background-position:0 -1811px;
+}
+div.user input.Retour {
+    display: block;
+    float: left;
+    font-size: 15px;
+    height: 35px;
+    width: 120px;
+}
+div.user input.Retour:hover {
+	background-position:-258px -1776px ;
+}
+textarea{
+	resize:none;
+	min-height: 100px;
+}
+
+@media (min-width:315px) and (max-width:450px){
+div.user {
+    display: block;
+    margin:0;
+    overflow: hidden;
+    position: relative;
+}
+div.user input, div.user textarea, div.user select {
+    border: 1px solid #C4BEA0;
+    float: none;
+    font-size: 10px;
+    height: 12px;
+    margin-bottom: 5px;
+    margin-left: 10px;
+    width: 226px;
+}
+div.user select {
+    height: 28px;
+}
+.ColonneCreationCompte .Radio {
+    display: inline-block;
+    float: left;
+}
+.user legend{
+	font-size: 16px;
+}
+div.user select.selectfin, div.user select.Pays {
+    height: 28px;
+}
+div.user label {
+    display: block;
+    margin: 0 auto;
+    padding: 4px 10px;
+    width: 331px;
+}
+
+div.user input.Valider {
+    display: block;
+    float: none;
+    font-size: 15px;
+    height: 35px;
+    margin: 0 auto 5px;
+    width: 120px;
+}
+div.user input.Retour {
+    display: block;
+    float: none;
+    font-size: 15px;
+    height: 35px;
+    margin: 0 auto 5px;
+    width: 120px;
+}
+.BoutonsCentre a {
+    display: block;
+    margin:20px 0 -24px -3px;
+}
+}

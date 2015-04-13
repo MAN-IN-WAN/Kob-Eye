@@ -3,6 +3,7 @@
 <div id="tags_block_left" class="block tags_block">
 	<h3 class="title_block title_block_green">Pratique</h3>
 	<p class="block_content">
+		<img src="/Skins/Paranature/img/components/ordonnances.jpg.mini.300x120.jpg" class="img-responsive img-accueil" />
 		<b>Mon ordonnance à distance</b><br />
 		Simple et rapide pour gagner du temps!<br />
 		Comment faire ?<br /><br />

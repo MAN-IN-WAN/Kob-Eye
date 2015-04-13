@@ -1669,7 +1669,7 @@ class ObjectClass extends Root{
 			if (isset($Prop["unique"])&&$Prop["unique"] && !empty($Obj[$Key])&&empty($Obj["Id"])){
 				$Result =  Sys::$Modules[$this->Module]->callData($this->titre."/".$Key."=".$Obj[$Key]);
 				if ($Result && $Result[0]["Id"]!=$Obj["Id"]){
-					$GLOBALS["Systeme"]->Error->sendUserMsg(16,$Key);
+					$GLOBALS["Systeme"]->Error->sendUserMsg(16,$Key.' n est pas unique : '.$Obj[$Key]);
 					$Error=true;
 				}
 			}

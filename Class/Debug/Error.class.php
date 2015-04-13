@@ -145,8 +145,8 @@ class KError extends Root{
 	 * Affiche un message
 	 * @param Error
 	 */
-	public function sendUserMsg($E){
-		echo "<div class='Error'>$E</div>";
+	public function sendUserMsg($E,$M){
+		echo "<div class='Error'>$E - $M</div>";
 	}
 	
 	/**

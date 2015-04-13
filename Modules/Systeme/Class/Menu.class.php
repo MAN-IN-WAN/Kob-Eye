@@ -11,7 +11,7 @@ class Menu extends genericClass {
 		//------------------------------------------------------
 		//génération des pages associées (sitemap + recherche)
 		//------------------------------------------------------
-		$sites = $this->getSites();
+		/*$sites = $this->getSites();
 		if (!empty($this->Alias))
 			$pages = $this->getSubPagesFromQuery($this->FullUrl,$this->Alias);
 		else $pages = Array();
@@ -25,7 +25,7 @@ class Menu extends genericClass {
 			    $s->delPage($k);
 		     }
 		}
-		parent::Save();
+		parent::Save();*/
 	 }
 	 /**
 	  * retournes les sites concernées par le menu courant.

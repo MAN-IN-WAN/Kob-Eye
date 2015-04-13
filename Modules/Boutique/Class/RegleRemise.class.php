@@ -5,6 +5,8 @@ class RegleRemise extends genericClass {
      *  Initialisation des produits et categories relatifs aux règles
      */
     public function initCategoryProducts() {
+/*        $this->_Categories = Array();
+        $this->_Produits = Array();*/
         $this->_Categories = $this->getChildren('Categorie');
         $this->_Produits = $this->getChildren('Produit');
     }

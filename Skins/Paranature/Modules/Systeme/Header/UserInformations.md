@@ -8,7 +8,7 @@
 		</div>
 		<div class="nav-item" id="your_account">
 			<div class="item-top">
-				<a href="/Connexion" title="Votre compte	">__MY_ACCOUNT__</a>
+				<a href="/Etape2" title="Votre compte	">__MY_ACCOUNT__</a>
 			</div>
 		</div>
 	</div>

@@ -94,15 +94,16 @@ class Component extends Beacon{
 	 * @return String
 	 */
 	 private function getFilePath($filename){
+
 	 	$Chemin = "";
 		//Chargement des données
 		if (sizeof(explode('/',$filename))<=1){
 			$CheminSkin = "Skins/".Sys::$Skin."/Modules/".$this->Module."/Components/".$this->Title."/".$filename;
-			$CheminShared = "Skins/".SHARED_SKIN."/Modules/".$this->Module."/Components/".$this->Title."/".$filename;
+			$CheminShared = "Skins/".Skin::$SharedSkin."/Modules/".$this->Module."/Components/".$this->Title."/".$filename;
 			$CheminModule = "Modules/".$this->Module."/Components/".$this->Title."/".$filename;
 		}else{
 			$CheminSkin = "Skins/".Sys::$Skin."/".$filename;
-			$CheminShared = "Skins/".SHARED_SKIN."/".$filename;
+			$CheminShared = "Skins/".Skin::$SharedSkin."/".$filename;
 			$CheminModule = $filename;
 		}
 		//Test des chemins

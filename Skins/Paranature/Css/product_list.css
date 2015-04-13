@@ -117,9 +117,9 @@ ul#product_list {
 	margin-top: 50px;
 	margin-bottom: 15px;
 }
-.p-item .product-container:hover .s_title_block a{
+/*.p-item .product-container:hover .s_title_block a{
 	color: #FFFFFF;
-}
+}*/
 .p-item .product-container:hover .content-bottom{
 	display: block;
 }
@@ -166,7 +166,7 @@ ul#product_list {
 }
 
 .sidebar .s_title_block *{color: #4d4e4f;}
-#center_column .s_title_block{height: 34px;}
+#center_column .s_title_block{min-height: 60px;}
 	#product_list .p-item .left_block  .compare label { display:inline}
 
 		#product_list .p-item p.compare input {

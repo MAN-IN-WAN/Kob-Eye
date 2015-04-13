@@ -221,7 +221,7 @@
 							    </div>
 							    [/IF]
 						</div>
-	    
+
 						<div class="span7">
 							    <div class="control-group  [IF [!C_Mail_Error!]]error[/IF]">
 									<label class="control-label" for="C_Mail">Adresse e-mail <span class="Obligatoire">*</span></label>

@@ -22,7 +22,7 @@ class Site extends genericClass {
             $p = genericClass::createInstance('Systeme','Page');
             $p->Url = $url;
             $p->MD5 = md5($p->Url);
-            $p->FromUrl = md5($fromurl);
+            //$p->FromUrl = md5($fromurl);
             $p->addParent($this);
         }else $p=$p[0];
         $p->Set('LastMod', date('Y-m-d'));

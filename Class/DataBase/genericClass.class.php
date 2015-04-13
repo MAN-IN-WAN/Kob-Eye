@@ -1105,11 +1105,11 @@ class genericClass extends Root {
 	}
 
 	public function getChildren($Type) {
+        $Childs = Array();
 		//Renvoie un tableau contenant les enfants de l'objet en cours
 		if ($this -> Id) {
 			$Query = $this -> ObjectType . '/' . $this -> Id . '/' . $Type;
 			$Chi = $this -> executeQuery($Query);
-			$Childs = Array();
 			if (is_array($Chi))
 				foreach ($Chi as $k => $Ch) {
 					if (strlen($Ch["Module"])) {
@@ -2312,7 +2312,7 @@ class genericClass extends Root {
 			}
 			$this->DescriptionMeta = substr(strip_tags($T),0,250);
 		}
-		if (empty($this->ImgMeta)) {
+		if (empty($this->ImgMeta)||$this->ImgMeta=="Skins/AdminV2/Img/default.jpg") {
 			$T='';
 			$Props = $this->Proprietes();
 			if (is_array($Props)) foreach ($Props as $p) {
@@ -2320,8 +2320,10 @@ class genericClass extends Root {
 				switch ($p["Type"]) {
 					case "image":
 						// Type text : on concatene
-						if (isset($this->$p["Titre"]))
-							$T = $this->$p["Titre"];
+						if (isset($this->$p["Titre"])){
+                            $T = $this->$p["Titre"];
+                            break 2;
+                        }
 					break;
 				}
 			}

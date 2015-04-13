@@ -16,8 +16,8 @@ class BoutiqueProduit extends genericClass
      */
     public function Save($recurs = true)
     {
-        parent::Save();
         $this->SaveRef();
+        parent::Save();
         // ajout de ce test car une carte configurable n'a qu'un ta
         if ($this->TypeProduit != '5') $this->UpdateStartPrice();
         $this->UpdateReferences();
@@ -136,9 +136,8 @@ class BoutiqueProduit extends genericClass
     private function SaveRef()
     {
         if (empty($this->Reference)) {
-            $ref = $this->Id;
-            while (strlen($ref) < 5) $ref = '0' . $ref;;
-            $this->Reference = 'PR' . $ref;
+            $ref = sprintf("PR".Date('Y').Date('m')."%08d",rand(0,10000000));
+            $this->Reference = $ref;
         }
     }
 
@@ -194,7 +193,8 @@ class BoutiqueProduit extends genericClass
                 if ($this->TarifPack = 0 || $this->TarifPack = '') $reference->TarifPack = $this->Tarif;
                 $reference->Save(false);
             }
-            $this->StockReference += $reference->Quantite;
+            if (isset($reference->Quantite))
+                $this->StockReference += $reference->Quantite;
         }
     }
 

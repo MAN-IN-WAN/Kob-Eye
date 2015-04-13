@@ -214,8 +214,9 @@ class fileDriver extends ObjectClass {
 		if ($TabNom[1]=="jpg"||$TabNom[1]=="jpeg"){
 			//On commence le travail de l'image
 			$Dimensions = getimagesize($OrigAdresse);
-			 $Img = imagecreatefromjpeg($OrigAdresse);
-		}elseif ($TabNom[1]=="gif"){
+			$Img = imagecreatefromjpeg($OrigAdresse);
+            //$Img = imagecreatetruecolor($Largeur, $Hauteur);
+        }elseif ($TabNom[1]=="gif"){
 			//On commence le travail de l'image
 			$Dimensions = getimagesize($OrigAdresse);
 			 $Img = imagecreatefromgif($OrigAdresse);
@@ -234,31 +235,27 @@ class fileDriver extends ObjectClass {
 				$Img = imagecreatefromjpeg($FrameTemp);
 			}
 		}else return false;
+
 		//On calcule le redimensionnement sans anamorphoser la photo
-		if ($Dimensions[1]>$Hauteur || $Dimensions[0]>$Largeur){
-			if ($Dimensions[1]>$Dimensions[0]){
-				//Cas du paysage
-				$Height = $Hauteur;
-				$Width  = $Dimensions[0] * ($Hauteur/$Dimensions[1]);
-				if ($Width<$Largeur)
-				{
-					$Width = $Largeur;
-					$Height = $Dimensions[1] * ($Largeur/$Dimensions[0]);
-				}
-			}else{
-				//Cas du portrait
-				$Width  = $Largeur;
-				$Height  = $Dimensions[1] * ($Largeur / $Dimensions[0]);
-				if ($Height<$Hauteur)
-				{
-					$Height = $Hauteur;
-					$Width = $Dimensions[0] * ($Hauteur/$Dimensions[1]);
-				}
-			}
-		}else{
-			$Width  = $Dimensions[0];
-			$Height  = $Dimensions[1];
-		}
+        if ($Dimensions[1]>$Dimensions[0]){
+            //Cas du paysage
+            $Height = $Hauteur;
+            $Width  = $Dimensions[0] * ($Hauteur/$Dimensions[1]);
+            if ($Width<$Largeur)
+            {
+                $Width = $Largeur;
+                $Height = $Dimensions[1] * ($Largeur/$Dimensions[0]);
+            }
+        }else{
+            //Cas du portrait
+            $Width  = $Largeur;
+            $Height  = $Dimensions[1] * ($Largeur / $Dimensions[0]);
+            if ($Height<$Hauteur)
+            {
+                $Height = $Hauteur;
+                $Width = $Dimensions[0] * ($Hauteur/$Dimensions[1]);
+            }
+        }
 		$TempCaneva = imagecreatetruecolor($Width,$Height);
 		if($Out=="png") {
 			imageAlphaBlending($TempCaneva, false);
@@ -270,7 +267,8 @@ class fileDriver extends ObjectClass {
 			imagefill($TempCaneva,0,0,$kek);
 		}
 		imagecopyresampled($TempCaneva,$Img,0,0,0,0,$Width,$Height,$Dimensions[0],$Dimensions[1]);
-		imagecopy($Caneva,$TempCaneva,0,0,($Width/2)-($Largeur/2),($Height/2)-($Hauteur/2),$Dimensions[0],$Dimensions[1]);
+        //$Caneva = $TempCaneva;
+		imagecopy($Caneva,$TempCaneva,0,0,($Width/2)-($Largeur/2),($Height/2)-($Hauteur/2),$Width,$Height);
 		if ($Out=="jpg"||$Out=="jpeg") $Test = imagejpeg($Caneva,$Dir.$Name,95);
 		elseif ($Out=="gif") $Test = imagegif($Caneva,$Dir.$Name);
 		elseif ($Out=="png") $Test = imagepng($Caneva,$Dir.$Name);

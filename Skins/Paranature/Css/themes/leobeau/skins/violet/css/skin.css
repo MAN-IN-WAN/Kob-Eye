@@ -78,6 +78,11 @@ a:hover, a:focus, .idTabs .selected, .breadcrumb, .sidebar .block .block_content
 .sidebar .block:nth-child(2n+1) .title_block, .dropdown-menu a:hover .menu-title, #header_right #search_block_top input.button, #header_logo {
 	background-color: #B1599e;
 }
+
+.block{
+    margin-top: 0;
+    margin-bottom: 15px;
+}
 #shopping_cart a {
 	background-image: url("../images/icon-cart.png");
 }
@@ -111,6 +116,19 @@ a:hover, a:focus, .idTabs .selected, .breadcrumb, .sidebar .block .block_content
 #footer-bottom a {
 	color: #B1599e;
 }
+
+
+
+
+
+/*** Blocks ***/
+.products_block .title_block {
+background: none repeat scroll 0 0 #ff4000;
+border: 1px solid #B1599e;
+/* color: #333; */
+}
+
+
 
 /*BombeBarre*/
 #promotetop, #top-breadcrumb {
@@ -275,3 +293,126 @@ li.lof-text > p {
 	color: white;
 	text-shadow: none;
 }
+
+/** Navigatoin boutique **/
+.sidebar .block .block_content ul li{
+    border:0;
+}
+.sidebar .block .block_content ul li a{
+    padding: 5px 10px;
+    border:0;
+    background: #f6f6f6;
+    color: #B1599e;
+}
+.sidebar .block .block_content ul li a.selected{
+    background: #B1599e;
+    color: white;
+}
+.sidebar .block .block_content ul li ul li a{
+    background: #f4f4f4;
+    color:#B1599e;
+    padding: 5px 10px;
+/*    margin-left:10px;*/
+}
+.sidebar .block .block_content ul li ul li ul li a{
+    background: #e6e6e6;
+    color:#B1599e;
+*    padding: 5px 10px;
+/*    margin-left:10px;*/
+}
+.sidebar .block .block_content ul li ul li ul li ul li a{
+    background: #e2e2e2;
+    color:#B1599e;
+    padding: 5px 10px;
+/*    margin-left:10px;*/
+}
+
+
+/*** Fiche produit ***/
+#primary_block > div{
+	border: 0;
+}
+#product-detail .row-fluid > div{
+	border:0;
+	margin:0;
+}
+
+#center_column fieldset, #center_column form {
+	border:0;
+	background: #F6F6F6;
+	padding: 10px;
+    margin:0;
+}
+#pb-left-column {
+	margin:0;
+	padding:5px;
+}
+
+
+
+/*____________________________________________________________________________________________
+/                                                                                  Bootstrap*/
+
+.well {
+    min-height: 20px;
+    padding: 5px;
+    margin-bottom: 20px;
+    background-color: #f5f5f5;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+.form-horizontal .control-label {
+    float: left;
+    width: 45%;
+    padding-top: 5px;
+    text-align: right;
+}
+.form-horizontal .controls {
+    margin-left: 50%;
+}
+input, textarea, .uneditable-input , .input-large, .input-xlarge{
+    width: 100%;
+}
+.input-large, .input-xlarge{
+    margin-right: -19px;
+}
+.input-append .add-on, .input-prepend .add-on {
+    display: inline-block;
+    width: auto;
+    height: 19px;
+    min-width: 16px;
+    padding: 4px 5px;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 14px;
+    text-align: center;
+    text-shadow: 0 1px 0 #ffffff;
+    background-color: #eeeeee;
+    border: 1px solid #ccc;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

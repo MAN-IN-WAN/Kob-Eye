@@ -10,6 +10,7 @@ class Skin extends Root{
 	var $Template = 1;
 	var $Css;
 	var $Nom="";
+    static $SharedSkin;
 
 	function Skin(){
 		$Num=Sys::$Skin;
@@ -57,7 +58,10 @@ class Skin extends Root{
 			if (isset($tabSkin['SKIN']['#']['TEMPLATE'][0]))$this->Template = $tabSkin['SKIN']['#']['TEMPLATE'][0]['#'];
 			if (isset($tabSkin['SKIN']['#']['CSS'][0]))$this->Css = $tabSkin['SKIN']['#']['CSS'][0]['#'];
 			else $this->Css = 'Skins/'.$Num.'/Css/style.css';
-			if (isset($tabSkin['SKIN']['#']['SHARED_SKIN'][0]))$this->DefaultSkin = $tabSkin['SKIN']['#']['SHARED_SKIN'][0]['#'];
+			if (isset($tabSkin['SKIN']['#']['SHARED_SKIN'][0])){
+                $this->DefaultSkin = $tabSkin['SKIN']['#']['SHARED_SKIN'][0]['#'];
+                Skin::$SharedSkin = $this->DefaultSkin;
+            }
 			if ($GLOBALS["Systeme"]->CurrentLanguage!=$GLOBALS["Systeme"]->DefaultLanguage){
 				if(isset($tabSkin['SKIN']['#'][$GLOBALS["Systeme"]->Language[$GLOBALS["Systeme"]->CurrentLanguage].'-DEFAULT_PAGE']))$this->DefaultPage = $tabSkin['SKIN']['#'][$GLOBALS["Systeme"]->Language[$GLOBALS["Systeme"]->CurrentLanguage].'-DEFAULT_PAGE'][0]['#'];
 			}elseif (isset($tabSkin['SKIN']['#']['DEFAULT_PAGE'][0]['#'])) $this->DefaultPage = $tabSkin['SKIN']['#']['DEFAULT_PAGE'][0]['#'];

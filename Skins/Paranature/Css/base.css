@@ -2835,7 +2835,7 @@ ul#product_list {
 	margin-bottom: 15px
 }
 .p-item .product-container:hover .s_title_block a {
-	color: #FFFFFF
+	/*color: #FFFFFF*/
 }
 .p-item .product-container:hover .content-bottom {
 	display: block

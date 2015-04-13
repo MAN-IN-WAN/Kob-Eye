@@ -1,7 +1,5 @@
+[SUPERHAUT]
 <div class="container">
-	<div class="row-fluid">
-		[SUPERHAUT]
-	</div>
 	<div class="row-fluid">
 		<div class="span3  sidebar column">
 			[GAUCHE]

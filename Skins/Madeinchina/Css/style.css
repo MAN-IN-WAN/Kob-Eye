@@ -92,6 +92,7 @@ div.copyright{
 
 }
 
+
 /***** PANIER ****/
 #center_column{
 	padding-bottom: 10px;
@@ -327,4 +328,7 @@ div.TitreTypeLivraison {
 .Etape4 .LigneBoutons .BoutonsDroite input { 
 	margin-right:92px; 
 	margin-top:0;
+}.block-search {
+    padding: 10px;
 }
+

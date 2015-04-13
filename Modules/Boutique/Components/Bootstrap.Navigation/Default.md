@@ -2,9 +2,14 @@
 [IF [!Niveau!]=][!Niveau:=1!][/IF]
 [STORPROC [!I::Historique!]|H|[!Niveau!]|1][/STORPROC]
 [!DISPLAY:=1!]
-[IF [!Module::Actuel::Nom!]!=Boutique][!DISPLAY:=0!][/IF]
-[!Menu:=[!Systeme::CurrentMenu!]!]
-[!MENU:=[!Systeme::CurrentMenu::Url!]!]
+[IF [!MENUID!]]
+    [STORPROC Systeme/Menu/[!MENUID!]|Menu|0|1][/STORPROC]
+[ELSE]
+    [IF [!Module::Actuel::Nom!]!=Boutique][!DISPLAY:=0!][/IF]
+    [!Menu:=[!Systeme::CurrentMenu!]!]
+    [!MENU:=[!Systeme::CurrentMenu::Url!]!]
+[/IF]
+
 
 [IF [!DISPLAY!]]
 <div class="well">

@@ -6,22 +6,15 @@
 <meta http-equiv="content-language" content="en-br-de-es-fr-it" />
 <meta name="generator" content="Kob-Eye" />
 <meta name="robots" content="index,follow" />
-<link rel="icon" type="image/vnd.microsoft.icon" href="/Skins/[!Systeme::Skin!]/Js/img/favicon.ico?1368585042" />
-<link rel="shortcut icon" type="image/x-icon" href="/Skins/[!Systeme::Skin!]/Js/img/favicon.ico?1368585042" />
-<script type="text/javascript">
-	var baseDir = '/';
-	var baseUri = '/';
-	var static_token = '32f4b0bcca875efdf13c8b259373d259';
-	var token = 'b39f2b4fd96f8342b202bc8abc6e8e50';
-	var priceDisplayPrecision = 2;
-	var priceDisplayMethod = 0;
-	var roundMode = 2; 
-</script>
+<link rel="icon" type="image/vnd.microsoft.icon" href="/Skins/[!Systeme::Skin!]/Js/img/favicon.ico" />
+<link rel="shortcut icon" type="image/x-icon" href="/Skins/[!Systeme::Skin!]/Js/img/favicon.ico" />
+
 [/HEADER]
 [HEADER CSS]Skins/[!Systeme::Skin!]/Css/bootstrap.css[/HEADER]
 [HEADER CSS]Skins/[!Systeme::Skin!]/Css/base.css[/HEADER]
 [HEADER CSS]Skins/[!Systeme::Skin!]/Css/global.css[/HEADER]
 [HEADER CSS]Skins/[!Systeme::Skin!]/Css/modules/carriercompare/style.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Css/style-commande.css[/HEADER]
 [HEADER CSS]Skins/[!Systeme::Skin!]/Css/modules/blockbestsellers/blockbestsellers.css[/HEADER]
 [HEADER CSS]Skins/[!Systeme::Skin!]/Css/modules/blockpermanentlinks/blockpermanentlinks.css[/HEADER]
 [HEADER CSS]Skins/[!Systeme::Skin!]/Css/modules/blockviewed/blockviewed.css[/HEADER]
@@ -65,6 +58,7 @@
 [HEADER CSS]Skins/[!Systeme::Skin!]/Css/menu.css[/HEADER]
 [HEADER CSS]Skins/[!Systeme::Skin!]/Css/product_detail.css[/HEADER]
 [HEADER CSS]Skins/[!Systeme::Skin!]/Css/panier.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Js/jquery/plugins/fancybox/jquery.fancybox.css[/HEADER]
 [IF [!skin!]=][!skin:=noir-jaune!][/IF]
 [HEADER CSS]Skins/[!Systeme::Skin!]/Css/themes/leobeau/skins/[!skin!]/css/skin.css[/HEADER]
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
@@ -76,7 +70,6 @@
 <script type="text/javascript" src="/Skins/[!Systeme::Skin!]/Js/jquery.scrollTo.js"></script>
 <script type="text/javascript" src="/Skins/[!Systeme::Skin!]/Js/jquery.jqzoom.js"></script>
 
-[HEADER CSS]Skins/[!Systeme::Skin!]/Js/jquery/plugins/fancybox/jquery.fancybox.css[/HEADER]
 <script type="text/javascript" src="/Skins/[!Systeme::Skin!]/Js/jquery/plugins/fancybox/jquery.fancybox.js"></script>
 
 <script type="text/javascript" src="/Skins/[!Systeme::Skin!]/Js/jquery.idTabs.js"></script>
@@ -105,7 +98,12 @@
 <!--[if lt IE 9]>
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
-<script type="text/javascript" src="http://platform.twitter.com/anywhere.js?id=18sTEQuTSqkRAXQuFQg&amp;v=1"></script>
+
+
+//<script type="text/javascript" src="http://platform.twitter.com/anywhere.js?id=18sTEQuTSqkRAXQuFQg&amp;v=1"></script>
+
+
+[MODULE Boutique/Produit/MajPanier]
 <div [IF [!Lien!]=] id="index"[/IF]>
 	<div id="page" class="clearfix">
 		[MODULE Systeme/Header]
@@ -143,6 +141,7 @@
 		</div>
 	</div>
 </div>
+
 
 
 <script type="text/javascript">

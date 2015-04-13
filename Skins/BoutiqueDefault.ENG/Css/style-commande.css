@@ -1,0 +1,1227 @@
+
+
+div.centreL {
+	position:relative;
+	display:block;
+	height:1%;
+	margin-left:249px;
+	padding: 0;
+}
+
+.Site {
+	color: #4d4d4d;
+	position: relative;
+	z-index: 10;
+}
+
+.Entete {
+	background-color:#E4f3f8;
+	color: #4d4d4d;
+}
+
+.EntetePied{
+	width: 990px;
+	position:relative;
+	margin:auto;
+
+}
+
+div.Bandeau {
+	background:url('/Skins/Public/Img/sprite.png') no-repeat;
+	height:162px;
+}
+
+div.MenuCentral {
+    background: url("/Skins/Public/Img/sprite.png") repeat-x scroll 0 -385px transparent;
+}
+
+.Contenu {
+	width: 1000px;
+	border: none;
+	background: none;
+	margin:auto;
+	position:relative;
+}
+
+div#TopColonnes {
+    background: url("/Skins/Public/Img/sprite_bas.png") no-repeat scroll 0 -1855px transparent;
+   	 height: 70px;
+	position:absolute;
+	top:0;
+	left:0;
+	right:0;
+}
+div#BottomColonnes {
+    	background: url("/Skins/Public/Img/sprite_bas.png") no-repeat scroll 0 -2000px transparent;
+   	height: 40px;
+	position:absolute;
+	bottom:0;
+	left:0;
+	right:0;
+}
+div#MiddleColonnes {
+    	background: url("/Skins/Public/Img/fond-bloc_aveccolonnes.png") repeat-y 1px 0;
+	position:absolute;
+	bottom:40px;
+	top:70px;
+	left:0;
+	right:0;
+}
+
+div#ContenuMen {
+	background: none;
+	position:relative;
+}
+
+.SiteFond {
+	position:relative;
+}
+
+
+a.HautDePage {
+    	background: url("/Skins/Public/Img/sprite_bas.png") no-repeat  0 -120px ;
+    	float: right;
+    	height: 40px;
+    	margin: 20px 0 0;
+    	padding-left: 27px;
+	display:block;
+	position:relative;
+}
+
+/*--- affichage des catégories dans la boutique -----*/
+
+/*--- Composant CategorieUne ---*/
+.BlocCategories {
+	position:relative;
+	overflow:hidden;
+	padding:5px;
+}
+
+.MiseEnAvant .imgMEa , .IdKdo .imgMEa{
+	display:block;
+	position:relative;
+	border: medium none;
+}
+
+.MiseEnAvant .imgMEa  .PromoCat {
+   	background: url("/Skins/Public/Img/sprite.png") no-repeat  -812px -487px ;
+    height: 107px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 110px;
+}
+.IdKdo .imgMEa  .PromoCat {
+   	background: url("/Skins/Public/Img/sprite.png") no-repeat  -812px -457px ;
+    	height: 117px;
+    	left: 0;
+    	position: absolute;
+    	top: 0;
+    	width: 110px;
+}
+.PromoCatProd {
+ 	background: url("/Skins/Public/Img/sprite.png") no-repeat -811px -487px ;
+    	height: 93px;
+    	left: 0;
+    	position: absolute;
+    	top: 0;
+    	width: 110px;
+	
+}
+.toutesCategories {
+	padding:10px 0;
+	overflow:hidden; 
+	border-bottom:1px dotted #01accf;
+}
+.BlocCateg {
+	float:left;
+	position:relative;
+	display:block;
+   	width: 50%;
+}
+.Categorie {
+	overflow:hidden;
+}
+
+.BlocCateg .CategoriePrix {
+	color: #FFFFFF;float: right;padding-right: 34px;text-align: right;width: auto;
+}
+.BlocCateg .BlocProduitApartir {font-size:11px;text-transform: none;font-weight:normal;}
+.BlocCateg .BlocProduitPrix {font-size:18px;text-transform: uppercase;font-weight:bold;}
+
+
+.TitreBlocCategorie {
+    	border-bottom: 1px solid #01accf;
+    	color: #01accf;
+    	display: inline-block;
+    	font-size: 20px;
+    	padding-top: 10px;
+    	padding-right: 5px;
+    	text-transform: uppercase;
+  	margin: 10px 0;
+ 	padding-left: 5px;
+
+}
+
+.CategorieContenu {
+	overflow:hidden;
+	height:165px;
+	margin:0 30px 30px 0;
+    	border-bottom: 1px dotted #ada88d;
+	
+}
+.CategorieTitreBlock {
+	background: url("/Skins/Public/Img/sprite.png") no-repeat scroll 0 -2263px transparent;
+	height: 45px;
+	overflow:hidden;
+	display:block;
+}
+.Categorie h2 {
+    	text-transform:none;
+ 	padding-left: 5px;
+	padding-top: 7px;
+
+}
+.ImageCategorie {
+	float:left;
+	position:absolute;
+	top:37px;
+}
+.ImageCategorieRight {
+	float:right;
+	margin-right: 2px;
+}
+.DescCategorie {
+	width:auto;
+	color: #01ACCF;
+    	font-size: 10px;
+    	text-align: justify;
+	/*padding-top: 10px;*/
+	padding-left:185px;
+}
+.DescCategorieProduit {
+	width:auto;
+	color: #4d4d4d;
+    font-size: 10px;
+/*    text-align: justify;
+	padding-top: 10px;*/
+	padding-left:185px;
+}
+.DescCategorieCat {
+	margin-right:185px;
+	width:auto;
+	color: #01ACCF;
+   	font-size: 10px;
+    text-align: justify;
+	padding-top: 10px;
+}
+
+
+
+a.LienBtnCategorieold {
+	background: url("/Skins/Public/Img/sprite.png") no-repeat scroll 0 -2416px transparent;
+	float: right;
+	height: 20px;
+	padding-right: 107px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+}
+
+a.LienBtnCategorie {
+
+	background: url("/Skins/Public/Img/sprite.png") no-repeat scroll 0 -2416px transparent;
+    	float: right;
+    	height: 20px;
+    	padding-right: 107px;
+    	position: absolute;
+    	right: 27px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+    	top: 185px;
+}
+
+a:hover.LienBtnCategorie  {
+	background-position:0 -2437px;
+}
+
+a.LienCategorie {
+    	color: #FFFFFF;
+    	float: right;
+    	padding-right: 14px;
+    	padding-top: 5px;
+    	text-align: right;
+    	text-decoration: none;
+    	text-transform: uppercase;
+    	width: auto;
+}
+a:hover.LienCategorie  {
+	color:#c4bea0;
+	text-decoration:none;
+}
+a.LienCategorieTitre {
+	color:#ffffff;
+	height:40px;
+    	text-transform: none;
+	font-weight:normal;
+	font-size:16px;
+	text-decoration:none;
+
+}
+
+a:hover.LienCategorieTitre  {
+	color:#c4bea0;
+	text-decoration:none;
+}
+
+.FicheProduit .pagination .suivant a:hover {
+	text-decoration:none;
+	border:none;
+}
+.FicheProduit .pagination .precedent a:hover {
+	text-decoration:none;
+	border:none;
+}
+
+/*--Achat gestion panier ---*/
+
+/*------- Etape1 ---*/
+
+.CommandeEtape1 {
+    margin-top: 67px;
+    padding: 0 10px;
+}
+.EtapesCommande h1 { border:none;}
+
+/*** BOUTIQUE - ETAPES ***/
+/*h2.CDE_OFFRESPEC {
+	text-transform:uppercase;font-size:13px;color:#5E626B;text-align:right;overflow:hidden;padding-right:10px;font-weight:bold;padding-bottom:10px;
+}
+*/
+
+
+.IconePaiement1, .IconePaiement2, .IconePaiement3, .IconePaiement4 {
+    background: url("/Skins/Public/Img/sprite.png") ;
+    display: inline-block;
+    height: 30px;
+    position: absolute;
+    top: 31px;
+    width: 34px;
+}
+.IconePaiement1Active, .IconePaiement2Active, .IconePaiement3Active, .IconePaiement4Active {
+    background: url("/Skins/Public/Img/sprite.png");
+    display: inline-block;
+    height: 30px;
+    position: absolute;
+    top: 31px;
+    width: 34px;
+}
+.IconePaiement1{background-position:-75px -1421px;left:45%;}
+.IconePaiement2 {background-position: -342px -1421px;left: 45%;}
+.IconePaiement3 {background-position: -610px -1421px;left: 45%;}
+.IconePaiement4 {background-position: -886px -1421px;left: 45%;}
+.IconePaiement1Active{background-position: -75px -1373px;left: 45%;}
+.IconePaiement2Active{background-position:-342px -1373px;left: 45%;}
+.IconePaiement3Active{background-position:-610px -1373px;left:45%;}
+.IconePaiement4Active{background-position:-886px -1373px;left:45%;
+}
+table.tCommande {
+    border: 1px solid #dcdcdc;
+    width: 980px;
+    margin-bottom: 20px;
+}
+/*table.tCommande th , table.tCommande td {
+	font-size:12px;
+    text-transform: uppercase;
+	font-weight:normal;
+    color: #393939;
+	border-right:1px dotted #cccccc;
+	text-align:center;
+}
+table.tCommande th  {
+	border-bottom:1px dotted #cccccc;
+}
+table.tCommande th.Produit{
+	padding-left: 10px;
+	text-align:left;
+	padding-top: 10px;
+}
+table.tCommande th.Qualite{
+	text-align:center;
+	padding-top: 10px;
+}
+table.tCommande th.SupprimerItem {
+	border-right:none;
+	font-weight:bold;
+	padding-top: 10px;
+}
+
+/*table.tCommande tr  {
+	height:40px;
+}
+table.tCommande td {
+	padding:5px 5px 0 0 ;
+    text-transform: uppercase;
+	text-align:left;
+}
+/*table.tCommande td.Produit{
+	text-align:left;
+	width:368px;
+	padding-left: 10px;
+	text-transform: none;
+	font-size:12px;
+}*/
+
+table.tCommande td.Produit a{
+   	color: #000000;
+}
+table.tCommande td.PrixInitial {
+	text-align:right;
+	font-weight: bold;
+}
+table.tCommande td.Remise {
+	text-align:right;
+}
+table.tCommande td.TotalTTC {
+	text-align:right;
+	font-weight:bold;
+	color:#db2484;
+	font-size: 14px;
+}
+.LaQuantite {
+	display:inline-block;
+	position:relative;
+	vertical-align: middle;
+}
+.LesBoutons {
+	/*float: left;*/
+	display:block;
+	position:relative;
+}
+
+table.tCommande td.Produit a,table.tCommande td.Produit p,table.tCommande td,table.tCommande th{
+	color:#393939;
+	
+}
+/*table.tCommande td.Quantite {
+	text-align: center; padding: 0 15px;
+}*/
+table.tCommande  td.Quantite .LaQuantite input {
+	border:1px solid #cccccc;
+    float: left;
+    height: 15px;
+    text-align: right;
+    width: 30px;
+    display:inline-block;
+    vertical-align:top;
+    color:#5E626B;
+}
+table.tCommande td.Quantite .InputBtnPlus {
+    height: 21px;
+    width: 18px;
+    display:inline-block;
+    vertical-align:top;
+}
+table.tCommande td.Quantite .InputBtnMoins   {
+    height: 21px;
+    width: 18px;
+    display:inline-block;
+    vertical-align:top;
+}
+.BoutonPlus, .BoutonMoins{
+   /* height: 20px;*/
+    width: 21px;
+    display:inline-block;
+    vertical-align: middle;
+}
+
+table.Commande td.SupprimerItem { 
+	height:20px;width:20px;border-right:none;text-align:center;
+	background: url("/Skins/Public/Img/sprite_bas.png") no-repeat scroll 5px -544px ;
+}
+.MontantTotal {
+    background: url("/Skins/Public/Img/sprite.png") no-repeat scroll 11px -1269px transparent;
+    height: 30px;
+    padding-top: 30px;
+    text-align: right;
+    width: 396px;
+    float: right;
+    color:#5e626b;
+}
+table.TotalCommande   {
+    	float: right;
+    	
+}
+table.TotalCommande   td {
+   	color: #FFFFFF;
+    	font-weight: bold;
+    	text-transform: uppercase;
+}
+span.MontantTotalCmde {
+    font-size: 18px;
+    padding-right: 51px;
+}
+span.MontantTotalTTC {
+	font-size: 18px;
+    padding-right: 15px;
+    font-weight:bold;
+}
+.RecalculerPanier{
+	float:right;
+}
+.BoutonsDroite{
+	margin:29px 0px 0px 0px;
+}
+.BoutonsGauche{
+	margin-right:221px;
+}
+.BoutonContinuer {
+    margin: 0 13px 0 0;
+}
+.btn{
+	font-size:12px;
+}
+.BoutonsDroite p,.BoutonsGauche p{
+	float:right;
+}
+.LigneBoutons {
+	margin-top:25px;
+}
+input.ContinuerAchats  {
+	background: url("/Skins/Public/Img/sprite_bas.png") no-repeat scroll 0 -1169px transparent;
+	border: medium none;
+	display: block;
+	float: right;
+	height: 38px;
+	margin-right: 10px;
+	margin-top: 16px;
+	text-indent: -999px;
+	font-size:0;
+	line-height:0;
+	width: 180px;
+	cursor:pointer;
+}
+input.ContinuerAchats:hover {
+	background-position:0 -1206px;
+}
+
+input.ValiderCommande:hover {
+	background-position:0 -1290px;
+}
+
+.EtapesCommande a:hover {
+	color:black;
+}
+
+.EtapesCommande a{
+	font-size: 9px;
+}
+table.tCommande th, table.tCommande td {
+    font-size: 12px;
+}
+table {
+    margin-left: 0;
+}
+.BoutonContinuer {
+    margin: 0;
+}
+.BoutonsGauche input.btn[type="submit"], .BoutonsDroite input.btn[type="submit"] {
+    font-size: 12px;
+    text-transform:uppercase;
+    margin-bottom: 30px;
+    margin-right: 1.7%;
+    margin-top: -24px;
+    width: 178px;
+}
+}
+/*-------- Etape 2 ---*/
+
+.CommandeEtape2 {
+	/*margin-top:67px;*/
+	padding: 0 10px;
+}
+
+label {
+    display: inline-block;
+    margin-bottom: 5px;
+    margin-right:15px;
+    float: left;
+}
+.Connexion{
+	width:auto;
+}
+.LigneForm{
+	/*text-align: right;*/
+}
+.CommandeEtape2 .ColonneIdentification {
+	display:block;
+	position:relative;
+	overflow:hidden;
+	width:100%;
+	margin-bottom:30px;
+}
+
+.CommandeEtape2 .ColonneIdentificationClient h2 {
+	color: #393939;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom:0;
+    line-height:1em;
+
+}
+.CommandeEtape2 .ColonneIdentificationClient span.petittexte {
+	font-size:11px;
+	font-style:italic;
+	color: #5E626B;
+}
+
+.CommandeEtape2 .ColonneIdentificationClient input {
+	border:1px solid #9e9f99;
+	/*height:15px;*/
+	font-size:12px;
+	margin-right:5px;
+	width:286px;
+}
+.CommandeEtape2 .ColonneIdentificationClient {
+	float:left;
+	margin-right:5px;
+	border:1px solid #ccc;
+	padding:5px;
+	width:48%;
+	min-height:140px;
+
+}
+.CommandeEtape2 .ColonneIdentificationClient .BoutonsCentre {
+	display:block;
+	padding-top:30px;
+}
+.CommandeEtape2 .ColonneIdentificationClient a {
+	font-style:italic;
+	color:#393939;
+	text-decoration:underline;
+	font-size:12px;
+	
+}
+.CommandeEtape2 .ColonneIdentificationClient .BoutonsCentre input.Connexion {
+    cursor: pointer;
+    float: none;
+    font-size: 12px;
+    text-transform:uppercase;
+    height: 28px;
+    width: 155px;
+}
+
+.CommandeEtape2 .ColonneIdentificationNew h2 {
+	font-weight:bold;
+	font-size:14px;
+	text-transform:uppercase;
+	color:#393939;
+
+}
+
+.CommandeEtape2 .ColonneIdentificationNew span.petittexte {
+	font-size:11px;
+	font-style:italic;
+	color:#393939;
+
+}
+.CommandeEtape2 .ColonneIdentificationNew .textecreation {
+	font-size:14px;
+	color:#393939;
+   	padding-top: 48px;
+	
+}
+.CommandeEtape2 .ColonneIdentificationNew .BoutonsCentre input {
+    cursor: pointer;
+    float: none;
+    font-size: 12px;
+    text-transform:uppercase;
+    height: 28px;
+    margin-top: 50px;
+}
+.CommandeEtape2 .ColonneIdentificationNew {
+	float:left;
+	border:1px solid #9e9f99;
+	padding:5px;
+	width:48%;
+	min-height:249px;
+
+}
+.BoutonsFin {
+    display: block;
+    float: left;
+    padding: 0 0 30px;
+}
+
+.CommandeEtape2 .ColonneIdentificationNew {
+    border: 1px solid #C4BEA0;
+    float: left;
+    margin: 0 auto 16px;
+    min-height: 140px;
+    padding: 5px;
+    width: 95%;
+}
+
+
+
+/*.CommandeEtape3 table.Logistique  {
+	border-top:1px solid #cccccc;
+	border-bottom:1px solid #cccccc;
+	width: 100%;
+	
+}*/
+/*.CommandeEtape3 .Logistique th {
+	vertical-align: middle;
+	border-right:1px dotted #cccccc;
+	font-size:14px;
+	color: #393939;
+	text-transform:uppercase;
+	text-align:left;
+	padding-left:10px;
+	height:30px;
+	border-bottom:1px dotted #cccccc;
+	width:50%;
+}
+
+.CommandeEtape3 .Logistique th, .CommandeEtape4 .Logistique th, .CommandeEtape4 .tCommande th{
+	border-bottom: 1px dotted #1A1A1A;
+    color: #1A1A1A;
+    font-family: 'Source Sans Pro';
+    font-size: 16px;
+    font-weight: 400;
+    padding: 10px 0 10px 5px;
+    text-transform: uppercase;
+}*/
+
+
+.AdresseName{
+	font-weight:bold;
+	text-transform:uppercase;
+}
+.AdresseVille{
+	text-transform:uppercase;
+}
+
+/*.CommandeEtape3 .Logistique td {
+	border-right:1px dotted #cccccc;
+	font-size:12px;
+	color: #5E626B;
+	text-align:left;
+	height:30px;
+	padding:3px;
+	text-transform:none;
+	width:50%;
+}
+
+.CommandeEtape3 .TotalTTC, .CommandeEtape4 .TotalTTC {
+	 border-right: none;
+	 border-right:none;
+	font-weight:bold;
+	padding-top: 10px;
+}*/
+
+div.AdresseStep3 {
+	font-size:12px;
+	text-transform:none;
+	color: #393939;
+	overflow: hidden;
+	padding-bottom: 20px;
+	display:block;
+}
+
+div.AdresseSelect {
+	display: block;
+	float: left;
+	position: relative;
+	padding: 0px 5px 0px 5px;
+}
+div.AdresseSelect input.AdresseRadioLivraison{
+	padding-top:0px;
+	margin-top:0px;
+}
+
+div.AdresseDesc {
+	margin-left: 30px;
+}
+a.lienadr {
+	font-size:14px;
+ 
+}
+a.lienadr:hover {
+	text-decoration:underline;
+	color: #5E626B;
+}
+
+div.MoreAdresses {
+    padding-left: 10px;
+}
+
+a.ChooseMoreAdresses { 	
+    padding-left: 15px;
+    text-decoration: none;
+	font-size:12px;
+}
+
+a.ChooseMoreAdresses:hover {
+	text-decoration:none;
+}
+
+
+/*-- livraison ---*/
+.CommandeEtape3 div.LaLivraison{
+	border:1px solid #cccccc;
+	padding: 10px;
+}
+
+/*div.TitreModeLivraison {
+	font-weight: bold;
+	text-transform:uppercase;
+	color:#393939;
+	text-align:left;
+	padding-bottom: 10px;
+}*/
+
+
+div.TitreModeLivraison {
+	border-bottom: 1px dotted #1a1a1a;
+    color: #1a1a1a;
+    font-weight: 400;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.LibelleChoixLivraison{
+	font-size:12px;
+	text-align:left;
+	color:#393939;
+}
+div.LivraisonDetails {
+	font-style: italic;
+	padding-bottom: 10px ;
+	color:#393939;
+}
+
+div.NomTypeLivraison {
+	position: relative;
+}
+
+div.NomTypeLivraison div.PrixTypeLivraison {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	font-weight: bold;
+	color:#393939;
+}
+
+div.NomTypeLivraison input.InputTypeLivraison {
+	margin: 0;
+	position: absolute;
+	top: 5px;
+	left: 0;
+}
+
+div.TitreTypeLivraison {
+    color: #1a1a1a;
+    font-size: 16px;
+    padding: 2px 74px 0 26px;
+}
+p.DescTypeLivraison {
+	margin: 0;
+	padding: 0 60px 5px 20px;
+}
+
+table.ListeChoixLivraison {
+	width: 100%;
+	margin-left: 20px;
+	border-left: 1px solid #cccccc;;
+}
+
+table.ListeChoixLivraison td.SelChoixLivraison {
+	width: 20px;
+}
+
+table.ListeChoixLivraison td.LibelleChoixLivraison {
+	padding: 4px 0;
+}
+
+/*-- recap ----*/
+.CommandeEtape3 table.tCommande th {font-weight:bold;}
+
+
+.CommandeEtape3 table.TotalDetaille{
+	/*float:right;
+	display:block;
+	position:relative;
+	border:0;
+	background-color:#EDE2C2;
+	width:412px;
+	margin:0;
+	padding:0;
+	border-collapse:collapse;*/
+}
+/*.CommandeEtape3 table.TotalDetaille td{
+	padding:5px;
+}*/
+
+.CommandeEtape3  table.TotalDetaille tr{
+	/*height:30px;*/
+}
+/*.CommandeEtape3  table.TotalDetaille td.label{
+	color:#5E626B;
+	text-transform:none;
+	font-size:14px;
+	text-align:left;
+	font-style:normal;
+	width:39%;
+	background-color: #EDE2C2;
+	text-shadow:none;
+}*/
+/*.CommandeEtape3 table.TotalDetaille td.val{
+	color:#5E626B;
+	text-transform:none;
+	font-size:14px;
+	font-weight:bold;
+	width:61%;
+	text-align:right;
+
+}
+
+.CommandeEtape3  table.TotalDetaille tr.vide{
+	height:5px;
+	background-color:transparent;
+	width:300px;
+
+
+}
+.CommandeEtape3 table.TotalDetaille tr.TotalAPayer  td{ 
+	font-size:14px;
+	font-weight:bold;
+	text-transform:uppercase;
+}*/
+.Logistique td.Adresses{
+	padding-left:5px;
+}
+
+.DescPaiement {
+	text-transform:none;font-weight:normal;
+}
+
+.AccepterCGV {
+	float:right;
+	padding-right:10px;
+	font-size:12px;
+	margin-top:20px;
+}
+.AccepterCGV input{
+	margin:-5px 5px 0px 0px;
+}
+.Etape3 .LigneBoutons {
+	margin:20px 0;
+}
+.Etape3 .BoutonsDroite input {
+    cursor: pointer;
+    float: right;
+    height: 35px;
+    margin-left: 5px;
+    width: 190px;
+    margin-right: 5px;
+}
+.Etape3 .BoutonsGauche input {
+    height: 35px;
+    width: 190px;
+	float:right;
+	cursor:pointer;
+}
+
+@media (min-width:315px) and (max-width:450px){
+
+.CommandeEtape3 div.LaLivraison {
+    width: 271px;
+}
+table.tCommande th, table.tCommande td {
+    font-size: 10px;
+    letter-spacing: -1px;
+}
+.Etape3 .LigneBoutons {
+    margin: 0 0 -25px;
+}
+}
+/*-- Etapes 4----*/
+
+
+.Etape4 table.Logistique{
+	/*display:block;
+	position:relative;
+	float:right;
+	border-collapse:collapse;
+	border-top:1px solid #5E626B;
+	border-bottom:1px solid #5E626B;
+	border-left:1px solid #5E626B;*/
+	border-top:1px solid #cccccc;
+	border-bottom:1px solid #cccccc;
+	width: 100%;
+}
+.Etape4 table.Logistique tr {
+
+}
+
+.Etape4 table.Logistique th {
+	font-weight:bold;
+	text-transform:uppercase;
+	color: #393939;
+	border-right:none;
+	border-bottom:1px dotted #ccc;
+	border-right:1px dotted #ccc;
+	padding:10px;
+	vertical-align:top;
+}
+.Etape4 table.Logistique td {
+	padding:5px;text-align:left;
+	border-right:1px dotted #ccc;
+	padding:10px;
+}
+
+.Etape4 td.Adresses {
+	vertical-align:top;
+	font-size:12px;
+	text-transform:none;
+	color:#393939;
+
+}
+.Etape4 td.Adresses span.nom {
+	text-transform:uppercase;
+	font-weight:bold;
+
+}
+
+.CommandeEtape4 table.ModeDePaiement {
+	display:block;
+	position:relative;
+	float:right;
+	border-collapse:collapse;
+	border:1px solid #ccc;
+ 	width: 300px;
+}
+.CommandeEtape4 table.ModeDePaiement th {
+	font-weight:bold;
+	text-transform:uppercase;
+	color:#393939;
+	border-bottom:1px dotted #ccc;
+	padding:10px;
+	width:300px;
+	text-align:left;
+}
+.CommandeEtape4 table.ModeDePaiement td {
+	font-weight:bold;
+	text-transform:uppercase;
+	color:#393939;
+	padding:10px;
+	border-right:1px dotted #ccc;
+	text-align:left;
+}
+.CommandeEtape4 .PaiementEtape4 { 
+	display:block;
+	overflow:hidden;
+	position:relative;
+	margin:30px 0;
+}
+
+.CommandeEtape4 table.TotalDetaille{
+	background-color:#bebebe;
+}
+/*.CommandeEtape4 table.TotalDetaille{
+	float:right;
+	display:block;
+	position:relative;
+	border:0;
+	background-color:#EDE2C2;
+	width:300px;
+	margin:0;
+	padding:0;
+	border-collapse:collapse;
+}*/
+.libelle{
+	font-size: 16px;
+	font-weight:400;
+	text-transform:uppercase;
+	color: #1a1a1a;
+}
+.table.TotalDetaille {
+    background-color: #BEBEBE;
+}
+.CommandeEtape4 table.TotalDetaille td{
+	padding:5px;
+	background-color:transparent;
+}
+.CommandeEtape4  table.TotalDetaille td.label{
+	color:#393939;
+	text-transform:none;
+	font-size:14px;
+	text-align:left;
+	font-style:normal;
+	text-shadow: none;
+	white-space:normal;
+}
+td.val {
+    color: #CF1111;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: right;
+}
+
+.CommandeEtape4  table.TotalDetaille tr.vide{
+	height:5px;
+	background-color:#fff;
+	/*width:300px;*/
+}
+.CommandeEtape4 table.TotalDetaille tr.TotalAPayer  td{ 
+	font-size:18px;	
+	class="Error"
+	text-transform:uppercase;
+}
+.ModifierCommande{
+	margin-right:25px;
+}
+.CommandeEtape4 table.TCodePromo{
+	display:block;
+	position:relative;
+	float:right;
+	border-collapse:collapse;
+	border:1px solid #ccc;
+	width:300px;
+	color:#393939;
+}
+.CommandeEtape4 table.TCodePromo tr {
+	
+}
+
+.CommandeEtape4 table.TCodePromo th {
+	font-weight:bold;
+	text-transform:uppercase;
+	border-right:none;
+	border-bottom:1px dotted #ccc;
+	padding:10px;
+	width:430px;
+	text-align:left;
+	
+}
+.CommandeEtape4 table.TCodePromo td {
+	font-weight:bold;
+	text-transform:uppercase;
+	color:#393939;
+	text-align:left;
+	border:none;
+	padding:10px 10px 0px 10px;
+} 
+
+
+.Etape4 .LigneBoutons {
+	margin:20px 0;
+}
+.Etape4 .BoutonsDroite input {
+    cursor: pointer;
+    display: block;
+    float: right;
+    font-size: 12px;
+    height: 37px;
+    margin: -29px 6px 0 0;
+    width: 157px;
+}
+.Etape4 .BoutonsDroite input:hover {
+	background-position:0 -1641px;
+}
+.Etape4 .BoutonsGauche input {
+    cursor: pointer;
+    display: block;
+    float: right;
+    font-size: 12px;
+    height: 37px;
+    width: 157px;
+}
+.Etape4 .BoutonsGauche input:hover {
+	background-position:0 -1720px;
+}
+
+.CommandeEtape5 h2 {
+    font-size: 18px;
+}
+.CommandeEtape5 h3 {
+	font-weight:bold;
+	font-size:14px;
+	text-transform:none;
+	color:#01accf;
+	margin-bottom:10px;
+	padding-bottom:10px;
+	text-decoration:underline;
+}
+.CommandeEtape5 .Desc {
+    color: #4D4D4D;
+    font-size: 14px;
+    
+    text-align: left;
+}
+.CommandeEtape5 .Desc h2{
+    color: #4D4D4D;
+    font-size: 14px;
+    
+    text-align: left;
+}
+.CommandeEtape5 .nom {
+	font-size:14px;
+	color:#4d4d4d;
+	font-weight:bold;
+}
+
+.CommandeEtape5 .LigneBoutons {
+	margin:20px 0;
+	overflow:hidden;
+	font-size:14px;
+}
+.CommandeEtape5 .BoutonsGauche { display:block;float:left; padding:11px 15px;margin-left:0;}
+.CommandeEtape5 .ConfirmationCommande { 
+	color:#4d4d4d;
+	font-size:18px;
+	text-transform:none;
+}
+
+.RetourAccueilCdeEtape5 {
+}
+.ImpressionCdeEtape5 {
+}
+.AccesClientEtape5 {
+}
+@media (min-width:315px) and (max-width:450px){
+.Etape4 td.Adresses {
+    color: #4D4D4D;
+    font-size: 11px;
+    text-transform: none;
+}
+.Etape4 table.Logistique th {
+    border-bottom: 1px dotted #01ACCF;
+    border-right: 1px dotted #4D4D4D;
+    color: #4D4D4D;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 7px;
+    text-transform: uppercase;
+}
+.BoutonsGauche {
+    margin-top: 29px;
+}
+}
+@media (min-width:315px) and (max-width:500px){
+.LigneBoutons a{
+	width: 200px;
+}
+.LigneBoutons{
+	text-align:center;
+}
+.CommandeEtape5 .BoutonsGauche{
+	float:none;
+	padding: 0 15px;
+}
+}
