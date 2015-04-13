@@ -21,11 +21,10 @@ class LivraisonStockTypeLivraisonStandard extends Plugin implements LivraisonSto
 		if ($this->TypeLivraison->SelectionMontant) $testTarif++;
 
 		// On cherche les tarifs correspondants
-		$Tarifs = $this->TypeLivraison->storproc('LivraisonStock/ZoneLivraison/'.$Zone->Id . '/TarifLivraison/Actif=1',false,0,100,'ASC','Ordre,MaxiPoids,MaxiQuantite,MaxiVolume,MaxiMontant');
+		$Tarifs = Sys::getData('LivraisonStock','ZoneLivraison/'.$Zone->Id . '/TarifLivraison/Actif=1',0,100,'ASC','Ordre,MaxiPoids,MaxiQuantite,MaxiVolume,MaxiMontant');
 
 		if (is_array($Tarifs)) {
 			foreach ($Tarifs as $TL) {
-				$TL = genericClass::createInstance('LivraisonStock',$TL);
 				$OkTarif=0;
 				if($this->TypeLivraison->SelectionPoids) {
 					// Vérification du poids maximum

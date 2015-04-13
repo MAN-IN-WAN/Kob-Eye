@@ -14,10 +14,10 @@
 		<FUNCTION >GetZone</FUNCTION>
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="ZoneLivraison" driver="mysql" AccessPoint="0" master="0" >
+	<OBJECTCLASS title="ZoneLivraison" driver="mysql" AccessPoint="0" master="0" Dico="1">
 		<PROPERTIES type="varchar" length="30" searchOrder="1">Code</PROPERTIES>
 		<PROPERTIES type="boolean" >AutoriseLivraison</PROPERTIES>
-		<PROPERTIES type="boolean" >Default</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="3">Default</PROPERTIES>
 		<PROPERTIES searchOrder="2" description="Livré en (nb jours ouvrés)"      type="float"   >LivreEn</PROPERTIES>
 		<RKEY module="Geographie" data="Pays,Code" card="0,n">ZonePays</RKEY>
 		<RKEY module="Geographie" data="Departement,Code" card="0,n">ZoneDepartement</RKEY>
@@ -40,7 +40,8 @@
 	
 	<OBJECTCLASS title="BonLivraison" driver="mysql" AccessPoint="1" master="0" Description="BonLivraison"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/LivraisonStock/Class/BonLivraison.class.php" >
 		<PROPERTIES searchOrder="1"	description="Numéro Bon Livraison" type="varchar">NumBL</PROPERTIES>
-		<PROPERTIES searchOrder="2"	description="Montant Livraison TTC" type="price" >MontantLivraisonTTC</PROPERTIES>
+        <PROPERTIES searchOrder="2"	description="Montant Livraison HT" type="price" >MontantLivraisonHT</PROPERTIES>
+        <PROPERTIES searchOrder="2"	description="Montant Livraison TTC" type="price" >MontantLivraisonTTC</PROPERTIES>
 		<PROPERTIES description="Statut" type="int" default="1" values="1::Non Préparé,2::Préparé,3::Expédié,4:Annulé" >Statut</PROPERTIES>
 		<PROPERTIES Order="6" 		description="Tva"      type="float"  default="19.6" >TxTvaBonLivr</PROPERTIES>
 		<PROPERTIES Order="10"     	description="Type Livraison" type="varchar">TypeLivraison</PROPERTIES>

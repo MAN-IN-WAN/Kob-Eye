@@ -8,18 +8,10 @@ class LigneCommande extends genericClass {
 	 * @return	void
 	 */
 	public function Save() {
-
-		if ($this->Expedie==1&&$this->Livre==0){
-			$cde = $this->storproc('Boutique/Commande/LigneCommande/'.$this->Id,false,0,1);
-			$cde = genericClass::createInstance('Boutique',$cde[0]);
-		}
-		
 		//si la configuration est un tableau alors il faut la transformer en chaine
 		$this->restoreConfig();
 
-
-		parent::Save();
-
+        parent::Save();
 	}
 
 	/**
@@ -27,7 +19,6 @@ class LigneCommande extends genericClass {
 	 * Applique les actions pour la ligne de commande en fonction de la nature du produit
 	 */
 	public function applyActions () {
-//		Klog::l('----> Ligne commande apply action');
 		$ref = $this->getReference();
 		$prod = $ref->getProd();
 		$com = $this->getCommande();
@@ -39,12 +30,10 @@ class LigneCommande extends genericClass {
 			break;
 			//Cas service
 			case 2:
-//				Klog::l('----> Ligne commande ajout service');
-//				//creation d'un objet service
+				//creation d'un objet service
 				$s = genericClass::createInstance('Boutique','Service');
 				$m = Magasin::getCurrentMagasin();
 				$s -> Nom = $prod->Nom.' - Nom ref : '.$ref->Nom;
-			//	$s -> Produit = $prod->Id;
 				$s -> DateDebut = time();
 				$s -> DateFin = time()+$ref->Duree;
 				$s -> addParent($cli);
@@ -55,7 +44,6 @@ class LigneCommande extends genericClass {
 			break;
 			//Cas téléchargement
 			case 3:
-//				Klog::l('----> Ligne commande ajout telechargement');
 				$s = genericClass::createInstance('Boutique','Telechargement');
 				$s -> Nom = $prod->Nom.' - '.$ref->Nom;
 				$s -> Url = $ref->Fichier;
@@ -73,12 +61,11 @@ class LigneCommande extends genericClass {
 	 */
 	function getReference ($reference="") {
 		if (!empty($reference)){
-			$Ref = $this->storproc('Boutique/Reference/Reference='.$reference,false,0,1);
-			$this->RefObject=genericClass::createInstance('Boutique',$Ref[0]);
+            $this->RefObject = Sys::getOneData('Boutique','Reference/Reference='.$reference);
 		}
 		if (!isset($this->RefObject)) {
-			$Ref = $this->storproc('Boutique/Reference/LigneCommande/'.$this->Id,false,0,1);
-			$this->RefObject=genericClass::createInstance('Boutique',$Ref[0]);
+			$Ref = $this->getParents('Reference');
+			$this->RefObject=$Ref[0];
 		}
 		return $this->RefObject;
 	}
@@ -88,21 +75,10 @@ class LigneCommande extends genericClass {
 	 */
 	function getCommande () {
 		if (!isset($this->Commande)) {
-			$Com = $this->storproc('Boutique/Commande/LigneCommande/' . $this->Id,false,0,1);
-			$this->Commande=genericClass::createInstance('Boutique',$Com[0]);
+			$Com = $this->getParents('Commande');
+			$this->Commande=$Com[0];
 		}
 		return $this->Commande;
-	}
-
-	/**
-	 * Fonction qui renvoie l'url complète d'un produit présent dans le panier
-	 * 
-	 */
-	function getUrlProduit () {
-		$Ref = $this->getReference();
-		if (!is_object($Ref)) return;
-		$prod = $Ref->getProd();
-		return $prod->getUrl();
 	}
 
 	/**
@@ -112,7 +88,6 @@ class LigneCommande extends genericClass {
 	function InitFromReference ($Reference,$Quantite,$config=null,$options=null) {
 		$Ref = $this->getReference($Reference);
 		$prod = $Ref->getProd();
-		$Colisage=1;
 		$Colisage=$prod->GetColisage();
 		$QuantiteLigne= $Quantite*$Colisage;
 		$this->Quantite=$QuantiteLigne;
@@ -121,10 +96,13 @@ class LigneCommande extends genericClass {
 		$this->Reference=$Ref->Reference;
 		$this->AddParent($Ref);
 		$this->Recalculer();
-	
 	}
-	
-	// tableau vers chaine
+
+    /**
+     * restoreConfig
+     * Restore une configuration serialisée de la ligne de ocmmande
+     * spécialement dans le cas de produit configurables.
+     */
 	public function restoreConfig(){
 		if (is_array($this->Config)&&sizeof($this->Config)){
 			$cfg = "";
@@ -137,7 +115,11 @@ class LigneCommande extends genericClass {
 			$this->Config = $cfg;
 		}
 	}
-	// Chaine vers tabelau
+
+    /**
+     * initconfig
+     * Initialise la confiuration dans le cas de produits configurables
+     */
 	public function initConfig(){
 		if (is_string($this->Config)&&!empty($this->Config)){
 			$tmp = explode("::",$this->Config);
@@ -169,7 +151,9 @@ class LigneCommande extends genericClass {
 		$this->TauxRemise = $remisetx;
 		$this->Taxe=$prod->getTauxTva();
 
-		$this->TableTva = serialize($this->getTableTva($remisetx));
+        //on regenere la table tva
+        $this->TableTva = null;
+		$this->getTableTva($remisetx);
 
 		// ==> mars2015
 
@@ -238,15 +222,19 @@ class LigneCommande extends genericClass {
 		$this->Profondeur=$Ref->Profondeur*$this->Quantite;
 		if (empty($Ref->Profondeur))  $this->Profondeur = $prod->Profondeur*$this->Quantite;
 	}
-	
+
+    /**
+     * Retourne le tableau de tva pour la ligne commande
+     * Specialement dans le cas des config packs
+     * @param int $remisetx
+     * @return array
+     */
 	function getTableTva ($remisetx=1) {
+        if (is_string($this->TableTva)) return unserialize($this->TableTva);
 		$refProduitPrincipal = $this->getReference();
 		$tabletva=array();
 		if ($this->TypeProduit==4){
-			//$this->recalculer();
-			//alors il faut traiter tous les taux de tva
 			//recupération du produit
-			$ht=0;
 			$prod = $refProduitPrincipal->getProd();
 			$cps = $prod->getChildren('ConfigPack');
 			if (is_array($cps))foreach ($cps as $cp){
@@ -271,15 +259,7 @@ class LigneCommande extends genericClass {
 			$tabletva["T".$this->Taxe] = array( 'Base' => $this->MontantHT ,"Taux"=> $this->Taxe);
 			
 		}
+        $this->TableTva = serialize($tabletva);
 		return $tabletva;
 	}
-	
-	/**
-	 * Raccourci vers callData
-	 * @return	Résultat de la requete
-	 */
-   	private function storproc( $Query, $recurs='', $Ofst='', $Limit='', $OrderType='', $OrderVar='', $Selection='', $GroupBy='' ) {
-		return Sys::$Modules['Boutique']->callData($Query, $recurs, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy);
-   	}
-
 }

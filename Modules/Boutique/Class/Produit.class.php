@@ -14,11 +14,10 @@ class BoutiqueProduit extends genericClass
      * -> Enregistre les mots clés
      * @return    void
      */
-    public function Save($recurs = true)
-    {
-        $this->SaveRef();
+    public function Save($recurs = true){
         parent::Save();
-        // ajout de ce test car une carte configurable n'a qu'un ta
+        $this->SaveRef();
+        // ajout de ce test car une carte configurable n'a qu'un tarif
         if ($this->TypeProduit != '5') $this->UpdateStartPrice();
         $this->UpdateReferences();
         //test image
@@ -143,15 +142,12 @@ class BoutiqueProduit extends genericClass
 
     public function initFromReference($Ref)
     {
-        $references = Sys::getData('Boutique', 'Reference/Reference=' . $Ref);
-        if (is_array($references) && sizeof($references)) {
-            $refer = $references[0];
-            return $refer->getProd();
-        }
+        $reference = Sys::getOneData('Boutique', 'Reference/Reference=' . $Ref);
+        return $reference;
     }
 
     /**
-     * Garde le prix minimum trouvé (mais non vide) dans les références
+     * Garde le prix minimum trouvé (mais non vide) dans les références et affecte au prix du produit.
      * @return    void
      */
     private function UpdateStartPrice()
@@ -159,10 +155,10 @@ class BoutiqueProduit extends genericClass
         $minPrice = -1;
         $tarifs = array();
         // Récupération de tous les tarifs
-        $refs = $this->storproc('Boutique/Produit/' . $this->Id . '/Reference');
+        $refs = $this->getChildren('Reference');
         if (is_array($refs)) foreach ($refs as $r) {
-            if ($r['Tarif'] > 0) {
-                $prix = $r['Tarif'];
+            if ($r->Tarif > 0) {
+                $prix = $r->Tarif;
                 if ($minPrice == -1 || $prix < $minPrice) $minPrice = $prix;
                 $tarifs[$prix] = 1;
             }
@@ -185,9 +181,8 @@ class BoutiqueProduit extends genericClass
     private function UpdateReferences()
     {
         $this->StockReference = 0;
-        $refs = $this->storproc('Boutique/Produit/' . $this->Id . '/Reference');
-        if (is_array($refs)) foreach ($refs as $r) {
-            $reference = genericClass::createInstance('Boutique', $r);
+        $refs = $this->getChildren('Reference');
+        if (is_array($refs)) foreach ($refs as $reference) {
             if ($reference->Tarif == 0 && $this->Tarif > 0) {
                 $reference->Tarif = $this->Tarif;
                 if ($this->TarifPack = 0 || $this->TarifPack = '') $reference->TarifPack = $this->Tarif;
@@ -209,18 +204,18 @@ class BoutiqueProduit extends genericClass
         } elseif (!Sys::$User->Admin) {
             if (isset($this->_getUrl)&&!empty($this->_getUrl)) return '/'.$this->_getUrl;
             //recherche des categorie
-            $cat = $this->storproc('Boutique/Categorie/*/Categorie/Produit/'.$this->Id);
+            $cat = Sys::getData('Boutique','Categorie/*/Categorie/Produit/'.$this->Id);
             //on verifie qu'il n'y pas de menu sur chacune des categories
             $M = false;
-            $lastCat = -1;
+            $lastCat = null;
             if (!isset($this->Url)) return false;
             $U = 'Produit/' . $this->Url;
             if (is_array($cat)) foreach ($cat as $c) {
-                if ('Boutique/Categorie/' . $c["Id"] != $GLOBALS["Systeme"]->getMenu('Boutique/Categorie/' . $c["Id"])) {
-                    $this->_getUrl = $GLOBALS["Systeme"]->getMenu('Boutique/Categorie/' . $c["Id"]) . '/' . $U;
+                if ('Boutique/Categorie/' . $c->Id != $GLOBALS["Systeme"]->getMenu('Boutique/Categorie/' . $c->Id)) {
+                    $this->_getUrl = $GLOBALS["Systeme"]->getMenu('Boutique/Categorie/' . $c->Id) . '/' . $U;
                     return '/'.$this->_getUrl;
-                } elseif ($lastCat == -1 || ($lastCat['Bg'] > $c['Bg'] && $lastCat['Bd'] < $c['Bd'])) {
-                    $U = $c["Url"] . '/' . $U;
+                } elseif (!$lastCat || ($lastCat->Bg > $c->Bg && $lastCat->Bd < $c->Bd)) {
+                    $U = $c->Url . '/' . $U;
                     $lastCat = $c;
                 }
             }
@@ -262,79 +257,15 @@ class BoutiqueProduit extends genericClass
 
         } else return parent::getUrl();
     }
-
-    /**
-     * Retourne l'url depuis la racine d'un produit donné
-     * @return    URL
-     */
-    public function getDomaine()
-    {
-        if (!Sys::$User->Admin) {
-            if (isset($this->_getUrl) && !empty($this->_getUrl)) return $this->_getUrl;
-            //recherche des categorie
-            $cat = $this->storproc('Boutique/Categorie/*/Categorie/Produit/' . $this->Id);
-            //on verifie qu'il n'y pas de menu sur chacune des categories
-            $M = false;
-            $lastCat = -1;
-            //$U='Produit/'.$this->Url;
-            if (is_array($cat)) foreach ($cat as $c) {
-                if ('Boutique/Categorie/' . $c["Id"] != $GLOBALS["Systeme"]->getMenu('Boutique/Categorie/' . $c["Id"])) {
-                    break;
-                    $laCat = $c["Id"];
-                    //$this->_getUrl = $GLOBALS["Systeme"]->getMenu('Boutique/Categorie/'.$c["Id"]).'/'.$U;
-                    //return $this->_getUrl;
-                }
-            }
-            //$U = 'Categorie/'.$U;
-            //recherche du magasin
-            if (!isset($c)) return "";
-            $mag = $this->storproc('Boutique/Magasin/Categorie/' . $c["Id"]);
-            if (is_array($mag) && sizeof($mag)) {
-                if ('Boutique/Magasin/' . $mag[0]["Id"] != $GLOBALS["Systeme"]->getMenu('Boutique/Magasin/' . $mag[0]["Id"])) {
-                    $leMag = $mag[0]["Id"];
-                }
-                //recherche du magasin plus la categorie
-                $Uc = 'Produit/' . $this->Url;
-                $C = '/Categorie';
-                if (is_array($cat)) for ($i = sizeof($cat) - 1; $i >= 0; $i--) {
-                    $C .= '/' . $cat[$i]["Id"];
-
-                    if ('Boutique/Magasin/' . $mag->Id . $C != $GLOBALS["Systeme"]->getMenu('Boutique/Magasin/' . $mag->Id . $C)) {
-                        $this->_getUrl = $GLOBALS["Systeme"]->getMenu('Boutique/Magasin/' . $mag[0]["Id"] . $C) . '/Categorie';
-                        for ($j = $i - 1; $j >= 0; $j--) $this->_getUrl .= '/' . $cat[$j]["Url"];
-                        $this->_getUrl .= '/' . $Uc;
-                        return $this->_getUrl;
-                    }
-                }
-                return 'Boutique/' . $U;
-            }
-            return parent::getUrl();
-
-        } else return parent::getUrl();
-        // LE RETURN, il manquait le RETURN ^^ so6+
-    }
-
     /**
      * Retourne le nombre de références  pour ce produit
-     *
      * @return    Nombre
      */
     public function CheckStock()
     {
         if ($this->TypeProduit == '5') return true;
-        $refs = $this->storproc('Boutique/Produit/' . $this->Id . '/Reference/Quantite>0+StockPermanent=1');
+        $refs = $this->getChildren('Reference/Quantite>0+StockPermanent=1');
         return is_array($refs) ? sizeof($refs) : 0;
-    }
-
-    /**
-     * Retourne la reference disponible en fonction des declinaisons selectionnes
-     * TODO Gestion des declinaisons
-     * @return    Nombre
-     */
-    public function getReference()
-    {
-        $refs = $this->storproc('Boutique/Produit/' . $this->Id . '/Reference');
-        return genericClass::createInstance('Boutique', $refs[0]);
     }
 
     /**
@@ -345,17 +276,18 @@ class BoutiqueProduit extends genericClass
      */
     function getPmpa()
     {
-        $refs = $this->storproc('Boutique/Produit/' . $this->Id . '/Reference');
+        $refs = $this->getChildren('Reference');
         $nbRefs = count($refs);
         if ($nbRefs == 0) return -1;
         $total = 0;
-        for ($i = 0; $i < $nbRefs; $i++) $total += $refs[$i]['Tarif'];
+        for ($i = 0; $i < $nbRefs; $i++) $total += $refs[$i]->Tarif;
         return round($total / $nbRefs, 2);
     }
 
     /**
      * Retourne le prix minimum d'une référence de ce produit
-     *
+     * Utlisé en général pour l'affichage du tarif à partir de
+     * Dans la liste de catégories.
      * @return    Prix
      */
     public function getTarif()
@@ -377,7 +309,8 @@ class BoutiqueProduit extends genericClass
 
     /**
      * Retourne le prix minimum d'une référence de ce produit hors promotion
-     *
+     * Retourn le prix du produit hors promo dans le cas d'un produit en promotion
+     * et qu'il est nécessaire d'afficher le prix barré.
      * @return    Prix
      */
     public function getTarifHorsPromo()
@@ -452,8 +385,8 @@ class BoutiqueProduit extends genericClass
      */
     public function GetPromo()
     {
-        $promos = $this->storproc('Boutique/Produit/' . $this->Id . '/Promotion/DateDebutPromo<=' . time() . '&&DateFinPromo>=' . time(), '', '', '', 'DESC', 'tmsEdit');
-        if (is_array($promos) && isset($promos[0])) return genericClass::createInstance('Boutique', $promos[0]);
+        $promos = $this->getChildren('Promotion/DateDebutPromo<=' . time() . '&&DateFinPromo>=' . time(), '', '', '', 'DESC', 'tmsEdit');
+        if (is_array($promos) && isset($promos[0])) return $promos[0];
         return 0;
     }
 
@@ -507,31 +440,31 @@ class BoutiqueProduit extends genericClass
      */
     public function GetPromoQte($Qte = 1)
     {
-        $promos = $this->storproc('Boutique/Produit/' . $this->Id . '/Promotion/DateDebutPromo<=' . time() . '&&DateFinPromo>=' . time(), '', '', '', 'DESC', 'APartirNbUnite');
+        $promos = Sys::getData('Boutique','Produit/' . $this->Id . '/Promotion/DateDebutPromo<=' . time() . '&&DateFinPromo>=' . time(), 0, 100, 'DESC', 'APartirNbUnite');
         $yapromo = false;
         $prixRef = $this->Tarif;
         if (is_array($promos)) foreach ($promos as $promo):
-            if ($promo['APartirNbUnite'] != '' && $promo['APartirNbUnite'] > $Qte) {
+            if ($promo->APartirNbUnite != '' && $promo->APartirNbUnite > $Qte) {
                 //pas de promo
                 //klog::l("pas de promo", $promo['Intitule']);
             } else {
                 //klog::l("promo", $promo['Intitule']);
-                if ($promo['PrixVariation'] != '0') {
-                    if ($promo['TypeVariation'] == '1') {
+                if ($promo->PrixVariation != '0') {
+                    if ($promo->TypeVariation == '1') {
                         // pourcentage
-                        $PrixPromo = $prixRef - (($prixRef * $promo['PrixVariation']) / 100);
+                        $PrixPromo = $prixRef - (($prixRef * $promo->PrixVariation) / 100);
                         $yapromo = true;
                     }
                     if ($promo['TypeVariation'] == '2') {
                         // montant fixe
-                        $PrixPromo = $prixRef - $promo['PrixVariation'];
+                        $PrixPromo = $prixRef - $promo->PrixVariation;
                         $yapromo = true;
                     }
 
                 } else {
                     // prixforcé renseigné donc le montant remplace le tarif
-                    if ($promo['PrixForce'] != '0') {
-                        $PrixPromo = $promo['PrixForce'];
+                    if ($promo->PrixForce != '0') {
+                        $PrixPromo = $promo->PrixForce;
                         $yapromo = true;
                     }
                 }
@@ -549,28 +482,28 @@ class BoutiqueProduit extends genericClass
         $PrixPromo = $prixMini;
         //klog::l(" promo",$PrixPromo);
         $yapromo = false;
-        $promos = $this->storproc('Boutique/Produit/' . $this->Id . '/Promotion/DateDebutPromo<=' . time() . '&&DateFinPromo>=' . time(), '', '', '', 'DESC', 'APartirNbUnite');
+        $promos = Sys::getData('Boutique','Produit/' . $this->Id . '/Promotion/DateDebutPromo<=' . time() . '&&DateFinPromo>=' . time(), 0, 100, 'DESC', 'APartirNbUnite');
         if (is_array($promos)) foreach ($promos as $promo):
-            if ($promo['APartirNbUnite'] != '' && $promo['APartirNbUnite'] > $Qte) {
+            if ($promo->APartirNbUnite != '' && $promo->APartirNbUnite > $Qte) {
                 //pas de promo
                 //klog::l("pas de promo", $promo['Intitule']);
             } else {
                 //klog::l("promo", $promo['Intitule']);
-                if ($promo['PrixVariation'] != '0') {
-                    if ($promo['TypeVariation'] == '1') {
+                if ($promo->PrixVariation != '0') {
+                    if ($promo->TypeVariation == '1') {
                         // pourcentage
-                        $PrixPromo = $prixRef - (($prixRef * $promo['PrixVariation']) / 100);
+                        $PrixPromo = $prixRef - (($prixRef * $promo->PrixVariation) / 100);
                         $yapromo = true;
                     }
                     if ($promo['TypeVariation'] == '2') {
                         // montant fixe
-                        $PrixPromo = $prixRef - $promo['PrixVariation'];
+                        $PrixPromo = $prixRef - $promo->PrixVariation;
                         $yapromo = true;
                     }
 
                 } else {
                     // prixforcé renseigné donc le montant remplace le tarif
-                    if ($promo['PrixForce'] != '0') {
+                    if ($promo->PrixForce != '0') {
                         $PrixPromo = $promo->PrixForce;
                         $yapromo = true;
                     }
@@ -578,7 +511,6 @@ class BoutiqueProduit extends genericClass
             }
             if ($yapromo) break;
         endforeach;
-
         if ($yapromo) {
             if ($prixMini > $PrixPromo) $prixMini = $PrixPromo;
         }
@@ -594,7 +526,7 @@ class BoutiqueProduit extends genericClass
      */
     public function EstenPromo()
     {
-        $promos = $this->storproc('Boutique/Produit/' . $this->Id . '/Promotion/DateDebutPromo<=' . time() . '&&DateFinPromo>=' . time(), '', '', '', 'DESC', 'tmsEdit');
+        $promos = Sys::getData('Boutique','Produit/' . $this->Id . '/Promotion/DateDebutPromo<=' . time() . '&&DateFinPromo>=' . time(), 0, 100, 'DESC', 'tmsEdit');
         return $promos;
     }
 
@@ -637,10 +569,10 @@ class BoutiqueProduit extends genericClass
      */
     public function GetEmballage()
     {
-        $conds = $this->storproc('Boutique/Conditionnement/Produit/' . $this->Id);
-        if (is_array($conds) && isset($conds[0])) return $conds[0];
-        $conds = $this->storproc('Boutique/Conditionnement/ConditionnementDefaut=1', '', '', 1, 'DESC', 'tmsEdit');
-        if (is_array($conds) && isset($conds[0])) return $conds[0];
+        $conds = Sys::getOneData('Boutique','Conditionnement/Produit/' . $this->Id);
+        if (is_object($conds)) return $conds;
+        $conds = Sys::getOneData('Boutique','Conditionnement/ConditionnementDefaut=1', 0, 1, 'DESC', 'tmsEdit');
+        if (is_object($conds)) return $conds;
         return '';
     }
 
@@ -651,10 +583,10 @@ class BoutiqueProduit extends genericClass
      */
     public function GetColisage()
     {
-        $conds = $this->storproc('Boutique/Conditionnement/Produit/' . $this->Id);
-        if (is_array($conds) && isset($conds[0])) return $conds[0]['Colisage'];
-        $conds = $this->storproc('Boutique/Conditionnement/ConditionnementDefaut=1', '', '', 1, 'DESC', 'tmsEdit');
-        if (is_array($conds) && isset($conds[0])) return $conds[0]['Colisage'];
+        $conds = Sys::getOneData('Boutique','Conditionnement/Produit/' . $this->Id);
+        if (is_object($conds)) return $conds->Colisage;
+        $conds = Sys::getOneData('Boutique','Conditionnement/ConditionnementDefaut=1', 0, 1, 'DESC', 'tmsEdit');
+        if (is_object($conds)) return $conds->Colisage;
         return '1';
 
     }
@@ -667,7 +599,7 @@ class BoutiqueProduit extends genericClass
     public function getClone($noreset = false)
     {
         $prod = parent::getClone();
-        $prod->Reference = "";
+        $prod->Reference = $this->Reference.'-COPY';
         $prod->Save();
         //provisionning children
         $donnees = $this->getChildren('Donnee');
@@ -734,9 +666,16 @@ class BoutiqueProduit extends genericClass
 
     }
 
-    // version qui est active dans boutique février 2015
+    /**
+     * Clonage produit en fournissant la reference et les prefixes mysteres
+     * @param string $NomP
+     * @param string $RefP
+     * @param string $PrefixeNomRef
+     * @param string $PrefixeRefRef
+     * @void
+     */
 
-    public function getCloneV2($NomP = '', $RefP = '', $PrefixeNomRef = '', $PrefixeRefRef = '')
+    public function getCloneWithParams($NomP = '', $RefP = '', $PrefixeNomRef = '', $PrefixeRefRef = '')
     {
 
         $prod = parent::getClone();
@@ -852,105 +791,6 @@ class BoutiqueProduit extends genericClass
 
     }
 
-
-    public function getCloneMathilde($prod)
-    {
-
-        // recupérer la produit modele
-//		klog::l("modèle", $prod->Id);
-
-
-        $cpks = $this->getChildren('ConfigPack');
-        foreach ($cpks as $cpk) {
-            if ($cpk->EtapeVisu != 1 && $cpk->EtapeVisu != 3) {
-                $cpk->Delete();
-                //klog::l("on supprimerait",$cpk->Id . "- " .$cpk->Nom);
-            }
-        }
-
-
-        $cps = $prod->getChildren('ConfigPack');
-        foreach ($cps as $cp) {
-            if ($cp->Id != 715 && $cp->Id != 711) {
-                $cp2 = $cp->getClone();
-                $cp2->addParent($this);
-                $cp2->Save();
-                $refs2 = $cp->getChildren('Reference');
-                foreach ($refs2 as $ref2) {
-                    $ref2->addParent($cp2);
-                    $ref2->Save();
-                }
-                // les options ne sont pas clonées mais juste liées
-                // donc pas besoin de faire options détails car déjà liées à otions
-                $opts = $cp->getChildren('Options');
-                foreach ($opts as $opt) {
-                    $opt->addParent($cp2);
-                    $opt->Save();
-                }
-            }
-        }
-        //$prod->Display=0;
-        $this->Save();
-
-    }
-
-    public function getCloneMathildeV2($prod)
-    {
-
-        /*
-        // recupérer la produit modele
-        klog::l("modèle", $prod->Id);
-        klog::l("maj", $this->Id);
-        klog::l("accroche av ", $this->Accroche);
-        $this->Accroche=$prod->Accroche;
-        klog::l("accroche ap", $this->Accroche);
-
-        klog::l("description av ", $this->Description);
-        $this->Description=$prod->Description;
-        klog::l("description ap", $this->Description);
-
-        klog::l("tarif av ", $this->Tarif);
-        $this->Tarif=$prod->Tarif;
-        klog::l("tarif ap", $this->Tarif);
-
-        $ref=$this->getReference();
-        klog::l("refp", $ref->Id);
-        klog::l("tarif av ", $ref->Tarif);
-        $ref->Tarif=$this->Tarif;
-        klog::l("tarif ap", $ref->Tarif);
-        $ref->Save();
-
-
-        //$prod->Display=0;
-        $this->Save();*/
-
-    }
-
-    /**
-     * Raccourci vers callData
-     * @return    Résultat de la requete
-     */
-    private function storproc($Query, $recurs = '', $Ofst = '', $Limit = '', $OrderType = '', $OrderVar = '', $Selection = '', $GroupBy = '')
-    {
-        return Sys::$Modules['Boutique']->callData($Query, $recurs, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy);
-    }
-
-
-    /**
-     * Retourne un montant dans un tableau avec valeur entier et decimale sur deux
-     * TODO
-     * @return    tableau deux valeurs numérique
-     */
-    public function DecoupePrix($Valeur)
-    {
-
-        /*$Montant['Entier']=floor($Valeur);
-        $MontantDec=$Valeur-floor($Valeur);
-        $Montant['2Decimale']=round($MontantDec,2)*100;*/
-        $Montant = round($Valeur, 2);
-        return sprintf('%.2f', $Montant);
-    }
-
     /**
      * Attribution du taux de tva
      */
@@ -960,8 +800,6 @@ class BoutiqueProduit extends genericClass
 
         // le champ TypeTvaInterne est le champ tva de la fiche produit
         // on stocke le type de tva et dans type tva on a les taux actifs
-        $letaux = 0;
-        $lazone = 0;
         if (!$typetaux) {
             // changement du nom du champ
 //			if ( $this->TypeTvaInterne == ''||$this->TypeTvaInterne==0) return 0;

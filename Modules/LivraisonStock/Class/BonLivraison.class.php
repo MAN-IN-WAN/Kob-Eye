@@ -24,7 +24,8 @@ class BonLivraison extends genericClass {
 	 * @return	void
 	 */
 	public function InitBL($Commande, $AdresseLivraison, $TypeLivraison, $TarifLivraison, $ZoneLivraison, $ChoixLivraison,$TxTvar=19.6) {
-		$this->MontantLivraisonTTC = $TypeLivraison->getTTC($TarifLivraison->Tarif);
+        $this->MontantLivraisonHT = $TarifLivraison->Tarif;
+        $this->MontantLivraisonTTC = $TypeLivraison->getTTC($TarifLivraison->Tarif);
 		$this->TypeLivraison = $TypeLivraison->Nom;
 		$this->ZoneLivraison = $ZoneLivraison->Code;
 		$this->ChoixLivraisonId = $ChoixLivraison;

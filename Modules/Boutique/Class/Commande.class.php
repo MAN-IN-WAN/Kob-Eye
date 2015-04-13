@@ -38,22 +38,17 @@ class Commande extends genericClass {
 	 */
 	public function Save() {
 		$this -> getFacture();
-
 		$this -> getBonLivraison();
-
-		//==>  empeche de mettre expedié
-		// commande facturée on ne modifie plus
-		// if (isset($this->Facture) && is_object($this->Facture))		return;
 
 		if ($this -> Id) {
 			//Verification avec l'objet en base
-			$old = $this -> storproc($this -> getUrl());
+			$old = Sys::getOneData('Boutique','Commande/'.$this->Id);
 
 			//Test des comportements à déclencher
-			$this -> Apayer = (!$old[0]["Paye"] && $this -> Paye);
-			$this -> Avalider = (!$old[0]["Valide"] && $this -> Valide);
-			$this -> ADevalider = ($old[0]["Valide"] && !$this -> Valide);
-			$this -> ACurrent = (!$old[0]["Current"] && $this -> Current);
+			$this -> Apayer = (!$old->Paye && $this -> Paye);
+			$this -> Avalider = (!$old->Valide && $this -> Valide);
+			$this -> ADevalider = ($old->Valide && !$this -> Valide);
+			$this -> ACurrent = (!$old->Current && $this -> Current);
 
 		} else {
 			$this -> Apayer = $this -> Paye;
@@ -64,49 +59,38 @@ class Commande extends genericClass {
 		parent::Save();
 
 		// ==> Mars 2015
-		// Recalcul de l'entete de commande par rapport au ligne
-		if (!isset($this -> LignesCommandes)) $this -> getLignesCommande();
-		if (isset($this -> LignesCommandes) && is_array($this -> LignesCommandes)) {
+		// Recalcul de l'entete de commande par rapport aux lignes
+		$this -> getLignesCommande();
+		if (is_array($this -> LignesCommandes)) {
 			$this->MontantTTC=0;
 			$this->MontantHT =0;
 			$this->MontantHorsPromoTTC=0;
 			$this->MontantHorsPromoHT =0;
-			foreach ($this->LignesCommandes as $obj) :
-				$this->MontantTTC += $obj->MontantTTC;
-				$this->MontantHT += $obj->MontantHT;
-				$this->MontantHorsPromoTTC += $obj->MontantHorsPromoTTC;
-				$this->MontantHorsPromoHT += $obj->MontantHorsPromoHT;
-			endforeach;
-
+			foreach ($this->LignesCommandes as $obj) {
+                $this->MontantTTC += $obj->MontantTTC;
+                $this->MontantHT += $obj->MontantHT;
+                $this->MontantHorsPromoTTC += $obj->MontantHorsPromoTTC;
+                $this->MontantHorsPromoHT += $obj->MontantHorsPromoHT;
+            }
 		}
-
-			
-		// Mars 2015 ===>
 			
 		//Definition du montant à payer avec la livraison
 		if (isset($this -> BonLivraison) && is_object($this -> BonLivraison) && $this->getMontantLivrable()>0) {
 
-
-			//on passe toujours ici car on a toujours un bon de livraison
-			//$this -> MontantPaye = $this -> MontantTTC - $this -> Remise + $this -> BonLivraison -> MontantLivraisonTTC;
-			//erreur mars 2015 la remise était déduite deux fois
-			$this -> MontantPaye = $this -> MontantTTC + $this -> BonLivraison -> MontantLivraisonTTC;
-			
-
-			$this -> MontantLivraison = $this -> BonLivraison -> MontantLivraisonTTC;
+			$this -> MontantPaye = round($this -> MontantTTC + $this -> BonLivraison -> MontantLivraisonTTC,2);
+			$this -> MontantLivraison = round($this -> BonLivraison -> MontantLivraisonTTC,2);
 			$this -> BonLivraison -> AddParent($this);
 			$this -> BonLivraison -> Save();
 
 		}else {
-			 $this -> MontantPaye = $this -> MontantTTC - $this -> Remise;
-
+			 $this -> MontantPaye = $this -> MontantTTC;
 		}
+
 		if (isset($this -> LignesCommandes) && is_array($this -> LignesCommandes))
-			foreach ($this->LignesCommandes as $obj) :
-				$obj -> AddParent($this);
-				$obj -> Save();
-			endforeach
-		;
+			foreach ($this->LignesCommandes as $obj) {
+                $obj->AddParent($this);
+                $obj->Save();
+            }
 
 		//Enregistrement de la reference
 		$this -> SaveRef();
@@ -135,7 +119,6 @@ class Commande extends genericClass {
 		}
 		if ($this -> Apayer) {
 			$this -> setMagasin();
-//			$this -> sendMailAcheteur($this -> Magasin -> Nom);
 			$this -> sendMailAcheteur();
 			$this -> applyInvoice();
 		}
@@ -150,54 +133,9 @@ class Commande extends genericClass {
 				}
 			}
 		}
-		
-		
-		
-		$arr = array(
-			1 => array(
-				'HT' => 0,
-				'TTC' => 0
-			),
-			2 => array(
-				'HT' => 0,
-				'TTC' => 0
-			)
-		);
-		$this->initTableTvaFacture();
-		if (isset($this -> LignesCommandes) && is_array($this -> LignesCommandes))
-			foreach ($this->LignesCommandes as $k=>$LC) {
-				$tabletva = unserialize($LC->TableTva);
-				$arr[1]['HT'] += $tabletva['T20']['Base'];
-				$arr[2]['HT'] += $tabletva['T5.5']['Base'];
-				
-				if(isset($tabletva['T20']['Taux']))
-					$this->TxTva1 = $tabletva['T20']['Taux'];
-				if(isset($tabletva['T5.5']['Taux']))
-					$this->TxTva2 = $tabletva['T5.5']['Taux'];
-			}
-		
-		$liv = $this->getChildren('BonLivraison');
-			
-		if (sizeof($liv)&&$liv[0]->MontantLivraisonHT!=0) {
-			
-			$this->HtLivr= $liv[0]->MontantLivraisonHT;
-			$this->TTCLiv=round($this->HtLivr * $this->TxTva1/100 ,2);
-			$this->MtTvaLiv =round($this->HtLivr * ($this->TxTva1  / 100), 2);
-			$this->TxTvaLiv = $liv[0]->TxTvaBonLivr;
-		}
 
-		//$this->TxTva1 = 20;
-		//$this->TxTva2 = 5.5;
-
-		$this->BaseHTTx1= round($arr[1]['HT'],2) ;
-		$this->MtTva1 =round($this->BaseHTTx1 * ($this->TxTva1 / 100), 2);
-		$this->TTC1= $this->BaseHTTx1 + $this->MtTva1;
-
-		$this->BaseHTTx2= round($arr[2]['HT'],2) ;
-		$this->MtTva2 =round($this->BaseHTTx2 * ($this->TxTva2 / 100), 2);
-		$this->TTC2= $this->BaseHTTx2+ $this->MtTva2;
-		
-
+        //generation de la table tva pour l'entete
+		$this->getTableTva();
 
 		//Sauvegarde
 		parent::Save();
@@ -510,7 +448,6 @@ class Commande extends genericClass {
 		$this -> Qte = 0;
 		$this -> Poids = 0;
 		$this -> Volume = 0;
-		$this -> initTableTvaFacture();
 
 		if (isset($this -> LignesCommandes) && is_array($this -> LignesCommandes)) {
 			foreach ($this->LignesCommandes as $k=>$LC) {
@@ -885,75 +822,56 @@ class Commande extends genericClass {
 	 * Création du tableau de stockage des montants
 	 * @return	void
 	 */
-	function initTableTvaFacture() {
+	function getTableTva($o=null) {
+        if (!$o)$o=$this;
 
-		$this -> tabletva = array();
-		$this->getLignesCommande();
-		//Lignes commandes
-		// on initialise le tableau de remise du client
-		$cl=$this->getClient();
-		if (!isset($cl->_Remises)) $cl = Client::getCurrentClient($cl->UserId);
-		$mini=0;
-		if (is_array($cl->_Remises)&&sizeof($cl->_Remises))foreach ($cl->_Remises as $clR) {
-			// mars 2015 BUG ON APPLIQUÉ LA REMISE ALORS QU'ELLE N'ÉTAIT PAS ENCORE SUR CETTE COMMANDE
-			// ajout du test est ce que l'abonnement est actif au moment de la commande
-			$ser = $cl->getChildren('Service');
-			if (sizeof($ser)){
-				foreach($ser as $servi){
-					if($servi->DateDebut < $this->DateCommande && $servi->Fin > $this->DateCommande){
-						if($clR> $mini) $mini=$clR;
-					}
-				}
-			}
-		}
-		$remisetx = 1 - ($mini/100);
+        $arr = array(
+            1 => array(
+                'HT' => 0,
+                'TTC' => 0
+            ),
+            2 => array(
+                'HT' => 0,
+                'TTC' => 0
+            )
+        );
+        if (isset($this -> LignesCommandes) && is_array($this -> LignesCommandes))
+            foreach ($this->LignesCommandes as $k=>$LC) {
+                $tabletva = $LC->getTableTva();
+                if (isset($tabletva['T20']))
+                    $arr[1]['HT'] += $tabletva['T20']['Base'];
+                if (isset($tabletva['T5.5']))
+                    $arr[2]['HT'] += $tabletva['T5.5']['Base'];
 
-		$tht = 0;
-		if (isset($this->LignesCommandes)&&is_array($this->LignesCommandes))foreach ($this->LignesCommandes as $lc){
-			// RECALCULER TRES IMPORTANT  --> SINON ON N'A PAS LES VALEURS DES CONFIG
-			$tabletva = $lc->getTableTva($remisetx);
-			//calcul des bases ht
-			foreach($tabletva as $tk => $tt) {
-				$tht += $tt['Base'];
-				$this->updateTableTvaFacture( $tt['Taux'],$tt['Base']);
-			}
-			
-		}
-		
-		$this->getBonLivraison();
-		if (isset($this->BonLivraison)&&is_object($this->BonLivraison)){
-			$this->updateTableTvaFacture($this->BonLivraison->TxTvaBonLivr,$this->BonLivraison->MontantLivraisonHT);
-			$tht += $this->BonLivraison->MontantLivraisonHT;
-		}
+                if(isset($tabletva['T20']['Taux']))
+                    $o->TxTva1 = $tabletva['T20']['Taux'];
+                if(isset($tabletva['T5.5']['Taux']))
+                    $o->TxTva2 = $tabletva['T5.5']['Taux'];
+            }
+        //stockage du tableau de tva
+        $o->tableTva = $arr;
 
-// 		// ajuste les bases tva pour correspondre au tht
-// 		$max = 0;
-// 		$amax = '';
-// 		$tbas = 0;
-// 		$rbas = 0;
-// 		foreach($this->tabletva as $tk => $tt) {
-// 			$b = $tt['Base'];
-// 			$tbas += $b;
-// 			$rbas += $this->tabletva[$tk]['Base'] = $b = round($b, 2);
-// 			if($b>$max) {$max = $b; $amax = $tk;}
-// 		}
-// 		$tbas = round($tbas, 2);
-// 		$diff = round($tbas - $rbas, 2);
-// 		$this->tabletva[$amax]['Base'] += $diff;
+        $liv = $this->getChildren('BonLivraison');
 
-	}
+        if (sizeof($liv)&&$liv[0]->MontantLivraisonHT!=0) {
 
-	/**
-	 * Ajout des infos dans le tableau global
-	 * @param	String	Taux de TVA à mutualiser
-	 * @param	Float	Prix HT
-	 * @void
-	 */
-	function updateTableTvaFacture($taux,$base) {
-		if (isset($this->tabletva["T".$taux]) ){
-			 $this->tabletva["T".$taux]['Base']+=$base;
-		}
-		else $this->tabletva["T".$taux] = array( 'Base' => $base ,"Taux"=> $taux);
+            $o->HtLivr= $liv[0]->MontantLivraisonHT;
+            $o->TTCLiv= round($o->HtLivr * (1+($o->TxTva1  / 100)), 2);
+            $o->MtTvaLiv =round($o->HtLivr * ($o->TxTva1  / 100), 2);
+            $o->TxTvaLiv = $liv[0]->TxTvaBonLivr;
+        }
+
+        //$this->TxTva1 = 20;
+        //$this->TxTva2 = 5.5;
+
+        $o->BaseHTTx1= round($arr[1]['HT'],2) ;
+        $o->MtTva1 =round($o->BaseHTTx1 * ($o->TxTva1 / 100), 2);
+        $o->TTC1= $o->BaseHTTx1 + $o->MtTva1;
+
+        $o->BaseHTTx2= round($arr[2]['HT'],2) ;
+        $o->MtTva2 =round($o->BaseHTTx2 * ($o->TxTva2 / 100), 2);
+        $o->TTC2= $o->BaseHTTx2+ $o->MtTva2;
+
 	}
 
 	/**
@@ -1114,8 +1032,7 @@ class Commande extends genericClass {
 			$this-> getMagasin();
 		}
 		if(!isset($this->Site)) {
-			$sites  = $this->storproc('Boutique/Site/Magasin/' . $this->Magasin->Id);
-			if(is_array($sites) && sizeof($sites)>0) $this->Site = genericClass::createInstance('Systeme',$sites[0]);
+            $this->Site = Site::getCurrentSite();
 		}
 		return $this->Site;
 	}
