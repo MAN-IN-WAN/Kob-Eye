@@ -566,7 +566,7 @@ class Client extends genericClass {
 	      $remises = array();
 
         //TODO PERFORMANCE HIT !!
-/*	      //pour chaque règle on teste le produit
+	      //pour chaque règle on teste le produit
 	      foreach ($this->_RegleRemises as $rr){
 		    if ($rr->checkProduct($prod,$qte)){
 			$remises  = array_merge($remises,array("Règle Produit ".$prod->Nom => $rr->Remise));
