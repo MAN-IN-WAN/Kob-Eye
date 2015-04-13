@@ -14,7 +14,7 @@
  * hacks involving comment tokens in 'content' value strings to break
  * minimization badly. A test suite is available.
  * 
- * @package Minify
+ * @package Minifyconf|
  * @author Stephen Clay <steve@mrclay.org>
  * @author http://code.google.com/u/1stvamp/ (Issue 64 patch)
  */

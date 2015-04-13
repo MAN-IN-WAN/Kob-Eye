@@ -119,7 +119,7 @@
 		<PROPERTIES searchOrder="3" description="Plusieurs tarifs" type="boolean" default="0" auto="1"  category="Descriptif" >MultiTarif</PROPERTIES>
 		<PROPERTIES description="Tarif HT Générique" type="price" default="" list="6" category="Descriptif">Tarif</PROPERTIES>
 		<PROPERTIES description="Prix public conseillé TTC" type="float" category="Descriptif" hidden="1">PPC</PROPERTIES>
-		<PROPERTIES description="Taux de Tva"  category="Descriptif"  type="float"  query="Fiscalite/TauxTva/Actif=1::Taux" hidden="1">TypeTva</PROPERTIES>
+		<PROPERTIES description="Taux de Tva"  category="Descriptif"  type="float"  query="Fiscalite/TauxTva/Actif=1::Id::Taux">TypeTva</PROPERTIES>
 		<PROPERTIES description="Ordre dans le flash" type="int" category="MisEnAvant">OrdreFlash</PROPERTIES>
 		<PROPERTIES description="Ordre" type="order" category="Descriptif">Ordre</PROPERTIES>
         <CATEGORY title="Synchro">
@@ -331,6 +331,7 @@
 	
 	<OBJECTCLASS title="TypeCaracteristique" driver="mysql" AccessPoint="0" Dico="1" master="0" Description="TypeCaracteristique"  Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png" >
 		<PROPERTIES searchOrder="1" description="TypeCaracteristique" type="varchar" length="50"   >Nom</PROPERTIES>
+		<PROPERTIES searchOrder="2" description="Libelle" type="varchar" length="255"   >Libelle</PROPERTIES>
 	</OBJECTCLASS>
 	
 	<OBJECTCLASS title="Client" driver="mysql" AccessPoint="1" Class="Modules/Boutique/Class/Client.class.php" master="0" Description="Clients" browseable="1"  Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png">

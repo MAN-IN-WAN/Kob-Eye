@@ -230,7 +230,6 @@ class LigneCommande extends genericClass {
 		$this->Livre=0;
 		$this->Expedie=0;
 		$this->Poids=$Ref->Poids*$this->Quantite;
-
 		if (empty($Ref->Poids))  $this->Poids = $prod->Poids*$this->Quantite;
 		$this->Largeur=$Ref->Largeur*$this->Quantite;
 		if (empty($Ref->Largeur))  $this->Largeur = $prod->Largeur*$this->Quantite;
