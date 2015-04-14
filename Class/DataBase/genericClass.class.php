@@ -2344,17 +2344,16 @@ class genericClass extends Root {
 			//recherche des menus pointant vers cette donnée
 			$menus = Sys::getMenus($this->Module.'/'.$this->ObjectType.'/'.$this->Id,true,true);
 			//Si des menus pointent vers cette donnée alors on ajoute les mots sur ces pages 
-			foreach ($menus as $m2){
-				foreach ($m2 as $m){
-					unset($m->Menus);
-					//mise à jour a partir des menus
-					$tls=array_merge($tls,$m->getPages());
-				}
+			foreach ($menus as $m){
+				unset($m->Menus);
+				//mise à jour a partir des menus
+				$tls=array_merge($tls,$m->getPages());
 			}
-			//recherche des menus pouvant emmener à cette donnée
-			$menus = Sys::getMenus($this->Module.'/'.$this->ObjectType,true,true);
-			foreach ($menus as $m2){
-				foreach ($m2 as $m){
+
+			if (!$this->isRecursiv()||(!Sys::getCount($this->Module,$this->ObjectType.'/'.$this->ObjectType.'/'.$this->Id))){
+				//recherche des menus pouvant emmener à cette donnée
+				$menus = Sys::getMenus($this->Module.'/'.$this->ObjectType,true,true);
+				foreach ($menus as $m){
 					unset($m->Menus);
 					//récupération des pages
 					$ps = $m->getPages();
@@ -2379,6 +2378,7 @@ class genericClass extends Root {
 			//Nous allons donc récupérer les éléments browseable parents afin de pouvoir générer les pages.
 			//si pas de menu associé on met à jour tous les parents browseable
 			$pars = $this->getParentTypes();
+			$browseable = $this->getObjectClass()->browseable;
 			foreach ($pars as $pa){
 				if ($pa["browseable"]&&!$pa["stopPage"]){
 					$pas = $this->getParents($pa["Titre"]);
@@ -2402,13 +2402,44 @@ class genericClass extends Root {
 							$tls[] = $pn;
 						}
 					}
+				}else if (!$pa["browseable"]&&$browseable){
+					$pas = $this->getParents($pa["Titre"]);
+					foreach ($pas as $p){
+						//recherche des menus pouvant emmener à cette donnée
+						$menus = Sys::getMenus($this->Module.'/'.$pa["Titre"].'/'.$p->Id,true,true);
+						$suffixe = '/'.$this->ObjectType;
+						if (!sizeof($menus)){
+							$menus = Sys::getMenus($this->Module.'/'.$pa["Titre"].'/'.$p->Id.'/'.$this->ObjectType,true,true);
+							$suffixe='';
+						}
+						foreach ($menus as $m){
+							unset($m->Menus);
+							//récupération des pages
+							$ps = $m->getPages();
+							foreach ($ps as $po){
+								//Pour chacune des pages trouvées on en ajoute une à la suite
+								$pn = genericClass::createInstance('Systeme','Page');
+								$pn->Url = $po->Url.$suffixe."/".$this->Url;
+								$pn->FromUrl = $po->Url;
+								$pn->LastMod = date('Y-m-d');
+								$pn->PageModule = $this->Module;
+								$pn->PageObject = $this->ObjectType;
+								$pn->PageId = $this->Id;
+								//récupération du site
+								$s = $po->getParents('Site');
+								if (isset($s[0]))
+									$pn->addParent($s[0]);
+								$pn->Save();
+								$tls[] = $pn;
+							}
+						}
+					}
 				}
 			}
 		}
 		//Dans le cas des menus la génération est automatique à l'enregistrement.
 		return $tls;
-	 }
-	 
+	 }	 
 	 /**
 	  * Supprime les pages d'un élément
 	  */
