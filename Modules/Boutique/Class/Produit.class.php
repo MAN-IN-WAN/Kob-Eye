@@ -374,6 +374,19 @@ class BoutiqueProduit extends genericClass
         return sprintf('%.2f', $Montant);
     }
 
+    /**
+     * Retourne la liste des catégories du produit en chaine.
+     * @return String
+     */
+    public function getCategoryString() {
+        $cats = Sys::getData('Boutique','Categorie/*/Categorie/Produit/'.$this->Id);
+        $out = "";
+        foreach ($cats as $c){
+            if (!empty($out)) $out.=" > ";
+            $out.=$c->Nom;
+        }
+        return $out;
+    }
 
     /**
      * Retourne le prix minimum d'une référence de ce produit hors promotion

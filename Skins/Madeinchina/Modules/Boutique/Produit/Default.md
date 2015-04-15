@@ -36,7 +36,22 @@
     [/STORPROC]
 </div>
 
+//metadonnée google shopping
+<div itemscope itemtype="http://schema.org/Product">
+    <span itemprop="name">[!Prod::Nom!]</span>
+    <span itemprop="logo">[!Prod::Image!]</span>
+    <span itemprop="description">[!Prod::Description!]</span>
+    <span itemprop="url">[!Prod::getUrl()!]</span>
 
+    <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+        <meta itemprop="priceCurrency" content="EUR" />€
+        <span itemprop="price">[!Prod::Tarif!]</span>
+        <meta itemprop="itemCondition" itemtype="http://schema.org/OfferItemCondition" content="http://schema.org/NewCondition"/>New
+        [IF [!Prod::StockReference!]]
+        <meta itemprop="availability" content="http://schema.org/InStock"/>Available online
+        [/IF]
+    </div>
+</div>
 
 // Surcouche JS
 <script type="text/javascript">

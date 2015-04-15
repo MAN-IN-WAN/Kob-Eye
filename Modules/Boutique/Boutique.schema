@@ -125,6 +125,9 @@
         <CATEGORY title="Synchro">
             <PROPERTIES description="id de produit distante" type="int" >RemoteId</PROPERTIES>
         </CATEGORY>
+        <CATEGORY title="Google Shopping">
+            <PROPERTIES description="Categorie Produit Google Shopping (voir sur la liste)" type="varchar" length="255">GoogleProductCategory</PROPERTIES>
+        </CATEGORY>
 		<FKEY card="1,n" data="Categorie,Id" >CategorieId</FKEY>
 		<FKEY card="0,n" data="Conditionnement,Id">ConditionnementId</FKEY> 
 		<FUNCTION Icon="/Skins/AdminV2/Img/group_add.png">clonageProduit</FUNCTION>
