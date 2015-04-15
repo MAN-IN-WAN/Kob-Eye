@@ -22,43 +22,33 @@ class Site extends genericClass {
             $p = genericClass::createInstance('Systeme','Page');
             $p->Url = $url;
             $p->MD5 = md5($p->Url);
-            //$p->FromUrl = md5($fromurl);
             $p->addParent($this);
         }else $p=$p[0];
         $p->Set('LastMod', date('Y-m-d'));
         if (!empty($alias)){
             //analyse de la requete
             $i = Info::getInfos($alias);
-            if ($i['TypeSearch']!='Interface'){
+            if ($i['TypeSearch']!='Interface'&&$i['TypeSearch']!='Menu'){
                 //recherche de l'element correpondant
-                if ($i['TypeSearch']=='Child'){
+                /*if ($i['TypeSearch']=='Child'){*/
                     $el = $men;
-                }else{
+                /*}else{
                     $el = Sys::getData($i["Module"],$i["ObjectType"].'/'.$i["LastId"]);
                     if (!sizeof($el)) $el = $men;
                     else $el = $el[0];
-                }
-            }else{
-                //alors information du menu
-                $el = $men;
+                }*/
+                //mise à jour des donnés
+                if (empty($p->Title)&&isset($el->TitleMeta))$p->Title = $el->TitleMeta;
+                if (empty($p->Description)&&isset($el->DescriptionMeta))$p->Description = $el->DescriptionMeta;
+                if (empty($p->Keywords)&&isset($el->KeywordsMeta))$p->Keywords = $el->KeywordsMeta;
+                if (empty($p->Image)&&isset($el->ImgMeta))$p->Image = $el->ImgMeta;
+                if (empty($p->PageModule))$p->PageModule = $el->Module;
+                if (empty($p->PageObject))$p->PageObject = $el->ObjectType;
+                if (empty($p->PageId))$p->PageId = $el->Id;
             }
-        }elseif (is_object($men)){
-            $el=$men;
-        }
-        if (isset($el)){
-            //mise à jour des donnés
-            if (empty($p->Title)&&isset($el->TitleMeta))$p->Title = $el->TitleMeta;
-            if (empty($p->Description)&&isset($el->DescriptionMeta))$p->Description = $el->DescriptionMeta;
-            if (empty($p->Keywords)&&isset($el->KeywordsMeta))$p->Keywords = $el->KeywordsMeta;
-            if (empty($p->Image)&&isset($el->ImgMeta))$p->Image = $el->ImgMeta;
-            if (empty($p->PageModule))$p->PageModule = $el->Module;
-            if (empty($p->PageObject))$p->PageObject = $el->ObjectType;
-            if (empty($p->PageId))$p->PageId = $el->Id;
         }
         $p->Save();
-        return $p;
-    }
-    
+    }    
      
     /**
      * delPage

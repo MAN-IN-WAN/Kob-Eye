@@ -33,28 +33,30 @@ class TypeLivraison extends genericClass {
 	 */
 	public function GetZone($Pays, $CodePostal="") {
 		// Zone définie au niveau du pays
-		$Zp = $this->storproc("ZoneLivraison/Pays.ZonePays(Nom=".$Pays.")&TypeLivraison.TypeLivraisonId(".$this->Id. ")",false,0,1,"Id","DESC","m.*,j11p.Nom as Pays");
-		if (is_array($Zp)) return genericClass::createInstance('LivraisonStock',$Zp[0]);
+		$Zp = Sys::getData("LivraisonStock","ZoneLivraison/Pays.ZonePays(Nom=".$Pays.")&TypeLivraison.TypeLivraisonId(".$this->Id. ")",0,1,"Id","DESC","m.*,j11p.Nom as Pays");
+		if (sizeof($Zp)) return $Zp[0];
 
 
 		// Zone définie par Code postal
 		if(!empty($CodePostal)) {
-			$P = $this->storproc("Pays/Nom=".$Pays);
-			if (is_array($P)){
+			$P = Sys::getOneData('Geographie',"Pays/Nom=".$Pays);
+			if (is_object($P)){
 				// Récupération Id du code postal
-				$Cp = $this->storproc("Pays/".$P[0]["Code"]."/Departement/*/Ville/*/CodePostal/Code=".$CodePostal,false,0,100,"Id","DESC","m.*,j0.Nom as Pays,j0.Code as PaysCode, j1.Id as DepartementCode, j2.Id as VilleCode");
-				// Recherche de la zone correspondante avec le departement
-				$Zd = $this->storproc("ZoneLivraison/Departement.ZoneDepartement(".$Cp[0]["DepartementCode"].")&TypeLivraison.TypeLivraisonId(".$this->Id. ")",false,0,1,"Id","DESC","m.*,j11p.Nom as Pays");
-				if (is_array($Zd)) return genericClass::createInstance('LivraisonStock',$Zd[0]);
-				// Recherche de la zone correspondante avec la ville
-				$Zv = $this->storproc("ZoneLivraison/Ville.ZoneVille(".$Cp[0]["VilleCode"] . ")&TypeLivraison.TypeLivraisonId(".$this->Id. ")",false,0,1,"Id","DESC","m.*,j11p.Nom as Pays");
-				if (is_array($Zv)) return genericClass::createInstance('LivraisonStock',$Zv[0]);
+				$Cp = Sys::getData('Geographie',"Pays/".$P->Code."/Departement/*/Ville/*/CodePostal/Code=".$CodePostal,0,1,"Id","DESC","m.*,j0.Nom as Pays,j0.Code as PaysCode, j1.Id as DepartementCode, j2.Id as VilleCode");
+                if (isset($Cp[0])) {
+                    // Recherche de la zone correspondante avec le departement
+                    $Zd = Sys::getData("LivraisonStock", "ZoneLivraison/Departement.ZoneDepartement(" . $Cp[0]->DepartementCode . ")&TypeLivraison.TypeLivraisonId(" . $this->Id . ")", 0, 1, "Id", "DESC", "m.*,j11p.Nom as Pays");
+                    if (sizeof($Zd)) return $Zd[0];
+                    // Recherche de la zone correspondante avec la ville
+                    $Zv = Sys::getData("LivraisonStock", "ZoneLivraison/Ville.ZoneVille(" . $Cp[0]->VilleCode . ")&TypeLivraison.TypeLivraisonId(" . $this->Id . ")", 0, 1, "Id", "DESC", "m.*,j11p.Nom as Pays");
+                    if (sizeof($Zv)) return $Zv[0];
+                }
 			}
 		}
 
 		// Zone définie par défaut
-		$Zd = $this->storproc("ZoneLivraison/Default=1",false,0,1);
-		if (is_array($Zd)) return genericClass::createInstance('LivraisonStock',$Zd[0]);
+		$Zd = Sys::getOneData("LivraisonStock","TypeLivraison/".$this->Id."/ZoneLivraison/Default=1");
+		if (is_object($Zd)) return $Zd;
 
 		// Pas de zone trouvée
 		return false;
@@ -66,7 +68,7 @@ class TypeLivraison extends genericClass {
 	 * @return	float	Tarif TTC
 	 */
 	public function getTTC( $tarif ) {
-		return $tarif * (1 + $this->TvaLivr / 100);
+		return round($tarif * (1 + $this->TvaLivr / 100),2);
 	}
 
 	/**
@@ -82,13 +84,4 @@ class TypeLivraison extends genericClass {
 		foreach($choix as $ch) if($c == $ch['Uid']) return true;
 		return false;
 	}
-
-	/**
-	 * Raccourci vers callData
-	 * @return	Résultat de la requete
-	 */
-	public function storproc( $Query, $recurs='', $Ofst='', $Limit='', $OrderType='', $OrderVar='', $Selection='', $GroupBy='' ) {
-		return Sys::$Modules['LivraisonStock']->callData($Query, $recurs, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy);
-	}
-
 }

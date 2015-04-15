@@ -917,7 +917,8 @@ class Sys extends Root{
 					$C = genericClass::createInstance($Infos['Module'],$C[0]);
 					//Cas ou il s'agit d'un objet
 					$Ap = Array();
-					$Ap[] = Array($Infos['Module'].'/'.$Infos['ObjectType'].'/'.$C->Id,"");
+					if ($Infos['Module'].'/'.$Infos['ObjectType'].'/'.$C->Id!=$Q)
+						$Ap[] = Array($Infos['Module'].'/'.$Infos['ObjectType'].'/'.$C->Id,"");
 					if (isset($C->Url)&&!empty($C->Url))$Ap[] = Array($Infos['Module'].'/'.$Infos['ObjectType'].'/'.$C->Url,"");
 					$up=(isset($C->Url))?$C->Url:$C->Id;
 				}
@@ -937,7 +938,7 @@ class Sys extends Root{
 			$Menus = Root::quickSort($Menus,"Ordre");
 			$out=Array();
 		}else $Menus = NULL;
-		//Parcours de la liste des menus
+		
 		foreach ($Ap as $a){
 			$m = Sys::searchInMenus('Alias',$a[0],Array(),$Menus,0,$all);
 			if ($m&&is_array($m)){
@@ -947,7 +948,7 @@ class Sys extends Root{
 					$m[] = $b;
 				}
 				if (!$all)return $m;
-				else array_push($out,$m);
+				else $out = array_merge($out,$m);
 			}
 		}
 		if ($all) return $out;

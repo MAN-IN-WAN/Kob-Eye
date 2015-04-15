@@ -119,7 +119,7 @@
 		<PROPERTIES searchOrder="3" description="Plusieurs tarifs" type="boolean" default="0" auto="1"  category="Descriptif" >MultiTarif</PROPERTIES>
 		<PROPERTIES description="Tarif HT Générique" type="price" default="" list="6" category="Descriptif">Tarif</PROPERTIES>
 		<PROPERTIES description="Prix public conseillé TTC" type="float" category="Descriptif" hidden="1">PPC</PROPERTIES>
-		<PROPERTIES description="Taux de Tva"  category="Descriptif"  type="float"  query="Fiscalite/TauxTva/Actif=1::Id::Taux">TypeTva</PROPERTIES>
+		<PROPERTIES description="Type de Tva"  category="Descriptif"  type="float"  query="Fiscalite/TypeTva/Actif=1::Id::Nom">TypeTva</PROPERTIES>
 		<PROPERTIES description="Ordre dans le flash" type="int" category="MisEnAvant">OrdreFlash</PROPERTIES>
 		<PROPERTIES description="Ordre" type="order" category="Descriptif">Ordre</PROPERTIES>
         <CATEGORY title="Synchro">
@@ -337,7 +337,7 @@
 		<PROPERTIES searchOrder="2" description="Libelle" type="varchar" length="255"   >Libelle</PROPERTIES>
 	</OBJECTCLASS>
 	
-	<OBJECTCLASS title="Client" driver="mysql" AccessPoint="1" Class="Modules/Boutique/Class/Client.class.php" master="0" Description="Clients" browseable="1"  Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png">
+	<OBJECTCLASS title="Client" driver="mysql" AccessPoint="1" Class="Modules/Boutique/Class/Client.class.php" master="0" Description="Clients"  Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png">
 		<PROPERTIES searchOrder="1" description="Pseudonyme" type="varchar" length="100" obligatoire="1">Pseudonyme</PROPERTIES>
 		<PROPERTIES Order="3" description="Email"      type="varchar" length="200" obligatoire="1">Mail</PROPERTIES>
 		<PROPERTIES Order="4" description="Civilite"   type="varchar" values="Mademoiselle,Madame,Monsieur" obligatoire="1">Civilite</PROPERTIES>
@@ -542,7 +542,24 @@
 		<PROPERTIES Order="75"	description="Taux Tva Liv" type="price"   format="2dec" category="LIvraison">TxTvaLiv</PROPERTIES>
 		<PROPERTIES Order="80"	description="Montant total Tva Liv" type="price"   format="2dec" category="LIvraison">MtTvaLiv</PROPERTIES>
 		<PROPERTIES Order="85"	description="Total TTC Liv" type="price"   format="2dec" category="LIvraison">TTCLiv</PROPERTIES>
-		<FKEY card="1,1" data="Commande,Id">CommandeId</FKEY>
+        <CATEGORY title="Adresse facturation">
+            <PROPERTIES Order="2" description="Civilite"   type="varchar" values="Mademoiselle,Madame,Monsieur" obligatoire="0">FactuCivilite</PROPERTIES>
+            <PROPERTIES searchOrder="3" description="Nom"        type="varchar" length="100"   >FactuNom</PROPERTIES>
+            <PROPERTIES Order="4" description="Prénom"     type="varchar" length="100"   >FactuPrenom</PROPERTIES>
+            <PROPERTIES Order="5" description="Adresse"    type="text"    special="multi">FactuAdresse</PROPERTIES>
+            <PROPERTIES Order="6" description="CodePostal" type="varchar" length="10"     >FactuCodePostal</PROPERTIES>
+            <PROPERTIES Order="7" description="Ville"      type="varchar" length="100"   >FactuVille</PROPERTIES>
+            <PROPERTIES Order="10" description="Pays"      type="varchar" length="100"   >FactuPays</PROPERTIES>
+        </CATEGORY>
+        <CATEGORY title="Adresse livraison">
+            <PROPERTIES Order="2" description="Civilite"   type="varchar" values="Mademoiselle,Madame,Monsieur" obligatoire="0">LivrCivilite</PROPERTIES>
+            <PROPERTIES searchOrder="3" description="Nom"        type="varchar" length="100"   >LivrNom</PROPERTIES>
+            <PROPERTIES Order="4" description="Prénom"     type="varchar" length="100"   >LivrPrenom</PROPERTIES>
+            <PROPERTIES Order="5" description="Adresse"    type="text"    special="multi">LivrAdresse</PROPERTIES>
+            <PROPERTIES Order="6" description="CodePostal" type="varchar" length="10"     >LivrCodePostal</PROPERTIES>
+            <PROPERTIES Order="7" description="Ville"      type="varchar" length="100"   >LivrVille</PROPERTIES>
+            <PROPERTIES Order="10" description="Pays"      type="varchar" length="100"   >LivrPays</PROPERTIES>
+        </CATEGORY>		<FKEY card="1,1" data="Commande,Id">CommandeId</FKEY>
 		<FKEY card="1,1" data="Client,Id">ClientId</FKEY>
 		<FUNCTION listOnly="1" multi="1" name="printFacture" icon="left" label="Impression Factures" description="Iprimer les factures">Impression
 			<ACTION>

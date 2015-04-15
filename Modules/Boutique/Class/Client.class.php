@@ -566,23 +566,21 @@ class Client extends genericClass {
 	      $remises = array();
 
         //TODO PERFORMANCE HIT !!
-/*	      //pour chaque règle on teste le produit
+	      //pour chaque règle on teste le produit
 	      foreach ($this->_RegleRemises as $rr){
 		    if ($rr->checkProduct($prod,$qte)){
 			$remises  = array_merge($remises,array("Règle Produit ".$prod->Nom => $rr->Remise));
 		    }
 	      }
 	      //pour chaque catégorie du produit on teste les regles
-*/
-//	      $cats = $prod->getParents('Categorie/*/Categorie');
-/*
+	      $cats = $prod->getParents('Categorie/*/Categorie');
 	      foreach ($cats as $c){
 		    foreach ($this->_RegleRemises as $rr){
 			  if ($rr->checkCategory($c,$qte)){
 			      $remises  = array_merge($remises,array("Règle Catégorie ".$c->Nom => $rr->Remise));
 			  }
 		    }	
-      	      }*/
+      	      }
 	      return $remises;
 	}
 

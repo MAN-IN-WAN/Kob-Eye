@@ -54,7 +54,7 @@
 		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png">Reset</FUNCTION>
 		<FKEY card="1,1" data="User,Id" inherit="Group">UserId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Page" driver="sqlite" Icon="/Skins/AdminV2/Img/IconAqua/Wiki2.png" generateUrl="0" Class="Modules/Systeme/Class/Page.class.php">
+	<OBJECTCLASS title="Page" driver="mysql" Icon="/Skins/AdminV2/Img/IconAqua/Wiki2.png" generateUrl="0" Class="Modules/Systeme/Class/Page.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé" list="2">Url</PROPERTIES>
       		<PROPERTIES type="varchar" auto="1">FromUrl</PROPERTIES>
 		<PROPERTIES type="varchar" auto="1">MD5</PROPERTIES>
@@ -145,7 +145,7 @@
 		<PROPERTIES type="file" length="255" searchOrder="2" special="multi" category="Informations">Fichier</PROPERTIES>
 		<FKEY card="1,1" data="Menu,Id" >MenuId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Connexion" driver="sqlite" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Tasks.png">
+	<OBJECTCLASS title="Connexion" driver="mysql" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Tasks.png">
 		<PROPERTIES type="varchar" length="16" searchOrder="1" category="Connexion">Ip</PROPERTIES>
 		<PROPERTIES type="varchar" length="200" category="Connexion">Host</PROPERTIES>
 		<PROPERTIES type="varchar" length="200" category="Connexion">Session</PROPERTIES>
@@ -237,11 +237,11 @@
 	</OBJECTCLASS>
 
 	<!--TAGS -->
-	<OBJECTCLASS title="Tag" driver="sqlite" master="0" AccessPoint="0" Dico="1" Icon="[None]">
+	<OBJECTCLASS title="Tag" driver="mysql" master="0" AccessPoint="0" Dico="1" Icon="[None]">
 		<PROPERTIES category="Description" type="varchar" length="32" searchOrder="1">Nom</PROPERTIES>
 		<PROPERTIES category="Description" type="varchar" searchOrder="2">Canonic</PROPERTIES>
 	</OBJECTCLASS>
-    	<OBJECTCLASS title="TagBlackList" Description="Liste des mots à exclure de la recherche" driver="sqlite"  Dico="1">
+    	<OBJECTCLASS title="TagBlackList" Description="Liste des mots à exclure de la recherche" driver="mysql"  Dico="1">
         	<PROPERTIES type="varchar" length="30" searchOrder="1" obligatoire="1">Titre</PROPERTIES>
     	</OBJECTCLASS>
 
