@@ -28,10 +28,7 @@
 	//recupération de la dernière ligne commande ajoutée
 	[!Panier:=[!Cli::getPanier()!]!]
 	[!LC:=[!Panier::getLastOrderLine()!]!]
-	[!Limage:=[!P::Image!]!]
-	[IF [!Re::Image!]!=]
-		[!Limage:=[!Re::Image!]!]
-	[/IF]
+	[!Limage:=[!Prod::Image!]!]
 	<div class="PopupPanier">
 		<div class="table-responsive">
 			<table class="table">
@@ -56,12 +53,12 @@
 				</tr>
 				<tr>
 					<td colspan="2" style="border:none;" >
-						<a class="btn btn-red pull-right" id="MonPanier" href="/[!Systeme::getMenu(Boutique/Commande/Etape1)!]" >VOIR MON PANIER</a> 
+						<a class="button exclusive pull-right" id="MonPanier" href="/[!Systeme::getMenu(Boutique/Commande/Etape1)!]" >VOIR MON PANIER</a>
 					</td>
 				</tr>
 				<tr>
 			<td colspan="2"style="border:none;" > 
-			    <a class="btn btn-gris pull-right" id="ContinuAchat" href="/[!P::getUrl()!]">CONTINUER MES ACHATS</a>
+			    <a class="button exclusive pull-right" id="ContinuAchat" href="[!P::getUrl()!]">CONTINUER MES ACHATS</a>
 			</td>
 		    </tr>
 			</table>

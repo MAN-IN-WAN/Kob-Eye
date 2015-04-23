@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
     <channel>
 [STORPROC Boutique/Magasin/[!CurrentMagasin::Id!]/Categorie/*/Produit/Actif=1|Prod|0|100]
-        [STORPROC [!Prod::getChildren(Marque)!]|Marque|0|1]
+        [STORPROC [!Prod::getParents(Marque)!]|Marque|0|1]
         <item>
             <g:id>[!Prod::Reference!]</g:id>
             <g:mpn>[!Prod::Reference!]</g:mpn>

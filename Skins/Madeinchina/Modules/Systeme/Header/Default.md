@@ -10,7 +10,7 @@
                 [/NORESULT]
 	[/STORPROC]
 [/IF]
-<header id="header" class="header-wrap" style="background-image: url(/[!IMAGE!].mini.1920x400.jpg);">
+<header id="header" class="header-wrap" style="background-image: url(/[!IMAGE!].mini.1920x400.jpg);" >
 
 	<section class="topbar">
 		<div class="container">

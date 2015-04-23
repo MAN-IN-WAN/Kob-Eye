@@ -23,6 +23,7 @@ include('Class/Rpc/IWebservice.interface.php');
 include('Class/Conf/Conf.class.php');
 include('Class/Debug/Klog.class.php');
 include('Class/Debug/Error.class.php');
+include('Class/Template/Skin.class.php');
 include('Class/Systeme/Module.class.php');
 include('Class/Systeme/Connection.class.php');
 include('Class/Systeme/Plugin.class.php');
@@ -38,6 +39,7 @@ include('Class/DataBase/Drivers/sqlCheck.class.php');
 include('Class/DataBase/Drivers/sqliteDriver.class.php');
 include('Class/DataBase/Drivers/sqlInherit.class.php');
 include('Class/DataBase/Drivers/textDriver.class.php');
+include('Class/DataBase/Drivers/fileDriver.class.php');
 include('Class/DataBase/Drivers/Flatfile.class.php');
 include('Class/Beacon/Beacon.class.php');
 include('Class/Beacon/Bloc.class.php');
@@ -56,6 +58,7 @@ include('Class/Process/Trigger/Classement.class.php');
 include('Class/Process/Trigger/Journal.class.php');
 include('Class/Process/Trigger/Total.class.php');
 include('Class/Utils/Utils.class.php');
+include('Class/Lib/xml2array.class.php');
 include('Class/Utils/Session.class.php');
 include('Class/Utils/JsonP.class.php');
 include('Class/More.php');
@@ -63,11 +66,9 @@ $Chrono->stop("CLASS LOAD");
 
 function __autoload($className) {
 	$folder=Root::classFolder($className);
-	$GLOBALS["Chrono"]->start("TOTAL CLASS LOAD");
-	$GLOBALS["Chrono"]->start("load ".$className);
+	$GLOBALS["Chrono"]->start("Lazy load ".$className);
 	if($folder) require_once($folder.'/'.$className.'.class.php');
-	$GLOBALS["Chrono"]->stop("TOTAL CLASS LOAD");
-	$GLOBALS["Chrono"]->stop("load ".$className);
+	$GLOBALS["Chrono"]->stop("Lazy load ".$className);
 }
 //Gestion des requetes d'autorisations. OPTIONS
 if($_SERVER['REQUEST_METHOD'] == "OPTIONS"){
@@ -80,9 +81,13 @@ if($_SERVER['REQUEST_METHOD'] == "OPTIONS"){
 }else{
 	//Definition du lien par defaut
 	$Systeme = new Sys($_SERVER["REQUEST_URI"],$_SERVER["HTTP_HOST"]);
+    $GLOBALS["Chrono"]->start("TOTAL CONNEXION");
 	$Systeme->Connect();
-	//$Systeme->Log->log($Chrono->total());
+    $GLOBALS["Chrono"]->stop("TOTAL CONNEXION");
+    $GLOBALS["Chrono"]->start("TOTAL AFFICH");
 	$Systeme->Affich();
+    $GLOBALS["Chrono"]->stop("TOTAL AFFICH");
+    $Systeme->Log->log($Chrono->total());
 	$Systeme->Close();
 	$Chrono->stop();
 }

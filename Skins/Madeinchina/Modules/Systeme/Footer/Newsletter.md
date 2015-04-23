@@ -5,7 +5,6 @@
 
 			<!-- Block Newsletter module-->
 			<div id="newsletter_block_left" class="block">
-				<h3 class="title_block">Newsletter</h3>
 				<div class="block_content">
 					<form action="/[!Lien!]" method="post">
 						<p>

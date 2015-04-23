@@ -199,30 +199,30 @@
 				</table>
 			</div>
 			
-			//<div class="row"><div class="col-md-12">
-				//<table class="table table-bordered  TCodePromo">
-					//<tr>
-						//<th colspan="2" >Code Promo</th>
-					//</tr>
-					//<tr>
-						//<td><input type="text" name="CodePromo" id="CodePromo" value="[!CodePromo!]" /></td>
-						//<script type="text/javascript">
-							//$(document).ready(function() {
-								//[IF [!CodePromo!]!=]
-									//RenvoieCodePromo( true );
-								//[/IF]
-								//$('#CodePromo').keydown(function(e) {
-									//if(e.code == 13) {
-										//$('#CodePromo').stop();
-										//RenvoieCodePromo();
-									//}
-								//});
-							//});
-						//</script>
-						//<td><input type="button" id="inputCodePromo" value="OK" onclick="RenvoieCodePromo();"/></td>
-					//</tr>
-				//</table>
-			//</div></div>	
+			<div class="row-fluid"><div class="span5 offset7">
+				<table class="table table-bordered  TCodePromo">
+					<tr>
+						<th colspan="2" >Code Promo</th>
+					</tr>
+					<tr>
+						<td><input type="text" name="CodePromo" id="CodePromo" value="[!CodePromo!]" /></td>
+						<script type="text/javascript">
+							$(document).ready(function() {
+								[IF [!CodePromo!]!=]
+									RenvoieCodePromo( true );
+								[/IF]
+								$('#CodePromo').keydown(function(e) {
+									if(e.code == 13) {
+										$('#CodePromo').stop();
+										RenvoieCodePromo();
+									}
+								});
+							});
+						</script>
+						<td><input type="button" id="inputCodePromo" value="OK" onclick="RenvoieCodePromo();"/></td>
+					</tr>
+				</table>
+			</div></div>
 	
 			<div class="row-fluid">
                             <div class="offset7 span5"><div class="table-responsive">

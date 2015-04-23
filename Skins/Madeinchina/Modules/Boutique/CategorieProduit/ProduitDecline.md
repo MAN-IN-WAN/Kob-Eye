@@ -59,7 +59,7 @@
 						<div id="short_description_block">
 							<h3>__QUICK_OVERVIEW__</h3>
 							<div id="short_description_content" class="rte align_justify">
-								[!P::Description!]
+								[!P::Accroche!]
 							</div>
 							<p class="buttons_bottom_block">
 								<a href="javascript:{}" class="button">__MORE_DETAILS__</a>
@@ -71,57 +71,60 @@
 						<form id="FicheProduit"  action="" method="post">
 
 							<!-- content prices -->
-							<div class="content_prices clearfix">
-								<!-- prices -->
+							<div class="content_prices clearfix row-fluid">
+                                <div class="span6" style="text-align: center">
+                                    <!-- prices -->
+                                    <div class="price">
 
-								<div class="price">
+                                        <p class="our_price_display">
+                                            <span id="tarif">[!Math::PriceV([!P::getTarif!])!] [!CurrentDevise::Sigle!]</span>
+                                            <!---->
+                                        </p>
 
-									<p class="our_price_display">
-										<span id="our_price_display">[!Math::PriceV([!P::getTarif!])!] [!De::Sigle!]</span>
-										<!---->
-									</p>
-
-								</div>
-								[!Promo:=[!Prod::GetPromo!]!]
-								[IF [!Promo!]]
-									[IF [!Promo::TypeVariation!]=1]
-										<p id="reduction_percent">
-											<span id="reduction_percent_display">- [!Promo::PrixVariation!]%</span>
-										</p>
-									[/IF]
-									[IF [!Promo::TypeVariation!]=2]
-										<p id="reduction_amount">
-											<span id="reduction_amount_display">- [!Promo::PrixVariation!] [!De::Sigle!]</span>
-										</p>
-									[/IF]
-									<p id="old_price">
-										<span class="bold">
-											<span id="old_price_display">[!Math::PriceV([!Prod::getTarifHorsPromo!])!][!De::Sigle!]</span>
-										</span>
-									</p>
-								[/IF]
+                                    </div>
+                                    [!Promo:=[!Prod::GetPromo!]!]
+                                    [IF [!Promo!]]
+                                        [IF [!Promo::TypeVariation!]=1]
+                                            <p id="reduction_percent">
+                                                <span id="reduction_percent_display">- [!Promo::PrixVariation!]%</span>
+                                            </p>
+                                        [/IF]
+                                        [IF [!Promo::TypeVariation!]=2]
+                                            <p id="reduction_amount">
+                                                <span id="reduction_amount_display">- [!Promo::PrixVariation!] [!De::Sigle!]</span>
+                                            </p>
+                                        [/IF]
+                                        <p id="old_price">
+                                            <span class="bold">
+                                                <span id="old_price_display">[!Math::PriceV([!Prod::getTarifHorsPromo!])!][!De::Sigle!]</span>
+                                            </span>
+                                        </p>
+                                    [/IF]
 								//******************************
 								// AFFICHAGE PANIER + QUANTITE
 								//******************************
 								[IF [!Prod::StockReference!]>0]
-                                                                        <div class="buttons_bottom_block row-fluid">
+                                        <div class="buttons_bottom_block row-fluid">
 										[IF [!Prod::TypeProduit!]=2]
-                                                                                      <div class="control-group">
-                                                                                        <label class="control-label" for="Qte">Quantité</label>
-                                                                                        <div class="controls">
-												<div class="FichQuantite">
-													<input name="Qte" id="Qte" value="1" size="2" onchange="VerifieSelection();" class="input-small" />
-												</div>
-												<div class="LesBoutons">
-													<input type="button" class="InputBtnMoins" value="-" onclick="CalculQte(-1);">
-													<input type="button" class="InputBtnPlus" value="+" onclick="CalculQte(+1);">
-												</div>
-                                                                                        </div>
-                                                                                      </div>
+                                              <div class="control-group">
+                                                <!--<label class="control-label" for="Qte">Quantité</label>-->
+                                                <div class="controls">
+                                                    <div class="FichQuantite">
+                                                        <input type="button" class="InputBtnMoins" value="-" onclick="CalculQte(-1);">
+                                                        <input name="Qte" id="Qte" value="1" size="2" onchange="VerifieSelection();" class="input-small" />
+                                                        <input type="button" class="InputBtnPlus" value="+" onclick="CalculQte(+1);">
+                                                    </div>
+                                                </div>
+                                              </div>
 										[/IF]
-									</div>
-								[/IF]
-								<div class="clear"></div>
+	    								</div>
+    							[/IF]
+                                </div>
+                                <div class="span6">
+                                    [IF [!Prod::TypeProduit!]!=1&&[!Prod::StockReference!]>0]
+                                    <input type="submit" name="Submit" value="__ADD_TO_CART__" id="add_to_cart" class="exclusive btn btn-block" />
+                                    [/IF]
+                                </div>
 							</div>
 							<!-- content prices -->
 
@@ -241,17 +244,16 @@
 							<!--<p class="buttons_bottom_block">
 								<a href="#" id="wishlist_button" onclick="WishlistCart('wishlist_block_list', 'add', '5', $('#idCombination').val(), document.getElementById('quantity_wanted').value); return false;">&raquo; __ADD_TO_MY_WISHLIST__</a>
 							</p>-->
-                                                        
-                                                        [IF [!Prod::TypeProduit!]!=1&&[!Prod::StockReference!]>0]
-           							<input type="submit" name="Submit" value="__ADD_TO_CART__" class="exclusive" />
-							[/IF]
-
-
 						</form>
 
-					</div>
+
+
+                    </div>
 				</div>
 			</div>
+            <div class="product_description">
+                   [!P::Description!]
+            </div>
 			[COUNT Boutique/Produit/[!Prod::Id!]/Donnee/Type!=Image|NbDo]
 			[IF [!NbDo!]]
 			<!-- description and features -->

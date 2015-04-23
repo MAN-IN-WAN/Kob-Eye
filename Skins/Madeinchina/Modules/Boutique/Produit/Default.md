@@ -1,20 +1,9 @@
-// Devise en cours
 
-[STORPROC Boutique/Devise/Defaut=1|De][/STORPROC]
-[IF [!Qte!]][ELSE]
-[IF [!Prod::TypeProduit!]=5]
-[!Qte:=25!]
-[ELSE]
-[!Qte:=1!]
-[/IF]
-
-[/IF]
 <div class="FicheProduit">
     [STORPROC [!Query!]|Prod|0|1]
         [NORESULT]
-        //			[HEADER 404][/HEADER]
+        //			[HEADER 404]Ce produit n'existe pas[/HEADER]
         [/NORESULT]
-        [STORPROC Boutique/Categorie/Produit/[!Prod::Id!]|Cat|0|1][/STORPROC]
         // gestion des différents modèles de fiche produit
         [SWITCH [!Prod::TypeProduit!]|=]
             [CASE 1]
@@ -37,7 +26,7 @@
 </div>
 
 //metadonnée google shopping
-<div itemscope itemtype="http://schema.org/Product">
+<div itemscope itemtype="http://schema.org/Product" style="display:none;">
     <span itemprop="name">[!Prod::Nom!]</span>
     <span itemprop="logo">[!Prod::Image!]</span>
     <span itemprop="description">[!Prod::Description!]</span>
@@ -307,7 +296,6 @@ function CalculQte (PlusMoins,Type) {
 
         }
     }
-    [STORPROC [!Query!]|Prod|0|1][/STORPROC]
     if ( $('#PackType').val()=='5') {
         var champ='';initI=1;
         [STORPROC Boutique/Produit/[!Prod::Id!]/ConfigPack/Options=0&ChoixObligatoire=1|Cpk]

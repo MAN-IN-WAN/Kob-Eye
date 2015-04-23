@@ -245,73 +245,6 @@ input[type="text"], input[type="email"], input[type="search"], input[type="passw
 	padding: 0 4px;
 	text-shadow: none;
 }
-/*buttons ************************************************************************************** */
-#add_to_cart,
-input[type="button"],
-input[type="submit"],
-input[type="reset"],
-.button, button,
-input.button_mini, input.button_small, input.button, input.button_large,
-input.button_mini_disabled, input.button_small_disabled, input.button_disabled, input.button_large_disabled,
-input.exclusive_mini, input.exclusive_small, input.exclusive, input.exclusive_large,
-input.exclusive_mini_disabled, input.exclusive_small_disabled, input.exclusive_disabled, input.exclusive_large_disabled,
-a.button_mini, a.button_small, a.button, a.button_large,
-a.exclusive_mini, a.exclusive_small, a.exclusive, a.exclusive_large,
-span.button_mini, span.button_small, span.button, span.button_large,
-span.exclusive_mini, span.exclusive_small, span.exclusive, span.exclusive_large, span.exclusive_large_disabled {
-	position:relative;
-	display:inline-block;
-	padding:0 10px;
-	height: 27px;
-	line-height: 27px;
-	font-size: 13px;
-	font-weight: normal;
-	cursor: pointer;
-	background: url(../img/default/bg-button.png) repeat-x 0 0 #333;
-	border: 1px solid #5a5b5c;
-	border-radius: 5px;
-	color: #fff !important;
-}
-#add_to_cart:hover,
-input[type="button"]:hover,
-input[type="submit"]:hover,
-input[type="reset"]:hover,
-.button:hover, button:hover,
-input.button_mini:hover, input.button_small:hover, input.button:hover, input.button_large:hover,
-input.button_mini_disabled, input.button_small_disabled, input.button_disabled, input.button_large_disabled,
-input.exclusive_mini:hover, input.exclusive_small:hover, input.exclusive:hover, input.exclusive_large:hover,
-input.exclusive_mini_disabled:hover, input.exclusive_small_disabled:hover, input.exclusive_disabled:hover, input.exclusive_large_disabled:hover,
-a.button_mini:hover, a.button_small:hover, a.button:hover, a.button_large:hover,
-a.exclusive_mini:hover, a.exclusive_small:hover, a.exclusive:hover, a.exclusive_large:hover,
-span.button_mini:hover, span.button_small:hover, span.button:hover, span.button_large:hover,
-span.exclusive_mini:hover, span.exclusive_small:hover, span.exclusive:hover, span.exclusive_large:hover, span.exclusive_large_disabled:hover {
-	background-position: 0 -27px;
-	border-color: #d6513f;
-}
-
-input.button_disabled, input.exclusive_disabled, span.exclusive {
-}
-/*button add to cart*/
-
-.content_prices #add_to_cart:before,
-.ajax_add_to_cart_button:before{
-    content: url("../img/default/icon-addcart.png");
-    height: 29px;
-    left: -1px;
-    padding: 0 8px;
-    position: absolute;
-    top: -1px;
-	line-height: 33px;
-}
-
-.content_prices #add_to_cart:hover,
-.ajax_add_to_cart_button:hover{}
-
-.content_prices #add_to_cart,
-.ajax_add_to_cart_button{	
-	padding-left: 30px !important;
-	position: relative;
-}
 /* form **************************************************************************************** */
 #center_column fieldset,
 #center_column form{
@@ -723,9 +656,10 @@ div.star_hover a, div.star a:hover { background-position: 0 -32px }
 		 
 	}
 	#header_right {
-		line-height: 28px;
+		line-height: 30px;
 		padding: 10px;
 		position: relative;
+        float: right;
 	}
 	#header_right .nav-item:first-child .item-top{padding-right: 0;}
 	#header_right .nav-item .item-top {
@@ -761,7 +695,7 @@ topnavigation
     border-radius: 0 0 0 0;
     box-shadow: none;
     min-height: 46px;
-    padding: 0;
+    padding: 6px 0 0 0;
 }
 
 /* ************************************************************************************************
@@ -887,7 +821,7 @@ topnavigation
 p.price_container{padding: 0; margin: 10px 0;}
 .price{
 	color: #e65341;
-	font-size: 16px;
+	font-size: 30px;
 }
 
 /* BLOCK idTabs ******************************************************************************** */

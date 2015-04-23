@@ -6,7 +6,7 @@
 
 [STORPROC [!Query!]|Cat]
 	// AFFICHAGE DE LA CATEGORIE PRINCIPALE
-	<div class="Redaction block well">
+	<div class="Redaction block">
 		[IF [!Cat::Nom!]!=Accueil]
 			<div class="TitreCategorie">
 				<h1 class="title_block">[!Cat::Nom!]</h1>

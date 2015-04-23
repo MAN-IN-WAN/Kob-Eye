@@ -23,12 +23,13 @@
 }
 #pb-right-column #image-block #view_full_size {
 	display: block;
-	cursor: pointer
+	cursor: pointer;
+    min-height: 200px;
 }
 #pb-right-column #image-block #view_full_size .span_link {
 	position: absolute;
 	bottom: 10px;
-	left: 20%;
+	left: 25%;
 	display: block;
 	padding: 0 12px 0 30px;
 	line-height: 20px;

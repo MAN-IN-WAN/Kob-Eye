@@ -2,7 +2,7 @@
 [OBJ Boutique|Magasin|Magasin]
 [!Magasin:=[!Magasin::getCurrentMagasin()!]!]
 <div id="categoriesprodtabs" class="block products_block exclusive blockleocategoriestabs">
-	<h3 class="title_block">Catégorie onglets </h3>
+	<h3 class="title_block">Nos produits à la une </h3>
 	<div class="block_content">
 		<div class="row-fluid">
 			<div class="htabs-title">

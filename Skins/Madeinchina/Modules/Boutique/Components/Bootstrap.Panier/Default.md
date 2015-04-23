@@ -14,63 +14,69 @@
 [!Panier:=[!Cli::getPanier()!]!]
 
 <form action ="/[!Lien!]" name="Panier" method="post" >
-	<script type="text/javascript">
-		var CUSTOMIZE_TEXTFIELD = 1;
-		var img_dir = 'http://demo4leotheme.com/prestashop/leo_beauty_store/themes/leobeau/img/';
-	</script>
-	<script type="text/javascript">
-		var customizationIdMessage = 'Customization #';
-		var removingLinkText = 'Please remove this product from my cart.';
-		var freeShippingTranslation = 'Free shipping!';
-		var freeProductTranslation = 'Free!';
-		var delete_txt = 'Delete';
-	</script>
-
 	<!-- MODULE Block cart -->
 	<div id="cart_block" class="block exclusive block_black">
-		<h3 class="title_block"><a href="/[!Systeme::getMenu(Boutique/Commande/Etape1)!]" title="__VIEW_SHOPPING_CART__" rel="nofollow">
+		<h3 class="title_block">
 			[IF [!Panier::Valide!]]
 				__MY_ORDER__
 			[ELSE]
 				__MY_CART__
 			[/IF]
-		</a><span id="block_cart_expand" class="hidden">&nbsp;</span><span id="block_cart_collapse" >&nbsp;</span></h3>
+		<span id="block_cart_expand" class="hidden">&nbsp;</span><span id="block_cart_collapse" >&nbsp;</span></h3>
 		<div class="block_content">
-			<table class="Panier" cellspacing="0">
-				<tr class="panierentete">
-					<th class="NomProduit">Produits</th>
-					<th class="Quantite">Qté</th>
-					[IF [!Panier::Valide!]]
-						<th class="SupprimerItem">Total TTC</th>
-					[ELSE]
-						<th class="TotalTTC">Total TTC</th>
-						<th class="SupprimerItem">Sup</th>
-					[/IF]
-					</tr>
-				[!MenuBoutique:=[!Systeme::getMenu(Boutique/Categorie)!]!]
-				[STORPROC [!Panier::LignesCommandes!]|Ligne]
-					<tr class="panierligne [IF [!Ligne::Reference!]=[!Reference!]] justAdded [/IF]">
-						<td class="NomProduit"><a href="/[!Ligne::getUrlProduit()!]">[IF [!Pos!]=[!NbResult!]][!Ligne::Titre!][ELSE][!Ligne::Titre!][/IF]</a></td>
-						<td class="Quantite">[!Ligne::Quantite!]</td>
-						[IF [!Panier::Valide!]]
-							<td class="SupprimerItem">[!Math::PriceV([!Ligne::MontantTTC!])!][!De::Sigle!]</td>
-						[ELSE]
-							<td class="TotalTTC">[!Math::PriceV([!Ligne::MontantTTC!])!][!De::Sigle!]</td>
-							<td class="SupprimerItem"><a class="SupprimerItemPanier" href="/[!Lien!]?Sup[]=[!Ligne::Reference!]">X</a></td>
-						[/IF]
-					</tr>
-					[NORESULT]
-						<tr class="panierligne">
-							<td class="NomProduit">Panier vide...</td>
-							<td class="Quantite"></td>
-							<td class="TotalTTC"></td>
-							<td class="SupprimerItem" style="background:none;"></td>
-						</tr>
-					[/NORESULT]
-					[!NbArticle+=[!Ligne::Quantite!]!]
-				[/STORPROC]
-			</table>
-		</div>
+//			<table class="Panier" cellspacing="0">
+//				<tr class="panierentete">
+//					<th class="NomProduit">Produits</th>
+//					<th class="Quantite">Qté</th>
+//					[IF [!Panier::Valide!]]
+//						<th class="SupprimerItem">Total TTC</th>
+//					[ELSE]
+//						<th class="TotalTTC">Total TTC</th>
+//						<th class="SupprimerItem">Sup</th>
+//					[/IF]
+//					</tr>
+//				[STORPROC [!Panier::LignesCommandes!]|Ligne]
+//					<tr class="panierligne [IF [!Ligne::Reference!]=[!Reference!]] justAdded [/IF]">
+//						<td class="NomProduit"><a href="/[!Ligne::getUrlProduit()!]">[IF [!Pos!]=[!NbResult!]][!Ligne::Titre!][ELSE][!Ligne::Titre!][/IF]</a></td>
+//						<td class="Quantite">[!Ligne::Quantite!]</td>
+//						[IF [!Panier::Valide!]]
+//							<td class="SupprimerItem">[!Math::PriceV([!Ligne::MontantTTC!])!][!De::Sigle!]</td>
+//						[ELSE]
+//							<td class="TotalTTC">[!Math::PriceV([!Ligne::MontantTTC!])!][!De::Sigle!]</td>
+//							<td class="SupprimerItem"><a class="SupprimerItemPanier" href="/[!Lien!]?Sup[]=[!Ligne::Reference!]">X</a></td>
+//						[/IF]
+//					</tr>
+//					[NORESULT]
+//						<tr class="panierligne">
+//							<td class="NomProduit">Panier vide...</td>
+//							<td class="Quantite"></td>
+//							<td class="TotalTTC"></td>
+//							<td class="SupprimerItem" style="background:none;"></td>
+//						</tr>
+//					[/NORESULT]
+//					[!NbArticle+=[!Ligne::Quantite!]!]
+//				[/STORPROC]
+//			</table>
+            <ul class="media-list">
+            [STORPROC [!Panier::LignesCommandes!]|Ligne]
+                <li class="media">
+                    [!Ref:=[!Ligne::RefObject!]!]
+                    [!Prod:=[!Ref::Prod!]!]
+                    <a class="pull-left" href="[!Prod::getUrl()!]">
+                        <img class="media-object" src="/[!Prod::Image!].mini.64x64.jpg" />
+                        <div class="media-body">
+                            <h4 class="media-heading">[!Ligne::Titre!]</h4>
+                            <span class="pull-right">[!Math::PriceV([!Ligne::MontantTTC!])!][!De::Sigle!]</span>
+                            Quantité: [!Ligne::Quantite!]<br />
+                        </div>
+                    </a>
+                </li>
+                [NORESULT]
+                    <li>Votre panier est vide</li>
+            	[/NORESULT]
+            [/STORPROC]
+            </ul>
+        </div>
 	
 	//COMMANDES EN COURS
 	[STORPROC [!Cli::getPendingCommandes()!]|Com]
@@ -159,8 +165,8 @@
 	[/STORPROC]
 		<div id="cart_block_list" class="expanded">
 			<p id="cart-buttons">
-				<a href="/[!Systeme::getMenu(Boutique/Commande/Etape1)!]" class="button_small" title="__VIEW_SHOPPING_CART__" rel="nofollow">__MY_CART__</a>
-				<a href="/[!Systeme::getMenu(Boutique/Commande/Etape2)!]" id="button_order_cart" class="exclusive" title="Checkout" rel="nofollow"><span></span>__CHECKOUT__</a>
+				<a href="/[!Systeme::getMenu(Boutique/Commande/Etape1)!]" class="button exclusive" title="__VIEW_SHOPPING_CART__" rel="nofollow">__MY_CART__</a>
+				<a href="/[!Systeme::getMenu(Boutique/Commande/Etape2)!]" id="button_order_cart" class="button exclusive" title="Checkout" rel="nofollow"><span></span>__CHECKOUT__</a>
 			</p>
 		</div>
 	</div>

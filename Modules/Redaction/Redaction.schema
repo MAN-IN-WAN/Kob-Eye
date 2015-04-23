@@ -3,7 +3,7 @@
 		<CATEGORY title="Contenu" type="large">
 			<PROPERTIES type="titre" searchOrder="1">Nom</PROPERTIES>
 			<PROPERTIES type="varchar" searchOrder="2">Titre</PROPERTIES>
-			<PROPERTIES type="bbcode" special="multi">Description</PROPERTIES>
+			<PROPERTIES type="html" special="multi">Description</PROPERTIES>
 		</CATEGORY>
 		<CATEGORY title="Configuration">
 			<PROPERTIES type="file" >Icone</PROPERTIES>
@@ -17,7 +17,6 @@
 		<PROPERTIES type="titre" searchOrder="1" obligatoire="1" category="Intitulé">Titre</PROPERTIES>
 		<PROPERTIES type="boolean" category="Intitulé" default="1">AfficheTitre</PROPERTIES>
 		<PROPERTIES type="html" special="multi" category="Contenu">Contenu</PROPERTIES>
-		<PROPERTIES type="bbcode" special="multi" category="Contenu">Contenu2</PROPERTIES>
 		<PROPERTIES type="boolean" category="Publication" default="1">ALaUne</PROPERTIES>
 		<PROPERTIES type="boolean" category="Publication">Publier</PROPERTIES>
 		<PROPERTIES type="order" category="Publication">Ordre</PROPERTIES>

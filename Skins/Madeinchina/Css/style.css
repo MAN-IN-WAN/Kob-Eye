@@ -1,3 +1,46 @@
+.bb_bold
+{
+    font-weight:bold;
+}
+
+.bb_italic
+{
+    font-style:italic;
+}
+
+.bb_underline
+{
+    text-decoration:underline;
+}
+
+.bb_strike
+{
+    text-decoration:line-through;
+}
+
+.bb_quote
+{
+    margin:20px;
+    border:1px dotted black;
+}
+
+.bb_spoiler
+{
+    margin:20px;
+    border:1px dotted black;
+    color:white;
+    background-color:white;
+}
+
+.bb_uppercase
+{
+    text-transform:uppercase;
+}
+
+.bb_lowercase
+{
+    text-transform:lowercase;
+}
 table{
 	background-color:transparent;
 }
@@ -6,7 +49,11 @@ table.Panier{
 }
 
 div.carousel-inner > .item > img, div.carousel-inner > .item > a > img {
-	min-height:300px;
+	min-height:100px;
+}
+#slideshow div.carousel-inner > .item > img, div.carousel-inner > .item > a > img {
+    min-height: 420px;
+    max-height: 500px;
 }
 
 /* BTN TEL ADRESSE */
@@ -38,20 +85,20 @@ div.copyright{
 	a#header_logo{
 		position: absolute;
 		width: 26%;
-		top: 0px; 
+		top: 0px;
 		padding: 22px;
 	}
 	#header_right #search_block_top input.button{
 		width: 5%;
 	}
 	#header_right #search_block_top input.search_query {
-		width: 95%;
+		width: 93%;
 		padding-left: 40px;
 		line-height: 1.3;
 	}
 	#header_right > div {
 		width: 100%;
-		
+
 	}
 	#header_right #search_block_top div.input-append{
 		width: 100%;
@@ -68,7 +115,7 @@ div.copyright{
 	a#header_logo{
 		position: relative;
 		width: 100%;
-		top: 0px; 
+		top: 0px;
 		padding: 0;
 	}
 	#header_right {
@@ -87,7 +134,7 @@ div.copyright{
 		width: 10%;
 	}
 	#header_right #search_block_top input.search_query {
-		width: 90%;
+		width: 89%;
 	}
 
 }
@@ -154,7 +201,7 @@ div.copyright{
 	background-color: #F6F6F6;
 	overflow: hidden;
 }
-.CommandeEtape1 h1,.CommandeEtape2 h1,.CommandeEtape3 h1,.CommandeEtape4 h1 { 
+.CommandeEtape1 h1,.CommandeEtape2 h1,.CommandeEtape3 h1,.CommandeEtape4 h1 {
 	border:none;
 }
 
@@ -210,7 +257,7 @@ p.DescTypeLivraison {
 }
 .CommandeEtape2 .ColonneIdentificationClient .BoutonsCentre input.Connexion {
     float: right;
- 
+
 }
 .CommandeEtape2 .ColonneIdentificationNew .BoutonsCentre input {
      margin-top:30px;
@@ -218,14 +265,14 @@ p.DescTypeLivraison {
 }
 
 .Etape1  , .Etape3 , .Etape4 {
-	 margin-top:10px;   
+	 margin-top:10px;
 	 overflow: hidden;
 	 }
-#CommandeEtape3 table.Logistique { 
+#CommandeEtape3 table.Logistique {
 	width:100%;
 	border:1px solid #cccccc;
  }
-#CommandeEtape3 a.ChooseMoreAdresses { 
+#CommandeEtape3 a.ChooseMoreAdresses {
 	/*width:140px;
 	float: right; */
 	color:#DB2484;
@@ -246,7 +293,7 @@ input[type="radio"], input[type="checkbox"] {
 .InputTypeLivraison, .AdresseRadioLivraison, .AdresseRadioFacturation{
     float: left;
 }
-h2.CDE_OFFRESPEC { 
+h2.CDE_OFFRESPEC {
 	display:block;
    /* font-weight: bold; */
     text-align: right;
@@ -274,7 +321,7 @@ div.TitreTypeLivraison {
 }
 
 .Etape3 table.TotalDetaille tr {
-	background-color:#db2484; 
+	background-color:#db2484;
 }
 
 
@@ -302,7 +349,7 @@ div.TitreTypeLivraison {
 }
 
 .Etape4 table.TotalDetaille tr {
-	background-color:#db2484; 
+	background-color:#db2484;
 }
 
 .CommandeEtape4 table.TotalDetaille td.label, .CommandeEtape4 table.TotalDetaille td.val {font-weight:bold;background:none;}
@@ -321,14 +368,15 @@ div.TitreTypeLivraison {
 .Etape4 .BoutonsDroite {
     margin-right: 0px;
 }
-.Etape4 .LigneBoutons .BoutonsGauche input { 
-	margin-top:30px; 
+.Etape4 .LigneBoutons .BoutonsGauche input {
+	margin-top:30px;
 	margin-right:0px;
 }
-.Etape4 .LigneBoutons .BoutonsDroite input { 
-	margin-right:92px; 
+.Etape4 .LigneBoutons .BoutonsDroite input {
+	margin-right:92px;
 	margin-top:0;
 }.block-search {
     padding: 10px;
 }
+
 

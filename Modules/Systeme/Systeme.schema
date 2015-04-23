@@ -43,7 +43,7 @@
 		<PROPERTIES type="order" category="Intégration">Ordre</PROPERTIES>
 		<FKEY card="1,n" data="Group,Id">GroupId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Site" driver="sqlite" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Wiki2.png" generateUrl="0" Class="Modules/Systeme/Class/Site.class.php">
+	<OBJECTCLASS title="Site" driver="mysql" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Wiki2.png" generateUrl="0" Class="Modules/Systeme/Class/Site.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé" list="1">Domaine</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" description="Mettre UA" values="Mobile,Desktop">UserAgent</PROPERTIES>
 		<PROPERTIES type="text" description="Contenu du robots.txt">Robots</PROPERTIES>

@@ -25,27 +25,18 @@ class Site extends genericClass {
             $p->addParent($this);
         }else $p=$p[0];
         $p->Set('LastMod', date('Y-m-d'));
-        if (!empty($alias)){
-            //analyse de la requete
-            $i = Info::getInfos($alias);
-            if ($i['TypeSearch']!='Interface'&&$i['TypeSearch']!='Menu'){
-                //recherche de l'element correpondant
-                /*if ($i['TypeSearch']=='Child'){*/
-                    $el = $men;
-                /*}else{
-                    $el = Sys::getData($i["Module"],$i["ObjectType"].'/'.$i["LastId"]);
-                    if (!sizeof($el)) $el = $men;
-                    else $el = $el[0];
-                }*/
-                //mise à jour des donnés
-                if (empty($p->Title)&&isset($el->TitleMeta))$p->Title = $el->TitleMeta;
-                if (empty($p->Description)&&isset($el->DescriptionMeta))$p->Description = $el->DescriptionMeta;
-                if (empty($p->Keywords)&&isset($el->KeywordsMeta))$p->Keywords = $el->KeywordsMeta;
-                if (empty($p->Image)&&isset($el->ImgMeta))$p->Image = $el->ImgMeta;
-                if (empty($p->PageModule))$p->PageModule = $el->Module;
-                if (empty($p->PageObject))$p->PageObject = $el->ObjectType;
-                if (empty($p->PageId))$p->PageId = $el->Id;
-            }
+        //analyse de la requete
+        $i = Info::getInfos($alias);
+        if (is_object($men)){
+            $el = $men;
+            //mise à jour des donnés
+            if (empty($p->Title)&&isset($el->TitleMeta))$p->Title = $el->TitleMeta;
+            if (empty($p->Description)&&isset($el->DescriptionMeta))$p->Description = $el->DescriptionMeta;
+            if (empty($p->Keywords)&&isset($el->KeywordsMeta))$p->Keywords = $el->KeywordsMeta;
+            if (empty($p->Image)&&isset($el->ImgMeta))$p->Image = $el->ImgMeta;
+            if (empty($p->PageModule))$p->PageModule = $el->Module;
+            if (empty($p->PageObject))$p->PageObject = $el->ObjectType;
+            if (empty($p->PageId))$p->PageId = $el->Id;
         }
         $p->Save();
     }    

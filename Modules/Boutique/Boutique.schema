@@ -96,13 +96,13 @@
 		<CATEGORY title="Description" type="large">
 			<PROPERTIES mobile="1" searchOrder="1" description="Intitulé" type="varchar" length="100" special="multi" list="1">Nom</PROPERTIES>
 			<PROPERTIES mobile="1" obligatoire="1" unique="1" searchOrder="2" description="Référence" type="varchar" length="16" list="10">Reference</PROPERTIES>
-			<PROPERTIES mobile="1" searchOrder="3" description="Actif" type="boolean" default="1" list="9">Actif</PROPERTIES>
-			<PROPERTIES searchOrder="8" description="Description" type="bbcode" special="multi" category="Descriptif">Description</PROPERTIES>
+			<PROPERTIES mobile="1" searchOrder="5" description="Actif" type="boolean" default="1" list="9">Actif</PROPERTIES>
+			<PROPERTIES description="Description" type="html" special="multi" category="Descriptif">Description</PROPERTIES>
 			<PROPERTIES mobile="1" Order="20" description="Poids en kg 0.xxx" type="float" >Poids</PROPERTIES>
 			<PROPERTIES mobile="1" Order="21" description="Largeur en cm"      type="float" >Largeur</PROPERTIES>
 			<PROPERTIES mobile="1" Order="22" description="Hauteur en cm"      type="float" >Hauteur</PROPERTIES>
 			<PROPERTIES mobile="1" Order="23" description="Profondeur en cm" type="float" >Profondeur</PROPERTIES>
-			<PROPERTIES searchOrder="9" description="Accroche"  type="bbcode" special="multi" >Accroche</PROPERTIES>
+			<PROPERTIES description="Accroche"  type="bbcode" special="multi" >Accroche</PROPERTIES>
 			<PROPERTIES mobile="1" description="Image" type="image" list="2">Image</PROPERTIES>
 		</CATEGORY>
 		<PROPERTIES description="Compte comptable particuliers" type="varchar" length="16" category="Descriptif">CompteComptable</PROPERTIES>
@@ -116,8 +116,8 @@
 		<PROPERTIES description="Nombre de Visites" auto="1" type="int" default="0"  list="6" category="Calcul" >Visites</PROPERTIES>
 		<PROPERTIES Order="17" description="Reste en stock"      type="int"  default="0"  list="7">StockReference</PROPERTIES>
 		<PROPERTIES description="ImageFond" type="file" category="MisEnAvant" >ImageFond</PROPERTIES>
-		<PROPERTIES searchOrder="3" description="Plusieurs tarifs" type="boolean" default="0" auto="1"  category="Descriptif" >MultiTarif</PROPERTIES>
-		<PROPERTIES description="Tarif HT Générique" type="price" default="" list="6" category="Descriptif">Tarif</PROPERTIES>
+		<PROPERTIES description="Plusieurs tarifs" type="boolean" default="0" auto="1"  category="Descriptif" >MultiTarif</PROPERTIES>
+		<PROPERTIES description="Tarif HT Générique" type="price" default="" list="6" searchOrder="4" category="Descriptif">Tarif</PROPERTIES>
 		<PROPERTIES description="Prix public conseillé TTC" type="float" category="Descriptif" hidden="1">PPC</PROPERTIES>
 		<PROPERTIES description="Type de Tva"  category="Descriptif"  type="float"  query="Fiscalite/TypeTva/Actif=1::Id::Nom">TypeTva</PROPERTIES>
 		<PROPERTIES description="Ordre dans le flash" type="int" category="MisEnAvant">OrdreFlash</PROPERTIES>
@@ -129,7 +129,8 @@
             <PROPERTIES description="Categorie Produit Google Shopping (voir sur la liste)" type="varchar" length="255">GoogleProductCategory</PROPERTIES>
         </CATEGORY>
 		<FKEY card="1,n" data="Categorie,Id" >CategorieId</FKEY>
-		<FKEY card="0,n" data="Conditionnement,Id">ConditionnementId</FKEY> 
+		<FKEY card="0,n" data="Conditionnement,Id">ConditionnementId</FKEY>
+        <FKEY card="1,1" data="Marque,Id">MarqueId</FKEY>
 		<FUNCTION Icon="/Skins/AdminV2/Img/group_add.png">clonageProduit</FUNCTION>
 		<FUNCTION Icon="/Skins/AdminV2/Img/group_link.png">GenererReference</FUNCTION>
 	</OBJECTCLASS>
@@ -201,7 +202,6 @@
 		<PROPERTIES type="metat" special="multi" category="Meta">TitleMeta</PROPERTIES>
 		<PROPERTIES type="metad" special="multi" category="Meta">DescriptionMeta</PROPERTIES>
 		<PROPERTIES type="metak" category="Meta">KeywordsMeta</PROPERTIES>	
-		<FKEY card="0,n" data="Produit,Id" >ProduitId</FKEY>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Devise" driver="mysql" AccessPoint="0" Dico="1" master="0" Description="Devises"   Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png">
@@ -278,7 +278,7 @@
 			<PROPERTIES Order="12" description="Stock permanent" default="0" type="boolean"  >StockPermanent</PROPERTIES>
 			<!--<PROPERTIES Order="13" description="Quantité en vente au départ" type="int"   default="0"  >StockOrigine</PROPERTIES>-->
 			<PROPERTIES Order="13" description="Quantité vendue" type="int"    default="0"         >QuantiteVendue</PROPERTIES>	
-			<PROPERTIES mobile="1" Order="17" description="Quantite en vente"  auto="1" type="int" searchOrder="3"  >Quantite</PROPERTIES>
+			<PROPERTIES mobile="1" Order="17" description="Quantite en stock"  type="int" searchOrder="3"  >Quantite</PROPERTIES>
 		</CATEGORY>
 		<CATEGORY title="Téléchargement">
 			<PROPERTIES Order="16" description="Fichier à télécharger" type="file"  special="multi" category="Description">Fichier</PROPERTIES>			

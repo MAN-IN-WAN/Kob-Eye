@@ -17,12 +17,12 @@
 									[COUNT Systeme/Menu/[!M::Id!]/Donnee/Type=Pub|PUB]
 									<div id="container[!M::Id!]" class="span[IF [!PUB!]]9[ELSE]12[/IF]"  style="position:relative;">
 										<ul class="level0 ">
-										[LIMIT 0|10]
+										[LIMIT 0|20]
 												<li class="item-menu" style="">
 													<a class="" href="/[!M::Url!]/[!M2::Url!]"><span class="menu-title">[!M2::Titre!]</span></a>
 													<ul class="level1">
-														[STORPROC [!M2::getSubMenus()!]|M3|0|5|Ordre|ASC]
-															[STORPROC [!M3::getSubMenus()!]|M4|0|5|Ordre|ASC]
+														[STORPROC [!M2::getSubMenus()!]|M3|0|10|Ordre|ASC]
+															[STORPROC [!M3::getSubMenus()!]|M4|0|10|Ordre|ASC]
 															<li class="">
 																<a class="" href="/[!M::Url!]/[!M2::Url!]/[!M3::Url!]"><span class="menu-title">[!M3::Titre!]</span></a>
 																<ul class="level2">
