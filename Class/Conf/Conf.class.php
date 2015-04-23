@@ -65,7 +65,7 @@ class Conf extends Root{
 	var $Files;
 	function Conf($Url) {
 		$CacheO = $Url.".cache";
-		$Sc = (defined("SCHEMA_CACHE"))?SCHEMA_CACHE:false;
+		/*$Sc = (defined("SCHEMA_CACHE"))?SCHEMA_CACHE:false;
 		if (file_exists($CacheO) && (filemtime($CacheO) >= filemtime($Url))&&$Sc) {
 			$Cache = file_get_contents($CacheO);
 			$Temp = unserialize($Cache);
@@ -78,7 +78,7 @@ class Conf extends Root{
 				 	$this->TabConf=$this->Files=$this->Consts="";
 				}
 			}
-		}
+		}*/
 		if (!is_array($this->TabConf)){
 			//Parsing du fichier de configuration
 			$Obj = new xml2array($Url);
@@ -86,12 +86,12 @@ class Conf extends Root{
 			$this->Files[] = $Url;
 			//Traitement des donn�es du tableau
 			$this->TabConf = $this->Parse($TabXml,"","CONF");
-			if ($this->Consts["CONF_CACHE"]){
+			/*if ($this->Consts["CONF_CACHE"]){
 				$T["TabConf"] = $this->TabConf;
 				$T["Files"] = $this->Files;
 				$T["Consts"] = $this->Consts;
 				$this->writeCacheFile(serialize($T),$Url.".cache");
-			}
+			}*/
 		}
 		//On declare les constantes
 		if (is_array($this->Consts))foreach ($this->Consts as $K=>$C){

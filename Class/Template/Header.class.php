@@ -7,7 +7,7 @@ class Header extends Root{
 	var $Title;
 	var $Body;
 	var $Type;
-	var $Description;
+	private $Description;
 	var $Keywords;
 	var $Image;
 	var $CssBegin = Array();
@@ -52,7 +52,8 @@ class Header extends Root{
 		$this->Body = $Temp;
 	}
 	function setDescription($Temp) {
-		$this->Description = $Temp;
+		$this->Description = preg_replace('#\[.+?\]#','', $Temp);
+        $this->Description = preg_replace('#\n#','', $this->Description);
 	}
 	function setClassification($Temp) {
 		$this->Classification = $Temp;
@@ -197,7 +198,7 @@ class Header extends Root{
 		$tab = Sys::$Modules['Systeme']->callData('Systeme/Page/MD5='.md5('http://'.Sys::$domain.$uri));
 		if(is_array($tab) && isset($tab[0])) {
 			if(!empty($tab[0]['Title'])) $this->Title = $tab[0]['Title'];
-			if(!empty($tab[0]['Description'])) $this->Description = $tab[0]['Description'];
+			if(!empty($tab[0]['Description'])) $this->setDescription($tab[0]['Description']);
 			if(!empty($tab[0]['Keywords'])) $this->Keywords = $tab[0]['Keywords'];
 		}
 	}
@@ -208,7 +209,7 @@ class Header extends Root{
 		if (isset($pages[0])){
 			$page = $pages[0];
 			$this->Title = $page->Title;
-			$this->Description = $page->Description;
+            $this->setDescription($page->Description);
 			$this->Keywords = $page->Keywords;
 			$this->Image = $page->Image;
 		}
@@ -227,24 +228,23 @@ class Header extends Root{
 							<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 							<meta name="description" content="'.$this->Description.'"/>
 							<meta name="keywords" content="'.$this->Keywords.'"/>
-							<meta name="author" content="Kob-Eye 1.2 Powered"/>
 							<meta name="robots" content="index,follow"/>
 							<meta name="rating" content="general"/>
 							<meta name="twitter:card" content="summary">
 							
-							<meta name="twitter:site" content="@FOneKites">
+							<!--<meta name="twitter:site" content="">-->
 							<meta name="twitter:title" content="'.$this->Title.'">
 							<meta name="twitter:description" content="'.$this->Description.'">
-							<meta name="twitter:creator" content="@FOneKites">
+							<!--<meta name="twitter:creator" content="">-->
 						
 							<meta property="og:title" content="'.$this->Title.'" />
 							<meta property="og:type" content="article" />
 							<meta property="og:url" content="'.'http://'.Sys::$domain.'/'.$GLOBALS["Systeme"]->Lien.'" />';
 			if (!empty($this->Image)){
 				$this->Content .='
-							<meta property="og:image" content="'.'http://'.Sys::$domain.'/'.$this->Image.'.mini.200x200.jpg" />
-							<link rel="image_src" href="'.'http://'.Sys::$domain.'/'.$this->Image.'.mini.200x200.jpg" />
-							<meta name="twitter:image" content="'.'http://'.Sys::$domain.'/'.$this->Image.'.mini.200x200.jpg"> ';
+							<meta property="og:image" content="'.'http://'.Sys::$domain.'/'.$this->Image.'.mini.250x250.jpg" />
+							<link rel="image_src" href="'.'http://'.Sys::$domain.'/'.$this->Image.'.mini.250x250.jpg" />
+							<meta name="twitter:image" content="'.'http://'.Sys::$domain.'/'.$this->Image.'.mini.250x250.jpg"> ';
 			}
 							
 			$this->Content .='

@@ -134,6 +134,11 @@ class DbAnalyzer extends Root{
  		if ($this->Module=="Explorateur") return false;
 		if (SQL_LITE_CACHE){
 			$tabCell = urlencode($Query).urlencode((is_array(DbAnalyzer::$LimRequete))?implode("",DbAnalyzer::$LimRequete):DbAnalyzer::$LimRequete).urlencode((is_array(DbAnalyzer::$Order))?implode("",DbAnalyzer::$Order):DbAnalyzer::$Order);//.urlencode((is_array($Select))?implode("",$Select):$Select).urlencode((is_array($Select))?implode("",$GroupBy):$GroupBy);
+            /*$t = apc_fetch($tabCell);
+            if ($t){
+                //klog::l('Load apc cache'.$tabCell,$t);
+                return $t;
+            }*/
 			if (is_array($this->tabCache)) if (array_key_exists($tabCell,$this->tabCache)){
 				$Result = $this->tabCache[$tabCell];
 				return $Result;
@@ -151,7 +156,8 @@ class DbAnalyzer extends Root{
 		if ($this->Module=="Explorateur") return false;
 		$tabCell = urlencode($Query).urlencode((is_array(DbAnalyzer::$LimRequete))?implode("",DbAnalyzer::$LimRequete):DbAnalyzer::$LimRequete).urlencode((is_array(DbAnalyzer::$Order))?implode("",DbAnalyzer::$Order):DbAnalyzer::$Order).urlencode((is_array($Select))?implode("",$Select):$Select).urlencode((is_array($Select))?implode("",$GroupBy):$GroupBy);
 		$this->tabCache[$tabCell]=$Results;
-	}
+        /*$rc=apc_store($tabCell,$Results,3600);*/
+    }
 	//------------------------------//
 	// FONCTION D EXPORTATION	//
 	//------------------------------//

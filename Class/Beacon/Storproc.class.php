@@ -156,7 +156,7 @@ class StorProc extends Beacon {
 			//Construction/Analayse de la requete
 			$TempData=explode("/",$this->Query);
 			$Search="";
-			for ($i=1;$i<count($TempData);$i++) {
+			for ($i=1,$c=count($TempData);$i<$c;$i++) {
 				if ($i>1) $Search.="/";
 				$Search.=$TempData[$i];
 			}
@@ -179,8 +179,8 @@ class StorProc extends Beacon {
 				$Search.="/*";
 			}
 			//Execution de la requete
-			$Tab=Sys::$Modules[$this->Module]->callData($Search,"",$this->Offset,$this->Limit,$this->OrderType,$this->OrderVar,$this->Select,$this->GroupBy);
-			
+            $Tab=Sys::$Modules[$this->Module]->callData($Search,"",$this->Offset,$this->Limit,$this->OrderType,$this->OrderVar,$this->Select,$this->GroupBy);
+
 			//Si il s agit d une recherche recursive alors il faut trier et ranger les resultats pour
 			//Repartir les resultats en mode recursif
 			if ($this->Recursiv) {
@@ -377,7 +377,7 @@ class StorProc extends Beacon {
 	function processNoResult($NoResult){
 		$this->ChildObjects = $NoResult->ChildObjects;
 		$this->NoLoop = true;
-		for ($j=0;$j<sizeof($this->ChildObjects);$j++){
+		for ($j=0,$c=sizeof($this->ChildObjects);$j<$c;$j++){
 			if (is_object($this->ChildObjects[$j])){
 				$this->ChildObjects[$j]->Generate();
 			}else{

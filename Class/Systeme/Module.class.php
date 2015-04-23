@@ -113,15 +113,15 @@ class Module extends Root{
 		//Si il n est pas charg�alors on le charge sinon retour
 		if (!$this->SchemaLoaded) {
 
-			if (SCHEMA_CACHE){
-				/*Charge le cache des modules, ou si il n'est pas disponible, va chercher le xml*/
+            /*Charge le cache des modules, ou si il n'est pas disponible, va chercher le xml*/
+			/*if (SCHEMA_CACHE){
 				$CacheO = "Modules/".$this->Nom."/.Db.cache";
 				$Class = "Class/DataBase/DbAnalyzer.class.php";
 				if (file_exists(ROOT_DIR.$CacheO) && (filemtime(ROOT_DIR.$CacheO) >= filemtime(ROOT_DIR.$Class))&& (filemtime(ROOT_DIR.$CacheO) >= filemtime(ROOT_DIR.$this->SchemaPath))&& (filemtime(ROOT_DIR.$CacheO) >= filemtime(ROOT_DIR.$this->ConfPath))&&SCHEMA_CACHE) {
 					$Cache = file_get_contents(ROOT_DIR.$CacheO);
 					$this->Db = unserialize($Cache);
 				}
-			}
+			}*/
 			if (!is_object($this->Db)){
 				$this->Db = new DbAnalyzer($this->Nom);
 				$this->Db->loadSchema($this->Schema);
@@ -176,7 +176,7 @@ class Module extends Root{
 	 * saveCache
 	 * Write serialize db to files
 	 */
-	function saveCache() {
+	/*function saveCache() {
 		$CacheO = "Modules/".$this->Nom."/.Db.cache";
 		$Class = "Class/DataBase/DbAnalyzer.class.php";
 		if ((!file_exists(ROOT_DIR.$CacheO) || (filemtime(ROOT_DIR.$CacheO) <= filemtime(ROOT_DIR.$Class))|| (filemtime(ROOT_DIR.$CacheO) <= filemtime(ROOT_DIR.$this->SchemaPath))|| (filemtime(ROOT_DIR.$CacheO) <= filemtime(ROOT_DIR.$this->ConfPath)))&&SCHEMA_CACHE) {
@@ -185,7 +185,7 @@ class Module extends Root{
 			fwrite($File,$ContentCache);
 			fclose($File);
 		}
-	}
+	}*/
 	function isInterface($ObjectClass,$Interface,$strict=true) {
 		if (DEBUG_INTERFACE)echo "-----------TEST---------------\r\n";
 		return (!$this->getInterface($ObjectClass,$Interface,$strict))?false:true;
@@ -376,7 +376,7 @@ class Module extends Root{
 		//RENVOIE VRAI SI MODIFICATON OU NON ACCES, FAUX SINON
 		if (!file_exists(ROOT_DIR.$URLINFO)) return 1;
 		$Content=file(ROOT_DIR.$URLINFO);
-		for ($i=0;$i<count($Content);$i++){
+		for ($i=0,$c = count($Content);$i<$c;$i++){
 			$Ligne=rtrim($Content[$i]);
 			$TabLigne=explode("||",$Ligne);
 			//echo "new:".filemtime($TabLigne[0]),"orig:".$TabLigne[1],"<br>";
@@ -435,7 +435,7 @@ class Module extends Root{
 		$t = $this->Db->getDefaultObjectClass();
 		if ($t&&$t!=$Out[0]){
 			//soit il existe une data source par défaut
-			for ($i=0;$i<sizeof($Out);$i++) $p .=(($i>0&&$Out[$i]!=""&&$p!="")?"/":"").$Out[$i];
+			for ($i=0,$c = sizeof($Out);$i<$c;$i++) $p .=(($i>0&&$Out[$i]!=""&&$p!="")?"/":"").$Out[$i];
 			if (DEBUG_INTERFACE)echo "DEFAULT OBJECTCLASS \r\n";
 			if ($this->isInterface($t,$p)){
 				$Interface = Array(
@@ -445,7 +445,7 @@ class Module extends Root{
 			}
 			//On insere l'objectclass par defaut au bon endroit pour reconstituer la requete
 			$Out2[0] = $t;
-			if ($Out[0]!="")for ($i=0;$i<sizeof($Out);$i++) $Out2[$i+1] = $Out[$i];
+			if ($Out[0]!="")for ($i=0,$c=sizeof($Out);$i<$c;$i++) $Out2[$i+1] = $Out[$i];
 			$Out = $Out2;
 		}
 		//GESTION LIEN VIDE
@@ -473,7 +473,7 @@ class Module extends Root{
 			//CAS INTERFACE
 			if ($Strict)return false;
 			//soit il s'agit d'un appel d'interface
-			for ($i=1;$i<sizeof($Out);$i++) $p .=(($i>1&&$Out[$i])?"/":"").$Out[$i];
+			for ($i=1,$c=sizeof($Out);$i<$c;$i++) $p .=(($i>1&&$Out[$i])?"/":"").$Out[$i];
 			if (DEBUG_INTERFACE)echo "CAS INTERFACE \r\n";
 			if ($this->isInterface($Out[0],$p,false)){
 				$Result[0]["Type"] = "Interface";
@@ -486,7 +486,7 @@ class Module extends Root{
 		}else{
 			//CAS REQUETE
 			//On decompose la requete en tableau par paire et on extrait le dernier objectclass
-			for ($i=0;$i<sizeof($Out);$i++) {
+			for ($i=0,$c=sizeof($Out);$i<$c;$i++) {
 				$Ass = null;
 				$Object="";
 				if ($i>0&&!preg_match("#.*([A-Za-z0-9]+?)\.([A-Za-z0-9]+?)\((.*?)\).*#",$Out[$i])){
@@ -599,8 +599,8 @@ class Module extends Root{
 						//die('REFAIRE GESTION du $OUT ICI !!! Module.class.php ligne 509');
 						//construction de l'url interface compl�te
 						$it2 = $it = "";
-						for ($g=$Last+1;$g<sizeof($Out);$g++) $it.=(!empty($it)? "/":"").$Out[$g];
-						for ($g=$Last+2;$g<sizeof($Out);$g++) $it2.=(!empty($it2)? "/":"").$Out[$g];
+						for ($g=$Last+1,$c=sizeof($Out);$g<$c;$g++) $it.=(!empty($it)? "/":"").$Out[$g];
+						for ($g=$Last+2,$c=sizeof($Out);$g<$c;$g++) $it2.=(!empty($it2)? "/":"").$Out[$g];
 						//On teste si le dernier parametre est une interface et le premier une valeur
 						if (DEBUG_INTERFACE)echo "LAST PAIR $Lien Strict : $Strict\r\n";
 						if (!$Strict&&$this->isInterface($Out[$Last],$Out[$j],true)) {
@@ -698,7 +698,7 @@ class Module extends Root{
 			}
 			//On genere la valeur de la query
 			$Query=$this->Nom;
-			for ($f=0;$f<sizeof($Result);$f++) {
+			for ($f=0,$c=sizeof($Result);$f<$c;$f++) {
 				$Query .= "/".$Result[$f]["DataSource"].(isset($Result[$f]["Key"])&&!empty($Result[$f]["Key"])?".".$Result[$f]["Key"]:"").(!empty($Result[$f]["Value"])?"/".$Result[$f]["Value"]:"");
 			}
 			//if ($Type!="Interface") $Query.= "/".$Out[sizeof($Out)-1];
@@ -756,7 +756,7 @@ class Module extends Root{
 			$Tab = Array();
 		}
 		//On ajoute les informations de la requete
-		for ($i=0;$i<sizeof($Tab);$i++) {
+		for ($i=0,$c=sizeof($Tab);$i<$c;$i++) {
 			if (sizeof($Tab[$i]))$Tab[$i]["QueryType"] = $TabQuery[0]["Type"];
 			if (sizeof($Tab[$i]))$Tab[$i]["Query"] = $TabQuery[0]["Query"];
 			if (sizeof($Tab[$i]))$Tab[$i]["Module"] = $TabQuery[$TabQuery[0]["Out"]]["Module"];
@@ -913,7 +913,7 @@ class Module extends Root{
 	*/
 	public function getBrowseable(){
 		$temp = Array();
-		for ($i=0;$i<sizeof($this->Db->ObjectClass);$i++){
+		for ($i=0,$c=sizeof($this->Db->ObjectClass);$i<$c;$i++){
 			if ($this->Db->ObjectClass[$i]->browseable)$temp[] = $this->Db->ObjectClass[$i];
 		}
 		return $temp;

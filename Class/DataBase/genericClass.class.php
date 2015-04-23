@@ -349,17 +349,17 @@ class genericClass extends Root {
 	 * @return String
 	 */
 	public function getDisplayType($Type) {
-		$normalTypes = array("varchar", "int", "private", "password", "alias", "objectclass", "color", "random", "metat", "metad", "id", "autodico", "mail", "url", "private", "order", "date", "price", "pourcent", "link", "canonic", "langfile", "string");
-		$lineTypes = array("titre");
-		$blockTypes = array("text", "txt", "html", "bbcode");
-		$mediaTypes = array("file", "image");
-		if (in_array($Type, $normalTypes)) {
+		$normalTypes = array("varchar"=>true, "int"=>true, "private"=>true, "password"=>true, "alias"=>true, "objectclass"=>true, "color"=>true, "random"=>true, "metat"=>true, "metad"=>true, "id"=>true, "autodico"=>true, "mail"=>true, "url"=>true, "private"=>true, "order"=>true, "date"=>true, "price"=>true, "pourcent"=>true, "link"=>true, "canonic"=>true, "langfile"=>true, "string"=>true);
+		$lineTypes = array("titre"=>true);
+		$blockTypes = array("text"=>true, "txt"=>true, "html"=>true, "bbcode"=>true);
+		$mediaTypes = array("file"=>true, "image"=>true);
+		if (isset($normalTypes[$Type])) {
 			return "normal";
-		} elseif (in_array($Type, $lineTypes)) {
+		} elseif (isset($lineTypes[$Type])) {
 			return "line";
-		} elseif (in_array($Type, $blockTypes)) {
+		} elseif (isset($blockTypes[$Type])) {
 			return "block";
-		} elseif (in_array($Type, $mediaTypes)) {
+		} elseif (isset($mediaTypes[$Type])) {
 			return "media";
 		} else {
 			return "normal";
@@ -2343,7 +2343,7 @@ class genericClass extends Root {
 			$tls = Array();
 			//recherche des menus pointant vers cette donnée
 			$menus = Sys::getMenus($this->Module.'/'.$this->ObjectType.'/'.$this->Id,true,true);
-			//Si des menus pointent vers cette donnée alors on ajoute les mots sur ces pages 
+			//Si des menus pointent vers cette donnée alors on ajoute les mots sur ces pages
 			foreach ($menus as $m){
 				unset($m->Menus);
 				//mise à jour a partir des menus
@@ -2477,7 +2477,8 @@ class genericClass extends Root {
 		}
 
 		//generation des mots-clefs
-		$Mcs = $this->genKeyWords();
+/*		$Mcs = $this->genKeyWords();
+
 		//generation des tags
 		if(is_array($Mcs)) {
 			foreach($Mcs as $Mc=>$Occ) {
@@ -2497,7 +2498,7 @@ class genericClass extends Root {
 						$tls[$i]->addParent($Mcf);
 				}
 			}
-		}
+		}*/
 		for ($i=0;$i<sizeof($tls);$i++)
 			$tls[$i]->Save();
 	}
@@ -2525,7 +2526,7 @@ class genericClass extends Root {
 							$T .= ' ' .trim( htmlspecialchars_decode($this->$p["Titre"]));
 						}
 						
-					}else
+					}elseif (isset($this->$p["Titre"]))
 						$T .= ' ' .trim( htmlspecialchars_decode($this->$p["Titre"]));
 				break;
 				case "html":
@@ -2563,7 +2564,7 @@ class genericClass extends Root {
 		$mcs = $keyword->get_keywords();
 		if (is_array($mcs))foreach ($mcs as $Mc=>$occ){
 			if ($Mc!=""){
-				$Nb = Sys::getCount("Systeme","TagBlackList/Titre=".$Mc);
+				$Nb = false;//Sys::getCount("Systeme","TagBlackList/Titre=".$Mc);
 				if (!$Nb) $Out[$Mc] = $occ;
 			}
 		}

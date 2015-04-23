@@ -286,8 +286,10 @@ class charUtils extends Beacon {
 						$this->Data = html_entity_decode($this->Data);
 					break;
 					case "NOHTML":
+                        $this->Data = preg_replace("#p {.*?}#","",$this->Data);
+                        $this->Data = preg_replace("#a:link {.*?}#","",$this->Data);
 						$this->Data = Parser::PostProcessing($this->Data);
-						$this->Data = strip_tags($this->Data);
+						$this->Data = utf8_encode(html_entity_decode(strip_tags($this->Data)));
 					break;
 					case "NOHTTP":
 						$this->Data = preg_replace('#^http://(.*)$#','$1',$this->Data);

@@ -461,12 +461,6 @@ class Process extends Root{
 						case "getDay":
 							return date("d",time());
 						break;
-						case "Floor":
-							return floor($Params[0]);
-						break;
-						case "Price":
-							return round($Params[0]*100)/100;
-						break;
 						case "getDate":
 							return date($Params[0],$Params[1]);
 						break;

@@ -11,6 +11,7 @@ class Sys extends Root{
 	static $remote_addr;
 	static $port;
 	static $user_agent;
+    static $allMenus;
 	//Initialisation Coeur
 	static $Modules;
 	static $BlocLoaded;
@@ -179,9 +180,9 @@ class Sys extends Root{
 		foreach ($Temp as $Mod) {
 			Sys::$Modules[$Mod["NAME"]]->init();
 		}
-		foreach ($Temp as $Mod) {
+/*		foreach ($Temp as $Mod) {
 			if (SCHEMA_CACHE)Sys::$Modules[$Mod["NAME"]]->saveCache();
-		}
+		}*/
 	}
 	/**
 	 * postInitModules
@@ -912,16 +913,19 @@ class Sys extends Root{
 			//On recupere les détails de l'objet demandé dans le cas d'une recherche directe
 			if ($Infos["TypeSearch"]=="Direct"){
 				$Q = $Query;
-				$C = Sys::$Modules[$Infos['Module']]->callData($Q,false,0,1);
-				if (isset($C)&&is_array($C)&&sizeof($C)){
-					$C = genericClass::createInstance($Infos['Module'],$C[0]);
-					//Cas ou il s'agit d'un objet
-					$Ap = Array();
-					if ($Infos['Module'].'/'.$Infos['ObjectType'].'/'.$C->Id!=$Q)
-						$Ap[] = Array($Infos['Module'].'/'.$Infos['ObjectType'].'/'.$C->Id,"");
-					if (isset($C->Url)&&!empty($C->Url))$Ap[] = Array($Infos['Module'].'/'.$Infos['ObjectType'].'/'.$C->Url,"");
-					$up=(isset($C->Url))?$C->Url:$C->Id;
-				}
+                if (!$strict) {
+                    //si pas strict alors on recherche
+                    $C = Sys::$Modules[$Infos['Module']]->callData($Q, false, 0, 1);
+                    if (isset($C) && is_array($C) && sizeof($C)) {
+                        $C = genericClass::createInstance($Infos['Module'], $C[0]);
+                        //Cas ou il s'agit d'un objet
+                        $Ap = Array();
+                        if ($Infos['Module'] . '/' . $Infos['ObjectType'] . '/' . $C->Id != $Q)
+                            $Ap[] = Array($Infos['Module'] . '/' . $Infos['ObjectType'] . '/' . $C->Id, "");
+                        if (isset($C->Url) && !empty($C->Url)) $Ap[] = Array($Infos['Module'] . '/' . $Infos['ObjectType'] . '/' . $C->Url, "");
+                        $up = (isset($C->Url)) ? $C->Url : $C->Id;
+                    }
+                }
 			}
 			if (isset($Infos['Historique'][0]['DataSource'])&&(!$strict||$Infos["TypeSearch"]=="Interface")){
 				$rest = explode($Infos['Module'].'/'.$Infos['Historique'][0]['DataSource'].'/',$Query);
@@ -932,10 +936,13 @@ class Sys extends Root{
 		$Ap[] = Array($Query,"");
 		if ($all){
 			//récupération de la liste de l'ensemble des menus
-			$Menus = Sys::getData('Systeme','Menu/*',0,10000);
-			__autoload("Storproc");
-			$Menus = StorProc::sortRecursivResult($Menus,"Menus");
-			$Menus = Root::quickSort($Menus,"Ordre");
+            if (!sizeof(Sys::$allMenus)) {
+                Sys::$allMenus = Sys::getData('Systeme', 'Menu/*', 0, 10000);
+                __autoload("Storproc");
+                Sys::$allMenus = StorProc::sortRecursivResult(Sys::$allMenus, "Menus");
+                Sys::$allMenus = Root::quickSort(Sys::$allMenus, "Ordre");
+            }
+            $Menus = Sys::$allMenus;
 			$out=Array();
 		}else $Menus = NULL;
 		
