@@ -1,5 +1,7 @@
 <?php
 class Module extends Root{
+	private $_arrayQueryCache = array();
+
 	var $Nom;												//Nom du Module
 	var $Data;
 	var $StorProc;
@@ -420,20 +422,27 @@ class Module extends Root{
 	* @return Array(Array(String...))
 	*/
 	function splitQuery($Lien,$Strict=false) {
-		$Out=explode("/",$Lien);
-		if(is_array($Out)) foreach($Out as $k => $o) $Out[$k] = Utils::KEStripSlashes(array($o));
+		if (isset($this->_arrayQueryCache[$Strict.'-'.$Lien])) {
+			return $this->_arrayQueryCache[$Strict.'-'.$Lien];
+		}
+
+        $Out=explode("/",$Lien);
+//TODO Ne pas oublier de vérifier que ca ne pose pas de probleme.
+//		if(is_array($Out)) foreach($Out as $k => $o) $Out[$k] = Utils::KEStripSlashes(array($o));
 		if ($Out[0]==$this->Nom)(sizeof($Out)>1)?array_shift($Out):$Out[0]="";
 		if (empty($Out))$Out = Array();
-		$p="";
+        $p="";
 		$Last=-1;
 		$TypeObjet = "";
 		$LastKey="";
 		$Type="Erreur";
 		$Result=Array();
 		$this->loadSchema();
-		//GESTION OBJECTCLASS PAR DEFAUT (IMPLICITE)
+        //GESTION OBJECTCLASS PAR DEFAUT (IMPLICITE)
 		$t = $this->Db->getDefaultObjectClass();
-		if ($t&&$t!=$Out[0]){
+
+
+        if ($t&&$t!=$Out[0]){
 			//soit il existe une data source par défaut
 			for ($i=0,$c = sizeof($Out);$i<$c;$i++) $p .=(($i>0&&$Out[$i]!=""&&$p!="")?"/":"").$Out[$i];
 			if (DEBUG_INTERFACE)echo "DEFAULT OBJECTCLASS \r\n";
@@ -448,6 +457,7 @@ class Module extends Root{
 			if ($Out[0]!="")for ($i=0,$c=sizeof($Out);$i<$c;$i++) $Out2[$i+1] = $Out[$i];
 			$Out = $Out2;
 		}
+
 		//GESTION LIEN VIDE
 		if ($Lien==""){
 			$Result[0]["Type"] = "Interface";
@@ -455,9 +465,12 @@ class Module extends Root{
 			$Result[0]["Interface"] = "";
 			return $Result;
 		}
+
 		//INIT
 		$LastAssociation = null;
+
 		//DETERMINATION DE LA NATURE DE LA REQUETE
+
 		$d1 = $this->getAnalyzedObjectClass($Out[0]);
 		$LastDataSource = $this->Db->getByTitleOrFkey($d1["ObjectClass"]);
 		if (is_object($LastDataSource)&&sizeof($Out)>1&&isset($d1["Key"])){
@@ -467,6 +480,7 @@ class Module extends Root{
 				$LastAssociation=$NextDataSource->getParentAssociation($d1["Key"],$d1["ObjectClass"]);
 			}
 		}
+
 		$lastkey = $d1;
 		//print_r($d1);
 		if (!is_object($LastDataSource)) {
@@ -482,16 +496,19 @@ class Module extends Root{
 					"DataSource"=>$Out[0],
 					"Interface"=>$p
 				);
-			}else return false;
+			}//else return false;
 		}else{
 			//CAS REQUETE
 			//On decompose la requete en tableau par paire et on extrait le dernier objectclass
-			for ($i=0,$c=sizeof($Out);$i<$c;$i++) {
-				$Ass = null;
+
+            for ($i=0,$c=sizeof($Out);$i<$c;$i++) {
+
+                $Ass = null;
 				$Object="";
-				if ($i>0&&!preg_match("#.*([A-Za-z0-9]+?)\.([A-Za-z0-9]+?)\((.*?)\).*#",$Out[$i])){
+				if ($i>0) { //&&!preg_match("#.*([A-Za-z0-9]+?)\.([A-Za-z0-9]+?)\((.*?)\).*#",$Out[$i])){
 					$d1 = $this->getAnalyzedObjectClass($Out[$i]);
 					$Object=$LastDataSource->getChildObjectClass($d1["ObjectClass"],(isset($lastkey["Key"]))?$lastkey["Key"]:null);
+                    //$GLOBALS["Chrono"]->start("MODULE splitQuery tableau test");
 					if (!is_object($Object)){
 						//parent
 						$Object=$LastDataSource->getParentObjectClass($d1["ObjectClass"],(isset($lastkey["Key"]))?$lastkey["Key"]:null);
@@ -507,9 +524,10 @@ class Module extends Root{
 							$Ass=$LastDataSource->getChildAssociation($lastkey["Key"]);
 						}
 					}
+                    //$GLOBALS["Chrono"]->stop("MODULE splitQuery tableau test");
 					$lastkey = $d1;
 				}
-				//TEST DE LA VUE
+                //TEST DE LA VUE
 				if (isset($d1["View"])){
 					$LastView = $d1["View"];
 				}
@@ -546,7 +564,8 @@ class Module extends Root{
 					unset($Tab);
 				}
 			}
-			//DETERMINATION DU TYPE DE REQUETE
+
+            //DETERMINATION DU TYPE DE REQUETE
 			if (($Last>-1)&&($Last!=sizeof($Out)-1)) {
 				//Si il existe un objectclass et qu'il n'est pas le dernier
 				for ($j=$Last+1;$j<$i;$j++) {
@@ -685,11 +704,12 @@ class Module extends Root{
 					}
 					$Tab['Value'] = "";
 					$Result[] = $Tab;
-					if (!$Strict)$Result[0]['InterfacePath'] = $this->getInterface($Out[$Last],"",false);
+                    if (!$Strict)$Result[0]['InterfacePath'] = $this->getInterface($Out[$Last],"",false);
 				}else{
 					$Type="Erreur";
 				}
 			}
+
 			if ($Type=="Direct"||$Type=="Child") {
 				//Verifions qu il ne s agit pas d une multisearch
 				if (isset($Out[$Last+1])&&preg_match("#[\<\>\!\=\~]{1,2}#",$Out[$Last+1])) {
@@ -725,13 +745,17 @@ class Module extends Root{
 		//if ($Lien=="ContractBuyerId/Contract/2900") $GLOBALS["Systeme"]->Log->log("SPLIT QUERY",$Result);
 		//if ($Lien=="DealIdDeal/Message/42")print_r($Result);
 		if (DEBUG_INTERFACE)print_r($Result);
-		return $Result;
+
+        //cache splitQuery for heavy load
+	    $this->_arrayQueryCache[$Strict.'-'.$Lien] = $Result;
+
+        return $Result;
 	}
 	//Appel depuis storproc pour lexecution de requete
 	function callData($Query,$recurs="",$Ofst="",$Limit="",$OrderType="",$OrderVar="",$Selection="",$GroupBy=""){
 		$Query = preg_replace("#^".$this->Nom."\/#","",$Query);
 		//Traitement des access
-		if (isset(Sys::$User->Access)&&
+		/*if (isset(Sys::$User->Access)&&
 			is_array(Sys::$User->Access)) 
 			foreach (Sys::$User->Access as $A){
 				if ($A->ObjectModule==$this->Nom){
@@ -742,15 +766,16 @@ class Module extends Root{
 //						$GLOBALS["Systeme"]->Log->log("ACCESS ".$LastQuery,$Query);
 					}
 				}
-		}
+		}*/
 		//On charge le Schema
 		$this->loadSchema();
  		$TabQuery = $this->splitQuery($Query,true);
 //$GLOBALS["Systeme"]->Log->log("$Query",$TabQuery);
-		if ($TabQuery[0]["Type"]=="Erreur") return false;
-		if (DEBUG_QUERY)KError::Set('QUERY '.$this->Nom."/".$Query,"",KError::$INFO);
+//		if ($TabQuery[0]["Type"]=="Erreur") return false;
+//		if (DEBUG_QUERY)KError::Set('QUERY '.$this->Nom."/".$Query,"",KError::$INFO);
 		Module::$LAST_QUERY = $this->Nom."/".$Query;
-		try{
+
+        try{
 			$Tab =  $this->Db->searchObject($TabQuery,$recurs,$Ofst,$Limit,$Query,$OrderType,$OrderVar,$Selection,$GroupBy);
 		}catch ( Exception $e ) {
 			$Tab = Array();
@@ -758,8 +783,8 @@ class Module extends Root{
 		//On ajoute les informations de la requete
 		for ($i=0,$c=sizeof($Tab);$i<$c;$i++) {
 			if (sizeof($Tab[$i]))$Tab[$i]["QueryType"] = $TabQuery[0]["Type"];
-			if (sizeof($Tab[$i]))$Tab[$i]["Query"] = $TabQuery[0]["Query"];
-			if (sizeof($Tab[$i]))$Tab[$i]["Module"] = $TabQuery[$TabQuery[0]["Out"]]["Module"];
+			if (sizeof($Tab[$i]))$Tab[$i]["Query"] = $Query; //$TabQuery[0]["Query"];
+			if (sizeof($Tab[$i]))$Tab[$i]["Module"] = $this->Nom; //$TabQuery[$TabQuery[0]["Out"]]["Module"];*/
 		}
 		return $Tab;
 	}
@@ -770,7 +795,7 @@ class Module extends Root{
 	function Affich($Lien) {
 		if (!$Bloc=$this->setData($Lien))
 			$Bloc = new Bloc();
-		$Tab = $this->splitQuery($Lien);
+		$Tab = $this->splitQuery($Lien,false);
 		if (isset($Tab[0]['Query']))$GLOBALS['Systeme']->setQuery($Tab[0]['Query']);
 		//Definition des variables
 		$T =$Bloc->Conf;
@@ -819,9 +844,12 @@ class Module extends Root{
 		$this->loadSchema();
 		//Analyse de l Url
 		$Tab = $this->splitQuery($Lien,false);
-		if (DEBUG_INTERFACE)print_r($Tab);
+		if (DEBUG_INTERFACE)
+            print_r($Tab);
 		//On appelle l interface concernee
-		$Bloc=$this->loadInterface($Tab[0]["InterfacePath"]);
+        if (isset($Tab[0]))
+		    $Bloc=$this->loadInterface($Tab[0]["InterfacePath"]);
+        else return null;
 		return $Bloc;
 	}
 

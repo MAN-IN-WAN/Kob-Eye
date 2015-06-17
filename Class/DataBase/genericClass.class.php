@@ -238,14 +238,14 @@ class genericClass extends Root {
 				$this -> $Key = is_null($Value) ? null : $Value;
 		}
 		//On definit les valeurs par defaut
-		$Props = $this -> Proprietes(false, true);
+		/*$Props = $this -> Proprietes(false, true);
 		if (is_array($Props))
 			foreach ($Props as $P) {
 				$N = $P["Nom"];
 				if ((!isset($this -> $N) || $this -> $N == "") && isset($P["Default"]) && $P["Default"] != "") {
 					$this -> $N = Process::ProcessingVars($P["Default"]);
 				}
-			}
+			}*/
 		//Verif des heritages
 		$this -> launchTriggers(__FUNCTION__);
 	}

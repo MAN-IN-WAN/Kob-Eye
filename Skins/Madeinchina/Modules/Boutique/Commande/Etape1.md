@@ -100,14 +100,14 @@
 							</td>
 							<td >
 								[IF [!Pan::TypeProduit!]<4]
-								<div class="BoutonMoins"><input type="button" class="InputBtnMoins" value="-" onclick="CalculQte(-[!NbUnite!],[!Pan::Quantite!],'[!refObj::Reference!]');" /></div>
+								<div class="BoutonMoins"><input type="button" class="btn btn-protector" value="-" onclick="CalculQte(-[!NbUnite!],[!Pan::Quantite!],'[!refObj::Reference!]');" /></div>
 								[/IF]
 								<div class="LaQuantite">
 									[!refObj:=[!Pan::RefObject!]!]
 									<input name="Qte[!refObj::Id!]" id="Qte[!refObj::Id!]" class="QteInput" value="[!Pan::Quantite!]"  readonly="readonly" >
 								</div>
 								[IF [!Pan::TypeProduit!]<4]
-								<div class="BoutonPlus"><input type="button" class="InputBtnPlus"  value="+" onclick="CalculQte([!NbUnite!],[!Pan::Quantite!],'[!refObj::Reference!]');"></div>
+								<div class="BoutonPlus"><input type="button" class="btn btn-protector"  value="+" onclick="CalculQte([!NbUnite!],[!Pan::Quantite!],'[!refObj::Reference!]');"></div>
 								[/IF]
 							</td>
 							<td class="PrixInitial">
@@ -121,7 +121,7 @@
 							</td>
 							<td   >
 								//<input type="checkbox" name="Sup[]" value="[!Pan::Reference!]" class="Panier_Supr" />
-								<a href="#nogo" class="button btn-protector btn-block btn-large" style="color:white;padding:0 12px;" onclick="removeLine('[!refObj::Reference!]')">Supp</a>
+								<a href="#nogo" class="btn btn-protector btn-block" onclick="removeLine('[!refObj::Reference!]')">Supp</a>
 							</td>
 						</tr>
 						[!TotGene+=[!Math::PriceV([!Pan::MontantTTC!])!]!]
@@ -156,10 +156,10 @@
 			</div></div>
 			<div class="row LigneBoutons"><div class="col-md-12">
 				<div class="pull-right">
-					<input class="button btn-protector" type="submit" name="Valider" value="Je valide ma commande" />
+					<input class="btn btn-success" type="submit" name="Valider" value="Je valide ma commande" />
 				</div>
 				<div class="pull-right" style="margin-bottom:30px;">
-					<input class="button btn-gris BoutonContinuer" type="submit" name="Continue" value="Continuer mes achats" />
+					<input class="btn btn-protector" type="submit" name="Continue" value="Continuer mes achats" />
 				</div>
 			</div>
 		</form>

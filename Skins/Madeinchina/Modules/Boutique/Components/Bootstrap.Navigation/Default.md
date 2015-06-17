@@ -6,7 +6,7 @@
 [STORPROC [!Menus!]|Menu|0|1]
     [!MENU:=/[!Menu::Url!]!]
     [STORPROC [!I::Historique!]|H|[!Niveau!]|1][/STORPROC]
-    <div id="" class="block">
+    <div id="" class="block navigation">
             <h3 class="title_block">[!TITRE!]</h3>
             <div class="block_content">
                     <ul class="">

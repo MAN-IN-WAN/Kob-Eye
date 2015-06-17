@@ -4,10 +4,10 @@ class BoutiqueCategorie extends genericClass {
 	 * getUrl
 	 * Retourne l'url depuis la racine d'un produit donné
 	 */
-	public function getUrl() {
+	/*public function getUrl() {
 		//recherche des categorie
 		if (!Sys::$User -> Admin) {
-			$cat = $this -> storproc('Boutique/Categorie/*/Categorie/Categorie/' . $this -> Id);
+			$cat = $this -> storproc('Boutique/Categorie/* /Categorie/Categorie/' . $this -> Id);
 			//on verifie qu'il n'y pas de menu sur chacune des categories
 			$M = false;
 			$U = $this->Url;
@@ -28,7 +28,7 @@ class BoutiqueCategorie extends genericClass {
 		} else
 			return parent::getUrl();
 	}
-
+*/
 
 
 	public function MyRecursiveUrl ($LeParent) {

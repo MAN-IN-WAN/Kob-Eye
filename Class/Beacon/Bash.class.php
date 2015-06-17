@@ -18,7 +18,9 @@ class Bash extends Beacon {
         }
     }
     function getString() {
-        $this->Data = Parser::getContent($this->ChildObjects);
+        $tmp = Parser::getContent($this->ChildObjects);
+        $tmp = Process::processingVars($tmp);
+        $this->Data = Parser::PostProcessing($tmp);
         return $this->Data;
     }
 

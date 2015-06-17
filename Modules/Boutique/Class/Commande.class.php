@@ -85,7 +85,6 @@ class Commande extends genericClass {
 		}else {
 			 $this -> MontantPaye = $this -> MontantTTC;
 		}
-
 		if (isset($this -> LignesCommandes) && is_array($this -> LignesCommandes))
 			foreach ($this->LignesCommandes as $obj) {
                 $obj->AddParent($this);
@@ -477,7 +476,7 @@ class Commande extends genericClass {
 			}
 		}
 		// ajouter la reduction CodePromo
-		if (isset($this -> CodePromo)) {
+		if ($this -> getCodePromo()) {
 			if ($this -> CodePromo -> TypeVariation != 3) {
 				$this -> Remise += $this -> CodePromo -> getReducMontant($this -> MontantTTC);
 			} else {
@@ -489,6 +488,8 @@ class Commande extends genericClass {
 				}
 			}
 		}
+        //mise à jour du montant TTC
+        $this -> MontantTTC -= $this->Remise;
 
 	}
 	public function getClient() {
@@ -750,15 +751,18 @@ class Commande extends genericClass {
 		$Prom = $this -> storproc('Boutique/CodePromo/Code=' . $CodeP);
 		//Gestion des erreurs
 		$Message = "";
-		$PromCo = genericClass::createInstance('Boutique', $Prom[0]);
-		if (!$PromCo -> Actif || !sizeof($Prom))
-			$Message = "Ce code promotion n'existe pas.";
-		if ($PromCo -> DateDebut > time())
-			$Message = "Ce code promotion n'est pas encore actif.";
-		if ($PromCo -> DateFin < time())
-			$Message = "Ce code promotion a expiré.";
-		if ($PromCo -> Quantite == 0 && $PromCo -> GestionQuantite == 0)
-			$Message = "Ce code promotion a déjà été utilisé.";
+        if (!isset($Prom[0])) $Message = "Code Promotion introuvable.";
+        else {
+            $PromCo = genericClass::createInstance('Boutique', $Prom[0]);
+            if (!$PromCo->Actif || !sizeof($Prom))
+                $Message = "Ce code promotion n'existe pas.";
+            if ($PromCo->DateDebut > time())
+                $Message = "Ce code promotion n'est pas encore actif.";
+            if ($PromCo->DateFin < time())
+                $Message = "Ce code promotion a expiré.";
+            if ($PromCo->Quantite == 0 && $PromCo->GestionQuantite == 0)
+                $Message = "Ce code promotion a déjà été utilisé.";
+        }
 		if (!empty($Message))
 			return Array('Desc' => '', 'Ok' => false, 'PortOffert' => false, 'Message' => $Message, 'Montant' => 0);
 		//Construction du coupon
@@ -776,7 +780,7 @@ class Commande extends genericClass {
 				$reduc = false;
 				// est ce que ce code promo est limité à certains clients
 				$CliProm = $this -> storproc('Boutique/CodePromo/' . $PromCo -> Id . '/Client');
-				if (is_array($CliProm)) {
+				if (is_array($CliProm)&&sizeof($CliProm)) {
 					// ce code promo est lié à des clients
 					foreach ($CliProm as $cP) :
 						if ($ClientId == $cP['Id'])
@@ -795,7 +799,7 @@ class Commande extends genericClass {
 			$reduc_arr['PortOffert'] = false;
 			// Pourcentage de la commande
 			if ($PromCo -> TypeVariation == 1) {
-				$reduc_arr['Montant'] = number_format((double)($this -> MontantTTC * $PromCo -> Variation) / 100, 2, '.', '');
+				$reduc_arr['Montant'] = ($this -> MontantTTC * $PromCo -> Variation) / 100;
 			}
 
 			// !!!! voir comment faire pour paiement par bon d'achat

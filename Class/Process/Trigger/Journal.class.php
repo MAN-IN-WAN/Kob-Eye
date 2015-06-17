@@ -13,7 +13,7 @@ class Journal extends TriggerFunction{
 			if ($this->Script!=""){
 				Process::registerTempVar("INPUT",$Input);
 				Process::ProcessVars($this->Script);
-				$Add = Process::$TempVar["OUTPUT"];
+				$Add = (isset(Process::$TempVar["OUTPUT"]))?Process::$TempVar["OUTPUT"]:'';
 			}else{
 				$Add = time()."|".$this->Event;
 			}

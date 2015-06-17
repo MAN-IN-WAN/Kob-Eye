@@ -160,6 +160,7 @@ class Reference extends genericClass {
 	public function getStockReference() {
 		return $this->StockPermanent ? 1000 : $this->Quantite;
 	}
+
 	/**
 	 * renvoie le prix unitaire HT de la référence hors promo
 	 * @return true ou false

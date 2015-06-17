@@ -7,6 +7,7 @@ RewriteRule   ^certificats.php	certificats.php  [L]
 RewriteRule   ^favicon.ico$	favicon.ico  [L]
 RewriteRule   ^Conf\/.*$	404.html  [L,R=404]
 #RewriteRule   ^Modules\/.*$	404.html  [L,R=404]
+RewriteRule   ^google(.*)$	google$1  [L]
 RewriteRule   ^Data\/.*$	404.html  [L,R=404]
 RewriteRule   ^Log\/.*$	404.html  [L,R=404]
 RewriteRule   ^crossdomain.xml$	crossdomain.xml [L]
@@ -22,7 +23,7 @@ RewriteCond %{REQUEST_FILENAME} \.(mini|limit|scale)\.[0-9]+x[0-9]+x[0-9]+\.(jpe
 RewriteRule   ^.*$	index.php  [L]
 
 #CAS GLOBAL
-RewriteCond %{REQUEST_FILENAME} !\.(ico|jpe?g|JPE?G|png|gif|ogg|swf|css|gz|js|json|mp4|ogv|f4v|flv|mp4|m4v|avi|apk|zip|ttf|eot|woff|svg)$
+RewriteCond %{REQUEST_FILENAME} !\.(ico|jpe?g|JPE?G|png|gif|ogg|html|swf|appcache|css|gz|js|json|mp4|ogv|f4v|flv|mp4|m4v|avi|apk|zip|ttf|eot|woff|woff2|svg)$
 RewriteRule   ^.*$	index.php  [L]
 
 #GESTION DES ENTETES

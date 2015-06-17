@@ -1,7 +1,8 @@
 <div class="Arborescence">
 	[IF [!Visit[!TypeEnf!]!]!=][!Chemin:=[!Visit[!TypeEnf!]!]/[!TypeEnf!]!][/IF]
 	[INFO [!Chemin!]|Che]
-	[STORPROC [!Che::Historique!]|H|[!Niveau!]|1][/STORPROC]
+
+    [STORPROC [!Che::Historique!]|H|[!Niveau!]|1][/STORPROC]
     	<ul>
 		//Si la datasource est bien la bonne
 		[IF [!H::DataSource!]=[!TypeEnf!]]

@@ -1,12 +1,13 @@
 // Acheteur connecté
-[STORPROC Boutique/Client/UserId=[!Systeme::User::Id!]|CLCONN|0|1][/STORPROC] 
-[!Panier:=[!CLCONN::getPanier()!]!]
-[!TabReducCodePromo:=[!Panier::getReductionCodePromo([!CodePromo!],[!CLCONN::Id!])!]!]
+[!Panier:=[!CurrentClient::getPanier()!]!]
+[!TabReducCodePromo:=[!Panier::getReductionCodePromo([!CodePromo!],[!CurrentClient::Id!])!]!]
 
-
+[IF [!TabReducCodePromo::Ok!]]
+    [!Panier::setCodePromo([!CodePromo!])!]
+[/IF]
 
 {
-	"ReducMontant":"[!TabReducCodePromo::Montant!]",
+	"ReducMontant":[!TabReducCodePromo::Montant!],
 	"ReducDesc":"[!TabReducCodePromo::Desc!]",
 	"ReducOk":"[!TabReducCodePromo::Ok!]",
 	"PortOffert":"[!TabReducCodePromo::PortOffert!]",

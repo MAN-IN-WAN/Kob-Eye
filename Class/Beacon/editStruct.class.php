@@ -1,11 +1,12 @@
 <?php
 class editStruct extends Beacon {
+    var $Data = '';
 
 	function editStruct() {
 	}
 
 	function Generate() {
-		Beacon::Generate();
+		parent::Generate();
 		switch ($this->Beacon) {
 			case "HEADER":
 				switch($this->Vars) {
@@ -68,7 +69,7 @@ class editStruct extends Beacon {
 	}
 
 	function getString() {
-		$this->Data = Parser::getContent($this->ChildObjects);
+		//$this->Data = Parser::getContent($this->ChildObjects);
 		return $this->Data;
 	}
 

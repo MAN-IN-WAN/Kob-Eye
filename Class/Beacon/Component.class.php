@@ -174,7 +174,7 @@ class Component extends Beacon{
 	*/
 	function Affich($test=false) {
 		//Le contenu du fichier retravaill�
-		$this->Data = Parser::getContent($this->ChildObjects);
+		//$this->Data = Parser::getContent($this->ChildObjects);
 		return $this->Data;
 	}
 

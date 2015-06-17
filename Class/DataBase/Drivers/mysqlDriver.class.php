@@ -417,9 +417,11 @@ class mysqlDriver extends ObjectClass{
 //if(strpos($sql,'CouleurId') !== false) klog::l(">>>>>>>>>>>>>>>>>".$sql);
 		$GLOBALS["Systeme"]->connectSQL();
 		$i=false;
+        $GLOBALS["Chrono"]->start("SQL");
 		$Result = $GLOBALS["Systeme"]->Db[$O->Bdd]->query ( $sql );
 		if ($Result)$Result = $Result->fetchALL ( PDO::FETCH_ASSOC );
-		//#DIRTY WORKAROUND 
+        $GLOBALS["Chrono"]->stop("SQL");
+		//#DIRTY WORKAROUND
 		if (preg_match("#COUNT\(DISTINCT\(m\.Id\)\)#",$sql,$o)&&sizeof($Result)>1)$Result = Array(Array("COUNT(DISTINCT(m.Id))"=>sizeof($Result)));
 		//#DIRTY WORKAROUND 
 		$Er = $GLOBALS["Systeme"]->Db[$O->Bdd]->errorInfo();
@@ -428,7 +430,7 @@ class mysqlDriver extends ObjectClass{
 			if ($Er[0]!="00000")KError::Set('SQL ERROR '.Module::$LAST_QUERY,$sql.'<br />'.$Er[2],KError::$WARNING);
 			elseif (DEBUG_MYSQL>=KError::$INFO) KError::Set('SQL INFO '.Module::$LAST_QUERY,$sql,KError::$INFO);
 		}
-		//if (DEBUG_ALL_BDD&&$Er[0]!="00000")echo "\r\nSQL ERROR ".Module::$LAST_QUERY."<br />\r\n".$sql."<br />\r\n".$Er[2]."<br />\r\n-------------------------------<br />\r\n";
+		if (DEBUG_ALL_BDD&&$Er[0]!="00000")echo "\r\nSQL ERROR ".Module::$LAST_QUERY."<br />\r\n".$sql."<br />\r\n".$Er[2]."<br />\r\n-------------------------------<br />\r\n";
 		//if ($O->Module=="Boutique"&&$O->titre=="Categorie")Klog::l("\r\nMYSQL DEBUG <br />\r\n".$sql."<br />\r\n".$Er[2]."<br />\r\n-------------------------------<br />\r\n");
         //if ($O->Module=="Boutique"&&$O->titre=="Produit") echo "\r\nSQL ERROR ".Module::$LAST_QUERY."<br />\r\n".$sql."<br />\r\n".$Er[2]."<br />\r\n-------------------------------<br />\r\n";
 		//if (DEBUG_ALL_BDD&&$Er[0]!="00000") Klog::l("\r\nMYSQL DEBUG <br />\r\n".Module::$LAST_QUERY."<br />\r\n-------------------------------<br />\r\n");

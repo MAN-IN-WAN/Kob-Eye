@@ -54,7 +54,8 @@ class sqlFunctions{
 					if ($i==0) $Condition[]=sqlFunctions::getPrefixe($Tab,$i)."i.Id=0";
 //EM-20150216 probleme de requete recursif pour avoir les éléments du premier noeud
 //					else $Condition[]=sqlFunctions::getPrefixe($Tab,$i)."t.".$Tab[$i-1]["Champ"]."=".sqlFunctions::getPrefixe($Tab,($i-1)).".Id";
-					else $Condition[]=sqlFunctions::getPrefixe($Tab,$i)."t.Id"./*$Tab[$i-1]["Champ"].*/"=".sqlFunctions::getPrefixe($Tab,($i-1)).".Id";
+//EM-20150611 recorrection car prob de requete
+					else $Condition[]=sqlFunctions::getPrefixe($Tab,$i)."t.".$Tab[$i-1]["Champ"]."=".sqlFunctions::getPrefixe($Tab,($i-1)).".Id";
 				}
 				if ($i>0)
 					$Condition[]=sqlFunctions::getPrefixe($Tab,$i).'i.Id='.sqlFunctions::getPrefixe($Tab,$i)."t.Id";
@@ -764,9 +765,10 @@ class sqlFunctions{
 		if (!strlen($Select)) {
 			if ($Type != "SELECT_INTERVAL" && $Type != "VIEW") {
 				$sql .= 'm.Id,m.userCreate,m.tmsCreate,m.tmsEdit,m.userEdit,m.uid,m.gid,m.umod,m.gmod,m.omod';
+				//propriétés standard
 				foreach ($O->Proprietes as $Key => $Prop) {
 					//Priorites de langage
-					$Special = (isset($O -> Proprietes[$Key]["special"])) ? $O -> Proprietes[$Key]["special"] : "";
+					$Special = (isset($Prop["special"])) ? $Prop["special"] : "";
 					if (!empty($Prop["Ref"]))
 						$sql .= ",r" . $Prop["Ref_Level"] . ".$Key";
 					elseif ($Special == "multi"&&is_object(Sys::$User)&&Sys::$User -> Admin) {
@@ -783,6 +785,13 @@ class sqlFunctions{
 						}
 					} else
 						$sql .= ",m.`" . $O -> langProp($Key) . "` as `" . $Key . "`";
+				}
+				
+				//clef courtes
+				foreach ($O->getParentElements() as $p){
+					if ($p['type']=='fkey'&&$p['card']=='short'){
+						$sql .= ",m.`" . $p['field'] . "` as `" . $p['name'] . "`";
+					}
 				}
 			}
 			//Ajout des champs Select optionnels

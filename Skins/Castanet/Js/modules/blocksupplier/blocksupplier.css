@@ -1,0 +1,14 @@
+/* Block supplier */
+.blocksupplier li {border-bottom:1px dotted #ccc}
+.blocksupplier li.last {	border:none;}
+.blocksupplier li a {
+    display:block;
+}
+
+
+.blocksupplier form {margin-top:10px;}
+.blocksupplier p {
+	padding:0;
+	text-align:center
+}
+

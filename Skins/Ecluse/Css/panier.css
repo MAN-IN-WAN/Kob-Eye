@@ -1,0 +1,8 @@
+.panierentete,.panierligne {
+    border-bottom: 1px dashed #535557;
+    line-height: 28px;
+    font-size:13px;
+}
+#cart-buttons {
+    padding: 4px;
+}

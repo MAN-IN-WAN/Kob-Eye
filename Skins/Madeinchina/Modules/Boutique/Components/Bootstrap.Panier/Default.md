@@ -24,39 +24,6 @@
 			[/IF]
 		<span id="block_cart_expand" class="hidden">&nbsp;</span><span id="block_cart_collapse" >&nbsp;</span></h3>
 		<div class="block_content">
-//			<table class="Panier" cellspacing="0">
-//				<tr class="panierentete">
-//					<th class="NomProduit">Produits</th>
-//					<th class="Quantite">Qté</th>
-//					[IF [!Panier::Valide!]]
-//						<th class="SupprimerItem">Total TTC</th>
-//					[ELSE]
-//						<th class="TotalTTC">Total TTC</th>
-//						<th class="SupprimerItem">Sup</th>
-//					[/IF]
-//					</tr>
-//				[STORPROC [!Panier::LignesCommandes!]|Ligne]
-//					<tr class="panierligne [IF [!Ligne::Reference!]=[!Reference!]] justAdded [/IF]">
-//						<td class="NomProduit"><a href="/[!Ligne::getUrlProduit()!]">[IF [!Pos!]=[!NbResult!]][!Ligne::Titre!][ELSE][!Ligne::Titre!][/IF]</a></td>
-//						<td class="Quantite">[!Ligne::Quantite!]</td>
-//						[IF [!Panier::Valide!]]
-//							<td class="SupprimerItem">[!Math::PriceV([!Ligne::MontantTTC!])!][!De::Sigle!]</td>
-//						[ELSE]
-//							<td class="TotalTTC">[!Math::PriceV([!Ligne::MontantTTC!])!][!De::Sigle!]</td>
-//							<td class="SupprimerItem"><a class="SupprimerItemPanier" href="/[!Lien!]?Sup[]=[!Ligne::Reference!]">X</a></td>
-//						[/IF]
-//					</tr>
-//					[NORESULT]
-//						<tr class="panierligne">
-//							<td class="NomProduit">Panier vide...</td>
-//							<td class="Quantite"></td>
-//							<td class="TotalTTC"></td>
-//							<td class="SupprimerItem" style="background:none;"></td>
-//						</tr>
-//					[/NORESULT]
-//					[!NbArticle+=[!Ligne::Quantite!]!]
-//				[/STORPROC]
-//			</table>
             <ul class="media-list">
             [STORPROC [!Panier::LignesCommandes!]|Ligne]
                 <li class="media">
@@ -77,67 +44,81 @@
             [/STORPROC]
             </ul>
         </div>
-	
+        <div id="cart_block_list" class="expanded">
+            <p id="cart-buttons">
+                <a href="/[!Systeme::getMenu(Boutique/Commande/Etape1)!]" class="btn btn-protector" title="__VIEW_SHOPPING_CART__" rel="nofollow">__MY_CART__</a>
+                <a href="/[!Systeme::getMenu(Boutique/Commande/Etape2)!]" id="button_order_cart" class="btn btn-success" title="Checkout" rel="nofollow"><span></span>__CHECKOUT__</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- MODULE Block cart -->
+    <div class="block exclusive block_black">
 	//COMMANDES EN COURS
 	[STORPROC [!Cli::getPendingCommandes()!]|Com]
-		<h3 class="title_block"><a href="/[!Systeme::getMenu(Boutique/Commande/Etape1)!]" title="__VIEW_SHOPPING_CART__" rel="nofollow">
+		<h3 class="title_block">
 			__CURRENT_ORDER__
-		</a><span id="block_cart_expand" class="hidden">&nbsp;</span><span id="block_cart_collapse" >&nbsp;</span></h3>
+		<span id="block_cart_expand" class="hidden">&nbsp;</span><span id="block_cart_collapse" >&nbsp;</span></h3>
 		<div class="block_content">
-			<table class="Panier" cellspacing="0">
-				<tr class="panierentete">
-					<th class="NomProduit">Commande</th>
-					<th class="SupprimerItem">Total TTC</th>
-				</tr>
-					[LIMIT 0|10]
-					<tr class="panierligne">
-						<td class="NomProduit">[!Com::RefCommande!]</td>
-						<td class="SupprimerItem">[!Math::PriceV([!Com::MontantTTC!])!][!De::Sigle!]</td>
-					</tr>
-					<tr class="panierligne">
-						<td colspan ="3"  class="SupprimerItem">
-							[SWITCH [!Com::getStatus()!]|=]
-								[CASE 1]
-									La commande est réservée. Le paiement n'est pas effectué.<br />
-									
-									<div class="ValiderCommande"><a href="/Boutique/Commande/Etape4?Com=[!Com::RefCommande!]&action=paiement">Payer ma commande</a></div>
-									<div class="ValiderCommande"><a href="/[!Lien!]?Com=[!Com::RefCommande!]&action=annule">Annuler ma commande</a></div>
-									<div class="ValiderCommande"><a href="/[!Lien!]?Com=[!Com::RefCommande!]">Modifier ma commande</a></div>
-								[/CASE]
-								[CASE 2]
-									Un paiement est en attente de réception.<br />
-									
-									<div class="ValiderCommande"><a href="/Boutique/Commande/Etape4?Com=[!Com::RefCommande!]&action=paiement">Payer ma commande</a></div>
-									<div class="ValiderCommande"><a href="/[!Lien!]?Com=[!Com::RefCommande!]&action=annule">Annuler ma commande</a></div>
-									<div class="ValiderCommande"><a href="/[!Lien!]?Com=[!Com::RefCommande!]">Modifier ma commande</a></div>
-								[/CASE]
-								[CASE 3]
-									Commande validée, le paiement a echoué.
-									Pour finaliser votre commande, veuillez cliquer sur le lien ci-dessous.
-									
-									<div class="ValiderCommande"><a href="/Boutique/Commande/Etape4?Com=[!Com::RefCommande!]&action=paiement">Payer ma commande</a></div>
-									<div class="ValiderCommande"><a href="/[!Lien!]?Com=[!Com::RefCommande!]&action=annule">Annuler ma commande</a></div>
-									<div class="ValiderCommande"><a href="/[!Lien!]?Com=[!Com::RefCommande!]">Modifier ma commande</a></div>
-								[/CASE]
-								[CASE 4]
-									Commande payée le [!Com::PayeLe!]. En cours d'expédition.
-								[/CASE]
-								[CASE 5]
-									Commande expédiée le [!Com::ExpedieLe!]. En cours de livraison.
-								[/CASE]
-								[CASE 6]
-									Commande archivée.
-								[/CASE]
-							[/SWITCH] 
-						</td>
-					</tr>
-					[/LIMIT]
-			</table>
+            <ul class="media-list">
+                [LIMIT 0|10]
+                <li class="media">
+                    <a style="overflow:hidden;margin-bottom: 15px;" href="#">
+                        <!-- <img class="media-object" src="/[!Prod::Image!].mini.64x64.jpg" />-->
+                        <div class="media-body">
+                            <h4 class="media-heading">[!Com::RefCommande!]</h4>
+                            <span class="pull-right">[!Math::PriceV([!Com::MontantTTC!])!][!CurrentDevise::Sigle!]</span>
+                            Date: [DATE d/m/Y][!Com::DateCommande!][/DATE]<br />
+                    [SWITCH [!Com::getStatus()!]|=]
+                        [CASE 1]
+                            <span class="badge badge-danger">Le paiement n'est pas effectué.</span>
+                        [/CASE]
+                        [CASE 2]
+                            <span class="badge badge-protector">Un paiement est en attente de validation.</span>
+                        [/CASE]
+                        [CASE 3]
+                            <span class="badge badge-protector">Le paiement a echoué.</span>
+                        [/CASE]
+                        [CASE 4]
+                            <span class="badge badge-success">En cours d'expédition.</span>
+                        [/CASE]
+                        [CASE 5]
+                            <span class="badge badge-success">En cours de livraison.</span>
+                        [/CASE]
+                        [CASE 6]
+                            <span class="badge badge-success">Commande archivée.</span>
+                        [/CASE]
+                    [/SWITCH]
+                        </div>
+                    </a>
+                    [SWITCH [!Com::getStatus()!]|=]
+                        [CASE 1]
+                        <a class="btn btn-success btn-block" href="/[!Systeme::getMenu(Boutique/Commande/Etape4)!]?Com=[!Com::RefCommande!]&action=paiement">Payer ma commande</a>
+                        <a class="btn btn-danger btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]&action=annule">Annuler ma commande</a>
+                        <a class="btn btn-protector btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]">Modifier ma commande</a>
+                        [/CASE]
+                        [CASE 2]
+                        <a class="btn btn-success btn-block" href="/[!Systeme::getMenu(Boutique/Commande/Etape4)!]?Com=[!Com::RefCommande!]&action=paiement">Payer ma commande</a>
+                        <a class="btn btn-danger btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]&action=annule">Annuler ma commande</a>
+                        <a class="btn btn-protector btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]">Modifier ma commande</a>
+                        [/CASE]
+                        [CASE 3]
+                        <a class="btn btn-success btn-block" href="/[!Systeme::getMenu(Boutique/Commande/Etape4)!]?Com=[!Com::RefCommande!]&action=paiement">Payer ma commande</a>
+                        <a class="btn btn-danger btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]&action=annule">Annuler ma commande</a>
+                        <a class="btn btn-protector btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]">Modifier ma commande</a>
+                        [/CASE]
+                    [/SWITCH]
+                    </li>
+                [/LIMIT]
+            </ul>
 		</div>
 	[/STORPROC]
-	
-	
-	//AUTRES PANIERS
+    </div>
+
+
+    <!-- MODULE Block cart -->
+    <div class="block exclusive block_black">
+    //AUTRES PANIERS
 	[STORPROC [!Cli::getOtherPanier()!]|Com]
 		<h3 class="title_block"><a href="/[!Systeme::getMenu(Boutique/Commande/Etape1)!]" title="__VIEW_SHOPPING_CART__" rel="nofollow">
 			__OTHERS_CARTS__
@@ -155,20 +136,14 @@
 					</tr>
 					<tr class="panierligne">
 						<td colspan ="3"  class="SupprimerItem">
-							<div class="ValiderCommande"><a href="/[!Lien!]?Com=[!Com::RefCommande!]">Utiliser ce panier</a></div>
-							<div class="ValiderCommande"><a href="/[!Lien!]?Com=[!Com::RefCommande!]&action=annule">Supprimer ce panier</a></div>
+							<a  class="btn btn-protector btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]">Utiliser ce panier</a>
+							<a  class="btn btn-danger btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]&action=annule">Supprimer ce panier</a>
 						</td>
 					</tr>
 					[/LIMIT]
 			</table>
 		</div>
 	[/STORPROC]
-		<div id="cart_block_list" class="expanded">
-			<p id="cart-buttons">
-				<a href="/[!Systeme::getMenu(Boutique/Commande/Etape1)!]" class="button exclusive" title="__VIEW_SHOPPING_CART__" rel="nofollow">__MY_CART__</a>
-				<a href="/[!Systeme::getMenu(Boutique/Commande/Etape2)!]" id="button_order_cart" class="button exclusive" title="Checkout" rel="nofollow"><span></span>__CHECKOUT__</a>
-			</p>
-		</div>
 	</div>
 	<!-- /MODULE Block cart -->
 </form>

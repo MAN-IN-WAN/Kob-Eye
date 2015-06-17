@@ -1,0 +1,6 @@
+/* Block specials */
+
+  .carousel-control{
+	z-index:10
+}
+#leorelatedcarousel{margin: 0;}

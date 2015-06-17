@@ -69,9 +69,10 @@ class BoutiqueTypePaiementPayPlug extends Plugin implements BoutiqueTypePaiement
 	}
 
 	public function serveurAutoResponse( $paiement, $commande ) {
-		if (!isset($_SERVER['PAYPLUG-SIGNATURE'])) return false;
-		Klog::l('[PAYPLUG] Autoresponse');
+        Klog::l('[PAYPLUG] Autoresponse',$_SERVER);
+		if (!isset($_SERVER['HTTP_PAYPLUG_SIGNATURE'])) return false;
 		//chargement de la configuration
+        Klog::l('[PAYPLUG] Signature OK');
 		try {
 			$parameters = Payplug::loadParameters($this->Params['USER_EMAIL'], $this->Params['USER_PASSWORD'], (boolean)$this->Params['TEST_MODE']);
 			Payplug::setConfig($parameters);
@@ -104,7 +105,8 @@ class BoutiqueTypePaiementPayPlug extends Plugin implements BoutiqueTypePaiement
 	}
 
 	public function retrouvePaiementEtape4s() {
-		if (!isset($_SERVER['PAYPLUG-SIGNATURE'])) return false;
+        Klog::l('[PAYPLUG] Autoresponse');
+		if (!isset($_SERVER['HTTP_PAYPLUG_SIGNATURE'])) return false;
 		Klog::l('[PAYPLUG] Retrouve Paiement');
 		//chargement de la configuration
 		try {

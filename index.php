@@ -6,11 +6,11 @@ define('ROOT_DIR', dirname(__FILE__).'/');
 if(filesize(ROOT_DIR.'Log/Systeme.log') > 1500000000) file_put_contents(ROOT_DIR.'Log/Systeme.log', '');
 
 // Ajout automatique des WWW si non local
-if (!preg_match("#^(.+)\.(.+)\.(.+)$#",$_SERVER["HTTP_HOST"],$Out) and $_SERVER["HTTP_HOST"] != 'localhost' and strpos($_SERVER["HTTP_HOST"], '.local') != strlen($_SERVER["HTTP_HOST"]) - 6){
+/*if (!preg_match("#^(.+)\.(.+)\.(.+)$#",$_SERVER["HTTP_HOST"],$Out) and $_SERVER["HTTP_HOST"] != 'localhost' and strpos($_SERVER["HTTP_HOST"], '.local') != strlen($_SERVER["HTTP_HOST"]) - 6){
 	header('Status: 301 Moved Permanently', false, 301);
 	header('Location: http://www.'.$_SERVER["HTTP_HOST"].$_SERVER['REQUEST_URI']);
 	exit();
-}
+}*/
 //Iteration du Chrono
 include('Class/Root.class.php');
 include('Class/Debug/Chrono.class.php');
@@ -66,9 +66,9 @@ $Chrono->stop("CLASS LOAD");
 
 function __autoload($className) {
 	$folder=Root::classFolder($className);
-	$GLOBALS["Chrono"]->start("Lazy load ".$className);
+	//$GLOBALS["Chrono"]->start("Lazy load ".$className);
 	if($folder) require_once($folder.'/'.$className.'.class.php');
-	$GLOBALS["Chrono"]->stop("Lazy load ".$className);
+	//$GLOBALS["Chrono"]->stop("Lazy load ".$className);
 }
 //Gestion des requetes d'autorisations. OPTIONS
 if($_SERVER['REQUEST_METHOD'] == "OPTIONS"){

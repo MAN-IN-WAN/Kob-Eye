@@ -1061,7 +1061,7 @@ class Sys extends Root{
 		foreach (Sys::$Modules as $Key=>$Mod){
 			if ($Mod->SchemaLoaded) {Sys::$Modules[$Key]->Db->close();}
 		}
-		if (is_object($this->Db[0])) $this->Db[0]->query("COMMIT");
+//		if (is_object($this->Db[0])) $this->Db[0]->query("COMMIT");
 		//Mise a jour des connexions
 		if (is_object($this->Connection))$this->Connection->close();
 		$this->Log->log("---------------------------------------- CLOSE----------------------------------------");

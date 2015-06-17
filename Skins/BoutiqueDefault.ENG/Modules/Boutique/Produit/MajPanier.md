@@ -14,10 +14,10 @@
 // Valider ou modifier ma commande
 [IF [!Action!]=Modifier ma commande]
 	[!Panier::setUnValid!]
-	[REDIRECT]Boutique/Commande/Etape1[/REDIRECT]
+	[REDIRECT][!Sys::getMenu(Boutique/Commande/Etape1)!][/REDIRECT]
 [/IF]
 [IF [!Action!]=Valider ma commande]
-	[REDIRECT]Boutique/Commande/Etape2[/REDIRECT]
+	[REDIRECT][!Sys::getMenu(Boutique/Commande/Etape2)!][/REDIRECT]
 [/IF]
 
 // Ajout au panier
@@ -28,23 +28,8 @@
 	//[IF [!Prod::GetColisage()!]][!Qte*=[!Prod::GetColisage()!]!][/IF]
 	[!T:=[!Cli::ajouterAuPanier([!Reference!],[!Qte!],[!config!],[!options!])!]!]
 
-	// en commentaires pour rester sur la fiche et ne pas aller sur le panier
-	//	[IF [!T!]]
-	//		[REDIRECT][!Systeme::getMenu(Boutique/Commande/Etape1)!][/REDIRECT]
-	//	[ELSE]
-	//		[REDIRECT][!Lien!][/REDIRECT]
-	//	[/IF]
-
 [/IF]
 
-// je recalcule systématiquement
-[IF [!Continue!]||[!Valider!]||[!Recalcul!]]
-	[STORPROC [!Panier::LignesCommandes!]|Pan]
-		// Changement de la quantité
-		[!refObj:=[!Pan::getReference()!]!]
-		[!Cli::ajusterQtePanier([!Pan::Reference!],[!Qte[!refObj::Id!]!])!]
-	[/STORPROC]
-[/IF]
 // Enlever du panier
 [IF [!Sup!]]
 	[STORPROC [!Sup!]|S]
@@ -64,15 +49,17 @@
 	[SWITCH [!action!]|=]
 		[CASE paiement]
 			[!Cli::switchCommande([!Com!])!]
-			[REDIRECT]Boutique/Commande/Etape4[/REDIRECT]
+			[REDIRECT][!Sys::getMenu(Boutique/Commande/Etape4)!][/REDIRECT]
 		[/CASE]
 		[CASE annule]
-			[!Cli::cancelCommande([!Com!])!]
-			[REDIRECT]Boutique/Commande/Etape4[/REDIRECT]
+			//[!Cli::cancelCommande([!Com!])!]
+			[REDIRECT][!Sys::getMenu(Boutique/Commande/Etape4)!][/REDIRECT]
 		[/CASE]
 		[DEFAULT]
 			[!Cli::switchCommande([!Com!])!]
-			[REDIRECT][!Lien!][/REDIRECT]
-		[/DEFAULT]
-	[/SWITCH]
-[/IF]
+			[REDIRECT][!Lien!][/REDIRECT]+-
+        -
+
+        -
+        -
+        ----------------------------------------------------------

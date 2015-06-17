@@ -45,7 +45,7 @@
 [/IF]
 <div class="CommandeEtape5">
 	<div class="row-fluid"><div class="span12">
-		<h2>
+		<h2 class="title_block">
 			[IF [!Mag::EtapePaiement!]]
 				[IF [!P::Etat!]=0]Commande [!CDE::RefCommande!] prise en compte - En attente de paiement[/IF]
 				[IF [!P::Etat!]=4]Commande [!CDE::RefCommande!] prise en compte - En attente de paiement[/IF]

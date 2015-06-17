@@ -258,29 +258,26 @@ Class Condition extends Beacon{
 		return "";
 	}
 	function Generate($Skin=false) {
-		// 		var_dump($this);
-		// 		$this->Vars = preg_replace('#\[!([\w\W\s]*?)!\]#e','$Process->processVars("\1")' , $this->Vars);
-//		$this->Vars = Process::processingVars($this->Vars);
-//		$this->Vars = Parser::PostProcessing($this->Vars);
 		if ($this->Beacon=="IF") {
-			$this->ChildObjects=$this->getIf($this->Vars,$this->ChildObjects);
+			$ChildObjects=$this->getIf($this->Vars,$this->ChildObjects);
 		}else{
-			$this->ChildObjects=$this->getSwitch($this->Vars,$this->ChildObjects);
+			$ChildObjects=$this->getSwitch($this->Vars,$this->ChildObjects);
 		}
-		$this->generateObjects($Skin);
-	}
-
-	function generateObjects($Skin=false) {
+        $this->Data='';
 		//On propage la generatio nuniquement aux objets concern�s
-		for ($i=0;$i<sizeof($this->ChildObjects);$i++) {
-			if (isset($this->ChildObjects[$i])&&is_object($this->ChildObjects[$i])) {
-				$this->ChildObjects[$i]->Generate($Skin);
+		for ($i=0;$i<sizeof($ChildObjects);$i++) {
+            $tmp='';
+			if (isset($ChildObjects[$i])&&is_object($ChildObjects[$i])) {
+				$ChildObjects[$i]->Generate($Skin);
+                $tmp = $ChildObjects[$i]->Affich();
 			}else {
-				if (isset($this->ChildObjects[$i])){
-					$this->ChildObjects[$i] = Process::processingVars($this->ChildObjects[$i]);
-					$this->ChildObjects[$i] = Parser::PostProcessing($this->ChildObjects[$i]);
+				if (isset($ChildObjects[$i])){
+                    $tmp = $ChildObjects[$i];
+                    $tmp = Process::processingVars($tmp);
+                    $tmp = Parser::PostProcessing($tmp);
 				}
 			}
+            $this->Data.=$tmp;
 		}
 	}
 
@@ -321,16 +318,7 @@ Class Condition extends Beacon{
 
 	//Fonction Affichage du List Box Derniere Fonction a executer
 	function Affich() {
-		$Data = "";
-		//Le contenu du fichier retravaill�
-		/*		if (sizeof ($this->PostObjects)){
-		$PostData = $this->PostObjects[0]->Affich();
-		$Data = str_replace("[-0-]",$this->ChildData,$PostData);
-		}else{
-		$Data = $this->ChildData;
-		}*/
-		$Data = Parser::getContent($this->ChildObjects);
-		return $Data;
+		return $this->Data;
 	}
 
 

@@ -455,7 +455,7 @@ class Client extends genericClass {
 	 * @return	Commande payée ou false
 	 */
 	public function getLastCommande() {
-		$C = $this->storproc('Boutique/Client/'.$this->Id.'/Commande/Valide=1',false,0,1,'DESC','Id');
+		$C = $this->storproc('Boutique/Client/'.$this->Id.'/Commande/Valide=1',false,0,1,'DESC','DateCommande');
 		if (is_array($C)&&is_array($C[0])) return genericClass::createInstance('Boutique',$C[0]);
 		else return false;
 	}

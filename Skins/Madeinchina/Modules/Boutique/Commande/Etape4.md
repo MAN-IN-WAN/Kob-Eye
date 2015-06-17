@@ -266,14 +266,14 @@
 				<div class="row-fluid"><div class="offset7 span5">
 					<table class="table  table-bordered  ModeDePaiement">
 						<tr>
-							<th  colspan="3">Mode de paiement</th>
+							<th  colspan="3">Mode de paiement</ypth>
 						</tr>
 						[STORPROC Boutique/TypePaiement/Actif=1|MP|||Ordre|ASC]	
 							<tr>
 								<td style="border-right:none;">
-									<span class="NomPaiement">[!MP::Nom!]</span>
-									[IF [!MP::Description!]!=]
-										<span class="DescPaiement"><br />[!MP::Description!]</span>
+									<span class="NomPaiement"><b>[!MP::Nom!]</b></span>
+									[IF [!MP::Information!]!=]
+										<span class="DescPaiement"><br />[!MP::Information!]</span>
 									[/IF]
 								</td>
 								//<td >[IF [!MP::Logo!]!=]<img src="/[!MP::Logo!]" title="[!MP::Nom!]" alt="[!MP::Nom!]" >[/IF]</td>
@@ -291,10 +291,10 @@
 			</div></div>
 			<div class="row-fluid LigneBoutons"><div class="span12">
 				<div class="pull-right">
-					<input type="submit" class="button ConfirmerPaiement" name="ConfirmerPaiement" value="Je confirme mon paiement" />
+					<input type="submit" class="btn btn-success" name="ConfirmerPaiement" value="Je confirme mon paiement" />
 				</div>
 				<div class="pull-right">
-					<input type="submit" class="button ModifierCommande" name="ModifierCommande" value="Je modifie ma commande" />
+					<input type="submit" class="btn btn-protector" name="ModifierCommande" value="Je modifie ma commande" />
 				</div>
 			</div></div>
 	
@@ -331,14 +331,14 @@
 			})
 			.done(function(json,text){
 				//Montant reduction 
-				json.ReducMontant = setPrice(json.ReducMontant);
+				//json.ReducMontant = setPrice(json.ReducMontant);
 				if (json.PortOffert) json.ReducMontant =Math.round([!BLivr::MontantLivraisonTTC!]*100)/100 ;
 
 				if(json.ReducOk) {
 					t = source;
 					toastr.success(json.Message+': '+json.ReducDesc);
 					$("#labelport").text( json.ReducDesc );
-					$("#valport").text( "- " + json.ReducMontant +" €");
+					$("#valport").text( "- " + setPrice(json.ReducMontant) +" €");
 					$("#ReductionOffreSpeciale").css('display','table-row');
 				}
 				else {
@@ -347,10 +347,10 @@
 				}
 
 				//Mise a jour du total
-				total = parseFloat("[!MontantTotalCde!]");
+				total = parseFloat("[!Panier::MontantTTC!]");
 				// ne sert plus car on met à jour reducmontant au dessus
 				if(json.PortOffert) {
-					total = [!Panier::MontantTTC:-[!Panier::Remise!]!];
+					total = parseFloat('[!Panier::MontantTTC:-[!Panier::Remise!]!]');
 				}else {
 					total = total - parseFloat(json.ReducMontant);
 				}

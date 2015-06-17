@@ -86,6 +86,7 @@ class Facture extends genericClass {
 		$err = '';
 		$files = array();
 		$fps = array();
+
 		$fin += 86400;
 		$facs = Sys::getData('Boutique',"Facture/tmsCreate>=$deb&tmsCreate<$fin",0,99999,'ASC','tmsCreate');
 		foreach($facs as $fac) {

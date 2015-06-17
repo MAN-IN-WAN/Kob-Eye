@@ -1,0 +1,104 @@
+/* Special style for block cart*/
+#block_cart_collapse,
+#block_cart_expand{
+	background: url("img/shopping-cart.png") no-repeat scroll 0 center transparent;
+    cursor: pointer;
+    float: right;
+    height: 30px;
+    margin-top: 8px;
+    width: 30px;
+}
+#left_column #cart_block, #right_column #cart_block {
+}
+#header  #cart_block .title_block, #header  #cart_block h4 {
+	display: none;
+}
+#header #cart_block {
+}
+#cart_block.cart_block_hover {display:block}
+#cart_block .title_block  span, #header  #cart_block h4 {
+}
+
+#cart_block  .block_content #cart-buttons {text-align: right;}
+#cart_block  .block_content #cart-buttons * {font-size: 14px;}
+#cart_block  .block_content p {margin-left: 15px; margin-right: 10px;}
+#cart_block  .block_content {padding: 10px 0 10px;}
+#cart_block  .block_content *{color: #6e6f70; padding :5px;}
+
+#cart_block #cart_block_summary {display:none;padding: 0 10px;}
+#cart_block .quantity-formated {
+	display:inline-block;
+	min-width:18px;
+}
+#cart_block .cart_block_product_name {}
+#cart_block .remove_link {
+	float:right;
+	display:inline-block;
+	margin:1px 0 0 5px;
+	height:12px;
+	width:12px
+}
+#cart_block .remove_link a {
+	display:inline-block;
+	height:12px;
+	width:12px;
+	background: url(img/icon/delete.gif) no-repeat 0 0
+}
+#cart_block .price {
+	float:right;
+	font-size: 12px;
+}
+
+#cart_block #cart_block_list dl {
+	padding: 0 10px 10px;
+	border-bottom: 1px dashed #535557;
+}
+#cart_block #cart_block_list dt {padding:4px 0}
+#cart_block #cart_block_list dt {font-weight:normal}
+#cart_block #cart_block_list dd {
+	margin-left:20px
+}
+
+#cart_block #cart-prices .price_detail{padding: 8px 20px;border-bottom: 1px dashed #535557;}
+#cart_block #cart-prices {
+	
+    margin-bottom: 10px;
+	font-size: 12px;
+}
+#cart_block #cart-prices .cart-prices-block{padding: 5px 0;}
+#cart_block #cart_block_shipping_cost,
+#cart_block #cart_block_total {
+	float:right
+}
+#cart_block #cart_block_shipping_cost {}
+
+#cart_block #cart-buttons .button_small {
+	background-position: 0 -27px;
+    border-color: #D6513F;
+}
+#cart_block #cart-buttons  #button_order_cart {
+	margin-left: 2px;
+}
+#cart_block #cart-buttons  #button_order_cart span {}
+#cart_block table#vouchers {
+	clear: both;
+	width:100%
+}
+#cart_block table#vouchers tr td{
+	padding: 2px;
+}
+#cart_block table#vouchers tr td.quantity{
+	margin-right:5px;
+	min-width:18px
+}
+#cart_block table#vouchers tr td.delete{
+	padding-left: 0;
+	padding-right: 0;
+	text-align: right;
+	width: 15px;
+}
+
+.sidebar .block.block_black {
+background: #3b3c3e;
+color: #dddede;
+}

@@ -8,6 +8,7 @@ class Boutique extends Module {
     static $_Client;
     static $_Magasin;
     static $_Devise;
+    static $_Categories;
 
 
     function init (){
@@ -58,9 +59,14 @@ class Boutique extends Module {
 			
 		}
 
+        //initialisation de la tva
 		Boutique::initTableauTva();
 
-
+        //initialisation dee cache des categories
+        /*$cats = Sys::getData('Boutique','Categorie/*');
+        $cats = StorProc::sortRecursivResult($cats,"Categories");
+        $cats = Root::quickSort($cats,"Ordre");
+        Boutique::$_Categories = $cats;*/
 	}
 	/**
 	 * Modification des données de la skin dans le cas ou un utilisateur se connecte sur un magasin

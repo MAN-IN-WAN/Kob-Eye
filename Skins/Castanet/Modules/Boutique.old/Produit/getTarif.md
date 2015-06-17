@@ -1,0 +1,23 @@
+[STORPROC [!Query!]|Prod|0|1][/STORPROC]
+// calcule le prix du produit dans une variable [!LePrix!]
+
+[!Req:=[!Query!]/Reference/!]
+[STORPROC [!Query!]/Attribut|Att]
+	[IF [!Pos!]>1][!Req+=&!][/IF]
+	[!Req+=Declinaison.DeclinaisonId([!P[!Prod::Id!]A[!Att::Id!]!])!]
+[/STORPROC]
+[STORPROC [!Req!]|Ref|0|1][/STORPROC]
+
+// ajout md : ajout idref en vu de chgt pour travailler sur id, non fait dans les class
+
+
+{
+	"price":"[!Ref::getTarif([!quantite!])!]",
+	"stock":"Ok",
+	"reference":"[!Ref::Reference!]",
+	"idreference":"[!Ref::Id!]",
+	"attribut":"[!Att::Id!]",
+	"StockAvailable":"[IF [!Ref::Quantite!]>=[!quantite!]]1[ELSE]0[/IF]",
+	"promo":"[!Prod::GetPromo!]",
+	"QTE":"[!quantite!]"
+}

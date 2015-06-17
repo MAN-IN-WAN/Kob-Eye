@@ -36,6 +36,9 @@
 //VARIABLES
 //[IF [!Var!]!=][ELSE][!Var:=[!Prefixe!][!TypeEnf!]!][/IF]
 //SELECTION
+
+
+
 [IF [!Type!]=Select]
 	[IF [![!Var!]!]!=]
 		//On doit comparer les champs precedement selectionner et les champs deselectionner
@@ -109,7 +112,7 @@
 			<div>Racine</div>
 		[/BLOC]
 	[/IF]
-	[MODULE Systeme/Interfaces/Arborescence/RecursivArbo?Niveau=[!Niveau!]&Chemin=[!Chemin!]&TypeEnf=[!Che::TypeChild!]&Requete=[!Requete!]&Visit[!TypeEnf!]=[!Visit[!TypeEnf!]!]&Prefixe=[!Prefixe!]&PrefixeVar=[!PrefixeVar!]&Inter=[!Inter!]&Check=[!Check!]&Type=[!Type!]&Objet=[!!]|GLOBAL]
+    [MODULE Systeme/Interfaces/Arborescence/RecursivArbo?Niveau=[!Niveau!]&Chemin=[!Chemin!]&TypeEnf=[!Che::TypeChild!]&Requete=[!Requete!]&Visit[!TypeEnf!]=[!Visit[!TypeEnf!]!]&Prefixe=[!Prefixe!]&PrefixeVar=[!PrefixeVar!]&Inter=[!Inter!]&Check=[!Check!]&Type=[!Type!]&Objet=[!!]|GLOBAL]
 	[STORPROC [![!Var!]Tab!]|C]
 		[!T:=1!]
 		[STORPROC [!TabFirst!]|D][IF [!C!]=[!D!]][!T:=0!][/IF][/STORPROC]

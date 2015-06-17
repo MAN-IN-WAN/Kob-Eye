@@ -1,0 +1,13 @@
+[HEADER CSS]/Tools/Css/Bootstrap/3.0/css/bootstrap.min.css[/HEADER]
+[HEADER CSS]/Tools/Css/Bootstrap/3.0/css/bootstrap-theme.min.css[/HEADER]
+[HEADER JS]/Tools/Css/Bootstrap/3.0/js/bootstrap.min.js[/HEADER]
+
+<div class="container-fluid">
+    <h1>Interface Formateur</h1>
+    <button class="btn btn-primary" type="button">
+        Utilisateurs connectés <span class="badge">18</span>
+    </button>
+    <button class="btn btn-danger" type="button">
+        Arrêt de la session
+    </button>
+</div>

@@ -521,14 +521,16 @@ class Connection extends Root{
 			$User = $Tab;
 		}else{
 			//C est un int
-			$Result = Sys::$Modules["Systeme"]->callData("Systeme/User/".$Tab);
-			if (!$Result) KError::fatalError("L'utilisateur par défaut est introuvable. Veuillez modifier la configuration.");
-			$User = genericClass::createInstance("Systeme",$Result[0]);
-			$User = $User;
+            $User = Sys::getOneData('Systeme', 'User/'.$Tab);
+			if (!$User){
+                KError::fatalError("L'utilisateur par défaut est introuvable. Veuillez modifier la configuration.");
+                die("L'utilisateur par défaut est introuvable. Veuillez modifier la configuration.");
+                $User = genericClass::createInstance('Systeme','User');
+            }
 		}
 		$User->Public=0;
 		$User->initUserVars();
-		
+
 		//PGF Sys::$User = $User;
 		return $User;
 	}

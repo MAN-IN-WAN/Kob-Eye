@@ -127,6 +127,9 @@ ul, ol {
 li{
     line-height: 14px;
 }
+h1, h2, h3 {
+    line-height: 16px;
+}
 .clear
 .clearfix:after{
     clear: both;
@@ -214,7 +217,7 @@ li{
 }
 body{
     font-family: 'calibri', Arial, Verdana, sans-serif;
-    font-size: 12px;
+    font-size: 14px;
     color: #6e6f70;
     background: url(../img/default/bg-body.jpg) repeat 0 0 #ededed;
 }
@@ -503,9 +506,9 @@ table.table_block td{
     background-color: #f1f1f1;
     background-image: url(../img/default/bullet-hover.png);
 }
-.sidebar .block .block_content ul li a{
+/*.sidebar .block .block_content ul li a{
     padding: 10px 25px;
-}
+}*/
 .sidebar .products_block .block_content ul li{
     background: none;
     width: 100%;
@@ -3306,9 +3309,9 @@ ul#footer_links li{
 #cart_block .block_content{
     padding: 10px 0 10px;
 }
-#cart_block .block_content *{
+/*#cart_block .block_content *{
     color: #dddede;
-}
+}*/
 #cart_block #cart_block_summary{
     display: none;
     padding: 0 10px;
@@ -6474,12 +6477,6 @@ table.table_block td{
     background-color: #f1f1f1;
     background-image: url(../img/default/bullet-hover.png);
 }
-.sidebar .block .block_content ul li a{
-    padding: 10px 10px;
-}
-.sidebar .block .block_content ul li ul li a{
-    padding: 10px 25px;
-}
 .sidebar .products_block .block_content ul li{
     background: none;
     width: 100%;
@@ -8805,11 +8802,9 @@ ul#footer_links li{
     margin-right: 10px;
 }
 #cart_block .block_content{
-    padding: 10px 0 10px;
+    padding: 10px;
 }
-#cart_block .block_content *{
-    color: #dddede;
-}
+
 #cart_block #cart_block_summary{
     display: none;
     padding: 0 10px;
@@ -14093,7 +14088,7 @@ img.jqzoom{
     font-size: 13px;
 }
 #cart-buttons{
-    padding: 4px;
+    padding: 5px;
 }
 #fancybox-loading{
     position: fixed;
@@ -14545,4 +14540,14 @@ a.SitemapLvl2{
 .nav-collapse.collapse {
     height: 0px;
     overflow: hidden;
+}
+.sidebar .block .block_content ul li a.pull-left {
+    width: 100%;
+}
+
+input#add_to_cart{
+    color: white;
+}
+input#add_to_cart:hover{
+    background-color: #028342;
 }

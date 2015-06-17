@@ -263,10 +263,10 @@
 			</div>
 			<div class="row-fluid LigneBoutons"><div class="span12">
 				<div class="pull-right">
-					<input type="submit" class="button btn-red ValiderCommande" name="ValiderCommande" value="Je valide ma commande" />
+					<input type="submit" class="btn btn-success " name="ValiderCommande" value="Je valide ma commande" />
 				</div>
 				<div class="pull-right">
-					<input type="submit" class="button ModifierCommande" name="ModifierCommande" value="Je modifie ma commande" />
+					<input type="submit" class="btn btn-protector" name="ModifierCommande" value="Je modifie ma commande" />
 				</div>
 			</div></div>
 	

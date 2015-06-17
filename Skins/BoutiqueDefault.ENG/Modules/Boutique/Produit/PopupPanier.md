@@ -28,10 +28,7 @@
 	//recupération de la dernière ligne commande ajoutée
 	[!Panier:=[!Cli::getPanier()!]!]
 	[!LC:=[!Panier::getLastOrderLine()!]!]
-	[!Limage:=[!P::Image!]!]
-	[IF [!Re::Image!]!=]
-		[!Limage:=[!Re::Image!]!]
-	[/IF]
+	[!Limage:=[!Prod::Image!]!]
 	<div class="PopupPanier">
 		<div class="table-responsive">
 			<table class="table">
@@ -39,7 +36,7 @@
 					<h3>Vous venez d'ajouter dans votre panier le(s) produit (s) :</h3>
 				</td></tr>
 				<tr>
-					<td style="width:215px;"><img src="/[!Limage!].mini.235x191.jpg"  alt="[!Utils::noHtml([!P::Description!])!]" class="img-responsive" /></td>
+					<td style="width:215px;"><img src="/[!Limage!].limit.235x1000.jpg"  alt="[!Utils::noHtml([!P::Description!])!]" class="img-responsive" /></td>
 					<td class="BlocPanier">
 						<div class="NomTarif">
 							<h2>[!P::Nom!]</h2><div class="Tarif">[!Math::PriceV([!LC::MontantTTC!])!] [!CurrentDevise::Sigle!]</div>
@@ -56,12 +53,12 @@
 				</tr>
 				<tr>
 					<td colspan="2" style="border:none;" >
-						<a class="btn btn-red pull-right" id="MonPanier" href="/[!Systeme::getMenu(Boutique/Commande/Etape1)!]" >VOIR MON PANIER</a> 
+						<a class="btn btn-protector pull-right" id="MonPanier" href="/[!Systeme::getMenu(Boutique/Commande/Etape1)!]" >VOIR MON PANIER</a>
 					</td>
 				</tr>
 				<tr>
 			<td colspan="2"style="border:none;" > 
-			    <a class="btn btn-gris pull-right" id="ContinuAchat" href="/[!P::getUrl()!]">CONTINUER MES ACHATS</a>
+			    <a class="btn btn-protector pull-right" id="ContinuAchat" href="[!P::getUrl()!]">CONTINUER MES ACHATS</a>
 			</td>
 		    </tr>
 			</table>

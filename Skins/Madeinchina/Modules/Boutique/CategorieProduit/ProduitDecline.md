@@ -356,7 +356,7 @@
                                                                                         </div>
                                                                                         <span class="online_only"></span>
                 
-                                                                                        <a class="button ajax_add_to_cart_button exclusive" rel="ajax_id_product_1" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=cart&add=&id_product=1&token=c72340620966cb9ae8dcccbd3dd03a3b" title="__ADD_TO_CART__">__ADD_TO_CART__</a>
+                                                                                        <a class="button ajax_add_to_cart_btn btn-protector" rel="ajax_id_product_1" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=cart&add=&id_product=1&token=c72340620966cb9ae8dcccbd3dd03a3b" title="__ADD_TO_CART__">__ADD_TO_CART__</a>
                 
                                                                                 </div>
                 <!--

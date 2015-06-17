@@ -1,0 +1,863 @@
+#product-detail {
+}
+#product-detail .row-fluid > div {
+	margin-bottom: 15px;
+	overflow: hidden
+}
+#pb-right-column {
+	float: left
+}
+#pb-right-column #image-block {
+	position: relative;
+	border-bottom: 1px solid #d2d2d2
+}
+#pb-right-column .images-block {
+	border: 1px solid #d2d2d2;
+	border-left: 0;
+	border-top: 0;
+	text-align: center
+}
+#pb-right-column #image-block img {
+}
+#pb-right-column #image-block #view_full_size {
+	display: block;
+	cursor: pointer
+}
+#pb-right-column #image-block #view_full_size .span_link {
+	position: absolute;
+	bottom: 10px;
+	left: 20%;
+	display: block;
+	/*padding: 0 12px 0 30px;*/
+	line-height: 20px;
+	color: #fff;
+	text-shadow: 0 1px 0 #000;
+	text-align: center;
+	text-transform: uppercase;
+	/*background-image: url(http://demo4leotheme.com/prestashop/leo_beauty_store/themes/leobeau/css/../img/icon/zoom.png);*/
+	background-repeat: no-repeat;
+	background-position: 10px 2px;
+	background-color: #000;
+	background-color: rgba(0,0,0,0.5);
+	border-radius: 12px;
+	-moz-border-radius: 12px;
+	-webkit-border-radius: 12px;
+	width: 150px
+}
+#pb-right-column #image-block #view_full_size .span_link img {
+	position: relative;
+	top: 3px;
+	left: -3px;
+	border: none;
+	padding-right: 2px
+}
+#pb-right-column #views_block {
+	margin: 0 auto;
+	width: 100%;
+	position: relative;
+	overflow: hidden
+}
+#thumbs_list {
+	float: left;
+	overflow: hidden;
+	padding: 7px 0;
+	width: 215px;
+	margin-left: 15px
+}
+#thumbs_list ul#thumbs_list_frame {
+	list-style-type: none;
+	padding-left: 0
+}
+#thumbs_list li {
+	float: left;
+	height: 60px;
+	width: 70px;
+	cursor: pointer
+}
+#thumbs_list li img {
+	margin: 0 10px;
+	border: 1px solid transparent
+}
+span.view_scroll_spacer {
+}
+.scroll_lr {
+	border-left: 1px solid #D2D2D2;
+	float: right;
+	height: 74px;
+	overflow: hidden;
+	width: 25px;
+	position: absolute;
+	right: 0
+}
+#view_scroll_left, #view_scroll_right {
+	background-image: url("/Skins/Paranature/img/default/bt-next-prev.png");
+	background-repeat: no-repeat;
+	float: left;
+	height: 50%;
+	overflow: hidden;
+	padding: 0;
+	text-indent: -3000em;
+	width: 100%;
+	display: inline !important;
+	opacity: 1 !important
+}
+#view_scroll_left {
+	background-position: center 11px
+}
+#view_scroll_right {
+	background-color: #e7e7e7;
+	background-position: center -31px
+}
+.resetimg {
+	padding: 10px 0 0
+}
+#usefull_link_block {
+	list-style-type: none;
+	margin-right: 15px;
+	padding: 10px 0
+}
+#usefull_link_block li {
+	display: inline;
+	margin-left: 5px;
+	padding: 2px 0
+}
+#usefull_link_block li.print {
+	padding-left: 20px;
+	background: url(http://demo4leotheme.com/prestashop/leo_beauty_store/themes/leobeau/css/../img/icon/print.gif) no-repeat 0 0
+}
+#usefull_link_block li.sendtofriend {
+	padding-left: 20px;
+	background: url(http://demo4leotheme.com/prestashop/leo_beauty_store/themes/leobeau/css/../img/icon/send_friend.gif) no-repeat 0 0
+}
+#usefull_link_block li#left_share_fb {
+	padding-left: 20px;
+	background: url(http://demo4leotheme.com/prestashop/leo_beauty_store/themes/leobeau/css/../img/icon/picto_fb.png) no-repeat 0 0
+}
+#pb-left-column {
+	float: left
+}
+#pb-left-column h1 {
+	border-bottom: 1px solid #D2D2D2;
+	font-size: 18px;
+	margin: 10px 0 0;
+	padding-bottom: 10px
+}
+#pb-left-column #short_description_block h3 {
+}
+#pb-left-column #short_description_block {
+	color: #666;
+	margin-bottom: 15px
+}
+#pb-left-column #short_description_block .buttons_bottom_block {
+	display: none
+}
+#pb-left-column #buy_block {
+	border: medium none;
+	margin: 0;
+	padding: 0 15px 0 0;
+	background: transparent
+}
+#buy_block p {
+	padding-bottom: 10px
+}
+#pb-left-column #buy_block label {
+	display: inline-block;
+	width: 30%;
+	font-weight: 700;
+	font-size: 12px;
+	text-align: right
+}
+.short_description_pack {
+	display: none
+}
+#pb-left-column #color_picker p {
+	padding-bottom: 5px;
+	font-weight: 700
+}
+#attributes fieldset {
+	border: medium none;
+	margin: 0;
+	padding: 0
+}
+#attributes fieldset label {
+	vertical-align: top
+}
+#attributes .attribute_list {
+	display: inline-block;
+	width: 68%
+}
+.attribute_list #color_to_pick_list {
+	list-style-type: none;
+	width: 100%
+}
+.attribute_list #color_to_pick_list li {
+	float: left;
+	margin: 0 8px 8px 0;
+	padding: 1px;
+	border: 1px solid #ccc
+}
+.attribute_list #color_to_pick_list li.selected {
+	border: 1px solid #000
+}
+.attribute_list #color_to_pick_list a.color_pick {
+	display: block;
+	height: 15px;
+	width: 15px
+}
+.product_attributes {
+	padding: 10px 0 0
+}
+#attributes select {
+	width: 120px;
+	border: 1px solid #cdcdcd
+}
+#quantity_wanted_p input {
+	border: 1px solid #CDCDCD;
+	border-radius: 4px 4px 4px 4px;
+	box-shadow: 0 0 10px #DDDDDD inset;
+	width: 45px
+}
+#availability_statut {
+	margin: 10px 0 0 0
+}
+#availability_statut span#availability_label {
+	display: inline-block;
+	width: 125px;
+	font-weight: 700;
+	font-size: 12px;
+	text-align: right
+}
+#availability_statut #availability_value {
+	background-color: green;
+	color: #ffffff;
+	text-shadow: none;
+	padding: 0 10px;
+	text-transform: uppercase;
+	font-size: 10px;
+	font-weight: bold;
+	display: inline
+}
+#availability_statut #availability_value.warning_inline {
+	background-color: #9B0000
+}
+.content_prices * {
+	display: inline
+}
+.content_prices {
+	background: none repeat scroll 0 0 #F4F4F4;
+	border: 1px solid #D2D2D2;
+	line-height: 28px;
+	padding: 10px;
+	text-align: right;
+}
+#buy_block p.price {
+	padding: 0
+}
+.discount {
+	display: none
+}
+#buy_block p#old_price {
+	padding-bottom: 15px;
+	font-size: 14px;
+	text-decoration: line-through;
+	margin-left: 10px
+}
+.our_price_display {
+}
+#reduction_percent, #reduction_amount {
+	background: url("http://demo4leotheme.com/prestashop/leo_beauty_store/themes/leobeau/css/../img/bg_reduction.png") no-repeat scroll 0 0 transparent;
+	color: #FFFFFF;
+	display: inline-block;
+	font-size: 12px;
+	font-weight: 700;
+	margin-left: 10px;
+	padding: 0 0 0 10px
+}
+#reduction_percent span, #reduction_amount span {
+	display: block;
+	padding: 1px 5px 1px 0;
+	background: url(http://demo4leotheme.com/prestashop/leo_beauty_store/themes/leobeau/css/../img/bg_reduction.png) no-repeat 100% 0 transparent;
+	line-height: 16px
+}
+#buy_block p.online_only {
+	font-weight: 700;
+	font-size: 11px;
+	color: #900;
+	text-align: left;
+	text-transform: uppercase;
+	margin-right: 5px
+}
+.content_prices #add_to_cart {
+	position: relative;
+	float: right;
+	padding-bottom: 0
+}
+.content_prices #add_to_cart .exclusive, .content_prices #add_to_cart .exclusive_disabled {
+	background: none repeat scroll 0 0 transparent;
+	border: medium none;
+	border-radius: 0 0 0 0;
+	margin: 0;
+	padding: 0 0 4px
+}
+.ie9 .content_prices #add_to_cart .exclusive, .ie9 .content_prices #add_to_cart .exclusive_disabled, .ie8 .content_prices #add_to_cart .exclusive, .ie8 .content_prices #add_to_cart .exclusive_disabled, .ie7 .content_prices #add_to_cart .exclusive, .ie7 .content_prices #add_to_cart .exclusive_disabled {
+	padding: 8px 7px 4px 15px;
+	line-height: 12px
+}
+:first-child+ html .content_prices #add_to_cart .exclusive {
+	padding: 4px 3px 4px 11px
+}
+.content_prices #add_to_cart span {
+}
+.buttons_bottom_block {
+	clear: both
+}
+.buttons_bottom_block #wishlist_button {
+}
+#send_friend_form {
+}
+#send_friend_form h2 {
+	padding: 8px 11px;
+	font-size: 12px;
+	color: #fff;
+	text-shadow: 0 1px 0 #000;
+	text-transform: uppercase;
+	background: #383838
+}
+#send_friend_form .product {
+	margin: 20px 10px
+}
+#send_friend_form .product img {
+	float: left;
+	margin: 0 10px 0 0;
+	border: 1px solid #ccc
+}
+#send_friend_form .product .product_desc {
+	float: left;
+	width: 380px
+}
+#send_friend_form .product .product_desc p {
+	padding: 0 10px 0 0;
+	color: #333
+}
+#send_friend_form .product .product_desc p.product_name {
+	font-size: 12px;
+	color: #000
+}
+#send_friend_form .send_friend_form_content {
+	margin: 0 10px 20px
+}
+#send_friend_form .form_container {
+	padding: 10px 15px;
+	border: 1px solid #ccc;
+	background: #eee
+}
+#send_friend_form .form_container p.intro_form {
+	padding-bottom: 14px;
+	font-weight: 700;
+	font-size: 13px;
+	color: #333
+}
+#send_friend_form .form_container p.txt_required {
+	padding-bottom: 0;
+	color: #666
+}
+#send_friend_form .form_container .text {
+	padding-bottom: 10px
+}
+#send_friend_form .form_container .text label {
+	display: inline-block;
+	padding: 6px 15px;
+	width: 180px;
+	font-size: 12px;
+	text-align: right
+}
+#send_friend_form .form_container .text input {
+	padding: 0 5px;
+	height: 22px;
+	width: 260px;
+	border: 1px solid #ccc;
+	font-size: 12px;
+	color: #666
+}
+#send_friend_form .submit {
+	margin-top: 20px;
+	padding-bottom: 0;
+	text-align: right
+}
+#blockpack {
+	margin-top: 20px;
+	padding-top: 20px;
+	border-top: 1px dotted #999
+}
+.customization_block {
+}
+.customization_block p.infoCustomizable {
+	margin: 10px 0 20px;
+	padding: 0 0 0 20px;
+	background: url(http://demo4leotheme.com/prestashop/leo_beauty_store/themes/leobeau/css/../img/icon/infos.gif) no-repeat 0 0 transparent
+}
+ul#uploadable_files, ul#text_fields {
+	list-style-type: none
+}
+.customizableProductsFile, .customizableProductsText {
+	margin-bottom: 20px;
+	padding-bottom: 10px;
+	border-bottom: 1px dotted #ccc
+}
+.customizationUploadLine {
+	padding-bottom: 10px
+}
+.customizationUploadLine label {
+	display: inline-block;
+	width: 150px;
+	vertical-align: top
+}
+.customizationUploadLine textarea {
+	height: 50px;
+	width: 300px;
+	border: 1px solid #ccc
+}
+#customizedDatas {
+	float: right
+}
+.accessories_block div ul li a {
+	display: inline-block
+}
+.accessories_block div ul li .s_title_block a, .accessories_block div ul li .s_title_block span {
+	font-weight: bold
+}
+div.zoomdiv img.bigimg {
+	max-width: inherit
+}
+#fancybox-loading {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	width: 40px;
+	height: 40px;
+	margin-top: -20px;
+	margin-left: -20px;
+	cursor: pointer;
+	overflow: hidden;
+	z-index: 1104;
+	display: none
+}
+#fancybox-loading div {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 40px;
+	height: 480px;
+	background-image: url('http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancybox.png')
+}
+#fancybox-overlay {
+	background-color: #000 !important;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 1100;
+	display: none
+}
+#fancybox-tmp {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	overflow: auto;
+	display: none
+}
+#fancybox-wrap {
+	background: none repeat scroll 0 0 rgb(255,255,255) !important;
+	background: none repeat scroll 0 0 rgba(255,255,255,0.3) !important;
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 8px;
+	z-index: 1101;
+	outline: none;
+	display: none;
+	border-radius: 8px
+}
+#fancybox-outer {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background: #fff
+}
+#fancybox-content {
+	width: 0;
+	height: 0;
+	padding: 0;
+	outline: none;
+	position: relative;
+	overflow: hidden;
+	z-index: 1102;
+	border: 0 solid #fff
+}
+#fancybox-hide-sel-frame {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: transparent;
+	z-index: 1101
+}
+#fancybox-close {
+	position: absolute;
+	top: -15px;
+	right: -15px;
+	width: 30px;
+	height: 30px;
+	background: transparent url('http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancybox.png') -40px 0;
+	cursor: pointer;
+	z-index: 1103;
+	display: none
+}
+#fancybox-error {
+	color: #444;
+	font: normal 12px/20px Arial;
+	padding: 14px;
+	margin: 0
+}
+#fancybox-img {
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	border: none;
+	outline: none;
+	line-height: 0;
+	vertical-align: top
+}
+#fancybox-frame {
+	width: 100%;
+	height: 100%;
+	border: none;
+	display: block
+}
+#fancybox-left, #fancybox-right {
+	position: absolute;
+	bottom: 0;
+	height: 100%;
+	width: 35%;
+	cursor: pointer;
+	outline: none;
+	background: transparent url('http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/blank.gif');
+	z-index: 1102;
+	display: none
+}
+#fancybox-left {
+	left: 0
+}
+#fancybox-right {
+	right: 0
+}
+#fancybox-left-ico, #fancybox-right-ico {
+	position: absolute;
+	top: 50%;
+	left: -9999px;
+	width: 30px;
+	height: 30px;
+	margin-top: -15px;
+	cursor: pointer;
+	z-index: 1102;
+	display: block
+}
+#fancybox-left-ico {
+	background-image: url('http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancybox.png');
+	background-position: -40px -30px;
+	left: 20px
+}
+#fancybox-right-ico {
+	background-image: url('http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancybox.png');
+	background-position: -40px -60px;
+	right: 20px;
+	left: auto
+}
+#fancybox-left:hover, #fancybox-right:hover {
+	visibility: visible
+}
+#fancybox-left:hover span {
+	left: 20px
+}
+#fancybox-right:hover span {
+	left: auto;
+	right: 20px
+}
+.fancybox-bg {
+	position: absolute;
+	padding: 0;
+	margin: 0;
+	border: 0;
+	width: 20px;
+	height: 20px;
+	z-index: 1001
+}
+#fancybox-bg-n {
+	top: -20px;
+	left: 0;
+	width: 100%;
+	background-image: url('http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancybox-x.png')
+}
+#fancybox-bg-ne {
+	top: -20px;
+	right: -20px;
+	background-image: url('http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancybox.png');
+	background-position: -40px -162px
+}
+#fancybox-bg-e {
+	top: 0;
+	right: -20px;
+	height: 100%;
+	background-image: url('http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancybox-y.png');
+	background-position: -20px 0
+}
+#fancybox-bg-se {
+	bottom: -20px;
+	right: -20px;
+	background-image: url('http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancybox.png');
+	background-position: -40px -182px
+}
+#fancybox-bg-s {
+	bottom: -20px;
+	left: 0;
+	width: 100%;
+	background-image: url('http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancybox-x.png');
+	background-position: 0 -20px
+}
+#fancybox-bg-sw {
+	bottom: -20px;
+	left: -20px;
+	background-image: url('http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancybox.png');
+	background-position: -40px -142px
+}
+#fancybox-bg-w {
+	top: 0;
+	left: -20px;
+	height: 100%;
+	background-image: url('http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancybox-y.png')
+}
+#fancybox-bg-nw {
+	top: -20px;
+	left: -20px;
+	background-image: url('http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancybox.png');
+	background-position: -40px -122px
+}
+#fancybox-title {
+	font-family: Helvetica;
+	font-size: 12px;
+	z-index: 1102
+}
+.fancybox-title-inside {
+	padding-bottom: 10px;
+	text-align: center;
+	color: #333;
+	background: #fff;
+	position: relative
+}
+.fancybox-title-outside {
+	padding-top: 10px;
+	color: #fff
+}
+.fancybox-title-over {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	color: #FFF;
+	text-align: left
+}
+#fancybox-title-over {
+	padding: 10px;
+	background-image: url('http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancy_title_over.png');
+	display: block
+}
+.fancybox-title-float {
+	position: absolute;
+	left: 0;
+	bottom: -20px;
+	height: 32px
+}
+#fancybox-title-float-wrap {
+	border: none;
+	border-collapse: collapse;
+	width: auto
+}
+#fancybox-title-float-wrap td {
+	border: none;
+	white-space: nowrap
+}
+#fancybox-title-float-left {
+	padding: 0 0 0 15px;
+	background: url('http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancybox.png') -40px -90px no-repeat
+}
+#fancybox-title-float-main {
+	color: #FFF;
+	line-height: 29px;
+	font-weight: bold;
+	padding: 0 0 3px 0;
+	background: url('http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancybox-x.png') 0 -40px
+}
+#fancybox-title-float-right {
+	padding: 0 0 0 15px;
+	background: url('http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancybox.png') -55px -90px no-repeat
+}
+.fancybox-ie6 #fancybox-close {
+	background: transparent;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancy_close.png',sizingMethod='scale')
+}
+.fancybox-ie6 #fancybox-left-ico {
+	background: transparent;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancy_nav_left.png',sizingMethod='scale')
+}
+.fancybox-ie6 #fancybox-right-ico {
+	background: transparent;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancy_nav_right.png',sizingMethod='scale')
+}
+.fancybox-ie6 #fancybox-title-over {
+	background: transparent;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancy_title_over.png',sizingMethod='scale');
+	zoom: 1
+}
+.fancybox-ie6 #fancybox-title-float-left {
+	background: transparent;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancy_title_left.png',sizingMethod='scale')
+}
+.fancybox-ie6 #fancybox-title-float-main {
+	background: transparent;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancy_title_main.png',sizingMethod='scale')
+}
+.fancybox-ie6 #fancybox-title-float-right {
+	background: transparent;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancy_title_right.png',sizingMethod='scale')
+}
+.fancybox-ie6 #fancybox-bg-w, .fancybox-ie6 #fancybox-bg-e, .fancybox-ie6 #fancybox-left, .fancybox-ie6 #fancybox-right, #fancybox-hide-sel-frame {
+	height: expression(this.parentNode.clientHeight + "px")
+}
+#fancybox-loading.fancybox-ie6 {
+	position: absolute;
+	margin-top: 0;
+	top: expression( (-20 + (document.documentElement.clientHeight ? document.documentElement.clientHeight/2 :document.body.clientHeight/2 )  + ( ignoreMe  = document .documentElement.scrollTop ? document.documentElement.scrollTop :document.body.scrollTop )) + 'px')
+}
+#fancybox-loading.fancybox-ie6 div {
+	background: transparent;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancy_loading.png',sizingMethod='scale')
+}
+.fancybox-ie .fancybox-bg {
+	background: transparent !important
+}
+.fancybox-ie #fancybox-bg-n {
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancy_shadow_n.png',sizingMethod='scale')
+}
+.fancybox-ie #fancybox-bg-ne {
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancy_shadow_ne.png',sizingMethod='scale')
+}
+.fancybox-ie #fancybox-bg-e {
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancy_shadow_e.png',sizingMethod='scale')
+}
+.fancybox-ie #fancybox-bg-se {
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancy_shadow_se.png',sizingMethod='scale')
+}
+.fancybox-ie #fancybox-bg-s {
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancy_shadow_s.png',sizingMethod='scale')
+}
+.fancybox-ie #fancybox-bg-sw {
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancy_shadow_sw.png',sizingMethod='scale')
+}
+.fancybox-ie #fancybox-bg-w {
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancy_shadow_w.png',sizingMethod='scale')
+}
+.fancybox-ie #fancybox-bg-nw {
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://demo4leotheme.com/prestashop/leo_beauty_store/js/jquery/plugins/fancybox/images/fancy_shadow_nw.png',sizingMethod='scale')
+}
+div.zoomdiv {
+	z-index: 100;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 200px;
+	height: 200px;
+	background: #ffffff;
+	border: 1px solid #CCCCCC;
+	display: none;
+	text-align: center;
+	overflow: hidden
+}
+img.jqzoom {
+	cursor: crosshair;
+	position: relative
+}
+#compare_shipping .center {
+	text-align: center
+}
+#compare_shipping {
+	padding: 10px
+}
+#compare_shipping #availableCarriers {
+	margin-bottom: 20px
+}
+#compare_shipping #availableCarriers_table {
+	margin: auto
+}
+#compare_shipping #availableCarriers_table .item .radio input {
+	margin: 0;
+	padding: 0
+}
+#compare_shipping ul#carriercompare_errors_list {
+	color: red
+}
+#compare_shipping ul#carriercompare_errors_list li {
+	margin-left: 30px;
+	text-decoration: none;
+	list-style: none
+}
+
+#center_column .products_block .block_content {
+	padding: 0
+}
+#center_column .block .title_block a, #center_column .block h4 a {
+	color: #333
+}
+#center_column .block .title_block, #center_column .block > h4 {
+}
+
+#leo-best-sellers_block_center .title_block {
+	position: relative
+}
+#leo-best-sellers_block_center .title_block {
+	border: none !important;
+	padding-left: 0;
+	margin-bottom: 10px
+}
+#leo-best-sellers_block_center .p-item .product_desc {
+	height: 45px
+}
+#leo-best-sellers_block_center .carousel-control {
+	top: -43px;
+	right: 30px
+}
+#leo-best-sellers_block_center .carousel-control.right {
+	right: 0
+}
+#leo-best-sellers_block_center .block_content {
+	border: none
+}
+#leo-best-sellers_block_center .p-item .product-container {
+	border: 1px solid #D2D2D2;
+	text-align: center
+}
+#leo-best-sellers_block_center .p-item .product-container h5 a {
+	font-size: 18px;
+	text-shadow: none
+}
+.products_block .title_block {
+	background: none repeat scroll 0 0 #F5F5F5;
+	border: 1px solid #D2D2D2;
+	/*color: #333*/
+}
+.products_block .block_content {
+    padding: 0px;
+}
+#categoriesprodtabs{
+	margin-top:15px;
+}

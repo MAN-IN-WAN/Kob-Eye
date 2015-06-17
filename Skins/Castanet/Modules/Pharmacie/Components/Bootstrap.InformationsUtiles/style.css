@@ -1,0 +1,16 @@
+.block_content i.fa{
+    -webkit-transition:-webkit-transform .9s; // Chrome Safari
+-moz-transition:-moz-transform .9s;       // Mozilla
+-o-transition:-o-transform .9s;           // Opéra
+-ms-transition:-ms-transform .9s;         // IE
+transition:transform .9s;
+    perspective: 600px;
+}
+
+.block_content i.fa:hover{
+    -webkit-transform:rotateY(180deg) ;
+    -moz-transform:rotateY(180deg);
+    -o-transform:rotateY(180deg);
+    -ms-transform:rotateY(180deg);
+    transform:rotateY(180deg);
+}

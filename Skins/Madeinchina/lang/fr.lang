@@ -9,6 +9,7 @@ __MY_CART__|Mon panier
 __MY_ORDER__|Ma commande
 __OTHERS_CARTS__|Autres paniers
 __CHECKOUT__|Commander
+__CURRENT_ORDER__|Commande en cours
 
 ######PRODUCT LIST#####
 __THERE_IS__|Il y a 

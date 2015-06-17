@@ -202,6 +202,7 @@
 		<PROPERTIES type="metat" special="multi" category="Meta">TitleMeta</PROPERTIES>
 		<PROPERTIES type="metad" special="multi" category="Meta">DescriptionMeta</PROPERTIES>
 		<PROPERTIES type="metak" category="Meta">KeywordsMeta</PROPERTIES>	
+		<FKEY card="0,n" data="Produit,Id" >ProduitId</FKEY>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Devise" driver="mysql" AccessPoint="0" Dico="1" master="0" Description="Devises"   Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png">
@@ -517,10 +518,11 @@
 	<OBJECTCLASS title="TypePaiement" driver="mysql" AccessPoint="0" Dico="1" master="0" Description="TypePaiements"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png"  Class="Modules/Boutique/Class/TypePaiement.class.php" plugin="1">
 		<PROPERTIES searchOrder="1" description="Nom" type="varchar" length="100"   >Nom</PROPERTIES>
 		<PROPERTIES description="Compte client" type="varchar" length="16" >CompteComptable</PROPERTIES>
-		<PROPERTIES Order="2" description="description" type="bbcode"  special="multi">Description</PROPERTIES>
-		<PROPERTIES Order="3" description="Logo" type="file">Logo</PROPERTIES>
-		<PROPERTIES Order="4" description="Actif" type="boolean" default="1">Actif</PROPERTIES>
-		<PROPERTIES Order="5" description="Ordre" type="order" >Ordre</PROPERTIES>
+        <PROPERTIES Order="2" description="Information choix du paiement" type="bbcode"  special="multi">Information</PROPERTIES>
+		<PROPERTIES Order="3" description="Description finalisation achat" type="bbcode"  special="multi">Description</PROPERTIES>
+		<PROPERTIES Order="4" description="Logo" type="file">Logo</PROPERTIES>
+		<PROPERTIES Order="5" description="Actif" type="boolean" default="1">Actif</PROPERTIES>
+		<PROPERTIES Order="6" description="Ordre" type="order" >Ordre</PROPERTIES>
 	</OBJECTCLASS>
 	
 	<OBJECTCLASS title="Facture" driver="mysql" AccessPoint="1" master="0" Description="Facture"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/Boutique/Class/Facture.class.php" >

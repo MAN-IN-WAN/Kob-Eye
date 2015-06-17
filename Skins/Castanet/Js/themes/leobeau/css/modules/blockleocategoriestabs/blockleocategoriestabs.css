@@ -1,0 +1,35 @@
+/* Block specials */
+.blockleocategoriestabs .htabs li  { display:block; width:100% }
+.blockleocategoriestabs .htabs li a{
+	background: url("img/icon-tabcate.png") no-repeat scroll 10px center transparent;
+    border-top: 1px solid #D2D2D2;
+    border-right: 1px solid #D2D2D2;
+    color: #4D4E4F;
+    display: block;
+    font-size: 17px;
+    padding: 20px 10px 21px 39px;
+}
+ .blockleocategoriestabs .htabs li:first-child a{border-top: 0;}
+ .blockleocategoriestabs .htabs li a:hover,
+ .blockleocategoriestabs .htabs li.active a{ 
+    background-color: #F6F6F6;
+    background-image: url("img/icon-tabcate-hover.png");
+    border-right: medium none;
+    color: #F46553;
+}
+.blockleocategoriestabs .htabs {
+    background: none repeat scroll 0 0 #ECECEC;
+    overflow: hidden;
+}
+.htabs-title {
+    float: left;
+    width: 25%;
+}
+.htabs-content {
+    float: left;
+    width: 75%;
+}
+.blockleocategoriestabs .carousel-control{
+	z-index:10
+}
+

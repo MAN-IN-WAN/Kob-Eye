@@ -148,7 +148,7 @@
 									</div>
 									<span class="online_only"></span>
 
-									<a class="button exclusive" href="[!Prod::getUrl()!]" title="__ADD_TO_CART__">__ADD_TO_CART__</a>
+									<a class="btn btn-protector" href="[!Prod::getUrl()!]" title="__ADD_TO_CART__">__ADD_TO_CART__</a>
 
 								</div>
 <!--

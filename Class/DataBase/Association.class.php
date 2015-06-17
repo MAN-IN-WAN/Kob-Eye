@@ -142,7 +142,8 @@ class Association {
 	* @return Boolean if this association is a parent of this object
 	*/
 	public function isParent($O) {
-		for ($i=1;$i<sizeof($this->Links);$i++)if ($this->Links[$i]['ObjectClass']->titre==$O)return true;
+        return $this->Links[1]['ObjectClass']->titre==$O;
+		//for ($i=1;$i<sizeof($this->Links);$i++)if ($this->Links[$i]['ObjectClass']->titre==$O)return true;
 	}
 	/**
 	* isBinary

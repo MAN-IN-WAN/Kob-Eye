@@ -62,7 +62,7 @@ class Process extends Root{
 			return Process::processVars($Data,$test+1);
 		}
 //		echo $Data."\r\n";
-		if (is_string($Data)&&preg_match("#\[\*\*(.*)\*\*\]#",$Data,$o)) {
+		if (is_string($Data)&&preg_match("#\[\*\*(.*)\*\*\]#",$Data,$o) && $test<2) {
 //			echo "-------------------------$test----------------------\r\n";
 //			echo $Data."\r\n";
 			//On envoie dans la moulinette
@@ -215,10 +215,10 @@ class Process extends Root{
 			}
 			return $Data;
 		}
-
 		$Tab = explode ('::',$Data);
 		if (sizeof($Tab)>1) {
 			switch ($Tab[0]) {
+
 				case "JSON":
 					$Json=$GLOBALS['Systeme']->RegVars['JSON'];
 					$chaine='$GLOBALS["Systeme"]->RegVars["JSON"]->'.$Tab[1].'->'.$Tab[2];
@@ -258,10 +258,6 @@ class Process extends Root{
 					$Function = explode("|",$Tab[sizeof($Tab)-1]);
 					$Tab[sizeof($Tab)-1] = $Function[0];
 					if ($Tab[1]=="Actuel"){
-						//On pointe sur le module en cours.
-/*						echo "---> ".$GLOBALS["Systeme"]->RegVars["Lien"]."\r\n";
-						$temp = explode("/",$GLOBALS["Systeme"]->RegVars["Lien"]);
-						$temp = explode (".",$temp[0]);*/
 						$BonModule = $GLOBALS["Systeme"]->CurrentModule;
 					}else{
 						//On pointe sur un module en particulier

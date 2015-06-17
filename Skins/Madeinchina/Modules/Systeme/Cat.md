@@ -357,7 +357,7 @@
 													</div>
 													<span class="online_only"></span>
 
-													<a class="button ajax_add_to_cart_button exclusive" rel="ajax_id_product_1" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=cart&add=&id_product=1&token=32f4b0bcca875efdf13c8b259373d259" title="Add to cart">Add to cart</a>
+													<a class="button ajax_add_to_cart_btn btn-protector" rel="ajax_id_product_1" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=cart&add=&id_product=1&token=32f4b0bcca875efdf13c8b259373d259" title="Add to cart">Add to cart</a>
 
 												</div>
 
@@ -396,7 +396,7 @@
 													</div>
 													<span class="online_only"></span>
 
-													<a class="button ajax_add_to_cart_button exclusive" rel="ajax_id_product_2" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=cart&add=&id_product=2&token=32f4b0bcca875efdf13c8b259373d259" title="Add to cart">Add to cart</a>
+													<a class="button ajax_add_to_cart_btn btn-protector" rel="ajax_id_product_2" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=cart&add=&id_product=2&token=32f4b0bcca875efdf13c8b259373d259" title="Add to cart">Add to cart</a>
 
 												</div>
 
@@ -435,7 +435,7 @@
 													</div>
 													<span class="online_only"></span>
 
-													<a class="button ajax_add_to_cart_button exclusive" rel="ajax_id_product_5" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=cart&add=&id_product=5&token=32f4b0bcca875efdf13c8b259373d259" title="Add to cart">Add to cart</a>
+													<a class="button ajax_add_to_cart_btn btn-protector" rel="ajax_id_product_5" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=cart&add=&id_product=5&token=32f4b0bcca875efdf13c8b259373d259" title="Add to cart">Add to cart</a>
 
 												</div>
 
@@ -483,7 +483,7 @@
 													</div>
 													<span class="online_only">Online only!</span>
 
-													<a class="button ajax_add_to_cart_button exclusive" rel="ajax_id_product_7" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=cart&add=&id_product=7&token=32f4b0bcca875efdf13c8b259373d259" title="Add to cart">Add to cart</a>
+													<a class="button ajax_add_to_cart_btn btn-protector" rel="ajax_id_product_7" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=cart&add=&id_product=7&token=32f4b0bcca875efdf13c8b259373d259" title="Add to cart">Add to cart</a>
 
 												</div>
 
@@ -523,7 +523,7 @@
 													</div>
 													<span class="online_only"></span>
 
-													<a class="button ajax_add_to_cart_button exclusive" rel="ajax_id_product_9" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=cart&add=&id_product=9&token=32f4b0bcca875efdf13c8b259373d259" title="Add to cart">Add to cart</a>
+													<a class="button ajax_add_to_cart_btn btn-protector" rel="ajax_id_product_9" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=cart&add=&id_product=9&token=32f4b0bcca875efdf13c8b259373d259" title="Add to cart">Add to cart</a>
 
 												</div>
 
@@ -563,7 +563,7 @@
 													</div>
 													<span class="online_only"></span>
 
-													<a class="button ajax_add_to_cart_button exclusive" rel="ajax_id_product_10" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=cart&add=&id_product=10&token=32f4b0bcca875efdf13c8b259373d259" title="Add to cart">Add to cart</a>
+													<a class="button ajax_add_to_cart_btn btn-protector" rel="ajax_id_product_10" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=cart&add=&id_product=10&token=32f4b0bcca875efdf13c8b259373d259" title="Add to cart">Add to cart</a>
 
 												</div>
 
@@ -605,7 +605,7 @@
 													</div>
 													<span class="online_only"></span>
 
-													<a class="button ajax_add_to_cart_button exclusive" rel="ajax_id_product_11" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=cart&add=&id_product=11&token=32f4b0bcca875efdf13c8b259373d259" title="Add to cart">Add to cart</a>
+													<a class="button ajax_add_to_cart_btn btn-protector" rel="ajax_id_product_11" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=cart&add=&id_product=11&token=32f4b0bcca875efdf13c8b259373d259" title="Add to cart">Add to cart</a>
 
 												</div>
 
@@ -645,7 +645,7 @@
 													</div>
 													<span class="online_only"></span>
 
-													<a class="button ajax_add_to_cart_button exclusive" rel="ajax_id_product_12" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=cart&add=&id_product=12&token=32f4b0bcca875efdf13c8b259373d259" title="Add to cart">Add to cart</a>
+													<a class="button ajax_add_to_cart_btn btn-protector" rel="ajax_id_product_12" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=cart&add=&id_product=12&token=32f4b0bcca875efdf13c8b259373d259" title="Add to cart">Add to cart</a>
 
 												</div>
 
@@ -685,7 +685,7 @@
 													</div>
 													<span class="online_only"></span>
 
-													<a class="button ajax_add_to_cart_button exclusive" rel="ajax_id_product_13" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=cart&add=&id_product=13&token=32f4b0bcca875efdf13c8b259373d259" title="Add to cart">Add to cart</a>
+													<a class="button ajax_add_to_cart_btn btn-protector" rel="ajax_id_product_13" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=cart&add=&id_product=13&token=32f4b0bcca875efdf13c8b259373d259" title="Add to cart">Add to cart</a>
 
 												</div>
 

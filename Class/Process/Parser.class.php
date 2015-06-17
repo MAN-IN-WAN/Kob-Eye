@@ -647,6 +647,13 @@ class Parser {
 		return $Data;
 	}
 
+    /**
+     * Première fonction du parser
+     * @param $Data
+     * @param bool $NoPost
+     * @param array $Tab
+     * @return mixed
+     */
 	static function Processing($Data,$NoPost=false,$Tab=Array()) {
 		//O supprime les commentaires
  		$Data = preg_replace("#(?<!http:)(?<!https:)(?<!:)//(.*)#m","",$Data);

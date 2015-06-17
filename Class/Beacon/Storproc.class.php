@@ -20,6 +20,7 @@ class StorProc extends Beacon {
 	var $OrderVar;
 	var $Select ;
 	var $Data = "";
+
 	// constructeur
 	function StorProc() {
 		$this->Data="";
@@ -144,11 +145,10 @@ class StorProc extends Beacon {
 		if(isset($Temp[7])){
 			$this->GroupBy.=Process::processingVars($Temp[7]);
 		}
-
 	}
 
 	function ProcessLinear($Var){
-		//Analyse de la requete
+        //Analyse de la requete
 		$this->setVars($Var);
 		if ($GLOBALS['Systeme']->isModule($this->Module)) {
 			/*			echo "\r\n---------STORPROC------------\r\n";
@@ -166,7 +166,7 @@ class StorProc extends Beacon {
 					$this->processNoResult($NoResult);
 				}else{
 					//Pas de NORESULT donc aucun affichage
-					$this->ChildObjects="";
+					//$this->ChildObjects="";
 				}
 				return;
 			}
@@ -179,7 +179,9 @@ class StorProc extends Beacon {
 				$Search.="/*";
 			}
 			//Execution de la requete
+            $GLOBALS["Chrono"]->start("STORPROC getdata ");
             $Tab=Sys::$Modules[$this->Module]->callData($Search,"",$this->Offset,$this->Limit,$this->OrderType,$this->OrderVar,$this->Select,$this->GroupBy);
+            $GLOBALS["Chrono"]->stop("STORPROC getdata ");
 
 			//Si il s agit d une recherche recursive alors il faut trier et ranger les resultats pour
 			//Repartir les resultats en mode recursif
@@ -229,7 +231,7 @@ class StorProc extends Beacon {
 						$this->processNoResult($NoResult);
 					}else{
 						//Pas de NORESULT donc aucun affichage
-						$this->ChildObjects="";
+						//$this->ChildObjects="";
 					}
 				}
 			}else{
@@ -240,7 +242,7 @@ class StorProc extends Beacon {
 					$this->processNoResult($NoResult);
 				}else{
 					//Pas de NORESULT donc aucun affichage
-					$this->ChildObjects="";
+					//$this->ChildObjects="";
 				}
 
 			}
@@ -269,14 +271,15 @@ class StorProc extends Beacon {
 				if (!empty($this->OrderVar)&&!empty($this->OrderType)){
 					$this->Result = Storproc::SpBubbleSort($this->Result,$this->OrderVar,$this->OrderType);
 				}
-				$this->parseContents($this->Result);
+                if (isset($this->Result)&&sizeof($this->Result))
+                    $this->parseContents($this->Result);
 			}else{
 				if ($NoResult = $this->getChild(array($this->MasterBeacon,"LIMIT","ORDER"),"NORESULT")) {
 					//Si NORESULT
 					$this->processNoResult($NoResult);
 				}else{
 					//Pas de NORESULT donc aucun affichage
-					$this->ChildObjects="";
+					//$this->ChildObjects="";
 				}
 			}
 		}else{
@@ -286,7 +289,7 @@ class StorProc extends Beacon {
 				$this->processNoResult($NoResult);
 			}else{
 				//Pas de NORESULT donc aucun affichage
-				$this->ChildObjects="";
+				//$this->ChildObjects="";
 			}
 		}
 		unset($this->Result);
@@ -375,28 +378,34 @@ class StorProc extends Beacon {
 	 }
 
 	function processNoResult($NoResult){
-		$this->ChildObjects = $NoResult->ChildObjects;
 		$this->NoLoop = true;
-		for ($j=0,$c=sizeof($this->ChildObjects);$j<$c;$j++){
-			if (is_object($this->ChildObjects[$j])){
-				$this->ChildObjects[$j]->Generate();
-			}else{
-				$this->ChildObjects[$j] = Process::processingVars($this->ChildObjects[$j]);
-			}
-		}
+        $out='';
+        if (is_array($NoResult->ChildObjects)) {
+            for ($j = 0, $c = sizeof($NoResult->ChildObjects); $j < $c; $j++) {
+                if (is_object($NoResult->ChildObjects[$j])) {
+                    $tmp = $NoResult->ChildObjects[$j];
+                    $tmp->Generate();
+                    $out .= $tmp->Affich();
+                } else {
+                    $tmp = Process::processingVars($NoResult->ChildObjects[$j]);
+                    $out .= $tmp;
+                }
+            }
+        }
+        $this->Data = $out;
 		return ;
 	}
 
 	function processRecursiv($Vars){
 		$this->Recursiv = true;
-		$this->Vars = Process::processingVars($this->Vars);
-		$this->Vars = Parser::PostProcessing($this->Vars);
-		$this->Query = Process::processVars("STORPROC-QUERY","STOR")."/".$this->Vars;
-		$this->ChildObjects = Process::processVars("STORPROC-OBJ","STOR");
-		$this->PostObjects = Process::processVars("STORPROC-POSTOBJ","STOR");
-		if ($this->PostObjects=="[!STORPROC-POSTOBJ!]") $this->PostObjects="";
-		$this->Nom = Process::processVars("STORPROC-VAR","STOR");
-		$this->Vars = $this->Query."|".$this->Nom;
+		//$this->Vars = Process::processingVars($this->Vars);
+		//$this->Vars = Parser::PostProcessing($this->Vars);
+		//$this->Query = Process::processVars("STORPROC-QUERY","STOR")."/".$this->Vars;
+		//$this->ChildObjects = Process::processVars("STORPROC-OBJ","STOR");
+		//$this->PostObjects = Process::processVars("STORPROC-POSTOBJ","STOR");
+		//if ($this->PostObjects=="[!STORPROC-POSTOBJ!]") $this->PostObjects="";
+		//$this->Nom = Process::processVars("STORPROC-VAR","STOR");
+		//$this->Vars = $this->Query."|".$this->Nom;
 		$Temp = Process::processVars("STORPROC-RESULT","STOR");
 		$this->setVars($this->Vars);
 		if (is_array($Temp))foreach ($Temp as $Res) {
@@ -407,11 +416,8 @@ class StorProc extends Beacon {
 	}
 
 	function loopData($Tab){
-		if (!isset($this->Data))$this->Data="";
-		//Generation du Data
-//  		$TempChild = serialize($this->ChildObjects);
-		$TempChild = $this->ChildObjects;
- 		unset($this->ChildObjects);
+        $TempChild = $this->ChildObjects;
+ 		//unset($this->ChildObjects);
 		$k=0;
 		if (isset(Process::$TempVar["Key"]))$OldKey = Process::$TempVar["Key"];
 		if (isset(Process::$TempVar["Pos"]))$OldPos = Process::$TempVar["Pos"];
@@ -423,8 +429,8 @@ class StorProc extends Beacon {
 
 		if (isset(Process::$TempVar["NbResult"]))$OldNbResult = Process::$TempVar["NbResult"];
 		if (is_array($Tab))$TabKey = array_keys($Tab);
+        $tmp = '';
 		if (sizeof($Tab)) foreach ($TabKey as $Key){
-			//var_dump($TempChild);
 			Process::RegisterTempVar($this->Nom,$Tab[$Key]);
 			Process::$TempVar["Key"]=$Key;
 			Process::$TempVar["Pos"]=$k+1;
@@ -434,24 +440,26 @@ class StorProc extends Beacon {
 			if ($this->Recursiv){
 				Process::RegisterTempVar($this->MasterBeacon."-RESULT",$Tab[$Key]->RECURSIV_TAB);
 			}
-			for ($j=0,$max=sizeof($TempChild);$j<$max;$j++) {
-				if (is_object($TempChild[$j])){
-		 			$this->LoopObjects[$k][$j] =$TempChild[$j]->__deepclone();
-					$this->LoopObjects[$k][$j]->Generate();
-				}else{
-		 			$this->LoopObjects[$k][$j] =$TempChild[$j];
-					$this->LoopObjects[$k][$j] = Process::processingVars( $this->LoopObjects[$k][$j]);
-					$this->LoopObjects[$k][$j] = Parser::PostProcessing($this->LoopObjects[$k][$j]);
-				}
-			}
-			$this->Data.=Parser::getContent($this->LoopObjects[$k]);
-			unset($this->LoopObjects[$k]);
+            if (is_array($TempChild)) {
+                for ($j = 0, $max = sizeof($TempChild); $j < $max; $j++) {
+                    if (is_object($TempChild[$j])) {
+                        $to = $TempChild[$j];
+                        $to->Generate();
+                        $tmp .= $to->Affich();
+                    } else {
+                        $GLOBALS["Chrono"]->start("STORPROC string ");
+                        $to = $TempChild[$j];
+                        $to = Process::processingVars($to);
+                        $tmp .= Parser::PostProcessing($to);
+                        //$tmp.=$to;
+                        $GLOBALS["Chrono"]->stop("STORPROC string ");
+                    }
+                }
+            }
 			$k++;
 		}
-		unset($this->ChildObjects);
+        $this->Data = $tmp;
 		Process::$TempVar["Level"]=0;
-		if (isset($this->Data))$this->ChildObjects[] = $this->Data;
-		unset($this->LoopObjects);
 		if (isset($OldKey))Process::$TempVar["Key"]=$OldKey;
 		if (isset($OldPos))Process::$TempVar["Pos"]=$OldPos;
 		if (isset($OldNbResult))Process::$TempVar["NbResult"]=$OldNbResult;
@@ -460,9 +468,9 @@ class StorProc extends Beacon {
 
 	//gestion des limites
 	function processLimit($Vars) {
-		$this->Vars = Process::processingVars($this->Vars);
-		$this->Vars = Parser::PostProcessing($this->Vars);
-		$Temp = explode("|",$this->Vars);
+		$Vars = Process::processingVars($Vars);
+		$Vars = Parser::PostProcessing($Vars);
+		$Temp = explode("|",$Vars);
 		$Offset = $Temp[0];
 		$Limit = $Temp[1];
 		//Recuperation du tableau de la variable
@@ -480,8 +488,8 @@ class StorProc extends Beacon {
 	}
 
 	function processOrder($Vars) {
-		$this->Vars = Process::processingVars($this->Vars);
-		$this->Vars = Parser::PostProcessing($this->Vars);
+		$Vars = Process::processingVars($Vars);
+		$Vars = Parser::PostProcessing($Vars);
 		$Vars = explode("|",$Vars);
 		$Champs = $Vars[0];
 		$Type = $Vars[1];
@@ -553,7 +561,7 @@ class StorProc extends Beacon {
 	}
 
 	function Generate($Skin=false) {
-		//On transforme les parametres
+        //On transforme les parametres
 		//On execute le storproc
 		switch ($this->Beacon) {
 			CASE "RECURSIV":
@@ -574,6 +582,7 @@ class StorProc extends Beacon {
 
 
 	function parseContents($Tab){
+        $this->Data="";
 		//On recherche l existence d enfants
 		if ($this->searchChild($this->MasterBeacon,"LIMIT")||$this->searchChild($this->MasterBeacon,"ORDER")) {
 			Process::RegisterTempVar($this->MasterBeacon,$Tab);
@@ -582,10 +591,12 @@ class StorProc extends Beacon {
 			$this->NoLoop = true;
 			for ($j=0,$max=sizeof($this->ChildObjects);$j<$max;$j++) {
 				if (is_object($this->ChildObjects[$j])){
-					$this->ChildObjects[$j]->Generate();
+                    $tmp = $this->ChildObjects[$j];
+					$tmp->Generate();
+                    $this->Data.= $tmp->Affich();
 				}else{
-					$this->ChildObjects[$j] = Process::processingVars($this->ChildObjects[$j]);
-					$this->ChildObjects[$j] = Parser::PostProcessing($this->ChildObjects[$j]);
+					$tmp = Process::processingVars($this->ChildObjects[$j]);
+					$this->Data .= Parser::PostProcessing($tmp);
 				}
 			}
 		}else{
@@ -601,12 +612,12 @@ class StorProc extends Beacon {
 
 	//Fonction Affichage du List Box Derniere Fonction a executer
 	function Affich() {
-		$Data = "";
+		//$Data = "";
 		//Le contenu du fichier retravaill�
-		if ($this->Beacon!="NORESULT"){
+		/*if ($this->Beacon!="NORESULT"){
 			if (isset($this->ChildObjects))$Data = Parser::getContent($this->ChildObjects);
-		}
-		return $Data;
+		}*/
+		return (isset($this->Data))?$this->Data:'';
 	}
 
 

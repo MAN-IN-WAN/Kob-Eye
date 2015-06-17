@@ -1,0 +1,47 @@
+[HEADER CSS]Skins/[!Systeme::Skin!]/Css/bootstrap.min.css[/HEADER]
+//[HEADER CSS]Tools/Css/Bootstrap/3.0/css/bootstrap-theme.min.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Css/font-awesome/css/font-awesome.min.css[/HEADER]
+[HEADER JS]Tools/Js/Jquery/1.9.2/jquery.min.js[/HEADER]
+[HEADER JS]Tools/Css/Bootstrap/3.0/js/bootstrap.min.js[/HEADER]
+[HEADER CSS]Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/css/bootstrap-datepicker.css[/HEADER]
+[HEADER JS]Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/js/bootstrap-datepicker.min.js[/HEADER]
+[HEADER JS]Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.fr.min.js[/HEADER]
+[HEADER JS]Tools/Css/Bootstrap/BootBox/bootbox.min.js[/HEADER]
+[HEADER]
+<meta name="viewport" content="width=device-width, initial-scale=1">
+[/HEADER]
+<div id="wrapper">
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Central Animateur</a>
+        </div>
+        <!-- Top Menu Items -->
+        <ul class="nav navbar-right top-nav">
+            <li><a href="/Systeme/Deconnexion"><i class="fa fa-fw fa-power-off"></i> Se déconnecter</a></li>
+        </ul>
+    [IF [!Lien!]!=]
+        [MODULE Systeme/Navigation]
+    [/IF]
+        <!-- /.navbar-collapse -->
+    </nav>
+    <div id="page-wrapper" style="min-height:1000px;">
+
+        <div class="container-fluid">
+
+            [DATA]
+        </div>
+        <!-- /.container-fluid -->
+
+    </div>
+    <!-- /#page-wrapper -->
+
+</div>
+<!-- /#wrapper -->

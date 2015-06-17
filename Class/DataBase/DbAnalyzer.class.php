@@ -1,6 +1,8 @@
 <?php
 
 class DbAnalyzer extends Root{
+    var $_defaultObjectClass = NULL;
+
 	var $ObjectClass = Array();
 	var $IndexObjectClass = Array();
 	var $Association=Array();
@@ -288,10 +290,13 @@ class DbAnalyzer extends Root{
 	
 	//Recuperation de l'objectClass definit par defaut
 	function getDefaultObjectClass($N=1){
-		for ($i=0;$i<sizeof($this->ObjectClass);$i++){
-			if ($this->ObjectClass[$i]->Default) return $this->ObjectClass[$i]->titre;
-		}
-		return false;
+        if (!is_null($this->_defaultObjectClass)) return $this->_defaultObjectClass;
+        $this->_defaultObjectClass='';
+        foreach ($this->ObjectClass as $O) if ($O->Default){
+            $this->_defaultObjectClass=$O->titre;
+            break;
+        }
+		return $this->_defaultObjectClass;
 	}
 	//----------------------------------------------//
 	// VERIFICATION DES DONNEES			//

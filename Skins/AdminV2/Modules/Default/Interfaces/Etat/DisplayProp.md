@@ -16,8 +16,8 @@
 					[BLOC Rounded|background:#dedede;margin:2px 7px;][!Key!][/BLOC]
 				[/IF]
 				<div style="margin:5px;overflow:hidden;">
+					//Affichage Entete + Systeme
 					[IF [!Pos!]=1]
-						//Affichage Entete + Systeme
 						[MODULE Systeme/Interfaces/Etat/Header?Obj=[!Obj!]]
 					[/IF]
 					//Affichage des proprietes

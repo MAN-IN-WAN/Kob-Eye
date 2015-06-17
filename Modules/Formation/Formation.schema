@@ -1,0 +1,85 @@
+<SCHEMA>
+    <!-- Définition de la formation -->
+	<OBJECTCLASS title="Projet" driver="mysql" master="1" AccessPoint="1" Description="Projet de formation" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+		<PROPERTIES type="varchar" length="200" searchOrder="1" category="Intitulé">Nom</PROPERTIES>
+		<PROPERTIES type="text" category="Descriptif">Description</PROPERTIES>
+	</OBJECTCLASS>
+    <OBJECTCLASS title="Categorie" driver="mysql" AccessPoint="1" Description="Catégorie" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+        <PROPERTIES type="varchar" length="200" searchOrder="1" category="Intitulé" mobile="1">Nom</PROPERTIES>
+        <PROPERTIES type="order" searchOrder="2" category="Intitulé" mobile="1">Ordre</PROPERTIES>
+        <PROPERTIES type="varchar" length="30" category="Intitulé" mobile="1">Prefixe</PROPERTIES>
+        <PROPERTIES type="boolean" searchOrder="2" category="Position" description="Afficher le titre de la catégorie" mobile="1">Afficher</PROPERTIES>
+        <PROPERTIES type="boolean" searchOrder="2" category="Position" description="Etape bloquante (nécessite le débloquage de l'animateur)" mobile="1">Bloque</PROPERTIES>
+        <PROPERTIES type="boolean" searchOrder="2" category="Position" description="Détermine la position sur la carte" mobile="1">Position</PROPERTIES>
+        <PROPERTIES type="float" category="Position" mobile="1">PosX</PROPERTIES>
+        <PROPERTIES type="float" category="Position" mobile="1">PosY</PROPERTIES>
+        <FKEY card="0,1" data="Projet,Id" category="Intitulé" description="Projet">ProjetId</FKEY>
+        <FKEY card="0,1" data="Map,Id" category="Intitulé" description="Projet" mobile="1">MapId</FKEY>
+        <FKEY card="0,1" data="Categorie,Id" category="Intitulé" description="Categorie parente" mobile="1">CategorieId</FKEY>
+    </OBJECTCLASS>
+    <OBJECTCLASS title="Question" driver="mysql" AccessPoint="1" Description="Question" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+        <PROPERTIES type="varchar" length="200" searchOrder="1" category="Intitulé" mobile="1">Nom</PROPERTIES>
+        <PROPERTIES type="varchar" length="30" category="Intitulé" mobile="1">Prefixe</PROPERTIES>
+        <PROPERTIES type="order" searchOrder="2" category="Intitulé" mobile="1">Ordre</PROPERTIES>
+        <!--<PROPERTIES type="varchar" length="200" searchOrder="1" query="Formation/TypeReponse::Id::Nom" category="Intitulé">TypeReponse</PROPERTIES>-->
+        <FKEY card="0,1" data="Categorie,Id" category="Intitulé" description="Categorie parente" mobile="1">CategorieId</FKEY>
+    </OBJECTCLASS>
+    <OBJECTCLASS title="TypeQuestion" driver="mysql" Description="Type de Réponse" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+        <PROPERTIES type="order" searchOrder="2" category="Intitulé" mobile="1">Ordre</PROPERTIES>
+        <PROPERTIES type="varchar" length="200" searchOrder="1" category="Intitulé" mobile="1">Nom</PROPERTIES>
+        <PROPERTIES type="varchar" length="200" searchOrder="1" query="Formation/TypeReponse::Id::Nom" category="Intitulé" mobile="1">TypeReponse</PROPERTIES>
+        <PROPERTIES type="boolean" searchOrder="2" category="Cas Sélection" description="S'affiche dans le cas oui du booléen" mobile="1">AfficheOui</PROPERTIES>
+        <PROPERTIES type="boolean" searchOrder="2" category="Cas Sélection" description="S'affiche dans le cas non du booléen" mobile="1">AfficheNon</PROPERTIES>
+        <FKEY card="1,1" data="Question,Id" category="Intitulé" description="Question parente" mobile="1">QuestionId</FKEY>
+    </OBJECTCLASS>
+    <OBJECTCLASS title="TypeQuestionValeur" driver="mysql" Description="Sélection: valeur" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+        <PROPERTIES type="varchar" length="200" searchOrder="1" category="Intitulé" mobile="1">Valeur</PROPERTIES>
+        <PROPERTIES type="order" searchOrder="2" category="Intitulé" mobile="1">Ordre</PROPERTIES>
+        <FKEY card="0,1" data="TypeQuestion,Id" category="Intitulé" description="Projet" mobile="1">TypeQuestionId</FKEY>
+    </OBJECTCLASS>
+    <OBJECTCLASS title="Map" driver="mysql" Dico="1" Description="Plan de formation" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+        <PROPERTIES type="varchar" length="200" searchOrder="1" category="Intitulé" mobile="1">Nom</PROPERTIES>
+        <PROPERTIES type="image" category="Intitulé" mobile="1">Fichier</PROPERTIES>
+        <PROPERTIES type="int" searchOrder="3" category="Intitulé" mobile="1">Largeur</PROPERTIES>
+        <PROPERTIES type="int" searchOrder="4" category="Intitulé" mobile="1">Hauteur</PROPERTIES>
+        <FKEY card="0,1" data="Projet,Id" category="Intitulé" description="Projet" mobile="1">ProjetId</FKEY>
+    </OBJECTCLASS>
+    <OBJECTCLASS title="Fichier" driver="mysql" Dico="1" Description="Fichier de formation" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+        <PROPERTIES type="varchar" length="200" searchOrder="1" category="Intitulé">Nom</PROPERTIES>
+        <PROPERTIES type="varchar" category="Intitulé" values="doc,video,text,excell,pdf,powerpoint,image,zip">Type</PROPERTIES>
+        <PROPERTIES type="file" category="Intitulé">Fichier</PROPERTIES>
+        <FKEY card="0,1" data="Projet,Id" category="Intitulé" description="Projet">ProjetId</FKEY>
+    </OBJECTCLASS>
+    <OBJECTCLASS title="TypeReponse" driver="mysql" Dico="1" Description="Type de réponse" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+        <PROPERTIES type="varchar" length="200" searchOrder="1" category="Intitulé" mobile="1">Nom</PROPERTIES>
+        <PROPERTIES type="text" category="Intitulé" mobile="1">Description</PROPERTIES>
+    </OBJECTCLASS>
+
+    <!-- Définition des session -->
+    <OBJECTCLASS title="Session" driver="mysql" AccessPoint="1" Description="Session" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/Formation/Class/Session.class.php" className="FormationSession">
+        <PROPERTIES type="varchar" length="200" searchOrder="1" category="Intitulé">Nom</PROPERTIES>
+        <PROPERTIES type="text" category="Intitulé">Description</PROPERTIES>
+        <PROPERTIES type="boolean" category="Intitulé">EnCours</PROPERTIES>
+        <PROPERTIES type="boolean" category="Intitulé">Termine</PROPERTIES>
+        <PROPERTIES type="boolean" category="Intitulé">Synchro</PROPERTIES>
+        <PROPERTIES type="date" category="Intitulé">Date</PROPERTIES>
+        <PROPERTIES type="date" category="Intitulé">TermineLe</PROPERTIES>
+        <FKEY card="0,1" data="Projet,Id" category="Intitulé" description="Projet">ProjetId</FKEY>
+        <FKEY card="0,1" data="Region,Id" category="Intitulé" description="Projet">Region</FKEY>
+    </OBJECTCLASS>
+    <OBJECTCLASS title="Equipe" driver="mysql" Description="Equipe" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+        <PROPERTIES type="int" searchOrder="1" category="Intitulé">Numero</PROPERTIES>
+        <PROPERTIES type="text" category="Intitulé">Description</PROPERTIES>
+        <FKEY card="0,1" data="Session,Id" category="Intitulé" description="Session">SessionId</FKEY>
+    </OBJECTCLASS>
+    <OBJECTCLASS title="Reponse" driver="mysql" Description="Reponse" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+        <PROPERTIES type="varchar" searchOrder="1" category="Intitulé">ReponseText</PROPERTIES>
+        <FKEY card="1,1" data="Equipe,Id" category="Intitulé" description="Equipe">EquipeId</FKEY>
+        <FKEY card="1,1" data="Question,Id" category="Intitulé" description="Question">QuestionId</FKEY>
+    </OBJECTCLASS>
+
+    <!--Dictionnaires -->
+    <OBJECTCLASS title="Region" driver="mysql" Dico="1" Description="Région" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+        <PROPERTIES type="varchar" searchOrder="1" category="Intitulé">Nom</PROPERTIES>
+    </OBJECTCLASS>
+</SCHEMA>

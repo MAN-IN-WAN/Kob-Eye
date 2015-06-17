@@ -286,10 +286,10 @@
 		</div>
 		<div class="Etape4" style="margin-bottom:20px;text-align:center;width:auto;">
 			<div class="BoutonsGauche">
-				<input type="submit" class="ModifierCommande" name="ModifierCommande" value="Je modifie ma commande" />
+				<input type="submit" class="btn btn-protector" name="ModifierCommande" value="Je modifie ma commande" />
 			</div>
 			<div class="BoutonsDroite">
-				<input type="submit" class="ConfirmerPaiement" name="ConfirmerPaiement" value="Je confirme mon paiement" />
+				<input type="submit" class="btn btn-success" name="ConfirmerPaiement" value="Je confirme mon paiement" />
 			</div>
 	
 		</div>
@@ -349,7 +349,7 @@
 				}else {
 					total = total - parseFloat(json.ReducMontant);
 				}
-				$('TotalAPayer').set('html',setPrice(total) + " [!De::Sigle!]");
+				$('TotalAPayer').set('html',setPrice(total) + " [!CurrentDevise::Sigle!]");
 			},
 			onError: function (error){
 				alert('probleme de connexion');

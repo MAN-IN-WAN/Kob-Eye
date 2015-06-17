@@ -1,7 +1,7 @@
 <?php
 class Beacon extends Root{
 	var $Init = 0;
-	var $Data;
+	var $Data = '';
 	var $Nom;
 	var $Result;
 	var $Beacon;
@@ -60,14 +60,6 @@ class Beacon extends Root{
 			$TabTemp = explode("|",$this->Vars);
 			$Test = explode("?",$TabTemp[0]);
 			$Lien = $Test[0];
-			/*if (sizeof($Test)>1) {
-				//Alors il y a des variables get
-				$VarsToRegister = explode("&",$Test[1]);
-				for ($i=0;$i<sizeof($VarsToRegister);$i++){
-					$Temp = explode("=",$VarsToRegister[$i]);
-					Process::RegisterTempVar(Process::processingVars($Temp[0]),Process::processingVars($Temp[1]));
-				}
-			}*/
 			//On genere le module si il n 'est pas generé
 			$Vars = Process::processingVars($Lien);
 			$Module = explode('/',$Vars,2);
@@ -89,28 +81,35 @@ class Beacon extends Root{
 				for ($i=0;$i<sizeof($Vars[0]);$i++){
 					$Temp[Process::processingVars($Vars[1][$i])] = Process::processingVars($Vars[2][$i]);
 				}
-				/*echo "****************************\r\n";
-				print_r($_POST);
-				print_r(Process::$TempVar);*/
 				Process::$TempVar = $Temp;
-				/*echo $this->Vars."\r\n";
-				print_r($Temp);*/
-			}//else Process::$TempVar = Array("Query"=>$TempVar["Query"]);
+			}
 		}
+        $this->Content = '';
+        $out='';
 		$this->Vars = Parser::PostProcessing($this->Vars);
 		if (isset($this->BlObjects)&&is_array($this->BlObjects)) for ($i=0;$i<sizeof($this->BlObjects);$i++) if (is_object($this->BlObjects[$i])) {
 			$this->BlObjects[$i]->Generate();
+            $out.=$this->BlObjects[$i]->Affich();
 		}else{
-			$this->BlObjects[$i] = Process::processingVars($this->BlObjects[$i]);
-			$this->BlObjects[$i] = Parser::PostProcessing($this->BlObjects[$i]);
+			$tmp = Process::processingVars($this->BlObjects[$i]);
+            $tmp = Parser::PostProcessing($tmp);
+            //$this->BlObjects[$i] = Process::processingVars($this->BlObjects[$i]);
+            //$this->BlObjects[$i] = Parser::PostProcessing($this->BlObjects[$i]);
+            $out.=$tmp;
 		}
+        $this->Content = $out;
+        $this->Data = '';
 		if (isset($this->ChildObjects)&&sizeof($this->ChildObjects)) for ($i=0;$i<sizeof($this->ChildObjects);$i++){
 			if (is_object($this->ChildObjects[$i])){
 				$this->ChildObjects[$i]->Generate();
+                $tmp = $this->ChildObjects[$i]->Affich();
 			}else{
-				$this->ChildObjects[$i] = Process::processingVars($this->ChildObjects[$i]);
-				$this->ChildObjects[$i] = Parser::PostProcessing($this->ChildObjects[$i]);
+                $tmp = Process::processingVars($this->ChildObjects[$i]);
+                $tmp = Parser::PostProcessing($tmp);
+				//$this->ChildObjects[$i] = Process::processingVars($this->ChildObjects[$i]);
+				//$this->ChildObjects[$i] = Parser::PostProcessing($this->ChildObjects[$i]);
 			}
+            $this->Data.=$tmp;
 		}
 		if   ($this->Beacon=="MODULE")Process::$TempVar = $TempVar;
 	}
@@ -217,8 +216,9 @@ class Beacon extends Root{
 	}
 
 	function Process() {
- 		if ($this->Data!="")$this->ChildObjects= Parser::Processing($this->Data,false);
-		//if (isset($Process->PostObjects))$this->PostObjects = $Process->PostObjects;
+        $GLOBALS["Chrono"]->start("BEACON Parser ");
+        if ($this->Data!="")$this->ChildObjects= Parser::Processing($this->Data,false);
+        $GLOBALS["Chrono"]->stop("BEACON Parser ");
 		unset($this->Data);
 	}
 
@@ -323,6 +323,7 @@ class Beacon extends Root{
 	}
 
 	function affich() {
+        	return (isset($this->Data))?$this->Data:'';
 	}
 }
 

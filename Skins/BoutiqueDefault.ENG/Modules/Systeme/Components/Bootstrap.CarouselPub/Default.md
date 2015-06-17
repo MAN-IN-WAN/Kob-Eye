@@ -1,7 +1,7 @@
 
 [STORPROC Systeme/Menu/[!Systeme::CurrentMenu::Id!]/Donnee/Type=Pub|I]
 <div id="tags_block_left" class="block tags_block">
-	<h3 class="title_block title_block_green">Protector: la solution efficace</h3>
+	<h3 class="title_block title_block_green">[!TITRE!]</h3>
 	<div id="myCarousel" class="carousel slide">
 		<div class="carousel-inner">
 			[LIMIT 0|10]

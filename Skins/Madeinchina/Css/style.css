@@ -145,10 +145,11 @@ div.copyright{
 	padding-bottom: 10px;
 }
 #center_column input.QteInput {
-	width: 50px;
-	font-size: 15px;
-	width: 20px;
-	margin: 2px 5px;
+    font-size: 15px;
+    width: 24px;
+    margin: 2px 5px;
+    line-height: 24px;
+    text-align: center;
 }
 #center_column .BoutonMoins {
 	float:left;
@@ -210,7 +211,7 @@ div.copyright{
 .CommandeEtape1,.CommandeEtape2, .CommandeEtape3, .CommandeEtape4, .CommandeEtape5{
 	border: 0;
 	background: #F6F6F6;
-	padding: 10px;
+	/*padding: 10px;*/
     min-height: 400px;
 }
 .CommandeEtape2 h2{

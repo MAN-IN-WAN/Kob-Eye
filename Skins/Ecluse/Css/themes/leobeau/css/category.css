@@ -1,0 +1,70 @@
+
+
+.productsview span{font-size: 14px;color: #6e6f70; line-height: 26px;}
+.resumecat {
+	font-size: 12px;
+	font-weight: normal;
+	text-transform: none;
+}
+
+.content_scene_cat {
+    background: none repeat scroll 0 0 #F6F6F6;
+    border: 1px solid #D2D2D2;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+
+.cat_desc {
+	line-height: 1.4em;
+    padding: 10px;
+}
+.cat_name {
+	display: block;
+    font-size: 13px;
+    margin: 10px 0;
+}
+.cat_desc .lnk_more {
+   padding:0 10px;
+   color:#0088CC;
+	background:url(../img/arrow_right_1.png) no-repeat 100% 4px transparent;
+}
+
+
+/* ************************************************************************************************
+      SUB CATEGORIES
+************************************************************************************************ */
+#subcategories {margin-top:15px}
+#subcategories h3 {
+	
+}
+
+.inline_list {
+	list-style-type:none;
+	margin-top:10px;
+}
+.inline_list  li {
+	padding:10px 0;
+	border-bottom:1px dotted #ccc
+}
+.inline_list  li .img {
+	float:left;
+	margin-right:15px
+}
+.inline_list  li img {
+	border:1px solid #ccc
+}
+.inline_list  li .cat_name {
+	font-weight:bold;
+	font-size:13px
+}
+.inline_list  .category-container:hover {
+	border-color: #F46553;
+    transition: all 0.5s ease 0s;
+}
+.inline_list  .category-container {
+    background: none repeat scroll 0 0 #F6F6F6;
+    border: 1px solid #D2D2D2;
+    margin-bottom: 15px;
+    padding: 10px;
+}

@@ -521,7 +521,8 @@ class ObjectClass extends Root{
 					"card"			=>  ($A->isShort())?"short":"long",
 					"objectName"	=>	$ot->titre,
 					"objectModule"	=>	$ot->Module,
-					"objectDescription"	=>	$ot->Description
+					"objectDescription"	=>	$ot->Description,
+					"field"			=> 	$A->getField("parent")
 				);
 				//Ajout des attributs custom
 				if (is_array($A->attributes))foreach ($A->attributes as $kat=>$at)
@@ -550,7 +551,8 @@ class ObjectClass extends Root{
 					"card"			=>  ($A->isShort())?"short":"long",
 					"objectName"	=>	$ot->titre,
 					"objectModule"	=>	$ot->Module,
-					"objectDescription"	=>	$ot->Description
+					"objectDescription"	=>	$ot->Description,
+					"field"			=> 	$A->getField("child")
 				);
 				//Ajout des attributs custom
 				if (is_array($A->attributes))foreach ($A->attributes as $kat=>$at)
@@ -1123,7 +1125,6 @@ class ObjectClass extends Root{
 	* @return ObjectClass
 	*/
 	public function getChildObjectClass($N) {
-		$Out= Array();
 		foreach ($this->Associations as $A)
 			if ($A->isParent($this->titre)&&$A->isChild($N)) return $A->getChildObjectClass();
 		return false;
@@ -1135,7 +1136,6 @@ class ObjectClass extends Root{
 	* @return ObjectClass
 	*/
 	public function getParentObjectClass($N) {
-		$Out= Array();
 		foreach ($this->Associations as $A){
 			if ($A->isChild($this->titre)&&$A->isParent($N)){
 				return $A->getParentObjectClass();
@@ -1150,7 +1150,6 @@ class ObjectClass extends Root{
 	* @return ObjectClass
 	*/
 	public function getLinkedObjectClass($N,$Module="") {
-		$Out= Array();
 		foreach ($this->Associations as $A){
 			if (!empty($Module)){
 				if ($A->isParent($this->titre)&&$A->isChild($N)&&$A->isLinkedWithModule($Module)) return $A->getChildObjectClass();
@@ -1330,14 +1329,16 @@ class ObjectClass extends Root{
 			if (is_array($Etape)&&!sizeof($Analyse))$Analyse[] = $Etape;
 			$Analyse[] = $TabAnalyse;
 			//Analyse terminée donc on envoi maintenant la requete au pilote.
-			if (!empty($View)&&is_object($this->getView($View))&&$View!="NOVIEW"){
+
+            if (!empty($View)&&is_object($this->getView($View))&&$View!="NOVIEW"){
 				$viewObject = $this->getView($View);
 				$Results = $viewObject->Search($Analyse,$Value,$Select,$GroupBy,$Otype,$Ovar);
 			}elseif (DbAnalyzer::$QueryType!="Direct"&&$this->defaultView&&$View!="NOVIEW"){
 				$Results = $this->defaultView->Search($Analyse,$Value,$Select,$GroupBy,$Otype,$Ovar);
 			}else
 				$Results = $this->DriverSearch($Analyse,$Select,$GroupBy);
-		}
+
+        }
 		if (AUTO_COMPLETE_LANG&&$GLOBALS["Systeme"]->LangageDefaut!=$GLOBALS["Systeme"]->DefaultLanguage&&!Sys::$User->Admin){
 			foreach ($GLOBALS["Systeme"]->Conf->get("GENERAL::LANGUAGE") as $Cod=>$Lang) {
 				if (isset($Lang["DEFAULT"])) $DefautPref = $Cod;
@@ -1570,7 +1571,7 @@ class ObjectClass extends Root{
 		$chaine = str_replace("%", "", $chaine);
 		$chaine = str_replace("²", "", $chaine);
 		$chaine = preg_replace('`[\,\ \(\)\+\'\/\:]`', '-', trim($chaine));
-		$chaine=strtr($chaine,utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ?"),"aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynn-");
+		$chaine=strtr($chaine,utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ?>#<+;,²³°"),"aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynn-------23o");
 		$chaine = preg_replace('`[-]+`', '-', trim($chaine));
 		$chaine =  utf8_encode($chaine);
 		//ON verifie qu il n existe pas deja une entité avec la meme url
@@ -1603,7 +1604,7 @@ class ObjectClass extends Root{
 		$chaine = $Obj[$Prefixe.$Prop];
 		//ON verifie qu il n existe pas deja une entité avec la meme url
 		$chaine=utf8_decode($chaine);
-		$chaine=strtr($chaine,utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ"),"aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynn");
+        $chaine=strtr($chaine,utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ?>#<+;,²³°"),"aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynn-------23o");
 		if (strlen($chaine)>3) $chaine = preg_replace("#(e|s|es|ent)$#","",$chaine);
 		return utf8_encode($chaine);
 	}
@@ -1678,7 +1679,7 @@ class ObjectClass extends Root{
 			}else{
 				if (empty($Prop["Ref"])&&isset($Obj[$Key])) $OrdreProp[$Key]=$Obj[$Key];
 			}
-			if ((isset($Prop["content"])&&$Prop["content"]=="link")||(isset($Prop["type"])&&$Prop["type"]=="link")) {
+			if ((isset($Prop["content"])&&$Prop["content"]=="link")||(isset($Prop["type"])&&$Prop["type"]=="link")&&empty($OrdreProp[$Key])) {
 				$OrdreProp[$Key] = $this->autoLink($Key,$Obj);
 				if (isset($Prop["special"])&&$Prop["special"]=="multi") {
 					//Pr tous les langages, on verifie q la variable de la prop existe.
