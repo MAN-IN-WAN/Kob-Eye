@@ -67,15 +67,15 @@
         <FKEY card="0,1" data="Projet,Id" category="Intitulé" description="Projet">ProjetId</FKEY>
         <FKEY card="0,1" data="Region,Id" category="Intitulé" description="Projet">Region</FKEY>
     </OBJECTCLASS>
-    <OBJECTCLASS title="Equipe" driver="mysql" Description="Equipe" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+    <OBJECTCLASS title="Equipe" driver="mysql" Description="Equipe" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/Formation/Class/Equipe.class.php">
         <PROPERTIES type="int" searchOrder="1" category="Intitulé">Numero</PROPERTIES>
         <PROPERTIES type="text" category="Intitulé">Description</PROPERTIES>
         <FKEY card="0,1" data="Session,Id" category="Intitulé" description="Session">SessionId</FKEY>
     </OBJECTCLASS>
     <OBJECTCLASS title="Reponse" driver="mysql" Description="Reponse" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
-        <PROPERTIES type="varchar" searchOrder="1" category="Intitulé">ReponseText</PROPERTIES>
+        <PROPERTIES type="varchar" searchOrder="1" category="Intitulé">Valeur</PROPERTIES>
         <FKEY card="1,1" data="Equipe,Id" category="Intitulé" description="Equipe">EquipeId</FKEY>
-        <FKEY card="1,1" data="Question,Id" category="Intitulé" description="Question">QuestionId</FKEY>
+        <FKEY card="1,1" data="TypeQuestion,Id" category="Intitulé" description="TypeQuestion">TypeQuestionId</FKEY>
     </OBJECTCLASS>
 
     <!--Dictionnaires -->

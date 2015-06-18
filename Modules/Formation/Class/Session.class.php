@@ -1,5 +1,13 @@
 <?php
 class FormationSession extends genericClass {
+    function Delete() {
+        // suppression de toutes les réponses
+        $t = $this->getChildren('Equipe');
+        foreach ($t as $r) {
+            $r->Delete();
+        }
+        parent::Delete();
+    }
     /**
      * Demarre
      * Démarre une session
@@ -127,5 +135,39 @@ class FormationSession extends genericClass {
         //recuperation du projet
         $p = $this->getProjet();
         return Sys::getData('Formation','TypeReponse');
+    }
+    /**
+     * saveResult
+     * Sauvegarde des réponse en fonction d'une session d'une equipe et des id de question Id
+     * @equipe  int numéro d'equipe
+     */
+    function saveResult($equipe) {
+        //vérificaiton de la validité de l'equipe
+        $eq = $this->getChildren('Equipe/Numero='.$equipe);
+        if (sizeof($eq)) {
+            $eq = $eq[0];
+            //L'equipe existe on enregistre les résultats
+            foreach ($_POST as $key=>$valeur){
+                if (preg_match('#^qi_([0-9]+)$#',$key,$out)){
+                    $question_id = $out[1];
+
+                    //vérification de la non existence de la réponse sinon on sort.
+                    $nb = Sys::getCount('Formation','Reponse/EquipeId='.$eq->Id.'&TypeQuestionId='.$question_id.'');
+                    if ($nb){
+                        //erreur la réponse existe déjà
+                        $this->addError(Array('Prop'=>'Zob','Message'=>"La réponse existe déjà $nb ".'  Reponse/TypeQuestion.TypeQuestionId('.$question_id.')&Equipe.EquipeId('.$equipe.')'));
+                        return false;
+                    }
+
+                    //génération de la réponse
+                    $rep = genericClass::createInstance('Formation','Reponse');
+                    $rep->Valeur = $valeur;
+                    $rep->addParent('Formation/Equipe/'.$eq->Id);
+                    $rep->addParent('Formation/TypeQuestion/'.$question_id);
+                    $rep->Save();
+                }
+            }
+            return true;
+        }
     }
 }

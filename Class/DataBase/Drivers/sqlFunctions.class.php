@@ -428,6 +428,7 @@ class sqlFunctions{
 		//Recherche de l'etape de sortie
 		for ($i=0;$i<sizeof($Tab);$i++) if (isset($Tab[$i]['multiFilter'])&&is_array($Tab[$i]['multiFilter'])){
 			 $T = $Tab[$i];
+
 			foreach ($T['multiFilter'] as $Mf){
 				$j++;
 // 				echo "--------------------------\r\n";

@@ -19,6 +19,28 @@
 //[IF [!NbLigne!]<[!NbS:/4!]][!NbLigne+=1!][/IF]
 //[STORPROC [!NbLigne!]|L]
 <div class="row">
+    <div class="col-lg-3 col-md-6">
+        <a href="#nogo" data-toggle="modal" data-target="#newSession">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-plus fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">Ajouter</div>
+                            <div>Créez une nouvelle session</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <span class="pull-left">Cliquez ici</span>
+                    <!--<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>-->
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </a>
+    </div>
     [STORPROC Formation/Session|S]
     <div class="col-lg-3 col-md-6">
         <a href="/Sessions/[!S::Id!]">
@@ -90,28 +112,7 @@
     [/STORPROC]
     //[IF [![!LastPos:+[!L:*4!]!]:+1!]=[!NbS!]]
     [IF [!LastPos!]=[!NbResult!]]
-    <div class="col-lg-3 col-md-6">
-        <a href="#nogo" data-toggle="modal" data-target="#newSession">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-3">
-                            <i class="fa fa-plus fa-5x"></i>
-                        </div>
-                        <div class="col-xs-9 text-right">
-                            <div class="huge">Ajouter</div>
-                            <div>Créez une nouvelle séssion</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel-footer">
-                    <span class="pull-left">Cliquez ici pour créer une nouvelle session</span>
-                    <!--<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>-->
-                    <div class="clearfix"></div>
-                </div>
-            </div>
-        </a>
-    </div>
+        //plus rien
     [/IF]
 </div>
 //[/STORPROC]

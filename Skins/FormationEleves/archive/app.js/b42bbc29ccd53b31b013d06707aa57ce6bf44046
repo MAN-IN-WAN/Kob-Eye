@@ -1,4 +1,4 @@
-function _21dd9dd28ccee205a26fc00848438799a6f170d0(){};//@tag foundation,core
+function _b42bbc29ccd53b31b013d06707aa57ce6bf44046(){};//@tag foundation,core
 //@define Ext
 /**
  * @class Ext
@@ -67214,15 +67214,15 @@ Ext.define('eleve.controller.Main', {
                 var ccq = cq.getBloquage();
                 var nq = me.getNextQuestion();
                 var cnq = nq.getBloquage();
-                results.equipe = eleve.utils.Config.getSessionEquipe();
-                results.session = eleve.utils.Config.getSessionId();
                 //enregistrement des résultats
                 var url = eleve.utils.Config.getResultUrl();
                 Ext.Ajax.request({
                     url: url,
                     useDefaultXhrHeader: false,
                     method: 'POST',
-                    params: results,
+                    data: {
+                        result: results
+                    },
                     success: function(response, opts) {
                         var obj = Ext.decode(response.responseText);
                         if (obj.success) {
@@ -68020,7 +68020,7 @@ Ext.define('eleve.view.Question', {
         this._lastBoolean = null;
         //recupération du record
         var record = this._record;
-        var results = {};
+        var results = [];
         //Récupération du/des types questions
         var tqStore = Ext.getStore('TypeQuestions');
         var me = this;
@@ -68032,17 +68032,17 @@ Ext.define('eleve.view.Question', {
                     //Jauge
                     //récupération de l'id
                     var jauge = $('#jauge-' + item.get('id'));
-                    results['qi_' + item.get('id')] = jauge.val();
+                    results[item.get('id')] = jauge.val();
                     break;
                 case "2":
                     //Echelle
                     var echelle = Ext.getCmp('echelle-' + item.get('id'));
-                    results['qi_' + item.get('id')] = echelle.getValue()[0];
+                    results[item.get('id')] = echelle.getValue()[0];
                     break;
                 case "3":
                     //Texte
                     var texte = Ext.getCmp('texte-' + item.get('id'));
-                    results['qi_' + item.get('id')] = texte.getValue();
+                    results[item.get('id')] = texte.getValue();
                     if (!texte.getValue().length && ((item.get('AfficheOui') && me._lastBoolean && me._lastBoolean.getValue()) || (me._lastBoolean && !me._lastBoolean.getValue() && item.get('AfficheNon')) || (me._lastBoolean && !item.get('AfficheOui') && !item.get('AfficheNon')) || !me._lastBoolean)) {
                         me._error = true;
                         Ext.Msg.alert('Problème de saisie', 'Veuillez vérifier votre saisie. Tous les champs sont obligatoires');
@@ -68051,7 +68051,7 @@ Ext.define('eleve.view.Question', {
                 case "4":
                     //Booleen
                     var booleen = Ext.getCmp('booleen-' + item.get('id'));
-                    results['qi_' + item.get('id')] = booleen.getValue();
+                    results[item.get('id')] = booleen.getValue();
                     me._lastBoolean = booleen;
                     break;
                 case "5":
@@ -68061,7 +68061,7 @@ Ext.define('eleve.view.Question', {
                         Ext.Msg.alert('Problème de saisie', 'Veuillez choisir un élément de la liste.');
                         me._error = true;
                     };
-                    results['qi_' + item.get('id')] = selection[0].getGroupValue();
+                    results[item.get('id')] = selection[0].getGroupValue();
                     break;
             }
         });

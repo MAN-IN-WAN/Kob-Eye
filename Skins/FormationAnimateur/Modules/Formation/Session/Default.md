@@ -2,6 +2,25 @@
 [!Region:=[!Sys::getOneData(Formation,Region/Session/[!S::Id!])!]!]
 [!Projet:=[!Sys::getOneData(Formation,Projet/Session/[!S::Id!])!]!]
 
+//STATISTIQUES
+//Nombre d'equipe
+[COUNT Formation/Session/[!S::Id!]/Equipe|NbEq]
+//Nombre total de type questions
+[COUNT Formation/Projet/[!Projet::Id!]/Categorie/*/Question/*/TypeQuestion|NbTq]
+//Nombre de réponse pour cette session
+[COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse|NbTr]
+
+//Pourcentage de progression
+[!NbRattendue:=[!NbEq:*[!NbTq!]!]!]
+[!Progression:=[!NbTq:/[!NbRattendue!]!]!]
+
+//Temps écoulé
+[!Te:=[!TMS::Now:-[!S::Date!]!]!]
+[!TeH:=[!Math::Floor([!Te:/3600!])!]!]
+[!TeM:=[!Math::Floor([![!Te:-[!TeH:*3600!]!]:/60!])!]!]
+[!TeS:=[![!Te:-[!TeH:*3600!]!]:-[!TeM:*60!]!]!]
+
+
 //ACTIONS
 [SWITCH [!action!]|=]
     [CASE Demarre]
@@ -101,7 +120,7 @@
                         <i class="fa fa-users fa-5x"></i>
                     </div>
                     <div class="col-xs-9">
-                        <div class="huge">59 Equipes</div>
+                        <div class="huge">[!NbEq!] Equipes</div>
                         <div>Connectées</div>
                     </div>
                 </div>
@@ -116,8 +135,10 @@
                         <i class="fa fa-pie-chart fa-5x"></i>
                     </div>
                     <div class="col-xs-9">
-                        <div class="huge">59 Equipes</div>
-                        <div>Connectées</div>
+                        <div class="huge">
+                            [!Progression!] %
+                        </div>
+                        <div>Progression ([!NbTr!] / [!NbRattendue!])</div>
                     </div>
                 </div>
             </div>
@@ -131,8 +152,8 @@
                         <i class="fa fa-tachometer fa-5x"></i>
                     </div>
                     <div class="col-xs-9">
-                        <div class="huge">59 Equipes</div>
-                        <div>Connectées</div>
+                        <div class="huge">[!TeH!]:[!TeM!]:[!TeS!]</div>
+                        <div>Temps écoulé</div>
                     </div>
                 </div>
             </div>
@@ -140,7 +161,31 @@
     </div>
 </div>
 
-
+<div class="row">
+    <div class="col-lg-12">
+        <h2>Equipes connectées</h2>
+    </div>
+    [STORPROC Formation/Session/[!S::Id!]/Equipe|E]
+        //calcul progression
+        [COUNT Formation/Equipe/[!E::Id!]/Reponse|NbRepEq]
+        [!Prog:=[!NbRepEq:/[!NbTq!]!]!]
+    <div class="col-md-3 equipe">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-xs-3">
+                    <i class="fa fa-users fa-5"></i>
+                </div>
+                <div class="col-xs-9">
+                    <div class="huge">Table Num [!E::Numero!]</div>
+                    <div>Progression [!Math::Round([!Prog:*100!])!] %</div>
+                    <div>Question [!NbRepEq!] / [!NbTq!] </div>
+                    <a href="?Action=SuppEq&id=[!E::Id!]" class="btn btn-danger btn-block">Supprimer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    [/STORPROC]
+</div>
 <div class="row">
     <div class="col-lg-12">
         <h2>Fichiers et vidéos</h2>
