@@ -15,8 +15,14 @@ class Header extends Root{
 	var $Css = Array();
 	var $Js = Array();
 	var $Files = Array();
+    //force
+    var $ForceTitle = false;
+    var $ForceDescription = false;
+    var $ForceKeywords = false;
+    var $ForceImage = false;
 
-	function Header ($Type="") {
+
+    function Header ($Type="") {
 		$proto = (Sys::$port == '443')?"https":"http";
 		$this->Url=$proto.'://'.Sys::$domain.'/';
 		$this->Title = $GLOBALS["Systeme"]->Titre;
@@ -44,26 +50,31 @@ class Header extends Root{
 			else array_unshift($this->Js, $js);
 		}
 	}
-
-	function setTitle($Temp) {
-		$this->Title = $Temp;
-	}
-	function setBody($Temp) {
-		$this->Body = $Temp;
-	}
-	function setDescription($Temp) {
-		$this->Description = preg_replace('#\[.+?\]#','', $Temp);
-        $this->Description = preg_replace('#\n#','', $this->Description);
-	}
-	function setClassification($Temp) {
-		$this->Classification = $Temp;
-	}
-	function setReplyTo($Temp) {
-		$this->ReplyTo = $Temp;
-	}
-	function setKeywords($Temp) {
-		$this->Keywords = $Temp;
-	}
+    function setTitle($Temp) {
+        $this->Title = $Temp;
+        $this->ForceTitle = true;
+    }
+    function setBody($Temp) {
+        $this->Body = $Temp;
+    }
+    function setImage($Temp) {
+        $this->Image = $Temp;
+        $this->ForceImage = true;
+    }
+    function setDescription($Temp) {
+        $this->Description = $Temp;
+        $this->ForceDescription = true;
+    }
+    function setClassification($Temp) {
+        $this->Classification = $Temp;
+    }
+    function setReplyTo($Temp) {
+        $this->ReplyTo = $Temp;
+    }
+    function setKeywords($Temp) {
+        $this->Keywords = $Temp;
+        $this->ForceKeywords = true;
+    }
 	function setFrameset($Tab,$Data="",$Name=0) {
 		//Analyse du tableau et construction de la chaine
 		if (is_array($Tab)) {
@@ -189,32 +200,30 @@ class Header extends Root{
 	}
 
 
-	function setMeta() {
-		$uri = Sys::$link;
-		if (!defined('SITEMAP_ALLOW_PARAMS') || !SITEMAP_ALLOW_PARAMS){
-			$pos = strpos($uri, '?');
-			if($pos !== FALSE) $uri = substr($uri, 0, $pos);
-		}
-		$tab = Sys::$Modules['Systeme']->callData('Systeme/Page/MD5='.md5('http://'.Sys::$domain.$uri));
-		if(is_array($tab) && isset($tab[0])) {
-			if(!empty($tab[0]['Title'])) $this->Title = $tab[0]['Title'];
-			if(!empty($tab[0]['Description'])) $this->setDescription($tab[0]['Description']);
-			if(!empty($tab[0]['Keywords'])) $this->Keywords = $tab[0]['Keywords'];
-		}
-	}
-	function Affich() {
-		//Récupréation de la page en cours
-		$code  = md5('http://'.Sys::$domain.'/'.$GLOBALS["Systeme"]->Lien);
-		$pages = Sys::getData('Systeme','Page/MD5='.$code);
-		if (isset($pages[0])){
-			$page = $pages[0];
-			$this->Title = $page->Title;
-            $this->setDescription($page->Description);
-			$this->Keywords = $page->Keywords;
-			$this->Image = $page->Image;
-		}
-		$browser = $this->getBrowser() . ' ' . $this->getBrowser(true);
-		$this->setMeta();
+    function setMeta() {
+        $uri = Sys::$link;
+        if (!defined('SITEMAP_ALLOW_PARAMS') || !SITEMAP_ALLOW_PARAMS){
+            $pos = strpos($uri, '?');
+            if($pos !== FALSE) $uri = substr($uri, 0, $pos);
+        }
+        $code  = md5('http://'.Sys::$domain.'/'.$GLOBALS["Systeme"]->Lien);
+        $pages = Sys::getData('Systeme','Page/MD5='.$code);
+        if (isset($pages[0])){
+            $page = $pages[0];
+            if (!$this->ForceTitle)
+                $this->Title = $page->Title;
+            if (!$this->ForceDescription)
+                $this->Description = $page->Description;
+            if (!$this->ForceKeywords)
+                $this->Keywords = $page->Keywords;
+            if (!$this->ForceImage)
+                $this->Image = $page->Image;
+        }
+    }
+    function Affich() {
+        //Récupréation de la page en cours
+        $browser = $this->getBrowser() . ' ' . $this->getBrowser(true);
+        $this->setMeta();
 		//					<html ' . (empty($browser) ? '': 'class="'.$browser.'"') .'>
 			$this->Content = '<!DOCTYPE HTML>
 							<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7 '.$browser.'" dir="ltr" lang="en-US"> <![endif]-->
