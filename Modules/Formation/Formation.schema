@@ -67,6 +67,13 @@
         <FKEY card="0,1" data="Projet,Id" category="Intitulé" description="Projet">ProjetId</FKEY>
         <FKEY card="0,1" data="Region,Id" category="Intitulé" description="Projet">Region</FKEY>
     </OBJECTCLASS>
+    <OBJECTCLASS title="Etape" driver="mysql" Description="Equipe" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+        <PROPERTIES type="order" searchOrder="1" category="Intitulé">Numero</PROPERTIES>
+        <PROPERTIES type="text" searchOrder="2" category="Intitulé">Titre</PROPERTIES>
+        <PROPERTIES type="boolean" category="Intitulé">Debloquage</PROPERTIES>
+        <FKEY card="0,1" data="Session,Id" category="Intitulé" description="Session">SessionId</FKEY>
+        <FKEY card="0,1" data="Categorie,Id" category="Intitulé" description="Categorie">CategorieId</FKEY>
+    </OBJECTCLASS>
     <OBJECTCLASS title="Equipe" driver="mysql" Description="Equipe" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/Formation/Class/Equipe.class.php">
         <PROPERTIES type="int" searchOrder="1" category="Intitulé">Numero</PROPERTIES>
         <PROPERTIES type="text" category="Intitulé">Description</PROPERTIES>

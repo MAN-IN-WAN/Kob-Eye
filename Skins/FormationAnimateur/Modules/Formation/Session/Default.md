@@ -11,8 +11,12 @@
 [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse|NbTr]
 
 //Pourcentage de progression
-[!NbRattendue:=[!NbEq:*[!NbTq!]!]!]
-[!Progression:=[!NbTq:/[!NbRattendue!]!]!]
+//[!NbRattendue:=[!NbEq:*[!NbTq!]!]!]
+[IF [!NbRattendue!]>0]
+    [!Progression:=[!NbTr:/[!NbRattendue!]!]!]
+[ELSE]
+    [!Progression:=0!]
+[/IF]
 
 //Temps écoulé
 [!Te:=[!TMS::Now:-[!S::Date!]!]!]
@@ -24,19 +28,36 @@
 //ACTIONS
 [SWITCH [!action!]|=]
     [CASE Demarre]
-        <div class="alert alert-info">La session démarre.</div>
         [!S::Demarre()!]
+        [REDIRECT][!Lien!]?message=La session démarre.&messageType=success[/REDIRECT]
     [/CASE]
     [CASE Termine]
-        <div class="alert alert-info">La session est terminée.</div>
         [!S::Termine()!]
+        [REDIRECT][!Lien!]?message=La session est terminée.&messageType=warning[/REDIRECT]
+    [/CASE]
+    [CASE Supprimer]
+        [!S::Delete()!]
+        [REDIRECT]?message=La session est supprimée.&messageType=danger[/REDIRECT]
+    [/CASE]
+    [CASE DebloqueEtape]
+        [STORPROC Formation/Etape/[!id!]|E|0|1]
+            [IF [!E::Debloquage!]]
+                [!E::Debloquage:=0!]
+                [!E::Save()!]
+                [REDIRECT][!Lien!]?message=L'étape [!E::Titre!] a été bloquée.&messageType=success[/REDIRECT]
+            [ELSE]
+                [!E::Debloquage:=1!]
+                [!E::Save()!]
+                [REDIRECT][!Lien!]?message=L'étape [!E::Titre!] a étée débloquée.&messageType=success[/REDIRECT]
+            [/IF]
+        [/STORPROC]
     [/CASE]
 [/SWITCH]
 
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">
-            Séssion [!S::Nom!] <small>région [!Region::Nom!] pour la formation [!Projet::Nom!] à la date du [DATE d/m/Y][!S::Date!][/DATE]</small>
+            Séssion [!S::Nom!] <small>région [!Region::Nom!] pour la formation [!Projet::Nom!]</small>
         </h1>
         <ol class="breadcrumb">
             <li >
@@ -49,13 +70,18 @@
     </div>
 </div>
 
+[IF [!message!]]
+        <div class="alert alert-[!messageType!]">[!message!]</div>
+[/IF]
+
 <div class="row">
+    [!ConfirmDelete:=Etes-vous sur de vouloir supprimer cette session ? <br />Les utliisateurs connectés seront déconnectés et toutes les données seront perdues pour cette session.!]
     [IF [!S::EnCours!]]
         [!Etat:=Formation en cours!]
         [!Panel:=success!]
         [!Icone:=stop!]
         [!Action:=Termine!]
-        [!Confirm:=Etes-vous sur de vouloir terminer cette session ? <br />Les utliisateurs connectés seront déconnectés.!]
+    [!Confirm:=Etes-vous sur de vouloir terminer cette session ? <br />Les utliisateurs connectés seront déconnectés.!]
     [ELSE]
         [IF [!S::Termine!]]
             [IF [!S::Synchro!]]
@@ -88,6 +114,7 @@
                     </div>
                     <div class="col-xs-2">
                         <a href="?action=[!Action!]" class="btn btn-primary btn-block confirm" data-confirm="[!Confirm!]">[!Action!]</a>
+                        <a href="?action=Supprimer" class="btn btn-danger btn-block confirm" data-confirm="[!ConfirmDelete!]">Supprimer</a>
                     </div>
                     <div class="col-xs-2">
                         <div class="huge">[!S::Nom!]</div>
@@ -136,7 +163,7 @@
                     </div>
                     <div class="col-xs-9">
                         <div class="huge">
-                            [!Progression!] %
+                            [!Math::Floor([!Progression:*100!])!] %
                         </div>
                         <div>Progression ([!NbTr!] / [!NbRattendue!])</div>
                     </div>
@@ -163,6 +190,34 @@
 
 <div class="row">
     <div class="col-lg-12">
+        <h2>Etapes de l'animation</h2>
+    </div>
+    [STORPROC Formation/Session/[!S::Id!]/Etape|E]
+        <div class="col-md-6 etape">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-1">
+                        <i class="fa fa-map-marker fa-5"></i>
+                    </div>
+                    <div class="col-xs-3">
+                        <div class="huge">Etape [!E::Numero!]</div>
+                    </div>
+                    <div class="col-xs-8">
+                        [IF [!E::Debloquage!]]
+                        <a href="?action=DebloqueEtape&id=[!E::Id!]" class="btn btn-success pull-right">Bloquer</a>
+                        [ELSE]
+                        <a href="?action=DebloqueEtape&id=[!E::Id!]" class="btn btn-danger pull-right">Débloquer</a>
+                        [/IF]
+                        <div>[!E::Titre!]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    [/STORPROC]
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
         <h2>Equipes connectées</h2>
     </div>
     [STORPROC Formation/Session/[!S::Id!]/Equipe|E]
@@ -179,7 +234,7 @@
                     <div class="huge">Table Num [!E::Numero!]</div>
                     <div>Progression [!Math::Round([!Prog:*100!])!] %</div>
                     <div>Question [!NbRepEq!] / [!NbTq!] </div>
-                    <a href="?Action=SuppEq&id=[!E::Id!]" class="btn btn-danger btn-block">Supprimer</a>
+                    <a href="?action=SuppEq&id=[!E::Id!]" class="btn btn-danger btn-block">Supprimer</a>
                 </div>
             </div>
         </div>

@@ -1,8 +1,60 @@
 <?php
 class FormationSession extends genericClass {
+
+    /**
+     * Save
+     */
+    function Save(){
+        parent::Save();
+        //Si pas d'étape alors on génère
+        if (!Sys::getCount('Formation','Session/'.$this->Id.'/Etape')){
+            $this->initCatBloque();
+        }
+    }
+    /**
+     * getCatBloque
+     */
+    function initCatBloque() {
+        $p = $this->getProjet();
+        $out = $this->recursivCat($p);
+        $num=1;
+        //on générère les Etapes
+        foreach ($out as $o) {
+            $e = genericClass::createInstance('Formation','Etape');
+            $e->addParent($this);
+            $e->addParent($o);
+            $e->Numero = $num;
+            $e->Titre = $o->Nom;
+            $num++;
+            $e->Save();
+        }
+    }
+    /**
+     * recursiveCat
+     * recherche recursivement dans les categories
+     */
+    function recursivCat($p) {
+        $cats = $p->getChildren('Categorie');
+        $out = array();
+        foreach ($cats as $c){
+            if ($c->Bloque){
+                array_push($out, $c);
+            }else{
+                $out = array_merge($out, $this->recursivCat($c));
+            }
+        }
+        return $out;
+    }
+    /**
+     * @return bool|void
+     */
     function Delete() {
         // suppression de toutes les réponses
         $t = $this->getChildren('Equipe');
+        foreach ($t as $r) {
+            $r->Delete();
+        }
+        $t = $this->getChildren('Etape');
         foreach ($t as $r) {
             $r->Delete();
         }
