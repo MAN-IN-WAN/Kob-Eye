@@ -10,6 +10,31 @@ class FormationSession extends genericClass {
         if (!Sys::getCount('Formation','Session/'.$this->Id.'/Etape')){
             $this->initCatBloque();
         }
+        //Si pas dde donnees alors on génère
+        if (!Sys::getCount('Formation','Session/'.$this->Id.'/Donnee')){
+            $this->initDonnee();
+        }
+    }
+    /**
+     * initDonnee
+     */
+    function initDonnee() {
+        $p = $this->getProjet();
+        $out = Sys::getData('Formation','Projet/'.$p->Id.'/Categorie/*/Question/*/TypeQuestion');
+        $num=1;
+        //on générère les Etapes
+        foreach ($out as $o) {
+            $q = $o->getParents('Question');
+            $q = $q[0];
+            $e = genericClass::createInstance('Formation','Donnee');
+            $e->addParent($this);
+            $e->addParent($o);
+            $e->Numero = $num;
+            $e->Titre = $q->Nom;
+            $e->TypeReponse = $o->TypeResponse;
+            $num++;
+            $e->Save();
+        }
     }
     /**
      * getCatBloque
@@ -110,6 +135,19 @@ class FormationSession extends genericClass {
             $t->Save();
             return true;
         }
+    }
+    /**
+     * checkEtape
+     * vérification du débloquage de l'étape
+     *
+     */
+    function checkEtape($equipe,$session,$question){
+        //recherche de la categorie bloquante de la question
+        $q = Sys::getOneData('Formation','Question/'.$question);
+        $cb = $q->getCategorieBloquante();
+        $blo = Sys::getOneData('Formation','Categorie/'.$cb->Id.'/Etape');
+        if ($blo->Debloquage) return true;
+        else return false;
     }
     /**
      * checkSessionTeam

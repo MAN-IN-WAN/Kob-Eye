@@ -7,6 +7,7 @@
 [HEADER JS]Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/js/bootstrap-datepicker.min.js[/HEADER]
 [HEADER JS]Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.fr.min.js[/HEADER]
 [HEADER JS]Tools/Css/Bootstrap/BootBox/bootbox.min.js[/HEADER]
+[HEADER JS]Tools/Js/ChartJs/Chart.min.js[/HEADER]
 [HEADER]
 <meta name="viewport" content="width=device-width, initial-scale=1">
 [/HEADER]

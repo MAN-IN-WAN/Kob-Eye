@@ -4,7 +4,7 @@
 		<PROPERTIES type="varchar" length="200" searchOrder="1" category="Intitulé">Nom</PROPERTIES>
 		<PROPERTIES type="text" category="Descriptif">Description</PROPERTIES>
 	</OBJECTCLASS>
-    <OBJECTCLASS title="Categorie" driver="mysql" AccessPoint="1" Description="Catégorie" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+    <OBJECTCLASS title="Categorie" driver="mysql" AccessPoint="1" Description="Catégorie" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" className="FormationCategorie" Class="Modules/Formation/Class/Categorie.class.php">
         <PROPERTIES type="varchar" length="200" searchOrder="1" category="Intitulé" mobile="1">Nom</PROPERTIES>
         <PROPERTIES type="order" searchOrder="2" category="Intitulé" mobile="1">Ordre</PROPERTIES>
         <PROPERTIES type="varchar" length="30" category="Intitulé" mobile="1">Prefixe</PROPERTIES>
@@ -17,7 +17,7 @@
         <FKEY card="0,1" data="Map,Id" category="Intitulé" description="Projet" mobile="1">MapId</FKEY>
         <FKEY card="0,1" data="Categorie,Id" category="Intitulé" description="Categorie parente" mobile="1">CategorieId</FKEY>
     </OBJECTCLASS>
-    <OBJECTCLASS title="Question" driver="mysql" AccessPoint="1" Description="Question" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+    <OBJECTCLASS title="Question" driver="mysql" AccessPoint="1" Description="Question" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/Formation/Class/Question.class.php">
         <PROPERTIES type="varchar" length="200" searchOrder="1" category="Intitulé" mobile="1">Nom</PROPERTIES>
         <PROPERTIES type="varchar" length="30" category="Intitulé" mobile="1">Prefixe</PROPERTIES>
         <PROPERTIES type="order" searchOrder="2" category="Intitulé" mobile="1">Ordre</PROPERTIES>
@@ -27,7 +27,7 @@
     <OBJECTCLASS title="TypeQuestion" driver="mysql" Description="Type de Réponse" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
         <PROPERTIES type="order" searchOrder="2" category="Intitulé" mobile="1">Ordre</PROPERTIES>
         <PROPERTIES type="varchar" length="200" searchOrder="1" category="Intitulé" mobile="1">Nom</PROPERTIES>
-        <PROPERTIES type="varchar" length="200" searchOrder="1" query="Formation/TypeReponse::Id::Nom" category="Intitulé" mobile="1">TypeReponse</PROPERTIES>
+        <PROPERTIES type="int" length="200" searchOrder="1" query="Formation/TypeReponse::Id::Nom" category="Intitulé" mobile="1">TypeReponse</PROPERTIES>
         <PROPERTIES type="boolean" searchOrder="2" category="Cas Sélection" description="S'affiche dans le cas oui du booléen" mobile="1">AfficheOui</PROPERTIES>
         <PROPERTIES type="boolean" searchOrder="2" category="Cas Sélection" description="S'affiche dans le cas non du booléen" mobile="1">AfficheNon</PROPERTIES>
         <FKEY card="1,1" data="Question,Id" category="Intitulé" description="Question parente" mobile="1">QuestionId</FKEY>
@@ -67,9 +67,17 @@
         <FKEY card="0,1" data="Projet,Id" category="Intitulé" description="Projet">ProjetId</FKEY>
         <FKEY card="0,1" data="Region,Id" category="Intitulé" description="Projet">Region</FKEY>
     </OBJECTCLASS>
-    <OBJECTCLASS title="Etape" driver="mysql" Description="Equipe" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+    <OBJECTCLASS title="Donnee" driver="mysql" Description="Donnee" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
         <PROPERTIES type="order" searchOrder="1" category="Intitulé">Numero</PROPERTIES>
-        <PROPERTIES type="text" searchOrder="2" category="Intitulé">Titre</PROPERTIES>
+        <PROPERTIES type="varchar" searchOrder="2" category="Intitulé">Titre</PROPERTIES>
+        <PROPERTIES type="int" length="200" searchOrder="1" query="Formation/TypeReponse::Id::Nom" category="Intitulé" mobile="1">TypeReponse</PROPERTIES>
+        <PROPERTIES type="text" category="Intitulé">Data</PROPERTIES>
+        <FKEY card="0,1" data="Session,Id" category="Intitulé" description="Session">SessionId</FKEY>
+        <FKEY card="0,1" data="TypeQuestion,Id" category="Intitulé" description="Categorie">TypeQuestionId</FKEY>
+    </OBJECTCLASS>
+    <OBJECTCLASS title="Etape" driver="mysql" Description="Etape" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+        <PROPERTIES type="order" searchOrder="1" category="Intitulé">Numero</PROPERTIES>
+        <PROPERTIES type="varchar" searchOrder="2" category="Intitulé">Titre</PROPERTIES>
         <PROPERTIES type="boolean" category="Intitulé">Debloquage</PROPERTIES>
         <FKEY card="0,1" data="Session,Id" category="Intitulé" description="Session">SessionId</FKEY>
         <FKEY card="0,1" data="Categorie,Id" category="Intitulé" description="Categorie">CategorieId</FKEY>

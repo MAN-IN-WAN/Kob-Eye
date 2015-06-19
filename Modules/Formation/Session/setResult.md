@@ -17,7 +17,8 @@
         [/IF]
 [ELSE]
 {
-    success: false
+    success: false,
+    reset: true,
     msg: 'impossible de trouver la session [!session!].'
 }
 [/IF]
