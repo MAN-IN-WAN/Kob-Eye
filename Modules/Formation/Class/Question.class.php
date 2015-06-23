@@ -10,4 +10,15 @@ class Question extends genericClass{
             return $c->getCategorieBloquante();
         else return false;
     }
+    /**
+     *
+     */
+    function getCategoryBreadcrumb() {
+        $out = array();
+        $c = Sys::getOneData('Formation','Categorie/Question/'.$this->Id);
+        if (is_object($c))
+           $out = array_merge($out,$c->getCategoryBreadcrumb());
+        array_push($out,$this);
+        return $out;
+    }
 }

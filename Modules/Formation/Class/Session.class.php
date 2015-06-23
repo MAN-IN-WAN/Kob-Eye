@@ -20,20 +20,20 @@ class FormationSession extends genericClass {
      */
     function initDonnee() {
         $p = $this->getProjet();
-        $out = Sys::getData('Formation','Projet/'.$p->Id.'/Categorie/*/Question/*/TypeQuestion');
         $num=1;
-        //on générère les Etapes
-        foreach ($out as $o) {
-            $q = $o->getParents('Question');
-            $q = $q[0];
-            $e = genericClass::createInstance('Formation','Donnee');
-            $e->addParent($this);
-            $e->addParent($o);
-            $e->Numero = $num;
-            $e->Titre = $q->Nom;
-            $e->TypeReponse = $o->TypeResponse;
-            $num++;
-            $e->Save();
+        $questions = Sys::getData('Formation','Projet/'.$p->Id.'/Categorie/*/Question',0,200,'ASC','Ordre');
+        foreach ($questions as $q){
+            $tps = $q->getChildren('TypeQuestion');
+            foreach ($tps as $o) {
+                $e = genericClass::createInstance('Formation', 'Donnee');
+                $e->addParent($this);
+                $e->addParent($o);
+                $e->Numero = $num;
+                $e->Titre = $q->Nom;
+                $e->TypeReponse = $o->TypeReponse;
+                $num++;
+                $e->Save();
+            }
         }
     }
     /**
@@ -145,6 +145,7 @@ class FormationSession extends genericClass {
         //recherche de la categorie bloquante de la question
         $q = Sys::getOneData('Formation','Question/'.$question);
         $cb = $q->getCategorieBloquante();
+        if (!$cb) return true;
         $blo = Sys::getOneData('Formation','Categorie/'.$cb->Id.'/Etape');
         if ($blo->Debloquage) return true;
         else return false;

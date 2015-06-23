@@ -19,6 +19,9 @@ class Sys extends Root{
 	var $Header;
 	static $Skin;
 	static $DefaultSkin;
+
+	//properties
+	static $PropertiesCache = Array();
 	var $Connection;
 	static $User;
 	var $Menus;

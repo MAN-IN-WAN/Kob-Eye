@@ -305,3 +305,27 @@ h1 {
 a.active .panel-heading{
     background-color: #dedede;
 }
+
+.jauge {
+    background: url(/Skins/FormationAnimateur/Img/Jauge.png) no-repeat;
+    background-size: contain;
+    background-position: 0 26px;
+    width: 75%;
+    margin: 0 12%;
+}
+.naviquestion{
+    position: fixed;
+    top: 51px;
+    width: 31%;
+    overflow-y: auto;
+    background-color: transparent;
+    bottom: 0;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+.stats {
+    padding-top: 20px;
+    margin-left: 36%;
+    width: 64%;
+}

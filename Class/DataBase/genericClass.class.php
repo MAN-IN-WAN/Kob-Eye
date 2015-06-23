@@ -578,6 +578,8 @@ class genericClass extends Root {
 	}
 
 	public function getProperties($L = "", $I = false) {
+		if (isset(Sys::$PropertiesCache[$this->Module.'_'.$this->ObjectType])) return Sys::$PropertiesCache[$this->Module.'_'.$this->ObjectType];
+
 		//Tableau contenant les proprietes par ordre d'importance et avec toutes les infos necessaires
 		// 		if (!sizeof($Props)) {
 		Sys::$Modules[$this -> Module] -> loadSchema();
@@ -695,6 +697,10 @@ class genericClass extends Root {
 				if ($Props[$i]["Langue"] == $L)
 					$Result[] = $Props[$i];
 			}
+			
+	        //mise en cache
+		Sys::$PropertiesCache[$this->Module.'_'.$this->ObjectType] = $Result;
+
 		return $Result;
 	}
 

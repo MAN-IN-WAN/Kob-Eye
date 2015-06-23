@@ -13,4 +13,13 @@ class FormationCategorie extends genericClass{
             else return false;
         }
     }
+    function getCategoryBreadcrumb() {
+        $out = array();
+        $c = Sys::getOneData('Formation','Categorie/Categorie/'.$this->Id);
+        if (is_object($c))
+           $out = array_merge($out,$c->getCategoryBreadcrumb());
+        if ($this->Afficher)
+            array_push($out,$this);
+        return $out;
+    }
 }
