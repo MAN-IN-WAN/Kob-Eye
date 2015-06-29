@@ -1,4 +1,4 @@
-function _d77e199612da661c6124f98bc4af9d9a71a9406c(){};//@tag foundation,core
+function _44707655ce9571ca059acabf3154eab5ebe1d4ec(){};//@tag foundation,core
 //@define Ext
 /**
  * @class Ext
@@ -68288,9 +68288,6 @@ Ext.define('eleve.view.Question', {
                 action: 'panneauConfirm',
                 xtype: 'actionsheet',
                 text: 'Etes-vous sûr ?',
-                showAnimation: null,
-                hideAnimation: null,
-                hideOnMaskTap: true,
                 hidden: true,
                 items: [
                     {

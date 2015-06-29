@@ -329,3 +329,16 @@ a.active .panel-heading{
     margin-left: 36%;
     width: 64%;
 }
+
+.legendeG{
+    position: absolute;
+    top: 95%;
+    left: 6%;
+    font-weight: bold;
+}
+.legendeD{
+    position: absolute;
+    top: 95%;
+    right: 6%;
+    font-weight: bold;
+}

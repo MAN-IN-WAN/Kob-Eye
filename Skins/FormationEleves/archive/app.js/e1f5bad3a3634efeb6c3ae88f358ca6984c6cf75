@@ -1,4 +1,4 @@
-function _d77e199612da661c6124f98bc4af9d9a71a9406c(){};//@tag foundation,core
+function _e1f5bad3a3634efeb6c3ae88f358ca6984c6cf75(){};//@tag foundation,core
 //@define Ext
 /**
  * @class Ext
@@ -68290,7 +68290,6 @@ Ext.define('eleve.view.Question', {
                 text: 'Etes-vous sûr ?',
                 showAnimation: null,
                 hideAnimation: null,
-                hideOnMaskTap: true,
                 hidden: true,
                 items: [
                     {

@@ -1,4 +1,4 @@
-function _d77e199612da661c6124f98bc4af9d9a71a9406c(){};//@tag foundation,core
+function _14fc546531695f0bf0598ba3c56e333966cf680a(){};//@tag foundation,core
 //@define Ext
 /**
  * @class Ext
@@ -66995,7 +66995,7 @@ Ext.define('eleve.utils.Config', {
         /**
          * global config
          */
-        appTitle: 'ERDF',
+        appTitle: 'EDF',
         loaded: false,
         /**
          * Urls
@@ -67512,8 +67512,6 @@ Ext.define('eleve.controller.Main', {
         }
         
         //affichage du panneau de confirmation
-        Ext.Msg.defaultAllowedConfig.showAnimation = false;
-        Ext.Msg.defaultAllowedConfig.hideAnimation = false;
         this.getPanneauConfirm().show();
     },
     saveReponse: function() {
@@ -67559,7 +67557,7 @@ Ext.define('eleve.controller.Main', {
         }
         else {
             eleve.utils.Config.setCurrentQuestion(nq.get('Ordre'));
-            me.redirectTo('wait');
+            me.redirectTo('map');
         }
     },
     /**
@@ -67601,9 +67599,9 @@ Ext.define('eleve.controller.Main', {
      */
     onBackTap: function(button, e, eOpts) {
         console.log('itemtap back');
-        //var appHistory = this.getApplication().getHistory();
+        var appHistory = this.getApplication().getHistory();
         // fire previous route
-        //appHistory.back();
+        appHistory.back();
         // prevent the default navigation view
         // back button behavior from firing
         return false;
@@ -67625,9 +67623,9 @@ Ext.define('eleve.controller.Main', {
         }
         
         //si equipe dejà définie sur la page equipê alors redirection map
-        if ((name_view == "eleve.view.SetEquipe" || name_view == "eleve.view.Loading") && eleve.utils.Config.getSessionActive() && eleve.utils.Config.getLoaded() && !this._etapeChecking) {
-            console.log('session active OK redirect to checkEtape');
-            this.redirectTo('wait');
+        if ((name_view == "eleve.view.SetEquipe" || name_view == "eleve.view.Loading") && eleve.utils.Config.getSessionActive() && eleve.utils.Config.getLoaded()) {
+            console.log('session active OK redirect to map');
+            this.redirectTo('map');
             return;
         }
         //gestion des effets
@@ -67681,31 +67679,25 @@ Ext.define('eleve.controller.Main', {
         if (this._thingsToLoad == 0) {
             eleve.utils.Config.setLoaded(true);
             this.redirectTo('setteam');
-            this._loading = false;
             console.log('***** LOADED *****');
         }
     },
     /********************************
      * ROUTING
      * ******************************/
-    _etapeChecking: false,
     showWait: function() {
-        if (!eleve.utils.Config.getLoaded()) {
-            this.redirectTo('loading');
-            return;
-        }
-        this._etapeChecking = true;
         console.log('showWait');
         //affichage de l'ecran de loading
-        this.manageView(0, 'eleve.view.Wait');
+        this.manageView(0, 'eleve.view.Loading');
+        //affichage du texte attente de session
+        var curview = me._indexViews['eleve.view.Loading'];
+        curview.down('[action=loadingText]').setHtml('<h1>Attente de l\'animateur...</h1><h2>Reprenez votre parcours.</h2>');
         //récupération de la session
         this.checkEtape();
     },
     checkEtape: function() {
-        console.log('check etape');
         var me = this;
-        var currentQuestion = me.getCurrentQuestion();
-        console.log('check etape', currentQuestion);
+        var curview = me._indexViews['eleve.view.Loading'];
         //interrogation du serveur pour savoir si l'etape est debloquée
         var url = eleve.utils.Config.getCheckEtapeUrl();
         Ext.Ajax.request({
@@ -67714,23 +67706,31 @@ Ext.define('eleve.controller.Main', {
             params: {
                 session: eleve.utils.Config.getSessionId(),
                 equipe: eleve.utils.Config.getSessionEquipe(),
-                question: currentQuestion.get('id')
+                question: eleve.utils.Config.getCurrentQuestion()
             },
             method: 'POST',
             success: function(response, opts) {
                 var obj = Ext.decode(response.responseText);
                 if (obj.success) {
-                    this._etapeChecking = false;
-                    //affichage de la map
-                    me.redirectTo('map');
+                    //affichage du texte de chargement
+                    curview.down('[action=loadingText]').setHtml('<h1>Chargement en cours...</h1>');
+                    //enregistrement des informations de session
+                    eleve.utils.Config.setSessionId(obj.id);
+                    eleve.utils.Config.setSessionName(obj.name);
+                    console.log('set session information', obj.id, obj.name);
+                    //chargement des stores
+                    me.loadStores();
                 } else {
-                    if (obj.reset) {
-                        //reset de la config
+                    //reset de la configuration stockée
+                    if (eleve.utils.Config.getSessionId())  {
                         eleve.utils.Config.resetSession();
                     }
+                    
+                    //affichage du texte attente de session
+                    curview.down('[action=loadingText]').setHtml('<h1>Attente d\'une session...</h1>');
                     //aucune session disponible
                     var task = Ext.create('Ext.util.DelayedTask', function() {
-                            me.checkEtape();
+                            me.getSession();
                         }, this);
                     //The function will start after 0 milliseconds - so we want to start instantly at first
                     task.delay(5000);
@@ -67793,13 +67793,7 @@ Ext.define('eleve.controller.Main', {
             }
         });
     },
-    _loading: false,
     loadStores: function() {
-        if (this._loading)  {
-            return;
-        }
-        
-        this._loading = true;
         var me = this;
         //chargement des stores
         var categories = Ext.getStore('Categories');
@@ -67858,10 +67852,6 @@ Ext.define('eleve.controller.Main', {
         this.manageView(0, 'eleve.view.SetEquipe');
     },
     showFin: function() {
-        if (!eleve.utils.Config.getLoaded()) {
-            this.redirectTo('loading');
-            return;
-        }
         this.manageView(0, 'eleve.view.Fin');
     },
     showMap: function() {
@@ -67879,7 +67869,7 @@ Ext.define('eleve.controller.Main', {
             this.redirectTo('loading');
             return;
         }
-        var ficheview = this.manageView(0, 'eleve.view.Question');
+        var ficheview = this.manageView(1, 'eleve.view.Question');
         var questionStore = Ext.getStore('Questions');
         var record = questionStore.getById(id);
         eleve.utils.Config.setCurrentQuestion(record.get('Ordre'));
@@ -68101,32 +68091,6 @@ Ext.define("eleve.store.TypeReponses", {
     }
 });
 
-Ext.define('eleve.view.Wait', {
-    extend: Ext.Panel,
-    xtype: 'loading',
-    config: {
-        title: 'Chargement des données',
-        items: [
-            {
-                docked: 'top',
-                xtype: 'titlebar',
-                title: eleve.utils.Config.getAppTitle()
-            },
-            {
-                html: '<i class="fa fa-users fa-6"></i>',
-                style: 'position:absolute; z-index:1; top:50%; left:50%;',
-                action: 'mapMarker'
-            },
-            {
-                width: '100%',
-                style: 'margin-top: 400px;text-align: center;',
-                action: 'loadingText',
-                html: '<h1>Merci, veuillez continuer sur le parcours.</h1>'
-            }
-        ]
-    }
-});
-
 Ext.define('eleve.view.Loading', {
     extend: Ext.Panel,
     xtype: 'loading',
@@ -68140,7 +68104,7 @@ Ext.define('eleve.view.Loading', {
             },
             {
                 width: '100%',
-                style: 'margin-top: 200px;text-align: center;',
+                style: 'margin-top: 65%;text-align: center;',
                 action: 'loadingText',
                 html: '<h1>Chargement en cours ...</h1>'
             }
@@ -68288,13 +68252,10 @@ Ext.define('eleve.view.Question', {
                 action: 'panneauConfirm',
                 xtype: 'actionsheet',
                 text: 'Etes-vous sûr ?',
-                showAnimation: null,
-                hideAnimation: null,
-                hideOnMaskTap: true,
                 hidden: true,
                 items: [
                     {
-                        text: 'Etes-vous sur ?     OUI',
+                        text: 'Oui',
                         ui: 'confirm',
                         action: 'confirm',
                         handler: function() {
@@ -68304,7 +68265,7 @@ Ext.define('eleve.view.Question', {
                     },
                     {
                         ui: 'decline',
-                        text: 'Etes-vous sur ?     NON',
+                        text: 'Non',
                         handler: function() {
                             this.up('[xtype=question]').down('[action=scrollableContainer]').getScrollable().getScroller().scrollTo(0, 0, true);
                             this.up('[action=panneauConfirm]').hide();
@@ -68421,7 +68382,6 @@ Ext.define('eleve.view.Question', {
                             temp.hidden = true;
                         };
                         me.down('[action=questionContainer]').add(temp);
-                        Ext.getCmp('texte-' + item.get('id')).focus();
                         break;
                     case "4":
                         //Booleen
@@ -68579,7 +68539,7 @@ Ext.define('eleve.view.Fin', {
             },
             {
                 width: '100%',
-                style: 'margin-top: 200px;text-align: center;',
+                style: 'margin-top: 65%;text-align: center;',
                 html: '<h1>Fin de l\'animation interactive</h1><h2>Merci pour votre participation.</h2>'
             }
         ]
@@ -68620,8 +68580,7 @@ Ext.application({
         'SetEquipe',
         'Map',
         'Question',
-        'Fin',
-        'Wait'
+        'Fin'
     ],
     controllers: [
         'Main',

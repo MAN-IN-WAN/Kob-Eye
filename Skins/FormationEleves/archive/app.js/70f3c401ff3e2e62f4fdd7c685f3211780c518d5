@@ -1,4 +1,4 @@
-function _d77e199612da661c6124f98bc4af9d9a71a9406c(){};//@tag foundation,core
+function _70f3c401ff3e2e62f4fdd7c685f3211780c518d5(){};//@tag foundation,core
 //@define Ext
 /**
  * @class Ext
@@ -67512,8 +67512,6 @@ Ext.define('eleve.controller.Main', {
         }
         
         //affichage du panneau de confirmation
-        Ext.Msg.defaultAllowedConfig.showAnimation = false;
-        Ext.Msg.defaultAllowedConfig.hideAnimation = false;
         this.getPanneauConfirm().show();
     },
     saveReponse: function() {
@@ -68288,9 +68286,6 @@ Ext.define('eleve.view.Question', {
                 action: 'panneauConfirm',
                 xtype: 'actionsheet',
                 text: 'Etes-vous sûr ?',
-                showAnimation: null,
-                hideAnimation: null,
-                hideOnMaskTap: true,
                 hidden: true,
                 items: [
                     {
