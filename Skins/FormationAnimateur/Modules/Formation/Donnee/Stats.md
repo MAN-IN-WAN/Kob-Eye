@@ -74,7 +74,7 @@
             // Get context with jQuery - using jQuery's .get() method.
             var ctx = $("#myChart").get(0).getContext("2d");
             var data = {
-                labels: ["1", "2", "3", "4", "5", "6"],
+                labels: ['1', "2", "3", "4", "5", "6"],
                 datasets: [
                     {
                         label: "Réponses",

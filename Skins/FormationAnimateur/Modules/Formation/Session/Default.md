@@ -123,8 +123,8 @@
                             </a>
                         </div>
                         <div class="col-xs-2">
-                            <a href="?action=[!Action!]" class="btn btn-[!Panel!] btn-block confirm" data-confirm="[!Confirm!]">[!Action!]</a>
-                            <a href="?action=Supprimer" class="btn btn-danger btn-block confirm" data-confirm="[!ConfirmDelete!]">Supprimer</a>
+                            <a href="?action=[!Action!]" class="btn btn-[!Panel!] btn-block confirm btn-lg" data-confirm="[!Confirm!]" style="text-transform: uppercase;">[!Action!]</a>
+                            <a href="?action=Supprimer" class="btn btn-danger btn-block confirm btn-xs" data-confirm="[!ConfirmDelete!]" style="text-transform: uppercase;">Supprimer</a>
                         </div>
                         <div class="col-xs-2">
                             <div class="huge">[!S::Nom!]</div>
@@ -170,7 +170,7 @@
                     <div class="row">
                         <div class="col-xs-3">
                             //<i class="fa fa-pie-chart fa-5x"></i>
-                            <canvas id="myChart" width="120" height="65"></canvas>
+                            <canvas id="myChart" width="80" height="65"></canvas>
 
                             <script>
 
@@ -260,16 +260,26 @@
                         <div class="col-xs-1">
                             <i class="fa fa-map-marker fa-5"></i>
                         </div>
-                        <div class="col-xs-3">
-                            <div class="huge">Etape [!E::Numero!]</div>
+                        <div class="col-xs-9">
+                            <div class="huge">[!E::Titre!]</div>
                         </div>
-                        <div class="col-xs-8">
+                        <div class="col-xs-2">
                             [IF [!E::Debloquage!]]
                             <a href="?action=DebloqueEtape&id=[!E::Id!]" class="btn btn-success pull-right">Bloquer</a>
                             [ELSE]
                             <a href="?action=DebloqueEtape&id=[!E::Id!]" class="btn btn-danger pull-right">Débloquer</a>
                             [/IF]
-                            <div>[!E::Titre!]</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            //récupération de la catégorie
+                            [STORPROC [!E::getParents(Categorie)!]|C|0|1]
+                            //récupération de la question
+                                [STORPROC [!C::getParents(Categorie)!]|C2]
+                                <div>[!C2::Nom!]</div>
+                                [/STORPROC]
+                            [/STORPROC]
                         </div>
                     </div>
                 </div>

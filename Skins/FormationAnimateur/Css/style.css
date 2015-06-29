@@ -326,8 +326,8 @@ a.active .panel-heading{
 
 .stats {
     padding-top: 20px;
-    margin-left: 36%;
-    width: 64%;
+    margin-left: 40%;
+    width: 60%;
 }
 
 .legendeG{
@@ -341,4 +341,10 @@ a.active .panel-heading{
     top: 95%;
     right: 6%;
     font-weight: bold;
+}
+
+
+.huge{
+    font-size: 18px;
+    font-weight: 600;
 }

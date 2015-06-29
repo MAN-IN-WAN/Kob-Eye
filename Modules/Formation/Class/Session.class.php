@@ -83,6 +83,10 @@ class FormationSession extends genericClass {
         foreach ($t as $r) {
             $r->Delete();
         }
+        $t = $this->getChildren('Donnee');
+        foreach ($t as $r) {
+            $r->Delete();
+        }
         parent::Delete();
     }
     /**
