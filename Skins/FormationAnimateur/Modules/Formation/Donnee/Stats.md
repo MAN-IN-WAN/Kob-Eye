@@ -1,6 +1,6 @@
 [INFO [!Query!]|I]
 [STORPROC [!I::Historique!]|H|0|1]
-    [STORPROC [!H::Module!]/[!H::DataSource!]/[!H::Valeur!]|S|0|1][/STORPROC]
+    [STORPROC [!H::Module!]/[!H::DataSource!]/[!H::Value!]|S|0|1][/STORPROC]
 [/STORPROC]
 [STORPROC [!Query!]|CD|0|1][/STORPROC]
 [STORPROC [!CD::getParents(TypeQuestion)!]|TQ|0|1][/STORPROC]
@@ -46,7 +46,7 @@
         </script>
     [/CASE]
     [CASE 2]
-        //Cas Echelle
+//Cas Echelle
         [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|NbR]
         [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=1|Nb1]
 [!Nb1:=[!Nb1:/[!NbR!]!]!]
