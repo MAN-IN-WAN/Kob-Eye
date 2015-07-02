@@ -1,25 +1,23 @@
-<div class="container">
-	<div class="row-fluid">
-		<div class="span12">
+	<div class="row">
+		<div class="col-md-12">
 			[HAUT]
 		</div>
 	</div>
-	<div class="row-fluid">
-		<div class="span12">
+	<div class="row">
+		<div class="col-md-12">
 			[DATA]
 		</div>
 	</div>
-	<div class="row-fluid">
-		<div class="span6">
+	<div class="row">
+		<div class="col-md-6">
 			[BAS-GAUCHE]
 		</div>
-		<div class="span6">
+		<div class="col-md-6">
 			[BAS-DROITE]
 		</div>
 	</div>
-	<div class="row-fluid">
-		<div class="span12">
+	<div class="row">
+		<div class="col-md-12">
 			[BAS]
 		</div>
 	</div>
-</div>

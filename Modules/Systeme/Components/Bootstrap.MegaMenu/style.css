@@ -1,76 +1,25 @@
-/***********************************
- * 	MENU
- ***********************************/
-.nav li{list-style: none;}
-.dropdown-menu {
-	position: absolute;
-	top: 44px;
-	left: 0;
-	z-index: 1000;
-	display: none;
-	float: left;
-	min-width: 100%;
-	padding: 9px 0;
-	margin: -4px 0 0;
-	list-style: none;
-	background-color: #ffffff;
-	border: 1px solid #ccc;
-	border: 1px solid rgba(0, 0, 0, 0.2);
-	-webkit-border-radius: 0px;
-	-moz-border-radius: 0px;
-	border-radius:0px;
-	-webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-	-moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-	-webkit-background-clip: padding-box;
-	-moz-background-clip: padding;
-	background-clip: padding-box;
-}
-.dropup,.dropdown, .navbar .nav,.collapse  {
-	position: inherit;
-}
-a.dropdown-toggle{
-	position:relative;
-}
-.navbar .nav > li > .dropdown-menu:after{
-	border-right:0px solid transparent;
-	border-left:0px solid transparent;
-}
-.navbar .nav > li > .dropdown-menu:before{
-	border-right:0px solid transparent;
-	border-left:0px solid transparent;
-	
-}
-/**
- * 	Marge pour le pied 
+/*!
+ * Yamm!3 - Yet another megamenu for Bootstrap 3
+ * http://geedmo.github.com/yamm3
+ *
+ * @geedmo - Licensed under the MIT license
  */
-.menu-content{
-	margin-bottom:150px;
+.yamm .nav,
+.yamm .collapse,
+.yamm .dropup,
+.yamm .dropdown {
+    position: static;
 }
-/**
- * 	levels
- */
-.level0{
+.yamm .container {
+    position: relative;
 }
-.level1{
-	padding-left:10px;
-	font-weight:bold;
+.yamm .dropdown-menu {
+    left: auto;
 }
-.level2{
-	padding-left:10px;
-	font-weight: normal;
+.yamm .yamm-content {
+    padding: 20px 30px;
 }
-/**
- * 	Petite fleche à coté des menus
- */
-.megamenu .caret {
-    position: absolute;
-    right: 1px;
-    top: 10px;
-}
-.item-menu{
-	float:left;
-	display:block;
-	width:200px;
-	height:auto;
+.yamm .dropdown.yamm-fw .dropdown-menu {
+    left: 0;
+    right: 0;
 }

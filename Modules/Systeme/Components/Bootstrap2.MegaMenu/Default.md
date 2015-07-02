@@ -1,18 +1,18 @@
 <script type="text/javascript" src="/Tools/Js/Masonry/masonry.min.js"></script>
 
-<nav id="topnavigation" class="navbar yamm navbar-default ">
-	<div class="container-fluid">
-		<div class="navbar-header">
-			<a data-target=".navbar-collapse" data-toggle="collapse" class="btn btn-navbar"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a>
-			<div class="navbar-collapse collapse">
-				<ul class="nav navbar-nav">
+<nav id="topnavigation">
+	<div class="navbar">
+		<div class="navbar-inner">
+			<a data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a>
+			<div class="nav-collapse collapse">
+				<ul class="nav megamenu">
 					[OBJ Systeme|Menu|M0]
 					[STORPROC [!M0::getMainMenus()!]|M|0|100|Ordre|ASC]
 						[STORPROC [!M::getSubMenus()!]|M2|0|100|Ordre|ASC]
 						<li class="parent dropdown ">
 							<a class="dropdown-toggle" data-toggle="dropdown" href="/[!M::Url!]" onmouseover='$("#container[!M::Id!]").masonry({ "columnWidth": 200, "itemSelector": ".item-menu" });'><span class="menu-title">[!M::Titre!]</span><b class="caret"></b></a>
 							<div class="dropdown-menu menu-content mega-cols cols3" [IF [!M::BackgroundImage!]]style="background-image:url(/[!M::BackgroundImage!])"[/IF]>
-								<div class="row">
+								<div class="row-fluid">
 									//test pour voir si il y a une publicite
 									[COUNT Systeme/Menu/[!M::Id!]/Donnee/Type=Pub|PUB]
 									<div id="container[!M::Id!]" class="span[IF [!PUB!]]9[ELSE]12[/IF]"  style="position:relative;">
