@@ -17,10 +17,10 @@
 					//Tranforme le genericClass en template
 					[!UIDTEMPLATE:=Template_[!UniqID!]_[!Val::Id!]!]
 					<div id="[!UIDTEMPLATE!]">
-						[STORPROC [!Val::getZones!]|Z]
+						[STORPROC [!Val::getZones()!]|Z]
 							<div class="BigTitle" style="background:#B5B5B5;margin:0;color:black;">[!Z::Name!]<a href="/Systeme/Configuration/Modeles/addComponent?t=[!Val::Id!]&z=[!Z::Name!]" rel="popup" redirectUrl="/[!Lien!].htm" style="float:right;"><img src="/Skins/AdminV2/Img/add.png" class="ListeMiniImg" style="margin:-1px 2px 2px 0;"/></a></div>
 							<div zone="[!Z::Name!]" class="Ct" style="padding-bottom:10px">
-								[STORPROC [!Z::getComponents!]|C]
+								[STORPROC [!Z::getComponents()!]|C]
 									<div id="[!UIDTEMPLATE!]-[!Z::Name!]-[!Key!]" ordre="[!Key!]" class="BigTitle" style="background:#ddd;color:black;margin:5px 0;position:relative;cursor:move; overflow:hidden">[!C::Name!]
 										<a class="deleteLink" href="/Systeme/Configuration/Modeles/removeComponent?t=[!Val::Id!]&z=[!Z::Name!]&c=[!Key!]" rel="confirm" message="Attention! Vous allez supprimer le composant [!C::Name!].Etes vous sur de vouloir le supprimer ?" title="Suppression d'un élément" redirectUrl="/[!Lien!].htm"  style="float:right;"><img src="/Skins/AdminV2/Img/delete.png" class="ListeMiniImg" style="margin:-1px 2px 2px 0;"/></a>
 										<a class="editLink" href="/Systeme/Configuration/Modeles/editComponent?t=[!Val::Id!]&z=[!Z::Name!]&c=[!Key!]" rel="popup" redirectUrl="/[!Lien!].htm"  style="float:right;"><img src="/Skins/AdminV2/Img/application_edit.png" class="ListeMiniImg"   style="margin:-1px 2px 2px 0;"/></a>

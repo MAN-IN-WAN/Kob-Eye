@@ -107,7 +107,7 @@ a:hover {
     margin-top: 20px;
 }
 .header{
-    min-height: 150px;
+    min-height: 135px;
 }
 .header.init{
     animation-name: initHeader;
@@ -117,7 +117,7 @@ a:hover {
 }
 .body{
     min-height: 450px;
-    margin-top: 500px;
+    margin-top: 10px;
     margin-bottom: 50px;
 }
 .body.init{
@@ -127,17 +127,13 @@ a:hover {
     animation-duration: 5s;
 }
 .footer{
-    min-height: 150px;
+    min-height: 135px;
 }
 .footer.init{
     animation-name: initHeader;
     animation-iteration-count: 1;
     animation-timing-function: ease;
     animation-duration: 5s;
-}
-.white-transparent {
-    background-color: rgba(255,255,255,0.75);
-    color: #231f20;
 }
 .navbar-default {
     background-color: transparent;
@@ -147,9 +143,22 @@ a:hover {
     margin-bottom: 0px;
 }
 .navbar-default .navbar-nav>li>a {
-    color: #231f20;
+    color: white;
     font-size: 14px;
     font-weight: 600;
+}
+.navbar-default .navbar-nav>li>a:hover {
+     color: #fefefe;
+     font-size: 14px;
+     font-weight: 600;
+ }
+@media (min-width: 768px) {
+    .navbar-header {
+        float: right;
+    }
+    .btn.btn-navbar{
+        display: none;
+    }
 }
 .line-header{
     line-height: 40px;
@@ -160,7 +169,6 @@ a:hover {
 .text-right{text-align: right}
 
 .barreblanche {
-    /* background: url("http://castanet.m-w.solutions/Skins/Castanet/Css/themes/leobeau/skins/castanet/css/../images/bombebarre.png") repeat-x scroll 0 bottom #2e2e2e; */
     background-color: rgba(255,255,255,0.75);
     background-image: none;
     border-bottom: 0;
@@ -169,6 +177,27 @@ a:hover {
     position: relative;
     min-height: 50px;
     padding: 1px 0 14px 0;
+}
+.barre.init{
+    animation-name: initBarre;
+    animation-iteration-count: 1;
+    animation-timing-function: ease;
+    animation-duration: 5s;
+}
+/************************************************
+ COULEURS
+ ************************************************/
+.white-transparent {
+    background-color: rgba(255,255,255,0.75);
+    color: #231f20;
+}
+.black-transparent {
+    background-color: rgba(0,0,0,0.35);
+    color: #white;
+}
+.white-plain {
+    background-color: rgba(255,255,255,1);
+    color: #231f20;
 }
 /************************************************
  LOGO FLIP
@@ -470,6 +499,17 @@ a:hover {
         margin-top: 3500px;
     }
     100% {
-        margin-top: 500px;
+        margin-top: 10px;
+    }
+}
+@keyframes initBarre{
+    0% {
+        margin-top: 3500px;
+    }
+    75% {
+        margin-top: 3500px;
+    }
+    100% {
+        margin-top: 350px;
     }
 }

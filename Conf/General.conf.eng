@@ -1,14 +1,14 @@
 <CONF access="sys">
 	<GENERAL>
 		<INFO>
-			<SITE_NAME>ecluse.m-w.solutions</SITE_NAME>
-			<ADMIN_MAIL>contact@ecluse.m-w.solutions</ADMIN_MAIL>
+			<SITE_NAME>eng.systems</SITE_NAME>
+			<ADMIN_MAIL>contact@eng.systems</ADMIN_MAIL>
 		</INFO>
 		<AUTH>
 			<USER_CHECK_RIGHTS type="const">1</USER_CHECK_RIGHTS>
 			<PHP_SESSION_NAME type="const">KE_SESSID</PHP_SESSION_NAME>
 			<CONNECT_TIMEOUT type="const">86400</CONNECT_TIMEOUT>
-			<MAIN_USER_NUM type="const">3</MAIN_USER_NUM>
+			<MAIN_USER_NUM type="const">14</MAIN_USER_NUM>
 			<MAIN_SKIN_NUM type="const">Login</MAIN_SKIN_NUM>
 			<SHARED_SKIN type="const">Commun</SHARED_SKIN>
 		</AUTH>
@@ -28,7 +28,7 @@
 			<SQL_MAX_LIMIT type="const">200</SQL_MAX_LIMIT>
 			<MAIN_DB_PREFIX type="const">kob-</MAIN_DB_PREFIX>
 			<MAIN_DB_RECURSIV_LIMIT type="const">0</MAIN_DB_RECURSIV_LIMIT>
-			<MYSQL_DSN>mysql://driveo:21wyisey@localhost/formation</MYSQL_DSN>
+			<MYSQL_DSN>mysql://eng.systems:21wyisey@localhost/eng.systems</MYSQL_DSN>
             <SQLITE_FILE>Data/bdd.sqlite</SQLITE_FILE>		
 		</BDD>
 		<DEBUG>
@@ -67,6 +67,5 @@
 		<LIVRAISONSTOCK file="Modules/LivraisonStock/LivraisonStock.conf" />
 		<GEOGRAPHIE file="Modules/Geographie/Geographie.conf" />
 		<NEWS file="Modules/News/News.conf" />-->
-        <FORMATION file="Modules/Formation/Formation.conf" />
 	</MODULE>
 </CONF>

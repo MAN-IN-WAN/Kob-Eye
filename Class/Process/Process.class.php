@@ -17,7 +17,7 @@ class Process extends Root{
 			if(isset(self::$TempVar[$Res[0]])&&is_object(self::$TempVar[$Res[0]])){
 				$N = $Res[1];
 				self::$TempVar[$Res[0]]->$N = $Var;
-// 				echo "OBJET ".$Res[0]."=>".$Res[1]." = $Var\r\n";
+ 				//echo "OBJET ".$Res[0]."=>".$Res[1]." = $Var\r\n";
 			}else{
 				if (empty($Res[1])){
 					self::$TempVar[$Res[0]][] = $Var;
@@ -27,7 +27,7 @@ class Process extends Root{
 			}
 		}else{
 			 self::$TempVar[$Name] = $Var;
-// 			echo "STANDARD ".$Name."=>".print_r($Var,true)."\r\n";
+ 			//echo "STANDARD ".$Name."=>".print_r($Var,true)."\r\n";
 		}
 //  		echo "--------------------\r\n";
 	}

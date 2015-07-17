@@ -13,15 +13,17 @@
 </div>
 
 <div class="container">
-    <div class="row white-transparent header">
+    <div class="row black-transparent header">
         <div class="col-md-3">
         </div>
-        <div class="col-md-9">
-            <div class="line-header text-right">
-                <h3>Bienvenue sur le site <a href="/">ENG.SYSTEMS</a></h3>
-            </div>
-            <div class="line-header text-right">
-                <p>Développement et Hébergement de vos solutions.</p>
+        <div class="col-md-9" style="padding:0">
+            <div class=" white-plain" style="padding: 0 15px; overflow: hidden">
+                <div class="line-header text-right">
+                    <h3>Bienvenue sur le site <a href="/">ENG.SYSTEMS</a></h3>
+                </div>
+                <div class="line-header text-right">
+                    <p>Développement et Hébergement de vos solutions.</p>
+                </div>
             </div>
             [COMPONENT Systeme/Bootstrap.MegaMenu]
         </div>
@@ -58,7 +60,7 @@
 
 <div class="container">
     <div class="body">
-        //[DATA]
+        [DATA]
     </div>
     <div class="row white-transparent footer">
         <div class="col-md-12">

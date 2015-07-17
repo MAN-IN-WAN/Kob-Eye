@@ -231,7 +231,7 @@ class StorProc extends Beacon {
 						$this->processNoResult($NoResult);
 					}else{
 						//Pas de NORESULT donc aucun affichage
-						//$this->ChildObjects="";
+                        $this->Data="";
 					}
 				}
 			}else{
@@ -242,7 +242,7 @@ class StorProc extends Beacon {
 					$this->processNoResult($NoResult);
 				}else{
 					//Pas de NORESULT donc aucun affichage
-					//$this->ChildObjects="";
+                    $this->Data="";
 				}
 
 			}
@@ -279,7 +279,7 @@ class StorProc extends Beacon {
 					$this->processNoResult($NoResult);
 				}else{
 					//Pas de NORESULT donc aucun affichage
-					//$this->ChildObjects="";
+                    $this->Data="";
 				}
 			}
 		}else{
@@ -289,7 +289,7 @@ class StorProc extends Beacon {
 				$this->processNoResult($NoResult);
 			}else{
 				//Pas de NORESULT donc aucun affichage
-				//$this->ChildObjects="";
+                $this->Data="";
 			}
 		}
 		unset($this->Result);
@@ -431,7 +431,7 @@ class StorProc extends Beacon {
 		if (is_array($Tab))$TabKey = array_keys($Tab);
         $tmp = '';
 		if (sizeof($Tab)) foreach ($TabKey as $Key){
-			Process::RegisterTempVar($this->Nom,$Tab[$Key]);
+            Process::RegisterTempVar($this->Nom,$Tab[$Key]);
 			Process::$TempVar["Key"]=$Key;
 			Process::$TempVar["Pos"]=$k+1;
 			Process::$TempVar["Level"]=$Level;
