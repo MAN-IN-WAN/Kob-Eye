@@ -127,9 +127,10 @@ class FormationSession extends genericClass {
     function setTeam($num) {
         if (!(int) $num>0) return false;
         //Verification de l'existence de l'equipe dans la base de donnée
-        $t = Sys::getCount('Formation', 'Session/'.$this->Id.'/Equipe/Numero='.$num);
+        $t = Sys::getOneData('Formation', 'Session/'.$this->Id.'/Equipe/Numero='.$num);
         //si existe => erreur
-        if ($t) return false;
+        if (is_object($t)&&$t->Description!=$_SERVER['REMOTE_ADDR']) return false;
+        elseif (is_object($t)&&$t->Description==$_SERVER['REMOTE_ADDR']) return true;
         //si existe pas on ajoute
         else {
             $t = genericClass::createInstance('Formation','Equipe');
@@ -139,6 +140,24 @@ class FormationSession extends genericClass {
             $t->Save();
             return true;
         }
+    }
+    /**
+     * getCurrentQuestion
+     * Retourne la question courante pour une session
+     */
+    function getCurrentQuestion ($num) {
+        //Verification de l'existence de l'equipe dans la base de donnée
+        $t = Sys::getOneData('Formation', 'Session/'.$this->Id.'/Equipe/Numero='.$num);
+        //calcul de la dernière réponse
+        $r = Sys::getOneData('Formation', 'Equipe/'.$t->Id.'/Reponse',0,1,'DESC','Id');
+        if (is_object($r)) {
+            //récupération du type question
+            $tq = Sys::getOneData('Formation', 'TypeQuestion/Reponse/' . $r->Id);
+            //récupération de la question
+            $q = Sys::getOneData('Formation', 'Question/TypeQuestion/' . $tq->Id);
+            return $q->Ordre + 1;
+        }else return 1;
+
     }
     /**
      * checkEtape
@@ -265,4 +284,5 @@ class FormationSession extends genericClass {
             return true;
         }
     }
+
 }

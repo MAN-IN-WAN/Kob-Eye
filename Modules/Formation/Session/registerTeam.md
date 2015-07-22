@@ -1,6 +1,7 @@
 [IF [!CurrentSession::setTeam([!num!])!]]
         {
-            success: true
+            success: true,
+            currentquestion: [!CurrentSession::getCurrentQuestion([!num!])!]
         }
 [ELSE]
         {
