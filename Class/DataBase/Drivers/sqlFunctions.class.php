@@ -53,9 +53,12 @@ class sqlFunctions{
 				}else{
 					if ($i==0) $Condition[]=sqlFunctions::getPrefixe($Tab,$i)."i.Id=0";
 //EM-20150216 probleme de requete recursif pour avoir les éléments du premier noeud
-//					else $Condition[]=sqlFunctions::getPrefixe($Tab,$i)."t.".$Tab[$i-1]["Champ"]."=".sqlFunctions::getPrefixe($Tab,($i-1)).".Id";
+//PROB DRIVEO POUR REQUETE Boutique/Categorie/655/Categorie/*/Produit
+//Donc retour sur Id ... Attente de l'autre cas pour créer un FIX.
+//TODO
+					else $Condition[]=sqlFunctions::getPrefixe($Tab,$i)."t.Id=".sqlFunctions::getPrefixe($Tab,($i-1)).".Id";
 //EM-20150611 recorrection car prob de requete
-					else $Condition[]=sqlFunctions::getPrefixe($Tab,$i)."t.".$Tab[$i-1]["Champ"]."=".sqlFunctions::getPrefixe($Tab,($i-1)).".Id";
+					//else $Condition[]=sqlFunctions::getPrefixe($Tab,$i)."t.".$Tab[$i-1]["Champ"]."=".sqlFunctions::getPrefixe($Tab,($i-1)).".Id";
 				}
 				if ($i>0)
 					$Condition[]=sqlFunctions::getPrefixe($Tab,$i).'i.Id='.sqlFunctions::getPrefixe($Tab,$i)."t.Id";

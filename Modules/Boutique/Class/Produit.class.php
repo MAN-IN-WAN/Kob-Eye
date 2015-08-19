@@ -199,9 +199,9 @@ class BoutiqueProduit extends genericClass
      */
     public function getUrl()
     {
-        if (Sys::$User->Public) {
+        /*if (Sys::$User->Public) {
             return parent::getUrl();
-        } elseif (!Sys::$User->Admin) {
+        } elseif (!Sys::$User->Admin) {*/
             if (isset($this->_getUrl)&&!empty($this->_getUrl)) return '/'.$this->_getUrl;
             //recherche des categorie
             $cat = Sys::getData('Boutique','Categorie/*/Categorie/Produit/'.$this->Id);
@@ -255,7 +255,7 @@ class BoutiqueProduit extends genericClass
             }
             return parent::getUrl();
 
-        } else return parent::getUrl();
+       // } else return parent::getUrl();
     }
     /**
      * Retourne le nombre de références  pour ce produit

@@ -22,23 +22,23 @@
 													<a class="" href="/[!M::Url!]/[!M2::Url!]"><span class="menu-title">[!M2::Titre!]</span></a>
 													<ul class="level1">
 														[STORPROC [!M2::getSubMenus()!]|M3|0|10|Ordre|ASC]
-															[STORPROC [!M3::getSubMenus()!]|M4|0|10|Ordre|ASC]
-															<li class="">
-																<a class="" href="/[!M::Url!]/[!M2::Url!]/[!M3::Url!]"><span class="menu-title">[!M3::Titre!]</span></a>
-																<ul class="level2">
-																	[LIMIT 0|10]
-																	<li class=" ">
-																		<a href="/[!M::Url!]/[!M2::Url!]/[!M3::Url!]/[!M4::Url!]"><span class="menu-title">[!M4::Titre!]</span></a>
-																	</li>
-																	[/LIMIT]
-																</ul>
-															</li>
-															[NORESULT]
+															//[STORPROC [!M3::getSubMenus()!]|M4|0|10|Ordre|ASC]
+															//<li class="">
+															//	<a class="" href="/[!M::Url!]/[!M2::Url!]/[!M3::Url!]"><span class="menu-title">[!M3::Titre!]</span></a>
+															//	<ul class="level2">
+															//		[LIMIT 0|10]
+															//		<li class=" ">
+															//			<a href="/[!M::Url!]/[!M2::Url!]/[!M3::Url!]/[!M4::Url!]"><span class="menu-title">[!M4::Titre!]</span></a>
+															//		</li>
+															//		[/LIMIT]
+															//	</ul>
+															//</li>
+															//[NORESULT]
 																<li class=" ">
 																	<a href="/[!M::Url!]/[!M2::Url!]/[!M3::Url!]"><span class="menu-title">[!M3::Titre!]</span></a>
 																</li>
-															[/NORESULT]
-															[/STORPROC]
+															//[/NORESULT]
+															//[/STORPROC]
 														[/STORPROC]
 													</ul>
 												</li>

@@ -34,7 +34,7 @@
 					</div>
 					<div class="row">
 						//[MODULE Systeme/Header/Menu]
-						[COMPONENT Systeme/Bootstrap.MegaMenu]
+						[COMPONENT Systeme/Bootstrap2.MegaMenu]
 					</div>
 				</div>
 			</div>

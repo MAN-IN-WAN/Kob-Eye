@@ -19,10 +19,10 @@
                     [STORPROC [!Menu::Alias!]/Categorie/Actif=1|Cato|0|20|Ordre|ASC]
                             <li>
                                     [IF [!Cato::Url!]=[!H::Value!]]
-                                            <a href="[!MENU!]/[!Cato::Url!]" [IF [!Lien!]~[!Cato::Url!]]class="selected"[/IF]>[!Cato::Nom!]</a>
-                                            [COMPONENT Boutique/Bootstrap.Navigation/SNavigation?Url=[!MENU!]/[!Cato::Url!]&CatId=[!Cato::Id!]&Niveau=2]
+                                            <a href="/[!MENU!]/[!Cato::Url!]" [IF [!Lien!]~[!Cato::Url!]]class="selected"[/IF]>[!Cato::Nom!]</a>
+                                            [COMPONENT Boutique/Bootstrap.Navigation/SNavigation?Url=/[!MENU!]/[!Cato::Url!]&CatId=[!Cato::Id!]&Niveau=2]
                                     [ELSE]
-                                            <a href="[!MENU!]/[!Cato::Url!]" [IF [!Lien!]~[!Cato::Url!]]class="selected"[/IF]>[!Cato::Nom!]</a>
+                                            <a href="/[!MENU!]/[!Cato::Url!]" [IF [!Lien!]~[!Cato::Url!]]class="selected"[/IF]>[!Cato::Nom!]</a>
                                     [/IF]
                             </li>
                     [/STORPROC]

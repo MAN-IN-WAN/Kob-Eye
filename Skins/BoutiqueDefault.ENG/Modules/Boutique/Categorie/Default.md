@@ -62,7 +62,7 @@
 							//<![CDATA[
 							$(document).ready(function() {
 								$('.selectProductSort').change(function() {
-									var requestSortProducts = 'http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?id_category=3&controller=category&id_lang=1&id_lang=1';
+									var requestSortProducts = '?';
 									var splitData = $(this).val().split(':');
 									document.location.href = requestSortProducts + ((requestSortProducts.indexOf('?') < 0) ? '?' : '&') + 'orderby=' + splitData[0] + '&orderway=' + splitData[1];
 								});
@@ -70,7 +70,7 @@
 							//]]>
 						</script>
 
-						<form id="productsSortForm" action="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?id_category=3&amp;controller=category&amp;id_lang=1&amp;id_lang=1">
+						<form id="productsSortForm" action="?">
 							<p class="select">
 								<label for="selectPrductSort">__SORT_BY__</label>
 								<select id="selectPrductSort" class="selectProductSort">

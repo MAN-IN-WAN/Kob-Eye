@@ -1,0 +1,30 @@
+/*.modal-header-inner {border-radius: 5px;height: 145px; background: url('/Skins/LoginBootstrap/Img/Arabesque.jpg') top right no-repeat; }*/
+/*.modal-header {border-radius: 5px;padding: 0; height: 145px; background: url('/Skins/LoginBootstrap/Img/Degrade.jpg') top repeat-x; }*/
+.modal-header-logo {border-radius: 5px;height: 145px; background: url('/Skins/LoginFormation/Img/LogoERDF-petit.jpg') top left no-repeat; }
+.modal-footer {   border-top: 0px; }
+
+@media screen and (min-width: 768px) {
+    .modal-content {
+        -webkit-box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        box-shadow: 0 0px 64px rgba(0,0,0,0.3);
+    }
+}
+
+.btn-primary {
+    background-image: -webkit-gradient(linear,left 0,left 100%,from(#02a6e3),to(#0088b0));
+    background-image: -webkit-linear-gradient(top,#02a6e3 0,#0088b0 100%);
+    background-image: -moz-linear-gradient(top,#02a6e3 0,#0088b0 100%);
+    background-image: linear-gradient(to bottom,#02a6e3 0,#0088b0 100%);
+    background-repeat: repeat-x;
+    border-color: #02a6e3;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff02a6e3',endColorstr='#ff0088b0',GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+@media screen and (min-width: 768px) {
+    .modal-dialog {
+        width: 600px;
+        padding-top: 200px;
+        padding-bottom: 30px;
+    }
+}

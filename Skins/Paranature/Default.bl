@@ -59,7 +59,7 @@
 [HEADER CSS]Skins/[!Systeme::Skin!]/Css/product_detail.css[/HEADER]
 [HEADER CSS]Skins/[!Systeme::Skin!]/Css/panier.css[/HEADER]
 [HEADER CSS]Skins/[!Systeme::Skin!]/Js/jquery/plugins/fancybox/jquery.fancybox.css[/HEADER]
-[!skin:=castanet!]
+//[!skin:=castanet!]
 [IF [!skin!]=][!skin:=violet!][/IF]
 [HEADER CSS]Skins/[!Systeme::Skin!]/Css/themes/leobeau/skins/[!skin!]/css/skin.css[/HEADER]
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
