@@ -6,6 +6,7 @@ __BOOKMARK__|
 
 ######PANIER######
 __MY_CART__|Mon panier
+__EMPTY__|Vider le panier
 __MY_ORDER__|Ma commande
 __OTHERS_CARTS__|Autres paniers
 __CHECKOUT__|Commander
@@ -32,6 +33,8 @@ __PROMO__|Promotion
 __A_PARTIR_DE__|A partir de
 __AVAILABLE__|Disponible
 __ITEMS__|Eléments
+__NO_RESULT__|Aucun résultat.
+__BRANDS__|Marques
 
 #######PRODUCT DETAIL######
 __VIEW_FULL_SIZE__|Zoomer
@@ -46,3 +49,6 @@ __DESCRIPTIF__|Description
 __BROWSE__|Parcourir
 __LE_CHAMP__|Le champ
 __EST_OBLIGATOIRE__|est obligatoire
+
+#######COMMANDES###########
+__CURRENT_ORDER__|Commande en cours

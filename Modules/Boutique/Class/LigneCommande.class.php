@@ -89,6 +89,7 @@ class LigneCommande extends genericClass {
 		$Ref = $this->getReference($Reference);
 		$prod = $Ref->getProd();
 		$Colisage=$prod->GetColisage();
+        $this->Titre=$prod->Nom;
 		$QuantiteLigne= $Quantite*$Colisage;
 		$this->Quantite=$QuantiteLigne;
 		$this->Config = $config;
@@ -144,7 +145,7 @@ class LigneCommande extends genericClass {
 		
 		$Ref = $this->getReference();
 		$prod = $Ref->getProd();
-		$this->Titre=$Ref->Nom;
+		$this->Titre=$prod->Nom;
 
 		//calcul taux de remise
 		$remisetx = 1 - ($Ref->getRemiseProduit($this->Quantite)/100);

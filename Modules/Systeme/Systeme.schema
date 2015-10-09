@@ -240,6 +240,7 @@
 	<OBJECTCLASS title="Tag" driver="mysql" master="0" AccessPoint="0" Dico="1" Icon="[None]">
 		<PROPERTIES category="Description" type="varchar" length="32" searchOrder="1">Nom</PROPERTIES>
 		<PROPERTIES category="Description" type="varchar" searchOrder="2">Canonic</PROPERTIES>
+		<PROPERTIES category="Description" type="int" default="1">Poids</PROPERTIES>
 	</OBJECTCLASS>
     	<OBJECTCLASS title="TagBlackList" Description="Liste des mots à exclure de la recherche" driver="mysql"  Dico="1">
         	<PROPERTIES type="varchar" length="30" searchOrder="1" obligatoire="1">Titre</PROPERTIES>

@@ -8,12 +8,5 @@
 		</div>
 	</div>
 	[/STORPROC]
-	<div class="nav-item">
-		<div class="item-top">
-			<script type="text/javascript">
-				writeBookmarkLink('http://[!Domaine!]', 'Kob-eye Boutique', '<span class="hidden-phone">__BOOKMARK__</span>');
-			</script>
-		</div>
-	</div>
 </div>
 <!-- /Block permanent links module HEADER -->

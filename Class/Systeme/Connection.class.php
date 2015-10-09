@@ -78,7 +78,8 @@ class Connection extends Root{
  				$this->initDefaultUser();
 			}
 		}
-		//Detection de la langue (cas ou l'utilisateur force une langue)
+
+        //Detection de la langue (cas ou l'utilisateur force une langue)
 		$this->DetectLanguage();
 		//Chargement des éléments en cache
 		if (isset(Sys::$User->Cache)&&is_array(Sys::$User->Cache)){
@@ -86,13 +87,15 @@ class Connection extends Root{
 				Process::$TempVar[$k] = $C;
 			}
 		}
-		//On enregistre la connexion
+
+        //On enregistre la connexion
 		if (is_object($this->Record)&&ADD_CONNECT){
 			$this->Record->Set("Utilisateur",Sys::$User->Id);
 			$GLOBALS["Systeme"]->Log->log("UTILISATEUR ".Sys::$User->Id);
 			$this->Record->Save();
 		}else $GLOBALS["Systeme"]->Log->log("ERROR CONNEXION");
-	}
+
+    }
 
 	//----------------------------------------
 	// CLOSE SESSION FOR MULTITHREADING
@@ -275,7 +278,7 @@ class Connection extends Root{
 	}
 	//Transfert des variables de la session publique vers la session prive
 	function SessionPublicToPrivate() {
-		session_start();
+		@session_start();
 		$OldSession = $_SESSION;
 		if (isset($_COOKIE[session_name()])) {
 			setcookie(session_name(), '', time()-42000, '/');
@@ -308,12 +311,12 @@ class Connection extends Root{
 		$this->login = $Login;
 		$this->pass = md5($Pass);
 		$this->clearpass = $Pass;
+        $GLOBALS["Systeme"]->Log->log("CONNECT FROM CODE");
 		if ($this->DetectUser() ){
 			$this->SessionPublicToPrivate();
 		}
 		//On enregistre les modifications de la connexion
 		$this->Record->Save();
-		//$GLOBALS["Systeme"]->Log->log("CONNECT FROM CODE",$this->Record);
 	}
 	//Destruction de la session prive
 	function DestroySess() {
@@ -501,7 +504,7 @@ class Connection extends Root{
 			if(defined('LOG_CONNECTION')&&LOG_CONNECTION)$this->Record->Logs.=date('d/m/Y H:m:i',time())." :: ".$this->Record->LastUrl."\r\n";
 			$this->Record->Save();
 			//On supprime les connexions perimees
-			$query="Systeme/Connexion/tmsEdit<".(time()-(CONNECT_TIMEOUT*60));
+			$query="Systeme/Connexion/tmsEdit<".(time()-CONNECT_TIMEOUT);
 			$Results = Sys::$Modules['Systeme']->callData($query,false,0,500);
 			if ($Results)for ($i=0;$i<sizeof($Results);$i++) {
 				$Connexion = genericClass::createInstance("Systeme",$Results[$i]);
@@ -544,7 +547,7 @@ class Connection extends Root{
 				if (!is_array($Result[0])) return false;
 				$User = genericClass::createInstance("Systeme",$Result[0]);
 				$User->Save();
-			}elseif (is_object(Sys::$User) && (!isset(Sys::$User->Public)||!Sys::$User->Public)){ 
+			}elseif (is_object(Sys::$User) && (!isset(Sys::$User->Public)||!Sys::$User->Public)){
 				$GLOBALS["Systeme"]->Log->log("DETECT USER >> SESSION CACHE ".Sys::$User->Id);
 				$this->DetectLanguage();
 				//CAS RECUP CACHE SESSION
@@ -567,11 +570,13 @@ class Connection extends Root{
 				//CAS LOGIN PASS POST
 				if ($this->kerberosAuth)
 					$Result = Sys::$Modules["Systeme"]->callData("User/Login=".$this->login);
-				else
-					$Result = Sys::$Modules["Systeme"]->callData("User/Login=".$this->login."&Pass=".$this->pass);
+				else {
+                    $Result = Sys::$Modules["Systeme"]->callData("User/Login=" . $this->login . "&Pass=" . $this->pass);
+                    klog::l('DETECT USER',"User/Login=" . $this->login . "&Pass=" . $this->pass);
+                }
 				if (!isset($Result[0])||!is_array($Result[0])){
 					//CONNEXION AD EXTERNAL + AUTO PROVISIONNING
-					if (defined("EXTERNAL_AUTH_AD")&&!EXTERNAL_AUTH_AD)return false;
+					if (!defined("EXTERNAL_AUTH_AD")||!EXTERNAL_AUTH_AD)return false;
 					elseif (defined("EXTERNAL_AUTH_AD")){
 						$adldap = $this->externalLdapConnect();
 						//authenticate the user
@@ -717,12 +722,12 @@ class Connection extends Root{
 				$defaultUserFound = true;
 				//On verifie quil nexiste pas deja un fichier cache pour lutilisateur
 				if (USER_CACHE && $Result["UserId"]>0 && file_exists("Home/".$Result["UserId"]."/.UserCache.".$GLOBALS["Systeme"]->CurrentLanguage)){
-					$GLOBALS["Systeme"]->Log->log("DETECT USER >> LOAD CACHE DEFAULT USER DOMAINE ".Sys::$domain."  ".((isset($Result["UserId"]))?$Result["UserId"]:""));
+					$GLOBALS["Systeme"]->Log->log("INIT DEFAULT USER >> LOAD CACHE DEFAULT USER DOMAINE ".Sys::$domain."  ".((isset($Result["UserId"]))?$Result["UserId"]:""));
 					Sys::$User = unserialize(file_get_contents("Home/".$Result["UserId"]."/.UserCache.".$GLOBALS["Systeme"]->CurrentLanguage));
 					//if ($Result[0]["CodeVerif"]!=Sys::$User->CodeVerif&&$Result[0]["CodeVerif"]!="")Sys::$User = "";
 				}
 				if (!is_object(Sys::$User)&&isset($Result["UserId"])){
-					$GLOBALS["Systeme"]->Log->log("DETECT USER >> INIT DEFAULT USER DOMAINE ".Sys::$domain."  ".((isset($Result["UserId"]))?$Result["UserId"]:""));
+					$GLOBALS["Systeme"]->Log->log("INIT DEFAULT USER >> INIT DEFAULT USER DOMAINE ".Sys::$domain."  ".((isset($Result["UserId"]))?$Result["UserId"]:""));
 					Sys::$User = $this->initUser($Result["UserId"]);
 					$this->_dirtyCache = true;
 				}
@@ -731,11 +736,11 @@ class Connection extends Root{
 		if(!$defaultUserFound) {
                     
 			if (file_exists("Home/".MAIN_USER_NUM."/.UserCache.".$GLOBALS["Systeme"]->CurrentLanguage) && USER_CACHE){
-				$GLOBALS["Systeme"]->Log->log("DETECT USER >> LOAD CACHE DEFAULT USER MAIN_USER_NUM ".MAIN_USER_NUM);
+				$GLOBALS["Systeme"]->Log->log("INIT DEFAULT USER >> LOAD CACHE DEFAULT USER MAIN_USER_NUM ".MAIN_USER_NUM);
 				Sys::$User = unserialize(file_get_contents("Home/".MAIN_USER_NUM."/.UserCache.".$GLOBALS["Systeme"]->CurrentLanguage));
 			}
 			if (!is_object(Sys::$User)){
-				$GLOBALS["Systeme"]->Log->log("DETECT USER >> INIT DEFAULT USER MAIN_USER_NUM ".MAIN_USER_NUM);
+				$GLOBALS["Systeme"]->Log->log("INIT DEFAULT USER >> INIT DEFAULT USER MAIN_USER_NUM ".MAIN_USER_NUM);
 				Sys::$User = $this->initUser(MAIN_USER_NUM);
 				//On genere le cache
 				$this->writeCacheFile(serialize(Sys::$User),"Home/".MAIN_USER_NUM."",".UserCache.".$GLOBALS["Systeme"]->CurrentLanguage);

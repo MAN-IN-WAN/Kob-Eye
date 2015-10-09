@@ -21,4 +21,10 @@ class Question extends genericClass{
         array_push($out,$this);
         return $out;
     }
+
+    function Delete() {
+        $questions = $this->getChildren('TypeQuestion');
+        foreach ($questions as $q) $q->Delete();
+        parent::Delete();
+    }
 }

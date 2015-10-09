@@ -3,7 +3,7 @@
     <h3 class="title_block"> Santé connectée <span class="resumecat category-product-count"> / Il y a 18 Produits. </span></h3>
     <div class="block-search">
         <h1>RECHERCHE</h1>
-        [STORPROC [!Systeme::getSearch([!Search!])!]|TL]
+        [STORPROC [!Systeme::getSearch([!search!])!]|TL]
         [NORESULT]
         <h3>__NO_RESULT__</h3>
         [/NORESULT]

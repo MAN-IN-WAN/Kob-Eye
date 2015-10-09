@@ -703,7 +703,7 @@ div.star_hover a, div.star a:hover { background-position: 0 -32px }
 	}
 
 	#header .topbar .container{ position:relative; }
-	.logo-wrapper{ 	background: #f46553; }
+	.logo-wrapper{ 	background: transparent; }
 	#header_logo {
 		display:block;
 		width:100%;
@@ -2471,4 +2471,24 @@ tr.subitem > td:first-child + td {
 .alert {
     -webkit-box-shadow: 0 0 2px 2px #a78459;
 	box-shadow: 0 0 2px 2px #a78459;
+}
+
+
+.Icons{
+    text-align: center;
+    width: 100%;
+    display: block;
+}
+.Icons h3{
+    text-align: center;
+}
+.Icons i{
+    font-size: 6em;
+}
+
+.contenu {
+    margin: 20px;
+}
+.contenu table{
+    width: 100%;
 }

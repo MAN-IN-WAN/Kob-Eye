@@ -6,8 +6,17 @@
                         <img src="/Skins/[!Systeme::Skin!]/img/preparatrice.jpg" class="img-responsive" />
                     </div>
                     <div class="span9">
+                        <h1>Envoyez-nous votre ordonnance depuis chez vous</h1>
+                        <ol>
+                            <li>Nous réceptionons votre photo ou image de votre scanner</li>
+                            <li>Nous préparons votre orconnance</li>
+                            <li>Vous recevez un mail dès qu'elle est prète</li>
+                            <li>Vous récuprérez votre commande à l'officine sans attendre dans la file spécialisée.</li>
+                        </ol>
+                        <br />
                         <p>
-                            Nous préparons vos ordonnances dès que vous nous avez envoyé une copie de votre ordonnance (scan / photo ...). Dès la réception de votre ordonnance nos préparateurs commenceront à la traiter et vous recevrez aussitôt un email ainsi qu'un sms vous informant de l'état de votre commande. Uen fois la commande prête, vous recevrez à nouveau un email ainsi qu'un sms contenant le numéro de préparation afin que vous puissiez retirer votre commande au guichet à la file rapide prévue à cet effet. Si vous avez des question n'hésitez pas à nous contacter.
+                            Nous préparons vos ordonnances dès que vous nous avez envoyé une copie de votre ordonnance (scan / photo ...).<br /> Dès la réception de votre ordonnance nos préparateurs commenceront à la traiter et vous recevrez aussitôt un email ainsi qu'un sms vous informant de l'état de votre commande. <br />Une fois la commande prête, vous recevrez à nouveau un email contenant le numéro de préparation afin que vous puissiez retirer votre commande au guichet à la file rapide prévue à cet effet. <br />
+                            Si vous avez des question n'hésitez pas à nous contacter.
                         </p>
                     </div>
                 </div>

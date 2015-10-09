@@ -121,13 +121,14 @@ div.copyright{
 #center_column .block {
     margin-bottom: 20px;
     margin-top: 0px;
+    padding-bottom: 10px;
 }
 #center_column fieldset,#center_column form {
     margin: 0px 0;
     border: 0;
     background: #F6F6F6;
 }
-, #center_column > div.span9 {
+#center_column > div.span9 {
       background: #F6F6F6;
   }
 
@@ -335,4 +336,139 @@ div.TitreTypeLivraison {
 .span4.well img.img-responsive{
     width: 100%;
 }
+/**
+PRODUCT LIST
+**/
+.p-item span.new {
+    background: url("../img/default/icon-new.png") no-repeat scroll 0 0 transparent;
+    border-radius: 3px 3px 3px 3px;
+    color: #FFFFFF;
+    display: block;
+    font-size: 12px;
+    padding: 15px 0;
+    position: absolute;
+    right: 15px;
+    text-align: center;
+    text-transform: uppercase;
+    top: 6px;
+    width: 45px;
+}
+/**
+MENU
+**/
+.dropdown-menu a .menu-title {
+    background: url("../img/bullet.png") no-repeat scroll 5px center transparent;
+    font-size: 12px;
+    padding: 5px 0 5px 25px;
+    text-transform: capitalize;
+}
+.dropdown-menu a .menu-title:hover {
+    background: url("../img/bullet-hover.png") no-repeat scroll 5px center transparent;
+}
 
+/**
+PRODUCT DETAIL
+**/
+.content_prices {
+    background: none repeat scroll 0 0 #F4F4F4;
+    border: 1px solid #D2D2D2;
+    line-height: 28px;
+    padding: 10px;
+    text-align: right;
+}
+/** ZOOM **/
+#pb-right-column #image-block {
+    position: relative;
+    border-bottom: 1px solid #d2d2d2;
+}
+
+#pb-right-column #image-block #view_full_size .span_link {
+    position: absolute;
+    bottom: 10px;
+    left: 25%;
+    display: block;
+    /* padding: 0 12px 0 30px; */
+    line-height: 20px;
+    color: #fff;
+    text-shadow: 0 1px 0 #000;
+    text-align: center;
+    text-transform: uppercase;
+    background-repeat: no-repeat;
+    background-position: 10px 2px;
+    background-color: #000;
+    background-color: rgba(0,0,0,0.5);
+    border-radius: 12px;
+    -moz-border-radius: 12px;
+    -webkit-border-radius: 12px;
+    width: 150px;
+}
+#pb-right-column #views_block {
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+/** IMAGE THUMB **/
+#thumbs_list {
+    float: left;
+    overflow: hidden;
+    padding: 7px 0;
+    width: 215px;
+    margin-left: 15px;
+}
+#thumbs_list li {
+    float: left;
+    height: 60px;
+    width: 70px;
+    cursor: pointer;
+}
+.scroll_lr {
+    border-left: 1px solid #D2D2D2;
+    float: right;
+    height: 74px;
+    overflow: hidden;
+    width: 25px;
+    position: absolute;
+    right: 0;
+}
+#thumbs_list ul#thumbs_list_frame {
+    list-style-type: none;
+    padding-left: 0;
+}
+#view_scroll_right {
+    background-color: #e7e7e7;
+    background-position: center -31px;
+}
+#view_scroll_left, #view_scroll_right {
+    background-image: url("/Skins/Paranature/img/default/bt-next-prev.png");
+    background-repeat: no-repeat;
+    float: left;
+    height: 50%;
+    overflow: hidden;
+    padding: 0;
+    text-indent: -3000em;
+    width: 100%;
+    display: inline !important;
+    opacity: 1 !important;
+}
+#view_scroll_left, #view_scroll_right {
+    background-image: url("/Skins/Paranature/img/default/bt-next-prev.png");
+    background-repeat: no-repeat;
+    float: left;
+    height: 50%;
+    overflow: hidden;
+    padding: 0;
+    text-indent: -3000em;
+    width: 100%;
+    display: inline !important;
+    opacity: 1 !important;
+}
+#view_scroll_left {
+    background-position: center 11px;
+}
+#pb-right-column .images-block {
+    border: 1px solid #d2d2d2;
+    border-left: 0;
+    border-top: 0;
+    text-align: center;
+}

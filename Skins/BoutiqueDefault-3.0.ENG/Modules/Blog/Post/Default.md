@@ -1,0 +1,7 @@
+[INFO [!Query!]|I]
+[IF [!I::TypeSearch!]=Child]
+	[!Chemin:=[!Query!]/Actif=1!]
+	[MODULE Blog/Post/Liste?Chemin=[!Chemin!]]
+[ELSE]
+	[MODULE Blog/Post/Fiche]
+[/IF]

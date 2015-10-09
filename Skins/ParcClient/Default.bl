@@ -1,0 +1,168 @@
+
+<!-- Bootstrap core CSS -->
+[HEADER JS]/Tools/Js/Jquery/1.9.2/jquery.min.js[/HEADER]
+[HEADER CSS]/Tools/Css/Bootstrap/3.0/css/bootstrap.min.css[/HEADER]
+[HEADER JS]/Tools/Css/Bootstrap/3.0/js/bootstrap.min.js[/HEADER]
+[HEADER]
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+[/HEADER]
+
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Espace client [!ParcClient::Nom!]</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Accueil</a></li>
+            <li><a href="/Profil">Profil</a></li>
+            <li><a href="/Systeme/Deconnexion">Déconnexion</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            [STORPROC [!Systeme::Menus!]|M]
+            <li  [IF [!Lien!]=[!M::Url!]]class="active"[ELSE][/IF]><a href="/[!M::Url!]">[!M::Titre!]  [IF [!Lien!]=[!M::Url!]]<span class="sr-only">(current)</span>[ELSE][/IF]</a></li>
+            [/STORPROC]
+          </ul>
+<!--          <ul class="nav nav-sidebar">
+            <li><a href="">Nav item</a></li>
+            <li><a href="">Nav item again</a></li>
+            <li><a href="">One more nav</a></li>
+            <li><a href="">Another nav item</a></li>
+            <li><a href="">More navigation</a></li>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li><a href="">Nav item again</a></li>
+            <li><a href="">One more nav</a></li>
+            <li><a href="">Another nav item</a></li>
+          </ul>
+-->
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          [DATA]
+        </div>
+      </div>
+    </div>
+
+<!-- MODAL -->
+<div class="modal fade"  id="modal-form">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <form id="modal-form-form">
+      <div class="modal-message"></div>
+      <div class="modal-body">
+        
+      </div>
+      </form>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-modal-cancel" data-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-primary btn-modal-save " data-form="">Enregistrer</button>
+        <button type="button" class="btn btn-danger btn-modal-close" style="visibility: hidden;" data-dismiss="modal">Fermer</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('.popup').click( function (e){
+      e.preventDefault();
+      $('#modal-form').modal('show');
+      //renseignement des contenus
+      $('#modal-form .modal-title').html($(this).attr('data-title'));
+      $('#modal-form .modal-body').html('<b>Chargement ...</b>');
+      $('#modal-form-form').attr('data-form',$(this).attr('href'));
+      
+      //chargement du formulaire
+      $.ajax({
+        url: $(this).attr('href'),
+        context: document.body
+      }).done(function(data) {
+        $('#modal-form .modal-body').html(data);
+      });
+      //reset controls
+      $('#modal-form .btn-modal-save').css('visibility','visible');
+      $('#modal-form .btn-modal-cancel').css('visibility','visible');
+      $('#modal-form .btn-modal-close').css('visibility','hidden');
+      //reset message
+      $('#modal-form .modal-message').empty();
+      //reset body
+      $('#modal-form .modal-body').html('<div class="alert alert-primary">Chargement ...</div>');
+    });
+    $('.btn-modal-save').click(function (e) {
+        //variables
+        var data = $('#modal-form-form').serialize()+'&ValidForm=1';
+        //enregistrement du formulaire
+        $.ajax({
+          url: $('#modal-form-form').attr('data-form'),
+          type: "POST",
+          data: data,
+          dataType: 'json',
+          context: document.body,
+          error: function (xhr, status, thrown) {
+            alert(status);
+            alert(thrown);
+          },
+          success: function(data) {
+            //gestion des controles
+            if (data.controls) {
+              if (!data.controls.save) 
+                $('#modal-form .btn-modal-save').css('visibility','hidden');
+              else
+                $('#modal-form .btn-modal-save').css('visibility','visible');
+              if (!data.controls.cancel) 
+                $('#modal-form .btn-modal-cancel').css('visibility','hidden');
+              else
+                $('#modal-form .btn-modal-cancel').css('visibility','visible');
+              if (!data.controls.close) 
+                $('#modal-form .btn-modal-close').css('visibility','hidden');
+              else
+                $('#modal-form .btn-modal-close').css('visibility','visible');
+            }
+            //test du retour
+            console.log ('rtour en force',data);
+            if (data.success) {
+              //en cas de success on remplace le body par le message
+              $('#modal-form .modal-message').empty();
+               $('#modal-form .modal-body').html(data.message);
+            }else{
+              //en cas d'echec, on affiche les erreurs au dessu du body
+              $('#modal-form .modal-message').html(data.message);
+            }
+            console.log ('valid form', data);
+          }
+        });
+    });
+  });
+</script>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="/Tools/Css/Bootstrap/3.0/js/bootstrap.min.js"></script>

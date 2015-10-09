@@ -4,6 +4,7 @@ class Bloc extends Beacon {
 	var $RawData;
 	var $VarData;
 	var $RawLoaded = false;
+    var $Data = '';
 	var $ContentLoaded = false;
 	var $Content;
 	var $BlObjects;
@@ -168,14 +169,14 @@ class Bloc extends Beacon {
 
 	// 	AFFICHAGE
 	function Affich($test=false) {
-		$Data = "";
 		//On traite les element d entete
 		$this->addHeader();
 		//Le contenu du fichier retravaill�
 		//$this->Content = Parser::getContent($this->BlObjects);
 		//$this->Data = Parser::getContent($this->ChildObjects);
-		if ($this->Content!="")$this->Data = $this->parseData($this->Data,$this->Content);
-		return $this->Data;
+		if (!empty($this->Content))
+            $this->Data = $this->parseData($this->Data,$this->Content);
+        return (isset($this->Data))?$this->Data:'';
 	}
 }
 ?>

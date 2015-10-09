@@ -91,6 +91,8 @@ a:hover, a:focus, .idTabs .selected, .breadcrumb, .sidebar .block .block_content
 }
 a:hover, a:focus, .idTabs .selected, .breadcrumb, .sidebar .block .block_content ul li a.selected, .sidebar .block .block_content ul li a:hover, .breadcrumb > .active, .navbar .nav > li > a:focus, .navbar .nav > li > a:hover, #header .topbar {
 	color: #B1599e;
+	background-color: transparent;
+
 }
 .navbar .nav li.dropdown > a:hover .caret, .navbar .nav li.dropdown > a:focus .caret {
 	border-bottom-color: #B1599e;
@@ -301,7 +303,6 @@ li.lof-text > p {
 .sidebar .block .block_content ul li a{
     padding: 5px 10px;
     border:0;
-    background: #f6f6f6;
     color: #B1599e;
 }
 .sidebar .block .block_content ul li a.selected{
@@ -326,7 +327,11 @@ li.lof-text > p {
     padding: 5px 10px;
 /*    margin-left:10px;*/
 }
-
+.sidebar .block.block_black .block_content ul li a {
+	padding: 5px 10px;
+	border: 0;
+	color: #f4f4f4;
+}
 
 /*** Fiche produit ***/
 #primary_block > div{
@@ -352,7 +357,9 @@ li.lof-text > p {
 
 /*____________________________________________________________________________________________
 /                                                                                  Bootstrap*/
-
+.container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
+    width: 1100px;
+}
 .well {
     min-height: 20px;
     padding: 5px;

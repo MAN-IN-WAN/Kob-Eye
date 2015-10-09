@@ -9,12 +9,15 @@
 [HEADER JS]Tools/Css/Bootstrap/BootBox/bootbox.min.js[/HEADER]
 [HEADER JS]Tools/Js/ChartJs/Chart.min.js[/HEADER]
 [HEADER JS]Tools/Js/Jquery/jquery.knob.min.js[/HEADER]
+[HEADER CSS]Tools/Css/Bootstrap/Bootstrap-fileinput/css/fileinput.min.css[/HEADER]
+[HEADER JS]Tools/Css/Bootstrap/Bootstrap-fileinput/js/fileinput.min.js[/HEADER]
+[HEADER JS]Tools/Css/Bootstrap/Bootstrap-fileinput/js/fileinput_locale_fr.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/bootstrap-slider.js[/HEADER]
 [HEADER]
 <meta name="viewport" content="width=device-width, initial-scale=1">
 [/HEADER]
-<div id="wrapper">
     <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <nav class="navbar navbar-inverse" role="navigation">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
@@ -23,17 +26,25 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Central Animateur</a>
+            <a class="navbar-brand" href="/">Central Animateur
+                [IF [!CurrentProjet!]]
+                [STORPROC Formation/Projet/[!CurrentProjet!]|R|0|1]
+                <span style="color:orange">[!R::Nom!]</span>
+                [/STORPROC]
+                [/IF]
+            </a>
+
         </div>
         <!-- Top Menu Items -->
         <ul class="nav navbar-right top-nav">
-            <li><a href="/Systeme/Deconnexion"><i class="fa fa-fw fa-power-off"></i> Se déconnecter</a></li>
+            <li><a href="/Systeme/Reboot" class=" btn btn-warning"><i class="fa fa-fw fa-power-off"></i> Redemarrer l'appareil</a></li>
+            <li><a href="/Systeme/Arret" class=" btn btn-danger"><i class="fa fa-fw fa-power-off"></i> Arrêter l'appareil</a></li>
+            <li><a href="/Systeme/Deconnexion"><i class="fa fa-fw fa-exit"></i> Se déconnecter</a></li>
         </ul>
-    [IF [!Lien!]!=]
-        [MODULE Systeme/Navigation]
-    [/IF]
+       [MODULE Systeme/Navigation]
         <!-- /.navbar-collapse -->
     </nav>
+<div id="wrapper">
     <div id="page-wrapper" style="min-height:1000px;">
 
         <div class="container-fluid">

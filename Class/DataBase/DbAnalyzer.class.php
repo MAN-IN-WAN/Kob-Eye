@@ -412,8 +412,9 @@ class DbAnalyzer extends Root{
 				//il s agit d une recherche de parents
 				$Obj2 = $Obj->getChildObjectClass($Tab[$NbEtape+1]['DataSource']);
 				if(!is_object($Obj2)) {
-					echo Module::$LAST_QUERY." ".$Tab[$NbEtape+1]['DataSource'] . " n'est pas un enfant de " . $Tab[$NbEtape]['DataSource']." ".print_r($Tab,true); die;
-				} 
+					echo Module::$LAST_QUERY." ".$Tab[$NbEtape+1]['DataSource'] . " n'est pas un enfant de " . $Tab[$NbEtape]['DataSource']." ".print_r($Tab,true);
+                    die;
+                }
 				if ($Obj->driver!=$Obj2->driver){
 					$partialResults = $Obj->partialSearch($Temp,$Tab[$NbEtape+1]['Value'],true,$Temp['Champ'],$GroupBy,Array(),isset($Tab[$NbEtape+1]['Key'])?$Tab[$NbEtape+1]['Key']:null,isset($Tab[$NbEtape+1]['View'])?$Tab[$NbEtape+1]['View']:null);
 					if (sizeof($partialResults))

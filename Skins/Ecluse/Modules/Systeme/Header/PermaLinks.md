@@ -8,12 +8,12 @@
 		</div>
 	</div>
 	[/STORPROC]
+	[IF [!Sys::User::Public!]=]
 	<div class="nav-item">
 		<div class="item-top">
-			<script type="text/javascript">
-				writeBookmarkLink('http://[!Domaine!]', 'Kob-eye Boutique', '<span class="hidden-phone">__BOOKMARK__</span>');
-			</script>
+			<a href="/Systeme/Deconnexion" class="btn btn-primary" title="contact">Déconnexion</a>
 		</div>
 	</div>
+	[/IF]
 </div>
 <!-- /Block permanent links module HEADER -->

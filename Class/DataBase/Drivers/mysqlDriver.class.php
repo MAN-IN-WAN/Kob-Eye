@@ -32,7 +32,7 @@ class mysqlDriver extends ObjectClass{
 		//suppression des filtres jointés
 		$Analyse = sqlFunctions::filterMultiJoin($Analyse);
 		//Construction des jointures
-		$Data = sqlFunctions::joinSql($Analyse,$Data,$this);
+        $Data = sqlFunctions::joinSql($Analyse, $Data, $this);
 		//Construction des jointures en mode selection + modification de la recherche pour éviter les collisions avec les filtres
 		$Data = sqlFunctions::multiJoinSql($Analyse,$Data,$this);
 		//Creation de la requete à partir du tableau
@@ -69,7 +69,7 @@ class mysqlDriver extends ObjectClass{
 		$Noms = '';
 		$Valeurs = '';
 		$RefWhere='';
-		if (!isset($Properties['Id'])) {
+		if (!isset($Properties['Id'])||(isset($Properties['Id'])&&Sys::$FORCE_INSERT)) {
 			foreach ($Properties as $NomProp=>$ValeurProp){
 				if($Flag) {$Noms.=",";$Valeurs.=",";$RefWhere.=" AND ";}
 				$Noms.= '`'.$NomProp.'`';
@@ -86,7 +86,7 @@ class mysqlDriver extends ObjectClass{
 					break;
 				}
 				$Valeurs .= $Valeur;
-				if ($NomProp!="Id")$RefWhere .= '(`'.$NomProp.'` = '.$Valeur.')';
+				$RefWhere .= '(`'.$NomProp.'` = '.$Valeur.')';
 				$Flag=true;
 			}
 			//On construit la requete SQL
@@ -432,7 +432,7 @@ class mysqlDriver extends ObjectClass{
 		}
 		if (DEBUG_ALL_BDD&&$Er[0]!="00000")echo "\r\nSQL ERROR ".Module::$LAST_QUERY."<br />\r\n".$sql."<br />\r\n".$Er[2]."<br />\r\n-------------------------------<br />\r\n";
 		//if ($O->Module=="Boutique"&&$O->titre=="Categorie")Klog::l("\r\nMYSQL DEBUG <br />\r\n".$sql."<br />\r\n".$Er[2]."<br />\r\n-------------------------------<br />\r\n");
-        //if ($O->Module=="Boutique"&&$O->titre=="Produit") echo "\r\nSQL ERROR ".Module::$LAST_QUERY."<br />\r\n".$sql."<br />\r\n".$Er[2]."<br />\r\n-------------------------------<br />\r\n";
+        //if ($O->Module=="Systeme"&&$O->titre=="Menu")echo "\r\nSQL ERROR ".Module::$LAST_QUERY."<br />\r\n".$sql."<br />\r\n".$Er[2]."<br />\r\n-------------------------------<br />\r\n";
 		//if (DEBUG_ALL_BDD&&$Er[0]!="00000") Klog::l("\r\nMYSQL DEBUG <br />\r\n".Module::$LAST_QUERY."<br />\r\n-------------------------------<br />\r\n");
 		if (AUTO_COMPLETE_LANG&&$GLOBALS["Systeme"]->CurrentLanguage!=$GLOBALS["Systeme"]->DefaultLanguage&&!Sys::$User->Admin){
 			foreach ($GLOBALS["Systeme"]->Conf->get("GENERAL::LANGUAGE") as $Cod=>$Lang) {
@@ -450,6 +450,7 @@ class mysqlDriver extends ObjectClass{
 				}
 			}
 		}
+        //print_r($Result);
 		return $Result;
 	}
 

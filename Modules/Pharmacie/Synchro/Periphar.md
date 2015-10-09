@@ -1,0 +1,1 @@
+[!Module::Pharmacie::synchroPeriphar(../stock/easy.txt)!]

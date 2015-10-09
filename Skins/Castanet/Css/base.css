@@ -823,7 +823,7 @@ div.star_hover a, div.star a:hover {
 }
 #header .topbar a {
 	color: #ebebeb;
-	text-shadow: 0 1px 0 #000
+	/*text-shadow: 0 1px 0 #000*/
 }
 #header .topbar {
 	min-height: 50px;
@@ -907,6 +907,7 @@ img.logo {
 	padding: 13px 0
 }
 .breadcrumb > li {
+    color: white;
   display: inline-block;
   *display: inline;
   /* IE7 inline-block hack */
@@ -3145,7 +3146,6 @@ ul#footer_links li {
 	line-height: 20px
 }
 #block_cart_collapse, #block_cart_expand {
-	background: url("http://demo4leotheme.com/prestashop/leo_beauty_store/themes/leobeau/css/modules/blockcart/img/shopping-cart.png") no-repeat scroll 0 center transparent;
 	cursor: pointer;
 	float: right;
 	height: 30px;
@@ -3201,7 +3201,6 @@ ul#footer_links li {
 	display: inline-block;
 	height: 12px;
 	width: 12px;
-	background: url(http://demo4leotheme.com/prestashop/leo_beauty_store/themes/leobeau/css/modules/blockcart/img/icon/delete.gif) no-repeat 0 0
 }
 #cart_block .price {
 	float: right;

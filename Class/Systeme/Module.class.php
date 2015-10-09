@@ -404,6 +404,10 @@ class Module extends Root{
 		$s = $s[0];
 		//recherche de clefs
 	 	$s = explode(".",$s);
+        if (isset($s[1])&&sizeof(explode("(",$s[1]))) {
+            //sortie car ils'agit d'un filtre
+            return Array("ObjectClass"=>"");
+        }
 	 	if (sizeof($s)>1){
 	 		//deinfnition de la vue
 	 		$o["Key"] = $s[1];
@@ -503,6 +507,7 @@ class Module extends Root{
 
             for ($i=0,$c=sizeof($Out);$i<$c;$i++) {
 
+
                 $Ass = null;
 				$Object="";
 				if ($i>0) { //&&!preg_match("#.*([A-Za-z0-9]+?)\.([A-Za-z0-9]+?)\((.*?)\).*#",$Out[$i])){
@@ -527,11 +532,14 @@ class Module extends Root{
                     //$GLOBALS["Chrono"]->stop("MODULE splitQuery tableau test");
 					$lastkey = $d1;
 				}
+
                 //TEST DE LA VUE
 				if (isset($d1["View"])){
 					$LastView = $d1["View"];
 				}
 				if ($i==0)$Object = $LastDataSource;
+
+                //Détermination des dernières informations
 				if (is_object($Object)) {
 					if ($Last>-1) {
 						//on Genere la donn� (Ds/Value/Ds/Value)
@@ -563,8 +571,8 @@ class Module extends Root{
 					if ($i>0)$LastAssociation = $Ass;
 					unset($Tab);
 				}
-			}
 
+            }
             //DETERMINATION DU TYPE DE REQUETE
 			if (($Last>-1)&&($Last!=sizeof($Out)-1)) {
 				//Si il existe un objectclass et qu'il n'est pas le dernier
@@ -740,10 +748,9 @@ class Module extends Root{
 				default: $Result[0]["Out"] =sizeof($Result)-1;
 			}
 		}
-		//if (DEBUG_INTERFACE)
-		//echo $Lien."\r\n";
+		//if (DEBUG_INTERFACE)echo $Lien."\r\n";
 		//if ($Lien=="ContractBuyerId/Contract/2900") $GLOBALS["Systeme"]->Log->log("SPLIT QUERY",$Result);
-		//if ($Lien=="DealIdDeal/Message/42")print_r($Result);
+		//if ($Lien=="Projet/2/Session/Region.Region(42)/Equipe")print_r($Result);
 		if (DEBUG_INTERFACE)print_r($Result);
 
         //cache splitQuery for heavy load
@@ -778,7 +785,7 @@ class Module extends Root{
         try{
 			$Tab =  $this->Db->searchObject($TabQuery,$recurs,$Ofst,$Limit,$Query,$OrderType,$OrderVar,$Selection,$GroupBy);
 		}catch ( Exception $e ) {
-			$Tab = Array();
+            die($e->getMessage());
 		}
 		//On ajoute les informations de la requete
 		for ($i=0,$c=sizeof($Tab);$i<$c;$i++) {

@@ -85,9 +85,9 @@ if($_SERVER['REQUEST_METHOD'] == "OPTIONS"){
 	$Systeme->Connect();
     $GLOBALS["Chrono"]->stop("TOTAL CONNEXION");
     $GLOBALS["Chrono"]->start("TOTAL AFFICH");
-	$Systeme->Affich();
+    $Systeme->Affich();
     $GLOBALS["Chrono"]->stop("TOTAL AFFICH");
-    $Systeme->Log->log($Chrono->total());
+//    $Systeme->Log->log($Chrono->total());
 	$Systeme->Close();
 	$Chrono->stop();
 }

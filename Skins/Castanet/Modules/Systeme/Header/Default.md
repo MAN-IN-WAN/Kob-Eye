@@ -4,7 +4,7 @@
 	[STORPROC Systeme/Menu/[!Systeme::CurrentMenu::Id!]/Donnee/Type=Image|IM|0|1]
 		[!IMAGE:=[!IM::Lien!]!]
                 [NORESULT]
-                        [STORPROC Systeme/Menu/1/Donnee/Type=Image|IM]
+                        [STORPROC Systeme/Menu/[!Sys::DefaultMenu::Id!]/Donnee/Type=Image|IM]
             		[!IMAGE:=[!IM::Lien!]!]
                         [/STORPROC]
                 [/NORESULT]
@@ -15,16 +15,16 @@
 	<section class="topbar">
 		<div class="container">
 
-			[MODULE Systeme/Header/UserInformations]			
-			[MODULE Systeme/Header/MiniPanier]			
-			[MODULE Systeme/Header/PermaLinks]			
+			[MODULE Systeme/Header/UserInformations]
+			[MODULE Systeme/Header/MiniPanier]
+			[MODULE Systeme/Header/PermaLinks]
 		</div>
 	</section>
 	<section class="header">
 		<div class="container" >
 			<div class="row-fluid">
 				<div class="span4 logo-wrapper text-center">
-					<a id="header_logo" href="[IF [!Lien!]]/[ELSE]/Systeme/Cat[/IF]" title="[!CurrentMagasin::Nom!]"> <img class="logo img-responsive" src="/[!Systeme::User::Avatar!]" alt="[!CurrentMagasin::Nom!]" /> </a>
+					<a id="header_logo" href="/" title="[!CurrentMagasin::Nom!]"> <img class="logo img-responsive" src="/[!Systeme::User::Avatar!]" alt="[!CurrentMagasin::Nom!]" /> </a>
 				</div>
 				<div class="span8">
 					<div id="header_right" class="row">

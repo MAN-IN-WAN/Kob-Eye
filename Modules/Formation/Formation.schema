@@ -1,8 +1,9 @@
 <SCHEMA>
     <!-- Définition de la formation -->
-	<OBJECTCLASS title="Projet" driver="mysql" master="1" AccessPoint="1" Description="Projet de formation" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+	<OBJECTCLASS title="Projet" driver="mysql" master="1" AccessPoint="1" Description="Projet de formation" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/Formation/Class/Projet.class.php">
 		<PROPERTIES type="varchar" length="200" searchOrder="1" category="Intitulé">Nom</PROPERTIES>
 		<PROPERTIES type="text" category="Descriptif">Description</PROPERTIES>
+        <FUNCTION>Synchro</FUNCTION>
 	</OBJECTCLASS>
     <OBJECTCLASS title="Categorie" driver="mysql" AccessPoint="1" Description="Catégorie" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" className="FormationCategorie" Class="Modules/Formation/Class/Categorie.class.php">
         <PROPERTIES type="varchar" length="200" searchOrder="1" category="Intitulé" mobile="1">Nom</PROPERTIES>
@@ -24,7 +25,7 @@
         <!--<PROPERTIES type="varchar" length="200" searchOrder="1" query="Formation/TypeReponse::Id::Nom" category="Intitulé">TypeReponse</PROPERTIES>-->
         <FKEY card="0,1" data="Categorie,Id" category="Intitulé" description="Categorie parente" mobile="1">CategorieId</FKEY>
     </OBJECTCLASS>
-    <OBJECTCLASS title="TypeQuestion" driver="mysql" Description="Type de Réponse" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+    <OBJECTCLASS title="TypeQuestion" driver="mysql" Description="Type de Réponse" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/Formation/Class/TypeQuestion.class.php">
         <PROPERTIES type="order" searchOrder="2" category="Intitulé" mobile="1">Ordre</PROPERTIES>
         <PROPERTIES type="varchar" length="200" searchOrder="1" category="Intitulé" mobile="1">Nom</PROPERTIES>
         <PROPERTIES type="int" length="200" searchOrder="1" query="Formation/TypeReponse::Id::Nom" category="Intitulé" mobile="1">TypeReponse</PROPERTIES>
@@ -56,7 +57,7 @@
     </OBJECTCLASS>
 
     <!-- Définition des session -->
-    <OBJECTCLASS title="Session" driver="mysql" AccessPoint="1" Description="Session" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/Formation/Class/Session.class.php" className="FormationSession">
+    <OBJECTCLASS title="Session" driver="mysql" AccessPoint="1" Description="Session" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/Formation/Class/Session.class.php" className="FormationSession" logEvent="1">
         <PROPERTIES type="varchar" length="200" searchOrder="1" category="Intitulé">Nom</PROPERTIES>
         <PROPERTIES type="text" category="Intitulé">Description</PROPERTIES>
         <PROPERTIES type="boolean" category="Intitulé">EnCours</PROPERTIES>
@@ -65,7 +66,9 @@
         <PROPERTIES type="date" category="Intitulé">Date</PROPERTIES>
         <PROPERTIES type="date" category="Intitulé">TermineLe</PROPERTIES>
         <FKEY card="0,1" data="Projet,Id" category="Intitulé" description="Projet">ProjetId</FKEY>
-        <FKEY card="0,1" data="Region,Id" category="Intitulé" description="Projet">Region</FKEY>
+        <FKEY card="0,1" data="Region,Id" category="Intitulé" description="Région">Region</FKEY>
+        <FKEY card="0,1" data="Boitier,Id" category="Intitulé" description="Boitier">Boitier</FKEY>
+        <FUNCTION>Synchro</FUNCTION>
     </OBJECTCLASS>
     <OBJECTCLASS title="Donnee" driver="mysql" Description="Donnee" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
         <PROPERTIES type="order" searchOrder="1" category="Intitulé">Numero</PROPERTIES>
@@ -96,5 +99,26 @@
     <!--Dictionnaires -->
     <OBJECTCLASS title="Region" driver="mysql" Dico="1" Description="Région" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
         <PROPERTIES type="varchar" searchOrder="1" category="Intitulé">Nom</PROPERTIES>
+        <FKEY card="1,1" data="InterRegion,Id" category="Intitulé" description="InterRegion">InterRegionId</FKEY>
+        <VIEW title="RegionInterRegion" default="1">
+            <OBJECTCLASS title="Region" select="Id,Nom">
+                <JOIN type="inner" module="Formation" title="InterRegion" on="InterRegionId" target="Id">
+                    <PROPERTIES type="int"  alias="InterRegion" >Id</PROPERTIES>
+                    <PROPERTIES type="varchar" alias="NomInterRegion" >Nom</PROPERTIES>
+                </JOIN>
+            </OBJECTCLASS>
+        </VIEW>
+    </OBJECTCLASS>
+    <OBJECTCLASS title="InterRegion" driver="mysql" Dico="1" Description="Inter-Région" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+        <PROPERTIES type="varchar" searchOrder="1" category="Intitulé">Nom</PROPERTIES>
+    </OBJECTCLASS>
+
+    <!--Boitiers-->
+    <OBJECTCLASS title="Boitier" driver="mysql" Dico="1" Description="Boitier" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+        <PROPERTIES type="varchar" searchOrder="1" category="Intitulé">Numero</PROPERTIES>
+    </OBJECTCLASS>
+    <OBJECTCLASS title="SynchroHisto" driver="mysql" Dico="1" Description="Historique de synchro" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+        <PROPERTIES type="varchar" searchOrder="1" category="Intitulé">Description</PROPERTIES>
+        <FKEY card="1,1" data="Boitier,Id" category="Intitulé" description="Historique">Boitier</FKEY>
     </OBJECTCLASS>
 </SCHEMA>

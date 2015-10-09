@@ -157,7 +157,7 @@ class Process extends Root{
 				case ":*":
 					if (!is_numeric($Val1)) $Val1=Process::processVars($Val1);
 					$Data = $Val1*$Val2;
-//  					echo "Multiplication ".$Out[1]."|".$Out[3]."|".$this->processVars($Val1)."*".$Val2."=".$Data."</BR>";
+  					//echo "Multiplication ".$Out[1]."|".$Out[3]."|".$this->processVars($Val1)."*".$Val2."=".$Data."</BR>";
 				break;
 				case ":-":
 					if (!is_numeric($Val1)) $Val1=Process::processVars($Val1);
@@ -290,13 +290,13 @@ class Process extends Root{
 					//ON verifie qu il s agisse bien d un objet
 					if (is_object($TmpObj)){
 						//On teste si il s agit d une propriete ou d une methode
-						$Temp = get_object_vars(eval("return ".$Obj.";"));
+						$Temp = get_object_vars($TmpObj);
 						if (array_key_exists($Tab[sizeof($Tab)-1],$Temp)) {
 							//C est une propriete
 							$Data = eval("return ".$chaine.";");
 						}else{
 							//Sinon verification de l existence de la methode
-							if (method_exists(eval("return $Obj;"),$Tab[count($Tab)-1])){
+							if (method_exists($TmpObj,$Tab[count($Tab)-1])){
 								//Si il y a des parametres alors on les ajoutent
 								if (is_array($Params)&&sizeof($Params)){
 									$chaine .= "(";

@@ -1,0 +1,92 @@
+[HEADER]
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
+<meta name="description" content="Boutique propulsée par Kob-Eye" />
+<meta name="keywords" content="boutique, kob-eye" />
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+<meta http-equiv="content-language" content="en-br-de-es-fr-it" />
+<meta name="generator" content="Kob-Eye" />
+<meta name="robots" content="index,follow" />
+
+[/HEADER]
+[HEADER CSS]Tools/Css/Bootstrap/3.0/css/bootstrap.min.css[/HEADER]
+[HEADER CSS]Tools/Css/Bootstrap/3.0/css/bootstrap-theme.min.css[/HEADER]
+
+[HEADER JS]Tools/Js/Jquery/1.9.2/jquery.min.js[/HEADER]
+[HEADER JS]Tools/Css/Bootstrap/3.0/js/bootstrap.min.js[/HEADER]
+[HEADER JS]Tools/Js/Masonry/masonry.min.js[/HEADER]
+<script src='/Tools/Js/animateIt/js/css3-animate-it.js'></script>
+<script src='/Tools/Js/Colorbox/jquery.colorbox-min.js'></script>
+<link rel="stylesheet" href="/Tools/Js/Colorbox/example1/colorbox.css" type="text/css">
+<script type="text/javascript" src="/Skins/BoutiqueDefault-3.0.ENG/Js/toastr.js"></script>
+
+
+<!--[if lt IE 9]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+
+
+[MODULE Boutique/Produit/MajPanier]
+
+<div id="page" class="clearfix">
+    [MODULE Systeme/Header]
+    <div class="container">
+    [DATA]
+    </div>
+    [MODULE Systeme/Footer]
+</div>
+
+<script type="text/javascript">
+    var classBody = ".png";
+    $("body").addClass(classBody.replace(/\.\w+$/, ""));
+
+    /* desactivation des liens */
+		/*$('a').each(function (index,item){
+        $(item).attr('a','#nogo');
+        $(item).click(function (e){
+            e.preventDefault();
+            alert('les liens sont désactivés. Il ne s\'agit que d\'une maquette de démonstration.');
+        });
+    });*/
+
+</script>
+<div class="modal fade" id="lemodal" tabindex="-1" role="dialog" aria-labelledby="inputModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="lemodal" tabindex="-1" role="dialog" aria-labelledby="inputModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<h3 id="myModalLabel"></h3>
+	</div>
+	<div class="modal-body">
+		<div class="modal-content">
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+	/**
+	* supression du contenu lors de la disparition du popup
+	*/
+	$('#lemodal').on('hidden.bs.modal', function (e) {
+		$(e.target).removeData('bs.modal').find('.modal-content').empty();
+	});
+</script>
+
+<link rel="stylesheet" href="/Tools/Js/animateIt/css/animations.css" type="text/css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+

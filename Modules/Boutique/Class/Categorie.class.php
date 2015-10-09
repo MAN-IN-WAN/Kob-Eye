@@ -571,14 +571,14 @@ class BoutiqueCategorie extends genericClass {
                       }*/
 
                       //content_usage
-                      $content_usage='';
+                      /*$content_usage='';
                       if (sizeof($prod('div#tabs-1'))&&is_object($prod('div#tabs-1')[0]))
                           $content_usage = $prod('div#tabs-1')[0]->getPlainText();
 
                       //content_composition
                       $content_composition='';
                       if (sizeof($prod('div#tabs-2'))&&is_object($prod('div#tabs-2')[0]))
-                          $content_composition = $prod('div#tabs-2')[0]->getPlainText();
+                          $content_composition = $prod('div#tabs-2')[0]->getPlainText();*/
 
                       //$content_notice = $prod->find('div#content_notice')[0]->plaintext;
                       //parent

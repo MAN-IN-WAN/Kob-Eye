@@ -353,13 +353,13 @@ table.table_block  td {
 
 /* BLOCK .block ******************************************************************************** */
 #center_column .block {margin-bottom:20px}
-.block {margin-bottom:15px;margin-top:15px;background: #f6f6f6;}
+.block {margin-bottom:15px;margin-top:15px;background: white;}
 .container > .row-fluid > .span12 {
     min-height:0;
 }
 
 .sidebar{font-size:13px;}
-.sidebar .block {background: #f6f6f6;}
+.sidebar .block {background: white;}
 .sidebar .block:nth-child(even) .title_block {background: #565758;}
 .sidebar .block:nth-child(odd) .title_block {background: #f46553;}
 .sidebar .title_block {color: #fff;}
@@ -691,7 +691,7 @@ div.star_hover a, div.star a:hover { background-position: 0 -32px }
 		HEADER
 ************************************************************************************************ */
 #header {position:relative; }
-	#header .topbar a{color:#ebebeb;text-shadow: 0 1px 0 #000;}
+	#header .topbar a{color:#676767;}
 	#header .topbar{
 		min-height: 50px;
 		line-height:40px; 

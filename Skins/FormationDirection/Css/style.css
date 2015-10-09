@@ -348,3 +348,7 @@ a.active .panel-heading{
     font-size: 18px;
     font-weight: 600;
 }
+
+.cloudtag{
+    min-height: 500px;
+}

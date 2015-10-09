@@ -20,7 +20,7 @@
 [STORPROC [!Chemin!]|Cat|0|1]
 <div class="contenttop row-fluid block">
 
-	<h3 class="title_block"> [IF [!Cat::NomLong!]][!Cat::NomLong!][ELSE][!Cat::Nom!][/IF] <span class="resumecat category-product-count"> / __THERE_IS__ [!Nb!] __PRODUCTS__. </span></h1>
+	<h1 class="title_block"> [IF [!Cat::NomLong!]][!Cat::NomLong!][ELSE][!Cat::Nom!][/IF] <span class="resumecat category-product-count"> / __THERE_IS__ [!Nb!] __PRODUCTS__. </span></h1>
 
 	[IF [!C::Image!]||[!C::Description!]]
 	<div class="content_scene_cat">
@@ -116,7 +116,7 @@
 		<div id="product_list" class="products_block view-grid">
 			<div class="rows-fluid">
 				<div class="row-fluid">
-					[STORPROC [!REQ!]|Prod|[![!Page:-1!]:*[!NbParPage!]!]|[!NbParPage!]|Ordre|ASC]
+					[STORPROC [!REQ!]|Prod|[![!Page:-1!]:*[!NbParPage!]!]|[!NbParPage!]|Nom|ASC]
 					[!LePrix:=[!Prod::getTarif!]!]
 					[!Promo:=[!Prod::GetPromo!]!]
 					<!-- Product item -->

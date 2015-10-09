@@ -1,0 +1,92 @@
+RewriteEngine on
+RewriteRule   ^install(.*)$	install$1 [L]
+RewriteRule   ^sqliteadmin(.*)$	sqliteadmin$1 [L]
+RewriteRule   ^phpmyadmin(.*)$	phpmyadmin$1 [L]
+RewriteRule   ^telem(.*)$	telem$1 [L]
+RewriteRule   ^phpinfo.php$	phpinfo.php [L]
+RewriteRule   ^certificats.php	certificats.php  [L]
+RewriteRule   ^favicon.ico$	favicon.ico  [L]
+RewriteRule   ^Conf\/.*$	404.html  [L,R=404]
+#RewriteRule   ^Modules\/.*$	404.html  [L,R=404]
+RewriteRule   ^generate(.*)$	generate_204.php [L]
+RewriteRule   ^hotspot-detect.html$	valid-hotspot.html [L]
+RewriteRule   ^test/success.html$	valid-hotspot.html [L]
+
+RewriteRule   ^google(.*)$	google$1  [L]
+RewriteRule   ^Data\/.*$	404.html  [L,R=404]
+RewriteRule   ^Log\/.*$	404.html  [L,R=404]
+RewriteRule   ^crossdomain.xml$	crossdomain.xml [L]
+
+#GESTION DES MINIATURES IMAGES
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} \.(mini|limit|scale|convert)\.[0-9]+x[0-9]+\.(jpe?g|png|gif|swf)$
+RewriteRule   ^.*$	index.php  [L]
+
+#GESTION DES MINIATURES VIDEOS
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} \.(mini|limit|scale)\.[0-9]+x[0-9]+x[0-9]+\.(jpe?g|png|gif|swf)$
+RewriteRule   ^.*$	index.php  [L]
+
+#CAS GLOBAL
+RewriteCond %{REQUEST_FILENAME} !\.(ico|jpe?g|JPE?G|png|gif|map|ogg|html|swf|appcache|css|gz|js|json|mp4|ogv|f4v|flv|mp4|m4v|avi|apk|zip|ttf|eot|woff|woff2|svg|pptx)$
+RewriteRule   ^.*$	index.php  [L]
+
+#GESTION DES ENTETES
+<FilesMatch "\\.(css|gz|js)$">
+	<IfModule mod_headers.c>
+		Header append Vary Accept-Encoding
+	</IfModule>
+</FilesMatch>
+
+#Suppression du pragma
+<IfModule mod_headers.c>
+	Header unset Pragma
+</IfModule>
+
+# BEGIN Cache-Control Headers
+#<IfModule mod_headers.c>#
+#	<FilesMatch "\\.(ico|jpe?g|png|gif|swf|css|gz|js)$">
+#		Header set Cache-Control "max-age=1209600"
+#	</FilesMatch>
+#	<FilesMatch "\\.(css|gz|js)$">
+#		Header append Vary Accept-Encoding
+#	</FilesMatch>
+#	<filesMatch "\\.(html|htm)$">
+#		Header set Cache-Control "max-age=7200, public"
+#	</filesMatch>
+#	# Disable caching for scripts and other dynamic files
+#	<FilesMatch "\.(pl|php|cgi|spl|scgi|fcgi)$">
+#		Header unset Cache-Control
+#	</FilesMatch>
+#</IfModule>
+# END Cache-Control Headers
+
+# BEGIN Expire headers
+#<IfModule mod_expires.c>
+#	ExpiresActive On
+#	ExpiresDefault "access plus 7200 seconds"
+#	ExpiresByType image/jpg "access plus 1209600 seconds"
+#	ExpiresByType image/jpeg "access plus 1209600 seconds"
+#	ExpiresByType image/png "access plus 1209600 seconds"
+#	ExpiresByType image/gif "access plus 1209600 seconds"
+#	AddType image/x-icon .ico
+#	ExpiresByType image/ico "access plus 1209600 seconds"
+#	ExpiresByType image/icon "access plus 1209600 seconds"
+#	ExpiresByType image/x-icon "access plus 1209600 seconds"
+#	ExpiresByType text/css "access plus 1209600 seconds"
+#	ExpiresByType text/javascript "access plus 1209600 seconds"
+#	ExpiresByType text/html "access plus 7200 seconds"
+#	ExpiresByType application/xhtml+xml "access plus 7200 seconds"
+#	ExpiresByType application/javascript A259200
+#	ExpiresByType application/x-javascript "access plus 2592000 seconds"
+#	ExpiresByType application/x-shockwave-flash "access plus 2592000 seconds"
+#</IfModule>
+# END Expire headers
+
+#COMPRESSION
+<IfModule mod_deflate.c>
+	<FilesMatch "\\.(js|css|html|htm|php|xml|txt)$">
+		SetOutputFilter DEFLATE
+	</FilesMatch>
+</IfModule>
+

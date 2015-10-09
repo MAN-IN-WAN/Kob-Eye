@@ -127,23 +127,25 @@ class Info extends Beacon {
         }
         //Le second est le nom de la variable dans laquelle stoquer l'info (COUNT par defaut)
         $Var = (isset($this->Attributes[1])&&!empty($this->Attributes[1]))?$this->Attributes[1]:"COUNT";
-        if (is_string($Query)){
-		$V = (isset($this->Attributes[2])&&$this->Attributes[2]!='')?"m.".$this->Attributes[2]:"m.Id";
-		//On extrait le nom du module
-		$Module = explode("/",$Query,2);
-		$Query = (isset($Module[1]))?$Module[1]:"";
-		$Module = $Module[0];
-		//On recolte les infos sur la requete
-		//Execution de la requete
-		if ($Module)if (isset(Sys::$Modules[$Module])&&is_object(Sys::$Modules[$Module]))$Tab=Sys::$Modules[$Module]->callData($Query,"",0,1000000,"","","COUNT(DISTINCT(".$V."))");
-		unset(Process::$TempVar[$Var]);
-		if (isset($Tab)&&isset($Tab[0]["COUNT(DISTINCT(".$V."))"])){
-			$Count=$Tab[0]["COUNT(DISTINCT(".$V."))"];
-			Process::$TempVar[$Var]=$Count;
-		}
-        }elseif(is_array($Query)) {
-		unset(Process::$TempVar[$Var]);
-		Process::$TempVar[$Var]=sizeof($Query);
+        if (is_string($Query)) {
+            $V = (isset($this->Attributes[2]) && $this->Attributes[2] != '') ? "m." . $this->Attributes[2] : "m.Id";
+            //On extrait le nom du module
+            $Module = explode("/", $Query, 2);
+            $Query = (isset($Module[1])) ? $Module[1] : "";
+            $Module = $Module[0];
+            //On recolte les infos sur la requete
+            //Execution de la requete
+            unset(Process::$TempVar[$Var]);
+            if (is_array($Query)) {
+                Process::$TempVar[$Var] = sizeof($Query);
+            } else {
+                $Count=0;
+                if ($Module && isset(Sys::$Modules[$Module]) && is_object(Sys::$Modules[$Module])) $Count = Sys::getCount($Module, $Query);
+                Process::$TempVar[$Var] = '0';
+                if (!$Count)
+                    Process::$TempVar[$Var] = '0';
+                else Process::$TempVar[$Var] = $Count;
+            }
         }
         return ;
     }

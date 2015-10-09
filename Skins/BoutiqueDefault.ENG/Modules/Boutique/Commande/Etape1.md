@@ -95,7 +95,7 @@
 						[/IF]
 						<tr class="ReferenceLine" data-ref="[!Pan::Reference!]" data-conf="[!Pan::Config!]">
 							<td class="gauche"  >
-								<a href="/[!Prod::getUrl!]"><strong>[!Pan::Titre!]</strong></a>[IF [!Emballage::ConditionnementDefaut!]!=1&&[!Emballage::ConditionnementDefaut!]!=](Vendu en [!Emballage::TypeEmballage!])[/IF]				    
+								<a href="/[!Prod::getUrl!]"><strong>[!Pan::Titre!]</strong></a>[IF [!Emballage::ConditionnementDefaut!]!=1&&[!Emballage::ConditionnementDefaut!]!=](Vendu en [!Emballage::TypeEmballage!])[/IF]
 								<p>[UTIL BBCODE][!Pan::Description!][/UTIL]</p>
 							</td>
 							<td >
@@ -212,7 +212,7 @@
 			},
 			contentType: "application/json; charset=utf-8",
 			dataType: "json"
-			
+
 		}).success(function(msg){
 			  refreshPanier(msg);
 		}).fail(function(msg){

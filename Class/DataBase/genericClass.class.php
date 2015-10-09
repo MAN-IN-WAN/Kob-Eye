@@ -2091,10 +2091,10 @@ class genericClass extends Root {
 		unset($this -> Parents);
 		$this -> initFromArray($Results);
 		$this -> launchTriggers(__FUNCTION__);
-		
+
 		//si l'element possede le generateUrl = true alors on génère ses mots clefs
 		if ($obj->browseable){
-			if ($this->Display)
+			if (isset($this->Display)&&$this->Display)
 				$this->SaveKeywords();
 			else
 				$this->deletePages();
@@ -2387,10 +2387,24 @@ class genericClass extends Root {
 					foreach ($pas as $p){
 						//récupération des pages
 						$ps = $p->getPages();
+
 						foreach ($ps as $po){
-							//Pour chacune des pages trouvées on en ajoute une à la suite
+                            //suffixe
+                            $suffixe = '';
+                            if ($this->ObjectType!=$po->PageObject && $po->PageObject!='Menu')
+                                $suffixe = $this->ObjectType."/";
+                            elseif ($this->ObjectType!=$po->PageObject && $po->PageObject=='Menu') {
+                                //il faut vérifier la cible du menu
+                                $m = Sys::getOneData('Systeme','Menu/'.$po->PageId);
+                                $i = Info::getInfos($m->Alias);
+                                if ($i["TypeChild"]!=$this->ObjectType) {
+                                    $suffixe = $this->ObjectType . "/";
+                                }else $suffixe = '';
+                            }else $suffixe = '';
+
+                            //Pour chacune des pages trouvées on en ajoute une à la suite
 							$pn = genericClass::createInstance('Systeme','Page');
-							$pn->Url = $po->Url."/".(($this->ObjectType!=$po->PageObject)?$this->ObjectType."/":"").$this->Url;
+							$pn->Url = $po->Url."/".$suffixe.$this->Url;
 							$pn->FromUrl = $po->Url;
 							$pn->LastMod = date('Y-m-d');
 							$pn->PageModule = $this->Module;
@@ -2407,6 +2421,7 @@ class genericClass extends Root {
 				}else if (!$pa["browseable"]&&$browseable){
 					$pas = $this->getParents($pa["Titre"]);
 					foreach ($pas as $p){
+
 						//recherche des menus pouvant emmener à cette donnée
 						$menus = Sys::getMenus($this->Module.'/'.$pa["Titre"].'/'.$p->Id,true,true);
 						$suffixe = '/'.$this->ObjectType;
@@ -2414,6 +2429,10 @@ class genericClass extends Root {
 							$menus = Sys::getMenus($this->Module.'/'.$pa["Titre"].'/'.$p->Id.'/'.$this->ObjectType,true,true);
 							$suffixe='';
 						}
+
+                        //Dans le cas ou l'objectclass du menu est la meme que celle en cours.
+                        if ($this->ObjectType == $pa["Titre"] && $this->isRecursiv()) $suffixe='';
+
 						foreach ($menus as $m){
 							unset($m->Menus);
 							//récupération des pages
@@ -2478,33 +2497,67 @@ class genericClass extends Root {
 			}
 		}
 
-		//generation des mots-clefs
-/*		$Mcs = $this->genKeyWords();
+		if (Sys::getKeywordsProcessing()&&sizeof($tls)) {
 
-		//generation des tags
-		if(is_array($Mcs)) {
-			foreach($Mcs as $Mc=>$Occ) {
-				if ($Mc!=" "&&!empty($Mc)){
-					//On verifie d'abord si il n'existe pas dans la base des mots clefs en tant que canonique
-					//$Tab2 = Sys::getData('Systeme','Tag/Canonic='.Utils::Canonic($Mc));
-					//if(!sizeof($Tab2)) {
-						// Il n'existe pas, on le créé
-						$Mcf = genericClass::createInstance("Systeme","Tag");
-						$Mcf->Set("Nom",$Mc);
-						$Mcf->Set("Canonic",Utils::Canonic($Mc));
-						$Mcf->Set("Poids",$Occ);
-						$Mcf->Save();
-					//}else $Mcf = $Tab2[0];
-					//Affectation au taglink
-					for ($i=0;$i<sizeof($tls);$i++)
-						$tls[$i]->addParent($Mcf);
+			//generation des mots-clefs
+			$Mcs = $this->genKeyWords();
+
+			//generation des tags
+			if (is_array($Mcs)) {
+				foreach ($Mcs as $Mc => $Occ) {
+					if ($Mc != " " && !empty($Mc)) {
+						//On verifie d'abord si il n'existe pas dans la base des mots clefs en tant que canonique
+						//$Tab2 = Sys::getData('Systeme','Tag/Canonic='.Utils::Canonic($Mc));
+						//if(!sizeof($Tab2)) {
+                            // Il n'existe pas, on le créé
+                            $Mcf = genericClass::createInstance("Systeme", "Tag");
+                            $Mcf->Set("Nom", $Mc);
+                            $Mcf->Set("Canonic", Utils::Canonic($Mc));
+                            $Mcf->Set("Poids", $Occ);
+    						//$Mcf->Save();
+						//}else $Mcf = $Tab2[0];
+						//Affectation au taglink
+
+                        $Mcf->Pages = array();
+						for ($i = 0; $i < sizeof($tls); $i++){
+							//$tls[$i]->addParent($Mcf);
+                            $Mcf->Pages[] = $tls[$i]->Id;
+                        }
+
+                        if (isset(Sys::$keywords[$Mcf->Canonic])){
+                            $Mcf->Pages = array_merge($Mcf->Pages,Sys::$keywords[$Mcf->Canonic]->Pages);
+                            $Mcf->Poids += Sys::$keywords[$Mcf->Canonic]->Poids;
+                        }
+                        Sys::$keywords[$Mcf->Canonic] = $Mcf;
+
+					}
 				}
 			}
-		}*/
-		for ($i=0;$i<sizeof($tls);$i++)
-			$tls[$i]->Save();
+			for ($i = 0; $i < sizeof($tls); $i++){
+				$tls[$i]->Save();
+			}
+		}
 	}
-	
+    /**
+     * rip_tags
+     * strip_tags replacement
+     */
+    public function rip_tags($string) {
+
+        // ----- remove HTML TAGs -----
+        $string = preg_replace ('/<[^>]*>/', ' ', $string);
+
+        // ----- remove control characters -----
+        $string = str_replace("\r", '', $string);    // --- replace with empty space
+        $string = str_replace("\n", ' ', $string);   // --- replace with space
+        $string = str_replace("\t", ' ', $string);   // --- replace with space
+
+        // ----- remove multiple spaces -----
+        $string = trim(preg_replace('/ {2,}/', ' ', $string));
+
+        return $string;
+
+    }
 	/**
 	* Génère la phrase significative de la donnée
 	* @return String
@@ -2519,9 +2572,9 @@ class genericClass extends Root {
 				case "titre":
 				case "text":
 				case "varchar":
-				case "metat":
+				/*case "metat":
 				case "metad":
-				case "metak":
+				case "metak":*/
 					// Type text : on concatene
 					if (isset($p["SearchOrder"])&&intval($p["SearchOrder"])>0){
 						for ($i=20; $i>=intval($p["SearchOrder"]); $i--){
@@ -2534,7 +2587,7 @@ class genericClass extends Root {
 				case "html":
 				case "bbcode":
 					// Type text : on concatene
-					$T .= ' ' . trim(strip_tags($this->$p["Titre"]));
+					$T .= ' ' . trim($this->rip_tags($this->$p["Titre"]));
 				break;
 			}
 		}
@@ -2558,7 +2611,7 @@ class genericClass extends Root {
 		//Extraction des mots clefs
 		$params['content'] = $T; //page content
 		//set the length of keywords you like
-		$params['min_word_length'] = 2;  //minimum length of single words
+		$params['min_word_length'] = 4;  //minimum length of single words
 		$params['min_word_occur'] = 1;  //minimum occur of single words
 		
 		$keyword = new autokeyword($params, "UTF-8");

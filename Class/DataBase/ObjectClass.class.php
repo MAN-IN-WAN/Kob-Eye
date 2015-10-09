@@ -1068,17 +1068,20 @@ class ObjectClass extends Root{
 	* Retourne vrai si l'objet est bien un enfant
 	*/
 	function isChildOf($Obj){
-		foreach ($this->Associations as $A)
-			if ($A->isParent($Obj)&&$A->isChild($this->titre)) return true;
-		return false;
+		foreach ($this->Associations as $A){
+            //echo $this->titre." isChildOf ".$Obj." A->isparent ".$A->isParent($Obj)." A->ischild ".$A->isChild($this->titre)."\r\n";
+            if ($A->isParent($Obj)&&$A->isChild($this->titre)) return true;
+        }
+        return false;
 	}
 	/**
 	* isParentOf
 	* Retourne vrai si l'objet est bien un enfant
 	*/
 	function isParentOf($Obj){
-		foreach ($this->Associations as $A)
-			if ($A->isChild($Obj)&&$A->isParent($this->titre)) return true;
+		foreach ($this->Associations as $A) {
+            if ($A->isChild($Obj) && $A->isParent($this->titre)) return true;
+        }
 		return false;
 	}
 	/**
@@ -1231,11 +1234,10 @@ class ObjectClass extends Root{
 	* @return Object
 	*/
 	public function getKey($ObjectClass="",$Champ="",$Type="child"){
-// 		echo "GET KEY ".$this->titre." | $ObjectClass | $Type \r\n";
 		foreach($this->Associations as $A){
 			if ($Type=="child"){
 				if ($A->titre==$Champ && $A->isChild($ObjectClass)){
-// 					echo "	-> ".$A->titre."\r\n";
+//                    echo "	-> ".$A->titre."\r\n";
 					return $A;
 				}
 			}else
@@ -1329,7 +1331,6 @@ class ObjectClass extends Root{
 			if (is_array($Etape)&&!sizeof($Analyse))$Analyse[] = $Etape;
 			$Analyse[] = $TabAnalyse;
 			//Analyse terminée donc on envoi maintenant la requete au pilote.
-
             if (!empty($View)&&is_object($this->getView($View))&&$View!="NOVIEW"){
 				$viewObject = $this->getView($View);
 				$Results = $viewObject->Search($Analyse,$Value,$Select,$GroupBy,$Otype,$Ovar);
@@ -1744,8 +1745,7 @@ class ObjectClass extends Root{
 			}
 		}
 		//Enregistrement objet
-		$Update = (isset($Obj["Id"])) ? 0:1;
-		if (!$Properties = $this->insertObject($Properties,$Update)) return false;
+		if (!$Properties = $this->insertObject($Properties)) return false;
 		//Enregistrement des clefs longues
 		if (!isset($Obj["Id"])) {$Id =$Obj["Id"] = $Properties['Id']; $Insert=true;}else {$Id = $Obj["Id"]; $Insert=false;}
 		//On fait une boucle qui va inserer les clefs etrangeres les unes apres les autres

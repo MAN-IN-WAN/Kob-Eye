@@ -26,7 +26,8 @@
 	content: "";
 	width: 100%;
 	height: 100%;
-	background: url(images/shape-slideshow.png) repeat 0 0;
+	/*background: url(images/shape-slideshow.png) repeat 0 0;*/
+    background: transparent;
 	top: 0;
 	left: 0;
 	z-index: 1;

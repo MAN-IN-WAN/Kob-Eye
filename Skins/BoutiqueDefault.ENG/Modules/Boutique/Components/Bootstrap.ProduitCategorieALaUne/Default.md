@@ -1,7 +1,7 @@
 <!-- MODULE Block specials -->
 [OBJ Boutique|Magasin|Magasin]
 [!Magasin:=[!Magasin::getCurrentMagasin()!]!]
-<div id="categoriesprodtabs" class="block products_block exclusive blockleocategoriestabs">
+<div id="categoriesprodtabs" class="block products_block exclusive blockleocategoriestabs hidden-phone">
 	<h3 class="title_block">Nos produits à la une </h3>
 	<div class="block_content">
 		<div class="row-fluid">
@@ -9,7 +9,7 @@
 				<ul id="catProductsTabs" class="htabs">
 					//Liste des catégories
 					[STORPROC Boutique/Magasin/[!Magasin::Id!]/Categorie/*/Categorie/AlaUne=1&Display=1|Cat|0|5]
-					<li>
+					<li [IF [!Pos!]=1]class="active"[/IF]>
 						<a href="#cattab[!Cat::Id!]" data-toggle="tab">[!Cat::Nom!]</a>
 					</li>
 					[/STORPROC]
@@ -20,12 +20,12 @@
 
 					//Liste des catégories
 					[STORPROC Boutique/Magasin/[!Magasin::Id!]/Categorie/*/Categorie/AlaUne=1&Display=1|Cat]
-					<div class="tab-pane" id="cattab[!Cat::Id!]">
+					<div class="tab-pane  [IF [!Pos!]=1]active[/IF]" id="cattab[!Cat::Id!]">
 						<div class=" carousel slide" id="carousel-[!Cat::Id!]">
 							<a class="carousel-control left" href="#carousel-[!Cat::Id!]"   data-slide="prev">&lsaquo;</a>
 							<a class="carousel-control right" href="#carousel-[!Cat::Id!]"  data-slide="next">&rsaquo;</a>
 							<div class="carousel-inner">
-								[STORPROC Boutique/Categorie/[!Cat::Id!]/Produit/Display=1|Prod|0|6]
+								[STORPROC Boutique/Categorie/[!Cat::Id!]/*/Produit/Display=1|Prod|0|6]
 								<div class="item active">
 									<div class="row-fluid">
 										[LIMIT 0|3]

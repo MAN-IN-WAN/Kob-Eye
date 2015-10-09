@@ -60,6 +60,7 @@ class sqlInterval{
 			if ($IdParent=="") $IdParent = 0;
 			$sql='SELECT Bd,Bg FROM `'.$O->Prefix.$O->titre.'-Interval` WHERE Id='.$IdParent;
 			$Result = $O->executeSql($O,$sql,"SELECT_SYS");
+            if (!isset($Result[0])) return;
 			$Bg = $Result[0]["Bg"];
 			$Bg++;
 			//On pousse les bornes droite de 1

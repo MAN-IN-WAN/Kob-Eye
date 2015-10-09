@@ -1,3 +1,4 @@
+[!DEBUG::Sys::Skin!]
 //SIMPLE PARENT 0,1
 [STORPROC Systeme/Group/User/[!Systeme::User::Id!]|G|0|1]
     <div style="color: green">OK</div>

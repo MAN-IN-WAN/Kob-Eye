@@ -22,33 +22,36 @@
 			[ELSE]
 				__MY_CART__
 			[/IF]
-		<span id="block_cart_expand" class="hidden">&nbsp;</span><span id="block_cart_collapse" >&nbsp;</span></h3>
-		<div class="block_content">
-            <ul class="media-list">
-            [STORPROC [!Panier::LignesCommandes!]|Ligne]
-                <li class="media">
-                    [!Ref:=[!Ligne::RefObject!]!]
-                    [!Prod:=[!Ref::Prod!]!]
-                    <a class="pull-left" href="[!Prod::getUrl()!]">
-                        <img class="media-object" src="/[!Prod::Image!].mini.64x64.jpg" />
+		<span id="block_cart_expand" class="hidden">&nbsp;</span></h3>
+        <div class="marge_block">
+            <div class="block_content">
+                <ul class="media-list">
+                [STORPROC [!Panier::LignesCommandes!]|Ligne]
+                    <li class="media">
+                        [!Ref:=[!Ligne::RefObject!]!]
+                        [!Prod:=[!Ref::Prod!]!]
+                        <a class="pull-left" href="[!Prod::getUrl()!]">
+                            <img class="media-object" src="/[!Prod::Image!].mini.64x64.jpg" />
+                        </a>
                         <div class="media-body">
                             <h4 class="media-heading">[!Ligne::Titre!]</h4>
                             <span class="pull-right">[!Math::PriceV([!Ligne::MontantTTC!])!][!De::Sigle!]</span>
                             Quantité: [!Ligne::Quantite!]<br />
                         </div>
-                    </a>
-                </li>
-                [NORESULT]
-                    <li>Votre panier est vide</li>
-            	[/NORESULT]
-            [/STORPROC]
-            </ul>
-        </div>
-        <div id="cart_block_list" class="expanded">
-            <p id="cart-buttons">
-                <a href="/[!Systeme::getMenu(Boutique/Commande/Etape1)!]" class="btn btn-protector" title="__VIEW_SHOPPING_CART__" rel="nofollow">__MY_CART__</a>
-                <a href="/[!Systeme::getMenu(Boutique/Commande/Etape2)!]" id="button_order_cart" class="btn btn-success" title="Checkout" rel="nofollow"><span></span>__CHECKOUT__</a>
-            </p>
+                    </li>
+                    [NORESULT]
+                        <li>Votre panier est vide</li>
+                    [/NORESULT]
+                [/STORPROC]
+                </ul>
+            </div>
+            <div id="cart_block_list" class="expanded">
+                <p id="cart-buttons">
+                    <a href="/[!Systeme::getMenu(Boutique/Commande/Etape1)!]" class="btn btn-protector btn-block" title="__VIEW_SHOPPING_CART__" rel="nofollow">__MY_CART__</a>
+                    <a href="/[!Systeme::getMenu(Boutique/Commande/Etape2)!]" class="btn btn-success btn-block" title="Checkout" rel="nofollow"><span></span>__CHECKOUT__</a>
+                    <a href="/[!Systeme::getMenu(Boutique/Commande/Etape1)!]?Action=Vider" class="btn btn-danger btn-block" title="Checkout" rel="nofollow"><span></span>__EMPTY__</a>
+                </p>
+            </div>
         </div>
     </div>
 
@@ -58,7 +61,7 @@
 	[STORPROC [!Cli::getPendingCommandes()!]|Com]
 		<h3 class="title_block">
 			__CURRENT_ORDER__
-		<span id="block_cart_expand" class="hidden">&nbsp;</span><span id="block_cart_collapse" >&nbsp;</span></h3>
+		</h3>
 		<div class="block_content">
             <ul class="media-list">
                 [LIMIT 0|10]
@@ -94,18 +97,18 @@
                     [SWITCH [!Com::getStatus()!]|=]
                         [CASE 1]
                         <a class="btn btn-success btn-block" href="/[!Systeme::getMenu(Boutique/Commande/Etape4)!]?Com=[!Com::RefCommande!]&action=paiement">Payer ma commande</a>
-                        <a class="btn btn-danger btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]&action=annule">Annuler ma commande</a>
-                        <a class="btn btn-protector btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]">Modifier ma commande</a>
+                        <a class="btn btn-danger btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]&Action=Annule">Annuler ma commande</a>
+                        <a class="btn btn-protector btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]&Action=Utiliser">Modifier ma commande</a>
                         [/CASE]
                         [CASE 2]
                         <a class="btn btn-success btn-block" href="/[!Systeme::getMenu(Boutique/Commande/Etape4)!]?Com=[!Com::RefCommande!]&action=paiement">Payer ma commande</a>
-                        <a class="btn btn-danger btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]&action=annule">Annuler ma commande</a>
-                        <a class="btn btn-protector btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]">Modifier ma commande</a>
+                        <a class="btn btn-danger btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]&Action=Annule">Annuler ma commande</a>
+                        <a class="btn btn-protector btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]&Action=Utiliser">Modifier ma commande</a>
                         [/CASE]
                         [CASE 3]
                         <a class="btn btn-success btn-block" href="/[!Systeme::getMenu(Boutique/Commande/Etape4)!]?Com=[!Com::RefCommande!]&action=paiement">Payer ma commande</a>
-                        <a class="btn btn-danger btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]&action=annule">Annuler ma commande</a>
-                        <a class="btn btn-protector btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]">Modifier ma commande</a>
+                        <a class="btn btn-danger btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]&Action=Annule">Annuler ma commande</a>
+                        <a class="btn btn-protector btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]&Action=Utiliser">Modifier ma commande</a>
                         [/CASE]
                     [/SWITCH]
                     </li>
@@ -122,7 +125,7 @@
 	[STORPROC [!Cli::getOtherPanier()!]|Com]
 		<h3 class="title_block"><a href="/[!Systeme::getMenu(Boutique/Commande/Etape1)!]" title="__VIEW_SHOPPING_CART__" rel="nofollow">
 			__OTHERS_CARTS__
-		</a><span id="block_cart_expand" class="hidden">&nbsp;</span><span id="block_cart_collapse" >&nbsp;</span></h3>
+		</a></h3>
 		<div class="block_content">
 			<table class="Panier" cellspacing="0">
 				<tr class="panierentete">
@@ -137,7 +140,7 @@
 					<tr class="panierligne">
 						<td colspan ="3"  class="SupprimerItem">
 							<a  class="btn btn-protector btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]">Utiliser ce panier</a>
-							<a  class="btn btn-danger btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]&action=annule">Supprimer ce panier</a>
+							<a  class="btn btn-danger btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]&Action=Annule">Supprimer ce panier</a>
 						</td>
 					</tr>
 					[/LIMIT]

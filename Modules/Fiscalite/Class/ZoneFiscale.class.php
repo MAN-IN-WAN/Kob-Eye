@@ -6,22 +6,23 @@ class ZoneFiscale extends genericClass {
 	//Pays (CODE)
 	//Pays (CODEPOSTAL)
 	static function getZone($Pays,$CodePostal=""){
-		$Zp = Sys::$Modules["Fiscalite"]->callData("ZoneFiscale/Pays/Nom=".$Pays,false,0,1,"Id","DESC","m.*,j1p.Nom as Pays");
-		if (is_array($Zp)){
+		$Zp = Sys::getData("Fiscalite","ZoneFiscale/Pays/Nom=".$Pays,0,1,"Id","DESC","m.*,j1p.Nom as Pays");
+		if (sizeof($Zp)){
 			//ON renvoie la zone
-			return Array(genericClass::createInstance('Fiscalite',$Zp[0]));
+			return $Zp;
 		}else{
 			//Sinon on recherche le pays , le departement, la ville pour rechercher la zone
-			$P = Sys::$Modules["Fiscalite"]->callData("Pays/Nom=".$Pays);
-			if (is_array($P)&&$CodePostal!=""){
+			$P = Sys::getOneData("Fiscalite","Pays/Nom=".$Pays);
+			if (is_object($P)&&$CodePostal!=""){
 				//On recherche maintenant le code postal correspondant
-				$Cp = Sys::$Modules["Fiscalite"]->callData("Pays/".$P[0]["Code"]."/Departement/*/Ville/*/CodePostal/Code=".$CodePostal,false,0,100,"Id","DESC","m.*,j0.Nom as Pays,j0.Code as PaysCode, j1.Id as DepartementCode, j2.Id as VilleCode");
+				$Cp = Sys::getOneData("Fiscalite","Pays/".$P->Code."/Departement/*/Ville/*/CodePostal/Code=".$CodePostal,0,100,"Id","DESC","m.*,j0.Nom as Pays,j0.Code as PaysCode, j1.Id as DepartementCode, j2.Id as VilleCode");
+                if (!is_object($Cp))return;
 				//Recherche de la zone correspondante avec le departement
-				$Zd = Sys::$Modules["Fiscalite"]->callData("ZoneFiscale/Departement/".$Cp[0]["DepartementCode"],false,0,1,"Id","DESC","m.*,j1p.Nom as Pays");
-				if (is_array($Zd))return Array(genericClass::createInstance('Fiscalite',$Zd[0]));
+				$Zd = Sys::getOneData("Fiscalite","ZoneFiscale/Departement/".$Cp->DepartementCode,0,1,"Id","DESC","m.*,j1p.Nom as Pays");
+				if (is_object($Zd))return Array($Zd);
 				//Recherche de la zone correspondante avec la ville
-				$Zv = Sys::$Modules["Fiscalite"]->callData("ZoneFiscale/Ville/Code=".$Cp[0]["VilleCode"],false,0,1,"Id","DESC","m.*,j1p.Nom as Pays");
-				if (is_array($Zv))return Array(genericClass::createInstance('Fiscalite',$Zv[0]));
+				$Zv = Sys::getOneData("Fiscalite","ZoneFiscale/Ville/Code=".$Cp->VilleCode,0,1,"Id","DESC","m.*,j1p.Nom as Pays");
+				if (is_object($Zv))return Array($Zv);
 			}
 		}
 		//Sinon renvoie la zone par défaut

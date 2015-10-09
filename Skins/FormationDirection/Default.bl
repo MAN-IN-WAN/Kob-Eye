@@ -9,6 +9,8 @@
 [HEADER JS]Tools/Css/Bootstrap/BootBox/bootbox.min.js[/HEADER]
 [HEADER JS]Tools/Js/ChartJs/Chart.min.js[/HEADER]
 [HEADER JS]Tools/Js/Jquery/jquery.knob.min.js[/HEADER]
+[HEADER JS]Tools/Js/JqCloud/dist/jqcloud.min.js[/HEADER]
+[HEADER CSS]Tools/Js/JqCloud/dist/jqcloud.min.css[/HEADER]
 [HEADER]
 <meta name="viewport" content="width=device-width, initial-scale=1">
 [/HEADER]
@@ -23,7 +25,27 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Central Animateur</a>
+            <a class="navbar-brand" href="/" style="color:white">Central Direction
+                [IF [!Sys::User::isRole(GLOBAL)!]]
+                    <span style="color:orange">Accès global</span>
+                [/IF]
+                [IF [!Sys::User::isRole(REGION)!]]
+                    <span style="color:orange">Accès régional</span>
+                    [IF [!CurrentRegion!]]
+                        [STORPROC Formation/Region/[!CurrentRegion!]|R|0|1]
+                            <span style="color:orange">[!R::Nom!]</span>
+                        [/STORPROC]
+                    [/IF]
+                [/IF]
+                [IF [!Sys::User::isRole(INTER-REGION)!]]
+                    <span style="color:orange">Accès inter-régional</span>
+                    [IF [!CurrentRegion!]]
+                        [STORPROC Formation/InterRegion/[!CurrentRegion!]|R|0|1]
+                            <span style="color:orange">[!R::Nom!]</span>
+                        [/STORPROC]
+                    [/IF]
+                [/IF]
+            </a>
         </div>
         <!-- Top Menu Items -->
         <ul class="nav navbar-right top-nav">

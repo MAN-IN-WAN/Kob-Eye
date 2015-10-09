@@ -22,4 +22,12 @@ class FormationCategorie extends genericClass{
             array_push($out,$this);
         return $out;
     }
+
+    function Delete() {
+        $questions = $this->getChildren('Question');
+        foreach ($questions as $q) $q->Delete();
+        $etapes = $this->getChildren('Etape');
+        foreach ($etapes as $q) $q->Delete();
+        parent::Delete();
+    }
 }

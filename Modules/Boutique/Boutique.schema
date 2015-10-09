@@ -4,7 +4,7 @@
 		<PROPERTIES searchOrder="2" description="Code" type="varchar" length="10"  category="magasin">Code</PROPERTIES>
 		<PROPERTIES Order="2" description="Nom Long"   type="varchar" length="255" category="magasin" list="1" >NomLong</PROPERTIES>
 		<PROPERTIES Order="7" description="Logo" type="file" >Logo</PROPERTIES>
-		<PROPERTIES Order="39" description="Validation auto client"    type="boolean"  default="1">AutoClient</PROPERTIES>
+		<PROPERTIES Order="39" description="Validation auto client et connexion automatique"    type="boolean"  default="1">AutoClient</PROPERTIES>
 		<PROPERTIES Order="42" description="Afficher etapes commande"    type="boolean"  default="1">EtapeAffiche</PROPERTIES>
 		<PROPERTIES Order="40" description="Etape Paiement"    type="boolean"  default="1">EtapePaiement</PROPERTIES>
 		<PROPERTIES Order="41" description="Etape Livraison"    type="boolean"  default="1">EtapeLivraison</PROPERTIES>
@@ -118,7 +118,7 @@
 		<PROPERTIES description="Nombre de Visites" auto="1" type="int" default="0"  list="6" category="Calcul" >Visites</PROPERTIES>
 		<PROPERTIES Order="17" description="Reste en stock"      type="int"  default="0"  list="7">StockReference</PROPERTIES>
 		<PROPERTIES description="ImageFond" type="file" category="MisEnAvant" >ImageFond</PROPERTIES>
-		<PROPERTIES description="Plusieurs tarifs" type="boolean" default="0" auto="1"  category="Descriptif" >MultiTarif</PROPERTIES>
+		<PROPERTIES description="Existence de tarifs différents (détection automatique)" type="boolean" default="0" hidden="1"  category="Descriptif" >MultiTarif</PROPERTIES>
 		<PROPERTIES description="Tarif HT Générique" type="price" default="" list="6" searchOrder="4" category="Descriptif">Tarif</PROPERTIES>
 		<PROPERTIES description="Prix public conseillé TTC" type="float" category="Descriptif" hidden="1">PPC</PROPERTIES>
 		<PROPERTIES description="Type de Tva"  category="Descriptif"  type="float"  query="Fiscalite/TypeTva/Actif=1::Id::Nom">TypeTva</PROPERTIES>
@@ -133,9 +133,9 @@
             <PROPERTIES description="Categorie Produit Google Shopping (voir sur la liste)" type="varchar" length="255">GoogleProductCategory</PROPERTIES>
         </CATEGORY>
 		<CATEGORY title="Codes">
-			<PROPERTIES description="CIP7/ACL7" type="varchar" length="30">CIP7</PROPERTIES>
-			<PROPERTIES description="CIP13/ACL13" type="varchar"  length="30">CIP13</PROPERTIES>
-			<PROPERTIES description="EAN/GTIN" type="varchar" length="30">EAN</PROPERTIES>
+			<PROPERTIES description="CIP7/ACL7" type="varchar" length="30" searchOrder="6">CIP7</PROPERTIES>
+			<PROPERTIES description="CIP13/ACL13" type="varchar"  length="30" searchOrder="6">CIP13</PROPERTIES>
+			<PROPERTIES description="EAN/GTIN" type="varchar" length="30" searchOrder="6">EAN</PROPERTIES>
 		</CATEGORY>
 		<FKEY card="1,n" data="Categorie,Id" >CategorieId</FKEY>
 		<FKEY card="0,n" data="Conditionnement,Id">ConditionnementId</FKEY>
@@ -211,7 +211,6 @@
 		<PROPERTIES type="metat" special="multi" category="Meta">TitleMeta</PROPERTIES>
 		<PROPERTIES type="metad" special="multi" category="Meta">DescriptionMeta</PROPERTIES>
 		<PROPERTIES type="metak" category="Meta">KeywordsMeta</PROPERTIES>	
-		<FKEY card="0,n" data="Produit,Id" >ProduitId</FKEY>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Devise" driver="mysql" AccessPoint="0" Dico="1" master="0" Description="Devises"   Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png">
@@ -222,20 +221,56 @@
 		
 	</OBJECTCLASS>
 	
-	<OBJECTCLASS title="Promotion" driver="mysql" AccessPoint="0" master="0" Dico="1" Description="Promotions"  Icon="/Skins/AdminV2/Img/IconAqua/Settings2.png"  Class="Modules/Boutique/Class/Promotion.class.php"> 
-		<PROPERTIES searchOrder="1" description="Intitulé" type="varchar" length="100" special="multi" category="Descriptif" >Intitule</PROPERTIES>
-		<PROPERTIES Order="2" description="Devise" type="varchar" query="Boutique/Devise::Id::Nom" >Devise</PROPERTIES>
-		<PROPERTIES Order="3" description="Pays" type="varchar" query="Boutique/Pays::Id::Nom" >Pays</PROPERTIES>
-		<PROPERTIES Order="4" description="Date début Promotion" type="date" obligatoire="1">DateDebutPromo</PROPERTIES>
-		<PROPERTIES Order="5" description="Date fin Promotion" type="date" obligatoire="1">DateFinPromo</PROPERTIES>
-		<PROPERTIES Order="6" description="A partir de x Unité"  type="float"    >APartirNbUnite</PROPERTIES>
-		<PROPERTIES Order="10" description="Prix Forcé en ht"  type="float"    >PrixForce</PROPERTIES>
-		<PROPERTIES Order="8" description="Variation de Prix"      type="float"   >PrixVariation</PROPERTIES>
-		<PROPERTIES Order="9" description="Type de Variation"  category="Descriptif"  type="int" values="1::Pourcentage,2::Montant Fixe" default="1"  >TypeVariation</PROPERTIES>
-		<FKEY card="1,n" data="Produit,Id">ProduitId</FKEY>
+	<OBJECTCLASS title="Promotion" driver="mysql" AccessPoint="1" master="0" Dico="0" Description="Promotions"  Icon="/Skins/AdminV2/Img/IconAqua/Settings2.png"  Class="Modules/Boutique/Class/Promotion.class.php" browseable="1">
+		<CATEGORY title="Description">
+			<PROPERTIES searchOrder="1" description="Intitulé" type="varchar" length="100" special="multi" category="Descriptif" >Intitule</PROPERTIES>
+			<PROPERTIES Order="2" description="Devise" type="varchar" query="Boutique/Devise::Id::Nom" >Devise</PROPERTIES>
+			<PROPERTIES Order="3" description="Pays" type="varchar" query="Boutique/Pays::Id::Nom" >Pays</PROPERTIES>
+			<PROPERTIES Order="4" description="Date début Promotion" type="date" obligatoire="1">DateDebutPromo</PROPERTIES>
+			<PROPERTIES Order="5" description="Date fin Promotion" type="date" obligatoire="1">DateFinPromo</PROPERTIES>
+		</CATEGORY>
+		<CATEGORY title="Reduction">
+			<PROPERTIES Order="6" description="A partir de x Unité"  type="float"    >APartirNbUnite</PROPERTIES>
+			<PROPERTIES Order="10" description="Prix Forcé en ht"  type="float"    >PrixForce</PROPERTIES>
+			<PROPERTIES Order="8" description="Variation de Prix"      type="float"   >PrixVariation</PROPERTIES>
+			<PROPERTIES Order="9" description="Type de Variation" type="int" values="1::Pourcentage,2::Montant Fixe" default="1"  >TypeVariation</PROPERTIES>
+			<FKEY card="1,n" data="Produit,Id">ProduitId</FKEY>
+		</CATEGORY>
+		<CATEGORY title="Slider">
+			<PROPERTIES Order="10" description="Promotion en page d'accueil"  type="boolean"    >SliderEnable</PROPERTIES>
+			<PROPERTIES Order="11" description="Image de promotion"  type="image" >Image</PROPERTIES>
+            <PROPERTIES description="Zoom image animé" type="boolean" >Panning</PROPERTIES>
+			<PROPERTIES Order="12" description="Transition du slide"  type="varchar" length="100" values="fade,boxfade,slotfade-horizontal,slotfade-vertical,fadefromright,fadefromleft,fadefromtop,fadefrombottom,fadetoleftfadefromright,fadetorightfadetoleft,fadetobottomfadefromtop,fadetotopfadefrombottom,scaledownfromright,scaledownfromleft,scaledownfromtop,scaledownfrombottom,zoomout,zoomin,slotzoom-horizontal,slotzoom-vertical,parallaxtoright,parallaxtoleft,parallaxtotop,parallaxtobottom,slideup,slidedown,slideright,slideleft,slidehorizontal,slidevertical,boxslide,slotslide-horizontal,slotslide-vertical,curtain-1,curtain-2,curtain-3,3dcurtain-horizontal,3dcurtain-vertical,cubic,cubic-horizontal,incube,incube-horizontal,turnoff,turnoff-vertical,papercut,flyin,random-static,random"   >SliderTransition</PROPERTIES>
+		</CATEGORY>
 	</OBJECTCLASS>
-	
-	
+
+	<OBJECTCLASS title="PromotionCalque" driver="mysql" Description="Calques"  Icon="/Skins/AdminV2/Img/IconAqua/Settings2.png" browseable="1">
+		<CATEGORY title="Description">
+			<PROPERTIES searchOrder="1" description="Texte" type="varchar" length="255" special="multi">Texte</PROPERTIES>
+            <PROPERTIES description="Type de texte" type="varchar" length="255" values="Title,SubTitle,Content">Type</PROPERTIES>
+            <PROPERTIES description="Police de caractère" type="varchar" length="255" values="Furniture,News,WebProduct,NotGeneric,Newspaper,BigBold,RotatingWords,">Police</PROPERTIES>
+            <PROPERTIES description="Fond de couleur" type="varchar" length="255" values="largewhitebg,largepinkbg,largegreenbg,largeblackbg">Background</PROPERTIES>
+		</CATEGORY>
+		<CATEGORY title="Point de départ">
+			<PROPERTIES description="Position X" type="varchar" default="center">PosX</PROPERTIES>
+			<PROPERTIES description="Position Y" type="varchar" default="center">PosY</PROPERTIES>
+		</CATEGORY>
+		<CATEGORY title="Animation">
+            <!--
+			<PROPERTIES description="Transition d'apparition" type="varchar" values="Linear.easeNone,Power0.easeIn,Power0.easeInOut,Power0.easeOut,Power1.easeIn,Power1.easeInOut,Power1.easeOut,Power2.easeIn,Power2.easeInOut,Power2.easeOut,Power3.easeIn,Power3.easeInOut,Power3.easeOut,Power4.easeIn,Power4.easeInOut,Power4.easeOut,Back.easeIn,Back.easeInOut,Back.easeOut,Bounce.easeInOut,Bounce.easeOut,Circ.easeIn,Circ.easeInOut,Circ.easeOut,Elastic.easeIn,Elastic.easeInOut,Elastic.easeOut,Expo.easeIn,Expo.easeInOut,Expo.easeOut,Sine.easeIn,Sine.easeInOut,Sine.easeOut,SlowMo.ease">TransitionStart</PROPERTIES>
+			<PROPERTIES description="Transition de disparition" type="varchar" values="Linear.easeNone,Power0.easeIn,Power0.easeInOut,Power0.easeOut,Power1.easeIn,Power1.easeInOut,Power1.easeOut,Power2.easeIn,Power2.easeInOut,Power2.easeOut,Power3.easeIn,Power3.easeInOut,Power3.easeOut,Power4.easeIn,Power4.easeInOut,Power4.easeOut,Back.easeIn,Back.easeInOut,Back.easeOut,Bounce.easeInOut,Bounce.easeOut,Circ.easeIn,Circ.easeInOut,Circ.easeOut,Elastic.easeIn,Elastic.easeInOut,Elastic.easeOut,Expo.easeIn,Expo.easeInOut,Expo.easeOut,Sine.easeIn,Sine.easeInOut,Sine.easeOut,SlowMo.ease">TransitionEnd</PROPERTIES>
+			-->
+            <PROPERTIES description="Type de transition" type="varchar" values="frombackground,fromforeground,fromtop,frombottom,fromleft,fromright">TransitionType</PROPERTIES>
+			<PROPERTIES description="Durée" type="varchar" default="800">Duration</PROPERTIES>
+            <PROPERTIES description="Délai" type="varchar" default="300">Delay</PROPERTIES>
+<!--			<PROPERTIES description="Classe css de personnalisation" type="varchar" default="large_bold_grey skewfromrightshort customout">Class</PROPERTIES>
+			<PROPERTIES description="Tranformation Css personnalisées pour l'apparition" type="varchar" default="x:0;y:100;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:1;scaleY:3;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:0% 0%;">CustomIn</PROPERTIES>
+			<PROPERTIES description="Tranformation Css personnalisées pour la disparition" type="varchar" default="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;">CustomOut</PROPERTIES>-->
+		</CATEGORY>
+
+		<FKEY card="0,1" data="Promotion,Id">PromotionId</FKEY>
+	</OBJECTCLASS>
+
 	<OBJECTCLASS title="Donnee" driver="mysql" AccessPoint="0" master="0" description="Donnees"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
 		<PROPERTIES searchOrder="2" description="Valeur" type="bbcode" special="multi" category="Descriptif">Valeur</PROPERTIES>
 		<PROPERTIES searchOrder="3" description="Type"    type="varchar" values="Caracteristique,Descriptif,Image,Fichier,Lien,Video,Documentation" category="Descriptif">Type</PROPERTIES>

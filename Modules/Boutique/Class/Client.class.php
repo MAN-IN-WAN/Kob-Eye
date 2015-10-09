@@ -390,6 +390,7 @@ class Client extends genericClass {
 			 	$com->PaymentPending = 0;
 			 	$com->EchecPayment = 0;
 			 	$com->Current = 1;
+				$com->setUnValid();
 				$com->Save();
 			}
 		}
@@ -523,7 +524,7 @@ class Client extends genericClass {
 		  $cl->_Remises = array();
 		  //remise Abonnement
 		  $m = Magasin::getCurrentMagasin();
-		  $abo = $cl->getChildren('Service/Magasin.MagasinId('.$m->Id.')');
+		  $abo = $cl->getChildren('Service/Service.MagasinId('.$m->Id.')');
 	 	  // JANVIER 2105 : on teste la validité de l'abonnement pour affecter la remise client d'un abonnement...
 		  if (sizeof($abo)){
 			foreach($abo as $abonn){
@@ -593,12 +594,13 @@ class Client extends genericClass {
 		// recherche la zone fiscale du client connecté
 		$adrclient= Sys::getData('Boutique','Client/' . $this->Id .'/Adresse/Type=Livraison&Default=1');
 		// on recherche adresse de Livraison
-		if (is_array($adrclient)) {
+		if (sizeof($adrclient)) {
 			$lazone=ZoneFiscale::getZone($adrclient[0]->Pays,$adrclient[0]->CodePostal);
 		} else {
 			// si pas d'adresse trouvée on prend celle du client
 			$lazone=ZoneFiscale::getZone($this->Pays,$this->CodePostal);
 		}
+        if (!is_object($lazone)) return;
 		$tauxtva= Sys::getData('Fiscalite','ZoneFiscale/' .$lazone[0]->Id .'/TauxTva/Actif=1&Debut<='. time().'&Fin>='.time() );
 		$tabarray=array();
 		if (sizeof($tauxtva)) {

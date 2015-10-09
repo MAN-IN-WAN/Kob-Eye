@@ -15,11 +15,13 @@ class BoutiqueProduit extends genericClass
      * @return    void
      */
     public function Save($recurs = true){
-        parent::Save();
-        $this->SaveRef();
-        // ajout de ce test car une carte configurable n'a qu'un tarif
-        if ($this->TypeProduit != '5') $this->UpdateStartPrice();
-        $this->UpdateReferences();
+        if ($recurs) {
+            parent::Save();
+            $this->SaveRef();
+            // ajout de ce test car une carte configurable n'a qu'un tarif
+            if ($this->TypeProduit != '5') $this->UpdateStartPrice();
+            $this->UpdateReferences();
+        }
         //test image
         if (empty($this->Image))
             $this->Image = 'Skins/AdminV2/Img/default.jpg';
@@ -147,6 +149,21 @@ class BoutiqueProduit extends genericClass
     }
 
     /**
+     * Définie le tarif pour le produit et le force pour les références.
+     * @return    void
+     */
+    public function setPriceForce($price){
+        $this->Tarif = $price;
+        // Récupération de tous les tarifs
+        $refs = $this->getChildren('Reference');
+        if (is_array($refs)) foreach ($refs as $r) {
+            $r->Tarif = $price;
+            $this->MultiTarif = 0;
+            $r->Save(false);
+        }
+        $this->Save(false);
+    }
+    /**
      * Garde le prix minimum trouvé (mais non vide) dans les références et affecte au prix du produit.
      * @return    void
      */
@@ -197,11 +214,11 @@ class BoutiqueProduit extends genericClass
      * Retourne l'url depuis la racine d'un produit donné
      * @return    URL
      */
-    public function getUrl()
-    {
+    public function getUrl(){
         /*if (Sys::$User->Public) {
             return parent::getUrl();
         } elseif (!Sys::$User->Admin) {*/
+        if (!Sys::$User->Admin) {
             if (isset($this->_getUrl)&&!empty($this->_getUrl)) return '/'.$this->_getUrl;
             //recherche des categorie
             $cat = Sys::getData('Boutique','Categorie/*/Categorie/Produit/'.$this->Id);
@@ -255,7 +272,7 @@ class BoutiqueProduit extends genericClass
             }
             return parent::getUrl();
 
-       // } else return parent::getUrl();
+       } else return parent::getUrl();
     }
     /**
      * Retourne le nombre de références  pour ce produit

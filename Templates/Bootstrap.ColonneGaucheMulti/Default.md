@@ -1,11 +1,11 @@
 [SUPERHAUT]
 <div class="container">
+	[HAUT]
 	<div class="row-fluid">
 		<div class="span3  sidebar column animatedParent">
 			[GAUCHE]
 		</div>
 		<div class="span9"  id="center_column">
-			[HAUT]
 			[DATA]
 			<div class="row-fluid">
 				<div class="span4 animatedParent">

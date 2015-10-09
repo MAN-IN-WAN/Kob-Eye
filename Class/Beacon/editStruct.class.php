@@ -91,7 +91,9 @@ class editStruct extends Beacon {
 				if (preg_match("#^http#",$p)){
 					header("Location:".$p);
 				}
-				else header("Location: http://".$_SERVER["HTTP_HOST"]."/".$p);
+				else {
+                    header("Location: http://".$_SERVER["HTTP_HOST"]."/".$p);
+                }
 				$GLOBALS["Systeme"]->Close();
 				die();
 				break;                          

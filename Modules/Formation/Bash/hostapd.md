@@ -1,0 +1,15 @@
+interface=wlan0
+driver=rtl871xdrv
+country_code=FR
+ctrl_interface=wlan0
+ssid=DEPLOIEMENT_ERDF
+hw_mode=g
+channel=1
+beacon_int=100
+auth_algs=1
+macaddr_acl=0
+wmm_enabled=1
+ieee80211d=1
+ieee80211n=1
+eap_reauth_period=360000000
+ht_capab=[HT40+][SHORT-GI-40][DSSS_CCK-40]

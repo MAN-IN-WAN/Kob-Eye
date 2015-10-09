@@ -1,5 +1,5 @@
 <!-- Block Viewed products -->
-<div id="viewed-products_block_left" class="block products_block">
+<div id="viewed-products_block_left" class="block products_block hidden-phone">
 	<h3 class="title_block title_block_green">Déjà vus	</h3>
 	<div class="block_content">
 		<ul class="products clearfix">

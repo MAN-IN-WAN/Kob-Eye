@@ -56,14 +56,11 @@
 						<!-- end usefull links-->
 
 						<!-- description short -->
-						<div id="short_description_block">
+						<div id="short_description_block" class="marge_block">
 							<h3>__QUICK_OVERVIEW__</h3>
 							<div id="short_description_content" class="rte align_justify">
-								[!P::Accroche!]
+                                [!P::Description!]
 							</div>
-							<p class="buttons_bottom_block">
-								<a href="javascript:{}" class="button">__MORE_DETAILS__</a>
-							</p>
 						</div>
 						<!-- end description short -->
 
@@ -251,9 +248,6 @@
                     </div>
 				</div>
 			</div>
-            <div class="product_description">
-                   [!P::Description!]
-            </div>
 			[COUNT Boutique/Produit/[!Prod::Id!]/Donnee/Type!=Image|NbDo]
 			[IF [!NbDo!]]
 			<!-- description and features -->

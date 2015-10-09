@@ -1,0 +1,577 @@
+	<div class="contenttop row">
+
+		<script type="text/javascript">
+			// <![CDATA[
+
+			// PrestaShop internal settings
+			var currencySign = '$';
+			var currencyRate = '1';
+			var currencyFormat = '1';
+			var currencyBlank = '0';
+			var taxRate = 0;
+			var jqZoomEnabled = true;
+
+			//JS Hook
+			var oosHookJsCodeFunctions = new Array();
+
+			// Parameters
+			var id_product = '1';
+			var productHasAttributes = true;
+			var quantitiesDisplayAllowed = true;
+			var quantityAvailable = 154;
+			var allowBuyWhenOutOfStock = false;
+			var availableNowValue = 'In stock';
+			var availableLaterValue = '';
+			var productPriceTaxExcluded = 124.58 - 0.000000;
+			var reduction_percent = 5;
+			var reduction_price = 0;
+			var specific_price = 124.580000;
+			var product_specific_price = new Array();
+				product_specific_price['id_specific_price'] = '1';
+				product_specific_price['id_specific_price_rule'] = '0';
+				product_specific_price['id_cart'] = '0';
+				product_specific_price['id_product'] = '1';
+				product_specific_price['id_shop'] = '0';
+				product_specific_price['id_shop_group'] = '0';
+				product_specific_price['id_currency'] = '0';
+				product_specific_price['id_country'] = '0';
+				product_specific_price['id_group'] = '0';
+				product_specific_price['id_customer'] = '0';
+				product_specific_price['id_product_attribute'] = '0';
+				product_specific_price['price'] = '124.580000';
+				product_specific_price['from_quantity'] = '1';
+				product_specific_price['reduction'] = '0.050000';
+				product_specific_price['reduction_type'] = 'percentage';
+				product_specific_price['from'] = '0000-00-00 00:00:00';
+				product_specific_price['to'] = '0000-00-00 00:00:00';
+				product_specific_price['score'] = '32';
+			var specific_currency = false;
+			var group_reduction = '1';
+			var default_eco_tax = 0.000000;
+			var ecotaxTax_rate = 0;
+			var currentDate = '2013-09-07 05:53:11';
+			var maxQuantityToAllowDisplayOfLastQuantityMessage = 3;
+			var noTaxForThisProduct = true;
+			var displayPrice = 0;
+			var productReference = '';
+			var productAvailableForOrder = '1';
+			var productShowPrice = '1';
+			var productUnitPriceRatio = '0.000000';
+			var idDefaultImage = 15;
+			var stock_management = 1;
+					
+			var productPriceWithoutReduction = '166.38602';
+			var productPrice = '158.07';
+			// Customizable field
+			var img_ps_dir = 'http://demo4leotheme.com/prestashop/leo_beauty_store/img/';
+			var customizationFields = new Array();
+			customizationFields[0] = new Array();
+			customizationFields[0][0] = 'img0';
+			customizationFields[0][1] = 0;
+
+			// Images
+			var img_prod_dir = 'http://demo4leotheme.com/prestashop/leo_beauty_store/img/p/';
+			var combinationImages = new Array();
+
+			combinationImages[0] = new Array();
+			combinationImages[0][0] = 0;
+
+			combinationImages[0] = new Array();
+			combinationImages[0][0] = 7;
+			combinationImages[0][1] = 8;
+			combinationImages[0][2] = 9;
+			combinationImages[0][3] = 10;
+			combinationImages[0][4] = 11;
+			combinationImages[0][5] = 12;
+			combinationImages[0][6] = 32;
+
+			// Translations
+			var doesntExist = 'This combination does not exist for this product. Please choose another.';
+			var doesntExistNoMore = 'This product is no longer in stock';
+			var doesntExistNoMoreBut = 'with those attributes but is available with others';
+			var uploading_in_progress = 'Uploading in progress, please wait...';
+			var fieldRequired = 'Please fill in all required fields, then save the customization.';
+			// Combinations
+			var specific_price_combination = new Array();
+			specific_price_combination['reduction_percent'] = 0;
+			specific_price_combination['reduction_price'] = 0;
+			specific_price_combination['price'] = 0;
+			specific_price_combination['reduction_type'] = '';
+			addCombination(9, new Array('15'), 34, 0, 0, -1, '', 0.00, 1, '', specific_price_combination);
+			var specific_price_combination = new Array();
+			specific_price_combination['reduction_percent'] = 0;
+			specific_price_combination['reduction_price'] = 0;
+			specific_price_combination['price'] = 0;
+			specific_price_combination['reduction_type'] = '';
+			addCombination(10, new Array('16'), 40, 75.250836, 0, -1, '', 0.00, 1, '', specific_price_combination);
+			var specific_price_combination = new Array();
+			specific_price_combination['reduction_percent'] = 0;
+			specific_price_combination['reduction_price'] = 0;
+			specific_price_combination['price'] = 0;
+			specific_price_combination['reduction_type'] = '';
+			addCombination(11, new Array('17'), 40, 150.501672, 0, -1, '', 0.00, 1, '', specific_price_combination);
+
+			// Combinations attributes informations
+			var attributesCombinations = new Array();
+			tabInfos = new Array();
+			tabInfos['id_attribute'] = '15';
+			tabInfos['attribute'] = '8gb';
+			tabInfos['group'] = 'disk_space';
+			tabInfos['id_attribute_group'] = '1';
+			attributesCombinations.push(tabInfos);
+			tabInfos = new Array();
+			tabInfos['id_attribute'] = '16';
+			tabInfos['attribute'] = '16gb';
+			tabInfos['group'] = 'disk_space';
+			tabInfos['id_attribute_group'] = '1';
+			attributesCombinations.push(tabInfos);
+			tabInfos = new Array();
+			tabInfos['id_attribute'] = '17';
+			tabInfos['attribute'] = '32gb';
+			tabInfos['group'] = 'disk_space';
+			tabInfos['id_attribute_group'] = '1';
+			attributesCombinations.push(tabInfos);
+			//]]>
+		</script>
+
+		<div id="product-detail">
+			<div id="primary_block" class="row">
+				<div>
+
+					<!-- right infos-->
+					<div id="pb-right-column" class="col-md-5">
+						<div class="images-block">
+							<!-- product img-->
+							<div id="image-block">
+								<span id="view_full_size"> <img src="http://demo4leotheme.com/prestashop/leo_beauty_store/img/p/3/2/32-large_default.jpg" class="jqzoom" alt="http://demo4leotheme.com/prestashop/leo_beauty_store/img/p/3/2/32-thickbox_default.jpg" id="bigpic" /> <span class="span_link">View full size</span> </span>
+							</div>
+							<!-- thumbnails -->
+							<div id="views_block" class="clearfix ">
+								<div id="thumbs_list">
+									<ul id="thumbs_list_frame">
+										<li id="thumbnail_7">
+											<a href="http://demo4leotheme.com/prestashop/leo_beauty_store/img/p/7/7-thickbox_default.jpg" rel="other-views" class="thickbox shown" title=""> <img id="thumb_7" src="http://demo4leotheme.com/prestashop/leo_beauty_store/img/p/7/7-medium_default.jpg" alt="" /> </a>
+										</li>
+										<li id="thumbnail_8">
+											<a href="http://demo4leotheme.com/prestashop/leo_beauty_store/img/p/8/8-thickbox_default.jpg" rel="other-views" class="thickbox " title=""> <img id="thumb_8" src="http://demo4leotheme.com/prestashop/leo_beauty_store/img/p/8/8-medium_default.jpg" alt="" /> </a>
+										</li>
+										<li id="thumbnail_9">
+											<a href="http://demo4leotheme.com/prestashop/leo_beauty_store/img/p/9/9-thickbox_default.jpg" rel="other-views" class="thickbox " title=""> <img id="thumb_9" src="http://demo4leotheme.com/prestashop/leo_beauty_store/img/p/9/9-medium_default.jpg" alt="" /> </a>
+										</li>
+										<li id="thumbnail_10">
+											<a href="http://demo4leotheme.com/prestashop/leo_beauty_store/img/p/1/0/10-thickbox_default.jpg" rel="other-views" class="thickbox " title=""> <img id="thumb_10" src="http://demo4leotheme.com/prestashop/leo_beauty_store/img/p/1/0/10-medium_default.jpg" alt="" /> </a>
+										</li>
+										<li id="thumbnail_11">
+											<a href="http://demo4leotheme.com/prestashop/leo_beauty_store/img/p/1/1/11-thickbox_default.jpg" rel="other-views" class="thickbox " title=""> <img id="thumb_11" src="http://demo4leotheme.com/prestashop/leo_beauty_store/img/p/1/1/11-medium_default.jpg" alt="" /> </a>
+										</li>
+										<li id="thumbnail_12">
+											<a href="http://demo4leotheme.com/prestashop/leo_beauty_store/img/p/1/2/12-thickbox_default.jpg" rel="other-views" class="thickbox " title=""> <img id="thumb_12" src="http://demo4leotheme.com/prestashop/leo_beauty_store/img/p/1/2/12-medium_default.jpg" alt="" /> </a>
+										</li>
+										<li id="thumbnail_32">
+											<a href="http://demo4leotheme.com/prestashop/leo_beauty_store/img/p/3/2/32-thickbox_default.jpg" rel="other-views" class="thickbox " title=""> <img id="thumb_32" src="http://demo4leotheme.com/prestashop/leo_beauty_store/img/p/3/2/32-medium_default.jpg" alt="" /> </a>
+										</li>
+									</ul>
+								</div>
+								<div class="scroll_lr">
+									<span class="view_scroll_spacer"><a id="view_scroll_left" class="hidden" title="Other views" href="javascript:{}">Previous</a></span><a id="view_scroll_right" title="Other views" href="javascript:{}">Next</a>
+								</div>
+							</div>
+						</div>
+						<p class="resetimg clear">
+							<span id="wrapResetImages" style="display: none;"><img src="http://demo4leotheme.com/prestashop/leo_beauty_store/themes/leobeau/img/icon/cancel_11x13.gif" alt="Cancel" width="11" height="13"/> <a id="resetImages" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?id_product=5&controller=product&id_lang=1" onclick="$('span#wrapResetImages').hide('slow');return (false);">Display all pictures</a></span>
+						</p>
+					</div>
+
+					<!-- left infos-->
+					<div id="pb-left-column" class="col-md-7">
+						<h1>iPod touch</h1>
+						<!-- usefull links-->
+						<ul id="usefull_link_block">
+
+							<li id="left_share_fb">
+								<a href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fdemo4leotheme.com%2Fprestashop%2Fleo_beauty_store%2Findex.php%3Fid_product%3D5%26controller%3Dproduct%26id_lang%3D1&amp;t=iPod+touch" class="js-new-window">Share on Facebook!</a>
+							</li>
+
+							<li id="favoriteproducts_block_extra_added">
+								Remove this product from my favorite's list.
+							</li>
+							<li id="favoriteproducts_block_extra_removed">
+								Add this product to my list of favorites.
+							</li>
+							<li class="print">
+								<a href="javascript:print();">Print</a>
+							</li>
+						</ul>
+						<!-- end usefull links-->
+
+						<!-- description short -->
+						<div id="short_description_block">
+							<h3>Quick Overview</h3>
+							<div id="short_description_content" class="rte align_justify">
+								<ul>
+									<li>
+										Revolutionary Multi-Touch interface
+									</li>
+									<li>
+										3.5-inch widescreen color display
+									</li>
+									<li>
+										Wi-Fi (802.11b/g)
+									</li>
+									<li>
+										8 mm thin
+									</li>
+									<li>
+										Safari, YouTube, Mail, Stocks, Weather, Notes, iTunes Wi-Fi Music Store, Maps
+									</li>
+								</ul>
+							</div>
+							<p class="buttons_bottom_block">
+								<a href="javascript:{}" class="button">More details</a>
+							</p>
+						</div>
+						<!-- end description short -->
+
+						<!-- add to cart form-->
+						<form id="buy_block"  action="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=cart" method="post">
+
+							<!-- hidden datas -->
+							<p class="hidden">
+								<input type="hidden" name="token" value="c72340620966cb9ae8dcccbd3dd03a3b" />
+								<input type="hidden" name="id_product" value="5" id="product_page_product_id" />
+								<input type="hidden" name="add" value="1" />
+								<input type="hidden" name="id_product_attribute" id="idCombination" value="" />
+							</p>
+							<!-- content prices -->
+							<div class="content_prices clearfix">
+								<!-- prices -->
+
+								<div class="price">
+
+									<p class="our_price_display">
+										<span id="our_price_display">$241.64</span>
+										<!---->
+									</p>
+
+								</div>
+								<p id="reduction_percent">
+									<span id="reduction_percent_display">15%</span>
+								</p>
+								<p id="reduction_amount">
+									<span id="reduction_amount_display">100</span>
+								</p>
+								<p id="old_price">
+									<span class="bold">
+										<span id="old_price_display">$166.39</span>
+									</span>
+								</p>
+								<p id="add_to_cart" class="buttons_bottom_block">
+									<span></span>
+									<input type="submit" name="Submit" value="Add to cart" class="exclusive" />
+								</p>
+								<div class="clear"></div>
+							</div>
+							<!-- content prices -->
+
+							<!-- attributes -->
+							<div class="product_attributes">
+								<!-- attributes -->
+								<div id="attributes">
+									<fieldset class="attribute_fieldset">
+										<label class="attribute_label" for="group_1">Disk space :</label>
+										<div class="attribute_list">
+											<select name="group_1" id="group_1" class="attribute_select" onchange="findCombination();getProductAttribute();$('#wrapResetImages').show('slow');;">
+												<option value="15" selected="selected" title="8GB">8GB</option>
+												<option value="16" title="16GB">16GB</option>
+												<option value="17" title="32GB">32GB</option>
+											</select>
+										</div>
+									</fieldset>
+								</div>
+								<p id="product_reference" style="display: none;">
+									<label for="product_reference">Reference: </label>
+									<span class="editable"></span>
+								</p>
+
+								<!-- quantity wanted -->
+								<p id="quantity_wanted_p">
+									<label>Quantity:</label>
+									<input type="text" name="qty" id="quantity_wanted" class="text" value="1" size="2" maxlength="3"  />
+								</p>
+
+								<!-- minimal quantity wanted -->
+								<p id="minimal_quantity_wanted_p" style="display: none;">
+									This product is not sold individually. You must select at least <b id="minimal_quantity_label">1</b> quantity for this product.
+								</p>
+
+								<!-- availability -->
+								<p id="availability_statut" style="display: none;">
+									<span id="availability_label">Availability:</span>
+									<span id="availability_value"> </span>
+								</p>
+
+								<!-- number of item in stock -->
+								<p id="pQuantityAvailable">
+									<span id="quantityAvailable">114</span>
+									<span  style="display: none;" id="quantityAvailableTxt">item in stock</span>
+									<span  id="quantityAvailableTxtMultiple">items in stock</span>
+								</p>
+
+								<!-- Out of stock hook -->
+								<p id="oosHook" style="display: none;">
+
+								</p>
+
+								<p class="warning_inline" id="last_quantities" style="display: none" >
+									Warning: Last items in stock!
+								</p>
+							</div>
+							<!-- end attributes -->
+
+							<p class="buttons_bottom_block">
+								<a href="#" id="wishlist_button" onclick="WishlistCart('wishlist_block_list', 'add', '5', $('#idCombination').val(), document.getElementById('quantity_wanted').value); return false;">&raquo; Add to my wishlist</a>
+							</p>
+
+						</form>
+
+					</div>
+				</div>
+			</div>
+
+			<!-- description and features -->
+			<div id="more_info_block" class="clear row">
+				<div>
+					<ul id="more_info_tabs" class="idTabs idTabsShort clearfix">
+						<li>
+							<a id="more_info_tab_more_info" href="#idTab1">More info</a>
+						</li>
+					</ul>
+					<div id="more_info_sheets" class="sheets align_justify">
+						<!-- full description -->
+						<div id="idTab1" class="rte">
+							<h3>Five new hands-on applications</h3>
+							<p>
+								View rich HTML email with photos as well as PDF, Word, and Excel attachments. Get maps, directions, and real-time traffic information. Take notes and read stock and weather reports.
+							</p>
+							<h3>Touch your music, movies, and more</h3>
+							<p>
+								The revolutionary Multi-Touch technology built into the gorgeous 3.5-inch display lets you pinch, zoom, scroll, and flick with your fingers.
+							</p>
+							<h3>Internet in your pocket</h3>
+							<p>
+								With the Safari web browser, see websites the way they were designed to be seen and zoom in and out with a tap.<sup>2</sup> And add Web Clips to your Home screen for quick access to favorite sites.
+							</p>
+							<h3>What's in the box</h3>
+							<ul>
+								<li>
+									iPod touch
+								</li>
+								<li>
+									Earphones
+								</li>
+								<li>
+									USB 2.0 cable
+								</li>
+								<li>
+									Dock adapter
+								</li>
+								<li>
+									Polishing cloth
+								</li>
+								<li>
+									Stand
+								</li>
+								<li>
+									Quick Start guide
+								</li>
+							</ul>
+						</div>
+
+						<!-- Customizable products -->
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<!-- MODULE Block specials -->
+		<div id="relatedproducts" class="block products_block exclusive blockleorelatedproducts">
+			<h3 class="title_block">Related product</h3>
+			<div class="block_content">
+				<div class=" carousel slide" id="leorelatedcarousel">
+
+					<div class="button-carousel">
+						<a class="carousel-control left" href="#leorelatedcarousel"   data-slide="prev">&lsaquo;</a>
+						<a class="carousel-control right" href="#leorelatedcarousel"  data-slide="next">&rsaquo;</a>
+					</div>
+					<div class="carousel-inner">
+						<div class="item active">
+							<div class="row">
+								<div class="p-item col-md-4 product_block ajax_block_product first_item p-item  ">
+									<div class="product-container">
+										<a href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?id_product=1&controller=product&id_lang=1" title="iPod Nano" class="product_image"><img src="http://demo4leotheme.com/prestashop/leo_beauty_store/img/p/2/8/28-home_default.jpg" alt="iPod Nano" /><span class="new">New</span></a>
+										<h5 class="s_title_block"><a href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?id_product=1&controller=product&id_lang=1" title="iPod Nano">iPod Nano</a></h5>
+
+										<div>
+
+											<p class="price_container">
+												<span class="price">$158.07</span>
+											</p>
+											<a class="exclusive ajax_add_to_cart_button" rel="ajax_id_product_1" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=cart?qty=1&amp;id_product=1&amp;token=c72340620966cb9ae8dcccbd3dd03a3b&amp;add" title="Add to cart">Add to cart</a>
+										</div>
+
+										<div class="content-bottom">
+											<div class="product_desc">
+												<a href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?id_product=1&controller=product&id_lang=1" title="More"> New design. New features. Now in 8GB and 16GB....</a>
+											</div>
+											<a href="#" id="wishlist_button1"  title="Add to wishlist" class="btn-add-wishlist btn" onclick="LeoWishlistCart('wishlist_block_list', 'add', '1', $('#idCombination').val(), 1 ); return false;"><i class="icon-heart icon-white">&nbsp;</i></a>
+											<a class="lnk_more btn" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?id_product=1&controller=product&id_lang=1" title="View"><i class="icon-file">&nbsp;</i></a>
+										</div>
+									</div>
+								</div>
+
+								<div class="p-item col-md-4 product_block ajax_block_product  alternate_item  ">
+									<div class="product-container">
+										<a href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?id_product=2&controller=product&id_lang=1" title="iPod shuffle" class="product_image"><img src="http://demo4leotheme.com/prestashop/leo_beauty_store/img/p/2/9/29-home_default.jpg" alt="iPod shuffle" /><span class="new">New</span></a>
+										<h5 class="s_title_block"><a href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?id_product=2&controller=product&id_lang=1" title="iPod shuffle">iPod shuffle</a></h5>
+
+										<div>
+
+											<p class="price_container">
+												<span class="price">$66.05</span>
+											</p>
+											<a class="exclusive ajax_add_to_cart_button" rel="ajax_id_product_2" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=cart?qty=1&amp;id_product=2&amp;token=c72340620966cb9ae8dcccbd3dd03a3b&amp;add" title="Add to cart">Add to cart</a>
+										</div>
+
+										<div class="content-bottom">
+											<div class="product_desc">
+												<a href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?id_product=2&controller=product&id_lang=1" title="More"> iPod shuffle, the world’s most wearable music...</a>
+											</div>
+											<a href="#" id="wishlist_button2"  title="Add to wishlist" class="btn-add-wishlist btn" onclick="LeoWishlistCart('wishlist_block_list', 'add', '2', $('#idCombination').val(), 1 ); return false;"><i class="icon-heart icon-white">&nbsp;</i></a>
+											<a class="lnk_more btn" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?id_product=2&controller=product&id_lang=1" title="View"><i class="icon-file">&nbsp;</i></a>
+										</div>
+									</div>
+								</div>
+
+								<div class="p-item col-md-4 product_block ajax_block_product last_item p-item  ">
+									<div class="product-container">
+										<a href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?id_product=7&controller=product&id_lang=1" title="Shure SE210 Sound-Isolating Earphones for iPod and iPhone" class="product_image"><img src="http://demo4leotheme.com/prestashop/leo_beauty_store/img/p/3/4/34-home_default.jpg" alt="Shure SE210 Sound-Isolating Earphones for iPod and iPhone" /><span class="new">New</span></a>
+										<h5 class="s_title_block"><a href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?id_product=7&controller=product&id_lang=1" title="Shure SE210 Sound-Isolating Earphones for iPod...">Shure SE210...</a></h5>
+
+										<div>
+
+											<p class="price_container">
+												<span class="price">$124.58</span>
+											</p>
+											<a class="exclusive ajax_add_to_cart_button" rel="ajax_id_product_7" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=cart?qty=1&amp;id_product=7&amp;token=c72340620966cb9ae8dcccbd3dd03a3b&amp;add" title="Add to cart">Add to cart</a>
+										</div>
+
+										<div class="content-bottom">
+											<div class="product_desc">
+												<a href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?id_product=7&controller=product&id_lang=1" title="More"> Evolved from personal monitor technology...</a>
+											</div>
+											<a href="#" id="wishlist_button7"  title="Add to wishlist" class="btn-add-wishlist btn" onclick="LeoWishlistCart('wishlist_block_list', 'add', '7', $('#idCombination').val(), 1 ); return false;"><i class="icon-heart icon-white">&nbsp;</i></a>
+											<a class="lnk_more btn" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?id_product=7&controller=product&id_lang=1" title="View"><i class="icon-file">&nbsp;</i></a>
+										</div>
+									</div>
+								</div>
+
+							</div>
+
+						</div>
+						<div class="item ">
+							<div class="row">
+								<div class="p-item col-md-4 product_block ajax_block_product first_item p-item  ">
+									<div class="product-container">
+										<a href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?id_product=9&controller=product&id_lang=1" title="Lorem ipsum" class="product_image"><img src="http://demo4leotheme.com/prestashop/leo_beauty_store/img/p/4/0/40-home_default.jpg" alt="Lorem ipsum" /><span class="new">New</span></a>
+										<h5 class="s_title_block"><a href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?id_product=9&controller=product&id_lang=1" title="Lorem ipsum">Lorem ipsum</a></h5>
+
+										<div>
+
+											<p class="price_container">
+												<span class="price">$158.07</span>
+											</p>
+											<a class="exclusive ajax_add_to_cart_button" rel="ajax_id_product_9" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=cart?qty=1&amp;id_product=9&amp;token=c72340620966cb9ae8dcccbd3dd03a3b&amp;add" title="Add to cart">Add to cart</a>
+										</div>
+
+										<div class="content-bottom">
+											<div class="product_desc">
+												<a href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?id_product=9&controller=product&id_lang=1" title="More"> New design. New features. Now in 8GB and 16GB....</a>
+											</div>
+											<a href="#" id="wishlist_button9"  title="Add to wishlist" class="btn-add-wishlist btn" onclick="LeoWishlistCart('wishlist_block_list', 'add', '9', $('#idCombination').val(), 1 ); return false;"><i class="icon-heart icon-white">&nbsp;</i></a>
+											<a class="lnk_more btn" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?id_product=9&controller=product&id_lang=1" title="View"><i class="icon-file">&nbsp;</i></a>
+										</div>
+									</div>
+								</div>
+
+								<div class="p-item col-md-4 product_block ajax_block_product  alternate_item  ">
+									<div class="product-container">
+										<a href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?id_product=10&controller=product&id_lang=1" title="Donec mattis" class="product_image"><img src="http://demo4leotheme.com/prestashop/leo_beauty_store/img/p/3/9/39-home_default.jpg" alt="Donec mattis" /><span class="new">New</span></a>
+										<h5 class="s_title_block"><a href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?id_product=10&controller=product&id_lang=1" title="Donec mattis">Donec mattis</a></h5>
+
+										<div>
+
+											<p class="price_container">
+												<span class="price">$158.07</span>
+											</p>
+											<a class="exclusive ajax_add_to_cart_button" rel="ajax_id_product_10" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=cart?qty=1&amp;id_product=10&amp;token=c72340620966cb9ae8dcccbd3dd03a3b&amp;add" title="Add to cart">Add to cart</a>
+										</div>
+
+										<div class="content-bottom">
+											<div class="product_desc">
+												<a href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?id_product=10&controller=product&id_lang=1" title="More"> New design. New features. Now in 8GB and 16GB....</a>
+											</div>
+											<a href="#" id="wishlist_button10"  title="Add to wishlist" class="btn-add-wishlist btn" onclick="LeoWishlistCart('wishlist_block_list', 'add', '10', $('#idCombination').val(), 1 ); return false;"><i class="icon-heart icon-white">&nbsp;</i></a>
+											<a class="lnk_more btn" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?id_product=10&controller=product&id_lang=1" title="View"><i class="icon-file">&nbsp;</i></a>
+										</div>
+									</div>
+								</div>
+
+								<div class="p-item col-md-4 product_block ajax_block_product last_item p-item  ">
+									<div class="product-container">
+										<a href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?id_product=11&controller=product&id_lang=1" title="Vestibulum suscipit" class="product_image"><img src="http://demo4leotheme.com/prestashop/leo_beauty_store/img/p/4/1/41-home_default.jpg" alt="Vestibulum suscipit" /><span class="new">New</span></a>
+										<h5 class="s_title_block"><a href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?id_product=11&controller=product&id_lang=1" title="Vestibulum suscipit">Vestibulum suscipit</a></h5>
+
+										<div>
+
+											<p class="price_container">
+												<span class="price">$158.07</span>
+											</p>
+											<a class="exclusive ajax_add_to_cart_button" rel="ajax_id_product_11" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=cart?qty=1&amp;id_product=11&amp;token=c72340620966cb9ae8dcccbd3dd03a3b&amp;add" title="Add to cart">Add to cart</a>
+										</div>
+
+										<div class="content-bottom">
+											<div class="product_desc">
+												<a href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?id_product=11&controller=product&id_lang=1" title="More"> Vestibulum suscipit rhoncus convallis. Quisque...</a>
+											</div>
+											<a href="#" id="wishlist_button11"  title="Add to wishlist" class="btn-add-wishlist btn" onclick="LeoWishlistCart('wishlist_block_list', 'add', '11', $('#idCombination').val(), 1 ); return false;"><i class="icon-heart icon-white">&nbsp;</i></a>
+											<a class="lnk_more btn" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?id_product=11&controller=product&id_lang=1" title="View"><i class="icon-file">&nbsp;</i></a>
+										</div>
+									</div>
+								</div>
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<!-- /MODULE Block specials -->
+		<script>
+			$(document).ready(function() {
+				$('.blockleorelatedproducts .carousel').each(function() {
+					$(this).carousel({
+						pause : true,
+						interval : false
+					});
+				});
+
+			});
+		</script>
+
+	</div>
+	<!-- end div block_home -->
+

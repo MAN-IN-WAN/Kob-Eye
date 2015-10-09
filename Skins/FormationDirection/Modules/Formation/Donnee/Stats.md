@@ -1,11 +1,10 @@
 [INFO [!Query!]|I]
 [STORPROC [!I::Historique!]|H|0|1]
-    [STORPROC [!H::Module!]/[!H::DataSource!]/[!H::Value!]|S|0|1][/STORPROC]
+    [STORPROC [!H::Module!]/[!H::DataSource!]/[!H::Value!]|P|0|1][/STORPROC]
 [/STORPROC]
 [STORPROC [!Query!]|CD|0|1][/STORPROC]
 [STORPROC [!CD::getParents(TypeQuestion)!]|TQ|0|1][/STORPROC]
 [STORPROC [!TQ::getParents(Question)!]|Q|0|1][/STORPROC]
-
 
 <ol class="breadcrumb">
     [STORPROC [!Q::getCategoryBreadcrumb()!]|BR]
@@ -20,7 +19,7 @@
         //<h1>Cas Jauge</h1>
         [!SUM:=0!]
         [!COUNT:=0!]
-        [STORPROC Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|R]
+        [STORPROC Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|R]
             [!SUM+=[!R::Valeur!]!]
             [!COUNT+=1!]
         [/STORPROC]
@@ -47,23 +46,23 @@
     [/CASE]
     [CASE 2]
 //Cas Echelle
-        [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|NbR]
-        [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=1|Nb1]
+        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur>1|NbR]
+        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=1|Nb1]
 [!Nb1:=[!Nb1:/[!NbR!]!]!]
 [!Nb1:=[!Math::Floor([!Nb1:*100!])!]!]
-        [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=2|Nb2]
+        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=2|Nb2]
 [!Nb2:=[!Nb2:/[!NbR!]!]!]
 [!Nb2:=[!Math::Floor([!Nb2:*100!])!]!]
-        [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=3|Nb3]
+        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=3|Nb3]
 [!Nb3:=[!Nb3:/[!NbR!]!]!]
 [!Nb3:=[!Math::Floor([!Nb3:*100!])!]!]
-        [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=4|Nb4]
+        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=4|Nb4]
 [!Nb4:=[!Nb4:/[!NbR!]!]!]
 [!Nb4:=[!Math::Floor([!Nb4:*100!])!]!]
-        [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=5|Nb5]
+        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=5|Nb5]
 [!Nb5:=[!Nb5:/[!NbR!]!]!]
 [!Nb5:=[!Math::Floor([!Nb5:*100!])!]!]
-        [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=6|Nb6]
+        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=6|Nb6]
 [!Nb6:=[!Nb6:/[!NbR!]!]!]
 [!Nb6:=[!Math::Floor([!Nb6:*100!])!]!]
         <div class="legendeG">FAIBLE</div>
@@ -128,7 +127,7 @@
                 legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
             });
 
-        </script>
+        </script>keywords
 
 
 
@@ -136,21 +135,80 @@
     [/CASE]
     [CASE 3]
         //<h1>Réponses texte.</h1>
-        [STORPROC Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|R]
-        [IF [!R::Valeur!]]
-            <div class="well">
-                <p>[!R::Valeur!]</p>
+        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur!=|NbR]
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#keywords" aria-controls="keywords" role="tab" data-toggle="tab">Mots clefs</a></li>
+            <li role="presentation"><a href="#2words" aria-controls="2words" role="tab" data-toggle="tab">Expressions de 2 mots</a></li>
+            <li role="presentation"><a href="#3words" aria-controls="3words" role="tab" data-toggle="tab">Expressions de 3 mots</a></li>
+            <li role="presentation"><a href="#random" aria-controls="random" role="tab" data-toggle="tab">10 réponses au hasard ( [!NbR!] Réponses au total)</a></li>
+        </ul>
+
+
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="keywords">
+                <div id="keywordspane" class="cloudtag" data-var="keywords"></div>
+                <script>
+                    var data = [];
+                    data['keywords'] = [
+                   [STORPROC [!TQ::getKeywords()!]|K]
+                    [IF [!Pos!]>1],[/IF]{text: "[!Key!]", weight: [!K!]}
+                    [/STORPROC]
+                    ];
+
+                    $('#keywordspane').jQCloud(data['keywords'], {
+                        shape: 'rectangular',
+                        autoResize: true
+                    });
+                </script>
             </div>
-        [/IF]
-        [/STORPROC]
+            <div role="tabpanel" class="tab-pane fade" id="2words">
+                <div id="2wordspane" class="cloudtag" data-var="twokeywords"></div>
+                <script>
+
+                    data['twokeywords'] = [
+                        [STORPROC [!TQ::getTwoKeywords()!]|K]
+                    [IF [!Pos!]>1],[/IF]{text: "[!Key!]", weight: [!K!]}
+                    [/STORPROC]
+                    ];
+                </script>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="3words">
+                <div id="3wordspane" class="cloudtag" data-var="threekeywords"></div>
+                <script>
+                    data['threekeywords'] = [
+                        [STORPROC [!TQ::getThreeKeywords()!]|K]
+                    [IF [!Pos!]>1],[/IF]{text: "[!Key!]", weight: [!K!]}
+                    [/STORPROC]
+                    ];
+                </script>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="random">
+                [STORPROC Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur!=|R|[!Utils::Random([!NbR:-10!])!]|10]
+                <div class="well">
+                    <p>[!R::Valeur!]</p>
+                </div>
+                [/STORPROC]
+            </div>
+        </div>
+
+        <script>
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                $(e.target.hash+'pane').jQCloud(data[$(e.target.hash+'pane').attr('data-var')], {
+                    shape: 'rectangular',
+                    autoResize: true
+                });
+            })
+        </script>
     [/CASE]
     [CASE 4]
         //Cas OUi / Non
-[COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|NbR]
-        [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=1|Nb1]
+[COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|NbR]
+        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=1|Nb1]
 [!Nb1:=[!Nb1:/[!NbR!]!]!]
 [!Nb1:=[!Math::Floor([!Nb1:*100!])!]!]
-        [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=0|Nb2]
+        [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=0|Nb2]
 [!Nb2:=[!Nb2:/[!NbR!]!]!]
 [!Nb2:=[!Math::Floor([!Nb2:*100!])!]!]
         <canvas id="myChart" width="500" height="350" style="width: 75%;margin-left: 12%"></canvas>
@@ -189,7 +247,7 @@
                 //Number - Amount of animation steps
                 animationSteps : 100,
 
-                //String - Animation easing effect
+                //StrSession/[!S::Id!]ing - Animation easing effect
                 animationEasing : "easeOutBounce",
 
                 //Boolean - Whether we animate the rotation of the Doughnut
@@ -207,7 +265,7 @@
     [/CASE]
     [CASE 5]
         //Cas Sélection
-[COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|NbR]
+[COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|NbR]
         <canvas id="myChart" width="500" height="500" style="width: 75%;margin-left: 12%"></canvas>
 
         <script>
@@ -225,13 +283,13 @@
                     highlightStroke: "rgba(151,187,205,1)",
                     data: [
                         [STORPROC [!TQ::getChildren(TypeQuestionValeur)!]|TQV]
-            [COUNT Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=[!TQV::Id!]|Nb1]
-             [!Nb1:=[!Nb1:/[!NbR!]!]!]
-             [!Nb1:=[!Math::Floor([!Nb1:*100!])!]!]
-             [!Nb1!][IF [!Pos!]!=[!NbResult!]],[/IF]
-             [/STORPROC]
+                            [COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=[!TQV::Id!]|Nb1]
+                             [!Nb1:=[!Nb1:/[!NbR!]!]!]
+                             [!Nb1:=[!Math::Floor([!Nb1:*100!])!]!]
+                             [!Nb1!][IF [!Pos!]!=[!NbResult!]],[/IF]
+                         [/STORPROC]
 
-             ]
+                 ]
              }
              ]
              };

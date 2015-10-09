@@ -31,7 +31,6 @@ class Commande extends genericClass {
 		}
 		parent::Delete();
 	}
-
 	/**
 	 * Enregistrement d'une commande en BDD
 	 * @return	void

@@ -56,9 +56,12 @@ class sqlFunctions{
 //PROB DRIVEO POUR REQUETE Boutique/Categorie/655/Categorie/*/Produit
 //Donc retour sur Id ... Attente de l'autre cas pour créer un FIX.
 //TODO
-					else $Condition[]=sqlFunctions::getPrefixe($Tab,$i)."t.Id=".sqlFunctions::getPrefixe($Tab,($i-1)).".Id";
+//					 $Condition[]=sqlFunctions::getPrefixe($Tab,$i)."t.Id=".sqlFunctions::getPrefixe($Tab,($i-1)).".Id";
 //EM-20150611 recorrection car prob de requete
-					//else $Condition[]=sqlFunctions::getPrefixe($Tab,$i)."t.".$Tab[$i-1]["Champ"]."=".sqlFunctions::getPrefixe($Tab,($i-1)).".Id";
+//                    else $Condition[]=sqlFunctions::getPrefixe($Tab,$i)."t.".$Tab[$i-1]["Champ"]."=".sqlFunctions::getPrefixe($Tab,($i-1)).".Id";
+//EM-20150824 correction avec solution
+                    else if ($Tab[$i-1]["Nom"]==$Tab[$i]["Nom"]) $Condition[]=sqlFunctions::getPrefixe($Tab,$i)."t.Id=".sqlFunctions::getPrefixe($Tab,($i-1)).".Id";
+					else $Condition[]=sqlFunctions::getPrefixe($Tab,$i)."t.".$Tab[$i-1]["Champ"]."=".sqlFunctions::getPrefixe($Tab,($i-1)).".Id";
 				}
 				if ($i>0)
 					$Condition[]=sqlFunctions::getPrefixe($Tab,$i).'i.Id='.sqlFunctions::getPrefixe($Tab,$i)."t.Id";
@@ -319,6 +322,7 @@ class sqlFunctions{
 
 	//Definit les prefixe de table en fonction de l emplacement dans le tableau d analyse
 	static function getPrefixe($Tab,$i){
+        if (isset($Tab[$i]['ForceAlias'])) return $Tab[$i]['ForceAlias'];
 		return ($i==sizeof($Tab)-1||isset($Tab[$i]["Parent"]))?"m":"j".$i;
 	}
 
@@ -401,32 +405,34 @@ class sqlFunctions{
 	//Extrait les joitures en filtres de la chaine de recherche
 	static function filterMultiJoin($Tab) {
 		//Recherche de l'etape de sortie
-		for ($i = 0; $i < sizeof($Tab); $i++)
-			if (isset($Tab[$i]['Out']) && $Tab[$i]['Out'] == 1)
-				$R = $i;
-		if (is_array($Tab[$R]["Recherche"]))$rech = implode('+',$Tab[$R]["Recherche"]);
-		else $rech = $Tab[$R]["Recherche"];
-		$Tab[$R]["Recherche"]= $rech;
-		
-		//recherche des jointures en selection
-		preg_match_all("#([^|&]*?)\.([^\(]*?)\(([^\)]*?)\)#", $Tab[$R]["Recherche"], $Rer);
-		if (!empty($Rer[0][0])) {
-			for ($i = 0; $i < sizeof($Rer[0]); $i++) {
-				$Tab[$R]["Recherche"] = str_replace($Rer[0][$i], '', $Tab[$R]["Recherche"]);
-				$Tab[$R]["multiFilter"][] = Array($Rer[0][$i], $Rer[1][$i], $Rer[2][$i], $Rer[3][$i]);
-			}
-			//On reecrit la recherche
-			$Re = explode("&", $Tab[$R]["Recherche"]);
-			$Tab[$R]["Recherche"] = '';
-			for ($i = 0; $i < sizeof($Re); $i++)
-				if (!empty($Re[$i]))
-					$Tab[$R]["Recherche"] .= (($Tab[$R]["Recherche"] != '') ? '&' : '') . $Re[$i];
+		for ($i = 0; $i < sizeof($Tab); $i++){
+			$R = $i;
+            if (is_array($Tab[$R]["Recherche"]))$rech = implode('+',$Tab[$R]["Recherche"]);
+            else $rech = $Tab[$R]["Recherche"];
+            $Tab[$R]["Recherche"]= $rech;
+
+            //recherche des jointures en selection
+//			preg_match_all("#([^|&]*?)\.([^\(]*?)\((.*)\)#", $Tab[$R]["Recherche"], $Rer);
+			preg_match_all("#([^|&]*?)\.([^\(]*?)\(([^\)]*?)\)#", $Tab[$R]["Recherche"], $Rer);
+            if (!empty($Rer[0][0])) {
+                for ($i = 0; $i < sizeof($Rer[0]); $i++) {
+                    $Tab[$R]["Recherche"] = str_replace($Rer[0][$i], '', $Tab[$R]["Recherche"]);
+                    $Tab[$R]["multiFilter"][] = Array($Rer[0][$i], $Rer[1][$i], $Rer[2][$i], $Rer[3][$i]);
+                }
+                //On reecrit la recherche
+                $Re = explode("&", $Tab[$R]["Recherche"]);
+                $Tab[$R]["Recherche"] = '';
+                for ($i = 0; $i < sizeof($Re); $i++)
+                    if (!empty($Re[$i]))
+                        $Tab[$R]["Recherche"] .= (($Tab[$R]["Recherche"] != '') ? '&' : '') . $Re[$i];
+            }
 		}
+        //print_r($Tab);
 		return $Tab;
 	}
 
 	//Cree les conditions de jointures necessaires dans une requete
-	static function multiJoinSql($Tab,$Data,$O){
+	static function multiJoinSql($Tab,$Data,$O,$lvl=''){
 		$j=0;
 		//Recherche de l'etape de sortie
 		for ($i=0;$i<sizeof($Tab);$i++) if (isset($Tab[$i]['multiFilter'])&&is_array($Tab[$i]['multiFilter'])){
@@ -434,13 +440,17 @@ class sqlFunctions{
 
 			foreach ($T['multiFilter'] as $Mf){
 				$j++;
-// 				echo "--------------------------\r\n";
+                $Co = Sys::$Modules[$O->Module]->Db->getObjectClass($T['Nom']);
 				//Identification et recuperation de la clef à traiter sur les associations enfantes
-				$TypeAssoc = ($O->isChildOf($Mf[1]))?"child":(($O->isParentOf($Mf[1]))?"parent":"error");
+				$TypeAssoc = ($Co->isChildOf($Mf[1]))?"child":(($Co->isParentOf($Mf[1]))?"parent":"error");
 				//Construction du tableau de requete
 				if ($TypeAssoc=="parent"){
-					$ClefAssoc = $O->getKey($Mf[1],$Mf[2],"child");
-					$Te[0] = $O->getKeyInfo($Mf[1],"",true,$Mf[2]);
+					$ClefAssoc = $Co->getKey($Mf[1],$Mf[2],"child");
+                    if (!is_object($ClefAssoc)){
+                        $msg = 'erreur! impossible de trouver la clef '.$Mf[2].' pour l\'objet: '.$Co->titre.' en tant que liaison père pour la requete '.Module::$LAST_QUERY;
+                        throw new Exception($msg);
+                    }
+					$Te[0] = $Co->getKeyInfo($Mf[1],"",true,$Mf[2]);
 					//Cas inverse du parent
 					$To = $ClefAssoc->getChildObjectClass();
 					$Te[1] = Array(
@@ -449,27 +459,35 @@ class sqlFunctions{
 						"Nom" => $Mf[1],
 						"Driver" => $ClefAssoc->getDriver()
 					);
-					$Data = sqlFunctions::joinParent($Te,$Data,0,$O,$j);
+					$Data = sqlFunctions::joinParent($Te,$Data,0,$Co,$j);
 				}
 				if ($TypeAssoc=="child"){
-					$Ob = Sys::$Modules[$O->Module]->Db->getObjectClass($Mf[1]);
-					$ClefAssoc = $Ob->getKey($O->titre,$Mf[2],"child");
-					$Te[0] = $Ob->getKeyInfo($O->titre,$Mf[3],false,$Mf[2]);
+					$Ob = Sys::$Modules[$Co->Module]->Db->getObjectClass($Mf[1]);
+					$ClefAssoc = $Ob->getKey($Co->titre,$Mf[2],"child");
+                    if (!is_object($ClefAssoc)){
+                        $msg = 'erreur! impossible de trouver la clef '.$Mf[2].' pour l\'objet: '.$Co->titre.' en tant que liaison fils pour la requete '.Module::$LAST_QUERY;
+                        throw new Exception($msg);
+                    }
+					$Te[0] = $Ob->getKeyInfo($Co->titre,$Mf[3],false,$Mf[2]);
 					$To = $ClefAssoc->getParentObjectClass();
 					$Te[1] = Array(
 						"Recherche" => '',
 						"Nom" => $T["Nom"],
 						"Module" => $To->Module,
 						"Driver" => $ClefAssoc->getDriver(),
+                        "ForceAlias" => (isset($T['Out'])&&$T['Out'])?'m':sqlFunctions::getPrefixe($Te[0],"".$i,$Co),
 						"Out" => 1
 					);
-					$Data = sqlFunctions::joinStandard($Te,$Data,0,$O,$j);
-					$Data = sqlFunctions::whereSql($Te[0],$Data,sqlFunctions::getPrefixe($Te[0],"0".$j,$O),$O);
+					$Te = sqlFunctions::filterMultiJoin($Te);
+					$Data = sqlFunctions::joinStandard($Te,$Data,0,$Co,$j);
+					$Data = sqlFunctions::multiJoinSql($Te,$Data,$Co,$lvl+1);
+					$Data = sqlFunctions::whereSql($Te[0],$Data,sqlFunctions::getPrefixe($Te[0],"0".$lvl.$j,$Co),$Co);
 					$Data["GroupBy"][] = "m.Id";
 					//$Data = sqlFunctions::mergeData($D,$Data);
 				}
 			}
 		}
+		//print_r($Data);
 		return $Data;
 	}
 
@@ -643,7 +661,7 @@ class sqlFunctions{
 			if ($f)
 				$Data['Condition'][] =$imbriqSql;
 			//Erreur si pas de recherche possible
-			else throw new Exception("QUERY: No search field available for this filter ".$c);
+			//else throw new Exception("QUERY: No search field available for this filter ".$c." query: ".Module::$LAST_QUERY);
 		}
 		return $Data;
 	}
@@ -746,7 +764,7 @@ class sqlFunctions{
 			$Tab["Lien"] = "AND";
 		$sqlCond = "(";
 		$queryStarted = false;
-		for ($i = 0; $i < sizeof($Tab["Condition"]); $i++) {
+		if (isset($Tab["Condition"]))for ($i = 0; $i < sizeof($Tab["Condition"]); $i++) {
 			if ($i > 0)
 				$sqlCond .= " " . $Tab["Lien"] . " ";
 			$sqlCond .= "(" . $Tab["Condition"][$i] . ")";

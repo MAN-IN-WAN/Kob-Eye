@@ -50,6 +50,12 @@ class Sys extends Root{
 	var $CurrentMenu;
 	var $DefaultMenu;
 	var $MenusFromUrl;
+	//Config
+	static $keywordsProcessing = true;
+	//Keywords
+    static $keywords = array();
+
+    static $FORCE_INSERT = false;
 
 //*************//
 //***ETAPE 1***//
@@ -1015,7 +1021,7 @@ class Sys extends Root{
 	 * Static call of callData
 	 */
 	 static function getCount($Module, $Query){
-	 	$o= Sys::$Modules[$Module]->callData($Query, false, '', '', '', '', 'COUNT(DISTINCT(m.Id))', '' );
+	 	$o= Sys::$Modules[$Module]->callData($Query, false, 0, 1000000, '', '', 'COUNT(DISTINCT(m.Id))', '' );
 		return isset($o[0]) ? $o[0]['COUNT(DISTINCT(m.Id))'] : 0;
 	 }
 
@@ -1066,7 +1072,38 @@ class Sys extends Root{
 		//Mise a jour des connexions
 		if (is_object($this->Connection))$this->Connection->close();
 		if (is_object($this->Db[0])) $this->Db[0]->query("COMMIT");
-		$this->Log->log("---------------------------------------- CLOSE----------------------------------------");
+
+        $Pages = array();
+
+        if (is_object($this->Db[0])) $this->Db[0]->query("START TRANSACTION");
+        //Gestion des mots clefs
+        foreach (Sys::$keywords as $k=>$m){
+            $t = Sys::getOneData('Systeme','Tag/Canonic='.$k);
+            if (is_object($t)) {
+                $t->Poids += $m->Poids;
+                $m=$t;
+            }
+            $m->Save();
+
+            if (isset($m->Pages)){
+                foreach ($m->Pages as $p) {
+                    if (!isset($Pages[$p])) {
+                        $Pages[$p] = Sys::getOneData('Systeme', 'Page/' . $p);
+                    }
+                    $Pages[$p]->AddParent($m);
+                }
+            }
+            $this->Log->log("KEYWORDS --> ".$k);
+        }
+        $this->Log->log("NOMBRE KEYWORDS --> ".sizeof(Sys::$keywords));
+
+        //Gestion des pages
+        foreach ($Pages as $page) $page->Save();
+        $this->Log->log("NOMBRE PAGESS --> ".sizeof($Pages));
+
+        if (is_object($this->Db[0])) $this->Db[0]->query("COMMIT");
+
+        $this->Log->log("---------------------------------------- CLOSE----------------------------------------");
 	}
 
 	function restartTransaction(){
@@ -1107,6 +1144,18 @@ class Sys extends Root{
 		$domain =Sys::$domain;
 		$Mc = Sys::getData('Systeme','Page/Tag.Tags(Canonic~'.$S.')&Site.SiteId(Domaine='.$domain.')');
 		return $Mc;
+	}
+	/**********************************
+	 * SEARCH TAGS
+	 ***********************************/
+	public static function getKeywordsProcessing() {
+		return Sys::$keywordsProcessing;
+	}
+	public static function disableKeywordsProcessing() {
+		Sys::$keywordsProcessing = false;
+	}
+	public static function enableKeywordsProcessing() {
+		Sys::$keywordsProcessing = true;
 	}
 }
 ?>

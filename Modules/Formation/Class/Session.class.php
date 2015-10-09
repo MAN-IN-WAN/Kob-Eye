@@ -14,6 +14,46 @@ class FormationSession extends genericClass {
         if (!Sys::getCount('Formation','Session/'.$this->Id.'/Donnee')){
             $this->initDonnee();
         }
+        //on check également l'intégrité des réponses par équipe
+        $this->checkReponse();
+    }
+    /**
+     * checkReponse
+     * Relie les réponse avec les typeQuestions correspondants
+     */
+    function checkReponse() {
+        $dirty=false;;
+
+        //récupération des données
+        $donn = Sys::getData('Formation','Session/'.$this->Id.'/Donnee',0,1000,'ASC','Numero');
+        if (!sizeof($donn)){
+            $this->initDonnee();
+            $donn = Sys::getData('Formation','Session/'.$this->Id.'/Donnee',0,1000,'ASC','Numero');
+        }
+
+        //pour chaque equipe on vérifie les questions
+        $eq = $this->getChildren('Equipe');
+        foreach ($eq as $e){
+            $reps = Sys::getData('Formation','Equipe/'.$e->Id.'/Reponse',0,1000,'ASC','Id');
+            for ($i=0,$si=sizeof($reps); $i<$si; $i++) {
+                //on vérifie qu'il y a bien un typequestion par réponse
+                if (!Sys::getCount('Formation', 'TypeQuestion/Reponse/' . $reps[$i]->Id)) {
+                    //récupration du type question correspondant
+                    $tq = $donn[$i]->getParents('TypeQuestion');
+                    $tq = $tq[0];
+                    $reps[$i]->addParent($tq);
+                    $reps[$i]->Save();
+                    $dirty = true;
+                }
+            }
+        }
+
+        //si il y avait un probleme alors on resynchronise
+        if ($dirty){
+            $this->Synchro = false;
+            genericClass::Save();
+        }
+
     }
     /**
      * initDonnee
@@ -59,6 +99,7 @@ class FormationSession extends genericClass {
      * recherche recursivement dans les categories
      */
     function recursivCat($p) {
+        if (!is_object($p)) return array();
         $cats = $p->getChildren('Categorie');
         $out = array();
         foreach ($cats as $c){
@@ -105,6 +146,7 @@ class FormationSession extends genericClass {
         //démarre cette session
         $this->EnCours = 1;
         $this->Termine = 0;
+        $this->Synchro = 0;
         $this->Date = time();
         $this->Save();
     }
@@ -119,6 +161,11 @@ class FormationSession extends genericClass {
         $this->Termine = 1;
         $this->TermineLe = time();
         $this->Save();
+
+        $GLOBALS["Systeme"]->Db[0]->query('COMMIT');
+
+        //backup
+        Formation::Backup();
     }
     /**
      * setTeam
@@ -169,7 +216,7 @@ class FormationSession extends genericClass {
         $q = Sys::getOneData('Formation','Question/'.$question);
         $cb = $q->getCategorieBloquante();
         if (!$cb) return true;
-        $blo = Sys::getOneData('Formation','Categorie/'.$cb->Id.'/Etape');
+        $blo = Sys::getOneData('Formation','Categorie/'.$cb->Id.'/Etape/SessionId='.$this->Id.'');
         if ($blo->Debloquage) return true;
         else return false;
     }
@@ -284,5 +331,157 @@ class FormationSession extends genericClass {
             return true;
         }
     }
+    /**
+     * getBoitier
+     * Récupère l'objet boitier
+     */
+    public function getBoitier() {
+        //Vérification de l'existence du numéro de boitier
+        $boitier = Sys::getOneData('Formation', 'Boitier');
+        if (!is_object($boitier)){
+            //création d'un numéro de boitier
+            $options = array(
+                'http' => array(
+                    'method'  => 'GET',
+                    'header'=>  "Content-Type: application/json\r\n" .
+                        "Accept: application/json\r\n"
+                )
+            );
 
+            $context  = stream_context_create( $options );
+            $result = file_get_contents( 'http://erdf.e-p.consulting/Formation/Boitier/getNumero.htm', false, $context );
+            $response = json_decode( $result );
+            if ($response->success){
+                //réception du numéro
+                $boitier = genericClass::createInstance('Formation','Boitier');
+                $boitier->Numero = $response->numero;
+                $boitier->Save();
+            }
+        }
+        return $boitier;
+    }
+    /**
+     * Synchro
+     * Syncrhonisation de la session avec le central pour aggrégation des données
+     */
+    public function Synchro() {
+        $this->checkReponse();
+        $boitier = $this->getBoitier();
+        if (!is_object($boitier)) return;
+        $projet = $this->getParents('Projet');
+        $projet = $projet[0];
+        $region = $this->getParents('Region');
+        $region = $region[0];
+        //préparation des données
+        $data = '{
+            "date": '.$this->Date.',
+            "boitier" : "'.$boitier->Numero.'",
+            "region" : "'.$region->Id.'",
+            "projet" : "'.$projet->Id.'",
+            "nom" : "'.str_replace('"', '\"',$this->Nom).'",
+            "equipes" : [';
+        $equipe = $this->getChildren('Equipe');
+        $virgule = '';
+        foreach ($equipe as $e){
+            $data .= $virgule.'{
+                    "table": '.$e->Numero.',
+                    "reponses": [';
+                $reponses = $e->getChildren('Reponse');
+                $virgule2 = '';
+                foreach ($reponses as $r){
+                    $tq = $r->getParents('TypeQuestion');
+                    if (sizeof($tq)) {
+                        $tq = $tq[0];
+                        $data .= $virgule2 . '{"typequestion": "' . $tq->Id . '", "valeur":"' . $this->textToJson($r->Valeur) . '"}';
+                        $virgule2 = ',';
+                    }
+                }
+            $virgule = ',';
+            $data.=']}';
+        }
+        $data .='
+            ]
+        }';
+
+        //sending informations
+        $options = array(
+            'http' => array(
+                'method'  => 'POST',
+                'content' => $data,
+                'header'=>  "Content-Type: application/json\r\n" .
+                    "Accept: application/json\r\n"
+            )
+        );
+
+        $context  = stream_context_create( $options );
+        $result = file_get_contents( 'http://erdf.e-p.consulting/Formation/Session/Reception.htm', false, $context );
+        $response = json_decode( $result );
+        if (isset($response->success)&&$response->success){
+            $this->Synchro = 1;
+            $this->Save();
+        }
+    }
+
+    /**
+     * Reception
+     * Syncrhonisation des sessions depuis les boitiers
+     *
+     */
+    public function reception() {
+        $json = file_get_contents('php://input');
+        try {
+            $json = json_decode ($json);
+            //recherche de la session
+            $sess = Sys::getOneData('Formation', 'Session/Date='.$json->date);
+            if (is_object($sess)){
+                //alors on supprime on reinsère
+                $sess->Delete();
+            }
+            //recherche du boitier
+            $boitier = Sys::getOneData('Formation','Boitier/'.$json->boitier);
+            //création
+            $sess = genericClass::createInstance('Formation','Session');
+            $sess->AddParent('Formation/Region/'.$json->region);
+            $sess->AddParent('Formation/Projet/'.$json->projet);
+            $sess->AddParent($boitier);
+            $sess->Date = $json->date;
+            $sess->Nom = $json->nom;
+            $sess->Termine = true;
+            $sess->Save();
+            //ajout des equipes
+            foreach ($json->equipes as $e) {
+                $eq = genericClass::createInstance('Formation','Equipe');
+                $eq->AddParent($sess);
+                $eq->Numero = $e->table;
+                $eq->Save();
+                foreach ($e->reponses as $r) {
+                    $rep = genericClass::createInstance('Formation','Reponse');
+                    $rep->AddParent($eq);
+                    $rep->AddParent('Formation/TypeQuestion/'.$r->typequestion);
+                    $rep->Valeur = $r->valeur;
+                    $rep->Save();
+                }
+            }
+
+            //ajout du commentaire de synchro
+            $h = genericClass::createInstance('Formation','SynchroHisto');
+            $h->Description = date('d/m/Y H:i:s').' Synchro session '.$sess->Nom.' OK from '.$_SERVER['REMOTE_ADDR'];
+            $h->addParent($boitier);
+            $h->Save();
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+    /**
+     * clearTexte
+     * text to json converter
+     */
+    public function textToJson($text) {
+        $text = str_replace('"', '\"',$text);
+        $text = str_replace("\n", ' ',$text);
+        $text = str_replace("\r", '',$text);
+        $text = str_replace("\t", '',$text);
+        return $text;
+    }
 }

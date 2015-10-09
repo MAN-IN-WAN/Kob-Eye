@@ -93,12 +93,14 @@ class Lib extends Beacon{
 				$Temp = Process::processVars($this->Attributes[2]);
 				Process::$TempVar[$this->Attributes[1]] = $Temp;
 				Sys::$User->Cache[$this->Attributes[1]] = $Temp;
+				klog::l('SET',$this->Attributes[1]);
 			break;
 			case "Add":
 				$Temp = Process::getGlobalVar($this->Attributes[1]);
 				$Temp[] = Process::processVars($this->Attributes[2]);
 				Process::RegisterTempVar($this->Attributes[1],$Temp);
 				Sys::$User->Cache[$this->Attributes[1]] = $Temp;
+				klog::l('Add',$this->Attributes[1]);
 				break;
 			case "Del":
 				//Supprime un cookie
@@ -110,15 +112,18 @@ class Lib extends Beacon{
 				}
 				Process::RegisterTempVar($this->Attributes[1],$Result);
 				$GLOBALS["Systeme"]->Connection->addSessionVar($this->Attributes[1],$Result);
+				klog::l('Del',$this->Attributes[1]);
 				break;
 			case "Reset":
 				//Supprime un cookie
 				Process::UnRegisterTempVar($this->Attributes[1]);
 				$GLOBALS["Systeme"]->Connection->rmSessionVar($this->Attributes[1]);
+				klog::l('Reset',$this->Attributes[1]);
 				break;
 			case "ResetAll":
 				//Supprime un cookie
 				$_SESSION = "";
+				klog::l('ResetAll',$this->Attributes[1]);
 				break;
 		}
 		return ;
