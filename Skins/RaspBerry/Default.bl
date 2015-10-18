@@ -1,13 +1,36 @@
 [HEADER CSS]/Tools/Css/Bootstrap/3.0/css/bootstrap.min.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Css/font-awesome/css/font-awesome.min.css[/HEADER]
 [HEADER CSS]/Tools/Css/Bootstrap/3.0/css/bootstrap-theme.min.css[/HEADER]
+[HEADER JS]/Tools/Js/Jquery/1.9.2/jquery.min.js[/HEADER]
 [HEADER JS]/Tools/Css/Bootstrap/3.0/js/bootstrap.min.js[/HEADER]
+[HEADER JS]Tools/Js/ChartJs/Chart.min.js[/HEADER]
 
-<div class="container-fluid">
-    <h1>Interface Formateur</h1>
-    <button class="btn btn-primary" type="button">
-        Utilisateurs connectés <span class="badge">18</span>
-    </button>
-    <button class="btn btn-danger" type="button">
-        Arrêt de la session
-    </button>
+<nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">
+               Hub Formation <span class="label label-success">Online</span>
+            </a>
+            <a class="navbar-brand" href="#">
+               Nom du wifi: <span class="label label-primary">HUB_SOMFY</span>
+            </a>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid" id="refresh">
+    [MODULE Formation/Screen]
 </div>
+
+<script>
+//auto reload
+var timeout = setInterval(reloadPage, 5000);
+function reloadPage () {
+    //window.location.href = '/[!Lien!]';
+    $.ajax({
+        url: '/Formation/Screen.htm?RELOAD=1',
+        context: $( '.container-fluid' )
+    }).done(function(data) {
+        $( '#refresh').html(data);
+    });
+}
+</script>

@@ -42,7 +42,7 @@
 <!--[if lt IE 9]>
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
-[MODULE Boutique/Produit/MajPanier]
+//[MODULE Boutique/Produit/MajPanier]
 <div [IF [!Lien!]=] id="index"[/IF]>
 	<div id="page" class="clearfix">
 		[MODULE Systeme/Header]

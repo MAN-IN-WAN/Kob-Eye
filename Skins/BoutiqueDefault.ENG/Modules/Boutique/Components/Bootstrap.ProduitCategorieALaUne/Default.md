@@ -19,7 +19,7 @@
 				<div id="catProductsTabsContent" class="tab-content">
 
 					//Liste des catégories
-					[STORPROC Boutique/Magasin/[!Magasin::Id!]/Categorie/*/Categorie/AlaUne=1&Display=1|Cat]
+					[STORPROC Boutique/Magasin/[!Magasin::Id!]/Categorie/*/Categorie/AlaUne=1&Display=1|Cat|0|5]
 					<div class="tab-pane  [IF [!Pos!]=1]active[/IF]" id="cattab[!Cat::Id!]">
 						<div class=" carousel slide" id="carousel-[!Cat::Id!]">
 							<a class="carousel-control left" href="#carousel-[!Cat::Id!]"   data-slide="prev">&lsaquo;</a>
@@ -39,13 +39,12 @@
 														[IF [!Promo!]!=0]
 														<span class="discount">__PROMO__</span>
 														[/IF]
-					
+
 													</div>
 													<div class="right_block">
 														<h3 class="s_title_block"><a href="[!Prod::getUrl()!]" title="iPod Nano">[!Prod::Nom!]</a></h3>
-					
+
 														<div class="price_container">
-															</span>
 															[IF [!Promo!]!=0]
 															<div style="display:block;color:#fff;font-size:13px;position:absolute;right:32px;text-decoration:line-through;top:0;" id="tarifNonPromo">
 																[!Math::PriceV([!Prod::getTarifHorsPromo!])!][!De::Sigle!]
@@ -71,9 +70,9 @@
 															<input type="checkbox" class="comsparator" id="comparator_item_1" value="comparator_item_1"  />
 															<label for="comparator_item_1">__SELECT_TO_COMPARE__</label>
 														</p>
-					
+
 														<a href="#" id="wishlist_button1" title="Add to wishlist" class="btn-add-wishlist btn" onclick="LeoWishlistCart('wishlist_block_list', 'add', '1', $('#idCombination').val(), 1 ); return false;"><i class="icon-heart icon-white">&nbsp;</i></a>
-					
+
 														<a class="lnk_more btn" href="[!Prod::getUrl()!]" title="View"><i class="icon-file">&nbsp;</i></a>
 													</div>
 					-->
@@ -97,13 +96,12 @@
 														[IF [!Promo!]!=0]
 														<span class="discount">__PROMO__</span>
 														[/IF]
-					
+
 													</div>
 													<div class="right_block">
 														<h3 class="s_title_block"><a href="[!Prod::getUrl()!]" title="iPod Nano">[!Prod::Nom!]</a></h3>
-					
+
 														<div class="price_container">
-															</span>
 															[IF [!Promo!]!=0]
 															<div style="display:block;color:#fff;font-size:13px;position:absolute;right:32px;text-decoration:line-through;top:0;" id="tarifNonPromo">
 																[!Math::PriceV([!Prod::getTarifHorsPromo!])!][!De::Sigle!]
@@ -118,7 +116,7 @@
 														<span class="online_only"></span>
 
                                                         <a class="exclusive ajax_add_to_cart_button" rel="ajax_id_product_9" href="[!Prod::getUrl()!]" title="Add to cart">__ADD_TO_CART__</a>
-					
+
 													</div>
 					<!--
 													<div class="content-bottom">
@@ -129,9 +127,9 @@
 															<input type="checkbox" class="comsparator" id="comparator_item_1" value="comparator_item_1"  />
 															<label for="comparator_item_1">__SELECT_TO_COMPARE__</label>
 														</p>
-					
+
 														<a href="#" id="wishlist_button1" title="Add to wishlist" class="btn-add-wishlist btn" onclick="LeoWishlistCart('wishlist_block_list', 'add', '1', $('#idCombination').val(), 1 ); return false;"><i class="icon-heart icon-white">&nbsp;</i></a>
-					
+
 														<a class="lnk_more btn" href="[!Prod::getUrl()!]" title="View"><i class="icon-file">&nbsp;</i></a>
 													</div>
 					-->

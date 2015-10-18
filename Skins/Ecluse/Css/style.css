@@ -121,7 +121,6 @@ div.copyright{
 #center_column .block {
     margin-bottom: 20px;
     margin-top: 0px;
-    padding-bottom: 10px;
 }
 #center_column fieldset,#center_column form {
     margin: 0px 0;
@@ -471,4 +470,23 @@ PRODUCT DETAIL
     border-left: 0;
     border-top: 0;
     text-align: center;
+}
+/**
+FONT AWESOME SIZES
+**/
+.fa-4 {
+    font-size: 8em;
+}
+.fa-5 {
+    font-size: 12em;
+}
+.fa.fa-6 {
+    font-size: 16em;
+}
+
+/**
+COLOR
+**/
+.green{
+    color: #51a351;
 }

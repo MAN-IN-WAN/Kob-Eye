@@ -101,6 +101,14 @@ if [ ! -e "/root/maj-$VERSION.tar.gz" ]; then
     wget -O /etc/init.d/majservice http://erdf.e-p.consulting/Formation/Bash/majservice.htm
     chmod +x /etc/init.d/majservice
 
+fi
+
+#MAJ 1.0.6
+#Correction de l'utilisation du meme appareil
+VERSION=1.0.6
+if [ ! -e "/root/maj-$VERSION.tar.gz" ]; then
+    maj $VERSION
+
     //on redemarre
     reboot
 fi

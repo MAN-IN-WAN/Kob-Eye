@@ -222,12 +222,21 @@ class FormationSession extends genericClass {
     }
     /**
      * checkSessionTeam
-     * Verifie la validité d'une session par rapport aux informations fournies
+     * Verifie la validité d'une session et de l'equipe par rapport aux informations fournies
      */
     function checkSessionTeam($equipeId,$sessionId){
         if ($sessionId!=$this->Id) return false;
         if (!$this->EnCours) return false;
         if (!Sys::getCount('Formation','Session/'.$this->Id.'/Equipe/Numero='.$equipeId)) return false;
+        return true;
+    }
+    /**
+     * checkSession
+     * Verifie la validité d'une session par rapport aux informations fournies
+     */
+    function checkSession($sessionId){
+        if ($sessionId!=$this->Id) return false;
+        if (!$this->EnCours) return false;
         return true;
     }
     /**

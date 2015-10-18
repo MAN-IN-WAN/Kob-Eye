@@ -43,65 +43,67 @@
 		[IF [!Adr::Type!]=Facturation][!AdrFc:=[!Adr!]!][/IF]
 	[/STORPROC]
 [/IF]
-<div class="CommandeEtape5">
-	<div class="row-fluid"><div class="span12">
-		<h2 class="title_block">
-			[IF [!Mag::EtapePaiement!]]
-				[IF [!P::Etat!]=0]Commande [!CDE::RefCommande!] prise en compte - En attente de paiement[/IF]
-				[IF [!P::Etat!]=4]Commande [!CDE::RefCommande!] prise en compte - En attente de paiement[/IF]
-				[IF [!P::Etat!]=1]Commande [!CDE::RefCommande!] validée et en cours d'expédition[/IF]
-				[IF [!P::Etat!]=3]Commande [!CDE::RefCommande!] annulée[/IF]
-				[IF [!P::Etat!]=2]Commande [!CDE::RefCommande!] annulée - Paiement refusé[/IF]
-			[ELSE]
-				Confirmation de commande [!CDE::RefCommande!]
-			[/IF]
-		</h2>
-	</div></div>
+<div class="block">
+	<h1 class="title_block">
+		[IF [!Mag::EtapePaiement!]]
+			[IF [!P::Etat!]=0]Commande [!CDE::RefCommande!] prise en compte - En attente de paiement[/IF]
+			[IF [!P::Etat!]=4]Commande [!CDE::RefCommande!] prise en compte - En attente de paiement[/IF]
+			[IF [!P::Etat!]=1]Commande [!CDE::RefCommande!] validée et en cours d'expédition[/IF]
+			[IF [!P::Etat!]=3]Commande [!CDE::RefCommande!] annulée[/IF]
+			[IF [!P::Etat!]=2]Commande [!CDE::RefCommande!] annulée - Paiement refusé[/IF]
+		[ELSE]
+			Confirmation de commande [!CDE::RefCommande!]
+		[/IF]
+	</h1>
+	<div class="block_content">
 	[IF [!Mag::EtapePaiement!]]
 		[IF [!P::Etat!]>1&&[!P::Etat!]<4]
-			<div class="row-fluid"><div class="span12">
-				<div class="Desc">
+				<p>
 					Votre commande n'a pas pu aboutir.<br />
 					Si vous pensez qu'il s'agit d'une erreur, veuillez nous <a href="/Contact" class="Etape5Lien" >contacter</a> en rappelant le numéro de commande&nbsp;<strong>[!CDE::RefCommande!] ou alors en retournant sur l'étape de paiement en cliquant sur le bouton ci-dessous</strong>.
-				</div>
-			</div></div>
+				</p>
 			[METHOD CDE|setUnValid][/METHOD]
 		[/IF]
 	[/IF]
 	[IF [!Mag::EtapePaiement!]=0||[!P::Etat!]<=1||[!P::Etat!]>3]
-		<div class="row-fluid"><div class="span12">
-			<div class="Desc">
-				[!CLCONN::Civilite!] [!CLCONN::Prenom!] [!CLCONN::Nom!], merci pour votre commande.
-			</div>
-		</div></div>
+		<i class="fa fa-check-circle fa-6 pull-left green"></i>
+		<p>
+			[!CLCONN::Civilite!] [!CLCONN::Prenom!] [!CLCONN::Nom!], merci pour votre commande.
+		</p>
 		[IF [!Mag::EtapePaiement!]]
-			<div class="row-fluid"><div class="span12">
-				<div class="Desc">
-					<h2>Paiement par [!TP::Nom!]</h2>
-					[!Plugin::affichageEtape5([!P!],[!CDE!])!]
-					<br />[IF [!P::Montant!]>0]<br /><h3>Montant de votre commande [!Math::PriceV([!P::Montant!])!][!De::Sigle!]&nbsp;&nbsp;</h3>[/IF]
-				</div>
-			</div></div>
+			<p>
+				<h2>Paiement par [!TP::Nom!]</h2>
+				[!Plugin::affichageEtape5([!P!],[!CDE!])!]
+				<br />[IF [!P::Montant!]>0]<br /><h3>Montant de votre commande [!Math::PriceV([!P::Montant!])!][!De::Sigle!]&nbsp;&nbsp;</h3>[/IF]
+			</p>
 		[/IF]
 		[IF [!Mag::EtapeLivraison!]&&[!CDE::getMontantLivrable()!]]
-			<div class="row-fluid"><div class="span12">
-				<div class="Desc">
-					<h2>Livraison via [!BL::TypeLivraison!]</h2>
-					[IF [!L::NumColis!]!=]Le numéro de votre colis est [!L::NumColis!]<br />[/IF]
-					[IF [!BL::AdresseLivraisonAlternative!]]
-						Pour <span class="nom">[!AdrLv::Civilite!] [!AdrLv::Prenom!] [!AdrLv::Nom!]</span><br />
-						à [!BL::ChoixLivraison!]<br />
-					[ELSE]
-						À <span class="nom">[!AdrLv::Civilite!] [!AdrLv::Prenom!] [!AdrLv::Nom!]</span><br />
-						[!AdrLv::Adresse!] <br />
-						[!AdrLv::CodePostal!] [!AdrLv::Ville!] [!AdrLv::Pays!]<br />
-					[/IF]	
-				</div>
-			</div></div>
+			<p>
+				<h2>Livraison via [!BL::TypeLivraison!]</h2>
+				[IF [!L::NumColis!]!=]Le numéro de votre colis est [!L::NumColis!]<br />[/IF]
+				[IF [!BL::AdresseLivraisonAlternative!]]
+					Pour <span class="nom">[!AdrLv::Civilite!] [!AdrLv::Prenom!] [!AdrLv::Nom!]</span><br />
+					à [!BL::ChoixLivraison!]<br />
+				[ELSE]
+					À <span class="nom">[!AdrLv::Civilite!] [!AdrLv::Prenom!] [!AdrLv::Nom!]</span><br />
+					[!AdrLv::Adresse!] <br />
+					[!AdrLv::CodePostal!] [!AdrLv::Ville!] [!AdrLv::Pays!]<br />
+				[/IF]
+			</p>
+		[ELSE]
+			//si pas de livraison alors retrait au magasin
+			<p>
+				Nos préparateurs ont reçu votre demande de préparation. <br />
+				Vous serez averti par email lorsque votre commande sera prête à être retirée dans notre officine. <br/>
+
+				Si vous avez des questions n'hésitez pas à nous contacter par mail ou par téléphone.
+
+
+			</p>
 		[/IF]
 	[/IF]
 
-	<div class="row-fluid LigneBoutons"><div class="span12">
+	<div class="row LigneBoutons"><div class="col-md-12">
 		<div class="pull-right">
 			<a href="/" class="button btn-red" >Je retourne à l'accueil</a>
 		</div>
@@ -129,5 +131,5 @@
 		</div>
 	</div></div>
 
-
+	</div>
 </div>
