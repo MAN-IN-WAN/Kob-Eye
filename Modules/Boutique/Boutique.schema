@@ -202,7 +202,7 @@
 		<FKEY card="0,1" data="Produit,Id" >ProduitId</FKEY>
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="Marque" driver="mysql"  AccessPoint="0" Dico="1" master="0"  Description="Marques" browseable="1"  Icon="/Skins/AdminV2/Img/IconAqua/Settings2.png"> 
+	<OBJECTCLASS title="Marque" driver="mysql"  AccessPoint="0" Dico="1" master="0"  Description="Marques"  stopPage="1" browseable="1"  Icon="/Skins/AdminV2/Img/IconAqua/Settings2.png">
 		<PROPERTIES searchOrder="1" description="Intitulé" type="varchar" length="100" special="multi" category="Descriptif" >Nom</PROPERTIES>
 		<PROPERTIES searchOrder="3" description="Actif" type="boolean" default="1"  category="Descriptif" list="9">Actif</PROPERTIES>
 		<PROPERTIES searchOrder="8" description="Description" type="bbcode" special="multi" category="Descriptif">Description</PROPERTIES>

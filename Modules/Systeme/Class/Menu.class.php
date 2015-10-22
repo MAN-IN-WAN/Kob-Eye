@@ -157,7 +157,7 @@ class Menu extends genericClass {
 							$o = genericClass::createInstance($inf["Module"],$c);
 							if ($inf['TypeSearch']=='Direct'){
 								//looking for childs
-								$out = array_merge($out,$o->getChildren($o->ObjectType));
+								$out = array_merge($out,$o->getChildren($o->ObjectType."/Display=1"));
 								//normalisation des elements
 								foreach ($out as $o){
 									$o->Titre = $o->getFirstSearchOrder();

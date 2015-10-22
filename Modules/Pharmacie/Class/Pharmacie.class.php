@@ -65,7 +65,7 @@ class Pharmacie extends Module
 
         //reinitialisation des Produits actifs
         $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=1");
-        $GLOBALS['Systeme']->Db[0]->query('UPDATE `'.MAIN_DB_PREFIX.'Boutique-Produit` SET Actif=0, Display=0');
+        //$GLOBALS['Systeme']->Db[0]->query('UPDATE `'.MAIN_DB_PREFIX.'Boutique-Produit` SET Actif=0, Display=0');
 
         while (!feof($f)) {
             //pour chaque ligne
@@ -96,7 +96,6 @@ class Pharmacie extends Module
             if (empty($query)) continue;
             $p = Sys::getOneData('Boutique', 'Produit/'.$query);
             if (is_object($p)){
-                echo "-> $i produit ".$p->Nom." ".$p->EAN." ".$p->CIP7." ".$p->CIP13." ";
 
                 //mise à jour des codes produit
                 if (empty($p->EAN))$p->EAN = $EAN;
@@ -106,6 +105,8 @@ class Pharmacie extends Module
                 //mise à jour des tarifs
                 $TTC = trim($l[4]);
                 $TTC = floatval(str_replace(',','.',$TTC));
+
+                echo "-> $i produit stock: ".$l[3]." Nom ".$p->Nom." tarif en ligne: ".$p->Tarif." TVA: ".trim($l[7])." tarif : ".$TTC." ean: ".$p->EAN." cip: ".$p->CIP7." cip13: ".$p->CIP13." ";
 
                 //mise à jour de la TVA
                 $TVA = trim($l[7]);
@@ -118,6 +119,9 @@ class Pharmacie extends Module
                 }elseif ($TVA=="10,00"){
                     $HT = $TTC/1.10;
                     $p->TypeTva = 3;
+                }elseif ($TVA=="2,10"){
+                    $HT = $TTC/1.021;
+                    $p->TypeTva = 4;
                 }
                 if ($p->Tarif!=$HT)
                     $p->setPriceForce($HT);
@@ -126,17 +130,21 @@ class Pharmacie extends Module
                 $ref = Sys::getOneData('Boutique','Produit/'.$p->Id.'/Reference');
                 $qte = intval(trim($l[3]));
                 if ($qte>0) {
-                    $p->Display = 1;
-                    $p->Actif = 1;
+                    $p->Display = true;
+                    $p->Actif = true;
+                    $p->StockReference = $qte;
                     $ref->Quantite = $qte;
+                    $ref->Actif = true;
                     $ref->Save(false);
                 }else{
-                    $ref->Quantite = 1;//$qte;
+                    $p->StockReference = 0;
+                    $ref->Quantite = 0;//$qte;
+                    $ref->Actif = false;
                     $ref->Save(false);
 
                     //on désactive le produit
-                    $p->Display = 1;
-                    $p->Actif = 1;
+                    $p->Display = 0;
+                    $p->Actif = 0;
                 }
 
                 //vérification de l'existence de la marque

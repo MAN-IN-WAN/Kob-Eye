@@ -601,7 +601,7 @@ class Client extends genericClass {
 			$lazone=ZoneFiscale::getZone($this->Pays,$this->CodePostal);
 		}
         if (!is_object($lazone)) return;
-		$tauxtva= Sys::getData('Fiscalite','ZoneFiscale/' .$lazone[0]->Id .'/TauxTva/Actif=1&Debut<='. time().'&Fin>='.time() );
+		$tauxtva= Sys::getData('Fiscalite','ZoneFiscale/' .$lazone->Id .'/TauxTva/Actif=1&Debut<='. time().'&Fin>='.time() );
 		$tabarray=array();
 		if (sizeof($tauxtva)) {
 			foreach ($tauxtva as $t) {

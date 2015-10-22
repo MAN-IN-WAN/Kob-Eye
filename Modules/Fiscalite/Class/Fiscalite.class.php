@@ -26,34 +26,61 @@ class Fiscalite extends Module {
 				$Ttx2=genericClass::createInstance('Fiscalite','TypeTva');
 				$Ttx2->Defaut=0;
 				$Ttx2->Nom='5.5';
+				$Ttx2->Actif=1;
 				$Ttx2->Save();
+				$Ttx3=genericClass::createInstance('Fiscalite','TypeTva');
+				$Ttx3->Defaut=0;
+				$Ttx3->Nom='10';
+				$Ttx3->Actif=1;
+				$Ttx3->Save();
+				$Ttx4=genericClass::createInstance('Fiscalite','TypeTva');
+				$Ttx4->Defaut=0;
+				$Ttx4->Nom='2.10';
+				$Ttx4->Actif=1;
+				$Ttx4->Save();
+			}else {
+				$Ttx= Sys::getData('Fiscalite','TypeTva/1');
+				$Ttx2= Sys::getData('Fiscalite','TypeTva/2');
+				$Ttx3= Sys::getData('Fiscalite','TypeTva/3');
+				$Ttx4= Sys::getData('Fiscalite','TypeTva/4');
 			}
-			$ZTz= Sys::getData('Fiscalite','ZoneFiscale/Default=1&');
-			$Ttx= Sys::getData('Fiscalite','TypeTva/Defaut=1&Actif=1');
-			$Ttx2= Sys::getData('Fiscalite','TypeTva/Defaut=0&Actif=1');
 			// cree les taux de tva par défaut pour cette zone
 			if (!Sys::getCount('Fiscalite','TauxTva/Actif=1&Debut<'. time().'&Fin>='.time())) {
 				$Tx=genericClass::createInstance('Fiscalite','TauxTva');
 				$Tx->Actif=1;
 				$Tx->Taux=20;
 				$Tx->Debut=time();
-				$Tx->Fin=time()+31536000;
-				$Tx->AddParent("Fiscalite/ZoneFiscale/" . $ZTz[0]->Id);	
-				$Tx->AddParent("Fiscalite/TypeTva/" . $Ttx[0]->Id);	
+				$Tx->Fin=time()+315360000;
+				$Tx->AddParent($Z);
+				$Tx->AddParent($Ttx);
 				$Tx->Save();
+
 				$Tx2=genericClass::createInstance('Fiscalite','TauxTva');
 				$Tx2->Actif=1;
 				$Tx2->Taux=5.5;
 				$Tx2->Debut=time();
-				$Tx2->Fin=time()+31536000;
-				$Tx2->AddParent("Fiscalite/ZoneFiscale/" .  $ZTz[0]->Id);	
-				$Tx2->AddParent("Fiscalite/TypeTva/" . $Ttx2[0]->Id);	
+				$Tx2->Fin=time()+315360000;
+				$Tx2->AddParent($Z);
+				$Tx2->AddParent($Ttx2);
 				$Tx2->Save();
-				
-			} else {
-				$tauxtva= Sys::getData('Fiscalite','TauxTva/Actif=1&'. time().'&Fin>='.time() );
-				$tauxtva->AddParent("Fiscalite/ZoneFiscale/" .  $ZTz[0]->Id);	
-				$tauxtva->Save();
+
+				$Tx3=genericClass::createInstance('Fiscalite','TauxTva');
+				$Tx3->Actif=1;
+				$Tx3->Taux=10;
+				$Tx3->Debut=time();
+				$Tx3->Fin=time()+315360000;
+				$Tx3->AddParent($Z);
+				$Tx3->AddParent($Ttx3);
+				$Tx3->Save();
+
+				$Tx4=genericClass::createInstance('Fiscalite','TauxTva');
+				$Tx4->Actif=1;
+				$Tx4->Taux=2.10;
+				$Tx4->Debut=time();
+				$Tx4->Fin=time()+315360000;
+				$Tx4->AddParent($Z);
+				$Tx4->AddParent($Ttx4);
+				$Tx4->Save();
 			}
 		}
 		return true;

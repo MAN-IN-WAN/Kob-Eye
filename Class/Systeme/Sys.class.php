@@ -1035,7 +1035,7 @@ class Sys extends Root{
 		echo '<?xml version="1.0" encoding="UTF-8"?>' . "\r\n";
 		echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">' . "\r\n";
 		$domain =Sys::$domain;
-		$pages = Sys::$Modules['Systeme']->callData("Systeme/Site/Domaine=$domain/Page/Publier=1&&Valid=1", '', 0, 1000);
+		$pages = Sys::$Modules['Systeme']->callData("Systeme/Site/Domaine=$domain/Page", '', 0, 100000);
 		if(is_array($pages)) foreach($pages as $page) {
 			echo "<url>";
 			echo "<loc>".$page['Url']."</loc>";
