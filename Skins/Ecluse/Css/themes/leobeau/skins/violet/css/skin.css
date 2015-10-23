@@ -173,11 +173,13 @@ header#header .topbar .container #header_nav .kenyan_coffee_rg{
 }
 
 /* HEADER LOGO */
-a#header_logo{
-	position: absolute;
-	width: 300px;
-	top:-50px;
-	padding:22px 0;
+@media (min-width: 767px) {
+    a#header_logo {
+        position: absolute;
+        width: 300px;
+        top: -50px;
+        padding: 22px 0;
+    }
 }
 
 /* Block centre */
@@ -356,9 +358,11 @@ li.lof-text > p {
 
 
 /*____________________________________________________________________________________________
-/                                                                                  Bootstrap*/
-.container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
-    width: 1100px;
+Bootstrap*/
+@media (min-width: 767px) {
+    .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
+        width: 1100px;
+    }
 }
 .well {
     min-height: 20px;

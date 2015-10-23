@@ -456,6 +456,8 @@
 		<PROPERTIES description="Montant TTC Livraison " type="float" format="2dec">MontantLivraison</PROPERTIES>
 		<PROPERTIES  searchOrder="2" description="Valide" type="boolean" default="0">Valide</PROPERTIES>
 		<PROPERTIES  searchOrder="3" description="Expedié" type="boolean" default="0">Expedie</PROPERTIES>
+        <PROPERTIES  searchOrder="3" description="Préparé" type="boolean" default="0">Prepare</PROPERTIES>
+        <PROPERTIES  searchOrder="3" description="Date préparation" type="date" default="0">PrepareLe</PROPERTIES>
 		<PROPERTIES description="Date Expédition" type="date" list="40">ExpedieLe</PROPERTIES>
 		<PROPERTIES  searchOrder="4" description="Payé" type="boolean" default="0">Paye</PROPERTIES>
 		<PROPERTIES  searchOrder="5" description="Panier courrant" type="boolean" default="0">Current</PROPERTIES>

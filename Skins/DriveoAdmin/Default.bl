@@ -92,8 +92,37 @@
 </div><!-- /.modal -->
 
 <script type="text/javascript">
+
+    //auto reload
+    var timeout = setInterval(reloadPage, 5000);
+    function reloadPage () {
+        //window.location.href = '/[!Query!]';
+        $.ajax({
+            url: '/[!Query!].htm?RELOAD=1',
+            context: $( '.main' )
+        }).done(function(data) {
+            $( '.main').html(data);
+            $( this ).addClass( 'active' );
+        });
+    }
+
+
+
   $(document).ready(function () {
-    $('.popup').click( function (e){
+      refresh();
+  });
+  function refresh() {
+      //popup confirm
+      $('.confirm').on('click',function (e) {
+          e.preventDefault();
+          var me = $( this );
+          bootbox.confirm(me.attr('data-confirm'), function(result) {
+              if (result){
+                  window.location.replace(me.attr('href'));
+              }
+          });
+      });
+      $('.popup').click( function (e){
       e.preventDefault();
       $('#modal-form').modal('show');
       //renseignement des contenus
@@ -161,7 +190,7 @@
           }
         });
     });
-  });
+  }
 </script>
 
 

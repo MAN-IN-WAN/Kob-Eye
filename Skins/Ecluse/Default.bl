@@ -46,9 +46,7 @@
 <div [IF [!Lien!]=] id="index"[/IF]>
 	<div id="page" class="clearfix">
 		[MODULE Systeme/Header]
-		//[IF [!Lien!]=]
-			[MODULE Systeme/Interfaces/SlideShow]
-		//[/IF]
+		[MODULE Systeme/Interfaces/SlideShow]
 		[MODULE Systeme/Interfaces/TopMessage]
 		[DATA]
 		[MODULE Systeme/Footer]

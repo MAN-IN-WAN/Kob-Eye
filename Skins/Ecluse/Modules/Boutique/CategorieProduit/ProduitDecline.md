@@ -254,45 +254,44 @@
 			<div id="more_info_block" class="clear row-fluid">
 				<div>
 					<ul id="more_info_tabs" class="idTabs idTabsShort clearfix">
-						[STORPROC Boutique/Produit/[!Prod::Id!]/Donnee/Type=Caracteristique+Type=Documentation+Type=Descriptif|CAR|0|1|Ordre|ASC]
+						[STORPROC Boutique/Produit/[!Prod::Id!]/Donnee/Type=Caracteristique+Type=Documentation+Type=Descriptif|CAR|0|10|Ordre|ASC]
 							<li>
-								<a id="more_info_tab_more_info" href="#idTab1">__DESCRIPTIF__</a>
+//                                <a id="more_info_tab_more_info" href="#idTab[!Pos!]">__DESCRIPTIF__</a>
+                                <a id="more_info_tab_more_info" href="#idTab[!Pos!]">[!CAR::TypeCaracteristique!]</a>
 							</li>
 						[/STORPROC]
-						[STORPROC Boutique/Produit/[!Prod::Id!]/Donnee/Type=Fichier+Type=Lien|CAR|0|1|Ordre|ASC]
-							<li>
-								<a id="more_info_tab_more_info" href="#idTab2">__FICHIERS__</a>
-							</li>
-						[/STORPROC]
-						[STORPROC Boutique/Produit/[!Prod::Id!]/Donnee/Type=Video|CAR|0|1|Ordre|ASC]
-							<li>
-								<a id="more_info_tab_more_info" href="#idTab3">__MEDIAS__</a>
-							</li>
-						[/STORPROC]
+						//[STORPROC Boutique/Produit/[!Prod::Id!]/Donnee/Type=Fichier+Type=Lien|CAR|0|1|Ordre|ASC]
+						//	<li>
+						//		<a id="more_info_tab_more_info" href="#idTab2">__FICHIERS__</a>
+						//	</li>
+						//[/STORPROC]
+						//[STORPROC Boutique/Produit/[!Prod::Id!]/Donnee/Type=Video|CAR|0|1|Ordre|ASC]
+						//	<li>
+						//		<a id="more_info_tab_more_info" href="#idTab3">__MEDIAS__</a>
+						//	</li>
+						//[/STORPROC]
 					</ul>
 					<div id="more_info_sheets" class="sheets align_justify">
 						<!-- full description -->
-						[STORPROC Boutique/Produit/[!Prod::Id!]/Donnee/Type=Caracteristique+Type=Documentation+Type=Descriptif|CAR|0|1|Ordre|ASC]
-							<div id="idTab1" class="rte">
-								[LIMIT 0|100]
+						[STORPROC Boutique/Produit/[!Prod::Id!]/Donnee/Type=Caracteristique+Type=Documentation+Type=Descriptif|CAR|0|10|Ordre|ASC]
+							<div id="idTab[!Pos!]" class="rte">
 								[!CAR::Valeur!]
-								[/LIMIT]
 							</div>
 						[/STORPROC]
-						[STORPROC Boutique/Produit/[!Prod::Id!]/Donnee/Type=Fichier+Type=Lien|CAR|0|1|Ordre|ASC]
-							<div id="idTab2" class="rte">
-								[LIMIT 0|100]
-								<a href="/[!CAR::Fichier!]">[!CAR::Valeur!]</a>
-								[/LIMIT]
-							</div>
-						[/STORPROC]
-						[STORPROC Boutique/Produit/[!Prod::Id!]/Donnee/Type=Video|CAR|0|1|Ordre|ASC]
-							<div id="idTab3" class="rte">
-								[LIMIT 0|100]
-								[!CAR::Fichier!]
-								[/LIMIT]
-							</div>
-						[/STORPROC]
+						//[STORPROC Boutique/Produit/[!Prod::Id!]/Donnee/Type=Fichier+Type=Lien|CAR|0|1|Ordre|ASC]
+						//	<div id="idTab2" class="rte">
+						//		[LIMIT 0|100]
+						//		<a href="/[!CAR::Fichier!]">[!CAR::Valeur!]</a>
+						//		[/LIMIT]
+						//	</div>
+						//[/STORPROC]
+						//[STORPROC Boutique/Produit/[!Prod::Id!]/Donnee/Type=Video|CAR|0|1|Ordre|ASC]
+						//	<div id="idTab3" class="rte">
+						//		[LIMIT 0|100]
+						//		[!CAR::Fichier!]
+						//		[/LIMIT]
+						//	</div>
+						//[/STORPROC]
 						<!-- Customizable products -->
 
 					</div>
@@ -350,7 +349,7 @@
                                                                                         </div>
                                                                                         <span class="online_only"></span>
                 
-                                                                                        <a class="button ajax_add_to_cart_btn btn-protector" rel="ajax_id_product_1" href="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=cart&add=&id_product=1&token=c72340620966cb9ae8dcccbd3dd03a3b" title="__ADD_TO_CART__">__ADD_TO_CART__</a>
+                                                                                        <a class="button ajax_add_to_cart_btn btn-protector" rel="ajax_id_product_1" href="[!Prod::getUrl()!]" title="__ADD_TO_CART__">__ADD_TO_CART__</a>
                 
                                                                                 </div>
                 <!--
