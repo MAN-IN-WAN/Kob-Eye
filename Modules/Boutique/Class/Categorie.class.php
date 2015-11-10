@@ -611,33 +611,39 @@ class BoutiqueCategorie extends genericClass {
 
                     //content_usage
                     $content_usage='';
-                    if (sizeof($prod('div#tabs-1'))&&is_object($prod('div#tabs-1')[0]))
-                        $content_usage = $prod('div#tabs-1')[0]->getPlainText();
+                    $pt = $prod('div#tabs-1');
+                    if (sizeof($pt)&&is_object($pt[0]))
+                        $content_usage = $pt[0]->getPlainText();
 
                     //content_precautions
                     $content_precautions='';
-                    if (sizeof($prod('div#tabs-2'))&&is_object($prod('div#tabs-2')[0]))
-                        $content_composition = $prod('div#tabs-2')[0]->getPlainText();
+                    $pt = $prod('div#tabs-2');
+                    if (sizeof($pt)&&is_object($pt[0]))
+                        $content_composition = $pt[0]->getPlainText();
 
                     //$contre_indications
                     $contre_indications='';
-                    if (sizeof($prod('div#tabs-3'))&&is_object($prod('div#tabs-3')[0]))
-                        $contre_indications = $prod('div#tabs-3')[0]->getPlainText();
+                    $pt = $prod('div#tabs-3');
+                    if (sizeof($pt)&&is_object($pt[0]))
+                        $contre_indications = $pt[0]->getPlainText();
 
                     //effets_indesirables
                     $effets_indesirables='';
-                    if (sizeof($prod('div#tabs-5'))&&is_object($prod('div#tabs-5')[0]))
-                        $effets_indesirables = $prod('div#tabs-5')[0]->getPlainText();
+                    $pt = $prod('div#tabs-5');
+                    if (sizeof($pt)&&is_object($pt[0]))
+                        $effets_indesirables = $pt[0]->getPlainText();
 
                     //composition
                     $composition='';
-                    if (sizeof($prod('div#tabs-6'))&&is_object($prod('div#tabs-6')[0]))
-                        $composition = $prod('div#tabs-6')[0]->getPlainText();
+                    $pt = $prod('div#tabs-6');
+                    if (sizeof($pt)&&is_object($pt[0]))
+                        $composition = $pt[0]->getPlainText();
 
                     //content_notice
                     $content_notice='';
-                    if (sizeof($prod('div#tabs-18'))&&is_object($prod('div#tabs-18')[0]))
-                        $content_notice = $prod('div#tabs-18 iframe')[0]->src;
+                    $pt = $prod('div#tabs-18');
+                    if (sizeof($pt)&&is_object($pt[0]))
+                        $content_notice = $pt[0]->src;
 
                     //$content_notice = $prod->find('div#content_notice')[0]->plaintext;
                     //parent
@@ -882,13 +888,15 @@ class BoutiqueCategorie extends genericClass {
 
                       //content_usage
                       $content_usage='';
-                      if (sizeof($prod('div#tabs-1'))&&is_object($prod('div#tabs-1')[0]))
-                          $content_usage = $prod('div#tabs-1')[0]->getPlainText();
+                    $pt =  $prod('div#tabs-1');
+                      if (sizeof($pt)&&is_object($pt[0]))
+                          $content_usage = $pt[0]->getPlainText();
 
                       //content_composition
                       $content_composition='';
-                      if (sizeof($prod('div#tabs-2'))&&is_object($prod('div#tabs-2')[0]))
-                          $content_composition = $prod('div#tabs-2')[0]->getPlainText();
+                    $pt = $prod('div#tabs-2');
+                      if (sizeof($pt)&&is_object($pt[0]))
+                          $content_composition = $pt[0]->getPlainText();
 
                       //$content_notice = $prod->find('div#content_notice')[0]->plaintext;
                       //parent

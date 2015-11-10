@@ -141,6 +141,7 @@
             <li role="presentation"><a href="#2words" aria-controls="2words" role="tab" data-toggle="tab">Expressions de 2 mots</a></li>
             <li role="presentation"><a href="#3words" aria-controls="3words" role="tab" data-toggle="tab">Expressions de 3 mots</a></li>
             <li role="presentation"><a href="#random" aria-controls="random" role="tab" data-toggle="tab">10 réponses au hasard ( [!NbR!] Réponses au total)</a></li>
+            <!--<li role="presentation"><a href="#dev" aria-controls="dev" role="tab" data-toggle="tab">Développement</a></li>-->
         </ul>
 
 
@@ -185,12 +186,39 @@
                 </script>
             </div>
             <div role="tabpanel" class="tab-pane" id="random">
-                [STORPROC Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur!=|R|[!Utils::Random([!NbR:-10!])!]|10]
-                <div class="well">
-                    <p>[!R::Valeur!]</p>
+                <a href=""  class="btn btn-primary refreshverbatim pull-right" style="margin-top: -37px;">10 autres réponses</a>
+                <div class="verbatim">
+
                 </div>
-                [/STORPROC]
+                <script>
+                    //initialisation
+                    $('.refreshverbatim').click(function (e){
+                        e.preventDefault();
+                        getReponse();
+                    });
+                    function getReponse() {
+                        $.ajax({
+                            url: '/Projets/[!P::Id!]/Session/*/Donnee/[!CD::Id!]/VerbatimStats.htm',
+                            context: $( '.verbatim' )
+                        }).done(function(data) {
+                            $( '.verbatim').html(data);
+                        });
+                    }
+                    getReponse();
+                </script>
             </div>
+//            <div role="tabpanel" class="tab-pane" id="dev">
+//                [STORPROC Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur!=|R|0|1000]
+//                <div class="well">
+//                    [STORPROC Formation/TypeQuestion/Reponse/[!R::Id!]|TQ][/STORPROC]
+//                    [STORPROC Formation/Question/TypeQuestion/[!TQ::Id!]|Q][/STORPROC]
+//                    [STORPROC Formation/Equipe/Reponse/[!R::Id!]|E][/STORPROC]
+//                    [STORPROC Formation/Session/Equipe/[!E::Id!]|S][/STORPROC]
+//                    <h3>[!R::Valeur!]</h3>
+//                    <p> TQ: [!TQ::Id!] Q: [!Q::Nom!] E: [!E::Numero!] S: [!S::Nom!] [DATE d/m/Y][!S::Date!][/DATE]</p>
+//                </div>
+//                [/STORPROC]
+//            </div>
         </div>
 
         <script>

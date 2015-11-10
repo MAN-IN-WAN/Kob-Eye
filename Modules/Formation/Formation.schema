@@ -119,6 +119,7 @@
     </OBJECTCLASS>
     <OBJECTCLASS title="SynchroHisto" driver="mysql" Dico="1" Description="Historique de synchro" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
         <PROPERTIES type="varchar" searchOrder="1" category="Intitulé">Description</PROPERTIES>
+        <PROPERTIES type="text" category="Intitulé">Data</PROPERTIES>
         <FKEY card="1,1" data="Boitier,Id" category="Intitulé" description="Historique">Boitier</FKEY>
     </OBJECTCLASS>
 </SCHEMA>

@@ -1,0 +1,15 @@
+[INFO [!Query!]|I]
+[STORPROC [!I::Historique!]|H|0|1]
+[STORPROC [!H::Module!]/[!H::DataSource!]/[!H::Value!]|P|0|1][/STORPROC]
+[/STORPROC]
+[STORPROC [!Query!]|CD|0|1][/STORPROC]
+[STORPROC [!CD::getParents(TypeQuestion)!]|TQ|0|1][/STORPROC]
+[STORPROC [!TQ::getParents(Question)!]|Q|0|1][/STORPROC]
+[COUNT Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur!=|NbR]
+[STORPROC Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur!=|R|[!Utils::random([!NbR:-10!])!]|12]
+    [IF [!Utils::parseInt([!R::Valeur!])!]!=[!R::Valeur!]]
+    <div class="well">
+        [!R::Valeur!]
+    </div>
+    [/IF]
+[/STORPROC]

@@ -12,7 +12,6 @@ class Connection extends Root{
 	var $FirstUrl;		//Premiere url html
 	var $Utlisateur;	//id de l'utilisateur connecté
 	var $Referent;		//Referent de la connexion
-	var $Record;		//Object Connexion
 	var $SessId="";
 	var $login;
 	var $pass;
@@ -66,7 +65,7 @@ class Connection extends Root{
 			$this->LoadLoginVars();
 			if ($this->DetectUser()) {
 				//On genere l id de session
-				$this->SessId = $this->genSessId($this->login,$this->pass,$this->Record->Id);
+				$this->SessId = $this->genSessId($this->login,$this->pass,Sys::$Session->Id);
 				//Creation Session
 				$this->DemarreAuthSession();
 				//Enregistrement des variable
@@ -89,10 +88,10 @@ class Connection extends Root{
 		}
 
         //On enregistre la connexion
-		if (is_object($this->Record)&&ADD_CONNECT){
-			$this->Record->Set("Utilisateur",Sys::$User->Id);
+		if (is_object(Sys::$Session)&&ADD_CONNECT){
+			Sys::$Session->Set("Utilisateur",Sys::$User->Id);
 			$GLOBALS["Systeme"]->Log->log("UTILISATEUR ".Sys::$User->Id);
-			$this->Record->Save();
+			Sys::$Session->Save();
 		}else $GLOBALS["Systeme"]->Log->log("ERROR CONNEXION");
 
     }
@@ -143,6 +142,10 @@ class Connection extends Root{
 			$this->SessId  = $_GET[PHP_SESSION_NAME];
 			$t=true;
 		}
+		if (isset($_POST["logkey"])&& $_POST["logkey"]!="" ) {
+			$this->SessId  = $_POST["logkey"];
+			$t=true;
+		}
 		if ($t) return true ;else  return false;
 	}
 
@@ -152,9 +155,9 @@ class Connection extends Root{
 	//Initialisation de la session prive
 	function DemarreAuthSession() {
 		//On recupere le numero de l'utilisateur
-		$this->configAuthSession($this->Record->Utilisateur);
+		$this->configAuthSession(Sys::$Session->Utilisateur);
 		//On enregistre le numero de session
-		$this->Record->Session = $this->SessId;
+		Sys::$Session->Session = $this->SessId;
 		session_id($this->SessId);
 		session_start();
 	}
@@ -206,7 +209,7 @@ class Connection extends Root{
 		$temp = "dddd".$id."dddd".$temp;
 		$sessid = $temp;
 		session_id($sessid);
-		$this->Record->Set("Session",$sessid);
+		Sys::$Session->Set("Session",$sessid);
 		$this->SessId = $sessid;
 		return $sessid;
 	}
@@ -240,7 +243,7 @@ class Connection extends Root{
 		//Configuration de la session
 		session_name("PHPSESSID");
 		//Emplacement de sauvegarde du fichier de session
-		$Path = ROOT_DIR."/Home/".$Id."/.sessions";
+		$Path = ROOT_DIR."/Home/".Sys::$User->Id."/.sessions";
 		if (!file_exists($Path)) Root::mk_dir($Path,0755);
 		session_save_path($Path);
 	}
@@ -285,7 +288,7 @@ class Connection extends Root{
 		}
 		session_destroy();
 		setcookie ("PHPSESSID", "", time()-60000);
-		$this->SessId = $this->genSessId($this->login,$this->pass,$this->Record->Id);
+		$this->SessId = $this->genSessId($this->login,$this->pass,Sys::$Session->Id);
 		//Creation Session
 		$this->DemarreAuthSession();
 		$_SESSION = $OldSession;
@@ -296,8 +299,8 @@ class Connection extends Root{
 		if (!$this->DetectSessions()&&Sys::$User->Public){
 			//Creation de la session
 			$this->initPublicSession();
-			$this->Record->Session = $this->SessId;
-			$this->Record->Save();
+			Sys::$Session->Session = $this->SessId;
+			Sys::$Session->Save();
 		}
 		$_SESSION[$Nom] = serialize($Valeur);
 		$GLOBALS["Systeme"]->RegisterVar($Nom,$Valeur);
@@ -316,7 +319,7 @@ class Connection extends Root{
 			$this->SessionPublicToPrivate();
 		}
 		//On enregistre les modifications de la connexion
-		$this->Record->Save();
+		Sys::$Session->Save();
 	}
 	//Destruction de la session prive
 	function DestroySess() {
@@ -381,7 +384,7 @@ class Connection extends Root{
 	//------------------------------------------------------------//
 	//Detection automatique de la langue
 	function DetectLanguage() {
-		$LangueSite=$this->Record->LangueSite;
+		$LangueSite=Sys::$Session->LangueSite;
 		//Detection automatique de la langue
 		$Temp = $GLOBALS["Systeme"]->Conf->get("GENERAL::LANGUAGE");
 		foreach ($Temp as $Tit=>$Lang){
@@ -406,10 +409,10 @@ class Connection extends Root{
 				$LangueSite = $GLOBALS["Systeme"]->GetVars["SwitchLanguage"];
 			}
 		}
-		if (!empty($LangueSite)&&$this->Record->LangueSite!=$LangueSite) $this->Record->LangueSite = $LangueSite;
+		if (!empty($LangueSite)&&Sys::$Session->LangueSite!=$LangueSite) Sys::$Session->LangueSite = $LangueSite;
 
 		//Verification de la définition dans la connexion
-		$GLOBALS["Systeme"]->CurrentLanguage = $this->Record->LangueSite;
+		$GLOBALS["Systeme"]->CurrentLanguage = Sys::$Session->LangueSite;
 	}
 
 	//Recherche connexion
@@ -449,10 +452,10 @@ class Connection extends Root{
 				if (isset($Results[0])&&is_array($Results[0])){
 					//Connexion existante
 					$GLOBALS["Systeme"]->Log->log("RECUP CONNEXION ".$this->SessId);
-					$this->Record = genericClass::createInstance("Systeme",$Results[0]);
-					if (preg_match("#\/(.*)\.[^\.]*?$#",$this->Record->LastUrl,$Out))
+					Sys::$Session = genericClass::createInstance("Systeme",$Results[0]);
+					if (preg_match("#\/(.*)\.[^\.]*?$#",Sys::$Session->LastUrl,$Out))
 						$this->LastUrl = $Out[1];
-					else $this->LastUrl = $this->Record->LastUrl;
+					else $this->LastUrl = Sys::$Session->LastUrl;
 				}else{
 					//Destruction de la session et deconnexion
 					$GLOBALS["Systeme"]->Log->log("PERTE CONNEXION ",$this->SessId);
@@ -460,35 +463,35 @@ class Connection extends Root{
 					$this->SessId="";
 				}
 			}
-			if (!isset($this->Record)){
+			if (!isset(Sys::$Session)){
 				//Recuperation d'une connexion publique
 				$query="Systeme/Connexion/Langue=".$this->Langue."&Domaine=".Sys::$domain."&Navigateur=".addslashes($this->Navigateur)."&Ip=".$this->Ip."&tmsEdit>".(time()-(CONNECT_TIMEOUT*60))."&Session=";
 				$Results = Sys::$Modules['Systeme']->callData($query,false,0,1);
 				if (isset($Results[0])&&is_array($Results[0])){
 					//Connexion existante
-					$this->Record = genericClass::createInstance("Systeme",$Results[0]);
+					Sys::$Session = genericClass::createInstance("Systeme",$Results[0]);
 				}
 			}
 			//Creation d'une nouvelle connexion
-			if (!isset($this->Record)){
+			if (!isset(Sys::$Session)){
 				//Creation de la connexion
-				$this->Record = genericClass::createInstance("Systeme","Connexion");
-				if (isset($this->Ref))$this->Record->Set("Referent",$this->Ref);
-				$this->Record->Set("FirstUrl",Sys::$link);
-				$this->Record->Set("Domaine",Sys::$domain);
-				$this->Record->Set("Ip",$this->Ip);
-				$this->Record->Set("Langue",$this->Langue);
-				$this->Record->Set("Host",$this->Host);
-				$this->Record->Set("Navigateur",$this->Navigateur);
+				Sys::$Session = genericClass::createInstance("Systeme","Connexion");
+				if (isset($this->Ref))Sys::$Session->Set("Referent",$this->Ref);
+				Sys::$Session->Set("FirstUrl",Sys::$link);
+				Sys::$Session->Set("Domaine",Sys::$domain);
+				Sys::$Session->Set("Ip",$this->Ip);
+				Sys::$Session->Set("Langue",$this->Langue);
+				Sys::$Session->Set("Host",$this->Host);
+				Sys::$Session->Set("Navigateur",$this->Navigateur);
 			}
 			//Enregistrement de la session
-			$this->Record->Save();
+			Sys::$Session->Save();
 			//Configuration de la connexion
-			$this->Record->Set("Session",$this->SessId);
-			//$this->Record->Set("LastUrl",$_SERVER["REQUEST_URI"]);
+			Sys::$Session->Set("Session",$this->SessId);
+			//Sys::$Session->Set("LastUrl",$_SERVER["REQUEST_URI"]);
 		}
 		$GLOBALS["Chrono"]->stop("GET Connexion");
-		return $this->Record;
+		return Sys::$Session;
 	}
 
 	function close () {
@@ -501,8 +504,8 @@ class Connection extends Root{
 			}
 		}
 		if (ADD_CONNECT){
-			if(defined('LOG_CONNECTION')&&LOG_CONNECTION)$this->Record->Logs.=date('d/m/Y H:m:i',time())." :: ".$this->Record->LastUrl."\r\n";
-			$this->Record->Save();
+			if(defined('LOG_CONNECTION')&&LOG_CONNECTION)Sys::$Session->Logs.=date('d/m/Y H:m:i',time())." :: ".Sys::$Session->LastUrl."\r\n";
+			Sys::$Session->Save();
 			//On supprime les connexions perimees
 			$query="Systeme/Connexion/tmsEdit<".(time()-CONNECT_TIMEOUT);
 			$Results = Sys::$Modules['Systeme']->callData($query,false,0,500);
@@ -552,7 +555,7 @@ class Connection extends Root{
 				$this->DetectLanguage();
 				//CAS RECUP CACHE SESSION
 				$User = Sys::$User;
-				$this->Record->Utilisateur = $User->Id;
+				Sys::$Session->Utilisateur = $User->Id;
 				//Detection langue force
 				if (isset($GLOBALS["Systeme"]->GetVars["SwitchLanguage"])) {
 					Sys::$User = $this->initUser($User);
@@ -663,7 +666,7 @@ class Connection extends Root{
 			//On verifie le mot de passe dans  la classe generique
 			if (isset($User)&&is_object($User)&&$User->Actif&&(!$User->DateExpiration||$User->DateExpiration>=time())) {
 				Sys::$User = $this->initUser($User);
-				$this->Record->Utilisateur = $User->Id;
+				Sys::$Session->Utilisateur = $User->Id;
 				if (isset($GLOBALS["Systeme"]->GetVars["SwitchLanguage"])) {
 					$L = $GLOBALS["Systeme"]->Conf->get("GENERAL::LANGUAGE");
 					if (is_array($L))foreach ($L as $k=>$la)if ($la["TITLE"]==$GLOBALS["Systeme"]->CurrentLanguage){
@@ -748,7 +751,7 @@ class Connection extends Root{
  		}
 		$GLOBALS["Chrono"]->stop("INIT DEFAULT USER");
 		Sys::$User->Public = 1;
-		$this->Record->Utilisateur = Sys::$User->Id;
+		Sys::$Session->Utilisateur = Sys::$User->Id;
 
 	}
 
@@ -772,7 +775,7 @@ class Connection extends Root{
 		if ($this->DetectSess()) $this->DestroySess();
 		if ($this->DetectAuth()) $this->DestroyAuth();
 		$GLOBALS["Systeme"]->Log->log("*** DECONNEXION *** ");
-		if (is_object($this->Record))$this->Record->Delete();
+		if (is_object(Sys::$Session))Sys::$Session->Delete();
 		$this->Disconnected = true;
 		return;
 	}
@@ -782,7 +785,7 @@ class Connection extends Root{
 		if ($this->DetectSess()) $this->DestroySess();
 		if ($this->DetectAuth()) $this->DestroyAuth();
 		$GLOBALS["Systeme"]->Log->log("*** DECONNEXION *** ");
-		if (is_object($this->Record))$this->Record->Delete();
+		if (is_object(Sys::$Session))Sys::$Session->Delete();
 		$this->Disconnected = true;
 		header("Location: http://".Sys::$domain."/");
 		die();
@@ -808,6 +811,17 @@ class Connection extends Root{
 				$R[$K]->Menus = Connection::recursivMenu($M["Menus"],$R[$K]);
 		}
 		return $R;
+	}
+	/**
+	 * startConnexion
+	 * initialize Connexio and User from connexion object
+	 * @param Object Connexion
+	 */
+	static function startConnection($o) {
+		$GLOBALS["Systeme"]->Connection->SessId = $o->Session;
+		Sys::$Session = $o;
+        $GLOBALS["Systeme"]->Connection->DemarreAuthSession();
+		Sys::$User = $GLOBALS["Systeme"]->Connection->initUser($o->Utilisateur);
 	}
 
 }

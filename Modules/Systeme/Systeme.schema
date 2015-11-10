@@ -145,10 +145,10 @@
 		<PROPERTIES type="file" length="255" searchOrder="2" special="multi" category="Informations">Fichier</PROPERTIES>
 		<FKEY card="1,1" data="Menu,Id" >MenuId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Connexion" driver="mysql" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Tasks.png">
+	<OBJECTCLASS title="Connexion" driver="mysql" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Tasks.png" Class="Modules/Systeme/Class/Connexion.class.php">
 		<PROPERTIES type="varchar" length="16" searchOrder="1" category="Connexion">Ip</PROPERTIES>
 		<PROPERTIES type="varchar" length="200" category="Connexion">Host</PROPERTIES>
-		<PROPERTIES type="varchar" length="200" category="Connexion">Session</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" searchOrder="2" category="Connexion">Session</PROPERTIES>
 		<PROPERTIES type="varchar" length="25" category="Informations">Langue</PROPERTIES>
 		<PROPERTIES type="varchar" length="200" category="Informations">Navigateur</PROPERTIES>
 		<PROPERTIES type="varchar" length="200" category="Informations">Referent</PROPERTIES>

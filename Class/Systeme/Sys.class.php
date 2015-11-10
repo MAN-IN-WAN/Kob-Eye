@@ -22,6 +22,7 @@ class Sys extends Root{
 
 	//properties
 	var $Connection;
+	static $Session;
 	static $User;
 	var $Menus;
 	var $Driver;
@@ -474,7 +475,7 @@ class Sys extends Root{
 					//ON definie les variables d environnements
 					$Skin = new Skin();
 					$this->CurrentSkin=$Skin; 
-					$this->Connection->Record->LastUrl = '/'.$this->Lien.'.'.$this->type;
+					Sys::$Session->LastUrl = '/'.$this->Lien.'.'.$this->type;
 					$data = "";
 					$this->AnalyseVars();
 					Parser::Init();
@@ -566,7 +567,7 @@ class Sys extends Root{
 					$name = $Temp[sizeof($Temp)-1];
 					$this->output_file($file,$name);
 				}else{
-					if ($this->Lien!='')$this->Connection->Record->LastUrl = '/'.$this->Lien;
+					if ($this->Lien!='')Sys::$Session->LastUrl = '/'.$this->Lien;
 					Parser::Init();
 					$Skin = new Skin();
 					$this->CurrentSkin=$Skin; 

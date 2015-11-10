@@ -12,53 +12,24 @@
     </div>
 </div>
 
-<div class="container">
-    <div class="row black-transparent header">
-        <div class="col-md-3">
-        </div>
-        <div class="col-md-9" style="padding:0">
-            <div class=" white-plain" style="padding: 0 15px; overflow: hidden">
-                <div class="line-header text-right">
-                    <h3>Bienvenue sur le site <a href="/">ENG.SYSTEMS</a></h3>
-                </div>
-                <div class="line-header text-right">
-                    <p>Développement et Hébergement de vos solutions.</p>
-                </div>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="row black-transparent header">
+            <div class=" black-plain" style="padding: 0 25px 25px 310px; overflow: hidden">
             </div>
-            [COMPONENT Systeme/Bootstrap.MegaMenu]
-        </div>
-    </div>
-</div>
-
-<section class="barreblanche barre">
-    <div class="container">
-        <div class="row">
-            <div class="customhtml leo-customhtml-ptop  ">
-                <div class="block_content clearfix">
-                    <div class="container-fluid">
-                        <div class="banner-welcome-wrap row clearfix">
-                            <div class="banner-welcome col-md-6">
-
-                                <p>Ouverture du nouveau site internet de la pharmacie de Castanet ! <br>
-                                    Venez découvrir nos nouveaux services !</p>
-
-                            </div>
-                            <div class="tel-adresse col-md-3">
-                                <a href="tel:0466644835" class="btn btn-success btn-large btn-block pull-right"><b>Tel: 0466644835</b></a>
-                            </div>
-                            <div class="tel-adresse col-md-3">
-                                <a title="itinéraire" onclick="javascript:itineraire('Route de Sauve 30900 Nimes');" href="#" class="btn btn-warning pull-right btn-block btn-large"><b>Itinéraire depuis votre position</b></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="line-header text-right">
+                <h3><a href="/">ENG.SYSTEMS</a></h3>
             </div>
         </div>
     </div>
+</nav>
+<section class="barre">
 </section>
 
+<div id="left-column">
 
-<div class="container">
+</div>
+<div id="main">
     <div class="body">
         [DATA]
     </div>

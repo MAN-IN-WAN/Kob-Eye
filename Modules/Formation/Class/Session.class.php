@@ -437,9 +437,9 @@ class FormationSession extends genericClass {
      *
      */
     public function reception() {
-        $json = file_get_contents('php://input');
+        $tmpjson = file_get_contents('php://input');
         try {
-            $json = json_decode ($json);
+            $json = json_decode ($tmpjson);
             //recherche de la session
             $sess = Sys::getOneData('Formation', 'Session/Date='.$json->date);
             if (is_object($sess)){
@@ -475,6 +475,7 @@ class FormationSession extends genericClass {
             //ajout du commentaire de synchro
             $h = genericClass::createInstance('Formation','SynchroHisto');
             $h->Description = date('d/m/Y H:i:s').' Synchro session '.$sess->Nom.' OK from '.$_SERVER['REMOTE_ADDR'];
+            $h->Data = $tmpjson;
             $h->addParent($boitier);
             $h->Save();
             return true;

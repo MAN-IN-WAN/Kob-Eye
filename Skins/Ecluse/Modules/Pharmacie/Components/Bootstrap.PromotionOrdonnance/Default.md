@@ -7,7 +7,7 @@
         <h2 style="text-align: center;font-weight:600;">Mon ordonnance à distance</h2>
         <p style="text-align: center">Simple et rapide pour gagner du temps! <br />
             Comment faire ?</p>
-        <a class="btn btn-block btn-primary" href="/[!Systeme::getMenu(Pharmacie/Ordonnance)!]">Envoyer mon ordonnance</a>
+        <a class="btn btn-block btn-primary" href="/Services/[!Systeme::getMenu(Pharmacie/Ordonnance)!]">Envoyer mon ordonnance</a>
     </div>
 </div>
 <!-- /Block tags module -->

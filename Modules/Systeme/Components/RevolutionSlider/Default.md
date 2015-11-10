@@ -1,6 +1,16 @@
-<script type='text/javascript' src='/Tools/Js/RevolutionSlider/slider/jquery.themepunch.revolution.min.js'></script>
-<script type='text/javascript' src='/Tools/Js/RevolutionSlider/revslider.js'></script>
+[HEADER]
+<!-- RS5.0 Main Stylesheet -->
+<link rel="stylesheet" type="text/css" href="/Tools/Js/RevolutionSlider-5.0/css/settings.css">
 
+<!-- RS5.0 Layers and Navigation Styles -->
+<link rel="stylesheet" type="text/css" href="/Tools/Js/RevolutionSlider-5.0/css/layers.css">
+<link rel="stylesheet" type="text/css" href="/Tools/Js/RevolutionSlider-5.0/css/navigation.css">
+
+[/HEADER]
+
+<!-- RS5.0 Core JS Files -->
+<script type="text/javascript" src="/Tools/Js/RevolutionSlider-5.0/js/jquery.themepunch.tools.min.js?rev=5.0"></script>
+<script type="text/javascript" src="/Tools/Js/RevolutionSlider-5.0/js/jquery.themepunch.revolution.min.js?rev=5.0"></script>
 
 <!--
 	#################################

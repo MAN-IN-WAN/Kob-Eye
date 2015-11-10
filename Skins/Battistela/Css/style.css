@@ -37,6 +37,9 @@ h3{
     float: left;
     margin: 0 0 0 15px;
 }
+.well {
+    margin: 0;
+}
 /**
 PAGE
 **/
@@ -51,11 +54,13 @@ HEADER
 **/
 header{
     box-shadow: 0 0px 49px 1px rgba(0, 0, 0, 0.2);
+    -webkit-background-size: cover;
+    background-size: cover;
 }
 .header{
     padding-top: 50px;
     padding-bottom: 50px;
-    background-color: rgba(255,255,255,0.8);
+    background-color: rgba(255,255,255,0.4);
 }
 img.logo{
     box-shadow: 0 0px 49px 1px rgba(0, 0, 0, 0.4);
@@ -171,7 +176,8 @@ LIGNE ICONES
     font-size: 6em;
 }
 .ligne-marge{
-    margin-top: 50px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 /**
 BLOCS

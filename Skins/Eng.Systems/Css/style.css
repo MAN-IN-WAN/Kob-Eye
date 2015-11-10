@@ -11,6 +11,7 @@ body {
     line-height: 16px;
     font-weight: 400;
     overflow: auto;
+    margin-left: 300px;
 }
 
 h1,h2,h3,h4,h5,h6 {
@@ -90,7 +91,110 @@ h1,h2,h3,h4,h5,h6 {
     -o-transition: opacity .5s ease-out;
     transition: opacity .5s ease-out;
 }
+/************************************************
+STRUCTURE
+*************************************************/
+h3 a{
+    color: white;
+    font-size: 18px;
+}
+.header h3{
+    margin: 10px;
+}
+#left-column{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 300px;
+    bottom: 0;
+    background-color: rgba(255,255,255,0.8);
+}
+/*#main{
+    position: fixed;
+    top: 350px;
+    left: 300px;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255,255,255,1);
+}*/
+/************************************************
+ANIMATIONS
+ ************************************************/
+@keyframes initHeader{
+    0% {
+        margin-top: -500px;
+    }
+    75% {
+        margin-top: -500px;
+    }
+    100% {
+        margin-top: 0;
+    }
+}
+.header.init{
+    animation-name: initHeader;
+    animation-iteration-count: 1;
+    animation-timing-function: ease;
+    animation-duration: 5s;
+}
+/** leftColumn **/
+@keyframes initLeftColumn{
+    0% {
+        left: -300px;
+    }
+    80% {
+        left: -300px;
+    }
+    100% {
+        left: 0px;
+    }
+}
+#left-column.init{
+    animation-name: initLeftColumn;
+    animation-iteration-count: 1;
+    animation-timing-function: ease;
+    animation-duration: 5s;
+}
+/** main **/
+@keyframes initMain{
+    0% {
+        margin-top: 100%;
+    }
+    90% {
+        margin-top: 100%;
+    }
+    100% {
+        margin-top: 0%;
+    }
+}
+#main.init{
+    animation-name: initMain;
+    animation-iteration-count: 1;
+    animation-timing-function: ease;
+    animation-duration: 5s;
+}
+/** box **/
+@keyframes initBox{
+    0% {
+        -webkit-transform: translateZ( -10000px ) rotateY( 90deg ) rotateX( 180deg );
+        -moz-transform: translateZ( -10000px ) rotateY( 90deg ) rotateX( 180deg );
+        -o-transform: translateZ( -10000px ) rotateY( 90deg ) rotateX( 180deg );
+        transform: translateZ( -10000px ) rotateY( 90deg ) rotateX( 180deg );
 
+    }
+    25% {
+        -webkit-transform: rotateY(0deg) rotateX(0deg) translateZ(  0px );
+        -moz-transform: rotateY(0deg) rotateX(0deg) translateZ(  0px );
+        -o-transform: rotateY(0deg) rotateX(0deg) translateZ(  0px );
+        transform: rotateY(0deg) rotateX(0deg) translateZ(  0px );
+    }
+    75% {
+        -webkit-transform: rotateY(360deg);
+        -moz-transform: rotateY(360deg);
+        -o-transform: rotateY(360deg);
+        transform: rotateY(360deg);
+    }
+}
 /************************************************
 WEBSITE
  ************************************************/
@@ -107,33 +211,16 @@ a:hover {
     margin-top: 20px;
 }
 .header{
-    min-height: 135px;
-}
-.header.init{
-    animation-name: initHeader;
-    animation-iteration-count: 1;
-    animation-timing-function: ease;
-    animation-duration: 5s;
+    min-height: 75px;
+    margin: 0;
 }
 .body{
     min-height: 450px;
     margin-top: 10px;
     margin-bottom: 50px;
 }
-.body.init{
-    animation-name: initBody;
-    animation-iteration-count: 1;
-    animation-timing-function: ease;
-    animation-duration: 5s;
-}
 .footer{
     min-height: 135px;
-}
-.footer.init{
-    animation-name: initHeader;
-    animation-iteration-count: 1;
-    animation-timing-function: ease;
-    animation-duration: 5s;
 }
 .navbar-default {
     background-color: transparent;
@@ -178,18 +265,17 @@ a:hover {
     min-height: 50px;
     padding: 1px 0 14px 0;
 }
-.barre.init{
-    animation-name: initBarre;
-    animation-iteration-count: 1;
-    animation-timing-function: ease;
-    animation-duration: 5s;
-}
+
 /************************************************
  COULEURS
  ************************************************/
 .white-transparent {
     background-color: rgba(255,255,255,0.75);
     color: #231f20;
+}
+.black-plain {
+    background-color: rgba(0,0,0,0.75);
+    color: #white;
 }
 .black-transparent {
     background-color: rgba(0,0,0,0.35);
@@ -202,6 +288,14 @@ a:hover {
 /************************************************
  LOGO FLIP
  ************************************************/
+
+.logo-container.init{
+    animation-fill-mode: forwards;
+    animation-name: initContainer;
+    animation-iteration-count: 1;
+    animation-timing-function: ease;
+    animation-duration: 5s;
+}
 
 
 /* proxy range */
@@ -274,22 +368,14 @@ a:hover {
     width: 300px;
     height: 300px;
     position: absolute;
-    margin: -150px 0 0 -150px;
-    top: calc(0% + 20px);
+    /*margin: -150px 0 0 -150px;*/
+    top: 0;
     margin-top: 0;
-    left: calc( 50% - 435px );    /*border: 1px solid #CCC;*/
+    left: 0;
     -webkit-perspective: 1200px;
     -moz-perspective: 1200px;
     -o-perspective: 1200px;
     perspective: 1200px;
-}
-
-.logo-container.init{
-    animation-fill-mode: forwards;
-    animation-name: initContainer;
-    animation-iteration-count: 1;
-    animation-timing-function: ease;
-    animation-duration: 5s;
 }
 
 #box {
@@ -438,78 +524,3 @@ a:hover {
     transform: translateZ( -100px ) rotateX(   90deg );
 }
 
-/*=============================================
-[ KeyFrame Animations]
-==============================================*/
-/** init **/
-@keyframes initContainer{
-    0% {
-        top: 50%;
-        left: 50%;
-        margin: -150px 0 0 -150px;
-    }
-    75% {
-        top: 50%;
-        left: 50%;
-        margin: -150px 0 0 -150px;
-    }
-    100% {
-        top: calc(0% + 20px);
-        margin-top: 0;
-        left: calc( 50% - 435px );
-    }
-}
-@keyframes initBox{
-    0% {
-        -webkit-transform: translateZ( -10000px ) rotateY( 90deg ) rotateX( 180deg );
-        -moz-transform: translateZ( -10000px ) rotateY( 90deg ) rotateX( 180deg );
-        -o-transform: translateZ( -10000px ) rotateY( 90deg ) rotateX( 180deg );
-        transform: translateZ( -10000px ) rotateY( 90deg ) rotateX( 180deg );
-
-    }
-    25% {
-        -webkit-transform: rotateY(0deg) rotateX(0deg) translateZ(  0px );
-        -moz-transform: rotateY(0deg) rotateX(0deg) translateZ(  0px );
-        -o-transform: rotateY(0deg) rotateX(0deg) translateZ(  0px );
-        transform: rotateY(0deg) rotateX(0deg) translateZ(  0px );
-    }
-    75% {
-        -webkit-transform: rotateY(360deg);
-        -moz-transform: rotateY(360deg);
-        -o-transform: rotateY(360deg);
-        transform: rotateY(360deg);
-    }
-}
-@keyframes initHeader{
-    0% {
-        margin-top: -500px;
-    }
-    75% {
-        margin-top: -500px;
-    }
-    100% {
-        margin-top: 0;
-    }
-}
-@keyframes initBody{
-    0% {
-        margin-top: 3500px;
-    }
-    75% {
-        margin-top: 3500px;
-    }
-    100% {
-        margin-top: 10px;
-    }
-}
-@keyframes initBarre{
-    0% {
-        margin-top: 3500px;
-    }
-    75% {
-        margin-top: 3500px;
-    }
-    100% {
-        margin-top: 350px;
-    }
-}

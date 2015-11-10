@@ -97,12 +97,12 @@
                             </div>
                             <div class="panel-footer">
                                 [IF [!S::EnCours!]]
-                                <span class="pull-left">Démarrée le [DATE m/d/Y H:i:s][!S::Date!][/DATE]</span>
+                                <span class="pull-left">Démarrée le [DATE d/m/Y H:i:s][!S::Date!][/DATE]</span>
                                 [ELSE]
                                 [IF [!S::Termine!]]
-                                <span class="pull-left">Terminée depuis le [DATE m/d/Y H:i:s][!S::TermineLe!][/DATE]</span>
+                                <span class="pull-left">Session éxécutée le [DATE d/m/Y H:i:s][!S::Date!][/DATE]</span>
                                 [ELSE]
-                                <div>Prévue pour le [DATE m/d/Y][!S::Date!][/DATE]</div>
+                                <div>Prévue pour le [DATE d/m/Y][!S::Date!][/DATE]</div>
                                 [/IF]
                                 [/IF]
                                 <!--<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>-->

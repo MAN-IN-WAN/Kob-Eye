@@ -109,6 +109,23 @@ VERSION=1.0.6
 if [ ! -e "/root/maj-$VERSION.tar.gz" ]; then
     maj $VERSION
 
+fi
+
+#MAJ 1.0.7
+#Suppression du mode production de l'app
+VERSION=1.0.7
+if [ ! -e "/root/maj-$VERSION.tar.gz" ]; then
+    maj $VERSION
+
     //on redemarre
     reboot
 fi
+
+#MAJ BDD
+#RESET BDD
+#if [ ! -e "/root/last.sql" ]; then
+#    wget -O /root/last.sql http://erdf.e-p.consulting/last.tar.gz
+#    mysql -u root -pzH34Y6u5 -e "DROP DATABASE formation;"
+#    mysql -u root -pzH34Y6u5 -e "CREATE DATABASE formation;"
+#    mysql -u root -pzH34Y6u5 formation < /root/last.sql
+#fi
