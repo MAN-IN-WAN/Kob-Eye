@@ -13,6 +13,6 @@
 </div>
 
 <div [IF [!I_Inscription!]=]style="display:none;"[/IF] id="NewClient">
-    <h1>Création du compte </h1>
+    <h1>Création du compte</h1>
     [MODULE Systeme/Login/Inscription?Redirect=[!Redirect!]]
 </div>

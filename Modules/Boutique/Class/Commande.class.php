@@ -111,6 +111,7 @@ class Commande extends genericClass {
 		//Execution des comportements
 		if ($this -> Avalider) {
 			$this -> applyCommande();
+            $this -> sendMailAcheteur();
 		}
 		if ($this -> ADevalider) {
 			$this -> discardCommande();
@@ -947,10 +948,47 @@ class Commande extends genericClass {
 
 	}
 
+    /**
+     * setExpedie
+     * Expedie la commande
+     */
+    public function setExpedie() {
+        $Mag= Magasin::getCurrentMagasin();
+        $this -> Expedie = true;
+        $this -> ExpedieLe = time();
+        $this -> Save();
+
+        $this -> sendMailAcheteur();
+    }
+
+    /**
+     * setPrepare
+     * Prepare la commande
+     */
+    public function setPrepare() {
+        $Mag= Magasin::getCurrentMagasin();
+        $this -> Prepare = true;
+        $this -> PrepareLe = time();
+        $this -> Save();
+
+        $this -> sendMailAcheteur();
+
+    }
+    /**
+     * setCloture
+     * Cloture la commande
+     */
+    public function setCloture() {
+        $Mag= Magasin::getCurrentMagasin();
+        $this -> Cloture = true;
+        $this -> ClotureLe = time();
+        $this -> Save();
+
+    }
 
 
 
-	/**
+    /**
 	 * applyCommande
 	 * Applique la commande
 	 * Destocke les produits
@@ -1069,48 +1107,82 @@ class Commande extends genericClass {
 		$CiviliteLiv = $this -> AdrLiv -> Civilite . " " . $this -> AdrLiv -> Prenom . ' <span style="text-transform:uppercase">' . $this -> AdrLiv -> Nom . '</span>';
 
 		$Lacommande = "";
-		$this -> getLignesCommande();
-		if (!sizeof($this -> LignesCommandes)) {
-			$Lacommande = "Erreur";
-		} else {
-			$Lacommande = "<br /><br />Récapitulatif de votre commande  : <br /><br /><table>";
-			foreach ($this->LignesCommandes as $l) :
-				$Lacommande .= "<tr><td>" . $l -> Quantite . "</td>";
-				$Lacommande .= "<td>" . $l -> Titre . "</td></tr>";
-			endforeach;
-			$Lacommande .= "</table>";
-		}
+        $this->getLignesCommande();
+        if (!sizeof($this->LignesCommandes)) {
+            $Lacommande = "Erreur";
+        } else {
+            $Lacommande = "<br /><br /><h2>Récapitulatif de votre commande  : </h2><br /><br /><table width='100%'>";
+            $Lacommande .= "<tr bgcolor='#B1599e' padding='5'><td></td><td><font color='#ffffff'>Quantite</font></td><td><font color='#ffffff'>Titre</font></td><td><font color='#ffffff'>Tarif TTC</font></td></tr>";
+            foreach ($this->LignesCommandes as $l) :
+                //récupération du produit
+                $r = $l->getParents('Reference');
+                $p = $r[0]->getParents('Produit');
+                $Lacommande .= "<tr height='200'><td><img src='http://" .Sys::$domain.'/'. $p[0]->Image . ".limit.200x200.jpg' /></td>";
+                $Lacommande .= "<td><h3>" . $l->Quantite . "</h3> </td>";
+                $Lacommande .= "<td><h3>" . $l->Titre . "</h3></td>";
+                $Lacommande .= "<td><h2>" . $l->MontantTTC . " € TTC</h2></td></tr>";
+            endforeach;
+            $Lacommande .= "
+                <tr bgcolor='#B1599e' padding='5'>
+                    <td colspan='2'></td>
+                    <td><font color='#ffffff'>TOTAL</font></td>
+                    <td><font color='#ffffff'><h2>$this->MontantTTC € TTC</h2></font></td>
+                </tr>
+            </table>";
+        }
 
-		if (isset($this -> BonLivraison)&&is_object($this -> BonLivraison)&&$this -> BonLivraison -> AdresseLivraisonAlternative) {
+		/*if (isset($this -> BonLivraison)&&is_object($this -> BonLivraison)&&$this -> BonLivraison -> AdresseLivraisonAlternative) {
 			$AdressLiv = "<br />Pour " . $CiviliteLiv . " à <br /> " . $this -> BonLivraison -> ChoixLivraison . "<br /> ";
 		} else {
 			$this -> getAdresseLivraison();
 			$AdressLiv = "<br />" . $CiviliteLiv . "<br />" . $this -> AdrLiv -> Adresse . " <br /> " . $this -> AdrLiv -> CodePostal . "  " . $this -> AdrLiv -> Ville . " " . $this -> AdrLiv -> Pays;
-		}
+		}*/
 		require_once ("Class/Lib/Mail.class.php");
 		$Mail = new Mail();
-		$Mail -> Subject("Confirmation achat sur " . $this->Magasin->Nom);
+        if ($this->Valide&&!$this->Prepare&&!$this->Expedie&&!$this->Cloture) {
+            $Mail->Subject("Confirmation de commande sur " . $this->Magasin->Nom);
+        }elseif ($this->Valide&&$this->Prepare&&!$this->Expedie&&!$this->Cloture) {
+            $Mail->Subject("Confirmation de preparation de commande  " . $this->Magasin->Nom);
+        }elseif ($this->Valide&&$this->Prepare&&$this->Expedie&&!$this->Cloture) {
+            $Mail->Subject("Confirmation de retrait de commande  " . $this->Magasin->Nom);
+        }
 		//$Mail -> From($GLOBALS['Systeme'] -> Conf -> get('MODULE::SYSTEME::CONTACT'));
 		$Mail -> From( $this -> Magasin ->EmailContact );
 //		$Mail -> ReplyTo($GLOBALS['Systeme'] -> Conf -> get('MODULE::SYSTEME::CONTACT'));
 		$Mail -> ReplyTo($this -> Magasin ->EmailContact);
 		$Mail -> To($this -> Client -> Mail);
-	//	$Mail -> Bcc($GLOBALS['Systeme'] -> Conf -> get('MODULE::SYSTEME::CONTACT'));
+		$Mail -> Bcc($this -> Magasin ->EmailContact);
 	//	$Mail -> Bcc($GLOBALS['Systeme'] -> Conf -> get('MODULE::SYSTEME::CONTACTALPHA'));
 		$bloc = new Bloc();
-		$mailContent = "
-			Bonjour " . $Civilite . ",<br /><br />
-			Nous vous informons que votre commande N° " . $this -> RefCommande . " a bien été prise en compte.<br />
-			Vous pouvez d'ores et déjà vous rendre sur <a style='text-decoration:underline' href='" .  $this->Site->Domaine  . "/" . $GLOBALS['Systeme'] -> getMenu('Boutique/Mon-compte') . "'>votre espace client</a> et suivre l'évolution de votre commande.<br /><br />
-			Adresse de livraison de votre commande : " . $AdressLiv . "<br /><br /> " . $Lacommande . "<br /><br />Toute l'équipe de " . $this -> Magasin ->Nom . " vous remercie de votre confiance,<br />
-			<br />Pour nous contacter : " . $this -> Magasin ->EmailContact . " .";
-//			<br />Pour nous contacter : " . $GLOBALS['Systeme'] -> Conf -> get('MODULE::SYSTEME::CONTACT') . " .";
-		$bloc -> setFromVar("Mail", $mailContent, array("BEACON" => "BLOC"));
+        if ($this->Valide&&!$this->Prepare&&!$this->Expedie&&!$this->Cloture) {
+            $mailContent = "
+                Bonjour " . $Civilite . ",<br /><br />
+                Nous vous informons que votre commande N° " . $this->RefCommande . " a bien été prise en compte.<br />
+                Vous pouvez d'ores et déjà vous rendre sur <a style='text-decoration:underline' href='" . $this->Site->Domaine . "/" . $GLOBALS['Systeme']->getMenu('Boutique/Mon-compte') . "'>votre espace client</a> et suivre l'évolution de votre commande.<br /><br />
+                <br />Toute l'équipe de " . $this->Magasin->Nom . " vous remercie de votre confiance,<br />
+                <br />Pour nous contacter : " . $this->Magasin->EmailContact . " .".$Lacommande;
+        }elseif ($this->Valide&&$this->Prepare&&!$this->Expedie&&!$this->Cloture) {
+            $mailContent = "
+                Bonjour " . $Civilite . ",<br /><br />
+                Nous vous informons que votre commande N° " . $this->RefCommande . " a été préparée.<br />
+                Vous pouvez d'ores et déjà vous rendre à l'officine ".$this->Magasin->Nom." pour retirer et payer votre commande <br /><br />
+                Toute l'équipe de " . $this->Magasin->Nom . " vous remercie de votre confiance,<br />
+                <br />Pour nous contacter : " . $this->Magasin->EmailContact . ". ".$Lacommande;
+        }elseif ($this->Valide&&$this->Prepare&&$this->Expedie&&!$this->Cloture) {
+            $mailContent = "
+                Bonjour " . $Civilite . ",<br /><br />
+                Vous avez retiré votre commande N° " . $this->RefCommande . ".
+                Toute l'équipe de " . $this->Magasin->Nom . " vous remercie de votre confiance,<br />
+                <br />Pour nous contacter : " . $this->Magasin->EmailContact . " .".$Lacommande;
+        }
+
+        $bloc -> setFromVar("Mail", $mailContent, array("BEACON" => "BLOC"));
 		$Pr = new Process();
 		$bloc -> init($Pr);
 		$bloc -> generate($Pr);
 		$Mail -> Body($bloc -> Affich());
-		$Mail -> Send();
+        if (!$this->Cloture)
+		    $Mail -> Send();
 	}
 
 

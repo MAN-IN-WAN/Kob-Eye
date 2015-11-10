@@ -1,4 +1,3 @@
-
 <div class="FicheProduit">
     [STORPROC [!Query!]|Prod|0|1]
         [NORESULT]

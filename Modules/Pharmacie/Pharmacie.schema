@@ -29,16 +29,16 @@
 		<PROPERTIES type="varchar" searchOrder="2" category="Personne" obligatoire="1">Prenom</PROPERTIES>
 		<PROPERTIES type="email"  searchOrder="3" category="Personne" obligatoire="1">Email</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="4" category="Personne" obligatoire="1">Telephone</PROPERTIES>
-		<PROPERTIES type="image" category="Ordonnace" listWidth="150" obligatoire="1">Image</PROPERTIES>
-		<PROPERTIES type="int" searchOrder="5" category="Ordonnace" values="1::Non traitée,2::En cours de traitement,3::Traitée,4::Livrée,5::Litige" default="1">Etat</PROPERTIES>
+		<PROPERTIES type="image" category="Ordonnance" listWidth="150" obligatoire="1">Image</PROPERTIES>
+		<PROPERTIES type="int" searchOrder="5" category="Ordonnance" values="1::Non traitée,2::En cours de traitement,3::Traitée,4::Livrée,5::Litige" default="1">Etat</PROPERTIES>
 		<VIEW title="OrdonnanceList" default="1" filters="">
 			<OBJECTCLASS title="Ordonnance" select="">
 				<PROPERTIES type="varchar" list="5" searchOrder="1" category="Personne" obligatoire="1">Nom</PROPERTIES>
 				<PROPERTIES type="varchar" list="6" searchOrder="2" category="Personne" obligatoire="1">Prenom</PROPERTIES>
 				<PROPERTIES type="email" list="4" searchOrder="3" category="Personne" obligatoire="1">Email</PROPERTIES>
 				<PROPERTIES type="varchar" list="3" searchOrder="4" category="Personne" obligatoire="1">Telephone</PROPERTIES>
-				<PROPERTIES type="image" list="2" category="Ordonnace" listWidth="150" obligatoire="1">Image</PROPERTIES>
-				<PROPERTIES type="int" searchOrder="5"  list="1" category="Ordonnace" values="1::Non traitée,2::En cours de traitement,3::Traitée,4::Livrée,5::Litige" default="1">Etat</PROPERTIES>
+				<PROPERTIES type="image" list="2" category="Ordonnance" listWidth="150" obligatoire="1">Image</PROPERTIES>
+				<PROPERTIES type="int" searchOrder="5"  list="1" category="Ordonnance" values="1::Non traitée,2::En cours de traitement,3::Traitée,4::Livrée,5::Litige" default="1">Etat</PROPERTIES>
 				<PROPERTIES type="date" list="5" listWidth="100" listDescr="Date création">tmsCreate</PROPERTIES>
 				<PROPERTIES type="int" >Id</PROPERTIES>
 				<JOIN type="outer" title="Couleur" on="Etat" target="Id">

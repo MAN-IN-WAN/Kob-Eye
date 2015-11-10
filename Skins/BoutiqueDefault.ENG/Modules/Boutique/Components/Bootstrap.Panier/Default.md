@@ -47,8 +47,8 @@
             </div>
             <div id="cart_block_list" class="expanded">
                 <p id="cart-buttons">
-                    <a href="/[!Systeme::getMenu(Boutique/Commande/Etape1)!]" class="btn btn-protector btn-block" title="__VIEW_SHOPPING_CART__" rel="nofollow">__MY_CART__</a>
                     <a href="/[!Systeme::getMenu(Boutique/Commande/Etape2)!]" class="btn btn-success btn-block" title="Checkout" rel="nofollow"><span></span>__CHECKOUT__</a>
+                    <a href="/[!Systeme::getMenu(Boutique/Commande/Etape1)!]" class="btn btn-warning btn-block" title="__VIEW_SHOPPING_CART__" rel="nofollow">__MY_CART__</a>
                     <a href="/[!Systeme::getMenu(Boutique/Commande/Etape1)!]?Action=Vider" class="btn btn-danger btn-block" title="Checkout" rel="nofollow"><span></span>__EMPTY__</a>
                 </p>
             </div>
@@ -72,43 +72,32 @@
                             <h4 class="media-heading">[!Com::RefCommande!]</h4>
                             <span class="pull-right">[!Math::PriceV([!Com::MontantTTC!])!][!CurrentDevise::Sigle!]</span>
                             Date: [DATE d/m/Y][!Com::DateCommande!][/DATE]<br />
-                    [SWITCH [!Com::getStatus()!]|=]
-                        [CASE 1]
-                            <span class="badge badge-danger">Le paiement n'est pas effectué.</span>
-                        [/CASE]
-                        [CASE 2]
-                            <span class="badge badge-protector">Un paiement est en attente de validation.</span>
-                        [/CASE]
-                        [CASE 3]
-                            <span class="badge badge-protector">Le paiement a echoué.</span>
-                        [/CASE]
-                        [CASE 4]
-                            <span class="badge badge-success">En cours d'expédition.</span>
-                        [/CASE]
-                        [CASE 5]
-                            <span class="badge badge-success">En cours de livraison.</span>
-                        [/CASE]
-                        [CASE 6]
-                            <span class="badge badge-success">Commande archivée.</span>
-                        [/CASE]
-                    [/SWITCH]
+                            [IF [!Com::Prepare!]=0]
+                            <span class="badge badge-warning">En cours de préparation</span>
+                            [/IF]
+                            [IF [!Com::Expedie!]=&&[!Com::Prepare!]=1]
+                            <span class="badge badge-success">Commande préparée. En attente de retrait.</span>
+                            [/IF]
+                            [IF [!Com::Expedie!]=1&&[!Com::Prepare!]=1]
+                            <span class="badge badge-info">Commande retirée le [DATE d/m/Y à h:i:s][!Com::ExpedieLe!][/DATE].</span>
+                            [/IF]
                         </div>
                     </a>
                     [SWITCH [!Com::getStatus()!]|=]
                         [CASE 1]
-                        <a class="btn btn-success btn-block" href="/[!Systeme::getMenu(Boutique/Commande/Etape4)!]?Com=[!Com::RefCommande!]&action=paiement">Payer ma commande</a>
+                        //<a class="btn btn-success btn-block" href="/[!Systeme::getMenu(Boutique/Commande/Etape4)!]?Com=[!Com::RefCommande!]&action=paiement">Payer ma commande</a>
                         <a class="btn btn-danger btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]&Action=Annule">Annuler ma commande</a>
-                        <a class="btn btn-protector btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]&Action=Utiliser">Modifier ma commande</a>
+                        //<a class="btn btn-protector btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]&Action=Utiliser">Modifier ma commande</a>
                         [/CASE]
                         [CASE 2]
-                        <a class="btn btn-success btn-block" href="/[!Systeme::getMenu(Boutique/Commande/Etape4)!]?Com=[!Com::RefCommande!]&action=paiement">Payer ma commande</a>
+                        //<a class="btn btn-success btn-block" href="/[!Systeme::getMenu(Boutique/Commande/Etape4)!]?Com=[!Com::RefCommande!]&action=paiement">Payer ma commande</a>
                         <a class="btn btn-danger btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]&Action=Annule">Annuler ma commande</a>
-                        <a class="btn btn-protector btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]&Action=Utiliser">Modifier ma commande</a>
+                        //<a class="btn btn-protector btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]&Action=Utiliser">Modifier ma commande</a>
                         [/CASE]
                         [CASE 3]
-                        <a class="btn btn-success btn-block" href="/[!Systeme::getMenu(Boutique/Commande/Etape4)!]?Com=[!Com::RefCommande!]&action=paiement">Payer ma commande</a>
-                        <a class="btn btn-danger btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]&Action=Annule">Annuler ma commande</a>
-                        <a class="btn btn-protector btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]&Action=Utiliser">Modifier ma commande</a>
+                        //<a class="btn btn-success btn-block" href="/[!Systeme::getMenu(Boutique/Commande/Etape4)!]?Com=[!Com::RefCommande!]&action=paiement">Payer ma commande</a>
+                        //<a class="btn btn-danger btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]&Action=Annule">Annuler ma commande</a>
+                        //<a class="btn btn-protector btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]&Action=Utiliser">Modifier ma commande</a>
                         [/CASE]
                     [/SWITCH]
                     </li>
