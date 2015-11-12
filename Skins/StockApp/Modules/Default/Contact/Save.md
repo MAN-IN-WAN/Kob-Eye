@@ -1,0 +1,21 @@
+[OBJ Boutique|Contact|O]
+[METHOD O|Set]
+    [PARAM]Email[/PARAM]
+    [PARAM][!Email!][/PARAM]
+[/METHOD]
+[METHOD O|Set]
+    [PARAM]CodeBarre[/PARAM]
+    [PARAM][!CodeBarre!][/PARAM]
+[/METHOD]
+[METHOD O|Set]
+    [PARAM]Commentaire[/PARAM]
+    [PARAM][!Commentaire!][/PARAM]
+[/METHOD]
+[METHOD O|Set]
+    [PARAM]Quantite[/PARAM]
+    [PARAM][!Quantite!][/PARAM]
+[/METHOD]
+[METHOD O|Save][/METHOD]
+{
+    success: true
+}

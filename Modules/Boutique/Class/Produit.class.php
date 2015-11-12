@@ -122,6 +122,7 @@ class BoutiqueProduit extends genericClass
                 //génération de la première référence
                 $o = genericClass::createInstance('Boutique','Reference');
                 $o->Reference = $this->Reference;
+                $o->Quantite = $this->StockReference;
                 $o->AddParent($this);
                 $o->Save();
                 //klog::l('génération reference');
@@ -164,6 +165,19 @@ class BoutiqueProduit extends genericClass
         $this->Save(false);
     }
     /**
+     * Définie le tarif pour le produit et le force pour les références.
+     * @return    void
+     */
+    public function setStockForce($stock){
+        $this->StockReference = $stock;
+        // Récupération de tous les stocks
+        $refs = $this->getChildren('Reference');
+        if (is_array($refs)) foreach ($refs as $r) {
+            $r->Quantite = $stock;
+            $r->Save(false);
+        }
+    }
+    /**
      * Garde le prix minimum trouvé (mais non vide) dans les références et affecte au prix du produit.
      * @return    void
      */
@@ -197,16 +211,20 @@ class BoutiqueProduit extends genericClass
      */
     private function UpdateReferences()
     {
-        $this->StockReference = 0;
         $refs = $this->getChildren('Reference');
-        if (is_array($refs)) foreach ($refs as $reference) {
-            if ($reference->Tarif == 0 && $this->Tarif > 0) {
-                $reference->Tarif = $this->Tarif;
-                if ($this->TarifPack = 0 || $this->TarifPack = '') $reference->TarifPack = $this->Tarif;
-                $reference->Save(false);
+        if (is_array($refs)&&sizeof($refs)){
+            $this->StockReference = 0;
+            foreach ($refs as $reference) {
+                if ($reference->Tarif == 0 && $this->Tarif > 0) {
+                    $reference->Tarif = $this->Tarif;
+                    if ($this->TarifPack = 0 || $this->TarifPack = '') $reference->TarifPack = $this->Tarif;
+                    $reference->Save(false);
+                }
+                if (isset($reference->Quantite))
+                    $this->StockReference += $reference->Quantite;
             }
-            if (isset($reference->Quantite))
-                $this->StockReference += $reference->Quantite;
+        }else{
+            $this->genererReferences();
         }
     }
 

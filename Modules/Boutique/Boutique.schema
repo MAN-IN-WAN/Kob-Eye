@@ -99,7 +99,7 @@
 			<PROPERTIES mobile="1" searchOrder="1" description="Intitulé" type="varchar" length="100" special="multi" list="1">Nom</PROPERTIES>
 			<PROPERTIES mobile="1" obligatoire="1" unique="1" searchOrder="2" description="Référence" type="varchar" length="16" list="10">Reference</PROPERTIES>
 			<PROPERTIES mobile="1" searchOrder="5" description="Actif" type="boolean" default="1" list="9">Actif</PROPERTIES>
-			<PROPERTIES description="Description" type="html" special="multi" category="Descriptif">Description</PROPERTIES>
+            <PROPERTIES description="Description" type="html" special="multi" category="Descriptif">Description</PROPERTIES>
 			<PROPERTIES mobile="1" Order="20" description="Poids en kg 0.xxx" type="float" >Poids</PROPERTIES>
 			<PROPERTIES mobile="1" Order="21" description="Largeur en cm"      type="float" >Largeur</PROPERTIES>
 			<PROPERTIES mobile="1" Order="22" description="Hauteur en cm"      type="float" >Hauteur</PROPERTIES>
@@ -107,6 +107,7 @@
 			<PROPERTIES description="Accroche"  type="bbcode" special="multi" >Accroche</PROPERTIES>
 			<PROPERTIES mobile="1" description="Image" type="image" list="2">Image</PROPERTIES>
 		</CATEGORY>
+        <PROPERTIES description="Commentaire" type="text" category="Stock">Commentaire</PROPERTIES>
 		<PROPERTIES description="Compte comptable particuliers" type="varchar" length="16" category="Descriptif">CompteComptable</PROPERTIES>
 		<PROPERTIES description="Compte comptable professionnels" type="varchar" length="16" category="Descriptif">CompteComptablePro</PROPERTIES>
 		<PROPERTIES searchOrder="4" description="Coup de coeur" type="boolean" default="0" category="MisEnAvant" >Coeur</PROPERTIES>
@@ -657,7 +658,7 @@
 	</OBJECTCLASS>
 	
 	<OBJECTCLASS title="CodePromo" driver="mysql" AccessPoint="1" Dico="0" master="0" Description="CodePromo et Offre spéciale" Class="Modules/Boutique/Class/CodePromo.class.php"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" >
-		<PROPERTIES searchOrder="1" description="Code" 		type="varchar" lenght="50" >Code</PROPERTIES>
+		<PROPERTIES searchOrder="1" description="Code" 		type="varchar" length="50" >Code</PROPERTIES>
 		<PROPERTIES Order="10" description="Actif" 		type="boolean" default="1">Actif</PROPERTIES>
 		<PROPERTIES Order="10" description="Type d'offre" 		type="int" values="1::Code Promotion,2::Offre spéciale,3::Remise"  default="1">TypeOffre</PROPERTIES>
 		<PROPERTIES Order="20" description="Intitulé"    	type="text"    special="multi">Nom</PROPERTIES>
@@ -678,10 +679,17 @@
 		<FKEY card="1,n" data="Client,Id">ClientId</FKEY>
 		<FKEY card="1,n" data="Produit,Id">ProduitId</FKEY>
 	</OBJECTCLASS>
-	
-	<OBJECTCLASS title="Litige" driver="mysql" AccessPoint="0" master="0" Description="Litiges"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
-		<PROPERTIES Order="1" description="Descriptif"   type="text" >Description</PROPERTIES>
-		<PROPERTIES Order="2" description="Litige résolu"   type="boolean" >Resolu</PROPERTIES>
-	</OBJECTCLASS>
+
+    <OBJECTCLASS title="Litige" driver="mysql" AccessPoint="0" master="0" Description="Litiges"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+        <PROPERTIES Order="1" description="Descriptif"   type="text" >Description</PROPERTIES>
+        <PROPERTIES Order="2" description="Litige résolu"   type="boolean" >Resolu</PROPERTIES>
+    </OBJECTCLASS>
+
+    <OBJECTCLASS title="Contact" driver="mysql" AccessPoint="1" master="0" Description="Contact de vente"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+        <PROPERTIES Order="1" description="Email" searchOrder="1"  type="varchar" length="255" >Email</PROPERTIES>
+        <PROPERTIES Order="2" description="Code barre" searchOrder="2"  type="varchar" length="255">CodeBarre</PROPERTIES>
+        <PROPERTIES Order="3" description="Quantité" searchOrder="3"  type="int" default="1">Quantite</PROPERTIES>
+        <PROPERTIES Order="4" description="Commentaire" type="text" >Commentaire</PROPERTIES>
+    </OBJECTCLASS>
 	
 </SCHEMA>
