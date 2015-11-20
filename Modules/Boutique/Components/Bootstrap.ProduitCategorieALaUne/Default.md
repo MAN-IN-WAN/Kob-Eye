@@ -5,7 +5,7 @@
 	<h3 class="title_block">[!TITRE!]</h3>
 	<div class="block_content">
 		<div class="row-fluid">
-			<div class="htabs-title">
+			<div class="htabs-title hidden-xs">
 				<ul id="catProductsTabs" class="htabs">
 					//Liste des catégories
 					[STORPROC [!Magasin::getTopCategories()!]|Cat|0|5]

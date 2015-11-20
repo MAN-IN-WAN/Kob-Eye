@@ -55,10 +55,10 @@
         </div>
     </div>
 
+    //COMMANDES EN COURS
+    [STORPROC [!Cli::getPendingCommandes()!]|Com]
     <!-- MODULE Block cart -->
     <div class="block exclusive block_black">
-	//COMMANDES EN COURS
-	[STORPROC [!Cli::getPendingCommandes()!]|Com]
 		<h3 class="title_block">
 			__CURRENT_ORDER__
 		</h3>
@@ -104,14 +104,14 @@
                 [/LIMIT]
             </ul>
 		</div>
-	[/STORPROC]
     </div>
+    [/STORPROC]
 
 
+    //AUTRES PANIERS
+    [STORPROC [!Cli::getOtherPanier()!]|Com]
     <!-- MODULE Block cart -->
     <div class="block exclusive block_black">
-    //AUTRES PANIERS
-	[STORPROC [!Cli::getOtherPanier()!]|Com]
 		<h3 class="title_block"><a href="/[!Systeme::getMenu(Boutique/Commande/Etape1)!]" title="__VIEW_SHOPPING_CART__" rel="nofollow">
 			__OTHERS_CARTS__
 		</a></h3>
@@ -135,7 +135,7 @@
 					[/LIMIT]
 			</table>
 		</div>
-	[/STORPROC]
 	</div>
 	<!-- /MODULE Block cart -->
+    [/STORPROC]
 </form>

@@ -1,18 +1,18 @@
 
+[HEADER]
+<!-- RS5.0 Main Stylesheet -->
+<link rel="stylesheet" type="text/css" href="/Tools/Js/RevolutionSlider-5.0/css/settings.css">
+
+<!-- RS5.0 Layers and Navigation Styles -->
+<link rel="stylesheet" type="text/css" href="/Tools/Js/RevolutionSlider-5.0/css/layers.css">
+<link rel="stylesheet" type="text/css" href="/Tools/Js/RevolutionSlider-5.0/css/navigation.css">
+
+[/HEADER]
+
+<!-- RS5.0 Core JS Files -->
+<script type="text/javascript" src="/Tools/Js/RevolutionSlider-5.0/js/jquery.themepunch.tools.min.js?rev=5.0"></script>
+<script type="text/javascript" src="/Tools/Js/RevolutionSlider-5.0/js/jquery.themepunch.revolution.min.js?rev=5.0"></script>
 [STORPROC Boutique/Promotion/DateDebutPromo<[!TMS::Now!]&DateFinPromo>[!TMS::Now!]&Display=1&SliderEnable=1|S|0|100]
-    [HEADER]
-    <!-- RS5.0 Main Stylesheet -->
-    <link rel="stylesheet" type="text/css" href="/Tools/Js/RevolutionSlider-5.0/css/settings.css">
-
-    <!-- RS5.0 Layers and Navigation Styles -->
-    <link rel="stylesheet" type="text/css" href="/Tools/Js/RevolutionSlider-5.0/css/layers.css">
-    <link rel="stylesheet" type="text/css" href="/Tools/Js/RevolutionSlider-5.0/css/navigation.css">
-
-    [/HEADER]
-
-    <!-- RS5.0 Core JS Files -->
-    <script type="text/javascript" src="/Tools/Js/RevolutionSlider-5.0/js/jquery.themepunch.tools.min.js?rev=5.0"></script>
-    <script type="text/javascript" src="/Tools/Js/RevolutionSlider-5.0/js/jquery.themepunch.revolution.min.js?rev=5.0"></script>
 
     <!-- START REVOLUTION SLIDER 5.0 -->
     <div style="width:100%;margin:auto; overflow:hidden;margin-bottom: 20px;">

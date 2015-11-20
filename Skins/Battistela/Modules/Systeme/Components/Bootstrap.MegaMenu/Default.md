@@ -11,14 +11,11 @@
 						//déterminatio nde la couleur
                             [!Couleur:=orange!]
                             [IF [!Utils::modulo([!Pos!],2)!]=]
-                                [!Couleur:=marron!]
+                                [!Couleur:=bleu!]
                             [/IF]
-                            [IF [!Utils::modulo([!Pos!],4)!]=]
-								[!Couleur:=vert-fonce!]
-							[/IF]
                             [IF [!Utils::modulo([!Pos!],3)!]=]
-                                [!Couleur:=vert!]
-                            [/IF]
+								[!Couleur:=vert!]
+							[/IF]
 						[STORPROC [!M::getSubMenus()!]|M2|0|100|Ordre|ASC]
 						<li class="parent dropdown [!Couleur!]">
 							<a class="dropdown-toggle carre carre-[!Couleur!]" data-toggle="dropdown" href="/[!M::Url!]" onmouseover='$("#container[!M::Id!]").masonry({ "columnWidth": 250, "itemSelector": ".item-menu" });'><i class="fa fa-[!M::ClassCss!]"></i><p>[!M::Titre!]</p><b class="caret"></b></a>

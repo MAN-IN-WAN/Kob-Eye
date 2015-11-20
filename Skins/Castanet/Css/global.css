@@ -717,6 +717,7 @@ div.star_hover a, div.star a:hover { background-position: 0 -32px }
 		line-height: 28px;
 		padding: 10px;
 		position: relative;
+		float: right;
 	}
 	#header_right .nav-item:first-child .item-top{padding-right: 0;}
 	#header_right .nav-item .item-top {
@@ -773,7 +774,7 @@ topnavigation
 	margin-bottom: 15px;
 }
 
-#breadcrumb {    position: relative;}
+#breadcrumb {    position: relative;    padding: 0 10px;}
 .breadcrumb a{color: #6e6f70;}
 .breadcrumb {
 	background: none repeat scroll 0 0 transparent;
@@ -2469,6 +2470,6 @@ tr.subitem > td:first-child + td {
 #wishlistwraning button{margin-right: 10px;}
 #wishlistwraning{ display:none; position:fixed; top:250px; width:100%;  z-index:99999999999;  }
 .alert {
-    -webkit-box-shadow: 0 0 2px 2px #a78459;
-	box-shadow: 0 0 2px 2px #a78459;
+    -webkit-box-shadow: 0 0 2px 2px #888;
+	box-shadow: 0 0 2px 2px #888;
 }

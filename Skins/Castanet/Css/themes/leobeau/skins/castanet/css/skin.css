@@ -7,9 +7,6 @@
  */
 body{
 	/*background-image: url(../images/carbon.jpg);*/
-	background-color:#f4f4f4;
-	background-position: center 250px;
-	background-repeat: no-repeat;
 }
 .sidebar .block:nth-child(2n+1) .title_block, .dropdown-menu a:hover .menu-title, #header_right #search_block_top input.button, #header_logo ,
 .sidebar .block:nth-child(even) .title_block{
@@ -176,7 +173,7 @@ footer#footer section.footer div.overlay-kb {
 /*______________________________________________________________________________________________________________
 //                                                                                                       MENU */
 #page header#header .header .container .row-fluid{
-	background: #f4f4f4;
+	background: #fff;
 	color: #7D2A69;
 }
 
@@ -189,7 +186,7 @@ footer#footer section.footer div.overlay-kb {
 
 /* Top menu */
 header#header .topbar .container{
-	background: #f4f4f4;
+	background: #fff;
 	line-height:50px;
 	opacity: 0.9;
 }
@@ -204,11 +201,22 @@ header#header .topbar .container #header_nav .kenyan_coffee_rg{
 }
 
 /* HEADER LOGO */
-a#header_logo{
-	position: absolute;
-	width: 300px;
-	top:-50px;
-	padding:0;
+@media screen and (min-width: 768px){
+    a#header_logo{
+        position: absolute;
+        width:23.404255319148934%;
+        top:-50px;
+        padding:0;
+    }
+}
+@media screen and (max-width: 768px){
+    a#header_logo{
+        width: 30%;
+        padding:0;
+        top: -50px;
+        right: 0;
+        position: absolute;
+    }
 }
 
 /* Block centre */
@@ -410,9 +418,10 @@ input, textarea, .uneditable-input , .input-large, .input-xlarge{
     background-color: #eeeeee;
     border: 1px solid #ccc;
 }
-
-.container{
-    width: 1180px;
+@media screen and (min-width: 768px){
+    .container{
+        width: 1180px;
+    }
 }
 
 .nav-item .item-top {

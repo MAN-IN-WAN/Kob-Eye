@@ -9,6 +9,18 @@ div.carousel-inner > .item > img, div.carousel-inner > .item > a > img {
 	min-height:300px;
 }
 
+/**
+STRUCTURE
+**/
+@media screen  and (min-width: 767px) {
+    #data-container {
+        margin-top: 115px;
+    }
+
+    .sidebar {
+        margin-top: 155px;
+    }
+}
 /* BTN TEL ADRESSE */
 .tel-adresse .btn{
 	min-height:30px;

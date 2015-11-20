@@ -29,7 +29,7 @@
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 
 
-<script type="text/javascript" src="/Skins/[!Systeme::Skin!]/Js/jquery/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="/Tools/Js/Jquery/1.9.2/jquery.min.js"></script>
 <script type="text/javascript" src="/Skins/[!Systeme::Skin!]/Js/jquery.idTabs.js"></script>
 <script type="text/javascript" src="/Skins/[!Systeme::Skin!]/Js/jquery.jcarousel.js"></script>
 <script type="text/javascript" src="/Skins/[!Systeme::Skin!]/Js/jquery/plugins/autocomplete/jquery.autocomplete.js"></script>
@@ -44,13 +44,22 @@
 
 
 [MODULE Boutique/Produit/MajPanier]
-<div [IF [!Lien!]=] id="index"[/IF]>
+<div id="index">
 	<div id="page" class="clearfix">
 		[MODULE Systeme/Header]
-		[MODULE Systeme/Interfaces/SlideShow]
+		//[MODULE Systeme/Interfaces/SlideShow]
 		//[MODULE Systeme/Interfaces/TopMessage]
 		[DATA]
+		<div class="row-fluid block container">
+				<h3 class="title_block">Contactez-nous</h3>
+				<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2877.77452067799!2d4.316360315912075!3d43.839772979115345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12b42e0cd217e96b%3A0x3fd39c07715f1b5e!2sPharmacie+de+Castanet!5e0!3m2!1sfr!2sfr!4v1447949032886" width="100%" height="350" frameborder="0" style="border:0"></iframe>
+		</div>
+
+
+
 		[MODULE Systeme/Footer]
+
+		<!-- PLAN -->
 	</div>
 
 	<script type="text/javascript">

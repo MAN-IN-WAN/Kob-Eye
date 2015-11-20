@@ -18,7 +18,7 @@
                 <div class="col-md-9">
                     <div class="row" style="margin-bottom: 20px;">
                         <div class="col-md-4  carre-wrapper" style="padding:0;">
-                            <a class="carre carre-vert-fonce" href="/Mon-compte"><i class="fa fa-user-md"></i><p>Mon compte</p></a>
+                            <a class="carre carre-vert" href="/Mon-compte"><i class="fa fa-user-md"></i><p>Mon compte</p></a>
                             <a class="carre carre-orange" href="/Systeme/Deconnexion"><i class="fa fa-sign-out"></i><p>Se déconnecter</p></a>
                         </div>
                         <div class="col-md-8" style="padding:0;text-align: right">

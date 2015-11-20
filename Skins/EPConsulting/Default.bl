@@ -1,0 +1,17 @@
+[HEADER JS]Tools/Js/Jquery/1.9.2/jquery.min.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/global.js[/HEADER]
+
+<link href='https://fonts.googleapis.com/css?family=Catamaran:400,300,700,900,100' rel='stylesheet' type='text/css'>
+
+<!-- carte de fond -->
+<div id="map"></div>
+
+<!-- Contenu -->
+<div id="content">
+    [DATA]
+</div>
+
+
+<script>
+    var ep = new epconsulting('#map','#content');
+</script>
