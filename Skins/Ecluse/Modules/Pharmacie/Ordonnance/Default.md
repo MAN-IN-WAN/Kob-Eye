@@ -85,6 +85,12 @@
                                                                             </span>
 									</div>
 							    </div>
+							<div class="control-group  [IF [!Form_Commentaire_Error!]]error[/IF]">
+								<label class="control-label" for="Form_Commentaire">Commentaire(s)</label>
+								<div class="controls">
+									<textarea id="Form_Image" name="Form_Commentaire" id="Form_Commentaire" >[!Form_Commentaire!]</textarea>
+								</div>
+							</div>
 						</div>
 				    </div>
 			[IF [!CAPTCHA_ACTIF!]]

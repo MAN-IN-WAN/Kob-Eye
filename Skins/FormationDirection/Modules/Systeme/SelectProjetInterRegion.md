@@ -34,7 +34,7 @@
                 </div>
                 <div class="panel-footer">
                     [IF [!NbS!]>0]
-                    [STORPROC Formation/Projet/[!S::Id!]/Session/Region.Region([!Region!])|Ls|0|1|tmsEdit|DESC][/STORPROC]
+                    [STORPROC Formation/InterRegion/[!Region!]/Region/*/Session/Projet.ProjetId([!S::Id!])|Ls|0|1|tmsEdit|DESC][/STORPROC]
                     <div>Dernière synchronisation le [DATE d/m/Y][!Ls::tmsEdit!][/DATE]</div>
                     [ELSE]
                     <div>Pas de session</div>

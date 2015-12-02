@@ -1,0 +1,5 @@
+<SCHEMA>
+	<OBJECTCLASS title="QrCode" driver="mysql" AccessPoint="1" Icon="[None]" Description="QrCode">
+		<PROPERTIES type="varchar" searchOrder="1" length="100" obligatoire="1" category="Intitulé" description="Désignation">Titre</PROPERTIES>
+	</OBJECTCLASS>
+</SCHEMA>

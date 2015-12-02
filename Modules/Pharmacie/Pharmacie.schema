@@ -27,6 +27,7 @@
 		</FUNCTION>
 		<PROPERTIES type="varchar" searchOrder="1" category="Personne" obligatoire="1">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" category="Personne" obligatoire="1">Prenom</PROPERTIES>
+		<PROPERTIES type="text" category="Personne" >Commentaire</PROPERTIES>
 		<PROPERTIES type="email"  searchOrder="3" category="Personne" obligatoire="1">Email</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="4" category="Personne" obligatoire="1">Telephone</PROPERTIES>
 		<PROPERTIES type="image" category="Ordonnance" listWidth="150" obligatoire="1">Image</PROPERTIES>
