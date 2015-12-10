@@ -432,7 +432,7 @@ class mysqlDriver extends ObjectClass{
 		}
 		if (DEBUG_ALL_BDD&&$Er[0]!="00000")echo "\r\nSQL ERROR ".Module::$LAST_QUERY."<br />\r\n".$sql."<br />\r\n".$Er[2]."<br />\r\n-------------------------------<br />\r\n";
 		//if ($O->Module=="Boutique"&&$O->titre=="Categorie")Klog::l("\r\nMYSQL DEBUG <br />\r\n".$sql."<br />\r\n".$Er[2]."<br />\r\n-------------------------------<br />\r\n");
-        //if ($O->Module=="Systeme"&&$O->titre=="Menu")echo "\r\nSQL ERROR ".Module::$LAST_QUERY."<br />\r\n".$sql."<br />\r\n".$Er[2]."<br />\r\n-------------------------------<br />\r\n";
+       // if ($O->Module=="Boutique"&&$O->titre=="Marque")echo "\r\nSQL ERROR ".Module::$LAST_QUERY."<br />\r\n".$sql."<br />\r\n".$Er[2]."<br />\r\n-------------------------------<br />\r\n";
 		//if (DEBUG_ALL_BDD&&$Er[0]!="00000") Klog::l("\r\nMYSQL DEBUG <br />\r\n".Module::$LAST_QUERY."<br />\r\n-------------------------------<br />\r\n");
 		if (AUTO_COMPLETE_LANG&&$GLOBALS["Systeme"]->CurrentLanguage!=$GLOBALS["Systeme"]->DefaultLanguage&&!Sys::$User->Admin){
 			foreach ($GLOBALS["Systeme"]->Conf->get("GENERAL::LANGUAGE") as $Cod=>$Lang) {

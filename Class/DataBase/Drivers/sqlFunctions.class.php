@@ -543,7 +543,7 @@ class sqlFunctions{
 				if (is_numeric($Out[3]) || $Out[3] == "NULL")
 					$Data['Condition'][] = "$Pref" . $Out[1] . $Out[2] . "" . $Out[3] . "";
 				else {
-					$Data['Condition'][] = "$Pref" . $Out[1] . $Out[2] . "'" . addslashes($Out[3]) . "'";
+					$Data['Condition'][] = "$Pref" . $Out[1] . $Out[2] . "'" . addslashes(Utils::KEStripSlashes($Out[3])) . "'";
 
 				}
 				$Made = 1;
@@ -570,7 +570,7 @@ class sqlFunctions{
 				$Data['Lien'] = "OR";
 				//Suppression des pluriels
 				//$c = preg_replace("#(.*)(s|e)$#","$1",$Out[3]);
-				$mc= $Out[3];
+				$mc= Utils::KEStripSlashes($Out[3]);
 				$likein = "";
 				//Pour la recherche plaintext ajouter searchType="plaintext" dans la déclaration de l'objectclass
 				if ($Out[1] != "") {
@@ -647,9 +647,9 @@ class sqlFunctions{
 									else
 										$f = true;
 									if (isset($Lang["DEFAULT"]) && $Lang["DEFAULT"] != 1) 
-										$imbriqSql .= "(`" . $Key . "-" . $Nom . "` = \"$c\")";
+										$imbriqSql .= "(`" . $Key . "-" . $Nom . "` = \"".Utils::KEStripSlashes($c)."\")";
 									else
-										$imbriqSql .= "(`" . $Nom . "` = \"$c\")";
+										$imbriqSql .= "(`" . $Nom . "` = \"".Utils::KEStripSlashes($c)."\")";
 								}
 							}
 						}

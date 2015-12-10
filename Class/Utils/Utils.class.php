@@ -149,14 +149,18 @@ class Utils {
 	}
 
 	static function KEAddSlashes($P) {
-        $tmp =  str_replace('/', '\\!#!\\', $P[0]);
-        $tmp =  str_replace('&', '\\!##!\\', $tmp);
+		if (is_array($P))$P=$P[0];
+        $tmp =  str_replace('/', '@!#!@', $P);
+        $tmp =  str_replace('&', '@!##!@', $tmp);
+		$tmp =  str_replace(' ', '@!###!@', $tmp);
         return $tmp;
 	}
 
 	static function KEStripSlashes($P) {
-        $tmp =  str_replace('\\!#!\\', '/', $P[0]);
-        $tmp = str_replace('\\!##!\\', '&', $tmp);
+		if (is_array($P))$P=$P[0];
+        $tmp =  str_replace('@!#!@', '/', $P);
+        $tmp = str_replace('@!##!@', '&', $tmp);
+		$tmp =  str_replace('@!###!@',' ', $tmp);
 		return $tmp;
 	}
 

@@ -4,18 +4,19 @@
 //PARAMETRES
 
 [IF [!Chemin!]=][!Chemin:=[!Query!]!][/IF]
-//[IF [!Lien!]=[!Systeme::CurrentMenu::Url!]]
+[INFO [!Chemin!]|I]
+
+[IF [!I::ObjectType!]=Categorie]
 	[!REQ:=[!Chemin!]/*/Produit/Actif=1&Tarif>0!]
-//[ELSE]
-//	[!REQ:=[!Chemin!]/Produit/Actif=1&Tarif>0!]
-//[/IF]
+[ELSE]
+	[!REQ:=[!Chemin!]/Produit/Actif=1&Tarif>0!]
+[/IF]
 [IF [!Page!]=][!Page:=1!][/IF]
 [COUNT [!REQ!]|Nb]
 [!NbParPage:=18!]
 [!NbNumParPage:=3!]
 [!NbPage:=[!Math::Floor([!Nb:/[!NbParPage!]!])!]!]
 [IF [!NbPage!]!=[!Nb:/[!NbParPage!]!]][!NbPage+=1!][/IF]
-
 
 [STORPROC [!Chemin!]|Cat|0|1]
 <div class="contenttop row-fluid block">
