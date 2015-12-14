@@ -7,10 +7,10 @@
 				Il y a [!Nb!] personnes connectées.
 			</p>
 			<p class="leo_phone">
-				Téléphone: [!Systeme::User::Tel!]
+				Téléphone: [!CurrentMagasin::Tel!]
 			</p>
 			<p class="leo_fax">
-				Fax: [!Systeme::User::Fax!]
+				Fax: [!CurrentMagasin::Fax!]
 			</p>
 			<p class="leo_email">
 				Utilisez notre <a href="/Contact">formulaire de contact</a>.

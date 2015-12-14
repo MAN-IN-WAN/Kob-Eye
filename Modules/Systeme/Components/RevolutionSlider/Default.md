@@ -17,7 +17,7 @@
 		- THEMEPUNCH BANNER -
 	#################################
 	-->
-<div class="tp-banner-container">
+<div class="tp-banner-container hidden-phone">
 	<div class="tp-banner" >
 		<ul>
 			<!-- SLIDE  -->

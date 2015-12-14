@@ -1143,7 +1143,7 @@ class Sys extends Root{
 	public function getSearch($Search) {
 		$S = Utils::Canonic($Search);
 		$domain =Sys::$domain;
-		$Mc = Sys::getData('Systeme','Page/Tag.Tags(Canonic~'.$S.')&Site.SiteId(Domaine='.$domain.')');
+		$Mc = Sys::getData('Systeme','Tag/Canonic~'.$S.'/Page/Page.SiteId(Domaine='.$domain.')',0,10,null,null,null,'m.Id');
 		return $Mc;
 	}
 	/**********************************

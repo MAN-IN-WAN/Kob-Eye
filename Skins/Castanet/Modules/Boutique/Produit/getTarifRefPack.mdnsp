@@ -1,0 +1,11 @@
+[STORPROC Boutique/Reference/[!LaRef!]|Ref|0|1][/STORPROC]
+// calcule le prix de la référence choisi pour un pack ou une personnalisation 
+[IF [!Ref::TarifPack!]!=[!Ref::Tarif!]]
+	[!LeprixPlus:=[!Ref::TarifPack!]!]
+[ELSE]
+	[!LeprixPlus:=[!Ref::Tarif!]!]
+[/IF]
+{
+	"pricePlus":[!Ref::getTarifMontant([!LeprixPlus!])!]
+
+}

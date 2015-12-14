@@ -71,6 +71,9 @@ div.copyright{
 	header#header .topbar .container #header_user {
 		margin-left: 0;
 	}
+    .span3.logo-wrapper.text-center{
+        display: 'initial';
+    }
 }
 @media screen and (max-width: 767px){
 	img.logo{
@@ -84,10 +87,10 @@ div.copyright{
 		padding: 0;
 	}
 	#header_right {
-		width: 95%;
-		float:none;
-		padding: 10px;
-	}
+        width: calc( 95% - 112px );
+        float: right;
+        padding: 10px;
+    }
 	.tel-adresse a.btn{
 		float: none;
 		margin: 10px 0;

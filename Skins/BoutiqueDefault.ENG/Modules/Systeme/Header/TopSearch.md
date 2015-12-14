@@ -6,24 +6,24 @@
 	<!-- Block search module TOP -->
 	<div id="search_block_top" class="item-top">
 
-		<form method="get" action="/Skins/Paranature/index.php?controller=search" id="searchbox" class="form-search">
+		<form method="get" action="/Search" id="searchbox" class="form-search">
 			<div class="input-append">
 				<label for="search_query_top"><!-- image on background --></label>
 				<input type="hidden" name="controller" value="search" />
 				<input type="hidden" name="orderby" value="position" />
 				<input type="hidden" name="orderway" value="desc" />
-				<input class="search_query span2 search-query" type="text" id="search_query_top" name="search_query" value="" />
-				<input type="submit" name="submit_search" value="Rechercher	" class="button btn" />
+				<input class="search_query span2 search-query" type="text" id="search_query_top" name="search" value="" />
+				<input type="submit" name="submit_search" value="Rechercher	" class="button btn" style="margin-top:0;"/>
 			</div>
 		</form>
 	</div>
 	<script type="text/javascript">
 		// <![CDATA[
 		$('document').ready(function() {
-			$("#search_query_top").autocomplete('http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?controller=search', {
-				minChars : 3,
+			$("#search_query_top").autocomplete('/Search/Json.json', {
+				minChars : 2,
 				max : 10,
-				width : 500,
+				width : 300,
 				selectFirst : false,
 				scroll : false,
 				dataType : "json",
@@ -35,7 +35,7 @@
 					for (var i = 0; i < data.length; i++)
 						mytab[mytab.length] = {
 							data : data[i],
-							value : data[i].cname + ' > ' + data[i].pname
+							value : '<a href="'+data[i].value+'"><img src="'+data[i].image+'" />'  + data[i].label+'</a>'
 						};
 					return mytab;
 				},
@@ -44,8 +44,8 @@
 					id_lang : 5
 				}
 			}).result(function(event, data, formatted) {
-				$('#search_query_top').val(data.pname);
-				document.location.href = data.product_link;
+				//$('#search_query_top').val(data.pname);
+				document.location.href = data.value;
 			})
 		});
 		// ]]>

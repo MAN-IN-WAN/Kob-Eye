@@ -1,6 +1,6 @@
 
 <!-- Block tags module -->
-<div class="block tags_block  animated flipInY hidden-phone">
+<div class="block tags_block  animated flipInY ">
 	<h3 class="title_block title_block_green">Pratique</h3>
     <div class="block_content" style="text-align: center;color: #4e9231;">
         <i class="fa fa-file-text-o" style="font-size: 110px;margin: 20px 0;"></i>

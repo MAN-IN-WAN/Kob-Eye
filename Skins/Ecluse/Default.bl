@@ -29,7 +29,6 @@
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 
 
-//<script type="text/javascript" src="/Skins/[!Systeme::Skin!]/Js/jquery/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="/Tools/Js/Jquery/1.9.2/jquery.min.js"></script>
 <script type="text/javascript" src="/Skins/[!Systeme::Skin!]/Js/jquery.idTabs.js"></script>
 <script type="text/javascript" src="/Skins/[!Systeme::Skin!]/Js/jquery.jcarousel.js"></script>
@@ -42,6 +41,8 @@
 <!--[if lt IE 9]>
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
+
+
 //[MODULE Boutique/Produit/MajPanier]
 <div [IF [!Lien!]=] id="index"[/IF]>
 	<div id="page" class="clearfix">

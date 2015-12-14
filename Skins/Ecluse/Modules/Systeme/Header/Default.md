@@ -16,8 +16,10 @@
 		<div class="container">
 
 			[MODULE Systeme/Header/UserInformations]
-			[MODULE Systeme/Header/MiniPanier]
 			[MODULE Systeme/Header/PermaLinks]
+			<div id="header_right" class="row" style="float:right">
+				[MODULE Systeme/Header/TopSearch]
+			</div>
 		</div>
 	</section>
 	<section class="header">
@@ -27,11 +29,6 @@
 					<a id="header_logo" href="/" title="[!CurrentMagasin::Nom!]"> <img class="logo img-responsive" src="/[!CurrentMagasin::Logo!]" alt="[!CurrentMagasin::Nom!]" /> </a>
 				</div>
 				<div class="span8">
-					<div id="header_right" class="row">
-						[MODULE Systeme/Header/TopSearch]
-						//[MODULE Systeme/Header/Currency]
-						//[MODULE Systeme/Header/Languages]
-					</div>
 					<div class="row">
 						//[MODULE Systeme/Header/Menu]
 						[COMPONENT Systeme/Bootstrap2.MegaMenu]

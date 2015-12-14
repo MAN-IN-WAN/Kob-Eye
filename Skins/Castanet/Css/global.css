@@ -2473,3 +2473,22 @@ tr.subitem > td:first-child + td {
     -webkit-box-shadow: 0 0 2px 2px #888;
 	box-shadow: 0 0 2px 2px #888;
 }
+
+.Icons{
+	text-align: center;
+	width: 100%;
+	display: block;
+}
+.Icons h3{
+	text-align: center;
+}
+.Icons i{
+	font-size: 6em;
+}
+
+.contenu {
+	margin: 20px;
+}
+.contenu table{
+	width: 100%;
+}

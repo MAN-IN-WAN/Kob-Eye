@@ -68,6 +68,7 @@ class Client extends genericClass {
 //		$Utilisateur->Set("Pass",$this->Get("Pass"));
 		$Utilisateur->Set("Pass",$this->Pass);
 		$Utilisateur->Set("Admin","0");
+		$Utilisateur->Set("Actif","1");
 //		$Utilisateur->AddParent("Systeme/Group/3");
 		//$GrpUser = $this->storproc('Boutique/Magasin/1',false,0,1);
 		$mag = Magasin::getCurrentMagasin();

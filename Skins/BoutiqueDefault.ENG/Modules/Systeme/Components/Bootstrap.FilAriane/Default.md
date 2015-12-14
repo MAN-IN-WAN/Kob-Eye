@@ -1,4 +1,4 @@
-<section id="top-breadcrumb">
+<section id="top-breadcrumb" class=" hidden-phone">
 	<div class="container">
 		<div class="row-fluid">
 			<!-- Breadcrumb -->

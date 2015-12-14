@@ -30,9 +30,10 @@
 	display: none;
 }
 #header_right #search_block_top input.search_query {
-    width: calc( 100% - 40px );
+    width: calc( 100% - 55px );
     padding-left: 10px;
-    line-height: 1.3;
+    line-height: 1.2;
+    height: 25px;
 }
 /* block left column "Quick search" */
 #search_block_left input { margin: 2px 0 0 0 }

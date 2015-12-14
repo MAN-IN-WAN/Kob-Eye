@@ -1,6 +1,6 @@
 <script type="text/javascript" src="/Tools/Js/Masonry/masonry.min.js"></script>
 
-<nav id="topnavigation">
+<nav id="topnavigation hidden-phone">
 	<div class="navbar">
 		<div class="navbar-inner">
 			<a data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a>

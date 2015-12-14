@@ -214,7 +214,7 @@ header#header .topbar .container #header_nav .kenyan_coffee_rg{
         width: 30%;
         padding:0;
         top: -50px;
-        right: 0;
+        left: 0;
         position: absolute;
     }
 }
@@ -590,7 +590,7 @@ fieldset[disabled] .btn-default.active {
     color: #ffffff;
     background-color: #333333;
 }
-.btn-primary {
+a.btn-primary,.btn-primary {
     color: #ffffff;
     background-color: #9e3584;
     border-color: #6a2459;
@@ -754,7 +754,7 @@ fieldset[disabled] .btn-warning.active {
     color: #9d4e89;
     background-color: #ffffff;
 }
-.btn-danger {
+.sidebar .block .block_content a.btn.btn-danger,.btn-danger {
     color: #ffffff;
     background-color: #aaa439;
     border-color: #979233;

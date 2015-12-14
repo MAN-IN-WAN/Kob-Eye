@@ -38,13 +38,13 @@
             <div class="form-group">
                 <label class="col-sm-5 control-label">Date de modification</label>
                 <div class="col-sm-5">
-                    [DATE m/d/Y H:i:s][!D::tmsEdit!][/DATE]
+                    [DATE d/m/Y H:i:s][!D::tmsEdit!][/DATE]
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-5 control-label">Date de création</label>
                 <div class="col-sm-5">
-                    [DATE m/d/Y H:i:s][!D::tmsCreate!][/DATE]
+                    [DATE d/m/Y H:i:s][!D::tmsCreate!][/DATE]
                 </div>
             </div>
         </form>
