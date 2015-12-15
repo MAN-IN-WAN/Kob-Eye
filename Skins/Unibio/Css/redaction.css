@@ -1,0 +1,60 @@
+div.ArticleImages {
+	display: block;
+	float: left;
+	position: relative;
+}
+
+.ImageArticleGauche {
+	float:left;
+	overflow:hidden;
+}
+.ImageArticleDroite {
+	float:right;
+	margin:0 30px;
+}
+
+div.Redaction h2 { margin-top:10px; }
+
+div.LienArticle {
+	/*padding:10px 0;*/
+}
+
+div.LienArticle a.lelienarticle {
+    	overflow: hidden;
+	color:#66a7bc;
+    	background: url("../Img/sprite.png") no-repeat   -12px -2233px ;
+	padding:2px 0 10px 15px;
+}
+div.LienArticle a.lelienarticle {
+	font-size: 12px;
+	font-weight: normal;
+	font-style:italic;
+	float:right;
+ 	/*padding-right: 10px;*/
+}
+div.LienArticle a.lelienarticle:hover {
+	background-position: -10px -2270px;
+	color:#474747;
+}
+
+div.LienArticleManu {
+	padding:5px 0;
+}
+
+div.LienArticleManu a.lelienarticle {
+     	background: url("../Img/sprite.png") no-repeat  -12px -2233px ;
+   	color: #66A7BC;
+    	height: 14px;
+    	overflow: hidden;display:block;
+    	padding: 2px 0 10px 15px;
+    	width: 138px;
+	font-size: 10px;
+    	font-weight: normal;
+	font-style:italic;
+	text-align:left;
+
+}
+div.LienArticleManu a.lelienarticle:hover {
+	background-position: -10px -2270px;
+	color:#474747;
+}

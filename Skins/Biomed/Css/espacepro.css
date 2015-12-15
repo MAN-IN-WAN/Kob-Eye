@@ -1,0 +1,120 @@
+div.LigneForm input, div.LigneForm select {
+	border: 1px solid #58585a;
+	background: white;
+}
+
+div.LigneForm button.RechercherBtn {
+	background: url("../Img/sprite.png") no-repeat -11px -1783px;
+	position: relative;
+	display: block;
+	border: none;
+	height: 25px;
+	width: 95px;
+	float: left;
+	border: none;
+	overflow: hidden;
+	text-indent: -200px;
+	cursor: pointer;
+	margin: 0;
+}
+
+div.LigneForm button.RechercherBtn:hover {
+	background-position: -223px -1783px;
+}
+
+div.Resultats ul {
+	padding: 10px 0;
+}
+
+div.Resultats li {
+	list-style: none;
+	padding: 3px 0;
+}
+
+div.Resultats li.Pair {
+	background: #DFF2F6;
+}
+
+div.Resultats li span.Puce {
+	padding: 0 6px;
+	background: url("../Img/sprite.png") no-repeat -313px -883px;
+}
+
+div.Pagination {
+	text-align: center;
+	padding-bottom: 10px;
+	background: url("../../Intranet/Img/sprite.png") no-repeat 0 -1246px;
+}
+
+div.Pagination a {
+	padding: 0 10px;
+}
+
+div.Pagination a.Page {
+	padding: 0 5px;
+}
+
+div.Pagination a.currentPage, div.Pagination a.CurrentPage {
+	color: #66A7BC;
+}
+
+div.Pagination a.FirstPage {
+	background: url("../../Intranet/Img/sprite.png") no-repeat -4px -1271px;
+}
+
+div.Pagination a.PreviousPage {
+	background: url("../../Intranet/Img/sprite.png") no-repeat -1px -1299px;
+}
+
+div.Pagination a.NextPage {
+	background: url("../../Intranet/Img/sprite.png") no-repeat -1px -1328px;
+}
+
+div.Pagination a.LastPage {
+	background: url("../../Intranet/Img/sprite.png") no-repeat -4px -1355px;
+}
+
+div.AnalyseCategorie {
+	padding: 8px 6px 0;
+}
+
+div.LigneForm button.RetourRecherche {
+	background: url("../Img/sprite.png") no-repeat -11px -1892px;
+	position: relative;
+	display: block;
+	border: none;
+	height: 27px;
+	width: 135px;
+	float: right;
+	border: none;
+	overflow: hidden;
+	text-indent: -200px;
+	cursor: pointer;
+}
+
+div.LigneForm button.RetourRecherche:hover {
+	background-position: -222px -1892px;
+}
+
+/*-- ajout pour imprimer dans intranet -*/
+div.LigneForm  a.BtnImprimer {
+	background: url("../Img/sprite.png") no-repeat scroll -11px -1835px transparent;
+    	border: medium none;
+    	cursor: pointer;
+    	display: block;
+    	float: right;
+    	height: 36px;
+    	overflow: hidden;
+     	text-indent: -200px;
+    	width: 115px;
+
+}
+
+div.LigneForm a.BtnImprimer:hover {
+	background-position: -222px -1835px;
+}
+
+
+
+
+

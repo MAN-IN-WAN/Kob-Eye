@@ -23,7 +23,7 @@
 #cart_block  .block_content #cart-buttons * {font-size: 14px;}
 #cart_block  .block_content p {margin-left: 15px; margin-right: 10px;}
 #cart_block  .block_content {padding: 10px 0 10px;}
-#cart_block  .block_content *{color: #6e6f70; padding :5px;}
+#cart_block  .block_content *{padding :5px;}
 
 #cart_block #cart_block_summary {display:none;padding: 0 10px;}
 #cart_block .quantity-formated {

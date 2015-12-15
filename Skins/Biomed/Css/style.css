@@ -1,0 +1,156 @@
+@import "redaction.css";
+@import "unibio.css";
+@import "forms.css";
+@import "espacepro.css";
+
+@import "labo.css";
+
+
+/*--- RESET ---*/
+html, body, div, span, applet, object, iframe, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td { margin: 0; padding: 0; border: 0; outline: 0; font-size: 100%; vertical-align: baseline }
+blockquote, q { quotes: none }
+blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; }
+ins { text-decoration: none }
+del { text-decoration: line-through }
+table { border-collapse: collapse; border-spacing: 0 }
+a:active, input:active { outline: none }
+:-moz-any-link:focus { outline: none }
+
+/*-- GLOBAL ---*/
+html,body {
+	padding:0;
+	margin:0;
+	font-family: Arial;
+	font-size:12px;
+    color:#58585a;
+}
+
+input, textarea, select, button {
+	font-family: Arial;
+	font-size: 12px;
+}
+
+textarea {
+	overflow: auto;
+}
+
+a {
+	text-decoration: none;
+    
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+.fullWidth {
+	width:975px;
+	margin:auto;
+	display:block;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	padding: 0;
+	margin: 0;
+}
+
+li {
+	list-style: disc inside;
+}
+
+div.Redaction {
+	margin-bottom: 20px;	/* Pour la page Présentation */
+}
+
+div.Redaction p {
+	margin: 10px 0;
+}
+
+div.TitreArticle h2 {
+	font-size: 14px;
+	margin: 10px 0;
+}
+
+div.Article {
+	border-bottom: 1px dotted #69A7BB;
+	overflow:hidden;
+	margin:10px 0;
+}
+div.ArticleImages {
+	margin-right:10px;
+}
+/*-- STRUCTURE ---*/
+div#Header {
+	height: 183px;
+}
+
+div#Footer {
+	padding: 10px 0;
+	background: #b1b3b4;
+}
+
+div#Bando {
+	height: 183px;
+	background: url('../Img/sprite.png') no-repeat top center
+}
+
+table#MenuTab {
+	width: 100%
+}
+
+table#MenuTab td {
+	text-align: center;
+	padding-top:20px;
+}
+
+table#MenuTab td.Current {
+	background: url('../Img/sprite.png') no-repeat 50% -252px;
+}
+
+table#MenuTab ul {
+	display: none;
+}
+
+div.CpContact {
+	padding-bottom: 20px
+}
+
+div.CpContact div.Buttons {
+	padding: 10px;
+	overflow: hidden;
+}
+
+.CategBordure{
+border-bottom: 1px dotted #66A7BC;
+}
+
+div.CpContact div.Buttons button {
+	display:block;
+	float:left;
+	position:relative;
+	background: url('../Img/sprite.png') -12px -1947px;
+	width: 75px;
+	height: 30px;
+	font-size: 0;
+	line-height: 0;
+	overflow: hidden;
+	text-indent: -150px;
+	margin-left: 483px;
+	border: none;
+	cursor: pointer;
+}
+
+div.CpContact div.Buttons button:hover {
+	background-position: -223px -1947px;
+}
+
+div.sitemap {
+	padding-bottom: 20px;
+}
+
+#primaryNav li a {
+	padding: 10px 2px;
+}
+div#FooterAbtel {
+	background-color:#fff;color:#000;font-size:10px;font-style:italic;text-align:right;
+}

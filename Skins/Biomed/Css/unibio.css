@@ -1,0 +1,461 @@
+html {
+	background: url('../Img/fond-degrade.png') bottom left repeat-x;
+}
+
+/*--- TOP ---*/
+div#MenuBar {
+	background: url('../Img/sprite.png') 0px -183px;
+    height:48px;
+}
+
+table#MenuTab {
+	text-transform: uppercase;
+}
+
+#Menu a {
+	border-right: 1px solid #000;
+	display: block;
+}
+
+table#MenuTab td.First a {
+	border-left: 1px solid #000;
+}
+
+#Menu a:hover{
+    text-decoration:none;
+}
+
+div.Ariane {
+    font-size:10px;
+	padding: 5px 0 10px;
+	font-style: italic;
+}
+
+a#RechercheLabo, a#ResultatsEnLigne {
+	display: block;
+	position: absolute;
+	top: 50px;
+	width: 118px;
+	height: 115px;
+	background: url('../Img/sprite.png');
+}
+
+a#RechercheLabo {
+	right: 170px;
+	background-position: -752px -1177px;
+}
+
+
+a#ResultatsEnLigne {
+	right: 20px;
+	background-position: -752px -1348px;
+}
+
+/*--- LEFT ---*/
+div.Left {
+	width: 180px;
+	padding: 0 10px 20px 0;
+}
+
+div.centreL {
+	border-left: 1px dotted black;
+	margin-left: 200px;
+	padding: 0 10px;
+}
+
+div.BlocNavigation a {
+	display: block;
+}
+
+/*--- TITRES ---*/
+div.TitreCategorie, div.TitreReferentiel, div.EntoureNavigation, div.TitreLabo {
+	overflow: hidden;
+    padding: 5px 0;
+	font-weight: bold;
+	font-size: 14px;
+	text-transform: uppercase;
+}
+
+h1, div.TitreNavigation {
+	display: block;
+	float: left;
+	position: relative;
+}
+
+/*--- MAIN ---*/
+div#Main h1 {
+	border-bottom: 1px dotted #66a7bc;
+	font-size: 14px;
+}
+
+/*--- FOOTER ---*/
+div#Footer {
+	overflow: hidden;
+}
+
+div.BlocFooter {
+	padding-top: 10px;
+	position: relative;
+	display: block;
+	float: left;
+}
+
+/*div.BlocFooter1 { width: 253px }
+div.BlocFooter2 { width: 313px }
+div.BlocFooter3 { width: 239px }
+div.BlocFooter4 { width: 170px }*/
+
+div.BlocFooter1 { width: 183px; }
+div.BlocFooter2 { width: 251px; }
+div.BlocFooter3 { width: 178px; }
+div.BlocFooter4 { width: 224px;}
+div.BlocFooter5 { 
+	height:110px;
+}
+div.BlocFooter5 .FooterLogo{
+	background: url("../Img/CofracBIOMED2.jpg") no-repeat 0 16px;
+	height:110px;width: 139px;
+}
+
+
+div.TitreFooterCt {
+	overflow: hidden;
+	margin-bottom: 10px;
+}
+
+div.TitreFooter {
+	position:relative;
+	display:block;
+	float: left;
+	padding: 2px 0;
+	border-bottom: 1px dotted #fff;
+	color: #fff;
+	text-transform: uppercase;
+	font-size: 14px;
+}
+
+div#Footer ul li {
+	padding: 5px 0 5px 12px;
+	background: url("../Img/sprite.png") no-repeat -13px -652px;
+	list-style: none;
+}
+
+div#Footer ul li a:hover {
+	color: #58585a;
+}
+
+div.BlocFooter4 a {
+	float: left;
+	display: block;
+	position: relative;
+	background: url("../Img/sprite.png");
+	height: 40px;
+}
+
+div.BlocFooter4 a.PartBio34 {
+	width: 110px;
+	background-position: -12px -704px;
+}
+
+div.BlocFooter4 a.PartBPR {
+	width: 60px;
+	background-position: -12px -787px;
+}
+
+div.BlocFooter4 a.OartCof {
+	/*width: 60px;
+	background-position: -12px -859px;*/
+}
+
+/*--- LABOS ---*/
+div.LaboItem {
+	overflow: hidden;
+	padding: 10px 0 0 10px;
+}
+
+div.LaboItemLeft {
+	display: block;
+	float: left;
+	position: relative;
+	width: 250px;	
+}
+
+div.LaboNom {
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+div.LaboItemRight {
+	margin-left: 250px;
+	padding: 0 10px; 
+}
+
+div.LaboItemRightTop {
+	padding-bottom: 10px;
+}
+
+div.LaboItemRightBottom {
+	padding: 10px 0 30px;
+	position: relative;
+}
+
+div.LaboMoreLiks {
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+}
+
+/*--- ANALYSES ---*/
+input#A_MotCle {
+	width: 300px;
+}
+
+select#A_Specialites {
+	width: 400px;
+}
+
+div.Resultats {
+	margin-top: 20px;
+	padding: 10px 0;
+}
+
+div.ResultatsTitre {
+	font-size: 14px;
+	font-weight: bold;
+}
+
+p.LastUpdateDB {
+	text-transform: uppercase;
+	font-style: italic;
+	font-weight: bold;
+	padding: 10px 0;
+	font-size: 12px;
+}
+
+
+/*--- COULEURS ---*/
+a {
+	color: #58585a;
+}
+
+h1, h2, h3, h4, h5, h6, a:hover, div.TitreNavigation, div#Menu td.Current a,
+div.LaboNom a, .blue, p.LastUpdateDB {
+	color: #66a7bc;
+    text-decoration:none;
+}
+h2{
+	color: #66A7BC;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+
+}
+.lirelasuite{
+	font-size:12px;
+	display:block;
+	text-align:right;
+	padding-right: 16px;
+	font-style: italic;
+	background: url("../../Intranet/Img/sprite.png") no-repeat scroll -70px -1352px transparent;
+}
+
+a.lirelasuite:hover{
+	background: url("../../Intranet/Img/sprite.png") no-repeat scroll -70px -1387px transparent;
+}
+
+div.BlocNavigation a {
+	color: #69A7BB;
+	padding: 10px 0 0 20px;
+	font-weight: bold;
+	background: url('../Img/sprite.png') -306px -873px;
+}
+
+div.BlocNavigation a.CurrentArbo {
+	background: url('../Img/sprite.png') -602px -873px;
+	color: #58585a;
+}
+
+div.centreL, div.LaboItemRight {
+	border-left: 1px dotted #66a7bc;
+}
+
+div.Resultats {
+	border-top: 1px dotted #66a7bc;
+}
+
+div#Footer ul li a {
+	color: #fff;
+}
+
+div.LaboItemPair {
+	background: #E2F5FB;
+}
+
+div.HomeBlocks {
+	overflow: hidden;
+	padding: 30px 0;
+}
+
+div.Bloc {
+	display:block;
+	position: relative;
+	float: left;
+	margin-right: 27px;
+	width:277px;
+	height:188px;
+	background: url("../Img/sprite.png") no-repeat scroll -13px -340px;
+	padding: 15px;
+}
+
+div.BlocEPRO {
+	margin-right: 0;
+}
+
+div.Bloc h2 {
+	text-transform: uppercase;
+	color: #58585a;
+	font-size: 18px;
+	font-weight: normal;
+	text-align: center;
+	padding-bottom: 10px;
+}
+
+div.BlocCt {
+	overflow: hidden;
+}
+
+div.BlocIll {
+	display: block;
+	float: left;
+	position: relative;
+	width: 125px;
+	height: 125px;
+	background: url("../Img/sprite.png");
+}
+
+div.BlocEPAT div.BlocIll {
+	background-position: -11px -1186px;
+}
+
+div.BlocEPRO div.BlocIll {
+	background-position: -11px -1410px;
+}
+
+div.BlocCt div.BlocFl {
+	background: url("../Img/sprite.png") 0 -620px;
+	display: block;
+	float: left;
+	position: relative;
+	width: 30px;
+	height: 30px;
+}
+
+div.BlocCt p {
+	margin-left: 155px;
+}
+
+/*--- CARTE LABOS ---*/
+div.CarteLabos {
+	background: url("../Img/sprite.png") repeat scroll -20px -989px transparent;
+    	height: 156px;
+    	position: relative;
+}
+
+div.CarteLabos a {
+	background: url("../Img/sprite.png");
+   	background-position: -10px -1567px;
+	text-transform: uppercase;
+	position: absolute;
+   	padding: 5px 0 8px 35px;
+   	
+}
+
+div.CarteLabos a:hover {
+    	background-position: -10px -1610px;
+	color: #58585a;
+}
+
+div.CarteLabos a.Agde {
+   	background-position: -8px -1567px;
+    left: 121px;
+    top: 94px;
+    width: 115px;
+}
+div.CarteLabos a.Agde:hover {
+   	background-position: -8px -1610px;
+}
+div.CarteLabos a.Beziers {
+   	background-position: 115px -1565px;
+    	left: -31px;
+    	top: 99px;
+    	width: 121px;
+}
+div.CarteLabos a.Beziers:hover {
+   	background-position: 115px -1608px;
+}
+
+div.CarteLabos a.Sete {
+    	background-position: -5px -1562px;
+    	left: 153px;
+    	top: 67px;
+    	width: 117px;
+}
+div.CarteLabos a.Sete:hover {
+   	background-position: -5px -1605px;
+}
+
+div.CarteLabos a.Hautscanton {
+   	background-position: 31px -1550px;
+    	height: 31px;
+    	left: 41px;
+    	top: 40px;
+    	width: 150px;
+}
+div.CarteLabos a.Hautscanton:hover {
+   	background-position: 31px -1593px;
+}
+div.CarteLabos a.Unibio {
+  	background-position: -6px -1567px;
+    	left: 196px;
+    	top: 22px;
+    	width: 151px;
+}
+
+div.CarteLabos a.Unibio:hover {
+    background-position: -6px -1610px;
+}
+
+
+div.Pagination span.PaginationPagesEP {
+	background: #E1EEF2;
+}
+
+div.Pagination span.PaginationPagesBlue {
+	background: #E5F0F3;
+}
+
+div.Pagination span.PaginationPagesWhite {
+	background: #ffffff;
+}
+
+li.bb_li {
+	background: url("../Img/sprite.png") no-repeat -10px -2075px;
+	padding-left: 15px;
+	padding-top: 10px;
+	list-style: none;
+}
+
+a.bb_a_url {
+	color: #69A7BB;
+}
+
+.bb_bold {
+	font-weight:bold;
+
+}
+
+/*--- SITEMAP ---*/
+html a.SitemapLvl1 {
+	color: #66A7BC;
+	border-bottom: 1px solid #66A7BC;
+}

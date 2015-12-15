@@ -71,7 +71,10 @@
 	[IF [!Mag::EtapePaiement!]=0||[!P::Etat!]<=1||[!P::Etat!]>3]
 		<div class="row"><div class="col-md-12">
 			<div class="Desc">
-				[!CLCONN::Civilite!] [!CLCONN::Prenom!] [!CLCONN::Nom!], merci pour votre commande.
+				[!CLCONN::Civilite!] [!CLCONN::Prenom!] [!CLCONN::Nom!], merci pour votre commande. <br />
+                Votre commande a été confirmée par nos services. Vous recevrez un email vous informant de l'état de préparation de votre commande.
+
+
 			</div>
 		</div></div>
 		[IF [!Mag::EtapePaiement!]]
@@ -103,12 +106,12 @@
 
 	<div class="row LigneBoutons"><div class="col-md-12">
 		<div class="pull-right">
-			<a href="/" class="button btn-red" >Je retourne à l'accueil</a>
+			<a href="/" class="btn btn-warning" >Je retourne à l'accueil</a>
 		</div>
 		[IF [!P::Etat!]=1]
 		<div class="pull-right">
 			[IF [!Mag::EtapePaiement!]]
-				<a href="/[!Systeme::getMenu(Boutique/Commande/BonDeCommande)!]/[!CDE::Id!]" class="button btn-gris">
+				<a href="/[!Systeme::getMenu(Boutique/Commande/BonDeCommande)!]/[!CDE::Id!]" class="btn btn-success">
 					J'imprime ma commande
 				</a>
 			[/IF]
@@ -116,14 +119,14 @@
                 [ELSE]
 		<div class="pull-right">
 			[IF [!Mag::EtapePaiement!]&&[!P::Etat!]>1&&[!P::Etat!]<4]
-				<a href="/[!Systeme::getMenu(Boutique/Commande/Etape4)!]" class="button btn-gris" >
+				<a href="/[!Systeme::getMenu(Boutique/Commande/Etape4)!]" class="btn btn-warning" >
 					Je retourne à l'étape de paiement
 				</a>
 			[/IF]
 		</div>
                 [/IF]
 		<div class="pull-right">
-			<a href="/[!Systeme::getMenu(Boutique/Mon-compte)!]" class="button btn-grisfonce Espace" >
+			<a href="/[!Systeme::getMenu(Boutique/Mon-compte)!]" class="btn btn-primary Espace" >
 				J'accède à mon espace client
 			</a>
 		</div>

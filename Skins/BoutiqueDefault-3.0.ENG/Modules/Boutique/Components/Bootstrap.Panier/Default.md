@@ -71,7 +71,13 @@
 				[/STORPROC]
 			</table>
 		</div>
-	
+        <div id="cart_block_list" class="expanded">
+            <p id="cart-buttons">
+                <a href="/[!Systeme::getMenu(Boutique/Commande/Etape1)!]" class="btn btn-primary btn-block" title="__VIEW_SHOPPING_CART__" rel="nofollow">__MY_CART__</a>
+                <a href="/[!Systeme::getMenu(Boutique/Commande/Etape2)!]" class="btn btn-warning btn-block" title="Checkout" rel="nofollow"><span></span>__CHECKOUT__</a>
+            </p>
+        </div>
+
 	//COMMANDES EN COURS
 	[STORPROC [!Cli::getPendingCommandes()!]|Com]
 		<h3 class="title_block"><a href="/[!Systeme::getMenu(Boutique/Commande/Etape1)!]" title="__VIEW_SHOPPING_CART__" rel="nofollow">
@@ -94,24 +100,24 @@
 								[CASE 1]
 									La commande est réservée. Le paiement n'est pas effectué.<br />
 									
-									<div class="ValiderCommande"><a href="/Boutique/Commande/Etape4?Com=[!Com::RefCommande!]&action=paiement">Payer ma commande</a></div>
-									<div class="ValiderCommande"><a href="/[!Lien!]?Com=[!Com::RefCommande!]&action=annule">Annuler ma commande</a></div>
-									<div class="ValiderCommande"><a href="/[!Lien!]?Com=[!Com::RefCommande!]">Modifier ma commande</a></div>
+									//<div class="ValiderCommande"><a class="btn btn-success btn-block" href="/Boutique/Commande/Etape4?Com=[!Com::RefCommande!]&action=paiement">Payer ma commande</a></div>
+									//<div class="ValiderCommande"><a class="btn btn-warning btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]">Modifier ma commande</a></div>
+                                    <div class="ValiderCommande"><a class="btn btn-danger btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]&action=annule">Annuler ma commande</a></div>
 								[/CASE]
 								[CASE 2]
 									Un paiement est en attente de réception.<br />
 									
-									<div class="ValiderCommande"><a href="/Boutique/Commande/Etape4?Com=[!Com::RefCommande!]&action=paiement">Payer ma commande</a></div>
-									<div class="ValiderCommande"><a href="/[!Lien!]?Com=[!Com::RefCommande!]&action=annule">Annuler ma commande</a></div>
-									<div class="ValiderCommande"><a href="/[!Lien!]?Com=[!Com::RefCommande!]">Modifier ma commande</a></div>
+									//<div class="ValiderCommande"><a class="btn btn-success btn-block" href="/Boutique/Commande/Etape4?Com=[!Com::RefCommande!]&action=paiement">Payer ma commande</a></div>
+									//<div class="ValiderCommande"><a class="btn btn-warning btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]">Modifier ma commande</a></div>
+                                    <div class="ValiderCommande"><a class="btn btn-danger btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]&action=annule">Annuler ma commande</a></div>
 								[/CASE]
 								[CASE 3]
 									Commande validée, le paiement a echoué.
 									Pour finaliser votre commande, veuillez cliquer sur le lien ci-dessous.
 									
-									<div class="ValiderCommande"><a href="/Boutique/Commande/Etape4?Com=[!Com::RefCommande!]&action=paiement">Payer ma commande</a></div>
-									<div class="ValiderCommande"><a href="/[!Lien!]?Com=[!Com::RefCommande!]&action=annule">Annuler ma commande</a></div>
-									<div class="ValiderCommande"><a href="/[!Lien!]?Com=[!Com::RefCommande!]">Modifier ma commande</a></div>
+									//<div class="ValiderCommande"><a class="btn btn-success btn-block" href="/Boutique/Commande/Etape4?Com=[!Com::RefCommande!]&action=paiement">Payer ma commande</a></div>
+                                    //<div class="ValiderCommande"><a class="btn btn-warning btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]">Modifier ma commande</a></div>
+									<div class="ValiderCommande"><a class="btn btn-danger btn-block" href="/[!Lien!]?Com=[!Com::RefCommande!]&action=annule">Annuler ma commande</a></div>
 								[/CASE]
 								[CASE 4]
 									Commande payée le [!Com::PayeLe!]. En cours d'expédition.
@@ -157,12 +163,6 @@
 			</table>
 		</div>
 	[/STORPROC]
-		<div id="cart_block_list" class="expanded">
-			<p id="cart-buttons">
-				<a href="/[!Systeme::getMenu(Boutique/Commande/Etape1)!]" class="btn btn-primary btn-block" title="__VIEW_SHOPPING_CART__" rel="nofollow">__MY_CART__</a>
-				<a href="/[!Systeme::getMenu(Boutique/Commande/Etape2)!]" class="btn btn-warning btn-block" title="Checkout" rel="nofollow"><span></span>__CHECKOUT__</a>
-			</p>
-		</div>
 	</div>
 	<!-- /MODULE Block cart -->
 </form>

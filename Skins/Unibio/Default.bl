@@ -1,0 +1,78 @@
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/mootools.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/mootools-more.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/swfobject.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/overlay.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/multiBox.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/functions.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/utils.js[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Css/multiBox.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Css/slickmap.css[/HEADER]
+<link rel="shortcut icon" href="http://intranet.unibio.fr/Skins/Intranet/Img/favicon.png">
+
+<div id="Header">
+	<div id="Bando" class="fullWidth" style="position:relative">
+		<a href="/" style="position:absolute;top:0;left:0;bottom:0;right:0" title="Retour à l'accueil"></a>
+		[MODULE Systeme/Structure/Header]
+	</div>
+</div>
+//<div class="fullWidth" style="text-align:right;color:red;padding:5px 0">
+//Le serveur des résultats en ligne sera indisponible toute la journée. Veuillez nous excuser pour la gêne occasionnée.
+//</div>
+<div id="MenuBar">
+	<div id="Menu" class="fullWidth">
+		[MODULE Systeme/Menu]
+	</div>
+</div>
+
+<div id="Main" [IF [!Lien!]=]style="background:url('/Skins/[!Systeme::Skin!]/Img/accueil2.jpg') no-repeat center"[/IF]>
+	<div id="Content" class="fullWidth">
+		[IF [!Lien!]!=]
+			[IF [!Query!]~Redaction]
+				[STORPROC [!Query!]|Cat]
+					[IF [!Cat::Icone!]!=]
+						[!ImgTrouvee:=1!]
+						<img src="/[!Cat::Icone!]" alt="" style="display:block" />
+					[/IF]
+				[/STORPROC]
+			[/IF]
+			[IF [!ImgTrouvee!]!=1]
+				[STORPROC Systeme/Menu/[!Systeme::CurrentMenu::Id!]/Donnee/Type=Image|Img]
+					<img src="/[!Img::Lien!]" alt="" style="display:block" />
+					[NORESULT]
+						<img src="/Skins/[!Systeme::Skin!]/Img/bando-image_03.jpg" alt="" style="display:block" />
+					[/NORESULT]
+				[/STORPROC]
+			[/IF]
+			[COMPONENT Systeme/FilAriane/Default?]
+		[/IF]
+		[DATA]
+	</div>
+</div>
+<div id="Footer">
+
+	<div id="Bottom" class="fullWidth">
+	        [IF [!Lien!]!=]
+			[MODULE Systeme/Version]
+		[/IF]
+		[MODULE Systeme/Structure/Footer]
+	</div>
+</div>
+
+<div id="FooterAbtel">
+	<div class="fullWidth">
+		<a href="http://agence-web.abtel.fr" target="_blank">Abtel agence web @ 2012</a>
+	</div>
+</div>
+
+<!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://stats.unibio.fr/" : "http://stats.unibio.fr/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://stats.unibio.fr/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code -->

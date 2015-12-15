@@ -5,5 +5,5 @@
     [/IF]
     user_id: [!Sys::User::Id!],
     logtoken: '[!Module::Systeme::getToken()!]',
-    name: '[!Sys::User::Prenom!] [!Sys::User::Nom!]',
+    name: '[!Sys::User::Prenom!] [!Sys::User::Nom!]'
 }

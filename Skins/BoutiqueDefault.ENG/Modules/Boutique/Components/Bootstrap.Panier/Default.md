@@ -55,6 +55,7 @@
         </div>
     </div>
 
+
     //COMMANDES EN COURS
     [STORPROC [!Cli::getPendingCommandes()!]|Com]
     <!-- MODULE Block cart -->
