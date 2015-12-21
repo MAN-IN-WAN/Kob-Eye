@@ -34,6 +34,13 @@
                              [/IF]
                                 >
                         <!-- LAYER NR. 1 -->
+                        <div class="tp-caption largepinkbg"
+                             data-x="left"
+                             data-y="80"
+                             data-transform_in="z:0;rX:0deg;rY:0;rZ:0;sX:1.5;sY:1.5;skX:0;skY:0;opacity:0;s:1500;e:Power3.easeOut;"
+                             data-transform_out="y:100%;s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;"
+                                >Offre valable du [DATE d/m/Y][!S::DateDebutPromo!][/DATE] au [DATE d/m/Y][!S::DateFinPromo!][/DATE]</div>
+                        <!-- LAYER NR. 2 -->
                         [STORPROC Boutique/Promotion/[!S::Id!]/PromotionCalque|SC]
                         <div class="tp-caption [!SC::Police!]-[!SC::Type!] [!SC::Background!] [!SC::Class!]"
                              data-x="[!SC::PosX!]"

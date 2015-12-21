@@ -490,3 +490,10 @@ COLOR
 .green{
     color: #51a351;
 }
+/**
+MARQUE
+**/
+#marqueSelect {
+    border-radius: 15px;
+    float: right;
+}

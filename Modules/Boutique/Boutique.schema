@@ -128,7 +128,7 @@
         <CATEGORY title="Synchro">
 			<PROPERTIES description="id de produit distante" type="int" >RemoteId</PROPERTIES>
 			<PROPERTIES description="url de produit distante" type="varchar" >RemotePage</PROPERTIES>
-			<PROPERTIES description="site distant" type="varchar" values="1001Pharmacie,PharmacieLafayette" searchOrder="5">RemoteSite</PROPERTIES>
+			<PROPERTIES description="site distant" type="varchar" values="1001Pharmacie,PharmacieLafayette">RemoteSite</PROPERTIES>
         </CATEGORY>
         <CATEGORY title="Google Shopping">
             <PROPERTIES description="Categorie Produit Google Shopping (voir sur la liste)" type="varchar" length="255">GoogleProductCategory</PROPERTIES>

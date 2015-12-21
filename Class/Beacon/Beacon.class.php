@@ -98,6 +98,7 @@ class Beacon extends Root{
             $out.=$tmp;
 		}
         $this->Content = $out;
+		unset($this->BlObjects);
         $this->Data = '';
 		if (isset($this->ChildObjects)&&sizeof($this->ChildObjects)) for ($i=0;$i<sizeof($this->ChildObjects);$i++){
 			if (is_object($this->ChildObjects[$i])){

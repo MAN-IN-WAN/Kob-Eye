@@ -222,8 +222,7 @@ class Lib extends Beacon{
 		}
 		//On recherche les balises filles de balise PARAM pour voir si il y pas des parametres suppl�mentaires a ajouter
 		$tempParams = $this->getAllChild("METHOD","PARAM");
-/*		echo "--------------------LISTE DES PARAMS-------------------";
-		 print_r($tempParams);*/
+		//echo "--------------------LISTE DES PARAMS-------------------";
 		$Char = "";
 		if (is_array($tempParams)) {
 			foreach ($tempParams as $K=>$Param) {

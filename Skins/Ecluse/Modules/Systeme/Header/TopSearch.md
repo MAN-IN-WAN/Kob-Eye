@@ -9,11 +9,8 @@
 		<form method="get" action="/Search" id="searchbox" class="form-search">
 			<div class="input-append">
 				<label for="search_query_top"><!-- image on background --></label>
-				<input type="hidden" name="controller" value="search" />
-				<input type="hidden" name="orderby" value="position" />
-				<input type="hidden" name="orderway" value="desc" />
-				<input class="search_query span2 search-query" type="text" id="search_query_top" name="search" value="" />
-				<input type="submit" name="submit_search" value="Rechercher	" class="button btn" style="margin-top:0;"/>
+				<input class="search_query span2 search-query" type="text" id="search_query_top" name="search" value="[!search!]" placeholder="recherche par titre"/>
+				<input type="submit" class="button btn" style="margin-top:0;"/>
 			</div>
 		</form>
 	</div>

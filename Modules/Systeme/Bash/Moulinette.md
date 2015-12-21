@@ -1,0 +1,12 @@
+[COUNT Boutique/Produit|NbP]
+[!R:=[!Math::Floor([!NbP:/100!])!]!]
+[BASH green][!R!] pages et [!NbP!] produits[/BASH]
+
+[STORPROC [!R:+1!]|N|0|1]
+    [BASH green]Page [!Key!]/[!R!][/BASH]
+    [STORPROC Boutique/Produit|P|[!Key:*100!]|100|Id|DESC]
+        [!P::TitleMeta:=!]
+        [!P::Save()!]
+        [BASH green][!P::Id!] [!P::Title!][/BASH]
+    [/STORPROC]
+[/STORPROC]

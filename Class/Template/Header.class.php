@@ -210,7 +210,7 @@ class Header extends Root{
         $pages = Sys::getData('Systeme','Page/MD5='.$code);
         if (isset($pages[0])){
             $page = $pages[0];
-            if (!$this->ForceTitle)
+            //if (!$this->ForceTitle)
                 $this->Title = $page->Title;
             if (!$this->ForceDescription)
                 $this->Description = $page->Description;

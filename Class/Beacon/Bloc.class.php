@@ -173,9 +173,10 @@ class Bloc extends Beacon {
 		$this->addHeader();
 		//Le contenu du fichier retravaill�
 		//$this->Content = Parser::getContent($this->BlObjects);
-		//$this->Data = Parser::getContent($this->ChildObjects);
+		$this->Data = Parser::getContent($this->ChildObjects);
 		if (!empty($this->Content))
             $this->Data = $this->parseData($this->Data,$this->Content);
+		//$this->Data= $this->Content;
         return (isset($this->Data))?$this->Data:'';
 	}
 }

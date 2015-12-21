@@ -9,7 +9,12 @@
 [IF [!I::ObjectType!]=Categorie]
 	[!REQ:=[!Chemin!]/*/Produit/Actif=1&Tarif>0!]
 [ELSE]
-	[!REQ:=[!Chemin!]/Produit/Actif=1&Tarif>0!]
+	[IF [!Type!]!=search]
+		[!REQ:=[!Chemin!]/Produit/Actif=1&Tarif>0!]
+	[ELSE]
+        [!REQ:=[!Chemin!]&Actif=1&Tarif>0!]
+        [!Chemin:=Boutique/Categorie!]
+	[/IF]
 [/IF]
 [IF [!Page!]=][!Page:=1!][/IF]
 [COUNT [!REQ!]|Nb]
@@ -20,30 +25,35 @@
 
 [STORPROC [!Chemin!]|Cat|0|1]
 <div class="contenttop row-fluid block">
+    [IF [!Type!]!=search]
+        <h1 class="title_block"> [IF [!Cat::NomLong!]][!Cat::NomLong!][ELSE][!Cat::Nom!][/IF] <span class="resumecat category-product-count"> / __THERE_IS__ [!Nb!] __PRODUCTS__. </span></h1>
 
-	<h1 class="title_block"> [IF [!Cat::NomLong!]][!Cat::NomLong!][ELSE][!Cat::Nom!][/IF] <span class="resumecat category-product-count"> / __THERE_IS__ [!Nb!] __PRODUCTS__. </span></h1>
-
-	[IF [!C::Image!]||[!C::Description!]]
-	<div class="content_scene_cat">
-		<!-- Category image -->
-		[IF [!C::Image!]]
-		<div class="align_center">
-			<img src="/[!C::Image!]" alt="[!C::Nom!]" title="[!C::Nom!]" id="categoryImage" />
-		</div>
-		[/IF]
-		[IF [!C::Description!]]
-		<div class="cat_desc">
-			<p id="category_description_short">
-				[SUBSTR 200][!C::Description!][/SUBSTR]
-			</p>
-			<p id="category_description_full" style="display:none">
-				[!C::Description!]
-			</p>
-			<a href="#" onclick="$('#category_description_short').hide(); $('#category_description_full').show(); $(this).hide(); return false;" class="lnk_more">__MORE__</a>
-		</div>
-		[/IF]
-	</div>
-	[/IF]
+        [IF [!C::Image!]||[!C::Description!]]
+        <div class="content_scene_cat">
+            <!-- Category image -->
+            [IF [!C::Image!]]
+            <div class="align_center">
+                <img src="/[!C::Image!]" alt="[!C::Nom!]" title="[!C::Nom!]" id="categoryImage" />
+            </div>
+            [/IF]
+            [IF [!C::Description!]]
+            <div class="cat_desc">
+                <p id="category_description_short">
+                    [SUBSTR 200][!C::Description!][/SUBSTR]
+                </p>
+                <p id="category_description_full" style="display:none">
+                    [!C::Description!]
+                </p>
+                <a href="#" onclick="$('#category_description_short').hide(); $('#category_description_full').show(); $(this).hide(); return false;" class="lnk_more">__MORE__</a>
+            </div>
+            [/IF]
+        </div>
+        [/IF]
+    [ELSE]
+        //Recherche
+        <h1 class="title_block"> Recherche [!search!] <span class="resumecat category-product-count"> / __THERE_IS__ [!Nb!] __PRODUCTS__. </span>
+        </h1>
+    [/IF]
 	<div class="products-list">
 		<div class="content_sortPagiBar">
 			<div class="row-fluid sortPagiBar">
@@ -191,41 +201,27 @@
 							<ul>
 								//<li><button class="active">Page 1 sur [!NbPage!] </button></li> 
 								[IF [!Page!]>1]
-									<li><a href="/[!Lien!]" class=""><span>&laquo;</span></a></li>
-									<li><a href="[IF [!Page!]=2]/[!Lien!][ELSE]?Page=[!Page:-1!][/IF]" class="">&lsaquo;</a>
+									<li><a href="/[!Lien!]?search=[!search!]" class=""><span>&laquo;</span></a></li>
+									<li><a href="[IF [!Page!]=2]/&search=[!search!][!Lien!][ELSE]?Page=[!Page:-1!]&search=[!search!][/IF]" class="">&lsaquo;</a>
 									[IF [!Page!]>[!Math::Round([!NbNumParPage:/2!])!]]
-										<li><a href="/[!Lien!]" class=""><span>1</span></a></li> 
+										<li><a href="/[!Lien!]?search=[!search!]" class=""><span>1</span></a></li>
 										<li><a href="#" class=""><span>...</span></a></li> 
 									[/IF]
 								[/IF]
 								[!start:=1!]
 								[IF [!Page!]>[!start:+[!NbNumParPage:/[!NbParPage!]!]!]][!start:=[!Math::Round([!Page:-[!NbNumParPage:/2!]!])!]!][/IF]
 								[STORPROC [!NbPage:+1!]|P|[!start!]|[!NbNumParPage!]]
-								<li class=" [IF [!P!]=[!Page!]]active[/IF]"><a href="[IF [!P!]!=1]?Page=[!P!][ELSE]/[!Lien!][/IF]" class="">[!P!]</a></li> 
+								<li class=" [IF [!P!]=[!Page!]]active[/IF]"><a href="[IF [!P!]!=1]?Page=[!P!][ELSE]/[!Lien!][/IF]&search=[!search!]" class="">[!P!]</a></li>
 								[/STORPROC]
 								[IF [!Page!]<[!NbPage!]]
 									[IF [!Page:+[!NbNumParPage:/2!]!]<[!NbPage!]]
 										<li><a href="#" class=""><span>...</span></a></li> 
-										<li><a href="?Page=[!NbPage!]" class="">[!NbPage!]</a></li> 
+										<li><a href="?Page=[!NbPage!]&search=[!search!]" class="">[!NbPage!]</a></li>
 									[/IF]
-									<li><a href="?Page=[!Page:+1!]" class=""><span>&rsaquo;</span></a></li> 
-									<li><a href="?Page=[!NbPage!]" class="">&raquo;</a></li> 
+									<li><a href="?Page=[!Page:+1!]&search=[!search!]" class=""><span>&rsaquo;</span></a></li>
+									<li><a href="?Page=[!NbPage!]&search=[!search!]" class="">&raquo;</a></li>
 								[/IF] 
 							</ul>
-							<form action="http://demo4leotheme.com/prestashop/leo_beauty_store/index.php?id_category=3&controller=category&id_lang=1" method="get" class="pagination">
-								<p>
-									<input type="submit" class="button_mini" value="OK" />
-									<label for="nb_item">__ITEMS__:</label>
-									<select name="n" id="nb_item">
-										<option value="9" selected="selected">9</option>
-										<option value="10" >10</option>
-										<option value="20" >20</option>
-									</select>
-									<input type="hidden" name="id_lang" value="1" />
-									<input type="hidden" name="id_category" value="3" />
-									<input type="hidden" name="controller" value="category" />
-								</p>
-							</form>
 						</div>	<!-- End Paging -->
 
 					</div>

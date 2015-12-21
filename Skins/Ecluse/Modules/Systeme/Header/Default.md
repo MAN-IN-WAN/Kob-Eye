@@ -17,13 +17,20 @@
 
 			[MODULE Systeme/Header/UserInformations]
 			[MODULE Systeme/Header/PermaLinks]
-			<div id="header_right" class="row" style="float:right">
-				[MODULE Systeme/Header/TopSearch]
-			</div>
 		</div>
 	</section>
 	<section class="header">
 		<div class="container" >
+            <div class="row-fluid">
+                <div class="span4">
+                </div>
+                <div class="span2">
+                 </div>
+                <div id="header_right" class="span6">
+                    [MODULE Systeme/Header/BrandSearch]
+                    [MODULE Systeme/Header/TopSearch]
+                </div>
+            </div>
 			<div class="row-fluid">
 				<div class="span4 logo-wrapper text-center">
 					<a id="header_logo" href="/" title="[!CurrentMagasin::Nom!]"> <img class="logo img-responsive" src="/[!CurrentMagasin::Logo!]" alt="[!CurrentMagasin::Nom!]" /> </a>
