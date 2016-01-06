@@ -2028,3 +2028,5 @@
 127.0.0.1 - - [18/Dec/2015:16:45:26 +0100] "GET / HTTP/1.1" 200 1270 "http://ecluse.local/Systeme/Structure/Test.htm" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"
 127.0.0.1 - - [18/Dec/2015:16:45:34 +0100] "GET /Systeme/Structure/Test.htm HTTP/1.1" 200 804 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"
 127.0.0.1 - - [18/Dec/2015:16:45:34 +0100] "GET / HTTP/1.1" 200 1270 "http://ecluse.local/Systeme/Structure/Test.htm" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"
+127.0.0.1 - - [28/Dec/2015:11:37:23 +0100] "GET /favicon.ico HTTP/1.1" 404 442 "http://ecluse.local/Systeme/Structure/Test.htm" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"
+127.0.0.1 - - [28/Dec/2015:11:37:23 +0100] "GET /favicon.ico HTTP/1.1" 404 441 "http://ecluse.local/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"

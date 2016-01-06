@@ -120,13 +120,8 @@ class Bloc extends Beacon {
 
 	// 	PROCESSUS
 	function BlProcess() {
-		// 		echo "--> BLPROCESS START \r\n";
 		if ($this->Vars!="") $this->RawData = $this->loadVars($this->Vars,$this->RawData);
 		$this->BlObjects = Parser::Processing($this->RawData,false);
-		if (isset($Process->PostObjects))$this->PostBlObjects = Parser::PostObjects;
-		$this->RawData="";
-		// 		print_r($this);
-		// // 		echo "--> BLPROCESS END \r\n";
 	}
 
 	function loadVars($Vars,$Data){
@@ -173,7 +168,7 @@ class Bloc extends Beacon {
 		$this->addHeader();
 		//Le contenu du fichier retravaill�
 		//$this->Content = Parser::getContent($this->BlObjects);
-		$this->Data = Parser::getContent($this->ChildObjects);
+		//$this->Data = Parser::getContent($this->ChildObjects);
 		if (!empty($this->Content))
             $this->Data = $this->parseData($this->Data,$this->Content);
 		//$this->Data= $this->Content;
