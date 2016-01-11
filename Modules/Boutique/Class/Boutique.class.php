@@ -36,7 +36,7 @@ class Boutique extends Module {
         $GLOBALS["Systeme"]->registerVar("CurrentMagasin",Boutique::$_Magasin);
 		
 		//initilisation devise
-		$T= Sys::getData('Boutique','Devise/Defaut=1');
+		$T= Sys::getData('Boutique','Devise/Default=1');
 		Boutique::$_Devise=$T[0];
 		$GLOBALS["Systeme"]->registerVar("CurrentDevise",Boutique::$_Devise);
 		
@@ -101,7 +101,7 @@ class Boutique extends Module {
 	function Check() {
 		parent::Check();
 		// Vérification de l'existence d'une devise par Defaut
-		if (!Sys::getCount('Boutique','Devise/Defaut=1')) {
+		if (!Sys::getCount('Boutique','Devise/Default=1')) {
 			$D=genericClass::createInstance('Boutique','Devise');
 			$D->Nom = 'Euro';
 			$D->Taux = '1';	

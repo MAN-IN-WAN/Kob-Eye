@@ -113,18 +113,21 @@
 		<PROPERTIES searchOrder="4" description="Coup de coeur" type="boolean" default="0" category="MisEnAvant" >Coeur</PROPERTIES>
 		<PROPERTIES searchOrder="5" description="Idée Cadeau" type="boolean" default="0"  category="MisEnAvant" >IdKdo</PROPERTIES>
 		<PROPERTIES description="Note"  type="float"  category="Calcul"  >Note</PROPERTIES>
-		<PROPERTIES description="Gestion des références" type="int" default="2" list="4" values="1::Références uniques,2::Produit Normal ou Références déclinées,3::Produit unique,4::Formule ou Pack,5::Configurateur de produit" category="Configuration" >TypeProduit</PROPERTIES>
-		<PROPERTIES description="Nature du produit" type="int" default="1" list="4" values="1::Livrable,2::Service,3::Téléchargeable,4::Téléchargement gratuit" category="Configuration" >NatureProduit</PROPERTIES>
-		<PROPERTIES description="Nombre de Ventes" auto="1" type="int" default="0" list="5" category="Calcul" >Ventes</PROPERTIES>
-		<PROPERTIES description="Nombre de Visites" auto="1" type="int" default="0"  list="6" category="Calcul" >Visites</PROPERTIES>
+		<PROPERTIES description="Gestion des références" type="int" default="2" values="1::Références uniques,2::Produit Normal ou Références déclinées,3::Produit unique,4::Formule ou Pack,5::Configurateur de produit" category="Configuration" >TypeProduit</PROPERTIES>
+		<PROPERTIES description="Nature du produit" type="int" default="1" values="1::Livrable,2::Service,3::Téléchargeable,4::Téléchargement gratuit" category="Configuration" >NatureProduit</PROPERTIES>
+		<PROPERTIES description="Nombre de Ventes" auto="1" type="int" default="0" category="Calcul" >Ventes</PROPERTIES>
+		<PROPERTIES description="Nombre de Visites" auto="1" type="int" default="0"  category="Calcul" >Visites</PROPERTIES>
 		<PROPERTIES Order="17" description="Reste en stock"      type="int"  default="0"  list="7">StockReference</PROPERTIES>
 		<PROPERTIES description="ImageFond" type="file" category="MisEnAvant" >ImageFond</PROPERTIES>
 		<PROPERTIES description="Existence de tarifs différents (détection automatique)" type="boolean" default="0" hidden="1"  category="Descriptif" >MultiTarif</PROPERTIES>
-		<PROPERTIES description="Tarif HT Générique" type="price" default="" list="6" searchOrder="4" category="Descriptif">Tarif</PROPERTIES>
+		<PROPERTIES description="Tarif HT" type="price" default="" list="6" searchOrder="4" category="Descriptif">Tarif</PROPERTIES>
 		<PROPERTIES description="Prix public conseillé TTC" type="float" category="Descriptif" hidden="1">PPC</PROPERTIES>
 		<PROPERTIES description="Type de Tva"  category="Descriptif"  type="float"  query="Fiscalite/TypeTva/Actif=1::Id::Nom">TypeTva</PROPERTIES>
 		<PROPERTIES description="Ordre dans le flash" type="int" category="MisEnAvant">OrdreFlash</PROPERTIES>
 		<PROPERTIES description="Ordre" type="order" category="Descriptif">Ordre</PROPERTIES>
+		<CATEGORY title="Saisie">
+			<PROPERTIES description="Fiche complète" type="boolean" default="1" list="6">Complet</PROPERTIES>
+		</CATEGORY>
         <CATEGORY title="Synchro">
 			<PROPERTIES description="id de produit distante" type="int" >RemoteId</PROPERTIES>
 			<PROPERTIES description="url de produit distante" type="varchar" >RemotePage</PROPERTIES>
@@ -204,9 +207,9 @@
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Marque" driver="mysql"  AccessPoint="0" Dico="1" master="0"  Description="Marques"  stopPage="1" browseable="1"  Icon="/Skins/AdminV2/Img/IconAqua/Settings2.png">
-		<PROPERTIES searchOrder="1" description="Intitulé" type="varchar" length="100" special="multi" category="Descriptif" >Nom</PROPERTIES>
-		<PROPERTIES searchOrder="3" description="Actif" type="boolean" default="1"  category="Descriptif" list="9">Actif</PROPERTIES>
-		<PROPERTIES searchOrder="8" description="Description" type="bbcode" special="multi" category="Descriptif">Description</PROPERTIES>
+		<PROPERTIES searchOrder="1" description="Intitulé" type="varchar" length="100" special="multi" category="Descriptif" list="1" >Nom</PROPERTIES>
+		<PROPERTIES searchOrder="3" description="Actif" type="boolean" default="1"  category="Descriptif" list="3">Actif</PROPERTIES>
+		<PROPERTIES searchOrder="8" description="Description" type="bbcode" special="multi" category="Descriptif" list="4">Description</PROPERTIES>
 		<PROPERTIES description="Image" type="image"  special="multi" category="Descriptif"  list="2">Image</PROPERTIES>
 		<PROPERTIES description="Ordre" type="order" category="Descriptif">Ordre</PROPERTIES>
 		<PROPERTIES type="metat" special="multi" category="Meta">TitleMeta</PROPERTIES>
