@@ -5,7 +5,7 @@
 		<PROPERTIES type="varchar" length="250">Size</PROPERTIES>
 		<FKEY card="1,1" data="_Dossier,Id">DossierId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="_Fichier" driver="file" Default="2">
+	<OBJECTCLASS title="_Fichier" driver="file" Default="2" Class="Modules/Explorateur/Class/_Fichier.class.php">
 		<PROPERTIES type="varchar" length="100" searchOrder="1">Nom</PROPERTIES>
 		<PROPERTIES type="text">Contenu</PROPERTIES>
 		<PROPERTIES type="int">Modif</PROPERTIES>

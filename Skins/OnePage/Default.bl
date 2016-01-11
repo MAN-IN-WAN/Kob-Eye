@@ -47,7 +47,7 @@
       <h2>Nos Services</h2>
       <div class="col-10-desktop no-float center-element">
         <p>
-          Nos consultants sont à votre écoute et seront force de proposition pour l'ensemble de vos problèmatiques d'hébergement. Que vous soyez un professionnel de la communication ou une agence web, vous trouverez chez nous une explication claire, un service intégré et un service vous permettant d'oublier les problèmatiques lièes à l'hébergement de vos solutions internet / intranet.
+          Nos consultants sont à votre écoute et seront force de proposition pour l'ensemble de vos problèmatiques d'hébergement. Que vous soyez un professionnel de la communication ou une agence web, vous trouverez chez nous une explication claire, un service intégré vous permettant d'oublier les problèmatiques lièes à l'hébergement de vos solutions internet / intranet.
         </p>
       </div>
     </div>
@@ -130,7 +130,7 @@
           Nous sommes une entreprise spécialisée dans l'hébergement de solutions digitales professionnelles. Nous proposons des solutions sur mesure allant de l'hébergement mutualisé haute performance à l'infrastructure dédiée infogérée.
         </p>
         <p>
-          Nous travaillons la proximité avec nos clients afin de leurs proposer une écoute et un service de grande qualité. Nos collaborateurs sont compétents et justifies tous de la double casquette Ingénieur Système / Développeur. Nous permettant ainsi de nous intégrer facilement dans les problèmatiques de déploiement logicielles.
+          Nous travaillons la proximité avec nos clients afin de leurs proposer une écoute et un service de grande qualité. Nos collaborateurs sont compétents et justifient tous de la double casquette Ingénieur Système / Développeur. Nous permettant ainsi de nous intégrer facilement dans les problèmatiques de déploiement logicielles.
         </p>
         <p>
           Nous proposons des reporting sur mesure et en tant que client vous profiterez d'un responsable de projet dédié qui vous connaît et qui peut agir en toute liberté.
@@ -146,22 +146,22 @@
         <div class="client-tab client-tab-1">
           <ul class="clients-list clear">
             <li class="client-item">
-              <a href="#"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/keole.png" alt="Keole"></a>
+              <a href="http://www.keole.net" target="_blank"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/keole.png" alt="Keole"></a>
             </li>
             <li class="client-item">
-              <a href="#"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/bleucerise.png" alt="Bleucerise"></a>
+              <a href="http://www.bleucerise.com" target="_blank"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/bleucerise.png" alt="Bleucerise"></a>
             </li>
             <li class="client-item">
-              <a href="#"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/azko.jpg" alt="Azko"></a>
+              <a href="http://www.azko.fr" target="_blank"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/azko.jpg" alt="Azko"></a>
             </li>
             <li class="client-item">
-              <a href="#"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/folcomedia.jpg" alt="Folcomédia"></a>
+              <a href="http://www.folcomedia.fr" target="_blank"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/folcomedia.jpg" alt="Folcomédia"></a>
             </li>
             <li class="client-item">
-              <a href="#"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/mwsolutions.png" alt="M-W.SOLUTIONS"></a>
+              <a href="http://www.m-w.solutions" target="_blank"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/mwsolutions.png" alt="M-W.SOLUTIONS"></a>
             </li>
             <li class="client-item">
-              <a href="#"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/secib.jpg" alt="Secib"></a>
+              <a href="http://www.secib.fr" target="_blank"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/secib.jpg" alt="Secib"></a>
             </li>
           </ul>
         </div>

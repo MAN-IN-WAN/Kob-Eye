@@ -32,11 +32,11 @@ class Ordonnance extends genericClass {
         require_once ("Class/Lib/Mail.class.php");
         $Mail = new Mail();
         if ($this->Etat==1) {
-            $Mail->Subject("Confirmation de commande sur " . $this->Magasin->Nom);
+            $Mail->Subject("Confirmation de soumission d'une ordonnance sur " . $this->Magasin->Nom);
         }elseif ($this->Etat==2) {
-            $Mail->Subject("Confirmation de preparation de commande  " . $this->Magasin->Nom);
+            $Mail->Subject("Confirmation de preparation de l'ordonnance  " . $this->Magasin->Nom);
         }elseif ($this->Etat==3) {
-            $Mail->Subject("Confirmation de retrait de commande  " . $this->Magasin->Nom);
+            $Mail->Subject("Confirmation de retrait de l'ordonnance  " . $this->Magasin->Nom);
         }
         //$Mail -> From($GLOBALS['Systeme'] -> Conf -> get('MODULE::SYSTEME::CONTACT'));
         $Mail -> From( $this -> Magasin ->EmailContact );
@@ -48,8 +48,8 @@ class Ordonnance extends genericClass {
         if ($this->Etat==1) {
             $mailContent = "
                 Bonjour " . $Civilite . ",<br /><br />
-                Nous vous informons que votre commande N° " . $this->RefCommande . " a bien été prise en compte.<br />
-                Vous pouvez d'ores et déjà vous rendre sur <a style='text-decoration:underline' href='" . $this->Site->Domaine . "/" . $GLOBALS['Systeme']->getMenu('Boutique/Mon-compte') . "'>votre espace client</a> et suivre l'évolution de votre commande.<br /><br />
+                Nous vous informons que votre ordonnance a bien été prise en compte.<br />
+                Vous pouvez d'ores et déjà vous rendre sur <a style='text-decoration:underline' href='http://" . Sys::$domain . "/" . $GLOBALS['Systeme']->getMenu('Boutique/Mon-compte') . "'>votre espace client</a> et suivre l'évolution de votre ordonnance.<br /><br />
                 <br />Toute l'équipe de " . $this->Magasin->Nom . " vous remercie de votre confiance,<br />
                 <br />Pour nous contacter : " . $this->Magasin->EmailContact . " .".$Lacommande;
         }elseif ($this->Etat==2) {

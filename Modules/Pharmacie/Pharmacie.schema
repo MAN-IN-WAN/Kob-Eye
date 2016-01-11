@@ -30,7 +30,7 @@
 		<PROPERTIES type="text" category="Personne" >Commentaire</PROPERTIES>
 		<PROPERTIES type="email"  searchOrder="3" category="Personne" obligatoire="1">Email</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="4" category="Personne" obligatoire="1">Telephone</PROPERTIES>
-		<PROPERTIES type="image" category="Ordonnance" listWidth="150" obligatoire="1">Image</PROPERTIES>
+		<PROPERTIES type="image" category="Ordonnance" listWidth="150" obligatoire="0">Image</PROPERTIES>
 		<PROPERTIES type="int" searchOrder="5" category="Ordonnance" values="1::Non traitée,2::En cours de traitement,3::Traitée,4::Livrée,5::Litige" default="1">Etat</PROPERTIES>
 		<VIEW title="OrdonnanceList" default="1" filters="">
 			<OBJECTCLASS title="Ordonnance" select="">

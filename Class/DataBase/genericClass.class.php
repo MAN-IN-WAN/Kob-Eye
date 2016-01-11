@@ -1984,7 +1984,39 @@ class genericClass extends Root {
 
 		return WebService::WSStatusMulti($status);
 	}
+    /**
+     * fileBase64
+     * Transform
+     */
+    private function fileBase64($Prop,$Val) {
+        //check base64
+        if (empty($Val)||base64_encode(base64_decode($Val, true)) !== $Val) {
+            return false;
+        }
 
+        //destination
+        $dossier = "Home/".Sys::$User->Id."/" . $this -> Module . "/" . $this -> ObjectType . "/";
+        if (!file_exists($dossier))
+            fileDriver::mk_dir($dossier);
+
+        //nom et extension
+        $extension = '.jpg';
+        $file_name = $Prop['Nom'].'-'.Sys::$User->Id;
+
+        $d = 0;
+        if (file_exists($dossier . $file_name . '_' . $d . $extension)) {
+            while (file_exists($dossier . $file_name . '_' . $d . $extension))
+                $d++;
+        }
+        $path = $dossier . $file_name . '_' . $d . $extension;
+        file_put_contents($path,base64_decode($Val));
+
+        //on enregistre le lien
+        $N = $Prop["Nom"];
+        $this -> $N = $path;
+
+        return $file_name;
+    }
 	/**
 	 * Save
 	 * Save an object
@@ -2003,7 +2035,8 @@ class genericClass extends Root {
 				switch ($Prop["Type"]) {
 					case "image":
 					case "file" :
-						$this -> fileUpload($Prop, $Prop["Valeur"]);
+						if (!$this -> fileUpload($Prop, $Prop["Valeur"]))
+                            $this->fileBase64($Prop,$Prop["Valeur"]);
 						break;
 					case "autodico" :
 						$Nom = $Prop["Nom"];
