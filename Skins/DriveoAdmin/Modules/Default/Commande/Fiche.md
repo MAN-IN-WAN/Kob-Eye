@@ -21,14 +21,32 @@
 <div class="row">
     <div class="col-md-6">
         <form class="form-horizontal">
+            [STORPROC Boutique/Client/Commande/[!D::Id!]|Client|0|1]
             <div class="form-group">
                 <label class="col-sm-5 control-label">Client</label>
                 <div class="col-sm-5">
-                    [STORPROC Boutique/Client/Commande/[!D::Id!]|Client|0|1]
                     [!Client::Nom!] [!Client::Prenom!]
-                    [/STORPROC]
                 </div>
             </div>
+            <div class="form-group">
+                <label class="col-sm-5 control-label">Adresse</label>
+                <div class="col-sm-5">
+                    [!Client::Adresse!] [!Client::CodePostal!] [!Client::Ville!]
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-5 control-label">Email</label>
+                <div class="col-sm-5">
+                    [!Client::Mail!]
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-5 control-label">Tel</label>
+                <div class="col-sm-5">
+                    [!Client::Tel!]
+                </div>
+            </div>
+            [/STORPROC]
             <div class="form-group">
                 <label class="col-sm-5 control-label">Montant TTC</label>
                 <div class="col-sm-5">

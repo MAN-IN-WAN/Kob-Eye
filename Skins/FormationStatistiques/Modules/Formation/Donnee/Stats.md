@@ -254,7 +254,7 @@
             <li role="presentation"><a href="#2words" aria-controls="2words" role="tab" data-toggle="tab">Expressions de 2 mots</a></li>
             <li role="presentation"><a href="#3words" aria-controls="3words" role="tab" data-toggle="tab">Expressions de 3 mots</a></li>
             <li role="presentation"><a href="#random" aria-controls="random" role="tab" data-toggle="tab">10 réponses au hasard ( [!NbR!] Réponses au total)</a></li>
-            <!--<li role="presentation"><a href="#dev" aria-controls="dev" role="tab" data-toggle="tab">Développement</a></li>-->
+            <li role="presentation"><a href="#dev" aria-controls="dev" role="tab" data-toggle="tab">Toutes les réponses</a></li>
         </ul>
 
 
@@ -320,18 +320,17 @@
                     getReponse();
                 </script>
             </div>
-//            <div role="tabpanel" class="tab-pane" id="dev">
-//                [STORPROC Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur!=|R|0|1000]
-//                <div class="well">
-//                    [STORPROC Formation/TypeQuestion/Reponse/[!R::Id!]|TQ][/STORPROC]
-//                    [STORPROC Formation/Question/TypeQuestion/[!TQ::Id!]|Q][/STORPROC]
-//                    [STORPROC Formation/Equipe/Reponse/[!R::Id!]|E][/STORPROC]
-//                    [STORPROC Formation/Session/Equipe/[!E::Id!]|S][/STORPROC]
-//                    <h3>[!R::Valeur!]</h3>
-//                    <p> TQ: [!TQ::Id!] Q: [!Q::Nom!] E: [!E::Numero!] S: [!S::Nom!] [DATE d/m/Y][!S::Date!][/DATE]</p>
-//                </div>
-//                [/STORPROC]
-//            </div>
+            <div role="tabpanel" class="tab-pane" id="dev">
+                [STORPROC Formation/Projet/[!P::Id!]/Session/*/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur!=|R|0|1000]
+                <div class="well">
+                    //[STORPROC Formation/TypeQuestion/Reponse/[!R::Id!]|TQ][/STORPROC]
+                    //[STORPROC Formation/Question/TypeQuestion/[!TQ::Id!]|Q][/STORPROC]
+                    //[STORPROC Formation/Equipe/Reponse/[!R::Id!]|E][/STORPROC]
+                    //[STORPROC Formation/Session/Equipe/[!E::Id!]|S][/STORPROC]
+                    <p>[!R::Valeur!]</p>
+                </div>
+                [/STORPROC]
+            </div>
         </div>
 
         <script>
@@ -403,6 +402,160 @@
             });
 
         </script>
+
+<h2>Inter-Régions</h2>
+<div class="row">
+    //INTERREGION
+    [STORPROC Formation/InterRegion|IR]
+    <div class="col-md-3">
+        [!FILTER_REGION:=!]
+        [STORPROC Formation/InterRegion/[!IR::Id!]/Region|Reg]
+            [IF [!Pos!]>1][!FILTER_REGION.=+!][/IF]
+            [!FILTER_REGION.=Id=[!Reg::Id!]!]
+        [/STORPROC]
+        <h4>[!IR::Nom!]</h4>
+        [!Nb1:=0!]
+        [!Nb2:=0!]
+        [STORPROC Formation/Projet/[!P::Id!]/Session/Region.Region([!FILTER_REGION!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=1|R]
+            [!Nb1+=1!]
+        [/STORPROC]
+        [STORPROC Formation/Projet/[!P::Id!]/Session/Region.Region([!FILTER_REGION!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=0|R]
+            [!Nb2+=1!]
+        [/STORPROC]
+
+        <canvas id="myChart-IR-[!IR::Id!]" width="200" height="250" style="width: 75%;margin-left: 12%"></canvas>
+
+        <script>
+
+            // Get context with jQuery - using jQuery's .get() method.
+            var ctx = $("#myChart-IR-[!IR::Id!]").get(0).getContext("2d");
+            var data = [
+                {
+                    value: '[!Nb1!]',
+                    color: "#46BFBD",
+                    highlight: "#5AD3D1",
+                    label: "Réponse Oui"
+                },
+                {
+                    value: '[!Nb2!]',
+                    color:"#F7464A",
+                    highlight: "#FF5A5E",
+                    label: "Réponse Non"
+                }
+            ];
+            var myNewChart = new Chart(ctx).Pie(data, {
+                //Boolean - Whether we should show a stroke on each segment
+                segmentShowStroke : true,
+
+                //String - The colour of each segment stroke
+                segmentStrokeColor : "#fff",
+
+                //Number - The width of each segment stroke
+                segmentStrokeWidth : 2,
+
+                //Number - The percentage of the chart that we cut out of the middle
+                percentageInnerCutout : 0, // This is 0 for Pie charts
+
+                //Number - Amount of animation steps
+                animationSteps : 100,
+
+                //StrSession/[!S::Id!]ing - Animation easing effect
+                animationEasing : "easeOutBounce",
+
+                //Boolean - Whether we animate the rotation of the Doughnut
+                animateRotate : true,
+
+                //Boolean - Whether we animate scaling the Doughnut from the centre
+                animateScale : false,
+
+                //String - A legend template
+                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%> % <%}%></li><%}%></ul>"
+
+            });
+
+        </script>    </div>
+    [/STORPROC]
+</div>
+<div class="form-group">
+    <label for="CommentaireGlobal" class="control-label">Commentaires Inter-Régions</label>
+    <div class="col-sm-12">
+        <textarea class="form-control" id="CommentaireInterRegion" placeholder="Commentaires inter-régions" style="min-height:100px;">[!Q::CommentaireInterRegion!]</textarea>
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-sm-12">
+        <button type="submit" class="btn btn-default btn-primary save">Enregistrer</button>
+    </div>
+</div>
+
+//REGION
+<h2>Régions</h2>
+<div class="row">
+    [STORPROC Formation/Region|RE]
+    <div class="col-md-3">
+        <h5>[!RE::Nom!]</h5>
+        [!Nb1:=0!]
+        [!Nb2:=0!]
+        [STORPROC Formation/Projet/[!P::Id!]/Session/Region.Region([!RE::Id!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=1|R]
+            [!Nb1+=1!]
+        [/STORPROC]
+        [STORPROC Formation/Projet/[!P::Id!]/Session/Region.Region([!RE::Id!])/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]&Valeur=0|R]
+            [!Nb2+=1!]
+        [/STORPROC]
+
+        <canvas id="myChart-RE-[!RE::Id!]" width="200" height="250" style="width: 75%;margin-left: 12%"></canvas>
+
+        <script>
+
+            // Get context with jQuery - using jQuery's .get() method.
+            var ctx = $("#myChart-RE-[!RE::Id!]").get(0).getContext("2d");
+            var data = [
+                {
+                    value: '[!Nb1!]',
+                    color: "#46BFBD",
+                    highlight: "#5AD3D1",
+                    label: "Réponse Oui"
+                },
+                {
+                    value: '[!Nb2!]',
+                    color:"#F7464A",
+                    highlight: "#FF5A5E",
+                    label: "Réponse Non"
+                }
+            ];
+            var myNewChart = new Chart(ctx).Pie(data, {
+                //Boolean - Whether we should show a stroke on each segment
+                segmentShowStroke : true,
+
+                //String - The colour of each segment stroke
+                segmentStrokeColor : "#fff",
+
+                //Number - The width of each segment stroke
+                segmentStrokeWidth : 2,
+
+                //Number - The percentage of the chart that we cut out of the middle
+                percentageInnerCutout : 0, // This is 0 for Pie charts
+
+                //Number - Amount of animation steps
+                animationSteps : 100,
+
+                //StrSession/[!S::Id!]ing - Animation easing effect
+                animationEasing : "easeOutBounce",
+
+                //Boolean - Whether we animate the rotation of the Doughnut
+                animateRotate : true,
+
+                //Boolean - Whether we animate scaling the Doughnut from the centre
+                animateScale : false,
+
+                //String - A legend template
+                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%> % <%}%></li><%}%></ul>"
+
+            });
+
+        </script>    </div>
+    [/STORPROC]
+</div>
     [/CASE]
     [CASE 5]
         //Cas Sélection

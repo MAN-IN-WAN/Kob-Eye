@@ -1,0 +1,315 @@
+[HEADER JS]Tools/Js/Jquery/1.9.2/jquery.min.js[/HEADER]
+[HEADER]
+<!-- RS5.0 Main Stylesheet -->
+<link rel="stylesheet" type="text/css" href="/Tools/Js/RevolutionSlider-5.0/css/settings.css">
+
+<!-- RS5.0 Layers and Navigation Styles -->
+<link rel="stylesheet" type="text/css" href="/Tools/Js/RevolutionSlider-5.0/css/layers.css">
+<link rel="stylesheet" type="text/css" href="/Tools/Js/RevolutionSlider-5.0/css/navigation.css">
+
+[/HEADER]
+
+<link href='https://fonts.googleapis.com/css?family=Catamaran:400,300,700,900,100' rel='stylesheet' type='text/css'>
+<!-- RS5.0 Core JS Files -->
+<script type="text/javascript" src="/Tools/Js/RevolutionSlider-5.0/js/jquery.themepunch.tools.min.js?rev=5.0"></script>
+<script type="text/javascript" src="/Tools/Js/RevolutionSlider-5.0/js/jquery.themepunch.revolution.min.js?rev=5.0"></script>
+
+<!--
+	#################################
+		- THEMEPUNCH BANNER -
+	#################################
+	-->
+<div id="rev_slider_101_1_wrapper" class="rev_slider_wrapper fullwidthbanner-container" style="margin:0px auto;background-color:transparent;padding:0px;margin-top:0px;margin-bottom:0px;">
+    <!-- START REVOLUTION SLIDER 5.1.6 fullwidth mode -->
+    <div id="rev_slider_101_1" class="rev_slider fullwidthabanner" style="display:none;" data-version="5.1.6">
+        <ul>	<!-- SLIDE  -->
+            <li data-index="rs-511" data-transition="fade" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off"  data-easein="default" data-easeout="default" data-masterspeed="1500"  data-rotate="0"  data-saveperformance="off"  data-title="Intro" data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
+                <!-- MAIN IMAGE -->
+                <img src="/Skins/[!Systeme::Skin!]/Img/image6.jpg"  alt=""  width="1920" height="1080" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="0" class="rev-slidebg" data-no-retina>
+                <!-- LAYERS -->
+
+                <!-- LAYER LOGO -->
+                <div class="tp-caption  Cadre tp-resizeme rs-parallaxlevel-4"
+                     id="slide-511-layer-3"
+                     data-x="['left','left','left','left']" data-hoffset="['30','30','200','80']"
+                     data-y="['top','top','top','bottom']" data-voffset="['183','203','590','20']"
+                     data-width="none"
+                     data-height="none"
+                     data-whitespace="nowrap"
+                     data-transform_idle="o:1;"
+
+                     data-transform_in="x:right;s:1500;e:Power3.easeOut;"
+                     data-transform_out="opacity:0;s:1500;e:Power4.easeIn;s:1500;e:Power4.easeIn;"
+                     data-start="2750"
+                     data-responsive_offset="on"
+
+
+                     style="z-index: 8;"><img src="/Skins/[!Systeme::Skin!]/Img/Logo.png" alt="" width="365" height="73" data-ww="['365px','365px','73px','170px']" data-hh="['73px','73px','251px','213px']" data-no-retina>
+                </div>
+
+                <!-- IMAGE 1 -->
+                <div class="tp-caption   tp-resizeme rs-parallaxlevel-2"
+                     id="slide-511-layer-5"
+                     data-x="['left','left','left','left']" data-hoffset="['530','553','127','58']"
+                     data-y="['top','top','top','top']" data-voffset="['-50','297','622','529']"
+                     data-width="none"
+                     data-height="none"
+                     data-whitespace="nowrap"
+                     data-transform_idle="o:1;"
+
+                     data-transform_in="x:right;s:1500;e:Power3.easeOut;"
+                     data-transform_out="opacity:0;s:1500;e:Power4.easeIn;s:1500;e:Power4.easeIn;"
+                     data-start="1500"
+                     data-responsive_offset="on"
+
+
+                     style="z-index: 11;"><img src="/Skins/[!Systeme::Skin!]/Img/image1.jpg" alt="" width="1500" height="1100" data-ww="['600px','300px','130px','100px']" data-hh="['440px','110px','225px','173px']" data-no-retina>
+                </div>
+
+                <!-- IMAGE 2 -->
+                <div class="tp-caption   tp-resizeme rs-parallaxlevel-1"
+                     id="slide-511-layer-6"
+                     data-x="['left','left','left','left']" data-hoffset="['876','598','150','75']"
+                     data-y="['top','top','top','top']" data-voffset="['360','379','663','560']"
+                     data-width="none"
+                     data-height="none"
+                     data-whitespace="nowrap"
+                     data-transform_idle="o:1;"
+
+                     data-transform_in="x:right;s:1500;e:Power3.easeOut;"
+                     data-transform_out="opacity:0;s:1500;e:Power4.easeIn;s:1500;e:Power4.easeIn;"
+                     data-start="3000"
+                     data-responsive_offset="on"
+
+
+                     style="z-index: 12;"><img src="/Skins/[!Systeme::Skin!]/Img/image2.jpg" alt="" width="1500" height="1100" data-ww="['600px','150px','130px','100px']" data-hh="['440px','110px','225px','173px']" data-no-retina>
+                </div>
+
+
+                <!-- LAYER NR. 11 -->
+                <div class="tp-caption Phrases Cadre tp-resizeme rs-parallaxlevel-7"
+                     id="slide-511-layer-9"
+                     data-x="['left','left','left','left']" data-hoffset="['30','30','200','80']"
+                     data-y="['middle','middle','top','top']" data-voffset="['129','127','365','314']"
+                     data-fontsize="['40','40','16','14']"
+                     data-lineheight="['35','24','24','22']"
+                     data-width="['600','356','370','317']"
+                     data-height="['none','none','81','88']"
+                     data-whitespace="normal"
+                     data-align="justify"
+                     data-transform_idle="o:1;"
+
+                     data-transform_in="x:-50px;opacity:0;s:1000;e:Power2.easeOut;"
+                     data-transform_out="opacity:0;s:1500;e:Power4.easeIn;s:1500;e:Power4.easeIn;"
+                     data-start="1500"
+                     data-splitin="none"
+                     data-splitout="none"
+                     data-responsive_offset="on"
+
+
+                     style="z-index: 5; min-width: 448px; max-width: 448px; white-space: normal;">Mettre chacun de vos collaborateurs<br /> au coeur de la reussite de votre<br/> entreprise
+                </div>
+
+
+            </li>
+            <li data-index="rs-512" data-transition="fade" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off"  data-easein="default" data-easeout="default" data-masterspeed="1500"  data-rotate="0"  data-saveperformance="off"  data-title="Intro" data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
+                <!-- MAIN IMAGE -->
+                <img src="/Skins/[!Systeme::Skin!]/Img/image7.jpg"  alt=""  width="1920" height="1080" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="0" class="rev-slidebg" data-no-retina>
+                <!-- LAYERS -->
+
+                <!-- LAYER LOGO -->
+                <div class="tp-caption  Cadre tp-resizeme rs-parallaxlevel-4"
+                     id="slide-511-layer-3"
+                     data-x="['left','left','left','left']" data-hoffset="['30','30','200','80']"
+                     data-y="['top','top','top','bottom']" data-voffset="['183','203','590','20']"
+                     data-width="none"
+                     data-height="none"
+                     data-whitespace="nowrap"
+                     data-transform_idle="o:1;"
+
+                     data-transform_in="x:right;s:1500;e:Power3.easeOut;"
+                     data-transform_out="opacity:0;s:1500;e:Power4.easeIn;s:1500;e:Power4.easeIn;"
+                     data-start="2750"
+                     data-responsive_offset="on"
+
+
+                     style="z-index: 8;"><img src="/Skins/[!Systeme::Skin!]/Img/Logo.png" alt="" width="365" height="73" data-ww="['365px','365px','73px','170px']" data-hh="['73px','73px','251px','213px']" data-no-retina>
+                </div>
+
+                <!-- IMAGE 1 -->
+                <div class="tp-caption   tp-resizeme rs-parallaxlevel-2"
+                     id="slide-511-layer-5"
+                     data-x="['left','left','left','left']" data-hoffset="['530','553','127','58']"
+                     data-y="['top','top','top','top']" data-voffset="['-50','297','622','529']"
+                     data-width="none"
+                     data-height="none"
+                     data-whitespace="nowrap"
+                     data-transform_idle="o:1;"
+
+                     data-transform_in="x:right;s:1500;e:Power3.easeOut;"
+                     data-transform_out="opacity:0;s:1500;e:Power4.easeIn;s:1500;e:Power4.easeIn;"
+                     data-start="1500"
+                     data-responsive_offset="on"
+
+
+                     style="z-index: 11;"><img src="/Skins/[!Systeme::Skin!]/Img/image3.jpg" alt="" width="1500" height="1100" data-ww="['600px','300px','130px','100px']" data-hh="['440px','110px','225px','173px']" data-no-retina>
+                </div>
+
+                <!-- IMAGE 2 -->
+                <div class="tp-caption   tp-resizeme rs-parallaxlevel-1"
+                     id="slide-511-layer-6"
+                     data-x="['left','left','left','left']" data-hoffset="['876','598','150','75']"
+                     data-y="['top','top','top','top']" data-voffset="['360','379','663','560']"
+                     data-width="none"
+                     data-height="none"
+                     data-whitespace="nowrap"
+                     data-transform_idle="o:1;"
+
+                     data-transform_in="x:right;s:1500;e:Power3.easeOut;"
+                     data-transform_out="opacity:0;s:1500;e:Power4.easeIn;s:1500;e:Power4.easeIn;"
+                     data-start="3000"
+                     data-responsive_offset="on"
+
+
+                     style="z-index: 12;"><img src="/Skins/[!Systeme::Skin!]/Img/image4.jpg" alt="" width="1500" height="1100" data-ww="['600px','150px','130px','100px']" data-hh="['440px','110px','225px','173px']" data-no-retina>
+                </div>
+
+
+                <!-- LAYER NR. 11 -->
+                <div class="tp-caption Phrases Cadre tp-resizeme rs-parallaxlevel-7"
+                     id="slide-511-layer-9"
+                     data-x="['left','left','left','left']" data-hoffset="['30','30','200','80']"
+                     data-y="['middle','middle','top','top']" data-voffset="['129','127','365','314']"
+                     data-fontsize="['40','40','16','14']"
+                     data-lineheight="['35','24','24','22']"
+                     data-width="['600','356','370','317']"
+                     data-height="['none','none','81','88']"
+                     data-whitespace="normal"
+                     data-align="justify"
+                     data-transform_idle="o:1;"
+
+                     data-transform_in="x:-50px;opacity:0;s:1000;e:Power2.easeOut;"
+                     data-transform_out="opacity:0;s:1500;e:Power4.easeIn;s:1500;e:Power4.easeIn;"
+                     data-start="1500"
+                     data-splitin="none"
+                     data-splitout="none"
+                     data-responsive_offset="on"
+
+
+                     style="z-index: 5; min-width: 448px; max-width: 448px; white-space: normal;">Tirer ses propres conclusions<br /> de ses propres expériences
+                </div>
+
+
+            </li>
+        </ul>
+        <div class="tp-static-layers">
+
+            <!-- LAYER NR. 1 -->
+            <div class="tp-caption -   tp-static-layer"
+                 id="slide-60-layer-1"
+                 data-x="['right','right','right','right']" data-hoffset="['30','30','30','30']"
+                 data-y="['top','top','top','top']" data-voffset="['30','30','30','30']"
+                 data-width="none"
+                 data-height="none"
+                 data-whitespace="nowrap"
+                 data-transform_idle="o:1;"
+
+                 data-transform_in="opacity:0;s:1000;e:Power3.easeInOut;"
+                 data-transform_out="auto:auto;s:1000;"
+                 data-start="500"
+                 data-splitin="none"
+                 data-splitout="none"
+                 data-actions='[{"event":"click","action":"toggleclass","layer":"slide-60-layer-1","delay":"0","classname":"open"},{"event":"click","action":"togglelayer","layerstatus":"hidden","layer":"slide-60-layer-3","delay":"0"},{"event":"click","action":"togglelayer","layerstatus":"hidden","layer":"slide-60-layer-4","delay":"0"},{"event":"click","action":"togglelayer","layerstatus":"hidden","layer":"slide-60-layer-5","delay":"0"},{"event":"click","action":"togglelayer","layerstatus":"hidden","layer":"slide-60-layer-6","delay":"0"}]'
+                 data-basealign="slide"
+                 data-responsive_offset="off"
+                 data-responsive="off"
+                 data-startslide="-1"
+                 data-endslide="-1"
+
+                 style="z-index: 5; white-space: nowrap; font-size: 20px; line-height: 22px; font-weight: 400; color: rgba(255, 255, 255, 1.00);"><div id="rev-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            </div>
+        </div>
+        <div class="tp-bannertimer tp-bottom" style="visibility: hidden !important;"></div>	</div>
+
+    <script type="text/javascript">
+        /******************************************
+         -	PREPARE PLACEHOLDER FOR SLIDER	-
+         ******************************************/
+
+        var setREVStartSize=function(){
+            try{var e=new Object,i=jQuery(window).width(),t=9999,r=0,n=0,l=0,f=0,s=0,h=0;
+                e.c = jQuery('#rev_slider_101_1');
+                e.responsiveLevels = [1240,1024,778,480];
+                e.gridwidth = [1400,1240,778,480];
+                e.gridheight = [768,768,960,720];
+
+                e.sliderLayout = "fullwidth";
+                if(e.responsiveLevels&&(jQuery.each(e.responsiveLevels,function(e,f){f>i&&(t=r=f,l=e),i>f&&f>r&&(r=f,n=e)}),t>r&&(l=n)),f=e.gridheight[l]||e.gridheight[0]||e.gridheight,s=e.gridwidth[l]||e.gridwidth[0]||e.gridwidth,h=i/s,h=h>1?1:h,f=Math.round(h*f),"fullscreen"==e.sliderLayout){var u=(e.c.width(),jQuery(window).height());if(void 0!=e.fullScreenOffsetContainer){var c=e.fullScreenOffsetContainer.split(",");if (c) jQuery.each(c,function(e,i){u=jQuery(i).length>0?u-jQuery(i).outerHeight(!0):u}),e.fullScreenOffset.split("%").length>1&&void 0!=e.fullScreenOffset&&e.fullScreenOffset.length>0?u-=jQuery(window).height()*parseInt(e.fullScreenOffset,0)/100:void 0!=e.fullScreenOffset&&e.fullScreenOffset.length>0&&(u-=parseInt(e.fullScreenOffset,0))}f=u}else void 0!=e.minHeight&&f<e.minHeight&&(f=e.minHeight);e.c.closest(".rev_slider_wrapper").css({height:f})
+
+            }catch(d){console.log("Failure at Presize of Slider:"+d)}
+        };
+
+
+        setREVStartSize();
+        function revslider_showDoubleJqueryError(sliderID) {
+            var errorMessage = "Revolution Slider Error: You have some jquery.js library include that comes after the revolution files js include.";
+            errorMessage += "<br> This includes make eliminates the revolution slider libraries, and make it not work.";
+            errorMessage += "<br><br> To fix it you can:<br>&nbsp;&nbsp;&nbsp; 1. In the Slider Settings -> Troubleshooting set option:  <strong><b>Put JS Includes To Body</b></strong> option to true.";
+            errorMessage += "<br>&nbsp;&nbsp;&nbsp; 2. Find the double jquery.js include and remove it.";
+            errorMessage = "<span style='font-size:16px;color:#BC0C06;'>" + errorMessage + "</span>";
+            jQuery(sliderID).show().html(errorMessage);
+        }
+        var tpj=jQuery;
+
+        var revapi101;
+        tpj(document).ready(function() {
+            if(tpj("#rev_slider_101_1").revolution == undefined){
+                revslider_showDoubleJqueryError("#rev_slider_101_1");
+            }else{
+                revapi101 = tpj("#rev_slider_101_1").show().revolution({
+                    sliderType:"hero",
+                    jsFileLocation:"http://revolution.themepunch.com/wp-content/plugins/revslider/public/assets/js/",
+                    sliderLayout:"fullscreen",
+                    dottedOverlay:"none",
+                    delay:5000,
+                    navigation: {
+                    },
+                    responsiveLevels:[1240,1024,778,480],
+                    visibilityLevels:[1240,1024,778,480],
+                    gridwidth:[1400,1240,778,480],
+                    gridheight:[768,768,960,720],
+                    lazyType:"none",
+                    parallax: {
+                        type:"3D",
+                        origo:"slidercenter",
+                        speed:1000,
+                        levels:[5,10,15,20,25],
+                        type:"3D",
+                        ddd_shadow:"off",
+                        ddd_bgfreeze:"off",
+                        ddd_overflow:"hidden",
+                        ddd_layer_overflow:"visible",
+                        ddd_z_correction:65,
+                    },
+                    spinner:"off",
+                    autoHeight:"off",
+                    disableProgressBar:"on",
+                    hideThumbsOnMobile:"off",
+                    hideSliderAtLimit:0,
+                    hideCaptionAtLimit:0,
+                    hideAllCaptionAtLilmit:0,
+                    debugMode:false,
+                    fallbacks: {
+                        simplifyAll:"off",
+                        disableFocusListener:false,
+                    }
+                });
+            }
+        });	/*ready*/
+    </script>
+</div><!-- END REVOLUTION SLIDER -->
+</div>

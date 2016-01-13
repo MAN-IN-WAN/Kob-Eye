@@ -296,7 +296,7 @@
 		</div>
 	</div>
 	<div class="control-group [IF [!I_Pass2_Error!]]error[/IF]">
-		<label class="control-label" for="I_Pass2">Confirmer MDP <span class="obligatoire">*</span></label>
+		<label class="control-label" for="I_Pass2">Confirmer mot de passe <span class="obligatoire">*</span></label>
 		<div class="controls">
 			<input type="password"  name="I_Pass2" value="[IF [!Reset!]=][!I_Pass2!][/IF]"  tabindex="40" />
 		</div>
