@@ -97,7 +97,7 @@
 		</INTERFACES>
 		<CATEGORY title="Description" type="large">
 			<PROPERTIES mobile="1" searchOrder="1" description="Intitulé" type="varchar" length="100" special="multi" list="1">Nom</PROPERTIES>
-			<PROPERTIES mobile="1" obligatoire="1" unique="1" searchOrder="2" description="Référence" type="varchar" length="16" list="10">Reference</PROPERTIES>
+			<PROPERTIES mobile="1" obligatoire="1" unique="1" searchOrder="2" description="Référence" type="varchar" length="16">Reference</PROPERTIES>
 			<PROPERTIES mobile="1" searchOrder="5" description="Actif" type="boolean" default="1" list="9">Actif</PROPERTIES>
             <PROPERTIES description="Description" type="html" special="multi" category="Descriptif">Description</PROPERTIES>
 			<PROPERTIES mobile="1" Order="20" description="Poids en kg 0.xxx" type="float" >Poids</PROPERTIES>
@@ -110,7 +110,7 @@
         <PROPERTIES description="Commentaire" type="text" category="Stock">Commentaire</PROPERTIES>
 		<PROPERTIES description="Compte comptable particuliers" type="varchar" length="16" category="Descriptif">CompteComptable</PROPERTIES>
 		<PROPERTIES description="Compte comptable professionnels" type="varchar" length="16" category="Descriptif">CompteComptablePro</PROPERTIES>
-		<PROPERTIES searchOrder="4" description="Coup de coeur" type="boolean" default="0" category="MisEnAvant" >Coeur</PROPERTIES>
+		<PROPERTIES searchOrder="4" description="Produit à la une" type="boolean" default="0" category="MisEnAvant" list="10" >Coeur</PROPERTIES>
 		<PROPERTIES searchOrder="5" description="Idée Cadeau" type="boolean" default="0"  category="MisEnAvant" >IdKdo</PROPERTIES>
 		<PROPERTIES description="Note"  type="float"  category="Calcul"  >Note</PROPERTIES>
 		<PROPERTIES description="Gestion des références" type="int" default="2" values="1::Références uniques,2::Produit Normal ou Références déclinées,3::Produit unique,4::Formule ou Pack,5::Configurateur de produit" category="Configuration" >TypeProduit</PROPERTIES>

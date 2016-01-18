@@ -30,6 +30,27 @@
 [!NbPage:=[!Math::Floor([!Nb:/[!NbParPage!]!])!]!]
 [IF [!NbPage!]!=[!Nb:/[!NbParPage!]!]][!NbPage+=1!][/IF]
 
+
+//ACTIONS
+[SWITCH [!action!]|=]
+    [CASE edit]
+        [STORPROC [!I::Module!]/[!I::TypeChild!]/[!id!]|P|0|1]
+            [!P::[!prop!]:=[!value!]!]
+            [IF [!P::Save()!]=]
+                <div class="alert alert-success">L'élément [!P::getDescription()!] [!P::getFirstSearchOrder()!] a bien été mis à jour.</div>
+            [ELSE]
+                <div class="alert alert-danger">Un problème est survenu lors de la mise à jour de l'élément [!P::getDescription()!] [!P::getFirstSearchOrder()!].
+                    <ul>
+                        [STORPROC [!P::Error!]|E]
+                            <li>[!E::Message!]</li>
+                        [/STORPROC]
+                    </ul>
+                </div>
+            [/IF]
+        [/STORPROC]
+    [/CASE]
+[/SWITCH]
+
 [IF [!Mini!]=]
 <div class="row well">
     <div class="col-md-4">
@@ -95,9 +116,9 @@
                 [SWITCH [!E::type!]|=]
                     [CASE boolean]
                         <td>[IF [!C::[!E::name!]!]]
-                                <h4><span class="label label-success"><i class="fa fa-check"></i></span></h4>
+                                <h4><a href="?search=[!search!]&Page=[!Page!]&action=edit&prop=[!E::name!]&value=0&id=[!C::Id!]"><span class="label label-success"><i class="fa fa-check"></i></span></a></h4>
                             [ELSE]
-                                <h4><span class="label label-danger"><i class="fa fa-times"></i></span></h4>
+                                <h4><a href="?search=[!search!]&Page=[!Page!]&action=edit&prop=[!E::name!]&value=1&id=[!C::Id!]"><span class="label label-danger"><i class="fa fa-times"></i></span></a></h4>
                             [/IF]
                         </td>
                     [/CASE]
@@ -128,7 +149,7 @@
             </td>
             <td>
                 <div class="btn-group" role="group">
-                    <a class="btn btn-info" href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!C::Id!]">Détails</a>
+                    <!--<a class="btn btn-info" href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!C::Id!]">Détails</a>-->
                 </div>
             </td>
         </tr>

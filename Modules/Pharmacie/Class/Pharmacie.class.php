@@ -65,7 +65,7 @@ class Pharmacie extends Module
 
         //reinitialisation des Produits actifs
         $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=1");
-        //$GLOBALS['Systeme']->Db[0]->query('UPDATE `'.MAIN_DB_PREFIX.'Boutique-Produit` SET Actif=0, Display=0');
+        $GLOBALS['Systeme']->Db[0]->query('UPDATE `'.MAIN_DB_PREFIX.'Boutique-Produit` SET Actif=0, Display=0');
 
         while (!feof($f)) {
             //pour chaque ligne

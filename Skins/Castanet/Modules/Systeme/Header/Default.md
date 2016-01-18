@@ -18,6 +18,7 @@
 			[MODULE Systeme/Header/UserInformations]
 			[MODULE Systeme/Header/PermaLinks]
 			<div id="header_right">
+				[MODULE Systeme/Header/BrandSearch]
 				[MODULE Systeme/Header/TopSearch]
 			</div>
 		</div>
@@ -30,7 +31,7 @@
 				</div>
 				<div class="span9">
 					<div class="row">
-						[COMPONENT Systeme/Bootstrap.MegaMenu]
+						[COMPONENT Systeme/Bootstrap2.MegaMenu]
 					</div>
 				</div>
 			</div>

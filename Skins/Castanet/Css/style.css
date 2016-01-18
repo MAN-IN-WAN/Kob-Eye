@@ -502,3 +502,8 @@ div.TitreTypeLivraison {
 #cart_block .block_content * {
     color: #676767;
 }
+#marqueSelect {
+    width: 150px;
+    border-radius: 15px;
+    float: right;
+}

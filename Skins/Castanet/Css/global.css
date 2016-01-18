@@ -715,7 +715,7 @@ div.star_hover a, div.star a:hover { background-position: 0 -32px }
 	}
 	#header_right {
 		line-height: 28px;
-		padding: 10px;
+		padding: 10px 10px 0 0;
 		position: relative;
 		float: right;
 	}

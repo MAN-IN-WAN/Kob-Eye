@@ -50,11 +50,13 @@ class Boutique extends Module {
 				//récupération de l'utilisateur
 				$usr = $sit->getParents('User');
 				$usr = $usr[0];
-				//on force la skin du magasin en cours
-				$usr = Connection::initUser($usr);
-				Sys::setSkin($usr->Skin);
-				Sys::$User->Menus = $usr->Menus;
-				$GLOBALS["Systeme"]->Menus = $usr->Menus;
+                if (is_object($usr)) {
+                    //on force la skin du magasin en cours
+                    $usr = Connection::initUser($usr);
+                    Sys::setSkin($usr->Skin);
+                    Sys::$User->Menus = $usr->Menus;
+                    $GLOBALS["Systeme"]->Menus = $usr->Menus;
+                }
 			}
 			
 		}

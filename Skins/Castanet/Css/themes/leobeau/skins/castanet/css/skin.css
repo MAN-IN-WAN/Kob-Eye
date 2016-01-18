@@ -284,9 +284,9 @@ li.lof-text > p {
 }
 /* MEGAMENU */
 .nav.megamenu .dropdown-menu.menu-content.mega-cols{
-	left: 5px;
+	left: -270px;
 	float: none;
-	top: 45px;
+	top: 40px;
 	right: 5px;
     box-shadow: 0px 0px 40px #2e2e2e;
 }

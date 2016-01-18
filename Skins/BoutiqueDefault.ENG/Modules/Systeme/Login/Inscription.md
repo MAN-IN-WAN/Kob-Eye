@@ -236,9 +236,9 @@
                                 [IF [!I_Pass_Error!]]<li>Le mot de passe ne peut pas être vide</li>[/IF]
                                 [IF [!I_Pass2_Error!]]<li>Les mots de passe ne correspondent pas</li>[/IF]
                                 [IF [!C_Code_Error!]]<li>Opération fausse</li>[/IF]
-                                [IF [!I_Societe_Error!]=]<li>Nom de votre société ne peut pas être vide</li>[/IF]
-                                [IF [!I_Siret_Error!]=]<li>Siret de votre société ne peut pas être vide</li>[/IF]
-                                [IF [!I_TVAIntraComm_Error!]=]<li>TvaIntracomm de votre société ne peut pas être vide</li>[/IF]
+                                //[IF [!I_Societe_Error!]=]<li>Nom de votre société ne peut pas être vide</li>[/IF]
+                                //[IF [!I_Siret_Error!]=]<li>Siret de votre société ne peut pas être vide</li>[/IF]
+                                //[IF [!I_TVAIntraComm_Error!]=]<li>TvaIntracomm de votre société ne peut pas être vide</li>[/IF]
 
 
 
@@ -401,7 +401,7 @@
 			</select>		
 		</div>
 	</div>
-	<div class="control-group [IF [!C_Calc_Error!]]error[/IF]">
+	<div class="control-group [IF [!C_Code_Error!]]error[/IF]">
 		<label  class="control-label" >Merci de résoudre cette opération*</label>
 		<div class="controls">
 			[IF [!Nb1!]=]

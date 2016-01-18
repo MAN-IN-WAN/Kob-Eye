@@ -9,12 +9,28 @@
 [IF [!start!]]
         [!iDisplayStart:=[!start!]!]
 [/IF]
+
 [IF [!limit!]]
         //[!iDisplayLength:=[!limit!]!]
         [!iDisplayLength:=10!]
 [/IF]
+
+[!SEARCH_TEST:=0!]
 [IF [!USER_FILTER!]=1]
     [!REQUETE+=/userCreate=[!Sys::User::Id!]!]
+    [!SEARCH_TEST:=1!]
+[/IF]
+
+[IF [!PRODUCT_FILTER!]=1]
+    [IF [!SEARCH_TEST!]][!REQUETE+=&!][ELSE][!REQUETE+=/!][/IF]
+    [!REQUETE+=Tarif>0&Actif=1&Display=1!]
+    [!SEARCH_TEST:=1!]
+[/IF]
+
+
+[IF [!search!]]
+    [IF [!SEARCH_TEST!]][!REQUETE+=&!][ELSE][!REQUETE+=/!][/IF]
+    [!REQUETE+=~[!search!]!]
 [/IF]
 
 //FILTERS
@@ -37,6 +53,8 @@
         [/NORESULT]
     [/STORPROC]
 [/STORPROC]
+
+
 
 {
     [COUNT [!REQUETE!]|NB]
