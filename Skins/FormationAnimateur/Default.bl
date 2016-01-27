@@ -37,8 +37,10 @@
         </div>
         <!-- Top Menu Items -->
         <ul class="nav navbar-right top-nav">
+            <!--
             <li><a href="/Systeme/Reboot" class=" btn btn-warning"><i class="fa fa-fw fa-power-off"></i> Redemarrer l'appareil</a></li>
             <li><a href="/Systeme/Arret" class=" btn btn-danger"><i class="fa fa-fw fa-power-off"></i> Arrêter l'appareil</a></li>
+            -->
             <li><a href="/Systeme/Deconnexion"><i class="fa fa-fw fa-exit"></i> Se déconnecter</a></li>
         </ul>
        [MODULE Systeme/Navigation]
