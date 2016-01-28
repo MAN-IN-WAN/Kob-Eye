@@ -1,14 +1,16 @@
-// Devise en cours
-[STORPROC Boutique/Devise/Defaut=1|De][/STORPROC]
-
 //PARAMETRES
 
 [IF [!Chemin!]=][!Chemin:=[!Query!]!][/IF]
-//[IF [!Lien!]=[!Systeme::CurrentMenu::Url!]]
-	[!REQ:=[!Chemin!]/*/Produit/Actif=1&Tarif>0!]
-//[ELSE]
-//	[!REQ:=[!Chemin!]/Produit/Actif=1&Tarif>0!]
-//[/IF]
+[IF [!I::ObjectType!]=Categorie]
+    [!REQ:=[!Chemin!]/*/Produit/Actif=1&Tarif>0!]
+[ELSE]
+    [IF [!Type!]!=search]
+        [!REQ:=[!Chemin!]/Produit/Actif=1&Tarif>0!]
+    [ELSE]
+        [!REQ:=[!Chemin!]&Actif=1&Tarif>0!]
+        [!Chemin:=Boutique/Categorie!]
+    [/IF]
+[/IF]
 [IF [!Page!]=][!Page:=1!][/IF]
 [COUNT [!REQ!]|Nb]
 [!NbParPage:=18!]
@@ -19,30 +21,35 @@
 
 [STORPROC [!Chemin!]|Cat|0|1]
 <div class="contenttop row block">
+    [IF [!Type!]!=search]
+        <h3 class="title_block"> [IF [!Cat::NomLong!]][!Cat::NomLong!][ELSE][!Cat::Nom!][/IF] <span class="resumecat category-product-count"> / __THERE_IS__ [!Nb!] __PRODUCTS__. </span></h3>
 
-	<h3 class="title_block"> [IF [!Cat::NomLong!]][!Cat::NomLong!][ELSE][!Cat::Nom!][/IF] <span class="resumecat category-product-count"> / __THERE_IS__ [!Nb!] __PRODUCTS__. </span></h3>
-
-	[IF [!C::Image!]||[!C::Description!]]
-	<div class="content_scene_cat">
-		<!-- Category image -->
-		[IF [!C::Image!]]
-		<div class="align_center">
-			<img src="/[!C::Image!]" alt="[!C::Nom!]" title="[!C::Nom!]" id="categoryImage" />
-		</div>
-		[/IF]
-		[IF [!C::Description!]]
-		<div class="cat_desc">
-			<p id="category_description_short">
-				[SUBSTR 200][!C::Description!][/SUBSTR]
-			</p>
-			<p id="category_description_full" style="display:none">
-				[!C::Description!]
-			</p>
-			<a href="#" onclick="$('#category_description_short').hide(); $('#category_description_full').show(); $(this).hide(); return false;" class="lnk_more">__MORE__</a>
-		</div>
-		[/IF]
-	</div>
-	[/IF]
+        [IF [!C::Image!]||[!C::Description!]]
+        <div class="content_scene_cat">
+            <!-- Category image -->
+            [IF [!C::Image!]]
+            <div class="align_center">
+                <img src="/[!C::Image!]" alt="[!C::Nom!]" title="[!C::Nom!]" id="categoryImage" />
+            </div>
+            [/IF]
+            [IF [!C::Description!]]
+            <div class="cat_desc">
+                <p id="category_description_short">
+                    [SUBSTR 200][!C::Description!][/SUBSTR]
+                </p>
+                <p id="category_description_full" style="display:none">
+                    [!C::Description!]
+                </p>
+                <a href="#" onclick="$('#category_description_short').hide(); $('#category_description_full').show(); $(this).hide(); return false;" class="lnk_more">__MORE__</a>
+            </div>
+            [/IF]
+        </div>
+        [/IF]
+    [ELSE]
+        //Recherche
+        <h3 class="title_block"> Recherche [!search!] <span class="resumecat category-product-count"> / __THERE_IS__ [!Nb!] __PRODUCTS__. </span>
+    </h1>
+    [/IF]
 	<div class="products-list">
 		<div class="content_sortPagiBar">
 			<div class="row sortPagiBar">
@@ -118,10 +125,10 @@
 										</span>
 										[IF [!Promo!]!=0]
 										<div style="display:block;color:#fff;font-size:13px;position:absolute;right:32px;text-decoration:line-through;top:0;" id="tarifNonPromo">
-											[!Math::PriceV([!Prod::getTarifHorsPromo!])!][!De::Sigle!]
+											[!Math::PriceV([!Prod::getTarifHorsPromo!])!][!CurrentDevise::Sigle!]
 										</div>
 										[/IF]
-										[IF [!Prod::MultiTarif!]=1]<span class="BlocProduitApartir">__A_PARTIR_DE__</span>[/IF] <span class="price" style="display: inline;">[!Math::PriceV([!LePrix!])!][!De::Sigle!]</span>
+										[IF [!Prod::MultiTarif!]=1]<span class="BlocProduitApartir">__A_PARTIR_DE__</span>[/IF] <span class="price" style="display: inline;">[!Math::PriceV([!LePrix!])!][!CurrentDevise::Sigle!]</span>
 										<br />
 										[IF [!Prod::CheckStock!]]
 										<span class="availability">__AVAILABLE__</span>

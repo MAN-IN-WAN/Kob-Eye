@@ -21,10 +21,14 @@
                             <a class="carre carre-vert" href="/Mon-compte"><i class="fa fa-user-md"></i><p>Mon compte</p></a>
                             <a class="carre carre-orange" href="/Systeme/Deconnexion"><i class="fa fa-sign-out"></i><p>Se déconnecter</p></a>
                         </div>
-                        <div class="col-md-8" style="padding:0;text-align: right">
+                        <div class="col-md-3 " style="padding:0;">
+                            [MODULE Systeme/Header/TopSearch]<br />
+                            [MODULE Systeme/Header/BrandSearch]
+                        </div>
+                        <div class="col-md-5" style="padding:0;text-align: right">
                             <h2 style="margin-top: 10px;font-size: 24px;font-weight: 800;">Bienvenue à la Pharmacie du Cours.</h2>
                             [IF [!Systeme::User::Public!]]
-                            <p>Consultez et préparez vos achats depuis chez vous et venez retirer vos commandes en officine sans attente grâce à notre nouvelle borne de retrait rapide.  </p>
+                            <p>Consultez et préparez vos achats depuis chez vous et venez retirer vos commandes en officine sans attente.  </p>
                             [ELSE]
                             Bonjour <strong>[!Sys::User::Nom!] [!Sys::User::Prenom!]</strong>. Vous pouvez maintenant passer commande sur notre click and collect ou encore scanner votre ordonnance afin que nous la préparions en attendant votre arrivée.
                             [/IF]

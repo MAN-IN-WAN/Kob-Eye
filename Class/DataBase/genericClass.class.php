@@ -2313,57 +2313,51 @@ class genericClass extends Root {
 	  * Enregistre les valeurs des champs de referencement si ils sont vides
 	  */
 	 function SaveHeaderVars() {
-		if (empty($this->TitleMeta)) {
-			$obj = $this->getObjectClass();
-			$T=' - '.$obj->getDescription().' - ';
-			$Props = $this->SearchOrder();
-			if (is_array($Props)) foreach ($Props as $p) {
-				//Verification de la valeur
-				switch ($p["Type"]) {
-					case "titre":
-					case "varchar":
-						// Type text : on concatene
-						$T .= ' ' . $this->$p["Titre"];
-					break;
-				}
-			}
-			$this->TitleMeta = substr($T,0,150);
-		}
-		if (empty($this->DescriptionMeta)) {
-			$T='';
-			$Props = $this->Proprietes();
-			if (is_array($Props)) foreach ($Props as $p) {
-				//Verification de la valeur
-				switch ($p["Type"]) {
-					case "text":
-						// Type text : on concatene
-						$T .= ' ' . $this->$p["Titre"];
-					break;
-					case "bbcode":
-						// Type text : on concatene
-						$T .= ' ' . strip_tags($this->$p["Titre"]);
-					break;
-				}
-			}
-			$this->DescriptionMeta = substr(strip_tags($T),0,250);
-		}
-		if (empty($this->ImgMeta)||$this->ImgMeta=="Skins/AdminV2/Img/default.jpg") {
-			$T='';
-			$Props = $this->Proprietes();
-			if (is_array($Props)) foreach ($Props as $p) {
-				//Verification de la valeur
-				switch ($p["Type"]) {
-					case "image":
-						// Type text : on concatene
-						if (isset($this->$p["Titre"])){
-                            $T = $this->$p["Titre"];
-                            break 2;
-                        }
-					break;
-				}
-			}
-			$this->ImgMeta = $T;
-		}
+        $obj = $this->getObjectClass();
+        $T=' - '.$obj->getDescription().' - ';
+        $Props = $this->SearchOrder();
+        if (is_array($Props)) foreach ($Props as $p) {
+            //Verification de la valeur
+            switch ($p["Type"]) {
+                case "titre":
+                case "varchar":
+                    // Type text : on concatene
+                    $T .= ' ' . $this->$p["Titre"];
+                break;
+            }
+        }
+        $this->TitleMeta = substr($T,0,150);
+        $T='';
+        $Props = $this->Proprietes();
+        if (is_array($Props)) foreach ($Props as $p) {
+            //Verification de la valeur
+            switch ($p["Type"]) {
+                case "text":
+                    // Type text : on concatene
+                    $T .= ' ' . $this->$p["Titre"];
+                break;
+                case "bbcode":
+                    // Type text : on concatene
+                    $T .= ' ' . strip_tags($this->$p["Titre"]);
+                break;
+            }
+        }
+        $this->DescriptionMeta = substr(strip_tags($T),0,250);
+        $T='';
+        $Props = $this->Proprietes();
+        if (is_array($Props)) foreach ($Props as $p) {
+            //Verification de la valeur
+            switch ($p["Type"]) {
+                case "image":
+                    // Type text : on concatene
+                    if (isset($this->$p["Titre"])){
+                        $T = $this->$p["Titre"];
+                        break 2;
+                    }
+                break;
+            }
+        }
+        $this->ImgMeta = $T;
 	 }
 	 //______________________________________________________________________________________________
 	 //											     TAGS

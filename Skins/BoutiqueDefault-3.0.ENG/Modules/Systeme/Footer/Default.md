@@ -35,13 +35,13 @@
                     [MODULE Systeme/Footer/InfosConnexion]
                 </div>
                 <div class="col-md-3">
-                    //[MODULE Systeme/Footer/TwitterFeed]
-                </div>
-                <div class="col-md-3">
                     [MODULE Systeme/Footer/BottomMenu?Num=0]
                 </div>
                 <div class="col-md-3">
                     [MODULE Systeme/Footer/BottomMenu?Num=1]
+                </div>
+                <div class="col-md-3">
+                    [MODULE Systeme/Footer/BottomMenu?Num=2]
                 </div>
             </div>
 		</div>
@@ -51,7 +51,7 @@
 			<div class="row">
 				<div class="col-md-6">
 					<div class="copyright">
-                                                    [!Systeme::User::Commentaire!]
+                    [!CurrentMagasin::Commentaire!]
 					</div>
 				</div>
 				<div class="col-md-6" style="padding: 10px 10px 0px 10px; text-align: right">

@@ -210,7 +210,7 @@
 		<PROPERTIES searchOrder="1" description="Intitulé" type="varchar" length="100" special="multi" category="Descriptif" list="1" >Nom</PROPERTIES>
 		<PROPERTIES searchOrder="3" description="Actif" type="boolean" default="1"  category="Descriptif" list="3">Actif</PROPERTIES>
 		<PROPERTIES searchOrder="8" description="Description" type="bbcode" special="multi" category="Descriptif" list="4">Description</PROPERTIES>
-		<PROPERTIES description="Image" type="image"  special="multi" category="Descriptif"  list="2">Image</PROPERTIES>
+		<PROPERTIES description="Image" type="image"  special="multi" category="Descriptif" >Image</PROPERTIES>
 		<PROPERTIES description="Ordre" type="order" category="Descriptif">Ordre</PROPERTIES>
 		<PROPERTIES type="metat" special="multi" category="Meta">TitleMeta</PROPERTIES>
 		<PROPERTIES type="metad" special="multi" category="Meta">DescriptionMeta</PROPERTIES>

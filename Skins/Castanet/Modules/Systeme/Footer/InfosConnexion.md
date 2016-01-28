@@ -3,7 +3,7 @@
 	<ul class="lof-items">
 		<li class="lof-text">
 			<p class="leo_adress">
-				[COUNT Systeme/Connexion/Session=|Nb]
+				[COUNT Systeme/Connexion/Session=&tmsEdit>[!TMS::Now:-600!]|Nb]
 				Il y a [!Nb!] personnes connectées.
 			</p>
 			<p class="leo_phone">

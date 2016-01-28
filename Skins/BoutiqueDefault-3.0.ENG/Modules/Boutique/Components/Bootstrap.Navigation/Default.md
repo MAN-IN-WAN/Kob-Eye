@@ -15,7 +15,7 @@
     [!MENU:=/[!Menu::Url!]!]
     [STORPROC [!I::Historique!]|H|[!Niveau!]|1][/STORPROC]
     <div class="block">
-            <h3 class="title_block">[!TITRE!]</h3>
+            <h3 class="title_block">[!Menu::Titre!]</h3>
             <div class="block_content">
                     <ul class="navigation">
                     [STORPROC [!Menu::Alias!]/Categorie/Actif=1|Cato|0|20|Ordre|ASC]

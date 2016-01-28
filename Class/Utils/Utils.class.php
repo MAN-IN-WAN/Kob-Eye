@@ -153,6 +153,7 @@ class Utils {
         $tmp =  str_replace('/', '@!#!@', $P);
         $tmp =  str_replace('&', '@!##!@', $tmp);
 		$tmp =  str_replace(' ', '@!###!@', $tmp);
+        $tmp =  str_replace('+', '@!####!@', $tmp);
         return $tmp;
 	}
 
@@ -161,6 +162,7 @@ class Utils {
         $tmp =  str_replace('@!#!@', '/', $P);
         $tmp = str_replace('@!##!@', '&', $tmp);
 		$tmp =  str_replace('@!###!@',' ', $tmp);
+        $tmp =  str_replace('@!####!@','+', $tmp);
 		return $tmp;
 	}
 

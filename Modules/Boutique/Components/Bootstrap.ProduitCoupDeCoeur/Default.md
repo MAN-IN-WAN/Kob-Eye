@@ -31,10 +31,10 @@
 										</span>
 										[IF [!Promo!]!=0]
 										<div style="display:block;color:#fff;font-size:13px;position:absolute;right:32px;text-decoration:line-through;top:0;" id="tarifNonPromo">
-											[!Math::PriceV([!Prod::getTarifHorsPromo!])!][!De::Sigle!]
+											[!Math::PriceV([!Prod::getTarifHorsPromo!])!] [!CurrentDevise::Sigle!]
 										</div>
 										[/IF]
-										[IF [!Prod::MultiTarif!]=1]<span class="BlocProduitApartir">__A_PARTIR_DE__</span>[/IF] <span class="price" style="display: inline;">[!Math::PriceV([!LePrix!])!][!De::Sigle!]</span>
+										[IF [!Prod::MultiTarif!]=1]<span class="BlocProduitApartir">__A_PARTIR_DE__</span>[/IF] <span class="price" style="display: inline;">[!Math::PriceV([!LePrix!])!] [!CurrentDevise::Sigle!]</span>
 										<br />
 										[IF [!Prod::CheckStock!]]
 										<span class="availability">__AVAILABLE__</span>

@@ -1,6 +1,3 @@
-// Devise en cours
-[STORPROC Boutique/Devise/Defaut=1|De][/STORPROC]
-
 //PARAMETRES
 
 [IF [!Chemin!]=][!Chemin:=[!Query!]!][/IF]
@@ -18,7 +15,7 @@
 [/IF]
 [IF [!Page!]=][!Page:=1!][/IF]
 [COUNT [!REQ!]|Nb]
-[!NbParPage:=18!]
+[!NbParPage:=12!]
 [!NbNumParPage:=3!]
 [!NbPage:=[!Math::Floor([!Nb:/[!NbParPage!]!])!]!]
 [IF [!NbPage!]!=[!Nb:/[!NbParPage!]!]][!NbPage+=1!][/IF]
@@ -149,10 +146,10 @@
 										</span>
 										[IF [!Promo!]!=0]
 										<div style="display:block;color:#fff;font-size:13px;position:absolute;right:32px;text-decoration:line-through;top:0;" id="tarifNonPromo">
-											[!Math::PriceV([!Prod::getTarifHorsPromo!])!][!De::Sigle!]
+											[!Math::PriceV([!Prod::getTarifHorsPromo!])!] [!CurrentDevise::Sigle!]
 										</div>
 										[/IF]
-										[IF [!Prod::MultiTarif!]=1]<span class="BlocProduitApartir">__A_PARTIR_DE__</span>[/IF] <span class="price" style="display: inline;">[!Math::PriceV([!LePrix!])!][!De::Sigle!]</span>
+										[IF [!Prod::MultiTarif!]=1]<span class="BlocProduitApartir">__A_PARTIR_DE__</span>[/IF] <span class="price" style="display: inline;">[!Math::PriceV([!LePrix!])!] [!CurrentDevise::Sigle!]</span>
 										<br />
 										[IF [!Prod::CheckStock!]]
 										<span class="availability">__AVAILABLE__</span>
@@ -250,7 +247,7 @@
 			</div>
 		</div>
 	</div>
-	[STORPROC [!Query!]/Categorie|SubCat|0|100]
+	//[STORPROC [!Query!]/Categorie|SubCat|0|100]
 	<!-- Subcategories -->
 	<!--<div id="subcategories">
 		<h3>__SUBCATEGORIES__</h3>
@@ -268,7 +265,7 @@
 		</div>
 		<br class="clear"/>
 	</div>-->
-	[/STORPROC]
+	//[/STORPROC]
 
 </div>
 <!-- end div block_home -->
