@@ -1,34 +1,171 @@
 body {
-    font-family: 'Catamaran', sans-serif;
+  font-family: monospace;
+  font-size: 18px;
+  background: #fff;
+  color: #666;
+  margin: 0;
 }
 
+img {
+  display: block;
+  width: 100%;
+}
 
+input[type=checkbox] {
+  display: none;
+}
+
+label {
+  display: inline-block;
+  margin-right: 1em;
+  padding: 0.4em 0;
+  cursor: pointer;
+}
+
+button {
+  border: 10px solid #00FFAA;
+  font-family: monospace;
+  position: absolute;
+  line-height: 60px;
+  text-align: right;
+  padding: 0 1.2em;
+  background: #444;
+  font-size: 24px;
+  cursor: pointer;
+  display: block;
+  outline: none;
+  height: 80px;
+  width: 80%;
+  top: 260px;
+  margin: 0;
+  left: 10%;
+}
+
+button:hover {
+  background: #00FFAA;
+}
+
+input[type=checkbox] + label:before {
+  display: inline-block;
+  position: relative;
+  background: #444;
+  margin-right: 8px;
+  content: "";
+  height: 16px;
+  width: 16px;
+  top: 1px;
+}
+
+input[type=checkbox]:checked + label:before {
+  background: #00FFAA;
+}
+
+.container {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 5%;
+}
+@media (min-width: 400px) {
+    .wrapper {
+        min-height: 360px;
+    }
+
+    .wrapper {
+        min-height: 460px;
+        position: absolute;
+        overflow: hidden;
+        display: table;
+        height: 100%;
+        width: 100%;
+        left: 0;
+        top: 0;
+    }
+}
+.scene {
+  padding: 0;
+  margin: 0;
+}
+.scene, .layer {
+    display: block;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+.fill {
+  position: absolute;
+  bottom: 5%;
+  right: 5%;
+  left: 5%;
+  top: 5%;
+}
+
+.expand-width {
+  width: 100%;
+}
+
+.border {
+  border: 2px dashed #00FFAA;
+}
+
+.aspect {
+  opacity: 0.2;
+}
 /**
-STRUCTURE
+EP TOOLS
 **/
-/*#map{
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    background-image: url(/Skins/EPConsulting/Img/map.jpg);
-    background-position: center center;
-}*/
-#contenu{
-
+.layer .animation{
+    position: relative;
+    opacity:0;
 }
-
 body {
-    font-family: 'Catamaran';
+    font-family: 'Catamaran' !important;
     font-weight: 400;
-
 }
-
-.Phrases {
-    text-align: left;
-}
-.Cadre {
-    background-color: rgba(255,255,255,0.6);
+.fondblanc {
+    background-color: rgba(255,255,255,0.8);
     padding: 50px;
+}
+.texte {
+    font-weight: 500;
+    line-height: 0.8em;
+    font-size: 27px;
+}
+.cadre {
+    width: 510px;
+}
+.shadow {
+    -moz-box-shadow: 0px 0px 50px 0px #cdcdcd;
+    -webkit-box-shadow: 0px 0px 50px 0px #cdcdcd;
+    -o-box-shadow: 0px 0px 50px 0px #cdcdcd;
+    box-shadow: 0px 0px 50px 0px #cdcdcd;
+
+}
+.background {
+    background-size: cover;
+    position: absolute;
+    width: 110%;
+    height: 110%;
+    left: -5%;
+    top: -5%;
+}
+/**
+EP SCENES
+**/
+
+#background1 {
+    background-image: url(/Skins/EPConsultingTesaser/Img/image7.jpg);
+}
+#background2 {
+    background-image: url(/Skins/EPConsultingTesaser/Img/image5.jpg);
+}
+#background3 {
+    background-image: url(/Skins/EPConsultingTesaser/Img/image6.jpg);
+}
+#background4 {
+    background-image: url(/Skins/EPConsultingTesaser/Img/image3.jpg);
+}
+#background5 {
+    background-image: url(/Skins/EPConsultingTesaser/Img/map.jpg);
 }

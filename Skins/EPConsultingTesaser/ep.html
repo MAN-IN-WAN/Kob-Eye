@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+
+	<title>EP Consulting | Teaser</title>
+
+	<!-- Behavioral Meta Data -->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+	<!-- Styles -->
+	<link rel="stylesheet" type="text/css" href="styles/styles.css"/>
+    <link href='https://fonts.googleapis.com/css?family=Catamaran:400,300,700,900,100' rel='stylesheet' type='text/css'>
+
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+
+    <!-- Greensock -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.2/TweenMax.min.js"></script>
+</head>
+<body>
+
+	<div id="container" class="wrapper">
+		<ul id="scene"  class="scene unselectable"
+            data-friction-x="0.1"
+            data-friction-y="0.1"
+            data-scalar-x="25"
+            data-scalar-y="15">
+
+            <li class="layer" data-depth="0.00"></li>
+
+            <li class="layer" data-depth="0.10">
+                <div id="background1" class="background"></div>
+            </li>
+            <li class="layer" data-depth="0.10">
+                <div id="background2" class="background" style="opacity:0;"></div>
+            </li>
+            <li class="layer" data-depth="0.10">
+                <div id="background3" class="background" style="opacity:0;"></div>
+            </li>
+
+        <!-- Layer 1 -->
+
+            <!-- logo -->
+            <li class="layer" data-depth="0.55">
+                <div class="animation fondblanc shadow" id="logo" style="left: -500px;top: 10%;width: 365px;height: 73px;">
+                    <img src="images/Logo.png" alt="Logo">
+                </div>
+            </li>
+            <!-- texte 1 -->
+            <li class="layer" data-depth="0.65">
+                <div class="animation cadre shadow" id="texte1"  style="left: 150%;top: 35%;">
+                    <div class="texte fondblanc" >Mettre chacun de vos collaborateurs<br /> au coeur de la réussite de votre<br/> entreprise</div>
+                </div>
+            </li>
+            <!-- texte 2 -->
+            <li class="layer" data-depth="0.75">
+                <div class="animation cadre shadow" id="texte2" style="left: 150%;top: 60%;">
+                    <div class="texte fondblanc" >Mettre chacun de vos collaborateurs<br />Leurs permettre de relever les défis<br /> qui se présente à l'entreprise</div>
+                </div>
+            </li>
+
+        <!-- Layer 2 -->
+            <!-- texte 3 -->
+            <li class="layer" data-depth="0.65">
+                <div class="animation cadre shadow" id="texte3"  style="left: -50%;top: 35%;">
+                    <div class="texte fondblanc"> La conduite du changement: <br /> des milliers de collaborateurs <br /> mobilisés</div>
+                </div>
+            </li>
+            <!-- texte 4 -->
+            <li class="layer" data-depth="0.75">
+                <div class="animation cadre shadow" id="texte4" style="left: -50%;top: 60%;">
+                    <div class="texte fondblanc" >Une approche méthodologique éprouvée<br /> des références internationales.</div>
+                </div>
+            </li>
+            <!-- texte 5 -->
+            <li class="layer" data-depth="0.65">
+                <div class="animation cadre shadow" id="texte5"  style="left: 150%;top: 35%;">
+                    <div class="texte fondblanc" >Une méthodologie récompensée par l'award de la meilleure formation européenne en développement d'organisation</div>
+                </div>
+            </li>
+            <!-- texte 6 -->
+            <li class="layer" data-depth="0.75">
+                <div class="animation cadre shadow" id="texte6" style="left: 150%;top: 60%;">
+                    <div class="texte fondblanc" >Mettre chacun de vos collaborateurs<br />Leurs permettre de relever les défis<br /> qui se présente à l'entreprise</div>
+                </div>
+            </li>
+            <!-- award -->
+            <li class="layer" data-depth="0.75">
+                <div class="animation cadre shadow" id="award" style="left: 150%;top: 15%;width: 314px;height: 122px;">
+                    <img src="images/EFMD_AWARD.png" alt="Award">
+                </div>
+            </li>
+
+        <!-- Layer 3 -->
+            <!-- texte 7 -->
+            <li class="layer" data-depth="0.65">
+                <div class="animation cadre shadow" id="texte7"  style="left: -50%;top: 35%;">
+                    <div class="texte fondblanc"> Agir</div>
+                </div>
+            </li>
+            <!-- texte 8 -->
+            <li class="layer" data-depth="0.75">
+                <div class="animation cadre shadow" id="texte8" style="left: -50%;top: 60%;">
+                    <div class="texte fondblanc" >Lever les freins<br /> à l'action</div>
+                </div>
+            </li>
+            <!-- texte 9 -->
+            <li class="layer" data-depth="0.85">
+                <div class="animation cadre shadow" id="texte9"  style="left: 150%;top: 35%;">
+                    <div class="texte fondblanc" >S'impliquer</div>
+                </div>
+            </li>
+            <!-- texte 10 -->
+            <li class="layer" data-depth="0.65">
+                <div class="animation cadre shadow" id="texte10" style="left: 150%;top: 60%;">
+                    <div class="texte fondblanc" >Partager les cultures</div>
+                </div>
+            </li>
+            <!-- texte 11 -->
+            <li class="layer" data-depth="0.75">
+                <div class="animation cadre shadow" id="texte11" style="left: 150%;top: 60%;">
+                    <div class="texte fondblanc" >Partager les expériences</div>
+                </div>
+            </li>
+		</ul>
+	</div>
+
+	<!-- Scripts -->
+	<script src="../deploy/parallax.js"></script>
+	<script>
+
+        // start scene
+        var scene = document.getElementById('scene');
+        var parallax = new Parallax(scene);
+
+        //elements
+        //page 1
+        var logo = $('#logo');
+        var background1 = $('#background1');
+        var background2 = $('#background2');
+        var background3 = $('#background3');
+        var texte1 = $('#texte1');
+        var texte2 = $('#texte2');
+
+        //page 2
+        var texte3 = $('#texte3');
+        var texte4 = $('#texte4');
+        var texte5 = $('#texte5');
+        var texte6 = $('#texte6');
+        var award = $('#award');
+
+        //start animation
+        var tl = new TimelineLite();
+        tl.to(logo, 1, {opacity: 1,left:'10%'})
+                //layer 1
+                //begin
+            .to(texte1, 0.5, {opacity: 1,left:'20%'})
+            .to(texte2, 0.5, {opacity: 1,left:'30%'})
+                //end
+            .to(texte1, 0.5, {opacity: 0,left:'-100%'},'+=3')
+            .to(texte2, 0.5, {opacity: 0,left:'-100%'})
+
+                //layer 2
+                //begin
+            .to(texte3, 0.5, {opacity: 1,left:'20%'})
+            .to(texte4, 0.5, {opacity: 1,left:'30%'})
+            .to(texte5, 0.5, {opacity: 1,left:'60%'})
+            .to(texte6, 0.5, {opacity: 1,left:'70%'})
+            .to(award, 0.5, {opacity: 1,left:'55%'})
+                //end
+            .to(texte3, 0.5, {opacity: 0,left:'-50%'},'+=3')
+            .to(texte4, 0.5, {opacity: 0,top:'150%'})
+            .to(texte5, 0.5, {opacity: 0,left:'150%'})
+            .to(texte6, 0.5, {opacity: 0,top:'150%'})
+            .to(award, 0.5, {opacity: 0,left:'150%'})
+
+                //layer 3
+                //begin
+            .to(logo, 0.5, {left:'0', top: 0})
+            .to(background1, 0.5, {opacity:0},'-=0.8')
+            .to(background2, 0.5, {opacity:1},'-=0.8')
+            .to(texte7, 0.5, {opacity: 1,left:'45%', top: '5%'})
+            .to(texte8, 0.5, {opacity: 1,left:'85%', top: '45%'})
+            .to(texte9, 0.5, {opacity: 1,left:'45%', top: '85%'})
+            .to(texte10, 0.5, {opacity: 1,left:'5%', top: '55%'})
+            .to(texte11, 0.5, {opacity: 1,left:'10%', top: '30%'})
+                //end
+            .to(texte7, 2, {opacity: 0,left:'45%', top: '45%'},'+=3')
+            .to(texte8, 2, {opacity: 0,left:'45%', top: '45%'},'-=2')
+            .to(texte9, 2, {opacity: 0,left:'45%', top: '45%'},'-=2')
+            .to(texte10, 2, {opacity: 0,left:'45%', top: '45%'},'-=2')
+            .to(texte11, 2, {opacity: 0,left:'45%', top: '45%'},'-=2')
+
+                //layer 4
+                //begin
+            .to(background2, 1, {opacity:0})
+            .to(background3, 1, {opacity:1},'-=0.8')
+        ;
+
+	</script>
+
+</body>
+</html>

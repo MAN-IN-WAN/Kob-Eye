@@ -1,0 +1,34 @@
+body {
+    font-family: 'Catamaran', sans-serif;
+}
+
+
+/**
+STRUCTURE
+**/
+/*#map{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-image: url(/Skins/EPConsulting/Img/map.jpg);
+    background-position: center center;
+}*/
+#contenu{
+
+}
+
+body {
+    font-family: 'Catamaran';
+    font-weight: 400;
+
+}
+
+.Phrases {
+    text-align: left;
+}
+.Cadre {
+    background-color: rgba(255,255,255,0.6);
+    padding: 50px;
+}
