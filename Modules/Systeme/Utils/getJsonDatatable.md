@@ -27,6 +27,11 @@
     [!SEARCH_TEST:=1!]
 [/IF]
 
+[IF [!ORDER_FILTER!]=1]
+    [IF [!SEARCH_TEST!]][!REQUETE+=&!][ELSE][!REQUETE+=/!][/IF]
+    [!REQUETE+=Valide=1!]
+    [!SEARCH_TEST:=1!]
+[/IF]
 
 [IF [!search!]]
     [IF [!SEARCH_TEST!]][!REQUETE+=&!][ELSE][!REQUETE+=/!][/IF]

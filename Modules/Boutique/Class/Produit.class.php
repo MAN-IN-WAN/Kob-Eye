@@ -228,70 +228,7 @@ class BoutiqueProduit extends genericClass
         }
     }
 
-    /**
-     * Retourne l'url depuis la racine d'un produit donné
-     * @return    URL
-     */
-    public function getUrl(){
-        /*if (Sys::$User->Public) {
-            return parent::getUrl();
-        } elseif (!Sys::$User->Admin) {*/
-        if (!Sys::$User->Admin) {
-            if (isset($this->_getUrl)&&!empty($this->_getUrl)) return '/'.$this->_getUrl;
-            //recherche des categorie
-            $cat = Sys::getData('Boutique','Categorie/*/Categorie/Produit/'.$this->Id);
-            //on verifie qu'il n'y pas de menu sur chacune des categories
-            $M = false;
-            $lastCat = null;
-            if (!isset($this->Url)) return false;
-            $U = 'Produit/' . $this->Url;
-            if (is_array($cat)) foreach ($cat as $c) {
-                if ('Boutique/Categorie/' . $c->Id != $GLOBALS["Systeme"]->getMenu('Boutique/Categorie/' . $c->Id)) {
-                    $this->_getUrl = $GLOBALS["Systeme"]->getMenu('Boutique/Categorie/' . $c->Id) . '/' . $U;
-                    return '/'.$this->_getUrl;
-                } elseif (!$lastCat || ($lastCat->Bg > $c->Bg && $lastCat->Bd < $c->Bd)) {
-                    $U = $c->Url . '/' . $U;
-                    $lastCat = $c;
-                }
-            }
-//            $U = 'Categorie/' . $U;
-            //recherche du magasin
-            if (!isset($c)) return false;
-            $mag = Magasin::getCurrentMagasin();
 
-            if (is_object($mag) && 'Boutique/Magasin/' . $mag->Id != $GLOBALS["Systeme"]->getMenu('Boutique/Magasin/' . $mag->Id . '/Categorie')) {
-                $this->_getUrl = $GLOBALS["Systeme"]->getMenu('Boutique/Magasin/' . $mag->Id.'/Categorie') . '/' . $U;
-                return '/'.$this->_getUrl;
-            }
-            //recherche du magasin plus la categorie
-            $Uc = 'Produit/' . $this->Url;
-            $C = '/Categorie';
-            if (is_array($cat)) for ($i = sizeof($cat) - 1; $i >= 0; $i--) {
-                $C .= '/' . $cat[$i]["Id"];
-                if (is_object($mag) && 'Boutique/Magasin/' . $mag->Id . $C != $GLOBALS["Systeme"]->getMenu('Boutique/Magasin/' . $mag->Id . $C)) {
-                    $this->_getUrl = $GLOBALS["Systeme"]->getMenu('Boutique/Magasin/' . $mag->Id . $C) . '/Categorie';
-                    for ($j = $i - 1; $j >= 0; $j--) $this->_getUrl .= '/' . $cat[$j]["Url"];
-                    $this->_getUrl .= '/' . $Uc;
-                    return '/'.$this->_getUrl;
-                }
-                //recherche du magasin plus la categorie
-                $Uc = 'Produit/' . $this->Url;
-                $C = '/Categorie';
-                if (is_array($cat)) for ($i = sizeof($cat) - 1; $i >= 0; $i--) {
-                    $C .= '/' . $cat[$i]["Id"];
-                    if ('Boutique/Magasin/' . $mag->Id . $C != $GLOBALS["Systeme"]->getMenu('Boutique/Magasin/' . $mag->Id . $C)) {
-                        $this->_getUrl = $GLOBALS["Systeme"]->getMenu('Boutique/Magasin/' . $mag->Id . $C) . '/Categorie';
-                        for ($j = $i - 1; $j >= 0; $j--) $this->_getUrl .= '/' . $cat[$j]["Url"];
-                        $this->_getUrl .= '/' . $Uc;
-                        return '/'.$this->_getUrl;
-                    }
-                }
-                return 'Boutique/' . $U;
-            }
-            return parent::getUrl();
-
-       } else return parent::getUrl();
-    }
     /**
      * Retourne le nombre de références  pour ce produit
      * @return    Nombre

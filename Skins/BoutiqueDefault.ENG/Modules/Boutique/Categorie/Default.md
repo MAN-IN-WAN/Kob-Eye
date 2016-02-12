@@ -143,13 +143,13 @@
 									<h3 class="s_title_block"><a href="[!Prod::getUrl()!]" title="[!Prod::Nom!]">[!Prod::Nom!]</a></h3>
 
 									<div class="price_container">
-										</span>
-										[IF [!Promo!]!=0]
-										<div style="display:block;color:#fff;font-size:13px;position:absolute;right:32px;text-decoration:line-through;top:0;" id="tarifNonPromo">
+										[IF [!Promo!]]
+										<div style="display:block;color:#333;font-size:13px;text-decoration:line-through;margin-bottom:5px;" id="tarifNonPromo">
 											[!Math::PriceV([!Prod::getTarifHorsPromo!])!] [!CurrentDevise::Sigle!]
 										</div>
 										[/IF]
-										[IF [!Prod::MultiTarif!]=1]<span class="BlocProduitApartir">__A_PARTIR_DE__</span>[/IF] <span class="price" style="display: inline;">[!Math::PriceV([!LePrix!])!] [!CurrentDevise::Sigle!]</span>
+										[IF [!Prod::MultiTarif!]=1]<span class="BlocProduitApartir">__A_PARTIR_DE__</span>[/IF]
+                                        <span class="price" style="display: inline;">[!Math::PriceV([!LePrix!])!] [!CurrentDevise::Sigle!]</span>
 										<br />
 										[IF [!Prod::CheckStock!]]
 										<span class="availability">__AVAILABLE__</span>

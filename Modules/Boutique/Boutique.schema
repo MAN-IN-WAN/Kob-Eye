@@ -81,7 +81,8 @@
 		<CATEGORY title="Synchro">
 			<PROPERTIES description="Id de catégorie distante" type="varchar" >RemoteId</PROPERTIES>
 			<PROPERTIES description="Numéro de page distante" type="int" >RemotePage</PROPERTIES>
-			<PROPERTIES description="Url de page distante" type="varchar" >RemoteUrl</PROPERTIES>
+            <PROPERTIES description="Url de page distante" type="varchar" >RemoteUrl</PROPERTIES>
+            <PROPERTIES description="Classification claude bernard" type="varchar" >Classification</PROPERTIES>
 		</CATEGORY>
 		<FUNCTION Icon="/Skins/AdminV2/Img/group_link.png">Parser</FUNCTION>
 		<FUNCTION Icon="/Skins/AdminV2/Img/group_link.png">ParserProduit</FUNCTION>
@@ -139,7 +140,8 @@
 		<CATEGORY title="Codes">
 			<PROPERTIES description="CIP7/ACL7" type="varchar" length="30" searchOrder="6">CIP7</PROPERTIES>
 			<PROPERTIES description="CIP13/ACL13" type="varchar"  length="30" searchOrder="6">CIP13</PROPERTIES>
-			<PROPERTIES description="EAN/GTIN" type="varchar" length="30" searchOrder="6">EAN</PROPERTIES>
+            <PROPERTIES description="EAN/GTIN" type="varchar" length="30" searchOrder="6">EAN</PROPERTIES>
+            <PROPERTIES description="Classificatio claude bernard" type="varchar" length="30" searchOrder="6">Classification</PROPERTIES>
 		</CATEGORY>
 		<FKEY card="1,n" data="Categorie,Id" >CategorieId</FKEY>
 		<FKEY card="0,n" data="Conditionnement,Id">ConditionnementId</FKEY>
@@ -546,6 +548,15 @@
 		<PROPERTIES description="Livré" type="boolean" default="0">Livre</PROPERTIES>
 		<FKEY card="1,1" data="Commande,Id">CommandeId</FKEY>
 		<FKEY card="1,1" data="Reference,Id">ReferenceId</FKEY>
+        <VIEW title="LigneCommandeList" default="1">
+            <OBJECTCLASS title="LigneCommande" select="*" filters="">
+                <JOIN type="inner" title="Reference" on="ReferenceId" target="Id">
+                    <JOIN type="inner" title="Produit" on="ProduitId" target="Id">
+                        <PROPERTIES type="varchar" listWidth="100" list="20" searchOrder="20" description="Nom" alias="Image">Image</PROPERTIES>
+                    </JOIN>
+                </JOIN>
+            </OBJECTCLASS>
+        </VIEW>
 	</OBJECTCLASS>
 	
 	<OBJECTCLASS title="Paiement" driver="mysql" AccessPoint="0" master="0" Description="Paiements"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png"  Class="Modules/Boutique/Class/Paiement.class.php">

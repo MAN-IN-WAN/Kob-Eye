@@ -5,12 +5,12 @@
 			<div class="item [IF [!Pos!]=1]active[/IF]">
 				<a href="#"><img src="/[!D::Lien!].mini.1600x400.jpg" alt="[!D::Titre!]" /></a>
 				<div class="slide-info hidden-tablet">
-					<div class="slide-title">
+					<!--<div class="slide-title">
 						[!D::Titre!]
 					</div>
 					<div class="slide-description">
 						[!D::Html!]
-					</div>
+					</div>-->
 				</div>
 			</div>
 			[/STORPROC]

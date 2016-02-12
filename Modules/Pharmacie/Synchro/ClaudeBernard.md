@@ -1,0 +1,1 @@
+[!Module::Pharmacie::synchroClaudeBernard(../stock/easy.txt)!]

@@ -2,6 +2,88 @@
 class Pharmacie extends Module
 {
     /**
+     * Consitution de la base claude bernard
+     * @param string $path
+     * @throws Exception
+     */
+    public static function synchroClaudeBernard($path = '../stock/easy.txt')
+    {
+        //categorie de base
+        $basecat = Sys::getOneData('Boutique','Categorie/Id=1027');
+        $tabcat = Array();
+
+        //desactivation de la generation des mots clefs.
+        Sys::disableKeywordsProcessing();
+
+        //récupération du fichier
+        if (!file_exists($path)) {
+            throw new Exception('Impossible d\'ouvrir le fichier ' . $path);
+        }
+        $f = fopen($path, 'r');
+        $i = 0;
+        $j = 0;
+
+        //reinitialisation des Produits actifs
+        $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=1");
+        $GLOBALS['Systeme']->Db[0]->query('UPDATE `' . MAIN_DB_PREFIX . 'Boutique-Produit` SET Actif=0, Display=0');
+
+        while (!feof($f)) {
+            //pour chaque ligne
+            $l = utf8_encode(fgets($f));
+            $l = explode(';', $l);
+
+            //test intégrité
+            if (sizeof($l) <= 40) continue;
+
+            //on récupère la classification
+            $BCB = trim($l[10]);
+            $BCBnom = trim($l[37]);
+
+            $tabcat[$BCB] = $BCBnom;
+        }
+        ksort($tabcat);
+        print_r($tabcat);
+
+        //création des catégories
+        foreach ($tabcat as $BCB=>$nom){
+            //on recherche si rla catégorie existe
+            $cat  = Sys::getOneData('Boutique','Categorie/*/Classification='.$BCB);
+            if (!$cat){
+                //alors recherche récursive
+                $cat = Pharmacie::getRecursivClaudeBernard($BCB,$basecat,$tabcat);
+            }
+        }
+    }
+    static function getRecursivClaudeBernard($BCB, $catparent, $allcat, $level = 1) {
+        //recherche de la catégorie parente
+        if (!$catparent) throw new Exception('Categorie de base introuvable',404);
+
+        //on récupère la classification à recherche correspondante au niveau
+        $cls = substr($BCB,0,$level);
+
+        //on vérifie l'existence
+        $cat  = Sys::getOneData('Boutique','Categorie/'.$catparent->Id.'/Categorie/Classification='.$cls);
+        if ($cat){
+            if (strlen($BCB)>$level)
+                //ok donc on recherche au niveau 2
+                return Pharmacie::getRecursivClaudeBernard($BCB,$cat,$allcat,$level+1);
+            else
+                //on a trouvé on renvoi
+                return $cat;
+        }else{
+            //la catégorie n'existe pas donc on la créée
+            $cat  = genericClass::createInstance('Boutique','Categorie');
+            $cat->Classification  = $cls;
+            $cat->Nom = (isset($allcat[$cls]))?$allcat[$cls]:'CODE '.$cls;
+            $cat->addParent($catparent);
+            $cat->Save();
+            echo "$level | $cls creation cat $cls => ".$cat->Nom."\r\n";
+            if (strlen($BCB)>$level)
+                return Pharmacie::getRecursivClaudeBernard($BCB,$cat,$allcat,$level+1);
+            else return $cat;
+        }
+    }
+    /**
      * analyse du fcihier de stock en export de periphar.
      * Mise à jour des tarifs et des stocks.
      * Array
@@ -101,6 +183,18 @@ class Pharmacie extends Module
                 if (empty($p->EAN))$p->EAN = $EAN;
                 if (empty($p->CIP13))$p->CIP13 = $CIP13;
                 if (empty($p->CIP7))$p->CIP7 = $CIP7;
+
+                //mise à jour de la classification
+                $BCB = trim($l[10]);
+                $p->Classification = $BCB;
+
+                //on recherche la cétegorie correspondate
+                if (empty($p->Classification)) {
+                    $cat = Sys::getOneData('Boutique', 'Categorie/*/Classification=' . $BCB);
+                    if ($cat) {
+                        $p->AddParent($cat);
+                    }
+                }
 
                 //mise à jour des tarifs
                 $TTC = trim($l[4]);

@@ -421,7 +421,7 @@ class Connection extends Root{
 		//Recuperation de l adresse IP
 		$this->Ip=Sys::$remote_addr;
 		//Recuperation du nom de l hote
-		$this->Host=@gethostbyaddr(Sys::$remote_addr);
+		//$this->Host=@gethostbyaddr(Sys::$remote_addr);
 		//Langage de l hote
 		$this->Navigateur=str_replace("/","",utf8_decode(Sys::$user_agent));
 		$this->Navigateur=str_replace("'","",$this->Navigateur);
@@ -448,7 +448,7 @@ class Connection extends Root{
 			if ($this->SessId!=""){
 				//Recuperation d'une connexion prive
 				$query="Systeme/Connexion/Session=".$this->SessId;
-				$Results = Sys::$Modules['Systeme']->callData($query,false,0,1);
+                $Results = Sys::$Modules['Systeme']->callData($query,false,0,1);
 				if (isset($Results[0])&&is_array($Results[0])){
 					//Connexion existante
 					$GLOBALS["Systeme"]->Log->log("RECUP CONNEXION ".$this->SessId);
