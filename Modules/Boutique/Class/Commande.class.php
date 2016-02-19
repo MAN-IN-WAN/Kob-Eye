@@ -112,6 +112,7 @@ class Commande extends genericClass {
 		if ($this -> Avalider) {
 			$this -> applyCommande();
             $this -> sendMailAcheteur();
+            $this -> sendNotification();
 		}
 		if ($this -> ADevalider) {
 			$this -> discardCommande();
@@ -120,6 +121,7 @@ class Commande extends genericClass {
 			$this -> setMagasin();
 			$this -> sendMailAcheteur();
 			$this -> applyInvoice();
+            $this -> sendNotification();
 		}
 		if ($this -> ACurrent) {
 			//définit cette commande comme commande par défaut
@@ -941,12 +943,21 @@ class Commande extends genericClass {
 	 * Valide la commande
 	 */
 	public function setValid() {
-		$Mag= Magasin::getCurrentMagasin();
-		$this -> Valide = true;
-		if (!$Mag->EtapePaiement) { $this->Current=0;}
-		$this -> Save();
-
-	}
+        $li = $this->getLignesCommande();
+        if (sizeof($li)) {
+            $Mag = Magasin::getCurrentMagasin();
+            $this->Valide = true;
+            if (!$Mag->EtapePaiement) {
+                $this->Current = 0;
+            }
+            $this->Save();
+        }else{
+            this.addError(Array(
+                "Champ" => "None",
+                "Message" => "Impossible de valider une commande vide"
+            ));
+        }
+    }
 
     /**
      * setExpedie
@@ -1768,5 +1779,58 @@ class Commande extends genericClass {
 		if($otva && $otva->checkDate($this->DateCommande)) return $this->ObjetTva = $otva;
 		return $this->ObjetTva = new ObjetTva($this->DateCommande);
 	}
+    private function sendNotifications($new){
+// API access key from Google API's Console
+        // API access key from Google API's Console
+        define('API_ACCESS_KEY', 'AIzaSyCGGUR9EbkicdM7IUXp1l-Z2sHFQCnLp-A');
 
+        //recherche des périphériques à associer.
+        $dev = Sys::getData('Pharmacie','Device');
+        $registrationIds = array();
+        foreach ($dev as $d){
+            $registrationIds[] = $d->Key;
+        }
+
+        if ($new) {
+            $msg = array
+            (
+                'title' => 'Driveo backoffice: un nouvel évènement commande',
+                'message' => 'la commande ' . $this->RefCommande,
+                'store' => 'Commandes',
+                'vibrate' => 1,
+                'sound' => 1
+            );
+        }else{
+            $msg = array
+            (
+                'title' => 'Driveo backoffice: un nouvel évènement commande',
+                'message' => 'la commande ' . $this->RefCommande,
+                'store' => 'Commandes',
+                'vibrate' => 1,
+                'sound' => 1
+            );
+        }
+        $fields = array
+        (
+            'registration_ids' 	=> $registrationIds,
+            'data'			=> $msg
+        );
+
+        $headers = array
+        (
+            'Authorization: key=' . API_ACCESS_KEY,
+            'Content-Type: application/json'
+        );
+
+        $ch = curl_init();
+        curl_setopt( $ch,CURLOPT_URL, 'https://android.googleapis.com/gcm/send' );
+        curl_setopt( $ch,CURLOPT_POST, true );
+        curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
+        curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
+        curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
+        curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fields ) );
+        $result = curl_exec($ch );
+        curl_close( $ch );
+        //echo $result;
+    }
 }

@@ -389,7 +389,7 @@
 	</OBJECTCLASS>
 	
 	<OBJECTCLASS title="Client" driver="mysql" AccessPoint="1" Class="Modules/Boutique/Class/Client.class.php" master="0" Description="Clients"  Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png">
-		<PROPERTIES searchOrder="1" description="Pseudonyme" type="varchar" length="100" obligatoire="1">Pseudonyme</PROPERTIES>
+		<PROPERTIES searchOrder="1" description="Pseudonyme" type="varchar" length="100" obligatoire="0">Pseudonyme</PROPERTIES>
 		<PROPERTIES Order="3" description="Email"      type="varchar" length="200" obligatoire="1">Mail</PROPERTIES>
 		<PROPERTIES Order="4" description="Civilite"   type="varchar" values="Mademoiselle,Madame,Monsieur" obligatoire="1">Civilite</PROPERTIES>
 		<PROPERTIES Order="5" description="Nom"        type="varchar" length="100" obligatoire="1">Nom</PROPERTIES>
@@ -398,10 +398,11 @@
 		<PROPERTIES Order="8" description="CodePostal" type="varchar" length="10" obligatoire="1">CodePostal</PROPERTIES>
 		<PROPERTIES Order="9" description="Ville"      type="varchar" length="100" obligatoire="1">Ville</PROPERTIES>
 		<PROPERTIES Order="10" description="Pays"      type="varchar" length="100" obligatoire="1">Pays</PROPERTIES>
-		<PROPERTIES Order="11" description="Téléphone" type="varchar" length="20" obligatoire="0">Tel</PROPERTIES>
+        <PROPERTIES Order="11" description="Téléphone" type="varchar" length="20" obligatoire="1">Tel</PROPERTIES>
+        <PROPERTIES Order="11" description="Mot de passe" type="varchar" length="100" obligatoire="1">Pass</PROPERTIES>
 		<PROPERTIES Order="11" description="Fax" type="varchar" length="20">Fax</PROPERTIES>
 		<PROPERTIES Order="12" description="Portable"  type="varchar" length="20">Portable</PROPERTIES>
-		<PROPERTIES Order="13" description="Date de Naissance" type="date" obligatoire="1">DateNaissance</PROPERTIES>
+		<PROPERTIES Order="13" description="Date de Naissance" type="date" obligatoire="0">DateNaissance</PROPERTIES>
 		<PROPERTIES Order="14" description="Société"   type="varchar" length="100">Societe</PROPERTIES>
 		<PROPERTIES Order="15" description="Avatar"    type="file">Avatar</PROPERTIES>
 		<PROPERTIES Order="16" description="Ce client est Actif"     type="boolean"  >Actif</PROPERTIES>
@@ -495,11 +496,11 @@
 		<FILTER name="Touts" view="NOVIEW" color="0x999999"></FILTER>
 		<FUNCTION Icon="/Skins/AdminV2/Img/bbedit/bbcode_preview.png">GenereFacture</FUNCTION>
 		<FUNCTION Icon="/Skins/AdminV2/Img/bbedit/bbcode_preview.png">ImprimeDocuments</FUNCTION>
-		<VIEW title="CommandeList" default="0">
+		<VIEW title="CommandeList" default="1">
 			<OBJECTCLASS title="Commande" select="*" filters="">
 				<JOIN type="outer" title="Client" on="ClientId" target="Id">
-					<PROPERTIES type="varchar" listWidth="100" list="20" searchOrder="20" description="Nom" alias="Client1.Nom">Nom</PROPERTIES>
-					<PROPERTIES type="varchar" listWidth="100" list="21" description="Prénom" alias="Client1.Prenom">Prenom</PROPERTIES>
+					<PROPERTIES type="varchar" listWidth="100" list="20" searchOrder="20" description="Nom" alias="Nom">Nom</PROPERTIES>
+					<PROPERTIES type="varchar" listWidth="100" list="21" description="Prénom" alias="Prenom">Prenom</PROPERTIES>
 				</JOIN>
 				<JOIN type="outer" title="Magasin" on="MagasinId" target="Id">
 					<PROPERTIES type="varchar" listWidth="100" list="1" searchOrder="10" description="Magasin" alias="Magasin2.Code">Code</PROPERTIES>

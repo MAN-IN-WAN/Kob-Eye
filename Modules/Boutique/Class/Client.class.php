@@ -37,6 +37,16 @@ class Client extends genericClass {
 		$Utilisateur->Save();
 		return $Pass;
 	}
+    /**
+     * surchage de la fonction delete pour supprimer l'utilisateur
+     */
+    function Delete() {
+        if ($this->UserId>0){
+            $u = $this->getUser();
+            $u->Delete();
+        }
+        parent::Delete();
+    }
 
 	/**
 	* Renvoie le mot de passe précédemment affecté à $this->Pass.
@@ -65,7 +75,6 @@ class Client extends genericClass {
 		$Utilisateur->Set("Ville",$this->Get("Ville"));
 		$Utilisateur->Set("Adresse",$this->Get("Adresse"));
 		$Utilisateur->Set("Pays",$this->Get("Pays"));
-//		$Utilisateur->Set("Pass",$this->Get("Pass"));
 		$Utilisateur->Set("Pass",$this->Pass);
 		$Utilisateur->Set("Admin","0");
 		$Utilisateur->Set("Actif","1");
@@ -131,7 +140,7 @@ class Client extends genericClass {
 			else $Utilisateur = $this->makeUser();
 			$Utilisateur->Verify();
 			genericClass::Verify();
-			//$this->Error = $Utilisateur->Error;
+			$this->Error = array_merge($this->Error,$Utilisateur->Error);
 			$Errors = Array();
 			if (isset($Utilisateur->Error) && is_array($Utilisateur->Error))foreach ($Utilisateur->Error as $E){
 
@@ -185,7 +194,6 @@ class Client extends genericClass {
 				$Utilisateur->Save();
 			}
 			elseif($need_user==1 && $this->Verify(1) && $this->UserId=="") {
-				$createUser = 1;
 				$Utilisateur = $this->makeUser();
 				$Utilisateur->Save();
 				$this->Set("UserId",$Utilisateur->Get("Id"));
@@ -193,7 +201,6 @@ class Client extends genericClass {
 		}
 		else {
 			if ($need_user==1 && $this->Verify(1)) {
-				$createUser = 1;
 				$Utilisateur = $this->makeUser();
 				$Utilisateur->Save();
 			}
@@ -313,10 +320,11 @@ class Client extends genericClass {
 		$lc->InitFromReference($refReference, $qte, $config,$options);
 		$this->getPanier();
 		$o = $this->Panier->ajouterLigneCommande( $lc );
+        $this->Error = array_merge($this->Error,$this->Panier->Error);
 		$this->savePanier();
 		if ($o===true)return true;
 		else {
-		  return $this->Panier->Error;
+		  return false;
 		}
 	}
 

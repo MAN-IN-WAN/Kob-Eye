@@ -1,0 +1,1 @@
+[!Module::Pharmacie::testNotification()!]

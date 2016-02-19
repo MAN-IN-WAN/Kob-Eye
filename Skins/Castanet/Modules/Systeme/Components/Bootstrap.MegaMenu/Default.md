@@ -10,7 +10,7 @@
 					[STORPROC [!M0::getMainMenus()!]|M|0|100|Ordre|ASC]
 						[STORPROC [!M::getSubMenus()!]|M2|0|100|Ordre|ASC]
 						<li class="parent dropdown ">
-							<a class="dropdown-toggle" data-toggle="dropdown" href="/[!M::Url!]" onmouseover='$("#container[!M::Id!]").masonry({ "columnWidth": 200, "itemSelector": ".item-menu" });'><span class="menu-title">[!M::Titre!]</span><b class="caret"></b></a>
+							<a class="dropdown-toggle visible-desktop" data-toggle="dropdown" href="/[!M::Url!]" onmouseover='$("#container[!M::Id!]").masonry({ "columnWidth": 200, "itemSelector": ".item-menu" });'><span class="menu-title">[!M::Titre!]</span><b class="caret"></b></a>
 							<div class="dropdown-menu menu-content mega-cols cols3" [IF [!M::BackgroundImage!]]style="background-image:url(/[!M::BackgroundImage!])"[/IF]>
 								<div class="row-fluid">
 									//test pour voir si il y a une publicite

@@ -6,7 +6,7 @@
                 "msg": "Le produit a été ajouté avec succès."
             [ELSE]
                 "success":false,
-                "msg": "ERREUR"
+                "msg": "[STORPROC [!CurrentClient::Error!]|E][JSON][!E::Message!][/JSON][/STORPROC]"
             [/IF]
         [/CASE]
         [CASE del]

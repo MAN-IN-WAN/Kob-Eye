@@ -4,6 +4,10 @@ __CONNECTION__|Connexion
 __MY_WISHLIST__|
 __BOOKMARK__|
 
+######ERROR######
+__LA_VALEUR_DU_CHAMP__|La valeur du champ
+__ALREADY_EXISTS__|existe déjà
+
 ######PANIER######
 __MY_CART__|Mon panier
 __MY_ORDER__|Ma commande

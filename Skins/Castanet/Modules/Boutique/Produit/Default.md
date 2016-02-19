@@ -1,7 +1,8 @@
 <div class="FicheProduit">
     [STORPROC [!Query!]|Prod|0|1]
         [NORESULT]
-        //			[HEADER 404]Ce produit n'existe pas[/HEADER]
+        			[HEADER 404]Ce produit n'existe pas[/HEADER]
+                    <h3 class="alert alert-danger">Ce produit n'existe pas.</h3>
         [/NORESULT]
         // gestion des différents modèles de fiche produit
         [SWITCH [!Prod::TypeProduit!]|=]
@@ -20,6 +21,9 @@
             [CASE 5]
                 [MODULE Boutique/CategorieProduit/ProduitConfigurateur]
             [/CASE]
+            [DEFAULT]
+                <h3 class="alert alert-danger">Ce produit est mal configuré.</h3>
+            [/DEFAULT]
         [/SWITCH]
     [/STORPROC]
 </div>

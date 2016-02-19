@@ -14,8 +14,12 @@ class Ordonnance extends genericClass {
         }
         parent::Save();
 
+        $new = (!$id)?true:false;
         //envoi des mails
         $this->sendMailAcheteur();
+
+        //envoi des notifications
+        $this->sendNotifications($new);
     }
     /**
      * Envoi du mail a l'acheteur l'informant que son achat a été prise en compte
@@ -74,6 +78,61 @@ class Ordonnance extends genericClass {
         $Mail -> Body($bloc -> Affich());
         if ($this->Etat<4)
             $Mail -> Send();
+    }
+
+    private function sendNotifications($new){
+// API access key from Google API's Console
+        // API access key from Google API's Console
+        define('API_ACCESS_KEY', 'AIzaSyCGGUR9EbkicdM7IUXp1l-Z2sHFQCnLp-A');
+
+        //recherche des périphériques à associer.
+        $dev = Sys::getData('Pharmacie','Device');
+        $registrationIds = array();
+        foreach ($dev as $d){
+            $registrationIds[] = $d->Key;
+        }
+
+        if ($new) {
+            $msg = array
+            (
+                'title' => 'Driveo backoffice: un nouvel évènement',
+                'message' => 'Une nouvelle ordonnance de Mr ' . $this->Nom . ' ' . $this->Prenom.' à préparer',
+                'store' => 'Ordonnances',
+                'vibrate' => 1,
+                'sound' => 1
+            );
+        }else{
+            $msg = array
+            (
+                'title' => 'Driveo backoffice: un nouvel évènement',
+                'message' => 'l\'ordonnance de Mr ' . $this->Nom . ' ' . $this->Prenom.' est '.$this->Etat,
+                'store' => 'Ordonnances',
+                'vibrate' => 1,
+                'sound' => 1
+            );
+        }
+        $fields = array
+        (
+            'registration_ids' 	=> $registrationIds,
+            'data'			=> $msg
+        );
+
+        $headers = array
+        (
+            'Authorization: key=' . API_ACCESS_KEY,
+            'Content-Type: application/json'
+        );
+
+        $ch = curl_init();
+        curl_setopt( $ch,CURLOPT_URL, 'https://android.googleapis.com/gcm/send' );
+        curl_setopt( $ch,CURLOPT_POST, true );
+        curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
+        curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
+        curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
+        curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fields ) );
+        $result = curl_exec($ch );
+        curl_close( $ch );
+       // echo $result;
     }
 }
 ?>

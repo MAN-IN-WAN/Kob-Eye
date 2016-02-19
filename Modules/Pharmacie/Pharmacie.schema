@@ -76,4 +76,8 @@
 		<PROPERTIES category="Document" type="file" searchOrder="3" description="Document"										>Doc</PROPERTIES>
 	</OBJECTCLASS>
 
+    <OBJECTCLASS title="Device" driver="mysql" AccessPoint="1" Icon="[None]" description="Périphériques">
+        <PROPERTIES category="Description" type="varchar" length="255" searchOrder="1">Key</PROPERTIES>
+        <FUNCTION>sendNotificationTest</FUNCTION>
+    </OBJECTCLASS>
 </SCHEMA>

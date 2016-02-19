@@ -132,7 +132,7 @@
 						<div class="list-products">
 							<div class="product-container clearfix">
 								<div class="center_block">
-									<a href="[!Prod::getUrl()!]" class="product_img_link" title="iPod Nano"> <img src="/[IF [!Prod::Image!]!=][!Prod::Image!][ELSE]Skins/[!Systeme::Skin!]/Img/image_def.jpg[/IF].mini.180x200.jpg" alt=""  />
+									<a href="[!Prod::getUrl()!]" class="product_img_link" title="iPod Nano"> <img src="/[IF [!Prod::Image!]!=][!Prod::Image!][ELSE]Skins/[!Systeme::Skin!]/Img/image_def.jpg[/IF]" alt=""  />
 										<!--<span class="new">__NEW__</span> </a>-->
 									[IF [!Promo!]!=0]
 									<span class="discount">__PROMO__</span>
@@ -247,26 +247,33 @@
 			</div>
 		</div>
 	</div>
-	//[STORPROC [!Query!]/Categorie|SubCat|0|100]
+    [COUNT [!Query!]/Categorie|nbCat]
+    [!nbLigne:=[!Math::Floor([!nbCat:/4!])!]!]
+    [IF [!nbLigne:%4!]!=0]
+        [!nbLigne+=1!]
+    [/IF]
+    [IF [!nbCat!]>0]
 	<!-- Subcategories -->
-	<!--<div id="subcategories">
+	<div id="subcategories">
 		<h3>__SUBCATEGORIES__</h3>
 		<div class="inline_list">
-			<div class="row-fluid">
-			[LIMIT 0|100]
-				<div class="span3">
-					<div class="category-container block">
-						//<a href="/[!SubCat::getUrl()!]" title="[!SubCat::Nom!]" class="img title_block"> <img src="/[!SubCat::Image!].mini.142x162.jpg" alt=""/> </a>
-						<a href="/[!SubCat::getUrl()!]" class="cat_name title_block">[IF [!SubCat::NomLong!]!=][!SubCat::NomLong!][ELSE][!SubCat::Nom!][/IF]</a>
-					</div>
-				</div>
-			[/LIMIT]
-			</div>
+            [STORPROC [!nbLigne!]|Sc|0|100]
+                [STORPROC [!Query!]/Categorie|SubCat|[!Key:*4!]|4]
+                <div class="row-fluid">
+                [LIMIT 0|4]
+                    <div class="span3">
+                        <div class="category-container block">
+                            <a href="[!SubCat::getUrl()!]" class="cat_name title_block">[IF [!SubCat::NomLong!]!=][!SubCat::NomLong!][ELSE][!SubCat::Nom!][/IF]</a>
+                        </div>
+                    </div>
+                [/LIMIT]
+                </div>
+                [/STORPROC]
+            [/STORPROC]
 		</div>
 		<br class="clear"/>
-	</div>-->
-	//[/STORPROC]
-
+	</div>
+    [/IF]
 </div>
 <!-- end div block_home -->
 [/STORPROC]

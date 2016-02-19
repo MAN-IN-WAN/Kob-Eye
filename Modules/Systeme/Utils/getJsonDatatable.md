@@ -16,7 +16,7 @@
 [/IF]
 
 [!SEARCH_TEST:=0!]
-[IF [!USER_FILTER!]=1]
+[IF [!USER_FILTER!]=1&&[!Sys::User::Admin!]=0]
     [!REQUETE+=/userCreate=[!Sys::User::Id!]!]
     [!SEARCH_TEST:=1!]
 [/IF]

@@ -40,7 +40,7 @@
 		<PROPERTIES type="boolean" default="0" category="Connexion">ExternalAuth</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Connexion">Privilege</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Connexion" list="7" listDescr="Dev">Developper</PROPERTIES>
-		<PROPERTIES type="order" category="Intégration">Ordre</PROPERTIES>
+		<!--<PROPERTIES type="order" category="Intégration">Ordre</PROPERTIES>-->
 		<FKEY card="1,n" data="Group,Id">GroupId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Site" driver="mysql" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Wiki2.png" generateUrl="0" Class="Modules/Systeme/Class/Site.class.php">

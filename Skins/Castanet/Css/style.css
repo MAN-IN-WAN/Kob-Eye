@@ -40,72 +40,6 @@ div.copyright{
 	border-color: #D6513F;
 }
 
-/*LOGO*/
-@media screen and (max-width: 979px){
-	#header_right {
-		width: 85%;
-		float:left;
-		padding-left: 20px;
-	}
-	a#header_logo{
-		position: absolute;
-		width: 26%;
-		top: 0px; 
-		padding: 22px;
-	}
-	#header_right #search_block_top input.button{
-		width: 5%;
-	}
-	#header_right #search_block_top input.search_query {
-		width: 95%;
-		padding-left: 40px;
-		line-height: 1.3;
-	}
-	#header_right > div {
-		width: 100%;
-		
-	}
-	#header_right #search_block_top div.input-append{
-		width: 100%;
-	}
-	header#header .topbar .container #header_user {
-		margin-left: 0;
-	}
-    .span3.logo-wrapper.text-center{
-        display: 'initial';
-    }
-}
-@media screen and (max-width: 767px){
-	img.logo{
-		width: 90%;
-		margin:5%;
-	}
-	a#header_logo{
-		position: relative;
-		width: 100%;
-		top: 0px; 
-		padding: 0;
-	}
-	#header_right {
-        width: calc( 95% - 112px );
-        float: right;
-        padding: 10px;
-    }
-	.tel-adresse a.btn{
-		float: none;
-		margin: 10px 0;
-		font-size: 1.5em;
-	}
-}
-@media screen and (max-width: 480px) {
-	#header_right #search_block_top input.button{
-		width: 10%;
-	}
-	#header_right #search_block_top input.search_query {
-		width: 90%;
-	}
-
-}
 
 
 /***** PANIER ****/
@@ -506,4 +440,117 @@ div.TitreTypeLivraison {
     width: 150px;
     border-radius: 15px;
     float: right;
+}
+
+#subcategories .title_block {
+    background: #7D2A69;
+    border: 0;
+    color: white;
+    font-size: 12px;
+}
+#product_list a.product_img_link img {
+    max-height: 250px;
+}
+#product_list .p-item a.product_img_link{
+    min-height:250px;
+}
+/*LOGO*/
+@media screen and (max-width: 979px){
+    #header_right {
+        width: 85%;
+        float:left;
+        padding-left: 20px;
+    }
+    a#header_logo{
+        position: absolute;
+        width: 26%;
+        top: 0px;
+        padding: 22px;
+    }
+    #header_right #search_block_top input.button{
+        width: 5%;
+    }
+    #header_right #search_block_top input.search_query {
+        width: 95%;
+        padding-left: 40px;
+        line-height: 1.3;
+    }
+    #header_right > div {
+        width: 100%;
+        float: right;
+    }
+    #header_right #search_block_top div.input-append{
+        width: 100%;
+    }
+    header#header .topbar .container #header_user {
+        margin-left: 0;
+    }
+    .span3.logo-wrapper.text-center{
+        display: 'initial';
+    }
+}
+@media screen and (max-width: 767px){
+    img.logo{
+        width: 90%;
+        margin:5%;
+    }
+    a#header_logo{
+        position: relative;
+        width: 100%;
+        top: 0px;
+        padding: 0;
+    }
+    #header_right {
+        width: 65%;
+        float: left;
+        padding: 10px;
+        margin-left: 30%;
+    }
+    .tel-adresse a.btn{
+        float: none;
+        margin: 10px 0;
+        font-size: 1.5em;
+    }
+    #marqueSelect {
+        width: 100%;
+        border-radius: 15px;
+        float: right;
+    }
+    #header_right > div {
+        float: left;
+        margin-right: 10px;
+    }
+    #header_right .nav-item .item-top {
+        padding: 0;
+    }
+    #header_right #search_block_top input.search_query {
+        width: calc( 100% - 36px ) !important;
+        padding-left: 10px;
+        line-height: 1.2;
+        height: 25px;
+    }
+    section.header .container{
+        margin-bottom: 10px;
+    }
+    /*section.header .container .span3{
+        width: 33.33%;
+        margin-left: 30%;
+    }*/
+    section.header .container .span9{
+        width: 66.66%;
+        margin-left: 30%;
+        float: right;
+    }
+    #header_right #search_block_top input.search_query {
+        min-height: 27px;
+    }
+}
+@media screen and (max-width: 480px) {
+    #header_right #search_block_top input.button{
+        width: 10%;
+    }
+    #header_right #search_block_top input.search_query {
+        width: 90%;
+    }
+
 }
