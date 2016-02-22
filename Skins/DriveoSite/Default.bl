@@ -17,7 +17,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand page-scroll" href="#page-top"><img src="/Skins/DriveoSite/images/logo.png" alt="Sanza theme logo"></a>
+					<a class="navbar-brand page-scroll" href="#page-top"><img src="/Skins/DriveoSite/images/logo.png" id="logo" alt="Driveo par M-W SOLUTIONS"></a>
 				</div>
 				<!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -26,7 +26,7 @@
 							<a href="#page-top"></a>
 						</li>
 						<li>
-							<a class="page-scroll" href="#about">About</a>
+							<a class="page-scroll" href="#about">Driveo</a>
 						</li>
 						<li>
 							<a class="page-scroll" href="#services">Services</a>
@@ -35,7 +35,7 @@
 							<a class="page-scroll" href="#portfolio">Portfolio</a>
 						</li>
 						<li>
-							<a class="page-scroll" href="#team">Team</a>
+							<a class="page-scroll" href="#team">Equipe</a>
 						</li>
 						<li>
 							<a class="page-scroll" href="#contact">Contact</a>
@@ -51,9 +51,9 @@
 			<div class="container">
 				<div class="slider-container">
 					<div class="intro-text">
-						<div class="intro-lead-in">Welcome To MOOZ Themes!</div>
-						<div class="intro-heading">YOUR FAVORITE SOURCE OF FREE BOOTSTRAP THEMES</div>
-						<a href="#about" class="page-scroll btn btn-xl">Tell Me More</a>
+						<div class="intro-lead-in">Drivéo</div>
+						<div class="intro-heading">La solution internet clef en main pour votre pharmacie !</div>
+						<a href="#about" class="page-scroll btn btn-xl">PLus de détails</a>
 					</div>
 				</div>
 			</div>
@@ -63,8 +63,8 @@
 				<div class="row">
 					<div class="col-lg-12 text-center">
 						<div class="section-title">
-							<h2>ABOUT</h2>
-							<p>A creative agency based on Candy Land, ready to boost your business with some beautifull templates. MOOZ Agency is one of the best in town see more you will be amazed.</p>
+							<h2>Drivéo</h2>
+							<p>Une solution complête</p>
 						</div>
 					</div>
 				</div>
@@ -73,8 +73,8 @@
 					<div class="col-md-3 text-center">
 						<div class="mz-module-about">
 							<i class="fa fa-briefcase ot-circle"></i>
-							<h3>Web Development</h3>
-							<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis</p>
+							<h3>Boutique en ligne</h3>
+							<p>Vendez vos produits sur internet ou proposez un service "click and collect" à vos clients.</p>
 						</div>
 					</div>
 					<!-- end about module -->
@@ -82,8 +82,8 @@
 					<div class="col-md-3 text-center">
 						<div class="mz-module-about">
 							<i class="fa fa-photo ot-circle"></i>
-							<h3>Visualisation</h3>
-							<p>Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe</p>
+							<h3>Application mobile</h3>
+							<p>Votre pharmacie sur les smartphones de vos patients!</p>
 						</div>
 					</div>
 					<!-- end about module -->
@@ -91,8 +91,8 @@
 					<div class="col-md-3 text-center">
 						<div class="mz-module-about">
 							<i class="fa fa-camera-retro ot-circle"></i>
-							<h3>Photography</h3>
-							<p>Accusamus et iusto odio dignissimos ducimus qui blanditiis</p>
+							<h3>Base de donnée produit</h3>
+							<p>Nous fournissons une base de donnée de plus de 14000 prodiuits avec photos, et fiches complêtes.</p>
 						</div>
 					</div>
 					<!-- end about module -->
@@ -100,8 +100,8 @@
 					<div class="col-md-3 text-center">
 						<div class="mz-module-about">
 							<i class="fa fa-cube ot-circle"></i>
-							<h3>UI/UX Design</h3>
-							<p> Itaque earum rerum hic tenetur a sapiente, ut aut reiciendis maiores</p>
+							<h3>La borne interactive</h3>
+							<p>Evitez les "Rushs", choisissez le "drive" !</p>
 						</div>
 					</div>
 					<!-- end about module -->

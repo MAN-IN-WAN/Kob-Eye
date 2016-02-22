@@ -842,3 +842,7 @@ and (max-width : 480px) {
 	font-size: 20px;
 }
 }
+/****** LOGO *****/
+#logo {
+    height: 100%;
+}
