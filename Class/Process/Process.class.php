@@ -74,7 +74,7 @@ class Process extends Root{
 		$sData = $Data;
 		if (!is_string($Data))return $Data;
 		//On detecte l existence d un calcul
-		if (preg_match("#(.*?)(\:\=|\=\=|\:\+|\:\*|(?<!http)\:\/|\:\-|\*\=|\-\=|\+\=|\.\=|\/\=|\%\=|\:\%)([^`]*)#s",$Data,$Out)){
+		if (preg_match("#(.*?)(\:\=|\:\+|\:\*|(?<!http)\:\/|\:\-|\*\=|\-\=|\+\=|\.\=|\/\=|\%\=|\:\%)([^`]*)#s",$Data,$Out)){
 			//On extrait les valeurs
 			$Operateur = $Out[2];
 			$Val1 = $Out[1];

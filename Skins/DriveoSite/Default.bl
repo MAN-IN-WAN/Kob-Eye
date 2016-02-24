@@ -5,6 +5,8 @@
 <!-- Custom styles for this template -->
 <link href="/Skins/[!Systeme::Skin!]/Css/owl.carousel.css" rel="stylesheet">
 <link href="/Skins/[!Systeme::Skin!]/Css/owl.theme.default.min.css"  rel="stylesheet">
+<link href="/Skins/[!Systeme::Skin!]/Css/style-sanza.css"  rel="stylesheet">
+<link rel="icon" type="image/png" href="/Skins/DriveoSite/images/favicon.png" />
 [/HEADER]
 		<!-- Navigation -->
 		<nav class="navbar navbar-default navbar-fixed-top">
@@ -26,16 +28,16 @@
 							<a href="#page-top"></a>
 						</li>
 						<li>
-							<a class="page-scroll" href="#about">Driveo</a>
+							<a class="page-scroll" href="#driveo">Driveo</a>
 						</li>
 						<li>
-							<a class="page-scroll" href="#services">Services</a>
+							<a class="page-scroll" href="#fonctionnalites">Fonctionnalités</a>
 						</li>
 						<li>
-							<a class="page-scroll" href="#portfolio">Portfolio</a>
+							<a class="page-scroll" href="#references">Références</a>
 						</li>
 						<li>
-							<a class="page-scroll" href="#team">Equipe</a>
+							<a class="page-scroll" href="#tarifs">Tarifs</a>
 						</li>
 						<li>
 							<a class="page-scroll" href="#contact">Contact</a>
@@ -53,18 +55,18 @@
 					<div class="intro-text">
 						<div class="intro-lead-in">Drivéo</div>
 						<div class="intro-heading">La solution internet clef en main pour votre pharmacie !</div>
-						<a href="#about" class="page-scroll btn btn-xl">PLus de détails</a>
+						<a href="#about" class="page-scroll btn btn-xl">Plus de détails</a>
 					</div>
 				</div>
 			</div>
 		</header>
-		<section id="about" class="dark-bg">
+		<section id="driveo" class="dark-bg">
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-12 text-center">
 						<div class="section-title">
 							<h2>Drivéo</h2>
-							<p>Une solution complête</p>
+							<p>Une solution complête dédié au métier de la pharmacie et de la parapharmacie. Ce pack comprend: </p>
 						</div>
 					</div>
 				</div>
@@ -92,7 +94,7 @@
 						<div class="mz-module-about">
 							<i class="fa fa-camera-retro ot-circle"></i>
 							<h3>Base de donnée produit</h3>
-							<p>Nous fournissons une base de donnée de plus de 14000 prodiuits avec photos, et fiches complêtes.</p>
+							<p>Nous fournissons une base de donnée de plus de 14000 produits avec photos, et fiches complêtes.</p>
 						</div>
 					</div>
 					<!-- end about module -->
@@ -101,7 +103,7 @@
 						<div class="mz-module-about">
 							<i class="fa fa-cube ot-circle"></i>
 							<h3>La borne interactive</h3>
-							<p>Evitez les "Rushs", choisissez le "drive" !</p>
+							<p>Evitez les "Rushs", choisissez le "drive" ! Vos patients qui ont commandé par leurs smartphones déclarent leur arrivée sur la borne pour récupérer leur commande.</p>
 						</div>
 					</div>
 					<!-- end about module -->
@@ -109,33 +111,58 @@
 			</div>
 			<!-- /.container -->
 		</section>
-		<section class="light-bg">
+		<section class="light-bg" id="fonctionnalites">
 			<div class="container">
 				<div class="row">
-					<div class="col-md-7">
+					<div class="col-md-5">
 						<div class="section-text">
-							<h3>WE`RE CREATIVE</h3>
-							<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore</p>
+							<h3>DES FONCTIONNALITES</h3>
+							<p>Nous avons sélectionné pour vous les fonctionnalités essentielles à votre déploiement sur internet. Le tout basé sur les denrières technologies.</p>
 							<ul>
-								<li>Responsive Bootstrap Template</li>
-								<li>Developer Friendly Code</li>
-								<li>Creative Freedom Experience</li>
-								<li>MOOZThemes.com Do Things With Love</li>
+								<li>Site web responsive compatible téléphone / tablette / desktop</li>
+								<li>Application mobile hybride HTML5 compatible android / ios / windows phone / backberry</li>
+								<li>Notification push instantannées</li>
+								<li>Consultation de vos produits avec pagination / recherche </li>
+								<li>Sélection de produit et constitution de commandes</li>
+								<li>Scannez le code barre du produit (pratique pour le renouvellement)</li>
+								<li>Vos patients prennent l'ordonnance en photo avec l'applciation mobile ou  le site internet</li>
+								<li>Gestion de votre blog</li>
+								<li>Gestion de vos promotions</li>
+								<li>La borne permet à un patient de se déclarer dans l'officine afin d'être servi en priorité</li>
+								<li>La borne permet de faire des achats rapides</li>
+                                <li>Synchronisation avec votre logiciel métier de vos stocks et tarifs</li>
 							</ul>
 						</div>
 					</div>
-					<div class="col-md-5">
-
-						<div class="owl-portfolio owl-carousel">
+					<div class="col-md-7">
+                        <h3>Notre documentation</h3>
+                        <a href="/Skins/DriveoSite/images/pdf/driveo.pdf" class="btn btn-block btn-info">Télécharger le pdf</a>
+                        
+						<div class="owl-portfolio owl-carousel" style="margin-top: 20px;;">
 							<div class="item">
-								<div class="owl-portfolio-item"><img src="/Skins/DriveoSite/images/demo/portfolio-7.jpg" class="img-responsive" alt="portfolio"></div>
+								<div class="owl-portfolio-item"><img src="/Skins/DriveoSite/images/pdf/1.jpg" class="img-responsive" alt="portfolio"></div>
 							</div>
 							<div class="item">
-								<div class="owl-portfolio-item"><img src="/Skins/DriveoSite/images/demo/portfolio-8.jpg" class="img-responsive" alt="portfolio"></div>
+								<div class="owl-portfolio-item"><img src="/Skins/DriveoSite/images/pdf/2.jpg" class="img-responsive" alt="portfolio"></div>
 							</div>
-							<div class="item">
-								<div class="owl-portfolio-item"><img src="/Skins/DriveoSite/images/demo/portfolio-9.jpg" class="img-responsive" alt="portfolio"></div>
-							</div>
+                            <div class="item">
+                                <div class="owl-portfolio-item"><img src="/Skins/DriveoSite/images/pdf/3.jpg" class="img-responsive" alt="portfolio"></div>
+                            </div>
+                            <div class="item">
+                                <div class="owl-portfolio-item"><img src="/Skins/DriveoSite/images/pdf/4.jpg" class="img-responsive" alt="portfolio"></div>
+                            </div>
+                            <div class="item">
+                                <div class="owl-portfolio-item"><img src="/Skins/DriveoSite/images/pdf/5.jpg" class="img-responsive" alt="portfolio"></div>
+                            </div>
+                            <div class="item">
+                                <div class="owl-portfolio-item"><img src="/Skins/DriveoSite/images/pdf/6.jpg" class="img-responsive" alt="portfolio"></div>
+                            </div>
+                            <div class="item">
+                                <div class="owl-portfolio-item"><img src="/Skins/DriveoSite/images/pdf/7.jpg" class="img-responsive" alt="portfolio"></div>
+                            </div>
+                            <div class="item">
+                                <div class="owl-portfolio-item"><img src="/Skins/DriveoSite/images/pdf/8.jpg" class="img-responsive" alt="portfolio"></div>
+                            </div>
 						</div>
 
 					</div>
@@ -143,13 +170,13 @@
 			</div>
 		</section>
 
-		<section id="portfolio">
+		<section id="references">
 			<div class="container">
 			<div class="row">
 				<div class="col-lg-12 text-center">
 					<div class="section-title">
-						<h2>Portfolio</h2>
-						<p>Our portfolio is the best way to show our work, you can see here a big range of our work. Check them all and you will find what you are looking for.</p>
+						<h2>Références</h2>
+						<p>Ils nous ont fait confiance.</p>
 					</div>
 				</div>
 			</div>
@@ -158,11 +185,11 @@
 				<div class="col-md-4 col-0-gutter">
 					<div class="ot-portfolio-item">
 						<figure class="effect-bubba">
-							<img src="/Skins/DriveoSite/images/demo/portfolio-1.jpg" alt="img02" class="img-responsive" />
+							<img src="/Skins/DriveoSite/images/references/ecluse.jpg" alt="img02" class="img-responsive" />
 							<figcaption>
-								<h2>Dean & Letter</h2>
-								<p>Branding, Design</p>
-								<a href="#" data-toggle="modal" data-target="#Modal-1">View more</a>
+								<h2>Pharmacie de l'écluse</h2>
+								<p>Cilck and collect, Application mobile</p>
+								<a href="#" data-toggle="modal" data-target="#Modal-1">Plus de détails</a>
 							</figcaption>
 						</figure>
 					</div>
@@ -172,11 +199,11 @@
 				<div class="col-md-4 col-0-gutter">
 					<div class="ot-portfolio-item">
 						<figure class="effect-bubba">
-							<img src="/Skins/DriveoSite/images/demo/portfolio-2.jpg" alt="img02" class="img-responsive" />
+							<img src="/Skins/DriveoSite/images/references/castanet.jpg" alt="img02" class="img-responsive" />
 							<figcaption>
-								<h2>Startup Framework</h2>
-								<p>Branding, Web Design</p>
-								<a href="#" data-toggle="modal" data-target="#Modal-2">View more</a>
+								<h2>Pharmacie de castanet</h2>
+								<p>Click and collect, Application mobile </p>
+								<a href="#" data-toggle="modal" data-target="#Modal-2">Plus de détails</a>
 							</figcaption>
 						</figure>
 					</div>
@@ -186,23 +213,22 @@
 				<div class="col-md-4 col-0-gutter">
 					<div class="ot-portfolio-item">
 						<figure class="effect-bubba">
-							<img src="/Skins/DriveoSite/images/demo/portfolio-3.jpg" alt="img02" class="img-responsive" />
+							<img src="/Skins/DriveoSite/images/references/cours.jpg" alt="img02" class="img-responsive" />
 							<figcaption>
-								<h2>Lamp & Velvet</h2>
-								<p>Branding, Web Design</p>
-								<a href="#" data-toggle="modal" data-target="#Modal-3">View more</a>
+								<h2>Pharmacie du cours</h2>
+								<p>Click and collect, Application mobile, Borne interactive</p>
+								<a href="#" data-toggle="modal" data-target="#Modal-3">Plus de détails</a>
 							</figcaption>
 						</figure>
 					</div>
 				</div>
 				<!-- end portfolio item -->
 			</div>
-			<div class="row row-0-gutter">
-				<!-- start portfolio item -->
+<!--			<div class="row row-0-gutter">
 				<div class="col-md-4 col-0-gutter">
 					<div class="ot-portfolio-item">
 						<figure class="effect-bubba">
-							<img src="/Skins/DriveoSite/images/demo/portfolio-4.jpg" alt="img02" class="img-responsive" />
+							<img src="/Skins/DriveoSite/images/pdf/6.jpg" alt="img02" class="img-responsive" />
 							<figcaption>
 								<h2>Smart Name</h2>
 								<p>Branding, Design</p>
@@ -211,12 +237,10 @@
 						</figure>
 					</div>
 				</div>
-				<!-- end portfolio item -->
-				<!-- start portfolio item -->
 				<div class="col-md-4 col-0-gutter">
 					<div class="ot-portfolio-item">
 						<figure class="effect-bubba">
-							<img src="/Skins/DriveoSite/images/demo/portfolio-5.jpg" alt="img02" class="img-responsive" />
+							<img src="/Skins/DriveoSite/images/pdf/7.jpg" alt="img02" class="img-responsive" />
 							<figcaption>
 								<h2>Fast People</h2>
 								<p>Branding, Web Design</p>
@@ -225,12 +249,10 @@
 						</figure>
 					</div>
 				</div>
-				<!-- end portfolio item -->
-				<!-- start portfolio item -->
 				<div class="col-md-4 col-0-gutter">
 					<div class="ot-portfolio-item">
 						<figure class="effect-bubba">
-							<img src="/Skins/DriveoSite/images/demo/portfolio-6.jpg" alt="img02" class="img-responsive" />
+							<img src="/Skins/DriveoSite/images/pdf/8.jpg" alt="img02" class="img-responsive" />
 							<figcaption>
 								<h2>Kites & Stars</h2>
 								<p>Branding, Web Design</p>
@@ -239,49 +261,43 @@
 						</figure>
 					</div>
 				</div>
-				<!-- end portfolio item -->
 			</div>
+			-->
 			</div><!-- end container -->
 		</section>
 
 		<section class="dark-bg short-section stats-bar">
 			<div class="container text-center">
 				<div class="row">
-					<div class="col-md-3 mb-sm-30">
+					<div class="col-md-4 mb-sm-40">
 						<div class="counter-item">
-							<h2 class="stat-number" data-n="9">0</h2>
-							<h6>awards</h6>
+							<h2 class="stat-number" data-n="16384">0</h2>
+							<h6>Pages</h6>
 						</div>
 					</div>
-					<div class="col-md-3 mb-sm-30">
+					<div class="col-md-4 mb-sm-40">
 						<div class="counter-item">
-							<h2 class="stat-number" data-n="167">0</h2>
-							<h6>Clients</h6>
+							<h2 class="stat-number" data-n="13987">0</h2>
+							<h6>Produits</h6>
 						</div>
 					</div>
-					<div class="col-md-3 mb-sm-30">
+					<div class="col-md-4 mb-sm-40">
 						<div class="counter-item">
-							<h2 class="stat-number" data-n="6">0</h2>
-							<h6>Team</h6>
-						</div>
-					</div>
-					<div class="col-md-3 mb-sm-30">
-						<div class="counter-item">
-							<h2 class="stat-number" data-n="34">0</h2>
-							<h6>Project</h6>
+							<h2 class="stat-number" data-n="289">0</h2>
+							<h6>Laboratoires</h6>
 						</div>
 					</div>
 				</div>
 			</div>
 		</section>
-
+<!--
 		<section>
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-12 text-center">
 						<div class="section-title">
-							<h2>Our Partners</h2>
-							<p>Mida sit una namet, cons uectetur adipiscing adon elit.</p>
+							<h2>Tarifs</h2>
+							<p>un apercu de nos prestations</p>
 						</div>
 					</div>
 				</div>
@@ -320,13 +336,14 @@
 				</div>
 			</div>
 		</section>
-		<section id="team" class="light-bg">
+		-->
+		<section id="tarifs" class="light-bg">
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-12 text-center">
 						<div class="section-title">
-							<h2>Our Team</h2>
-							<p>A creative agency based on Candy Land, ready to boost your business with some beautifull templates. MOOZ Agency is one of the best in town see more you will be amazed.</p>
+							<h2>Nos packs</h2>
+							<p>Vous trouverez ici nos différents packs et leurs tarifs</p>
 						</div>
 					</div>
 				</div>
@@ -335,12 +352,13 @@
 					<div class="col-md-4">
 						<div class="team-item">
 							<div class="team-image">
-								<img src="/Skins/DriveoSite/images/demo/author-2.jpg" class="img-responsive" alt="author">
+								<img src="/Skins/DriveoSite/images/produits/Produit-Driveo.png" class="img-responsive" alt="author">
 							</div>
 							<div class="team-text">
-								<h3>TOM BEKERS</h3>
-								<div class="team-position">CEO & Web Design</div>
-								<p>Mida sit una namet, cons uectetur adipiscing adon elit. Aliquam vitae barasa droma.</p>
+								<h3>DRIVEO</h3>
+								<div class="team-position">La solution idéale pour démarrer sur internet</div>
+								<p>Elle comprend la boutique en ligne, la base de donnée produit, l'application mobile et l'administrateur tablette</p>
+                                <h2 class="price"><span class="label label-info">A partir de 8990 € HT</span></h2>
 							</div>
 						</div>
 					</div>
@@ -349,12 +367,13 @@
 					<div class="col-md-4">
 						<div class="team-item">
 							<div class="team-image">
-								<img src="/Skins/DriveoSite/images/demo/author-6.jpg" class="img-responsive" alt="author">
+								<img src="/Skins/DriveoSite/images/produits/Produit-Driveo-RUSH.png" class="img-responsive" alt="author">
 							</div>
 							<div class="team-text">
-								<h3>LINA GOSATA</h3>
-								<div class="team-position">Photography</div>
-								<p>Worsa dona namet, cons uectetur dipiscing adon elit. Aliquam vitae fringilla unda mir.</p>
+								<h3>DRIVEO RUSH</h3>
+								<div class="team-position">Internet et la gestion des rushs</div>
+								<p>Elle comprend la boutique en ligne, la base de donnée produit, l'application mobile, la borne interactive et l'administrateur tablette</p>
+                                <h2 class="price"><span class="label label-info">A partir de 11380 € HT</span></h2>
 							</div>
 						</div>
 					</div>
@@ -363,12 +382,13 @@
 					<div class="col-md-4">
 						<div class="team-item">
 							<div class="team-image">
-								<img src="/Skins/DriveoSite/images/demo/author-4.jpg" class="img-responsive" alt="author">
+								<img src="/Skins/DriveoSite/images/produits/Produit-Driveo-WEBSTORE.png" class="img-responsive" alt="author">
 							</div>
 							<div class="team-text">
-								<h3>John BEKERS</h3>
-								<div class="team-position">Marketing</div>
-								<p>Dolor sit don namet, cons uectetur beriscing adon elit. Aliquam vitae fringilla unda.</p>
+								<h3>DRIVEO WEBSTORE</h3>
+								<div class="team-position">La solution complête driveo</div>
+								<p>Elle comprend la boutique en ligne, la base de donnée produit, l'application mobile, la borne interactive et l'administrateur tablette. Le tout hébergé chez un hébergeur de santé avec la procédure de l'agrément ARS, les questionnaires santé, le paiement en ligne et le module de livraison.</p>
+                                <h2 class="price"><span class="label label-info">A partir de 14990 € HT</span></h2>
 							</div>
 						</div>
 					</div>
@@ -381,40 +401,40 @@
 				<div class="row">
 					<div class="col-lg-12 text-center">
 						<div class="section-title">
-							<h2>Contact Us</h2>
-							<p>If you have some Questions or need Help! Please Contact Us!<br>We make Cool and Clean Design for your Business</p>
+							<h2>Contactez-nous</h2>
+							<p>Si vous avez des questions sur la solution, ou que vous souhaitez un rendez-vous, utilisez le formulaire ci-dessous.</p>
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-3">
 						<div class="section-text">
-							<h4>Our Business Office</h4>
-							<p>3422 Street, Barcelona 432, Spain, New Building North, 15th Floor</p>
-							<p><i class="fa fa-phone"></i> +101 377 655 22125</p>
-							<p><i class="fa fa-envelope"></i> mail@yourcompany.com</p>
+							<h4>M-W SOLUTIONS</h4>
+							<p>1530 chemin du carreau de lanes 30900 Nîmes</p>
+							<p><i class="fa fa-phone"></i>06 76 56 81 14</p>
+							<p><i class="fa fa-envelope"></i>contact@m-w.solutions</p>
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="section-text">
-							<h4>Business Hours</h4>
-							<p><i class="fa fa-clock-o"></i> <span class="day">Weekdays:</span><span>9am to 8pm</span></p>
-							<p><i class="fa fa-clock-o"></i> <span class="day">Saturday:</span><span>9am to 2pm</span></p>
-							<p><i class="fa fa-clock-o"></i> <span class="day">Sunday:</span><span>Closed</span></p>
+							<h4>Heures d'ouvertures</h4>
+							<p><i class="fa fa-clock-o"></i> <span class="day">Semaine:</span><span>9h à 18h</span></p>
+							<p><i class="fa fa-clock-o"></i> <span class="day">Samedi:</span><span>Fermé</span></p>
+							<p><i class="fa fa-clock-o"></i> <span class="day">Dimanche:</span><span>Fermé</span></p>
 						</div>
 					</div>
 					<div class="col-md-6">
-						<form name="sentMessage" id="contactForm" novalidate="">
+						<form name="sentMessage" id="contactForm">
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
-										<input type="text" class="form-control" placeholder="Your Name *" id="name" required="" data-validation-required-message="Please enter your name.">
+										<input type="text" class="form-control" placeholder="Votre nom *" id="name" required="" data-validation-required-message="Veuillez saisir votre nom.">
 										<p class="help-block text-danger"></p>
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
-										<input type="email" class="form-control" placeholder="Your Email *" id="email" required="" data-validation-required-message="Please enter your email address.">
+										<input type="email" class="form-control" placeholder="Votre email *" id="email" required="" data-validation-required-message="Veuillez saisir votre adresse email.">
 										<p class="help-block text-danger"></p>
 									</div>
 								</div>
@@ -422,7 +442,7 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div class="form-group">
-										<textarea class="form-control" placeholder="Your Message *" id="message" required="" data-validation-required-message="Please enter a message."></textarea>
+										<textarea class="form-control" placeholder="Votre message *" id="message" required="" data-validation-required-message="Veuillez saisir votre message."></textarea>
 										<p class="help-block text-danger"></p>
 									</div>
 								</div>
@@ -431,10 +451,11 @@
 							<div class="row">
 								<div class="col-lg-12 text-center">
 									<div id="success"></div>
-									<button type="submit" class="btn">Send Message</button>
+									<button type="submit" class="btn">Envoyer</button>
 								</div>
 							</div>
 						</form>
+
 					</div>
 				</div>
 			</div>
@@ -444,71 +465,73 @@
 		</p>
 		<footer>
 			<div class="container text-center">
-				<p>Designed by <a href="http://moozthemes.com"><span>MOOZ</span>Themes.com</a></p>
+				<p>Réalisation <a href="http://m-w.solutions"><span>M-W.SOLUTIONS</span></a></p>
 			</div>
 		</footer>
 
-		<!-- Modal for portfolio item 1 -->
+		<!-- Modal for reference item 1 -->
 		<div class="modal fade" id="Modal-1" tabindex="-1" role="dialog" aria-labelledby="Modal-label-1">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="Modal-label-1">Dean & Letter</h4>
+						<h4 class="modal-title" id="Modal-label-1">Pharmacie de l'écluse</h4>
 					</div>
 					<div class="modal-body">
-						<img src="/Skins/DriveoSite/images/demo/portfolio-1.jpg" alt="img01" class="img-responsive" />
-						<div class="modal-works"><span>Branding</span><span>Web Design</span></div>
-						<p>Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe</p>
+						<img src="/Skins/DriveoSite/images/references/ecluse.jpg" alt="img01" class="img-responsive" />
+						<div class="modal-works"><span>Click and collect</span><span>Application mobile</span></div>
+						<p>La pharmacie de l'écluse à Bollène a opté pour la solution DRIVEO.</p>
 					</div>
 					<div class="modal-footer">
+                        <a href="http://www.pharmaciedelecluse.fr" target="_blank" class="btn btn-danger">Visiter le site</a>
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<!-- Modal for portfolio item 2 -->
+		<!-- Modal for reference item 2 -->
 		<div class="modal fade" id="Modal-2" tabindex="-1" role="dialog" aria-labelledby="Modal-label-2">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="Modal-label-2">Startup Framework</h4>
+						<h4 class="modal-title" id="Modal-label-2">Pharmacie de castanet</h4>
 					</div>
 					<div class="modal-body">
-						<img src="/Skins/DriveoSite/images/demo/portfolio-2.jpg" alt="img01" class="img-responsive" />
-						<div class="modal-works"><span>Branding</span><span>Web Design</span></div>
-						<p>Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe</p>
+						<img src="/Skins/DriveoSite/images/references/castanet.jpg" alt="img01" class="img-responsive" />
+                        <div class="modal-works"><span>Click and collect</span><span>Application mobile</span></div>
+						<p>La pharmacie de castanet à Nîmes a opté pour la solution DRIVEO </p>
 					</div>
 					<div class="modal-footer">
+                        <a href="http://www.pharmaciedecastanet.fr" target="_blank" class="btn btn-danger">Visiter le site</a>
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<!-- Modal for portfolio item 3 -->
+		<!-- Modal for reference item 3 -->
 		<div class="modal fade" id="Modal-3" tabindex="-1" role="dialog" aria-labelledby="Modal-label-3">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="Modal-label-3">Lamp & Velvet</h4>
+						<h4 class="modal-title" id="Modal-label-3">Pharmacie du cours</h4>
 					</div>
 					<div class="modal-body">
-						<img src="/Skins/DriveoSite/images/demo/portfolio-3.jpg" alt="img01" class="img-responsive" />
-						<div class="modal-works"><span>Branding</span><span>Web Design</span></div>
-						<p>Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe</p>
+						<img src="/Skins/DriveoSite/images/references/cours.jpg" alt="img01" class="img-responsive" />
+                        <div class="modal-works"><span>Click and collect</span><span>Application mobile</span><span>Borne interactive</span></div>
+						<p>La pharmacie du cours a opté pour la solution DRIVEO RUSH</p>
 					</div>
 					<div class="modal-footer">
+                        <a href="http://www.pharmaciducours.fr" target="_blank" class="btn btn-danger">Visiter le site</a>
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 					</div>
 				</div>
 			</div>
 		</div>
-
-		<!-- Modal for portfolio item 4 -->
+<!--
 		<div class="modal fade" id="Modal-4" tabindex="-1" role="dialog" aria-labelledby="Modal-label-4">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
@@ -528,7 +551,6 @@
 			</div>
 		</div>
 
-		<!-- Modal for portfolio item 5 -->
 		<div class="modal fade" id="Modal-5" tabindex="-1" role="dialog" aria-labelledby="Modal-label-5">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
@@ -547,7 +569,7 @@
 				</div>
 			</div>
 		</div>
-
+-->
 		<!-- Bootstrap core JavaScript
 			================================================== -->
 		<!-- Placed at the end of the document so the pages load faster -->
@@ -559,3 +581,37 @@
 		<script src="/Skins/[!Systeme::Skin!]/js/jquery.appear.js"></script>
 		<script src="/Skins/[!Systeme::Skin!]/js/SmoothScroll.min.js"></script>
 		<script src="/Skins/[!Systeme::Skin!]/js/mooz.themes.scripts.js"></script>
+<script>
+    $('#contactForm').submit(function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: '/Systeme/User/sendContact.htm',
+            data: {
+                name: $('input#name').val(),
+                email: $('input#email').val(),
+                subject: $('input#subject').val(),
+                message: $('textarea#message').val()
+            },
+            method: 'post'
+        }).done(function (response){
+            console.log("reponses",response);
+            $('#contactForm').html('<div class="alert alert-success">Le message a été envoyé avec succès. Consultez votre boîte de réception, vous devriez y trouver un message de confirmation. Merci de votre interet pour nos produits.</div>');
+        });
+    });
+</script>
+<!-- Piwik -->
+<script type="text/javascript">
+    var _paq = _paq || [];
+    _paq.push(["setDomains", ["*.driveo.m-w.solutions"]]);
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+        var u="http://piwik.enguer.com/";
+        _paq.push(['setTrackerUrl', u+'piwik.php']);
+        _paq.push(['setSiteId', 11]);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+    })();
+</script>
+<noscript><p><img src="http://piwik.enguer.com/piwik.php?idsite=11" style="border:0;" alt="" /></p></noscript>
+<!-- End Piwik Code -->

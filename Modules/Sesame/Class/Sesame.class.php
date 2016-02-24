@@ -7,6 +7,7 @@ class Sesame extends Module {
      * ex: HIP;aaa;001;1454320497;1480586097
      */
     static function checkQrCode ($qr) {
+        $qr = urldecode($qr);
         klog::l('decryptage '.$qr);
 
         $h = genericClass::createInstance('Sesame', 'QrCode');

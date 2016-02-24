@@ -68,7 +68,12 @@
                                                     [!Systeme::User::Commentaire!]
 					</div>
 				</div>
-				<div class="span6">
+				<div class="span3">
+					<div class="footnav">
+						<a href="http://driveo.m-w.solutions">DRIVEO M-W SOLUTIONS</a>
+					</div>
+				</div>
+				<div class="span3">
 					<div class="footnav">
 						<div class="customhtml block " id="leo-customhtml-footnav">
 							<div class="block_content">

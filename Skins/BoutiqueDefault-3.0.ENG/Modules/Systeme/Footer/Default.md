@@ -54,7 +54,12 @@
                     [!CurrentMagasin::Commentaire!]
 					</div>
 				</div>
-				<div class="col-md-6" style="padding: 10px 10px 0px 10px; text-align: right">
+                <div class="col-md-3">
+                    <div class="footnav">
+                        <a href="http://driveo.m-w.solutions">DRIVEO M-W SOLUTIONS</a>
+                    </div>
+                </div>
+				<div class="col-md-3" style="padding: 10px 10px 0px 10px; text-align: right">
                     <p><img src="/Skins/Battistela/Img/icon-social.png" alt="" />
                     </p>
 				</div>
