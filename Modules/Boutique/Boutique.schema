@@ -127,7 +127,8 @@
 		<PROPERTIES description="Ordre dans le flash" type="int" category="MisEnAvant">OrdreFlash</PROPERTIES>
 		<PROPERTIES description="Ordre" type="order" category="Descriptif">Ordre</PROPERTIES>
 		<CATEGORY title="Saisie">
-			<PROPERTIES description="Fiche complète" type="boolean" default="1" list="6">Complet</PROPERTIES>
+            <PROPERTIES description="Fiche complète" type="boolean" default="1" list="6">Complet</PROPERTIES>
+            <PROPERTIES description="Liste noire" type="boolean" default="0" list="7">Blacklist</PROPERTIES>
 		</CATEGORY>
         <CATEGORY title="Synchro">
 			<PROPERTIES description="id de produit distante" type="int" >RemoteId</PROPERTIES>

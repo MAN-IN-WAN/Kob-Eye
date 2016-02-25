@@ -1,6 +1,32 @@
 <?php
-class Pharmacie extends Module
-{
+class Pharmacie extends Module{
+    public static function updateBlacklist () {
+        $sql = 'SELECT Id, Actif FROM `driv-Boutique-Produit-20160224` WHERE 1 ';
+        foreach ($GLOBALS['Systeme']->Db[0]->query($sql) as $r){
+            echo $r['Id']." - ".$r["Actif"]."\n";
+            if ($r['Actif']==0)
+                $GLOBALS['Systeme']->Db[0]->query('UPDATE `driv-Boutique-Produit` SET Blacklist = 1 WHERE Id="'.$r['Id'].'"');
+        }
+    }
+    public static function setCategorieBCB () {
+        $cats = Sys::getData('Boutique','Categorie/*/Categorie',0,10000);
+        foreach ($cats as $c){
+            //echo $c->Id."\n";
+            $bcb = Array();
+            //echo 'Categorie/'.$c->Id.'/Produit'."\n";
+            $prods = Sys::getData('Boutique','Categorie/'.$c->Id.'/Produit');
+            foreach ($prods as $p) {
+                //echo $p->Nom."\n";
+                if (!empty($p->Classification)&&!in_array($p->Classification,$bcb))
+                    array_push($bcb,$p->Classification);
+            }
+            if (sizeof($bcb)) {
+                $c->Classification = '|'.implode('|', $bcb).'|';
+                echo implode(',', $bcb) . "\n";
+                $c->Save();
+            }
+        }
+    }
     /**
      * Consitution de la base claude bernard
      * @param string $path
@@ -150,12 +176,15 @@ class Pharmacie extends Module
 
         //reinitialisation des Produits actifs
         $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=1");
-        $GLOBALS['Systeme']->Db[0]->query('UPDATE `' . MAIN_DB_PREFIX . 'Boutique-Produit` SET Actif=0, Display=0');
+        $GLOBALS['Systeme']->Db[0]->query('UPDATE `' . MAIN_DB_PREFIX . 'Boutique-Produit` SET Actif=0, Display=0,StockReference=0');
 
         while (!feof($f)) {
             //pour chaque ligne
             $l = utf8_encode(fgets($f));
             $l = explode(';', $l);
+
+            //si pas de stock alors on continue
+            if ($l[3]==0) continue;
 
             //test intégrité
             if (sizeof($l) <= 40) continue;
@@ -178,6 +207,16 @@ class Pharmacie extends Module
                 if (!empty($query)) $query .= '+';
                 $query .= 'CIP13=' . $CIP13;
             }
+
+            /*DEBUG
+             * if ($l[3]>0) {
+                echo "-> $i produit stock: " . $l[3] . " Nom " . $l[2] . " tarif: " . $l[4] . " TVA: " . trim($l[7]) . " ean: " . $l[39] . " cip: " . $l[0] . " cip13: " . $l[1] . " ";
+                $j++;
+            }
+            continue;
+            *DEBUG
+            **/
+
             if (empty($query)) continue;
             $p = Sys::getOneData('Boutique', 'Produit/' . $query);
             if (is_object($p)) {
@@ -204,7 +243,6 @@ class Pharmacie extends Module
                 $TTC = floatval(str_replace(',', '.', $TTC));
 
                 echo "-> $i produit stock: " . $l[3] . " Nom " . $p->Nom . " tarif en ligne: " . $p->Tarif . " TVA: " . trim($l[7]) . " tarif : " . $TTC . " ean: " . $p->EAN . " cip: " . $p->CIP7 . " cip13: " . $p->CIP13 . " ";
-
                 //mise à jour de la TVA
                 $TVA = trim($l[7]);
                 if ($TVA == "20,00") {
@@ -231,12 +269,12 @@ class Pharmacie extends Module
                     $p->Actif = true;
                     $p->StockReference = $qte;
                     $ref->Quantite = $qte;
-                    $ref->Actif = true;
+                    //$ref->Actif = true;
                     $ref->Save(false);
                 } else {
                     $p->StockReference = 0;
                     $ref->Quantite = 0;//$qte;
-                    $ref->Actif = false;
+                    //$ref->Actif = false;
                     $ref->Save(false);
 
                     //on désactive le produit

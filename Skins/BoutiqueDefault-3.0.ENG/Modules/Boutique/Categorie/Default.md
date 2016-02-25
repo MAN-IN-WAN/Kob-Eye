@@ -1,6 +1,6 @@
 //PARAMETRES
-
 [IF [!Chemin!]=][!Chemin:=[!Query!]!][/IF]
+[INFO [!Chemin!]|I]
 [IF [!I::ObjectType!]=Categorie]
     [!REQ:=[!Chemin!]/*/Produit/Actif=1&Tarif>0!]
 [ELSE]
@@ -17,7 +17,6 @@
 [!NbNumParPage:=3!]
 [!NbPage:=[!Math::Floor([!Nb:/[!NbParPage!]!])!]!]
 [IF [!NbPage!]!=[!Nb:/[!NbParPage!]!]][!NbPage+=1!][/IF]
-
 
 [STORPROC [!Chemin!]|Cat|0|1]
 <div class="contenttop row block">
@@ -104,7 +103,7 @@
 		<div id="product_list" class="products_block view-grid">
 			<div class="rows-fluid">
 				<div class="row">
-					[STORPROC [!REQ!]|Prod|[![!Page:-1!]:*[!NbParPage!]!]|[!NbParPage!]|Ordre|ASC]
+                    [STORPROC [!REQ!]|Prod|[![!Page:-1!]:*[!NbParPage!]!]|[!NbParPage!]|Ordre|ASC]
 					[!LePrix:=[!Prod::getTarif!]!]
 					[!Promo:=[!Prod::GetPromo!]!]
 					<!-- Product item -->
@@ -112,7 +111,7 @@
 						<div class="list-products">
 							<div class="product-container clearfix">
 								<div class="center_block">
-									<a href="[!Prod::getUrl()!]" class="product_img_link" title="iPod Nano"> <img src="/[IF [!Prod::Image!]!=][!Prod::Image!][ELSE]Skins/[!Systeme::Skin!]/Img/image_def.jpg[/IF].mini.180x200.jpg" alt=""  /> <span class="new">__NEW__</span> </a>
+									<a href="[!Prod::getUrl()!]" class="product_img_link" title="iPod Nano"> <img src="/[IF [!Prod::Image!]!=][!Prod::Image!][ELSE]Skins/[!Systeme::Skin!]/Img/image_def.jpg[/IF]" alt="" class="img-responsive" style="max-height:200px;"/> <!--<span class="new">__NEW__</span>--> </a>
 									[IF [!Promo!]!=0]
 									<span class="discount">__PROMO__</span>
 									[/IF]

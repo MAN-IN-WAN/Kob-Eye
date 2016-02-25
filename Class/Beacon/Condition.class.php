@@ -112,7 +112,7 @@ Class Condition extends Beacon{
 		//		$Data = $this->getContent($Data);
 		/*		echo "------------------------------\r\n";
 		print_r($Data);*/
-		foreach ($this->CaseTab as $Key){
+		if (is_array($this->CaseTab))foreach ($this->CaseTab as $Key){
 			//On verifie l egalite
 			if (Condition::getCondition($Vars[0],$Vars[1],$Key["VAR"])) {
 				// 				echo "Condition Vrai : ".$Vars[0].$Vars[1].$Key["VAR"]."\r\n";
