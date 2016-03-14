@@ -1,0 +1,216 @@
+body{
+    background-image: url(/Skins/TennisLogin/Img/Fond.jpg);
+    background-size: cover;
+    color: #fff;
+
+}
+
+/*.modal-header-inner {border-radius: 5px;height: 145px; background: url('/Skins/LoginBootstrap/Img/Arabesque.jpg') top right no-repeat; }
+.modal-header {border-radius: 5px;padding: 0; height: 145px; background: url('/Skins/LoginBootstrap/Img/Degrade.jpg') top repeat-x; }*/
+.modal-header-logo {border-radius: 5px;height: 80px; background: url('/Skins/TennisLogin/Img/Logo.png') top left no-repeat; background-position-x: center }
+.modal-footer {   border-top: 0px; }
+.modal-header {border:0;}
+@media screen and (min-width: 768px) {
+    .modal-content {
+        -webkit-box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        box-shadow: 0 0px 64px rgba(0,0,0,0.3);
+    }
+}
+
+.btn-primary {
+    background-image: -webkit-gradient(linear,left 0,left 100%,from(#02a6e3),to(#0088b0));
+    background-image: -webkit-linear-gradient(top,#02a6e3 0,#0088b0 100%);
+    background-image: -moz-linear-gradient(top,#02a6e3 0,#0088b0 100%);
+    background-image: linear-gradient(to bottom,#02a6e3 0,#0088b0 100%);
+    background-repeat: repeat-x;
+    border-color: #02a6e3;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff02a6e3',endColorstr='#ff0088b0',GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+@media screen and (min-width: 768px) {
+    .modal-dialog {
+        width: 500px;
+        padding-top: 200px;
+        padding-bottom: 30px;
+    }
+}
+.modal-dialog {
+    padding-top: 80px;
+}
+.modal-content {
+
+ /*   background-color: #302e33;*/
+    background-color: rgba(0,0,0,0.8)
+}
+.form-group {
+    margin-bottom: 15px;
+    overflow: hidden;
+}
+h1 { font: normal 50px/50px Oleo Script;  color:#ffffff; }
+h2 { font: normal 40px/34px Oleo Script;  color:#ffffff; }
+h3 { font: normal 19px/26px "Trebuchet MS", Arial, Helvetica, sans-serif;  color:#ffffff; }
+h4 { font: normal 14px/20px Arial, Helvetica, sans-serif;  color:#333333; }
+h5 { font: normal 19px/26px "Trebuchet MS", Arial, Helvetica, sans-serif;  color:#ffffff; }
+h6 { font: italic 12px/18px Ubuntu;  color:#ffffff; }
+body { font-weight: normal;}
+
+.modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1024 !important;
+    display: none;
+    overflow: auto;
+    overflow-y: auto !important;
+}
+.btn-tennis{
+    padding: 20px;
+    display: block;
+    position: relative;
+    margin: 20px;
+    background-color: rgba(255,255,255,0.3);
+    font-weight: 600;
+    border-radius: 10px;
+    font: normal 18px/24px "Trebuchet MS", Arial, Helvetica, sans-serif;
+    color: #ffffff;
+}
+.btn-tennis:before{
+    position: absolute;
+    content: "";
+    height: 50%;
+    background: #ffffff;
+    right: 0;
+    width: 0%;
+    top: 0;
+    border-radius: 12px 12px 0 0;
+    z-index: 0;
+    -webkit-transition: all 0.6s ease;
+    -moz-transition: all 0.6s ease;
+    -o-transition: all 0.6s ease;
+    transition: all 0.6s ease;
+}
+.btn-tennis:after{
+    position: absolute;
+    content: "";
+    height: 50%;
+    background: #ffffff;
+    right: 0;
+    width: 0%;
+    bottom: 0;
+    border-radius: 0 0 12px 12px;
+    z-index: 0;
+    -webkit-transition: all 0.4s ease;
+    -moz-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+}
+.btn-tennis:hover{
+    color: #fff;
+    background: transparent;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+.btn-tennis:hover:before {
+    position: absolute;
+    content: "";
+    width: 100%;
+    left: 0;
+    background: #edcc58;
+    opacity: 0.8;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+.btn-tennis:hover:after {
+    position: absolute;
+    content: "";
+    width: 100%;
+    left: 0;
+    opacity: 0.8;
+    background: #edcc58;
+    -webkit-transition: all 0.35s ease;
+    -moz-transition: all 0.35s ease;
+    -o-transition: all 0.35s ease;
+}
+
+/** tennis horaire **/
+
+.horaire-tennis{
+    padding: 5px 20px;
+    display: block;
+    position: relative;
+    margin: 2px 10px;
+    background-color: rgba(255,255,255,0.8);
+    font-weight: 600;
+    border-radius: 10px;
+    font: normal 18px/24px "Trebuchet MS", Arial, Helvetica, sans-serif;
+    color: #313131;
+}
+.horaire-tennis:before{
+    position: absolute;
+    content: "";
+    height: 50%;
+    background: #ffffff;
+    right: 0;
+    width: 0%;
+    top: 0;
+    border-radius: 12px 12px 0 0;
+    z-index: 0;
+    -webkit-transition: all 0.6s ease;
+    -moz-transition: all 0.6s ease;
+    -o-transition: all 0.6s ease;
+    transition: all 0.6s ease;
+}
+.horaire-tennis:after{
+    position: absolute;
+    content: "";
+    height: 50%;
+    background: #ffffff;
+    right: 0;
+    width: 0%;
+    bottom: 0;
+    border-radius: 0 0 12px 12px;
+    z-index: 0;
+    -webkit-transition: all 0.4s ease;
+    -moz-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+}
+.horaire-tennis:hover{
+    color: #fff;
+    background: transparent;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+.horaire-tennis:hover:before {
+    position: absolute;
+    content: "";
+    width: 100%;
+    left: 0;
+    background: #edcc58;
+    opacity: 0.8;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+.horaire-tennis:hover:after {
+    position: absolute;
+    content: "";
+    width: 100%;
+    left: 0;
+    opacity: 0.8;
+    background: #edcc58;
+    -webkit-transition: all 0.35s ease;
+    -moz-transition: all 0.35s ease;
+    -o-transition: all 0.35s ease;
+}
+

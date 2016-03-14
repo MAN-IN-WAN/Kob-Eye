@@ -10,6 +10,8 @@
     [!REQ:=[!Chemin!]!]
 [/IF]
 
+[!O::setView()!]
+
 //RECHERCHE
 [!FILTER:=!]
 [IF [!search!]!=]
@@ -29,6 +31,8 @@
 [!NbNumParPage:=3!]
 [!NbPage:=[!Math::Floor([!Nb:/[!NbParPage!]!])!]!]
 [IF [!NbPage!]!=[!Nb:/[!NbParPage!]!]][!NbPage+=1!][/IF]
+
+[COUNT [!O::getElementsByAttribute(form,,1)!]|NbP]
 
 
 //ACTIONS
@@ -123,7 +127,7 @@
                         </td>
                     [/CASE]
                     [CASE price]
-                        <td><h4><span class="label label-primary">[!Utils::getPrice([!C::[!E::name!]!])!] € HT</span></h4></td>
+                        <td><h4><span class="label label-primary">[!Utils::getPrice([!C::[!E::name!]!])!] €</span></h4></td>
                     [/CASE]
                     [CASE int]
                         <td><h4><span class="label label-warning">[!C::[!E::name!]!]</span></h4></td>
@@ -133,23 +137,28 @@
                     [/CASE]
                     [DEFAULT]
                         <td>
-                            <a href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!C::Id!]">
+                            //<a href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!C::Id!]">
                             [IF [!Pos!]=1]<strong>[/IF]
                             [!C::[!E::name!]!]
                             [IF [!Pos!]=1]</strong>[/IF]
-                            </a>
+                            //</a>
                         </td>
                     [/DEFAULT]
                 [/SWITCH]
             [/STORPROC]
 
-            <td>
+            <td width="250">
                 <div class="small">Créé le [DATE d/m/Y H:i:s][!C::tmsCreate!][/DATE] [STORPROC Systeme/User/[!C::userCreate!]|U] par [!U::Nom!] [!U::Prenom!] ([!U::Login!])[/STORPROC]</div>
-                <div class="small">Modifié le [DATE d/m/Y H:i:s][!C::tmsCreate!][/DATE] [STORPROC Systeme/User/[!C::userEdit!]|U] par [!U::Nom!] [!U::Prenom!] ([!U::Login!])[/STORPROC]</div>
+                <div class="small">Modifié le [DATE d/m/Y H:i:s][!C::tmsEdit!][/DATE] [STORPROC Systeme/User/[!C::userEdit!]|U] par [!U::Nom!] [!U::Prenom!] ([!U::Login!])[/STORPROC]</div>
             </td>
-            <td>
+            <td width="200">
                 <div class="btn-group" role="group">
-                    <!--<a class="btn btn-info" href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!C::Id!]">Détails</a>-->
+                    [IF [!NbP!]<2]
+                        <a class="btn btn-warning popup" href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!C::Id!]/Form" data-title="Modification [!C::getFirstSearchOder()!]">Modifier</a>
+                    [ELSE]
+                    <a class="btn btn-warning" href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!C::Id!]/Modifier" data-title="Modification [!C::getFirstSearchOder()!]">Modifier</a>
+                    [/IF]
+                    <a class="btn btn-danger confirm" href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!C::Id!]/Supprimer" data-title="Suppression [!C::getFirstSearchOder()!]" data-confirm="Etes vous sur de vouloir supprimer [!C::getFirstSearchOrder()!] ?">Supprimer</a>
                 </div>
             </td>
         </tr>

@@ -1,0 +1,6 @@
+[INFO [!Query!]|I]
+[IF [!I::TypeSearch!]=Direct]
+    [MODULE TennisForever/TypeCourt/Fiche]
+[ELSE]
+    [MODULE TennisForever/TypeCourt/List]
+[/IF]

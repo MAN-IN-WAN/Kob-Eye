@@ -10,6 +10,8 @@
 [HEADER JS]Tools/Css/Bootstrap/Bootstrap-fileinput/js/fileinput.min.js[/HEADER]
 [HEADER JS]Tools/Css/Bootstrap/Bootstrap-fileinput/js/fileinput_locale_fr.js[/HEADER]
 [HEADER JS]/Tools/Css/Bootstrap/3.0/js/bootstrap.min.js[/HEADER]
+[HEADER CSS]Tools/Css/Bootstrap/bootstrap-switch-master/dist/css/bootstrap3/bootstrap-switch.min.css[/HEADER]
+[HEADER JS]Tools/Css/Bootstrap/bootstrap-switch-master/dist/js/bootstrap-switch.min.js[/HEADER]
 [HEADER JS]Tools/Js/CkEditor/ckeditor.js[/HEADER]
 [HEADER]
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -77,7 +79,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title"></h4>
       </div>
-      <form id="modal-form-form">
+      <form id="modal-form-form" class="standard">
       <div class="modal-message"></div>
       <div class="modal-body">
         
@@ -103,79 +105,110 @@
           e.preventDefault();
           var me = $( this );
           bootbox.confirm(me.attr('data-confirm'), function(result) {
-              if (result){
-                  window.location.replace(me.attr('href'));
-              }
+              $.ajax({
+                  url: me.attr('href')+'.json',
+                  type: "POST",
+                  dataType: 'json',
+                  context: document.body,
+                  error: function (xhr, status, thrown) {
+                      alert(status);
+                      alert(thrown);
+                  },
+                  success: function(data) {
+                      if (data.success) {
+                          //en cas de success on remplace le body par le message
+                          $('#modal-form .modal-message').empty();
+                          $('#modal-form .modal-body').html(data.message);
+                          location.reload();
+                      }else{
+                          //en cas d'echec, on affiche les erreurs au dessu du body
+                          $('#modal-form .modal-message').html(data.message);
+                      }
+                  }
+              });
           });
       });
       $('.popup').click( function (e){
-      e.preventDefault();
-      $('#modal-form').modal('show');
-      //renseignement des contenus
-      $('#modal-form .modal-title').html($(this).attr('data-title'));
-      $('#modal-form .modal-body').html('<b>Chargement ...</b>');
-      $('#modal-form-form').attr('data-form',$(this).attr('href'));
-      
-      //chargement du formulaire
-      $.ajax({
-        url: $(this).attr('href'),
-        context: document.body
-      }).done(function(data) {
-        $('#modal-form .modal-body').html(data);
-      });
-      //reset controls
-      $('#modal-form .btn-modal-save').css('visibility','visible');
-      $('#modal-form .btn-modal-cancel').css('visibility','visible');
-      $('#modal-form .btn-modal-close').css('visibility','hidden');
-      //reset message
-      $('#modal-form .modal-message').empty();
-      //reset body
-      $('#modal-form .modal-body').html('<div class="alert alert-primary">Chargement ...</div>');
-    });
-    $('.btn-modal-save').click(function (e) {
-        //variables
-        var data = $('#modal-form-form').serialize()+'&ValidForm=1';
-        //enregistrement du formulaire
-        $.ajax({
-          url: $('#modal-form-form').attr('data-form'),
-          type: "POST",
-          data: data,
-          dataType: 'json',
-          context: document.body,
-          error: function (xhr, status, thrown) {
-            alert(status);
-            alert(thrown);
-          },
-          success: function(data) {
-            //gestion des controles
-            if (data.controls) {
-              if (!data.controls.save) 
-                $('#modal-form .btn-modal-save').css('visibility','hidden');
-              else
-                $('#modal-form .btn-modal-save').css('visibility','visible');
-              if (!data.controls.cancel) 
-                $('#modal-form .btn-modal-cancel').css('visibility','hidden');
-              else
-                $('#modal-form .btn-modal-cancel').css('visibility','visible');
-              if (!data.controls.close) 
-                $('#modal-form .btn-modal-close').css('visibility','hidden');
-              else
-                $('#modal-form .btn-modal-close').css('visibility','visible');
-            }
-            //test du retour
-            console.log ('rtour en force',data);
-            if (data.success) {
-              //en cas de success on remplace le body par le message
-              $('#modal-form .modal-message').empty();
-               $('#modal-form .modal-body').html(data.message);
-            }else{
-              //en cas d'echec, on affiche les erreurs au dessu du body
-              $('#modal-form .modal-message').html(data.message);
-            }
-            console.log ('valid form', data);
-          }
+          e.preventDefault();
+          $('#modal-form').modal('show');
+          //renseignement des contenus
+          $('#modal-form .modal-title').html($(this).attr('data-title'));
+          $('#modal-form .modal-body').html('<b>Chargement ...</b>');
+          $('#modal-form-form').attr('data-form',$(this).attr('href'));
+
+          //chargement du formulaire
+          $.ajax({
+            url: $(this).attr('href')+'.htm',
+            context: document.body
+          }).done(function(data) {
+            $('#modal-form .modal-body').html(data);
+          });
+          //reset controls
+          $('#modal-form .btn-modal-save').css('visibility','visible');
+          $('#modal-form .btn-modal-cancel').css('visibility','visible');
+          $('#modal-form .btn-modal-close').css('visibility','hidden');
+          //reset message
+          $('#modal-form .modal-message').empty();
+          //reset body
+          $('#modal-form .modal-body').html('<div class="alert alert-primary">Chargement ...</div>');
         });
-    });
+
+
+        $('.btn-modal-save').click(function (e) {
+            //variables
+            var data = $('#modal-form-form').serialize()+'&ValidForm=1';
+            //enregistrement du formulaire
+            $.ajax({
+              url: $('#modal-form-form').attr('data-form')+'.json',
+              type: "POST",
+              data: data,
+              dataType: 'json',
+              context: document.body,
+              error: function (xhr, status, thrown) {
+                alert(status);
+                alert(thrown);
+              },
+              success: function(data) {
+                //gestion des controles
+                if (data.controls) {
+                  if (!data.controls.save)
+                    $('#modal-form .btn-modal-save').css('visibility','hidden');
+                  else
+                    $('#modal-form .btn-modal-save').css('visibility','visible');
+                  if (!data.controls.cancel)
+                    $('#modal-form .btn-modal-cancel').css('visibility','hidden');
+                  else
+                    $('#modal-form .btn-modal-cancel').css('visibility','visible');
+                  if (!data.controls.close)
+                    $('#modal-form .btn-modal-close').css('visibility','hidden');
+                  else
+                    $('#modal-form .btn-modal-close').css('visibility','visible');
+                }
+                //test du retour
+                console.log ('rtour en force',data);
+                if (data.success) {
+                  //en cas de success on remplace le body par le message
+                  $('#modal-form .modal-message').empty();
+                   $('#modal-form .modal-body').html(data.message);
+                }else{
+                  //en cas d'echec, on affiche les erreurs au dessu du body
+                  $('#modal-form .modal-message').html(data.message);
+                }
+                console.log ('valid form', data);
+              }
+            });
+        });
+        $('.btn-modal-close').click(function (e){
+            location.reload();
+        });
+          $('.datepicker').datepicker({
+              language: 'fr'
+          });
+        $('input.switch').bootstrapSwitch({
+            onColor: 'success',
+            offColor: 'danger'
+        });
+
   }
 </script>
 

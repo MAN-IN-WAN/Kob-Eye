@@ -23,9 +23,12 @@ class Sesame extends Module {
         $key = Sys::getOneData('Sesame', 'Dictionnaire/Nom=AES_KEY');
         // test ZBCKbyX6RgJA8wRTbE5a4SQeVv3ccP0ISng3iEry3qU=  ====> test de phrase ===> passe partout
         // test uA4mgVJcJGAo2AYWri89IjrJ5sRjlk0NESPYfvDsjyYKYflrJyT9NR2fzu6JaKmM0ouoeF2n8atbn/i3v4DKzA== => HIP;aaa;001;1454320497;1480586097 => chaine valide
-        //$qr = base64_encode(mcrypt_encrypt('rijndael-256',$key->Valeur,'HIP;aaa;001;1454320497;1480586097','cbc', "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"));
-        $str = mcrypt_decrypt('rijndael-256', $key->Valeur, base64_decode($qr), 'cbc', "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");
-
+        $qr2 = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256,$key->Valeur,'HIP;aaa;001;1454320497;1480586097',MCRYPT_MODE_CBC, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"));
+        echo $qr2."<br />\r\n";
+        echo base64_encode(base64_decode($qr))."<br />\r\n";
+        $str = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $key->Valeur, base64_decode($qr), MCRYPT_MODE_CBC, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");
+echo $str;
+        die();
         $h->Decode = $str;
 
 

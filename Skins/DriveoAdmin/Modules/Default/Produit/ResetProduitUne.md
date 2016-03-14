@@ -1,0 +1,5 @@
+[STORPROC Boutique/Produit/Coeur=1|P|0|100000]
+    [!P::Coeur:=0!]
+    [METHOD P|Save][/METHOD]
+[/STORPROC]
+[REDIRECT][!Sys::getMenu(Boutique/Produit)!][/REDIRECT]

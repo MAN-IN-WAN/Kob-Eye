@@ -411,6 +411,8 @@ LISTE PRODUIT
 .center_block{
     text-align: center;
     background-color: white;
+    min-height: 200px;
+    
 }
 .p-item{
     padding: 20px;
@@ -555,4 +557,24 @@ BLOG
     .col-md-45,.col-md-85{
         width: 100%;
     }
+}
+
+/**
+FICHE PRODUIT
+**/
+.nav-tabs>li>a {
+    color: #fff;
+    padding: 10px 20px;
+    background-color: #f6a924;
+    border: 1px solid #f6a924;
+    border-bottom-color: transparent;
+}
+.tab-content>.tab-pane {
+    padding: 20px;
+    min-height: 200px;
+    background-color: #fff;
+    border: 1px solid #f6a924;
+}
+#primary_block{
+    margin: 20px;
 }

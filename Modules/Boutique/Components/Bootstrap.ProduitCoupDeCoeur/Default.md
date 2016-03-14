@@ -16,8 +16,8 @@
 					<div class="p-item span4 product_block ajax_block_product [IF [!Pos!]=1]first_item[/IF][IF [!Pos!]=[!NbResult!]]last_item[/IF] [IF [!Utils::isPair([!Pos!])!]] alternate_item[ELSE] item[/IF]  ">
 						<div class="list-products">
 							<div class="product-container clearfix">
-								<div class="center_block">
-									<a href="[!Prod::getUrl()!]" class="product_img_link" title="iPod Nano"> <img src="/[IF [!Prod::Image!]!=][!Prod::Image!][ELSE]Skins/[!Systeme::Skin!]/Img/image_def.jpg[/IF].mini.180x200.jpg" alt=""  />
+								<div class="center_block" style="min-height: 230px;">
+									<a href="[!Prod::getUrl()!]" class="product_img_link" title="iPod Nano"> <img src="/[IF [!Prod::Image!]!=][!Prod::Image!][ELSE]Skins/[!Systeme::Skin!]/Img/image_def.jpg[/IF]" alt=""  height="200" style="margin: auto;"/>
                                         <!--<span class="new">__NEW__</span> </a>-->
 									[IF [!Promo!]!=0]
 									<span class="discount">__PROMO__</span>

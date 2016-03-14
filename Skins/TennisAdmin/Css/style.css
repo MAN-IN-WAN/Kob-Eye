@@ -115,3 +115,17 @@ font-size: 4em;
 .modal-body{
   overflow:auto;
 }
+
+/**
+FORM
+**/
+form.standard > div {
+  margin: 5px;
+}
+form > div.form-group {
+    overflow: hidden;
+}
+.bootstrap-switch {
+    float: right;
+
+}

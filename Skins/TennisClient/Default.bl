@@ -1,0 +1,49 @@
+[HEADER CSS]/Tools/Css/Bootstrap/3.0/css/bootstrap.min.css[/HEADER]
+[HEADER CSS]/Tools/Css/Bootstrap/3.0/css/bootstrap-theme.min.css[/HEADER]
+[HEADER JS]/Tools/Js/Jquery/1.9.2/jquery.min.js[/HEADER]
+[HEADER JS]/Tools/Css/Bootstrap/3.0/js/bootstrap.min.js[/HEADER]
+[HEADER]
+<link href='https://fonts.googleapis.com/css?family=Oleo+Script' rel='stylesheet' type='text/css'>
+[/HEADER]
+
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Bienvenue [!Sys::User::Nom!] [!Sys::User::Prenom!]</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                [STORPROC [!Sys::Menus!]|M|0|10]
+                <li><a href="/[!M::Url!]">[!M::Titre!]</a></li>
+                [/STORPROC]
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!--login modal-->
+<div id="loginModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-header-inner">
+                    <div class="modal-header-logo"></div>
+                </div>
+            </div>
+            <div class="modal-body">
+                [DATA]
+            </div>
+<!--            <div class="modal-footer">
+                <div class="col-md-12">
+                    <a class="btn btn-danger" data-dismiss="modal" href="/" aria-hidden="true">Annuler</a>
+                </div>
+            </div>-->
+        </div>
+    </div>
+</div>

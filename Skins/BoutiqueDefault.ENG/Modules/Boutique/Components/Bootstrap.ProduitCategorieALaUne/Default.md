@@ -35,7 +35,7 @@
 											<div class="list-products">
 												<div class="product-container clearfix">
 													<div class="center_block">
-														<a href="[!Prod::getUrl()!]" class="product_img_link" title="iPod Nano"> <img src="/[IF [!Prod::Image!]!=][!Prod::Image!][ELSE]Skins/[!Systeme::Skin!]/Img/image_def.jpg[/IF].mini.180x200.jpg" alt=""  /> <span class="new">__NEW__</span> </a>
+														<a href="[!Prod::getUrl()!]" class="product_img_link" title="iPod Nano"> <img src="/[IF [!Prod::Image!]!=][!Prod::Image!][ELSE]Skins/[!Systeme::Skin!]/Img/image_def.jpg[/IF]" alt=""  /> <span class="new">__NEW__</span> </a>
 														[IF [!Promo!]!=0]
 														<span class="discount">__PROMO__</span>
 														[/IF]
@@ -92,7 +92,7 @@
 											<div class="list-products">
 												<div class="product-container clearfix">
 													<div class="center_block">
-														<a href="[!Prod::getUrl()!]" class="product_img_link" title="iPod Nano"> <img src="/[IF [!Prod::Image!]!=][!Prod::Image!][ELSE]Skins/[!Systeme::Skin!]/Img/image_def.jpg[/IF].mini.180x200.jpg" alt=""  /> <span class="new">__NEW__</span> </a>
+														<a href="[!Prod::getUrl()!]" class="product_img_link" title="iPod Nano"> <img src="/[IF [!Prod::Image!]!=][!Prod::Image!][ELSE]Skins/[!Systeme::Skin!]/Img/image_def.jpg[/IF]" alt=""  /> <span class="new">__NEW__</span> </a>
 														[IF [!Promo!]!=0]
 														<span class="discount">__PROMO__</span>
 														[/IF]

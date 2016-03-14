@@ -1001,6 +1001,7 @@ class ObjectClass extends Root{
 			case "autodico":
 			case "order":
 			case "date":
+			case "datetime":
 			case "duration":
 			case "modele":
 			case "int":

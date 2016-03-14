@@ -10,6 +10,9 @@
 [/HEADER]
 [HEADER CSS]Tools/Css/Bootstrap/3.0/css/bootstrap.min.css[/HEADER]
 [HEADER CSS]Tools/Css/Bootstrap/3.0/css/bootstrap-theme.min.css[/HEADER]
+//lightbox
+[HEADER CSS]Skins/[!Systeme::Skin!]/Js/lightbox.min.css[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/lightbox.min.js[/HEADER]
 
 [HEADER JS]Tools/Js/Jquery/1.9.2/jquery.min.js[/HEADER]
 [HEADER JS]Tools/Css/Bootstrap/3.0/js/bootstrap.min.js[/HEADER]
@@ -106,3 +109,9 @@
 </script>
 <noscript><p><img src="http://piwik.enguer.com/piwik.php?idsite=12" style="border:0;" alt="" /></p></noscript>
 <!-- End Piwik Code -->
+<script>
+    $(document).delegate('*[class="thickbox"]', 'click', function(event) {
+        event.preventDefault();
+        $(this).ekkoLightbox();
+    });
+</script>

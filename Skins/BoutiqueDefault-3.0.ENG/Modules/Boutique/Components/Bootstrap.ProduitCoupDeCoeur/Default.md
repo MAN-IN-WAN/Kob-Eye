@@ -1,7 +1,7 @@
 <!-- MODULE Block specials -->
 [OBJ Boutique|Magasin|Magasin]
 [!Magasin:=[!Magasin::getCurrentMagasin()!]!]
-[!REQ:=Boutique/Produit/Coeur=1!]
+[!REQ:=Boutique/Produit/Coeur=1&Actif=1!]
 <div id="categoriesprodtabs" class="block products_block exclusive blockleocategoriestabs">
 	<h3 class="title_block">[!TITRE!]</h3>
 	<div class="block_content">
@@ -16,7 +16,7 @@
 					<div class="list-products">
 						<div class="product-container clearfix">
 							<div class="center_block">
-								<a href="[!Prod::getUrl()!]" class="product_img_link" title="iPod Nano"> <img src="/[IF [!Prod::Image!]!=][!Prod::Image!][ELSE]Skins/[!Systeme::Skin!]/Img/image_def.jpg[/IF].mini.180x200.jpg" alt=""  /> <span class="new">__NEW__</span> </a>
+								<a href="[!Prod::getUrl()!]" class="product_img_link" title="iPod Nano"> <img src="/[IF [!Prod::Image!]!=][!Prod::Image!][ELSE]Skins/[!Systeme::Skin!]/Img/image_def.jpg[/IF]" alt="" class="img-responsive" style="max-height:200px;margin: auto;" /> <span class="new">__NEW__</span> </a>
 								[IF [!Promo!]!=0]
 								<span class="discount">__PROMO__</span>
 								[/IF]

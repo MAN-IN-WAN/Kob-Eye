@@ -182,14 +182,16 @@ class genericClass extends Root {
 				//Priorites de langage
 				if (isset($Prop["special"]))
 					$Special = $Prop["special"];
+				//valeur par défaut
+				$defaultValue = (isset($Prop["default"]))?$Prop["default"]:'';
 				if (is_object(Sys::$User) && Sys::$User -> Admin && isset($Special) && $Special == "multi") {
-					$Tab[$Key] = "";
+					$Tab[$Key] = $defaultValue;
 					foreach ($GLOBALS["Systeme"]->Conf->get("GENERAL::LANGUAGE") as $Cod => $Lang) {
 						if (!isset($Lang["DEFAULT"]) || !$Lang["DEFAULT"])
-							$Tab[$Cod . "-" . $Key] = "";
+							$Tab[$Cod . "-" . $Key] = $defaultValue;
 					}
 				} else {
-					$Tab[$Key] = "";
+					$Tab[$Key] = $defaultValue;
 				}
 			}
 		$Tab['ObjectType'] = $Type;
@@ -1431,6 +1433,7 @@ class genericClass extends Root {
 	 * @param Value of the property to define
 	 */
 	public function Set($Prop, $newValue) {
+		if (empty($Prop)) return;
 		$this -> launchTriggers(__FUNCTION__);
 		$Props = $this -> Proprietes(false, true);
 		for ($i = 0; $i < sizeof($Props); $i++) {
@@ -1708,21 +1711,17 @@ class genericClass extends Root {
 			}
 		}
 		if (isset($Prop["unique"]) && $Prop["unique"] && (!isset($this -> Id) || $this -> Id == "")) {
-			$Res = Sys::$Modules[$this -> Module] -> callData($this -> Module . "/" . $this -> ObjectType . "/" . $Prop["Titre"] . "=" . $this -> $Prop["Titre"]);
-			if (!empty($Res)) {
+			$Res = Sys::getCount($this -> Module,  $this -> ObjectType . "/" . $Prop["Titre"] . "=" . $this -> $Prop["Titre"]);
+			if ($Res) {
 				$this -> AddError(array("Message" => "__LA_VALEUR_DU_CHAMP__ " . $Prop["Titre"] . " __ALREADY_EXISTS__", "Prop" => $Prop["Titre"]));
 				$error = 0;
 			}
 		}
 		if (isset($Prop["unique"]) && $Prop["unique"] && (isset($this -> Id) && $this -> Id != "")) {
-			$Res = Sys::$Modules[$this -> Module] -> callData($this -> Module . "/" . $this -> ObjectType . "/" . $Prop["Titre"] . "=" . $this -> $Prop["Titre"]);
-			if (!empty($Res)) {
-				foreach ($Res as $Test) {
-					if ($Test["Id"] != $this -> Id) {
-						$this -> AddError(array("Message" => "__LA_VALEUR_DU_CHAMP__ " . $Prop["Titre"] . " __ALREADY_EXISTS__", "Prop" => $Prop["Titre"]));
-						$error = 0;
-					}
-				}
+            $Res = Sys::getCount($this -> Module,  $this -> ObjectType . "/" . $Prop["Titre"] . "=" . $this -> $Prop["Titre"]."&Id!=". $this -> Id);
+			if ($Res) {
+                $this -> AddError(array("Message" => "__LA_VALEUR_DU_CHAMP__ " . $Prop["Titre"] . " __ALREADY_EXISTS__", "Prop" => $Prop["Titre"]));
+                $error = 0;
 			}
 		}
 		return $error;

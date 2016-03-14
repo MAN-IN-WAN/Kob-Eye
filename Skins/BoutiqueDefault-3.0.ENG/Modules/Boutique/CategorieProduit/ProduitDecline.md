@@ -247,46 +247,45 @@
 			[IF [!NbDo!]]
 			<!-- description and features -->
             <div>
-                <ul class="nav nav-tabs">
-                    [STORPROC Boutique/Produit/[!Prod::Id!]/Donnee/Type=Caracteristique+Type=Documentation+Type=Descriptif|CAR|0|1|Ordre|ASC]
-                        <li>
-                            <a href="#idTab1">__DESCRIPTIF__</a>
+                <ul class="nav nav-tabs" role="tablist">
+                    [STORPROC Boutique/Produit/[!Prod::Id!]/Donnee/Type=Caracteristique+Type=Documentation+Type=Descriptif|CAR|0|10|Ordre|ASC]
+                        <li role="presentation" [IF [!Pos!]=1]class="active"[/IF]>
+							<a href="#idTab[!Pos!]" aria-controls="home" role="tab" data-toggle="tab">[!CAR::TypeCaracteristique!]</a>
+//                            <a href="#idTab1">__DESCRIPTIF__</a>
                         </li>
                     [/STORPROC]
-                    [STORPROC Boutique/Produit/[!Prod::Id!]/Donnee/Type=Fichier+Type=Lien|CAR|0|1|Ordre|ASC]
-                        <li>
-                            <a href="#idTab2">__FICHIERS__</a>
-                        </li>
-                    [/STORPROC]
-                    [STORPROC Boutique/Produit/[!Prod::Id!]/Donnee/Type=Video|CAR|0|1|Ordre|ASC]
-                        <li>
-                            <a href="#idTab3">__MEDIAS__</a>
-                        </li>
-                    [/STORPROC]
+                    //[STORPROC Boutique/Produit/[!Prod::Id!]/Donnee/Type=Fichier+Type=Lien|CAR|0|1|Ordre|ASC]
+                     //   <li role="presentation" >
+                     //       <a href="#idTab2" aria-controls="home" role="tab" data-toggle="tab">__FICHIERS__</a>
+                    //    </li>
+                    //[/STORPROC]
+                    //[STORPROC Boutique/Produit/[!Prod::Id!]/Donnee/Type=Video|CAR|0|1|Ordre|ASC]
+                    //    <li role="presentation" >
+                    //        <a href="#idTab3" aria-controls="home" role="tab" data-toggle="tab">__MEDIAS__</a>
+                    //    </li>
+                    //[/STORPROC]
                 </ul>
                 <div class="tab-content">
                     <!-- full description -->
-                    [STORPROC Boutique/Produit/[!Prod::Id!]/Donnee/Type=Caracteristique+Type=Documentation+Type=Descriptif|CAR|0|1|Ordre|ASC]
-                        <div id="idTab1"  class="tab-pane active">
-                            [LIMIT 0|100]
+                    [STORPROC Boutique/Produit/[!Prod::Id!]/Donnee/Type=Caracteristique+Type=Documentation+Type=Descriptif|CAR|0|10|Ordre|ASC]
+                        <div role="tabpanel" id="idTab[!Pos!]"  class="tab-pane [IF [!Pos!]=1]active[/IF]">
                             [!CAR::Valeur!]
-                            [/LIMIT]
                         </div>
                     [/STORPROC]
-                    [STORPROC Boutique/Produit/[!Prod::Id!]/Donnee/Type=Fichier+Type=Lien|CAR|0|1|Ordre|ASC]
-                        <div id="idTab2"  class="tab-pane">
-                            [LIMIT 0|100]
-                            <a href="/[!CAR::Fichier!]">[!CAR::Valeur!]</a>
-                            [/LIMIT]
-                        </div>
-                    [/STORPROC]
-                    [STORPROC Boutique/Produit/[!Prod::Id!]/Donnee/Type=Video|CAR|0|1|Ordre|ASC]
-                        <div id="idTab3"  class="tab-pane">
-                            [LIMIT 0|100]
-                            [!CAR::Fichier!]
-                            [/LIMIT]
-                        </div>
-                    [/STORPROC]
+                    //[STORPROC Boutique/Produit/[!Prod::Id!]/Donnee/Type=Fichier+Type=Lien|CAR|0|1|Ordre|ASC]
+                     //   <div role="tabpanel" id="idTab2"  class="tab-pane">
+                    //        [LIMIT 0|100]
+                    //        <a href="/[!CAR::Fichier!]">[!CAR::Valeur!]</a>
+                    //        [/LIMIT]
+                    //    </div>
+                    //[/STORPROC]
+                    //[STORPROC Boutique/Produit/[!Prod::Id!]/Donnee/Type=Video|CAR|0|1|Ordre|ASC]
+                    //    <div role="tabpanel" id="idTab3"  class="tab-pane">
+                    //        [LIMIT 0|100]
+                    //        [!CAR::Fichier!]
+                    //        [/LIMIT]
+                    //    </div>
+                    //[/STORPROC]
                     <!-- Customizable products -->
 
                 </div>

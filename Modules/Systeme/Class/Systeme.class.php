@@ -73,4 +73,32 @@ class Systeme extends Module {
             $u->Save();
         }
     }
+
+    static function retrievePassword($email){
+        //recherche du compte
+        $u = Sys::getOneData('Systeme','User/Mail='.$email);
+        if ($u){
+            $np = substr($u->CodeVerif,0,8);
+
+            $Mail = new Mail();
+            $Mail->Subject("Mot de passe oublié ".Sys::$domain);
+            $Mail -> From("noreply@".Sys::$domain);
+            $Mail -> ReplyTo("noreply@".Sys::$domain);
+            $Mail -> To($u->Mail);
+            $bloc = new Bloc();
+            $mailContent = "
+			Bonjour ".$u->Nom." ".$u->Prenom.",<br />Vous avez effectué une demande de changement de mot de passe.<br/>
+			Conservez le bien ou changez le à la prochaine connexion.<br />Nouveau mot de passe: <h1>".$np."</h1>";
+            $bloc -> setFromVar("Mail", $mailContent, array("BEACON" => "BLOC"));
+            $Pr = new Process();
+            $bloc -> init($Pr);
+            $bloc -> generate($Pr);
+            $Mail -> Body($bloc -> Affich());
+            $Mail -> Send();
+            $u->Set('Pass',$np);
+            $u->Save();
+            return true;
+        }
+        return false;
+    }
 }

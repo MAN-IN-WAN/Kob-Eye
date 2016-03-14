@@ -147,6 +147,9 @@ class Info extends Beacon {
                 else Process::$TempVar[$Var] = $Count;
             }
         }
+		if (is_array($Query)){
+			Process::$TempVar[$Var] = sizeof($Query);
+		}
         return ;
     }
     function Affich() {
