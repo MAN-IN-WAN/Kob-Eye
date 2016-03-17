@@ -101,4 +101,93 @@ class Systeme extends Module {
         }
         return false;
     }
+    public static function registerDevice($KEY,$USER_ID,$TYPE="Android",$ADMIN=0)
+    {
+        //on vérifie l'existence de l'appareil
+        if (!empty($KEY)&&!empty($USER_ID)&&!Sys::getCount('Systeme', 'Device/Key=' . $KEY)) {
+            //on ajoute le device
+            $d = genericClass::createinstance('Systeme', 'Device');
+            $d->Set('Key', $KEY);
+            $d->Set('Type', $TYPE);
+            $d->Set('Admin', $ADMIN);
+            $d->AddParent('Systeme/User/'.$USER_ID);
+            $d->Save();
+        }
+    }
+
+    public static function testNotification()
+    {
+        // prep the bundle
+        $msg = array
+        (
+            'message' => 'here is a message. message',
+            'title' => 'This is a title. title',
+            'subtitle' => 'This is a subtitle. subtitle',
+            'tickerText' => 'Ticker text here...Ticker text here...Ticker text here',
+            'vibrate' => 1,
+            'sound' => 1,
+            'largeIcon' => 'large_icon',
+            'smallIcon' => 'small_icon'
+        );
+        echo 'send message';
+        print_r($msg);
+
+        Systeme::sendNotification($msg,'all');
+    }
+
+    public static function  sendNotification($msg,$target) {
+        $msg['vibrate'] = 1;
+        $msg['sound'] = 1;
+        $msg['largeIcon'] = 'large_icon';
+        $msg['smallIcon'] = 'small_icon';
+
+        //backapp
+        //$API_ACCESS_KEY = 'AIzaSyCGGUR9EbkicdM7IUXp1l-Z2sHFQCnLp-A';
+        // API access key from Google API's Console
+        //castanet
+        //define('API_ACCESS_KEY', 'AIzaSyD-WPYJ39eWmA2aWzgn6fQF1A5WOv3FG5A');
+        //cours
+        //$API_ACCESS_KEY = 'AIzaSyBbYtVciuBNkTX2h13sHhAvsjBRCSdtb6U';
+        //ecluse
+        //define('API_ACCESS_KEY', 'AIzaSyCmaDWG5O2HrKdXm4JCkJPQZAvtwqCljos');
+
+        //recherche des périphériques à associer.
+        //die('envoi utilisateur '.$target.' | '.($target>0));
+        if ($target>0){
+            $dev = Sys::getData('Systeme','User/'.$target.'/Device/Admin=0');
+            $API_ACCESS_KEY = 'AIzaSyBbYtVciuBNkTX2h13sHhAvsjBRCSdtb6U';
+        }elseif ($target=="all"){
+            $dev = Sys::getData('Systeme','Device/Admin=0');
+            $API_ACCESS_KEY = 'AIzaSyBbYtVciuBNkTX2h13sHhAvsjBRCSdtb6U';
+        }elseif($target=="admin"){
+            $dev = Sys::getData('Systeme','Device/Admin=1');
+            $API_ACCESS_KEY = 'AIzaSyCGGUR9EbkicdM7IUXp1l-Z2sHFQCnLp-A';
+        }
+        $registrationIds = array();
+        foreach ($dev as $d){
+            $registrationIds[] = $d->Key;
+        }
+        $fields = array
+        (
+            'registration_ids' => $registrationIds,
+            'data' => $msg
+        );
+
+        $headers = array
+        (
+            'Authorization: key=' . $API_ACCESS_KEY,
+            'Content-Type: application/json'
+        );
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://android.googleapis.com/gcm/send');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+    }
 }

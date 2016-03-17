@@ -79,24 +79,29 @@ class Ordonnance extends genericClass {
         if ($this->Etat<4)
             $Mail -> Send();
     }
-
     private function sendNotifications($new){
-// API access key from Google API's Console
-        // API access key from Google API's Console
-        define('API_ACCESS_KEY', 'AIzaSyCGGUR9EbkicdM7IUXp1l-Z2sHFQCnLp-A');
-
-        //recherche des périphériques à associer.
-        $dev = Sys::getData('Pharmacie','Device');
-        $registrationIds = array();
-        foreach ($dev as $d){
-            $registrationIds[] = $d->Key;
+        //notification admin
+        $m = Magasin::getCurrentMagasin();
+        switch ($this->Etat){
+            //1::Non traitée,2::En cours de traitement,3::Traitée,4::Livrée,5::Litige
+            case 1:
+                $message = "Une nouvelle ordonnance est disponible de Mr " . $this->Nom . " " . $this->Prenom." ";
+                break;
+            case 2:
+                $message = "L'ordonnance est en cours de préparation";
+                break;
+            case 3:
+                $message = "L'ordonnance est préparée";
+                break;
+            case 4:
+                $message = "L'ordonnance est livrée";
+                break;
         }
 
         if ($new) {
             $msg = array
             (
-                'title' => 'Driveo backoffice: un nouvel évènement',
-                'message' => 'Une nouvelle ordonnance de Mr ' . $this->Nom . ' ' . $this->Prenom.' à préparer',
+                'title' => 'Driveo backoffice '.$m->Nom.': nouvelle ordonnance de Mr ' . $this->Nom . ' ' . $this->Prenom,
                 'store' => 'Ordonnances',
                 'vibrate' => 1,
                 'sound' => 1
@@ -104,35 +109,28 @@ class Ordonnance extends genericClass {
         }else{
             $msg = array
             (
-                'title' => 'Driveo backoffice: un nouvel évènement',
-                'message' => 'l\'ordonnance de Mr ' . $this->Nom . ' ' . $this->Prenom.' est '.$this->Etat,
+                'title' => 'Driveo backoffice '.$m->Nom.': un nouvel ordonnance de Mr ' . $this->Nom . ' ' . $this->Prenom,
                 'store' => 'Ordonnances',
                 'vibrate' => 1,
                 'sound' => 1
             );
         }
-        $fields = array
-        (
-            'registration_ids' 	=> $registrationIds,
-            'data'			=> $msg
-        );
+        $msg["message"] = $message;
+        Systeme::sendNotification($msg,'admin');
 
-        $headers = array
-        (
-            'Authorization: key=' . API_ACCESS_KEY,
-            'Content-Type: application/json'
-        );
-
-        $ch = curl_init();
-        curl_setopt( $ch,CURLOPT_URL, 'https://android.googleapis.com/gcm/send' );
-        curl_setopt( $ch,CURLOPT_POST, true );
-        curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
-        curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
-        curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
-        curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fields ) );
-        $result = curl_exec($ch );
-        curl_close( $ch );
-       // echo $result;
+        //notification utilisateur
+        $u = Sys::getOneData('Systeme','User/'.$this->userCreate);
+        if (!$new) {
+            $msg = array
+            (
+                'title' => $m->Nom.': votre ordonnance a changé d\'état.',
+                'store' => 'Ordonnances',
+                'vibrate' => 1,
+                'sound' => 1
+            );
+            $msg["message"] = $message;
+            Systeme::sendNotification($msg,$u->Id);
+        }
     }
 }
 ?>

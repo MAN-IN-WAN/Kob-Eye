@@ -4,5 +4,9 @@
     [MODULE Systeme/Utils/saveData]
 [ELSE]
     //resultat requete
-    [MODULE Systeme/Utils/getJsonDatatable?USER_FILTER=1]
+    [IF [!Sys::User::Admin!]]
+        [MODULE Systeme/Utils/getJsonDatatable?ORDO_FILTER=1]
+    [ELSE]
+        [MODULE Systeme/Utils/getJsonDatatable?USER_FILTER=1&]
+    [/IF]
 [/IF]

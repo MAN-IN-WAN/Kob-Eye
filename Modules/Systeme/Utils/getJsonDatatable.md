@@ -27,9 +27,21 @@
     [!SEARCH_TEST:=1!]
 [/IF]
 
+[IF [!FILTER_COEUR!]=1]
+    [IF [!SEARCH_TEST!]][!REQUETE+=&!][ELSE][!REQUETE+=/!][/IF]
+    [!REQUETE+=Coeur=1!]
+    [!SEARCH_TEST:=1!]
+[/IF]
+
 [IF [!ORDER_FILTER!]=1]
     [IF [!SEARCH_TEST!]][!REQUETE+=&!][ELSE][!REQUETE+=/!][/IF]
     [!REQUETE+=Valide=1!]
+    [!SEARCH_TEST:=1!]
+[/IF]
+
+[IF [!ORDO_FILTER!]=1]
+    [IF [!SEARCH_TEST!]][!REQUETE+=&!][ELSE][!REQUETE+=/!][/IF]
+    [!REQUETE+=Etat<4!]
     [!SEARCH_TEST:=1!]
 [/IF]
 
@@ -75,12 +87,9 @@
                     [STORPROC [!Ob::getElementsByAttribute(type,,1)!]|P]
                             [NORESULT]
                                     [STORPROC [!Ob::getElementsByAttribute(searchOrder,,1)!]|P]
-                                            ,
-                                            "[!P::name!]":[MODULE Systeme/Utils/getDataType?P=[!P!]&O=[!O!]]
+                                            ,"[!P::name!]":[MODULE Systeme/Utils/getDataType?P=[!P!]&O=[!O!]]
                                     [/STORPROC]
-                            [/NORESULT]
-                            ,
-                            "[!P::name!]":[MODULE Systeme/Utils/getDataType?P=[!P!]&O=[!O!]]
+                            [/NORESULT],"[!P::name!]":[MODULE Systeme/Utils/getDataType?P=[!P!]&O=[!O!]]
                     [/STORPROC]
             }
     [/STORPROC]

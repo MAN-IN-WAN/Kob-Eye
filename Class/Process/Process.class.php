@@ -300,8 +300,10 @@ class Process extends Root{
 								//Si il y a des parametres alors on les ajoutent
 								if (is_array($Params)&&sizeof($Params)){
 									$chaine .= "(";
+                                    $v='';
 									foreach ($Params as $p){
-										$chaine .= "'".$p."'";
+										$chaine .= $v."'".$p."'";
+                                        $v=',';
 									}
 									$chaine .= ")";
 								}else{

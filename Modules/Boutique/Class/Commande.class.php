@@ -36,6 +36,7 @@ class Commande extends genericClass {
 	 * @return	void
 	 */
 	public function Save() {
+        $new = false;
 		$this -> getFacture();
 		$this -> getBonLivraison();
 
@@ -50,6 +51,7 @@ class Commande extends genericClass {
 			$this -> ACurrent = (!$old->Current && $this -> Current);
 
 		} else {
+            $new = true;
 			$this -> Apayer = $this -> Paye;
 			$this -> Avalider = $this -> Valide;
 		}
@@ -112,7 +114,6 @@ class Commande extends genericClass {
 		if ($this -> Avalider) {
 			$this -> applyCommande();
             $this -> sendMailAcheteur();
-            $this -> sendNotification();
 		}
 		if ($this -> ADevalider) {
 			$this -> discardCommande();
@@ -121,7 +122,6 @@ class Commande extends genericClass {
 			$this -> setMagasin();
 			$this -> sendMailAcheteur();
 			$this -> applyInvoice();
-            $this -> sendNotification();
 		}
 		if ($this -> ACurrent) {
 			//définit cette commande comme commande par défaut
@@ -134,6 +134,8 @@ class Commande extends genericClass {
 				}
 			}
 		}
+
+        $this -> sendNotification($new);
 
         //generation de la table tva pour l'entete
 		$this->getTableTva();
@@ -1779,22 +1781,13 @@ class Commande extends genericClass {
 		if($otva && $otva->checkDate($this->DateCommande)) return $this->ObjetTva = $otva;
 		return $this->ObjetTva = new ObjetTva($this->DateCommande);
 	}
-    private function sendNotifications($new){
-// API access key from Google API's Console
-        // API access key from Google API's Console
-        define('API_ACCESS_KEY', 'AIzaSyCGGUR9EbkicdM7IUXp1l-Z2sHFQCnLp-A');
-
-        //recherche des périphériques à associer.
-        $dev = Sys::getData('Pharmacie','Device');
-        $registrationIds = array();
-        foreach ($dev as $d){
-            $registrationIds[] = $d->Key;
-        }
-
+    private function sendNotification($new){
+        //notification admin
+        $m = Magasin::getCurrentMagasin();
         if ($new) {
             $msg = array
             (
-                'title' => 'Driveo backoffice: un nouvel évènement commande',
+                'title' => 'Driveo backoffice '. $m->Nom.': un nouvel évènement commande',
                 'message' => 'la commande ' . $this->RefCommande,
                 'store' => 'Commandes',
                 'vibrate' => 1,
@@ -1803,34 +1796,33 @@ class Commande extends genericClass {
         }else{
             $msg = array
             (
-                'title' => 'Driveo backoffice: un nouvel évènement commande',
+                'title' => 'Driveo backoffice '. $m->Nom.': un nouvel évènement commande',
                 'message' => 'la commande ' . $this->RefCommande,
                 'store' => 'Commandes',
                 'vibrate' => 1,
                 'sound' => 1
             );
         }
-        $fields = array
-        (
-            'registration_ids' 	=> $registrationIds,
-            'data'			=> $msg
-        );
+        Systeme::sendNotification($msg,'admin');
 
-        $headers = array
-        (
-            'Authorization: key=' . API_ACCESS_KEY,
-            'Content-Type: application/json'
-        );
-
-        $ch = curl_init();
-        curl_setopt( $ch,CURLOPT_URL, 'https://android.googleapis.com/gcm/send' );
-        curl_setopt( $ch,CURLOPT_POST, true );
-        curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
-        curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
-        curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
-        curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fields ) );
-        $result = curl_exec($ch );
-        curl_close( $ch );
-        //echo $result;
+        //notification utilisateur
+        $c = $this->getClient();
+        $u = Sys::getOneData('Systeme','User/'.$c->UserId);
+        if (!$new) {
+            $msg = array
+            (
+                'title' => $m->Nom.': votre commande a changé d\'état.',
+                'store' => 'Commandes',
+                'vibrate' => 1,
+                'sound' => 1
+            );
+            if ($this->Prepare){
+                $msg["message"] = "La commande est préparée et attends son retrait à l'officine";
+            }
+            if ($this->Expedie){
+                $msg["message"] = "La commande a été retirée";
+            }
+        }
+        Systeme::sendNotification($msg,$u->Id);
     }
 }

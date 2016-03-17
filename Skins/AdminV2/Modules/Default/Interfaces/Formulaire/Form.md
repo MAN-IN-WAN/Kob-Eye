@@ -28,6 +28,7 @@
 		</ul>		
 	[/IF]
 [/IF]
+
 <div style="overflow:hidden;position:relative;display:block;">
 	<div style="overflow:hidden;width:100%;float:left;margin:7px;">
 		[STORPROC [!CONF::GENERAL::LANGUAGE!]|Lang]
