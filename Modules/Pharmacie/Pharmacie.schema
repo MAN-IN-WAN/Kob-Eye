@@ -54,10 +54,15 @@
 				<PROPERTIES type="boolean" searchOrder="6" category="Personne" default="10">SachetDose</PROPERTIES>
 				<PROPERTIES type="boolean" searchOrder="6" category="Personne" default="10">Livraison</PROPERTIES>
 				<PROPERTIES type="int" searchOrder="5"  list="1" category="Ordonnance" values="1::Non traitée,2::En cours de traitement,3::Traitée,4::Livrée,5::Litige" default="1">Etat</PROPERTIES>
-				<PROPERTIES type="date" list="5" listWidth="100" listDescr="Date création" searchOrder="1">tmsCreate</PROPERTIES>
+				<PROPERTIES type="date" list="1" listWidth="100" listDescr="Date création" searchOrder="6">Date</PROPERTIES>
 				<PROPERTIES type="int" >Id</PROPERTIES>
 				<JOIN type="outer" title="Couleur" on="Etat" target="Id">
 					<PROPERTIES type="color" list="1" alias="Couleur">Couleur</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" title="User" module="Systeme" on="userCreate" target="Id">
+					<PROPERTIES type="varchar" list="1" alias="Adresse" searchOrder="6">Adresse</PROPERTIES>
+					<PROPERTIES type="varchar" list="1" alias="CodPos" searchOrder="6">CodPos</PROPERTIES>
+					<PROPERTIES type="varchar" list="1" alias="Ville" searchOrder="6">Ville</PROPERTIES>
 				</JOIN>
 			</OBJECTCLASS>
 		</VIEW>

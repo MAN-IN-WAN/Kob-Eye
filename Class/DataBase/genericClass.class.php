@@ -1053,10 +1053,9 @@ class genericClass extends Root {
 	 * @return String of history's query
 	 */
 	public function getUrl() {
-		if (Sys::$User->Public&&Site::getCurrentSite()){
+		if ($site = Site::getCurrentSite()) {
 			//recherche des pages pour ce domaine
-			$site = Site::getCurrentSite();
-			$pags = $site->getChildren('Page/PageModule='.$this->Module.'&PageObject='.$this->ObjectType.'&PageId='.$this->Id);
+			$pags = $site->getChildren('Page/PageModule=' . $this->Module . '&PageObject=' . $this->ObjectType . '&PageId=' . $this->Id);
 			if (sizeof($pags)) return $pags[0]->Url;
 		}
 		$Url = $this -> Module;
@@ -1082,6 +1081,7 @@ class genericClass extends Root {
 		$Url .= '/' . $this -> Id;
 		$this -> myUrl = $Url;
 		return $Url;
+
 		//."/".$this->ObjectType."/".$this->Id;
 	}
 

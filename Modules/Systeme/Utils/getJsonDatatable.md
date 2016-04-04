@@ -71,7 +71,11 @@
     [/STORPROC]
 [/STORPROC]
 
-
+[IF [!mDataProp_[!iSortCol_0!]!]]
+    [!SFIELD:=[!mDataProp_[!iSortCol_0!]!]!]
+[ELSE]
+    [!SFIELD:=Id!]
+[/IF]
 
 {
     [COUNT [!REQUETE!]|NB]
@@ -79,7 +83,7 @@
     "req": '[!REQUETE!]',
     "results":
 [
-    [STORPROC [!REQUETE!]|O|[!iDisplayStart!]|[!iDisplayLength!]|[!mDataProp_[!iSortCol_0!]!]|[!SORT!]]
+    [STORPROC [!REQUETE!]|O|[!iDisplayStart!]|[!iDisplayLength!]|[!SFIELD!]|[!SORT!]]
             [IF [!Pos!]>1],[/IF]
             {
                     "id":"[!O::Id!]",

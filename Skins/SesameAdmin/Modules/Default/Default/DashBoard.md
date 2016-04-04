@@ -1,5 +1,5 @@
 [IF [!action!]=ouvrir]
-    [!Module::Sesame::Ouverture()!]
+    [!Module::Sesame::OuvertureFermeture()!]
     [!serrure:=1!]
 [ELSE]
     [!serrure:=0!]
@@ -7,7 +7,7 @@
 <div id="reload">
     <h1 class="page-header">Tableau de bord</h1>
           <div class="row placeholders">
-            <div class="col-xs-6 col-sm-3 placeholder">
+            <div class="col-xs-12 col-sm-3 placeholder">
                 <a class="btn [IF [!serrure!]>0]btn-danger[ELSE]btn-success[/IF] btn-block" href="?action=ouvrir">
                     <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
                     [IF [!serrure!]>0]
@@ -15,10 +15,10 @@
                     [ELSE]
                     <h4>Ouvrir la porte</h4>
                     [/IF]
-                    <span>La serrure se débloque pendant 3 secondes</span>
+                    <span>La serrure se débloque pendant 5 secondes</span>
                 </a>
             </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
+            <div class="col-xs-12 col-sm-3 placeholder">
                 <a class="btn btn-block [IF [!OP!]>0]btn-danger[ELSE]btn-info[/IF]" href="/[!Sys::getMenu(Sesame/QrCode)!]">
                     <span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>
                     [COUNT Sesame/QrCode|O]
@@ -26,13 +26,25 @@
                     <span>Consulter l'historique complet</span>
                 </a>
             </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
+            <div class="col-xs-12 col-sm-3 placeholder">
                 <a class="btn btn-warning btn-block" href="/[!Sys::getMenu(Sesame/PassePartout)!]">
                     <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
                     <h4>[COUNT Sesame/PassePartout|D][!D!] Passe-Partout(s)</h4>
                     <span>Consulter tous les passe-partouts</span>
                 </a>
             </div>
+              <div class="col-xs-12 col-sm-3 placeholder">
+                  [COUNT Sesame/Sejour/Actif=1|NS]
+                  <a class="btn btn-primary btn-block [IF [!NS!]]btn-danger[ELSE]btn-info[/IF]" href="/[!Sys::getMenu(Sesame/Sejour)!]">
+                      <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
+                      <h4>[COUNT Sesame/Sejour|D][!D!] Séjour(s)</h4>
+                      [IF [!NS!]]
+                        <span>Il y a un séjour en cours</span>
+                      [ELSE]
+                        <span>Il n'y a pas de séjour en cours</span>
+                      [/IF]
+                  </a>
+              </div>
           </div>
 
     <h2 class="sub-header">Historique</h2>

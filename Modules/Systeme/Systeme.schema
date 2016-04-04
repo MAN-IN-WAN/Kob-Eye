@@ -248,7 +248,7 @@
     <!-- device -->
     <OBJECTCLASS title="Device" driver="mysql" AccessPoint="1" Icon="[None]" description="Périphériques">
         <PROPERTIES category="Description" type="boolean" searchOrder="2">Admin</PROPERTIES>
-        <PROPERTIES category="Description" type="varchar" values="Ios,Android" length="255" searchOrder="1">Type</PROPERTIES>
+        <PROPERTIES category="Description" type="varchar" values="iOS,Android" length="255" searchOrder="1">Type</PROPERTIES>
         <PROPERTIES category="Description" type="varchar" length="255" searchOrder="1">Key</PROPERTIES>
         <FKEY card="0,1" data="User,Id" description="User">UserId</FKEY>
         <FUNCTION>sendNotificationTest</FUNCTION>

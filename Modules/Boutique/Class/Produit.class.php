@@ -794,7 +794,7 @@ class BoutiqueProduit extends genericClass
             $typetaux = $this->TypeTva;
         }
 
-        Boutique::initTableauTva();
+        //Boutique::initTableauTva();
         $tabtva = $GLOBALS['Systeme']->getRegVars('TX_TVA');
         if (!isset($tabtva[$typetaux])) return 0;
         $letaux = $tabtva[$typetaux];

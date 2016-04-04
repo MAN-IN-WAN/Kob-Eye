@@ -32,9 +32,13 @@ class Sesame extends Module {
 
         //on vérifie le passe partout
         if (Sys::getCount('Sesame','PassePartout/Code='.$qr)){
-            klog::l('OUVERTURE PASSE PARTOUT');
-            $h->Resultat = 'Ouverture passe partout';
-            Sesame::Ouverture();
+            $cc = Sys::getOneData('Sesame','PassePartout/Code='.$qr);
+            $h->Decode = $qr;
+            $h->Resultat = 'Ouverture passe partout '.(($cc->CodeDirecteur) ? ' avec un code de cloture': '');
+            if ($cc->CodeDirecteur)
+                Sesame::closeCurrentSejour();
+            else
+                Sesame::Ouverture();
         }else {
 
             $t = explode(';', $str);
@@ -60,7 +64,7 @@ class Sesame extends Module {
                 if ($idb->Valeur == $t[5] && (string)$emp->Valeur == (string)$t[6] && $tmsdeb < time() && $tmsfin > time()) {
                     klog::l('OUVERTURE PORTE !!');
                     $h->Resultat = 'Ouverture classique';
-                    Sesame::Ouverture();
+                    Sesame::CreateSejour($tmsdeb,$tmsfin,$t);
                 } elseif ($idb->Valeur != $t[5]) {
                     klog::l('ERROR >> ID_BOITIER INCORRECTE ');
                     $h->Resultat = 'ERROR >> ID_BOITIER INCORRECTE ';
@@ -75,6 +79,24 @@ class Sesame extends Module {
         }
         $h->Save();
         echo $h->Resultat;
+    }
+    static function CreateSejour ($datedeb,$datefin,$all) {
+        exec('/usr/local/bin/ouverturePermanente > /dev/null 2>/dev/null &');
+        $sej = genericclass::createInstance('Sesame','Sejour');
+        $sej->Nom = 'Séjour du '.date('d/m/Y H:i:s',$datedeb).' au '.date('d/m/Y H:i:s',$datefin);
+        $sej->DateDebut = $datedeb;
+        $sej->DateFin = $datefin;
+        $sej->Actif = true;
+
+        if ($cs = Sesame::getCurrentSejour()){
+            $cs->Actif = 0;
+            $cs->Save();
+        }
+        $sej->Save();
+        Sesame::Ouverture();
+    }
+    static function OuvertureFermeture () {
+        exec('/usr/local/bin/ouvreetferme > /dev/null 2>/dev/null &');
 
     }
     static function Ouverture () {
@@ -84,6 +106,34 @@ class Sesame extends Module {
     static function Fermeture () {
         exec('/usr/local/bin/fermeture > /dev/null 2>/dev/null &');
     }
+
+    public static function getCurrentSejour(){
+        return Sys::getOneData('Sesame','Sejour/Actif=1');
+    }
+
+    public static function checkSejour(){
+        $cs = Sesame::getCurrentSejour();
+        if ($cs)
+            if ($cs->DateDebut < time() && $cs->DateFin > time()) {
+                echo 'Porte ouverte';
+                Sesame::Ouverture();
+            }else {
+                echo 'Fin du sejour - Fermeture';
+                Sesame::closeCurrentSejour();
+            }
+        else {
+            echo 'Porte fermée';
+            Sesame::Fermeture();
+        }
+    }
+
+    public static function closeCurrentSejour(){
+        $cs = Sesame::getCurrentSejour();
+        $cs->Actif = 0;
+        $cs->Save();
+        Sesame::Fermeture();
+    }
+
     function Check() {
         parent::Check();
         // Vérification de l'existence d'un pass partout par Defaut

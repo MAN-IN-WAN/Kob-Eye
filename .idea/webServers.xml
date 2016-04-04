@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="b3895f4a-7984-45c7-8e76-dda065144e59" name="pharmaciedelecluse.fr" url="http://admin.pharmaciedelecluse.fr">
+        <fileTransfer host="admin.pharmaciedelecluse.fr" port="21" password="df98df9bdfdddfd3dfc3dfd9dfcfdfd3" username="admin@pharmaciedelecluse.fr">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="b3aba428-4f5f-4563-8127-dfec19a85a01" name="pharmaducours.fr" url="http://admin.pharmaducours.fr">
+        <fileTransfer host="admin.pharmaducours.fr" port="21" password="df98df9bdfdddfd3dfc3dfd9dfcfdfd3" username="admin@pharmaducours.fr">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="56d7caaa-fa9d-40d3-a04d-1b6de9f361e1" name="raspberry_gil" url="http://192.168.0.113">
+        <fileTransfer host="192.168.0.113" port="22" rootFolder="/var/www" accessType="SFTP" password="df98df9bdfdddfd3dfc3dfd9dfcfdfd3" username="formation">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

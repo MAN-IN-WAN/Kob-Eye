@@ -6,6 +6,13 @@
 	</OBJECTCLASS>
     <OBJECTCLASS title="PassePartout" driver="mysql" AccessPoint="1" Icon="[None]" Description="Passe-partout">
         <PROPERTIES type="varchar" searchOrder="1" length="100" obligatoire="1" category="Intitulé" description="Code" list="1">Code</PROPERTIES>
+        <PROPERTIES type="boolean" searchOrder="2" category="Intitulé" description="Code cloture" list="1">CodeDirecteur</PROPERTIES>
+    </OBJECTCLASS>
+    <OBJECTCLASS title="Sejour" driver="mysql" AccessPoint="1" Icon="[None]" Description="Séjour en cours">
+        <PROPERTIES type="varchar" searchOrder="1" length="100" obligatoire="1" category="Intitulé" description="Nom" list="1">Nom</PROPERTIES>
+        <PROPERTIES type="date" searchOrder="2" length="100" obligatoire="1" category="Intitulé" description="Déte de début de séjour" list="1">DateDebut</PROPERTIES>
+        <PROPERTIES type="date" searchOrder="3" length="100" obligatoire="1" category="Intitulé" description="Date de fin de séjour" list="1">DateFin</PROPERTIES>
+        <PROPERTIES type="boolean" searchOrder="4" category="Intitulé" description="Séjour en cours" list="1">Actif</PROPERTIES>
     </OBJECTCLASS>
     <OBJECTCLASS title="Dictionnaire" driver="mysql" AccessPoint="1" Icon="[None]" Description="Configuration">
         <PROPERTIES type="varchar" searchOrder="1" length="255" obligatoire="1" category="Intitulé" description="Nom variable" list="1">Nom</PROPERTIES>

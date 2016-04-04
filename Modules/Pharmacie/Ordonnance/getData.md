@@ -5,7 +5,7 @@
 [ELSE]
     //resultat requete
     [IF [!Sys::User::Admin!]]
-        [MODULE Systeme/Utils/getJsonDatatable?ORDO_FILTER=1]
+        [MODULE Systeme/Utils/getJsonDatatable]
     [ELSE]
         [MODULE Systeme/Utils/getJsonDatatable?USER_FILTER=1&]
     [/IF]
