@@ -8,8 +8,8 @@
     [STORPROC [!Query!]/Court|C|0|10]
     <div class="col-md-[!12:/[!NbCol!]!]">
         <h3>[!C::Titre!]</h3>
-        [STORPROC 18|H]
-            <a href="" class="horaire-tennis">[!H:+6!]h</a>
+        [STORPROC 12|H]
+            <a href="" class="horaire-tennis">[!H:+9!]h</a>
         [/STORPROC]
     </div>
     [/STORPROC]

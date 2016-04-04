@@ -25,11 +25,12 @@
 				]]>
 			</ACTION>
 		</FUNCTION>
-		<PROPERTIES type="varchar" searchOrder="1" category="Personne" obligatoire="1">Nom</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="2" category="Personne" obligatoire="1">Prenom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" category="Personne" obligatoire="0">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" category="Personne" obligatoire="0">Prenom</PROPERTIES>
 		<PROPERTIES type="text" category="Personne" >Commentaire</PROPERTIES>
-		<PROPERTIES type="email"  searchOrder="3" category="Personne" obligatoire="1">Email</PROPERTIES>
-        <PROPERTIES type="varchar" searchOrder="4" category="Personne" obligatoire="1">Telephone</PROPERTIES>
+		<PROPERTIES type="email"  searchOrder="3" category="Personne" obligatoire="0">Email</PROPERTIES>
+        <PROPERTIES type="varchar" searchOrder="4" category="Personne" obligatoire="0">Telephone</PROPERTIES>
+		<PROPERTIES type="date" searchOrder="6" category="Personne" default="[!TMS::Now!]" description="Date de création">DateCreation</PROPERTIES>
         <PROPERTIES type="date" searchOrder="6" category="Personne" default="10" description="Date de préparation">PrepareLe</PROPERTIES>
         <PROPERTIES type="date" searchOrder="6" category="Personne" default="10" description="Date de retrait">RetireLe</PROPERTIES>
         <PROPERTIES type="date" searchOrder="6" category="Personne" default="10" description="Date de retrait prévue">DateRetrait</PROPERTIES>
@@ -44,13 +45,16 @@
 				<PROPERTIES type="varchar" list="6" searchOrder="2" category="Personne" obligatoire="1">Prenom</PROPERTIES>
 				<PROPERTIES type="email" list="4" searchOrder="3" category="Personne" obligatoire="1">Email</PROPERTIES>
 				<PROPERTIES type="varchar" list="3" searchOrder="4" category="Personne" obligatoire="1">Telephone</PROPERTIES>
-                <PROPERTIES type="date" searchOrder="6" category="Personne" default="10" description="Date de préparation">PrepareLe</PROPERTIES>
-                <PROPERTIES type="date" searchOrder="6" category="Personne" default="10" description="Date de retrait">RetireLe</PROPERTIES>
-                <PROPERTIES type="date" searchOrder="6" category="Personne" default="10" description="Date de retrait prévue">DateRetrait</PROPERTIES>
+				<PROPERTIES type="date" searchOrder="6" category="Personne" default="[!TMS::Now!]" description="Date de création">DateCreation</PROPERTIES>
+				<PROPERTIES type="date" searchOrder="6" category="Personne" description="Date de préparation">PrepareLe</PROPERTIES>
+                <PROPERTIES type="date" searchOrder="6" category="Personne" description="Date de retrait">RetireLe</PROPERTIES>
+                <PROPERTIES type="date" searchOrder="6" category="Personne" description="Date de retrait prévue">DateRetrait</PROPERTIES>
                 <PROPERTIES type="int" searchOrder="6" category="Personne" default="10">Priorite</PROPERTIES>
 				<PROPERTIES type="image" list="2" category="Ordonnance" listWidth="150" obligatoire="1">Image</PROPERTIES>
+				<PROPERTIES type="boolean" searchOrder="6" category="Personne" default="10">SachetDose</PROPERTIES>
+				<PROPERTIES type="boolean" searchOrder="6" category="Personne" default="10">Livraison</PROPERTIES>
 				<PROPERTIES type="int" searchOrder="5"  list="1" category="Ordonnance" values="1::Non traitée,2::En cours de traitement,3::Traitée,4::Livrée,5::Litige" default="1">Etat</PROPERTIES>
-				<PROPERTIES type="date" list="5" listWidth="100" listDescr="Date création">tmsCreate</PROPERTIES>
+				<PROPERTIES type="date" list="5" listWidth="100" listDescr="Date création" searchOrder="1">tmsCreate</PROPERTIES>
 				<PROPERTIES type="int" >Id</PROPERTIES>
 				<JOIN type="outer" title="Couleur" on="Etat" target="Id">
 					<PROPERTIES type="color" list="1" alias="Couleur">Couleur</PROPERTIES>
@@ -86,8 +90,8 @@
 		<PROPERTIES category="Document" type="file" searchOrder="3" description="Document"										>Doc</PROPERTIES>
 	</OBJECTCLASS>
 
-    <OBJECTCLASS title="Device" driver="mysql" AccessPoint="1" Icon="[None]" description="Périphériques">
-        <PROPERTIES category="Description" type="varchar" length="255" searchOrder="1">Key</PROPERTIES>
-        <FUNCTION>sendNotificationTest</FUNCTION>
+    <OBJECTCLASS title="PlageHoraire" driver="mysql" AccessPoint="1" Icon="[None]" description="Plages Horaires">
+        <PROPERTIES category="Description" type="int" values="6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21" searchOrder="1" description="Heure de début de période">HeureDebut</PROPERTIES>
+		<PROPERTIES category="Description" type="int" values="6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21" searchOrder="1" description="Heure de fin de période ">HeureFin</PROPERTIES>
     </OBJECTCLASS>
 </SCHEMA>

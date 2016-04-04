@@ -22,6 +22,20 @@
             [PARAM][!Form_[!P::Nom!]!][/PARAM]
         [/METHOD]
     [/STORPROC]
+
+    //SPECIAL BATTISTELLA
+    [IF [!Form_SachetDose!]]
+            [!TEXT:=<br /> PREPRATION SACHET DOSE!]
+            [IF [!Form_Livraison!]]
+                [!TEXT+=<br /> LIVRAISON DOMICILE!]
+            [/IF]
+            [METHOD Or|Set]
+                [PARAM]Commentaire[/PARAM]
+                [PARAM][!Form_Commentaire!] [!TEXT!] [/PARAM]
+            [/METHOD]
+    [/IF]
+
+
     [IF [!Or::Verify()!]]
         //Enregistrement
         [METHOD Or|Save][/METHOD]
@@ -39,95 +53,90 @@
         </div>
     [/IF]
 [/IF]
+[IF [!Sys::User::Public!]=]
+    [IF [!SendContact!]=||[!Form_Error!]]
+            <form id="FormContact" method="post" action="/[!Lien!]" class="form-horizontal" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-12">
+                                    <div class="form-group  [IF [!Form_Image_Error!]]error[/IF]">
+                                        <label class="control-label col-sm-4" for="Form_Mail">Image de l'ordonnance <span class="Obligatoire">*</span></label>
+                                        <div class="col-sm-6">
+                                            <span class="exclusive btn-file">
+                                                __BROWSE__ <input type="file" id="Form_Image" name="Form_Image" value="[!Form_Image!]" class="input-block-level" required/>
+                                            </span>
+                                        </div>
+                                    </div>
+                                <div class="form-group  [IF [!Form_Commentaire_Error!]]error[/IF]">
+                                    <label class="control-label col-sm-4" for="Form_Commentaire">Commentaire(s)</label>
+                                    <div class="col-sm-6">
+                                        <textarea id="Form_Image" name="Form_Commentaire" id="Form_Commentaire" >[!Form_Commentaire!]</textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group  [IF [!Form_SachetDose_Error!]]error[/IF]">
+v                                    <label class="control-label col-sm-4" for="Form_SachetDose">Souhaitez-vous une préparation en sachet dose ?</label>
+                                    <div class="col-sm-6">
+                                        <input id="Form_SachetDose" name="Form_SachetDose" value="1" type="checkbox" [IF [!Form_SachetDose!]]checked="checked"[/IF] />
+                                    </div>
+                                </div>
+                                <div id="livraison" style="display:none;" class="form-group  [IF [!Form_SachetDose_Error!]]error[/IF]">
+                                    <label class="control-label col-sm-4" for="Form_Livraison">Souhaitez-vous une livraison ?</label>
+                                    <div class="col-sm-6">
+                                        <input id="Form_Livraison" name="Form_Livraison" value="1" type="checkbox" [IF [!Form_Livraison!]]checked="checked"[/IF] />
+                                    </div>
+                                </div>
+                                <div class="col-sm-4"></div>
+                                <div class="col-sm-8">
+                                    <p>Retirez votre commande directement à l'officine sans attente en utilisant la borne à votre arrivée.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <input type="hidden" name="SendContact" value="1">
+                            <div class="col-md-5 col-md-offset-7">
+                                    <button type="submit" class="btn btn-primary" >Envoyer</button>
+                                    <a href="/[!Systeme::CurrentMenu::Url!]" class="btn btn-danger">Annuler</a>
+                            </div>
+                        </div>
+                <script>
+                    $(function () {
+                        console.log('test');
+                        $("#Form_SachetDose").on('change',function (e) {
+                            if ($(e.target).is(':checked')) $('#livraison').css('display','block');
+                            else{
+                                $('#livraison').css('display','none');
+                                $('#Form_Livraison').prop('checked', false);
+                            }
+                        });
+                    });
+                </script>
+            </form>
 
-[IF [!SendContact!]=||[!Form_Error!]]
-	    <form id="FormContact" method="post" action="/[!Lien!]" class="form-horizontal" enctype="multipart/form-data">
-				    <div class="row">
-						<div class="col-md-12">
-							    <div class="form-group  [IF [!Form_Nom_Error!]]error[/IF]">
-									<label class="control-label col-sm-4" for="Form_Nom">Nom <span class="Obligatoire">*</span></label>
-									<div class="col-sm-6">
-										    <input type="text" class="form-control" id="Form_Nom" name="Form_Nom" style="text-transform:uppercase" value="[!Form_Nom!]" required/>
-									</div>
-							    </div>
-							    <div class="form-group  [IF [!Form_Prenom_Error!]]error[/IF]">
-									<label class="control-label col-sm-4" for="Form_Prenom">Prénom</label>
-									<div class="col-sm-6">
-										    <input type="text" class="form-control" name="Form_Prenom" value="[!Form_Prenom!]" />
-									</div>
-							    </div>
-							    <div class="form-group [IF [!Form_Telephone_Error!]]error[/IF]">
-									<label class="control-label col-sm-4" for="Form_Telephone">Numéro de téléphone</label>
-									<div class="col-sm-6">
-										    <input type="text" class="form-control" name="Form_Telephone"  value="[!Form_Telephone!]"/>
-									</div>
-							    </div>
-							    <div class="form-group  [IF [!Form_Email_Error!]]error[/IF]">
-									<label class="control-label col-sm-4" for="Form_Email">Adresse e-mail <span class="Obligatoire">*</span></label>
-									<div class="col-sm-6">
-										<input type="text" class="form-control" id="Form_Email" name="Form_Email" value="[!Form_Email!]" required/>
-									</div>
-							    </div>
-							    <div class="form-group  [IF [!Form_Image_Error!]]error[/IF]">
-									<label class="control-label col-sm-4" for="Form_Mail">Image de l'ordonnance <span class="Obligatoire">*</span></label>
-									<div class="col-sm-6">
-                                                                            <span class="exclusive btn-file">
-                                                                                __BROWSE__ <input type="file" id="Form_Image" name="Form_Image" value="[!Form_Image!]" class="input-block-level" required/>
-                                                                            </span>
-									</div>
-							    </div>
-							<div class="form-group  [IF [!Form_Commentaire_Error!]]error[/IF]">
-								<label class="control-label col-sm-4" for="Form_Commentaire">Commentaire(s)</label>
-								<div class="col-sm-6">
-									<textarea id="Form_Image" name="Form_Commentaire" id="Form_Commentaire" >[!Form_Commentaire!]</textarea>
-								</div>
-							</div>
-						</div>
-				    </div>
-			[IF [!CAPTCHA_ACTIF!]]
-				    <div class="row">
-						<div class="col-md-12">
-							    <div class="form-group last [IF [!Form_Calc_Error!]]error[/IF]">
-									<label class="control-label col-md-6" for="Form_Nom">Merci de résoudre l'opération ci-dessous avant de valider <span class="Obligatoire">*</span></label>
-									<div class="controls form-inline">
-										    <input type="text" class="form-control" name="n3" id="n3" value="[!Utils::Random(9)!]" maxlength="2" readonly="readonly" class="span1"/>+
-										    <input type="text" class="form-control" name="n4" value="[!Utils::Random(9)!]" maxlength="2" readonly="readonly" class="span1"/>
-										    <span style="width:40px;text-align:center;">=</span>
-										    <input type="text" class="form-control" name="tot2" value=""  maxlength="2" class="span1 [IF [!Calc2_Error!]]Error[/IF]" required/>
-									</div>
-							    </div>
-						</div>
-				    </div>
-			[/IF]
-				    <div class="row">
-						<input type="hidden" name="SendContact" value="1">
-						<div class="col-md-5 col-md-offset-7">
-							    <button type="submit" class="btn btn-primary" >Envoyer</button>
-							    <a href="/[!Systeme::CurrentMenu::Url!]" class="btn btn-danger">Annuler</a>
-						</div>
-				    </div>	
-	    </form>
-	    
-			<div class="row" style="margin-top: 50px;">
-				    <div class="col-md-6">
-						<p>Les champs marqués (<span class="Obligatoire">*</span>) sont obligatoires.</p>
-						<p class="ContactTel">Vous pouvez aussi nous contacter par :<br />
-						Tel : [!Systeme::User::Tel!]<br />
-						Fax : [!Systeme::User::Fax!]</p>
-				    </div>
-				    <div class="col-md-6">
-						<p>
-						Conformément à la loi n°78-17 du 6 janvier 1978 relative à l'informatique, aux fichiers et aux libertés,
-						vous disposez d'un droit d'accès, de rectification, de suppression des informations qui vous concernent que vous pouvez exercer en vous adressant à
-						[!Systeme::User::Nom!] - [!Systeme::User::Adresse!] - [!Systeme::User::CodPos!] [!Systeme::User::Ville!] - [!Systeme::User::Pays!].
-						</p>
-	    
-						<p>
-						[!TEXT_BAS!]
-						</p>
-				    </div>
-			</div>
+                <div class="row" style="margin-top: 50px;">
+                        <div class="col-md-6">
+                            [OBJ Boutique|Magasin|M]
+                            [!Mag:=[!M::getCurrentMagasin()!]!]
+                            <p>Les champs marqués (<span class="Obligatoire">*</span>) sont obligatoires.</p>
+                            <p class="ContactTel">Vous pouvez aussi nous contacter par :<br />
+                            Tel : [!Mag::Tel!]<br />
+                            Fax : [!Mag::Fax!]</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>
+                            Conformément à la loi n°78-17 du 6 janvier 1978 relative à l'informatique, aux fichiers et aux libertés,
+                            vous disposez d'un droit d'accès, de rectification, de suppression des informations qui vous concernent que vous pouvez exercer en vous adressant à
+                            [!Mag::Nom!] - [!Mag::Adresse!] - [!Mag::CodPos!] [!Mag::Ville!] - [!Mag::Pays!].
+                            </p>
 
+                            <p>
+                            [!TEXT_BAS!]
+                            </p>
+                        </div>
+                </div>
+
+    [/IF]
+[ELSE]
+            <div class="alert alert-warning">Afin d'utiliser le service d'envoi d'ordonnances, veuillez vous connecter avec votre compte utilisateur ou créez un compte en cliquant sur le bouton ci-dessous:</div>
+            <a class="btn btn-success btn-large" href="/Mon-compte">Connectez-vous</a>
 [/IF]
             </div>
 </div>

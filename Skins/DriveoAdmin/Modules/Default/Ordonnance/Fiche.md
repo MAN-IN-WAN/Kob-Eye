@@ -43,9 +43,9 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-5 control-label">Date de modification</label>
+                <label class="col-sm-5 control-label">Date de retarit prévue</label>
                 <div class="col-sm-5">
-                    [DATE d/m/Y H:i:s][!D::tmsEdit!][/DATE]
+                    [DATE d/m/Y H:i:s][!D::DateRetrait!][/DATE]
                 </div>
             </div>
             <div class="form-group">

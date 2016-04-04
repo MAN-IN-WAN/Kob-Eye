@@ -12,9 +12,9 @@
 [HEADER CSS]Tools/Css/Bootstrap/3.0/css/bootstrap-theme.min.css[/HEADER]
 //lightbox
 [HEADER CSS]Skins/[!Systeme::Skin!]/Js/lightbox.min.css[/HEADER]
-[HEADER JS]Skins/[!Systeme::Skin!]/Js/lightbox.min.js[/HEADER]
 
 [HEADER JS]Tools/Js/Jquery/1.9.2/jquery.min.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/lightbox.min.js[/HEADER]
 [HEADER JS]Tools/Css/Bootstrap/3.0/js/bootstrap.min.js[/HEADER]
 [HEADER JS]Tools/Js/Masonry/masonry.min.js[/HEADER]
 <script src='/Tools/Js/animateIt/js/css3-animate-it.js'></script>

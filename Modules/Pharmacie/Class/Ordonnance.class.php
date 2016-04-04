@@ -2,24 +2,99 @@
 class Ordonnance extends genericClass {
     function Save () {
         $id = $this->Id;
+        $new = (!$id)?true:false;
+        if ($id){
+            //récupération de l'ancien enreigstrement pour comparer
+            $old = Sys::getOneData('Pharmacie','Ordonnance/'.$id);
+        }
+
         parent::Save();
         if (!$id){
+            //Si sachet dose
+            if ($this->SachetDose){
+                $this->Commentaire.="\r\nPREPARATION SACHET DOSE";
+                if ($this->Livraison)
+                    $this->Commentaire.="\r\nLIVRAISON";
+            }
+            //si livraison
+
             //A la creation on force l'état 1
             $this->Etat=1;
             $usr='';
             $rol='USER';
 
+            $cl = Sys::getOneData('Boutique','Client/UserId='.Sys::$User->Id);
+            if (!$cl) return false;
+            //on remplit les champs
+            $this->Nom = $cl->Nom;
+            $this->Prenom = $cl->Prenom;
+            $this->Email = $cl->Mail;
+            $this->Telephone = $cl->Tel;
+            $this->Priorite = 10;
+            $this->DateCreation = time();
+
+            //calcul de la date de retrait prévue
+            //il faut au moins un décallage de 2 heures
+            $d = $this->tmsCreate;
+            $ch = date('H',$d+7200);
+            $hs = Sys::getData('Pharmacie','PlageHoraire',0,100,'HeureDebut','ASC');
+            $gp = null;
+            foreach ($hs as $hss){
+                if ($ch<$hss->HeureFin){
+                    $gp = $hss;
+                    $ch = $hss->HeureDebut;
+                }
+            }
+            if (!$gp){
+                //pour le lendemain
+                $hss = Sys::getOneData('Pharmacie','PlageHoraire',0,1,'HeureDebut','ASC');
+                $ch = $hss->HeureDebut;
+                $d = strtotime('+1 day',$this->tmsCreate);
+            }
+            $this->DateRetrait = mktime($ch,0,0,date('m',$d),date('d',$d),date('Y',$d));
+
             //alors c'une nouvelle ordonnance on envoie une notification
  	        AlertUser::addAlert('Nouvelle ordonnance à traiter pour monsieur '.$this->Nom.' '.$this->Prenom,'OR'.$this->Id,'Pharmacie','Ordonnance',$this->Id,$usr,$rol,'icon_contract');
         }
+        //mise à jour de l'état
+        switch ($this->Etat){
+            //1::Non traitée,2::En cours de traitement,3::Traitée,4::Livrée,5::Litige
+            case 1:
+                //envoi des mails
+                $this->sendMailAcheteur();
+                //envoi des notifications
+                $this->sendNotifications($new);
+                break;
+            case 2:
+                if ($old->Etat!=$this->Etat) {
+                    //envoi des mails
+                    $this->sendMailAcheteur();
+                    //envoi des notifications
+                    $this->sendNotifications($new);
+                }
+                break;
+            case 3:
+                if ($old->Etat!=$this->Etat) {
+                    //envoi des mails
+                    $this->sendMailAcheteur();
+                    //envoi des notifications
+                    $this->sendNotifications($new);
+                    $this->PrepareLe = time();
+                }
+                break;
+            case 4:
+                if ($old->Etat!=$this->Etat) {
+                    //envoi des mails
+                    $this->sendMailAcheteur();
+                    //envoi des notifications
+                    $this->sendNotifications($new);
+                    $this->RetireLe = time();
+                }
+                break;
+        }
+
+
         parent::Save();
-
-        $new = (!$id)?true:false;
-        //envoi des mails
-        $this->sendMailAcheteur();
-
-        //envoi des notifications
-        $this->sendNotifications($new);
     }
     /**
      * Envoi du mail a l'acheteur l'informant que son achat a été prise en compte
@@ -54,16 +129,17 @@ class Ordonnance extends genericClass {
                 Bonjour " . $Civilite . ",<br /><br />
                 Nous vous informons que votre ordonnance a bien été prise en compte.<br />
                 Vous pouvez d'ores et déjà vous rendre sur <a style='text-decoration:underline' href='http://" . Sys::$domain . "/" . $GLOBALS['Systeme']->getMenu('Boutique/Mon-compte') . "'>votre espace client</a> et suivre l'évolution de votre ordonnance.<br /><br />
+                <b>Vous pouvez retirer votre commande à partir du ".date('d/m/Y H:i',$this->DateRetrait)."</b><br />
                 <br />Toute l'équipe de " . $this->Magasin->Nom . " vous remercie de votre confiance,<br />
                 <br />Pour nous contacter : " . $this->Magasin->EmailContact . " .".$Lacommande;
-        }elseif ($this->Etat==2) {
+        }elseif ($this->Etat==3) {
             $mailContent = "
                 Bonjour " . $Civilite . ",<br /><br />
                 Nous vous informons que votre commande N° " . $this->RefCommande . " a été préparée.<br />
                 Vous pouvez d'ores et déjà vous rendre à l'officine ".$this->Magasin->Nom." pour retirer et payer votre commande <br /><br />
                 Toute l'équipe de " . $this->Magasin->Nom . " vous remercie de votre confiance,<br />
                 <br />Pour nous contacter : " . $this->Magasin->EmailContact . ". ".$Lacommande;
-        }elseif ($this->Etat==3) {
+        }elseif ($this->Etat==4) {
             $mailContent = "
                 Bonjour " . $Civilite . ",<br /><br />
                 Vous avez retiré votre commande N° " . $this->RefCommande . ".
@@ -85,7 +161,7 @@ class Ordonnance extends genericClass {
         switch ($this->Etat){
             //1::Non traitée,2::En cours de traitement,3::Traitée,4::Livrée,5::Litige
             case 1:
-                $message = "Une nouvelle ordonnance est disponible de Mr " . $this->Nom . " " . $this->Prenom." ";
+                $message = "A retirer à partir du ".date('d/m/Y H:i',$this->DateRetrait);
                 break;
             case 2:
                 $message = "L'ordonnance est en cours de préparation";
@@ -120,17 +196,15 @@ class Ordonnance extends genericClass {
 
         //notification utilisateur
         $u = Sys::getOneData('Systeme','User/'.$this->userCreate);
-        if (!$new) {
-            $msg = array
-            (
-                'title' => $m->Nom.': votre ordonnance a changé d\'état.',
-                'store' => 'Ordonnances',
-                'vibrate' => 1,
-                'sound' => 1
-            );
-            $msg["message"] = $message;
-            Systeme::sendNotification($msg,$u->Id);
-        }
+        $msg = array
+        (
+            'title' => $m->Nom.': votre ordonnance a changé d\'état.',
+            'store' => 'Ordonnances',
+            'vibrate' => 1,
+            'sound' => 1
+        );
+        $msg["message"] = $message;
+        Systeme::sendNotification($msg,$u->Id);
     }
 }
 ?>

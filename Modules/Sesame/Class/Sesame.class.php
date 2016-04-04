@@ -7,7 +7,6 @@ class Sesame extends Module {
      * ex: HIP;aaa;001;1454320497;1480586097
      */
     static function checkQrCode ($qr) {
-        $qr = urldecode($qr);
         klog::l('decryptage '.$qr);
 
         $h = genericClass::createInstance('Sesame', 'QrCode');
@@ -22,14 +21,13 @@ class Sesame extends Module {
         //sinon on décrypte le code pour valider la chaîne
         $key = Sys::getOneData('Sesame', 'Dictionnaire/Nom=AES_KEY');
         // test ZBCKbyX6RgJA8wRTbE5a4SQeVv3ccP0ISng3iEry3qU=  ====> test de phrase ===> passe partout
-        // test uA4mgVJcJGAo2AYWri89IjrJ5sRjlk0NESPYfvDsjyYKYflrJyT9NR2fzu6JaKmM0ouoeF2n8atbn/i3v4DKzA== => HIP;aaa;001;1454320497;1480586097 => chaine valide
-        $qr2 = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256,$key->Valeur,'HIP;aaa;001;1454320497;1480586097',MCRYPT_MODE_CBC, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"));
-        echo $qr2."<br />\r\n";
-        echo base64_encode(base64_decode($qr))."<br />\r\n";
+        // test ov4dxzJAqeWtyMKWKCHuOHjImA2mV+7opAIm8jJ99kmZu5XdnotMb03BbxO6qwe/tcIXRJ30MMzOobVRqmH3rA== => MICHEL MANOLIOS;15122015;12:00;18122016;12:00;SB125;048 => chaine valide
+        //$qr2 = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256,$key->Valeur,'MICHEL MANOLIOS;15122015;12:00;18122016;12:00;SB125;048',MCRYPT_MODE_CBC, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"));
+        //echo $qr2."<br />\r\n";
+        //echo base64_encode(base64_decode($qr))."<br />\r\n";
+        //die('zob');
         $str = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $key->Valeur, base64_decode($qr), MCRYPT_MODE_CBC, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0");
-echo $str;
-        die();
-        $h->Decode = $str;
+        $str = $h->Decode = trim($str);
 
 
         //on vérifie le passe partout
@@ -43,31 +41,40 @@ echo $str;
             klog::l('decryptage ' . $str, $t);
 
             if (sizeof($t) >= 5) {
+                //[0] = > NOM CLIENT
+                //[1] = > DATE DEBUT
+                //[2] = > HEURE DEBUT
+                //[3] = > DATE FIN
+                //[4] = > HEURE FIN
+                //[5] = > NUM BOITIER
+                //[6] = > EMPLACEMENT
+
                 //on vérifie la chaine
                 $emp = Sys::getOneData('Sesame', 'Dictionnaire/Nom=EMPLACEMENT');
-                $cli = Sys::getOneData('Sesame', 'Dictionnaire/Nom=NOM_CLIENT');
-                $cha = Sys::getOneData('Sesame', 'Dictionnaire/Nom=NOM_CHAINE');
+                $idb = Sys::getOneData('Sesame', 'Dictionnaire/Nom=ID_BOITIER');
 
-                if ($cha->Valeur == $t[0] && $cli->Valeur == $t[1] && $emp->Valeur == $t[2] && $t[3] < time() && $t[4] > time()) {
+                //calcul des timestamp sebut et fin
+                $tmsdeb = mktime(substr($t[2],0,2),substr($t[2],3,2),0,substr($t[1],2,2),substr($t[1],0,2),substr($t[1],4,4));
+                $tmsfin = mktime(substr($t[4],0,2),substr($t[4],3,2),0,substr($t[3],2,2),substr($t[3],0,2),substr($t[3],4,4));
+
+                if ($idb->Valeur == $t[5] && (string)$emp->Valeur == (string)$t[6] && $tmsdeb < time() && $tmsfin > time()) {
                     klog::l('OUVERTURE PORTE !!');
                     $h->Resultat = 'Ouverture classique';
                     Sesame::Ouverture();
-                } elseif ($cha->Valeur != $t[0]) {
-                    klog::l('ERROR >> NOM_CHAINE INCORRECTE ');
-                    $h->Resultat = 'ERROR >> NOM_CHAINE INCORRECTE ';
-                } elseif ($cli->Valeur != $t[1]) {
-                    klog::l('ERROR >> CLIENT INCORRECT');
-                    $h->Resultat = 'ERROR >> CLIENT INCORRECT';
-                } elseif ($emp->Valeur != $t[2]) {
-                    klog::l('ERROR >> EMPLACEMENT INCORRECT');
-                    $h->Resultat = 'ERROR >> EMPLACEMENT INCORRECT';
+                } elseif ($idb->Valeur != $t[5]) {
+                    klog::l('ERROR >> ID_BOITIER INCORRECTE ');
+                    $h->Resultat = 'ERROR >> ID_BOITIER INCORRECTE ';
+                } elseif ((string)$emp->Valeur != (string)$t[6]) {
+                    klog::l('ERROR >> EMPLACEMENT INCORRECT'.$emp->Valeur.'!='.$t[6]);
+                    $h->Resultat = 'ERROR >> EMPLACEMENT INCORRECT '.$emp->Valeur.'!='.$t[6];
                 } else {
                     klog::l('ERROR >> DATES INCORRECTES');
-                    $h->Resultat = 'ERROR >> DATES INCORRECT';
+                    $h->Resultat = 'ERROR >> DATES INCORRECT '.$tmsdeb.' '.$tmsfin;
                 }
             } else $h->Resultat = 'Impossible de décoder la chaine';
         }
         $h->Save();
+        echo $h->Resultat;
 
     }
     static function Ouverture () {
@@ -89,7 +96,7 @@ echo $str;
         if (!Sys::getCount('Sesame','Dictionnaire')) {
             $D=genericClass::createInstance('Sesame','Dictionnaire');
             $D->Nom = 'EMPLACEMENT';
-            $D->Valeur = '003';
+            $D->Valeur = '048';
             $D->Save();
 
             $D=genericClass::createInstance('Sesame','Dictionnaire');
@@ -98,13 +105,8 @@ echo $str;
             $D->Save();
 
             $D=genericClass::createInstance('Sesame','Dictionnaire');
-            $D->Nom = 'NOM_CHAINE';
-            $D->Valeur = 'HIP';
-            $D->Save();
-
-            $D=genericClass::createInstance('Sesame','Dictionnaire');
-            $D->Nom = 'NOM_CLIENT';
-            $D->Valeur = 'aaa';
+            $D->Nom = 'ID_BOITIER';
+            $D->Valeur = 'SB125';
             $D->Save();
         }
     }
