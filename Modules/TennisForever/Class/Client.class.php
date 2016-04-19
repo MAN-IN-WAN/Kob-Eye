@@ -9,6 +9,10 @@ class Client extends genericClass {
   var $Pass;
   var $Panier;
 
+
+	function isSubscriber(){
+		return $this->Abonne;
+	}
 	/**
 	* Créé un mot de passe aléatoire pour l'utilisateur.
 	*

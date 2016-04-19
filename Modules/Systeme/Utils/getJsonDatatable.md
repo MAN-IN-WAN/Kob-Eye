@@ -4,7 +4,9 @@
 
 //CONFIGURATION
 [!REQUETE:=[!Query!]!]
-[IF [!sSortDir_0!]=desc][!SORT:=DESC!][ELSE][!SORT:=ASC!][/IF]
+[IF [!SORT!]=]
+    [IF [!sSortDir_0!]!=asc][!SORT:=DESC!][ELSE][!SORT:=ASC!][/IF]
+[/IF]
 [IF [!sSearch!]][!REQUETE+=/~[!sSearch!]!][/IF]
 [IF [!start!]]
         [!iDisplayStart:=[!start!]!]
@@ -70,17 +72,18 @@
         [/NORESULT]
     [/STORPROC]
 [/STORPROC]
-
-[IF [!mDataProp_[!iSortCol_0!]!]]
-    [!SFIELD:=[!mDataProp_[!iSortCol_0!]!]!]
-[ELSE]
-    [!SFIELD:=Id!]
+[IF [!SFIELD!]=]
+    [IF [!mDataProp_[!iSortCol_0!]!]]
+        [!SFIELD:=[!mDataProp_[!iSortCol_0!]!]!]
+    [ELSE]
+        [!SFIELD:=Id!]
+    [/IF]
 [/IF]
 
 {
     [COUNT [!REQUETE!]|NB]
     "total": [!NB!],
-    "req": '[!REQUETE!]',
+    "req": '[!REQUETE!] |[!SFIELD!]|[!SORT!]',
     "results":
 [
     [STORPROC [!REQUETE!]|O|[!iDisplayStart!]|[!iDisplayLength!]|[!SFIELD!]|[!SORT!]]

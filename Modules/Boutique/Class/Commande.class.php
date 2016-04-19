@@ -49,7 +49,9 @@ class Commande extends genericClass {
 			$this -> Avalider = (!$old->Valide && $this -> Valide);
 			$this -> ADevalider = ($old->Valide && !$this -> Valide);
 			$this -> ACurrent = (!$old->Current && $this -> Current);
-
+			$this -> AExpedier = (!$old->Expedie && $this -> Expedie);
+			$this -> ACloturer = (!$old->Cloture && $this -> Cloture);
+			$this -> APrepare = (!$old->Prepare && $this -> Prepare);
 		} else {
             $new = true;
 			$this -> Apayer = $this -> Paye;
@@ -114,14 +116,25 @@ class Commande extends genericClass {
 		if ($this -> Avalider) {
 			$this -> applyCommande();
             $this -> sendMailAcheteur();
+			$this->Priorite = 40;
 		}
 		if ($this -> ADevalider) {
 			$this -> discardCommande();
+			$this->Priorite = 0;
 		}
 		if ($this -> Apayer) {
 			$this -> setMagasin();
 			$this -> sendMailAcheteur();
 			$this -> applyInvoice();
+		}
+		if ($this -> APrepare) {
+			$this->Priorite = 20;
+		}
+		if ($this -> AExpedie) {
+			$this->Priorite = 10;
+		}
+		if ($this -> ACloture) {
+			$this->Priorite = 0;
 		}
 		if ($this -> ACurrent) {
 			//définit cette commande comme commande par défaut
@@ -953,11 +966,13 @@ class Commande extends genericClass {
                 $this->Current = 0;
             }
             $this->Save();
+			return true;
         }else{
-            this.addError(Array(
+            $this->AddError(Array(
                 "Champ" => "None",
                 "Message" => "Impossible de valider une commande vide"
             ));
+			return false;
         }
     }
 

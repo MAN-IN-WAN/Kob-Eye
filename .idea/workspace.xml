@@ -1,49 +1,492 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/Modules/Sesame/Class/Sesame.class.php" line="33" />
-  </component>
   <component name="ChangeListManager">
     <list default="true" id="59b5ed17-fd7e-457b-b982-788a41f8400d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Modules/Systeme/Device/dev.castanet.pem" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Modules/Systeme/Device/dev.cours.pem" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Modules/Systeme/Device/prod.castanet.pem" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Modules/Systeme/Device/prod.cours.pem" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/Sejour/Ajouter.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/Sejour/Default.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/Sejour/Fiche.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/Sejour/Supprimer.md" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/Ecluse/Js/modules/feeder/rss1e3b.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/Ecluse/Js/modules/feeder/rss2ba0.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/Ecluse/Js/modules/feeder/rss5de6.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/Ecluse/Js/modules/feeder/rss7283.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/Ecluse/Js/modules/feeder/rss7525.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/Ecluse/Js/modules/feeder/rss80ee.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/Ecluse/Js/modules/feeder/rssab67.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/Ecluse/Js/modules/feeder/rssb558.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/Ecluse/Js/modules/feeder/rssbb4b.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/Ecluse/Js/modules/feeder/rssc316.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/Ecluse/Js/modules/feeder/rssc91d.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/Ecluse/Js/modules/feeder/rssd8a9.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/Ecluse/Js/modules/feeder/rssdb04.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/Ecluse/Js/modules/feeder/rsse2eb.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/Ecluse/Js/modules/feeder/rssedcf.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/Ecluse/Js/modules/feeder/rssf48f.php" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Skins/Ecluse/Js/modules/feeder/rss8207.php" afterPath="$PROJECT_DIR$/Modules/Sesame/Utils/checkState.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Battistela/Img/test1.jpg" afterPath="$PROJECT_DIR$/Skins/Battistela/Img/test1.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Battistela/Img/test3.jpg" afterPath="$PROJECT_DIR$/Skins/Battistela/Img/test3.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/Files/curly.flv" afterPath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/Files/curly.flv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/Files/curly.mov" afterPath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/Files/curly.mov" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/Files/curly.rmvb" afterPath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/Files/curly.rmvb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/Files/curly.wmv" afterPath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/Files/curly.wmv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/Files/flvplayer.swf" afterPath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/Files/flvplayer.swf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/Files/mp3player.swf" afterPath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/Files/mp3player.swf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/Files/music.mp3" afterPath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/Files/music.mp3" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/Files/parallax.swf" afterPath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/Files/parallax.swf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/MagIcon(grayscale).png" afterPath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/MagIcon(grayscale).png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/MagIcon(lime).png" afterPath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/MagIcon(lime).png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/MagIcon(navy).png" afterPath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/MagIcon(navy).png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/MagIcon(orange).png" afterPath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/MagIcon(orange).png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/MagIcon.gif" afterPath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/MagIcon.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/MagIcon.png" afterPath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/MagIcon.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/close.png" afterPath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/close.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/left.png" afterPath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/left.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/leftDisabled.png" afterPath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/leftDisabled.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/loader.gif" afterPath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/loader.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/right.png" afterPath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/right.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/rightDisabled.png" afterPath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/rightDisabled.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Img/CofracBIOMED.jpg" afterPath="$PROJECT_DIR$/Skins/Biomed/Img/CofracBIOMED.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Img/CofracBIOMED2.jpg" afterPath="$PROJECT_DIR$/Skins/Biomed/Img/CofracBIOMED2.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Img/accueil.jpg" afterPath="$PROJECT_DIR$/Skins/Biomed/Img/accueil.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Img/accueil.png" afterPath="$PROJECT_DIR$/Skins/Biomed/Img/accueil.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Img/accueil1.jpg" afterPath="$PROJECT_DIR$/Skins/Biomed/Img/accueil1.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Img/accueil2.jpg" afterPath="$PROJECT_DIR$/Skins/Biomed/Img/accueil2.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Img/bando-image_03.jpg" afterPath="$PROJECT_DIR$/Skins/Biomed/Img/bando-image_03.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Img/favicon.png" afterPath="$PROJECT_DIR$/Skins/Biomed/Img/favicon.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Img/fond-degrade.png" afterPath="$PROJECT_DIR$/Skins/Biomed/Img/fond-degrade.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Img/img-fond_03.jpg" afterPath="$PROJECT_DIR$/Skins/Biomed/Img/img-fond_03.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Img/labo-defaut_03.jpg" afterPath="$PROJECT_DIR$/Skins/Biomed/Img/labo-defaut_03.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Img/sprite.png" afterPath="$PROJECT_DIR$/Skins/Biomed/Img/sprite.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Img/sprite1.png" afterPath="$PROJECT_DIR$/Skins/Biomed/Img/sprite1.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Img/sprite2.png" afterPath="$PROJECT_DIR$/Skins/Biomed/Img/sprite2.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/fonts/glyphicons-halflings-regular.eot" afterPath="$PROJECT_DIR$/Skins/DriveoSite/fonts/glyphicons-halflings-regular.eot" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/fonts/glyphicons-halflings-regular.ttf" afterPath="$PROJECT_DIR$/Skins/DriveoSite/fonts/glyphicons-halflings-regular.ttf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/fonts/glyphicons-halflings-regular.woff" afterPath="$PROJECT_DIR$/Skins/DriveoSite/fonts/glyphicons-halflings-regular.woff" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/fonts/glyphicons-halflings-regular.woff2" afterPath="$PROJECT_DIR$/Skins/DriveoSite/fonts/glyphicons-halflings-regular.woff2" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/backoffice-login.jpg" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/backoffice-login.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/author-2.jpg" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/author-2.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/author-4.jpg" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/author-4.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/author-6.jpg" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/author-6.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/bg-sanza.jpg" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/bg-sanza.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/partners-1.png" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/partners-1.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/partners-2.png" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/partners-2.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/partners-3.png" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/partners-3.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/partners-4.png" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/partners-4.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/partners-5.png" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/partners-5.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/partners-6.png" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/partners-6.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/partners-7.png" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/partners-7.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/partners-8.png" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/partners-8.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/partners-9.png" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/partners-9.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/portfolio-1.jpg" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/portfolio-1.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/portfolio-2.jpg" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/portfolio-2.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/portfolio-3.jpg" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/portfolio-3.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/portfolio-4.jpg" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/portfolio-4.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/portfolio-5.jpg" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/portfolio-5.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/portfolio-6.jpg" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/portfolio-6.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/portfolio-7.jpg" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/portfolio-7.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/portfolio-8.jpg" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/portfolio-8.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/portfolio-9.jpg" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/demo/portfolio-9.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/favicon.png" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/favicon.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/logo.png" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/logo.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/pdf/1.jpg" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/pdf/1.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/pdf/2.jpg" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/pdf/2.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/pdf/3.jpg" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/pdf/3.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/pdf/4.jpg" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/pdf/4.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/pdf/5.jpg" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/pdf/5.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/pdf/6.jpg" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/pdf/6.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/pdf/7.jpg" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/pdf/7.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/pdf/8.jpg" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/pdf/8.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/pdf/driveo.pdf" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/pdf/driveo.pdf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/produits/Produit-Driveo-RUSH.png" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/produits/Produit-Driveo-RUSH.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/produits/Produit-Driveo-WEBSTORE.png" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/produits/Produit-Driveo-WEBSTORE.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/produits/Produit-Driveo.png" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/produits/Produit-Driveo.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/references/castanet.jpg" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/references/castanet.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/references/cours.jpg" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/references/cours.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/images/references/ecluse.jpg" afterPath="$PROJECT_DIR$/Skins/DriveoSite/images/references/ecluse.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/EPConsultingTesaser/Img/EFMD_AWARD.png" afterPath="$PROJECT_DIR$/Skins/EPConsultingTesaser/Img/EFMD_AWARD.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/LoginEngSystems/Img/Logo.png" afterPath="$PROJECT_DIR$/Skins/LoginEngSystems/Img/Logo.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisClient/Img/Logo.png" afterPath="$PROJECT_DIR$/Skins/TennisClient/Img/Logo.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisLogin/Img/Logo.png" afterPath="$PROJECT_DIR$/Skins/TennisLogin/Img/Logo.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/Files/curly.flv" afterPath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/Files/curly.flv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/Files/curly.mov" afterPath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/Files/curly.mov" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/Files/curly.rmvb" afterPath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/Files/curly.rmvb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/Files/curly.wmv" afterPath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/Files/curly.wmv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/Files/flvplayer.swf" afterPath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/Files/flvplayer.swf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/Files/mp3player.swf" afterPath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/Files/mp3player.swf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/Files/music.mp3" afterPath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/Files/music.mp3" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/Files/parallax.swf" afterPath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/Files/parallax.swf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/MagIcon(grayscale).png" afterPath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/MagIcon(grayscale).png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/MagIcon(lime).png" afterPath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/MagIcon(lime).png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/MagIcon(navy).png" afterPath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/MagIcon(navy).png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/MagIcon(orange).png" afterPath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/MagIcon(orange).png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/MagIcon.gif" afterPath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/MagIcon.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/MagIcon.png" afterPath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/MagIcon.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/close.png" afterPath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/close.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/left.png" afterPath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/left.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/leftDisabled.png" afterPath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/leftDisabled.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/loader.gif" afterPath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/loader.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/right.png" afterPath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/right.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/rightDisabled.png" afterPath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/rightDisabled.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Img/accueil.jpg" afterPath="$PROJECT_DIR$/Skins/Unibio/Img/accueil.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Img/accueil.png" afterPath="$PROJECT_DIR$/Skins/Unibio/Img/accueil.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Img/accueil1.jpg" afterPath="$PROJECT_DIR$/Skins/Unibio/Img/accueil1.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Img/accueil2.jpg" afterPath="$PROJECT_DIR$/Skins/Unibio/Img/accueil2.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Img/bando-image_03.jpg" afterPath="$PROJECT_DIR$/Skins/Unibio/Img/bando-image_03.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Img/bando-image_03.jpg.limit.600x300.jpg" afterPath="$PROJECT_DIR$/Skins/Unibio/Img/bando-image_03.jpg.limit.600x300.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Img/favicon.png" afterPath="$PROJECT_DIR$/Skins/Unibio/Img/favicon.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Img/fond-degrade.png" afterPath="$PROJECT_DIR$/Skins/Unibio/Img/fond-degrade.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Img/img-fond_03.jpg" afterPath="$PROJECT_DIR$/Skins/Unibio/Img/img-fond_03.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Img/labo-defaut_03.jpg" afterPath="$PROJECT_DIR$/Skins/Unibio/Img/labo-defaut_03.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Img/sprite.png" afterPath="$PROJECT_DIR$/Skins/Unibio/Img/sprite.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Img/sprite1.png" afterPath="$PROJECT_DIR$/Skins/Unibio/Img/sprite1.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Img/sprite2.png" afterPath="$PROJECT_DIR$/Skins/Unibio/Img/sprite2.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Img/sprite3.png" afterPath="$PROJECT_DIR$/Skins/Unibio/Img/sprite3.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Img/spritesave.png" afterPath="$PROJECT_DIR$/Skins/Unibio/Img/spritesave.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_static/screenshots/demo_head.png" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_static/screenshots/demo_head.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_static/screenshots/markup_component.png" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_static/screenshots/markup_component.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_static/screenshots/markup_daterange.png" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_static/screenshots/markup_daterange.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_static/screenshots/markup_input.png" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_static/screenshots/markup_input.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_static/screenshots/option_calendarweeks.png" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_static/screenshots/option_calendarweeks.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_static/screenshots/option_clearbtn.png" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_static/screenshots/option_clearbtn.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_static/screenshots/option_daysofweekdisabled.png" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_static/screenshots/option_daysofweekdisabled.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_static/screenshots/option_enddate.png" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_static/screenshots/option_enddate.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_static/screenshots/option_language.png" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_static/screenshots/option_language.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_static/screenshots/option_multidate.png" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_static/screenshots/option_multidate.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_static/screenshots/option_startdate.png" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_static/screenshots/option_startdate.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_static/screenshots/option_todaybtn.png" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_static/screenshots/option_todaybtn.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_static/screenshots/option_todayhighlight.png" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_static/screenshots/option_todayhighlight.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_static/screenshots/option_weekstart.png" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_static/screenshots/option_weekstart.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/docs/fonts/glyphicons-halflings-regular.eot" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/docs/fonts/glyphicons-halflings-regular.eot" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/docs/fonts/glyphicons-halflings-regular.ttf" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/docs/fonts/glyphicons-halflings-regular.ttf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/docs/fonts/glyphicons-halflings-regular.woff" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/docs/fonts/glyphicons-halflings-regular.woff" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/deployment.xml" afterPath="$PROJECT_DIR$/.idea/deployment.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/webServers.xml" afterPath="$PROJECT_DIR$/.idea/webServers.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Class/DataBase/Drivers/sqlFunctions.class.php" afterPath="$PROJECT_DIR$/Class/DataBase/Drivers/sqlFunctions.class.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Class/DataBase/genericClass.class.php" afterPath="$PROJECT_DIR$/Class/DataBase/genericClass.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Boutique/Class/Produit.class.php" afterPath="$PROJECT_DIR$/Modules/Boutique/Class/Produit.class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Class/Utils/Utils.class.php" afterPath="$PROJECT_DIR$/Class/Utils/Utils.class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Conf/General.conf" afterPath="$PROJECT_DIR$/Conf/General.conf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Log/http_access.log" afterPath="$PROJECT_DIR$/Log/http_access.log" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Boutique/Boutique.schema" afterPath="$PROJECT_DIR$/Modules/Boutique/Boutique.schema" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Boutique/Class/Commande.class.php" afterPath="$PROJECT_DIR$/Modules/Boutique/Class/Commande.class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Boutique/Client/create.md" afterPath="$PROJECT_DIR$/Modules/Boutique/Client/create.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Boutique/Client/resetPassword.md" afterPath="$PROJECT_DIR$/Modules/Boutique/Client/resetPassword.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Boutique/Commande/getData.md" afterPath="$PROJECT_DIR$/Modules/Boutique/Commande/getData.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Boutique/Commande/manage.md" afterPath="$PROJECT_DIR$/Modules/Boutique/Commande/manage.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Boutique/Commande/managePanier.md" afterPath="$PROJECT_DIR$/Modules/Boutique/Commande/managePanier.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Boutique/Commande/signaler.md" afterPath="$PROJECT_DIR$/Modules/Boutique/Commande/signaler.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Boutique/Produit/Moulinette.md" afterPath="$PROJECT_DIR$/Modules/Boutique/Produit/Moulinette.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Boutique/Promotion/getPromotion.md" afterPath="$PROJECT_DIR$/Modules/Boutique/Promotion/getPromotion.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Explorateur/Class/_Fichier.class.php" afterPath="$PROJECT_DIR$/Modules/Explorateur/Class/_Fichier.class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Fiscalite/Class/ZoneFiscale.class.php" afterPath="$PROJECT_DIR$/Modules/Fiscalite/Class/ZoneFiscale.class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Pharmacie/Class/Ordonnance.class.php" afterPath="$PROJECT_DIR$/Modules/Pharmacie/Class/Ordonnance.class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Pharmacie/Device/registerDevice.md" afterPath="$PROJECT_DIR$/Modules/Pharmacie/Device/registerDevice.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Pharmacie/Device/sendNotificationTest.md" afterPath="$PROJECT_DIR$/Modules/Pharmacie/Device/sendNotificationTest.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Pharmacie/Ordonnance/getData.md" afterPath="$PROJECT_DIR$/Modules/Pharmacie/Ordonnance/getData.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Pharmacie/Ordonnance/manage.md" afterPath="$PROJECT_DIR$/Modules/Pharmacie/Ordonnance/manage.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Pharmacie/Ordonnance/send.md" afterPath="$PROJECT_DIR$/Modules/Pharmacie/Ordonnance/send.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Pharmacie/Ordonnance/signaler.md" afterPath="$PROJECT_DIR$/Modules/Pharmacie/Ordonnance/signaler.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Pharmacie/Pharmacie.schema" afterPath="$PROJECT_DIR$/Modules/Pharmacie/Pharmacie.schema" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Sesame/Class/Sesame.class.php" afterPath="$PROJECT_DIR$/Modules/Sesame/Class/Sesame.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Sesame/Sesame.schema" afterPath="$PROJECT_DIR$/Modules/Sesame/Sesame.schema" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Sesame/Utils/Code.md" afterPath="$PROJECT_DIR$/Modules/Sesame/Utils/Code.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Sesame/Utils/checkState.md" afterPath="$PROJECT_DIR$/Modules/Sesame/Utils/checkState.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Systeme/Bash/Moulinette.md" afterPath="$PROJECT_DIR$/Modules/Systeme/Bash/Moulinette.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Systeme/Class/Systeme.class.php" afterPath="$PROJECT_DIR$/Modules/Systeme/Class/Systeme.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Systeme/Systeme.schema" afterPath="$PROJECT_DIR$/Modules/Systeme/Systeme.schema" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Systeme/Device/dev.castanet.pem" afterPath="$PROJECT_DIR$/Modules/Systeme/Device/dev.castanet.pem" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Systeme/Device/dev.cours.pem" afterPath="$PROJECT_DIR$/Modules/Systeme/Device/dev.cours.pem" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Systeme/Device/prod.castanet.pem" afterPath="$PROJECT_DIR$/Modules/Systeme/Device/prod.castanet.pem" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Systeme/Device/prod.cours.pem" afterPath="$PROJECT_DIR$/Modules/Systeme/Device/prod.cours.pem" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Systeme/Device/registerDevice.md" afterPath="$PROJECT_DIR$/Modules/Systeme/Device/registerDevice.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Systeme/Device/sendNotificationTest.md" afterPath="$PROJECT_DIR$/Modules/Systeme/Device/sendNotificationTest.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Systeme/User/RetrievePassword.md" afterPath="$PROJECT_DIR$/Modules/Systeme/User/RetrievePassword.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Systeme/Utils/getJsonDatatable.md" afterPath="$PROJECT_DIR$/Modules/Systeme/Utils/getJsonDatatable.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Ecluse/Css/base.css" afterPath="$PROJECT_DIR$/Skins/Ecluse/Css/base.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Ecluse/Css/product_detail.css" afterPath="$PROJECT_DIR$/Skins/Ecluse/Css/product_detail.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/Default/DashBoard.md" afterPath="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/Default/DashBoard.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/PassePartout/Fiche.md" afterPath="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/PassePartout/Fiche.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/TennisForever/Class/Client.class.php" afterPath="$PROJECT_DIR$/Modules/TennisForever/Class/Client.class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/TennisForever/Class/Reservation.class.php" afterPath="$PROJECT_DIR$/Modules/TennisForever/Class/Reservation.class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/TennisForever/Class/TennisForever.class.php" afterPath="$PROJECT_DIR$/Modules/TennisForever/Class/TennisForever.class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/TennisForever/Client/ConfirmEmail.md" afterPath="$PROJECT_DIR$/Modules/TennisForever/Client/ConfirmEmail.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/TennisForever/Client/RenvoiEmailConfirmation.md" afterPath="$PROJECT_DIR$/Modules/TennisForever/Client/RenvoiEmailConfirmation.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/TennisForever/Client/RetrievePassword.md" afterPath="$PROJECT_DIR$/Modules/TennisForever/Client/RetrievePassword.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/TennisForever/Plugins/TypePaiement/Cheque/Cheque.class.php" afterPath="$PROJECT_DIR$/Modules/TennisForever/Plugins/TypePaiement/Cheque/Cheque.class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/TennisForever/Plugins/TypePaiement/Cheque/Plugin.conf" afterPath="$PROJECT_DIR$/Modules/TennisForever/Plugins/TypePaiement/Cheque/Plugin.conf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/TennisForever/TennisForever.schema" afterPath="$PROJECT_DIR$/Modules/TennisForever/TennisForever.schema" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Battistela/Js/lightbox.min.css" afterPath="$PROJECT_DIR$/Skins/Battistela/Js/lightbox.min.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Battistela/Js/lightbox.min.js" afterPath="$PROJECT_DIR$/Skins/Battistela/Js/lightbox.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Battistela/Modules/Systeme/Header/BrandSearch.md" afterPath="$PROJECT_DIR$/Skins/Battistela/Modules/Systeme/Header/BrandSearch.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/.cache/Header.cache" afterPath="$PROJECT_DIR$/Skins/Biomed/.cache/Header.cache" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/.cache/Skin.cache" afterPath="$PROJECT_DIR$/Skins/Biomed/.cache/Skin.cache" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/.cache/Skin.info" afterPath="$PROJECT_DIR$/Skins/Biomed/.cache/Skin.info" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Css/espacepro.css" afterPath="$PROJECT_DIR$/Skins/Biomed/Css/espacepro.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Css/forms.css" afterPath="$PROJECT_DIR$/Skins/Biomed/Css/forms.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Css/labo.css" afterPath="$PROJECT_DIR$/Skins/Biomed/Css/labo.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Css/multiBox.css" afterPath="$PROJECT_DIR$/Skins/Biomed/Css/multiBox.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Css/redaction.css" afterPath="$PROJECT_DIR$/Skins/Biomed/Css/redaction.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Css/slickmap.css" afterPath="$PROJECT_DIR$/Skins/Biomed/Css/slickmap.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Css/style.css" afterPath="$PROJECT_DIR$/Skins/Biomed/Css/style.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Css/unibio.css" afterPath="$PROJECT_DIR$/Skins/Biomed/Css/unibio.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Default.bl" afterPath="$PROJECT_DIR$/Skins/Biomed/Default.bl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/Files/blank-ajax.htm" afterPath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/Files/blank-ajax.htm" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/Files/blank.htm" afterPath="$PROJECT_DIR$/Skins/Biomed/Images/mb_Components/Files/blank.htm" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Img/test" afterPath="$PROJECT_DIR$/Skins/Biomed/Img/test" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Js/functions.js" afterPath="$PROJECT_DIR$/Skins/Biomed/Js/functions.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Js/mootools-more.js" afterPath="$PROJECT_DIR$/Skins/Biomed/Js/mootools-more.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Js/mootools.js" afterPath="$PROJECT_DIR$/Skins/Biomed/Js/mootools.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Js/multiBox.js" afterPath="$PROJECT_DIR$/Skins/Biomed/Js/multiBox.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Js/overlay.js" afterPath="$PROJECT_DIR$/Skins/Biomed/Js/overlay.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Js/suivi_variable.js" afterPath="$PROJECT_DIR$/Skins/Biomed/Js/suivi_variable.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Js/swfobject.js" afterPath="$PROJECT_DIR$/Skins/Biomed/Js/swfobject.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Js/utils.js" afterPath="$PROJECT_DIR$/Skins/Biomed/Js/utils.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Main.bl" afterPath="$PROJECT_DIR$/Skins/Biomed/Main.bl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Modules/Systeme/Menu/Default.md" afterPath="$PROJECT_DIR$/Skins/Biomed/Modules/Systeme/Menu/Default.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Modules/Systeme/Structure/Footer.md" afterPath="$PROJECT_DIR$/Skins/Biomed/Modules/Systeme/Structure/Footer.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Modules/Systeme/Structure/Header.md" afterPath="$PROJECT_DIR$/Skins/Biomed/Modules/Systeme/Structure/Header.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Biomed/Skin.conf" afterPath="$PROJECT_DIR$/Skins/Biomed/Skin.conf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Castanet/Modules/Systeme/Header/BrandSearch.md" afterPath="$PROJECT_DIR$/Skins/Castanet/Modules/Systeme/Header/BrandSearch.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/PlageHoraire/Ajouter.md" afterPath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/PlageHoraire/Ajouter.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/PlageHoraire/Default.md" afterPath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/PlageHoraire/Default.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/PlageHoraire/Fiche.md" afterPath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/PlageHoraire/Fiche.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/PlageHoraire/List.md" afterPath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/PlageHoraire/List.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/PlageHoraire/Supprimer.md" afterPath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/PlageHoraire/Supprimer.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/PlageHoraire/Upload.md" afterPath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/PlageHoraire/Upload.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/Post/Ajouter.md" afterPath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/Post/Ajouter.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/Post/Supprimer.md" afterPath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/Post/Supprimer.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/Produit/ResetProduitUne.md" afterPath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/Produit/ResetProduitUne.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/Promotion/Ajouter.md" afterPath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/Promotion/Ajouter.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/Promotion/Default.md" afterPath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/Promotion/Default.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/Promotion/Fiche.md" afterPath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/Promotion/Fiche.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/Promotion/List.md" afterPath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/Promotion/List.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/Promotion/Supprimer.md" afterPath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/Promotion/Supprimer.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/Promotion/Upload.md" afterPath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/Promotion/Upload.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/Utils/List/Default.md" afterPath="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Default/Utils/List/Default.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoBase/Modules/Default/Utils/List/Default.md" afterPath="$PROJECT_DIR$/Skins/DriveoBase/Modules/Default/Utils/List/Default.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/Css/bootstrap-theme.css" afterPath="$PROJECT_DIR$/Skins/DriveoSite/Css/bootstrap-theme.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/Css/bootstrap-theme.css.map" afterPath="$PROJECT_DIR$/Skins/DriveoSite/Css/bootstrap-theme.css.map" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/Css/bootstrap-theme.min.css" afterPath="$PROJECT_DIR$/Skins/DriveoSite/Css/bootstrap-theme.min.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/Css/bootstrap.css" afterPath="$PROJECT_DIR$/Skins/DriveoSite/Css/bootstrap.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/Css/bootstrap.css.map" afterPath="$PROJECT_DIR$/Skins/DriveoSite/Css/bootstrap.css.map" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/Css/bootstrap.min.css" afterPath="$PROJECT_DIR$/Skins/DriveoSite/Css/bootstrap.min.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/Css/owl.carousel.css" afterPath="$PROJECT_DIR$/Skins/DriveoSite/Css/owl.carousel.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/Css/owl.theme.default.min.css" afterPath="$PROJECT_DIR$/Skins/DriveoSite/Css/owl.theme.default.min.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/Css/style-sanza.css" afterPath="$PROJECT_DIR$/Skins/DriveoSite/Css/style-sanza.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/Default.bl" afterPath="$PROJECT_DIR$/Skins/DriveoSite/Default.bl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/Modules/Systeme/User/sendContact.md" afterPath="$PROJECT_DIR$/Skins/DriveoSite/Modules/Systeme/User/sendContact.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/fonts/glyphicons-halflings-regular.svg" afterPath="$PROJECT_DIR$/Skins/DriveoSite/fonts/glyphicons-halflings-regular.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/js/SmoothScroll.min.js" afterPath="$PROJECT_DIR$/Skins/DriveoSite/js/SmoothScroll.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/js/bootstrap.js" afterPath="$PROJECT_DIR$/Skins/DriveoSite/js/bootstrap.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/js/bootstrap.min.js" afterPath="$PROJECT_DIR$/Skins/DriveoSite/js/bootstrap.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/js/cbpAnimatedHeader.js" afterPath="$PROJECT_DIR$/Skins/DriveoSite/js/cbpAnimatedHeader.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/js/jquery.appear.js" afterPath="$PROJECT_DIR$/Skins/DriveoSite/js/jquery.appear.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/js/mooz.themes.scripts.js" afterPath="$PROJECT_DIR$/Skins/DriveoSite/js/mooz.themes.scripts.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/js/npm.js" afterPath="$PROJECT_DIR$/Skins/DriveoSite/js/npm.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/DriveoSite/js/owl.carousel.min.js" afterPath="$PROJECT_DIR$/Skins/DriveoSite/js/owl.carousel.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/EPConsulting/Js/global.js" afterPath="$PROJECT_DIR$/Skins/EPConsulting/Js/global.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/EPConsultingTesaser/Css/style.css" afterPath="$PROJECT_DIR$/Skins/EPConsultingTesaser/Css/style.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/EPConsultingTesaser/Default.bl" afterPath="$PROJECT_DIR$/Skins/EPConsultingTesaser/Default.bl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/EPConsultingTesaser/Js/jquery.parallax.js" afterPath="$PROJECT_DIR$/Skins/EPConsultingTesaser/Js/jquery.parallax.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/EPConsultingTesaser/Js/jquery.parallax.min.js" afterPath="$PROJECT_DIR$/Skins/EPConsultingTesaser/Js/jquery.parallax.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/EPConsultingTesaser/Js/parallax.js" afterPath="$PROJECT_DIR$/Skins/EPConsultingTesaser/Js/parallax.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/EPConsultingTesaser/Js/parallax.min.js" afterPath="$PROJECT_DIR$/Skins/EPConsultingTesaser/Js/parallax.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/EPConsultingTesaser/ep.html" afterPath="$PROJECT_DIR$/Skins/EPConsultingTesaser/ep.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Ecluse/Modules/Systeme/Header/BrandSearch.md" afterPath="$PROJECT_DIR$/Skins/Ecluse/Modules/Systeme/Header/BrandSearch.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/FormationStatistiques/Modules/Formation/Question/SaveCommentaire.md" afterPath="$PROJECT_DIR$/Skins/FormationStatistiques/Modules/Formation/Question/SaveCommentaire.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/LoginBootstrap/Mail.bl" afterPath="$PROJECT_DIR$/Skins/LoginBootstrap/Mail.bl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/OnePage/Mail.bl" afterPath="$PROJECT_DIR$/Skins/OnePage/Mail.bl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/OnePage/Modules/Systeme/User/sendContact.md" afterPath="$PROJECT_DIR$/Skins/OnePage/Modules/Systeme/User/sendContact.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/Dictionnaire/Ajouter.md" afterPath="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/Dictionnaire/Ajouter.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/Dictionnaire/Supprimer.md" afterPath="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/Dictionnaire/Supprimer.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/PassePartout/Ajouter.md" afterPath="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/PassePartout/Ajouter.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/PassePartout/Supprimer.md" afterPath="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/PassePartout/Supprimer.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/Sejour/Ajouter.md" afterPath="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/Sejour/Ajouter.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/Sejour/Supprimer.md" afterPath="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/Sejour/Supprimer.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/Utils/List/Default.md" afterPath="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/Utils/List/Default.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/Utils/MiniList/Default.md" afterPath="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/Utils/MiniList/Default.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisAdmin/Css/style.css" afterPath="$PROJECT_DIR$/Skins/TennisAdmin/Css/style.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisAdmin/Default.bl" afterPath="$PROJECT_DIR$/Skins/TennisAdmin/Default.bl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisAdmin/Js/typeahed.min.js" afterPath="$PROJECT_DIR$/Skins/TennisAdmin/Js/typeahed.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisAdmin/Modules/Default/Default/Ajouter.md" afterPath="$PROJECT_DIR$/Skins/TennisAdmin/Modules/Default/Default/Ajouter.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisAdmin/Modules/Default/Default/Form.md" afterPath="$PROJECT_DIR$/Skins/TennisAdmin/Modules/Default/Default/Form.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisAdmin/Modules/Default/Default/Modifier.md" afterPath="$PROJECT_DIR$/Skins/TennisAdmin/Modules/Default/Default/Modifier.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisAdmin/Modules/Default/Default/Supprimer.md" afterPath="$PROJECT_DIR$/Skins/TennisAdmin/Modules/Default/Default/Supprimer.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisAdmin/Modules/Default/Service/Ajouter.md" afterPath="$PROJECT_DIR$/Skins/TennisAdmin/Modules/Default/Service/Ajouter.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisAdmin/Modules/Default/Service/Modifier.md" afterPath="$PROJECT_DIR$/Skins/TennisAdmin/Modules/Default/Service/Modifier.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisAdmin/Modules/Default/Service/Supprimer.md" afterPath="$PROJECT_DIR$/Skins/TennisAdmin/Modules/Default/Service/Supprimer.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisAdmin/Modules/Default/Utils/Form/Default.md" afterPath="$PROJECT_DIR$/Skins/TennisAdmin/Modules/Default/Utils/Form/Default.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisAdmin/Modules/Default/Utils/Form/FullForm.md" afterPath="$PROJECT_DIR$/Skins/TennisAdmin/Modules/Default/Utils/Form/FullForm.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisAdmin/Modules/Default/Utils/List/Default.md" afterPath="$PROJECT_DIR$/Skins/TennisAdmin/Modules/Default/Utils/List/Default.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisAdmin/lang/fr.lang" afterPath="$PROJECT_DIR$/Skins/TennisAdmin/lang/fr.lang" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisClient/Css/style.css" afterPath="$PROJECT_DIR$/Skins/TennisClient/Css/style.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisClient/Default.bl" afterPath="$PROJECT_DIR$/Skins/TennisClient/Default.bl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisClient/Modules/Systeme/Default.md" afterPath="$PROJECT_DIR$/Skins/TennisClient/Modules/Systeme/Default.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisClient/Modules/Systeme/Profil.md" afterPath="$PROJECT_DIR$/Skins/TennisClient/Modules/Systeme/Profil.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisClient/Modules/Systeme/Save.md" afterPath="$PROJECT_DIR$/Skins/TennisClient/Modules/Systeme/Save.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisClient/Modules/Systeme/Utils/Form/FullForm.md" afterPath="$PROJECT_DIR$/Skins/TennisClient/Modules/Systeme/Utils/Form/FullForm.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisClient/Modules/Systeme/Utils/List/Default.md" afterPath="$PROJECT_DIR$/Skins/TennisClient/Modules/Systeme/Utils/List/Default.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/Default.md" afterPath="$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/Default.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/Reservation/Default.md" afterPath="$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/Reservation/Default.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/Reservation/Fiche.md" afterPath="$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/Reservation/Fiche.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/Reservation/List.md" afterPath="$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/Reservation/List.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/Service/Mini.md" afterPath="$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/Service/Mini.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/TypeCourt/Default.md" afterPath="$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/TypeCourt/Default.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/TypeCourt/Fiche.md" afterPath="$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/TypeCourt/Fiche.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/TypeCourt/List.md" afterPath="$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/TypeCourt/List.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/TypeCourt/Reserver.md" afterPath="$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/TypeCourt/Reserver.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/TypeCourt/getDispo.md" afterPath="$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/TypeCourt/getDispo.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisLogin/Modules/Systeme/Default.md" afterPath="$PROJECT_DIR$/Skins/TennisLogin/Modules/Systeme/Default.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisLogin/Modules/Systeme/Password.md" afterPath="$PROJECT_DIR$/Skins/TennisLogin/Modules/Systeme/Password.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisLogin/Modules/Systeme/Register.md" afterPath="$PROJECT_DIR$/Skins/TennisLogin/Modules/Systeme/Register.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisLogin/Modules/Systeme/Save.md" afterPath="$PROJECT_DIR$/Skins/TennisLogin/Modules/Systeme/Save.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisLogin/Modules/Systeme/Utils/Form/FullForm.md" afterPath="$PROJECT_DIR$/Skins/TennisLogin/Modules/Systeme/Utils/Form/FullForm.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/TennisLogin/Modules/Systeme/Utils/List/Default.md" afterPath="$PROJECT_DIR$/Skins/TennisLogin/Modules/Systeme/Utils/List/Default.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/.cache/Header.cache" afterPath="$PROJECT_DIR$/Skins/Unibio/.cache/Header.cache" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/.cache/Skin.cache" afterPath="$PROJECT_DIR$/Skins/Unibio/.cache/Skin.cache" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/.cache/Skin.info" afterPath="$PROJECT_DIR$/Skins/Unibio/.cache/Skin.info" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Css/espacepro.css" afterPath="$PROJECT_DIR$/Skins/Unibio/Css/espacepro.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Css/forms.css" afterPath="$PROJECT_DIR$/Skins/Unibio/Css/forms.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Css/labo.css" afterPath="$PROJECT_DIR$/Skins/Unibio/Css/labo.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Css/multiBox.css" afterPath="$PROJECT_DIR$/Skins/Unibio/Css/multiBox.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Css/redaction.css" afterPath="$PROJECT_DIR$/Skins/Unibio/Css/redaction.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Css/slickmap.css" afterPath="$PROJECT_DIR$/Skins/Unibio/Css/slickmap.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Css/style.css" afterPath="$PROJECT_DIR$/Skins/Unibio/Css/style.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Css/unibio.css" afterPath="$PROJECT_DIR$/Skins/Unibio/Css/unibio.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Default.bl" afterPath="$PROJECT_DIR$/Skins/Unibio/Default.bl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/Files/blank-ajax.htm" afterPath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/Files/blank-ajax.htm" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/Files/blank.htm" afterPath="$PROJECT_DIR$/Skins/Unibio/Images/mb_Components/Files/blank.htm" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Img/test" afterPath="$PROJECT_DIR$/Skins/Unibio/Img/test" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Js/functions.js" afterPath="$PROJECT_DIR$/Skins/Unibio/Js/functions.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Js/mootools-more.js" afterPath="$PROJECT_DIR$/Skins/Unibio/Js/mootools-more.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Js/mootools.js" afterPath="$PROJECT_DIR$/Skins/Unibio/Js/mootools.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Js/multiBox.js" afterPath="$PROJECT_DIR$/Skins/Unibio/Js/multiBox.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Js/overlay.js" afterPath="$PROJECT_DIR$/Skins/Unibio/Js/overlay.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Js/suivi_variable.js" afterPath="$PROJECT_DIR$/Skins/Unibio/Js/suivi_variable.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Js/swfobject.js" afterPath="$PROJECT_DIR$/Skins/Unibio/Js/swfobject.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Js/utils.js" afterPath="$PROJECT_DIR$/Skins/Unibio/Js/utils.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Main.bl" afterPath="$PROJECT_DIR$/Skins/Unibio/Main.bl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Modules/Systeme/Menu/Default.md" afterPath="$PROJECT_DIR$/Skins/Unibio/Modules/Systeme/Menu/Default.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Modules/Systeme/Structure/Footer.md" afterPath="$PROJECT_DIR$/Skins/Unibio/Modules/Systeme/Structure/Footer.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Modules/Systeme/Structure/Header.md" afterPath="$PROJECT_DIR$/Skins/Unibio/Modules/Systeme/Structure/Header.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/Unibio/Skin.conf" afterPath="$PROJECT_DIR$/Skins/Unibio/Skin.conf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/.travis.yml" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/.travis.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/CHANGELOG.md" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/CHANGELOG.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/Gruntfile.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/Gruntfile.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/README.md" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/bower.json" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/bower.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/build/build.less" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/build/build.less" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/build/build3.less" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/build/build3.less" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/build/build_standalone3.less" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/build/build_standalone3.less" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/css/bootstrap-datepicker.css" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/css/bootstrap-datepicker.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/css/bootstrap-datepicker.min.css" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/css/bootstrap-datepicker.min.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/css/bootstrap-datepicker.standalone.css" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/css/bootstrap-datepicker.standalone.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/css/bootstrap-datepicker.standalone.min.css" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/css/bootstrap-datepicker.standalone.min.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/css/bootstrap-datepicker3.css" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/css/bootstrap-datepicker3.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/css/bootstrap-datepicker3.min.css" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/css/bootstrap-datepicker3.min.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/css/bootstrap-datepicker3.standalone.css" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/css/bootstrap-datepicker3.standalone.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/css/bootstrap-datepicker3.standalone.min.css" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/css/bootstrap-datepicker3.standalone.min.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/js/bootstrap-datepicker.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/js/bootstrap-datepicker.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/js/bootstrap-datepicker.min.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/js/bootstrap-datepicker.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.ca.min.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.ca.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.cs.min.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.cs.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.da.min.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.da.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.de.min.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.de.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.en-GB.min.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.en-GB.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.es.min.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.es.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.fr-CH.min.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.fr-CH.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.fr.min.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.fr.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.hu.min.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.hu.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.hy.min.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.hy.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.it.min.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.it.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.ja.min.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.ja.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.lt.min.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.lt.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.ms.min.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.ms.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.nb.min.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.nb.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.nl-BE.min.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.nl-BE.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.nl.min.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.nl.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.pl.min.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.pl.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.pt-BR.min.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.pt-BR.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.pt.min.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.pt.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.sk.min.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.sk.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.zh-CN.min.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.zh-CN.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.zh-TW.min.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.zh-TW.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_screenshots/demo_head.html" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_screenshots/demo_head.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_screenshots/option_calendarweeks.html" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/_screenshots/option_calendarweeks.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/events.rst" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/events.rst" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/i18n.rst" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/i18n.rst" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/index.rst" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/index.rst" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/markup.rst" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/markup.rst" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/methods.rst" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/methods.rst" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/options.rst" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/docs/options.rst" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/bootstrap-datepicker.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/bootstrap-datepicker.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.ca.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.ca.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.cs.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.cs.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.de.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.de.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.en-GB.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.en-GB.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.es.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.es.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.fr-CH.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.fr-CH.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.fr.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.fr.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.hu.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.hu.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.hy.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.hy.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.it.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.it.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.ja.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.ja.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.kr.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.kr.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.lt.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.lt.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.ms.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.ms.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.nb.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.nb.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.nl-BE.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.nl-BE.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.nl.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.nl.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.pt-BR.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.pt-BR.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.pt.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.pt.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.sk.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.sk.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.zh-CN.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.zh-CN.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.zh-TW.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/js/locales/bootstrap-datepicker.zh-TW.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/less/datepicker.less" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/less/datepicker.less" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/less/datepicker3.less" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/less/datepicker3.less" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/package.json" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/package.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/tests/assets/mock.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/tests/assets/mock.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/tests/suites/calendar-weeks.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/tests/suites/calendar-weeks.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/tests/suites/component.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/tests/suites/component.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/tests/suites/events.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/tests/suites/events.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/tests/suites/formats.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/tests/suites/formats.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/tests/suites/keyboard_navigation/2011.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/tests/suites/keyboard_navigation/2011.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/tests/suites/keyboard_navigation/all.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/tests/suites/keyboard_navigation/all.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/tests/suites/methods.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/tests/suites/methods.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/tests/suites/options.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/tests/suites/options.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/tests/tests.html" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/tests/tests.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datetimepicker-master/build/js/moment.min.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datetimepicker-master/build/js/moment.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datetimepicker-master/build/locales/fr.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datetimepicker-master/build/locales/fr.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/.bowerrc" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/.bowerrc" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/.gitignore" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/CHANGELOG.md" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/CHANGELOG.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/CNAME" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/CNAME" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/CONTRIBUTING.md" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/CONTRIBUTING.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/LICENSE" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/LICENSE" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/README.md" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/bower.json" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/bower.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/coffeelint.json" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/coffeelint.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/composer.json" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/composer.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/dist/css/bootstrap2/bootstrap-switch.css" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/dist/css/bootstrap2/bootstrap-switch.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/dist/css/bootstrap2/bootstrap-switch.min.css" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/dist/css/bootstrap2/bootstrap-switch.min.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/dist/css/bootstrap3/bootstrap-switch.css" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/dist/css/bootstrap3/bootstrap-switch.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/dist/css/bootstrap3/bootstrap-switch.min.css" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/dist/css/bootstrap3/bootstrap-switch.min.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/dist/js/bootstrap-switch.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/dist/js/bootstrap-switch.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/dist/js/bootstrap-switch.min.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/dist/js/bootstrap-switch.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/docs/css/bootstrap.min.css" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/docs/css/bootstrap.min.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/docs/css/highlight.css" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/docs/css/highlight.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/docs/css/main.css" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/docs/css/main.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/docs/fonts/glyphicons-halflings-regular.svg" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/docs/fonts/glyphicons-halflings-regular.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/docs/js/bootstrap.min.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/docs/js/bootstrap.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/docs/js/highlight.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/docs/js/highlight.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/docs/js/jquery.min.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/docs/js/jquery.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/docs/js/main.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/docs/js/main.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/documentation-2.html" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/documentation-2.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/events.html" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/events.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/examples.html" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/examples.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/gulpfile.coffee" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/gulpfile.coffee" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/index.html" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/karma.json" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/karma.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/main.html" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/main.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/methods.html" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/methods.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/options.html" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/options.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/package.json" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/package.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/coffee/bootstrap-switch.coffee" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/coffee/bootstrap-switch.coffee" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/coffee/bootstrap-switch.tests.coffee" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/coffee/bootstrap-switch.tests.coffee" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/docs/coffee/main.coffee" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/docs/coffee/main.coffee" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/docs/css/highlight.css" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/docs/css/highlight.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/docs/jade/documentation-2.jade" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/docs/jade/documentation-2.jade" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/docs/jade/events.jade" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/docs/jade/events.jade" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/docs/jade/examples.jade" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/docs/jade/examples.jade" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/docs/jade/index.jade" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/docs/jade/index.jade" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/docs/jade/main.jade" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/docs/jade/main.jade" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/docs/jade/methods.jade" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/docs/jade/methods.jade" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/docs/jade/options.jade" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/docs/jade/options.jade" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/docs/js/highlight.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/docs/js/highlight.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/docs/less/main.less" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/docs/less/main.less" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/less/bootstrap2/bootstrap-switch.less" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/less/bootstrap2/bootstrap-switch.less" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/less/bootstrap2/build.less" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/less/bootstrap2/build.less" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/less/bootstrap2/mixins.less" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/less/bootstrap2/mixins.less" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/less/bootstrap2/variables.less" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/less/bootstrap2/variables.less" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/less/bootstrap3/bootstrap-switch.less" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/less/bootstrap3/bootstrap-switch.less" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/less/bootstrap3/build.less" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/src/less/bootstrap3/build.less" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/test/bootstrap-switch.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/test/bootstrap-switch.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/test/bootstrap-switch.tests.js" afterPath="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-switch-master/test/bootstrap-switch.tests.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/google9c7d40394fe8f0a6.html" afterPath="$PROJECT_DIR$/google9c7d40394fe8f0a6.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/syncbdd.sh" afterPath="$PROJECT_DIR$/syncbdd.sh" />
     </list>
     <ignored path="Kob-Eye-Git.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -65,41 +508,104 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Sesame.schema" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Modules/Sesame/Sesame.schema">
+      <file leaf-file-name="Fiche.md" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/TypeCourt/Fiche.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="10" column="87" selection-start-line="10" selection-start-column="87" selection-end-line="10" selection-end-column="87" />
+            <state relative-caret-position="630">
+              <caret line="45" column="7" selection-start-line="45" selection-start-column="7" selection-end-line="45" selection-end-column="7" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DashBoard.md" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/Default/DashBoard.md">
+      <file leaf-file-name="getDispo.md" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/TypeCourt/getDispo.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="16" column="25" selection-start-line="16" selection-start-column="25" selection-end-line="16" selection-end-column="25" />
+            <state relative-caret-position="182">
+              <caret line="13" column="60" selection-start-line="13" selection-start-column="60" selection-end-line="13" selection-end-column="60" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Sesame.class.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Modules/Sesame/Class/Sesame.class.php">
+      <file leaf-file-name="Reserver.md" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/TypeCourt/Reserver.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="254">
-              <caret line="109" column="46" selection-start-line="109" selection-start-column="46" selection-end-line="109" selection-end-column="46" />
+            <state relative-caret-position="770">
+              <caret line="79" column="5" selection-start-line="79" selection-start-column="5" selection-end-line="79" selection-end-column="5" />
+              <folding>
+                <marker date="1460715405423" expanded="true" signature="2657:2674" placeholder="..." />
+                <marker date="1460715405423" expanded="true" signature="3446:3589" placeholder="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TennisForever.class.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Modules/TennisForever/Class/TennisForever.class.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="392">
+              <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="checkState.md" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Modules/Sesame/Utils/checkState.md">
+      <file leaf-file-name="Reservation.class.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Modules/TennisForever/Class/Reservation.class.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="291">
+              <caret line="289" column="13" selection-start-line="289" selection-start-column="13" selection-end-line="289" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Default.md" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/Reservation/Default.md">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="70">
+              <caret line="5" column="5" selection-start-line="5" selection-start-column="5" selection-end-line="5" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="List.md" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/Reservation/List.md">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
-              <caret line="0" column="31" selection-start-line="0" selection-start-column="31" selection-end-line="0" selection-end-column="31" />
+              <caret line="0" column="9" selection-start-line="0" selection-start-column="9" selection-end-line="0" selection-end-column="9" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Fiche.md" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/Reservation/Fiche.md">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="350">
+              <caret line="25" column="10" selection-start-line="23" selection-start-column="38" selection-end-line="23" selection-end-column="45" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TennisForever.schema" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Modules/TennisForever/TennisForever.schema">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="322">
+              <caret line="140" column="69" selection-start-line="140" selection-start-column="69" selection-end-line="140" selection-end-column="69" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Client.class.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Modules/TennisForever/Class/Client.class.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="140">
+              <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -113,22 +619,12 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Modules/Systeme/Utils/iconPack.md" />
-        <option value="$PROJECT_DIR$/Modules/Boutique/Class/Boutique.class.php" />
-        <option value="$PROJECT_DIR$/Modules/Boutique/Class/Produit.class.php" />
-        <option value="$PROJECT_DIR$/Modules/Systeme/Systeme.schema" />
-        <option value="$PROJECT_DIR$/Modules/Systeme/Device/dev.pem" />
         <option value="$PROJECT_DIR$/Modules/Systeme/Device/prod.pem" />
         <option value="$PROJECT_DIR$/Modules/Systeme/Device/dev.cours.pem" />
         <option value="$PROJECT_DIR$/Modules/Systeme/Device/prod.cours.pem" />
         <option value="$PROJECT_DIR$/Modules/Pharmacie/Ordonnance/signaler.md" />
-        <option value="$PROJECT_DIR$/Modules/Pharmacie/Ordonnance/getData.md" />
-        <option value="$PROJECT_DIR$/Modules/Systeme/Class/Systeme.class.php" />
         <option value="$PROJECT_DIR$/Skins/Ecluse/Css/base.css" />
         <option value="$PROJECT_DIR$/Skins/Ecluse/Css/product_detail.css" />
-        <option value="$PROJECT_DIR$/Class/DataBase/genericClass.class.php" />
-        <option value="$PROJECT_DIR$/Modules/Systeme/Utils/getJsonDatatable.md" />
-        <option value="$PROJECT_DIR$/Modules/Pharmacie/Pharmacie.schema" />
         <option value="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/Sejour/Fiche.md" />
         <option value="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/Sejour/Default.md" />
         <option value="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/PassePartout/Fiche.md" />
@@ -137,7 +633,43 @@
         <option value="$PROJECT_DIR$/Modules/Sesame/Sesame.schema" />
         <option value="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/Default/DashBoard.md" />
         <option value="$PROJECT_DIR$/Modules/Sesame/Utils/checkState.md" />
+        <option value="$PROJECT_DIR$/Modules/Boutique/Commande/managePanier.md" />
+        <option value="$PROJECT_DIR$/Class/DataBase/Drivers/sqlFunctions.class.php" />
+        <option value="$PROJECT_DIR$/Modules/Fiscalite/Class/ZoneFiscale.class.php" />
+        <option value="$PROJECT_DIR$/Modules/Systeme/Class/Systeme.class.php" />
+        <option value="$PROJECT_DIR$/Modules/Boutique/Boutique.schema" />
+        <option value="$PROJECT_DIR$/Modules/Systeme/Utils/getJsonDatatable.md" />
+        <option value="$PROJECT_DIR$/Modules/Pharmacie/Ordonnance/getData.md" />
+        <option value="$PROJECT_DIR$/Modules/Boutique/Commande/getData.md" />
+        <option value="$PROJECT_DIR$/Modules/Boutique/Class/Commande.class.php" />
+        <option value="$PROJECT_DIR$/Modules/Pharmacie/Class/Ordonnance.class.php" />
+        <option value="$PROJECT_DIR$/Modules/Pharmacie/Pharmacie.schema" />
+        <option value="$PROJECT_DIR$/Skins/TennisAdmin/Modules/Default/Utils/List/Default.md" />
+        <option value="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datetimepicker-master/build/locales/fr.js" />
+        <option value="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datetimepicker-master/build/js/moment.min.js" />
+        <option value="$PROJECT_DIR$/Skins/TennisAdmin/Css/style.css" />
+        <option value="$PROJECT_DIR$/Skins/TennisAdmin/Default.bl" />
+        <option value="$PROJECT_DIR$/Class/DataBase/genericClass.class.php" />
+        <option value="$PROJECT_DIR$/Skins/TennisAdmin/Modules/Default/Utils/Form/Default.md" />
+        <option value="$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.fr.min.js" />
+        <option value="$PROJECT_DIR$/Skins/TennisClient/Default.bl" />
+        <option value="$PROJECT_DIR$/Skins/TennisClient/Css/style.css" />
+        <option value="$PROJECT_DIR$/Conf/General.conf" />
         <option value="$PROJECT_DIR$/Modules/Sesame/Class/Sesame.class.php" />
+        <option value="$PROJECT_DIR$/Class/Utils/Utils.class.php" />
+        <option value="$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/Service/Mini.md" />
+        <option value="$PROJECT_DIR$/Class/Process/Process.class.php" />
+        <option value="$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/TypeCourt/getDispo.md" />
+        <option value="$PROJECT_DIR$/Modules/TennisForever/Class/TennisForever.class.php" />
+        <option value="$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/TypeCourt/Reserver.md" />
+        <option value="$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/Reservation/List.md" />
+        <option value="$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/Reservation/Default.md" />
+        <option value="$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/TypeCourt/Fiche.md" />
+        <option value="$PROJECT_DIR$/Modules/Sesame/Class/Client.class.php" />
+        <option value="$PROJECT_DIR$/Modules/TennisForever/Class/Client.class.php" />
+        <option value="$PROJECT_DIR$/Modules/TennisForever/TennisForever.schema" />
+        <option value="$PROJECT_DIR$/Modules/TennisForever/Class/Reservation.class.php" />
+        <option value="$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/Reservation/Fiche.md" />
       </list>
     </option>
   </component>
@@ -152,9 +684,9 @@
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
     <option name="x" value="43" />
-    <option name="y" value="924" />
+    <option name="y" value="896" />
     <option name="width" value="1877" />
-    <option name="height" value="1056" />
+    <option name="height" value="1084" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -210,7 +742,157 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Skins" />
+              <option name="myItemId" value="Tools" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Js" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Tools" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Css" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Bootstrap" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Tools" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Css" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Bootstrap" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bootstrap-datepicker-master" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Tools" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Css" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Bootstrap" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bootstrap-datepicker-master" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dist" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="locales" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Tools" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Css" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Bootstrap" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bootstrap-datepicker-master" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dist" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Tools" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Css" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Bootstrap" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bootstrap-datepicker-master" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dist" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -225,172 +907,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="Skins" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SesameAdmin" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye-Git" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye-Git" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Skins" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SesameAdmin" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Modules" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Default" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Utils" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MiniList" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye-Git" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye-Git" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Skins" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SesameAdmin" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Modules" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Default" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Utils" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="List" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye-Git" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye-Git" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Skins" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SesameAdmin" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Modules" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Default" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Utils" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Form" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye-Git" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye-Git" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Skins" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SesameAdmin" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Modules" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Default" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Utils" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye-Git" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye-Git" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Skins" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SesameAdmin" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Modules" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Default" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Sejour" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -408,19 +924,7 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="SesameAdmin" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Modules" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Default" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="QrCode" />
+              <option name="myItemId" value="TennisClient" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -438,7 +942,7 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="SesameAdmin" />
+              <option name="myItemId" value="TennisClient" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -446,11 +950,7 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Default" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="PassePartout" />
+              <option name="myItemId" value="TennisForever" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -468,7 +968,7 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="SesameAdmin" />
+              <option name="myItemId" value="TennisClient" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -476,7 +976,11 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Default" />
+              <option name="myItemId" value="TennisForever" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Reservation" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -494,29 +998,7 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="SesameAdmin" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Modules" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Default" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Default" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye-Git" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemId" value="TennisClient" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -537,8 +1019,22 @@
               <option name="myItemId" value="Modules" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Sesame" />
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Modules" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TennisForever" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -556,11 +1052,15 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Sesame" />
+              <option name="myItemId" value="TennisForever" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Utils" />
+              <option name="myItemId" value="Plugins" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TypePaiement" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -578,7 +1078,57 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Sesame" />
+              <option name="myItemId" value="TennisForever" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Client" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Modules" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TennisForever" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Class" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Conf" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -597,6 +1147,10 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="Class" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Utils" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -632,7 +1186,47 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="Process" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Class" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="DataBase" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Class" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DataBase" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Drivers" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -645,11 +1239,12 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../backapp.driveo.m-w.solutions" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.appearance" />
+    <property name="settings.editor.selected.configurable" value="preferences.fileTypes" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Conf" />
       <recent name="$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default" />
     </key>
   </component>
@@ -716,20 +1311,46 @@
       <workItem from="1459358104093" duration="123000" />
       <workItem from="1459436015660" duration="3181000" />
       <workItem from="1459450835656" duration="10830000" />
-      <workItem from="1459789210249" duration="2574000" />
+      <workItem from="1459789210249" duration="3266000" />
+      <workItem from="1459923356631" duration="44000" />
+      <workItem from="1459941779420" duration="1808000" />
+      <workItem from="1459955708445" duration="2239000" />
+      <workItem from="1459960449593" duration="1060000" />
+      <workItem from="1459966948334" duration="679000" />
+      <workItem from="1460012559139" duration="114000" />
+      <workItem from="1460018402300" duration="184000" />
+      <workItem from="1460040421930" duration="315000" />
+      <workItem from="1460040794878" duration="659000" />
+      <workItem from="1460041480883" duration="569000" />
+      <workItem from="1460042164826" duration="2006000" />
+      <workItem from="1460044392367" duration="926000" />
+      <workItem from="1460045712914" duration="127000" />
+      <workItem from="1460049853046" duration="216000" />
+      <workItem from="1460050518418" duration="138000" />
+      <workItem from="1460050768911" duration="2601000" />
+      <workItem from="1460095763459" duration="773000" />
+      <workItem from="1460097243218" duration="234000" />
+      <workItem from="1460461982945" duration="47335000" />
+      <workItem from="1460703020244" duration="12270000" />
+      <workItem from="1460716165991" duration="429000" />
+      <workItem from="1460716688392" duration="718000" />
+      <workItem from="1460718090662" duration="2770000" />
+      <workItem from="1460727645478" duration="3341000" />
+      <workItem from="1460791210152" duration="1248000" />
+      <workItem from="1461045270979" duration="2832000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="38605000" />
+    <option name="totallyTimeSpent" value="124932000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="43" y="924" width="1877" height="1056" extended-state="6" />
+    <frame x="43" y="896" width="1877" height="1084" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18350628" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18132168" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32916668" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11354167" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -765,287 +1386,242 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Modules/Pharmacie/Class/Ordonnance.class.php">
+    <entry file="file://$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/Default/DashBoard.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="162">
+          <caret line="9" column="22" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Boutique/Commande/managePanier.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="25" column="32" selection-start-line="25" selection-start-column="32" selection-end-line="25" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Class/DataBase/Drivers/sqlFunctions.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9180">
+          <caret line="510" column="32" selection-start-line="510" selection-start-column="32" selection-end-line="510" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Fiscalite/Class/ZoneFiscale.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="17" column="57" selection-start-line="17" selection-start-column="57" selection-end-line="17" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Class/Systeme/Sys.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19404">
+          <caret line="1078" column="78" selection-start-line="1074" selection-start-column="0" selection-end-line="1078" selection-end-column="78" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Class/Systeme/Module.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="301">
+          <caret line="312" column="0" selection-start-line="312" selection-start-column="0" selection-end-line="312" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Pharmacie/Ordonnance/send.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="14" column="1" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Modules/Systeme/Class/Systeme.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2565">
-          <caret line="171" column="9" selection-start-line="171" selection-start-column="9" selection-end-line="171" selection-end-column="9" />
+        <state relative-caret-position="2970">
+          <caret line="165" column="13" selection-start-line="165" selection-start-column="13" selection-end-line="165" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Systeme/Device/registerDevice.md">
+    <entry file="file://$PROJECT_DIR$/Modules/Boutique/Boutique.schema">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="8568">
+          <caret line="476" column="81" selection-start-line="476" selection-start-column="81" selection-end-line="476" selection-end-column="81" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Systeme/Device/dev.castanet.pem">
+    <entry file="file://$PROJECT_DIR$/Class/DataBase/View.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="32" column="25" selection-start-line="32" selection-start-column="25" selection-end-line="32" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Systeme/Systeme.schema">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Boutique/Class/Produit.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5190">
-          <caret line="346" column="67" selection-start-line="346" selection-start-column="67" selection-end-line="346" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/BoutiqueDefault.ENG/Modules/Boutique/Produit/getTarif.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Boutique/Class/Reference.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2925">
-          <caret line="195" column="28" selection-start-line="195" selection-start-column="20" selection-end-line="195" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Boutique/Class/Boutique.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Boutique/Class/Produit.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5190">
-          <caret line="346" column="67" selection-start-line="346" selection-start-column="67" selection-end-line="346" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/BoutiqueDefault.ENG/Modules/Boutique/Produit/getTarif.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Boutique/Class/Reference.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2925">
-          <caret line="195" column="28" selection-start-line="195" selection-start-column="20" selection-end-line="195" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Boutique/Class/Boutique.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Boutique/Class/Produit.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5190">
-          <caret line="346" column="67" selection-start-line="346" selection-start-column="67" selection-end-line="346" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/BoutiqueDefault.ENG/Modules/Boutique/Produit/getTarif.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Boutique/Class/Reference.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2925">
-          <caret line="195" column="28" selection-start-line="195" selection-start-column="20" selection-end-line="195" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Boutique/Class/Boutique.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Systeme/Utils/iconPack.md" />
-    <entry file="file://$PROJECT_DIR$/Skins/BoutiqueDefault.ENG/Modules/Boutique/Produit/getTarif.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Boutique/Class/Reference.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2925">
-          <caret line="195" column="28" selection-start-line="195" selection-start-column="20" selection-end-line="195" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Boutique/Class/Boutique.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1395">
-          <caret line="93" column="29" selection-start-line="93" selection-start-column="29" selection-end-line="93" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Systeme/Device/sendNotificationTest.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Systeme/Systeme.schema">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3330">
-          <caret line="222" column="48" selection-start-line="222" selection-start-column="48" selection-end-line="222" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Systeme/Device/dev.castanet.pem">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="36" column="4" selection-start-line="36" selection-start-column="4" selection-end-line="36" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Systeme/Device/prod.castanet.pem">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="32" column="64" selection-start-line="32" selection-start-column="64" selection-end-line="32" selection-end-column="64" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Systeme/Device/registerDevice.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="9" selection-start-line="3" selection-start-column="9" selection-end-line="3" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Systeme/Device/prod.cours.pem">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="64" selection-start-line="22" selection-start-column="64" selection-end-line="22" selection-end-column="64" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Systeme/Device/dev.cours.pem">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="26" column="64" selection-start-line="26" selection-start-column="64" selection-end-line="26" selection-end-column="64" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Pharmacie/Ordonnance/signaler.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="1" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Systeme/Class/Systeme.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1890">
-          <caret line="126" column="40" selection-start-line="126" selection-start-column="40" selection-end-line="126" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Pharmacie/Class/Ordonnance.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1770">
-          <caret line="118" column="48" selection-start-line="118" selection-start-column="48" selection-end-line="118" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/Ecluse/Css/product_detail.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="724" column="1" selection-start-line="724" selection-start-column="1" selection-end-line="724" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/Ecluse/Css/base.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="46635">
-          <caret line="3109" column="1" selection-start-line="3109" selection-start-column="1" selection-end-line="3109" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Pharmacie/Ordonnance/getData.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Boutique/Class/Produit.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-9">
-          <caret line="21" column="69" selection-start-line="21" selection-start-column="69" selection-end-line="21" selection-end-column="69" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Pharmacie/Pharmacie.schema">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="50" column="71" selection-start-line="50" selection-start-column="71" selection-end-line="50" selection-end-column="71" />
+        <state relative-caret-position="666">
+          <caret line="37" column="60" selection-start-line="37" selection-start-column="60" selection-end-line="37" selection-end-column="60" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Modules/Systeme/Utils/getJsonDatatable.md">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1494">
+          <caret line="83" column="26" selection-start-line="83" selection-start-column="26" selection-end-line="83" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Pharmacie/Ordonnance/getData.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="7" column="85" selection-start-line="7" selection-start-column="46" selection-end-line="7" selection-end-column="85" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Boutique/Commande/getData.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="7" column="62" selection-start-line="7" selection-start-column="62" selection-end-line="7" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Boutique/Class/Commande.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2286">
+          <caret line="127" column="36" selection-start-line="127" selection-start-column="36" selection-end-line="127" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Pharmacie/Class/Ordonnance.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1458">
+          <caret line="81" column="46" selection-start-line="81" selection-start-column="46" selection-end-line="81" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Pharmacie/Pharmacie.schema">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="36" column="39" selection-start-line="36" selection-start-column="39" selection-end-line="36" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/TypeCourt/Default.md">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="88" column="37" selection-start-line="88" selection-start-column="37" selection-end-line="88" selection-end-column="37" />
-          <folding />
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/CHANGELOG.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="18" column="37" selection-start-line="18" selection-start-column="37" selection-end-line="18" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="12" column="59" selection-start-line="12" selection-start-column="16" selection-end-line="12" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/TennisClient/Modules/Systeme/Profil.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="486">
+          <caret line="27" column="15" selection-start-line="15" selection-start-column="12" selection-end-line="27" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/TennisAdmin/Modules/Default/Utils/List/Default.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="147" column="29" selection-start-line="147" selection-start-column="29" selection-end-line="147" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datetimepicker-master/build/locales/fr.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="785">
+          <caret line="61" column="4" selection-start-line="61" selection-start-column="4" selection-end-line="61" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datetimepicker-master/build/js/moment.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-9">
+          <caret line="6" column="4728" selection-start-line="6" selection-start-column="4728" selection-end-line="6" selection-end-column="4728" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/TennisAdmin/Modules/Default/Default/Modifier.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Class/DataBase/genericClass.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-8">
-          <caret line="2440" column="45" selection-start-line="2440" selection-start-column="45" selection-end-line="2440" selection-end-column="45" />
+        <state relative-caret-position="335">
+          <caret line="2074" column="33" selection-start-line="2074" selection-start-column="33" selection-end-line="2074" selection-end-column="33" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/Sejour/Default.md">
+    <entry file="file://$PROJECT_DIR$/Skins/TennisAdmin/Modules/Default/Utils/Form/Default.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="17" column="5" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
+        <state relative-caret-position="115">
+          <caret line="90" column="19" selection-start-line="90" selection-start-column="19" selection-end-line="90" selection-end-column="19" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/QrCode/Fiche.md">
+    <entry file="file://$PROJECT_DIR$/Skins/TennisAdmin/Modules/Default/Utils/Form/FullForm.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-162">
+        <state relative-caret-position="-9">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/PassePartout/Fiche.md">
+    <entry file="file://$PROJECT_DIR$/Skins/TennisAdmin/Css/style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="522">
-          <caret line="29" column="43" selection-start-line="29" selection-start-column="43" selection-end-line="29" selection-end-column="43" />
+        <state relative-caret-position="205">
+          <caret line="92" column="1" selection-start-line="92" selection-start-column="1" selection-end-line="126" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/TennisAdmin/Default.bl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="10" column="113" selection-start-line="10" selection-start-column="113" selection-end-line="10" selection-end-column="113" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/Default.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.fr.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="28">
+          <caret line="0" column="420" selection-start-line="0" selection-start-column="420" selection-end-line="0" selection-end-column="420" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/TypeCourt/List.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/TennisClient/Default.bl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="10" column="8" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/TennisClient/Css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2156">
+          <caret line="154" column="23" selection-start-line="154" selection-start-column="23" selection-end-line="154" selection-end-column="23" />
         </state>
       </provider>
     </entry>
@@ -1053,78 +1629,132 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Sesame/Sesame.conf">
+    <entry file="file://$PROJECT_DIR$/Conf/General.conf">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/Sejour/Fiche.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/Utils/List/Default.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="101" column="15" selection-start-line="101" selection-start-column="15" selection-end-line="101" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/Utils/MiniList/Default.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="46" column="41" selection-start-line="46" selection-start-column="32" selection-end-line="46" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Sesame/Sesame.schema">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="10" column="87" selection-start-line="10" selection-start-column="87" selection-end-line="10" selection-end-column="87" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/PassePartout/Default.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Sesame/Utils/checkState.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="31" selection-start-line="0" selection-start-column="31" selection-end-line="0" selection-end-column="31" />
-          <folding />
+        <state relative-caret-position="98">
+          <caret line="7" column="54" selection-start-line="7" selection-start-column="54" selection-end-line="7" selection-end-column="54" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Modules/Sesame/Class/Sesame.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="254">
-          <caret line="109" column="46" selection-start-line="109" selection-start-column="46" selection-end-line="109" selection-end-column="46" />
+        <state relative-caret-position="672">
+          <caret line="47" column="81" selection-start-line="47" selection-start-column="81" selection-end-line="47" selection-end-column="81" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Class/Process/Process.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="309" column="59" selection-start-line="309" selection-start-column="59" selection-end-line="309" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Class/Utils/Utils.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="14">
+          <caret line="18" column="28" selection-start-line="18" selection-start-column="28" selection-end-line="18" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/Service/Mini.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/SesameAdmin/Modules/Default/Default/DashBoard.md">
+    <entry file="file://$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/TypeCourt/getDispo.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="16" column="25" selection-start-line="16" selection-start-column="25" selection-end-line="16" selection-end-column="25" />
+        <state relative-caret-position="182">
+          <caret line="13" column="60" selection-start-line="13" selection-start-column="60" selection-end-line="13" selection-end-column="60" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/TypeCourt/Fiche.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="630">
+          <caret line="45" column="7" selection-start-line="45" selection-start-column="7" selection-end-line="45" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/Reservation/Default.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="70">
+          <caret line="5" column="5" selection-start-line="5" selection-start-column="5" selection-end-line="5" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/Reservation/List.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="9" selection-start-line="0" selection-start-column="9" selection-end-line="0" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Sesame/Class/Client.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="3" column="29" selection-start-line="3" selection-start-column="29" selection-end-line="3" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/TennisForever/Class/Client.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/TennisForever/TennisForever.schema">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="140" column="69" selection-start-line="140" selection-start-column="69" selection-end-line="140" selection-end-column="69" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/TennisForever/Class/TennisForever.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="392">
+          <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/TypeCourt/Reserver.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="770">
+          <caret line="79" column="5" selection-start-line="79" selection-start-column="5" selection-end-line="79" selection-end-column="5" />
+          <folding>
+            <marker date="1460715405423" expanded="true" signature="2657:2674" placeholder="..." />
+            <marker date="1460715405423" expanded="true" signature="3446:3589" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/TennisForever/Class/Reservation.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="291">
+          <caret line="289" column="13" selection-start-line="289" selection-start-column="13" selection-end-line="289" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/TennisClient/Modules/TennisForever/Reservation/Fiche.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="350">
+          <caret line="25" column="10" selection-start-line="23" selection-start-column="38" selection-end-line="23" selection-end-column="45" />
           <folding />
         </state>
       </provider>

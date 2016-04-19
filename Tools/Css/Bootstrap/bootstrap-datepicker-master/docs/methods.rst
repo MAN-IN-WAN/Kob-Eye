@@ -1,18 +1,21 @@
 Methods
 =======
 
-Methods are called on a datepicker by call the ``datepicker`` function with a string first argument, followed by any arguments the method takes::
+Methods are called on a datepicker by calling the ``datepicker`` function with a string first argument, followed by any arguments the method takes
+
+::
 
     $('.datepicker').datepicker('method', arg1, arg2);
 
 
-remove
+destroy
 ------
 
 Arguments: None
 
 Remove the datepicker.  Removes attached events, internal attached objects, and added HTML elements.
 
+*Alias: remove*
 
 show
 ----
@@ -52,6 +55,7 @@ To reset the datepicker and clear the selected date, pass an empty string with `
 ::
 
     $('.datepicker').datepicker('update', '');
+
 
 setDate
 -------
@@ -141,6 +145,22 @@ Arguments: None
 Returns the internal list of UTC date objects, as they are and unconverted to local time, of the first datepicker in the selection.  For use with multidate pickers.
 
 
+getStartDate
+------------
+
+Arguments: None
+
+Returns the lower date limit on the datepicker.
+
+
+getEndDate
+----------
+
+Arguments: None
+
+Returns the upper date limit on the datepicker.
+
+
 setStartDate
 ------------
 
@@ -165,6 +185,18 @@ Sets a new upper date limit on the datepicker.  See :ref:`enddate` for valid val
 Omit endDate (or provide an otherwise falsey value) to unset the limit.
 
 
+setDatesDisabled
+----------------
+
+Arguments:
+
+* datesDisabled (String|Array)
+
+Sets the days that should be disabled.  See :ref:`datesDisabled` for valid values.
+
+Omit datesDisabled (or provide an otherwise falsey value) to unset the disabled days.
+
+
 setDaysOfWeekDisabled
 ---------------------
 
@@ -175,3 +207,15 @@ Arguments:
 Sets the days of week that should be disabled.  See :ref:`daysofweekdisabled` for valid values.
 
 Omit daysOfWeekDisabled (or provide an otherwise falsey value) to unset the disabled days.
+
+
+setDaysOfWeekHighlighted
+------------------------
+
+Arguments:
+
+* daysOfWeekHighlighted (String|Array)
+
+Sets the days of week that should be highlighted.  See :ref:`daysOfWeekHighlighted` for valid values.
+
+Omit daysOfWeekHighlighted (or provide an otherwise falsey value) to unset the disabled days.

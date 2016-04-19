@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="raspberry_gil">
+  <component name="PublishConfigData" serverName="tennisforever.fr">
     <serverData>
       <paths name="pharmaciedecastanet.fr">
         <serverdata>
@@ -27,6 +27,13 @@
         <serverdata>
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="tennisforever.fr">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/reservation" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

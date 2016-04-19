@@ -26,6 +26,14 @@
           <option name="port" value="22" />
         </fileTransfer>
       </webServer>
+      <webServer id="fe4bc21d-dcee-4f23-b3c5-625d337cb397" name="tennisforever.fr" url="http://tennisforever.fr">
+        <fileTransfer host="tennisforever.fr" port="21" password="df98df9bdfdddfd3dfc3dfd9dfcfdfd3" username="admin@tennisforever.fr">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
     </option>
   </component>
 </project>

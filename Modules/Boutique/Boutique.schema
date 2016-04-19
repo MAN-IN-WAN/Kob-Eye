@@ -474,6 +474,7 @@
 		<PROPERTIES description="Date Payé" type="date" list="30" listDescr="Payé">PayeLe</PROPERTIES>
 		<PROPERTIES  searchOrder="8" description="Cloturé" type="boolean" default="0">Cloture</PROPERTIES>
 		<PROPERTIES description="Date Cloture" type="date">ClotureLe</PROPERTIES>
+        <PROPERTIES type="int" searchOrder="6" default="10">Priorite</PROPERTIES>
 		<PROPERTIES description="Date Commande" type="date" list="5" listDescr="Date" searchOrder="9">DateCommande</PROPERTIES>
 		<PROPERTIES searchOrder="110"	description="Total HT Tx Normal" type="price"   format="2dec" category="BaseNormale">BaseHTTx1</PROPERTIES>
 		<PROPERTIES Order="112"	description="Taux TVA Normal" type="price"   format="2dec" category="BaseNormale">TxTva1</PROPERTIES>
@@ -500,8 +501,13 @@
 		<VIEW title="CommandeList" default="1">
 			<OBJECTCLASS title="Commande" select="*" filters="">
 				<JOIN type="outer" title="Client" on="ClientId" target="Id">
-					<PROPERTIES type="varchar" listWidth="100" list="20" searchOrder="20" description="Nom" alias="Nom">Nom</PROPERTIES>
-					<PROPERTIES type="varchar" listWidth="100" list="21" description="Prénom" alias="Prenom">Prenom</PROPERTIES>
+                    <PROPERTIES Order="3" description="Email"      type="varchar" length="200" obligatoire="1">Mail</PROPERTIES>
+                    <PROPERTIES Order="5" description="Nom"        type="varchar" length="100" obligatoire="1">Nom</PROPERTIES>
+                    <PROPERTIES Order="6" description="Prénom"     type="varchar" length="100" obligatoire="1">Prenom</PROPERTIES>
+                    <PROPERTIES Order="7" description="Adresse"    type="text"    special="multi" obligatoire="1">Adresse</PROPERTIES>
+                    <PROPERTIES Order="8" description="CodePostal" type="varchar" length="10" obligatoire="1">CodePostal</PROPERTIES>
+                    <PROPERTIES Order="9" description="Ville"      type="varchar" length="100" obligatoire="1">Ville</PROPERTIES>
+                    <PROPERTIES Order="11" description="Téléphone" type="varchar" length="20" obligatoire="1">Tel</PROPERTIES>
 				</JOIN>
 				<JOIN type="outer" title="Magasin" on="MagasinId" target="Id">
 					<PROPERTIES type="varchar" listWidth="100" list="1" searchOrder="10" description="Magasin" alias="Magasin2.Code">Code</PROPERTIES>

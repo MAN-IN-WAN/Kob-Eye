@@ -514,7 +514,7 @@ class sqlFunctions{
 			$j=false;
 			if (isset($OData["Select"])){
 				foreach ($OData["Select"] as $i=>$d){
-					if ($OData["Select"][$i]["Alias"]==$y){
+					if (isset($OData["Select"][$i]["Alias"])&&$OData["Select"][$i]["Alias"]==$y){
 						$Out[1] = $OData["Select"][$i]["Nom"];
 						$j=true;
 					}

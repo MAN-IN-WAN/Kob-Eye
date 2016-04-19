@@ -29,9 +29,13 @@
         [/CASE]
         [CASE valid]
             [!Panier:=[!CurrentClient::getPanier()!]!]
-            [!Panier::setValid()!]
-            "success":true,
-            "msg": "La commande a été soumise. Vous pouvez aller dans le menu commande afin de régler les détails."
+            [IF [!Panier::setValid()!]]
+                "success":true,
+                "msg": "La commande a été soumise. Vous pouvez aller dans le menu commande afin de régler les détails."
+            [ELSE]
+                "success":false,
+                "msg": "Votre panier n\'est pas complet."
+            [/IF]
         [/CASE]
         [DEFAULT]
             "success": false,

@@ -2,6 +2,12 @@
 [HEADER CSS]/Tools/Css/Bootstrap/3.0/css/bootstrap-theme.min.css[/HEADER]
 [HEADER JS]/Tools/Js/Jquery/1.9.2/jquery.min.js[/HEADER]
 [HEADER JS]/Tools/Css/Bootstrap/3.0/js/bootstrap.min.js[/HEADER]
+
+//DATE PICKER
+[HEADER JS]/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/js/bootstrap-datepicker.min.js[/HEADER]
+[HEADER CSS]/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/css/bootstrap-datepicker3.min.css[/HEADER]
+[HEADER JS]/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.fr.min.js[/HEADER]
+
 [HEADER]
 <link href='https://fonts.googleapis.com/css?family=Oleo+Script' rel='stylesheet' type='text/css'>
 [/HEADER]
@@ -31,12 +37,8 @@
 <div id="loginModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-header-inner">
-                    <div class="modal-header-logo"></div>
-                </div>
-            </div>
             <div class="modal-body">
+                [MODULE Systeme/Utils/BreadCrumbs]
                 [DATA]
             </div>
 <!--            <div class="modal-footer">

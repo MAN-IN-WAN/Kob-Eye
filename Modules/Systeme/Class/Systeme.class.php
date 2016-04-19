@@ -133,11 +133,21 @@ class Systeme extends Module {
         Systeme::sendNotification($msg,'all');
     }
 
-    public static function  sendNotification($msg,$target) {
+    public static function  sendNotification($msg,$target)
+    {
+
+        //enregistre les changement dans la base pour rendre les modifications disponibles
+        if (is_object($GLOBALS['Systeme']->Db[0])) {
+            $GLOBALS['Systeme']->Db[0]->query("COMMIT");
+            $GLOBALS['Systeme']->Db[0]->query("START TRANSACTION");
+        }
         $msg['vibrate'] = 1;
-        $msg['sound'] = 1;
-        if (!isset($msg['alert']))$msg['alert'] = 1;
-        if (!isset($msg['store']))$msg['store'] = '';
+        if (isset($msg['sound'])) unset($msg['sound']);
+        /*$msg['soundname'] = 'www/res/raw/sound.mp3';*/
+        /*$msg['sound'] = "true";*/
+        if (!isset($msg['notify'])) $msg['notify'] = 1;
+        if (!isset($msg['store'])) $msg['store'] = '';
+        if (!isset($msg['message'])) $msg['message'] = '';
         $msg['largeIcon'] = 'large_icon';
         $msg['smallIcon'] = 'small_icon';
 
@@ -156,18 +166,18 @@ class Systeme extends Module {
         /****
          * ANDROID
          */
-        if ($target>0){
-            $dev = Sys::getData('Systeme','User/'.$target.'/Device/Admin=0&Type=Android');
+        if ($target > 0) {
+            $dev = Sys::getData('Systeme', 'User/' . $target . '/Device/Admin=0&Type=Android');
             $API_ACCESS_KEY = 'AIzaSyBbYtVciuBNkTX2h13sHhAvsjBRCSdtb6U';
-        }elseif ($target=="all"){
-            $dev = Sys::getData('Systeme','Device/Admin=0&Type=Android');
+        } elseif ($target == "all") {
+            $dev = Sys::getData('Systeme', 'Device/Admin=0&Type=Android');
             $API_ACCESS_KEY = 'AIzaSyBbYtVciuBNkTX2h13sHhAvsjBRCSdtb6U';
-        }elseif($target=="admin"){
-            $dev = Sys::getData('Systeme','Device/Admin=1&Type=Android');
+        } elseif ($target == "admin") {
+            $dev = Sys::getData('Systeme', 'Device/Admin=1&Type=Android');
             $API_ACCESS_KEY = 'AIzaSyCGGUR9EbkicdM7IUXp1l-Z2sHFQCnLp-A';
         }
         $registrationIds = array();
-        foreach ($dev as $d){
+        foreach ($dev as $d) {
             $registrationIds[] = $d->Key;
         }
         if (sizeof($registrationIds)) {
@@ -196,25 +206,25 @@ class Systeme extends Module {
         /****
          * IOS
          */
-        if ($target>0){
-            $dev = Sys::getData('Systeme','User/'.$target.'/Device/Admin=0&Type=iOS');
-        }elseif ($target=="all"){
-            $dev = Sys::getData('Systeme','Device/Admin=0&Type=iOS');
+        if ($target > 0) {
+            $dev = Sys::getData('Systeme', 'User/' . $target . '/Device/Admin=0&Type=iOS');
+        } elseif ($target == "all") {
+            $dev = Sys::getData('Systeme', 'Device/Admin=0&Type=iOS');
         }
-        foreach ($dev as $d){
+        $ctx = stream_context_create();
+        // ck.pem is your certificate file
+        stream_context_set_option($ctx, 'ssl', 'local_cert', 'Modules/Systeme/Device/prod.cours.pem');
+        stream_context_set_option($ctx, 'ssl', 'passphrase', '21wyisey');
+        // Open a connection to the APNS server
+        $gateway = 'ssl://gateway.push.apple.com:2195';
+        //$gateway_dev = 'ssl://gateway.sandbox.push.apple.com:2195';
+        $fp = stream_socket_client(
+            $gateway, $err,
+            $errstr, 60, STREAM_CLIENT_CONNECT | STREAM_CLIENT_PERSISTENT, $ctx);
+        if (!$fp)
+            exit("Failed to connect prod: $err $errstr" . PHP_EOL);
+        foreach ($dev as $d) {
             $deviceToken = $d->Key;
-            $ctx = stream_context_create();
-            // ck.pem is your certificate file
-            stream_context_set_option($ctx, 'ssl', 'local_cert', 'Modules/Systeme/Device/dev.cours.pem');
-            stream_context_set_option($ctx, 'ssl', 'passphrase', '21wyisey');
-            // Open a connection to the APNS server
-            $gateway = 'ssl://gateway.push.apple.com:2195';
-            $gateway_dev = 'ssl://gateway.sandbox.push.apple.com:2195';
-            $fp = stream_socket_client(
-                $gateway_dev, $err,
-                $errstr, 60, STREAM_CLIENT_CONNECT|STREAM_CLIENT_PERSISTENT, $ctx);
-            if (!$fp)
-                exit("Failed to connect: $err $errstr" . PHP_EOL);
             // Create the payload body
             $body = (object)array(
                 'aps' => array(
@@ -231,20 +241,13 @@ class Systeme extends Module {
             // Encode the payload as JSON
             $payload = json_encode($body);
             // Build the binary notification
-            $tmp = chr(0) . pack('n', 32) . pack('H*', $deviceToken) . pack('n', strlen($payload)) . $payload;
+            $tmp = chr(0) . pack('n', 32) . pack('H*', crc32($deviceToken)) . pack('n', strlen($payload)) . $payload;
             // Send it to the server
             $result = fwrite($fp, $tmp, strlen($tmp));
-//echo $tmp."\r\n";
-//echo $result."\r\n";
-            // Close the connection to the server
             //self::checkAppleErrorResponse($fp);
-            fclose($fp);
-            /*if (!$result)
-                return 'Message not delivered' . PHP_EOL;
-            else
-                return 'Message successfully delivered' . PHP_EOL;*/
         }
-   }
+        fclose($fp);
+    }
     //FUNCTION to check if there is an error response from Apple
 //         Returns TRUE if there was and FALSE if there was not
    public static function checkAppleErrorResponse($fp) {

@@ -2,9 +2,15 @@
 <!-- Bootstrap core CSS -->
 [HEADER JS]/Tools/Js/Jquery/1.9.2/jquery.min.js[/HEADER]
 [HEADER CSS]/Tools/Css/Bootstrap/3.0/css/bootstrap.min.css[/HEADER]
-[HEADER CSS]Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/css/bootstrap-datepicker.css[/HEADER]
-[HEADER JS]Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/js/bootstrap-datepicker.min.js[/HEADER]
-[HEADER JS]Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.fr.min.js[/HEADER]
+
+//MOMENT LOCALES
+[HEADER JS]/Tools/Css/Bootstrap/bootstrap-datetimepicker-master/build/js/moment.min.js[/HEADER]
+[HEADER JS]/Tools/Css/Bootstrap/bootstrap-datetimepicker-master/build/locales/fr.js[/HEADER]
+
+//DATE PICKER
+[HEADER JS]/Tools/Css/Bootstrap/bootstrap-datetimepicker-master/build/js/bootstrap-datetimepicker.min.js[/HEADER]
+[HEADER CSS]/Tools/Css/Bootstrap/bootstrap-datetimepicker-master/build/css/bootstrap-datetimepicker.min.css[/HEADER]
+
 [HEADER JS]Tools/Css/Bootstrap/BootBox/bootbox.min.js[/HEADER]
 [HEADER CSS]Tools/Css/Bootstrap/Bootstrap-fileinput/css/fileinput.min.css[/HEADER]
 [HEADER JS]Tools/Css/Bootstrap/Bootstrap-fileinput/js/fileinput.min.js[/HEADER]
@@ -201,9 +207,9 @@
         $('.btn-modal-close').click(function (e){
             location.reload();
         });
-          $('.datepicker').datepicker({
+/*          $('.datetimepicker').datepicker({
               language: 'fr'
-          });
+          });*/
         $('input.switch').bootstrapSwitch({
             onColor: 'success',
             offColor: 'danger'

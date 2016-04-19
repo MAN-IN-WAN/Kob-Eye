@@ -2071,11 +2071,15 @@ class genericClass extends Root {
 						if ($this -> $Nom == "0")
 							$this -> $Nom = "0.0";
 						break;
+					case "datetime" :
 					case "date" :
 						$Nom = $Prop["Nom"];
 						if(isset($this->$Nom)&&! is_null($this->$Nom)) {
 							if (preg_match("#^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})\ ([0-9]{2})\:([0-9]{2})\:([0-9]{2})$#", $this -> $Nom, $out)) {
 								$this -> $Nom = mktime($out[4], $out[5], $out[6], $out[2], $out[1], $out[3]);
+							}
+							if (preg_match("#^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})\ ([0-9]{2})\:([0-9]{2})$#", $this -> $Nom, $out)) {
+								$this -> $Nom = mktime($out[4], $out[5], 0, $out[2], $out[1], $out[3]);
 							}
 							if (preg_match("#^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$#", $this -> $Nom, $out)) {
 								$this -> $Nom = mktime(0, 0, 0, $out[2], $out[1], $out[3]);

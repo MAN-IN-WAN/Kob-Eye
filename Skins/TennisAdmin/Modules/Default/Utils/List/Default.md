@@ -107,7 +107,7 @@
         <tr>
 
             [STORPROC [!O::getElementsByAttribute(list,,1)!]|E]
-            <th>[!E::description!]</th>
+            <th>[IF [!E::objectDescription!]][!E::objectDescription!][ELSE][!E::description!][/IF]</th>
             [/STORPROC]
             <th>Informations</th>
             <th>Actions</th>
@@ -132,10 +132,23 @@
                     [CASE int]
                         <td><h4><span class="label label-warning">[!C::[!E::name!]!]</span></h4></td>
                     [/CASE]
+                    [CASE fkey]
+                        [!FK:=[!Sys::getOneData([!E::objectModule!],[!E::objectName!]/[!I::ObjectType!]/[!C::Id!])!]!]
+                        <td><strong>[!FK::getFirstSearchOrder()!]</strong></td>
+                    [/CASE]
+                    [CASE date]
+                        <td><h4><span class="label label-primary">[DATE d/m/Y][!C::[!E::name!]!][/DATE]</span></h4></td>
+                    [/CASE]
+                    [CASE datetime]
+                        <td><h4><span class="label label-info">[DATE d/m/Y H:i:s][!C::[!E::name!]!][/DATE]</span></h4></td>
+                    [/CASE]
                     [CASE image]
                         <td><img src="/[!C::[!E::name!]!].mini.200x50.jpg" class="img-responsive" /></td>
                     [/CASE]
                     [DEFAULT]
+                        [IF [!E::values!]]
+                            VALUES #TODO
+                        [ELSE]
                         <td>
                             //<a href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!C::Id!]">
                             [IF [!Pos!]=1]<strong>[/IF]
@@ -143,6 +156,7 @@
                             [IF [!Pos!]=1]</strong>[/IF]
                             //</a>
                         </td>
+                        [/IF]
                     [/DEFAULT]
                 [/SWITCH]
             [/STORPROC]

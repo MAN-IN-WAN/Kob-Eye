@@ -42,7 +42,7 @@ Usage
 
 Call the datepicker via javascript::
 
-    $('.datepicker').datepicker()
+    $('.datepicker').datepicker();
 
 
 Data API
@@ -53,6 +53,17 @@ As with bootstrap's own plugins, datepicker provides a data-api that can be used
 .. code-block:: html
 
     <input data-provide="datepicker">
+
+Markup with component
+
+.. code-block:: html
+
+    <div class="input-group date" data-provide="datepicker">
+        <input type="text" class="form-control">
+        <div class="input-group-addon">
+            <span class="glyphicon glyphicon-th"></span>
+        </div>
+    </div>
 
 You can disable datepicker's data-api in the same way as you would disable other bootstrap plugins::
 
@@ -67,7 +78,7 @@ Configuration
     $('.datepicker').datepicker({
         format: 'mm/dd/yyyy',
         startDate: '-3d'
-    })
+    });
 
 Most options may be provided as data-attributes on the target element:
 
@@ -79,15 +90,23 @@ Most options may be provided as data-attributes on the target element:
 
     $('.datepicker').datepicker({
         startDate: '-3d'
-    })
+    });
 
 Defaults for all options can be modified directly by changing values in the ``$.fn.datepicker.defaults`` hash::
 
     $.fn.datepicker.defaults.format = "mm/dd/yyyy";
     $('.datepicker').datepicker({
         startDate: '-3d'
-    })
+    });
 
+
+Stylesheets
+^^^^^^^^^^^
+
+There are a few different stylesheets included in the library. This is an overview of what each file is to be used for:
+
+:code:`bootstrap-datepicker.css` gives legacy support for twitter bootstrap v2, :code:`bootstrap-datepicker3.css` is used for twitter bootstrap v3 support
+and :code:`bootstrap-datepicker.standalone.css` can be used the include the datepicker without depending on the twitter bootstrap library.
 
 No Conflict mode
 ^^^^^^^^^^^^^^^^

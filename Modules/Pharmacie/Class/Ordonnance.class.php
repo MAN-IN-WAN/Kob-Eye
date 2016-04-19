@@ -64,6 +64,8 @@ class Ordonnance extends genericClass {
                 $this->sendMailAcheteur();
                 //envoi des notifications
                 $this->sendNotifications($new);
+                $this->DateCreation = time();
+                $this->Priorite = 40;
                 break;
             case 2:
                 if ($old->Etat!=$this->Etat) {
@@ -71,6 +73,7 @@ class Ordonnance extends genericClass {
                     $this->sendMailAcheteur();
                     //envoi des notifications
                     $this->sendNotifications($new);
+                    $this->Priorite = 20;
                 }
                 break;
             case 3:
@@ -80,6 +83,7 @@ class Ordonnance extends genericClass {
                     //envoi des notifications
                     $this->sendNotifications($new);
                     $this->PrepareLe = time();
+                    $this->Priorite = 10;
                 }
                 break;
             case 4:
@@ -89,8 +93,12 @@ class Ordonnance extends genericClass {
                     //envoi des notifications
                     $this->sendNotifications($new);
                     $this->RetireLe = time();
+                    $this->Priorite = 0;
                 }
                 break;
+            default:
+                $this->Priorite = 0;
+            break;
         }
 
 
@@ -112,9 +120,9 @@ class Ordonnance extends genericClass {
         $Mail = new Mail();
         if ($this->Etat==1) {
             $Mail->Subject("Confirmation de soumission d'une ordonnance sur " . $this->Magasin->Nom);
-        }elseif ($this->Etat==2) {
-            $Mail->Subject("Confirmation de preparation de l'ordonnance  " . $this->Magasin->Nom);
         }elseif ($this->Etat==3) {
+            $Mail->Subject("Confirmation de preparation de l'ordonnance  " . $this->Magasin->Nom);
+        }elseif ($this->Etat==4) {
             $Mail->Subject("Confirmation de retrait de l'ordonnance  " . $this->Magasin->Nom);
         }
         //$Mail -> From($GLOBALS['Systeme'] -> Conf -> get('MODULE::SYSTEME::CONTACT'));
@@ -135,14 +143,14 @@ class Ordonnance extends genericClass {
         }elseif ($this->Etat==3) {
             $mailContent = "
                 Bonjour " . $Civilite . ",<br /><br />
-                Nous vous informons que votre commande N° " . $this->RefCommande . " a été préparée.<br />
+                Nous vous informons que votre ordonnance a été préparée.<br />
                 Vous pouvez d'ores et déjà vous rendre à l'officine ".$this->Magasin->Nom." pour retirer et payer votre commande <br /><br />
                 Toute l'équipe de " . $this->Magasin->Nom . " vous remercie de votre confiance,<br />
                 <br />Pour nous contacter : " . $this->Magasin->EmailContact . ". ".$Lacommande;
         }elseif ($this->Etat==4) {
             $mailContent = "
                 Bonjour " . $Civilite . ",<br /><br />
-                Vous avez retiré votre commande N° " . $this->RefCommande . ".
+                Vous avez retiré votre ordonnance.
                 Toute l'équipe de " . $this->Magasin->Nom . " vous remercie de votre confiance,<br />
                 <br />Pour nous contacter : " . $this->Magasin->EmailContact . " .".$Lacommande;
         }
@@ -198,7 +206,7 @@ class Ordonnance extends genericClass {
         $u = Sys::getOneData('Systeme','User/'.$this->userCreate);
         $msg = array
         (
-            'title' => $m->Nom.': votre ordonnance a changé d\'état.',
+            'title' => $m->Nom.': l\'ordonnance de ' . $this->Nom . ' ' . $this->Prenom.' changé d\'état.',
             'store' => 'Ordonnances',
             'vibrate' => 1,
             'sound' => 1

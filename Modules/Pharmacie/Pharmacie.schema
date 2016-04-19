@@ -38,8 +38,8 @@
 		<PROPERTIES type="image" category="Ordonnance" listWidth="150" obligatoire="0">Image</PROPERTIES>
         <PROPERTIES type="boolean" searchOrder="6" category="Personne" default="10">SachetDose</PROPERTIES>
         <PROPERTIES type="boolean" searchOrder="6" category="Personne" default="10">Livraison</PROPERTIES>
-		<PROPERTIES type="int" searchOrder="5" category="Ordonnance" values="1::Non traitée,2::En cours de traitement,3::Traitée,4::Livrée,5::Litige" default="1">Etat</PROPERTIES>
-		<VIEW title="OrdonnanceList" default="1" filters="">
+		<PROPERTIES type="int" searchOrder="5" category="Ordonnance" values="1::Non traitée,2::En cours de traitement,3::Traitée,4::Livrée,5::Litige,6::Cloture" default="1">Etat</PROPERTIES>
+		<VIEW title="OrdonnanceList" default="1" filters="" order="Priorite,tmsEdit">
 			<OBJECTCLASS title="Ordonnance" select="*">
 				<PROPERTIES type="varchar" list="5" searchOrder="1" category="Personne" obligatoire="1">Nom</PROPERTIES>
 				<PROPERTIES type="varchar" list="6" searchOrder="2" category="Personne" obligatoire="1">Prenom</PROPERTIES>
@@ -53,7 +53,7 @@
 				<PROPERTIES type="image" list="2" category="Ordonnance" listWidth="150" obligatoire="1">Image</PROPERTIES>
 				<PROPERTIES type="boolean" searchOrder="6" category="Personne" default="10">SachetDose</PROPERTIES>
 				<PROPERTIES type="boolean" searchOrder="6" category="Personne" default="10">Livraison</PROPERTIES>
-				<PROPERTIES type="int" searchOrder="5"  list="1" category="Ordonnance" values="1::Non traitée,2::En cours de traitement,3::Traitée,4::Livrée,5::Litige" default="1">Etat</PROPERTIES>
+				<PROPERTIES type="int" searchOrder="5"  list="1" category="Ordonnance" values="1::Non traitée,2::En cours de traitement,3::Traitée,4::Livrée,5::Litige,6::Cloture" default="1">Etat</PROPERTIES>
 				<PROPERTIES type="date" list="1" listWidth="100" listDescr="Date création" searchOrder="6">Date</PROPERTIES>
 				<PROPERTIES type="int" >Id</PROPERTIES>
 				<JOIN type="outer" title="Couleur" on="Etat" target="Id">

@@ -31,19 +31,10 @@ class Sesame extends Module {
 
 
         //on vérifie le passe partout
-        if (Sys::getCount('Sesame','PassePartout/Code='.$qr)){
-            $cc = Sys::getOneData('Sesame','PassePartout/Code='.$qr);
-            $h->Decode = $qr;
-            $h->Resultat = 'Ouverture passe partout '.(($cc->CodeDirecteur) ? ' avec un code de cloture': '');
-            if ($cc->CodeDirecteur)
-                Sesame::closeCurrentSejour();
-            else
-                Sesame::Ouverture();
-        }else {
-
+        if (!empty($qr)) {
             $t = explode(';', $str);
             klog::l('decryptage ' . $str, $t);
-
+            echo 'decryptage ' . $str;
             if (sizeof($t) >= 5) {
                 //[0] = > NOM CLIENT
                 //[1] = > DATE DEBUT
@@ -58,27 +49,35 @@ class Sesame extends Module {
                 $idb = Sys::getOneData('Sesame', 'Dictionnaire/Nom=ID_BOITIER');
 
                 //calcul des timestamp sebut et fin
-                $tmsdeb = mktime(substr($t[2],0,2),substr($t[2],3,2),0,substr($t[1],2,2),substr($t[1],0,2),substr($t[1],4,4));
-                $tmsfin = mktime(substr($t[4],0,2),substr($t[4],3,2),0,substr($t[3],2,2),substr($t[3],0,2),substr($t[3],4,4));
+                $tmsdeb = mktime(substr($t[2], 0, 2), substr($t[2], 3, 2), 0, substr($t[1], 2, 2), substr($t[1], 0, 2), substr($t[1], 4, 4));
+                $tmsfin = mktime(substr($t[4], 0, 2), substr($t[4], 3, 2), 0, substr($t[3], 2, 2), substr($t[3], 0, 2), substr($t[3], 4, 4));
 
                 if ($idb->Valeur == $t[5] && (string)$emp->Valeur == (string)$t[6] && $tmsdeb < time() && $tmsfin > time()) {
                     klog::l('OUVERTURE PORTE !!');
                     $h->Resultat = 'Ouverture classique';
-                    Sesame::CreateSejour($tmsdeb,$tmsfin,$t);
+                    Sesame::CreateSejour($tmsdeb, $tmsfin, $t);
                 } elseif ($idb->Valeur != $t[5]) {
                     klog::l('ERROR >> ID_BOITIER INCORRECTE ');
                     $h->Resultat = 'ERROR >> ID_BOITIER INCORRECTE ';
                 } elseif ((string)$emp->Valeur != (string)$t[6]) {
-                    klog::l('ERROR >> EMPLACEMENT INCORRECT'.$emp->Valeur.'!='.$t[6]);
-                    $h->Resultat = 'ERROR >> EMPLACEMENT INCORRECT '.$emp->Valeur.'!='.$t[6];
+                    klog::l('ERROR >> EMPLACEMENT INCORRECT' . $emp->Valeur . '!=' . $t[6]);
+                    $h->Resultat = 'ERROR >> EMPLACEMENT INCORRECT ' . $emp->Valeur . '!=' . $t[6];
                 } else {
                     klog::l('ERROR >> DATES INCORRECTES');
-                    $h->Resultat = 'ERROR >> DATES INCORRECT '.$tmsdeb.' '.$tmsfin;
+                    $h->Resultat = 'ERROR >> DATES INCORRECT ' . $tmsdeb . ' ' . $tmsfin;
                 }
+            }elseif (Sys::getCount('Sesame', 'PassePartout/Code=' . Utils::KEAddSlashes($qr))) {
+                $cc = Sys::getOneData('Sesame', 'PassePartout/Code=' . Utils::KEAddSlashes($qr));
+                $h->Decode = $qr;
+                $h->Resultat = 'Ouverture passe partout ' . (($cc->CodeDirecteur) ? ' avec un code de cloture' : '');
+                if ($cc->CodeDirecteur)
+                    Sesame::closeCurrentSejour();
+                else
+                    Sesame::Ouverture();
             } else $h->Resultat = 'Impossible de décoder la chaine';
+            $h->Save();
+            echo $h->Resultat;
         }
-        $h->Save();
-        echo $h->Resultat;
     }
     static function CreateSejour ($datedeb,$datefin,$all) {
         exec('/usr/local/bin/ouverturePermanente > /dev/null 2>/dev/null &');
@@ -88,9 +87,12 @@ class Sesame extends Module {
         $sej->DateFin = $datefin;
         $sej->Actif = true;
 
-        if ($cs = Sesame::getCurrentSejour()){
-            $cs->Actif = 0;
-            $cs->Save();
+        if (Sesame::getCurrentSejour()){
+            $cs = Sesame::getCurrentSejour();
+            if ($cs) {
+                $cs->Actif = 0;
+                $cs->Save();
+            }
         }
         $sej->Save();
         Sesame::Ouverture();
@@ -129,6 +131,10 @@ class Sesame extends Module {
 
     public static function closeCurrentSejour(){
         $cs = Sesame::getCurrentSejour();
+        if (!$cs) {
+            echo 'Cloture séjour: Il n\'y aucun séjour en cours à cloturer';
+            return;
+        }
         $cs->Actif = 0;
         $cs->Save();
         Sesame::Fermeture();
@@ -151,7 +157,7 @@ class Sesame extends Module {
 
             $D=genericClass::createInstance('Sesame','Dictionnaire');
             $D->Nom = 'AES_KEY';
-            $D->Valeur = 'HipVillagesUntempsd;avance';
+            $D->Valeur = 'HipVillagesUntempsd;avan';
             $D->Save();
 
             $D=genericClass::createInstance('Sesame','Dictionnaire');

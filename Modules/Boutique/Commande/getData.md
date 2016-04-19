@@ -5,7 +5,7 @@
 [ELSE]
     [IF [!Sys::User::Admin!]]
         //resultat requete
-        [MODULE Systeme/Utils/getJsonDatatable?ORDER_FILTER=1]
+        [MODULE Systeme/Utils/getJsonDatatable?ORDER_FILTER=1&SORT=DESC,DESC&SFIELD=Priorite,tmsEdit]
     [ELSE]
         //resultat requete
         [MODULE Systeme/Utils/getJsonDatatable?USER_FILTER=1&ORDER_FILTER=1]

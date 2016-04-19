@@ -92,6 +92,24 @@ test('setEndDate', function(){
     strictEqual(returnedObject, this.dp, "is chainable");
 });
 
+test('getStartDate', function(){
+    var date_in = new Date(Date.UTC(2012, 3, 5)),
+        expected_date = date_in,
+        returnedObject = this.dp.setStartDate(date_in);
+    // ...
+    datesEqual(returnedObject.getStartDate(), expected_date);
+    strictEqual(returnedObject, this.dp, "is chainable");
+});
+
+test('getEndDate', function(){
+    var date_in = new Date(Date.UTC(2012, 3, 5)),
+        expected_date = date_in,
+        returnedObject = this.dp.setEndDate(date_in);
+    // ...
+    datesEqual(returnedObject.getEndDate(), expected_date);
+    strictEqual(returnedObject, this.dp, "is chainable");
+});
+
 test('setDaysOfWeekDisabled - String', function(){
     var days_in = "0,6",
         expected_days = [0,6],
@@ -120,4 +138,33 @@ test('place', function(){
     var returnedObject = this.dp.place();
     // ...
     strictEqual(returnedObject, this.dp, "is chainable");
+});
+
+test('moveMonth - can handle invalid date', function(){
+    // any input which results in an invalid date, f.e. an incorrectly formatted.
+    var invalidDate = new Date("invalid"),
+        returnedObject = this.dp.moveMonth(invalidDate, 1);
+    // ...
+    equal(this.input.val(), "31-03-2011", "date is reset");
+});
+
+test('parseDate - outputs correct value', function(){
+    var parsedDate = $.fn.datepicker.DPGlobal.parseDate('11/13/2015',$.fn.datepicker.DPGlobal.parseFormat('mm/dd/yyyy'),'en');
+    equal(parsedDate.getDate(), "13", "date is correct");
+    equal(parsedDate.getMonth(), "10", "month is correct");
+    equal(parsedDate.getFullYear(), "2015", "fullyear is correct");
+});
+
+test('parseDate - outputs correct value for yyyy\u5E74mm\u6708dd\u65E5 format', function(){
+    var parsedDate = $.fn.datepicker.DPGlobal.parseDate('2015\u5E7411\u670813',$.fn.datepicker.DPGlobal.parseFormat('yyyy\u5E74mm\u6708dd\u65E5'),'ja');
+    equal(parsedDate.getDate(), "13", "date is correct");
+    equal(parsedDate.getMonth(), "10", "month is correct");
+    equal(parsedDate.getFullYear(), "2015", "fullyear is correct");
+});
+
+test('parseDate - outputs correct value for dates containing unicodes', function(){
+    var parsedDate = $.fn.datepicker.DPGlobal.parseDate('\u5341\u4E00\u6708 13 2015',$.fn.datepicker.DPGlobal.parseFormat('MM dd yyyy'),'zh-CN');
+    equal(parsedDate.getDate(), "13", "date is correct");
+    equal(parsedDate.getMonth(), "10", "month is correct");
+    equal(parsedDate.getFullYear(), "2015", "fullyear is correct");
 });

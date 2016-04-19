@@ -48,7 +48,38 @@ class TennisForever extends Module {
 		}
         return false;
     }
-    static function  getCurrentClient(){
+    static function createReservation($date, $court, $heuredeb,$service){
+        $res = genericClass::createInstance('TennisForever','Reservation');
+
+        //récupération du client
+        $cli = TennisForever::getCurrentClient();
+        $res->setClient($cli);
+
+        //vérification du court
+        $court = Sys::getOneData('TennisForever','Court/'.$court);
+        $res->setCourt($court);
+
+        //définition du service
+        if ($service>0) {
+            $service = Sys::getOneData('TennisForever', 'Service/' . $service);
+            $res->setService($service);
+        }
+
+        //definition de la date
+        $res->setDate($date);
+
+        //definition de l'heure de debut
+        $res->setHeureDebut($heuredeb);
+
+        return $res;
+    }
+
+    /**
+     * getCurrentClient
+     * Récupération du client
+     */
+    static function getCurrentClient() {
         return Sys::getOneData('TennisForever','Client/UserId='.Sys::$User->Id);
     }
+
 }
