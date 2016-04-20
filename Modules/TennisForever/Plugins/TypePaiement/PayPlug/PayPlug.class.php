@@ -10,7 +10,7 @@
 
 require_once( dirname(dirname(__FILE__)).'/TypePaiement.interface.php' );
 
-class BoutiqueTypePaiementPayPlug extends Plugin implements BoutiqueTypePaiementPlugin {
+class TennisForeverTypePaiementPayPlug extends Plugin implements TennisForeverTypePaiementPlugin {
 
 	/**
 	* initStatePaiement
@@ -42,24 +42,24 @@ class BoutiqueTypePaiementPayPlug extends Plugin implements BoutiqueTypePaiement
 		}
 
 		//récupération du client
-		$com = $paiement->getCommande();
-		$client = $com->getClient();
+		$fact = $paiement->getFacture();
+		$client = $fact->getClient();
 		
 		//creation de l'url de paiement
 		$paymentUrl = PaymentUrl::generateUrl(array(
-                                         'amount' => round($paiement->Montant * 100),
-                                         'currency' => 'EUR',
-                                         'email' => $client->Mail, 
-                                         'firstName' => $client->Prenom,
-                                         'lastName' => $client->Nom,
-					 'order' => $com->Reference,
-					 'customer' => $client->Id,
-					 'origin' => $_SERVER['HTTP_HOST'],
-                                         'ipnUrl' => "http://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Boutique/Commande/Etape4s'),
-					 'cancelUrl' => "http://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Boutique/Commande/Etape5'),
-					 'returnUrl' => "http://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Boutique/Commande/Etape5'),
-					 'customData' => $paiement->Id
-                                         ));
+			 'amount' => round($paiement->Montant * 100),
+			 'currency' => 'EUR',
+			 'email' => $client->Mail,
+			 'firstName' => $client->Prenom,
+			 'lastName' => $client->Nom,
+			 'order' => $fact->Reference,
+			 'customer' => $client->Id,
+			 'origin' => $_SERVER['HTTP_HOST'],
+			 'ipnUrl' => "http://".$_SERVER['HTTP_HOST']."/TennisForever/Facture/IPN",
+			 'cancelUrl' => "http://".$_SERVER['HTTP_HOST']."/TennisForever/Facture/".$fact->Id."/Annulation",
+			 'returnUrl' => "http://".$_SERVER['HTTP_HOST']."/TennisForever/Facture/".$fact->Id."/Confirmation",
+			 'customData' => $paiement->Id
+		 ));
 
 		// Redirects the user to the payment page
 		header("Location: $paymentUrl");

@@ -1,0 +1,12 @@
+[LOG]IPN RECEUVECD[/LOG]
+[STORPROC TennisForever/TypePaiement/Actif=1|TP]
+    [!Plg:=[!TP::getPlugin()!]!]
+    [!PaiementID:=[!Plg::retrouvePaiementEtape4s()!]!]
+[LOG]PAIEMENT [!PaiementID!][/LOG]
+    <h2>PAIEMENT [!PaiementID!]</h2>
+    [IF [!PaiementID!]>0]
+        [STORPROC TennisForever/Paiement/[!PaiementID!]|P|0|1]
+            [METHOD P|CheckPaiement][/METHOD]
+        [/STORPROC]
+    [/IF]
+[/STORPROC]

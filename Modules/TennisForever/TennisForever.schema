@@ -18,7 +18,7 @@
         <PROPERTIES description="Notes"     type="text" form="1">Notes</PROPERTIES>
         <PROPERTIES description="Statuts"  values="-18,Junior,Adulte,Etudiant,Couple"  type="varchar" form="1">Statuts</PROPERTIES>
         <PROPERTIES description="Numéro de licence"     type="varchar" form="1">Licence</PROPERTIES>
-        <PROPERTIES description="Est un abonné"     type="boolean" form="1">Abonne</PROPERTIES>
+        <PROPERTIES description="Est un adhérent"     type="boolean" form="1" searchOrder="5" list="5">Abonne</PROPERTIES>
         <PROPERTIES Order="17" type="Int"  >UserId</PROPERTIES>
         <FUNCTION title="Renvoyer email de confirmation">RenvoiEmailConfirmation</FUNCTION>
 	</OBJECTCLASS>
@@ -51,12 +51,14 @@
     </OBJECTCLASS>
     <OBJECTCLASS title="Partenaire" driver="mysql" AccessPoint="0" Dico="1" Description="Partenaire de réservation" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png">
         <PROPERTIES searchOrder="1" description="Nom du partenaire" type="varchar" length="200" obligatoire="1" list="1" form="1">Nom</PROPERTIES>
+        <PROPERTIES searchOrder="1" description="Prénom du partenaire" type="varchar" length="200" obligatoire="1" list="1" form="1">Prenom</PROPERTIES>
         <PROPERTIES description="Email du partenaire" type="varchar" list="1" form="1">Email</PROPERTIES>
         <FKEY card="1,1" data="Reservation,Id" list="1" form="1" parentDescription="Réservation">ReservationId</FKEY>
         <FKEY card="1,1" data="Client,Id" list="1" form="1" parentDescription="Client">ClientId</FKEY>
     </OBJECTCLASS>
     <OBJECTCLASS title="Court" driver="mysql" AccessPoint="1" Description="Court" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png">
         <PROPERTIES Order="1" description="Titre" type="varchar" length="200" obligatoire="1" list="1" form="1" searchOrder="1">Titre</PROPERTIES>
+        <PROPERTIES description="Ordre" type="order" length="200" obligatoire="1" list="1" form="1" searchOrder="1">Ordre</PROPERTIES>
         <FKEY card="1,1" data="TypeCourt,Id" form="1" parentDescription="Type de court">TypeCourtId</FKEY>
         <VIEW title="CourtList" default="1">
             <OBJECTCLASS title="Court" select="*" filters="">
@@ -68,13 +70,14 @@
     </OBJECTCLASS>
     <OBJECTCLASS title="TypeCourt" driver="mysql" AccessPoint="0" Dico="1" Description="Ressources" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png" browseable="1">
         <PROPERTIES searchOrder="1" description="Titre" type="varchar" length="200" obligatoire="1" list="1" form="1">Titre</PROPERTIES>
+        <PROPERTIES searchOrder="2" description="Type de réservation" type="varchar" length="200" obligatoire="1" list="1" form="1" values="Horaire,Journalière,Aucun">Reservation</PROPERTIES>
         <PROPERTIES description="Afficher sur le site" type="boolean" list="1" form="1">Web</PROPERTIES>
     </OBJECTCLASS>
-    <OBJECTCLASS title="Service" driver="mysql" AccessPoint="1" Description="Produit" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png">
+    <OBJECTCLASS title="Service" driver="mysql" AccessPoint="1" Description="Produit" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png" Class="Modules/TennisForever/Class/Service.class.php">
         <PROPERTIES Order="1" description="Titre" type="varchar" length="200" obligatoire="1" list="1" form="1" searchOrder="1">Titre</PROPERTIES>
         <PROPERTIES Order="4" description="Type de produit" type="varchar" values="Reservation,Abonnement,Produit,Cotisation" list="1" form="1">Type</PROPERTIES>
         <PROPERTIES Order="2" description="Tarif TTC" type="price"  list="1" form="1">Tarif</PROPERTIES>
-        <PROPERTIES Order="3" description="Tarif TTC abonnés" type="price"  list="1" form="1">TarifAbonnes</PROPERTIES>
+        <PROPERTIES Order="3" description="Tarif TTC adhérent" type="price"  list="1" form="1">TarifAbonnes</PROPERTIES>
         <PROPERTIES Order="3" description="Tarif TTC invité" type="price"  list="1" form="1">TarifInvite</PROPERTIES>
         <PROPERTIES Order="2" description="Tarif heure creuse TTC" type="price"  list="1" form="1">TarifCreuse</PROPERTIES>
         <PROPERTIES Order="4" description="Durée en minute" type="duration" form="1">Duree</PROPERTIES>
@@ -94,13 +97,13 @@
         <PROPERTIES Order="3" description="Logo" type="datetime" list="1" form="1" >Fin</PROPERTIES>
         <FKEY card="0,n" data="Court,Id" list="1" form="1" parentDescription="Court numéro">CourtId</FKEY>
     </OBJECTCLASS>
-    <OBJECTCLASS title="Paiement" driver="mysql" AccessPoint="0" master="0" Description="Paiements"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+    <OBJECTCLASS title="Paiement" driver="mysql" AccessPoint="0" master="0" Description="Paiements"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/TennisForever/Class/Paiement.class.php">
         <PROPERTIES searchOrder="2" description="Montant (TTC)" type="float" list="1" listDescr="Montant" format="2dec">Montant</PROPERTIES>
         <PROPERTIES description="Detail" type="text"  special="multi" auto="1">Detail</PROPERTIES>
         <PROPERTIES description="Référence Paiement" type="varchar" auto="0" length="30" list="3" listDescr="Référence">Reference</PROPERTIES>
         <PROPERTIES description="Statut de la connexion au serveur de paiement" type="boolean" auto="1" default="0">Status</PROPERTIES>
         <PROPERTIES searchOrder="1" description="Etat du paiement" type="int" default="0" values="0::En Cours,1::Accepté,2::Refusé,3::Initialisé,4::Attente" list="2" listDescr="Etat">Etat</PROPERTIES>
-        <FKEY card="1,1" data="Commande,Id">CommandeId</FKEY>
+        <FKEY card="1,1" data="Facture,Id">FactureId</FKEY>
         <FKEY card="1,1" data="TypePaiement,Id">TypePaiementId</FKEY>
         <VIEW title="PaiementList" default="1">
             <OBJECTCLASS title="Paiement" select="*" filters="">
@@ -111,7 +114,7 @@
         </VIEW>
     </OBJECTCLASS>
 
-    <OBJECTCLASS title="TypePaiement" driver="mysql" AccessPoint="0" Dico="1" master="0" Description="TypePaiements"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" plugin="1">
+    <OBJECTCLASS title="TypePaiement" driver="mysql" AccessPoint="0" Dico="1" master="0" Description="TypePaiements"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" plugin="1" Class="Modules/TennisForever/Class/TypePaiement.class.php">
         <PROPERTIES searchOrder="1" description="Nom" type="varchar" length="100"   >Nom</PROPERTIES>
         <PROPERTIES description="Compte client" type="varchar" length="16" >CompteComptable</PROPERTIES>
         <PROPERTIES Order="2" description="Information choix du paiement" type="bbcode"  special="multi">Information</PROPERTIES>
@@ -121,40 +124,14 @@
         <PROPERTIES Order="6" description="Ordre" type="order" >Ordre</PROPERTIES>
     </OBJECTCLASS>
 
-    <OBJECTCLASS title="Facture" driver="mysql" AccessPoint="1" master="0" Description="Facture"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+    <OBJECTCLASS title="Facture" driver="mysql" AccessPoint="1" master="0" Description="Facture"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/TennisForever/Class/Facture.class.php">
         <PROPERTIES searchOrder="1"	description="Numéro Facture" type="varchar" list="2" listDescr="Numéro" listWidth="100" category="Total Facture">NumFac</PROPERTIES>
         <PROPERTIES searchOrder="2"	description="Total Facture TTC" type="price" list="3" listDescr="TTC" format="2dec" category="Total Facture">MontantTTC</PROPERTIES>
-        <PROPERTIES searchOrder="10"	description="Total HT Tx Normal" type="price"   format="2dec" category="BaseNormale">BaseHTTx1</PROPERTIES>
-        <PROPERTIES Order="12"	description="Taux TVA Normal" type="price"   format="2dec" category="BaseNormale">TxTva1</PROPERTIES>
-        <PROPERTIES Order="15"	description="Montant total Tva Normal" type="price"   format="2dec" category="BaseNormale">MtTva1</PROPERTIES>
-        <PROPERTIES Order="20"	description="Total TTC Normal" type="price"   format="2dec" category="BaseNormale">TTC1</PROPERTIES>
-        <PROPERTIES Order="25"	description="Total HT Tx Reduit" type="price"   format="2dec" category="BaseReduite">BaseHTTx2</PROPERTIES>
-        <PROPERTIES Order="65"	description="Taux TVA Reduit" type="price"   format="2dec" category="BaseReduite">TxTva2</PROPERTIES>
-        <PROPERTIES Order="50"	description="Montant total Tva Reduit" type="price"   format="2dec" category="BaseReduite">MtTva2</PROPERTIES>
-        <PROPERTIES Order="60"	description="Total TTC Reduit" type="price"   format="2dec" category="BaseReduite">TTC2</PROPERTIES>
-        <PROPERTIES Order="70"	description="Total HT Livraison" type="price"   format="2dec" category="LIvraison">HtLivr</PROPERTIES>
-        <PROPERTIES Order="75"	description="Taux Tva Liv" type="price"   format="2dec" category="LIvraison">TxTvaLiv</PROPERTIES>
-        <PROPERTIES Order="80"	description="Montant total Tva Liv" type="price"   format="2dec" category="LIvraison">MtTvaLiv</PROPERTIES>
-        <PROPERTIES Order="85"	description="Total TTC Liv" type="price"   format="2dec" category="LIvraison">TTCLiv</PROPERTIES>
-        <CATEGORY title="Adresse facturation">
-            <PROPERTIES Order="2" description="Civilite"   type="varchar" values="Mademoiselle,Madame,Monsieur" obligatoire="0">FactuCivilite</PROPERTIES>
-            <PROPERTIES searchOrder="3" description="Nom"        type="varchar" length="100"   >FactuNom</PROPERTIES>
-            <PROPERTIES Order="4" description="Prénom"     type="varchar" length="100"   >FactuPrenom</PROPERTIES>
-            <PROPERTIES Order="5" description="Adresse"    type="text"    special="multi">FactuAdresse</PROPERTIES>
-            <PROPERTIES Order="6" description="CodePostal" type="varchar" length="10"     >FactuCodePostal</PROPERTIES>
-            <PROPERTIES Order="7" description="Ville"      type="varchar" length="100"   >FactuVille</PROPERTIES>
-            <PROPERTIES Order="10" description="Pays"      type="varchar" length="100"   >FactuPays</PROPERTIES>
-        </CATEGORY>
-        <CATEGORY title="Adresse livraison">
-            <PROPERTIES Order="2" description="Civilite"   type="varchar" values="Mademoiselle,Madame,Monsieur" obligatoire="0">LivrCivilite</PROPERTIES>
-            <PROPERTIES searchOrder="3" description="Nom"        type="varchar" length="100"   >LivrNom</PROPERTIES>
-            <PROPERTIES Order="4" description="Prénom"     type="varchar" length="100"   >LivrPrenom</PROPERTIES>
-            <PROPERTIES Order="5" description="Adresse"    type="text"    special="multi">LivrAdresse</PROPERTIES>
-            <PROPERTIES Order="6" description="CodePostal" type="varchar" length="10"     >LivrCodePostal</PROPERTIES>
-            <PROPERTIES Order="7" description="Ville"      type="varchar" length="100"   >LivrVille</PROPERTIES>
-            <PROPERTIES Order="10" description="Pays"      type="varchar" length="100"   >LivrPays</PROPERTIES>
-        </CATEGORY>
+        <PROPERTIES searchOrder="2"	description="Total Facture TTC" type="price" list="3" listDescr="TTC" format="2dec" category="Total Facture">MontantHT</PROPERTIES>
+        <PROPERTIES searchOrder="3"	description="Facture Validée" type="boolean" list="3" category="Etat">Valide</PROPERTIES>
+        <PROPERTIES searchOrder="4"	description="Facture Payée" type="boolean" list="3" category="Etat">Paye</PROPERTIES>
         <FKEY card="1,1" data="Client,Id">ClientId</FKEY>
+        <FKEY card="1,1" data="Reservation,Id">ReservationId</FKEY>
     </OBJECTCLASS>
     <OBJECTCLASS title="LigneFacture" driver="mysql" AccessPoint="0" master="0" Description="Ligne Facture"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
         <PROPERTIES searchOrder="1"	description="Libelle" type="varchar" list="2" listDescr="Libellé" listWidth="100">Libelle</PROPERTIES>

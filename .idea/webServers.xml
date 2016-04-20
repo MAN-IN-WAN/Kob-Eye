@@ -2,7 +2,7 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="b3895f4a-7984-45c7-8e76-dda065144e59" name="pharmaciedelecluse.fr" url="http://admin.pharmaciedelecluse.fr">
+      <webServer id="b3895f4a-7984-45c7-8e76-dda065144e59" name="pharmaciedelecluse.fr (project level)" url="http://admin.pharmaciedelecluse.fr">
         <fileTransfer host="admin.pharmaciedelecluse.fr" port="21" password="df98df9bdfdddfd3dfc3dfd9dfcfdfd3" username="admin@pharmaciedelecluse.fr">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" />
@@ -10,7 +10,7 @@
           <option name="port" value="21" />
         </fileTransfer>
       </webServer>
-      <webServer id="b3aba428-4f5f-4563-8127-dfec19a85a01" name="pharmaducours.fr" url="http://admin.pharmaducours.fr">
+      <webServer id="b3aba428-4f5f-4563-8127-dfec19a85a01" name="pharmaducours.fr (project level)" url="http://admin.pharmaducours.fr">
         <fileTransfer host="admin.pharmaducours.fr" port="21" password="df98df9bdfdddfd3dfc3dfd9dfcfdfd3" username="admin@pharmaducours.fr">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" />

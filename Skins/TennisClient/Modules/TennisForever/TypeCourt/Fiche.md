@@ -51,7 +51,7 @@ function onChangeDate(e) {
     today.setMinutes(0);
     today.setSeconds(0);
     console.log('DATE '+Math.floor(today.getTime()/1000));
-    $('#dateform').val((e)?Math.floor(new Date(e.date).getTime()/1000):Math.floor(today.getTime()/1000));
+    $('.dateform').val((e)?Math.floor(new Date(e.date).getTime()/1000):Math.floor(today.getTime()/1000));
 }
 $(function () {
     onChangeDate();
@@ -67,7 +67,7 @@ $(function () {
     [/IF]
     [STORPROC [!Query!]/Court|C|0|10]
     <form action="/[!Lien!]/Reserver" method="POST">
-    <input type="hidden" name="Date" value="" id="dateform" />
+    <input type="hidden" name="Date" value="" class="dateform" />
     <input type="hidden" name="Court" value="[!C::Id!]" id="courform" />
     <div class="col-md-[!12:/[!NbCol!]!]">
         <h3>[!C::Titre!]</h3>

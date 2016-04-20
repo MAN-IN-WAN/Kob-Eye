@@ -15,6 +15,29 @@ class Reservation extends genericClass {
     /**
      * GETTER
      */
+    function getFacture() {
+        $total = $this->getTotal();
+        $fact = Sys::getOneData('TennisForever','Reservation/'.$this->Id.'/Facture');
+        if ($fact) return $fact;
+        elseif ($total >0){
+            //création de la facture
+            $fact = genericClass::createInstance('TennisForever','Facture');
+            $fact->MontantTTC = $total;
+            $fact->MontantHT = $total/1.20;
+            $fact->addParent($this->getClient());
+            $fact->Save();
+            
+            //on attache aussi toutes les lignes facture
+            $lf = Sys::getData('TennisForever','Reservation/'.$this->Id.'/LigneFacture');
+            foreach ($lf as $l) {
+                $l -> addParent($fact);
+                $l->Save();
+            }
+            
+            return $fact;
+        }
+        return false;
+    }
     function getClient() {
         $out=false;
         if ($this->Id){
@@ -40,8 +63,8 @@ class Reservation extends genericClass {
             if ($out) return $out;
         }
         if (!$out){
-            //on cherche dans le tableau parrent temporaire.
-            foreach ($this->Parents as $p){
+            //on cherche dans le tableau parent temporaire.
+            if (is_array($this->Parents))foreach ($this->Parents as $p){
                 if ($p["Titre"]=='Service') {
                     return Sys::getOneData('TennisForever','Service/'.$p["Id"]);
                 }
@@ -72,12 +95,36 @@ class Reservation extends genericClass {
      */
     function setPartenaires($parts){
         if (is_array($parts))foreach ($parts as $p){
-            if (!empty($p->Nom)) {
+            if ($p['Client']>0) {
+                //recherche du client
+                $cli = Sys::getOneData('TennisForever','Client/'.$p['Client']);
+                $part = $cli->getChildren('Partenaire');
+                if (!sizeof($part)){
+                    //il faut le créer
+                    $pa = genericClass::createInstance('TennisForever', 'Partenaire');
+                    $pa->Nom = $cli->Nom;
+                    $pa->Email = $cli->Email;
+                    $pa->Prenom = $cli->Prenom;
+                    $pa->addParent($cli);
+                    $pa->Save();
+                }else{
+                    $pa = $part[0];
+                }
+            }else{
                 $pa = genericClass::createInstance('TennisForever', 'Partenaire');
-                $pa->Nom = $p['Nom'];
-                $pa->Email = $p['Email'];
-                array_push($this->_partenaires, $pa);
+                $pa->Nom = (empty($p['Nom']))?'Invité':$p['Nom'];
+                $pa->Email = (empty($p['Email']))?'Invité':$p['Email'];
+                $pa->Prenom = (empty($p['Prenom']))?'Invité':$p['Prenom'];
             }
+            array_push($this->_partenaires, $pa);
+        }
+        if (!sizeof($parts)){
+            //on ajoute un particpant par défaut
+            $pa = genericClass::createInstance('TennisForever', 'Partenaire');
+            $pa->Nom = 'Invité';
+            $pa->Prenom = 'Invité';
+            $pa->Email = 'Invité';
+            array_push($this->_partenaires, $pa);
         }
     }
 
@@ -182,6 +229,20 @@ class Reservation extends genericClass {
             return true;
         }else return false;
     }
+    function checkDateJour() {
+        if ($this->_date){
+            //definition des heuredebut et heurefin
+            $this->DateDebut = $this->_date;
+            $this->DateFin = $this->DateDebut + 86400;
+        }
+        //il faut également le court
+        $court = $this->getCourt();
+        if (!$court) return false;
+
+        if ($this->DateDebut && $this->DateFin){
+            return true;
+        }else return false;
+    }
     function checkDispo() {
         //il faut également le court
         $court = $this->getCourt();
@@ -206,22 +267,32 @@ class Reservation extends genericClass {
     }
 
     function Verify() {
-        //vérifie le client
         if (!$this->checkClient()){
             $this->addError(array("Message"=>"Veuillez saisir le client pour cette réservation"));
         }
         if (!$this->checkCourt()){
             $this->addError(array("Message"=>"Veuillez saisir le court pour cette réservation"));
         }
-        if (!$this->checkService()){
-            $this->addError(array("Message"=>"Veuillez saisir le service pour cette réservation"));
-        }
-        if (!$this->checkDate()){
-            $this->addError(array("Message"=>"Veuillez vérifier la saisie des dates"));
-        }
-        if (!$this->checkDispo()){
-            $this->addError(array("Message"=>"Cette horaire n'est pas disponible"));
-            $this->Valide = false;
+        //on récupère le type de court
+        $court= $this->getCourt();
+        $tc = $court->getParents('TypeCourt');
+        $tc = $tc[0];
+        if ($tc->Reservation=='Horaire') {
+            if (!$this->checkDate()) {
+                $this->addError(array("Message" => "Veuillez vérifier la saisie des dates"));
+            }
+            //vérifie le client
+            if (!$this->checkService()) {
+                $this->addError(array("Message" => "Veuillez saisir le service pour cette réservation"));
+            }
+            if (!$this->checkDispo()) {
+                $this->addError(array("Message" => "Cette horaire n'est pas disponible"));
+                $this->Valide = false;
+            }
+        }else{
+            if (!$this->checkDateJour()) {
+                $this->addError(array("Message" => "Veuillez vérifier la saisie de la date"));
+            }
         }
         if (sizeof($this->Error)) return false;
 
@@ -243,43 +314,44 @@ class Reservation extends genericClass {
             //Ajout d'une ligne pour la réservation
             $service = $this->getService();
             $client = $this->getClient();
-            $ser = genericClass::createInstance('TennisForever','LigneFacture');
-            $ser->Libelle = $service->Titre;
-            $ser->Type = "Reservation";
-            $ser->Quantite = 1;
-            $ser->MontantUnitaireTTC = $client->isSubscriber() ? $service->TarifAbonne : $service->Tarif;
-            $ser->MontantTTC = $ser->MontantUnitaireTTC;
-            $ser->addParent($this);
-            $ser->Save();
+            if ($service) {
+                $ser = genericClass::createInstance('TennisForever', 'LigneFacture');
+                $ser->Libelle = $service->Titre;
+                $ser->Type = "Reservation";
+                $ser->Quantite = 1;
+                $ser->MontantUnitaireTTC = $service->getTarif($client->isSubscriber(), $this->DateDebut, $this->DateFin);
+                $ser->MontantTTC = $ser->MontantUnitaireTTC;
+                $ser->addParent($this);
+                $ser->Save();
+            }
 
 
             //Saisie des partenaires.
             if (is_array($this->_partenaires)) foreach ($this->_partenaires as $p) {
-                //on vérifie l'existence du partenaire en client
-                $ep = Sys::getOneData('TennisForever', 'Partenaire/Email=' . $p->Email);
-                if ($ep) {
+                //on vérifie que le partenaire n'est pas abonne
+                if ($p->Id >0) {
                     //utilisation du partenaire existant
-                    $ep->AddParent($this);
-                    $ep->Save();
-                    $p = $ep;
+                    $p->AddParent($this);
+                    $p->Save();
                 } else {
                     //creation du partenaire
                     $p->AddParent($this);
                     $p->Save();
                 }
-                //si l'invité est abonné alors il ne paye pas
-                $ab = Sys::getOneData('TennisForever','Client/Partenaire/'.$p->Id);
-                if ($p && (!$ab || !$ab->isSubscriber() && $service->TarifInvite > 0)){
-                    //on ajoute la ligne de facture
-                    $ser = genericClass::createInstance('TennisForever','LigneFacture');
-                    $ser->Libelle = 'Partenaire '.$p->Nom.' - '.$service->Titre;
-                    $ser->Type = "Partenaire";
-                    $ser->Quantite = 1;
-                    $ser->MontantTTC = $service->TarifInvite;
-                    $ser->addParent($this);
-                    $ser->Save();
+                if ($client->isSubscriber()) {
+                    //si l'invité est abonné alors il ne paye pas
+                    $ab = Sys::getOneData('TennisForever', 'Client/Partenaire/' . $p->Id);
+                    if ($p && (!$ab || !$ab->isSubscriber() && $service->TarifInvite > 0)) {
+                        //on ajoute la ligne de facture
+                        $ser = genericClass::createInstance('TennisForever', 'LigneFacture');
+                        $ser->Libelle = 'Partenaire ' . $p->Nom . ' - ' . $service->Titre;
+                        $ser->Type = "Partenaire";
+                        $ser->Quantite = 1;
+                        $ser->MontantTTC = $service->TarifInvite;
+                        $ser->addParent($this);
+                        $ser->Save();
+                    }
                 }
-
             }
 
             //Saisie des produits
@@ -314,5 +386,13 @@ class Reservation extends genericClass {
             $total+= $l->MontantTTC;
         }
         return $total;
+    }
+
+    /**
+     * Validation de la réservation
+     */
+    function setValide() {
+        $this->Valide=1;
+        $this->Save();
     }
 }

@@ -9,7 +9,7 @@
 *********************************************/
 
 
-interface BoutiqueTypePaiementPlugin {
+interface TennisForeverTypePaiementPlugin {
 
 	/**
 	* initStatePaiement

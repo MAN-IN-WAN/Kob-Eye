@@ -30,7 +30,7 @@ body{
 
 @media screen and (min-width: 768px) {
     .modal-dialog {
-        width: 500px;
+        width: 700px;
         padding-top: 200px;
         padding-bottom: 30px;
     }
