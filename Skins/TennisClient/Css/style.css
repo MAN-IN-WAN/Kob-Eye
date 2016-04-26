@@ -40,15 +40,15 @@ body{
 }
 .modal-content {
 
- /*   background-color: #302e33;*/
+    /*   background-color: #302e33;*/
     background-color: rgba(0,0,0,0.8)
 }
 .form-group {
     margin-bottom: 15px;
     overflow: hidden;
 }
-h1 { font: normal 50px/50px Oleo Script;  color:#ffffff; }
-h2 { font: normal 40px/34px Oleo Script;  color:#ffffff; }
+h1 { font: normal 50px/50px Righteous;  color:#ffffff; }
+h2 { font: normal 40px/34px Righteous;  color:#ffffff; }
 h3 { font: normal 19px/26px "Trebuchet MS", Arial, Helvetica, sans-serif;  color:#ffffff; }
 h4 { font: normal 14px/20px Arial, Helvetica, sans-serif;  color:#333333; }
 h5 { font: normal 19px/26px "Trebuchet MS", Arial, Helvetica, sans-serif;  color:#ffffff; }
@@ -240,4 +240,16 @@ body { font-weight: normal;}
     color: #white;
     pointer-events: none;
     cursor: default;
+}
+
+.breadcrumb {
+    padding: 8px 15px;
+    margin-bottom: 20px;
+    list-style: none;
+    background-color: rgba(255,255,255,0.08);
+    border-radius: 4px;
+    color: #fff;
+}
+.breadcrumb a,.breadcrumb a:visited{
+    color: #fff;
 }

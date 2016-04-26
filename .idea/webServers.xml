@@ -34,6 +34,14 @@
           <option name="port" value="21" />
         </fileTransfer>
       </webServer>
+      <webServer id="37ad23ff-8111-4db0-af83-be848c44c2d5" name="client.eng.systems" url="http://client.eng.systems">
+        <fileTransfer host="client.eng.systems" port="22" privateKey="$USER_HOME$/.ssh/id_rsa" rootFolder="/var/www/kobeye" accessType="SFTP" username="root" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
     </option>
   </component>
 </project>

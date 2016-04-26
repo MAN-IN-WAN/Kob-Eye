@@ -2,6 +2,13 @@
 <project version="4">
   <component name="PublishConfigData" serverName="tennisforever.fr">
     <serverData>
+      <paths name="client.eng.systems">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="pharmaciedecastanet.fr">
         <serverdata>
           <mappings>
@@ -9,14 +16,14 @@
           </mappings>
         </serverdata>
       </paths>
-      <paths name="pharmaciedelecluse.fr">
+      <paths name="pharmaciedelecluse.fr (project level)">
         <serverdata>
           <mappings>
             <mapping deploy="/kobeye" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
-      <paths name="pharmaducours.fr">
+      <paths name="pharmaducours.fr (project level)">
         <serverdata>
           <mappings>
             <mapping deploy="/www" local="$PROJECT_DIR$" web="/" />

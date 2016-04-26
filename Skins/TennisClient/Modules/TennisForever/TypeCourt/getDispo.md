@@ -13,7 +13,7 @@
             "Id":[!R::Id!],
             "HeureDebut": "[DATE H][!R::DateDebut!][/DATE]",
             "HeureFin": "[DATE H][!R::DateFin!][/DATE]",
-            "Court": [!R::Court!],
+            "Court": [!R::CourtId!],
             "MinuteDebut": "[DATE i][!R::DateDebut!][/DATE]",
             "MinuteFin": "[DATE i][!R::DateFin!][/DATE]",
             "Service": "[!R::Service!]"
@@ -25,7 +25,7 @@
                 "Id":[!R::Id!],
                 "HeureDebut": "[DATE H][!R::Debut!][/DATE]",
                 "HeureFin": "[DATE H][!R::Fin!][/DATE]",
-                "Court": [!C::Id!],
+                "Court": [!C::CourtId!],
                 "MinuteDebut": "[DATE i][!R::Debut!][/DATE]",
                 "MinuteFin": "[DATE i][!R::Fin!][/DATE]",
                 "Service": "[!R::Service!]"

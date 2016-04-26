@@ -7,9 +7,14 @@
 [HEADER JS]/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/js/bootstrap-datepicker.min.js[/HEADER]
 [HEADER CSS]/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/css/bootstrap-datepicker3.min.css[/HEADER]
 [HEADER JS]/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.fr.min.js[/HEADER]
+[HEADER]
+<link rel="icon" href="http://tennisforever.fr/wp-content/uploads/2015/12/cropped-balle-32x32.png" sizes="32x32" />
+<link rel="icon" href="http://tennisforever.fr/wp-content/uploads/2015/12/cropped-balle-192x192.png" sizes="192x192" />
+<link rel="apple-touch-icon-precomposed" href="http://tennisforever.fr/wp-content/uploads/2015/12/cropped-balle-180x180.png" />
+[/HEADER]
 
 [HEADER]
-<link href='https://fonts.googleapis.com/css?family=Oleo+Script' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css'>
 [/HEADER]
 
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">

@@ -2,10 +2,12 @@
 class Service extends genericClass {
 
     function getTarif($ab,$deb,$fin){
-        if ($ab) return $this->TarifAbonnes;
+        if (!is_object($ab))die('pas un objet client');
         //test heure pleine
-        $hc = $this->isHeurePleine($deb,$fin);
-        if (!$hc) return $this->TarifCreuse;
+        $hp = $this->isHeurePleine($deb,$fin);
+        if ($ab->isSubscriber()&&!$hp) return ($this->TarifAbonnes<$this->TarifCreuse)?$this->TarifAbonnes:$this->TarifCreuse;
+        if ($ab->isSubscriber()&&$hp) return ($this->TarifAbonnes<$this->Tarif)?$this->TarifAbonnes:$this->Tarif;
+        elseif (!$ab->isSubscriber()&&!$hp) return $this->TarifCreuse;
         else return $this->Tarif;
 
     }
@@ -13,14 +15,15 @@ class Service extends genericClass {
     function isHeurePleine($deb,$fin) {
         $heuredeb = (int)date('H',$deb);
         $heurefin = (int)date('H',$fin);
+        $minutedeb = (int)date('i',$deb);
+        $minutefin = (int)date('i',$fin);
         //créneau 12-14
         if (($heuredeb<14&&$heuredeb>=12)
-            || ($heurefin<=14&&$heurefin>12)) return true;
+            || ($heurefin<=14&&($heurefin>12||($heurefin==12&$minutefin>0)))) return true;
 
         //créneau 18-21
         if (($heuredeb<21&&$heuredeb>=18)
-            || ($heurefin<=21&&$heurefin>18)) return true;
-
+            || ($heurefin<=21&&($heurefin>18||($heurefin==18&$minutefin>0)))) return true;
         //week end
         $date = date("l", $deb);
         $date = strtolower($date);

@@ -1678,8 +1678,8 @@ class genericClass extends Root {
 				}
 				break;
 			case "int" :
-				if (is_int($this -> $Prop["Titre"]) && $this -> $Prop["Titre"] != "") {
-					$e["Message"] = "__LA_VALEUR_DU_CHAMP__ " . (($Prop["description"] != "") ? $Prop["description"] : $Prop["Titre"]) . " __NOT_INT__";
+				if (!is_int($this -> $Prop["Titre"]) && $this -> $Prop["Titre"] != "") {
+					$e["Message"] = "__LA_VALEUR_DU_CHAMP__ " . (($Prop["description"] != "") ? $Prop["description"] : $Prop["Titre"]) . " __NOT_INT__ ";
 					$e["Prop"] = $Prop["Titre"];
 					$this -> AddError($e);
 					$error = 0;

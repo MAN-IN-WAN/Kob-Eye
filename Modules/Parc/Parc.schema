@@ -20,7 +20,7 @@
 		<FKEY card="0,1" module="Systeme" data="User,Id">UserId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Domain" driver="mysql" AccessPoint="1" master="0" Description="Domaines" Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png" Class="Modules/Parc/Class/Domain.class.php">
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Url du domaine">Url</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" description="Url du domaine">Url</PROPERTIES>
 		<PROPERTIES type="boolean" default="1" description="Auto-completion à la sauvegarde">updateOnSave</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">DNSSerial</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
@@ -101,15 +101,15 @@
 		<FUNCTION>Majdomaine</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Host" driver="mysql" Dico="1" description="Hébergement" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Class="Modules/Parc/Class/Host.class.php">
-		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" list="1">Nom</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="gestion commerciale" searchOrder="2" description="En production">Production</PROPERTIES>
 		<PROPERTIES type="boolean" default="1" category="gestion commerciale" searchOrder="3" description="Nécessite une facturation">Facturable</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="gestion commerciale" searchOrder="4" description="Hébergement au profit de l'agence">Interne</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" category="gestion commerciale" searchOrder="5" description="Numéro de contrat">NumContrat</PROPERTIES>
 		<PROPERTIES type="text" category="gestion commerciale">Commentaires</PROPERTIES>
-		<PROPERTIES type="int" obligatoire="1" default="1000" description="Quota (en Mo)">Quota</PROPERTIES>
-		<PROPERTIES type="varchar" length="50" obligatoire="1" default="default" description="Version de php" query="Parc/PHPVersion::Valeur">PHPVersion</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="1" default="1000" description="Quota (en Mo)" list="1">Quota</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" obligatoire="1" default="default" description="Version de php" query="Parc/PHPVersion::Valeur" list="1">PHPVersion</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
 		<PROPERTIES category="LDAP" type="int" auto="1">LdapGid</PROPERTIES>

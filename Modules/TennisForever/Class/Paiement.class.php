@@ -49,5 +49,12 @@ class Paiement extends genericClass
         $this->Set('Etat', $results['etat']);
         $this->Set('Status', 1);
         $this->Save();
+
+        if ($results['etat']=='1') {
+            //Mise à jour de la facture
+            $facture->Valide = 1;
+            $facture->Paye = 1;
+            $facture->Save();
+        }
     }
 }

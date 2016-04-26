@@ -1,17 +1,22 @@
- <h1 class="page-header">Tableau de bord</h1>
+[COUNT Boutique/Commande/Valide=1&Cloture=0|C]
+[COUNT Boutique/Commande/Valide=1&Prepare=0&Expedie=0&Cloture=0|CP]
+[COUNT Pharmacie/Ordonnance/Etat<4|O]
+[COUNT Pharmacie/Ordonnance/Etat<2|OP]
+<div id="reload">
+    <h1 class="page-header">Tableau de bord</h1>
           <div class="row placeholders">
             <div class="col-xs-6 col-sm-3 placeholder">
-                <a class="btn btn-success btn-block" href="/[!Sys::getMenu(Parc/Domain)!]">
+                <a class="btn [IF [!CP!]>0]btn-danger[ELSE]btn-success[/IF] btn-block" href="/[!Sys::getMenu(Boutique/Commande)!]">
                     <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
-                    <h4>[COUNT [!ParcClient::getChildren(Domain)!]|D][!D!] Domaine(s)</h4>
-                    <!--<span class="text-muted">Something else</span>-->
+                    <h4>[!C!] Commandes(s)</h4>
+                    <span>Dont [!CP!] non preparée(s)</span>
                 </a>
             </div>
             <div class="col-xs-6 col-sm-3 placeholder">
-                <a class="btn btn-info btn-block" href="/[!Sys::getMenu(Parc/Host)!]">
+                <a class="btn btn-block [IF [!OP!]>0]btn-danger[ELSE]btn-info[/IF]" href="/[!Sys::getMenu(Pharmacie/Ordonnance)!]">
                     <span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>
-                    <h4>[COUNT [!ParcClient::getChildren(Host)!]|D][!D!] Hébergement(s)</h4>
-                    <!--<span class="text-muted">Something else</span>-->
+                    <h4>[!O!] Ordonnance(s)</h4>
+                    <span>Dont [!OP!] non preparée(s)</span>
                 </a>
             </div>
         <!--
@@ -32,7 +37,25 @@
         -->
           </div>
 
-          <h2 class="sub-header">Domaines</h2>
-          [MODULE Parc/Domain/List]
-          <h2 class="sub-header">Hébergements</h2>
-          [MODULE Parc/Host/List]
+          <h2 class="sub-header">Commandes</h2>
+          [MODULE Boutique/Commande/List]
+          <h2 class="sub-header">Ordonnances</h2>
+          [MODULE Pharmacie/Ordonnance/List]
+</div>
+[IF [!RELOAD!]!=1]
+<script>
+
+    //auto reload
+    var timeout = setInterval(reloadPage, 5000);
+    function reloadPage () {
+        //window.location.href = '/[!Query!]';
+        $.ajax({
+            url: '/Systeme/User/DashBoard.htm?RELOAD=1',
+            context: $( '#reload' )
+        }).done(function(data) {
+            $( '#reload').html(data);
+            $( this ).addClass( 'active' );
+        });
+    }
+</script>
+[/IF]

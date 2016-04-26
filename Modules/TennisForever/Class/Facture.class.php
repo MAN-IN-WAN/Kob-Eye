@@ -77,6 +77,7 @@ class Facture extends genericClass{
         $res = Sys::getOneData('TennisForever','Reservation/Facture/'.$this->Id);
         if ($res){
             $res->Valide = 1;
+            $res->Facture = 1;
             $res->Save();
         }
     }
