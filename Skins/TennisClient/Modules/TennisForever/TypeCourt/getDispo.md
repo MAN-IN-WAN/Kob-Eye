@@ -21,15 +21,16 @@
         [/STORPROC]
         [STORPROC TennisForever/Disponibilite/Debut>[!DateDeb!]&Fin<[!DateFin!]|R|0|1000|Id|DESC||Id]
             [STORPROC TennisForever/Court/Disponibilite/[!R::Id!]|C]
-                [IF [!Flag!]+[!Pos!]>1],[/IF]{
+                [IF [!Flag!]],[/IF]{
                 "Id":[!R::Id!],
                 "HeureDebut": "[DATE H][!R::Debut!][/DATE]",
                 "HeureFin": "[DATE H][!R::Fin!][/DATE]",
-                "Court": [!C::CourtId!],
+                "Court": [!C::Id!],
                 "MinuteDebut": "[DATE i][!R::Debut!][/DATE]",
                 "MinuteFin": "[DATE i][!R::Fin!][/DATE]",
                 "Service": "[!R::Service!]"
                 }
+                [!Flag:=1!]
             [/STORPROC]
         [/STORPROC]
     ]

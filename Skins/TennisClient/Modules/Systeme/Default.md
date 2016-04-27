@@ -12,7 +12,14 @@ Mes réservations non complètes
         <a href="/[!Sys::getMenu(TennisForever/Reservation)!]/[!RES::Id!]" class="btn-tennis">
         <span class="label label-danger pull-right">[!Utils::getPrice([!RES::getTotal()!])!] €</span>
         Complèter ma réservation<br/>
-        <small>Du [DATE d/m/Y à H:i][!RES::DateDebut!][/DATE] pour une durée de [!RES::Duree!] minutes et avec [!RES::NbParticipant!] participants.</small>
+            [IF [!RES::Service!]]
+            <small>De [DATE H:i][!RES::DateDebut!][/DATE] pour une durée de [!RES::Duree!] minutes et avec [!RES::NbParticipant!] participants.</small>
+            [/IF]
+            <ul>
+                [STORPROC [!RES::getLigneFacture()!]|Lf]
+                <li>[!Lf::Quantite!] x [!Lf::Libelle!]</li>
+                [/STORPROC]
+            </ul>
         </a>
     [/LIMIT]
 [/STORPROC]
@@ -24,8 +31,15 @@ Mes réservations à venir
         [LIMIT 0|10]
 <a href="/[!Sys::getMenu(TennisForever/Reservation)!]/[!RES::Id!]" class="btn-tennis">
 <span class="label label-success pull-right">[!Utils::getPrice([!RES::getTotal()!])!] €</span>
-Consulter ma réservation<br/>
-<small>Du [DATE d/m/Y à H:i][!RES::DateDebut!][/DATE] pour une durée de [!RES::Duree!] minutes et avec [!RES::NbParticipant!] participants.</small>
+Consulter ma réservation Du [DATE d/m/Y][!RES::DateDebut!][/DATE]<br/>
+    [IF [!RES::Service!]]
+        <small>De [DATE H:i][!RES::DateDebut!][/DATE] pour une durée de [!RES::Duree!] minutes et avec [!RES::NbParticipant!] participants.</small>
+    [/IF]
+    <ul>
+    [STORPROC [!RES::getLigneFacture()!]|Lf]
+        <li>[!Lf::Quantite!] x [!Lf::Libelle!]</li>
+    [/STORPROC]
+    </ul>
 </a>
         [/LIMIT]
         [/STORPROC]

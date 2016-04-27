@@ -141,12 +141,14 @@ class Reservation extends genericClass {
         //partenaires
         $nbabonnes = sizeof($this->_partenaires);
         $this->_nbinvites;
-        if ($service->TarifInvite>0&&$this->_nbinvites>0){
+        if ($service->TarifInvite>0&&$this->_nbinvites>0&$client->isSubscriber()){
             $this->addLigneFacture($service->Titre.' - Invitation',$service->TarifInvite,$this->_nbinvites,$service,'Invitation');
         }
 
         $this->NbParticipant = $this->_nbinvites+ $nbabonnes + 1;
     }
+
+
     function setPartenaires($parts){
         $this->_partenaires = array();
         if (is_array($parts))foreach ($parts as $p){
