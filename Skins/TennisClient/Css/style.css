@@ -46,6 +46,7 @@ body{
 .form-group {
     margin-bottom: 15px;
     overflow: hidden;
+    color: white;
 }
 h1 { font: normal 50px/50px Righteous;  color:#ffffff; }
 h2 { font: normal 40px/34px Righteous;  color:#ffffff; }

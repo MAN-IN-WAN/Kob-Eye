@@ -52,13 +52,16 @@
             </ul></h3>
         <h3><b>Total à payer:</b><span class="label label-success" >[!Utils::getPrice([!R::getTotal()!])!] €</span></h3>
 
-        [IF [!R::DateFin!]>[!TMS::Now!]]
             [IF [!R::Valide!]=]
                 [IF [!R::getTotal()!]>0]
-                    <input type="submit" class="btn btn-success btn-large btn-block" name="Valider" value="Payer en carte bleue" />
+                    [IF [!R::DateFin!]>[!TMS::Now!]]
+                        <input type="submit" class="btn btn-success btn-large btn-block" name="Valider" value="Payer en carte bleue" />
+                    [/IF]
                     <a href="/[!Sys::getMenu(TennisForever/Reservation)!]/[!R::Id!]/Supprimer" class="btn btn-warning btn-large btn-block" >Supprimer la réservation</a>
                 [ELSE]
-                    <input type="submit" class="btn btn-success btn-large btn-block" name="Valider" value="Valider la réservation">
+                    [IF [!R::DateFin!]>[!TMS::Now!]]
+                        <input type="submit" class="btn btn-success btn-large btn-block" name="Valider" value="Valider la réservation">
+                    [/IF]
                         <a href="/[!Sys::getMenu(TennisForever/Reservation)!]/[!R::Id!]/Supprimer" class="btn btn-warning btn-large btn-block" >Supprimer la réservation</a>
                  [/IF]
             [ELSE]
@@ -70,10 +73,11 @@
                         Cette réservation est payée.
                     </div>
                 [ELSE]
+                    [IF [!R::DateFin!]>[!TMS::Now!]]
                         <a href="/[!Sys::getMenu(TennisForever/Reservation)!]/[!R::Id!]/Supprimer" class="btn btn-warning btn-large btn-block" >Supprimer la réservation</a>
+                    [/IF]
                 [/IF]
             [/IF]
-        [/IF]
                 <a href="/" class="btn btn-danger btn-large btn-block">Retour à l'accueil</a>
         </form>
     </div>

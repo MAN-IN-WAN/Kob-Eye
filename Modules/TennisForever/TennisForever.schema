@@ -51,6 +51,7 @@
                 <JOIN type="outer" title="Service" on="ServiceId" target="Id">
                     <PROPERTIES type="varchar" list="1" description="Service" alias="Service">Titre</PROPERTIES>
                     <PROPERTIES type="varchar" list="1" description="Duree" alias="Duree">Duree</PROPERTIES>
+                    <PROPERTIES type="varchar" list="1" description="Duree" alias="Type">Type</PROPERTIES>
                 </JOIN>
             </OBJECTCLASS>
         </VIEW>
@@ -70,13 +71,14 @@
             <OBJECTCLASS title="Court" select="*" filters="">
                 <JOIN type="outer" title="TypeCourt" on="TypeCourtId" target="Id">
                     <PROPERTIES type="varchar" list="1" description="Type" alias="TypeCourt">Titre</PROPERTIES>
+                    <PROPERTIES description="Afficher sur le site" type="boolean" list="1" form="1">Web</PROPERTIES>
                 </JOIN>
             </OBJECTCLASS>
         </VIEW>
     </OBJECTCLASS>
     <OBJECTCLASS title="TypeCourt" driver="mysql" AccessPoint="0" Dico="1" Description="Ressources" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png" browseable="1">
         <PROPERTIES searchOrder="1" description="Titre" type="varchar" length="200" obligatoire="1" list="1" form="1">Titre</PROPERTIES>
-        <PROPERTIES searchOrder="2" description="Type de réservation" type="varchar" length="200" obligatoire="1" list="1" form="1" values="Horaire,Journalière,Aucun">Reservation</PROPERTIES>
+        <PROPERTIES searchOrder="3" description="Type de réservation" type="varchar" length="200" obligatoire="1" list="1" form="1" values="Horaire,Journalière,Aucun">Reservation</PROPERTIES>
         <PROPERTIES Order="1" description="Gestion des invités" type="varchar" values="Nominatif,Quantitatif,Aucun" form="1" default="1">GestionInvite</PROPERTIES>
         <PROPERTIES description="Afficher sur le site" type="boolean" list="1" form="1">Web</PROPERTIES>
     </OBJECTCLASS>

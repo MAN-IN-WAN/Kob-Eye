@@ -1,6 +1,8 @@
 [STORPROC [!Query!]|R|0|1]
     [IF [!action!]=Je confirme]
-        [IF [!R::DateFin!]>[!TMS::Now!]]
+        [IF [!R::Valide!]&&[!R::getTotal()!]>0]
+            [REDIRECT][!Sys::getMenu(TennisForever/Reservation)!]?msg=La réservation ne peut être supprimée&action=danger[/REDIRECT]
+        [ELSE]
             [!R::Delete()!]
             <div class="alert alert-success">
                 La réservation a été supprimée avec succès.
@@ -8,8 +10,6 @@
             //Suppression de la réservation
             [!R::Delete()!]
             [REDIRECT][!Sys::getMenu(TennisForever/Reservation)!]?msg=La réservation a été supprimée avec succes&action=success[/REDIRECT]
-        [ELSE]
-            [REDIRECT][!Sys::getMenu(TennisForever/Reservation)!]?msg=La réservation ne peut être supprimée&action=danger[/REDIRECT]
         [/IF]
     [/IF]
 <div class="row">
