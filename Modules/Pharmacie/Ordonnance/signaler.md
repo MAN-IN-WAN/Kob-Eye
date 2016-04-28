@@ -2,5 +2,6 @@
         [METHOD O|Prioriser][/METHOD]
 [/STORPROC]
 {
-    "success": true
+    "success": true,
+    "msg": "L'equipe a été prévenue de votre arrivée. Nous vous remercions."
 }

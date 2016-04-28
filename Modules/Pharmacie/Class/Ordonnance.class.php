@@ -9,7 +9,7 @@ class Ordonnance extends genericClass {
         }
 
         parent::Save();
-        if (!$id){
+        if ($new){
             //Si sachet dose
             if ($this->SachetDose){
                 $this->Commentaire.="\r\nPREPARATION SACHET DOSE";
@@ -65,36 +65,39 @@ class Ordonnance extends genericClass {
                 //envoi des notifications
                 $this->sendNotifications($new);
                 $this->DateCreation = time();
-                $this->Priorite = 40;
+                if ($this->Priorite<50)
+                    $this->Priorite = 40;
                 break;
             case 2:
-                if ($old->Etat!=$this->Etat) {
+                if ($old->Etat!=$this->Etat||$this->Priorite>50) {
                     //envoi des mails
                     $this->sendMailAcheteur();
                     //envoi des notifications
                     $this->sendNotifications($new);
-                    $this->Priorite = 20;
+                    if ($this->Priorite<50)
+                        $this->Priorite = 20;
                 }
                 break;
             case 3:
-                if ($old->Etat!=$this->Etat) {
+                if ($old->Etat!=$this->Etat||$this->Priorite>50) {
                     //envoi des mails
                     $this->sendMailAcheteur();
                     //envoi des notifications
                     $this->sendNotifications($new);
                     $this->PrepareLe = time();
-                    $this->Priorite = 10;
+                    if ($this->Priorite<50)
+                        $this->Priorite = 10;
                 }
                 break;
             case 4:
-                if ($old->Etat!=$this->Etat) {
+                //if ($old->Etat!=$this->Etat) {
                     //envoi des mails
                     $this->sendMailAcheteur();
                     //envoi des notifications
                     $this->sendNotifications($new);
                     $this->RetireLe = time();
                     $this->Priorite = 0;
-                }
+                //}
                 break;
             default:
                 $this->Priorite = 0;
@@ -181,11 +184,14 @@ class Ordonnance extends genericClass {
                 $message = "L'ordonnance est livrée";
                 break;
         }
+        if ($this->Priorite>50){
+            $message = 'Le client est dans l\'officine !! '.$message;
+        }
 
         if ($new) {
             $msg = array
             (
-                'title' => 'Driveo backoffice '.$m->Nom.': nouvelle ordonnance de Mr ' . $this->Nom . ' ' . $this->Prenom,
+                'title' => ''.$m->Nom.': nouvelle ordonnance de Mr ' . $this->Nom . ' ' . $this->Prenom,
                 'store' => 'Ordonnances',
                 'vibrate' => 1,
                 'sound' => 1
@@ -193,7 +199,7 @@ class Ordonnance extends genericClass {
         }else{
             $msg = array
             (
-                'title' => 'Driveo backoffice '.$m->Nom.': un nouvel ordonnance de Mr ' . $this->Nom . ' ' . $this->Prenom,
+                'title' => ''.$m->Nom.': l\'ordonnance de Mr ' . $this->Nom . ' ' . $this->Prenom,
                 'store' => 'Ordonnances',
                 'vibrate' => 1,
                 'sound' => 1
@@ -213,6 +219,10 @@ class Ordonnance extends genericClass {
         );
         $msg["message"] = $message;
         Systeme::sendNotification($msg,$u->Id);
+    }
+    function Prioriser() {
+        $this->Priorite=60;
+        $this->Save();
     }
 }
 ?>

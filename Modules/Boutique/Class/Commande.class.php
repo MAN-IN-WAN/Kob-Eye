@@ -1,8 +1,11 @@
 <?php
 
 class Commande extends genericClass {
-	var $Avalider = false;
-	var $Apayer = false;
+    var $AValider = false;
+    var $ACloturer = false;
+    var $AExpedier = false;
+    var $APreparer = false;
+	var $APayer = false;
 	var $ADevalider = false;
 	var $ACurrent = false;
 
@@ -45,17 +48,17 @@ class Commande extends genericClass {
 			$old = Sys::getOneData('Boutique','Commande/'.$this->Id);
 
 			//Test des comportements à déclencher
-			$this -> Apayer = (!$old->Paye && $this -> Paye);
-			$this -> Avalider = (!$old->Valide && $this -> Valide);
+			$this -> APayer = (!$old->Paye && $this -> Paye);
+			$this -> AValider = (!$old->Valide && $this -> Valide);
 			$this -> ADevalider = ($old->Valide && !$this -> Valide);
 			$this -> ACurrent = (!$old->Current && $this -> Current);
 			$this -> AExpedier = (!$old->Expedie && $this -> Expedie);
 			$this -> ACloturer = (!$old->Cloture && $this -> Cloture);
-			$this -> APrepare = (!$old->Prepare && $this -> Prepare);
+			$this -> APreparer = (!$old->Prepare && $this -> Prepare);
 		} else {
             $new = true;
-			$this -> Apayer = $this -> Paye;
-			$this -> Avalider = $this -> Valide;
+			$this -> APayer = $this -> Paye;
+			$this -> AValider = $this -> Valide;
 		}
 
 		//Sauvegarde
@@ -113,27 +116,28 @@ class Commande extends genericClass {
 		}
 
 		//Execution des comportements
-		if ($this -> Avalider) {
+		if ($this -> AValider) {
 			$this -> applyCommande();
             $this -> sendMailAcheteur();
 			$this->Priorite = 40;
+            $new=true;
 		}
 		if ($this -> ADevalider) {
 			$this -> discardCommande();
 			$this->Priorite = 0;
 		}
-		if ($this -> Apayer) {
+		if ($this -> APayer) {
 			$this -> setMagasin();
 			$this -> sendMailAcheteur();
 			$this -> applyInvoice();
 		}
-		if ($this -> APrepare) {
+		if ($this -> APreparer) {
 			$this->Priorite = 20;
 		}
-		if ($this -> AExpedie) {
+		if ($this -> AExpedier) {
 			$this->Priorite = 10;
 		}
-		if ($this -> ACloture) {
+		if ($this -> ACloturer) {
 			$this->Priorite = 0;
 		}
 		if ($this -> ACurrent) {
@@ -1797,12 +1801,13 @@ class Commande extends genericClass {
 		return $this->ObjetTva = new ObjetTva($this->DateCommande);
 	}
     private function sendNotification($new){
+		if ($new&&!$this->Valide)return;
         //notification admin
         $m = Magasin::getCurrentMagasin();
         if ($new) {
             $msg = array
             (
-                'title' => 'Driveo backoffice '. $m->Nom.': un nouvel évènement commande',
+                'title' => ''. $m->Nom.': Nouvelle commande '.$this->RefCommande,
                 'message' => 'la commande ' . $this->RefCommande,
                 'store' => 'Commandes',
                 'vibrate' => 1,
@@ -1811,8 +1816,8 @@ class Commande extends genericClass {
         }else{
             $msg = array
             (
-                'title' => 'Driveo backoffice '. $m->Nom.': un nouvel évènement commande',
-                'message' => 'la commande ' . $this->RefCommande,
+                'title' => ''. $m->Nom.': un nouvel évènement commande',
+                'message' => (($this->Priorite>50)?'Le client est dans l\'officine !! ':'').'la commande ' . $this->RefCommande,
                 'store' => 'Commandes',
                 'vibrate' => 1,
                 'sound' => 1
@@ -1826,7 +1831,7 @@ class Commande extends genericClass {
         if (!$new) {
             $msg = array
             (
-                'title' => $m->Nom.': votre commande a changé d\'état.',
+                'title' => $m->Nom.': votre commande ' . $this->RefCommande.' a changé d\'état.',
                 'store' => 'Commandes',
                 'vibrate' => 1,
                 'sound' => 1
@@ -1837,7 +1842,17 @@ class Commande extends genericClass {
             if ($this->Expedie){
                 $msg["message"] = "La commande a été retirée";
             }
+            if ($this->Cloture){
+                $msg["message"] = "La commande a été cloturée";
+            }
+            Systeme::sendNotification($msg,$u->Id);
         }
-        Systeme::sendNotification($msg,$u->Id);
+    }
+
+    function Prioriser() {
+        if (!$this->Cloture&&!$this->Expedie) {
+            $this->Priorite = 60;
+            $this->Save();
+        }
     }
 }

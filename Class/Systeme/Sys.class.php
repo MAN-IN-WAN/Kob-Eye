@@ -1105,6 +1105,9 @@ class Sys extends Root{
         if (is_object($this->Db[0])) $this->Db[0]->query("COMMIT");
 
         $this->Log->log("---------------------------------------- CLOSE----------------------------------------");
+		flush();
+        ob_end_flush();
+        session_write_close();
 	}
 
 	function restartTransaction(){

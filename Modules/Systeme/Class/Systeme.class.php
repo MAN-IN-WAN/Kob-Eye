@@ -130,42 +130,13 @@ class Systeme extends Module {
         echo 'send message';
         print_r($msg);
 
-        Systeme::sendNotification($msg,'all');
+//        Systeme::sendNotification($msg,'all');
+        Systeme::sendNotification($msg,37);
     }
 
     public static function  sendNotification($msg,$target)
     {
 
-        //enregistre les changement dans la base pour rendre les modifications disponibles
-        if (is_object($GLOBALS['Systeme']->Db[0])) {
-            $GLOBALS['Systeme']->Db[0]->query("COMMIT");
-            $GLOBALS['Systeme']->Db[0]->query("START TRANSACTION");
-        }
-        $msg['vibrate'] = 1;
-        if (isset($msg['sound'])) unset($msg['sound']);
-        /*$msg['soundname'] = 'www/res/raw/sound.mp3';*/
-        /*$msg['sound'] = "true";*/
-        if (!isset($msg['notify'])) $msg['notify'] = 1;
-        if (!isset($msg['store'])) $msg['store'] = '';
-        if (!isset($msg['message'])) $msg['message'] = '';
-        $msg['largeIcon'] = 'large_icon';
-        $msg['smallIcon'] = 'small_icon';
-
-        //backapp
-        //$API_ACCESS_KEY = 'AIzaSyCGGUR9EbkicdM7IUXp1l-Z2sHFQCnLp-A';
-        // API access key from Google API's Console
-        //castanet
-        //define('API_ACCESS_KEY', 'AIzaSyD-WPYJ39eWmA2aWzgn6fQF1A5WOv3FG5A');
-        //cours
-        //$API_ACCESS_KEY = 'AIzaSyBbYtVciuBNkTX2h13sHhAvsjBRCSdtb6U';
-        //ecluse
-        //define('API_ACCESS_KEY', 'AIzaSyCmaDWG5O2HrKdXm4JCkJPQZAvtwqCljos');
-
-        //recherche des périphériques à associer.
-        //die('envoi utilisateur '.$target.' | '.($target>0));
-        /****
-         * ANDROID
-         */
         if ($target > 0) {
             $dev = Sys::getData('Systeme', 'User/' . $target . '/Device/Admin=0&Type=Android');
             $API_ACCESS_KEY = 'AIzaSyBbYtVciuBNkTX2h13sHhAvsjBRCSdtb6U';
@@ -176,148 +147,219 @@ class Systeme extends Module {
             $dev = Sys::getData('Systeme', 'Device/Admin=1&Type=Android');
             $API_ACCESS_KEY = 'AIzaSyCGGUR9EbkicdM7IUXp1l-Z2sHFQCnLp-A';
         }
-        $registrationIds = array();
-        foreach ($dev as $d) {
-            $registrationIds[] = $d->Key;
-        }
-        if (sizeof($registrationIds)) {
-            $fields = array
-            (
-                'registration_ids' => $registrationIds,
-                'data' => $msg
-            );
 
-            $headers = array
-            (
-                'Authorization: key=' . $API_ACCESS_KEY,
-                'Content-Type: application/json'
-            );
-
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, 'https://android.googleapis.com/gcm/send');
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
-            $result = curl_exec($ch);
-            curl_close($ch);
-        }
-        /****
-         * IOS
-         */
+        $devios = array();
         if ($target > 0) {
-            $dev = Sys::getData('Systeme', 'User/' . $target . '/Device/Admin=0&Type=iOS');
+            $devios = Sys::getData('Systeme', 'User/' . $target . '/Device/Admin=0&Type=iOS');
         } elseif ($target == "all") {
-            $dev = Sys::getData('Systeme', 'Device/Admin=0&Type=iOS');
+            $devios = Sys::getData('Systeme', 'Device/Admin=0&Type=iOS');
+        } elseif ($target == "admin") {
+            $devios = Sys::getData('Systeme', 'Device/Admin=1&Type=iOS');
         }
-        $ctx = stream_context_create();
-        // ck.pem is your certificate file
-        stream_context_set_option($ctx, 'ssl', 'local_cert', 'Modules/Systeme/Device/prod.cours.pem');
-        stream_context_set_option($ctx, 'ssl', 'passphrase', '21wyisey');
-        // Open a connection to the APNS server
-        $gateway = 'ssl://gateway.push.apple.com:2195';
-        //$gateway_dev = 'ssl://gateway.sandbox.push.apple.com:2195';
-        $fp = stream_socket_client(
-            $gateway, $err,
-            $errstr, 60, STREAM_CLIENT_CONNECT | STREAM_CLIENT_PERSISTENT, $ctx);
-        stream_set_blocking ($fp, 0);
 
-        $apple_expiry = time() + (90 * 24 * 60 * 60);
+        //enregistre les changement dans la base pour rendre les modifications disponibles
+        if (is_object($GLOBALS['Systeme']->Db[0])) {
+            $GLOBALS['Systeme']->Db[0]->query("COMMIT");
+            $GLOBALS['Systeme']->Db[0]->query("START TRANSACTION");
+        }
+        //$pid = pcntl_fork();
+        //if (!$pid) die('ca marche po');
+        register_shutdown_function('sendNotificationParallel',$dev,$devios,$msg,$API_ACCESS_KEY);
+        return;
+    }
 
-        if (!$fp)
-            exit("Failed to connect prod: $err $errstr" . PHP_EOL);
 
-        // Create the payload body
-        $body = (object)array(
-            'aps' => array(
-                'alert' => array(
-                    'title' => $msg['title'],
-                    'body' => $msg['message']
-                ),
-                'sound' => 'default'
-            ),
-            'store' => $msg['store'],
-            'alert' => $msg['alert']
+}
+function sendNotificationParallel($dev,$devios,$msg,$API_ACCESS_KEY) {
+    $pid = pcntl_fork();
+    if (!$pid) die();
+
+    $msg['vibrate'] = 1;
+    if (isset($msg['sound'])) unset($msg['sound']);
+    /*$msg['soundname'] = 'www/res/raw/sound.mp3';*/
+    /*$msg['sound'] = "true";*/
+    if (!isset($msg['notify'])) $msg['notify'] = 1;
+    if (!isset($msg['alert'])) $msg['alert'] = 1;
+    if (!isset($msg['store'])) $msg['store'] = '';
+    if (!isset($msg['message'])) $msg['message'] = '';
+    $msg['largeIcon'] = 'large_icon';
+    $msg['smallIcon'] = 'small_icon';
+
+    //backapp
+    //$API_ACCESS_KEY = 'AIzaSyCGGUR9EbkicdM7IUXp1l-Z2sHFQCnLp-A';
+    // API access key from Google API's Console
+    //castanet
+    //define('API_ACCESS_KEY', 'AIzaSyD-WPYJ39eWmA2aWzgn6fQF1A5WOv3FG5A');
+    //cours
+    //$API_ACCESS_KEY = 'AIzaSyBbYtVciuBNkTX2h13sHhAvsjBRCSdtb6U';
+    //ecluse
+    //define('API_ACCESS_KEY', 'AIzaSyCmaDWG5O2HrKdXm4JCkJPQZAvtwqCljos');
+
+    //recherche des périphériques à associer.
+    //die('envoi utilisateur '.$target.' | '.($target>0));
+    /****
+     * ANDROID
+     */
+    $registrationIds = array();
+    foreach ($dev as $d) {
+        $registrationIds[] = $d->Key;
+    }
+    if (sizeof($registrationIds)) {
+        $fields = array
+        (
+            'registration_ids' => $registrationIds,
+            'data' => $msg
         );
 
+        $headers = array
+        (
+            'Authorization: key=' . $API_ACCESS_KEY,
+            'Content-Type: application/json'
+        );
 
-        foreach ($dev as $d) {
-            $deviceToken = $d->Key;
-
-            $apple_identifier = $d->Id;
-            // Encode the payload as JSON
-            $payload = json_encode($body);
-            // Build the binary notification
-            $tmp = chr(0) . pack('n', 32) . pack('H*', crc32($deviceToken)) . pack('n', strlen($payload)) . $payload;
-            // Send it to the server
-            // Enhanced Notification
-            $msg = pack("C", 1) . pack("N", $apple_identifier) . pack("N", $apple_expiry) . pack("n", 32) . pack('H*', str_replace(' ', '', $deviceToken)) . pack("n", strlen($payload)) . $payload;
-
-            // SEND PUSH
-            fwrite($fp, $msg);
-            self::checkAppleErrorResponse($fp);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://android.googleapis.com/gcm/send');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4 );
+        curl_setopt($ch, CURLOPT_SSLVERSION,3);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_FAILONERROR, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+        //echo 'curl --header "Authorization: key=AIzaSyCGGUR9EbkicdM7IUXp1l-Z2sHFQCnLp-A" --header "Content-Type: application/json" -v https://android.googleapis.com/gcm/send -d "'.addslashes(json_encode($fields)).'"';
+        $result = curl_exec($ch);
+        // Error handling
+        if ( curl_errno( $ch ) )
+        {
+            $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            echo 'GCM error: '.$API_ACCESS_KEY.' => ' . curl_error( $ch ).' => ' . curl_errno( $ch ).' => '.$http_status;
         }
-        // Workaround to check if there were any errors during the last seconds of sending.
-        // Pause for half a second.
-        // Note I tested this with up to a 5 minute pause, and the error message was still available to be retrieved
-        usleep(500000);
+        curl_close($ch);
 
-        self::checkAppleErrorResponse($fp);
-
-        fclose($fp);
-    }
-    // FUNCTION to check if there is an error response from Apple
-    // Returns TRUE if there was and FALSE if there was not
-    function checkAppleErrorResponse($fp) {
-        //byte1=always 8, byte2=StatusCode, bytes3,4,5,6=identifier(rowID).
-        // Should return nothing if OK.
-
-        //NOTE: Make sure you set stream_set_blocking($fp, 0) or else fread will pause your script and wait
-        // forever when there is no response to be sent.
-
-        $apple_error_response = fread($fp, 6);
-        if ($apple_error_response) {
-            // unpack the error response (first byte 'command" should always be 8)
-            $error_response = unpack('Ccommand/Cstatus_code/Nidentifier', $apple_error_response);
-            if ($error_response['status_code'] == '0') {
-                $error_response['status_code'] = '0-No errors encountered';
-            } else if ($error_response['status_code'] == '1') {
-                $error_response['status_code'] = '1-Processing error';
-            } else if ($error_response['status_code'] == '2') {
-                $error_response['status_code'] = '2-Missing device token';
-            } else if ($error_response['status_code'] == '3') {
-                $error_response['status_code'] = '3-Missing topic';
-            } else if ($error_response['status_code'] == '4') {
-                $error_response['status_code'] = '4-Missing payload';
-            } else if ($error_response['status_code'] == '5') {
-                $error_response['status_code'] = '5-Invalid token size';
-            } else if ($error_response['status_code'] == '6') {
-                $error_response['status_code'] = '6-Invalid topic size';
-            } else if ($error_response['status_code'] == '7') {
-                $error_response['status_code'] = '7-Invalid payload size';
-            } else if ($error_response['status_code'] == '8') {
-                $error_response['status_code'] = '8-Invalid token';
-            } else if ($error_response['status_code'] == '255') {
-                $error_response['status_code'] = '255-None (unknown)';
-            } else {
-                $error_response['status_code'] = $error_response['status_code'].'-Not listed';
+        //gestion des erreurs
+        $out = json_decode($result);
+        if ($out->failure){
+            //on doit un supprimer un
+            foreach ($out->results as $k=>$r){
+                if (isset($r->error)){
+                    //suppression du device
+                    $dev = Sys::getOneData('Systeme','Device/Key='.$registrationIds[$k]);
+                    $dev->Delete();
+                }
             }
-
-            //echo '<br><b>+ + + + + + ERROR</b> Response Command:<b>' . $error_response['command'] . '</b>&nbsp;&nbsp;&nbsp;Identifier:<b>' . $error_response['identifier'] . '</b>&nbsp;&nbsp;&nbsp;Status:<b>' . $error_response['status_code'] . '</b><br>';
-
-            //echo 'Identifier is the rowID (index) in the database that caused the problem, and Apple will disconnect you from server. To continue sending Push Notifications, just start at the next rowID after this Identifier.<br>';
-
-            //elmination des périphériques invalides
-            if ($error_response['status_code']=='5'||$error_response['status_code']=='8'){
-                //suppression du périphérique
-                $dev = Sys::getOneData('Systeme','Device/'.$error_response['identifier']);
-                $dev->Delete();
-                echo 'suppression du périphérique '.$error_response['identifier']."\r\n";
-            }
-
-            return true;
         }
-        return false;
     }
+    /****
+     * IOS
+     */
+    $ctx = stream_context_create();
+    // ck.pem is your certificate file
+    stream_context_set_option($ctx, 'ssl', 'local_cert', realpath(dirname(__FILE__)).'/../Device/prod.cours.pem');
+    stream_context_set_option($ctx, 'ssl', 'passphrase', '21wyisey');
+    // Open a connection to the APNS server
+    $gateway = 'ssl://gateway.push.apple.com:2195';
+    //$gateway_dev = 'ssl://gateway.sandbox.push.apple.com:2195';
+    $fp = stream_socket_client(
+        $gateway, $err,
+        $errstr, 60, STREAM_CLIENT_CONNECT | STREAM_CLIENT_PERSISTENT, $ctx);
+    stream_set_blocking ($fp, 0);
+
+    $apple_expiry = time() + (90 * 24 * 60 * 60);
+
+    if (!$fp)
+        exit("Failed to connect prod: $err $errstr" . PHP_EOL);
+
+    // Create the payload body
+    $body = (object)array(
+        'aps' => array(
+            'alert' => array(
+                'title' => $msg['title'],
+                'body' => $msg['message']
+            ),
+            'sound' => 'default'
+        ),
+        'store' => $msg['store'],
+        'alert' => $msg['alert']
+    );
+
+
+    foreach ($devios as $d) {
+        //echo "<li>- sending to $d->Id</li>\r\n";
+        $deviceToken = $d->Key;
+
+        $apple_identifier = $d->Id;
+        // Encode the payload as JSON
+        $payload = json_encode($body);
+        // Send it to the server
+        // Enhanced Notification
+        $msg = pack("C", 1) . pack("N", $apple_identifier) . pack("N", $apple_expiry) . pack("n", 32) . pack('H*', str_replace(' ', '', $deviceToken)) . pack("n", strlen($payload)) . $payload;
+
+        // SEND PUSH
+        fwrite($fp, $msg);
+        checkAppleErrorResponse($fp);
+    }
+    // Workaround to check if there were any errors during the last seconds of sending.
+    // Pause for half a second.
+    // Note I tested this with up to a 5 minute pause, and the error message was still available to be retrieved
+    usleep(500000);
+
+    checkAppleErrorResponse($fp);
+
+    fclose($fp);
+
+    $GLOBALS['Systeme']->Db[0]->query("COMMIT");
+}
+// FUNCTION to check if there is an error response from Apple
+// Returns TRUE if there was and FALSE if there was not
+function checkAppleErrorResponse($fp) {
+    //byte1=always 8, byte2=StatusCode, bytes3,4,5,6=identifier(rowID).
+    // Should return nothing if OK.
+
+    //NOTE: Make sure you set stream_set_blocking($fp, 0) or else fread will pause your script and wait
+    // forever when there is no response to be sent.
+
+    $apple_error_response = fread($fp, 6);
+    if ($apple_error_response) {
+        // unpack the error response (first byte 'command" should always be 8)
+        $error_response = unpack('Ccommand/Cstatus_code/Nidentifier', $apple_error_response);
+        if ($error_response['status_code'] == '0') {
+            $error_response['status_code'] = '0-No errors encountered';
+        } else if ($error_response['status_code'] == '1') {
+            $error_response['status_code'] = '1-Processing error';
+        } else if ($error_response['status_code'] == '2') {
+            $error_response['status_code'] = '2-Missing device token';
+        } else if ($error_response['status_code'] == '3') {
+            $error_response['status_code'] = '3-Missing topic';
+        } else if ($error_response['status_code'] == '4') {
+            $error_response['status_code'] = '4-Missing payload';
+        } else if ($error_response['status_code'] == '5') {
+            $error_response['status_code'] = '5-Invalid token size';
+        } else if ($error_response['status_code'] == '6') {
+            $error_response['status_code'] = '6-Invalid topic size';
+        } else if ($error_response['status_code'] == '7') {
+            $error_response['status_code'] = '7-Invalid payload size';
+        } else if ($error_response['status_code'] == '8') {
+            $error_response['status_code'] = '8-Invalid token';
+        } else if ($error_response['status_code'] == '255') {
+            $error_response['status_code'] = '255-None (unknown)';
+        } else {
+            $error_response['status_code'] = $error_response['status_code'].'-Not listed';
+        }
+
+        echo '<br><b>+ + + + + + ERROR</b> Response Command:<b>' . $error_response['command'] . '</b>&nbsp;&nbsp;&nbsp;Identifier:<b>' . $error_response['identifier'] . '</b>&nbsp;&nbsp;&nbsp;Status:<b>' . $error_response['status_code'] . '</b><br>';
+
+        echo 'Identifier is the rowID (index) in the database that caused the problem, and Apple will disconnect you from server. To continue sending Push Notifications, just start at the next rowID after this Identifier.<br>';
+
+        //elmination des périphériques invalides
+        if ($error_response['status_code']=='5'||$error_response['status_code']=='8'){
+            //suppression du périphérique
+            $dev = Sys::getOneData('Systeme','Device/'.$error_response['identifier']);
+            $dev->Delete();
+            echo 'suppression du périphérique '.$error_response['identifier']."\r\n";
+        }
+
+        return true;
+    }
+    return false;
 }

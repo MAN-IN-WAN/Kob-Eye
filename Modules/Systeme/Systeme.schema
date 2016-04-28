@@ -253,5 +253,10 @@
         <FKEY card="0,1" data="User,Id" description="User">UserId</FKEY>
         <FUNCTION>sendNotificationTest</FUNCTION>
     </OBJECTCLASS>
+	<OBJECTCLASS title="Notification" driver="mysql" AccessPoint="0" Icon="[None]" description="Notifications">
+		<PROPERTIES category="Description" type="varchar" searchOrder="1">Titre</PROPERTIES>
+		<PROPERTIES category="Description" type="varchar" searchOrder="2">Message</PROPERTIES>
+		<FKEY card="0,1" data="Device,Id" description="Périphérique">DeviceId</FKEY>
+	</OBJECTCLASS>
 
 </SCHEMA>
