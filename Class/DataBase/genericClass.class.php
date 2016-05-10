@@ -2298,7 +2298,7 @@ class genericClass extends Root {
 	 		$out = array_merge($this->Menus,$out);
 	 	}else {
 			//children menus
-			$chds = $this->getChildren($this->ObjectType);
+			$chds = $this->getChildren($this->ObjectType.'/Display=1');
 		 	if (isset($chds)&&is_array($chds)){
 		 		$out = array_merge($chds,$out);
 		 	}

@@ -1,15 +1,13 @@
 <SCHEMA>
 	<OBJECTCLASS title="Client" driver="mysql" AccessPoint="1" master="0" Description="Clients" Icon="/Skins/AdminV2/Img/IconAqua/Forum.png" className="Parc_Client" Class="Modules/Parc/Class/Client.class.php">
-		<PROPERTIES category="Intitulé" type="varchar" obligatoire="1" searchOrder="1">Nom</PROPERTIES>
-		<PROPERTIES category="Gestion" type="varchar" obligatoire="0" searchOrder="2" description="Code client de la gestion Abtel Web">CodeClient</PROPERTIES>
-		<PROPERTIES category="Gestion" type="varchar" obligatoire="0" searchOrder="3" description="Code client de la gestion Abtel Informatique">CodeClientInfo</PROPERTIES>
-		<PROPERTIES category="Accès client" type="boolean" obligatoire="0" searchOrder="4" description="Activation Accès web">AccesActif</PROPERTIES>
+		<PROPERTIES category="Intitulé" type="varchar" obligatoire="1" searchOrder="1" list="1">Nom</PROPERTIES>
+		<PROPERTIES category="Accès client" type="boolean" obligatoire="0" searchOrder="4" description="Activation Accès web" list="1">AccesActif</PROPERTIES>
 		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="5" description="Identifiant Accès web">AccesUser</PROPERTIES>
 		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="6" description="Mot de passe Accès Web">AccesPass</PROPERTIES>
 		<PROPERTIES category="Coordonnées" type="varchar" description="Adresse e-mail">Email</PROPERTIES>
 		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de téléphone">Tel</PROPERTIES>
 		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de fax">Fax</PROPERTIES>
-		<PROPERTIES category="LDAP" type="varchar" obligatoire="1" unique="1" description="Nom sous LDAP">NomLDAP</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" obligatoire="1" unique="1" description="Nom sous LDAP" list="1">NomLDAP</PROPERTIES>
 		<PROPERTIES category="LDAP" type="int" auto="1">LdapGid</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
@@ -17,6 +15,15 @@
 		<FUNCTION>MailAvertissement</FUNCTION>
 		<FUNCTION>EnvoyerRecapitulatif</FUNCTION>
 		<FUNCTION>ImporterPlusieursDomaines</FUNCTION>
+		<FKEY card="0,1" module="Systeme" data="User,Id">UserId</FKEY>
+		<FKEY card="0,1" module="Parc" data="Revendeur,Id">RevendeurId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Revendeur" driver="mysql" AccessPoint="1" master="0" Description="Revendeurs" Icon="/Skins/AdminV2/Img/IconAqua/Forum.png" className="Parc_Revendeur" Class="Modules/Parc/Class/Revendeur.class.php">
+		<PROPERTIES category="Intitulé" type="varchar" obligatoire="1" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES category="Accès client" type="boolean" obligatoire="0" searchOrder="4" description="Activation Accès web">AccesActif</PROPERTIES>
+		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="5" description="Identifiant Accès web">AccesUser</PROPERTIES>
+		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="6" description="Mot de passe Accès Web">AccesPass</PROPERTIES>
+		<PROPERTIES category="Coordonnées" type="varchar" description="Adresse e-mail" obligatoire="1">Email</PROPERTIES>
 		<FKEY card="0,1" module="Systeme" data="User,Id">UserId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Domain" driver="mysql" AccessPoint="1" master="0" Description="Domaines" Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png" Class="Modules/Parc/Class/Domain.class.php">
@@ -100,7 +107,7 @@
 		<FUNCTION>AjouterSPF</FUNCTION>
 		<FUNCTION>Majdomaine</FUNCTION>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Host" driver="mysql" Dico="1" description="Hébergement" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Class="Modules/Parc/Class/Host.class.php">
+	<OBJECTCLASS title="Host" driver="mysql" Dico="1" Description="Hébergement" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Class="Modules/Parc/Class/Host.class.php">
 		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" list="1">Nom</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="gestion commerciale" searchOrder="2" description="En production">Production</PROPERTIES>

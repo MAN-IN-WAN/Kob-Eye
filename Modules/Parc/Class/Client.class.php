@@ -1,7 +1,7 @@
 <?php
 
 class Parc_Client extends genericClass {
-
+	var $Role = 'PARC_CLIENT';
 	/**
 	 * Force la vérification avant enregistrement
 	 * @param	boolean	Enregistrer aussi sur LDAP
@@ -135,7 +135,7 @@ class Parc_Client extends genericClass {
 	 */
 	public function setUser() {
 		//récupération du groupe de stockage des accès clients
-		$grp = Group::getGroupFromRole('PARC_CLIENT');
+		$grp = Group::getGroupFromRole($this->Role);
 		if (!sizeof($grp)){
 			//Erreur
 			$this->AddError(Array("Message"=>"Veuillez mettre le module à jour, les roles ne sont pas définis"));
@@ -152,8 +152,6 @@ class Parc_Client extends genericClass {
 					$u->Login = $this->AccesUser;
 					$u->Pass = md5($this->AccesPass);
 					$u->Mail = $this->Email;
-					$u->Tel = $this->Tel;
-					$u->Fax = $this->Fax;
 					$u->Actif = true;
 					$u->AddParent($grp);
 					$u->Save();
@@ -165,8 +163,6 @@ class Parc_Client extends genericClass {
 					$u->Login = $this->AccesUser;
 					$u->Pass = md5($this->AccesPass);
 					$u->Mail = $this->Email;
-					$u->Tel = $this->Tel;
-					$u->Fax = $this->Fax;
 					$u->Actif = true;
 					$u->AddParent($grp);
 					$u->Save();
@@ -184,6 +180,18 @@ class Parc_Client extends genericClass {
 				$u->Save();
 			}
 		}
+	}
+	public function getDomain() {
+		return $this->getChildren('Domain');
+	}
+	public function getHost() {
+		return $this->getChildren('Host');
+	}
+	public function getDomainQuery() {
+		return 'Parc/Client/'.$this->Id.'/Domain';
+	}
+	public function getHostQuery() {
+		return 'Parc/Client/'.$this->Id.'/Host';
 	}
 
 }

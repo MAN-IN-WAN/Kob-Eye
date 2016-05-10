@@ -10,6 +10,11 @@
     [!REQ:=[!Chemin!]!]
 [/IF]
 
+//DATA
+[IF [!Data!]]
+    [!REQ:=[!Data!]!]
+[/IF]
+
 //RECHERCHE
 [!FILTER:=!]
 [IF [!search!]!=]
@@ -135,11 +140,11 @@
                     [/CASE]
                     [DEFAULT]
                         <td>
-                            //<a href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!C::Id!]">
+                            <a href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!C::Id!]">
                             [IF [!Pos!]=1]<strong>[/IF]
                             [!C::[!E::name!]!]
                             [IF [!Pos!]=1]</strong>[/IF]
-                            //</a>
+                            </a>
                         </td>
                     [/DEFAULT]
                 [/SWITCH]

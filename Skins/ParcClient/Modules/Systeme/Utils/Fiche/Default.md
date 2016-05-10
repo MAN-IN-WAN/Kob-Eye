@@ -38,7 +38,7 @@
     [/IF]
 [/IF]
 [IF [!FORM!]]
-[STORPROC [!O::getElementsByAttribute(form,,1)!]|P]
+[STORPROC [!O::getElementsByAttribute(list,,1)!]|P]
 
     [SWITCH [!P::type!]|=]
         [CASE duration]

@@ -14,5 +14,5 @@
     <h1>[!Sys::CurrentMenu::Titre!]</h1>
     <i><b>[!Sys::CurrentMenu::SousTitre!]</b></i>
 
-    [MODULE Systeme/Utils/List?Chemin=[!I::Module!]/[!I::ObjectType!]]
+    [MODULE Systeme/Utils/List?Chemin=[!ParcClient::get[!I::ObjectType!]Query()!]]
 [/IF]

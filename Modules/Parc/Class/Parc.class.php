@@ -46,6 +46,38 @@ class Parc extends Module{
                 //création du groupe
                 $this->createGroup($r);
            }
+            //teste le role revendeur
+            $r = Sys::getData('Systeme','Role/Title=PARC_REVENDEUR');
+            if (sizeof($r)){
+                $r = $r[0];
+                //teste le groupe
+                $g = $r->getChildren('Group');
+                if (sizeof($g)){
+                    //tout est ok
+                }else{
+                    $this->createGroupRevendeur($r);
+                }
+            }else{
+                //il faut tout créer
+                //création du role
+                $r = genericClass::createInstance('Systeme','Role');
+                $r->Title = "PARC_REVENDEUR";
+                $r->Save();
+                //création du groupe
+                $this->createGroupRevendeur($r);
+            }
+            //teste l'accès revendeur principal
+            $rev = Sys::getCount('Parc','Revendeur');
+            if (!$rev){
+                //creation du revendeur principal
+                $re = genericClass::createInstance('Parc','Revendeur');
+                $re->Set('Nom','Revendeur');
+                $re->Set('AccesUser','revendeur');
+                $re->Set('AccesPass','revendeur');
+                $re->Set('AccesActif',true);
+                $re->Set('Email',$this->AccesUser.'@'.$_SERVER["SERVER_NAME"]);
+                $re->Save();
+            }
         }
         /**
          * Creation du groupe et de tout ses menus
@@ -64,18 +96,40 @@ class Parc extends Module{
             $m->AddParent($g);
             $m->Save();
         }
+        private function createGroupRevendeur($role){
+            //creation du groupe revendeur
+            $g = genericClass::createInstance('Systeme','Group');
+            $g->Nom = "[PARC] Accès revendeur";
+            $g->Skin = "ParcClient";
+            $g->AddParent($role);
+            $g->Save();
+            //création des menus
+            /*$m = genericClass::createInstance('Systeme','Menu');
+            $m->Titre = "Tableau de bord";
+            $m->Alias = "Parc/Revendeur/DashBoard";
+            $m->AddParent($g);
+            $m->Save();*/
+            $g->importMenu('YTo0OntpOjA7YToyNjp7czozOiJVcmwiO3M6MDoiIjtzOjU6IlRpdHJlIjtzOjE1OiJUYWJsZWF1IGRlIGJvcmQiO3M6OToiU291c1RpdHJlIjtzOjA6IiI7czo0OiJMaWVuIjtzOjA6IiI7czo3OiJBZmZpY2hlIjtzOjE6IjEiO3M6NToiQWxpYXMiO3M6MjQ6IlBhcmMvUmV2ZW5kZXVyL0Rhc2hCb2FyZCI7czo3OiJGaWx0ZXJzIjtzOjA6IiI7czoxNjoiUHJlZml4ZUNvZGViYXJyZSI7czowOiIiO3M6NToiSWNvbmUiO3M6MDoiIjtzOjE1OiJCYWNrZ3JvdW5kSW1hZ2UiO3M6MDoiIjtzOjE1OiJCYWNrZ3JvdW5kQ29sb3IiO3M6MDoiIjtzOjg6IkNsYXNzQ3NzIjtzOjA6IiI7czo1OiJPcmRyZSI7czoxOiIwIjtzOjg6Ik1lbnVIYXV0IjtzOjE6IjAiO3M6NzoiTWVudUJhcyI7czoxOiIwIjtzOjEzOiJNZW51UHJpbmNpcGFsIjtzOjE6IjEiO3M6MTA6IkF1dG9TdWJHZW4iO3M6MToiMCI7czo1OiJUaXRsZSI7czowOiIiO3M6MTE6IkRlc2NyaXB0aW9uIjtzOjA6IiI7czo4OiJLZXl3b3JkcyI7czowOiIiO3M6ODoiVGVtcGxhdGUiO3M6MToiMCI7czoxMDoiTWVudVBhcmVudCI7czoxOiIwIjtzOjEwOiJPYmplY3RUeXBlIjtzOjQ6Ik1lbnUiO3M6NDoibm90ZSI7aToxMDtzOjY6Ik1vZHVsZSI7czo3OiJTeXN0ZW1lIjtzOjU6Ik1lbnVzIjthOjA6e319aToxO2E6MjY6e3M6MzoiVXJsIjtzOjc6IkNsaWVudHMiO3M6NToiVGl0cmUiO3M6MTk6Ikdlc3Rpb24gZGVzIGNsaWVudHMiO3M6OToiU291c1RpdHJlIjtzOjA6IiI7czo0OiJMaWVuIjtzOjA6IiI7czo3OiJBZmZpY2hlIjtzOjE6IjEiO3M6NToiQWxpYXMiO3M6MTE6IlBhcmMvQ2xpZW50IjtzOjc6IkZpbHRlcnMiO3M6MDoiIjtzOjE2OiJQcmVmaXhlQ29kZWJhcnJlIjtzOjA6IiI7czo1OiJJY29uZSI7czowOiIiO3M6MTU6IkJhY2tncm91bmRJbWFnZSI7czowOiIiO3M6MTU6IkJhY2tncm91bmRDb2xvciI7czowOiIiO3M6ODoiQ2xhc3NDc3MiO3M6MDoiIjtzOjU6Ik9yZHJlIjtzOjI6IjIwIjtzOjg6Ik1lbnVIYXV0IjtzOjE6IjAiO3M6NzoiTWVudUJhcyI7czoxOiIwIjtzOjEzOiJNZW51UHJpbmNpcGFsIjtzOjE6IjEiO3M6MTA6IkF1dG9TdWJHZW4iO3M6MToiMCI7czo1OiJUaXRsZSI7czowOiIiO3M6MTE6IkRlc2NyaXB0aW9uIjtzOjA6IiI7czo4OiJLZXl3b3JkcyI7czowOiIiO3M6ODoiVGVtcGxhdGUiO3M6MToiMCI7czoxMDoiTWVudVBhcmVudCI7czoxOiIwIjtzOjEwOiJPYmplY3RUeXBlIjtzOjQ6Ik1lbnUiO3M6NDoibm90ZSI7aToxMDtzOjY6Ik1vZHVsZSI7czo3OiJTeXN0ZW1lIjtzOjU6Ik1lbnVzIjthOjA6e319aToyO2E6MjY6e3M6MzoiVXJsIjtzOjg6IkRvbWFpbmVzIjtzOjU6IlRpdHJlIjtzOjIwOiJHZXN0aW9uIGRlcyBkb21haW5lcyI7czo5OiJTb3VzVGl0cmUiO3M6MDoiIjtzOjQ6IkxpZW4iO3M6MDoiIjtzOjc6IkFmZmljaGUiO3M6MToiMSI7czo1OiJBbGlhcyI7czoxMToiUGFyYy9Eb21haW4iO3M6NzoiRmlsdGVycyI7czowOiIiO3M6MTY6IlByZWZpeGVDb2RlYmFycmUiO3M6MDoiIjtzOjU6Ikljb25lIjtzOjA6IiI7czoxNToiQmFja2dyb3VuZEltYWdlIjtzOjA6IiI7czoxNToiQmFja2dyb3VuZENvbG9yIjtzOjA6IiI7czo4OiJDbGFzc0NzcyI7czowOiIiO3M6NToiT3JkcmUiO3M6MjoiMzAiO3M6ODoiTWVudUhhdXQiO3M6MToiMCI7czo3OiJNZW51QmFzIjtzOjE6IjAiO3M6MTM6Ik1lbnVQcmluY2lwYWwiO3M6MToiMSI7czoxMDoiQXV0b1N1YkdlbiI7czoxOiIwIjtzOjU6IlRpdGxlIjtzOjA6IiI7czoxMToiRGVzY3JpcHRpb24iO3M6MDoiIjtzOjg6IktleXdvcmRzIjtzOjA6IiI7czo4OiJUZW1wbGF0ZSI7czoxOiIwIjtzOjEwOiJNZW51UGFyZW50IjtzOjE6IjAiO3M6MTA6Ik9iamVjdFR5cGUiO3M6NDoiTWVudSI7czo0OiJub3RlIjtpOjEwO3M6NjoiTW9kdWxlIjtzOjc6IlN5c3RlbWUiO3M6NToiTWVudXMiO2E6MDp7fX1pOjM7YToyNjp7czozOiJVcmwiO3M6MTI6IkhlYmVyZ2VtZW50cyI7czo1OiJUaXRyZSI7czoyNToiR2VzdGlvbiBkZXMgaMOpYmVyZ2VtZW50cyI7czo5OiJTb3VzVGl0cmUiO3M6MDoiIjtzOjQ6IkxpZW4iO3M6MDoiIjtzOjc6IkFmZmljaGUiO3M6MToiMSI7czo1OiJBbGlhcyI7czo5OiJQYXJjL0hvc3QiO3M6NzoiRmlsdGVycyI7czowOiIiO3M6MTY6IlByZWZpeGVDb2RlYmFycmUiO3M6MDoiIjtzOjU6Ikljb25lIjtzOjA6IiI7czoxNToiQmFja2dyb3VuZEltYWdlIjtzOjA6IiI7czoxNToiQmFja2dyb3VuZENvbG9yIjtzOjA6IiI7czo4OiJDbGFzc0NzcyI7czowOiIiO3M6NToiT3JkcmUiO3M6MjoiNDAiO3M6ODoiTWVudUhhdXQiO3M6MToiMCI7czo3OiJNZW51QmFzIjtzOjE6IjAiO3M6MTM6Ik1lbnVQcmluY2lwYWwiO3M6MToiMSI7czoxMDoiQXV0b1N1YkdlbiI7czoxOiIwIjtzOjU6IlRpdGxlIjtzOjA6IiI7czoxMToiRGVzY3JpcHRpb24iO3M6MDoiIjtzOjg6IktleXdvcmRzIjtzOjA6IiI7czo4OiJUZW1wbGF0ZSI7czoxOiIwIjtzOjEwOiJNZW51UGFyZW50IjtzOjE6IjAiO3M6MTA6Ik9iamVjdFR5cGUiO3M6NDoiTWVudSI7czo0OiJub3RlIjtpOjEwO3M6NjoiTW9kdWxlIjtzOjc6IlN5c3RlbWUiO3M6NToiTWVudXMiO2E6MDp7fX19');
+        }
 
 	/**
 	 * Initilisation des variables globales disponibles pour la boutique
 	 */
 	private function initGlobalVars(){
-                if (!Sys::$User->Public){
-                    //initialisation client si connecté
-                    $Cls = Sys::$User->getChildren('Client');
-                    if (sizeof($Cls)){
-                        $this->_ParcClient = $Cls[0];
-                        $GLOBALS["Systeme"]->registerVar("ParcClient",$this->_ParcClient);
-                    }
+        if (!Sys::$User->Public){
+            //initialisation client si connecté
+            $Cls = Sys::$User->getChildren('Client');
+            if (sizeof($Cls)){
+                $this->_ParcClient = $Cls[0];
+                $GLOBALS["Systeme"]->registerVar("ParcClient",$this->_ParcClient);
+            }else{
+                //test si revendeur
+                $Rvs = Sys::$User->getChildren('Revendeur');
+                if (sizeof($Rvs)){
+                    $this->_ParcClient = $Rvs[0];
+                    $GLOBALS["Systeme"]->registerVar("ParcClient",$this->_ParcClient);
                 }
+            }
+        }
 	}
 }

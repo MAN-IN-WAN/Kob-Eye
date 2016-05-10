@@ -1,32 +1,29 @@
-[COUNT Boutique/Commande/Valide=1&Cloture=0|C]
-[COUNT Boutique/Commande/Valide=1&Prepare=0&Expedie=0&Cloture=0|CP]
-[COUNT Pharmacie/Ordonnance/Etat<4|O]
-[COUNT Pharmacie/Ordonnance/Etat<2|OP]
-<div id="reload">
-    <h1 class="page-header">Tableau de bord</h1>
+ <h1 class="page-header">Tableau de bord</h1>
           <div class="row placeholders">
             <div class="col-xs-6 col-sm-3 placeholder">
-                <a class="btn [IF [!CP!]>0]btn-danger[ELSE]btn-success[/IF] btn-block" href="/[!Sys::getMenu(Boutique/Commande)!]">
+                <a class="btn btn-success btn-block" href="/[!Sys::getMenu(Parc/Domain)!]">
                     <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
-                    <h4>[!C!] Commandes(s)</h4>
-                    <span>Dont [!CP!] non preparée(s)</span>
+                    <h4>[COUNT [!ParcClient::getDomain()!]|D][!D!] Domaine(s)</h4>
+                    <!--<span class="text-muted">Something else</span>-->
                 </a>
             </div>
             <div class="col-xs-6 col-sm-3 placeholder">
-                <a class="btn btn-block [IF [!OP!]>0]btn-danger[ELSE]btn-info[/IF]" href="/[!Sys::getMenu(Pharmacie/Ordonnance)!]">
+                <a class="btn btn-info btn-block" href="/[!Sys::getMenu(Parc/Host)!]">
                     <span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>
-                    <h4>[!O!] Ordonnance(s)</h4>
-                    <span>Dont [!OP!] non preparée(s)</span>
+                    <h4>[COUNT [!ParcClient::getHost()!]|D][!D!] Hébergement(s)</h4>
+                    <!--<span class="text-muted">Something else</span>-->
                 </a>
             </div>
-        <!--
+            [IF [!Sys::User::isRole(PARC_REVENDEUR)!]]
             <div class="col-xs-6 col-sm-3 placeholder">
-                <div class="btn btn-warning btn-block">
-                    <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
-                    <h4>[COUNT Parc/Client/[!ParcClient::Id!]/Host/*/Apache|D][!D!] Configuration(s) Apache</h4>
-                    <span class="text-muted">Something else</span>
-                </div>
+                <a class="btn btn-warning btn-block" href="/[!Sys::getMenu(Parc/Client)!]">
+                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                    <h4>[COUNT [!ParcClient::getClient()!]|D][!D!] Client(s)</h4>
+                    <!--<span class="text-muted">Something else</span>-->
+                </a>
             </div>
+            [/IF]
+            <!--
             <div class="col-xs-6 col-sm-3 placeholder">
                 <div class="btn btn-danger btn-block">
                     <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
@@ -37,25 +34,11 @@
         -->
           </div>
 
-          <h2 class="sub-header">Commandes</h2>
-          [MODULE Boutique/Commande/List]
-          <h2 class="sub-header">Ordonnances</h2>
-          [MODULE Pharmacie/Ordonnance/List]
-</div>
-[IF [!RELOAD!]!=1]
-<script>
-
-    //auto reload
-    var timeout = setInterval(reloadPage, 5000);
-    function reloadPage () {
-        //window.location.href = '/[!Query!]';
-        $.ajax({
-            url: '/Systeme/User/DashBoard.htm?RELOAD=1',
-            context: $( '#reload' )
-        }).done(function(data) {
-            $( '#reload').html(data);
-            $( this ).addClass( 'active' );
-        });
-    }
-</script>
-[/IF]
+          //<h2 class="sub-header">Domaines</h2>
+          //[MODULE Systeme/Utils/List?Data=[!ParcClient::getDomain()!]]
+          //<h2 class="sub-header">Hébergements</h2>
+          //[MODULE Systeme/Utils/List?Data=[!ParcClient::getHost()!]]
+         //[IF [!Sys::User::isRole(PARC_REVENDEUR)!]]
+         //<h2 class="sub-header">Clients</h2>
+         //[MODULE Systeme/Utils/List?Data=[!ParcClient::getClient()!]]
+        //[/IF]

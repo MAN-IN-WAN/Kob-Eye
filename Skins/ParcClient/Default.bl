@@ -26,12 +26,8 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#">Accueil</a></li>
-            <li><a href="/Profil">Profil</a></li>
             <li><a href="/Systeme/Deconnexion">Déconnexion</a></li>
           </ul>
-          <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form>
         </div>
       </div>
     </nav>

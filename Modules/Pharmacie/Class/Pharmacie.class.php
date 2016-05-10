@@ -220,6 +220,8 @@ class Pharmacie extends Module{
             if (empty($query)) continue;
             $p = Sys::getOneData('Boutique', 'Produit/' . $query);
             if (is_object($p)) {
+                //on désactive la mise à jour
+                //continue;
 
                 //mise à jour des codes produit
                 if (empty($p->EAN)) $p->EAN = $EAN;
@@ -306,7 +308,99 @@ class Pharmacie extends Module{
                 //mise à jour du nombre de produit
                 //if ($qte>0)
                 $i++;
-            } else $j++;
+            }/* else {
+                //creation nouveau produit
+                $p = genericClass::createInstance('Boutique','Produit');
+                $p->Nom = $l[2];
+                $p->Image = 'Home/no-image.png';
+                //mise à jour des codes produit
+                if (empty($p->EAN)) $p->EAN = $EAN;
+                if (empty($p->CIP13)) $p->CIP13 = $CIP13;
+                if (empty($p->CIP7)) $p->CIP7 = $CIP7;
+
+                //mise à jour de la classification
+                $BCB = trim($l[10]);
+                $p->Classification = $BCB;
+
+                $p->Save();
+                //on recherche la cétegorie correspondate
+                //if (empty($p->Classification)) {
+                    $cat = Sys::getOneData('Boutique', 'Categorie/* /Classification=' . $BCB);
+                    if ($cat) {
+                        $p->AddParent($cat);
+                    }else echo 'pas de cat';
+                //}
+
+
+                //mise à jour des tarifs
+                $TTC = trim($l[4]);
+                $TTC = floatval(str_replace(',', '.', $TTC));
+                echo "-> $i produit stock: " . $l[3] . " Nom " . $p->Nom . " tarif en ligne: " . $p->Tarif . " TVA: " . trim($l[7]) . " tarif : " . $TTC . " ean: " . $p->EAN . " cip: " . $p->CIP7 . " cip13: " . $p->CIP13 . " ";
+                //mise à jour de la TVA
+                $TVA = trim($l[7]);
+                if ($TVA == "20,00") {
+                    $HT = $TTC / 1.20;
+                    $p->TypeTva = 1;
+                } elseif ($TVA == "5,50") {
+                    $HT = $TTC / 1.055;
+                    $p->TypeTva = 2;
+                } elseif ($TVA == "10,00") {
+                    $HT = $TTC / 1.10;
+                    $p->TypeTva = 3;
+                } elseif ($TVA == "2,10") {
+                    $HT = $TTC / 1.021;
+                    $p->TypeTva = 4;
+                }
+                $p->Save();
+                $p->genererReferences();
+
+                if ($p->Tarif != $HT)
+                    $p->setPriceForce($HT);
+
+                //mise à jour des stocks
+                $ref = Sys::getOneData('Boutique', 'Produit/' . $p->Id . '/Reference');
+                $qte = intval(trim($l[3]));
+                if ($qte > 0) {
+                    $p->Display = true;
+                    $p->Actif = true;
+                    $p->StockReference = $qte;
+                    $ref->Quantite = $qte;
+                    //$ref->Actif = true;
+                    $ref->Save(false);
+                } else {
+                    $p->StockReference = 0;
+                    $ref->Quantite = 0;//$qte;
+                    //$ref->Actif = false;
+                    $ref->Save(false);
+
+                    //on désactive le produit
+                    $p->Display = 0;
+                    $p->Actif = 0;
+                }
+
+                //vérification de l'existence de la marque
+                $lab = trim($l[9]);
+                $ma = Sys::getOneData('Boutique', 'Marque/Nom=' . Utils::KEAddSlashes(Array($lab)));
+                if (is_object($ma)) {
+                    //la marque existe on vérifie qu'elle est bien liée au produit
+                    if (!Sys::getCount('Boutique', 'Marque/' . $ma->Id . '/Produit/' . $p->Id)) {
+                        $p->addParent($ma);
+                    }
+                } else {
+                    //il faut créer la marque
+                    $ma = genericClass::createInstance('Boutique', 'Marque');
+                    $ma->Nom = $lab;
+                    $ma->Save();
+                    $p->addParent($ma);
+                }
+
+                //sauvegarde du produit
+                $p->Save(false);
+
+                echo "OK \r\n";
+
+                $j++;
+            }*/
 
             //retour anticipé
             /*if ($i>=1){

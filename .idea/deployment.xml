@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="tennisforever.fr">
+  <component name="PublishConfigData" serverName="parc.azko.fr">
     <serverData>
       <paths name="client.eng.systems">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="dev.pharmaciedelecluse.fr">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/kobeye-dev" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="parc.azko.fr">
         <serverdata>
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$" web="/" />

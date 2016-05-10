@@ -8,7 +8,7 @@
 [STORPROC [!T::Historique!]|H][/STORPROC]
 <div id="Container">
 [STORPROC [!T::LastDirect!]|Objet|0|1]
-	[IF [!H::Key!]!=][!KEY:=.[!H::Key!]!][/IF]
+	//[IF [!H::Key!]!=][!KEY:=.[!H::Key!]!][/IF]
 	[!Class:=[!H::DataSource!]!]
 	[!Module:=[!H::Module!]!]
 	[IF [!Action!]]
@@ -31,7 +31,7 @@
 			[METHOD L|Save][/METHOD]
 		[/STORPROC]
 		[IF [!Action!]=VALIDER]
-			[REDIRECT][!LAST_URL!][/REDIRECT]
+			[REDIRECT][!Objet::Module!]/[!Objet::ObjectType!]/[!Objet::Id!][/REDIRECT]
 		[/IF]
 	[/IF]
 	//<form [IF [!Test::Reflexive!]=]target="Liste[!Test::TypeChild!]"[/IF] name="liste" method="post">
@@ -68,9 +68,9 @@
 					//On analyse les cardinalités
 					[IF [!Class!]=[!Objet::ObjectType!]][!Disable:=[!Objet::Id!]!][/IF]
 					[IF [!Objet::getCard([!Class!])!]=0,1||[!Objet::getCard([!Class!])!]=1,1]
-						[MODULE Systeme/Interfaces/Liste?Chemin=[!Module!]/[!Class!][!KEY!]&TypeEnf=[!Class!][!KEY!]&Inter=radio&Disable=[!Disable!]&Check=[!Objet::getChildren([!Class!][!KEY!])!]&Prefixe=Dep&Type=MultiSelect]
+						[MODULE Systeme/Interfaces/Liste?Chemin=[!Module!]/[!Class!]&TypeEnf=[!Class!][!KEY!]&Inter=radio&Disable=[!Disable!]&Check=[!Objet::getChildren([!Class!][!KEY!])!]&Prefixe=Dep&Type=MultiSelect]
 					[ELSE]
-						[MODULE Systeme/Interfaces/Liste?Chemin=[!Module!]/[!Class!][!KEY!]&NbChamp=4&TypeEnf=[!Class!][!KEY!]&Inter=checkbox&Disable=[!Disable!]&Check=[!Objet::getChildren([!Class!][!KEY!])!]&Prefixe=Dep&Type=MultiSelect]
+						[MODULE Systeme/Interfaces/Liste?Chemin=[!Module!]/[!Class!]&NbChamp=4&TypeEnf=[!Class!][!KEY!]&Inter=checkbox&Disable=[!Disable!]&Check=[!Objet::getChildren([!Class!][!KEY!])!]&Prefixe=Dep&Type=MultiSelect]
 					[/IF]
 				[/BLOC]
 			</div>
