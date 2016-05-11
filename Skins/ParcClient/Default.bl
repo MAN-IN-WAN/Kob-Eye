@@ -2,16 +2,31 @@
 <!-- Bootstrap core CSS -->
 [HEADER JS]/Tools/Js/Jquery/1.9.2/jquery.min.js[/HEADER]
 [HEADER CSS]/Tools/Css/Bootstrap/3.0/css/bootstrap.min.css[/HEADER]
+
+//MOMENT LOCALES
+[HEADER JS]/Tools/Css/Bootstrap/bootstrap-datetimepicker-master/build/js/moment.min.js[/HEADER]
+[HEADER JS]/Tools/Css/Bootstrap/bootstrap-datetimepicker-master/build/locales/fr.js[/HEADER]
+
+//DATE PICKER
+[HEADER JS]/Tools/Css/Bootstrap/bootstrap-datetimepicker-master/build/js/bootstrap-datetimepicker.min.js[/HEADER]
+[HEADER CSS]/Tools/Css/Bootstrap/bootstrap-datetimepicker-master/build/css/bootstrap-datetimepicker.min.css[/HEADER]
+
+[HEADER JS]Tools/Css/Bootstrap/BootBox/bootbox.min.js[/HEADER]
+[HEADER CSS]Tools/Css/Bootstrap/Bootstrap-fileinput/css/fileinput.min.css[/HEADER]
+[HEADER JS]Tools/Css/Bootstrap/Bootstrap-fileinput/js/fileinput.min.js[/HEADER]
+[HEADER JS]Tools/Css/Bootstrap/Bootstrap-fileinput/js/fileinput_locale_fr.js[/HEADER]
 [HEADER JS]/Tools/Css/Bootstrap/3.0/js/bootstrap.min.js[/HEADER]
+[HEADER CSS]Tools/Css/Bootstrap/bootstrap-switch-master/dist/css/bootstrap3/bootstrap-switch.min.css[/HEADER]
+[HEADER JS]Tools/Css/Bootstrap/bootstrap-switch-master/dist/js/bootstrap-switch.min.js[/HEADER]
+[HEADER JS]Tools/Js/CkEditor/ckeditor.js[/HEADER]
 [HEADER]
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 [/HEADER]
-
-
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -154,6 +169,11 @@
         });
     });
   });
+  $('input.switch').bootstrapSwitch({
+    onColor: 'success',
+    offColor: 'danger'
+  });
+
 </script>
 
 

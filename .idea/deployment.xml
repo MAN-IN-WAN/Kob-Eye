@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="parc.azko.fr">
+  <component name="PublishConfigData" serverName="parc.azko.fr (1)">
     <serverData>
       <paths name="client.eng.systems">
         <serverdata>
@@ -17,6 +17,13 @@
         </serverdata>
       </paths>
       <paths name="parc.azko.fr">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="parc.azko.fr (1)">
         <serverdata>
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$" web="/" />

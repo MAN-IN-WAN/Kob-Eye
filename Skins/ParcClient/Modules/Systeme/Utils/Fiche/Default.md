@@ -1,44 +1,5 @@
-//Config
-[!FORM:=1!]
 
-//validation du formulaire
-[IF [!ValidForm!]=1]
-    //Engregistrement des champs
-    [STORPROC [!O::getElementsByAttribute(client,,1)!]|P]
-        [METHOD O|Set]
-            [PARAM][!P::name!][/PARAM]
-            [PARAM][!Form_[!P::name!]!][/PARAM]
-        [/METHOD]
-    [/STORPROC]
-     //verfication de la saisie
-    [IF [!O::Verify()!]]
-        [METHOD O|Save][PARAM]1[/PARAM][/METHOD]
-        [!FORM:=0!]
-        {
-            "success":1,
-            "message": "<div class=\"alert alert-success\">Votre compte utilisateur a été créé avec succès.<br/> Veuillez vérifier votre boîte email afin de confirmer votre adresse e-mail en cliquant sur le lien du message. </div>",
-            "controls":{
-                "close":1,
-                "save":0,
-                "cancel":0
-            }
-        }
-    [ELSE]
-        [!FORM:=0!]
-        //affichage des erreurs
-        {
-            "success":0,
-            "message": "<div class=\"alert alert-danger\">Les erreurs suivantes sont présentes dans le formulaire: <ul>[STORPROC [!O::Error!]|E]<li> [!E::Message!]</li>[/STORPROC]</ul></div>",
-            "controls":{
-                "close":0,
-                "save":1,
-                "cancel":1
-            }
-        }
-    [/IF]
-[/IF]
-[IF [!FORM!]]
-[STORPROC [!O::getElementsByAttribute(list,,1)!]|P]
+[STORPROC [!O::getElementsByAttribute(fiche,,1)!]|P]
 
     [SWITCH [!P::type!]|=]
         [CASE duration]
@@ -83,7 +44,8 @@
         <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
             <label class="col-sm-5 control-label">[!P::description!]</label>
             <div class="col-sm-7">
-                <input type="text" class="form-control datepicker" id="inputDate" placeholder="Sélectionnez une date" value="[!DF!]"  name="Form_[!P::name!]">
+                [!DF!]
+                //<input type="text" class="form-control datepicker" id="inputDate" placeholder="Sélectionnez une date" value="[!DF!]"  name="Form_[!P::name!]">
             </div>
         </div>
         [/CASE]
@@ -129,19 +91,9 @@
             <div class="col-sm-7">
                 [IF [!DF!]]
                 <img src="/[!DF!]"   class="img-responsive" style="max-height: 200px;"/>
+                [ELSE]
+                <i>Pas d'image</i>
                 [/IF]
-                <input type="hidden" class="ImageInput" id="Form_[!P::name!]" name="Form_[!P::name!]" value="[!DF!]"/>
-                <input id="input-Image-[!P::name!]" type="file" multiple=false class="file-loading"/>
-                <script>
-                    $(document).on('ready', function() {
-                        $("#input-Image-[!P::name!]").fileinput({showCaption: false, showPreview: true, language: 'fr', uploadUrl: '/Systeme/Utils/Form/Upload.htm', dropZoneEnabled: false});
-                    });
-                    $('#input-Image-[!P::name!]').on('fileuploaded', function(event, data, previewId, index) {
-                        console.log('document upload ', data);
-                        $('#Form_[!P::name!]').val(data.response.url);
-                    });
-
-                </script>
             </div>
         </div>
         [/CASE]
@@ -150,7 +102,8 @@
             <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
                 <label for="Form_[!P::name!]" class="col-sm-5 control-label">[!P::description!]</label>
                 <div class="col-sm-7">
-                    <input type="password" class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]" placeholder="" value="[!DF!]">
+                    **********
+//                    <input type="password" class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]" placeholder="" value="[!DF!]">
                 </div>
             </div>
         [/CASE]
@@ -160,23 +113,46 @@
                 <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
                     <label class="col-sm-5 control-label">[!P::description!]</label>
                     <div class="col-sm-7">
-                        <select class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]">
-                            [STORPROC [!P::Values!]|C]
-                            <option value="[!C!]" [IF [!DF!]=[!C!]]selected="selected"[/IF]>[!C!]</option>
-                            [/STORPROC]
-                        </select>
+                        [!DF!]
+                        //<select class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]">
+                        //    [STORPROC [!P::Values!]|C]
+                        //    <option value="[!C!]" [IF [!DF!]=[!C!]]selected="selected"[/IF]>[!C!]</option>
+                        //    [/STORPROC]
+                        //</select>
                     </div>
                 </div>
             [ELSE]
                 <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
                   <label for="Form_[!P::name!]" class="col-sm-5 control-label">[!P::description!]</label>
                   <div class="col-sm-7">
-                    <input type="text" class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]" placeholder="" value="[!DF!]">
+                      [!DF!]
+                    //<input type="text" class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]" placeholder="" value="[!DF!]">
                   </div>
                 </div>
             [/IF]
         [/DEFAULT]
     [/SWITCH]
 [/STORPROC]
- [/IF]
+<br />
+<hr>
+[STORPROC [!O::getChildElements()!]|C]
+<div>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        [LIMIT 0|100]
+        [COUNT [!O::Module!]/[!O::ObjectType!]/[!O::Id!]/[!C::objectName!]|NB]
+        <li role="presentation" [IF [!Pos!]=1]class="active"[/IF]><a href="#[!C::objectName!]" aria-controls="[!C::objectName!]" role="tab" data-toggle="tab">[!C::objectDescription!] ([!NB!])</a></li>
+        [/LIMIT]
+    </ul>
 
+    <!-- Tab panes -->
+    <div class="tab-content">
+        [LIMIT 0|100]
+        <div role="tabpanel" class="tab-pane [IF [!Pos!]=1]active[/IF]" id="[!C::objectName!]">
+            [MODULE Systeme/Utils/List?Chemin=[!O::Module!]/[!O::ObjectType!]/[!O::Id!]/[!C::objectName!]]
+        </div>
+        [/LIMIT]
+    </div>
+
+</div>
+[/STORPROC]

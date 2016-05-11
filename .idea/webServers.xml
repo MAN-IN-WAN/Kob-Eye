@@ -58,6 +58,14 @@
           <option name="port" value="22" />
         </fileTransfer>
       </webServer>
+      <webServer id="a7f8420a-ae70-4343-ad10-6040d3feea4f" name="parc.azko.fr (1)" url="http://parc.azko.fr">
+        <fileTransfer host="parc.azko.fr" port="22" privateKey="$USER_HOME$/.ssh/id_rsa" rootFolder="/var/www/html" accessType="SFTP" username="root" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
     </option>
   </component>
 </project>

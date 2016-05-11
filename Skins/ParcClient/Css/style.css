@@ -115,3 +115,8 @@ font-size: 4em;
 .modal-body{
   overflow:auto;
 }
+
+/** Formulaire **/
+.form-group{
+  clear: both;
+}

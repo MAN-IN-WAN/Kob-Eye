@@ -1,13 +1,13 @@
 <SCHEMA>
 	<OBJECTCLASS title="Client" driver="mysql" AccessPoint="1" master="0" Description="Clients" Icon="/Skins/AdminV2/Img/IconAqua/Forum.png" className="Parc_Client" Class="Modules/Parc/Class/Client.class.php">
-		<PROPERTIES category="Intitulé" type="varchar" obligatoire="1" searchOrder="1" list="1">Nom</PROPERTIES>
-		<PROPERTIES category="Accès client" type="boolean" obligatoire="0" searchOrder="4" description="Activation Accès web" list="1">AccesActif</PROPERTIES>
-		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="5" description="Identifiant Accès web">AccesUser</PROPERTIES>
-		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="6" description="Mot de passe Accès Web">AccesPass</PROPERTIES>
-		<PROPERTIES category="Coordonnées" type="varchar" description="Adresse e-mail">Email</PROPERTIES>
-		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de téléphone">Tel</PROPERTIES>
-		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de fax">Fax</PROPERTIES>
-		<PROPERTIES category="LDAP" type="varchar" obligatoire="1" unique="1" description="Nom sous LDAP" list="1">NomLDAP</PROPERTIES>
+		<PROPERTIES category="Intitulé" type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1">Nom</PROPERTIES>
+		<PROPERTIES category="Accès client" type="boolean" obligatoire="0" searchOrder="4" description="Activation Accès web" list="1" fiche="1" form="1">AccesActif</PROPERTIES>
+		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="5" description="Identifiant Accès web"  fiche="1" form="1">AccesUser</PROPERTIES>
+		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="6" description="Mot de passe Accès Web" fiche="1" form="1">AccesPass</PROPERTIES>
+		<PROPERTIES category="Coordonnées" type="varchar" description="Adresse e-mail" fiche="1" form="1">Email</PROPERTIES>
+		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de téléphone" fiche="1" form="1">Tel</PROPERTIES>
+		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de fax" fiche="1" form="1">Fax</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" obligatoire="1" unique="1" description="Nom sous LDAP" list="1" fiche="1">NomLDAP</PROPERTIES>
 		<PROPERTIES category="LDAP" type="int" auto="1">LdapGid</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>

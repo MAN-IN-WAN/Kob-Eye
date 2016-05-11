@@ -131,6 +131,9 @@ class Reservation extends genericClass {
         //ajout de la ligne de service
         $client = $this->getClient();
         $service = $this->getService();
+        $court = $this->getCourt();
+        $typecourt = $court->getParents('TypeCourt');
+        $typecourt = $typecourt[0];
         if ($service) {
             //suppression si existante
             $this->deleteLigneFacture('Réservation');
@@ -141,7 +144,8 @@ class Reservation extends genericClass {
         //partenaires
         $nbabonnes = sizeof($this->_partenaires);
         $this->_nbinvites;
-        if ($service->TarifInvite>0&&$this->_nbinvites>0&$client->isSubscriber()){
+        if ($service->TarifInvite>0&&$this->_nbinvites>0&$client->isSubscriber()
+            || $service->TarifInvite>0&&$this->_nbinvites>0&&$typecourt->GestionInvite=="Quantitatif"){
             $this->addLigneFacture($service->Titre.' - Invitation',$service->TarifInvite,$this->_nbinvites,$service,'Invitation');
         }
 
