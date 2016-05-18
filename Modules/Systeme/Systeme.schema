@@ -17,7 +17,7 @@
 		<PROPERTIES type="mail" length="255" obligatoire="1" searchOrder="4" unique="1" category="Contact" list="4">Mail</PROPERTIES>
 		<PROPERTIES type="varchar"  length="100" obligatoire="0" category="Contact" list="3">Prenom</PROPERTIES>
 		<PROPERTIES type="varchar"  length="255" obligatoire="0" category="Contact">Adresse</PROPERTIES>
-		<PROPERTIES type="int" obligatoire="0" category="Contact">CodPos</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" category="Contact">CodPos</PROPERTIES>
 		<PROPERTIES type="varchar"  length="100" obligatoire="0" category="Contact">Ville</PROPERTIES>
 		<PROPERTIES type="varchar" length="20" obligatoire="0" category="Contact">Tel</PROPERTIES>
 		<PROPERTIES type="varchar" length="20" obligatoire="0" category="Contact">Mobile</PROPERTIES>

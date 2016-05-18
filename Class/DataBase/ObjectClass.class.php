@@ -1008,6 +1008,7 @@ class ObjectClass extends Root{
 				$Type="integer";
 				break;
 			case "txt":
+			case "raw":
 			case "text":
 			case "bbcode":
 			case "html":

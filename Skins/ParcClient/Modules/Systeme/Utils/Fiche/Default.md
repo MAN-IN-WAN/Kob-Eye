@@ -1,12 +1,55 @@
+<h1>[!O::getDescription()!] [!O::getFirstSearchOrder()!]</h1>
+[IF [!O::Verify()!]][ELSE]
+    <div class="alert alert-warning">
+        <ul>
+        [STORPROC [!O::Error!]|E]
+            <li>[!E::Message!]</li>
+        [/STORPROC]
+        </ul>
+    </div>
+[/IF]
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class=" navbar-header">
+            &nbsp;
+            <a class="btn btn-warning navbar-btn popup " href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!O::Id!]/Form" data-title="Modification [!C::getFirstSearchOder()!]">Modifier</a>
+            <a class="btn btn-danger navbar-btn confirm" href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!O::Id!]/Supprimer" data-title="Suppression [!C::getFirstSearchOder()!]" data-confirm="Êtes vous sur de vouloir supprimer [!O::getDescription()!] [!O::getFirstSearchOrder()!]" data-url="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]">Supprimer</a>
+            [STORPROC [!O::getElementsByAttribute(link,,1)!]/type=fkey|P]
+                [STORPROC [!O::Module!]/[!P::objectName!]/[!O::ObjectType!]/[!O::Id!]|Pa|0|10]
+                    <a href="/[!Sys::getMenu([!P::objectModule!]/[!P::objectName!])!]/[!Pa::Id!]" class="btn-primary navbar-btn btn">Fiche [!P::objectDescription!] [!Pa::getFirstSearchOrder()!]</a>
+                [/STORPROC]
+            [/STORPROC]
 
+        </div>
+    </div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+            <!--<li><a href="#">Link</a></li>-->
+            [STORPROC [!O::getFunctions()!]|F]
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Fonctions <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    [LIMIT 0|100]
+                    <li><a href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!O::Id!]/[!F::Nom!]" class="popup">[IF [!F::title!]][!F::title!][ELSE][!F::Nom!][/IF]</a></li>
+                    [/LIMIT]
+                </ul>
+            </li>
+            [/STORPROC]
+        </ul>
+    </div>
+</nav>
+<div class="row">
+[COUNT [!O::getElementsByAttribute(fiche,,1)!]|NBC]
+    <div class="[IF [!NBC!]>6]col-md-6[ELSE]col-md-12[/IF]">
 [STORPROC [!O::getElementsByAttribute(fiche,,1)!]|P]
 
     [SWITCH [!P::type!]|=]
         [CASE duration]
         [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]
         <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
-            <label class="col-sm-5 control-label">[!P::description!]</label>
-            <div class="col-sm-7">
+            <label class="col-sm-6 control-label">[!P::description!]</label>
+            <div class="col-sm-6">
                 <select class="form-control" id="Form_[!P::name!][]" name="Form_[!P::name!]">
                     <option value=""></option>
                     <option value="30" [IF [!DF!]=30]selected="selected"[/IF]>30 minutes</option>
@@ -33,17 +76,17 @@
         [CASE boolean]
         [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]
         <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
-            <label class="col-sm-5 control-label">[!P::description!]</label>
-            <div class="col-sm-7">
-                <input type="checkbox" name="Form_[!P::name!]" [IF [!DF!]]checked="checked"[/IF] class="switch" value="1">
+            <label class="col-sm-6 control-label">[!P::description!]</label>
+            <div class="col-sm-6">
+                <input type="checkbox" name="Form_[!P::name!]" [IF [!DF!]]checked="checked"[/IF] class="switch" value="1" disabled="disabled">
             </div>
         </div>
         [/CASE]
         [CASE date]
         [IF [!Form_[!P::name!]!]>0][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!Utils::getDate(d/m/Y,[!P::value!])!]!][/IF]
         <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
-            <label class="col-sm-5 control-label">[!P::description!]</label>
-            <div class="col-sm-7">
+            <label class="col-sm-6 control-label">[!P::description!]</label>
+            <div class="col-sm-6">
                 [!DF!]
                 //<input type="text" class="form-control datepicker" id="inputDate" placeholder="Sélectionnez une date" value="[!DF!]"  name="Form_[!P::name!]">
             </div>
@@ -52,8 +95,8 @@
         [CASE fkey]
             [IF [!P::card!]=long]
                 <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
-                    <label class="col-sm-5 control-label">[!P::parentDescription!]</label>
-                    <div class="col-sm-7">
+                    <label class="col-sm-6 control-label">[!P::parentDescription!]</label>
+                    <div class="col-sm-6">
                         <div class="row">
                         [STORPROC [!P::objectModule!]/[!P::objectName!]|C]
                             <div class="col-md-6">
@@ -72,9 +115,9 @@
             [ELSE]
                 [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]
                 <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
-                    <label class="col-sm-5 control-label">[!P::parentDescription!]</label>
-                    <div class="col-sm-7">
-                        <select class="form-control" id="Form_[!P::name!][]" name="Form_[!P::name!]">
+                    <label class="col-sm-6 control-label">[!P::parentDescription!]</label>
+                    <div class="col-sm-6">
+                        <select class="form-control" id="Form_[!P::name!][]" name="Form_[!P::name!]" disabled="disabled">
                             <option value=""></option>
                             [STORPROC [!P::objectModule!]/[!P::objectName!]|C]
                             <option value="[!C::Id!]" [IF [!DF!]=[!C::Id!]]selected="selected"[/IF]>[!C::getFirstSearchOrder()!] [!C::getSecondSearchOrder()!]</option>
@@ -87,8 +130,8 @@
         [CASE image]
         [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]
         <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
-            <label for="Form_[!P::name!]" class="col-sm-5 control-label">[!P::description!]</label>
-            <div class="col-sm-7">
+            <label for="Form_[!P::name!]" class="col-sm-6 control-label">[!P::description!]</label>
+            <div class="col-sm-6">
                 [IF [!DF!]]
                 <img src="/[!DF!]"   class="img-responsive" style="max-height: 200px;"/>
                 [ELSE]
@@ -97,22 +140,40 @@
             </div>
         </div>
         [/CASE]
-        [CAE password]
+        [CASE password]
             [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]
             <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
-                <label for="Form_[!P::name!]" class="col-sm-5 control-label">[!P::description!]</label>
-                <div class="col-sm-7">
+                <label for="Form_[!P::name!]" class="col-sm-6 control-label">[!P::description!]</label>
+                <div class="col-sm-6">
                     **********
 //                    <input type="password" class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]" placeholder="" value="[!DF!]">
                 </div>
+            </div>
+        [/CASE]
+        [CASE raw]
+            [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]
+            <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
+            <label for="Form_[!P::name!]" class="control-label">[!P::description!]</label>
+            <div>
+                <pre class="prettyprint">[UTIL SPECIALCHARS][!DF!][/UTIL]</pre>
+            </div>
+            </div>
+        [/CASE]
+        [CASE html]
+        [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]
+            <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
+            <label for="Form_[!P::name!]" class="control-label">[!P::description!]</label>
+            <div>
+                [!DF!]
+            </div>
             </div>
         [/CASE]
         [DEFAULT]
             [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]
             [IF [!P::Values!]]
                 <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
-                    <label class="col-sm-5 control-label">[!P::description!]</label>
-                    <div class="col-sm-7">
+                    <label class="col-sm-6 control-label">[!P::description!]</label>
+                    <div class="col-sm-6">
                         [!DF!]
                         //<select class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]">
                         //    [STORPROC [!P::Values!]|C]
@@ -123,8 +184,8 @@
                 </div>
             [ELSE]
                 <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
-                  <label for="Form_[!P::name!]" class="col-sm-5 control-label">[!P::description!]</label>
-                  <div class="col-sm-7">
+                  <label for="Form_[!P::name!]" class="col-sm-6 control-label">[!P::description!]</label>
+                  <div class="col-sm-6">
                       [!DF!]
                     //<input type="text" class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]" placeholder="" value="[!DF!]">
                   </div>
@@ -132,7 +193,24 @@
             [/IF]
         [/DEFAULT]
     [/SWITCH]
+    [IF [!NBC!]>6&&[!Pos!]=[!Math::Floor([!NBC:/2!])!]]
+        </div>
+        <div class="col-md-6">
+    [/IF]
 [/STORPROC]
+    </div>
+<!--    <div class="col-md-2">
+        <a class="btn btn-warning btn-block popup " href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!O::Id!]/Form" data-title="Modification [!C::getFirstSearchOder()!]">Modifier</a>
+        <a class="btn btn-danger btn-block confirm" href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!O::Id!]/Supprimer" data-title="Suppression [!C::getFirstSearchOder()!]" data-confirm="Êtes vous sur de vouloir supprimer [!O::getDescription()!] [!O::getFirstSearchOrder()!]" data-url="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]">Supprimer</a>
+        <hr></hr>
+        [STORPROC [!O::getElementsByAttribute(link,,1)!]/type=fkey|P]
+            [STORPROC [!O::Module!]/[!P::objectName!]/[!O::ObjectType!]/[!O::Id!]|Pa|0|10]
+            <a href="/[!Sys::getMenu([!P::objectModule!]/[!P::objectName!])!]/[!Pa::Id!]" class="btn-primary btn-block btn">Fiche [!P::objectDescription!] [!Pa::getFirstSearchOrder()!]</a>
+            [/STORPROC]
+        [/STORPROC]
+
+    </div>-->
+</div>
 <br />
 <hr>
 [STORPROC [!O::getChildElements()!]|C]
@@ -149,7 +227,15 @@
     <div class="tab-content">
         [LIMIT 0|100]
         <div role="tabpanel" class="tab-pane [IF [!Pos!]=1]active[/IF]" id="[!C::objectName!]">
-            [MODULE Systeme/Utils/List?Chemin=[!O::Module!]/[!O::ObjectType!]/[!O::Id!]/[!C::objectName!]]
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class=" navbar-header">
+                        &nbsp;
+                        <a href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!O::Id!]/[!C::objectName!]/Form" data-title="Ajouter [!C::objectDescription!]" class="btn btn-success popup navbar-btn"><span class="glyphicon glyphicon-plus" aria-hidden="true" ></span> Ajouter un(e) [!C::objectDescription!]</a>
+                    </div>
+                </div>
+            </nav>
+            [MODULE Systeme/Utils/List?Chemin=[!O::Module!]/[!O::ObjectType!]/[!O::Id!]/[!C::objectName!]&Popup=[!C::popup!]]
         </div>
         [/LIMIT]
     </div>

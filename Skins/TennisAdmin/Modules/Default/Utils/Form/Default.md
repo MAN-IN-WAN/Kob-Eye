@@ -1,32 +1,34 @@
-[INFO [!Query!]|I]
-[IF [!I::TypeSearch!]=Direct]
-    [STORPROC [!Query!]|O|0|1][/STORPROC]
-[ELSE]
-    [OBJ [!I::Module!]|[!I::ObjectType!]|O]
-[/IF]
 //Config
 [!FORM:=1!]
 
 //validation du formulaire
 [IF [!ValidForm!]=1]
     //Engregistrement des champs
-    [STORPROC [!O::Proprietes()!]|P]
-        [METHOD O|Set]
-            [PARAM][!P::Nom!][/PARAM]
-            [PARAM][!Form_[!P::Nom!]!][/PARAM]
-        [/METHOD]
+    [STORPROC [!O::getElementsByAttribute(form,,1)!]|P]
+        [SWITCH [!P::type!]|=]
+            [CASE fkey]
+                [!O::resetParents([!P::objectName!])!]
+                [STORPROC [!Form_[!P::name!]!]|V]
+                    [METHOD O|AddParent]
+                        [PARAM][!P::objectModule!]/[!P::objectName!]/[!V!][/PARAM]
+                    [/METHOD]
+                [/STORPROC]
+            [/CASE]
+            [DEFAULT]
+                [METHOD O|Set]
+                    [PARAM][!P::name!][/PARAM]
+                    [PARAM][!Form_[!P::name!]!][/PARAM]
+                [/METHOD]
+            [/DEFAULT]
+        [/SWITCH]
     [/STORPROC]
-     //enregistrement de la position
-    [METHOD O|AddParent]
-        [PARAM][!Query!][/PARAM]
-    [/METHOD]
      //verfication de la saisie
     [IF [!O::Verify()!]]
-        [METHOD O|Save][/METHOD]
+        [METHOD O|Save][PARAM]1[/PARAM][/METHOD]
         [!FORM:=0!]
         {
             "success":1,
-            "message": "<div class=\"alert alert-success\">L'élément a été ajouté avec succés</div>",
+            "message": "<div class=\"alert alert-success\">Votre élément [!O::getDescription()!] a été sauvegardé avec succès.</div>",
             "controls":{
                 "close":1,
                 "save":0,
@@ -93,52 +95,9 @@
         <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
             <label class="col-sm-5 control-label">[!P::description!]</label>
             <div class="col-sm-7">
-                <div class="form-group">
-                    <div class='input-group date' id='datepicker-[!Pos!]'>
-                        <input type='text' class="form-control" value="[!DF!]" name="Form_[!P::name!]"/>
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                    </div>
-                </div>
-                //<input type="text" class="form-control datepicker" id="inputDate" placeholder="Sélectionnez une date" value="[!DF!]"  name="Form_[!P::name!]">
+                <input type="text" class="form-control datepicker" id="inputDate" placeholder="Sélectionnez une date" value="[!DF!]"  name="Form_[!P::name!]">
             </div>
-            <script type="text/javascript">
-                $(function () {
-                    $('#datepicker[!Pos!]').datetimepicker({
-                        locale: 'fr'
-                    });
-                });
-            </script>
         </div>
-        [/CASE]
-        [CASE datetime]
-            [IF [!Form_[!P::name!]!]>0][!DF:=[!Form_[!P::name!]!]!][ELSE]
-                [IF [!P::value!]>0]
-                    [!DF:=[!Utils::getDate(d/m/Y H:i:s,[!P::value!])!]!]
-                [ELSE]
-                    [!DF:=[!Utils::getDate(d/m/Y H:i:s,[!TMS::Now!])!]!]
-                [/IF]
-            [/IF]
-            <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
-            <label class="col-sm-5 control-label">[!P::description!]</label>
-            <div class="col-sm-7">
-                <div class="input-group date" id='datetimepicker[!Pos!]'>
-                    <input type="text" class="form-control datepicker" value="[!DF!]" name="Form_[!P::name!]" />
-                    <div class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </div>
-                </div>
-                //<input type="text" class="form-control datepicker" id="inputDate" placeholder="Sélectionnez une date" value="[!DF!]"  name="Form_[!P::name!]">
-            </div>
-            </div>
-            <script type="text/javascript">
-            $(function () {
-                $('#datetimepicker[!Pos!]').datetimepicker({
-                    locale: 'fr'
-                });
-            });
-            </script>
         [/CASE]
         [CASE fkey]
             [IF [!P::card!]=long]
@@ -197,6 +156,24 @@
                 </script>
             </div>
         </div>
+        [/CASE]
+        [CASE password]
+            [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]
+            <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
+                <label for="Form_[!P::name!]" class="col-sm-5 control-label">[!P::description!]</label>
+                <div class="col-sm-7">
+                    <input type="password" class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]" placeholder="" value="[!DF!]">
+                </div>
+            </div>
+        [/CASE]
+        [CASE text]
+            [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]
+            <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
+                <label for="Form_[!P::name!]" class="col-sm-5 control-label">[!P::description!]</label>
+                <div class="col-sm-7">
+                    <textarea class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]" >[**DF**]</textarea>
+                </div>
+            </div>
         [/CASE]
         [DEFAULT]
             [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]

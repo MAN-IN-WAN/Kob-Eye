@@ -129,3 +129,8 @@ form.standard > div {
     float: right;
 
 }
+/** Formulaire **/
+.form-group{
+  overflow: hidden;
+  margin-bottom:5px;
+}

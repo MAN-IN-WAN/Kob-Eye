@@ -16,7 +16,7 @@
         [!FORM:=0!]
         {
             "success":1,
-            "message": "<div class=\"alert alert-success\">Votre compte utilisateur a été créé avec succès.<br/> Veuillez vérifier votre boîte email afin de confirmer votre adresse e-mail en cliquant sur le lien du message. </div>",
+            "message": "<div class=\"alert alert-success\">Votre profil a été enregistré avec succès.</div>",
             "controls":{
                 "close":1,
                 "save":0,

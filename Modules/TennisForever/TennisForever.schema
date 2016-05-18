@@ -1,24 +1,24 @@
 <SCHEMA>
-    <OBJECTCLASS title="Client" driver="mysql" AccessPoint="1" Description="Client" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png" Class="Modules/TennisForever/Class/Client.class.php">
-        <PROPERTIES Order="3" description="Email"      type="varchar" length="200" obligatoire="1" form="1" client="1" searchOrder="5" unique="0">Mail</PROPERTIES>
-        <PROPERTIES Order="4" description="Civilite"   type="varchar" values="Mademoiselle,Madame,Monsieur" client="1" obligatoire="1" form="1">Civilite</PROPERTIES>
-        <PROPERTIES Order="5" description="Nom"        type="varchar" length="100" obligatoire="1" list="1" form="1" client="1" searchOrder="1">Nom</PROPERTIES>
-        <PROPERTIES Order="6" description="Prénom"     type="varchar" length="100" obligatoire="1" list="1" form="1" client="1" searchOrder="2">Prenom</PROPERTIES>
-        <PROPERTIES Order="7" description="Adresse"    type="text"    special="multi" obligatoire="0" form="1" client="1">Adresse</PROPERTIES>
-        <PROPERTIES Order="8" description="CodePostal" type="varchar" length="10" obligatoire="0" form="1" client="1">CodePostal</PROPERTIES>
-        <PROPERTIES Order="9" description="Ville"      type="varchar" length="100" obligatoire="1" form="1" default="Nîmes" client="1"  searchOrder="3">Ville</PROPERTIES>
-        <PROPERTIES Order="10" description="Pays"      type="varchar" length="100" obligatoire="1" form="1" default="France">Pays</PROPERTIES>
-        <PROPERTIES Order="11" description="Téléphone" type="varchar" length="20" obligatoire="1" list="1" form="1"  searchOrder="4" client="1">Tel</PROPERTIES>
+    <OBJECTCLASS title="Client" driver="mysql" AccessPoint="1" order="Nom" orderType="ASC" Description="Client" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png" Class="Modules/TennisForever/Class/Client.class.php">
+        <PROPERTIES Order="3" description="Email"      type="varchar" length="200" obligatoire="1" form="1" client="1" fiche="1" searchOrder="5" unique="0">Mail</PROPERTIES>
+        <PROPERTIES Order="4" description="Civilite"   type="varchar" values="Mademoiselle,Madame,Monsieur" client="1" fiche="1" obligatoire="1" form="1">Civilite</PROPERTIES>
+        <PROPERTIES Order="5" description="Nom"        type="varchar" length="100" obligatoire="1" list="1" form="1" fiche="1" client="1" searchOrder="1">Nom</PROPERTIES>
+        <PROPERTIES Order="6" description="Prénom"     type="varchar" length="100" obligatoire="1" list="1" form="1" fiche="1" client="1" searchOrder="2">Prenom</PROPERTIES>
+        <PROPERTIES Order="7" description="Adresse"    type="text"    special="multi" obligatoire="0" form="1" fiche="1" client="1">Adresse</PROPERTIES>
+        <PROPERTIES Order="8" description="CodePostal" type="varchar" length="10" obligatoire="0" form="1" fiche="1" client="1">CodePostal</PROPERTIES>
+        <PROPERTIES Order="9" description="Ville"      type="varchar" length="100" obligatoire="1" form="1" fiche="1" default="Nîmes" client="1"  searchOrder="3">Ville</PROPERTIES>
+        <PROPERTIES Order="10" description="Pays"      type="varchar" length="100" obligatoire="1" form="1" fiche="1" default="France">Pays</PROPERTIES>
+        <PROPERTIES Order="11" description="Téléphone" type="varchar" length="20" obligatoire="1" list="1" fiche="1" form="1"  searchOrder="4" client="1">Tel</PROPERTIES>
         <PROPERTIES Order="11" description="Mot de passe" type="varchar" length="100" obligatoire="1" form="1" client="1">Pass</PROPERTIES>
-        <PROPERTIES Order="13" description="Date de Naissance" type="date" obligatoire="0" form="1" client="1">DateNaissance</PROPERTIES>
-        <PROPERTIES Order="14" description="Société"   type="varchar" length="100" form="1">Societe</PROPERTIES>
-        <PROPERTIES Order="15" description="Avatar"    type="image" list="1" form="1">Avatar</PROPERTIES>
-        <PROPERTIES Order="16" description="Ce client est Actif"     type="boolean"   list="1" form="1">Actif</PROPERTIES>
-        <PROPERTIES Order="16" description="Adresse email confirmée"     type="boolean" default="0" list="1" form="1">EmailConfirm</PROPERTIES>
-        <PROPERTIES description="Notes"     type="text" form="1">Notes</PROPERTIES>
-        <PROPERTIES description="Statuts"  values="-18,Junior,Adulte,Etudiant,Couple"  type="varchar" form="1">Statuts</PROPERTIES>
-        <PROPERTIES description="Numéro de licence"     type="varchar" form="1">Licence</PROPERTIES>
-        <PROPERTIES description="Est un adhérent"     type="boolean" form="1" searchOrder="5" list="5">Abonne</PROPERTIES>
+        <PROPERTIES Order="13" description="Date de Naissance (jj/mm/aaaa)" type="date" obligatoire="0" form="1" fiche="1" client="1">DateNaissance</PROPERTIES>
+        <PROPERTIES Order="14" description="Société"   type="varchar" length="100" form="1" fiche="1">Societe</PROPERTIES>
+        <PROPERTIES Order="15" description="Avatar"    type="image" list="1" form="1" fiche="1">Avatar</PROPERTIES>
+        <PROPERTIES Order="16" description="Ce client est Actif"     type="boolean"   fiche="1" list="1" form="1">Actif</PROPERTIES>
+        <PROPERTIES Order="16" description="Adresse email confirmée"     type="boolean" default="0" list="1" form="1" fiche="1">EmailConfirm</PROPERTIES>
+        <PROPERTIES description="Notes"     type="text" form="1" fiche="1">Notes</PROPERTIES>
+        <PROPERTIES description="Statuts"  values="-18,Junior,Adulte,Etudiant,Couple"  type="varchar" form="1" fiche="1">Statuts</PROPERTIES>
+        <PROPERTIES description="Numéro de licence"     type="varchar" form="1" fiche="1">Licence</PROPERTIES>
+        <PROPERTIES description="Est un adhérent"     type="boolean" form="1" searchOrder="5" list="5" fiche="1">Abonne</PROPERTIES>
         <PROPERTIES Order="17" type="Int"  >UserId</PROPERTIES>
         <FUNCTION title="Renvoyer email de confirmation">RenvoiEmailConfirmation</FUNCTION>
     </OBJECTCLASS>

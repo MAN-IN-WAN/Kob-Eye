@@ -76,6 +76,7 @@ class CNAME extends genericClass {
 					////////// Nouvel élément
 					if($KEDomain) {
 						$entry = $this->buildEntry();
+						$dn = 'cn='.$this->Nom.',cn='.$KEDomain->Url.',ou=domains,'.PARC_LDAP_BASE;
 						$res = Server::ldapAdd($dn, $entry);
 						if($res['OK']) {
 							$this->LdapDN = $dn;
@@ -131,6 +132,9 @@ class CNAME extends genericClass {
 	 */
 	private function buildEntry( $new = true ) {
 		$entry = array();
+		// Vérifie qu'il y a le CNAME:
+		$pre = substr($this->Nom, 0, 6);
+		if($pre != 'CNAME:') $this->Nom = 'CNAME:' . $this->Nom;
 		$entry['cn'] = $this->Nom;
 		if (empty($this->Dnscname))$this->Dnscname = $this->_KEDomain->Url.".";
 		$entry['dnscname'] = $this->Dnscname;

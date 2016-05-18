@@ -15,7 +15,6 @@ class Subdomain extends genericClass {
 		// Enregistrement si pas d'erreur
 		if($this->_isVerified) {
 			parent::Save();
-			$this->ajustConfigApache( $synchro );
 			if($synchro) $this->_KEDomain->updateDnsSerial();
 		}
 	}
@@ -143,33 +142,6 @@ class Subdomain extends genericClass {
 	public function Delete() {
 		Server::ldapDelete($this->LdapID);
 		parent::Delete();
-	}
-
-	/**
-	 * Ajuste la config apache associée
-	 * en rajoutant l'url à la liste des alias si pas encore présent
-	 * @param	boolean		Synchroniser avec LDAP
-	 * @return	void
-	 */
-	private function ajustConfigApache( $synchro ) {
-		$this->getKEDomain();
-		$tab = $this->getParents('Apache');
-		$fullDomain = ((strlen($this->Url)>2) ? substr($this->Url,2).'.' : '') . $this->_KEDomain->Url;
-		if(!empty($tab)) {
-			$KEApache = $tab[0];
-			if($KEApache->ApacheServerName == $fullDomain) return;
-			if(empty($KEApache->ApacheServerAlias)) {
-				$KEApache->ApacheServerAlias = $fullDomain;
-				$KEApache->Save($synchro);
-			}
-			else {
-				$alias = explode("\r", $KEApache->ApacheServerAlias);
-				foreach($alias as $a) if($a == $fullDomain) return;
-				$alias[] = $fullDomain;
-				$KEApache->ApacheServerAlias = implode("\r", $alias);
-				$KEApache->Save($synchro);
-			}
-		}
 	}
 
 	/**

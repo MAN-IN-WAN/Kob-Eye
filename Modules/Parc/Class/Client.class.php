@@ -11,6 +11,12 @@ class Parc_Client extends genericClass {
 		parent::Save();
 		// Forcer la vérification
 		if(!$this->_isVerified) $this->Verify( $synchro );
+		//Si le revendeur connecté modifie ou ajoute un client
+		//on l'ajoute
+		if (Sys::$User->isRole('PARC_REVENDEUR')){
+			$rev = Process::getRegVars('ParcClient');
+			$this->AddParent($rev);
+		}
 		// Enregistrement si pas d'erreur
 		if($this->_isVerified){
 			parent::Save();

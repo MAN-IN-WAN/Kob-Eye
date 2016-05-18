@@ -1,0 +1,1 @@
+[STORPROC [!Query!]|H|0|1][!H::Terminal()!][/STORPROC]

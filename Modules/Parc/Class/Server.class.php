@@ -490,11 +490,15 @@ class Server extends genericClass {
 			$e['exists'] = false;
 			return $e;
 		}
-		if ($res[0]['modifytimestamp'][0] > $KEObj -> LdapTms) {
+		/*if (!empty($KEObj -> LdapTms) && intval($res[0]['modifytimestamp'][0])-10000 > intval($KEObj -> LdapTms )) {
 			$e['OK'] = false;
 			$e['Message'] = "Cette entrée est obsolète. Il faut faire une synchronisation avant de pouvoir la modifier.";
 			$e['Prop'] = '';
-		} else {
+		}else*/if (empty($KEObj -> LdapTms)) {
+			$e['OK'] = false;
+			$e['Message'] = "Cette entrée n'est pas publiée, elle doit être incomplète. Vérifiez la cohérence de l'élément.";
+			$e['Prop'] = '';
+		}else {
 			$e['OK'] = true;
 		}
 		return $e;

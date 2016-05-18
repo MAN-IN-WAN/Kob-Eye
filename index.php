@@ -1,5 +1,4 @@
 <?php
-
 define('ROOT_DIR', dirname(__FILE__).'/');
 
 // Verif taille fichier log

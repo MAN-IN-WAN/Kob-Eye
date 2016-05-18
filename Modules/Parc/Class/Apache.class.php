@@ -4,17 +4,52 @@ class Apache extends genericClass {
 	var $_KEHost;
 	var $_KEServer;
 	var $_isVerified = false;
-
 	/**
 	 * Force la vérification avant enregistrement
 	 * @param	boolean	Enregistrer aussi sur LDAP
 	 * @return	void
 	 */
 	public function Save( $synchro = true ) {
+		if ($this->Ssl){
+			//test de l'activation ssl
+			$old = Sys::getOneData('Parc','Apache/'.$this->Id);
+			if (!$old->Ssl) $this->enableSsl();
+		}
 		// Forcer la vérification
 		if(!$this->_isVerified) $this->Verify( $synchro );
 		// Enregistrement si pas d'erreur
 		if($this->_isVerified) parent::Save();
+	}
+
+	private function enableSsl() {
+		$serv = $this->getKEServer();
+		//pour activer ssl il faut déclencher une tache
+		$task  = genericClass::createInstance('Parc','Tache');
+		$task->Nom = "Activation SSL pour la configuration Apache ".$this->ApacheServerName." ( ".$this->Id." )";
+		$task->Type = "Ssh";
+		$task->Contenu = "service httpd stop \n /usr/src/certbot/certbot-auto certonly --standalone -d ".$this->ApacheServerName."";
+		// ajout des server alias
+		$sa = explode("\n",$this->ApacheServerAlias);
+		if (!empty($sa[0]))foreach ($sa as $s ){
+			$task->Contenu .= " -d ".trim($s);
+		}
+		$task->Contenu.="\n service httpd start";
+		$task->addParent($this);
+		$task->addParent($serv);
+		$task->Save();
+	}
+
+	public function getRootPath() {
+		if (!$this->Id){
+			//recherche de l'hote dans le parent
+			foreach ($this->Parents as $p){
+				if ($p['Titre']=='Host'){
+					$ho = Sys::getOneData('Parc','Host/'.$p['Id']);
+					return '/home/'.$ho->Nom.'/www';
+				}
+			}
+			return 'Tout neuf';
+		}else return $this->DocumentRoot;
 	}
 
 	/**

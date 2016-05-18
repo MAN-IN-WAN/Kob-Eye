@@ -88,6 +88,9 @@ class charUtils extends Beacon {
 					case "STRIPSLASHES":
 						$this->Data = stripslashes($this->Data);
 					break;
+					case "URL":
+						$this->Data = urlencode($this->Data);
+						break;
 					case "MD5":
 						$this->Data = md5($this->Data);
 					break;

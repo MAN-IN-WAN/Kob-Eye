@@ -4,11 +4,23 @@
 //validation du formulaire
 [IF [!ValidForm!]=1]
     //Engregistrement des champs
-    [STORPROC [!O::getElementsByAttribute(client,,1)!]|P]
-        [METHOD O|Set]
-            [PARAM][!P::name!][/PARAM]
-            [PARAM][!Form_[!P::name!]!][/PARAM]
-        [/METHOD]
+    [STORPROC [!O::getElementsByAttribute(form,,1)!]|P]
+        [SWITCH [!P::type!]|=]
+            [CASE fkey]
+                [!O::resetParents([!P::objectName!])!]
+                [STORPROC [!Form_[!P::name!]!]|V]
+                    [METHOD O|AddParent]
+                        [PARAM][!P::objectModule!]/[!P::objectName!]/[!V!][/PARAM]
+                    [/METHOD]
+                [/STORPROC]
+            [/CASE]
+            [DEFAULT]
+                [METHOD O|Set]
+                    [PARAM][!P::name!][/PARAM]
+                    [PARAM][!Form_[!P::name!]!][/PARAM]
+                [/METHOD]
+            [/DEFAULT]
+        [/SWITCH]
     [/STORPROC]
      //verfication de la saisie
     [IF [!O::Verify()!]]
@@ -16,7 +28,7 @@
         [!FORM:=0!]
         {
             "success":1,
-            "message": "<div class=\"alert alert-success\">Votre compte utilisateur a été créé avec succès.<br/> Veuillez vérifier votre boîte email afin de confirmer votre adresse e-mail en cliquant sur le lien du message. </div>",
+            "message": "<div class=\"alert alert-success\">Votre élément [!O::getDescription()!] a été sauvegardé avec succès.</div>",
             "controls":{
                 "close":1,
                 "save":0,
@@ -112,7 +124,7 @@
                 <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
                     <label class="col-sm-5 control-label">[!P::parentDescription!]</label>
                     <div class="col-sm-7">
-                        <select class="form-control" id="Form_[!P::name!][]" name="Form_[!P::name!]">
+                        <select class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!][]">
                             <option value=""></option>
                             [STORPROC [!P::objectModule!]/[!P::objectName!]|C]
                             <option value="[!C::Id!]" [IF [!DF!]=[!C::Id!]]selected="selected"[/IF]>[!C::getFirstSearchOrder()!] [!C::getSecondSearchOrder()!]</option>
@@ -145,7 +157,7 @@
             </div>
         </div>
         [/CASE]
-        [CAE password]
+        [CASE password]
             [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]
             <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
                 <label for="Form_[!P::name!]" class="col-sm-5 control-label">[!P::description!]</label>
@@ -154,27 +166,96 @@
                 </div>
             </div>
         [/CASE]
+        [CASE text]
+            [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]
+            <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
+                <label for="Form_[!P::name!]" class="col-sm-5 control-label">[!P::description!]</label>
+                <div class="col-sm-7">
+                    <textarea class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]" >[**DF**]</textarea>
+                </div>
+            </div>
+        [/CASE]
+        [CASE html]
+        [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]
+            <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
+                <label for="Form_[!P::name!]" class="control-label">[!P::description!]</label>
+                <div class="">
+                    <textarea id="Form_[!P::name!]" name="Form_[!P::name!]" class="ckeditor form-control">
+                        [!DF!]
+                    </textarea>
+                    <script>
+                        CKEDITOR.replace( 'Form_[!P::name!]' );
+                    </script>
+                </div>
+            </div>
+        [/CASE]
+        [CASE function]
+            [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!O::[!P::function!]()!]!][/IF]
+            <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
+            <label for="Form_[!P::name!]" class="col-sm-5 control-label">[!P::description!]</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]" value="[!DF!]"/>
+            </div>
+            </div>
+        [/CASE]
+        [CASE raw]
+             [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]
+            <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
+            <label for="Form_[!P::name!]" class="control-label">[!P::description!]</label>
+            <div class="">
+                <textarea class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]" style="height: 400px">[**DF**]</textarea>
+            </div>
+            </div>
+        [/CASE]
         [DEFAULT]
             [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]
-            [IF [!P::Values!]]
-                <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
-                    <label class="col-sm-5 control-label">[!P::description!]</label>
-                    <div class="col-sm-7">
-                        <select class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]">
-                            [STORPROC [!P::Values!]|C]
-                            <option value="[!C!]" [IF [!DF!]=[!C!]]selected="selected"[/IF]>[!C!]</option>
+            [IF [!P::query!]]
+                [!test:=[![!P::query!]:/::!]!]
+                [IF [!Array::SizeOf([!test!])!]>1]
+                    <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
+                        <label class="col-sm-5 control-label">[!P::description!]</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]">
+                            [STORPROC [!test::0!]|C]
+                                <option value="[!C::[!test::1!]!]" [IF [!DF!]=[!C::[!test::1!]!]]selected="selected"[/IF]>[!C::[!test::1!]!]</option>
+                            [/STORPROC]
+                            </select>
+                        </div>
+                    </div>
+                [ELSE]
+                    <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
+                        <label class="col-sm-5 control-label">[!P::description!]</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]">
+                            [STORPROC [!P::query!]|C]
+                                <option value="[!C::Id!]" [IF [!DF!]=[!C::Id!]]selected="selected"[/IF]>[!C::getFirstSearchOrder()!]</option>
                             [/STORPROC]
                         </select>
+                        </div>
                     </div>
-                </div>
+                [/IF]
             [ELSE]
-                <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
-                  <label for="Form_[!P::name!]" class="col-sm-5 control-label">[!P::description!]</label>
-                  <div class="col-sm-7">
-                    <input type="text" class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]" placeholder="" value="[!DF!]">
-                  </div>
-                </div>
+                [IF [!P::Values!]]
+                    <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
+                        <label class="col-sm-5 control-label">[!P::description!]</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]">
+                                [STORPROC [!P::Values!]|C]
+                                <option value="[!C!]" [IF [!DF!]=[!C!]]selected="selected"[/IF]>[!C!]</option>
+                                [/STORPROC]
+                            </select>
+                        </div>
+                    </div>
+                [ELSE]
+                    <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
+                      <label for="Form_[!P::name!]" class="col-sm-5 control-label">[!P::description!]</label>
+                      <div class="col-sm-7">
+                        <input type="text" class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]" placeholder="" value="[!DF!]">
+                      </div>
+                    </div>
+                [/IF]
             [/IF]
+
         [/DEFAULT]
     [/SWITCH]
 [/STORPROC]

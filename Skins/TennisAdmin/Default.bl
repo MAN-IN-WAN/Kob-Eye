@@ -205,7 +205,7 @@
             });
         });
         $('.btn-modal-close').click(function (e){
-            location.reload();
+            location.reload(true);
         });
 /*          $('.datetimepicker').datepicker({
               language: 'fr'

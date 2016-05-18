@@ -197,8 +197,8 @@ class Client extends genericClass {
 		$user = $this->getUser();
 		$Mail = new Mail();
 		$Mail->Subject("Confirmation de'inscription sur Tennis Forever");
-		$Mail -> From( "contact@tennisofrever.fr");
-		$Mail -> ReplyTo("contact@tennisofrever.fr");
+		$Mail -> From( "contact@tennisforever.fr");
+		$Mail -> ReplyTo("contact@tennisforever.fr");
 		$Mail -> To($this -> Mail);
 		$bloc = new Bloc();
 		$mailContent = "

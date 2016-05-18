@@ -20,6 +20,18 @@ class Ftpuser extends genericClass {
 			$this->getUidGidFromHost( $synchro );
 		}
 	}
+	public function getRootPath() {
+		if (!$this->Id){
+			//recherche de l'hote dans le parent
+			foreach ($this->Parents as $p){
+				if ($p['Titre']=='Host'){
+					$ho = Sys::getOneData('Parc','Host/'.$p['Id']);
+					return '/home/'.$ho->Nom.'/';
+				}
+			}
+			return 'Tout neuf';
+		}else return $this->DocumentRoot;
+	}
 
 	/**
 	 * Verification des erreurs possibles

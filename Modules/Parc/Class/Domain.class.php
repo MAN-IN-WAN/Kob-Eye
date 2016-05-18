@@ -250,8 +250,17 @@ class Domain extends genericClass {
 	 */
 	private function AutoGenSubDomains($fromsave=true) {
 		$out= '<ul><li><div style="color:green;font-weight:bold" class="debug">Auto gen  '.$this->Url.'</div><ul>';
-		$obj = empty($GLOBALS) ? Sys::$Conf : $GLOBALS["Systeme"]->Conf;
-		$conf = $obj->get("MODULE::PARC::AUTO_DOMAIN");
+		//vérification de l'existence d'une template
+		$dt = Sys::getOneData('Parc','DomainTemplate/Domain/'.$this->Id);
+		if ($dt){
+			$Obj = new xml2array($dt->Contenu);
+			$TabXml[0] = $Obj->Tableau["TEMPLATE"];
+			//Traitement des donn�es du tableau
+			$conf = Conf::parseOnly($TabXml);
+		}else {
+			$obj = empty($GLOBALS) ? Sys::$Conf : $GLOBALS["Systeme"]->Conf;
+			$conf = $obj->get("MODULE::PARC::AUTO_DOMAIN");
+		}
 		//sous domaines
 		$out.= "<li>Check <strong>subdomains</strong><ul>\r\n";
 		foreach($conf['SOUS_DOMAINE'] as $sub) {

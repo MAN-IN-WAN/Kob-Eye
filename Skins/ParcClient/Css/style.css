@@ -118,5 +118,6 @@ font-size: 4em;
 
 /** Formulaire **/
 .form-group{
-  clear: both;
+  overflow: hidden;
+  margin-bottom:5px;
 }

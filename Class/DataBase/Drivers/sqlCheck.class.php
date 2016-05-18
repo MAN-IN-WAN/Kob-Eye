@@ -462,6 +462,7 @@ class sqlCheck{
 				break;
 			case "textonly":				//Champ texte
 			case "text":				//Champ texte
+			case "raw":				//Champ crue
 			case "templateconfig":				//Champ texte
 			case "pluginconfig":				//Champ texte
 			case "xml":				//Champ texte

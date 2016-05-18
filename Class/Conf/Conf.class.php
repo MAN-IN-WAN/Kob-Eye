@@ -105,7 +105,7 @@ class Conf extends Root{
 	}
 	//Fonction recursive qui est appel�e a chaque niveau de recursivite
 	//Elle reagit aux attributs standards de la configuration
-	function Parse($TabOrig,$option="",$Name="") {
+	function Parse($TabOrig,$option="",$Name="",$formatonly = false) {
 		//@ Defini les attributs
 		//# Defini les classes
 		if (is_array($TabOrig))foreach ($TabOrig as $Tab) {
@@ -154,6 +154,60 @@ class Conf extends Root{
 		}
 
                 
+		return $TabResult;
+	}
+
+	//Fonction recursive qui est appel�e a chaque niveau de recursivite
+	//Elle reagit aux attributs standards de la configuration
+	static function parseOnly($TabOrig,$option="") {
+		//@ Defini les attributs
+		//# Defini les classes
+		if (is_array($TabOrig))foreach ($TabOrig as $Tab) {
+			if (isset($Tab["@"]))if (sizeof($Tab["@"]))foreach ($Tab["@"] as $Att=>$Value) {
+				//On analyse les attributs
+				switch ($Att){
+					case "access":
+						$option[$Att] = $Value;
+						break;
+					case "type":
+						$option[$Att] = $Value;
+						break;
+					case "file":
+						$option[$Att] = $Value;
+						break;
+				}
+			}
+			//On analyse les elements
+			if (sizeof($Tab["#"])==1){
+				if (is_string($Tab["#"])) {
+					//Le cas ou il y a directement une valeur
+					//->Enregistrement dans le tableau
+					// 					echo "-> Enregistrement dans le tableau de la valeur ".$Tab["#"]."\r\n";
+					$Result=$Tab["#"];
+				}else{
+					$Keys = array_keys($Tab["#"]);
+					//Le cas ou il n y qu un seul element du meme type
+					//->Lancement du parse en mode recursif
+					// 					echo "-> Enregistrement recursif du tableau \r\n";
+					$Result[$Keys[0]]=Conf::parseOnly($Tab["#"][$Keys[0]],$option,$Keys[0]);
+
+				}
+			}elseif(sizeof($Tab["#"])>1){
+				//Le cas ou il y plusieurs elements du meme type
+				//->Lancement du parse en mode recursif
+				foreach ($Tab["#"] as $Item=>$Value){
+					// 					echo "-> on relance recursivement TEST la methode parse pour ".$Item."\r\n";
+					$Result[$Item]=Conf::parseOnly($Value,$option,$Item);
+				}
+			}
+			if (sizeof($TabOrig)>1) {
+				$TabResult[] = $Result;
+			}else $TabResult = $Result;
+			// 			print_r($TabOrig);
+			$Result="";
+		}
+
+
 		return $TabResult;
 	}
 

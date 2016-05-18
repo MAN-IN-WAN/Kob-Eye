@@ -1,24 +1,24 @@
 <SCHEMA>
-	<OBJECTCLASS title="Client" driver="mysql" AccessPoint="1" master="0" Description="Clients" Icon="/Skins/AdminV2/Img/IconAqua/Forum.png" className="Parc_Client" Class="Modules/Parc/Class/Client.class.php">
-		<PROPERTIES category="Intitulé" type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1">Nom</PROPERTIES>
+	<OBJECTCLASS title="Client" driver="mysql" AccessPoint="1" master="0" Description="Client" Icon="/Skins/AdminV2/Img/IconAqua/Forum.png" className="Parc_Client" Class="Modules/Parc/Class/Client.class.php" Order="Nom">
+		<PROPERTIES category="Intitulé" type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1">Nom</PROPERTIES>
 		<PROPERTIES category="Accès client" type="boolean" obligatoire="0" searchOrder="4" description="Activation Accès web" list="1" fiche="1" form="1">AccesActif</PROPERTIES>
 		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="5" description="Identifiant Accès web"  fiche="1" form="1">AccesUser</PROPERTIES>
 		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="6" description="Mot de passe Accès Web" fiche="1" form="1">AccesPass</PROPERTIES>
-		<PROPERTIES category="Coordonnées" type="varchar" description="Adresse e-mail" fiche="1" form="1">Email</PROPERTIES>
+		<PROPERTIES category="Coordonnées" searchOrder="2" type="varchar" description="Adresse e-mail" fiche="1" form="1">Email</PROPERTIES>
 		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de téléphone" fiche="1" form="1">Tel</PROPERTIES>
 		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de fax" fiche="1" form="1">Fax</PROPERTIES>
-		<PROPERTIES category="LDAP" type="varchar" obligatoire="1" unique="1" description="Nom sous LDAP" list="1" fiche="1">NomLDAP</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" obligatoire="1" unique="1" length="12" description="Nom sous LDAP (de 8-12 caractères sans caractère spéciaux ou espace)" list="1" fiche="1" form="1">NomLDAP</PROPERTIES>
 		<PROPERTIES category="LDAP" type="int" auto="1">LdapGid</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
-		<FUNCTION>MailAvertissement</FUNCTION>
-		<FUNCTION>EnvoyerRecapitulatif</FUNCTION>
-		<FUNCTION>ImporterPlusieursDomaines</FUNCTION>
+		<FUNCTION title="Envoyer un mail d'avertissement">MailAvertissement</FUNCTION>
+		<FUNCTION title="Envoyer un mail récapitulatif">EnvoyerRecapitulatif</FUNCTION>
+		<FUNCTION title="Importer plusieurs domaines">ImporterPlusieursDomaines</FUNCTION>
 		<FKEY card="0,1" module="Systeme" data="User,Id">UserId</FKEY>
 		<FKEY card="0,1" module="Parc" data="Revendeur,Id">RevendeurId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Revendeur" driver="mysql" AccessPoint="1" master="0" Description="Revendeurs" Icon="/Skins/AdminV2/Img/IconAqua/Forum.png" className="Parc_Revendeur" Class="Modules/Parc/Class/Revendeur.class.php">
+	<OBJECTCLASS title="Revendeur" driver="mysql" AccessPoint="1" master="0" Description="Revendeur" Icon="/Skins/AdminV2/Img/IconAqua/Forum.png" className="Parc_Revendeur" Class="Modules/Parc/Class/Revendeur.class.php">
 		<PROPERTIES category="Intitulé" type="varchar" obligatoire="1" searchOrder="1">Nom</PROPERTIES>
 		<PROPERTIES category="Accès client" type="boolean" obligatoire="0" searchOrder="4" description="Activation Accès web">AccesActif</PROPERTIES>
 		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="5" description="Identifiant Accès web">AccesUser</PROPERTIES>
@@ -26,77 +26,114 @@
 		<PROPERTIES category="Coordonnées" type="varchar" description="Adresse e-mail" obligatoire="1">Email</PROPERTIES>
 		<FKEY card="0,1" module="Systeme" data="User,Id">UserId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Domain" driver="mysql" AccessPoint="1" master="0" Description="Domaines" Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png" Class="Modules/Parc/Class/Domain.class.php">
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" description="Url du domaine">Url</PROPERTIES>
-		<PROPERTIES type="boolean" default="1" description="Auto-completion à la sauvegarde">updateOnSave</PROPERTIES>
-		<PROPERTIES category="LDAP" type="varchar" auto="1">DNSSerial</PROPERTIES>
+	<OBJECTCLASS title="Domain" driver="mysql" AccessPoint="1" master="0" Description="Domaine" Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png" Class="Modules/Parc/Class/Domain.class.php">
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" form="1" fiche="1" description="Url du domaine">Url</PROPERTIES>
+		<PROPERTIES type="boolean" default="1" description="Auto-completion à la sauvegarde" list="1" form="1" fiche="1">updateOnSave</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1" fiche="1">DNSSerial</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
-		<FKEY card="0,1" data="Client,Id">ClientId</FKEY>
+		<FKEY card="0,1" data="Client,Id" fiche="1" parentDescription="Client" obligatoire="1" link="1">ClientId</FKEY>
+        <FKEY card="0,1" data="DomainTemplate,Id" fiche="1" parentDescription="Template de domaine" form="1">DomainTemplateId</FKEY>
 		<FUNCTION>Synchroniser</FUNCTION>
 		<FUNCTION>Check</FUNCTION>
 		<FUNCTION>UpdateAll</FUNCTION>
+        <VIEW title="DomainList" default="1">
+            <OBJECTCLASS title="Domain" filters="" select="*">
+                <JOIN type="outer" title="Client" on="ClientId" target="Id">
+                    <PROPERTIES type="varchar" listWidth="100" list="1" description="Client" >Nom</PROPERTIES>
+                </JOIN>
+            </OBJECTCLASS>
+        </VIEW>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Subdomain" driver="mysql" Description="Sous Domaines" Icon="/Skins/AdminV2/Img/IconAqua/Search.png" Class="Modules/Parc/Class/Subdomain.class.php">
-		<PROPERTIES type="varchar" searchOrder="1" description="Prefixe Sous Domaine">Url</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="2" description="Adresse IP du sous domaine">IP</PROPERTIES>
+	<OBJECTCLASS title="Subdomain" driver="mysql" Description="A" Icon="/Skins/AdminV2/Img/IconAqua/Search.png" Class="Modules/Parc/Class/Subdomain.class.php">
+		<PROPERTIES type="varchar" searchOrder="1" description="Prefixe Sous Domaine" list="1" form="1">Url</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" description="Adresse IP du sous domaine" list="1" form="1">IP</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
-		<FKEY card="1,1" data="Domain,Id">DomainId</FKEY>
+		<FKEY card="1,1" data="Domain,Id" popup="1">DomainId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="MX" driver="mysql" Description="Configuration MX" Icon="/Skins/AdminV2/Img/IconAqua/Tasks_mini.png" Class="Modules/Parc/Class/MX.class.php">
-		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="2">Dnscname</PROPERTIES>
-		<PROPERTIES type="varchar" values="1,5,10,15,20,25,30,35" default="10">Poids</PROPERTIES>
+	<OBJECTCLASS title="AAA" driver="mysql" Description="AAA" Icon="/Skins/AdminV2/Img/IconAqua/Search.png" Class="Modules/Parc/Class/AAA.class.php">
+		<PROPERTIES type="varchar" searchOrder="1" description="Prefixe Sous Domaine" list="1" form="1">Url</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" description="Adresse IPV6 du sous domaine" list="1" form="1">IP</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
-		<FKEY card="1,1" data="Domain,Id">DomainId</FKEY>
+		<FKEY card="1,1" data="Domain,Id" popup="1">DomainId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="NS" driver="mysql" Description="Configuration NS" Icon="/Skins/AdminV2/Img/IconAqua/Tasks_mini.png" Class="Modules/Parc/Class/NS.class.php">
-		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
+	<OBJECTCLASS title="MX" driver="mysql" Description="MX" Icon="/Skins/AdminV2/Img/IconAqua/Tasks_mini.png" Class="Modules/Parc/Class/MX.class.php">
+		<PROPERTIES type="varchar" searchOrder="1" list="1" form="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" list="1" form="1" description="Nom DNS du serveur de mail (ou type A mail)">Dnscname</PROPERTIES>
+		<PROPERTIES type="varchar" values="1,5,10,15,20,25,30,35" default="10" list="1" form="1">Poids</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
-		<FKEY card="1,1" data="Domain,Id">DomainId</FKEY>
-		<FKEY card="1,1" data="Server,Id">NameServerId</FKEY>
+		<FKEY card="1,1" data="Domain,Id" popup="1">DomainId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="TXT" driver="mysql" Description="Configuration SPF" Icon="/Skins/AdminV2/Img/IconAqua/Tasks_mini.png" Class="Modules/Parc/Class/TXT.class.php">
-		<PROPERTIES type="varchar" searchOrder="1" values="TXT,TXT2,TXT3,TXT4,SPF,SPF2,SPF3,SPF4">Nom</PROPERTIES>
-		<PROPERTIES type="varchar">Dnsdomainname</PROPERTIES>
-		<PROPERTIES type="varchar">Dnstxt</PROPERTIES>
+	<OBJECTCLASS title="NS" driver="mysql" Description="NS" Icon="/Skins/AdminV2/Img/IconAqua/Tasks_mini.png" Class="Modules/Parc/Class/NS.class.php">
+		<PROPERTIES type="varchar" searchOrder="1" list="1" form="1">Nom</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
-		<FKEY card="1,1" data="Domain,Id">DomainId</FKEY>
+		<FKEY card="1,1" data="Domain,Id" popup="1">DomainId</FKEY>
+		<FKEY card="1,1" data="Server,Id" form="1" parentDescription="Serveur de nom">NameServerId</FKEY>
+		<VIEW title="NSList" default="1">
+			<OBJECTCLASS title="NS" filters="" select="*">
+                <PROPERTIES type="varchar" searchOrder="1" list="1" form="1">Nom</PROPERTIES>
+				<JOIN type="outer" title="Server" on="NameServerId" target="Id">
+					<PROPERTIES type="varchar" listWidth="100" list="1" description="Serveur DNS" >DNSNom</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="CNAME" driver="mysql" Description="Configuration CNAME" Icon="/Skins/AdminV2/Img/IconAqua/Tasks_mini.png" Class="Modules/Parc/Class/CNAME.class.php">
-		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="2">Dnscname</PROPERTIES>
-		<PROPERTIES type="varchar">Dnsdomainname</PROPERTIES>
+	<OBJECTCLASS title="TXT" driver="mysql" Description="TXT" Icon="/Skins/AdminV2/Img/IconAqua/Tasks_mini.png" Class="Modules/Parc/Class/TXT.class.php">
+		<PROPERTIES type="varchar" searchOrder="1" values="TXT,SPF,DKIM" list="1" form="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" form="1" description="Domaine cible (pour la racine: '[Domaine].')">Dnsdomainname</PROPERTIES>
+		<PROPERTIES type="text" list="1" form="1" description="text">Dnstxt</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
-		<FKEY card="1,1" data="Domain,Id">DomainId</FKEY>
+		<FKEY card="1,1" data="Domain,Id" popup="1">DomainId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="CNAME" driver="mysql" Description="CNAME" Icon="/Skins/AdminV2/Img/IconAqua/Tasks_mini.png" Class="Modules/Parc/Class/CNAME.class.php">
+		<PROPERTIES type="varchar" searchOrder="1" list="1" form="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" description="Domaine cible (pour la racine: '[Domaine].')" list="1" form="1">Dnscname</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" form="1" description="Préfixe sous-domaine">Dnsdomainname</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
+		<FKEY card="1,1" data="Domain,Id" popup="1">DomainId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="SRV" driver="mysql" Description="SRV" Icon="/Skins/AdminV2/Img/IconAqua/Tasks_mini.png" Class="Modules/Parc/Class/SRV.class.php">
+		<PROPERTIES type="varchar" searchOrder="1" list="1" form="1" description="Nom ([Service].[Protocole])">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" list="1" form="1" description="Cible (pensez à ajouter le point à la fin)">Target</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="3" list="1" form="1">Service</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" form="1">Protocole</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" form="1">Port</PROPERTIES>
+		<PROPERTIES type="varchar" values="1,5,10,15,20,25,30,35" default="10" list="1" form="1">Poids</PROPERTIES>
+		<PROPERTIES type="varchar" values="100,200,300" default="100" list="1" form="1">Priorite</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
+		<FKEY card="1,1" data="Domain,Id" popup="1">DomainId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Server" driver="mysql" AccessPoint="1" master="0" Description="Serveurs" Icon="/Skins/AdminV2/Img/IconAqua/App1.png" Class="Modules/Parc/Class/Server.class.php">
-		<PROPERTIES type="varchar" searchOrder="1">Nom</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="4">DNSNom</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="3">LDAPNom</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="2">IP</PROPERTIES>
-		<PROPERTIES type="boolean" searchOrder="7">Web</PROPERTIES>
-		<PROPERTIES type="boolean" searchOrder="5">Dns</PROPERTIES>
-		<PROPERTIES type="boolean" searchOrder="6">Mail</PROPERTIES>
-		<PROPERTIES type="boolean" searchOrder="6">Sql</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" list="1" form="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" list="1" form="1">DNSNom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="4" form="1">LDAPNom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="3" list="1" form="1">IP</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="7" list="1" form="1">Web</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="5" list="1" form="1">Dns</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="6" list="1" form="1">Mail</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="6" list="1" form="1">Sql</PROPERTIES>
 		<CATEGORY title="Informations">
 			<PROPERTIES type="varchar" description="SSH: Nom d'utilisateur" default="root">SshUser</PROPERTIES>
 			<PROPERTIES type="varchar" description="SSH: Mot de passe">SshPassword</PROPERTIES>
-			<PROPERTIES type="int" description="Nombre de cpu">NbCpu</PROPERTIES>
-			<PROPERTIES type="int" description="Nombre de giga de RAM">NbRam</PROPERTIES>
-			<PROPERTIES type="int" description="Espace provisionné (en Mo)">EspaceProvisionne</PROPERTIES>
-			<PROPERTIES type="text">Commentaire</PROPERTIES>
+			<PROPERTIES type="int" description="Nombre de cpu" list="1" form="1">NbCpu</PROPERTIES>
+			<PROPERTIES type="int" description="Nombre de giga de RAM" list="1" form="1">NbRam</PROPERTIES>
+			<PROPERTIES type="int" description="Espace provisionné (en Mo)" list="1" form="1">EspaceProvisionne</PROPERTIES>
+			<PROPERTIES type="text" list="1" form="1">Commentaire</PROPERTIES>
 		</CATEGORY>
 		<FKEY card="0,1" data="Client,Id">ClientId</FKEY>
 		
@@ -108,42 +145,43 @@
 		<FUNCTION>Majdomaine</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Host" driver="mysql" Dico="1" Description="Hébergement" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Class="Modules/Parc/Class/Host.class.php">
-		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" list="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1">Nom</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
-		<PROPERTIES type="boolean" default="0" category="gestion commerciale" searchOrder="2" description="En production">Production</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="gestion commerciale" searchOrder="2" description="En production" fiche="1" form="1">Production</PROPERTIES>
 		<PROPERTIES type="boolean" default="1" category="gestion commerciale" searchOrder="3" description="Nécessite une facturation">Facturable</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="gestion commerciale" searchOrder="4" description="Hébergement au profit de l'agence">Interne</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" category="gestion commerciale" searchOrder="5" description="Numéro de contrat">NumContrat</PROPERTIES>
-		<PROPERTIES type="text" category="gestion commerciale">Commentaires</PROPERTIES>
-		<PROPERTIES type="int" obligatoire="1" default="1000" description="Quota (en Mo)" list="1">Quota</PROPERTIES>
-		<PROPERTIES type="varchar" length="50" obligatoire="1" default="default" description="Version de php" query="Parc/PHPVersion::Valeur" list="1">PHPVersion</PROPERTIES>
+		<PROPERTIES type="text" category="gestion commerciale" fiche="1" form="1">Commentaires</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="1" default="1000" description="Quota (en Mo)" list="1" fiche="1" form="1">Quota</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" obligatoire="1" default="default" description="Version de php" query="Parc/PHPVersion::Valeur" list="1" fiche="1" form="1">PHPVersion</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
 		<PROPERTIES category="LDAP" type="int" auto="1">LdapGid</PROPERTIES>
 		<PROPERTIES category="LDAP" type="int" auto="1">LdapUid</PROPERTIES>
-		<FKEY card="1,1" data="Server,Id">ServerId</FKEY>
-		<FKEY card="0,1" data="Client,Id">ClientId</FKEY>
+		<FKEY card="1,1" data="Server,Id" form="1" list="1" fiche="1" parentDescription="Serveur">ServerId</FKEY>
+		<FKEY card="0,1" data="Client,Id" link="1">ClientId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Apache" driver="mysql" Dico="1" Description="Config Apache" Icon="/Skins/AdminV2/Img/IconAqua/Tasks.png" Class="Modules/Parc/Class/Apache.class.php">
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1">DocumentRoot</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="2" obligatoire="1">ApacheServerName</PROPERTIES>
-		<PROPERTIES type="text" searchOrder="3">ApacheServerAlias</PROPERTIES>
+	<OBJECTCLASS title="Apache" driver="mysql" Dico="1" Description="Hôte virtuel" Icon="/Skins/AdminV2/Img/IconAqua/Tasks.png" Class="Modules/Parc/Class/Apache.class.php">
+		<PROPERTIES type="function" searchOrder="2" obligatoire="1" list="1" fiche="1" form="1" description="Racine du site" function="getRootPath">DocumentRoot</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Domaine principal (sans http)" listDescr="Domaine">ApacheServerName</PROPERTIES>
+		<PROPERTIES type="text" searchOrder="3" list="1" fiche="1" form="1" description="Autres domaines">ApacheServerAlias</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
-		<PROPERTIES category="Protection" type="boolean" description="Protéger avec un mot de passe">PasswordProtected</PROPERTIES>
-		<PROPERTIES category="Protection" type="varchar" description="Nom d'utilisateur">HtaccessUser</PROPERTIES>
-		<PROPERTIES category="Protection" type="varchar" description="Mot de passe">HtaccessPassword</PROPERTIES>
-		<FKEY card="1,1" data="Host,Id">HostId</FKEY>
+        <PROPERTIES category="Configuration" type="boolean" description="Activer SSL" listDescr="SSL" list="1" fiche="1" form="1">Ssl</PROPERTIES>
+		<PROPERTIES category="Protection" type="boolean" description="Protéger avec un mot de passe" listDescr="Protection" list="1" fiche="1" form="1">PasswordProtected</PROPERTIES>
+		<PROPERTIES category="Protection" type="varchar" description="Nom d'utilisateur" fiche="1" form="1">HtaccessUser</PROPERTIES>
+		<PROPERTIES category="Protection" type="varchar" description="Mot de passe" fiche="1" form="1">HtaccessPassword</PROPERTIES>
+		<FKEY card="1,1" data="Host,Id" popup="1">HostId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Ftpuser" driver="mysql" Dico="1" Description="Accès FTP" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Ftpuser.class.php">
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Identifiant">Identifiant</PROPERTIES>
-		<PROPERTIES type="varchar" obligatoire="1">Password</PROPERTIES>
-		<PROPERTIES type="varchar" obligatoire="1">DocumentRoot</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Identifiant" list="1" fiche="1" form="1">Identifiant</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="1" list="1" fiche="1" form="1" description="Mot de passe">Password</PROPERTIES>
+		<PROPERTIES type="function" obligatoire="1" list="1" fiche="1" form="1" function="getRootPath" description="Racine du FTP">DocumentRoot</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
-		<FKEY card="1,1" data="Host,Id">HostId</FKEY>
+		<FKEY card="1,1" data="Host,Id" popup="1">HostId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="PHPVersion" driver="mysql" Dico="1" Description="Version de php" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png">
                 <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Titre de la version">Titre</PROPERTIES>
@@ -155,6 +193,22 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="FichierConfiguration" driver="mysql" browseable="1" Dico="1" Description="Fichier template de configuration" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" >
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom du fichier">Nom</PROPERTIES>
-		<PROPERTIES type="text" obligatoire="1">Contenu</PROPERTIES>
+		<PROPERTIES type="raw" obligatoire="1">Contenu</PROPERTIES>
 	</OBJECTCLASS>
+    <OBJECTCLASS title="DomainTemplate" driver="mysql" Dico="1" Description="Template de domaine" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" >
+        <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom du fichier">Nom</PROPERTIES>
+        <PROPERTIES type="raw" obligatoire="1" fiche="1" form="1">Contenu</PROPERTIES>
+    </OBJECTCLASS>
+    <OBJECTCLASS title="Tache" driver="mysql" Dico="1" Description="Tache" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Tache.class.php" >
+        <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom de la tache">Nom</PROPERTIES>
+        <PROPERTIES type="varchar" searchOrder="2" obligatoire="1" list="1" values="Ssh,Auto,Manuel" fiche="1" form="1" description="Type de tache">Type</PROPERTIES>
+        <PROPERTIES type="boolean" searchOrder="3" fiche="1" list="1" form="1" description="Tache terminé">Termine</PROPERTIES>
+        <PROPERTIES type="boolean" searchOrder="4" fiche="1" list="1" form="1" description="Tache démarrée">Demarre</PROPERTIES>
+        <PROPERTIES type="boolean" searchOrder="5" fiche="1" list="1" form="1" description="Erreur">Erreur</PROPERTIES>
+        <PROPERTIES type="raw" fiche="1" form="1">Contenu</PROPERTIES>
+        <PROPERTIES type="html" fiche="1" form="1">Retour</PROPERTIES>
+        <FKEY card="0,1" data="Server,Id" fiche="1" form="1" parentDescription="Serveur">ServerId</FKEY>
+        <FKEY card="0,1" data="Apache,Id" fiche="1" form="1" parentDescription="Hôte virtuel">ApacheId</FKEY>
+        <FUNCTION title="Executer">Executer</FUNCTION>
+    </OBJECTCLASS>
 </SCHEMA>

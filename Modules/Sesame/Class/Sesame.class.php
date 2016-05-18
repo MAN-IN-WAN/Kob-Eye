@@ -20,6 +20,7 @@ class Sesame extends Module {
 
         //sinon on décrypte le code pour valider la chaîne
         $key = Sys::getOneData('Sesame', 'Dictionnaire/Nom=AES_KEY');
+        $key->Valeur = "MA CLEF EN DUR";
         // test ZBCKbyX6RgJA8wRTbE5a4SQeVv3ccP0ISng3iEry3qU=  ====> test de phrase ===> passe partout
         // test ov4dxzJAqeWtyMKWKCHuOHjImA2mV+7opAIm8jJ99kmZu5XdnotMb03BbxO6qwe/tcIXRJ30MMzOobVRqmH3rA== => MICHEL MANOLIOS;15122015;12:00;18122016;12:00;SB125;048 => chaine valide
         //$qr2 = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256,$key->Valeur,'MICHEL MANOLIOS;15122015;12:00;18122016;12:00;SB125;048',MCRYPT_MODE_CBC, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"));

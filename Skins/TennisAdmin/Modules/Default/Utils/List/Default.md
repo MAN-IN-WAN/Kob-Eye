@@ -9,8 +9,12 @@
     [OBJ [!I::Module!]|[!I::ObjectType!]|O]
     [!REQ:=[!Chemin!]!]
 [/IF]
-
 [!O::setView()!]
+
+//DATA
+[IF [!Data!]]
+    [!REQ:=[!Data!]!]
+[/IF]
 
 //RECHERCHE
 [!FILTER:=!]
@@ -56,7 +60,7 @@
 [/SWITCH]
 
 [IF [!Mini!]=]
-<div class="row well">
+<div class="row ">
     <div class="col-md-4">
         <form method="GET">
         <div class="btn-toolbar" role="toolbar">
@@ -107,7 +111,7 @@
         <tr>
 
             [STORPROC [!O::getElementsByAttribute(list,,1)!]|E]
-            <th>[IF [!E::objectDescription!]][!E::objectDescription!][ELSE][!E::description!][/IF]</th>
+            <th>[!E::description!]</th>
             [/STORPROC]
             <th>Informations</th>
             <th>Actions</th>
@@ -146,32 +150,25 @@
                         <td><img src="/[!C::[!E::name!]!].mini.200x50.jpg" class="img-responsive" /></td>
                     [/CASE]
                     [DEFAULT]
-                        [IF [!E::values!]]
-                            VALUES #TODO
-                        [ELSE]
                         <td>
-                            //<a href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!C::Id!]">
+                            <a href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!C::Id!][IF [!Popup!]]/Form[/IF]" class="[IF [!Popup!]]popup[/IF]">
                             [IF [!Pos!]=1]<strong>[/IF]
                             [!C::[!E::name!]!]
                             [IF [!Pos!]=1]</strong>[/IF]
-                            //</a>
+                            </a>
                         </td>
-                        [/IF]
                     [/DEFAULT]
                 [/SWITCH]
             [/STORPROC]
 
             <td width="250">
                 <div class="small">Créé le [DATE d/m/Y H:i:s][!C::tmsCreate!][/DATE] [STORPROC Systeme/User/[!C::userCreate!]|U] par [!U::Nom!] [!U::Prenom!] ([!U::Login!])[/STORPROC]</div>
-                <div class="small">Modifié le [DATE d/m/Y H:i:s][!C::tmsEdit!][/DATE] [STORPROC Systeme/User/[!C::userEdit!]|U] par [!U::Nom!] [!U::Prenom!] ([!U::Login!])[/STORPROC]</div>
+                <div class="small">Modifié le [DATE d/m/Y H:i:s][!C::tmsCreate!][/DATE] [STORPROC Systeme/User/[!C::userEdit!]|U] par [!U::Nom!] [!U::Prenom!] ([!U::Login!])[/STORPROC]</div>
             </td>
             <td width="200">
                 <div class="btn-group" role="group">
-                    [IF [!NbP!]<2]
-                        <a class="btn btn-warning popup" href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!C::Id!]/Form" data-title="Modification [!C::getFirstSearchOder()!]">Modifier</a>
-                    [ELSE]
-                    <a class="btn btn-warning" href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!C::Id!]/Modifier" data-title="Modification [!C::getFirstSearchOder()!]">Modifier</a>
-                    [/IF]
+
+                    <a class="btn btn-warning [IF [!Popup!]]popup[/IF]" href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!C::Id!]/Form" data-title="Modification [!C::getFirstSearchOder()!]">Modifier</a>
                     <a class="btn btn-danger confirm" href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!C::Id!]/Supprimer" data-title="Suppression [!C::getFirstSearchOder()!]" data-confirm="Etes vous sur de vouloir supprimer [!C::getFirstSearchOrder()!] ?">Supprimer</a>
                 </div>
             </td>
@@ -181,7 +178,7 @@
     </table>
 </div>
 [IF [!Mini!]=]
-<div class="row well">
+<div class="row ">
     <div class="col-md-4">
     </div>
     <div class="col-md-8">

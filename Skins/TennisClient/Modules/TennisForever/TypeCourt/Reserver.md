@@ -123,7 +123,7 @@ function addPartenaire(e,nom,email,prenom) {
     '<label class="sr-only" for="partenaireNom'+partenaire+'">Membre</label>'+
     '<select class="form-control" id="partenaireNom'+partenaire+'" placeholder="Nom" name="Partenaire['+partenaire+'][Client]">'+
     '       <option value="">-- Liste des Adhérents --</option>'+
-    [STORPROC TennisForever/Client/Abonne=1|C]
+    [STORPROC TennisForever/Client/Abonne=1|C|0|500|Nom|ASC]
     '       <option value="[!C::Id!]">[!C::Nom!] [!C::Prenom!]</option>'+
     [/STORPROC]
     '</select>'+

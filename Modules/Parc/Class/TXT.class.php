@@ -79,6 +79,7 @@ class TXT extends genericClass {
 					////////// Nouvel élément
 					if($KEDomain) {
 						$entry = $this->buildEntry();
+						$dn = 'cn='.$this->Nom.',cn='.$KEDomain->Url.',ou=domains,'.PARC_LDAP_BASE;
 						$res = Server::ldapAdd($dn, $entry);
 						if($res['OK']) {
 							$this->LdapDN = $dn;
@@ -134,6 +135,12 @@ class TXT extends genericClass {
 	 */
 	private function buildEntry( $new = true ) {
 		$entry = array();
+		if ($new){
+			//recherche du numéro
+			$dom = $this->getKEDomain();
+			$nb = Sys::getCount('Parc','Domain/'.$dom->Id.'/TXT/Nom~'.$this->Nom.'%')+1;
+			$this->Nom.=':'.$nb;
+		}
 		$entry['cn'] = $this->Nom;
 		$entry['dnsdomainname'] = $this->Dnsdomainname;
 		$entry['dnstxt'] = $this->Dnstxt;

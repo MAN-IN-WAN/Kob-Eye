@@ -79,6 +79,7 @@ class MX extends genericClass {
 					////////// Nouvel élément
 					if($KEDomain) {
 						$entry = $this->buildEntry();
+						$dn = 'cn='.$this->Nom.',cn='.$KEDomain->Url.',ou=domains,'.PARC_LDAP_BASE;
 						$res = Server::ldapAdd($dn, $entry);
 						if($res['OK']) {
 							$this->LdapDN = $dn;
@@ -134,6 +135,12 @@ class MX extends genericClass {
 	 */
 	private function buildEntry( $new = true ) {
 		$entry = array();
+		if ($new){
+			//recherche du numéro
+			$dom = $this->getKEDomain();
+			$nb = Sys::getCount('Parc','Domain/'.$dom->Id.'/MX')+1;
+			$this->Nom='MX:'.$nb;
+		}
 		$entry['cn'] = $this->Nom;
 		$entry['dnscname'] = $this->Dnscname;
 		if($new) {
