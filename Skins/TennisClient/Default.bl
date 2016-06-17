@@ -31,7 +31,7 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 [STORPROC [!Sys::Menus!]|M|0|10]
-                <li><a href="/[!M::Url!]">[!M::Titre!]</a></li>
+                <li><a href="/[!M::Url!]?rand=[!TMS::Now!]">[!M::Titre!]</a></li>
                 [/STORPROC]
             </ul>
         </div>

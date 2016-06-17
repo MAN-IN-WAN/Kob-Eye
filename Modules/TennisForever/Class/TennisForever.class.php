@@ -81,5 +81,33 @@ class TennisForever extends Module {
     static function getCurrentClient() {
         return Sys::getOneData('TennisForever','Client/UserId='.Sys::$User->Id);
     }
-
+    /**
+     * isDispoPiscine
+     * Vérifie la disponibilité de la piscine
+     */
+    static function isDispoPiscine($date) {
+        $co = 20;
+        $res = Sys::getCount('TennisForever','Court/'.$co.'/Disponibilite/Debut>='.$date);
+        return $res;
+    }
+    /**
+     * getResaPiscine
+     * Recupere le sinformations  de reservation de piscine.
+     */
+    static function getResaPiscine() {
+        
+        $co = 20;
+        $res = Sys::getData('TennisForever','Court/'.$co.'/Reservation/DateDebut>='.Utils::getTodayMorning(array()).'&DateDebut<'.Utils::getTodayEvening(array()).'/LigneFacture');
+        $ser = Sys::getData('TennisForever','Court/'.$co.'/Service');
+        $out='';
+        foreach ($ser as $s){
+            $nbres = 0;
+            foreach ($res as $r){
+                if ($r->Id = $s->Id) $nbres++;
+            }
+            //on compte le nombre d'occurence
+            $out.='<div style="overflow:hidden;"><span class="label label-warning" style="font-size:16px;font-weight: bold;text-align:center;float:right;background-color:darkred;width: 50px;height: 50px; display: block;line-height:50px;">'.$nbres.'</span>'.$s->Titre.'</div>';
+        }
+        return addslashes($out);
+    }
 }

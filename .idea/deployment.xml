@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="parc.azko.fr (1)">
+  <component name="PublishConfigData" serverName="protector.mobi">
     <serverData>
       <paths name="client.eng.systems">
         <serverdata>
@@ -12,7 +12,21 @@
       <paths name="dev.pharmaciedelecluse.fr">
         <serverdata>
           <mappings>
-            <mapping deploy="/kobeye-dev" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="f-onefoil.com">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="lace-restaurant.fr">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
@@ -23,7 +37,7 @@
           </mappings>
         </serverdata>
       </paths>
-      <paths name="parc.azko.fr (1)">
+      <paths name="pharmaciedecastanet.fr">
         <serverdata>
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
@@ -41,6 +55,13 @@
         <serverdata>
           <mappings>
             <mapping deploy="/www" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="protector.mobi">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/kobeye" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

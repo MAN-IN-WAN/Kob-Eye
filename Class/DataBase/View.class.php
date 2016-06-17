@@ -108,6 +108,11 @@ class View extends Root{
 			}
 			
 		}
+
+		//group by
+		if (!empty($GroupBy))
+			$Data["GroupBy"][] = $GroupBy;
+
 		//Creation du sql;
 		$sql = sqlFunctions::createSql("VIEW",$Data,$this->ObjectClass);
 		
@@ -214,7 +219,10 @@ class View extends Root{
 		//Filtres
 		//TODO
 		//GroupBy
-		//TODO
+        if (isset($T["@"]["groupBy"])&&!empty($T["@"]["groupBy"])) {
+            $Gp = $T["@"]["groupBy"];
+            $this->sqlTab["GroupBy"] = array($Gp);
+        }
 		//Order
 		if (isset($T["@"]["order"])&&!empty($T["@"]["order"])&&isset($T["@"]["orderType"])&&!empty($T["@"]["orderType"])){
 			$fld = explode(',', $T["@"]["order"]);

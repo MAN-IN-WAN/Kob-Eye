@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="MySQL - @lace-restaurant.fr" uuid="545941f9-141e-43da-9672-07a5bdb99de9">
+      <secret-storage>master_key</secret-storage>
+      <user-name>lace-restaurant</user-name>
+    </data-source>
+  </component>
+</project>

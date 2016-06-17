@@ -11,6 +11,7 @@ class genericClass extends Root {
 	var $Enfants = Array();
 	var $Error = Array();
 	var $Success = Array();
+	var $Warning = Array();
 	//Variable POST correspondante
 	var $setPost;
 	var $isHeritage = false;
@@ -2197,6 +2198,33 @@ class genericClass extends Root {
 		$this -> Success = Array();
 	}
 
+	/**
+	 * addWarning
+	 * Add an warning message in the success array
+	 * @param Array Warning
+	 */
+	public function addWarning($warn) {
+		$this -> Warning[] = $warn;
+	}
+
+	/**
+	 * getWarning
+	 * get all warning messages
+	 * @param Array Warning
+	 */
+	//public function Warning() {return $this->getWarning();}
+	public function getWarning() {
+		return $this -> Warning;
+	}
+
+	/**
+	 * resetWarning
+	 * reset All warning
+	 */
+	public function resetWarning() {
+		//unset($this->Warning);
+		$this -> Warning = Array();
+	}
 	/**
 	 * TEMPLATES
 	 */

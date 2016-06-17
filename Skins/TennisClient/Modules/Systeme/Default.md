@@ -3,8 +3,8 @@
     Consultez vos réservations, modifiez vos informations et réservez vos activités.
 </div>
 <a href="/[!Sys::getMenu(TennisForever/TypeCourt)!]" class="btn-tennis">Réserver une activité</a>
-
-[STORPROC TennisForever/Reservation/Valide=0|RES]
+[!Client:=[!Module::TennisForever::getCurrentClient()!]!]
+[STORPROC TennisForever/Client/[!Client::Id!]/Reservation/Valide=0|RES]
 <div class="alert alert-danger">
 Mes réservations non complètes
 </div>
@@ -24,7 +24,7 @@ Mes réservations non complètes
     [/LIMIT]
 [/STORPROC]
 
-        [STORPROC TennisForever/Reservation/Valide=1&DateFin>[!TMS::Now!]|RES]
+        [STORPROC TennisForever/Client/[!Client::Id!]/Reservation/Valide=1&DateFin>[!TMS::Now!]|RES]
 <div class="alert alert-success">
 Mes réservations à venir
 </div>

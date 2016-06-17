@@ -27,17 +27,25 @@ function onChangeDate(e) {
     }).done(function (response) {
         //mise à jour des cours
         $('.horaire-tennis').removeClass('disabled');
+        $('.horaire-tennis').removeClass('warning');
         console.log('RESPONSE',response);
         for ( var r in response.data){
             for (var j=response.data[r].HeureDebut; j<=response.data[r].HeureFin; j++ ){
                 console.log('test time', r, j ,parseInt(response.data[r].HeureDebut),parseInt(response.data[r].MinuteDebut),'FIN',parseInt(response.data[r].HeureFin),parseInt(response.data[r].MinuteFin));
+                //calcul 30 min avant
+                if (parseInt(response.data[r].MinuteDebut)==0){
+                    $('#date-' + response.data[r].Court + '-' + (parseInt(response.data[r].HeureDebut)-1) + '-30').addClass('warning');
+                }else $('#date-' + response.data[r].Court + '-' + parseInt(response.data[r].HeureDebut) + '-00').addClass('warning');
+
                 if ( (j==parseInt(response.data[r].HeureDebut) && parseInt(response.data[r].MinuteDebut)==0 )
                         || (j<parseInt(response.data[r].HeureFin)&&j>parseInt(response.data[r].HeureDebut))
                         || (j==parseInt(response.data[r].HeureFin) && parseInt(response.data[r].MinuteFin)==30)) {
-                    $('#date-' + response.data[r].Court + '-' + j + '-00').addClass('disabled');
+                    console.log('desactivation '+'#date-' + response.data[r].Court + '-' + parseInt(j) + '-00')
+                    $('#date-' + response.data[r].Court + '-' + parseInt(j) + '-00').addClass('disabled');
                 }
                 if (j < parseInt(response.data[r].HeureFin)){
-                    $('#date-'+response.data[r].Court+'-'+j+'-30').addClass('disabled');
+                    console.log('desactivation '+'#date-' + response.data[r].Court + '-' + parseInt(j) + '-30')
+                    $('#date-'+response.data[r].Court+'-'+parseInt(j)+'-30').addClass('disabled');
                 }
             }
         }

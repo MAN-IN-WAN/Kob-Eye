@@ -26,6 +26,24 @@ class Utils {
 		$Params = strtolower($Params);
 		return $Params;	
 	}
+	static function  getTodayEvening($P) {
+		$h=23;
+		$m=59;
+		$s=59;
+		$M=date('m');
+		$J=date('d');
+		$A=date('Y');
+		return mktime($h,$m,$s,$M,$J,$A);
+	}
+	static function  getTodayMorning($P) {
+		$h=0;
+		$m=0;
+		$s=0;
+		$M=date('m');
+		$J=date('d');
+		$A=date('Y');
+		return mktime($h,$m,$s,$M,$J,$A);
+	}
 	static function  getDate($P) {
 		if (!isset($P[1]))return 0;
 		if (!$P[1]>0)$P[1]=time();
@@ -43,6 +61,7 @@ class Utils {
 		$A=(isset($D[3]))?$D[3]:0;;
 		return mktime($h,$m,$s,$M,$J,$A);
 	}
+
 
 	static function strToTime($P) {
         	return strtotime($P[0]);

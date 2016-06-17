@@ -43,7 +43,7 @@
         </fileTransfer>
       </webServer>
       <webServer id="da932cf4-e227-4f7a-907c-1ef9698076eb" name="dev.pharmaciedelecluse.fr" url="http://admin.pharmaciedelecluse.fr">
-        <fileTransfer host="admin.pharmaciedelecluse.fr" port="21" password="df98df9bdfdddfd3dfc3dfd9dfcfdfd3" username="admin@pharmaciedelecluse.fr">
+        <fileTransfer host="admin.pharmaciedelecluse.fr" port="21" rootFolder="/kobeye" password="df98df9bdfdddfd3dfc3dfd9dfcfdfd3" username="admin@pharmaciedelecluse.fr">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" />
           </advancedOptions>
@@ -58,12 +58,28 @@
           <option name="port" value="22" />
         </fileTransfer>
       </webServer>
-      <webServer id="a7f8420a-ae70-4343-ad10-6040d3feea4f" name="parc.azko.fr (1)" url="http://parc.azko.fr">
-        <fileTransfer host="parc.azko.fr" port="22" privateKey="$USER_HOME$/.ssh/id_rsa" rootFolder="/var/www/html" accessType="SFTP" username="root" keyPair="true">
+      <webServer id="4cfb473b-4527-415d-b224-357fc4c9b942" name="lace-restaurant.fr" url="http://lace-restaurant.fr">
+        <fileTransfer host="lace-restaurant.fr" port="21" rootFolder="/kobeye" password="df98df9bdfdddfd3dfc3dfd9dfcfdfd3" username="admin@lace-restaurant.fr">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" />
           </advancedOptions>
-          <option name="port" value="22" />
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="bab6378b-bffe-4ea1-99fb-b63f0ede3152" name="f-onefoil.com" url="http://f-onefoil.com">
+        <fileTransfer host="f-onefoil.com" port="21" rootFolder="/www" password="df98df9bdfdddfd3dfc3dfd9dfcfdfd3" username="admin@f-onefoil.com">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="e9c11c23-1b95-4bd9-a0fc-768ca72e6529" name="protector.mobi" url="http://protector.mobi">
+        <fileTransfer host="protector.mobi" port="21" password="df98df9bdfdddfd3dfc3dfd9dfcfdfd3" username="admin@madeinchina.boutique">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="21" />
         </fileTransfer>
       </webServer>
     </option>

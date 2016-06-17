@@ -152,9 +152,15 @@
                 $('#modal-form .modal-body').html(data);
             });
             //reset controls
-            $('#modal-form .btn-modal-save').css('visibility', 'visible');
-            $('#modal-form .btn-modal-cancel').css('visibility', 'visible');
-            $('#modal-form .btn-modal-close').css('visibility', 'hidden');
+            if ($(this).hasClass('popup-close')){
+                $('#modal-form .btn-modal-save').css('visibility', 'hidden');
+                $('#modal-form .btn-modal-cancel').css('visibility', 'hidden');
+                $('#modal-form .btn-modal-close').css('visibility', 'visible');
+            }else {
+                $('#modal-form .btn-modal-save').css('visibility', 'visible');
+                $('#modal-form .btn-modal-cancel').css('visibility', 'visible');
+                $('#modal-form .btn-modal-close').css('visibility', 'hidden');
+            }
             //reset message
             $('#modal-form .modal-message').empty();
             //reset body
@@ -171,8 +177,10 @@
                 dataType: 'json',
                 context: document.body,
                 error: function (xhr, status, thrown) {
-                    alert(status);
-                    alert(thrown);
+                    $('#modal-form .btn-modal-cancel').css('visibility', 'hidden');
+                    $('#modal-form .btn-modal-save').css('visibility', 'hidden');
+                    $('#modal-form .btn-modal-close').css('visibility', 'visible');
+                    $('#modal-form .modal-message').html(xhr);
                 },
                 success: function (data) {
                     //gestion des controles

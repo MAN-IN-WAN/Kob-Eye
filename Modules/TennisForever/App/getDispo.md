@@ -1,5 +1,7 @@
 //CONVERSION DE LA DATE
-[!DateTemp:=[!Utils::getDate(d/m/Y,[!TMS::Now!])!]!]
+[IF [!date!]>0][ELSE][!date:=[!TMS::Now!]!][/IF]
+
+[!DateTemp:=[!Utils::getDate(d/m/Y,[!date!])!]!]
 [!DateDeb:=[!Utils::getTms([!DateTemp!] 00:00)!]!]
 [!DateFin:=[!Utils::getTms([!DateTemp!] 23:59)!]!]
 
@@ -39,7 +41,7 @@
     [IF [!Flag!]],[/IF]{
         "Titre": "Piscine",
         "TypeCourt": "Piscine",
-        "Service": "La piscine comprend 3 réservations aujourd'hui"
+        "Service": "[!Module::TennisForever::getResaPiscine()!]"
     }
 ]
 }

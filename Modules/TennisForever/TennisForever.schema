@@ -19,39 +19,41 @@
         <PROPERTIES description="Statuts"  values="-18,Junior,Adulte,Etudiant,Couple"  type="varchar" form="1" fiche="1">Statuts</PROPERTIES>
         <PROPERTIES description="Numéro de licence"     type="varchar" form="1" fiche="1">Licence</PROPERTIES>
         <PROPERTIES description="Est un adhérent"     type="boolean" form="1" searchOrder="5" list="5" fiche="1">Abonne</PROPERTIES>
-        <PROPERTIES Order="17" type="Int"  >UserId</PROPERTIES>
+        <PROPERTIES Order="17" type="Int"  searchOrder="6">UserId</PROPERTIES>
         <FUNCTION title="Renvoyer email de confirmation">RenvoiEmailConfirmation</FUNCTION>
     </OBJECTCLASS>
     <OBJECTCLASS title="Abonnement" driver="mysql" AccessPoint="1" Description="Abonnement" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png">
-        <PROPERTIES Order="1" description="Date de début" type="date" obligatoire="1" list="1" form="1">DateDebut</PROPERTIES>
-        <PROPERTIES Order="2" description="Date de fin" type="date" obligatoire="1" list="1" form="1">DateFin</PROPERTIES>
-        <PROPERTIES Order="3" description="Actif" type="boolean" default="1" list="1" form="1">Actif</PROPERTIES>
-        <FKEY card="1,1" data="Client,Id" list="1" form="1">ClientId</FKEY>
-        <FKEY card="1,1" data="Service,Id" list="1" form="1">ServiceId</FKEY>
+        <PROPERTIES Order="1" description="Date de début" type="date" obligatoire="1" list="1" form="1" fiche="1">DateDebut</PROPERTIES>
+        <PROPERTIES Order="2" description="Date de fin" type="date" obligatoire="1" list="1" form="1" fiche="1">DateFin</PROPERTIES>
+        <PROPERTIES Order="3" description="Actif" type="boolean" default="1" list="1" form="1" fiche="1">Actif</PROPERTIES>
+        <FKEY card="1,1" data="Client,Id" list="1" form="1" fiche="1">ClientId</FKEY>
+        <FKEY card="1,1" data="Service,Id" list="1" form="1" fiche="1">ServiceId</FKEY>
     </OBJECTCLASS>
     <OBJECTCLASS title="Reservation" driver="mysql" AccessPoint="1" Description="Reservation" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png" Class="Modules/TennisForever/Class/Reservation.class.php">
-        <PROPERTIES searchOrder="1" description="Date de début" type="datetime" obligatoire="1" list="1" form="1">DateDebut</PROPERTIES>
-        <PROPERTIES searchOrder="2" description="Date de fin" type="datetime" obligatoire="1" list="1" form="1">DateFin</PROPERTIES>
-        <PROPERTIES searchOrder="2" description="Validité" type="boolean" list="1" form="1">Valide</PROPERTIES>
-        <PROPERTIES searchOrder="2" description="Facturé" type="boolean" list="1" form="1">Facture</PROPERTIES>
-        <PROPERTIES searchOrder="3" description="Nombre total de participant" type="int" list="1" form="1" default="1">NbParticipant</PROPERTIES>
-        <FKEY card="1,1" data="Client,Id" form="1" parentDescription="Client">ClientId</FKEY>
-        <FKEY card="1,1" data="Service,Id" form="1" parentDescription="Service">ServiceId</FKEY>
-        <FKEY card="1,1" data="Court,Id" form="1" parentDescription="Court numéro">CourtId</FKEY>
+        <PROPERTIES searchOrder="1" description="Description" type="varchar" list="1" >Nom</PROPERTIES>
+        <PROPERTIES searchOrder="1" description="Date de début" type="datetime" obligatoire="1" list="1" form="1" fiche="1">DateDebut</PROPERTIES>
+        <PROPERTIES searchOrder="2" description="Date de fin" type="datetime" obligatoire="1" list="1" form="1" fiche="1">DateFin</PROPERTIES>
+        <PROPERTIES searchOrder="2" description="Validité" type="boolean" list="1" form="1" fiche="1">Valide</PROPERTIES>
+        <PROPERTIES searchOrder="2" description="Facturé" type="boolean" list="1" form="1" fiche="1">Facture</PROPERTIES>
+        <PROPERTIES searchOrder="3" description="Nombre total de participant" listDescr="Participants" type="int" list="1" form="1" default="1" fiche="1">NbParticipant</PROPERTIES>
+        <FKEY card="1,1" data="Client,Id" form="1" parentDescription="Client" fiche="1">ClientId</FKEY>
+        <FKEY card="1,1" data="Service,Id" form="1" parentDescription="Service" fiche="1">ServiceId</FKEY>
+        <FKEY card="1,1" data="Court,Id" form="1" parentDescription="Court numéro" fiche="1">CourtId</FKEY>
+        <FUNCTION title="Renvoyer le mail">SendMail</FUNCTION>
         <VIEW title="ReservationList" default="1">
             <OBJECTCLASS title="Reservation" select="*" filters="">
                 <JOIN type="outer" title="Client" on="ClientId" target="Id">
-                    <PROPERTIES type="varchar" list="1" description="Prenom" alias="ClientPrenom">Prenom</PROPERTIES>
-                    <PROPERTIES type="varchar" list="1" description="Nom" alias="ClientNom">Nom</PROPERTIES>
+                    <PROPERTIES type="varchar" description="Prenom" alias="ClientPrenom">Prenom</PROPERTIES>
+                    <PROPERTIES type="varchar" description="Nom" alias="ClientNom">Nom</PROPERTIES>
                 </JOIN>
                 <JOIN type="outer" title="Court" on="CourtId" target="Id">
-                    <PROPERTIES type="varchar" list="1" description="Court" alias="Court">Titre</PROPERTIES>
+                    <PROPERTIES type="varchar" description="Court" alias="Court">Titre</PROPERTIES>
                     <PROPERTIES type="int" description="Court ID" alias="CourtId">Id</PROPERTIES>
                 </JOIN>
                 <JOIN type="outer" title="Service" on="ServiceId" target="Id">
-                    <PROPERTIES type="varchar" list="1" description="Service" alias="Service">Titre</PROPERTIES>
-                    <PROPERTIES type="varchar" list="1" description="Duree" alias="Duree">Duree</PROPERTIES>
-                    <PROPERTIES type="varchar" list="1" description="Duree" alias="Type">Type</PROPERTIES>
+                    <PROPERTIES type="varchar" description="Service" alias="Service">Titre</PROPERTIES>
+                    <PROPERTIES type="varchar" description="Duree" alias="Duree">Duree</PROPERTIES>
+                    <PROPERTIES type="varchar" description="Type" alias="Type">Type</PROPERTIES>
                 </JOIN>
             </OBJECTCLASS>
         </VIEW>
@@ -60,13 +62,13 @@
         <PROPERTIES searchOrder="1" description="Nom du partenaire" type="varchar" length="200" obligatoire="1" list="1" form="1">Nom</PROPERTIES>
         <PROPERTIES searchOrder="1" description="Prénom du partenaire" type="varchar" length="200" obligatoire="1" list="1" form="1">Prenom</PROPERTIES>
         <PROPERTIES description="Email du partenaire" type="varchar" list="1" form="1">Email</PROPERTIES>
-        <FKEY card="1,1" data="Reservation,Id" list="1" form="1" parentDescription="Réservation">ReservationId</FKEY>
-        <FKEY card="1,1" data="Client,Id" list="1" form="1" parentDescription="Client">ClientId</FKEY>
+        <FKEY card="1,n" data="Reservation,Id" form="1" parentDescription="Réservation" listDescr="Réservation">ReservationId</FKEY>
+        <FKEY card="1,1" data="Client,Id" form="1" parentDescription="Client" listDescr="Client">ClientId</FKEY>
     </OBJECTCLASS>
     <OBJECTCLASS title="Court" driver="mysql" AccessPoint="1" Description="Court" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png">
-        <PROPERTIES Order="1" description="Titre" type="varchar" length="200" obligatoire="1" list="1" form="1" searchOrder="1">Titre</PROPERTIES>
-        <PROPERTIES description="Ordre" type="order" length="200" obligatoire="1" list="1" form="1" searchOrder="1">Ordre</PROPERTIES>
-        <FKEY card="1,1" data="TypeCourt,Id" form="1" parentDescription="Type de court">TypeCourtId</FKEY>
+        <PROPERTIES Order="1" description="Titre" type="varchar" length="200" obligatoire="1" list="1" form="1" fiche="1" searchOrder="1">Titre</PROPERTIES>
+        <PROPERTIES description="Ordre" type="order" length="200" obligatoire="1" list="1" form="1" fiche="1" searchOrder="1">Ordre</PROPERTIES>
+        <FKEY card="1,1" data="TypeCourt,Id" form="1" fiche="1" parentDescription="Type de court">TypeCourtId</FKEY>
         <VIEW title="CourtList" default="1">
             <OBJECTCLASS title="Court" select="*" filters="">
                 <JOIN type="outer" title="TypeCourt" on="TypeCourtId" target="Id">
@@ -77,33 +79,33 @@
         </VIEW>
     </OBJECTCLASS>
     <OBJECTCLASS title="TypeCourt" driver="mysql" AccessPoint="0" Dico="1" Description="Ressources" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png" browseable="1">
-        <PROPERTIES searchOrder="1" description="Titre" type="varchar" length="200" obligatoire="1" list="1" form="1">Titre</PROPERTIES>
-        <PROPERTIES searchOrder="3" description="Type de réservation" type="varchar" length="200" obligatoire="1" list="1" form="1" values="Horaire,Journalière,Aucun">Reservation</PROPERTIES>
-        <PROPERTIES Order="1" description="Gestion des invités" type="varchar" values="Nominatif,Quantitatif,Aucun" form="1" default="1">GestionInvite</PROPERTIES>
-        <PROPERTIES description="Afficher sur le site" type="boolean" list="1" form="1">Web</PROPERTIES>
+        <PROPERTIES searchOrder="1" description="Titre" type="varchar" length="200" obligatoire="1" list="1" form="1" fiche="1">Titre</PROPERTIES>
+        <PROPERTIES searchOrder="3" description="Type de réservation" type="varchar" length="200" obligatoire="1" list="1" form="1" fiche="1" values="Horaire,Journalière,Aucun">Reservation</PROPERTIES>
+        <PROPERTIES Order="1" description="Gestion des invités" type="varchar" values="Nominatif,Quantitatif,Aucun" form="1" fiche="1" default="1">GestionInvite</PROPERTIES>
+        <PROPERTIES description="Afficher sur le site" type="boolean" list="1" form="1" fiche="1">Web</PROPERTIES>
     </OBJECTCLASS>
     <OBJECTCLASS title="Service" driver="mysql" AccessPoint="1" Description="Produit" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png" Class="Modules/TennisForever/Class/Service.class.php">
-        <PROPERTIES Order="1" description="Titre" type="varchar" length="200" obligatoire="1" list="1" form="1" searchOrder="1">Titre</PROPERTIES>
-        <PROPERTIES Order="4" description="Type de produit" type="varchar" values="Reservation,Abonnement,Produit,Cotisation" list="1" form="1">Type</PROPERTIES>
-        <PROPERTIES Order="2" description="Tarif TTC" type="price"  list="1" form="1">Tarif</PROPERTIES>
-        <PROPERTIES Order="3" description="Tarif TTC adhérent" type="price"  list="1" form="1">TarifAbonnes</PROPERTIES>
-        <PROPERTIES Order="3" description="Tarif TTC invité" type="price"  list="1" form="1">TarifInvite</PROPERTIES>
-        <PROPERTIES Order="2" description="Tarif heure creuse TTC" type="price"  list="1" form="1">TarifCreuse</PROPERTIES>
-        <PROPERTIES Order="4" description="Durée en minute" type="duration" form="1">Duree</PROPERTIES>
-        <PROPERTIES Order="1" description="Date de fin des cotisation" type="varchar" default="31/08" form="1">DateFinCotisation</PROPERTIES>
-        <PROPERTIES Order="1" description="Demande la quantité" type="boolean" form="1" default="0">SaisieQuantite</PROPERTIES>
+        <PROPERTIES Order="1" description="Titre" type="varchar" length="200" obligatoire="1" list="1" form="1" fiche="1" searchOrder="1">Titre</PROPERTIES>
+        <PROPERTIES Order="4" description="Type de produit" type="varchar" values="Reservation,Abonnement,Produit,Cotisation" list="1" form="1" fiche="1">Type</PROPERTIES>
+        <PROPERTIES Order="2" description="Tarif TTC" type="price"  list="1" form="1" fiche="1">Tarif</PROPERTIES>
+        <PROPERTIES Order="3" description="Tarif TTC adhérent" type="price"  list="1" form="1" fiche="1">TarifAbonnes</PROPERTIES>
         <FKEY card="0,n" data="TypeCourt,Id" form="1" childDescription="Liste des Services" parentDescription="Type de court">TypeCourtId</FKEY>
+        <PROPERTIES Order="3" description="Tarif TTC invité" type="price"  list="1" form="1" fiche="1">TarifInvite</PROPERTIES>
+        <PROPERTIES Order="2" description="Tarif heure creuse TTC" type="price"  list="1" form="1" fiche="1">TarifCreuse</PROPERTIES>
+        <PROPERTIES Order="4" description="Durée en minute" type="duration" form="1" fiche="1">Duree</PROPERTIES>
+        <PROPERTIES Order="1" description="Date de fin des cotisation" type="varchar" default="31/08" form="1" fiche="1">DateFinCotisation</PROPERTIES>
+        <PROPERTIES Order="1" description="Demande la quantité" type="boolean" form="1" default="0" fiche="1">SaisieQuantite</PROPERTIES>
         <FKEY card="0,n" data="Court,Id" form="1" childDescription="Liste des Services" parentDescription="Court concernés">CourtId</FKEY>
     </OBJECTCLASS>
     <OBJECTCLASS title="Sponsor" driver="mysql" AccessPoint="1" Description="Sponsor" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png">
-        <PROPERTIES Order="1" description="Titre" type="varchar" length="200" obligatoire="1" default="test" list="1" form="1">Titre</PROPERTIES>
-        <PROPERTIES Order="2" description="Logo" type="image" list="1" form="1" >Logo</PROPERTIES>
+        <PROPERTIES Order="1" description="Titre" type="varchar" length="200" obligatoire="1" default="test" list="1" form="1" fiche="1">Titre</PROPERTIES>
+        <PROPERTIES Order="2" description="Logo" type="image" list="1" form="1" fiche="1" >Logo</PROPERTIES>
     </OBJECTCLASS>
     <OBJECTCLASS title="Disponibilite" driver="mysql" AccessPoint="1" Description="Disponibilités" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png">
-        <PROPERTIES Order="1" description="Titre" type="varchar" length="200" obligatoire="1" default="test" list="1" form="1">Titre</PROPERTIES>
-        <PROPERTIES Order="2" description="Logo" type="datetime" list="1" form="1" >Debut</PROPERTIES>
-        <PROPERTIES Order="3" description="Logo" type="datetime" list="1" form="1" >Fin</PROPERTIES>
-        <FKEY card="0,n" data="Court,Id" list="1" form="1" parentDescription="Court numéro">CourtId</FKEY>
+        <PROPERTIES Order="1" description="Titre" type="varchar" length="200" obligatoire="1" default="test" list="1" form="1" fiche="1">Titre</PROPERTIES>
+        <PROPERTIES Order="2" description="Début" type="datetime" list="1" form="1" fiche="1" >Debut</PROPERTIES>
+        <PROPERTIES Order="3" description="Fin" type="datetime" list="1" form="1" fiche="1" >Fin</PROPERTIES>
+        <FKEY card="0,n" data="Court,Id" list="1" form="1" fiche="1" parentDescription="Court numéro">CourtId</FKEY>
     </OBJECTCLASS>
     <OBJECTCLASS title="Paiement" driver="mysql" AccessPoint="0" master="0" Description="Paiements"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/TennisForever/Class/Paiement.class.php">
         <PROPERTIES searchOrder="2" description="Montant (TTC)" type="float" list="1" listDescr="Montant" format="2dec">Montant</PROPERTIES>
@@ -133,13 +135,14 @@
     </OBJECTCLASS>
 
     <OBJECTCLASS title="Facture" driver="mysql" AccessPoint="1" master="0" Description="Facture"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/TennisForever/Class/Facture.class.php">
-        <PROPERTIES searchOrder="1"	description="Numéro Facture" type="varchar" list="2" listDescr="Numéro" listWidth="100" category="Total Facture">NumFac</PROPERTIES>
-        <PROPERTIES searchOrder="2"	description="Total Facture TTC" type="price" list="3" listDescr="TTC" format="2dec" category="Total Facture">MontantTTC</PROPERTIES>
-        <PROPERTIES searchOrder="2"	description="Total Facture TTC" type="price" list="3" listDescr="TTC" format="2dec" category="Total Facture">MontantHT</PROPERTIES>
-        <PROPERTIES searchOrder="3"	description="Facture Validée" type="boolean" list="3" category="Etat">Valide</PROPERTIES>
-        <PROPERTIES searchOrder="4"	description="Facture Payée" type="boolean" list="3" category="Etat">Paye</PROPERTIES>
-        <FKEY card="1,1" data="Client,Id">ClientId</FKEY>
-        <FKEY card="1,1" data="Reservation,Id">ReservationId</FKEY>
+        <PROPERTIES searchOrder="1"	description="Numéro Facture" type="varchar" list="2" fiche="1" listDescr="Numéro" listWidth="100" category="Total Facture">NumFac</PROPERTIES>
+        <PROPERTIES searchOrder="2"	description="Total Facture TTC" type="price" list="3" fiche="1" listDescr="TTC" format="2dec" category="Total Facture">MontantTTC</PROPERTIES>
+        <PROPERTIES searchOrder="2"	description="Total Facture TTC" type="price" list="3" fiche="1" listDescr="TTC" format="2dec" category="Total Facture">MontantHT</PROPERTIES>
+        <PROPERTIES searchOrder="3"	description="Facture Validée" type="boolean" list="3" fiche="1" category="Etat">Valide</PROPERTIES>
+        <PROPERTIES searchOrder="4"	description="Facture Payée" type="boolean" list="3" fiche="1" category="Etat">Paye</PROPERTIES>
+        <FKEY card="1,1" data="Client,Id" fiche="1" parentDescription="Client">ClientId</FKEY>
+        <FKEY card="1,1" data="Reservation,Id" fiche="1" parentDescription="Réservation">ReservationId</FKEY>
+        <FUNCTION title="Renvoyer le mail">sendMail</FUNCTION>
     </OBJECTCLASS>
     <OBJECTCLASS title="LigneFacture" driver="mysql" AccessPoint="0" master="0" Description="Ligne Facture"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
         <PROPERTIES searchOrder="1"	description="Libelle" type="varchar" list="2" listDescr="Libellé" listWidth="100">Libelle</PROPERTIES>

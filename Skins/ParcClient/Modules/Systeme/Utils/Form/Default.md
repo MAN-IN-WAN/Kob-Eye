@@ -90,6 +90,34 @@
             </div>
         </div>
         [/CASE]
+        [CASE datetime]
+            [IF [!Form_[!P::name!]!]>0][!DF:=[!Form_[!P::name!]!]!][ELSE]
+            [IF [!P::value!]>0]
+            [!DF:=[!Utils::getDate(d/m/Y H:i:s,[!P::value!])!]!]
+            [ELSE]
+            [!DF:=[!Utils::getDate(d/m/Y H:i:s,[!TMS::Now!])!]!]
+            [/IF]
+            [/IF]
+            <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
+            <label class="col-sm-5 control-label">[!P::description!]</label>
+            <div class="col-sm-7">
+                <div class="input-group date" id='datetimepicker[!Pos!]'>
+                    <input type="text" class="form-control datepicker" value="[!DF!]" name="Form_[!P::name!]" />
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </div>
+                </div>
+                //<input type="text" class="form-control datepicker" id="inputDate" placeholder="Sélectionnez une date" value="[!DF!]"  name="Form_[!P::name!]">
+            </div>
+            </div>
+            <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker[!Pos!]').datetimepicker({
+                    locale: 'fr'
+                });
+            });
+            </script>
+        [/CASE]
         [CASE date]
         [IF [!Form_[!P::name!]!]>0][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!Utils::getDate(d/m/Y,[!P::value!])!]!][/IF]
         <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
@@ -199,11 +227,10 @@
             </div>
         [/CASE]
         [CASE raw]
-             [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]
             <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
             <label for="Form_[!P::name!]" class="control-label">[!P::description!]</label>
             <div class="">
-                <textarea class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]" style="height: 400px">[**DF**]</textarea>
+                <textarea class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]" style="height: 400px">[IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][**P::value**][/IF]</textarea>
             </div>
             </div>
         [/CASE]

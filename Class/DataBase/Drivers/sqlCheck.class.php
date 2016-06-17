@@ -590,7 +590,7 @@ class sqlCheck{
 	static function CheckKeys($O) {
 		foreach ($O->Associations as $A){
 			if ($A->isLong()&&$A->isParent($O->titre)&&$A->isChild($O->titre)&&!$A->isInterModule()) {
-				echo "<li> FKEY $A->titre </li>\r\n";
+				//echo "<li> FKEY $A->titre </li>\r\n";
 				//Dans le cas d'une liaison recursive de forte cardinalité, on verifie les paires
 				$sqlc = "SELECT COUNT(Id) FROM `".$O->Prefix.$O->titre."`";
 				$co = $O->executeSql($O,$sqlc);

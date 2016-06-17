@@ -1,0 +1,147 @@
+<SCHEMA>
+	<OBJECTCLASS title="Collection" driver="mysql" master="1" AccessPoint="1" Description="Collections"  Icon="/Skins/AdminV2/Img/IconAqua/Home.png">
+		<PROPERTIES type="varchar" special="multi"  length="100" searchOrder="1" fiche="1" form="1" list="1">Titre</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Categorie" driver="mysql" master="1" AccessPoint="1" browseable="1" Description="Catégories"  Icon="/Skins/AdminV2/Img/IconAqua/Contact.png">
+		<PROPERTIES type="varchar" length="100" special="multi"  searchOrder="1" fiche="1" form="1" list="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" length="100" special="multi"  description="Nom Alternatif (au survol)" fiche="1" form="1">NomAlternatif</PROPERTIES>
+		<PROPERTIES type="varchar" length="250"  description="Autre site" fiche="1" form="1">LienExterne</PROPERTIES>
+		<PROPERTIES type="boolean"  default="1" fiche="1" form="1" list="1">ALaUne</PROPERTIES>
+		<PROPERTIES type="varchar" values="normal,large" fiche="1" form="1">Largeur</PROPERTIES>
+		<PROPERTIES type="varchar" values="normal,large" fiche="1" form="1">Hauteur</PROPERTIES>
+		<PROPERTIES type="varchar" values="red,green,blue,yellow,grey,orange,violet,turquoise,grisfonce" fiche="1" form="1" list="1">Couleur</PROPERTIES>
+		<PROPERTIES type="varchar" values="WindRange,Size" fiche="1" form="1">SizeType</PROPERTIES>
+		<PROPERTIES type="order" default="0" fiche="1" form="1" list="1">Ordre</PROPERTIES>
+		<PROPERTIES type="image" special="multi"  description="Image fichier" fiche="1" form="1" list="1">Image</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Photo" driver="mysql" master="0" AccessPoint="0" Dico="1" Description="BandeauEntete" Icon="/Skins/AdminV2/Img/IconAqua/Home.png">
+		<PROPERTIES type="varchar" special="multi" searchOrder="1" fiche="1" form="1" list="1">Titre</PROPERTIES>
+		<PROPERTIES type="image" special="multi"  fiche="1" form="1" list="1">Image</PROPERTIES>
+		<FKEY card="0,n" data="Categorie,Id">CategoriePhoto</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Produit" driver="mysql" noRecursivity="1" master="0" AccessPoint="1" browseable="1" stopPage="1" Description="Produits" tagObjects="Sizes,Range,Description,Technologie,PunchText" Icon="/Skins/AdminV2/Img/IconAqua/Contact.png">
+		<PROPERTIES type="varchar" special="multi"  length="100" searchOrder="1" fiche="1" form="1" list="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" special="multi"  length="100" searchOrder="2" fiche="1" form="1">SousTitre</PROPERTIES>
+		<PROPERTIES type="varchar" special="multi"  length="100"  fiche="1" form="1">Chapo</PROPERTIES>
+		<PROPERTIES type="image" description="Visuel planche en petit format (type PNG transparent)" hidden="1" >ProduitPetitFormat</PROPERTIES>
+		<PROPERTIES type="image" special="multi"  description="Visuel planche"  fiche="1" form="1" list="1">ProduitGrandFormat</PROPERTIES>
+		<PROPERTIES type="html" special="multi"  description="Saisir en html la description du produit"  fiche="1" form="1" >Description</PROPERTIES>
+		<PROPERTIES type="image" special="multi"  description="Image Vidéo"  fiche="1" form="1">ImageVideo</PROPERTIES>
+		<PROPERTIES type="text" special="multi"  description="Video"  fiche="1" form="1">Iframe</PROPERTIES>
+<!--		<PROPERTIES type="text" special="multi"  description="Safety" hidden="1">Securite</PROPERTIES>
+		<PROPERTIES type="text" special="multi"  description="Program" hidden="1">Program</PROPERTIES>
+		<PROPERTIES type="text" special="multi"  description="Colors - Sizes" hidden="1">Couleurs</PROPERTIES>
+		<PROPERTIES type="text" special="multi"  description="Sizes à saisir dans la table size" hidden="1">Sizes</PROPERTIES>
+		<PROPERTIES type="text" special="multi"  description="Equipment" hidden="1">Equipment</PROPERTIES>
+		<PROPERTIES type="boolean" description="Activer effet 3D" default="1" hidden="1">Effet3D</PROPERTIES> -->
+		<PROPERTIES type="order" default="0" fiche="1" form="1" list="1">Ordre</PROPERTIES>
+		<FKEY card="1,1" data="Categorie,Id" fiche="1" form="1" list="1" parentDescription="Catégorie">CategorieId</FKEY>
+		<FKEY card="0,n" data="Collection,Id" fiche="1" form="1" list="1" parentDescription="Collection">CollectionId</FKEY>
+		<FKEY card="0,n" data="Produit,Id" form="1" parentDescription="Related Gears" fiche="1">RelatedGears</FKEY>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Sizes" driver="mysql" master="0" AccessPoint="0" Dico="1" Description="Sizes"  Icon="/Skins/AdminV2/Img/IconAqua/Home.png">
+		<PROPERTIES type="varchar" special="multi"  length="100" searchOrder="1" fiche="1" form="1" list="1">Nom</PROPERTIES>
+		<PROPERTIES type="order" fiche="1" form="1" list="1">Ordre</PROPERTIES>
+		<PROPERTIES type="image" special="multi"  fiche="1" form="1" list="1">Icone</PROPERTIES>
+		<PROPERTIES type="html" special="multi"  fiche="1" form="1">Contenu</PROPERTIES>
+		<FKEY card="0,n" data="Produit,Id">ProduitSizes</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Range" driver="mysql" master="0" AccessPoint="0" Dico="1" Description="Range"  Icon="/Skins/AdminV2/Img/IconAqua/Home.png">
+		<PROPERTIES type="varchar" special="multi"  length="100" searchOrder="1" fiche="1" form="1" list="1">Nom</PROPERTIES>
+		<PROPERTIES type="order" fiche="1" form="1" list="1">Ordre</PROPERTIES>
+		<PROPERTIES type="text" description="Note sur 100" fiche="1" form="1">Note</PROPERTIES>
+		<FKEY card="0,n" data="Produit,Id">ProduitRange</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Description" driver="mysql" master="0" AccessPoint="0" Dico="0" Description="Descriptions"  Icon="/Skins/AdminV2/Img/IconAqua/Home.png">
+		<PROPERTIES type="varchar" special="multi"  length="100" searchOrder="1" fiche="1" form="1" list="1">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" special="multi"  length="100" searchOrder="1" fiche="1" form="1" list="1">SousTitre</PROPERTIES>
+		<PROPERTIES type="varchar" special="multi"  length="100" searchOrder="1" fiche="1" form="1" list="1">Chapo</PROPERTIES>
+		<PROPERTIES type="order" fiche="1" form="1" list="1">Ordre</PROPERTIES>
+		<PROPERTIES type="image" special="multi"  fiche="1" form="1" list="1">Icone</PROPERTIES>
+		<PROPERTIES type="html" special="multi"  fiche="1" form="1">Contenu</PROPERTIES>
+		<FKEY card="0,n" data="Produit,Id">ProduitDescription</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Technologie" driver="mysql" master="0" AccessPoint="0" Dico="1" Description="Technologies"  Icon="/Skins/AdminV2/Img/IconAqua/Home.png">
+		<PROPERTIES type="varchar" special="multi"  length="100" searchOrder="1" fiche="1" form="1" list="1">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" length="100" values="Image::Image,TexteEtImage::Texte et Image,Texte::Texte" searchOrder="2" default="Texte et Image" fiche="1" form="1" list="1">Modele</PROPERTIES>
+		<PROPERTIES type="order" fiche="1" form="1" list="1">Ordre</PROPERTIES>
+		<PROPERTIES type="image" special="multi"  fiche="1" form="1" list="1">Icone</PROPERTIES>
+		<PROPERTIES type="image" special="multi" fiche="1" form="1">Image</PROPERTIES>
+		<PROPERTIES type="html" special="multi" fiche="1" form="1">Texte</PROPERTIES>
+		<FKEY card="0,n" data="Produit,Id">ProduitTechnologie</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="BlockTechnologie" driver="mysql" master="0" AccessPoint="0" Dico="0" Description="Bloc de contenu" Icon="/Skins/AdminV2/Img/IconAqua/Home.png" order="Ordre" orderType="ASC">
+		<PROPERTIES type="varchar" length="100" searchOrder="1" fiche="1" form="1" list="1">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" values="TexteDroite::Texte à droite de l'image,TexteGauche::Texte à gauche de l'image,TexteDessous::Texte en dessous de l'image,Aucun::Aucun texte,DoubleTexte::Deux colonnes de texte,DoubleMedia::Deux images côte à côte" default="TexteDroite" description="Position du texte" searchOrder="1" fiche="1" form="1">TextePosition</PROPERTIES>
+		<CATEGORY title="Première colonne">
+			<PROPERTIES type="int" values="0::Image,1::Iframe (Video ou 3d),2::Aucun média" description="Type de média" searchOrder="2" fiche="1" form="1" list="1">TypeMedia</PROPERTIES>
+			<PROPERTIES type="image" special="multi"  searchOrder="3" description="Image dans le cas d'un type média image" fiche="1" form="1">Image</PROPERTIES>
+			<PROPERTIES type="text" special="multi"  description="Iframe dans le cas d'un type média iframe" fiche="1" form="1">Iframe</PROPERTIES>
+			<PROPERTIES type="html" special="multi" description="Texte (ou punchtext)" fiche="1" form="1">Texte</PROPERTIES>
+		</CATEGORY>
+		<CATEGORY title="Deuxième colonne">		
+			<PROPERTIES type="int" values="0::Image,1::Iframe (Video ou 3d),2::Aucun média" description="Type de média" searchOrder="2" fiche="1" form="1" list="1">TypeMedia2</PROPERTIES>
+			<PROPERTIES type="image" special="multi"  searchOrder="3" description="Image pour la deuxième colonne dans le cas d'un type média image" fiche="1" form="1">Image2</PROPERTIES>
+			<PROPERTIES type="text" special="multi"  description="Iframe pour la deuxième colonne dans le cas d'un type média iframe" fiche="1" form="1">Iframe2</PROPERTIES>
+			<PROPERTIES type="html" special="multi" description="Texte (ou punchtext)  pour la deuxième colonne" fiche="1" form="1">Texte2</PROPERTIES>
+		</CATEGORY>
+		<PROPERTIES type="order" fiche="1" form="1" list="1">Ordre</PROPERTIES>
+		<FKEY card="0,1" data="Technologie,Id">TechnologieId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="PunchText" driver="mysql" master="0" AccessPoint="0" Dico="0" Description="PunchText" Icon="/Skins/AdminV2/Img/IconAqua/Home.png">
+		<PROPERTIES type="html" special="multi" searchOrder="1" fiche="1" form="1" list="1">Texte</PROPERTIES>
+		<FKEY card="0,1" data="Produit,Id">ProduitId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Illustration" driver="mysql" master="0" AccessPoint="0" Dico="1" Description="Illustrations" Icon="/Skins/AdminV2/Img/IconAqua/Home.png" Class="Modules/Products/Class/Illustration.class.php">
+		<PROPERTIES type="varchar" length="100" special="multi"  searchOrder="1" fiche="1" form="1" list="1">Titre</PROPERTIES>
+<!--		<PROPERTIES type="varchar" length="100" values="Image,3d">Type</PROPERTIES> -->
+		<PROPERTIES type="boolean" description="Activer la 3D pour cette illustration" fiche="1" form="1" list="1">3D</PROPERTIES>
+		<PROPERTIES type="text" special="multi"  description="Code iframe pour la 3D" fiche="1" form="1">Iframe</PROPERTIES>
+		<PROPERTIES type="image" special="multi"  fiche="1" form="1" list="1">Image</PROPERTIES>
+		<PROPERTIES type="order" searchOrder="2" fiche="1" form="1" list="1">Ordre</PROPERTIES>
+		<FKEY card="0,n" data="Produit,Id">ProduitIllustration</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Manuel" driver="mysql" master="1" AccessPoint="1" Dico="0" Description="Manuels"  Icon="/Skins/AdminV2/Img/IconAqua/Home.png">
+		<PROPERTIES type="varchar" special="multi"  length="100" searchOrder="1" fiche="1" form="1" list="1">Titre</PROPERTIES>
+		<PROPERTIES type="order" fiche="1" form="1" list="1">Ordre</PROPERTIES>
+		<PROPERTIES type="file"  special="multi"    description="Manuel au format pdf" fiche="1" form="1">Fichier</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Catalogue" driver="mysql" master="1" AccessPoint="1" Dico="0" Description="Catalogues"  Icon="/Skins/AdminV2/Img/IconAqua/Home.png" browseable="1">
+		<PROPERTIES type="varchar" special="multi"  length="100" searchOrder="1" fiche="1" form="1" list="1">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" special="multi"  length="100" description="Lien vers le catalogue à mettre dans l'iframe" fiche="1" form="1">Lien</PROPERTIES>
+		<PROPERTIES type="boolean" description="Téléchargement du fichier directement" fiche="1" form="1" list="1">DownloadDirect</PROPERTIES>
+		<PROPERTIES type="file" description="Fichier zip à télécharger dans le cas su téléchargement direct" special="multi"  fiche="1" form="1" >FileDownload</PROPERTIES>
+		<PROPERTIES type="order">Ordre</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="SparePart" driver="mysql" master="1" AccessPoint="1" Dico="0" Description="Spares Parts"  Icon="/Skins/AdminV2/Img/IconAqua/Home.png" browseable="1">
+		<PROPERTIES type="varchar" special="multi"  length="100" searchOrder="1" fiche="1" form="1" list="1">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" description="Année" fiche="1" form="1" list="1">Annee</PROPERTIES>
+		<PROPERTIES type="image" special="multi"  description="Image technique produit" fiche="1" form="1" list="1">ImageParts</PROPERTIES>
+		<PROPERTIES type="order" fiche="1" form="1" list="1">Ordre</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Part" driver="mysql" master="0" AccessPoint="0" Dico="0" Description="Parts"  Icon="/Skins/AdminV2/Img/IconAqua/Home.png">
+		<PROPERTIES type="varchar" special="multi"  length="100" searchOrder="1" fiche="1" form="1" list="1">Titre</PROPERTIES>
+		<PROPERTIES type="html" special="multi"  description="Description de la pièce" fiche="1" form="1" list="1">Description</PROPERTIES>
+		<PROPERTIES type="image" special="multi"  description="Image de la pièce" fiche="1" form="1" list="1">Image</PROPERTIES>
+		<PROPERTIES type="float" description="Position de la pièce en X" fiche="1" form="1" list="1">PosX</PROPERTIES>
+		<PROPERTIES type="float" description="Position de la pièce en Y" fiche="1" form="1" list="1">PosY</PROPERTIES>
+		<PROPERTIES type="order" fiche="1" form="1" list="1">Ordre</PROPERTIES>
+		<FKEY card="1,1" data="SparePart,Id">Produit</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Registration" driver="mysql" master="0" AccessPoint="0" Dico="1" Description="Registration"  Icon="/Skins/AdminV2/Img/IconAqua/Home.png" Class="Modules/Products/Class/Registration.class.php">
+		<PROPERTIES type="varchar" searchOrder="1">FirstName</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2">LastName</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="3">Email</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="3">Address</PROPERTIES>
+		<PROPERTIES type="varchar">City</PROPERTIES>
+		<PROPERTIES type="varchar">Country</PROPERTIES>
+		<PROPERTIES type="varchar">Product</PROPERTIES>
+		<PROPERTIES type="varchar">ProductSerial</PROPERTIES>
+		<PROPERTIES type="varchar">Size</PROPERTIES>
+		<PROPERTIES type="varchar">Shop</PROPERTIES>
+		<PROPERTIES type="varchar">DatePurchased</PROPERTIES>
+		<PROPERTIES type="text">Message</PROPERTIES>
+		<FUNCTION Icon="Skins/AdminV2/Img/application_form.png">ExportListe</FUNCTION>
+	</OBJECTCLASS>
+</SCHEMA>

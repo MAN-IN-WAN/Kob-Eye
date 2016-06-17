@@ -13,7 +13,7 @@ class Apache extends genericClass {
 		if ($this->Ssl){
 			//test de l'activation ssl
 			$old = Sys::getOneData('Parc','Apache/'.$this->Id);
-			if (!$old->Ssl) $this->enableSsl();
+			if (!$old->Ssl&&$this->SslMethod=="Letsencrypt") $this->enableSsl();
 		}
 		// Forcer la vérification
 		if(!$this->_isVerified) $this->Verify( $synchro );
@@ -21,22 +21,38 @@ class Apache extends genericClass {
 		if($this->_isVerified) parent::Save();
 	}
 
-	private function enableSsl() {
-		$serv = $this->getKEServer();
-		//pour activer ssl il faut déclencher une tache
-		$task  = genericClass::createInstance('Parc','Tache');
-		$task->Nom = "Activation SSL pour la configuration Apache ".$this->ApacheServerName." ( ".$this->Id." )";
-		$task->Type = "Ssh";
-		$task->Contenu = "service httpd stop \n /usr/src/certbot/certbot-auto certonly --standalone -d ".$this->ApacheServerName."";
-		// ajout des server alias
-		$sa = explode("\n",$this->ApacheServerAlias);
-		if (!empty($sa[0]))foreach ($sa as $s ){
-			$task->Contenu .= " -d ".trim($s);
+	public function enableSsl() {
+		if (empty($this->SslMethod))$this->SslMethod = "Letsencrypt";
+		if ($this->Ssl&&!empty($this->SslCertificate)&&!empty($this->SslCertificateKey)&&$this->SslExpiration>time()){
+			$this->addError(array("Message"=>"Le certificat est déjà généré et valide."));
+			return;
 		}
-		$task->Contenu.="\n service httpd start";
-		$task->addParent($this);
-		$task->addParent($serv);
-		$task->Save();
+		switch($this->SslMethod){
+			case "Letsencrypt":
+				//définition de la date d'expiration
+				$this->SslExpiration=time()+(86400*90);
+				$this->Ssl = true;
+				$serv = $this->getKEServer();
+				//pour activer ssl il faut déclencher une tache
+				$task  = genericClass::createInstance('Parc','Tache');
+				$task->Nom = "Activation SSL pour la configuration Apache ".$this->ApacheServerName." ( ".$this->Id." )";
+				$task->Type = "Ssh";
+				$task->Contenu = "/usr/src/certbot/certbot-auto certonly --quiet --pre-hook \"service httpd stop | killall -9 httpd.worker\" --post-hook \"service httpd start\" --standalone -d ".$this->ApacheServerName;
+				// ajout des server alias
+				$sa = explode("\n",$this->ApacheServerAlias);
+				if (!empty($sa[0]))foreach ($sa as $s ){
+					$task->Contenu .= " -d ".trim($s);
+				}
+				$task->Contenu .= "\n cat /etc/letsencrypt/live/".$this->ApacheServerName."/fullchain.pem";
+				$task->Contenu .= "\n cat /etc/letsencrypt/live/".$this->ApacheServerName."/privkey.pem";
+				$task->addParent($this);
+				$task->addParent($serv);
+				$task->Save();
+				parent::Save();
+			break;
+			default:
+			break;
+		}
 	}
 
 	public function getRootPath() {
@@ -58,6 +74,8 @@ class Apache extends genericClass {
 	 * @return	Verification OK ou NON
 	 */
 	public function Verify( $synchro = true ) {
+		$this->addWarning(array("Message"=>"Veuillez bien vérifier que les ServerName soit bien configuré et pointe bien vers le serveur. Les ServerAlias doivent également bien pointer sur le serveur, sinon l'activation SSL échouera."));
+
 		//check documentRoot
 		if (substr($this->DocumentRoot,strlen($this->DocumentRoot)-1,1)=='/') $this->DocumentRoot = substr($this->DocumentRoot,0,-1);
 
@@ -171,7 +189,8 @@ class Apache extends genericClass {
 			$alias = explode("\n", $this->ApacheServerAlias);
 			$entry['apacheserveralias'] = array();
 			foreach($alias as $k => $a)	$entry['apacheserveralias'][$k] = $a;
-		}
+		}elseif (!$new) $entry['apacheserveralias'] = array();
+
 		$entry['apachesuexecuid'] = $this->_KEHost->Nom;
 		$Client = $this->_KEHost->getKEClient();
 		$entry['apachesuexecgid'] = $Client->NomLDAP;
@@ -181,8 +200,9 @@ class Apache extends genericClass {
 		if($new) {
 			$entry['objectclass'][0] = 'apacheConfig';
 			$entry['objectclass'][1] = 'top';
-			$entry['apachevhostenabled'] = 'yes';
 		}
+		$entry['apachevhostenabled'] = $this->Actif?'yes':'no';
+		$entry['apacheHtPasswordEnabled'] = $this->PasswordProtected?'yes':'no';
 		if ($this->PasswordProtected) {
 			$entry['apacheOptions'][] = 'AuthType Basic';
 			$entry['apacheOptions'][] = 'AuthName "Authentication Required"';
@@ -192,6 +212,14 @@ class Apache extends genericClass {
 			$entry['apacheHtPasswordPassword'] = $this->HtaccessPassword;
 		}elseif (!$new){
 			$entry['apacheOptions'] = Array();
+		}
+		if ($this->Ssl&&!empty($this->SslCertificate)&&!empty($this->SslCertificateKey)){
+			$entry['apacheSslEnabled'] = 'yes';
+			$entry['apacheCertificate'] = base64_encode($this->SslCertificate);
+			$entry['apacheCertificateKey'] = base64_encode($this->SslCertificateKey);
+			$entry['apacheCertificateExpiration'] = $this->SslExpiration;
+		}else{
+			$entry['apacheSslEnabled'] = 'no';
 		}
 		//var_dump($entry);
 		return $entry;
@@ -273,5 +301,21 @@ class Apache extends genericClass {
 			}
 		}
 		return $result;
+	}
+
+	/**
+	 * callBackTask
+	 * function callback pour le retour de la tache
+	 */
+	public function callBackTask($msg){
+		if (preg_match("#-----BEGIN CERTIFICATE-----#", $msg,$out)){
+			//enregistrement du fullchain
+			$this->SslCertificate = $msg;
+			parent::Save();
+		}
+		if (preg_match("#-----BEGIN PRIVATE KEY-----#", $msg,$out)){
+			$this->SslCertificateKey = $msg;
+			parent::Save();
+		}
 	}
 }

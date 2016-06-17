@@ -21,17 +21,17 @@
                   <td>[!C::Telephone!]</td>
                   <td>
                       [SWITCH [!C::Etat!]|=]
-                            [CASE 1]
-                                <div class="label label-danger">Non préparée</div>
-                            [/CASE]
                           [CASE 2]
                             <div class="label label-warning">Préparée mais non retirée</div>
                           [/CASE]
                           [CASE 3]
                               <div class="label label-warning">Préparée, retirée mais non cloturée</div>
                           [/CASE]
+                          [CASE 4]
+                              <div class="label label-warning">Cloturée</div>
+                          [/CASE]
                           [DEFAULT]
-                            <div class="label label-warning">Cloturée</div>
+                              <div class="label label-danger">Non préparée</div>
                           [/DEFAULT]
                       [/SWITCH]
                   </td>

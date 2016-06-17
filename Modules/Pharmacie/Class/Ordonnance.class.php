@@ -16,7 +16,7 @@ class Ordonnance extends genericClass {
                 if ($this->Livraison)
                     $this->Commentaire.="\r\nLIVRAISON";
             }
-            //si livraison
+
 
             //A la creation on force l'état 1
             $this->Etat=1;
@@ -24,6 +24,7 @@ class Ordonnance extends genericClass {
             $rol='USER';
 
             $cl = Sys::getOneData('Boutique','Client/UserId='.Sys::$User->Id);
+
             if (!$cl) return false;
             //on remplit les champs
             $this->Nom = $cl->Nom;
@@ -64,6 +65,7 @@ class Ordonnance extends genericClass {
                 $this->sendMailAcheteur();
                 //envoi des notifications
                 $this->sendNotifications($new);
+                $this->sendMailAdministrateur();
                 $this->DateCreation = time();
                 if ($this->Priorite<50)
                     $this->Priorite = 40;
@@ -157,6 +159,39 @@ class Ordonnance extends genericClass {
                 Toute l'équipe de " . $this->Magasin->Nom . " vous remercie de votre confiance,<br />
                 <br />Pour nous contacter : " . $this->Magasin->EmailContact . " .".$Lacommande;
         }
+
+        $bloc -> setFromVar("Mail", $mailContent, array("BEACON" => "BLOC"));
+        $Pr = new Process();
+        $bloc -> init($Pr);
+        $bloc -> generate($Pr);
+        $Mail -> Body($bloc -> Affich());
+        if ($this->Etat<4)
+            $Mail -> Send();
+    }
+
+    /**
+     * Envoi du mail a l'administrateur
+     * Param  magasin string
+     */
+    private function sendMailAdministrateur() {
+        if (empty($this->Magasin->EmailAdministrateur)||empty($this->Magasin->EmailImprimante)) return false;
+        $this->Magasin = Magasin::getCurrentMagasin();
+
+        $Civilite = $this -> Prenom . ' <span style="text-transform:uppercase">' . $this -> Nom . '</span>';
+        $Lacommande = "<br /><img src='http://".Sys::$domain."/".$this->Image.".limit.800x800.jpg' width='100%'/>";
+
+        require_once ("Class/Lib/Mail.class.php");
+        $Mail = new Mail();
+        $Mail->Subject("[ORDONNANCE] Client ".$this -> Prenom. " ".$this -> Nom);
+        //$Mail -> From($GLOBALS['Systeme'] -> Conf -> get('MODULE::SYSTEME::CONTACT'));
+        $Mail -> From( $this -> Magasin ->EmailContact );
+//		$Mail -> ReplyTo($GLOBALS['Systeme'] -> Conf -> get('MODULE::SYSTEME::CONTACT'));
+        $Mail -> ReplyTo($this -> Magasin ->EmailContact);
+        $Mail -> To($this -> Magasin ->EmailAdministrateur);
+        $Mail -> Bcc($this -> Magasin ->EmailImprimante);
+        $bloc = new Bloc();
+        $mailContent = "
+            Client " . $Civilite . ",<br />".$Lacommande;
 
         $bloc -> setFromVar("Mail", $mailContent, array("BEACON" => "BLOC"));
         $Pr = new Process();

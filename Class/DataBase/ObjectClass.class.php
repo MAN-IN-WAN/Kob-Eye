@@ -1223,6 +1223,7 @@ class ObjectClass extends Root{
 	public function isReflexive($P=""){
 		if (!empty($P))	$Object = Sys::$Modules[$this->Module]->Db->getObjectClass($P);
 		else $Object = $this;
+		if ($Object->noRecursivity) return false;
 		foreach($Object->Associations as $A)
 			if ($R = $A->isRecursiv()) return $R;
 		return false;

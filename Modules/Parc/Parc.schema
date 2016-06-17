@@ -7,7 +7,7 @@
 		<PROPERTIES category="Coordonnées" searchOrder="2" type="varchar" description="Adresse e-mail" fiche="1" form="1">Email</PROPERTIES>
 		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de téléphone" fiche="1" form="1">Tel</PROPERTIES>
 		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de fax" fiche="1" form="1">Fax</PROPERTIES>
-		<PROPERTIES category="LDAP" type="varchar" obligatoire="1" unique="1" length="12" description="Nom sous LDAP (de 8-12 caractères sans caractère spéciaux ou espace)" list="1" fiche="1" form="1">NomLDAP</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" obligatoire="1" unique="1" length="25" description="Nom sous LDAP (de 8-25 caractères sans caractère spéciaux ou espace)" list="1" fiche="1" form="1">NomLDAP</PROPERTIES>
 		<PROPERTIES category="LDAP" type="int" auto="1">LdapGid</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
@@ -119,20 +119,20 @@
 		<FKEY card="1,1" data="Domain,Id" popup="1">DomainId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Server" driver="mysql" AccessPoint="1" master="0" Description="Serveurs" Icon="/Skins/AdminV2/Img/IconAqua/App1.png" Class="Modules/Parc/Class/Server.class.php">
-		<PROPERTIES type="varchar" searchOrder="1" list="1" form="1">Nom</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="2" list="1" form="1">DNSNom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" list="1" fiche="1" form="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" list="1" fiche="1" form="1">DNSNom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="4" form="1">LDAPNom</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="3" list="1" form="1">IP</PROPERTIES>
-		<PROPERTIES type="boolean" searchOrder="7" list="1" form="1">Web</PROPERTIES>
-		<PROPERTIES type="boolean" searchOrder="5" list="1" form="1">Dns</PROPERTIES>
-		<PROPERTIES type="boolean" searchOrder="6" list="1" form="1">Mail</PROPERTIES>
-		<PROPERTIES type="boolean" searchOrder="6" list="1" form="1">Sql</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="3" list="1" fiche="1" form="1">IP</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="7" list="1" fiche="1" form="1">Web</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="5" list="1" fiche="1" form="1">Dns</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="6" list="1" fiche="1" form="1">Mail</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="6" list="1" fiche="1" form="1">Sql</PROPERTIES>
 		<CATEGORY title="Informations">
-			<PROPERTIES type="varchar" description="SSH: Nom d'utilisateur" default="root">SshUser</PROPERTIES>
-			<PROPERTIES type="varchar" description="SSH: Mot de passe">SshPassword</PROPERTIES>
-			<PROPERTIES type="int" description="Nombre de cpu" list="1" form="1">NbCpu</PROPERTIES>
-			<PROPERTIES type="int" description="Nombre de giga de RAM" list="1" form="1">NbRam</PROPERTIES>
-			<PROPERTIES type="int" description="Espace provisionné (en Mo)" list="1" form="1">EspaceProvisionne</PROPERTIES>
+			<PROPERTIES type="varchar" description="SSH: Nom d'utilisateur" default="root" form="1">SshUser</PROPERTIES>
+			<PROPERTIES type="varchar" description="SSH: Mot de passe" form="1">SshPassword</PROPERTIES>
+			<PROPERTIES type="int" description="Nombre de cpu" fiche="1" list="1" form="1">NbCpu</PROPERTIES>
+			<PROPERTIES type="int" description="Nombre de giga de RAM" fiche="1" list="1" form="1">NbRam</PROPERTIES>
+			<PROPERTIES type="int" description="Espace provisionné (en Mo)" fiche="1" list="1" form="1">EspaceProvisionne</PROPERTIES>
 			<PROPERTIES type="text" list="1" form="1">Commentaire</PROPERTIES>
 		</CATEGORY>
 		<FKEY card="0,1" data="Client,Id">ClientId</FKEY>
@@ -145,7 +145,7 @@
 		<FUNCTION>Majdomaine</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Host" driver="mysql" Dico="1" Description="Hébergement" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Class="Modules/Parc/Class/Host.class.php">
-		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" description="Nom (uniquement de 2 à 16 caractères comprenant a-Z et 0-9 sans espace et ponctuation.)" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="gestion commerciale" searchOrder="2" description="En production" fiche="1" form="1">Production</PROPERTIES>
 		<PROPERTIES type="boolean" default="1" category="gestion commerciale" searchOrder="3" description="Nécessite une facturation">Facturable</PROPERTIES>
@@ -168,11 +168,17 @@
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
-        <PROPERTIES category="Configuration" type="boolean" description="Activer SSL" listDescr="SSL" list="1" fiche="1" form="1">Ssl</PROPERTIES>
+		<PROPERTIES category="Configuration" type="boolean" description="Configuration active" listDescr="Actif" list="1" fiche="1" form="1" default="1">Actif</PROPERTIES>
+		<PROPERTIES category="Configuration" type="boolean" description="Activer SSL" listDescr="SSL" list="1" fiche="1" form="1">Ssl</PROPERTIES>
+		<PROPERTIES category="Configuration" type="varchar" fiche="1" form="1" values="Letsencrypt,Manuel" description="SSL Methode">SslMethod</PROPERTIES>
+		<PROPERTIES category="Configuration" type="raw" fiche="1" form="1" description="SSL Certificat (chaine complete)" default="">SslCertificate</PROPERTIES>
+		<PROPERTIES category="Configuration" type="raw" fiche="1" form="1" description="SSL Clef " default="">SslCertificateKey</PROPERTIES>
+		<PROPERTIES category="Configuration" type="date" fiche="1" form="1" description="SSL Date d'expiration">SslExpiration</PROPERTIES>
 		<PROPERTIES category="Protection" type="boolean" description="Protéger avec un mot de passe" listDescr="Protection" list="1" fiche="1" form="1">PasswordProtected</PROPERTIES>
 		<PROPERTIES category="Protection" type="varchar" description="Nom d'utilisateur" fiche="1" form="1">HtaccessUser</PROPERTIES>
 		<PROPERTIES category="Protection" type="varchar" description="Mot de passe" fiche="1" form="1">HtaccessPassword</PROPERTIES>
-		<FKEY card="1,1" data="Host,Id" popup="1">HostId</FKEY>
+		<FKEY card="1,1" data="Host,Id" link="1">HostId</FKEY>
+		<FUNCTION title="Activer SSL">ActiverSSL</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Ftpuser" driver="mysql" Dico="1" Description="Accès FTP" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Ftpuser.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Identifiant" list="1" fiche="1" form="1">Identifiant</PROPERTIES>
@@ -207,8 +213,8 @@
         <PROPERTIES type="boolean" searchOrder="5" fiche="1" list="1" form="1" description="Erreur">Erreur</PROPERTIES>
         <PROPERTIES type="raw" fiche="1" form="1">Contenu</PROPERTIES>
         <PROPERTIES type="html" fiche="1" form="1">Retour</PROPERTIES>
-        <FKEY card="0,1" data="Server,Id" fiche="1" form="1" parentDescription="Serveur">ServerId</FKEY>
-        <FKEY card="0,1" data="Apache,Id" fiche="1" form="1" parentDescription="Hôte virtuel">ApacheId</FKEY>
-        <FUNCTION title="Executer">Executer</FUNCTION>
+        <FKEY card="0,1" data="Server,Id" fiche="1" form="1" parentDescription="Serveur" link="1">ServerId</FKEY>
+        <FKEY card="0,1" data="Apache,Id" fiche="1" form="1" parentDescription="Hôte virtuel" link="1">ApacheId</FKEY>
+        <FUNCTION title="Executer maintenant">Executer</FUNCTION>
     </OBJECTCLASS>
 </SCHEMA>

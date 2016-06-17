@@ -19,6 +19,8 @@
 		<PROPERTIES Order="9" description="Ville"      type="varchar" length="100" obligatoire="1" category="adresse">Ville</PROPERTIES>
 		<PROPERTIES Order="10" description="Pays"      type="varchar" length="100" obligatoire="0" category="adresse">Pays</PROPERTIES>
 		<PROPERTIES Order="10" description="Mail de contact"      type="varchar" length="100" obligatoire="0" category="magasin">EmailContact</PROPERTIES>
+		<PROPERTIES Order="10" description="Mail de contact administrateur"      type="varchar" length="100" obligatoire="0" category="magasin">EmailAdministrateur</PROPERTIES>
+		<PROPERTIES Order="10" description="Mail de contact imprimante"      type="varchar" length="100" obligatoire="0" category="magasin">EmailImprimante</PROPERTIES>
 		<PROPERTIES Order="11" description="Téléphone" type="varchar" length="20" obligatoire="0" category="adresse">Tel</PROPERTIES>
 		<PROPERTIES Order="11" description="Fax" type="varchar" length="20" category="adresse">Fax</PROPERTIES>
 		<PROPERTIES Order="12" description="Portable"  type="varchar" length="20" category="adresse">Portable</PROPERTIES>
