@@ -3,6 +3,7 @@
 
 //validation du formulaire
 [IF [!ValidForm!]=1]
+
     //Engregistrement des champs
     [STORPROC [!O::getElementsByAttribute(form,,1)!]|P]
         [SWITCH [!P::type!]|=]
@@ -22,6 +23,7 @@
             [/DEFAULT]
         [/SWITCH]
     [/STORPROC]
+
      //verfication de la saisie
     [IF [!O::Verify()!]]
         [METHOD O|Save][PARAM]1[/PARAM][/METHOD]
@@ -267,8 +269,9 @@
                         <label class="col-sm-5 control-label">[!P::description!]</label>
                         <div class="col-sm-7">
                             <select class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]">
+                                <option value="[!DF!]" selected="selected">[!DF!]</option>
                                 [STORPROC [!P::Values!]|C]
-                                <option value="[!C!]" [IF [!DF!]=[!C!]]selected="selected"[/IF]>[!C!]</option>
+                                <option value="[!C!]">[!C!]</option>
                                 [/STORPROC]
                             </select>
                         </div>

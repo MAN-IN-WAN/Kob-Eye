@@ -221,7 +221,6 @@ class Apache extends genericClass {
 		}else{
 			$entry['apacheSslEnabled'] = 'no';
 		}
-		//var_dump($entry);
 		return $entry;
 	}
 

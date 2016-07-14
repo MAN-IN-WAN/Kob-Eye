@@ -26,8 +26,50 @@ class Menu extends genericClass {
 		     }
 		}
 		parent::Save();
+		 //enregistrement des metas pour les menus
+		 if (isset($this->Affiche)&&$this->Affiche){
+			 $this->SaveMenuKeywords();
+		 }else{
+			 $this->deletePages();
+		 }
 	 }
-	 /**
+
+	/**
+	 * SaveMenuKeywords
+	 * Enregistrement des metas pour les menus
+	 */
+	function SaveMenuKeywords()
+	{
+		//On recherche les pages
+		$tls = $this->getPages();
+
+		//mise à jour des pages
+		for ($i = 0; $i < sizeof($tls); $i++) {
+			$tls[$i]->Title = $this->Title;
+			$tls[$i]->Description = $this->Description;
+			$tls[$i]->Keywords = $this->Keywords;
+			$tls[$i]->Image = $this->Img;
+			foreach ($GLOBALS["Systeme"]->Conf->get("GENERAL::LANGUAGE") as $Cod => $Lang) {
+				if (!isset($Lang["DEFAULT"]) || !$Lang["DEFAULT"]) {
+					$tls[$i]->{$Cod . "-Title"} = $this->{$Cod . "-Title"};
+					$tls[$i]->{$Cod . "-Description"} = $this->{$Cod . "-Description"};
+					$tls[$i]->{$Cod . "-Keywords"} = $this->{$Cod . "-Keywords"};
+				}
+			}
+			$url = $tls[$i]->Url;
+			$last = explode('/', $url);
+			if ($last[sizeof($last) - 1] != $this->Url) {
+				//mise à jour url
+				$tls[$i]->Url = preg_replace('#' . $last[sizeof($last) - 1] . '$#', $this->Url, $url);
+				//TODO requete recursive dans le cas ou on modifie une url contenant d'autres pages.
+			}
+		}
+		for ($i = 0; $i < sizeof($tls); $i++){
+			$tls[$i]->Save();
+		}
+	}
+
+	/**
 	  * retournes les sites concernées par le menu courant.
 	  * @return Array[Sites]
 	  */

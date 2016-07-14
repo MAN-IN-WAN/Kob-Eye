@@ -9,7 +9,7 @@
     //Engregistrement des champs
     [IF [!SENS!]=parent]
         [STORPROC [!O::getElementsByAttribute(type,,1)!]|P]
-            [IF [!P::objectName!]=[!I::ObjectType!]]
+            [IF [!P::objectName!]=[!I::ObjectType!]&&[!P::objectModule!]=[!I::QueryModule!]]
                 [!O::resetParent([!P::objectName!])!]
                 [STORPROC [!Form_[!P::name!]!]|V]
                     [METHOD O|AddParent]
@@ -20,7 +20,7 @@
         [/STORPROC]
     [ELSE]
         [STORPROC [!OO::getElementsByAttribute(type,,1)!]|PO]
-            [IF [!PO::objectName!]=[!O::ObjectType!]] [!P:=[!PO!]!][/IF]
+            [IF [!PO::objectName!]=[!O::ObjectType!]&&[!PO::objectModule!]=[!I::QueryModule!]] [!P:=[!PO!]!][/IF]
         [/STORPROC]
 
         //reset des enfants
@@ -71,7 +71,7 @@
 [IF [!FORM!]]
 
     [STORPROC [!OO::getElementsByAttribute(type,,1)!]|P]
-        [IF [!P::objectName!]=[!O::ObjectType!]]
+        [IF [!P::objectName!]=[!O::ObjectType!]&&[!P::objectModule!]=[!I::QueryModule!]]
             <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
                 <div class="row">
                     [MODULE Systeme/Utils/List/FormSelect?Chemin=[!OO::Module!]/[!OO::ObjectType!]&P=[!P!]&O=[!O!]&SENS=enfant]

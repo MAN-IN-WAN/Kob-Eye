@@ -3,6 +3,7 @@
 		<PROPERTIES type="varchar" special="multi"  length="100" searchOrder="1" fiche="1" form="1" list="1">Titre</PROPERTIES>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Categorie" driver="mysql" master="1" AccessPoint="1" browseable="1" Description="Catégories"  Icon="/Skins/AdminV2/Img/IconAqua/Contact.png">
+		<PROPERTIES type="varchar" length="100"  fiche="1" form="1" list="1">Url</PROPERTIES>
 		<PROPERTIES type="varchar" length="100" special="multi"  searchOrder="1" fiche="1" form="1" list="1">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" length="100" special="multi"  description="Nom Alternatif (au survol)" fiche="1" form="1">NomAlternatif</PROPERTIES>
 		<PROPERTIES type="varchar" length="250"  description="Autre site" fiche="1" form="1">LienExterne</PROPERTIES>
@@ -19,25 +20,21 @@
 		<PROPERTIES type="image" special="multi"  fiche="1" form="1" list="1">Image</PROPERTIES>
 		<FKEY card="0,n" data="Categorie,Id">CategoriePhoto</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Produit" driver="mysql" noRecursivity="1" master="0" AccessPoint="1" browseable="1" stopPage="1" Description="Produits" tagObjects="Sizes,Range,Description,Technologie,PunchText" Icon="/Skins/AdminV2/Img/IconAqua/Contact.png">
+	<OBJECTCLASS title="Produit" driver="mysql" noRecursivity="1" master="0" AccessPoint="1" browseable="1" stopPage="1" Description="Produits" tagObjects="Sizes,Range,Description,Technologie,PunchText" Icon="/Skins/AdminV2/Img/IconAqua/Contact.png" Class="Modules/Products/Class/Produit.class.php" className="ProductsProduit">
 		<PROPERTIES type="varchar" special="multi"  length="100" searchOrder="1" fiche="1" form="1" list="1">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" special="multi"  length="100" searchOrder="2" fiche="1" form="1">SousTitre</PROPERTIES>
 		<PROPERTIES type="varchar" special="multi"  length="100"  fiche="1" form="1">Chapo</PROPERTIES>
+		<PROPERTIES type="boolean" default="1" description="Affichage dans la rubrique 'Show all' (cas de doublon)" fiche="1" form="1">ShowAllDisplay</PROPERTIES>
 		<PROPERTIES type="image" description="Visuel planche en petit format (type PNG transparent)" hidden="1" >ProduitPetitFormat</PROPERTIES>
-		<PROPERTIES type="image" special="multi"  description="Visuel planche"  fiche="1" form="1" list="1">ProduitGrandFormat</PROPERTIES>
+		<PROPERTIES type="image"  description="Visuel planche"  fiche="1" form="1" list="1">ProduitGrandFormat</PROPERTIES>
 		<PROPERTIES type="html" special="multi"  description="Saisir en html la description du produit"  fiche="1" form="1" >Description</PROPERTIES>
-		<PROPERTIES type="image" special="multi"  description="Image Vidéo"  fiche="1" form="1">ImageVideo</PROPERTIES>
+		<PROPERTIES type="image"  description="Image Vidéo"  fiche="1" form="1">ImageVideo</PROPERTIES>
 		<PROPERTIES type="text" special="multi"  description="Video"  fiche="1" form="1">Iframe</PROPERTIES>
-<!--		<PROPERTIES type="text" special="multi"  description="Safety" hidden="1">Securite</PROPERTIES>
-		<PROPERTIES type="text" special="multi"  description="Program" hidden="1">Program</PROPERTIES>
-		<PROPERTIES type="text" special="multi"  description="Colors - Sizes" hidden="1">Couleurs</PROPERTIES>
-		<PROPERTIES type="text" special="multi"  description="Sizes à saisir dans la table size" hidden="1">Sizes</PROPERTIES>
-		<PROPERTIES type="text" special="multi"  description="Equipment" hidden="1">Equipment</PROPERTIES>
-		<PROPERTIES type="boolean" description="Activer effet 3D" default="1" hidden="1">Effet3D</PROPERTIES> -->
 		<PROPERTIES type="order" default="0" fiche="1" form="1" list="1">Ordre</PROPERTIES>
-		<FKEY card="1,1" data="Categorie,Id" fiche="1" form="1" list="1" parentDescription="Catégorie">CategorieId</FKEY>
-		<FKEY card="0,n" data="Collection,Id" fiche="1" form="1" list="1" parentDescription="Collection">CollectionId</FKEY>
+		<FKEY card="1,1" data="Categorie,Id" fiche="1" form="1" list="1" link="1" parentDescription="Catégorie" listDescr="Catégorie">CategorieId</FKEY>
+		<FKEY card="0,n" data="Collection,Id" fiche="1" form="1" parentDescription="Collection">CollectionId</FKEY>
 		<FKEY card="0,n" data="Produit,Id" form="1" parentDescription="Related Gears" fiche="1">RelatedGears</FKEY>
+		<FUNCTION title="Dupliquer">Cloner</FUNCTION>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Sizes" driver="mysql" master="0" AccessPoint="0" Dico="1" Description="Sizes"  Icon="/Skins/AdminV2/Img/IconAqua/Home.png">
@@ -45,13 +42,13 @@
 		<PROPERTIES type="order" fiche="1" form="1" list="1">Ordre</PROPERTIES>
 		<PROPERTIES type="image" special="multi"  fiche="1" form="1" list="1">Icone</PROPERTIES>
 		<PROPERTIES type="html" special="multi"  fiche="1" form="1">Contenu</PROPERTIES>
-		<FKEY card="0,n" data="Produit,Id">ProduitSizes</FKEY>
+		<FKEY card="0,n" data="Produit,Id" popup="1">ProduitSizes</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Range" driver="mysql" master="0" AccessPoint="0" Dico="1" Description="Range"  Icon="/Skins/AdminV2/Img/IconAqua/Home.png">
 		<PROPERTIES type="varchar" special="multi"  length="100" searchOrder="1" fiche="1" form="1" list="1">Nom</PROPERTIES>
 		<PROPERTIES type="order" fiche="1" form="1" list="1">Ordre</PROPERTIES>
 		<PROPERTIES type="text" description="Note sur 100" fiche="1" form="1">Note</PROPERTIES>
-		<FKEY card="0,n" data="Produit,Id">ProduitRange</FKEY>
+		<FKEY card="0,n" data="Produit,Id" popup="1">ProduitRange</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Description" driver="mysql" master="0" AccessPoint="0" Dico="0" Description="Descriptions"  Icon="/Skins/AdminV2/Img/IconAqua/Home.png">
 		<PROPERTIES type="varchar" special="multi"  length="100" searchOrder="1" fiche="1" form="1" list="1">Titre</PROPERTIES>
@@ -60,16 +57,16 @@
 		<PROPERTIES type="order" fiche="1" form="1" list="1">Ordre</PROPERTIES>
 		<PROPERTIES type="image" special="multi"  fiche="1" form="1" list="1">Icone</PROPERTIES>
 		<PROPERTIES type="html" special="multi"  fiche="1" form="1">Contenu</PROPERTIES>
-		<FKEY card="0,n" data="Produit,Id">ProduitDescription</FKEY>
+		<FKEY card="0,n" data="Produit,Id" popup="1">ProduitDescription</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Technologie" driver="mysql" master="0" AccessPoint="0" Dico="1" Description="Technologies"  Icon="/Skins/AdminV2/Img/IconAqua/Home.png">
+	<OBJECTCLASS title="Technologie" driver="mysql" master="0" AccessPoint="0" Dico="1" Description="Technologies"  Icon="/Skins/AdminV2/Img/IconAqua/Home.png" Class="Modules/Products/Class/Technologie.class.php">
 		<PROPERTIES type="varchar" special="multi"  length="100" searchOrder="1" fiche="1" form="1" list="1">Titre</PROPERTIES>
 		<PROPERTIES type="varchar" length="100" values="Image::Image,TexteEtImage::Texte et Image,Texte::Texte" searchOrder="2" default="Texte et Image" fiche="1" form="1" list="1">Modele</PROPERTIES>
 		<PROPERTIES type="order" fiche="1" form="1" list="1">Ordre</PROPERTIES>
 		<PROPERTIES type="image" special="multi"  fiche="1" form="1" list="1">Icone</PROPERTIES>
 		<PROPERTIES type="image" special="multi" fiche="1" form="1">Image</PROPERTIES>
 		<PROPERTIES type="html" special="multi" fiche="1" form="1">Texte</PROPERTIES>
-		<FKEY card="0,n" data="Produit,Id">ProduitTechnologie</FKEY>
+		<FKEY card="0,n" data="Produit,Id" form="1" parentDescription="Produits" fiche="1">ProduitTechnologie</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="BlockTechnologie" driver="mysql" master="0" AccessPoint="0" Dico="0" Description="Bloc de contenu" Icon="/Skins/AdminV2/Img/IconAqua/Home.png" order="Ordre" orderType="ASC">
 		<PROPERTIES type="varchar" length="100" searchOrder="1" fiche="1" form="1" list="1">Titre</PROPERTIES>
@@ -87,11 +84,11 @@
 			<PROPERTIES type="html" special="multi" description="Texte (ou punchtext)  pour la deuxième colonne" fiche="1" form="1">Texte2</PROPERTIES>
 		</CATEGORY>
 		<PROPERTIES type="order" fiche="1" form="1" list="1">Ordre</PROPERTIES>
-		<FKEY card="0,1" data="Technologie,Id">TechnologieId</FKEY>
+		<FKEY card="0,1" data="Technologie,Id" link="1" popup="1">TechnologieId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="PunchText" driver="mysql" master="0" AccessPoint="0" Dico="0" Description="PunchText" Icon="/Skins/AdminV2/Img/IconAqua/Home.png">
 		<PROPERTIES type="html" special="multi" searchOrder="1" fiche="1" form="1" list="1">Texte</PROPERTIES>
-		<FKEY card="0,1" data="Produit,Id">ProduitId</FKEY>
+		<FKEY card="0,1" data="Produit,Id" popup="1">ProduitId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Illustration" driver="mysql" master="0" AccessPoint="0" Dico="1" Description="Illustrations" Icon="/Skins/AdminV2/Img/IconAqua/Home.png" Class="Modules/Products/Class/Illustration.class.php">
 		<PROPERTIES type="varchar" length="100" special="multi"  searchOrder="1" fiche="1" form="1" list="1">Titre</PROPERTIES>
@@ -100,7 +97,7 @@
 		<PROPERTIES type="text" special="multi"  description="Code iframe pour la 3D" fiche="1" form="1">Iframe</PROPERTIES>
 		<PROPERTIES type="image" special="multi"  fiche="1" form="1" list="1">Image</PROPERTIES>
 		<PROPERTIES type="order" searchOrder="2" fiche="1" form="1" list="1">Ordre</PROPERTIES>
-		<FKEY card="0,n" data="Produit,Id">ProduitIllustration</FKEY>
+		<FKEY card="0,n" data="Produit,Id" popup="1">ProduitIllustration</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Manuel" driver="mysql" master="1" AccessPoint="1" Dico="0" Description="Manuels"  Icon="/Skins/AdminV2/Img/IconAqua/Home.png">
 		<PROPERTIES type="varchar" special="multi"  length="100" searchOrder="1" fiche="1" form="1" list="1">Titre</PROPERTIES>
@@ -127,7 +124,7 @@
 		<PROPERTIES type="float" description="Position de la pièce en X" fiche="1" form="1" list="1">PosX</PROPERTIES>
 		<PROPERTIES type="float" description="Position de la pièce en Y" fiche="1" form="1" list="1">PosY</PROPERTIES>
 		<PROPERTIES type="order" fiche="1" form="1" list="1">Ordre</PROPERTIES>
-		<FKEY card="1,1" data="SparePart,Id">Produit</FKEY>
+		<FKEY card="1,1" data="SparePart,Id" popup="1">Produit</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Registration" driver="mysql" master="0" AccessPoint="0" Dico="1" Description="Registration"  Icon="/Skins/AdminV2/Img/IconAqua/Home.png" Class="Modules/Products/Class/Registration.class.php">
 		<PROPERTIES type="varchar" searchOrder="1">FirstName</PROPERTIES>
@@ -142,6 +139,5 @@
 		<PROPERTIES type="varchar">Shop</PROPERTIES>
 		<PROPERTIES type="varchar">DatePurchased</PROPERTIES>
 		<PROPERTIES type="text">Message</PROPERTIES>
-		<FUNCTION Icon="Skins/AdminV2/Img/application_form.png">ExportListe</FUNCTION>
 	</OBJECTCLASS>
 </SCHEMA>

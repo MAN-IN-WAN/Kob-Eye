@@ -16,7 +16,7 @@
     </thead>
     <tbody>
 
-    [STORPROC [!REQ!]|C|0|1000|tmsCreate|DESC]
+    [STORPROC [!REQ!]|C|0|1000]
     <tr>
         [STORPROC [!OO::getElementsByAttribute(list,,1)!]|E]
             [MODULE Systeme/Utils/List/getElementType?E=[!E!]&C=[!C!]&NOLINK=1]

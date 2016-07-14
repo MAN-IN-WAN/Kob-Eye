@@ -71,7 +71,7 @@ class StorProc extends Beacon {
 					foreach($Filtres as $j => $f) {
 						$f = Process::processingVars($f);
 
-						preg_match("#(.*)(!=|>=|<=)(.*)#s",$f,$Out);
+						preg_match("#(.*)(!=|>=|<=|~=)(.*)#s",$f,$Out);
 						if (sizeof($Out)<3)preg_match("#(.*)(=|>|<)(.*)#s",$f,$Out);
 						if ($g && sizeof($Out)>=3){
 							if (is_array($val) && !isset( $val[$Out[1]])) $val[$Out[1]] = '';
@@ -94,6 +94,9 @@ class StorProc extends Beacon {
 								break;
 								case "<" :
 									$g = (is_array($val)) ?  (isset( $val[$Out[1]]))?$val[$Out[1]] < $Out[3]:null : $val->$Out[1] < $Out[3];
+								break;
+								case "~=" :
+									$g = (is_array($val)) ?  (isset( $val[$Out[1]])) ? preg_match('#'.$Out[3].'#',$val[$Out[1]]):null :preg_match('#'.$Out[3].'#',$val->$Out[1]);
 								break;
 							}
 						}

@@ -37,7 +37,6 @@
  * @version $Id: class.phpmailer.php 447 2009-05-25 01:36:38Z codeworxtech $
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  */
-
 if (version_compare(PHP_VERSION, '5.0.0', '<') ) exit("Sorry, this version of PHPMailer will only run on PHP version 5 or greater!\n");
 
 class PHPMailer {
@@ -81,20 +80,20 @@ class PHPMailer {
    * Sets the From email address for the message.
    * @var string
    */
-  public $From              = 'root@localhost';
+  public $From              = MAIL_FROM;
 
   /**
    * Sets the From name of the message.
    * @var string
    */
-  public $FromName          = 'Root User';
+  public $FromName          = '';
 
   /**
    * Sets the Sender email (Return-Path) of the message.  If not empty,
    * will be sent via -f to sendmail or as 'MAIL FROM' in smtp mode.
    * @var string
    */
-  public $Sender            = '';
+  public $Sender            = MAIL_FROM;
 
   /**
    * Sets the Subject of the message.
@@ -129,7 +128,7 @@ class PHPMailer {
    * Method to send mail: ("mail", "sendmail", or "smtp").
    * @var string
    */
-  public $Mailer            = 'mail';
+  public $Mailer            = 'smtp';
 
   /**
    * Sets the path of the sendmail program.
@@ -177,13 +176,13 @@ class PHPMailer {
    * Hosts will be tried in order.
    * @var string
    */
-  public $Host          = 'localhost';
+  public $Host          = MAIL_SERVER;
 
   /**
    * Sets the default SMTP server port.
    * @var int
    */
-  public $Port          = 25;
+  public $Port          = MAIL_PORT;
 
   /**
    * Sets the SMTP HELO of the message (Default is $Hostname).
@@ -202,19 +201,19 @@ class PHPMailer {
    * Sets SMTP authentication. Utilizes the Username and Password variables.
    * @var bool
    */
-  public $SMTPAuth      = false;
+  public $SMTPAuth      = true;
 
   /**
    * Sets SMTP username.
    * @var string
    */
-  public $Username      = '';
+  public $Username      = MAIL_USER;
 
   /**
    * Sets SMTP password.
    * @var string
    */
-  public $Password      = '';
+  public $Password      = MAIL_PASS;
 
   /**
    * Sets the SMTP server timeout in seconds.
@@ -227,7 +226,7 @@ class PHPMailer {
    * Sets SMTP class debugging on or off.
    * @var bool
    */
-  public $SMTPDebug     = false;
+  public $SMTPDebug     = true;
 
   /**
    * Prevents the SMTP connection from being closed after each mail
@@ -703,7 +702,7 @@ class PHPMailer {
    * @return bool
    */
   protected function SmtpSend($header, $body) {
-    require_once $this->PluginDir . 'class.smtp.php';
+    require_once 'Class/Lib/Smtp.class.php';
     $bad_rcpt = array();
 
     if(!$this->SmtpConnect()) {

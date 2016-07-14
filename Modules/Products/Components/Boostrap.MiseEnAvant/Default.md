@@ -6,7 +6,7 @@
 			<div id="myCarousel2" class="carousel slide vertical">
 				<div class="vertical carousel-inner ">
 					[STORPROC Products/Categorie/ALaUne=1|CatP|0|1|Ordre|ASC]
-						[STORPROC Products/Categorie/[!CatP::Id!]/Produit|P|0|[!NBINFOS!]]
+						[STORPROC Products/Categorie/[!CatP::Id!]/Produit/Display=1|P|0|[!NBINFOS!]]
 							<div class="item [IF [!Pos!]=1]active[/IF]">
 								<div class="produits">
 									<div class="produits-inner">
@@ -29,12 +29,12 @@
 				</div>
 			</div>
 		</div>
-		<!-- Carousel items --> 
+		<!-- Carousel items -->
 		<div class="col-lg-3-3 col-md-3 col-xs-6 hidden-xs " style="padding-right:5px;padding-left:5px;">
 			<div id="myCarousel3" class="carousel slide vertical">
 				<div class="vertical carousel-inner ">
 					[STORPROC Products/Categorie/ALaUne=1|CatP|1|1|Ordre|ASC]
-						[STORPROC Products/Categorie/[!CatP::Id!]/Produit|P|0|[!NBINFOS!]|Ordre|ASC]
+						[STORPROC Products/Categorie/[!CatP::Id!]/Produit/Display=1|P|0|[!NBINFOS!]|Ordre|ASC]
 							<div class="item  [IF [!Pos!]=1]active[/IF]">
 								<div class="produits">
 									<div class="produits-inner">
@@ -61,7 +61,7 @@
 			<div id="myCarousel4" class="carousel slide vertical">
 				<div class="vertical carousel-inner ">
 					[STORPROC Products/Categorie/ALaUne=1|CatP|2|1|Ordre|ASC]
-						[STORPROC Products/Categorie/[!CatP::Id!]/Produit|P|0|[!NBINFOS!]|Ordre|ASC]
+						[STORPROC Products/Categorie/[!CatP::Id!]/Produit/Display=1|P|0|[!NBINFOS!]|Ordre|ASC]
 							<div class="item  [IF [!Pos!]=1]active[/IF]">
 								<div class="produits">
 									<div class="produits-inner">

@@ -82,6 +82,22 @@
           <option name="port" value="21" />
         </fileTransfer>
       </webServer>
+      <webServer id="60fe4ba2-c31d-4c66-b72f-12baa2fba8a4" name="f-onekites.com" url="http://f-onekites.com">
+        <fileTransfer host="f-onekites.com" port="21" rootFolder="/www" username="admin@f-onekites.com">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="7b3d6757-6d02-48c9-a2bb-50351d012fd4" name="f-onesup.com" url="http://f-onesup.com">
+        <fileTransfer host="f-onesup.com" port="21" rootFolder="/www" username="admin@f-onesup.com">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
     </option>
   </component>
 </project>

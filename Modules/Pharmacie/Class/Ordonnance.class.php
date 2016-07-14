@@ -1,6 +1,7 @@
 <?php
 class Ordonnance extends genericClass {
     function Save () {
+
         $id = $this->Id;
         $new = (!$id)?true:false;
         if ($id){
@@ -60,6 +61,7 @@ class Ordonnance extends genericClass {
         //mise à jour de l'état
         switch ($this->Etat){
             //1::Non traitée,2::En cours de traitement,3::Traitée,4::Livrée,5::Litige
+            case 0:
             case 1:
                 //envoi des mails
                 $this->sendMailAcheteur();
@@ -188,7 +190,7 @@ class Ordonnance extends genericClass {
 //		$Mail -> ReplyTo($GLOBALS['Systeme'] -> Conf -> get('MODULE::SYSTEME::CONTACT'));
         $Mail -> ReplyTo($this -> Magasin ->EmailContact);
         $Mail -> To($this -> Magasin ->EmailAdministrateur);
-        $Mail -> Bcc($this -> Magasin ->EmailImprimante);
+        $Mail -> Cc($this -> Magasin ->EmailImprimante);
         $bloc = new Bloc();
         $mailContent = "
             Client " . $Civilite . ",<br />".$Lacommande;

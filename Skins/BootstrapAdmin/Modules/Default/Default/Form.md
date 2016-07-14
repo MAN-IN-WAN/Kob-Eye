@@ -3,5 +3,8 @@
     [STORPROC [!Query!]|O|0|1][/STORPROC]
 [ELSE]
     [OBJ [!I::Module!]|[!I::ObjectType!]|O]
+    [METHOD O|AddParent]
+        [PARAM][!I::LastDirect!][/PARAM]
+    [/METHOD]
 [/IF]
 [MODULE Systeme/Utils/Form]

@@ -543,10 +543,10 @@ class genericClass extends Root {
 	 * @param String Value of the attribute
 	 * @return Array elments details
 	 */
-	public function getElementsByAttribute($A, $V = "",$flat=false) {
+	public function getElementsByAttribute($A, $V = "",$flat=false, $L="") {
 		$O = Array();
 		//Il faut le faire pour chaque langue
-		$Tab = $this -> getElements();
+		$Tab = $this -> getElements($L);
 		foreach ($Tab as $CatName => $Cat)
 			foreach ($Cat as $ElemsName => $Elems)
 				foreach ($Elems as $Elem) {
@@ -2348,48 +2348,54 @@ class genericClass extends Root {
         $obj = $this->getObjectClass();
         $T=' - '.$obj->getDescription().' - ';
         $Props = $this->SearchOrder();
-        if (is_array($Props)) foreach ($Props as $p) {
-            //Verification de la valeur
-            switch ($p["Type"]) {
-                case "titre":
-                case "varchar":
-                    // Type text : on concatene
-                    $T .= ' ' . $this->$p["Titre"];
-                break;
-            }
-        }
-        $this->TitleMeta = substr($T,0,150);
+		 if (empty($this->TitleMeta)) {
+			 if (is_array($Props)) foreach ($Props as $p) {
+				 //Verification de la valeur
+				 switch ($p["Type"]) {
+					 case "titre":
+					 case "varchar":
+						 // Type text : on concatene
+						 $T .= ' ' . $this->$p["Titre"];
+						 break;
+				 }
+			 }
+			 $this->TitleMeta = substr($T, 0, 150);
+		 }
         $T='';
-        $Props = $this->Proprietes();
-        if (is_array($Props)) foreach ($Props as $p) {
-            //Verification de la valeur
-            switch ($p["Type"]) {
-                case "text":
-                    // Type text : on concatene
-                    $T .= ' ' . $this->$p["Titre"];
-                break;
-                case "bbcode":
-                    // Type text : on concatene
-                    $T .= ' ' . strip_tags($this->$p["Titre"]);
-                break;
-            }
-        }
-        $this->DescriptionMeta = substr(strip_tags($T),0,250);
+		 if (empty($this->DescriptionMeta)) {
+			 $Props = $this->Proprietes();
+			 if (is_array($Props)) foreach ($Props as $p) {
+				 //Verification de la valeur
+				 switch ($p["Type"]) {
+					 case "text":
+						 // Type text : on concatene
+						 $T .= ' ' . $this->$p["Titre"];
+						 break;
+					 case "bbcode":
+						 // Type text : on concatene
+						 $T .= ' ' . strip_tags($this->$p["Titre"]);
+						 break;
+				 }
+			 }
+			 $this->DescriptionMeta = substr(strip_tags($T), 0, 250);
+		 }
         $T='';
-        $Props = $this->Proprietes();
-        if (is_array($Props)) foreach ($Props as $p) {
-            //Verification de la valeur
-            switch ($p["Type"]) {
-                case "image":
-                    // Type text : on concatene
-                    if (isset($this->$p["Titre"])){
-                        $T = $this->$p["Titre"];
-                        break 2;
-                    }
-                break;
-            }
-        }
-        $this->ImgMeta = $T;
+		 if (empty($this->ImgMeta)) {
+			 $Props = $this->Proprietes();
+			 if (is_array($Props)) foreach ($Props as $p) {
+				 //Verification de la valeur
+				 switch ($p["Type"]) {
+					 case "image":
+						 // Type text : on concatene
+						 if (isset($this->$p["Titre"])) {
+							 $T = $this->$p["Titre"];
+							 break 2;
+						 }
+						 break;
+				 }
+			 }
+			 $this->ImgMeta = $T;
+		 }
 	 }
 	 //______________________________________________________________________________________________
 	 //											     TAGS
@@ -2531,7 +2537,7 @@ class genericClass extends Root {
 			$tls[$i]->Delete();
 		}
 	 }
-	 
+
 	/**
 	 * Enregistre les mots-clés pour cet élément
 	 * @return	void

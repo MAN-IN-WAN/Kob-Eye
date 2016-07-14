@@ -60,8 +60,6 @@
                     </div>
                 </div>
 				<div class="col-md-3" style="padding: 10px 10px 0px 10px; text-align: right">
-                    <p><img src="/Skins/Battistela/Img/icon-social.png" alt="" />
-                    </p>
 				</div>
 			</div>
 		</div>

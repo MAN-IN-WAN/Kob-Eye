@@ -1,4 +1,3 @@
-
 [MODULE Systeme/Utils/BreadCrumbs]
 [INFO [!Query!]|I]
 [OBJ [!I::Module!]|[!I::ObjectType!]|O]
@@ -15,5 +14,5 @@
     <h1>[!Sys::CurrentMenu::Titre!]</h1>
     <i><b>[!Sys::CurrentMenu::SousTitre!]</b></i>
 
-    [MODULE Systeme/Utils/List?Chemin=[!I::Module!]/[!I::ObjectType!]]
+    [MODULE Systeme/Utils/List?Chemin=[!Query!]]
 [/IF]

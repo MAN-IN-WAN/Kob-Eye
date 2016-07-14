@@ -35,9 +35,9 @@
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
 		<FKEY card="0,1" data="Client,Id" fiche="1" parentDescription="Client" obligatoire="1" link="1">ClientId</FKEY>
         <FKEY card="0,1" data="DomainTemplate,Id" fiche="1" parentDescription="Template de domaine" form="1">DomainTemplateId</FKEY>
-		<FUNCTION>Synchroniser</FUNCTION>
+		<!--<FUNCTION>Synchroniser</FUNCTION>
 		<FUNCTION>Check</FUNCTION>
-		<FUNCTION>UpdateAll</FUNCTION>
+		<FUNCTION>UpdateAll</FUNCTION>-->
         <VIEW title="DomainList" default="1">
             <OBJECTCLASS title="Domain" filters="" select="*">
                 <JOIN type="outer" title="Client" on="ClientId" target="Id">
@@ -184,6 +184,7 @@
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Identifiant" list="1" fiche="1" form="1">Identifiant</PROPERTIES>
 		<PROPERTIES type="varchar" obligatoire="1" list="1" fiche="1" form="1" description="Mot de passe">Password</PROPERTIES>
 		<PROPERTIES type="function" obligatoire="1" list="1" fiche="1" form="1" function="getRootPath" description="Racine du FTP">DocumentRoot</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="1" list="1" fiche="1" form="1" description="Quota utilisateur en MB" default="5000">QuotaMb</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>

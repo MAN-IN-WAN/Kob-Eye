@@ -140,6 +140,7 @@ class TXT extends genericClass {
 			$dom = $this->getKEDomain();
 			$nb = Sys::getCount('Parc','Domain/'.$dom->Id.'/TXT/Nom~'.$this->Nom.'%')+1;
 			$this->Nom.=':'.$nb;
+			parent::Save();
 		}
 		$entry['cn'] = $this->Nom;
 		$entry['dnsdomainname'] = $this->Dnsdomainname;

@@ -1,48 +1,49 @@
 <SCHEMA>
-	<OBJECTCLASS title="Categorie" driver="mysql" AccessPoint="1" master="1" Description="Categories"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" browseable="1" className="RedactionCategorie" Class="Modules/Redaction/Class/Categorie.class.php">
-		<CATEGORY title="Contenu" type="large">
-			<PROPERTIES type="titre" searchOrder="1">Nom</PROPERTIES>
-			<PROPERTIES type="varchar" searchOrder="2">Titre</PROPERTIES>
-			<PROPERTIES type="html" special="multi">Description</PROPERTIES>
+	<OBJECTCLASS title="Categorie" driver="mysql" AccessPoint="1" master="1" Description="Pages" tagObjects="Article"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" browseable="1" className="RedactionCategorie" Class="Modules/Redaction/Class/Categorie.class.php">
+		<PROPERTIES type="titre" searchOrder="1" category="Intitulé" special="multi" list="1" form="1" fiche="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" category="Intitulé" special="multi"  list="1" form="1" fiche="1">Titre</PROPERTIES>
+		<PROPERTIES type="boolean" category="Intitulé" description="Afficher le titre" default="1" form="1" fiche="1">AfficheTitre</PROPERTIES>
+		<PROPERTIES type="html" special="multi"  category="Contenu" form="1" fiche="1">Description</PROPERTIES>
+		<PROPERTIES type="html" special="multi"  category="Contenu">FullHTML</PROPERTIES>
+		<PROPERTIES type="varchar" values="red,green,blue,yellow,grey">Couleur</PROPERTIES>
+		<PROPERTIES type="file" special="multi"  category="Informations">Icone</PROPERTIES>
+		<PROPERTIES type="varchar" method="getModele" list="1" form="1" fiche="1">Modele</PROPERTIES>
+		<PROPERTIES type="order" category="Publication" form="1" fiche="1">Ordre</PROPERTIES>
+		<FKEY card="0,1" data="Categorie,Id">CategorieId</FKEY>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Article" driver="mysql" order="Ordre" orderType="ASC" AccessPoint="1" Description="Articles"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png"  className="RedactionArticle" Class="Modules/Redaction/Class/Article.class.php">
+		<PROPERTIES type="titre" searchOrder="1" category="Intitulé" special="multi" list="1" form="1" fiche="1">Titre</PROPERTIES>
+		<PROPERTIES type="boolean" category="Intitulé" description="Afficher le titre" default="1" form="1" fiche="1">AfficheTitre</PROPERTIES>
+		<CATEGORY title="Première colonne">
+			<PROPERTIES type="image" special="multi" list="1" form="1" fiche="1">Image</PROPERTIES>
+			<PROPERTIES type="html" special="multi" form="1" fiche="1">Contenu</PROPERTIES>
 		</CATEGORY>
-		<CATEGORY title="Configuration">
-			<PROPERTIES type="file" >Icone</PROPERTIES>
-			<PROPERTIES type="boolean" default="1">Publier</PROPERTIES>
-			<PROPERTIES type="varchar" method="getModele">Modele</PROPERTIES>
-			<PROPERTIES type="order">Ordre</PROPERTIES>
+		<CATEGORY title="Deuxième colonne">
+			<PROPERTIES type="image" special="multi" >Image2</PROPERTIES>
+			<PROPERTIES type="html" special="multi" >Contenu2</PROPERTIES>
 		</CATEGORY>
-		<FKEY card="0,1" data="Categorie,Id" hidden="1">CategorieId</FKEY>
+		<!--<PROPERTIES type="bbcode" special="multi"  category="Contenu" hidden="1">Contenu2</PROPERTIES>-->
+		<!--		<PROPERTIES type="boolean" category="Publication" default="1" hidden="1">ALaUne</PROPERTIES>-->
+		<PROPERTIES type="boolean" category="Publication" list="1" form="1" fiche="1">Publier</PROPERTIES>
+		<PROPERTIES type="order" category="Publication" form="1" fiche="1">Ordre</PROPERTIES>
+		<PROPERTIES type="varchar" method="getModele" searchOrder="2">Modele</PROPERTIES>
+		<FKEY card="0,n" data="Categorie,Id" link="1"  list="1" form="1" fiche="1" parentDescription="Catégorie" listDescr="Catégorie">CategorieId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Article" driver="mysql" AccessPoint="1" Description="Articles"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
-		<PROPERTIES type="titre" searchOrder="1" obligatoire="1" category="Intitulé">Titre</PROPERTIES>
-		<PROPERTIES type="boolean" category="Intitulé" default="1">AfficheTitre</PROPERTIES>
-		<PROPERTIES type="html" special="multi" category="Contenu">Contenu</PROPERTIES>
-		<PROPERTIES type="boolean" category="Publication" default="1">ALaUne</PROPERTIES>
-		<PROPERTIES type="boolean" category="Publication">Publier</PROPERTIES>
-		<PROPERTIES type="order" category="Publication">Ordre</PROPERTIES>
-		<FKEY card="0,n" data="Categorie,Id">CategorieId</FKEY>
+
+	<OBJECTCLASS title="Lien" driver="mysql" Description="Lien">
+		<PROPERTIES type="titre" searchOrder="1" category="Intitulé" special="multi" list="1" form="1" fiche="1">Titre</PROPERTIES>
+		<!--		<PROPERTIES type="text"  category="Description">Commentaires</PROPERTIES>
+                <PROPERTIES type="varchar" values="Interne,Externe" length="20"  category="Emplacement"  default="Interne">Type</PROPERTIES>-->
+		<PROPERTIES type="varchar" special="multi"  length="255" category="Emplacement" list="1" form="1" fiche="1">URL</PROPERTIES>
+		<!--		<PROPERTIES type="file" category="Description">Icone</PROPERTIES>-->
+		<FKEY card="1,1" data="Article,Id" popup="1">ArticleId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Lien" driver="mysql">
-		<PROPERTIES type="titre" searchOrder="1" category="Intitulé">Titre</PROPERTIES>
-		<PROPERTIES type="text"  category="Description">Commentaires</PROPERTIES>
-		<PROPERTIES type="varchar" values="Interne,Externe" length="20"  category="Emplacement"  default="Interne">Type</PROPERTIES>
-		<PROPERTIES type="varchar" length="255" category="Emplacement">URL</PROPERTIES>
-		<PROPERTIES type="file" category="Description">Icone</PROPERTIES>
-		<FKEY card="1,1" data="Article,Id" >ArticleId</FKEY>
-	</OBJECTCLASS>
-	<OBJECTCLASS title="Fichier" driver="mysql">
-		<PROPERTIES type="titre" searchOrder="1" category="Intitulé">Titre</PROPERTIES>
-		<PROPERTIES type="varchar" values="VideoSwf,VideoFlv,Son,Fichier" length="20" searchOrder="3" category="Intitulé"  default="Fichier">Type</PROPERTIES>
-		<PROPERTIES type="file" length="255" searchOrder="2" special="multi" category="Emplacement">URL</PROPERTIES>
-		<FKEY card="1,1" data="Article,Id" >ArticleId</FKEY>
-	</OBJECTCLASS>
-	<OBJECTCLASS title="Image" driver="mysql">
-		<PROPERTIES type="titre" searchOrder="1" category="Intitulé">Titre</PROPERTIES>
-		<PROPERTIES type="bbcode" searchOrder="2" category="Description">Commentaires</PROPERTIES>
-		<PROPERTIES type="varchar" values="Dessous,Droite,Gauche,Dessus" length="20" searchOrder="3" category="Intitulé" default="Dessous">Position</PROPERTIES>
-		<PROPERTIES type="file" category="Emplacement">URL</PROPERTIES>
-		<PROPERTIES type="ObjectClass" module="Galerie" target="Fichier" category="Emplacement">DossierImage</PROPERTIES>
-		<PROPERTIES type="file" category="Emplacement">Mini</PROPERTIES>
-		<FKEY card="1,1" data="Article,Id" >ArticleId</FKEY>
+
+	<OBJECTCLASS title="Fichier" driver="mysql" Description="Fichier">
+		<PROPERTIES type="titre" searchOrder="1" category="Intitulé" special="multi" list="1" form="1" fiche="1">Titre</PROPERTIES>
+		<!--<PROPERTIES type="varchar" values="VideoSwf,VideoFlv,Son,Fichier" length="20" searchOrder="3" category="Intitulé"  default="Fichier">Type</PROPERTIES>-->
+		<PROPERTIES type="image" special="multi"  length="255" searchOrder="2" category="Emplacement" list="1" form="1" fiche="1">URL</PROPERTIES>
+		<FKEY card="1,1" data="Article,Id" popup="1">ArticleId</FKEY>
 	</OBJECTCLASS>
 </SCHEMA>

@@ -3,8 +3,8 @@
         <div class="row carre-wrapper">
             <div class="col-md-3 ligne-icone carre-bleu animated flipInY go">
                 <i class="fa fa-file-text-o"></i>
-                <h3>Mon ordonnances à distance</h3>
-                <p>Simlple et rapide pour gagner du temps ! Comment faire ?</p>
+                <h3>Mon ordonnance à distance</h3>
+                <p>Simple et rapide pour gagner du temps ! Comment faire ?</p>
                 <a href="/Ordonnances" class="btn btn-white">Envoyer mon ordonnance</a>
             </div>
             <div class="col-md-3 ligne-icone carre-vert animated flipInY delay-250 go">

@@ -327,7 +327,7 @@ class Domain extends genericClass {
 				$KEObj = genericClass::createInstance('Parc', $conf['MAIL_SERVER']['TYPE']);
 				$KEObj->Nom = $conf['MAIL_SERVER']['CN'];
 				$KEObj->Dnscname = $conf['MAIL_SERVER']['DNSCNAME'];
-				$KEObj->Poids = (isset($conf['MAIL_SERVER']['WEIGHT']))?$conf['MAIL_SERVER']['WEIGHT']:'10';
+				$KEObj->Poids = (isset($conf['MAIL_SERVER']['WEIGHT'])&&$conf['MAIL_SERVER']['WEIGHT']>0)?$conf['MAIL_SERVER']['WEIGHT']:'10';
 				$KEObj->AddParent($this);
 				$KEObj->Save();
 				$out.= '<li><div style="color:red" class="debug">Add Mailserver '.$KEObj->Nom.'</div> </li>';

@@ -28,7 +28,7 @@
         [/CASE]
         [DEFAULT]
 <td>
-[IF [!NOLINK!]=]<a href="/[!Sys::getMenu([!C::Module!]/[!C::ObjectType!])!]/[!C::Id!][IF [!Popup!]]/Form[/IF]" class="[IF [!Popup!]]popup[/IF]">[/IF]
+[IF [!NOLINK!]=&&[!NOACTION!]=]<a href="/[!Sys::getMenu([!C::Module!]/[!C::ObjectType!])!]/[!C::Id!][IF [!Popup!]]/Form[/IF]" class="[IF [!Popup!]]popup[/IF]">[/IF]
     [IF [!Pos!]=1]<strong>[/IF]
     [!C::[!E::name!]!]
     [IF [!Pos!]=1]</strong>[/IF]

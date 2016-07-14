@@ -1,36 +1,46 @@
 <SCHEMA>
-	<OBJECTCLASS title="Categorie" generateUrl="1" driver="mysql" master="1" AccessPoint="1" Description="Categorie publique" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
-		<PROPERTIES type="varchar" length="200" searchOrder="1" category="Intitulé">Nom</PROPERTIES>
-		<PROPERTIES type="text" category="Descriptif">Description</PROPERTIES>
-		<PROPERTIES type="boolean" category="Descriptif" default="1">Publier</PROPERTIES>
-		<PROPERTIES type="file" length="255" category="Descriptif">Icone</PROPERTIES>
-		<FUNCTION>ImporterDossier</FUNCTION>
+	<OBJECTCLASS title="Categorie" driver="mysql" master="1" AccessPoint="1" browseable="1" Description="Catégories" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+		<PROPERTIES type="varchar" special="multi" length="200" searchOrder="1" category="Intitulé" fiche="1" form="1" list="1">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" values="blue,green,grey,red,yellow,orange,violet,turquoise,grisfonce" fiche="1" form="1" list="1">Couleur</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" values="Gallery,Video,Wallpaper" fiche="1" form="1" list="1">Type</PROPERTIES>
+		<PROPERTIES type="boolean" default="1" category="Publication" fiche="1" form="1" list="1">Publier</PROPERTIES>
+		<PROPERTIES type="date" searchOrder="3" category="Intitulé">Date</PROPERTIES>
+		<PROPERTIES type="text" special="multi" category="Descriptif" fiche="1" form="1">Description</PROPERTIES>
+		<PROPERTIES type="order" category="Descriptif" fiche="1" form="1">Ordre</PROPERTIES>
+		<PROPERTIES type="image" length="255" category="Descriptif" fiche="1" form="1" list="1">Icone</PROPERTIES>
+		<FKEY card="0,1" data="Categorie,Id">CategorieId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Portfolio" generateUrl="1" driver="mysql" master="1" AccessPoint="1" Description="Portfolio client" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
-		<PROPERTIES type="varchar" length="200" searchOrder="1" category="Intitulé">Nom</PROPERTIES>
-		<PROPERTIES type="int" searchOrder="2" category="Gadget">LikeCompteur</PROPERTIES>
-		<PROPERTIES type="text" category="Descriptif">Description</PROPERTIES>
-		<PROPERTIES type="boolean" category="Descriptif" default="1">Public</PROPERTIES>
-		<PROPERTIES type="file" length="255" category="Descriptif">Icone</PROPERTIES>
-		<FKEY card="1,1" data="Categorie,Id">CategorieId</FKEY>
-		<FUNCTION>ImporterDossier</FUNCTION>
+	<OBJECTCLASS title="Media" driver="mysql" AccessPoint="1" Description="Images" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" browseable="0" Class="Modules/Galerie/Class/Media.class.php">
+		<PROPERTIES type="varchar" special="multi" searchOrder="1" fiche="1" form="1" list="1">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" special="multi" searchOrder="2">Chapo</PROPERTIES>
+		<PROPERTIES type="image" fileType="Media" category="Emplacement"  description="Fichier ou Apercu video" fiche="1" form="1" list="1" >Fichier</PROPERTIES>
+		<PROPERTIES type="html" special="multi" category="Descriptif">Description</PROPERTIES>
+		<PROPERTIES type="text" special="multi" category="Emplacement" description="Code video">Iframe</PROPERTIES>
+		<PROPERTIES type="date" category="Configuration" fiche="1" form="1" list="1">Date</PROPERTIES>
+		<PROPERTIES type="boolean" description="Publier sur le site" fiche="1" form="1" list="1">Publier</PROPERTIES>
+		<FKEY card="1,1" data="Categorie,Id" parentDescription="Catégorie">CategorieId</FKEY>
+        <FUNCTION title="Dupliquer">Cloner</FUNCTION>
+    </OBJECTCLASS>
+	<OBJECTCLASS title="Donnees" driver="mysql" Description="Données">
+		<PROPERTIES type="titre" searchOrder="1" category="Intitulé" fiche="1" form="1" list="1">Titre</PROPERTIES>
+		<PROPERTIES type="text" searchOrder="2" category="Description" description="Code d integration de la video" fiche="1" form="1">IFrame</PROPERTIES>
+		<PROPERTIES type="image" category="Emplacement" description="charger image" fiche="1" form="1" list="1">URL</PROPERTIES>
+		<FKEY card="1,1" data="Media,Id" popup="1" parentDescription="Données">MediaId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Image" driver="mysql" AccessPoint="1" Description="Images" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
-		<PROPERTIES type="titre" searchOrder="1" category="Intitulé">Titre</PROPERTIES>
-		<PROPERTIES type="image" category="Emplacement">Fichier</PROPERTIES>
-		<PROPERTIES type="text" special="multi" category="Emplacement">Description</PROPERTIES>
-		<PROPERTIES type="order" category="Emplacement">Ordre</PROPERTIES>
-		<FKEY card="1,n" data="Portfolio,Id" >PortfolioId</FKEY>
-	</OBJECTCLASS>
-	<OBJECTCLASS title="Video" driver="mysql" AccessPoint="1" Description="Vidéos" Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
-		<PROPERTIES type="titre" searchOrder="1" category="Intitulé">Titre</PROPERTIES>
-		<PROPERTIES type="image" category="Publication">Preview</PROPERTIES>
-		<PROPERTIES type="order" category="Publication">Ordre</PROPERTIES>
-		<PROPERTIES type="image" category="Emplacement" description="Fichier standard (.f4v ou .flv)">Fichier</PROPERTIES>
-		<PROPERTIES type="image" category="Emplacement" description="Fichier HD (.f4v ou .flv)">FichierHD</PROPERTIES>
-		<PROPERTIES type="image" category="Emplacement" description="Fichier iPod / iPhone (.mp4 480x320)">FichierApple</PROPERTIES>
-		<PROPERTIES type="image" category="Emplacement" description="Fichier iPad (.mp4 1024x768)">FichierAppleHD</PROPERTIES>
-		<PROPERTIES type="image" category="Emplacement" description="Fichier HTML5 (.webm)">FichierHTML5</PROPERTIES>
-		<FKEY card="1,n" data="Portfolio,Id" >PortfolioId</FKEY>
+
+	<OBJECTCLASS title="Videos" driver="mysql"  generateUrl="1" Description="Videos" Icon="/Skins/AdminV2/Img/IconAqua/Contact.png">
+		<PROPERTIES type="varchar" category="Configuration" special="multi" searchOrder="1" fiche="1" form="1" list="1">Titre</PROPERTIES>
+		<PROPERTIES type="text" category="Configuration" special="multi" fiche="1" form="1">Description</PROPERTIES>
+		<PROPERTIES type="date" category="Configuration" fiche="1" form="1" list="1">Date</PROPERTIES>
+		<PROPERTIES type="boolean" description="Publier sur le site F-One" fiche="1" form="1" list="1">Publier</PROPERTIES>
+		<PROPERTIES type="file" category="Fichiers" fileType="Media" description="Vidéo Flash HD (.f4v)" fiche="1" form="1">Fichier</PROPERTIES>
+		<PROPERTIES type="file" category="Fichiers" fileType="Media" description="Vidéo Flash LD (.f4v)" fiche="1" form="1">FichierLD</PROPERTIES>
+		<PROPERTIES type="file" category="Fichiers" fileType="Media" description="Vidéo iPad (.mp4)" fiche="1" form="1">FichierMP4</PROPERTIES>
+		<PROPERTIES type="file" category="Fichiers" fileType="Media" description="Vidéo iPhone (.mp4)" fiche="1" form="1">FichierMP4iPhone</PROPERTIES>
+		<PROPERTIES type="file" category="Fichiers" fileType="Media" description="Vidéo HTML5 (.webm)" fiche="1" form="1">FichierWEBM</PROPERTIES>
+		<PROPERTIES type="image" category="Fichiers" fiche="1" form="1" list="1">Apercu</PROPERTIES>
+		<PROPERTIES category="meta" type="metat" special="multi" fiche="1" form="1">TitleMeta</PROPERTIES>
+		<PROPERTIES category="meta" type="metad" special="multi" fiche="1" form="1">DescriptionMeta</PROPERTIES>
+		<PROPERTIES category="meta" type="metak" fiche="1" form="1">KeywordsMeta</PROPERTIES>
 	</OBJECTCLASS>
 </SCHEMA>

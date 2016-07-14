@@ -161,3 +161,23 @@ MODAL
     padding-bottom: 30px;
   }
 }
+/**
+MENU
+**/
+ul#sidemenu > li{
+    background: #f4f4f4;
+}
+ul#sidemenu > li > ul > li{
+    background: #666;
+    padding-left: 20px;
+}
+ul#sidemenu > li > ul > li > a{
+    color: #fff;
+}
+ul#sidemenu > li > ul > li:hover,ul#sidemenu li.active , ul#sidemenu > li > ul > li > a:hover{
+    background: #999;
+}
+ul#sidemenu > li > ul > li:hover a,ul#sidemenu li.active , ul#sidemenu > li > ul > li > a:hover{
+    color: #666;
+}
+

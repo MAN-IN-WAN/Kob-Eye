@@ -20,7 +20,7 @@ class Registration extends genericClass {
     }
     function checkCaptcha() {
         require_once 'Class/Lib/ReCaptcha/autoload.php';
-        $secret ='6LeSQQoTAAAAACEDjM8tk09mvfq8tfGrhhhH_iGF'; 
+        $secret ='6Ld11yMTAAAAAHVIRsNLoE6FZlkt5xSVtggrSMjv';
         $recaptcha = new \ReCaptcha\ReCaptcha($secret);
         $resp = $recaptcha->verify($_POST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
         return $resp->isSuccess();

@@ -206,7 +206,6 @@ class Utils {
     static function UrlDecode($P) {
         return urldecode($P[0]);
     }
-
     static function escape($P) {
     	if (is_array($P))$s = $P[0];
 		else $s = $P;

@@ -1,28 +1,29 @@
 <SCHEMA>
 	<OBJECTCLASS title="GroupeEnvoi" driver="mysql" AccessPoint="1" master="1" Description="Groupes de contact"  Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png">
-		<PROPERTIES type="varchar" searchOrder="1" category="Intitulé">Titre</PROPERTIES>
-		<FUNCTION Icon="/Skins/AdminV2/Img/database_go.png">Importer</FUNCTION>
-		<FUNCTION Icon="/Skins/AdminV2/Img/database_go.png">DesImporter</FUNCTION>
-		<FUNCTION Icon="/Skins/AdminV2/Img/database_go.png">ActivTous</FUNCTION>
+		<PROPERTIES type="varchar" searchOrder="1" category="Intitulé" list="1" fiche="1" form="1">Titre</PROPERTIES>
+		<FUNCTION Icon="/Skins/AdminV2/Img/database_go.png" title="Exporter les contacts">ExporterContact</FUNCTION>
+		<FUNCTION Icon="/Skins/AdminV2/Img/database_go.png" title="Vider le groupe">Vider</FUNCTION>
+<!--		<FUNCTION Icon="/Skins/AdminV2/Img/database_go.png">DesImporter</FUNCTION>
+		<FUNCTION Icon="/Skins/AdminV2/Img/database_go.png">ActivTous</FUNCTION>-->
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Contact" driver="mysql"  Icon="/Skins/AdminV2/Img/IconAqua/Contact.png" className="NewsletterContact" Class="Modules/Newsletter/Class/Contact.class.php">
-		<PROPERTIES type="email" searchOrder="1" category="Contact">Email</PROPERTIES>
-		<PROPERTIES type="varchar" length="150" searchOrder="2" category="Identité">Nom</PROPERTIES>
-		<PROPERTIES type="varchar" length="250" category="Intitulé">Libelle</PROPERTIES>
-		<PROPERTIES type="varchar" length="30" category="Contact">Fax</PROPERTIES>
-		<PROPERTIES type="varchar" length="30" category="Contact">Telephone</PROPERTIES>
-		<PROPERTIES type="varchar" length="100" category="Identié">Prenom</PROPERTIES>
-		<PROPERTIES type="varchar" length="150" category="Identité">Fonction</PROPERTIES>
-		<PROPERTIES type="varchar" length="150" category="Identité">Societe</PROPERTIES>
-		<PROPERTIES type="varchar" length="150" category="Identité">Services</PROPERTIES>
-		<PROPERTIES type="int" category="Adresse">CodePostal</PROPERTIES>
-		<PROPERTIES type="int" category="Adresse">Departement</PROPERTIES>
-		<PROPERTIES type="varchar" length="150" category="Adresse">Ville</PROPERTIES>
-		<PROPERTIES type="varchar" length="250" category="Adresse">Adresse</PROPERTIES>
-		<PROPERTIES type="varchar" length="250" category="Adresse">Adresse2</PROPERTIES>
-		<PROPERTIES type="varchar" length="30" category="Contact">Mobile</PROPERTIES>
-		<PROPERTIES type="boolean" default="1" searchOrder="2" category="Publication">Actif</PROPERTIES>
-		<FKEY card="1,n" data="GroupeEnvoi,Id">GroupeEnvoi</FKEY>
+		<PROPERTIES type="email" searchOrder="1" category="Contact" list="1" fiche="1" form="1">Email</PROPERTIES>
+		<PROPERTIES type="varchar" length="150" searchOrder="2" category="Identité" list="1" fiche="1" form="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" category="Intitulé" fiche="1" form="1">Libelle</PROPERTIES>
+		<PROPERTIES type="varchar" length="30" category="Contact" fiche="1" form="1">Fax</PROPERTIES>
+		<PROPERTIES type="varchar" length="30" category="Contact" fiche="1" form="1">Telephone</PROPERTIES>
+		<PROPERTIES type="varchar" length="100" category="Identié" fiche="1" form="1">Prenom</PROPERTIES>
+		<PROPERTIES type="varchar" length="150" category="Identité" list="1" fiche="1" form="1">Fonction</PROPERTIES>
+		<PROPERTIES type="varchar" length="150" category="Identité" fiche="1" form="1">Societe</PROPERTIES>
+		<PROPERTIES type="varchar" length="150" category="Identité" fiche="1" form="1">Services</PROPERTIES>
+		<PROPERTIES type="int" category="Adresse" fiche="1" form="1">CodePostal</PROPERTIES>
+		<PROPERTIES type="int" category="Adresse" fiche="1" form="1">Departement</PROPERTIES>
+		<PROPERTIES type="varchar" length="150" category="Adresse" fiche="1" form="1">Ville</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" category="Adresse" fiche="1" form="1">Adresse</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" category="Adresse" fiche="1" form="1">Adresse2</PROPERTIES>
+		<PROPERTIES type="varchar" length="30" category="Contact" fiche="1" form="1">Mobile</PROPERTIES>
+		<PROPERTIES type="boolean" default="1" searchOrder="2" category="Publication" fiche="1" form="1" list="1">Actif</PROPERTIES>
+		<FKEY card="1,n" data="GroupeEnvoi,Id" link="1" popup="1">GroupeEnvoi</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Reception" driver="mysql" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Mail1.png">
 		<PROPERTIES type="varchar" length="200" searchOrder="1" category="Contenu">Sujet</PROPERTIES>

@@ -302,7 +302,7 @@ class ObjectClass extends Root{
 		//INITILISATION DES PROPRIETES DYNAMIQUES
 		if (isset($this->generateUrl)&&$this->generateUrl){
 			//On ajoute une proprietes Url
-			$this->Proprietes["Url"] = $this->parseAttributes(array("type"=>"link","searchOrder"=>3,"auto"=>0,"category"=>"Configuration"),"Url");
+			$this->Proprietes["Url"] = $this->parseAttributes(array("type"=>"link","searchOrder"=>3,"auto"=>0,"category"=>"Configuration", "form"=>1,"fiche"=>1),"Url");
 			$this->addCategory(Array("title"=>"Configuration"),Array("type"=>"property","title"=>"Url"));
 		}
 		//GESTION DES PLUGINS
@@ -311,33 +311,33 @@ class ObjectClass extends Root{
 			$this->Proprietes["Plugin"] = $this->parseAttributes(array("type"=>"plugin","category"=>"Configuration","query"=>"Explorateur/Dossier/Modules/".$this->Module."/Plugins/".$this->titre."/Dossier::Nom"),"Plugin");
 			$this->addCategory(Array("title"=>"Configuration"),Array("type"=>"property","title"=>"Plugin"));
 			//On ajoute une propriete PluginConfig
-			$this->Proprietes["PluginConfig"] = $this->parseAttributes(array("type"=>"pluginconfig","category"=>"Configuration"),"PluginConfig");
+			$this->Proprietes["PluginConfig"] = $this->parseAttributes(array("type"=>"pluginconfig","category"=>"Configuration", "form"=>1,"fiche"=>1),"PluginConfig");
 			$this->addCategory(Array("title"=>"Configuration"),Array("type"=>"property","title"=>"PluginConfig"));
 		}
 		if ($this->browseable){
 			//On ajoute une proprietes Template
-			$this->Proprietes["Template"] = $this->parseAttributes(array("type"=>"modele","category"=>"Configuration","query"=>"Systeme/ActiveTemplate::Id::Nom"),"Template");
+			$this->Proprietes["Template"] = $this->parseAttributes(array("type"=>"modele","category"=>"Configuration","query"=>"Systeme/ActiveTemplate::Id::Nom", "form"=>1,"fiche"=>1),"Template");
 			$this->addCategory(Array("title"=>"Configuration"),Array("type"=>"property","title"=>"Template"));
 			//TitleMeta
-			$this->addCategory(Array("title"=>"Référencement"),Array("type"=>"property","title"=>"TitleMeta"));
+			$this->addCategory(Array("title"=>"Référencement"),Array("type"=>"property","title"=>"TitleMeta", "form"=>1,"fiche"=>1));
 			$o[] = Array("type"=>"property","name"=>"TitleMeta");
 			$this->Proprietes['TitleMeta'] = Array('type'=>'metat','special'=>'multi','description'=>'META: Titre de la page (réseaux sociaux également)');
 			//DescriptionMeta
-			$this->addCategory(Array("title"=>"Référencement"),Array("type"=>"property","title"=>"DescriptionMeta"));
+			$this->addCategory(Array("title"=>"Référencement"),Array("type"=>"property","title"=>"DescriptionMeta", "form"=>1,"fiche"=>1));
 			$o[] = Array("type"=>"property","name"=>"DescriptionMeta");
-			$this->Proprietes['DescriptionMeta'] = Array('type'=>'metad','special'=>'multi','description'=>'META: Description de la page (réseaux sociaux également)');
+			$this->Proprietes['DescriptionMeta'] = Array('type'=>'metad','special'=>'multi','description'=>'META: Description de la page (réseaux sociaux également)', "form"=>1,"fiche"=>1);
 			//KeywordsMeta
 			$this->addCategory(Array("title"=>"Référencement"),Array("type"=>"property","title"=>"KeywordsMeta"));
 			$o[] = Array("type"=>"property","name"=>"KeywordsMeta");
-			$this->Proprietes['KeywordsMeta'] = Array('type'=>'metak','special'=>'multi','description'=>'META: Mots clefs de la page (réseaux sociaux également)');
+			$this->Proprietes['KeywordsMeta'] = Array('type'=>'metak','special'=>'multi','description'=>'META: Mots clefs de la page (réseaux sociaux également)', "form"=>1,"fiche"=>1);
 			//ImgMeta
 			$this->addCategory(Array("title"=>"Référencement"),Array("type"=>"property","title"=>"ImgMeta"));
 			$o[] = Array("type"=>"property","name"=>"ImgMeta");
-			$this->Proprietes['ImgMeta'] = Array('type'=>'image','description'=>'META: Image de la page pour les réseaux sociaux');
+			$this->Proprietes['ImgMeta'] = Array('type'=>'image','description'=>'META: Image de la page pour les réseaux sociaux', "form"=>1,"fiche"=>1);
 			//Displayed
 			$this->addCategory(Array("title"=>"Configuration"),Array("type"=>"property","title"=>"Display"));
 			$o[] = Array("type"=>"property","name"=>"Display");
-			$this->Proprietes['Display'] = Array('type'=>'boolean','default'=> 1,'description'=>'Afficher');
+			$this->Proprietes['Display'] = Array('type'=>'boolean','default'=> 1,'description'=>'Afficher', "form"=>1,"fiche"=>1, "list"=>1);
 		}
 		return $o;
 	}

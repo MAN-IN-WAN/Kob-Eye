@@ -59,9 +59,9 @@
       		<PROPERTIES type="varchar" auto="1">FromUrl</PROPERTIES>
 		<PROPERTIES type="varchar" auto="1">MD5</PROPERTIES>
 		<PROPERTIES type="varchar">LastMod</PROPERTIES>
-		<PROPERTIES type="metat" list="4">Title</PROPERTIES>
-		<PROPERTIES type="metad">Description</PROPERTIES>
-		<PROPERTIES type="metak">Keywords</PROPERTIES>
+		<PROPERTIES type="metat" special="multi" list="4">Title</PROPERTIES>
+		<PROPERTIES type="metad" special="multi">Description</PROPERTIES>
+		<PROPERTIES type="metak" special="multi">Keywords</PROPERTIES>
 		<PROPERTIES type="image" list="1">Image</PROPERTIES>
 		<PROPERTIES category="Clef" type="varchar"  searchOrder="2" list="5">PageModule</PROPERTIES>
 		<PROPERTIES category="Clef" type="varchar"  searchOrder="3" list="6">PageObject</PROPERTIES>
@@ -74,33 +74,33 @@
 		<FKEY card="0,n" data="Tag,Id">Tags</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Menu" logEvent="1" driver="mysql" AccessPoint="0" Icon="/Skins/AdminV2/Img/folder.gif" Class="Modules/Systeme/Class/Menu.class.php">
-		<PROPERTIES type="varchar" searchOrder="2" category="Intitulé">Url</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé" special="multi">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" category="Intitulé" fiche="1" form="1" list="1">Url</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé" special="multi" fiche="1" form="1" list="1">Titre</PROPERTIES>
 		<PROPERTIES type="varchar" category="Intitulé" special="multi">SousTitre</PROPERTIES>
 		<PROPERTIES type="varchar" category="Emplacement">Lien</PROPERTIES>
-		<PROPERTIES type="boolean" default="1" category="Publication">Affiche</PROPERTIES>
-		<PROPERTIES type="alias" category="Emplacement">Alias</PROPERTIES>
-		<PROPERTIES type="varchar" category="Emplacement">Filters</PROPERTIES>
+		<PROPERTIES type="boolean" default="1" category="Publication" fiche="1" form="1" list="1">Affiche</PROPERTIES>
+		<PROPERTIES type="alias" category="Emplacement" fiche="1" form="1">Alias</PROPERTIES>
+		<PROPERTIES type="varchar" category="Emplacement" fiche="1" form="1">Filters</PROPERTIES>
 		<PROPERTIES type="varchar" category="Emplacement" description="Préfixe Codebarre">PrefixeCodebarre</PROPERTIES>
 		<!-- style -->
-		<PROPERTIES type="file" category="Style" description="Icone du menu">Icone</PROPERTIES>
-		<PROPERTIES type="image" category="Style" description="Image de fond">BackgroundImage</PROPERTIES>
+		<PROPERTIES type="file" category="Style" description="Icone du menu" fiche="1" form="1">Icone</PROPERTIES>
+		<PROPERTIES type="image" category="Style" description="Image de fond" fiche="1" form="1">BackgroundImage</PROPERTIES>
 		<PROPERTIES type="color" category="Style">BackgroundColor</PROPERTIES>
 		<PROPERTIES type="varchar" category="Style" description="Css Classe">ClassCss</PROPERTIES>
 		<!-- configuration -->
 		<PROPERTIES type="order" category="Publication">Ordre</PROPERTIES>
-		<PROPERTIES type="boolean" category="Position" default="0" >MenuHaut</PROPERTIES>
-		<PROPERTIES type="boolean" category="Position" default="0">MenuBas</PROPERTIES>
-		<PROPERTIES type="boolean" category="Position" default="1">MenuPrincipal</PROPERTIES>
-		<PROPERTIES type="boolean" category="Position" default="0" description="Tente de générer automatiquement les sous menus dans la navigation">AutoSubGen</PROPERTIES>
+		<PROPERTIES type="boolean" category="Position" default="0"  fiche="1" form="1">MenuHaut</PROPERTIES>
+		<PROPERTIES type="boolean" category="Position" default="0" fiche="1" form="1">MenuBas</PROPERTIES>
+		<PROPERTIES type="boolean" category="Position" default="1" fiche="1" form="1">MenuPrincipal</PROPERTIES>
+		<PROPERTIES type="boolean" category="Position" default="0" description="Tente de générer automatiquement les sous menus dans la navigation" fiche="1" form="1">AutoSubGen</PROPERTIES>
 		<!-- meta -->
-		<PROPERTIES type="metat" special="multi">Title</PROPERTIES>
-		<PROPERTIES type="metad" special="multi">Description</PROPERTIES>
-		<PROPERTIES type="metak">Keywords</PROPERTIES>
+		<PROPERTIES type="metat" special="multi" fiche="1" form="1">Title</PROPERTIES>
+		<PROPERTIES type="metad" special="multi" fiche="1" form="1">Description</PROPERTIES>
+		<PROPERTIES type="metak" special="multi" fiche="1" form="1">Keywords</PROPERTIES>
 		<PROPERTIES type="modele" category="Configuration" query="Systeme/ActiveTemplate::Id::Nom">Template</PROPERTIES>
-		<FKEY card="0,1" data="Menu,Id">MenuParent</FKEY>
-		<FKEY card="0,n" data="User,Id" inherit="Group">UserId</FKEY>
-		<FKEY card="0,n" data="Group,Id">GroupId</FKEY>
+		<FKEY card="0,1" data="Menu,Id" link="1"  hidden="1">MenuParent</FKEY>
+		<FKEY card="0,n" data="User,Id" inherit="Group" hidden="1">UserId</FKEY>
+		<FKEY card="0,n" data="Group,Id" hidden="1">GroupId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Access" logEvent="1" driver="mysql" AccessPoint="1" Icon="/Skins/AdminV2/Img/brick.png">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé">Titre</PROPERTIES>
@@ -131,19 +131,28 @@
 		<PROPERTIES type="text">Data</PROPERTIES>
 		<FKEY card="1,1" data="User,Id" >UserId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Donnee" driver="mysql" AccessPoint="0" Icon="/Skins/AdminV2/Img/brick.png">
-		<PROPERTIES type="titre" searchOrder="1" obligatoire="1" category="Intitulé">Titre</PROPERTIES>
-		<PROPERTIES type="file" searchOrder="2" category="Emplacement">Lien</PROPERTIES>
+	<OBJECTCLASS title="Donnee"  Description="Média de l'entête" driver="mysql" AccessPoint="1" Icon="/Skins/AdminV2/Img/brick.png" order="Ordre" orderType="ASC">
+		<PROPERTIES type="titre" searchOrder="1" obligatoire="1" category="Intitulé" list="1" form="1" fiche="1">Titre</PROPERTIES>
+		<PROPERTIES type="image" searchOrder="2" category="Emplacement" list="1" form="1" fiche="1">Lien</PROPERTIES>
 		<PROPERTIES type="file" searchOrder="3" category="Emplacement">Alternatif</PROPERTIES>
-		<PROPERTIES type="varchar" values="Image,Video,Son,Defaut,Plugin,Html,Pub" length="20" searchOrder="3" category="Intitulé">Type</PROPERTIES>
-		<PROPERTIES type="text"  >Html</PROPERTIES>
-		<PROPERTIES type="order"  >Ordre</PROPERTIES>
-		<FKEY card="1,n" data="Menu,Id" behaviour="Integrated">MenuParent</FKEY>
+		<PROPERTIES type="varchar" values="Image,Video,Son,Defaut,Plugin,Html,Pub" length="20" searchOrder="3" category="Intitulé" list="1" form="1" fiche="1">Type</PROPERTIES>
+		<PROPERTIES type="html" form="1" fiche="1" special="multi">Html</PROPERTIES>
+		<PROPERTIES type="order"  list="1" form="1" fiche="1">Ordre</PROPERTIES>
+		<FKEY card="1,n" data="Menu,Id" behaviour="Integrated" form="1" fiche="1" parentDescription="Menu">MenuParent</FKEY>
+		<!--<FKEY card="1,n" module="Products" data="Categorie,Id">ProductsCategorieId</FKEY>
+		<FKEY card="1,n" module="Products" data="Produit,Id">ProductsProduitId</FKEY>
+		<FKEY card="1,n" module="Team" data="Equipe,Id">TeamEquipeId</FKEY>
+		<FKEY card="1,n" module="Team" data="Rider,Id">TeamRiderId</FKEY>
+		<FKEY card="1,n" module="Galerie" data="Categorie,Id">GalerieCategorieId</FKEY>
+		<FKEY card="1,n" module="Galerie" data="Media,Id">GalerieMediaId</FKEY>
+		<FKEY card="1,n" module="Blog" data="Categorie,Id">BlogCategorieId</FKEY>
+		<FKEY card="1,n" module="Blog" data="Post,Id">BlogPostId</FKEY>
+		<FKEY card="1,n" module="Redaction" data="Categorie,Id">RedactionCategorieId</FKEY>-->
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Fichier" driver="mysql" AccessPoint="0">
 		<PROPERTIES type="titre" length="50" searchOrder="1" obligatoire="1" category="Informations">Titre</PROPERTIES>
 		<PROPERTIES type="file" length="255" searchOrder="2" special="multi" category="Informations">Fichier</PROPERTIES>
-		<FKEY card="1,1" data="Menu,Id" >MenuId</FKEY>
+		<FKEY card="1,1" data="Menu,Id"  hidden="1">MenuId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Connexion" driver="mysql" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Tasks.png" Class="Modules/Systeme/Class/Connexion.class.php">
 		<PROPERTIES type="varchar" length="16" searchOrder="1" category="Connexion">Ip</PROPERTIES>

@@ -1,7 +1,10 @@
 
 <!-- Bootstrap core CSS -->
-[HEADER JS]Tools/Js/Jquery/1.9.2/jquery.min.js[/HEADER]
-[HEADER CSS]Tools/Css/Bootstrap/3.0/css/bootstrap.min.css[/HEADER]
+[HEADER JS]Tools/Js/Jquery/1.11.3/jquery.min.js[/HEADER]
+[HEADER JS]Tools/Js/Jquery/jquery.template.min.js[/HEADER]
+//bootstrap
+[HEADER CSS]Tools/Css/Bootstrap/3.3/css/bootstrap.min.css[/HEADER]
+[HEADER JS]Tools/Css/Bootstrap/3.3/js/bootstrap.min.js[/HEADER]
 //[HEADER CSS]Skins/BootstrapAdmin/Css/bootstrap.flatly.min.css[/HEADER]
 
 //MOMENT LOCALES
@@ -11,14 +14,23 @@
 //DATE PICKER
 [HEADER JS]Tools/Css/Bootstrap/bootstrap-datetimepicker-master/build/js/bootstrap-datetimepicker.min.js[/HEADER]
 [HEADER CSS]Tools/Css/Bootstrap/bootstrap-datetimepicker-master/build/css/bootstrap-datetimepicker.min.css[/HEADER]
+[HEADER JS]Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/js/bootstrap-datepicker.min.js[/HEADER]
+[HEADER CSS]Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/css/bootstrap-datepicker.min.css[/HEADER]
 
 [HEADER JS]Tools/Css/Bootstrap/BootBox/bootbox.min.js[/HEADER]
 [HEADER CSS]Tools/Css/Bootstrap/Bootstrap-fileinput/css/fileinput.min.css[/HEADER]
 [HEADER JS]Tools/Css/Bootstrap/Bootstrap-fileinput/js/fileinput.min.js[/HEADER]
 [HEADER JS]Tools/Css/Bootstrap/Bootstrap-fileinput/js/fileinput_locale_fr.js[/HEADER]
-[HEADER JS]Tools/Css/Bootstrap/3.0/js/bootstrap.min.js[/HEADER]
+//switch
 [HEADER CSS]Tools/Css/Bootstrap/bootstrap-switch-master/dist/css/bootstrap3/bootstrap-switch.min.css[/HEADER]
 [HEADER JS]Tools/Css/Bootstrap/bootstrap-switch-master/dist/js/bootstrap-switch.min.js[/HEADER]
+
+//lightbox
+[HEADER CSS]Tools/Js/Gallery-master/css/blueimp-gallery.min.css[/HEADER]
+[HEADER CSS]Tools/Css/Bootstrap/bootstrap-lightbox/bootstrap-lightbox.min.css[/HEADER]
+//[HEADER JS]Tools/Js/Gallery-master/js/blueimp-gallery.min.js[/HEADER]
+//[HEADER JS]Tools/Css/Bootstrap/bootstrap-lightbox/bootstrap-lightbox.min.js[/HEADER]
+//editor
 [HEADER JS]Tools/Js/CkEditor/ckeditor.js[/HEADER]
 [HEADER]
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -56,10 +68,20 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar">
-            [STORPROC [!Systeme::Menus!]|M]
-            <li  [IF [!Lien!]=[!M::Url!]]class="active"[ELSE][/IF]><a href="/[!M::Url!]">[!M::Titre!]  [IF [!Lien!]=[!M::Url!]]<span class="sr-only">(current)</span>[ELSE][/IF]</a></li>
-            [/STORPROC]
+          <ul class="nav nav-sidebar" id="sidemenu">
+          [INFO [!Query!]|I]
+          [STORPROC [!Sys::Modules!]|Mo]
+
+              [STORPROC [!Sys::Menus!]/Alias~=[!Mo::Nom!]|M]
+              <li><a href="#" data-toggle="collapse" data-target="#submenu-[!Mo::Nom!]" aria-expanded="false">[!Mo::Nom!]</a>
+                  <ul class="nav [IF [!I::Module!]!=[!Mo::Nom!]]collapse[/IF]" role="menu" id="submenu-[!Mo::Nom!]">
+                [LIMIT 0|50]
+                    <li  [IF [!Lien!]~[!M::Url!]]class="active"[ELSE][/IF]><a href="/[!M::Url!]">[!M::Titre!]  [IF [!Lien!]=[!M::Url!]]<span class="sr-only">(current)</span>[ELSE][/IF]</a></li>
+                [/LIMIT]
+                  </ul>
+              </li>
+              [/STORPROC]
+          [/STORPROC]
           </ul>
 <!--          <ul class="nav nav-sidebar">
             <li><a href="">Nav item</a></li>
@@ -119,8 +141,7 @@
                         dataType: 'json',
                         context: document.body,
                         error: function (xhr, status, thrown) {
-                            alert(status);
-                            alert(thrown);
+                            location.reload();
                         },
                         success: function (data) {
                             if (data.success) {
@@ -171,6 +192,7 @@
             $('#modal-form .modal-body').html('<div class="alert alert-primary">Chargement ...</div>');
         });
         $('.btn-modal-save').click(function (e) {
+
             //variables
             var data = $('#modal-form-form').serialize() + '&ValidForm=1';
             //enregistrement du formulaire
@@ -181,10 +203,11 @@
                 dataType: 'json',
                 context: document.body,
                 error: function (xhr, status, thrown) {
+                    console.log('retour erreur', xhr);
                     $('#modal-form .btn-modal-cancel').css('visibility', 'hidden');
                     $('#modal-form .btn-modal-save').css('visibility', 'hidden');
                     $('#modal-form .btn-modal-close').css('visibility', 'visible');
-                    $('#modal-form .modal-message').html(xhr);
+                    $('#modal-form .modal-body').html(xhr.responseText);
                 },
                 success: function (data) {
                     //gestion des controles
@@ -203,16 +226,17 @@
                             $('#modal-form .btn-modal-close').css('visibility', 'visible');
                     }
                     //test du retour
-                    console.log('rtour en force', data);
                     if (data.success) {
                         //en cas de success on remplace le body par le message
                         $('#modal-form .modal-message').empty();
                         $('#modal-form .modal-body').html(data.message);
                     } else {
                         //en cas d'echec, on affiche les erreurs au dessu du body
-                        $('#modal-form .modal-message').html(data.message);
+                        if (data.message)
+                            $('#modal-form .modal-message').html(data.message);
+                        else
+                            $('#modal-form .modal-message').html(data);
                     }
-                    console.log('valid form', data);
                 }
             });
         });
@@ -230,7 +254,41 @@
         });
     }
     refresh();
-
 </script>
+<!-- The Bootstrap Image Gallery lightbox, should be a child element of the document body -->
+<div id="blueimp-gallery" class="blueimp-gallery">
+    <!-- The container for the modal slides -->
+    <div class="slides"></div>
+    <!-- Controls for the borderless lightbox -->
+    <h3 class="title"></h3>
+    <a class="prev">‹</a>
+    <a class="next">›</a>
+    <a class="close">×</a>
+    <a class="play-pause"></a>
+    <ol class="indicator"></ol>
+    <!-- The modal dialog, which will be used to wrap the lightbox content -->
+    <div class="modal fade">
+        <div class="modal-dialog" style="width: 90% !important;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body next"></div>
+                <div class="modal-footer">
+                    <!--<button type="button" class="btn btn-default pull-left prev">
+                        <i class="glyphicon glyphicon-chevron-left"></i>
+                        Previous
+                    </button>
+                    <button type="button" class="btn btn-primary next">
+                        Next
+                        <i class="glyphicon glyphicon-chevron-right"></i>
+                    </button>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-
+<script src="/Tools/Js/Gallery-master/js/jquery.blueimp-gallery.min.js"></script>
+<script src="/Tools/Css/Bootstrap/bootstrap-lightbox/bootstrap-lightbox.min.js"></script>

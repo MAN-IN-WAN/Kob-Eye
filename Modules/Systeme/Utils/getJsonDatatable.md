@@ -83,7 +83,7 @@
 {
     [COUNT [!REQUETE!]|NB]
     "total": [!NB!],
-    "req": '[!REQUETE!] |[!SFIELD!]|[!SORT!]',
+    "req": '[!REQUETE!]',
     "results":
 [
     [STORPROC [!REQUETE!]|O|[!iDisplayStart!]|[!iDisplayLength!]|[!SFIELD!]|[!SORT!]]
