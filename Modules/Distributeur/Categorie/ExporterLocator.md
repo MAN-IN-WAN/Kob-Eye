@@ -1,0 +1,35 @@
+[STORPROC [!Query!]|Objet|0|1]
+	[IF [!Action!]=Exporter]
+		[INI memory_limit]80M[/INI]
+		[INI max_execution_time]3600[/INI]
+		[!Recherche:=[!Query!]/Shop!]
+		//FILTRE
+		[!RechPrefixe:=Rech!]
+		[OBJ [!Module::Actuel::Nom!]|Shop|T]
+		[STORPROC [!T::GetFilter()!]|P|0|100]
+			[IF [![!RechPrefixe!]Filter[!P::Nom!]!]!=]
+				[IF [!Shlass!]][!Recherche+=&!][ELSE][!Shlass:=1!][!Recherche+=/!][/IF]
+				[!Recherche+=m.[!P::Nom!]=[![!RechPrefixe!]Filter[!P::Nom!]!]!]
+			[/IF]
+		[/STORPROC]
+		//RECHERCHE PROPRIETE
+		[STORPROC [!T::SearchOrder()!]|P|0|100]
+			[IF [![!RechPrefixe!]Prop[!P::Nom!]!]!=&&[!P::Filter!]=]
+				[IF [!Shlass!]][!Recherche+=&!][ELSE][!Shlass:=1!][!Recherche+=/!][/IF]
+				[!Recherche+=m.[!P::Nom!]~[![!RechPrefixe!]Prop[!P::Nom!]!]!]
+			[/IF]
+		[/STORPROC]
+
+                 [!SEP:=\r\n!]
+		[COUNT [!Recherche!]|Nb]
+		[!NbPass:=[!Nb:/1000!]!]
+		[!NbPass+=1!]
+                [!Systeme::setFileName(Export-[!Objet::Nom!]-[!Date::getDay()!]-[!Date::getMonth()!]-[!Date::getYear()!])!]
+		[STORPROC [!NbPass!]|n][STORPROC [!Recherche!]|C|[!n:*1000!]|1000]
+                [!Objet::Nom!];[STORPROC [!T::Proprietes()!]|P][!C::[!P::Nom!]!][IF [!Pos!]<[!NbResult!]];[ELSE][/IF][/STORPROC][/STORPROC][/STORPROC]
+	[ELSE]
+		<h1>Exportation d'un fichier</h1>
+		<a rel="link" class="KEBouton" href="/[!Lien!].csv?Action=Exporter">
+                                                        Télécharger le fichier</a>
+	[/IF]
+[/STORPROC]

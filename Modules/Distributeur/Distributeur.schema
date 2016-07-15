@@ -1,0 +1,60 @@
+<SCHEMA>
+	<OBJECTCLASS title="Categorie" driver="mysql" master="0" AccessPoint="1" browseable="1" Description="Catégories"  Icon="/Skins/AdminV2/Img/IconAqua/Contact.png">
+		<PROPERTIES type="varchar" length="100" multi="1"  searchOrder="1" list="1" form="1" fiche="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" values="rouge,vert,violet" list="1" form="1" fiche="1">Couleur</PROPERTIES>
+		<PROPERTIES type="image" multi="1"  length="255" category="Descriptif" list="1" form="1" fiche="1">IconeMap</PROPERTIES>
+		<PROPERTIES type="boolean" default="1" category="Publication" list="1" form="1" fiche="1">Publier</PROPERTIES>
+		<PROPERTIES type="int" default="0" list="1" form="1" fiche="1">Ordre</PROPERTIES>
+		<FUNCTION title="Importer un fichier CSV" type="form">ImporterShop</FUNCTION>
+		<FUNCTION title="Exporter un fichier CSV">ExporterLocator</FUNCTION>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Shop" driver="mysql" master="0" AccessPoint="1" Description="Locator"  Icon="/Skins/AdminV2/Img/IconAqua/Contact.png" Class="Modules/Distributeur/Class/Shop.class.php" browseable="1">
+		<PROPERTIES description="Name" type="varchar" searchOrder="1" list="1" form="1" fiche="1">Name</PROPERTIES>
+		<PROPERTIES description="Adress" type="text" length="255" form="1" fiche="1">Adress</PROPERTIES>
+		<PROPERTIES description="Adress 2" type="text" length="255">Adress2</PROPERTIES>
+		<PROPERTIES description="Adress 3" type="text" length="255">Adress3</PROPERTIES>
+		<PROPERTIES description="Postal Code" type="varchar" obligatoire="0" form="1" fiche="1">PostalCode</PROPERTIES>
+		<PROPERTIES description="City" type="varchar" length="100" list="1" form="1" fiche="1">City</PROPERTIES>
+		<PROPERTIES description="Phone" type="varchar" length="32" form="1" fiche="1">Phone</PROPERTIES>
+		<PROPERTIES description="Phone" type="varchar" length="32" form="1" fiche="1">Fax</PROPERTIES>
+		<PROPERTIES description="E-mail" type="varchar" list="1" form="1" fiche="1">Email</PROPERTIES>
+		<PROPERTIES description="Website" type="varchar" form="1" fiche="1">Website</PROPERTIES>
+		<PROPERTIES description="Region" type="varchar" length="100">Region</PROPERTIES>
+		<PROPERTIES description="Country" type="varchar" length="100" form="1" fiche="1">Country</PROPERTIES>
+		<PROPERTIES description="Pro Shop" type="boolean"  list="1" form="1" fiche="1">Proshop</PROPERTIES>
+		<PROPERTIES description="Pro Shop Germany" type="boolean"  list="1" form="1" fiche="1">ProshopGermany</PROPERTIES>
+		<PROPERTIES description="Test Center" type="boolean" list="1" form="1" fiche="1">TestCenter</PROPERTIES>
+		<PROPERTIES description="Pro School" type="boolean" list="1" form="1" fiche="1">ProSchool</PROPERTIES>
+		<PROPERTIES description="Pays à saisir pour faire apparaître dans le select country (attention à saisir en anglais)" type="varchar" query="Geographie/Pays::Code::Nom">CountryNew</PROPERTIES>
+		<PROPERTIES description="Photo" type="image" form="1" fiche="1">Photo</PROPERTIES>
+		<PROPERTIES description="Latitude" auto="0" type="varchar" length="16" form="1" fiche="1">Latitude</PROPERTIES>
+		<PROPERTIES description="Longitude" auto="0" type="varchar" length="16" form="1" fiche="1">Longitude</PROPERTIES>
+		<FKEY card="1,n" data="Categorie,Id" fiche="1" popup="1">CategorieId</FKEY>
+		<FUNCTION>Geolocaliser</FUNCTION>
+		<!--<VIEW name="ShopList" default="1">
+			<OBJECTCLASS title="Shop">
+				<PROPERTIES type="int" >Id</PROPERTIES>
+				<PROPERTIES description="Name" type="varchar" length="100" searchOrder="1">Name</PROPERTIES>
+				<PROPERTIES description="Adress" type="text" length="255">Adress</PROPERTIES>
+				<PROPERTIES description="Adress 2" type="text" length="255">Adress2</PROPERTIES>
+				<PROPERTIES description="Adress 3" type="text" length="255">Adress3</PROPERTIES>
+				<PROPERTIES description="Postal Code" type="varchar" obligatoire="0">PostalCode</PROPERTIES>
+				<PROPERTIES description="City" type="varchar" length="100">City</PROPERTIES>
+				<PROPERTIES description="Phone" type="varchar" length="32">Phone</PROPERTIES>
+				<PROPERTIES description="Phone" type="varchar" length="32">Fax</PROPERTIES>
+				<PROPERTIES description="E-mail" type="varchar" length="32">Email</PROPERTIES>
+				<PROPERTIES description="Website" type="varchar" length="32">Website</PROPERTIES>
+				<PROPERTIES description="Region" type="varchar" length="100">Region</PROPERTIES>
+				<PROPERTIES description="Country" type="varchar" length="100">Country</PROPERTIES>
+				<PROPERTIES description="Country à retaper pour locator" type="varchar" query="Geographie/Pays::Code::Nom">CountryNew</PROPERTIES>
+				<PROPERTIES description="Photo" type="image">Photo</PROPERTIES>
+				<PROPERTIES description="Latitude" auto="1" type="varchar" length="16">Latitude</PROPERTIES>
+				<PROPERTIES description="Longitude" auto="1" type="varchar" length="16">Longitude</PROPERTIES>
+				<JOIN type="inner" module="Distributeur" title="Categorie" on="Id" target="CategorieId">
+					<PROPERTIES type="varchar" length="250"  list="1" alias="Category">Nom</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>-->
+	</OBJECTCLASS>
+</SCHEMA>

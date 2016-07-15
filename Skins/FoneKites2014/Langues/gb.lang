@@ -1,0 +1,130 @@
+// fichier de traduction en anglais
+//$$|
+$MSGSEARCH$|Enter your search term...
+$MSGMOREPOST$|LOAD MORE POSTS
+$PHONE$|Phone.
+$FAX$|Fax.
+$MAIL$|Email
+$MSGTITRECONTACT$|Select a mark.
+$MSGINSCRIPNEWSLET$|Inscription to F-ONEKITES Newsletter
+$CORPSMAILINSCRIPTION$|Hello,<br />Congratulations, you are registered to F-ONEKITES newsletter.
+$TEAMTHANK$|All the F-ONE Team thanks you <br />
+$INSCRIPTIONOK$|Congratulations, you are registered to F-ONEKITES newsletter
+$INSCRIPTIONVIDE$|Please enter your email
+$INSCRIPTIONDEJA$|You are already registered
+$ABOUTFONE$|ABOUT F-ONE
+$HISTPHIL$|History Philosophy
+$PRODCAT$|Products Catalogs
+$USERMANU$|User manuals
+$CONTACTUS$|Contact Us
+$WARRANTY$|Warranty
+$SPAREPARTES$|Spare Parts
+$REGISTRATIONPROD$|Products Registration
+$PRIVACIPOLICY$|Privacy Policy 
+$USERAGREE$|User Agreement
+$WARANTY$|Warranty
+$RETD$|R&D
+__SEE_MAP__|See on map
+$DOWNLOAD$|DOWNLOAD
+
+#CONTACT
+__CONTACT_US__|Contact us
+__NEWSLETTER_SUBSCRIPTION__|Newsletter registration
+__CLOSE__|Close
+__NO_RESULT__|No result
+__RECEIVER__|Receiver
+__CONTACT_ERRORS__|Please check the following fields:
+__ERROR_NAME__|Please fill your name
+__ERROR_EMAIL__|Please fill your email
+__ERROR_SUBJECT__|Please fill a subject
+__ERROR_MESSAGE__|Please fill your message
+__ERROR_COUNTRY__|Please fill your country
+__MESSAGE_SUCCESS__|Your message has been sent successfully
+__MESSAGE_SAV_CONTACT__|Please contact the closest retailer.
+__FULL_NAME__|Full Name
+__SUBJECT__|Subject
+__CITY__|City
+__COUNTRY__|Country
+__MESSAGE__|Message
+__PHONE__|Phone
+__EMAIL__|Email
+
+#FOOTER
+__CLOSEST_SHOP__|Closest shop
+__FOLLOW_US__|Follow us
+__NEWSLETTER__|Newsletter
+__LOADING__|Loading ...
+
+#POPUP NEWSLETTER
+__EMAIL_ADDRESS__|Email address
+$EMAILINPUT$|Enter your email
+__NEWSLETTER_SUSCRIBE_SUCCESS__|Succesfully registered to the F-ONE Newsletter.
+__NEWSLETTER_SUSCRIBE_WARNING__|You already registered the F-ONE Newsletter.
+
+#PRODUCT REGISTRATION
+__PLEASE_FILL_THE_FIELDS__|Please verify the following fields :
+__PLEASE_ACEEPT_ALL_TERMS_AND_CONDITIONS__|Please accept terms and conditions
+__PLEASE_FILL_YOUR_EMAIL_ADDRESS__|Please fill your email address
+__MESSAGE_SENT_SUCCESSFULLY__|Your message has been sent successfully
+
+__FIRST_NAME__|First name
+__LAST_NAME__|Last name
+__EMAIL_ADDRESS__|Email address
+__ADDRESS__|Address
+__KIT_SERIAL_NUMBER__|Product serial number
+__PRODUCT_MODE__|Product
+__SIZE__|Size
+__SHOP_WHERE_PURCHASED__|SHOP WHERE PURCHASED
+__DATE_OF_PURCHASE__|DATE OF PURCHASE
+__A_MESSAGE_IF_YOU_WANT__|A MESSAGE IF YOU WANT...
+__AGREE_ALL_TERMS_AND_CONDITIONS__|I AGREE ALL TERMS AND CONDITIONS.
+__SEND_MESSAGE__|SEND MESSAGE
+
+__PLEASE_FILL_YOUR_FIRSTNAME__|Please fill your first name
+__PLEASE_FILL_YOUR_NAME__|Please fill your name
+__PLEASE_FILL_YOUR_ADDRESS__|Please fill your address
+__PLEASE_FILL_YOUR_CITY__|Please fill your city
+__PLEASE_FILL_YOUR_COUNTRY__|Please fill your country
+__PLEASE_FILL_THE_PRODUCT_MODE__|Please fill the product
+__PLEASE_FILL_THE_PRODUCT_SIZE__|Please fill the product size
+__PLEASE_FILL_YOUR_SHOP__| Please fill the shop where purchased
+__PLEASE_FILL_YOUR_PURCHASE__|Please fill the date when purchased
+__PLEASE_CHECK_THE_CATPCHA__|Please check the "I'm not a bot"
+
+__SUSCRIBE_TO_F-ONE_NEWSLETTER__|I AGREE TO RECEIVE INFORMATION FROM F-ONEKITES
+__DETAILS_REGISTRATION__|TERMS AND CONDITIONS
+__TEXT_REGISTRATION__|In order for us to know you better and to inform you from our latest news and product launches, we offer you to register your e-mail by filling-in the form hereunder.<br />This data processing has been declared to the French data protection authority as per declaration CNIL N° 1751751 v 0. <br />Please note that pursuant to French law #78-17 on data protection of 6 January 1978, you have the right to access, rectify and erase your personal data. <br />In order to exercise this right, please contact F.One by e-mail at contact@f-onekites.com
+__TEXT_CONDITIONS__|In order for us to know you better and to inform you from our latest news and product launches, we offer you to register your e-mail by filling-in the form hereunder.<br />This data processing has been declared to the French data protection authority as per declaration CNIL N° 1751751 v 0. <br />Please note that pursuant to French law #78-17 on data protection of 6 January 1978, you have the right to access, rectify and erase your personal data. <br />In order to exercise this right, please contact F.One by e-mail at contact@f-onekites.com
+__SUSCRIBE_SUCCESSFULL__|Your F-ONE product has been registered, thank you for trusting us!
+
+
+#MSG EMAIL
+__HELLO__|Hello
+__MSG_RECEPTION__|We have received your email, thank you for your trust. <br /> We will answer to your demand in the shortest delay.
+
+#LOCATOR
+__MSG_LOCATOR__|Please select a mark on the map.
+$SELECTCOUNTRY$|Select your country
+
+#RIDER
+__LAST_NEWS__|Last news
+__MESSAGE_SPARE_PARTS_TEL__|The spare parts are not available for this device. <br /> Please try with a tablet or a computer.
+
+#HOME
+__MEDIA_SOCIAL__|Social Media 
+__PRODUCTS__|Products
+__MEDIAS__|Medias
+
+#DIVERS
+__MORE_DETAILS__|MORE DETAILS
+__TECHNOLOGIES_CONSTRUCTION__|TECHNOLOGIES / CONSTRUCTION
+__RELATED_GEARS__|Related gears
+__PRODUCT_VIDEO__|Product video
+__LATEST_NEWS__|Latest news
+__SHOW_ALL__|Show all
+
+#LOCATOR
+__INVITE_EMAIL_LOCATOR__|A customer is contacting you from the website
+
+#DISCLAIMER
+__DISCLAIMER_BANDEAU__|By browsing this website, you agree to the installation and use of tracking systems allowing you to share some content from our website with third parties or to inform others about your browsing or your opinion regarding this website, and to the possibility for us to realize visit statistics. <a href="/Disclaimer">Click here for more information on those trackers and on how to customize their settings </a>

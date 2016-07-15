@@ -1,0 +1,270 @@
+[HEADER]
+	<link rel="shortcut icon" href="/Skins/FoneKites2014/favicons/favicon_f-one.png">
+	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,200italic,200,300,300italic,400italic,600,600italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+	<!-- Bootstrap core CSS -->
+	<link rel="stylesheet" type="text/css" href="[!Domaine!]/Skins/[!Systeme::Skin!]/css/component.css" />
+	<link rel="stylesheet" type="text/css" href="[!Domaine!]/Skins/[!Systeme::Skin!]/css/gallery.css" />
+	<link href="[!Domaine!]/Skins/[!Systeme::Skin!]/css/carousel.css" rel="stylesheet">
+	//[MODULE Systeme/Social/HeaderSocial?Chemin=[!Query!]]
+	<link rel="icon" type="image/png" href="/Skins/FoneKites2014/favicons/favicon_f-one.png" />
+	<!--<link rel="icon" type="image/gif" href="/Skins/FoneKites2014/favicons/favicon_f-onekites32x32.gif" />-->
+
+[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Css/bootstrap.min.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/Css/flexslider.css[/HEADER]
+
+<div class="navbar-wrapper">
+        <div class="header">
+		<div  class="navber-affix-container" id="topmenubar">
+
+
+			[MODULE Systeme/Menu]
+		</div>
+		[MODULE Systeme/Menu/MenuCarousel]
+		[MODULE Systeme/Menu/SousMenu]
+	</div>
+</div>
+
+[DATA]
+
+[MODULE Systeme/Menu/Footer]
+
+<div href="#nogo" class="button-scroll hidden-lg"></div>
+
+[HEADER JS]Tools/Js/Jquery/1.8.3/jquery.min.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/js/bootstrap.min.js[/HEADER]
+//<script src="/Skins/[!Systeme::Skin!]/assets/js/holder.js"></script>
+<script src="/Skins/[!Systeme::Skin!]/js/classie.js"></script>
+<script src="/Skins/[!Systeme::Skin!]/js/uisearch.js"></script>
+<script src="/Tools/Js/imagesLoaded/3.0.4/imagesLoaded.min.js"></script>
+<script src="/Tools/Js/ScrollTo/jquery.scrollTo-1.4.3.1-min.js"></script>
+<script src="/Skins/[!Systeme::Skin!]/js/modernizr.custom.js"></script>
+<script src="/Skins/[!Systeme::Skin!]/js/isotope.min.js"></script>
+//<script type="text/javascript" src="/Skins/[!Systeme::Skin!]/js/simplethumbs.js"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyCMhrluM8sw148mOsW0Mqnp-KimwMvE928"></script>
+<script src="/Skins/[!Systeme::Skin!]/js/InfoBox.js"></script>
+<script src="/Skins/[!Systeme::Skin!]/js/jquery.cookie.js"></script>
+<script src="/Skins/[!Systeme::Skin!]/js/jquery-zoom.min.js"></script>
+<script src="/Skins/[!Systeme::Skin!]/js/jquery-flexslider-min.js"></script>
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+<script src="/Skins/[!Systeme::Skin!]/assets/js/html5shiv.js"></script>
+<script src="/Skins/[!Systeme::Skin!]/assets/js/respond.min.js"></script>
+<![endif]-->
+<script>
+      new UISearch( document.getElementById( 'sb-search' ) );
+</script>
+
+
+
+<script type="text/javascript">
+	function setClosestShop() {
+		//alimentation du closest shop
+		$.ajax({
+			url: (location_coordonates&&location_coordonates!="timeout")?'/Distributeur/Shop/getShop.htm?cache='+Math.random()+'&Lat='+ location_coordonates.latitude+'&Long='+ location_coordonates.longitude:'/Distributeur/Shop/getShop.htm',
+			success: function (data) { 
+				$('#closest_shop').html(data);
+			},
+			dataType: 'html'
+		});
+	}
+	var location_coordonates = null;/*{
+		latitude:43.593509,
+		longitude:3.906827
+	};*/
+	window.onload = function(){
+		//correction animation search bar
+		$('.sb-search').css('-webkit-transition','width 0.3s');
+		$('.sb-search').css('-moz-transition','width 0.3s');
+		$('.sb-search').css('transition','width 0.3s');
+		var scrolling = false;
+		//evenement touch
+		$('.button-scroll').bind('touchstart touchmove', function(event) {
+			scrolling=true;
+			$('html,body').on('touchstart touchmove', function(e){ 
+				//prevent native touch activity like scrolling
+				e.preventDefault(); 
+			});
+			var touch = event.originalEvent.targetTouches[0];
+			var height = $(window).height();
+			var scrollTop = $(window).scrollTop();
+			if ((touch.pageY-scrollTop)>110&&(touch.pageY-scrollTop)<height-60)
+				$('.button-scroll').css('top',(touch.pageY-scrollTop)+'px');
+			//calcul du ratio scrollpos / document
+			var ratio = (parseInt($('.button-scroll').css('top'))-110)/(height-170);
+			ratio = (ratio>1)?1:((ratio<0)?0:ratio);
+			$(document).scrollTo(ratio*$(document).height());
+			event.preventDefault();
+		});
+		$('.button-scroll').bind('touchend', function(event) { 
+			scrolling=false;
+			$('html,body').unbind('touchstart touchmove');
+		});
+		//evenement souris sur le scroll
+		$('.button-scroll').mousedown(function (event){
+			scrolling = true;
+			$(this).css('background-color','red');
+			$(document).mousemove(function (event) {
+				var height = $(window).height();
+				var scrollTop = $(window).scrollTop();
+				if ((event.pageY-scrollTop)>110&&(event.pageY-scrollTop)<height-110)
+					$('.button-scroll').css('top',(event.pageY-scrollTop)+'px');
+				//calcul du ratio scrollpos / document
+				var ratio = (parseInt($('.button-scroll').css('top'))-110)/(height-170);
+				$(document).scrollTo(ratio*$(document).height());
+				event.preventDefault();
+			});
+			$(document).mouseup(function (event){
+				scrolling = false;
+				$('.button-scroll').css('background-color','transparent');
+				//remove event
+				$(document).unbind('mousemove');
+				$(document).unbind('mouseup');
+				event.preventDefault();
+			});
+			event.preventDefault();
+		});
+		//position d'origine
+		poscurseur($(window).scrollTop());
+		//eventment scroll
+		$(document).scroll(function (event) {
+			poscurseur($(window).scrollTop());
+		});
+		
+		function poscurseur(scrollpos){
+			var height = $(window).height();
+			var ratio = (scrollpos)/($(document).height());
+			if (!scrolling)
+				$('.button-scroll').css('top',((ratio*(height-170))+110)+'px');
+		}
+	}
+	
+</script>
+
+
+
+<!-- Piwik -->
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(["setCookieDomain", "*.f-onekites.com"]);
+  _paq.push(["trackPageView"]);
+  _paq.push(["enableLinkTracking"]);
+
+</script>
+<!-- End Piwik Code -->
+<script type="text/javascript">
+  $('.affix-top').affix({
+    offset: {
+      top: 0
+    }
+  });
+  //detection du cookie disclaimer
+  disclaimer_cookie = $.cookie('disclaimer_cookie');
+  if (disclaimer_cookie&&disclaimer_cookie=="true"){
+	//$('#cnil-conformite').popover('hide');
+	activate_cookie_components();
+  }else{
+	console.log('show disclaimer popup');
+	//affichage du popup
+	$('#cnil-conformite .alert').removeClass('hide');
+	$('#cnil-conformite .alert').popover('show');
+	//on déplace le menu vers le bas
+//	$('#topmenubar .navbar.navbar-inverse').css('top','70px');
+	console.log('test '+$('#topmenubar .navbar.navbar-inverse').css('top'));
+	//evenement popup
+	$('#cnil-conformite').on('closed.bs.alert', function () {
+		console.log('show disclaimer on popup close');
+	      create_disclaimer_cookie();
+	      activate_cookie_components();
+	});
+	$('body a').on('click', function () {
+	      console.log('show disclaimer on click');
+              $('#cnil-conformite .alert').addClass('hide');
+	      $('#cnil-conformite .alert').popover('hide');
+//		$('#topmenubar .navbar.navbar-inverse').css('top','0px');
+	      create_disclaimer_cookie();
+	      activate_cookie_components();
+	});
+  }
+
+  function create_disclaimer_cookie() {
+	//creation du cookie
+	$.cookie('disclaimer_cookie', 'true', {expires: 30});
+  }
+  function activate_cookie_components() {
+	console.log('activation des composants cookies');
+	//geolocalisation
+	start_geolocalisation();
+	//media box
+	$('.disclaimer-hidden').css('display','block');
+	//google analytics
+	//like facebook
+	$('iframe').each(function (index,item){
+		if ($(item).attr('src-disclaimer')) {
+			$(item).attr('src',$(item).attr('src-disclaimer'));
+		}
+	});
+	//like twitter
+	!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+	//piwik
+	(function() {
+	  var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.f-onekites.com/";
+	  _paq.push(["setTrackerUrl", u+"piwik.php"]);
+	  _paq.push(["setSiteId", "2"]);
+	  var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+	  g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+	})();
+	//vimeo
+	
+  }
+  function start_geolocalisation() {
+		//verification de l'existence du cookie geoloc
+	loc_cookies = $.cookie('location_coordonates');
+	if (loc_cookies&&loc_cookies!="timeout"){
+		var tmp=loc_cookies.split('XXXX',2);
+		location_coordonates = {
+			latitude:tmp["0"],
+			longitude:tmp["1"]
+		}
+		$( document).trigger( "geoloc", [ tmp["0"], tmp["1"] ] );
+		console.log('coordonates '+tmp[0]+' '+tmp[1]);
+	}
+	if (location_coordonates!=null){
+		setClosestShop();
+	}else{
+		//sinon on le cree
+		var options = {
+			enableHighAccuracy: true,
+			timeout: 5000,
+			maximumAge: 0
+		};
+		
+		function success(pos) {
+			var crd = pos.coords;
+			//static
+			location_coordonates = crd;
+			setClosestShop();
+			//definition du cookie
+			$.cookie('location_coordonates', location_coordonates.latitude+'XXXX'+location_coordonates.longitude, {expires: 30});
+			$( document).trigger( "geoloc", [ location_coordonates.latitude, location_coordonates.longitude ] );
+		};
+		
+		function error(err) {
+			console.log('erreur de localisation');
+			//alimentation du closest shop
+			location_coordonates = {
+				latitude:43.593509,
+				longitude:3.906827
+			};
+			setClosestShop();
+//				$.cookie('location_coordonates', "timeout");
+			$.cookie('location_coordonates', "43.593509XXXX3.906827", {expires: 30});
+			$( document).trigger( "geoloc", [ 43.593509, 3.906827 ] );
+		};
+		navigator.geolocation.getCurrentPosition(success, error, options);
+	}
+  }
+
+</script>
+
+

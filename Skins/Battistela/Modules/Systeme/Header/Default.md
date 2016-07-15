@@ -26,7 +26,7 @@
                             [MODULE Systeme/Header/BrandSearch]
                         </div>
                         <div class="col-md-5" style="padding:0;text-align: right">
-                            <h2 style="margin-top: 10px;font-size: 24px;font-weight: 800;">Bienvenue à la Pharmacie du Cours.</h2>
+                            <h1 style="margin-top: 10px;font-size: 24px;font-weight: 800;">Bienvenue à la Pharmacie du Cours.</h1>
                             [IF [!Systeme::User::Public!]]
                             <p>Consultez et préparez vos achats depuis chez vous et venez retirer vos commandes en officine sans attente.  </p>
                             [ELSE]

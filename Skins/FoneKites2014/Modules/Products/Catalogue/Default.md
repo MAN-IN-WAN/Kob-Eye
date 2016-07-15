@@ -1,0 +1,6 @@
+[INFO [!Query!]|I]
+[IF [!I::TypeSearch!]=Direct]
+	[MODULE Products/Catalogue/Fiche]
+[ELSE]
+	[MODULE Products/Catalogue/Liste]
+[/IF]

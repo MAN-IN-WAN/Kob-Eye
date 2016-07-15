@@ -23,19 +23,6 @@
 //lightbox
 [HEADER CSS]Skins/[!Systeme::Skin!]/Js/lightbox.min.css[/HEADER]
 
-[HEADER JS]Tools/Js/Jquery/1.9.2/jquery.min.js[/HEADER]
-[HEADER JS]Skins/[!Systeme::Skin!]/Js/lightbox.min.js[/HEADER]
-[HEADER JS]Tools/Css/Bootstrap/3.0/js/bootstrap.min.js[/HEADER]
-[HEADER JS]Tools/Js/Masonry/masonry.min.js[/HEADER]
-<script src='/Tools/Js/animateIt/js/css3-animate-it.js'></script>
-<script src='/Tools/Js/Colorbox/jquery.colorbox-min.js'></script>
-<link rel="stylesheet" href="/Tools/Js/Colorbox/example1/colorbox.css" type="text/css">
-<script type="text/javascript" src="/Skins/BoutiqueDefault-3.0.ENG/Js/toastr.js"></script>
-
-
-<!--[if lt IE 9]>
-<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
 
 
 
@@ -48,6 +35,19 @@
     </div>
     [MODULE Systeme/Footer]
 </div>
+[HEADER JS]Tools/Js/Jquery/1.9.2/jquery.min.js[/HEADER]
+<script src='/Skins/[!Systeme::Skin!]/Js/lightbox.min.js'></script>
+<script src='/Tools/Css/Bootstrap/3.0/js/bootstrap.min.js'></script>
+<script src='/Tools/Js/Masonry/masonry.min.js'></script>
+<script src='/Tools/Js/Colorbox/jquery.colorbox-min.js'></script>
+<link rel="stylesheet" href="/Tools/Js/Colorbox/example1/colorbox.css" type="text/css">
+<script type="text/javascript" src="/Skins/BoutiqueDefault-3.0.ENG/Js/toastr.js"></script>
+
+
+<!--[if lt IE 9]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
 
 <script type="text/javascript">
     var classBody = ".png";
@@ -125,4 +125,14 @@
         $(this).ekkoLightbox();
     });
 </script>
-
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Organization",
+  "name" : "Pharmacie du cours",
+  "url" : "http://www.pharmacieducours.fr",
+  "sameAs" : [
+    "https://www.facebook.com/Pharmacie-du-Cours-454537144751780/"
+ ]
+}
+</script>

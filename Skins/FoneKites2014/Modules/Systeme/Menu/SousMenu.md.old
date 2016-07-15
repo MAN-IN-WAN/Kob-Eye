@@ -1,0 +1,102 @@
+//[INFO [!Lien!]|I]
+//Recherche du menu racine
+//[COUNT [!I::Historique!]|NbNiv]
+[STORPROC Systeme/Menu/[!Systeme::CurrentMenu::Id!]/Donnee/Type=Html|Do|0|1]
+	<div class="baseline"><div class="container">
+		[!Do::Html!]
+	</div></div>
+[/STORPROC]
+
+[!SCat:=0!]
+[COUNT Systeme/Menu/[!Systeme::CurrentMenu::Id!]/Menu/Affiche=1|SMen]
+[!Req:=[!Systeme::CurrentMenu::Alias!]!]
+[IF [!Systeme::CurrentMenu::Alias!]~Redaction]
+	[COUNT [!Systeme::CurrentMenu::Alias!]/Categorie/Publier=1|SCat]
+[/IF]
+[IF [!Systeme::CurrentMenu::Alias!]~Blog]
+	[COUNT [!Systeme::CurrentMenu::Alias!]|SCat]
+[/IF]
+[IF [!Systeme::CurrentMenu::Alias!]~Products]
+	[COUNT [!Systeme::CurrentMenu::Alias!]|SCat]
+[/IF]
+[IF [!Systeme::CurrentMenu::Alias!]~Team]
+	[COUNT [!Systeme::CurrentMenu::Alias!]|SCat]
+[/IF]
+[IF [!Systeme::CurrentMenu::Alias!]~Distributeur]
+	// on affiche le sous menu dans le module car on insère une carte clicable au dessus
+//	[COUNT [!Systeme::CurrentMenu::Alias!]|SCat]
+[/IF]
+[IF [!Systeme::CurrentMenu::Alias!]~Galerie]
+	[COUNT [!Systeme::CurrentMenu::Alias!]/Publier=1|SCat]
+	[!Req+=/Publier=1!]
+[/IF]
+
+
+[IF [!SCat!]>0||[!SMen!]>0]
+	<div class="second-menu">
+		<div class="container">
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+				[IF [!Systeme::CurrentMenu::Alias!]~Products||[!Systeme::CurrentMenu::Alias!]~Team||[!Systeme::CurrentMenu::Alias!]~Blog||[!Systeme::CurrentMenu::Alias!]~Galerie]
+					[IF [!Lien!]~Post||[!Lien!]~Rider||[!Lien!]~Produit]
+						<ul class="nav navbar-second-nav">
+							<li [IF [!Lien!]=[!Systeme::CurrentMenu::Url!]] class="active" [/IF] >
+								<a href="[IF [!Systeme::CurrentMenu::Url!]~http][ELSE]/[/IF][!Systeme::CurrentMenu::Url!]" [IF [!Systeme::CurrentMenu::Url!]~http]target="_blank"[/IF] >
+									SHOW ALL
+								</a>
+							</li>
+							[STORPROC [!Req!]|SCat|0|10|Ordre|ASC]
+								<li [IF [!Lien!]~[!Systeme::CurrentMenu::Url!]/[!SCat::Url!]] class="active" [/IF]>
+									<a href="[IF [!SCat::LienExterne!]!=][IF [!SCat::LienExterne!]~http][ELSE]/[!Systeme::CurrentMenu::Url!]/[/IF][!SCat::LienExterne!][ELSE][IF [!SCat::Url!]~http][ELSE]/[!Systeme::CurrentMenu::Url!]/[/IF][!SCat::Url!][/IF]" [IF [!SCat::LienExterne!]~http||[!SCat::Url!]~http]target="_blank"[/IF]>
+									//<a href="[IF [!SCat::Url!]~http][ELSE]/[/IF][!Systeme::CurrentMenu::Url!]/[!SCat::Url!]" [IF [!SCat::Url!]~http]target="_blank"[/IF]  >
+										[IF [!Req!]~Products][!SCat::Nom!][ELSE][!SCat::Titre!][/IF]
+									</a>
+								</li>
+							[/STORPROC]
+						</ul>
+					[ELSE]
+						[COUNT [!Query!]|NbNiv]
+						[!Tous:=0!]
+						[IF [!NbNiv!]>1] [!Tous:=1!][/IF]
+						[STORPROC [!Query!]|Cat][/STORPROC]
+						<ul class="nav navbar-second-nav filters">
+							<li ><a href="#" data-filter="*" class="[IF [!Tous!]=1]filteractive[/IF] filter">show all</a></li>
+							[STORPROC [!Req!]|CatP]
+								<li >
+									<a href="[IF [!CatP::LienExterne!]!=][!CatP::LienExterne!][ELSE]#[/IF]" [IF [!CatP::LienExterne!]!=][ELSE]data-filter=".[!CatP::Url!]"[/IF] class="[IF [!Cat::Url!]=[!CatP::Url!]&&[!Tous!]!=1&&[!CatP::LienExterne!]=]filteractive[/IF] selector [IF [!CatP::LienExterne!]=]filter[/IF]" [IF [!CatP::LienExterne!]~http||[!CatP::Url!]~http]target="_blank"[/IF]>
+										[IF [!Req!]~Products][!CatP::Nom!][ELSE][!CatP::Titre!][/IF]
+									</a>
+								</li>
+							[/STORPROC]
+						</ul>
+					[/IF]
+				[ELSE]
+					<ul class="nav navbar-second-nav">
+						[STORPROC Systeme/Menu/[!Systeme::CurrentMenu::Id!]/Menu/Affiche=1|SCat|0|10|Ordre|ASC]
+							<li [IF [!Systeme::CurrentMenu::Id!]=[!SCat::Id!]]class=" active " [/IF]>
+								<a href="[IF [!SCat::Url!]~http][!SCat::Url!][ELSE]/[!SCat::Url!]/[!SCat::Url!][/IF]" [IF [!SCat::Url!]~http]target="_blank"[/IF] >[!SCat::Titre!]</a>
+							</li>
+						[/STORPROC]
+					//	[IF [!Systeme::CurrentMenu::Alias!]~Galerie]
+					//		<li [IF [!Lien!]=[!Systeme::CurrentMenu::Url!]] class="active" [/IF] >
+					//			<a href="[IF [!Systeme::CurrentMenu::Url!]~http][ELSE]/[/IF][!Systeme::CurrentMenu::Url!]" [IF [!Systeme::CurrentMenu::Url!]~http]target="_blank"[/IF] >
+					//				ALL
+					//			</a>
+					//		</li>
+					//	[/IF]
+						[STORPROC [!Req!]/Publier=1|SCat|0|10|Ordre|ASC]
+							<li [IF [!Lien!]~[!Systeme::CurrentMenu::Url!]/[!SCat::Url!]] class="active" [/IF]>
+								<a href="[IF [!SCat::Url!]~http][ELSE]/[/IF][!Systeme::CurrentMenu::Url!]/[!SCat::Url!]" [IF [!SCat::Url!]~http]target="_blank"[/IF]  >
+									[IF [!Req!]~Galerie]
+										[!SCat::Titre!]
+									[ELSE]
+										[!SCat::Name!] 
+									[/IF]
+								</a>
+							</li>
+						[/STORPROC]
+					</ul>
+				[/IF]
+			</div>
+		</div>
+	</div>
+[/IF]

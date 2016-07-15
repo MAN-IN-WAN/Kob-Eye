@@ -2,17 +2,17 @@
     <div class="row">
         <div class="col-md-4 well">
             <a href="http://ansm.sante.fr/" target="_blank">
-                <img class="img-responsive" src="/Skins/Battistela/Img/logos/ansm.jpg">
+                <img class="img-responsive" src="/Skins/Battistela/Img/logos/ansm.jpg" alt="ansm logo" />
             </a>
         </div>
         <div class="col-md-4 well">
             <a href="http://www.ars.paca.sante.fr/" target="_blank">
-                <img class="img-responsive" src="/Skins/Battistela/Img/logos/ars-paca.jpg">
+                <img class="img-responsive" src="/Skins/Battistela/Img/logos/ars-paca.jpg"  alt="ars paca" />
             </a>
         </div>
         <div class="col-md-4 well">
             <a href="http://www.ordre.pharmacien.fr/" target="_blank">
-                <img class="img-responsive" src="/Skins/Battistela/Img/logos/ordre-pharmacien.png">
+                <img class="img-responsive" src="/Skins/Battistela/Img/logos/ordre-pharmacien.png" alt="ordre des pharmaciens" />
             </a>
         </div>
     </div>
