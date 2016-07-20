@@ -18,8 +18,8 @@
           <option name="port" value="21" />
         </fileTransfer>
       </webServer>
-      <webServer id="56d7caaa-fa9d-40d3-a04d-1b6de9f361e1" name="raspberry_gil" url="http://192.168.0.113">
-        <fileTransfer host="192.168.0.113" port="22" rootFolder="/var/www" accessType="SFTP" password="df98df9bdfdddfd3dfc3dfd9dfcfdfd3" username="formation">
+      <webServer id="56d7caaa-fa9d-40d3-a04d-1b6de9f361e1" name="raspberry" url="http://192.168.1.38">
+        <fileTransfer host="192.168.1.38" port="22" rootFolder="/var/www" accessType="SFTP" password="df98df9bdfdddfd3dfc3dfd9dfcfdfd3" username="root">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" />
           </advancedOptions>

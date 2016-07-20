@@ -16,9 +16,9 @@
             {
                 success: false,
                 team: true,
-                etape: false,
+                etape: true,
                 data: true,
-                msg: 'L\'étape est erronée. Retour à la première question.'
+                msg: 'This step is locked.'
             }
         [/IF]
     [ELSE]
@@ -28,7 +28,7 @@
         team: false,
         etape: false,
         data: true,
-        msg: 'L\'équipe n\'est pas reconnue. Retour au choix de l\équipe.'
+        msg: 'This team is not recognized. Back to the team choice.'
     }
     [/IF]
 [ELSE]
@@ -38,6 +38,6 @@
         team: false,
         etape: fasle,
         data: false,
-        msg: 'La session a changé et doit être réinitialisée.'
+        msg: 'The session need to be reset.'
 }
 [/IF]

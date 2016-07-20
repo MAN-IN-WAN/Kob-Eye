@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="parc.azko.fr (1)">
+  <component name="PublishConfigData" serverName="raspberry">
     <serverData>
       <paths name="client.eng.systems">
         <serverdata>
@@ -44,7 +44,7 @@
           </mappings>
         </serverdata>
       </paths>
-      <paths name="raspberry_gil">
+      <paths name="raspberry">
         <serverdata>
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
