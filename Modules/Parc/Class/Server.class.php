@@ -405,6 +405,7 @@ class Server extends genericClass {
 	static function ldapRename($olddn, $newrdn, $parent) {
 		$e = array();
 		$connect = Server::ldapConnect();
+		//echo "ldaprename ".Server::$_LDAP." - ".$olddn." - ".$newrdn." - ".$parent." <br />\r\n";
 		$req = @ldap_rename(Server::$_LDAP, $olddn, $newrdn, $parent, true);
 		if ($connect and $req) {
 			// Le déplacement a réussi - on récupère le tms LDAP

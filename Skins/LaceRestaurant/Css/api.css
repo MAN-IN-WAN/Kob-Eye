@@ -1,0 +1,1489 @@
+.copyright
+{
+    bottom:0;
+    line-height:100%;
+    position:relative;
+    z-index:999;
+}
+
+canvas {
+    position: absolute;
+}
+
+.copyright a.labels
+{
+    padding: 2px;
+
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:10px;
+    position:relative;
+    right: 0px;
+    bottom: 0px;
+
+    zoom:1;
+    color:#333;
+    background-color: #FFF;
+    background: rgba(255, 255, 255, 0.7);
+    filter: alpha(opacity=70);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#B2FFFFFF, endColorstr=#B2FFFFFF);
+}
+
+.copyright a.logos
+{
+    position:absolute;
+    right: 0px;
+    bottom: 0px;
+}
+
+.copyright a.logos img
+{
+    margin-right: 1px;
+    border: 0;
+}
+
+/*
+Toolbar
+*/
+.tools-toolbar
+{
+    cursor:pointer;
+}
+
+.tools-slider
+{
+    height:150px;
+    width:34px;
+    background:url(/Skins/LaceRestaurant/Img/img/tools/gdeBarreZoom_centre.png) -1px 0;
+    position:relative;
+    width:34px;
+    padding:9px 0 0 0;
+}
+
+.tools-slider .slider
+{
+    position:relative;
+    height:150px;
+}
+
+.tools-slider .slider-handler
+{
+    background:url(/Skins/LaceRestaurant/Img/img/tools/sprite-slider.png) no-repeat 50% 0;
+    position:absolute;
+    width:34px;
+    height:9px;
+    line-height:0px;
+    text-decoration:none;
+    overflow:hidden;
+    z-index:2;
+}
+
+.tools-slider .slider-handler:hover
+{
+    background-position:50% -9px;
+}
+
+.tools-minimap,
+.tools-minimap-rounded,
+.tools-minus,
+.tools-minus:hover,
+.tools-minus-rounded:hover,
+.tools-minus-rounded,
+.tools-move,
+.tools-plus,
+.tools-plus:hover,
+.tools-plus-rounded,
+.tools-plus-rounded:hover,
+.tools-selection,
+.tools-selection-selected,
+.tools-mousewheelzoom-enable,
+.tools-mousewheelzoom-enable:hover,
+.tools-mousewheelzoom-disable,
+.tools-mousewheelzoom-disable:hover,
+.tools-viewmode-standard,
+.tools-viewmode-standard-rounded,
+.tools-viewmode-hybrid,
+.tools-viewmode-hybrid-rounded,
+.tools-viewmode-photo,
+.tools-viewmode-photo-rounded
+{
+    background-image:url(/Skins/LaceRestaurant/Img/img/tools/spriteToolbar.png);
+    background-repeat:no-repeat;
+    width:34px;
+}
+
+.tools-viewmode-container
+{
+    font-family:Arial,Helvetica,sans-serif;
+    font-weight:bold;
+    font-size:11px;
+    position:absolute;
+    bottom:0;
+    right:34px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    margin: 0;
+    padding: 5px;
+    color:#333333;
+    background-color: #fff;
+    border:1px solid #CACACA;
+}
+
+.tools-viewmode-container li
+{
+    cursor:pointer;
+    line-height:22px !important;;
+    padding:0 5px 0 30px;
+    list-style-image:none !important;;
+    list-style-position:outside !important;;
+    list-style-type:none !important;;
+}
+
+.tools-viewmode-liste-hybrid
+{
+    background:url(/Skins/LaceRestaurant/Img/img/tools/viewmode-hybrid.png) no-repeat 0 0;
+}
+
+.tools-viewmode-liste-standard
+{
+    background:url(/Skins/LaceRestaurant/Img/img/tools/viewmode-map.png) no-repeat 0 0;
+}
+
+.tools-viewmode-liste-photo
+{
+    background:url(/Skins/LaceRestaurant/Img/img/tools/viewmode-photo.png) no-repeat 0 0;
+}
+
+.tools-viewmode-standard,
+.tools-viewmode-photo,
+.tools-viewmode-hybrid
+{
+    position: relative;
+    height:26px;
+}
+
+.tools-viewmode-standard
+{
+    background-position:0 -424px;
+}
+
+.tools-viewmode-hybrid
+{
+    background-position:0 -476px;
+}
+
+.tools-viewmode-photo
+{
+    background-position:0 -450px;
+}
+
+.tools-viewmode-standard-rounded,
+.tools-viewmode-photo-rounded,
+.tools-viewmode-hybrid-rounded
+{
+    height:32px;
+}
+
+.tools-viewmode-standard-rounded
+{
+    background-position:0 -502px;
+}
+
+.tools-viewmode-hybrid-rounded
+{
+    background-position:0 -566px;
+}
+
+.tools-viewmode-photo-rounded
+{
+    background-position:0 -534px;
+}
+
+.tools-move
+{
+    background-position:0 -211px;
+    height:35px;
+}
+
+.tools-minimap-rounded
+{
+    background-position:0 -89px;
+    height:33px;
+}
+
+.tools-selection
+{
+    background-position:0 -268px;
+    height:26px;
+}
+
+.tools-selection:hover
+{
+    background-position:0 -294px;
+}
+
+.tools-selection-selected
+{
+    height:26px;
+    background-position:0 -243px;
+}
+
+.tools-mousewheelzoom-enable
+{
+    height:26px;
+    background-position:0 -320px;
+}
+
+.tools-mousewheelzoom-enable:hover
+{
+    background-position:0 -346px;
+}
+
+.tools-mousewheelzoom-disable
+{
+    height:26px;
+    background-position:0 -372px;
+}
+
+.tools-mousewheelzoom-disable:hover
+{
+    background-position:0 -398px;
+}
+
+.tools-plus
+{
+    height:23px;
+    background-position:0 0;
+}
+
+.tools-plus:hover
+{
+    background-position:0 -142px;
+}
+
+.tools-plus-rounded
+{
+    background-position:0 -165px;
+    height:23px;
+}
+
+.tools-plus-rounded:hover
+{
+    background-position:0 -188px;
+}
+
+.tools-minus
+{
+    background-position:0 -69px;
+    height:23px;
+}
+
+.tools-minus:hover
+{
+    background-position:0 -122px;
+}
+.tools-minus-rounded
+{
+    background-position:0 -46px;
+    height:23px;
+}
+
+.tools-minus-rounded:hover
+{
+    background-position:0 -23px;
+}
+/*
+IE Filters
+*/
+.tools-minimap-ie6,
+.tools-minimap-rounded-ie6,
+.tools-minus-ie6,
+.tools-minus-rounded-ie6,
+.tools-move-ie6,
+.tools-plus-ie6,
+.tools-plus-rounded-ie6,
+.tools-mousewheelzoom-enable-ie6,
+.tools-mousewheelzoom-disable-ie6,
+.tools-selection-ie6,
+.tools-selection-selected-ie6,
+.tools-viewmode-standard-ie6,
+.tools-viewmode-standard-rounded-ie6,
+.tools-viewmode-photo-ie6,
+.tools-viewmode-photo-rounded-ie6,
+.tools-viewmode-hybrid-ie6,
+.tools-viewmode-hybrid-rounded-ie6
+{
+    position:relative;
+    width:34px;
+}
+
+.tools-minimap-ie6 div,
+.tools-minimap-rounded-ie6 div,
+.tools-minus-ie6 div,
+.tools-minus-rounded-ie6 div,
+.tools-move-ie6 div,
+.tools-plus-ie6 div,
+.tools-plus-rounded-ie6 div,
+.tools-mousewheelzoom-enable-ie6 div,
+.tools-mousewheelzoom-disable-ie6 div,
+.tools-selection-ie6 div,
+.tools-selection-selected-ie6 div,
+.tools-viewmode-standard-ie6 div,
+.tools-viewmode-standard-rounded-ie6 div,
+.tools-viewmode-photo-ie6 div,
+.tools-viewmode-photo-rounded-ie6 div,
+.tools-viewmode-hybrid-ie6 div,
+.tools-viewmode-hybrid-rounded-ie6 div
+{
+    position:absolute;
+    width:34px;
+    height:598px;
+    left:0;
+    /* filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,sizingMethod=crop,src='/Skins/LaceRestaurant/Img/img/tools/spriteToolbar.png'); */
+}
+
+.tools-viewmode-standard-ie6,
+.tools-viewmode-photo-ie6,
+.tools-viewmode-hybrid-ie6
+{
+    position:relative;
+    height:26px;
+}
+
+.tools-viewmode-standard-ie6 div
+{
+    top:-424px;
+    CLIP: rect(424px 34px 450px 0px);
+}
+
+.tools-viewmode-hybrid-ie6 div
+{
+    top:-476px;
+    CLIP: rect(476px 34px 502px 0px);
+}
+
+.tools-viewmode-photo-ie6 div
+{
+    top:-450px;
+    CLIP: rect(450px 34px 476px 0px);
+}
+
+.tools-viewmode-standard-rounded-ie6,
+.tools-viewmode-photo-rounded-ie6,
+.tools-viewmode-hybrid-rounded-ie6
+{
+    position:relative;
+    height:32px;
+}
+
+.tools-viewmode-standard-rounded-ie6 div
+{
+    top:-502px;
+    CLIP: rect(502px 34px 534px 0px);
+}
+
+.tools-viewmode-hybrid-rounded-ie6 div
+{
+    top:-566px;
+    CLIP: rect(566px 34px 598px 0px);
+}
+
+.tools-viewmode-photo-rounded-ie6 div
+{
+    top:-534px;
+    CLIP: rect(534px 34px 566px 0px);
+}
+
+.tools-move-ie6
+{
+    height:35px;
+}
+
+.tools-move-ie6 div
+{
+    top:-211px;
+    CLIP: rect(211px 34px 246px 0px);
+}
+
+.tools-minimap-rounded-ie6
+{
+    height:33px;
+}
+
+.tools-minimap-rounded-ie6 div
+{
+    top:-89px;
+    CLIP: rect(89px 34px 122px 0px);
+}
+
+.tools-mousewheelzoom-enable-ie6,
+.tools-mousewheelzoom-disable-ie6
+{
+    height:26px;
+}
+
+.tools-mousewheelzoom-enable-ie6 div
+{
+    top:-320px;
+    CLIP: rect(320px 34px 346px 0px);
+}
+
+.tools-mousewheelzoom-disable-ie6 div
+{
+    top:-372px;
+    CLIP: rect(372px 34px 398px 0px);
+}
+
+.tools-plus-ie6,
+.tools-plus-rounded-ie6,
+.tools-minus-ie6,
+.tools-minus-rounded-ie6
+{
+    height:23px;
+}
+
+.tools-plus-ie6 div
+{
+    top:0;
+    CLIP: rect(0px 34px 23px 0px);
+}
+
+.tools-plus-rounded-ie6 div
+{
+    top:-165px;
+    CLIP: rect(165px 34px 188px 0px);
+}
+
+.tools-minus-ie6 div
+{
+    top:-69px;
+    CLIP: rect(69px 34px 92px 0px);
+}
+
+.tools-minus-rounded-ie6 div
+{
+    top:-46px;
+    CLIP: rect(46px 34px 69px 0px);
+}
+
+.tools-selection-ie6
+{
+    height:26px;
+}
+
+.tools-selection-ie6 div
+{
+    top:-268px;
+    CLIP: rect(268px 34px 294px 0px);
+}
+
+.tools-selection-selected-ie6
+{
+    height:26px;
+}
+
+.tools-selection-selected-ie6 div
+{
+    top:-243px;
+    CLIP: rect(243px 34px 269px 0px);
+}
+
+.tools-slider-ie6
+{
+    position:relative;
+    height:159px;
+    width:34px;
+}
+
+.tools-slider-bg-ie6
+{
+    position:absolute;
+    left:-1px;
+    top:0;
+    height:159px;
+    width:35px;
+}
+
+.tools-slider-ie6 .slider
+{
+    top:9px;
+    position:relative;
+    height:150px;
+}
+
+.tools-slider-ie6 .slider-handler
+{
+    font-size:1px;
+    background:url(/Skins/LaceRestaurant/Img/img/tools/sprite-slider.png) no-repeat 50% 0;
+    position:absolute;
+    width:34px;
+    height:9px;
+    z-index:2;
+}
+
+.tools-slider-ie6 .slider-handler:hover
+{
+    background-position:50% -9px;
+}
+
+/*
+Select zone
+*/
+.tools-selected-zone
+{
+    border: 1px solid blue;
+    background-color: #6688AA;
+}
+
+/*
+Default icon
+*/
+.default-icon
+{
+    color:#000;
+    cursor: pointer;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:11px;
+    font-weight:bold;
+    height:21px;
+    line-height:21px;
+    text-align:center;
+    width:21px;
+    -moz-user-select:none;
+}
+
+/*
+Default cluster
+*/
+.default-cluster
+{
+    color:#000;
+    cursor: pointer;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:14px;
+    font-weight:bold;
+    height:34px;
+    line-height:34px;
+    text-align:center;
+    width:34px;
+    -moz-user-select:none;
+}
+
+.default-cluster-x
+{
+    font-size:x-small;
+}
+
+/*
+Default tooltip
+*/
+.default-tooltip
+{
+    background-color:#FFFFE1;
+    border:1px solid #333;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:11px;
+    float:left;
+    line-height:100%;
+    white-space:nowrap;
+    opacity:0.8;
+    filter:alpha(opacity=80);
+}
+
+.beak-right
+{
+    margin-left: -10px;
+    width: 30px;
+}
+
+/*
+Minimap
+*/
+.minimap
+{
+    background-image: url(/Skins/LaceRestaurant/Img/img/tools/border_minimap.png);
+    height:132px;
+    width:132px;
+}
+
+.minimap div
+{
+    position:absolute;
+}
+
+.minimap-ie6
+{
+    background-image:none;
+}
+
+.minimap-bg-ie6
+{
+    left:0;
+    top:0;
+    height:132px;
+    width:132px;
+    /* filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,sizingMethod=crop,src='/Skins/LaceRestaurant/Img/img/tools/border_minimap.png'); */
+}
+
+.minimap-close
+{
+    background-image: url(/Skins/LaceRestaurant/Img/img/tools/border_minimap.png);
+    background-position: -66px -66px;
+    cursor:pointer;
+    height:23px;
+    margin:6px;
+    z-index:30;
+    width:23px;
+}
+
+.minimap-ie6 .minimap-close
+{
+    overflow:hidden;
+    background-image:none;
+}
+
+.minimap-close-ie6
+{
+    height:132px;
+    width:132px;
+    /* filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,sizingMethod=crop,src='/Skins/LaceRestaurant/Img/img/tools/border_minimap.png'); */
+}
+
+.minimap-rectangle
+{
+    border:1px solid blue;
+    background-color:#6688AA;
+    z-index:20;
+}
+
+.minimap-content
+{
+    background-color:#FFF3DC;
+    height:120px;
+    margin:6px;
+    overflow:hidden;
+    width:120px;
+}
+
+
+/*
+Popup
+*/
+.popup
+{
+    cursor:auto;
+    position:absolute;
+}
+.map .popup {
+    padding: 20px 10px 10px 10px;
+}
+
+.popup:hover
+{
+    z-index:1;
+}
+
+.popup-n,
+.popup-s,
+.popup-e,
+.popup-w,
+.popup-nw,
+.popup-ne,
+.popup-sw,
+.popup-se,
+.popup-beak
+{
+    /* font-size:0px; */
+    position:absolute;
+    overflow:hidden;
+}
+
+.popup-n img,
+.popup-s img,
+.popup-e img,
+.popup-w img,
+.popup-nw img,
+.popup-ne img,
+.popup-sw img,
+.popup-se img,
+.popup-beak  img
+{
+    position:absolute;
+    width:1000px;
+    height:1049px;
+}
+
+.popup-nw,
+.popup-ne
+{
+    height:22px;
+    top:0;
+}
+
+.popup-ne,
+.popup-se
+{
+    width:23px;
+    right:0;
+}
+
+.popup-nw,
+.popup-sw
+{
+    left:0;
+}
+
+.popup-se,
+.popup-sw
+{
+    bottom:0;
+}
+
+.popup-nw img
+{
+    left:0;
+    top:0;
+}
+
+.popup-ne img
+{
+    right:0;
+    top:0;
+}
+
+.popup-se img
+{
+    right:0;
+    bottom:-49px;
+}
+
+.popup-sw img
+{
+    left:0;
+    bottom:-49px;
+}
+
+.popup-content
+{
+    margin:10px;
+    position:absolute;
+}
+
+.popup-beak
+{
+    height: 49px;
+    width: 23px;
+}
+
+.popup-beak img
+{
+    left:0;
+    bottom:0;
+}
+
+.popup-close
+{
+    background-image: url(/Skins/LaceRestaurant/Img/img/tools/border_minimap.png);
+    background-position: -46px -66px;
+    position:absolute;
+    right:0;
+    top:0;
+    width:23px;
+    height:22px;
+    cursor:pointer;
+    z-index:1;
+}
+
+/**
+Traffic signs
+**/
+
+.shield {
+    color:#333333;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 1.231;
+    margin-bottom: 5px;
+    width: 150px;
+}
+
+.shield .hat {
+    margin: 0;
+    padding: 1px;
+    text-align: center;
+}
+
+.shield ul {
+    background: #fff;
+    list-style: none;
+    margin: 0;
+    padding: 2px;
+    border: 1px solid #000;
+}
+
+.shield .highway {
+    background: blue;
+    border: none;
+    color: white;
+}
+
+.shield li {
+    padding: 1px 2px 1px 3px;
+}
+
+.shield .other {
+    font-style: italic;
+    font-weight: normal;
+}
+
+.shield .streetname {
+    font-style: italic;
+    font-weight: normal;
+}
+
+.shield .num-a {
+    background-color: #F00;
+    color: #FFF;
+    font-weight: bold;
+}
+
+.shield .num-n {
+    background-color: #F00;
+    color: #FFF;
+    font-weight: bold;
+}
+
+.shield .num-e {
+    background-color: #35B135;
+    color: #FFF;
+    font-weight: bold;
+}
+
+.shield .num-d {
+    background-color: #FDD017;
+    color: #000;
+    font-weight: bold;
+}
+
+.town-sign
+{
+    background-color:#C41313;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    border-radius:5px;
+    border:1px solid #C8C8C8;
+    display:-moz-inline-stack;
+    display:inline-block;
+    zoom:1;
+    display:inline;
+    padding:4px;
+    font-size:11px;
+}
+
+.town-sign span
+{
+    -moz-border-radius:1px;
+    -webkit-border-radius:1px;
+    border-radius:1px;
+    background-color:#FFF;
+    font-family:"Arial Black",Gadget,sans-serif;
+    padding:0 4px;
+}
+
+/* Roadbook */
+.summary {
+    border-top: solid 1px #DDDDDD;
+    border-bottom: solid 1px #DDDDDD;
+}
+
+table.roadbook {
+    margin: 0;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.roadbook td {
+    padding: 5px;
+}
+
+.roadbook .pois td {
+    padding: 0;
+    font-size:13px;
+}
+
+.roadbook tr.out {
+    background-color: #F3F3F3;
+}
+
+.roadbook .number
+{
+    color:#07F;
+    font-size:19px;
+}
+
+.roadbook .km {
+    width: 60px;
+    font-style: italic;
+}
+
+.panel {
+    margin-right: 5px;
+    width: 36px;
+    height: 36px;
+    background-image: url(/Skins/LaceRestaurant/Img/img/roadbook/actions/panels.png);
+}
+.pois .panel {
+    height: 25px;
+}
+.panel.start {
+    background-position: 0 510px;
+}
+.panel.end {
+    background-position: 0 0;
+}
+.panel.turn-right {
+    background-position: 0 180px;
+}
+.panel.turn-left {
+    background-position: 0 144px;
+}
+.panel.place {
+    background-position: 0 252px;
+}
+.panel.continue {
+    background-position: 0 216px;
+}
+.panel.ferry-enter,
+.panel.ferry-exit {
+    background-position: 0 108px;
+}
+.panel.ped-to-veh {
+    background-position: 0 72px;
+}
+.panel.veh-to-ped {
+    background-position: 0 36px;
+}
+.panel.ramp-left {
+    background-position: 0 288px;
+}
+.panel.ramp-right {
+    background-position: 0 324px;
+}
+.panel.train-enter,
+.panel.train-exit,
+.panel.brunnel {
+    background-position: 0 355px;
+}
+.panel.toll {
+    background-position: 0 385px;
+}
+.panel.radar {
+    background-position: 0 414px;
+}
+.panel.waypoint {
+    background-position: 0 462px;
+}
+.panel.town,
+.panel.town-enter,
+.panel.town-exit,
+.panel.town-via,
+.panel.walk-start,
+.panel.walk-end,
+.panel.ped-to-urban-bike,
+.panel.urban-bike-to-ped,
+.panel.transport,
+.panel.transport-end,
+.panel.transport-wait {
+    background: none;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+
+/* Route summary */
+.summary-wrapper
+{
+    font-size:12px;
+    overflow:hidden;
+}
+
+.routes-summary
+{
+    float:left;
+}
+
+.route-bloc-summary
+{
+    float:left;
+    width:225px;
+}
+
+.route-bloc-summary-large
+{
+    margin-right:0;
+    width:350px;
+}
+
+.active-route
+{
+    border:1px solid #2b9ccd;
+    color:#666;
+}
+
+.inactive-route
+{
+    border:1px solid #CCC;
+    color:#333;
+}
+
+.active-route .time_delay,
+.headerPane .time_delay
+{
+    color:#cc0000;
+}
+
+.inactive-route:hover
+{
+    -webkit-box-shadow: 0px 0px 8px rgba(0,0,0,0.25);
+    -moz-box-shadow: 0px 0px 8px rgba(0,0,0,0.25);
+    box-shadow: 0px 0px 8px rgba(0,0,0,0.25);
+    cursor:pointer;
+}
+
+.route-header
+{
+    height:45px;
+    padding: 5px;
+    position:relative;
+}
+
+.route-header-public-transport
+{
+    height:15px;
+}
+
+.active-route .route-header
+{
+    background-image: -webkit-gradient(
+            linear,
+            left bottom,
+            left top,
+            color-stop(0.5, #d5ebf5),
+            color-stop(1, #e6f3f9)
+    );
+    background-image: -moz-linear-gradient(
+            center bottom,
+            #d5ebf5 50%,
+            #e6f3f9 100%
+    );
+    filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#e6f3f9',EndColorStr='#d5ebf5');
+    color:#2b9ccd;
+}
+
+.inactive-route .route-header
+{
+    background-image: -webkit-gradient(
+            linear,
+            left bottom,
+            left top,
+            color-stop(0.5, #E5E5E5),
+            color-stop(1, #F0F0F0)
+    );
+    background-image: -moz-linear-gradient(
+            center bottom,
+            #E5E5E5 50%,
+            #F0F0F0 100%
+    );
+    filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#F0F0F0',EndColorStr='#E5E5E5');
+}
+
+.inactive-route:hover .route-header
+{
+    background-image: -webkit-gradient(
+            linear,
+            left bottom,
+            left top,
+            color-stop(0.5, #dbdbdb),
+            color-stop(1, #e7e7e7)
+    );
+    background-image: -moz-linear-gradient(
+            center bottom,
+            #dbdbdb 50%,
+            #e7e7e7 100%
+    );
+    filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#e7e7e7',EndColorStr='#dbdbdb');
+}
+
+.route-header h3
+{
+    font-size:14px;
+    font-weight:bold;
+    margin : 0px;
+}
+
+.route-header p
+{
+    font-size:11px;
+    font-style:italic;
+}
+
+.route-number
+{
+    color:#fff;
+    font-size:11px;
+    font-weight:bold;
+    height:20px;
+    line-height:20px;
+    text-align:center;
+    width:20px;
+}
+
+.route-header .route-number
+{
+    display:none;/* insted of removing it i just hide it, 'cause they can change their mind */
+    position:absolute;
+    right:10px;
+    top:15px;
+}
+
+.active-route .route-number
+{
+    background-position: -190px -1936px;
+}
+
+.inactive-route .route-number
+{
+    background-position: -210px -1936px;
+}
+
+.route-summary ul li
+{
+    !line-height:13px;
+    overflow:hidden;
+    zoom:1;
+}
+
+.route-summary .label
+{
+    float:left;
+    font-weight:normal;
+    width:70px;
+}
+
+.route-summary p,
+.route-summary strong
+{
+    float:left;
+    width:140px;
+    margin: 2px 0;
+}
+
+.route-summary strong
+{
+    font-weight:bold;
+}
+
+.route-summary .free_bikes .label,
+.route-summary .free_blocks .label
+{
+    width:auto;
+}
+
+.route-summary .free_bikes p,
+.route-summary .free_blocks p
+{
+    width:auto;
+}
+
+/*
+ * TRAFFIC CONDITIONS
+ */
+.roadbook td.traffic_indicator
+{
+    height:100%;
+    width:5px;
+    padding:0px;
+}
+
+/*
+ Traffic events
+*/
+/*
+    From \\int-map-inf\map_2v8\files\TrafficEvents.xml
+    <categories>
+        <category Code="1" Label="Ralentissements" Picto="10309"  />
+        <category Code="2" Label="Fermeture" Picto="10308" />
+        <category Code="3" Label="Incident"  Picto="10305" />
+        <category Code="4" Label="Accident"  Picto="10305" />
+        <category Code="6" Label="ChaussÃ©e rÃ©duite" Picto="10306" />
+        <category Code="7" Label="Travaux" Picto="10306" />
+        <category Code="8" Label="Danger" Picto="10305" />
+        <category Code="9" Label="IntempÃ©ries" Picto="10304" />
+        <category Code="11" Label="Rassemblement" Picto="10307" />
+    </categories>
+*/
+.traffic-event
+{
+    background : url(/Skins/LaceRestaurant/Img/img/traffic/sprite_traffic.png) no-repeat 0 0;
+    width : 20px;
+    height : 20px;
+}
+
+/* Nothing to do : by default the bg position is 0px 0px.
+.traffic-event-9
+{
+    /*10304
+    background-position : 0px 0px;
+}*/
+
+.traffic-event-3,
+.traffic-event-4,
+.traffic-event-8
+{
+    /*10305*/
+    background-position : -20px 0px;
+}
+.traffic-event-6,
+.traffic-event-7
+{
+    /*10306*/
+    background-position : -40px 0px;
+}
+.traffic-event-11
+{
+    /*10307*/
+    background-position : -60px 0px;
+}
+.traffic-event-2
+{
+    /*10308*/
+    background-position : -80px 0px;
+}
+.traffic-event-1
+{
+    /*10309*/
+    background-position : -100px 0px;
+}
+
+.traffic_state_0{background-color:#c0c0c0;}
+.traffic_state_1{background-color:#39b54a;}
+.traffic_state_2, .traffic_state_3{background-color:#ff860e;}
+.traffic_state_4, .traffic_state_5{background-color:#d64545;}
+.traffic_state_6{background-color:#333333;}
+
+.traffic_volatility_25
+{
+    opacity : 0.75;
+    -moz-opacity : 0.75;
+    -ms-filter: "alpha(opacity=75)"; /* IE 8 */
+    filter : alpha(opacity=75); /* IE < 8 */
+}
+
+.traffic_volatility_50
+{
+    opacity : 0.5;
+    -moz-opacity : 0.5;
+    -ms-filter: "alpha(opacity=50)"; /* IE 8 */
+    filter : alpha(opacity=50); /* IE < 8 */
+}
+
+.traffic_volatility_75
+{
+    opacity : 0.25;
+    -moz-opacity : 0.25;
+    -ms-filter: "alpha(opacity=25)"; /* IE 8 */
+    filter : alpha(opacity=25); /* IE < 8 */
+}
+
+
+/**
+ * TC ("Transports en Commun") tooltips
+ */
+
+
+.tc-tooltip
+{
+    display: block;
+    margin: 3px 6px;
+}
+
+.tc-tooltip ul,
+.tc-tooltip li
+{
+    margin: 0;
+    padding: 0;
+}
+.tc-tooltip li
+{
+    list-style: none outside none;
+}
+
+.tc-tooltip .clearfix
+{
+    clear: both;
+}
+
+.tc-tooltip .line-name
+{
+    height: 20px;
+    line-height: 20px;
+}
+
+.tc-tooltip .line-name.single-line-type
+{
+    float: left;
+    margin-right: 10px;
+}
+.tc-tooltip .lines.single
+{
+    float: left;
+}
+.tc-tooltip .lines.multi
+{
+    clear: both;
+}
+.tc-tooltip .lines
+{
+    margin-bottom: 1px;
+}
+
+.tc-tooltip .roadbook-mm,
+.tc-tooltip .roadbook-mm-line
+{
+    display: block;
+    float: left;
+    margin-right: 2px;
+}
+.tc-tooltip .lines-type
+{
+    margin-right: 5px;
+}
+.tc-tooltip .roadbook-mm-line .num
+{
+    display: none;
+}
+
+
+.tc-tooltip .roadbook-mm,
+.tc-tooltip .roadbook-mm-line
+{
+    background : url(/Skins/LaceRestaurant/Img/img/roadbook/sprite-roadbook-mm.24.png) no-repeat 0 0;
+    background-repeat:no-repeat;
+    height:20px;
+    width:20px;
+}
+
+.tc-tooltip .roadbook-mm-train{background-position:-3px -3px}
+.tc-tooltip .roadbook-mm-plane{background-position:-3px -29px}
+.tc-tooltip .roadbook-mm-car{background-position:-3px -55px}
+.tc-tooltip .roadbook-mm-pedestrian{background-position:-3px -81px}
+.tc-tooltip .roadbook-mm-bike{background-position:-3px -107px}
+.tc-tooltip .roadbook-mm-boat{background-position:-3px -133px}
+.tc-tooltip .roadbook-mm-bus{background-position:-3px -159px}
+.tc-tooltip .roadbook-mm-rer{background-position:-3px -185px}
+.tc-tooltip .roadbook-mm-tram{background-position:-3px -211px}
+.tc-tooltip .roadbook-mm-metro{background-position:-3px -237px}
+.tc-tooltip .roadbook-mm-connection{
+    background-position:0 -260px;
+    height:26px;
+    width:26px;
+}
+/* TODO */
+.tc-tooltip .roadbook-mm-shuttle{background-position:0 0}
+.tc-tooltip .roadbook-mm-autocar{background-position:0 -52px}
+.tc-tooltip .roadbook-mm-transport{background-position:0 0}
+
+/* Line */
+.tc-tooltip .roadbook-mm-line-metro_1{background-position:-26px -3px}
+.tc-tooltip .roadbook-mm-line-metro_2{background-position:-26px -25px}
+.tc-tooltip .roadbook-mm-line-metro_3{background-position:-26px -47px}
+.tc-tooltip .roadbook-mm-line-metro_3b{background-position:-26px -69px}
+.tc-tooltip .roadbook-mm-line-metro_4{background-position:-26px -91px}
+.tc-tooltip .roadbook-mm-line-metro_5{background-position:-26px -113px}
+.tc-tooltip .roadbook-mm-line-metro_6{background-position:-26px -135px}
+.tc-tooltip .roadbook-mm-line-metro_7{background-position:-26px -157px}
+.tc-tooltip .roadbook-mm-line-metro_7b{background-position:-26px -179px}
+.tc-tooltip .roadbook-mm-line-metro_8{background-position:-26px -201px}
+.tc-tooltip .roadbook-mm-line-metro_9{background-position:-26px -223px}
+.tc-tooltip .roadbook-mm-line-metro_10{background-position:-26px -245px}
+.tc-tooltip .roadbook-mm-line-metro_11{background-position:-26px -267px}
+.tc-tooltip .roadbook-mm-line-metro_12{background-position:-26px -289px}
+.tc-tooltip .roadbook-mm-line-metro_13{background-position:-26px -311px}
+.tc-tooltip .roadbook-mm-line-metro_14{background-position:-26px -333px}
+
+.tc-tooltip .roadbook-mm-line-t1{background-position:-48px -3px}
+.tc-tooltip .roadbook-mm-line-t2{background-position:-48px -25px}
+.tc-tooltip .roadbook-mm-line-t3{background-position:-48px -47px}
+.tc-tooltip .roadbook-mm-line-t4{background-position:-48px -69px}
+.tc-tooltip .roadbook-mm-line-t3a{background-position:-48px -91px}
+.tc-tooltip .roadbook-mm-line-t3b{background-position:-48px -113px}
+
+.tc-tooltip .roadbook-mm-line-rer_a{background-position:-70px -3px}
+.tc-tooltip .roadbook-mm-line-rer_b{background-position:-70px -25px}
+.tc-tooltip .roadbook-mm-line-rer_c{background-position:-70px -47px}
+.tc-tooltip .roadbook-mm-line-rer_d{background-position:-70px -69px}
+.tc-tooltip .roadbook-mm-line-rer_e{background-position:-70px -91px}
+
+.tc-tooltip .roadbook-mm-line-train_k{background-position:-92px -3px}
+.tc-tooltip .roadbook-mm-line-train_h{background-position:-92px -25px}
+.tc-tooltip .roadbook-mm-line-train_j{background-position:-92px -47px}
+.tc-tooltip .roadbook-mm-line-train_l{background-position:-92px -69px}
+.tc-tooltip .roadbook-mm-line-train_n{background-position:-92px -91px}
+.tc-tooltip .roadbook-mm-line-train_r{background-position:-92px -113px}
+.tc-tooltip .roadbook-mm-line-train_p{background-position:-92px -135px}
+.tc-tooltip .roadbook-mm-line-train_u{background-position:-92px -157px}
+
+.tc-tooltip .roadbook-mm-ped-to-urban-bike{background-position:0 -1431px}
+.tc-tooltip .roadbook-mm-urban-bike-to-ped{background-position:0 -1473px}
+
+
+
+/**
+ * Misc
+ */
+
+.invisible{visibility: hidden}
+
+.route-title {
+    margin-top: 0px;
+}
+
+.iti-marker,
+canvas {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+#logoMappy
+{
+    background : url(/Skins/LaceRestaurant/Img/img/map/logo.png) no-repeat 0 0;
+    background-repeat:no-repeat;
+    position:absolute;
+    right:5px;
+    top:5px;
+    z-index:999;
+    width:50px;
+    height:50px;
+
+}
+
+#logoMappy-ie6
+{
+    background : url(/Skins/LaceRestaurant/Img/img_png8/map/logo.png) no-repeat 0 0;
+    background-repeat:no-repeat;
+    position:absolute;
+    right:5px;
+    top:5px;
+    z-index:999;
+    width:50px;
+    height:50px;
+
+}

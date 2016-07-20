@@ -27,7 +27,7 @@ class MX extends genericClass {
 	 * @return	Verification OK ou NON
 	 */
 	public function Verify( $synchro = true ) {
-
+		if (!$this->Poids) $this->Poids = 10;
 		if(parent::Verify()) {
 
 			$this->_isVerified = true;

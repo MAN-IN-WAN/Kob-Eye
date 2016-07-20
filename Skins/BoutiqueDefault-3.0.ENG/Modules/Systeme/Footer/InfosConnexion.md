@@ -1,20 +1,20 @@
 <div class="lof-block-wrap">
-	<h2>Restez connecté</h2>
-	<ul class="lof-items">
-		<li class="lof-text">
-			<p class="leo_adress">
-				[COUNT Systeme/Connexion/Session=|Nb]
-				Il y a [!Nb!] personnes connectées.
-			</p>
-			<p class="leo_phone">
-				Téléphone: [!Systeme::User::Tel!]
-			</p>
-			<p class="leo_fax">
-				Fax: [!Systeme::User::Fax!]
-			</p>
-			<p class="leo_email">
-				Utilisez notre <a href="/Contact">formulaire de contact</a>.
-			</p>
-		</li>
-	</ul>
+	<img class="logo img-responsive" src="/Home/1/Boutique/Magasin/LOGO_LAST_0.png" alt="PHARMACIE DU COURS">
+			<br />
+	<p class="">
+		[COUNT Systeme/Connexion/Session=&tmsEdit>[!TMS::Now:+3600!]|Nb]
+		Il y a [!Nb!] personnes connectées.
+	</p>
+	<p class="">
+		Téléphone: [!CurrentMagasin::Tel!]
+	</p>
+	<p class="">
+		Adresse: [!CurrentMagasin::Adresse!] [!CurrentMagasin::CodePostal!] [!CurrentMagasin::Ville!]
+	</p>
+	<p class="">
+		Utilisez notre <a href="/Contact">formulaire de contact</a>.
+	</p>
+	<a href="https://www.facebook.com/Pharmacie-du-Cours-454537144751780/">
+		<img src="/Skins/Battistela/Img/facebook.png" style="width:50px;" target="_blank"/>
+	</a>
 </div>

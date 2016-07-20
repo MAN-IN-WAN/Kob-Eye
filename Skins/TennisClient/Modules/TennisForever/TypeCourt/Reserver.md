@@ -124,7 +124,9 @@ function addPartenaire(e,nom,email,prenom) {
     '<select class="form-control" id="partenaireNom'+partenaire+'" placeholder="Nom" name="Partenaire['+partenaire+'][Client]">'+
     '       <option value="">-- Liste des Adhérents --</option>'+
     [STORPROC TennisForever/Client/Abonne=1|C|0|500|Nom|ASC]
+        [IF [!C::Id!]!=[!Client::Id!]]
     '       <option value="[!C::Id!]">[!C::Nom!] [!C::Prenom!]</option>'+
+        [/IF]
     [/STORPROC]
     '</select>'+
     '</div>'+

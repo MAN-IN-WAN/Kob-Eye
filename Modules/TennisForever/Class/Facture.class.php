@@ -69,6 +69,14 @@ class Facture extends genericClass{
             return $paiement;
         }
     }
+    function getLigneFacture() {
+        if ($this->Id){
+            //on cherche dans les parents en base
+            $this->_produits = Sys::getData('TennisForever','Facture/'.$this->Id.'/LigneFacture');
+        }
+        return $this->_produits;
+    }
+
     function getClient() {
         return Sys::getoneData('TennisForever','Client/Facture/'.$this->Id);
     }
@@ -76,9 +84,68 @@ class Facture extends genericClass{
         //recuperation de la reservation
         $res = Sys::getOneData('TennisForever','Reservation/Facture/'.$this->Id);
         if ($res){
-            $res->Valide = 1;
+            $res->setValide();
             $res->Facture = 1;
             $res->Save();
         }
+        $this->sendMail();
+    }
+
+    function sendMail() {
+        $cli = $this -> getClient();
+        $paiement = $this->getPaiement();
+
+        $Civilite = $cli -> Civilite . " " . $cli -> Prenom . ' <span style="text-transform:uppercase">' . $cli -> Nom . '</span>';
+
+        $lf = $this->getLigneFacture();
+        if (!sizeof($lf)) {
+            $Lacommande = "Erreur";
+        } else {
+            $Lacommande .= "<h2>Récapitulatif de votre facture  $this->NumFac: </h2><br /><br /><table width='100%'>";
+            $Lacommande .= "<tr bgcolor='#666' padding='5'><td><font color='#ffffff'>Quantite</font></td><td><font color='#ffffff'>Titre</font></td><td><font color='#ffffff'>Tarif TTC</font></td></tr>";
+            $total = 0;
+            foreach ($lf as $l) :
+                //récupération du produit
+                $Lacommande .= "<td><h3>" . $l->Quantite . "</h3> </td>";
+                $Lacommande .= "<td><h3>" . $l->Libelle . "</h3></td>";
+                $Lacommande .= "<td><h2>" . $l->MontantTTC . " € TTC</h2></td></tr>";
+                $total += $l->MontantTTC;
+            endforeach;
+            $Lacommande .= "
+                <tr bgcolor='#666' padding='5'>
+                    <td colspan='2'></td>
+                    <td><font color='#ffffff'>TOTAL</font></td>
+                    <td><font color='#ffffff'><h2>$this->MontantTTC € TTC</h2></font></td>
+                </tr>
+            </table>";
+
+            $Lacommande .= "<br /><h2>Détail du paiement</h2>";
+            $Lacommande .= "<p>Le paiement a été effectué avec succès sous la référence ".$paiement->Reference." à ".date('d/m/Y H:i:s',$paiement->tmsEdit)." pour un montant de ".$paiement ->Montant." € TTC</p>";
+
+        }
+
+        require_once ("Class/Lib/Mail.class.php");
+        $Mail = new Mail();
+        $Mail->Subject("TENNISFOREVER Emission de facture");
+        $Mail -> From( $GLOBALS['Systeme'] -> Conf -> get('MODULE::TENNISFOREVER::CONTACT'));
+        $Mail -> ReplyTo($GLOBALS['Systeme'] -> Conf -> get('MODULE::TENNISFOREVER::CONTACT'));
+        $Mail -> To($cli -> Mail);
+        //$Mail -> To('enguer@enguer.com');
+        $Mail -> Cc( $GLOBALS['Systeme'] -> Conf -> get('MODULE::TENNISFOREVER::CONTACT'));
+        $Mail -> Bcc('enguer@enguer.com');
+        $bloc = new Bloc();
+        $mailContent = "
+            Bonjour " . $Civilite . ",<br /><br />
+            Nous vous informons que votre facture N° " . $this->NumFac. " du ".date("d/m/Y à H:i",$this->tmsCreate)." a bien été enregistrée.<br />
+            <br />Toute l'équipe de TENNIS FOREVER vous remercie de votre confiance,<br />
+            <br />Pour nous contacter : " . $GLOBALS['Systeme'] -> Conf -> get('MODULE::TENNISFOREVER::CONTACT') . " .".$Lacommande;
+
+        $bloc -> setFromVar("Mail", $mailContent, array("BEACON" => "BLOC"));
+        $Pr = new Process();
+        $bloc -> init($Pr);
+        $bloc -> generate($Pr);
+        $Mail -> Body($bloc -> Affich());
+        if (!$this->Cloture)
+            $Mail -> Send();
     }
 }

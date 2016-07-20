@@ -16,7 +16,7 @@
 					<div class="list-products">
 						<div class="product-container clearfix">
 							<div class="center_block">
-								<a href="[!Prod::getUrl()!]" class="product_img_link" title="iPod Nano"> <img src="/[IF [!Prod::Image!]!=][!Prod::Image!][ELSE]Skins/[!Systeme::Skin!]/Img/image_def.jpg[/IF]" alt="" class="img-responsive" style="max-height:200px;margin: auto;" /> <span class="new">__NEW__</span> </a>
+								<a href="[!Prod::getUrl()!]" class="product_img_link" title="[!Prod::Nom!]"> <img src="/[IF [!Prod::Image!]!=][!Prod::Image!][ELSE]Skins/[!Systeme::Skin!]/Img/image_def.jpg[/IF]" alt="[!Prod::Nom!]" class="img-responsive" style="max-height:200px;margin: auto;" /> <span class="new">__NEW__</span> </a>
 								[IF [!Promo!]!=0]
 								<span class="discount">__PROMO__</span>
 								[/IF]

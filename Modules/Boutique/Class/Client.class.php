@@ -140,8 +140,8 @@ class Client extends genericClass {
 			else $Utilisateur = $this->makeUser();
 			$Utilisateur->Verify();
 			genericClass::Verify();
-			$this->Error = array_merge($this->Error,$Utilisateur->Error);
-			$Errors = Array();
+			array_merge($this->Error,$Utilisateur->Error);
+/*			$Errors = Array();
 			if (isset($Utilisateur->Error) && is_array($Utilisateur->Error))foreach ($Utilisateur->Error as $E){
 
 				$f= false;
@@ -153,8 +153,8 @@ class Client extends genericClass {
 				foreach ($Errors as $e)if ($e["Prop"]==$E["Prop"])$f=true;
 				if (!$f)$Errors[] = $E;
 			}
-			$this->Error = $Errors;
-			return !sizeof($this->Error);
+			$this->Error = $Errors;*/
+			return sizeof($this->Error)>0 ? 0:1;
 		}
 		return genericClass::Verify();
 	}
@@ -196,7 +196,7 @@ class Client extends genericClass {
 			elseif($need_user==1 && $this->Verify(1) && $this->UserId=="") {
 				$Utilisateur = $this->makeUser();
 				$Utilisateur->Save();
-				$this->Set("UserId",$Utilisateur->Get("Id"));
+				$this->Set("UserId",$Utilisateur->Id);
 			}
 		}
 		else {

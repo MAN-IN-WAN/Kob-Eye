@@ -573,7 +573,8 @@ class Module extends Root{
 				}
 
             }
-            //DETERMINATION DU TYPE DE REQUETE
+
+			//DETERMINATION DU TYPE DE REQUETE
 			if (($Last>-1)&&($Last!=sizeof($Out)-1)) {
 				//Si il existe un objectclass et qu'il n'est pas le dernier
 				for ($j=$Last+1;$j<$i;$j++) {
@@ -750,7 +751,7 @@ class Module extends Root{
 		}
 		//if (DEBUG_INTERFACE)echo $Lien."\r\n";
 		//if ($Lien=="ContractBuyerId/Contract/2900") $GLOBALS["Systeme"]->Log->log("SPLIT QUERY",$Result);
-		//if ($Lien=="Projet/2/Session/Region.Region(42)/Equipe")print_r($Result);
+		//if ($Lien=="Categorie/Kites/Produit/BANDIT/Donnee/Type=Image+Type=ImageVideo")print_r($Result);
 		if (DEBUG_INTERFACE)print_r($Result);
 
         //cache splitQuery for heavy load

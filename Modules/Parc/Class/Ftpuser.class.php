@@ -156,6 +156,7 @@ class Ftpuser extends genericClass {
 		$entry['homedirectory'] = $this->DocumentRoot;
 		$entry['uid'] = $this->Identifiant;
 		if($this->Password != '*******') $entry['userpassword'] = "{MD5}".base64_encode(pack("H*",md5($this->Password)));
+		$entry['ftpquotambytes'] = $this->QuotaMb;
 		if($new) {
 			$KEHost = $this->getKEHost();
 			$entry['ftpuid'] = $KEHost->LdapUid;
@@ -166,7 +167,6 @@ class Ftpuser extends genericClass {
 			$entry['objectclass'][1] = 'PureFTPdUser';
 			$entry['objectclass'][2] = 'top';
 			$entry['ftpstatus'] = 'enabled';
-			$entry['ftpquotambytes'] = 10485760;
 		}
 		return $entry;
 	}

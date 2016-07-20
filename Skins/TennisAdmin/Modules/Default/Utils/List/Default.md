@@ -111,7 +111,7 @@
         <tr>
 
             [STORPROC [!O::getElementsByAttribute(list,,1)!]|E]
-            <th>[!E::description!]</th>
+            <th>[IF [!E::listDescr!]][!E::listDescr!][ELSE][!E::description!][/IF]</th>
             [/STORPROC]
             <th>Informations</th>
             <th>Actions</th>
@@ -168,7 +168,7 @@
             <td width="200">
                 <div class="btn-group" role="group">
 
-                    <a class="btn btn-warning [IF [!Popup!]]popup[/IF]" href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!C::Id!]/Form" data-title="Modification [!C::getFirstSearchOder()!]">Modifier</a>
+                    <a class="btn btn-warning [IF [!Popup!]]popup[/IF]" href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!C::Id!]/[IF [!Popup!]]Form[/IF]" data-title="Modification [!C::getFirstSearchOder()!]">[IF [!Popup!]]Modifier[ELSE]Détails[/IF]</a>
                     <a class="btn btn-danger confirm" href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!C::Id!]/Supprimer" data-title="Suppression [!C::getFirstSearchOder()!]" data-confirm="Etes vous sur de vouloir supprimer [!C::getFirstSearchOrder()!] ?">Supprimer</a>
                 </div>
             </td>

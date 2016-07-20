@@ -1,0 +1,77 @@
+[INFO [!Lien!]|I]
+//Recherche du menu racine
+[COUNT [!I::Historique!]|NbNiv]
+[!Req:=[!Query!]/Photo!]
+[IF [!Lien!]~Team||[!Lien!]~Products||[!Lien!]~Galerie]
+	[IF [!Lien!]~Products]
+		[IF [!Lien!]~Produits]
+			[STORPROC [!Query!]|P][/STORPROC]
+			[STORPROC Products/Categorie/Produits/[!P::Id!]|Cat|0|1]
+				[!Req:=Products/Categorie/[!Cat::Id!]/Photo!]
+			[/STORPROC]
+		[ELSE]
+			[IF [!NbNiv!]=1]
+				[!Req:=Products/Photo!]
+			[ELSE]
+				[!Req:=[!Query!]/Photo!]
+			[/IF]
+		[/IF]
+	[ELSE]
+		[IF [!Lien!]~Rider]
+		[ELSE]
+			[IF [!NbNiv!]=1]
+				[!Req:=Team/Rider/*/Photo!]
+			[ELSE]
+				[!Req:=[!Query!]/Rider/*/Photo!]
+			[/IF]
+
+
+
+		[/IF]
+	[/IF]
+	[COUNT [!Req!]|NbDo]
+	[IF [!NbDo!]]
+		//[!Req!]
+		<div id="headerCarousel" class="carousel slide" >
+			<div class="carousel-inner" >
+				[STORPROC [!Req!]|Do|0|5]
+					<div class="item [IF [!Pos!]=1]active[/IF]" style="background:url(/[!Do::Image!].mini.2560x390.jpg)">
+						//<img src="/[!Do::Image!].mini.2560x390.jpg" data-src="/[!Do::Image!].mini.2560x390.jpg"  alt="[IF [!Pos!]=1]First[/IF] slide"/>
+					</div>
+				[/STORPROC]
+			</div>
+			[IF [!NbDo!]>1]
+				<a class="left carousel-control" href="#headerCarousel" data-slide="prev"><span class="carouleft"><img src="[!Domaine!]/Skins/[!Systeme::Skin!]/img/arrow-left.png" alt="left"/></span></a>
+				<a class="right carousel-control" href="#headerCarousel" data-slide="next"><span class="carouright"><img src="[!Domaine!]/Skins/[!Systeme::Skin!]/img/arrow-right.png" alt="left"/></span></a>
+			[/IF]
+		</div>
+	[/IF]
+
+[ELSE]
+	[STORPROC Systeme/Menu/[!Systeme::CurrentMenu::Id!]/Donnee/Type=Image+Type=ImageVideo|Do]
+		<div id="headerCarousel" class="carousel slide">
+			<div class="carousel-inner">
+				[LIMIT 0|100]
+					<div class="item [IF [!Pos!]=1]active[/IF]"   style="background:url(/[!Do::Lien!].mini.2560x390.jpg) no-repeat scroll center center;">
+						<div class="inner-item" >
+							//<img src="/[!Do::Lien!].mini.2560x390.jpg" data-src="/[!Do::Lien!].mini.2560x390.jpg"  alt="[IF [!Pos!]=1]First[/IF] slide"/>
+							<div class="container">
+								[IF [!Do::Type!]=ImageVideo]
+								<div class="carousel-video" style="position: absolute;top: 0;left: 50%;margin-left:-600px;">
+									[!Do::VideoHtml!]
+								</div>
+								[/IF]
+								<div class="carousel-caption">
+									<h1>[IF [!Do::LienTitre!]!=]<a href="[IF [!Do::LienTitre!]~http][ELSE]/[/IF][!Do::LienTitre!]" alt="[!Do::Titre!]" [IF [!Do::LienTitre!]~http] target="_blank"[/IF]>[/IF][!Do::Titre!][IF [!Do::LienTitre!]!=]</a>[/IF]<h1>
+									<p>[IF [!Do::LienTitre!]!=]<a href="[IF [!Do::LienTitre!]~http][ELSE]/[/IF][!Do::LienTitre!]" alt="[!Do::Titre!]" [IF [!Do::LienTitre!]~http] target="_blank"[/IF]>[/IF][!Do::Html!][IF [!Do::LienTitre!]!=]</a>[/IF]<p>
+								</div>
+							</div>
+						</div>
+					</div>
+				[/LIMIT]
+			</div>
+			<a class="left carousel-control" href="#headerCarousel" data-slide="prev"><span class="carouleft"><img src="[!Domaine!]/Skins/[!Systeme::Skin!]/img/arrow-left.png" alt="left"/></span></a>
+			<a class="right carousel-control" href="#headerCarousel" data-slide="next"><span class="carouright"><img src="[!Domaine!]/Skins/[!Systeme::Skin!]/img/arrow-right.png" alt="left"/></span></a>
+		</div>
+	[/STORPROC]
+[/IF]

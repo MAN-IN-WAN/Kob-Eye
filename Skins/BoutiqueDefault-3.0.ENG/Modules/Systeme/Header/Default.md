@@ -22,7 +22,7 @@
                             <a class="carre carre-orange" href="/Systeme/Deconnexion"><i class="fa fa-sign-out"></i><p>Se déconnecter</p></a>
                         </div>
                         <div class="col-md-8" style="padding:0;text-align: right">
-                            <h2 style="margin-top: 10px;font-size: 24px;font-weight: 800;">Bienvenue sur le site de la pharmacie du cours.</h2>
+                            <h1 style="margin-top: 10px;font-size: 24px;font-weight: 800;">Bienvenue sur le site de la pharmacie du cours.</h1>
                             [IF [!Systeme::User::Public!]]
                                 <p>Connectez-vous ou créez un compte en cliquant <a href="/Mon-Compte">ici</a> afin de bénéficier des services très complêt de votre pharmacie.  </p>
                             [ELSE]

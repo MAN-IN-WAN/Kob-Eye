@@ -134,15 +134,25 @@ class Systeme extends Module {
         Systeme::sendNotification($msg,37);
     }
 
+    //backapp
+    //$API_ACCESS_KEY = 'AIzaSyCGGUR9EbkicdM7IUXp1l-Z2sHFQCnLp-A';
+    // API access key from Google API's Console
+    //castanet
+    //define('API_ACCESS_KEY', 'AIzaSyD-WPYJ39eWmA2aWzgn6fQF1A5WOv3FG5A');
+    //cours
+    //$API_ACCESS_KEY = 'AIzaSyBbYtVciuBNkTX2h13sHhAvsjBRCSdtb6U';
+    //ecluse
+    //define('API_ACCESS_KEY', 'AIzaSyCmaDWG5O2HrKdXm4JCkJPQZAvtwqCljos');
+
     public static function  sendNotification($msg,$target)
     {
 
         if ($target > 0) {
             $dev = Sys::getData('Systeme', 'User/' . $target . '/Device/Admin=0&Type=Android');
-            $API_ACCESS_KEY = 'AIzaSyBbYtVciuBNkTX2h13sHhAvsjBRCSdtb6U';
+            $API_ACCESS_KEY = 'AIzaSyD-WPYJ39eWmA2aWzgn6fQF1A5WOv3FG5A';
         } elseif ($target == "all") {
             $dev = Sys::getData('Systeme', 'Device/Admin=0&Type=Android');
-            $API_ACCESS_KEY = 'AIzaSyBbYtVciuBNkTX2h13sHhAvsjBRCSdtb6U';
+            $API_ACCESS_KEY = 'AIzaSyD-WPYJ39eWmA2aWzgn6fQF1A5WOv3FG5A';
         } elseif ($target == "admin") {
             $dev = Sys::getData('Systeme', 'Device/Admin=1&Type=Android');
             $API_ACCESS_KEY = 'AIzaSyCGGUR9EbkicdM7IUXp1l-Z2sHFQCnLp-A';
@@ -184,16 +194,6 @@ function sendNotificationParallel($dev,$devios,$msg,$API_ACCESS_KEY) {
     if (!isset($msg['message'])) $msg['message'] = '';
     $msg['largeIcon'] = 'large_icon';
     $msg['smallIcon'] = 'small_icon';
-
-    //backapp
-    //$API_ACCESS_KEY = 'AIzaSyCGGUR9EbkicdM7IUXp1l-Z2sHFQCnLp-A';
-    // API access key from Google API's Console
-    //castanet
-    //define('API_ACCESS_KEY', 'AIzaSyD-WPYJ39eWmA2aWzgn6fQF1A5WOv3FG5A');
-    //cours
-    //$API_ACCESS_KEY = 'AIzaSyBbYtVciuBNkTX2h13sHhAvsjBRCSdtb6U';
-    //ecluse
-    //define('API_ACCESS_KEY', 'AIzaSyCmaDWG5O2HrKdXm4JCkJPQZAvtwqCljos');
 
     //recherche des périphériques à associer.
     //die('envoi utilisateur '.$target.' | '.($target>0));
@@ -255,7 +255,7 @@ function sendNotificationParallel($dev,$devios,$msg,$API_ACCESS_KEY) {
      */
     $ctx = stream_context_create();
     // ck.pem is your certificate file
-    stream_context_set_option($ctx, 'ssl', 'local_cert', realpath(dirname(__FILE__)).'/../Device/prod.cours.pem');
+    stream_context_set_option($ctx, 'ssl', 'local_cert', realpath(dirname(__FILE__)).'/../Device/castanet-prod.pem');
     stream_context_set_option($ctx, 'ssl', 'passphrase', '21wyisey');
     // Open a connection to the APNS server
     $gateway = 'ssl://gateway.push.apple.com:2195';

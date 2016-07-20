@@ -2469,11 +2469,6 @@ tr.subitem > td:first-child + td {
 .zoomdiv img.bigimg{max-width: inherit;}
 #wishlistwraning button{margin-right: 10px;}
 #wishlistwraning{ display:none; position:fixed; top:250px; width:100%;  z-index:99999999999;  }
-.alert {
-    -webkit-box-shadow: 0 0 2px 2px #888;
-	box-shadow: 0 0 2px 2px #888;
-}
-
 .Icons{
 	text-align: center;
 	width: 100%;

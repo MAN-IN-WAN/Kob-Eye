@@ -1,0 +1,52 @@
+[!MessageInfos:=!]
+[!Success:=0!]
+
+[IF [!emailnewsletter!]=]
+        [!Success:=0!]
+        [!MessageInfos:=$INSCRIPTIONVIDE$.!]
+[ELSE]
+        [COUNT Newsletter/GroupeEnvoi/11/Contact/Email=[!emailnewsletter!]|Test]
+        [IF [!Test!]>0]
+                [!Success:=0!]
+                [!MessageInfos:=$INSCRIPTIONDEJA$!]
+        [ELSE]	
+                //creation de l'objet contact a enregistrer a la newsletter
+                [STORPROC Newsletter/Contact/Email=[!emailnewsletter!]|Con]
+                        [NORESULT]
+                                [OBJ Newsletter|Contact|Con]
+                                [METHOD Con|Set]
+                                        [PARAM]Email[/PARAM]
+                                        [PARAM][!emailnewsletter!][/PARAM]
+                                [/METHOD]
+                        [/NORESULT]
+                [/STORPROC]
+                [METHOD Con|AddParent]
+                        [PARAM]Newsletter/GroupeEnvoi/11[/PARAM]
+                [/METHOD]
+                [METHOD Con|Save][/METHOD]
+
+                //Envoi du mail lorsque le mail est enregistre
+                [LIB Mail|LeMail]
+                [METHOD LeMail|Subject][PARAM]$MSGINSCRIPNEWSLET$[/PARAM][/METHOD]
+                [METHOD LeMail|From][PARAM][!CONF::MODULE::SYSTEME::CONTACT!][/PARAM][/METHOD]
+                [METHOD LeMail|ReplyTo][PARAM][!CONF::MODULE::SYSTEME::CONTACT!][/PARAM][/METHOD]
+                [METHOD LeMail|To][PARAM][!emailnewsletter!][/PARAM][/METHOD]
+                [METHOD LeMail|Body]
+                        [PARAM]
+                                [BLOC Mail]
+                                        $CORPSMAILINSCRIPTION$<br /><br />
+                                        $TEAMTHANK$<br />
+                                [/BLOC]
+                        [/PARAM]
+                [/METHOD]
+                [METHOD LeMail|Priority][PARAM]5[/PARAM][/METHOD]
+                [METHOD LeMail|BuildMail][/METHOD]
+                [METHOD LeMail|Send][/METHOD]
+                [!MessageInfos:=$INSCRIPTIONOK$.!]
+                [!Success:=1!]
+        [/IF]
+[/IF]
+{
+    "message":"[JSON][!MessageInfos!][/JSON]",
+    "success":[!Success!]
+}

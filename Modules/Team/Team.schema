@@ -1,0 +1,54 @@
+<SCHEMA>
+	<OBJECTCLASS title="Equipe" driver="mysql" master="1" browseable="1" AccessPoint="1" Description="Equipe"  Icon="/Skins/AdminV2/Img/IconAqua/Home.png">
+		<PROPERTIES type="varchar" special="multi"  length="100" searchOrder="1" fiche="1" form="1" list="1">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" values="red,green,blue,yellow,grey,orange,violet,turquoise,grisfonce" fiche="1" form="1" list="1">Couleur</PROPERTIES>
+		<PROPERTIES type="image" description="Image equipe" fiche="1" form="1" list="1">Image</PROPERTIES>
+		<PROPERTIES type="order" fiche="1" form="1" list="1">Ordre</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Rider" driver="mysql" browseable="1" master="0" AccessPoint="1" Description="Rider"  Icon="/Skins/AdminV2/Img/IconAqua/Contact.png" stopPage="1" tagObjects="Caracteristique,PunchText" Class="Modules/Team/Class/Rider.class.php">
+		<PROPERTIES type="varchar" length="100" searchOrder="1" fiche="1" form="1" list="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" length="100" searchOrder="2" fiche="1" form="1" list="1">Prenom</PROPERTIES>
+		<PROPERTIES type="varchar" special="multi"  length="100" searchOrder="3" fiche="1" form="1" list="1">Pays</PROPERTIES>
+		<PROPERTIES type="image" special="multi"  description="Photo du membre sur la liste" fiche="1" form="1" list="1">Avatar</PROPERTIES>
+		<PROPERTIES type="order" description="Ordre d'affichage sur le site" default="10" fiche="1" form="1">Ordre</PROPERTIES>
+		<PROPERTIES type="image" description="Photo de fond" fiche="1" form="1">Fond</PROPERTIES>
+		<PROPERTIES type="text" special="multi"  description="Description page 1" hidden="1">Description1</PROPERTIES>
+		<PROPERTIES type="html" special="multi"  description="Palmares"  fiche="1" form="1">Description2</PROPERTIES>
+		<PROPERTIES type="html" special="multi"  description="Sponsors"  fiche="1" form="1">Description3</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" description="Site web mettre http://"  fiche="1" form="1">Web</PROPERTIES>
+		<PROPERTIES type="boolean" default="1" description="Affichage dans la rubrique 'Show all' (cas de doublon)" fiche="1" form="1" list="1" listDescr="Show All">ShowAllDisplay</PROPERTIES>
+		<FKEY card="0,n" data="Equipe,Id" action="Link" fiche="1" form="1" list="1" link="1" parentDescription="Equipe">EquipeId</FKEY>
+		<FUNCTION title="Dupliquer">Cloner</FUNCTION>
+		<VIEW title="RiderList" default="1">
+			<OBJECTCLASS title="Rider" select="*">
+				<PROPERTIES type="int">Id</PROPERTIES>
+				<PROPERTIES type="varchar">Url</PROPERTIES>
+				<PROPERTIES type="varchar" length="100" searchOrder="1">Nom</PROPERTIES>
+				<PROPERTIES type="varchar" length="100" searchOrder="2">Prenom</PROPERTIES>
+				<PROPERTIES type="varchar" special="multi"  length="100" searchOrder="3">Pays</PROPERTIES>
+				<PROPERTIES type="file" special="multi"  description="Photo du membre 120x120 minimum">Avatar</PROPERTIES>
+				<PROPERTIES type="boolean" default="1" description="Affichage dans la rubrique 'Show all' (cas de doublon)" list="1">ShowAllDisplay</PROPERTIES>
+				<JOIN type="outer" module="Team" title="RiderEquipeId" on="Rider" target="Id">
+					<JOIN type="inner" module="Team" title="Equipe" on="EquipeId" target="Id">
+						<PROPERTIES type="varchar" special="multi"  length="250"  alias="Equipe">Titre</PROPERTIES>
+					</JOIN>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Photo" driver="mysql" master="0" AccessPoint="0" Dico="1" Description="Photos (Galerie)" Icon="/Skins/AdminV2/Img/IconAqua/Home.png">
+		<PROPERTIES type="varchar" special="multi" searchOrder="1" fiche="1" form="1" list="1">Titre</PROPERTIES>
+		<PROPERTIES special="multi"  type="image" fiche="1" form="1" list="1">Image</PROPERTIES>
+		<FKEY card="0,n" data="Rider,Id" popup="1">RiderPhoto</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Caracteristique" driver="mysql" master="0" AccessPoint="0" Dico="0" Description="Caractéristiques" Icon="/Skins/AdminV2/Img/IconAqua/Home.png">
+		<PROPERTIES type="varchar" special="multi" searchOrder="1" fiche="1" form="1" list="1">Titre</PROPERTIES>
+		<PROPERTIES type="html" special="multi"  searchOrder="2" fiche="1" form="1" list="1">Valeur</PROPERTIES>
+		<PROPERTIES type="order" description="Ordre d'affichage sur le site" default="10" fiche="1" form="1" list="1">Ordre</PROPERTIES>
+		<FKEY card="0,1" data="Rider,Id" popup="1">RiderId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="PunchText" driver="mysql" master="0" AccessPoint="0" Dico="0" Description="PunchText" Icon="/Skins/AdminV2/Img/IconAqua/Home.png">
+		<PROPERTIES type="html" special="multi" searchOrder="1" fiche="1" form="1" list="1">Texte</PROPERTIES>
+		<FKEY card="0,1" data="Rider,Id"popup="1">RiderId</FKEY>
+	</OBJECTCLASS>
+</SCHEMA>

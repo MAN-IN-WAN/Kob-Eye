@@ -1,0 +1,96 @@
+[INFO [!Query!]|I]
+[STORPROC [!Query!]|Cat|0|1][/STORPROC]
+[!Req:=Redaction!]
+[COUNT [!Req!]/Article|NbArt]
+[!More:=6!]
+<div class="last-news">
+	<div class="container">
+		<div id="fone">
+			[MODULE Redaction/Article/LoadArticle?Req=[!Req!]&Limit=[!More!]&Offset=0]
+		</div> 
+	</div>
+</div>  
+[IF [!NbArt!]>6]
+	<div class="container">
+		<div class="load-more">
+			<a href="#nogo"  class="btn-more-Media btn-primary" id="LoadMore" data-url="/Redaction/Article/LoadArticle.htm" data-max="[!NbArt!]" data-more="[!More!]" data-current="[!More!]">LOAD MORE</a>
+		</div> 
+	</div>
+[/IF]
+
+//[COMPONENT Systeme/Bootstrap.Social/?NOMDIV=resociaux]
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		/**
+		 * ISOTOPE + MASONRY
+		 */
+		$('#fone').isotope({
+			
+	  		// options
+			[IF [!I::TypeSearch!]=Direct]
+			 	filter: '.[!Cat::Url!]'
+			[/IF]
+		});
+		function refreshIsotope(newElements) {
+			$('#fone').isotope({
+				
+		  		// options
+				[IF [!I::TypeSearch!]=Direct]
+				 	filter: '.[!Cat::Url!]'
+				[/IF]
+			});
+			$('#fone').imagesLoaded( function(){
+				$('#fone').isotope({
+					
+			  		// options
+					[IF [!I::TypeSearch!]=Direct]
+					 	filter: '.[!Cat::Url!]'
+					[/IF]
+				});
+			});	
+		}
+		
+		$(window).smartresize(function(){
+			refreshIsotope();
+		});
+		
+		// trigger Isotope after images have loaded
+		$('#fone').imagesLoaded( function(){
+			refreshIsotope();
+		});	
+		$('.filters a.filter').click(function(){
+			$('.filters a.filter.filteractive').removeClass('filteractive');
+			$('.filters li.active').removeClass('active');
+			var selector = $(this).attr('data-filter');
+			$('#fone').isotope({ filter: selector });
+			$('a[data-filter="'+selector+'"]').addClass('filteractive');
+			return false;
+		});
+		/**
+		 * LOAD MORE
+		 */
+		$('#LoadMore').on('click',function() {
+			//affichage indicateur de chargement
+			//lancement du chargement ajax
+			var sel = this;
+			$.ajax({
+				url: $(this).attr('data-url')+'?Offset='+(parseInt($(this).attr('data-current'))-1)+'&Limit='+(parseInt($(this).attr('data-more'))),
+				success: function (data) { 
+					$('#fone').append($(data)).isotope('reloadItems');
+					refreshIsotope(data);
+					//mise à jour du total
+					$(sel).attr('data-current',parseInt($(sel).attr('data-current'))+parseInt($(sel).attr('data-more')));
+					//suppressio ndu bouton load more si tout est chargé
+					if (parseInt($(sel).attr('data-current'))>=parseInt($(sel).attr('data-max'))){
+						$('#LoadMore').css('display','none');
+					}
+				},
+				dataType: 'html'
+			});
+			return false;
+		});
+		
+	});
+</script>
+

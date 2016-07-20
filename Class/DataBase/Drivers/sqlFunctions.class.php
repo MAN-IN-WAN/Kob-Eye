@@ -666,7 +666,7 @@ class sqlFunctions{
 		return $Data;
 	}
 
-	static function getMultiSearch($Tab, $Data, $Rech, $prefixe, $O,$View=null) {
+	static function getMultiSearch($Tab, $Data, $Rech, $prefixe, $O,$View=null,$rec=false) {
 		/*On créé un tableau en découpant chaque (!!) et en notant son parent, son départ, son arrivée, et sa profondeur */
 		$TRech = $Rech;
 		$brackets = Array();
@@ -721,7 +721,9 @@ class sqlFunctions{
 					$Conditions = ($brak["Lien"] == "OR") ? preg_split('#(?<!\\\)[\+]{1}#', $FullCondition) : preg_split('#(?<!\\\)[\&]{1}#', $FullCondition);
 					foreach ($Conditions as $C) {
 						if (!empty($C)) {
-							$tempi = sqlFunctions::multiConditions(Utils::unescape($C), $Tab, $prefixe,$Data, $O,$View);
+							if (strpos($C, "+")||strpos($C, "&")){
+								$tempi = sqlFunctions::getMultiSearch($Tab, $Data, $C, $prefixe, $O,$View, true);
+							}else $tempi = sqlFunctions::multiConditions(Utils::unescape($C), $Tab, $prefixe,$Data, $O,$View);
 							if (isset($tempi["Suffixe"]) && is_array($tempi["Suffixe"]))
 								$Data["Suffixe"] = $tempi["Suffixe"];
 							$brak["Condition"]["Groupe"][] = $tempi;
@@ -741,6 +743,7 @@ class sqlFunctions{
 			}
 		}
 		$Data["Groupe"][(isset($Data["Groupe"])) ? sizeof($Data["Groupe"]) : 0] = $brackets[0];
+		if ($rec) return $brackets[0];
 		return $Data;
 	}
 

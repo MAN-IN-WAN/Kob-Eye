@@ -131,6 +131,6 @@ form.standard > div {
 }
 /** Formulaire **/
 .form-group{
-  overflow: hidden;
+  clear: both;
   margin-bottom:5px;
 }

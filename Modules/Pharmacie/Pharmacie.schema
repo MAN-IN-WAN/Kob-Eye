@@ -1,5 +1,5 @@
 <SCHEMA>
-	<OBJECTCLASS title="Ordonnance" driver="mysql" logEvent="1" AccessPoint="1" master="0" Description="Ordonnances"  Icon="/Skins/AdminV2/Img/IconAqua/rss.jpg" Class="Modules/Pharmacie/Class/Ordonnance.class.php">
+	<OBJECTCLASS title="Ordonnance" driver="mysql" logEvent="1" AccessPoint="1" master="0" Description="Ordonnances"  Icon="/Skins/AdminV2/Img/IconAqua/rss.jpg" Class="Modules/Pharmacie/Class/Ordonnance.class.php" Order="Id" OrderType="DESC">
 		<INTERFACES name="accordion">
 			<FORM form="WidgetDocument" module="Pharmacie" objectClass="Document" dirtyParent="1">Documents</FORM>
 			<FORM form="WidgetComments" module="Pharmacie" objectClass="Comments" dirtyParent="1">Comments</FORM>
@@ -10,7 +10,7 @@
 		<FILTER name="Preparée" color="0x5BC0DE"><![CDATA[Etat=3]]></FILTER>
 		<FILTER name="Livré" color="0x5CB85C"><![CDATA[Etat=4]]></FILTER>
 		<FILTER name="Litiges" color="0x428BCA"><![CDATA[Etat=5]]></FILTER>
-		<FUNCTION type="vseparator" formOnly="1">s0</FUNCTION>
+		<!--<FUNCTION type="vseparator" formOnly="1">s0</FUNCTION>
 		<FUNCTION name="CreateUser" formOnly="1" icon="user" label="Create user" description="Create user" stateGroup="savedIdle">
 			<PROPERTIES type="varchar" length="255" obligatoire="1" category="New user" description="Login">login</PROPERTIES>
 			<PROPERTIES type="varchar" length="255" obligatoire="1" category="New user" description="Password">password</PROPERTIES>
@@ -24,22 +24,22 @@
 					}
 				]]>
 			</ACTION>
-		</FUNCTION>
-		<PROPERTIES type="varchar" searchOrder="1" category="Personne" obligatoire="0">Nom</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="2" category="Personne" obligatoire="0">Prenom</PROPERTIES>
-		<PROPERTIES type="text" category="Personne" >Commentaire</PROPERTIES>
-		<PROPERTIES type="email"  searchOrder="3" category="Personne" obligatoire="0">Email</PROPERTIES>
-        <PROPERTIES type="varchar" searchOrder="4" category="Personne" obligatoire="0">Telephone</PROPERTIES>
-		<PROPERTIES type="date" searchOrder="6" category="Personne" default="[!TMS::Now!]" description="Date de création">DateCreation</PROPERTIES>
-        <PROPERTIES type="date" searchOrder="6" category="Personne" default="10" description="Date de préparation">PrepareLe</PROPERTIES>
-        <PROPERTIES type="date" searchOrder="6" category="Personne" default="10" description="Date de retrait">RetireLe</PROPERTIES>
-        <PROPERTIES type="date" searchOrder="6" category="Personne" default="10" description="Date de retrait prévue">DateRetrait</PROPERTIES>
-        <PROPERTIES type="int" searchOrder="6" category="Personne" default="10">Priorite</PROPERTIES>
-		<PROPERTIES type="image" category="Ordonnance" listWidth="150" obligatoire="0">Image</PROPERTIES>
-        <PROPERTIES type="boolean" searchOrder="6" category="Personne" default="10">SachetDose</PROPERTIES>
-        <PROPERTIES type="boolean" searchOrder="6" category="Personne" default="10">Livraison</PROPERTIES>
-		<PROPERTIES type="int" searchOrder="5" category="Ordonnance" values="1::Non traitée,2::En cours de traitement,3::Traitée,4::Livrée,5::Litige,6::Cloture" default="1">Etat</PROPERTIES>
-		<VIEW title="OrdonnanceList" default="1" filters="" order="Priorite,tmsEdit">
+		</FUNCTION>-->
+		<PROPERTIES type="varchar" searchOrder="1" category="Personne" obligatoire="0" fiche="1" form="1" list="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" category="Personne" obligatoire="0" fiche="1" form="1" list="1">Prenom</PROPERTIES>
+		<PROPERTIES type="text" category="Personne"  fiche="1" form="1" >Commentaire</PROPERTIES>
+		<PROPERTIES type="email"  searchOrder="3" category="Personne" obligatoire="0" fiche="1" form="1" >Email</PROPERTIES>
+        <PROPERTIES type="varchar" searchOrder="4" category="Personne" obligatoire="0" fiche="1" form="1" >Telephone</PROPERTIES>
+		<PROPERTIES type="date" searchOrder="6" category="Personne" default="[!TMS::Now!]" description="Date de création" fiche="1" form="1" list="1">DateCreation</PROPERTIES>
+        <PROPERTIES type="date" searchOrder="6" category="Personne" default="10" description="Date de préparation" fiche="1" form="1" >PrepareLe</PROPERTIES>
+        <PROPERTIES type="date" searchOrder="6" category="Personne" default="10" description="Date de retrait" fiche="1" form="1" >RetireLe</PROPERTIES>
+        <PROPERTIES type="date" searchOrder="6" category="Personne" default="10" description="Date de retrait prévue" fiche="1" form="1" >DateRetrait</PROPERTIES>
+        <PROPERTIES type="int" searchOrder="6" category="Personne" default="10" fiche="1" form="1" >Priorite</PROPERTIES>
+		<PROPERTIES type="image" category="Ordonnance" listWidth="150" obligatoire="0" fiche="1" form="1" list="1">Image</PROPERTIES>
+        <PROPERTIES type="boolean" searchOrder="6" category="Personne" default="10" fiche="1" form="1" >SachetDose</PROPERTIES>
+        <PROPERTIES type="boolean" searchOrder="6" category="Personne" default="10" fiche="1" form="1" >Livraison</PROPERTIES>
+		<PROPERTIES type="int" searchOrder="5" category="Ordonnance" values="1::Non traitée,2::En cours de traitement,3::Traitée,4::Livrée,5::Litige,6::Cloture" default="1" fiche="1" form="1" list="1">Etat</PROPERTIES>
+		<VIEW title="OrdonnanceList" default="0" filters="" order="Priorite,tmsEdit">
 			<OBJECTCLASS title="Ordonnance" select="*">
 				<PROPERTIES type="varchar" list="5" searchOrder="1" category="Personne" obligatoire="1">Nom</PROPERTIES>
 				<PROPERTIES type="varchar" list="6" searchOrder="2" category="Personne" obligatoire="1">Prenom</PROPERTIES>
@@ -74,7 +74,7 @@
 	<OBJECTCLASS title="Comments" driver="mysql" Icon="[None]" order="m.`tmsCreate`" orderType="DESC">
 		<PROPERTIES category="" type="date" list="1" 	searchOrder="1"	default="[!TMS::Now!]"							>Date</PROPERTIES>
 		<PROPERTIES category="" type="text" list="2" 	searchOrder="2"								>Comments</PROPERTIES>
-		<FKEY card="0,1" data="Ordonnance,Id" position="accordion" description="Ordonnance">CommentsOrdonnanceId</FKEY>
+		<FKEY card="0,1" data="Ordonnance,Id" position="accordion" description="Ordonnance" hidden="1">CommentsOrdonnanceId</FKEY>
 		<VIEW title="CommentsList" default="1">
 			<OBJECTCLASS title="Comments">
 				<PROPERTIES category="" type="int" searchOrder="1"								>Id</PROPERTIES>
@@ -89,7 +89,7 @@
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Document" driver="mysql" Icon="[None]" Interface="FormDetail" description="Documents">
-		<FKEY card="0,1" data="Ordonnance,Id" category="Document"	documentx="Doc" position="accordion" description="Document"		>DocumentOrdonnanceId</FKEY>
+		<FKEY card="0,1" data="Ordonnance,Id" category="Document"	documentx="Doc" position="accordion" description="Document"	hidden="1"	>DocumentOrdonnanceId</FKEY>
 		<PROPERTIES category="Document" type="date" defaultValue="Now" searchOrder="1"											>Date</PROPERTIES>
 		<PROPERTIES category="Document" type="varchar" searchOrder="2" 															>Name</PROPERTIES>
 		<PROPERTIES category="Document" type="file" searchOrder="3" description="Document"										>Doc</PROPERTIES>

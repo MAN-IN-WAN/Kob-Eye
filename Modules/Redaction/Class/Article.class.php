@@ -1,5 +1,5 @@
-<?
-class Article extends genericClass{
+<?php
+class RedactionArticle extends genericClass{
 	function __construct($Mod,$Tab){
 		genericClass::__construct($Mod,$Tab);
 	}

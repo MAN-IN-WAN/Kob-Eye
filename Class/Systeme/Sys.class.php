@@ -915,7 +915,7 @@ class Sys extends Root{
 		//On analyse la requete
 		$Infos = Info::getInfos($Query);
 		if (!isset($Infos['Module'])||!is_object(Sys::$Modules[$Infos['Module']]))return $Query;
-		//Liste des noeuds parents
+		//Cas différent de child
 		if (isset($Infos["TypeSearch"])&&($Infos["NbHisto"]>1||$Infos["TypeSearch"]!="Child")){
 			//Liste des noeuds parents
 			$P = Array();
@@ -942,6 +942,12 @@ class Sys extends Root{
 				$Ap[] = Array($Infos['Module'].'/'.$Infos['Historique'][0]['DataSource'],$up);
 			}
 		}
+		//cas child
+		if (isset($Infos["TypeSearch"])&&($Infos["NbHisto"]==1&&$Infos["TypeSearch"]=="Child")&&!$strict){
+			//dans ce cas la on extrait le module et la cible pour comparer avec les menus
+            
+		}
+
 		$Ap[] = Array($Query,"");
 		if ($all){
 			//récupération de la liste de l'ensemble des menus

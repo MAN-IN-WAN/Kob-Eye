@@ -1,0 +1,130 @@
+// fichier de traduction en anglais
+//$$|
+$MSGSEARCH$|Saisissez le terme recherch&eacute;...
+$MSGMOREPOST$|PLUS DE POSTS
+$PHONE$|T&eacute;l.
+$FAX$|Fax.
+$MAIL$|Email
+$MSGTITRECONTACT$|CLIQUEZ SUR LE REP&Egrave;RE POUR AFFICHER LE FORMULAIRE
+$MSGINSCRIPNEWSLET$|Inscription &agrave; la newsletter LACE RESTAURANT
+$CORPSMAILINSCRIPTION$|Bonjour,<br />f&eacute;licitation, vous &ecirc;tes inscrit(e) &agrave; la newsletter L ACE RESTAURANT.
+$TEAMTHANK$|Toute l'&eacute;quipe de L ACE RESTAURANT vous remercie<br />
+$INSCRIPTIONOK$|F&eacute;licitation vous &ecirc;tes inscrit(e) à notre newsletter
+$INSCRIPTIONDEJA$|Vous &ecirc;tes d&eacute;j&agrave; inscrit(e) à notre newsletter
+$INSCRIPTIONVIDE$|Merci de saisir votre email
+$ABOUTFONE$|A propos de L ACE RESTAURANT
+$HISTPHIL$|Histoire Philosophie
+$PRODCAT$|Catalogues produits 
+$USERMANU$|Manuels utilisateurs
+$CONTACTUS$|Nous contacter
+$WARRANTY$|Garantie
+$SPAREPARTES$|Pi&egrave;ces d&eacute;tach&eacute;es
+$REGISTRATIONPROD$|Enregistrement produit
+$PRIVACIPOLICY$|Confidentialit&eacute;
+$USERAGREE$|Accord utilisateur
+$WARANTY$|Garantie
+$RETD$|R&D
+__SEE_MAP__|Voir sur la carte
+$DOWNLOAD$|T&Eacute;L&Eacute;CHARGER
+
+#CONTACT
+__CONTACT_US__|Contactez-nous
+__NEWSLETTER_SUBSCRIPTION__|Inscription à la newsletter
+__CLOSE__|Fermer
+__NO_RESULT__|Aucun r&eacute;sultat
+__RECEIVER__|Destinataire
+__CONTACT_ERRORS__|Veuillez remplir les champs obligatoires suivants :
+__ERROR_NAME__|Merci de renseigner votre nom
+__ERROR_EMAIL__|Merci de renseigner votre adresse email
+__ERROR_SUBJECT__|Merci de renseigner le sujet de votre demande
+__ERROR_MESSAGE__|Merci de laisser votre message
+__ERROR_COUNTRY__|Merci de renseigner votre pays
+__MESSAGE_SUCCESS__|Votre message a &eacute;t&eacute; envoy&eacute; avec succ&egrave;s
+__MESSAGE_SAV_CONTACT__|Veuillez contacter votre revendeur le plus proche.
+__FULL_NAME__|Nom complet
+__SUBJECT__|Sujet
+__CITY__|Ville
+__COUNTRY__|Pays
+__MESSAGE__|Message
+__PHONE__|T&eacute;l&eacute;phone
+__EMAIL__|Email
+
+#FOOTER
+__CLOSEST_SHOP__|Shop le plus proche
+__FOLLOW_US__|Suivez nous
+__NEWSLETTER__|Newsletter
+__LOADING__|Chargement...
+
+#POPUP NEWSLETTER
+__EMAIL_ADDRESS__|Adresse email
+$EMAILINPUT$|ENTREZ VOTRE EMAIL
+__NEWSLETTER_SUSCRIBE_SUCCESS__|Vous avez été inscris à la newsletter avec succès.
+__NEWSLETTER_SUSCRIBE_WARNING__|You already registered the L ACE RESTAURANT Newsletter.
+
+
+#PRODUCT REGISTRATION
+__PLEASE_FILL_THE_FIELDS__|V&eacute;rifiez les champs suivants
+__PLEASE_ACEEPT_ALL_TERMS_AND_CONDITIONS__|Acceptez les conditions g&eacute;n&eacute;rales
+__PLEASE_FILL_YOUR_EMAIL_ADDRESS__|Merci de remplir votre adresse email
+__MESSAGE_SENT_SUCCESSFULLY__|Message envoy&eacute; avec succ&egrave;s.
+
+__FIRST_NAME__|Nom 
+__LAST_NAME__|Pr&eacute;nom
+__EMAIL_ADDRESS__|Adresse email
+__ADDRESS__|Adresse
+__KIT_SERIAL_NUMBER__|Num&eacute;ro de s&eacute;rie
+__PRODUCT_MODE__|Produit
+__SIZE__|Taille
+__SHOP_WHERE_PURCHASED__|Lieu d'achat
+__DATE_OF_PURCHASE__|Date d'achat
+__A_MESSAGE_IF_YOU_WANT__|Un message &agrave; faire passer...
+__AGREE_ALL_TERMS_AND_CONDITIONS__|j'acceptes les conditions g&eacute;n&eacute;rales
+__SEND_MESSAGE__|Envoyer le message
+
+__PLEASE_FILL_YOUR_FIRSTNAME__|Veuillez saisir votre prénom
+__PLEASE_FILL_YOUR_NAME__|Veuillez saisir votre nom
+__PLEASE_FILL_YOUR_ADDRESS__|Veuillez ssaisir votre adresse
+__PLEASE_FILL_YOUR_CITY__|Veuillez saisir votre ville
+__PLEASE_FILL_YOUR_COUNTRY__|Veuillez saisir votre pays
+__PLEASE_FILL_THE_PRODUCT_MODE__|Veuillez saisir votre produit
+__PLEASE_FILL_THE_PRODUCT_SIZE__|Veuillez saisir la taille de votre produit
+__PLEASE_FILL_YOUR_SHOP__|Veuillez saisir le nomde votre magasin
+__PLEASE_FILL_YOUR_PURCHASE__|Veuillez saisir la date d'achat
+__PLEASE_CHECK_THE_CATPCHA__|Veuillez cocher la case "Je ne suis pas un robot"
+
+__DETAILS_REGISTRATION__|Conditions G&eacute;n&eacute;rales
+__TEXT_REGISTRATION__|Afin de nous permettre de mieux vous conna&icirc;tre et de vous proposer des produits ou services plus appropri&eacute;s &agrave; vos besoins, nous vous proposons d&rsquo;enregistrer votre nouvel achat en remplissant le formulaire ci-dessous. <br />Ce traitement de donn&eacute;es &agrave; caract&egrave;re personnel a fait l&rsquo;objet d&rsquo;une d&eacute;claration &agrave; la CNIL N&deg; 1751751 v 0 <br />Conform&eacute;ment &agrave; la loi &laquo; Informatique et libert&eacute;s &raquo; du 6 janvier 1978, vous disposez d&rsquo;un droit d&rsquo;acc&egrave;s, de rectification et d&rsquo;opposition au traitement des donn&eacute;es personnelles vous concernant.<br />Afin d&rsquo;exercer ce droit, nous vous invitons &agrave; contacter F.One par e-mail &agrave; l&rsquo;adresse suivante: contact@f-onekites.com
+__TEXT_CONDITIONS__|Afin de nous permettre de mieux vous conna&icirc;tre et de vous informer de nos dernières actualit&eacute;s et sorties de produits, nous vous proposons d&rsquo;enregistrer votre e-mail en remplissant le formulaire ci-dessous. <br />Ce traitement de donn&eacute;es &agrave; caract&egrave;re personnel a fait l&rsquo;objet d&rsquo;une d&eacute;claration &agrave; la CNIL N&deg; 1751751 v 0 <br />Conform&eacute;ment &agrave; la loi &laquo; Informatique et libert&eacute;s &raquo; du 6 janvier 1978, vous disposez d&rsquo;un droit d&rsquo;acc&egrave;s, de rectification et d&rsquo;opposition au traitement des donn&eacute;es personnelles vous concernant.<br />Afin d&rsquo;exercer ce droit, nous vous invitons &agrave; contacter F.One par e-mail &agrave; l&rsquo;adresse suivante: contact@f-onekites.com
+__SUSCRIBE_TO_L ACE RESTAURANT_NEWSLETTER__|JE SUIS D'ACCORD POUR RECEVOIR DES INFORMATIONS DE L ACE RESTAURANT
+__SUSCRIBE_SUCCESSFULL__|Votre produit L ACE RESTAURANT a été enregistré, merci pour votre confiance.
+
+#MSG EMAIL
+__HELLO__|Bonjour
+__MSG_RECEPTION__|Nous avons bien reçu votre demande par email et vous remercions de votre confiance.<br />Votre demande sera trait&eacute;e dans les plus brefs d&eacute;lais.
+
+#LOCATOR
+__MSG_LOCATOR__|S&eacute;lectionnez un rep&egrave;re sur la carte.
+$SELECTCOUNTRY$|S&eacute;lectionnez un pays
+
+#RIDER
+__LAST_NEWS__|Derni&egrave;res actus
+__MESSAGE_SPARE_PARTS_TEL__|Les pi&egrave;ces d&eacute;tach&eacute;es ne sont pas disponibles sur t&eacute;l&eacute;phone.<br />Veuillez vous connecter depuis une tablette ou un ordinateur.
+
+#HOME
+__MEDIA_SOCIAL__|Médias sociaux
+__PRODUCTS__|Produits
+__MEDIAS__|Médias
+
+#DIVERS
+__MORE_DETAILS__|PLUS DE DETAILS
+__TECHNOLOGIES_CONSTRUCTION__|TECHNOLOGIES / CONSTRUCTIONS
+__RELATED_GEARS__|Produits associés
+__PRODUCT_VIDEO__|Vidéo produit
+__LATEST_NEWS__|Dernières actualités
+__SHOW_ALL__|Tout afficher
+
+#LOCATOR
+__INVITE_EMAIL_LOCATOR__|Un client vous contacte depuis le site
+
+#DISCLAIMER
+__DISCLAIMER_BANDEAU__|En poursuivant votre navigation sur ce site, vous acceptez l’utilisation de traceurs pour vous permettre de partager des contenus de notre site avec d'autres personnes ou de faire connaître à ces autres personnes votre consultation ou votre opinion, ainsi que pour nous permettre de réaliser des statistiques de visites. <a href="/Disclaimer">Cliquez ici pour en savoir plus et paramétrer les traceurs </a>

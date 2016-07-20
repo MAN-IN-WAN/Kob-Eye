@@ -33,7 +33,7 @@ class charUtils extends Beacon {
 				$this->Data = str_replace("‘" , "'", $this->Data);
 				$this->Data = str_replace("“" , '"', $this->Data);
 				$this->Data = str_replace("”" , '"', $this->Data);
-				$this->Data = addslashes($this->Data);
+				$this->Data = str_replace('"' , '\"', $this->Data);
 			break;
 			case "CONCAT":
 				$this->Data = Parser::PostProcessing($this->Data);

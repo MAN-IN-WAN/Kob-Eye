@@ -1,0 +1,3 @@
+(`Id`,`tmsCreate`,`userCreate`,`tmsEdit`,`userEdit`,`uid`,`gid`,`umod`,`gmod`,`omod`,`Texte`) VALUES ("1","1383749955","101","1383749955","101","101","109","7","7","7","The ultimate gear for freestyle")
+(`Id`,`tmsCreate`,`userCreate`,`tmsEdit`,`userEdit`,`uid`,`gid`,`umod`,`gmod`,`omod`,`Texte`) VALUES ("2","1384275842","103","1384275842","103","103","109","7","7","7","Ultimate New School Weapon")
+(`Id`,`tmsCreate`,`userCreate`,`tmsEdit`,`userEdit`,`uid`,`gid`,`umod`,`gmod`,`omod`,`Texte`) VALUES ("3","1384276572","103","1384276572","103","103","109","7","7","7","ULTIMATE PRO NEW SCHOOL WEAPON")

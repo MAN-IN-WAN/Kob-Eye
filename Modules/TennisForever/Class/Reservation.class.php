@@ -142,14 +142,18 @@ class Reservation extends genericClass {
         }
         
         //partenaires
-        $nbabonnes = sizeof($this->_partenaires);
+        $nbabonnes = sizeof($this->getPartenaires());
         $this->_nbinvites;
+        $this->deleteLigneFacture('Invitation');
         if ($service->TarifInvite>0&&$this->_nbinvites>0&$client->isSubscriber()
             || $service->TarifInvite>0&&$this->_nbinvites>0&&$typecourt->GestionInvite=="Quantitatif"){
             $this->addLigneFacture($service->Titre.' - Invitation',$service->TarifInvite,$this->_nbinvites,$service,'Invitation');
         }
 
         $this->NbParticipant = $this->_nbinvites+ $nbabonnes + 1;
+
+        //définition du Nom de la réservation
+        $this->Nom = $client->Nom.' '.$client->Prenom.' - '.$service->Titre; //date('d/m/Y à H:i',$this->DateDebut);
     }
 
 
@@ -296,24 +300,42 @@ class Reservation extends genericClass {
         }else return false;
     }
     function checkDispo() {
+
         //il faut également le court
         if ($this->Id&&$this->Valide)return true;
         $court = $this->getCourt();
+        $tc = $court->getParents('TypeCourt');
+        $tc = $tc[0];
         if (!$court) return false;
 
         if ($this->DateDebut && $this->DateFin){
-            //vérification de la disponibilité
+            //RESERVATION
+            if ($tc->Reservation=='Horaire') {
+                //test du debut à cheval
+                $out = Sys::getCount('TennisForever', 'Court/' . $court->Id . '/Reservation/Valide=1&DateDebut>=' . $this->DateDebut . '&DateDebut<' . $this->DateFin);
+                if ($out) return false;
+                //test de la fin à cheval
+                $out = Sys::getCount('TennisForever', 'Court/' . $court->Id . '/Reservation/Valide=1&DateFin>' . $this->DateDebut . '&DateFin<=' . $this->DateFin);
+                if ($out) return false;
+                //test des deux en encadrement intérieur
+                $out = Sys::getCount('TennisForever', 'Court/' . $court->Id . '/Reservation/Valide=1&DateFin<=' . $this->DateFin . '&DateDebut>=' . $this->DateDebut);
+                if ($out) return false;
+                //test les deux en encadrement extérieur
+                $out = Sys::getCount('TennisForever', 'Court/' . $court->Id . '/Reservation/Valide=1&DateFin>=' . $this->DateFin . '&DateDebut<=' . $this->DateDebut);
+                if ($out) return false;
+            }
+            //DISPONIBILITE
             //test du debut à cheval
-            $out = Sys::getCount('TennisForever','Court/'.$court->Id.'/Reservation/Valide=1&DateDebut>='.$this->DateDebut.'&DateDebut<'.$this->DateFin);
+            $out = Sys::getCount('TennisForever','Court/'.$court->Id.'/Disponibilite/Debut>='.$this->DateDebut.'&Debut<'.$this->DateFin);
             if ($out) return false;
             //test de la fin à cheval
-            $out = Sys::getCount('TennisForever','Court/'.$court->Id.'/Reservation/Valide=1&DateFin>'.$this->DateDebut.'&DateFin<='.$this->DateFin);
+            $out = Sys::getCount('TennisForever','Court/'.$court->Id.'/Disponibilite/Fin>'.$this->DateDebut.'&Fin<='.$this->DateFin);
             if ($out) return false;
             //test des deux en encadrement intérieur
-            $out = Sys::getCount('TennisForever','Court/'.$court->Id.'/Reservation/Valide=1&DateFin<='.$this->DateFin.'&DateDebut>='.$this->DateDebut);
+            $out = Sys::getCount('TennisForever','Court/'.$court->Id.'/Disponibilite/Fin<='.$this->DateFin.'&Debut>='.$this->DateDebut);
             if ($out) return false;
             //test les deux en encadrement extérieur
-            $out = Sys::getCount('TennisForever','Court/'.$court->Id.'/Reservation/Valide=1&DateFin>='.$this->DateFin.'&DateDebut<='.$this->DateDebut);
+            $out = Sys::getCount('TennisForever','Court/'.$court->Id.'/Disponibilite/Fin>='.$this->DateFin.'&Debut<='.$this->DateDebut);
             if ($out) return false;
             return true;
         }else return false;
@@ -345,6 +367,10 @@ class Reservation extends genericClass {
         }else{
             if (!$this->checkDateJour()) {
                 $this->addError(array("Message" => "Veuillez vérifier la saisie de la date"));
+            }
+            if (!$this->checkDispo()) {
+                $this->addError(array("Message" => "Ce jour n'est pas disponible"));
+                $this->Valide = false;
             }
         }
         if (sizeof($this->Error)) return false;
@@ -415,5 +441,72 @@ class Reservation extends genericClass {
     function setValide() {
         $this->Valide=1;
         $this->Save();
+        //TODO
+        //envoi du mail
+        $this->sendMail();
+    }
+
+    function sendMail() {
+        $cli = $this -> getClient();
+
+
+        $Civilite = $cli -> Civilite . " " . $cli -> Prenom . ' <span style="text-transform:uppercase">' . $cli -> Nom . '</span>';
+
+        $lf = $this->getLigneFacture();
+        if (!sizeof($lf)) {
+            $Lacommande = "Erreur";
+        } else {
+            $Lacommande = "<br /> Vous avez déclaré $this->NbParticipant participant(s) au total ";
+            $parts = $this->getPartenaires();
+            if (sizeof($parts)) {
+                $Lacommande .= "<br /> Vous jouerez avec le(s) partenaire(s) suivant(s): <ul>";
+                foreach ($parts as $p) {
+                    $Lacommande .= "<li>$p->Nom $p->Prenom</li>";
+                }
+                $Lacommande .= "</ul>";
+            }
+            $Lacommande .= "<h2>Récapitulatif de votre réservation  : </h2><br /><br /><table width='100%'>";
+            $Lacommande .= "<tr bgcolor='#666' padding='5'><td><font color='#ffffff'>Quantite</font></td><td><font color='#ffffff'>Titre</font></td><td><font color='#ffffff'>Tarif TTC</font></td></tr>";
+            $total = 0;
+            foreach ($lf as $l) :
+                //récupération du produit
+                $Lacommande .= "<td><h3>" . $l->Quantite . "</h3> </td>";
+                $Lacommande .= "<td><h3>" . $l->Libelle . "</h3></td>";
+                $Lacommande .= "<td><h2>" . $l->MontantTTC . " € TTC</h2></td></tr>";
+                $total += $l->MontantTTC;
+            endforeach;
+            $Lacommande .= "
+                <tr bgcolor='#666' padding='5'>
+                    <td colspan='2'></td>
+                    <td><font color='#ffffff'>TOTAL</font></td>
+                    <td><font color='#ffffff'><h2>$total € TTC</h2></font></td>
+                </tr>
+            </table>";
+
+        }
+
+        require_once ("Class/Lib/Mail.class.php");
+        $Mail = new Mail();
+        $Mail->Subject("TENNISFOREVER Confirmation de reservation");
+        $Mail -> From( $GLOBALS['Systeme'] -> Conf -> get('MODULE::TENNISFOREVER::CONTACT'));
+        $Mail -> ReplyTo($GLOBALS['Systeme'] -> Conf -> get('MODULE::TENNISFOREVER::CONTACT'));
+        $Mail -> To($cli -> Mail);
+        //$Mail -> To('enguer@enguer.com');
+        $Mail -> Bcc('enguer@enguer.com');
+        $Mail -> Cc($GLOBALS['Systeme'] -> Conf -> get('MODULE::TENNISFOREVER::CONTACT'));
+        $bloc = new Bloc();
+        $mailContent = "
+            Bonjour " . $Civilite . ",<br /><br />
+            Nous vous informons que votre réservation N° " . $this->Nom . " pour le ".date("d/m/Y à H:i",$this->DateDebut)." a bien été prise en compte.<br />Attention, il est possible dans certains cas , que votre réservation court extérieur soit basculée en court couvert. Aucun supplément ne vous sera facturé. 
+            <br />Toute l'équipe de TENNIS FOREVER vous remercie de votre confiance,<br />
+            <br />Pour nous contacter : " . $GLOBALS['Systeme'] -> Conf -> get('MODULE::TENNISFOREVER::CONTACT') . " .".$Lacommande;
+
+        $bloc -> setFromVar("Mail", $mailContent, array("BEACON" => "BLOC"));
+        $Pr = new Process();
+        $bloc -> init($Pr);
+        $bloc -> generate($Pr);
+        $Mail -> Body($bloc -> Affich());
+        if (!$this->Cloture)
+            $Mail -> Send();
     }
 }

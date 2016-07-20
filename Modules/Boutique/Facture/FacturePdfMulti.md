@@ -2,11 +2,8 @@
 	// Pas accès à cette commande
 	[REDIRECT][!Systeme::CurrentMenu::Url!][/REDIRECT]
 [ELSE]
-	[IF [!quoi!]!=]
-		[STORPROC [!Utils::Explode('§',[!quoi!])!]|Facdem]
-			[!DEBUG::Facdem!]
-
-			[STORPROC Boutique/Commande/[!Facdem::Id!]/Facture|FA][/STORPROC]
+		[LIB HTML2PDF|html2pdf]
+		[STORPROC Boutique/Facture/tmsCreate>1420066800&tmsCreate<1451602800|FA]
 			[STORPROC Boutique/Commande/Facture/[!FA::Id!]|CDE|0|1][/STORPROC]
 			[STORPROC Boutique/Devise/Defaut=1|De][/STORPROC]
 			// Pas accès à cette commande
@@ -36,7 +33,6 @@
 			[!CDE::initTableTvaFacture()!]
 			[!Lig:=0!]
 			
-			[LIB HTML2PDF|html2pdf]
 			[METHOD html2pdf|writeHTML]
 				[PARAM]
 					<style type="text/css">
@@ -59,8 +55,8 @@
 										<img src="[!Domaine!]/Skins/LoisirsCrea/Img/bando-mail.jpg.limit.300x200.jpg"/><br />
 									[/IF]
 									<div class="TitrePdf">
-										//[!Mag::Nom!]<br />
-										LOVE PAPER<br />[!Mag::Adresse!]<br />
+										[!Mag::Nom!]<br />
+										[!Mag::Adresse!]<br />
 										[!Mag::CodePostal!] [!Mag::Ville!]<br />
 										[IF  [!Mag::Tel!]!=] Tél : [!Mag::Tel!][/IF]
 										//[IF  [!Mag::Tel!]!=&&[!Mag::Fax!]!=]<br />[/IF]
@@ -141,33 +137,31 @@
 								</tr>
 							[/STORPROC]
 							// Ajout de la ligne sur la livraison
-							[STORPROC Boutique/Commande/[!CDE::Id!]/BonLivraison|LV|0|1]
-								[!InfoLiv:=[!LV::getInfoCdeFac()!]!]
+							//[STORPROC Boutique/Commande/[!CDE::Id!]/BonLivraison|LV|0|1]
+							//	[!InfoLiv:=[!LV::getInfoCdeFac()!]!]
 								// NE SERT PLUS CAR FAIT DANS L'INIT DE LA CLASS
 								//[IF [!LV::TxTvaBonLivr!]>0][!CDE::updateTableTvaFacture([!LV::TxTvaBonLivr!],[!InfoLiv::MontantHT!])!][/IF]
 			
-								[!TableComplete-=1!]
-								<tr style="margin:0;padding:0;"  cellspacing="0" cellpadding="0" >
-									<td style="padding:1mm;width:25mm;text-align:center;border-left:solid;border-top:none;border-bottom:none;"  class="ResDescription">Livraison-[!TotHtLiv!]</td>
-									<td style="width:90mm;border-left:solid;border-top:none;border-bottom:none;" class="ResDescription">&nbsp;[!InfoLiv::Nom!]</td>
-									<td style="width:15mm;text-align:right;border-left:solid;border-top:none;border-bottom:none;"  class="ResDescription">1&nbsp;&nbsp;</td>
-									<td style="width:27mm;text-align:right;border-left:solid;border-top:none;border-bottom:none;"  class="ResDescription">[!Math::PriceV([!InfoLiv::MontantHT!])!]&nbsp;&nbsp;</td>
-									<td style="width:27mm;text-align:right;border-left:solid;border-top:none;border-bottom:none;border-right:solid;"  class="ResDescription">[!Math::PriceV([!InfoLiv::MontantHT!])!]&nbsp;&nbsp;</td>
-			
-								</tr>
-							[/STORPROC]
-							// Lignes pour arriver en bas
-							//[STORPROC [!TableComplete!]|tt]
-							//	<tr style="height:5mm;"  cellspacing="0" cellpadding="0">
-							//		<td style="width:25mm;border-left:solid;border-top:none;border-bottom:none;" >&nbsp;</td>
-							//		<td style="width:90mm;border-left:solid;border-top:none;border-bottom:none;"  >&nbsp;</td>
-							///		<td style="width:15mm;border-left:solid;border-top:none;border-bottom:none;"   >&nbsp;</td>
-							//		<td style="width:27mm;border-left:solid;border-top:none;border-bottom:none;"  >&nbsp;</td>
-							//		<td style="width:27mm;border-left:solid;border-right:solid;border-top:none;border-bottom:none;" >&nbsp;</td>
+							//	[!TableComplete-=1!]
+							//	<tr style="margin:0;padding:0;"  cellspacing="0" cellpadding="0" >
+							//		<td style="padding:1mm;width:25mm;text-align:center;border-left:solid;border-top:none;border-bottom:none;"  class="ResDescription">Livraison-[!TotHtLiv!]</td>
+							//		<td style="width:90mm;border-left:solid;border-top:none;border-bottom:none;" class="ResDescription">&nbsp;[!InfoLiv::Nom!]</td>
+							//		<td style="width:15mm;text-align:right;border-left:solid;border-top:none;border-bottom:none;"  class="ResDescription">1&nbsp;&nbsp;</td>
+							//		<td style="width:27mm;text-align:right;border-left:solid;border-top:none;border-bottom:none;"  class="ResDescription">[!Math::PriceV([!InfoLiv::MontantHT!])!]&nbsp;&nbsp;</td>
+							//		<td style="width:27mm;text-align:right;border-left:solid;border-top:none;border-bottom:none;border-right:solid;"  class="ResDescription">[!Math::PriceV([!InfoLiv::MontantHT!])!]&nbsp;&nbsp;</td>
 							//	</tr>
 							//[/STORPROC]
+							// Lignes pour arriver en bas
+							[STORPROC [!TableComplete!]|tt]
+								<tr style="height:5mm;"  cellspacing="0" cellpadding="0">
+									<td style="width:25mm;border-left:solid;border-top:none;border-bottom:none;" >&nbsp;</td>
+									<td style="width:90mm;border-left:solid;border-top:none;border-bottom:none;"  >&nbsp;</td>
+									<td style="width:15mm;border-left:solid;border-top:none;border-bottom:none;"   >&nbsp;</td>
+									<td style="width:27mm;border-left:solid;border-top:none;border-bottom:none;"  >&nbsp;</td>
+									<td style="width:27mm;border-left:solid;border-right:solid;border-top:none;border-bottom:none;" >&nbsp;</td>
+								</tr>
+							[/STORPROC]
 						</table>
-						<page_footer >
 							<table class="page_footer" cellspacing="0" cellspadding="0">
 								// Lecture objet TVA alimentation des totaux
 								// on passe par la car dans l'objet commande on a le total ht sans tenir compte de la livraison
@@ -190,72 +184,47 @@
 												<td style="width:20mm;text-align:center;" class="ResDescription" border="1">Montant Taxe</td>
 												<td style="width:70mm;text-align:center;" class="ResDescription" border="1">Reglement par</td>
 												<td style="border:none;width:36mm;text-align:right;">Total HT&nbsp;&nbsp;</td>
-												<td style="width:30mm;text-align:right;" border="1">[!Math::PriceV([!TotHt!])!] [!De::Sigle!]&nbsp;&nbsp;</td>
+												<td style="width:30mm;text-align:right;" border="1">[!Math::PriceV([!CDE::MontantHT!])!] [!De::Sigle!]&nbsp;&nbsp;</td>
 											</tr>
-											// Lecture objet TVA
-											[STORPROC [!Table_TVA!]|TvaTx]
-												[!mtTva:=[!CDE::getTVA([!TvaTx::Base!],[!TvaTx::Taux!])!]!]
-												[!totTVA+=[!mtTva!]!]
-												<tr style="height:10mm;margin:30mm">
-													<td style="width:10mm;text-align:center;" class="ResDescription" border="1"> [!TvaTx::Taux!] %</td>
-													<td style="width:20mm;text-align:right;" class="ResDescription" border="1">[!Math::PriceV([!TvaTx::Base!])!] [!De::Sigle!]&nbsp;&nbsp;</td>
-													<td style="width:20mm;text-align:right;" class="ResDescription" border="1">
-														[!Math::PriceV([!mtTva!])!] [!De::Sigle!]&nbsp;&nbsp;
-													</td>
-													<td style="width:70mm;text-align:center;" class="ResDescription" border="1">[!MP::Nom!]</td>
-													[IF [!Pos!]=[!NbResult!]]
-														<td style="border:none;width:36mm;text-align:right;">
-															Total TVA&nbsp;&nbsp;
-														</td>
-														<td style="width:30mm;text-align:right;" border="1">
-															[!Math::PriceV([!totTVA!])!] €&nbsp;&nbsp;
-														</td>
-													[ELSE]
-														<td style="border:none;width:36mm;" colspan="2">&nbsp;&nbsp;</td>
-													[/IF]
-												</tr>
-											[/STORPROC]
+											<tr style="height:10mm;margin:30mm">
+												<td style="width:10mm;text-align:center;" class="ResDescription" border="1"> 20 %</td>
+												<td style="width:20mm;text-align:right;" class="ResDescription" border="1">[!Math::PriceV([!CDE::BaseHTTx1!])!] [!De::Sigle!]&nbsp;&nbsp;</td>
+												<td style="width:20mm;text-align:right;" class="ResDescription" border="1">
+													[!Math::PriceV([!CDE::MtTva1!])!] [!De::Sigle!]&nbsp;&nbsp;
+												</td>
+												<td style="width:70mm;text-align:center;" class="ResDescription" border="1">[!MP::Nom!]</td>
+												<td style="border:none;width:36mm;text-align:right;">
+													Total TVA&nbsp;&nbsp;
+												</td>
+												<td style="width:30mm;text-align:right;" border="1">
+													[!Math::PriceV([!CDE::MtTva1!])!] €&nbsp;&nbsp;
+												</td>
+											</tr>
 											[!totGene:=[!TotHt!]!]
 											[!totGene+=[!totTVA!]!]
-											[IF [!CDE::Remise!]!=0]
-												<tr style="width:200mm;height:10mm;margin:30mm">
-													<td colspan="4" border="0"></td>
-													<td style="border:none;width:36mm;text-align:right;font-weight:bold;">Sous-Total&nbsp;&nbsp;</td>
-													<td style="width:30mm;text-align:right;" border="1"> [!Math::PriceV([!totGene!])!] [!De::Sigle!]&nbsp;&nbsp;</td>
-												</tr>
-												<tr style="width:200mm;height:10mm;margin:30mm">
-													<td colspan="4" border="0"></td>
-													<td style="border:none;width:36mm;text-align:right;">Remise&nbsp;&nbsp;</td>
-													<td style="width:30mm;text-align:right;" border="1">- [!Math::PriceV([!CDE::Remise!])!] [!De::Sigle!]&nbsp;&nbsp;</td>
-												</tr>
-												[!totGene-=[!CDE::Remise!]!]
-			
-											[/IF]
 											<tr style="width:200mm;height:10mm;margin:30mm">
 												<td colspan="4" border="0"></td>
 												<td style="border:none;width:36mm;text-align:right;font-weight:bold;font-size:14px;">Total Facture&nbsp;&nbsp;</td>
-												<td style="width:30mm;text-align:right;font-weight:bold;font-size:14px;" border="1">[!Math::PriceV([!totGene!])!] [!De::Sigle!]&nbsp;&nbsp;</td>
+												<td style="width:30mm;text-align:right;font-weight:bold;font-size:14px;" border="1">[!Math::PriceV([!CDE::MontantTTC!])!] [!De::Sigle!]&nbsp;&nbsp;</td>
 											</tr>
 										</table>
 									</td>
 								</tr>
 								<tr style="width:200mm;padding-top:10mm;text-align:center;font-size:10px;">
 									<td>
-										<br /><br />LOVE PAPER<br />[!Mag::Adresse!]- [!Mag::CodePostal!] [!Mag::Ville!]<br />Siret : [!Mag::Siret!]
+										<br /><br />[!Mag::Nom!]<br />[!Mag::Adresse!]- [!Mag::CodePostal!] [!Mag::Ville!]<br />Siret : [!Mag::Siret!]
 									</td>
 								</tr>
 			
 							</table>
-						</page_footer>
-			
+
 					</page>
 				[/PARAM]
 				[PARAM][/PARAM]
 			[/METHOD]
 		[/STORPROC]
-		
-	[/IF]
+	[/STORPROC]
 
 	//[!html2pdf::Output(Facture_[!FA::NumFac!].pdf)!]
-	[!html2pdf::Output(Home/Pdf/[!FA::NumFac!]_KIRI_[!TMS::Now!].pdf,FI)!]
+	[!html2pdf::Output(Home/Pdf/[!FA::NumFac!]_PROTECT_[!TMS::Now!].pdf,FI)!]
 [/IF]

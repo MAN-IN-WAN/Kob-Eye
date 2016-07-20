@@ -1,32 +1,29 @@
-[COUNT Boutique/Commande/Valide=1&Cloture=0|C]
-[COUNT Boutique/Commande/Valide=1&Prepare=0&Expedie=0&Cloture=0|CP]
-[COUNT Pharmacie/Ordonnance/Etat<4|O]
-[COUNT Pharmacie/Ordonnance/Etat<2|OP]
 <div id="reload">
     <h1 class="page-header">Tableau de bord</h1>
           <div class="row placeholders">
             <div class="col-xs-6 col-sm-3 placeholder">
-                <a class="btn [IF [!CP!]>0]btn-danger[ELSE]btn-success[/IF] btn-block" href="/[!Sys::getMenu(Boutique/Commande)!]">
+                <a class="btn [IF [!CP!]>0]btn-danger[ELSE]btn-success[/IF] btn-block" href="/[!Sys::getMenu(TennisForever/Reservation)!]">
                     <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
-                    <h4>[!C!] Commandes(s)</h4>
-                    <span>Dont [!CP!] non preparée(s)</span>
+                    [COUNT TennisForever/Reservation/Valide=1&DateDebut>[!Utils::getTodayMorning()!]&DateFin<[!Utils::getTodayEvening()!]|C]
+                    <h4>[!C!] Réservation(s) aujourd'hui</h4>
                 </a>
             </div>
             <div class="col-xs-6 col-sm-3 placeholder">
-                <a class="btn btn-block [IF [!OP!]>0]btn-danger[ELSE]btn-info[/IF]" href="/[!Sys::getMenu(Pharmacie/Ordonnance)!]">
+                <a class="btn btn-block [IF [!OP!]>0]btn-danger[ELSE]btn-info[/IF]" href="/[!Sys::getMenu(TennisForever/Facture)!]">
                     <span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>
-                    <h4>[!O!] Ordonnance(s)</h4>
-                    <span>Dont [!OP!] non preparée(s)</span>
+                    [COUNT TennisForever/Facture/Valide=1&tmsCreate>[!Utils::getTodayMorning()!]&tmsCreate<[!Utils::getTodayEvening()!]|C]
+                    <h4>[!C!] Facture(s) aujourd'hui</h4>
                 </a>
             </div>
-        <!--
             <div class="col-xs-6 col-sm-3 placeholder">
                 <div class="btn btn-warning btn-block">
                     <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
-                    <h4>[COUNT Parc/Client/[!ParcClient::Id!]/Host/*/Apache|D][!D!] Configuration(s) Apache</h4>
-                    <span class="text-muted">Something else</span>
+                    <h4>[COUNT TennisForever/Client|D][!D!] Clients</h4>
+                    [COUNT TennisForever/Client/Abonne=1|D]
+                    <span class="text-muted">Dont [!D!] adhérents</span>
                 </div>
             </div>
+              <!--
             <div class="col-xs-6 col-sm-3 placeholder">
                 <div class="btn btn-danger btn-block">
                     <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
@@ -36,14 +33,15 @@
             </div>
         -->
           </div>
-
-          <h2 class="sub-header">Commandes</h2>
-          [MODULE Boutique/Commande/List]
-          <h2 class="sub-header">Ordonnances</h2>
-          [MODULE Pharmacie/Ordonnance/List]
+    <h2 class="sub-header">Réservations du jour</h2>
+    [!Chemin:=TennisForever/Reservation/Valide=1&DateDebut>[!Utils::getTodayMorning()!]&DateFin<[!Utils::getTodayEvening()!]!]
+    [MODULE Systeme/Utils/List?Chemin=[!Chemin!]&Mini=1]
+    <h2 class="sub-header">Factures du jour</h2>
+    [!Chemin:=TennisForever/Facture/Valide=1&tmsCreate>[!Utils::getTodayMorning()!]&tmsCreate<[!Utils::getTodayEvening()!]!]
+    [MODULE Systeme/Utils/List?Chemin=[!Chemin!]&Mini=1]
 </div>
 [IF [!RELOAD!]!=1]
-<script>
+    <script>
 
     //auto reload
     var timeout = setInterval(reloadPage, 5000);
@@ -57,5 +55,5 @@
             $( this ).addClass( 'active' );
         });
     }
-</script>
+    </script>
 [/IF]

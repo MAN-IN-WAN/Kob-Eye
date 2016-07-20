@@ -1,8 +1,21 @@
 [!R:=[!RES!]!]
+[!CHECK:=1!]
+
+//VERIFICATION
+[IF [!R::Verify()!]][ELSE]
+    [!CHECK:=0!]
+    <div class="alert alert-danger">
+        <ul>
+            [STORPROC [!R::Error!]|E]
+            <li>[!E::Message!]</li>
+            [/STORPROC]
+        </ul>
+    </div>
+[/IF]
 
 [IF [!Valider!]=Valider la réservation]
     <div class="alert alert-success">
-        La réservation a étée validée avec succès.
+        La réservation a été validée avec succès.
     </div>
     //Validation de la réservation
     [!R::setValide()!]
@@ -42,7 +55,7 @@
             </ul></h3>
             <h3><b>Total à payer:</b><span class="label label-success" >[!Utils::getPrice([!R::getTotal()!])!] €</span></h3>
 
-            [IF [!R::Valide!]=]
+            [IF [!CHECK!]&&[!R::Valide!]=]
                 [IF [!R::getTotal()!]>0]
                     <input type="submit" class="btn btn-success btn-large btn-block" name="Valider" value="Payer en carte bleue" />
                 [ELSE]

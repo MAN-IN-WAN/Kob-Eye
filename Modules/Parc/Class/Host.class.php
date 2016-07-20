@@ -41,12 +41,22 @@ class Host extends genericClass
      */
     public function Verify($synchro = true)
     {
-
+        //test du nom
+        if (!preg_match('#[a-z0-9]+#',$this->Nom)){
+            $this->addError(array("Prop"=>"Nom","Message"=>"Le nom ne peut contenir de caractères accentués, de majuscule, d'espaces ou de ponctuations."));
+            return false;
+        }
+        if (strlen($this->Nom)>25||strlen($this->Nom)<2){
+            $this->addError(array("Prop"=>"Nom","Message"=>"Le nom doit comporter de 2 à 25 caractères"));
+            return false;
+        }
         if (parent::Verify()) {
             //Verification du client
             if (!$this->getKEClient()) return true;
             //Verification du server
-            if (!$this->getKEServer()) return true;
+            if (!$this->getKEServer()){
+                return true;
+            }
 
             $this->_isVerified = true;
 

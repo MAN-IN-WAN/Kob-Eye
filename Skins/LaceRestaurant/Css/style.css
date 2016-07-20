@@ -1,0 +1,31 @@
+body{
+    background-image: url(../Img/Fond.jpg);
+}
+#content{
+    margin-top:0px;
+}
+* {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+.form-control {
+    width: calc(100% - 24px);
+}
+.tp-caption.largepinkbg, .largepinkbg {
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    background-color: #BFA688 !important;
+    border-radius: 0;
+    color: #fff;
+    font-family: 'Open Sans', sans-serif  !important;
+    font-size: 20px;
+    margin: 5px;
+    line-height: 70px;
+    padding: 0 20px;
+    position: absolute;
+    text-shadow: none;
+    box-shadow: rgba(0,0,0,0.3) 0 10px 30px;
+    font-weight: bold;
+    text-transform: uppercase;
+}

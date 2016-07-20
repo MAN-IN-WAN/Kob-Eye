@@ -236,8 +236,14 @@ body { font-weight: normal;}
 .horaire-wrapper.right .horaire-tennis{
     border-radius: 0 6px 6px 0;
 }
-.horaire-tennis.disabled{
+.horaire-tennis.disabled,.horaire-tennis.disabled.warning{
     background:red !important;
+    color: #white;
+    pointer-events: none;
+    cursor: default;
+}
+.horaire-tennis.warning{
+    background:orange !important;
     color: #white;
     pointer-events: none;
     cursor: default;

@@ -1,13 +1,4 @@
 <h1>[!O::getDescription()!] [!O::getFirstSearchOrder()!]</h1>
-[IF [!O::Verify()!]][ELSE]
-    <div class="alert alert-warning">
-        <ul>
-        [STORPROC [!O::Error!]|E]
-            <li>[!E::Message!]</li>
-        [/STORPROC]
-        </ul>
-    </div>
-[/IF]
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class=" navbar-header">
@@ -24,21 +15,49 @@
     </div>
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav">
-            <!--<li><a href="#">Link</a></li>-->
+        [COUNT [!O::getFunctions()!]|NF]
+        [IF [!NF!]>3]
+            <ul class="nav navbar-nav">
+                <!--<li><a href="#">Link</a></li>-->
+                [STORPROC [!O::getFunctions()!]|F]
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Fonctions<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        [LIMIT 0|100]
+                        <li><a href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!O::Id!]/[!F::Nom!]" class="popup popup-close">[IF [!F::title!]][!F::title!][ELSE][!F::Nom!][/IF]</a></li>
+                        [/LIMIT]
+                    </ul>
+                </li>
+                [/STORPROC]
+            </ul>
+        [ELSE]
+            &nbsp;
             [STORPROC [!O::getFunctions()!]|F]
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Fonctions <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    [LIMIT 0|100]
-                    <li><a href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!O::Id!]/[!F::Nom!]" class="popup">[IF [!F::title!]][!F::title!][ELSE][!F::Nom!][/IF]</a></li>
-                    [/LIMIT]
-                </ul>
-            </li>
+                <a href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!O::Id!]/[!F::Nom!]" class="btn btn-info navbar-btn popup popup-close">[IF [!F::title!]][!F::title!][ELSE][!F::Nom!][/IF]</a>
             [/STORPROC]
-        </ul>
+        [/IF]
     </div>
 </nav>
+[IF [!O::Verify(0)!]][ELSE]
+    [STORPROC [!O::Error!]|E]
+        <div class="alert alert-danger">
+            <ul>
+                [LIMIT 0|100]
+                <li>[!E::Message!]</li>
+                [/LIMIT]
+            </ul>
+        </div>
+    [/STORPROC]
+    [STORPROC [!O::Warning!]|W]
+        <div class="alert alert-warning">
+            <ul>
+                [LIMIT 0|100]
+                <li>[!W::Message!]</li>
+                [/LIMIT]
+            </ul>
+        </div>
+    [/STORPROC]
+[/IF]
 <div class="row">
 [COUNT [!O::getElementsByAttribute(fiche,,1)!]|NBC]
     <div class="[IF [!NBC!]>6]col-md-6[ELSE]col-md-12[/IF]">
@@ -81,6 +100,16 @@
                 <input type="checkbox" name="Form_[!P::name!]" [IF [!DF!]]checked="checked"[/IF] class="switch" value="1" disabled="disabled">
             </div>
         </div>
+        [/CASE]
+        [CASE datetime]
+            [IF [!Form_[!P::name!]!]>0][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!Utils::getDate(d/m/Y H:i,[!P::value!])!]!][/IF]
+            <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
+            <label class="col-sm-6 control-label">[!P::description!]</label>
+            <div class="col-sm-6">
+                [!DF!]
+                //<input type="text" class="form-control datetimepicker" id="inputDate" placeholder="Sélectionnez une date" value="[!DF!]"  name="Form_[!P::name!]">
+            </div>
+            </div>
         [/CASE]
         [CASE date]
         [IF [!Form_[!P::name!]!]>0][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!Utils::getDate(d/m/Y,[!P::value!])!]!][/IF]
@@ -151,20 +180,18 @@
             </div>
         [/CASE]
         [CASE raw]
-            [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]
             <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
             <label for="Form_[!P::name!]" class="control-label">[!P::description!]</label>
             <div>
-                <pre class="prettyprint">[UTIL SPECIALCHARS][!DF!][/UTIL]</pre>
+                <pre class="prettyprint">[IF [!Form_[!P::name!]!]][UTIL SPECIALCHARS][!Form_[!P::name!]!][/UTIL][ELSE][UTIL SPECIALCHARS][!P::value!][/UTIL][/IF]</pre>
             </div>
             </div>
         [/CASE]
         [CASE html]
-        [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]
             <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
             <label for="Form_[!P::name!]" class="control-label">[!P::description!]</label>
             <div>
-                [!DF!]
+                [IF [!Form_[!P::name!]!]][!Form_[!P::name!]!][ELSE][!P::value!][/IF]
             </div>
             </div>
         [/CASE]

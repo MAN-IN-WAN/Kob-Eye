@@ -5,7 +5,7 @@
 [!Client:=[!Module::TennisForever::getCurrentClient()!]!]
 
 
-        [STORPROC TennisForever/Reservation/Valide=0|RES]
+        [STORPROC TennisForever/Client/[!Client::Id!]/Reservation/Valide=0|RES]
 <div class="alert alert-danger">
 Mes réservations non complètes
 </div>
@@ -14,7 +14,7 @@ Mes réservations non complètes
 <span class="label label-danger pull-right">[!Utils::getPrice([!RES::getTotal()!])!] €</span>
 Complèter ma réservation<br/>
     [IF [!RES::Service!]]
-    <small>De [DATE H:i][!RES::DateDebut!][/DATE] pour une durée de [!RES::Duree!] minutes et avec [!RES::NbParticipant!] participants.</small>
+    <small>Le [DATE d/m/Y][!RES::DateDebut!][/DATE] de [DATE H:i][!RES::DateDebut!][/DATE] pour une durée de [!RES::Duree!] minutes et avec [!RES::NbParticipant!] participants.</small>
     [/IF]
     <ul>
         [STORPROC [!RES::getLigneFacture()!]|Lf]
@@ -25,7 +25,7 @@ Complèter ma réservation<br/>
         [/LIMIT]
         [/STORPROC]
 
-        [STORPROC TennisForever/Reservation/Valide=1&DateFin>[!TMS::Now!]|RES]
+        [STORPROC TennisForever/Client/[!Client::Id!]/Reservation/Valide=1&DateFin>[!TMS::Now!]|RES]
 <div class="alert alert-success">
 Mes réservations à venir
 </div>
@@ -34,7 +34,7 @@ Mes réservations à venir
 <span class="label label-success pull-right">[!Utils::getPrice([!RES::getTotal()!])!] €</span>
 Consulter ma réservation<br/>
     [IF [!RES::Service!]]
-    <small>De [DATE H:i][!RES::DateDebut!][/DATE] pour une durée de [!RES::Duree!] minutes et avec [!RES::NbParticipant!] participants.</small>
+    <small>Le [DATE d/m/Y][!RES::DateDebut!][/DATE] de [DATE H:i][!RES::DateDebut!][/DATE] pour une durée de [!RES::Duree!] minutes et avec [!RES::NbParticipant!] participants.</small>
     [/IF]
     <ul>
         [STORPROC [!RES::getLigneFacture()!]|Lf]
@@ -45,7 +45,7 @@ Consulter ma réservation<br/>
         [/LIMIT]
         [/STORPROC]
 
-[STORPROC TennisForever/Reservation/DateFin<[!TMS::Now!]|RES]
+[STORPROC TennisForever/Client/[!Client::Id!]/Reservation/DateFin<[!TMS::Now!]|RES]
 <div class="alert alert-info">
     Mes réservations passées
 </div>
@@ -54,7 +54,7 @@ Consulter ma réservation<br/>
     <span class="label label-primary pull-right">[!Utils::getPrice([!RES::getTotal()!])!] €</span>
     Consulter ma réservation<br/>
     [IF [!RES::Service!]]
-    <small>De [DATE H:i][!RES::DateDebut!][/DATE] pour une durée de [!RES::Duree!] minutes et avec [!RES::NbParticipant!] participants.</small>
+    <small>Le [DATE d/m/Y][!RES::DateDebut!][/DATE] de [DATE H:i][!RES::DateDebut!][/DATE] pour une durée de [!RES::Duree!] minutes et avec [!RES::NbParticipant!] participants.</small>
     [/IF]
     <ul>
         [STORPROC [!RES::getLigneFacture()!]|Lf]

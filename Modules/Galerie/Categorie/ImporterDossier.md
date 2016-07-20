@@ -18,7 +18,7 @@
 					[BLOC Rounded|background-color:#9A9EA0;color:#FFFFFF;|margin-bottom:5px;]Importation de [!D!][/BLOC]
 					//Importation des images
 					<ul>
-					[STORPROC Explorateur/_Dossier/Home/Galerie/[!D!]/_Fichier|F]
+					[STORPROC Explorateur/Dossier/Home/Galerie/[!D!]/Fichier|F]
 						<li>[!F::Nom!] - [!F::Type!]</li>
 						[OBJ Galerie|Image|Im]
 						[METHOD Im|Set][PARAM]Titre[/PARAM][PARAM][!F::Nom!][/PARAM][/METHOD]
@@ -36,19 +36,19 @@
 				[/BLOC]
 				<div style="overflow:auto;position:absolute;top:30px;bottom:30px;width:100%;background-color:white;">
 				<ul>
-				[STORPROC Explorateur/_Dossier/Home/Galerie/_Dossier|Dos]
+				[STORPROC Explorateur/Dossier/Home/Galerie/Dossier|Dos]
 					<li><input type="checkbox" value="[!Dos::Nom!]" name="Doss[]"/>[!Dos::Nom!]</li>
 					<ul>
-					[STORPROC Explorateur/_Dossier/Home/Galerie/[!Dos::Nom!]/_Dossier|Dos2]
+					[STORPROC Explorateur/Dossier/Home/Galerie/[!Dos::Nom!]/Dossier|Dos2]
 						<li><input type="checkbox" value="[!Dos::Nom!]/[!Dos2::Nom!]"  name="Doss[]"/>[!Dos2::Nom!]</li>
 						<ul>
-						[STORPROC Explorateur/_Dossier/Home/Galerie/[!Dos::Nom!]/[!Dos2::Nom!]/_Dossier|Dos3]
+						[STORPROC Explorateur/Dossier/Home/Galerie/[!Dos::Nom!]/[!Dos2::Nom!]/Dossier|Dos3]
 							<li><input type="checkbox" value="[!Dos::Nom!]/[!Dos2::Nom!]/[!Dos3::Nom!]" name="Doss[]" />[!Dos3::Nom!]</li>
 							<ul>
-							[STORPROC Explorateur/_Dossier/Home/Galerie/[!Dos::Nom!]/[!Dos2::Nom!]/[!Dos3::Nom!]/_Dossier|Dos4]
+							[STORPROC Explorateur/Dossier/Home/Galerie/[!Dos::Nom!]/[!Dos2::Nom!]/[!Dos3::Nom!]/Dossier|Dos4]
 								<li><input type="checkbox" value="[!Dos::Nom!]/[!Dos2::Nom!]/[!Dos3::Nom!]/[!Dos4::Nom!]" name="Doss[]" />[!Dos4::Nom!]</li>
 								<ul>
-								[STORPROC Explorateur/_Dossier/Home/Galerie/[!Dos::Nom!]/[!Dos2::Nom!]/[!Dos3::Nom!]/[!Dos4::Nom!]/_Dossier|Dos5]
+								[STORPROC Explorateur/Dossier/Home/Galerie/[!Dos::Nom!]/[!Dos2::Nom!]/[!Dos3::Nom!]/[!Dos4::Nom!]/Dossier|Dos5]
 									<li><input type="checkbox" value="[!Dos::Nom!]/[!Dos2::Nom!]/[!Dos3::Nom!]/[!Dos4::Nom!]/[!Dos5::Nom!]" name="Doss[]" />[!Dos5::Nom!]</li>
 									
 								[/STORPROC]

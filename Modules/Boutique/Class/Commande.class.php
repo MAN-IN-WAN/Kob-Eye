@@ -151,6 +151,7 @@ class Commande extends genericClass {
 				}
 			}
 		}
+		$this->sendMailAdministrateur();
 
         $this -> sendNotification($new);
 
@@ -1018,8 +1019,6 @@ class Commande extends genericClass {
 
     }
 
-
-
     /**
 	 * applyCommande
 	 * Applique la commande
@@ -1217,6 +1216,94 @@ class Commande extends genericClass {
 		    $Mail -> Send();
 	}
 
+	/**
+	 * Envoi du mail a l'administrateur
+	 * Param  magasin string
+	 */
+	private function sendMailAdministrateur() {
+		$this -> getClient();
+		$this -> getBonLivraison();
+		$this->getSiteMagasin();
+		$this->getTypePaiement();
+		$this->getMagasin();
+		if (empty($this->Magasin->EmailAdministrateur)||empty($this->Magasin->EmailImprimante)) return false;
+
+
+		$Civilite = $this -> Client -> Civilite . " " . $this -> Client -> Prenom . ' <span style="text-transform:uppercase">' . $this -> Client -> Nom . '</span>';
+		$CiviliteLiv = $this -> AdrLiv -> Civilite . " " . $this -> AdrLiv -> Prenom . ' <span style="text-transform:uppercase">' . $this -> AdrLiv -> Nom . '</span>';
+
+		$Lacommande = "";
+		$this->getLignesCommande();
+		if (!sizeof($this->LignesCommandes)) {
+			$Lacommande = "Erreur";
+		} else {
+			$Lacommande = "<br /><br /><h2>Récapitulatif de votre commande  : </h2><br /><br /><table width='100%'>";
+			$Lacommande .= "<tr bgcolor='#B1599e' padding='5'><td></td><td><font color='#ffffff'>Quantite</font></td><td><font color='#ffffff'>Titre</font></td><td><font color='#ffffff'>Tarif TTC</font></td></tr>";
+			foreach ($this->LignesCommandes as $l) :
+				//récupération du produit
+				$r = $l->getParents('Reference');
+				$p = $r[0]->getParents('Produit');
+				$Lacommande .= "<tr height='200'><td><img src='http://" .Sys::$domain.'/'. $p[0]->Image . ".limit.200x200.jpg' /></td>";
+				$Lacommande .= "<td><h3>" . $l->Quantite . "</h3> </td>";
+				$Lacommande .= "<td><h3>" . $l->Titre . "</h3></td>";
+				$Lacommande .= "<td><h2>" . $l->MontantTTC . " € TTC</h2></td></tr>";
+			endforeach;
+			$Lacommande .= "
+                <tr bgcolor='#B1599e' padding='5'>
+                    <td colspan='2'></td>
+                    <td><font color='#ffffff'>TOTAL</font></td>
+                    <td><font color='#ffffff'><h2>$this->MontantTTC € TTC</h2></font></td>
+                </tr>
+            </table>";
+		}
+		require_once ("Class/Lib/Mail.class.php");
+		$Mail = new Mail();
+		if ($this->Valide&&!$this->Prepare&&!$this->Expedie&&!$this->Cloture) {
+			$Mail->Subject("Confirmation de commande sur " . $this->Magasin->Nom);
+		}elseif ($this->Valide&&$this->Prepare&&!$this->Expedie&&!$this->Cloture) {
+			$Mail->Subject("Confirmation de preparation de commande  " . $this->Magasin->Nom);
+		}elseif ($this->Valide&&$this->Prepare&&$this->Expedie&&!$this->Cloture) {
+			$Mail->Subject("Confirmation de retrait de commande  " . $this->Magasin->Nom);
+		}
+		//$Mail -> From($GLOBALS['Systeme'] -> Conf -> get('MODULE::SYSTEME::CONTACT'));
+		$Mail -> From( $this -> Magasin ->EmailContact );
+//		$Mail -> ReplyTo($GLOBALS['Systeme'] -> Conf -> get('MODULE::SYSTEME::CONTACT'));
+		$Mail -> ReplyTo($this -> Magasin ->EmailContact);
+		$Mail -> To($this -> Magasin ->EmailAdministrateur);
+		$Mail -> Bcc($this -> Magasin ->EmailImprimante);
+
+        //	$Mail -> Bcc($GLOBALS['Systeme'] -> Conf -> get('MODULE::SYSTEME::CONTACTALPHA'));
+		if ($this->Valide&&!$this->Prepare&&!$this->Expedie&&!$this->Cloture) {
+			$bloc = new Bloc();
+			$mailContent = "
+                Client " . $Civilite . ",<br /><br />
+                Nous vous informons que votre commande N° " . $this->RefCommande . " a bien été prise en compte.<br />
+                Vous pouvez d'ores et déjà vous rendre sur <a style='text-decoration:underline' href='" . $this->Site->Domaine . "/" . $GLOBALS['Systeme']->getMenu('Boutique/Mon-compte') . "'>votre espace client</a> et suivre l'évolution de votre commande.<br /><br />
+                <br />Toute l'équipe de " . $this->Magasin->Nom . " vous remercie de votre confiance,<br />
+                <br />Pour nous contacter : " . $this->Magasin->EmailContact . " .".$Lacommande;
+				$bloc -> setFromVar("Mail", $mailContent, array("BEACON" => "BLOC"));
+				$Pr = new Process();
+				$bloc -> init($Pr);
+				$bloc -> generate($Pr);
+				$Mail -> Body($bloc -> Affich());
+				if (!$this->Cloture)
+					$Mail -> Send();
+		}/*elseif ($this->Valide&&$this->Prepare&&!$this->Expedie&&!$this->Cloture) {
+			$mailContent = "
+                Bonjour " . $Civilite . ",<br /><br />
+                Nous vous informons que votre commande N° " . $this->RefCommande . " a été préparée.<br />
+                Vous pouvez d'ores et déjà vous rendre à l'officine ".$this->Magasin->Nom." pour retirer et payer votre commande <br /><br />
+                Toute l'équipe de " . $this->Magasin->Nom . " vous remercie de votre confiance,<br />
+                <br />Pour nous contacter : " . $this->Magasin->EmailContact . ". ".$Lacommande;
+		}elseif ($this->Valide&&$this->Prepare&&$this->Expedie&&!$this->Cloture) {
+			$mailContent = "
+                Bonjour " . $Civilite . ",<br /><br />
+                Vous avez retiré votre commande N° " . $this->RefCommande . ".
+                Toute l'équipe de " . $this->Magasin->Nom . " vous remercie de votre confiance,<br />
+                <br />Pour nous contacter : " . $this->Magasin->EmailContact . " .".$Lacommande;
+		}*/
+
+	}
 
 //---------------------------------------- ------------------------------------------------------//
 //-------------------------- DÉPLACER DANS PLUGIN PAIEMENT PAR CHÈQUE --------------------------//

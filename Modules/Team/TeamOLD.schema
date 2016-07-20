@@ -1,0 +1,57 @@
+<SCHEMA>
+	<OBJECTCLASS title="Equipe" driver="mysql" master="1" generateUrl="1" AccessPoint="1" Description="Equipe"  Icon="/Skins/AdminV2/Img/IconAqua/Home.png">
+		<PROPERTIES type="varchar" special="multi" length="100" searchOrder="1" list="1">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" values="red,green,blue,yellow,grey">Couleur</PROPERTIES>
+		<PROPERTIES type="order" list="1">Ordre</PROPERTIES>
+<!--		<VIEW title="EquipeList" default="1">
+			<OBJECTCLASS title="Equipe">
+				<PROPERTIES type="int">Id</PROPERTIES>
+				<PROPERTIES type="varchar" special="multi" length="100" searchOrder="1" list="1">Titre</PROPERTIES>
+				<PROPERTIES type="order" list="1">Ordre</PROPERTIES>
+			</OBJECTCLASS>
+	</VIEW> -->
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Rider" driver="mysql" browseable="1" master="0" AccessPoint="1" Description="Rider"  Icon="/Skins/AdminV2/Img/IconAqua/Contact.png">
+		<PROPERTIES type="varchar" length="100" searchOrder="1" list="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" length="100" searchOrder="2" list="1">Prenom</PROPERTIES>
+		<PROPERTIES type="varchar" special="multi" length="100" searchOrder="3" list="1">Pays</PROPERTIES>
+		<PROPERTIES type="image" description="Photo du membre sur la liste" list="1">Avatar</PROPERTIES>
+		<PROPERTIES type="order" description="Ordre d'affichage sur le site" default="10">Ordre</PROPERTIES>
+		<PROPERTIES type="image" description="Photo du membre sur la fiche">Fond</PROPERTIES>
+		<PROPERTIES type="text" special="multi" description="Description page 1" hidden="1">Description1</PROPERTIES>
+		<PROPERTIES type="bbcode" special="multi" description="Palmares" >Description2</PROPERTIES>
+		<PROPERTIES type="bbcode" special="multi" description="Sponsors" >Description3</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" description="Site web mettre http://" list="1">Web</PROPERTIES>
+		<FKEY card="0,n" data="Equipe,Id" action="Link">EquipeId</FKEY>
+		<FKEY module="Galerie"  data="Media,Id" card="0,n" action="Link">PostId</FKEY>
+		<FKEY module="Blog" data="Post,Id" card="0,n" action="Link" >MediaId</FKEY>
+		<VIEW title="RiderList" default="1">
+			<OBJECTCLASS title="Rider">
+				<PROPERTIES type="int">Id</PROPERTIES>
+				<PROPERTIES type="varchar">Url</PROPERTIES>
+				<PROPERTIES type="varchar" length="100" searchOrder="1" list="1">Nom</PROPERTIES>
+				<PROPERTIES type="varchar" special="multi" length="100" searchOrder="2" list="1">Pays</PROPERTIES>
+				<PROPERTIES type="file" description="Photo du membre 120x120 minimum" list="1">Avatar</PROPERTIES>
+				<JOIN type="outer" module="Team" title="RiderEquipeId" on="Rider" target="Id">
+					<JOIN type="inner" module="Team" title="Equipe" on="EquipeId" target="Id">
+						<PROPERTIES type="varchar" length="250"  list="1" alias="Equipe">Titre</PROPERTIES>
+					</JOIN>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Photo" driver="mysql" master="0" AccessPoint="0" Dico="1" Description="Photos (Galerie)" Icon="/Skins/AdminV2/Img/IconAqua/Home.png">
+		<PROPERTIES type="varchar" multi="1" searchOrder="1">Titre</PROPERTIES>
+		<PROPERTIES type="file">Image</PROPERTIES>
+		<FKEY card="0,n" data="Rider,Id">RiderPhoto</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Caracteristique" driver="mysql" master="0" AccessPoint="0" Dico="0" Description="Caractéristiques" Icon="/Skins/AdminV2/Img/IconAqua/Home.png">
+		<PROPERTIES type="varchar" multi="1" searchOrder="1">Titre</PROPERTIES>
+		<PROPERTIES type="text" searchOrder="2">Valeur</PROPERTIES>
+		<FKEY card="0,1" data="Rider,Id">RiderId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="PunchText" driver="mysql" master="0" AccessPoint="0" Dico="0" Description="PunchText" Icon="/Skins/AdminV2/Img/IconAqua/Home.png">
+		<PROPERTIES type="varchar" multi="1" searchOrder="1">Texte</PROPERTIES>
+		<FKEY card="0,1" data="Rider,Id">RiderId</FKEY>
+	</OBJECTCLASS>
+</SCHEMA>
