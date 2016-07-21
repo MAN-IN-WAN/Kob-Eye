@@ -22,6 +22,7 @@
         <PROPERTIES type="varchar" length="200" searchOrder="1" category="Intitulé" mobile="1">Nom</PROPERTIES>
         <PROPERTIES type="varchar" length="30" category="Intitulé" mobile="1">Prefixe</PROPERTIES>
         <PROPERTIES type="order" searchOrder="2" category="Intitulé" mobile="1">Ordre</PROPERTIES>
+        <PROPERTIES type="image" category="Intitulé" mobile="1">Image</PROPERTIES>
         <PROPERTIES type="text" category="Commentaires" mobile="1">CommentaireGlobal</PROPERTIES>
         <PROPERTIES type="text" category="Commentaires" mobile="1">CommentaireInterRegion</PROPERTIES>
         <PROPERTIES type="text" category="Commentaires" mobile="1">CommentaireRegion</PROPERTIES>
@@ -38,6 +39,7 @@
     </OBJECTCLASS>
     <OBJECTCLASS title="TypeQuestionValeur" driver="mysql" Description="Sélection: valeur" Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
         <PROPERTIES type="varchar" length="200" searchOrder="1" category="Intitulé" mobile="1">Valeur</PROPERTIES>
+        <PROPERTIES type="image" category="Intitulé" mobile="1" searchOrder="2" >Image</PROPERTIES>
         <PROPERTIES type="order" searchOrder="2" category="Intitulé" mobile="1">Ordre</PROPERTIES>
         <FKEY card="0,1" data="TypeQuestion,Id" category="Intitulé" description="Projet" mobile="1">TypeQuestionId</FKEY>
     </OBJECTCLASS>
