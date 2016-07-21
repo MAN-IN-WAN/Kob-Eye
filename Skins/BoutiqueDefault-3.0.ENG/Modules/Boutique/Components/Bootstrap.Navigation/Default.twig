@@ -1,0 +1,19 @@
+{% for menu in Menus %}
+<div class="block">
+    <h3 class="title_block">{{ menu.Titre }}</h3>
+    <div class="block_content">
+        <ul class="navigation">
+            {% for menu2 in menu.getSubMenus() %}
+            <li>
+                {% if Lien matches '#^' ~ menu.Url ~ '/' ~ menu2.Url ~ '.*#' %}
+                    <a href="/{{ menu.Url }}/{{ menu2.Url}}" class="selected">{{ menu2.Titre }}</a>
+                    {{ include(template_from_string(component("Boutique/Bootstrap.Navigation/SNavigation?Url="~menu.Url~"/"~menu2.Url~"&CatId="~menu2.Id~"&Niveau=2"))) }}
+                {% else %}
+                    <a href="/{{ menu.Url }}/{{ menu2.Url }}">{{ menu2.Titre }}</a>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endfor %}

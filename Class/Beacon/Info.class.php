@@ -40,7 +40,7 @@ class Info extends Beacon {
 		$FirstModule = $Mod[0];
 		if (!$FirstModule) return ;
 		if ($GLOBALS["Systeme"]->isModule($FirstModule)){
-			$Query = (isset($Mod[1]))?$Mod[1]:'';
+			//$Query = (isset($Mod[1]))?$Mod[1]:'';
 			//On recolte les infos sur la requete
 			$Result = Sys::$Modules[$FirstModule]->splitQuery($Query);
 			//On definit le module

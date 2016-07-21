@@ -151,10 +151,14 @@ class Group extends genericClass{
 	 */
 	 function Delete(){
 	 	//suppression des menus
-	 	$mpd = $this->getChilds("Menu");
+	 	$mpd = $this->getChildren("Menu");
 		if (is_array($mpd)&&sizeof($mpd))foreach ($mpd as $mp){
 			$mp->Delete();
 		}
+		 $mpd = $this->getChildren("Group");
+		 if (is_array($mpd)&&sizeof($mpd))foreach ($mpd as $mp){
+			 $mp->Delete();
+		 }
 	 	return parent::Delete();
 	 }
 	 

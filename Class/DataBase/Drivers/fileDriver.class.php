@@ -211,16 +211,16 @@ class fileDriver extends ObjectClass {
 		//On prend l'image selon le type
 		$Caneva = imagecreatetruecolor($Largeur,$Hauteur);
 		$TabNom[1] = strtolower($TabNom[1]);
-		if ($TabNom[1]=="jpg"||$TabNom[1]=="jpeg"){
+		if (exif_imagetype($OrigAdresse)==IMAGETYPE_JPEG){
 			//On commence le travail de l'image
 			$Dimensions = getimagesize($OrigAdresse);
 			$Img = imagecreatefromjpeg($OrigAdresse);
             //$Img = imagecreatetruecolor($Largeur, $Hauteur);
-        }elseif ($TabNom[1]=="gif"){
+        }elseif (exif_imagetype($OrigAdresse)==IMAGETYPE_GIF){
 			//On commence le travail de l'image
 			$Dimensions = getimagesize($OrigAdresse);
 			 $Img = imagecreatefromgif($OrigAdresse);
-		}elseif ($TabNom[1]=="png") {
+		}elseif (exif_imagetype($OrigAdresse)==IMAGETYPE_PNG) {
 			//On commence le travail de l'image
 			$Dimensions = getimagesize($OrigAdresse);
 			$Img = imagecreatefrompng($OrigAdresse);

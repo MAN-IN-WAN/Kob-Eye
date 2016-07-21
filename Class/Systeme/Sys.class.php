@@ -147,6 +147,8 @@ class Sys extends Root{
 				$this->Db[0]->query("SET AUTOCOMMIT=0");
 				$this->Db[0]->query("START TRANSACTION");
 			} catch (PDOException $e) {
+				echo 'impossible de se connecter à la abase de donnée';
+				print_r($e);
 				KError::fatalError('Impossible de se connecter à la base de données !');
 			}
 		}
@@ -767,8 +769,10 @@ class Sys extends Root{
 	}
 
 	function getContenu() {
-		$Tab = Sys::$Modules[$this->CurrentModule]->splitQuery($this->Query);
-		if (isset($Tab[0]["Query"]))Process::RegisterTempVar('Query',$Tab[0]["Query"]);
+        if (!empty($this->Query)) {
+            $Tab = Module::splitQuery($this->Query);
+            if (isset($Tab[0]["Query"])) Process::RegisterTempVar('Query', $Tab[0]["Query"]);
+        }
 		//Recuperation des Donnï¿œes du Module
 		$Data = Sys::$Modules[$this->CurrentModule]->Affich($this->Query); //echo "ERREUR FICHEIR NON TROUVE";//$this->FileNotFound($this->Query);
 		return $Data;
@@ -1069,6 +1073,13 @@ class Sys extends Root{
 	/**********************************
 	* ETAPE 4
 	***********************************/
+    /**
+     * Cloture transaction
+     */
+    function CommitTransaction() {
+        if (is_object($this->Db[0])) $this->Db[0]->query("COMMIT");
+        if (is_object($this->Db[0])) $this->Db[0]->query("START TRANSACTION");
+    }
 	/**
 	* Fermeture des connexions
 	*/
@@ -1112,7 +1123,6 @@ class Sys extends Root{
 
         $this->Log->log("---------------------------------------- CLOSE----------------------------------------");
 		flush();
-        ob_end_flush();
         session_write_close();
 	}
 

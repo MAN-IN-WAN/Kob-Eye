@@ -10,6 +10,24 @@ class Systeme extends Module {
         return Sys::$Session->Session;
     }
     /**
+     * Surcharge de la fonction postInit
+     * Après l'authentification de l'utilisateur
+     * Toutes les fonctionnalités sont disponibles
+     * @void
+     */
+    function postInit (){
+        parent::postInit();
+        //chargement des variables globales par défaut pour le module boutique
+        $this->initGlobalVars();
+    }
+    /**
+     * Initilisation des variables globales disponibles pour la boutique
+     */
+    function initGlobalVars(){
+        //initialisation magasin si disponible
+        $GLOBALS["Systeme"]->registerVar("CurrentUser",Sys::$User);
+    }
+    /**
      * isLogged
      * check if session is started
      * if session exists, start session
@@ -29,6 +47,81 @@ class Systeme extends Module {
             }
         }
         return false;
+    }
+    /**
+     * Keyword generation
+     *
+     */
+    static public function Keywords() {
+        $mens = Sys::$User->Menus;
+        $b = new BashColors();
+        echo $b->getColoredString("-------------------------------------------------------------\n",'yellow');
+        echo $b->getColoredString("-              GENERATION DES PAGES                         -\n",'yellow');
+        echo $b->getColoredString("-------------------------------------------------------------\n",'yellow');
+
+        foreach ($mens as $m) {
+            $m->Save();
+            echo $b->getColoredString($m->Module.' / '.$m->ObjectType.' / '.$m->getFirstSearchOrder().' ( '.$m->Id." )        [ OK ]\n", 'green');
+            foreach ($m->Menus as $m2) {
+                $m2->Save();
+                echo $b->getColoredString($m2->Module.' / '.$m2->ObjectType.' / '.$m2->getFirstSearchOrder()." ( '.$m2->Id.' )        [ OK ]\n", 'green');
+            }
+        }
+
+        echo $b->getColoredString("-------------------------------------------------------------\n",'yellow');
+        echo $b->getColoredString("-              GENERATION DES MOTS CLEFS                    -\n",'yellow');
+        echo $b->getColoredString("-------------------------------------------------------------\n",'yellow');
+
+        foreach (Sys::$Modules as $mod){
+            echo $b->getColoredString("-- ".$mod->Nom."\n",'cyan');
+            foreach (Sys::$Modules[$mod->Nom]->Db->ObjectClass as $o){
+                if ($o->browseable) {
+                    echo $b->getColoredString("---- ".$o->titre."\n",'cyan');
+                    if ($o->isReflexive()) {
+                        $tmp = Sys::getData($mod->Nom, $o->titre . '/*',0, 1000000, 'Id', 'ASC');
+                        $nb = Sys::getCount($mod->Nom, $o->titre . '/*');
+                        $i=1;
+                        echo $b->getColoredString("------> RAPPORT total: ".$nb."\n",'red');
+                        foreach ($tmp as $t){
+                            if ($t->Display) {
+                                $t->SaveKeywords();
+                                echo $b->getColoredString("------ " . $i . "/" . $nb . " ".$mod->Nom ." " . $o->titre." " . $t->getFirstSearchOrder(). "\n", 'green');
+                            }else{
+                                echo $b->getColoredString("---DEL " . $i . "/" . $nb . " ".$mod->Nom ." " . $o->titre." " . $t->getFirstSearchOrder(). "\n", 'red');
+                                $t->deletePages();
+                            }
+                            $i++;
+                        }
+                        $GLOBALS['Systeme']->CommitTransaction();
+                        Sys::$Modules[$mod->Nom]->Db->clearLiteCache();
+                    } else {
+                        $nb = Sys::getCount($mod->Nom, $o->titre . '/*');
+                        $i=1;
+                        $nbpage = floor($nb/100)+1;
+                        echo $b->getColoredString("------> RAPPORT pages:  ".$nbpage." / total: ".$nb."\n",'red');
+                        for ($p=0; $p<$nbpage;$p++){
+                            $tmp = Sys::getData($mod->Nom, $o->titre,$p*100,100);
+                            echo $b->getColoredString("------> PAGE:  ".$p." / ".$nbpage."\n",'red');
+                            foreach ($tmp as $t){
+                                if ($t->Display) {
+                                    $t->SaveKeywords();
+                                    echo $b->getColoredString("------ " . $i . "/" . $nb . " ".$mod->Nom ." " . $o->titre." " . $t->getFirstSearchOrder(). "\n", 'green');
+                                }else{
+                                    echo $b->getColoredString("---DEL " . $i . "/" . $nb . " ".$mod->Nom ." " . $o->titre." " . $t->getFirstSearchOrder(). "\n", 'red');
+                                    $t->deletePages();
+                                }
+                                $i++;
+                            }
+                            $GLOBALS['Systeme']->CommitTransaction();
+                            Sys::$Modules[$mod->Nom]->Db->clearLiteCache();
+                        }
+                    }
+                }
+            }
+        }
+        echo $b->getColoredString("-------------------------------------------------------------\n",'yellow');
+        echo $b->getColoredString("-                            FIN                            -\n",'yellow');
+        echo $b->getColoredString("-------------------------------------------------------------\n",'yellow');
     }
     /**
      * Surcharge de la fonction Check
@@ -177,6 +270,7 @@ class Systeme extends Module {
         register_shutdown_function('sendNotificationParallel',$dev,$devios,$msg,$API_ACCESS_KEY);
         return;
     }
+
 
 
 }
@@ -363,3 +457,4 @@ function checkAppleErrorResponse($fp) {
     }
     return false;
 }
+

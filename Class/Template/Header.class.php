@@ -207,11 +207,10 @@ class Header extends Root{
             if($pos !== FALSE) $uri = substr($uri, 0, $pos);
         }
         $code  = md5('http://'.Sys::$domain.'/'.$GLOBALS["Systeme"]->Lien);
-        $pages = Sys::getData('Systeme','Page/MD5='.$code);
-        if (isset($pages[0])){
-            $page = $pages[0];
+        $page = Sys::getOneData('Systeme','Page/MD5='.$code);
+        if ($page){
             //if (!$this->ForceTitle)
-                $this->Title = $page->Title;
+            $this->Title = $page->Title;
             if (!$this->ForceDescription)
                 $this->Description = $page->Description;
             if (!$this->ForceKeywords)
@@ -224,6 +223,7 @@ class Header extends Root{
         //Récupréation de la page en cours
         $browser = $this->getBrowser() . ' ' . $this->getBrowser(true);
         $this->setMeta();
+
 		//					<html ' . (empty($browser) ? '': 'class="'.$browser.'"') .'>
 			$this->Content = '<!DOCTYPE HTML>
 							<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7 '.$browser.'" dir="ltr" lang="en-US"> <![endif]-->
@@ -290,16 +290,12 @@ class Header extends Root{
 ';
 			}
 		}
+		$this->Content.='<body '.$this->Body.'>';
 		$this->Content .= $this->getTab();
 		$this->Content .= $this->getLastTab();
 		if (DEBUG_DISPLAY) $this->Content.=KError::displayHeader();
 		$this->Content .='</head>
 ';
-		if (isset($this->Frameset)) {
-			$this->Content .= $this->getFrame();
-		}else{ 
-			$this->Content.='<body '.$this->Body.'>';
-		}
 		return $this->Content;
 	}
 

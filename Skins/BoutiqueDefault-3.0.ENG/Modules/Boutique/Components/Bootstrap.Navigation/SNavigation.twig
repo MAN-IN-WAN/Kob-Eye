@@ -1,0 +1,13 @@
+{% if menus|length > 0 %}
+<ul>
+    {% for menu in menus %}
+    <li>
+        <a href="/{{ Url }}/{{ menu.Url }}" {% if Lien matches '#^' ~ Url ~ '\/' ~ menu.Url ~ '.*#' %}class="selected">{{ menu.Nom }}</a>
+        {{ include(template_from_string(component("Boutique/Bootstrap.Navigation/SNavigation?Url="~Url~"/"~menu.Url~"&CatId="~menu.Id~"&Niveau="~(Niveau+1)))) }}
+        {% else %}
+            >{{ menu.Nom }}</a>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}

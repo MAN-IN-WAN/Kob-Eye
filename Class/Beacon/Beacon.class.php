@@ -55,64 +55,36 @@ class Beacon extends Root{
 	*/
 	function Generate() {
 		//if (isset($this->Data))$this->Data = Process::processingVars($this->Data);
-		if   ($this->Beacon=="MODULE") {
-			//Extraction des variables GET internes
-			$TabTemp = explode("|",$this->Vars);
-			$Test = explode("?",$TabTemp[0]);
-			$Lien = $Test[0];
-			//On genere le module si il n 'est pas generé
-			$Vars = Process::processingVars($Lien);
-			$Module = explode('/',$Vars,2);
-			$Query = (isset($Module[1]))?$Module[1]:"";
-			$Module = trim($Module[0]);
-			//test de l'existence du module
-			if (empty($Module)||!is_object(Sys::$Modules[$Module])){
-				return "<h1>LE MODULE $Module N'est pas installé pour la requete ".$this->Vars."</h1>";
-			}
-			//execution requete
-			$Bloc=Sys::$Modules[$Module]->setData($Query);
-			if (isset($Bloc)&&is_object($Bloc))$this->ChildObjects=$Bloc->ChildObjects;
-			//Gestion des variables temporaires
-			$TempVar = Process::$TempVar;
-			$Temp=Array("Query"=>$TempVar["Query"]);
-			if (isset($Test[1])){
-				$Vars = $Test[1];
-				preg_match_all("#([^&=|]*?)=([^&|=]*)#",$Vars,$Vars);
-				for ($i=0;$i<sizeof($Vars[0]);$i++){
-					$Temp[Process::processingVars($Vars[1][$i])] = Process::processingVars($Vars[2][$i]);
-				}
-				Process::$TempVar = $Temp;
-			}
-		}
         $this->Content = '';
         $out='';
 		$this->Vars = Parser::PostProcessing($this->Vars);
-		if (isset($this->BlObjects)&&is_array($this->BlObjects)) for ($i=0;$i<sizeof($this->BlObjects);$i++) if (is_object($this->BlObjects[$i])) {
-			$this->BlObjects[$i]->Generate();
-            $out.=$this->BlObjects[$i]->Affich();
-		}else{
-			$tmp = Process::processingVars($this->BlObjects[$i]);
-            $tmp = Parser::PostProcessing($tmp);
-            //$this->BlObjects[$i] = Process::processingVars($this->BlObjects[$i]);
-            //$this->BlObjects[$i] = Parser::PostProcessing($this->BlObjects[$i]);
-            $out.=$tmp;
-		}
+		if (isset($this->BlObjects)&&is_array($this->BlObjects))
+            for ($i=0;$i<sizeof($this->BlObjects);$i++) if (is_object($this->BlObjects[$i])) {
+                $this->BlObjects[$i]->Generate();
+                $out.=$this->BlObjects[$i]->Affich();
+            }else{
+                $tmp = Process::processingVars($this->BlObjects[$i]);
+                $tmp = Parser::PostProcessing($tmp);
+                //$this->BlObjects[$i] = Process::processingVars($this->BlObjects[$i]);
+                //$this->BlObjects[$i] = Parser::PostProcessing($this->BlObjects[$i]);
+                $out.=$tmp;
+            }
         $this->Content = $out;
 		//unset($this->BlObjects);
         $this->Data = '';
-		if (isset($this->ChildObjects)&&sizeof($this->ChildObjects)) for ($i=0;$i<sizeof($this->ChildObjects);$i++){
-			if (is_object($this->ChildObjects[$i])){
-				$this->ChildObjects[$i]->Generate();
-                $tmp = $this->ChildObjects[$i]->Affich();
-			}else{
-                $tmp = Process::processingVars($this->ChildObjects[$i]);
-                $tmp = Parser::PostProcessing($tmp);
-				//$this->ChildObjects[$i] = Process::processingVars($this->ChildObjects[$i]);
-				//$this->ChildObjects[$i] = Parser::PostProcessing($this->ChildObjects[$i]);
+		if (isset($this->ChildObjects)&&sizeof($this->ChildObjects))
+			for ($i=0;$i<sizeof($this->ChildObjects);$i++){
+				if (is_object($this->ChildObjects[$i])){
+					$this->ChildObjects[$i]->Generate();
+					$tmp = $this->ChildObjects[$i]->Affich();
+				}else{
+					$tmp = Process::processingVars($this->ChildObjects[$i]);
+					$tmp = Parser::PostProcessing($tmp);
+					//$this->ChildObjects[$i] = Process::processingVars($this->ChildObjects[$i]);
+					//$this->ChildObjects[$i] = Parser::PostProcessing($this->ChildObjects[$i]);
+				}
+				$this->Data.=$tmp;
 			}
-            $this->Data.=$tmp;
-		}
-		if   ($this->Beacon=="MODULE")Process::$TempVar = $TempVar;
 	}
 
 	function writeCacheFile($Data,$Url,$Name) {

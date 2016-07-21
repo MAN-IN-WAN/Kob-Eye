@@ -400,8 +400,8 @@ class BoutiqueProduit extends genericClass
         }
         //gestion des remises relatives à la catégorie du produit
         //pour chaque catégorie du produit on teste les regles
-        $cats = $prod->getParents('Categorie/*/Categorie');
-        foreach ($cats as $c) {
+        //$cats = $prod->getParents('Categorie/*/Categorie');
+        /*foreach ($cats as $c) {
             $rrs = $c->getParents('RegleRemise');
             foreach ($rrs as $rr) {
                 if ($rr->Public == 1 && $qte > $rr->QuantiteMinimale) {
@@ -409,7 +409,7 @@ class BoutiqueProduit extends genericClass
                     $remises = array_merge($remises, array("Règle Remise " . $rr->Nom . " Categorie " . $c->Nom => $rr->Remise));
                 }
             }
-        }
+        }*/
         //application de la plus grosse remise
         foreach ($remises as $k => $r) {
             if ($re < $r) $re = $r;

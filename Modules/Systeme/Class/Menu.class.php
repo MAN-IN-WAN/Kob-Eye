@@ -1,5 +1,6 @@
 <?php
 class Menu extends genericClass {
+	var $Image = null;
 	/**
 	 * Save
 	 * Surcharge de la fonction Save
@@ -48,7 +49,7 @@ class Menu extends genericClass {
 			$tls[$i]->Title = $this->Title;
 			$tls[$i]->Description = $this->Description;
 			$tls[$i]->Keywords = $this->Keywords;
-			$tls[$i]->Image = $this->Img;
+			$tls[$i]->Image = $this->Image;
 			foreach ($GLOBALS["Systeme"]->Conf->get("GENERAL::LANGUAGE") as $Cod => $Lang) {
 				if (!isset($Lang["DEFAULT"]) || !$Lang["DEFAULT"]) {
 					$tls[$i]->{$Cod . "-Title"} = $this->{$Cod . "-Title"};
@@ -173,7 +174,7 @@ class Menu extends genericClass {
 	 * return the children menus of this menu or children by alias from another module
 	 * @return Array( genericClass ) 
 	 */
-	 public function getSubMenus(){
+	 public function getSubMenus($limit=1000){
 	 	$out = Array();
 		//local storage ( session cookie )
 	 	if (isset($this->Menus)&&is_array($this->Menus)){
@@ -193,13 +194,13 @@ class Menu extends genericClass {
 				$obj = Sys::$Modules[$inf["Module"]]->Db->getObjectClass($inf["TypeChild"]);
 				//if objest has generateUrl enabled
 				if (isset($obj->generateUrl)&&$obj->generateUrl){
-					$ch = Sys::$Modules[$inf["Module"]]->callData($this->Alias);
+					$ch = Sys::$Modules[$inf["Module"]]->callData($this->Alias,false,0,$limit);
 					if (is_array($ch)){
 						foreach ($ch as $c){
 							$o = genericClass::createInstance($inf["Module"],$c);
 							if ($inf['TypeSearch']=='Direct'){
 								//looking for childs
-								$out = array_merge($out,$o->getChildren($o->ObjectType."/Display=1"));
+								$out = array_merge($out,$o->getChildren($o->ObjectType."/Display=1",0,$limit));
 								//normalisation des elements
 								foreach ($out as $o){
 									$o->Titre = $o->getFirstSearchOrder();

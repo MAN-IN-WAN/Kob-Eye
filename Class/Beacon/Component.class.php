@@ -12,6 +12,8 @@ class Component extends Beacon{
 	var $Params;
 	var $Title;
 	var $Proprietes;
+	var $Path;
+	var $Twig;
 	/**
 	* Constructor
 	*/
@@ -48,8 +50,14 @@ class Component extends Beacon{
 			 $Fichier = "Default";
 		}
 		$this->Css = $this->getFilePath("style.css");
-		$Chemin = $this->getFilePath($Fichier.".md");
-		$this->Data=@file_get_contents($Chemin);
+		$Chemin = $this->getFilePath($Fichier.'.md');
+		$this->Path = $Chemin;
+		if (preg_match('#\.twig$#',$this->Path)) {
+			$this->Twig = true;
+			KeTwig::loadTemplate($this->Path);
+		}else{
+			$this->Data = @file_get_contents($this->Path);
+		}
 	}
 	/**
 	* @Override
@@ -85,7 +93,13 @@ class Component extends Beacon{
 				$this->Css = $this->getFilePath($Config["CSS"][0]["#"]);
 			}
 			$Chemin = $this->getFilePath("Default.md");
-			$this->Data = @file_get_contents($Chemin);
+			$this->Path = $Chemin;
+			if (preg_match('#\.twig$#',$this->Path)) {
+				$this->Twig = true;
+				KeTwig::loadTemplate($this->Path);
+			}else{
+				$this->Data = @file_get_contents($this->Path);
+			}
 		}
 	}
 	/**
@@ -94,22 +108,41 @@ class Component extends Beacon{
 	 * @return String
 	 */
 	 private function getFilePath($filename){
-
-	 	$Chemin = "";
+		 $mod="";
+		if (preg_match('#\.md$#',$filename)) {
+			$mod='md';
+		}
+		$Chemin = "";
 		//Chargement des données
 		if (sizeof(explode('/',$filename))<=1){
 			$CheminSkin = "Skins/".Sys::$Skin."/Modules/".$this->Module."/Components/".$this->Title."/".$filename;
 			$CheminShared = "Skins/".Skin::$SharedSkin."/Modules/".$this->Module."/Components/".$this->Title."/".$filename;
 			$CheminModule = "Modules/".$this->Module."/Components/".$this->Title."/".$filename;
+			if ($mod=='md') {
+                $filenametwig = str_replace('.md','.twig',$filename);
+				$CheminSkinTwig = "Skins/" . Sys::$Skin . "/Modules/" . $this->Module . "/Components/" . $this->Title . "/" . $filenametwig;
+				$CheminSharedTwig = "Skins/" . Skin::$SharedSkin . "/Modules/" . $this->Module . "/Components/" . $this->Title . "/" . $filenametwig;
+				$CheminModuleTwig = "Modules/" . $this->Module . "/Components/" . $this->Title . "/" . $filenametwig;
+			}
 		}else{
 			$CheminSkin = "Skins/".Sys::$Skin."/".$filename;
 			$CheminShared = "Skins/".Skin::$SharedSkin."/".$filename;
 			$CheminModule = $filename;
+			if ($mod=='md') {
+                $filenametwig = str_replace('.md','.twig',$filename);
+				$CheminSkinTwig = "Skins/".Sys::$Skin."/".$filenametwig;
+				$CheminSharedTwig = "Skins/".Skin::$SharedSkin."/".$filenametwig;
+				$CheminModuleTwig = $filenametwig;
+			}
 		}
 		//Test des chemins
-		if (file_exists($CheminSkin))$Chemin = $CheminSkin;
-		elseif (file_exists($CheminShared))$Chemin = $CheminShared;
-		elseif (file_exists($CheminModule))$Chemin = $CheminModule;
+		if ($mod=='md'&&file_exists($CheminSkinTwig))$Chemin = $CheminSkinTwig;
+		elseif (file_exists($CheminSkin))$Chemin = $CheminSkin;
+		elseif ($mod=='md'&&file_exists($CheminSharedTwig))$Chemin = $CheminSharedTwig;
+        elseif (file_exists($CheminShared))$Chemin = $CheminShared;
+		elseif ($mod=='md'&&file_exists($CheminModuleTwig))$Chemin = $CheminModuleTwig;
+        elseif (file_exists($CheminModule))$Chemin = $CheminModule;
+
 		return $Chemin;
 	 }
 	/**
@@ -163,7 +196,11 @@ class Component extends Beacon{
 			foreach ($this->Proprietes as $T => $P) {
 				Process::$TempVar[Process::processingVars($P["Nom"])] = Process::processingVars($P["Valeur"]);
 			}
-		parent::Generate();
+		if (!$this->Twig)
+			parent::Generate();
+		else{
+			$this->Data = KeTwig::render($this->Path,Process::$TempVar);
+		}
 		//Restauration de la pile
 		Process::$TempVar = $TempVar;
 	}

@@ -1141,7 +1141,8 @@ class genericClass extends Root {
 			if (is_array($Par))
 				foreach ($Par as $k => $Pa) {
 					if (strlen($Pa["Module"])) {
-						$Parents[] = genericClass::createInstance($Pa["Module"], $Pa);
+						$tmp = genericClass::createInstance($Pa["Module"], $Pa);
+						if ($tmp) $Parents[] = $tmp;
 					}
 				}
 		} else {
@@ -1479,7 +1480,7 @@ class genericClass extends Root {
 	 *	1 MODIFICATION
 	 *	0 SUPPRESSION
 	 */
-	private function addFkey($Module, $Class, $Nid, $Action = 2, $SpeFKey = "") {
+	public function addFkey($Module, $Class, $Nid, $Action = 2, $SpeFKey = "") {
 		//Ajoute une nvelle clef etrangere
 		if (empty($Nid))
 			return false;

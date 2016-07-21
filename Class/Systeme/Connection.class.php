@@ -22,6 +22,7 @@ class Connection extends Root{
 	var $SessionStarted = false;
 	var $_dirtyCache = false;
 	var $kerberosAuth = false;
+	var $Mobile=false;
 	
 
 	//------------------------------------------------------------//
@@ -144,6 +145,7 @@ class Connection extends Root{
 		}
 		if (isset($_POST["logkey"])&& $_POST["logkey"]!="" ) {
 			$this->SessId  = $_POST["logkey"];
+			$this->Mobile = true;
 			$t=true;
 		}
 		if ($t) return true ;else  return false;
@@ -465,7 +467,7 @@ class Connection extends Root{
 			}
 			if (!isset(Sys::$Session)){
 				//Recuperation d'une connexion publique
-				$query="Systeme/Connexion/Langue=".$this->Langue."&Domaine=".Sys::$domain."&Navigateur=".addslashes($this->Navigateur)."&Ip=".$this->Ip."&tmsEdit>".(time()-(CONNECT_TIMEOUT*60))."&Session=";
+				$query="Systeme/Connexion/Langue=".$this->Langue."&Domaine=".Sys::$domain."&Navigateur=".addslashes($this->Navigateur)."&Ip=".$this->Ip."&Session=";
 				$Results = Sys::$Modules['Systeme']->callData($query,false,0,1);
 				if (isset($Results[0])&&is_array($Results[0])){
 					//Connexion existante
@@ -482,6 +484,7 @@ class Connection extends Root{
 				Sys::$Session->Set("Ip",$this->Ip);
 				Sys::$Session->Set("Langue",$this->Langue);
 				Sys::$Session->Set("Host",$this->Host);
+				Sys::$Session->Set("Mobile",$this->Mobile);
 				Sys::$Session->Set("Navigateur",$this->Navigateur);
 			}
 			//Enregistrement de la session
@@ -506,9 +509,9 @@ class Connection extends Root{
 		if (ADD_CONNECT){
 			if(defined('LOG_CONNECTION')&&LOG_CONNECTION)Sys::$Session->Logs.=date('d/m/Y H:m:i',time())." :: ".Sys::$Session->LastUrl."\r\n";
 			Sys::$Session->Save();
-			//On supprime les connexions perimees
-			$query="Systeme/Connexion/tmsEdit<".(time()-CONNECT_TIMEOUT);
-			$Results = Sys::$Modules['Systeme']->callData($query,false,0,500);
+			//On supprime les connexions perimees sauf les session mobiles
+			$query="Systeme/Connexion/tmsEdit<".(time()-CONNECT_TIMEOUT."&Mobile=0");
+			$Results = Sys::$Modules['Systeme']->callData($query,false,0,5000);
 			if ($Results)for ($i=0;$i<sizeof($Results);$i++) {
 				$Connexion = genericClass::createInstance("Systeme",$Results[$i]);
 				$Connexion->Delete();

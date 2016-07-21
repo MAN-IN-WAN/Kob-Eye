@@ -51,7 +51,7 @@ RewriteRule   ^.*$	index.php  [L]
 		Header append Vary Accept-Encoding
 	</FilesMatch>
 	<filesMatch "\\.(html|htm)$">
-		Header set Cache-Control "max-age=7200, public"
+		Header set Cache-Control "max-age=512000, public"
 	</filesMatch>
 	# Disable caching for scripts and other dynamic files
 	<FilesMatch "\.(pl|php|cgi|spl|scgi|fcgi)$">

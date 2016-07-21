@@ -1,0 +1,90 @@
+/*!
+ * Yamm!3 - Yet another megamenu for Bootstrap 3
+ * http://geedmo.github.com/yamm3
+ *
+ * @geedmo - Licensed under the MIT license
+ */
+.yamm .nav,
+.yamm .collapse,
+.yamm .dropup,
+.yamm .dropdown {
+    position: static;
+}
+.yamm .container {
+    position: relative;
+}
+.yamm .dropdown-menu {
+/*    left: auto;*/
+    padding: 40px;
+    border: 0;
+}
+.yamm .yamm-content {
+    padding: 20px 30px;
+}
+.yamm .dropdown.yamm-fw .dropdown-menu {
+    left: 0;
+    right: 0;
+}
+.yamm ul li{
+    list-style-type: none;
+}
+
+
+/** customsation **/
+ul.level0 > li > a {
+    line-height: 30px;
+    font-weight: 700;
+    display: block;
+    padding: 5px;
+    width: 230px;
+    color: #fff;
+}
+
+.navbar-default {
+    background-color: transparent;
+    background-image: none;
+    border-color: transparent;
+    box-shadow: none;
+}
+.navbar-default .navbar-nav>li>a {
+    color: white;
+}
+.navbar-collapse {
+    padding-right: 0px;
+    padding-left: 0px;
+}
+.navbar-default .navbar-nav>li>a:hover, .navbar-default .navbar-nav>li>a:focus {
+    color: white;
+    background-color: #f8b750;
+}
+div.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    top: 130px;
+    z-index: 1000;
+    display: none;
+    float: left;
+    width: 100%;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    list-style: none;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    background-clip: padding-box;
+}
+
+.nav>li>a {
+    padding: 20px 0;
+}
+@media (min-width: 979px) {
+    .yamm li.dropdown:hover > div.dropdown-menu {
+        display: block;
+    }
+}

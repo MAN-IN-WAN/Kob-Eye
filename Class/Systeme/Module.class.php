@@ -94,15 +94,6 @@ class Module extends Root{
 	}
 
 
-	function writeCacheFile($Data,$Url,$Name) {
-		if (!$File=@fopen (ROOT_DIR.$Url.$Name,"w")){
-			$this->mk_dir($Url);
-			if (!$File=fopen (ROOT_DIR.$Url.$Name,"w")) return false;
-		}
-		fwrite($File,$Data);
-		fclose($File);
-	}
-
 	function getDataSource($Type,$Id) {
 		//Construction de l arbres des donn�s necessaires
 		$TempSource = new $Type();
@@ -174,187 +165,7 @@ class Module extends Root{
 			}
 		}
 	}
-	/**
-	 * saveCache
-	 * Write serialize db to files
-	 */
-	/*function saveCache() {
-		$CacheO = "Modules/".$this->Nom."/.Db.cache";
-		$Class = "Class/DataBase/DbAnalyzer.class.php";
-		if ((!file_exists(ROOT_DIR.$CacheO) || (filemtime(ROOT_DIR.$CacheO) <= filemtime(ROOT_DIR.$Class))|| (filemtime(ROOT_DIR.$CacheO) <= filemtime(ROOT_DIR.$this->SchemaPath))|| (filemtime(ROOT_DIR.$CacheO) <= filemtime(ROOT_DIR.$this->ConfPath)))&&SCHEMA_CACHE) {
-			$ContentCache = serialize($this->Db);
-			$File = fopen(ROOT_DIR.$CacheO,"w");
-			fwrite($File,$ContentCache);
-			fclose($File);
-		}
-	}*/
-	function isInterface($ObjectClass,$Interface,$strict=true) {
-		if (DEBUG_INTERFACE)echo "-----------TEST---------------\r\n";
-		return (!$this->getInterface($ObjectClass,$Interface,$strict))?false:true;
-	}
-	function getInterface($ObjectClass,$Interface,$Strict=true){
-		//Calcul tab
-		$t = explode('/',$ObjectClass);
-		$t = array_merge($t,explode('/',$Interface));
-		//Controle tableau;
-		$t2 = Array();
-		foreach ($t as $t3)if (!empty($t3))$t2[] = $t3;
-		$t=$t2;
-		$Mod = array_merge(Array($this->Nom),$t);
-		if (DEBUG_INTERFACE)echo "-----------$ObjectClass,$Interface-$Strict---------------\r\n";
-		if (DEBUG_INTERFACE)print_r($Mod);
-		if (Sys::$DefaultSkin==""&&Sys::$User->Skin=="")return true;
-		if (isset(Sys::$User)&&is_object(Sys::$User)){
-			//Skin en cours
-			$Chemin="Skins/".Sys::$User->Skin."/Modules";
-			if (DEBUG_INTERFACE)echo "TEST $Chemin \r\n";
-			if (file_exists(ROOT_DIR.$Chemin)&&$I=$this->lookForInterface($Mod,$Chemin,true)) return $I;
-		}
-		//SKin partagée
-		$Chemin="Skins/".Sys::$DefaultSkin."/Modules";
-		if (DEBUG_INTERFACE)echo "TEST $Chemin \r\n";
-		if (file_exists(ROOT_DIR.$Chemin)&&$I=$this->lookForInterface($Mod,$Chemin,true)) return $I;
-		if (DEBUG_INTERFACE)echo "/////////////////////////////\r\n";
-		//Fichier du module
-		$Chemin="Modules";
-		if (DEBUG_INTERFACE)echo "TEST $Chemin \r\n";
-// 		if (file_exists($Chemin)&&$I=$this->testInterface($ObjectClass,$Interface,$Chemin)) return $I;
-		if (file_exists(ROOT_DIR.$Chemin)&&$I=$this->lookForInterface($Mod,$Chemin,true)) return $I;
-		//Skin en cours sans mode strict
-		if (!$Strict){
-			if (isset(Sys::$User)&&is_object(Sys::$User)){
-				$Chemin="Skins/".Sys::$User->Skin."/Modules";
-				if (DEBUG_INTERFACE)echo "TEST $Chemin \r\n";
-				if (file_exists(ROOT_DIR.$Chemin)&&$I=$this->lookForInterface($Mod,$Chemin,false)) return $I;
-			}
-			//SKin partagée
-			$Chemin="Skins/".Sys::$DefaultSkin."/Modules";
-			if (DEBUG_INTERFACE)echo "TEST $Chemin \r\n";
-			if (file_exists(ROOT_DIR.$Chemin)&&$I=$this->lookForInterface($Mod,$Chemin,false)) return $I;
-			//Fichier du module
-			$Chemin="Modules";
-			if (DEBUG_INTERFACE)echo "TEST $Chemin \r\n";
-			if (file_exists(ROOT_DIR.$Chemin)&&$I=$this->lookForInterface($Mod,$Chemin,false)) return $I;
-		}
-		if (DEBUG_INTERFACE) echo "$ObjectClass $Interface FAILED !!!!";
-		return false;
-	}
-	/**
-	* Recherche recursivement l'interface correspondante à l'url
-	* @param tab tableau comprenant chacun des niveaux de la requete
-	* @param path base de recherche
-	* @param i niveau de recherche
-	* trois cas de figure
-	* - le dossier existe
-	* - le dossier default existe
-	* - dans le cas de la derniere boucle il peut s'agir un fichier(.md) ou du dossier(/Default.md)
-	*/
-	private function lookForInterface($tab,$path,$strict=false,$i=0){
-		if (DEBUG_INTERFACE)echo "LFI $path	|$i\r\n";
-		$pd = $p = $path;
-		if ($tab[$i]==""){
-			if ($i<sizeof($tab)-1)return $this->lookForInterface($tab,$p,$strict,$i+1);
-			//else return $p;
-		} else {
-			$p.=(($p!="")?"/":"").$tab[$i];
-			$pd = $path;
-			$pd.=(($p!="")?"/":"")."Default";
-		}
-		if (DEBUG_INTERFACE)echo "PATH $p FILE ".file_exists(ROOT_DIR.$p)."  DIR ".is_dir(ROOT_DIR.$p)."\r\n";
-		if (file_exists(ROOT_DIR.$p)&&is_dir(ROOT_DIR.$p)&&$i<sizeof($tab)-1){
-			//C 'est un dossier
-			if (DEBUG_INTERFACE)echo "	- $p\r\n";
-			return $this->lookForInterface($tab,$p,$strict,$i+1);
-		}
-		if (file_exists(ROOT_DIR.$pd)&&is_dir(ROOT_DIR.$pd)&&$i<sizeof($tab)-1){
-			if (DEBUG_INTERFACE)echo "	- $pd\r\n";
-			//C 'est un dossier default
-			return $this->lookForInterface($tab,$pd,$strict,$i+1);
-		}
-		if (file_exists(ROOT_DIR.$p.".md")){
-			//C 'est un fichier
-			if (DEBUG_INTERFACE)echo "	- $p.md\r\n";
-			return $p.".md";
-		}
-		if ($i==sizeof($tab)-1){
-			if (DEBUG_INTERFACE)echo "	LAST PASS $p/Default.md // $pd/Default.md // $pd.md\r\n";
-			if (!$strict&&is_dir(ROOT_DIR.$p)&&file_exists(ROOT_DIR.$p."/Default.md")){
-				//C 'est un fichier
-				if (DEBUG_INTERFACE)echo "	- $p/Default.md\r\n";
-				return $p."/Default.md";
-			}
-			if (!$strict&&is_dir(ROOT_DIR.$pd)&&file_exists(ROOT_DIR.$pd."/Default.md")){
-				//C 'est un fichier
-				if (DEBUG_INTERFACE)echo "	- $pd/Default.md\r\n";
-				return $pd."/Default.md";
-			}
-			if (!$strict&&file_exists(ROOT_DIR.$pd.".md")){
-				//C 'est un fichier
-				if (DEBUG_INTERFACE)echo "	- $pd.md\r\n";
-				return $pd.".md";
-			}
-		}
-		if (DEBUG_INTERFACE)echo "FAILED !! \r\n";
-		return false;
-	}
-	
-	//_________________________________________________________________________________
-	//									INTERFACES
-	/**
-	* Chargement de module interface
-	*/
-	function loadInterface($Lien,$NewSkin=0,$DefaultTry=false) {
-		if (DEBUG_INTERFACE)echo "----------LOAD INTERFACE-$Lien---------------\r\n";
-		$Lien2 = str_replace("/","_",$Lien);
-		$Lien2 = str_replace("__","_",$Lien2);
-		$Lien2 = $this->Nom.(($Lien2!="")?"_":"").$Lien2;
-		if ($Lien2=="") $Lien2 = "Default";
-		$URL = "Home/".Sys::$User->Id."/.cache/".$Lien2.'.modCache';
-		$URLCACHE = "Home/".Sys::$User->Id."/.cache/";
-		$FILENAME = $Lien2.'.modCache';
-		$URLINFO = "Home/".Sys::$User->Id."/.cache/".$Lien2.'.modInfo';
-		$FILENAMEINFO = $Lien2.'.modInfo';
-		if ((!file_exists(ROOT_DIR.$URLCACHE))||(!MODULE_CACHE)||$this->checkIfModified($URLINFO)){
-			//On charge le fichier
-			//echo "//////////////////////////////////////////////////////////////\r\n";
-			if (DEBUG_INTERFACE)echo "PAS DE CACHE $Lien \r\n";
-//			if ($t=$this->getInterface("",$Lien,true)) {
-			if (file_exists(ROOT_DIR.$Lien)) {
-//				$Chemin = $t;
-				$Chemin = $Lien;
-				$Data=@file_get_contents(ROOT_DIR.$Lien);
-			}else{
-				//echo "LOADING ERROR $t $Lien\r\n";
-				#TODO ERREUR DE CHARGEMENT
- 				return false;
-			}
-			$Bloc=new Bloc();
-			$Bloc->loadData($Data);
-			$Bloc->init();
-			$Bloc->Path = $Chemin;
-			if (MODULE_CACHE) {
-				$GLOBALS["Systeme"]->Log->Log("-=>WRITE MODULE CACHE ".$URL);
-				$ModulesLoaded = $Bloc->getModulesLoaded();
-				$this->writeCacheFile(serialize($Bloc),$URLCACHE,$FILENAME);
-				$Entree ="";
-				foreach ($ModulesLoaded as $Key){
-					$Entree.= $Key.'||';
-					$Entree.=@filemtime(ROOT_DIR.$Key);
-					$Entree.="\n";
-				}
-				$this->writeCacheFile($Entree,$URLCACHE,$FILENAMEINFO);
-			}
-		}else{
-			if (!empty($this->QuickCache[$URL])){
-				$Bloc = unserialize($this->QuickCache[$URL]);
-			}else{
-				$Bloc = file_get_contents(ROOT_DIR.$URL);
-				$Bloc = unserialize($Bloc);
-				$this->QuickCache[$URL] = serialize($Bloc);
-			}
-		}
-		return $Bloc;
-	}
+
 	/**
 	* Chargement de templates
 	*/
@@ -374,25 +185,13 @@ class Module extends Root{
 		return $Bloc;
 	}
 
-	function checkIfModified($URLINFO){
-		//RENVOIE VRAI SI MODIFICATON OU NON ACCES, FAUX SINON
-		if (!file_exists(ROOT_DIR.$URLINFO)) return 1;
-		$Content=file(ROOT_DIR.$URLINFO);
-		for ($i=0,$c = count($Content);$i<$c;$i++){
-			$Ligne=rtrim($Content[$i]);
-			$TabLigne=explode("||",$Ligne);
-			//echo "new:".filemtime($TabLigne[0]),"orig:".$TabLigne[1],"<br>";
-			if(@filemtime(ROOT_DIR.$TabLigne[0])>$TabLigne[1]) return 1;
-		}
-		return 0;
-	}
 	/**
 	 * analyzeObjectClass
 	 * Analyse la chaine de l'objectclass pour en extraire les clefs et les vues à utiliser
 	 * @param String
 	 * @return Array[String] 
 	 */
-	 private function getAnalyzedObjectClass($s){
+	 function getAnalyzedObjectClass($s){
 	 	$o=Array();
 	 	//recherche de vues
 	 	$s = explode(":",$s);
@@ -425,32 +224,36 @@ class Module extends Root{
 	* @param Boolean Strict definit si la cohérence doit tester les interfaces.
 	* @return Array(Array(String...))
 	*/
-	function splitQuery($Lien,$Strict=false) {
-		if (isset($this->_arrayQueryCache[$Strict.'-'.$Lien])) {
-			return $this->_arrayQueryCache[$Strict.'-'.$Lien];
+	public static function splitQuery($Lien,$Strict=false) {
+		$Out=explode("/",$Lien);
+		$Module = $Out[0];
+        if (!isset(Sys::$Modules[$Module])){
+            return false;
+        }
+		array_shift($Out);
+        $Lien=implode('/',$Out);
+		if (isset(Sys::$Modules[$Module]->_arrayQueryCache[$Strict.'-'.$Lien])) {
+			return Sys::$Modules[$Module]->_arrayQueryCache[$Strict.'-'.$Lien];
 		}
+		//TEST APC CACHE
+        /*if (ApcCache::getData('QUERY-'.$Strict.'-'.$Lien))
+            return ApcCache::getData('QUERY-'.$Strict.'-'.$Lien);*/
 
-        $Out=explode("/",$Lien);
-//TODO Ne pas oublier de vérifier que ca ne pose pas de probleme.
-//		if(is_array($Out)) foreach($Out as $k => $o) $Out[$k] = Utils::KEStripSlashes(array($o));
-		if ($Out[0]==$this->Nom)(sizeof($Out)>1)?array_shift($Out):$Out[0]="";
 		if (empty($Out))$Out = Array();
         $p="";
 		$Last=-1;
-		$TypeObjet = "";
-		$LastKey="";
 		$Type="Erreur";
 		$Result=Array();
-		$this->loadSchema();
+		Sys::$Modules[$Module]->loadSchema();
         //GESTION OBJECTCLASS PAR DEFAUT (IMPLICITE)
-		$t = $this->Db->getDefaultObjectClass();
+		$t = Sys::$Modules[$Module]->Db->getDefaultObjectClass();
 
 
         if ($t&&$t!=$Out[0]){
 			//soit il existe une data source par défaut
 			for ($i=0,$c = sizeof($Out);$i<$c;$i++) $p .=(($i>0&&$Out[$i]!=""&&$p!="")?"/":"").$Out[$i];
 			if (DEBUG_INTERFACE)echo "DEFAULT OBJECTCLASS \r\n";
-			if ($this->isInterface($t,$p)){
+			if (Bloc::isInterface($Module,$t,$p)){
 				$Interface = Array(
 					"DataSource"=>$t,
 					"Interface"=>$p
@@ -467,6 +270,7 @@ class Module extends Root{
 			$Result[0]["Type"] = "Interface";
 			$Result[0]["Query"] = "";
 			$Result[0]["Interface"] = "";
+            $Result[0]["InterfacePath"] = Bloc::getInterface($Module,'',$p,false);
 			return $Result;
 		}
 
@@ -474,12 +278,11 @@ class Module extends Root{
 		$LastAssociation = null;
 
 		//DETERMINATION DE LA NATURE DE LA REQUETE
-
-		$d1 = $this->getAnalyzedObjectClass($Out[0]);
-		$LastDataSource = $this->Db->getByTitleOrFkey($d1["ObjectClass"]);
+		$d1 = Sys::$Modules[$Module]->getAnalyzedObjectClass($Out[0]);
+		$LastDataSource = Sys::$Modules[$Module]->Db->getByTitleOrFkey($d1["ObjectClass"]);
 		if (is_object($LastDataSource)&&sizeof($Out)>1&&isset($d1["Key"])){
-			$d2 = $this->getAnalyzedObjectClass($Out[1]);
-			$NextDataSource = $this->Db->getByTitleOrFkey($d2["ObjectClass"]);
+			$d2 = Sys::$Modules[$Module]->getAnalyzedObjectClass($Out[1]);
+			$NextDataSource = Sys::$Modules[$Module]->Db->getByTitleOrFkey($d2["ObjectClass"]);
 			if (is_object($NextDataSource)){
 				$LastAssociation=$NextDataSource->getParentAssociation($d1["Key"],$d1["ObjectClass"]);
 			}
@@ -493,9 +296,10 @@ class Module extends Root{
 			//soit il s'agit d'un appel d'interface
 			for ($i=1,$c=sizeof($Out);$i<$c;$i++) $p .=(($i>1&&$Out[$i])?"/":"").$Out[$i];
 			if (DEBUG_INTERFACE)echo "CAS INTERFACE \r\n";
-			if ($this->isInterface($Out[0],$p,false)){
+			if (Bloc::isInterface($Module,$Out[0],$p,false)){
 				$Result[0]["Type"] = "Interface";
-				$Result[0]["InterfacePath"] = $this->getInterface($Out[0],$p,false);
+				$Result[0]["InterfacePath"] = Bloc::getInterface($Module,$Out[0],$p,false);
+                $Result[0]["Module"] = $Module;
 				$Result[0]["Interface"] = Array(
 					"DataSource"=>$Out[0],
 					"Interface"=>$p
@@ -511,7 +315,7 @@ class Module extends Root{
                 $Ass = null;
 				$Object="";
 				if ($i>0) { //&&!preg_match("#.*([A-Za-z0-9]+?)\.([A-Za-z0-9]+?)\((.*?)\).*#",$Out[$i])){
-					$d1 = $this->getAnalyzedObjectClass($Out[$i]);
+					$d1 = Sys::$Modules[$Module]->getAnalyzedObjectClass($Out[$i]);
 					$Object=$LastDataSource->getChildObjectClass($d1["ObjectClass"],(isset($lastkey["Key"]))?$lastkey["Key"]:null);
                     //$GLOBALS["Chrono"]->start("MODULE splitQuery tableau test");
 					if (!is_object($Object)){
@@ -566,7 +370,7 @@ class Module extends Root{
 						}
 					}
 					$Last=$i;
-					$LastName = $Object->titre;
+                    $LastName = $Object->titre;
 					$LastDataSource = $Object;
 					if ($i>0)$LastAssociation = $Ass;
 					unset($Tab);
@@ -631,7 +435,7 @@ class Module extends Root{
 						for ($g=$Last+2,$c=sizeof($Out);$g<$c;$g++) $it2.=(!empty($it2)? "/":"").$Out[$g];
 						//On teste si le dernier parametre est une interface et le premier une valeur
 						if (DEBUG_INTERFACE)echo "LAST PAIR $Lien Strict : $Strict\r\n";
-						if (!$Strict&&$this->isInterface($Out[$Last],$Out[$j],true)) {
+						if (!$Strict&&Bloc::isInterface($Module,$Out[$Last],$Out[$j],true)) {
 							//Si c'est une interface alors ce n est pas une requete
 							$O = $LastDataSource->titre;
 							$Type="Interface";
@@ -648,22 +452,22 @@ class Module extends Root{
 								}
 								$Result[] = $Tab;
 							}
-							$Result[0]['InterfacePath'] = $this->getInterface($Out[$Last],$Out[$j],true);
-						}elseif (!$Strict&&!empty($it)&&$this->isInterface($Out[$Last],$it,true)){
+							$Result[0]['InterfacePath'] = Bloc::getInterface($Module,$Out[$Last],$Out[$j],true);
+						}elseif (!$Strict&&!empty($it)&&Bloc::isInterface($Module,$Out[$Last],$it,true)){
 							$O = $Out[$Last];
 							$Type="Interface";
-							$Result[0]['InterfacePath'] = $this->getInterface($Out[$Last],$it,true);
+							$Result[0]['InterfacePath'] = Bloc::getInterface($Module,$Out[$Last],$it,true);
 							$Result[sizeof($Result)-1]['Value'] = '';
-						}elseif (!$Strict&&!empty($it2)&&$this->isInterface($Out[$Last],$it2,true)){
+						}elseif (!$Strict&&!empty($it2)&&Bloc::isInterface($Module,$Out[$Last],$it2,true)){
 							$O = $Out[$Last];
 							$Type="Interface";
-							$Result[0]['InterfacePath'] = $this->getInterface($Out[$Last],$it2,true);
+							$Result[0]['InterfacePath'] = Bloc::getInterface($Module,$Out[$Last],$it2,true);
 							$Result[sizeof($Result)-1]['Value'] = '';
-						}elseif (!$Strict&&$Type=="Erreur"&&$this->isInterface($Out[$Last],$it,false)){
+						}elseif (!$Strict&&$Type=="Erreur"&&Bloc::isInterface($Module,$Out[$Last],$it,false)){
 							$O = $Out[$Last];
 							$Type="Interface";
 							$Result[sizeof($Result)-1]['Value'] = '';
-							$Result[0]['InterfacePath'] = $this->getInterface($Out[$Last],$it,false);
+							$Result[0]['InterfacePath'] = Bloc::getInterface($Module,$Out[$Last],$it,false);
 						}else{
 							$Temp=$Out[$j];
 							$Tab['Module'] = $LastDataSource->Module;
@@ -677,7 +481,7 @@ class Module extends Root{
 							$Tab['Value'] = $Temp;
 							if (is_array($Result)||empty($Result))$Result[] = $Tab;
 							if (DEBUG_INTERFACE)echo "CAS STANDARD\r\n";
-							if (!$Strict)$Result[0]['InterfacePath'] = $this->getInterface($Out[$Last],$Out[$j],false);
+							if (!$Strict)$Result[0]['InterfacePath'] = Bloc::getInterface($Module,$Out[$Last],$Out[$j],false);
 						}
 					}else{
 						$Temp=$Out[$j];
@@ -692,7 +496,7 @@ class Module extends Root{
 						$Tab['Value'] = $Temp;
 						$Result[] = $Tab;
 						if (DEBUG_INTERFACE)echo "CAS STANDARD\r\n";
-						if (!$Strict)$Result[0]['InterfacePath'] = $this->getInterface($Out[$Last],"",false);
+						if (!$Strict)$Result[0]['InterfacePath'] = Bloc::getInterface($Module,$Out[$Last],"",false);
 					}
 				}
 	/*			if (count($Interface)>1) {
@@ -713,7 +517,7 @@ class Module extends Root{
 					}
 					$Tab['Value'] = "";
 					$Result[] = $Tab;
-                    if (!$Strict)$Result[0]['InterfacePath'] = $this->getInterface($Out[$Last],"",false);
+                    if (!$Strict)$Result[0]['InterfacePath'] = Bloc::getInterface($Module,$Out[$Last],"",false);
 				}else{
 					$Type="Erreur";
 				}
@@ -726,7 +530,7 @@ class Module extends Root{
 				}
 			}
 			//On genere la valeur de la query
-			$Query=$this->Nom;
+			$Query=$Module;
 			for ($f=0,$c=sizeof($Result);$f<$c;$f++) {
 				$Query .= "/".$Result[$f]["DataSource"].(isset($Result[$f]["Key"])&&!empty($Result[$f]["Key"])?".".$Result[$f]["Key"]:"").(!empty($Result[$f]["Value"])?"/".$Result[$f]["Value"]:"");
 			}
@@ -755,13 +559,18 @@ class Module extends Root{
 		if (DEBUG_INTERFACE)print_r($Result);
 
         //cache splitQuery for heavy load
-	    $this->_arrayQueryCache[$Strict.'-'.$Lien] = $Result;
+	    Sys::$Modules[$Module]->_arrayQueryCache[$Strict.'-'.$Lien] = $Result;
+		//TEST APC CACHE
+		//ApcCache::setData('QUERY-'.$Strict.'-'.$Lien,$Result);
 
         return $Result;
 	}
 	//Appel depuis storproc pour lexecution de requete
 	function callData($Query,$recurs="",$Ofst="",$Limit="",$OrderType="",$OrderVar="",$Selection="",$GroupBy=""){
-		$Query = preg_replace("#^".$this->Nom."\/#","",$Query);
+		//correctio nau cas ou on ait pas le module
+		if (!preg_match("#^".$this->Nom."\/#",$Query)){
+			$Query = $this->Nom.'/'.$Query;
+		}
 		//Traitement des access
 		/*if (isset(Sys::$User->Access)&&
 			is_array(Sys::$User->Access)) 
@@ -777,11 +586,11 @@ class Module extends Root{
 		}*/
 		//On charge le Schema
 		$this->loadSchema();
- 		$TabQuery = $this->splitQuery($Query,true);
+ 		$TabQuery = Module::splitQuery($Query,true);
 //$GLOBALS["Systeme"]->Log->log("$Query",$TabQuery);
 //		if ($TabQuery[0]["Type"]=="Erreur") return false;
 //		if (DEBUG_QUERY)KError::Set('QUERY '.$this->Nom."/".$Query,"",KError::$INFO);
-		Module::$LAST_QUERY = $this->Nom."/".$Query;
+		Module::$LAST_QUERY = $Query;
 
         try{
 			$Tab =  $this->Db->searchObject($TabQuery,$recurs,$Ofst,$Limit,$Query,$OrderType,$OrderVar,$Selection,$GroupBy);
@@ -801,18 +610,20 @@ class Module extends Root{
 	* Appel principal depuis la classe Systeme
 	*/
 	function Affich($Lien) {
-		if (!$Bloc=$this->setData($Lien))
-			$Bloc = new Bloc();
-		$Tab = $this->splitQuery($Lien,false);
-		if (isset($Tab[0]['Query']))$GLOBALS['Systeme']->setQuery($Tab[0]['Query']);
-		//Definition des variables
-		$T =$Bloc->Conf;
-		if (sizeof($T))foreach ($T as $K=>$V){
-			$V = Process::processingVars($V);
-			Process::RegisterTempVar($K,$V);
-		}
-		$Bloc->Generate();
-		$Result = $Bloc->Affich();
+        $Bloc = new Bloc();
+        if (!empty($Lien)) {
+            $Bloc->setData($Lien);
+            $Tab = Module::splitQuery($Lien, false);
+            if (isset($Tab[0]['Query'])) $GLOBALS['Systeme']->setQuery($Tab[0]['Query']);
+            //Definition des variables
+            $T = $Bloc->Conf;
+            if (sizeof($T)) foreach ($T as $K => $V) {
+                $V = Process::processingVars($V);
+                Process::RegisterTempVar($K, $V);
+            }
+            $Bloc->Generate();
+        }
+        $Result = $Bloc->Affich();
 		if (isset($GLOBALS["Systeme"]->CurrentSkin->Template)&&$GLOBALS["Systeme"]->CurrentSkin->Template){
 			//On verifie la nature de l'objet à afficher. Si c'est un objet browseable alors on extrait sa template.
 			//$IdObject = $this->Db->findByTitle($Tab[0]["DataSource"]);
@@ -842,25 +653,6 @@ class Module extends Root{
 		}
 		return $Result;
 	}
-
-	//Appel depuis la balise module pour affichage interface
-	function setData($Lien,$recurs=0) {
-		if (empty($Lien))return;
-// 		$GLOBALS["Systeme"]->Log->log("SET DATA =>> $Lien");
-		$Display="Interface";
-		//On charge le Schema
-		$this->loadSchema();
-		//Analyse de l Url
-		$Tab = $this->splitQuery($Lien,false);
-		if (DEBUG_INTERFACE)
-            print_r($Tab);
-		//On appelle l interface concernee
-        if (isset($Tab[0]))
-		    $Bloc=$this->loadInterface($Tab[0]["InterfacePath"]);
-        else return null;
-		return $Bloc;
-	}
-
 
 	function Query($Prefix,$Class,$Action) {
 		$this->loadSchema();

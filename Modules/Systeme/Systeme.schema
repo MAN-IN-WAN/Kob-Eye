@@ -1,5 +1,5 @@
 <SCHEMA>
-	<OBJECTCLASS title="Group" driver="mysql" logEvent="1" master="1" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png" Description="Groupes" Heritage="0" Class="Modules/Systeme/Class/Group.class.php">
+	<OBJECTCLASS title="Group" driver="mysql" logEvent="1" master="1" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png" Description="Groupes" Heritage="0" Class="Modules/Systeme/Class/Group.class.php" cache="1">
 		<PROPERTIES type="private"  searchOrder="1" obligatoire="1" category="Intitulé" formLabel="1">Nom</PROPERTIES>
 		<PROPERTIES type="private"  searchOrder="2" category="Intitulé">Commentaire</PROPERTIES>
 		<PROPERTIES type="varchar" query="Explorateur/_Dossier/Skins/_Dossier::Nom::Nom" category="Intégration">Skin</PROPERTIES>
@@ -43,7 +43,7 @@
 		<!--<PROPERTIES type="order" category="Intégration">Ordre</PROPERTIES>-->
 		<FKEY card="1,n" data="Group,Id">GroupId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Site" driver="mysql" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Wiki2.png" generateUrl="0" Class="Modules/Systeme/Class/Site.class.php">
+	<OBJECTCLASS title="Site" driver="mysql" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Wiki2.png" generateUrl="0" Class="Modules/Systeme/Class/Site.class.php" cache="1">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé" list="1">Domaine</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" description="Mettre UA" values="Mobile,Desktop">UserAgent</PROPERTIES>
 		<PROPERTIES type="text" description="Contenu du robots.txt">Robots</PROPERTIES>
@@ -73,7 +73,7 @@
 		<FKEY card="1,1" data="Site,Id">SiteId</FKEY>
 		<FKEY card="0,n" data="Tag,Id">Tags</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Menu" logEvent="1" driver="mysql" AccessPoint="0" Icon="/Skins/AdminV2/Img/folder.gif" Class="Modules/Systeme/Class/Menu.class.php">
+	<OBJECTCLASS title="Menu" logEvent="1" driver="mysql" AccessPoint="0" Icon="/Skins/AdminV2/Img/folder.gif" Class="Modules/Systeme/Class/Menu.class.php" cache="1">
 		<PROPERTIES type="varchar" searchOrder="2" category="Intitulé" fiche="1" form="1" list="1">Url</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé" special="multi" fiche="1" form="1" list="1">Titre</PROPERTIES>
 		<PROPERTIES type="varchar" category="Intitulé" special="multi">SousTitre</PROPERTIES>
@@ -97,6 +97,7 @@
 		<PROPERTIES type="metat" special="multi" fiche="1" form="1">Title</PROPERTIES>
 		<PROPERTIES type="metad" special="multi" fiche="1" form="1">Description</PROPERTIES>
 		<PROPERTIES type="metak" special="multi" fiche="1" form="1">Keywords</PROPERTIES>
+		<PROPERTIES type="image" fiche="1" form="1">Image</PROPERTIES>
 		<PROPERTIES type="modele" category="Configuration" query="Systeme/ActiveTemplate::Id::Nom">Template</PROPERTIES>
 		<FKEY card="0,1" data="Menu,Id" link="1"  hidden="1">MenuParent</FKEY>
 		<FKEY card="0,n" data="User,Id" inherit="Group" hidden="1">UserId</FKEY>
@@ -131,7 +132,7 @@
 		<PROPERTIES type="text">Data</PROPERTIES>
 		<FKEY card="1,1" data="User,Id" >UserId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Donnee"  Description="Média de l'entête" driver="mysql" AccessPoint="1" Icon="/Skins/AdminV2/Img/brick.png" order="Ordre" orderType="ASC">
+	<OBJECTCLASS title="Donnee"  Description="Média de l'entête" driver="mysql" AccessPoint="1" Icon="/Skins/AdminV2/Img/brick.png" order="Ordre" orderType="ASC" cache="1">
 		<PROPERTIES type="titre" searchOrder="1" obligatoire="1" category="Intitulé" list="1" form="1" fiche="1">Titre</PROPERTIES>
 		<PROPERTIES type="image" searchOrder="2" category="Emplacement" list="1" form="1" fiche="1">Lien</PROPERTIES>
 		<PROPERTIES type="file" searchOrder="3" category="Emplacement">Alternatif</PROPERTIES>
@@ -139,7 +140,7 @@
 		<PROPERTIES type="html" form="1" fiche="1" special="multi">Html</PROPERTIES>
 		<PROPERTIES type="order"  list="1" form="1" fiche="1">Ordre</PROPERTIES>
 		<FKEY card="1,n" data="Menu,Id" behaviour="Integrated" form="1" fiche="1" parentDescription="Menu">MenuParent</FKEY>
-		<!--<FKEY card="1,n" module="Products" data="Categorie,Id">ProductsCategorieId</FKEY>
+		<FKEY card="1,n" module="Products" data="Categorie,Id">ProductsCategorieId</FKEY>
 		<FKEY card="1,n" module="Products" data="Produit,Id">ProductsProduitId</FKEY>
 		<FKEY card="1,n" module="Team" data="Equipe,Id">TeamEquipeId</FKEY>
 		<FKEY card="1,n" module="Team" data="Rider,Id">TeamRiderId</FKEY>
@@ -147,7 +148,7 @@
 		<FKEY card="1,n" module="Galerie" data="Media,Id">GalerieMediaId</FKEY>
 		<FKEY card="1,n" module="Blog" data="Categorie,Id">BlogCategorieId</FKEY>
 		<FKEY card="1,n" module="Blog" data="Post,Id">BlogPostId</FKEY>
-		<FKEY card="1,n" module="Redaction" data="Categorie,Id">RedactionCategorieId</FKEY>-->
+		<FKEY card="1,n" module="Redaction" data="Categorie,Id">RedactionCategorieId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Fichier" driver="mysql" AccessPoint="0">
 		<PROPERTIES type="titre" length="50" searchOrder="1" obligatoire="1" category="Informations">Titre</PROPERTIES>
@@ -158,14 +159,15 @@
 		<PROPERTIES type="varchar" length="16" searchOrder="1" category="Connexion">Ip</PROPERTIES>
 		<PROPERTIES type="varchar" length="200" category="Connexion">Host</PROPERTIES>
 		<PROPERTIES type="varchar" length="200" searchOrder="2" category="Connexion">Session</PROPERTIES>
-		<PROPERTIES type="varchar" length="25" category="Informations">Langue</PROPERTIES>
+		<PROPERTIES type="varchar" length="100" category="Informations">Langue</PROPERTIES>
 		<PROPERTIES type="varchar" length="200" category="Informations">Navigateur</PROPERTIES>
 		<PROPERTIES type="varchar" length="200" category="Informations">Referent</PROPERTIES>
-		<PROPERTIES type="varchar" length="25" category="Informations">LangueSite</PROPERTIES>
+		<PROPERTIES type="varchar" length="100" category="Informations">LangueSite</PROPERTIES>
 		<PROPERTIES type="varchar" length="250" category="Informations">LastUrl</PROPERTIES>
 		<PROPERTIES type="varchar" length="250" category="Informations">FirstUrl</PROPERTIES>
 		<PROPERTIES type="varchar" length="250" searchOrder="2" category="Connexion">Utilisateur</PROPERTIES>
 		<PROPERTIES type="varchar" length="250" category="Connexion">Domaine</PROPERTIES>
+		<PROPERTIES type="boolean" category="Connexion mobile" default="0">Mobile</PROPERTIES>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="ActiveTemplate" AccessPoint="0" Dico="0" driver="mysql" Icon="/Skins/AdminV2/Img/IconAqua/Wiki2.png" Class="Modules/Systeme/Class/ActiveTemplate.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="0" category="Intitulé">Nom</PROPERTIES>

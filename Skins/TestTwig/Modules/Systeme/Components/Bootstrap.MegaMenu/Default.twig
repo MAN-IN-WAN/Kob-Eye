@@ -1,0 +1,50 @@
+<script type="text/javascript" src="/Tools/Js/Masonry/masonry.min.js"></script>
+<nav id="topnavigation" class="navbar yamm navbar-default ">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a data-target=".navbar-collapse" data-toggle="collapse" class="btn btn-navbar"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav carre-wrapper">
+                {% for men in MainMenus %}
+                    {% if men.getSubMenus() %}
+                        <li class="parent dropdown {{ men.Couleur }}">
+                            <a class="dropdown-toggle carre carre-{{ men.Couleur }}" data-toggle="dropdown" href="/{{ men.Url }}" onmouseover='$("#container{{ men.Id }}").masonry({ "columnWidth": 250, "itemSelector": ".item-menu" });'><i class="fa fa-{{ men.ClassCss }}"></i><p>{{ men.Titre }}</p><b class="caret"></b></a>
+                            <div class="dropdown-menu menu-content mega-cols cols3" {% if men.BackgroundImage %}style="background-image:url(/{{ men.BackgroundImage }})"{% endif %}>
+                                <div class="row">
+                                    <div id="container{{ men.Id }}" class="span{% if men.Publicites %}9{% else %}12{% endif %}"  style="position:relative;">
+                                        <ul class="level0 ">
+                                        {% for men2 in men.getSubMenus() %}
+                                            <li class="item-menu" style="">
+                                                <a class="" href="/{{ men.Url }}/{{ men2.Url }}"><span class="menu-title">{{ men2.Titre }}</span></a>
+                                                <ul class="level1">
+                                                    {% for men3 in men2.getSubMenus() %}
+                                                    <li class=" ">
+                                                        <a href="/{{ men.Url }}/{{ men2.Url }}/{{ men3.Url }}"><span class="menu-title">{{ men3.Titre }}</span></a>
+                                                    </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </li>
+                                         {% endfor %}
+                                        </ul>
+                                    </div>
+                                    {% if men.Publicites %}
+                                    <div class="span3">
+                                        {% for pub in men.Publicites %}
+                                        <a href="{{ pub.Alternatif }}"><img src="/{{ pup.Lien }}" width="300" height="300"/></a>
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </li>
+                    {% else %}
+                        <li class="">
+                            <a href="/{{ men.Url }}" class="carre carre-{{ men.Couleur }}"><i class="fa fa-{{ men.ClassCss }}"></i><p>{{ men.getFirstSearchOrder() }}</p></a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    </div>
+</nav>

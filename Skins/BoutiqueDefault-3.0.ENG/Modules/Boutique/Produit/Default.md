@@ -1,8 +1,7 @@
-
 <div class="FicheProduit">
     [STORPROC [!Query!]|Prod|0|1]
         [NORESULT]
-        //			[HEADER 404]Ce produit n'existe pas[/HEADER]
+        			[HEADER 404]Ce produit n'existe pas[/HEADER]
         [/NORESULT]
         // gestion des différents modèles de fiche produit
         [SWITCH [!Prod::TypeProduit!]|=]
@@ -21,6 +20,9 @@
             [CASE 5]
                 [MODULE Boutique/CategorieProduit/ProduitConfigurateur]
             [/CASE]
+            [DEFAULT]
+                [MODULE Boutique/CategorieProduit/ProduitDecline]
+            [/DEFAULT]
         [/SWITCH]
     [/STORPROC]
 </div>

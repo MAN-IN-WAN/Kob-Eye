@@ -1,0 +1,12 @@
+<div class="lof-block-wrap">
+    {% for menu in menus %}
+    <h3><a href="/{{ menu.Url }}" title="{{ menu.Description }}" rel="nofollow">{{ menu.Titre }}</a></h3>
+    <ul class="bullet">
+        {% for menu2 in menu.getSubMenus(10) %}
+        <li class="item">
+            <a href="/{{ menu.Url }}/{{ menu2.Url }}" title="{{ menu2.Description }}" rel="nofollow">{{ menu2.Titre }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endfor %}
+</div>

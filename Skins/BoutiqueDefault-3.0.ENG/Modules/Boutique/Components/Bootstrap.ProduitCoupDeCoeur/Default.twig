@@ -1,0 +1,58 @@
+<!-- MODULE Block specials -->
+
+<div id="categoriesprodtabs" class="block products_block exclusive blockleocategoriestabs">
+    <h3 class="title_block">{{ TITRE }}</h3>
+    <div class="block_content">
+        <!-- Products list -->
+        <div id="product_list" class="products_block view-grid">
+            <div class="row">
+                {% for prod in prods %}
+                <!-- Product item -->
+                <div class="p-item col-md-4 product_block ajax_block_product {% if loop.first %}first_item{% endif %}{% if loop.last %}last_item{% endif %} {% if loop.index%2==0 %} alternate_item{% else %} item{% endif %}  ">
+                    <div class="list-products">
+                        <div class="product-container clearfix">
+                            <div class="center_block">
+                                <a href="{{ prod.Url }}" class="product_img_link" title="{{ prod.Nom }}"> <img src="/{% if prod.Image!= '' %}{{ prod.Image }}.mini.200x200.jpg{% else %}Skins/[!Systeme::Skin!]/Img/image_def.jpg{% endif %}" alt="{{ prod.Nom }}" class="img-responsive" style="max-height:200px;margin: auto;" /> <span class="new">__NEW__</span> </a>
+                                {% if prod.Promo %}
+                                <span class="discount">__PROMO__</span>
+                                {% endif %}
+
+                            </div>
+                            <div class="right_block">
+                                <h3 class="s_title_block"><a href="{{ prod.Url }}" title="{{ prod.Nom }}">{{ prod.Nom }}</a></h3>
+
+                                <div class="price_container">
+                                    </span>
+                                    {% if prod.Promo %}
+                                    <div style="display:block;color:#fff;font-size:13px;position:absolute;right:32px;text-decoration:line-through;top:0;" id="tarifNonPromo">
+                                        {{ prod.getTarifHorsPromo() }}{{ CurrentDevise.Sigle }}
+                                    </div>
+                                    {% endif %}
+                                    {% if prod.MultiTarif %}<span class="BlocProduitApartir">__A_PARTIR_DE__</span>{% endif %} <span class="price" style="display: inline;">{{ prod.Prix }}{{ CurrentDevise.Sigle }}</span>
+                                    <br />
+                                    {% if prod.StockReference %}
+                                    <span class="availability">__AVAILABLE__</span>
+                                    {% endif %}
+                                </div>
+                                <span class="online_only"></span>
+
+                                <a class="btn btn-success" href="{{ prod.Url }}" title="__ADD_TO_CART__">__ADD_TO_CART__</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Product item -->
+                {% if loop.index%3==0 and loop.last==0 %}
+            </div>
+            <div class="row">
+                {% endif %}
+                {% endfor %}
+
+            </div>
+        </div>
+        <!-- /Products list -->
+    </div>
+</div>
+<!-- /MODULE Block specials -->
+

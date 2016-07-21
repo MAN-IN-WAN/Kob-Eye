@@ -3,7 +3,6 @@
 		<PROPERTIES type="varchar" special="multi"  length="100" searchOrder="1" fiche="1" form="1" list="1">Titre</PROPERTIES>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Categorie" driver="mysql" master="1" AccessPoint="1" browseable="1" Description="Catégories"  Icon="/Skins/AdminV2/Img/IconAqua/Contact.png">
-		<PROPERTIES type="varchar" length="100"  fiche="1" form="1" list="1">Url</PROPERTIES>
 		<PROPERTIES type="varchar" length="100" special="multi"  searchOrder="1" fiche="1" form="1" list="1">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" length="100" special="multi"  description="Nom Alternatif (au survol)" fiche="1" form="1">NomAlternatif</PROPERTIES>
 		<PROPERTIES type="varchar" length="250"  description="Autre site" fiche="1" form="1">LienExterne</PROPERTIES>
@@ -61,7 +60,7 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Technologie" driver="mysql" master="0" AccessPoint="0" Dico="1" Description="Technologies"  Icon="/Skins/AdminV2/Img/IconAqua/Home.png" Class="Modules/Products/Class/Technologie.class.php">
 		<PROPERTIES type="varchar" special="multi"  length="100" searchOrder="1" fiche="1" form="1" list="1">Titre</PROPERTIES>
-		<PROPERTIES type="varchar" length="100" values="Image::Image,TexteEtImage::Texte et Image,Texte::Texte" searchOrder="2" default="Texte et Image" fiche="1" form="1" list="1">Modele</PROPERTIES>
+		<PROPERTIES type="varchar" length="100" values="...::,Image::Image,TexteEtImage::Texte et Image,Texte::Texte" searchOrder="2" default="Texte et Image" fiche="1" form="1" list="1">Modele</PROPERTIES>
 		<PROPERTIES type="order" fiche="1" form="1" list="1">Ordre</PROPERTIES>
 		<PROPERTIES type="image" special="multi"  fiche="1" form="1" list="1">Icone</PROPERTIES>
 		<PROPERTIES type="image" special="multi" fiche="1" form="1">Image</PROPERTIES>

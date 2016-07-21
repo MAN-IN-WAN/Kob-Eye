@@ -23,9 +23,11 @@ include('Class/Conf/Conf.class.php');
 include('Class/Debug/Klog.class.php');
 include('Class/Debug/Error.class.php');
 include('Class/Template/Skin.class.php');
+include('Class/Template/Header.class.php');
 include('Class/Systeme/Module.class.php');
 include('Class/Systeme/Connection.class.php');
 include('Class/Systeme/Plugin.class.php');
+include('Class/Systeme/ApcCache.class.php');
 include('Class/DataBase/DbAnalyzer.class.php');
 include('Class/DataBase/ObjectClass.class.php');
 include('Class/DataBase/Association.class.php');
@@ -37,18 +39,22 @@ include('Class/DataBase/Drivers/sqlFunctions.class.php');
 include('Class/DataBase/Drivers/sqlCheck.class.php');
 include('Class/DataBase/Drivers/sqliteDriver.class.php');
 include('Class/DataBase/Drivers/sqlInherit.class.php');
+include('Class/DataBase/Drivers/sqlInterval.class.php');
 include('Class/DataBase/Drivers/textDriver.class.php');
 include('Class/DataBase/Drivers/fileDriver.class.php');
 include('Class/DataBase/Drivers/Flatfile.class.php');
 include('Class/Beacon/Beacon.class.php');
 include('Class/Beacon/Bloc.class.php');
 include('Class/Beacon/Condition.class.php');
+include('Class/Beacon/Component.class.php');
 include('Class/Beacon/Info.class.php');
 include('Class/Beacon/Lib.class.php');
 include('Class/Beacon/Stats.class.php');
 include('Class/Beacon/Storproc.class.php');
 include('Class/Beacon/charUtils.class.php');
 include('Class/Beacon/editStruct.class.php');
+include('Class/Beacon/Template.class.php');
+include('Class/Beacon/Zone.class.php');
 include('Class/Process/Process.class.php');
 include('Class/Process/Parser.class.php');
 include('Class/Process/Trigger.class.php');
@@ -61,7 +67,11 @@ include('Class/Lib/xml2array.class.php');
 include('Class/Utils/Session.class.php');
 include('Class/Utils/JsonP.class.php');
 include('Class/More.php');
+include('Class/Template/Twig.class.php');
+//Twig template
 $Chrono->stop("CLASS LOAD");
+
+KeTwig::initTwig();
 
 function __autoload($className) {
 	$folder=Root::classFolder($className);
@@ -84,9 +94,19 @@ if($_SERVER['REQUEST_METHOD'] == "OPTIONS"){
 	$Systeme->Connect();
     $GLOBALS["Chrono"]->stop("TOTAL CONNEXION");
     $GLOBALS["Chrono"]->start("TOTAL AFFICH");
+    try{
+
+    }catch (Exception $e){
+        echo 'erreur mystere';
+        print_r($e);
+    }
     $Systeme->Affich();
     $GLOBALS["Chrono"]->stop("TOTAL AFFICH");
-    $Systeme->Log->log($Chrono->total());
+    //$Systeme->Log->log($Chrono->total());
+
 	$Systeme->Close();
 	$Chrono->stop();
+	if ($_GET['CHRONO']){
+		echo $Chrono->total();
+	}
 }

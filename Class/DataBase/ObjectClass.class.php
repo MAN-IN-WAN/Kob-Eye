@@ -30,6 +30,7 @@ class ObjectClass extends Root{
 	var $Class = 0;
 	var $logEvent = 0;
 	var $color;
+	var $cache;
 	var $hidden;
 	var $Interface;
 	var $className = 0;
@@ -94,6 +95,7 @@ class ObjectClass extends Root{
 		if (isset($schema['@']['generateUrl']))$this->generateUrl = $schema['@']['generateUrl'];
 		if (isset($schema['@']['logEvent']))$this->logEvent = $schema['@']['logEvent'];
 		if (isset($schema['@']['color']))$this->color = $schema['@']['color'];
+		if (isset($schema['@']['cache']))$this->cache = $schema['@']['cache'];
 		if (isset($schema['@']['hidden']))$this->hidden = $schema['@']['hidden'];
 		if (isset($schema['@']['className']))$this->className = $schema['@']['className'];
 		if (isset($schema['@']['noRecursivity']))$this->noRecursivity = $schema['@']['noRecursivity'];
@@ -319,9 +321,9 @@ class ObjectClass extends Root{
 			$this->Proprietes["Template"] = $this->parseAttributes(array("type"=>"modele","category"=>"Configuration","query"=>"Systeme/ActiveTemplate::Id::Nom", "form"=>1,"fiche"=>1),"Template");
 			$this->addCategory(Array("title"=>"Configuration"),Array("type"=>"property","title"=>"Template"));
 			//TitleMeta
-			$this->addCategory(Array("title"=>"Référencement"),Array("type"=>"property","title"=>"TitleMeta", "form"=>1,"fiche"=>1));
+			$this->addCategory(Array("title"=>"Référencement"),Array("type"=>"property","title"=>"TitleMeta"));
 			$o[] = Array("type"=>"property","name"=>"TitleMeta");
-			$this->Proprietes['TitleMeta'] = Array('type'=>'metat','special'=>'multi','description'=>'META: Titre de la page (réseaux sociaux également)');
+			$this->Proprietes['TitleMeta'] = Array('type'=>'metat','special'=>'multi','description'=>'META: Titre de la page (réseaux sociaux également)', "form"=>1,"fiche"=>1);
 			//DescriptionMeta
 			$this->addCategory(Array("title"=>"Référencement"),Array("type"=>"property","title"=>"DescriptionMeta", "form"=>1,"fiche"=>1));
 			$o[] = Array("type"=>"property","name"=>"DescriptionMeta");

@@ -212,7 +212,7 @@ $(function () {
 
         [COUNT [!T!]|S]
         [IF [!S!]>1]
-            <option value="[!T::0!]" [IF [!C!]=[!T::0!]]selected="selected"[/IF]>[!T::1!]</option>
+            <option value="[!T::0!]" [IF [!DF!]=[!T::0!]]selected="selected"[/IF]>[!T::1!]</option>
         [ELSE]
             <option value="[!C!]" [IF [!DF!]=[!C!]]selected="selected"[/IF]>[!C!]</option>
         [/IF]

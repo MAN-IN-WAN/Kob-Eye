@@ -97,41 +97,26 @@ class Skin extends Root{
 
 	function initSkin(){
 		if (!SKIN_CACHE||$this->checkIfModified()){
-			//Creation des fichiers du cache de la skin
-			$Url="Skins/".Sys::$User->Skin."/.cache";
-			if (!is_dir(ROOT_DIR.$Url)){
-				mkdir(ROOT_DIR.$Url);
-			}
 			//On genere le html
 			$SkinBloc=new Bloc();
 			$Beacon["BEACON"] = "BLOC";
 			$SkinBloc->setFromVar($this->bloc,"[DATA]",$Beacon);
 			$SkinBloc->init();
  			$this->SkinObjects = $SkinBloc;
-			$this->WriteHeaderCache($Url."/Header");
-/* 			$this->Data = $this->SkinObjects->Affich();
- 			//Ensuite on genere les structure conditionnelle 
- 			$SkinBloc=new Bloc();
- 			$SkinBloc->loadData($this->Data);
- 			$this->Data="";
- 			$SkinBloc->init();include(
- 			$this->SkinObjects = $SkinBloc;	
-// 			$ObjVars = $this->SkinObjects->getObjVars();
-// 			$this->SkinObjects->ObjVars = $ObjVars;
-// 			//On ecrit le cache*/
-			$this->SkinObjects->writeCache($Url);
-			//Generatio ndu fichier info
-			$this->WriteSkinInfo();
-// 			$this->SkinObjects = "";
-			//$this->loadSkin();
+			if (SKIN_CACHE&&$this->checkIfModified()) {
+				$Url="Skins/".Sys::$User->Skin."/.cache";
+				//Creation des fichiers du cache de la skin
+				if (!is_dir(ROOT_DIR.$Url)){
+					mkdir(ROOT_DIR.$Url);
+				}
+				$this->WriteHeaderCache($Url . "/Header");
+				$this->SkinObjects->writeCache($Url);
+				$this->WriteSkinInfo();
+			}
 
 		}else{
-			$SkinBloc=new Bloc();
 			//Donc on charge la skin
 			$this->SkinObjects= unserialize(file_get_contents(ROOT_DIR.$this->URL));
-			//$this->Data = $this->SkinObjects->Affich();
-			//$this->loadSkin();
-// 			echo "SKIN INIT OK\r\n";
 		}
 	}
 	
@@ -145,10 +130,12 @@ class Skin extends Root{
 	function writeSkinInfo(){
 		if (!$File=fopen (ROOT_DIR.$this->URLINFO,"w"))return false;
 		foreach (Sys::$BlocLoaded as $k=>$p){
-			$Entree = $k.'||';
-			$Entree.=filemtime(ROOT_DIR.'Skins/'.$this->Nom.'/'.$k.".bl");
-			$Entree.="\n";
-			fwrite ($File,$Entree);
+			if (file_exists(ROOT_DIR.'Skins/'.$this->Nom.'/'.$k.".bl")) {
+				$Entree = $k . '||';
+				$Entree .= filemtime(ROOT_DIR . 'Skins/' . $this->Nom . '/' . $k . ".bl");
+				$Entree .= "\n";
+				fwrite($File, $Entree);
+			}
 		}
 		fclose($File);
 

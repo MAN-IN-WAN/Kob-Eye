@@ -1,5 +1,5 @@
 <SCHEMA>
-	<OBJECTCLASS title="Magasin" driver="mysql" AccessPoint="1" master="1" Description="Boutique Internet"  Icon="/Skins/AdminV2/Img/IconAqua/Wiki2.png"  Default="0" Class="Modules/Boutique/Class/Magasin.class.php">
+	<OBJECTCLASS title="Magasin" driver="mysql" AccessPoint="1" master="1" Description="Boutique Internet"  Icon="/Skins/AdminV2/Img/IconAqua/Wiki2.png"  Default="0" Class="Modules/Boutique/Class/Magasin.class.php" cache="1">
 		<PROPERTIES searchOrder="1" description="Intitulé" type="varchar" length="100"  category="magasin" fiche="1" form="1" list="1">Nom</PROPERTIES>
 		<PROPERTIES searchOrder="2" description="Code" type="varchar" length="10"  category="magasin">Code</PROPERTIES>
 		<PROPERTIES Order="2" description="Nom Long"   type="varchar" length="255" category="magasin" list="1" >NomLong</PROPERTIES>
@@ -62,7 +62,7 @@
 		<PROPERTIES Order="19" description="Icone Univers"    			type="file" >Icone</PROPERTIES>
 	</OBJECTCLASS>
 	
-	<OBJECTCLASS title="Categorie" driver="mysql" AccessPoint="1" master="1" Description="Categories" browseable="1"  Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png" Default="0" className="BoutiqueCategorie" Class="Modules/Boutique/Class/Categorie.class.php">
+	<OBJECTCLASS title="Categorie" driver="mysql" AccessPoint="1" master="1" Description="Categories" browseable="1"  Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png" Default="0" className="BoutiqueCategorie" Class="Modules/Boutique/Class/Categorie.class.php" cache="1">
 		<PROPERTIES searchOrder="1" description="Intitulé" type="varchar" length="100"   special="multi" category="Desc" fiche="1" form="1" list="1">Nom</PROPERTIES>
 		<PROPERTIES description="Couleur Catégorie"      type="color">CatColor</PROPERTIES>
 		<PROPERTIES Order="2" description="Nom Long" type="varchar" length="100"   special="multi" category="Desc">NomLong</PROPERTIES>
@@ -211,7 +211,7 @@
 		<FKEY card="0,1" data="Produit,Id" hidden="1">ProduitId</FKEY>
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="Marque" driver="mysql"  AccessPoint="0" Dico="1" master="0"  Description="Marques"  stopPage="1" browseable="1"  Icon="/Skins/AdminV2/Img/IconAqua/Settings2.png">
+	<OBJECTCLASS title="Marque" driver="mysql"  AccessPoint="0" Dico="1" master="0"  Description="Marques"  stopPage="1" browseable="1"  Icon="/Skins/AdminV2/Img/IconAqua/Settings2.png" cache="1">
 		<PROPERTIES searchOrder="1" description="Intitulé" type="varchar" length="100" special="multi" category="Descriptif"  fiche="1" form="1" list="1">Nom</PROPERTIES>
 		<PROPERTIES searchOrder="3" description="Actif" type="boolean" default="1"  category="Descriptif"  fiche="1" form="1" list="1">Actif</PROPERTIES>
 		<PROPERTIES searchOrder="8" description="Description" type="bbcode" special="multi" category="Descriptif"  fiche="1" form="1" >Description</PROPERTIES>
@@ -219,7 +219,7 @@
 		<PROPERTIES description="Ordre" type="order" category="Descriptif">Ordre</PROPERTIES>
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="Devise" driver="mysql" AccessPoint="0" Dico="1" master="0" Description="Devises"   Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png">
+	<OBJECTCLASS title="Devise" driver="mysql" AccessPoint="0" Dico="1" master="0" Description="Devises"   Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png" cache="1">
 		<PROPERTIES searchOrder="1" description="Intitulé" type="varchar" length="100"   >Nom</PROPERTIES>
 		<PROPERTIES description="Sigle" type="varchar" length="10"   >Sigle</PROPERTIES>
 		<PROPERTIES  searchOrder="2" description="Taux"  type="float"  >Taux</PROPERTIES>
@@ -583,7 +583,7 @@
 		</VIEW>
 	</OBJECTCLASS>
 	
-	<OBJECTCLASS title="TypePaiement" driver="mysql" AccessPoint="0" Dico="1" master="0" Description="TypePaiements"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png"  Class="Modules/Boutique/Class/TypePaiement.class.php" plugin="1">
+	<OBJECTCLASS title="TypePaiement" driver="mysql" AccessPoint="0" Dico="1" master="0" Description="TypePaiements"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png"  Class="Modules/Boutique/Class/TypePaiement.class.php" plugin="1" cache="1">
 		<PROPERTIES searchOrder="1" description="Nom" type="varchar" length="100"   >Nom</PROPERTIES>
 		<PROPERTIES description="Compte client" type="varchar" length="16" >CompteComptable</PROPERTIES>
         <PROPERTIES Order="2" description="Information choix du paiement" type="bbcode"  special="multi">Information</PROPERTIES>
