@@ -251,8 +251,8 @@ class Header extends Root{
 							<meta property="og:url" content="'.'http://'.Sys::$domain.'/'.$GLOBALS["Systeme"]->Lien.'" />';
 			if (!empty($this->Image)){
 				$this->Content .='
-							<meta property="og:image" content="'.'http://'.Sys::$domain.'/'.$this->Image.'.mini.250x250.jpg" />
-							<link rel="image_src" href="'.'http://'.Sys::$domain.'/'.$this->Image.'.mini.250x250.jpg" />
+							<meta property="og:image" content="'.'http://'.Sys::$domain.'/'.$this->Image.'.mini.600x600.jpg" />
+							<link rel="image_src" href="'.'http://'.Sys::$domain.'/'.$this->Image.'.mini.600x600.jpg" />
 							<meta name="twitter:image" content="'.'http://'.Sys::$domain.'/'.$this->Image.'.mini.250x250.jpg"> ';
 			}
 							

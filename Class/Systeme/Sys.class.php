@@ -1097,27 +1097,24 @@ class Sys extends Root{
         //Gestion des mots clefs
         foreach (Sys::$keywords as $k=>$m){
             $t = Sys::getOneData('Systeme','Tag/Canonic='.$k);
+            $tmpPages = $m->Pages;
+            $tmpPoids = $m->Poids;
             if (is_object($t)) {
-                $t->Poids += $m->Poids;
                 $m=$t;
             }
             $m->Save();
-
-            if (isset($m->Pages)){
-                foreach ($m->Pages as $p) {
+            if (is_array($tmpPages)){
+                foreach ($tmpPages as $p) {
                     if (!isset($Pages[$p])) {
                         $Pages[$p] = Sys::getOneData('Systeme', 'Page/' . $p);
                     }
                     $Pages[$p]->AddParent($m);
                 }
             }
-            $this->Log->log("KEYWORDS --> ".$k);
         }
-        $this->Log->log("NOMBRE KEYWORDS --> ".sizeof(Sys::$keywords));
 
         //Gestion des pages
         foreach ($Pages as $page) $page->Save();
-        $this->Log->log("NOMBRE PAGESS --> ".sizeof($Pages));
 
         if (is_object($this->Db[0])) $this->Db[0]->query("COMMIT");
 

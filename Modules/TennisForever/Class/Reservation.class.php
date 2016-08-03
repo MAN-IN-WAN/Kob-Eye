@@ -160,6 +160,7 @@ class Reservation extends genericClass {
     function setPartenaires($parts){
         $this->_partenaires = array();
         if (is_array($parts))foreach ($parts as $p){
+            $p = (array)$p;
             if ($p['Client']>0) {
                 //recherche du client
                 $cli = Sys::getOneData('TennisForever','Client/'.$p['Client']);
@@ -207,7 +208,7 @@ class Reservation extends genericClass {
         $this->addParent($service);
     }
     function setDate($date){
-        $this->_date = $date;
+        $this->_date = mktime(0,0,0,date('n', $date),date('j', $date),date('Y', $date));
     }
     function setHeureDebut($heure){
         //transformation de l'heure

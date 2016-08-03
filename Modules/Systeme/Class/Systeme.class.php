@@ -104,6 +104,7 @@ class Systeme extends Module {
                             echo $b->getColoredString("------> PAGE:  ".$p." / ".$nbpage."\n",'red');
                             foreach ($tmp as $t){
                                 if ($t->Display) {
+                                    //$t->Save();
                                     $t->SaveKeywords();
                                     echo $b->getColoredString("------ " . $i . "/" . $nb . " ".$mod->Nom ." " . $o->titre." " . $t->getFirstSearchOrder(). "\n", 'green');
                                 }else{

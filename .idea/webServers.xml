@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="b3895f4a-7984-45c7-8e76-dda065144e59" name="pharmaciedelecluse.fr (project level)" url="http://admin.pharmaciedelecluse.fr">
+        <fileTransfer host="admin.pharmaciedelecluse.fr" port="21" password="df98df9bdfdddfd3dfc3dfd9dfcfdfd3" username="admin@pharmaciedelecluse.fr">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="b3aba428-4f5f-4563-8127-dfec19a85a01" name="pharmaducours.fr (project level)" url="http://admin.pharmaducours.fr">
+        <fileTransfer host="admin.pharmaducours.fr" port="21" password="df98df9bdfdddfd3dfc3dfd9dfcfdfd3" username="admin@pharmaducours.fr">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="56d7caaa-fa9d-40d3-a04d-1b6de9f361e1" name="raspberry_gil" url="http://192.168.0.113">
+        <fileTransfer host="192.168.0.113" port="22" rootFolder="/var/www" accessType="SFTP" password="df98df9bdfdddfd3dfc3dfd9dfcfdfd3" username="formation">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="fe4bc21d-dcee-4f23-b3c5-625d337cb397" name="tennisforever.fr" url="http://tennisforever.fr">
+        <fileTransfer host="tennisforever.fr" port="21" password="df98df9bdfdddfd3dfc3dfd9dfcfdfd3" username="admin@tennisforever.fr">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="37ad23ff-8111-4db0-af83-be848c44c2d5" name="client.eng.systems" url="http://client.eng.systems">
+        <fileTransfer host="client.eng.systems" port="22" privateKey="$USER_HOME$/.ssh/id_rsa" rootFolder="/var/www/kobeye" accessType="SFTP" username="root" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="da932cf4-e227-4f7a-907c-1ef9698076eb" name="dev.pharmaciedelecluse.fr" url="http://admin.pharmaciedelecluse.fr">
+        <fileTransfer host="admin.pharmaciedelecluse.fr" port="21" rootFolder="/kobeye" password="df98df9bdfdddfd3dfc3dfd9dfcfdfd3" username="admin@pharmaciedelecluse.fr">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="9aa87e51-7973-484c-a605-5c7c920e9b61" name="parc.azko.fr" url="http://parc.azko.fr">
+        <fileTransfer host="parc.azko.fr" port="22" privateKey="$USER_HOME$/.ssh/id_rsa" rootFolder="/var/www/html" accessType="SFTP" username="root" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="4cfb473b-4527-415d-b224-357fc4c9b942" name="lace-restaurant.fr" url="http://lace-restaurant.fr">
+        <fileTransfer host="lace-restaurant.fr" port="21" rootFolder="/kobeye" password="df98df9bdfdddfd3dfc3dfd9dfcfdfd3" username="admin@lace-restaurant.fr">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="bab6378b-bffe-4ea1-99fb-b63f0ede3152" name="f-onefoil.com" url="http://f-onefoil.com">
+        <fileTransfer host="f-onefoil.com" port="21" rootFolder="/www" password="df98df9bdfdddfd3dfc3dfd9dfcfdfd3" username="admin@f-onefoil.com">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="e9c11c23-1b95-4bd9-a0fc-768ca72e6529" name="protector.mobi" url="http://protector.mobi">
+        <fileTransfer host="protector.mobi" port="21" password="df98df9bdfdddfd3dfc3dfd9dfcfdfd3" username="admin@madeinchina.boutique">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="60fe4ba2-c31d-4c66-b72f-12baa2fba8a4" name="f-onekites.com" url="http://f-onekites.com">
+        <fileTransfer host="f-onekites.com" port="21" password="df98df9bdfdddfd3dfc3dfd9dfcfdfd3" username="admin@f-onekites.com">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="7b3d6757-6d02-48c9-a2bb-50351d012fd4" name="f-onesup.com" url="http://f-onesup.com">
+        <fileTransfer host="f-onesup.com" port="21" password="df98df9bdfdddfd3dfc3dfd9dfcfdfd3" username="admin@f-onesup.com">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

@@ -21,6 +21,7 @@ class TennisForever extends Module {
      */
     function initGlobalVars(){
         define('TENNISFOREVER_CLIENT_GROUP',4);
+        $GLOBALS["Systeme"]->registerVar("CurrentClient",TennisForever::getCurrentClient());
     }
     /**
      * Modification des données de la skin dans le cas ou un utilisateur se connecte sur un magasin
@@ -109,5 +110,30 @@ class TennisForever extends Module {
             $out.='<div style="overflow:hidden;"><span class="label label-warning" style="font-size:16px;font-weight: bold;text-align:center;float:right;background-color:darkred;width: 50px;height: 50px; display: block;line-height:50px;">'.$nbres.'</span>'.$s->Titre.'</div>';
         }
         return addslashes($out);
+    }
+    /**
+     * getServices
+     * Récupère tous les services par type de court et par court;
+     */
+    static function getServices() {
+        $ser = Sys::getData('TennisForever','Service');
+        $out = array();
+        foreach ($ser as $s){
+            //recherche des types de court
+            $tcs = Sys::getData('TennisForever','TypeCourt/Service/'.$s->Id);
+            $cs = Sys::getData('TennisForever','Court/Service/'.$s->Id);
+            for ($i=0;$i<sizeof($tcs);$i++){
+                $st = unserialize(serialize($s));
+                $st->TypeCourtId = $tcs[$i]->Id;
+                $out[] = $st;
+            }
+            //recherche des court
+            for ($j=0;$j<sizeof($cs);$j++){
+                $st = unserialize(serialize($s));
+                $st->CourtId = $cs[$j]->Id;
+                $out[] = $st;
+            }
+        }
+        return $out;
     }
 }
