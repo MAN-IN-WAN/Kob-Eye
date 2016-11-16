@@ -483,9 +483,9 @@ class Process extends Root{
 					foreach ($Parametres as $K=>$P)$Parametres[$K] = (sizeof(explode("[!",$P))>1)?Process::processVars($P):$P;
 					foreach ($Parametres as $K=>$P)$Parametres[$K] = (is_string($P)&&sizeof(explode("[*",$P))>1)?Process::searchAndReplaceVars($P,"[*","*]"):$P;
 					//preg_match("#(.*)\((.*)\)#",$Tab[1],$Out);
-					if (method_exists(new $ClassName(),$Out[0])) {
+					//if (method_exists(new $ClassName(),$Out[0])) {
 						return Utils::$FunctionName($Parametres);
-					}
+					//}
 				break;
 				case "Array":
 					$ClassName = $Tab[0];
