@@ -1125,6 +1125,19 @@ class genericClass extends Root {
 		}
 		return $Childs;
 	}
+	
+	/**
+	 * getOneChild
+	 * Return First Child found of a given type from this object
+	 * @param String Name of the child type
+	 * @return genericClass
+	 */
+	public function getChilds($Type) {
+		$childs = $this -> getChildren($Type);
+		if (sizeof($childs)) return $childs[0];
+		return false;
+	}
+	
 
 	/**
 	 * getParents
@@ -1171,6 +1184,18 @@ class genericClass extends Root {
 			}
 		}
 		return $Parents;
+	}
+	
+	/**
+	 * getOneParent
+	 * Return The first Parent found of a given type from this object
+	 * @param String Name of the parent type
+	 * @return genericClass
+	 */
+	public function getOneParent($Type = "") {
+		$parents = $this->getParents($Type);
+		if (sizeof($parents)) return $parents[0];
+		return false;
 	}
 
 	/**
