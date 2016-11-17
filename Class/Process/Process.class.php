@@ -74,7 +74,7 @@ class Process extends Root{
 		$sData = $Data;
 		if (!is_string($Data))return $Data;
 		//On detecte l existence d un calcul
-		if (preg_match("#(.*?)(\:\=|\:\+|\:\*|(?<!http)\:\/|\:\-|\*\=|\-\=|\+\=|\.\=|\/\=|\%\=|\:\%)([^`]*)#s",$Data,$Out)){
+		if (preg_match("#(.*?)(\:\=|\:\+|\:\*|(?<!http|https)\:\/|\:\-|\*\=|\-\=|\+\=|\.\=|\/\=|\%\=|\:\%)([^`]*)#s",$Data,$Out)){
 			//On extrait les valeurs
 			$Operateur = $Out[2];
 			$Val1 = $Out[1];
@@ -94,7 +94,7 @@ class Process extends Root{
 				case ":=":
 					//Affectation par defaut
 					if (strlen($Out[1])&&(Process::ProcessPostVars($Out[1])==""||Process::ProcessPostVars($Out[1])==$Out[1])){
-						if (preg_match("#(.*?)(\:\=|\=\=|\:\+|\:\*|\:\/|\:\-|\*\=|\/\=)([^`]*)#s",$Out[3],$Out2)) $Out[3]=Process::GetTempVar($Out[3]);
+						if (preg_match("#(.*?)(\:\=|\=\=|\:\+|\:\*|(?<!http|https)\:\/|\:\-|\*\=|\/\=)([^`]*)#s",$Out[3],$Out2)) $Out[3]=Process::GetTempVar($Out[3]);
 						//On verifie qu il ne s agissent pas d un tableau
 						if (sizeof($Tab = explode ('::',$Out[1]))>1) {
 							//C un tableau
@@ -483,9 +483,9 @@ class Process extends Root{
 					foreach ($Parametres as $K=>$P)$Parametres[$K] = (sizeof(explode("[!",$P))>1)?Process::processVars($P):$P;
 					foreach ($Parametres as $K=>$P)$Parametres[$K] = (is_string($P)&&sizeof(explode("[*",$P))>1)?Process::searchAndReplaceVars($P,"[*","*]"):$P;
 					//preg_match("#(.*)\((.*)\)#",$Tab[1],$Out);
-					if (method_exists(new $ClassName(),$Out[0])) {
+					//if (method_exists(new $ClassName(),$Out[0])) {
 						return Utils::$FunctionName($Parametres);
-					}
+					//}
 				break;
 				case "Array":
 					$ClassName = $Tab[0];
