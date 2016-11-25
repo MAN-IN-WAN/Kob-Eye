@@ -2432,6 +2432,15 @@ class genericClass extends Root {
 	  */
 	 public function getPages($strict=false){
 		$tls = Sys::getData('Systeme','Page/PageModule='.$this->Module.'&PageObject='.$this->ObjectType.'&PageId='.$this->Id);
+		
+		if(!Sys::$User->Admin && is_object(Site::getCurrentSite())){
+			$site = Site::getCurrentSite();
+			$siteId = $site->Id;
+			$tls = array_filter($tls,function($a)use($siteId){
+				return ($siteId == $a->SiteId);
+			});
+		}
+		
 		if (!sizeof($tls)&&$this->ObjectType!="Menu"&&!$strict){
 			$tls = Array();
 			//recherche des menus pointant vers cette donnée
