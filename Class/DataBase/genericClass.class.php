@@ -1132,7 +1132,7 @@ class genericClass extends Root {
 	 * @param String Name of the child type
 	 * @return genericClass
 	 */
-	public function getChilds($Type) {
+	public function getOneChild($Type) {
 		$childs = $this -> getChildren($Type);
 		if (sizeof($childs)) return $childs[0];
 		return false;
