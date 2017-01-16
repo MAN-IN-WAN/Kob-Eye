@@ -203,7 +203,7 @@ class Module extends Root{
 		$s = $s[0];
 		//recherche de clefs
 	 	$s = explode(".",$s);
-        if (isset($s[1])&&sizeof(explode("(",$s[1]))) {
+        if (isset($s[1])&&sizeof(explode("(",$s[1])))>1 {
             //sortie car ils'agit d'un filtre
             return Array("ObjectClass"=>"");
         }
