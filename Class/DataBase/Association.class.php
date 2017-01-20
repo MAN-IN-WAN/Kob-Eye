@@ -71,7 +71,7 @@ class Association {
 		$this->attributes = $t;
 		foreach ($t as $n => $att){
 			//echo "SET $n =>  $att\r\n";
-			$this->$n = $att;
+			$this->{$n} = $att;
 		}
 	}
 	/**

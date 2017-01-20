@@ -16,7 +16,8 @@
 	[IF [!I_Tel!]=][!I_Tel_Error:=1!][!I_Error:=1!][/IF]
 	[IF [!I_Prenom!]=][!I_Prenom_Error:=1!][!I_Error:=1!][/IF]
 	//[IF [!I_DateNaissance!]=][!I_DateNaissance_Error:=1!][!I_Error:=1!][/IF]
-	[IF [!I_Adresse!]=][!I_Adresse_Error:=1!][!I_Error:=1!][/IF]
+
+	[IF [!I_Adresse!]][ELSE][!I_Adresse_Error:=1!][!I_Error:=1!][/IF]
 	[IF [!I_CodePostal!]=][!I_CodePostal_Error:=1!][!I_Error:=1!][/IF]
 	[IF [!I_Ville!]=][!I_Ville_Error:=1!][!I_Error:=1!][/IF]
 	[IF [!Systeme::User::Public!]=1]

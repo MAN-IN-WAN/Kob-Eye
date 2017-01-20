@@ -437,7 +437,7 @@ class fileDriver extends ObjectClass {
 			$Temp = explode(".",$Nom);                        
 			$Tab['Type'] = $Temp[count($Temp)-1];
 			$Tab['Mod'] = $Temp[0];
-			$Tab['Mime'] = mime_content_type($Adresse);
+			$Tab['Mime'] = (!empty($adresse))?mime_content_type($Adresse):'';
 		}
 		$Tab['Nom'] = $Nom;
 		$Tab['Url'] = $Adresse;

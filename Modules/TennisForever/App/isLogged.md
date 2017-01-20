@@ -10,7 +10,7 @@
     Tel: '[JSON][!Sys::User::Tel!][/JSON]',
     Adresse: '[JSON][!Sys::User::Adresse!][/JSON]',
     CodePostal: '[JSON][!Sys::User::CodPos!][/JSON]',
-    Abonne: [!CurrentClient::Abonne!],
+    Abonne: "[!CurrentClient::Abonne!]",
     Ville: '[JSON][!Sys::User::Ville!][/JSON]'
     [ELSE]false[/IF]
 }

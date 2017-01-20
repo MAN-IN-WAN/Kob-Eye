@@ -284,14 +284,14 @@
 				    <div class="span6">
 						<p>Les champs marqués (<span class="Obligatoire">*</span>) sont obligatoires.</p>
 						<p class="ContactTel">Vous pouvez aussi nous contacter par :<br />
-						Tel : [!Systeme::User::Tel!]<br />
-						Fax : [!Systeme::User::Fax!]</p>
+						Tel : [!CurrentMagasin::Tel!]<br />
+						Fax : [!CurrentMagasin::Fax!]</p>
 				    </div>
 				    <div class="span6">
 						<p>
 						Conformément à la loi n°78-17 du 6 janvier 1978 relative à l'informatique, aux fichiers et aux libertés,
 						vous disposez d'un droit d'accès, de rectification, de suppression des informations qui vous concernent que vous pouvez exercer en vous adressant à
-						[!Systeme::User::Nom!] - [!Systeme::User::Adresse!] - [!Systeme::User::CodPos!] [!Systeme::User::Ville!] - [!Systeme::User::Pays!].
+						[!CurrentMagasin::Nom!] - [!CurrentMagasin::Adresse!] - [!CurrentMagasin::CodPos!] [!CurrentMagasin::Ville!] - [!CurrentMagasin::Pays!].
 						</p>
 	    
 						<p>

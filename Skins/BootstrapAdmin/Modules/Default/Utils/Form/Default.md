@@ -70,7 +70,7 @@
         [STORPROC [!O::getElementsByAttribute(form,,1)!]|P]
             [SWITCH [!P::type!]|=]
                 [CASE fkey]
-                    [IF [!P::card!]=long]
+                    [IF [!P::card!]=long||[!P::recursive!]]
                         <li role="form-[!P::name!]" ><a href="#form-[!P::name!]" aria-controls="form-[!P::name!]" role="tab" data-toggle="tab">[!P::parentDescription!]</a></li>
                     [/IF]
                 [/CASE]
@@ -94,7 +94,7 @@
     <!-- Tab panes -->
             [SWITCH [!P::type!]|=]
                 [CASE fkey]
-                    [IF [!P::card!]=long]
+                    [IF [!P::card!]=long||[!P::recursive!]]
                         <div role="form-[!P::name!]" class="tab-pane" id="form-[!P::name!]">
                             <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
                                 <div class="row">
@@ -105,8 +105,11 @@
                                             </div>
                                         </div>
                                     </nav>
-
-                                    [MODULE Systeme/Utils/List/FormSelect?Chemin=[!P::objectModule!]/[!P::objectName!]&P=[!P!]&O=[!O!]]
+                                    [IF [!P::recursive!]]
+                                        [MODULE Systeme/Utils/Tree/FormSelect?Chemin=[!P::objectModule!]/[!P::objectName!]&P=[!P!]&O=[!O!]]
+                                    [ELSE]
+                                        [MODULE Systeme/Utils/List/FormSelect?Chemin=[!P::objectModule!]/[!P::objectName!]&P=[!P!]&O=[!O!]]
+                                    [/IF]
                                 </div>
                             </div>
                         </div>

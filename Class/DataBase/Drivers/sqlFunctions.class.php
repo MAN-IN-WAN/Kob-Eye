@@ -229,7 +229,11 @@ class sqlFunctions{
 			case "0,1":
 			case "1,1":
 				//Ajout de l'ordre
-				$Data['Select'][] = Array("Nom"=>'(mj.Bd - mj.Bg)',"Alias"=>'Ob');
+                /*if ($GLOBALS['Systeme']->version('5.7.0')) {
+                    $Data['Select'][] = Array("Nom" => '(ANY_VALUE(mj.Bd) - ANY_VALUE(mj.Bg))', "Alias" => 'Ob');
+                }else{*/
+                    $Data['Select'][] = Array("Nom" => '(mj.Bd - mj.Bg)', "Alias" => 'Ob');
+                //}
 				$Data['Order'] = 'Ob ASC';
 				//Table d intervalle  l objet parent
 				$Data["Table"][sizeof($Data["Table"])]['Prefix'] = MAIN_DB_PREFIX.$Tab[$i]["Module"]."-";
@@ -361,9 +365,16 @@ class sqlFunctions{
 		if ($O->isReflexive()){
 			//Cardinalite faible
 			if ($O->isReflexive()==1){
-				$Data["Select"][]=Array("Nom"=>"m.".$O->findReflexive(),"Alias"=>"ClefReflexive");
-				$Data["Select"][]=Array("Nom"=>"mj.Bd","Alias"=>"Bd");
-				$Data["Select"][]=Array("Nom"=>"mj.Bg","Alias"=>"Bg");
+			    //vérification car workaround spécifique à la version de mysql.
+			    /*if ($GLOBALS['Systeme']->version('5.7.0')) {
+                    $Data["Select"][] = Array("Nom" => "ANY_VALUE(m." . $O->findReflexive() . ")", "Alias" => "ClefReflexive");
+                    $Data["Select"][] = Array("Nom" => "ANY_VALUE(mj.Bd)", "Alias" => "Bd");
+                    $Data["Select"][] = Array("Nom" => "ANY_VALUE(mj.Bg)", "Alias" => "Bg");
+                }else{*/
+                    $Data["Select"][] = Array("Nom" => "m." . $O->findReflexive(), "Alias" => "ClefReflexive");
+                    $Data["Select"][] = Array("Nom" => "mj.Bd", "Alias" => "Bd");
+                    $Data["Select"][] = Array("Nom" => "mj.Bg", "Alias" => "Bg");
+                /*}*/
 				$Data["Table"][] = Array("Nom"=>$O->titre."-Interval","Alias"=>"mj","Prefix"=>MAIN_DB_PREFIX.$O->Module."-");
 
 				$Data['Groupe'][]['Condition'][] ="mj.Id = m.Id";

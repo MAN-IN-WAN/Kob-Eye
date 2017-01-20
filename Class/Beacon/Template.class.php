@@ -209,7 +209,7 @@ class Template extends Beacon {
 		if($type != 'Css' && $type != 'Js') return $t;
 		foreach($this->Zones as $z) {
 			foreach($z->getComponents() as $c) {
-				$t[] = $c->$type;
+				$t[] = $c->{$type};
 			}
 		}
 		return $t;

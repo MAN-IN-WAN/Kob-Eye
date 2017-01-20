@@ -12,9 +12,9 @@
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
-		<FUNCTION title="Envoyer un mail d'avertissement">MailAvertissement</FUNCTION>
-		<FUNCTION title="Envoyer un mail récapitulatif">EnvoyerRecapitulatif</FUNCTION>
-		<FUNCTION title="Importer plusieurs domaines">ImporterPlusieursDomaines</FUNCTION>
+		<FUNCTION title="Envoyer un mail d'avertissement" type="form">MailAvertissement</FUNCTION>
+		<FUNCTION title="Envoyer un mail récapitulatif" type="form">EnvoyerRecapitulatif</FUNCTION>
+		<FUNCTION title="Importer plusieurs domaines" type="form">ImporterPlusieursDomaines</FUNCTION>
 		<FKEY card="0,1" module="Systeme" data="User,Id">UserId</FKEY>
 		<FKEY card="0,1" module="Parc" data="Revendeur,Id">RevendeurId</FKEY>
 	</OBJECTCLASS>
@@ -54,7 +54,7 @@
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
 		<FKEY card="1,1" data="Domain,Id" popup="1">DomainId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="AAA" driver="mysql" Description="AAA" Icon="/Skins/AdminV2/Img/IconAqua/Search.png" Class="Modules/Parc/Class/AAA.class.php">
+	<OBJECTCLASS title="AAA" driver="mysql" Description="AAAA" Icon="/Skins/AdminV2/Img/IconAqua/Search.png" Class="Modules/Parc/Class/AAA.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" description="Prefixe Sous Domaine" list="1" form="1">Url</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" description="Adresse IPV6 du sous domaine" list="1" form="1">IP</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
@@ -179,12 +179,13 @@
 		<PROPERTIES category="Protection" type="varchar" description="Mot de passe" fiche="1" form="1">HtaccessPassword</PROPERTIES>
 		<FKEY card="1,1" data="Host,Id" link="1">HostId</FKEY>
 		<FUNCTION title="Activer SSL">ActiverSSL</FUNCTION>
+		<FUNCTION title="Forcer la mise à jour du certificat">RenewSSL</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Ftpuser" driver="mysql" Dico="1" Description="Accès FTP" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Ftpuser.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Identifiant" list="1" fiche="1" form="1">Identifiant</PROPERTIES>
 		<PROPERTIES type="varchar" obligatoire="1" list="1" fiche="1" form="1" description="Mot de passe">Password</PROPERTIES>
 		<PROPERTIES type="function" obligatoire="1" list="1" fiche="1" form="1" function="getRootPath" description="Racine du FTP">DocumentRoot</PROPERTIES>
-		<PROPERTIES type="int" obligatoire="1" list="1" fiche="1" form="1" description="Quota utilisateur en MB" default="5000">QuotaMb</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="0" list="1" fiche="1" form="1" description="Quota utilisateur en MB" default="5000">QuotaMb</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>

@@ -1,4 +1,10 @@
 <?php
+/**
+ * Class Parc
+ * Installation des taches plafnifiées
+ * 0 6 * * * apache /usr/bin/php /var/www/html/cron.php parc.azko.fr Parc/Bash/Renew.cron
+ * *\/5 * * * * apache /usr/bin/php /var/www/html/cron.php parc.azko.fr Parc/Bash/Execute.cron
+ */
 class Parc extends Module{
     	/**
 	 * Surcharge de la fonction init
@@ -191,4 +197,17 @@ class Parc extends Module{
             }
         }
 	}
+
+	/**
+     * Renouvellement des certificats
+     */
+	public function renewCertificates () {
+        echo "renew certificate\r\n";
+	    //recherche des hébergements à renouveller avec une expiration dans les prochains 30 jours
+        $aps = Sys::getData('Parc','Apache/Ssl=1&&SslMethod=Letsencrypt');
+        //pour chaque apache on crée une tache pour renouveller le certificat
+        foreach ($aps as $a){
+            if ($a->enableSsl()) echo "--> renew $a->ApacheServerName \r\n";
+        }
+    }
 }

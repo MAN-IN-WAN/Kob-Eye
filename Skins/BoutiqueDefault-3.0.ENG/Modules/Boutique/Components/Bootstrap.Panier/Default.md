@@ -8,7 +8,6 @@
 		[/NORESULT]
 	[/STORPROC]
 [/IF]
-// Devise en cours
 
 
 [!Panier:=[!Cli::getPanier()!]!]

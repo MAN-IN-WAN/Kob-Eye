@@ -10,7 +10,7 @@ class Modele extends genericClass {
 		genericClass::Save();
 		// description
 		$key = 'ModDescription.ModeleDescr';
-		$this->saveDescription($this->$key);		
+		$this->saveDescription($this->{$key});
 		//si la categorie est automatique alors on propage
 		$prod = $this->getParents("Produit");
 		$cat = $prod[0]->getParents("Categorie");

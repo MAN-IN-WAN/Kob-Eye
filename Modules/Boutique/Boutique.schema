@@ -88,8 +88,8 @@
 		</CATEGORY>
 		<!--<FUNCTION Icon="/Skins/AdminV2/Img/group_link.png">Parser</FUNCTION>
 		<FUNCTION Icon="/Skins/AdminV2/Img/group_link.png">ParserProduit</FUNCTION>-->
-		<FKEY card="0,n" data="Magasin,Id" fiche="1" form="1" list="1">MagasinId</FKEY>
-		<FKEY card="0,1" data="Categorie,Id" fiche="1" form="1" list="1">CategorieId</FKEY>
+		<FKEY card="0,n" data="Magasin,Id" hidden="1">MagasinId</FKEY>
+		<FKEY card="0,1" data="Categorie,Id" fiche="1" form="1" list="1" parentDescription="Emplacement Catégories"  childDescription="Emplacement Catégories">CategorieId</FKEY>
 		<FKEY card="0,1" data="Univers,Id" hidden="1">UniversId</FKEY>
 	</OBJECTCLASS>
 	
@@ -100,7 +100,7 @@
 		</INTERFACES>
 		<CATEGORY title="Description" type="large">
 			<PROPERTIES mobile="1" searchOrder="1" description="Intitulé" type="varchar" length="100" special="multi"  fiche="1" form="1" list="1">Nom</PROPERTIES>
-			<PROPERTIES mobile="1" obligatoire="1" unique="1" searchOrder="2" description="Référence" type="varchar" length="16" fiche="1" form="1" list="1">Reference</PROPERTIES>
+			<PROPERTIES mobile="1" obligatoire="1" unique="1" searchOrder="2" description="Référence" type="varchar" length="16" fiche="1" form="1">Reference</PROPERTIES>
 			<PROPERTIES mobile="1" searchOrder="5" description="Actif" type="boolean" default="1" list="9" fiche="1" form="1" >Actif</PROPERTIES>
             <PROPERTIES description="Description" type="html" special="multi" category="Descriptif" fiche="1" form="1">Description</PROPERTIES>
 			<PROPERTIES mobile="1" Order="20" description="Poids en kg 0.xxx" type="float" fiche="1" form="1" >Poids</PROPERTIES>
@@ -116,7 +116,7 @@
 		<PROPERTIES searchOrder="4" description="Produit à la une" type="boolean" default="0" category="MisEnAvant"  fiche="1" form="1" list="1">Coeur</PROPERTIES>
 		<PROPERTIES searchOrder="5" description="Idée Cadeau" type="boolean" default="0"  category="MisEnAvant" >IdKdo</PROPERTIES>
 		<PROPERTIES description="Note"  type="float"  category="Calcul"  >Note</PROPERTIES>
-		<PROPERTIES description="Gestion des références" type="int" default="2" values="1::Références uniques,2::Produit Normal ou Références déclinées,3::Produit unique,4::Formule ou Pack,5::Configurateur de produit" category="Configuration"  fiche="1" form="1">TypeProduit</PROPERTIES>
+		<PROPERTIES description="Gestion des références" type="int" default="2" values="2::Produit Normal ou Références déclinées (défaut),1::Références uniques,3::Produit unique,4::Formule ou Pack,5::Configurateur de produit" category="Configuration"  fiche="1" form="1">TypeProduit</PROPERTIES>
 		<PROPERTIES description="Nature du produit" type="int" default="1" values="1::Livrable,2::Service,3::Téléchargeable,4::Téléchargement gratuit" category="Configuration"  fiche="1" form="1">NatureProduit</PROPERTIES>
 		<PROPERTIES description="Nombre de Ventes" auto="1" type="int" default="0" category="Calcul"  fiche="1" form="1">Ventes</PROPERTIES>
 		<PROPERTIES description="Nombre de Visites" auto="1" type="int" default="0"  category="Calcul" >Visites</PROPERTIES>
@@ -146,9 +146,9 @@
             <PROPERTIES description="EAN/GTIN" type="varchar" length="30" searchOrder="6" fiche="1" form="1">EAN</PROPERTIES>
             <PROPERTIES description="Classificatio claude bernard" type="varchar" length="30" searchOrder="6" fiche="1" form="1">Classification</PROPERTIES>
 		</CATEGORY>
-		<FKEY card="1,n" data="Categorie,Id"  fiche="1" form="1" list="1" parentDescription="Catégorie" listDescr="Catégorie">CategorieId</FKEY>
+		<FKEY card="1,n" data="Categorie,Id"  fiche="1" form="1" parentDescription="Catégorie" listDescr="Catégorie">CategorieId</FKEY>
 		<FKEY card="0,n" data="Conditionnement,Id" hidden="1">ConditionnementId</FKEY>
-        <FKEY card="1,1" data="Marque,Id" fiche="1" form="1" list="1" parentDescription="Marque" listDescr="Marque">MarqueId</FKEY>
+        <FKEY card="1,1" data="Marque,Id" fiche="1" form="1" parentDescription="Marque" listDescr="Marque">MarqueId</FKEY>
 		<FUNCTION Icon="/Skins/AdminV2/Img/group_add.png">clonageProduit</FUNCTION>
 		<!--<FUNCTION Icon="/Skins/AdminV2/Img/group_link.png">GenererReference</FUNCTION>-->
 	</OBJECTCLASS>
@@ -338,7 +338,7 @@
 			<PROPERTIES Order="16" description="Durée du service" type="int" default="31536000" values="86400::1 jour,604800::1 semaine,1209600::2 semaines,2592000::1 mois,5184000:2 mois,7776000::3 mois,15768000::6 mois,31536000::12 mois">Duree</PROPERTIES>			
 		</CATEGORY>
 		<FKEY card="0,n" data="ConfigPack,Id" hidden="1" >ConfigPackId</FKEY>
-		<FKEY mobile="1" card="1,1" data="Produit,Id" fiche="1" form="1" list="1">ProduitId</FKEY>
+		<FKEY mobile="1" card="1,1" data="Produit,Id" fiche="1" list="1" popup="1">ProduitId</FKEY>
 		<FKEY card="0,1" data="TypeLivraison,Id" hidden="1">TypeLivraisonId</FKEY>
 		<FKEY mobile="1" card="0,n" data="Declinaison,Id" hidden="1">DeclinaisonId</FKEY>
 		<VIEW title="ListProduitOrdonne" default="0">

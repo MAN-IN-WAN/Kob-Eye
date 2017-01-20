@@ -124,14 +124,14 @@
             [/STORPROC]
             <td width="250">
                 <div class="small">Créé le [DATE d/m/Y H:i:s][!C::tmsCreate!][/DATE] [STORPROC Systeme/User/[!C::userCreate!]|U|0|1] par [!U::Nom!] [!U::Prenom!] ([!U::Login!])[/STORPROC]</div>
-                <div class="small">Modifié le [DATE d/m/Y H:i:s][!C::tmsCreate!][/DATE] [STORPROC Systeme/User/[!C::userEdit!]|U|0|1] par [!U::Nom!] [!U::Prenom!] ([!U::Login!])[/STORPROC]</div>
+                <div class="small">Modifié le [DATE d/m/Y H:i:s][!C::tmsEdit!][/DATE] [STORPROC Systeme/User/[!C::userEdit!]|U|0|1] par [!U::Nom!] [!U::Prenom!] ([!U::Login!])[/STORPROC]</div>
             </td>
             <td width="250">
                 <div class="btn-group" role="group">
 
-                    <a class="btn btn-warning [IF [!Popup!]]popup[/IF]" href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!C::Id!]/[IF [!Popup!]]Form[/IF]" data-title="Modification [!C::getFirstSearchOder()!]">[IF [!Popup!]]Modifier[ELSE]Détails[/IF]</a>
+                    <a class="btn btn-warning [IF [!Popup!]]popup[/IF]" href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!C::Id!][IF [!Popup!]]/Form[/IF]" data-title="Modification [!C::getFirstSearchOder()!]">[IF [!Popup!]]Modifier[ELSE]Détails[/IF]</a>
                     <a class="btn btn-danger confirm" href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!C::Id!]/Supprimer" data-title="Suppression [!C::getFirstSearchOder()!]" data-confirm="Etes vous sur de vouloir supprimer [!C::getFirstSearchOrder()!] ?">Supprimer</a>
-                    <a class="btn btn-info confirm" href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!C::Id!]/Cloner" data-title="CLonage [!C::getFirstSearchOder()!]" data-confirm="Etes vous sur de vouloir cloner [!C::getFirstSearchOrder()!] ?">Cloner</a>
+                    <a class="btn btn-info confirm" href="/[!Sys::getMenu([!I::Module!]/[!I::ObjectType!])!]/[!C::Id!]/Cloner" data-title="Clonage [!C::getFirstSearchOder()!]" data-confirm="Etes vous sur de vouloir cloner [!C::getFirstSearchOrder()!] ?">Cloner</a>
                 </div>
             </td>
         </tr>

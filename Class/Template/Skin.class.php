@@ -25,7 +25,7 @@ class Skin extends Root{
 		$this->initSkin();
 	}
 	function get($Name){
-		return $this->$Name;
+		return $this->{$Name};
 	}
 	function checkIfModified(){
 		//RENVOIE VRAI SI MODIFICATON OU NON ACCES, FAUX SINON

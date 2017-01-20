@@ -21,38 +21,42 @@ class Apache extends genericClass {
 		if($this->_isVerified) parent::Save();
 	}
 
-	public function enableSsl() {
+	public function enableSsl($force = false) {
 		if (empty($this->SslMethod))$this->SslMethod = "Letsencrypt";
-		if ($this->Ssl&&!empty($this->SslCertificate)&&!empty($this->SslCertificateKey)&&$this->SslExpiration>time()){
+		if (!$force&&$this->Ssl&&!empty($this->SslCertificate)&&!empty($this->SslCertificateKey)&&$this->SslExpiration>time()+2592000){
 			$this->addError(array("Message"=>"Le certificat est déjà généré et valide."));
-			return;
+			return false;
 		}
+		//on vérifie qu'il n'y ait pas déjà une tache
+        if (Sys::getCount('Parc','Apache/'.$this->Id.'/Tache/Termine=0')) return false;
+
 		switch($this->SslMethod){
 			case "Letsencrypt":
-				//définition de la date d'expiration
-				$this->SslExpiration=time()+(86400*90);
-				$this->Ssl = true;
-				$serv = $this->getKEServer();
-				//pour activer ssl il faut déclencher une tache
-				$task  = genericClass::createInstance('Parc','Tache');
-				$task->Nom = "Activation SSL pour la configuration Apache ".$this->ApacheServerName." ( ".$this->Id." )";
-				$task->Type = "Ssh";
-				$task->Contenu = "/usr/src/certbot/certbot-auto certonly --quiet --pre-hook \"service httpd stop | killall -9 httpd.worker\" --post-hook \"service httpd start\" --standalone -d ".$this->ApacheServerName;
-				// ajout des server alias
-				$sa = explode("\n",$this->ApacheServerAlias);
-				if (!empty($sa[0]))foreach ($sa as $s ){
-					$task->Contenu .= " -d ".trim($s);
-				}
-				$task->Contenu .= "\n cat /etc/letsencrypt/live/".$this->ApacheServerName."/fullchain.pem";
-				$task->Contenu .= "\n cat /etc/letsencrypt/live/".$this->ApacheServerName."/privkey.pem";
-				$task->addParent($this);
-				$task->addParent($serv);
-				$task->Save();
-				parent::Save();
+                //définition de la date d'expiration
+                $this->SslExpiration=time()+(86400*90);
+                $this->Ssl = true;
+                $serv = $this->getKEServer();
+                //pour activer ssl il faut déclencher une tache
+                $task  = genericClass::createInstance('Parc','Tache');
+                $task->Nom = "Activation SSL pour la configuration Apache ".$this->ApacheServerName." ( ".$this->Id." )";
+                $task->Type = "Ssh";
+                $task->Contenu = "/usr/src/certbot/certbot-auto --renew-by-default --webroot certonly --webroot-path /var/www/letsencrypt --quiet -d ".$this->ApacheServerName;
+                // ajout des server alias
+                $sa = explode("\n",$this->ApacheServerAlias);
+                if (!empty($sa[0]))foreach ($sa as $s ){
+                    $task->Contenu .= " -d ".trim($s);
+                }
+                $task->Contenu .= "\n cat /etc/letsencrypt/live/".$this->ApacheServerName."/fullchain.pem";
+                $task->Contenu .= "\n cat /etc/letsencrypt/live/".$this->ApacheServerName."/privkey.pem";
+                $task->addParent($this);
+                $task->addParent($serv);
+                $task->Save();
+                parent::Save();
 			break;
 			default:
 			break;
 		}
+		return true;
 	}
 
 	public function getRootPath() {
@@ -308,6 +312,7 @@ class Apache extends genericClass {
 	 */
 	public function callBackTask($msg){
 		if (preg_match("#-----BEGIN CERTIFICATE-----#", $msg,$out)){
+            $this->SslExpiration=time()+(86400*90);
 			//enregistrement du fullchain
 			$this->SslCertificate = $msg;
 			parent::Save();

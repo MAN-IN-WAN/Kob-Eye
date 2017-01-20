@@ -67,17 +67,17 @@ class Root {
 		//On copie l ensemble des proprietes
 		foreach ($Props as $p) {
 			$n = $p -> name;
-			if (isset($this -> $n))
-				switch (gettype($this->$n)) {
+			if (isset($this ->{$n}))
+				switch (gettype($this->{$n})) {
 					case "int" :
 					case "string" :
-						$temp -> $n = $this -> $n;
+						$temp -> {$n} = $this -> {$n};
 						break;
 					case "array" :
-						$temp -> $n = $this -> __clone_array($this -> $n);
+						$temp -> {$n} = $this -> __clone_array($this -> {$n});
 						break;
 					case "object" :
-						$temp -> $n = clone $this -> $n;
+						$temp -> {$n} = clone $this -> {$n};
 						break;
 					default :
 						break;
@@ -128,7 +128,7 @@ class Root {
 				if (is_array($seq[$i]))
 					$test = $seq[$i][$field] <= $k[$field];
 				if (is_object($seq[$i]))
-					$test = $seq[$i]->$field <= $k->$field;
+					$test = $seq[$i]->{$field} <= $k->{$field};
 			} else {
 				$test = $seq[$i] <= $k;
 			}

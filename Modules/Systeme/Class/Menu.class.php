@@ -207,7 +207,8 @@ class Menu extends genericClass {
 								}
 							}else{
 								$o->Titre = $o->getFirstSearchOrder();
-								array_push($out,$o);
+                                if ($o->Display)
+								    array_push($out,$o);
 							}
 						}
 					}

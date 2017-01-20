@@ -15,7 +15,7 @@ class Produit extends genericClass {
 		//sauvegarde
 		genericClass::Save();
 		$key = 'ProDescription.ProduitDescr';
-		$this->saveDescription($this->$key);
+		$this->saveDescription($this->{$key});
 		//si la categorie est automatique alors on propage
 		$cat = $this->getParents("Categorie");
 		if (isset($cat[0])){

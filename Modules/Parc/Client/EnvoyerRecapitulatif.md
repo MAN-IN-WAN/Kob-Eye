@@ -1,13 +1,3 @@
-[TITLE]Admin Kob-Eye | Importation d'un fichier[/TITLE]
-[MODULE Systeme/Interfaces/FilAriane]
-<div id="Container">
-	<div id="Arbo">
-		[BLOC Panneau][/BLOC]
-	</div>
-	<div id="Data">
-		<form enctype="multipart/form-data" action="" method="post" name="frm" >
-		[BLOC Panneau]
-
 [STORPROC [!Query!]|C]
 	[IF [!MAILSEND!]]
 		[LIB PHPMailer|M]
@@ -19,10 +9,16 @@
 		[/PARAM][/METHOD]
 		[METHOD M|set][PARAM]Subject[/PARAM][PARAM][!SUBJECT!][/PARAM][/METHOD]
 		[METHOD M|Send][/METHOD]
-		<div class="success">Mail envoyé</div>
-					<a href="[IF [!popup!]=true]#[ELSE][!Query!][/IF]" class="KEBouton" [IF [!popup!]=true]  onclick="Fl.closePopup();return false;"[/IF] style="width:75px;float:left;margin-left:7px;">Fermer</a>
-	[ELSE]
-		[BLOC Panneau|background:white;position:relative;overflow:hidden;padding:5px;]
+        {
+            "success": true,
+            "message": "L'email é été envoyé avec succès",
+            "controls": {
+                "save": false,
+                "cancel": false,
+                "close": true
+            }
+        }
+    [ELSE]
 			<div class="Propriete">
 				<div class="ProprieteTitre">Sujet</div>
 				<div class="ProprieteValeur">&nbsp;
@@ -181,14 +177,5 @@
 				</div>
 			</div>
 			<input type="hidden" name="MAILSEND" value="Envoyer"/>
-		[/BLOC]
-			<div class="JSFormButton" style="overflow:hidden;height:60px;margin-right:6px;">
-				<a href="[IF [!popup!]=true]#[ELSE][!Query!][/IF]" class="KEBouton" [IF [!popup!]=true]  onclick="Fl.closePopup();return false;"[/IF] style="width:75px;float:left;margin-left:7px;">Annuler</a>
-				<input type="submit" class="KEBouton"  value="Enregistrer" name="SaveObject" style="float:right;"/>
-			</div>
 	[/IF]
 [/STORPROC]
-		[/BLOC]
-		</form>
-	</div>
-</div>

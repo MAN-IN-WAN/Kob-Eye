@@ -597,8 +597,7 @@ class Client extends genericClass {
 	// Mars 2015 function qui permet d'initialiser un tableau de taux de tva à utiliser
 	// dans le contexte	
 	function clientTableauTva() {
-
-		//INIT DES TAUX UTILISABLES 
+		//INIT DES TAUX UTILISABLES
 		// ATTENTION IL FAUDRA AJUSTÉ CE SYSTEME POUR LES PROFESSIONNELS !!!!!!!!!!
 		// recherche la zone fiscale du client connecté
 		$adrclient= Sys::getData('Boutique','Client/' . $this->Id .'/Adresse/Type=Livraison&Default=1');
@@ -609,7 +608,11 @@ class Client extends genericClass {
 			// si pas d'adresse trouvée on prend celle du client
 			$lazone=ZoneFiscale::getZone($this->Pays,$this->CodePostal);
 		}
-        if (!is_object($lazone)) return;
+        if (!is_object($lazone)) {
+            $lazone = Sys::getOneData('Fiscalite', 'ZoneFiscale/Default=1');
+        }else{
+            die('Il n\'y a pas de zone fiscale définie.');
+        }
 		$tauxtva= Sys::getData('Fiscalite','ZoneFiscale/' .$lazone->Id .'/TauxTva/Actif=1&Debut<='. time().'&Fin>='.time() );
 		$tabarray=array();
 		if (sizeof($tauxtva)) {

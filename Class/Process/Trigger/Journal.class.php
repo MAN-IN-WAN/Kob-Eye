@@ -19,8 +19,8 @@ class Journal extends TriggerFunction{
 			}
 			$Add.="\n";
 			$Id = $this->Identifier;
-			if (isset($Input->$Id)){
-				$File = $this->CreatePath($Input,date($P,$Input->tmsCreate),$this->FileName."-".$Input->$Id); 
+			if (isset($Input->{$Id})){
+				$File = $this->CreatePath($Input,date($P,$Input->tmsCreate),$this->FileName."-".$Input->{$Id});
 				$F=@fopen($File,"a+");
 				$ToPut = $Add;
 				fputs($F,$ToPut);

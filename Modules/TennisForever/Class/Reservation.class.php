@@ -188,7 +188,7 @@ class Reservation extends genericClass {
     }
 
     function setProduits($produit){
-        if (is_array($produit))foreach ($produit as $i=>$p){
+        foreach ((array)$produit as $i=>$p){
             if ($p>0) {
                 $client = $this->getClient();
                 //récupération du produit
@@ -445,6 +445,13 @@ class Reservation extends genericClass {
         //TODO
         //envoi du mail
         $this->sendMail();
+        //envoi de la notification
+        $msg = array('title' => 'Réservation confirmée',
+            'message' => 'Votre réservation a été validée avec succès',
+            'store' => 'Reservations',
+            'vibrate' => 1,
+            'sound' => 1);
+        Systeme::sendNotification($msg, Sys::$User->Id);
     }
 
     function sendMail() {

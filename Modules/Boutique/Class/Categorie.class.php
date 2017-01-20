@@ -29,7 +29,14 @@ class BoutiqueCategorie extends genericClass {
 			return parent::getUrl();
 	}
 */
-
+    public function Delete(){
+        //suppression des catégories sous jacentes
+        $cats = $this->getChildren('Categorie');
+        foreach ($cats as $c){
+            $c->Delete();
+        }
+        parent::Delete();
+    }
 
 	public function MyRecursiveUrl ($LeParent) {
 		$catParent = $this->getParents(Categorie);

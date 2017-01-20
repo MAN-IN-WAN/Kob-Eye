@@ -230,6 +230,7 @@ class Lib extends Beacon{
 //				$Char.="urldecode('".urlencode($Param->getContent($Param->ChildObjects))."')";
 				$T[$K] = Parser::getContent($Param->ChildObjects);
 				$T[$K] = Process::processingVars($T[$K]);
+                $T[$K] = $GLOBALS["Systeme"]->CurrentSkin->ProcessLang($T[$K]);
 				$Char.="\$T[$K]";
 			}
 		}

@@ -33,7 +33,7 @@ class DbAnalyzer extends Root{
 	/**
 	* Constructeur
 	*/
-	function DbAnalyzer($Module) {
+	function __construct($Module) {
 		$this->Module = $Module;
 		DbAnalyzer::$LimRequete = Array(0,SQL_MAX_LIMIT);
 	}
@@ -137,14 +137,16 @@ class DbAnalyzer extends Root{
 		if (SQL_LITE_CACHE){
 			$tabCell = urlencode($Query).urlencode((is_array(DbAnalyzer::$LimRequete))?implode("",DbAnalyzer::$LimRequete):DbAnalyzer::$LimRequete).urlencode((is_array(DbAnalyzer::$Order))?implode("",DbAnalyzer::$Order):DbAnalyzer::$Order);//.urlencode((is_array($Select))?implode("",$Select):$Select).urlencode((is_array($Select))?implode("",$GroupBy):$GroupBy);
 			$i = Info::getInfos($Query);
-			$obj = $this->getObjectClass($i['ObjectType']);
-			if (!$obj->cache) {
-				if (is_array($this->tabCache)) if (array_key_exists($tabCell, $this->tabCache)) {
-					$Result = $this->tabCache[$tabCell];
-					return $Result;
+			if (isset($i['ObjectType'])) {
+				$obj = $this->getObjectClass($i['ObjectType']);
+				if (!$obj->cache) {
+					if (is_array($this->tabCache)) if (array_key_exists($tabCell, $this->tabCache)) {
+						$Result = $this->tabCache[$tabCell];
+						return $Result;
+					}
+				} else {
+					return ApcCache::getData('SQL_LITE_CACHE-' . $tabCell);
 				}
-			}else {
-				return ApcCache::getData('SQL_LITE_CACHE-' . $tabCell);
 			}
 		}
 		 return false;

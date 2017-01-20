@@ -98,6 +98,14 @@
           <option name="port" value="21" />
         </fileTransfer>
       </webServer>
+      <webServer id="d8e88708-ea12-4342-802a-36f559f44559" name="chic-et-sauvage.fr" url="http://chic-et-sauvage.fr">
+        <fileTransfer host="chic-et-sauvage.fr" port="21" rootFolder="/www" password="df98df9bdfdddfd3dfc3dfd9dfcfdfd3" username="admin@chic-et-sauvage.fr">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
     </option>
   </component>
 </project>

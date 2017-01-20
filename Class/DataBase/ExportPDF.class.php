@@ -30,7 +30,7 @@ class ExportPDF extends PDFB {
 
 			if($c[2] == 'image') {
 				$f = $c[1].'_ToolTip';
-				if(!r && !isset($r->$d)) continue;
+				if(!r && !isset($r->{$d})) continue;
 				$this->field[] = $f;
 			}
 			else $this->field[] = $c[1];
@@ -101,7 +101,7 @@ class ExportPDF extends PDFB {
 		$n = count($this->field);
 		for($i = 0; $i < $n; $i++) {
 			$f = $this->field[$i];
-			$t = $l->$f;
+			$t = $l->{$f};
 			switch($this->format[$i]) {
 				case 'checkbox':
 				case 'boolean':
@@ -134,15 +134,15 @@ class ExportPDF extends PDFB {
 					break;
 			}
 			$c = $f.'_Color';
-			if(isset($l->$c)) {
-				$a = $this->splitRGB(hexdec($l->$c));
+			if(isset($l->{$c})) {
+				$a = $this->splitRGB(hexdec($l->{$c}));
 				$this->SetTextColor($a[0],$a[1],$a[2]);
 			} 
 			else $this->SetTextColor(0);
 			$fill = 0;
 			$c = $f.'_backgroundColor';
-			if(isset($l->$c) && ! empty($l->$c)) {
-				$a = $this->splitRGB(hexdec($l->$c));
+			if(isset($l->{$c}) && ! empty($l->{$c})) {
+				$a = $this->splitRGB(hexdec($l->{$c}));
 				$this->SetFillColor($a[0],$a[1],$a[2]);
 				$fill = 1;
 			} 

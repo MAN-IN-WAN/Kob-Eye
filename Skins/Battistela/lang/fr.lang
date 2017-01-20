@@ -58,3 +58,6 @@ __CURRENT_ORDER__|Commande en cours
 
 #######MARQUES###########
 __BRANDS__|Marques
+
+#######CLIENT###########
+__FORMAT_DATE_INVALID__|n'est pas un format date valide (ex: jj/mm/aaaa)

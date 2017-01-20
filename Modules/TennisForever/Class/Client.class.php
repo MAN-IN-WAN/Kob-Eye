@@ -147,7 +147,7 @@ class Client extends genericClass {
 				foreach ($Errors as $e)if ($e["Prop"]==$E["Prop"])$f=true;
 				if (!$f)$Errors[] = $E;
 			}
-			$this->Error = $Errors;
+			$this->Error = array_merge((array)$this->Error,(array)$Errors);
 			return !sizeof($this->Error);
 		}
 		return genericClass::Verify();

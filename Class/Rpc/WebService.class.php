@@ -732,7 +732,7 @@ class WebService extends Root{
 						}else{
 							$Obj->Set($P,urldecode($D[0]["#"]));
 						}	
-						$result .= $Pref."----->PROP $P (".$Pr["type"].")-> ".$Obj->$P."\r\n";
+						$result .= $Pref."----->PROP $P (".$Pr["type"].")-> ".$Obj->{$P}."\r\n";
 					}elseif ($Obj->isChild($P)){
 						//Enfants
 						$result .= $Pref."----->CHILD $P -> ".$D[0]["#"]."\r\n";

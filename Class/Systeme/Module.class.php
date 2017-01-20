@@ -23,7 +23,7 @@ class Module extends Root{
 	//Derniere requete
 	public static $LAST_QUERY;
 
-	function Module ($Tab) {						//Constructeur du Module
+	function __construct ($Tab) {						//Constructeur du Module
 		$this->Cache=true;
 		//Configuration du module
 		$this->Nom=$Tab["NAME"];

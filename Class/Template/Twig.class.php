@@ -8,7 +8,7 @@ class KeTwig{
     public static function initTwig() {
         KeTwig::$Loader = new Twig_Loader_Filesystem('.');
         KeTwig::$Twig = new Twig_Environment(KeTwig::$Loader, array(
-            'cache' => 'Data/Twig'
+            /*'cache' => 'Data/Twig'*/
         ));
         KeTwig::$Twig->addExtension(new Twig_Extension_StringLoader());
         KeTwig::$Twig->addFunction(new Twig_SimpleFunction('module','KeTwig::callModule'));
