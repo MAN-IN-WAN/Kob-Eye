@@ -46,6 +46,10 @@ class fileDriver extends ObjectClass {
 		//$RenamedOAdr = str_replace("/","_",$Dossier);
 		//$Name = "/".$TabNom[0].".mini.".$Largeur."x".$Hauteur.$RenamedOAdr.".".$GLOBALS["Systeme"]->type;
 		$Name = "/".$Nom.".limit.".$Params.".".$TabNom[1];
+		
+		if($this->imageOverQuota($Dossier,'/'.$Nom."\.limit\.[0-9]+x[0-9]+\.".$Out.'/'))	
+			return false;
+		
 		if (file_exists($Dir.$Name)) return $Dir.$Name;
 		//On verifie l'existence du fichier original
 		if (!file_exists($OrigAdresse)) return false;
@@ -126,6 +130,10 @@ class fileDriver extends ObjectClass {
 		//$RenamedOAdr = str_replace("/","_",$Dossier);
 		//$Name = "/".$TabNom[0].".mini.".$Largeur."x".$Hauteur.$RenamedOAdr.".".$GLOBALS["Systeme"]->type;
 		$Name = "/".$Nom.".scale.".$Params.".".$TabNom[1];
+		
+		if($this->imageOverQuota($Dossier,'/'.$Nom."\.scale\.[0-9]+x[0-9]+\.".$Out.'/'))	
+			return false;
+		
 		if (file_exists($Dir.$Name)) return $Dir.$Name;
 		//On verifie l'existence du fichier original
 		if (!file_exists($OrigAdresse)) return false;
@@ -203,6 +211,10 @@ class fileDriver extends ObjectClass {
 		$Dir = $Dossier;
 		if (!file_exists($Dir)) Root::mk_dir($Dir);
 		$Name = "/".$Nom.".mini.".$Params.".".$Out;
+		
+		if($this->imageOverQuota($Dossier,'/'.$Nom."\.mini\.[0-9]+x[0-9]+\.".$Out.'/'))	
+			return false;
+		
 		if (file_exists($Dir.$Name)) return $Dir.$Name;
 		//On verifie l'existence du fichier original
 		if (!file_exists($OrigAdresse)) return false;
@@ -291,6 +303,10 @@ class fileDriver extends ObjectClass {
 		$Dir = $Dossier;
 		if (!file_exists($Dir)) Root::mk_dir($Dir);
 		$Name = "/".$Nom.".convert.".$Params.".".$Out;
+		
+		if($this->imageOverQuota($Dossier,'/'.$Nom."\.convert\.[0-9]+x[0-9]+\.".$Out.'/'))	
+			return false;
+		
 		if (file_exists($Dir.$Name)) return $Dir.$Name;
 		//On verifie l'existence du fichier original
 		if (!file_exists($OrigAdresse)) return false;
@@ -634,6 +650,23 @@ class fileDriver extends ObjectClass {
 	/*---------------------------------
 	 |           PRIVEE               |
 	 ---------------------------------*/
+	
+	private function imageOverQuota($dossier,$regex){
+		$quota = 20; //TODO : Parametrer dans la conf
+		$dirFiles = scandir($dossier);
+		$made = 0;
+		
+		foreach($dirFiles as $dirFile){
+			if( preg_match($regex,$dirFile)){
+				$made += 1;
+			}
+		}
+		//$GLOBALS['Systeme']->Log->log($made);
+		
+		if ($made > $quota) return true;
+		
+		return false;
+	}
 
 	/*---------------------------------
 	 |           CREATION              |

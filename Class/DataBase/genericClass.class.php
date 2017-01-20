@@ -1127,6 +1127,19 @@ class genericClass extends Root {
 		}
 		return $Childs;
 	}
+	
+	/**
+	 * getOneChild
+	 * Return First Child found of a given type from this object
+	 * @param String Name of the child type
+	 * @return genericClass
+	 */
+	public function getOneChild($Type) {
+		$childs = $this -> getChildren($Type);
+		if (sizeof($childs)) return $childs[0];
+		return false;
+	}
+	
 
 	/**
 	 * getParents
@@ -1173,6 +1186,18 @@ class genericClass extends Root {
 			}
 		}
 		return $Parents;
+	}
+	
+	/**
+	 * getOneParent
+	 * Return The first Parent found of a given type from this object
+	 * @param String Name of the parent type
+	 * @return genericClass
+	 */
+	public function getOneParent($Type = "") {
+		$parents = $this->getParents($Type);
+		if (sizeof($parents)) return $parents[0];
+		return false;
 	}
 
 	/**
@@ -2416,6 +2441,15 @@ class genericClass extends Root {
 	  */
 	 public function getPages($strict=false){
 		$tls = Sys::getData('Systeme','Page/PageModule='.$this->Module.'&PageObject='.$this->ObjectType.'&PageId='.$this->Id);
+		
+		if(!Sys::$User->Admin && is_object(Site::getCurrentSite())){
+			$site = Site::getCurrentSite();
+			$siteId = $site->Id;
+			$tls = array_filter($tls,function($a)use($siteId){
+				return ($siteId == $a->SiteId);
+			});
+		}
+		
 		if (!sizeof($tls)&&$this->ObjectType!="Menu"&&!$strict){
 			$tls = Array();
 			//recherche des menus pointant vers cette donnée

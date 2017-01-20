@@ -249,5 +249,17 @@ class Utils {
     static function  addslashes($P) {
 	return addslashes($P[0]);
 }
+	//Nécéssaire pour pouvoir ajouter des fonctions à la classe "à la volée"
+	public static function __callStatic($method, $args)
+	{
+		if (method_exists('UtilsExtends',$method)) { //Alternative : is_callable
+		    $func = 'UtilsExtends::'.$method;
+		    return call_user_func_array($func, $args);
+		}
+		return false;
+	}
 }
+
+@include 'Utils.extend.php';
+
 
