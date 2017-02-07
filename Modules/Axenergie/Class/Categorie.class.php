@@ -30,7 +30,7 @@ class Categorie extends genericClass {
 			}
 		}
 		$key = 'CatDescription.CategorieDescr';
-		$this->saveDescription($this->$key);
+		$this->saveDescription($this->{$key});
 		return $status;
 	}
 

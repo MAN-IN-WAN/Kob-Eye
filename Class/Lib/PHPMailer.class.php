@@ -465,7 +465,7 @@ class PHPMailer {
     }
     if ($kind != 'ReplyTo') {
       if (!isset($this->all_recipients[strtolower($address)])) {
-        array_push($this->$kind, array($address, $name));
+        array_push($this->{$kind}, array($address, $name));
         $this->all_recipients[strtolower($address)] = true;
         return true;
       }
@@ -2148,8 +2148,8 @@ class PHPMailer {
   */
   public function set($name, $value = '') {
     try {
-      if (isset($this->$name) ) {
-        $this->$name = $value;
+      if (isset($this->{$name}) ) {
+        $this->{$name} = $value;
       } else {
         throw new phpmailerException($this->Lang('variable_set') . $name, self::STOP_CRITICAL);
       }

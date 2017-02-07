@@ -181,3 +181,22 @@ ul#sidemenu > li > ul > li:hover a,ul#sidemenu li.active , ul#sidemenu > li > ul
     color: #666;
 }
 
+/**
+SPINNER LOADING
+**/
+.loadingSpinner {
+    background-image: url('../Img/ellipsis.gif');
+    background-size: cover;
+    padding: 10px;
+    margin: auto;
+    width: 40px;
+    height: 40px;
+    display: block;
+}
+
+/**
+TREE
+**/
+.tree .treeitem.opened{
+    background-color: #d0e3cc;
+}

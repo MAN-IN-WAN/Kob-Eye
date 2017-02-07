@@ -7,7 +7,7 @@ class ApcCache {
 
     // constructor
     static function init() {
-        ApcCache::$bEnabled = extension_loaded('apc');
+        ApcCache::$bEnabled = false;//extension_loaded('apc');
     }
 
     // get data from memory

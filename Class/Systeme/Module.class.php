@@ -23,7 +23,7 @@ class Module extends Root{
 	//Derniere requete
 	public static $LAST_QUERY;
 
-	function Module ($Tab) {						//Constructeur du Module
+	function __construct ($Tab) {						//Constructeur du Module
 		$this->Cache=true;
 		//Configuration du module
 		$this->Nom=$Tab["NAME"];
@@ -203,7 +203,7 @@ class Module extends Root{
 		$s = $s[0];
 		//recherche de clefs
 	 	$s = explode(".",$s);
-        if (isset($s[1])&&sizeof(explode("(",$s[1])))>1 {
+        if (isset($s[1])&&sizeof(explode("(",$s[1]))>1) {
             //sortie car ils'agit d'un filtre
             return Array("ObjectClass"=>"");
         }

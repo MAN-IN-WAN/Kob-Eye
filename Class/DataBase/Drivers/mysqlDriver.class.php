@@ -75,9 +75,12 @@ class mysqlDriver extends ObjectClass{
 				$Noms.= '`'.$NomProp.'`';
 				$Type = $this->getPropType($NomProp);
 				switch ($Type){
-					case "integer":
-						$Valeur = is_null($ValeurProp) ? 'null' : intval($ValeurProp);
-					break;
+                    case "integer":
+                        $Valeur = is_null($ValeurProp) ? 'null' : intval($ValeurProp);
+                        break;
+                    case "boolean":
+                        $Valeur = is_null($ValeurProp) ? 'null' : intval($ValeurProp);
+                        break;
 					case "float":
 						$Valeur = floatval($ValeurProp);
 					break;
@@ -98,6 +101,9 @@ class mysqlDriver extends ObjectClass{
 				$Noms.= '`'.$NomProp.'`';
 				$Type = $this->getPropType($NomProp);
 				switch ($Type){
+                    case "boolean":
+                        $Valeur = is_null($ValeurProp) ? 'null' : intval($ValeurProp);
+                        break;
 					case "integer":
 						$Valeur = is_null($ValeurProp) ? 'null' : intval($ValeurProp);
 					break;

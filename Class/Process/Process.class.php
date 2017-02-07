@@ -16,7 +16,7 @@ class Process extends Root{
 			$Res = explode("::",$Name);
 			if(isset(self::$TempVar[$Res[0]])&&is_object(self::$TempVar[$Res[0]])){
 				$N = $Res[1];
-				self::$TempVar[$Res[0]]->$N = $Var;
+				self::$TempVar[$Res[0]]->{$N} = $Var;
  				//echo "OBJET ".$Res[0]."=>".$Res[1]." = $Var\r\n";
 			}else{
 				if (empty($Res[1])){
@@ -103,7 +103,7 @@ class Process extends Root{
 							$a = (empty($Tab[1]))?sizeof($Temp):$Tab[1];
 							if (is_array($Temp))$Temp[$a] = $Out[3];
 							elseif (is_object($Temp)){
-								$Temp->$a = $Out[3];
+								$Temp->{$a} = $Out[3];
 							}else $Temp[] = $Out[3];
 // 							echo "-------------------------\r\n";
 							Process::RegisterTempVar($Tab[0],$Temp);
@@ -325,7 +325,7 @@ class Process extends Root{
 								$prop = new ReflectionProperty(get_class($Obj), $n);
 								$Obj=$prop->getValue($Obj);
 							}catch (Exception $e){
-								$Obj=$Obj->$n;
+								$Obj=$Obj->{$n};
 							}
 							if ($i==sizeof($Tab)-1)$Data = $Obj;
 						}else{
@@ -552,9 +552,11 @@ class Process extends Root{
 						$Function = $Function[0];
 						if (array_key_exists($Tab[1],self::$TempVar[$Ob])) {
 							$Suivre=true;
-							if (method_exists(self::$TempVar[$Ob],"Get"))
-							$Data = self::$TempVar[$Ob]->Get($Tab[1]);
-							else $Data = self::$TempVar[$Ob]->$Tab[1];
+							if (method_exists(self::$TempVar[$Ob],"Get")) {
+                                $Data = self::$TempVar[$Ob]->Get($Tab[1]);
+                            }else {
+                                $Data = self::$TempVar[$Ob]->{$Tab[1]};
+                            }
 						}elseif(method_exists(self::$TempVar[$Ob],$Function)) {
 							//Detection de l existence de parenthese
 							if ($Params!=""){
@@ -583,7 +585,7 @@ class Process extends Root{
 								$S=self::$TempVar[$Ob];
 								$Data = eval("return \$S->$Function(".$Params.");");
 							}else{
-								$Data=self::$TempVar[$Ob]->$Function();
+								$Data=self::$TempVar[$Ob]->{$Function}();
 							}
 						}
 					}elseif(isset(self::$TempVar[$Ob])&&is_array(self::$TempVar[$Ob])){
@@ -616,11 +618,11 @@ class Process extends Root{
 						}elseif(isset(self::$TempVar[$Tab[0]])&&is_object(self::$TempVar[$Tab[0]])) {
 							$Data = self::$TempVar[$Tab[0]];
 							$n = $Tab[1];
-							$Data = $Data->$n;
+							$Data = $Data->{$n};
 						}elseif(is_object(Process::ProcessPostVars($Tab[0]))) {
 							$Data = Process::ProcessPostVars($Tab[0]);
 							$n = $Tab[1];
-							$Data = $Data->$n;
+							$Data = $Data->{$n};
 						}elseif(is_array(Process::ProcessPostVars($Tab[0]))) {
 							$Data = Process::ProcessPostVars($Tab[0]);
 							$Data = $Data[$Tab[1]];

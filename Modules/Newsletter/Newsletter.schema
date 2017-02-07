@@ -2,11 +2,11 @@
 	<OBJECTCLASS title="GroupeEnvoi" driver="mysql" AccessPoint="1" master="1" Description="Groupes de contact"  Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png">
 		<PROPERTIES type="varchar" searchOrder="1" category="Intitulé" list="1" fiche="1" form="1">Titre</PROPERTIES>
 		<FUNCTION Icon="/Skins/AdminV2/Img/database_go.png" title="Exporter les contacts">ExporterContact</FUNCTION>
-		<FUNCTION Icon="/Skins/AdminV2/Img/database_go.png" title="Vider le groupe">Vider</FUNCTION>
+		<FUNCTION Icon="/Skins/AdminV2/Img/database_go.png" title="Vider le groupe"  type="form">Vider</FUNCTION>
 <!--		<FUNCTION Icon="/Skins/AdminV2/Img/database_go.png">DesImporter</FUNCTION>
 		<FUNCTION Icon="/Skins/AdminV2/Img/database_go.png">ActivTous</FUNCTION>-->
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Contact" driver="mysql"  Icon="/Skins/AdminV2/Img/IconAqua/Contact.png" className="NewsletterContact" Class="Modules/Newsletter/Class/Contact.class.php">
+	<OBJECTCLASS title="Contact" driver="mysql"  Icon="/Skins/AdminV2/Img/IconAqua/Contact.png" Description="Contact" className="NewsletterContact" Class="Modules/Newsletter/Class/Contact.class.php">
 		<PROPERTIES type="email" searchOrder="1" category="Contact" list="1" fiche="1" form="1">Email</PROPERTIES>
 		<PROPERTIES type="varchar" length="150" searchOrder="2" category="Identité" list="1" fiche="1" form="1">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" length="250" category="Intitulé" fiche="1" form="1">Libelle</PROPERTIES>
@@ -23,12 +23,12 @@
 		<PROPERTIES type="varchar" length="250" category="Adresse" fiche="1" form="1">Adresse2</PROPERTIES>
 		<PROPERTIES type="varchar" length="30" category="Contact" fiche="1" form="1">Mobile</PROPERTIES>
 		<PROPERTIES type="boolean" default="1" searchOrder="2" category="Publication" fiche="1" form="1" list="1">Actif</PROPERTIES>
-		<FKEY card="1,n" data="GroupeEnvoi,Id" link="1" popup="1">GroupeEnvoi</FKEY>
+		<FKEY card="1,n" data="GroupeEnvoi,Id" link="1" popup="1" description="Contacts">GroupeEnvoi</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Reception" driver="mysql" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Mail1.png">
-		<PROPERTIES type="varchar" length="200" searchOrder="1" category="Contenu">Sujet</PROPERTIES>
-		<PROPERTIES type="text" category="Contenu">Contenu</PROPERTIES>
-		<FKEY card="0,1" data="Contact,Id">ContactId</FKEY>
+		<PROPERTIES type="varchar" length="200" searchOrder="1" category="Contenu" list="1" fiche="1" form="1">Sujet</PROPERTIES>
+		<PROPERTIES type="text" category="Contenu" fiche="1" form="1">Contenu</PROPERTIES>
+		<FKEY card="0,1" data="Contact,Id" parentDescription="Contact" list="1" fiche="1" form="1">ContactId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Lettre" driver="mysql" AccessPoint="1" Description="Lettres"  Icon="/Skins/AdminV2/Img/IconAqua/Mail1.png">
 		<PROPERTIES type="varchar" length="200" searchOrder="1" category="Contenu">Sujet</PROPERTIES>

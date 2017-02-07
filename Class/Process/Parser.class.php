@@ -359,7 +359,7 @@ class Parser {
 												$FuncString.=");";
 												$TempResult.= eval($FuncString);*/
  												//echo ">>> $Function\r\n";
-												if (isset($BeaconTab['TARGET']))$TempResult .= $BeaconTab['TARGET']->$Function($Attributes,$Donnee,$BeaconTab);
+												if (isset($BeaconTab['TARGET']))$TempResult .= $BeaconTab['TARGET']->{$Function}($Attributes,$Donnee,$BeaconTab);
 												else $TempResult .= Parser::$Function($Attributes,$Donnee,$BeaconTab);
 											}else{
 												//Le cas d un remplacement

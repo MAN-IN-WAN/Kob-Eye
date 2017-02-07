@@ -18,7 +18,7 @@
         <PROPERTIES description="Notes"     type="text" form="1" fiche="1">Notes</PROPERTIES>
         <PROPERTIES description="Statuts"  values="-18,Junior,Adulte,Etudiant,Couple"  type="varchar" form="1" fiche="1">Statuts</PROPERTIES>
         <PROPERTIES description="Numéro de licence"     type="varchar" form="1" fiche="1">Licence</PROPERTIES>
-        <PROPERTIES description="Est un adhérent"     type="boolean" form="1" searchOrder="5" list="5" fiche="1">Abonne</PROPERTIES>
+        <PROPERTIES description="Est un adhérent"  default="0" type="boolean" form="1" searchOrder="5" list="5" fiche="1">Abonne</PROPERTIES>
         <PROPERTIES Order="17" type="Int"  searchOrder="6">UserId</PROPERTIES>
         <FUNCTION title="Renvoyer email de confirmation">RenvoiEmailConfirmation</FUNCTION>
     </OBJECTCLASS>

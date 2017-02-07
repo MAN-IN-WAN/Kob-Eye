@@ -63,6 +63,7 @@ include('Class/Process/Trigger/Classement.class.php');
 include('Class/Process/Trigger/Journal.class.php');
 include('Class/Process/Trigger/Total.class.php');
 include('Class/Utils/Utils.class.php');
+include('Class/Utils/UtilsArray.class.php');
 include('Class/Lib/xml2array.class.php');
 include('Class/Utils/Session.class.php');
 include('Class/Utils/JsonP.class.php');
@@ -106,7 +107,7 @@ if($_SERVER['REQUEST_METHOD'] == "OPTIONS"){
 
 	$Systeme->Close();
 	$Chrono->stop();
-	if ($_GET['CHRONO']){
+	if (isset($_GET['CHRONO'])){
 		echo $Chrono->total();
 	}
 }

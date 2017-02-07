@@ -66,7 +66,7 @@
 	</div>
 [ELSE]
 	<div class="alert alert-danger">
-		<b>Erreur :</b>
+		<b>Erreur :</b>tu veux
 		<ul>
             [IF [!Reference!]=]
             <li>Aucune référence</li>
@@ -77,7 +77,7 @@
             [IF [!Cli!]=]
             <li>Client introuvable</li>
             [/IF]
-		[STORPROC [!T!]|E]
+		[STORPROC [!Cli::Error!]|E]
 			<li>[!E::Message!]</li>
 		[/STORPROC]
 		</ul>

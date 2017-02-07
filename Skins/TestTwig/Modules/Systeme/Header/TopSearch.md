@@ -4,7 +4,7 @@
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Recherche ..." value="[!search!]" name="search">
           <span class="input-group-btn">
-            <button class="btn btn-default" type="button">OK</button>
+            <input class="btn btn-default" type="submit" value="OK"/>
           </span>
         </div><!-- /input-group -->
     </form>

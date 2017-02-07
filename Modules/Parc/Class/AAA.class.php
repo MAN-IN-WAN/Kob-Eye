@@ -117,16 +117,16 @@ class AAA extends genericClass {
 		$entry = array();
 		$entry['dnsipaddr'] = $this->IP;
 		// Vérifie qu'il y a le AAA:
-		$pre = substr($this->Url, 0, 4);
-		if($pre != 'AAA:') $this->Url = 'AAA:' . $this->Url;
+		$pre = substr($this->Url, 0, 5);
+		if($pre != 'AAAA:') $this->Url = 'AAAA:' . $this->Url;
 		// Récupère la partie "sous domaine"
 		$entry['cn'] = $this->Url;
-		$sD = substr($this->Url, 4);
+		$sD = substr($this->Url, 5);
 		if (!empty($sD)) $entry['dnsdomainname'] = $sD;
 		if($new) {
 			$entry['dnsclass'] = 'IN';
 			$entry['dnsttl'] = 86400;
-			$entry['dnstype'] = 'AAA';
+			$entry['dnstype'] = 'AAAA';
 			$entry['objectclass'][0] = 'dnsrrset';
 			$entry['objectclass'][1] = 'top';
 		}

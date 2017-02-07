@@ -8,7 +8,7 @@ Class Condition extends Beacon{
 	var $CaseDefault;
 
 	// constructeur
-	function Condition() {
+	function __construct() {
 		$this->Data="";
 		$this->Nom="Condition";
 	}

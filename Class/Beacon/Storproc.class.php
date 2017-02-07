@@ -75,28 +75,28 @@ class StorProc extends Beacon {
 						if (sizeof($Out)<3)preg_match("#(.*)(=|>|<)(.*)#s",$f,$Out);
 						if ($g && sizeof($Out)>=3){
 							if (is_array($val) && !isset( $val[$Out[1]])) $val[$Out[1]] = '';
-							if (is_object($val) && !isset( $val->$Out[1])) $val->$Out[1] = '';
+							if (is_object($val) && !isset( $val->{$Out[1]})) $val->{$Out[1]} = '';
 							switch($Out[2]) {
 								case "!=" :
-									$g = (is_array($val)) ? (isset( $val[$Out[1]]))?$val[$Out[1]] != $Out[3]:null : $val->$Out[1] != $Out[3];
+									$g = (is_array($val)) ? (isset( $val[$Out[1]]))?$val[$Out[1]] != $Out[3]:null : $val->{$Out[1]} != $Out[3];
 								break;
 								case "=" :
-									$g =(is_array($val)) ? (isset( $val[$Out[1]]))?$val[$Out[1]] == $Out[3]:null : $val->$Out[1] == $Out[3];
+									$g =(is_array($val)) ? (isset( $val[$Out[1]]))?$val[$Out[1]] == $Out[3]:null : $val->{$Out[1]} == $Out[3];
 								break;
 								case ">=" :
-									$g = (is_array($val)) ?  (isset( $val[$Out[1]]))?$val[$Out[1]] >= $Out[3]:null : $val->$Out[1] >= $Out[3];
+									$g = (is_array($val)) ?  (isset( $val[$Out[1]]))?$val[$Out[1]] >= $Out[3]:null : $val->{$Out[1]} >= $Out[3];
 								break;
 								case "<=" :
-									$g = (is_array($val)) ?  (isset( $val[$Out[1]]))?$val[$Out[1]] <= $Out[3]:null : $val->$Out[1] <= $Out[3];
+									$g = (is_array($val)) ?  (isset( $val[$Out[1]]))?$val[$Out[1]] <= $Out[3]:null : $val->{$Out[1]} <= $Out[3];
 								break;
 								case ">" :
-									$g = (is_array($val)) ?  (isset( $val[$Out[1]]))?$val[$Out[1]] > $Out[3]:null : $val->$Out[1] > $Out[3];
+									$g = (is_array($val)) ?  (isset( $val[$Out[1]]))?$val[$Out[1]] > $Out[3]:null : $val->{$Out[1]} > $Out[3];
 								break;
 								case "<" :
-									$g = (is_array($val)) ?  (isset( $val[$Out[1]]))?$val[$Out[1]] < $Out[3]:null : $val->$Out[1] < $Out[3];
+									$g = (is_array($val)) ?  (isset( $val[$Out[1]]))?$val[$Out[1]] < $Out[3]:null : $val->{$Out[1]} < $Out[3];
 								break;
 								case "~=" :
-									$g = (is_array($val)) ?  (isset( $val[$Out[1]])) ? preg_match('#'.$Out[3].'#',$val[$Out[1]]):null :preg_match('#'.$Out[3].'#',$val->$Out[1]);
+									$g = (is_array($val)) ?  (isset( $val[$Out[1]])) ? preg_match('#'.$Out[3].'#',$val[$Out[1]]):null :preg_match('#'.$Out[3].'#',$val->{$Out[1]});
 								break;
 							}
 						}
@@ -206,9 +206,9 @@ class StorProc extends Beacon {
 						$Methods = get_class_methods($gClass);
 						$Meth = $this->QueryTab[1];
 						if (in_array(strtolower($Meth),$Methods)){
-							$this->Result[]=$gClass->$Meth();
+							$this->Result[]=$gClass->{$Meth}();
 						}else {
-							$this->Result[]=$gClass->$Meth;
+							$this->Result[]=$gClass->{$Meth};
 						}
 					}
 				}elseif ($Tab&&sizeof($Tab)&&sizeof($this->QueryTab)>2){
@@ -221,9 +221,9 @@ class StorProc extends Beacon {
 					$Meth = $this->QueryTab[1];
 					if (in_array(strtolower($Meth),$Methods)){
 						// 						echo "METHODE TROUVE $Meth \r\n";
-						$this->Result[]=$gClass->$Meth();
+						$this->Result[]=$gClass->{$Meth}();
 					}else{
-						$this->Result[]=$gClass->$Meth;
+						$this->Result[]=$gClass->{$Meth};
 					}
 				}
 				if (sizeof($this->Result)>0) {
@@ -330,7 +330,7 @@ class StorProc extends Beacon {
 				}
 				if (is_object($Res)){
 					$Histo2[] = Array("Id"=>$Res->Id,"ObjectType"=>$Res->ObjectType);
-					$Res->$NomTab= StorProc::sortRecursiv($Tab,$Res->Id,$Histo2,$NomTab);
+					$Res->{$NomTab}= StorProc::sortRecursiv($Tab,$Res->Id,$Histo2,$NomTab);
 					$Res->Historique = $Histo;
 				}
 				//Il faut egalement reconstituer l historique

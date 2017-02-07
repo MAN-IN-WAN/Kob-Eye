@@ -64,7 +64,7 @@ class Sys extends Root{
 	//***********************************
 	//	CONSTRUCTEUR
 	//***********************************
-	function Sys($link,$domain) {
+	function __construct($link,$domain) {
 		Sys::$link = $link;
 		Sys::$domain = $domain;
 		Sys::$remote_addr = (isset($_SERVER["REMOTE_ADDR"]))?$_SERVER["REMOTE_ADDR"]:"127.0.0.1";
@@ -153,7 +153,11 @@ class Sys extends Root{
 			}
 		}
 	}
-
+	function version($min){
+		$version = $this->Db[0]->query('select version()')->fetchColumn();
+		$version = mb_substr($version, 0, 6);
+		return (version_compare($version, $min) >= 0);
+	}
 	function connectSQLITE(){
 		if ((!isset($this->Db[1])||!is_object($this->Db[1]))&&$this->Conf->get("GENERAL::BDD::SQLITE_FILE")!=""){
 			$f = $this->Conf->get("GENERAL::BDD::SQLITE_FILE");
@@ -897,10 +901,10 @@ class Sys extends Root{
 			for ($i=0;$i<sizeof($Tab);$i++){
 				//echo "--> Test ".$Tab[$i]->Alias." | ".$Tab[$i]->Titre."\r\n";
 				//Test de resultat
-				if ($Tab[$i]->$Field!=$Value&&isset($Tab[$i]->Menus)&&sizeof($Tab[$i]->Menus)) {
+				if ($Tab[$i]->{$Field}!=$Value&&isset($Tab[$i]->Menus)&&sizeof($Tab[$i]->Menus)) {
 					$Url = Sys::searchInMenus($Field,$Value,$Url,$Tab[$i]->Menus,$Niv+1,$all);
 					if (!$all&&sizeof($Url)) return $Url;
-				}elseif ($Tab[$i]->$Field==$Value&&$Tab[$i]->Url!=""){
+				}elseif ($Tab[$i]->{$Field}==$Value&&$Tab[$i]->Url!=""){
 					//echo "Found ".$Tab[$i]->Alias." | ".$Tab[$i]->Titre." \r\n";
 					array_push($Url,$Tab[$i]);
 					if (!$all)return $Url;
@@ -1166,7 +1170,8 @@ class Sys extends Root{
 	 * SEARCH TAGS
 	 ***********************************/
 	public static function getKeywordsProcessing() {
-		return Sys::$keywordsProcessing;
+		return KEYWORDS_PROCESSING;
+		//return Sys::$keywordsProcessing;
 	}
 	public static function disableKeywordsProcessing() {
 		Sys::$keywordsProcessing = false;

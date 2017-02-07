@@ -10,15 +10,15 @@
 		<PROPERTIES type="image" length="255" category="Descriptif" fiche="1" form="1" list="1">Icone</PROPERTIES>
 		<FKEY card="0,1" data="Categorie,Id">CategorieId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Media" driver="mysql" AccessPoint="1" Description="Images" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" browseable="0" Class="Modules/Galerie/Class/Media.class.php">
+	<OBJECTCLASS title="Media" driver="mysql" AccessPoint="1" Description="Images" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" browseable="1" Class="Modules/Galerie/Class/Media.class.php">
 		<PROPERTIES type="varchar" special="multi" searchOrder="1" fiche="1" form="1" list="1">Titre</PROPERTIES>
-		<PROPERTIES type="varchar" special="multi" searchOrder="2">Chapo</PROPERTIES>
+		<PROPERTIES type="varchar" special="multi" searchOrder="2" fiche="1" form="1">Chapo</PROPERTIES>
 		<PROPERTIES type="image" fileType="Media" category="Emplacement"  description="Fichier ou Apercu video" fiche="1" form="1" list="1" >Fichier</PROPERTIES>
-		<PROPERTIES type="html" special="multi" category="Descriptif">Description</PROPERTIES>
-		<PROPERTIES type="text" special="multi" category="Emplacement" description="Code video">Iframe</PROPERTIES>
+		<PROPERTIES type="html" special="multi" category="Descriptif" fiche="1" form="1">Description</PROPERTIES>
+		<PROPERTIES type="text" special="multi" category="Emplacement" description="Code video" fiche="1" form="1">Iframe</PROPERTIES>
 		<PROPERTIES type="date" category="Configuration" fiche="1" form="1" list="1">Date</PROPERTIES>
 		<PROPERTIES type="boolean" description="Publier sur le site" fiche="1" form="1" list="1">Publier</PROPERTIES>
-		<FKEY card="1,1" data="Categorie,Id" parentDescription="Catégorie">CategorieId</FKEY>
+		<FKEY card="1,1" data="Categorie,Id" parentDescription="Catégorie" fiche="1" form="1">CategorieId</FKEY>
         <FUNCTION title="Dupliquer">Cloner</FUNCTION>
     </OBJECTCLASS>
 	<OBJECTCLASS title="Donnees" driver="mysql" Description="Données">

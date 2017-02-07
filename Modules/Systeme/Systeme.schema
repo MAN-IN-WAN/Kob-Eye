@@ -73,7 +73,7 @@
 		<FKEY card="1,1" data="Site,Id">SiteId</FKEY>
 		<FKEY card="0,n" data="Tag,Id">Tags</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Menu" logEvent="1" driver="mysql" AccessPoint="0" Icon="/Skins/AdminV2/Img/folder.gif" Class="Modules/Systeme/Class/Menu.class.php" cache="1">
+	<OBJECTCLASS title="Menu" logEvent="1" driver="mysql" AccessPoint="0" Icon="/Skins/AdminV2/Img/folder.gif" Description="Menu" Class="Modules/Systeme/Class/Menu.class.php" cache="1">
 		<PROPERTIES type="varchar" searchOrder="2" category="Intitulé" fiche="1" form="1" list="1">Url</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé" special="multi" fiche="1" form="1" list="1">Titre</PROPERTIES>
 		<PROPERTIES type="varchar" category="Intitulé" special="multi">SousTitre</PROPERTIES>
@@ -99,7 +99,7 @@
 		<PROPERTIES type="metak" special="multi" fiche="1" form="1">Keywords</PROPERTIES>
 		<PROPERTIES type="image" fiche="1" form="1">Image</PROPERTIES>
 		<PROPERTIES type="modele" category="Configuration" query="Systeme/ActiveTemplate::Id::Nom">Template</PROPERTIES>
-		<FKEY card="0,1" data="Menu,Id" link="1"  hidden="1">MenuParent</FKEY>
+		<FKEY card="0,1" data="Menu,Id" link="1" parentDescription="Menus" childDescription="Menus" Description="Menus">MenuParent</FKEY>
 		<FKEY card="0,n" data="User,Id" inherit="Group" hidden="1">UserId</FKEY>
 		<FKEY card="0,n" data="Group,Id" hidden="1">GroupId</FKEY>
 	</OBJECTCLASS>
@@ -136,11 +136,14 @@
 		<PROPERTIES type="titre" searchOrder="1" obligatoire="1" category="Intitulé" list="1" form="1" fiche="1">Titre</PROPERTIES>
 		<PROPERTIES type="image" searchOrder="2" category="Emplacement" list="1" form="1" fiche="1">Lien</PROPERTIES>
 		<PROPERTIES type="file" searchOrder="3" category="Emplacement">Alternatif</PROPERTIES>
-		<PROPERTIES type="varchar" values="Image,Video,Son,Defaut,Plugin,Html,Pub" length="20" searchOrder="3" category="Intitulé" list="1" form="1" fiche="1">Type</PROPERTIES>
+		<PROPERTIES type="varchar" values="Image,Video,Son,Defaut,Plugin,Html,Pub,ImageVideo" length="20" searchOrder="3" category="Intitulé" list="1" form="1" fiche="1">Type</PROPERTIES>
+		<!--<PROPERTIES type="boolean" default="1" category="Publication" description="Afficher le titre" form="1" fiche="1">AfficheTitre</PROPERTIES>-->
+		<PROPERTIES type="varchar"  length="200" special="multi" category="Intitulé" descriptif="lien sur le titre" form="1" fiche="1">LienTitre</PROPERTIES>
+		<PROPERTIES type="text" description="Video HTML (Vimeo, Youtube, etc...)" form="1" fiche="1">VideoHtml</PROPERTIES>
 		<PROPERTIES type="html" form="1" fiche="1" special="multi">Html</PROPERTIES>
 		<PROPERTIES type="order"  list="1" form="1" fiche="1">Ordre</PROPERTIES>
 		<FKEY card="1,n" data="Menu,Id" behaviour="Integrated" form="1" fiche="1" parentDescription="Menu">MenuParent</FKEY>
-		<FKEY card="1,n" module="Products" data="Categorie,Id">ProductsCategorieId</FKEY>
+		<!--<FKEY card="1,n" module="Products" data="Categorie,Id">ProductsCategorieId</FKEY>
 		<FKEY card="1,n" module="Products" data="Produit,Id">ProductsProduitId</FKEY>
 		<FKEY card="1,n" module="Team" data="Equipe,Id">TeamEquipeId</FKEY>
 		<FKEY card="1,n" module="Team" data="Rider,Id">TeamRiderId</FKEY>
@@ -148,7 +151,7 @@
 		<FKEY card="1,n" module="Galerie" data="Media,Id">GalerieMediaId</FKEY>
 		<FKEY card="1,n" module="Blog" data="Categorie,Id">BlogCategorieId</FKEY>
 		<FKEY card="1,n" module="Blog" data="Post,Id">BlogPostId</FKEY>
-		<FKEY card="1,n" module="Redaction" data="Categorie,Id">RedactionCategorieId</FKEY>
+		<FKEY card="1,n" module="Redaction" data="Categorie,Id">RedactionCategorieId</FKEY>-->
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Fichier" driver="mysql" AccessPoint="0">
 		<PROPERTIES type="titre" length="50" searchOrder="1" obligatoire="1" category="Informations">Titre</PROPERTIES>

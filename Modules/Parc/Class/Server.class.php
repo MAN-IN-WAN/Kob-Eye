@@ -74,7 +74,7 @@ class Server extends genericClass {
 
 				// On instancie un objet KE
 				$assocVar = '_assoc' . $type;
-				$KEObj = $this -> getKEObject($type, $data[$i], $this -> $assocVar);
+				$KEObj = $this -> getKEObject($type, $data[$i], $this -> {$assocVar});
 
 				// Action spécifique selon le type
 				switch($type) {
@@ -280,7 +280,7 @@ class Server extends genericClass {
 		$obj -> LdapTms = $entry['modifytimestamp'][0];
 		foreach ($assoc as $key => $field) {
 			unset($entry[$field]['count']);
-			$obj -> $key = @implode("\r", $entry[$field]);
+			$obj -> {$key} = @implode("\r", $entry[$field]);
 		}
 		return $obj;
 

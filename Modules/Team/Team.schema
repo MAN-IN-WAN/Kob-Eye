@@ -49,6 +49,6 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="PunchText" driver="mysql" master="0" AccessPoint="0" Dico="0" Description="PunchText" Icon="/Skins/AdminV2/Img/IconAqua/Home.png">
 		<PROPERTIES type="html" special="multi" searchOrder="1" fiche="1" form="1" list="1">Texte</PROPERTIES>
-		<FKEY card="0,1" data="Rider,Id"popup="1">RiderId</FKEY>
+		<FKEY card="0,1" data="Rider,Id" popup="1">RiderId</FKEY>
 	</OBJECTCLASS>
 </SCHEMA>

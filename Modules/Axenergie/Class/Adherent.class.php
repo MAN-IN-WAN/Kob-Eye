@@ -8,7 +8,7 @@ class Adherent extends genericClass {
 		$err = array(array('message'=>'Le couple utilisateur, mot de passe existe déjà.'));
 		// check user
 		$tmp = 'User.UserId';
-		$tmp = $this->$tmp;
+		$tmp = $this->{$tmp};
 		if(count($tmp)) {
 			$usr = genericClass::createInstance('Systeme', 'User');
 			$usr->initFromId($tmp[0]);
@@ -82,7 +82,7 @@ class Adherent extends genericClass {
 			if(is_array($rec) && count($rec)) {
 				$p = genericClass::createInstance("Axenergie",$rec[0]);
 				$tmp = 'User.UserId';
-				$p->$tmp = $p->getParents('User');
+				$p->{$tmp} = $p->getParents('User');
 			}
 			else $p = genericClass::createInstance("Axenergie",'Adherent');
 			$p->Enseigne = $line[0];

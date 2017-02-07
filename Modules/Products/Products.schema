@@ -108,7 +108,7 @@
 		<PROPERTIES type="varchar" special="multi"  length="100" description="Lien vers le catalogue à mettre dans l'iframe" fiche="1" form="1">Lien</PROPERTIES>
 		<PROPERTIES type="boolean" description="Téléchargement du fichier directement" fiche="1" form="1" list="1">DownloadDirect</PROPERTIES>
 		<PROPERTIES type="file" description="Fichier zip à télécharger dans le cas su téléchargement direct" special="multi"  fiche="1" form="1" >FileDownload</PROPERTIES>
-		<PROPERTIES type="order">Ordre</PROPERTIES>
+		<PROPERTIES type="order" fiche="1" form="1" list="1">Ordre</PROPERTIES>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="SparePart" driver="mysql" master="1" AccessPoint="1" Dico="0" Description="Spares Parts"  Icon="/Skins/AdminV2/Img/IconAqua/Home.png" browseable="1">
 		<PROPERTIES type="varchar" special="multi"  length="100" searchOrder="1" fiche="1" form="1" list="1">Titre</PROPERTIES>
@@ -126,17 +126,19 @@
 		<FKEY card="1,1" data="SparePart,Id" popup="1">Produit</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Registration" driver="mysql" master="0" AccessPoint="0" Dico="1" Description="Registration"  Icon="/Skins/AdminV2/Img/IconAqua/Home.png" Class="Modules/Products/Class/Registration.class.php">
-		<PROPERTIES type="varchar" searchOrder="1">FirstName</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="2">LastName</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="3">Email</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="3">Address</PROPERTIES>
-		<PROPERTIES type="varchar">City</PROPERTIES>
-		<PROPERTIES type="varchar">Country</PROPERTIES>
-		<PROPERTIES type="varchar">Product</PROPERTIES>
-		<PROPERTIES type="varchar">ProductSerial</PROPERTIES>
-		<PROPERTIES type="varchar">Size</PROPERTIES>
-		<PROPERTIES type="varchar">Shop</PROPERTIES>
-		<PROPERTIES type="varchar">DatePurchased</PROPERTIES>
-		<PROPERTIES type="text">Message</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" fiche="1" form="1" list="1">FirstName</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" fiche="1" form="1" list="1">LastName</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="3" fiche="1" form="1" list="1">Email</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="3" fiche="1" form="1" >Address</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" >City</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" >Country</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" >Product</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" >ProductSerial</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" >Size</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" >Shop</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" >DatePurchased</PROPERTIES>
+		<PROPERTIES type="text" fiche="1" form="1" >Message</PROPERTIES>
+		<FUNCTION title="Exporter la liste">ExportListe</FUNCTION>
+        <FUNCTION title="Vider la liste">ViderListe</FUNCTION>
 	</OBJECTCLASS>
 </SCHEMA>

@@ -14,7 +14,7 @@
 
 
 [STORPROC [!Panier::getErrors()!]|E]
-	<div class="Error">[!E::Message!]</div>
+	<div class="alert alert-danger">[!E::Message!]</div>
 [/STORPROC]
 [!Panier::resetErrors()!]
 [STORPROC [!Panier::getSuccess()!]|S]

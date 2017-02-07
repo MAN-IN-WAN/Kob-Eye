@@ -924,7 +924,7 @@ if(!class_exists('FPDF'))
 					$mtd='_parse'.$type;
 					if(!method_exists($this,$mtd))
 					$this->Error('Unsupported image type: '.$type);
-					$info=$this->$mtd($file);
+					$info=$this->{$mtd($file)};
 				}
 				set_magic_quotes_runtime($mqr);
 				$info['i']=count($this->images)+1;
@@ -1269,7 +1269,7 @@ if(!class_exists('FPDF'))
 					$mtd='_put'.strtolower($type);
 					if(!method_exists($this,$mtd))
 					$this->Error('Unsupported font type: '.$type);
-					$this->$mtd($font);
+					$this->{$mtd($font)};
 				}
 			}
 		}

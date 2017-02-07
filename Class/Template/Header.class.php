@@ -365,7 +365,7 @@ class Header extends Root{
 
 		// Contenu du fichier
 		$contenu = "";
-		foreach($this->$type as $f) {
+		foreach($this->{$type} as $f) {
 			$contenu .= $this->getFileContent( $f );
 		}
 

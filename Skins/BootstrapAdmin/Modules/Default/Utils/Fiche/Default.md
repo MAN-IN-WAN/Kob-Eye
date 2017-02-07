@@ -63,7 +63,7 @@
     [STORPROC [!O::getElementsByAttribute(fiche,,1)!]|P]
         [SWITCH [!P::type!]|=]
             [CASE fkey]
-                [IF [!P::card!]=long]
+                [IF [!P::card!]=long||[!P::recursive!]]
                 <li role="fiche-[!P::name!]" ><a href="#fiche-[!P::name!]" aria-controls="fiche-[!P::name!]" role="tab" data-toggle="tab">[!P::parentDescription!]</a></li>
                 [/IF]
             [/CASE]
@@ -88,11 +88,13 @@
         [COUNT [!O::getElementsByAttribute(fiche,,1)!]|NBC]
         <div class="[IF [!NBC!]>6]col-md-6[ELSE]col-md-12[/IF]">
             [STORPROC [!O::getElementsByAttribute(fiche,,1)!]|P]
-                [MODULE Systeme/Utils/Fiche/getInput?P=[!P!]]
-                [IF [!NBC!]>6&&[!Pos!]=[!Math::Floor([!NBC:/2!])!]]
-                    </div>
-                    <div class="col-md-6">
-                [/IF]
+                [IF [!P::type!]!=fkey&&(![!P::recursive!]!=+[!P::card!]!=long!)]
+                    [MODULE Systeme/Utils/Fiche/getInput?P=[!P!]]
+                    [IF [!NBC!]>6&&[!Pos!]=[!Math::Floor([!NBC:/2!])!]]
+                        </div>
+                        <div class="col-md-6">
+                    [/IF]
+                 [/IF]
             [/STORPROC]
         </div>
     </div>
@@ -100,7 +102,7 @@
         <!-- Tab panes -->
         [SWITCH [!P::type!]|=]
             [CASE fkey]
-                [IF [!P::card!]=long]
+                [IF [!P::card!]=long||[!P::recursive!]]
                 <div role="fiche-[!P::name!]" class="tab-pane" id="fiche-[!P::name!]">
                     <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
                         <div class="row" style="margin: 0;">

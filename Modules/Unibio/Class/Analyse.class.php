@@ -141,7 +141,7 @@ class Analyse extends genericClass {
 		// Recensement des champs textuels
 		$T="";
 		$Props = $this->SearchOrder();
-		foreach ($Props as $p) $T .= ' ' . $this->$p["Titre"];
+		foreach ($Props as $p) $T .= ' ' . $this->{$p["Titre"]};
 		//Extraction des mots clefs
 		$params['content'] = $T; //page content
 		//set the length of keywords you like

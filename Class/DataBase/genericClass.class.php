@@ -17,6 +17,8 @@ class genericClass extends Root {
 	var $isHeritage = false;
 	var $Triggers;
 	var $_view = "";
+    //dirty
+    var $dirtyPage = false;
 
 	//----------------------------------------------//
 	//		INITIALISATION			//
@@ -32,7 +34,7 @@ class genericClass extends Root {
 		Sys::$Modules[$this -> Module] -> loadSchema();
 		$ClassName = (gettype($Data) == "array") ? $Data["ObjectType"] : $Data;
 		$ObjClass = Sys::$Modules[$refMod] -> Db -> getObjectClass($ClassName);
-		$this -> Interface = $ObjClass -> Interface;
+		$this ->Interface = $ObjClass ->Interface;
 		if ($Data != NULL) {
 			switch(gettype($Data)) {
 				case 'array' :
@@ -69,7 +71,7 @@ class genericClass extends Root {
 				foreach ($tabProp as $Key => $Propriete) {
 					if (!isset($Propriete["searchOrder"])) {
 						$Tab[$int]['Nom'] = $Key;
-						$Tab[$int]['Valeur'] = (isset($this -> $Key)) ? $this -> $Key : null;
+						$Tab[$int]['Valeur'] = (isset($this -> {$Key})) ? $this -> {$Key} : null;
 						$int++;
 					}
 				}
@@ -92,7 +94,7 @@ class genericClass extends Root {
 			}
 			if (!$Key)
 				return false;
-			return (!$Nom && isset($this -> $Key)) ? $this -> $Key : $Key;
+			return (!$Nom && isset($this -> {$Key})) ? $this -> {$Key} : $Key;
 		}
 		//On verifie si c est un mot reserve
 		if ($Data == "Id")
@@ -110,7 +112,7 @@ class genericClass extends Root {
 				switch ($Propriete['Type']) {
 					case "bbcode" :
 						$temp = new charUtils();
-						$temp -> ChildObjects[] = $this -> $Data;
+						$temp -> ChildObjects[] = $this -> {$Data};
 						$temp -> Beacon = "UTIL";
 						$temp -> Vars = "BBCODE";
 						return $temp -> affich();
@@ -122,14 +124,14 @@ class genericClass extends Root {
 					case "text" :
 					case "html" :
 					default :
-						return $this -> $Data;
+						return $this -> {$Data};
 						break;
 				}
 			}
 		}
 		//Donc pas une propriete , donc il s agit d une variable
-		if (isset($this -> $Data))
-			return $this -> $Data;
+		if (isset($this -> {$Data}))
+			return $this -> {$Data};
 		//Si on a pas trouve la propriete, elle n'existe pas et on renvoie une rreur
 		return false;
 	}
@@ -236,10 +238,10 @@ class genericClass extends Root {
 			return false;
 		foreach ($Tab as $Key => $Value) {
 			if (is_array($Value))
-				$this -> $Key = $Value;
+				$this -> {$Key} = $Value;
 			else
 //				$this -> $Key = is_null($Value) ? null : stripslashes($Value);
-				$this -> $Key = is_null($Value) ? null : $Value;
+				$this -> {$Key} = is_null($Value) ? null : $Value;
 		}
 		//On definit les valeurs par defaut
 		/*$Props = $this -> Proprietes(false, true);
@@ -444,8 +446,8 @@ class genericClass extends Root {
 					$p = &$t[$c]["elements"][$j];
 					$n = $Prefixe.$p["name"];
 					$p['name'] = $n;
-					if (isset($this->$n))
-						$p["value"] = $this->$n;
+					if (isset($this->{$n}))
+						$p["value"] = $this->{$n};
 					if (empty($p["description"]))$p["description"] = $p["name"];
 				}else{
 					array_splice($t[$c]["elements"],$j,1);
@@ -636,11 +638,11 @@ class genericClass extends Root {
 					$Infos['Nom'] = $Key;
 					$Infos['name'] = $Key;
 					$Infos['Langue'] = $Prefixes[$DefaultLanguage];
-					if (isset($this -> $Key)&& is_string($this->$Key) && strlen($this -> $Key) == 0)
+					if (isset($this -> {$Key})&& is_string($this->{$Key}) && strlen($this -> {$Key}) == 0)
 						$Infos['isNull'] = "True";
 					else
 						$Infos['isNull'] = "False";
-					$Infos['Valeur'] = (isset($this -> $Key)) ? $this -> $Key : null;
+					$Infos['Valeur'] = (isset($this -> {$Key})) ? $this -> {$Key} : null;
 					if (isset($tabProp[$Key]['searchOrder']))
 						$Infos['SearchOrder'] = $tabProp[$Key]['searchOrder'];
 					else
@@ -675,7 +677,7 @@ class genericClass extends Root {
 									$Props[$i]['Nom'] = $Prefixe . "-" . $Key;
 									$Props[$i]['Langue'] = $Prefixe;
 									$Props[$i]['description'] = "$Key ($NomPref)";
-									$Props[$i]['Valeur'] = isset($this -> $NomLangue) ? $this -> $NomLangue: '';
+									$Props[$i]['Valeur'] = isset($this -> {$NomLangue}) ? $this -> {$NomLangue}: '';
 									$i++;
 								}
 							}
@@ -1489,7 +1491,7 @@ class genericClass extends Root {
 		}
 		if (is_string($newValue))
 			$newValue = trim($newValue);
-		$this -> $Prop = $newValue;
+		$this -> {$Prop} = $newValue;
 		return true;
 	}
 
@@ -1677,8 +1679,8 @@ class genericClass extends Root {
 						$error = 0;
 					}else $this -> AddError(array("Message" => "__LA_VALEUR_DU_CHAMP__ " . $Prop["Titre"] . " __ALREADY_EXISTS__", "Prop" => $Prop["Titre"]));*/
 				} else {
-					if ($Value != "" && $this -> $Prop["Titre"] != "") {
-						if (md5($Value) != $this -> $Prop["Titre"]) {
+					if ($Value != "" && $this -> {$Prop["Titre"]} != "") {
+						if (md5($Value) != $this -> {$Prop["Titre"]}) {
 							$e["Message"] = "__LA_VALEUR_DU_CHAMP__ " . (($Prop["description"] != "") ? $Prop["description"] : $Prop["Titre"]) . " __INVALID__";
 							$e["Prop"] = $Prop["Titre"];
 							$this -> AddError($e);
@@ -1690,7 +1692,7 @@ class genericClass extends Root {
 				}
 				break;
 			case "mail" :
-				if (! Utils::isMail($this -> $Prop["Titre"]) && $this -> $Prop["Titre"] != "") {
+				if (! Utils::isMail($this -> {$Prop["Titre"]}) && $this -> {$Prop["Titre"]} != "") {
 					$e["Message"] = "__LA_VALEUR_DU_CHAMP__ " . (($Prop["description"] != "") ? $Prop["description"] : $Prop["Titre"]) . " __INVALID__";
 					$e["Prop"] = $Prop["Titre"];
 					$this -> AddError($e);
@@ -1698,7 +1700,7 @@ class genericClass extends Root {
 				}
 				break;
 			case "date" :
-				if ((!Utils::isDate($this -> $Prop["Titre"]) && strlen($this -> $Prop["Titre"]) > 1 && !is_numeric($this -> $Prop["Titre"])) || (is_numeric($this -> $Prop["Titre"]) && strlen($this -> $Prop["Titre"]) < 1)) {
+				if ((!Utils::isDate($this ->{$Prop["Titre"]}) && strlen($this -> {$Prop["Titre"]}) > 1 && !is_numeric($this -> {$Prop["Titre"]})) || (is_numeric($this -> {$Prop["Titre"]}) && strlen($this -> {$Prop["Titre"]}) < 1)) {
 					$e["Message"] = "__LA_VALEUR_DU_CHAMP__ " . (($Prop["description"] != "") ? $Prop["description"] : $Prop["Titre"]) . " __FORMAT_DATE_INVALID__";
 					$e["Prop"] = $Prop["Titre"];
 					$this -> AddError($e);
@@ -1714,7 +1716,7 @@ class genericClass extends Root {
 				}*/
 				break;
 			case "string" :
-				if (is_string($this -> $Prop["Titre"]) && $this -> $Prop["Titre"] != "") {
+				if (is_string($this -> {$Prop["Titre"]}) && $this -> {$Prop["Titre"]} != "") {
 					$e["Message"] = "__LA_VALEUR_DU_CHAMP__ " . (($Prop["description"] != "") ? $Prop["description"] : $Prop["Titre"]) . " __INVALID_CHAR__";
 					$e["Prop"] = $Prop["Titre"];
 					$this -> AddError($e);
@@ -1724,13 +1726,13 @@ class genericClass extends Root {
 		}
 		//Verification en fonction des attributs
 		if (isset($Prop["obligatoire"]) && $Prop["obligatoire"]) {
-			if ((empty($this -> $Prop["Titre"])||$this -> $Prop["Titre"]=="0") && $Prop["Type"] != "file") {
+			if ((empty($this -> {$Prop["Titre"]})||$this -> {$Prop["Titre"]}=="0") && $Prop["Type"] != "file") {
 				$e["Message"] = "__LE_CHAMP__ " . (($Prop["description"] != "") ? $Prop["description"] : $Prop["Titre"]) . " __EST_OBLIGATOIRE__.";
 				$e["Prop"] = $Prop["Titre"];
 				$this -> AddError($e);
 				$error = 0;
 			} elseif ($Prop["Type"] == "file") {
-				if (!is_array($_FILES["Form_" . $Prop["Titre"] . "_Upload"]) && $this -> $Prop["Titre"] == "") {
+				if (!is_array($_FILES["Form_" . $Prop["Titre"] . "_Upload"]) && $this -> {$Prop["Titre"]} == "") {
 					$e["Message"] = "__LE_CHAMP__ " . (($Prop["description"] != "") ? $Prop["description"] : $Prop["Titre"]) . " __EST_OBLIGATOIRE__.";
 					$e["Prop"] = $Prop["Titre"];
 					$this -> AddError($e);
@@ -1739,14 +1741,14 @@ class genericClass extends Root {
 			}
 		}
 		if (isset($Prop["unique"]) && $Prop["unique"] && (!isset($this -> Id) || $this -> Id == "")) {
-			$Res = Sys::getCount($this -> Module,  $this -> ObjectType . "/" . $Prop["Titre"] . "=" . $this -> $Prop["Titre"]);
+			$Res = Sys::getCount($this -> Module,  $this -> ObjectType . "/" . $Prop["Titre"] . "=" . $this -> {$Prop["Titre"]});
 			if ($Res) {
 				$this -> AddError(array("Message" => "__LA_VALEUR_DU_CHAMP__ " . $Prop["Titre"] . " __ALREADY_EXISTS__", "Prop" => $Prop["Titre"]));
 				$error = 0;
 			}
 		}
 		if (isset($Prop["unique"]) && $Prop["unique"] && (isset($this -> Id) && $this -> Id != "")) {
-            $Res = Sys::getCount($this -> Module,  $this -> ObjectType . "/" . $Prop["Titre"] . "=" . $this -> $Prop["Titre"]."&Id!=". $this -> Id);
+            $Res = Sys::getCount($this -> Module,  $this -> ObjectType . "/" . $Prop["Titre"] . "=" . $this -> {$Prop["Titre"]}."&Id!=". $this -> Id);
 			if ($Res) {
                 $this -> AddError(array("Message" => "__LA_VALEUR_DU_CHAMP__ " . $Prop["Titre"] . " __ALREADY_EXISTS__", "Prop" => $Prop["Titre"]));
                 $error = 0;
@@ -1852,7 +1854,7 @@ class genericClass extends Root {
 				//$GLOBALS["Systeme"]->Error->sendWarningMsg(41);
 			}
 			$N = $Prop["Nom"];
-			$this -> $N = $dossier . $file_name . $d . $extension;
+			$this -> {$N} = $dossier . $file_name . $d . $extension;
 			return true;
 		}
 		unset($_FILES['Form_' . $Prop["Nom"] . '_Upload']);
@@ -1906,15 +1908,15 @@ class genericClass extends Root {
 				$nomAssociation = $pa->titre;
 				$nomComplet = $nomObjet.'.'.$pa->titre;
 				$vraiNom = "";
-				if (isset($arg -> $nomObjet)) $vraiNom = $nomObjet;
-				if (isset($arg -> $nomAssociation)) $vraiNom = $nomAssociation;
-				if (isset($arg -> $nomComplet)) $vraiNom = $nomComplet;
+				if (isset($arg -> {$nomObjet})) $vraiNom = $nomObjet;
+				if (isset($arg -> {$nomAssociation})) $vraiNom = $nomAssociation;
+				if (isset($arg -> {$nomComplet})) $vraiNom = $nomComplet;
 				if ($vraiNom) {
-					if (!is_array($arg -> $vraiNom))
-						$arg -> $vraiNom = Array($arg -> $vraiNom);
+					if (!is_array($arg -> {$vraiNom}))
+						$arg -> {$vraiNom} = Array($arg -> {$vraiNom});
 					//remise à zero des liaisons de ce type
 					$this -> resetParents($nomComplet);
-					foreach ($arg->$vraiNom as $par) {
+					foreach ($arg->{$vraiNom} as $par) {
 						$this -> AddParent($this -> Module . "/" . $nomComplet . "/" . $par);
 						//$GLOBALS["Systeme"] -> Log -> log("ADD PARENT " . $this -> Module . "/" . $nomComplet . "/" . $par);
 					}
@@ -1943,7 +1945,7 @@ class genericClass extends Root {
 				}
 			}
 		}
-		
+		$res = '';
 		if (!$this -> Verify())
 			$status[] = Array($type, 0, $this -> Id, $this -> Module, $this -> ObjectType, '', '', $this -> Error, $res);
 		elseif($default)
@@ -2040,7 +2042,7 @@ class genericClass extends Root {
 
         //on enregistre le lien
         $N = $Prop["Nom"];
-        $this -> $N = $path;
+        $this -> {$N} = $path;
 
         return $file_name;
     }
@@ -2067,7 +2069,7 @@ class genericClass extends Root {
 						break;
 					case "autodico" :
 						$Nom = $Prop["Nom"];
-						$Valeur = $this -> $Nom;
+						$Valeur = $this -> {$Nom};
 						$Query = $this -> Module . "/" . $Prop["Target"];
 						$Tab = Sys::$Modules[$this -> Module] -> callData($Query);
 						if (!is_array($Tab))
@@ -2092,25 +2094,25 @@ class genericClass extends Root {
 							$Generic -> Type = $Valeur;
 							$Generic -> Save();
 						}
-						$this -> $Nom = $Id;
+						$this -> {$Nom} = $Id;
 						break;
 					case "float" :
 						$Nom = $Prop["Nom"];
-						if ($this -> $Nom == "0")
-							$this -> $Nom = "0.0";
+						if ($this -> {$Nom} == "0")
+							$this -> {$Nom} = "0.0";
 						break;
 					case "datetime" :
 					case "date" :
 						$Nom = $Prop["Nom"];
-						if(isset($this->$Nom)&&! is_null($this->$Nom)) {
-							if (preg_match("#^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})\ ([0-9]{2})\:([0-9]{2})\:([0-9]{2})$#", $this -> $Nom, $out)) {
-								$this -> $Nom = mktime($out[4], $out[5], $out[6], $out[2], $out[1], $out[3]);
+						if(isset($this->{$Nom})&&! is_null($this->{$Nom})) {
+							if (preg_match("#^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})\ ([0-9]{2})\:([0-9]{2})\:([0-9]{2})$#", $this -> {$Nom}, $out)) {
+								$this -> {$Nom} = mktime($out[4], $out[5], $out[6], $out[2], $out[1], $out[3]);
 							}
-							if (preg_match("#^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})\ ([0-9]{2})\:([0-9]{2})$#", $this -> $Nom, $out)) {
-								$this -> $Nom = mktime($out[4], $out[5], 0, $out[2], $out[1], $out[3]);
+							if (preg_match("#^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})\ ([0-9]{2})\:([0-9]{2})$#", $this -> {$Nom}, $out)) {
+								$this -> {$Nom} = mktime($out[4], $out[5], 0, $out[2], $out[1], $out[3]);
 							}
-							if (preg_match("#^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$#", $this -> $Nom, $out)) {
-								$this -> $Nom = mktime(0, 0, 0, $out[2], $out[1], $out[3]);
+							if (preg_match("#^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$#", $this ->{$Nom}, $out)) {
+								$this -> {$Nom} = mktime(0, 0, 0, $out[2], $out[1], $out[3]);
 							}
 						}
 						break;
@@ -2146,8 +2148,8 @@ class genericClass extends Root {
 		if (isset($this -> Heritages) && sizeof($this -> Heritages)) {
 			for ($i = 0; $i < sizeof($this -> Heritages); $i++) {
 				$Name = $this -> Heritages[$i]["Nom"];
-				$this -> Heritages[$i]["Valeur"] = $this -> $Name;
-				$this -> Heritages[$i]["Value"] = $this -> $Name;
+				$this -> Heritages[$i]["Valeur"] = $this -> {$Name};
+				$this -> Heritages[$i]["Value"] = $this -> {$Name};
 			}
 		}
 		$obj = $this->getObjectClass();
@@ -2381,11 +2383,14 @@ class genericClass extends Root {
 					 case "titre":
 					 case "varchar":
 						 // Type text : on concatene
-						 $T .= ' ' . $this->$p["Titre"];
+						 $T .= ' ' . $this->{$p["Titre"]};
 						 break;
 				 }
 			 }
 			 $this->TitleMeta = substr($T, 0, 150);
+
+             //on force la mise à jour des pages
+             $this->dirtyPage = true;
 		 }
         $T='';
 		 if (empty($this->DescriptionMeta)) {
@@ -2395,15 +2400,17 @@ class genericClass extends Root {
 				 switch ($p["Type"]) {
 					 case "text":
 						 // Type text : on concatene
-						 $T .= ' ' . $this->$p["Titre"];
+						 $T .= ' ' . $this->{$p["Titre"]};
 						 break;
 					 case "bbcode":
 						 // Type text : on concatene
-						 $T .= ' ' . strip_tags($this->$p["Titre"]);
+						 $T .= ' ' . strip_tags($this->{$p["Titre"]});
 						 break;
 				 }
 			 }
 			 $this->DescriptionMeta = substr(strip_tags($T), 0, 250);
+             //on force la mise à jour des pages
+             $this->dirtyPage = true;
 		 }
         $T='';
 		 if (empty($this->ImgMeta)) {
@@ -2413,14 +2420,16 @@ class genericClass extends Root {
 				 switch ($p["Type"]) {
 					 case "image":
 						 // Type text : on concatene
-						 if (isset($this->$p["Titre"])) {
-							 $T = $this->$p["Titre"];
+						 if (isset($this->{$p["Titre"]})) {
+							 $T = $this->{$p["Titre"]};
 							 break 2;
 						 }
 						 break;
 				 }
 			 }
 			 $this->ImgMeta = $T;
+             //on force la mise à jour des pages
+             $this->dirtyPage = true;
 		 }
 	 }
 	 //______________________________________________________________________________________________
@@ -2452,7 +2461,7 @@ class genericClass extends Root {
 				$tls=array_merge($tls,$m->getPages());
 			}
 
-			if (!$this->isRecursiv()||(!Sys::getCount($this->Module,$this->ObjectType.'/'.$this->ObjectType.'/'.$this->Id))){
+			if (!$this->isRecursiv()||(!Sys::getCount($this->Module,$this->ObjectType.'/'.$this->ObjectType.'/'.$this->Id.'/Display=1'))){
 				//recherche des menus pouvant emmener à cette donnée
 				$menus = Sys::getMenus($this->Module.'/'.$this->ObjectType,true,true);
 				foreach ($menus as $m){
@@ -2485,6 +2494,7 @@ class genericClass extends Root {
 				if ($pa["browseable"]&&!$pa["stopPage"]){
 					$pas = $this->getParents($pa["Titre"]);
 					foreach ($pas as $p){
+					    if (!$p->Display) continue;
 						//récupération des pages
 						$ps = $p->getPages();
 
@@ -2521,8 +2531,9 @@ class genericClass extends Root {
 				}else if (!$pa["browseable"]&&$browseable){
 					$pas = $this->getParents($pa["Titre"]);
 					foreach ($pas as $p){
+                        if (!$p->Display) continue;
 
-						//recherche des menus pouvant emmener à cette donnée
+                        //recherche des menus pouvant emmener à cette donnée
 						$menus = Sys::getMenus($this->Module.'/'.$pa["Titre"].'/'.$p->Id,true,true);
 						$suffixe = '/'.$this->ObjectType;
 						if (!sizeof($menus)){
@@ -2633,10 +2644,10 @@ class genericClass extends Root {
 					}
 				}
 			}
-			for ($i = 0; $i < sizeof($tls); $i++){
-				$tls[$i]->Save();
-			}
 		}
+        for ($i = 0; $i < sizeof($tls); $i++){
+            $tls[$i]->Save();
+        }
 	}
     /**
      * rip_tags
@@ -2678,16 +2689,16 @@ class genericClass extends Root {
 					// Type text : on concatene
 					if (isset($p["SearchOrder"])&&intval($p["SearchOrder"])>0){
 						for ($i=20; $i>=intval($p["SearchOrder"]); $i--){
-							$T .= ' ' .trim( htmlspecialchars_decode($this->$p["Titre"]));
+							$T .= ' ' .trim( htmlspecialchars_decode($this->{$p["Titre"]}));
 						}
 						
-					}elseif (isset($this->$p["Titre"]))
-						$T .= ' ' .trim( htmlspecialchars_decode($this->$p["Titre"]));
+					}elseif (isset($this->{$p["Titre"]}))
+						$T .= ' ' .trim( htmlspecialchars_decode($this->{$p["Titre"]}));
 				break;
 				case "html":
 				case "bbcode":
 					// Type text : on concatene
-					$T .= ' ' . trim($this->rip_tags($this->$p["Titre"]));
+					$T .= ' ' . trim($this->rip_tags($this->{$p["Titre"]}));
 				break;
 			}
 		}
@@ -2758,7 +2769,7 @@ class genericClass extends Root {
 			for($i = 0; $i < $n; $i++) {
 				if($i) $l .= ';';
 				$d = $cs[$i][1];
-				$v = $r->$d;
+				$v = $r->{$d};
 				switch($cs[$i][2]) {
 					case 'date':
 						$v = $v ? date('Y-m-d', $v) : '';
@@ -2768,7 +2779,7 @@ class genericClass extends Root {
 						break;
 					case 'image':
 						$d .= '_ToolTip';
-						if(isset($r->$d)) $v = $r->$d;
+						if(isset($r->{$d})) $v = $r->{$d};
 						break;
 				}
 				$l .= '"'.$v.'"';
@@ -2801,7 +2812,7 @@ class genericClass extends Root {
 		foreach($rs as $r) {
 			for($i = 0; $i < $n; $i++) {
 				$d = $cs[$i][1];
-				$v = $r->$d;
+				$v = $r->{$d};
 				switch($cs[$i][2]) {
 					case 'date':
 					case 'time':
@@ -2809,20 +2820,20 @@ class genericClass extends Root {
 						break;
 					case 'image':
 						$d .= '_ToolTip';
-						if(isset($r->$d)) $v = $r->$d;
+						if(isset($r->{$d})) $v = $r->{$d};
 						break;
 				}
 				$p = PHPExcel_Cell::stringFromColumnIndex($i).$l;
 				$sh->SetCellValue($p,$v);
 
 				$c = $d.'_Color';
-				if(isset($r->$c)) {
-					$h = $this->hexaColor($r->$c);
+				if(isset($r->{$c})) {
+					$h = $this->hexaColor($r->{$c});
 					$sh->getStyle($p)->getFont()->getColor()->applyFromArray(array("rgb"=>$h));
 				} 
 				$c = $d.'_backgroundColor';
-				if(isset($r->$c) && ! empty($r->$c)) {
-					$h = $this->hexaColor($r->$c);
+				if(isset($r->{$c}) && ! empty($r->{$c})) {
+					$h = $this->hexaColor($r->{$c});
 					$sh->getStyle($p)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
 					$sh->getStyle($p)->getFill()->getStartColor()->setRGB($h);
 				} 

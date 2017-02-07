@@ -1,6 +1,6 @@
 <?php
 class Media extends genericClass {
-    function getClone()  {
+    function getClone($noreset = false)  {
         //creéation d'un clone avec clonage spécifique
         $o = parent::getClone();
         //PARENTS

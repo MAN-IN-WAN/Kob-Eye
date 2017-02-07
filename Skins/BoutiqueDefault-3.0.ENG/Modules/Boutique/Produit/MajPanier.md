@@ -52,7 +52,7 @@
 			[REDIRECT][!Sys::getMenu(Boutique/Commande/Etape4)!][/REDIRECT]
 		[/CASE]
 		[CASE annule]
-			//[!Cli::cancelCommande([!Com!])!]
+			[!Cli::cancelCommande([!Com!])!]
 			[REDIRECT][!Sys::getMenu(Boutique/Commande/Etape4)!][/REDIRECT]
 		[/CASE]
 		[DEFAULT]

@@ -581,3 +581,7 @@ FICHE PRODUIT
 #primary_block{
     margin: 20px;
 }
+
+#page>.container{
+    background-color: rgba(255,255,255,0.80);
+}

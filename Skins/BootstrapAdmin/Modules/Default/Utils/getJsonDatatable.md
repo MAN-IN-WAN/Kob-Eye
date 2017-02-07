@@ -91,6 +91,9 @@
             {
                     "id":"[!O::Id!]",
                     "label":"[JSON][!O::getFirstSearchOrder()!][/JSON]"
+                    [IF [!O::isReflexive()!]]
+                        ,"tail": [IF [!O::isTail()!]]"tail"[ELSE]""[/IF]
+                    [/IF]
                     [STORPROC [!Ob::getElementsByAttribute(type,,1)!]|P]
                             [NORESULT]
                                     [STORPROC [!Ob::getElementsByAttribute(searchOrder,,1)!]|P]

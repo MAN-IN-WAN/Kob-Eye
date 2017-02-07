@@ -15,7 +15,7 @@ class RedactionArticle extends genericClass{
 				case "text":
 				case "varchar":
 					//Recuperation des mots clefs
-					$T .= $this->$p["Titre"];
+					$T .= $this->{$p["Titre"]};
 					//Insertion dans la base de donnee
 					
 				break;

@@ -201,33 +201,51 @@ $(function () {
 </div>
         [/CASE]
         [DEFAULT]
-        [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[**P::value**]!][/IF]
-        [IF [!P::Values!]]
-<div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
-<label class="col-sm-5 control-label">[!P::description!]</label>
-<div class="col-sm-7 form-value">
-    <select class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]">
-        [STORPROC [!P::Values!]|C]
-        [!T:=[![!C!]:/::!]!]
+            [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[**P::value**]!][/IF]
+            [IF [!P::Values!]]
+                <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
+                <label class="col-sm-5 control-label">[!P::description!]</label>
+                <div class="col-sm-7 form-value">
+                    <select class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]">
+                        <option value="" >...</option>
+                        [STORPROC [!P::Values!]|C]
+                        [!T:=[![!C!]:/::!]!]
 
-        [COUNT [!T!]|S]
-        [IF [!S!]>1]
-            <option value="[!T::0!]" [IF [!DF!]=[!T::0!]]selected="selected"[/IF]>[!T::1!]</option>
-        [ELSE]
-            <option value="[!C!]" [IF [!DF!]=[!C!]]selected="selected"[/IF]>[!C!]</option>
-        [/IF]
-
-    [/STORPROC]
-</select>
-</div>
-        </div>
-        [ELSE]
-<div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
-<label for="Form_[!P::name!]" class="col-sm-5 control-label">[!P::description!]</label>
-<div class="col-sm-7 form-value">
-    <input type="text" class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]" placeholder="" value="[IF [!Form_[!P::name!]!]][**Form_[!P::name!]**][ELSE][**P::value**][/IF]">
-</div>
-</div>
-        [/IF]
-    [/DEFAULT]
-[/SWITCH]
+                        [COUNT [!T!]|S]
+                        [IF [!S!]>1]
+                            <option value="[!T::0!]" [IF [!DF!]=[!T::0!]]selected="selected"[/IF]>[!T::1!]</option>
+                        [ELSE]
+                            <option value="[!C!]" [IF [!DF!]=[!C!]]selected="selected"[/IF]>[!C!]</option>
+                        [/IF]
+                    [/STORPROC]
+                </select>
+                </div>
+                </div>
+            [ELSE]
+                [IF [!P::query!]]
+                    <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
+                    <label class="col-sm-5 control-label">[!P::description!]</label>
+                    <div class="col-sm-7 form-value">
+                        <select class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]">
+                            <option value="" >...</option>
+                            [!T:=[![!P::query!]:/::!]!]
+                            [COUNT [!T!]|S]
+                            [IF [!S!]=2][!VA:=[!T::1!]!][!TI:=[!T::1!]!][/IF]
+                            [IF [!S!]=3][!VA:=[!T::1!]!][!TI:=[!T::2!]!][/IF]
+                            [STORPROC [!T::0!]|C]
+                                <option value="[!C::[!VA!]!]" [IF [!DF!]=[!C::[!VA!]!]]selected="selected"[/IF]>[!C::[!TI!]!]</option>
+                            [/STORPROC]
+                        </select>
+                    </div>
+                    </div>
+                [ELSE]
+                    <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
+                    <label for="Form_[!P::name!]" class="col-sm-5 control-label">[!P::description!]</label>
+                    <div class="col-sm-7 form-value">
+                        <input type="text" class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]" placeholder="" value="[IF [!Form_[!P::name!]!]][**Form_[!P::name!]**][ELSE][**P::value**][/IF]">
+                    </div>
+                    </div>
+                [/IF]
+            [/IF]
+        [/DEFAULT]
+    [/SWITCH]

@@ -224,8 +224,8 @@ class Systeme extends Module {
         echo 'send message';
         print_r($msg);
 
-//        Systeme::sendNotification($msg,'all');
-        Systeme::sendNotification($msg,37);
+        Systeme::sendNotification($msg,'all');
+//        Systeme::sendNotification($msg,37);
     }
 
     //backapp
@@ -243,13 +243,13 @@ class Systeme extends Module {
 
         if ($target > 0) {
             $dev = Sys::getData('Systeme', 'User/' . $target . '/Device/Admin=0&Type=Android');
-            $API_ACCESS_KEY = 'AIzaSyD-WPYJ39eWmA2aWzgn6fQF1A5WOv3FG5A';
+            $API_ACCESS_KEY = 'AIzaSyCmaDWG5O2HrKdXm4JCkJPQZAvtwqCljos';
         } elseif ($target == "all") {
             $dev = Sys::getData('Systeme', 'Device/Admin=0&Type=Android');
-            $API_ACCESS_KEY = 'AIzaSyD-WPYJ39eWmA2aWzgn6fQF1A5WOv3FG5A';
+            $API_ACCESS_KEY = 'AIzaSyCmaDWG5O2HrKdXm4JCkJPQZAvtwqCljos';
         } elseif ($target == "admin") {
             $dev = Sys::getData('Systeme', 'Device/Admin=1&Type=Android');
-            $API_ACCESS_KEY = 'AIzaSyCGGUR9EbkicdM7IUXp1l-Z2sHFQCnLp-A';
+            $API_ACCESS_KEY = 'AIzaSyCmaDWG5O2HrKdXm4JCkJPQZAvtwqCljos';
         }
 
         $devios = array();
@@ -317,12 +317,12 @@ function sendNotificationParallel($dev,$devios,$msg,$API_ACCESS_KEY) {
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4 );
-        curl_setopt($ch, CURLOPT_SSLVERSION,3);
+        //curl_setopt($ch, CURLOPT_SSLVERSION,3);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_FAILONERROR, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
-        //echo 'curl --header "Authorization: key=AIzaSyCGGUR9EbkicdM7IUXp1l-Z2sHFQCnLp-A" --header "Content-Type: application/json" -v https://android.googleapis.com/gcm/send -d "'.addslashes(json_encode($fields)).'"';
+        echo 'curl --header "Authorization: key='.$API_ACCESS_KEY.'" --header "Content-Type: application/json" -v https://android.googleapis.com/gcm/send -d "'.addslashes(json_encode($fields)).'"';
         $result = curl_exec($ch);
         // Error handling
         if ( curl_errno( $ch ) )
@@ -350,11 +350,11 @@ function sendNotificationParallel($dev,$devios,$msg,$API_ACCESS_KEY) {
      */
     $ctx = stream_context_create();
     // ck.pem is your certificate file
-    stream_context_set_option($ctx, 'ssl', 'local_cert', realpath(dirname(__FILE__)).'/../Device/castanet-prod.pem');
-    stream_context_set_option($ctx, 'ssl', 'passphrase', '21wyisey');
+    stream_context_set_option($ctx, 'ssl', 'local_cert', realpath(dirname(__FILE__)).'/../Device/dev.ecluse.pem');
+    stream_context_set_option($ctx, 'ssl', 'passphrase', '');
     // Open a connection to the APNS server
-    $gateway = 'ssl://gateway.push.apple.com:2195';
-    //$gateway_dev = 'ssl://gateway.sandbox.push.apple.com:2195';
+    //$gateway = 'ssl://gateway.push.apple.com:2195';
+    $gateway = 'ssl://gateway.sandbox.push.apple.com:2195';
     $fp = stream_socket_client(
         $gateway, $err,
         $errstr, 60, STREAM_CLIENT_CONNECT | STREAM_CLIENT_PERSISTENT, $ctx);
@@ -363,7 +363,7 @@ function sendNotificationParallel($dev,$devios,$msg,$API_ACCESS_KEY) {
     $apple_expiry = time() + (90 * 24 * 60 * 60);
 
     if (!$fp)
-        exit("Failed to connect prod: $err $errstr" . PHP_EOL);
+        exit("Failed to connect: $err $errstr" . PHP_EOL);
 
     // Create the payload body
     $body = (object)array(

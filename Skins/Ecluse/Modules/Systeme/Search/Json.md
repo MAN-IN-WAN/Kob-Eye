@@ -1,5 +1,5 @@
 [
-    [STORPROC Boutique/Produit/~[!q!]|TL|0|10]
+    [STORPROC Boutique/Produit/~[!q!]&StockReference>1|TL|0|10]
         [NORESULT]
         [/NORESULT]
 [IF [!Pos!]>1],[/IF]{

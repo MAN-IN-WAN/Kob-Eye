@@ -52,7 +52,7 @@
 	[REDIRECT][!ProdUrl!][/REDIRECT]
 [/IF]
 
-[COMPONENT Boutique/MessagePanier/Default?]
+//[COMPONENT Boutique/MessagePanier/Default?]
 <div class="block">
     <h3 class="title_block">Mon Panier</h3>
 [IF [!Mag::EtapeAffiche!]]
