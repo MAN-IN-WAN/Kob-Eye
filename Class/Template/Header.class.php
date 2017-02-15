@@ -5,7 +5,8 @@ class Header extends Root{
 	var $Tab;
 	var $LastTab;
 	var $Title;
-	var $Body;
+    var $Html;
+    var $Body;
 	var $Type;
 	private $Description;
 	var $Keywords;
@@ -56,6 +57,9 @@ class Header extends Root{
     }
     function setBody($Temp) {
         $this->Body = $Temp;
+    }
+    function setHtml($Temp) {
+        $this->Html = $Temp;
     }
     function setImage($Temp) {
         $this->Image = $Temp;
@@ -153,21 +157,22 @@ class Header extends Root{
 
 	function getTab() {
 		$Result="";
-		if (count($this->Tab)>0) {
+		if (sizeof($this->Tab)) {
 			foreach ($this->Tab as $Key) {
 				$Result.="$Key\r\n";
 			}
 		}
-		if (isset($Result))return $Result;
+		return $Result;
 	}
 
 	function getLastTab() {
-		if (count($this->LastTab)>0) {
+        $Result="";
+		if (sizeof($this->LastTab)) {
 			foreach ($this->LastTab as $Key) {
 				$Result.="$Key\r\n";
 			}
 		}
-		if (isset($Result))return $Result;
+		return $Result;
 	}
 
 	function getFrame() {
@@ -230,7 +235,7 @@ class Header extends Root{
 							<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8 '.$browser.'" dir="ltr" lang="en-US"> <![endif]-->
 							<!--[if IE 8]>    <html class="no-js lt-ie9 '.$browser.'" dir="ltr" lang="en-US"> <![endif]-->
 							<!--[if IE 9]>    <html class="no-js lt-ie10 '.$browser.'" dir="ltr" lang="en-US"> <![endif]-->
-							<!--[if gt IE 8]><!--> <html class="no-js '.$browser.'" dir="ltr" lang="en-US"> <!--<![endif]-->
+							<!--[if gt IE 8]><!--> <html class="no-js '.$browser.'" dir="ltr" lang="en-US" '.$this->Html.'> <!--<![endif]-->
 							<head>
 							<title>'.$this->Title.'</title>
 							<meta http-equiv="Content-Type" content="text/html; charset='.CHARSET_CODE.'" />
@@ -290,12 +295,12 @@ class Header extends Root{
 ';
 			}
 		}
-		$this->Content.='<body '.$this->Body.'>';
 		$this->Content .= $this->getTab();
 		$this->Content .= $this->getLastTab();
 		if (DEBUG_DISPLAY) $this->Content.=KError::displayHeader();
 		$this->Content .='</head>
 ';
+        $this->Content.='<body '.$this->Body.'>';
 		return $this->Content;
 	}
 

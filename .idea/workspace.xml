@@ -2,8 +2,111 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="59b5ed17-fd7e-457b-b982-788a41f8400d" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Css/style.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Menu/App.twig" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Menu/App.twig.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Menu/Default.twig" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Menu/Default.twig.php" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/03/03509b8ab2d60378a772ad69c09ed14f892f3e0b695e6d25657b01c05b26b2a3.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/0b/0bdb7420ac47ac5dfed2884dbf45d48d9c422614437857eb58b6073696a2d3ee.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/13/132c476af93a82c7aeb88c8ae863d6192d521b3c9f0f581d4e648529f2602708.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/21/21efefe30331efb6b782272437c4fe0dd105862b4cf304553722d9d5154cc6e4.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/25/2516968d8a297b99514f896c4e31bd73e1d9cc567ec99d5c8115dce4747590e4.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/2c/2cb740d65419f5e288a8885d2e99f4c9a2f8ca77f1814aa942c7a571addf48d3.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/3e/3e55fea92c5fc7f1ff04614e85d42330ca847cbd937d5994fc0bd5a8484a30a5.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/42/423ad0a31cd6754363304a98958cde89329c3ffc2cb8189a1713940f2a4c3731.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/43/43f62f3a7b0e237b57f5c4bbc987b6c130b895c0fad8cfebc5147ca3e628f651.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/47/473ff8005057673a13b5d4392abe9650d5b34579f8237d939a93851ebc03fb74.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/48/48dbb1acf7cdc39bb0f28ce854d2e8e6004e2e68e9266cb9ee06643b736a6e80.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/4a/4a4dd436966f21e70f0ee5214cdeac16048c6f11861acbc29e17c7e3f786599c.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/4c/4c49a8a132b90b3d4f352d141633763a7695395fe49d09f02cd75f48746046ac.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/50/5071889ff258d60363cef6078882ca7182a8452ff0b613b66f2df5ba8cd1aaf4.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/53/532a0c0bfe1908d02a787028671a0a48539fa258ad5813e4f0f88c2769684c28.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/53/53436dc4c9306402bee0a8f4287dd272829972a8ca2a895eb38ace67b5a99a50.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/5b/5b706fcefdb38ab55ca556969fdd199a69b59a58829d9ff85d9c9ca5724edf82.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/5c/5ce0f9ba7105f01e27685b2a645baf9d591203c006f0811b4842f89434245629.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/5e/5e5105e104f31599f1801f7a5621fb90ab3835b37ce53b3d019da25b4a512445.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/61/6103937253e96a899c8c0994a3e12d972f84430108a483610d52b538a420a4c0.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/77/773cf74ba5dd373027556951cc22392692578a4f7005e7b9775ac574bbe76451.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/79/7921ae1f666ec8beec741e830bf35a24b6d7ad430fc84bf881ece1ba9971a28b.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/79/7983425012646e73f97c83031cd8aec24457b171efe39b85c41758319a915364.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/7a/7a56ba1d6bd75eb4f70be947ea0d725a968f0d163b2453979610da9933c1360f.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/7f/7f448ade829de99b59f2a66782d60a6ce2246afa2eddbffdbb3f705cfff2cce3.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/95/9502ef28e51ead697a2c5de8cdd657115ac46b7f564f3a9032b59f08f5d4c40d.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/96/968077cd66476f9e030ac5b6f1b1fe51cdd6e3911ec5cd77634b2f6e749baa40.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/9d/9dd4642c046d8af6d95b91006fc5117dfb5a7210814d81efabf04e822019346f.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/a4/a44e860556fe89362c060f1640bf485c2494106a09ad50cfb7a8800de08f99c5.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/a5/a5f998ecaa326ef70540a2d97521b14560efe7d0024a551c73eea4d03fc0d03b.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/a6/a6373b1bd7d7113841cc7274abfefd68dafb9abeba34fb770e515aa6f30a7b94.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/b7/b7845a69c28664b944f856ef18f633df955f22d3ba8600463c789b9c27da191b.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/b9/b991b6c6a864bcd50fd3330dfc67bbff467f02cfcb04b11a665a59c55c65b29a.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/bc/bc2f8b4c915d02c5cc694a152d4b215b1a2e66b365535c15e2c98e6cea98a33b.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/cd/cdb47d65b427089d72c9fab7cb9e0deb5a48c1f4023c7575f31c71bcf2aa6656.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/d2/d28f4b04a86d4c0d9086557936f411e21efaaf26232d84a299000170175cefc9.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/d4/d4b7960727f9a677dd1d6d8c7094de56c73fd829f4686c3ce1170470ef2ca59f.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/ea/ea9db706556716fc77f1b9cc9933ea261c8ff5887053169b6d73b5498b076de3.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Data/Twig/f6/f6b111c60ac28ec18a0de7e4740766e1de02babb46b2d96801cf6294f1864a42.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Home/19/.sessions/sess_dddd111309dddd4012778ad01b3fd25c862e0e9b25d0a8" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Home/19/.sessions/sess_dddd111310dddd4012778ad01b3fd25c862e0e9b25d0a8" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Home/2/.sessions/sess_dddd30dddd08de8b01ea41142e73ea97391d1bc128" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Home/2/.sessions/sess_dddd39860dddd7453837b7abc6b2e54b886f61f1c0e06" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Home/2/.sessions/sess_dddd39957dddd08de8b01ea41142e73ea97391d1bc128" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Home/2/.sessions/sess_dddd40019dddd7453837b7abc6b2e54b886f61f1c0e06" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Home/2/.sessions/sess_dddd41dddd08de8b01ea41142e73ea97391d1bc128" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Home/2/.sessions/sess_dddd47dddd08de8b01ea41142e73ea97391d1bc128" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Home/2/.sessions/sess_dddd53dddd08de8b01ea41142e73ea97391d1bc128" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Home/2/.sessions/sess_dddd57dddd7453837b7abc6b2e54b886f61f1c0e06" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Home/2/Galerie/Media/Capture_du_2016_06_30_08_20_03_0.png.mini.210x55.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Home/2/Systeme/Donnee/Capture_du_2016_06_30_09_35_23_0.png.mini.210x55.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Modules/Distributeur/.Db.cache" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Modules/Products/.Db.cache" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Modules/Team/.Db.cache" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/AdminV2/.cache/Header.cache" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/AdminV2/.cache/Skin.cache" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/AdminV2/.cache/Skin.info" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/Biomed/.cache/Header.cache" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/Biomed/.cache/Skin.cache" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/Biomed/.cache/Skin.info" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/FoneKites2014/.cache/Header.cache" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/FoneKites2014/.cache/Skin.cache" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/FoneKites2014/.cache/Skin.info" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/LaceRestaurant/.cache/Header.cache" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/LaceRestaurant/.cache/Skin.cache" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/LaceRestaurant/.cache/Skin.info" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/LoginBootstrap/.cache/Header.cache" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/LoginBootstrap/.cache/Skin.cache" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/LoginBootstrap/.cache/Skin.info" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/Unibio/.cache/Header.cache" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/Unibio/.cache/Skin.cache" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/Unibio/.cache/Skin.info" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/Unibio/Img/bando-image_03.jpg.limit.600x300.jpg" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Class/Beacon/editStruct.class.php" afterPath="$PROJECT_DIR$/Class/Beacon/editStruct.class.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Class/Systeme/Module.class.php" afterPath="$PROJECT_DIR$/Class/Systeme/Module.class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Class/Template/Header.class.php" afterPath="$PROJECT_DIR$/Class/Template/Header.class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Conf/Process.all.conf" afterPath="$PROJECT_DIR$/Conf/Process.all.conf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Log/Systeme.log" afterPath="$PROJECT_DIR$/Log/Systeme.log" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Explorateur/Explorateur.conf" afterPath="$PROJECT_DIR$/Modules/Explorateur/Explorateur.conf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Redaction/Redaction.conf" afterPath="$PROJECT_DIR$/Modules/Redaction/Redaction.conf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Systeme/Systeme.conf" afterPath="$PROJECT_DIR$/Modules/Systeme/Systeme.conf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/Default.bl" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Default.bl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/apps/gallery.html" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/apps/gallery.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/apps/messaging.html" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/apps/messaging.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/apps/profile.html" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/apps/profile.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/dashboards/alpha.html" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/dashboards/alpha.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/dashboards/beta.html" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/dashboards/beta.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/ecommerce/cart-checkout.html" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/ecommerce/cart-checkout.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/ecommerce/product-details.html" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/ecommerce/product-details.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/ecommerce/product-edit.html" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/ecommerce/product-edit.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/ecommerce/products-catalog.html" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/ecommerce/products-catalog.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/ecommerce/products-list.html" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/ecommerce/products-list.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/layout/utilities.html" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/layout/utilities.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/pages/invoice.html" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/pages/invoice.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/pages/lockscreen.html" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/pages/lockscreen.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/pages/login-alpha.html" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/pages/login-alpha.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/pages/login-beta.html" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/pages/login-beta.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/pages/login-omega.html" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/pages/login-omega.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/pages/register.html" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/pages/register.html" />
     </list>
     <ignored path="Kob-Eye-Git.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -31,103 +134,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Vider.md" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Modules/Newsletter/GroupeEnvoi/Vider.md">
+      <file leaf-file-name="Boutique.schema" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Modules/Boutique/Boutique.schema">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Module.class.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Class/Systeme/Module.class.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="214" column="19" selection-start-line="214" selection-start-column="19" selection-end-line="214" selection-end-column="19" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Newsletter.schema" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Modules/Newsletter/Newsletter.schema">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="25" column="70" selection-start-line="25" selection-start-column="70" selection-end-line="25" selection-end-column="70" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Apache.class.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Modules/Parc/Class/Apache.class.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="765">
-              <caret line="51" column="40" selection-start-line="51" selection-start-column="40" selection-end-line="51" selection-end-column="40" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Parc.schema" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Modules/Parc/Parc.schema">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2145">
-              <caret line="143" column="39" selection-start-line="143" selection-start-column="39" selection-end-line="143" selection-end-column="39" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RenewSSL.md" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Modules/Parc/Apache/RenewSSL.md">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" column="11" selection-start-line="18" selection-start-column="11" selection-end-line="18" selection-end-column="11" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Default.bl" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Default.bl">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1894">
-              <caret line="1091" column="0" selection-start-line="1091" selection-start-column="0" selection-end-line="1091" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="General.conf" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Conf/General.conf">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="36" column="51" selection-start-line="36" selection-start-column="51" selection-end-line="36" selection-end-column="51" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="sqlFunctions.class.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Class/DataBase/Drivers/sqlFunctions.class.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="641">
-              <caret line="371" column="65" selection-start-line="371" selection-start-column="56" selection-end-line="371" selection-end-column="65" />
-              <folding>
-                <marker date="1484901545682" expanded="true" signature="44015:44080" ph="SELECT COUNT... " />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Connection.class.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Class/Systeme/Connection.class.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-900">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="30">
+              <caret line="1" column="207" selection-start-line="1" selection-start-column="166" selection-end-line="1" selection-end-column="207" />
               <folding />
             </state>
           </provider>
@@ -141,23 +152,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Modules/TennisForever/TennisForever.schema" />
-        <option value="$PROJECT_DIR$/Modules/TennisForever/App/isLogged.md" />
-        <option value="$PROJECT_DIR$/Modules/TennisForever/App/login.md" />
-        <option value="$PROJECT_DIR$/Modules/TennisForever/Class/TennisForever.class.php" />
-        <option value="$PROJECT_DIR$/Class/Systeme/Connection.class.php" />
-        <option value="$PROJECT_DIR$/Modules/TennisForever/Class/Client.class.php" />
-        <option value="$PROJECT_DIR$/Modules/TennisForever/Client/update.md" />
-        <option value="$PROJECT_DIR$/Modules/TennisForever/Class/Reservation.class.php" />
-        <option value="$PROJECT_DIR$/Skins/BootstrapAdmin/Modules/Default/Utils/List/Default.md" />
-        <option value="&lt;b3895f4a-7984-45c7-8e76-dda065144e59&gt;/kobeye/Conf/General.conf" />
-        <option value="$PROJECT_DIR$/Class/Systeme/Sys.class.php" />
-        <option value="$PROJECT_DIR$/Modules/Parc/Class/AAA.class.php" />
-        <option value="$PROJECT_DIR$/Skins/BootstrapAdmin/Modules/Default/Utils/Tree/Default.md" />
-        <option value="&lt;b3aba428-4f5f-4563-8127-dfec19a85a01&gt;/www/Conf/General.conf" />
-        <option value="$PROJECT_DIR$/Modules/Systeme/Class/Menu.class.php" />
-        <option value="$PROJECT_DIR$/Skins/BoutiqueDefault-3.0.ENG/Modules/Systeme/Components/Bootstrap.Contact/Default.md" />
-        <option value="$PROJECT_DIR$/Modules/Fiscalite/Class/ZoneFiscale.class.php" />
         <option value="$PROJECT_DIR$/Skins/Ecluse/Modules/Systeme/Search/Json.md" />
         <option value="$PROJECT_DIR$/Modules/Galerie/Galerie.schema" />
         <option value="$PROJECT_DIR$/Modules/Parc/Client/ImporterPlusieursDomaines.md" />
@@ -188,10 +182,27 @@
         <option value="$PROJECT_DIR$/Modules/Parc/Parc.schema" />
         <option value="$PROJECT_DIR$/Modules/Parc/Class/Apache.class.php" />
         <option value="$PROJECT_DIR$/Modules/Parc/Apache/RenewSSL.md" />
-        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Default.bl" />
         <option value="$PROJECT_DIR$/Class/DataBase/Drivers/sqlFunctions.class.php" />
         <option value="$PROJECT_DIR$/Conf/General.conf" />
+        <option value="$PROJECT_DIR$/Conf/Process.all.conf" />
+        <option value="$PROJECT_DIR$/Class/Beacon/editStruct.class.php" />
+        <option value="$PROJECT_DIR$/Class/Template/Header.class.php" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/assets/common/js/version_angular/app.js" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/dashboards/alpha.html" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/dashboards/beta.html" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/apps/gallery.html" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/ecommerce/cart-checkout.html" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/layout/utilities.html" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/pages/invoice.html" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Menu/Default.md" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Menu/Default.twig.php" />
         <option value="$PROJECT_DIR$/Class/Systeme/Module.class.php" />
+        <option value="$PROJECT_DIR$/Modules/Systeme/Systeme.conf" />
+        <option value="$PROJECT_DIR$/Modules/Explorateur/Explorateur.conf" />
+        <option value="$PROJECT_DIR$/Modules/Redaction/Redaction.conf" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Menu/Default.twig" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Default.bl" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Menu/App.twig" />
       </list>
     </option>
   </component>
@@ -207,9 +218,9 @@
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
     <option name="x" value="1950" />
-    <option name="y" value="24" />
-    <option name="width" value="1869" />
-    <option name="height" value="2136" />
+    <option name="y" value="52" />
+    <option name="width" value="1849" />
+    <option name="height" value="2108" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -236,7 +247,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -279,6 +290,408 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="Skins" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AngularAdmin" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Skins" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AngularAdmin" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tables" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Skins" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AngularAdmin" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pages" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Skins" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AngularAdmin" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Modules" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Systeme" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Menu" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Skins" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AngularAdmin" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="layout" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Skins" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AngularAdmin" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="icons" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Skins" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AngularAdmin" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="forms" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Skins" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AngularAdmin" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ecommerce" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Skins" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AngularAdmin" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dashboards" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Skins" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AngularAdmin" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Css" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Skins" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AngularAdmin" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="components" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Skins" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AngularAdmin" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="charts" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Skins" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AngularAdmin" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="assets" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Skins" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AngularAdmin" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="assets" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="common" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Skins" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AngularAdmin" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="assets" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="common" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="version_angular" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Skins" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AngularAdmin" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="assets" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="common" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Skins" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AngularAdmin" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="apps" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kob-Eye-Git" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="Modules" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
@@ -297,7 +710,7 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Systeme" />
+              <option name="myItemId" value="Redaction" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -315,11 +728,7 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Systeme" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Class" />
+              <option name="myItemId" value="Boutique" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -379,24 +788,6 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Template" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye-Git" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye-Git" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Class" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="Systeme" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
@@ -419,49 +810,9 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye-Git" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye-Git" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Class" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DataBase" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Drivers" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye-Git" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye-Git" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Class" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Beacon" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -476,21 +827,22 @@
     <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
     <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
     <property name="com.intellij.database.dataSource.DataSourceTemplate" value="MySQL" />
+    <property name="nodejs_interpreter_path" value="/usr/local/bin/node" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/Skins/BootstrapAdmin/Modules/Default/Utils" />
-      <recent name="$PROJECT_DIR$/Skins/BootstrapAdmin/Modules/Default/Utils/List" />
-      <recent name="$PROJECT_DIR$/Modules/TennisForever/App" />
-      <recent name="$PROJECT_DIR$/Modules/Products/Components" />
-      <recent name="$PROJECT_DIR$/Skins/TestTwig" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/Class" />
       <recent name="$PROJECT_DIR$/Skins/BootstrapAdmin/Modules/Default/Utils" />
       <recent name="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Systeme" />
       <recent name="$PROJECT_DIR$/Skins/DriveoAdmin/Modules/Pharmacie" />
       <recent name="$PROJECT_DIR$/Tools" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Menu" />
+      <recent name="$PROJECT_DIR$/Skins/BootstrapAdmin/Modules/Default/Utils" />
+      <recent name="$PROJECT_DIR$/Skins/BootstrapAdmin/Modules/Default/Utils/List" />
+      <recent name="$PROJECT_DIR$/Modules/TennisForever/App" />
+      <recent name="$PROJECT_DIR$/Modules/Products/Components" />
     </key>
   </component>
   <component name="RunManager">
@@ -708,12 +1060,15 @@
       <workItem from="1481009390683" duration="598000" />
       <workItem from="1483633308858" duration="660000" />
       <workItem from="1484834635570" duration="4319000" />
-      <workItem from="1484897498966" duration="3379000" />
+      <workItem from="1484897498966" duration="10343000" />
+      <workItem from="1484989030609" duration="6001000" />
+      <workItem from="1485510807808" duration="1891000" />
+      <workItem from="1485800379214" duration="1200000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="863406000" />
+    <option name="totallyTimeSpent" value="879462000" />
   </component>
   <component name="TodoView" selected-index="1">
     <todo-panel id="selected-file">
@@ -725,17 +1080,17 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1950" y="24" width="1869" height="2136" extended-state="4" />
-    <editor active="true" />
+    <frame x="1950" y="52" width="1849" height="2108" extended-state="0" />
+    <editor active="false" />
     <layout>
       <window_info id="Remote Host" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2771413" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17882611" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18524681" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297414" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32916668" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32885572" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298744" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24959038" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32985073" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32985073" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32916668" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -745,7 +1100,7 @@
       <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.110447764" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32854947" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3283582" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
@@ -768,181 +1123,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Modules/TennisForever/Class/Paiement.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/TennisForever/Class/Reservation.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3810">
-          <caret line="254" column="19" selection-start-line="254" selection-start-column="19" selection-end-line="254" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/TestTwig/Skin.conf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Galerie/Galerie.schema">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="615">
-          <caret line="41" column="44" selection-start-line="41" selection-start-column="44" selection-end-line="41" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Parc/Client/ImporterPlusieursDomaines.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="5" selection-start-line="7" selection-start-column="4" selection-end-line="15" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Parc/Client/EnvoyerRecapitulatif.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1395">
-          <caret line="93" column="16" selection-start-line="93" selection-start-column="16" selection-end-line="93" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Distributeur/Distributeur.schema">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Class/Beacon/Component.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="223">
-          <caret line="145" column="23" selection-start-line="145" selection-start-column="23" selection-end-line="145" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Systeme/Systeme.schema">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1725">
-          <caret line="115" column="67" selection-start-line="115" selection-start-column="67" selection-end-line="115" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/BootstrapAdmin/Modules/Default/Default/Default.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/BootstrapAdmin/Modules/Default/Utils/List/Default.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1965">
-          <caret line="131" column="123" selection-start-line="131" selection-start-column="113" selection-end-line="131" selection-end-column="123" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Products/Registration/ExportCsv.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Products/Registration/ExportListe.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Products/Products.schema">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="71" column="55" selection-start-line="71" selection-start-column="55" selection-end-line="71" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Products/Class/Registration.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="53" selection-start-line="18" selection-start-column="53" selection-end-line="18" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/FoneKites2014/Langues/fr.lang">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="812">
-          <caret line="81" column="35" selection-start-line="81" selection-start-column="35" selection-end-line="81" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Products/Registration/ViderListe.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="1" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Class/Template/Header.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1704">
-          <caret line="240" column="67" selection-start-line="240" selection-start-column="67" selection-end-line="240" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Products/Products.conf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Class/Process/Parser.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1170">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/FoneKites2014/Modules/Products/Produit/testMail.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="16" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/FoneKites2014/Modules/Products/Produit/Registration.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2250">
-          <caret line="150" column="18" selection-start-line="150" selection-start-column="18" selection-end-line="150" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Class/Lib/Mail.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Class/Beacon/Lib.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3540">
-          <caret line="236" column="32" selection-start-line="236" selection-start-column="32" selection-end-line="236" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Class/Systeme/Sys.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8670">
-          <caret line="578" column="38" selection-start-line="578" selection-start-column="20" selection-end-line="578" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Skins/Ecluse/Modules/Boutique/Commande/Etape1.md">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
@@ -998,14 +1178,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1590">
           <caret line="106" column="49" selection-start-line="106" selection-start-column="49" selection-end-line="106" selection-end-column="49" />
-          <folding>
-            <marker date="1478257754929" expanded="true" signature="18481:18487" ph=" " />
-            <marker date="1478257754929" expanded="true" signature="18487:18493" ph=" " />
-            <marker date="1478257754929" expanded="true" signature="18493:18499" ph=" " />
-            <marker date="1478257754929" expanded="true" signature="18554:18560" ph=" " />
-            <marker date="1478257754929" expanded="true" signature="18560:18566" ph=" " />
-            <marker date="1478257754929" expanded="true" signature="18566:18572" ph=" " />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1016,26 +1188,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Conf/Process.all.conf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Class/Template/Twig.class.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
           <caret line="16" column="52" selection-start-line="16" selection-start-column="52" selection-end-line="16" selection-end-column="52" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Boutique/Boutique.schema">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="207" selection-start-line="1" selection-start-column="166" selection-end-line="1" selection-end-column="207" />
         </state>
       </provider>
     </entry>
@@ -1043,7 +1199,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1051,7 +1206,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1059,7 +1213,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1067,7 +1220,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1075,7 +1227,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
           <caret line="25" column="70" selection-start-line="25" selection-start-column="70" selection-end-line="25" selection-end-column="70" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1083,7 +1234,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2145">
           <caret line="143" column="39" selection-start-line="143" selection-start-column="39" selection-end-line="143" selection-end-column="39" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1091,7 +1241,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="765">
           <caret line="51" column="40" selection-start-line="51" selection-start-column="40" selection-end-line="51" selection-end-column="40" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1099,25 +1248,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="18" column="11" selection-start-line="18" selection-start-column="11" selection-end-line="18" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Default.bl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1894">
-          <caret line="1091" column="0" selection-start-line="1091" selection-start-column="0" selection-end-line="1091" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Class/DataBase/Drivers/sqlFunctions.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="641">
+        <state relative-caret-position="611">
           <caret line="371" column="65" selection-start-line="371" selection-start-column="56" selection-end-line="371" selection-end-column="65" />
-          <folding>
-            <marker date="1484901545682" expanded="true" signature="44015:44080" ph="SELECT COUNT... " />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1129,32 +1266,220 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Conf/General.conf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="36" column="51" selection-start-line="36" selection-start-column="51" selection-end-line="36" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Modules/Newsletter/GroupeEnvoi/Vider.md">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Conf/Process.all.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1860">
+          <caret line="124" column="20" selection-start-line="124" selection-start-column="20" selection-end-line="124" selection-end-column="20" />
           <folding />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Class/Beacon/editStruct.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="765">
+          <caret line="51" column="98" selection-start-line="51" selection-start-column="98" selection-end-line="51" selection-end-column="98" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Conf/General.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1095">
+          <caret line="73" column="18" selection-start-line="73" selection-start-column="18" selection-end-line="73" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Class/Template/Header.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3645">
+          <caret line="243" column="81" selection-start-line="243" selection-start-column="81" selection-end-line="243" selection-end-column="81" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/dashboards/beta.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="87" selection-start-line="7" selection-start-column="87" selection-end-line="7" selection-end-column="87" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/dashboards/alpha.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="641">
+          <caret line="224" column="94" selection-start-line="224" selection-start-column="94" selection-end-line="224" selection-end-column="94" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/apps/gallery.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="80" selection-start-line="15" selection-start-column="80" selection-end-line="15" selection-end-column="80" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/pages/invoice.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="66" selection-start-line="16" selection-start-column="66" selection-end-line="16" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/layout/utilities.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="188" column="50" selection-start-line="188" selection-start-column="50" selection-end-line="188" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/ecommerce/cart-checkout.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="210" column="74" selection-start-line="210" selection-start-column="74" selection-end-line="210" selection-end-column="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/ecommerce/products-list.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1226">
+          <caret line="93" column="24" selection-start-line="93" selection-start-column="24" selection-end-line="93" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/index_material.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="566">
+          <caret line="111" column="29" selection-start-line="111" selection-start-column="29" selection-end-line="111" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/index_menu_shadow_superclean.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1110">
+          <caret line="116" column="70" selection-start-line="116" selection-start-column="26" selection-end-line="116" selection-end-column="70" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Menu/Default.md" />
+    <entry file="file://$PROJECT_DIR$/Skins/TestTwig/Default.twig.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="16" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Class/DataBase/DbAnalyzer.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7980">
+          <caret line="532" column="24" selection-start-line="532" selection-start-column="13" selection-end-line="532" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Data/Twig/0b/0bdb7420ac47ac5dfed2884dbf45d48d9c422614437857eb58b6073696a2d3ee.php" />
     <entry file="file://$PROJECT_DIR$/Class/Systeme/Module.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="214" column="19" selection-start-line="214" selection-start-column="19" selection-end-line="214" selection-end-column="19" />
+        <state relative-caret-position="795">
+          <caret line="53" column="37" selection-start-line="53" selection-start-column="37" selection-end-line="53" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Menu/Default.twig.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="2" selection-start-line="9" selection-start-column="2" selection-end-line="9" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Class/DataBase/ObjectClass.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-5940">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Systeme/Systeme.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="27" selection-start-line="1" selection-start-column="27" selection-end-line="1" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Explorateur/Explorateur.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="27" selection-start-line="1" selection-start-column="27" selection-end-line="1" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Redaction/Redaction.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="29" selection-start-line="1" selection-start-column="29" selection-end-line="1" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/assets/common/js/version_angular/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="19" column="69" selection-start-line="0" selection-start-column="0" selection-end-line="382" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Default.bl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1125">
+          <caret line="75" column="74" selection-start-line="75" selection-start-column="74" selection-end-line="75" selection-end-column="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Menu/Default.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1155">
+          <caret line="77" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Menu/App.twig.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="2" selection-start-line="9" selection-start-column="2" selection-end-line="9" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Menu/App.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1041">
+          <caret line="324" column="35" selection-start-line="324" selection-start-column="35" selection-end-line="324" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Boutique/Boutique.schema">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="1" column="207" selection-start-line="1" selection-start-column="166" selection-end-line="1" selection-end-column="207" />
           <folding />
         </state>
       </provider>
     </entry>
   </component>
   <component name="webServersAuthStorage">
-    <data>AAAF8EeFKXW1d7dDUo6iUcJpvhjnv2NGxKHeHny6l6bmcGlStxlOnxcXSn8KdfZ6daxmPO0y1jbDheo86uZ6x8Q1zC72EvgLyzHD3luKWiKzgfPf/Chib2fW795XcHo5q/j36zB25q6GuYuCkM7fGf/H8K5h+NLJGq3nZFYymbA6ZCupT3sYcZ5JJ2v+5Vi/7sGGovdTJLEmCXBOG/VV4LKWMmbormn2gQjRl7J9TpR2hQvj4B5gidaPz66jrs0nxfHHNWJocEnQxGsicqDmlk8U9avA5gRyaxP+dnGlWzV298A7JptbQPokVr8VBS77fYomHtlaOA2S+67z+gBszFNRM3q9TEpnYqNl8wq7atrzAUfCV5eiE6Fm4G9d18Bpew+e39n+ky2+xBMDwom0CbbOiGAniRU+V80wKTk0Nk0wTLhsACN/LIZMJevnJwnSEv5y0AdMH8RZlaN8QuQr3q3VQQQ3RqeLxzWaAGCPjNBnbDiMVpv2RwxfW5CAnolt4gq/7zrtvT5gJT6gPP53GbeSCiDGXAj40yV4REmkbe8W/ld1OdACa3JcpqqQNyc+Rop+sfCPlOxc9z2Ckd4H7q/mBS1A+UBwy043l5fUv5AeqpODADoRd00nXgwW7gKjZzj9sOY9MrJ2vTpPiAck5xBLdkq2Tn6eytdUNf/SUsihJZs3wJF0ZIsF8P/HWBwlumX1iMJ0FgajVX8Rc1d7SJoeOsYth2lg+9soKRA0/fFlMd2+E1KDyzYzj1XOMdYfm6CXcgNysdCGWiQLinNBkUFLgCdx8Lv00t4O80QgXZa5M3BeYF+JG9d5vx5jMIM+80OPEdWGYcHjKhnC0CelDuzFf2q/MwImTys6Wa1aTLFh+70pGb75WWuASTg69esC+dzYt/Vv27/2TaqsICS8pPF3nI1T9A4XsuT3pc6I6ky3AWXtBjvXQzNkZr/b58SUUK6SSYsWuwAY+8QI+46DsUM1mf4a5fE11bDRsXdXEntS4ANuDQ0BZloBYL2+fDVLiLXX2pPa18Br7cbo09L0mvai6sE5tIW92bkOhv5sShRC4QLV4ii/MAfW5PBogIBuKKJP+ol1IUnIY7aDmfJyDPS7vqWTLtGzwwUn2e6Xdjew+XGMx0dfjGBokD+TL/rV1WFmGC5UtzdANfukYdyHqn+QLu2mDl8deCWZHJQ3d6006bNTVwEfdZ6bcRIbFBJt44RYmG2xiWpGE5blwS0tDMxMnH6F/vkHEbao7ATUxVQc4gc5t0QX4SPdw/5cdDGAuN5IoxW7vTBORakwBYk6WvyTL7Ov99NrI2GW49lmPOf+9zWPDv3hkeM7wGE+EEqdKTZUMCyNqSA4C5Cc8CBjsZE/yNORR0fK7rttq1ocF0mOwpOjpIqm48ktPCY7yTIA870dTlo5UPxZGi5EQnOiduz4Fxvf3N6zDwuu3/LHsfH/kY+VRGGI9IHUTjR2It1hd+lv3XYvjiJ3djmxvpwykQ6M8DhzKrDimohAXYwpu0MtvCd9hK+hFgNbadRUNBnIe1g45emry1ZVIsWuQAPqIoyGlrqXWAeKrMG5cUhCEYk39LXaDqpN6CzrkqeC31yIA7b4ItBPbf0b/j7ZGEyaKa7ltMw/kDxKb5VNsy6BSaYxJWA9c/lBXs4CeZThoJBXcTjS/TkYpKxoiqPoDEFBGnqLWXOZAqsfGl99LGo3aT7WOb6L98OZawnxm4dsjt61jZYb3daM5DlkhEsFdhLPRkS7pHwisZzCHtV/liFKtqZrTPcpP8DrrD3KMtkvp7oYMDle20RWRXc0SoVXoUaHsR7I4EklnrareYEjNc7GSNRmDqLBmIH4kF54LXLutVJyfyhKT9YYqxq9tkLtlnVi6oT6zPC/qnkhK38fa2L+PLjXMTl+XrnMClAxsXHCJNawXHV3j56MrCHP0w12owa+L7WtldAnASqEhH4qtUTn4rU03MfryAP05UyErOqWEB98haOsv7B3vBBGIzELEF6s7rmZDBiXJ5UV9bIJ8Eae85yNpoM3AfTI9ZSv2pSE7IO/Sbbgfg==</data>
+    <data>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</data>
   </component>
 </project>
