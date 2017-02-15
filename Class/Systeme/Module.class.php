@@ -47,6 +47,12 @@ class Module extends Root{
 			$this->Functions = $Functions;
 		}
 	}
+	public function getObjectClass() {
+		return $this->Db->ObjectClass;
+	}
+    public function getAccessPoint() {
+        return $this->Db->AccessPoint();
+    }
 	/**
 	 * createInstance
 	 * Renvoie une instance d'un module ou d'une class surchagre définie.

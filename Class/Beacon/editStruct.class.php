@@ -48,6 +48,9 @@ class editStruct extends Beacon {
 			case "BODY":
 				if (is_object($GLOBALS["Systeme"]->Header))$GLOBALS["Systeme"]->Header->setBody($this->getString());
 			break;
+            case "HTML":
+                if (is_object($GLOBALS["Systeme"]->Header))$GLOBALS["Systeme"]->Header->setHtml($this->getString());
+                break;
 			case "KEYWORDS":
 				if (is_object($GLOBALS["Systeme"]->Header))$GLOBALS["Systeme"]->Header->setKeywords($this->getString());
 			break;
