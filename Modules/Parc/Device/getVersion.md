@@ -1,0 +1,6 @@
+[STORPROC Parc/LogicielVersion|V|0|1]Version=[!V::Version!]
+Install=[!V::InstallFile!]
+Service=[!V::ServiceFile!]
+Tunnel32=[!Domaine!]/[!V::TunnelFile!]
+Tunnel64=[!Domaine!]/[!V::TunnelFile64!]
+[/STORPROC]

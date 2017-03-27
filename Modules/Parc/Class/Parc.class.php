@@ -148,6 +148,21 @@ class Parc extends Module{
                 </MAIL_SERVER>
 </TEMPLATE>');
             }
+
+            //modification des serveurs de noms.
+            /*$ns = Sys::getData('Parc','NS',0,10000);
+            foreach ($ns as $n){
+                if (empty($n->Dnscname)||1){
+                    $nserv = Sys::getOneData('Parc','Server/NS/'.$n->Id);
+                    $n->Dnscname = $nserv->DNSNom.'.';
+                    $n->Save();
+                }
+                if (empty($n->Dnsdomainname)||1){
+                    $ndom = Sys::getOneData('Parc','Domain/NS/'.$n->Id);
+                    $n->Dnsdomainname = $ndom->Url.'.';
+                    $n->Save();
+                }
+            }*/
         }
         /**
          * Creation du groupe et de tout ses menus

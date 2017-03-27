@@ -1,0 +1,91 @@
+<div class="page-content-inner">
+
+    <div class="widget widget-four background-transparent">
+        <div class="row">
+            <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
+                <div class="step-block ">
+                        <span class="step-digit">
+                            <i class="icmn-database"><!-- --></i>
+                        </span>
+                    <div class="step-desc">
+                        <span class="step-title">Databases</span>
+                        <p>
+                            Total: 765
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
+                <div class="step-block">
+                        <span class="step-digit">
+                            <i class="icmn-users"><!-- --></i>
+                        </span>
+                    <div class="step-desc">
+                        <span class="step-title">Users</span>
+                        <p>Total: 24 467</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
+                <div class="step-block step-warning">
+                        <span class="step-digit">
+                            <i class="icmn-stats-growth"><!-- --></i>
+                        </span>
+                    <div class="step-desc">
+                        <span class="step-title">Daily Sales</span>
+                        <p>
+                            Total: 765
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
+                <div class="step-block step-primary">
+                        <span class="step-digit">
+                            <i class="icmn-stats-dots"><!-- --></i>
+                        </span>
+                    <div class="step-desc">
+                        <span class="step-title">Bandwidth</span>
+                        <p>
+                            <span>160.32 GB/S</span>
+                            <span>&nbsp;</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="panel">
+        <div class="panel-heading">
+            <h3>
+                Domaines
+            </h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="panel panel-with-borders m-b-0">
+                        <div class="panel-body">
+                            {{ include(template_from_string(module('Systeme/Utils/List'))) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Nestable -->
+
+</div>
+
+<!-- Page Scripts -->
+<script>
+    $(function(){
+
+        $('#nestable1').nestable();
+
+        $('#nestable2').nestable();
+
+    });
+</script>
+<!-- End Page Scripts --->

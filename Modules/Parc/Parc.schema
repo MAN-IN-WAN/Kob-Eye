@@ -24,11 +24,12 @@
 		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="5" description="Identifiant Accès web">AccesUser</PROPERTIES>
 		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="6" description="Mot de passe Accès Web">AccesPass</PROPERTIES>
 		<PROPERTIES category="Coordonnées" type="varchar" description="Adresse e-mail" obligatoire="1">Email</PROPERTIES>
+		<FUNCTION title="Lister les domaines sans client" type="form">AfficherDomaineSansClient</FUNCTION>
 		<FKEY card="0,1" module="Systeme" data="User,Id">UserId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Domain" driver="mysql" AccessPoint="1" master="0" Description="Domaine" Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png" Class="Modules/Parc/Class/Domain.class.php">
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" form="1" fiche="1" description="Url du domaine">Url</PROPERTIES>
-		<PROPERTIES type="boolean" default="1" description="Auto-completion à la sauvegarde" list="1" form="1" fiche="1">updateOnSave</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" form="1" fiche="1" description="Url du domaine" listDescr="Domaine">Url</PROPERTIES>
+		<PROPERTIES type="boolean" default="1" description="Auto-completion à la sauvegarde" list="1" form="1" fiche="1" listDescr="Saisie automatique">updateOnSave</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1" fiche="1">DNSSerial</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
@@ -73,12 +74,14 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="NS" driver="mysql" Description="NS" Icon="/Skins/AdminV2/Img/IconAqua/Tasks_mini.png" Class="Modules/Parc/Class/NS.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" list="1" form="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" description="Nom de domaine racine (ex: exemple.com.)" searchOrder="2" list="1" form="1">Dnsdomainname</PROPERTIES>
+		<PROPERTIES type="varchar" description="Nom DNS du serveur de nom" searchOrder="3" list="1" form="1">Dnscname</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
 		<FKEY card="1,1" data="Domain,Id" popup="1">DomainId</FKEY>
-		<FKEY card="1,1" data="Server,Id" form="1" parentDescription="Serveur de nom">NameServerId</FKEY>
-		<VIEW title="NSList" default="1">
+		<FKEY card="1,1" data="Server,Id" hidden="1" parentDescription="Serveur de nom">NameServerId</FKEY>
+		<VIEW title="NSList" default="0">
 			<OBJECTCLASS title="NS" filters="" select="*">
                 <PROPERTIES type="varchar" searchOrder="1" list="1" form="1">Nom</PROPERTIES>
 				<JOIN type="outer" title="Server" on="NameServerId" target="Id">
@@ -88,7 +91,8 @@
 		</VIEW>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="TXT" driver="mysql" Description="TXT" Icon="/Skins/AdminV2/Img/IconAqua/Tasks_mini.png" Class="Modules/Parc/Class/TXT.class.php">
-		<PROPERTIES type="varchar" searchOrder="1" values="TXT,SPF,DKIM" list="1" form="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" list="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" values="TXT,SPF,DKIM,DMARC" list="1" form="1">Type</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" form="1" description="Domaine cible (pour la racine: '[Domaine].')">Dnsdomainname</PROPERTIES>
 		<PROPERTIES type="text" list="1" form="1" description="text">Dnstxt</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
@@ -135,6 +139,12 @@
 			<PROPERTIES type="int" description="Espace provisionné (en Mo)" fiche="1" list="1" form="1">EspaceProvisionne</PROPERTIES>
 			<PROPERTIES type="text" list="1" form="1">Commentaire</PROPERTIES>
 		</CATEGORY>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
+        <PROPERTIES category="LDAP" type="varchar" auto="1">LdapUserDN</PROPERTIES>
+        <PROPERTIES category="LDAP" type="varchar" auto="1">LdapUserID</PROPERTIES>
+        <PROPERTIES category="LDAP" type="varchar" auto="1">LdapUserTms</PROPERTIES>
 		<FKEY card="0,1" data="Client,Id">ClientId</FKEY>
 		
 		<FUNCTION>MailAvertissement</FUNCTION>
@@ -219,4 +229,20 @@
         <FKEY card="0,1" data="Apache,Id" fiche="1" form="1" parentDescription="Hôte virtuel" link="1">ApacheId</FKEY>
         <FUNCTION title="Executer maintenant">Executer</FUNCTION>
     </OBJECTCLASS>
+	<OBJECTCLASS title="Device" driver="mysql" Dico="1" Description="Périphérique réseau" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Device.class.php">
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom du périphérique">Nom</PROPERTIES>
+		<PROPERTIES type="text" searchOrder="2" obligatoire="0" list="1" fiche="1" form="1" description="Description du périphérique">Description</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="3" obligatoire="0" list="1" fiche="1" form="1" description="Identifiant du périphérique">Uuid</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="4" obligatoire="1" list="1" fiche="1" form="1" description="Type de connexion">ConnectionType</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" description="Url guacamole">GuacamoleUrl</PROPERTIES>
+		<FKEY card="0,1" data="Client,Id" fiche="1" form="1" parentDescription="Client" link="1">ClientId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="LogicielVersion" driver="mysql" Dico="1" Description="Version logMeNimes" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png">
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom de la version">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" obligatoire="0" list="1" fiche="1" form="1" description="Version">Version</PROPERTIES>
+		<PROPERTIES type="file" fiche="1" form="1" description="Fichier de service">ServiceFile</PROPERTIES>
+		<PROPERTIES type="file" fiche="1" form="1" description="Fichier d'installation">InstallFile</PROPERTIES>
+		<PROPERTIES type="file" fiche="1" form="1" description="Fichier de tunnel 32bits">TunnelFile</PROPERTIES>
+		<PROPERTIES type="file" fiche="1" form="1" description="Fichier de tunnel 64bits">TunnelFile64</PROPERTIES>
+	</OBJECTCLASS>
 </SCHEMA>

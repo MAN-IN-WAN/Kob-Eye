@@ -15,7 +15,7 @@
 		<PROPERTIES type="boolean" default="0">Actif</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" list="1" form="1" fiche="1">Valide</PROPERTIES>
 		<PROPERTIES type="date" default="[!TMS::Now!]"  list="1" form="1" fiche="1" searchOrder="2">Date</PROPERTIES>
-		<FKEY card="1,1" data="Categorie,Id" list="1" form="1" fiche="1" link="1" parentDescription="Categorie">CategorieId</FKEY>
+		<FKEY card="1,1" data="Categorie,Id" list="1" form="1" fiche="1" link="1" parentDescription="Categorie" listDescr="Catégorie">CategorieId</FKEY>
 	</OBJECTCLASS>
 	
 	<OBJECTCLASS title="Donnees" driver="mysql" AccessPoint="1" browseable="1" Description="Lier des données à un post" >

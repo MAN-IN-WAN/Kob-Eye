@@ -20,7 +20,177 @@ class Server extends genericClass {
 	var $_assocCNAME = array('Nom' => 'cn', 'Dnscname' => 'dnscname', 'Dnsdomainname' => 'dnsdomainname');
 	var $_assocTXT = array('Nom' => 'cn', 'Dnsdomainname' => 'dnsdomainname', 'Dnstxt' => 'dnstxt');
 
-	/*******************************************************************************************************************************
+    var $_isVerified = false;
+
+    /**
+     * Force la vérification avant enregistrement
+     * @param	boolean	Enregistrer aussi sur LDAP
+     * @return	void
+     */
+    public function Save( $synchro = true ) {
+        $first = ($this->Id == 0);
+        parent::Save();
+        // Forcer la vérification
+        if(!$this->_isVerified) $this->Verify( $synchro );
+        // Enregistrement si pas d'erreur
+        if($this->_isVerified) {
+            parent::Save();
+        }
+    }
+    /**
+     * Verification des erreurs possibles
+     * @param	boolean	Verifie aussi sur LDAP
+     * @return	Verification OK ou NON
+     */
+    public function Verify( $synchro = true ) {
+
+        if(parent::Verify()) {
+
+            $this->_isVerified = true;
+
+            if($synchro) {
+
+                // Outils
+                $dn = 'ou='.$this->LDAPNom.',ou=servers,'.PARC_LDAP_BASE;
+                $dn2 = 'cn='.$this->LDAPNom.','.PARC_LDAP_BASE;
+
+                // Verification à jour
+                $res = Server::checkTms($this);
+                if($res['exists']) {
+                    if(!$res['OK']) {
+                        $this->AddError($res);
+                        $this->_isVerified = false;
+                    }
+                    else {
+                        // Déplacement
+                        //$res = Server::ldapRename($this->LdapDN, 'cn='.$this->Url, 'ou=domains,'.PARC_LDAP_BASE);
+                        //if($res['OK']) {
+                        // Modification
+                        $entry = $this->buildEntry(false);
+                        $res = Server::ldapModify($this->LdapID, $entry);
+                        $entry2 = $this->buildUserEntry(false);
+                        $res2 = Server::ldapModify($this->LdapUserID, $entry2);
+                        if($res['OK']&&$res2['OK']) {
+                            // Tout s'est passé correctement
+                            $this->LdapDN = $dn;
+                            $this->LdapTms = $res['LdapTms'];
+                            $this->LdapUserDN = $dn2;
+                            $this->LdapUserTms = $res['LdapTms'];
+                        }
+                        else {
+                            // Erreur
+                            if (!$res['OK'])
+                                $this->AddError($res);
+                            if (!$res2['OK'])
+                                $this->AddError($res2);
+                            $this->_isVerified = false;
+                            // Rollback du déplacement
+                            /*$tab = explode(',', $this->LdapDN);
+                            $leaf = array_shift($tab);
+                            $rest = implode(',', $tab);
+                            Server::ldapRename($dn, $leaf, $rest);*/
+                        }
+                        /*}
+                        else {
+                            $this->AddError($res);
+                            $this->_isVerified = false;
+                        }*/
+                    }
+
+                }
+                else {
+                    ////////// Nouvel élément
+                    $entry = $this->buildEntry();
+                    $res = Server::ldapAdd($dn, $entry);
+                    $entry2 = $this->buildUserEntry();
+                    $res2 = Server::ldapAdd($dn2, $entry2);
+                    if($res['OK']&&$res2['OK']) {
+                        $this->LdapDN = $dn;
+                        $this->LdapID = $res['LdapID'];
+                        $this->LdapTms = $res['LdapTms'];
+                        $this->LdapUserDN = $dn2;
+                        $this->LdapUserID = $res2['LdapID'];
+                        $this->LdapUserTms = $res2['LdapTms'];
+                    }
+                    else {
+                        if (!$res['OK'])
+                            $this->AddError($res);
+                        else $this->Delete();
+                        if (!$res2['OK'])
+                            $this->AddError($res2);
+                        $this->_isVerified = false;
+                    }
+                }
+
+            }
+
+        }
+        else {
+
+            $this->_isVerified = false;
+
+        }
+
+        return $this->_isVerified;
+
+    }
+    /**
+     * Configuration d'une nouvelle entrée type
+     * Utilisé lors du test dans Verify
+     * puis lors du vrai ajout dans Save
+     *
+     * dn: ou=ws2.enguer.com,ou=servers,dc=enguer,dc=com
+        objectclass: organizationalUnit
+        objectclass: top
+        ou: ws2.enguer.com
+     *
+     * dn: cn=ws2.enguer.com,dc=enguer,dc=com
+        cn: ws2.enguer.com
+        displayname: ws2.enguer.com read only
+        objectclass: inetOrgPerson
+        objectclass: top
+        sn: ws2.enguer.com
+        uid: cn=ws2.enguer.com,dc=enguer,dc=com
+        userpassword: {SSHA}QT7YK+30GU7cAS/IeWX+xVNimqvPWDpD
+     *
+     * @param	boolean		Si FALSE c'est simplement une mise à jour$dn
+     * @return	Array
+     */
+    private function buildUserEntry( $new = true ) {
+        $entry = array();
+        $entry['cn'] = $this->LDAPNom;
+        $entry['sn'] = $this->LDAPNom;
+        $entry['uid'] = 'cn='.$this->LDAPNom.',dc=enguer,dc=com';
+        $entry['displayname'] = '' . $this->LDAPNom . ' read only';
+        $entry['userpassword'] = '{SSHA}QT7YK+30GU7cAS/IeWX+xVNimqvPWDpD';
+        if($new) {
+            $entry['objectclass'][0] = 'inetOrgPerson';
+            $entry['objectclass'][1] = 'top';
+        }
+        return $entry;
+    }
+    private function buildEntry( $new = true ) {
+        $entry = array();
+        $entry['ou'] = $this->LDAPNom;
+        if($new) {
+            $entry['objectclass'][0] = 'organizationalUnit';
+            $entry['objectclass'][1] = 'top';
+        }
+        return $entry;
+    }
+
+    /**
+     * Suppression de la BDD
+     * Relai de cette suppression à LDAP
+     * On utilise aussi la fonction de la superclasse
+     * @return	void
+     */
+    public function Delete() {
+        Server::ldapDelete($this->LdapID);
+        parent::Delete();
+    }
+
+    /*******************************************************************************************************************************
 
 	 SYNCHRONISATION
 
@@ -40,6 +210,28 @@ class Server extends genericClass {
 			$this -> debug("Connexion LDAP établie");
 		else
 			$this -> error("Impossible d'établie une connexion à la base");
+
+        Server::ldapConnect();
+        $req = ldap_search(Server::$_LDAP, $this->LdapDN, '(objectClass=*)', array('*', 'modifytimestamp', 'entryuuid'));
+        $res = ldap_get_entries(Server::$_LDAP, $req);
+        foreach($res as $k => $r) :
+            if($k == 'count' or !isset($r['dnstype']) or $r['dnstype'][0] != 'A' or !isset($r['cn']) or !isset($r['dnsipaddr'])) continue;
+            $url = $r['cn'][0];
+            $ip = $r['dnsipaddr'][0];
+            $e = Sys::$Modules['Parc']->callData('Domain/'.$this->Id.'/Subdomain/Url='.$url,false,0,1,'DESC','Id','COUNT(*)');
+            if (!$e[0]['COUNT(*)']){
+                $KEObj = genericClass::createInstance('Parc', 'Subdomain');
+                $KEObj->Url = $url;
+                $KEObj->IP = $ip;
+                $KEObj->LdapDN = 'cn='.$url.','.$this->LdapDN;
+                $KEObj->LdapID = $r['entryuuid'][0];
+                $KEObj->LdapTms = $r['modifytimestamp'][0];
+                $KEObj->AddParent($this);
+                $KEObj->Save();
+                echo "Sous domaine <strong>$url</strong> ($ip) ajouté.<br />";
+            }
+        endforeach;
+        echo '<br /><a href="/Parc/Domain/'.$this->Id.'">Retour au domaine</a>';
 
 		// Synchro des éléments indépendants
 		$this -> synchroPartielle('clients');

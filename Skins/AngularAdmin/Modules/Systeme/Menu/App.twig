@@ -317,11 +317,28 @@ controller: 'registerPageCtrl'
 });
 
 /////////////////////////////////////////////////////////////
+// Menus
+{%  for m in menus %}
+    $routeProvider.when('/{{ m.Url }}/{{ m2.Url }}', {
+    templateUrl: '{{ m.Url }}/Template.htm',
+    controller: '{{ m.Url }}Ctrl'
+    });
+    {% for m2 in m.getSubMenus() %}
+        $routeProvider.when('/{{ m.Url }}/{{ m2.Url }}', {
+            templateUrl: '{{ m.Url }}/{{ m2.Url }}/Template.htm',
+            controller: '{{ m.Url }}{{ m2.Url }}Ctrl'
+        });
+        $routeProvider.when('/{{ m.Url }}/{{ m2.Url }}/:id', {
+            templateUrl: '{{ m.Url }}/{{ m2.Url }}/FicheTemplate.htm',
+            controller: '{{ m.Url }}{{ m2.Url }}FicheCtrl'
+        });
+    {%  endfor %}
+{%  endfor %}
 // Admin
 {%  for mod in modules %}
     {% for obj in mod.getAccessPoint() %}
         $routeProvider.when('/{{ mod.Nom }}/{{ obj.titre }}', {
-            templateUrl: '{{ mod.Nom }}/{{ obj.titre }}.html',
+            templateUrl: '{{ mod.Nom }}/{{ obj.titre }}/Template.htm',
             controller: '{{ mod.Nom }}{{ obj.titre }}Ctrl'
         });
     {%  endfor %}

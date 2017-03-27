@@ -1,0 +1,66 @@
+O:4:"Bloc":23:{s:7:"RawData";s:0:"";s:7:"VarData";N;s:9:"RawLoaded";b:1;s:13:"ContentLoaded";b:1;s:7:"Content";N;s:9:"BlObjects";a:1:{i:0;O:4:"Bloc":23:{s:7:"RawData";s:0:"";s:7:"VarData";N;s:9:"RawLoaded";b:1;s:13:"ContentLoaded";b:1;s:7:"Content";N;s:9:"BlObjects";a:10:{i:0;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:44:"Skins/[!Systeme::Skin!]/Js/suivi_variable.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:1;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:39:"Skins/[!Systeme::Skin!]/Js/swfobject.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:2;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:36:"Tools/Js/Jquery/1.11.2/jquery.min.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:3;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:45:"Tools/Css/Bootstrap/3.3.1/js/bootstrap.min.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:4;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:37:"Tools/Js/Grafikart-Zoombox/zoombox.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:5;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:36:"Tools/Js/Isotope/isotope.pkgd.min.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:6;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:43:"Tools/Css/Bootstrap/3.3.1/css/bootstrap.css";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:3:"CSS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:7;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:38:"Tools/Js/Grafikart-Zoombox/zoombox.css";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:3:"CSS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:8;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:344:"
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+		<script src="/Tools/assets/js/html5shiv.js"></script>
+		<script src="/Tools/[!Systeme::Skin!]/assets/js/respond.min.js"></script>
+	<![endif]-->
+	<link href="https://fonts.googleapis.com/css?family=Libre+Baskerville" rel="stylesheet"> 	
+	
+";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:0:"";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:9;s:764:"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="mainContent">
+	[DATA]
+</div>
+<div id="FooterAbtel" class="container" >
+	<a href="http://agence-web.abtel.fr" target="_blank">Abtel agence web @ 2016</a>
+</div>
+
+	
+	
+
+
+<script type="text/javascript">
+	/**
+	* supression du contenu lors de la disparition du popup
+	*/
+	$('#lemodal').on('hidden.bs.modal', function (e) {
+		$(e.target).removeData('bs.modal').find('.modal-content').empty();
+	});
+	
+</script>
+
+<script type="text/javascript">
+	
+	$(document).ready(function(){
+		$('a.zoombox').zoombox({
+			theme       : 'zoombox',        
+			opacity     : 0.8,              
+			duration    : 800,              
+			animation   : true,             
+			gallery     : true,             
+			autoplay : false                
+		});
+	});
+	
+
+</script>
+
+";}s:6:"BlData";N;s:8:"PostData";N;s:11:"PostObjects";N;s:10:"PostBlData";N;s:7:"ObjVars";N;s:13:"PostBlObjects";N;s:12:"ChildObjects";a:1:{i:0;s:9:"
+	[DATA]
+";}s:9:"ChildData";N;s:4:"Path";s:7:"Default";s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:4:"BLOC";s:5:"Child";N;s:4:"Vars";s:7:"Default";s:7:"TempVar";N;s:4:"Conf";N;}}s:6:"BlData";N;s:8:"PostData";N;s:11:"PostObjects";N;s:10:"PostBlData";N;s:7:"ObjVars";N;s:13:"PostBlObjects";N;s:12:"ChildObjects";a:1:{i:0;s:6:"[DATA]";}s:9:"ChildData";N;s:4:"Path";s:4:"Main";s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:4:"BLOC";s:5:"Child";N;s:4:"Vars";s:4:"Main";s:7:"TempVar";N;s:4:"Conf";N;}

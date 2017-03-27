@@ -656,7 +656,9 @@ class Parser {
      */
 	static function Processing($Data,$NoPost=false,$Tab=Array()) {
 		//O supprime les commentaires
- 		$Data = preg_replace("#(?<!http:)(?<!https:)(?<!:)//(.*)#m","",$Data);
+        if (Sys::$REMOVE_COMMENT) {
+            $Data = preg_replace("#(?<!http:)(?<!https:)(?<!:)//(.*)#m", "", $Data);
+        }
 		self::$Objects = $Tab;
 		$Data=Parser::processRecursiv($Data,self::$Beacons,$NoPost);
 		if (is_array(self::$Objects)) foreach (self::$Objects as $K=>$D) {

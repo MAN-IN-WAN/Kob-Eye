@@ -1,0 +1,102 @@
+<div class="nav-tabs-horizontal margin-bottom-20">
+    <ul class="nav nav-tabs" role="tablist">
+        {% for filter in filters %}
+        <li class="nav-item">
+            <a class="nav-link active" href="javascript: void(0);" data-toggle="tab" data-target="#h1" role="tab">{{ filter.title }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+<table class="table table-hover nowrap margin-bottom-0" id="example1" width="100%">
+    <thead>
+        <tr>
+            <th>ID</th>
+            {% for field in fields %}
+            <th>{{ field.listDescr }}</th>
+            {% endfor %}
+            <th width="50">Détails</th>
+            <th width="50">Actions</th>
+        </tr>
+    </thead>
+    <tfoot>
+    <tr>
+        <th>ID</th>
+        {% for field in fields %}
+            <th>{{ field.listDescr }}</th>
+        {% endfor %}
+        <th></th>
+        <th></th>
+    </tr>
+    </tfoot>
+</table>
+<!-- Page Scripts -->
+<script>
+$('#example1').DataTable({
+    responsive: true,
+    ajax: '/{{ Query }}/getData.json',
+    "columnDefs": [
+        {
+            "targets": 0,
+            "render": function (data, type, row) {
+                return '<span class="label label-warning">' + data + '</span>';
+            }
+        },
+        {% for field in fields %}
+        {
+            "targets": {{ loop.index }},
+            {% if field.type == "price" or field.type == "float" %}
+                "render": function (data, type, row ) {
+                    return '<span class="label label-warning">'+data+'</span>';
+                }
+            {% elseif field.type == "int" %}
+                "render": function (data, type, row ) {
+                    return '<span class="label label-primary">'+data+'</span>';
+                }
+            {% elseif field.type == "boolean" %}
+                "render": function (data, type, row ) {
+                    if (data)
+                        return '<span class="label label-success"><i class="fa fa-check"></i></span>';
+                    else
+                        return '<span class="label label-danger"><i class="fa fa-times"></i></span>';
+                }
+            {% else %}
+                "render": function (data, type, row ) {
+                    return data;
+                }
+            {% endif %}
+        },
+        {% endfor %}
+        {
+            "targets": -2
+        },
+        {
+            "targets": -1,
+            "data": null,
+            "defaultContent": '<div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false"> Actions</button><ul class="dropdown-menu"><a class="dropdown-item" href="#/Parc/Client/12">Voir les détails</a><a class="dropdown-item" href="javascript: void(0);">Modifier</a><a class="dropdown-item" href="javascript: void(0);">Supprimer</a></li></ul></div>'
+        }
+    ],
+    "language": {
+        "sProcessing":     "Traitement en cours...",
+        "sSearch":         "Rechercher&nbsp;:",
+        "sLengthMenu":     "Afficher _MENU_ &eacute;l&eacute;ments",
+        "sInfo":           "Affichage de l'&eacute;lement _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
+        "sInfoEmpty":      "Affichage de l'&eacute;lement 0 &agrave; 0 sur 0 &eacute;l&eacute;ments",
+        "sInfoFiltered":   "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+        "sInfoPostFix":    "",
+        "sLoadingRecords": "Chargement en cours...",
+        "sZeroRecords":    "Aucun &eacute;l&eacute;ment &agrave; afficher",
+        "sEmptyTable":     "Aucune donn&eacute;e disponible dans le tableau",
+        "oPaginate": {
+            "sFirst":      "Premier",
+            "sPrevious":   "Pr&eacute;c&eacute;dent",
+            "sNext":       "Suivant",
+            "sLast":       "Dernier"
+        },
+        "oAria": {
+            "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
+            "sSortDescending": ": activer pour trier la colonne par ordre d&eacute;croissant"
+        }
+    }
+});
+</script>
+<!-- End Page Scripts --->

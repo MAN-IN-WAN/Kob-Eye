@@ -639,8 +639,8 @@ class Module extends Root{
 				$Template = isset($r[0]["Template"]) ? $r[0]["Template"] : "";
 				if (isset($_GET["DEBUG_TEMPLATE"])&&$_GET["DEBUG_TEMPLATE"]) echo "<li>- Template propre à l'élément trouvée: $Template</li>";
 			}else	if (isset($_GET["DEBUG_TEMPLATE"])&&$_GET["DEBUG_TEMPLATE"]) echo "<li>- pas d élement pour la base de donnée (recherche de type interface)</li>";
-			if (!empty($GLOBALS["Systeme"]->CurrentMenu->Template)&&empty($Template)){
-				$Template = $GLOBALS["Systeme"]->CurrentMenu->Template;
+			if (!empty(Sys::$CurrentMenu->Template)&&empty($Template)){
+				$Template = Sys::$CurrentMenu->Template;
 				if (isset($_GET["DEBUG_TEMPLATE"])&&$_GET["DEBUG_TEMPLATE"]) echo "<li>- Template par défaut du menu $Template</li>";
 			}else	if (isset($_GET["DEBUG_TEMPLATE"])&&$_GET["DEBUG_TEMPLATE"]) echo "<li>- pas de menu en cours.</li>";
 			
@@ -649,7 +649,7 @@ class Module extends Root{
 			$Template = isset($r[0]["Template"]) ? $r[0]["Template"] : "";*/
 			
 			//Chargement de la template
-			if (isset($Template)){
+			if (isset($Template)&&!Sys::$NO_TEMPLATE){
 				if (isset($_GET["DEBUG_TEMPLATE"])&&$_GET["DEBUG_TEMPLATE"]) echo "<li>Affichage template $Template</li>";
 				$Tmpl=$this->loadTemplate($Template);
 				$Tmpl->Generate();

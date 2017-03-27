@@ -138,7 +138,19 @@ class MX extends genericClass {
 		if ($new){
 			//recherche du numéro
 			$dom = $this->getKEDomain();
-			$nb = Sys::getCount('Parc','Domain/'.$dom->Id.'/MX')+1;
+			$nb = 1;
+            $alr = Sys::getData('Parc','Domain/'.$dom->Id.'/MX');
+            $ok=0;
+            while (!$ok) {
+                $ok=1;
+                foreach ($alr as $a){
+                    if($a->Nom == 'MX:'.$nb){
+                        $ok=0;
+                        $nb++;
+                        break;
+                    }
+                }
+            }
 			$this->Nom='MX:'.$nb;
 		}
 		$entry['cn'] = $this->Nom;

@@ -27,7 +27,9 @@ class TXT extends genericClass {
 	 * @return	Verification OK ou NON
 	 */
 	public function Verify( $synchro = true ) {
-
+        if (!$this->Type) {
+            $this->Type = 'TXT';
+        }
 		if(parent::Verify()) {
 
 			$this->_isVerified = true;
@@ -46,9 +48,22 @@ class TXT extends genericClass {
 						$this->_isVerified = false;
 					}
 					else {
-						// Déplacement
-						$res = Server::ldapRename($this->LdapDN, 'cn='.$this->Nom, 'cn='.$KEDomain->Url.',ou=domains,'.PARC_LDAP_BASE);
-						if($res['OK']) {
+                        //Compatibilité avec ancien systeme
+                        if (preg_match('#^(TXT|TXT2|TXT3|SPF|SPF2|SPF3)$#',$this->Nom,$out)){
+                            Server::ldapDelete($this->LdapID);
+                            $entry = $this->buildEntry(true,true);
+                            $dn = 'cn='.$this->Nom.',cn='.$KEDomain->Url.',ou=domains,'.PARC_LDAP_BASE;
+                            $res = Server::ldapAdd($dn, $entry);
+                            if($res['OK']) {
+                                $this->LdapDN = $dn;
+                                $this->LdapID = $res['LdapID'];
+                                $this->LdapTms = $res['LdapTms'];
+                            }
+                            else {
+                                $this->AddError($res);
+                                $this->_isVerified = false;
+                            }
+                        }else{
 							// Modification
 							$entry = $this->buildEntry(false);
 							$res = Server::ldapModify($this->LdapID, $entry);
@@ -68,17 +83,13 @@ class TXT extends genericClass {
 								Server::ldapRename($dn, $leaf, $rest);
 							}
 						}
-						else {
-							$this->AddError($res);
-							$this->_isVerified = false;
-						}
 					}
 	
 				}
 				else {
 					////////// Nouvel élément
 					if($KEDomain) {
-						$entry = $this->buildEntry();
+					    $entry = $this->buildEntry();
 						$dn = 'cn='.$this->Nom.',cn='.$KEDomain->Url.',ou=domains,'.PARC_LDAP_BASE;
 						$res = Server::ldapAdd($dn, $entry);
 						if($res['OK']) {
@@ -133,18 +144,36 @@ class TXT extends genericClass {
 	 * @param	boolean		Si FALSE c'est simplement une mise à jour
 	 * @return	Array
 	 */
-	private function buildEntry( $new = true ) {
+	private function buildEntry( $new = true , $retrocompat = false) {
 		$entry = array();
 		if ($new){
 			//recherche du numéro
 			$dom = $this->getKEDomain();
-			$nb = Sys::getCount('Parc','Domain/'.$dom->Id.'/TXT/Nom~'.$this->Nom.'%')+1;
-			$this->Nom.=':'.$nb;
+			$nb = 1;
+
+            $alr = Sys::getData('Parc','Domain/'.$dom->Id.'/TXT/Nom~'.$this->Type);
+            $ok=0;
+            while (!$ok) {
+                $ok=1;
+                foreach ($alr as $a){
+                    if($a->Nom == $this->Type.':'.$nb){
+                        $ok=0;
+                        $nb++;
+                        break;
+                    }
+                }
+            }
+			$this->Nom=$this->Type.':'.$nb;
 			parent::Save();
 		}
 		$entry['cn'] = $this->Nom;
 		$entry['dnsdomainname'] = $this->Dnsdomainname;
-		$entry['dnstxt'] = $this->Dnstxt;
+		if ($retrocompat&&!strpos($this->Dnstxt,'"')) {
+            $this->Dnstxt = '"' . $this->Dnstxt . '"';
+            parent::Save();
+        }
+        $this->Dnstxt = str_replace('""','"',$this->Dnstxt);
+        $entry['dnstxt'] = $this->Dnstxt;
 		if($new) {
 			$entry['objectclass'][0] = 'dnsrrset';
 			$entry['objectclass'][1] = 'top';

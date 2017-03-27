@@ -137,13 +137,13 @@
 		<PROPERTIES type="image" searchOrder="2" category="Emplacement" list="1" form="1" fiche="1">Lien</PROPERTIES>
 		<PROPERTIES type="file" searchOrder="3" category="Emplacement">Alternatif</PROPERTIES>
 		<PROPERTIES type="varchar" values="Image,Video,Son,Defaut,Plugin,Html,Pub,ImageVideo" length="20" searchOrder="3" category="Intitulé" list="1" form="1" fiche="1">Type</PROPERTIES>
-		<!--<PROPERTIES type="boolean" default="1" category="Publication" description="Afficher le titre" form="1" fiche="1">AfficheTitre</PROPERTIES>-->
+		<PROPERTIES type="boolean" default="0" category="Publication" description="Afficher le titre" form="1" fiche="1">AfficheTitre</PROPERTIES>
 		<PROPERTIES type="varchar"  length="200" special="multi" category="Intitulé" descriptif="lien sur le titre" form="1" fiche="1">LienTitre</PROPERTIES>
 		<PROPERTIES type="text" description="Video HTML (Vimeo, Youtube, etc...)" form="1" fiche="1">VideoHtml</PROPERTIES>
 		<PROPERTIES type="html" form="1" fiche="1" special="multi">Html</PROPERTIES>
 		<PROPERTIES type="order"  list="1" form="1" fiche="1">Ordre</PROPERTIES>
 		<FKEY card="1,n" data="Menu,Id" behaviour="Integrated" form="1" fiche="1" parentDescription="Menu">MenuParent</FKEY>
-		<!--<FKEY card="1,n" module="Products" data="Categorie,Id">ProductsCategorieId</FKEY>
+		<FKEY card="1,n" module="Products" data="Categorie,Id">ProductsCategorieId</FKEY>
 		<FKEY card="1,n" module="Products" data="Produit,Id">ProductsProduitId</FKEY>
 		<FKEY card="1,n" module="Team" data="Equipe,Id">TeamEquipeId</FKEY>
 		<FKEY card="1,n" module="Team" data="Rider,Id">TeamRiderId</FKEY>
@@ -151,7 +151,7 @@
 		<FKEY card="1,n" module="Galerie" data="Media,Id">GalerieMediaId</FKEY>
 		<FKEY card="1,n" module="Blog" data="Categorie,Id">BlogCategorieId</FKEY>
 		<FKEY card="1,n" module="Blog" data="Post,Id">BlogPostId</FKEY>
-		<FKEY card="1,n" module="Redaction" data="Categorie,Id">RedactionCategorieId</FKEY>-->
+		<FKEY card="1,n" module="Redaction" data="Categorie,Id">RedactionCategorieId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Fichier" driver="mysql" AccessPoint="0">
 		<PROPERTIES type="titre" length="50" searchOrder="1" obligatoire="1" category="Informations">Titre</PROPERTIES>

@@ -1,0 +1,777 @@
+/*--- RESET ---*/
+html, body, div, span, applet, object, iframe, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td { margin: 0; padding: 0; border: 0; outline: 0; font-size: 100%; vertical-align: baseline }
+blockquote, q { quotes: none }
+blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; }
+ins { text-decoration: none }
+del { text-decoration: line-through }
+table { border-collapse: collapse; border-spacing: 0 }
+a:active, input:active { outline: none }
+:-moz-any-link:focus { outline: none }
+
+/****************************************************************
+ *								*
+ *			     COLOR SET    			*
+ *								*
+ ****************************************************************/
+/*
+ *	#fff
+ *	#222;
+ *	#000
+ *  info      bleu   : #0e8ec1
+ *  web       orange : #ee7805
+ *  network   vert   : #6eb126
+ *  formation rose   : #e6008d
+ *  autre     gris   : #868585
+ *
+ */
+.color-red {
+	color:#641313;
+}
+
+
+/*************************************************/
+/******************** FONTES *********************/
+/*************************************************/
+
+@font-face {
+    font-family: 'latoblack';
+    src: url('../Fonts/lato-black-webfont.eot');
+    src: url('../Fonts/lato-black-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../Fonts/lato-black-webfont.woff2') format('woff2'),
+         url('../Fonts/lato-black-webfont.woff') format('woff'),
+         url('../Fonts/lato-black-webfont.ttf') format('truetype'),
+         url('../Fonts/lato-black-webfont.svg#latoblack') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'latoblackitalic';
+    src: url('../Fonts/lato-blackitalic-webfont.eot');
+    src: url('../Fonts/lato-blackitalic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../Fonts/lato-blackitalic-webfont.woff2') format('woff2'),
+         url('../Fonts/lato-blackitalic-webfont.woff') format('woff'),
+         url('../Fonts/lato-blackitalic-webfont.ttf') format('truetype'),
+         url('../Fonts/lato-blackitalic-webfont.latoblackitalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'latobold';
+    src: url('../Fonts/lato-bold-webfont.eot');
+    src: url('../Fonts/lato-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../Fonts/lato-bold-webfont.woff2') format('woff2'),
+         url('../Fonts/lato-bold-webfont.woff') format('woff'),
+         url('../Fonts/lato-bold-webfont.ttf') format('truetype'),
+         url('../Fonts/lato-bold-webfont.latobold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'latobolditalic';
+    src: url('../Fonts/lato-bolditalic-webfont.eot');
+    src: url('../Fonts/lato-bolditalic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../Fonts/lato-bolditalic-webfont.woff2') format('woff2'),
+         url('../Fonts/lato-bolditalic-webfont.woff') format('woff'),
+         url('../Fonts/lato-bolditalic-webfont.ttf') format('truetype'),
+         url('../Fonts/lato-bolditalic-webfont.latobolditalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'latohairline';
+    src: url('../Fonts/lato-hairline-webfont.eot');
+    src: url('../Fonts/lato-hairline-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../Fonts/lato-hairline-webfont.woff2') format('woff2'),
+         url('../Fonts/lato-hairline-webfont.woff') format('woff'),
+         url('../Fonts/lato-hairline-webfont.ttf') format('truetype'),
+         url('../Fonts/lato-hairline-webfont.latohairline') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'latohairlineitalic';
+    src: url('../Fonts/lato-hairlineitalic-webfont.eot');
+    src: url('../Fonts/lato-hairlineitalic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../Fonts/lato-hairlineitalic-webfont.woff2') format('woff2'),
+         url('../Fonts/lato-hairlineitalic-webfont.woff') format('woff'),
+         url('../Fonts/lato-hairlineitalic-webfont.ttf') format('truetype'),
+         url('../Fonts/lato-hairlineitalic-webfont.latohairlineitalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'latoitalic';
+    src: url('../Fonts/lato-italic-webfont.eot');
+    src: url('../Fonts/lato-italic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../Fonts/lato-italic-webfont.woff2') format('woff2'),
+         url('../Fonts/lato-italic-webfont.woff') format('woff'),
+         url('../Fonts/lato-italic-webfont.ttf') format('truetype'),
+         url('../Fonts/lato-italic-webfont.latoitalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'latolight';
+    src: url('../Fonts/lato-light-webfont.eot');
+    src: url('../Fonts/lato-light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../Fonts/lato-light-webfont.woff2') format('woff2'),
+         url('../Fonts/lato-light-webfont.woff') format('woff'),
+         url('../Fonts/lato-light-webfont.ttf') format('truetype'),
+         url('../Fonts/lato-light-webfont.latolight') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'latolightitalic';
+    src: url('../Fonts/lato-lightitalic-webfont.eot');
+    src: url('../Fonts/lato-lightitalic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../Fonts/lato-lightitalic-webfont.woff2') format('woff2'),
+         url('../Fonts/lato-lightitalic-webfont.woff') format('woff'),
+         url('../Fonts/lato-lightitalic-webfont.ttf') format('truetype'),
+         url('../Fonts/lato-lightitalic-webfont.latolightitalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'latoregular';
+    src: url('../Fonts/lato-regular-webfont.eot');
+    src: url('../Fonts/lato-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../Fonts/lato-regular-webfont.woff2') format('woff2'),
+         url('../Fonts/lato-regular-webfont.woff') format('woff'),
+         url('../Fonts/lato-regular-webfont.ttf') format('truetype'),
+         url('../Fonts/lato-regular-webfont.latoregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/*************************************************/
+/********************GLOBAL -******************/
+
+html{
+	padding:0;
+	margin:0;
+	font-family: 'latoregular';
+	font-size:12px;
+	background-color: #000;
+	color:#fff;
+        height: 100%;
+        position: relative;
+}
+body {
+	padding:0;
+	margin:0;
+	font-family: 'latoregular';
+	font-size:12px;
+	background-color: #000;
+	color:#fff;
+        min-height: 100%;
+        position: relative;
+        padding-bottom: 30px;
+}
+#badTrick{
+        position: fixed;
+        top: 0;
+        bottom: 30px;
+        left: 0;
+        right: 0;
+        background-color: #fff;
+        z-index: 0;
+}
+#mainContent{
+         height: 100%;
+         position: relative;
+         z-index: 1;
+}
+#mainContent .container{
+        background-color: #fff;
+}
+
+input, textarea, select, button {
+	font-family: Arial;
+	font-size: 1em;
+}
+
+a {
+	text-decoration: none;
+	color: #ffaaaa;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	padding: 0;
+	margin: 0;
+}
+
+h1 {font-size:1.5em;font-weight:bold;letter-spacing:0.5em;padding-bottom: 5px;}
+h2 {font-size:1.3em;}
+
+li {
+	list-style: none;
+}
+
+div.noMargin{
+	margin: 0;
+}
+
+/*************************************************/
+/********************Accueil -******************/
+
+.Accueil {
+	padding-top: 21%;
+	background-repeat:no-repeat;
+	background-position:center;
+	background-size:cover;
+	height:100%
+}
+#MenuAccueil {
+	width:100%;margin-top:10%;
+}
+#MenuAccueil .ElementMenu {
+	border:1px solid #fff;
+	margin:20px;
+        width:40%;
+        text-align:center;
+}
+#MenuAccueil .ElementMenu a {
+	color:#fff;
+        text-align:center;
+        padding: 45px;
+        text-transform:uppercase;
+        font-size:0.8em;
+        height: 100%;
+        width: 100%;
+        display: inline-block;
+}
+#MenuAccueil .ElementMenu a:hover {
+        background-color: rgba(255,255,255,0.5);
+        text-decoration: none;
+}
+#MenuAccueil .ElementMenu a:hover h2 {
+	color:#641313;
+        font-weight: 600;
+}
+
+
+/* --- Menus Blog  et Publications ---*/
+.menutelephone { background-color:#ccc; }
+
+
+/*************************************************/
+/********************Blog -******************/
+.Blog {
+	background-color: #fff;
+	height: 100%;color:#000;
+}
+.Blog h1 {
+	font-size:1.5em;font-weight:bold;letter-spacing:0.5em;
+	padding-top:20px;padding-bottom: 5px;color:#000; text-align:center;
+	border-bottom:1px solid #000;margin:0 30%;
+}
+.Blog h2 {
+	font-size:1.3em;color:#000;padding-top:10px;
+	text-align:center;
+}
+
+.Blog h3 {
+	font-size:1.2em;padding:20px 20px 20px 0;
+	text-align:left;font-weight:bold;
+}
+.Blog  .quandqui {
+	font-weight:bold; font-style:italic;
+}
+.Blog .UnPost {
+	margin: 5px 10px;
+}
+.Blog .chapo{
+	text-align: justify;
+	padding-top:10px;
+
+}
+.Blog .ReseauxSoc {
+	border-top:1px solid #000;
+	margin:20px 25%;
+	height:20px; text-align:center;
+}
+
+/* Colonne de droite du blog */
+.Blog .Avatar {
+	text-align:center;
+}
+.Blog .Avatar img {
+	border-bottom:1px solid #000;
+	margin: auto;
+}
+
+.Blog .Apropos {
+	background-color: #ccc;padding:20px;
+	text-align:justify;
+
+}
+.Blog .Apropos h4{
+	border-bottom:1px solid #000;
+	margin:20px 25%;	text-align:center;
+}
+.Blog .Apropos .LienArticle {
+	width:30%;padding: 15px;
+	
+}
+
+.Blog .Categories h4 , .Blog .PlusLus h4 {
+	border-bottom:1px solid #000;padding-bottom:10px;
+	margin:20px 25%;	text-align:center;
+	
+}
+.Blog .Categories .unecateg {
+		background-color: #ccc;margin:5px;
+}
+.Blog .Categories .unecateg a {
+	text-transform:uppercase;color:#1c1c1c; padding:5px;
+}
+.Blog .Categories .unecateg a.current {
+	color:#641313; font-weight:bold;
+}
+
+/************* Blog Détail d'un article ***************/
+.ArticleBlog {
+	background-color: #fff;
+	height: 100%;color:#000;padding:10px;
+}
+.ArticleBlog  .quandqui {
+	font-weight:bold; font-style:italic;
+}
+.ArticleBlog h2 {
+	font-size:1.5em;font-weight:bold;letter-spacing:0.5em;
+	padding:10px 0; color:#000; text-align:left;
+	margin:0;border:none;
+}
+.ArticleBlog .ReseauxSoc {
+	border-top:none;
+	margin:10px 0;
+	height:20px; text-align:left;
+	
+}
+.ArticleBlog .ReseauxSoc .pull-left{
+	margin-right:10px;
+}
+.ArticleBlog .ReseauxSocLiens {
+	text-align:center;
+	margin:0 30%;
+	border-top:1px solid #000;
+}
+.ArticleBlog .commentaires {
+	text-align:center;
+	margin:20px 30%;
+	border-top:1px solid #000;font-weight:bold;
+}
+
+
+.ArticleBlog .btn.btn-noir {
+    color: #ffffff;
+    background-color: #252925;
+    background-image: linear-gradient(to bottom, #101c10, #0c120c);
+    border-color: #030f03 #030f03 #030f03;
+    margin-right:10px;
+}
+.ArticleBlog .btn.btn-noir:hover {
+    color: #ffffff;
+    background-color: #0c120c;
+    background-image: linear-gradient(to bottom, #0c120c, #0c120c);
+    border-color: #030f03 #030f03 #030f03;
+}
+
+.ArticleBlog h3 {
+	font-size:1.3em;color:#000;
+}
+
+.ArticleBlog h4 {
+	font-size:1.2em;
+	text-align:left;font-weight:bold;
+}
+
+.ArticleBlog .UnPost {
+	margin: 5px 0;
+}
+.ArticleBlog .chapo{
+	text-align: justify;
+	font-weight:bold;
+}
+.ArticleBlog .contenu {
+	margin:10px 0;
+}
+
+.ArticleBlog .LienArticle {
+	border:1px solid #000;
+	margin:20px auto;width:15%;text-align:center;padding: 15px;
+	
+}
+.ArticleBlog .LienArticle a {
+	color:#000; font-weight: bold;
+}
+
+
+/*************************************************/
+/********************Publications -******************/
+
+.Publications {
+	background-color: #fff;
+	height: 100%;color:#000;
+}
+.Publications h1 {
+	font-size:1.5em;font-weight:bold;letter-spacing:0.5em;
+	padding-top:20px;padding-bottom: 5px;color:#000; text-align:center;
+	border-bottom:1px solid #000;margin:0 30%;
+}
+.Publications h2 {
+	font-size:1.3em;color:#000;padding-top:10px;
+	text-align:center;
+}
+
+.Publications h3 {
+	font-size:1.2em;
+	text-align:left;
+        font-weight:bold;
+} 
+
+.Publications .chapo{
+	text-align: justify;
+	padding-top:10px;
+
+}
+.Publications .Filtres {
+	text-align:center;
+	margin:30px auto;
+}
+.Publications .Filtres .icoFiltre{
+        height: 50px;
+        border: 1px solid #ccc;
+}
+.Publications .Filtres a:hover .icoFiltre{
+        border-color:  #641313;
+}
+.Publications .Filtres .active a{
+	color:#641313;font-weight:bold;
+}
+.Publications .unecateg {
+	padding-right:10px;display:inline;
+}
+.Publications .unecateg  a{
+	color:#313131;
+        font-size:1.2em;
+        text-decoration: none;
+}
+.Publications .unecateg  a:hover{
+	text-decoration: none;
+}
+.Publications .article{
+        width: 32.4%;
+}
+.Publications .article .icoCatArticle{
+        height: 40px;
+        /*vertical-align: middle;*/
+        width: 40px;
+        border: 1px solid #ccc;
+        margin-right: 5px;
+        float: left;
+}
+.Publications .article .quandqui{
+        clear: both;
+}
+.Publications .LienArticle,
+.Blog .LienArticle{
+	margin:20px auto;
+        text-align:center;
+}
+.Publications .LienArticle a,
+.Blog .LienArticle a{
+	color:#000;
+        font-weight: bold;
+        display: inline-block;
+        width: 100px;
+        padding: 20px 10px;
+        border:1px solid #000;
+}
+.Publications .LienArticle a:hover,
+.Blog .LienArticle a:hover{
+	color:#fff;
+        background-color:#641313;
+        text-decoration: none;
+}
+.Publications #emptyFilter {
+    text-align: center;
+    font-size: 1.4em;
+    color: #641313;
+}
+
+/************* Contact **********************************/
+.FicheContact {
+	background-color:#fff;color:#000;
+	
+}
+.FicheContact h2 {
+	font-size:2em;text-transform:uppercase;padding-bottom:10px;
+	border-bottom:1px solid #000;margin-bottom:20px;
+}
+#formContact{
+   margin: 0;padding:20px;
+}
+#formContact #formInputs{
+   margin-bottom: 15px;
+}
+#formContact #formInputs .control-group{
+   margin-bottom: 10px;
+}
+#formContact #formInputs .control-group:after{
+   clear: both;
+   display: table;
+   content: " ";
+}
+#formContact #formInputs .control-group label{
+   display: inline-block;
+   width: 175px;
+   text-align: left;
+   
+}
+#formContact #formInputs .control-group input{
+    width: 65%;
+	float: right;
+}
+#formContact #formInputs .control-group input.input-large{
+    width: 83%;
+}
+#formContact #formInputs .control-group textarea{
+    width: 83%;
+    float: right;
+    resize: vertical;
+}
+#captchaContact{
+    margin-bottom: 20px;
+}
+#captchaContact label{
+    text-align: left;
+}
+
+#captchaContact span.col-md-1{
+    width: 40px;
+    padding: 3px 0;
+}
+#captchaContact input[readonly]{
+    border: none;
+    width: 40px;
+    padding: 3px 0;
+}
+#submitButtons button,
+#submitButtons a{
+    /*border-radius: 30px;*/
+    border-radius: 0;
+    border: none;
+    padding: 10px;
+}
+#submitButtons button{
+    background-color: #054e45;
+}
+#submitButtons a{
+    background-color: #641313;
+}
+span.Obligatoire{
+    color: #088373;
+    font-weight: 600;
+}
+#infoSupp{
+    font-size: 0.8em;padding:20px;
+}
+
+/*************************************************/
+/********************Footer -******************/
+#FooterAbtel{
+	height: 30px;
+	position:absolute;
+	margin:auto;
+	padding: 5px 10px ;
+        right: 0;
+        left: 0;
+        bottom: 0;
+}
+#FooterAbtel a {
+	float:right; color:#fff;
+}
+
+#FooterAbtel a:hover {
+	color:#641313;
+}
+
+/** BOOSTRATP ***/
+.navbar{
+	margin:20px 30%;	
+	height:40px;
+	min-height: 10px;
+    width:auto;
+}
+.menuPrincipal.navbar-default {
+    background-color: #ccc;
+    border-color: transparent;
+    border-radius: 0;
+}
+.menuPrincipal.navbar-default .navbar-nav > li.active {
+   background-color: #641313;
+}
+.menuPrincipal.navbar-default .navbar-nav > li.active > a{
+   color:#fff;
+   text-decoration:none;
+}
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+ 	background-color: transparent;
+}
+.menuPrincipal.navbar-default .navbar-nav > li > a {
+    color: #313131;
+    font-size:1.2em;
+}
+.menuPrincipal.navbar-default .navbar-nav > li > a:hover {
+   color:#000;
+   text-decoration:none;
+}
+
+.menuPrincipal.navbar-default .navbar-nav > li > a {
+    color: #313131;
+    font-size:1.2em;
+}
+.menuPrincipal.navbar-nav > li {
+	padding: 10px 15px;float: left; 
+}
+
+
+
+/**************************************************************************/
+/*********************    Responsive/Adaptative    ************************/
+/**************************************************************************/
+
+/*=========== 992 - 1199 : tablette paysage ======*/
+@media (min-width: 992px) and (max-width: 1199px) {
+
+	.navbar {
+   		height: 40px;
+	    margin: 20px 25%;
+	    min-height: 10px;
+	    width: auto;
+	}		
+
+	.Blog .LienArticle {
+   	 	padding: 15px;
+	    width: 26%;
+	}
+	.Blog .Apropos .LienArticle {
+   	 	padding: 15px;
+	    width: 50%;
+	}
+}
+
+/*=========== 768 - 991 : petite tablette paysage ======*/
+@media (min-width: 768px) and (max-width: 991px) {
+
+	.navbar {
+   		height: 40px;
+	    margin: 20px 19%;
+	    min-height: 10px;
+	    width: auto;
+	}
+	
+	.Blog .LienArticle {
+   	 	padding: 15px;
+	    width: 50%;
+	}
+	.Blog .Apropos .LienArticle {
+   	 	padding: 15px;
+	    width: 45%;
+	}
+			
+}
+
+/*=========== <767 : telephone paysage et tablette portrait ======*/
+@media (max-width: 767px) {
+	
+ 	
+	#MenuAccueil .ElementMenu {
+    	margin: 10px;
+	}  
+	.navbar {
+ 	   	height: auto;
+    	margin:10px auto;
+    	min-height: 10px;
+    	width: auto;
+	}    
+	.navbar-nav {
+    	margin: 0;
+	}
+	
+	.navbar-collapse {
+ 		padding-left:0;padding-right:0;
+ 	}   
+
+ 	.navbar-collapse {
+ 		padding-left:0;padding-right:0;
+ 	}   
+ 	.menuPrincipal.navbar-nav > li {
+		float: left;
+    	font-size: 1em;
+    	padding: 10px 18px;
+	}
+	
+	.Blog .LienArticle {
+   	 	padding: 15px;
+	    width: 50%;
+	}
+	.Blog .Apropos .LienArticle {
+   	 	padding: 15px;
+	    width: 45%;
+	}
+	
+	
+}
+
+/*=========== <465 : smartphone portrait======*/
+@media (max-width: 465px) {
+	
+ 	#MenuAccueil .ElementMenu {
+    	margin: 10px;
+	}  
+	.navbar {
+ 	   height: auto;
+    	margin: 10px auto;
+    	min-height: 10px;
+    	width: auto;
+	}
+	.navbar-nav {
+    	margin: 0;
+	}
+	
+	.navbar-collapse {
+ 		padding-left:0;padding-right:0;
+ 	}   
+	.menuPrincipal.navbar-nav > li {
+		float: left;
+    	font-size: 0.9em;
+    	padding: 10px 5px;
+	}
+	
+	.Blog .LienArticle {
+   	 	padding: 15px;
+	    width: 50%;
+	}
+	.Blog .Apropos .LienArticle {
+   	 	padding: 15px;
+	    width: 45%;
+	}
+	
+}

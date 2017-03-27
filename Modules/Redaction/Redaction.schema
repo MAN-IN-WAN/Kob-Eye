@@ -9,7 +9,7 @@
 		<PROPERTIES type="file" special="multi"  category="Informations">Icone</PROPERTIES>
 		<PROPERTIES type="varchar" method="getModele" list="1" form="1" fiche="1">Modele</PROPERTIES>
 		<PROPERTIES type="order" category="Publication" form="1" fiche="1">Ordre</PROPERTIES>
-		<FKEY card="0,1" data="Categorie,Id" link="1" form="1">CategorieId</FKEY>
+		<FKEY card="0,1" data="Categorie,Id" link="1" form="1" parentDescription="Catégorie">CategorieId</FKEY>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Article" driver="mysql" order="Ordre" orderType="ASC" AccessPoint="1" Description="Articles"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png"  className="RedactionArticle" Class="Modules/Redaction/Class/Article.class.php">

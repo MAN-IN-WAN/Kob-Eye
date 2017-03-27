@@ -328,9 +328,9 @@ nav.left-menu .logo-container {
 
 nav.left-menu .logo-container .logo {
     display: block;
-    max-width: 150px;
-    height: 37px;
-    margin-left: -3px;
+    max-width: 200px;
+    height: 50px;
+    margin-left: -5px;
 }
 
 nav.left-menu .logo-container .logo img {

@@ -2,62 +2,39 @@
     <div class="logo-container">
         <a href="#/dashboards/alpha" class="logo">
             <img src="Skins/AngularAdmin/assets/common/img/logo.png" alt="Clean UI Admin Template" />
-            <img class="logo-inverse" src="Skins/AngularAdmin/assets/common/img/logo-inverse.png" alt="Clean UI Admin Template" />
+            <img class="logo-inverse" src="Skins/AngularAdmin/img/logo.png" alt="Abtel informatique" />
         </a>
     </div>
     <div class="left-menu-inner scroll-pane">
         <ul class="left-menu-list left-menu-list-root list-unstyled">
             <li class="left-menu-list-submenu">
-            <li>
-                <a class="left-menu-link" href="#/dashboards/alpha">
-                    <i class="left-menu-link-icon icmn-home2"><!-- --></i>
-                    <span class="menu-top-hidden">Dashboard</span>
-                </a>
-            </li>
-            <li class="left-menu-list-submenu">
-            <a class="left-menu-link" href="javascript: void(0);">
-                <i class="left-menu-link-icon icmn-cart5"><!-- --></i>
-                Ecommerce
-            </a>
-            <ul class="left-menu-list list-unstyled">
-                <li>
-                    <a class="left-menu-link" href="#/ecommerce/dashboard">
-                        Dashboard
-                    </a>
-                </li>
-                <li>
-                    <a class="left-menu-link" href="#/ecommerce/products-catalog">
-                        Products Catalog
-                    </a>
-                </li>
-                <li>
-                    <a class="left-menu-link" href="#/ecommerce/product-details">
-                        Product Details
-                    </a>
-                </li>
-                <li>
-                    <a class="left-menu-link" href="#/ecommerce/product-edit">
-                        Product Edit
-                    </a>
-                </li>
-                <li>
-                    <a class="left-menu-link" href="#/ecommerce/products-list">
-                        Products List
-                    </a>
-                </li>
-                <li>
-                    <a class="left-menu-link" href="#/ecommerce/orders">
-                        Orders
-                    </a>
-                </li>
-                <li>
-                    <a class="left-menu-link" href="#/ecommerce/cart-checkout">
-                        Cart / Checkout
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="left-menu-list-separator"><!-- --></li>
+            {%  for m in menus %}
+                {% if m.getSubMenus()|length > 0 %}
+                    <li class="left-menu-list-submenu">
+                        <a class="left-menu-link" href="javascript: void(0);">
+                            <i class="left-menu-link-icon icmn-files-empty2"><!-- --></i>
+                            {{ m.Titre }}
+                        </a>
+                        <ul class="left-menu-list list-unstyled">
+                            {% for m2 in m.getSubMenus() %}
+                                <li>
+                                    <a class="left-menu-link" href="#/{{ m.Url }}/{{ m2.Url }}">
+                                        {{ m2.Titre }}
+                                    </a>
+                                </li>
+                            {%  endfor %}
+                        </ul>
+                    </li>
+                {% else %}
+                    <li>
+                        <a class="left-menu-link" href="#/{{ m.Url }}">
+                            <i class="left-menu-link-icon icmn-home2"><!-- --></i>
+                            <span class="menu-top-hidden">{{ m.Titre }}</span>
+                        </a>
+                    </li>
+                {% endif %}
+            {%  endfor %}
+            <li class="left-menu-list-separator"></li>
             {%  for mod in modules %}
             <li class="left-menu-list-submenu">
                 <a class="left-menu-link" href="javascript: void(0);">
@@ -67,7 +44,7 @@
                 <ul class="left-menu-list list-unstyled">
                     {% for obj in mod.getAccessPoint() %}
                     <li>
-                        <a class="left-menu-link" href="#/{{ mod.Nom }}/{{ mod.titre }}">
+                        <a class="left-menu-link" href="#/{{ mod.Nom }}/{{ obj.titre }}">
                             {{ obj.description }}
                         </a>
                     </li>

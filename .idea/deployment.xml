@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="f-onesup.com">
+  <component name="PublishConfigData" serverName="bertrandimmobilier.fr">
     <serverData>
+      <paths name="bertrandimmobilier.fr">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/www" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="client.eng.systems">
         <serverdata>
           <mappings>
@@ -37,10 +44,24 @@
           </mappings>
         </serverdata>
       </paths>
+      <paths name="guilaume-navarro.fr">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/kobeye" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="lace-restaurant.fr">
         <serverdata>
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="parc.abtel.fr">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/var/www/html" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

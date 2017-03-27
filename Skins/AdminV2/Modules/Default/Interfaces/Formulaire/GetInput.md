@@ -79,6 +79,9 @@
 	[CASE html]
 		<textarea ROWS="30" class="Champ EditorFull" style="width:491px;" name="[!Prefixe!][!Prop::Nom!]" id="field[!Prefixe!][!Prop::Nom!]">[!Valeur!]</textarea>
 	[/CASE]
+	[CASE raw]
+		<textarea ROWS="15" class="Champ" style="width:491px;" name="[!Prefixe!][!Prop::Nom!]" id="field[!Prefixe!][!Prop::Nom!]">[!Valeur!]</textarea>
+	[/CASE]
 	[CASE textonly]
 		<textarea ROWS="15" class="Champ" style="width:491px;" name="[!Prefixe!][!Prop::Nom!]" id="field[!Prefixe!][!Prop::Nom!]">[!Valeur!]</textarea>
 	[/CASE]

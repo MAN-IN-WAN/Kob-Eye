@@ -1,0 +1,63 @@
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/suivi_variable.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/swfobject.js[/HEADER]
+
+[HEADER JS]Tools/Js/Jquery/1.11.2/jquery.min.js[/HEADER]
+[HEADER JS]Tools/Css/Bootstrap/3.3.1/js/bootstrap.min.js[/HEADER]
+[HEADER JS]Tools/Js/Grafikart-Zoombox/zoombox.js[/HEADER]
+[HEADER JS]Tools/Js/Isotope/isotope.pkgd.min.js[/HEADER]
+
+[HEADER CSS]Tools/Css/Bootstrap/3.3.1/css/bootstrap.css[/HEADER]
+[HEADER CSS]Tools/Js/Grafikart-Zoombox/zoombox.css[/HEADER]
+
+
+
+[HEADER]
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+		<script src="/Tools/assets/js/html5shiv.js"></script>
+		<script src="/Tools/[!Systeme::Skin!]/assets/js/respond.min.js"></script>
+	<![endif]-->
+	<link href="https://fonts.googleapis.com/css?family=Libre+Baskerville" rel="stylesheet"> 	
+	
+[/HEADER]
+
+
+// TOUT EST GÉRÉ AVEC LES MODELES DE MISE EN PAGE OU DE REDACTION OU LES TEMPLATES
+// L'ENTETE DU SITE (AUTRE QUE ACCUEIL) EST GÉRÉ AVEC UN MODÈLE APPELÉ PAR LE TEMPLATE
+<div id="mainContent">
+	[DATA]
+</div>
+<div id="FooterAbtel" class="container" >
+	<a href="http://agence-web.abtel.fr" target="_blank">Abtel agence web @ 2016</a>
+</div>
+
+	
+	
+
+
+<script type="text/javascript">
+	/**
+	* supression du contenu lors de la disparition du popup
+	*/
+	$('#lemodal').on('hidden.bs.modal', function (e) {
+		$(e.target).removeData('bs.modal').find('.modal-content').empty();
+	});
+	
+</script>
+
+<script type="text/javascript">
+	//Zoombox pour agrandir les photos
+	$(document).ready(function(){
+		$('a.zoombox').zoombox({
+			theme       : 'zoombox',        //available themes : zoombox,lightbox, prettyphoto, darkprettyphoto, simple
+			opacity     : 0.8,              // Black overlay opacity
+			duration    : 800,              // Animation duration
+			animation   : true,             // Do we have to animate the box ?
+			gallery     : true,             // Allow gallery thumb view
+			autoplay : false                // Autoplay for video
+		});
+	});
+	
+
+</script>
+

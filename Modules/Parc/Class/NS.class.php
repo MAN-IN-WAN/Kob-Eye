@@ -17,6 +17,7 @@ class NS extends genericClass {
 		if($this->_isVerified) {
 			// Dans le cas du déplacer on doit connaitre les nouveaux parents donc 2 Save()
 			parent::Save();
+            if($synchro) $this->_KEDomain->updateDnsSerial();
 		}
 	}
 
@@ -133,9 +134,11 @@ class NS extends genericClass {
 	 */
 	private function buildEntry( $new = true ) {
 		$entry = array();
-		$KENS = $this->getNameServer();
-		if (!is_object($KENS))return false;
-		$entry['dnscname'] = $KENS->DNSNom . '.';
+		//$KENS = $this->getNameServer();
+		//if (!is_object($KENS))return false;
+		//$entry['dnscname'] = $KENS->DNSNom . '.';
+        $entry['dnscname'] = $this->Dnscname;
+        $entry['dnsdomainname'] = $this->Dnsdomainname;
 		$entry['cn'] = $this->Nom;
 		if($new) {
 			$entry['objectclass'][0] = 'dnsrrset';

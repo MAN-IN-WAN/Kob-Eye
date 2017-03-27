@@ -48,15 +48,17 @@ class Sys extends Root{
 	var $CurrentLanguage;
 	var $isLogged = 0;
 	//Menus
-	var $CurrentMenu;
-	var $DefaultMenu;
-	var $MenusFromUrl;
+	static $CurrentMenu;
+	static $DefaultMenu;
+	static $MenusFromUrl;
 	//Config
 	static $keywordsProcessing = true;
 	//Keywords
     static $keywords = array();
 
     static $FORCE_INSERT = false;
+    static $NO_TEMPLATE = false;
+    static $REMOVE_COMMENT = true;
 
 //*************//
 //***ETAPE 1***//
@@ -492,7 +494,31 @@ class Sys extends Root{
 					print($data);
 				}
 			break;
-
+            case "raw":
+                $file = $this->Lien.'.'.$this->type;
+                if (@fopen(ROOT_DIR.$file,'r') ) {
+                    //si un fichier existe
+                    $file = $this->Lien.'.'.$this->type;
+                    $Temp = explode("/",$file);
+                    $name = $Temp[sizeof($Temp)-1];
+                    $this->output_file($file,$name,false,$detectmime);
+                }else{
+                    //ON definie les variables d environnements
+                    Sys::$NO_TEMPLATE = true;
+                    Sys::$REMOVE_COMMENT = false;
+                    $Skin = new Skin();
+                    $this->CurrentSkin=$Skin;
+                    Sys::$Session->LastUrl = '/'.$this->Lien.'.'.$this->type;
+                    $data = "";
+                    $this->AnalyseVars();
+                    Parser::Init();
+                    $data .= $this->getContenu();
+                    $data = $Skin->ProcessLang($data);
+                    if (DEBUG_DISPLAY) $data.=KError::displayErrors();
+                    if($this->type == "htm" && defined('HTML_CACHE') && HTML_CACHE) $data = str_replace(array("\r", "\n", "\t"),"",$data);
+                    print($data);
+                }
+                break;
 			case "pdf":
 				if ($this->type=="pdf"){
 					header('Content-type: application/pdf');
@@ -651,8 +677,8 @@ class Sys extends Root{
 			//Modification de l'url du menu en cours
 			$U = $Menus[0];
 			for ($i=1;$i<sizeof($this->MenusFromUrl);$i++)$U.='/'.$this->MenusFromUrl[$i]->Url;
-			$this->CurrentMenu = $Results->getClone(true);
-			$this->CurrentMenu->Url=$U;
+			Sys::$CurrentMenu = $Results->getClone(true);
+			Sys::$CurrentMenu->Url=$U;
 		}
 //		if (isset($Results)&&is_object($Results)&&$Results->Alias!=""&&$Results->Niveau<sizeof($Menus)){
 // Correctio prob de menu sans alias
