@@ -1,0 +1,102 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//ABTEL Mediterranee//Gestion v0.1//FR
+BEGIN:VEVENT
+DTSTART:20170213T13:15:00
+DTEND:20170213T13:16:00
+CATEGORIES:AUDITOCCITANIE
+SUMMARY:AUDITOCCITANIE : @ du client .... 
+DESCRIPTION: BONJOUR JE VOUS RELANCE SUITE A MON APPEL DE CE MATIN EN EFFET NOUS AVONS DEPUIS VENDREDI UN SOUCIS D IMPRESSION ASSEZ IMPORTANT EN CE QUI CONCERNE LE CHOIX DU BAC LORS DE L EDITION MERCI DE BIEN VOULOIR ENVOYER UN TECHNICIEN AU PLUS VITE AFIN DE POUVOIR REGLER CE DESAGREMENT A BIENTOT BRUNOAUDIT OCCITANIE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20170206T08:10:00
+DTEND:20170206T08:11:00
+CATEGORIES:GAZSERVICE
+SUMMARY:GAZSERVICE : Message d'erreur voir GED ticket
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20170116T08:27:00
+DTEND:20170116T08:28:00
+CATEGORIES:AFE2
+SUMMARY:AFE2 : @ de M. Bresillion .... 
+DESCRIPTION: De: "franck bresillion" &Agrave;: "support" Cc: "stephane creton" Envoy&eacute;: Dimanche 15 Janvier 2017 13:10:30Objet: AFE / sauvegardeBonjour Votre sauvegarde a fait planter aujourd'hui (ce dimanche) notre serveur AQ = plus acces &agrave; aucune ressources r&eacute;seaux, connexion rdp impossibleSeul le red&eacute;marrage physique est possible. il va falloir trouver une autre solution.
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20170113T08:28:00
+DTEND:20170113T08:29:00
+CATEGORIES:ANEST
+SUMMARY:ANEST : Rappel de Marie-Thérèse imprimante bloquée 
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161027T08:52:00
+DTEND:20161027T08:53:00
+CATEGORIES:MEDIATEQUE_GARO
+SUMMARY:MEDIATEQUE_GARO : Rappel de Mme Castagno .... 
+DESCRIPTION: animations pr&eacute;vues la semaine prochaineelle souhaite faire le point vu que mardi est f&eacute;ri&eacute;
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161019T08:27:00
+DTEND:20161019T08:28:00
+CATEGORIES:TRANSVINS
+SUMMARY:TRANSVINS : Rappel à Véronique ok pour elle, elle attend son arrivée
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161019T08:27:00
+DTEND:20161019T08:28:00
+CATEGORIES:TRANSVINS
+SUMMARY:TRANSVINS : Intervention de GARCIA ce matin
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161007T10:26:00
+DTEND:20161007T10:27:00
+CATEGORIES:ANIM
+SUMMARY:ANIM : Appel du site Valmédica le problème persiste
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160922T14:42:00
+DTEND:20160922T14:43:00
+CATEGORIES:ICN
+SUMMARY:ICN : Rappel malgré l'échange du casque ça ne foncitonne toujours pas .... 
+DESCRIPTION: voir pour le changement du t&eacute;l
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160318T15:45:00
+DTEND:20160318T15:46:00
+CATEGORIES:DENIM
+SUMMARY:DENIM : RDV pris le vendredi 18/03/2016 à partir de 16h - SC .... 
+DESCRIPTION: De: sbrownfoot@abtel.fr&Agrave;: "Patrick Makinadjian" Cc: frederic@shakey.fr, sc-fogo@shakey.frEnvoy&eacute;: Vendredi 18 Mars 2016 15:44:20Objet: Re: Abtel Informatique - Notre devis G03253Bonjour,Un technicien va intervenir d'ici 1/2h, merci de laisser le poste &agrave; disposition.Cordialement.  BROWNFOOT Sophie ABTELParc deltaKm 4 - Route d'Arles30230 BouillarguesFrancehttp://www.abtel.frAssistante AdministrativeTel : 04 66 04 06 13Fax: 04 66 04 09 80 Email : sbrownfoot@abtel.frPensez ENVIRONNEMENT : n'imprimez que si n&eacute;cessaire !
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160318T15:43:00
+DTEND:20160318T15:44:00
+CATEGORIES:DENIM
+SUMMARY:DENIM : Devis validé ce jour - CMD G03100 .... 
+DESCRIPTION: De: "Patrick Makinadjian" &Agrave;: sbrownfoot@abtel.frCc: frederic@shakey.fr, sb@abtel.fr, sc-fogo@shakey.frEnvoy&eacute;: Vendredi 18 Mars 2016 15:27:52Objet: Re: Abtel Informatique - Notre devis G03253BonjourPar retour de ce mail je vous confirme mon bon pour accordMerci de faire l'intervention Cordialement Patrick Makinadjian 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160318T11:20:00
+DTEND:20160318T11:21:00
+CATEGORIES:MAISONHOURS
+SUMMARY:MAISONHOURS : M. Allier s'impatiente ..... 
+DESCRIPTION: De: sbrownfoot@abtel.fr&Agrave;: "Guillaume Allier" Cc: "St&eacute;phanie Donson" , "ltroulet" , "Isabelle Angosto" Envoy&eacute;: Vendredi 18 Mars 2016 11:18:50Objet: Re: Abtel Informatique - Notre devis G02189Bonjour Monsieur,Nous attendons toujours les licences, nous avons relanc&eacute; le fournisseur pour cela, ils ont eu un probl&egrave;me informatique dans la semaine.Nous devrions les recevoir dans la journ&eacute;e.Le renouvellement s'effectuera d&eacute;s r&eacute;ception, nous le mettrons en priorit&eacute;.Cordialement.  BROWNFOOT Sophie ABTELParc deltaKm 4 - Route d'Arles30230 BouillarguesFrancehttp://www.abtel.frAssistante AdministrativeTel : 04 66 04 06 13Fax: 04 66 04 09 80 Email : sbrownfoot@abtel.frPensez ENVIRONNEMENT : n'imprimez que si n&eacute;cessaire !De: "Guillaume Allier" &Agrave;: sbrownfoot@abtel.frCc: "St&eacute;phanie Donson" , "ltroulet" Envoy&eacute;: Vendredi 18 Mars 2016 10:54:53Objet: Re: Abtel Informatique - Notre devis G02189Bonjour,Vous deviez intervenir lundi 14/03 pour installation des logiciels antivirus actuellement p&eacute;rim&eacute;s sur l&rsquo;ensemble de nos postes.Lundi &agrave; 17h, je vous ai appel&eacute; pour savoir ce qu&rsquo;il en &eacute;tait. Vous m&rsquo;avez alors indiqu&eacute; ne pas avoir re&ccedil;u les licences! A ce jour, je n&rsquo;ai toujours aucune nouvelle sur une nouvelle date d&rsquo;installation. Je vous remercie de bien vouloir revenir vers nous au plus t&ocirc;t.Bien &agrave; vous,Guillaume AllierPr&eacute;sidentM. 06 21 88 13 49T. 04 66 64 88 16F. 04 66 62 32 32                                             
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160318T11:13:00
+DTEND:20160318T11:14:00
+CATEGORIES:LOCA
+SUMMARY:LOCA : BP G03030 fait - dd ext n° 3797
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160318T11:06:00
+DTEND:20160318T11:11:00
+CATEGORIES:SYNERGIE
+SUMMARY:SYNERGIE : Eu Maria au tél .... 
+DESCRIPTION: doit faire le point avec M. Motard pour cette nouvelle licence, c'est lui qui prend la d&eacute;cisionrappeler semaine proch et insister sur le fait que ce n'est qu'une version d'&eacute;val et qu'elle ne sera bient&ocirc;t plus prot&eacute;g&eacute;Elle doit aussi faire le point sur l'ensemble des noms des postes &agrave; renouveller, doit nous faire suivre une liste pour mettre &agrave; jour le devis G03095voir DME si on l'a re&ccedil;oit
+END:VEVENT
+END:VCALENDAR

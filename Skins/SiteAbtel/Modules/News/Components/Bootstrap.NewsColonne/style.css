@@ -1,0 +1,21 @@
+a.ToutesLesNews {
+	display: block;
+	text-align: right;
+	margin-top: 5px;
+}
+
+a.LireLaSuiteNews {
+	display: block;
+	text-align: right;
+	margin: 5px 0;
+}
+
+div.CurrentNews {
+	font-weight: bold;
+	color:#9D4680;	
+}
+
+div.News {
+	border-bottom: 1px solid #888;
+	color:#470026;	
+}

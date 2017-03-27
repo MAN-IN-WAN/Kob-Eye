@@ -1,0 +1,1 @@
+[STORPROC [!Query!]|r][!r::getReservationPrice([!start!],[!end!],[!id!])!][/STORPROC]

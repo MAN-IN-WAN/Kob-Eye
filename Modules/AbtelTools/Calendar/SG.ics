@@ -1,0 +1,144 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//ABTEL Mediterranee//Gestion v0.1//FR
+BEGIN:VEVENT
+DTSTART:20170213T15:33:00
+DTEND:20170213T15:34:00
+CATEGORIES:AUDITOCCITANIE
+SUMMARY:AUDITOCCITANIE : Rappel de Mr Jean
+DESCRIPTION: N'ont pas recu d'appel de notre part. Probleme de bac de l'imprimante. Tout les utilisateurs impriment sur le m&ecirc;me bacAppeler au 04 66 67 95 01
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20170213T14:37:00
+DTEND:20170213T14:38:00
+CATEGORIES:FEDEPECHE30
+SUMMARY:FEDEPECHE30 : Rappel de Mme Danna...
+DESCRIPTION: Demande &agrave; parler &agrave; LT. Je lui ai expliqu&eacute; qu'il ne faisait plus partie de l'entreprise.Elle s'inquiete parce qu'elle n'a pas de nouvelles et cela devient tres urgent.04 66 67 95 01(Attente depuis le 16 decembre 2016)
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20170120T17:12:00
+DTEND:20170120T17:13:00
+CATEGORIES:SYNERGIE
+SUMMARY:SYNERGIE : Rappel de la cliente (Maria)...
+DESCRIPTION: Elle rappelle Lundi. Elle a appel&eacute; Orange qui lui dit qu'elle n'est pas cliente chez eux.Elle possede une autre BOX et veut savoir si elle peut la mettre en place en d&eacute;pannage.
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20170117T11:31:00
+DTEND:20170117T11:32:00
+CATEGORIES:OCEAN
+SUMMARY:OCEAN : Rappel du client pour relance. Voir le probleme au plus vite.
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20170116T08:34:00
+DTEND:20170116T08:35:00
+CATEGORIES:CENTREAFFAIRE1
+SUMMARY:CENTREAFFAIRE1 : Rappel de la cliente...
+DESCRIPTION: Personne &agrave; l'acces &agrave; internet. Les utilisateurs ne peuvent plus travailler, la cliente demande &agrave; etre rappeler tres rapidement.
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20170109T14:50:00
+DTEND:20170109T14:51:00
+CATEGORIES:FEDEPECHE30
+SUMMARY:FEDEPECHE30 : Rappel de Mme D'Anna...
+DESCRIPTION: Elle a appel&eacute; vendredi pour savoir ou en est le projet de la fibre, elle devait etre rappel&eacute;e aujourd'hui mais n'a pas eu d'appel.Elle souhaite etre rappel&eacute;e rapidement au 06 76 09 63 59
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160912T12:20:00
+DTEND:20160912T12:21:00
+CATEGORIES:BETAC
+SUMMARY:BETAC : Création du ticket de suivi
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160912T12:20:00
+DTEND:20160912T12:21:00
+CATEGORIES:BETAC
+SUMMARY:BETAC : Création du ticket de suivi
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T11:00:00
+DTEND:20160407T11:02:00
+CATEGORIES:ABTEL
+SUMMARY:ABTEL : Prise d'appel par  GALAN Sylvain...
+DESCRIPTION: Imprimante de pret: N'imprime pas
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T14:31:00
+DTEND:20160407T14:32:00
+CATEGORIES:ABTEL
+SUMMARY:ABTEL : Prise d'appel par  GALAN Sylvain...
+DESCRIPTION: OPTIPLEX 7020 sn/ 12951657902
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T14:28:00
+DTEND:20160407T14:29:00
+CATEGORIES:ABTEL
+SUMMARY:ABTEL : Prise d'appel par  GALAN Sylvain...
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160329T11:20:00
+DTEND:20160329T11:30:00
+CATEGORIES:GAN
+SUMMARY:GAN : Point DM + JCC + SC
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160329T11:45:00
+DTEND:20160329T12:00:00
+CATEGORIES:GAN
+SUMMARY:GAN : Demande SAV
+DESCRIPTION: Contact t&eacute;l&eacute;phonique + mail &agrave; INGRAM : serviceclient@ingrammicro.comBonjour,Comme convenu lors de notre conversation t&eacute;l&eacute;phonique ce jour, voici les &eacute;l&eacute;ments n&eacute;cessaires pour traiter ma demande:Num&eacute;ro client: 507151-000Num&eacute;ro de facture: 21-9174205R&eacute;f&eacute;rence produit: Disque dur SSD 480 Gb KingstonDemande: remplacement du disque dur hors serviceSKC300S37A/ 6795060/ 9904447-483.E01G50026B724B0400CC 1446 526ABBF0Je reste &agrave; votre disposition pour plus d'informations.Cordialement,
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160321T15:00:00
+DTEND:20160321T16:30:00
+CATEGORIES:DENIM
+SUMMARY:DENIM : Atelier...
+DESCRIPTION: Sauvegarde du disque durFormatage/ mise en service DENIM-PC1
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160321T09:45:00
+DTEND:20160321T10:00:00
+CATEGORIES:EOLANE
+SUMMARY:EOLANE : Preparation de la palette
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160321T09:35:00
+DTEND:20160321T09:45:00
+CATEGORIES:CM-RADIOLOGIE
+SUMMARY:CM-RADIOLOGIE : Atelier...
+DESCRIPTION: Donn&eacute;es r&eacute;cup&eacute;r&eacute;s sur le nouveau poste.Remontage des disquesFaire demande de destruction de l'ancien machine
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160321T08:30:00
+DTEND:20160321T09:20:00
+CATEGORIES:ABTEL
+SUMMARY:ABTEL : Réunion
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160318T14:00:00
+DTEND:20160318T14:30:00
+CATEGORIES:TUILERIE
+SUMMARY:TUILERIE : Atelier...
+DESCRIPTION: Test materiel : ok
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160318T08:30:00
+DTEND:20160318T09:30:00
+CATEGORIES:FIC
+SUMMARY:FIC : Livraison du materiel
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160317T10:00:00
+DTEND:20160317T10:15:00
+CATEGORIES:ABTEL
+SUMMARY:ABTEL : Réception commandes
+DESCRIPTION: 
+END:VEVENT
+END:VCALENDAR

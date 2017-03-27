@@ -1,0 +1,62 @@
+[HEADER JS]Tools/Js/Jquery/1.11.3/jquery.min.js[/HEADER]
+[HEADER JS]Tools/Css/Bootstrap/3.3.1/js/bootstrap.min.js[/HEADER]
+[HEADER JS]Tools/Js/Eternicode-DatePicker/js/bootstrap-datepicker.js[/HEADER]
+[HEADER JS]Tools/Js/Eternicode-DatePicker/js/locales/bootstrap-datepicker.fr.js[/HEADER]
+[HEADER JS]Tools/Js/Grafikart-Zoombox/zoombox.js[/HEADER]
+[HEADER JS]Tools/Js/JCarousel/jquery.jcarousel.min.js[/HEADER]
+[HEADER JS]Tools/Js/Isotope/isotope.min.js[/HEADER]
+[HEADER JS]Tools/Js/customScrollBar/jquery.mCustomScrollbar.concat.min.js[/HEADER]
+[HEADER JS]Tools/Js/syntaxhighlighter/scripts/shCore.js[/HEADER]
+[HEADER JS]Tools/Js/syntaxhighlighter/scripts/shBrushXml.js[/HEADER]
+
+[HEADER CSS]Tools/Css/Bootstrap/3.3.1/css/bootstrap.css[/HEADER]
+[HEADER CSS]Tools/Js/Eternicode-DatePicker/css/datepicker.css[/HEADER]
+[HEADER CSS]Tools/Js/Grafikart-Zoombox/zoombox.css[/HEADER]
+[HEADER CSS]Tools/Js/customScrollBar/jquery.mCustomScrollbar.min.css[/HEADER]
+[HEADER CSS]Tools/Js/syntaxhighlighter/styles/shCore.css[/HEADER]
+[HEADER CSS]Tools/Js/syntaxhighlighter/styles/shThemeDefault.css[/HEADER]
+
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/suivi_variable.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/swfobject.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/AbtelLayout.js[/HEADER]
+//[HEADER JS]Skins/[!Systeme::Skin!]/Js/jquery.textfill.js[/HEADER]
+
+
+
+[HEADER]
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+		<script src="/Tools/assets/js/html5shiv.js"></script>
+		<script src="/Tools/[!Systeme::Skin!]/assets/js/respond.min.js"></script>
+	<![endif]-->
+	
+[/HEADER]
+
+
+<div id="siteWrap">
+	<div id="header" class="row noMargin">
+		[MODULE Systeme/Structure/Header]
+	</div>
+	<div id="main" class="row noMargin">
+		[DATA]
+	</div>
+	[IF [!Lien!]=]
+		<div id="mainMenu"  class="row noMargin">
+			[MODULE Systeme/Menu/AbtelMenu]
+		</div>
+	[/IF]
+	<div id="footer" class="row noMargin">
+		[MODULE Systeme/Structure/Footer]
+	</div>
+</div>
+
+[COMPONENT Systeme/Bootstrap.Login/Default?TITRE=S'identifier]
+
+<script type="text/javascript">
+	$(document).on('ready',function(){
+		fitHeight();
+		//$('.customScroll').mCustomScrollbar();
+	});
+</script>
+
+[MODULE Systeme/Cookies/Default?gaProperty=UA-XXXXXX-Y&piwikSiteId=XXX]

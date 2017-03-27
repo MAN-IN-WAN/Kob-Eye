@@ -1,0 +1,109 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//ABTEL Mediterranee//Gestion v0.1//FR
+BEGIN:VEVENT
+DTSTART:20170123T13:30:00
+DTEND:20170123T13:31:00
+CATEGORIES:APELEM
+SUMMARY:APELEM : Faire devis ou commande
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20170117T11:02:00
+DTEND:20170117T11:03:00
+CATEGORIES:NIMAPLANTS
+SUMMARY:NIMAPLANTS : A facturer
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20170106T18:09:00
+DTEND:20170106T18:10:00
+CATEGORIES:LOCA
+SUMMARY:LOCA : Contrat Débloqué...
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161222T17:49:00
+DTEND:20161222T17:50:00
+CATEGORIES:CULTURESCOEUR
+SUMMARY:CULTURESCOEUR : JPn : on fait devis ou ?
+DESCRIPTION: De: "ABTEL_myriam" &Agrave;: "ABTEL_jpn" Envoy&eacute;: Lundi 19 D&eacute;cembre 2016 16:00:48Objet: Fwd: Module Kob-eye pour bloquer des r&eacute;servationsVoir demande ci-dessous,bon il a fallu que je teste pour voir et &agrave; priori il faut au moins 3h (j'en ai pass&eacute; 1h &agrave; chercher comment faire)Ma solution soit :ajouter une jointure entre spectacle et client(structure sociale) et ce qui est s&eacute;lectionn&eacute; est exclu des r&eacute;servationsajouter une jointure  entre structure culturelle et client(structure sociale) et les clients s&eacute;lectionn&eacute;s n'ont droit &agrave; aucune r&eacute;servation d'un spectacle organis&eacute; par la structure socialeattention risque de soucis car pas mal de choses &agrave; tester !!! et notamment s'ils font une rechercheBref ce n'est vraiment pas simpleCordialementLogo AbtelAbtel Agence WebDOMINGUEZ MyriamChef de Projet WebTel : 04 66 04 06 13Fax : 04 66 04 09 80myriam@abtel.frParc deltaKm 4 - Route d'Arles30230 BouillarguesFrancehttp://www.abtel.frPensez ENVIRONNEMENT : n'imprimez que si n&eacute;cessaire !Pub Abtel
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161222T10:19:00
+DTEND:20161222T10:20:00
+CATEGORIES:ARFOBOIS
+SUMMARY:ARFOBOIS : JPN : voir pour devis messagerie cloud ?
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161124T08:45:00
+DTEND:20161124T08:46:00
+CATEGORIES:TRANSMANUDEM
+SUMMARY:TRANSMANUDEM : Informer le client
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161003T13:33:00
+DTEND:20161003T13:34:00
+CATEGORIES:MP2
+SUMMARY:MP2 : REcontacter le client pour projet "refaire son site"
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160912T10:34:00
+DTEND:20160912T10:35:00
+CATEGORIES:MFM
+SUMMARY:MFM : Avertir le client
+DESCRIPTION: Est ce que tu avertis le client ou e le fais ?
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160524T18:52:00
+DTEND:20160524T18:53:00
+CATEGORIES:GAZSERVICE
+SUMMARY:GAZSERVICE : Contrat Débloqué...
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160524T09:00:00
+DTEND:20160524T09:01:00
+CATEGORIES:AUPALYA
+SUMMARY:AUPALYA : Contrat pour les mails à vérifier
+DESCRIPTION: plus de 9 Giga de mails pour une offre mutualis&eacute;e !
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160524T09:00:00
+DTEND:20160524T09:01:00
+CATEGORIES:CULTURESCOEUR
+SUMMARY:CULTURESCOEUR : Voir le renouvellement du contrat qui est arrivé à échéance
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160428T16:54:00
+DTEND:20160428T16:55:00
+CATEGORIES:IMMOPLUS
+SUMMARY:IMMOPLUS : Contrat Débloqué...
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160428T16:33:00
+DTEND:20160428T16:34:00
+CATEGORIES:REANIMA
+SUMMARY:REANIMA : Contrat Débloqué...
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160428T12:50:00
+DTEND:20160428T12:51:00
+CATEGORIES:LOCA
+SUMMARY:LOCA : Contrat Débloqué...
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160428T12:46:00
+DTEND:20160428T12:47:00
+CATEGORIES:LOCA
+SUMMARY:LOCA : Contrat Débloqué...
+DESCRIPTION: 
+END:VEVENT
+END:VCALENDAR

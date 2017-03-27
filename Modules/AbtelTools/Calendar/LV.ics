@@ -1,0 +1,704 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//ABTEL Mediterranee//Gestion v0.1//FR
+BEGIN:VEVENT
+DTSTART:20160819T10:30:00
+DTEND:20160819T10:31:00
+CATEGORIES:CM-RHUMAT
+SUMMARY:CM-RHUMAT : Appel cliente
+DESCRIPTION: Trop de manip pour aller sur le scanne. Remettre comme avant. L'appeler en fin de matin&eacute;eL'appeler vers midi moins le quart midi
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160818T15:21:00
+DTEND:20160818T15:22:00
+CATEGORIES:RBC
+SUMMARY:RBC : Appel client
+DESCRIPTION: Ca ne remarche pas
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160818T15:00:00
+DTEND:20160818T15:01:00
+CATEGORIES:LUNELMEDIC
+SUMMARY:LUNELMEDIC : Rappel du client
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160818T11:07:00
+DTEND:20160818T11:08:00
+CATEGORIES:ENFAIM
+SUMMARY:ENFAIM : Rappel du client
+DESCRIPTION: Demande qu'on l'appelle &agrave; 17h30
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160817T11:29:00
+DTEND:20160817T11:30:00
+CATEGORIES:ADRH
+SUMMARY:ADRH : Appel de Mme Thierry 04 68 67 61 27
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160817T09:03:00
+DTEND:20160817T09:04:00
+CATEGORIES:SIDAM
+SUMMARY:SIDAM : Rappel du client
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160816T11:38:00
+DTEND:20160816T11:39:00
+CATEGORIES:CAPMED
+SUMMARY:CAPMED : Rappel de la cliente
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160816T10:14:00
+DTEND:20160816T10:15:00
+CATEGORIES:CAPMED
+SUMMARY:CAPMED : Rappel de la cliente
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160816T09:38:00
+DTEND:20160816T09:39:00
+CATEGORIES:SIDAM
+SUMMARY:SIDAM : Rappel client  06 08 76 93 85
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160816T08:37:00
+DTEND:20160816T08:38:00
+CATEGORIES:COLOMBISPORTS
+SUMMARY:COLOMBISPORTS : PB mail frauduleux
+DESCRIPTION: > Bonjour,                Vous trouverez en PJ, les adresses e-mail de ce mail frauduleux.  Pour ce que j&rsquo;en vois, celle de c.colombi est juste except&eacute; qu&rsquo;il n&rsquo;y a pas de majuscules normalement,  celle de Judy est correcte mais elle ne veut plus qu&rsquo;on l&rsquo;utilise, par contre celle de Hugues Fermaud m&rsquo;est inconnue !                Merci de me tenir inform&eacute;e.                Cordialement,                Lucie BUSKILA                04 66 75 78 55                COLOMBI SPORTS
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160812T16:51:00
+DTEND:20160812T16:52:00
+CATEGORIES:AMTCUSTOM
+SUMMARY:AMTCUSTOM : Rappel du client
+DESCRIPTION: Aimerai avoir les codes avant ce week end
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160812T08:24:00
+DTEND:20160812T08:25:00
+CATEGORIES:VEYRON
+SUMMARY:VEYRON : Rappel de M Grand
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160811T14:51:00
+DTEND:20160811T14:52:00
+CATEGORIES:RBC
+SUMMARY:RBC : Appel client
+DESCRIPTION: C&agrave; a replanter
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160811T09:35:00
+DTEND:20160811T09:36:00
+CATEGORIES:TUILERIE
+SUMMARY:TUILERIE : rappel de Mme Botto
+DESCRIPTION: 06 60 42 17 17attend toujoursson devis + le PB de la prise r&eacute;seau
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160811T07:53:00
+DTEND:20160811T07:54:00
+CATEGORIES:APELEM
+SUMMARY:APELEM : Réponse
+DESCRIPTION: Bonjour,Malgr&eacute; le fait que la connexion dont je dispose est extr&ecirc;mement faible, j'ai r&eacute;ussi apr&egrave;s de multiples essais a me connecter au serveur dfs.Je vous remercie pour votre aide.Pour information j'ai d&ucirc; d&eacute;sinstaller la version FortiClient pr&eacute;sente sur mon PC que j'avais t&eacute;l&eacute;charger sur le site en direct puis mettre en place la version disponible sur le portail apelem (pr&eacute;-configurer a l&rsquo;exception du port qui est configurer en 10443 que j'ai remis a 443)J'ai &eacute;galement d&eacute;sactiver le proxy sur mon navigateur qui se met en place automatiquement lors de l'installation.   Cordialement,MOLINA R&eacute;mi
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160810T15:22:00
+DTEND:20160810T15:23:00
+CATEGORIES:APELEM
+SUMMARY:APELEM : Réponse
+DESCRIPTION: Bonjour,J'ai pas encore essay&eacute; la connexion. Je ferait l'essai ce soir. Cordialement,Molina R&eacute;mi
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160810T11:14:00
+DTEND:20160810T11:15:00
+CATEGORIES:PAD
+SUMMARY:PAD : Réponse
+DESCRIPTION: Bonjour, Ci-joint les photos demand&eacute;es. Cordialement, 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160810T11:11:00
+DTEND:20160810T11:12:00
+CATEGORIES:PUMPY
+SUMMARY:PUMPY : Appel cliente
+DESCRIPTION: C&agrave; ne marche pas
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160809T14:02:00
+DTEND:20160809T14:03:00
+CATEGORIES:APELEM
+SUMMARY:APELEM : Relance client
+DESCRIPTION: De: "tleletty" &Agrave;: "support" Cc: "mmatroni" Envoy&eacute;: Mardi 9 Ao&ucirc;t 2016 12:34:51Objet: Fwd: Acc&egrave;s VPNBonjour,La demande de R&eacute;mi a t'elle &eacute;t&eacute; prise en charge ?Avec 75% de d&eacute;placement, il a absolument besoin du VPN.Merci Thomas Le LettySupply Chain DirectorDMS APELEMtleletty@apelem.com+33 6 70 63 88 96
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160809T11:28:00
+DTEND:20160809T11:29:00
+CATEGORIES:CM-ROMAN
+SUMMARY:CM-ROMAN : Rappel de la cliente
+DESCRIPTION: Le Pc et le TPE ne marche plus
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160808T16:15:00
+DTEND:20160808T16:16:00
+CATEGORIES:CM-BELLON
+SUMMARY:CM-BELLON : Rappel de la cliente
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160808T14:08:00
+DTEND:20160808T14:09:00
+CATEGORIES:COLOMBISPORTS
+SUMMARY:COLOMBISPORTS : Rappel de la cliente
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160805T15:24:00
+DTEND:20160805T15:25:00
+CATEGORIES:VEYRON
+SUMMARY:VEYRON : Rappel M Grand au sujet de Castillon
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160805T13:38:00
+DTEND:20160805T13:39:00
+CATEGORIES:LIGOUZAT
+SUMMARY:LIGOUZAT : Ne pas appeler PB résolu
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160805T11:21:00
+DTEND:20160805T11:22:00
+CATEGORIES:FONE
+SUMMARY:FONE : rappel de la cliente
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160805T10:16:00
+DTEND:20160805T10:17:00
+CATEGORIES:VEYRON
+SUMMARY:VEYRON : Rappel M Grand
+DESCRIPTION: A fait le point avec Castillon
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160805T08:59:00
+DTEND:20160805T09:00:00
+CATEGORIES:URBAINNET
+SUMMARY:URBAINNET : Réponse
+DESCRIPTION: Bonjour M. Bottura,Comme convenu, nous avons sauvegard&eacute; les dossiers du serveur sur le disque ethernet (192.168.0.29).Les fichiers copi&eacute;s sont accessibles sur l'adresse suivante:192.168.0.29\\Sauvegarde\\SAVE0108\\Nous restons &agrave; votre disposition pour plus d'informations.Cordialement, Support TechniqueAbtelParc deltaKm 4 - Route d'Arles30230 BouillarguesFrancehttp://www.abtel.frSupport ITTel +33(0)4 66 04 06 13 Fax +33(0)4 66 04 09 80 Email : support@abtel.fr
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160805T07:50:00
+DTEND:20160805T07:51:00
+CATEGORIES:TRANS_PEYROT
+SUMMARY:TRANS_PEYROT : Réponse
+DESCRIPTION: De : Chris Peyrot [mailto:chris.peyrot@peyrot.fr] Envoy&eacute; : jeudi 4 ao&ucirc;t 2016 18:41&Agrave; : dmarch@abtel.frObjet : RE: Connexion VPN Bonjour, Veuillez m&rsquo;excuser pour cette r&eacute;ponse tardive. Je me suis connect&eacute;e hier et aujourd&rsquo;hui en VPN, RAS, tout semble fonctionner normalement. Je ne manquerai pas de revenir vers vous si je rencontre &agrave; nouveau un probl&egrave;me.Cordialement, cid:image001.png@01CE2946.74B03E80Chris Peyrot Transports PeyrotZAC Salvaza - Bld Henri BouffetB.P. 109811880 CARCASSONNE CEDEX 9T&eacute;l : 04.68.11.44.29 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160804T12:05:00
+DTEND:20160804T12:06:00
+CATEGORIES:URBAINNET
+SUMMARY:URBAINNET : Rappel du client
+DESCRIPTION: M Bottura 06 08 02 94 82
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160804T10:36:00
+DTEND:20160804T10:37:00
+CATEGORIES:ANIM
+SUMMARY:ANIM : Appel cliente
+DESCRIPTION: Sur Valm&eacute;dica le voyant s'allume mais il n'y a pas de sonnerie et quand elle d&eacute;croche il n'y a rien et &ccedil;&agrave; raccroche au patient
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160804T10:32:00
+DTEND:20160804T10:33:00
+CATEGORIES:GAZDEPANNAGE
+SUMMARY:GAZDEPANNAGE : Création du ticket de suivi
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160804T09:08:00
+DTEND:20160804T09:09:00
+CATEGORIES:ADRH
+SUMMARY:ADRH : Appel cliente
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160804T08:54:00
+DTEND:20160804T08:55:00
+CATEGORIES:CDARCHITECTURE
+SUMMARY:CDARCHITECTURE : Appel client
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160803T14:53:00
+DTEND:20160803T14:54:00
+CATEGORIES:UNIBIO
+SUMMARY:UNIBIO : URGENT - Pour Mathias - GLPI à nouveau planté
+DESCRIPTION: Bonjour,A l'attention de Mathias : notre GLPI est &agrave; nouveau plant&eacute; depuis environ 30 minutes.Peux-tu faire qqch stp ?MerciCordialement,
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160803T14:19:00
+DTEND:20160803T14:20:00
+CATEGORIES:UNIBIO
+SUMMARY:UNIBIO : Appel sabrina
+DESCRIPTION: Le GLPI est de nouveau en rade
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160803T14:07:00
+DTEND:20160803T14:08:00
+CATEGORIES:CDARCHITECTURE
+SUMMARY:CDARCHITECTURE : Rappel client
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160802T17:48:00
+DTEND:20160802T17:49:00
+CATEGORIES:PRODENTEC
+SUMMARY:PRODENTEC : Réponse
+DESCRIPTION: Bonjour,Nous vous informons de la cl&ocirc;ture de ce ticket d'incident.Nous restons &agrave; votre disposition pour toute information compl&eacute;mentaire.Vous en souhaitant bonne r&eacute;ception.Cordialement,AVERTISSEMENT :Tout retour &eacute;crit concernant ce ticket d'incident doit &ecirc;tre imp&eacute;rativement effectu&eacute; en r&eacute;ponse &agrave; ce mail.Tout mail concernant un ticket d'incident en cours de traitement nous parvenant en dehors de ce cadre ne nous permettra pas de r&eacute;pondre &agrave; votre demande dans les meilleurs d&eacute;lais.--Support technique37-39 rue de Neuilly92110 Clichysupport@openip.frR&eacute;f&eacute;rence ticket : 15188-3Suite a notre conversation t&eacute;l&eacute;phonique le renvoi est bien en place. Avec votre accord nous proc&eacute;dons &agrave; la cl&ocirc;ture de votre ticket. N'h&eacute;sitez pas &agrave; revenir vers nous quand vous souhaiterai retirer le renvoi.Information complete du ticketR&eacute;f. client :15188Client :ABTEL NETWORKS / LDAD LABORATOIRE D'ARTInt&eacute;grateur :ABTELPriorit&eacute; :Haute&Eacute;tat :Cl&ocirc;tur&eacute;Ouverture :mardi 02 ao&ucirc;t 2016 17:11Date cl&ocirc;ture :mardi 02 ao&ucirc;t 2016 17:33E-mails de contact :support@abtel.frMessage d'ouverture :Appel entrant prt : Le partenaire souhaite la mise en place d'un renvoi d'appel du 04 66 05 10 10 --> 06 51 99 24 42. Pouvez-vous nous confirmer &ecirc;tre a l'origine de la demande ?Contact : R&eacute;mi 04 66 04 06 13OpenIPLe mardi 02 ao&ucirc;t 2016 17:32E-mail de : rfrichet@abtel.frRe&ccedil;u le : mardi 02 ao&ucirc;t 2016 17:13Re: [OpenIP] Ticket 15188-3 ABTEL NETWORKS / LDAD LABORATOIRE D'ART : Ouverture########Bonjour ,Je confirme cette demande de transfert du 04.66.05.10.10  au 06-51-99-24-42.Je reste &agrave; votre disposition pour plus d'informations.Cordialement,De: support@openip.fr&Agrave;: "support" Envoy&eacute;: Mardi 2 Ao&ucirc;t 2016 17:11:53Objet: [OpenIP] Ticket 15188-3 ABTEL NETWORKS / LDAD LABORATOIRE D'ART : OuvertureBonjour,Dans le cadre de la demande technique pour laquelle vous nous avez contact&eacute;, le ticket d'incident ci-dessous a &eacute;t&eacute; cr&eacute;&eacute;.Vous en souhaitant bonne r&eacute;ception.Cordialement,AVERTISSEMENT :Tout retour &eacute;crit concernant ce ticket d'incident doit &ecirc;tre imp&eacute;rativement effectu&eacute; en r&eacute;ponse &agrave; ce mail.Tout mail concernant un ticket d'incident en cours de traitement nous parvenant en dehors de ce cadre ne nous permettra pas de r&eacute;pondre &agrave; votre demande dans les meilleurs d&eacute;lais.--Support technique37-39 rue de Neuilly92110 Clichysupport@openip.frR&eacute;f&eacute;rence ticket : 15188-3Appel entrant prt : Le partenaire souhaite la mise en place d'un renvoi d'appel du 04 66 05 10 10 --> 06 51 99 24 42. Pouvez-vous nous confirmer &ecirc;tre a l'origine de la demande ?Contact : R&eacute;mi 04 66 04 06 13Information complete du ticketR&eacute;f. client :15188Client :ABTEL NETWORKS / LDAD LABORATOIRE D'ARTInt&eacute;grateur :ABTELPriorit&eacute; :Haute&Eacute;tat :OuvertOuverture :mardi 02 ao&ucirc;t 2016 17:11E-mails de contact :support@abtel.frMessage d'ouverture :Appel entrant prt : Le partenaire souhaite la mise en place d'un renvoi d'appel du 04 66 05 10 10 --> 06 51 99 24 42. Pouvez-vous nous confirmer &ecirc;tre a l'origine de la demande ?Contact : R&eacute;mi 04 66 04 06 13OpenIPLe mardi 02 ao&ucirc;t 2016 17:33Suite a notre conversation t&eacute;l&eacute;phonique le renvoi est bien en place. Avec votre accord nous proc&eacute;dons &agrave; la cl&ocirc;ture de votre ticket. N'h&eacute;sitez pas &agrave; revenir vers nous quand vous souhaiterai retirer le renvoi.
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160802T17:47:00
+DTEND:20160802T17:48:00
+CATEGORIES:PRODENTEC
+SUMMARY:PRODENTEC : Réponse
+DESCRIPTION: Bonjour,Nous vous informons que le ticket d'incident vient d'&ecirc;tre mis &agrave; jour, dont vous trouverez le contenu ci-dessous.Cordialement,AVERTISSEMENT :Tout retour &eacute;crit concernant ce ticket d'incident doit &ecirc;tre imp&eacute;rativement effectu&eacute; en r&eacute;ponse &agrave; ce mail.Tout mail concernant un ticket d'incident en cours de traitement nous parvenant en dehors de ce cadre ne nous permettra pas de r&eacute;pondre &agrave; votre demande dans les meilleurs d&eacute;lais.--Support technique37-39 rue de Neuilly92110 Clichysupport@openip.frR&eacute;f&eacute;rence ticket : 15188-3Suite a notre conversation t&eacute;l&eacute;phonique le renvoi est bien en place. Avec votre accord nous proc&eacute;dons &agrave; la cl&ocirc;ture de votre ticket. N'h&eacute;sitez pas &agrave; revenir vers nous quand vous souhaiterai retirer le renvoi.Information complete du ticketR&eacute;f. client :15188Client :ABTEL NETWORKS / LDAD LABORATOIRE D'ARTInt&eacute;grateur :ABTELPriorit&eacute; :Haute&Eacute;tat :OuvertOuverture :mardi 02 ao&ucirc;t 2016 17:11E-mails de contact :support@abtel.frMessage d'ouverture :Appel entrant prt : Le partenaire souhaite la mise en place d'un renvoi d'appel du 04 66 05 10 10 --> 06 51 99 24 42. Pouvez-vous nous confirmer &ecirc;tre a l'origine de la demande ?Contact : R&eacute;mi 04 66 04 06 13OpenIPLe mardi 02 ao&ucirc;t 2016 17:32E-mail de : rfrichet@abtel.frRe&ccedil;u le : mardi 02 ao&ucirc;t 2016 17:13Re: [OpenIP] Ticket 15188-3 ABTEL NETWORKS / LDAD LABORATOIRE D'ART : Ouverture########Bonjour ,Je confirme cette demande de transfert du 04.66.05.10.10  au 06-51-99-24-42.Je reste &agrave; votre disposition pour plus d'informations.Cordialement,De: support@openip.fr&Agrave;: "support" Envoy&eacute;: Mardi 2 Ao&ucirc;t 2016 17:11:53Objet: [OpenIP] Ticket 15188-3 ABTEL NETWORKS / LDAD LABORATOIRE D'ART : OuvertureBonjour,Dans le cadre de la demande technique pour laquelle vous nous avez contact&eacute;, le ticket d'incident ci-dessous a &eacute;t&eacute; cr&eacute;&eacute;.Vous en souhaitant bonne r&eacute;ception.Cordialement,AVERTISSEMENT :Tout retour &eacute;crit concernant ce ticket d'incident doit &ecirc;tre imp&eacute;rativement effectu&eacute; en r&eacute;ponse &agrave; ce mail.Tout mail concernant un ticket d'incident en cours de traitement nous parvenant en dehors de ce cadre ne nous permettra pas de r&eacute;pondre &agrave; votre demande dans les meilleurs d&eacute;lais.--Support technique37-39 rue de Neuilly92110 Clichysupport@openip.frR&eacute;f&eacute;rence ticket : 15188-3Appel entrant prt : Le partenaire souhaite la mise en place d'un renvoi d'appel du 04 66 05 10 10 --> 06 51 99 24 42. Pouvez-vous nous confirmer &ecirc;tre a l'origine de la demande ?Contact : R&eacute;mi 04 66 04 06 13Information complete du ticketR&eacute;f. client :15188Client :ABTEL NETWORKS / LDAD LABORATOIRE D'ARTInt&eacute;grateur :ABTELPriorit&eacute; :Haute&Eacute;tat :OuvertOuverture :mardi 02 ao&ucirc;t 2016 17:11E-mails de contact :support@abtel.frMessage d'ouverture :Appel entrant prt : Le partenaire souhaite la mise en place d'un renvoi d'appel du 04 66 05 10 10 --> 06 51 99 24 42. Pouvez-vous nous confirmer &ecirc;tre a l'origine de la demande ?Contact : R&eacute;mi 04 66 04 06 13OpenIPLe mardi 02 ao&ucirc;t 2016 17:33Suite a notre conversation t&eacute;l&eacute;phonique le renvoi est bien en place. Avec votre accord nous proc&eacute;dons &agrave; la cl&ocirc;ture de votre ticket. N'h&eacute;sitez pas &agrave; revenir vers nous quand vous souhaiterai retirer le renvoi.
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160802T17:46:00
+DTEND:20160802T17:47:00
+CATEGORIES:PRODENTEC
+SUMMARY:PRODENTEC : Réponse
+DESCRIPTION: Bonjour,Nous vous informons que le ticket d'incident vient d'&ecirc;tre mis &agrave; jour, dont vous trouverez le contenu ci-dessous.Cordialement,AVERTISSEMENT :Tout retour &eacute;crit concernant ce ticket d'incident doit &ecirc;tre imp&eacute;rativement effectu&eacute; en r&eacute;ponse &agrave; ce mail.Tout mail concernant un ticket d'incident en cours de traitement nous parvenant en dehors de ce cadre ne nous permettra pas de r&eacute;pondre &agrave; votre demande dans les meilleurs d&eacute;lais.--Support technique37-39 rue de Neuilly92110 Clichysupport@openip.frR&eacute;f&eacute;rence ticket : 15188-3E-mail de : rfrichet@abtel.frRe&ccedil;u le : mardi 02 ao&ucirc;t 2016 17:13Re: [OpenIP] Ticket 15188-3 ABTEL NETWORKS / LDAD LABORATOIRE D'ART : Ouverture########Bonjour ,Je confirme cette demande de transfert du 04.66.05.10.10  au 06-51-99-24-42.Je reste &agrave; votre disposition pour plus d'informations.Cordialement,De: support@openip.fr&Agrave;: "support" Envoy&eacute;: Mardi 2 Ao&ucirc;t 2016 17:11:53Objet: [OpenIP] Ticket 15188-3 ABTEL NETWORKS / LDAD LABORATOIRE D'ART : OuvertureBonjour,Dans le cadre de la demande technique pour laquelle vous nous avez contact&eacute;, le ticket d'incident ci-dessous a &eacute;t&eacute; cr&eacute;&eacute;.Vous en souhaitant bonne r&eacute;ception.Cordialement,AVERTISSEMENT :Tout retour &eacute;crit concernant ce ticket d'incident doit &ecirc;tre imp&eacute;rativement effectu&eacute; en r&eacute;ponse &agrave; ce mail.Tout mail concernant un ticket d'incident en cours de traitement nous parvenant en dehors de ce cadre ne nous permettra pas de r&eacute;pondre &agrave; votre demande dans les meilleurs d&eacute;lais.--Support technique37-39 rue de Neuilly92110 Clichysupport@openip.frR&eacute;f&eacute;rence ticket : 15188-3Appel entrant prt : Le partenaire souhaite la mise en place d'un renvoi d'appel du 04 66 05 10 10 --> 06 51 99 24 42. Pouvez-vous nous confirmer &ecirc;tre a l'origine de la demande ?Contact : R&eacute;mi 04 66 04 06 13Information complete du ticketR&eacute;f. client :15188Client :ABTEL NETWORKS / LDAD LABORATOIRE D'ARTInt&eacute;grateur :ABTELPriorit&eacute; :Haute&Eacute;tat :OuvertOuverture :mardi 02 ao&ucirc;t 2016 17:11E-mails de contact :support@abtel.frMessage d'ouverture :Appel entrant prt : Le partenaire souhaite la mise en place d'un renvoi d'appel du 04 66 05 10 10 --> 06 51 99 24 42. Pouvez-vous nous confirmer &ecirc;tre a l'origine de la demande ?Contact : R&eacute;mi 04 66 04 06 13Information complete du ticketR&eacute;f. client :15188Client :ABTEL NETWORKS / LDAD LABORATOIRE D'ARTInt&eacute;grateur :ABTELPriorit&eacute; :Haute&Eacute;tat :OuvertOuverture :mardi 02 ao&ucirc;t 2016 17:11E-mails de contact :support@abtel.frMessage d'ouverture :Appel entrant prt : Le partenaire souhaite la mise en place d'un renvoi d'appel du 04 66 05 10 10 --> 06 51 99 24 42. Pouvez-vous nous confirmer &ecirc;tre a l'origine de la demande ?Contact : R&eacute;mi 04 66 04 06 13OpenIPLe mardi 02 ao&ucirc;t 2016 17:32E-mail de : rfrichet@abtel.frRe&ccedil;u le : mardi 02 ao&ucirc;t 2016 17:13Re: [OpenIP] Ticket 15188-3 ABTEL NETWORKS / LDAD LABORATOIRE D'ART : Ouverture########Bonjour ,Je confirme cette demande de transfert du 04.66.05.10.10  au 06-51-99-24-42.Je reste &agrave; votre disposition pour plus d'informations.Cordialement,De: support@openip.fr&Agrave;: "support" Envoy&eacute;: Mardi 2 Ao&ucirc;t 2016 17:11:53Objet: [OpenIP] Ticket 15188-3 ABTEL NETWORKS / LDAD LABORATOIRE D'ART : OuvertureBonjour,Dans le cadre de la demande technique pour laquelle vous nous avez contact&eacute;, le ticket d'incident ci-dessous a &eacute;t&eacute; cr&eacute;&eacute;.Vous en souhaitant bonne r&eacute;ception.Cordialement,AVERTISSEMENT :Tout retour &eacute;crit concernant ce ticket d'incident doit &ecirc;tre imp&eacute;rativement effectu&eacute; en r&eacute;ponse &agrave; ce mail.Tout mail concernant un ticket d'incident en cours de traitement nous parvenant en dehors de ce cadre ne nous permettra pas de r&eacute;pondre &agrave; votre demande dans les meilleurs d&eacute;lais.--Support technique37-39 rue de Neuilly92110 Clichysupport@openip.frR&eacute;f&eacute;rence ticket : 15188-3Appel entrant prt : Le partenaire souhaite la mise en place d'un renvoi d'appel du 04 66 05 10 10 --> 06 51 99 24 42. Pouvez-vous nous confirmer &ecirc;tre a l'origine de la demande ?Contact : R&eacute;mi 04 66 04 06 13Information complete du ticketR&eacute;f. client :15188Client :ABTEL NETWORKS / LDAD LABORATOIRE D'ARTInt&eacute;grateur :ABTELPriorit&eacute; :Haute&Eacute;tat :OuvertOuverture :mardi 02 ao&ucirc;t 2016 17:11E-mails de contact :support@abtel.frMessage d'ouverture :Appel entrant prt : Le partenaire souhaite la mise en place d'un renvoi d'appel du 04 66 05 10 10 --> 06 51 99 24 42. Pouvez-vous nous confirmer &ecirc;tre a l'origine de la demande ?Contact : R&eacute;mi 04 66 04 06 13
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160802T15:03:00
+DTEND:20160802T15:04:00
+CATEGORIES:THIBAUD
+SUMMARY:THIBAUD : Appel cliente
+DESCRIPTION: 1 adresse mail a &eacute;t&eacute; mal configur&eacute;e
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160802T11:13:00
+DTEND:20160802T11:14:00
+CATEGORIES:TISSOTELEC
+SUMMARY:TISSOTELEC : Réponse
+DESCRIPTION: Morgan, Je fais suite &agrave; notre CT de ce jour et vous adresse la fiche d&rsquo;installation concernant l&rsquo;installation du nouveau traceur sur notre entit&eacute; de Caissargues en remplacement de :-          Plieuse POWERSINUS 960 Traceur IFP 760 CANON R&eacute;f : 21AAGR0344 (ce sont toutes les infos que j&rsquo;ai sur le mat&eacute;riel) Je vous remercie de bien vouloir renseigner la partie informatique et de me confirmer si votre pr&eacute;sence est obligatoire ou non le jour de l&rsquo;installation. D&rsquo;avance merci et je reste &agrave; votre disposition. Bien cordialement, Orlane BRILLANT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160802T09:14:00
+DTEND:20160802T09:15:00
+CATEGORIES:JULESTRAITEUR
+SUMMARY:JULESTRAITEUR : Rappel cliente
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160801T14:32:00
+DTEND:20160801T14:33:00
+CATEGORIES:COLOMBISPORTS
+SUMMARY:COLOMBISPORTS : Rappel de la cliente
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160801T14:25:00
+DTEND:20160801T14:26:00
+CATEGORIES:THIBAUD
+SUMMARY:THIBAUD : Création du ticket de suivi
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160801T10:34:00
+DTEND:20160801T10:35:00
+CATEGORIES:ADRH
+SUMMARY:ADRH : Appel de la cliente
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160801T10:17:00
+DTEND:20160801T10:18:00
+CATEGORIES:JULESTRAITEUR
+SUMMARY:JULESTRAITEUR : Rappel du client
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160729T16:21:00
+DTEND:20160729T16:22:00
+CATEGORIES:APELEM
+SUMMARY:APELEM : Appel du client
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160729T16:07:00
+DTEND:20160729T16:08:00
+CATEGORIES:LELETTY
+SUMMARY:LELETTY : Création du ticket de suivi
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160729T15:09:00
+DTEND:20160729T15:10:00
+CATEGORIES:CM-RADIOLOGIERD
+SUMMARY:CM-RADIOLOGIERD : Rappel de la cliente
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160729T13:50:00
+DTEND:20160729T13:51:00
+CATEGORIES:SCIMANDIE
+SUMMARY:SCIMANDIE : Création du ticket de suivi
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160729T09:55:00
+DTEND:20160729T09:56:00
+CATEGORIES:RBC
+SUMMARY:RBC : Rappel de la cliente
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160729T08:08:00
+DTEND:20160729T08:09:00
+CATEGORIES:RBC
+SUMMARY:RBC : RE: problème stockage data
+DESCRIPTION: Bonjour, Morgan a mis &agrave; jour aujourd&rsquo;hui le mot de passe de la messagerie mariedo@rbcmobilier.com.Pourriez-vous nous communiquer ce nouveau mot de passe pour que Marie Dominique Camano puisse consulter ses mails sur son portable. Merci par avance, Cordialement, Marie LAUROLibrairie & boutiqueRBC DESIGN CENTER609 avenue Raymond Dugrand34000 Montpellier04-11-93-40-73 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160728T14:57:00
+DTEND:20160728T14:58:00
+CATEGORIES:JULESTRAITEUR
+SUMMARY:JULESTRAITEUR : Rappel du client
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160728T14:42:00
+DTEND:20160728T14:43:00
+CATEGORIES:MIDIBATT
+SUMMARY:MIDIBATT : Création du ticket de suivi
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160728T11:59:00
+DTEND:20160728T12:00:00
+CATEGORIES:RBC
+SUMMARY:RBC : Appel cliente
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160728T11:46:00
+DTEND:20160728T11:47:00
+CATEGORIES:JULESTRAITEUR
+SUMMARY:JULESTRAITEUR : Rappel de la cliente
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160728T11:04:00
+DTEND:20160728T11:05:00
+CATEGORIES:SOGELOG
+SUMMARY:SOGELOG : A reçu les identifiants
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160728T10:55:00
+DTEND:20160728T10:56:00
+CATEGORIES:RYCKMAN
+SUMMARY:RYCKMAN : Appel cliente
+DESCRIPTION: C'est toujours tr&eacute;s long
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160728T10:33:00
+DTEND:20160728T10:34:00
+CATEGORIES:RBC
+SUMMARY:RBC : Meme PB sur un autre poste
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160728T10:16:00
+DTEND:20160728T10:17:00
+CATEGORIES:MASDALESTI
+SUMMARY:MASDALESTI : Appel cliente
+DESCRIPTION: Le PB est revenu pour une autre personne
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160728T09:13:00
+DTEND:20160728T09:14:00
+CATEGORIES:TRANS_PEYROT
+SUMMARY:TRANS_PEYROT : Appel M devillard
+DESCRIPTION: 06 18 29 25 99Les t&eacute;l&eacute;phones ne marchent pas
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160727T15:41:00
+DTEND:20160727T15:42:00
+CATEGORIES:RYCKMAN
+SUMMARY:RYCKMAN : Appel cliente
+DESCRIPTION: Toujours tr&eacute;s lent
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160727T15:28:00
+DTEND:20160727T15:29:00
+CATEGORIES:SUDLOGISTIQUES
+SUMMARY:SUDLOGISTIQUES : Appel de la cliente
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160727T13:45:00
+DTEND:20160727T13:46:00
+CATEGORIES:CM-UROGARD
+SUMMARY:CM-UROGARD : Ca ne marche toujours pas
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160727T11:24:00
+DTEND:20160727T11:25:00
+CATEGORIES:DMS
+SUMMARY:DMS : Rappel client  05 62 47 64 58
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160726T11:23:00
+DTEND:20160726T11:24:00
+CATEGORIES:THIBAUD
+SUMMARY:THIBAUD : APPEL De M Touatik
+DESCRIPTION: demande qu'on le rappelle rapidement .Est sur site
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160726T11:18:00
+DTEND:20160726T11:19:00
+CATEGORIES:MASDALESTI
+SUMMARY:MASDALESTI : Appel cliente
+DESCRIPTION: Suite &agrave; TM Un message d'erreur s'affiche sur l'&eacute;cran de contr&ocirc;le des camr&eacute;ras
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160726T13:58:00
+DTEND:20160726T13:59:00
+CATEGORIES:CM-RADIOLOGIE
+SUMMARY:CM-RADIOLOGIE : problème logiciel pointeuse à l'attention de Rémi
+DESCRIPTION: Rebonjour,Merci de me faire savoir pour le probl&egrave;me de la pointeuse la d&eacute;marche &agrave; suivre.Je suis cette apr&egrave;s-midi sur le site de Marguerites au 0466752382.SalutationsMme VERNET ----- message d'origine -----
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160725T17:31:00
+DTEND:20160725T17:32:00
+CATEGORIES:CM-RHUMAT
+SUMMARY:CM-RHUMAT : Si pas possible de faire la réindexation La faire demain à partir de 14h30
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160725T17:30:00
+DTEND:20160725T17:31:00
+CATEGORIES:FONE
+SUMMARY:FONE : Ne pas appeler  a retrouvé ses mails
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160725T10:45:00
+DTEND:20160725T10:46:00
+CATEGORIES:CM-ROMAN
+SUMMARY:CM-ROMAN : Rappel de la cliente
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160725T10:09:00
+DTEND:20160725T10:10:00
+CATEGORIES:UNIBIO
+SUMMARY:UNIBIO : Nas
+DESCRIPTION: Bonjour, le NAS 10.30.31.81 est satur&eacute;, pouvons nous pr&eacute;voir une extension ?merci Laurent MardonInformaticienLaboratoires UNIBIO490 rue Yves SIGAL
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160725T08:34:00
+DTEND:20160725T08:35:00
+CATEGORIES:ABTEL
+SUMMARY:ABTEL : Création du ticket de suivi
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160725T08:27:00
+DTEND:20160725T08:28:00
+CATEGORIES:ABTEL
+SUMMARY:ABTEL : Création du ticket de suivi
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160725T10:13:00
+DTEND:20160725T10:14:00
+CATEGORIES:BADAROUX
+SUMMARY:BADAROUX : Rappel client  06 20 42 16 73
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160722T10:59:00
+DTEND:20160722T11:00:00
+CATEGORIES:SYSTEMX
+SUMMARY:SYSTEMX : Appel
+DESCRIPTION: Bonjour ChristianAu-del&agrave; du probl&egrave;me Sql, comment expliqu&eacute;s tu que &ccedil;a marchait avant un simple reboot du serveur ? Cordialement, Tarek NAGATILe 22 juil. 2016 &agrave; 09:48, "cragot@abtel.fr"  a &eacute;crit :
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160722T09:45:00
+DTEND:20160722T09:46:00
+CATEGORIES:AFE2
+SUMMARY:AFE2 : Ne pas appeler çà remarche
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160720T14:20:00
+DTEND:20160720T14:21:00
+CATEGORIES:UNIBIO
+SUMMARY:UNIBIO : Réponse
+DESCRIPTION: Bonjour Christian &ccedil;a va ?Tu trouveras ci-dessous ce qu'Orange a trouv&eacute; hier sur notre r&eacute;seau, plus particuli&egrave;rement sur Arles Centre (le labo qui a eu le plus de r&eacute;percussion sur les lenteurs finalement).Est-ce que l'IP 10.119.129.232 te dis quelque chose stp ?Merci SourireSabrina VINCENTInformaticienneLaboratoires UNIBIO490 rue Yves Sigal - 30000 NimesTel : 04 66 04 96 30Port : 07 86 63 97 76http://www.unibio.frDe: "alain moulie" &Agrave;: "sabrina.vincent@unibio.fr Vincent" Cc: "Laurent Mardon" Envoy&eacute;: Mardi 19 Juillet 2016 15:07:47Objet: RE: Lenteur connexionBonjour, Nous avons regard&eacute; la Cos pour votre r&eacute;seau : D1 :Ports : 771, 1521 et 23 D2 :Priorise la machine 10.119.129.232Ports : 515 et 9100 D3 : tout le reste Je vous rappelle dans l&rsquo;apr&egrave;s-midi. Cordialement, logo Orange Alain Moulie Orange/OF/DEF/AESOM/CSC/RSC fixe : +33 5 34 24 68 03 mobile : +33 6 80 42 24 26 alain.moulie@orange.com Votre assistance &agrave; port&eacute;e de clics : http://baratutos.fr/cid:image005.png@01D173CC.141702B0
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160720T11:27:00
+DTEND:20160720T11:28:00
+CATEGORIES:BASTIDEDIF
+SUMMARY:BASTIDEDIF : Appel du client
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160719T17:21:00
+DTEND:20160719T17:22:00
+CATEGORIES:ABTEL
+SUMMARY:ABTEL : Création du ticket de suivi
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160719T17:10:00
+DTEND:20160719T17:11:00
+CATEGORIES:ABTEL
+SUMMARY:ABTEL : Création du ticket de suivi
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160719T16:21:00
+DTEND:20160719T16:22:00
+CATEGORIES:RBC
+SUMMARY:RBC : Rappel de la cliente
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160719T14:04:00
+DTEND:20160719T14:05:00
+CATEGORIES:UNIBIO
+SUMMARY:UNIBIO : Rappel  du client
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160719T14:02:00
+DTEND:20160719T14:03:00
+CATEGORIES:VALIKA
+SUMMARY:VALIKA : Rappel du client
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160719T11:02:00
+DTEND:20160719T11:03:00
+CATEGORIES:SCIORCHID
+SUMMARY:SCIORCHID : Appel du client
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160719T09:56:00
+DTEND:20160719T09:57:00
+CATEGORIES:BASTIDEDIF
+SUMMARY:BASTIDEDIF : Appel du client
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160719T09:23:00
+DTEND:20160719T09:24:00
+CATEGORIES:SYNERGIE
+SUMMARY:SYNERGIE : Rappel de la cliente
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160719T08:12:00
+DTEND:20160719T08:13:00
+CATEGORIES:CM-ROUBEAU
+SUMMARY:CM-ROUBEAU : Appel de la cliente
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160719T08:08:00
+DTEND:20160719T08:09:00
+CATEGORIES:CM-ARAMAV
+SUMMARY:CM-ARAMAV : Appel cliente 
+DESCRIPTION: Le disk clignote toujours
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160718T17:32:00
+DTEND:20160718T17:33:00
+CATEGORIES:SCIORCHID
+SUMMARY:SCIORCHID : Appel client
+DESCRIPTION: La vitesse est descendue &agrave; 250kg
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160718T14:20:00
+DTEND:20160718T14:21:00
+CATEGORIES:RBC
+SUMMARY:RBC : Rappel de la cliente
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160718T11:37:00
+DTEND:20160718T11:38:00
+CATEGORIES:MAIR_BOUILLARGU
+SUMMARY:MAIR_BOUILLARGU : Rappel de la cliente Urgent
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160718T11:06:00
+DTEND:20160718T11:07:00
+CATEGORIES:LIGUE
+SUMMARY:LIGUE : appel M Roussel  Infogestion
+DESCRIPTION: 06 75 69 48 88Depuis TM de vendredi dernier Ont un PB avec sage. Demande que le tech qui a fait la TM l'appelle
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160718T08:59:00
+DTEND:20160718T09:00:00
+CATEGORIES:LIGUE
+SUMMARY:LIGUE : Rappel du client  Urgent
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160715T15:33:00
+DTEND:20160715T15:34:00
+CATEGORIES:LIGUE
+SUMMARY:LIGUE : Appel client
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160715T09:47:00
+DTEND:20160715T09:48:00
+CATEGORIES:LIGUE
+SUMMARY:LIGUE : L'appeler sur ce N°
+DESCRIPTION: 06 07 11 60 29
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160715T08:02:00
+DTEND:20160715T08:03:00
+CATEGORIES:DMS
+SUMMARY:DMS : réponse
+DESCRIPTION: Bonjour David, Je vois que le VPN est de nouveau fonctionnel. Par contre la bande passante pour les nomades est limit&eacute;e.Je pense que de transf&eacute;rer 400mo via le VPN apporte un fort risque de saturation. Je suis pas au bureau pour faire une analyse plus profonde. Nous allons regarder &ccedil;a et revenir vers vous. Cordialement,Ok merci.Que le d&eacute;bit soit limit&eacute; n'est pas un probl&egrave;me, mais j'ai d&eacute;j&agrave; envoy&eacute; bien plus gros que &ccedil;&agrave; sans souci particulier (par contre il est vrai plut&ocirc;t en soir&eacute;e ou week-end qu'en plein apr&egrave;s-midi).A la fin je me demande si ce VPN est vraiment fait pour travailler ; on n'arrive pas a s'y connecter la moiti&eacute; du temps, et bient&ocirc;t on va me dire qu'en plus il ne faut transf&eacute;rer que des petits fichiers ?David GALLO   -   DMS-Apelem R&D departmentDMS-APELEM B175 All&eacute;e Von Neumann30035 N&icirc;mes Cedex 1, FRANCETel.: +33 4 67 50 49 00  dgallo@dms.comMob.: +33 6 45 34 81 66
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160713T17:50:00
+DTEND:20160713T17:51:00
+CATEGORIES:MAISONPAULRABAU
+SUMMARY:MAISONPAULRABAU : appel du client
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160713T16:45:00
+DTEND:20160713T16:46:00
+CATEGORIES:MAIR_GENERAC
+SUMMARY:MAIR_GENERAC : Rappel du client
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160713T16:02:00
+DTEND:20160713T16:03:00
+CATEGORIES:UNIBIO
+SUMMARY:UNIBIO : Mail de Mathias
+DESCRIPTION: Je ne parviens pas &agrave; me connecter &agrave; notre gestion. Je mets le support Abtel en copie afin que l&rsquo;on vous fournisse le pwd root. Cordialement,De : Laurent Mardon [mailto:laurent.mardon@unibio.fr] Envoy&eacute; : mercredi 13 juillet 2016 14:29&Agrave; : mmatroni@abtel.frCc : ltroulet@abtel.frObjet : Re: Extraction Zimbra ok, merci .... mais avez-vous les codes pour se connecter en ligne de commande sur ce serveur Zimbra..... merci Laurent MardonInformaticienLaboratoires UNIBIO490 rue Yves SIGAL30900 NIMES04.66.04.96.30http://www.unibio.fr  
+END:VEVENT
+END:VCALENDAR

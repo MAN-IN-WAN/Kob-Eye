@@ -1,0 +1,704 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//ABTEL Mediterranee//Gestion v0.1//FR
+BEGIN:VEVENT
+DTSTART:20160707T11:37:00
+DTEND:20160707T11:41:00
+CATEGORIES:CM-RADIOLOGIE
+SUMMARY:CM-RADIOLOGIE : Point avec Sylvie,..
+DESCRIPTION: Il s'agit du poste d'echographie en haut.Utilis&eacute; par Mme FaurieA priori pas de probleme sur le poste d'apres Sylvie.Contacter quelqu'un sur Birhakeim pour allumer le poste
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160422T10:14:00
+DTEND:20160422T10:15:00
+CATEGORIES:RBC
+SUMMARY:RBC : Prise d'appel par Laurent Chedotal...
+DESCRIPTION: Je n&rsquo;y arrive pasVous pouvez reprendre la main� ?Je me branche &agrave; logmeCordialement,Franck ArgentinRBC 609,AVENUE RAYMOND DUGRAND 34000 MONTPELLIERTEL : +33 466 731 1636 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160421T08:30:00
+DTEND:20160421T08:31:00
+CATEGORIES:RBC
+SUMMARY:RBC : Prise d'appel par Laurent Chedotal...
+DESCRIPTION: SalutFranck ne passera Pas ce matin.Tu peux le contacter sur son portable et prendre la main sur son poste.CordialementLoic TROULETDirecteur commercial Abtel0618584377Envoy&eacute; de mon iPhone
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160419T18:28:00
+DTEND:20160419T18:29:00
+CATEGORIES:CM-RHUMAT
+SUMMARY:CM-RHUMAT : Prise d'appel par Laurent Chedotal...
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160418T14:00:00
+DTEND:20160418T14:01:00
+CATEGORIES:ANIMO
+SUMMARY:ANIMO : Prise d'appel par Laurent Chedotal...
+DESCRIPTION: ALERTESymantec System Recovery : Job de sauvegarde p&eacute;rim&eacute; Sauvegarde sur DD externe ({{E4EB5F5D-9ED5-4346-B88A-4B2144402571}}) depuis 1 semaine 1 jour sur la machine SRV2008 (ANIMO)Date de derni&egrave;re ex&eacute;cution r&eacute;ussie : 07/04/2016 07:36Date de prochaine ex&eacute;cution : 14/04/2016 02:00Temps &eacute;coul&eacute; depuis le d&eacute;but de l'incident : less than a minute (Date de d&eacute;but : 15/04/2016 09:49)Cliquez ici pour acquitter ce ticket(Afin de ne plus recevoir de mail d'alerte pour cet incident)    * N&deg; Ticket : TI73TUG7CG9E    * N&deg; Agent : FQ01-J1-X9    * Criticit&eacute; : Normale    * N&deg; de relance : 1
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160418T13:57:00
+DTEND:20160418T13:58:00
+CATEGORIES:TRANSVINS
+SUMMARY:TRANSVINS : Prise d'appel par Laurent Chedotal...
+DESCRIPTION: ALERTESymantec System Recovery : Job de sauvegarde p&eacute;rim&eacute; Sauvegarde 1 ({{33B40DFC-2BFE-4631-B9CE-55C8A264F749}}) depuis 1 semaine 1 jour sur la machine SRV2008 (TRANSVIN)Date de derni&egrave;re ex&eacute;cution r&eacute;ussie : 01/04/2016 23:31Date de prochaine ex&eacute;cution : 04/04/2016 22:00Temps &eacute;coul&eacute; depuis le d&eacute;but de l'incident : less than a minute (Date de d&eacute;but : 15/04/2016 09:46)Cliquez ici pour acquitter ce ticket(Afin de ne plus recevoir de mail d'alerte pour cet incident)    * N&deg; Ticket : TI73TTOI7X3W    * N&deg; Agent : FQ02-V4-T0    * Criticit&eacute; : Normale    * N&deg; de relance : 1
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160418T13:48:00
+DTEND:20160418T13:49:00
+CATEGORIES:FDGROUP
+SUMMARY:FDGROUP : Prise d'appel par Laurent Chedotal...
+DESCRIPTION: Symantec System Recovery : Le job de sauvegarde Sauvegarde RDX ({{2FE521B6-87A6-4138-B28A-BF20E30FFACD}}) a &eacute;chou&eacute; sur la machine APPLEONE (FDGROUP)Date de prochaine ex&eacute;cution : 15/04/2016 22:00Temps &eacute;coul&eacute; depuis le d&eacute;but de l'incident : 21 heures 55 minutes (Date de d&eacute;but : 15/04/2016 17:55)    * N&deg; Ticket : TI73XKAKOI3F    * N&deg; Agent : GZ12-V1-Z3    * Criticit&eacute; : Normale
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160418T13:37:00
+DTEND:20160418T13:38:00
+CATEGORIES:CM-BELLON
+SUMMARY:CM-BELLON : Prise d'appel par Laurent Chedotal...
+DESCRIPTION: ALERTESymantec System Recovery : Le job de sauvegarde Sauvegarde du lecteur de (C:\\) ({{687A6EB6-6072-4D4B-9B97-8D7C342C365D}}) a &eacute;chou&eacute; sur la machine SRV2008 (CM-BELLON)Date de prochaine ex&eacute;cution : 19/04/2016 23:00Temps &eacute;coul&eacute; depuis le d&eacute;but de l'incident : 5 heures 45 minutes (Date de d&eacute;but : 16/04/2016 01:50)Cliquez ici pour acquitter ce ticket(Afin de ne plus recevoir de mail d'alerte pour cet incident)    * N&deg; Ticket : TI7417A2YLWS    * N&deg; Agent : FQ01-K4-A9    * Criticit&eacute; : Normale    * N&deg; de relance : 2
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160418T13:27:00
+DTEND:20160418T13:28:00
+CATEGORIES:TISSOTELEC
+SUMMARY:TISSOTELEC : Prise d'appel par Laurent Chedotal...
+DESCRIPTION: ALERTEVeeam Backup and Replication : Le job de sauvegarde Replication Job 1 (DB069CE8-CB28-49B7-B555-92CDA0958B62) a &eacute;chou&eacute; sur la machine MANAGEMENT (TISSOTELEC)Date de prochaine ex&eacute;cution : 15/04/2016 22:00Temps &eacute;coul&eacute; depuis le d&eacute;but de l'incident : 28 minutes (Date de d&eacute;but : 15/04/2016 15:27)Cliquez ici pour acquitter ce ticket(Afin de ne plus recevoir de mail d'alerte pour cet incident)    * N&deg; Ticket : TI73WFILWXBD    * N&deg; Agent : HS11-Y1-W7    * Criticit&eacute; : Normale    * N&deg; de relance : 2
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160418T10:43:00
+DTEND:20160418T10:44:00
+CATEGORIES:TISSOTELEC
+SUMMARY:TISSOTELEC : Prise d'appel par Laurent Chedotal...
+DESCRIPTION: Pas de connexion internet
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160414T15:31:00
+DTEND:20160414T15:32:00
+CATEGORIES:CM-CARDIOLOGIE
+SUMMARY:CM-CARDIOLOGIE : Prise d'appel par Laurent Chedotal...
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160414T14:41:00
+DTEND:20160414T14:42:00
+CATEGORIES:CM-CARDIOLOGIE
+SUMMARY:CM-CARDIOLOGIE : Prise d'appel par Laurent Chedotal...
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160414T08:07:00
+DTEND:20160414T08:08:00
+CATEGORIES:FONE
+SUMMARY:FONE : Prise d'appel par Laurent Chedotal...
+DESCRIPTION: ALERTELa machine SRV2008 (FONE) s'est arr&ecirc;t&eacute; de communiquer pendant au moins 10 minutesTemps &eacute;coul&eacute; depuis le d&eacute;but de l'incident : 31 minutes (Date de d&eacute;but : 14/04/2016 00:44)Cliquez ici pour acquitter ce ticket(Afin de ne plus recevoir de mail d'alerte pour cet incident)    * N&deg; Ticket : TI73ENDD5YWA    * N&deg; Agent : FQ01-B8-Z5    * Criticit&eacute; : Critique    * N&deg; de relance : 3
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160412T09:57:00
+DTEND:20160412T09:58:00
+CATEGORIES:FGH
+SUMMARY:FGH : Prise d'appel par Laurent Chedotal...
+DESCRIPTION: Faire le point sur le probleme rencontr&eacute;Le contacter au 06.71.25.66.99
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160412T08:03:00
+DTEND:20160412T08:04:00
+CATEGORIES:BETAC
+SUMMARY:BETAC : Prise d'appel par Laurent Chedotal...
+DESCRIPTION: Telecharger un outil chez DELL et installer sur le poste.dELL precsision optimizerhttp://www-wip.dell.com/support/home/Drivers/DriversDetails?driverId=MYYNTltroulet@abtel.FrLmdpeabtel01(ancien code)Lmdepabtel02
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160408T17:17:00
+DTEND:20160408T17:18:00
+CATEGORIES:ECHIQUIER
+SUMMARY:ECHIQUIER : Prise d'appel par Laurent Chedotal...
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160408T08:15:00
+DTEND:20160408T08:16:00
+CATEGORIES:CM-RADIOLOGIE
+SUMMARY:CM-RADIOLOGIE : Prise d'appel par Laurent Chedotal...
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T08:00:00
+DTEND:20160407T08:30:00
+CATEGORIES:ABTEL
+SUMMARY:ABTEL : Recherche de solutions pour l'attributions des postes (pret, hs...)
+DESCRIPTION: http://forum.glpi-project.org/viewtopic.php?id=43492
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T17:01:00
+DTEND:20160407T17:03:00
+CATEGORIES:APELEM
+SUMMARY:APELEM : Mail envoyé à M. Sifre...
+DESCRIPTION: Bonjour,Le routage a &eacute;t&eacute; mis en place. Pouvez vous faire un essai?Nous restons &agrave; votre disposition pour plus d'informations.Cordialement,
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T16:29:00
+DTEND:20160407T17:02:00
+CATEGORIES:APELEM
+SUMMARY:APELEM : Configuration du routage vers les imprimantes
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T16:28:00
+DTEND:20160407T16:29:00
+CATEGORIES:APELEM
+SUMMARY:APELEM : Reponse de M. Siffre...
+DESCRIPTION: Pouvez vous &eacute;tendre ce mode de fonctionnement WIFI Guest APELEM ? 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T16:25:00
+DTEND:20160407T16:26:00
+CATEGORIES:APELEM
+SUMMARY:APELEM : Reponse de M. Sifre...
+DESCRIPTION: Parfait,La solution convient parfaitement au besoin.Vous pouvez mettre en &loz;uvre cette solution d&egrave;s &agrave; pr&eacute;sent.CdtM.SIFRE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T16:18:00
+DTEND:20160407T16:22:00
+CATEGORIES:APELEM
+SUMMARY:APELEM : Mail à M. Sifre...
+DESCRIPTION: Bonjour M. Sifre,Concernant votre demande ci-dessous, la solution la plus pratique serait que les stagiaires se connectent sur le WIFI des smartphones.Nous pouvons ensuite cr&eacute;er des regles sur le routeur pour les impressions depuis ce r&eacute;seau wifi.Nous restons &agrave; votre disposition pour plus d'informations.Cordialement,
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T15:41:00
+DTEND:20160407T16:06:00
+CATEGORIES:CM-UCHAUD
+SUMMARY:CM-UCHAUD : TM sur le poste de la secretaire...
+DESCRIPTION: Pas de probleme de configuration sur le posteAppel M. BachelotVerification des parametresRenvoi des resultatsLe rappeler si non recu
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T15:47:00
+DTEND:20160407T15:49:00
+CATEGORIES:MIDIBATT
+SUMMARY:MIDIBATT : Mail à Mme Botella...
+DESCRIPTION: Bonjour Mme Botella,Nous avons valid&eacute; l'acc&egrave;s au site "legifrance".Pouvez vous essayer et me confirmer s'il vous pla&icirc;t?Nous restons &agrave; votre disposition pour plus d'informations.Cordialement,
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T15:33:00
+DTEND:20160407T15:43:00
+CATEGORIES:ABTEL
+SUMMARY:ABTEL : Explication Hellodoc mail à MMA
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T15:35:00
+DTEND:20160407T15:36:00
+CATEGORIES:FDGROUP
+SUMMARY:FDGROUP : A CLOTURER
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T15:25:00
+DTEND:20160407T15:26:00
+CATEGORIES:FDGROUP
+SUMMARY:FDGROUP : Point avec M. Pialat...
+DESCRIPTION: Son boitier a un probleme. Il a contact&eacute; Bouygues et il y a priori une anomalie sur ce boitierIl attends le retour de Bouygues
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T15:15:00
+DTEND:20160407T15:16:00
+CATEGORIES:MARCENAC
+SUMMARY:MARCENAC : A CLOTURER
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T14:54:00
+DTEND:20160407T15:11:00
+CATEGORIES:MARCENAC
+SUMMARY:MARCENAC : Point avec Amelie...
+DESCRIPTION: A bien des authorisations d'acces sur TREND pour le site mail.gmail.comVerification sur le serveur OKExplication a Amelie.Pas de probleme aujourd'hui
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T14:48:00
+DTEND:20160407T14:49:00
+CATEGORIES:FONE
+SUMMARY:FONE : A CLOTURER
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T14:43:00
+DTEND:20160407T14:48:00
+CATEGORIES:FONE
+SUMMARY:FONE : Sauvegarde journaliere OK
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T14:37:00
+DTEND:20160407T14:40:00
+CATEGORIES:MIDIBATT
+SUMMARY:MIDIBATT : Appel au standard... Mme Botella est en RDV
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T14:33:00
+DTEND:20160407T14:34:00
+CATEGORIES:URBAINNET
+SUMMARY:URBAINNET : Appel au standard... M. Ikider n'est pas present l'apres midi... Rapp demain
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T14:30:00
+DTEND:20160407T14:31:00
+CATEGORIES:URBAINNET
+SUMMARY:URBAINNET : Appel sur le mobile sans reponse
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T11:20:00
+DTEND:20160407T11:30:00
+CATEGORIES:ABTEL
+SUMMARY:ABTEL : Point avec JCC sur GLPI Koutsandreou
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T11:33:00
+DTEND:20160407T11:59:00
+CATEGORIES:MIDIBATT
+SUMMARY:MIDIBATT : Modification sur le routeur...
+DESCRIPTION: Test de connexion OK sur le tseRappeler cet apres midi pour verifier avec les utilisateurs
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T11:28:00
+DTEND:20160407T11:29:00
+CATEGORIES:CM-VERMEULEN
+SUMMARY:CM-VERMEULEN : A CLOTURER
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T10:56:00
+DTEND:20160407T11:26:00
+CATEGORIES:CM-VERMEULEN
+SUMMARY:CM-VERMEULEN : TM sur le serveur....
+DESCRIPTION: Redemarrage du serveur car extremement lentCreation de compte VS6 / Gems123Test de connexion ok
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T10:55:00
+DTEND:20160407T10:56:00
+CATEGORIES:OCEAN
+SUMMARY:OCEAN : A CLOTURER
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T10:48:00
+DTEND:20160407T10:55:00
+CATEGORIES:OCEAN
+SUMMARY:OCEAN : TM sur le serveur...
+DESCRIPTION: Arret de la session TSEExplication de la manip
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T10:38:00
+DTEND:20160407T10:39:00
+CATEGORIES:OCEAN
+SUMMARY:OCEAN : Appel sur le Mobile sans reponse
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T10:22:00
+DTEND:20160407T10:23:00
+CATEGORIES:OCEAN
+SUMMARY:OCEAN : Message vocal laissé sur le mobile
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T10:20:00
+DTEND:20160407T10:21:00
+CATEGORIES:CM-RADIOLOGIE
+SUMMARY:CM-RADIOLOGIE : A CLOTURER 
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T10:07:00
+DTEND:20160407T10:16:00
+CATEGORIES:CM-RADIOLOGIE
+SUMMARY:CM-RADIOLOGIE : Appel MM...
+DESCRIPTION: Verification des regles de routageIl y a une case a cocher dans l'interface WAN1:Retrieve default gateway from server
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T09:46:00
+DTEND:20160407T09:57:00
+CATEGORIES:CM-RADIOLOGIE
+SUMMARY:CM-RADIOLOGIE : Appel la secretaire pour redemarrer le netgear
+DESCRIPTION: N'arrive pas &agrave; redemarrer le netgearLe routeur est tout en haut et elle ne peut pas y acceder
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T09:37:00
+DTEND:20160407T09:46:00
+CATEGORIES:CM-RADIOLOGIE
+SUMMARY:CM-RADIOLOGIE : Appel CRA...
+DESCRIPTION: Point avec CRAIl y a un netgearVerifier le routageNe pense pas que cela vienne du modem netgear
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T09:35:00
+DTEND:20160407T09:37:00
+CATEGORIES:CM-RADIOLOGIE
+SUMMARY:CM-RADIOLOGIE : Appel SC...
+DESCRIPTION: Ne sait pas ce qu'il y a las bas
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T09:07:00
+DTEND:20160407T09:35:00
+CATEGORIES:CM-RADIOLOGIE
+SUMMARY:CM-RADIOLOGIE : Appel orange
+DESCRIPTION: longue attente.Transfert du pro vers tout publicTest de la ligne ok mais ne voit pas liveboxpense qu'il s'agit d'un probleme d'identifiants
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160406T16:38:00
+DTEND:20160406T16:48:00
+CATEGORIES:ABTEL
+SUMMARY:ABTEL : Aide à la creation de regle + entite GLPI
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160406T18:20:00
+DTEND:20160406T18:21:00
+CATEGORIES:FGH
+SUMMARY:FGH : A CLOTURER
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160406T18:18:00
+DTEND:20160406T18:20:00
+CATEGORIES:FGH
+SUMMARY:FGH : Verification OK
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160406T17:55:00
+DTEND:20160406T18:18:00
+CATEGORIES:FGH
+SUMMARY:FGH : Configuration de l'acces internet pour M. Gentes...
+DESCRIPTION: Configuration de l'acces libre pour son mac sur le fortigate
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160406T10:00:00
+DTEND:20160406T10:10:00
+CATEGORIES:FONE
+SUMMARY:FONE : Le disque a été retiré avant la fin de sauvegarde ce matin
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160406T17:02:00
+DTEND:20160406T17:03:00
+CATEGORIES:SIDAM
+SUMMARY:SIDAM : A CLOTURER
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160406T15:04:00
+DTEND:20160406T16:09:00
+CATEGORIES:SIDAM
+SUMMARY:SIDAM : TM sur le serveur 2003...
+DESCRIPTION: Verification de la strategie KAVModification de la strategieL'agent ne se lance pas,Desinstallation + Reinstallation de l'agentMise a jour OK
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160406T14:55:00
+DTEND:20160406T14:56:00
+CATEGORIES:MARCENAC
+SUMMARY:MARCENAC : Amelie est en RDV... Nous rappel apres
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160406T14:39:00
+DTEND:20160406T14:40:00
+CATEGORIES:TRANS_PEYROT
+SUMMARY:TRANS_PEYROT : Contacter l'utilisateur 
+DESCRIPTION: 06.12.30.58.46  ou  06.24.92.54.07Rebrancher le cisco debranch&eacute;
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160406T13:38:00
+DTEND:20160406T14:02:00
+CATEGORIES:ABTEL
+SUMMARY:ABTEL : Nettoyage de la console GLPI...
+DESCRIPTION: Transfert d'entit&eacute; pour les postes non class&eacute;s correctement.
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160406T11:38:00
+DTEND:20160406T11:39:00
+CATEGORIES:MARCENAC
+SUMMARY:MARCENAC : Amelie n'est pas disponible... nous rappel
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160406T10:35:00
+DTEND:20160406T11:13:00
+CATEGORIES:ABTEL
+SUMMARY:ABTEL : Les notifications ne fonctionnent pas...
+DESCRIPTION: Les notifications par mail ne fonctionnent pasParametrage des notifications par mailTest OKModification de l'entete des mails (code client)
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160406T08:20:00
+DTEND:20160406T10:35:00
+CATEGORIES:ABTEL
+SUMMARY:ABTEL : MAJ de GLPI en version 0.85.5
+DESCRIPTION: Installation de fusion verification ok
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160405T18:12:00
+DTEND:20160405T18:26:00
+CATEGORIES:FDGROUP
+SUMMARY:FDGROUP : Scan du reseau... Femto introuvable
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160405T18:11:00
+DTEND:20160405T18:12:00
+CATEGORIES:BETAC
+SUMMARY:BETAC : A CLOTURER
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160405T17:44:00
+DTEND:20160405T18:10:00
+CATEGORIES:BETAC
+SUMMARY:BETAC : TM sur le poste...
+DESCRIPTION: Il a besoin de Genesys logicielInstallation de Everwin GXConfiguration Test de connexion OK
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160405T17:47:00
+DTEND:20160405T17:48:00
+CATEGORIES:TISSOTELEC
+SUMMARY:TISSOTELEC : A CLOTURER
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160405T17:08:00
+DTEND:20160405T17:46:00
+CATEGORIES:TISSOTELEC
+SUMMARY:TISSOTELEC : Configuration de la PRISME...
+DESCRIPTION: Redemarrage de Virtual PCRedemarrage du poste en W7Installation des ports COMLancement de la connexion ModemVerification avec M. Vernet OK
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160405T17:09:00
+DTEND:20160405T17:10:00
+CATEGORIES:FONE
+SUMMARY:FONE : Verifier à J+1
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160405T15:24:00
+DTEND:20160405T15:25:00
+CATEGORIES:FDGROUP
+SUMMARY:FDGROUP : Appel MM... Pas de routage a mettre en place... Il faut uniquement un acces inte
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160405T15:14:00
+DTEND:20160405T15:15:00
+CATEGORIES:TISSOTELEC
+SUMMARY:TISSOTELEC : Appel sans reponse
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160405T14:45:00
+DTEND:20160405T14:50:00
+CATEGORIES:ABTEL
+SUMMARY:ABTEL : Mail au service technique...
+DESCRIPTION: Bonjour,Comme convenu lors de la derni&egrave;re r&eacute;union technique, j'ai effectu&eacute; une installation de Fusion-Inventory sur un MAC OS afin de verifier si la remont&eacute;e des informations s'effectuait correctement.Je vous confirme, la remont&eacute;e des informations fonctionne correctement:Pour information, avant d'installer Fusion-inventory, il faut changer le nom du poste et red&eacute;marrer celui-ci. Il est imp&eacute;ratif.Je reste &agrave; votre disposition si vous avez des questions.Cordialement,
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160405T14:00:00
+DTEND:20160405T14:45:00
+CATEGORIES:ABTEL
+SUMMARY:ABTEL : Test FUSIONINVENTORY sur MAC...
+DESCRIPTION: Modification du nom du poste  -->  ADRH-MAC1 (PC de M. Maury)Redemarrage du posteConfiguration de l'agent fusioninventoryInstallation de fusionVerification dans la console GLPITest OK
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160405T11:32:00
+DTEND:20160405T11:44:00
+CATEGORIES:FDGROUP
+SUMMARY:FDGROUP : Verification sur la sauvegarde...
+DESCRIPTION: Nettoyage du disque
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160405T11:22:00
+DTEND:20160405T11:32:00
+CATEGORIES:FDGROUP
+SUMMARY:FDGROUP : Point avec Damien...
+DESCRIPTION: Il a rebranch&eacute; le disque sur le reseauIl ne pense pas toujours &agrave; changer de disque
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160405T09:15:00
+DTEND:20160405T09:29:00
+CATEGORIES:FONE
+SUMMARY:FONE : Appel pour le probleme...
+DESCRIPTION: Veriication sur le serveurSauvegarde d'hier OKLe disque 192.168.1.242 est indisponible depuis 7 joursCorinne fait le point et nous rappel
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160405T09:14:00
+DTEND:20160405T09:15:00
+CATEGORIES:TISSOTELEC
+SUMMARY:TISSOTELEC : Appel M. Vernet... En chantier ce matin
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160405T08:45:00
+DTEND:20160405T09:00:00
+CATEGORIES:TISSOTELEC
+SUMMARY:TISSOTELEC : Verification sur Prisme...
+DESCRIPTION: C'est un virtual PCLe port USB doit se mettre en veilleModification de l'alimentation 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160404T16:59:00
+DTEND:20160404T17:00:00
+CATEGORIES:FONE
+SUMMARY:FONE : Verifier la sauvegarde J+1
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160404T16:32:00
+DTEND:20160404T16:56:00
+CATEGORIES:FONE
+SUMMARY:FONE : Nettoyage de la sauvegarde...
+DESCRIPTION: nettoyage de la sauvegardeReplanification Lancement de la sauvegarde manuelle
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160404T15:25:00
+DTEND:20160404T15:26:00
+CATEGORIES:FDGROUP
+SUMMARY:FDGROUP : mail de M. Pialat...
+DESCRIPTION: Je fais suite &agrave; notre conversation, il faut ouvrir les ports comme indiqu&eacute;, merciCordialement.Michel PialatFD Group SarlApple Way &ndash; Spare ConceptT&eacute;l : +33(0)4 66 29 97 16Fax : +33(0)4 66 29 21 02Mobile : +33(0)6 20 41 46 96michel.pialat@fdgroup.eumichel.pialat@gmail.comskype : michel_fdgroupPensez ECOlogie et ECOnomie : n'imprimez que si n&eacute;cessaire ! P
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160404T11:01:00
+DTEND:20160404T11:02:00
+CATEGORIES:ANIM
+SUMMARY:ANIM : Point avec CRA... Est en ligne avec M. Pingau
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160404T08:30:00
+DTEND:20160404T09:03:00
+CATEGORIES:ABTEL
+SUMMARY:ABTEL : Reunion technique hebdomadaire 
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160404T09:17:00
+DTEND:20160404T09:18:00
+CATEGORIES:CM-RHUMAT
+SUMMARY:CM-RHUMAT : Mail à M. Mardon...
+DESCRIPTION: Bonjour M. Mardon,Est-ce que l'envoi des r&eacute;sultats &agrave; Mme Dasilva  fonctionne pour vous?Je reste &agrave; votre disposition pour toute information compl&eacute;mentaire.Cordialement,
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160401T17:37:00
+DTEND:20160401T17:38:00
+CATEGORIES:CM-UCHAUD
+SUMMARY:CM-UCHAUD : M. Bachelot est indisponible... Rappeler lundi
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160401T17:23:00
+DTEND:20160401T17:24:00
+CATEGORIES:FDGROUP
+SUMMARY:FDGROUP : Mail à M. Pialat...
+DESCRIPTION: Bonjour M. Pialat,J'ai v&eacute;rifi&eacute; les pr&eacute;-requis ci-dessous.Il faudra installer le logiciel "femtochecker" sur un poste. Celui-ci v&eacute;rifiera la configuration et vous indiquera si les pr&eacute;-requis sont respect&eacute;s.Souhaitez vous une t&eacute;l&eacute;maintenance?Je reste &agrave; votre disposition pour toute information compl&eacute;mentaire.Cordialement,
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160401T16:53:00
+DTEND:20160401T16:54:00
+CATEGORIES:FDGROUP
+SUMMARY:FDGROUP : M.Pialat s'est absenté... Reviens lundi
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160401T15:44:00
+DTEND:20160401T15:48:00
+CATEGORIES:FDGROUP
+SUMMARY:FDGROUP : prerequis du doc...
+DESCRIPTION: Le DHCP doit etre activ&eacute;Les ports suivants doivent etre ouverts en mode TCP/UDP:- 123 (NTP)- 500 (ISAKMP)- 4500 (IPSEC)Si ces ports sont ferm&eacute;s, la femtocell ne pourra passer aucun appel.Pour valider la bonne configuration, utiliser l'outil "femtochecker" (outil de test de la config BOX)
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160401T11:33:00
+DTEND:20160401T11:34:00
+CATEGORIES:CM-UCHAUD
+SUMMARY:CM-UCHAUD : Prise d'appel par Laurent Chedotal...
+DESCRIPTION: Patient: Isabelle DUBOSCMedecin: Dr ClaretVoir avec M. BachelotLe labo roussel envoie des resultat au CM mais le CM ne re&ccedil;oit pas04 66 35 36 89
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160401T09:27:00
+DTEND:20160401T09:30:00
+CATEGORIES:CM-RHUMAT
+SUMMARY:CM-RHUMAT : Mail envoyé à Mme Da Silva...
+DESCRIPTION: Bonjour,Ci-dessous la demande adress&eacute;e au laboratoire Unibio.Recevez vous les r&eacute;sultats de ce laboratoire?Cordialement,
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160330T17:50:00
+DTEND:20160330T18:20:00
+CATEGORIES:ABTEL
+SUMMARY:ABTEL : Explication MMA pour config routeur fortigate
+DESCRIPTION: Explication + configuration des redirections de port sur le fortigate pour le client HABILIS
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160329T10:50:00
+DTEND:20160329T10:51:00
+CATEGORIES:SYNERGIE
+SUMMARY:SYNERGIE : Maria nous enverra un mail quand elle aura commandé les disques
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160329T10:36:00
+DTEND:20160329T10:48:00
+CATEGORIES:SYNERGIE
+SUMMARY:SYNERGIE : Point avec Maria...
+DESCRIPTION: Elle n'a pas command&eacute; les disques durs pour le momentM'a pos&eacute; des questions sur son onduleur et sur le fonctionnement de logmein pour qu'ils puissent se connecter avec des clients.
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160329T09:33:00
+DTEND:20160329T09:37:00
+CATEGORIES:ADRH
+SUMMARY:ADRH : Verification sur le poste OK...
+DESCRIPTION: les mails sont dans le dossier SENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160325T09:10:00
+DTEND:20160325T09:13:00
+CATEGORIES:ADRH
+SUMMARY:ADRH : Point avec M. Maury... Est sur Marseille ce jour... Appeler mardi matin
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160324T10:10:00
+DTEND:20160324T10:11:00
+CATEGORIES:ADRH
+SUMMARY:ADRH : Confirmé avec Mme Chaudet
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160324T09:53:00
+DTEND:20160324T09:55:00
+CATEGORIES:ADRH
+SUMMARY:ADRH : Demande d'inter site...
+DESCRIPTION: Preparer un PC portable de pret.Le poste de Mme Chaudet ne demarre pas.Rien ne s'affiche &agrave; l'ecranAlimentation + batterie retir&eacute;e et remise... Rien ne s'affiche au demarrage
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160324T09:43:00
+DTEND:20160324T09:52:00
+CATEGORIES:ADRH
+SUMMARY:ADRH : Appel de Mme Chaudet...
+DESCRIPTION: TM sur le poste pour lui montrer comment acceder au webmail
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160324T09:25:00
+DTEND:20160324T09:26:00
+CATEGORIES:ADRH
+SUMMARY:ADRH : TM sur le poste...
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160324T09:09:00
+DTEND:20160324T09:25:00
+CATEGORIES:ADRH
+SUMMARY:ADRH : Le poste ne demarre plus...
+DESCRIPTION: Num&eacute;ro de s&eacute;rie : B1SLJX1 Date d&rsquo;exp&eacute;dition : mai 22, 2013 Pays: France Service Fournisseur Date de d&eacute;but (fuseau horaire GMT): mai 22, 2013 Date de fin (fuseau horaire GMT):mai 22, 2014
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160323T18:22:00
+DTEND:20160323T18:32:00
+CATEGORIES:CM-RHUMAT
+SUMMARY:CM-RHUMAT : Verification + mail envoyé à M. Mardon...
+DESCRIPTION: Bonjour M. Mardon,Nous avons le Docteur Da Silva qui ne re&ccedil;oit pas les r&eacute;sultats de UNIBIO.Pouvez vous v&eacute;rifier s'il vous pla&icirc;t?Adresse:     Virginie.DASILVA@medical30.apicrypt.orgJe reste &agrave; votre disposition pour tout compl&eacute;ment d'information.Cordialement,
+END:VEVENT
+END:VCALENDAR

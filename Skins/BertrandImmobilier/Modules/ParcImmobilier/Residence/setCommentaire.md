@@ -1,0 +1,1 @@
+[STORPROC [!Query!]|r][!r::setCommentaire([!nom!],[!prenom!],[!telephone!],[!email!],[!commentaire!],[!note!],[!id!])!][/STORPROC]

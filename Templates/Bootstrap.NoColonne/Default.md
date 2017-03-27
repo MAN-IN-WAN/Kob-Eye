@@ -1,7 +1,5 @@
-<div class="row-fluid">
-	<div class="span12">
+<div id="mainContent" class="row noMargin">
 		[HAUT]
 		[DATA]
 		[BAS]
-	</div>
 </div>

@@ -1,0 +1,734 @@
+/****************************************************************
+ *								*
+ *			     COLOR SET    			*
+ *								*
+ ****************************************************************/
+/*
+ *	#fff
+ *	#222;
+ *	#000
+ *  info      bleu   : #0e8ec1
+ *  web       orange : #ee7805
+ *  network   vert   : #6eb126
+ *  formation rose   : #e6008d
+ *  autre     gris   : #868585
+ *
+
+
+/* Importation des elements suppl�mentaires */
+html, body{
+	margin:0;
+	padding:0;
+	width:100%;
+	height:100%;
+	font-size:7pt;
+	font-family:Arial;
+	color:#000000;
+}
+body{
+	padding-top: 130px;
+}
+.clear{
+	clear: both;
+}
+a{
+	border:0px;
+	text-decoration:none;
+}
+a:hover{
+	text-decoration:none;
+}
+a.addButton,
+a.modButton,
+a.delButton{
+	color: #fff;
+	width: 130px;
+	display: block;
+	position: relative;
+	text-align: center;
+	font-family: Arial;
+	font-size: 16px;
+	font-weight: 600;
+	padding: 10px 30px;
+}
+a.addButton:hover:after,
+a.modButton:hover:after,
+a.delButton:hover:after{
+	content:' ';
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255,255,255,0.5);
+}
+a.addButton:before,
+a.modButton:before,
+a.delButton:before{
+	font-family: 'Glyphicons Halflings';
+	position: absolute;
+	top: 10px;
+	left: 10px;
+}
+a.addButton{
+	background-color: #6eb126;
+}
+a.addButton:before{
+	content: "\002b";
+}
+a.modButton{
+	background-color: #ee7805;
+}
+a.modButton:before{
+	content: "\e019";
+}
+a.delButton{
+	background-color: #e6008d;
+}
+a.delButton:before{
+	content: "\e020";
+}
+
+h1 {
+	font-size:3em;
+	text-transform:uppercase;
+}
+h2 {
+	font-size:1em;	
+}
+h3 {
+	font-size:0.9em;	
+}
+h1,h2,h3{
+	margin: 0;
+}
+.disabled{
+	position: relative;
+	pointer-events: none;
+}
+.disabled:after{
+	content:' ';
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.2);
+}
+.notFound{
+	color: #ff4444;
+}
+.debug{
+	display: none;
+	visibility: hidden;
+}
+
+/* -------------ENTETE -------------*/
+#Entete {
+	background-color: #000;
+	color:#fff;
+	font-weight:bold;
+	font-size:2em;
+	text-align:right;
+	padding-right: 20px;
+	height: 70px;
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: 0;
+	z-index: 1030;
+}
+#Entete #headTxt{
+	height: 100%;
+}
+#Entete #headTxt .subHead{
+	height: 50%;
+}
+
+/*----------------------CONTENU-----------------------*/
+#Global{
+	display: block;
+	position:relative;
+	background-color:#fff;
+	color:#000;
+}
+#Global #DescAdm {
+	font-size:2em;
+	text-align: center;
+	padding-top: 20px;
+}
+#Global #ModTitle,
+#Global #ModNav{
+	position: fixed;
+	top: 70px;
+	right: 50%;
+	left: 0;
+	z-index: 1030;
+	padding-left: 15px;
+	display: block;
+	overflow: hidden;
+	background-color: #868585;
+	color: #fff;
+	height: 60px;
+}
+#Global #ModNav{
+	right: 0;
+	left: 50%;
+	padding-right: 15px;
+}
+#Global #ModNav p{
+	height: 100%;
+	margin: 0;
+	line-height: 60px;
+	font-size: 1.4em;
+	text-align: right;
+}
+#Global #ModTitle:hover:after {
+	content:' ';
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.2);
+}
+#Global #ModTitle h1{
+	height: 100%;
+	line-height: 60px;	
+}
+
+#Global .module a{
+  	background: #0e8ec1;
+	color: #ffffff;
+	display: block;
+	font-family: Arial;
+	font-size: 3em;
+	padding: 10px 20px;
+	text-decoration: none;
+	position: relative;
+}
+#Global .module a:hover:before{ 
+	content:' ';
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255,255,255,0.5);
+}
+
+/* NAVIGATION A GAUCHE */
+#Global #LeftNav,
+#Global #LeftNavHome{
+	list-style: none;
+	background-color: #ee7805;
+	position: fixed;
+	top: 130px;
+	bottom: 0;
+	left: 0;
+	z-index: 1000;
+	display: block;
+	margin-bottom: 0px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	padding: 0;
+}
+#Global #LeftNavHome{
+	background-color: #0e8ec1;
+}
+#Global #LeftNav li a,
+#Global #LeftNavHome li a{
+   	color: #ffffff;
+	display: block;
+	font-family: Arial;
+	font-size: 2em;
+	text-decoration: none;
+	position: relative;
+	padding: 15px 45px;
+}
+#Global #LeftNav li a:hover:before,
+#Global #LeftNavHome li a:hover:before{
+	content:' ';
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255,255,255,0.5);
+}
+#Global #LeftNav li.selected a:after,
+#Global #LeftNavHome li.selected a:after {
+	content:' ';
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.2);
+}
+
+/* CENTRE PAGE */
+#Global #ModContent {
+	
+}
+#Global #ModContent #MEPDesc {
+	color:#245790;
+	font-size:2em;
+}
+
+/* MENU CENTRE PAGE EN HAUT */
+
+/*-----------------------MEPCat ---------------------------------*/
+#Global #ModContent #MEPCat  {
+	font-size:2em;
+}
+#Global #ModContent #MEPCat .displayItem ul#catListMenu {
+	list-style:none;
+	background-color: #6eb126;
+	padding: 0;
+}
+#Global #ModContent #MEPCat .displayItem ul:after {
+	content:"";
+	clear: both;
+	display:table;
+}
+#Global #ModContent #MEPCat .displayItem ul li a  {
+	float:left;
+	color:#fff;
+	width:auto;
+	padding: 15px;
+	display: block;
+	position: relative;
+}
+#Global #ModContent #MEPCat .displayItem ul li a:hover  {
+	text-decoration: none;
+}
+#Global #ModContent #MEPCat .displayItem ul li a:hover:before  {
+	content: " ";
+	display: block;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: rgba(255,255,255,0.5);
+}
+#Global #ModContent #MEPCat .displayItem ul li a.selected:after {
+	content:' ';
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.2);
+}
+
+
+/* CENTRE PAGE DETAILS MEPCAT*/
+#Global #ModContent #MEPCat .itemChilds #subItems{
+	margin-bottom: 15px;
+}
+#Global #ModContent #MEPCat .itemChilds #subItems a{
+	padding-left: 17px;
+	position: relative;
+	margin-left: 10px;
+}
+#Global #ModContent #MEPCat .itemChilds #subItems a:before{
+	content:"\e012";
+	font-family: 'Glyphicons Halflings';
+	position: absolute;
+	top: 1px;
+	left: 0;
+	display: inline-block;
+	width: 15px;
+	height: 100%;
+	font-size: 0.7em;
+}
+#Global #ModContent #MEPCat .itemChilds .children{
+	padding: 15px;
+}
+#Global #ModContent #MEPCat .itemChilds .children a.childsGoTo{
+	display: block;
+	background-color: #0e8ec1;
+	padding: 10px;
+	color: #fff;
+}
+#Global #ModContent #MEPCat .itemChilds .children a.childsGoTo:hover:after{
+	content: " ";
+	display: block;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: rgba(255,255,255,0.5);
+}
+#Global #ModContent #MEPCat .itemChilds .children a.childsGoTo .childDesc{
+	font-size: 0.9em;
+	font-style: italic;
+}
+
+/*----------DetailDirect----------------------------*/
+#Global #ModContent #MEPCat .itemChilds #DetailDirect {
+	border-left: 10px solid #0e8ec1;
+	border-right: 10px solid #0e8ec1;
+	padding:0 20px;
+	margin-bottom: 40px;
+}
+#Global #ModContent #MEPCat .itemChilds #DetailDirect h2 {
+	font-size:1.2em;
+	margin-bottom: 15px;
+}
+#Global #ModContent #MEPCat .itemChilds #DetailDirect p {
+	margin-bottom: 5px;
+	line-height: 1.1em;
+}
+#Global #ModContent #MEPCat .itemChilds #DetailDirect .champval {
+	font-size:1.1em;
+	color:#868585;
+}
+#Global #ModContent #MEPCat .itemChilds #DetailDirect a {
+	float: right;
+	margin-left: 10px;
+}
+
+/************ ChildrenDirect ----------------------------*/
+#Global #ModContent #MEPCat .itemChilds #ChildrenDirect {
+	border-left: 10px solid #e6008d;
+	border-right: 10px solid #e6008d;
+	padding: 0 20px;
+}
+#Global #ModContent #MEPCat .itemChilds #ChildrenDirect .childArt a.addButton {
+	float: right;
+}
+#Global #ModContent #MEPCat .itemChilds #ChildrenDirect .childArt a.artTitle {
+	color: #868585;
+	position: relative;
+	padding-left: 20px;
+}
+#Global #ModContent #MEPCat .itemChilds #ChildrenDirect .childArt a.artTitle:hover {
+	color: #e6008d;
+}
+#Global #ModContent #MEPCat .itemChilds #ChildrenDirect .childArt a.artTitle:before {
+	content: " ";
+	display: block;
+	width: 15px;
+	height: 18px;
+	background-image: url("../Img/article.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+	position: absolute;
+	top: 3px;
+	left: 0;
+}				
+/************ FIN MEPCat ----------------------------*/
+
+/************ MEPArt ----------------------------*/
+	
+#Global #ModContent #MEPArt {
+	font-size: 2em;
+}
+#Global #ModContent #MEPArt #selectChild{
+	margin-top: 10px;
+}
+#Global #ModContent #MEPArt #sortChild{
+	margin-top: 10px;
+}
+#Global #ModContent #MEPArt #sortChild a img{
+	max-width: 40px;
+	max-height: 40px;
+	display: inline-block;
+	border: 1px solid #ccc;
+}
+#Global #ModContent #MEPArt .itemChilds .children{
+	padding: 15px;
+}
+#Global #ModContent #MEPArt .itemChilds .children a.childsGoTo{
+	display: block;
+	background-color: #0e8ec1;
+	padding: 10px;
+	color: #fff;
+}
+#Global #ModContent #MEPArt .itemChilds .children a.childsGoTo:hover:after{
+	content: " ";
+	display: block;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: rgba(255,255,255,0.5);
+}
+#Global #ModContent #MEPArt .itemChilds .children a.childsGoTo .childName{
+	font-size: 1.1em;
+	font-weight: 600;
+}
+#Global #ModContent #MEPArt .itemChilds .children a.childsGoTo .childDesc{
+	font-size: 0.9em;
+	font-style: italic;
+}
+	
+	
+/*----------DetailDirect----------------------------*/
+#Global #ModContent #MEPArt .itemChilds #DetailDirect {
+	margin-top: 10px;
+	border-left: 10px solid #0e8ec1;
+	border-right: 10px solid #0e8ec1;
+	padding:0 20px;
+	margin-bottom: 40px;
+}
+#Global #ModContent #MEPArt .itemChilds #DetailDirect h2 {
+	font-size:1.2em;
+	margin-bottom: 15px;
+}
+#Global #ModContent #MEPArt .itemChilds #DetailDirect p {
+	margin-bottom: 5px;
+	line-height: 1.1em;
+}
+#Global #ModContent #MEPArt .itemChilds #DetailDirect .champval {
+	font-size:1.1em;
+	color:#868585;
+}
+#Global #ModContent #MEPArt .itemChilds #DetailDirect a {
+	float: right;
+	margin-left: 10px;
+}
+
+/************ ChildrenDirect ----------------------------*/
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect {
+	border-left: 10px solid #e6008d;
+	border-right: 10px solid #e6008d;
+	padding: 0 20px;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect a{
+	float: right;
+	margin-left: 10px;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .tableWrap{
+	border-left: 10px solid #6eb126;
+	border-right: 10px solid #6eb126;
+	padding: 0 20px;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect table {
+	width: 100%;
+	border-collapse: collapse;
+	background-color: #868585;
+	text-align: center;
+	margin-bottom: 10px;
+	color: #fff;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect table caption{
+	padding-top: 0;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect table caption span.conTitre{
+	display: inline-block;
+	padding: 10px 0;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect table td{
+	border: 2px solid #fff;
+	padding: 5px;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect table td.colTitre{
+	width: 60%;
+	position: relative;
+	padding-left: 22px;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect table td.colTitre:before{
+	display: block;
+	position: absolute;
+	top: 3px;
+	left: 5px;
+	font-size: 0.6em;
+	font-family: 'Glyphicons Halflings';
+	content: "\e060";
+	width: 10px;
+	height: 10px;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect table td.colTitre:after{
+	display: block;
+	position: absolute;
+	bottom: 8px;
+	left: 5px;
+	font-size: 0.6em;
+	font-family: 'Glyphicons Halflings';
+	content: "\e052";
+	width: 10px;
+	height: 10px;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect table td.colRatio{
+	width: 20%;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect table td.colMod,
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect table td.colDel{
+	width: 10%;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect table td.colMod,
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect table td.colDel,
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect table td.colAdd{
+	padding: 5px 0;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect table td.colMod a,
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect table td.colDel a,
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect table td.colAdd a{
+	display: block;
+	width: 100%;
+	height: 100%;
+	position: relative;
+	margin: 0;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect table td.colMod a:hover:after,
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect table td.colDel a:hover:after,
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect table td.colAdd a:hover:after{
+	content: " ";
+	display: block;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: rgba(255,255,255,0.2);
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect table td.colMod a{
+	color: #ee7805;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect table td.colDel a{
+	color: #e6008d;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect table td.colAdd a{
+	color: #6eb126;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect table td a{
+	float: none;
+}
+
+#Global #ModContent #MEPArt .itemChilds #backToCat{
+	display: inline-block;
+	position: relative;
+	padding: 10px;
+	padding-left: 30px;
+	background-color: #0e8ec1;
+	color: #fff;
+	margin-top: 40px;
+}
+#Global #ModContent #MEPArt .itemChilds #backToCat:before{
+	display: block;
+	position: absolute;
+	top: 10px;
+	left: 5px;
+	font-family: 'Glyphicons Halflings';
+	content: "\e095";
+	width: 20px;
+	height: 20px;
+}
+
+
+/*------------- Formulaires ----------------*/
+#Global #ModTitle #objName{
+	font-size: 1.05em;
+	color: #ee7805;
+}
+#Global .error h2,
+#Global .succes h2{
+	text-align: center;
+	font-size: 2em;
+	color: #e6008d;
+	font-weight: 600;
+	margin-bottom: 20px; 
+}
+#Global .succes h2{
+	color: #6eb126;
+}
+#Global .succes a{
+	font-size: 1.8em;
+}
+#Global #ModContainer{
+	max-width: 1200px;
+	margin: 20px auto;
+}
+#Global .inputWrap{
+	font-size: 1.5em;
+	margin-bottom: 10px;
+}
+#Global .inputWrap:after{
+	content: " ";
+	clear: both;
+	display: table;
+}
+#Global .inputWrap label{
+	min-width: 100px;
+	width: 20%;
+	display: block;
+	float: left;
+	background-color: #0e8ec1;
+	color: #fff;
+	padding: 5px 10px;
+}
+#Global .inputWrap.error label{
+	background-color: #e6008d;
+}
+#Global .inputWrap input,
+#Global .inputWrap textarea{
+	min-width: 250px;
+	width: 80%;
+	display: block;
+	float: left;
+	background-color: #868585;
+	color: #fff;
+	border: none;
+	padding: 5px 10px;
+}
+#Global .inputWrap .cke{
+	float: left;
+	box-sizing: border-box;
+	width: 80%
+}
+#Global .inputWrap select{
+	min-width: 100px;
+	width: 40%;
+	display: block;
+	float: left;
+	background-color: #868585;
+	color: #fff;
+	border: none;
+	padding: 6px 10px;
+}
+.btnCancel,
+.btnSubmit{
+	color: #fff;
+	width: 130px;
+	display: block;
+	position: relative;
+	text-align: center;
+	font-family: Arial;
+	font-size: 16px;
+	font-weight: 600;
+	padding: 10px 30px;
+	float: right;
+	margin-left: 10px;
+	border: none;
+}
+.btnCancel{
+	background-color: #e6008d;
+}
+.btnSubmit{
+	background-color: #6eb126;
+}
+.btnCancel:hover:after,
+.btnSubmit:hover:after{
+	content:' ';
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255,255,255,0.5);
+}
+	

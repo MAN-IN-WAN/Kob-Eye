@@ -1,0 +1,25 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//ABTEL Mediterranee//Gestion v0.1//FR
+BEGIN:VEVENT
+DTSTART:20161011T15:25:00
+DTEND:20161011T15:26:00
+CATEGORIES:MASDALESTI
+SUMMARY:MASDALESTI : Intevention à prévoir si client rappelle
+DESCRIPTION: si la cliente rappelleL'historique du pb &eacute;tait un service qui n'avait pas bien red&eacute;marr&eacute; ap&egrave;rs arr&ecirc;t d'une machineChristian a relanc&eacute; le service et tout fonctionne d&eacute;sormais sauf sur le poste d'une personne mme imbertdonc ce n'est pas un pb du site web mais c'est surment un pb de cache...il faut se connecter sur la machine de madame Imbert par logmeinet ensuite il faut aller sur leur gestion documentaire (lui demander de le faire)si &ccedil;a ne fonctionne toujours pas, il faut vider le cachectrl+F5 ou vider les cookiesou ajouter &agrave; l'url  .http://.... /Systeme/DeconnexionSi pb m'appeler ou les faire patienter &agrave; jeudi pour que je les rappelle....
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160414T13:46:00
+DTEND:20160414T13:47:00
+CATEGORIES:COLOMBISPORTS
+SUMMARY:COLOMBISPORTS : Concerne Service Info
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160408T15:38:00
+DTEND:20160408T15:39:00
+CATEGORIES:CM-TRIOPON
+SUMMARY:CM-TRIOPON : PB imprimante
+DESCRIPTION: Il faut intervenir sur site dans le cadre du contrat de maintenance.Jean-Fran&ccedil;ois LooAbtelParc deltaKm 4 - Route d'Arles30230 Bouillargues
+END:VEVENT
+END:VCALENDAR

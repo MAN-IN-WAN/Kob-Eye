@@ -1,0 +1,468 @@
+
+/*--- RESET ---*/
+html, body, div, span, applet, object, iframe, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td { margin: 0; padding: 0; border: 0; outline: 0; font-size: 100%; vertical-align: baseline }
+blockquote, q { quotes: none }
+blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; }
+ins { text-decoration: none }
+del { text-decoration: line-through }
+table { border-collapse: collapse; border-spacing: 0 }
+a:active, input:active { outline: none }
+:-moz-any-link:focus { outline: none }
+
+/****************************************************************
+ *								*
+ *			     COLOR SET    			*
+ *								*
+ ****************************************************************/
+/*
+ *	#fff
+ *	#222;
+ *	#000
+ *  info      bleu   : #0e8ec1
+ *  web       orange : #ee7805
+ *  network   vert   : #6eb126
+ *  formation rose   : #e6008d
+ *  autre     gris   : #868585
+ *
+ */
+
+
+/*************************************************/
+/******************** FONTES *********************/
+/*************************************************/
+
+@font-face {
+    font-family: 'latoblack';
+    src: url('../Fonts/lato-black-webfont.eot');
+    src: url('../Fonts/lato-black-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../Fonts/lato-black-webfont.woff2') format('woff2'),
+         url('../Fonts/lato-black-webfont.woff') format('woff'),
+         url('../Fonts/lato-black-webfont.ttf') format('truetype'),
+         url('../Fonts/lato-black-webfont.svg#latoblack') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'latoblackitalic';
+    src: url('../Fonts/lato-blackitalic-webfont.eot');
+    src: url('../Fonts/lato-blackitalic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../Fonts/lato-blackitalic-webfont.woff2') format('woff2'),
+         url('../Fonts/lato-blackitalic-webfont.woff') format('woff'),
+         url('../Fonts/lato-blackitalic-webfont.ttf') format('truetype'),
+         url('../Fonts/lato-blackitalic-webfont.latoblackitalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'latobold';
+    src: url('../Fonts/lato-bold-webfont.eot');
+    src: url('../Fonts/lato-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../Fonts/lato-bold-webfont.woff2') format('woff2'),
+         url('../Fonts/lato-bold-webfont.woff') format('woff'),
+         url('../Fonts/lato-bold-webfont.ttf') format('truetype'),
+         url('../Fonts/lato-bold-webfont.latobold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'latobolditalic';
+    src: url('../Fonts/lato-bolditalic-webfont.eot');
+    src: url('../Fonts/lato-bolditalic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../Fonts/lato-bolditalic-webfont.woff2') format('woff2'),
+         url('../Fonts/lato-bolditalic-webfont.woff') format('woff'),
+         url('../Fonts/lato-bolditalic-webfont.ttf') format('truetype'),
+         url('../Fonts/lato-bolditalic-webfont.latobolditalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'latohairline';
+    src: url('../Fonts/lato-hairline-webfont.eot');
+    src: url('../Fonts/lato-hairline-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../Fonts/lato-hairline-webfont.woff2') format('woff2'),
+         url('../Fonts/lato-hairline-webfont.woff') format('woff'),
+         url('../Fonts/lato-hairline-webfont.ttf') format('truetype'),
+         url('../Fonts/lato-hairline-webfont.latohairline') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'latohairlineitalic';
+    src: url('../Fonts/lato-hairlineitalic-webfont.eot');
+    src: url('../Fonts/lato-hairlineitalic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../Fonts/lato-hairlineitalic-webfont.woff2') format('woff2'),
+         url('../Fonts/lato-hairlineitalic-webfont.woff') format('woff'),
+         url('../Fonts/lato-hairlineitalic-webfont.ttf') format('truetype'),
+         url('../Fonts/lato-hairlineitalic-webfont.latohairlineitalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'latoitalic';
+    src: url('../Fonts/lato-italic-webfont.eot');
+    src: url('../Fonts/lato-italic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../Fonts/lato-italic-webfont.woff2') format('woff2'),
+         url('../Fonts/lato-italic-webfont.woff') format('woff'),
+         url('../Fonts/lato-italic-webfont.ttf') format('truetype'),
+         url('../Fonts/lato-italic-webfont.latoitalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'latolight';
+    src: url('../Fonts/lato-light-webfont.eot');
+    src: url('../Fonts/lato-light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../Fonts/lato-light-webfont.woff2') format('woff2'),
+         url('../Fonts/lato-light-webfont.woff') format('woff'),
+         url('../Fonts/lato-light-webfont.ttf') format('truetype'),
+         url('../Fonts/lato-light-webfont.latolight') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'latolightitalic';
+    src: url('../Fonts/lato-lightitalic-webfont.eot');
+    src: url('../Fonts/lato-lightitalic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../Fonts/lato-lightitalic-webfont.woff2') format('woff2'),
+         url('../Fonts/lato-lightitalic-webfont.woff') format('woff'),
+         url('../Fonts/lato-lightitalic-webfont.ttf') format('truetype'),
+         url('../Fonts/lato-lightitalic-webfont.latolightitalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'latoregular';
+    src: url('../Fonts/lato-regular-webfont.eot');
+    src: url('../Fonts/lato-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../Fonts/lato-regular-webfont.woff2') format('woff2'),
+         url('../Fonts/lato-regular-webfont.woff') format('woff'),
+         url('../Fonts/lato-regular-webfont.ttf') format('truetype'),
+         url('../Fonts/lato-regular-webfont.latoregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/*-- GLOBAL ---*/
+html,body {
+	padding:0;
+	margin:0;
+	font-family: 'latoregular';
+	font-size:12px;
+	background-color: #222;
+	height: 100%;
+}
+#siteWrap{
+	min-height: 100%;
+	position:relative;
+}
+
+input, textarea, select, button {
+	font-family: Arial;
+	font-size: 1em;
+}
+
+a {
+	text-decoration: none;
+	color: #77a;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	padding: 0;
+	margin: 0;
+}
+
+li {
+	list-style: disc inside;
+}
+
+div.noMargin{
+	margin: 0;
+}
+
+
+/****************************************************************
+ *								*
+ *			     GENERAL    			*
+ *								*
+ ****************************************************************/
+div#header, div#footer {
+	background-color: rgba(68,68,68,0.6);
+	z-index: 10;
+}
+
+/* Header */
+#header{
+	height: 80px;
+	border-top: 2px solid #fff;
+	position: relative;
+	z-index: 100;
+}
+#header div#logoAbtel,
+#header div#menuTop{
+	height: 100%;
+}
+
+
+/* Footer */
+#footer {
+	height: 50px;
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	z-index: 100;
+}
+#footer div#newsLetterAbtel,
+#footer div#menuBottom,
+#footer div#menuSocial{
+	height: 100%;
+}
+
+/* Main Content */
+#siteWrap #main {
+	min-height: 300px;
+	position: relative;
+	z-index: 100;
+}
+#siteWrap #main.backblanc {
+	background-color:#fff;
+}
+/* Background Slide */
+#slideBack{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+        z-index: 1;
+}
+
+#siteWrap #main .HomeProjets {
+	min-height: 300px;
+	position: relative;
+	z-index: 100;
+	border-left:2px dotted #fff;
+
+}
+#siteWrap #main .HomeProjets h2{
+
+}
+
+
+/****************************************************************
+ *								*
+ *			     ACCUEIL    			*
+ *								*
+ ****************************************************************/
+.BasdeLigneEntite {
+	width:100%;
+        vertical-align:bottom;
+}
+.BasdeLigneEntite .pull-left {
+	width:17%;
+        margin:15px;
+        height:240px;
+        padding:20px 15px;
+}
+.BasdeLigneEntite .pull-left h2 {
+	font-weight:bold;
+        font-size:2em;
+        padding:70px 0 5px 0;
+	text-transform:uppercase;
+	color:#fff;
+}
+.BasdeLigneEntite .pull-left h2.redac {
+	padding-top:15px;
+}
+.BasdeLigneEntite .pull-left h3 {
+	font-size:1.5em;
+        padding:0 0 5px 0;
+	text-transform:uppercase;
+	color:#fff;
+}
+.BasdeLigneEntite .pull-left .Description,
+.BasdeLigneEntite .pull-left .Description p {
+	color:#fff;
+        font-size:1.1em;
+
+}
+
+/****************************************************************
+ *								*
+		*	MENU DU HAUT	   			*
+ *								*
+ ****************************************************************/
+
+#topNavigation ul.navbar-top {
+	float:right;
+}
+#topNavigation ul.navbar-top li {
+	margin-top:15px;
+        list-style:none;
+        float:left;
+        padding-right:20px;
+	font-size:1.2em;
+        text-transform:uppercase;
+        color:#fff;
+}
+#topNavigation ul.navbar-top li a{
+	color:#fff;
+}
+#topNavigation ul.navbar-top li a:hover{
+	color:#868585;
+        text-decoration:none;
+}
+#topNavigation ul.navbar-top li a.contact {	
+	color:#fff;
+ 	background-color: #868585;
+    	border-radius: 30px;
+    	color: #fff;
+    	display: inline-block;
+    	font-size: 1.1em;
+    	font-weight: 600;
+    	padding: 10px 20px;
+    	text-shadow: none;
+    	text-transform: uppercase;
+}
+#topNavigation ul.navbar-top li a.contact:hover {	
+	color:#fff;
+        text-decoration:underline
+}
+
+
+/****************************************************************
+ *								*
+		*	MENU PRINCIPAL	   			*
+ *								*
+ ****************************************************************/
+
+.MenuPrincipalEnBas {
+	width:100%;
+        vertical-align:bottom;
+        margin-bottom:60px;
+}
+.MenuPrincipalEnBas .pull-left {
+	width:19%;
+        margin:5px;
+}
+.MenuPrincipalEnBas .pull-left .ElementMenu {
+	height:196px;
+        position:relative;
+}
+.MenuPrincipalEnBas .pull-left .ElementMenu a {
+	position:absolute;
+        bottom:10px;
+        left:20%;
+}
+.MenuPrincipalEnBas .pull-left h2 {
+	font-weight:bold;
+        font-size:1.5em;
+        padding:70px 9px 5px 55px;
+	text-transform:uppercase;
+	color:#fff;
+        font-family:'latobold';
+        bottom:40px;
+}
+.MenuPrincipalEnBas .pull-left h2.redac {
+	padding-top:15px;
+}
+.MenuPrincipalEnBas .pull-left h3 {
+	font-size:1.5em;
+        padding:0 0 9px 55px;
+	text-transform:uppercase;
+	color:#fff;
+        font-family:'latoregular';
+}
+
+/****************************************************************
+ *								*
+ *			MENU DU BAS	   			*
+ *								*
+ ****************************************************************/
+.zonebas{
+	margin-top:10px;
+}
+.zonebas .newsletter form {
+	padding-left:20px;
+}
+.zonebas .newsletter button.add-on {
+	background:none;
+        border:none;
+        font-size:2em;
+        color:#868585;
+}
+.zonebas .newsletter form label {
+        color:#868585;
+        font-size:1.2em;
+        text-transform:uppercase;
+}
+.zonebas .newsletter form input {
+        background:none;
+        border:none;
+        font-size:1em;
+        color:#868585;
+        padding-left:20px;
+}
+.zonebas #bottomNavigation {
+	float:right;
+}
+.zonebas #bottomNavigation ul li.menuBasDroite {
+	list-style:none;
+        float:left;
+        padding-right:20px;
+	font-size:1.2em;
+        text-transform:uppercase;
+        color:#868585;
+}
+.zonebas #bottomNavigation ul li.menuBasDroite a {	
+	color:#868585;
+}
+.zonebas #bottomNavigation ul li.menuBasDroite a:hover {	
+	color:#fff;
+        text-decoration:none;
+}
+
+/****************************************************************
+ *								*
+ *			REDACTIONNEL	   			*
+ *								*
+ ****************************************************************/
+.Redaction {
+	width:100%;
+        margin:auto; 
+}
+.Redaction .Contenu {
+	width:80%;
+        text-align:center;
+}
+.Redaction .descCat {
+	color:#fff;
+        font-family:'latolightitalic';
+	font-size:2em;
+        text-align:center;
+        font-style:italic;
+	vertical-align:middle;
+	min-height:40px;
+        margin:20px auto;
+}
+.Redaction .artContenu {
+	color:#000;
+        font-family:'latolight';
+	font-size:1.2em;
+        text-align:justify;
+	min-height:150px;
+        margin:20px auto;
+}

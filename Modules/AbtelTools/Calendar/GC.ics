@@ -1,0 +1,25 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//ABTEL Mediterranee//Gestion v0.1//FR
+BEGIN:VEVENT
+DTSTART:20170210T15:03:00
+DTEND:20170210T15:13:00
+CATEGORIES:GAZSERVICE
+SUMMARY:GAZSERVICE : Appel de Mme creavisu
+DESCRIPTION: Lui faire une export des pages en csv qu'on reimportera par la suitePour la redirection des 404 si ce sont des produit oou cat&eacute;gories du catalogue => Vers la boutiquePour le reste si &ccedil;a se raccroche &agrave; une thematique pr&eacute;sente sur le site renvoyer vers cette page, sinon &agrave; la racine du site.
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20170201T10:06:00
+DTEND:20170201T10:07:00
+CATEGORIES:MAIGARONS
+SUMMARY:MAIGARONS : Supprimer les tgz sur mbx1 /opt/garons
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160406T09:06:00
+DTEND:20160406T09:16:00
+CATEGORIES:APELEM
+SUMMARY:APELEM : Prise d'appel par Guillaume Candella...
+DESCRIPTION: Je ne sais pas si ils sont couverts par un contrat. Voir avec Lo&iuml;c je crois que c'est un de ses clientsContact :Sanna - 04 67 50 49 05
+END:VEVENT
+END:VCALENDAR

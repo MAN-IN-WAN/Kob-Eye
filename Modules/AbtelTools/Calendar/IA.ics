@@ -1,0 +1,704 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//ABTEL Mediterranee//Gestion v0.1//FR
+BEGIN:VEVENT
+DTSTART:20161108T09:06:00
+DTEND:20161108T09:07:00
+CATEGORIES:MAIGARONS
+SUMMARY:MAIGARONS : rappel de M. Barbes ...
+DESCRIPTION: Il souhaite que tu le rappeles toujours au sujet de Zimbra
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161107T10:16:00
+DTEND:20161107T10:17:00
+CATEGORIES:MIDIBATT
+SUMMARY:MIDIBATT : rappel client ..
+DESCRIPTION: M. Yves Mondalia a rappeler pour svoir o&ugrave; en &eacute;tait son prob de WyseJe lui ai dit qu'on devait faire un devis pour ajouter des licences mais il n'a pas compris pourquoi &eacute;tant donn&eacute; qu'avant son m&eacute;t&eacute;riel fonctionnait. Il a fait juste remplacer le mat&eacute;riel. Ce n'est pas un ajout. Souhaite qu'on lui explique pourquoi &ccedil;a ne fonctionne pas.
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161028T16:57:00
+DTEND:20161028T16:58:00
+CATEGORIES:FDGROUP
+SUMMARY:FDGROUP : mail client ...
+DESCRIPTION: De: "Fr&eacute;d&eacute;ric SMADJA" &Agrave;: support@abtel.frEnvoy&eacute;: Vendredi 28 Octobre 2016 16:05:04Objet: Re: FD GROUP -  Code d'acc&egrave;s Modem / RouteurBonjour,c&rsquo;est OK maintenant. Merci From: support@abtel.frSent: Friday, October 28, 2016 3:35 PMTo: Fr&eacute;d&eacute;ricSMADJASubject: Re: FD GROUP - Code d'acc&egrave;s Modem / Routeur Bonjour Monsieur,Pouvez vous essayer &agrave; nouveau s'il vous pla&icirc;t?Cordialement, Logo AbtelSUPPORT TECHNIQUETel 04 66 04 06 13Fax 04 66 04 09 80Parc deltaKm 4 - Route d'Arles30230 Bouillarguessupport@abtel.fr - www.abtel.frPensez ENVIRONNEMENT : n'imprimez que si n&eacute;cessaire !Pub Abtel De: "Fr&eacute;d&eacute;ric SMADJA" &Agrave;: support@abtel.frEnvoy&eacute;: Vendredi 28 Octobre 2016 11:07:09Objet: Re: FD GROUP -  Code d'acc&egrave;s Modem / RouteurBonjour,malheureusement, je ne parviens pas &agrave; me connecter en ftp &agrave; partir de: fd-epc.ddns.net.Auriez-vous dans le log du routeur des tentatives de connexion avec des messages d&rsquo;erreur ? Pourriez-vous me communiquer ces messages ? Merci, From: support@abtel.frSent: Thursday, October 27, 2016 2:03 PMTo: Michel PialatCc: dmarch@abtel.fr ; f.smadja@free.frSubject: Re: FD GROUP - Code d'acc&egrave;s Modem / Routeur Bonjour,La configuration sur le routeur est effective &agrave; partir de maintenant. Les ports ont &eacute;t&eacute;s ouverts comme demand&eacute;.Je reste &agrave; votre disposition pour toute information compl&eacute;mentaire.Cordialement, Logo AbtelSUPPORT TECHNIQUETel 04 66 04 06 13Fax 04 66 04 09 80Parc deltaKm 4 - Route d'Arles30230 Bouillarguessupport@abtel.fr - www.abtel.frPensez ENVIRONNEMENT : n'imprimez que si n&eacute;cessaire !Pub Abtel De: "Michel Pialat" &Agrave;: support@abtel.frCc: dmarch@abtel.frEnvoy&eacute;: Lundi 24 Octobre 2016 10:02:04Objet: FD GROUP -  Code d'acc&egrave;s Modem / RouteurBonjour,  Une question plus que technique, je vous laisse la d&eacute;couvrir ci-dessous.Merci pour votre retour.   Cordialement. Michel PialatFD Group SarlApple Way &ndash; Spare ConceptT&eacute;l : +33(0)4 66 29 97 16Fax : +33(0)4 66 29 21 02Mobile : +33(0)6 20 41 46 96michel.pialat@fdgroup.eumichel.pialat@gmail.comskype : michel_fdgroupEco-attitudeAdoptez l'&eacute;co-attitude. N'imprimez ce mail que si c'est vraiment n&eacute;cessaire  De : Fr&eacute;d&eacute;ric SMADJA [mailto:f.smadja@free.fr] Envoy&eacute; : lundi 24 octobre 2016 09:47&Agrave; : Michel PialatObjet : Code d'acc&egrave;s Modem / Routeur Monsieur Pialat bonjour,pour mettre en place la synchronisation avec CARIBE, j&rsquo;aurais besoin des codes d&rsquo;acc&egrave;s &agrave; l&rsquo;interface web de votre modem / routeur afin de rediriger le port 21 vers le serveur pour mettre en place un serveur FTP. Dans l&rsquo;attente de votre r&eacute;ponse, Cordialement, Fr&eacute;d&eacute;ric SMADJAIng&eacute;nieur en informatique17 avenue Savorgnan de Brazza13470 Carnoux en ProvenceT&eacute;l.: 09 54 48 69 82Fax: 09 59 48 69 82Mobile: 06 62 16 37 56e-mail: f.smadja@free.frhttp://www.cifuics.fr/ Analyse des malwares effectu&eacute;e  Analyse des malwares effectu&eacute;e Analyse des malwares effectu&eacute;e
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161027T10:12:00
+DTEND:20161027T10:13:00
+CATEGORIES:PIC
+SUMMARY:PIC : appel client ...
+DESCRIPTION: Suite point pour la FAC G08172 : elle ne l'avais pas donc renvoy&eacute;e par mail par contre pour la G05219 il y aurait un litige :De: "i angosto" &Agrave;: "ltroulet" Cc: "samira" Envoy&eacute;: Jeudi 27 Octobre 2016 10:12:57Objet: Relance PIC Fac G05219Je viens d'avoir Alexandrine &agrave; LOCA pour le compte PIC SARL concernant la facture du DD n&deg; G05219. Elle me dit que de son souvenir Bastien n'&eacute;tait pas d'accord pour le payer car ce n'&eacute;taitpas de sa faute si son DD avait grill&eacute;.Du coup, merci de me dire si on doit faire un avoir ou si tu t'occupe de voir &ccedil;a directement avec Bastien de Loca.Cordialement,
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161019T16:23:00
+DTEND:20161019T16:24:00
+CATEGORIES:MIDIBATT
+SUMMARY:MIDIBATT : rappeler Stéphanie avant 17h sinon Cathy après 17h00
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161019T15:57:00
+DTEND:20161019T15:58:00
+CATEGORIES:ADRH
+SUMMARY:ADRH : Création du ticket de suivi
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161019T14:09:00
+DTEND:20161019T14:10:00
+CATEGORIES:TRANS_PEYROT
+SUMMARY:TRANS_PEYROT : appel Simon infralink ...
+DESCRIPTION: la liaison est r&eacute;tablie
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161019T11:47:00
+DTEND:20161019T11:48:00
+CATEGORIES:RBC
+SUMMARY:RBC : mail client ...
+DESCRIPTION: De: "Clemence" &Agrave;: support@abtel.frCc: "tristan" Envoy&eacute;: Mercredi 19 Octobre 2016 11:41:02Objet: URGENT /// Mot de passe mailBonjour, Merci de rappeler le standard et de donner le mot de passe de le boite mail de M. Lonher Tristan.Lorsqu&rsquo;il ouvre sa boite, il lui est demand&eacute; le mot de passe. Cordialement, Cl&eacute;mence NGUYEN QUYResponsable Administrative, RBC Design Center RBC DESIGN CENTER, Montpellier609, av. Raymond Dugrand &ndash; Port Marianne34 000 MontpellierLigne directe : +33 (0) 4 11 93 40 57Mtp      
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161019T09:07:00
+DTEND:20161019T09:08:00
+CATEGORIES:ICN
+SUMMARY:ICN : échange mail ...
+DESCRIPTION: De: cragot@abtel.fr&Agrave;: "DUPUCH cyril" Cc: "ltroulet" , "Meryck Jean" , "Yamin ABDELKADER" , "support" , "ABERLENC gael" , "CZESCHAN christian" Envoy&eacute;: Mardi 18 Octobre 2016 19:04:31Objet: Re: MAJ cluster 240D f&eacute;d&eacute;rateurs ICGBonjour,Merci pour votre retour,Concernant le GIE, sachant nous sommes sur un VDOM transparant pour la partie interco avec le CHU , nous ne sommes pas , par construction (les software switch chez FG etant limit&eacute; au vdom NAT) en mesure de construire un software switch.Sur cette partie , Nous ne pourrons malheureusement rien changer sauf mettre un switch frontal, Nous voyons cela avec Mr Abdlekader du GIEConcernant Kenval, la construction est ,comme les documents que nous vous avions fournis a l'epoque, en full mesh avec deux switch frontaux d'interco redondant, donc il faudra que nous voyons ensemble avec Mr Jean ce que nous faisons.Cordialement,  Logo AbtelRAGOT Christian - Directeur TechniqueTel 04 66 04 06 13Fax 04 66 04 09 80Parc deltaKm 4 - Route d'Arles30230 Bouillarguescragot@abtel.fr - www.abtel.frPensez ENVIRONNEMENT : n'imprimez que si n&eacute;cessaire !Pub AbtelDe: "DUPUCH cyril" &Agrave;: "Lo&iuml;c Troulet" , "cragot" , "Meryck Jean" , "Yamin ABDELKADER" , "support" Cc: "ABERLENC gael" , "CZESCHAN christian" Envoy&eacute;: Mardi 18 Octobre 2016 17:54:32Objet: RE: MAJ cluster 240D f&eacute;d&eacute;rateurs ICGBonjour, Entre mes recherches suite aux op&eacute;rations d&rsquo;hier soir et le point technique fait avec SNS (notre prestataire FW) ce jour, je suis en mesure de vous apporter des &eacute;l&eacute;ments de r&eacute;ponses. Probl&eacute;matique commune GIE et KENVAL identifi&eacute;e :-          Perte compl&egrave;te du r&eacute;seau  lors de la bascule de notre cluster de fortigate 240D et impossibilit&eacute; de r&eacute;cup&eacute;rer le service m&ecirc;me apr&egrave;s un red&eacute;marrage de notre cluster. Questions pour ABDTEL :-          Il semblerait que les interfaces sur lesquelles est interconnect&eacute; notre cluster de 240D ne soient pas configur&eacute;es de la bonne mani&egrave;re. Est-ce que ces interfaces sont bien configur&eacute;es en mode &laquo; software switch &raquo; au niveau de votre fortigate ? Il faut que les deux interfaces soient vues comme une seule et m&ecirc;me interface, il faut donc lier les 2 ports. Questions pour KENVAL : -          C&ocirc;t&eacute; Kenval c&rsquo;est un autre probl&egrave;me qui se profile. En effet, notre cluster est interconnect&eacute; sur des switch vous appartenant. Votre cluster est lui aussi doubl&eacute; attach&eacute; sur ces m&ecirc;mes switch. Lorsque notre cluster bascule, votre cluster ne d&eacute;tecte pas cette bascule, car le syst&egrave;me de port monitor int&eacute;gr&eacute; ne d&eacute;tecte aucune perte de link sur les ports connect&eacute;s au switch. Du coup lorsque le membre slave de mon cluster reboot pour faire sa mise &agrave; jour en premier vous ne perdez pas le r&eacute;seau votre master est toujours connect&eacute; sur notre master par l&rsquo;interm&eacute;diaire du switch. En revanche, lorsque notre master reboot le r&ocirc;le de master bascule sur le slave et &agrave; ce moment votre cluster est dans le noir sans d&eacute;tecter aucune perte de port. Du coup vous ne retrouvez le r&eacute;seau qu&rsquo;&agrave; partir du moment o&ugrave; l&rsquo;un des 2 cluster reboot une nouvelle fois pour que chaque membre reprenne ses r&ocirc;les Master/slave d&rsquo;origine. Il s&rsquo;agit l&agrave; plus d&rsquo;un probl&egrave;me de conception d&rsquo;architecture qu&rsquo;un bug ou qu&rsquo;un probl&egrave;me hardware.-          Workaround : Passage sur un seul switch d&rsquo;interco entre les 2 clusters. Ou suppression des switch d&rsquo;interco. Dans tous les cas, j&rsquo;attends vos r&eacute;ponses respectives avant de replanifier des tests de bascules. Cordialement, Cyril DUPUCHResponsable &Eacute;quipe Infrastructure - Secteur TechniqueDSIH &ndash; CHU de N&icirc;mesTel : 04.66.68.43.17cyril.dupuch@chu-nimes.fr  De : ltroulet@abtel.fr [mailto:ltroulet@abtel.fr] Envoy&eacute; : mardi 18 octobre 2016 07:59&Agrave; : DUPUCH cyril Cc : christian ragot ; Meryck Jean ; Yamin ABDELKADER ; support ; ABERLENC gael ; CZESCHAN christian Objet : Re: MAJ cluster 240D f&eacute;d&eacute;rateurs ICG Bonjour, Pouvons nous pr&eacute;voir de faire un test apr&egrave;s 19 heures de basculement de votre cluster Fortinet afin de v&eacute;rifier si la mise &agrave; jour r&egrave;gle les probl&egrave;mes que nous avons relev&eacute;.On peut pr&eacute;voir cela un soir apr&egrave;s 19 heures.   Restant &agrave; votre disposition. Cordialement. Logo AbtelTROULET Loic - Directeur CommercialTel 04 66 04 06 13Gsm 06 18 58 43 77Parc deltaKm 4 - Route d'Arles30230 Bouillarguesltroulet@abtel.fr - www.abtel.frPensez ENVIRONNEMENT : n'imprimez que si n&eacute;cessaire !Pub Abtel  De: "DUPUCH cyril" &Agrave;: "christian ragot" , "Meryck Jean" , "Yamin ABDELKADER" , "Lo&iuml;c Troulet" Cc: "support" , "ABERLENC gael" , "Christian czeschan" Envoy&eacute;: Lundi 17 Octobre 2016 17:28:40Objet: RE: MAJ cluster 240D f&eacute;d&eacute;rateurs ICG Re Bonjour, Afin que l&rsquo;on soit le plus efficace possible pouvez-vous m&rsquo;envoyer le r&eacute;sultat de cette commande pass&eacute;e sur vos fortigate respectifs ? En mode config global : diagnose hardware deviceinfo nic port9 (port 9 est un exemple il faut mettre &agrave; la place le port sur lequel est interconnect&eacute; notre cluster de 240D).Et r&eacute;p&eacute;ter l&rsquo;op&eacute;ration pour chaque port d&rsquo;interconnexion. Merci par avance pour votre retour, Cyril DUPUCH   De : DUPUCH cyril Envoy&eacute; : lundi 17 octobre 2016 17:11&Agrave; : 'cragot@abtel.fr' ; Meryck Jean ; Yamin ABDELKADER ; Lo&iuml;c Troulet Cc : support ; ABERLENC gael ; CZESCHAN christian Objet : MAJ cluster 240D f&eacute;d&eacute;rateurs ICG Bonjour, Comme convenu au t&eacute;l&eacute;phone, nous allons mettre &agrave; jour le cluster de fortigate 240D ce soir &agrave; partir de 19h. Deux reboot sont &agrave; pr&eacute;voir, passage en 5.2.7 puis 5.2.8. Il vous faudra certainement red&eacute;marrer vos &eacute;quipements suite &agrave; cette mise &agrave; jour.N&rsquo;h&eacute;sitez pas &agrave; revenir vers moi pour plus d&rsquo;information.Si vous pouvez r&eacute;pondre &agrave; ce mail avec vos num&eacute;ros de portable respectifs pour que je puisse vous joindre� Merci par avance, Cordialement, Cyril DUPUCHResponsable &Eacute;quipe Infrastructure - Secteur TechniqueDSIH &ndash; CHU de N&icirc;mesTel : 04.66.68.43.17cyril.dupuch@chu-nimes.fr  Centre Hospitalier Universitaire de N&icirc;mes Le CHU de N&icirc;mes regroupe trois sites hospitaliers : &bull; Car&eacute;meau &bull; Serre-Cavalier &bull; Le Grau-du-Roi &bull; Place du Pr-Robert-Debr&eacute; - 30029 N&Icirc;MES cedex 9Standard : 04 66 68 68 68   Le CHU de N&icirc;mes est engag&eacute; dans une d&eacute;marche de d&eacute;veloppement durable. N'imprimez ce mail et les documents joints que si n&eacute;cessaire.Centre Hospitalier Universitaire de N&icirc;mes Le CHU de N&icirc;mes regroupe trois sites hospitaliers : &bull; Car&eacute;meau &bull; Serre-Cavalier &bull; Le Grau-du-Roi &bull; Place du Pr-Robert-Debr&eacute; - 30029 N&Icirc;MES cedex 9Standard : 04 66 68 68 68 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161018T09:13:00
+DTEND:20161018T09:14:00
+CATEGORIES:ICN
+SUMMARY:ICN : mail LT ...
+DESCRIPTION: De: "ltroulet" &Agrave;: "DUPUCH cyril" Cc: "christian ragot" , "Meryck Jean" , "Yamin ABDELKADER" , "support" , "ABERLENC gael" , "Christian czeschan" Envoy&eacute;: Mardi 18 Octobre 2016 07:58:52Objet: Re: MAJ cluster 240D f&eacute;d&eacute;rateurs ICGBonjour,Pouvons nous pr&eacute;voir de faire un test apr&egrave;s 19 heures de basculement de votre cluster Fortinet afin de v&eacute;rifier si la mise &agrave; jour r&egrave;gle les probl&egrave;mes que nous avons relev&eacute;.On peut pr&eacute;voir cela un soir apr&egrave;s 19 heures.Restant &agrave; votre disposition.Cordialement.Logo AbtelTROULET Loic - Directeur CommercialTel 04 66 04 06 13Gsm 06 18 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161017T17:31:00
+DTEND:20161017T17:32:00
+CATEGORIES:ICN
+SUMMARY:ICN : mail Dupuch ...
+DESCRIPTION: De: "DUPUCH cyril" &Agrave;: cragot@abtel.fr, "Meryck Jean" , "Yamin ABDELKADER" , "ltroulet" Cc: "support" , "ABERLENC gael" , "CZESCHAN christian" Envoy&eacute;: Lundi 17 Octobre 2016 17:28:40Objet: RE: MAJ cluster 240D f&eacute;d&eacute;rateurs ICGRe Bonjour, Afin que l&rsquo;on soit le plus efficace possible pouvez-vous m&rsquo;envoyer le r&eacute;sultat de cette commande pass&eacute;e sur vos fortigate respectifs ? En mode config global : diagnose hardware deviceinfo nic port9 (port 9 est un exemple il faut mettre &agrave; la place le port sur lequel est interconnect&eacute; notre cluster de 240D).Et r&eacute;p&eacute;ter l&rsquo;op&eacute;ration pour chaque port d&rsquo;interconnexion. Merci par avance pour votre retour, Cyril DUPUCH
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161017T17:15:00
+DTEND:20161017T17:16:00
+CATEGORIES:ICN
+SUMMARY:ICN : mail Dupuch ...
+DESCRIPTION: De: "DUPUCH cyril" &Agrave;: cragot@abtel.fr, "Meryck Jean" , "Yamin ABDELKADER" , "ltroulet" Cc: "support" , "ABERLENC gael" , "CZESCHAN christian" Envoy&eacute;: Lundi 17 Octobre 2016 17:10:35Objet: MAJ cluster 240D f&eacute;d&eacute;rateurs ICGBonjour, Comme convenu au t&eacute;l&eacute;phone, nous allons mettre &agrave; jour le cluster de fortigate 240D ce soir &agrave; partir de 19h. Deux reboot sont &agrave; pr&eacute;voir, passage en 5.2.7 puis 5.2.8. Il vous faudra certainement red&eacute;marrer vos &eacute;quipements suite &agrave; cette mise &agrave; jour.N&rsquo;h&eacute;sitez pas &agrave; revenir vers moi pour plus d&rsquo;information.Si vous pouvez r&eacute;pondre &agrave; ce mail avec vos num&eacute;ros de portable respectifs pour que je puisse vous joindre� Merci par avance, Cordialement, Cyril DUPUCHResponsable &Eacute;quipe Infrastructure - Secteur TechniqueDSIH &ndash; CHU de N&icirc;mesTel : 04.66.68.43.17cyril.dupuch@chu-nimes.fr  Centre Hospitalier Universitaire de N&icirc;mes Le CHU de N&icirc;mes regroupe trois sites hospitaliers : &bull; Car&eacute;meau &bull; Serre-Cavalier &bull; Le Grau-du-Roi &bull; Place du Pr-Robert-Debr&eacute; - 30029 N&Icirc;MES cedex 9Standard : 04 66 68 68 68 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161017T16:46:00
+DTEND:20161017T16:47:00
+CATEGORIES:CM-RADIOLOGIERD
+SUMMARY:CM-RADIOLOGIERD : mail client ...
+DESCRIPTION: De: "christian verdeil" &Agrave;: support@abtel.frEnvoy&eacute;: Lundi 17 Octobre 2016 16:40:39Objet: teamviewer sur 40.17.0.1Bonjour,A la demande de Mr Kowacks technicien de waid qui s'occupe de notre r&eacute;cup&eacute;ration de donn&eacute;e j'ai relanc&eacute; Teamviewer sur le Sirdata (40.17.0.1)id:     679722097mdp:   3nb53rmais je n'arrive pas &agrave; me connecter, pourriez vous le v&eacute;rifier et lui transmettre les donn&eacute;es de connexion.MerciCordialementChristian VERDEILLe 17/10/2016 &agrave; 10:49, KOVAKS James a &eacute;crit :Bonjour, Le mot de passe de TeamViewer a chang&eacute; pouvez-vous m&rsquo;envoyer le nouveau s&rsquo;il vous plait ? Cordialement, James KOVAKSSupport Clients Niveau 2 &ndash; Secteur RIS T / + 33 (0) 4 88 71 13 00S / www.softwaymedical.com cid:A35B5835-E752-40E5-81F2-F5BC023FCF06@routerf73a08.comcid:FE621F73-955C-4B93-ACBD-C2AB147D5BB7@routerf73a08.comcid:DC2811EA-7CF1-43DE-92FA-D1085C8BD717@routerf73a08.com signature_mail De : KOVAKS James Envoy&eacute; : mardi 4 octobre 2016 08:19&Agrave; : 'support@abtel.fr' ; christian VERDEIL Cc : christian ragot ; ltroulet Objet : RE: coupure edf et teamviewer Bonjour, Tr&egrave;s bien merci j&rsquo;ai la t&eacute;l&eacute;maintenance. Cordialement, James KOVAKSSupport Clients Niveau 2 &ndash; Secteur RIS T / + 33 (0) 4 88 71 13 00S / www.softwaymedical.com cid:A35B5835-E752-40E5-81F2-F5BC023FCF06@routerf73a08.comcid:FE621F73-955C-4B93-ACBD-C2AB147D5BB7@routerf73a08.comcid:DC2811EA-7CF1-43DE-92FA-D1085C8BD717@routerf73a08.com signature_mail De : support@abtel.fr [mailto:support@abtel.fr] Envoy&eacute; : lundi 3 octobre 2016 14:40&Agrave; : christian VERDEIL Cc : christian ragot ; KOVAKS James ; ltroulet Objet : Re: coupure edf et teamviewer Bonjour,J'ai v&eacute;rifi&eacute; la connexion des serveurs. Tout est revenu en ligne et fonctionnel.Le code teamViewer a chang&eacute;, ci dessous le code pour se connecter:Cordialement,  Logo AbtelSUPPORT TECHNIQUETel 04 66 04 06 13Fax 04 66 04 09 80Parc deltaKm 4 - Route d'Arles30230 Bouillarguessupport@abtel.fr - www.abtel.frPensez ENVIRONNEMENT : n'imprimez que si n&eacute;cessaire !Pub Abtel  De: support@abtel.fr&Agrave;: "christian VERDEIL" Cc: "christian ragot" , jkovaks@softwaymedical.fr, "ltroulet" Envoy&eacute;: Lundi 3 Octobre 2016 11:03:16Objet: Re: coupure edf et teamviewerBonjour, Comme convenu lors de notre conversation t&eacute;l&eacute;phonique de ce matin. Un arr&ecirc;t des VMs a &eacute;t&eacute; planifi&eacute; pour aujourd'hui &agrave; 12h55.Lors de la remise en route de l'&eacute;lectricit&eacute;, il faudra simplement appuyer sur le bouton power du serveur. Les VMs se relanceront automatiquement.Pour la connexion Teamviewer sur le serveur SIRDATA, le technicien peut se connecter avec les identifiants suivants:Je viens de faire l'essai de connexion, &ccedil;a fonctionne correctement.Cependant, il faudra relancer teamviewer apr&egrave;s le red&eacute;marrage du serveur pr&eacute;vu &agrave; 13h30.Je le relancerai &agrave; 14h si vous le souhaitez.Je reste &agrave; votre disposition pour toute information compl&eacute;mentaire.Cordialement, Logo AbtelSUPPORT TECHNIQUETel 04 66 04 06 13Fax 04 66 04 09 80Parc deltaKm 4 - Route d'Arles30230 Bouillarguessupport@abtel.fr - www.abtel.frPensez ENVIRONNEMENT : n'imprimez que si n&eacute;cessaire !Pub Abtel  De: "christian VERDEIL" &Agrave;: support@abtel.frCc: "christian ragot" , "," Envoy&eacute;: Lundi 3 Octobre 2016 07:59:52Objet: coupure edf et teamviewerBonjour,1-Nous allons avoir ce jour &agrave; 13h une coupure EDF globale pour changement de compteur. Pourriez vous pr&eacute;voir d'arr&ecirc;ter les VM &agrave; 12h55 et reprise &agrave; 13h30 ou voulez vous profiter de l'occasion pour v&eacute;rifier que la carte smtp de l'onduleur fonctionne bien sur arr&ecirc;t secteur?2-Le technicien de Waid Mr Kovaks (jkovaks@softwaymedical.fr) charg&eacute; de finaliser la reprise de donn&eacute;es demande un acc&egrave;s teamviewer sur le SIR DATA, j'ai lanc&eacute; teamviewer mais Sirdata ne semble pas avoir d'acc&eacute;s reseau : pourriez vous le lui fournir?Avec mes remerciementsChristian VERDEILCM radiologie RDBonjour Docteur,  Pouvez-vous lancer TeamViewer sur le serveur SIRDATA, afin de terminer la reprise de donn&eacute;es.  En vous remerciant,  Cordialemne,t  James KOVAKSjkovaks@softwaymedical.frSupport Clients Niveau 2 &ndash; Secteur RIS  T / + 33 (0) 4 88 71 13 00S / www.softwaymedical.com    
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161013T16:25:00
+DTEND:20161013T16:26:00
+CATEGORIES:MAIGARONS
+SUMMARY:MAIGARONS : rappel client...
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161013T15:59:00
+DTEND:20161013T16:00:00
+CATEGORIES:BIOMEDIVAL
+SUMMARY:BIOMEDIVAL : rappel client ...
+DESCRIPTION: le rappeler d&egrave;s que possible
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161012T17:29:00
+DTEND:20161012T17:30:00
+CATEGORIES:UNIBIO
+SUMMARY:UNIBIO : mail client ...
+DESCRIPTION: De: "Sabrina Vincent" &Agrave;: cragot@abtel.frCc: "support" , "dmarch" Envoy&eacute;: Mercredi 12 Octobre 2016 17:23:52Objet: Re: G13973 - Re: Audit serveur Compta + pb de sauvegarde Veam AdministrationBonjour,Super, merci pour les informations SourireEt merci pour la sauvegarde, j'ai vu qu'elle &eacute;tait correcte tout &agrave; l'heure.Bonne soir&eacute;e,Cordialement,Sabrina VINCENTInformaticienne
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161012T16:12:00
+DTEND:20161012T16:13:00
+CATEGORIES:LUNELMEDIC
+SUMMARY:LUNELMEDIC : rappel de la cliente ...
+DESCRIPTION: la rappeler avant 17h00 ou demain matin
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161012T15:17:00
+DTEND:20161012T15:18:00
+CATEGORIES:TISSOTELEC
+SUMMARY:TISSOTELEC : rappel cliente ...
+DESCRIPTION: elle pensait avoir un poste en pret - le tech n'est pas venu avecelle ne peut toujours pas travailler pas tr&egrave;s contente
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161012T12:05:00
+DTEND:20161012T12:06:00
+CATEGORIES:EXAVISION
+SUMMARY:EXAVISION : rappel client ...
+DESCRIPTION: rappeler M. Perez
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161012T10:12:00
+DTEND:20161012T10:13:00
+CATEGORIES:ORLOV
+SUMMARY:ORLOV : Mail client ...
+DESCRIPTION: De: "jeancharles spiteri" &Agrave;: support@abtel.frEnvoy&eacute;: Mercredi 12 Octobre 2016 10:07:30Objet: RE: Acces - LogmeInBonjour, A priori ce n&rsquo;est pas le bon mot de passe. Pouvez-vous v&eacute;rifier ? Merci. signature-jcs De : support@abtel.fr [mailto:support@abtel.fr] Envoy&eacute; : mercredi 12 octobre 2016 09:37&Agrave; : Jean-Charles SPITERI Objet : Re: Acces - LogmeIn Bonjour,Le mot de passe pour se connecter au poste est : LmdpeAbt04!Cordialement, Logo AbtelSUPPORT TECHNIQUETel 04 66 04 06 13Fax 04 66 04 09 80Parc deltaKm 4 - Route d'Arles30230 Bouillarguessupport@abtel.fr - www.abtel.frPensez ENVIRONNEMENT : n'imprimez que si n&eacute;cessaire !Pub Abtel
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161011T09:32:00
+DTEND:20161011T09:33:00
+CATEGORIES:MAISONPAULRABAU
+SUMMARY:MAISONPAULRABAU : rappel cliente
+DESCRIPTION: la rappeler elle sera joignable
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161011T09:03:00
+DTEND:20161011T09:04:00
+CATEGORIES:PAD
+SUMMARY:PAD : rappel client ...
+DESCRIPTION: le rappeler
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161010T15:16:00
+DTEND:20161010T15:17:00
+CATEGORIES:CENTREAFFAIRE1
+SUMMARY:CENTREAFFAIRE1 : rappel cliente ...
+DESCRIPTION: Merci de la rappeler 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161007T14:34:00
+DTEND:20161007T14:35:00
+CATEGORIES:CENTREAFFAIRE1
+SUMMARY:CENTREAFFAIRE1 : appel cliente..
+DESCRIPTION: souhaite plut&ocirc;t augmenter sa plage DHCT plut&ocirc;t que les borne wifisouhaite savoir si c possible et la diff&eacute;rence entre les 2
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161007T14:00:00
+DTEND:20161007T14:01:00
+CATEGORIES:ANIM
+SUMMARY:ANIM : mail cliente ...
+DESCRIPTION: De: "C&eacute;line Artaud" &Agrave;: dazzoug@edl.fr, "support" Envoy&eacute;: Vendredi 7 Octobre 2016 12:33:47Objet: Re: EDL/Message SUPPORT/NIM2-S1610.0377A savoir que les postes sont de nouveaux tr&egrave;s lents et qu'il existe des d&eacute;connexions ++ &agrave; Valmedica**Mme C&eacute;line ARTAUD Service Tiers Payant SELARL ANIM B&acirc;timent l'Odyss&eacute;e 480, avenue Saint Andr&eacute; de Codols 30900 NIMES 04.66.76.96.84 c.artaud@animradio.fr ----- Mail original -----De: dazzoug@edl.fr&Agrave;: "c artaud" Envoy&eacute;: Vendredi 7 Octobre 2016 12:26:56Objet: EDL/Message SUPPORT/NIM2-S1610.0377Bonjour,Je vous prie de trouver ci-dessous le compte-rendu d'un message SUPPORT.============================================================================R&eacute;f&eacute;rence     : S1610.0377B&eacute;n&eacute;ficiaire  : NIM2/GIE Imagerie NimesInterlocuteur : M. CABINET VALMEDICAOuvert le     : vendredi 07/10/2016 &agrave; 08:44:58Cat&eacute;gorie     : XP AUTRE----------------------------------------------------------------------------xplore tr&egrave;s lent sur tous les postes----------------------------------------------------------------------------DAZ le vendredi 07/10/2016 &agrave; 12:26:06Ping entre un poste utilisateur et le serveur WEB, il y avait &eacute;norm&eacute;ment de d&eacute;lai d'attente d&eacute;pass&eacute;.La soci&eacute;t&eacute; ABTEL &agrave; red&eacute;marr&eacute; l'ensemble des &eacute;quipements r&eacute;seaux, suite &agrave; ce red&eacute;marrage, il y a beaucoup moins de lenteur.Il y a toujours des micros coupure r&eacute;seau mais beaucoup moins.............................................................................SMU le vendredi 07/10/2016 &agrave; 08:52:27Nous constatons depuis lundi une lenteur d'explore mais je constate &eacute;galement une lenteur g&eacute;n&eacute;rale du r&eacute;seau (internet et zimbra...).Donc est-ce edl ou abtel &agrave; voir.Merci.Cdt. Mme C&eacute;line  ARTAUD============================================================================Cordialement.EDLAZZOUG DjamelCe message exp&eacute;di&eacute; par EDB 6.3.13 est confidentiel; son contenu ne repr&eacute;sente en aucun cas un engagement de la part de EDL sous r&eacute;serve de tout accord conclu par &eacute;crit entre vous et EDL. Toute publication, utilisation ou diffusion, m&ecirc;me partielle, doit &ecirc;tre autoris&eacute;e pr&eacute;alablement. Si vous n'&ecirc;tes pas destinataire de ce message, merci d'en avertir imm&eacute;diatement l'exp&eacute;diteur.
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161007T11:47:00
+DTEND:20161007T11:48:00
+CATEGORIES:ANIM
+SUMMARY:ANIM : rappel client ...
+DESCRIPTION: eu valmedica : ca va un peu mieux
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161006T10:48:00
+DTEND:20161006T10:49:00
+CATEGORIES:FDGROUP
+SUMMARY:FDGROUP : mail client ...
+DESCRIPTION: De: "Michel Pialat" &Agrave;: support@abtel.frEnvoy&eacute;: Jeudi 6 Octobre 2016 10:47:44Objet: TR: FD GROUP&uml;Cela ne fonctionne toujours pas pour ces postes   Cordialement. Michel PialatFD Group SarlApple Way &ndash; Spare ConceptT&eacute;l : +33(0)4 66 29 97 16Fax : +33(0)4 66 29 21 02Mobile : +33(0)6 20 41 46 96michel.pialat@fdgroup.eumichel.pialat@gmail.comskype : michel_fdgroupEco-attitudeAdoptez l'&eacute;co-attitude. N'imprimez ce mail que si c'est vraiment n&eacute;cessaire
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161006T09:56:00
+DTEND:20161006T09:57:00
+CATEGORIES:FDGROUP
+SUMMARY:FDGROUP : mail client ...
+DESCRIPTION: De: "Michel Pialat" &Agrave;: support@abtel.frEnvoy&eacute;: Jeudi 6 Octobre 2016 09:55:13Objet: FD GROUP&uml;Suite &agrave; l intervention de ce matin deux postes ne parviennent pas &agrave; lancer les logiciels m&eacute;tiers ni imprimer EUROPARTS-03FDGROUP-PC2     Cordialement. Michel PialatFD Group SarlApple Way &ndash; Spare ConceptT&eacute;l : +33(0)4 66 29 97 16Fax : +33(0)4 66 29 21 02Mobile : +33(0)6 20 41 46 96michel.pialat@fdgroup.eumichel.pialat@gmail.comskype : michel_fdgroupEco-attitudeAdoptez l'&eacute;co-attitude. N'imprimez ce mail que si c'est vraiment n&eacute;cessaire  
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161006T16:44:00
+DTEND:20161006T16:45:00
+CATEGORIES:ABTEL
+SUMMARY:ABTEL : Création du ticket de suivi
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161003T11:40:00
+DTEND:20161003T11:41:00
+CATEGORIES:ABTELCLOUD
+SUMMARY:ABTELCLOUD : Création du ticket de suivi
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161003T09:39:00
+DTEND:20161003T09:40:00
+CATEGORIES:FDGROUP
+SUMMARY:FDGROUP : mail client ...
+DESCRIPTION: De: "Michel Pialat" &Agrave;: support@abtel.frEnvoy&eacute;: Lundi 3 Octobre 2016 09:23:25Objet: ***Spam*** FD GROUPBonjour, Nous sommes lundi, le pc a redemarr&eacute; tout seul vers 09h, le probleme n est pas r&eacute;solu. Merci    Cordialement. Michel PialatFD Group SarlApple Way &ndash; Spare ConceptT&eacute;l : +33(0)4 66 29 97 16Fax : +33(0)4 66 29 21 02Mobile : +33(0)6 20 41 46 96michel.pialat@fdgroup.eumichel.pialat@gmail.comskype : michel_fdgroupEco-attitudeAdoptez l'&eacute;co-attitude. N'imprimez ce mail que si c'est vraiment n&eacute;cessaire  
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160930T09:33:00
+DTEND:20160930T09:34:00
+CATEGORIES:CM-BELLON
+SUMMARY:CM-BELLON : rappel de la cliente ...
+DESCRIPTION: sohaite savoir si la grosse sauvegarde du 1er va se fairesohaite savoir quel disque elle doit r&eacute;cup&eacute;rerla tenir au courant
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160929T13:47:00
+DTEND:20160929T13:48:00
+CATEGORIES:ANIM
+SUMMARY:ANIM : rappel cliente ...
+DESCRIPTION: De nouveau prob de cr&eacute;pitement quand elle fait un appel externe. Il appara&icirc;t un R apr&egrave;s le n&deg; Quand elle re&ccedil;oit un appel &ccedil;a ne le fait pas
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160922T16:15:00
+DTEND:20160922T16:16:00
+CATEGORIES:CM-UROGARD
+SUMMARY:CM-UROGARD : Création du ticket de suivi
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160922T14:17:00
+DTEND:20160922T14:18:00
+CATEGORIES:ABTEL
+SUMMARY:ABTEL : Création du ticket de suivi
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160921T11:08:00
+DTEND:20160921T11:09:00
+CATEGORIES:OCEAN
+SUMMARY:OCEAN : rappel client...
+DESCRIPTION: souhaite que SC le rappele pour param&eacute;trer une imprimante sur le r&eacute;seau VPN
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160919T12:25:00
+DTEND:20160919T12:26:00
+CATEGORIES:ABTELNETWORKS
+SUMMARY:ABTELNETWORKS : Création du ticket de suivi
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160915T15:22:00
+DTEND:20160915T15:23:00
+CATEGORIES:DMS
+SUMMARY:DMS : mail client ...
+DESCRIPTION: De: "Support DMS-APELEM" &Agrave;: "Support DMS-APELEM" Envoy&eacute;: Jeudi 15 Septembre 2016 15:14:38Objet: [GLPI #0000037] Nouveau suivi pour ce ticket Raccourcis H/SURL : http://192.168.148.227/glpi/index.php?redirect=ticket_37Description du ticketNom :Raccourcis H/S Demandeurs : GERMOND St&eacute;phanie Date d'ouverture :06-07-2016 11:37 Date de cl&ocirc;ture : Source de la demande :HelpdeskAttribu&eacute; &agrave; - Techniciens : abtel Statut  : En cours (Attribu&eacute;)Urgence : MoyenneImpact : MoyenPriorit&eacute; : Moyenne Cat&eacute;gorie  :ABTEL > T&eacute;l&eacute;phonie Description : Bonjour,Je viens de trouver un nouveau n&deg; raccourci qui ne fonctionne plus :le 57 131 (04 67 83 57 59) pour la ligne directe de Mme Diane BORDES..Quand on le fait : "num&eacute;rotation erron&eacute;e"Merci &agrave; vousst&eacute;phanieSuivi(s) d&eacute;j&agrave; effectu&eacute;(s) : 3[15-09-2016 15:14] Priv&eacute; : Non R&eacute;dacteur abtelDescription Mail : Bonjour Mireille,je viens par ce mail vous informer de la modification du num&eacute;ro interne de DIANE BORDES en 359 au lieu de 131 auparavant.Ceci afin d'y faire correspondre son num&eacute;ro priv&eacute; 57359.En r&eacute;capitulatif :son num&eacute;ro directe SDA est 0467835759son num&eacute;ro priv&eacute; pour &ecirc;tre joint directement depuis APELEM est 57359son num&eacute;ro interne &agrave; DMS est 359Merci de lui transmettre l'information car je n'ai pas r&eacute;ussi &agrave; la joindre par t&eacute;l&eacute;phone.Bien cordialementDate d'ouverture 15-09-2016 15:14Source de la demande Helpdesk[15-09-2016 15:14] Priv&eacute; : Non R&eacute;dacteur abtelDescription T&eacute;l&eacute; Maintenance : recherche du probl&egrave;meapr&egrave;s v&eacute;rif le 57131 n'existe pas(0467835759) 57359 correspond au poste interne 131 Date d'ouverture 15-09-2016 15:14Source de la demande Helpdesk[02-09-2016 15:41] Priv&eacute; : Non R&eacute;dacteur GERMOND St&eacute;phanieDescription Bonjour,Suite &agrave; la cr&eacute;ation du nouveau N&deg; interne de Mme Diane BORDES. Je vous informe de la chose suivante :quand on fait le N&deg;57 359 le nom de famille n'apparait pas, il est simplement indiqu&eacute; "libre"Pouvez vous intervenir SVP (je fais aussi un ticket &agrave; ce sujet)St&eacute;phanieDate d'ouverture 02-09-2016 15:41Source de la demande HelpdeskT&acirc;che(s) d&eacute;j&agrave; effectu&eacute;e(s) : 0-- G&eacute;n&eacute;r&eacute; automatiquement par GLPI 0.83.91
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160915T15:02:00
+DTEND:20160915T15:03:00
+CATEGORIES:THIBAUD
+SUMMARY:THIBAUD : appel cliente ...
+DESCRIPTION: elle pense que les BAL n'ont pas &eacute;t&eacute; cr&eacute;e ou peut &ecirc;tre qu'ils ne savent pas comment les utiliser o&ugrave; les trouver
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160915T14:55:00
+DTEND:20160915T14:56:00
+CATEGORIES:MERIC
+SUMMARY:MERIC : mail cliente ...
+DESCRIPTION: De: "Marie GASPARD" &Agrave;: "dmarch@abtel.fr" Envoy&eacute;: Jeudi 15 Septembre 2016 14:39:05Objet: RE: C&eacute;line alle peut voir la bo&icirc;te de r&eacute;ception de l&rsquo;adresse de messagerie collaborateur mais pas la bo&icirc;te d&rsquo;envoi.Serait-il possible de la lui ajouter ?                 Merci d&rsquo;avance, Marie Cabinet ALAIN MERICBP 57 05630 911 NIMES Cedex 2Tel : 04-66-04-24-70      Fax : 04-66-04-10-36Courriel : gaspard.marie@a-meric.fr
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160914T14:37:00
+DTEND:20160914T14:38:00
+CATEGORIES:URBAINNET
+SUMMARY:URBAINNET : Rappel cliente..
+DESCRIPTION: elle vient de retrouver des mail jamais re&ccedil;ula rappeler au 04 11 93 11 17
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160914T09:21:00
+DTEND:20160914T09:22:00
+CATEGORIES:SUDAUDITCONSEIL
+SUMMARY:SUDAUDITCONSEIL : rappel cliente...
+DESCRIPTION: commence a sympatienter...
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160908T12:07:00
+DTEND:20160908T12:08:00
+CATEGORIES:ABTEL
+SUMMARY:ABTEL : Création du ticket de suivi
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160907T16:33:00
+DTEND:20160907T16:34:00
+CATEGORIES:OCEAN
+SUMMARY:OCEAN : Création du ticket de suivi
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160907T16:30:00
+DTEND:20160907T16:31:00
+CATEGORIES:OCEAN
+SUMMARY:OCEAN : Création du ticket de suivi
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160907T16:23:00
+DTEND:20160907T16:24:00
+CATEGORIES:OCEAN
+SUMMARY:OCEAN : Création du ticket de suivi
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160907T08:55:00
+DTEND:20160907T08:56:00
+CATEGORIES:ABTELNETWORKS
+SUMMARY:ABTELNETWORKS : Création du ticket de suivi
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160905T09:18:00
+DTEND:20160905T09:19:00
+CATEGORIES:ABTEL
+SUMMARY:ABTEL : Création du ticket de suivi
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160905T16:17:00
+DTEND:20160905T16:18:00
+CATEGORIES:NIMAPLANTS
+SUMMARY:NIMAPLANTS : Appel client ...
+DESCRIPTION: Prob r&eacute;currentDe nouveau : n'arrive pas a acc&eacute;der &agrave; la messagerie - poste SANQUA
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160902T15:08:00
+DTEND:20160902T15:09:00
+CATEGORIES:OCEAN
+SUMMARY:OCEAN : prob toujours présent ...
+DESCRIPTION: Suite point de ce matin : souhaite que DM le rappel car prob toujours pr&eacute;sent sessions noires
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160902T14:02:00
+DTEND:20160902T14:03:00
+CATEGORIES:APELEM
+SUMMARY:APELEM : mail client ...
+DESCRIPTION: De: "Jean RINGOT" &Agrave;: mmatroni@abtel.fr, support@abtel.fr, "adrien aymes" Cc: "Benjamin TREGAN" , "Bruno ODASSO" , "Rachid KANICHE" , "Cedric Muscolino" , "Nad&egrave;ge PERRINE" Envoy&eacute;: Vendredi 2 Septembre 2016 12:02:28Objet: RE: Pas d'acc&egrave;s au r&eacute;pertoire documentaire BEMBonjour Abtlel, bonjour Hexawin, Pourriez-vous voir entre vous qui doit g&eacute;rer l&rsquo;incident d&eacute;crit ci-dessous par Nad&egrave;ge. Si vous pouviez avoir la m&ecirc;me efficacit&eacute; que vous avez eu pour remettre en place mon VPN, je ne pourrais qu&rsquo;&ecirc;tre totalement satisfait.Si vous avez besoin de pr&eacute;cisions, n&rsquo;h&eacute;sitez pas &agrave; contacter Nad&egrave;ge. Je fais un point en fin d&rsquo;apr&egrave;s-midi avec elle concernant issue heureuse de cette affaire, je n&rsquo;en doute pas. En vous remerciant,Bien cordialement, Jean RINGOT - PhDScientific Director - DMSGSM: +33 (0)6 30 03 40 98 DMS - 393 rue Charles Lindbergh34130 Mauguio - FRANCET: +33 (0)4 67 50 49 00F: +33 (0)4 67 50 49 09   De : Nad&egrave;ge PERRINE [mailto:nperrine@apelem.com] Envoy&eacute; : vendredi 2 septembre 2016 11:51&Agrave; : Jean RINGOT Cc : 'Benjamin TREGAN' ; Bruno ODASSO ; Rachid KANICHE ; 'Cedric Muscolino' Objet : Pas d'acc&egrave;s au r&eacute;pertoire documentaire BEM Bonjour Jean,ABTEL a t&eacute;l&eacute;phon&eacute; hier et a cl&ocirc;tur&eacute; nos tickets, mais le probl&egrave;me persiste. On a maintenant acc&egrave;s au dossier certes, mais on ne peut ni &eacute;crire, ni lire les documents (words ET pdf) :Ce probl&egrave;me concerne Bruno O, Rachid K, C&eacute;dric M et moi. On a refait des tickets.Si jamais il y a un num&eacute;ro pour les joindre on est preneur.Merci d'avance, -- 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160829T17:41:00
+DTEND:20160829T17:42:00
+CATEGORIES:FDGROUP
+SUMMARY:FDGROUP : Création du ticket de suivi
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160829T10:53:00
+DTEND:20160829T10:54:00
+CATEGORIES:CEZANNE
+SUMMARY:CEZANNE : Création du ticket de suivi
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160810T12:11:00
+DTEND:20160810T12:12:00
+CATEGORIES:TUILERIE
+SUMMARY:TUILERIE : appel de la cliente...
+DESCRIPTION: elle part en cong&eacute;s maintenant.Pour prise de RDV appeler Mme BOTTO au 06 60 42 17 17 pour qu'elle ouvre les locaux.ou si pas joignable contacter malgr&eacute; tout Aude au 07 88 17 05 00
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160802T09:31:00
+DTEND:20160802T09:32:00
+CATEGORIES:GAZDEPANNAGE
+SUMMARY:GAZDEPANNAGE : rappel cliente ...
+DESCRIPTION: plus d'acc&egrave;s au serveur ...
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160729T10:55:00
+DTEND:20160729T10:56:00
+CATEGORIES:JULESTRAITEUR
+SUMMARY:JULESTRAITEUR : rappeler la cliente ...
+DESCRIPTION: plus acc&egrave;s au serveur
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160729T10:27:00
+DTEND:20160729T10:28:00
+CATEGORIES:RBC
+SUMMARY:RBC : rappel de la cliente ... la rappeler sur le fixe
+DESCRIPTION: rappeler au 04 72  04 25 25
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160722T15:30:00
+DTEND:20160722T15:31:00
+CATEGORIES:MAIR_GENERAC
+SUMMARY:MAIR_GENERAC : Rappel cliente
+DESCRIPTION: Le n&deg; 3 n'est plus actif avec les autres PC et fuchia net ne peut plus &ecirc;tre ouvert
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160713T15:31:00
+DTEND:20160713T15:32:00
+CATEGORIES:SUDTRANSPORT
+SUMMARY:SUDTRANSPORT : rappel cliente..
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160712T16:54:00
+DTEND:20160712T16:55:00
+CATEGORIES:PRAXIS
+SUMMARY:PRAXIS : rappel de la cliente ..
+DESCRIPTION: concernant le MDP : veut r&eacute;cup sur boite mail tous les document qui auraient &eacute;t&eacute; envoy&eacute; car ne la plusSa coll&egrave;gue a tous les mail depuis le 01/01/2016 qui sont remont&eacute;s en double (+ de 800 message) : veut savoir si c normal - si c suite au manip.
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160712T14:36:00
+DTEND:20160712T14:37:00
+CATEGORIES:PRAXIS
+SUMMARY:PRAXIS : Appel cliente...
+DESCRIPTION: elle a les code+mdp++ :adresse ip : 192.168.100.253login : adminmdp : 1234Pass-> pour acc&eacute;der au NASVal&eacute;rie : 04 99 13 76 10
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160712T14:33:00
+DTEND:20160712T14:34:00
+CATEGORIES:CM-ARAMAV
+SUMMARY:CM-ARAMAV : rappel cliente
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160712T09:46:00
+DTEND:20160712T09:47:00
+CATEGORIES:FGH
+SUMMARY:FGH : rappel de la cliente...
+DESCRIPTION: elle attend notre appel car ne peut pas travailler
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160712T09:35:00
+DTEND:20160712T09:36:00
+CATEGORIES:BADAROUX
+SUMMARY:BADAROUX : rappel client ...
+DESCRIPTION: internet est revenu mais pas la wifi
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160712T09:14:00
+DTEND:20160712T09:15:00
+CATEGORIES:SYSTEMX
+SUMMARY:SYSTEMX : rappel du client...
+DESCRIPTION: le rappeler &agrave; ce sujet
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160708T15:31:00
+DTEND:20160708T15:32:00
+CATEGORIES:MIDIBATT
+SUMMARY:MIDIBATT : Rappel client ..
+DESCRIPTION: le rappeler en urgence car l'imprimante n'arr&ecirc;te plus d'imprimer
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160708T15:14:00
+DTEND:20160708T15:15:00
+CATEGORIES:CENTREFRANCOPHO
+SUMMARY:CENTREFRANCOPHO : rappeler la cliente en urgence !
+DESCRIPTION: t&egrave;l 06 77 01 54 91
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160706T15:36:00
+DTEND:20160706T15:37:00
+CATEGORIES:CM-ARAMAV
+SUMMARY:CM-ARAMAV : rappel de la cliente...
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160705T15:03:00
+DTEND:20160705T15:04:00
+CATEGORIES:PRAXIS
+SUMMARY:PRAXIS : rappel du client - le rappeler
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160704T17:16:00
+DTEND:20160704T17:17:00
+CATEGORIES:ANIM
+SUMMARY:ANIM : rappel de la cliente ...
+DESCRIPTION: souhaite avoir des nouvelles sur son probl&egrave;me d'archivage
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160704T17:15:00
+DTEND:20160704T17:16:00
+CATEGORIES:MIDIBATT
+SUMMARY:MIDIBATT : rappel client ..
+DESCRIPTION: une aute imprimante supprim&eacute; apr&egrave;s manip.
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160623T08:51:00
+DTEND:20160623T08:52:00
+CATEGORIES:ANIM
+SUMMARY:ANIM : Rappel client ...
+DESCRIPTION: plus de t&eacute;l&eacute;phone, plus de bascule sur les diff&eacute;rents site
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160621T10:26:00
+DTEND:20160621T10:27:00
+CATEGORIES:BETAC
+SUMMARY:BETAC : rappel cliente ...
+DESCRIPTION: elle re&ccedil;oit des Spam - pense que &ccedil;a ne passe plus par MIB .
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160620T12:26:00
+DTEND:20160620T12:27:00
+CATEGORIES:APELEM
+SUMMARY:APELEM : mail client + rappel de M. Leletty ...
+DESCRIPTION: De: "St&eacute;phanie GERMOND" &Agrave;: "Thomas LE LETTY" Cc: "ABTEL" Envoy&eacute;: Lundi 20 Juin 2016 12:05:07Objet: URGENT Impossible de joindre DMS ce matinThomas,Depuis ce matin, nous n'arrivons pas &agrave; joindre DMS : (plusieurs personnes m'ont signal&eacute; le probl&egrave;me)- tous les N&deg; raccourcis en 57 + poste sont "N&deg; non attribu&eacute;s ou momentan&eacute;ment indisponibles".- tous les *3 + poste "N&deg; hors service"-  le 0467504900 "par suite d'encombrement...etc"...St&eacute;phanie
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160616T11:42:00
+DTEND:20160616T11:43:00
+CATEGORIES:MARCENAC
+SUMMARY:MARCENAC : RAPPEL CLIENT...
+DESCRIPTION: Eu M. PASQUIER : il faut rappeler avant midi LOMACO au 05 65 34 31 92 : julien car besoin d'un mot de passe : celui donn&eacute; n'est pas bonMail de julien : l.soulery@lomaco.frSi besoin rappeler M. Pasquier.
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160608T15:15:00
+DTEND:20160608T15:16:00
+CATEGORIES:HABILIS
+SUMMARY:HABILIS : rappel client. ..
+DESCRIPTION: le rappeler
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160608T09:13:00
+DTEND:20160608T09:14:00
+CATEGORIES:TERROIRSVIVANTS
+SUMMARY:TERROIRSVIVANTS : rappel cliente
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160607T09:20:00
+DTEND:20160607T09:21:00
+CATEGORIES:CM-BELLON
+SUMMARY:CM-BELLON : Dr Bellon ok pour la sauvegarde
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160602T14:21:00
+DTEND:20160602T14:22:00
+CATEGORIES:EPIGONE
+SUMMARY:EPIGONE : rappel de la cliente...
+DESCRIPTION: Eu Mme Peyrot :r&eacute;soudre au + vite ce prob de transfert car elle rate des appels
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160601T09:50:00
+DTEND:20160601T09:51:00
+CATEGORIES:APSYSE
+SUMMARY:APSYSE : rappel client ..
+DESCRIPTION: le rappeler sur son portable au 06 46 19 22 85
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160512T12:10:00
+DTEND:20160512T12:11:00
+CATEGORIES:COLOMBISPORTS
+SUMMARY:COLOMBISPORTS : rappel du client
+DESCRIPTION: rappeler Hugues
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160509T09:09:00
+DTEND:20160509T09:10:00
+CATEGORIES:ANIM
+SUMMARY:ANIM : rappel client
+DESCRIPTION: Les compte- rendus disparaissent carrement ... plus rien fonctionne
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160428T12:23:00
+DTEND:20160428T12:24:00
+CATEGORIES:ANIM
+SUMMARY:ANIM : rappel de la cliente ...
+DESCRIPTION: Probl&egrave;me de gr&eacute;sillement de nouveau + temps de retard entre se qu'elle dit et se que son interlocuteur re&ccedil;oit.
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160426T09:19:00
+DTEND:20160426T09:20:00
+CATEGORIES:RYCKMAN
+SUMMARY:RYCKMAN : rappel de la cliente ...
+DESCRIPTION: &ccedil;a devient tr&egrave;s urgent - il faut que ce soit r&eacute;gl&eacute; ce jour absolument
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160422T11:30:00
+DTEND:20160422T11:31:00
+CATEGORIES:MIDIBATT
+SUMMARY:MIDIBATT : Prise d'appel par Isabelle Angosto...
+DESCRIPTION: Plus d'acc&egrave;s serveur Villeneuve les Beziers
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160422T09:30:00
+DTEND:20160422T09:31:00
+CATEGORIES:MIDIBATT
+SUMMARY:MIDIBATT : Prise d'appel par Isabelle Angosto...
+DESCRIPTION: Circet est sur place en train de tirer la fibre la client dit ne plus avoir internet  vu DM c pas normal car l'inter de Circet ne devrait pas leur couper internet.La messagerie ne marche pas non plus
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160420T15:15:00
+DTEND:20160420T15:16:00
+CATEGORIES:DMS
+SUMMARY:DMS : Prise d'appel par Isabelle Angosto...
+DESCRIPTION: INTERVENTION PREVENTIVE DANS LE CADRE DU CONTRAT.
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160419T16:17:00
+DTEND:20160419T16:18:00
+CATEGORIES:NIMAPLANTS
+SUMMARY:NIMAPLANTS : Prise d'appel par Isabelle Angosto...
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160419T11:16:00
+DTEND:20160419T11:17:00
+CATEGORIES:ALZON
+SUMMARY:ALZON : Prise d'appel par Isabelle Angosto...
+DESCRIPTION: tel au 06 07 81 92 14suite coupure courant esxi ne se connecte pas bienune partie des machines ne se sont pas allum&eacute;s
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160419T09:30:00
+DTEND:20160419T09:31:00
+CATEGORIES:MAICAOUT
+SUMMARY:MAICAOUT : Prise d'appel par Isabelle Angosto...
+DESCRIPTION: les messages ne se chargent pas : message d'erreur
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160415T08:41:00
+DTEND:20160415T08:42:00
+CATEGORIES:MAISONPAULRABAU
+SUMMARY:MAISONPAULRABAU : Prise d'appel par Isabelle Angosto...
+DESCRIPTION:  message d'erreur - controler les messages d'administration dans les roles sur le serveur et lui faire un retour si tout est ok ou si probSC lui avait dit qu'il fallait le contr&ocirc;ler 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160414T14:18:00
+DTEND:20160414T14:19:00
+CATEGORIES:ADRH
+SUMMARY:ADRH : Prise d'appel par Isabelle Angosto...
+DESCRIPTION: Armelle DUBUS souhaite recevoir les mail de la boite : mmaury@adrh.org en son absence
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160414T11:25:00
+DTEND:20160414T11:26:00
+CATEGORIES:FONE
+SUMMARY:FONE : Prise d'appel par Isabelle Angosto...
+DESCRIPTION: souhaite mettre en place un poste AASTRA qu'elle a stock pour sa stagiairesouhaite savoir si SC peut lui donner la proc par t&egrave;l ou s'il peut le faire vendredi 22/04 lors de son inter
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160412T17:00:00
+DTEND:20160412T17:01:00
+CATEGORIES:FIDEISINVEST
+SUMMARY:FIDEISINVEST : Prise d'appel par Isabelle Angosto...
+DESCRIPTION: controler qu'ils ont un bon d&eacute;bit car &ccedil;a" mouline" et tenir au courant la cliente
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160412T13:55:00
+DTEND:20160412T13:56:00
+CATEGORIES:CM-GERBAULT
+SUMMARY:CM-GERBAULT : Prise d'appel par Isabelle Angosto...
+DESCRIPTION: N'arive pas &agrave; transmettre &agrave; la s&eacute;cu :a enregistr&eacute; sur le boitier puis reli&eacute; au ordi puis message d'erreur :"erreur de mot de passe sur le canal PO P3Server error desciption : invalid. USER PASSWORD"laisse le poste allum&eacute; pour prie en main &agrave; distance
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160411T09:57:00
+DTEND:20160411T09:58:00
+CATEGORIES:CM-ROMAN
+SUMMARY:CM-ROMAN : Prise d'appel par Isabelle Angosto...
+DESCRIPTION: t&eacute;l&eacute;transmission du Dr Amaudric ne s'allume pasne pas l'appeler sur son portable car oubli&eacute; appeler au 04 66 79 90 73
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T17:59:00
+DTEND:20160407T18:00:00
+CATEGORIES:SYSTEMX
+SUMMARY:SYSTEMX : Prise d'appel par Isabelle Angosto...
+DESCRIPTION: De: "BAILLY Marine" &Agrave;: "Isabelle Angosto" Cc: ltroulet@abtel.frEnvoy&eacute;: Jeudi 7 Avril 2016 17:56:19Objet: Demande devisBonjour,Pouvez-vous me fournir un devis de 2 x disques 6to IBM avec la cage pour un serveur IBM3500 (facture F06199)Merci bien.Marine 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T15:30:00
+DTEND:20160407T15:31:00
+CATEGORIES:APELEM
+SUMMARY:APELEM : Prise d'appel par Isabelle Angosto...
+DESCRIPTION: De: "S&eacute;bastien VIDIT" &Agrave;: "Isabelle Angosto" Envoy&eacute;: Jeudi 7 Avril 2016 15:23:45Objet: POUCTMP28IsabelleIl me faudrait 2 prise RJ45ref Abtel POUCTMP28 :  Prises POUYET CAT 6Idem Devis F090728�Quel d&eacute;lais la dessus SVP
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160406T11:21:00
+DTEND:20160406T11:22:00
+CATEGORIES:SANCHEZ
+SUMMARY:SANCHEZ : Prise d'appel par Isabelle Angosto...
+DESCRIPTION: Suite inter de hier de JCC prob d'impression des mail sur le poste de J&eacute;r&ocirc;me, sur leur imprimante car imprime en tr&egrave; tr&egrave;s petit.Si c JCC qui rappele :Poste qui se trouve au fon d (le + &eacute;loign&eacute;)
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160406T10:48:00
+DTEND:20160406T10:49:00
+CATEGORIES:MSH
+SUMMARY:MSH : Prise d'appel par Isabelle Angosto...
+DESCRIPTION: probl&egrave;me sur poste - probl&egrave;me de lenteur - prob r&eacute;current
+END:VEVENT
+END:VCALENDAR

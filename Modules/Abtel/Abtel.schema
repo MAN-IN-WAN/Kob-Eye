@@ -1,0 +1,58 @@
+<SCHEMA>
+	<OBJECTCLASS title="Entite" driver="mysql" AccessPoint="1" master="1" Description="Entité du groupe Abtel"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" className="Entite" Class="Modules/Abtel/Class/Entite.class.php">
+		<CATEGORY title="Descriptif" type="large">
+			<PROPERTIES type="titre" searchOrder="1">Nom</PROPERTIES>
+			<PROPERTIES type="image" >Logo</PROPERTIES>
+			<PROPERTIES type="html" special="multi">Description</PROPERTIES>
+			<PROPERTIES type="color" >CodeCouleur</PROPERTIES>
+			<PROPERTIES type="image" >PubSignature</PROPERTIES>
+			<PROPERTIES type="image" >LogoSignature</PROPERTIES>
+		</CATEGORY>
+		<CATEGORY title="Fonctionnel" type="large">
+			<PROPERTIES type="boolean" default="1">Publier</PROPERTIES>
+			<PROPERTIES type="order">Ordre</PROPERTIES>
+			<PROPERTIES type="varchar" searchOrder="2">CodeGestion</PROPERTIES>
+			<PROPERTIES type="boolean" default="0">Default</PROPERTIES>
+			<FKEY module="Systeme" description="Domaine de l'entité"  data="Site,Id" card="0,n">SiteId</FKEY>
+			<FKEY module="Systeme" description="Menu pointant vers l'entité"  data="Menu,Id" card="0,n">MenuId</FKEY>
+			<FKEY module="News" description="Catégorie d'actus liées à l'entité"  data="Categorie,Id" card="0,n">NewsCatId</FKEY>
+			<FKEY module="MiseEnPage" description="Catégorie de Mise en Page liées à l'entité"  data="Categorie,Id" card="0,n">MEPCatId</FKEY>
+		</CATEGORY>
+		<CATEGORY title="Contact" type="large">
+			<PROPERTIES type="mail" length="255"  searchOrder="4" category="Contact" list="4">Mail</PROPERTIES>
+			<PROPERTIES type="varchar"  length="255" obligatoire="0" category="Contact">Adresse</PROPERTIES>
+			<PROPERTIES type="int" obligatoire="0" category="Contact">CodPos</PROPERTIES>
+			<PROPERTIES type="varchar"  length="100" obligatoire="0" category="Contact">Ville</PROPERTIES>
+			<PROPERTIES type="varchar" length="20" obligatoire="0" category="Contact">Tel</PROPERTIES>
+			<PROPERTIES type="varchar" length="20" obligatoire="0" category="Contact">Mobile</PROPERTIES>
+			<PROPERTIES type="varchar" length="20" category="Contact">Fax</PROPERTIES>
+			<PROPERTIES type="html" length="20" category="Contact">Map</PROPERTIES>
+		</CATEGORY>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="Projet" driver="mysql" AccessPoint="1" Description="Projet"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" className="Projet" Class="Modules/Abtel/Class/Projet.class.php">
+		<CATEGORY title="Description" type="large">
+			<PROPERTIES type="titre" searchOrder="1">Nom</PROPERTIES>
+			<PROPERTIES type="html" special="multi">Description</PROPERTIES>
+			<PROPERTIES type="image" >BackImage</PROPERTIES>
+			<PROPERTIES type="boolean" description="Affichage sur la page d'acceuil du groupe" default="1">Accueil</PROPERTIES>
+			<PROPERTIES type="boolean" description="Affichage des ratios entités" default="0">Ratios</PROPERTIES>
+		</CATEGORY>
+		<CATEGORY title="Fonctionnel">
+			<PROPERTIES type="varchar" >CodeGestion</PROPERTIES>
+			<FKEY card="0,1" data="Tiers,Id">TiersId</FKEY>
+		</CATEGORY>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="Tiers" driver="mysql" AccessPoint="1" Description="Tiers"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
+		<PROPERTIES type="titre" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES type="image" searchOrder="1">Logo</PROPERTIES>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="PELink" driver="mysql" AccessPoint="1" Description="Liaison Projet-Entité"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
+		<PROPERTIES type="titre" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES type="integer" searchOrder="2">Value</PROPERTIES>
+		<FKEY card="1,1" data="Projet,Id">ProjetId</FKEY>
+		<FKEY card="1,1" data="Entite,Id">EntiteId</FKEY>
+	</OBJECTCLASS>
+</SCHEMA>

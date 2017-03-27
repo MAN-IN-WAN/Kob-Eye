@@ -1,0 +1,75 @@
+<SCHEMA>
+	<OBJECTCLASS title="Categorie" driver="mysql" AccessPoint="1" master="1" Description="Categories"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" browseable="1" className="MiseEnPageCategorie" Class="Modules/MiseEnPage/Class/Categorie.class.php" >
+		<CATEGORY title="Contenu" type="large">
+			<PROPERTIES type="titre" searchOrder="1">Nom</PROPERTIES>
+			<PROPERTIES type="varchar" searchOrder="2">Titre</PROPERTIES>
+			<PROPERTIES type="html" special="multi">Description</PROPERTIES>
+		</CATEGORY>
+		<CATEGORY title="Configuration">
+			<PROPERTIES type="file" >Icone</PROPERTIES>
+			<PROPERTIES type="boolean" default="1">Publier</PROPERTIES>
+			<PROPERTIES type="varchar" method="getModele">Modele</PROPERTIES>
+			<PROPERTIES type="order">Ordre</PROPERTIES>
+			<FKEY card="0,1" data="Categorie,Id" hidden="1">CategorieId</FKEY>
+		</CATEGORY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Article" driver="mysql" AccessPoint="1" Description="Articles"  browseable="1" Icon="/Skins/AdminV2/Img/IconAqua/Document.png" className="MiseEnPageArticle" Class="Modules/MiseEnPage/Class/Article.class.php">
+		<PROPERTIES type="titre" searchOrder="1" obligatoire="1" category="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="html" category="Intitulé" special="multi" >Chapo</PROPERTIES>
+		<PROPERTIES type="date" category="Intitulé">Date</PROPERTIES>
+		<PROPERTIES type="varchar" category="Intitulé">Auteur</PROPERTIES>
+		<PROPERTIES type="boolean" category="Intitulé" default="1">AfficheTitre</PROPERTIES>
+		<PROPERTIES type="html" special="multi" category="Contenu">Contenu</PROPERTIES>
+		<PROPERTIES type="boolean" category="Publication" default="1">ALaUne</PROPERTIES>
+		<PROPERTIES type="boolean" category="Publication">Publier</PROPERTIES>
+		<PROPERTIES type="order" category="Publication">Ordre</PROPERTIES>
+		<FKEY card="0,n" data="Categorie,Id">CategorieId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Contenu" driver="mysql" AccessPoint="1" Description="Contenus"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" className="Contenu" Class="Modules/MiseEnPage/Class/Contenu.class.php">
+		<PROPERTIES type="titre" searchOrder="1" obligatoire="1" category="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" searchOrder="2"  category="Intitulé">SousTitre</PROPERTIES>
+		<PROPERTIES type="boolean" category="Intitulé" default="1">AfficheTitre</PROPERTIES>
+		<PROPERTIES type="boolean" category="Publication">Publier</PROPERTIES>
+		<PROPERTIES type="order" category="Publication">Ordre</PROPERTIES>
+		<FKEY card="1,1" data="Article,Id">ArticleId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Colonne" driver="mysql" Description="Colonnes"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" className="Colonne" Class="Modules/MiseEnPage/Class/Colonne.class.php">
+		<PROPERTIES type="titre" searchOrder="1" obligatoire="1" category="Intitulé">Titre</PROPERTIES>
+		<CATEGORY title="Organistaion">
+			<PROPERTIES type="varchar" description="Largeur en %">Ratio</PROPERTIES>
+			<PROPERTIES type="order">Ordre</PROPERTIES>
+			<FKEY card="1,1" data="Contenu,Id">ContenuId</FKEY>
+		</CATEGORY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Image" driver="mysql">
+		<PROPERTIES type="titre" searchOrder="1" category="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" category="Intitulé">Alt</PROPERTIES>
+		<PROPERTIES type="varchar" category="Intitulé">Title</PROPERTIES>
+		<PROPERTIES type="bbcode" category="Description">Legende</PROPERTIES>
+		<PROPERTIES type="bbcode" searchOrder="2" category="Description">Commentaires</PROPERTIES>
+		<PROPERTIES type="file" category="Emplacement">URL</PROPERTIES>
+		<PROPERTIES type="ObjectClass" module="Galerie" target="Fichier" category="Emplacement">DossierImage</PROPERTIES>
+		<PROPERTIES type="file" category="Emplacement">Mini</PROPERTIES>
+		<FKEY card="1,1" data="Colonne,Id" >ColonneId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Texte" driver="mysql">
+		<PROPERTIES type="titre" searchOrder="1" category="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="html" special="multi" category="Contenu">Contenu</PROPERTIES>
+		<PROPERTIES type="bbcode" searchOrder="2" category="Description">Commentaires</PROPERTIES>
+		<FKEY card="1,1" data="Colonne,Id" >ColonneId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Lien" driver="mysql">
+		<PROPERTIES type="titre" searchOrder="1" category="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="text"  category="Description">Commentaires</PROPERTIES>
+		<PROPERTIES type="varchar" values="Interne,Externe" length="20"  category="Emplacement"  default="Interne">Type</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Emplacement">URL</PROPERTIES>
+		<PROPERTIES type="file" category="Description">Icone</PROPERTIES>
+		<FKEY card="1,1" data="Contenu,Id" >ContenuId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Fichier" driver="mysql">
+		<PROPERTIES type="titre" searchOrder="1" category="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" values="VideoSwf,VideoFlv,Son,Fichier" length="20" searchOrder="3" category="Intitulé"  default="Fichier">Type</PROPERTIES>
+		<PROPERTIES type="file" length="255" searchOrder="2" special="multi" category="Emplacement">URL</PROPERTIES>
+		<FKEY card="1,1" data="Contenu,Id" >ContenuId</FKEY>
+	</OBJECTCLASS>
+</SCHEMA>
