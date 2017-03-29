@@ -63,7 +63,7 @@
 		//		</div>
 		//	</a>
 		//[/STORPROC]
-		[STORPROC MiseEnPage/Article/Publier=1|Art]
+		[STORPROC MiseEnPage/Categorie/6/Categorie/*/Article/Publier=1|Art]
 			[STORPROC MiseEnPage/Categorie/Article/[!Art::Id!]|Cat][/STORPROC]
 			[!Entite:=[!Cat::getOneChild(Entite)!]!]
 			

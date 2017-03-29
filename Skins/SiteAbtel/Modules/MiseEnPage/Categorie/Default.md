@@ -1,14 +1,16 @@
 
 <div id="listNews">
 	<div id="newsTri">
-		<a href="" data-filter="*"><h1 id="listNews">Toute l'actualité du groupe</h1></a>
-		[STORPROC Abtel/Entite|Ent]
-			[IF [!Ent::CodeGestion!]!=00]
-				<a href="" data-filter=".[!Ent::CodeGestion!]" style="color:[!Ent::CodeCouleur!]">[!Ent::Nom!]</a>
-			[/IF]
-		[/STORPROC]
+		<div class="container">
+			<a href="" data-filter="*"><h1 id="listNews">Toute l'actualité du groupe</h1></a>
+			[STORPROC Abtel/Entite|Ent]
+				[IF [!Ent::CodeGestion!]!=00]
+					<a href="" data-filter=".[!Ent::CodeGestion!]" style="color:[!Ent::CodeCouleur!]">[!Ent::Nom!]</a>
+				[/IF]
+			[/STORPROC]
+		</div>
 	</div>
-	<div id="newsDisplay">
+	<div id="newsDisplay"  class="container">
 		[STORPROC MiseEnPage/Article/Publier=1|MEP]
 			[STORPROC MiseEnPage/Categorie/Article/Id=[!MEP::Id!]|Cat][/STORPROC]
 			[!Ent:=[!Cat::getOneChild(Entite)!]!]

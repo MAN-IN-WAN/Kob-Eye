@@ -7,16 +7,16 @@ function fitHeight(){
         var winWidth = $(window).width();
         
         var header = $("#header");
-        var headerHeight = header.height();
+        var headerHeight = header.outerHeight();
         var footer = $("#footer");
-        var footerHeight = footer.height();
+        var footerHeight = footer.outerHeight();
         var mainMenu = $("#mainMenu");
         var mainMenuHeight = 0;
         if (mainMenu.length) {
                //mainMenuHeight = winHeight*0.3;
                //mainMenu.height(mainMenuHeight);
                
-               mainMenuHeight = mainMenu.height();
+               mainMenuHeight = mainMenu.outerHeight();
         }
         var main = $("#main");
         var leftCol = $("#projectHome");
@@ -27,7 +27,7 @@ function fitHeight(){
         //leftCol.hide();
         //rightCol.hide();
         
-        var mainHeight = winHeight - (headerHeight+footerHeight+mainMenuHeight+2);
+        var mainHeight = winHeight - (headerHeight+footerHeight+mainMenuHeight);
         main.outerHeight(mainHeight);
         
         if (mainHeight >= heightTreshold) {

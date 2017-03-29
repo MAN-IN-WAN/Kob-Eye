@@ -113,5 +113,70 @@ class User extends genericClass{
 		if (!empty($Acces))$Acces = Storproc::SpBubbleSort($Acces,"Ordre","ASC");
 			$this->Access = $Acces;
 	}
+
+
+
+		 /**
+	  * exportMenus
+	  *export menus as xml
+	  */
+	  public function exportMenus(){
+		$Mt = Sys::$Modules["Systeme"]->callData("Systeme/User/".$this->Id."/Menu/*");
+		if (is_array($Mt)&&sizeof($Mt)) {
+			//On concatene les menus dans un seul tableau
+			foreach ($Mt as $M) {
+				//unset($M["Id"]);
+				$Menus[] = $M;
+			}
+		}
+		//Maintenant on reorganise les menus afin qu ils soient exploitables
+		$Menus = StorProc::sortRecursivResult($Menus,"Menus");
+		$Menus = StorProc::cleanRecursivArrays($Menus,"Menus");
+		$Menus = $this->quickSort($Menus,"Ordre");
+ /* 		require_once 'Class/Utils/Serializer.class.php';
+	  	$xml = '';
+		$options = array(
+                    XML_SERIALIZER_OPTION_INDENT      => '    ',
+                    XML_SERIALIZER_OPTION_LINEBREAKS  => "\n",
+                    XML_SERIALIZER_OPTION_DEFAULT_TAG => 'unnamedItem',
+                    XML_SERIALIZER_OPTION_TYPEHINTS   => true
+                );
+		$serializer = new XML_Serializer($options);
+		$result = $serializer->serialize($Menus);
+		if( $result === true ) {
+			$xml = $serializer->getSerializedData();
+		}
+
+		return htmlspecialchars($xml);*/
+
+		return base64_encode(serialize($Menus));
+	  }
+	  public function importMenus($xml){
+		/*require_once 'Class/Utils/Unserializer.class.php';
+		$options = array(
+                    XML_SERIALIZER_OPTION_INDENT      => '    ',
+                    XML_SERIALIZER_OPTION_LINEBREAKS  => "\n",
+                    XML_SERIALIZER_OPTION_DEFAULT_TAG => 'unnamedItem',
+                    XML_SERIALIZER_OPTION_TYPEHINTS   => true
+                );
+	  	$unserializer = new XML_Unserializer();
+		$status = $unserializer->unserialize($xml);
+		$data = $unserializer->getUnserializedData();
+		print_r($data);*/
+		$data = unserialize(base64_decode(trim($xml)));
+		return $this->importRecursivMenu($data,$this);
+	  }
+	  private function importRecursivMenu($data,$parent){
+	  	$out="";
+	  	foreach ($data as $d){
+	  		$out.="-> Creation du menu \r\n";
+	  		$t = genericClass::createInstance('Systeme',$d);
+			$t->addParent($parent);
+			$t->Save();
+			if (is_array($d["Menus"]))$out.=$this->importRecursivMenu($d["Menus"], $t);
+	  	}
+		return $out;
+	  }
+
 }
 ?>

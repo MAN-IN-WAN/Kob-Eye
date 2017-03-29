@@ -672,7 +672,7 @@ div.noMargin {
     text-decoration: none;
 }
 
-#topNavigation ul.navbar-top li a.Contact {
+#topNavigation ul.navbar-top li a.contact {
     color: #fff;
     background-color: #868585;
     border-radius: 30px;
@@ -686,7 +686,7 @@ div.noMargin {
     position: relative;
 }
 
-#topNavigation ul.navbar-top li a.Contact:before {
+#topNavigation ul.navbar-top li a.contact:before {
     content: "\e111";
     font-family: 'Glyphicons Halflings';
     color: #fff;
@@ -696,7 +696,7 @@ div.noMargin {
     font-size: 1.3em;
 }
 
-#topNavigation ul.navbar-top li a.Contact:after {
+#topNavigation ul.navbar-top li a.contact:after {
     content: "\e052";
     font-family: 'Glyphicons Halflings';
     color: #aaa;
@@ -706,7 +706,7 @@ div.noMargin {
     font-size: 0.7em;
 }
 
-#topNavigation ul.navbar-top li a.Contact:hover {
+#topNavigation ul.navbar-top li a.contact:hover {
     color: #fff;
     text-decoration: underline
 }
@@ -792,8 +792,33 @@ div.noMargin {
 }
 
 /*= =MISE EN PAGE= =*/
+/*= =MISE EN PAGE= =*/
 #detailArticle {
-    padding: 35px;
+    /*padding: 35px;*/
+}
+#articleHeader{
+    padding:15px 0;
+    color: #fff;
+}
+#articleHeader h2{
+    font-size:1.5em;
+}
+#articleHeader .container{
+    padding-left:100px;
+    position: relative;
+}
+#articleHeader .container:after{
+    content: "\e165";
+    font-size: 80px;
+    font-weight: 600;
+    position: absolute;
+    top: 50%;
+    height: 100px;
+    margin-top: -50px;
+    left: 0;
+    color: #fff;
+    font-family: 'Glyphicons Halflings';
+    opacity: 0.5;
 }
 
 #detailArticle .contenuMEP {
@@ -841,9 +866,21 @@ div.noMargin {
     padding-left: 35px;
     font-size: 1.3em;
 }
+#contactHead h1 {
+    padding-left:50px;
+    position: relative;
+}
+#contactHead h1:after {
+    content: "\2709";
+    font-family: 'Glyphicons Halflings';
+    position: absolute;
+    opacity:0.5;
+    top: 0px;
+    left: 0px;
+}
 
 #contactWrap {
-    padding: 30px;
+    padding: 30px 15px;
 }
 
 #contactWrap #contactMap iframe {
@@ -857,440 +894,68 @@ div.noMargin {
 }
 
 #contactWrap #formInputs .control-group {
-    margin-bottom: 5px;
+    clear: both;
 }
 
 #contactWrap #formInputs label {
     text-align: left;
     width: 150px;
+    float: left;
 }
-
-#contactWrap #formInputs input,
-#contactWrap #formInputs textarea {
+#contactWrap #captchaContact input,
+#contactWrap #formInputs input{
+    background-color: #fafafa;
     text-align: left;
     width: 65%;
-    margin-left: 5px;
-    float: right;
+    margin-left: 10px;
+    float: left;
     border: none;
-    background-color: #868585;
-    color: #fff;
+    color: #000;
     padding: 2px 10px;
+    border-bottom:1px solid #ffddb2;
+    margin-bottom: 5px;
 }
 
 #contactWrap #formInputs textarea {
+    background-image:  -webkit-linear-gradient(transparent 30px, #ffddb2 30px, #ffddb2 31px, transparent 31px);
+    background-image:  -moz-linear-gradient(transparent 30px, #ffddb2 30px, #ffddb2 31px, transparent 31px);
+    background-image:  -ms-linear-gradient(transparent 30px, #ffddb2 30px, #ffddb2 31px, transparent 31px);
+    background-image:  -o-linear-gradient(transparent 30px, #ffddb2 30px, #ffddb2 31px, transparent 31px);
+    background-image:  linear-gradient(transparent 30px, #ffddb2 30px, #ffddb2 31px, transparent 31px);
+    background-size:  100% 31px;
+    background-color: #fafafa;
+    line-height: 31px;
+    margin-left: 10px;
+    border:none;
+    padding: 8px;
     resize: vertical;
+    width:60%;
 }
 
 #contactWrap #captchaContact label {
     text-align: left;
 }
-
-#contactWrap #captchaContact input {
-    text-align: center;
-    border: none;
-    background-color: #868585;
-    color: #fff;
+.Obligatoire{
+    color: #ee7805;
 }
-
+#contactWrap #captchaContact .controls{
+    display: inline-block;
+}
+#contactWrap #captchaContact input{
+    float: none;
+    width:50px;
+    text-align: center;
+}
 #contactWrap #captchaContact input[readonly] {
     background-color: transparent;
+    border:none;
     color: #000;
 }
-
-/*= =SUPPORT= =*/
-#supportHead {
-    background-color: #868585;
-    color: #fff;
-    font-size: 1.3em;
+#contactWrap #submitButtons .btn{
+    -webkit-border-radius:0;
+    -moz-border-radius:0;
+    border-radius:0;
 }
-
-#supportInfo {
-    font-size: 1.3em;
-    color: #fff;
-}
-
-#supportInfo a {
-    color: #f9a869;
-    font-weight: 600;
-}
-
-#supportInfo #supportIP {
-    font-weight: 600;
-    font-size: 1.1em;
-}
-
-#supportContent {
-
-}
-
-#supportContent .artFile,
-#supportContent .artLink {
-    float: left;
-    padding: 15px;
-}
-
-/*= =SUPPLEMENT SIGNATURE= =*/
-#signatureAbt {
-    height: 100%;
-}
-
-/*Reset*/
-#signatureAbt #signPreview {
-    background: 0;
-    background-attachment: scroll;
-    background-clip: border-box;
-    background-color: transparent;
-    background-image: none;
-    background-origin: padding-box;
-    background-position: 0 0;
-    background-repeat: repeat;
-    background-size: auto auto;
-    border: 0;
-    border-style: none;
-    border-width: medium;
-    border-color: inherit;
-    border-bottom: 0;
-    border-bottom-color: inherit;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    border-bottom-style: none;
-    border-bottom-width: medium;
-    border-collapse: separate;
-    border-image: none;
-    border-left: 0;
-    border-left-color: inherit;
-    border-left-style: none;
-    border-left-width: medium;
-    border-radius: 0;
-    border-right: 0;
-    border-right-color: inherit;
-    border-right-style: none;
-    border-right-width: medium;
-    border-spacing: 0;
-    border-top: 0;
-    border-top-color: inherit;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    border-top-style: none;
-    border-top-width: medium;
-    bottom: auto;
-    box-shadow: none;
-    box-sizing: content-box;
-    caption-side: top;
-    clear: none;
-    clip: auto;
-    color: inherit;
-    content: normal;
-    counter-increment: none;
-    counter-reset: none;
-    cursor: auto;
-    direction: ltr;
-    display: inline;
-    empty-cells: show;
-    float: none;
-    font-family: "serif";
-    font-size: medium;
-    font-style: normal;
-    font-variant: normal;
-    font-weight: normal;
-    height: auto;
-    left: auto;
-    letter-spacing: normal;
-    line-height: normal;
-    list-style: none;
-    list-style-image: none;
-    list-style-position: outside;
-    list-style-type: disc;
-    margin: 0;
-    margin-bottom: 0;
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 0;
-    max-height: none;
-    max-width: none;
-    min-height: 0;
-    min-width: 0;
-    opacity: 1;
-    outline: 0;
-    outline-style: none;
-    outline-width: medium;
-    overflow: visible;
-    overflow-x: visible;
-    overflow-y: visible;
-    padding: 0;
-    padding-bottom: 0;
-    padding-left: 0;
-    padding-right: 0;
-    padding-top: 0;
-    page-break-after: auto;
-    page-break-before: auto;
-    page-break-inside: auto;
-    perspective: none;
-    perspective-origin: 50% 50%;
-    position: static;
-    right: auto;
-    table-layout: auto;
-    text-align: inherit;
-    text-decoration: none;
-    text-indent: 0;
-    text-shadow: none;
-    text-transform: none;
-    top: auto;
-    transform: none;
-    transform-style: flat;
-    transition: none;
-    transition-delay: 0s;
-    transition-duration: 0s;
-    transition-property: none;
-    transition-timing-function: ease;
-    unicode-bidi: normal;
-    vertical-align: baseline;
-    visibility: visible;
-    white-space: normal;
-    width: auto;
-    word-spacing: normal;
-    z-index: auto;
-}
-
-#signatureAbt #signForm {
-    height: 100%;
-    overflow: auto;
-}
-
-#signatureAbt #signForm .formGrp {
-    font-size: 1.3em;
-    margin-bottom: 5px;
-}
-
-#signatureAbt #signForm #mpSig {
-    margin-top: 10px;
-}
-
-#signatureAbt #signForm .formGrp label {
-    display: inline-block;
-    width: 30%;
-    font-weight: 100;
-}
-
-#signatureAbt #signForm .formGrp input {
-    background-color: transparent;
-    color: #868585;
-    border: none;
-    border-bottom: 1px solid #868585;
-    width: 69%;
-}
-
-#signatureAbt #signForm .formGrp select {
-    background-color: #868585;
-    color: #fff;
-    border: none;
-    width: 69%;
-}
-
-#signatureAbt #signForm .formGrp #faxGsm {
-    width: 30%;
-    color: #333;
-    background-color: #ccc;
-}
-
-#signatureAbt #signForm .formGrp input:focus,
-#signatureAbt #signForm .formGrp select:focus {
-    outline: none;
-}
-
-#signatureAbt #signForm #signPubChange {
-    margin-top: 25px;
-    border-top: 1px solid #868585;
-    padding-top: 25px;
-}
-
-#signatureAbt #signForm #signPubChange input {
-    margin-top: 10px;
-}
-
-#signatureAbt #signForm #signPubChange input[type=file] {
-    width: 100%;
-}
-
-#signatureAbt #signForm #signPubChange input[type=submit] {
-    padding: 5px;
-    color: #fff;
-    background-color: #114411;;
-    border: none;
-}
-
-#signatureAbt #signForm #signPubChange a {
-    margin-top: 10px;
-    float: right;
-    color: #661111;;
-}
-
-#signatureAbt #signCode {
-    height: 100%;
-    overflow: auto;
-    background-color: #868585;
-    padding: 0;
-}
-
-#signatureAbt #signCode .abtelTabs {
-    height: 100%;
-}
-
-#signatureAbt #signCode #ongletsSign {
-    height: 50px;
-}
-
-#signatureAbt #signCode #ongletsSign li {
-    height: 100%;
-    color: #000000;
-    border-right: 1px solid #fff;
-    width: 200px;
-}
-
-#signatureAbt #signCode #ongletsSign li a {
-    font-size: 1.2em;
-    height: 100%;
-    line-height: 50px;
-    padding: 0 20px;
-    margin: 0;
-    color: #fff;
-    text-align: center;
-    border: none;
-}
-
-#signatureAbt #signCode #ongletsSign li a:hover {
-    font-weight: 600;
-    border-radius: 0;
-    background-color: transparent;
-    border: none;
-}
-
-#signatureAbt #signCode #ongletsSign li.active a {
-    border: none;
-    background-color: #ddd;
-    border-radius: 0;
-    color: #000;
-}
-
-#signatureAbt #signCode ul li#copySig,
-#signatureAbt #signCode ul li#setSig {
-    float: right;
-    background-color: #eee;
-    font-size: 1.5em;
-    margin: 0 5px;
-}
-
-#signatureAbt #signCode ul li#copySig button,
-#signatureAbt #signCode ul li#setSig button {
-    width: 100%;
-    height: 100%;
-    background-color: transparent;
-    color: #114411;
-    border: none;
-    position: relative;
-    padding-left: 35px;
-}
-
-#signatureAbt #signCode ul li#copySig button:before {
-    content: "\e205";
-    font-family: 'Glyphicons Halflings';
-    position: absolute;
-    top: 10px;
-    left: 15px;
-}
-
-#signatureAbt #signPreview #hiddenCode table {
-    margin: auto;
-    margin-top: 100px;
-}
-
-#signatureAbt #signCode #displayCode {
-    padding: 1px;
-    background-color: #fff;
-    border-left: 2px solid #868585;
-}
-
-#signatureAbt #signForm .formGrp .onoffswitch {
-    position: relative;
-    display: inline-block;
-    width: 66px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-}
-
-#signatureAbt #signForm .formGrp .onoffswitch-checkbox {
-    display: none;
-}
-
-#signatureAbt #signForm .formGrp .onoffswitch-label {
-    display: block;
-    overflow: hidden;
-    cursor: pointer;
-    border: 2px solid #999999;
-    border-radius: 25px;
-    width: 100%;
-}
-
-#signatureAbt #signForm .formGrp .onoffswitch-inner {
-    display: block;
-    width: 200%;
-    margin-left: -100%;
-    transition: margin 0.3s ease-in 0s;
-}
-
-#signatureAbt #signForm .formGrp .onoffswitch-inner:before,
-#signatureAbt #signForm .formGrp .onoffswitch-inner:after {
-    display: block;
-    float: left;
-    width: 50%;
-    height: 17px;
-    padding: 0;
-    line-height: 17px;
-    font-size: 14px;
-    color: white;
-    font-family: Trebuchet, Arial, sans-serif;
-    font-weight: bold;
-    box-sizing: border-box;
-}
-
-#signatureAbt #signForm .formGrp .onoffswitch-inner:before {
-    content: "ON";
-    padding-left: 11px;
-    background-color: #34C26D;
-    color: #FFFFFF;
-}
-
-#signatureAbt #signForm .formGrp .onoffswitch-inner:after {
-    content: "OFF";
-    padding-right: 11px;
-    background-color: #EEEEEE;
-    color: #999999;
-    text-align: right;
-}
-
-#signatureAbt #signForm .formGrp .onoffswitch-switch {
-    display: block;
-    width: 25px;
-    margin: -2px;
-    background: #FFFFFF;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 45px;
-    border: 2px solid #999999;
-    border-radius: 25px;
-    transition: all 0.3s ease-in 0s;
-}
-
-#signatureAbt #signForm .formGrp .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
-    margin-left: 0;
-}
-
-#signatureAbt #signForm .formGrp .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
-    right: 0px;
-}
-
 
 
 /**************************************************************************/
@@ -1359,7 +1024,7 @@ div.noMargin {
 	    padding: 10px;
 	}
 	
-	#topNavigation ul.navbar-top li a.Contact {
+	#topNavigation ul.navbar-top li a.contact {
 	    margin-top: 7px;
 	    font-size:0.8em;
 	}

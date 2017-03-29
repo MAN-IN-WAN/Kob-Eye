@@ -42,6 +42,8 @@
 		<PROPERTIES type="boolean" default="0" category="Connexion" list="7" listDescr="Dev">Developper</PROPERTIES>
 		<!--<PROPERTIES type="order" category="Intégration">Ordre</PROPERTIES>-->
 		<FKEY card="1,n" data="Group,Id">GroupId</FKEY>
+		<FUNCTION>exportMenus</FUNCTION>
+		<FUNCTION>importMenus</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Site" driver="mysql" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Wiki2.png" generateUrl="0" Class="Modules/Systeme/Class/Site.class.php" cache="1">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé" list="1">Domaine</PROPERTIES>
@@ -92,6 +94,7 @@
 		<PROPERTIES type="boolean" category="Position" default="0"  fiche="1" form="1">MenuHaut</PROPERTIES>
 		<PROPERTIES type="boolean" category="Position" default="0" fiche="1" form="1">MenuBas</PROPERTIES>
 		<PROPERTIES type="boolean" category="Position" default="1" fiche="1" form="1">MenuPrincipal</PROPERTIES>
+		<PROPERTIES type="boolean" category="Position" default="0" fiche="1" form="1">MenuSpecial</PROPERTIES>
 		<PROPERTIES type="boolean" category="Position" default="0" description="Tente de générer automatiquement les sous menus dans la navigation" fiche="1" form="1">AutoSubGen</PROPERTIES>
 		<!-- meta -->
 		<PROPERTIES type="metat" special="multi" fiche="1" form="1">Title</PROPERTIES>

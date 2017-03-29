@@ -382,9 +382,24 @@ div.noMargin {
     padding: 20px 0;
     margin: 0 0 0 2%;
     float: left;
+    position: relative;
+}
+#siteWrap #mainMenu .mainMenuLink .abtelMainSubMenu{
+    position: absolute;
+    bottom: 15%;
+    left: 5%;
+    color: #fff;
+    font-size: 1.2em;
+    font-family: 'latobold';
+}
+#siteWrap #mainMenu .mainMenuLink .abtelMainSubMenuLink{
+    color: #fff;
+}
+#siteWrap #mainMenu .mainMenuLink .abtelMainSubMenuLink .sub{
+    font-family: 'latoregular';
 }
 
-#siteWrap #mainMenu .mainMenuLink a {
+#siteWrap #mainMenu .mainMenuLink a.abtelMainMenuLink {
     display: block;
     /*padding: 5%;*/
     color: #fff;
@@ -445,11 +460,11 @@ div.noMargin {
     padding-bottom: 5%;
 }
 
-#siteWrap #mainMenu .mainMenuLink a:hover {
+#siteWrap #mainMenu .mainMenuLink a.abtelMainMenuLink:hover {
     text-decoration: none;
 }
 
-#siteWrap #mainMenu .mainMenuLink a:hover:after {
+#siteWrap #mainMenu .mainMenuLink a.abtelMainMenuLink:hover:after {
     content: " ";
     position: absolute;
     top: 0;
@@ -459,13 +474,13 @@ div.noMargin {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
-#siteWrap #mainMenu .mainMenuLink a h2 {
+#siteWrap #mainMenu .mainMenuLink a.abtelMainMenuLink h2 {
     text-transform: uppercase;
     font-size: 1.8em;
     font-weight: 600;
 }
 
-#siteWrap #mainMenu .mainMenuLink a p {
+#siteWrap #mainMenu .mainMenuLink a.abtelMainMenuLink p {
     font-size: 1.1em;
     /*font-style: italic;*/
 }
@@ -671,7 +686,7 @@ div.noMargin {
     text-decoration: none;
 }
 
-#topNavigation ul.navbar-top li a.Contact {
+#topNavigation ul.navbar-top li a.contact {
     color: #fff;
     background-color: #868585;
     border-radius: 30px;
@@ -685,7 +700,7 @@ div.noMargin {
     position: relative;
 }
 
-#topNavigation ul.navbar-top li a.Contact:before {
+#topNavigation ul.navbar-top li a.contact:before {
     content: "\e111";
     font-family: 'Glyphicons Halflings';
     color: #fff;
@@ -695,7 +710,7 @@ div.noMargin {
     font-size: 1.3em;
 }
 
-#topNavigation ul.navbar-top li a.Contact:after {
+#topNavigation ul.navbar-top li a.contact:after {
     content: "\e052";
     font-family: 'Glyphicons Halflings';
     color: #868585;
@@ -705,7 +720,7 @@ div.noMargin {
     font-size: 0.7em;
 }
 
-#topNavigation ul.navbar-top li a.Contact:hover {
+#topNavigation ul.navbar-top li a.contact:hover {
     color: #fff;
     text-decoration: underline
 }
@@ -792,7 +807,31 @@ div.noMargin {
 
 /*= =MISE EN PAGE= =*/
 #detailArticle {
-    padding: 35px;
+    /*padding: 35px;*/
+}
+#articleHeader{
+    padding:15px 0;
+    color: #fff;
+}
+#articleHeader h2{
+    font-size:1.5em;
+}
+#articleHeader .container{
+    padding-left:100px;
+    position: relative;
+}
+#articleHeader .container:after{
+    content: "\e165";
+    font-size: 80px;
+    font-weight: 600;
+    position: absolute;
+    top: 50%;
+    height: 100px;
+    margin-top: -50px;
+    left: 0;
+    color: #fff;
+    font-family: 'Glyphicons Halflings';
+    opacity: 0.5;
 }
 
 #detailArticle .contenuMEP {
@@ -840,9 +879,21 @@ div.noMargin {
     padding-left: 35px;
     font-size: 1.3em;
 }
+#contactHead h1 {
+    padding-left:50px;
+    position: relative;
+}
+#contactHead h1:after {
+    content: "\2709";
+    font-family: 'Glyphicons Halflings';
+    position: absolute;
+    opacity:0.5;
+    top: 0px;
+    left: 0px;
+}
 
 #contactWrap {
-    padding: 30px;
+    padding: 30px 15px;
 }
 
 #contactWrap #contactMap iframe {
@@ -856,44 +907,67 @@ div.noMargin {
 }
 
 #contactWrap #formInputs .control-group {
-    margin-bottom: 5px;
+    clear: both;
 }
 
 #contactWrap #formInputs label {
     text-align: left;
     width: 150px;
+    float: left;
 }
-
-#contactWrap #formInputs input,
-#contactWrap #formInputs textarea {
+#contactWrap #captchaContact input,
+#contactWrap #formInputs input{
+    background-color: #fafafa;
     text-align: left;
     width: 65%;
-    margin-left: 5px;
-    float: right;
+    margin-left: 10px;
+    float: left;
     border: none;
-    background-color: #868585;
-    color: #fff;
+    color: #000;
     padding: 2px 10px;
+    border-bottom:1px solid #b2dfff;
+    margin-bottom: 5px;
 }
 
 #contactWrap #formInputs textarea {
+    background-image:  -webkit-linear-gradient(transparent 30px, #b2dfff 30px, #b2dfff 31px, transparent 31px);
+    background-image:  -moz-linear-gradient(transparent 30px, #b2dfff 30px, #b2dfff 31px, transparent 31px);
+    background-image:  -ms-linear-gradient(transparent 30px, #b2dfff 30px, #b2dfff 31px, transparent 31px);
+    background-image:  -o-linear-gradient(transparent 30px, #b2dfff 30px, #b2dfff 31px, transparent 31px);
+    background-image:  linear-gradient(transparent 30px, #b2dfff 30px, #b2dfff 31px, transparent 31px);
+    background-size:  100% 31px;
+    background-color: #fafafa;
+    line-height: 31px;
+    margin-left: 10px;
+    border:none;
+    padding: 8px;
     resize: vertical;
+    width:60%;
 }
 
 #contactWrap #captchaContact label {
     text-align: left;
 }
-
-#contactWrap #captchaContact input {
-    text-align: center;
-    border: none;
-    background-color: #868585;
-    color: #fff;
+.Obligatoire{
+    color: #ee7805;
 }
-
+#contactWrap #captchaContact .controls{
+    display: inline-block;
+}
+#contactWrap #captchaContact input{
+    float: none;
+    width:50px;
+    text-align: center;
+}
 #contactWrap #captchaContact input[readonly] {
     background-color: transparent;
+    border:none;
     color: #000;
+}
+#contactWrap #submitButtons .btn{
+    -webkit-border-radius:0;
+    -moz-border-radius:0;
+    border-radius:0;
 }
 
 /*= =SUPPORT= =*/
@@ -901,11 +975,26 @@ div.noMargin {
     background-color: #868585;
     color: #fff;
     font-size: 1.3em;
+    padding:15px;
+    padding-left:35px;
+}
+#supportHead h1 {
+    padding-left:50px;
+    position: relative;
+}
+#supportHead h1:after {
+    content: "\e136";
+    font-family: 'Glyphicons Halflings';
+    position: absolute;
+    opacity:0.5;
+    top: 0px;
+    left: 0px;
 }
 
 #supportInfo {
     font-size: 1.3em;
     color: #fff;
+    padding:15px 0;
 }
 
 #supportInfo a {
@@ -919,7 +1008,7 @@ div.noMargin {
 }
 
 #supportContent {
-
+    padding:15px 0;
 }
 
 #supportContent .artFile,

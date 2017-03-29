@@ -80,14 +80,19 @@ class MiseEnPageArticle extends genericClass{
      * Crée un code html par default pour l'article
      * @return String
      */
-	public function generateDefaultLayout(){
-		
+	public function generateDefaultLayout($creds = 1){
+		$cat = $this->getOneParent('Categorie');
+		if($cat) $ent = $cat->getOneChild('Entite');
+        $style= isset($ent) ? 'style="background-color:'.$ent->CodeCouleur.';"':'';
+
 		$html = '<div class="articleMEP">';
-		
+        $html .= '<div id="articleHeader" '.$style.'><div class="container">';
 		$html .= '<h1>'.$this->Titre.'</h1>';
 		$html .= '<h2>'.$this->Chapo.'</h2>';
-		$html .= '<p class="credsMEP">Le <span class="dateMEP">'.date('d/m/Y \à H:i:s',$this->Date).'</span> par <span class="auteurMEP">'.$this->Auteur.'</span></p>';
-		
+		if($creds)
+            $html .= '<p class="credsMEP">Le <span class="dateMEP">'.date('d/m/Y \à H:i:s',$this->Date).'</span> par <span class="auteurMEP">'.$this->Auteur.'</span></p>';
+		$html .= '</div></div>';
+        $html .= '<div class="container">';
 		$contenus = $this->getChildren('Contenu');
 		foreach ($contenus as $contenu){
 			$html .= '<div class="contenuMEP">';
@@ -119,6 +124,7 @@ class MiseEnPageArticle extends genericClass{
 			
 			$html .= '</div>';
 		}
+        $html .= '</div>';
 		
 		$html .= '</div>';
         
