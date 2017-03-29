@@ -2449,7 +2449,7 @@ class genericClass extends Root {
 				return ($siteId == $a->SiteId);
 			});
 		}
-		
+
 		if (!sizeof($tls)&&$this->ObjectType!="Menu"&&!$strict){
 			$tls = Array();
 			//recherche des menus pointant vers cette donnée
@@ -2570,7 +2570,8 @@ class genericClass extends Root {
 			}
 		}
 		//Dans le cas des menus la génération est automatique à l'enregistrement.
-		return $tls;
+
+		return array_values($tls);
 	 }	 
 	 /**
 	  * Supprime les pages d'un élément
