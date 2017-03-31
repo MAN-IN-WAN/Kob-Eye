@@ -373,6 +373,8 @@ div.noMargin {
     position: relative;
     z-index: 100;
     overflow: hidden;
+    background-color: #fff;
+    height:1500px;
 }
 
 /* Menu Principal */

@@ -153,7 +153,7 @@ class genericClass extends Root {
 		$ObjClass = Sys::$Modules[$refMod] -> Db -> getObjectClass($ClassName);
 		if (!is_object($ObjClass))
 			return;
-		$Special = $ObjClass -> Class;
+		$Special = $ObjClass ->Class;
 		if ($Special != "") {
 			//Le cas d une class etendue
 			require_once (ROOT_DIR.$Special);
@@ -869,7 +869,7 @@ class genericClass extends Root {
 		if (is_array($C) && !empty($C))
 			foreach ($C as $A) {
 				$O = $A -> getParentObjectClass();
-				$Ct[] = Array("Titre" => $O -> titre, "Icon" => $O -> Icon, "Driver" => $O -> driver, "Nom" => $A -> titre, "Card" => $A -> getCard('parent'), "Target" => $A -> getTarget(), "Default" => $A -> Default, "Long" => $A -> isLong(), "Short" => $A -> isShort(), "Description" => $O -> Description,"browseable" => $O -> browseable,"noRecursivity"=>$O->noRecursivity,"stopPage"=>$O->stopPage);
+				$Ct[] = Array("Titre" => $O -> titre, "Icon" => $O -> Icon, "Driver" => $O -> driver, "Nom" => $A -> titre, "Card" => $A -> getCard('parent'), "Target" => $A -> getTarget(), "Default" => $A->Default, "Long" => $A -> isLong(), "Short" => $A -> isShort(), "Description" => $O -> Description,"browseable" => $O -> browseable,"noRecursivity"=>$O->noRecursivity,"stopPage"=>$O->stopPage);
 			}
 		return $Ct;
 	}
@@ -893,7 +893,7 @@ class genericClass extends Root {
 				$O = $A -> getChildObjectClass();
 				//evite les boucles pour un cas de reflexivité non recursive (produits associés par exemple)
 				if ($ObjClass->titre==$O->titre&&$O->noRecursivity&&!$force) continue;
-				$Pt[] = Array("Titre" => $O -> titre, "Icon" => $O -> Icon, "Driver" => $O -> driver, "Nom" => $A -> titre, "Card" => $A -> getCard('child'), "Target" => $A -> getTarget(), "Default" => $A -> Default, "Long" => $A -> isLong(), "Short" => $A -> isShort(), "Description" => $O -> Description,"browseable" => $O -> browseable,"noRecursivity"=>$O->noRecursivity,"stopPage"=>$O->stopPage);
+				$Pt[] = Array("Titre" => $O -> titre, "Icon" => $O -> Icon, "Driver" => $O -> driver, "Nom" => $A -> titre, "Card" => $A -> getCard('child'), "Target" => $A -> getTarget(), "Default" => $A->Default, "Long" => $A -> isLong(), "Short" => $A -> isShort(), "Description" => $O -> Description,"browseable" => $O -> browseable,"noRecursivity"=>$O->noRecursivity,"stopPage"=>$O->stopPage);
 			}
 		return $Pt;
 	}
@@ -1020,11 +1020,12 @@ class genericClass extends Root {
 		$Url = $this -> Module;
 		$Nbhisto = count($this -> Historique) - 1;
 		//Construction de l'url
+        $Obc = null;
 		for ($i = 0; $i <= $Nbhisto; $i++) {
 			$this -> Historique[$i]['Num'] = $i;
 			//On verifie si l'objectClass n'est pas default
 			$Obc = ($i == 0 || $this -> Historique[$i - 1]['ObjectType'] == $this -> Historique[$i]['ObjectType']) ? Sys::$Modules[$this -> Module] -> Db -> findByTitle($this -> Historique[$i]['ObjectType']) : $Obc;
-			if (!is_object($Obc) || !$Obc -> Default)
+			if (!is_object($Obc) || !$Obc->Default)
 				$Url .= '/' . $this -> Historique[$i]['ObjectType'];
 			$this -> Historique[$i]['objectUrl'] = $Url;
 			$Url .= '/' . $this -> Historique[$i]['Id'];
@@ -1041,7 +1042,7 @@ class genericClass extends Root {
 		$this -> firstObjType = ($i > 0 && isset($this -> Historique[$i]['ObjectType'])) ? $this -> Historique[$i]['ObjectType'] : $this -> ObjectType;
 		$this -> menuUrl = ((isset($kUrl)) ? $kUrl . '/' : '') . $Url;
 		$Obc = Sys::$Modules[$this -> Module] -> Db -> findByTitle($this -> ObjectType);
-		if (!is_object($Obc) || !$Obc -> Default)
+		if (!is_object($Obc) || !$Obc->Default)
 			$Url .= '/' . $this -> ObjectType;
 		$this -> objectUrl = $Url;
 		$this -> Level = $i + 1;
@@ -1923,6 +1924,7 @@ class genericClass extends Root {
 				}
 			}
 		}
+        $res = '';
 		if (!$this -> Verify()) {
 			$status[] = Array($type, 0, $this -> Id, $this -> Module, $this -> ObjectType, null, null, $this -> Error, $res);
 			return WebService::WSStatusMulti($status);
@@ -1945,7 +1947,7 @@ class genericClass extends Root {
 				}
 			}
 		}
-		$res = '';
+
 		if (!$this -> Verify())
 			$status[] = Array($type, 0, $this -> Id, $this -> Module, $this -> ObjectType, '', '', $this -> Error, $res);
 		elseif($default)
@@ -2602,7 +2604,7 @@ class genericClass extends Root {
 			$tls[$i]->Image = $this->ImgMeta;
 			$url = $tls[$i]->Url;
 			$last = explode('/',$url);
-			if ($last[sizeof($last)-1]!=$this->Url){
+			if ($last[sizeof($last)-1]!=$this->Url  && $tls[$i]->PageObject!='Menu'){
 				//mise à jour url
 				$tls[$i]->Url = preg_replace('#'.$last[sizeof($last)-1].'$#',$this->Url,$url);
 				//TODO requete recursive dans le cas ou on modifie une url contenant d'autres pages.
