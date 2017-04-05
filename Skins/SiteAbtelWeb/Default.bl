@@ -6,6 +6,7 @@
 [HEADER JS]Tools/Js/JCarousel/jquery.jcarousel.min.js[/HEADER]
 [HEADER JS]Tools/Js/Isotope/isotope.min.js[/HEADER]
 [HEADER JS]Tools/Js/customScrollBar/jquery.mCustomScrollbar.concat.min.js[/HEADER]
+[HEADER JS]Tools/Js/jquery.mousewheel.min.js[/HEADER]
 [HEADER JS]Tools/Js/syntaxhighlighter/scripts/shCore.js[/HEADER]
 [HEADER JS]Tools/Js/syntaxhighlighter/scripts/shBrushXml.js[/HEADER]
 
@@ -57,8 +58,11 @@
 <script type="text/javascript">
 	$(document).on('ready',function(){
 		fitHeight();
-		//$('.customScroll').mCustomScrollbar();
+		$('.customScroll').mCustomScrollbar();
 	});
+	$(window).resize(function(){
+        fitHeight();
+    });
 </script>
 
 [MODULE Systeme/Cookies/Default?gaProperty=UA-XXXXXX-Y&piwikSiteId=XXX]

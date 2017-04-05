@@ -245,4 +245,18 @@
 		<PROPERTIES type="file" fiche="1" form="1" description="Fichier de tunnel 32bits">TunnelFile</PROPERTIES>
 		<PROPERTIES type="file" fiche="1" form="1" description="Fichier de tunnel 64bits">TunnelFile64</PROPERTIES>
 	</OBJECTCLASS>
+	<OBJECTCLASS title="CompteMail" driver="mysql" AccessPoint="1" Description="Comptes Mail" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/CompteMail.class.php">
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Adresse eMail">Adresse</PROPERTIES>
+		<PROPERTIES type="varchar" description="Mot de passe">Pass</PROPERTIES>
+		<PROPERTIES type="int" description="Quota en Mo">Quota</PROPERTIES>
+		<PROPERTIES type="int" description="Espace utilisé en Mo">EspaceUtilise</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" description="Status de l'adresse">Status</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="3" description="Nom du contact">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" description="Prenom du contact">Prenom</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
+		<FKEY card="1,1" data="Client,Id">ClientId</FKEY>
+		<FKEY card="1,1" data="Server,Id">ServerId</FKEY>
+	</OBJECTCLASS>
 </SCHEMA>

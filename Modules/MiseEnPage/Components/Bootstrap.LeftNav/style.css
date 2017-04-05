@@ -1,0 +1,90 @@
+.MEPNav{
+    margin-top:15px;
+    font-size:1.1em;
+}
+.MEPNav .baseLabel{
+    vertical-align: middle;
+}
+.MEPNav .baseNav{
+    margin-left:5px;
+}
+.MEPNav .baseNav h2{
+    font-size:1.1em;
+    font-weight:600;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.MEPNav .aNav{
+    font-size: 1.1em;
+    margin-bottom: 7px;
+    display: inline-block;
+}
+.MEPNav .aNav.legacy{
+    color: #7f007f;
+}
+.MEPNav .aNav.self{
+    text-decoration: underline;
+}
+
+
+.MEPNav ul{
+    margin-left:10px;
+	padding-left:20px;
+    position: relative;
+}
+.MEPNav > ul{
+    margin-left:30px;
+}
+.MEPNav input{
+    display: none;
+}
+.MEPNav li,
+.MEPNav ul > label{
+    max-height:0;
+    overflow: hidden;
+    -webkit-transition: all 1s;
+    transition: all 1s;
+}
+.MEPNav li{
+    list-style-type: none;
+}
+.MEPNav ul > label{
+    position: absolute;
+    top:0;
+    left:0;
+}
+
+.MEPNav input:checked ~ ul > li,
+.MEPNav input:checked ~ ul > label{
+    max-height: 50px;
+    transition: all 1s;
+}
+.MEPNav input:checked ~ ul > li{
+    padding-left:5px;
+}
+
+.MEPNav  label{
+    width:20px;
+    height:20px;
+    position: relative;
+    display: inline-block;
+}
+.MEPNav label:after {
+    position: absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+    text-align: center;
+    line-height:20px;
+    content: "\e160";
+    font-family:'Glyphicons Halflings';
+    font-size: 1.3em;
+    color: #9a3232;
+}
+
+.MEPNav input:checked ~ label:after{
+    content: "\e159";
+    color: #329a32;
+}

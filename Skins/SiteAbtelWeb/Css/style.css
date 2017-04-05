@@ -242,14 +242,16 @@ div.noMargin {
     height: 100%;
     overflow: auto;
 }
-
+.fullHeight{
+    height:100%;
+    overflow: auto;
+}
 /****************************************************************
  *								*
  *			     GENERAL    			*
  *								*
  ****************************************************************/
-.templateContainer,
-.mCSB_container {
+.templateContainer{
     height: 100%;
 }
 
@@ -984,15 +986,15 @@ div.noMargin {
 	/*CORRESPOND  768*1024 */
 
 
-	
+
 }
 
 
 /*=========== <767 : tablette portrait ======*/
 @media (min-width: 481px) and (max-width: 767px) {
 	/*CORRESPOND À 600*800 */
- 
- 	
+
+
 
 }
 
@@ -1000,9 +1002,9 @@ div.noMargin {
 /*=========== <480 : smartphone paysage ======*/
 @media (min-width: 466px) and (max-width: 599px) {
 	/*CORRESPOND À 480*320 */
- 	
- 	
-	
+
+
+
 }
 
 
@@ -1016,30 +1018,30 @@ div.noMargin {
 	#siteWrap {
 	}
 
-	
-	
+
+
 	#topNavigation ul.navbar-top li {
 		margin-top:2px;
 	}
-	
+
 	#topNavigation ul.navbar-top li a {
 	    padding: 10px;
 	}
-	
+
 	#topNavigation ul.navbar-top li a.contact {
 	    margin-top: 7px;
 	    font-size:0.8em;
 	}
-	
+
 	table#projectHomeTxt {
     	color: #fff;
     	margin: 20px 10px;
     	padding: 20px 20px 0 20px;
     	font-size: 3em;
-     	width: 100%; 
+     	width: 100%;
      	height:auto;
 	}
-	
+
 
 	#projectResumeTxt {
     	margin: 0;font-size:0.8em;
@@ -1047,7 +1049,7 @@ div.noMargin {
 	#projectResumeCell {
     	vertical-align: top;
     }
-	
+
 }
 
 

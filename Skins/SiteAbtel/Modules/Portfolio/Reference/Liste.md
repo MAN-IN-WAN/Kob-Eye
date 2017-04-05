@@ -1,8 +1,3 @@
-[HEADER]
-	<link rel="canonical" href="[!Domaine!]/[!Lien!]" />
-[/HEADER]
-//DETECTION CATEGORIE
-[DESCRIPTION]Portfolio webdesigner : liste de nos realisations de sites internet, références sites web clients.[/DESCRIPTION]
 [INFO [!Chemin!]|I]
 [IF [!I::NbHisto!]>0]
 	[STORPROC [!I::Historique!]|Cec|0|1]
@@ -14,7 +9,12 @@
 	[!C:=5!]
 [/IF]
 [IF [!C!]!=][STORPROC Portfolio/Categorie/[!C!]|Cec|0|1][/STORPROC][/IF]
-<div style="overflow:hidden;">
+<div id="headerRefs">
+	<div class="container">
+		<h1>[!Systeme::CurrentMenu::Titre!]</h1>
+	</div>
+</div>
+<div class="container">
 	[MODULE Portfolio/Structure/Gauche?Chemin=[!Chemin!]]
 	<div id="Milieu" style="margin-left:250px;">
 		<div id="Data" style="border-top:0px solid #827152;padding-top:1px;">

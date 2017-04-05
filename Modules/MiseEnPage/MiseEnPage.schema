@@ -24,6 +24,7 @@
 		<PROPERTIES type="boolean" category="Publication">Publier</PROPERTIES>
 		<PROPERTIES type="order" category="Publication">Ordre</PROPERTIES>
 		<FKEY card="0,n" data="Categorie,Id">CategorieId</FKEY>
+		<FKEY card="0,1" data="Article,Id">ArticleId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Contenu" driver="mysql" AccessPoint="1" Description="Contenus"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" className="Contenu" Class="Modules/MiseEnPage/Class/Contenu.class.php">
 		<PROPERTIES type="titre" searchOrder="1" obligatoire="1" category="Intitulé">Titre</PROPERTIES>

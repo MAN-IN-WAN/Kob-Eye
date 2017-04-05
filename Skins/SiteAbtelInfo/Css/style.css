@@ -242,14 +242,17 @@ div.noMargin {
     height: 100%;
     overflow: auto;
 }
+.fullHeight{
+    height:100%;
+    overflow: auto;
+}
 
 /****************************************************************
  *								*
  *			     GENERAL    			*
  *								*
  ****************************************************************/
-.templateContainer,
-.mCSB_container {
+.templateContainer{
     height: 100%;
 }
 
