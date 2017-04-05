@@ -1,13 +1,13 @@
 <SCHEMA>
 	<OBJECTCLASS title="Client" driver="mysql" AccessPoint="1" master="0" Description="Client" Icon="/Skins/AdminV2/Img/IconAqua/Forum.png" className="Parc_Client" Class="Modules/Parc/Class/Client.class.php" Order="Nom">
-		<PROPERTIES category="Intitulé" type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1">Nom</PROPERTIES>
-		<PROPERTIES category="Accès client" type="boolean" obligatoire="0" searchOrder="4" description="Activation Accès web" list="1" fiche="1" form="1">AccesActif</PROPERTIES>
+		<PROPERTIES category="Intitulé" type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" listDescr="Nom">Nom</PROPERTIES>
+		<PROPERTIES category="Accès client" type="boolean" obligatoire="0" searchOrder="4" description="Activation Accès web" list="1" fiche="1" form="1" listDescr="Accès Web">AccesActif</PROPERTIES>
 		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="5" description="Identifiant Accès web"  fiche="1" form="1">AccesUser</PROPERTIES>
 		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="6" description="Mot de passe Accès Web" fiche="1" form="1">AccesPass</PROPERTIES>
-		<PROPERTIES category="Coordonnées" searchOrder="2" type="varchar" description="Adresse e-mail" fiche="1" form="1">Email</PROPERTIES>
-		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de téléphone" fiche="1" form="1">Tel</PROPERTIES>
+		<PROPERTIES category="Coordonnées" searchOrder="2" type="varchar" description="Adresse e-mail" fiche="1" form="1" list="1" listDescr="Email">Email</PROPERTIES>
+		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de téléphone" fiche="1" form="1" list="1" listDescr="Tel">Tel</PROPERTIES>
 		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de fax" fiche="1" form="1">Fax</PROPERTIES>
-		<PROPERTIES category="LDAP" type="varchar" obligatoire="1" unique="1" length="25" description="Nom sous LDAP (de 8-25 caractères sans caractère spéciaux ou espace)" list="1" fiche="1" form="1">NomLDAP</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" obligatoire="1" unique="1" length="25" description="Nom sous LDAP (de 8-25 caractères sans caractère spéciaux ou espace)" fiche="1" form="1">NomLDAP</PROPERTIES>
 		<PROPERTIES category="LDAP" type="int" auto="1">LdapGid</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
@@ -229,12 +229,15 @@
         <FKEY card="0,1" data="Apache,Id" fiche="1" form="1" parentDescription="Hôte virtuel" link="1">ApacheId</FKEY>
         <FUNCTION title="Executer maintenant">Executer</FUNCTION>
     </OBJECTCLASS>
-	<OBJECTCLASS title="Device" driver="mysql" Dico="1" Description="Périphérique réseau" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Device.class.php">
+	<OBJECTCLASS title="Device" driver="mysql" Dico="1" Description="Périphérique(s) réseau(x)" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Device.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom du périphérique">Nom</PROPERTIES>
 		<PROPERTIES type="text" searchOrder="2" obligatoire="0" list="1" fiche="1" form="1" description="Description du périphérique">Description</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="3" obligatoire="0" list="1" fiche="1" form="1" description="Identifiant du périphérique">Uuid</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="4" obligatoire="1" list="1" fiche="1" form="1" description="Type de connexion">ConnectionType</PROPERTIES>
-		<PROPERTIES type="varchar" list="1" fiche="1" form="1" description="Url guacamole">GuacamoleUrl</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="3" obligatoire="0" fiche="1" form="1" description="Identifiant du périphérique">Uuid</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="4" obligatoire="0" fiche="1" form="1" description="Type de connexion">ConnectionType</PROPERTIES>
+		<PROPERTIES type="extlink" list="1" fiche="1" form="1" description="Url guacamole VNC" listDescr="VNC">GuacamoleUrlVnc</PROPERTIES>
+		<PROPERTIES type="extlink" list="1"  fiche="1" form="1" description="Url guacamole RDP" listDescr="RDP">GuacamoleUrlRdp</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" description="Id guacamole RDP">GuacamoleIdRdp</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" description="Id guacamole VNC">GuacamoleIdVnc</PROPERTIES>
 		<FKEY card="0,1" data="Client,Id" fiche="1" form="1" parentDescription="Client" link="1">ClientId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="LogicielVersion" driver="mysql" Dico="1" Description="Version logMeNimes" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png">
@@ -244,5 +247,10 @@
 		<PROPERTIES type="file" fiche="1" form="1" description="Fichier d'installation">InstallFile</PROPERTIES>
 		<PROPERTIES type="file" fiche="1" form="1" description="Fichier de tunnel 32bits">TunnelFile</PROPERTIES>
 		<PROPERTIES type="file" fiche="1" form="1" description="Fichier de tunnel 64bits">TunnelFile64</PROPERTIES>
+		<PROPERTIES type="file" fiche="1" form="1" description="Fichier de vnc 32bits">VncFile</PROPERTIES>
+		<PROPERTIES type="file" fiche="1" form="1" description="Fichier de vnc 64bits">VncFile64</PROPERTIES>
+		<PROPERTIES type="file" fiche="1" form="1" description="Fichier dll de vnc 32bits">VncDllFile</PROPERTIES>
+		<PROPERTIES type="file" fiche="1" form="1" description="Fichier dll de vnc 64bits">VncDllFile64</PROPERTIES>
+		<PROPERTIES type="text" obligatoire="0" list="1" fiche="1" form="1" description="Notice installation">Description</PROPERTIES>
 	</OBJECTCLASS>
 </SCHEMA>

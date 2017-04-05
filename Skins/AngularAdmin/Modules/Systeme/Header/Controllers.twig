@@ -1,3 +1,34 @@
 {% for c in controllers %}
-    <script src="{{ c }}/Controller.json"></script>
+    /**** LIST CONTROLLER  ****/
+    app.controller('{{ c.name }}Ctrl', function($location, $scope, $rootScope,$http,{{ c.identifier }}Store) {
+        //test du store
+        $scope.{{ c.identifier }}currentPage = 1;
+        $scope.{{ c.identifier }}itemsPerPage = {{ c.identifier }}Store.getPageLength();
+        $scope.{{ c.identifier }} = {{ c.identifier }}Store;
+        {{ c.identifier }}Store.getData($scope.currentPage);
+
+        //recherche watcher
+        $scope.{{ c.identifier }}query = {{ c.identifier }}Store.getFilters();
+        $scope.$watch('{{ c.identifier }}query', function() {
+            //on lance la recherche depuis le store
+            {{ c.identifier }}Store.setFilters($scope.{{ c.identifier }}query);
+        });
+        $scope.$watch('{{ c.identifier }}currentPage', function() {
+            {{ c.identifier }}Store.setPage($scope.{{ c.identifier }}currentPage);
+        });
+    });
+
+    /**** FICHE CONTROLLER ****/
+    app.controller('{{ c.name }}FicheCtrl', function($location, $scope, $rootScope, $routeParams,$http,{{ c.identifier }}Store) {
+        //récupération des données du store.
+        {{ c.identifier }}Store.getOneData($routeParams.id).then(function (data){
+            console.log('retour chargement one data',data);
+            $scope.obj = data;
+            {% for child in c.childrenelements %}
+                $scope.{{ child.objectModule }}{{ child.objectName }} = {
+                    data:data.{{ child.objectName }}
+                };
+            {% endfor %}
+        });
+    });
 {% endfor %}

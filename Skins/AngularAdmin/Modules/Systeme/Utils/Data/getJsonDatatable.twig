@@ -1,0 +1,25 @@
+{
+    "total": "{{ total }}",
+    "data": [
+
+        {% for row in rows %}
+        {
+            "id":"{{ row.Id }}",
+            "label":"{{ row.label }}",
+            "Details":"créé le {{ row.tmsCreate | date('d/m/Y H:i') }} par {{ row.userCreateName }}\nmodifié le {{ row.tmsEdit  | date('d/m/Y H:i')  }} par {{ row.userEditName }}"
+            {% for field in fields %}
+            ,"{{ field.name }}": "{{ attribute(row,field.name) }}"
+            {% endfor %}
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+{#        {% for row in rows %}
+            [
+            {{ row.Id }}
+            {% for field in fields %}
+                ,"{{ attribute(row,field.name) }}"
+            {% endfor %}
+            ,"créé le {{ row.tmsCreate | date('d/m/Y H:i') }} par {{ row.userCreateName }}<br />modifié le {{ row.tmsEdit  | date('d/m/Y H:i')  }} par {{ row.userEditName }}<br />"
+            ]{% if not loop.last %},{% endif %}
+        {% endfor %}#}
+    ]
+}

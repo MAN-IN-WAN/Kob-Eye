@@ -1028,7 +1028,8 @@ class ObjectClass extends Root{
 			case "titre":
 			case "canonic":
 			case "varchar":
-			case "link":
+            case "link":
+            case "extlink":
 				$Type="string";
 				break;
 			case "boolean":

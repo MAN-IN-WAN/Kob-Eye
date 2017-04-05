@@ -34,24 +34,26 @@
                     </li>
                 {% endif %}
             {%  endfor %}
-            <li class="left-menu-list-separator"></li>
-            {%  for mod in modules %}
-            <li class="left-menu-list-submenu">
-                <a class="left-menu-link" href="javascript: void(0);">
-                    <i class="left-menu-link-icon icmn-files-empty2"><!-- --></i>
-                    {{ mod.Description }}
-                </a>
-                <ul class="left-menu-list list-unstyled">
-                    {% for obj in mod.getAccessPoint() %}
-                    <li>
-                        <a class="left-menu-link" href="#/{{ mod.Nom }}/{{ obj.titre }}">
-                            {{ obj.description }}
-                        </a>
-                    </li>
-                    {%  endfor %}
-                </ul>
-            </li>
-            {%  endfor %}
+            {% if user.Admin %}
+                <li class="left-menu-list-separator"></li>
+                {%  for mod in modules %}
+                <li class="left-menu-list-submenu">
+                    <a class="left-menu-link" href="javascript: void(0);">
+                        <i class="left-menu-link-icon icmn-files-empty2"><!-- --></i>
+                        {{ mod.Description }}
+                    </a>
+                    <ul class="left-menu-list list-unstyled">
+                        {% for obj in mod.getAccessPoint() %}
+                        <li>
+                            <a class="left-menu-link" href="#/{{ mod.Nom }}/{{ obj.titre }}">
+                                {{ obj.description }}
+                            </a>
+                        </li>
+                        {%  endfor %}
+                    </ul>
+                </li>
+                {%  endfor %}
+            {% endif %}
         </ul>
     </div>
 </nav>

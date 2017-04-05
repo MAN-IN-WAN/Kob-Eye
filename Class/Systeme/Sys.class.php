@@ -387,7 +387,8 @@ class Sys extends Root{
 			case "pot": if ($this->type=="pot") { header("Content-type:application/vnd.ms-powerpoint");$detectmime=false;  }
 			case "xmn":
 			case "lnn":
-			case "exe": if ($this->type=="exe") { header("Content-type:application/octet-stream");$detectmime=false;  }
+            case "exe": if ($this->type=="exe") { header("Content-type:application/octet-stream");$detectmime=false;  }
+            case "dll": if ($this->type=="dll") { header("Content-type:application/octet-stream");$detectmime=false;  }
 			case "doc": if ($this->type=="doc") { header("Content-type:application/msword");$detectmime=false;  }
 			case "odt": if ($this->type=="odt") { header("Content-type:application/vnd.oasis.opendocument.text");$detectmime=false;  }
 			case "xlsx": if ($this->type=="xlsx") { header("Content-type:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");$detectmime=false;  }

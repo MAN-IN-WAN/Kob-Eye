@@ -91,18 +91,21 @@
     <!-- v1.7.0 -->
     <script src="Skins/AngularAdmin/assets/vendors/dropify/dist/js/dropify.min.js"></script>
 
-
     <!-- Angular Version Scripts -->
     <script src="Skins/AngularAdmin/assets/vendors/angular/angular.min.js"></script>
     <script src="Skins/AngularAdmin/assets/vendors/angular-route/angular-route.min.js"></script>
     <!--<script src="Skins/AngularAdmin/assets/common/js/version_angular/app.js"></script>-->
-    <script src="Systeme/Menu/App.json"></script>
+    <script src="Systeme/Header/App.json"></script>
+    <script src="Systeme/Header/Controllers.json"></script>
+    <script src="Systeme/Header/Store.json"></script>
 
     <!-- Angular Version Controllers -->
     <!-- <script src="Skins/AngularAdmin/pages/register.ctrl.js"></script> -->
     <!-- <script src="Skins/AngularAdmin/pages/login.ctrl.js"></script> -->
     <!-- <script src="Skins/AngularAdmin/pages/lockscreen.ctrl.js"></script> -->
-    [MODULE Systeme/Header/Controllers]
+
+    <!-- PAGINATION -->
+    <script src="Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.js"></script>
 
     <!-- Clean UI Scripts -->
     <script src="Skins/AngularAdmin/assets/common/js/common.js"></script>

@@ -1,0 +1,162 @@
+{% for st in stores %}
+app.service('{{ st.identifier }}Store', function ($http,$q,$timeout) {
+    var {{ st.identifier }}Store = [],
+        currentPage = 1,
+        pageLoaded = 0,
+        total = 0,
+        pageLength = 15,
+        filters = '',
+        timer = 0,
+        busy = false;
+    return {
+        getOneData: getOneData,
+        getData: getData,
+        getTotal: getTotal,
+        setPage: setPage,
+        setFilters: setFilters,
+        getFilters: getFilters,
+        getPageLength: getPageLength,
+        setPageLength: setPageLength,
+        data:{{ st.identifier }}Store
+    };
+    function setPageLength(pl) {
+        pageLength = pl;
+    }
+    function getPageLength() {
+        return pageLength;
+    }
+    function getTotal() {
+        return total;
+    }
+    function purgeStore(){
+        /*for (var i in {{ st.identifier }}Store){
+            {{ st.identifier }}Store.pop();
+        }*/
+        {{ st.identifier }}Store.splice(0,{{ st.identifier }}Store.length);
+    }
+    /**
+    * Définition de la page en cours
+    */
+    function setPage(page){
+        getData(page);
+    }
+    /**
+    * Définition du filtre
+    **/
+    function setFilters(filter){
+        if (filter==filters) return;
+        filters = filter;
+        //on recharge le store
+        $timeout.cancel(timer);
+        timer=$timeout(function (){
+            pageLoaded=0;
+            getData(1);
+        }, 300);
+    }
+    /**
+    * Récupération du filtre en cours
+    **/
+    function getFilters(){
+        return filters;
+    }
+    /**
+    * Test if this id already exists
+    */
+    function alreadyExists(id){
+        for (var i in {{ st.identifier }}Store){
+            if ({{ st.identifier }}Store[i].Id==id){
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
+    * Look for specific id data into the store
+    * Return Promise
+    */
+    function getOneData(id) {
+        return $q(function(resolve, reject) {
+            console.log('store > {{ st.identifier }} > getOneData '+id);
+            for (var i in {{ st.identifier }}Store){
+                if ({{ st.identifier }}Store[i].id==id){
+                    var idStore = i;
+                    loadChildren({{ st.identifier }}Store[i]).then(function (obj){
+                        {{ st.identifier }}Store[idStore] = obj;
+                        resolve(obj);
+                    });
+                    continue;
+                }
+            }
+            //si store pas chargé ou introuvable
+            $http.get('/{{ st.module }}/{{ st.objecttype }}/'+id+'/getOneData.json')
+                .success(function(data) {
+                    console.log('store > {{ st.identifier }} > load success '+id, data);
+                    loadChildren(data).then(function (obj){
+                        resolve(obj);
+                    });
+
+            });
+        });
+    }
+    /**
+    * Load more data base on page
+    */
+    function getData(page) {
+        return $q(function(resolve, reject) {
+            if (busy) {
+                reject('already busy');
+                return;
+            }
+            console.log('store > {{ st.identifier }} > getData '+page);
+            if (!page) page = currentPage;
+            else currentPage = page;
+            if (page!=pageLoaded){
+                busy=true;
+                $http.get(
+                    '/{{ st.module }}/{{ st.objecttype }}/getData.json',
+                    {
+                        params: {
+                            filters: filters,
+                            offset: (page-1)*pageLength,
+                            limit: pageLength
+                        }
+                    }).success(function(data) {
+                        busy=false;
+                        purgeStore();
+                        pageLoaded = page;
+                        total = data.total;
+                        for (var i in data.data) {
+                            if (!alreadyExists(data.data[i].id))
+                                {{ st.identifier }}Store.push(data.data[i]);
+                        }
+                        //{{ st.identifier }}Store = data.data;
+                        console.log('store > {{ st.identifier }} > loaded success ',{{ st.identifier }}Store);
+                        resolve({{ st.identifier }}Store);
+                });
+            }else resolve({{ st.identifier }}Store);
+    });
+    }
+    /**
+    * Chargement des données enfants
+    */
+    function loadChildren(obj) {
+        var num = {{ st.childrenelements | length }};
+        return $q(function(resolve, reject) {
+            {% for child in st.childrenelements %}
+                if (!obj.{{ child.objectName }})
+                    $http.get('/{{ st.module }}/{{ st.objecttype }}/'+obj.id+'/{{ child.objectName }}/getData.json')
+                        .success(function(data) {
+                            obj.{{ child.objectName }} = data.data;
+                            num--;
+                            if (num==0) resolve(obj);
+                        });
+                else{
+                    num--;
+                    if (num==0) resolve(obj);
+                }
+            {% endfor %}
+            if (num==0) resolve(obj);
+        });
+    }
+});
+{% endfor %}

@@ -1,35 +1,73 @@
-<div class="margin-bottom-50">
-    <div class="dd" id="nestable1">
-        <ol class="dd-list">
-            <li class="dd-item" data-id="1">
-                <div class="dd-handle">Level 1</div>
-            </li>
-            <li class="dd-item" data-id="2">
-                <div class="dd-handle">Level 1</div>
+<!-- Default Panel -->
+<section class="panel panel-with-sidebar">
+    <div class="panel-sidebar">
+        <div class="margin-bottom-50">
+            <div class="dd" id="nestable1">
                 <ol class="dd-list">
-                    <li class="dd-item" data-id="3"><div class="dd-handle">Level 2</div></li>
-                    <li class="dd-item" data-id="4"><div class="dd-handle">Level 2</div></li>
-                    <li class="dd-item" data-id="5">
-                        <div class="dd-handle">Level 2</div>
+                    <li class="dd-item" data-id="1">
+                        <div class="dd-handle">Level 1</div>
+                    </li>
+                    <li class="dd-item" data-id="2">
+                        <div class="dd-handle">Level 1</div>
                         <ol class="dd-list">
-                            <li class="dd-item" data-id="6"><div class="dd-handle">Level 3</div></li>
-                            <li class="dd-item" data-id="7"><div class="dd-handle">Level 3</div></li>
-                            <li class="dd-item" data-id="8"><div class="dd-handle">Level 3</div></li>
+                            <li class="dd-item" data-id="3"><div class="dd-handle">Level 2</div></li>
+                            <li class="dd-item" data-id="4"><div class="dd-handle">Level 2</div></li>
+                            <li class="dd-item" data-id="5">
+                                <div class="dd-handle">Level 2</div>
+                                <ol class="dd-list">
+                                    <li class="dd-item" data-id="6"><div class="dd-handle">Level 3</div></li>
+                                    <li class="dd-item" data-id="7"><div class="dd-handle">Level 3</div></li>
+                                    <li class="dd-item" data-id="8"><div class="dd-handle">Level 3</div></li>
+                                </ol>
+                            </li>
+                            <li class="dd-item" data-id="9"><div class="dd-handle">Level 2</div></li>
+                            <li class="dd-item" data-id="10"><div class="dd-handle">Level 2</div></li>
                         </ol>
                     </li>
-                    <li class="dd-item" data-id="9"><div class="dd-handle">Level 2</div></li>
-                    <li class="dd-item" data-id="10"><div class="dd-handle">Level 2</div></li>
+                    <li class="dd-item" data-id="11">
+                        <div class="dd-handle">Level 1</div>
+                    </li>
+                    <li class="dd-item" data-id="12">
+                        <div class="dd-handle">Level 1</div>
+                    </li>
                 </ol>
-            </li>
-            <li class="dd-item" data-id="11">
-                <div class="dd-handle">Level 1</div>
-            </li>
-            <li class="dd-item" data-id="12">
-                <div class="dd-handle">Level 1</div>
-            </li>
-        </ol>
+            </div>
+        </div>
     </div>
-</div>
+    <div class="panel-heading">
+        <div class="pull-right">
+                            <span class="margin-right-20">
+                                User:
+                                <a href="javascript: void(0);">Administrator</a>
+                            </span>
+            <div class="dropdown">
+                <a href="javascript: void(0);" class="dropdown-toggle dropdown-inline-button" data-toggle="dropdown" aria-expanded="false">
+                    <i class="dropdown-inline-button-icon icmn-database"></i>
+                    <span class="hidden-lg-down">Dashboards</span>
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="" role="menu">
+                    <div class="dropdown-header">Active</div>
+                    <a class="dropdown-item" href="javascript:void(0)">Project Management</a>
+                    <a class="dropdown-item" href="javascript:void(0)">User Inetrface Development</a>
+                    <a class="dropdown-item" href="javascript:void(0)">Documentation</a>
+                    <div class="dropdown-header">Inactive</div>
+                    <a class="dropdown-item" href="javascript:void(0)">Marketing</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="javascript:void(0)"><i class="dropdown-icon icmn-cog"></i> Settings</a>
+                </ul>
+            </div>
+        </div>
+        <h3>{{ child.objectDescription }}</h3>
+    </div>
+    <div class="panel-body">
+        <span>Default Panel Body</span>
+    </div>
+    <div class="panel-footer">
+        <span>Default Panel Footer</span>
+    </div>
+</section>
+<!-- End Default Panel -->
 
 <!-- Page Scripts -->
 <script>

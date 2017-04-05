@@ -7,96 +7,54 @@
         {% endfor %}
     </ul>
 </div>
-<table class="table table-hover nowrap margin-bottom-0" id="example1" width="100%">
+<div class="form-group row">
+    <div class="col-md-3">
+        <label class="form-control-label" for="l8">Recherche</label>
+    </div>
+    <div class="col-md-9">
+        <div class="input-group">
+            <input type="text" class="form-control" name="{{ identifier }}query" ng-model="{{ identifier }}query" placeholder="Recherche..." >
+            <span class="input-group-btn">
+                <a href="javascript: void(0);" class="btn btn-success">
+                    Recherche
+                </a>
+            </span>
+        </div>
+    </div>
+</div>
+<table class="table table-hover nowrap margin-bottom-0" id="{{ identifier }}" width="100%">
     <thead>
         <tr>
             <th>ID</th>
             {% for field in fields %}
-            <th>{{ field.listDescr }}</th>
+                <th>{{ field.listDescr }}</th>
             {% endfor %}
             <th width="50">Détails</th>
             <th width="50">Actions</th>
         </tr>
     </thead>
-    <tfoot>
-    <tr>
-        <th>ID</th>
+    <tbody>
+    <tr dir-paginate="item in {{ identifier }}.data" current-page="{{ identifier }}currentPage" items-per-page="{{ identifier }}itemsPerPage">
+        <td><span class="label label-warning">{[{ item.id }]}</span></td>
         {% for field in fields %}
-            <th>{{ field.listDescr }}</th>
-        {% endfor %}
-        <th></th>
-        <th></th>
-    </tr>
-    </tfoot>
-</table>
-<!-- Page Scripts -->
-<script>
-$('#example1').DataTable({
-    responsive: true,
-    ajax: '/{{ Query }}/getData.json',
-    "columnDefs": [
-        {
-            "targets": 0,
-            "render": function (data, type, row) {
-                return '<span class="label label-warning">' + data + '</span>';
-            }
-        },
-        {% for field in fields %}
-        {
-            "targets": {{ loop.index }},
+        <td class="text-nowrap" scope="row">
             {% if field.type == "price" or field.type == "float" %}
-                "render": function (data, type, row ) {
-                    return '<span class="label label-warning">'+data+'</span>';
-                }
+                <span class="label label-warning">{[{ item.{{ field.name }} }]}</span>
+            {% elseif field.type == "extlink" %}
+                <a class="btn btn-success btn-xs" href="https://zabbix.abtel.fr:8443/guacamole/#/client/{[{ item.{{ field.name }} }]}" target="_blank">{{ field.listDescr }}</a>
             {% elseif field.type == "int" %}
-                "render": function (data, type, row ) {
-                    return '<span class="label label-primary">'+data+'</span>';
-                }
+                <span class="label label-primary">{[{ item.{{ field.name }} }]}</span>
             {% elseif field.type == "boolean" %}
-                "render": function (data, type, row ) {
-                    if (data)
-                        return '<span class="label label-success"><i class="fa fa-check"></i></span>';
-                    else
-                        return '<span class="label label-danger"><i class="fa fa-times"></i></span>';
-                }
+                <span class="label label-success" ng-if="item.{{ field.name }}"><i class="fa fa-check"></i></span>
+                <span class="label label-danger" ng-if="!item.{{ field.name }}"><i class="fa fa-times"></i></span>
             {% else %}
-                "render": function (data, type, row ) {
-                    return data;
-                }
+                {[{ item.{{ field.name }} }]}
             {% endif %}
-        },
+        </td>
         {% endfor %}
-        {
-            "targets": -2
-        },
-        {
-            "targets": -1,
-            "data": null,
-            "defaultContent": '<div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false"> Actions</button><ul class="dropdown-menu"><a class="dropdown-item" href="#/Parc/Client/12">Voir les détails</a><a class="dropdown-item" href="javascript: void(0);">Modifier</a><a class="dropdown-item" href="javascript: void(0);">Supprimer</a></li></ul></div>'
-        }
-    ],
-    "language": {
-        "sProcessing":     "Traitement en cours...",
-        "sSearch":         "Rechercher&nbsp;:",
-        "sLengthMenu":     "Afficher _MENU_ &eacute;l&eacute;ments",
-        "sInfo":           "Affichage de l'&eacute;lement _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
-        "sInfoEmpty":      "Affichage de l'&eacute;lement 0 &agrave; 0 sur 0 &eacute;l&eacute;ments",
-        "sInfoFiltered":   "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
-        "sInfoPostFix":    "",
-        "sLoadingRecords": "Chargement en cours...",
-        "sZeroRecords":    "Aucun &eacute;l&eacute;ment &agrave; afficher",
-        "sEmptyTable":     "Aucune donn&eacute;e disponible dans le tableau",
-        "oPaginate": {
-            "sFirst":      "Premier",
-            "sPrevious":   "Pr&eacute;c&eacute;dent",
-            "sNext":       "Suivant",
-            "sLast":       "Dernier"
-        },
-        "oAria": {
-            "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
-            "sSortDescending": ": activer pour trier la colonne par ordre d&eacute;croissant"
-        }
-    }
-});
-</script>
-<!-- End Page Scripts --->
+        <td width="200" class="table-details" ng-bind-html="item.Details">{[{ item.Details }]}</td>
+        <td ><div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false"> Actions</button><ul class="dropdown-menu"><a class="dropdown-item" href="#/{{ CurrentUrl }}/{[{ item.id }]}">Voir les détails</a></li></ul></div></td>
+    </tr>
+    </tbody>
+</table>
+<dir-pagination-controls boundary-links="true" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>

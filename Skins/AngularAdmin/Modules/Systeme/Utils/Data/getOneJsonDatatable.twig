@@ -1,0 +1,7 @@
+{
+    "id":"{{ row.Id }}",
+    "label": "{{ row.label }}"
+    {% for field in fields %}
+    ,"{{ field.name }}": "{{ attribute(row,field.name) }}"
+    {% endfor %}
+}

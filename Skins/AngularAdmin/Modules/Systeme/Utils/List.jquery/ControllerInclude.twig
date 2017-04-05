@@ -1,0 +1,18 @@
+/*$http({
+    method: 'POST',
+    url: '{{ QueryString }}/getData.json',
+    data: {
+        orderField: $scope.order,
+        orderType: $scope.orderType,
+        offset: $scope.offset,
+        limit: $scope.limit,
+        search: $scope.search
+    }
+}).then(function (response) {
+    console.log('ok',response);
+    $scope.rows = response.data.data;
+    $scope.total = response.data.total;
+}, function (response) {
+    console.log('nok',response);
+    alert('une erreur est survenue:'+response);
+});*/

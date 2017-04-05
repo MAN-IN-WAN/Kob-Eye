@@ -50,7 +50,7 @@ class Process extends Root{
 		return $Data;
 	}
 
-	static function processVars($Data,$test=0){
+	static function processVars($Data,$test=0,$DebBeacon="[!",$FinBeancon="!]"){
 // 		if ($Data=="Lien") print_r(Process::$TempVar);
 		if (is_string($Data)&&preg_match("#\[\!.*?\!\]#",$Data,$o) && $test<2) {
 			//On envoie dans la moulinette
@@ -63,13 +63,7 @@ class Process extends Root{
 		}
 //		echo $Data."\r\n";
 		if (is_string($Data)&&preg_match("#\[\*\*(.*)\*\*\]#",$Data,$o) && $test<2) {
-//			echo "-------------------------$test----------------------\r\n";
-//			echo $Data."\r\n";
-			//On envoie dans la moulinette
-			$Data = Process::searchAndReplaceVars($Data,"[**","**]");
-//			echo $Data."\r\n";
-//			echo "************************************************\r\n";
-			return Process::processVars($Data,$test+1);
+            return Process::processVars($Data,$test+1,'[**','**]');
 		}
 		$sData = $Data;
 		if (!is_string($Data))return $Data;
@@ -87,7 +81,7 @@ class Process extends Root{
 // 					echo $Val1."=".$Val2."\r\n";
 					//Affectatuion forc�e
 					if (strlen($Out[1])){
-						Process::RegisterTempVar($Out[1],Process::searchAndReplaceVars($Out[3]));
+						Process::RegisterTempVar($Out[1],Process::searchAndReplaceVars($Out[3],$DebBeacon,$FinBeancon));
 					}
 					$Data="";
 				break;
@@ -106,7 +100,7 @@ class Process extends Root{
 								$Temp->{$a} = $Out[3];
 							}else $Temp[] = $Out[3];
 // 							echo "-------------------------\r\n";
-							Process::RegisterTempVar($Tab[0],$Temp);
+							Process::RegisterTempVar($Tab[0],Process::searchAndReplaceVars($Temp,$DebBeacon,$FinBeancon));
 						}else{
 // 							echo "/////////////////////\r\n";
 // 							print_r($Out);
@@ -118,7 +112,7 @@ class Process extends Root{
 //								print_r($Out[3]);
 							}
 //  		 					echo "AFFECTATION ".$Out[1]."=".$Out[3]."\r\n";
-							Process::RegisterTempVar($Out[1],$Out[3]);
+							Process::RegisterTempVar($Out[1],Process::searchAndReplaceVars($Out[3],$DebBeacon,$FinBeancon));
 						}
 					}
 					$Data="";
@@ -166,7 +160,7 @@ class Process extends Root{
 				break;
 				case "*=":
 					$Temp = Process::processVars($Val1);
-					Process::RegisterTempVar($Out[1],$Val2*$Temp);
+					Process::RegisterTempVar($Out[1],Process::searchAndReplaceVars($Val2*$Temp,$DebBeacon,$FinBeancon));
 					$Data="";
 				break;
 				case "/=":
@@ -182,7 +176,7 @@ class Process extends Root{
 						if (!is_numeric($Val1)) {
 							$Val1=Process::processVars($Val1);
 						}
-						if ($Val2!=""&&$Val2!=0) Process::RegisterTempVar($Out[1],$Val1/$Val2);
+						if ($Val2!=""&&$Val2!=0) Process::RegisterTempVar($Out[1],Process::searchAndReplaceVars($Val1/$Val2,$DebBeacon,$FinBeancon));
 					}
 					$Data="";
 				break;
@@ -195,21 +189,21 @@ class Process extends Root{
 					if (!is_numeric($Val1)&&!is_numeric($Val2)) {
 						//Alors il s agit dune concatenation de chaine
 						$Val1=Process::processVars($Val1);
-						Process::RegisterTempVar($Out[1],$Val1.$Val2);
+						Process::RegisterTempVar($Out[1],Process::searchAndReplaceVars($Val1.$Val2,$DebBeacon,$FinBeancon));
 					}else{
 						$Temp = Process::processVars($Out[1]);
-						Process::RegisterTempVar($Out[1],$Val2+$Temp);
+						Process::RegisterTempVar($Out[1],Process::searchAndReplaceVars($Val2+$Temp,$DebBeacon,$FinBeancon));
 					}
 					$Data="";
 				break;
 				case "-=":
 					$Temp = Process::GetTempVar($Out[1]);
-					Process::RegisterTempVar($Out[1],$Temp-$Val2);
+					Process::RegisterTempVar($Out[1],Process::searchAndReplaceVars($Temp-$Val2,$DebBeacon,$FinBeancon));
 					$Data="";
 				break;
 				case ".=":
 					$Temp = Process::GetTempVar($Out[1]);
-					Process::RegisterTempVar($Out[1],$Temp.$Val2);
+					Process::RegisterTempVar($Out[1],Process::searchAndReplaceVars($Temp.$Val2,$DebBeacon,$FinBeancon));
 					$Data="";
 				break;
 			}
@@ -649,6 +643,7 @@ class Process extends Root{
 	//C est la methode qui scanne la chaine a la recherche de balise varible avant d envoyer a processVars
 	static function searchAndReplaceVars($Data,$DebBeacon="[!",$FinBeacon="!]") {
 		$EndResult="";
+		if (is_array($Data)) return $Data;
 		//On ecarte le debut de la chaine jusqu a la balise
  		$TempData = explode($FinBeacon,$Data);
 		if (sizeof($TempData)>1){
