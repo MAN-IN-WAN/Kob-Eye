@@ -14,7 +14,7 @@
                         [IF [!EntiteMenu!]]
                                 [!Grp:=0!]
                                 [STORPROC Systeme/Site/Entite/[!Entite::Id!]|Sitouille|0|1]
-                                    [!link:=http://[!Sitouille::Domaine!]!]
+                                    [!link:=https://[!Sitouille::Domaine!]!]
                                     [IF [!link!]!=][ELSE][!link:=[!M::Url!]!][/IF]
                                     [STORPROC Systeme/User/Site/[!Sitouille::Id!]|Usr|0|1][/STORPROC]
                                     [STORPROC Systeme/Group/User/[!Usr::Id!]|Grp|0|1][/STORPROC]
