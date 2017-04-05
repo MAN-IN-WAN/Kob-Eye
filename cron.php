@@ -5,6 +5,7 @@
 * EXAMPLE: $ php cron.php test.kob-eye.com /Systeme/test.htm false
 *****************************************************************************/
 define('ROOT_DIR', dirname(__FILE__).'/');
+define('SQL_LITE_CACHE',0);
 
 //importation de la class BashColors
 include ('Class/Utils/BashColors.class.php');

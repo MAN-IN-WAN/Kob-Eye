@@ -1,0 +1,64 @@
+[HEADER]
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+        <link rel="stylesheet" href="/Skins/Diag/Css/dashboard.css">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+[/HEADER]
+
+
+
+
+
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+                <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="/">Diagnostic Parc</a>
+                </div>
+                <!--<div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav navbar-right">
+                                <li><a href="#">Dashboard</a></li>
+                                <li><a href="#">Settings</a></li>
+                                <li><a href="#">Profile</a></li>
+                                <li><a href="#">Help</a></li>
+                        </ul>
+                        <form class="navbar-form navbar-right">
+                                <input type="text" class="form-control" placeholder="Search...">
+                        </form>
+                </div>-->
+                <a class="navbar-brand pull-right" href="/Systeme/Deconnexion">Deconnexion</a>
+        </div>
+</nav>
+
+<div class="container-fluid">
+        <div class="row">
+                <div class="col-sm-3 col-md-2 sidebar">
+                        <ul class="nav nav-sidebar">
+                                [STORPROC [!Systeme::Menus!]|M]
+                                <li  [IF [!Lien!]=[!M::Url!]]class="active"[ELSE][/IF]><a href="/[!M::Url!]">[!M::Titre!]  [IF [!Lien!]=[!M::Url!]]<span class="sr-only">(current)</span>[ELSE][/IF]</a></li>
+                                [/STORPROC]
+                        </ul>
+                </div>
+                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                        [DATA]
+                </div>
+        </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+  

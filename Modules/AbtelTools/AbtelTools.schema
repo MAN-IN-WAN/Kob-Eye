@@ -1,0 +1,8 @@
+<SCHEMA>
+	<OBJECTCLASS title="Action" driver="mysql" Description="Action Gestion"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelTools/Class/Action.class.php">
+		<PROPERTIES type="titre" searchOrder="1">Titre</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="GestionParc" driver="mysql" Description="Liaision Parc-Gestion"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelTools/Class/GestionParc.class.php">
+		<PROPERTIES type="titre" searchOrder="1">Titre</PROPERTIES>
+	</OBJECTCLASS>
+</SCHEMA>

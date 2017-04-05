@@ -1,0 +1,123 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//ABTEL Mediterranee//Gestion v0.1//FR
+BEGIN:VEVENT
+DTSTART:20160613T18:37:00
+DTEND:20160613T18:42:00
+CATEGORIES:POLYCLINIQUE
+SUMMARY:POLYCLINIQUE : cf loic car le switch HP a semble-t-il été recupéré..
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160613T18:12:00
+DTEND:20160613T18:32:00
+CATEGORIES:CM-RADIOLOGIERD
+SUMMARY:CM-RADIOLOGIERD : tache interrrompue --> EDL va recuperer en direct le transfert de données WAID
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160613T18:21:00
+DTEND:20160613T18:31:00
+CATEGORIES:CM-RADIOLOGIERD
+SUMMARY:CM-RADIOLOGIERD : interrompu definitivement par migration sur RIS EDL
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160613T16:37:00
+DTEND:20160613T17:02:00
+CATEGORIES:SYSTEMX
+SUMMARY:SYSTEMX : envoi d'un mail
+DESCRIPTION: Bonjour,Suivant l' echange que tu as eu avec mon coll&egrave;gue Laurent, il est tr&egrave;s important de comprendre la diff&eacute;rence entre datastore qui h&eacute;berge les VM et espace a l' interieur des VM:Pourquoi la VM ne se lan&ccedil;ait pas sur l'infra de la clinique Bouchard. --> Un espace insuffisant sur un datastore bloque le d&eacute;marrage des vm (la memoire ram a allou&eacute;e est repr&eacute;sent&eacute; par un fichier qui doit avoir une place suffisante pour se cr&eacute;er)La VM a deux disques le C et le D.Cette VM ne d&eacute;marrait pas car le disque D etait satur&eacute;. (non , c'etait le datastore vmware satur&eacute; qui emp&ecirc;chait son d&eacute;marrage..)Le disque C est dans le datastore1: okLe disque D est sur le datastore2: okLe datastore2  n' &eacute;tait pas compl&eacute;tement satur&eacute;, il avait de la place encore. (le fichier m&eacute;moire se cr&eacute;ant sur datastore 1 , c'est lui qui par sa saturation bloquait le d&eacute;marrage de la VM)Une fois  vid&eacute;... la VM &agrave; demarre et fonctionne:dans le disque D il y avait suffisamment d'espace disque. (ce n&rsquo;&eacute;tait pas cela l'origine du probl&egrave;me)Pour infos:Sachant que les  VM "SRV-MANAGEMENT" et "Vcenter" ont supprim&eacute;s pour permettre la lib&eacute;ration d'espace sur datastore 1 --> tu n'a plus de pilotage des sauvegardes..Je vais d'appeler pour faire le point.Cordialement,
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160602T08:30:00
+DTEND:20160602T09:30:00
+CATEGORIES:BIOMEDIVAL
+SUMMARY:BIOMEDIVAL : connexion rdp croisés refaite pour bollene vers montelimar
+DESCRIPTION: Cordialement,   Christian RAGOT AbtelParc deltaKm 4 - Route d'Arles30230 BouillarguesFrancehttp://www.abtel.fr  Directeur Technique  +33(0)4 66 04 06 13    Email : cragot@abtel.fr De: "cragot" &Agrave;: "LABORATOIRE MEDICAL BOLLENE" Cc: "Lo&iuml;c Troulet" , "Pierre Grosjean" , "David March" , "support" Envoy&eacute;: Jeudi 2 Juin 2016 09:31:02Objet: Re: changements postes BIOMEDIVAL et migration serveurBonjour,D&eacute;sol&eacute;, je viens de voir (origine de votre mail ) que la demande ayant bien &eacute;t&eacute; effectu&eacute;e ,je fait le point avec mes coll&egrave;gues ,je vous appelle.Cordialement,   Christian RAGOT AbtelParc deltaKm 4 - Route d'Arles30230 BouillarguesFrancehttp://www.abtel.fr  Directeur Technique  +33(0)4 66 04 06 13    Email : cragot@abtel.fr De: "cragot" &Agrave;: "LABORATOIRE MEDICAL BOLLENE" Cc: "Lo&iuml;c Troulet" , "Pierre Grosjean" , "Lo&iuml;c Troulet" , "David March" , "support" Envoy&eacute;: Jeudi 2 Juin 2016 09:29:06Objet: Re: changements postes BIOMEDIVAL et migration serveurBonjour,D&eacute;sol&eacute; Mme Tramini , mais en d&eacute;placement , et pour &eacute;viter les probl&egrave;mes/d&eacute;lais de traitements d'incident ult&eacute;rieurs (par exemple pendant les p&eacute;riodes de vacances/cong&eacute;s), vous serez-t-il possible de nous d&eacute;clencher les incidents par le biais de notre adresse:support@abtel.frJe viens de le re-transf&eacute;rer le mail a mes coll&egrave;gues du support. Je fais le point dans la matin&eacute;eCordialement,   Christian RAGOT AbtelParc deltaKm 4 - Route d'Arles30230 BouillarguesFrancehttp://www.abtel.fr  Directeur Technique  +33(0)4 66 04 06 13    Email : cragot@abtel.fr De: "LABORATOIRE MEDICAL BOLLENE" &Agrave;: "cragot" Envoy&eacute;: Jeudi 2 Juin 2016 08:31:14Objet: RE: changements postes BIOMEDIVAL et migration serveurBonjour Monsieur Ragot, nous attendons toujours votre appel pour la connexion au logiciel Biowin de Mont&eacute;limar, il me semble que nous arrivons bien sur leur base (cf IP) mais il n&rsquo;y a rien sur la page ouverte.Cordialement  Isabelle TRAMINIBiologiste co-responsableLBM BIOMEDIVAL429 Av Salvador Allende84500 BOLLENE04 90 30 10 44
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160602T10:10:00
+DTEND:20160602T10:30:00
+CATEGORIES:BIOMEDIVAL
+SUMMARY:BIOMEDIVAL : reste problème des licenses TSE sur les deux sites --> cf incident G07854
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160530T14:43:00
+DTEND:20160530T14:55:00
+CATEGORIES:UNIBIO
+SUMMARY:UNIBIO : réponse LM: ok tout marche , cette fois ci...
+DESCRIPTION: OK, valid&eacute; sur le poste....merci,Laurent MardonInformaticienLaboratoires UNIBIO490 rue Yves SIGAL30900 NIMES04.66.04.96.30http://www.unibio.fr 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160530T14:00:00
+DTEND:20160530T14:35:00
+CATEGORIES:UNIBIO
+SUMMARY:UNIBIO : réponse CRA: modif de configuration : routage passerelle
+DESCRIPTION: Bonjour,Il est vraiement hybride ce poste (....)D'ou l'utilit&eacute; du routage Local sur le xp a mettre en place:On remet la passerelle par defaut : 10.30.100.253 et on met une route :route add 10.30.31.0 mask 255.255.255.0 10.30.100.254 /pA priori tout fonctionne (mis en place et test&eacute;....)Cordialement,   Christian RAGOT AbtelParc deltaKm 4 - Route d'Arles30230 BouillarguesFrancehttp://www.abtel.fr  Directeur Technique  +33(0)4 66 04 06 13    Email : cragot@abtel.fr 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160530T13:37:00
+DTEND:20160530T13:50:00
+CATEGORIES:UNIBIO
+SUMMARY:UNIBIO : réponse LM: Mr longuet doit avoir accès a tout....
+DESCRIPTION: Ok, sauf que le poste d eMr Longuet doit avoir acc&egrave;s &agrave; l'intranet, zimbra, GLPI etc et que si je change la passerelle, tout &ccedil;a ne fonctionne plus...Laurent MardonInformaticienLaboratoires UNIBIO490 rue Yves SIGAL30900 NIMES04.66.04.96.30http://www.unibio.fr
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160530T11:50:00
+DTEND:20160530T12:29:00
+CATEGORIES:UNIBIO
+SUMMARY:UNIBIO : réponse CRA: deux choix de fonctionnement possible.
+DESCRIPTION: De: cragot@abtel.fr&Agrave;: "Laurent Mardon" Cc: "vincent chazalette" , "David March" Envoy&eacute;: Lundi 30 Mai 2016 12:29:59Objet: Re: Acces ALyzs&eacute;Bonjour,Le poste est ok:Deux choix,A/ soit on laisse actif le lien connexion au r&eacute;seau local2 , avec deux cartes sur la vm (l'un vers le reseau "administratrif"  et l'autre  vers le reseau "unibio prod" ) --> faible isolationB/ soit on declare la passerelle 10.30.100.254 (du f100d ) qui va renvoyer (et filtr&eacute;)  via f100d vers alizela passerelle a  &eacute;t&eacute; chang&eacute; est tout est ok...Cordialement,   Christian RAGOT AbtelParc deltaKm 4 - Route d'Arles30230 BouillarguesFrancehttp://www.abtel.fr  Directeur Technique  +33(0)4 66 04 06 13    Email : cragot@abtel.fr 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160525T09:00:00
+DTEND:20160525T21:00:00
+CATEGORIES:BIOMEDIVAL
+SUMMARY:BIOMEDIVAL : finitions des vm de bollène+ montelimar + intern sur site avec mr aboufarisse DL
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160524T14:00:00
+DTEND:20160524T18:00:00
+CATEGORIES:BIOMEDIVAL
+SUMMARY:BIOMEDIVAL : finition des VM de bollene + montelimar pour DL
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160422T09:04:00
+DTEND:20160422T09:05:00
+CATEGORIES:CM-RADIOLOGIE
+SUMMARY:CM-RADIOLOGIE : Prise d'appel par Christian Ragot...
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160413T14:30:00
+DTEND:20160413T15:00:00
+CATEGORIES:CM-RADIOLOGIE
+SUMMARY:CM-RADIOLOGIE : Prise d'appel par Christian Ragot...
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160408T11:10:00
+DTEND:20160408T11:15:00
+CATEGORIES:CM-RADIOLOGIE
+SUMMARY:CM-RADIOLOGIE : Prise d'appel par Christian Ragot...
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160407T19:25:00
+DTEND:20160407T19:26:00
+CATEGORIES:UNIBIO
+SUMMARY:UNIBIO : Prise d'appel par Christian Ragot...
+DESCRIPTION: De: "Laurent Mardon" &Agrave;: "christian ragot" Cc: "Troulet Loic" Envoy&eacute;: Jeudi 7 Avril 2016 09:06:40Objet: Fwd: CAISSE PREVOYANCEBonjour,suite &agrave; cette conversation "houleuse" avec 3CC,peux-tu me dire si tu connais le logiciel ISL, et s'il est suffisamment secure pour que nous puissions l'installer sur le serveur administratif?j'ai l'accord de Mr Monneret si vous n'y voyez pas d'objection.Merci de votre aide,Cordialement,Laurent MardonInformaticienLaboratoires UNIBIO490 rue Yves SIGAL30900 NIMES04.66.04.96.30http://www.unibio.fr De: "OLIVIA GUILLEMAUT" &Agrave;: "Laurent Mardon" Cc: "samantha.cottin@unibio.fr Cottin" , "Ivan Monneret" , "Vincent Chazalette" , assistance@3cc.frEnvoy&eacute;: Mardi 5 Avril 2016 14:39:39Objet: Re: CAISSE PREVOYANCEL'adresse IP est la suivante : 80.13.207.154MerciLe 5 avril 2016 &agrave; 14:11, Laurent Mardon  a &eacute;crit :    Pouvez-vous me donner l'adresse ip ou le nom de votre domaine par lequel vous utiliserez ce programme afin que je puisse param&eacute;trer les r&egrave;gles d'autorisation sur notre routeur ?    Merci,        Laurent Mardon    Informaticien    Laboratoires UNIBIO    490 rue Yves SIGAL    30900 NIMES    04.66.04.96.30    http://www.unibio.fr         De: "OLIVIA GUILLEMAUT"     &Agrave;: "Laurent Mardon"     Cc: "samantha.cottin@unibio.fr Cottin" , "Ivan Monneret" , "Vincent Chazalette" , assistance@3cc.fr    Envoy&eacute;: Mardi 5 Avril 2016 13:54:55    Objet: Re: CAISSE PREVOYANCE    Le programme &agrave; installer sur le serveur.    Merci de me dire quand il est install&eacute; sur le serveur pour test.    Remplacer l'extension.toto par l'extension .exe    Cordialement,    Le 5 avril 2016 &agrave; 12:19, Laurent Mardon  a &eacute;crit :        Renseignements pris aupr&egrave;s des utilisateurs, la prise en main &agrave; distance sur ces postes se fait en mode web par l'adresse http://www.3cc.fr/isl.htm        est-ce le m&ecirc;me syst&egrave;me que vous souhaitez sur le serveur, ou faut-il installer un client ?        En cas de n&eacute;cessit&eacute; d'installation , pourriez-vous nous fournir le programme ou l'adresse &agrave; laquelle se le procurer ?        Merci,                Laurent Mardon        Informaticien        Laboratoires UNIBIO        490 rue Yves SIGAL        30900 NIMES        04.66.04.96.30        http://www.unibio.fr                 De: "OLIVIA GUILLEMAUT"         &Agrave;: "Laurent Mardon"         Cc: "samantha.cottin@unibio.fr Cottin" , "Ivan Monneret" , "Vincent Chazalette" , assistance@3cc.fr        Envoy&eacute;: Mardi 5 Avril 2016 10:58:56        Objet: Re: CAISSE PREVOYANCE        &loz;Ce mode de fonctionnement est inefficace comme indiqu&eacute; &agrave; plusieurs reprises dans mes rapports d'intervention.        1er raison : coupure internet tr&egrave;s fr&eacute;quentes (la derni&egrave;re fois, j'en ai compt&eacute; 25 en 1H)        2&egrave;me raison : impossibilit&eacute; de transf&eacute;rer des dossiers de ce compte VPN &agrave; notre poste de travail, obligation de passer par le serveur en direct via une invite de commande, ce qui montre que le serveur n'est pas totalement s&eacute;curis&eacute;.        3&egrave;me raison : lenteur de calcul des bulletin voir mail ci-dessous        Nous utilisons aux du client 3 modes de prise de main :        - Acc&egrave;s teamviewer en permanence ouvert sur le serveur (et non par un acc&egrave;s TSE cr&eacute;e), cela sous entends que pour &ecirc;tre en corformit&eacute; avec cet outil, le client s'acquitte de la licence Teamviewer.        - Acc&egrave;s ISL&loz; : outil s&eacute;curis&eacute; que nous avons d&eacute;ploy&eacute; chez nos clients qui ne souhaitait pas de financer un logiciel de prise de main, qui fonctionne par des mots de passe s&eacute;curis&eacute;.        - Acc&egrave;s VPN : directement sur le serveur, nous prenons la main et non sur un acc&egrave;s TSE restreints.        Ces 3 modes fonctionnent tr&egrave;s bien.        Merci         Le 5 avril 2016 &agrave; 10:01, Laurent Mardon  a &eacute;crit :            Merci pour ces informations.            Ces mail montrent que Abtel vous a param&eacute;tr&eacute; un acc&egrave;s VPN SSL via le Fortinet Administratif et donn&eacute; les param&eacute;trages n&eacute;cessaires &agrave; son bon fonctionnement...            Encore une fois, avant ce jour, je n'ai pas eu connaissance que ce mode de prise en main ne vous convenait pas..            Pourriez-vous, comme demand&eacute; pr&eacute;c&eacute;demment, me donner plus d'information sur les outils que vous souhaiteriez utiliser ?            Merci de votre aide,             Cordialement,                         Laurent Mardon            Informaticien            Laboratoires UNIBIO            490 rue Yves SIGAL            30900 NIMES            04.66.04.96.30            http://www.unibio.fr                         De: "OLIVIA GUILLEMAUT"             &Agrave;: "Laurent Mardon"             Cc: "samantha.cottin@unibio.fr Cottin" , "Ivan Monneret" , "Vincent Chazalette" , assistance@3cc.fr            Envoy&eacute;: Mardi 5 Avril 2016 09:15:58            Objet: Re: CAISSE PREVOYANCE            Bonjour,            Je ne vais pas perdre une heure &agrave; retracer des mails qui datent depuis 2011 aux diff&eacute;rents interlocuteurs . Si vous insistez, je le ferais mais il est hors de question que cela soit encore &agrave; titre gracieux.            J'ai eu 3 interlocuteurs :             - Florent NAVARRO : partie techinique serveur            - Christian RAGOT : partie technique serveur            - Laurent MARDON : partie soft serveur            Vous m'avez toujours dit que la partie technique serveur ne vous concernait pas.            Maintenant je comprends que c'est vous le responsable.            Bref, je pense que le plus judicieux est de solutionner le probl&egrave;me au lieu de chercher le responsable, c'est en effet tout ce que je demande: une connexion correcte pour travailler comme chez tous mes autres clients.            Je vous transf&egrave;re les derniers &eacute;changes fait entre Mr RAGOT et moi-m&ecirc;me pour l'installation de cette passerelle inefficace.            De plus, je sais qu'en interne vous utilisez des outils plus performants et que vous les mettez &agrave; disposition des consultants pour la partie Compta financi&egrave;re afin qu'il puisse travailler tranquillement.             Merci de bien vouloir faire le n&eacute;cessaire;            Bien cordialement,            Le 5 avril 2016 &agrave; 08:52, Laurent Mardon  a &eacute;crit :                Bonjour,                le dernier mail envoy&eacute; consistait d'abord &agrave; faire un &eacute;tat des lieux des moyens de communication d&eacute;j&agrave; mis en place sur le serveur, mais n'entendait pas d&eacute;crire la mise en place d'une solution d&eacute;finitive au probl&egrave;me.                Il permet ainsi de d&eacute;montrer qu'aucune restriction particuli&egrave;re n'a &eacute;t&eacute; mis en place sur ce serveur,                - Je ne retrouve pas de trace d'&eacute;change concernant la mise en place d'un vnp avec 3CC, sans doute une erreur de ma part, mais si vous en avez, merci de bien vouloir me faire suivre ces mails...afin de voir directement avec Abtel si n&eacute;cessaire...                - Je ne retrouve pas, non plus, d'&eacute;changes ou de demande concernant des probl&egrave;mes de lenteur d'acc&egrave;s de votre part, sans doute encore une erreur de ma part; si vous en avez, merci de bien vouloir me les renvoyer afin que j'ai tous les &eacute;l&eacute;ments n&eacute;cessaires &agrave; ma disposition                -Je ne retrouve pas,non plus, de trace de demande d'installation d'un logiciel particulier sur le serveur pour la prise ne main &agrave; distance.                Pouvez-vous me donner :                        - votre proc&eacute;dure actuelle pour voir quels r&eacute;glages sont possibles pour am&eacute;liorer les choses                        - votre proc&eacute;dure souhait&eacute;e pour v&eacute;rifier son int&eacute;gration dans notre syst&egrave;me.                Je tiens &agrave; pr&eacute;ciser que nous avons toujours r&eacute;pondu au mieux &agrave; vos demandes et fait au mieux pour r&eacute;pondre &agrave; vos difficult&eacute;s pour autant que nous ayons &eacute;t&eacute; mis au courant....                Cordialement,                                Laurent Mardon                Informaticien                Laboratoires UNIBIO                490 rue Yves SIGAL                30900 NIMES                04.66.04.96.30                http://www.unibio.fr                                 De: "OLIVIA GUILLEMAUT"                 &Agrave;: "samantha.cottin@unibio.fr Cottin" , "Laurent MARDON" , "Ivan Monneret" , "Vincent Chazalette"                 Cc: assistance@3cc.fr                Envoy&eacute;: Lundi 4 Avril 2016 23:50:12                Objet: Re: CAISSE PREVOYANCE                &loz;Bonjour &agrave; tous,                Je remercie Mme COTTIN pour sa compr&eacute;hension du probl&egrave;me.                Je la remercie car elle a cette conviction de vouloir nous aider &agrave; avancer plus raidement et plus sereinement.                Comme chacun le sait, si un salari&eacute; n'est pas pay&eacute; en temps et en heure, et bien il cr&eacute;e un mauvais climat social.                De m&ecirc;me qu'un organisme social, s'il n'est pas d&eacute;clar&eacute; en temps et en heure il met des p&eacute;nalit&eacute;s de retard.                Je la remercie &eacute;galement de m'avoir transf&eacute;rer la r&eacute;ponse de Laurent MARDON qui ne regarde pas le probl&egrave;me de fond et qui ne m'a pas appel&eacute; pour conna&icirc;tre le fondement du probl&egrave;me. Je lui aurais alors montr&eacute; &agrave; distance ce que j'avais comme probl&egrave;me.                Je tiens &agrave; pr&eacute;ciser que ni je r&acirc;le, ni je hurle, je suis juste exasp&eacute;r&eacute;e du temps que je passe pour juste bosser correctement.                Petit rappel de l'historique :                Nous faisons la maintenance des logiciels Sage pour le compte d'unibio puis apr&egrave;s biomed, depuis sa mise en place en 2011, d'abord &agrave; titre gratuit puis au vue du nombre des appels t&eacute;l&eacute;phoniques (+ de 20 par mois) nous les avons r&eacute;glement&eacute; dans le cadre d'une assistance.                Depuis le d&eacute;part, nous avons eu des difficult&eacute;s pour prendre la main &agrave; distance.                Mais nous avons fait avec.                Devant le nombre de changement d'interlocuteur en RH, nous avons fait une demande officiel aupr&egrave;s de  de VPN en 2014 afin de pouvoir montrer les erreurs commises ou des oublis ou des mauvaises manipulations aupr&egrave;s des nouvelles assistantes qui avaient re&ccedil;u que tr&egrave;s peu de formation sur le logiciel et pour finir le travail de la journ&eacute;e (voir nos rapports d'intervention pour connaitre les raisons de nos d&eacute;passements d&rsquo;interventions) , nous avons eu une r&eacute;ponse&loz; de votre part le 11 mai 2015, par l'interm&eacute;diaire de Mr Christian RAGOT.                Nous avons eu un peu de mal &agrave; comprendre le fonctionnement car il fallait obligatoirement install&eacute; encore un autre outil sur nos postes de travail et le fait que l'on impose un syst&egrave;me compliqu&eacute; et lourds alors qu'il y avait plus simple mais bon, nous nous sommes pli&eacute;s &agrave; cette s&eacute;curit&eacute;.                Puis, pour finaliser un dossier de DADSU, j'ai &eacute;t&eacute; contrainte de demander les droits d'administrateurs car je me retrouvais avec une fen&ecirc;tre m'interdisant l'acc&egrave;s car je n'avais pas les droits n&eacute;cessaire. A savoir que nous ne sommes pas l&agrave; pour faire n'importe quoi sur votre serveur car de toute fa&ccedil;on quand cela ne marche pas , c'est nous qui devons voir ce qui s'est pass&eacute; et surtout r&eacute;tablir.                 L&agrave; aussi, vous &ecirc;tes les seuls clients &agrave; prendre des prestataires et &agrave; ne pas leur faire confiance pour leur cr&eacute;er des users restreints. Mr Christian RAGOT m'a alors dit, " Vous m'appelez et je vous mets les droits quand vous le voulez, ce qui est tr&egrave;s gentil mais peu r&eacute;alisable car mr RAGOT fini sa journ&eacute;e &agrave; 18H ce qui est bien normal, et que moi lorsqu'il y a urgence pour la d&eacute;claration le lendemain et bien, je suis oblig&eacute;e d'&eacute;tudier la source du probl&egrave;me une bonne partie de la soir&eacute;e.                 Apr&egrave;s avoir pleur&eacute; (mail ci-dessous et non hurl&eacute;, car j'&eacute;tais plus d&eacute;sesp&eacute;r&eacute;e de voir que l'on m&rsquo;emp&ecirc;che de bosser correctement) &eacute;tant donn&eacute;e que je n'arrivais pas &agrave; bosser, en 2016, on nous a autoris&eacute; &agrave; avoir les droits administrateurs.                Bref pass&eacute; cet &eacute;pisode des droits sur le poste, je me retrouve confronter &agrave; un dernier probl&egrave;me et pas des moindre &agrave; savoir la lenteur de la connexion internet ou des coupures internet, et pire impossible de transf&eacute;rer un fichier pour travailler sur nos postes qui nous permettent d'avoir une performance plus efficace que celle que vous me proposer pour travailler.                Pour vous donner une id&eacute;e quand j' ouvre une fen&ecirc;tre 45 secondes, quand j'affiche une fen&ecirc;tre 72 secondes, quand je calcul un bulletin 2 minutes. alors qu'en prise de main chez mes autres clients, ces temps sont de 2 secondes, 6 secondes et 45 secondes.                J'invite donc ces messiers &agrave; venir &agrave; notre agence pour constater la diff&eacute;rence de qualit&eacute; de travail entre vous et plusieurs autre de mes clients (comme le groupe CAP sant&eacute; : 1100 salari&eacute;s, le groupe Hexagone : 1 200 salari&eacute;s, etc...)                 Lorsque je lis que la soci&eacute;t&eacute; APTEL qui travaille avec les m&ecirc;me outils n'ont aucune difficult&eacute;, je r&eacute;pondrais : c'est normal car ils ne font ni param&eacute;trage, ni calcul de paie qui dure au minima 1 heure &agrave; 3 heures. Attention de ne pas comparer, et puis entre nous comme c'est la soci&eacute;t&eacute; APTEL qui a mis en place ce syst&egrave;me, je doute qu'il soit restreint comme nous.                Mais en tout &eacute;tat de cause, nous sommes dans l'absolue coinc&eacute; pour mettre &agrave; jour, regarder des probl&eacute;matiques, et faire des comptes rendus.                Voil&agrave; ce petit historique pour vous compreniez bien que je ne demande pas pour le plaisir de demander plus de confort.                si encore ceci &eacute;tait dans un but de vous facturer mais vous voyez, je ne suis m&ecirc;me pas &agrave; ce stade.                Je trouve bien triste qu'en 2016, il faille en arriver &agrave; un mail comme celui l&agrave; pour expliquer &agrave; mes clients que s'il veulent que je les d&eacute;panner rapidement et bien il faut que je puisse travailler.                Pour info, lors de la formation avec Mme COTTIN, j'avais pris la main sur le serveur pour lui montrer et lui faire constater la lenteur des traitements.                Un travail qui demande 10 minutes, chez vous, il en prend 30 minutes avec votre syst&egrave;me.                Fut une &eacute;poque, Mr Florent Navarro nous avait autoris&eacute; &agrave; installer notre outil ISL de prise de main sur le serveur SAGE et nous pouvions interagir rapidement.                Mais cette &eacute;poque est fini depuis l'arriv&eacute;e d'APTEL.                Le fait que l'on a pas de possibilit&eacute; de transfert des fichiers aussi. Bref, j'esp&egrave;re que cela vous aidera &agrave; mieux comprendre pourquoi tout ceci !                Maintenant, je vous laisse revenir vers moi, car pour moi tant qu'il n'y a rien qui bouge de votre cot&eacute;, je ne pourrais plus faire l'assistance dans des d&eacute;lais raisonnable.                Bien cordialement,                Le 4 avril 2016 &agrave; 16:35, samantha.cottin@unibio.fr Cottin  a &eacute;crit :                    laurent.mardon@unibio.fr
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160404T10:39:00
+DTEND:20160404T10:40:00
+CATEGORIES:CM-GIEINFORMATI
+SUMMARY:CM-GIEINFORMATI : Prise d'appel par Christian Ragot...
+DESCRIPTION: 
+END:VEVENT
+END:VCALENDAR

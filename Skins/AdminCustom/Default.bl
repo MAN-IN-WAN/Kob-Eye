@@ -1,0 +1,53 @@
+[HEADER JS]Tools/Js/CkEditor/ckeditor.js[/HEADER]
+[HEADER JS]Tools/Js/Jquery/1.11.2/jquery.min.js[/HEADER]
+[HEADER JS]Tools/Css/Bootstrap/3.3.1/js/bootstrap.min.js[/HEADER]
+
+//[HEADER JS]Tools/Js/Datetimepicker/build/jquery.datetimepicker.full.min.js[/HEADER]
+[HEADER JS]Tools/Js/moment-with-locales.js[/HEADER]
+[HEADER JS]Tools/Js/Bootstrap-Datetimepicker/build/js/bootstrap-datetimepicker.min.js[/HEADER]
+
+[HEADER JS]Tools/Js/Grafikart-Zoombox/zoombox.js[/HEADER]
+
+
+[HEADER JS]Tools/Js/jQuery-File-Upload/js/vendor/jquery.ui.widget.js[/HEADER]
+[HEADER JS]Tools/Js/jQuery-File-Upload/js/canvas-to-blob.min.js[/HEADER]
+[HEADER JS]Tools/Js/jQuery-File-Upload/js/load-image.all.min.js[/HEADER]
+[HEADER JS]Tools/Js/jQuery-File-Upload/js/jquery.fileupload.js[/HEADER]
+[HEADER JS]Tools/Js/jQuery-File-Upload/js/jquery.fileupload-process.js[/HEADER]
+[HEADER JS]Tools/Js/jQuery-File-Upload/js/jquery.fileupload-image.js[/HEADER]
+[HEADER JS]Tools/Js/jQuery-File-Upload/js/jquery.fileupload-validate.js[/HEADER]
+[HEADER JS]Tools/Js/jQuery-File-Upload/js/jquery.iframe-transport.js[/HEADER]
+
+[HEADER JS]Skins/[!Systeme::Skin!]/Js/Init.js[/HEADER]
+
+[HEADER JS]Tools/Js/Isotope/isotope.pkgd.min.js[/HEADER]
+
+[HEADER CSS]Tools/Css/Bootstrap/3.3.1/css/bootstrap.css[/HEADER]
+//[HEADER CSS]Tools/Js/Datetimepicker/jquery.datetimepicker.css[/HEADER]
+[HEADER CSS]Tools/Js/Bootstrap-Datetimepicker/build/css/bootstrap-datetimepicker.min.css[/HEADER]
+[HEADER CSS]Tools/Js/Grafikart-Zoombox/zoombox.css[/HEADER]
+[HEADER CSS]Tools/Js/jQuery-File-Upload/css/jquery.fileupload.css[/HEADER]
+
+<div id="Entete">
+	<div id="headWrap" class="container">
+		<div id="headLogo" class="col-md-2"></div>
+		<div id="headTxt" class="col-md-9">
+			Kob-Eye : Administration personnalisée
+		</div>
+		<div class="col-md-1">
+			<div  id="logout" class="pull-right">
+				<a href="/Systeme/Deconnexion" title="Se déconnecter" id="logoutLink"></a>
+			</div>
+		</div>
+		
+	</div>
+</div>
+<div id="AdminBody" class="container">
+	<form action="" method="post" enctype="multipart/form-data" id="MainForm" onsubmit="beforeSubmit();">
+		<div id="Global"> 
+			[DATA]
+		</div>
+	</form>
+</div>
+
+

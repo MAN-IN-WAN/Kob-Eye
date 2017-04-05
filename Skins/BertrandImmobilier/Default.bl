@@ -1,0 +1,246 @@
+[HEADER]
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
+    <link rel="icon" href="Skins/BertrandImmobilier/assets/img/favicon.ico" />
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3&amp;sensor=true"></script>
+[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/assets/css/bootstrap.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/assets/css/bootstrap-responsive.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/assets/libraries/chosen/chosen.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/assets/libraries/bootstrap-fileupload/bootstrap-fileupload.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/assets/libraries/jquery-ui-1.10.2.custom/css/ui-lightness/jquery-ui-1.10.2.custom.min.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/assets/libraries/bootstrap-datepicker-master/dist/css/bootstrap-datepicker.min.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/assets/css/realia-red.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/assets/css/custom.css[/HEADER]
+[HEADER CSS]Skins/[!Systeme::Skin!]/assets/css/breakingNews.css[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/assets/js/jquery.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/assets/js/jquery.ezmark.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/assets/js/jquery.currency.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/assets/js/jquery.cookie.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/assets/js/retina.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/assets/js/bootstrap.min.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/assets/js/carousel.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/assets/libraries/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.min.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/assets/libraries/chosen/chosen.jquery.min.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/assets/libraries/iosslider/_src/jquery.iosslider.min.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/assets/libraries/bootstrap-fileupload/bootstrap-fileupload.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/assets/libraries/bootstrap-datepicker-master/dist/js/bootstrap-datepicker.min.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/assets/libraries/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.fr.min.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/assets/js/realia.js[/HEADER]
+[HEADER JS]Skins/[!Systeme::Skin!]/assets/js/breakingNews.js[/HEADER]
+
+<div id="wrapper-outer" >
+    <div id="wrapper">
+        <div id="wrapper-inner">
+            [MODULE Systeme/Structure/Header]
+            [DATA]
+        </div>
+        [MODULE Systeme/Structure/Footer]
+    </div>
+</div>
+<div class="cd-panel from-right no-print">
+    <div class="cd-panel-container">
+        <form method="get" action="javascript:;" id="formDevis">
+            <div class="cd-panel-pre-content">
+                <div class="cd-panel-content">
+                    <div class="row">
+                        <div class="span3">
+                            <div id="formTopIdentite">
+                                <h5>Quelles sont vos coordonnées ?</h5>
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <label class="search-radio no-float">
+                                            <input type="text" name="lastname" placeholder="Votre nom">
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <label class="search-radio no-float">
+                                            <input type="text" name="firstname" placeholder="Votre prénom">
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <label class="search-radio no-float">
+                                            <input type="text" name="email" placeholder="Votre email">
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <label class="search-radio no-float">
+                                            <input type="text" name="phone" placeholder="Votre téléphone">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span3">
+                            <h5>Votre demande concerne</h5>
+                            <div class="control-group">
+                                <div class="controls">
+                                    <label class="search-radio no-float">
+                                        <input type="radio" name="optionDemande" id="optionDemande1" value="Syndic">
+                                        Un syndic de copropriété
+                                    </label>
+                                    <label class="search-radio no-float">
+                                        <input type="radio" name="optionDemande" id="optionDemande2" value="Gestion_immobiliere">
+                                        La gestion immobilière
+                                    </label>
+                                    <label class="search-radio no-float">
+                                        <input type="radio" name="optionDemande" id="optionDemande3" value="Vente_ou_location">
+                                        La vente ou la location d'un bien
+                                    </label>
+                                    <label class="search-radio no-float">
+                                        <input type="radio" name="optionDemande" id="optionDemande4" value="location_saisonniere">
+                                        Une location saisonnière
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <div id="formTopSyndic">
+                                <h5>Votre rôle ?</h5>
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <label class="search-radio no-float">
+                                            <input type="radio" name="optionRoleSyndicAutre" id="optionRoleSyndicAutre1" value="Président du Conseil Syndical">
+                                            Président du Conseil Syndical
+                                        </label>
+                                        <label class="search-radio no-float">
+                                            <input type="radio" name="optionRoleSyndicAutre" id="optionRoleSyndicAutre2" value="Membre du Conseil Syndical">
+                                            Membre du Conseil Syndical
+                                        </label>
+                                        <label class="search-radio no-float">
+                                            <input type="radio" name="optionRoleSyndicAutre" id="optionRoleSyndicAutre3" value="Copropriétaire">
+                                            Copropriétaire
+                                        </label>
+                                    </div>
+                                </div>
+                                <h5>Votre immeuble</h5>
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <label class="search-radio no-float">
+                                            <input type="text" name="nbAppartementImmeuble" placeholder="Nombre d'appartements">
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <label class="search-radio no-float">
+                                            <input type="text" name="codePostalImmeuble" placeholder="Code postal ou Ville">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="formTopGestion">
+                                <h5>Informations sur vote bien</h5>
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <label class="search-radio no-float">
+                                            <input type="radio" name="optionGestion" id="optionGestionAppartement" value="Un appartement">
+                                            Un appartement
+                                        </label>
+                                        <label class="search-radio no-float">
+                                            <input type="radio" name="optionGestion" id="optionGestionLocal" value="Un local commercial ou industriel">
+                                            Un local commercial ou industriel
+                                        </label>
+                                        <label class="search-radio no-float">
+                                            <input type="radio" name="optionGestion" id="optionGestionImmeuble" value="Un immeuble locatif">
+                                            Un immeuble locatif
+                                        </label>
+                                        <label class="search-radio no-float">
+                                            <input type="text" placeholder="Autre" name="optionGestionImmeubleAutre">
+                                        </label>
+                                    </div>
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <label class="search-radio no-float">
+                                                <input type="text" name="codePostalGestion" placeholder="Code postal ou Ville">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="formTopVente">
+                                <h5>Vous souhaitez ?</h5>
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <label class="search-radio no-float">
+                                            <input type="radio" name="optionVente" id="optionVenteVente" value="Vendre un bien">
+                                            Vendre un bien
+                                        </label>
+                                        <label class="search-radio no-float">
+                                            <input type="radio" name="optionVente" id="optionVenteAchat" value="Acheter un bien">
+                                            Acheter un bien
+                                        </label>
+                                        <label class="search-radio no-float">
+                                            <input type="radio" name="optionVente" id="optionVenteLocation" value="Chercher une location">
+                                            Chercher une location
+                                        </label>
+                                        <label class="search-radio no-float">
+                                            <input type="radio" name="optionVente" id="optionVenteMettre" value="Mettre un bien en location">
+                                            Mettre un bien en location
+                                        </label>
+                                    </div>
+                                    <div class="controls">
+                                        <label class="search-radio no-float">
+                                            <input type="text" name="optionVenteType" placeholder="Type de bien">
+                                        </label>
+                                    </div>
+                                    <div class="controls">
+                                        <label class="search-radio no-float">
+                                            <input type="text" name="optionVenteVille" placeholder="Ville ou code postal">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="formTopSaisoniere">
+                                <h5>Détails de votre recherche</h5>
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <label class="search-radio no-float">
+                                            <input type="text" name="optionSaisonniereCouchage" placeholder="Nombre de couchages">
+                                        </label>
+                                    </div>
+                                    <div class="controls">
+                                        <label class="search-radio no-float">
+                                            <input type="text" name="optionSaisonniereDateArrivee" placeholder="Date d'arrivée (un samedi)">
+                                        </label>
+                                    </div>
+                                    <div class="controls">
+                                        <label class="search-radio no-float">
+                                            <input type="text" name="optionSaisonniereDateDepart" placeholder="Date de départ (un samedi)">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span2">
+                            <a class="btn btn-primary btn-large cd-btn" href="javascript:;">X</a>
+                            <br><br><br><br><br>
+                            <div class="form-actions">
+                                <input type="submit" value="Envoyer votre demande" class="submitFormDevis btn btn-primary btn-large">
+                            </div><!-- /.form-actions -->
+                        </div>
+                    </div>
+                </div> <!-- cd-panel-content -->
+                <div class="cd-panel-bottom">
+                    <div class="cd-panel-content">
+                        Bertrand Immobilier - 1 Boulevard Sarrail 34250 Palavas-les-Flots - syndic@bertrandimmobilier.fr - 04.67.50.79.12
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="cd-panel-content" id="formThanks">
+            <div class="row">
+                <h2>Votre demande a bien été envoyée, nous vous contacterons dans les plus brefs délais.</h2>
+                <div class="span1">
+                    <a class="btn btn-primary btn-large cd-btn" href="javascript:;">Fermer</a>
+                </div>
+            </div>
+        </div>
+    </div> <!-- cd-panel-container -->
+</div> <!-- cd-panel -->
+

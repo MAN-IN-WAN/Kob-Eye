@@ -1,0 +1,247 @@
+O:4:"Bloc":23:{s:7:"RawData";s:0:"";s:7:"VarData";N;s:9:"RawLoaded";b:1;s:13:"ContentLoaded";b:1;s:7:"Content";N;s:9:"BlObjects";a:30:{i:0;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:302:"
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
+    <link rel="icon" href="Skins/BertrandImmobilier/assets/img/favicon.ico" />
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3&amp;sensor=true"></script>
+";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:0:"";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:1;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:48:"Skins/[!Systeme::Skin!]/assets/css/bootstrap.css";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:3:"CSS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:2;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:59:"Skins/[!Systeme::Skin!]/assets/css/bootstrap-responsive.css";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:3:"CSS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:3;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:58:"Skins/[!Systeme::Skin!]/assets/libraries/chosen/chosen.css";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:3:"CSS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:4;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:86:"Skins/[!Systeme::Skin!]/assets/libraries/bootstrap-fileupload/bootstrap-fileupload.css";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:3:"CSS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:5;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:113:"Skins/[!Systeme::Skin!]/assets/libraries/jquery-ui-1.10.2.custom/css/ui-lightness/jquery-ui-1.10.2.custom.min.css";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:3:"CSS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:6;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:106:"Skins/[!Systeme::Skin!]/assets/libraries/bootstrap-datepicker-master/dist/css/bootstrap-datepicker.min.css";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:3:"CSS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:7;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:49:"Skins/[!Systeme::Skin!]/assets/css/realia-red.css";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:3:"CSS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:8;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:45:"Skins/[!Systeme::Skin!]/assets/css/custom.css";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:3:"CSS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:9;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:51:"Skins/[!Systeme::Skin!]/assets/css/breakingNews.css";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:3:"CSS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:10;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:43:"Skins/[!Systeme::Skin!]/assets/js/jquery.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:11;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:50:"Skins/[!Systeme::Skin!]/assets/js/jquery.ezmark.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:12;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:52:"Skins/[!Systeme::Skin!]/assets/js/jquery.currency.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:13;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:50:"Skins/[!Systeme::Skin!]/assets/js/jquery.cookie.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:14;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:43:"Skins/[!Systeme::Skin!]/assets/js/retina.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:15;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:50:"Skins/[!Systeme::Skin!]/assets/js/bootstrap.min.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:16;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:45:"Skins/[!Systeme::Skin!]/assets/js/carousel.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:17;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:98:"Skins/[!Systeme::Skin!]/assets/libraries/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.min.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:18;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:68:"Skins/[!Systeme::Skin!]/assets/libraries/chosen/chosen.jquery.min.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:19;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:79:"Skins/[!Systeme::Skin!]/assets/libraries/iosslider/_src/jquery.iosslider.min.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:20;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:85:"Skins/[!Systeme::Skin!]/assets/libraries/bootstrap-fileupload/bootstrap-fileupload.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:21;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:104:"Skins/[!Systeme::Skin!]/assets/libraries/bootstrap-datepicker-master/dist/js/bootstrap-datepicker.min.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:22;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:112:"Skins/[!Systeme::Skin!]/assets/libraries/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.fr.min.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:23;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:43:"Skins/[!Systeme::Skin!]/assets/js/realia.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:24;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:49:"Skins/[!Systeme::Skin!]/assets/js/breakingNews.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:25;s:120:"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="wrapper-outer" >
+    <div id="wrapper">
+        <div id="wrapper-inner">
+            ";i:26;O:4:"Bloc":24:{s:7:"RawData";N;s:7:"VarData";N;s:9:"RawLoaded";b:0;s:13:"ContentLoaded";b:0;s:7:"Content";N;s:9:"BlObjects";N;s:6:"BlData";N;s:8:"PostData";N;s:11:"PostObjects";N;s:10:"PostBlData";N;s:7:"ObjVars";N;s:13:"PostBlObjects";N;s:12:"ChildObjects";N;s:9:"ChildData";N;s:4:"Path";N;s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"MODULE";s:5:"Child";N;s:4:"Vars";s:24:"Systeme/Structure/Header";s:7:"TempVar";N;s:4:"Conf";N;s:6:"INITOK";s:4:"NB 0";}i:27;s:43:"
+            [DATA]
+        </div>
+        ";i:28;O:4:"Bloc":24:{s:7:"RawData";N;s:7:"VarData";N;s:9:"RawLoaded";b:0;s:13:"ContentLoaded";b:0;s:7:"Content";N;s:9:"BlObjects";N;s:6:"BlData";N;s:8:"PostData";N;s:11:"PostObjects";N;s:10:"PostBlData";N;s:7:"ObjVars";N;s:13:"PostBlObjects";N;s:12:"ChildObjects";N;s:9:"ChildData";N;s:4:"Path";N;s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"MODULE";s:5:"Child";N;s:4:"Vars";s:24:"Systeme/Structure/Footer";s:7:"TempVar";N;s:4:"Conf";N;s:6:"INITOK";s:4:"NB 0";}i:29;s:13400:"
+    </div>
+</div>
+<div class="cd-panel from-right no-print">
+    <div class="cd-panel-container">
+        <form method="get" action="javascript:;" id="formDevis">
+            <div class="cd-panel-pre-content">
+                <div class="cd-panel-content">
+                    <div class="row">
+                        <div class="span3">
+                            <div id="formTopIdentite">
+                                <h5>Quelles sont vos coordonnées ?</h5>
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <label class="search-radio no-float">
+                                            <input type="text" name="lastname" placeholder="Votre nom">
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <label class="search-radio no-float">
+                                            <input type="text" name="firstname" placeholder="Votre prénom">
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <label class="search-radio no-float">
+                                            <input type="text" name="email" placeholder="Votre email">
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <label class="search-radio no-float">
+                                            <input type="text" name="phone" placeholder="Votre téléphone">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span3">
+                            <h5>Votre demande concerne</h5>
+                            <div class="control-group">
+                                <div class="controls">
+                                    <label class="search-radio no-float">
+                                        <input type="radio" name="optionDemande" id="optionDemande1" value="Syndic">
+                                        Un syndic de copropriété
+                                    </label>
+                                    <label class="search-radio no-float">
+                                        <input type="radio" name="optionDemande" id="optionDemande2" value="Gestion_immobiliere">
+                                        La gestion immobilière
+                                    </label>
+                                    <label class="search-radio no-float">
+                                        <input type="radio" name="optionDemande" id="optionDemande3" value="Vente_ou_location">
+                                        La vente ou la location d'un bien
+                                    </label>
+                                    <label class="search-radio no-float">
+                                        <input type="radio" name="optionDemande" id="optionDemande4" value="location_saisonniere">
+                                        Une location saisonnière
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <div id="formTopSyndic">
+                                <h5>Votre rôle ?</h5>
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <label class="search-radio no-float">
+                                            <input type="radio" name="optionRoleSyndicAutre" id="optionRoleSyndicAutre1" value="Président du Conseil Syndical">
+                                            Président du Conseil Syndical
+                                        </label>
+                                        <label class="search-radio no-float">
+                                            <input type="radio" name="optionRoleSyndicAutre" id="optionRoleSyndicAutre2" value="Membre du Conseil Syndical">
+                                            Membre du Conseil Syndical
+                                        </label>
+                                        <label class="search-radio no-float">
+                                            <input type="radio" name="optionRoleSyndicAutre" id="optionRoleSyndicAutre3" value="Copropriétaire">
+                                            Copropriétaire
+                                        </label>
+                                    </div>
+                                </div>
+                                <h5>Votre immeuble</h5>
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <label class="search-radio no-float">
+                                            <input type="text" name="nbAppartementImmeuble" placeholder="Nombre d'appartements">
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <label class="search-radio no-float">
+                                            <input type="text" name="codePostalImmeuble" placeholder="Code postal ou Ville">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="formTopGestion">
+                                <h5>Informations sur vote bien</h5>
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <label class="search-radio no-float">
+                                            <input type="radio" name="optionGestion" id="optionGestionAppartement" value="Un appartement">
+                                            Un appartement
+                                        </label>
+                                        <label class="search-radio no-float">
+                                            <input type="radio" name="optionGestion" id="optionGestionLocal" value="Un local commercial ou industriel">
+                                            Un local commercial ou industriel
+                                        </label>
+                                        <label class="search-radio no-float">
+                                            <input type="radio" name="optionGestion" id="optionGestionImmeuble" value="Un immeuble locatif">
+                                            Un immeuble locatif
+                                        </label>
+                                        <label class="search-radio no-float">
+                                            <input type="text" placeholder="Autre" name="optionGestionImmeubleAutre">
+                                        </label>
+                                    </div>
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <label class="search-radio no-float">
+                                                <input type="text" name="codePostalGestion" placeholder="Code postal ou Ville">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="formTopVente">
+                                <h5>Vous souhaitez ?</h5>
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <label class="search-radio no-float">
+                                            <input type="radio" name="optionVente" id="optionVenteVente" value="Vendre un bien">
+                                            Vendre un bien
+                                        </label>
+                                        <label class="search-radio no-float">
+                                            <input type="radio" name="optionVente" id="optionVenteAchat" value="Acheter un bien">
+                                            Acheter un bien
+                                        </label>
+                                        <label class="search-radio no-float">
+                                            <input type="radio" name="optionVente" id="optionVenteLocation" value="Chercher une location">
+                                            Chercher une location
+                                        </label>
+                                        <label class="search-radio no-float">
+                                            <input type="radio" name="optionVente" id="optionVenteMettre" value="Mettre un bien en location">
+                                            Mettre un bien en location
+                                        </label>
+                                    </div>
+                                    <div class="controls">
+                                        <label class="search-radio no-float">
+                                            <input type="text" name="optionVenteType" placeholder="Type de bien">
+                                        </label>
+                                    </div>
+                                    <div class="controls">
+                                        <label class="search-radio no-float">
+                                            <input type="text" name="optionVenteVille" placeholder="Ville ou code postal">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="formTopSaisoniere">
+                                <h5>Détails de votre recherche</h5>
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <label class="search-radio no-float">
+                                            <input type="text" name="optionSaisonniereCouchage" placeholder="Nombre de couchages">
+                                        </label>
+                                    </div>
+                                    <div class="controls">
+                                        <label class="search-radio no-float">
+                                            <input type="text" name="optionSaisonniereDateArrivee" placeholder="Date d'arrivée (un samedi)">
+                                        </label>
+                                    </div>
+                                    <div class="controls">
+                                        <label class="search-radio no-float">
+                                            <input type="text" name="optionSaisonniereDateDepart" placeholder="Date de départ (un samedi)">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span2">
+                            <a class="btn btn-primary btn-large cd-btn" href="javascript:;">X</a>
+                            <br><br><br><br><br>
+                            <div class="form-actions">
+                                <input type="submit" value="Envoyer votre demande" class="submitFormDevis btn btn-primary btn-large">
+                            </div><!-- /.form-actions -->
+                        </div>
+                    </div>
+                </div> <!-- cd-panel-content -->
+                <div class="cd-panel-bottom">
+                    <div class="cd-panel-content">
+                        Bertrand Immobilier - 1 Boulevard Sarrail 34250 Palavas-les-Flots - syndic@bertrandimmobilier.fr - 04.67.50.79.12
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="cd-panel-content" id="formThanks">
+            <div class="row">
+                <h2>Votre demande a bien été envoyée, nous vous contacterons dans les plus brefs délais.</h2>
+                <div class="span1">
+                    <a class="btn btn-primary btn-large cd-btn" href="javascript:;">Fermer</a>
+                </div>
+            </div>
+        </div>
+    </div> <!-- cd-panel-container -->
+</div> <!-- cd-panel -->
+
+";}s:6:"BlData";N;s:8:"PostData";N;s:11:"PostObjects";N;s:10:"PostBlData";N;s:7:"ObjVars";N;s:13:"PostBlObjects";N;s:12:"ChildObjects";a:1:{i:0;s:6:"[DATA]";}s:9:"ChildData";N;s:4:"Path";s:7:"Default";s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:4:"BLOC";s:5:"Child";N;s:4:"Vars";s:7:"Default";s:7:"TempVar";N;s:4:"Conf";N;}

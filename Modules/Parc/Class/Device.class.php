@@ -51,7 +51,7 @@ class Device extends genericClass{
         $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         //Connection RDP
-        if($this->GuacamoleUrlRdp=="" || $this->GuacamoleUrlRdp==null) {
+        if($this->GuacamoleUrlRdp=="" || $this->GuacamoleUrlRdp==null || $this->GuacamoleIdRdp=="" || $this->GuacamoleIdRdp==null) {
 
             $query = "INSERT INTO `guacamole_connection` (connection_name,protocol,parent_id,max_connections,max_connections_per_user) VALUES ('" . $this->Nom . "_rdp','rdp',NULL,NULL,NULL)";
             $q = $dbGuac->query($query);
@@ -67,19 +67,17 @@ class Device extends genericClass{
             $this->GuacamoleUrlRdp = base64_encode($lid."\0".'c'."\0".'mysql');
 
             $this->Save();
-        } else {
+        } else{
             $query = "UPDATE `guacamole_connection` SET connection_name ='" . $this->Nom . "_rdp' WHERE connection_id =$this->GuacamoleIdRdp";
-            klog::l('query',$query);
-            //$q = $dbGuac->query($query);
+            $q = $dbGuac->query($query);
 
             $port = 12000 + $this->Id;
             $query = "UPDATE `guacamole_connection_parameter` SET parameter_value = '$port' WHERE connection_id=$this->GuacamoleIdRdp AND parameter_name='port'";
-            //$q = $dbGuac->query($query);
-
+            $q = $dbGuac->query($query);
         }
 
         //Connection VNC
-        if($this->GuacamoleUrlVnc=="" || $this->GuacamoleUrlVnc==null) {
+        if($this->GuacamoleUrlVnc=="" || $this->GuacamoleUrlVnc==null || $this->GuacamoleIdVnc=="" || $this->GuacamoleIdVnc==null) {
 
             $query = "INSERT INTO `guacamole_connection` (connection_name,protocol,parent_id,max_connections,max_connections_per_user) VALUES ('".$this->Nom."_vnc','vnc',NULL,NULL,NULL)";
 
@@ -101,11 +99,11 @@ class Device extends genericClass{
             $this->Save();
         }else {
             $query = "UPDATE `guacamole_connection` SET connection_name ='" . $this->Nom . "_vnc' WHERE connection_id =$this->GuacamoleIdVnc";
-            //$q = $dbGuac->query($query);
+            $q = $dbGuac->query($query);
 
             $port = 22000 + $this->Id;
             $query = "UPDATE `guacamole_connection_parameter` SET parameter_value = '$port' WHERE connection_id=$this->GuacamoleIdVnc AND parameter_name='port'";
-            //$q = $dbGuac->query($query);
+            $q = $dbGuac->query($query);
 
         }
 

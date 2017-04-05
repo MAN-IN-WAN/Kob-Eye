@@ -44,7 +44,9 @@ class ApcCache {
     }
 
     static function clearData() {
-        apc_clear_cache();
+        if (ApcCache::$bEnabled) {
+            apc_clear_cache();
+        }
         ApcCache::$tempStore = array();
     }
 }

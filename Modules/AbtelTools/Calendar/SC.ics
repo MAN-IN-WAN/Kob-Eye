@@ -1,0 +1,74 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//ABTEL Mediterranee//Gestion v0.1//FR
+BEGIN:VEVENT
+DTSTART:20160325T14:15:00
+DTEND:20160325T14:18:00
+CATEGORIES:KEEPCOOL
+SUMMARY:KEEPCOOL : Appel client et ils n'ont plus de probleme de communication.
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160324T11:47:00
+DTEND:20160324T11:48:00
+CATEGORIES:SYNERGIE
+SUMMARY:SYNERGIE : Prise d'appel par Stéphane Crochet...
+DESCRIPTION: Installation de veeam endpoint sur les 3 PC portablesIls vont acheter des DD externes USB et nous recontacterons pour param&eacute;trer la sauvegarde.
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160323T16:30:00
+DTEND:20160323T16:31:00
+CATEGORIES:TUILERIE
+SUMMARY:TUILERIE : Suite ticket G03870
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160323T16:25:00
+DTEND:20160323T16:30:00
+CATEGORIES:TRANS_PEYROT
+SUMMARY:TRANS_PEYROT : Mail envoyé a KIPLINK ...
+DESCRIPTION: Bonjour,Depuis pas mal de temps les FAX d'Hutteneim et Avignon fonctionnent al&eacute;atoirement.Quand il ne fonctionne plus, il suffit que l'on mette une autre adresse mail dans le fax center et tout refonctionne.Nous l'enlevons -> pas de probl&egrave;me -> au bout d'un certain temps de nouveaux plus de fax et ainsi de suite.Nous avions mit en cause Open IP mais avec ces tests on s&rsquo;aper&ccedil;oit bien que cela vient bien du centrex.Deuxi&egrave;mement, on a aussi des d&eacute;calages de voix d&rsquo;&agrave; peux pr&ecirc;t 10 secondes que ce soit sur Peyrot ou bien Epigone. Ceux-ci est al&eacute;atoire sur tous les sites.De plus on continu d'avoir des plantages de la pile SIP (tous les tel et trunk passent en noir)Faut vraiment trouver d&rsquo;o&ugrave; cela vient car le client n'en peux plus et on a aucune r&eacute;ponse &agrave; lui donnerCordialement,
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160323T11:06:00
+DTEND:20160323T11:11:00
+CATEGORIES:MAISONPAULRABAU
+SUMMARY:MAISONPAULRABAU : Prévoir TM que le matin sauf le mercredi car M. DELFAU ne travail pas
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160322T13:25:00
+DTEND:20160322T13:26:00
+CATEGORIES:ABTELWEB
+SUMMARY:ABTELWEB : A voir quand tu as le temps
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160321T08:30:00
+DTEND:20160321T09:20:00
+CATEGORIES:0
+SUMMARY:0 : Réunion hebdo
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160318T16:00:00
+DTEND:20160318T17:45:00
+CATEGORIES:DENIM
+SUMMARY:DENIM : Site ...
+DESCRIPTION: Recherche des fichiers locky -> ils sont tous dans dropbox soci&eacute;t&eacute; OFSEPArret des synchro dropbox -> suppression des fichier verol&eacute;s sur les PC des bureaux -> ils se chargent de faire les magasins.R&eacute;cup&eacute;ration du PC infect&eacute; en atelier
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160318T14:58:00
+DTEND:20160318T15:00:00
+CATEGORIES:TRANS_PEYROT
+SUMMARY:TRANS_PEYROT : Appel Kiplink -> ils regardent.
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160318T14:55:00
+DTEND:20160318T14:58:00
+CATEGORIES:TRANS_PEYROT
+SUMMARY:TRANS_PEYROT : Appel INFRALINK -> pour eux tout est OK
+DESCRIPTION: 
+END:VEVENT
+END:VCALENDAR

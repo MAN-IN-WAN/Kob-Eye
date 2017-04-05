@@ -14,6 +14,7 @@ class Site extends genericClass {
      * @param Menu object menu
      */
     public function addPage($url,$alias="",$men=""){
+        if(strpos($url,'http://') !== false || strpos($url,'https://') !== false ) return false;
         $url = 'http://'.$this->Domaine.'/'.$url;
         //Verification de l'existence
         $p = $this->getChildren('Page/MD5=' . md5($url));

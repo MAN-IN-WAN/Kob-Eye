@@ -1,0 +1,181 @@
+.horaire{padding-left:10px !important;}
+
+.cd-panel {
+    /*...*/
+    position:absolute;
+}
+
+.nolink{cursor:default !important}
+/*#content{background: url(../img/bg-cut.png);background-position: bottom;background-repeat: no-repeat}*/
+
+#header-wrapper{background: url(../img/bg-navigation.png);}
+
+#content {
+    background-image: url(../img/bg-cut.png);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: top;
+}
+
+.cd-panel-container {
+    /*...*/
+    position: fixed;
+    width: 100%;
+    height: 310px;
+    top: 0;
+    right: 0;
+
+    margin-top:-340px;
+
+    background-color: #fff;
+    border-bottom: 3px solid #651616;
+    padding:0;
+    z-index: 10000;
+}
+
+.cd-panel-pre-content{width:100%;height:310px;position: relative}
+.cd-panel-content{width:1170px;margin:auto;}
+.cd-panel-bottom{position: absolute;bottom:0;width:100%;background-color:#BB2A2A;height:50px;color:#fff}
+.cd-panel-bottom > .cd-panel-content{font-size:16px;line-height: 50px;text-align: center}
+
+.is-visible .cd-panel-container {
+   margin-top: 0;
+}
+
+@media (max-width: 767px) {
+    .cd-panel{display:none}
+}
+
+.no-float{float:none !important}
+.ez-radio{margin-right: 8px;}
+.sidebar-search > .ez-radio {margin-right: 1px !important;}
+.sidebar-search > label {font-size: 13px !important;}
+#formTopSyndic{display:none;}
+#formTopGestion{display:none;}
+#formTopVente{display:none;}
+#formThanks{display:none;}
+#formTopSaisoniere{display:none;}
+
+.margin-top-80{margin-top: 80px;}
+.margin-top-40{margin-top: 40px;}
+.margin-top-60{margin-top: 60px;}
+.justify{text-align: justify}
+/*.sidebar{margin-top:25px}*/
+.list-city{float:right;margin-right: 30px;}
+
+.contact-form-success{display:none}
+.agent p{font-size: 12px}
+.agent h5{margin-top: 0px !important}
+.agent{padding-top:5px !important;padding-bottom: 5px !important;}
+.pagination{width:100%;text-align:center;}
+
+h1.page-header{font-size: 35px !important;font-weight: 400;}
+h1{border:0px !important;color:#511212 !important;font-size:30px !important;font-weight: 400 !important;line-height:40px !important;margin:20px 0px !important;padding:0px !important;}
+
+.checkItem{
+    background-image:url("../img/icons/nike.png");
+    background-position:left center;
+    background-repeat:no-repeat;
+    background-size:11px 9px;
+    adding-bottom:3px;
+    padding-left:20px;
+    padding-top:3px;
+    width:150px}
+
+blockquote{border-left: 4px solid #BB2A2A !important;padding-bottom: 7px;padding-top: 7px;margin-left:20px;font-size: 14px;font-style: italic}
+blockquote p{font-size: 16px;font-style: italic}
+
+.header-facebook{
+    margin-top:5px;
+    display:inline-block;
+    float:right;
+    height:25px;
+    background-image:url("../img/share/facebook.png");
+    background-position:center;
+    background-repeat: no-repeat;
+    width:28px;
+    background-color:#4A6EA9;
+    -webkit-transition:background-color 0.2s ease-in;-moz-transition:background-color 0.2s ease-in;-o-transition:background-color 0.2s ease-in;transition:background-color 0.2s ease-in;
+}
+.header-facebook:hover{background-color: #2c4b7c}
+
+.datepicker table tr td.range, .datepicker table tr td.range:hover, .datepicker table tr td.range.disabled, .datepicker table tr td.range.disabled:hover {background-color: #abc3ea }
+.datepicker table tr td.active:hover, .datepicker table tr td.active:hover:hover, .datepicker table tr td.active.disabled:hover, .datepicker table tr td.active.disabled:hover:hover, .datepicker table tr td.active:active, .datepicker table tr td.active:hover:active, .datepicker table tr td.active.disabled:active, .datepicker table tr td.active.disabled:hover:active, .datepicker table tr td.active.active, .datepicker table tr td.active:hover.active, .datepicker table tr td.active.disabled.active, .datepicker table tr td.active.disabled:hover.active, .datepicker table tr td.active.disabled, .datepicker table tr td.active:hover.disabled, .datepicker table tr td.active.disabled.disabled, .datepicker table tr td.active.disabled:hover.disabled, .datepicker table tr td.active[disabled], .datepicker table tr td.active:hover[disabled], .datepicker table tr td.active.disabled[disabled], .datepicker table tr td.active.disabled:hover[disabled]{background-color: #2abb53}
+.dateHolidayDepart{width:calc(100% - 5px) !important;margin-right: 5px !important;border-radius: 0px !important}
+.dateHolidayFin{margin-left: 5px !important;border-radius: 0px !important}
+
+.reservation h3{width:100%;color:#fff;text-align:center;margin-top:0px}
+.reservation .prix-location{width:100%;color:#fff;text-align:center;}
+.reservation .prix-location span{background-color: #fff;color:#BB2A2A;padding:1px 10px;display: inline-block;margin-right: 5px }
+
+.divToPay{display:none;width:100%;background-color: #fff;margin-top:15px;text-align: center;padding-bottom: 15px}
+.divToPay input{width:50% !important;}
+#showPrice, #showTotalPrice{color:#511212;font-size: 20px;margin-bottom: 15px}
+.form-error{padding:10px;color:#ff0}
+
+.datepicker-days .day{font-weight: bold;background-color:#fafafa}
+.datepicker-days .disabled{font-weight: normal !important}
+
+.datepicker-days .disabled-date{background-color:#BB2A2A !important;color:#fafafa !important}
+
+.saison-prix{width:100%;background-color: #fff;margin-top:25px;padding-bottom: 15px}
+.saison-prix h3{width:100%;text-align:center;}
+.saison-prix table{width:80%;margin: auto}
+
+.miniature-paiement{float:left;margin-right: 15px;border:1px solid #aaa}
+
+.header-print{display:none}
+.only-print{display:none}
+.header-print{background-color:#681726;color:#fff;text-align:center;padding:10px 0px 5px 0px}
+.header-print .print-title{margin-bottom:0;color:#fff;font-size:25px;line-height: 25px}
+.documents-fiche{width:250px !important}
+.documents-fiche img{display:block}
+.documents-fiche span{display:block;width:100%;text-align: center;background-color: #EEEEEE}
+
+.fiche-imgs{width:100%;text-align: center}
+
+/* Etoiles commentaires réservation saisonnière */
+.rating {
+    unicode-bidi: bidi-override;
+    direction: rtl;
+    float:left;
+}
+.rating > span {
+    display: inline-block;
+    position: relative;
+    font-size: 2em;
+    width: 1.1em;
+}
+.rating > span:hover:before,
+.rating > span:hover ~ span:before {
+    content: "\2605";
+    position: absolute;
+    color:gold;
+    cursor:pointer;
+}
+
+.golden{color:gold;}
+
+.commentaire-note{margin:20px 0 20px 0}
+.commentaire-note > span{font-weight: 700}
+.commentaire-note .com-note{float:left}
+
+.com-bloc{margin:10px 0 10px 0;border-bottom: 1px solid #edd5d5;padding-bottom: 15px}
+.com-bloc h4{font-weight: 500}
+.com-bloc-note{float:right}
+.com-bloc-note span{color:gold;font-size: 30px}
+.com-com{text-align:justify}
+.com-date{float:right;font-size: 0.9em}
+
+
+@media print
+{
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
+    .header-print{display:block !important;}
+    .only-print{display:block !important;}
+
+    .span2{display:inline-block;}
+}

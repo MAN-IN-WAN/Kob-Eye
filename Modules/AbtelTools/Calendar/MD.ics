@@ -1,0 +1,123 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//ABTEL Mediterranee//Gestion v0.1//FR
+BEGIN:VEVENT
+DTSTART:20170522T09:08:00
+DTEND:20170522T09:09:00
+CATEGORIES:CHARTREUSE
+SUMMARY:CHARTREUSE : Devis chartreuse renouvellement appli ipad qui expire 21/06
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20170213T14:00:00
+DTEND:20170213T14:30:00
+CATEGORIES:BIODOC
+SUMMARY:BIODOC : à faire...
+DESCRIPTION: Le jour j : aller sur console gestion domaine (voir &eacute;l&eacute;ments&agrave;d&eacute;cider ave le client de la date de migration...1 - enlever le transport sur bsp pour les comptes du domaines biodoc2 - modifier les mx et cr&eacute;er spf , dkim, dmarc3- lancer la migration imap_sync
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20170213T09:00:00
+DTEND:20170213T09:01:00
+CATEGORIES:EPIGONE
+SUMMARY:EPIGONE : Suppression des boites mails à faire, après confirmation auprès du client
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20170203T17:08:00
+DTEND:20170203T17:09:00
+CATEGORIES:LOVEPAPER
+SUMMARY:LOVEPAPER : Reste à modifier  l'accueil l'affichage des nouveautés
+DESCRIPTION: Le client doit cocher des produits dans l'administration.Quand ce sera fait il faudra changer le composant d'affichage (mise en avant)pour qu'l tienne compte des poduits coch&eacute; (champ coeur)
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20170109T12:00:00
+DTEND:20170109T12:55:00
+CATEGORIES:ANIMO
+SUMMARY:ANIMO : Rappeler pour configuration
+DESCRIPTION: Test divers filtres cr&eacute;&eacute;s sur les boites mails et &ccedil;a fonctionnehygiene2@animo-concept.comDe: "ABTEL_myriam" &Agrave;: "proprete" , "hygiene2" , "anaik" Envoy&eacute;: Lundi 9 Janvier 2017 12:09:16Objet: test de mailBonjour Madame,comme convenu voici un mail envoy&eacute; aux 3 adresseshygiene2@animo-concept.comproprete@animo-concept.comanaik@animo-concept.comVous devriez donc le recevoir 3 fois.Je profites de ce mail pour vous adresser, de la part de toute l'&eacute;quipe d'Abtel, nos meilleurs voeux pour cette nouvelle ann&eacute;e 2017.Cordialement
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20170109T16:54:00
+DTEND:20170109T16:55:00
+CATEGORIES:CONSERVATOIRE
+SUMMARY:CONSERVATOIRE : A voir avec nouveau parc lors du changement
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161206T08:30:00
+DTEND:20161206T08:45:00
+CATEGORIES:NIMAPLANTS
+SUMMARY:NIMAPLANTS : Voir ensemble pourquoi les cookies ne fonctionnent pas
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20161117T11:46:00
+DTEND:20161117T11:47:00
+CATEGORIES:BIODOC
+SUMMARY:BIODOC : Mettre mot de passe sur fichier list dans zabbix
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160913T11:22:00
+DTEND:20160913T11:23:00
+CATEGORIES:SUDAUDITCONSEIL
+SUMMARY:SUDAUDITCONSEIL : attente retour cliente
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160825T14:12:00
+DTEND:20160825T14:13:00
+CATEGORIES:CONSERVATOIRE
+SUMMARY:CONSERVATOIRE : Faire le point à mon retour de congés
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160627T17:00:00
+DTEND:20160627T17:10:00
+CATEGORIES:ABTELWEB
+SUMMARY:ABTELWEB : Suivi du problème appel vers mathias
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160620T15:20:00
+DTEND:20160620T15:30:00
+CATEGORIES:STATIM
+SUMMARY:STATIM : Rappel de la cliente, car ne change pas sur page agences
+DESCRIPTION: v&eacute;rificationen fait sur les pages agences on regarde par rapport aux userscar en fonction du site on va chercher si on est sur un site nimes, carcassonne...et donc ce sont les donn&eacute;es user qui sont affich&eacute;on ne peut pas s'appuyer sur les donn&eacute;es agences &agrave; cause de &ccedil;a
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160523T15:48:00
+DTEND:20160523T15:49:00
+CATEGORIES:URBAINNET
+SUMMARY:URBAINNET : vérifier le quota pour voir si on approche pas du giga !!!
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160414T10:39:00
+DTEND:20160414T10:54:00
+CATEGORIES:ADRH
+SUMMARY:ADRH : Prise d'appel par Myriam Dominguez...
+DESCRIPTION: Recherche contrat, dans l'admin des mails...De: "Delphine Desan Isodoro" &Agrave;: "Myriam Dominguez" Envoy&eacute;: Jeudi 14 Avril 2016 10:27:27Objet: RE: Test de mail d'abtelBonjour, Le mail a bien &eacute;t&eacute; redirig&eacute; vers ma bo&icirc;te. Mon nom est toujours erron&eacute;, desanisodoro au lieu de desanisidoro. Merci de m&rsquo;indiquer si un changement est pr&eacute;vu ou non. Cordialement. Delphine DE SAN ISIDOROConseill&egrave;re en Insertion ProfessionnelleCAP EMPLOI 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160405T11:56:00
+DTEND:20160405T12:06:00
+CATEGORIES:MASDALESTI
+SUMMARY:MASDALESTI : Prise d'appel par Myriam Dominguez...
+DESCRIPTION: De: "Myriam Dominguez" &Agrave;: "Jean-Fran&ccedil;ois Loo" Cc: "ABTEL_jpn" Envoy&eacute;: Mardi 5 Avril 2016 12:04:29Objet: Re: MAS d'AlestiC'est un site wordpress, donc actuellement on n'a pas encore eu de site wordpress en gestion, donc s'il y avait des modifications &agrave; faire dessus, il faut int&eacute;grer qu'on ne fait pas de site wordpressEn plus ce sont des sites qui n&eacute;cessite des mises &agrave; jour r&eacute;guli&egrave;res.ll faut s'assurer qu'ils aient bien acc&egrave;s &agrave; l'administrationEnsuite il y a un compte google analytics, donc il faut s'assurer que c'est bien le client qui en a la gestionPour r&eacute;cup&eacute;rer le site, il nous faut les acc&egrave;s aux sources de d&eacute;veloppement, &agrave; la base de donn&eacute;es, il faut tous les acc&egrave;s utilisateurs , admin....Le site est chez ovh mais c'est d&eacute;j&agrave; nous qui g&eacute;rons les dns car cela pointe sur les dns abtelMais ni le domaine, ni l'h&eacute;bergement ne sont chez abtel.Apr&egrave;s la personne qui s'en occupe veux s'en d&eacute;charger, c'est quelqu'un en interne ?c'est quoi le travail sur le site exactement ?Jean-philippe est ce qu'on r&eacute;cup&egrave;re un site wordpress ? Cordialement,         Myriam DominguezAbtel Agence WebParc deltaKm 4 - Route d'Arles30230 BouillarguesFrancehttp://agence-web.abtel.fr        Chef de Projet    +33(0)4 66 04 06 13    +33(0)4 66 04 09 80 Email : myriam@abtel.frDe: "Jean-Fran&ccedil;ois Loo" &Agrave;: "Myriam Dominguez" , "Guillaume Candella" Envoy&eacute;: Mardi 5 Avril 2016 10:20:08Objet: MAS d'AlestiSalut,Pourriez vous jeter un coup d'oeil &agrave; ce site http://www.masalesti.fr/, et me dire si nous pourrions le reprendre en h&eacute;bergement et ce que cela impliquerait  car la personne qui s'en occupe voudrait s'en d&eacute;charger.Merci d'avanceJean-Fran&ccedil;ois LooAbtelParc deltaKm 4 - Route d'Arles30230 BouillarguesFrancehttp://www.abtel.frIng&eacute;nieur CommercialTel : +33(0)4 66 04 06 13Fax : +33(0)4 66 04 09 80Gsm : +33(0)6 46 83 41 44Email : jfloo@abtel.frPlease Consider The environment - do you really need to print this mail? Avant d'imprimer, pensez &agrave; l'environnement______________________________________________________________________Ce message contient des informations dont le contenu est susceptible d'etre confidentiel.Il est destine au(x) destinataire(s) indique(s) exclusivement.A moins que vous ne fassiez partie de la liste des destinataires, ou que vous soyez habilite a recevoir le mail a leur place, il vous est interdit de le copier, de l'utiliser ou de devoiler son contenu a un tiers.Si vous avez recu cet email par erreur, merci de prendre contact avec l'emetteur.Les opinions exprimees dans cet e-mail sont celles de l'emetteur et ne refletent pas necessairement celles de l'entreprise.Ce e-mail peut contenir des pieces jointes dont certaines pourraient contenir des virus qui pourraient endommager votre systeme informatique.ABTEL a pris toutes dispositions afin de minimiser ce risque et decline toute responsabilite pour toute perte ou dommage resultant directement ou indirectement de l'utilisation de cet email ou de son contenu.Il vous appartient d'effectuer vos propres controles anti-virus avant d'ouvrir la ou les pieces jointes.
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160324T16:51:00
+DTEND:20160324T17:51:00
+CATEGORIES:LOVEPAPER
+SUMMARY:LOVEPAPER : Suite montage
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160321T13:57:00
+DTEND:20160321T13:58:00
+CATEGORIES:ABTELWEB
+SUMMARY:ABTELWEB : Prise d'appel par Myriam Dominguez...
+DESCRIPTION: 
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,872 @@
+/****************************************************************
+ *								*
+ *			     COLOR SET    			*
+ *								*
+ ****************************************************************/
+/*
+ *	#fff
+ *	#222;
+ *	#000
+ *  info      bleu   : #0e8ec1
+ *  web       orange : #ee7805
+ *  network   vert   : #6eb126
+ *  formation rose   : #e6008d
+ *  autre     gris   : #868585
+ *
+ *
+ *  bg               : #f5f8fa
+ *  font color       : #1e3948
+ *  logout red	     : #881111
+ *  gris bord bloc   : #d3e0e9
+ *  vert pale        : #ecffea
+
+
+/* Importation des elements suppl�mentaires */
+html, body{
+	margin:0;
+	padding:0;
+	width:100%;
+	height:100%;
+	font-size:7pt;
+	font-family:Arial;
+	color: #1e3948;
+}
+body{
+	background-color: #f5f8fa;
+	padding-top: 70px;
+}
+.clear{
+	clear: both;
+}
+.container{
+	width: 1400px;
+}
+.bloc{
+	background-color: #ffffff;
+	border: 1px solid #d3e0e9;
+	border-radius: 4px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+	margin-bottom: 15px;
+}
+a{
+	border:0px;
+	text-decoration:none;
+	color: #1e3948;
+}
+a:hover{
+	text-decoration:none;
+}
+a.addButton,
+a.modButton,
+a.delButton,
+a.genButton{
+	color: #1e3948;
+	display: block;
+	position: relative;
+	text-align: center;
+	font-family: Arial;
+	font-size: 16px;
+	padding: 5px 8px 5px 26px;
+	border-radius: 4px;
+	background-color: #fff;
+	border: 1px solid #fff;
+}
+a.addButton:hover:after,
+a.modButton:hover:after,
+a.delButton:hover:after,
+a.genButton:hover:after{
+	content:' ';
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255,255,255,0.5);
+}
+a.addButton:before,
+a.modButton:before,
+a.delButton:before,
+a.genButton:before{
+	font-family: 'Glyphicons Halflings';
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	color: #9da9b0;
+}
+a.addButton{
+	border-color: #6eb126;
+}
+a.addButton:before{
+	content: "\002b";
+}
+a.modButton{
+	border-color: #e6d0a1;
+}
+a.modButton:before{
+	content: "\e019";
+}
+a.delButton{
+	border-color: #881111;
+}
+a.delButton:before{
+	content: "\e020";
+}
+a.genButton{
+	border-color: #0e8ec1;
+}
+a.genButton:before{
+	content: " ";
+}
+a.short{
+	padding-left: 14px;
+}
+
+h1 {
+	font-size:3em;
+	text-transform:uppercase;
+}
+h2 {
+	font-size:1em;	
+}
+h3 {
+	font-size:0.9em;	
+}
+h1,h2,h3{
+	margin: 0;
+}
+.disabled{
+	position: relative;
+	pointer-events: none;
+}
+.disabled:after{
+	content:' ';
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.2);
+}
+.notFound{
+	color: #ff4444;
+}
+.debug{
+	display: none;
+	visibility: hidden;
+}
+
+/* -------------ENTETE -------------*/
+#Entete {
+	background-color: #ee7805;
+	font-weight:bold;
+	font-size:2em;
+	height: 50px;
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: 0;
+	z-index: 1030;
+	border-bottom: 1px solid #000;
+	color: #fff;
+}
+#Entete #headWrap,
+#Entete #headLogo,
+#Entete #headTxt{
+	height: 100%;
+	line-height: 50px;
+}
+#Entete #logout{
+	height: 40px;
+	width: 40px;
+	margin-top: 5px;
+}
+#Entete #logout a{
+	display: block;
+	height: 100%;
+	width: 100%;
+	position: relative;
+	border: 2px solid #fff;
+	border-radius: 40px;
+	color: #fff;
+}
+#Entete #logout a:before{
+	display: block;
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	top: -6px;
+	left: 1px;
+	content: '\e163';
+	font-family: 'Glyphicons Halflings';
+	text-align: center;
+}
+#Entete #logout a:hover{
+	color: #881111;
+	border-color: #881111;
+}
+
+
+/*----------------------CONTENU-----------------------*/
+#Global{
+	position:relative;
+}
+#Global #DescAdm {
+	font-size:2em;
+	text-align: center;
+}
+#Global #ModNav{
+	border-bottom: 1px solid #e6d0a1;
+	margin-bottom: 10px;
+	padding: 2px 15px;
+	background-color: #fcf8e3;
+	color: #8a6d3b;
+}
+#Global #ModNav p{
+	margin: 0;
+	font-size: 1.4em;
+}
+#Global #ModNav a{
+	color: #216a94;
+}
+#Global .module a{
+  	background: #0e8ec1;
+	color: #ffffff;
+	display: block;
+	font-family: Arial;
+	font-size: 3em;
+	padding: 10px 20px;
+	text-decoration: none;
+	position: relative;
+}
+#Global .module a:hover:before{ 
+	content:' ';
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255,255,255,0.5);
+}
+
+/* NAVIGATION A GAUCHE */
+#Global #LeftNav{
+	list-style: none;
+	display: block;
+	margin-bottom: 0px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	padding: 0;
+}
+#Global #LeftNav a#ModTitle:hover:before {
+	background-color: rgba(255,255,255,0.3);
+}
+#Global #LeftNav #ModTitle{
+	display: block;
+	overflow: hidden;
+	background-color: #0e8ec1;
+	color: #fff;
+	text-align: center;
+	padding: 15px;
+	border-bottom: 1px solid #d3e0e9;
+}
+#Global #LeftNav #ModTitle h1{
+	font-size: 1em;
+}
+#Global #LeftNav li{
+	font-family: Arial;
+	font-size: 2em;
+}
+#Global #LeftNav:not(.homeNav) li:last-child{
+	margin-top: 30px;
+}
+
+#Global #LeftNav li a{
+	display: block;
+	text-decoration: none;
+	position: relative;
+	padding: 5px 10px;
+}
+#Global #LeftNav li a:hover:before{
+	content:' ';
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255,255,255,0.5);
+}
+#Global #LeftNav li.selected a:after {
+	content:' ';
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(14,142,193,0.2)
+}
+#Global #LeftNav li:not(#moduleName) .glyphicon {
+	color: #9da9b0;
+	margin-right: 5px;
+	display: inline-block;
+	width: 20px;
+}
+
+/* CENTRE PAGE */
+#Global .modifTitle{
+	text-align: center;
+}
+
+#Global #ModContent {
+	padding: 0;
+}
+#Global #ModContent #MEPDesc {
+	color:#245790;
+	font-size:2em;
+	padding: 15px;
+}
+
+/* MENU CENTRE PAGE EN HAUT */
+
+/*-----------------------MEPCat ---------------------------------*/
+#Global #ModContent #MEPCat  {
+	font-size:2em;
+	padding: 0 15px 15px;
+}
+#Global #ModContent #MEPCat .displayItem ul#catListMenu {
+	list-style:none;
+	background-color: #6eb126;
+	padding: 0;
+}
+#Global #ModContent #MEPCat .displayItem ul:after {
+	content:"";
+	clear: both;
+	display:table;
+}
+#Global #ModContent #MEPCat .displayItem ul li a  {
+	float:left;
+	color:#fff;
+	width:auto;
+	padding: 15px;
+	display: block;
+	position: relative;
+}
+#Global #ModContent #MEPCat .displayItem ul li a:hover  {
+	text-decoration: none;
+}
+#Global #ModContent #MEPCat .displayItem ul li a:hover:before  {
+	content: " ";
+	display: block;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: rgba(255,255,255,0.5);
+}
+#Global #ModContent #MEPCat .displayItem ul li a.selected:after {
+	content:' ';
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.2);
+}
+
+
+/* CENTRE PAGE DETAILS MEPCAT*/
+#Global #ModContent #MEPCat .itemChilds #subItems{
+	margin-bottom: 15px;
+	position: relative;
+}
+#Global #ModContent #MEPCat .itemChilds #subItems:before,
+#Global #ModContent #MEPArt #sortChild:before{
+	content:"";
+	position: absolute;
+	top: 3px;
+	left: 0;
+	display: inline-block;
+	border-top: 8px solid transparent;
+	border-bottom: 8px solid transparent;
+	border-left: 15px solid #9da9b0;
+}
+#Global #ModContent #MEPArt #sortChild:before{
+	top: 13px;
+}
+#Global #ModContent #MEPCat .itemChilds #subItems a{
+	padding-left: 17px;
+	position: relative;
+	margin-left: 10px;
+	color: #216a94;
+}
+#Global #ModContent #MEPCat .itemChilds #subItems a:before{
+	content:"\e012";
+	font-family: 'Glyphicons Halflings';
+	position: absolute;
+	top: 1px;
+	left: 0;
+	display: inline-block;
+	width: 15px;
+	height: 100%;
+	font-size: 0.7em;
+	color: #9da9b0;
+}
+#Global #ModContent #MEPCat .itemChilds .children{
+	padding: 15px;
+}
+#Global #ModContent #MEPCat .itemChilds .children a.childsGoTo{
+	display: block;
+	background-color: #0e8ec1;
+	padding: 10px;
+	color: #fff;
+	border-radius: 4px;
+}
+#Global #ModContent #MEPCat .itemChilds .children a.childsGoTo:hover:after{
+	content: " ";
+	display: block;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: rgba(255,255,255,0.5);
+}
+#Global #ModContent #MEPCat .itemChilds .children a.childsGoTo .childDesc{
+	font-size: 0.9em;
+	font-style: italic;
+}
+
+/*----------DetailDirect----------------------------*/
+#Global #ModContent #MEPCat .itemChilds #DetailDirect,
+#Global #ModContent #MEPArt .itemChilds #DetailDirect{ 
+	padding:15px 20px;
+	margin-bottom: 30px;
+	background-color: rgba(14,142,193,0.1);
+	position: relative;
+}
+#Global #ModContent #MEPCat .itemChilds #DetailDirect:after,
+#Global #ModContent #MEPArt .itemChilds #DetailDirect:after {
+	content: ' ';
+	display: block;
+	position: absolute;
+	bottom: -15px;
+	width: 50%;
+	right: 50%;
+	margin-right: -25%;
+	border-bottom: 1px solid #d3e0e9;
+}
+#Global #ModContent #MEPCat .itemChilds #DetailDirect h2 {
+	font-size:1.2em;
+	margin-bottom: 15px;
+}
+#Global #ModContent #MEPCat .itemChilds #DetailDirect p {
+	margin-bottom: 5px;
+	line-height: 1.1em;
+}
+#Global #ModContent #MEPCat .itemChilds #DetailDirect .champval {
+	font-size:1.1em;
+	color:#868585;
+}
+#Global #ModContent #MEPCat .itemChilds #DetailDirect a {
+	float: right;
+	margin-left: 10px;
+}
+
+/************ ChildrenDirect ----------------------------*/
+#Global #ModContent #MEPCat .itemChilds #ChildrenDirect,
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect{
+	padding:15px 20px;
+	background-color: rgba(230,0,141,0.05);
+	margin-bottom: 15px;
+}
+#Global #ModContent #MEPCat .itemChilds #ChildrenDirect .childArt a.addButton {
+	float: right;
+}
+#Global #ModContent #MEPCat .itemChilds #ChildrenDirect .childArt a.artTitle {
+	color: #868585;
+	position: relative;
+	padding-left: 20px;
+}
+#Global #ModContent #MEPCat .itemChilds #ChildrenDirect .childArt a.artTitle:hover {
+	color: #e6008d;
+}
+#Global #ModContent #MEPCat .itemChilds #ChildrenDirect .childArt a.artTitle:before {
+	content: " ";
+	display: block;
+	width: 15px;
+	height: 18px;
+	background-image: url("../Img/article.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+	position: absolute;
+	top: 3px;
+	left: 0;
+}				
+/************ FIN MEPCat ----------------------------*/
+
+/************ MEPArt ----------------------------*/
+	
+#Global #ModContent #MEPArt {
+	font-size: 2em;
+}
+#Global #ModContent #MEPArt #selectChild{
+	margin-top: 10px;
+}
+#Global #ModContent #MEPArt #sortChild{
+	margin: 10px 0;
+}
+#Global #ModContent #MEPArt #sortChild a{
+	border: 1px solid #ccc;
+	display: inline-block;
+	height: 42px;
+	vertical-align: middle;
+	line-height: 38px;
+}
+#Global #ModContent #MEPArt #sortChild a img{
+	max-width: 40px;
+	max-height: 40px;
+	display: inline-block;
+}
+#Global #ModContent #MEPArt .itemChilds .children{
+	padding: 15px;
+}
+#Global #ModContent #MEPArt .itemChilds .children a.childsGoTo{
+	display: block;
+	background-color: #0e8ec1;
+	padding: 10px;
+	color: #fff;
+	border-radius: 4px;
+}
+#Global #ModContent #MEPArt .itemChilds .children a.childsGoTo:hover:after{
+	content: " ";
+	display: block;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: rgba(255,255,255,0.5);
+}
+#Global #ModContent #MEPArt .itemChilds .children a.childsGoTo p {
+	margin: 0;
+}
+#Global #ModContent #MEPArt .itemChilds .children a.childsGoTo .childName{
+	font-size: 1.1em;
+	font-weight: 600;
+	margin-bottom: 10px;
+}
+#Global #ModContent #MEPArt .itemChilds .children a.childsGoTo .childDesc{
+	font-size: 0.9em;
+	font-style: italic;
+}
+	
+	
+/*----------DetailDirect----------------------------*/
+#Global #ModContent #MEPArt .itemChilds #DetailDirect h2 {
+	font-size:1.2em;
+	margin-bottom: 15px;
+}
+#Global #ModContent #MEPArt .itemChilds #DetailDirect p {
+	margin-bottom: 5px;
+	line-height: 1.1em;
+}
+#Global #ModContent #MEPArt .itemChilds #DetailDirect .champval {
+	font-size:1.1em;
+	color:#868585;
+}
+#Global #ModContent #MEPArt .itemChilds #DetailDirect a {
+	float: right;
+	margin-left: 10px;
+}
+
+/************ ChildrenDirect ----------------------------*/
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect a{
+	float: right;
+	margin-left: 10px;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .contentHead h4 {
+	float: left;
+	width: 70%;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .contentShowcase {
+	border-radius: 0;
+	padding: 5px;
+	display: table;
+	table-layout: fixed;
+	width: 100%;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .contentShowcase .addColumn {
+	display: table-cell;
+	float: none;
+	text-align: center;
+	position: relative;
+	border: 1px solid #6eb126;
+	padding: 5px;
+	overflow: hidden;
+	padding-top: 130px;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .contentShowcase .addColumn .addColTxt{
+	background-color: #6eb126;
+	margin-right: -5px;
+	margin-left: -5px;
+	color: #fff;
+	margin-bottom: 20px;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .contentShowcase .addColumn:after {
+	content: "\002b";
+	padding: 5px;
+	position: absolute;
+	top: 20px;
+	left: 50%;
+	margin-left: -45px;
+	width: 90px;
+	height: 90px;
+	border-radius: 200px;
+	font-family: 'Glyphicons Halflings';
+	text-align: center;
+	line-height: 80px;
+	color: #fff;
+	font-size: 50px;
+	overflow: hidden;
+	background-color: #6eb126;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .contentShowcase .addColumn.short:after {
+	top: 40px;
+	left: 50%;
+	margin-left: -22.5px;
+	width: 45px;
+	height: 45px;
+	border-radius: 200px;
+	line-height: 33px;
+	font-size: 30px;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .contentCol {
+	border: 1px solid #000;
+	padding: 5px;
+	/*float: left;*/
+	display: table-cell;
+	padding-top: 130px;
+	position: relative;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .contentCol.typeImage {
+	border-color: #e6008d;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .contentCol.typeTexte {
+	border-color: #0e8ec1;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .contentCol.typeEmpty {
+	border-color: #ee7805;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .contentCol:after {
+	content: ' ';
+	padding: 5px;
+	position: absolute;
+	top: 20px;
+	left: 50%;
+	margin-left: -45px;
+	width: 90px;
+	height: 90px;
+	border-radius: 200px;
+	font-family: 'Glyphicons Halflings';
+	text-align: center;
+	line-height: 80px;
+	color: #fff;
+	font-size: 50px;
+	overflow: hidden;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .contentCol.typeImage:after {
+	content: "\e060";
+	background-color: #e6008d;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .contentCol.typeTexte:after {
+	content: "\e052";
+	background-color: #0e8ec1;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .contentCol.typeEmpty:after {
+	content: "\e090";
+	background-color: #ee7805;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .contentCol .colTitre{
+	text-align: center;
+	margin-right: -5px;
+	margin-left: -5px;
+	margin-bottom: 10px;
+	background-color: #000;
+	color: #fff;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .contentCol.typeImage .colTitre{
+	background-color: #e6008d;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .contentCol.typeTexte .colTitre{
+	background-color: #0e8ec1;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .contentCol.typeEmpty .colTitre{
+	background-color: #ee7805;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .contentCol .colButtons{
+	margin-bottom: 10px;
+	overflow: hidden;
+	height: 0;
+	opacity: 0;
+	transition: 	height 1s 0.3s,
+			opacity 0.3s 0s;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .contentCol:hover .colButtons{
+	opacity: 1;
+	height: 50px;
+	transition: 	height 1s 0s,
+			opacity 0.3s 1s;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .contentCol .colButtons a{
+	margin: 0;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .contentCol .colButtons .modButton{
+	float: left;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .contentCol .colRatio,
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .addColumn .colRatio{
+	border-bottom: 1px solid #e6d0a1;
+	position: relative;
+	text-align: center;
+	font-size: 0.7em;
+	margin-bottom: 10px;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .contentCol .colRatio:before,
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .addColumn .colRatio:before{
+	content: "\e079";
+	position: absolute;
+	font-family: 'Glyphicons Halflings';
+	top: 10px;
+	left: -7px;
+	color: #e6d0a1;
+}
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .contentCol .colRatio:after,
+#Global #ModContent #MEPArt .itemChilds #ChildrenDirect .addColumn .colRatio:after{
+	content: "\e080";
+	font-family: 'Glyphicons Halflings';
+	position: absolute;
+	top: 9px;
+	right: -6px;
+	color: #e6d0a1;
+}
+
+#Global #ModContent #MEPArt .itemChilds #backToCat{
+	display: block;
+	clear: both;
+	width: 180px;
+	margin: 0 auto 40px auto;
+}
+#Global #ModContent #MEPArt .itemChilds #backToCat:before{
+	content: "\e095";
+}
+
+
+/*------------- Formulaires ----------------*/
+#Global #ModTitle #objName{
+	font-size: 1.05em;
+	color: #ee7805;
+}
+#Global .error h2,
+#Global .succes h2{
+	text-align: center;
+	font-size: 2em;
+	color: #e6008d;
+	font-weight: 600;
+	margin-bottom: 20px; 
+}
+#Global .succes h2{
+	color: #6eb126;
+}
+#Global .succes a{
+	font-size: 1.8em;
+}
+#Global #ModContainer{
+	max-width: 1200px;
+	margin: 20px auto;
+}
+#Global .inputWrap{
+	font-size: 1.5em;
+	margin-bottom: 10px;
+}
+#Global .inputWrap:after{
+	content: " ";
+	clear: both;
+	display: table;
+}
+#Global .inputWrap label{
+	min-width: 100px;
+	width: 20%;
+	display: block;
+	float: left;
+	background-color: #0e8ec1;
+	color: #fff;
+	padding: 5px 10px;
+}
+#Global .inputWrap.error label{
+	background-color: #e6008d;
+}
+#Global .inputWrap input,
+#Global .inputWrap textarea{
+	min-width: 250px;
+	width: 80%;
+	display: block;
+	float: left;
+	background-color: #868585;
+	color: #fff;
+	border: none;
+	padding: 5px 10px;
+}
+#Global .inputWrap .cke{
+	float: left;
+	box-sizing: border-box;
+	width: 80%
+}
+#Global .inputWrap select{
+	min-width: 100px;
+	width: 40%;
+	display: block;
+	float: left;
+	background-color: #868585;
+	color: #fff;
+	border: none;
+	padding: 6px 10px;
+}
+.btnCancel,
+.btnSubmit{
+	color: #fff;
+	width: 130px;
+	display: block;
+	position: relative;
+	text-align: center;
+	font-family: Arial;
+	font-size: 16px;
+	font-weight: 600;
+	padding: 10px 30px;
+	float: right;
+	margin-left: 10px;
+	border: none;
+}
+.btnCancel{
+	background-color: #e6008d;
+}
+.btnSubmit{
+	background-color: #6eb126;
+}
+.btnCancel:hover:after,
+.btnSubmit:hover:after{
+	content:' ';
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255,255,255,0.5);
+}
+	

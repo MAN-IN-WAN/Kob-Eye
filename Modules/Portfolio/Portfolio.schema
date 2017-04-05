@@ -1,0 +1,72 @@
+<SCHEMA>
+	<OBJECTCLASS title="Categorie" driver="mysql" AccessPoint="1" master="1" Description="Categories"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" browseable="1">
+		<PROPERTIES type="titre" searchOrder="1" category="Intitulé">Nom</PROPERTIES>
+		<PROPERTIES type="bbcode" searchOrder="2" special="multi" category="Informations">Description</PROPERTIES>
+		<PROPERTIES type="file" category="Informations">Icone</PROPERTIES>
+		<PROPERTIES type="boolean" category="Publication">Publier</PROPERTIES>
+		<PROPERTIES type="order" category="Publication">Ordre</PROPERTIES>
+		<FKEY card="1,1" data="Categorie,Id">CategorieId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Clients" driver="mysql" AccessPoint="1" Description="Clients"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" browseable="1">
+		<PROPERTIES type="titre" searchOrder="1" category="Intitulé">Nom</PROPERTIES>
+		<PROPERTIES type="bbcode" searchOrder="2" special="multi" category="Informations">Description</PROPERTIES>
+		<PROPERTIES type="file" category="Informations">Logo</PROPERTIES>
+		<PROPERTIES type="file" category="Informations">LogoNB</PROPERTIES>
+		<PROPERTIES type="boolean" category="Publication">Publier</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Reference" driver="mysql" AccessPoint="1" Description="References"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" browseable="1">
+		<PROPERTIES type="titre" searchOrder="1" obligatoire="1" category="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="titre" searchOrder="2" category="Intitulé">Chapo</PROPERTIES>
+		<PROPERTIES type="boolean" category="Technologie">Php</PROPERTIES>
+		<PROPERTIES type="boolean" category="Technologie">Kobeye</PROPERTIES>
+		<PROPERTIES type="boolean" category="Technologie">Joomla</PROPERTIES>
+		<PROPERTIES type="boolean" category="Technologie">Xhtml</PROPERTIES>
+		<PROPERTIES type="boolean" category="Technologie">XML</PROPERTIES>
+		<PROPERTIES type="boolean" category="Technologie">SOAP</PROPERTIES>
+		<PROPERTIES type="boolean" category="Technologie">Html</PROPERTIES>
+		<PROPERTIES type="boolean" category="Technologie">Css</PROPERTIES>
+		<PROPERTIES type="boolean" category="Technologie">Flash</PROPERTIES>
+		<PROPERTIES type="boolean" category="Technologie">Javascript</PROPERTIES>
+		<PROPERTIES type="boolean" category="Technologie">Administration</PROPERTIES>
+		<PROPERTIES type="file" category="Informations">Icone</PROPERTIES>
+		<PROPERTIES type="file" category="Informations">Photos</PROPERTIES>
+		<PROPERTIES type="titre" category="Contenu">Cibles</PROPERTIES>
+		<PROPERTIES type="bbcode"  special="multi" category="Contenu">Chiffres</PROPERTIES>
+		<PROPERTIES type="bbcode" special="multi" category="Contenu">Problematique</PROPERTIES>
+		<PROPERTIES type="price" category="Contenu">Budget</PROPERTIES>
+		<PROPERTIES type="date" category="Contenu">DateSortie</PROPERTIES>
+		<PROPERTIES type="boolean" category="Publication">Publier</PROPERTIES>
+
+		<PROPERTIES type="titre" category="A Supprimer">Technologies</PROPERTIES>
+		<PROPERTIES type="bbcode" special="multi" category="A Supprimer">Description</PROPERTIES>
+		<PROPERTIES type="varchar" category="A Supprimer">SiteWeb</PROPERTIES>
+		<PROPERTIES type="bbcode" special="multi" category="A Supprimer">Moyens</PROPERTIES>
+
+		<FKEY card="0,n" data="Categorie,Id">CategorieId</FKEY>
+		<FKEY card="1,1" data="Clients,Id">ClientsId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Prestation" driver="mysql" Icon="/Skins/AdminV2/Img/IconAqua/App.png" AccessPoint="1" description="Types de prestations">
+		<PROPERTIES type="titre" searchOrder="1">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" length="255">Url</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" query="Portfolio/TypePrestation::Id::Titre">TypePrestation</PROPERTIES>
+		<FKEY card="0,n" data="Reference,Id" behaviour="Integrated" action="Link">ReferenceId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="TypePrestation" driver="mysql" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Dico="1">
+		<PROPERTIES type="titre" searchOrder="1">Titre</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Lien" driver="mysql">
+		<PROPERTIES type="titre" category="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="bbcode"  category="Description">Commentaires</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Emplacement"  searchOrder="1">URL</PROPERTIES>
+		<PROPERTIES type="varchar" values="interne,externe" Description="Ouvrir le lien en" category="Option">Type</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" description="NoFollow" category="Option">NoFollow</PROPERTIES>
+		<PROPERTIES type="file" category="Description">Icone</PROPERTIES>
+		<FKEY card="1,1" data="Reference,Id" >ReferenceId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Donnee" driver="mysql" Icon="/Skins/AdminV2/Img/IconAqua/App2.png">
+		<PROPERTIES type="titre" searchOrder="1">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" values="Fichier,Lien,Image,Flash" searchOrder="2">Type</PROPERTIES>
+		<PROPERTIES type="file">Url</PROPERTIES>
+		<FKEY card="1,1" data="Reference,Id" >ReferenceId</FKEY>
+	</OBJECTCLASS>
+</SCHEMA>

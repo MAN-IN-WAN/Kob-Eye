@@ -1,0 +1,109 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//ABTEL Mediterranee//Gestion v0.1//FR
+BEGIN:VEVENT
+DTSTART:20160419T15:32:00
+DTEND:20160419T15:33:00
+CATEGORIES:BETAC
+SUMMARY:BETAC : Prise d'appel par Morgan Mazauric...
+DESCRIPTION: Bonjour, J'ai essay&eacute; mon ordinateur portable mais je n'arrive toujours pas &agrave; me connecter &agrave; mon ordinateur du BETAC, la connexion SSL fonctionne mais pas la connexion &agrave; mon ordinateur du bureau. Mon mari est &agrave; la maison (t&eacute;l. 04.66.20.69.78) jusqu'&agrave; 16h30 si vous pouvez voir ce qu'il en est ? Merci. Cordiales salutations. Mme Patricia GARCIAp.garcia@betac.fr
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160413T12:03:00
+DTEND:20160413T12:04:00
+CATEGORIES:UNIFERT
+SUMMARY:UNIFERT : Prise d'appel par Morgan Mazauric...
+DESCRIPTION: ALERTEVeeam Backup and Replication : Job de sauvegarde p&eacute;rim&eacute; Replication Job 1 (389CD13A-A524-4B95-A35C-5BE4293F64F2) depuis 1 semaine 1 jour sur la machine SRV-2008 (UNIFERT) Date de derni&egrave;re ex&eacute;cution r&eacute;ussie : 29/03/2016 23:12 Date de prochaine ex&eacute;cution : 11/04/2016 22:00 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160413T12:01:00
+DTEND:20160413T12:02:00
+CATEGORIES:FONE
+SUMMARY:FONE : Prise d'appel par Morgan Mazauric...
+DESCRIPTION: ALERTESymantec System Recovery : Le job de sauvegarde Sauvegarde du lecteur de (C:\\), (D:\\) ({{5B27E993-3522-4DB2-8503-9F843B4920D5}}) a &eacute;chou&eacute; sur la machine SRV2008 (FONE) Date de prochaine ex&eacute;cution : 11/04/2016 22:00 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160413T11:57:00
+DTEND:20160413T11:58:00
+CATEGORIES:MAISONHOURS
+SUMMARY:MAISONHOURS : Prise d'appel par Morgan Mazauric...
+DESCRIPTION: ALERTESymantec System Recovery : Job de sauvegarde p&eacute;rim&eacute; Sauvegarde du lecteur de DellUtility (*:\\), (C:\\), Data (E:\\) (3) ({{EA27C746-E6A2-4FDE-9468-2433E495966C}}) depuis 1 semaine 1 jour sur la machine SRV2003 (SOGELOG) Date de derni&egrave;re ex&eacute;cution r&eacute;ussie : 07/03/2016 01:27 Date de prochaine ex&eacute;cution : 08/03/2016 02:00 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160412T13:44:00
+DTEND:20160412T13:45:00
+CATEGORIES:OCEAN
+SUMMARY:OCEAN : Prise d'appel par Morgan Mazauric...
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160406T17:43:00
+DTEND:20160406T17:44:00
+CATEGORIES:CM-RADIOLOGIE
+SUMMARY:CM-RADIOLOGIE : Prise d'appel par Morgan Mazauric...
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160401T15:00:00
+DTEND:20160401T15:01:00
+CATEGORIES:RYCKMAN
+SUMMARY:RYCKMAN : Prise d'appel par Morgan Mazauric...
+DESCRIPTION: Lors de ma TM pour changement de SSID Emilie Loiseau m'a signal&eacute; l'arriv&eacute;e de nombreux spams, surtout dans la bo&icirc;te de MyriamEmilie en re&ccedil;oit 5/6 par jourMyriam beaucoup plusCertain mails (avec des factures en PJ) sont quand &agrave; eux consid&eacute;r&eacute;s comme SPAM alors qu'ils ne le sont pas.
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160330T08:59:00
+DTEND:20160330T09:00:00
+CATEGORIES:THIBAUD
+SUMMARY:THIBAUD : Prise d'appel par Morgan Mazauric...
+DESCRIPTION: Lors de  derniere visite pr&eacute;ventive M. Millet m'avais fait par d'un mail suspicieux.Il faut relev&eacute; l'en-t&ecirc;te du mail afin d'en detecter la source.
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160324T08:44:00
+DTEND:20160324T12:15:00
+CATEGORIES:CAPMED
+SUMMARY:CAPMED : Site...
+DESCRIPTION: Arret et nettoyge des ordinateur et du serveurGLPI okKaspersky OKVerification du fonctionement des ordinateurMise a jour windowsNettoyge pc Validation avec Anne Sophie ok
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160324T14:00:00
+DTEND:20160324T17:50:00
+CATEGORIES:ESPACELAND
+SUMMARY:ESPACELAND : Site ...
+DESCRIPTION: Renommage de deux postesSur 7 postesV&eacute;rif journaux &eacute;v&egrave;nementsInstall package KasperskyInstall fusionBelarc des postesSoufflage des 7 PC
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160323T12:00:00
+DTEND:20160323T13:00:00
+CATEGORIES:THIBAUD
+SUMMARY:THIBAUD : Site...
+DESCRIPTION: arr&ecirc;t du serveursoufflagered&eacute;marrage et test OK
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160323T09:00:00
+DTEND:20160323T10:45:00
+CATEGORIES:THIBAUD
+SUMMARY:THIBAUD : Site...
+DESCRIPTION: nettoyage , renommage des postes restantma&agrave; KAV10installation de fusionbelarc des postes
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160322T09:00:00
+DTEND:20160322T11:45:00
+CATEGORIES:FDGROUP
+SUMMARY:FDGROUP : Site ....
+DESCRIPTION: V&eacute;rif ESXIV&eacute;rif sauvegardeV&eacute;rif journaux &eacute;v&egrave;nementsArret et soufflage du serveurBranchement et config IMM
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160322T16:16:00
+DTEND:20160322T17:16:00
+CATEGORIES:CAC
+SUMMARY:CAC : Support Sylae
+DESCRIPTION: Appel au supportDemande d'appel au fournisseur de certiat (CA CERT)Appel CA CERT + v&eacute;rif certificat -> OKRappel SylaeIls ont des soucis de certificat en ce momentRappel du service thnique pr&eacute;vu.Si ils ne rapelle pas... relancer.
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160318T09:00:00
+DTEND:20160318T17:40:00
+CATEGORIES:UNIFERT
+SUMMARY:UNIFERT : Site ..
+DESCRIPTION: Renommage des postesEtiquettageV&eacute;rif journaux &eacute;v&egrave;nementsInst KESInst fusionAdwcleanerBelarc
+END:VEVENT
+END:VCALENDAR

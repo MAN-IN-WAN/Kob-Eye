@@ -1,0 +1,3 @@
+[!GlpiApi::getComputerList()!]
+
+[!GlpiApi::test()!]

@@ -1,0 +1,7 @@
+[STORPROC [!Query!]|Cat|0|1|Id|ASC]
+	[IF [!Cat::Modele!]=]
+		[MODULE MiseEnPage/Modeles/Default?Chemin=[!Query!]]
+	[ELSE]
+		[MODULE MiseEnPage/Modeles/[!Cat::Modele!]?Chemin=[!Query!]]
+	[/IF]
+[/STORPROC]

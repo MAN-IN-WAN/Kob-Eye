@@ -1,0 +1,6 @@
+[COUNT [!Query!]|C]
+[IF [!C!]=1]
+	[MODULE Portfolio/Reference/Fiche?Chemin=[!Query!]]	
+[ELSE]
+	[MODULE Portfolio/Reference/Liste?Chemin=[!Query!]]
+[/IF]

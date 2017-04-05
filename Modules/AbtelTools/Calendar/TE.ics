@@ -1,0 +1,109 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//ABTEL Mediterranee//Gestion v0.1//FR
+BEGIN:VEVENT
+DTSTART:20160606T08:25:00
+DTEND:20160606T08:26:00
+CATEGORIES:ADRH
+SUMMARY:ADRH : Contrat Débloqué...
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160421T10:06:00
+DTEND:20160421T10:07:00
+CATEGORIES:ADRH
+SUMMARY:ADRH : Prise d'appel par Epalla Thierry...
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160415T15:37:00
+DTEND:20160415T15:38:00
+CATEGORIES:ADRH
+SUMMARY:ADRH : Prise d'appel par Epalla Thierry ...
+DESCRIPTION: la sortie VGA ne fonctionne pasHDMI OKETHERNET OKUSB3 OK faire SAV,  produit neuf
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160414T14:39:00
+DTEND:20160414T14:40:00
+CATEGORIES:BETAC
+SUMMARY:BETAC : Prise d'appel par Epalla Thierry...
+DESCRIPTION: une valeur qui est suppos&eacute;e &ecirc;tre report&eacute;e sur un autre paragraphe s'additionne plut&ocirc;t lorsqu'on y ins&egrave;re une virguleex: 7,7 % devient 14%      3,5% devient 8%et ceci uniquement sur poste de Mme GARCIA et M. BEYsur le poste du s&eacute;cr&eacute;tariat c OKversion de word 2013 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160325T15:41:00
+DTEND:20160325T16:59:00
+CATEGORIES:THIBAUD
+SUMMARY:THIBAUD : Atelier...
+DESCRIPTION: mise &agrave; jour du dossier client
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160325T11:31:00
+DTEND:20160325T11:46:00
+CATEGORIES:0
+SUMMARY:0 : reset Pabx de test...
+DESCRIPTION: IP par d&eacute;faut 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160325T08:49:00
+DTEND:20160325T08:50:00
+CATEGORIES:ADRH
+SUMMARY:ADRH : appel du client sans réponse , message laissé sur son répondeur
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160324T14:00:00
+DTEND:20160324T15:00:00
+CATEGORIES:ADRH
+SUMMARY:ADRH : site...
+DESCRIPTION: recherche du probl&egrave;mele poste ne d&eacute;marre pastouche ON/OFF &agrave; priori cass&eacute;installation du portable de pr&ecirc;ttransfert des donn&eacute;estest OK
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160324T15:00:00
+DTEND:20160324T18:00:00
+CATEGORIES:ADRH
+SUMMARY:ADRH : site...
+DESCRIPTION: installation d'un portable de pr&ecirc;tinstallation des imprimantesmise en domainetransfert des donn&eacute;es
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160324T11:09:00
+DTEND:20160324T11:25:00
+CATEGORIES:0
+SUMMARY:0 : nettoyage poste ericsson
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160324T10:39:00
+DTEND:20160324T11:09:00
+CATEGORIES:ADRH
+SUMMARY:ADRH : Atelier...
+DESCRIPTION: v&eacute;rif poste de pr&ecirc;tinstallation des mise &agrave; jour et licences KAV
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160323T16:25:00
+DTEND:20160323T16:35:00
+CATEGORIES:0
+SUMMARY:0 : PEC retour de prêt AUDIREX
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160323T12:00:00
+DTEND:20160323T13:00:00
+CATEGORIES:THIBAUD
+SUMMARY:THIBAUD : Site...
+DESCRIPTION: arr&ecirc;t du serveursoufflagered&eacute;marrage et test OK
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160323T09:00:00
+DTEND:20160323T10:45:00
+CATEGORIES:THIBAUD
+SUMMARY:THIBAUD : Site...
+DESCRIPTION: nettoyage , renommage des postes restantma&agrave; KAV10installation de fusionbelarc des postes
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160321T08:30:00
+DTEND:20160321T09:10:00
+CATEGORIES:0
+SUMMARY:0 : point info hebdo
+DESCRIPTION: 
+END:VEVENT
+END:VCALENDAR

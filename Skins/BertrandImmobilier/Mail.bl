@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Bertrand Immobilier</title>
+</head>
+<body>
+<table cellpadding="0" cellspacing="0" border="0" align="center" width="100%">
+    <tbody>
+    <tr>
+        <td align="center" style="background-color:#511212;padding:37px 0" bgcolor="#263238">
+            <table cellpadding="0" cellspacing="0" border="0" style="color:#444444;font-family:arial;font-size:12px;background-color:#ffffff;margin:0;border-top:10px solid #bb2a2a;border-bottom:10px solid #bb2a2a;padding-top:0px" width="600" bgcolor="#ffffff">
+                <tbody>
+                <tr>
+                    <td style="width:100%;height:80px;text-align:center;background:url('http://www.bertrandimmobilier.fr/Skins/BertrandImmobilier/assets/img/img-entete-mail.png')">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size:14px;line-height:1.3em;background-color:rgb(255,255,255);">
+                        <table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;margin:0;width:550px;margin-left:25px">
+                            <tbody>
+                            <tr>
+                                <td style="color:#444444;font-family:arial;font-size:14px;background-color:#ffffff;padding:25px 0;border:#dddddd" align="left" bgcolor="#ffffff;">
+                                    [DATA]
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <hr style="display:block;min-height:1px;line-height:0;width:550px;background-color:#e0dddd;margin:0;border:none;margin-left:25px">
+
+                        <div style="text-align:center;font-size:12px" align="center">
+                            <p>
+                                <a href="https://www.facebook.com/bertrandimmobilierpalavas" target="_blank"><img src="http://account.myposeo.com/images/email/fr/ico_facebook.png" style="border:none"></a><br>
+                                <a style="color:#569faf;border:none" href="mailto:transaction@bertrandimmobilier.fr" target="_blank">transaction@bertrandimmobilier.fr</a> |
+                                <a style="color:#569faf;border:none" href="mailto:syndic@bertrandimmobilier.fr" target="_blank">syndic@bertrandimmobilier.fr</a> |
+                                <a style="color:#569faf;border:none" href="mailto:location@bertrandimmobilier.fr" target="_blank">location@bertrandimmobilier.fr</a> |
+                                <a style="color:#569faf;border:none" href="http://www.bertrandimmobilier.fr" target="_blank">www.bertrandimmobilier.fr</a> | 04.67.50.79.12<br>
+                                <span style="color: #37474F"> © Bertrand Immobilier</span>
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size:14px;line-height:1.3em;background-color:rgb(255,255,255);">
+                        <hr style="display:block;min-height:1px;line-height:0;width:550px;background-color:#e0dddd;margin:0;border:none;margin-left:25px">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

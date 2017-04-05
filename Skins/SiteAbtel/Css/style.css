@@ -1,0 +1,1476 @@
+/*--- RESET ---*/
+html, body, div, span, applet, object, iframe, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline
+}
+
+blockquote, q {
+    quotes: none
+}
+
+blockquote:before, blockquote:after, q:before, q:after {
+    content: '';
+    content: none;
+}
+
+ins {
+    text-decoration: none
+}
+
+del {
+    text-decoration: line-through
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0
+}
+
+a:active, input:active {
+    outline: none
+}
+
+:-moz-any-link:focus {
+    outline: none
+}
+
+/****************************************************************
+ *								*
+ *			     COLOR SET    			*
+ *								*
+ ****************************************************************/
+/*
+ *	#fff
+ *	#aaa
+ *	#222;
+ *	#000
+ *  info      bleu   : #0e8ec1
+ *  web       orange : #ee7805
+ *  network   vert   : #6eb126
+ *  formation rose   : #e6008d
+ *  autre     gris   : #868585
+ *
+ */
+#colorscheme {
+    color: #0e8ec1;
+    color: #ee7805;
+    color: #6eb126;
+    color: #e6008d;
+    color: #868585;
+}
+
+/*************************************************/
+/******************** FONTES *********************/
+/*************************************************/
+
+@font-face {
+    font-family: 'latoblack';
+    src: url('../Fonts/lato-black-webfont.eot');
+    src: url('../Fonts/lato-black-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../Fonts/lato-black-webfont.woff2') format('woff2'),
+    url('../Fonts/lato-black-webfont.woff') format('woff'),
+    url('../Fonts/lato-black-webfont.ttf') format('truetype'),
+    url('../Fonts/lato-black-webfont.svg#latoblack') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'latoblackitalic';
+    src: url('../Fonts/lato-blackitalic-webfont.eot');
+    src: url('../Fonts/lato-blackitalic-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../Fonts/lato-blackitalic-webfont.woff2') format('woff2'),
+    url('../Fonts/lato-blackitalic-webfont.woff') format('woff'),
+    url('../Fonts/lato-blackitalic-webfont.ttf') format('truetype'),
+    url('../Fonts/lato-blackitalic-webfont.latoblackitalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'latobold';
+    src: url('../Fonts/lato-bold-webfont.eot');
+    src: url('../Fonts/lato-bold-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../Fonts/lato-bold-webfont.woff2') format('woff2'),
+    url('../Fonts/lato-bold-webfont.woff') format('woff'),
+    url('../Fonts/lato-bold-webfont.ttf') format('truetype'),
+    url('../Fonts/lato-bold-webfont.latobold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'latobolditalic';
+    src: url('../Fonts/lato-bolditalic-webfont.eot');
+    src: url('../Fonts/lato-bolditalic-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../Fonts/lato-bolditalic-webfont.woff2') format('woff2'),
+    url('../Fonts/lato-bolditalic-webfont.woff') format('woff'),
+    url('../Fonts/lato-bolditalic-webfont.ttf') format('truetype'),
+    url('../Fonts/lato-bolditalic-webfont.latobolditalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'latohairline';
+    src: url('../Fonts/lato-hairline-webfont.eot');
+    src: url('../Fonts/lato-hairline-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../Fonts/lato-hairline-webfont.woff2') format('woff2'),
+    url('../Fonts/lato-hairline-webfont.woff') format('woff'),
+    url('../Fonts/lato-hairline-webfont.ttf') format('truetype'),
+    url('../Fonts/lato-hairline-webfont.latohairline') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'latohairlineitalic';
+    src: url('../Fonts/lato-hairlineitalic-webfont.eot');
+    src: url('../Fonts/lato-hairlineitalic-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../Fonts/lato-hairlineitalic-webfont.woff2') format('woff2'),
+    url('../Fonts/lato-hairlineitalic-webfont.woff') format('woff'),
+    url('../Fonts/lato-hairlineitalic-webfont.ttf') format('truetype'),
+    url('../Fonts/lato-hairlineitalic-webfont.latohairlineitalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'latoitalic';
+    src: url('../Fonts/lato-italic-webfont.eot');
+    src: url('../Fonts/lato-italic-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../Fonts/lato-italic-webfont.woff2') format('woff2'),
+    url('../Fonts/lato-italic-webfont.woff') format('woff'),
+    url('../Fonts/lato-italic-webfont.ttf') format('truetype'),
+    url('../Fonts/lato-italic-webfont.latoitalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'latolight';
+    src: url('../Fonts/lato-light-webfont.eot');
+    src: url('../Fonts/lato-light-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../Fonts/lato-light-webfont.woff2') format('woff2'),
+    url('../Fonts/lato-light-webfont.woff') format('woff'),
+    url('../Fonts/lato-light-webfont.ttf') format('truetype'),
+    url('../Fonts/lato-light-webfont.latolight') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'latolightitalic';
+    src: url('../Fonts/lato-lightitalic-webfont.eot');
+    src: url('../Fonts/lato-lightitalic-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../Fonts/lato-lightitalic-webfont.woff2') format('woff2'),
+    url('../Fonts/lato-lightitalic-webfont.woff') format('woff'),
+    url('../Fonts/lato-lightitalic-webfont.ttf') format('truetype'),
+    url('../Fonts/lato-lightitalic-webfont.latolightitalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'latoregular';
+    src: url('../Fonts/lato-regular-webfont.eot');
+    src: url('../Fonts/lato-regular-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../Fonts/lato-regular-webfont.woff2') format('woff2'),
+    url('../Fonts/lato-regular-webfont.woff') format('woff'),
+    url('../Fonts/lato-regular-webfont.ttf') format('truetype'),
+    url('../Fonts/lato-regular-webfont.latoregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/*-- GLOBAL ---*/
+html, body {
+    padding: 0;
+    margin: 0;
+    font-family: 'latoregular';
+    font-size: 12px;
+    background-color: #222;
+    height: 100%;
+}
+
+#siteWrap {
+    min-height: 100%;
+    position: relative;
+}
+
+input, textarea, select, button {
+    font-family: Arial;
+    font-size: 1em;
+}
+
+a {
+    text-decoration: none;
+    color: #77a;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    list-style: disc inside;
+}
+
+div.noMargin {
+    margin: 0;
+}
+
+.mCSB_inside > .mCSB_container {
+    margin: 0;
+}
+
+.clear {
+    clear: both;
+}
+
+.fullHeight,
+#mainContent {
+    height: 100%;
+    overflow: auto;
+}
+
+
+/****************************************************************
+ *								*
+ *			     GENERAL    			*
+ *								*
+ ****************************************************************/
+.templateContainer{
+    height: 100%;
+}
+
+#siteWrap div#header,
+#siteWrap div#footer {
+    background-color: rgba(10, 10, 10, 0.7);
+    z-index: 100;
+}
+
+/* Header */
+#siteWrap #header {
+    height: 70px;
+    border-top: 3px solid #fff;
+    position: relative;
+    padding:5px 0;
+}
+
+#siteWrap #header #logoAbtel,
+#siteWrap #header #menuTop {
+    height: 100%;
+}
+
+#siteWrap #header #logoAbtel {
+    text-align: center;
+}
+
+#siteWrap #header #logoAbtel #logoHead {
+    height: 100%;
+}
+
+/* Footer */
+#siteWrap #footer {
+    height: 35px;
+    width: 100%;
+    position: relative;
+}
+
+#siteWrap #footer #newsLetterAbtel,
+#siteWrap #footer #menuBottom,
+#siteWrap #footer #menuSocial,
+#siteWrap #footer #newsletterBottom {
+    height: 100%;
+}
+
+#siteWrap #footer #newsletterBottom form {
+    height: 100%;
+    padding-left: 20px;
+
+    display: none;
+}
+
+#siteWrap #footer #newsletterBottom form label {
+    color: #fff;
+    font-size: 1.2em;
+    text-transform: uppercase;
+    margin-right: 15px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#siteWrap #footer #newsletterBottom form input {
+    background: none;
+    border: none;
+    font-size: 1em;
+    color: #868585;
+    width: 220px;
+    height: 100%;
+}
+
+#siteWrap #footer #newsletterBottom form button {
+    background: none;
+    border: none;
+    font-size: 2em;
+    line-height: 1.2em;
+    color: #868585;
+    vertical-align: middle;
+}
+
+#siteWrap #footer #bottomMenu {
+    height: 100%;
+}
+
+#siteWrap #footer #bottomNavigation {
+    height: 100%;
+    float: right;
+}
+
+#siteWrap #footer #bottomNavigation ul {
+    height: 100%;
+}
+
+#siteWrap #footer #bottomNavigation ul li {
+    list-style: none;
+    float: left;
+    /*font-size:1.2em;*/
+    text-transform: uppercase;
+    height: 100%;
+}
+
+#siteWrap #footer #bottomNavigation ul li a {
+    display: inline-block;
+    color: #aaa;
+    height: 100%;
+    line-height: 100%;
+    padding: 10px;
+}
+
+#siteWrap #footer #bottomNavigation ul li a:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Main Content */
+#siteWrap #main {
+    position: relative;
+    z-index: 100;
+    overflow: hidden;
+    background-color: #fff;
+    height:1500px;
+}
+
+/* Menu Principal */
+#siteWrap #mainMenu {
+    position: relative;
+    z-index: 100;
+    background-color: rgba(23, 23, 23, 0.6);
+}
+
+#siteWrap #mainMenu .mainMenuLink {
+    width: 17.6%;
+    height: 100%;
+    padding: 20px 0;
+    margin: 0 0 0 2%;
+    float: left;
+    position: relative;
+}
+#siteWrap #mainMenu .mainMenuLink .abtelMainSubMenu{
+    position: absolute;
+    bottom: 15%;
+    left: 5%;
+    color: #fff;
+    font-size: 1.2em;
+    font-family: 'latobold';
+}
+#siteWrap #mainMenu .mainMenuLink .abtelMainSubMenuLink{
+    color: #fff;
+}
+#siteWrap #mainMenu .mainMenuLink .abtelMainSubMenuLink .sub{
+    font-family: 'latoregular';
+}
+
+#siteWrap #mainMenu .mainMenuLink a.abtelMainMenuLink {
+    display: block;
+    /*padding: 5%;*/
+    color: #fff;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    background-color: #868585;
+    padding-top: 75%;
+}
+
+#siteWrap #mainMenu .mainMenuLink.disabled a {
+    pointer-events: none;
+}
+
+#siteWrap #mainMenu .mainMenuLink a .mainMenuWrap {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 5%;
+}
+
+#siteWrap #mainMenu .mainMenuLink a .mainMenuWrap img {
+    margin-bottom: 8%;
+    width: 70%;
+}
+
+#siteWrap #mainMenu .mainMenuLink.contactMenu a .mainMenuWrap {
+    display: flex;
+    flex-direction: column;
+}
+#siteWrap #mainMenu .mainMenuLink.contactMenu a h2{
+    margin-top: auto;
+}
+
+#siteWrap #mainMenu .mainMenuLink.contactMenu a{
+    position: relative;
+}
+#siteWrap #mainMenu .mainMenuLink.contactMenu a:before{
+    content: "\e111";
+    font-family: 'Glyphicons Halflings';
+    color: #fff;
+    position: absolute;
+    top: -40px;
+    left: 140px;
+    font-size: 13em;
+    opacity: 0.3;
+    -ms-transform: rotate(-25deg); /* IE 9 */
+    -webkit-transform: rotate(-25deg); /* Chrome, Safari, Opera */
+    transform: rotate(-25deg);
+}
+
+#siteWrap #mainMenu .mainMenuLink.contactMenu h3 {
+    padding-bottom: 5%;
+}
+
+#siteWrap #mainMenu .mainMenuLink a.abtelMainMenuLink:hover {
+    text-decoration: none;
+}
+
+#siteWrap #mainMenu .mainMenuLink a.abtelMainMenuLink:hover:after {
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+#siteWrap #mainMenu .mainMenuLink a.abtelMainMenuLink h2 {
+    text-transform: uppercase;
+    font-size: 1.8em;
+    font-weight: 600;
+}
+
+#siteWrap #mainMenu .mainMenuLink a.abtelMainMenuLink p {
+    font-size: 1.1em;
+    /*font-style: italic;*/
+}
+
+/* Background Slide */
+#siteWrap #slideBack {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+}
+
+#siteWrap #slideBack .item {
+    text-align: center;
+}
+
+#siteWrap #slideBack .item img {
+    display: inline-block;
+}
+
+.abtelContent {
+    padding: 15px;
+    padding-left: 35px;
+}
+
+/****************************************************************
+ *								*
+ *			  ACCUEIL GROUPE   			*
+ *								*
+ ****************************************************************/
+#newsHome,
+#projectHome {
+    margin: 20px 0;
+    padding: 20px 20px 0 20px;
+    background-color: rgba(23, 23, 23, 0.7);
+    color: #fff;
+    max-width: 450px;
+}
+
+#projectHome,
+#projectHomeTxt {
+    display: none;
+}
+
+#projectHomeTxt {
+    color: #fff;
+    margin: 20px 0;
+    padding: 20px 20px 0 20px;
+    font-size: 3em;
+    float: left;
+    width: 55%;
+}
+
+#projectResumeCell {
+    vertical-align: middle;
+}
+
+#projectResumeTxt {
+    margin: 20px;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 5px #000, -1px -1px 5px #000, 1px 1px 20px #000;
+}
+
+#newsHome {
+    width: 300px;
+}
+
+#newsHome .newsPreview {
+    /*height: 30%;*/
+    margin-bottom: 5%;
+}
+
+#newsHome .newsPreview .newsEntite {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin: 2px;
+}
+
+#newsHome .newsPreview h3 {
+    font-size: 1.4em;
+    width: 100%;
+}
+
+#newsHome .newsPreview .creds {
+    color: #777;
+    font-size: 0.9em;
+}
+
+#newsHome .newsPreview .newsContent {
+    width: 100%;
+    height: 70%;
+    color: #aaa;
+    line-height: 0.98em;
+}
+
+#newsHome a {
+    color: #fff;
+}
+
+#newsHome a:hover {
+    text-decoration: none;
+    color: #868585;
+}
+
+#projectHome #tiersLogo {
+    width: 50%;
+    margin: auto;
+    height: 20%;
+}
+
+#projectHome #projectResume {
+    margin: 15px 0;
+    font-size: 1.3em;
+    height: 30%;
+}
+
+#projectHome #projectShare {
+    height: 40%;
+    width: 80%;
+    float: left;
+}
+
+#projectHome #projectShare .progressContainer {
+    height: 25%;
+}
+
+#projectHome .projectEntity {
+    font-size: 1.3em;
+    text-transform: uppercase;
+    height: 50%;
+    margin-bottom: 1%;
+}
+
+#projectHome .projectEntity .entityPercent {
+    font-family: 'latobold';
+    font-weight: 600;
+}
+
+#projectHome .progress {
+    background-color: rgba(134, 133, 133, 0.7);
+    height: 25%;
+    margin-top: 5px;
+    margin-bottom: 0;
+    border-radius: 10px;
+}
+
+#projectHome .progress .progress-bar {
+    border-radius: 10px;
+}
+
+#projectHome #slideNextProj {
+    text-align: center;
+    float: right;
+    height: 50%;
+    width: 20%;
+}
+
+#projectHome #slideNextProj a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    line-height: 400%;
+    color: #fff;
+    font-size: 4em;
+}
+
+#projectHome #slideNextProj a:hover {
+    text-decoration: none;
+}
+
+/****************************************************************
+ *								*
+ *	                MENU DU HAUT	   			*
+ *								*
+ ****************************************************************/
+
+#topNavigation ul.navbar-top {
+    float: right;
+}
+
+#topNavigation ul.navbar-top li {
+    margin-top: 10px;
+    list-style: none;
+    float: left;
+    padding-right: 20px;
+    /*font-size:1.2em;*/
+    text-transform: uppercase;
+    color: #fff;
+}
+
+#topNavigation ul.navbar-top li a {
+    color: #aaa;
+    display: inline-block;
+    padding: 10px;
+}
+
+#topNavigation ul.navbar-top li a:hover {
+    color: #868585;
+    text-decoration: none;
+}
+
+#topNavigation ul.navbar-top li a.contact {
+    color: #fff;
+    background-color: #868585;
+    border-radius: 30px;
+    /*font-size: 1.1em;
+    font-weight: 600;*/
+    margin-top: 5px;
+    padding: 5px 10px;
+    padding-left: 30px;
+    text-shadow: none;
+    text-transform: uppercase;
+    position: relative;
+}
+
+#topNavigation ul.navbar-top li a.contact:before {
+    content: "\e111";
+    font-family: 'Glyphicons Halflings';
+    color: #fff;
+    position: absolute;
+    top: 3px;
+    left: 10px;
+    font-size: 1.3em;
+}
+
+#topNavigation ul.navbar-top li a.contact:after {
+    content: "\e052";
+    font-family: 'Glyphicons Halflings';
+    color: #868585;
+    position: absolute;
+    top: 7px;
+    left: 14px;
+    font-size: 0.7em;
+}
+
+#topNavigation ul.navbar-top li a.contact:hover {
+    color: #fff;
+    text-decoration: underline
+}
+
+/****************************************************************
+ *								*
+ *	                MENU PRINCIPAL	   			*
+ *								*
+ ****************************************************************/
+
+/****************************************************************
+ *								*
+ *			MENU DU BAS	   			*
+ *								*
+ ****************************************************************/
+
+/****************************************************************
+ *								*
+ *			REDACTIONNEL	   			*
+ *								*
+ ****************************************************************/
+
+/*= =NEWS= =*/
+#listNews .news {
+    width: 98%;
+}
+
+#listNews .news.row a.row {
+    display: block;
+}
+
+#newsTri,
+#articleBack {
+    background-color: #868585;
+    color: #fff;
+}
+
+#newsTri a,
+#articleBack a {
+    color: #fff;
+    display: inline-block;
+    padding: 15px;
+    padding-left: 35px;
+    font-size: 1.3em;
+    text-shadow: 1px 1px 3px #292828;
+}
+
+#newsTri h1 {
+    font-size: 1.3em;
+    display: inline-block;
+}
+
+#newsDisplay {
+    font-size: 1.3em;
+    padding: 30px;
+}
+
+#newsDisplay .news {
+    margin-bottom: 15px;
+}
+
+#newsDisplay .news .newsListEnt {
+    font-size: 0.7em;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+#newsDisplay .news h3 {
+    font-size: 1.1em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #000;
+}
+
+#detailNews #newsTitle {
+    color: #fff;
+    text-transform: uppercase;
+    padding: 30px;
+}
+
+#detailNews #newsContent {
+    padding: 30px;
+}
+
+/*= =MISE EN PAGE= =*/
+#detailArticle {
+    /*padding: 35px;*/
+}
+#articleHeader{
+    padding:15px 0;
+    color: #fff;
+}
+#articleHeader h2{
+    font-size:1.5em;
+}
+#articleHeader .container{
+    padding-left:100px;
+    position: relative;
+}
+#articleHeader .container:after{
+    content: "\e165";
+    font-size: 80px;
+    font-weight: 600;
+    position: absolute;
+    top: 50%;
+    height: 100px;
+    margin-top: -50px;
+    left: 0;
+    color: #fff;
+    font-family: 'Glyphicons Halflings';
+    opacity: 0.5;
+}
+
+#detailArticle .contenuMEP {
+    margin-top: 15px;
+    font-size: 1.3em;
+}
+
+#detailArticle .contenuMEP:after {
+    content: ' ';
+    display: table;
+    clear: both;
+}
+
+#detailArticle .contenuMEP .colonneMEP {
+    float: left;
+}
+
+#detailArticle .contenuMEP .colonneMEP + .colonneMEP {
+    padding-left: 15px;
+}
+
+#detailArticle .contenuMEP .colonneMEP img {
+    width: 100%;
+}
+
+#detailArticle .contenuMEP .colonneMEP .imgMEPContainer {
+    position: relative;
+}
+
+#detailArticle .contenuMEP .colonneMEP .imgMEPContainer .imgMEPLegend {
+    position: absolute;
+    color: #000;
+    left: 0;
+    bottom: 0;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.5);
+    width: 100%;
+}
+
+/*= =CONTACT= =*/
+#contactHead {
+    background-color: #868585;
+    color: #fff;
+    padding: 15px;
+    padding-left: 35px;
+    font-size: 1.3em;
+}
+#contactHead h1 {
+    padding-left:50px;
+    position: relative;
+}
+#contactHead h1:after {
+    content: "\2709";
+    font-family: 'Glyphicons Halflings';
+    position: absolute;
+    opacity:0.5;
+    top: 0px;
+    left: 0px;
+}
+
+#contactWrap {
+    padding: 30px 15px;
+}
+
+#contactWrap #contactMap iframe {
+    width: 100%;
+}
+
+#contactWrap #formInputs,
+#contactWrap #captchaContact,
+#contactWrap #submitButtons {
+    margin-bottom: 35px;
+}
+
+#contactWrap #formInputs .control-group {
+    clear: both;
+}
+
+#contactWrap #formInputs label {
+    text-align: left;
+    width: 150px;
+    float: left;
+}
+#contactWrap #captchaContact input,
+#contactWrap #formInputs input{
+    background-color: #fafafa;
+    text-align: left;
+    width: 65%;
+    margin-left: 10px;
+    float: left;
+    border: none;
+    color: #000;
+    padding: 2px 10px;
+    border-bottom:1px solid #b2dfff;
+    margin-bottom: 5px;
+}
+
+#contactWrap #formInputs textarea {
+    background-image:  -webkit-linear-gradient(transparent 30px, #b2dfff 30px, #b2dfff 31px, transparent 31px);
+    background-image:  -moz-linear-gradient(transparent 30px, #b2dfff 30px, #b2dfff 31px, transparent 31px);
+    background-image:  -ms-linear-gradient(transparent 30px, #b2dfff 30px, #b2dfff 31px, transparent 31px);
+    background-image:  -o-linear-gradient(transparent 30px, #b2dfff 30px, #b2dfff 31px, transparent 31px);
+    background-image:  linear-gradient(transparent 30px, #b2dfff 30px, #b2dfff 31px, transparent 31px);
+    background-size:  100% 31px;
+    background-color: #fafafa;
+    line-height: 31px;
+    margin-left: 10px;
+    border:none;
+    padding: 8px;
+    resize: vertical;
+    width:60%;
+}
+
+#contactWrap #captchaContact label {
+    text-align: left;
+}
+.Obligatoire{
+    color: #ee7805;
+}
+#contactWrap #captchaContact .controls{
+    display: inline-block;
+}
+#contactWrap #captchaContact input{
+    float: none;
+    width:50px;
+    text-align: center;
+}
+#contactWrap #captchaContact input[readonly] {
+    background-color: transparent;
+    border:none;
+    color: #000;
+}
+#contactWrap #submitButtons .btn{
+    -webkit-border-radius:0;
+    -moz-border-radius:0;
+    border-radius:0;
+}
+
+/*= =SUPPORT= =*/
+#supportHead {
+    background-color: #868585;
+    color: #fff;
+    font-size: 1.3em;
+    padding:15px;
+    padding-left:35px;
+}
+#supportHead h1 {
+    padding-left:50px;
+    position: relative;
+}
+#supportHead h1:after {
+    content: "\e136";
+    font-family: 'Glyphicons Halflings';
+    position: absolute;
+    opacity:0.5;
+    top: 0px;
+    left: 0px;
+}
+
+#supportInfo {
+    font-size: 1.3em;
+    color: #fff;
+    padding:15px 0;
+}
+
+#supportInfo a {
+    color: #f9a869;
+    font-weight: 600;
+}
+
+#supportInfo #supportIP {
+    font-weight: 600;
+    font-size: 1.1em;
+}
+
+#supportContent {
+    padding:15px 0;
+}
+
+#supportContent .artFile,
+#supportContent .artLink {
+    float: left;
+    padding: 15px;
+}
+
+/*= =SUPPLEMENT SIGNATURE= =*/
+#signatureAbt {
+    height: 100%;
+}
+
+/*Reset*/
+#signatureAbt #signPreview {
+    background: 0;
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: transparent;
+    background-image: none;
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-size: auto auto;
+    border: 0;
+    border-style: none;
+    border-width: medium;
+    border-color: inherit;
+    border-bottom: 0;
+    border-bottom-color: inherit;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-style: none;
+    border-bottom-width: medium;
+    border-collapse: separate;
+    border-image: none;
+    border-left: 0;
+    border-left-color: inherit;
+    border-left-style: none;
+    border-left-width: medium;
+    border-radius: 0;
+    border-right: 0;
+    border-right-color: inherit;
+    border-right-style: none;
+    border-right-width: medium;
+    border-spacing: 0;
+    border-top: 0;
+    border-top-color: inherit;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-top-style: none;
+    border-top-width: medium;
+    bottom: auto;
+    box-shadow: none;
+    box-sizing: content-box;
+    caption-side: top;
+    clear: none;
+    clip: auto;
+    color: inherit;
+    content: normal;
+    counter-increment: none;
+    counter-reset: none;
+    cursor: auto;
+    direction: ltr;
+    display: inline;
+    empty-cells: show;
+    float: none;
+    font-family: "serif";
+    font-size: medium;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    height: auto;
+    left: auto;
+    letter-spacing: normal;
+    line-height: normal;
+    list-style: none;
+    list-style-image: none;
+    list-style-position: outside;
+    list-style-type: disc;
+    margin: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    max-height: none;
+    max-width: none;
+    min-height: 0;
+    min-width: 0;
+    opacity: 1;
+    outline: 0;
+    outline-style: none;
+    outline-width: medium;
+    overflow: visible;
+    overflow-x: visible;
+    overflow-y: visible;
+    padding: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    page-break-after: auto;
+    page-break-before: auto;
+    page-break-inside: auto;
+    perspective: none;
+    perspective-origin: 50% 50%;
+    position: static;
+    right: auto;
+    table-layout: auto;
+    text-align: inherit;
+    text-decoration: none;
+    text-indent: 0;
+    text-shadow: none;
+    text-transform: none;
+    top: auto;
+    transform: none;
+    transform-style: flat;
+    transition: none;
+    transition-delay: 0s;
+    transition-duration: 0s;
+    transition-property: none;
+    transition-timing-function: ease;
+    unicode-bidi: normal;
+    vertical-align: baseline;
+    visibility: visible;
+    white-space: normal;
+    width: auto;
+    word-spacing: normal;
+    z-index: auto;
+}
+
+#signatureAbt #signForm {
+    height: 100%;
+    overflow: auto;
+}
+
+#signatureAbt #signForm .formGrp {
+    font-size: 1.3em;
+    margin-bottom: 5px;
+}
+
+#signatureAbt #signForm #mpSig {
+    margin-top: 10px;
+}
+
+#signatureAbt #signForm .formGrp label {
+    display: inline-block;
+    width: 30%;
+    font-weight: 100;
+}
+
+#signatureAbt #signForm .formGrp input {
+    background-color: transparent;
+    color: #868585;
+    border: none;
+    border-bottom: 1px solid #868585;
+    width: 69%;
+}
+
+#signatureAbt #signForm .formGrp select {
+    background-color: #868585;
+    color: #fff;
+    border: none;
+    width: 69%;
+}
+
+#signatureAbt #signForm .formGrp #faxGsm {
+    width: 30%;
+    color: #333;
+    background-color: #ccc;
+}
+
+#signatureAbt #signForm .formGrp input:focus,
+#signatureAbt #signForm .formGrp select:focus {
+    outline: none;
+}
+
+#signatureAbt #signForm #signPubChange {
+    margin-top: 25px;
+    border-top: 1px solid #868585;
+    padding-top: 25px;
+}
+
+#signatureAbt #signForm #signPubChange input {
+    margin-top: 10px;
+}
+
+#signatureAbt #signForm #signPubChange input[type=file] {
+    width: 100%;
+}
+
+#signatureAbt #signForm #signPubChange input[type=submit] {
+    padding: 5px;
+    color: #fff;
+    background-color: #114411;;
+    border: none;
+}
+
+#signatureAbt #signForm #signPubChange a {
+    margin-top: 10px;
+    float: right;
+    color: #661111;;
+}
+
+#signatureAbt #signCode {
+    height: 100%;
+    overflow: auto;
+    background-color: #868585;
+    padding: 0;
+}
+
+#signatureAbt #signCode .abtelTabs {
+    height: 100%;
+}
+
+#signatureAbt #signCode #ongletsSign {
+    height: 50px;
+}
+
+#signatureAbt #signCode #ongletsSign li {
+    height: 100%;
+    color: #000000;
+    border-right: 1px solid #fff;
+    width: 200px;
+}
+
+#signatureAbt #signCode #ongletsSign li a {
+    font-size: 1.2em;
+    height: 100%;
+    line-height: 50px;
+    padding: 0 20px;
+    margin: 0;
+    color: #fff;
+    text-align: center;
+    border: none;
+}
+
+#signatureAbt #signCode #ongletsSign li a:hover {
+    font-weight: 600;
+    border-radius: 0;
+    background-color: transparent;
+    border: none;
+}
+
+#signatureAbt #signCode #ongletsSign li.active a {
+    border: none;
+    background-color: #ddd;
+    border-radius: 0;
+    color: #000;
+}
+
+#signatureAbt #signCode ul li#copySig,
+#signatureAbt #signCode ul li#setSig {
+    float: right;
+    background-color: #eee;
+    font-size: 1.5em;
+    margin: 0 5px;
+}
+
+#signatureAbt #signCode ul li#copySig button,
+#signatureAbt #signCode ul li#setSig button {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    color: #114411;
+    border: none;
+    position: relative;
+    padding-left: 35px;
+}
+
+#signatureAbt #signCode ul li#copySig button:before {
+    content: "\e205";
+    font-family: 'Glyphicons Halflings';
+    position: absolute;
+    top: 10px;
+    left: 15px;
+}
+
+#signatureAbt #signPreview #hiddenCode table {
+    margin: auto;
+    margin-top: 100px;
+}
+
+#signatureAbt #signCode #displayCode {
+    padding: 1px;
+    background-color: #fff;
+    border-left: 2px solid #868585;
+}
+
+#signatureAbt #signForm .formGrp .onoffswitch {
+    position: relative;
+    display: inline-block;
+    width: 66px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+#signatureAbt #signForm .formGrp .onoffswitch-checkbox {
+    display: none;
+}
+
+#signatureAbt #signForm .formGrp .onoffswitch-label {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid #999999;
+    border-radius: 25px;
+    width: 100%;
+}
+
+#signatureAbt #signForm .formGrp .onoffswitch-inner {
+    display: block;
+    width: 200%;
+    margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+
+#signatureAbt #signForm .formGrp .onoffswitch-inner:before,
+#signatureAbt #signForm .formGrp .onoffswitch-inner:after {
+    display: block;
+    float: left;
+    width: 50%;
+    height: 17px;
+    padding: 0;
+    line-height: 17px;
+    font-size: 14px;
+    color: white;
+    font-family: Trebuchet, Arial, sans-serif;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+#signatureAbt #signForm .formGrp .onoffswitch-inner:before {
+    content: "ON";
+    padding-left: 11px;
+    background-color: #34C26D;
+    color: #FFFFFF;
+}
+
+#signatureAbt #signForm .formGrp .onoffswitch-inner:after {
+    content: "OFF";
+    padding-right: 11px;
+    background-color: #EEEEEE;
+    color: #999999;
+    text-align: right;
+}
+
+#signatureAbt #signForm .formGrp .onoffswitch-switch {
+    display: block;
+    width: 25px;
+    margin: -2px;
+    background: #FFFFFF;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 45px;
+    border: 2px solid #999999;
+    border-radius: 25px;
+    transition: all 0.3s ease-in 0s;
+}
+
+#signatureAbt #signForm .formGrp .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+
+#signatureAbt #signForm .formGrp .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px;
+}
+
+
+
+/**************************************************************************/
+/*********************    Responsive/Adaptative    ************************/
+/**************************************************************************/
+
+/*=========== 992 - 1199 : tablette paysage ======*/
+@media (min-width: 992px) and (max-width: 1199px) {
+	/* CORRESPOND 1024 * 768 */
+
+
+
+}
+
+/*=========== 801 - 991 : petite tablette paysage ======*/
+@media (min-width: 801px) and (max-width: 991px) {
+	/*CORRESPOND À 800X600  */
+
+
+}
+
+/*=========== 768 - 800 : tablette portrait ======*/
+@media (min-width: 768px) and (max-width: 800px) {
+	/*CORRESPOND  768*1024 */
+
+
+	
+}
+
+
+/*=========== <767 : tablette portrait ======*/
+@media (min-width: 481px) and (max-width: 767px) {
+	/*CORRESPOND À 600*800 */
+ 
+ 	
+
+}
+
+
+/*=========== <480 : smartphone paysage ======*/
+@media (min-width: 466px) and (max-width: 599px) {
+	/*CORRESPOND À 480*320 */
+ 	
+ 	
+	
+}
+
+
+/*=========== <465 : smartphone portrait======*/
+@media (max-width: 466px) {
+
+	html, body {
+    	font-size: 10px;
+	}
+
+	#siteWrap {
+	}
+
+	
+	
+	#topNavigation ul.navbar-top li {
+		margin-top:2px;
+	}
+	
+	#topNavigation ul.navbar-top li a {
+	    padding: 10px;
+	}
+	
+	#topNavigation ul.navbar-top li a.Contact {
+	    margin-top: 7px;
+	    font-size:0.8em;
+	}
+	
+	table#projectHomeTxt {
+    	color: #fff;
+    	margin: 20px 10px;
+    	padding: 20px 20px 0 20px;
+    	font-size: 3em;
+     	width: 100%; 
+     	height:auto;
+	}
+	
+
+	#projectResumeTxt {
+    	margin: 0;font-size:0.8em;
+	}
+	#projectResumeCell {
+    	vertical-align: top;
+    }
+	
+}
+
+

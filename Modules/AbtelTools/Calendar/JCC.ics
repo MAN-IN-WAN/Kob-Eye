@@ -1,0 +1,109 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//ABTEL Mediterranee//Gestion v0.1//FR
+BEGIN:VEVENT
+DTSTART:20160325T17:36:00
+DTEND:20160325T17:37:00
+CATEGORIES:UNIFERT
+SUMMARY:UNIFERT : Reste à faire
+DESCRIPTION: Un poste + renomage UNIFERT-PC5 en double
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160325T14:00:00
+DTEND:20160325T15:00:00
+CATEGORIES:DENIM
+SUMMARY:DENIM : Atelier
+DESCRIPTION: Install office 2007UtilitairesWindows Update en cours
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160325T15:19:00
+DTEND:20160325T15:20:00
+CATEGORIES:GAN
+SUMMARY:GAN : Tjs pas de plantage du portable
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160325T10:00:00
+DTEND:20160325T11:30:00
+CATEGORIES:GAN
+SUMMARY:GAN : Atelier ...
+DESCRIPTION: Scan avec SpyHunter + suppression malwareWinstressLe portable ne plante pas
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160325T11:32:00
+DTEND:20160325T11:33:00
+CATEGORIES:FDGROUP
+SUMMARY:FDGROUP : Plus de reste à faire voir ticket G03949
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160325T11:00:00
+DTEND:20160325T11:30:00
+CATEGORIES:ABTEL
+SUMMARY:ABTEL : Atelier
+DESCRIPTION: Reset + formatage des disques
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160324T18:17:00
+DTEND:20160324T18:18:00
+CATEGORIES:ESPACELAND
+SUMMARY:ESPACELAND : Reste à faire
+DESCRIPTION: Pr&eacute;ventive sur le serveurSouffler le serveur, routeur, onduleur....
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160324T14:00:00
+DTEND:20160324T17:50:00
+CATEGORIES:ESPACELAND
+SUMMARY:ESPACELAND : Site ...
+DESCRIPTION: Renommage de deux postesSur 7 postesV&eacute;rif journaux &eacute;v&egrave;nementsInstall package KasperskyInstall fusionBelarc des postesSoufflage des 7 PC
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160324T18:00:00
+DTEND:20160324T18:01:00
+CATEGORIES:ESPACELAND
+SUMMARY:ESPACELAND : Prise d'appel par Jean-Claude Cauvet...
+DESCRIPTION: Suite &agrave; la pr&eacute;ventive.Le client poss&egrave;de 5 PC en XP, pr&eacute;voir le remplacement des postes
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160323T09:00:00
+DTEND:20160323T18:00:00
+CATEGORIES:CM-CARDIOLOGIE
+SUMMARY:CM-CARDIOLOGIE : Site ...
+DESCRIPTION: Pr&eacute;ventif sur 6 postesV&eacute;rif journaux &eacute;v&egrave;nementsInst KESInst fusionAdwcleanerBelarcSoufflage des postesArret serveur et soufflageServeur plant&eacute;Appel DELL1 disque HSEcran violet sur ESXIR&eacute;cup du serveur pour atelier
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160322T12:37:00
+DTEND:20160322T12:38:00
+CATEGORIES:FDGROUP
+SUMMARY:FDGROUP : Reste à faire...
+DESCRIPTION: Modifier sauvegarde sur la cartoucheCr&eacute;er une t&acirc;che planifi&eacute;e pour formater la cartouche avant de faire la sauvegarde.
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160322T09:00:00
+DTEND:20160322T11:45:00
+CATEGORIES:FDGROUP
+SUMMARY:FDGROUP : Site ....
+DESCRIPTION: V&eacute;rif ESXIV&eacute;rif sauvegardeV&eacute;rif journaux &eacute;v&egrave;nementsArret et soufflage du serveurBranchement et config IMM
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160321T09:20:00
+DTEND:20160321T12:30:00
+CATEGORIES:JARDIN
+SUMMARY:JARDIN : Site ....
+DESCRIPTION: Sur 2 PCV&eacute;rif journaux &eacute;v&egrave;nementsInstall FusionMise &agrave; jour KESMise &agrave; jour Java et Acrobat ReaderRenommage etiquettage et soufflage d'un poste
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160321T08:30:00
+DTEND:20160321T09:20:00
+CATEGORIES:0
+SUMMARY:0 : Réunion atelier
+DESCRIPTION: 
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20160318T09:00:00
+DTEND:20160318T17:40:00
+CATEGORIES:UNIFERT
+SUMMARY:UNIFERT : Site ..
+DESCRIPTION: Renommage des postesEtiquettageV&eacute;rif journaux &eacute;v&egrave;nementsInst KESInst fusionAdwcleanerBelarc
+END:VEVENT
+END:VCALENDAR
