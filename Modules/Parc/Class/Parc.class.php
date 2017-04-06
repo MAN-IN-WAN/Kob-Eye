@@ -6,13 +6,21 @@
  * *\/5 * * * * apache /usr/bin/php /var/www/html/cron.php parc.azko.fr Parc/Bash/Execute.cron
  */
 class Parc extends Module{
-    	/**
+    public $classLoader=null;
+    /**
 	 * Surcharge de la fonction init
 	 * Avant l'authentification de l'utilisateur
 	 * @void 
 	 */
 	function init (){
 		parent::init();
+
+        require_once 'Class/Lib/SplClassLoader.php'; // The PSR-0 autoloader from https://gist.github.com/221634
+        @include_once 'Class/Lib/SimpleXmlDebug/simplexml_dump.php';
+        @include_once 'Class/Lib/SimpleXmlDebug/simplexml_tree.php';
+
+        $this->classLoader = new SplClassLoader('Zimbra', realpath('Class/Lib/')); // Point this to the src folder of the zcs-php repo
+        $this->classLoader->register();
 	}
 	/**
 	 * Surcharge de la fonction postInit
