@@ -243,11 +243,7 @@ class Server extends genericClass {
 
                 $report .= '<b>Domaine</b> "'.$dname.': .<br>'.PHP_EOL;
 
-                $accList = $zimbra->getAccounts(array(
-                    'domain'=>$dname,
-                    'limit'=> 200,
-                    'offset'=> 0
-                ));
+                $accList = $zimbra->getAllAccounts($dname);
                 foreach($accList as $account){
                     //echo '<pre>';
                     //print_r($account);
