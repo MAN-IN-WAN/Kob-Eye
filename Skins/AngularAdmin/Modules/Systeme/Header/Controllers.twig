@@ -2,33 +2,69 @@
     /**** LIST CONTROLLER  ****/
     app.controller('{{ c.name }}Ctrl', function($location, $scope, $rootScope,$http,{{ c.identifier }}Store) {
         //test du store
-        $scope.{{ c.identifier }}currentPage = 1;
-        $scope.{{ c.identifier }}itemsPerPage = {{ c.identifier }}Store.getPageLength();
         $scope.{{ c.identifier }} = {{ c.identifier }}Store;
+        $scope.{{ c.identifier }}.currentPage = 1;
+        $scope.{{ c.identifier }}.itemsPerPage = {{ c.identifier }}Store.getPageLength();
         {{ c.identifier }}Store.getData($scope.currentPage);
 
         //recherche watcher
-        $scope.{{ c.identifier }}query = {{ c.identifier }}Store.getFilters();
-        $scope.$watch('{{ c.identifier }}query', function() {
+        $scope.{{ c.identifier }}.filter = {{ c.identifier }}Store.getFilters();
+        $scope.$watch('{{ c.identifier }}.filter', function() {
             //on lance la recherche depuis le store
-            {{ c.identifier }}Store.setFilters($scope.{{ c.identifier }}query);
+            {{ c.identifier }}Store.setFilters($scope.{{ c.identifier }}.filter,true);
         });
-        $scope.$watch('{{ c.identifier }}currentPage', function() {
-            {{ c.identifier }}Store.setPage($scope.{{ c.identifier }}currentPage);
+        $scope.$watch('{{ c.identifier }}.currentPage', function() {
+            {{ c.identifier }}Store.setPage($scope.{{ c.identifier }}.currentPage);
         });
+        $scope.setFilter = function (filter){
+            {{ c.identifier }}Store.setFilters(filter);
+        }
+        $scope.modify = function (id){
+            console.log('edit ',id);
+            $("#modal-{{ c.identifier }}").modal();
+        }
+        $scope.delete = function (item){
+            console.log('edit ',item);
+            swal({
+                    title: "Êtes vous sûr de vouloir supprimer "+item["label"]+"?",
+                    text: "Cette suppression sera définitive. ",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    cancelButtonText: "Annuler",
+                    confirmButtonText: "Oui, supprimer !",
+                    closeOnConfirm: true
+                },
+                function(){
+                    $http.get('/{{ c.module }}/{{ c.objecttype }}/'+item.id+'/delete.json')
+                        .success(function(data) {
+                            console.log('store > {{ c.module }}/{{ c.objecttype }} > deleted '+item.id, data);
+                            {{ c.identifier }}Store.refresh();
+                        });
+                });
+        }
     });
 
     /**** FICHE CONTROLLER ****/
-    app.controller('{{ c.name }}FicheCtrl', function($location, $scope, $rootScope, $routeParams,$http,{{ c.identifier }}Store) {
+    app.controller('{{ c.name }}FicheCtrl', function($location, $scope, $rootScope, $routeParams,$http,{{ c.identifier }}Store{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}StoreChild{% endfor %}) {
         //récupération des données du store.
         {{ c.identifier }}Store.getOneData($routeParams.id).then(function (data){
             console.log('retour chargement one data',data);
             $scope.obj = data;
             {% for child in c.childrenelements %}
-                $scope.{{ child.objectModule }}{{ child.objectName }} = {
-                    data:data.{{ child.objectName }}
-                };
+                $scope.{{ child.objectModule }}{{ child.objectName }} = {{ child.objectModule }}{{ child.objectName }}StoreChild;
+                console.log('launch watcher {{ child.objectModule }}{{ child.objectName }}');
+                $scope.$watch('{{ child.objectModule }}{{ child.objectName }}.filter', function() {
+                    console.log('filter ',$scope.{{ child.objectModule }}{{ child.objectName }}.filter,true);
+                    //on lance la recherche depuis le store
+                    {{ child.objectModule }}{{ child.objectName }}StoreChild.setFilters($scope.{{ child.objectModule }}{{ child.objectName }}.filter);
+                });
+                $scope.$watch('{{ child.objectModule }}{{ child.objectName }}.currentPage', function() {
+                    console.log(' currentPage ',$scope.{{ child.objectModule }}{{ child.objectName }}.currentPage);
+                    {{ child.objectModule }}{{ child.objectName }}StoreChild.setPage($scope.{{ child.objectModule }}{{ child.objectName }}.currentPage);
+                });
             {% endfor %}
+            $scope.show = true;
         });
     });
 {% endfor %}

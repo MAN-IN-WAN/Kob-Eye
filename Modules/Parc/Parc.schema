@@ -1,6 +1,7 @@
 <SCHEMA>
 	<OBJECTCLASS title="Client" driver="mysql" AccessPoint="1" master="0" Description="Client" Icon="/Skins/AdminV2/Img/IconAqua/Forum.png" className="Parc_Client" Class="Modules/Parc/Class/Client.class.php" Order="Nom">
 		<PROPERTIES category="Intitulé" type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" listDescr="Nom">Nom</PROPERTIES>
+		<PROPERTIES category="Intitulé" type="varchar" fiche="1" form="1" listDescr="Code Gestion">CodeGestion</PROPERTIES>
 		<PROPERTIES category="Accès client" type="boolean" obligatoire="0" searchOrder="4" description="Activation Accès web" list="1" fiche="1" form="1" listDescr="Accès Web">AccesActif</PROPERTIES>
 		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="5" description="Identifiant Accès web"  fiche="1" form="1">AccesUser</PROPERTIES>
 		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="6" description="Mot de passe Accès Web" fiche="1" form="1">AccesPass</PROPERTIES>
@@ -139,6 +140,11 @@
 			<PROPERTIES type="int" description="Espace provisionné (en Mo)" fiche="1" list="1" form="1">EspaceProvisionne</PROPERTIES>
 			<PROPERTIES type="text" list="1" form="1">Commentaire</PROPERTIES>
 		</CATEGORY>
+		<CATEGORY title="Mail">
+			<PROPERTIES type="varchar" description="Admin mail: Nom d'utilisateur" default="admin" form="1">mailAdminUser</PROPERTIES>
+			<PROPERTIES type="varchar" description="Admin mail: Mot de passe" form="1">mailAdminPassword</PROPERTIES>
+			<PROPERTIES type="varchar" description="Admin mail: Port" default="7071" form="1">mailAdminPort</PROPERTIES>
+		</CATEGORY>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
@@ -153,6 +159,8 @@
 		<FUNCTION>Update</FUNCTION>
 		<FUNCTION>AjouterSPF</FUNCTION>
 		<FUNCTION>Majdomaine</FUNCTION>
+
+        <FUNCTION>GetMails</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Host" driver="mysql" Dico="1" Description="Hébergement" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Class="Modules/Parc/Class/Host.class.php">
 		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" description="Nom (uniquement de 2 à 16 caractères comprenant a-Z et 0-9 sans espace et ponctuation.)" listDescr="Nom">Nom</PROPERTIES>
@@ -230,7 +238,15 @@
         <FUNCTION title="Executer maintenant">Executer</FUNCTION>
     </OBJECTCLASS>
 	<OBJECTCLASS title="Device" driver="mysql" Dico="1" Description="Périphérique(s) réseau(x)" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Device.class.php">
+		<FILTER name="Tous les périphériques" color="warning" ></FILTER>
+		<FILTER name="Périphériques en ligne"  color="success">Online=1</FILTER>
+		<FILTER name="Périphériques en mode test">ModeTest=1</FILTER>
+		<FILTER name="Ajoutés aujourd'hui">tmsCreate>[!TMS::Now:-86400!]</FILTER>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom du périphérique">Nom</PROPERTIES>
+		<PROPERTIES category="Intitulé" type="varchar" fiche="1" form="1" listDescr="Code Client" description="Code client saisi">CodeClient</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="2" obligatoire="0" list="1" fiche="1" form="1"  listDescr="Test" description="Machine test">ModeTest</PROPERTIES>
+		<PROPERTIES type="date" searchOrder="4" obligatoire="0" fiche="1" form="1" listDescr="Last seen" description="Vu pour la dernière fois">LastSeen</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="4" obligatoire="0" fiche="1" list="1" form="1" listDescr="Online" description="En ligne">Online</PROPERTIES>
 		<PROPERTIES type="text" searchOrder="2" obligatoire="0" list="1" fiche="1" form="1" description="Description du périphérique">Description</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="3" obligatoire="0" fiche="1" form="1" description="Identifiant du périphérique">Uuid</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="4" obligatoire="0" fiche="1" form="1" description="Type de connexion">ConnectionType</PROPERTIES>
@@ -242,6 +258,7 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="LogicielVersion" driver="mysql" Dico="1" Description="Version logMeNimes" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom de la version">Nom</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="2" obligatoire="0" list="1" fiche="1" form="1" description="Production">Release</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" obligatoire="0" list="1" fiche="1" form="1" description="Version">Version</PROPERTIES>
 		<PROPERTIES type="file" fiche="1" form="1" description="Fichier de service">ServiceFile</PROPERTIES>
 		<PROPERTIES type="file" fiche="1" form="1" description="Fichier d'installation">InstallFile</PROPERTIES>
@@ -252,15 +269,18 @@
 		<PROPERTIES type="file" fiche="1" form="1" description="Fichier dll de vnc 32bits">VncDllFile</PROPERTIES>
 		<PROPERTIES type="file" fiche="1" form="1" description="Fichier dll de vnc 64bits">VncDllFile64</PROPERTIES>
 		<PROPERTIES type="text" obligatoire="0" list="1" fiche="1" form="1" description="Notice installation">Description</PROPERTIES>
+		<FUNCTION title="Cloner">Cloner</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="CompteMail" driver="mysql" AccessPoint="1" Description="Comptes Mail" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/CompteMail.class.php">
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Adresse eMail">Adresse</PROPERTIES>
-		<PROPERTIES type="varchar" description="Mot de passe">Pass</PROPERTIES>
-		<PROPERTIES type="int" description="Quota en Mo">Quota</PROPERTIES>
-		<PROPERTIES type="int" description="Espace utilisé en Mo">EspaceUtilise</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="2" description="Status de l'adresse">Status</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="3" description="Nom du contact">Nom</PROPERTIES>
-		<PROPERTIES type="varchar" description="Prenom du contact">Prenom</PROPERTIES>
+        <PROPERTIES type="varchar" unique="1" description="Id sur le serveur mail" >IdMail</PROPERTIES>
+        <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Adresse eMail" list="1" form="1" fiche="1" listDescr="Adresse">Adresse</PROPERTIES>
+		<PROPERTIES type="varchar" description="Mot de passe" list="0" form="1" fiche="1">Pass</PROPERTIES>
+        <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" values="NULL,MAIL_BUS,MAIL_POP,MAIL_PRO" default="MAIL_POP" description="COS" list="1" form="1" fiche="1" listDescr="COS">COS</PROPERTIES>
+		<PROPERTIES type="int" description="Quota en Mo" list="1" form="1" fiche="1" listDescr="Quota">Quota</PROPERTIES>
+		<PROPERTIES type="int" description="Espace utilisé en Mo" list="1" form="1" fiche="1" listDescr="Utilisé">EspaceUtilise</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" description="Status de l'adresse" list="1" form="1" fiche="1" listDescr="Etat">Status</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="3" description="Nom du contact" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" description="Prenom du contact" list="1" form="1" fiche="1" listDescr="Prénom">Prenom</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>

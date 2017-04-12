@@ -100,7 +100,9 @@
                         return collectionGetter(scope);
                     }, function(collection) {
                         if (collection) {
-                            var collectionLength = scope[itemsPerPageFilterRemoved.split('.')[0]].getTotal();//(collection instanceof Array) ? collection.length : Object.keys(collection).length;
+                            if (itemsPerPageFilterRemoved.split('.').length)
+                                var collectionLength = scope[itemsPerPageFilterRemoved.split('.')[0]].getTotal();
+                            else var collectionLength = (collection instanceof Array) ? collection.length : Object.keys(collection).length;
                             paginationService.setCollectionLength(paginationId, collectionLength);
                         }
                     });
@@ -319,7 +321,6 @@
 
             scope.$watch(function() {
                 if (paginationService.isRegistered(paginationId)) {
-                    console.log('watcher ',(paginationService.getCollectionLength(paginationId) + 1),paginationService.getItemsPerPage(paginationId));
                     return (paginationService.getCollectionLength(paginationId) + 1) * paginationService.getItemsPerPage(paginationId);
                 }
             }, function(length) {

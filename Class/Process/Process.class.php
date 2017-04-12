@@ -534,7 +534,7 @@ class Process extends Root{
 					}
 				break;
 				Default:
-					//Si le denominateur correspond a un objet temporaire (cas du storproc)
+                    //Si le denominateur correspond a un objet temporaire (cas du storproc)
 					if ($Tab[0]=="") {$Ob = "Object";}else{$Ob=$Tab[0];}
 					if (isset(self::$TempVar[$Ob])&&is_object(self::$TempVar[$Ob])) {
 						//On enleve les parenthese si il y a
@@ -549,41 +549,42 @@ class Process extends Root{
 							if (method_exists(self::$TempVar[$Ob],"Get")) {
                                 $Data = self::$TempVar[$Ob]->Get($Tab[1]);
                             }else {
+
                                 $Data = self::$TempVar[$Ob]->{$Tab[1]};
                             }
 						}elseif(method_exists(self::$TempVar[$Ob],$Function)) {
 							//Detection de l existence de parenthese
 							if ($Params!=""){
-								//On verifie si il n y a pas des variables a traduire
+                                //On verifie si il n y a pas des variables a traduire
 								//Alors il y a des parenthese donc des parametres
 								$ParamsTemp = explode(",",$Params);
-								$Params="";
+								//$Params="";
 								$i=0;
-								print_r($Params);
 								foreach ($ParamsTemp as $K=>$Key) {
 									if (sizeof($Tab = explode("[!",$Key))>1){
 										$T[$K] =Process::searchAndReplaceVars($Key);
-										$Params.="\$T[".$K."]";
+										//$Params.="\$T[".$K."]";
 									}elseif (sizeof($Tab = explode("[*",$Key))>1){
 										$T[$K] =Process::searchAndReplaceVars($Key,"[*","*]");
-										$Params.="\$T[".$K."]";
+										//$Params.="\$T[".$K."]";
 									}else{
 										//$Params.=$Key;
 										$T[$K] = $Key;
-										$Params.="\$T[".$K."]";
+										//$Params.="\$T[".$K."]";
 									}
-									if ($i<sizeof($ParamsTemp)-1) $Params.=",";
+									//if ($i<sizeof($ParamsTemp)-1) $Params.=",";
 									$i++;
 								}
-// 								echo "return \$this->TempVar[\$Ob]->$Function($Params);";
 								$S=self::$TempVar[$Ob];
-								$Data = eval("return \$S->$Function(".$Params.");");
+								//$Data = eval("return \$S->$Function('".$Params."');");
+                                $Data = call_user_func_array(array($S,$Function),$T);
 							}else{
 								$Data=self::$TempVar[$Ob]->{$Function}();
 							}
 						}
 					}elseif(isset(self::$TempVar[$Ob])&&is_array(self::$TempVar[$Ob])){
-						if (array_key_exists($Tab[1],self::$TempVar[$Ob])) {
+
+                        if (array_key_exists($Tab[1],self::$TempVar[$Ob])) {
 							$Data = self::$TempVar[$Ob][$Tab[1]];
 // 							echo $Tab[0]."::".$Tab[1]." - ".$Data."\r\n";
 						}else{
@@ -592,7 +593,8 @@ class Process extends Root{
 						}
 
 					}else{
-						if ($Tab[1]=="Reset"){
+
+                        if ($Tab[1]=="Reset"){
 							unset(self::$TempVar[$Tab[0]]);
 							unset($GLOBALS["Systeme"]->GetVars[$Tab[0]]);
 							unset($GLOBALS["Systeme"]->PostVars[$Tab[0]]);

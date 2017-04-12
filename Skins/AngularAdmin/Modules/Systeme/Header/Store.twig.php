@@ -11,13 +11,22 @@ foreach (Sys::$User->Menus as $m){
             $o = genericClass::createInstance($info['Module'], $info['ObjectType']);
             $obj = $o->getObjectClass();
             $tmp['childrenelements'] = $obj->getChildElements();
-            $stores[$tmp['identifier']] = $tmp;
+            $stores[$tmp['identifier'].'Store'] = $tmp;
+            foreach ($obj->getChildElements() as $sub){
+                $tmp['identifier'] = $sub['objectModule'] . $sub['objectName'];
+                $tmp['module'] = $sub['objectModule'];
+                $tmp['objecttype'] = $sub['objectName'];
+                $o = genericClass::createInstance($sub['objectModule'] , $sub['objectName']);
+                $obj = $o->getObjectClass();
+                $tmp['childrenelements'] = $obj->getChildElements();
+                $stores[$tmp['identifier'].'StoreChild'] = $tmp;
+            }
         }
     }
 }
 if (Sys::$User->Admin){
     foreach (Sys::$Modules as $k=>$mod){
-        foreach ($mod->getAccessPoint() as $ap){
+        foreach ($mod->getObjectClass() as $ap){
             $tmp['identifier'] = $mod->Nom . $ap->Nom;
             $tmp['module'] = $mod->Nom;
             $tmp['objecttype'] = $ap->Nom;

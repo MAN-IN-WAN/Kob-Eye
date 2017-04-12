@@ -1,0 +1,22 @@
+{
+  "name": "angular-confirm-modal",
+  "main": "angular-confirm.js",
+  "version": "1.2.6",
+  "ignore": [
+    "test",
+    "package.json",
+    "LICENSE",
+    ".gitignore",
+    ".npmignore",
+    "*.md",
+    ".travis.yml",
+    "karma.conf.js",
+    "angular-cli.json"
+  ],
+  "homepage": "https://github.com/Schlogen/angular-confirm",
+  "authors": [
+    "James Kleeh"
+  ],
+  "description": "Confirmation modal dialog for AngularJS",
+  "license": "Apache-2.0"
+}

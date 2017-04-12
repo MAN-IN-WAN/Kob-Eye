@@ -1,0 +1,122 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "angular-confirm",
+        "scope": null,
+        "escapedName": "angular-confirm",
+        "name": "angular-confirm",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/home/engu3/Sites/Kob-Eye/Skins/AngularAdmin/assets/vendors"
+    ]
+  ],
+  "_from": "angular-confirm@latest",
+  "_id": "angular-confirm@2.0.0-alpha.2",
+  "_inCache": true,
+  "_location": "/angular-confirm",
+  "_nodeVersion": "6.6.0",
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/angular-confirm-2.0.0-alpha.2.tgz_1477188844604_0.6736286054365337"
+  },
+  "_npmUser": {
+    "name": "schlogen",
+    "email": "james.kleeh@gmail.com"
+  },
+  "_npmVersion": "3.10.7",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "angular-confirm",
+    "scope": null,
+    "escapedName": "angular-confirm",
+    "name": "angular-confirm",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/angular-confirm/-/angular-confirm-2.0.0-alpha.2.tgz",
+  "_shasum": "093f1697d372bbfee4d68ddac05846bf628e5ccb",
+  "_shrinkwrap": null,
+  "_spec": "angular-confirm",
+  "_where": "/home/engu3/Sites/Kob-Eye/Skins/AngularAdmin/assets/vendors",
+  "angular-cli": {},
+  "author": {
+    "name": "James Kleeh"
+  },
+  "bugs": {
+    "url": "https://github.com/Schlogen/angular-confirm/issues"
+  },
+  "dependencies": {
+    "@angular/common": "~2.1.0",
+    "@angular/compiler": "~2.1.0",
+    "@angular/core": "~2.1.0",
+    "@angular/forms": "~2.1.0",
+    "@angular/http": "~2.1.0",
+    "@angular/platform-browser": "~2.1.0",
+    "@angular/platform-browser-dynamic": "~2.1.0",
+    "@angular/router": "~3.1.0",
+    "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.9",
+    "core-js": "^2.4.1",
+    "rxjs": "5.0.0-beta.12",
+    "ts-helpers": "^1.1.1",
+    "zone.js": "^0.6.23"
+  },
+  "description": "Angular Confirm Modal",
+  "devDependencies": {
+    "@types/jasmine": "^2.2.30",
+    "@types/node": "^6.0.42",
+    "angular-cli": "1.0.0-beta.18",
+    "codelyzer": "1.0.0-beta.1",
+    "jasmine-core": "2.4.1",
+    "jasmine-spec-reporter": "2.5.0",
+    "karma": "1.2.0",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-cli": "^1.0.1",
+    "karma-jasmine": "^1.0.2",
+    "karma-remap-istanbul": "^0.2.1",
+    "protractor": "4.0.9",
+    "ts-node": "1.2.1",
+    "tslint": "3.13.0",
+    "typescript": "~2.0.3"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "093f1697d372bbfee4d68ddac05846bf628e5ccb",
+    "tarball": "https://registry.npmjs.org/angular-confirm/-/angular-confirm-2.0.0-alpha.2.tgz"
+  },
+  "gitHead": "f6f0f7e6570d5d4aaf49bdfc54cd97dc9b772d4b",
+  "homepage": "https://github.com/Schlogen/angular-confirm",
+  "keywords": [
+    "angular",
+    "confirm",
+    "angular-ui",
+    "$modal"
+  ],
+  "license": "Apache-2.0",
+  "main": "src/confirm/confirm.module.ts",
+  "maintainers": [
+    {
+      "name": "schlogen",
+      "email": "james.kleeh@gmail.com"
+    }
+  ],
+  "name": "angular-confirm",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Schlogen/angular-confirm.git"
+  },
+  "scripts": {
+    "lint": "tslint \"src/**/*.ts\"",
+    "test": "ng test"
+  },
+  "version": "2.0.0-alpha.2"
+}

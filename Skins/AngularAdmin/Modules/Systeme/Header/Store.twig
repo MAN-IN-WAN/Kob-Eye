@@ -1,5 +1,5 @@
-{% for st in stores %}
-app.service('{{ st.identifier }}Store', function ($http,$q,$timeout) {
+{% for key,st in stores %}
+app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrenelements %},{{ child.objectModule }}{{ child.objectName }}StoreChild{% endfor %}) {
     var {{ st.identifier }}Store = [],
         currentPage = 1,
         pageLoaded = 0,
@@ -7,6 +7,7 @@ app.service('{{ st.identifier }}Store', function ($http,$q,$timeout) {
         pageLength = 15,
         filters = '',
         timer = 0,
+        query = '/{{ st.module }}/{{ st.objecttype }}/getData.json',
         busy = false;
     return {
         getOneData: getOneData,
@@ -17,8 +18,16 @@ app.service('{{ st.identifier }}Store', function ($http,$q,$timeout) {
         getFilters: getFilters,
         getPageLength: getPageLength,
         setPageLength: setPageLength,
+        currentPage: currentPage,
+        itemsPerPage: pageLength,
+        refresh: refresh,
+        filter: filters,
+        setQuery: setQuery,
         data:{{ st.identifier }}Store
     };
+    function setQuery(q) {
+        query = q;
+    }
     function setPageLength(pl) {
         pageLength = pl;
     }
@@ -43,9 +52,16 @@ app.service('{{ st.identifier }}Store', function ($http,$q,$timeout) {
     /**
     * Définition du filtre
     **/
-    function setFilters(filter){
+    function refresh(){
+        pageLoaded--;
+        getData(currentPage);
+    }
+    /**
+    * Définition du filtre
+    **/
+    function setFilters(filter,blur = false){
         if (filter==filters) return;
-        filters = filter;
+        filters = (blur?'~':'')+filter;
         //on recharge le store
         $timeout.cancel(timer);
         timer=$timeout(function (){
@@ -90,7 +106,7 @@ app.service('{{ st.identifier }}Store', function ($http,$q,$timeout) {
             //si store pas chargé ou introuvable
             $http.get('/{{ st.module }}/{{ st.objecttype }}/'+id+'/getOneData.json')
                 .success(function(data) {
-                    console.log('store > {{ st.identifier }} > load success '+id, data);
+                    console.log('store > {{ key }} > load success '+id, data);
                     loadChildren(data).then(function (obj){
                         resolve(obj);
                     });
@@ -107,13 +123,13 @@ app.service('{{ st.identifier }}Store', function ($http,$q,$timeout) {
                 reject('already busy');
                 return;
             }
-            console.log('store > {{ st.identifier }} > getData '+page);
+            console.log('store > {{ key }} > getData '+page);
             if (!page) page = currentPage;
             else currentPage = page;
             if (page!=pageLoaded){
                 busy=true;
                 $http.get(
-                    '/{{ st.module }}/{{ st.objecttype }}/getData.json',
+                    query,
                     {
                         params: {
                             filters: filters,
@@ -130,7 +146,7 @@ app.service('{{ st.identifier }}Store', function ($http,$q,$timeout) {
                                 {{ st.identifier }}Store.push(data.data[i]);
                         }
                         //{{ st.identifier }}Store = data.data;
-                        console.log('store > {{ st.identifier }} > loaded success ',{{ st.identifier }}Store);
+                        console.log('store > {{ key }} > loaded success ',{{ st.identifier }}Store);
                         resolve({{ st.identifier }}Store);
                 });
             }else resolve({{ st.identifier }}Store);
@@ -143,14 +159,15 @@ app.service('{{ st.identifier }}Store', function ($http,$q,$timeout) {
         var num = {{ st.childrenelements | length }};
         return $q(function(resolve, reject) {
             {% for child in st.childrenelements %}
-                if (!obj.{{ child.objectName }})
-                    $http.get('/{{ st.module }}/{{ st.objecttype }}/'+obj.id+'/{{ child.objectName }}/getData.json')
-                        .success(function(data) {
-                            obj.{{ child.objectName }} = data.data;
-                            num--;
-                            if (num==0) resolve(obj);
-                        });
-                else{
+                {{ child.objectModule }}{{ child.objectName }}StoreChild.setQuery('/{{ st.module }}/{{ st.objecttype }}/'+obj.id+'/{{ child.objectName }}/getData.json');
+                if (!obj.{{ child.objectName }}) {
+                    obj.{{ child.objectName }} = {{ child.objectModule }}{{ child.objectName }}StoreChild.data;
+                    {{ child.objectModule }}{{ child.objectName }}StoreChild.getData().then(function () {
+                        num--;
+                        if (num==0) resolve(obj);
+                    });
+                }else{
+                    {{ child.objectModule }}{{ child.objectName }}StoreChild.data = obj.{{ child.objectName }};
                     num--;
                     if (num==0) resolve(obj);
                 }

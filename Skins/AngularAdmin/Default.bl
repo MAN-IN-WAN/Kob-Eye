@@ -112,8 +112,6 @@
     <script src="Skins/AngularAdmin/assets/common/js/demo.temp.js"></script>
 [/HEADER]
 [BODY]class="theme-dark colorful-enabled  mode-material  mode-box-shadow menu-static" ng-controller="MainCtrl"[/BODY]
-//<body class="theme-dark colorful-enabled" ng-controller="MainCtrl">
-
 [MODULE Systeme/Menu]
 <nav class="top-menu" ng-class="{'hidden-top-menu': hideTopMenu}">
     <div class="menu-icon-container hidden-md-up">
@@ -284,3 +282,4 @@
     </div>
 </div>
 <div class="main-backdrop"><!-- --></div>
+

@@ -8,7 +8,11 @@
             "label":"{{ row.label }}",
             "Details":"créé le {{ row.tmsCreate | date('d/m/Y H:i') }} par {{ row.userCreateName }}\nmodifié le {{ row.tmsEdit  | date('d/m/Y H:i')  }} par {{ row.userEditName }}"
             {% for field in fields %}
+                {% if field.type == "boolean" %}
+            ,"{{ field.name }}": {{ attribute(row,field.name) ? 1:0 }}
+                {% else %}
             ,"{{ field.name }}": "{{ attribute(row,field.name) }}"
+                {% endif %}
             {% endfor %}
         }{% if not loop.last %},{% endif %}
         {% endfor %}

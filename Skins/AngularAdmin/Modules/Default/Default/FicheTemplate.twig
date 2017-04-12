@@ -18,35 +18,6 @@
                 <button type="button" class="btn btn-default btn-danger margin-inline" data-toggle="modal" data-target="#example1">
                     Modifier
                 </button>
-                <div class="modal fade modal-size-large" id="example1" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                <h4 class="modal-title" id="myModalLabel">Modifier {[{ obj.label }]}</h4>
-                            </div>
-                            <div class="modal-body">
-                                {% for field in formfields %}
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label class="form-control-label" for="l0">{{ field.description }}</label>
-                                        <small>{{ field.help }}</small>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control" placeholder="" id="input-{{ field.name }}" ng-model="obj.{{ field.name }}">
-                                    </div>
-                                </div>
-                                {% endfor %}
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn" data-dismiss="modal">Annuler</button>
-                                <button type="button" class="btn btn-primary">Enregistrer les modifications</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
             <h3>{[{ obj.label }]}</h3>
         </div>
@@ -99,7 +70,7 @@
                 {% else %}
                     <section class="panel">
                         <div class="panel-body">
-                            <ng-include src="'/{{ CurrentObj.Module }}/{{ CurrentObj.ObjectType }}/'+obj.id+'/{{ child.objectName }}/List.htm'"></ng-include>
+                            <ng-include src="'/{{ CurrentObj.Module }}/{{ CurrentObj.ObjectType }}/'+obj.id+'/{{ child.objectName }}/List.htm'" ng-if="show"></ng-include>
                         </div>
                     </section>
                     <!-- End Default Panel -->

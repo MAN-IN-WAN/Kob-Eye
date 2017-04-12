@@ -1,3 +1,7 @@
 table tr td.table-details{
     font-size:0.7em;
 }
+.pagination {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
