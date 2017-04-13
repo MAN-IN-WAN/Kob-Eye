@@ -243,10 +243,11 @@
 		<FILTER name="Périphériques en mode test">ModeTest=1</FILTER>
 		<FILTER name="Ajoutés aujourd'hui">tmsCreate>[!TMS::Now:-86400!]</FILTER>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom du périphérique">Nom</PROPERTIES>
-		<PROPERTIES category="Intitulé" type="varchar" fiche="1" form="1" listDescr="Code Client" description="Code client saisi">CodeClient</PROPERTIES>
+		<PROPERTIES category="Intitulé" searchOrder="4" type="varchar" fiche="1" form="1" list="1" listDescr="Code Client" description="Code client saisi">CodeClient</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="2" obligatoire="0" list="1" fiche="1" form="1"  listDescr="Test" description="Machine test">ModeTest</PROPERTIES>
 		<PROPERTIES type="date" searchOrder="4" obligatoire="0" fiche="1" form="1" listDescr="Last seen" description="Vu pour la dernière fois">LastSeen</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="4" obligatoire="0" fiche="1" list="1" form="1" listDescr="Online" description="En ligne">Online</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" obligatoire="0" list="1" fiche="1" form="1" listDescr="Version" description="Version courante">CurrentVersion</PROPERTIES>
 		<PROPERTIES type="text" searchOrder="2" obligatoire="0" list="1" fiche="1" form="1" description="Description du périphérique">Description</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="3" obligatoire="0" fiche="1" form="1" description="Identifiant du périphérique">Uuid</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="4" obligatoire="0" fiche="1" form="1" description="Type de connexion">ConnectionType</PROPERTIES>
@@ -268,6 +269,8 @@
 		<PROPERTIES type="file" fiche="1" form="1" description="Fichier de vnc 64bits">VncFile64</PROPERTIES>
 		<PROPERTIES type="file" fiche="1" form="1" description="Fichier dll de vnc 32bits">VncDllFile</PROPERTIES>
 		<PROPERTIES type="file" fiche="1" form="1" description="Fichier dll de vnc 64bits">VncDllFile64</PROPERTIES>
+		<PROPERTIES type="file" fiche="1" form="1" description="Zabbix agent 32bits">ZabbixAgent32</PROPERTIES>
+		<PROPERTIES type="file" fiche="1" form="1" description="Zabbix agent 64bits">ZabbixAgent64</PROPERTIES>
 		<PROPERTIES type="text" obligatoire="0" list="1" fiche="1" form="1" description="Notice installation">Description</PROPERTIES>
 		<FUNCTION title="Cloner">Cloner</FUNCTION>
 	</OBJECTCLASS>

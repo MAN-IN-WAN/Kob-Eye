@@ -54,7 +54,7 @@
                 <h4 class="modal-title" id="myModalLabel">Modifier {[{ obj.label }]}</h4>
             </div>
             <div class="modal-body">
-                <ng-include src="'/{{ CurrentObj.Module }}/{{ CurrentObj.ObjectType }}/Form.htm'"></ng-include>
+                {{ include(template_from_string(module('Systeme/Utils/Form?Path=[!Query!]'))) }}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn" data-dismiss="modal">Annuler</button>

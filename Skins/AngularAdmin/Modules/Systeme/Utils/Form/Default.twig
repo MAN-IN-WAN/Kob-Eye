@@ -1,0 +1,11 @@
+{% for field in formfields %}
+    <div class="row">
+        <div class="col-md-6">
+            <label class="form-control-label" for="l0">{{ field.description }}</label>
+            <small>{{ field.help }}</small>
+        </div>
+        <div class="col-md-6">
+            <input type="text" class="form-control" placeholder="" id="input-{{ field.name }}" ng-model="obj.{{ field.name }}">
+        </div>
+    </div>
+{% endfor %}

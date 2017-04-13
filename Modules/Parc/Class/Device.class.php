@@ -24,6 +24,10 @@ class Device extends genericClass{
             $dev->Save();
             if ($dev->ModeTest) $prod=false;
         }
+        if (isset($_GET['version'])&&$_GET['version']!=$dev->CurrentVersion){
+            $dev->CurrentVersion = $_GET['version'];
+            $dev->Save();
+        }
         //Mise à jour des devices offline
         $devs = Sys::getData('Parc','Device/LastSeen<'.(time()-60));
         foreach ($devs as $d) {
@@ -43,6 +47,8 @@ Vnc32=http://".Sys::$domain."/$log->VncFile
 Vnc64=http://".Sys::$domain."/$log->VncFile64
 VncDll32=http://".Sys::$domain."/$log->VncDllFile
 VncDll64=http://".Sys::$domain."/$log->VncDllFile64
+ZabbixAgent32=http://".Sys::$domain."/$log->ZabbixAgent32
+ZabbixAgent64=http://".Sys::$domain."/$log->ZabbixAgent64
 Ports=$dev->ConnectionType
 ";
     }
