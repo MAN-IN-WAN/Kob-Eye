@@ -1,61 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="59b5ed17-fd7e-457b-b982-788a41f8400d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Home/2/.sessions/sess_dddd20dddd7453837b7abc6b2e54b886f61f1c0e06" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Home/3/.sessions/sess_dddd19dddd38ec74cffd1fb0155e5ea3691e3fa4c4" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Home/3/.sessions/sess_dddd24dddd38ec74cffd1fb0155e5ea3691e3fa4c4" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Home/4/.sessions/sess_dddd21ddddd933267f0fabdd713fb43d025276de91" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/Kob-Eye.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/deployment.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/webServers.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Home/2/.sessions/sess_dddd22dddd08de8b01ea41142e73ea97391d1bc128" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Home/2/.sessions/sess_dddd23dddd7453837b7abc6b2e54b886f61f1c0e06" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Home/4/.sessions/sess_dddd25ddddd933267f0fabdd713fb43d025276de91" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/FicheTemplate.twig.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/List.twig" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/getOneData.twig" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Header/App.twig.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Header/Store.twig" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Header/Store.twig.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/Data/getOneJsonDatatable.twig" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/Data/getOneJsonDatatable.twig.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/List.jquery/Default.twig.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/AdminAngular" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/Controller.twig" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/Controller.twig.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Menu/App.twig.php" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Menu/App.twig" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Header/App.twig" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/List/ControllerInclude.twig" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/List.jquery/ControllerInclude.twig" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/List/ControllerInclude.twig.php" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/List.jquery/ControllerInclude.twig.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/List/Default.twig" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/List.jquery/Default.twig" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/List/getJsonDatatable.twig" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/Data/getJsonDatatable.twig" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/List/getJsonDatatable.twig.php" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/Data/getJsonDatatable.twig.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Class/DataBase/ObjectClass.class.php" afterPath="$PROJECT_DIR$/Class/DataBase/ObjectClass.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Class/Process/Process.class.php" afterPath="$PROJECT_DIR$/Class/Process/Process.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Class/Systeme/Sys.class.php" afterPath="$PROJECT_DIR$/Class/Systeme/Sys.class.php" />
+    <list default="true" id="59b5ed17-fd7e-457b-b982-788a41f8400d" name="Default" comment="divers">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/Kob-Eye.iml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/dataSources.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/deployment.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/webServers.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Home/2/.sessions/sess_dddd22dddd08de8b01ea41142e73ea97391d1bc128" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Home/2/.sessions/sess_dddd23dddd7453837b7abc6b2e54b886f61f1c0e06" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Home/4/.sessions/sess_dddd25ddddd933267f0fabdd713fb43d025276de91" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Log/Systeme.log" afterPath="$PROJECT_DIR$/Log/Systeme.log" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Parc/Class/Device.class.php" afterPath="$PROJECT_DIR$/Modules/Parc/Class/Device.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Parc/Device/getVersion.md" afterPath="$PROJECT_DIR$/Modules/Parc/Device/getVersion.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Modules/Parc/Parc.schema" afterPath="$PROJECT_DIR$/Modules/Parc/Parc.schema" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/Css/style.css" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Css/style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/Default.bl" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Default.bl" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/FicheTemplate.twig" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/FicheTemplate.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/getData.twig" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/getData.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Header/Controllers.twig" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Header/Controllers.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Header/Controllers.twig.php" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Header/Controllers.twig.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Menu/Default.twig" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Menu/Default.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Menu/Default.twig.php" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Menu/Default.twig.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/List/Default.twig" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/List/Default.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/List/Default.twig.php" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/List/Default.twig.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/Tree/Default.twig" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/Tree/Default.twig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/node_modules/rxjs/src/add/observable/onErrorResumeNext.ts" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/node_modules/rxjs/src/add/observable/onErrorResumeNext.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/node_modules/rxjs/src/add/observable/pairs.ts" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/node_modules/rxjs/src/add/observable/pairs.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/node_modules/rxjs/src/add/operator/onErrorResumeNext.ts" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/node_modules/rxjs/src/add/operator/onErrorResumeNext.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/node_modules/rxjs/src/add/operator/timestamp.ts" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/node_modules/rxjs/src/add/operator/timestamp.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/node_modules/rxjs/src/observable/PairsObservable.ts" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/node_modules/rxjs/src/observable/PairsObservable.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/node_modules/rxjs/src/observable/pairs.ts" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/node_modules/rxjs/src/observable/pairs.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/node_modules/rxjs/src/operator/onErrorResumeNext.ts" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/node_modules/rxjs/src/operator/onErrorResumeNext.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/node_modules/rxjs/src/operator/timestamp.ts" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/node_modules/rxjs/src/operator/timestamp.ts" />
     </list>
     <ignored path="Kob-Eye-Git.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -83,11 +49,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Store.twig" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Header/Store.twig">
+      <file leaf-file-name="Template.twig" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/Template.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="414">
-              <caret line="143" column="45" lean-forward="true" selection-start-line="143" selection-start-column="45" selection-end-line="143" selection-end-column="45" />
+            <state relative-caret-position="896">
+              <caret line="56" column="87" lean-forward="false" selection-start-line="56" selection-start-column="87" selection-end-line="56" selection-end-column="87" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Default.twig" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/Form/Default.twig">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="176">
+              <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -96,70 +72,18 @@
       <file leaf-file-name="Controllers.twig" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Header/Controllers.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="15" column="67" lean-forward="true" selection-start-line="15" selection-start-column="67" selection-end-line="15" selection-end-column="67" />
+            <state relative-caret-position="576">
+              <caret line="36" column="18" lean-forward="false" selection-start-line="36" selection-start-column="18" selection-end-line="36" selection-end-column="18" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Device.class.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Modules/Parc/Class/Device.class.php">
+      <file leaf-file-name="Template.twig.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/Template.twig.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="18">
-              <caret line="52" column="24" lean-forward="false" selection-start-line="52" selection-start-column="24" selection-end-line="52" selection-end-column="24" />
-              <folding>
-                <marker date="1491298905000" expanded="true" signature="1962:2129" ph="INSERT INTO `guacamole_connection`... " />
-                <marker date="1491298905000" expanded="true" signature="2240:2368" ph="INSERT INTO `guacamole_connection_parameter`... " />
-                <marker date="1491298905000" expanded="true" signature="2473:2593" ph="INSERT INTO `guacamole_connection_parameter`... " />
-                <marker date="1491298905000" expanded="true" signature="2827:2924" ph="UPDATE `guac... " />
-                <marker date="1491298905000" expanded="true" signature="3090:3227" ph="UPDATE `guac... " />
-                <marker date="1491298905000" expanded="true" signature="3406:3569" ph="INSERT INTO `guacamole_connection`... " />
-                <marker date="1491298905000" expanded="true" signature="3682:3810" ph="INSERT INTO `guacamole_connection_parameter`... " />
-                <marker date="1491298905000" expanded="true" signature="3913:4033" ph="INSERT INTO `guacamole_connection_parameter`... " />
-                <marker date="1491298905000" expanded="true" signature="4099:4224" ph="INSERT INTO `guacamole_connection_parameter`... " />
-                <marker date="1491298905000" expanded="true" signature="4457:4554" ph="UPDATE `guac... " />
-                <marker date="1491298905000" expanded="true" signature="4683:4820" ph="UPDATE `guac... " />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Default.twig" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/List/Default.twig">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="556">
-              <caret line="52" column="0" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="extras.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/forms/extras.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-432">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="modal.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/components/modal.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="44" column="55" lean-forward="false" selection-start-line="44" selection-start-column="39" selection-end-line="44" selection-end-column="55" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FicheTemplate.twig" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/FicheTemplate.twig">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="61" column="69" lean-forward="false" selection-start-line="61" selection-start-column="69" selection-end-line="61" selection-end-column="69" />
+            <state relative-caret-position="64">
+              <caret line="4" column="42" lean-forward="false" selection-start-line="4" selection-start-column="42" selection-end-line="4" selection-end-column="42" />
               <folding />
             </state>
           </provider>
@@ -168,34 +92,71 @@
       <file leaf-file-name="FicheTemplate.twig.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/FicheTemplate.twig.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="10" column="2" lean-forward="true" selection-start-line="10" selection-start-column="2" selection-end-line="10" selection-end-column="2" />
+            <state relative-caret-position="64">
+              <caret line="4" column="24" lean-forward="false" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="24" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="basic-form-elements.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/forms/basic-form-elements.html">
+      <file leaf-file-name="Form.twig" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/Form.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="104" column="81" lean-forward="true" selection-start-line="103" selection-start-column="36" selection-end-line="104" selection-end-column="81" />
+            <state relative-caret-position="0">
+              <caret line="0" column="44" lean-forward="false" selection-start-line="0" selection-start-column="44" selection-end-line="0" selection-end-column="44" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="dirPagination.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.js">
+      <file leaf-file-name="Parc.schema" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Modules/Parc/Parc.schema">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="269">
-              <caret line="89" column="32" lean-forward="false" selection-start-line="89" selection-start-column="27" selection-end-line="89" selection-end-column="32" />
+            <state relative-caret-position="4288">
+              <caret line="268" column="109" lean-forward="false" selection-start-line="268" selection-start-column="109" selection-end-line="268" selection-end-column="109" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="getVersion.md" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Modules/Parc/Device/getVersion.md">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="46" lean-forward="false" selection-start-line="0" selection-start-column="46" selection-end-line="0" selection-end-column="46" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Device.class.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Modules/Parc/Class/Device.class.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="300">
+              <caret line="32" column="31" lean-forward="false" selection-start-line="32" selection-start-column="31" selection-end-line="32" selection-end-column="31" />
               <folding>
-                <marker date="1491381053705" expanded="true" signature="11578:11585" ph="«" />
-                <marker date="1491381053705" expanded="true" signature="11728:11736" ph="‹" />
-                <marker date="1491381053705" expanded="true" signature="12167:12175" ph="›" />
-                <marker date="1491381053705" expanded="true" signature="12325:12332" ph="»" />
+                <marker date="1492009890295" expanded="true" signature="3976:4143" ph="INSERT INTO `guacamole_connection`... " />
+                <marker date="1492009890295" expanded="true" signature="4254:4382" ph="INSERT INTO `guacamole_connection_parameter`... " />
+                <marker date="1492009890295" expanded="true" signature="4487:4607" ph="INSERT INTO `guacamole_connection_parameter`... " />
+                <marker date="1492009890295" expanded="true" signature="4840:4937" ph="UPDATE `guac... " />
+                <marker date="1492009890295" expanded="true" signature="5064:5201" ph="UPDATE `guac... " />
+                <marker date="1492009890295" expanded="true" signature="5437:5600" ph="INSERT INTO `guacamole_connection`... " />
+                <marker date="1492009890295" expanded="true" signature="5713:5841" ph="INSERT INTO `guacamole_connection_parameter`... " />
+                <marker date="1492009890295" expanded="true" signature="5944:6064" ph="INSERT INTO `guacamole_connection_parameter`... " />
+                <marker date="1492009890295" expanded="true" signature="6130:6255" ph="INSERT INTO `guacamole_connection_parameter`... " />
+                <marker date="1492009890295" expanded="true" signature="6488:6585" ph="UPDATE `guac... " />
+                <marker date="1492009890295" expanded="true" signature="6712:6849" ph="UPDATE `guac... " />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="List.twig" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/List.twig">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="65" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -204,9 +165,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>.Accueil</find>
-      <find>padding: 45</find>
-      <find>mainContent</find>
       <find>htm</find>
       <find>&quot;htm&quot;</find>
       <find>maincon</find>
@@ -234,6 +192,9 @@
       <find>current</find>
       <find>watcher</find>
       <find>watch</find>
+      <find>dll</find>
+      <find>{{ su</find>
+      <find>console.log</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/Skins</dir>
@@ -245,57 +206,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Modules/Parc/Class/TXT.class.php" />
-        <option value="$PROJECT_DIR$/Modules/Parc/Class/NS.class.php" />
-        <option value="&lt;bab6378b-bffe-4ea1-99fb-b63f0ede3152&gt;/Class/Systeme/ApcCache.class.php" />
-        <option value="&lt;ce0dfaf4-1369-4481-8022-1a68798c6b62&gt;/www/Skins/BertrandImmobilier/Modules/ParcImmobilier/Commande/Etape5.md" />
-        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/List/getJsonDatatable.twig" />
-        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/List/getJsonDatatable.twig.php" />
-        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Parc/Default/Controller.twig.php" />
         <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Parc/Domain/Controller.twig.php" />
         <option value="&lt;ce0dfaf4-1369-4481-8022-1a68798c6b62&gt;/www/Modules/ParcImmobilier/Moulinette/Default.md" />
         <option value="&lt;ce0dfaf4-1369-4481-8022-1a68798c6b62&gt;/www/Modules/ParcImmobilier/ParcImmobilier.schema" />
         <option value="$PROJECT_DIR$/Modules/Parc/Device/getConfig.md" />
         <option value="$PROJECT_DIR$/Modules/Parc/Class/Parc.class.php" />
         <option value="$PROJECT_DIR$/Class/Systeme/Sys.class.php" />
-        <option value="$PROJECT_DIR$/Modules/Parc/Device/getVersion.md" />
         <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/Tree/Default.twig" />
         <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/List.twig" />
         <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/List.twig.php" />
-        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/Template.twig" />
         <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/getData.twig" />
         <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/getOneData.twig" />
-        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/Data/getOneJsonDatatable.twig.php" />
-        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/Data/getOneJsonDatatable.twig" />
         <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Menu/App.twig" />
         <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Menu/Default.twig" />
         <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Menu/Default.twig.php" />
         <option value="$PROJECT_DIR$/Skins/AdminV2/Modules/Default/Interfaces/Formulaire/ModifProprietes.md" />
-        <option value="$PROJECT_DIR$/Class/Process/Process.class.php" />
         <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/List/Default.twig.php" />
         <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/Controller.twig.php" />
-        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Css/style.css" />
         <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/FicheController.twig.php" />
         <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/Controller.twig" />
         <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Menu/App.twig.php" />
         <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Menu/Store.twig.php" />
         <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/FicheController.twig" />
-        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/Data/getJsonDatatable.twig" />
         <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Menu/Store.twig" />
         <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Header/Controllers.twig.php" />
-        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/Data/getJsonDatatable.twig.php" />
-        <option value="$PROJECT_DIR$/Modules/Parc/Class/Device.class.php" />
-        <option value="$PROJECT_DIR$/Modules/Parc/Parc.schema" />
         <option value="$PROJECT_DIR$/Class/DataBase/ObjectClass.class.php" />
-        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Default.bl" />
         <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Header/App.twig" />
-        <option value="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html" />
-        <option value="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.js" />
-        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/List/Default.twig" />
-        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Header/Controllers.twig" />
-        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Header/Store.twig" />
         <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/FicheTemplate.twig.php" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Header/Store.twig.php" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.js" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/bootstrap/scss/_pagination.scss" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Css/style.css" />
+        <option value="$PROJECT_DIR$/Modules/Parc/Device/getVersion.md" />
+        <option value="$PROJECT_DIR$/Class/Process/Process.class.php" />
+        <option value="$PROJECT_DIR$/Modules/Parc/LogicielVersion/Cloner.md" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/Data/getOneJsonDatatable.twig" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/Data/getJsonDatatable.twig" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/Data/getOneJsonDatatable.twig.php" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/Data/getJsonDatatable.twig.php" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Header/Store.twig" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/List/Default.twig" />
         <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/FicheTemplate.twig" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Default.bl" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/Template.twig.php" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/Form.twig.php" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Header/Controllers.twig" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/Template.twig" />
+        <option value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/Form.twig" />
+        <option value="$PROJECT_DIR$/Modules/Parc/Parc.schema" />
+        <option value="$PROJECT_DIR$/Modules/Parc/Class/Device.class.php" />
       </list>
     </option>
   </component>
@@ -305,15 +266,18 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
+  <component name="NodeModulesDirectoryManager">
+    <handled-path value="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/node_modules" />
+  </component>
   <component name="PhpServers">
     <servers />
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="1439" />
-    <option name="y" value="-11" />
-    <option name="width" value="1922" />
-    <option name="height" value="1092" />
+    <option name="x" value="1440" />
+    <option name="y" value="-4" />
+    <option name="width" value="1920" />
+    <option name="height" value="1084" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -349,6 +313,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -498,7 +463,7 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="List" />
+              <option name="myItemId" value="Form" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -525,44 +490,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="Systeme" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Utils" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Data" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Skins" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AngularAdmin" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Modules" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Systeme" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Menu" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -681,240 +608,8 @@
               <option name="myItemId" value="Default" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
-          </PATH>
-          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Skins" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AngularAdmin" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="layout" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Skins" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AngularAdmin" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="forms" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Skins" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AngularAdmin" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ecommerce" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Skins" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AngularAdmin" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="documentation" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Skins" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AngularAdmin" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dashboards" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Skins" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AngularAdmin" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Css" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Skins" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AngularAdmin" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="components" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Skins" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AngularAdmin" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="assets" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="vendors" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Skins" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AngularAdmin" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="assets" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="vendors" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dirPagination" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Skins" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AngularAdmin" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="assets" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="common" />
+              <option name="myItemId" value="Dashboard" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -1036,7 +731,7 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Template" />
+              <option name="myItemId" value="Utils" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -1076,52 +771,15 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Class" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DataBase" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Kob-Eye" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Class" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Beacon" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="true" />
     <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="preferences.fileTypes" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Header/Controllers.twig" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
@@ -1133,11 +791,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/Form" />
+      <recent name="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default" />
+      <recent name="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors" />
       <recent name="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/List" />
       <recent name="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/Data" />
-      <recent name="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default" />
-      <recent name="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default" />
-      <recent name="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Parc/Default" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Header" />
@@ -1433,12 +1091,39 @@
       <workItem from="1490968615793" duration="6434000" />
       <workItem from="1491203325989" duration="20834000" />
       <workItem from="1491288955962" duration="12131000" />
-      <workItem from="1491374671667" duration="6683000" />
+      <workItem from="1491374671667" duration="20514000" />
+      <workItem from="1491464071889" duration="14558000" />
+      <workItem from="1491576218229" duration="5754000" />
+      <workItem from="1491811596804" duration="22000" />
+      <workItem from="1491985052984" duration="6256000" />
+      <workItem from="1492072533428" duration="126000" />
     </task>
+    <task id="LOCAL-00001" summary="divers">
+      <created>1491388940831</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1491388940831</updated>
+    </task>
+    <task id="LOCAL-00002" summary="divers">
+      <created>1492000677417</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1492000677417</updated>
+    </task>
+    <task id="LOCAL-00003" summary="divers">
+      <created>1492072644987</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1492072644987</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1066313000" />
+    <option name="totallyTimeSpent" value="1106860000" />
   </component>
   <component name="TodoView" selected-index="1">
     <todo-panel id="selected-file">
@@ -1450,25 +1135,26 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1439" y="-11" width="1922" height="1092" extended-state="6" />
+    <frame x="1440" y="-4" width="1920" height="1084" extended-state="6" />
     <layout>
       <window_info id="Remote Host" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2113951" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18530351" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23908414" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297414" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.10892116" sideWeight="0.5021299" order="10" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32987553" sideWeight="0.50319487" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298744" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.10892116" sideWeight="0.4978701" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32987553" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32987553" sideWeight="0.4968051" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24959038" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33817428" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21991701" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32916668" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12713675" sideWeight="0.4978701" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="TypeScript" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32780084" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1476,6 +1162,24 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="processedProjectFiles" value="true" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="Vcs.Log.UiProperties">
     <option name="RECENTLY_FILTERED_USER_GROUPS">
@@ -1488,6 +1192,12 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
+    <MESSAGE value="divers" />
+    <option name="LAST_COMMIT_MESSAGE" value="divers" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <option name="time" value="3" />
@@ -1495,91 +1205,130 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/List/getJsonDatatable.twig" />
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/List.twig.php" />
-    <entry file="file://$PROJECT_DIR$/Class/DataBase/genericClass.class.php">
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/FicheController.twig.php" />
+    <entry file="file://$PROJECT_DIR$/Class/Template/Skin.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="1435" column="35" lean-forward="true" selection-start-line="1435" selection-start-column="35" selection-end-line="1435" selection-end-column="35" />
-          <folding />
+        <state relative-caret-position="-2860">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/components/tabs.html">
+    <entry file="file://$PROJECT_DIR$/Class/Template/Twig.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="74" column="30" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="74" selection-end-column="30" />
+        <state relative-caret-position="431">
+          <caret line="25" column="38" lean-forward="true" selection-start-line="25" selection-start-column="38" selection-end-line="25" selection-end-column="38" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/Tree/Default.twig">
+    <entry file="file://$PROJECT_DIR$/Class/Beacon/Bloc.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="36" selection-end-column="31" />
+        <state relative-caret-position="252">
+          <caret line="398" column="73" lean-forward="false" selection-start-line="398" selection-start-column="65" selection-end-line="398" selection-end-column="73" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/getOneData.twig">
+    <entry file="file://$PROJECT_DIR$/Class/DataBase/ObjectClass.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="84" lean-forward="false" selection-start-line="0" selection-start-column="84" selection-end-line="0" selection-end-column="84" />
+        <state relative-caret-position="18504">
+          <caret line="1028" column="27" lean-forward="false" selection-start-line="1028" selection-start-column="27" selection-end-line="1028" selection-end-column="27" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/Data/getOneJsonDatatable.twig">
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/components/pagination.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="6" column="1" lean-forward="false" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
+        <state relative-caret-position="558">
+          <caret line="37" column="40" lean-forward="false" selection-start-line="32" selection-start-column="36" selection-end-line="37" selection-end-column="40" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AdminV2/Modules/Default/Interfaces/Formulaire/GetInput.md">
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/forms/extras.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-432">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/components/modal.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="44" column="55" lean-forward="false" selection-start-line="44" selection-start-column="39" selection-end-line="44" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/forms/basic-form-elements.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="104" column="81" lean-forward="false" selection-start-line="103" selection-start-column="36" selection-end-line="104" selection-end-column="81" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Header/Store.twig.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="11" column="40" lean-forward="false" selection-start-line="11" selection-start-column="40" selection-end-line="11" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1242">
+          <caret line="69" column="90" lean-forward="false" selection-start-line="69" selection-start-column="78" selection-end-line="69" selection-end-column="90" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AdminV2/Modules/Default/Interfaces/Formulaire/ModifProprietes.md">
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/bootstrap/scss/_pagination.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="16" column="13" lean-forward="true" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="4" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="6" column="1" lean-forward="true" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Class/Process/Process.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="259">
-          <caret line="22" column="34" lean-forward="false" selection-start-line="22" selection-start-column="34" selection-end-line="22" selection-end-column="34" />
-          <folding />
+        <state relative-caret-position="375">
+          <caret line="573" column="37" lean-forward="true" selection-start-line="573" selection-start-column="37" selection-end-line="573" selection-end-column="37" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Menu/Default.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="33" column="25" lean-forward="false" selection-start-line="33" selection-start-column="25" selection-end-line="33" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/Template.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="62" column="17" lean-forward="true" selection-start-line="62" selection-start-column="17" selection-end-line="62" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/List.jquery/ControllerInclude.twig.php">
+    <entry file="file://$PROJECT_DIR$/Modules/Parc/LogicielVersion/Cloner.md">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="0" column="45" lean-forward="true" selection-start-line="0" selection-start-column="45" selection-end-line="0" selection-end-column="45" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/List.jquery/Default.twig.php">
+    <entry file="file://$PROJECT_DIR$/Modules/Parc/Device/getConfig.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="6" column="33" lean-forward="true" selection-start-line="6" selection-start-column="33" selection-end-line="6" selection-end-column="33" />
+        <state relative-caret-position="0">
+          <caret line="0" column="22" lean-forward="true" selection-start-line="0" selection-start-column="22" selection-end-line="0" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/Data/getOneJsonDatatable.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="5" column="67" lean-forward="true" selection-start-line="5" selection-start-column="36" selection-end-line="5" selection-end-column="67" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Murphy/Murphy.schema">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="18" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1590,146 +1339,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Css/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36">
-          <caret line="2" column="1" lean-forward="true" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/List.jquery/Default.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="720">
-          <caret line="40" column="24" lean-forward="false" selection-start-line="40" selection-start-column="24" selection-end-line="40" selection-end-column="58" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/getData.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="64" lean-forward="true" selection-start-line="0" selection-start-column="64" selection-end-line="0" selection-end-column="64" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/Controller.twig.php" />
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/apps/mail.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1674">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/layout/grid.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1334">
-          <caret line="45" column="59" lean-forward="false" selection-start-line="45" selection-start-column="28" selection-end-line="45" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Header/App.twig.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="3" column="35" lean-forward="true" selection-start-line="3" selection-start-column="35" selection-end-line="3" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Menu/Default.twig.php">
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="126">
-          <caret line="7" column="35" lean-forward="true" selection-start-line="7" selection-start-column="35" selection-end-line="7" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/List.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="39" lean-forward="false" selection-start-line="0" selection-start-column="39" selection-end-line="0" selection-end-column="39" />
+          <caret line="7" column="48" lean-forward="false" selection-start-line="7" selection-start-column="48" selection-end-line="7" selection-end-column="48" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/List/Default.twig.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="9" column="2" lean-forward="false" selection-start-line="9" selection-start-column="2" selection-end-line="9" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/Controller.twig" />
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/FicheController.twig" />
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/FicheController.twig.php" />
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Header/Controllers.twig.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="14" column="34" lean-forward="false" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Header/Store.twig.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="7" column="26" lean-forward="false" selection-start-line="7" selection-start-column="26" selection-end-line="7" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Class/Template/Skin.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2860">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Class/Template/Twig.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="431">
-          <caret line="25" column="38" lean-forward="true" selection-start-line="25" selection-start-column="38" selection-end-line="25" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Class/Beacon/Bloc.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="398" column="73" lean-forward="false" selection-start-line="398" selection-start-column="65" selection-end-line="398" selection-end-column="73" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/Data/getJsonDatatable.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="11" column="24" lean-forward="true" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/Data/getJsonDatatable.twig.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="16" column="23" lean-forward="true" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Parc/Parc.schema">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="235" column="52" lean-forward="false" selection-start-line="236" selection-start-column="26" selection-end-line="236" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Class/DataBase/ObjectClass.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18504">
-          <caret line="1028" column="27" lean-forward="false" selection-start-line="1028" selection-start-column="27" selection-end-line="1028" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Default.bl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1746">
-          <caret line="97" column="51" lean-forward="false" selection-start-line="106" selection-start-column="4" selection-end-line="110" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="18">
+          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="5" selection-end-column="42" />
         </state>
       </provider>
     </entry>
@@ -1737,120 +1357,218 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="234">
           <caret line="13" column="60" lean-forward="false" selection-start-line="13" selection-start-column="60" selection-end-line="13" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/Data/getJsonDatatable.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="11" column="70" lean-forward="true" selection-start-line="11" selection-start-column="70" selection-end-line="11" selection-end-column="70" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/bootstrap/dist/css/bootstrap.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/node_modules/angular-confirm/src/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/node_modules/angular-confirm/karma.conf.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18">
+          <caret line="1" column="69" lean-forward="true" selection-start-line="1" selection-start-column="3" selection-end-line="1" selection-end-column="69" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/angular-confirm/src/confirm/confirm.module.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="10" column="3" lean-forward="true" selection-start-line="10" selection-start-column="3" selection-end-line="10" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/node_modules/angular-confirm/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="8" column="60" lean-forward="false" selection-start-line="8" selection-start-column="11" selection-end-line="8" selection-end-column="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/spin.js/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="12" column="14" lean-forward="true" selection-start-line="12" selection-start-column="14" selection-end-line="12" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Class/Systeme/Sys.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="8" column="16" lean-forward="false" selection-start-line="8" selection-start-column="11" selection-end-line="8" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/List/Default.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="606">
+          <caret line="63" column="13" lean-forward="true" selection-start-line="63" selection-start-column="13" selection-end-line="63" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/Data/getJsonDatatable.twig.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="17" column="38" lean-forward="false" selection-start-line="17" selection-start-column="38" selection-end-line="17" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Default/Controller.twig.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Default.bl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="332">
+          <caret line="262" column="48" lean-forward="true" selection-start-line="262" selection-start-column="48" selection-end-line="262" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/FicheTemplate.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="478">
+          <caret line="72" column="170" lean-forward="true" selection-start-line="72" selection-start-column="28" selection-end-line="72" selection-end-column="170" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Header/Store.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="848">
+          <caret line="53" column="7" lean-forward="false" selection-start-line="53" selection-start-column="7" selection-end-line="53" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/Form.twig.php" />
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Header/Controllers.twig.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="416">
+          <caret line="26" column="0" lean-forward="false" selection-start-line="25" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Default/Controller.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/FicheTemplate.twig.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="64">
+          <caret line="4" column="24" lean-forward="false" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="24" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/components/pagination.html">
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/Template.twig.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="558">
-          <caret line="37" column="40" lean-forward="false" selection-start-line="32" selection-start-column="36" selection-end-line="37" selection-end-column="40" />
+        <state relative-caret-position="64">
+          <caret line="4" column="42" lean-forward="false" selection-start-line="4" selection-start-column="42" selection-end-line="4" selection-end-column="42" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html">
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Header/Controllers.twig">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="15" column="50" lean-forward="false" selection-start-line="15" selection-start-column="50" selection-end-line="15" selection-end-column="50" />
+        <state relative-caret-position="576">
+          <caret line="36" column="18" lean-forward="false" selection-start-line="36" selection-start-column="18" selection-end-line="36" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/Template.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="896">
+          <caret line="56" column="87" lean-forward="false" selection-start-line="56" selection-start-column="87" selection-end-line="56" selection-end-column="87" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/Form/Default.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/Form/Default.twig.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/List.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="65" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/Form.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="44" lean-forward="false" selection-start-line="0" selection-start-column="44" selection-end-line="0" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Parc/Parc.schema">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4288">
+          <caret line="268" column="109" lean-forward="false" selection-start-line="268" selection-start-column="109" selection-end-line="268" selection-end-column="109" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Parc/Device/getVersion.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="46" lean-forward="false" selection-start-line="0" selection-start-column="46" selection-end-line="0" selection-end-column="46" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Modules/Parc/Class/Device.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="52" column="24" lean-forward="false" selection-start-line="52" selection-start-column="24" selection-end-line="52" selection-end-column="24" />
+        <state relative-caret-position="300">
+          <caret line="32" column="31" lean-forward="false" selection-start-line="32" selection-start-column="31" selection-end-line="32" selection-end-column="31" />
           <folding>
-            <marker date="1491298905000" expanded="true" signature="1962:2129" ph="INSERT INTO `guacamole_connection`... " />
-            <marker date="1491298905000" expanded="true" signature="2240:2368" ph="INSERT INTO `guacamole_connection_parameter`... " />
-            <marker date="1491298905000" expanded="true" signature="2473:2593" ph="INSERT INTO `guacamole_connection_parameter`... " />
-            <marker date="1491298905000" expanded="true" signature="2827:2924" ph="UPDATE `guac... " />
-            <marker date="1491298905000" expanded="true" signature="3090:3227" ph="UPDATE `guac... " />
-            <marker date="1491298905000" expanded="true" signature="3406:3569" ph="INSERT INTO `guacamole_connection`... " />
-            <marker date="1491298905000" expanded="true" signature="3682:3810" ph="INSERT INTO `guacamole_connection_parameter`... " />
-            <marker date="1491298905000" expanded="true" signature="3913:4033" ph="INSERT INTO `guacamole_connection_parameter`... " />
-            <marker date="1491298905000" expanded="true" signature="4099:4224" ph="INSERT INTO `guacamole_connection_parameter`... " />
-            <marker date="1491298905000" expanded="true" signature="4457:4554" ph="UPDATE `guac... " />
-            <marker date="1491298905000" expanded="true" signature="4683:4820" ph="UPDATE `guac... " />
+            <marker date="1492009890295" expanded="true" signature="3976:4143" ph="INSERT INTO `guacamole_connection`... " />
+            <marker date="1492009890295" expanded="true" signature="4254:4382" ph="INSERT INTO `guacamole_connection_parameter`... " />
+            <marker date="1492009890295" expanded="true" signature="4487:4607" ph="INSERT INTO `guacamole_connection_parameter`... " />
+            <marker date="1492009890295" expanded="true" signature="4840:4937" ph="UPDATE `guac... " />
+            <marker date="1492009890295" expanded="true" signature="5064:5201" ph="UPDATE `guac... " />
+            <marker date="1492009890295" expanded="true" signature="5437:5600" ph="INSERT INTO `guacamole_connection`... " />
+            <marker date="1492009890295" expanded="true" signature="5713:5841" ph="INSERT INTO `guacamole_connection_parameter`... " />
+            <marker date="1492009890295" expanded="true" signature="5944:6064" ph="INSERT INTO `guacamole_connection_parameter`... " />
+            <marker date="1492009890295" expanded="true" signature="6130:6255" ph="INSERT INTO `guacamole_connection_parameter`... " />
+            <marker date="1492009890295" expanded="true" signature="6488:6585" ph="UPDATE `guac... " />
+            <marker date="1492009890295" expanded="true" signature="6712:6849" ph="UPDATE `guac... " />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Header/Controllers.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="15" column="67" lean-forward="true" selection-start-line="15" selection-start-column="67" selection-end-line="15" selection-end-column="67" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
-          <caret line="89" column="32" lean-forward="false" selection-start-line="89" selection-start-column="27" selection-end-line="89" selection-end-column="32" />
-          <folding>
-            <marker date="1491381053705" expanded="true" signature="11578:11585" ph="«" />
-            <marker date="1491381053705" expanded="true" signature="11728:11736" ph="‹" />
-            <marker date="1491381053705" expanded="true" signature="12167:12175" ph="›" />
-            <marker date="1491381053705" expanded="true" signature="12325:12332" ph="»" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Header/Store.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="143" column="45" lean-forward="true" selection-start-line="143" selection-start-column="45" selection-end-line="143" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/forms/extras.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-432">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/components/modal.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="44" column="55" lean-forward="false" selection-start-line="44" selection-start-column="39" selection-end-line="44" selection-end-column="55" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/forms/basic-form-elements.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="104" column="81" lean-forward="true" selection-start-line="103" selection-start-column="36" selection-end-line="104" selection-end-column="81" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/FicheTemplate.twig.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="10" column="2" lean-forward="true" selection-start-line="10" selection-start-column="2" selection-end-line="10" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Systeme/Utils/List/Default.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="556">
-          <caret line="52" column="0" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Skins/AngularAdmin/Modules/Default/Default/FicheTemplate.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="61" column="69" lean-forward="false" selection-start-line="61" selection-start-column="69" selection-end-line="61" selection-end-column="69" />
-          <folding />
         </state>
       </provider>
     </entry>
