@@ -1,18 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="59b5ed17-fd7e-457b-b982-788a41f8400d" name="Default" comment="divers">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/Kob-Eye.iml" afterPath="" />
+    <list default="true" id="59b5ed17-fd7e-457b-b982-788a41f8400d" name="Default" comment="">
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/dataSources.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/deployment.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/webServers.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Home/2/.sessions/sess_dddd22dddd08de8b01ea41142e73ea97391d1bc128" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Home/2/.sessions/sess_dddd23dddd7453837b7abc6b2e54b886f61f1c0e06" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Home/4/.sessions/sess_dddd25ddddd933267f0fabdd713fb43d025276de91" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Log/Systeme.log" afterPath="$PROJECT_DIR$/Log/Systeme.log" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/node_modules/rxjs/src/add/observable/onErrorResumeNext.ts" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/node_modules/rxjs/src/add/observable/onErrorResumeNext.ts" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/node_modules/rxjs/src/add/observable/pairs.ts" afterPath="$PROJECT_DIR$/Skins/AngularAdmin/assets/vendors/node_modules/rxjs/src/add/observable/pairs.ts" />
@@ -1096,7 +1087,7 @@
       <workItem from="1491576218229" duration="5754000" />
       <workItem from="1491811596804" duration="22000" />
       <workItem from="1491985052984" duration="6256000" />
-      <workItem from="1492072533428" duration="126000" />
+      <workItem from="1492072533428" duration="184000" />
     </task>
     <task id="LOCAL-00001" summary="divers">
       <created>1491388940831</created>
@@ -1119,11 +1110,18 @@
       <option name="project" value="LOCAL" />
       <updated>1492072644987</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="divers avant pull+push">
+      <created>1492072702886</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1492072702886</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1106860000" />
+    <option name="totallyTimeSpent" value="1106918000" />
   </component>
   <component name="TodoView" selected-index="1">
     <todo-panel id="selected-file">
@@ -1196,7 +1194,8 @@
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="divers" />
-    <option name="LAST_COMMIT_MESSAGE" value="divers" />
+    <MESSAGE value="divers avant pull+push" />
+    <option name="LAST_COMMIT_MESSAGE" value="divers avant pull+push" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1301,6 +1300,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
           <caret line="573" column="37" lean-forward="true" selection-start-line="573" selection-start-column="37" selection-end-line="573" selection-end-column="37" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1413,6 +1413,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="128">
           <caret line="8" column="16" lean-forward="false" selection-start-line="8" selection-start-column="11" selection-end-line="8" selection-end-column="16" />
+          <folding />
         </state>
       </provider>
     </entry>
