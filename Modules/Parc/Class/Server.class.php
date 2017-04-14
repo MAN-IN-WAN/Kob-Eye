@@ -190,6 +190,116 @@ class Server extends genericClass {
         parent::Delete();
     }
 
+
+
+    /**
+     * Récupérer les mails presents sur le serveur et les créer/updater objets CompteMail si besoin
+     * @param boolean $dryrun : Si true on affiche seulement les mails
+     * @return	String rapport
+     */
+    public function getMails($dryrun=false) {
+        //TODO: Vérifier que les comptes admin sont bien actifs avant !!!
+        $report = '';
+
+        if(!isset($this->IP) || $this->IP =='' || !isset($this->mailAdminPort) || $this->mailAdminPort == '' || !isset($this->mailAdminUser) || $this->mailAdminUser == '' || !isset($this->mailAdminPassword) || $this->mailAdminPassword == ''){
+            $report = 'Veuillez vérifier la configuration du serveur. En l\'état il nous est impossible de nous connecter a l\'administration du serveur de mail';
+            return $report;
+        }
+
+        // Create a new Admin class and authenticate
+        $zimbra = new \Zimbra\ZCS\Admin($this->IP, $this->mailAdminPort);
+        $zimbra->auth($this->mailAdminUser, $this->mailAdminPassword);
+
+        try{
+            $domaines = $zimbra->getDomains();
+            $quotas = $zimbra->getQuotas(array());
+            //echo '<pre>';
+            //print_r($quotas);
+            //echo '</pre>';
+            $cosesTemp = $zimbra->getAllCos();
+            $coses = array();
+            foreach ($cosesTemp as $cosTemp){
+                $coses[$cosTemp->get('id')]=$cosTemp;
+            }
+
+
+            foreach($domaines as $domain){
+                //echo '<pre>';
+                //print_r($domain);
+                //echo '</pre>';
+
+                $dname = $domain->get('name');
+                //print_r($dname.'<br/>');
+                $kDom = Sys::getOneData('Parc','Domain/Url='.$dname);
+                if(!is_object($kDom)){
+                    $report .= '<b>Domaine</b> "'.$dname.'" absent du Parc. Les adresses appartenant à ce domaine seront ignorées car impossible à relier à un client.<br>'.PHP_EOL;
+                    continue;
+                }
+                $kCli = $kDom->getOneParent('Client');
+                if(!is_object($kCli)){
+                    $report .= '<b>Client</b> introuvable pour le domaine "'.$dname.'". Les adresses appartenant à ce domaine seront ignorées car impossible à relier à un client.<br>'.PHP_EOL;
+                    continue;
+                }
+
+                $report .= '<b>Domaine</b> "'.$dname.': .<br>'.PHP_EOL;
+
+                $accList = $zimbra->getAllAccounts($dname);
+                foreach($accList as $account){
+                    //echo '<pre>';
+                    //print_r($account);
+                    //echo '</pre>';
+                    //exit;
+
+
+                    $accHost = $account->get('zimbraMailHost');
+                    if($accHost != $this->DNSNom){
+                        continue;
+                    }
+                    $accId = $account->get('id');
+                    $accName = $account->get('name');
+                    $userNom = $account->get('sn');
+                    $userPrenom = $account->get('givenName');
+                    //print_r($accId.' : '.$accName.'<br>');
+                    //print_r($quotas[$accId]['limit'].' / '.$quotas[$accId]['used'] .'<br>');
+                    $userQuota = $quotas[$accId]['limit'];
+                    $userUsed = $quotas[$accId]['used'];
+                    $accStatus = $account->get('zimbraMailStatus');
+                    $cosId = $account->get('zimbraCOSId');
+                    $cos ='NULL';
+                    if(isset($cosId) && $cosId != '')
+                        $cos = $coses[$cosId];
+
+                    $o = Sys::getOneData('Parc','CompteMail/Adresse='.$accName);
+                    if(!is_object($o)){
+                        $o = genericClass::createInstance('Parc','CompteMail');
+                        $o->IdMail = $accId;
+                        $o->Adresse = $accName;
+                        $report .= '<b>Nouvelle adresse trouvée</b> : '.$accName.'.<br>'.PHP_EOL;
+                    }
+                    $o->COS = $cos;
+                    $o->Nom = $userNom;
+                    $o->Prenom = $userPrenom;
+                    $o->Quota = floor($userQuota/1048576); //En Mo
+                    $o->EspaceUtilise =floor($userUsed/1048576); //En Mo
+                    $o->Status = $accStatus;
+
+
+                    $o->addParent($this);
+                    $o->addParent($kCli);
+
+                    if(!$dryrun){
+                        $o->Save();
+                    }
+                }
+            }
+        } catch (Exception $e){
+            $report .= print_r ($e,true);
+        }
+
+         return $report;
+    }
+
+
     /*******************************************************************************************************************************
 
 	 SYNCHRONISATION

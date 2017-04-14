@@ -257,7 +257,7 @@ class GestionParc extends genericClass {
                 if ($res)
                         $result = $res->fetchALL ( PDO::FETCH_ASSOC );
                 if ($result) foreach ($result as $r) {
-                        $o = Sys::getOneData('Parc','Mail/'.$r['pm_Id']);
+                        $o = Sys::getOneData('Parc','CompteMail/'.$r['pm_Id']);
                         $o->Adresse = $r['pm_Adresse'];
                         $o->Quota = $r['pm_Quota'];
                         //Attention rattache le parent client !!!
@@ -295,11 +295,11 @@ class GestionParc extends genericClass {
          * Récupère la liste des mails depuis les serveurs
          */
         public function getMail() {
-                require_once '/home/parc2/kobeye/Class/Lib/SplClassLoader.php'; // The PSR-0 autoloader from https://gist.github.com/221634
-                @include_once '/home/parc2/kobeye/Class/Lib/SimpleXmlDebug/simplexml_dump.php';
-                @include_once '/home/parc2/kobeye/Class/Lib/SimpleXmlDebug/simplexml_tree.php';
+                require_once '//var/www/html/Class/Lib/SplClassLoader.php'; // The PSR-0 autoloader from https://gist.github.com/221634
+                @include_once '/var/www/html/Class/Lib/SimpleXmlDebug/simplexml_dump.php';
+                @include_once '/var/www/html/Class/Lib/SimpleXmlDebug/simplexml_tree.php';
                 
-                $classLoader = new SplClassLoader('Zimbra', realpath('/home/parc2/kobeye/Class/Lib/')); // Point this to the src folder of the zcs-php repo
+                $classLoader = new SplClassLoader('Zimbra', realpath('/var/www/html/Class/Lib/')); // Point this to the src folder of the zcs-php repo
                 $classLoader->register();
                 
                 

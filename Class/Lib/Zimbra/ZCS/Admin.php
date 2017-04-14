@@ -17,7 +17,6 @@ class Admin
     private $zimbraConnect;
     private $zimbraConnectChild;
     private $systemUsers = array(
-        //"admin",
         "postmaster",
         "ham",
         "spam",
@@ -285,7 +284,7 @@ class Admin
         return $res;        
     }
     
-    //Recupère la ou les préférences du compte
+    //Modifie la ou les préférences du compte
     public function modifyPrefs($mail,$pref){
         $this->delegateAuth($mail);
         $params = array(

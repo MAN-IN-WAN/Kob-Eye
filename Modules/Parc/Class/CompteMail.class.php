@@ -18,6 +18,10 @@ class CompteMail extends genericClass {
 		if($this->_isVerified) {
 			parent::Save();
 		}
+
+		if(!isset($this->IdMail) || $this->IdMail==''){
+		    $this->createMail();
+        }
 	}
 
 	/**
@@ -29,9 +33,9 @@ class CompteMail extends genericClass {
 
 		if(parent::Verify()) {
 			//Verification du client
-			if (!$this->getKEClient()) return true;
+			if (!$this->getKEClient()) return false;
 			//Verification du server
-			if (!$this->getKEServer()) return true;
+			if (!$this->getKEServer()) return false;
 
 			$this->_isVerified = true;
 
@@ -207,4 +211,45 @@ class CompteMail extends genericClass {
 		}
 	}
 
+    /**
+     * Crée une adresse sur le serveur mail a pres l'avoir enregistré en base
+     * @return	false
+     */
+	public function createMail(){
+
+	    $srv = $this->getOneParent('Server');
+	    if(!is_object($srv) || $srv->ObjectType != 'Server')
+	        return false;
+
+        // Create a new Admin class and authenticate
+        $zimbra = new \Zimbra\ZCS\Admin($this->IP, $srv->mailAdminPort);
+        $zimbra->auth($srv->mailAdminUser, $srv->mailAdminPassword);
+
+
+        try{
+
+            $domaines = $zimbra->getDomains();
+            var_dump($domaines);
+
+            $cosesTemp = $zimbra->getAllCos();
+            $coses = array();
+            foreach ($cosesTemp as $cosTemp){
+                $coses[$cosTemp->get('id')]=$cosTemp;
+            }
+
+
+            $values = array();
+
+            $values['name'] = $this->Adresse;
+            $values['password'] = $this->Password;
+            $values['zimbraCOSId']='';
+
+
+        } catch (Exception $e){
+           print_r ($e);
+        }
+
+
+	    return false;
+    }
 }

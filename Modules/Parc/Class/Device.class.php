@@ -14,6 +14,8 @@ class Device extends genericClass{
         parent::save();
     }
     function getVersion($uuid) {
+        if(!isset($uuid))
+            return false;
         $prod = true;
         //recherche de la machine
         $dev = Sys::getOneData('Parc','Device/Uuid='.$uuid);

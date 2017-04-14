@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="parc.abtel.fr">
+  <component name="PublishConfigData" serverName="parc / abtel">
     <serverData>
+      <paths name="Parc (Old)">
+        <serverdata>
+          <mappings>
+            <mapping local="$USER_HOME$/Documents/Tools_devAbtel" web="/" />
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="bertrandimmobilier.fr">
         <serverdata>
           <mappings>
@@ -9,10 +17,33 @@
           </mappings>
         </serverdata>
       </paths>
+      <paths name="c2s-home.fr">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/kobeye" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="chic-et-sauvage.fr">
+        <serverdata>
+          <mappings>
+            <mapping local="$USER_HOME$/Documents/Tools_devAbtel" web="/" />
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="client.eng.systems">
         <serverdata>
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="colombisports.com">
+        <serverdata>
+          <mappings>
+            <mapping local="$USER_HOME$/Documents/Tools_devAbtel" web="/" />
+            <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
@@ -33,21 +64,45 @@
       <paths name="f-onekites.com">
         <serverdata>
           <mappings>
-            <mapping deploy="/www" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/www-dev" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
       <paths name="f-onesup.com">
         <serverdata>
           <mappings>
-            <mapping deploy="/www" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/www-dev" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
-      <paths name="guilaume-navarro.fr">
+      <paths name="fidu.fr">
         <serverdata>
           <mappings>
-            <mapping deploy="/kobeye" local="$PROJECT_DIR$" web="/" />
+            <mapping local="$USER_HOME$/Documents/Tools_devAbtel" web="/" />
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="gaz-service.fr">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/kobeye2015" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="guillaume-navarro.fr">
+        <serverdata>
+          <mappings>
+            <mapping local="$USER_HOME$/Documents/Tools_devAbtel" web="/" />
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="kirigami.fr">
+        <serverdata>
+          <mappings>
+            <mapping local="$USER_HOME$/Documents/Tools_devAbtel" web="/" />
+            <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
@@ -58,10 +113,26 @@
           </mappings>
         </serverdata>
       </paths>
-      <paths name="parc.abtel.fr">
+      <paths name="midiverreemballages.com">
         <serverdata>
           <mappings>
-            <mapping deploy="/var/www/html" local="$PROJECT_DIR$" web="/" />
+            <mapping local="$USER_HOME$/Documents/Tools_devAbtel" web="/" />
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="morning-glory.eu">
+        <serverdata>
+          <mappings>
+            <mapping local="$USER_HOME$/Documents/Tools_devAbtel" web="/" />
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="parc / abtel">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/html" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
@@ -86,6 +157,14 @@
           </mappings>
         </serverdata>
       </paths>
+      <paths name="pragma-immobilier.fr">
+        <serverdata>
+          <mappings>
+            <mapping local="$USER_HOME$/Documents/Tools_devAbtel" web="/" />
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="protector.mobi">
         <serverdata>
           <mappings>
@@ -104,6 +183,21 @@
         <serverdata>
           <mappings>
             <mapping deploy="/reservation" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="unifert">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/kobeye" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="webdev.abtel.fr">
+        <serverdata>
+          <mappings>
+            <mapping local="$USER_HOME$/Documents/Tools_devAbtel" web="/" />
+            <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
