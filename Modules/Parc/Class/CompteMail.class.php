@@ -1,7 +1,7 @@
 <?php
 
 class CompteMail extends genericClass {
-	var $_isVerified = false;
+	//var $_isVerified = false;
 	var $_KEServer = false;
 	var $_KEClient = false;
 
@@ -13,108 +13,116 @@ class CompteMail extends genericClass {
 	public function Save( $synchro = true ) {
 		parent::Save();
 		// Forcer la vérification
-		if(!$this->_isVerified) $this->Verify( $synchro );
+		//if(!$this->_isVerified) $this->Verify( $synchro );
 		// Enregistrement si pas d'erreur
-		if($this->_isVerified) {
-			parent::Save();
-		}
+		//if($this->_isVerified) {
+		//	parent::Save();
+		//}
 
-		if(!isset($this->IdMail) || $this->IdMail==''){
+		if((!isset($this->IdMail) || $this->IdMail=='') && $this->getKEServer()){
 		    $this->createMail();
         }
 	}
 
-	/**
-	 * Verification des erreurs possibles
-	 * @param	boolean	Verifie aussi sur LDAP
-	 * @return	Verification OK ou NON
-	 */
-	public function Verify( $synchro = true ) {
-
-		if(parent::Verify()) {
-			//Verification du client
-			if (!$this->getKEClient()) return false;
-			//Verification du server
-			if (!$this->getKEServer()) return false;
-
-			$this->_isVerified = true;
-
-			if($synchro) {
-
-				// Outils
-				$KEServer = $this->getKEServer();
-				$dn = 'cn='.$this->Adresse.',ou='.$KEServer->LDAPNom.',ou=servers,'.PARC_LDAP_BASE;
-				// Verification à jour
-				$res = Server::checkTms($this);
-				if($res['exists']) {
-					if(!$res['OK']) {
-						$this->AddError($res);
-						$this->_isVerified = false;
-					}
-					else {
-						// Déplacement
-						if($this->LdapDN != 'cn='.$this->Adresse.',ou='.$KEServer->LDAPNom.',ou=servers,'.PARC_LDAP_BASE) $res = Server::ldapRename($this->LdapDN, 'cn='.$this->Adresse, 'ou='.$KEServer->LDAPNom.',ou=servers,'.PARC_LDAP_BASE);
-						else $res = array('OK' => true);
-						if($res['OK']) {
-							// Modification
-							$entry = $this->buildEntry(false);
-							$res = Server::ldapModify($this->LdapID, $entry);
-							if($res['OK']) {
-								// Tout s'est passé correctement
-								$this->LdapDN = $dn;
-								$this->LdapTms = $res['LdapTms'];
-							}
-							else {
-								// Erreur
-								$this->AddError($res);
-								$this->_isVerified = false;
-								// Rollback du déplacement
-								$tab = explode(',', $this->LdapDN);
-								$leaf = array_shift($tab);
-								$rest = implode(',', $tab);
-								Server::ldapRename($dn, $leaf, $rest);
-							}
-						}
-						else {
-							$this->AddError($res);
-							$this->_isVerified = false;
-						}
-					}
-	
-				}
-				else {
-					////////// Nouvel élément
-					if($KEServer) {
-						$entry = $this->buildEntry();
-						$res = Server::ldapAdd($dn, $entry);
-						if($res['OK']) {
-							$this->LdapDN = $dn;
-							$this->LdapID = $res['LdapID'];
-							$this->LdapTms = $res['LdapTms'];
-						}
-						else {
-							$this->AddError($res);
-							$this->_isVerified = false;
-						}
-					}
-					else {
-						$this->AddError(array('Message' => "Un compte email doit obligatoirement être créé dans un serveur de mail donné.", 'Prop' => ''));
-						$this->_isVerified = false;
-					}
-				}
-
-			}
-
-		}
-		else {
-
-			$this->_isVerified = false;
-
-		}
-
-		return $this->_isVerified;
-
-	}
+//	/**
+//	 * Verification des erreurs possibles
+//	 * @param	boolean	Verifie aussi sur LDAP
+//	 * @return	Verification OK ou NON
+//	 */
+//	public function Verify( $synchro = true ) {
+//    return true;
+//		if(parent::Verify()) {
+//			//Verification du client
+//			if (!$this->getKEClient()) {
+//                $this->AddError(array('Message'=>'Un compte mail doit être lié a un Client.'));
+//			    return false;
+//            }
+//			//Verification du server
+//			if (!$this->getKEServer()) {
+//                $this->AddError(array('Message'=>'Un compte mail doit être lié a un Serveur.'));
+//			    return false;
+//            }
+//
+//			$this->_isVerified = true;
+//
+//			if($synchro) {
+//
+//				// Outils
+//				$KEServer = $this->getKEServer();
+//				$dn = 'cn='.$this->Adresse.',ou='.$KEServer->LDAPNom.',ou=servers,'.PARC_LDAP_BASE;
+//				// Verification à jour
+//				$res = Server::checkTms($this);
+//				if($res['exists']) {
+//					if(!$res['OK']) {
+//						$this->AddError($res);
+//						$this->_isVerified = false;
+//					}
+//					else {
+//						// Déplacement
+//						if($this->LdapDN != 'cn='.$this->Adresse.',ou='.$KEServer->LDAPNom.',ou=servers,'.PARC_LDAP_BASE) $res = Server::ldapRename($this->LdapDN, 'cn='.$this->Adresse, 'ou='.$KEServer->LDAPNom.',ou=servers,'.PARC_LDAP_BASE);
+//						else $res = array('OK' => true);
+//						if($res['OK']) {
+//							// Modification
+//							$entry = $this->buildEntry(false);
+//							$res = Server::ldapModify($this->LdapID, $entry);
+//							if($res['OK']) {
+//								// Tout s'est passé correctement
+//								$this->LdapDN = $dn;
+//								$this->LdapTms = $res['LdapTms'];
+//							}
+//							else {
+//								// Erreur
+//								$this->AddError($res);
+//								$this->_isVerified = false;
+//								// Rollback du déplacement
+//								$tab = explode(',', $this->LdapDN);
+//								$leaf = array_shift($tab);
+//								$rest = implode(',', $tab);
+//								Server::ldapRename($dn, $leaf, $rest);
+//							}
+//						}
+//						else {
+//							$this->AddError($res);
+//							$this->_isVerified = false;
+//						}
+//					}
+//
+//				}
+//				else {
+//					////////// Nouvel élément
+//					if($KEServer) {
+//						$entry = $this->buildEntry();
+//
+//						$res = Server::ldapAdd($dn, $entry);
+//                        klog::l('$entry',$entry);
+//						if($res['OK']) {
+//							$this->LdapDN = $dn;
+//							$this->LdapID = $res['LdapID'];
+//							$this->LdapTms = $res['LdapTms'];
+//						}
+//						else {
+//							$this->AddError($res);
+//							$this->_isVerified = false;
+//						}
+//					}
+//					else {
+//						$this->AddError(array('Message' => "Un compte email doit obligatoirement être créé dans un serveur de mail donné.", 'Prop' => ''));
+//						$this->_isVerified = false;
+//					}
+//				}
+//
+//			}
+//
+//		}
+//		else {
+//
+//			$this->_isVerified = false;
+//
+//		}
+//
+//		return $this->_isVerified;
+//
+//	}
 
 	/**
 	 * Configuration d'une nouvelle entrée type
@@ -212,38 +220,75 @@ class CompteMail extends genericClass {
 	}
 
     /**
+     * Met à jour une adresse mail sur le serveur
+     * @return	false
+     */
+    public function updateMail(){
+        $srv = $this->getOneParent('Server');
+
+        if(!is_object($srv) || $srv->ObjectType != 'Server'){
+            $this->AddError(array('Message'=>'Un compte mail doit être lié a un serveur.'));
+            return false;
+        }
+
+    }
+
+    /**
      * Crée une adresse sur le serveur mail a pres l'avoir enregistré en base
      * @return	false
      */
 	public function createMail(){
 
 	    $srv = $this->getOneParent('Server');
-	    if(!is_object($srv) || $srv->ObjectType != 'Server')
+
+	    if(!is_object($srv) || $srv->ObjectType != 'Server'){
+            $this->AddError(array('Message'=>'Un compte mail doit être lié a un serveur.'));
 	        return false;
+        }
+
 
         // Create a new Admin class and authenticate
-        $zimbra = new \Zimbra\ZCS\Admin($this->IP, $srv->mailAdminPort);
+        $zimbra = new \Zimbra\ZCS\Admin($srv->IP, $srv->mailAdminPort);
         $zimbra->auth($srv->mailAdminUser, $srv->mailAdminPassword);
+
+
+
+        $dom = explode('@',$this->Adresse);
+        $dom = $dom[1];
+
+        try{
+            $domaine = $zimbra->getDomain($dom);
+        } catch (Exception $e){
+            if($e->getMessage() == ''){
+                //TODO : Creation du domaine
+            }
+        }
 
 
         try{
 
-            $domaines = $zimbra->getDomains();
-            var_dump($domaines);
-
             $cosesTemp = $zimbra->getAllCos();
             $coses = array();
             foreach ($cosesTemp as $cosTemp){
-                $coses[$cosTemp->get('id')]=$cosTemp;
+                $coses[$cosTemp->get('name')]=$cosTemp;
             }
-
+            $cos = $coses[$this->COS];
 
             $values = array();
 
             $values['name'] = $this->Adresse;
-            $values['password'] = $this->Password;
-            $values['zimbraCOSId']='';
+            $values['password'] = $this->Pass;
+            $values['zimbraCOSId'] = $cos->get('id');
+            $values['sn'] = $this->Nom;
+            $values['givenName'] = $this->Prenom;
+            $values['displayName'] = ucfirst($this->Prenom) .' '. ucfirst($this->Nom);
+            $values['zimbraMailHost'] = $srv->DNSNom;
 
+            $res = $zimbra->createAccount($values);
+
+            $this->IdMail = $res->get('id');
+
+            $this->save();
 
         } catch (Exception $e){
            print_r ($e);

@@ -1062,6 +1062,9 @@ class genericClass extends Root {
 			//recherche des pages pour ce domaine
 			$pags = $site->getChildren('Page/PageModule=' . $this->Module . '&PageObject=' . $this->ObjectType . '&PageId=' . $this->Id);
 			if (sizeof($pags)) return $pags[0]->Url;
+
+		    $mens =  Sys::getMenus($this->Module.'/'.$this->ObjectType.'/'.$this->Id,true,true);
+            if (sizeof($mens)) return $mens[0]->Url;
 		}
 		$Url = $this -> Module;
 		$Nbhisto = sizeof($this -> Historique()) - 1;

@@ -721,6 +721,32 @@ div.noMargin {
  *	                MENU PRINCIPAL	   			*
  *								*
  ****************************************************************/
+/****************************************************************
+ *								*
+ *			MENU DU Gauche	   			*
+ *								*
+ ****************************************************************/
+.MEPNav .aNav.legacy {
+    color: #6eb126;
+}
+
+.MEPNav label::after {
+    bottom: 0;
+    color: #000;
+    content: "";
+    font-family: "Glyphicons Halflings";
+    font-size: 1.3em;
+    left: 0;
+    line-height: 20px;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+}
+.MEPNav input:checked ~ label::after {
+    color: #6eb126;
+    content: "";
+}
 
 /****************************************************************
  *								*
