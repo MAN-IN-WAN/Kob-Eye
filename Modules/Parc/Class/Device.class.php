@@ -14,29 +14,48 @@ class Device extends genericClass{
         parent::save();
     }
     function getVersion($uuid) {
-        if(!isset($uuid))
-            return false;
+        /*if(!isset($uuid))
+            return false;*/
         $prod = true;
+        $Commands = "";
+        $ConnectionType = "\r\nPorts=";
         //recherche de la machine
         $dev = Sys::getOneData('Parc','Device/Uuid='.$uuid);
+        if (!$dev&&isset($uuid)){
+            //si machine existe pas on la créé
+            $this->getConfig($uuid);
+            $dev = Sys::getOneData('Parc','Device/Uuid='.$uuid);
+        }
         if ($dev){
             //mise à jour de la machine
             $dev->LastSeen = time();
+            $dev->PublicIP = $_SERVER['REMOTE_ADDR'];
             $dev->Online = true;
             $dev->Save();
             if ($dev->ModeTest) $prod=false;
-        }
-        if (isset($_GET['version'])&&$_GET['version']!=$dev->CurrentVersion){
-            $dev->CurrentVersion = $_GET['version'];
-            $dev->Save();
-        }
-        //Mise à jour des devices offline
-        $devs = Sys::getData('Parc','Device/LastSeen<'.(time()-60));
-        foreach ($devs as $d) {
-            $d->Online = false;
-            $d->Save();
-        }
+            if (isset($_GET['version'])&&$_GET['version']!=$dev->CurrentVersion){
+                $dev->CurrentVersion = $_GET['version'];
+                $dev->Save();
+            }
+            if (isset($_GET['bios'])&&$_GET['bios']!=$dev->CurrentVersion){
+                $dev->SerialNumber = $_GET['bios'];
+                $dev->Save();
+            }
+            //GEstion des commandes
+            if ($dev->RestartTunnel){
+                $Commands = "\r\nCommande=tunnel";
+                $dev->RestartTunnel = false;
+                $dev->Save();
+            }
+            $ConnectionType .= $dev->ConnectionType;
+            //Mise à jour des devices offline
+            $devs = Sys::getData('Parc','Device/LastSeen<'.(time()-60));
+            foreach ($devs as $d) {
+                $d->Online = false;
+                $d->Save();
+            }
 
+        }
         //recherche de la version
         $log = Sys::getOneData('Parc','LogicielVersion/Release='.$prod);
         if (!$log) $log = Sys::getOneData('Parc','LogicielVersion/Release='.!$prod);
@@ -50,8 +69,7 @@ Vnc64=http://".Sys::$domain."/$log->VncFile64
 VncDll32=http://".Sys::$domain."/$log->VncDllFile
 VncDll64=http://".Sys::$domain."/$log->VncDllFile64
 ZabbixAgent32=http://".Sys::$domain."/$log->ZabbixAgent32
-ZabbixAgent64=http://".Sys::$domain."/$log->ZabbixAgent64
-Ports=$dev->ConnectionType
+ZabbixAgent64=http://".Sys::$domain."/$log->ZabbixAgent64$ConnectionType$Commands
 ";
     }
     function getConfig($uuid) {

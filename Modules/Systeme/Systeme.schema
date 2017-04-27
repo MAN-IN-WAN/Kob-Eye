@@ -106,15 +106,16 @@
 		<FKEY card="0,n" data="User,Id" inherit="Group" hidden="1">UserId</FKEY>
 		<FKEY card="0,n" data="Group,Id" hidden="1">GroupId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Access" logEvent="1" driver="mysql" AccessPoint="1" Icon="/Skins/AdminV2/Img/brick.png">
+	<OBJECTCLASS title="Access" logEvent="1" driver="mysql" Icon="/Skins/AdminV2/Img/brick.png">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé">Titre</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="2" values="Systeme,Vitrine,Planogramme" category="Definition" description="Module">ObjectModule</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="3" category="Definition">ObjectClass</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" values="Parc,Systeme,Abtel" category="Definition" description="Module">ObjectModule</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="3" values="Client,Device,Ticket,Facture,Contrat,Domain,CompteMail,Host,Server" category="Definition">ObjectClass</PROPERTIES>
 		<PROPERTIES type="varchar" category="Definition">Alias</PROPERTIES>
 		<PROPERTIES type="varchar" category="Definition">Filters</PROPERTIES>
 		<PROPERTIES type="order" category="Definition">Ordre</PROPERTIES>
 		<PROPERTIES type="int" values="0::ACCEPT,1::REJECT" default="0" category="Definition">Type</PROPERTIES>
 		<PROPERTIES type="int" values="0::READ,1::READ-WRITE" default="0" category="Definition">Rights</PROPERTIES>
+		<FKEY card="0,n" data="Role,Id" description="Role list" category="Config">RoleId</FKEY>
 		<FKEY card="0,n" data="User,Id" description="User list" category="Config">UserId</FKEY>
 		<FKEY card="0,n" data="Group,Id" description="Group list" category="Config">GroupId</FKEY>
 	</OBJECTCLASS>
@@ -123,7 +124,7 @@
 		<PROPERTIES type="text">Data</PROPERTIES>
 		<FKEY card="1,1" data="User,Id" behaviour="Integrated">UserId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Role" driver="mysql" order="Title" orderType="ASC" AccessPoint="0" Description="Rôles" Icon="/Skins/AdminV2/Img/brick.png" Dico="1">
+	<OBJECTCLASS title="Role" driver="mysql" order="Title" orderType="ASC" AccessPoint="1" Description="Rôles" Icon="/Skins/AdminV2/Img/brick.png" Dico="1">
 		<PROPERTIES type="varchar" unique="1" searchOrder="1">Title</PROPERTIES>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Event" driver="mysql" AccessPoint="0" Dico="1" Icon="/Skins/AdminV2/Img/brick.png" Class="Modules/Systeme/Class/Event.class.php">

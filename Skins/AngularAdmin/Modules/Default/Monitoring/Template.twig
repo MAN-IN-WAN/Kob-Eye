@@ -1,0 +1,360 @@
+<div class="page-content-inner">
+    <iframe src="https://zabbix.abtel.fr/zabbix/zabbix.php?action=map.view&sysmapid=26&fullscreen=1" style="width:100%;height:800px;"></iframe>
+<!--    <div id="3d"></div>
+    <script>
+        var container,objContainer;
+
+        var camera, scene, renderer, controls;
+
+        var mouseX = 0, mouseY = 0;
+
+        var windowHalfX = window.innerWidth / 2;
+        var windowHalfY = window.innerHeight / 2;
+
+        var obj;
+        var toto;
+        var cube, field1, field2 , field3, cylinder1, cylinder2, firewall;
+        var bricks
+        init();
+        animate();
+
+
+        function init() {
+
+            container = document.getElementById( '3d' );
+            //document.body.appendChild( container );
+
+            camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 2000 );
+            camera.position.x = -10;
+            camera.position.y = 20;
+            camera.position.z = 30;
+            camera.lookAt(new THREE.Vector3(0,0,20));
+            //camera.rotation.x = -Math.PI/2;
+
+
+            // scene
+            scene = new THREE.Scene();
+
+            //cube reference
+//                var geometry = new THREE.BoxGeometry(1, 1, 1);
+//                var material = new THREE.MeshBasicMaterial({color: 0xff5555});
+//                cube = new THREE.Mesh(geometry, material);
+//                scene.add(cube);
+
+//                //plan de ref
+//                var geometry = new THREE.PlaneGeometry(10, 10, 5, 5);
+//                var material1 = new THREE.MeshBasicMaterial( {color:0xff5555, side:THREE.DoubleSide});
+//                var material2 = new THREE.MeshBasicMaterial( {color:0x55ff55, side:THREE.DoubleSide});
+//                var material3 = new THREE.MeshBasicMaterial( {color:0x5555ff, side:THREE.DoubleSide});
+//                field1 = new THREE.Mesh(geometry, material1);
+//                //field1.rotation.x = -45 * Math.PI / 180;
+//                scene.add(field1);
+//                field2 = new THREE.Mesh(geometry, material2);
+//                //field2.rotation.z = -45 * Math.PI / 180;
+//                scene.add(field2);
+//                field3 = new THREE.Mesh(geometry, material3);
+//                scene.add(field3);
+
+
+            //light
+            var ambient = new THREE.AmbientLight( 0x101030 );
+            scene.add( ambient );
+
+            directionalLight = new THREE.DirectionalLight( 0xffeedd);
+            directionalLight.position.set( 0, 1, 1 );
+            scene.add( directionalLight );
+
+            directionalLight2 = new THREE.DirectionalLight( 0x88aaff,0.4 );
+            directionalLight2.position.set( -1, 1, -1 );
+            directionalLight2.castShadow =true;
+            directionalLight2.shadowDarkness = 0.5;
+            scene.add( directionalLight2);
+
+            // manager
+            var manager = new THREE.LoadingManager();
+            manager.onProgress = function ( item, loaded, total ) {
+                console.log( item, loaded, total );
+            };
+
+
+            // texture
+            var texture = new THREE.Texture();
+            var loader = new THREE.ImageLoader( manager );
+            loader.load( '/Skins/AngularAdmin/threejs/textures/UV_Grid_Sm.jpg', function ( image ) {
+                texture.image = image;
+                texture.needsUpdate = true;
+
+            } );
+
+
+            // model loader
+            var onProgress = function ( xhr ) {
+                if ( xhr.lengthComputable ) {
+                    var percentComplete = xhr.loaded / xhr.total * 100;
+                    console.log( Math.round(percentComplete, 2) + '% downloaded' );
+                }
+            };
+
+            var onError = function ( xhr ) {
+            };
+
+
+            objContainer = new THREE.Object3D();
+            scene.add(objContainer);
+            var loader = new THREE.OBJLoader( manager );
+            loader.load( '/Skins/AngularAdmin/threejs/models/cloud2.obj', function ( object ) {
+                object.traverse( function ( child ) {
+                    if ( child instanceof THREE.Mesh ) {
+                        child.material.map = texture;
+                    }
+                } );
+                obj=object;
+                objContainer.add( object );
+
+                //Recentre l'objet pour avoir des coordonnées en base 0
+                var box = new THREE.Box3().setFromObject( obj );
+                box.getCenter( obj.position ); // this re-sets the mesh position
+                obj.position.multiplyScalar( - 1 );
+                obj.castShadow =true;
+                obj.receiveShadow = true;
+                objContainer.rotation.x = -Math.PI/2
+
+            }, onProgress, onError );
+
+
+            //tube liaison
+            var geometry1 = new THREE.CylinderGeometry( 0.2, 0.4, 20, 32 );
+            var material1 = new THREE.MeshLambertMaterial( {color: 0xaaffaa,transparent:true,opacity:0.7} );
+            cylinder1 = new THREE.Mesh( geometry1, material1 );
+            var geometry2 = new THREE.CylinderGeometry( 0.2, 0.2, 20, 32 );
+            var material2 = new THREE.MeshLambertMaterial( {color: 0xffaaaa} );
+            cylinder2 = new THREE.Mesh( geometry2, material2 );
+            scene.add( cylinder1, cylinder2 );
+            cylinder1.position.z = 10;
+            cylinder1.position.x = +1;
+            cylinder1.rotation.x = 90*Math.PI/180;
+            cylinder2.position.z = 10;
+            cylinder2.position.x = -1;
+            cylinder2.rotation.x = 90*Math.PI/180;
+
+            cylinder1.castShadow = true;
+            cylinder1.receiveShadow = true;
+            cylinder2.castShadow = true;
+            cylinder2.receiveShadow = true;
+
+            //firewall
+            firewall = new THREE.Object3D();
+
+            var height = 0.5;
+            var width = 1.3;
+            var depth =0.5;
+            var geometryb = new THREE.BoxGeometry(width, height, depth);
+            var materialb = new THREE.MeshLambertMaterial({color: 0xff5555});
+            var bottom =0;
+            var left =0;
+            var rangs =5;
+            var bpr =6;
+            bricks = new Array();
+            for(var i =0; i<bpr*rangs;i++){
+//                    console.log(i+' : '+i%3);
+//                    console.log('left : '+left);
+//                    console.log('bottom : '+bottom);
+                if(i!=0 && !(i%bpr)) {
+                    bottom += height;
+                    left = 0;
+                }
+                if(!(i%(2*bpr))) left += width/2;
+                bricks[i] = new THREE.Mesh(geometryb, materialb);
+                bricks[i].position.x = left;
+                bricks[i].position.y = bottom;
+                firewall.add(bricks[i]);
+                left += width+0.01;
+            }
+            firewall.position.z = 10;
+            firewall.position.y = -1*rangs*height/2+height/2;
+            firewall.position.x = -1*(bpr-0.5)*width/2;
+            firewall.castShadow = true;
+            firewall.receiveShadow = true;
+
+            firewall.traverse( function ( child ) {
+                if ( child instanceof THREE.Mesh ) {
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                }
+            } );
+            scene.add(firewall);
+
+            directionalLight2.target = firewall;
+
+            //switchub
+            switchub = new THREE.Object3D();
+            var geometryhub = new THREE.BoxGeometry(2.5, 0.7, 2);
+            var materialhub= new THREE.MeshLambertMaterial({color: 0x8888ff});
+            hub = new THREE.Mesh(geometryhub, materialhub);
+            switchub.add(hub);
+            scene.add(switchub);
+            switchub.position.z =20;
+
+
+
+
+            //fioritures
+            //tube liaison
+            var geometry3 = new THREE.CylinderGeometry( 0.2, 0.2, 10, 32 );
+            var material3 = new THREE.MeshLambertMaterial( {color: 0xaaaaff} );
+            cylinder3 = new THREE.Mesh( geometry3, material3 );
+            var geometry4 = new THREE.CylinderGeometry( 0.2, 0.2, 10, 32 );
+            var material4= new THREE.MeshLambertMaterial( {color: 0xaaaaff} );
+            cylinder4 = new THREE.Mesh( geometry4, material4 );
+            var geometry5 = new THREE.CylinderGeometry( 0.2, 0.2, 10, 32 );
+            var material5= new THREE.MeshLambertMaterial( {color: 0xaaaaff} );
+            cylinder5 = new THREE.Mesh( geometry5, material5 );
+            scene.add( cylinder3, cylinder4,cylinder5 );
+            cylinder3.position.z = 20+5*Math.cos(Math.PI/6);
+            cylinder3.position.x = 1+5*Math.sin(Math.PI/6);
+            cylinder3.rotation.x = Math.PI/2;
+            cylinder3.rotation.z = -Math.PI/6;
+
+            cylinder4.position.z = 25;
+            cylinder4.position.x = 0;
+            cylinder4.rotation.x = Math.PI/2;
+
+            cylinder5.position.z = 20+5*Math.cos(Math.PI/6);
+            cylinder5.position.x = -1-5*Math.sin(Math.PI/6);
+            cylinder5.rotation.x = Math.PI/2;
+            cylinder5.rotation.z = Math.PI/6;
+
+            //fioritures
+            //postes clients
+            poste1 = new THREE.Object3D();
+            var geometrypc = new THREE.BoxGeometry(1.3, 2.5, 2.6);
+            var materialpc= new THREE.MeshLambertMaterial({color: 0x445555});
+            var pc = new THREE.Mesh(geometrypc, materialpc);
+
+
+            var geometryscrb = new THREE.BoxGeometry(3, 2.5, 0.3);
+            var materialscrb= new THREE.MeshLambertMaterial({color: 0x445555});
+            var scrb = new THREE.Mesh(geometryscrb, materialscrb);
+
+            var geometryscr = new THREE.BoxGeometry(2.8, 2.3, 0.2);
+            var materialscr= new THREE.MeshLambertMaterial({color: 0xccddff});
+            var scr = new THREE.Mesh(geometryscr, materialscr);
+            scr.position = new THREE.Vector3(0.1,0.1,0);
+
+            poste1.add(pc,scrb,scr);
+            pc.position.set(2.8,0.1,0);
+            scrb.position.set(0,0,0);
+            scr.position.set(-0.1,0.1,-0.1);
+
+            poste1.position.z = 20+10*Math.cos(Math.PI/6);
+            poste1.position.x = 1+10*Math.sin(Math.PI/6);
+            poste2 = poste1.clone();
+            poste2.position.z = 30;
+            poste2.position.x = 0;
+            poste3 = poste1.clone();
+            poste3.position.z = 20+10*Math.cos(Math.PI/6);
+            poste3.position.x = -1-10*Math.sin(Math.PI/6);
+            scene.add(poste1,poste2,poste3);
+
+
+            //fioritures
+            //serveurs
+            serv1 = new THREE.Object3D();
+            var geometryserv = new THREE.BoxGeometry(2.5, 2.5, 2);
+            var materialserv= new THREE.MeshLambertMaterial({color: 0x225555});
+            serv = new THREE.Mesh(geometryserv, materialserv);
+            serv1.add(serv);
+            var geometrysp1 = new THREE.SphereGeometry( 0.1, 32, 32 );
+            var materialsp1 = new THREE.MeshLambertMaterial( {color: 0xff0000} );
+            sphere1 = new THREE.Mesh( geometrysp1, materialsp1 );
+            var geometrysp2 = new THREE.SphereGeometry( 0.1, 32, 32 );
+            var materialsp2 = new THREE.MeshLambertMaterial( {color: 0x00ff00} );
+            sphere2 = new THREE.Mesh( geometrysp2, materialsp2 );
+            sphere1.position.z = -1;
+            sphere1.position.x = -0.2;
+            sphere2.position.z = -1;
+            sphere2.position.x = 0.2;
+            sphere3 = sphere1.clone();
+            sphere4 = sphere2.clone();
+            sphere3.position.x = 0.6;
+            sphere4.position.x = -0.6;
+            serv1.add(sphere1,sphere2,sphere3,sphere4);
+            scene.add(serv1);
+
+            serv1.position.z = 20+10*Math.cos(Math.PI/3);
+            serv1.position.x = 2+10*Math.sin(Math.PI/3);
+
+            //fioritures
+            //tube liaison
+            var geometry6 = new THREE.CylinderGeometry( 0.1, 0.1, 10, 32 );
+            var material6 = new THREE.MeshLambertMaterial( {color: 0xffff88} );
+            cylinder6 = new THREE.Mesh( geometry6, material6 );
+
+
+            scene.add( cylinder6);
+            cylinder6.position.z = 20+5*Math.cos(Math.PI/3);
+            cylinder6.position.x = 1+5*Math.sin(Math.PI/3);
+            cylinder6.rotation.x = Math.PI/2;
+            cylinder6.rotation.z = -Math.PI/3;
+
+
+
+
+
+            //rederer
+            renderer = new THREE.WebGLRenderer({ alpha: true });
+            renderer.setPixelRatio( window.devicePixelRatio );
+            renderer.setSize( window.innerWidth, window.innerHeight );
+            renderer.setClearColor( 0xffffff, 0);
+            renderer.shadowMap.Enabled = true;
+
+            container.appendChild( renderer.domElement );
+
+            //controls
+            controls = new THREE.OrbitControls( camera, renderer.domElement );
+            controls.target = new THREE.Vector3(0,0,20);
+            //controls.minDistance = 50;
+            controls.enablePan = false;
+            //controls.addEventListener( 'change', render ); <= desactivé car on a deja un animation loop qui rerender
+
+
+            document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+            window.addEventListener( 'resize', onWindowResize, false );
+
+        }
+
+        function onWindowResize() {
+            windowHalfX = window.innerWidth / 2;
+            windowHalfY = window.innerHeight / 2;
+
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+
+            renderer.setSize( window.innerWidth, window.innerHeight );
+        }
+
+        function onDocumentMouseMove( event ) {
+            mouseX = ( event.clientX - windowHalfX ) / 2;
+            mouseY = ( event.clientY - windowHalfY ) / 2;
+        }
+
+        //
+
+        function animate()  {
+            requestAnimationFrame( animate );
+            render();
+        }
+
+        function render() {
+            objContainer.rotation.x+=1;
+            //camera.position.x += ( mouseX - camera.position.x ) * .05;
+            //camera.position.y += ( - mouseY - camera.position.y ) * .05;
+
+            //camera.lookAt( scene.position );
+
+            renderer.render( scene, camera );
+        }
+    </script>-->
+</div>
+
+

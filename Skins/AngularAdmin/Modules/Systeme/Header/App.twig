@@ -3,7 +3,8 @@ var TEMPLATE_PATH = '/Skins/AngularAdmin/';
 angular.module('cleanUI', [
 'ngRoute',
 'cleanUI.controllers',
-'angularUtils.directives.dirPagination'
+'angularUtils.directives.dirPagination',
+'ngSanitize'
 ]).config(function($interpolateProvider){
 $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
 })

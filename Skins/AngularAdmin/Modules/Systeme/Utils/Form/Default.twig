@@ -5,7 +5,18 @@
             <small>{{ field.help }}</small>
         </div>
         <div class="col-md-6">
-            <input type="text" class="form-control" placeholder="" id="input-{{ field.name }}" ng-model="obj.{{ field.name }}">
+            {% if field.type == "price" or field.type == "float" %}
+                <span class="label label-warning">{[{ obj.{{ field.name }} }]}</span>
+            {% elseif field.type == "extlink" %}
+                <a class="btn btn-success btn-xs" href="https://zabbix.abtel.fr:8443/guacamole/#/client/{[{ obj.{{ field.name }} }]}" target="_blank">{{ field.listDescr }}</a>
+            {% elseif field.type == "int" %}
+                <span class="label label-primary">{[{ obj.{{ field.name }} }]}</span>
+            {% elseif field.type == "boolean" %}
+                <span class="label label-success" ng-if="obj.{{ field.name }}"><i class="fa fa-check"></i></span>
+                <span class="label label-danger" ng-if="!obj.{{ field.name }}"><i class="fa fa-times"></i></span>
+            {% else %}
+                <input type="text" class="form-control" placeholder="" id="input-{{ field.name }}" ng-model="modalObj.{{ field.name }}">
+            {% endif %}
         </div>
     </div>
 {% endfor %}
