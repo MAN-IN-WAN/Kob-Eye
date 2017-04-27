@@ -19,9 +19,24 @@
         $scope.setFilter = function (filter){
             {{ c.identifier }}Store.setFilters(filter);
         }
-        $scope.modify = function (id){
-            console.log('edit ',id);
+        $scope.modify = function (obj){
+            console.log('edit ',obj.id);
+            {{ c.identifier }}Store.getOneData(obj.id).then(function (data) {
+                $scope.modalObj = data;
+                console.log('edit obj',$scope.modalObj);
+            });
             $("#modal-{{ c.identifier }}").modal();
+        }
+        $scope.modifySave = function (){
+            console.log('save ',$scope.modalObj);
+            {{ c.identifier }}Store.saveData($scope.modalObj).then(function (data) {
+                if (data.success)
+                    $scope.modalObj = data.data;
+                else {
+                    alert(data.errors);
+                }
+                console.log('save obj',data);
+            });
         }
         $scope.delete = function (item){
             console.log('edit ',item);

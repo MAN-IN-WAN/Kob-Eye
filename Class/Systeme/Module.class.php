@@ -578,18 +578,16 @@ class Module extends Root{
 			$Query = $this->Nom.'/'.$Query;
 		}
 		//Traitement des access
-		/*if (isset(Sys::$User->Access)&&
+		if (isset(Sys::$User->Access)&&
 			is_array(Sys::$User->Access)) 
-			foreach (Sys::$User->Access as $A){
-				if ($A->ObjectModule==$this->Nom){
-					$LastQuery = $Query;
-					$Al = preg_replace("#^".$this->Nom."\/#","",$A->Alias);
-					if (sizeof(explode($Al,$Query))==1){
-						$Query = preg_replace('#^'.$A->ObjectClass.'#',$Al,$Query);
-//						$GLOBALS["Systeme"]->Log->log("ACCESS ".$LastQuery,$Query);
-					}
-				}
-		}*/
+			foreach (Sys::$User->Access as $A) {
+				//echo "test ".$A->ObjectModule.'/'.$A->ObjectClass.'  =>  '.$Query." -- ".preg_match('#^'.$A->ObjectModule.'\/'.$A->ObjectClass.'#',$Query)."\r\n";
+                if (preg_match('#^'.$A->ObjectModule.'\/'.$A->ObjectClass."#",$Query)) {
+					$Query = preg_replace('#^'.$A->ObjectModule.'\/' . $A->ObjectClass . '#', $A->Alias, $Query);
+					$Query = Process::searchAndReplaceVars($Query);
+                    $GLOBALS["Systeme"]->Log->log("ACCESS " . $Query);
+                }
+			}
 		//On charge le Schema
 		$this->loadSchema();
  		$TabQuery = Module::splitQuery($Query,true);

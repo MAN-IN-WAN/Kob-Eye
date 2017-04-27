@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <title>Network Supervision</title>
+        <style>
+            body {
+                margin: 0;
+            }
+
+            canvas {
+                width: 100%;
+                height: 100%
+            }
+        </style>
+
+        <script src="lib/three.js"></script>
+        <script src="lib/loaders/OBJLoader.js"></script>
+        <script src="lib/controls/OrbitControls.js"></script>
+
+        <script src="builder.js"></script>
+        <script src="threeScene.js"></script>
+    </head>
+    <body>
+        <div id="threeContainer">
+
+        </div>
+        <script type="text/javascript">
+            var scene = initScene('threeContainer');
+            var items = {};
+            items['0'] = new MapItem(null,'cloud',scene);
+            items['10.10.10.10'] = new MapItem({x:-3.575,y:-1,z:10},'firewall',scene);
+            items['0-10.10.10.10a'] = new MapItem({x:1,y:0,z:10},'link',scene);
+            items['0-10.10.10.10b'] = new MapItem({x:-1,y:0,z:10},'link',scene);
+            items['10.10.10.1'] = new MapItem({x:0,y:0,z:20},'switch',scene);
+            items['10.10.10.2'] = new MapItem({x:0,y:0,z:30},'poste',scene);
+            items['10.10.10.3'] = new MapItem({x:5,y:0,z:30},'server',scene);
+        </script>
+    </body>
+</html>

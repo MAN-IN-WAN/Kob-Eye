@@ -3,63 +3,63 @@
     <!-- Dashboard -->
     <div class="dashboard-container">
         <div class="row">
-            <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
+            <a class="col-xl-3 col-lg-6 col-sm-6 col-xs-12" href="#/Documents/Contrats">
                 <div class="widget widget-seven background-success">
                     <div class="widget-body">
                         <div href="javascript: void(0);" class="widget-body-inner">
                             <h5 class="text-uppercase">Montant mensuel</h5>
                             <i class="counter-icon icmn-cash3"></i>
                             <span class="counter-count">
-                                <i class="icmn-arrow-up5"></i>
-                                €<span class="counter-init" data-from="25" data-to="942"></span>
+                                <span class="counter-init" data-from="0" data-to="{{ ParcClient.MontantMensuel }}"></span> €
                             </span>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
+            </a>
+            <a class="col-xl-3 col-lg-6 col-sm-6 col-xs-12" href="#/Cloud/Domaines">
                 <div class="widget widget-seven background-default">
                     <div class="widget-body">
                         <div href="javascript: void(0);" class="widget-body-inner">
-                            <h5 class="text-uppercase">Disponibilité</h5>
+                            <h5 class="text-uppercase">Domaines</h5>
                             <i class="counter-icon icmn-server"></i>
                             <span class="counter-count">
                                 <i class="icmn-arrow-down5"></i>
-                                <span class="counter-init" data-from="0" data-to="99.99"></span>%
+                                <span class="counter-init" data-from="0" data-to="{{ NbDomaines }}"></span>
                             </span>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
+            </a>
+            <a class="col-xl-3 col-lg-6 col-sm-6 col-xs-12" href="#/Infrastructure/Peripheriques">
                 <div class="widget widget-seven">
                     <div class="widget-body">
                         <div href="javascript: void(0);" class="widget-body-inner">
-                            <h5 class="text-uppercase">Total incidents</h5>
+                            <h5 class="text-uppercase">Périphériques</h5>
                             <i class="counter-icon icmn-users"></i>
                             <span class="counter-count">
                                 <i class="icmn-arrow-up5"></i>
-                                <span class="counter-init" data-from="0" data-to="67"></span>
+                                <span class="counter-init" data-from="0" data-to="{{ NbDevices }}"></span>
                             </span>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
+            </a>
+            <a class="col-xl-3 col-lg-6 col-sm-6 col-xs-12" href="#/Cloud/Email">
                 <div class="widget widget-seven">
                     <div class="widget-body">
                         <div href="javascript: void(0);" class="widget-body-inner">
-                            <h5 class="text-uppercase">Incidents traités </h5>
+                            <h5 class="text-uppercase">Comptes emails</h5>
                             <i class="counter-icon icmn-users"></i>
                             <span class="counter-count">
                                 <i class="icmn-arrow-up5"></i>
-                                <span class="counter-init" data-from="0" data-to="356"></span>
+                                <span class="counter-init" data-from="0" data-to="{{ NbEmails }}"></span>
                             </span>
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
+        <!--
         <div class="row">
             <div class="col-xl-6">
                 <div class="widget widget-six">
@@ -122,6 +122,146 @@
                     </div>
                     <div class="widget-body">
                         <div class="chart-overlapping-bar height-250 chartist"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        -->
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="widget widget-three">
+                    <div class="example-calendar-block"></div>
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="widget widget-two">
+                    <div class="widget-header">
+                        <div class="dropdown pull-right">
+                            <a href="javascript: void(0);" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <i class="dropdown-inline-button-icon icmn-folder-open"></i>
+                                <span class="hidden-lg-down">Historique des alertes</span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="" role="menu">
+                                <a class="dropdown-item" href="javascript:void(0)">Current search</a>
+                                <a class="dropdown-item" href="javascript:void(0)">Search for issues</a>
+                                <div class="dropdown-divider"></div>
+                                <div class="dropdown-header">Opened</div>
+                                <a class="dropdown-item" href="javascript:void(0)"><i class="dropdown-icon icmn-checkmark"></i> CLNUI-253 Project implemen...</a>
+                                <a class="dropdown-item" href="javascript:void(0)"><i class="dropdown-icon icmn-checkmark"></i> CLNUI-234 Active history iss...</a>
+                                <a class="dropdown-item" href="javascript:void(0)"><i class="dropdown-icon icmn-clock"></i> CLNUI-424 Ionicons intergrat...</a>
+                                <a class="dropdown-item" href="javascript:void(0)">More...</a>
+                                <div class="dropdown-divider"></div>
+                                <div class="dropdown-header">Filters</div>
+                                <a class="dropdown-item" href="javascript:void(0)">My open issues</a>
+                                <a class="dropdown-item" href="javascript:void(0)">Reported by me</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="javascript:void(0)">Import issues from CSV</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="javascript:void(0)"><i class="dropdown-icon icmn-cog"></i> Settings</a>
+                            </ul>
+                        </div>
+                        Consultez les <strong>Alertes</strong>
+                    </div>
+                    <div class="widget-body clearfix">
+                        <div class="conversation-block custom-scroll" style="height: 260px">
+                            <!--<div class="conversation-item">
+                                <div class="s1">
+                                    <a class="avatar" href="javascript:void(0);">
+                                        <img src="/Skins/AngularAdmin/assets/common/img/temp/avatars/3.jpg" alt="Alternative text to the image" />
+                                    </a>
+                                </div>
+                                <div class="s2">
+                                    <strong>David Scott</strong>
+                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
+                                </div>
+                            </div>
+                            <div class="conversation-item">
+                                <div class="s1">
+                                    <a class="avatar" href="javascript:void(0);">
+                                        <img src="/Skins/AngularAdmin/assets/common/img/temp/avatars/3.jpg" alt="Alternative text to the image" />
+                                    </a>
+                                </div>
+                                <div class="s2">
+                                    <strong>Chris Smith</strong>
+                                    <p>Lorem Ipsum is simply dummy text of the printing</p>
+                                </div>
+                            </div>
+                            <div class="conversation-item you">
+                                <div class="s1">
+                                    <a class="avatar" href="javascript:void(0);">
+                                        <img src="/Skins/AngularAdmin/assets/common/img/temp/avatars/4.jpg" alt="Alternative text to the image" />
+                                    </a>
+                                </div>
+                                <div class="s2">
+                                    <strong>Donald Trump</strong>
+                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy</p>
+                                </div>
+                            </div>
+                            <div class="conversation-item">
+                                <div class="s1">
+                                    <a class="avatar" href="javascript:void(0);">
+                                        <img src="/Skins/AngularAdmin/assets/common/img/temp/avatars/3.jpg" alt="Alternative text to the image" />
+                                    </a>
+                                </div>
+                                <div class="s2">
+                                    <strong>David Scott</strong>
+                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
+                                </div>
+                            </div>
+                            <div class="conversation-item you">
+                                <div class="s1">
+                                    <a class="avatar" href="javascript:void(0);">
+                                        <img src="/Skins/AngularAdmin/assets/common/img/temp/avatars/4.jpg" alt="Alternative text to the image" />
+                                    </a>
+                                </div>
+                                <div class="s2">
+                                    <strong>Donald Trump</strong>
+                                    <p>Ok. Thanks!</p>
+                                </div>
+                            </div>
+                            <div class="conversation-item you">
+                                <div class="s1">
+                                    <a class="avatar" href="javascript:void(0);">
+                                        <img src="/Skins/AngularAdmin/assets/common/img/temp/avatars/4.jpg" alt="Alternative text to the image" />
+                                    </a>
+                                </div>
+                                <div class="s2">
+                                    <strong>Donald Trump</strong>
+                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy</p>
+                                </div>
+                            </div>
+                            <div class="conversation-item">
+                                <div class="s1">
+                                    <a class="avatar" href="javascript:void(0);">
+                                        <img src="/Skins/AngularAdmin/assets/common/img/temp/avatars/3.jpg" alt="Alternative text to the image" />
+                                    </a>
+                                </div>
+                                <div class="s2">
+                                    <strong>David Scott</strong>
+                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
+                                </div>
+                            </div>
+                            <div class="conversation-item you">
+                                <div class="s1">
+                                    <a class="avatar" href="javascript:void(0);">
+                                        <img src="/Skins/AngularAdmin/assets/common/img/temp/avatars/4.jpg" alt="Alternative text to the image" />
+                                    </a>
+                                </div>
+                                <div class="s2">
+                                    <strong>Donald Trump</strong>
+                                    <p>Ok. Thanks!</p>
+                                </div>
+                            </div>-->
+                        </div>
+                        <div class="form-group padding-top-20 margin-bottom-0">
+                            <textarea id="textarea" class="form-control" placeholder="Saisissez et appuyez sur entrer"></textarea>
+                            <button class="btn width-full margin-top-10">
+                                <i class="fa fa-send margin-right-5"></i>
+                                Envoyer
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -250,145 +390,6 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-xl-6">
-                <div class="widget widget-three">
-                    <div class="example-calendar-block"></div>
-                </div>
-            </div>
-            <div class="col-xl-6">
-                <div class="widget widget-two">
-                    <div class="widget-header">
-                        <div class="dropdown pull-right">
-                            <a href="javascript: void(0);" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <i class="dropdown-inline-button-icon icmn-folder-open"></i>
-                                <span class="hidden-lg-down">Issues History</span>
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="" role="menu">
-                                <a class="dropdown-item" href="javascript:void(0)">Current search</a>
-                                <a class="dropdown-item" href="javascript:void(0)">Search for issues</a>
-                                <div class="dropdown-divider"></div>
-                                <div class="dropdown-header">Opened</div>
-                                <a class="dropdown-item" href="javascript:void(0)"><i class="dropdown-icon icmn-checkmark"></i> CLNUI-253 Project implemen...</a>
-                                <a class="dropdown-item" href="javascript:void(0)"><i class="dropdown-icon icmn-checkmark"></i> CLNUI-234 Active history iss...</a>
-                                <a class="dropdown-item" href="javascript:void(0)"><i class="dropdown-icon icmn-clock"></i> CLNUI-424 Ionicons intergrat...</a>
-                                <a class="dropdown-item" href="javascript:void(0)">More...</a>
-                                <div class="dropdown-divider"></div>
-                                <div class="dropdown-header">Filters</div>
-                                <a class="dropdown-item" href="javascript:void(0)">My open issues</a>
-                                <a class="dropdown-item" href="javascript:void(0)">Reported by me</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="javascript:void(0)">Import issues from CSV</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="javascript:void(0)"><i class="dropdown-icon icmn-cog"></i> Settings</a>
-                            </ul>
-                        </div>
-                        Conversation: <strong>Software</strong>
-                    </div>
-                    <div class="widget-body clearfix">
-                        <div class="conversation-block custom-scroll" style="height: 260px">
-                            <div class="conversation-item">
-                                <div class="s1">
-                                    <a class="avatar" href="javascript:void(0);">
-                                        <img src="/Skins/AngularAdmin/assets/common/img/temp/avatars/3.jpg" alt="Alternative text to the image" />
-                                    </a>
-                                </div>
-                                <div class="s2">
-                                    <strong>David Scott</strong>
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
-                                </div>
-                            </div>
-                            <div class="conversation-item">
-                                <div class="s1">
-                                    <a class="avatar" href="javascript:void(0);">
-                                        <img src="/Skins/AngularAdmin/assets/common/img/temp/avatars/3.jpg" alt="Alternative text to the image" />
-                                    </a>
-                                </div>
-                                <div class="s2">
-                                    <strong>Chris Smith</strong>
-                                    <p>Lorem Ipsum is simply dummy text of the printing</p>
-                                </div>
-                            </div>
-                            <div class="conversation-item you">
-                                <div class="s1">
-                                    <a class="avatar" href="javascript:void(0);">
-                                        <img src="/Skins/AngularAdmin/assets/common/img/temp/avatars/4.jpg" alt="Alternative text to the image" />
-                                    </a>
-                                </div>
-                                <div class="s2">
-                                    <strong>Donald Trump</strong>
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy</p>
-                                </div>
-                            </div>
-                            <div class="conversation-item">
-                                <div class="s1">
-                                    <a class="avatar" href="javascript:void(0);">
-                                        <img src="/Skins/AngularAdmin/assets/common/img/temp/avatars/3.jpg" alt="Alternative text to the image" />
-                                    </a>
-                                </div>
-                                <div class="s2">
-                                    <strong>David Scott</strong>
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
-                                </div>
-                            </div>
-                            <div class="conversation-item you">
-                                <div class="s1">
-                                    <a class="avatar" href="javascript:void(0);">
-                                        <img src="/Skins/AngularAdmin/assets/common/img/temp/avatars/4.jpg" alt="Alternative text to the image" />
-                                    </a>
-                                </div>
-                                <div class="s2">
-                                    <strong>Donald Trump</strong>
-                                    <p>Ok. Thanks!</p>
-                                </div>
-                            </div>
-                            <div class="conversation-item you">
-                                <div class="s1">
-                                    <a class="avatar" href="javascript:void(0);">
-                                        <img src="/Skins/AngularAdmin/assets/common/img/temp/avatars/4.jpg" alt="Alternative text to the image" />
-                                    </a>
-                                </div>
-                                <div class="s2">
-                                    <strong>Donald Trump</strong>
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy</p>
-                                </div>
-                            </div>
-                            <div class="conversation-item">
-                                <div class="s1">
-                                    <a class="avatar" href="javascript:void(0);">
-                                        <img src="/Skins/AngularAdmin/assets/common/img/temp/avatars/3.jpg" alt="Alternative text to the image" />
-                                    </a>
-                                </div>
-                                <div class="s2">
-                                    <strong>David Scott</strong>
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
-                                </div>
-                            </div>
-                            <div class="conversation-item you">
-                                <div class="s1">
-                                    <a class="avatar" href="javascript:void(0);">
-                                        <img src="/Skins/AngularAdmin/assets/common/img/temp/avatars/4.jpg" alt="Alternative text to the image" />
-                                    </a>
-                                </div>
-                                <div class="s2">
-                                    <strong>Donald Trump</strong>
-                                    <p>Ok. Thanks!</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group padding-top-20 margin-bottom-0">
-                            <textarea id="textarea" class="form-control" placeholder="Type and press enter"></textarea>
-                            <button class="btn width-full margin-top-10">
-                                <i class="fa fa-send margin-right-5"></i>
-                                Send
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- End Dashboard -->
 
@@ -456,31 +457,8 @@
                     });
                 }
             },
-            defaultDate: '2016-05-12',
+            defaultDate: '2017-04-26',
             events: [
-                {
-                    title: 'All Day Event',
-                    start: '2016-05-01',
-                    className: 'fc-event-success'
-                },
-                {
-                    id: 999,
-                    title: 'Repeating Event',
-                    start: '2016-05-09T16:00:00',
-                    className: 'fc-event-default'
-                },
-                {
-                    id: 999,
-                    title: 'Repeating Event',
-                    start: '2016-05-16T16:00:00',
-                    className: 'fc-event-success'
-                },
-                {
-                    title: 'Conference',
-                    start: '2016-05-11',
-                    end: '2016-05-14',
-                    className: 'fc-event-danger'
-                }
             ],
             eventClick: function(calEvent, jsEvent, view) {
                 if (!$(this).hasClass('event-clicked')) {

@@ -110,6 +110,17 @@ class User extends genericClass{
 				}
 			}
 		}
+        //Recherche des acces des roles de l'utilisateur
+        $this->Roles = $this->getRoles();
+        if (is_array($this->Roles))foreach ($this->Roles as $g) {
+            $Mt = Sys::$Modules["Systeme"]->callData("Systeme/Role/Title=".$g."/Access");
+            if (is_array($Mt)&&sizeof($Mt)) {
+                //On concatene les acces dans un seul tableau
+                foreach ($Mt as $M) {
+                    $Acces[] = genericClass::createInstance("Systeme",$M);
+                }
+            }
+        }
 		if (!empty($Acces))$Acces = Storproc::SpBubbleSort($Acces,"Ordre","ASC");
 			$this->Access = $Acces;
 	}

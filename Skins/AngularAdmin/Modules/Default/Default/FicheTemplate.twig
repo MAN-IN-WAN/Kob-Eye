@@ -40,7 +40,7 @@
                                     <span class="label label-success" ng-if="obj.{{ field.name }}"><i class="fa fa-check"></i></span>
                                     <span class="label label-danger" ng-if="!obj.{{ field.name }}"><i class="fa fa-times"></i></span>
                                 {% else %}
-                                    {[{ obj.{{ field.name }} }]}
+                                    <span >{[{ obj.{{ field.name }} }]}</span>
                                 {% endif %}
                             </div>
                         </div>

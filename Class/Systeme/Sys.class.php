@@ -380,6 +380,11 @@ class Sys extends Root{
 				$name = $Temp[sizeof($Temp)-1];
 				$this->output_file($file,$name,false,$detectmime);
 			break;
+            case "b64":
+            	header("Content-type:application/octet-stream");
+            	$detectmime=false;
+            	echo base64_encode( file_get_contents($this->Lien));
+            break;
 			case "ods": if ($this->type=="ods") { header("Content-type:application/vnd.oasis.opendocument.spreadsheet");$detectmime=false;  }
 			case "ppt": if ($this->type=="ppt") { header("Content-type:application/vnd.ms-powerpoint");$detectmime=false; }
 			case "ppz": if ($this->type=="ppz") { header("Content-type:application/vnd.ms-powerpoint");$detectmime=false;  }
