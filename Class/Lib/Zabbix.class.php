@@ -34,6 +34,26 @@ class Zabbix {
         echo'<pre>';
     }
 
+
+    public static function getGraphData($hostIds,$itemIds,$start,$end){
+        $zab = self::connect();
+
+        $hosts = $zab->historyGet(array(
+            'output' => 'extend',
+            'history' => '0',
+            'hostids' => $hostIds,
+            'itemids' => $itemIds,
+            'time_from'=> $start,
+            'time_till' => $end
+        ));
+
+        echo '<pre>';
+        foreach($hosts as $h){
+            print_r($h);
+        }
+        echo'<pre>';
+    }
+
     public static function updateGroup($cli, $uuid){
 
         $zab = self::connect();
