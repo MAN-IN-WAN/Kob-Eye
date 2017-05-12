@@ -1639,7 +1639,7 @@ class genericClass extends Root {
 	 */
 	public function Verify() {
 		$error = 1;
-		unset($this -> Error);
+		$this -> Error = array();
 		//Lancement de la verification des prorpietes
 		$Props = $this -> Proprietes(false, true);
 		if (is_array($Props))

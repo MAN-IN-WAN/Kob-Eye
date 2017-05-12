@@ -94,10 +94,11 @@ Client=$dev->CodeClient
             $obj->Description = $_GET["os"];
             $obj->Type = $_GET["machine"] || 'station';
             $obj->Uuid = $uuid;
+            klog::l('$obj',$obj);
             $obj->Save();
             $port_rdp = 12000+$obj->Id;
             $port_vnc = 22000+$obj->Id;
-            if ($port_rdp==12000) die('ERROR');
+            if ($port_rdp==12000) die('ERROR Device port rdp');
             $obj->ConnectionType = 'R'.$port_rdp.'=localhost:3389,R'.$port_vnc.'=localhost:15900';
 
             //$obj->addParent('Parc/Client/2');

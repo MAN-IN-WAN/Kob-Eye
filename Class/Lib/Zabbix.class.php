@@ -38,7 +38,7 @@ class Zabbix {
     public static function getGraphData($hostIds,$itemIds,$start,$end){
         $zab = self::connect();
 
-        $hosts = $zab->historyGet(array(
+        $histories = $zab->historyGet(array(
             'output' => 'extend',
             'history' => '0',
             'hostids' => $hostIds,
@@ -47,9 +47,12 @@ class Zabbix {
             'time_till' => $end
         ));
 
+        $data = array();
         echo '<pre>';
-        foreach($hosts as $h){
+        foreach($histories as $h){
             print_r($h);
+
+
         }
         echo'<pre>';
     }

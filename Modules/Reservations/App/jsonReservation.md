@@ -1,0 +1,21 @@
+{
+    "Id":[!C::Id!],
+    "Nom": "[!C::Nom!]",
+    "Date": "[!C::DateDebut!]",
+    "DateDebut": "[DATE d/m/Y H:i][!C::DateDebut!][/DATE]",
+    "DateFin": "[DATE d/m/Y H:i][!C::DateFin!][/DATE]",
+    "Valide": "[!C::Valide!]",
+    "Facture": "[!C::Facture!]",
+    "NbParticipant": "[!C::NbParticpant!]",
+    "ClientId": "[!C::ClientId!]",
+    "ClientPrenom": "[!C::ClientPrenom!]",
+    "ClientNom": "[!C::ClientNom!]",
+    "ServiceId": "[!C::ServiceId!]",
+    "Service": "[!C::Service!]",
+    "Duree": "[!C::Duree!]",
+    "Type": "[!C::Type!]",
+    "CourtId": "[!C::CourtId!]",
+    "Court": "[!C::Court!]",
+    "Tarif": "[!Utils::getPrice([!C::getTotal()!])!] € TTC",
+    "ServiceDetail": '[STORPROC [!C::getLigneFacture()!]|Lf]<hr /><div class="service-line"><span class="service-line-price" >[!Utils::getPrice([!Lf::MontantTTC!])!] €</span>[!Lf::Libelle!] (x[!Lf::Quantite!]) </div>[/STORPROC]'
+}
