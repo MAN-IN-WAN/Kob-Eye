@@ -4,7 +4,10 @@ angular.module('cleanUI', [
 'ngRoute',
 'cleanUI.controllers',
 'angularUtils.directives.dirPagination',
-'ngSanitize'
+'ngSanitize',
+'uiSwitch',
+'ui.bootstrap',
+'CustomSelect'
 ]).config(function($interpolateProvider){
 $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
 })
@@ -12,7 +15,7 @@ $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
 function($locationProvider, $routeProvider) {
 /////////////////////////////////////////////////////////////
 // SYSTEM
-$routeProvider.when('/', {redirectTo: '/dashboards/alpha'});
+$routeProvider.when('/', {redirectTo: '{{ defaultMenu }}'});
 $routeProvider.otherwise({redirectTo: 'pages/page-404'});
 
 /////////////////////////////////////////////////////////////
@@ -323,7 +326,7 @@ controller: 'registerPageCtrl'
 /////////////////////////////////////////////////////////////
 // Menus
 {%  for m in menus %}
-    $routeProvider.when('/{{ m.Url }}/{{ m2.Url }}', {
+    $routeProvider.when('/{{ m.Url }}', {
     templateUrl: '{{ m.Url }}/Template.htm',
     controller: '{{ m.Url }}Ctrl'
     });

@@ -1,5 +1,5 @@
 {% for key,st in stores %}
-app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrenelements %},{{ child.objectModule }}{{ child.objectName }}StoreChild{% endfor %}) {
+app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrenelements %},{{ child.identifier }}Store{% endfor %}) {
     var {{ st.identifier }}Store = [],
         currentPage = 1,
         pageLoaded = 0,
@@ -7,13 +7,15 @@ app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrene
         pageLength = 15,
         filters = '',
         timer = 0,
-        query = '/{{ st.module }}/{{ st.objecttype }}/getData.json',
+        query = '/{{ st.module }}/{{ st.objecttype }}',
         busy = false;
     return {
         getOneData: getOneData,
         getData: getData,
+        getNewData: getNewData,
         saveData: saveData,
         getTotal: getTotal,
+        export: exportData,
         setPage: setPage,
         setFilters: setFilters,
         getFilters: getFilters,
@@ -21,12 +23,19 @@ app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrene
         setPageLength: setPageLength,
         currentPage: currentPage,
         itemsPerPage: pageLength,
+        getDataFilter: getDataFilter,
         refresh: refresh,
         filter: filters,
+        resetQuery: resetQuery,
         setQuery: setQuery,
         data:{{ st.identifier }}Store
     };
+    function resetQuery(q) {
+        pageLoaded = 0;
+        query = '/{{ st.module }}/{{ st.objecttype }}';
+    }
     function setQuery(q) {
+        pageLoaded = 0;
         query = q;
     }
     function setPageLength(pl) {
@@ -88,17 +97,34 @@ app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrene
         return false;
     }
     /**
+    * exportData
+    * export des données en fichier csv
+    */
+    function exportData(){
+        window.open(query+'/Export.csv','_blank');
+        console.log('store > {{ key }} > export '+query);
+    }
+    /**
     * SaveData
     * Envoie des données vers le serveur et gestion des erreurs
     */
     function saveData(obj){
         return $q(function(resolve, reject) {
-            $http.post('/{{ st.module }}/{{ st.objecttype }}/'+obj.id+'/Save.json',obj)
+            var q = (obj.id > 0) ? '/{{ st.module }}/{{ st.objecttype }}/'+obj.id+'/Save.json' :'/{{ st.module }}/{{ st.objecttype }}/Save.json'
+            $http.post(q,obj)
                 .success(function(data) {
                     console.log('store > {{ key }} > save success '+obj.id, data);
                     resolve(data);
             });
         });
+    }
+    /**
+    * Return new data with default values
+    * Return Promise
+    */
+    function getNewData() {
+        console.log('new data {{ st.newData }}');
+        return {{ st.newData | raw }};
     }
     /**
     * Look for specific id data into the store
@@ -129,6 +155,13 @@ app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrene
         });
     }
     /**
+    * Get data for combo component
+    */
+    function getDataFilter (filter) {
+        setFilters('~'+filter);
+        return getData(1);
+    }
+    /**
     * Load more data base on page
     */
     function getData(page) {
@@ -143,7 +176,7 @@ app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrene
             if (page!=pageLoaded){
                 busy=true;
                 $http.get(
-                    query,
+                    query+'/getData.json',
                     {
                         params: {
                             filters: filters,
@@ -173,15 +206,15 @@ app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrene
         var num = {{ st.childrenelements | length }};
         return $q(function(resolve, reject) {
             {% for child in st.childrenelements %}
-                {{ child.objectModule }}{{ child.objectName }}StoreChild.setQuery('/{{ st.module }}/{{ st.objecttype }}/'+obj.id+'/{{ child.objectName }}/getData.json');
+                {{ child.objectModule }}{{ child.objectName }}Store.setQuery('/{{ st.module }}/{{ st.objecttype }}/'+obj.id+'/{{ child.objectName }}');
                 if (!obj.{{ child.objectName }}) {
-                    obj.{{ child.objectName }} = {{ child.objectModule }}{{ child.objectName }}StoreChild.data;
-                    {{ child.objectModule }}{{ child.objectName }}StoreChild.getData().then(function () {
+                    obj.{{ child.objectName }} = {{ child.objectModule }}{{ child.objectName }}Store.data;
+                    {{ child.objectModule }}{{ child.objectName }}Store.getData().then(function () {
                         num--;
                         if (num==0) resolve(obj);
                     });
                 }else{
-                    {{ child.objectModule }}{{ child.objectName }}StoreChild.data = obj.{{ child.objectName }};
+                    {{ child.objectModule }}{{ child.objectName }}Store.data = obj.{{ child.objectName }};
                     num--;
                     if (num==0) resolve(obj);
                 }

@@ -81,6 +81,8 @@ ZabbixAgent64=http://".Sys::$domain."/$log->ZabbixAgent64$ConnectionType$Command
             $port_vnc = 22000+$exists->Id;
             $exists->Nom = $_GET["name"];
             $exists->Description = $_GET["os"];
+            if(isset($_GET["machine"]))
+                $exists->Type = $_GET["machine"];
             $exists->ConnectionType = 'R'.$port_rdp.'=localhost:3389,R'.$port_vnc.'=localhost:15900';
             $exists->Save();
             $obj = $exists;
@@ -89,6 +91,7 @@ ZabbixAgent64=http://".Sys::$domain."/$log->ZabbixAgent64$ConnectionType$Command
             $obj = genericClass::createInstance('Parc','Device');
             $obj->Nom = $_GET["name"];
             $obj->Description = $_GET["os"];
+            $exists->Type = $_GET["machine"] || 'station';
             $obj->Uuid = $uuid;
             $obj->Save();
             $port_rdp = 12000+$obj->Id;
@@ -121,6 +124,27 @@ ZabbixAgent64=http://".Sys::$domain."/$log->ZabbixAgent64$ConnectionType$Command
         $dbGuac = new PDO('mysql:host=10.0.97.5;dbname=guacamole', 'root', 'RsL5pfky', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
         $dbGuac->query("SET AUTOCOMMIT=1");
         $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        //Vérif l'existence du client et le crée le cas échéant
+        $cli = $this->getOneParent('Client');
+        //klog::l('$cli',$cli);
+        if(isset($cli->AccesUser) && $cli->AccesUser != '' && $cli->AccesUser != null){
+            $query = "SELECT * FROM `guacamole_user` WHERE username = '".$cli->AccesUser."'";
+            $q = $dbGuac->query($query);
+            $result = $q->fetchALL ( PDO::FETCH_ASSOC );
+            if(sizeof($result)>0){
+                    $usr = $result[0];
+            } elseif (!empty($cli->AccesPass)){
+                $query = "INSERT INTO `guacamole_user` (username,password_hash,password_date) VALUES ('".$cli->AccesUser."',UNHEX(SHA2('".$cli->AccesPass."',256)),'".date("Y-m-d H:i:s")."')";
+                $q = $dbGuac->query($query);
+
+                $query = "SELECT * FROM `guacamole_user` WHERE username = '".$cli->AccesUser."'";
+                $q = $dbGuac->query($query);
+                $result = $q->fetchALL ( PDO::FETCH_ASSOC );
+                $usr = $result[0];
+            }
+        }
+
 
         //Connection RDP
         if($this->GuacamoleUrlRdp=="" || $this->GuacamoleUrlRdp==null || $this->GuacamoleIdRdp=="" || $this->GuacamoleIdRdp==null) {

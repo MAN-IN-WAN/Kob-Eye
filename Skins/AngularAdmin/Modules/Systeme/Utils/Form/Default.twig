@@ -5,18 +5,44 @@
             <small>{{ field.help }}</small>
         </div>
         <div class="col-md-6">
-            {% if field.type == "price" or field.type == "float" %}
-                <span class="label label-warning">{[{ obj.{{ field.name }} }]}</span>
-            {% elseif field.type == "extlink" %}
-                <a class="btn btn-success btn-xs" href="https://zabbix.abtel.fr:8443/guacamole/#/client/{[{ obj.{{ field.name }} }]}" target="_blank">{{ field.listDescr }}</a>
-            {% elseif field.type == "int" %}
-                <span class="label label-primary">{[{ obj.{{ field.name }} }]}</span>
+            <div class="form-group" ng-class="{'has-danger': modalObj.fieldErrors.length && modalObj.fieldErrors.indexOf('{{ field.name }}') !== -1}">
+            {% if field.type == "date" %}
+                    <label class="input-group datepicker-only-init">
+                        <input type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="modalObj.{{ field.name }}"/>
+                        <span class="input-group-addon">
+                            <i class="icmn-calendar"></i>
+                        </span>
+                    </label>
+            {% elseif field.type == "fkey" and field.card == "short" %}
+                <div custom-select="a.id as a.label for a in {{ field.objectModule }}{{ field.objectName }}Store.getDataFilter($searchTerm)" custom-select-options="{ 'async': true }" ng-model="modalObj.{{ field.name }}" class="form-control" ng-title="modalObj.{{ field.name }}label"></div>
             {% elseif field.type == "boolean" %}
-                <span class="label label-success" ng-if="obj.{{ field.name }}"><i class="fa fa-check"></i></span>
-                <span class="label label-danger" ng-if="!obj.{{ field.name }}"><i class="fa fa-times"></i></span>
+                <switch id="enabled" name="enabled" ng-model="modalObj.{{ field.name }}" class="green"></switch>
             {% else %}
-                <input type="text" class="form-control" placeholder="" id="input-{{ field.name }}" ng-model="modalObj.{{ field.name }}">
+                {% if field.Values %}
+                    <select class="form-control">
+                        {% for v,k in field.Values %}
+                            <option value="v">{{ k }}</option>
+                        {% endfor %}
+                    </select>
+                {% else %}
+                    <input type="text" class="form-control" placeholder="" id="input-{{ field.name }}" ng-model="modalObj.{{ field.name }}">
+                {% endif %}
             {% endif %}
+            </div>
         </div>
     </div>
 {% endfor %}
+<script>
+    $('.datepicker-only-init').datetimepicker({
+        widgetPositioning: {
+            horizontal: 'left'
+        },
+        locale: 'fr',
+        icons: {
+            time: "fa fa-clock-o",
+            date: "fa fa-calendar",
+            up: "fa fa-arrow-up",
+            down: "fa fa-arrow-down"
+        }
+    });
+</script>

@@ -18,6 +18,9 @@
                 <a href="javascript: void(0);" class="btn btn-warning" ng-click="{{ identifier }}add()">
                     Ajouter
                 </a>
+                <a href="javascript: void(0);" class="btn btn-primary" ng-click="{{ identifier }}.export()">
+                    Exporter
+                </a>
             </span>
         </div>
     </div>
@@ -56,12 +59,18 @@
         </td>
         {% endfor %}
         <td width="200" class="table-details" ng-bind-html="item.Details">{[{ item.Details }]}</td>
-        <td ><div class="btn-group">
-                <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false"> Actions</button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#/{{ CurrentUrl }}/{[{ item.id }]}">Voir les détails</a></li>
+        <td width="170" style="width:170px;">
+            <!-- Split button -->
+            <div class="btn-group" uib-dropdown>
+                <a id="split-button" type="button" class="btn btn-danger  btn-sm" href="#/{{ CurrentUrl }}/{[{ item.id }]}">détails</a>
+                <button type="button" class="btn btn-danger  btn-sm" uib-dropdown-toggle>
+                    <span class="caret"></span>
+                    <span class="sr-only">Split button!</span>
+                </button>
+                <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
                     <li><a class="dropdown-item" href="javascript: void(0);" ng-click="modify(item)">Modifier</a></li>
                     <li><a class="dropdown-item" href="javascript: void(0);" ng-click="delete(item)">Supprimer</a></li>
+<!--                    <li class="divider"></li>-->
                 </ul>
             </div>
         </td>

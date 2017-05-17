@@ -18,6 +18,14 @@ foreach ($vars['rows'] as $k=>$v){
         $v->userEditName = $ue->Login;
     else $v->userEditName = 'inconnu';
     $v->label = $v->getFirstSearchOrder();
+    if ($v->getSecondSearchOrder())
+        $v->description = $v->{$v->getSecondSearchOrder()};
+    foreach ($vars['fields'] as $f){
+        if ($f['type']=='date'){
+            //transformation des timestamps en format js
+            $v->{$f['name']} = date(DATE_W3C,$v->{$f['name']});
+        }
+    }
 }
 $vars['total'] = Sys::getCount($info['Module'],$vars['Path'].'/'.$filters);
 ?>
