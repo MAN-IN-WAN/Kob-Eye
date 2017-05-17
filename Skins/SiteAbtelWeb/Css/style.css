@@ -209,7 +209,7 @@ input, textarea, select, button {
 
 a {
     text-decoration: none;
-    color: #77a;
+    color: #000;
 }
 
 a:hover {
@@ -245,6 +245,10 @@ div.noMargin {
 .fullHeight{
     height:100%;
     overflow: auto;
+}
+.fitHeight{
+    height: calc(100% - 150px);
+    /*height:300px;*/
 }
 /****************************************************************
  *								*
@@ -286,6 +290,13 @@ div.noMargin {
 
 #siteWrap #header #logoAbtel #logoHead {
     height: 100%;
+}
+.breadcrumb {
+	color:#ee7805;
+}
+
+#breadcrumb .breadcrumb a.Last {
+    color: #ee7805;
 }
 
 /* Footer */
@@ -715,6 +726,13 @@ div.noMargin {
     text-decoration: underline
 }
 
+/*
+info      bleu   : #0e8ec1
+ *  web       orange : #ee7805
+ *  network   vert   : #6eb126
+ *  formation rose   : #e6008d
+ *  autre     gris   : #868585
+ * */
 /****************************************************************
  *								*
  *	                MENU PRINCIPAL	   			*
@@ -723,16 +741,40 @@ div.noMargin {
 
 /****************************************************************
  *								*
- *			MENU DU BAS	   			*
+ *			MENU DU Gauche	   			*
  *								*
  ****************************************************************/
+.MEPNav .aNav.legacy {
+    color: #ee7805;
+}
+
+.MEPNav label::after {
+    bottom: 0;
+    color: #000;
+    content: "";
+    font-family: "Glyphicons Halflings";
+    font-size: 1.3em;
+    left: 0;
+    line-height: 20px;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+}
+.MEPNav input:checked ~ label::after {
+    color: #ee7805;
+    content: "";
+}
+
 
 /****************************************************************
  *								*
  *			REDACTIONNEL	   			*
  *								*
  ****************************************************************/
-
+h3 { margin-bottom:10px;}
+ul { margin:10px 0 ; }
+ul li ul  {padding-left:15px; list-style:circle; }
 /*= =NEWS= =*/
 #listNews .news {
     width: 98%;
@@ -803,6 +845,7 @@ div.noMargin {
 #articleHeader{
     padding:15px 0;
     color: #fff;
+    overflow:hidden;
 }
 #articleHeader h2{
     font-size:1.5em;

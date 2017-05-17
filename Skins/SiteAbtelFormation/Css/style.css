@@ -289,12 +289,20 @@ div.noMargin {
     height: 100%;
 }
 
+.breadcrumb {
+	color:#e6008d;
+}
+#breadcrumb .breadcrumb a.Last {
+    color: #e6008d;
+}
+
 /* Footer */
 #siteWrap #footer {
     height: 35px;
     width: 100%;
     position: relative;
 }
+
 
 #siteWrap #footer #newsLetterAbtel,
 #siteWrap #footer #menuBottom,
@@ -730,7 +738,32 @@ div.noMargin {
  *	                MENU PRINCIPAL	   			*
  *								*
  ****************************************************************/
+/****************************************************************
+ *								*
+ *			MENU DU Gauche	   			*
+ *								*
+ ****************************************************************/
+.MEPNav .aNav.legacy {
+    color: #e6008d;
+}
 
+.MEPNav label::after {
+    bottom: 0;
+    color: #000;
+    content: "";
+    font-family: "Glyphicons Halflings";
+    font-size: 1.3em;
+    left: 0;
+    line-height: 20px;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+}
+.MEPNav input:checked ~ label::after {
+    color: #e6008d;
+    content: "";
+}
 /****************************************************************
  *								*
  *			MENU DU BAS	   			*
@@ -742,6 +775,11 @@ div.noMargin {
  *			REDACTIONNEL	   			*
  *								*
  ****************************************************************/
+h3 {
+    margin-bottom: 10px;
+}
+ul { margin:10px 0 ; }
+ul li ul  {padding-left:15px; list-style:circle; }
 
 /*= =NEWS= =*/
 #listNews .news {

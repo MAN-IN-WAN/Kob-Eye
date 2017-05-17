@@ -22,6 +22,14 @@
                                         <h2>BlackList</h2>
                                         <p>Vous rencontrez des problèmes d'envoi de mail ? Vérifiez la réputation de votre adresse IP :  <a target="_blank" href="http://www.anti-abuse.org/multi-rbl-check-results/?host=[!SERVER::REMOTE_ADDR!]">Anti-abuse.org</a></p>
                                 </div>
+                            <div class="supportCustom">
+                                <h2 title="Abtel Link - Support">A.L.S.</h2>
+                                [STORPROC Parc/LogicielVersion/Release=1|L|0|1|Id|DESC][/STORPROC]
+                                [IF [!L::Description!=!]]
+                                <p>[!L::Description!=!]</p>
+                                [/IF]
+                                <p> A télécharger Ici : <a href="[!L::InstallFile!]">Installeur ALS</a></p>
+                            </div>
                         </div>
                 </div>
                 <div class="container">
