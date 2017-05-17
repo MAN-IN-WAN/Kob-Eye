@@ -246,7 +246,7 @@
 		<FILTER name="Ajoutés ces dernières 24h">tmsCreate>[!TMS::Now:-86400!]</FILTER>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom du périphérique">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="0" list="1" fiche="1" listDescr="IP" description="IP Publique">PublicIP</PROPERTIES>
-		<PROPERTIES category="Intitulé" searchOrder="4" type="varchar" fiche="1" form="1" list="1" listDescr="Code Client" description="Code client saisi">CodeClient</PROPERTIES>
+		<PROPERTIES category="Intitulé" searchOrder="4" type="varchar" fiche="1" form="0" list="1" listDescr="Code Client" description="Code client saisi">CodeClient</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="2" obligatoire="0"  fiche="1" form="1"  listDescr="Test" description="Machine test">ModeTest</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="2" obligatoire="0" fiche="1" form="1"  listDescr="Tunnel Restart" description="Tunnel restart">RestartTunnel</PROPERTIES>
 		<PROPERTIES type="date" searchOrder="4" obligatoire="0" fiche="1" listDescr="Last seen" description="Vu pour la dernière fois">LastSeen</PROPERTIES>

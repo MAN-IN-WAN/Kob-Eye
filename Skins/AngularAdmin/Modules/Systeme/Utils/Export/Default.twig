@@ -1,0 +1,1 @@
+{% for field in fields %}{{ field.name }}{% if not loop.last %};{% endif %}{% endfor %}{{ lb }}{% for row in rows %}{% for field in fields %}{{ attribute(row,field.name) }}{% if not loop.last %};{% endif %}{% endfor %}{{ lb }}{% endfor %}

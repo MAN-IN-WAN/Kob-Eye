@@ -444,8 +444,9 @@ class ObjectClass extends Root{
 					case "fkey":
 						$as = $this->getAssociation($el["title"]);
 						if (!is_object($as)){
-							throw new Exception("MAUVAISE DESTINATION DE CLEF OU MODULE".print_r($el,true), 1);
+							//throw new Exception("MAUVAISE DESTINATION DE CLEF OU MODULE".print_r($el,true), 1);
 							$GLOBALS["Systeme"]->Log->log("*************** ERREUR (MAUVAISE DESTINATION DE CLEF OU MODULE) ***************",$el);
+							continue;
 						}
 						if ($el["type"]=="rkey") $ot = $as->getChildObjectClass();
 						else $ot = $as->getParentObjectClass();

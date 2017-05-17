@@ -640,7 +640,7 @@ class Sys extends Root{
 		$this->Query=$this->AnalyseMenu($this->Lien);
 		//Définition du men par défaut
 		$Results = $this->searchMenu('');
-		$this->DefaultMenu = $Results;
+		Sys::$DefaultMenu = $Results;
 		//Recuperation des Donnï¿œes du Module
 		$Out = explode("/",$this->Query);
 		$this->CurrentModule = ($Out[0]!="")?$Out[0]:"Systeme";

@@ -1,11 +1,21 @@
 {% for c in controllers %}
+    {% if not c.store %}
+        app.controller('{{ c.name }}Ctrl', function() {});
+    {% else %}
     /**** LIST CONTROLLER  ****/
-    app.controller('{{ c.name }}Ctrl', function($location, $scope, $rootScope,$http,{{ c.identifier }}Store) {
+    app.controller('{{ c.name }}Ctrl', function($location, $scope, $rootScope,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}) {
         //test du store
         $scope.{{ c.identifier }} = {{ c.identifier }}Store;
+        //on reinitialise la requete du store
+        $scope.{{ c.identifier }}.resetQuery();
         $scope.{{ c.identifier }}.currentPage = 1;
         $scope.{{ c.identifier }}.itemsPerPage = {{ c.identifier }}Store.getPageLength();
         {{ c.identifier }}Store.getData($scope.currentPage);
+
+        //acces aux stores parents
+        {% for parent in c.parentelements %}
+            $scope.{{ parent.objectModule }}{{ parent.objectName }}Store = {{ parent.objectModule }}{{ parent.objectName }}Store;
+        {% endfor %}
 
         //recherche watcher
         $scope.{{ c.identifier }}.filter = {{ c.identifier }}Store.getFilters();
@@ -19,21 +29,37 @@
         $scope.setFilter = function (filter){
             {{ c.identifier }}Store.setFilters(filter);
         }
+        $scope.{{ c.identifier }}add = function (){
+            console.log('add {{ c.objecttype }}');
+            $scope.modalObj = {{ c.identifier }}Store.getNewData();
+            $scope.modalObj.title = 'Ajouter un nouveau {{ c.description }}';
+            $("#modal-{{ c.identifier }}").modal();
+            $("#modal-{{ c.identifier }}").modal();
+        }
         $scope.modify = function (obj){
             console.log('edit ',obj.id);
             {{ c.identifier }}Store.getOneData(obj.id).then(function (data) {
                 $scope.modalObj = data;
+                $scope.modalObj.title = 'Modifier {{ c.description }} '+data.label;
                 console.log('edit obj',$scope.modalObj);
             });
             $("#modal-{{ c.identifier }}").modal();
         }
-        $scope.modifySave = function (){
+        $scope.modalSave = function (){
             console.log('save ',$scope.modalObj);
             {{ c.identifier }}Store.saveData($scope.modalObj).then(function (data) {
-                if (data.success)
+                if (data.success){
                     $scope.modalObj = data.data;
-                else {
-                    alert(data.errors);
+                    $("#modal-{{ c.identifier }}").modal('toggle');
+                    {{ c.identifier }}Store.refresh();
+                }else {
+                    //gestion des erreurs
+                    $scope.modalObj.errors = data.errors;
+                    $scope.modalObj.fieldErrors = [];
+                    for (var e in data.errors) {
+                        $scope.modalObj.fieldErrors.push(data.errors[e].Prop);
+                    }
+                    console.log('tab field error',$scope.modalObj.fieldErrors);
                 }
                 console.log('save obj',data);
             });
@@ -51,7 +77,7 @@
                     closeOnConfirm: true
                 },
                 function(){
-                    $http.get('/{{ c.module }}/{{ c.objecttype }}/'+item.id+'/delete.json')
+                    $http.get('/{{ c.module }}/{{ c.objecttype }}/'+item.id+'/Delete.json')
                         .success(function(data) {
                             console.log('store > {{ c.module }}/{{ c.objecttype }} > deleted '+item.id, data);
                             {{ c.identifier }}Store.refresh();
@@ -61,25 +87,74 @@
     });
 
     /**** FICHE CONTROLLER ****/
-    app.controller('{{ c.name }}FicheCtrl', function($location, $scope, $rootScope, $routeParams,$http,{{ c.identifier }}Store{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}StoreChild{% endfor %}) {
+    app.controller('{{ c.name }}FicheCtrl', function($location, $scope, $rootScope, $routeParams,$http,{{ c.identifier }}Store{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store{% endfor %}) {
         //récupération des données du store.
         {{ c.identifier }}Store.getOneData($routeParams.id).then(function (data){
             console.log('retour chargement one data',data);
             $scope.obj = data;
+            $scope.modify = function (obj){
+                console.log('edit ',obj.id);
+                {{ c.identifier }}Store.getOneData(obj.id).then(function (data) {
+                    $scope.modalObj = data;
+                    $scope.modalObj.title = 'Modifier {{ c.description }} '+data.label;
+                    console.log('edit obj',$scope.modalObj);
+                });
+                $("#modal-{{ c.identifier }}").modal();
+            }
+            $scope.modalSave = function (){
+                console.log('save ',$scope.modalObj);
+                {{ c.identifier }}Store.saveData($scope.modalObj).then(function (data) {
+                    if (data.success){
+                        $scope.modalObj = data.data;
+                        $("#modal-{{ c.identifier }}").modal('toggle');
+                        {{ c.identifier }}Store.refresh();
+                    }else {
+                        //gestion des erreurs
+                        $scope.modalObj.errors = data.errors;
+                        $scope.modalObj.fieldErrors = [];
+                        for (var e in data.errors) {
+                            $scope.modalObj.fieldErrors.push(data.errors[e].Prop);
+                        }
+                        console.log('tab field error',$scope.modalObj.fieldErrors);
+                    }
+                    console.log('save obj',data);
+                });
+            }
+            $scope.delete = function (item){
+                console.log('edit ',item);
+                swal({
+                        title: "Êtes vous sûr de vouloir supprimer "+item["label"]+"?",
+                        text: "Cette suppression sera définitive. ",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonClass: "btn-danger",
+                        cancelButtonText: "Annuler",
+                        confirmButtonText: "Oui, supprimer !",
+                        closeOnConfirm: true
+                    },
+                    function(){
+                        $http.get('/{{ c.module }}/{{ c.objecttype }}/'+item.id+'/Delete.json')
+                        .success(function(data) {
+                            console.log('store > {{ c.module }}/{{ c.objecttype }} > deleted '+item.id, data);
+                            {{ c.identifier }}Store.refresh();
+                    });
+                });
+            }
             {% for child in c.childrenelements %}
-                $scope.{{ child.objectModule }}{{ child.objectName }} = {{ child.objectModule }}{{ child.objectName }}StoreChild;
+                $scope.{{ child.objectModule }}{{ child.objectName }} = {{ child.objectModule }}{{ child.objectName }}Store;
                 console.log('launch watcher {{ child.objectModule }}{{ child.objectName }}');
                 $scope.$watch('{{ child.objectModule }}{{ child.objectName }}.filter', function() {
                     console.log('filter ',$scope.{{ child.objectModule }}{{ child.objectName }}.filter,true);
                     //on lance la recherche depuis le store
-                    {{ child.objectModule }}{{ child.objectName }}StoreChild.setFilters($scope.{{ child.objectModule }}{{ child.objectName }}.filter);
+                    {{ child.objectModule }}{{ child.objectName }}Store.setFilters($scope.{{ child.objectModule }}{{ child.objectName }}.filter);
                 });
                 $scope.$watch('{{ child.objectModule }}{{ child.objectName }}.currentPage', function() {
                     console.log(' currentPage ',$scope.{{ child.objectModule }}{{ child.objectName }}.currentPage);
-                    {{ child.objectModule }}{{ child.objectName }}StoreChild.setPage($scope.{{ child.objectModule }}{{ child.objectName }}.currentPage);
+                    {{ child.objectModule }}{{ child.objectName }}Store.setPage($scope.{{ child.objectModule }}{{ child.objectName }}.currentPage);
                 });
             {% endfor %}
             $scope.show = true;
         });
     });
+    {% endif %}
 {% endfor %}

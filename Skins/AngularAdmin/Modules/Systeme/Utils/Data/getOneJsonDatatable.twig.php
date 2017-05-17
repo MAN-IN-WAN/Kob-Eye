@@ -12,4 +12,19 @@ else $vars['row']->userCreateName = 'inconnu';
 if (is_object($ue))
     $vars['row']->userEditName = $ue->Login;
 else $vars['row']->userEditName = 'inconnu';
+foreach ($vars['fields'] as $f){
+    if ($f['type']=='date'){
+        //transformation des timestamps en format js
+        $vars['row']->{$f['name']} = date('d/m/Y H:i',$vars['row']->{$f['name']});
+    }
+    if ($f['type']=='fkey'&&$f['card']=='short'){
+        if ($vars['row']->{$f['name']} > 0) {
+            $kk = Sys::getOneData($f['objectModule'], $f['objectName'] . '/' . $vars['row']->{$f['name']});
+            $vars['row']->{$f['name'].'label'} = $kk->getFirstSearchOrder();
+        }else{
+            $vars['row']->{$f['name'].'label'} = '';
+        }
+    }
+}
+
 ?>

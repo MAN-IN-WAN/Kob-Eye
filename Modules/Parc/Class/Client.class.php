@@ -2,6 +2,7 @@
 
 class Parc_Client extends genericClass {
 	var $Role = 'PARC_CLIENT';
+	var $_isVerified = false;
 	/**
 	 * Force la vérification avant enregistrement
 	 * @param	boolean	Enregistrer aussi sur LDAP

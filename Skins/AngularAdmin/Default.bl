@@ -57,6 +57,7 @@
     <script src="Skins/AngularAdmin/assets/vendors/autosize/dist/autosize.min.js"></script>
     <script src="Skins/AngularAdmin/assets/vendors/bootstrap-show-password/bootstrap-show-password.min.js"></script>
     <script src="Skins/AngularAdmin/assets/vendors/moment/min/moment.min.js"></script>
+    <script src="Skins/AngularAdmin/assets/vendors/moment/locale/fr.js"></script>
     <script src="Skins/AngularAdmin/assets/vendors/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
     <script src="Skins/AngularAdmin/assets/vendors/fullcalendar/dist/fullcalendar.min.js"></script>
     <script src="Skins/AngularAdmin/assets/vendors/cleanhtmlaudioplayer/src/jquery.cleanaudioplayer.js"></script>
@@ -117,6 +118,18 @@
     <script src="Skins/AngularAdmin/threejs/lib/loaders/OBJLoader.js"></script>
     <script src="Skins/AngularAdmin/threejs/lib/controls/OrbitControls.js"></script>
 
+    <!-- angular switch -->
+    <link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/assets/vendors/angular-ui-switch/angular-ui-switch.css">
+    <script src="Skins/AngularAdmin/assets/vendors/angular-ui-switch/angular-ui-switch.js"></script>
+
+    <!-- angualr autocomplete -->
+    --<link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/assets/vendors/js-custom-select/css/style.css">
+    <script src="Skins/AngularAdmin/assets/vendors/js-custom-select/js/customSelect.js"></script>
+
+    <!-- angular ui bootstrap -->
+    <link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/assets/vendors/angular-ui-bootstrap/dist/ui-bootstrap-csp.css">
+    <script src="Skins/AngularAdmin/assets/vendors/angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
+    <script src="Skins/AngularAdmin/assets/vendors/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
 [/HEADER]
 [BODY]class="theme-dark colorful-enabled  mode-material  mode-box-shadow menu-static" ng-controller="MainCtrl"[/BODY]
 [MODULE Systeme/Menu]
