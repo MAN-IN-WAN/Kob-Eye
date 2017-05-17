@@ -89,6 +89,15 @@ class GestionWs {
                 $json = '{"requete":{"commande":"client_full_liste"}}';
                 break;
             case 'ticket_liste':
+                if(isset($params['codeGestion']) && isset($params['lastTms'])) {
+                    $code = $params['codeGestion'];
+                    $tms = $params['lastTms'];
+                }else{
+                    return false;
+                }
+                $json = '{"requete":{"commande":"ticket_liste","code":"'.$code.'","tms":"'.$tms.'"}}';
+                break;
+            case 'ticket_full_liste':
                 if(isset($params['codeGestion'])){
                     $code = $params['codeGestion'];
                 }elseif(isset($params)&&$params){
@@ -96,7 +105,7 @@ class GestionWs {
                 }else{
                     return false;
                 }
-                $json = '{"requete":{"commande":"ticket_liste","code":"'.$code.'"}}';
+                $json = '{"requete":{"commande":"ticket_full_liste","code":"'.$code.'"}}';
                 break;
             case 'action_liste':
                 if(isset($params['numTick'])){
@@ -173,6 +182,9 @@ class GestionWs {
         if($infos->succes && isset($infos->data)){
             return $infos->data;
         }
+        if(!$infos->succes){
+            print_r($infos);
+        }
 
         return false;
 
@@ -214,9 +226,9 @@ class GestionWs {
                 $kecli = Sys::getOneData('Parc','Client/CodeGestion='.$cli->code);
                 if(!$kecli){
                     $kecli =  genericClass::createInstance('Parc','Client');
-                    $kecli->NomLDAP = $cli->nom;
+                    $kecli->Nom = $cli->nom;
                     $kecli->CodeGestion = $cli->code;
-                    $kecli->NomLDAP = strtolower($cli->code);
+                    $kecli->NomLDAP = str_replace(' ', '', strtolower($cli->code));
 
                     $kecli->addParent('Parc/Revendeur/1');
 
@@ -224,6 +236,8 @@ class GestionWs {
 
                     echo 'Client '.$cli->nom.' créé !!!!!'.PHP_EOL;
                 } else {
+                    $kecli->Nom = $cli->nom;
+                    //$kecli->Save();
                     echo 'Déjà '.$cli->nom.''.PHP_EOL;
                 }
 
@@ -233,6 +247,99 @@ class GestionWs {
 
         $date = date('YmdHis');
         file_put_contents($tmsFile,$date.'00');
+
+        return false;
+    }
+
+    //Check les derniers clients créés dans la gestion et mets a jour le parc
+    public static function getTickets( $clients = null){
+        if(!$clients){
+            $clients = Sys::getData('Parc','Client');
+        }
+
+
+        if(!is_array($clients)){
+            $clients = array($clients);
+        }
+
+
+        foreach ($clients as $cli) {
+            //Si on a passé juste un/des code(s) gestion on recup l'objet KE
+            if(!is_object($cli)){
+                $clitemp = Sys::getOneData('Parc','Client/CodeGestion='.$cli);
+                if(!$clitemp){
+                    echo 'Client '.$cli.' introuvable: ';
+                    continue;
+                } else {
+                    $cli= $clitemp;
+                }
+            }
+
+            $tmsFile = 'Data/tmsTicket_'.$cli->Id.'.time';
+
+            if(!is_file($tmsFile)){
+                $file = fopen($tmsFile, 'w') or die('Cannot open file:  '.$tmsFile);
+                fclose($file);
+            }
+
+            $tms = file_get_contents($tmsFile);
+
+            if ($tms == '' || $tms == null){
+                $tix = self::queryGestion('ticket_full_liste', $cli->CodeGestion);
+
+            } else {
+                $tix = self::queryGestion('ticket_liste', array('codeGestion'=>$cli->CodeGestion,'lastTms'=>(int)$tms));
+            }
+
+
+
+            //Etats gestions
+            $states = array(
+                1=>'A facturer'
+                ,2=>'En cours'
+                ,3=>'Terminé'
+                ,4=>'Abandonné'
+                ,5=>'Commercial'
+            );
+
+            if( $tix && count($tix) ) {
+                foreach ($tix as $ticket) {
+
+                    $ketick = Sys::getOneData('Parc','Ticket/Numero='.$ticket->numTicket);
+                    if(!$ketick){
+                        $ketick =  genericClass::createInstance('Parc','Ticket');
+                        $ketick->IdGestion = $ticket->id;
+                        $ketick->Numero = $ticket->numTicket;
+                        $ketick->Type = $ticket->type=='DEM'?'Demande':($ticket->type=='INC'?'Incident':'NC');
+                        $ketick->Titre = $ticket->titre;
+                        $ketick->DateCrea = $ticket->dateCrea;
+                        $ketick->DateEcheance = $ticket->dateEcheance;
+                        $ketick->Etat = $states[$ticket->etat];
+                        $ketick->UserCrea = $ticket->userCrea;
+                        $ketick->UserNext = $ticket->userNext;
+
+                        $ketick->addParent('Parc/Client/'.$cli->Id);
+
+                        $ketick->Save();
+
+                        echo 'Client '.$cli->Nom.' Ticket: '.$ketick->Numero.' !!!!!'.PHP_EOL;
+                    } else {
+                        continue;
+                        $ketick->Titre = $ticket->titre;
+                        $ketick->UserNext = $ticket->userNext;
+                        $ketick->Type = $ticket->type=='DEM'?'Demande':$ticket->type=='INC'?'Incident':'NC';
+                        $ketick->Etat = $states[$ticket->etat];
+                        $ketick->DateEcheance = $ticket->dateEcheance;
+
+                        $ketick->Save();
+
+                        echo 'Client '.$cli->Nom.' Ticket: '.$ketick->Numero.' UPDATE !'.PHP_EOL;
+                    }
+
+
+                }
+            }
+        }
 
         return false;
     }

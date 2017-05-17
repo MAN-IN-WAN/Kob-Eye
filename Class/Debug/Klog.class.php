@@ -294,7 +294,7 @@ class Klog extends Root
 		exit($this->ret_err);
 	}
 	static function l($text, $var="", $modus=-1, $prio=false, $line=false){
-		if (is_object($GLOBALS["Systeme"]))$GLOBALS["Systeme"]->Log->log($text, $var, $modus, $prio, $line);
+		if (isset($GLOBALS["Systeme"]) && is_object($GLOBALS["Systeme"]))$GLOBALS["Systeme"]->Log->log($text, $var, $modus, $prio, $line);
 	}
 }#endclass
 
