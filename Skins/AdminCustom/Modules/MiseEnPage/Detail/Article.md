@@ -11,8 +11,10 @@
                                 <div id="InfoCat" class="infoObject">
                                         //[!DEBUG::Art!]
                                         <p>Chapo : [IF [!Art::Chapo!]!=]<span class="champval">[!Art::Chapo!] [ELSE]<span class="champvide">Non renseigné[/IF]</span></p>
+                                        <p>Punchline : [IF [!Art::Punchline!]!=]<span class="champval">[!Art::Punchline!] [ELSE]<span class="champvide">Non renseigné[/IF]</span></p>
                                         <p>Date de rédaction: <span class="champval">[!Utils::getDate(d/m/Y H:i:s,[!Art::Date!])!]</span></p>
                                         <p>Auteur : <span class="champval">[!Art::Auteur!]</span></p>
+                                        <p>Afficher le bouton contact : [IF [!Art::AfficheContact!]=0]<span class="champval">Non[ELSE]<span class="champval">Oui[/IF]</span></p>
                                         <p>Afficher le titre : [IF [!Art::AfficheTitre!]=0]<span class="champval">Non[ELSE]<span class="champval">Oui[/IF]</span></p>
                                         <p>Contenu simple: <span class="champval">[!Art::Contenu!]</span></p>
                                         <p>A la une : <span class="champval"> [IF [!Art::ALaUne!]=0]<span class="champval">Non[ELSE]<span class="champval">Oui[/IF]</span></p>
@@ -22,7 +24,11 @@
                                 <a href="[!I::LastId!]/Supprimer" class="delButton">Supprimer</a>
                                 <a href="[!I::LastId!]/Modifier" class="modButton">Modifier</a>
                         </div>
-                        
+                        <hr>
+                        <div id="Punchlines" class="col-md-12">
+                                [MODULE MiseEnPage/Default/Punchline]
+                        </div>
+                        <hr>
                        
                         [IF [!I::ObjectType!]=Article]
                         <div id="ChildrenDirect"  class="col-md-12">
@@ -33,12 +39,29 @@
                         [/NORESULT]
                 [/STORPROC]
                 
+
+                <div id="subArts" class="col-md-12">
+                        <h3>Articles enfants</h3>
+                        <ul>
+                        [STORPROC MiseEnPage/Article/[!Art::Id!]/Article|subArt]
+                               <li> <a href="/MiseEnPage/Article/[!subArt::Id!]">[!subArt::Titre!]</a></li>
+                                [NORESULT]
+                                        <li>Aucun sous-article</li>
+                                [/NORESULT]
+                        [/STORPROC]
+                            <li><a href="[!I::LastId!]/AjouterSousArticle" class="addButton" title="Ajouter un article">Ajouter</a></li>
+                        </ul>
+                </div>
+
+
                 [!Cat:=[!Art::getOneParent(Categorie)!]!]
                 [IF [!Cat!]]
+                        <a href="/MiseEnPage/Categorie/[!Cat::Id!]" id="backToCat" class="genButton" title="Voir la catégorie parente">Voir la catégorie</a>
                 [ELSE]
-                        [!Cat:=[!Child::getOneParent(Categorie)!]!]
+                        [!pArt:=[!Art::getOneParent(Article)!]!]
+                        <a href="/MiseEnPage/Article/[!pArt::Id!]" id="backToCat" class="genButton" title="Voir l'article parent">Voir l'article parent</a>
                 [/IF]
-                <a href="/MiseEnPage/Categorie/[!Cat::Id!]" id="backToCat" class="genButton" title="Voir la catégorie parente">Voir la catégorie</a> 
+
                 
         [/IF]
         [IF [!I::TypeSearch!]=Child]

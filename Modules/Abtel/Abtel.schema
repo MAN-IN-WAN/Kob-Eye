@@ -17,6 +17,7 @@
 			<FKEY module="Systeme" description="Menu pointant vers l'entité"  data="Menu,Id" card="0,n">MenuId</FKEY>
 			<FKEY module="News" description="Catégorie d'actus liées à l'entité"  data="Categorie,Id" card="0,n">NewsCatId</FKEY>
 			<FKEY module="MiseEnPage" description="Catégorie de Mise en Page liées à l'entité"  data="Categorie,Id" card="0,n">MEPCatId</FKEY>
+			<RKEY module="Portfolio" description="Categorie de Portfolio liées à l'entité"  data="Categorie,Id" card="0,n">PFolioCatId</RKEY>
 		</CATEGORY>
 		<CATEGORY title="Contact" type="large">
 			<PROPERTIES type="mail" length="255"  searchOrder="4" category="Contact" list="4">Mail</PROPERTIES>
@@ -54,5 +55,32 @@
 		<PROPERTIES type="integer" searchOrder="2">Value</PROPERTIES>
 		<FKEY card="1,1" data="Projet,Id">ProjetId</FKEY>
 		<FKEY card="1,1" data="Entite,Id">EntiteId</FKEY>
+	</OBJECTCLASS>
+
+
+	<OBJECTCLASS title="Contrat" driver="mysql" AccessPoint="1" Description="Contrats Clients" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" >
+        <FILTER name="En cours" color="primary"><![CDATA[DateDebut<[!TMS::Now!]&ContratFin>[!TMS::Now!]]]></FILTER>
+        <FILTER name="Echeance - de 6 mois" color="warning" ><![CDATA[ContratFin>[!TMS::Now:+7776000!]&ContratFin<[!TMS::Now:+15552000!]]]></FILTER>
+        <FILTER name="Echeance - de 3 mois" color="danger" ><![CDATA[ContratFin<[!TMS::Now:+7776000!]]]></FILTER>
+        <FILTER name="Tous les contrats" color="secondary" ></FILTER>
+
+		<PROPERTIES type="int" unique="1" description="Id dans la gestion" >IdGestion</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Code du contrat" list="1" form="1" fiche="1" listDescr="Code">Code</PROPERTIES>
+		<PROPERTIES type="varchar" description="Type de contrat"  form="1" fiche="1" listDescr="Type">Type</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" obligatoire="1"  description="Libellé" list="1" form="1" fiche="1" listDescr="Libellé">Libelle</PROPERTIES>
+		<PROPERTIES type="date" description="Date de début" list="1" form="1" fiche="1" listDescr="Date de début">DateDebut</PROPERTIES>
+		<PROPERTIES type="date" description="Date de fin" list="1" form="1" fiche="1" listDescr="Date de fin">ContratFin</PROPERTIES>
+		<PROPERTIES type="int" description="Durée" list="1" form="1" fiche="1" listDescr="Durée (mois)">Duree</PROPERTIES>
+		<PROPERTIES type="varchar" description="Engagement Initial" form="1" fiche="1" listDescr="Engagement Init.">EngagementInit</PROPERTIES>
+		<PROPERTIES type="varchar" description="Préavis"  form="1" fiche="1" >Preavis</PROPERTIES>
+		<PROPERTIES type="varchar" description="Fréquence de facturation" list="0" form="1" fiche="1" >FrequenceFactu</PROPERTIES>
+		<PROPERTIES type="date" description="Fin facturation"  form="1" fiche="1" >FinFactu</PROPERTIES>
+		<PROPERTIES type="date" description="Date échéance"  form="1" fiche="1" >DateEcheance</PROPERTIES>
+		<PROPERTIES type="price" description="Montant Annuel" list="1" form="1" fiche="1" listDescr="Montant Annuel">MontantAnnu</PROPERTIES>
+		<PROPERTIES type="price" description="Montant mensuel" list="1" form="1" fiche="1" listDescr="Montant Mensuel">MontantMensu</PROPERTIES>
+		<PROPERTIES type="varchar" description="Tacite rconduction"  form="1" fiche="1" >TaciteRecond</PROPERTIES>
+		<PROPERTIES type="varchar" description="Commentaire"  >Commentaire</PROPERTIES>
+
+		<FKEY card="1,1" module="Parc" data="Client,Id">ClientId</FKEY>
 	</OBJECTCLASS>
 </SCHEMA>

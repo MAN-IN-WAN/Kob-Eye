@@ -299,15 +299,15 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Ticket" driver="mysql" AccessPoint="1" Description="Tickets Clients" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" >
 		<FILTER name="En cours" color="secondary">Etat=En cours</FILTER>
-		<FILTER name="Incidents" color="warning">Type=Incident</FILTER>
-		<FILTER name="Demandes" color="secondary">Type=Demande</FILTER>
+		<FILTER name="Incidents" color="warning"><![CDATA[Type=Incident&Etat=En cours]]></FILTER>
+		<FILTER name="Demandes" color="secondary"><![CDATA[Type=Demande&Etat=En cours]]></FILTER>
 		<FILTER name="Tous les tickets" color="primary" ></FILTER>
 		<PROPERTIES type="int" unique="1" description="Id dans la gestion" >IdGestion</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Numero du ticket" list="1" form="1" fiche="1" listDescr="N° Ticket">Numero</PROPERTIES>
 		<PROPERTIES type="varchar" description="Type de ticket" list="0" form="1" fiche="1" listDescr="Type" values="Incident,Demande,NC" default="NC" >Type</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" obligatoire="1"  description="Intitulé" list="1" form="1" fiche="1" listDescr="Intitulé">Titre</PROPERTIES>
-		<PROPERTIES type="varchar" description="Date de création" list="1" form="1" fiche="1" listDescr="Date de création">DateCrea</PROPERTIES>
-        <PROPERTIES type="varchar" description="Date d'échéance" list="1" form="1" fiche="1" listDescr="Date d'échance">DateEcheance</PROPERTIES>
+		<PROPERTIES type="date" description="Date de création" list="1" form="1" fiche="1" listDescr="Date de création">DateCrea</PROPERTIES>
+        <PROPERTIES type="date" description="Date d'échéance" list="1" form="1" fiche="1" listDescr="Date d'échance">DateEcheance</PROPERTIES>
         <PROPERTIES type="varchar" description="Etat" list="1" form="1" fiche="1" listDescr="Etat" values="A facturer,En cours,Terminé,Abandonné,Commercial">Etat</PROPERTIES>
 		<PROPERTIES type="varchar" description="Intervenant original" list="0" form="1" fiche="1" listDescr="Créateur">UserCrea</PROPERTIES>
 		<PROPERTIES type="varchar" description="Prochain intervenant" list="1" form="1" fiche="1" listDescr="Prochain">UserNext</PROPERTIES>
@@ -315,3 +315,4 @@
 		<FKEY card="1,1" data="Client,Id">ClientId</FKEY>
 	</OBJECTCLASS>
 </SCHEMA>
+

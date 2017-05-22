@@ -20,6 +20,13 @@
                 [!title:=Retour à l'Article!]
                 [!text:=Modification du Contenu <span id="objName">[!Con::Titre!]</span>!]
         [/CASE]
+        [CASE Punchline]
+                [STORPROC [!Query!]|Pun|0|1][/STORPROC]
+                [!Art:=[!Pun::getOneParent(Article)!]!]
+                [!back:=MiseEnPage/Article/[!Art::Id!]!]
+                [!title:=Retour à l'Article!]
+                [!text:=Modification de la punchline <span id="objName">[!Pun::Id!]</span>!]
+        [/CASE]
         [CASE Colonne]
                 [STORPROC [!Query!]|Col|0|1][/STORPROC]
                 [!Con:=[!Col::getOneParent(Contenu)!]!]
@@ -50,6 +57,11 @@
                 [CASE Article]
                 <div id="modArt">
                         [MODULE MiseEnPage/Article/ModArt]
+                </div>
+                [/CASE]
+                [CASE Punchline]
+                <div id="modPun">
+                        [MODULE MiseEnPage/Punchline/ModPun]
                 </div>
                 [/CASE]
                 [CASE Contenu]

@@ -47,6 +47,7 @@
 [/IF]
 
 [IF [!mod_saved!]=1]
+        [REDIRECT]/MiseEnPage/Article/[!Art::Id!][/REDIRECT]
         <div class="succes">
                 <h2>Modification enregistrée avec succès</h2>
                 <a href="/MiseEnPage/Article/[!Art::Id!]">Retour à l'article</a>
@@ -64,11 +65,11 @@
         </div>
         <div class="inputWrap [IF [!err_AfficheTitre!]=1]error[/IF]">
                 <label for="modCon_AfficheTitre">Afficher le titre</label>
-                <input type="checkbox" name="modCon_AfficheTitre" id="modCon_AfficheTitre"[IF [!modCon_AfficheTitre!]]checked=true[/IF]" />
+                <input type="checkbox" name="modCon_AfficheTitre" id="modCon_AfficheTitre" [IF [!modCon_AfficheTitre!]]checked=true[/IF]" />
         </div>
         <div class="inputWrap [IF [!err_Publier!]=1]error[/IF]">
                 <label for="modCon_Publier">Publier</label>
-                <input type="checkbox" name="modCon_Publier" id="modCon_Publier"[IF [!modCon_Publier!]]checked=true[/IF]" />
+                <input type="checkbox" name="modCon_Publier" id="modCon_Publier" [IF [!modCon_Publier!]]checked=true[/IF]" />
         </div>
         <div class="inputWrap [IF [!err_Ordre!]=1]error[/IF]">
                 <label for="modCon_Ordre">Ordre</label>

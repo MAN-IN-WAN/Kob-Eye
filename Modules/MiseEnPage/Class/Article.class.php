@@ -111,7 +111,9 @@ class MiseEnPageArticle extends genericClass{
 
         $html = '<div id="articleHeader" '.$style.'><div class="container">';
         $html .= '<h1>'.$this->Titre.'</h1>';
-        $html .= '<h2>'.$this->Chapo.'</h2>';
+        $html .= $this->Chapo!=''?'<h2>'.$this->Chapo.'</h2>':'';
+
+
         if($creds != false && $creds != 0 && $creds != '0')
             $html .= '<p class="credsMEP">Le <span class="dateMEP">'.date('d/m/Y \à H:i:s',$this->Date).'</span> par <span class="auteurMEP">'.$this->Auteur.'</span></p>';
         $html .= '</div></div>';
@@ -127,6 +129,14 @@ class MiseEnPageArticle extends genericClass{
     public function generateBody(){
 
         $html = '';
+        $punchlines = $this->getChildren('Punchline');
+        if(sizeof($punchlines)>0) {
+            foreach ($punchlines as $punchline) {
+            $html .= '<div class="alert alert-'.$punchline->Type.'" role="alert">
+                            '.$punchline->Contenu.'
+                      </div>';
+            }
+        }
         $contenus = $this->getChildren('Contenu');
         if(sizeof($contenus)>0){
             foreach ($contenus as $contenu){
@@ -137,14 +147,14 @@ class MiseEnPageArticle extends genericClass{
 
                 $colonnes = $contenu->getChildren('Colonne');
                 foreach ($colonnes as $colonne){
-                    $html .= '<div class="colonneMEP" style="width:'.$colonne->Ratio.'%;">';
-
+                    $html .= '<div class="colonneMEP" style="width:'.rtrim($colonne->Ratio,'%').'%;">';
+                    if($colonne->AfficheTitre) $html .= '<h3 class="colonneMEPTitle" >'.$colonne->Titre.'</h3>';
                     //Par defaut on cherche les images si aucune image alors texte
                     $images = $colonne->getChildren('Image');
                     if (sizeof($images)){
                         foreach($images as $image){
                             $html .= '<div class="imgMEPContainer">
-                                    <img src="/'.$image->URL.'" alt="'.$image->Alt.'" title="'.$image->Title.'">
+                                    <img src="/'.$image->URL.'" alt="'.$image->Alt.'" title="'.$image->Title.'" class="img-responsive" style="height:'.rtrim($image->Hauteur,'px').'px">
                                     '.($image->Legende? '<div class="imgMEPLegend">'.$image->Legende.'</div>':'').'
                                 </div>';
                         }
@@ -156,6 +166,12 @@ class MiseEnPageArticle extends genericClass{
                                 </div>';
                         }
                     }
+                    //bouton demande de contact
+                    $bouton = $colonne->getOneChild('Bouton');
+                    if($bouton) {
+                        $dest = $bouton->Type == contact? '/contact':'/espace-client';
+                        $html .= '<a href="' . $dest . $bouton->Parametres . '" class="artContact btn btn-info">' . $bouton->Label . '</a>';
+                    }
 
                     $html .= '</div>';
                 }
@@ -166,6 +182,34 @@ class MiseEnPageArticle extends genericClass{
             $html .= '<div class="contenuMEP">';
             $html .= $this->Contenu;
             $html .= '</div>';
+        }
+
+        $html .= $this->getBottom();
+
+        return $html;
+    }
+
+    /**
+     * getBottom
+     * Generate list of sub-Articles
+     * @return String html
+     */
+    public function getBottom(){
+        $html = '';
+
+        $artsChild = $this->getChildren('Article');
+        $items = '';
+        foreach($artsChild as $art){
+            $items .= '<li>
+                            <a href="'.$art->getUrl().'">
+                                    <h4>'.$art->Titre.'</h4>
+                                    <h5>'.$art->Chapo.'</h5>
+                            </a>
+                       </li>';
+        }
+
+        if($items != ''){
+            $html .='<hr class="subSeparator"><ul class="subArts">'.$items.'</ul>';
         }
 
         return $html;
@@ -197,6 +241,45 @@ class MiseEnPageArticle extends genericClass{
      * @param $chain Mixed list des articles à ouvrir par defaut
      * @return String
      */
+//    public function buildSubNav($id=null,$lvl=0,$chain = null){
+//        if(!$chain && $id != null){
+//            $chain = $this->getAncestry($id,0);
+//        }
+//        $legacy = in_array($this->Id,$chain);
+//        $checked = $legacy?'checked="checked"':'';
+//        $aClass = $legacy?'legacy':'';
+//
+//        $children = $this->getChildren('Article');
+//
+//        if(sizeof($children)>0){
+//
+//            if($lvl == 0){
+//                $html = '<input type="checkbox" name="ipt_'.$this->Id.'" id="ipt_'.$this->Id.'" '.$checked.'" />';
+//                $html .= '<label for="ipt_'.$this->Id.'" class="baseLabel"></label>';
+//                $html .= '<a href="'.$this->getUrl().'" class="aNav baseNav '.$aClass.' '.(($this->Id==$id)?'self':'').'"><h2>'.$this->Titre.'</h2></a>';
+//
+//            }else{
+//                $html = '<ul>';
+//                $html .= '<input type="checkbox" name="ipt_'.$this->Id.'" id="ipt_'.$this->Id.'" '.$checked.'/>
+//                      <label for="ipt_'.$this->Id.'"></label>
+//                      <li class="hasSub '.(($this->Id == $id)? 'active':'').'">
+//                            <a href="'.$this->getUrl().'" class="aNav '.$aClass.' '.(($this->Id==$id)?'self':'').'" >'.$this->Titre.'</a>
+//                      </li>';
+//            }
+//
+//            $lvl +=1;
+//
+//            foreach($children as $child){
+//                $html .= $child->buildSubNav($id,$lvl,$chain);
+//            }
+//            $html .= '</ul>';
+//            return $html;
+//        }else{
+//            return '<ul><li><a href="'.$this->getUrl().'"  class="aNav '.$aClass.' '.(($this->Id==$id)?'self':'').'">'.$this->Titre.'</a></li></ul>';
+//        }
+//
+//        return false;
+//    }
     public function buildSubNav($id=null,$lvl=0,$chain = null){
         if(!$chain && $id != null){
             $chain = $this->getAncestry($id,0);
@@ -206,36 +289,41 @@ class MiseEnPageArticle extends genericClass{
         $aClass = $legacy?'legacy':'';
 
         $children = $this->getChildren('Article');
-
+        $html = '';
         if(sizeof($children)>0){
-
             if($lvl == 0){
-                $html = '<input type="checkbox" name="ipt_'.$this->Id.'" id="ipt_'.$this->Id.'" '.$checked.'" />';
-                $html .= '<label for="ipt_'.$this->Id.'" class="baseLabel"></label>';
-                $html .= '<a href="'.$this->getUrl().'" class="aNav baseNav '.$aClass.' '.(($this->Id==$id)?'self':'').'"><h2>'.$this->Titre.'</h2></a>';
 
+                $html .=    '<ul id="menu" >';
+                $html .=         '<li class="'.$aClass.'  '.(($this->Id==$id)?'self':'').'">';
+                $html .=            '<input type="checkbox" name="ipt_'.$this->Id.'" id="ipt_'.$this->Id.'" '.$checked.'" />';
+                $html .=            '<label for="ipt_'.$this->Id.'" class="niveau'.sprintf('%02d',$lvl+1).'"><a href="/'.$this->getUrl().'" class="aNav">'.$this->Titre.'</a></label>';
             }else{
-                $html = '<ul>';
-                $html .= '<input type="checkbox" name="ipt_'.$this->Id.'" id="ipt_'.$this->Id.'" '.$checked.'/>
-                      <label for="ipt_'.$this->Id.'"></label>
-                      <li class="hasSub '.(($this->Id == $id)? 'active':'').'">
-                            <a href="'.$this->getUrl().'" class="aNav '.$aClass.' '.(($this->Id==$id)?'self':'').'" >'.$this->Titre.'</a>
-                      </li>';
+                $html = '<ul class="menu'.sprintf('%02d',$lvl).'">';
+                $html .= '<li class="'.$aClass.' '.(($this->Id==$id)?'self':'').'">
+                            <input type="checkbox" name="ipt_'.$this->Id.'" id="ipt_'.$this->Id.'" '.$checked.'/>
+                            <label for="ipt_'.$this->Id.'"class="niveau'.sprintf('%02d',$lvl+1).'"><a href="'.$this->getUrl().'" class="aNav">'.$this->Titre.'</a></label>';
             }
-
             $lvl +=1;
-
             foreach($children as $child){
                 $html .= $child->buildSubNav($id,$lvl,$chain);
             }
-            $html .= '</ul>';
-            return $html;
+            $html .= '</li>
+                    </ul>';
         }else{
-            return '<ul><li><a href="'.$this->getUrl().'"  class="aNav '.$aClass.' '.(($this->Id==$id)?'self':'').'">'.$this->Titre.'</a></li></ul>';
+            $html .= '<ul class="menu'.sprintf('%02d',$lvl).'">
+                        <li  class="'.$aClass.' '.(($this->Id==$id)?'self':'').'">
+                            <label class="niveau'.sprintf('%02d',$lvl+1).'">
+                                <a href="'.$this->getUrl().'"  class="aNav">'.$this->Titre.'</a>
+                            </label>
+                        </li>
+                    </ul>';
         }
+
+        return $html;
 
         return false;
     }
+
 
     /**
      * getAncestry

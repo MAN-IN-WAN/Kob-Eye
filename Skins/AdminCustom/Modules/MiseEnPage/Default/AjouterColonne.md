@@ -21,6 +21,12 @@
                                 [PARAM]Titre[/PARAM]
                                 [PARAM][!newCol_Titre!][/PARAM]
                         [/METHOD]
+
+                        [IF [!modCon_AfficheTitre!]]
+                            [!Col::Set(AfficheTitre,1)!]
+                        [ELSE]
+                            [!Col::Set(AfficheTitre,0)!]
+                        [/IF]
                         [!Col::Set(Ratio,[!newCol_Ratio!])!]
                         [!Col::Set(Ordre,[!newCol_Ordre!])!]
                         [!Col::addParent([!Con!])!]
@@ -70,9 +76,13 @@
                                 //Ajout de l'image
                                 [OBJ MiseEnPage|Image|Img]
                                 [METHOD Img|Set]
-                                        [PARAM]Titre[/PARAM]
-                                        [PARAM][!newData_Titre!][/PARAM]
+                                    [PARAM]Hauteur[/PARAM]
+                                    [PARAM][!newData_Hauteur!][/PARAM]
                                 [/METHOD]
+                                //[METHOD Img|Set]
+                                //       [PARAM]Titre[/PARAM]
+                                //        [PARAM][!newData_Titre!][/PARAM]
+                                //[/METHOD]
                                 [METHOD Img|Set]
                                         [PARAM]Alt[/PARAM]
                                         [PARAM][!newData_Alt!][/PARAM]
@@ -110,6 +120,7 @@
         [/IF]
         
         [IF [!new_saved!]=1]
+                [REDIRECT ]/MiseEnPage/Article/[!Art::Id!][/REDIRECT]
                 <div class="succes">
                         <h2>Création enregistrée avec succès</h2>
                         <a href="/MiseEnPage/Article/[!Art::Id!]">Retour à l'article</a>
@@ -118,8 +129,12 @@
                 <input type="hidden" name="newCol_New" id="newCol_New" value="1" />
                 
                 <div class="inputWrap [IF [!err_Titre!]=1]error[/IF]">
-                        <label for="modCol_Titre">Nom</label>
+                        <label for="newCol_Titre">Titre de la colonne</label>
                         <input type="text" name="newCol_Titre" id="newCol_Titre" value="[!newCol_Titre!]" />
+                </div>
+                <div class="inputWrap ">
+                        <label for="newCol_AfficheTitre">Afficher titre</label>
+                        <input type="checkbox" name="newCol_AfficheTitre" id="newCol_AfficheTitre" [IF [!newCol_AfficheTitre!]]checked=true[/IF] />
                 </div>
                 <div class="inputWrap [IF [!err_Ratio!]=1]error[/IF]">
                         <label for="newCol_Ratio">Largeur en %</label>
@@ -138,13 +153,17 @@
                         </select>
                 </div>
                 <div id="ColContent">
-                        <div class="inputWrap [IF [!sub_err_Titre!]=1]error[/IF]">
-                                <label for="newData_Titre">Titre</label>
-                                <input type="text" name="newData_Titre" id="newData_Titre" value="[!newData_Titre!]" />
-                        </div>
+                        <!--<div class="inputWrap [IF [!sub_err_Titre!]=1]error[/IF]">-->
+                                <!--<label for="newData_Titre">Titre</label>-->
+                                <!--<input type="text" name="newData_Titre" id="newData_Titre" value="[!newData_Titre!]" />-->
+                        <!--</div>-->
                         <div class="inputWrap txtCon [IF [!sub_err_Contenu!]=1]error[/IF]">
                                 <label for="newData_Contenu">Contenu</label>
                                 <textarea name="newData_Contenu" id="newData_Contenu" class="EditorFull">[!newData_Contenu!]</textarea>
+                        </div>
+                        <div class="inputWrap imgCon [IF [!sub_err_Hauteur!]=1]error[/IF]">
+                                <label for="newData_Hauteur">Hauteur de l'image</label>
+                                <input type="text" name="newData_Hauteur" id="newData_Hauteur" value="[!newData_Hauteur!]" />
                         </div>
                         <div class="inputWrap imgCon [IF [!sub_err_Alt!]=1]error[/IF]">
                                 <label for="newData_Alt">Alt de l'image</label>

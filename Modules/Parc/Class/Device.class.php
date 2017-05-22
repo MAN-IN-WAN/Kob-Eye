@@ -48,13 +48,6 @@ class Device extends genericClass{
                 $dev->Save();
             }
             $ConnectionType .= $dev->ConnectionType;
-            //Mise à jour des devices offline
-            $devs = Sys::getData('Parc','Device/LastSeen<'.(time()-60));
-            foreach ($devs as $d) {
-                $d->Online = false;
-                $d->Save();
-            }
-
         }
         //recherche de la version
         $log = Sys::getOneData('Parc','LogicielVersion/Release='.$prod);
@@ -73,6 +66,7 @@ ZabbixAgent64=http://".Sys::$domain."/$log->ZabbixAgent64$ConnectionType$Command
 Client=$dev->CodeClient
 ";
     }
+
     function getConfig($uuid) {
 
         if (empty($uuid)) return;
@@ -121,6 +115,14 @@ Client=$dev->CodeClient
         return $obj->ConnectionType;
     }
 
+    public static function getOffline(){
+        //Mise à jour des devices offline
+        $devs = Sys::getData('Parc','Device/Online=1&&LastSeen<'.(time()-60));
+        foreach ($devs as $d) {
+            $d->Online = false;
+            $d->Save();
+        }
+    }
 
     private function checkGuacamoleConnections()
     {

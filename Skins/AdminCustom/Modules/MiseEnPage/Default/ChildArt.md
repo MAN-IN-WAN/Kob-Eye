@@ -25,9 +25,18 @@
                                                         [/IF]
                                                         <div class="contentCol type[!type!]" style="width:[!Ratio!];" draggable="true" title="Deplacer la colonne [!Cols::Titre!]" data-id="[!Cols::Id!]">
                                                                 <div class="colTitre">[!Cols::Titre!]</div>
+                                                                <div class="boutons">
+                                                                        [STORPROC MiseEnPage/Colonne/[!Cols::Id!]/Bouton|Bout|||Ordre|ASC]
+                                                                                <a href="/MiseEnPage/Colonne/[!Cols::Id!]/ModBou" title="modifier le bouton de la colonne"  class="modButton [IF [!Cols::Ratio!]>24]">[!Bout::Label!][ELSE]short">&nbsp;[/IF]</a>
+                                                                                [NORESULT]
+                                                                                        <a href="/MiseEnPage/Colonne/[!Cols::Id!]/AjouterBouton" title="Ajouter un bouton à la colonne"  class="addButton [IF [!Cols::Ratio!]>24]">Ajouter Bouton[ELSE]short">&nbsp;[/IF]</a>
+                                                                                [/NORESULT]
+                                                                        [/STORPROC]
+                                                                </div>
+                                                                <hr/>
                                                                 <div class="colButtons">
                                                                         <a href="/MiseEnPage/Colonne/[!Cols::Id!]/Modifier" title="Modifier la colonne" class="modButton [IF [!Cols::Ratio!]>24]">Modifier[ELSE]short">&nbsp;[/IF]</a>
-                                                                        <a href="/MiseEnPage/Colonne/[!Cols::Id!]/Supprimer" title="Supprimer la colonne"  class="delButton [IF [!Cols::Ratio!]>24]">supprimer[ELSE]short">&nbsp;[/IF]</a>           
+                                                                        <a href="/MiseEnPage/Colonne/[!Cols::Id!]/Supprimer" title="Supprimer la colonne"  class="delButton [IF [!Cols::Ratio!]>24]">Supprimer[ELSE]short">&nbsp;[/IF]</a>
                                                                         <div class="clear"></div>
                                                                 </div>                                                       
                                                                 <div class="colRatio">Largeur : [!Ratio!] </div>
