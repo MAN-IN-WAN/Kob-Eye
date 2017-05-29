@@ -105,7 +105,7 @@ Client=$dev->CodeClient
             if (is_int($client)) {
                 $cli = Sys::getOneData('Parc', 'Client/Id=' . $client);
             }else{
-                $cli = Sys::getOneData('Parc','Client/~'.$client);
+                $cli = Sys::getOneData('Parc','Client/CodeGestion='.$client);
             }
             if ($cli) {
                 $obj->addParent($cli);
@@ -152,6 +152,22 @@ Client=$dev->CodeClient
             $cli->addError(array('Message' => 'La valeur du champ AccesPass est nulle ou non définie alors que le champ AccesUser est défini.', "Prop" => 'AccesPass'));
         }
 
+        if(isset($cli->Nom)){
+
+            $query = "SELECT * FROM `guacamole_connection_group` WHERE connection_group_name = '" . strtoupper(str_replace('\'',' ',$cli->Nom)) . "'";
+            $q = $dbGuac->query($query);
+            $result = $q->fetchALL(PDO::FETCH_ASSOC);
+            if (sizeof($result) > 0) {
+                $grp = $result[0];
+                $gid = $grp['connection_group_id'];
+            } else {
+                $query = "INSERT INTO `guacamole_connection_group` (connection_group_name) VALUES ('" . strtoupper(str_replace('\'',' ',$cli->Nom)) . "')";
+                $q = $dbGuac->query($query);
+
+                $gid = $dbGuac->lastInsertId();
+            }
+        }
+
 
         //Connection RDP
         if ($this->GuacamoleUrlRdp == "" || $this->GuacamoleUrlRdp == null || $this->GuacamoleIdRdp == "" || $this->GuacamoleIdRdp == null) {
@@ -173,6 +189,12 @@ Client=$dev->CodeClient
         } else {
             $query = "UPDATE `guacamole_connection` SET connection_name ='" . $this->Nom . "_rdp' WHERE connection_id =$this->GuacamoleIdRdp";
             $q = $dbGuac->query($query);
+
+            if(isset($gid)){
+                $query = "UPDATE `guacamole_connection` SET parent_id ='" . $gid . "' WHERE connection_id =$this->GuacamoleIdRdp";
+                $q = $dbGuac->query($query);
+            }
+
 
             $port = 12000 + $this->Id;
             $query = "UPDATE `guacamole_connection_parameter` SET parameter_value = '$port' WHERE connection_id=$this->GuacamoleIdRdp AND parameter_name='port'";
@@ -204,6 +226,11 @@ Client=$dev->CodeClient
         } else {
             $query = "UPDATE `guacamole_connection` SET connection_name ='" . $this->Nom . "_vnc' WHERE connection_id =$this->GuacamoleIdVnc";
             $q = $dbGuac->query($query);
+
+            if(isset($gid)){
+                $query = "UPDATE `guacamole_connection` SET parent_id ='" . $gid . "' WHERE connection_id =$this->GuacamoleIdVnc";
+                $q = $dbGuac->query($query);
+            }
 
             $port = 22000 + $this->Id;
             $query = "UPDATE `guacamole_connection_parameter` SET parameter_value = '$port' WHERE connection_id=$this->GuacamoleIdVnc AND parameter_name='port'";

@@ -4,7 +4,7 @@ class GestionWs {
 
     const RMT_HOST = '10.0.3.8';//'10.0.3.149';
     const RMT_PORT = 5555;
-    const RMT_TMOT = 10;
+    const RMT_TMOT = 5;
 
 
     //Crée un socket et s'y connecte
@@ -44,6 +44,7 @@ class GestionWs {
         //Creation et connection au socket
         $sock = self::openSocket();
         //socket_set_nonblock($sock);
+        socket_set_option($sock,SOL_SOCKET,SO_RCVTIMEO,array('sec'=>self::RMT_TMOT,'usec'=>0));
 
         //construction du json adequat
         switch ($func){
@@ -74,6 +75,16 @@ class GestionWs {
                         return false;
                     }
                     $json = '{"requete":{"commande":"tiers_contacts","code":"'.$code.'"}}';
+                break;
+            case 'contact_liste':
+                if(isset($params['lastTms'])){
+                    $tms = $params['lastTms'];
+                }elseif(isset($params)&&$params!==null){
+                    $tms = $params;
+                }else{
+                    return false;
+                }
+                $json = '{"requete":{"commande":"contact_liste","tms":"'.$tms.'"}}';
                 break;
             case 'client_liste':
                     if(isset($params['tms'])){
@@ -145,6 +156,16 @@ class GestionWs {
                     return false;
                 }
                 $json = '{"requete":{"commande":"contrat_full_liste","code":"'.$code.'"}}';
+                break;
+            case 'contrat_last_liste':
+                if(isset($params['lastTms'])){
+                    $tms = $params['lastTms'];
+                }elseif(isset($params)&&$params!==null){
+                    $tms = $params;
+                }else{
+                    return false;
+                }
+                $json = '{"requete":{"commande":"contrat_last_liste","tms":"'.$tms.'"}}';
                 break;
             default:
                 return false;
@@ -242,12 +263,13 @@ class GestionWs {
                 if(strpos($cli->nom,'*') !== false)
                     continue;
 
-                $kecli = Sys::getOneData('Parc','Client/CodeGestion='.$cli->code);
+                $nom = preg_replace('/[^a-zA-Z0-9]/','',$cli->nom);
+                $kecli = Sys::getOneData('Parc','Client/CodeGestion='.Utils::KEAddSlashes($cli->code));
                 if(!$kecli){
                     $kecli =  genericClass::createInstance('Parc','Client');
-                    $kecli->Nom = $cli->nom;
+                    $kecli->Nom = strtoupper($cli->nom);
                     $kecli->CodeGestion = $cli->code;
-                    $kecli->NomLDAP = str_replace(' ', '', strtolower($cli->code));
+                    $kecli->NomLDAP = strtolower($nom);
 
                     $kecli->addParent('Parc/Revendeur/1');
 
@@ -255,8 +277,9 @@ class GestionWs {
 
                     echo 'Client '.$cli->nom.' créé !!!!!'.PHP_EOL;
                 } else {
-                    $kecli->Nom = $cli->nom;
-                    //$kecli->Save();
+                    $kecli->Nom = strtoupper($cli->nom);
+                    //$kecli->NomLDAP = strtolower($nom);
+                    $kecli->Save();
                     echo 'Déjà '.$cli->nom.''.PHP_EOL;
                 }
 
@@ -268,6 +291,70 @@ class GestionWs {
         }
 
 
+
+        return false;
+    }
+
+    //Check les derniers clients créés dans la gestion et mets a jour le parc
+    public static function getContacts(){
+
+        $tmsFile = 'Data/tmsContactLast.time';
+
+        if(!is_file($tmsFile)){
+            $file = fopen($tmsFile, 'w') or die('Cannot open file:  '.$tmsFile);
+            fclose($file);
+        }
+
+        $tms = file_get_contents($tmsFile) != '' ? file_get_contents($tmsFile) : 0;
+
+        $contacts = self::queryGestion('contact_liste', $tms);
+
+
+        if( $contacts && count($contacts) ) {
+            foreach ($contacts as $contact) {
+                //Si on a passé juste un/des code(s) gestion on recup l'objet KE
+                $clitemp = Sys::getOneData('Parc','Client/CodeGestion='.$contact->codeGestion);
+                if(!$clitemp){
+                    echo 'Client '.$contact->codeGestion.' introuvable ';
+                    continue;
+                } else {
+                    $cli= $clitemp;
+                }
+
+
+                $kecontact = Sys::getOneData('Parc','Contact/IdGestion='.$contact->id);
+                if(!$kecontact){
+                    $kecontact =  genericClass::createInstance('Parc','Contact');
+                    $kecontact->IdGestion = $contact->id;
+                    $kecontact->Nom = $contact->nom;
+                    $kecontact->Prenom = $contact->prenom;
+                    $kecontact->Tel = $contact->tel;
+                    $kecontact->Mobile = $contact->gsm;
+                    $kecontact->Fax = $contact->fax;
+                    $kecontact->Email = $contact->mail;
+
+                    $kecontact->addParent('Parc/Client/'.$cli->Id);
+
+                    $kecontact->Save();
+
+                    echo 'Client '.$cli->Nom.' Contact: '.$kecontact->Nom.' '.$kecontact->Prenom.' !!!!!'.PHP_EOL;
+                } else {
+                    $kecontact->Nom = $contact->nom;
+                    $kecontact->Prenom = $contact->prenom;
+                    $kecontact->Tel = $contact->tel;
+                    $kecontact->Mobile = $contact->gsm;
+                    $kecontact->Fax = $contact->fax;
+                    $kecontact->Email = $contact->mail;
+
+                    $kecontact->Save();
+
+                    echo 'Client '.$cli->Nom.' Contact: '.$kecontact->Nom.' '.$kecontact->Prenom.' UPDATE !'.PHP_EOL;
+                }
+            }
+
+            $date = date('YmdHis');
+            file_put_contents($tmsFile,$date.'00');
+        }
 
         return false;
     }
@@ -287,7 +374,7 @@ class GestionWs {
         foreach ($clients as $cli) {
             //Si on a passé juste un/des code(s) gestion on recup l'objet KE
             if(!is_object($cli)){
-                $clitemp = Sys::getOneData('Parc','Client/CodeGestion='.$cli);
+                $clitemp = Sys::getOneData('Parc','Client/CodeGestion='.Utils::KEAddSlashes($cli));
                 if(!$clitemp){
                     echo 'Client '.$cli.' introuvable: ';
                     continue;
@@ -342,7 +429,7 @@ class GestionWs {
                         $kecont->Duree = $contrat->duree;
                         $kecont->EngagementInit = $contrat->engagementInit;
                         $kecont->Preavis = $contrat->preavis;
-                        $kecont->FrequenceFactu = $contrat->frenquenceFactu;
+                        $kecont->FrequenceFactu = $contrat->frequenceFactu;
 
                         $finFactu = new DateTime($contrat->finFactu);
                         $kecont->FinFactu = $finFactu->getTimestamp();
@@ -371,7 +458,7 @@ class GestionWs {
                         $kecont->DateEcheance = $dateEcheance->getTimestamp();
 
                         $kecont->Duree = $contrat->duree;
-                        $kecont->FrequenceFactu = $contrat->frenquenceFactu;
+                        $kecont->FrequenceFactu = $contrat->frequenceFactu;
                         $kecont->MontantAnnu = $contrat->montantAnnu;
                         $kecont->MontantMensu = $contrat->montantMensu;
                         $kecont->TaciteRecond = $contrat->taciteRecond;
@@ -387,7 +474,7 @@ class GestionWs {
                 }
 
                 $date = date('YmdHis');
-                file_put_contents($tmsFile,$date.'00');
+                //file_put_contents($tmsFile,$date.'00');
             }
 
 
@@ -396,6 +483,102 @@ class GestionWs {
 
         return false;
     }
+
+    //Check les derniers contrats créés dans la gestion et mets a jour le parc
+    public static function altGetContrats(  $forcefull = false){
+
+        $tmsFile = 'Data/tmsContratLast.time';
+
+        if(!is_file($tmsFile)){
+            $file = fopen($tmsFile, 'w') or die('Cannot open file:  '.$tmsFile);
+            fclose($file);
+        }
+
+        $tms = file_get_contents($tmsFile) != '' ? file_get_contents($tmsFile) : 0;
+
+        $cons = self::queryGestion('contrat_last_liste', $tms);
+
+
+        if( $cons && count($cons) ) {
+
+            foreach ($cons as $contrat) {
+
+                $clitemp = Sys::getOneData('Parc','Client/CodeGestion='.Utils::KEAddSlashes($contrat->codeGestion));
+                if(!$clitemp){
+                    echo 'Client '.$contrat->codeGestion.' introuvable: ';
+                    continue;
+                } else {
+                    $cli= $clitemp;
+                }
+
+                $kecont = Sys::getOneData('Abtel','Contrat/Code='.$contrat->code);
+                if(!$kecont){
+                    $kecont =  genericClass::createInstance('Abtel','Contrat');
+                    $kecont->IdGestion = $contrat->id;
+                    $kecont->Code = $contrat->code;
+                    $kecont->Type = $contrat->type;
+                    $kecont->Libelle = $contrat->libelle;
+
+                    $dateDeb = new DateTime($contrat->dateDebut);
+                    $kecont->DateDebut = $dateDeb->getTimestamp();
+                    $contratFin = new DateTime($contrat->contratFin);
+                    $kecont->ContratFin = $contratFin->getTimestamp();
+
+                    $kecont->Duree = $contrat->duree;
+                    $kecont->EngagementInit = $contrat->engagementInit;
+                    $kecont->Preavis = $contrat->preavis;
+                    $kecont->FrequenceFactu = $contrat->frenquenceFactu;
+
+                    $finFactu = new DateTime($contrat->finFactu);
+                    $kecont->FinFactu = $finFactu->getTimestamp();
+                    $dateEcheance = new DateTime($contrat->dateEcheance);
+                    $kecont->DateEcheance = $dateEcheance->getTimestamp();
+
+                    $kecont->MontantAnnu = $contrat->montantAnnu;
+                    $kecont->MontantMensu = $contrat->montantMensu;
+                    $kecont->TaciteRecond = $contrat->taciteRecond;
+                    $kecont->Commentaire = $contrat->commentaire;
+
+                    $kecont->addParent('Parc/Client/'.$cli->Id);
+
+                    $kecont->Save();
+
+                    echo 'Client '.$cli->Nom.' Contrat: '.$kecont->Code.' !!!!!'.PHP_EOL;
+                } else {
+
+                    $dateDeb = new DateTime($contrat->dateDebut);
+                    $kecont->DateDebut = $dateDeb->getTimestamp();
+                    $contratFin = new DateTime($contrat->contratFin);
+                    $kecont->ContratFin = $contratFin->getTimestamp();
+                    $finFactu = new DateTime($contrat->finFactu);
+                    $kecont->FinFactu = $finFactu->getTimestamp();
+                    $dateEcheance = new DateTime($contrat->dateEcheance);
+                    $kecont->DateEcheance = $dateEcheance->getTimestamp();
+
+                    $kecont->Duree = $contrat->duree;
+                    $kecont->FrequenceFactu = $contrat->frenquenceFactu;
+                    $kecont->MontantAnnu = $contrat->montantAnnu;
+                    $kecont->MontantMensu = $contrat->montantMensu;
+                    $kecont->TaciteRecond = $contrat->taciteRecond;
+                    $kecont->Commentaire = $contrat->commentaire;
+                    $kecont->Duree = $contrat->duree;
+
+                    $kecont->Save();
+
+                    echo 'Client '.$cli->Nom.' Contrat: '.$kecont->Code.' UPDATE !'.PHP_EOL;
+                }
+
+
+            }
+
+            $date = date('YmdHis');
+            file_put_contents($tmsFile,$date.'00');
+        }
+
+
+        return false;
+    }
+
 
     //Check les derniers clients créés dans la gestion et mets a jour le parc
     public static function altGetTickets(){
@@ -426,7 +609,7 @@ class GestionWs {
         if( $tix && count($tix) ) {
             foreach ($tix as $ticket) {
                 //Si on a passé juste un/des code(s) gestion on recup l'objet KE
-                $clitemp = Sys::getOneData('Parc','Client/CodeGestion='.$ticket->codeGestion);
+                $clitemp = Sys::getOneData('Parc','Client/CodeGestion='.Utils::KEAddSlashes($ticket->codeGestion));
                 if(!$clitemp){
                     echo 'Client '.$ticket->codeGestion.' introuvable ';
                     continue;

@@ -46,6 +46,7 @@
 	<OBJECTCLASS title="Image" driver="mysql">
         <PROPERTIES type="varchar" category="Description">Hauteur</PROPERTIES>
 		<PROPERTIES type="varchar" category="Intitulé">Alt</PROPERTIES>
+		<PROPERTIES type="varchar" category="Intitulé">Title</PROPERTIES>
 		<PROPERTIES type="bbcode" category="Description">Legende</PROPERTIES>
 		<PROPERTIES type="bbcode" searchOrder="2" category="Description">Commentaires</PROPERTIES>
 		<PROPERTIES type="file" category="Emplacement">URL</PROPERTIES>

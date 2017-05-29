@@ -169,7 +169,7 @@ class MiseEnPageArticle extends genericClass{
                     //bouton demande de contact
                     $bouton = $colonne->getOneChild('Bouton');
                     if($bouton) {
-                        $dest = $bouton->Type == contact? '/contact':'/espace-client';
+                        $dest = $bouton->Type == 'contact'? '/contact':'/espace-client';
                         $html .= '<a href="' . $dest . $bouton->Parametres . '" class="artContact btn btn-info">' . $bouton->Label . '</a>';
                     }
 

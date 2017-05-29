@@ -9,7 +9,7 @@
 		<PROPERTIES category="Coordonnées" searchOrder="2" type="varchar" description="Adresse e-mail" fiche="1" form="1" list="1" listDescr="Email">Email</PROPERTIES>
 		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de téléphone" fiche="1" form="1" list="1" listDescr="Tel">Tel</PROPERTIES>
 		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de fax" fiche="1" form="1">Fax</PROPERTIES>
-		<PROPERTIES category="LDAP" type="varchar" obligatoire="1" unique="1" length="25" description="Nom sous LDAP (de 8-25 caractères sans caractère spéciaux ou espace)" fiche="1" form="1">NomLDAP</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" obligatoire="1" unique="1" length="50" description="Nom sous LDAP (de 8-50 caractères sans caractère spéciaux ou espace)" fiche="1" form="1">NomLDAP</PROPERTIES>
 		<PROPERTIES category="LDAP" type="int" auto="1">LdapGid</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
@@ -19,6 +19,20 @@
 		<FUNCTION title="Importer plusieurs domaines" type="form">ImporterPlusieursDomaines</FUNCTION>
 		<FKEY card="0,1" module="Systeme" data="User,Id">UserId</FKEY>
 		<FKEY card="0,1" module="Parc" data="Revendeur,Id">RevendeurId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Contact" driver="mysql" Description="Contact/Utilisateur Client" Icon="/Skins/AdminV2/Img/IconAqua/Forum.png" className="Parc_Contact" Class="Modules/Parc/Class/Contact.class.php" Order="Nom">
+		<PROPERTIES category="Gestion" type="int" unique="1" description="Id dans la gestion" >IdGestion</PROPERTIES>
+		<PROPERTIES category="Intitulé" type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" listDescr="Nom">Nom</PROPERTIES>
+		<PROPERTIES category="Intitulé" type="varchar" searchOrder="2" list="1" fiche="1" form="1" listDescr="Prenom">Prenom</PROPERTIES>
+		<PROPERTIES category="Accès client" type="boolean" obligatoire="0" description="Activation Accès web" list="1" fiche="1" form="1" listDescr="Accès Web">AccesActif</PROPERTIES>
+		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="5" description="Identifiant Accès web"  fiche="1" form="1">AccesUser</PROPERTIES>
+		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="6" description="Mot de passe Accès Web" fiche="1" form="1">AccesPass</PROPERTIES>
+		<PROPERTIES category="Coordonnées" searchOrder="2" type="varchar" description="Adresse e-mail" fiche="1" form="1" list="1" listDescr="Email">Email</PROPERTIES>
+		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de téléphone" fiche="1" form="1" list="1" listDescr="Tel">Tel</PROPERTIES>
+		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de mobile" fiche="1" form="1">Mobile</PROPERTIES>
+		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de fax" fiche="1" form="1">Fax</PROPERTIES>
+		<FKEY card="0,1" module="Systeme" data="User,Id">UserId</FKEY>
+		<FKEY card="0,1" data="Client,Id">ClientId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Revendeur" driver="mysql" AccessPoint="1" master="0" Description="Revendeur" Icon="/Skins/AdminV2/Img/IconAqua/Forum.png" className="Parc_Revendeur" Class="Modules/Parc/Class/Revendeur.class.php">
 		<PROPERTIES category="Intitulé" type="varchar" obligatoire="1" searchOrder="1">Nom</PROPERTIES>
@@ -262,6 +276,16 @@
 		<PROPERTIES type="varchar" description="Id guacamole RDP">GuacamoleIdRdp</PROPERTIES>
 		<PROPERTIES type="varchar" description="Id guacamole VNC">GuacamoleIdVnc</PROPERTIES>
 		<FKEY card="0,1" data="Client,Id" fiche="1" form="1" parentDescription="Client" link="1">ClientId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Connection" driver="mysql" Description="Connection(s) vers le Périphérique" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png">
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom du périphérique">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" obligatoire="1" fiche="1" description="Type de connexion" values="RDP,VNC,SSH,Telnet">Type</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="0" fiche="1" description="Port redirection Local">PortRedirectLocal</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="0" fiche="1" description="Port redirection Distant">PortRedirectDistant</PROPERTIES>
+		<PROPERTIES type="extlink" list="1" fiche="1" description="Url guacamole" listDescr="VNC">GuacamoleUrl</PROPERTIES>
+		<PROPERTIES type="varchar" description="Id guacamole">GuacamoleId</PROPERTIES>
+		<FKEY card="0,1" data="Device,Id" fiche="1" form="1" parentDescription="Périphérique" link="1">DeviceId</FKEY>
+		<FKEY card="0,n" data="Contact,Id" fiche="1" form="1" parentDescription="Contact/Utilisateur" link="1">ContactId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="LogicielVersion" driver="mysql" Dico="1" Description="Version logMeNimes" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom de la version">Nom</PROPERTIES>
