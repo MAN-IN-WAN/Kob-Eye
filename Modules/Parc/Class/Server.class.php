@@ -353,6 +353,31 @@ class Server extends genericClass {
 
 	}
 
+
+    /**
+     * Mise à jour des éléements depuis le serveur LDAP
+     * @return	void
+     */
+    public function SynchServ() {
+
+        // On détermine la dernière date de mise à jour
+        $this -> getLastUpdate(true);
+
+        // Connexion à la base LDAP
+        if ($this -> ldapConnect())
+            $this -> debug("Connexion LDAP établie");
+        else
+            $this -> error("Impossible d'établie une connexion à la base");
+
+        Server::ldapConnect();
+
+        $this -> synchroPartielle('servers');
+
+        // Fin
+        $this -> debug('Synchronisation terminée');
+
+    }
+
 	/**
 	 * Récupère les données nouvelles pour un groupe de données et met à jour la base KE
 	 * -> Effectue la requete

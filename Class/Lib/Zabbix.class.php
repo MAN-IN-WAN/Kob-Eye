@@ -4,7 +4,7 @@ require_once(__DIR__.'/Zabbix/ZabbixApi.class.php');
 
 class Zabbix {
 
-    const RMT_HOST = 'zabbix.abtel.fr';
+    const RMT_HOST = '10.0.97.1';
     const RMT_PORT = 5555;
     const USR = 'ZSA';
     const PASS = 'CHAp*awR_7re';
@@ -87,11 +87,10 @@ class Zabbix {
         }
 
         if(!$group){
-            //TODO : Create Group
             $grp = $zab->hostgroupCreate(array(
                 'name' => ucfirst($cli)
             ));
-            print_r($grp);
+            //print_r($grp);
             $group = $zab->hostgroupGet(array(
                 'groupids' => $grp->groupids
             ));

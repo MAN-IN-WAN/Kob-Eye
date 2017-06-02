@@ -31,6 +31,7 @@ class Parc_Contact extends genericClass {
                     $grp = $uCli->getOneParent('Group');
                     if(!$grp){
                         $base = Group::getGroupFromRole($this->Role);
+                        $base = $base[0];
                         $uGrp = $base->getOneChild('Group/Nom='.strtoupper(Utils::KEAddSlashes($cli->Nom)));
                         if($uGrp){
                             $grp = $uGrp;
@@ -43,6 +44,7 @@ class Parc_Contact extends genericClass {
                     }
                 } else{
                     $base = Group::getGroupFromRole($this->Role);
+                    $base = $base[0];
                     $uGrp = $base->getOneChild('Group/Nom='.strtoupper(Utils::KEAddSlashes($cli->Nom)));
                     if($uGrp){
                         $grp = $uGrp;
@@ -59,7 +61,7 @@ class Parc_Contact extends genericClass {
 
 			//Vérification des propriétées
 			if (!empty($this->AccesUser)&&!empty($this->AccesPass)){
-				if (!sizeof($u)){
+				if (!$u || !sizeof($u)){
 					//creation de l'utilisateur
 					$u = genericClass::createInstance('Systeme','User');
 					$u->Login = $this->AccesUser;
@@ -71,8 +73,8 @@ class Parc_Contact extends genericClass {
 					$this->AddParent($u);
 					parent::Save();
 				}else{
+
 					//mise à jour utilisateur
-					$u = $u[0];
 					$u->Login = $this->AccesUser;
 					$u->Pass = md5($this->AccesPass);
 					$u->Mail = $this->Email;

@@ -159,7 +159,7 @@ class Parc_Client extends genericClass {
                 $grp = $sGrp;
             }else{
                 $sGrp = genericClass::createInstance('Systeme','Group');
-                $sGrp->Nom = strtoupper(Utils::KEAddSlashes($this->Nom));
+                $sGrp->Nom = strtoupper($this->Nom);
                 $sGrp->addParent($grp);
                 $sGrp->Save();
 

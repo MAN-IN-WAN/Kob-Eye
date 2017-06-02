@@ -485,7 +485,7 @@ class GestionWs {
     }
 
     //Check les derniers contrats créés dans la gestion et mets a jour le parc
-    public static function altGetContrats(  $forcefull = false){
+    public static function altGetContrats(){
 
         $tmsFile = 'Data/tmsContratLast.time';
 
@@ -495,6 +495,7 @@ class GestionWs {
         }
 
         $tms = file_get_contents($tmsFile) != '' ? file_get_contents($tmsFile) : 0;
+
 
         $cons = self::queryGestion('contrat_last_liste', $tms);
 

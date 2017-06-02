@@ -52,7 +52,7 @@ $('#{{ identifier }}').DataTable({
 
                 "render": function (data, type, row ) {
                     if (data)
-                        return '<a class="btn btn-success btn-xs" href="https://zabbix.abtel.fr:8443/guacamole/#/client/'+data+'" target="_blank">{{ field.listDescr }}</a>';
+                        return '<a class="btn btn-success btn-xs" href="https://zabbix.abtel.fr/guacamole/#/client/'+data+'" target="_blank">{{ field.listDescr }}</a>';
                     else
                         return '<a class="btn btn-disabled btn-xs" href="javascript:void(0);">{{ field.listDescr }}</a>';
                 }

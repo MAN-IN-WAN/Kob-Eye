@@ -277,12 +277,14 @@
 		<PROPERTIES type="varchar" description="Id guacamole VNC">GuacamoleIdVnc</PROPERTIES>
 		<FKEY card="0,1" data="Client,Id" fiche="1" form="1" parentDescription="Client" link="1">ClientId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Connection" driver="mysql" Description="Connection(s) vers le Périphérique" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png">
+	<OBJECTCLASS title="DeviceConnexion" driver="mysql" Description="Connection(s) vers le Périphérique" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/DeviceConnexion.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom du périphérique">Nom</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="2" obligatoire="1" fiche="1" description="Type de connexion" values="RDP,VNC,SSH,Telnet">Type</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" obligatoire="1" fiche="1" description="Type de connexion" values="RDP,VNC,SSH,Telnet,Https">Type</PROPERTIES>
 		<PROPERTIES type="int" obligatoire="0" fiche="1" description="Port redirection Local">PortRedirectLocal</PROPERTIES>
 		<PROPERTIES type="int" obligatoire="0" fiche="1" description="Port redirection Distant">PortRedirectDistant</PROPERTIES>
-		<PROPERTIES type="extlink" list="1" fiche="1" description="Url guacamole" listDescr="VNC">GuacamoleUrl</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" description="Login" listDescr="Login">Login</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" description="Mot de passe" listDescr="Mot de passe">Password</PROPERTIES>
+		<PROPERTIES type="extlink" list="1" fiche="1" description="Url guacamole" listDescr="Lien Direct">GuacamoleUrl</PROPERTIES>
 		<PROPERTIES type="varchar" description="Id guacamole">GuacamoleId</PROPERTIES>
 		<FKEY card="0,1" data="Device,Id" fiche="1" form="1" parentDescription="Périphérique" link="1">DeviceId</FKEY>
 		<FKEY card="0,n" data="Contact,Id" fiche="1" form="1" parentDescription="Contact/Utilisateur" link="1">ContactId</FKEY>

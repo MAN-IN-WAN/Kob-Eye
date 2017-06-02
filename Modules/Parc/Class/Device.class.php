@@ -115,6 +115,8 @@ Client=$dev->CodeClient
         return $obj->ConnectionType;
     }
 
+
+
     public static function getOffline(){
         //Mise à jour des devices offline
         $devs = Sys::getData('Parc','Device/Online=1&&LastSeen<'.(time()-60));
@@ -124,8 +126,8 @@ Client=$dev->CodeClient
         }
     }
 
-    private function checkGuacamoleConnections()
-    {
+
+    private function checkGuacamoleConnections()    {
         $dbGuac = new PDO('mysql:host=10.0.97.5;dbname=guacamole', 'root', 'RsL5pfky', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
         $dbGuac->query("SET AUTOCOMMIT=1");
         $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -246,8 +248,47 @@ Client=$dev->CodeClient
         return true;
     }
 
-    private function removeGuacamoleConnection(){
+    public function createBaseConnection(){
+        $ports = explode(',',$this->ConnectionType);
+        array_walk($ports,function(&$a){
+            $a = ltrim($a,'R');
+            $temp = explode('=',$a);
+            $a = array('local'=>$temp[0],'distant'=>$temp[1]);
+            $a['distant']=explode(':',$a['distant'])[1];
+        });
 
+
+        if($this->GuacamoleIdRdp != "" || $this->GuacamoleIdRdp != null)
+            $rdp = $this->getOneChild('DeviceConnexion/GuacamoleId='.$this->GuacamoleIdRdp);
+
+        if($this->GuacamoleIdVnc != "" || $this->GuacamoleIdVnc != null)
+            $vnc = $this->getOneChild('DeviceConnexion/GuacamoleId='.$this->GuacamoleIdVnc);
+
+
+        if(!isset($rdp) || !$rdp){
+            $coRdp = genericClass::createInstance('Parc','DeviceConnexion');
+            $coRdp->Nom = $this->Nom . "_rdp";
+            $coRdp->Type = 'RDP';
+            $coRdp->PortRedirectLocal = $ports[0]['local'];
+            $coRdp->PortRedirectDistant = $ports[0]['distant'];
+            $coRdp->GuacamoleUrl = $this->GuacamoleUrlRdp;
+            $coRdp->GuacamoleId = $this->GuacamoleIdRdp;
+            $coRdp->addParent($this);
+            $coRdp->Save();
+        }
+
+
+        if(!isset($vnc) || !$vnc){
+            $coVnc = genericClass::createInstance('Parc','DeviceConnexion');
+            $coVnc->Nom = $this->Nom . "_vnc";
+            $coVnc->Type = 'VNC';
+            $coVnc->PortRedirectLocal = $ports[1]['local'];
+            $coVnc->PortRedirectDistant = $ports[1]['distant'];
+            $coVnc->GuacamoleUrl = $this->GuacamoleUrlVnc;
+            $coVnc->GuacamoleId = $this->GuacamoleIdVnc;
+            $coVnc->addParent($this);
+            $coVnc->Save();
+        }
     }
 
 }
