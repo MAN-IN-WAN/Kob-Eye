@@ -9,7 +9,7 @@
 		<PROPERTIES category="Coordonnées" searchOrder="2" type="varchar" description="Adresse e-mail" fiche="1" form="1" list="1" listDescr="Email">Email</PROPERTIES>
 		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de téléphone" fiche="1" form="1" list="1" listDescr="Tel">Tel</PROPERTIES>
 		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de fax" fiche="1" form="1">Fax</PROPERTIES>
-		<PROPERTIES category="LDAP" type="varchar" obligatoire="1" unique="1" length="25" description="Nom sous LDAP (de 8-25 caractères sans caractère spéciaux ou espace)" fiche="1" form="1">NomLDAP</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" obligatoire="1" unique="1" length="50" description="Nom sous LDAP (de 8-50 caractères sans caractère spéciaux ou espace)" fiche="1" form="1">NomLDAP</PROPERTIES>
 		<PROPERTIES category="LDAP" type="int" auto="1">LdapGid</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
@@ -19,6 +19,20 @@
 		<FUNCTION title="Importer plusieurs domaines" type="form">ImporterPlusieursDomaines</FUNCTION>
 		<FKEY card="0,1" module="Systeme" data="User,Id">UserId</FKEY>
 		<FKEY card="0,1" module="Parc" data="Revendeur,Id">RevendeurId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Contact" driver="mysql" Description="Contact/Utilisateur Client" Icon="/Skins/AdminV2/Img/IconAqua/Forum.png" className="Parc_Contact" Class="Modules/Parc/Class/Contact.class.php" Order="Nom">
+		<PROPERTIES category="Gestion" type="int" unique="1" description="Id dans la gestion" >IdGestion</PROPERTIES>
+		<PROPERTIES category="Intitulé" type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" listDescr="Nom">Nom</PROPERTIES>
+		<PROPERTIES category="Intitulé" type="varchar" searchOrder="2" list="1" fiche="1" form="1" listDescr="Prenom">Prenom</PROPERTIES>
+		<PROPERTIES category="Accès client" type="boolean" obligatoire="0" description="Activation Accès web" list="1" fiche="1" form="1" listDescr="Accès Web">AccesActif</PROPERTIES>
+		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="5" description="Identifiant Accès web"  fiche="1" form="1">AccesUser</PROPERTIES>
+		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="6" description="Mot de passe Accès Web" fiche="1" form="1">AccesPass</PROPERTIES>
+		<PROPERTIES category="Coordonnées" searchOrder="2" type="varchar" description="Adresse e-mail" fiche="1" form="1" list="1" listDescr="Email">Email</PROPERTIES>
+		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de téléphone" fiche="1" form="1" list="1" listDescr="Tel">Tel</PROPERTIES>
+		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de mobile" fiche="1" form="1">Mobile</PROPERTIES>
+		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de fax" fiche="1" form="1">Fax</PROPERTIES>
+		<FKEY card="0,1" module="Systeme" data="User,Id">UserId</FKEY>
+		<FKEY card="0,1" data="Client,Id">ClientId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Revendeur" driver="mysql" AccessPoint="1" master="0" Description="Revendeur" Icon="/Skins/AdminV2/Img/IconAqua/Forum.png" className="Parc_Revendeur" Class="Modules/Parc/Class/Revendeur.class.php">
 		<PROPERTIES category="Intitulé" type="varchar" obligatoire="1" searchOrder="1">Nom</PROPERTIES>
@@ -243,7 +257,7 @@
 		<FILTER name="Tous les périphériques" color="warning" ></FILTER>
 		<FILTER name="Périphériques en ligne"  color="success">Online=1</FILTER>
 		<FILTER name="Périphériques en mode test">ModeTest=1</FILTER>
-		<FILTER name="Ajoutés aujourd'hui">tmsCreate>[!TMS::Now:-86400!]</FILTER>
+		<FILTER name="Ajoutés ces dernières 24h">tmsCreate>[!TMS::Now:-86400!]</FILTER>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom du périphérique">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="0" list="1" fiche="1" listDescr="IP" description="IP Publique">PublicIP</PROPERTIES>
 		<PROPERTIES category="Intitulé" searchOrder="4" type="varchar" fiche="1" form="0" list="1" listDescr="Code Client" description="Code client saisi">CodeClient</PROPERTIES>
@@ -262,6 +276,16 @@
 		<PROPERTIES type="varchar" description="Id guacamole RDP">GuacamoleIdRdp</PROPERTIES>
 		<PROPERTIES type="varchar" description="Id guacamole VNC">GuacamoleIdVnc</PROPERTIES>
 		<FKEY card="0,1" data="Client,Id" fiche="1" form="1" parentDescription="Client" link="1">ClientId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Connection" driver="mysql" Description="Connection(s) vers le Périphérique" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png">
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom du périphérique">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" obligatoire="1" fiche="1" description="Type de connexion" values="RDP,VNC,SSH,Telnet">Type</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="0" fiche="1" description="Port redirection Local">PortRedirectLocal</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="0" fiche="1" description="Port redirection Distant">PortRedirectDistant</PROPERTIES>
+		<PROPERTIES type="extlink" list="1" fiche="1" description="Url guacamole" listDescr="VNC">GuacamoleUrl</PROPERTIES>
+		<PROPERTIES type="varchar" description="Id guacamole">GuacamoleId</PROPERTIES>
+		<FKEY card="0,1" data="Device,Id" fiche="1" form="1" parentDescription="Périphérique" link="1">DeviceId</FKEY>
+		<FKEY card="0,n" data="Contact,Id" fiche="1" form="1" parentDescription="Contact/Utilisateur" link="1">ContactId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="LogicielVersion" driver="mysql" Dico="1" Description="Version logMeNimes" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom de la version">Nom</PROPERTIES>
@@ -288,16 +312,31 @@
 		<PROPERTIES type="varchar" unique="1" description="Id sur le serveur mail" >IdMail</PROPERTIES>
         <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Adresse eMail" list="1" form="1" fiche="1" listDescr="Adresse">Adresse</PROPERTIES>
 		<PROPERTIES type="varchar" description="Mot de passe" list="0" form="1" fiche="1">Pass</PROPERTIES>
-        <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" values="NULL,MAIL_BUS,MAIL_POP,MAIL_PRO" default="MAIL_POP" description="COS" list="1" form="1" fiche="1" listDescr="COS">COS</PROPERTIES>
+        <PROPERTIES type="varchar" searchOrder="2" obligatoire="1" values="NULL,MAIL_BUS,MAIL_POP,MAIL_PRO" default="MAIL_POP" description="COS" list="1" form="1" fiche="1" listDescr="COS">COS</PROPERTIES>
 		<PROPERTIES type="int" description="Quota en Mo" list="1" form="1" fiche="1" listDescr="Quota">Quota</PROPERTIES>
 		<PROPERTIES type="int" description="Espace utilisé en Mo" list="1" form="1" fiche="1" listDescr="Utilisé">EspaceUtilise</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="2" description="Status de l'adresse" list="1" form="1" fiche="1" listDescr="Etat">Status</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="3" description="Nom du contact" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="3" description="Status de l'adresse" list="1" form="1" fiche="1" listDescr="Etat">Status</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="4" description="Nom du contact" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" description="Prenom du contact" list="1" form="1" fiche="1" listDescr="Prénom">Prenom</PROPERTIES>
-		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
-		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
-		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
 		<FKEY card="1,1" data="Client,Id">ClientId</FKEY>
 		<FKEY card="1,1" data="Server,Id">ServerId</FKEY>
 	</OBJECTCLASS>
+	<OBJECTCLASS title="Ticket" driver="mysql" AccessPoint="1" Description="Tickets Clients" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" >
+		<FILTER name="En cours" color="secondary">Etat=En cours</FILTER>
+		<FILTER name="Incidents" color="warning"><![CDATA[Type=Incident&Etat=En cours]]></FILTER>
+		<FILTER name="Demandes" color="secondary"><![CDATA[Type=Demande&Etat=En cours]]></FILTER>
+		<FILTER name="Tous les tickets" color="primary" ></FILTER>
+		<PROPERTIES type="int" unique="1" description="Id dans la gestion" >IdGestion</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Numero du ticket" list="1" form="1" fiche="1" listDescr="N° Ticket">Numero</PROPERTIES>
+		<PROPERTIES type="varchar" description="Type de ticket" list="0" form="1" fiche="1" listDescr="Type" values="Incident,Demande,NC" default="NC" >Type</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" obligatoire="1"  description="Intitulé" list="1" form="1" fiche="1" listDescr="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="date" description="Date de création" list="1" form="1" fiche="1" listDescr="Date de création">DateCrea</PROPERTIES>
+        <PROPERTIES type="date" description="Date d'échéance" list="1" form="1" fiche="1" listDescr="Date d'échance">DateEcheance</PROPERTIES>
+        <PROPERTIES type="varchar" description="Etat" list="1" form="1" fiche="1" listDescr="Etat" values="A facturer,En cours,Terminé,Abandonné,Commercial">Etat</PROPERTIES>
+		<PROPERTIES type="varchar" description="Intervenant original" list="0" form="1" fiche="1" listDescr="Créateur">UserCrea</PROPERTIES>
+		<PROPERTIES type="varchar" description="Prochain intervenant" list="1" form="1" fiche="1" listDescr="Prochain">UserNext</PROPERTIES>
+
+		<FKEY card="1,1" data="Client,Id">ClientId</FKEY>
+	</OBJECTCLASS>
 </SCHEMA>
+

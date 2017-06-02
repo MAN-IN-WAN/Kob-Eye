@@ -69,6 +69,7 @@
 [/IF]
 
 [IF [!mod_saved!]=1]
+        [REDIRECT]/MiseEnPage/Article/[!Art::Id!][/REDIRECT]
         <div class="succes">
                 <h2>Modification enregistrée avec succès</h2>
                 <a href="/MiseEnPage/Article/[!Art::Id!]">Retour à l'article</a>
@@ -92,7 +93,7 @@
         <div class="inputWrap [IF [!err_Auteur!]=1]error[/IF]">
                 <label for="modArt_Auteur">Auteur</label>
                 <input type="text" name="modArt_Auteur" id="modArt_Auteur" value="[!modArt_Auteur!]" />
-        </div>
+        </div>v>
         <div class="inputWrap [IF [!err_AfficheTitre!]=1]error[/IF]">
                 <label for="modArt_AfficheTitre">Afficher le titre</label>
                 <input type="checkbox" name="modArt_AfficheTitre" id="modArt_AfficheTitre"[IF [!modArt_AfficheTitre!]]checked=true[/IF]" />

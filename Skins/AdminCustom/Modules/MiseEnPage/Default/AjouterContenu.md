@@ -50,6 +50,7 @@
         [/IF]
         
         [IF [!new_saved!]=1]
+        [REDIRECT]/MiseEnPage/Article/[!Art::Id!][/REDIRECT]
                 <div class="succes">
                         <h2>Modification enregistrée avec succès</h2>
                         <a href="/MiseEnPage/Article/[!Art::Id!]">Retour à l'article</a>

@@ -7,6 +7,15 @@
 		[!Groupe:=[!Entite!]!]
 	[/IF]
 [/STORPROC]
+
+//Sujet passé en get
+[IF [!sujet!]]
+    [!C_Objet:=[!sujet!]!]
+[/IF]
+[IF [!message!]]
+    [!C_Mess:=[!message!]!]
+[/IF]
+
 <div id="contactHead">
 	<div class="container">
 		<h1>Contactez-nous</h1>

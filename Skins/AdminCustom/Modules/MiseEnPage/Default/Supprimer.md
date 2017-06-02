@@ -31,16 +31,13 @@
                 [!text:=Erreur!!]
         [/DEFAULT]
 [/SWITCH]
+
 <div class="debug">
 [STORPROC [!Query!]|Q]
-        [IF [!I::ObjectType!]=Article]
-                [!Q::DeleteRecursive()!]
-        [ELSE]
-                [!Q::Delete()!]
-        [/IF]
+        [!Q::Delete()!]
 [/STORPROC]
 </div>
-
+[REDIRECT][!back!][/REDIRECT]
 <a href="[!back!]" title="[!title!]" id="ModTitle">
 	<h1><span class="glyphicon glyphicon-share-alt"> </span>Retour</h1>
 </a>

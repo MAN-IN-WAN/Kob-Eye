@@ -14,6 +14,11 @@
                         [PARAM]Titre[/PARAM]
                         [PARAM][!modCol_Titre!][/PARAM]
                 [/METHOD]
+                [IF [!modCol_AfficheTitre!]]
+                    [!Col::Set(AfficheTitre,1)!]
+                [ELSE]
+                    [!Col::Set(AfficheTitre,0)!]
+                [/IF]
                 [!Col::Set(Ratio,[!modCol_Ratio!])!]
                 [!Col::Set(Ordre,[!modCol_Ordre!])!]
         </div>
@@ -64,9 +69,13 @@
                 [IF [!Img!]]
                         //On avait deja une image on change juste ses propriétés
                         [METHOD Img|Set]
-                                [PARAM]Titre[/PARAM]
-                                [PARAM][!modData_Titre!][/PARAM]
+                            [PARAM]Hauteur[/PARAM]
+                            [PARAM][!modData_Hauteur!][/PARAM]
                         [/METHOD]
+                        // [METHOD Img|Set]
+                        //         [PARAM]Titre[/PARAM]
+                        //         [PARAM][!modData_Titre!][/PARAM]
+                        // [/METHOD]
                         [METHOD Img|Set]
                                 [PARAM]Alt[/PARAM]
                                 [PARAM][!modData_Alt!][/PARAM]
@@ -84,9 +93,13 @@
                         //On avait un texte ou rien et on veut une image à la place
                         [OBJ MiseEnPage|Image|Img]
                         [METHOD Img|Set]
-                                [PARAM]Titre[/PARAM]
-                                [PARAM][!modData_Titre!][/PARAM]
+                            [PARAM]Hauteur[/PARAM]
+                            [PARAM][!modData_Hauteur!][/PARAM]
                         [/METHOD]
+                        // [METHOD Img|Set]
+                        //         [PARAM]Titre[/PARAM]
+                        //         [PARAM][!modData_Titre!][/PARAM]
+                        // [/METHOD]
                         [METHOD Img|Set]
                                 [PARAM]Alt[/PARAM]
                                 [PARAM][!modData_Alt!][/PARAM]
@@ -146,7 +159,7 @@
                 [!modData_Contenu:=[!Txt::Contenu!]!]
         [ELSE]
                 [!modCol_Type:=Image!]
-                [!modData_Titre:=[!Img::Titre!]!]
+                [!modData_Hauteur:=[!Img::Hauteur!]!]
                 [!modData_Alt:=[!Img::Alt!]!]
                 [!modData_Legende:=[!Img::Legende!]!]
                 [!modData_Title:=[!Img::Title!]!]
@@ -156,6 +169,7 @@
 [/IF]
 
 [IF [!mod_saved!]=1]
+        [REDIRECT]/MiseEnPage/Article/[!Art::Id!][/REDIRECT]
         <div class="succes">
                 <h2>Modification enregistrée avec succès</h2>
                 <a href="/MiseEnPage/Article/[!Art::Id!]">Retour à l'article</a>
@@ -164,8 +178,12 @@
         <input type="hidden" name="modCol_Mod" id="modCol_Mod" value="1" />
         
         <div class="inputWrap [IF [!err_Titre!]=1]error[/IF]">
-                <label for="modCol_Titre">Nom</label>
+                <label for="modCol_Titre">Titre de la colonne</label>
                 <input type="text" name="modCol_Titre" id="modCol_Titre" value="[!modCol_Titre!]" />
+        </div>
+        <div class="inputWrap ">
+            <label for="modCol_AfficheTitre">Afficher titre</label>
+            <input type="checkbox" name="modCol_AfficheTitre" id="modCol_AfficheTitre" [IF [!modCol_AfficheTitre!]]checked=true[/IF]/>
         </div>
         <div class="inputWrap [IF [!err_Ratio!]=1]error[/IF]">
                 <label for="modCol_Ratio">Largeur en %</label>
@@ -184,13 +202,17 @@
                 </select>
         </div>
         <div id="ColContent">
-                <div class="inputWrap [IF [!sub_err_Titre!]=1]error[/IF]">
-                        <label for="modData_Titre">Titre</label>
-                        <input type="text" name="modData_Titre" id="modData_Titre" value="[!modData_Titre!]" />
-                </div>
+                <!--<div class="inputWrap [IF [!sub_err_Titre!]=1]error[/IF]">-->
+                        <!--<label for="modData_Titre">Titre</label>-->
+                        <!--<input type="text" name="modData_Titre" id="modData_Titre" value="[!modData_Titre!]" />-->
+                <!--</div>-->
                 <div class="inputWrap txtCon [IF [!sub_err_Contenu!]=1]error[/IF]">
                         <label for="modData_Contenu">Contenu</label>
                         <textarea name="modData_Contenu" id="modData_Contenu" class="EditorFull">[!modData_Contenu!]</textarea>
+                </div>
+                <div class="inputWrap imgCon [IF [!sub_err_Hauteur!]=1]error[/IF]">
+                        <label for="modData_Hauteur">Hauteur de l'image</label>
+                        <input type="text" name="modData_Hauteur" id="modData_Hauteur" value="[!modData_Hauteur!]" />
                 </div>
                 <div class="inputWrap imgCon [IF [!sub_err_Alt!]=1]error[/IF]">
                         <label for="modData_Alt">Alt de l'image</label>

@@ -148,9 +148,24 @@ class Parc_Client extends genericClass {
 			$this->AddError(Array("Message"=>"Veuillez mettre le module à jour, les roles ne sont pas définis"));
 			return;
 		}else $grp = $grp[0];
+
 		//vérification de l'existence de l'utilisateur
 		$u = $this->getParents('User');
 		if ($this->AccesActif){
+
+            //Création d'un subGroup dédié au clilent
+            $sGrp = $grp->getOneChild('Group/Nom='.strtoupper(Utils::KEAddSlashes($this->Nom)));
+            if($sGrp){
+                $grp = $sGrp;
+            }else{
+                $sGrp = genericClass::createInstance('Systeme','Group');
+                $sGrp->Nom = strtoupper(Utils::KEAddSlashes($this->Nom));
+                $sGrp->addParent($grp);
+                $sGrp->Save();
+
+                $grp = $sGrp;
+            }
+
 			//Vérification des propriétées
 			if (!empty($this->AccesUser)&&!empty($this->AccesPass)){
 				if (!sizeof($u)){
