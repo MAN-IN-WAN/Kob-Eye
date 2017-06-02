@@ -130,7 +130,7 @@ app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrene
     * Look for specific id data into the store
     * Return Promise
     */
-    function getOneData(id) {
+    function getOneData(id,full = true) {
         return $q(function(resolve, reject) {
             console.log('store > {{ st.identifier }} > getOneData '+id,id);
             /*for (var i in {{ st.identifier }}Store){
@@ -147,10 +147,12 @@ app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrene
             $http.get('/{{ st.module }}/{{ st.objecttype }}/'+id+'/getOneData.json')
                 .success(function(data) {
                     console.log('store > {{ key }} > load success '+id, data);
-                    loadChildren(data).then(function (obj){
-                        resolve(obj);
-                    });
-
+                    //on charge les enfants uniquement si param full
+                    if (full)
+                        loadChildren(data).then(function (obj){
+                            resolve(obj);
+                        });
+                    else resolve(data);
             });
         });
     }
@@ -165,6 +167,7 @@ app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrene
     * Load more data base on page
     */
     function getData(page) {
+        if (page<1) page=1;
         return $q(function(resolve, reject) {
             if (busy) {
                 reject('already busy');
@@ -209,10 +212,12 @@ app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrene
                 {{ child.objectModule }}{{ child.objectName }}Store.setQuery('/{{ st.module }}/{{ st.objecttype }}/'+obj.id+'/{{ child.objectName }}');
                 if (!obj.{{ child.objectName }}) {
                     obj.{{ child.objectName }} = {{ child.objectModule }}{{ child.objectName }}Store.data;
-                    {{ child.objectModule }}{{ child.objectName }}Store.getData().then(function () {
+                    /*{{ child.objectModule }}{{ child.objectName }}Store.getData().then(function () {
                         num--;
                         if (num==0) resolve(obj);
-                    });
+                    });*/
+                    num--;
+                    if (num==0) resolve(obj);
                 }else{
                     {{ child.objectModule }}{{ child.objectName }}Store.data = obj.{{ child.objectName }};
                     num--;

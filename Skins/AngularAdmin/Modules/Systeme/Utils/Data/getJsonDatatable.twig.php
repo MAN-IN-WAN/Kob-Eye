@@ -6,8 +6,9 @@ $vars['fields'] = $o->getElementsByAttribute('list','',true);
 $offset = (isset($_GET['offset']))?$_GET['offset']:0;
 $limit = (isset($_GET['limit']))?$_GET['limit']:30;
 $filters = (isset($_GET['filters']))?$_GET['filters']:'';
-
-$vars['rows'] = Sys::getData($info['Module'],$vars['Path'].'/'.$filters,$offset,$limit);
+$path = explode('/',$vars['Path'],2);
+$path = $path[1];
+$vars['rows'] = Sys::getData($info['Module'],$path.'/'.$filters,$offset,$limit);
 foreach ($vars['rows'] as $k=>$v){
     $uc = Sys::getOneData('Systeme','User/'.$v->userCreate);
     $ue = Sys::getOneData('Systeme','User/'.$v->userEdit);

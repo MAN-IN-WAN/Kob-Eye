@@ -13,7 +13,7 @@
                 <div class="mainMenuLink lienEntite_[!Entite::CodeGestion!] [!M::ClassCss!]">
                         [IF [!EntiteMenu!]]
                                 [!Grp:=0!]
-                                [STORPROC Systeme/Site/Entite/[!Entite::Id!]|Sitouille|0|1]
+                                [STORPROC Systeme/Site/Entite/[!Entite::Id!]|Sitouille|0|1|Id|ASC]
                                     [!link:=https://[!Sitouille::Domaine!]!]
                                     [IF [!link!]!=][ELSE][!link:=[!M::Url!]!][/IF]
                                     [STORPROC Systeme/User/Site/[!Sitouille::Id!]|Usr|0|1][/STORPROC]

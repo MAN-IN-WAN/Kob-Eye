@@ -50,4 +50,8 @@
 <div id="bottomMenu" class="col-md-7 ">
 	[MODULE Systeme/Menu/BootstrapMenuBottom]
 </div>
-
+[IF [!Systeme::CurrentMenu::Url!]!=]
+<div id="moreFooter" class="col-md-12">
+	[MODULE Systeme/Structure/MoreFooter]
+</div>
+[/IF]

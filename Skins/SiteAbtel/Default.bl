@@ -55,7 +55,7 @@
 <script type="text/javascript">
     $(document).on('ready',function(){
         fitHeight();
-        $('.customScroll').mCustomScrollbar();
+        //$('.customScroll').mCustomScrollbar();
     });
     $(window).resize(function(){
         fitHeight();

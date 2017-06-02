@@ -198,7 +198,7 @@ html, body {
 }
 
 #siteWrap {
-    min-height: 100%;
+    /*min-height: 100%; enlevé par Michaël*/
     position: relative;
 }
 
@@ -207,13 +207,17 @@ input, textarea, select, button {
     font-size: 1em;
 }
 
+
+
+
 a {
     text-decoration: none;
-    color: #000;
+    color: inherit;  /*modifié par Michaël #000 en inherit*/
 }
 
+
 a:hover {
-    text-decoration: underline;
+        text-decoration: none; /*underline remplacé par none - Michaël*/
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -239,7 +243,7 @@ div.noMargin {
 
 #mainContent {
     background-color: #fff;
-    height: 100%;
+    /*height: 100%;  enlevé par Michaël*/
     overflow: auto;
 }
 .fullHeight{
@@ -268,8 +272,10 @@ div.noMargin {
 #siteWrap div#header,
 #siteWrap div#footer {
     background-color: rgba(10, 10, 10, 0.7);
-    z-index: 100;
-}
+    z-index: 100;}
+
+
+
 
 /* Header */
 #siteWrap #header {
@@ -387,7 +393,8 @@ div.noMargin {
     z-index: 100;
     overflow: hidden;
     background-color: #fff;
-    height:1500px;
+     /*min-height: calc(100vh - 105px); 1500px changé en calc(100vh - 105px), puis mis en commentaire par Michaël*/
+    padding-bottom: 30px; /*padding-bottom rajouté par Michaël */
 }
 
 /* Menu Principal */
@@ -664,10 +671,10 @@ div.noMargin {
 
 #topNavigation ul.navbar-top {
     float: right;
-}
+    }
 
 #topNavigation ul.navbar-top li {
-    margin-top: 10px;
+   /* margin-top: 10px; margin-top enlevé par Michaël*/
     list-style: none;
     float: left;
     padding-right: 20px;
@@ -744,27 +751,27 @@ info      bleu   : #0e8ec1
  *			MENU DU Gauche	   			*
  *								*
  ****************************************************************/
-.MEPNav .aNav.legacy {
-    color: #ee7805;
+/*.MEPNav .aNav.legacy {
+    color: #000;   mis en commentaire par Michaël*/
 }
 
-.MEPNav label::after {
-    bottom: 0;
-    color: #000;
-    content: "";
-    font-family: "Glyphicons Halflings";
-    font-size: 1.3em;
-    left: 0;
-    line-height: 20px;
-    position: absolute;
-    right: 0;
-    text-align: center;
-    top: 0;
-}
-.MEPNav input:checked ~ label::after {
-    color: #ee7805;
-    content: "";
-}
+/*.MEPNav label::after {*/
+    /*bottom: 0;*/
+    /*color: #000;*/
+    /*content: "";*/
+    /*font-family: "Glyphicons Halflings";*/
+    /*font-size: 1.3em;*/
+    /*left: 0;*/
+    /*line-height: 20px;*/
+    /*position: absolute;*/
+    /*right: 0;*/
+    /*text-align: center;*/
+    /*top: 0;*/
+/*}*/
+/*.MEPNav input:checked ~ label::after {*/
+    /*color: #ee7805;*/
+    /*content: "";*/
+/*}*/
 
 
 /****************************************************************
@@ -774,7 +781,7 @@ info      bleu   : #0e8ec1
  ****************************************************************/
 h3 { margin-bottom:10px;}
 ul { margin:10px 0 ; }
-ul li ul  {padding-left:15px; list-style:circle; }
+/*ul li ul  {padding-left:15px; list-style:circle; } mis en commentaire par Michaël*/
 /*= =NEWS= =*/
 #listNews .news {
     width: 98%;
@@ -889,6 +896,7 @@ ul li ul  {padding-left:15px; list-style:circle; }
 
 #detailArticle .contenuMEP .colonneMEP img {
     width: 100%;
+    object-fit: cover; /*rajouté par Michaël*/
 }
 
 #detailArticle .contenuMEP .colonneMEP .imgMEPContainer {
@@ -902,8 +910,484 @@ ul li ul  {padding-left:15px; list-style:circle; }
     bottom: 0;
     padding: 15px;
     background-color: rgba(255, 255, 255, 0.5);
-    width: 100%;
+    width: 100%;}
+
+ /* changements Michaël*/
+
+
+#siteWrap[href^="https://agence-web.abtel.fr/references"] {background-image: none;}
+#siteWrap[href^="https://agence-web.abtel.fr/developpement"] {background-image: none;}
+#siteWrap[href="https://agence-web.abtel.fr/hebergement-services"] {background-image: none;}
+
+/*----- menu de gauche Michaël -----*/
+
+.legacy>label {border-left: 15px solid #ae5804;}
+
+.self>label {border-left: 15px solid #ae5804;}
+
+.niveau01 {background-color: #ee7805;
+    border: 1px none #ee7805;
+    color: #fff;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding-left: 10;}
+
+.niveau01:hover {background-color: #ffdebd;
+    color: #ee7805; }
+
+.menu01 li>a {padding-left: 20px;}
+
+.niveau02 {background-color: black;
+    border: 1px none black;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding-left: 20px;}
+
+.menu02 li>a {padding-left: 30px;}
+
+.niveau02:hover {background-color: #ffdebd;
+    color: black; }
+
+.niveau03 {background-color: #535353;
+    border: 1px none #535353;
+    color: #ffffff ;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding-left: 30px;}
+
+.menu03 li>a {padding-left: 40px;}
+
+.niveau03:hover {background-color: #ffdebd;
+    color: #535353; }
+
+.menu04 {background-color: #fff;
+    color: #ee7805;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding-left: 40px;}
+
+.menu04 li>a {padding-left: 50px;}
+
+.niveau04:hover {background-color: #ffdebd;}
+
+.niveau05 {background-color: #fff;
+    color: black;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding-left: 50px;}
+
+.menu05 li>a {padding-left: 60px;}
+
+.niveau05:hover {background-color: #ffdebd;}
+
+.niveau06 {background-color: #fff;
+    color: #535353;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding-left: 60px;}
+
+.menu06 li>a {padding-left: 70px;}
+
+.niveau06:hover { background-color: #ffdebd;}
+
+.niveau07 {background-color: #fff;
+    color: #ee7805;
+    font-size: 13px;
+    font-weight: bold;
+    padding-left: 70px;}
+
+.menu07 li>a {padding-left: 80px;}
+
+.niveau07:hover {background-color: #ffdebd;}
+
+.niveau08 {background-color: #fff;
+    color: black;
+    font-size: 13px;
+    font-weight: bold;
+    padding-left: 80px;}
+
+.menu08 li>a {padding-left: 90px;}
+
+.niveau08:hover {background-color: #ffdebd;}
+
+.niveau09 {background-color: #fff;
+    color: #535353;
+    font-size: 13px;
+    font-weight: bold;
+    padding-left: 90px;}
+
+.menu09 li>a {padding-left: 100px;}
+
+.niveau09:hover { background-color: #ffdebd;}
+
+
+/*----- fin menu de gauche Michaël-----*/
+
+/*page nos références Michaël*/
+
+/* ----------------------------------------------
+ * Generated by Animista on 2017-5-11 16:11:22
+ * http://animista.net
+ * T: @cssanimista
+ * ---------------------------------------------- */
+
+@-webkit-keyframes flip-in-hor-bottom{0%{-webkit-transform:rotateX(80deg);transform:rotateX(80deg);opacity:0}100%{-webkit-transform:rotateX(0);transform:rotateX(0);opacity:1}}@keyframes flip-in-hor-bottom{0%{-webkit-transform:rotateX(80deg);transform:rotateX(80deg);opacity:0}100%{-webkit-transform:rotateX(0);transform:rotateX(0);opacity:1}}
+
+.inner {padding-bottom: 20px;
+        height:280px;
+    -webkit-animation: flip-in-hor-bottom 0.9s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    -moz-animation: flip-in-hor-bottom 0.9s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    animation: flip-in-hor-bottom 0.9s cubic-bezier(0.250, 0.460, 0.450, 0.940) both; }
+
+
+.inner>figure>a {display: inline-block;
+                 width: 270px;
+                 height:138px;}
+
+
+.inner>figure>a>img { display: block;
+     transition: all 0.5s; }
+
+.inner>figure>a>img:hover {-moz-transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    transform: scale(1.1);
+    }
+
+.InfoRef {padding-top: 10px;}
+
+.InfoRef h2 {
+    color: #ee7805 !important;
+    min-height:45px;
+    padding-top: 10px !important;
+    font-size: 1.4em;}
+
+.inner p {height: 52px;}
+
+.Projet {padding: 0 0 5px 15px;}
+
+.MEPNav>div {background-color: #ffffff !important;
+            padding-top: 15px;}
+
+.MEPNav+div {padding-top: 15px;}
+
+.imgreferences {overflow: hidden;}
+
+#navmenuhaut {margin-top: 15px;
+                margin-bottom: 15px;
+            text-align: center;}
+
+
+
+.amenuhaut {vertical-align: top;
+            padding: 10px 5px 10px 5px;
+            background-color: #535353;
+            color: #ffffff;
+            margin: 10px auto 25px auto;
+            border-radius: 3px;
+            transition: all 0.5s;
+            width: 118px;
+            text-align: center;
+            text-transform: uppercase;
+            font-size: 0.8em;
+            border: 1px solid #535353;
+            display: inline-flex;
+            justify-content: center;}
+
+
+
+
+
+.amenuhaut:hover,.encours  {background-color: #ffffff;
+                  color:rgba(10, 10, 10, 0.7) !important;
+                    border: 1px solid rgba(10, 10, 10, 0.7); }
+
+
+
+
+
+.articleHeader {color:#ffffff;
+               position: relative;}
+
+#headerRefs .container {
+    height:70px;
+    }
+
+#headerRefs {overflow: hidden;}
+
+
+.articleHeader>div>h1 {padding-top: 15px; position:relative;   padding-left: 90px;}
+
+
+
+
+.articleHeader h1:before{
+    font-family: 'Glyphicons Halflings';
+    content: "\e135";
+    font-size: 80px;
+    font-weight: 600;
+    position: absolute;
+    height: 70px;
+    top:0 ;
+    left: 0;
+    color: #fff;
+    opacity: 0.5;
 }
+
+#bottomNavigation>ul {
+    margin: 0;}
+
+#main[style] {min-height: 10px !important;}
+
+/*fin page nos références Michaël*/
+
+/*----- MoreFooter Michaël -----*/
+
+
+/*#fondnoir li{list-style-type: none;
+    padding: 5px 0 5px 0;}
+
+.titrefooter {font-size:1.2em;
+    text-transform: uppercase;
+    color:#ffffff;}
+
+.titrefooter2 {font-size:1.2em;
+    text-transform: uppercase;
+    color:#aaa;}
+
+
+.textefooter {font-size: 1em;
+    color:#aaa;}
+
+
+.classinfo {text-decoration: none;
+    transition all 0.5s;}
+
+
+.classinfo:hover {color: #0e8ec1;
+    text-decoration:none;}
+
+
+.classweb {text-decoration: none;
+    transition all 0.5s;}
+
+
+.classweb:hover {color: #ee7805;
+    text-decoration:none;}
+
+.classnetworks {text-decoration: none;
+    transition all 0.5s;}
+
+
+.classnetworks:hover {color: #6eb126;
+    text-decoration:none;}
+
+.classformation {text-decoration: none;
+    transition all 0.5s;}
+
+
+.classformation:hover {color: #e6008d;
+    text-decoration:none;}
+
+.classautre {text-decoration: none;
+    transition all 0.5s;}
+
+
+.classautre:hover {color: #aaa;
+    text-decoration: none;}
+
+
+#news {position: relative;}
+
+#emailNewsletter {display: inline-block;
+    vertical-align: top;
+    background-color: #000;
+    font-family: 'latoregular';
+    color:#ffffff;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: 1px solid #aaa;}
+
+#emailNewsletter:focus {outline: 0;}
+
+
+#emailNewsletter::placeholder-shown {color:#aaa;}
+
+#emailNewsletter::-webkit-placeholder-shown {color:#aaa;}
+
+#emailNewsletter::-ms-placeholder-shown {color:#aaa;}
+
+#emailNewsletter::-webkit-input-placeholder {color:#aaa;}
+
+#emailNewsletter:-ms-input-placeholder{color:#aaa;}
+
+#emailNewsletter + button {background-color: #000;
+    color:#fff;
+    display: inline-block;
+    border:none;
+    font-size: 3em;
+    vertical-align: top;
+    height:40px;
+    position:absolute;
+    top:-13px; }*/
+
+
+
+
+#moreFooter {padding:0;}
+
+.grandsliens {color:#ffffff;
+            opacity: 1;
+            font-size: 1.2em;
+            text-transform: uppercase;
+            display: block;
+            width: 100%;
+            overflow: hidden;
+            height:170px;
+            margin-bottom: 30px;
+            padding:140px 0 0 15px; }
+
+.grandsliens:hover {filter: brightness(120%);
+    -webkit-filter: brightness(120%);
+    -moz-filter: brightness(120%);
+    -o-filter: brightness(120%);
+    -ms-filter: brightness(120%);
+    color: #ffffff;}
+
+
+
+
+.grandsliens2 {color:#ffffff;
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    height:100px;
+    margin-bottom: 30px;}
+
+.grandsliens2:hover {filter: brightness(120%);
+    -webkit-filter: brightness(120%);
+    -moz-filter: brightness(120%);
+    -o-filter: brightness(120%);
+    -ms-filter: brightness(120%);
+    color: #ffffff;}
+
+
+#imgnosrefs {background-image: url("https://agence-web.abtel.fr/Home/3/Systeme/Menu/accueil_web_03_2.png");
+             background-size: cover;
+            }
+
+#imgdevweb {background-image: url("https://agence-web.abtel.fr/Home/3/Systeme/Menu/accueil_web_05_0.png");
+    background-size: cover;}
+
+#imghebergement {background-image: url("https://agence-web.abtel.fr/Home/3/Systeme/Menu/accueil_web_07_0.png");
+    background-size: cover;}
+
+#actualite {background-image: url("https://agence-web.abtel.fr/Home/3/Systeme/Menu/accueil_web_09_1.png");
+    background-size: cover;}
+
+.separefootergris {border-top: 1px solid #aaa;
+                margin-bottom: 15px;}
+
+
+#imggroupe {background-image: url("https://www.abtel.fr/Home/3/Abtel/Entite/Abtel_Mediterranee_4.svg");
+            background-color: #aaa;
+            background-repeat: no-repeat;}
+
+#imginformatique {background-image: url("https://informatique.abtel.fr/Home/3/Abtel/Entite/Abtel_Informatique_2.svg");
+    background-color: #0e8ec1;
+    background-repeat: no-repeat;
+    background-position: 15px 10px;}
+
+#imgnetwork {background-image: url("https://networks.abtel.fr/Home/3/Abtel/Entite/Abtel_Networks_1.svg");
+    background-color: #6eb126;
+    background-repeat: no-repeat;
+    background-position: 15px 10px;}
+
+#imginformation {background-image: url("https://formation.abtel.fr/Home/3/Abtel/Entite/Abtel_Formation_1.svg");
+    background-color: #e6008d;
+    background-repeat: no-repeat;
+    background-position: 15px 10px;}
+
+#divmap {margin: 0 0 30px 0;
+    position:relative;
+    border-bottom: 5px solid #ee7805;
+    border-top: 5px solid #ee7805;}
+
+.adressefooter1 {display:block;
+                color:#ffffff;
+                text-transform:uppercase;
+                font-size: 1.5em;
+                margin-top: 10px;
+                padding:0 0 5px 15px;}
+
+.adressefooter2 {display:block;
+                 color: #aaa;
+                font-size: 1.2em;
+                padding: 5px 0 5px 15px;}
+
+#mapfooter {display:inline-block;
+            width:100%;
+            height:300px;
+            overflow: hidden;
+            vertical-align: top; }
+
+#iframefooter {width:100%;}
+
+#adressemap {width:34%;
+            display:inline-block;
+            background-color: rgba(0, 0, 0, 0.8);
+            height:300px;
+            vertical-align: top;
+            padding-left: 15px;
+            position:absolute;
+            top:0;
+            right:0;}
+
+.liensbasfooter {display:inline-block;
+                color:#aaa;
+                font-size: 1em;
+                text-transform: uppercase;
+                margin-bottom: 15px;
+                padding-left: 15px;
+                padding-right: 15px;}
+
+.liensbasfooter:hover {color: #ffffff;}
+
+
+#hautfooter {text-align: right;}
+
+#iconefooter1::before {font-family:'Glyphicons Halflings';
+                       content: "\e062";
+                        padding-right: 15px;}
+
+#iconefooter2::before {font-family:'Glyphicons Halflings';
+    content: "\e182";
+    padding-right: 15px;}
+
+#iconefooter3::before {font-family:'Glyphicons Halflings';
+    content: "\e023";
+    padding-right: 15px;}
+
+#iconefooter1 {padding-left: 15px;}
+
+.ssicone {padding-left: 43px;}
+
+/*----- Fin MoreFooter Michaël -----*/
+
+
+
+ /* fin changements Michaël*/
+
+
 
 /*= =CONTACT= =*/
 #contactHead {
@@ -1094,5 +1578,6 @@ ul li ul  {padding-left:15px; list-style:circle; }
     }
 
 }
+
 
 

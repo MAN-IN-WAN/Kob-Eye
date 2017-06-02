@@ -61,7 +61,7 @@
 			// Sinon envoi du mail
 			[LIB Mail|LeMail]
 			[METHOD LeMail|Subject][PARAM]Message de [!Domaine!] - [!C_Objet!][/PARAM][/METHOD]
-			[METHOD LeMail|From][PARAM][!C_Mail!][/PARAM][/METHOD]
+			[METHOD LeMail|From][PARAM]contact@abtel.fr[/PARAM][/METHOD]
 			[METHOD LeMail|ReplyTo][PARAM][!C_Mail!][/PARAM][/METHOD]
 			[METHOD LeMail|To][PARAM][!C_ContactName!][/PARAM][/METHOD]
 			[IF [!CONTACTMAILCC!]!=][METHOD LeMail|Cc][PARAM][!CONTACTMAILCC!][/PARAM][/METHOD][/IF]
@@ -69,6 +69,7 @@
 			[IF [!CONTACTMAILBCC!]!=]
 				[!bccs:=[!Utils::Explode(; ,[!CONTACTMAILBCC!])!]!]
 				[STORPROC [!bccs!]|add]
+					[LOG][!add!][/LOG]
                     [METHOD LeMail|Bcc][PARAM][!add!][/PARAM][/METHOD]
                 [/STORPROC]
 			[/IF]

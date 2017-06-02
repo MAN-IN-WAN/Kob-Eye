@@ -19,11 +19,16 @@ class KeTwig{
         $file = array_pop($t);
         $dir = implode('/',$t);
         //KeTwig::$Loader->addPath($dir);
-        KeTwig::$templates[$template] = KeTwig::$Twig->loadTemplate($dir.'/'.$file);
+        return KeTwig::$templates[$template] = KeTwig::$Twig->loadTemplate($dir.'/'.$file);
     }
     public static function render($template, $vars){
+        //echo "zob => $template \r\n";
         if (file_exists($template.'.php'))
             include($template.'.php');
+        /*foreach (debug_backtrace(0) as $z){
+            unset($z['args']);
+            print_r($z);
+        }*/
         return KeTwig::$templates[$template]->render($vars);
     }
     public static function callModule($var) {

@@ -745,7 +745,7 @@ div.noMargin {
  *								*
  ****************************************************************/
 
-ul { margin:10px 0 ; }
+/*ul { margin:10px 0 ; }*/
 ul li ul  {padding-left:15px; list-style:circle; }
 /*= =NEWS= =*/
 #listNews .news {
@@ -1474,5 +1474,6 @@ ul li ul  {padding-left:15px; list-style:circle; }
     }
 	
 }
+
 
 

@@ -1025,8 +1025,12 @@ class Sys extends Root{
 		$m = Sys::getMenus($Query,false,false);
 		$out='';
 		if ($m){
-			foreach ($m as $a)
-				$out .= ((!empty($out))?'/':'').$a->Url;
+			foreach ($m as $a) {
+                $out .= ((!empty($out)) ? '/' : '') . $a->Url;
+                if (isset($a->MenuParent)&&sizeof($a->MenuParent)){
+                	$out = $a->MenuParent[0]->Url.'/'.$out;
+				}
+            }
 		}else{
 			$out = $Query;
 		}
