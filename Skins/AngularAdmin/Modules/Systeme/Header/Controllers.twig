@@ -34,11 +34,10 @@
             $scope.modalObj = {{ c.identifier }}Store.getNewData();
             $scope.modalObj.title = 'Ajouter un nouveau {{ c.description }}';
             $("#modal-{{ c.identifier }}").modal();
-            $("#modal-{{ c.identifier }}").modal();
         }
         $scope.modify = function (obj){
             console.log('edit ',obj.id);
-            {{ c.identifier }}Store.getOneData(obj.id).then(function (data) {
+            {{ c.identifier }}Store.getOneData(obj.id,false).then(function (data) {
                 $scope.modalObj = data;
                 $scope.modalObj.title = 'Modifier {{ c.description }} '+data.label;
                 console.log('edit obj',$scope.modalObj);
@@ -94,19 +93,19 @@
             $scope.obj = data;
             $scope.modify = function (obj){
                 console.log('edit ',obj.id);
-                {{ c.identifier }}Store.getOneData(obj.id).then(function (data) {
+                {{ c.identifier }}Store.getOneData(obj.id,false).then(function (data) {
                     $scope.modalObj = data;
                     $scope.modalObj.title = 'Modifier {{ c.description }} '+data.label;
                     console.log('edit obj',$scope.modalObj);
                 });
-                $("#modal-{{ c.identifier }}").modal();
+                $("#modalfiche-{{ c.identifier }}").modal();
             }
             $scope.modalSave = function (){
                 console.log('save ',$scope.modalObj);
                 {{ c.identifier }}Store.saveData($scope.modalObj).then(function (data) {
                     if (data.success){
                         $scope.modalObj = data.data;
-                        $("#modal-{{ c.identifier }}").modal('toggle');
+                        $("#modalfiche-{{ c.identifier }}").modal('toggle');
                         {{ c.identifier }}Store.refresh();
                     }else {
                         //gestion des erreurs
@@ -152,6 +151,12 @@
                     console.log(' currentPage ',$scope.{{ child.objectModule }}{{ child.objectName }}.currentPage);
                     {{ child.objectModule }}{{ child.objectName }}Store.setPage($scope.{{ child.objectModule }}{{ child.objectName }}.currentPage);
                 });
+                $scope.{{ child.objectModule }}{{ child.objectName }}add = function (){
+                    console.log('child add {{ child.objectName }}');
+                    $scope.modalObj = {{ child.objectModule }}{{ child.objectName }}Store.getNewData();
+                    $scope.modalObj.title = 'Ajouter un nouveau {{ child.objectDescription }}';
+                    $("#modal-{{ child.objectModule }}{{ child.objectName }}").modal();
+                }
             {% endfor %}
             $scope.show = true;
         });

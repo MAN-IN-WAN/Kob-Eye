@@ -134,7 +134,7 @@ class Bloc extends Beacon {
                 $this->Twig = true;
                 $this->Path = $Tab[0]["InterfacePath"];
                 KeTwig::loadTemplate($this->Path);
-                $this->Data = KeTwig::render($this->Path,Process::$TempVar);
+                $this->Content = $this->Data = KeTwig::render($this->Path,Process::$TempVar);
             }else
                 $this->loadInterface($Tab[0]["InterfacePath"]);
         }
@@ -396,7 +396,7 @@ class Bloc extends Beacon {
 	//GENERATION
 	function Generate(){
         if ($this->Twig){
-			$this->Content = KeTwig::render($this->Path,Process::$TempVar);
+			//$this->Content = KeTwig::render($this->Path,Process::$TempVar);
             $this->Data = $this->ChildObjects[0];
 		}else{
             if ($this->Beacon=="MODULE") {

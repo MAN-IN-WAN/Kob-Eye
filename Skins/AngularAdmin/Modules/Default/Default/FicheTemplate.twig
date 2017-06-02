@@ -15,9 +15,8 @@
     <section class="panel">
         <div class="panel-heading">
             <div class="pull-right">
-                <button type="button" class="btn btn-default btn-danger margin-inline" ng-click="modify(obj)">
-                    Modifier
-                </button>
+                <button type="button" class="btn btn-default btn-warning margin-inline" ng-click="modify(obj)">Modifier</button>
+                <button type="button" class="btn btn-default btn-danger margin-inline" ng-click="delete(obj)">Supprimer</button>
             </div>
             <h3>{[{ obj.label }]}</h3>
         </div>
@@ -27,18 +26,22 @@
                     {% for field in fichefields %}
                         <div class="row">
                             <div class="col-md-6">
-                                <label class="form-control-label" for="l0">{{ field.description }}</label>
+                                <label class="form-control-label" for="l0">{% if field.parentDescription is not empty %}{{ field.parentDescription }}{% else %}{{ field.description }}{% endif %}</label>
                             </div>
                             <div class="col-md-6">
-                                {% if field.type == "price" or field.type == "float" %}
-                                    <span class="label label-warning">{[{ obj.{{ field.name }} }]}</span>
+                                {% if field.type == "price" %}
+                                    <span class="label label-warning">{[{ obj.{{ field.name }} | currency:"" }]} €</span>
+                                {% elseif field.type == "float" %}
+                                    <span class="label label-warning">{[{ obj.{{ field.name }}| currency:"" }]}</span>
                                 {% elseif field.type == "extlink" %}
-                                    <a class="btn btn-success btn-xs" href="https://zabbix.abtel.fr:8443/guacamole/#/client/{[{ obj.{{ field.name }} }]}" target="_blank">{{ field.listDescr }}</a>
+                                    <a class="btn btn-success btn-xs" href="https://zabbix.abtel.fr/guacamole/#/client/{[{ obj.{{ field.name }} }]}" target="_blank">{{ field.listDescr }}</a>
                                 {% elseif field.type == "int" %}
                                     <span class="label label-primary">{[{ obj.{{ field.name }} }]}</span>
                                 {% elseif field.type == "boolean" %}
                                     <span class="label label-success" ng-if="obj.{{ field.name }}"><i class="fa fa-check"></i></span>
                                     <span class="label label-danger" ng-if="!obj.{{ field.name }}"><i class="fa fa-times"></i></span>
+                                {% elseif field.type == "fkey" and field.card == "short" %}
+                                    <a class="btn btn-primary btn-xs" href="#{{ field.link }}/{[{ obj.{{ field.name }} }]}">{[{ obj.{{ field.name }}label }]}</a>
                                 {% else %}
                                     <span >{[{ obj.{{ field.name }} }]}</span>
                                 {% endif %}
@@ -70,7 +73,7 @@
                 {% else %}
                     <section class="panel">
                         <div class="panel-body">
-                            <ng-include src="'/{{ CurrentObj.Module }}/{{ CurrentObj.ObjectType }}/'+obj.id+'/{{ child.objectName }}/List.htm'" ng-if="show"></ng-include>
+                            <ng-include src="'/{{ CurrentUrl }}/'+obj.id+'/{{ child.objectName }}/ListChildren.htm'" ng-if="show"></ng-include>
                         </div>
                     </section>
                     <!-- End Default Panel -->
@@ -82,7 +85,7 @@
 
 </div>
 
-<div class="modal fade modal-size-large" id="modal-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
+<div class="modal fade modal-size-large" id="modalfiche-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">

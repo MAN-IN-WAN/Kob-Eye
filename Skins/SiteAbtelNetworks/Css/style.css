@@ -209,8 +209,7 @@ input, textarea, select, button {
 
 a {
     text-decoration: none;
-    color: #77a;
-}
+    color: inherit; } /* #transformé en inherit par Michaël*/
 
 a:hover {
     text-decoration: underline;
@@ -288,6 +287,15 @@ div.noMargin {
 #siteWrap #header #logoAbtel #logoHead {
     height: 100%;
 }
+
+.breadcrumb {
+	color:#6eb126;
+}
+
+#breadcrumb .breadcrumb a.Last {
+    color: #6eb126;
+}
+
 
 /* Footer */
 #siteWrap #footer {
@@ -371,6 +379,108 @@ div.noMargin {
     text-decoration: none;
 }
 
+
+/*----- MoreFooter Michaël -----*/
+
+#fondnoir {background-color: black;
+    margin-top: -17px;}
+
+#fondnoir li{list-style-type: none;
+    padding: 5px 0 5px 0;}
+
+.titrefooter {font-size:1.2em;
+    text-transform: uppercase;
+    color:#ffffff;}
+
+.titrefooter2 {font-size:1.2em;
+    text-transform: uppercase;
+    color:#aaa;}
+
+
+.textefooter {font-size: 1em;
+    color:#aaa;}
+
+
+.classinfo {text-decoration: none;
+    transition all 0.5s;}
+
+
+.classinfo:hover {color: #0e8ec1;
+    text-decoration:none;}
+
+
+.classweb {text-decoration: none;
+    transition all 0.5s;}
+
+
+.classweb:hover {color: #ee7805;
+    text-decoration:none;}
+
+.classnetworks {text-decoration: none;
+    transition all 0.5s;}
+
+
+.classnetworks:hover {color: #6eb126;
+    text-decoration:none;}
+
+.classformation {text-decoration: none;
+    transition all 0.5s;}
+
+
+.classformation:hover {color: #e6008d;
+    text-decoration:none;}
+
+.classautre {text-decoration: none;
+    transition all 0.5s;}
+
+
+.classautre:hover {color: #aaa;
+    text-decoration: none;}
+
+
+#news {position: relative;}
+
+#emailNewsletter {display: inline-block;
+    vertical-align: top;
+    background-color: #000;
+    font-family: 'latoregular';
+    color:#ffffff;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: 1px solid #aaa;}
+
+#emailNewsletter:focus {outline: 0;}
+
+
+#emailNewsletter::placeholder-shown {color:#aaa;}
+
+#emailNewsletter::-webkit-placeholder-shown {color:#aaa;}
+
+#emailNewsletter::-ms-placeholder-shown {color:#aaa;}
+
+#emailNewsletter::-webkit-input-placeholder {color:#aaa;}
+
+#emailNewsletter:-ms-input-placeholder{color:#aaa;}
+
+#emailNewsletter + button {background-color: #000;
+    color:#fff;
+    display: inline-block;
+    border:none;
+    font-size: 3em;
+    vertical-align: top;
+    height:40px;
+    position:absolute;
+    top:-13px; }
+
+
+#mapfooter {padding-bottom: 30px;
+            overflow:hidden;}
+
+/*----- Fin MoreFooter Michaël -----*/
+
+
+
 /* Main Content */
 #siteWrap #main {
     position: relative;
@@ -378,6 +488,7 @@ div.noMargin {
     overflow: hidden;
     background-color: #fff;
     height:1500px;
+    padding-bottom: 30px; /*padding-bottom rajouté par Michaël */
 }
 
 /* Menu Principal */
@@ -721,32 +832,7 @@ div.noMargin {
  *	                MENU PRINCIPAL	   			*
  *								*
  ****************************************************************/
-/****************************************************************
- *								*
- *			MENU DU Gauche	   			*
- *								*
- ****************************************************************/
-.MEPNav .aNav.legacy {
-    color: #6eb126;
-}
 
-.MEPNav label::after {
-    bottom: 0;
-    color: #000;
-    content: "";
-    font-family: "Glyphicons Halflings";
-    font-size: 1.3em;
-    left: 0;
-    line-height: 20px;
-    position: absolute;
-    right: 0;
-    text-align: center;
-    top: 0;
-}
-.MEPNav input:checked ~ label::after {
-    color: #6eb126;
-    content: "";
-}
 
 /****************************************************************
  *								*
@@ -873,6 +959,7 @@ div.noMargin {
 
 #detailArticle .contenuMEP .colonneMEP img {
     width: 100%;
+    object-fit: cover; /*rajouté par Michaël*/
 }
 
 #detailArticle .contenuMEP .colonneMEP .imgMEPContainer {
@@ -1079,4 +1166,146 @@ div.noMargin {
 	
 }
 
+/****************************************************************
+ *								*
+ *			MENU DU Gauche	   			*
+ *								*
+ ****************************************************************/
+/* .MEPNav .aNav.legacy {
+    color: #6eb126;
+}
 
+.MEPNav label::after {
+    bottom: 0;
+    color: #000;
+    content: "";
+    font-family: "Glyphicons Halflings";
+    font-size: 1.3em;
+    left: 0;
+    line-height: 20px;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+}
+.MEPNav input:checked ~ label::after {
+    color: #6eb126;
+    content: "";
+}*/
+
+/*changements Michaël Menu gauche*/
+
+
+
+.legacy>label {border-left: 15px solid #467118;}
+
+.self>label {border-left: 15px solid #467118;}
+
+
+.MEPNav ul {margin: 10px 0;}
+
+.niveau01 {background-color: #6eb126;
+    border: 1px none #6eb126;
+    color: #fff;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding-left: 10;}
+
+.niveau01:hover {background-color: #e7f8d3;
+    color: #6eb126;}
+
+.menu01 li>a {padding-left: 20px;}
+
+.niveau02 {background-color: black;
+    border: 1px none black;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding-left: 20px;}
+
+.menu02 li>a {padding-left: 30px;}
+
+.niveau02:hover {background-color: #e7f8d3;
+    color: black; }
+
+.niveau03 {background-color: #535353;
+    border: 1px none #535353;
+    color: #ffffff ;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding-left: 30px;}
+
+.menu03 li>a {padding-left: 40px;}
+
+.niveau03:hover {background-color: #e7f8d3;
+    color: #535353; }
+
+.menu04 {background-color: #fff;
+    color: #6eb126;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding-left: 40px;}
+
+.menu04 li>a {padding-left: 50px;}
+
+.niveau04:hover {background-color: #e7f8d3;}
+
+.niveau05 {background-color: #fff;
+    color: black;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding-left: 50px;}
+
+.menu05 li>a {padding-left: 60px;}
+
+.niveau05:hover {background-color: ##e7f8d3;}
+
+.niveau06 {background-color: #fff;
+    color: #535353;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding-left: 60px;}
+
+.menu06 li>a {padding-left: 70px;}
+
+.niveau06:hover { background-color: #e7f8d3;}
+
+.niveau07 {background-color: #fff;
+    color: #6eb126;
+    font-size: 13px;
+    font-weight: bold;
+    padding-left: 70px;}
+
+.menu07 li>a {padding-left: 80px;}
+
+.niveau07:hover {background-color: #e7f8d3;}
+
+.niveau08 {background-color: #fff;
+    color: black;
+    font-size: 13px;
+    font-weight: bold;
+    padding-left: 80px;}
+
+.menu08 li>a {padding-left: 90px;}
+
+.niveau08:hover {background-color: #e7f8d3;}
+
+.niveau09 {background-color: #fff;
+    color: #535353;
+    font-size: 13px;
+    font-weight: bold;
+    padding-left: 90px;}
+
+.menu09 li>a {padding-left: 100px;}
+
+.niveau09:hover { background-color: #e7f8d3;}
+
+
+
+/*fin changements Michaël Menu gauche*/
