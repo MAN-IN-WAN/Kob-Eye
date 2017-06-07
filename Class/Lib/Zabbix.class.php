@@ -35,17 +35,26 @@ class Zabbix {
     }
 
 
-    public static function getGraphData($hostIds,$itemIds,$start,$end){
+    public static function getGraphData($itemIds,$end = null,$start = null){
+        if(!$end)
+            $end = time();
+        if(!$start)
+            $start = $end - 3600;
+
+
+
         $zab = self::connect();
 
         $histories = $zab->historyGet(array(
             'output' => 'extend',
             'history' => '0',
-            'hostids' => $hostIds,
+            //'hostids' => $hostIds,
             'itemids' => $itemIds,
             'time_from'=> $start,
-            'time_till' => $end
+            'time_till' => $end,
+            'sortfield' => 'clock'
         ));
+
 
         $data = array();
         echo '<pre>';
@@ -55,6 +64,34 @@ class Zabbix {
 
         }
         echo'<pre>';
+    }
+
+    public static function getHostItems($hostIds,$search = null){
+        $zab = self::connect();
+;
+        $items = $zab->itemGet(array(
+            'output' => 'extend',
+            'history' => '0',
+            'hostids' => $hostIds,
+        ));
+
+
+        $data = array();
+        if($search === null)
+            return false;
+
+
+        foreach($items as $i){
+            if (strpos($i->name,$search) !== false){
+                array_push($data,$i);
+            }
+        }
+
+        echo '<pre>';
+            print_r($data);
+        echo '</pre>';
+
+        return $data;
     }
 
     public static function updateGroup($cli, $uuid){

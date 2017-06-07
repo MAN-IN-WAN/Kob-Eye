@@ -98,6 +98,14 @@ class DeviceConnexion extends genericClass{
                     //Imprimante
                     $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'enable-printing','true')";
                     $q = $dbGuac->query($query);
+                    //Drive
+                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'enable-drive','true')";
+                    $q = $dbGuac->query($query);
+                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'drive-path','/home/dakota')";
+                    $q = $dbGuac->query($query);
+                    //Clavier
+                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'server-layout','fr-fr-azerty')";
+                    $q = $dbGuac->query($query);
 
                     if(isset($this->Login) && $this->Login !='' && $this->Login != null){
                         $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'username','".$this->Login."')";
@@ -113,7 +121,7 @@ class DeviceConnexion extends genericClass{
 
                     $this->Save();
                 } else {
-                    $query = "UPDATE `guacamole_connection` SET connection_name ='" . $this->Nom . "_rdp' WHERE connection_id =$this->GuacamoleId";
+                    $query = "UPDATE `guacamole_connection` SET connection_name ='" . $this->Nom . "' WHERE connection_id =$this->GuacamoleId";
                     $q = $dbGuac->query($query);
 
                     if(isset($this->Login) && $this->Login !='' && $this->Login != null){
@@ -129,8 +137,17 @@ class DeviceConnexion extends genericClass{
                         $query = "UPDATE `guacamole_connection` SET parent_id ='" . $gid . "' WHERE connection_id =$this->GuacamoleId";
                         $q = $dbGuac->query($query);
                     }
-                    $query = "REPLACE INTO INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($this->GuacamoleId,'enable-printing','true')";
+                    $query = "REPLACE INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($this->GuacamoleId,'enable-printing','true')";
                     $q = $dbGuac->query($query);
+                    //Drive
+                    $query = "REPLACE INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($this->GuacamoleId,'enable-drive','true')";
+                    $q = $dbGuac->query($query);
+                    $query = "REPLACE INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($this->GuacamoleId,'drive-path','/home/dakota')";
+                    $q = $dbGuac->query($query);
+                    //Clavier
+                    $query = "REPLACE INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($this->GuacamoleId,'server-layout','fr-fr-azerty')";
+                    $q = $dbGuac->query($query);
+
 
                     $query = "UPDATE `guacamole_connection_parameter` SET parameter_value = '".$this->PortRedirectLocal."' WHERE connection_id=$this->GuacamoleId AND parameter_name='port'";
                     $q = $dbGuac->query($query);
@@ -149,20 +166,23 @@ class DeviceConnexion extends genericClass{
                     $q = $dbGuac->query($query);
                     $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'password','secret')";
                     $q = $dbGuac->query($query);
+                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'color-depth','8')";
+                    $q = $dbGuac->query($query);
 
                     $this->GuacamoleId = $lid;
                     $this->GuacamoleUrl = base64_encode($lid . "\0" . 'c' . "\0" . 'mysql');
 
                     $this->Save();
                 } else {
-                    $query = "UPDATE `guacamole_connection` SET connection_name ='" . $this->Nom . "_vnc' WHERE connection_id =$this->GuacamoleId";
+                    $query = "UPDATE `guacamole_connection` SET connection_name ='" . $this->Nom . "' WHERE connection_id =$this->GuacamoleId";
                     $q = $dbGuac->query($query);
 
                     if(isset($gid)){
                         $query = "UPDATE `guacamole_connection` SET parent_id ='" . $gid . "' WHERE connection_id =$this->GuacamoleId";
                         $q = $dbGuac->query($query);
                     }
-
+                    $query = "REPLACE INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($this->GuacamoleId,'color-depth','8')";
+                    $q = $dbGuac->query($query);
 
                     $query = "UPDATE `guacamole_connection_parameter` SET parameter_value = '$this->PortRedirectLocal' WHERE connection_id=$this->GuacamoleId AND parameter_name='port'";
                     $q = $dbGuac->query($query);
