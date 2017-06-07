@@ -10,4 +10,5 @@ if (is_object(Sys::$CurrentMenu)) {
         $vars['CurrentUrl'] = Sys::getMenu($info['Module'] . '/' . $info['ObjectType']);
     }else $vars['CurrentUrl'] = Sys::$CurrentMenu->Url;
 }else $vars['CurrentUrl'] = $vars['Query'];
+if (!$vars['ObjectClass']->AccessPoint) $vars['Type'] = "Tail";
 ?>

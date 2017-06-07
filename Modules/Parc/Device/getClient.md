@@ -1,0 +1,1 @@
+[COUNT Parc/Client/CodeGestion=[!client!]|NB][IF [!NB!]>0]1[ELSE]0[/IF]

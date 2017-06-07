@@ -253,7 +253,7 @@
         <FKEY card="0,1" data="Apache,Id" fiche="1" form="1" parentDescription="Hôte virtuel" link="1">ApacheId</FKEY>
         <FUNCTION title="Executer maintenant">Executer</FUNCTION>
     </OBJECTCLASS>
-	<OBJECTCLASS title="Device" driver="mysql" Dico="1" Description="Périphérique(s) réseau(x)" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Device.class.php">
+	<OBJECTCLASS title="Device" driver="mysql" AccessPoint="1" Description="Périphérique(s) réseau(x)" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Device.class.php">
 		<FILTER name="Tous les périphériques" color="warning" ></FILTER>
 		<FILTER name="Périphériques en ligne"  color="success">Online=1</FILTER>
 		<FILTER name="Périphériques en mode test">ModeTest=1</FILTER>

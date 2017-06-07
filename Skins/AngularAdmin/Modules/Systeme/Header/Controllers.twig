@@ -35,7 +35,7 @@
             $scope.modalObj.title = 'Ajouter un nouveau {{ c.description }}';
             $("#modal-{{ c.identifier }}").modal();
         }
-        $scope.modify = function (obj){
+        $scope.{{ c.identifier }}modify = function (obj){
             console.log('edit ',obj.id);
             {{ c.identifier }}Store.getOneData(obj.id,false).then(function (data) {
                 $scope.modalObj = data;
@@ -44,7 +44,7 @@
             });
             $("#modal-{{ c.identifier }}").modal();
         }
-        $scope.modalSave = function (){
+        $scope.{{ c.identifier }}modalSave = function (){
             console.log('save ',$scope.modalObj);
             {{ c.identifier }}Store.saveData($scope.modalObj).then(function (data) {
                 if (data.success){
@@ -63,7 +63,7 @@
                 console.log('save obj',data);
             });
         }
-        $scope.delete = function (item){
+        $scope.{{ c.identifier }}delete = function (item){
             console.log('edit ',item);
             swal({
                     title: "Êtes vous sûr de vouloir supprimer "+item["label"]+"?",
@@ -156,6 +156,54 @@
                     $scope.modalObj = {{ child.objectModule }}{{ child.objectName }}Store.getNewData();
                     $scope.modalObj.title = 'Ajouter un nouveau {{ child.objectDescription }}';
                     $("#modal-{{ child.objectModule }}{{ child.objectName }}").modal();
+                }
+                $scope.{{ child.objectModule }}{{ child.objectName }}modify = function (obj){
+                    console.log('edit ',obj.id);
+                    {{ child.objectModule }}{{ child.objectName }}Store.getOneData(obj.id,false).then(function (data) {
+                        $scope.modalObj = data;
+                        $scope.modalObj.title = 'Modifier {{ child.objectDescription }} '+data.label;
+                        console.log('edit obj',$scope.modalObj);
+                    });
+                    $("#modal-{{ child.objectModule }}{{ child.objectName }}").modal();
+                }
+                $scope.{{ child.objectModule }}{{ child.objectName }}modalSave = function (){
+                    console.log('save {{ child.objectModule }}{{ child.objectName }}',$scope.modalObj);
+                    {{ child.objectModule }}{{ child.objectName }}Store.saveData($scope.modalObj).then(function (data) {
+                        if (data.success){
+                            $scope.modalObj = data.data;
+                            $("#modal-{{ child.objectModule }}{{ child.objectName }}").modal('toggle');
+                            {{ child.objectModule }}{{ child.objectName }}Store.refresh();
+                        }else {
+                            //gestion des erreurs
+                            $scope.modalObj.errors = data.errors;
+                            $scope.modalObj.fieldErrors = [];
+                            for (var e in data.errors) {
+                                $scope.modalObj.fieldErrors.push(data.errors[e].Prop);
+                            }
+                            console.log('tab field error',$scope.modalObj.fieldErrors);
+                        }
+                        console.log('save obj {{ child.objectModule }}{{ child.objectName }}',data);
+                    });
+                }
+                $scope.{{ child.objectModule }}{{ child.objectName }}delete = function (item){
+                    console.log('edit ',item);
+                    swal({
+                            title: "Êtes vous sûr de vouloir supprimer {{ child.objectDescription }} "+item["label"]+"?",
+                            text: "Cette suppression sera définitive. ",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonClass: "btn-danger",
+                            cancelButtonText: "Annuler",
+                            confirmButtonText: "Oui, supprimer !",
+                            closeOnConfirm: true
+                        },
+                        function(){
+                            $http.get('/{{ child.objectModule }}/{{ child.objectName }}/'+item.id+'/Delete.json')
+                                .success(function(data) {
+                                    console.log('store > {{ child.objectModule }}/{{ child.objectName }} > deleted '+item.id, data);
+                                    {{ child.objectModule }}{{ child.objectName }}Store.refresh();
+                            });
+                    });
                 }
             {% endfor %}
             $scope.show = true;

@@ -1027,7 +1027,7 @@ class Sys extends Root{
 		if ($m){
 			foreach ($m as $a) {
                 $out .= ((!empty($out)) ? '/' : '') . $a->Url;
-                if (isset($a->MenuParent)&&sizeof($a->MenuParent)){
+                if (isset($a->MenuParent)&&sizeof($a->MenuParent)&&is_object($a->MenuParent[0])){
                 	$out = $a->MenuParent[0]->Url.'/'.$out;
 				}
             }
