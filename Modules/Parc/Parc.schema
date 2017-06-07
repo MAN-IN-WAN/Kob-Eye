@@ -21,7 +21,7 @@
 		<FKEY card="0,1" module="Parc" data="Revendeur,Id">RevendeurId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Contact" driver="mysql" Description="Contact/Utilisateur Client" Icon="/Skins/AdminV2/Img/IconAqua/Forum.png" className="Parc_Contact" Class="Modules/Parc/Class/Contact.class.php" Order="Nom">
-		<PROPERTIES category="Gestion" type="int" unique="1" description="Id dans la gestion" >IdGestion</PROPERTIES>
+		<PROPERTIES category="Gestion" type="int"  description="Id dans la gestion" >IdGestion</PROPERTIES>
 		<PROPERTIES category="Intitulé" type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES category="Intitulé" type="varchar" searchOrder="2" list="1" fiche="1" form="1" listDescr="Prenom">Prenom</PROPERTIES>
 		<PROPERTIES category="Accès client" type="boolean" obligatoire="0" description="Activation Accès web" list="1" fiche="1" form="1" listDescr="Accès Web">AccesActif</PROPERTIES>
@@ -253,7 +253,7 @@
         <FKEY card="0,1" data="Apache,Id" fiche="1" form="1" parentDescription="Hôte virtuel" link="1">ApacheId</FKEY>
         <FUNCTION title="Executer maintenant">Executer</FUNCTION>
     </OBJECTCLASS>
-	<OBJECTCLASS title="Device" driver="mysql" Dico="1" Description="Périphérique(s) réseau(x)" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Device.class.php">
+	<OBJECTCLASS title="Device" driver="mysql" AccessPoint="1" Description="Périphérique(s) réseau(x)" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Device.class.php">
 		<FILTER name="Tous les périphériques" color="warning" ></FILTER>
 		<FILTER name="Périphériques en ligne"  color="success">Online=1</FILTER>
 		<FILTER name="Périphériques en mode test">ModeTest=1</FILTER>
@@ -279,11 +279,12 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="DeviceConnexion" driver="mysql" Description="Connection(s) vers le Périphérique" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/DeviceConnexion.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom du périphérique">Nom</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="2" obligatoire="1" fiche="1" description="Type de connexion" values="RDP,VNC,SSH,Telnet,Https">Type</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" obligatoire="1"  list="1" fiche="1" description="Type de connexion" listDescr="Type" values="RDP,VNC,SSH,Telnet,Https">Type</PROPERTIES>
 		<PROPERTIES type="int" obligatoire="0" fiche="1" description="Port redirection Local">PortRedirectLocal</PROPERTIES>
 		<PROPERTIES type="int" obligatoire="0" fiche="1" description="Port redirection Distant">PortRedirectDistant</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" description="Login" listDescr="Login">Login</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" description="Mot de passe" listDescr="Mot de passe">Password</PROPERTIES>
+        <PROPERTIES type="varchar" list="1" fiche="1" description="Clef Ssh">SshKey</PROPERTIES>
 		<PROPERTIES type="extlink" list="1" fiche="1" description="Url guacamole" listDescr="Lien Direct">GuacamoleUrl</PROPERTIES>
 		<PROPERTIES type="varchar" description="Id guacamole">GuacamoleId</PROPERTIES>
 		<FKEY card="0,1" data="Device,Id" fiche="1" form="1" parentDescription="Périphérique" link="1">DeviceId</FKEY>
