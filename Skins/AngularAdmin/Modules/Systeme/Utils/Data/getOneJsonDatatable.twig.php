@@ -1,7 +1,7 @@
 <?php
 $info = Info::getInfos($vars['Query']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
-$vars['fields'] = $o->getElementsByAttribute('fiche','',true);
+$vars['fields'] = $o->getElementsByAttribute('fiche|form','',true);
 $vars['row'] = Sys::getOneData($info['Module'],$vars['Query']);
 $vars['row']->label = $vars['row']->getFirstSearchOrder();
 $uc = Sys::getOneData('Systeme','User/'.$vars['row']->userCreate);
