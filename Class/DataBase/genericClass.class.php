@@ -545,25 +545,27 @@ class genericClass extends Root {
 	 * @param String Value of the attribute
 	 * @return Array elments details
 	 */
-	public function getElementsByAttribute($A, $V = "",$flat=false, $L="") {
+	public function getElementsByAttribute($At, $V = "",$flat=false, $L="") {
 		$O = Array();
+		$attr = explode('|',$At);
 		//Il faut le faire pour chaque langue
 		$Tab = $this -> getElements($L);
-		foreach ($Tab as $CatName => $Cat)
-			foreach ($Cat as $ElemsName => $Elems)
-				foreach ($Elems as $Elem) {
-					if (isset($Elem[$A]) && (empty($V) || $Elem[$A] == $V)||$A==null) {
-						if ($flat){
-							$O[] = $Elem;
-						}else{
-							if (!isset($O[$CatName])) {
-								$O[$CatName] = Array();
-								$O[$CatName][$ElemsName] = Array();
-							}
-							$O[$CatName][$ElemsName][] = $Elem;
-						}
-					}
-				}
+		foreach ($attr as $A)
+            foreach ($Tab as $CatName => $Cat)
+                foreach ($Cat as $ElemsName => $Elems)
+                    foreach ($Elems as $Elem) {
+                        if (isset($Elem[$A]) && (empty($V) || $Elem[$A] == $V)||$A==null) {
+                            if ($flat){
+                                $O[] = $Elem;
+                            }else{
+                                if (!isset($O[$CatName])) {
+                                    $O[$CatName] = Array();
+                                    $O[$CatName][$ElemsName] = Array();
+                                }
+                                $O[$CatName][$ElemsName][] = $Elem;
+                            }
+                        }
+                    }
 		//on ordonne sur l'attribut
 		if (empty($V)){
 			$O = Storproc::SpBubbleSort($O,$A);

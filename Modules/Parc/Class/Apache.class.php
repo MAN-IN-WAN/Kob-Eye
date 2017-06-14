@@ -13,7 +13,9 @@ class Apache extends genericClass {
 		if ($this->Ssl){
 			//test de l'activation ssl
 			$old = Sys::getOneData('Parc','Apache/'.$this->Id);
-			if (!$old->Ssl&&$this->SslMethod=="Letsencrypt") $this->enableSsl();
+			if ($old->Ssl) {
+			    if (!$this->enableSsl()) return false;
+            }
 		}
 		// Forcer la vérification
 		if(!$this->_isVerified) $this->Verify( $synchro );
@@ -22,7 +24,9 @@ class Apache extends genericClass {
 	}
 
 	public function enableSsl($force = false) {
+	    $this->Ssl = false;
 		if (empty($this->SslMethod))$this->SslMethod = "Letsencrypt";
+		//check already exists
 		if (!$force&&$this->Ssl&&!empty($this->SslCertificate)&&!empty($this->SslCertificateKey)&&$this->SslExpiration>time()+2592000){
 			$this->addError(array("Message"=>"Le certificat est déjà généré et valide."));
 			return false;
@@ -31,6 +35,19 @@ class Apache extends genericClass {
         if (Sys::getCount('Parc','Apache/'.$this->Id.'/Tache/Termine=0')) return false;
 
 		switch($this->SslMethod){
+            case "Manuel":
+                if (!$force&&$this->Ssl&&(empty($this->SslCertificate)||empty($this->SslCertificateKey))){
+                    $this->addError(array("Message"=>"Pour activer SSL il faut que la clef et le certificat soient renseignés"));
+                    return false;
+                }
+                //check validity before enabling
+                $key  = openssl_x509_check_private_key($this->SslCertificate,$this->SslCertificateKey);
+                if (!$key){
+                    $this->addError(array("Message"=>"Le certificat et la clef ne correspondent pas."));
+                    return false;
+                }
+                $this->Ssl = true;
+                break;
 			case "Letsencrypt":
                 //définition de la date d'expiration
                 $this->SslExpiration=time()+(86400*90);
@@ -84,7 +101,21 @@ class Apache extends genericClass {
 		if (substr($this->DocumentRoot,strlen($this->DocumentRoot)-1,1)=='/') $this->DocumentRoot = substr($this->DocumentRoot,0,-1);
 
 		if(parent::Verify()) {
-
+            //check ssl
+            if ($this->Ssl&&(empty($this->SslCertificate)||empty($this->SslCertificateKey))){
+                $this->addError(array("Message"=>"Pour activer SSL il faut que la clef et le certificat soient renseignés"));
+                $this->_isVerified = false;
+                return false;
+            }
+            if ($this->Ssl&&$this->SslMethod=='Manuel') {
+                //check validity before enabling
+                $key = openssl_x509_check_private_key($this->SslCertificate, $this->SslCertificateKey);
+                if (!$key) {
+                    $this->addError(array("Message" => "Le certificat et la clef ne correspondent pas."));
+                    $this->_isVerified = false;
+                    return false;
+                }
+            }
 			$this->_isVerified = true;
 
 			if($synchro) {

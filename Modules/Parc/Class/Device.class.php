@@ -115,6 +115,21 @@ Client=$dev->CodeClient
         return $obj->ConnectionType;
     }
 
+    /**
+     * check client name and device hostname
+     */
+    function checkClient($uuid) {
+        //check client
+        if (!Sys::getCount('Parc', 'Client/CodeGestion=' . $_GET["client"])){
+            return 'client';
+        }
+        //check hostname
+        if (Sys::getCount('Parc', 'Device/Uuid!='.$uuid.'&Nom=' . $_GET["system"])){
+            return 'system';
+        }
+        return 'ok';
+    }
+
 
 
     public static function getOffline(){
