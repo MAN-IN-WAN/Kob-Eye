@@ -1,0 +1,12 @@
+{
+"total": "{{ total }}",
+"data": [
+{% for issue in issues %}
+    {
+    "id":"{{ graph.id }}",
+    "label":"{{ graph.label }}",
+    "delay":"{{ graph.delay }}"
+    }{% if not loop.last %},{% endif %}
+{% endfor %}
+]
+}
