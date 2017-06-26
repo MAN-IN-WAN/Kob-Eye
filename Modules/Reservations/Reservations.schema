@@ -65,7 +65,7 @@
         <FKEY card="1,n" data="Reservation,Id" form="1" parentDescription="Réservation" listDescr="Réservation">ReservationId</FKEY>
         <FKEY card="1,1" data="Client,Id" form="1" parentDescription="Client" listDescr="Client">ClientId</FKEY>
     </OBJECTCLASS>
-    <OBJECTCLASS title="Court" driver="mysql" AccessPoint="1" Description="Court" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png">
+    <OBJECTCLASS title="Court" driver="mysql" AccessPoint="1" Description="Emplacement" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png">
         <PROPERTIES Order="1" description="Titre" type="varchar" length="200" obligatoire="1" list="1" form="1" fiche="1" searchOrder="1">Titre</PROPERTIES>
         <PROPERTIES description="Ordre" type="order" length="200" obligatoire="1" list="1" form="1" fiche="1" searchOrder="1">Ordre</PROPERTIES>
         <FKEY card="1,1" data="TypeCourt,Id" form="1" fiche="1" parentDescription="Type de court">TypeCourtId</FKEY>
@@ -78,7 +78,7 @@
             </OBJECTCLASS>
         </VIEW>
     </OBJECTCLASS>
-    <OBJECTCLASS title="TypeCourt" driver="mysql" AccessPoint="0" Dico="1" Description="Ressources" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png" browseable="1">
+    <OBJECTCLASS title="TypeCourt" driver="mysql" AccessPoint="0" Dico="1" Description="Type d'emplacement" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png" browseable="1">
         <PROPERTIES searchOrder="1" description="Titre" type="varchar" length="200" obligatoire="1" list="1" form="1" fiche="1">Titre</PROPERTIES>
         <PROPERTIES searchOrder="3" description="Type de réservation" type="varchar" length="200" obligatoire="1" list="1" form="1" fiche="1" values="Horaire,Journalière,Aucun">Reservation</PROPERTIES>
         <PROPERTIES Order="1" description="Gestion des invités" type="varchar" values="Nominatif,Quantitatif,Aucun" form="1" fiche="1" default="1">GestionInvite</PROPERTIES>

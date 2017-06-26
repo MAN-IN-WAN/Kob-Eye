@@ -27,6 +27,7 @@ class Device extends genericClass{
             $dev = Sys::getOneData('Parc','Device/Uuid='.$uuid);
         }
         if ($dev){
+            if(!$dev->Online) Zabbix::enableOnline($dev->Uuid);
             //mise à jour de la machine
             $dev->LastSeen = time();
             $dev->PublicIP = $_SERVER['REMOTE_ADDR'];
@@ -138,6 +139,7 @@ Client=$dev->CodeClient
         foreach ($devs as $d) {
             $d->Online = false;
             $d->Save();
+            Zabbix::disableOffline($d->Uuid);
         }
     }
 
