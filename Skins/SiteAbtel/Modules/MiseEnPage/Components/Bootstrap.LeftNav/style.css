@@ -1,0 +1,306 @@
+/*.MEPNav{*/
+    /*margin-top:15px;*/
+    /*font-size:1.1em;*/
+/*}*/
+/*.MEPNav .baseLabel{*/
+    /*vertical-align: middle;*/
+/*}*/
+/*.MEPNav .baseNav{*/
+    /*margin-left:5px;*/
+/*}*/
+/*.MEPNav .baseNav h2{*/
+    /*font-size:em;*/
+    /*font-weight:600;*/
+    /*display: inline-block;*/
+    /*vertical-align: middle;*/
+/*}*/
+
+/*.MEPNav .aNav{*/
+    /*font-size: 1.1em;*/
+    /*margin-bottom: 7px;*/
+    /*display: inline-block;*/
+/*}*/
+/*.MEPNav .aNav.legacy{*/
+    /*color: #7f007f;*/
+/*}*/
+/*.MEPNav .aNav.self{*/
+    /*text-decoration: underline;*/
+/*}*/
+
+
+/*.MEPNav ul{*/
+    /*margin-left:10px;*/
+	/*padding-left:20px;*/
+    /*position: relative;*/
+/*}*/
+/*.MEPNav > ul{*/
+    /*margin-left:30px;*/
+/*}*/
+/*.MEPNav input{*/
+    /*display: none;*/
+/*}*/
+/*.MEPNav li,*/
+/*.MEPNav ul > label{*/
+    /*overflow: hidden;*/
+    /*-webkit-transition: all 1s;*/
+    /*transition: all 1s;*/
+/*}*/
+/*.MEPNav li{*/
+    /*list-style-type: none;*/
+/*}*/
+/*.MEPNav ul > label{*/
+    /*position: absolute;*/
+    /*top:0;*/
+    /*left:0;*/
+/*}*/
+
+/*.MEPNav input:checked ~ ul > li,*/
+/*.MEPNav input:checked ~ ul > label{*/
+    /*max-height: 50px;*/
+    /*transition: all 1s;*/
+/*}*/
+/*.MEPNav input:checked ~ ul > li{*/
+    /*padding-left:5px;*/
+/*}*/
+
+/*.MEPNav  label{*/
+    /*position: relative;*/
+/*}*/
+/*!*.MEPNav label:after {*!*/
+    /*!*position: absolute;*!*/
+    /*!*top:0;*!*/
+    /*!*left:0;*!*/
+    /*!*bottom:0;*!*/
+    /*!*right:0;*!*/
+    /*!*text-align: center;*!*/
+    /*!*line-height:20px;*!*/
+    /*!*content: "\e160";*!*/
+    /*!*font-family:'Glyphicons Halflings';*!*/
+    /*!*font-size: 1.3em;*!*/
+    /*!*color: #9a3232;*!*/
+/*!*}*!*/
+
+/*.MEPNav input:checked ~ label:after{*/
+    /*content: "\e159";*/
+    /*color: #329a32;*/
+/*}*/
+
+
+
+
+
+/*--------------------- prog Michaël ---------------------------------------*/
+
+
+
+
+
+label:not(:only-child) .aNav:before {font-family:'Glyphicons Halflings';
+content: "\e258";
+padding-right: 5px;
+font-size: 1.2em;
+vertical-align: top;}
+
+
+
+
+.self {vertical-align: top;}
+
+
+
+ul {list-style: none;
+}
+
+
+
+#conteneur {width: 1170px;
+margin: 0 auto;}
+
+#menu {width: 100%;
+padding-top: 10px; }
+
+input {display:none;}
+
+.MEPNav label {display: inline-block;
+width: 100%;
+min-height:50px;
+padding-top: 15px;
+transition: all 0.5s;
+}
+
+
+
+
+.MEPnav a {transition all 0.6s;}
+
+
+
+
+
+
+.MEPNav a:hover {text-decoration: underline;}
+
+
+
+.niveau01,.niveau02,.niveau03,.niveau04,.niveau05,.niveau06,.niveau07,.niveau08,.niveau09 {
+position: relative; }
+
+
+
+
+.menu01,.menu02,.menu03,.menu04,.menu05,.menu06,.menu07,.menu08,.menu09 {max-height: 0;
+overflow: hidden;
+margin: 0; }
+
+
+.MEPNav input:checked~ul {max-height: 1000px;
+transition: max-height 0.6s ease-in-out;
+margin-top: 12px; }
+
+
+.MEPNav input:checked~label:not(:only-child)>.aNav:before {font-family:'Glyphicons Halflings';
+content: "\e259" !important;
+    padding-right: 5px;
+    font-size: 1.2em;
+    vertical-align: top;}
+
+
+.MEPNav li>a {display: block;
+      padding-top:10px;
+      font-weight:bold;
+      }
+
+
+.MEPNav {
+width:100%;}
+
+.MEPNav li {list-style: none;
+    padding-left: inherit;}
+
+.aNav {transition:all 0.5s;}
+
+.aNav:hover {color:inherit;}
+
+.niveau01 {background-color: #ee7805;
+border: 1px none #ee7805;
+color: #fff;
+font-size: 13px;
+font-weight: bold;
+text-transform: uppercase;
+padding-left: 10;}
+
+.niveau01:hover {background-color: #ffdebd;
+color: #ee7805; }
+
+.menu01 li>a {padding-left: 20px;}
+
+.niveau02 {background-color: black;
+    border: 1px none black;
+    color: #ffffff;
+font-size: 13px;
+font-weight: bold;
+text-transform: uppercase;
+padding-left: 20px;}
+
+.menu02 li>a {padding-left: 30px;}
+
+.niveau02:hover {background-color: #ffdebd;
+color: black; }
+
+.niveau03 {background-color: #535353;
+    border: 1px none #535353;
+    color: #ffffff ;
+font-size: 13px;
+font-weight: bold;
+text-transform: uppercase;
+padding-left: 30px;}
+
+.menu03 li>a {padding-left: 40px;}
+
+.niveau03:hover {background-color: #ffdebd;
+color: #535353; }
+
+.menu04 {background-color: #fff;
+color: #ee7805;
+font-size: 13px;
+font-weight: bold;
+text-transform: uppercase;
+padding-left: 40px;}
+
+.menu04 li>a {padding-left: 50px;}
+
+.niveau04:hover {background-color: #ffdebd;}
+
+.niveau05 {background-color: #fff;
+color: black;
+font-size: 13px;
+font-weight: bold;
+text-transform: uppercase;
+padding-left: 50px;}
+
+.menu05 li>a {padding-left: 60px;}
+
+.niveau05:hover {background-color: #ffdebd;}
+
+.niveau06 {background-color: #fff;
+color: #535353;
+font-size: 13px;
+font-weight: bold;
+text-transform: uppercase;
+padding-left: 60px;}
+
+.menu06 li>a {padding-left: 70px;}
+
+.niveau06:hover { background-color: #ffdebd;}
+
+.niveau07 {background-color: #fff;
+color: #ee7805;
+font-size: 13px;
+font-weight: bold;
+padding-left: 70px;}
+
+.menu07 li>a {padding-left: 80px;}
+
+.niveau07:hover {background-color: #ffdebd;}
+
+.niveau08 {background-color: #fff;
+color: black;
+font-size: 13px;
+font-weight: bold;
+padding-left: 80px;}
+
+.menu08 li>a {padding-left: 90px;}
+
+.niveau08:hover {background-color: #ffdebd;}
+
+.niveau09 {background-color: #fff;
+color: #535353;
+font-size: 13px;
+font-weight: bold;
+padding-left: 90px;}
+
+.menu09 li>a {padding-left: 100px;}
+
+.niveau09:hover { background-color: #ffdebd;}
+
+
+.MEPNav label:after {
+position: absolute;
+content: " ";
+left:50%;
+bottom:-20px;
+width: 0;
+height: 0;
+border-left: 20px solid transparent;
+border-right: 20px solid transparent;
+border-top: 20px solid;
+border-top-color: inherit;
+z-index: 1000;
+transform: translate(-50%,0);}
+
+.fullHeight {min-height: 90px;}
+
+/*fin menu Michaël*/
+
+
+/*fin prog Michaël*/
