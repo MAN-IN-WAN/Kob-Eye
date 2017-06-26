@@ -338,7 +338,9 @@
         <PROPERTIES type="varchar" description="Etat" list="1" form="1" fiche="1" listDescr="Etat" values="A facturer,En cours,Terminé,Abandonné,Commercial">Etat</PROPERTIES>
 		<PROPERTIES type="varchar" description="Intervenant original" list="0" form="1" fiche="1" listDescr="Créateur">UserCrea</PROPERTIES>
 		<PROPERTIES type="varchar" description="Prochain intervenant" list="1" form="1" fiche="1" listDescr="Prochain">UserNext</PROPERTIES>
-
+		<PROPERTIES type="varchar" description="Source du ticket" list="1" form="1" fiche="1" listDescr="Source" values="Gestion,Zabbix,Glpi,Web" default="Gestion" >Source</PROPERTIES>
+        <PROPERTIES type="varchar" description="Priorité" list="1" form="1" fiche="1" listDescr="Priorité" values="NC,Info,Warning,Moyenne,Haute,Désastre" default="NC" >Priorite</PROPERTIES>
+		<FKEY card="0,n" data="Device,Id">DeviceId</FKEY>
 		<FKEY card="1,1" data="Client,Id">ClientId</FKEY>
 	</OBJECTCLASS>
 </SCHEMA>

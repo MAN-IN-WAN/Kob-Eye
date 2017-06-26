@@ -3,9 +3,9 @@
 "data": [
 {% for issue in issues %}
     {
-    "id":"{{ graph.id }}",
-    "label":"{{ graph.label }}",
-    "delay":"{{ graph.delay }}"
+    "hote":"{{ issue.hosts[0].host }}",
+    "description":"{{ issue.description }}",
+    "priorite":"{{ issue.priority }}"
     }{% if not loop.last %},{% endif %}
 {% endfor %}
 ]

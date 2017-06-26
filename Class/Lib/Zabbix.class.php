@@ -313,11 +313,50 @@ class Zabbix {
             //On verifie qu'il est bien enregistré comme poste
             foreach ($host->parentTemplates as $tpl){
                 if($tpl->templateid == 11523){ //Template OS Windows active Poste
+
                     //TODO : Eventuellement le mettre dans un groupe disabled
                     $zab->hostUpdate(array(
                         'hostid' => $host->hostid,
                         'status' => 1
                     ));
+                    break;
+                }
+            }
+        }
+
+    }
+    //Disable les hosts dont la machine est hors ligne dans la parc et qui sont des postes
+    public static function disableOfflineName($names){
+        if(!$names ) return false;
+        if(!is_array($names)) $names = array($names);
+
+        $zab = self::connect();
+
+        //On recup les hosts a modifier
+        foreach($names as $name){
+            $hosts = $zab->hostGet(array(
+                'selectParentTemplates' => 'extend',
+                "filter" => array('name'=>$name)
+            ));
+            if(count($hosts)>0){
+                $host = $hosts[0];
+            } else{
+                continue;
+            }
+//            echo PHP_EOL.'++++++++++++'.PHP_EOL;
+//            echo PHP_EOL.$name.PHP_EOL;
+//            print_r($host);
+
+            //On verifie qu'il est bien enregistré comme poste
+            foreach ($host->parentTemplates as $tpl){
+                if($tpl->templateid == 11523){ //Template OS Windows active Poste
+
+                    //TODO : Eventuellement le mettre dans un groupe disabled
+                    $zab->hostUpdate(array(
+                        'hostid' => $host->hostid,
+                        'status' => 1
+                    ));
+
                     break;
                 }
             }
@@ -335,7 +374,7 @@ class Zabbix {
         //On recup les hosts a modifier
         foreach($uuids as $uuid){
             $host = self::getHostFromUuid($uuid);
-
+            if(!$host) return false;
             //On verifie qu'il est bien enregistré comme poste
             foreach ($host->parentTemplates as $tpl){
                 if($tpl->templateid == 11523){ //Template OS Windows active Poste
@@ -344,6 +383,42 @@ class Zabbix {
                         'hostid' => $host->hostid,
                         'status' => 0
                     ));
+                    break;
+                }
+            }
+        }
+
+    }
+
+    //Disable les hosts dont la machine est hors ligne dans la parc et qui sont des postes
+    public static function enableOnlineName($names){
+        if(!$names ) return false;
+        if(!is_array($names)) $names = array($names);
+
+        $zab = self::connect();
+
+        //On recup les hosts a modifier
+        foreach($names as $name){
+            $hosts = $zab->hostGet(array(
+                'selectParentTemplates' => 'extend',
+                "filter" => array('name'=>$name)
+            ));
+            if(count($hosts)>0){
+                $host = $hosts[0];
+            } else{
+                continue;
+            }
+
+            //On verifie qu'il est bien enregistré comme poste
+            foreach ($host->parentTemplates as $tpl){
+                if($tpl->templateid == 11523){ //Template OS Windows active Poste
+
+                    //TODO : Eventuellement le sortir du groupe disabled
+                    $zab->hostUpdate(array(
+                        'hostid' => $host->hostid,
+                        'status' => 0
+                    ));
+
                     break;
                 }
             }

@@ -7,7 +7,13 @@ body{
 
 /*.modal-header-inner {border-radius: 5px;height: 145px; background: url('/Skins/LoginBootstrap/Img/Arabesque.jpg') top right no-repeat; }
 .modal-header {border-radius: 5px;padding: 0; height: 145px; background: url('/Skins/LoginBootstrap/Img/Degrade.jpg') top repeat-x; }*/
-.modal-header-logo {border-radius: 5px;height: 80px; background: url('/Skins/ResasLogin/Img/Logo.png') top left no-repeat; background-position-x: center }
+.modal-header-logo {
+    border-radius: 5px;
+    height: 80px;
+    background: url('/Skins/ResasLogin/Img/Logo.png') top left no-repeat;
+    background-position-x: center;
+    background-size: contain;
+}
 .modal-footer {   border-top: 0px; }
 .modal-header {border:0;}
 @media screen and (min-width: 768px) {
