@@ -338,8 +338,10 @@
         <PROPERTIES type="varchar" description="Etat" list="1" form="1" fiche="1" listDescr="Etat" values="A facturer,En cours,Terminé,Abandonné,Commercial">Etat</PROPERTIES>
 		<PROPERTIES type="varchar" description="Intervenant original" list="0" form="1" fiche="1" listDescr="Créateur">UserCrea</PROPERTIES>
 		<PROPERTIES type="varchar" description="Prochain intervenant" list="1" form="1" fiche="1" listDescr="Prochain">UserNext</PROPERTIES>
-
 		<FKEY card="1,1" data="Client,Id">ClientId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Task" driver="mysql" AccessPoint="1" Description="Taches machines" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" >
+		<FKEY card="1,1" data="Device,Id">DeviceId</FKEY>
 	</OBJECTCLASS>
 </SCHEMA>
 
