@@ -63,7 +63,7 @@
         <PROPERTIES searchOrder="1" description="Prénom du partenaire" type="varchar" length="200" obligatoire="1" list="1" form="1">Prenom</PROPERTIES>
         <PROPERTIES description="Email du partenaire" type="varchar" list="1" form="1">Email</PROPERTIES>
         <FKEY card="1,n" data="Reservation,Id" form="1" parentDescription="Réservation" listDescr="Réservation">ReservationId</FKEY>
-        <FKEY card="1,1" data="Client,Id" form="1" parentDescription="Client" listDescr="Client">ClientId</FKEY>
+        <FKEY card="1,n" data="Client,Id" form="1" parentDescription="Client" listDescr="Client">ClientId</FKEY>
     </OBJECTCLASS>
     <OBJECTCLASS title="Court" driver="mysql" AccessPoint="1" Description="Emplacement" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png">
         <PROPERTIES Order="1" description="Titre" type="varchar" length="200" obligatoire="1" list="1" form="1" fiche="1" searchOrder="1">Titre</PROPERTIES>

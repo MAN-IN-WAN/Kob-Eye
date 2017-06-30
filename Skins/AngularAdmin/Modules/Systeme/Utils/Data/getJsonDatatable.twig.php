@@ -20,11 +20,17 @@ foreach ($vars['rows'] as $k=>$v){
     else $v->userEditName = 'inconnu';
     $v->label = $v->getFirstSearchOrder();
     if ($v->getSecondSearchOrder())
-        $v->description = $v->{$v->getSecondSearchOrder()};
+        $v->description = $v->getSecondSearchOrder();
     foreach ($vars['fields'] as $f){
-        if ($f['type']=='date'){
-            //transformation des timestamps en format js
-            $v->{$f['name']} = date(DATE_W3C,$v->{$f['name']});
+        switch ($f['type']){
+            case 'date':
+                //transformation des timestamps en format js
+                $v->{$f['name']} = date(DATE_W3C,$v->{$f['name']});
+                break;
+            case 'text':
+                //transformation des timestamps en format js
+                $v->{$f['name']} = Utils::cleanJson($v->{$f['name']});
+                break;
         }
     }
 }

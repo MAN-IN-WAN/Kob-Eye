@@ -5,3 +5,33 @@ table tr td.table-details{
     margin-top: 0 !important;
     margin-bottom: 0 !important;
 }
+
+#tCount{
+    background-color: #ff3f4d;
+    color: #fff;
+    border-radius:30px;
+    display: inline-block;
+    width:20px;
+    height:20px;
+    line-height: 20px;
+    text-align: center;
+}
+
+.prio_NC{
+    color: #97AAB3;
+}
+.prio_Info{
+    color: #7499FF;
+}
+.prio_Warning{
+    color: #FFC859;
+}
+.prio_Moyenne{
+    color: #FFA059;
+}
+.prio_Haute{
+    color: #E97659;
+}
+.prio_Desastre{
+    color: #E45959;
+}

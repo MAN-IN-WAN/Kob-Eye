@@ -12,7 +12,7 @@
                 {% if field.type == "boolean" %}
             ,"{{ field.name }}": {{ attribute(row,field.name) ? 1:0 }}
                 {% else %}
-            ,"{{ field.name }}": "{{ attribute(row,field.name) }}"
+            ,"{{ field.name }}": "{{ attribute(row,field.name) | raw}}"
                 {% endif %}
             {% endfor %}
         }{% if not loop.last %},{% endif %}

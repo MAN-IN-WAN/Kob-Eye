@@ -43,7 +43,7 @@
     <tr dir-paginate="item in {{ identifier }}.data" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination">
         <td><span class="label label-warning">{[{ item.id }]}</span></td>
         {% for field in fields %}
-        <td class="text-nowrap" scope="row">
+        <td scope="row">
             {% if field.type == "price" or field.type == "float" %}
                 <span class="label label-warning">{[{ item.{{ field.name }}| currency:"" }]}</span>
             {% elseif field.type == "extlink" %}
@@ -55,6 +55,8 @@
             {% elseif field.type == "boolean" %}
                 <span class="label label-success" ng-if="item.{{ field.name }}"><i class="fa fa-check"></i></span>
                 <span class="label label-danger" ng-if="!item.{{ field.name }}"><i class="fa fa-times"></i></span>
+            {% elseif field.type == "text" %}
+                <span ng-bind-html=" item.{{ field.name }} | nl2br"></span>
             {% else %}
                 {[{ item.{{ field.name }} }]}
             {% endif %}

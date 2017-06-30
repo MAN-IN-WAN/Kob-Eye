@@ -607,6 +607,14 @@ class GestionWs {
             ,5=>'Commercial'
         );
 
+        //Prios gestions
+        $prios = array(
+            0=>'Info'
+            ,1=>'Warning'
+            ,2=>'Moyenne'
+            ,3=>'Haute'
+        );
+
         if( $tix && count($tix) ) {
             foreach ($tix as $ticket) {
                 //Si on a passé juste un/des code(s) gestion on recup l'objet KE
@@ -635,6 +643,7 @@ class GestionWs {
                     $ketick->Etat = $states[$ticket->etat];
                     $ketick->UserCrea = $ticket->userCrea;
                     $ketick->UserNext = $ticket->userNext;
+                    $ketick->Priorite = $prios[$ticket->urgence];
 
                     $ketick->addParent('Parc/Client/'.$cli->Id);
 
@@ -646,6 +655,7 @@ class GestionWs {
                     $ketick->UserNext = $ticket->userNext;
                     $ketick->Type = $ticket->type=='DEM'?'Demande':$ticket->type=='INC'?'Incident':'NC';
                     $ketick->Etat = $states[$ticket->etat];
+                    $ketick->Priorite = $prios[$ticket->urgence];
 
                     $dateEcheance = new DateTime($ticket->dateEcheance);
                     $ketick->DateEcheance = $dateEcheance->getTimestamp();
@@ -723,6 +733,14 @@ class GestionWs {
             ,5=>'Commercial'
             );
 
+            //Prios gestions
+            $prios = array(
+                0=>'Info'
+            ,1=>'Warning'
+            ,2=>'Moyenne'
+            ,3=>'Haute'
+            );
+
             if( $tix && count($tix) ) {
                 foreach ($tix as $ticket) {
 
@@ -742,6 +760,7 @@ class GestionWs {
                         $ketick->Etat = $states[$ticket->etat];
                         $ketick->UserCrea = $ticket->userCrea;
                         $ketick->UserNext = $ticket->userNext;
+                        $ketick->Priorite = $prios[$ticket->urgence];
 
                         $ketick->addParent('Parc/Client/'.$cli->Id);
 
@@ -753,6 +772,7 @@ class GestionWs {
                         $ketick->UserNext = $ticket->userNext;
                         $ketick->Type = $ticket->type=='DEM'?'Demande':$ticket->type=='INC'?'Incident':'NC';
                         $ketick->Etat = $states[$ticket->etat];
+                        $ketick->Priorite = $prios[$ticket->urgence];
 
                         $dateEcheance = new DateTime($ticket->dateEcheance);
                         $ketick->DateEcheance = $dateEcheance->getTimestamp();
