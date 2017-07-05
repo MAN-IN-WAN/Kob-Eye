@@ -28,8 +28,12 @@ function onChangeDate(e) {
         //mise à jour des cours
         $('.horaire-tennis').removeClass('disabled');
         $('.horaire-tennis').removeClass('warning');
+
+        $('.horaire-wrapper:last-child .horaire-tennis').addClass('warning');
         console.log('RESPONSE',response);
+
         for ( var r in response.data){
+            if(response.data[r].HeureFin == 0) response.data[r].HeureFin = 24;
             for (var j=response.data[r].HeureDebut; j<=response.data[r].HeureFin; j++ ){
                 console.log('test time', r, j ,parseInt(response.data[r].HeureDebut),parseInt(response.data[r].MinuteDebut),'FIN',parseInt(response.data[r].HeureFin),parseInt(response.data[r].MinuteFin));
                 //calcul 30 min avant
@@ -74,22 +78,37 @@ $(function () {
         [!NbCol:=[!Nb!]!]
     [/IF]
     [STORPROC [!Query!]/Court|C|0|10]
+    [STORPROC [!Query!]|TC][/STORPROC]
+    [!S:=[!TC::getOneChild(Service)!]!]
+
     <form action="/[!Lien!]/Reserver" method="POST">
     <input type="hidden" name="Date" value="" class="dateform" />
     <input type="hidden" name="Court" value="[!C::Id!]" id="courform" />
     <div class="col-md-[!12:/[!NbCol!]!]">
         <h3>[!C::Titre!]</h3>
-        [STORPROC 12|H]
-            <div class="row">
-                <div class="col-xs-6 horaire-wrapper left">
-                    <input type="submit" class="horaire-tennis" id="date-[!C::Id!]-[!H:+9!]-00" name="HeureDebut" value="[!H:+9!]:00" />
-                </div>
-                <div class="col-xs-6 horaire-wrapper right">
-                    <input type="submit" class="horaire-tennis" id="date-[!C::Id!]-[!H:+9!]-30" name="HeureDebut" value="[!H:+9!]:30" />
-                </div>
+//        [STORPROC 12|H]
+//           <div class="row">
+//                <div class="col-xs-6 horaire-wrapper left">
+//                    <input type="submit" class="horaire-tennis" id="date-[!C::Id!]-[!H:+9!]-00" name="HeureDebut" value="[!H:+9!]:00" />
+ //               </div>
+ //               <div class="col-xs-6 horaire-wrapper right">
+ //                   <input type="submit" class="horaire-tennis" id="date-[!C::Id!]-[!H:+9!]-30" name="HeureDebut" value="[!H:+9!]:30" />
+ //               </div>
+ //           </div>
+//
+//        [/STORPROC]
+        <div class="row">
+        [STORPROC [!S::getHoraires()!]|H]
+            [!splitH:=[!Utils::explode(:,[!H!])!]!]
+            <div class="col-xs-6 horaire-wrapper">
+                <input type="submit" class="horaire-tennis" id="date-[!C::Id!]-[!splitH::0!]-[!splitH::1!]" name="HeureDebut" value="[!H!]" />
             </div>
-
+            [IF [!Utils::modulo([!Key!],2)!]=1]
+            </div>
+            <div class="row">
+            [/IF]
         [/STORPROC]
+        </div>
     </div>
     </form>
     [/STORPROC]

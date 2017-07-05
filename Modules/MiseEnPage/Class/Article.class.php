@@ -284,6 +284,9 @@ class MiseEnPageArticle extends genericClass{
         if(!$chain && $id != null){
             $chain = $this->getAncestry($id,0);
         }
+        //Evite les erreurs  si get ancestry retourn du vide
+        $chain = is_array($chain)? $chain : array($chain);
+
         $legacy = in_array($this->Id,$chain);
         $checked = $legacy?'checked="checked"':'';
         $aClass = $legacy?'legacy':'';

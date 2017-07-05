@@ -20,7 +20,7 @@ foreach ($vars['rows'] as $k=>$v){
     else $v->userEditName = 'inconnu';
     $v->label = $v->getFirstSearchOrder();
     if ($v->getSecondSearchOrder())
-        $v->description = $v->{$v->getSecondSearchOrder()};
+        $v->description = $v->getSecondSearchOrder();
     foreach ($vars['fields'] as $f){
         switch ($f['type']){
             case 'date':
@@ -28,7 +28,7 @@ foreach ($vars['rows'] as $k=>$v){
                 $v->{$f['name']} = date(DATE_W3C,$v->{$f['name']});
                 break;
             case 'text':
-                //transformation des test en format json compatible
+                //transformation des timestamps en format js
                 $v->{$f['name']} = Utils::cleanJson($v->{$f['name']});
                 break;
         }

@@ -183,6 +183,50 @@ class Reservation extends genericClass {
             $this->_nbinvites=1;
         }
     }
+    function setPartenairesBis($parts){
+        $cli = Sys::getOneData('Reservations','Client/UserId='.Sys::$User->Id);
+
+        $this->_partenaires = array();
+        if (is_array($parts))foreach ($parts as $k=>$p){
+            $p = (array)$p;
+            if ($p['Client']>0) {
+                //recherche du client
+                $pa = Sys::getOneData('Reservations','Partenaire/'.$p['Client']);
+                if(!$pa) {
+                    $this->addError(array("Message"=>"Une erreur a été rencontrée avec le partenaire n°".$k." !"));
+                    continue;
+                }
+
+                array_push($this->_partenaires, $pa);
+            }else {
+                $pa = Sys::getOneData('Reservations','Partenaire/Email='.$p['Email']);
+
+                if(!$pa) {
+                    $pa = genericClass::createInstance('Reservations', 'Partenaire');
+                    $pa->Nom = $p['Nom'];
+                    $pa->Email = $p['Email'];
+                    $pa->Prenom = $p['Prenom'];
+
+                    $pa->addParent($cli);
+                    $pa->Save();
+
+                    $pa = Sys::getOneData('Reservations','Partenaire/Email='.$p['Email']);
+                    if(!$pa) {
+                        $this->addError(array("Message"=>"Une erreur a été rencontrée avec le partenaire n°".$k." !"));
+                        continue;
+                    }
+                }
+
+                $cli->addChild('Partenaire',$pa->Id);
+
+                array_push($this->_partenaires, $pa);
+            }
+        }
+        if (!sizeof($parts)){
+            return false;
+        }
+    }
+
     function setNombrePartenaires($nb){
         $this->_nbinvites=$nb;
     }
@@ -396,10 +440,16 @@ class Reservation extends genericClass {
 
             //Saisie des partenaires.
             if (is_array($this->_partenaires)) foreach ($this->_partenaires as $p) {
-                //on vérifie que le partenaire n'est pas abonne
                 //creation du partenaire
-                $p->AddParent($this);
+                $s = genericClass::createInstance('Reservations', 'StatusReservation');
+                $s->Nom = 'Status_R'.$this->Id.'_P'.$p->Id;
+                $s->AddParent($this);
+                $s->Save();
+
+                $p->AddParent($s);
                 $p->Save();
+
+                $p->sendReservationMail($this,$s);
             }
 
             //Saisie des produits
@@ -495,7 +545,7 @@ class Reservation extends genericClass {
 
         require_once ("Class/Lib/Mail.class.php");
         $Mail = new Mail();
-        $Mail->Subject("Reservations Confirmation de reservation");
+        $Mail->Subject("Dome du Foot : Confirmation de reservation");
         $Mail -> From( $GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
         $Mail -> ReplyTo($GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
         $Mail -> To($cli -> Mail);
@@ -505,8 +555,8 @@ class Reservation extends genericClass {
         $bloc = new Bloc();
         $mailContent = "
             Bonjour " . $Civilite . ",<br /><br />
-            Nous vous informons que votre réservation N° " . $this->Nom . " pour le ".date("d/m/Y à H:i",$this->DateDebut)." a bien été prise en compte.<br />Attention, il est possible dans certains cas , que votre réservation court extérieur soit basculée en court couvert. Aucun supplément ne vous sera facturé. 
-            <br />Toute l'équipe de TENNIS FOREVER vous remercie de votre confiance,<br />
+            Nous vous informons que votre réservation N° " . $this->Id . " pour le ".date("d/m/Y à H:i",$this->DateDebut)." a bien été prise en compte.<br />
+            <br />Toute l'équipe du Dome du Foot vous remercie de votre confiance,<br />
             <br />Pour nous contacter : " . $GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT') . " .".$Lacommande;
 
         $bloc -> setFromVar("Mail", $mailContent, array("BEACON" => "BLOC"));
