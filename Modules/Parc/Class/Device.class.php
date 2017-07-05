@@ -50,6 +50,11 @@ class Device extends genericClass{
             }
             $ConnectionType .= $dev->ConnectionType;
         }
+        //recherche d'un tache à accomplir
+        $t = $dev->getChildren('DeviceTask');
+        if (sizeof($t)>0){
+            $task = 'http://'.Sys::$domain.'/Parc/DeviceTask/'.$t[0]->Id.'/getTask.json';
+        }else $task = '';
         //recherche de la version
         $log = Sys::getOneData('Parc','LogicielVersion/Release='.$prod);
         if (!$log) $log = Sys::getOneData('Parc','LogicielVersion/Release='.!$prod);
@@ -65,6 +70,7 @@ VncDll64=http://".Sys::$domain."/$log->VncDllFile64
 ZabbixAgent32=http://".Sys::$domain."/$log->ZabbixAgent32
 ZabbixAgent64=http://".Sys::$domain."/$log->ZabbixAgent64$ConnectionType$Commands
 Client=$dev->CodeClient
+Task=$task
 ";
     }
 

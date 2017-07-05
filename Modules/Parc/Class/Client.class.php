@@ -20,9 +20,19 @@ class Parc_Client extends genericClass {
 		}
 		// Enregistrement si pas d'erreur
 		if($this->_isVerified){
+            //Calcul montant mensuel
+            $cs = $this->getChildren('Contrat');
+            $amount = 0;
+            foreach ($cs as $c){
+                $amount += $c->MontantMensu;
+            }
+            $this->MontantMensuel = $amount;
+
 			parent::Save();
 			$this->setUser();
+
 		}
+
 	}
 
 	/**

@@ -5,7 +5,7 @@
 		<PROPERTIES category="Accès client" type="boolean" obligatoire="0" searchOrder="4" description="Activation Accès web" list="1" fiche="1" form="1" listDescr="Accès Web">AccesActif</PROPERTIES>
 		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="5" description="Identifiant Accès web"  fiche="1" form="1">AccesUser</PROPERTIES>
 		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="6" description="Mot de passe Accès Web" fiche="1" form="1">AccesPass</PROPERTIES>
-		<PROPERTIES category="Finance" type="price" description="Montant Mensuel" fiche="1" form="1" listDescr="Montant / Mois">MontantMensuel</PROPERTIES>
+		<PROPERTIES category="Finance" type="price" description="Montant Mensuel" fiche="1" form="1" list="1" listDescr="Montant / Mois">MontantMensuel</PROPERTIES>
 		<PROPERTIES category="Coordonnées" searchOrder="2" type="varchar" description="Adresse e-mail" fiche="1" form="1" list="1" listDescr="Email">Email</PROPERTIES>
 		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de téléphone" fiche="1" form="1" list="1" listDescr="Tel">Tel</PROPERTIES>
 		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de fax" fiche="1" form="1">Fax</PROPERTIES>
@@ -343,8 +343,18 @@
 		<FKEY card="0,n" data="Device,Id">DeviceId</FKEY>
 		<FKEY card="1,1" data="Client,Id">ClientId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Task" driver="mysql" AccessPoint="1" Description="Taches machines" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" >
+	<OBJECTCLASS title="DeviceTask" driver="mysql" AccessPoint="1" Description="Taches machines" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/DeviceTask.class.php">
 		<FKEY card="1,1" data="Device,Id">DeviceId</FKEY>
+		<PROPERTIES type="boolean" description="Activation" list="1" form="1" fiche="1" listDescr="Active">Enabled</PROPERTIES>
+		<PROPERTIES type="boolean" description="Succès" list="1" fiche="1" listDescr="Succès">Success</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Titre de la tache" list="1" form="1" fiche="1" listDescr="Titre">Titre</PROPERTIES>
+		<PROPERTIES type="text" description="Commandes" list="1" form="1" fiche="1" listDescr="Commandes">Commande</PROPERTIES>
+		<PROPERTIES type="text" description="Retour" fiche="1" listDescr="Retour">Log</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="DeviceTaskFiles" driver="mysql" Description="Fichiers" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" >
+		<FKEY card="1,1" data="DeviceTask,Id">TaskId</FKEY>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom du fichier" list="1" form="1" fiche="1" listDescr="Nom fichier">Nom</PROPERTIES>
+		<PROPERTIES type="file" description="Fichiers" list="1" form="1" fiche="1" listDescr="Fichier">Fichier</PROPERTIES>
 	</OBJECTCLASS>
 </SCHEMA>
 

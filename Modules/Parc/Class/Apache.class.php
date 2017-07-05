@@ -102,7 +102,7 @@ class Apache extends genericClass {
 
 		if(parent::Verify()) {
             //check ssl
-            if ($this->Ssl&&(empty($this->SslCertificate)||empty($this->SslCertificateKey))){
+            if ($this->Ssl&&$this->SslMethod=='Manuel'&&(empty($this->SslCertificate)||empty($this->SslCertificateKey))){
                 $this->addError(array("Message"=>"Pour activer SSL il faut que la clef et le certificat soient renseignés"));
                 $this->_isVerified = false;
                 return false;

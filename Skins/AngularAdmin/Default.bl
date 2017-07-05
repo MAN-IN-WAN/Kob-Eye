@@ -96,6 +96,7 @@
     <script src="Skins/AngularAdmin/assets/vendors/angular/angular.min.js"></script>
     <script src="Skins/AngularAdmin/assets/vendors/angular-route/angular-route.min.js"></script>
     <script src="Skins/AngularAdmin/assets/vendors/angular-sanitize/angular-sanitize.min.js"></script>
+    <script src="Skins/AngularAdmin/assets/vendors/angular-nl2br/angular-nl2br.js"></script>
     <!--<script src="Skins/AngularAdmin/assets/common/js/version_angular/app.js"></script>-->
     <script src="Systeme/Header/App.json"></script>
     <script src="Systeme/Header/Controllers.json"></script>
@@ -148,7 +149,7 @@
                     </span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="" role="menu">
-                    <a class="dropdown-item" href="#/Systeme/Profil"><i class="dropdown-icon icmn-user"></i> Profil</a>
+                    <a class="dropdown-item" href="#/Profile"><i class="dropdown-icon icmn-user"></i> Profil</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="/Systeme/Deconnexion"><i class="dropdown-icon icmn-exit"></i> Déconnexion</a>
                 </ul>
