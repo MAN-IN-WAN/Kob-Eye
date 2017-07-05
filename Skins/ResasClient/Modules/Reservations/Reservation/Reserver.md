@@ -26,7 +26,7 @@
     [!RES::Save()!]
     [COOKIE Set|RES|RES]
     <div class="alert alert-success">
-    La réservation a étée validée avec succès.
+    La réservation a été validée avec succès.
     </div>
     [REDIRECT][!Sys::getMenu(Reservations/Reservation)!]/[!RES::Id!]/Payer[/REDIRECT]
 [/IF]

@@ -16,10 +16,12 @@
             "Court": [!R::CourtId!],
             "MinuteDebut": "[DATE i][!R::DateDebut!][/DATE]",
             "MinuteFin": "[DATE i][!R::DateFin!][/DATE]",
-            "Service": "[!R::Service!]"
+            "Service": "[!R::Service!]",
+            "Dispo": "0"
         }
         [/STORPROC]
-        [STORPROC Reservations/Disponibilite/Debut>[!DateDeb!]&Fin<[!DateFin!]|R|0|1000|Id|DESC||Id]
+        [OBJ Reservations|Disponibilite|D]
+        [STORPROC [!D::getDispo([!DateDeb!],[!DateFin!])!]|R]
             [STORPROC Reservations/Court/Disponibilite/[!R::Id!]|C]
                 [IF [!Flag!]],[/IF]{
                 "Id":[!R::Id!],
@@ -28,7 +30,8 @@
                 "Court": [!C::Id!],
                 "MinuteDebut": "[DATE i][!R::Debut!][/DATE]",
                 "MinuteFin": "[DATE i][!R::Fin!][/DATE]",
-                "Service": "[!R::Service!]"
+                "Service": "[!R::Service!]",
+                "Dispo": "[!R::Dispo!]"
                 }
                 [!Flag:=1!]
             [/STORPROC]

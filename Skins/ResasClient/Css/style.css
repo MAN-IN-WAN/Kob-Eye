@@ -230,16 +230,16 @@ body { font-weight: normal;}
     margin:auto;
 }
 
-.horaire-wrapper.left{
+.horaire-wrapper:first-child{
     padding-right:0;
 }
-.horaire-wrapper.right{
+.horaire-wrapper:last-child{
     padding-left:0;
 }
-.horaire-wrapper.left .horaire-tennis{
+.horaire-wrapper:first-child .horaire-tennis{
     border-radius: 6px 0 0 6px ;
 }
-.horaire-wrapper.right .horaire-tennis{
+.horaire-wrapper:last-child .horaire-tennis{
     border-radius: 0 6px 6px 0;
 }
 .horaire-tennis.disabled,.horaire-tennis.disabled.warning{

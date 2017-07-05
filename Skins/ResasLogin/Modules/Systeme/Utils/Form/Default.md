@@ -44,7 +44,7 @@
         [CASE duration]
         [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]
         <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
-            <label class="col-sm-5 control-label">[!P::description!]</label>
+            <label class="col-sm-5 control-label">[!P::description!] [IF [!P::obligatoire!]=1]<span class="obligatoire">*</span>[/IF]</label>
             <div class="col-sm-7">
                 <select class="form-control" id="Form_[!P::name!][]" name="Form_[!P::name!]">
                     <option value=""></option>
@@ -72,7 +72,7 @@
         [CASE boolean]
         [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]
         <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
-            <label class="col-sm-5 control-label">[!P::description!]</label>
+            <label class="col-sm-5 control-label">[!P::description!] [IF [!P::obligatoire!]=1]<span class="obligatoire">*</span>[/IF]</label>
             <div class="col-sm-7">
                 <input type="checkbox" name="Form_[!P::name!]" [IF [!DF!]]checked="checked"[/IF] class="switch" value="1">
             </div>
@@ -81,7 +81,7 @@
         [CASE date]
         [IF [!Form_[!P::name!]!]>0][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!Utils::getDate(d/m/Y,[!P::value!])!]!][/IF]
         <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
-            <label class="col-sm-5 control-label">[!P::description!]</label>
+            <label class="col-sm-5 control-label">[!P::description!] [IF [!P::obligatoire!]=1]<span class="obligatoire">*</span>[/IF]</label>
             <div class="col-sm-7">
                 <input type="text" class="form-control datepicker" id="inputDate" placeholder="Sélectionnez une date" value="[!DF!]"  name="Form_[!P::name!]">
             </div>
@@ -90,7 +90,7 @@
         [CASE fkey]
             [IF [!P::card!]=long]
                 <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
-                    <label class="col-sm-5 control-label">[!P::parentDescription!]</label>
+                    <label class="col-sm-5 control-label">[!P::parentDescription!] [IF [!P::obligatoire!]=1]<span class="obligatoire">*</span>[/IF]</label>
                     <div class="col-sm-7">
                         <div class="row">
                         [STORPROC [!P::objectModule!]/[!P::objectName!]|C]
@@ -110,7 +110,7 @@
             [ELSE]
                 [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]
                 <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
-                    <label class="col-sm-5 control-label">[!P::parentDescription!]</label>
+                    <label class="col-sm-5 control-label">[!P::parentDescription!] [IF [!P::obligatoire!]=1]<span class="obligatoire">*</span>[/IF]</label>
                     <div class="col-sm-7">
                         <select class="form-control" id="Form_[!P::name!][]" name="Form_[!P::name!]">
                             <option value=""></option>
@@ -125,7 +125,7 @@
         [CASE image]
         [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]
         <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
-            <label for="Form_[!P::name!]" class="col-sm-5 control-label">[!P::description!]</label>
+            <label for="Form_[!P::name!]" class="col-sm-5 control-label">[!P::description!] [IF [!P::obligatoire!]=1]<span class="obligatoire">*</span>[/IF]</label>
             <div class="col-sm-7">
                 [IF [!DF!]]
                 <img src="/[!DF!]"   class="img-responsive" style="max-height: 200px;"/>
@@ -148,7 +148,7 @@
         [CAE password]
             [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]
             <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
-                <label for="Form_[!P::name!]" class="col-sm-5 control-label">[!P::description!]</label>
+                <label for="Form_[!P::name!]" class="col-sm-5 control-label">[!P::description!] [IF [!P::obligatoire!]=1]<span class="obligatoire">*</span>[/IF]</label>
                 <div class="col-sm-7">
                     <input type="password" class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]" placeholder="" value="[!DF!]">
                 </div>
@@ -158,7 +158,7 @@
             [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]
             [IF [!P::Values!]]
                 <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
-                    <label class="col-sm-5 control-label">[!P::description!]</label>
+                    <label class="col-sm-5 control-label">[!P::description!] [IF [!P::obligatoire!]=1]<span class="obligatoire">*</span>[/IF]</label>
                     <div class="col-sm-7">
                         <select class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]">
                             [STORPROC [!P::Values!]|C]
@@ -169,7 +169,7 @@
                 </div>
             [ELSE]
                 <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
-                  <label for="Form_[!P::name!]" class="col-sm-5 control-label">[!P::description!]</label>
+                  <label for="Form_[!P::name!]" class="col-sm-5 control-label">[!P::description!] [IF [!P::obligatoire!]=1]<span class="obligatoire">*</span>[/IF]</label>
                   <div class="col-sm-7">
                     <input type="text" class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]" placeholder="" value="[!DF!]">
                   </div>

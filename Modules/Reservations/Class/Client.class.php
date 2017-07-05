@@ -188,7 +188,20 @@ class Client extends genericClass {
 			//nouvel utilisateur envoyer email de confirmation
 			$this->EnvoiEmailConfirmation();
 		}
+
 		genericClass::Save();
+
+		$partenaire = $this->getOneParent('Partenaire');
+		if(!$partenaire) $partenaire = Sys::getOneData('Reservations','Partenaire/Email='.$this->Get("Mail"));
+		if(!$partenaire) {
+		    $partenaire = genericClass::createInstance('Reservations','Partenaire');
+            $partenaire->Nom = $this->Get("Nom");
+            $partenaire->Prenom = $this->Get("Prenom");
+        }
+        $partenaire->Email = $this->Get("Mail");
+        $partenaire->Save();
+        $this->addParent($partenaire);
+        genericClass::Save();
 		return true;
 	}
 
@@ -196,9 +209,9 @@ class Client extends genericClass {
 		require_once ("Class/Lib/Mail.class.php");
 		$user = $this->getUser();
 		$Mail = new Mail();
-		$Mail->Subject("Confirmation de'inscription au Dôme du Foot");
-		$Mail -> From( "contact@le-dome-du-foot.fr");
-		$Mail -> ReplyTo("contact@le-dome-du-foot.fr");
+		$Mail->Subject("Confirmation d'inscription au Dôme du Foot");
+		$Mail -> From( $GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
+		$Mail -> ReplyTo($GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
 		$Mail -> To($this -> Mail);
 		$bloc = new Bloc();
 		$mailContent = "
