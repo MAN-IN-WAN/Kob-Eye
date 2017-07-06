@@ -18,7 +18,9 @@
         <PROPERTIES description="Notes"     type="text" form="1" fiche="1">Notes</PROPERTIES>
         <PROPERTIES description="Statuts"  values="-18,Junior,Adulte,Etudiant,Couple"  type="varchar" form="1" fiche="1">Statuts</PROPERTIES>
         <PROPERTIES description="Numéro de licence"     type="varchar" form="1" fiche="1">Licence</PROPERTIES>
-        <PROPERTIES description="Est un adhérent"  default="0" type="boolean" form="1" searchOrder="5" list="5" fiche="1">Abonne</PROPERTIES>
+        <PROPERTIES description="Réservation gratuite"  default="0" type="boolean" form="1" searchOrder="5" list="5" fiche="1">Abonne</PROPERTIES>
+        <PROPERTIES Order="18" description="Disponible pour participer à des matchs" type="boolean" client="1" fiche="1" form="1">Disponible</PROPERTIES>
+        <PROPERTIES Order="19" description="Commentaires pour les organisateurs de matchs" type="text" fiche="1" client="1" form="1">Details</PROPERTIES>
         <PROPERTIES Order="17" type="Int"  searchOrder="6">UserId</PROPERTIES>
         <FKEY card="0,1" data="Partenaire,Id" form="1" parentDescription="Partenaire" listDescr="Partenaire">PartenaireId</FKEY>
         <FUNCTION title="Renvoyer email de confirmation">RenvoiEmailConfirmation</FUNCTION>
@@ -34,12 +36,13 @@
         <PROPERTIES searchOrder="1" description="Description" type="varchar" list="1" >Nom</PROPERTIES>
         <PROPERTIES searchOrder="1" description="Date de début" type="datetime" obligatoire="1" list="1" form="1" fiche="1">DateDebut</PROPERTIES>
         <PROPERTIES searchOrder="2" description="Date de fin" type="datetime" obligatoire="1" list="1" form="1" fiche="1">DateFin</PROPERTIES>
+        <PROPERTIES searchOrder="2" description="Paiement des participants" type="boolean" list="1" fiche="1">PaiementParticipant</PROPERTIES>
         <PROPERTIES searchOrder="2" description="Validité" type="boolean" list="1" form="1" fiche="1">Valide</PROPERTIES>
-        <PROPERTIES searchOrder="2" description="Facturé" type="boolean" list="1" form="1" fiche="1">Facture</PROPERTIES>
+        <PROPERTIES searchOrder="2" description="Facturé" type="boolean" list="1" fiche="1">Facture</PROPERTIES>
         <PROPERTIES searchOrder="3" description="Nombre total de participant" listDescr="Participants" type="int" list="1" form="1" default="1" fiche="1">NbParticipant</PROPERTIES>
         <FKEY card="1,1" data="Client,Id" form="1" parentDescription="Client" fiche="1">ClientId</FKEY>
-        <FKEY card="1,1" data="Service,Id" form="1" parentDescription="Service" fiche="1">ServiceId</FKEY>
-        <FKEY card="1,1" data="Court,Id" form="1" parentDescription="Court numéro" fiche="1">CourtId</FKEY>
+        <FKEY card="1,1" data="Service,Id" form="1" parentDescription="Type de réservation" fiche="1">ServiceId</FKEY>
+        <FKEY card="1,1" data="Court,Id" form="1" parentDescription="Terrain" fiche="1">CourtId</FKEY>
         <FUNCTION title="Renvoyer le mail">SendMail</FUNCTION>
         <VIEW title="ReservationList" default="1">
             <OBJECTCLASS title="Reservation" select="*" filters="">
@@ -63,6 +66,8 @@
         <PROPERTIES searchOrder="1" description="Nom du partenaire" type="varchar" length="200" obligatoire="1" list="1" form="1">Nom</PROPERTIES>
         <PROPERTIES searchOrder="1" description="Prénom du partenaire" type="varchar" length="200" obligatoire="1" list="1" form="1">Prenom</PROPERTIES>
         <PROPERTIES description="Email du partenaire" type="varchar" list="1" form="1">Email</PROPERTIES>
+        <PROPERTIES description="Détails du partenaire" type="text" list="1" form="1">Details</PROPERTIES>
+        <PROPERTIES description="Disponibilité du partenaire" type="boolean" list="1" form="1">Disponible</PROPERTIES>
         <FKEY card="1,n" data="StatusReservation,Id" form="1" parentDescription="Status partenaire/reservation" listDescr="Status partenaire/reservation">StatusReservationId</FKEY>
         <FKEY card="1,n" data="Client,Id" form="1" parentDescription="Client" listDescr="Client">ClientId</FKEY>
     </OBJECTCLASS>
@@ -70,6 +75,7 @@
         <PROPERTIES searchOrder="1" description="Nom du partenaire" type="varchar" length="200" obligatoire="1" list="1" form="1">Nom</PROPERTIES>
         <PROPERTIES searchOrder="2" description="Sera présent" type="varchar" length="20" values="Oui,Non,NC" default="NC" list="1" form="1">Present</PROPERTIES>
         <PROPERTIES  description="A payé" type="boolean" default="0" list="1" form="1">Paye</PROPERTIES>
+        <PROPERTIES  description="Mail envoyé" type="boolean" default="0" list="1" form="1">MailEnvoye</PROPERTIES>
         <PROPERTIES  description="Montant Payé" type="varchar" length="200" default="0" list="1" form="1">MontantPaye</PROPERTIES>
         <FKEY card="1,1" data="Reservation,Id" form="1" parentDescription="Réservation" listDescr="Réservation">ReservationId</FKEY>
     </OBJECTCLASS>
@@ -129,7 +135,7 @@
         <PROPERTIES Order="3" description="Fin" type="datetime" list="1" form="1" fiche="1" >Fin</PROPERTIES>
         <PROPERTIES Order="4" description="Recurrence Hebdo" type="boolean" Default="0" list="1" form="1" fiche="1" >RecurrenceHebdo</PROPERTIES>
         <PROPERTIES Order="4" description="Disponible" type="boolean" Default="0" list="1" form="1" fiche="1" >Dispo</PROPERTIES>
-        <FKEY card="0,n" data="Court,Id" list="1" form="1" fiche="1" parentDescription="Court numéro">CourtId</FKEY>
+        <FKEY card="0,n" data="Court,Id" list="1" form="1" fiche="1" parentDescription="Terrain">CourtId</FKEY>
     </OBJECTCLASS>
     <OBJECTCLASS title="Paiement" driver="mysql" AccessPoint="0" master="0" Description="Paiements"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/Reservations/Class/Paiement.class.php">
         <PROPERTIES searchOrder="2" description="Montant (TTC)" type="float" list="1" listDescr="Montant" format="2dec">Montant</PROPERTIES>
@@ -175,7 +181,7 @@
         <PROPERTIES searchOrder="3"	description="Montant unitaire TTC" type="price" list="2" listDescr="Montant unitaire TTC" listWidth="100">MontantUnitaireTTC</PROPERTIES>
         <PROPERTIES searchOrder="3"	description="Montant TTC" type="price" list="2" listDescr="Montant TTC" listWidth="100">MontantTTC</PROPERTIES>
         <FKEY card="0,1" data="Reservation,Id">ReservationId</FKEY>
-        <FKEY card="0,1" data="Service,Id">ServiceId</FKEY>
+        <FKEY card="0,1" data="Service,Id" hidden="1">ServiceId</FKEY>
         <FKEY card="1,1" data="Facture,Id">FactureId</FKEY>
     </OBJECTCLASS>
 </SCHEMA>

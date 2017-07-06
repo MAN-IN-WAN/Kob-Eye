@@ -1772,7 +1772,7 @@ class genericClass extends Root {
 	 * @param String File Name
 	 * @return String New name of the file
 	 */
-	private function normalizeFileName($chaine) {
+	protected function normalizeFileName($chaine) {
 		//On enleve les accents
 		$chaine = strtr($chaine, "ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ", "aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynn");
 		//On remplace tous ce qui n est pas une lettre ou un chiffre par un _

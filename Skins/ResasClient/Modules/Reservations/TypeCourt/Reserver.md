@@ -11,6 +11,12 @@
             [!RES::setNombrePartenaires([!NombreParticipant:-1!])!]
         [/CASE]
         [CASE Nominatif]
+            [IF [!PaiementParticipant!]=1]
+            [METHOD RES|Set]
+                [PARAM]PaiementParticipant[/PARAM]
+                [PARAM]1[/PARAM]
+            [/METHOD]
+            [/IF]
             [!RES::setPartenairesBis([!Partenaire!])!]
         [/CASE]
     [/SWITCH]
@@ -88,7 +94,13 @@
     </div>
     [/CASE]
     [CASE Nominatif]
-    <h5>Indiquez les nom des paticipants</h5>
+    <div class="form-group group-PaiementParticipant">
+        <label class="col-sm-5 control-label">Paiement des participants</label>
+        <div class="col-sm-7">
+            <input type="checkbox" name="PaiementParticipant" [IF [!PaiementParticipant!]]checked="checked"[/IF] class="switch" value="1">
+        </div>
+    </div>
+    <h5>Indiquez les nom des participants</h5>
     <div class="form-inline" id="Partenaires">
     </div>
     <br />
