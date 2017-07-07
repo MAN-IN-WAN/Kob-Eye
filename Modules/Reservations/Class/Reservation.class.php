@@ -353,9 +353,13 @@ class Reservation extends genericClass {
         $tc = $tc[0];
         if (!$court) return false;
 
+        klog::l('this dispo',$this);
+
+
         if ($this->DateDebut && $this->DateFin){
             //RESERVATION
             if ($tc->Reservation=='Horaire') {
+
                 //test du debut à cheval
                 $out = Sys::getCount('Reservations', 'Court/' . $court->Id . '/Reservation/Valide=1&DateDebut>=' . $this->DateDebut . '&DateDebut<' . $this->DateFin);
                 if ($out) return false;
@@ -369,24 +373,36 @@ class Reservation extends genericClass {
                 $out = Sys::getCount('Reservations', 'Court/' . $court->Id . '/Reservation/Valide=1&DateFin>=' . $this->DateFin . '&DateDebut<=' . $this->DateDebut);
                 if ($out) return false;
             }
+
+
             //DISPONIBILITE
             //test du debut à cheval
-            $out = Sys::getCount('Reservations','Court/'.$court->Id.'/Disponibilite/Debut>='.$this->DateDebut.'&Debut<'.$this->DateFin);
+            $out = Sys::getCount('Reservations','Court/'.$court->Id.'/Disponibilite/Dispo=0&Debut>='.$this->DateDebut.'&Debut<'.$this->DateFin);
             if ($out) return false;
             //test de la fin à cheval
-            $out = Sys::getCount('Reservations','Court/'.$court->Id.'/Disponibilite/Fin>'.$this->DateDebut.'&Fin<='.$this->DateFin);
+            $out = Sys::getCount('Reservations','Court/'.$court->Id.'/Disponibilite/Dispo=0&Fin>'.$this->DateDebut.'&Fin<='.$this->DateFin);
             if ($out) return false;
             //test des deux en encadrement intérieur
-            $out = Sys::getCount('Reservations','Court/'.$court->Id.'/Disponibilite/Fin<='.$this->DateFin.'&Debut>='.$this->DateDebut);
+            $out = Sys::getCount('Reservations','Court/'.$court->Id.'/Disponibilite/Dispo=0&Fin<='.$this->DateFin.'&Debut>='.$this->DateDebut);
             if ($out) return false;
             //test les deux en encadrement extérieur
-            $out = Sys::getCount('Reservations','Court/'.$court->Id.'/Disponibilite/Fin>='.$this->DateFin.'&Debut<='.$this->DateDebut);
+            $out = Sys::getCount('Reservations','Court/'.$court->Id.'/Disponibilite/Dispo=0&Fin>='.$this->DateFin.'&Debut<='.$this->DateDebut);
             if ($out) return false;
             return true;
         }else return false;
     }
 
     function Verify() {
+        if(strpos($this->DateDebut,'/') || strpos($this->DateDebut,':')){
+            $datetime = DateTime::createFromFormat('d/m/Y H:i',$this->DateDebut);
+            $this->DateDebut = $datetime->getTimestamp();
+        }
+        if(strpos($this->DateFin,'/') || strpos($this->DateFin,':')){
+            $datetime = DateTime::createFromFormat('d/m/Y H:i',$this->DateFin);
+            $this->DateFin = $datetime->getTimestamp();
+        }
+
+
         if (!$this->checkClient()){
             $this->addError(array("Message"=>"Veuillez saisir le client pour cette réservation"));
         }
@@ -405,7 +421,9 @@ class Reservation extends genericClass {
             if (!$this->checkService()) {
                 $this->addError(array("Message" => "Veuillez saisir le service pour cette réservation"));
             }
+            klog::l('before');
             if (!$this->checkDispo()) {
+                klog::l('after');
                 $this->addError(array("Message" => "Cette horaire n'est pas disponible"));
                 $this->Valide = false;
             }
@@ -427,6 +445,9 @@ class Reservation extends genericClass {
     }
 
     function Save(){
+        $this->Verify();
+        if (sizeof($this->Error)) return false;
+
         $new = false;
         if (!$this->Id) {
             $new = true;
@@ -437,19 +458,26 @@ class Reservation extends genericClass {
             $service = $this->getService();
             $client = $this->getClient();
 
+            $ligne = $this->getOneChild('LigneFacture/Type=Reservation');
+            $montant = $ligne->MontantTTC;
+            if (is_array($this->_partenaires))
+                $montantPart = $montant / sizeof($this->_partenaires);
 
             //Saisie des partenaires.
             if (is_array($this->_partenaires)) foreach ($this->_partenaires as $p) {
                 //creation du partenaire
                 $s = genericClass::createInstance('Reservations', 'StatusReservation');
                 $s->Nom = 'Status_R'.$this->Id.'_P'.$p->Id;
+                if($this->PaiementParticipant){
+                    $s->MontantPaye=$montantPart;
+                }else{
+                    $s->Paye =true;
+                }
                 $s->AddParent($this);
                 $s->Save();
 
                 $p->AddParent($s);
                 $p->Save();
-
-                $p->sendReservationMail($this,$s);
             }
 
             //Saisie des produits
@@ -457,6 +485,18 @@ class Reservation extends genericClass {
                 //creation du partenaire
                 $p->AddParent($this);
                 $p->Save();
+            }
+        }
+
+        if($this->Valide){
+            $status = $this->getChildren('StatusReservation');
+
+            foreach($status as $s){
+                if($s->MailEnvoye) continue;
+                $p = $s->getOneChild('Partenaire');
+                $p->sendReservationMail($this,$s);
+                $s->MailEnvoye = true;
+                $s->Save();
             }
         }
 
@@ -474,10 +514,22 @@ class Reservation extends genericClass {
             $facts = Sys::getData('Reservations', 'Reservation/'.$this->Id.'/Facture');
             foreach($facts as $f) $f->Delete();
 
+            //suppression des status après envoi de mail pour prevenir
+            $status = Sys::getData('Reservations', 'Reservation/'.$this->Id.'/StatusReservation');
+            foreach($status as $s) {
+                $p = $s->getOneChild('Partenaire');
+                if($p && $s->MailEnvoye) $p->sendAnnulationMail($this);
+                $status->Delete();
+            }
+
             parent::Delete();
         }
     }
     function getTotal() {
+        $cli = $this -> getClient();
+        if($cli->Abonne) return 0;
+
+
         $lf = $this->getLigneFacture();
         var_dump($lf);
         $total = 0;
@@ -546,12 +598,12 @@ class Reservation extends genericClass {
 
         require_once ("Class/Lib/Mail.class.php");
         $Mail = new Mail();
-        $Mail->Subject("Dome du Foot : Confirmation de reservation");
+        $Mail -> Subject("Dome du Foot : Confirmation de reservation");
         $Mail -> From( $GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
         $Mail -> ReplyTo($GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
         $Mail -> To($cli -> Mail);
         //$Mail -> To('enguer@enguer.com');
-        $Mail -> Bcc('enguer@enguer.com');
+        $Mail -> Bcc('gcandella@abtel.fr');
         $Mail -> Cc($GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
         $bloc = new Bloc();
         $mailContent = "

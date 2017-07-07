@@ -169,15 +169,24 @@ class Systeme extends Module {
     }
 
     static function retrievePassword($email){
+        @include_once('Class/Lib/Mail.class.php');
         //recherche du compte
         $u = Sys::getOneData('Systeme','User/Mail='.$email);
         if ($u){
             $np = substr($u->CodeVerif,0,8);
 
+            //On suppose qu'on ne gere pas de domain du style xxxx.co.uk
+            $sendingDom = explode('.',Sys::$domain);
+            if(sizeof($sendingDom)>2){
+                $baseDom = $sendingDom[sizeof($sendingDom) - 2].'.'.$sendingDom[sizeof($sendingDom) - 1];
+            }else{
+                $baseDom = Sys::$domain;
+            }
+
             $Mail = new Mail();
             $Mail->Subject("Mot de passe oublié ".Sys::$domain);
-            $Mail -> From("noreply@".Sys::$domain);
-            $Mail -> ReplyTo("noreply@".Sys::$domain);
+            $Mail -> From("noreply@".$baseDom);
+            $Mail -> ReplyTo("noreply@".$baseDom);
             $Mail -> To($u->Mail);
             $bloc = new Bloc();
             $mailContent = "

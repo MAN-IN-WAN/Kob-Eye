@@ -82,7 +82,7 @@ class Client extends genericClass {
 		$Utilisateur->Set("Pass",$this->Pass);
 		$Utilisateur->Set("Admin","0");
 		$Utilisateur->Set("Actif",$this->Get("Actif"));
-		$Utilisateur->AddParent("Systeme/Group/".RESERVATION_CLIENT_GROUP);
+		$Utilisateur->AddParent("Systeme/Group/".RESERVATIONS_CLIENT_GROUP);
 		return $Utilisateur;
 	}
 
@@ -105,7 +105,7 @@ class Client extends genericClass {
 		  $Utilisateur->Set("Pass",$this->Pass);
 		}
 		$Utilisateur->Set("Admin","0");
-		$Utilisateur->AddParent("Systeme/Group/".RESERVATION_CLIENT_GROUP);
+		$Utilisateur->AddParent("Systeme/Group/".RESERVATIONS_CLIENT_GROUP);
 		$Utilisateur->Save();
 		return $Utilisateur;
 	}
@@ -137,19 +137,25 @@ class Client extends genericClass {
 			$Utilisateur = $this->getUser();
 			$Utilisateur->Verify();
 			genericClass::Verify();
-			if (is_array($this->Error)&&is_array($Utilisateur->Error))
-				$this->Error = array_merge($this->Error,$Utilisateur->Error);
-			elseif (!is_array($this->Error)&&is_array($Utilisateur->Error))
-				$this->Error = $Utilisateur->Error;
+//			if (is_array($this->Error)&&is_array($Utilisateur->Error))
+//				$this->Error = array_merge($this->Error,$Utilisateur->Error);
+//			elseif (!is_array($this->Error)&&is_array($Utilisateur->Error))
+//				$this->Error = $Utilisateur->Error;
+            if (!is_array($this->Error))
+                $this->Error = array();
+
 			$Errors = Array();
 			if (isset($this->Error)&&is_array($this->Error))foreach ($this->Error as $E){
 				$f= false;
 				foreach ($Errors as $e)if ($e["Prop"]==$E["Prop"])$f=true;
 				if (!$f)$Errors[] = $E;
 			}
-			$this->Error = array_merge((array)$this->Error,(array)$Errors);
+			$this->Error = (array)$Errors;
+
 			return !sizeof($this->Error);
 		}
+
+
 		return genericClass::Verify();
 	}
 	
@@ -195,10 +201,12 @@ class Client extends genericClass {
 		if(!$partenaire) $partenaire = Sys::getOneData('Reservations','Partenaire/Email='.$this->Get("Mail"));
 		if(!$partenaire) {
 		    $partenaire = genericClass::createInstance('Reservations','Partenaire');
-            $partenaire->Nom = $this->Get("Nom");
-            $partenaire->Prenom = $this->Get("Prenom");
         }
+        $partenaire->Nom = $this->Get("Nom");
+        $partenaire->Prenom = $this->Get("Prenom");
         $partenaire->Email = $this->Get("Mail");
+        $partenaire->Disponible = $this->Get("Disponible");
+        $partenaire->Details = $this->Get("Details");
         $partenaire->Save();
         $this->addParent($partenaire);
         genericClass::Save();
@@ -209,7 +217,7 @@ class Client extends genericClass {
 		require_once ("Class/Lib/Mail.class.php");
 		$user = $this->getUser();
 		$Mail = new Mail();
-		$Mail->Subject("Confirmation d'inscription au Dôme du Foot");
+		$Mail->Subject("D.D.F: Confirmation d'inscription");
 		$Mail -> From( $GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
 		$Mail -> ReplyTo($GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
 		$Mail -> To($this -> Mail);
@@ -225,6 +233,36 @@ class Client extends genericClass {
 		$Mail -> Body($bloc -> Affich());
 		$Mail -> Send();
 	}
+
+    function  sendConfirmationPartenaireMail($present,$partenaire,$reservation) {
+        require_once ("Class/Lib/Mail.class.php");
+        $user = $this->getUser();
+
+        $Mail = new Mail();
+        $sub = $present ? "D.D.F: Présence Confirmée" : "D.D.F: Absence signalée";
+        $Mail -> Subject($sub);
+        $Mail -> From( $GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
+        $Mail -> ReplyTo($GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
+        $Mail -> To($this -> Mail);
+        $bloc = new Bloc();
+        $mailContent1 = "
+			Bonjour " . $this->Civilite . " ".$this->Nom." ".$this->Prenom.",<br />
+			Votre partenaire ".$partenaire->Nom." ".$partenaire->Prenom." viens juste de confirmer sa présence lors du match du ".date('d/m/Y à H:i:s',$reservation->DateDebut).".<br/>
+			<br />Toute l'équipe du Dome du Foot vous remercie de votre confiance,<br />
+            <br />Pour nous contacter : " . $GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT') . " .";
+        $mailContent2 = "
+			Bonjour " . $this->Civilite . " ".$this->Nom." ".$this->Prenom.",<br />
+			Votre partenaire ".$partenaire->Nom." ".$partenaire->Prenom." viens juste de nous signaler qu'il ne pourrait pas être présent lors du match du ".date('d/m/Y à H:i:s',$reservation->DateDebut).".<br/>
+			<br />Toute l'équipe du Dome du Foot vous remercie de votre confiance,<br />
+            <br />Pour nous contacter : " . $GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT') . " .";
+
+        $bloc -> setFromVar("Mail", ($present)?$mailContent1:$mailContent2, array("BEACON" => "BLOC"));
+        $Pr = new Process();
+        $bloc -> init($Pr);
+        $bloc -> generate($Pr);
+        $Mail -> Body($bloc -> Affich());
+        $Mail -> Send();
+    }
 
 	function confirmAccount() {
 		$this->Actif = 1;

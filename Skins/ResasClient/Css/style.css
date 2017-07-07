@@ -266,3 +266,12 @@ body { font-weight: normal;}
 .breadcrumb a,.breadcrumb a:visited{
     color: #fff;
 }
+.label-custom{
+    border-radius:  0.25em;
+    display: inline;
+    padding: .2em .6em .3em;
+    font-weight: bold;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+}

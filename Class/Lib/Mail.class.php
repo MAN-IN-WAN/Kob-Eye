@@ -1,6 +1,11 @@
 <?php
-include 'Class/Lib/PHPMailer.class.php';
+include 'Class/Lib/Phpmailer/class.phpmailer.php';
 if (!defined('MAIL_TYPE'))define('MAIL_TYPE','mail');
+if (!defined('MAIL_FROM'))define('MAIL_FROM','');
+if (!defined('MAIL_SERVER'))define('MAIL_SERVER','');
+if (!defined('MAIL_PORT'))define('MAIL_PORT','');
+if (!defined('MAIL_USER'))define('MAIL_USER','');
+if (!defined('MAIL_PASS'))define('MAIL_PASS','');
 class Mail extends PHPMailer{
     public $From              = MAIL_FROM;
     public $Sender            = MAIL_FROM;
@@ -10,6 +15,12 @@ class Mail extends PHPMailer{
     public $Username      = MAIL_USER;
     public $Password      = MAIL_PASS;
     public $SMTPDebug     = false;
+
+    public function __construct($exceptions = null)
+    {
+       parent::__construct($exceptions);
+       $this->CharSet = 'utf-8';
+    }
 
     function Mail(){
 		parent::__construct(false);

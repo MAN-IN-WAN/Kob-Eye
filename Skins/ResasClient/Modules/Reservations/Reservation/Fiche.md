@@ -35,11 +35,12 @@
                     <h3><b>Partenaire(s): [!Pa!]</b>
                 [/CASE]
                 [CASE Nominatif]
-                    [STORPROC Reservations/Reservation/[!R::Id!]/Partenaire|Pa]
+                    [STORPROC Reservations/Reservation/[!R::Id!]/StatusReservation|SR]
                     <h3><b>Partenaire(s):</b>
                         <ul>
                             [LIMIT 0|100]
-                            <li>[!Pa::Nom!] <span class="label label-primary" >[!Pa::Email!]</span></li>
+                            [!Pa:=[!SR::getOneChild(Partenaire)!]!]
+                            <li>[!Pa::Nom!] [!Pa::Prenom!] : <span class="label label-primary" >[!Pa::Email!]</span>  <span class="pull-right label-custom [IF [!SR::Present!]=Oui]label-success[ELSE][IF[!SR::Present!]=Non]label-warning[ELSE]label-default[/IF][/IF]" >[!SR::Present!]</span><span class="pull-right">Présent : </span></li>
                             [/LIMIT]
                         </ul></h3>
                     [/STORPROC]

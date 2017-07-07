@@ -41,6 +41,13 @@ Consulter ma réservation<br/>
         <li>[!Lf::Quantite!] x [!Lf::Libelle!]</li>
         [/STORPROC]
     </ul>
+    [COUNT Reservations/Reservation/[!RES::Id!]/StatusReservation|NbPart]
+    [COUNT Reservations/Reservation/[!RES::Id!]/StatusReservation/Present=Oui|NbPartOk]
+    [COUNT Reservations/Reservation/[!RES::Id!]/StatusReservation/Present=Non|NbPartKo]
+    [IF [!NbPart!] > 0!]
+        Partenaires ayant confirmé : [!NbPartOk!]/[!NbPart!] <br/>
+        Partenaires ayant refusé : [!NbPartKo!]/[!NbPart!]
+    [/IF]
 </a>
         [/LIMIT]
         [/STORPROC]
