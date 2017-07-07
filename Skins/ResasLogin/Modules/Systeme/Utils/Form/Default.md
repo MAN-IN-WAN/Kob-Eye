@@ -145,13 +145,22 @@
             </div>
         </div>
         [/CASE]
-        [CAE password]
+        [CASE password]
             [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]
             <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
                 <label for="Form_[!P::name!]" class="col-sm-5 control-label">[!P::description!] [IF [!P::obligatoire!]=1]<span class="obligatoire">*</span>[/IF]</label>
                 <div class="col-sm-7">
                     <input type="password" class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]" placeholder="" value="[!DF!]">
                 </div>
+            </div>
+        [/CASE]
+        [CASE text]
+            [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]
+            <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
+              <label for="Form_[!P::name!]" class="col-sm-5 control-label">[!P::description!] [IF [!P::obligatoire!]=1]<span class="obligatoire">*</span>[/IF]</label>
+              <div class="col-sm-7">
+                <textarea class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!]" placeholder="" >[!DF!]</textarea>
+              </div>
             </div>
         [/CASE]
         [DEFAULT]

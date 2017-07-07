@@ -129,6 +129,7 @@ class genericClass extends Root {
 				}
 			}
 		}
+        klog::l($Data.'->'.$this -> {$Data});
 		//Donc pas une propriete , donc il s agit d une variable
 		if (isset($this -> {$Data}))
 			return $this -> {$Data};
@@ -1462,13 +1463,24 @@ class genericClass extends Root {
 		$Flag = Sys::$Modules[$this -> Module] -> Db -> ObjectClass[$NumObj] -> ChangeRights($this -> Id, $Pid, $Gid, $Umod, $Gmod, $Omod);
 	}
 
-	/**
+    //setter php
+    public function __set($Prop, $newValue){
+	    $this->Set($Prop, $newValue);
+    }
+    //getter php
+    public function __get($Prop){
+        klog::l($Prop);
+        return $this->Get($Prop);
+    }
+
+    /**
 	 * setRights
 	 * Define rights of this object
 	 * @param String Name of the property to define
 	 * @param Value of the property to define
 	 */
 	public function Set($Prop, $newValue) {
+
 		if (empty($Prop)) return;
 		$this -> launchTriggers(__FUNCTION__);
 		$Props = $this -> Proprietes(false, true);
@@ -1489,6 +1501,10 @@ class genericClass extends Root {
 						break;
 					case "text" :
 						break;
+                    case "date" :
+                        if(!is_int($newValue))
+                            $newValue = strtotime($newValue);
+                        break;
 					default :
 						if (is_string($newValue))
 							$newValue = trim($newValue);

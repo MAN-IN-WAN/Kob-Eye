@@ -479,6 +479,7 @@ class Reservation extends genericClass {
     }
     function getTotal() {
         $lf = $this->getLigneFacture();
+        var_dump($lf);
         $total = 0;
         foreach ($lf as $l){
             $total+= $l->MontantTTC;

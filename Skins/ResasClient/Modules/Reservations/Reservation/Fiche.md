@@ -9,12 +9,12 @@
     [/IF]
 
     [IF [!Valider!]=Payer en carte bleue]
-        [!RES::Save()!]
-        [COOKIE Set|RES|RES]
+        [!R::Save()!]
+        [COOKIE Set|RES|R]
         <div class="alert alert-success">
         La réservation a étée validée avec succès.
         </div>
-        [REDIRECT][!Sys::getMenu(Reservations/Reservation)!]/[!RES::Id!]/Payer[/REDIRECT]
+        [REDIRECT][!Sys::getMenu(Reservations/Reservation)!]/[!R::Id!]/Payer[/REDIRECT]
     [/IF]
 
     <div class="row">

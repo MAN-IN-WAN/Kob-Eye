@@ -2,7 +2,8 @@
 [!CHECK:=1!]
 
 //VERIFICATION
-[IF [!R::Verify()!]][ELSE]
+[IF [!R::Verify()!]]
+[ELSE]
     [!CHECK:=0!]
     <div class="alert alert-danger">
         <ul>
@@ -12,7 +13,6 @@
         </ul>
     </div>
 [/IF]
-
 [IF [!Valider!]=Valider la réservation]
     <div class="alert alert-success">
         La réservation a été validée avec succès.

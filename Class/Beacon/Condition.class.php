@@ -184,7 +184,12 @@ Class Condition extends Beacon{
 			//Cas tout vide
 			if ($Result[1]=='0'&&$Result[2]=='=='&&$Result[3]=='')return true;
 			//Autre
-			return eval ("if ('".utf8_encode(addslashes(htmlentities(utf8_decode(($Result[1])))))."' ".$Result[2]." '".utf8_encode(addslashes(htmlentities(utf8_decode(($Result[3])))))."')return true;");
+            if(ini_get('default_charset')=='UTF-8'){
+                return eval ("if ('".addslashes(htmlentities(($Result[1])))."' ".$Result[2]." '".addslashes(htmlentities(($Result[3])))."')return true;");
+            }else{
+                return eval ("if ('".utf8_encode(addslashes(htmlentities(utf8_decode(($Result[1])))))."' ".$Result[2]." '".utf8_encode(addslashes(htmlentities(utf8_decode(($Result[3])))))."')return true;");
+            }
+
 		}
 		return false;
 	}
