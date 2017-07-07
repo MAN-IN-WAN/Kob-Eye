@@ -262,6 +262,7 @@
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="0" list="1" fiche="1" listDescr="IP" description="IP Publique">PublicIP</PROPERTIES>
 		<PROPERTIES category="Intitulé" searchOrder="4" type="varchar" fiche="1" form="0" list="1" listDescr="Code Client" description="Code client saisi">CodeClient</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="2" obligatoire="0"  fiche="1" form="1"  listDescr="Test" description="Machine test">ModeTest</PROPERTIES>
+        <PROPERTIES type="int" obligatoire="0" fiche="1" description="Modifié récemment">Dirty</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="2" obligatoire="0" fiche="1" form="1"  listDescr="Tunnel Restart" description="Tunnel restart">RestartTunnel</PROPERTIES>
 		<PROPERTIES type="date" searchOrder="4" obligatoire="0" fiche="1" listDescr="Last seen" description="Vu pour la dernière fois">LastSeen</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="4" obligatoire="0" fiche="1" list="1" listDescr="Online" description="En ligne">Online</PROPERTIES>
@@ -282,6 +283,7 @@
 		<PROPERTIES type="varchar" searchOrder="2" obligatoire="1"  list="1" fiche="1" description="Type de connexion" listDescr="Type" values="RDP,VNC,SSH,Telnet,Https">Type</PROPERTIES>
 		<PROPERTIES type="int" obligatoire="0" fiche="1" description="Port redirection Local">PortRedirectLocal</PROPERTIES>
 		<PROPERTIES type="int" obligatoire="0" fiche="1" description="Port redirection Distant">PortRedirectDistant</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" fiche="1" description="Ip redirection Distant">IpRedirectDistant</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" description="Login" listDescr="Login">Login</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" description="Mot de passe" listDescr="Mot de passe">Password</PROPERTIES>
         <PROPERTIES type="varchar" list="1" fiche="1" description="Clef Ssh">SshKey</PROPERTIES>
