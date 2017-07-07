@@ -7,6 +7,10 @@ class DeviceConnexion extends genericClass{
         parent::save();
         $this->checkGuacamoleConnection();
         parent::save();
+
+        $dev = $this->getOneParent('Device');
+        $dev->Dirty=1;
+        $dev->Save();
     }
 
 
@@ -64,6 +68,7 @@ class DeviceConnexion extends genericClass{
         }
 
 
+        $gid=null;
         if(isset($cli->Nom)){
 
             $query = "SELECT * FROM `guacamole_connection_group` WHERE connection_group_name = '" . strtoupper(str_replace('\'',' ',$cli->Nom)) . "'";
@@ -84,7 +89,7 @@ class DeviceConnexion extends genericClass{
             case 'RDP':
                 if ($this->GuacamoleUrl == "" || $this->GuacamoleUrl == null || $this->GuacamoleId == "" || $this->GuacamoleId == null) {
 
-                    $query = "INSERT INTO `guacamole_connection` (connection_name,protocol,parent_id,max_connections,max_connections_per_user) VALUES ('" . $this->Nom . "_rdp','rdp',NULL,NULL,NULL)";
+                    $query = "INSERT INTO `guacamole_connection` (connection_name,protocol,parent_id,max_connections,max_connections_per_user) VALUES ('" . $this->Nom . "','rdp',$gid,NULL,NULL)";
                     $q = $dbGuac->query($query);
                     $lid = $dbGuac->lastInsertId();
 
@@ -133,7 +138,7 @@ class DeviceConnexion extends genericClass{
                         $q = $dbGuac->query($query);
                     }
 
-                    if(isset($gid)){
+                    if(isset($gid)&&$gid!=null){
                         $query = "UPDATE `guacamole_connection` SET parent_id ='" . $gid . "' WHERE connection_id =$this->GuacamoleId";
                         $q = $dbGuac->query($query);
                     }
@@ -156,7 +161,7 @@ class DeviceConnexion extends genericClass{
             case 'VNC':
                 if ($this->GuacamoleUrl == "" || $this->GuacamoleUrl == null || $this->GuacamoleId == "" || $this->GuacamoleId == null) {
 
-                    $query = "INSERT INTO `guacamole_connection` (connection_name,protocol,parent_id,max_connections,max_connections_per_user) VALUES ('" . $this->Nom . "_vnc','vnc',NULL,NULL,NULL)";
+                    $query = "INSERT INTO `guacamole_connection` (connection_name,protocol,parent_id,max_connections,max_connections_per_user) VALUES ('" . $this->Nom . "','vnc',$gid,NULL,NULL)";
                     $q = $dbGuac->query($query);
                     $lid = $dbGuac->lastInsertId();
 
@@ -177,7 +182,7 @@ class DeviceConnexion extends genericClass{
                     $query = "UPDATE `guacamole_connection` SET connection_name ='" . $this->Nom . "' WHERE connection_id =$this->GuacamoleId";
                     $q = $dbGuac->query($query);
 
-                    if(isset($gid)){
+                    if(isset($gid)&&$gid!=null){
                         $query = "UPDATE `guacamole_connection` SET parent_id ='" . $gid . "' WHERE connection_id =$this->GuacamoleId";
                         $q = $dbGuac->query($query);
                     }
@@ -192,6 +197,52 @@ class DeviceConnexion extends genericClass{
 
                 break;
             case 'SSH':
+                if ($this->GuacamoleUrl == "" || $this->GuacamoleUrl == null || $this->GuacamoleId == "" || $this->GuacamoleId == null) {
+
+                    $query = "INSERT INTO `guacamole_connection` (connection_name,protocol,parent_id,max_connections,max_connections_per_user) VALUES ('" . $this->Nom . "','ssh',$gid,NULL,NULL)";
+                    $q = $dbGuac->query($query);
+                    $lid = $dbGuac->lastInsertId();
+
+                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'hostname','localhost')";
+                    $q = $dbGuac->query($query);
+                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'port','$this->PortRedirectLocal')";
+                    $q = $dbGuac->query($query);
+                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'username','$this->Login')";
+                    $q = $dbGuac->query($query);
+                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'password','$this->Password')";
+                    $q = $dbGuac->query($query);
+                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'color-scheme','green-black')";
+                    $q = $dbGuac->query($query);
+                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'enable-sftp','true')";
+                    $q = $dbGuac->query($query);
+                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'font-name','Terminus')";
+                    $q = $dbGuac->query($query);
+                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'font-size','11')";
+                    $q = $dbGuac->query($query);
+
+                    $this->GuacamoleId = $lid;
+                    $this->GuacamoleUrl = base64_encode($lid . "\0" . 'c' . "\0" . 'mysql');
+
+                    $this->Save();
+                } else {
+                    $query = "UPDATE `guacamole_connection` SET connection_name ='" . $this->Nom . "' WHERE connection_id =$this->GuacamoleId";
+                    $q = $dbGuac->query($query);
+
+                    if(isset($gid)&&$gid!=null){
+                        $query = "UPDATE `guacamole_connection` SET parent_id ='" . $gid . "' WHERE connection_id =$this->GuacamoleId";
+                        $q = $dbGuac->query($query);
+                    }
+
+                    $query = "UPDATE `guacamole_connection_parameter` SET parameter_value = '$this->PortRedirectLocal' WHERE connection_id=$this->GuacamoleId AND parameter_name='port'";
+                    $q = $dbGuac->query($query);
+
+                    $query = "UPDATE `guacamole_connection_parameter` SET parameter_value = '$this->Login' WHERE connection_id=$this->GuacamoleId AND parameter_name='username'";
+                    $q = $dbGuac->query($query);
+
+                    $query = "UPDATE `guacamole_connection_parameter` SET parameter_value = '$this->Password' WHERE connection_id=$this->GuacamoleId AND parameter_name='password'";
+                    $q = $dbGuac->query($query);
+
+                }
 
                 break;
             case 'Telnet':

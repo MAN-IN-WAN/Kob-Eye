@@ -58,6 +58,22 @@ class Device extends genericClass{
         //recherche de la version
         $log = Sys::getOneData('Parc','LogicielVersion/Release='.$prod);
         if (!$log) $log = Sys::getOneData('Parc','LogicielVersion/Release='.!$prod);
+        $dirty = '';
+        if($dev->Dirty){
+            if($dev->ModeTest){
+                $cos=$dev->getChildren('DeviceConnexion');
+                $dirty = "Ports=";
+                foreach ($cos as $co){
+                    $ip = $co->IpRedirectDistant!=''?$co->IpRedirectDistant:'localhost';
+                    $dirty .= 'R'.$co->PortRedirectLocal.'='.$ip.':'.$co->PortRedirectDistant.',';
+                }
+                $dirty = rtrim($dirty,',');
+                $dev->Dirty = 0;
+                $dev->Save();
+            }
+        }
+
+
         return "Version=$log->Version
 Install=http://".Sys::$domain."/$log->InstallFile
 Service=http://".Sys::$domain."/$log->ServiceFile
@@ -70,8 +86,23 @@ VncDll64=http://".Sys::$domain."/$log->VncDllFile64
 ZabbixAgent32=http://".Sys::$domain."/$log->ZabbixAgent32
 ZabbixAgent64=http://".Sys::$domain."/$log->ZabbixAgent64$ConnectionType$Commands
 Client=$dev->CodeClient
+Computer=$dev->Nom
 Task=$task
+".$dirty."
 ";
+
+        /*Tasklist
+            Ports= **Chaine régénérée**   //Reinit les redirection de ports avec les infos fournies
+
+
+
+
+
+        */
+
+
+
+
     }
 
     function getConfig($uuid) {
@@ -85,7 +116,19 @@ Task=$task
             $exists->Description = $_GET["os"];
             if(isset($_GET["machine"]))
                 $exists->Type = $_GET["machine"];
-            $exists->ConnectionType = 'R'.$port_rdp.'=localhost:3389,R'.$port_vnc.'=localhost:15900';
+
+            if($exists->ModeTest){
+                $cos=$exists->getChildren('DeviceConnexion');
+                $exists->ConnectionType = "";
+                foreach ($cos as $co){
+                    $ip = $co->IpRedirectDistant!=''?$co->IpRedirectDistant:'localhost';
+                    $exists->ConnectionType .= 'R'.$co->PortRedirectLocal.'='.$ip.':'.$co->PortRedirectDistant.',';
+                }
+                $exists->ConnectionType = rtrim(',',$exists->ConnectionType);
+            }else{
+                $exists->ConnectionType = 'R'.$port_rdp.'=localhost:3389,R'.$port_vnc.'=localhost:15900';
+            }
+
             $exists->Save();
             $obj = $exists;
         }else{
