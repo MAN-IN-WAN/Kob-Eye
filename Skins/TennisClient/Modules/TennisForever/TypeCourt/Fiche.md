@@ -79,7 +79,7 @@ $(function () {
     <input type="hidden" name="Court" value="[!C::Id!]" id="courform" />
     <div class="col-md-[!12:/[!NbCol!]!]">
         <h3>[!C::Titre!]</h3>
-        [STORPROC 12|H]
+        [STORPROC 14|H]
             <div class="row">
                 <div class="col-xs-6 horaire-wrapper left">
                     <input type="submit" class="horaire-tennis" id="date-[!C::Id!]-[!H:+9!]-00" name="HeureDebut" value="[!H:+9!]:00" />

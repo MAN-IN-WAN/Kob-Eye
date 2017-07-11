@@ -64,7 +64,10 @@
                     <option value="60" [IF [!DF!]=60]selected="selected"[/IF]>1 heure</option>
                     <option value="90" [IF [!DF!]=90]selected="selected"[/IF]>1 heure 30</option>
                     <option value="120" [IF [!DF!]=120]selected="selected"[/IF]>2 heures</option>
+                    <option value="150" [IF [!DF!]=120]selected="selected"[/IF]>2 heures 30</option>
                     <option value="180" [IF [!DF!]=180]selected="selected"[/IF]>3 heures</option>
+                    <option value="210" [IF [!DF!]=180]selected="selected"[/IF]>3 heures 30</option>
+                    <option value="240" [IF [!DF!]=180]selected="selected"[/IF]>4 heures</option>
                     <option value="360" [IF [!DF!]=360]selected="selected"[/IF]>6 heures</option>
                     <option value="480" [IF [!DF!]=480]selected="selected"[/IF]>8 heures</option>
                     <option value="720" [IF [!DF!]=720]selected="selected"[/IF]>12 heures</option>
@@ -98,25 +101,25 @@
                 [!DF:=[!Utils::getDate(d/m/Y H:i:s,[!TMS::Now!])!]!]
                 [/IF]
                 [/IF]
-            <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
-            <label class="col-sm-5 control-label">[!P::description!]</label>
-            <div class="col-sm-7">
-                <div class="input-group date" id='datetimepicker[!Pos!]'>
-                    <input type="text" class="form-control datepicker" value="[!DF!]" name="Form_[!P::name!]" />
-                    <div class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </div>
+        <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
+        <label class="col-sm-5 control-label">[!P::description!]</label>
+        <div class="col-sm-7">
+            <div class="input-group date" id='datetimepicker[!Pos!]'>
+                <input type="text" class="form-control datepicker" value="[!DF!]" name="Form_[!P::name!]" />
+                <div class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
                 </div>
-                //<input type="text" class="form-control datepicker" id="inputDate" placeholder="Sélectionnez une date" value="[!DF!]"  name="Form_[!P::name!]">
             </div>
-            </div>
-            <script type="text/javascript">
-            $(function () {
-                $('#datetimepicker[!Pos!]').datetimepicker({
-                    locale: 'fr'
-                });
+            //<input type="text" class="form-control datepicker" id="inputDate" placeholder="Sélectionnez une date" value="[!DF!]"  name="Form_[!P::name!]">
+        </div>
+        </div>
+        <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker[!Pos!]').datetimepicker({
+                locale: 'fr'
             });
-            </script>
+        });
+        </script>
         [/CASE]
         [CASE date]
         [IF [!Form_[!P::name!]!]>0][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!Utils::getDate(d/m/Y,[!P::value!])!]!][/IF]

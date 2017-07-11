@@ -34,10 +34,10 @@
         -->
           </div>
     <h2 class="sub-header">Réservations du jour</h2>
-    [!Chemin:=TennisForever/Reservation/Valide=1&DateDebut>[!Utils::getTodayMorning()!]&DateFin<[!Utils::getTodayEvening()!]!]
+    [!Chemin:=TennisForever/Reservation/Valide=1&DateDebut>=[!Utils::getTodayMorning()!]&DateFin<=[!Utils::getTodayEvening():+1!]!]
     [MODULE Systeme/Utils/List?Chemin=[!Chemin!]&Mini=1]
     <h2 class="sub-header">Factures du jour</h2>
-    [!Chemin:=TennisForever/Facture/Valide=1&tmsCreate>[!Utils::getTodayMorning()!]&tmsCreate<[!Utils::getTodayEvening()!]!]
+    [!Chemin:=TennisForever/Facture/Paye=1&tmsCreate>[!Utils::getTodayMorning()!]&tmsCreate<[!Utils::getTodayEvening()!]!]
     [MODULE Systeme/Utils/List?Chemin=[!Chemin!]&Mini=1]
 </div>
 [IF [!RELOAD!]!=1]

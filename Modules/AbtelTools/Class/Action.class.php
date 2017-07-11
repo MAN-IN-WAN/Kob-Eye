@@ -4,12 +4,12 @@ class Action extends genericClass {
         private $error = '';
         
         public function __construct($o,$i){
-                try{
+                /*try{
                         $this->dbAbtel = new PDO('mysql:host=10.0.3.8;dbname=gestion','gestion','',array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
                         $this->dbAbtel->query("SET AUTOCOMMIT=1");
                 } catch (Exception $e){
                         $this->error .= print_r($e,true);
-                }
+                }*/
                 parent::__construct($o,$i);
         }
         

@@ -6,7 +6,7 @@
 
 <form class="form col-md-12 center-block" method="POST">
     <div class="form-group">
-        <input type="text" name="login" class="form-control input-lg" placeholder="Nom d'utilisateur">
+        <input type="text" name="login" class="form-control input-lg" placeholder="Adresse email">
     </div>
     <div class="form-group">
         <input type="password"  name="pass" class="form-control input-lg" placeholder="Mot de passe">

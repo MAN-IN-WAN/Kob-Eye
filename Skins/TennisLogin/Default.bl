@@ -3,7 +3,12 @@
 [HEADER JS]/Tools/Js/Jquery/1.9.2/jquery.min.js[/HEADER]
 [HEADER JS]/Tools/Css/Bootstrap/3.0/js/bootstrap.min.js[/HEADER]
 [HEADER]
-<link href='https://fonts.googleapis.com/css?family=Oleo+Script' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css'>
+[/HEADER]
+[HEADER]
+<link rel="icon" href="http://tennisforever.fr/wp-content/uploads/2015/12/cropped-balle-32x32.png" sizes="32x32" />
+<link rel="icon" href="http://tennisforever.fr/wp-content/uploads/2015/12/cropped-balle-192x192.png" sizes="192x192" />
+<link rel="apple-touch-icon-precomposed" href="http://tennisforever.fr/wp-content/uploads/2015/12/cropped-balle-180x180.png" />
 [/HEADER]
 
 <!--login modal-->

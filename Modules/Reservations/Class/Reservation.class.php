@@ -519,7 +519,7 @@ class Reservation extends genericClass {
             foreach($status as $s) {
                 $p = $s->getOneChild('Partenaire');
                 if($p && $s->MailEnvoye) $p->sendAnnulationMail($this);
-                $status->Delete();
+                $s->Delete();
             }
 
             parent::Delete();
@@ -531,7 +531,6 @@ class Reservation extends genericClass {
 
 
         $lf = $this->getLigneFacture();
-        var_dump($lf);
         $total = 0;
         foreach ($lf as $l){
             $total+= $l->MontantTTC;
