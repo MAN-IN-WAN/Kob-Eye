@@ -184,7 +184,9 @@ class Reservation extends genericClass {
         }
     }
     function setPartenairesBis($parts){
-        $cli = Sys::getOneData('Reservations','Client/UserId='.Sys::$User->Id);
+        if ($this->Id>0)
+            $cli = Sys::getOneData('Reservations','Client/Reservation/'.$this->Id);
+        else $cli = Sys::getOneData('Reservations','Client/'.$this->ClientId);
 
         $this->_partenaires = array();
         if (is_array($parts))foreach ($parts as $k=>$p){
@@ -411,29 +413,31 @@ class Reservation extends genericClass {
         }
         //on récupère le type de court
         $court= $this->getCourt();
-        $tc = $court->getParents('TypeCourt');
-        $tc = $tc[0];
-        if ($tc->Reservation=='Horaire') {
-            if (!$this->checkDate()) {
-                $this->addError(array("Message" => "Veuillez vérifier la saisie des dates"));
-            }
-            //vérifie le client
-            if (!$this->checkService()) {
-                $this->addError(array("Message" => "Veuillez saisir le service pour cette réservation"));
-            }
-            klog::l('before');
-            if (!$this->checkDispo()) {
-                klog::l('after');
-                $this->addError(array("Message" => "Cette horaire n'est pas disponible"));
-                $this->Valide = false;
-            }
-        }else{
-            if (!$this->checkDateJour()) {
-                $this->addError(array("Message" => "Veuillez vérifier la saisie de la date"));
-            }
-            if (!$this->checkDispo()) {
-                $this->addError(array("Message" => "Ce jour n'est pas disponible"));
-                $this->Valide = false;
+        if ($court) {
+            $tc = $court->getParents('TypeCourt');
+            $tc = $tc[0];
+            if ($tc->Reservation == 'Horaire') {
+                if (!$this->checkDate()) {
+                    $this->addError(array("Message" => "Veuillez vérifier la saisie des dates"));
+                }
+                //vérifie le client
+                if (!$this->checkService()) {
+                    $this->addError(array("Message" => "Veuillez saisir le service pour cette réservation"));
+                }
+                klog::l('before');
+                if (!$this->checkDispo()) {
+                    klog::l('after');
+                    $this->addError(array("Message" => "Cette horaire n'est pas disponible"));
+                    $this->Valide = false;
+                }
+            } else {
+                if (!$this->checkDateJour()) {
+                    $this->addError(array("Message" => "Veuillez vérifier la saisie de la date"));
+                }
+                if (!$this->checkDispo()) {
+                    $this->addError(array("Message" => "Ce jour n'est pas disponible"));
+                    $this->Valide = false;
+                }
             }
         }
         if (sizeof($this->Error)) return false;

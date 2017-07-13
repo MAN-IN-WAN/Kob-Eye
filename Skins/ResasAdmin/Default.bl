@@ -10,6 +10,10 @@
 //DATE PICKER
 [HEADER JS]/Tools/Css/Bootstrap/bootstrap-datetimepicker-master/build/js/bootstrap-datetimepicker.min.js[/HEADER]
 [HEADER CSS]/Tools/Css/Bootstrap/bootstrap-datetimepicker-master/build/css/bootstrap-datetimepicker.min.css[/HEADER]
+//DATE PICKER
+[HEADER JS]/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/js/bootstrap-datepicker.min.js[/HEADER]
+[HEADER CSS]/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/css/bootstrap-datepicker3.min.css[/HEADER]
+[HEADER JS]/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.fr.min.js[/HEADER]
 
 [HEADER JS]Tools/Css/Bootstrap/BootBox/bootbox.min.js[/HEADER]
 [HEADER CSS]Tools/Css/Bootstrap/Bootstrap-fileinput/css/fileinput.min.css[/HEADER]

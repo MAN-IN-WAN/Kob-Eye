@@ -241,10 +241,10 @@ class View extends Root{
 		//$this->sqlTab["Groupe"][] = $gr;
 		//Jointures
 		if (isset($T["#"]["JOIN"])&&is_array($T["#"]["JOIN"]))
-			foreach ($T["#"]["JOIN"] as $j) $this->addJoin($j,$this->ObjectClass,"m");
+			foreach ($T["#"]["JOIN"] as $j) $this->addJoin($j,$this->ObjectClass,"m",$this->ObjectClass->Prefix);
 		//Count
 		if (isset($T["#"]["COUNT"])&&is_array($T["#"]["COUNT"]))
-			foreach ($T["#"]["COUNT"] as $j) $this->addCount($j,$this->ObjectClass,"m");
+			foreach ($T["#"]["COUNT"] as $j) $this->addCount($j,$this->ObjectClass,"m",$this->ObjectClass->Prefix);
 	}
 	/**
 	 * addJoin
@@ -253,21 +253,43 @@ class View extends Root{
 	 * @param Object Parent Objet
 	 * @void 
 	 */
-	private function addJoin ($T,$P,$La){
+	private function addJoin ($T,$P,$La,$Prefix=''){
 		$this->Counter++;
 		//type de la jointure
 		$inner = (!isset($T["@"]["type"])||$T["@"]["type"]=="inner")? true:false;
 		//Récupéartion du module de l'objet à joindre
 		$mod = Sys::$Modules[(isset($T["@"]["module"]))? $T["@"]["module"]:$P->Module];
-		//Récupération de l'objet à joindre
-		$oj = $mod->Db->getObjectClass($T["@"]["title"]);
-		if (!is_object($oj))return;
 		//definition de la clef
 		$key = $T["@"]["on"];
 		//definition de l'alias;
 		$alias = $T["@"]["title"].$this->Counter;
 		//initialisation du tableau des selections
 		$Sel = Array();
+        //Récupération de l'objet à joindre
+        $oj = $mod->Db->getObjectClass($T["@"]["title"]);
+        if (!is_object($oj)){
+            //cas table d'association
+            $Ta = Array(
+                "Prefix" => $Prefix,
+                "Nom" => $T["@"]["title"],
+                "Alias" => $alias
+            );
+            //Ajout des conditions de jointure
+            $gr = Array(
+                "Lien" => "OR",
+                "Condition" => Array(
+                    $La.".".$T["@"]["on"]." = ".$alias.".".$T["@"]["target"]
+                )
+            );
+            if (!$inner){
+                $gr['Condition'][] = $La.".".$T["@"]["on"].' is null';
+            }
+            $this->sqlTab["Table"][] = $Ta;
+            $this->sqlTab["Groupe"][] = $gr;
+            foreach ($T["#"]["JOIN"] as $j) $this->addJoin($j,$this->ObjectClass,$alias);
+            return;
+        }
+
 		if ($inner){
 			//CAS INNER
 			//Detail de la table 
@@ -344,12 +366,13 @@ class View extends Root{
 		}
 		//Saisie de la table sql
 		$this->sqlTab["Select"] = array_merge($this->sqlTab["Select"],$Sel);
-		//Jointures
+
+        //Jointures
 		if (isset($T["#"]["JOIN"])&&is_array($T["#"]["JOIN"]))
-			foreach ($T["#"]["JOIN"] as $j) $this->addJoin($j,$this->ObjectClass,$alias);
+			foreach ($T["#"]["JOIN"] as $j) $this->addJoin($j,$this->ObjectClass,$alias,$oj->Prefix);
 		//Count
 		if (isset($T["#"]["COUNT"])&&is_array($T["#"]["COUNT"]))
-			foreach ($T["#"]["COUNT"] as $j) $this->addCount($j,$this->ObjectClass,$alias);
+			foreach ($T["#"]["COUNT"] as $j) $this->addCount($j,$this->ObjectClass,$alias,$oj->Prefix);
 	}
 	/**
 	 * addCount

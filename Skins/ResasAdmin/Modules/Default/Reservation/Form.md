@@ -1,0 +1,7 @@
+[INFO [!Query!]|I]
+[IF [!I::TypeSearch!]=Direct]
+    [STORPROC [!Query!]|O|0|1][/STORPROC]
+[ELSE]
+    [OBJ [!I::Module!]|[!I::ObjectType!]|O]
+[/IF]
+[MODULE Systeme/Utils/Form]

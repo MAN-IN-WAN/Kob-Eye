@@ -1,6 +1,6 @@
 <SCHEMA>
     <OBJECTCLASS title="Client" driver="mysql" AccessPoint="1" order="Nom" orderType="ASC" Description="Client" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png" Class="Modules/Reservations/Class/Client.class.php">
-        <PROPERTIES Order="3" description="Email"      type="varchar" length="200" obligatoire="1" form="1" client="1" fiche="1" searchOrder="5" unique="0">Mail</PROPERTIES>
+        <PROPERTIES Order="3" description="Email"      type="varchar" length="200" obligatoire="1" form="1" client="1" fiche="1" searchOrder="5" unique="1">Mail</PROPERTIES>
         <PROPERTIES Order="4" description="Civilite"   type="varchar" values="Madame,Monsieur" client="1" fiche="1" obligatoire="1" form="1">Civilite</PROPERTIES>
         <PROPERTIES Order="5" description="Nom"        type="varchar" length="100" obligatoire="1" list="1" form="1" fiche="1" client="1" searchOrder="1">Nom</PROPERTIES>
         <PROPERTIES Order="6" description="Prénom"     type="varchar" length="100" obligatoire="1" list="1" form="1" fiche="1" client="1" searchOrder="2">Prenom</PROPERTIES>
@@ -39,7 +39,7 @@
         <PROPERTIES searchOrder="2" description="Paiement des participants" type="boolean" list="1" fiche="1">PaiementParticipant</PROPERTIES>
         <PROPERTIES searchOrder="2" description="Validité" type="boolean" list="1" form="1" fiche="1">Valide</PROPERTIES>
         <PROPERTIES searchOrder="2" description="Facturé" type="boolean" list="1" fiche="1">Facture</PROPERTIES>
-        <PROPERTIES searchOrder="3" description="Nombre total de participant" listDescr="Participants" type="int" list="1" form="1" default="1" fiche="1">NbParticipant</PROPERTIES>
+        <PROPERTIES searchOrder="3" description="Nombre total de participant" listDescr="Participants" type="int" list="1" default="1" fiche="1">NbParticipant</PROPERTIES>
         <FKEY card="1,1" data="Client,Id" form="1" parentDescription="Client" fiche="1">ClientId</FKEY>
         <FKEY card="1,1" data="Service,Id" form="1" parentDescription="Type de réservation" fiche="1">ServiceId</FKEY>
         <FKEY card="1,1" data="Court,Id" form="1" parentDescription="Terrain" fiche="1">CourtId</FKEY>
@@ -51,7 +51,7 @@
                     <PROPERTIES type="varchar" description="Nom" alias="ClientNom">Nom</PROPERTIES>
                 </JOIN>
                 <JOIN type="outer" title="Court" on="CourtId" target="Id">
-                    <PROPERTIES type="varchar" description="Court" alias="Court">Titre</PROPERTIES>
+                    <PROPERTIES type="varchar" description="Court" alias="Court" list="1">Titre</PROPERTIES>
                     <PROPERTIES type="int" description="Court ID" alias="CourtId">Id</PROPERTIES>
                 </JOIN>
                 <JOIN type="outer" title="Service" on="ServiceId" target="Id">
@@ -78,6 +78,17 @@
         <PROPERTIES  description="Mail envoyé" type="boolean" default="0" list="1" form="1">MailEnvoye</PROPERTIES>
         <PROPERTIES  description="Montant Payé" type="varchar" length="200" default="0" list="1" form="1">MontantPaye</PROPERTIES>
         <FKEY card="1,1" data="Reservation,Id" form="1" parentDescription="Réservation" listDescr="Réservation">ReservationId</FKEY>
+        <VIEW title="StatusList" default="1">
+            <OBJECTCLASS title="StatusReservation" select="*" filters="">
+                <JOIN type="inner" title="PartenaireStatusReservationId" on="Id" target="StatusReservationId">
+                    <JOIN type="inner" title="Partenaire" on="Partenaire" target="Id">
+                        <PROPERTIES searchOrder="1" description="Nom du partenaire" type="varchar" length="200" obligatoire="1" form="1">Nom</PROPERTIES>
+                        <PROPERTIES searchOrder="1" description="Prénom du partenaire" type="varchar" length="200" obligatoire="1" list="1" form="1">Prenom</PROPERTIES>
+                        <PROPERTIES description="Email du partenaire" type="varchar" list="1" form="1">Email</PROPERTIES>
+                    </JOIN>
+                </JOIN>
+            </OBJECTCLASS>
+        </VIEW>
     </OBJECTCLASS>
     <OBJECTCLASS title="Court" driver="mysql" AccessPoint="1" Description="Emplacement" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png">
         <PROPERTIES Order="1" description="Titre" type="varchar" length="200" obligatoire="1" list="1" form="1" fiche="1" searchOrder="1">Titre</PROPERTIES>
