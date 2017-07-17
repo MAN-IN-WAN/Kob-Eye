@@ -158,7 +158,21 @@ class Client extends genericClass {
 
 		return genericClass::Verify();
 	}
-	
+
+    /**
+     * addPartenaire
+     * fonction pour ajouter un partenaire
+     */
+    function addPartenaire($id) {
+        $this->addChild('Partenaire',$id);
+    }
+    /**
+     * delPartenaire
+     * fonction pour supprimer un partenaire
+     */
+    function delPartenaire($id) {
+        $this->delChild('Partenaire',$id);
+    }
 	function getUser(){
 		if ($this->UserId)
 			$U = Sys::$Modules["Systeme"]->callData("Systeme/User/".$this->UserId);

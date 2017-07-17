@@ -84,6 +84,9 @@ body { font-weight: normal;}
     font: normal 18px/24px "Trebuchet MS", Arial, Helvetica, sans-serif;
     color: #ffffff;
 }
+.btn-tennis h3{
+    margin:0;padding:0;font-size:1.5em;font-weight:bold;
+}
 .btn-tennis:before{
     position: absolute;
     content: "";
@@ -274,4 +277,8 @@ body { font-weight: normal;}
     line-height: 1;
     color: #fff;
     text-align: center;
+}
+/*** BOOTBOX ***/
+.bootbox.modal{
+    z-index: 1031 !important;
 }

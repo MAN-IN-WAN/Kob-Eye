@@ -67,7 +67,7 @@
             [/STORPROC]
     </select>
     <h2>Les participants</h2>
-[SWITCH [!TC::GestionInvite!]|=]
+    [SWITCH [!TC::GestionInvite!]|=]
     [CASE Quantitatif]
     <div class="well" style="overflow:hidden">
         <div class="row">
@@ -94,37 +94,19 @@
     </div>
     [/CASE]
     [CASE Nominatif]
-    <div class="form-group group-PaiementParticipant row">
-        <label class="col-sm-7 control-label">Paiement des participants
-            <p style="font-weight: normal;">Chaque particpant recevra un email lui permettant de régler sa propre participation.</p>
-        </label>
-        <div class="col-sm-5" style="text-align: right;">
-            <input type="checkbox" name="PaiementParticipant" [IF [!PaiementParticipant!]]checked="checked"[/IF] class="switch pull-right" value="1">
+    <div class="form-group group-PaiementParticipant">
+        <label class="col-sm-5 control-label">Paiement des participants</label>
+        <div class="col-sm-7">
+            <input type="checkbox" name="PaiementParticipant" [IF [!PaiementParticipant!]]checked="checked"[/IF] class="switch" value="1">
         </div>
     </div>
-    <h5>Sélectionnez les participants</h5>
-    <div id="Partenaires">
+    <h5>Indiquez les nom des participants</h5>
+    <div class="form-inline" id="Partenaires">
     </div>
-
-    <div class="form-group row">
-        <div class="col-xs-10">
-        <label class="sr-only" for="SelectPartenaire">Membre</label>
-        <select class="form-control" id="SelectPartenaire" >
-           <option value="">-- Liste des partenaires enregistrés --</option>
-            [STORPROC Reservations/Client/[!Client::Id!]/Partenaire|P|0|500|Nom|ASC]
-            <option value="[!P::Id!]" data-nom="[!P::Nom!]" data-prenom="[!P::Prenom!]" data-details="[!P::Details!]" data-email="[!P::Email!]">[!P::Nom!] [!P::Prenom!]</option>
-            [/STORPROC]
-        </select>
-        </div>
-        <div class="col-xs-2">
-        <div class="form-group pull-right">
-        <a class="btn btn-danger" id="PartenaireAdd"><span class="glyphicon glyphicon-plus"></span></a>
-        </div>
-        </div>
-    </div>
-
+    <br />
+    <button type="submit" class="btn btn-default" id="PartenaireAjout"><span class="glyphicon glyphicon-plus"></span>Ajouter un Participant</button>
     [/CASE]
-[/SWITCH]
+    [/SWITCH]
     [STORPROC Reservations/Court/[!Court!]/Service/Type=Produit|S]
         <h3>Choisissez les services annexes / compléter votre réservation</h3>
         [LIMIT 0|100]
@@ -136,17 +118,9 @@
 </div>
         </form>
 <script>
-$('#PartenaireAdd').on('click',function () {
-    //récupération du partenaire sélectionné
-    var nom = $('#SelectPartenaire option:selected').attr('data-nom');
-    var prenom = $('#SelectPartenaire option:selected').attr('data-prenom');
-    var id = $('#SelectPartenaire option:selected').val();
-    var details = $('#SelectPartenaire option:selected').attr('data-details');
-    var email = $('#SelectPartenaire option:selected').attr('data-email');
-    addPartenaire(id,nom,email,prenom,details);
-});
+$('#PartenaireAjout').on('click',addPartenaire);
 var partenaire= 0;
-function addPartenaire(id,nom,email,prenom,details) {
+function addPartenaire(e,nom,email,prenom) {
     [IF [!Co::Capacite!]]
         [!Part:=[!Co::Capacite!]-1!]
         if(partenaire >= [!Part!]) return false;
@@ -155,14 +129,46 @@ function addPartenaire(id,nom,email,prenom,details) {
     if (!nom)nom='';
     if (!email)email='';
     if (!prenom)prenom='';
-    if (!details)details='';
+    if (e)
+        e.preventDefault();
     partenaire++;
     console.log('Ajout partenaire',partenaire);
-    $('#Partenaires').append($('<div class="btn-tennis del" data-nom="'+nom+'" data-id="'+id+'" data-details="'+details+'" id="part-'+id+'">'+
-        '<a class="btn btn-danger pull-right"><span class="glyphicon glyphicon-minus"></span></a>'+
-        '<h3>'+nom+' '+prenom+'</h3>'+
-        '<p>'+details+'</p>'+
-        '</div>'));
+    $('<div id="partenaire-'+partenaire+'" class="partenaire-wrapper" style="overflow: hidden;">'+
+            '<h5>Paticipant '+partenaire+'</h5>'+
+            '<div class="form-group">'+
+                '<label class="sr-only" for="partenaireEmail'+partenaire+'">Email address</label>'+
+                '<input type="email" class="form-control" id="partenaireEmail'+partenaire+'" placeholder="Adresse email" name="Partenaire['+partenaire+'][Email]" value="'+email+'" />'+
+            '</div><br/>'+
+            '<div class="form-group">'+
+                '<label class="sr-only" for="partenaireNom'+partenaire+'">Nom</label>'+
+                '<input type="text" class="form-control" id="partenaireNom'+partenaire+'" placeholder="Nom" name="Partenaire['+partenaire+'][Nom]" value="'+nom+'" />'+
+            '</div>'+
+            '<div class="form-group">'+
+                '<label class="sr-only" for="partenaireNom'+partenaire+'">Prenom</label>'+
+                '<input type="text" class="form-control" id="partenairePrenom'+partenaire+'" placeholder="Prenom" name="Partenaire['+partenaire+'][Prenom]" value="'+prenom+'" />'+
+            '</div>'+
+
+            '<span style="color: #fff;"> OU </span>'+
+            '<div class="form-group">'+
+                '<label class="sr-only" for="partenaireNom'+partenaire+'">Membre</label>'+
+                '<select class="form-control" id="partenaireNom'+partenaire+'" placeholder="Nom" name="Partenaire['+partenaire+'][Client]">'+
+                '       <option value="">-- Liste des partenaires enregistrés --</option>'+
+//                        [STORPROC Reservations/Client/Actif=1|C|0|500|Nom|ASC]
+//                            [IF [!C::Id!]!=[!Client::Id!]]
+//                        '<option value="[!C::Id!]">[!C::Nom!] [!C::Prenom!]</option>'+
+//                            [/IF]
+//                        [/STORPROC]
+                        [STORPROC Reservations/Client/[!Client::Id!]/Partenaire|P|0|500|Nom|ASC]
+                        '<option value="[!P::Id!]">[!P::Nom!] [!P::Prenom!]</option>'+
+                        [/STORPROC]
+
+                '</select>'+
+            '</div>'+
+
+            '<div class="form-group pull-right">'+
+                '<a class="btn btn-danger PartenaireSupp" onclick="suppPartenaire(this)"><span class="glyphicon glyphicon-minus"></span></a>'+
+            '</div>'+
+    '</div>').appendTo('#Partenaires');
 }
 function suppPartenaire(el) {
     console.log('supp partenaire',partenaire);
@@ -177,7 +183,7 @@ $(
             addPartenaire(null, '[!P::Nom!]', '[!P::Email!]', '[!P::Prenom!]');
             [/STORPROC]
             [ELSE]
-            //addPartenaire();
+            addPartenaire();
             [/IF]
         }
 );

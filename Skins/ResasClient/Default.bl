@@ -7,6 +7,12 @@
 [HEADER JS]/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/js/bootstrap-datepicker.min.js[/HEADER]
 [HEADER CSS]/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/css/bootstrap-datepicker3.min.css[/HEADER]
 [HEADER JS]/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.fr.min.js[/HEADER]
+//BOOTBOX CONFIRM
+[HEADER JS]/Tools/Css/Bootstrap/BootBox/bootbox.min.js[/HEADER]
+//SWITCH
+[HEADER CSS]Tools/Css/Bootstrap/bootstrap-switch-master/dist/css/bootstrap3/bootstrap-switch.min.css[/HEADER]
+[HEADER JS]Tools/Css/Bootstrap/bootstrap-switch-master/dist/js/bootstrap-switch.min.js[/HEADER]
+
 [HEADER]
 <link rel="icon" href="http://tennisforever.fr/wp-content/uploads/2015/12/cropped-balle-32x32.png" sizes="32x32" />
 <link rel="icon" href="http://tennisforever.fr/wp-content/uploads/2015/12/cropped-balle-192x192.png" sizes="192x192" />
@@ -56,3 +62,11 @@
         </div>
     </div>
 </div>
+<script>
+$('input.switch').bootstrapSwitch({
+            onColor: 'success',
+            offColor: 'danger',
+            size: 'normal',
+            handleWidth: 50
+        });
+</script>
