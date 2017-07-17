@@ -264,6 +264,7 @@ $(function () {
 </div>
 <h5>Indiquez les nom des participants</h5>
 <div class="form-inline" id="Partenaires">
+    <p class="precision">Si vous ne sélectionnez pas de partenaire déjà créé, merci de renseigner au moins le nom et le prénom.</p>
 </div>
 <br />
 <button type="submit" class="btn btn-default" id="PartenaireAjout"><span class="glyphicon glyphicon-plus"></span>Ajouter un Participant</button>

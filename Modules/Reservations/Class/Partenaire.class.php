@@ -72,7 +72,7 @@ class Partenaire extends genericClass {
 
         require_once ("Class/Lib/Mail.class.php");
         $Mail = new Mail();
-        $Mail->Subject("D.D.F: Rappel Reservation");
+        $Mail->Subject("D.D.F: Annulation Reservation");
         $Mail -> From( $GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
         $Mail -> ReplyTo($GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
         $Mail -> To($this -> Email);

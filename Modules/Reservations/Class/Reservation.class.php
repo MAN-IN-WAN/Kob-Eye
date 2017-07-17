@@ -184,9 +184,9 @@ class Reservation extends genericClass {
         }
     }
     function setPartenairesBis($parts){
-        if ($this->Id>0)
-            $cli = Sys::getOneData('Reservations','Client/Reservation/'.$this->Id);
-        else $cli = Sys::getOneData('Reservations','Client/'.$this->ClientId);
+        $cli = $this->getClient();
+
+        klog::l('$cli',$cli);
 
         $this->_partenaires = array();
         if (is_array($parts))foreach ($parts as $k=>$p){
@@ -201,7 +201,17 @@ class Reservation extends genericClass {
 
                 array_push($this->_partenaires, $pa);
             }else {
-                $pa = Sys::getOneData('Reservations','Partenaire/Email='.$p['Email']);
+                if(isset($p['Email']) && $p['Email'] != null && $p['Email'] != ''){
+                    $pa = Sys::getOneData('Reservations','Partenaire/Email='.$p['Email']);
+                } else {
+                    if(!isset($p['Prenom']) || $p['Prenom'] == null || $p['Prenom'] == '' || !isset($p['Nom']) || $p['Nom'] == null || $p['Nom'] == '') {
+                        $this->addError(array("Message" => "Une erreur a été rencontrée avec le partenaire n°" . $k . " ! Vous devez au moins définir un Nom et un Prenom."));
+                        continue;
+                    }
+
+                    $pa = Sys::getOneData('Reservations','Partenaire/Nom='.$p['Nom'].'&Prenom='.$p['Prenom']);
+                }
+
 
                 if(!$pa) {
                     $pa = genericClass::createInstance('Reservations', 'Partenaire');
@@ -212,10 +222,10 @@ class Reservation extends genericClass {
                     $pa->addParent($cli);
                     $pa->Save();
 
-                    $pa = Sys::getOneData('Reservations','Partenaire/Email='.$p['Email']);
-                    if(!$pa) {
-                        $this->addError(array("Message"=>"Une erreur a été rencontrée avec le partenaire n°".$k." !"));
-                        continue;
+                    if(isset($p['Email']) && $p['Email'] != null && $p['Email'] != ''){
+                        $pa = Sys::getOneData('Reservations','Partenaire/Email='.$p['Email']);
+                    } else {
+                        $pa = Sys::getOneData('Reservations','Partenaire/Nom='.$p['Nom'].'&Prenom='.$p['Prenom']);
                     }
                 }
 
@@ -355,8 +365,6 @@ class Reservation extends genericClass {
         $tc = $tc[0];
         if (!$court) return false;
 
-        klog::l('this dispo',$this);
-
 
         if ($this->DateDebut && $this->DateFin){
             //RESERVATION
@@ -424,7 +432,6 @@ class Reservation extends genericClass {
                 if (!$this->checkService()) {
                     $this->addError(array("Message" => "Veuillez saisir le service pour cette réservation"));
                 }
-                klog::l('before');
                 if (!$this->checkDispo()) {
                     klog::l('after');
                     $this->addError(array("Message" => "Cette horaire n'est pas disponible"));

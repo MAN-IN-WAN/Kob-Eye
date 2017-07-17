@@ -145,6 +145,7 @@
         <PROPERTIES Order="2" description="Début" type="datetime" list="1" form="1" fiche="1" >Debut</PROPERTIES>
         <PROPERTIES Order="3" description="Fin" type="datetime" list="1" form="1" fiche="1" >Fin</PROPERTIES>
         <PROPERTIES Order="4" description="Recurrence Hebdo" type="boolean" Default="0" list="1" form="1" fiche="1" >RecurrenceHebdo</PROPERTIES>
+        <PROPERTIES Order="4" description="Date fin de la Recurrence Hebdo" Default="0" type="datetime" list="1" form="1" fiche="1" >DateFinRecurrence</PROPERTIES>
         <PROPERTIES Order="4" description="Disponible" type="boolean" Default="0" list="1" form="1" fiche="1" >Dispo</PROPERTIES>
         <FKEY card="0,n" data="Court,Id" list="1" form="1" fiche="1" parentDescription="Terrain">CourtId</FKEY>
     </OBJECTCLASS>

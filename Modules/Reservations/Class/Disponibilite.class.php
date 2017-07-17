@@ -5,25 +5,29 @@ class Disponibilite extends genericClass {
     public static function getDispo($dateDebut,$dateFin){
 
         //Cas des dispos classiques
-        $dispos = Sys::getData('Reservations','Disponibilite/Debut>'.$dateDebut.'&Fin<'.$dateFin.'&Dispo=0',0,1000);
+        $dispos = Sys::getData('Reservations','Disponibilite/Debut>='.$dateDebut.'&Fin<='.$dateFin.'&Dispo=0',0,1000);
 
 
         //Cas des récurentes
-        $recus = Sys::getData('Reservations','Disponibilite/RecurrenceHebdo=1',0,1000);
+        $recus = Sys::getData('Reservations','Disponibilite/RecurrenceHebdo=1&Dispo=0',0,1000);
         if(sizeof($recus)){
             $weekDay = date('D',$dateDebut);
             foreach ($recus as $recu){
                 $wDay = date('D',$recu->Debut);
                 if($weekDay != $wDay) continue;
 
-                array_push($dispos,$recu);
-
+                if($recu->Debut <= $dateDebut && $recu->DateFinRecurrence>=$dateFin)
+                    array_push($dispos,$recu);
+                if($recu->Debut >= $dateDebut && $recu->Debut <=$dateFin)
+                    array_push($dispos,$recu);
+                if($recu->DateFinRecurrence >= $dateDebut && $recu->DateFinRecurrence <=$dateFin)
+                    array_push($dispos,$recu);
             }
         }
 
         //Cas des dispos forcées
-        $forces = Sys::getData('Reservations','Disponibilite/Debut>'.$dateDebut.'&Debut<='.($dateFin+60).'&Dispo=1',0,1000);
-        $forcesBis = Sys::getData('Reservations','Disponibilite/Fin>'.$dateDebut.'&Fin<='.($dateFin+60).'&Dispo=1',0,1000);
+        $forces = Sys::getData('Reservations','Disponibilite/Debut>'.$dateDebut.'&Debut<='.($dateFin+60).'&Dispo=1&RecurrenceHebdo=0',0,1000);
+        $forcesBis = Sys::getData('Reservations','Disponibilite/Fin>'.$dateDebut.'&Fin<='.($dateFin+60).'&Dispo=1&RecurrenceHebdo=0',0,1000);
         foreach($forcesBis as $key=>$fbi){
             foreach($forces as $force){
                 if($fbi->Id == $force->Id) unset($forcesBis[$key]);

@@ -91,12 +91,18 @@
         </div>
         [/CASE]
         [CASE datetime]
-                [IF [!Form_[!P::name!]!]>0][!DF:=[!Form_[!P::name!]!]!][ELSE]
-                [IF [!P::value!]>0]
-                [!DF:=[!Utils::getDate(d/m/Y H:i:s,[!P::value!])!]!]
+                [IF [!Form_[!P::name!]!]>0]
+                    [!DF:=[!Form_[!P::name!]!]!]
                 [ELSE]
-                [!DF:=[!Utils::getDate(d/m/Y H:i:s,[!TMS::Now!])!]!]
-                [/IF]
+                    [IF [!P::value!]>0]
+                        [!DF:=[!Utils::getDate(d/m/Y H:i:s,[!P::value!])!]!]
+                    [ELSE]
+                        [IF [!P::Default!] != 0]
+                            [!DF:=[!Utils::getDate(d/m/Y H:i:s,[!TMS::Now!])!]!]
+                        [ELSE]
+                            [!DF:=[!Utils::getDate(d/m/Y H:i:s,1)!]!]
+                        [/IF]
+                    [/IF]
                 [/IF]
             <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
             <label class="col-sm-5 control-label">[!P::description!]</label>
