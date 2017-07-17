@@ -63,11 +63,14 @@ class ReservationsTypePaiementPayBox extends Plugin implements ReservationsTypeP
 		     $PBX_ERREUR      = "http://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Reservations/Commande/Etape5');
 		//date
 		     $PBX_TIME	      =  date("c");
+		//paiement différé
+             $PBX_DIFF        = "90";
 		
 		//construction de la chaîne de paramètres
 		     //$PBX             = "PBX_MODE=$PBX_MODE PBX_SITE=$PBX_SITE PBX_RANG=$PBX_RANG PBX_IDENTIFIANT=$PBX_IDENTIFIANT PBX_WAIT=$PBX_WAIT PBX_TXT=$PBX_TXT PBX_BOUTPI=$PBX_BOUTPI PBX_BKGD=$PBX_BKGD PBX_TOTAL=$PBX_TOTAL PBX_DEVISE=$PBX_DEVISE PBX_CMD=$PBX_CMD PBX_PORTEUR=$PBX_PORTEUR PBX_EFFECTUE=$PBX_EFFECTUE PBX_REFUSE=$PBX_REFUSE PBX_ANNULE=$PBX_ANNULE PBX_ERREUR=$PBX_ERREUR PBX_RETOUR=$PBX_RETOUR PBX_REPONDRE_A=$PBX_REPONDRE_A";
 		     //$PBX             = "PBX_SITE=$PBX_SITE&PBX_RANG=$PBX_RANG&PBX_IDENTIFIANT=$PBX_IDENTIFIANT&PBX_TOTAL=$PBX_TOTAL&PBX_DEVISE=$PBX_DEVISE&PBX_CMD=$PBX_CMD&PBX_PORTEUR=$PBX_PORTEUR&PBX_RETOUR=$PBX_RETOUR&PBX_HASH=$PBX_HASH&PBX_TIME=$PBX_TIME&PBX_EFFECTUE=$PBX_EFFECTUE&PBX_REFUSE=$PBX_REFUSE&PBX_ANNULE=$PBX_ANNULE&PBX_ERREUR=$PBX_ERREUR&PBX_RETOUR=$PBX_RETOUR&PBX_REPONDRE_A=$PBX_REPONDRE_A";
-		     $PBX             = "PBX_SITE=$PBX_SITE&PBX_RANG=$PBX_RANG&PBX_IDENTIFIANT=$PBX_IDENTIFIANT&PBX_CMD=$PBX_CMD&PBX_DEVISE=$PBX_DEVISE&PBX_PORTEUR=$PBX_PORTEUR&PBX_RETOUR=$PBX_RETOUR&PBX_TOTAL=$PBX_TOTAL&PBX_TYPEPAIEMENT=$PBX_TYPEPAIEMENT&PBX_TYPECARTE=$PBX_TYPECARTE&PBX_HASH=$PBX_HASH&PBX_TIME=$PBX_TIME";
+             //$PBX             = "PBX_SITE=$PBX_SITE&PBX_RANG=$PBX_RANG&PBX_IDENTIFIANT=$PBX_IDENTIFIANT&PBX_CMD=$PBX_CMD&PBX_DEVISE=$PBX_DEVISE&PBX_PORTEUR=$PBX_PORTEUR&PBX_RETOUR=$PBX_RETOUR&PBX_TOTAL=$PBX_TOTAL&PBX_TYPEPAIEMENT=$PBX_TYPEPAIEMENT&PBX_TYPECARTE=$PBX_TYPECARTE&PBX_HASH=$PBX_HASH&PBX_TIME=$PBX_TIME";
+             $PBX= "PBX_SITE=$PBX_SITE&PBX_RANG=$PBX_RANG&PBX_IDENTIFIANT=$PBX_IDENTIFIANT&PBX_TOTAL=$PBX_TOTAL&PBX_DEVISE=$PBX_DEVISE&PBX_CMD=$PBX_CMD&PBX_PORTEUR=$PBX_PORTEUR&PBX_RETOUR=$PBX_RETOUR&PBX_HASH=$PBX_HASH&PBX_TIME=$PBX_TIME&PBX_DIFF=$PBX_DIFF";
 		/***** DEPRECATED *****/
 		//lancement paiement par exécution
 		/*ob_clean();
@@ -87,7 +90,7 @@ class ReservationsTypePaiementPayBox extends Plugin implements ReservationsTypeP
 		
 		//on renvoie le formulaire
 		return '
-		<form method="POST" id="payment-'.$PBX_CMD.'" action="https://tpeweb.e-transactions.fr/cgi/MYchoix_pagepaiement.cgi">
+		<form method="POST" id="payment-'.$PBX_CMD.'" action="https://preprod-tpeweb.e-transactions.fr/cgi/MYchoix_pagepaiement.cgi">
 			<input type="hidden" name="PBX_SITE" value="'.$PBX_SITE.'">
 			<input type="hidden" name="PBX_RANG" value="'.$PBX_RANG.'">
 			<input type="hidden" name="PBX_IDENTIFIANT" value="'.$PBX_IDENTIFIANT.'">
@@ -95,21 +98,22 @@ class ReservationsTypePaiementPayBox extends Plugin implements ReservationsTypeP
 			<input type="hidden" name="PBX_DEVISE" value="'.$PBX_DEVISE.'">
 			<input type="hidden" name="PBX_CMD" value="'.$PBX_CMD.'">
 			<input type="hidden" name="PBX_PORTEUR" value="'.$PBX_PORTEUR.'">
-			<input type="hidden" name="PBX_TYPEPAIEMENT" value="'.$PBX_TYPEPAIEMENT.'">
-			<input type="hidden" name="PBX_TYPECARTE" value="'.$PBX_TYPECARTE.'">
+<!--			<input type="hidden" name="PBX_TYPEPAIEMENT" value="'.$PBX_TYPEPAIEMENT.'">
+			<input type="hidden" name="PBX_TYPECARTE" value="'.$PBX_TYPECARTE.'">-->
 			<input type="hidden" name="PBX_RETOUR" value="'.$PBX_RETOUR.'">
-			<input type="hidden" name="PBX_EFFECTUE" value="'.$PBX_EFFECTUE.'">
+<!--			<input type="hidden" name="PBX_EFFECTUE" value="'.$PBX_EFFECTUE.'">
 			<input type="hidden" name="PBX_REFUSE" value="'.$PBX_REFUSE.'">
 			<input type="hidden" name="PBX_ANNULE" value="'.$PBX_ANNULE.'">
-			<input type="hidden" name="PBX_REPONDRE_A" value="'.$PBX_REPONDRE_A.'">
+			<input type="hidden" name="PBX_REPONDRE_A" value="'.$PBX_REPONDRE_A.'">-->
 			<input type="hidden" name="PBX_HASH" value="'.$PBX_HASH.'">
 			<input type="hidden" name="PBX_TIME" value="'.$PBX_TIME.'">
+			<input type="hidden" name="PBX_DIFF" value="'.$PBX_DIFF.'">
 			<input type="hidden" name="PBX_HMAC" value="'.$hmac.'">
 			<input type="submit" value="Envoyer">
 		</form>
 		<script>
             (function () {
-                //$("#payment-'.$PBX_CMD.'").submit();
+                $("#payment-'.$PBX_CMD.'").submit();
             })();		
         </script>
 		';

@@ -61,7 +61,7 @@
                 method: 'POST'
             }).done(function (response) {
                 //mise à jour des cours
-                $('.horaire-tennis').removeClass('disabled');
+                $('.horaire-tennis').removeClass('disabled-alt');
                 $('.horaire-tennis').removeClass('warning');
 
                 $('.horaire-wrapper:last-child .horaire-tennis').addClass('warning');
@@ -155,7 +155,7 @@
     <script>
 
     //auto reload
-    var timeout = setInterval(reloadPage, 20000);
+    //var timeout = setInterval(reloadPage, 20000);
     function reloadPage () {
         //window.location.href = '/[!Query!]';
         $.ajax({

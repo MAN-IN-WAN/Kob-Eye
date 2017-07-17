@@ -160,7 +160,7 @@ class Server extends genericClass {
         $entry = array();
         $entry['cn'] = $this->LDAPNom;
         $entry['sn'] = $this->LDAPNom;
-        $entry['uid'] = 'cn='.$this->LDAPNom.',dc=enguer,dc=com';
+        $entry['uid'] = 'cn='.$this->LDAPNom.PARC_LDAP_BASE;
         $entry['displayname'] = '' . $this->LDAPNom . ' read only';
         $entry['userpassword'] = '{SSHA}QT7YK+30GU7cAS/IeWX+xVNimqvPWDpD';
         if($new) {
@@ -812,8 +812,26 @@ class Server extends genericClass {
 	static function checkTms($KEObj) {
 		$e = array('exists' => true, 'OK' => true);
 		$connect = Server::ldapConnect();
-		$search = ldap_search(Server::$_LDAP, PARC_LDAP_BASE, 'entryuuid=' . $KEObj -> LdapID, array('modifytimestamp'));
-		$res = ldap_get_entries(Server::$_LDAP, $search);
+		if (empty($KEObj -> LdapID)) {
+		    switch (get_class($KEObj)) {
+                case "Server":
+                    $search = ldap_search(Server::$_LDAP, 'ou=servers,'.PARC_LDAP_BASE, 'ou=' . $KEObj->LDAPNom, array('modifytimestamp', 'entryuuid'));
+                    $res = ldap_get_entries(Server::$_LDAP, $search);
+                    //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
+                    $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                    $KEObj->LdapID = $res[0]['entryuuid'][0];
+                    $KEObj->LdapDN = $res[0]['dn'];
+                    $search2 = ldap_search(Server::$_LDAP, PARC_LDAP_BASE, 'cn=' . $KEObj->LDAPNom, array('modifytimestamp', 'entryuuid'));
+                    $res2 = ldap_get_entries(Server::$_LDAP, $search2);
+                    $KEObj->LdapUserTms = intval($res2[0]['modifytimestamp'][0])-10000;
+                    $KEObj->LdapUserID = $res2[0]['entryuuid'][0];
+                    $KEObj->LdapUserDN = $res2[0]['dn'];
+                break;
+            }
+        }else {
+            $search = ldap_search(Server::$_LDAP, PARC_LDAP_BASE, 'entryuuid=' . $KEObj->LdapID, array('modifytimestamp'));
+            $res = ldap_get_entries(Server::$_LDAP, $search);
+        }
 		if (!$res['count']) {
 			$e['exists'] = false;
 			return $e;
@@ -826,6 +844,7 @@ class Server extends genericClass {
 			$e['OK'] = false;
 			$e['Message'] = "Cette entrée n'est pas publiée, elle doit être incomplète. Vérifiez la cohérence de l'élément.";
 			$e['Prop'] = '';
+            $e['OK'] = true;
 		}else {
 			$e['OK'] = true;
 		}
