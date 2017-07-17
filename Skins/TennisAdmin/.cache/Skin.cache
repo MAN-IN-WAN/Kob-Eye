@@ -1,0 +1,471 @@
+O:4:"Bloc":23:{s:7:"RawData";s:10671:"
+<!-- Bootstrap core CSS -->
+[HEADER JS]/Tools/Js/Jquery/1.9.2/jquery.min.js[/HEADER]
+[HEADER CSS]/Tools/Css/Bootstrap/3.0/css/bootstrap.min.css[/HEADER]
+
+//MOMENT LOCALES
+[HEADER JS]/Tools/Css/Bootstrap/bootstrap-datetimepicker-master/build/js/moment.min.js[/HEADER]
+[HEADER JS]/Tools/Css/Bootstrap/bootstrap-datetimepicker-master/build/locales/fr.js[/HEADER]
+
+//DATE PICKER
+[HEADER JS]/Tools/Css/Bootstrap/bootstrap-datetimepicker-master/build/js/bootstrap-datetimepicker.min.js[/HEADER]
+[HEADER CSS]/Tools/Css/Bootstrap/bootstrap-datetimepicker-master/build/css/bootstrap-datetimepicker.min.css[/HEADER]
+
+[HEADER JS]Tools/Css/Bootstrap/BootBox/bootbox.min.js[/HEADER]
+[HEADER CSS]Tools/Css/Bootstrap/Bootstrap-fileinput/css/fileinput.min.css[/HEADER]
+[HEADER JS]Tools/Css/Bootstrap/Bootstrap-fileinput/js/fileinput.min.js[/HEADER]
+[HEADER JS]Tools/Css/Bootstrap/Bootstrap-fileinput/js/fileinput_locale_fr.js[/HEADER]
+[HEADER JS]/Tools/Css/Bootstrap/3.0/js/bootstrap.min.js[/HEADER]
+[HEADER CSS]Tools/Css/Bootstrap/bootstrap-switch-master/dist/css/bootstrap3/bootstrap-switch.min.css[/HEADER]
+[HEADER JS]Tools/Css/Bootstrap/bootstrap-switch-master/dist/js/bootstrap-switch.min.js[/HEADER]
+[HEADER JS]Tools/Js/CkEditor/ckeditor.js[/HEADER]
+[HEADER]
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+[/HEADER]
+
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Espace Administration</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              [STORPROC [!Systeme::Menus!]|M]
+              <li  class="[IF [!Lien!]=[!M::Url!]]active[ELSE][/IF] visible-xs"><a href="/[!M::Url!]">[!M::Titre!]  [IF [!Lien!]=[!M::Url!]]<span class="sr-only">(current)</span>[ELSE][/IF]</a></li>
+              [/STORPROC]
+<!--            <li><a href="#">Accueil</a></li>-->
+            <li><a href="/Systeme/Deconnexion">Déconnexion</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            [STORPROC [!Systeme::Menus!]|M]
+            <li  [IF [!Lien!]=[!M::Url!]]class="active"[ELSE][/IF]><a href="/[!M::Url!]">[!M::Titre!]  [IF [!Lien!]=[!M::Url!]]<span class="sr-only">(current)</span>[ELSE][/IF]</a></li>
+            [/STORPROC]
+          </ul>
+<!--          <ul class="nav nav-sidebar">
+            <li><a href="">Nav item</a></li>
+            <li><a href="">Nav item again</a></li>
+            <li><a href="">One more nav</a></li>
+            <li><a href="">Another nav item</a></li>
+            <li><a href="">More navigation</a></li>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li><a href="">Nav item again</a></li>
+            <li><a href="">One more nav</a></li>
+            <li><a href="">Another nav item</a></li>
+          </ul>
+-->
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          [DATA]
+        </div>
+      </div>
+    </div>
+
+<!-- MODAL -->
+<div class="modal fade"  id="modal-form">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <form id="modal-form-form" class="standard">
+      <div class="modal-message"></div>
+      <div class="modal-body">
+        
+      </div>
+      </form>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-modal-cancel" data-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-primary btn-modal-save " data-form="">Enregistrer</button>
+        <button type="button" class="btn btn-danger btn-modal-close" style="visibility: hidden;" data-dismiss="modal">Fermer</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //popup confirm
+        $('.confirm').on('click',function (e) {
+            e.preventDefault();
+            var me = $( this );
+            bootbox.confirm(me.attr('data-confirm'), function(result) {
+                if (result) {
+                    $.ajax({
+                        url: me.attr('href') + '.json',
+                        type: "POST",
+                        dataType: 'json',
+                        context: document.body,
+                        error: function (xhr, status, thrown) {
+                            alert(status);
+                            alert(thrown);
+                        },
+                        success: function (data) {
+                            if (data.success) {
+                                //en cas de success on remplace le body par le message
+                                $('#modal-form .modal-message').empty();
+                                $('#modal-form .modal-body').html(data.message);
+                                if (me.attr('data-url')){
+                                    document.location.href=me.attr('data-url');
+                                }else location.reload();
+                            } else {
+                                //en cas d'echec, on affiche les erreurs au dessu du body
+                                $('#modal-form .modal-message').html(data.message);
+                            }
+                        }
+                    });
+                }
+            });
+        });
+        $('.popup').click(function (e) {
+            e.preventDefault();
+            $('#modal-form').modal('show');
+            //renseignement des contenus
+            $('#modal-form .modal-title').html($(this).attr('data-title'));
+            $('#modal-form .modal-body').html('<b>Chargement ...</b>');
+            $('#modal-form-form').attr('data-form', $(this).attr('href')+'.htm');
+
+            //chargement du formulaire
+            $.ajax({
+                url: $(this).attr('href')+'.htm',
+                context: document.body
+            }).done(function (data) {
+                $('#modal-form .modal-body').html(data);
+                refresh();
+            });
+            //reset controls
+            if ($(this).hasClass('popup-close')){
+                $('#modal-form .btn-modal-save').css('visibility', 'hidden');
+                $('#modal-form .btn-modal-cancel').css('visibility', 'hidden');
+                $('#modal-form .btn-modal-close').css('visibility', 'visible');
+            }else {
+                $('#modal-form .btn-modal-save').css('visibility', 'visible');
+                $('#modal-form .btn-modal-cancel').css('visibility', 'visible');
+                $('#modal-form .btn-modal-close').css('visibility', 'hidden');
+            }
+            //reset message
+            $('#modal-form .modal-message').empty();
+            //reset body
+            $('#modal-form .modal-body').html('<div class="alert alert-primary">Chargement ...</div>');
+        });
+        $('.btn-modal-save').click(function (e) {
+            //variables
+            var data = $('#modal-form-form').serialize() + '&ValidForm=1';
+            //enregistrement du formulaire
+            $.ajax({
+                url: $('#modal-form-form').attr('data-form'),
+                type: "POST",
+                data: data,
+                dataType: 'json',
+                context: document.body,
+                error: function (xhr, status, thrown) {
+                    $('#modal-form .btn-modal-cancel').css('visibility', 'hidden');
+                    $('#modal-form .btn-modal-save').css('visibility', 'hidden');
+                    $('#modal-form .btn-modal-close').css('visibility', 'visible');
+                    $('#modal-form .modal-message').html(xhr);
+                },
+                success: function (data) {
+                    //gestion des controles
+                    if (data.controls) {
+                        if (!data.controls.save)
+                            $('#modal-form .btn-modal-save').css('visibility', 'hidden');
+                        else
+                            $('#modal-form .btn-modal-save').css('visibility', 'visible');
+                        if (!data.controls.cancel)
+                            $('#modal-form .btn-modal-cancel').css('visibility', 'hidden');
+                        else
+                            $('#modal-form .btn-modal-cancel').css('visibility', 'visible');
+                        if (!data.controls.close)
+                            $('#modal-form .btn-modal-close').css('visibility', 'hidden');
+                        else
+                            $('#modal-form .btn-modal-close').css('visibility', 'visible');
+                    }
+                    //test du retour
+                    console.log('rtour en force', data);
+                    if (data.success) {
+                        //en cas de success on remplace le body par le message
+                        $('#modal-form .modal-message').empty();
+                        $('#modal-form .modal-body').html(data.message);
+                    } else {
+                        //en cas d'echec, on affiche les erreurs au dessu du body
+                        $('#modal-form .modal-message').html(data.message);
+                    }
+                    console.log('valid form', data);
+                }
+            });
+        });
+    });
+
+    function refresh() {
+        $('.btn-modal-close').click(function (e) {
+            location.reload(true);
+        });
+        $('input.switch').bootstrapSwitch({
+            onColor: 'success',
+            offColor: 'danger',
+            size: 'normal',
+            handleWidth: 50
+        });
+    }
+    refresh();
+
+</script>
+
+
+";s:7:"VarData";N;s:9:"RawLoaded";b:1;s:13:"ContentLoaded";b:1;s:7:"Content";N;s:9:"BlObjects";a:21:{i:0;s:29:"
+<!-- Bootstrap core CSS -->
+";i:1;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:36:"/Tools/Js/Jquery/1.9.2/jquery.min.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:2;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:46:"/Tools/Css/Bootstrap/3.0/css/bootstrap.min.css";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:3:"CSS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:3;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:75:"/Tools/Css/Bootstrap/bootstrap-datetimepicker-master/build/js/moment.min.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:4;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:72:"/Tools/Css/Bootstrap/bootstrap-datetimepicker-master/build/locales/fr.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:5;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:93:"/Tools/Css/Bootstrap/bootstrap-datetimepicker-master/build/js/bootstrap-datetimepicker.min.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:6;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:95:"/Tools/Css/Bootstrap/bootstrap-datetimepicker-master/build/css/bootstrap-datetimepicker.min.css";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:3:"CSS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:7;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:42:"Tools/Css/Bootstrap/BootBox/bootbox.min.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:8;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:61:"Tools/Css/Bootstrap/Bootstrap-fileinput/css/fileinput.min.css";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:3:"CSS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:9;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:59:"Tools/Css/Bootstrap/Bootstrap-fileinput/js/fileinput.min.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:10;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:65:"Tools/Css/Bootstrap/Bootstrap-fileinput/js/fileinput_locale_fr.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:11;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:44:"/Tools/Css/Bootstrap/3.0/js/bootstrap.min.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:12;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:88:"Tools/Css/Bootstrap/bootstrap-switch-master/dist/css/bootstrap3/bootstrap-switch.min.css";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:3:"CSS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:13;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:75:"Tools/Css/Bootstrap/bootstrap-switch-master/dist/js/bootstrap-switch.min.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:14;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:29:"Tools/Js/CkEditor/ckeditor.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:15;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:406:"
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:0:"";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:16;s:740:"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Espace Administration</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              ";i:17;O:8:"StorProc":24:{s:6:"Offset";N;s:5:"Limit";N;s:5:"Query";N;s:7:"TempVar";N;s:11:"LoopObjects";N;s:12:"ChildObjects";a:5:{i:0;s:27:"
+              <li  class="";i:1;O:9:"Condition":14:{s:7:"CaseTab";N;s:11:"CaseDefault";N;s:4:"Init";b:1;s:4:"Data";s:0:"";s:3:"Nom";s:9:"Condition";s:6:"Result";N;s:6:"Beacon";s:2:"IF";s:12:"ChildObjects";a:2:{i:0;a:1:{i:0;s:6:"active";}i:1;a:1:{i:0;s:0:"";}}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:19:"[!Lien!]=[!M::Url!]";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:2;s:49:" visible-xs"><a href="/[!M::Url!]">[!M::Titre!]  ";i:3;O:9:"Condition":14:{s:7:"CaseTab";N;s:11:"CaseDefault";N;s:4:"Init";b:1;s:4:"Data";s:0:"";s:3:"Nom";s:9:"Condition";s:6:"Result";N;s:6:"Beacon";s:2:"IF";s:12:"ChildObjects";a:2:{i:0;a:1:{i:0;s:38:"<span class="sr-only">(current)</span>";}i:1;a:1:{i:0;s:0:"";}}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:19:"[!Lien!]=[!M::Url!]";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:4;s:24:"</a></li>
+              ";}s:8:"Recursiv";b:0;s:6:"NoLoop";b:0;s:6:"NoPost";b:1;s:6:"Module";N;s:7:"GroupBy";N;s:9:"OrderType";N;s:8:"OrderVar";N;s:6:"Select";N;s:4:"Init";b:1;s:3:"Nom";s:6:"Object";s:6:"Result";N;s:6:"Beacon";s:8:"STORPROC";s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:20:"[!Systeme::Menus!]|M";s:4:"Path";N;s:4:"Conf";N;s:12:"MasterBeacon";s:8:"STORPROC";}i:18;s:335:"
+<!--            <li><a href="#">Accueil</a></li>-->
+            <li><a href="/Systeme/Deconnexion">Déconnexion</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            ";i:19;O:8:"StorProc":24:{s:6:"Offset";N;s:5:"Limit";N;s:5:"Query";N;s:7:"TempVar";N;s:11:"LoopObjects";N;s:12:"ChildObjects";a:5:{i:0;s:18:"
+            <li  ";i:1;O:9:"Condition":14:{s:7:"CaseTab";N;s:11:"CaseDefault";N;s:4:"Init";b:1;s:4:"Data";s:0:"";s:3:"Nom";s:9:"Condition";s:6:"Result";N;s:6:"Beacon";s:2:"IF";s:12:"ChildObjects";a:2:{i:0;a:1:{i:0;s:14:"class="active"";}i:1;a:1:{i:0;s:0:"";}}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:19:"[!Lien!]=[!M::Url!]";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:2;s:37:"><a href="/[!M::Url!]">[!M::Titre!]  ";i:3;O:9:"Condition":14:{s:7:"CaseTab";N;s:11:"CaseDefault";N;s:4:"Init";b:1;s:4:"Data";s:0:"";s:3:"Nom";s:9:"Condition";s:6:"Result";N;s:6:"Beacon";s:2:"IF";s:12:"ChildObjects";a:2:{i:0;a:1:{i:0;s:38:"<span class="sr-only">(current)</span>";}i:1;a:1:{i:0;s:0:"";}}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:19:"[!Lien!]=[!M::Url!]";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:4;s:22:"</a></li>
+            ";}s:8:"Recursiv";b:0;s:6:"NoLoop";b:0;s:6:"NoPost";b:1;s:6:"Module";N;s:7:"GroupBy";N;s:9:"OrderType";N;s:8:"OrderVar";N;s:6:"Select";N;s:4:"Init";b:1;s:3:"Nom";s:6:"Object";s:6:"Result";N;s:6:"Beacon";s:8:"STORPROC";s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:20:"[!Systeme::Menus!]|M";s:4:"Path";N;s:4:"Conf";N;s:12:"MasterBeacon";s:8:"STORPROC";}i:20;s:7040:"
+          </ul>
+<!--          <ul class="nav nav-sidebar">
+            <li><a href="">Nav item</a></li>
+            <li><a href="">Nav item again</a></li>
+            <li><a href="">One more nav</a></li>
+            <li><a href="">Another nav item</a></li>
+            <li><a href="">More navigation</a></li>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li><a href="">Nav item again</a></li>
+            <li><a href="">One more nav</a></li>
+            <li><a href="">Another nav item</a></li>
+          </ul>
+-->
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          [DATA]
+        </div>
+      </div>
+    </div>
+
+<!-- MODAL -->
+<div class="modal fade"  id="modal-form">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <form id="modal-form-form" class="standard">
+      <div class="modal-message"></div>
+      <div class="modal-body">
+        
+      </div>
+      </form>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-modal-cancel" data-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-primary btn-modal-save " data-form="">Enregistrer</button>
+        <button type="button" class="btn btn-danger btn-modal-close" style="visibility: hidden;" data-dismiss="modal">Fermer</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        
+        $('.confirm').on('click',function (e) {
+            e.preventDefault();
+            var me = $( this );
+            bootbox.confirm(me.attr('data-confirm'), function(result) {
+                if (result) {
+                    $.ajax({
+                        url: me.attr('href') + '.json',
+                        type: "POST",
+                        dataType: 'json',
+                        context: document.body,
+                        error: function (xhr, status, thrown) {
+                            alert(status);
+                            alert(thrown);
+                        },
+                        success: function (data) {
+                            if (data.success) {
+                                
+                                $('#modal-form .modal-message').empty();
+                                $('#modal-form .modal-body').html(data.message);
+                                if (me.attr('data-url')){
+                                    document.location.href=me.attr('data-url');
+                                }else location.reload();
+                            } else {
+                                
+                                $('#modal-form .modal-message').html(data.message);
+                            }
+                        }
+                    });
+                }
+            });
+        });
+        $('.popup').click(function (e) {
+            e.preventDefault();
+            $('#modal-form').modal('show');
+            
+            $('#modal-form .modal-title').html($(this).attr('data-title'));
+            $('#modal-form .modal-body').html('<b>Chargement ...</b>');
+            $('#modal-form-form').attr('data-form', $(this).attr('href')+'.htm');
+
+            
+            $.ajax({
+                url: $(this).attr('href')+'.htm',
+                context: document.body
+            }).done(function (data) {
+                $('#modal-form .modal-body').html(data);
+                refresh();
+            });
+            
+            if ($(this).hasClass('popup-close')){
+                $('#modal-form .btn-modal-save').css('visibility', 'hidden');
+                $('#modal-form .btn-modal-cancel').css('visibility', 'hidden');
+                $('#modal-form .btn-modal-close').css('visibility', 'visible');
+            }else {
+                $('#modal-form .btn-modal-save').css('visibility', 'visible');
+                $('#modal-form .btn-modal-cancel').css('visibility', 'visible');
+                $('#modal-form .btn-modal-close').css('visibility', 'hidden');
+            }
+            
+            $('#modal-form .modal-message').empty();
+            
+            $('#modal-form .modal-body').html('<div class="alert alert-primary">Chargement ...</div>');
+        });
+        $('.btn-modal-save').click(function (e) {
+            
+            var data = $('#modal-form-form').serialize() + '&ValidForm=1';
+            
+            $.ajax({
+                url: $('#modal-form-form').attr('data-form'),
+                type: "POST",
+                data: data,
+                dataType: 'json',
+                context: document.body,
+                error: function (xhr, status, thrown) {
+                    $('#modal-form .btn-modal-cancel').css('visibility', 'hidden');
+                    $('#modal-form .btn-modal-save').css('visibility', 'hidden');
+                    $('#modal-form .btn-modal-close').css('visibility', 'visible');
+                    $('#modal-form .modal-message').html(xhr);
+                },
+                success: function (data) {
+                    
+                    if (data.controls) {
+                        if (!data.controls.save)
+                            $('#modal-form .btn-modal-save').css('visibility', 'hidden');
+                        else
+                            $('#modal-form .btn-modal-save').css('visibility', 'visible');
+                        if (!data.controls.cancel)
+                            $('#modal-form .btn-modal-cancel').css('visibility', 'hidden');
+                        else
+                            $('#modal-form .btn-modal-cancel').css('visibility', 'visible');
+                        if (!data.controls.close)
+                            $('#modal-form .btn-modal-close').css('visibility', 'hidden');
+                        else
+                            $('#modal-form .btn-modal-close').css('visibility', 'visible');
+                    }
+                    
+                    console.log('rtour en force', data);
+                    if (data.success) {
+                        
+                        $('#modal-form .modal-message').empty();
+                        $('#modal-form .modal-body').html(data.message);
+                    } else {
+                        
+                        $('#modal-form .modal-message').html(data.message);
+                    }
+                    console.log('valid form', data);
+                }
+            });
+        });
+    });
+
+    function refresh() {
+        $('.btn-modal-close').click(function (e) {
+            location.reload(true);
+        });
+        $('input.switch').bootstrapSwitch({
+            onColor: 'success',
+            offColor: 'danger',
+            size: 'normal',
+            handleWidth: 50
+        });
+    }
+    refresh();
+
+</script>
+
+
+";}s:6:"BlData";N;s:8:"PostData";N;s:11:"PostObjects";N;s:10:"PostBlData";N;s:7:"ObjVars";N;s:13:"PostBlObjects";N;s:12:"ChildObjects";a:1:{i:0;s:6:"[DATA]";}s:9:"ChildData";N;s:4:"Path";s:7:"Default";s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:4:"BLOC";s:5:"Child";N;s:4:"Vars";s:7:"Default";s:7:"TempVar";N;s:4:"Conf";N;}
