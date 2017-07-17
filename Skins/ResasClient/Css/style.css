@@ -250,7 +250,7 @@ body { font-weight: normal;}
 }
 .horaire-tennis.warning{
     background:orange !important;
-    color: white;
+    color: /*white*/orange;
     pointer-events: none;
     cursor: default;
 }
