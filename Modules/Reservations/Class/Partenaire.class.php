@@ -14,6 +14,8 @@ class Partenaire extends genericClass {
         $Mail -> From( $GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
         $Mail -> ReplyTo($GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
         $Mail -> To($this -> Email);
+
+        klog::l('$this',print_r($this,true));
         //$Mail -> To('enguer@enguer.com');
         $Mail -> Bcc('gcandella@abtel.fr');
         //$Mail -> Cc($GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
@@ -21,8 +23,8 @@ class Partenaire extends genericClass {
         $mailContent = "
             Bonjour " . $this->Nom . " " . $this->Prenom . ",<br /><br />
             Nous vous informons que ". $Civilite ." vous a réservé une place pour le ".date("d/m/Y à H:i",$reserv->DateDebut)." (Reservation N° " . $reserv->Id . ").<br /> 
-            Afin de confirmer ou d'infirmer votre présence ".$reserv->PaiementParticipant ? "et de payer le cas échéant" : " " .", merci de suivre le lien suivant:
-            <a href=\"http://".Sys::$domain."/Status/".$status->Id."\">Reservations du dome du foot.</a>
+            Afin de confirmer ou d'infirmer votre présence".($reserv->PaiementParticipant ? " et de payer le cas échéant" : " ") .", merci de suivre le lien suivant:
+            <a href=\"https://reservation.le-dome-du-foot.fr/Status/".$status->Id."\">Reservations du dome du foot.</a>
             <br />Toute l'équipe du Dome du Foot vous remercie de votre confiance,<br />
             <br />Pour nous contacter : " . $GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT') . " .";
 
@@ -31,6 +33,9 @@ class Partenaire extends genericClass {
         $bloc -> init($Pr);
         $bloc -> generate($Pr);
         $Mail -> Body($bloc -> Affich());
+
+        klog::l('$Mail',print_r($Mail,true));
+
         $Mail -> Send();
     }
 

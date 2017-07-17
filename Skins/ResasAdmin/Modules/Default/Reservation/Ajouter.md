@@ -28,7 +28,13 @@
     [IF [!O::Verify()!]]
         <div class="alert alert-success">OK bien enregistré</div>
         [!O::setPartenairesBis([!Partenaire!])!]
-        [METHOD O|Save][/METHOD]
+        [IF [!O::Id!]>0]
+[LOG][!O::Id!][/LOG]
+            [METHOD O|Save][/METHOD]
+        [ELSE]
+            [METHOD O|setValide][/METHOD]
+        [/IF]
+
         [REDIRECT][!Sys::getMenu(Reservations/Reservation)!][/REDIRECT]
     [ELSE]
         <div class="alert alert-danger">
@@ -49,14 +55,14 @@
 <div class="row">
     <div class="col-md-12">
         <h3>Sélectionnez une date</h3>
-        <div class="input-group date">
+        <div id="datepicker-wrap" class="input-group date">
             <input type="text" class="form-control" id="datepicker" value="[DATE d/m/Y][!TMS::Now!][/DATE]"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
         </div>
     </div>
 </div>
 
 <script>
-$('#datepicker').datepicker({
+$('#datepicker-wrap').datepicker({
     format:"dd/mm/yyyy",
     language: "fr"
 }).on('changeDate',onChangeDate);

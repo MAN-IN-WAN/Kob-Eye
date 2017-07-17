@@ -644,6 +644,7 @@ class Process extends Root{
 	}
 	//C est la methode qui scanne la chaine a la recherche de balise varible avant d envoyer a processVars
 	static function searchAndReplaceVars($Data,$DebBeacon="[!",$FinBeacon="!]") {
+        $TempResult ='';
 		$EndResult="";
 		if (is_array($Data)) return $Data;
 		//On ecarte le debut de la chaine jusqu a la balise
@@ -770,7 +771,7 @@ class Process extends Root{
 		$BaliseTemp["OBJECT"] = "Bloc";
 		$BaliseTemp["TYPE"] = "ORPHAN";
 		$Balise[]=$BaliseTemp;
-		$Data = $this->searchAndReplaceOrphanBeacon($Data,$Balise);
+		$Data = Parser::searchAndReplaceOrphanBeacon($Data,$Balise);
 		$Balise="";
 		return $Data;
 	}

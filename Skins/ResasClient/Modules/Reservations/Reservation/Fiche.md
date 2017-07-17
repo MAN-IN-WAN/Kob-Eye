@@ -63,8 +63,8 @@
                     [IF [!R::DateFin!]>[!TMS::Now!]]
                         <input type="submit" class="btn btn-success btn-large btn-block" name="Valider" value="Valider la réservation">
                     [/IF]
-                        <a href="/[!Sys::getMenu(Reservations/Reservation)!]/[!R::Id!]/Supprimer" class="btn btn-warning btn-large btn-block" >Annuler la réservation</a>
-                 [/IF]
+                    <a href="/[!Sys::getMenu(Reservations/Reservation)!]/[!R::Id!]/Supprimer" class="btn btn-warning btn-large btn-block" >Annuler la réservation</a>
+                [/IF]
             [ELSE]
                 <div class="alert alert-success">
                     Cette réservation est validée.
@@ -73,6 +73,11 @@
                     <div class="alert alert-success">
                         Cette réservation est payée.
                     </div>
+                    [!limit:=[!R::DateDebut!]!]
+                    [!limit-=86400!]
+                    [IF [!limit!]>[!TMS::Now!]]
+                    <a href="/[!Sys::getMenu(Reservations/Reservation)!]/[!R::Id!]/Supprimer" class="btn btn-warning btn-large btn-block" >Annuler la réservation</a>
+                    [/IF]
                 [ELSE]
                     [IF [!R::DateFin!]>[!TMS::Now!]]
                         <a href="/[!Sys::getMenu(Reservations/Reservation)!]/[!R::Id!]/Supprimer" class="btn btn-warning btn-large btn-block" >Annuler la réservation</a>

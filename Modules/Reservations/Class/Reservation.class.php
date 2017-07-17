@@ -538,7 +538,7 @@ class Reservation extends genericClass {
     }
     function getTotal() {
         $cli = $this -> getClient();
-        if($cli->Abonne) return 0;
+        //if($cli->Abonne) return 0;
 
 
         $lf = $this->getLigneFacture();
@@ -606,6 +606,16 @@ class Reservation extends genericClass {
 
         }
 
+        $partenaires = "";
+        if(count($this->_partenaires)){
+            $partenaires .= 'Les participants enregistrés sont: <br/>
+                                <ul>';
+            foreach($this->_partenaires as $p){
+                $partenaires .= '<li>'.$p->Nom.' '.$p->Prenom.' '.$p->Email.'</li>';
+            }
+            $partenaires .= '   </ul>';
+        }
+
         require_once ("Class/Lib/Mail.class.php");
         $Mail = new Mail();
         $Mail -> Subject("Dome du Foot : Confirmation de reservation");
@@ -619,6 +629,7 @@ class Reservation extends genericClass {
         $mailContent = "
             Bonjour " . $Civilite . ",<br /><br />
             Nous vous informons que votre réservation N° " . $this->Id . " pour le ".date("d/m/Y à H:i",$this->DateDebut)." a bien été prise en compte.<br />
+            ".$partenaires."
             <br />Toute l'équipe du Dome du Foot vous remercie de votre confiance,<br />
             <br />Pour nous contacter : " . $GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT') . " .".$Lacommande;
 
@@ -630,4 +641,19 @@ class Reservation extends genericClass {
         if (!$this->Cloture)
             $Mail -> Send();
     }
+
+
+    function sendRappel(){
+        $status = $this->getChildren('StatusReservation');
+        $cli = $this->getClient();
+
+        foreach ($status as $s){
+            if(!$s->MailEnvoye) continue;
+            $p = $s->getOneChild('Partenaire');
+            $p->sendRappelMail($this);
+        }
+
+        //$cli->sendRappelMail($this);
+    }
+
 }
