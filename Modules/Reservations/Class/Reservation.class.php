@@ -64,9 +64,13 @@ class Reservation extends genericClass {
     }
     function getPartenaires() {
         if ($this->Id){
+            $out = array();
             //on cherche dans les parents en base
-            $out = Sys::getData('Reservations','Reservation/'.$this->Id.'/Partenaire');
-            if ($out) return $out;
+            $statuses = Sys::getData('Reservations','Reservation/'.$this->Id.'/StatusReservation');
+            foreach ($statuses as $s){
+                array_push($out,$s->getOneChild('Partenaire'));
+            }
+            if (count($out)) return $out;
         }else return $this->_partenaires;
     }
     function getClient() {
@@ -385,19 +389,28 @@ class Reservation extends genericClass {
             }
 
 
+
+
             //DISPONIBILITE
-            //test du debut à cheval
-            $out = Sys::getCount('Reservations','Court/'.$court->Id.'/Disponibilite/Dispo=0&Debut>='.$this->DateDebut.'&Debut<'.$this->DateFin);
-            if ($out) return false;
-            //test de la fin à cheval
-            $out = Sys::getCount('Reservations','Court/'.$court->Id.'/Disponibilite/Dispo=0&Fin>'.$this->DateDebut.'&Fin<='.$this->DateFin);
-            if ($out) return false;
-            //test des deux en encadrement intérieur
-            $out = Sys::getCount('Reservations','Court/'.$court->Id.'/Disponibilite/Dispo=0&Fin<='.$this->DateFin.'&Debut>='.$this->DateDebut);
-            if ($out) return false;
-            //test les deux en encadrement extérieur
-            $out = Sys::getCount('Reservations','Court/'.$court->Id.'/Disponibilite/Dispo=0&Fin>='.$this->DateFin.'&Debut<='.$this->DateDebut);
-            if ($out) return false;
+//            //test du debut à cheval
+//            $out = Sys::getCount('Reservations','Court/'.$court->Id.'/Disponibilite/Dispo=0&Debut>='.$this->DateDebut.'&Debut<'.$this->DateFin);
+//            if ($out) return false;
+//            //test de la fin à cheval
+//            $out = Sys::getCount('Reservations','Court/'.$court->Id.'/Disponibilite/Dispo=0&Fin>'.$this->DateDebut.'&Fin<='.$this->DateFin);
+//            if ($out) return false;
+//            //test des deux en encadrement intérieur
+//            $out = Sys::getCount('Reservations','Court/'.$court->Id.'/Disponibilite/Dispo=0&Fin<='.$this->DateFin.'&Debut>='.$this->DateDebut);
+//            if ($out) return false;
+//            //test les deux en encadrement extérieur
+//            $out = Sys::getCount('Reservations','Court/'.$court->Id.'/Disponibilite/Dispo=0&Fin>='.$this->DateFin.'&Debut<='.$this->DateDebut);
+//            if ($out) return false;
+
+            $dispos = Disponibilite::getDispo($this->DateDebut,$this->DateFin);
+            foreach ($dispos as $dispo){
+                $courtD = $dispo->getOneParent('Court');
+                if($court->Id == $courtD->Id) return false;
+            }
+
             return true;
         }else return false;
     }
@@ -499,6 +512,7 @@ class Reservation extends genericClass {
             }
         }
 
+        $cli = $this->getClient();
         if($this->Valide){
             $status = $this->getChildren('StatusReservation');
 
@@ -532,6 +546,9 @@ class Reservation extends genericClass {
                 if($p && $s->MailEnvoye) $p->sendAnnulationMail($this);
                 $s->Delete();
             }
+
+            $cli = $this->getClient();
+            $cli->sendAnnulationMail($this);
 
             parent::Delete();
         }
@@ -569,6 +586,7 @@ class Reservation extends genericClass {
 
     function sendMail() {
         $cli = $this -> getClient();
+        $usr = Sys::getOneData('Systeme','User/'.$cli->UserId);
 
 
         $Civilite = $cli -> Civilite . " " . $cli -> Prenom . ' <span style="text-transform:uppercase">' . $cli -> Nom . '</span>';
@@ -606,15 +624,6 @@ class Reservation extends genericClass {
 
         }
 
-        $partenaires = "";
-        if(count($this->_partenaires)){
-            $partenaires .= 'Les participants enregistrés sont: <br/>
-                                <ul>';
-            foreach($this->_partenaires as $p){
-                $partenaires .= '<li>'.$p->Nom.' '.$p->Prenom.' '.$p->Email.'</li>';
-            }
-            $partenaires .= '   </ul>';
-        }
 
         require_once ("Class/Lib/Mail.class.php");
         $Mail = new Mail();
@@ -626,12 +635,26 @@ class Reservation extends genericClass {
         $Mail -> Bcc('gcandella@abtel.fr');
         $Mail -> Cc($GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
         $bloc = new Bloc();
-        $mailContent = "
-            Bonjour " . $Civilite . ",<br /><br />
-            Nous vous informons que votre réservation N° " . $this->Id . " pour le ".date("d/m/Y à H:i",$this->DateDebut)." a bien été prise en compte.<br />
-            ".$partenaires."
-            <br />Toute l'équipe du Dome du Foot vous remercie de votre confiance,<br />
-            <br />Pour nous contacter : " . $GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT') . " .".$Lacommande;
+
+        if($usr->Privilege) {
+            $mailContent = "
+                Bonjour ,<br /><br />
+                Nous vous informons que votre réservation N° " . $this->Id . " pour le " . date("d/m/Y à H:i", $this->DateDebut) . " a bien été prise en compte.<br />";
+            $parts = $this->getPartenaires();
+            if (sizeof($parts)) {
+                $mailContent .= "<br /> Partenaire(s) inscrit(s): <ul>";
+                foreach ($parts as $p) {
+                    $mailContent .= "<li>$p->Nom $p->Prenom</li>";
+                }
+                $mailContent .= "</ul>";
+            }
+        } else {
+            $mailContent = "
+                Bonjour " . $Civilite . ",<br /><br />
+                Nous vous informons que votre réservation N° " . $this->Id . " pour le " . date("d/m/Y à H:i", $this->DateDebut) . " a bien été prise en compte.<br />
+                <br />Toute l'équipe du Dome du Foot vous remercie de votre confiance,<br />
+                <br />Pour nous contacter : " . $GLOBALS['Systeme']->Conf->get('MODULE::RESERVATIONS::CONTACT') . " ." . $Lacommande;
+        }
 
         $bloc -> setFromVar("Mail", $mailContent, array("BEACON" => "BLOC"));
         $Pr = new Process();
@@ -653,7 +676,7 @@ class Reservation extends genericClass {
             $p->sendRappelMail($this);
         }
 
-        //$cli->sendRappelMail($this);
+        $cli->sendRappelMail($this);
     }
 
 }

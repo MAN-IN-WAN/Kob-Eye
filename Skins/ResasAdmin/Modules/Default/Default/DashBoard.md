@@ -47,7 +47,8 @@
     <script>
         $('#datepicker-wrap').datepicker({
             format:"dd/mm/yyyy",
-            language: "fr"
+            language: "fr",
+            autoclose:true
         }).on('changeDate',onChangeDate);
 
         function onChangeDate(e) {
