@@ -4,7 +4,7 @@
 //validation du formulaire
 [IF [!ValidForm!]=1]
     //Engregistrement des champs
-    [STORPROC [!O::getElementsByAttribute(client,,1)!]|P]
+    [STORPROC [!O::getElementsByAttribute(profil,,1)!]|P]
         [METHOD O|Set]
             [PARAM][!P::name!][/PARAM]
             [PARAM][!Form_[!P::name!]!][/PARAM]
@@ -38,7 +38,7 @@
     [/IF]
 [/IF]
 [IF [!FORM!]]
-[STORPROC [!O::getElementsByAttribute(client,,1)!]|P]
+[STORPROC [!O::getElementsByAttribute(profil,,1)!]|P]
 
     [SWITCH [!P::type!]|=]
         [CASE duration]
@@ -135,6 +135,9 @@
                 <script>
                     $(document).on('ready', function() {
                         $("#input-Image-[!P::name!]").fileinput({showCaption: false, showPreview: true, language: 'fr', uploadUrl: '/Systeme/Utils/Form/Upload.htm', dropZoneEnabled: false});
+                    });
+                    $('#input-Image-[!P::name!]').on('fileloaded',function(){
+                        $("#input-Image-[!P::name!]").fileinput('upload');
                     });
                     $('#input-Image-[!P::name!]').on('fileuploaded', function(event, data, previewId, index) {
                         console.log('document upload ', data);

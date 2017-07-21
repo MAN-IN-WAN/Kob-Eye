@@ -65,7 +65,7 @@
                     <option value="[!S::Id!]" [IF [!ServiceDuree!]=[!S::Id!]]selected="selected"[/IF]>[!S::Titre!] -  [!Utils::getPrice([!S::getTarif([!Client!],[!DateDeb!],[!DateDeb:+3600!])!])!] €</option>
                 [/STORPROC]
             [/STORPROC]
-    </select>
+        </select>
     <h2>Les participants</h2>
     [SWITCH [!TC::GestionInvite!]|=]
     [CASE Quantitatif]

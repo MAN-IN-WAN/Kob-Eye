@@ -138,9 +138,11 @@
 <script>
 $('#PartenaireAdd').on('click',function () {
     //récupération du partenaire sélectionné
+
+    var id = $('#SelectPartenaire option:selected').val();
+    if (!id||$('#part-'+id)[0])return;
     var nom = $('#SelectPartenaire option:selected').attr('data-nom');
     var prenom = $('#SelectPartenaire option:selected').attr('data-prenom');
-    var id = $('#SelectPartenaire option:selected').val();
     var details = $('#SelectPartenaire option:selected').attr('data-details');
     var email = $('#SelectPartenaire option:selected').attr('data-email');
     addPartenaire(id,nom,email,prenom,details);
@@ -158,26 +160,29 @@ function addPartenaire(id,nom,email,prenom,details) {
     if (!details)details='';
     partenaire++;
     console.log('Ajout partenaire',partenaire);
-    $('#Partenaires').append($('<div class="btn-tennis del" data-nom="'+nom+'" data-id="'+id+'" data-details="'+details+'" id="part-'+id+'">'+
+    $('#Partenaires').append($('<div class="btn-tennis del" data-nom="'+nom+'" data-id="'+id+'" data-details="'+details+'" id="part-'+id+'" onclick="suppPartenaire('+id+')">'+
+        '<input type="hidden" name="Partenaire['+partenaire+'][Details]" value="'+details+'" />'+
+        '<input type="hidden" name="Partenaire['+partenaire+'][Id]" value="'+id+'" />'+
+        '<input type="hidden" name="Partenaire['+partenaire+'][Nom]" value="'+nom+'" />'+
+        '<input type="hidden" name="Partenaire['+partenaire+'][Prenom]" value="'+prenom+'" />'+
+        '<input type="hidden" name="Partenaire['+partenaire+'][Email]" value="'+email+'" />'+
         '<a class="btn btn-danger pull-right"><span class="glyphicon glyphicon-minus"></span></a>'+
         '<h3>'+nom+' '+prenom+'</h3>'+
         '<p>'+details+'</p>'+
-        '</div>'));
+        '</div>'));'[!P::Id!]'
 }
-function suppPartenaire(el) {
-    console.log('supp partenaire',partenaire);
-    $('#partenaire-'+partenaire).detach();
+function suppPartenaire(id) {
+    console.log('supp partenaire',id);
+    $('#part-'+id).detach();
     partenaire--;
     $('#PartenaireAjout').show();
 }
 $(
         function () {
             [IF [!Partenaire!]]
-            [STORPROC [!Partenaire!]|P]
-            addPartenaire(null, '[!P::Nom!]', '[!P::Email!]', '[!P::Prenom!]');
-            [/STORPROC]
-            [ELSE]
-            //addPartenaire();
+                [STORPROC [!Partenaire!]|P]
+                    addPartenaire('[!P::Id!]', '[UTIL ADDSLASHES][!P::Nom!][/UTIL]', '[UTIL ADDSLASHES][!P::Email!][/UTIL]', '[UTIL ADDSLASHES][!P::Prenom!][/UTIL]','[UTIL ADDSLASHES][!P::Details!][/UTIL]');
+                [/STORPROC]
             [/IF]
         }
 );

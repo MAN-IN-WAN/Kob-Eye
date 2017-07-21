@@ -51,7 +51,7 @@ class Device extends genericClass{
             $ConnectionType .= $dev->ConnectionType;
         }
         //recherche d'un tache à accomplir
-        $t = $dev->getChildren('DeviceTask');
+        $t = $dev->getChildren('DeviceTask/Enabled=1');
         if (sizeof($t)>0){
             $task = 'http://'.Sys::$domain.'/Parc/DeviceTask/'.$t[0]->Id.'/getTask.json';
         }else $task = '';
@@ -134,11 +134,19 @@ Task=$task
         }else{
             //creation du device
             $obj = genericClass::createInstance('Parc','Device');
-            $obj->Nom = $_GET["name"];
-            $obj->Description = $_GET["os"];
-            $obj->Type = $_GET["machine"] || 'station';
+            if(!isset($_GET["name"])){
+                $obj->Nom = 'Noname_'.$uuid;
+            } else{
+                $obj->Nom = $_GET["name"];
+            }
+            if(!isset($_GET["os"])){
+                $obj->Description = 'OS non spécifié';
+            } else{
+                $obj->Description = $_GET["os"];
+            }
+            $obj->Type = isset($_GET["machine"])? $_GET["machine"] : 'station';
             $obj->Uuid = $uuid;
-            klog::l('$obj',$obj);
+            //klog::l('$obj',$obj);
             $obj->Save();
             $port_rdp = 12000+$obj->Id;
             $port_vnc = 22000+$obj->Id;

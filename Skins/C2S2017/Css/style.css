@@ -1,0 +1,676 @@
+/*--- RESET ---*/
+html, body, div, span, applet, object, iframe, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td { margin: 0; padding: 0; border: 0; outline: 0; font-size: 100%; vertical-align: baseline }
+blockquote, q { quotes: none }
+blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; }
+ins { text-decoration: none }
+del { text-decoration: line-through }
+table { border-collapse: collapse; border-spacing: 0 }
+a:active, input:active { outline: none }
+:-moz-any-link:focus { outline: none }
+
+/****************************************************************
+ *								*
+ *			     COLOR SET    			*
+ *								*
+ ****************************************************************/
+/*
+ *	#fff
+ *	#000
+ *	#A2DCF2 bleu clair
+ *	#64226C violet foncé
+ *	#B4007B violet clair
+ *	#EDE6ED gris clair
+ *	#E4DFE3 gris clair menu bas
+ *
+ *
+ */
+@keyframes clignote {
+    0%   {opacity: 1;}
+    100% {opacity: 0;}
+}
+
+
+
+
+/*-- GLOBAL ---*/
+html,body {
+	padding:0;
+	margin:0;
+	font-family: Arial;
+	font-siz4e:12px;
+}
+
+input, textarea, select, button {
+	font-family: Arial;
+	font-size: 1em;
+}
+
+a {
+	text-decoration: none;
+	color: #64226c;font-weight:bold;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	padding: 0;
+	margin: 0;
+}
+
+li {
+	list-style: disc inside;
+}
+.clear{
+	clear: both;
+}
+.inline{
+	display: inline !important;	
+}
+/*-- STRUCTURE ---*/
+
+div#main {
+	min-height: 300px;
+	position: relative;
+	z-index: 1;
+}
+
+div#footerAbtel {
+	display: none;
+	padding: 5px;
+	text-align: right;
+}
+
+/****************************************************************
+ *								*
+ *			     GENERAL    			*
+ *								*
+ ****************************************************************/
+/* HEADER */
+#header {
+	height: 200px;
+	position: relative;
+	z-index: 10;
+	background-color: #A2DCF2;
+	background-image: url("../Img/bg.jpg");
+}
+#header #appelHead{
+	position: absolute;
+	top: 0;
+	right: 220px;
+	animation: clignote 750ms linear 0ms infinite alternate;
+}
+
+#header a.C2sLogoLien {
+	position:absolute;
+	top:10px;left:20%;
+	width:230px;height:170px;
+}
+
+#menuBar {
+	background-color: #64226C;
+	box-shadow: 0 -160px 755px 385px #A2DCF2;
+}
+#menuBar .navbar-default{
+	background-color: transparent;
+	border: none;
+	margin: 0;
+}
+#menuBar .navbar-default .navbar-collapse.navbar-menuprincipal{
+	padding: 0;
+}
+#menuBar .navbar-default ul.menuPrincipal{
+	height: 70px;
+}
+#menuBar .navbar-default ul.menuPrincipal li{
+	font-weight: bold;
+	list-style-type: none;
+	height: 100%;
+}
+#menuBar .navbar-default ul.menuPrincipal li + li{
+	border-left: 2px solid #fff;
+}
+#menuBar .navbar-default ul.menuPrincipal li a {
+	color: #fff;
+	display: block;
+	height: 100%;
+	padding: 25px 20px;
+}
+#menuBar .navbar-default ul.menuPrincipal li.active a {
+	background-color: #B4007B;
+}
+
+
+#menuBar .navbar-default ul.menuPrincipal li.36-divrelative {
+	position:relative;
+}
+
+/* MAIN */
+#main{
+	background-color: #fff;
+	box-shadow: 0 0 7px -2px #000;
+}
+#mainRight > div{
+	border: 4px solid #fff;
+	
+	color: #fff
+}
+#mainRight > div .col-md-12{
+	padding: 5px 15px;
+	font-size:0.9em;
+}
+#mainRight > div.Focus .col-md-12{
+	padding: 10px 15px;
+	font-size:1.2em;
+}
+
+#mainRight > div + div{
+	border-top: none;
+}
+#mainRight #telRight{
+	background-color: #64226C;
+	position: relative;
+	font-size: 1.5em;
+	font-weight: 600;
+	text-align: center;
+}
+#mainRight #telRight .col-md-12{
+	padding-left: 95px;
+	position: relative;
+	font-size:1.2em;
+}
+#mainRight #telRight .col-md-12:before{
+	content: " ";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 25px;
+	height: 100%;
+	width: 69px;
+	background-image: url(../Img/miniC2S.png) ;
+	background-size: contain;
+}
+#mainRight #telRight a{
+	display: none;
+}
+#mainRight #txtRight{
+	background-color: #B4007B;
+	text-align: center;
+	position: relative;
+}
+
+#mainRight #Focus {
+	background-color: #ede6ed;
+	position: relative;
+	padding:5px;border:1px solid #b4007b;
+}
+#mainRight #Focus h3 {
+	color:#fff;text-transform:uppercase;font-size:1.5em;font-weight:bold;text-align:center;
+	background-color:#b4007b;
+}
+#mainRight #Focus a h4 {
+	color::#B4007B;text-decoration:none;font-size:0.9em;font-weight: bold;
+}
+
+
+#mainRight #txtRight .col-md-12{
+	margin: 10px 0;
+}
+#mainRight #txtRight a{
+	color: #fff;
+	font-weight: 600;
+	font-size: 1.2em;
+}
+
+#mainRight #txtRight a.textrightDevis {
+	color: #fff;
+	font-weight: 600;
+	font-size: 2.2em;
+	
+}
+#mainRight #txtRight a.textrightDevis2 {
+	color: #fff;
+	font-weight: 600;
+	font-size: 1.8em;
+	
+}
+#mainRight #txtRight a.textrightDevis3 {
+	color: #fff;
+	font-weight: 600;
+	font-size: 1.5em;
+	
+}
+#mainRight #txtRight #textrightRappel {
+	background-color:#fff;
+}
+
+#mainRight #parrainRight:before{
+/*	content: url(../Img/Partage_40.png);*/
+	content: url(../Img/partners.png);
+	position: absolute;
+	top: 8px;
+	left: 16px;
+}
+#mainRight #devisRight:before{
+/*	content: url(../Img/devis_48.png);*/
+	content: url(../Img/mail.png);
+	position: absolute;
+	top: 12px;
+	left: 10px;
+}
+#mainRight #telRight2:before{
+	content: url(../Img/rappelc2s.png);
+	position: absolute;
+	top: 14px;
+	left: 18px;
+}
+/*
+#textrightRappel {
+	height: 145px;
+	width: 124px;
+	z-index: 10;
+	background-color: #A2DCF2;
+	background-image: url("../Img/bg2.jpg");
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+#textrightRappel #appelHead{
+	
+	animation: clignote 750ms linear 0ms infinite alternate;
+}
+
+*/
+
+#mainRight #linksRight{
+	background-color: #64226C;
+}
+#mainRight #linksRight a{
+	display: inline-block;
+	padding: 10px;
+}
+#mainRight #parrainageRight{
+	background-color: #64226C;
+	text-align: center;
+	animation: clignote 1500ms linear 0ms infinite alternate;
+}
+#mainRight #parrainageRight a{
+	color: #fff;
+	font-weight: bold;
+	font-size: 1.2em;
+	text-decoration: blink;
+}
+
+#mainRight .ZonesInterventions {
+	background-color: #ede6ed;
+	margin:0 -15px ;
+}
+
+
+/* CHANGEMENT C2S 2016/12/22 */
+
+#mainLeft .redaction {
+    background-color: #ede6ed;
+    background-position: right bottom;
+    background-repeat: no-repeat;
+    /*background-size: cover;*/
+    border-radius: 10px;
+    color: #64226c;
+    font-size: 0.95em;
+    margin: 10px 0;
+    min-height: 625px;
+}
+/* CHANGEMENT C2S 2016/12/22 */
+
+
+#mainLeft .redaction .linkArticle{
+	height: 270px;
+	text-align: center;
+}
+#mainLeft h1,
+#mainLeft .redaction .linkArticle h3{
+	text-align: center;
+	color: #B4007B;
+	margin-bottom: 10px;
+	font-weight: 600;
+}
+#mainLeft .redaction .linkArticle h3{
+	font-size: 1.3em;
+}
+#mainLeft .redaction .linkArticle h4{
+	color: #64226C;
+	font-size: 1em;
+}
+#mainLeft .redaction .artContent{
+	width: 69%;
+	text-align: justify;  padding: 10px;
+}
+#mainLeft .redaction .artPlein{
+	width: 100%;
+	text-align: justify;  padding: 10px;
+}
+
+#mainLeft .redaction {
+	padding: 20px 10px;
+}
+#mainLeft .redaction .article{
+	margin-bottom: 20px;
+}
+
+#mainLeft .redaction .imageArticleDessous { margin:10px 0;}
+
+
+#mainLeft .redaction h2.Categ {
+	margin:20px 0;border-top : 1px dotted #64226C;
+	padding-top:20px;
+}
+
+#mainLeft .redaction .TitreArticle h3 {
+	font-size:1.2em;margin:10px 0;text-decoration:underline;text-transform:none;font-weight: bold;
+}
+
+/* MENU BOTTOM */
+#menuBottom .menuCol{
+	display: block;
+	position: relative;
+}
+#menuBottom .menuCol .menuBack{
+	width: 100%;
+	height: auto;
+}
+#menuBottom .menuCol .menuTxt{
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	left: 80px;
+	bottom: 20px;
+	background-color: #E4DFE3;
+	font-weight: 600;
+	color: #B4007B;
+	font-size: 1.3em;
+	padding: 20px 15px;
+	line-height: 115%;
+}
+#menuBottom .menuCol:hover .menuTxt{
+	text-decoration: underline;
+}
+#menuBottom .active .menuCol .menuTxt{
+	color: #64226C;
+}
+#menuBottom .col-md-3:nth-child(2n) .menuCol .menuTxt{
+	padding-top: 32px;
+}
+
+
+.PartenairesBottom {
+	margin:10px 0;
+}
+
+/* FOOTER */
+#footer{
+	height: auto;
+	position: relative;
+	z-index: 10;
+	background-color: #64226C;
+}
+#footer .container,
+#footer .row{
+	height: 100%;
+}
+#footer .bCol{
+	height: 100%;
+	/*border: 1px solid #fff;*/
+}
+#footer .bCol.last a{
+	font-weight: 600;
+}
+
+#footer .bCol {
+	border-right: 1px solid #fff;
+}
+#footer .bCol.last{
+	border-right: none;
+}
+
+/*#footer .bCol + .bCol{*/
+#footer .bCol.bColFin {
+	border-left: 1px solid #fff;
+}
+#footer .spacer{
+	width: 80%;
+	position: relative;
+	right: -68px;
+	border-bottom: 2px solid #fff;
+	margin-top: 10px;
+}
+#footer h5{
+	color: #fff;
+	text-decoration: underline;
+	font-size: 1.1em;
+	font-weight: 600;
+	margin-top: 15px;
+	margin-bottom: 10px;
+}
+#footer a{
+	color: #fff;
+	font-size: 0.7em;
+	display: block;
+}
+#footer #gMaps {
+	margin-top: 1px;
+	text-align: center;
+}
+#footer #gMaps img{
+	width: 90px;
+	height: auto;
+}
+#footer #AdresseBasDePage {
+	color:#fff;font-size:0.8em;
+}
+
+/****************************************************************
+ *								*
+ *			     ACCUEIL    			*
+ *								*
+ ****************************************************************/
+#carouHome img{
+	width: 100%;
+	height: auto;
+}
+#homeRedac{
+	margin-top: 25px;
+	padding: 15px;
+	background-color: #EDE6ED;
+	border-radius: 10px;
+}
+#homeRedac .redaction {
+	min-height: 155px;
+	background-size: cover;
+	background-color:  #EDE6ED;
+	padding: 10px;
+	border-radius: 10px;
+	margin: 10px 0;
+	color: #64226C;
+	font-size: 0.95em;
+}
+
+/****************************************************************
+ *								*
+ *			     FORMS	    			*
+ *								*
+ ****************************************************************/
+#imgHeadContact{
+	text-align: center;
+}
+#formContact{
+	padding: 15px;
+}
+#formContact h2{
+	text-transform: uppercase;
+	color: #B4007B;
+	text-decoration: underline;
+	font-size: 1.3em;
+	margin-bottom: 15px;
+}
+#formContact label{
+	padding-top: 0;
+}
+#formContact textarea{
+	resize: vertical;
+	width: 90%;
+}
+#formContact .control-group{
+	margin-bottom: 5px;
+}
+#formContact #needs{
+	margin-bottom: 35px;
+}
+#formContact #coords label{
+	display: inline-block;
+	width: 120px;
+	text-align: left;
+	vertical-align: top;
+}
+#formContact #coords input:not([type=radio]){
+	width: 200px;
+	padding: 0 5px;
+}
+#formContact #captchaContact{
+	margin-top: 15px;
+}
+#formContact #captchaContact .inputDis{
+	width: 30px;
+	border: none;
+	text-align: center;
+}
+#formContact #captchaContact .inputRes{
+	width: 40px;
+	text-align: left;
+	padding: 0 5px;
+}
+#formContact #submitButtons{
+	margin-top: 35px;
+	text-align: center;
+}
+#formContact #submitButtons .btn{
+	margin-bottom: 15px;
+	width: 90px;
+	background-color: #64226C;
+	border: 1px solid #B4007B;
+	display: inline-block;
+}
+
+/****************************************************************
+ *								*
+ *		    DIV FLOTTANTE	    			*
+ *								*
+ ****************************************************************/
+#recallRight{
+	position: fixed;
+	top: 10px;
+	right: 10px;
+	padding: 10px;
+	background-color: #B4007B;
+	border-radius: 10px;
+	z-index: 9999;
+}
+#recallRight a{
+	display: block;
+	border: 1px solid #fff;
+	text-align: center;
+	margin: 5px;
+	width: 50px;
+	height: 50px;
+	padding: 5px 0;
+}
+#recallRight a:hover{
+	border-radius: 10px;
+	border-color: #64226C;
+}
+
+
+
+/****************************************************************
+ ****************************************************************
+ *		    	MEDIA QUERIES 				*
+ ****************************************************************
+ ****************************************************************/
+@media screen and (max-width: 1199px) {
+	#recallRight{
+		display: none;
+	}
+	#menuBar .navbar-default ul.menuPrincipal li a{
+		padding: 25px 3px;
+	}
+	#footer .spacer{
+		right: -58px;
+	}
+	#menuBottom .menuCol .menuTxt{
+		top: 5px;
+		left: 55px;
+	}
+	#formContact #coords label{
+		width: 110px;
+	}
+}
+@media screen and (max-width: 991px) {
+	#menuBottom .menuCol .menuTxt{
+		padding: 10px 5px;
+		left: 50px;
+		font-size: 1em;
+	}
+	#menuBottom .col-md-3:nth-child(2n) .menuCol .menuTxt{
+		padding-top: 20px;
+	}
+	#header{
+		    background-position-x: -220px;
+	}
+	#header #appelHead{
+		right: 20px;
+	}
+	#menuBar .navbar-default ul.menuPrincipal{
+		height: 140px;
+	}
+	#menuBar .navbar-default ul.menuPrincipal li{
+		height: 50%;
+	}
+	#menuBar .navbar-default ul.menuPrincipal li+li{
+		border: none;
+	}
+	#footer{
+		height: 750px;
+	}
+	#footer .bCol{
+		height: 50%;
+		border: 1px solid #fff;
+	}
+}
+@media screen and (max-width: 767px) {
+	#menuBar .navbar-default ul.menuPrincipal{
+		height: auto;
+	}
+	#menuBar .navbar-default ul.menuPrincipal li{
+		padding-left: 50px;
+	}
+	#footer .spacer{
+		display: none;
+	}
+}
+@media screen and (max-width: 667px) {
+	#mainRight #telRight a{
+		display: block;
+		position: absolute;
+		top: 12px;
+		right: 7px;
+		background-image: url('../Img/phone_ios7_ios_7.png');
+		background-size: contain;
+		width: 40px;
+		height: 40px;
+	}
+}
+
+
+
+
+

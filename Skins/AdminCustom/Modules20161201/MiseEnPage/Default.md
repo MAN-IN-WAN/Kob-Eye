@@ -11,10 +11,10 @@
 	<li>
 		<a href="/"><span class="glyphicon glyphicon-home"></span>  Accueil</a>
 	</li>
-	<li [IF [!Lien!]~Categorie]class="selected"[/IF]>
+	<li [IF [!Lien!]~=Categorie]class="selected"[/IF]>
 		<a href="/MiseEnPage/Categorie"><span class="glyphicon glyphicon-th-list"></span>  Catégories</a>
 	</li>
-	<li [IF [!Lien!]~Article]class="selected"[/IF]>
+	<li [IF [!Lien!]~=Article]class="selected"[/IF]>
 		<a href="/MiseEnPage/Article"><span class="glyphicon glyphicon-align-left"></span>  Articles</a>
 	</li>
 </ul>

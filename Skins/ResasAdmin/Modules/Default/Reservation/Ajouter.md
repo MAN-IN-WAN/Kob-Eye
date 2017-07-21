@@ -29,7 +29,6 @@
         <div class="alert alert-success">OK bien enregistré</div>
         [!O::setPartenairesBis([!Partenaire!])!]
         [IF [!O::Id!]>0]
-[LOG][!O::Id!][/LOG]
             [METHOD O|Save][/METHOD]
         [ELSE]
             [METHOD O|setValide][/METHOD]
@@ -56,7 +55,7 @@
     <div class="col-md-12">
         <h3>Sélectionnez une date</h3>
         <div id="datepicker-wrap" class="input-group date">
-            <input type="text" class="form-control" id="datepicker" value="[DATE d/m/Y][!TMS::Now!][/DATE]"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+            <input type="text" class="form-control" id="datepicker" value="[IF [!Form_DateDebut!]][!DDS:=[!Utils::explode( ,[!Form_DateDebut!])!]!][!DDS::0!][ELSE][DATE d/m/Y][!TMS::Now!][/DATE][/IF]"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
         </div>
     </div>
 </div>
@@ -64,7 +63,8 @@
 <script>
 $('#datepicker-wrap').datepicker({
     format:"dd/mm/yyyy",
-    language: "fr"
+    language: "fr",
+    autoclose:true
 }).on('changeDate',onChangeDate);
 
 function onChangeDate(e) {
@@ -87,7 +87,7 @@ function onChangeDate(e) {
         for ( var r in response.data){
             if(response.data[r].HeureFin == 0) response.data[r].HeureFin = 24;
             for (var j=response.data[r].HeureDebut; j<=response.data[r].HeureFin; j++ ){
-                console.log('test time', r, j ,parseInt(response.data[r].HeureDebut),parseInt(response.data[r].MinuteDebut),'FIN',parseInt(response.data[r].HeureFin),parseInt(response.data[r].MinuteFin));
+                //console.log('test time', r, j ,parseInt(response.data[r].HeureDebut),parseInt(response.data[r].MinuteDebut),'FIN',parseInt(response.data[r].HeureFin),parseInt(response.data[r].MinuteFin));
                 //calcul 30 min avant
                 if (parseInt(response.data[r].MinuteDebut)==0){
                     $('#date-' + response.data[r].Court + '-' + (parseInt(response.data[r].HeureDebut)-1) + '-30').addClass('warning');
@@ -96,11 +96,11 @@ function onChangeDate(e) {
                 if ( (j==parseInt(response.data[r].HeureDebut) && parseInt(response.data[r].MinuteDebut)==0 )
                         || (j<parseInt(response.data[r].HeureFin)&&j>parseInt(response.data[r].HeureDebut))
                         || (j==parseInt(response.data[r].HeureFin) && parseInt(response.data[r].MinuteFin)==30)) {
-                    console.log('desactivation '+'#date-' + response.data[r].Court + '-' + parseInt(j) + '-00')
+                    //console.log('desactivation '+'#date-' + response.data[r].Court + '-' + parseInt(j) + '-00')
                     $('#date-' + response.data[r].Court + '-' + parseInt(j) + '-00').addClass('disabled');
                 }
                 if (j < parseInt(response.data[r].HeureFin)){
-                    console.log('desactivation '+'#date-' + response.data[r].Court + '-' + parseInt(j) + '-30')
+                    //console.log('desactivation '+'#date-' + response.data[r].Court + '-' + parseInt(j) + '-30')
                     $('#date-'+response.data[r].Court+'-'+parseInt(j)+'-30').addClass('disabled');
                 }
             }
@@ -114,11 +114,18 @@ function onChangeDate(e) {
     today.setHours(0);
     today.setMinutes(0);
     today.setSeconds(0);
-    console.log('DATE '+Math.floor(today.getTime()/1000));
+    //console.log('DATE '+Math.floor(today.getTime()/1000));
     $('.dateform').val((e)?Math.floor(new Date(e.date).getTime()/1000):Math.floor(today.getTime()/1000));
 }
 $(function () {
-    onChangeDate();
+    var date = $('#datepicker').val();
+    date = date.split('/');
+    console.log(date);
+    if(date.length == 3){
+        var ev = {date: new Date(parseInt(date[2]),parseInt(date[1])-1,parseInt(date[0]))}
+        console.log(ev);
+        onChangeDate(ev);
+    } else onChangeDate();
 });
 </script>
 <div class="row">

@@ -10,22 +10,51 @@
 </div>
 
 <script>
+var today = new Date();
 $('#datepicker-wrap').datepicker({
         format:"dd/mm/yyyy",
-        language: "fr"
+        language: "fr",
+        minDate: today,
+        startDate: today,
+        autoclose:true
     }).on('changeDate',onChangeDate);;
 
 
 function onChangeDate(e) {
 
     console.log('change date',e);
+
+
+
+    //Mise à jour de la date
+    var today = new Date();
+    today.setHours(0);
+    today.setMinutes(0);
+    today.setSeconds(0);
+    console.log('DATE '+Math.floor(today.getTime()/1000));
+    $('.dateform').val((e)?Math.floor(new Date(e.date).getTime()/1000):Math.floor(today.getTime()/1000));
+
+    if(e != undefined && e.date.getFullYear() < today.getFullYear()){
+        $('.horaire-tennis').addClass('disabled');
+        return false;
+    }
+    if(e != undefined && e.date.getFullYear() == today.getFullYear() && e.date.getMonth() < today.getMonth()){
+        $('.horaire-tennis').addClass('disabled');
+        return false;
+    }
+    if(e != undefined && e.date.getFullYear() == today.getFullYear() && e.date.getMonth() == today.getMonth() && e.date.getDate() < today.getDate()){
+        $('.horaire-tennis').addClass('disabled');
+        return false;
+    }
+
+
     $.ajax({
         url: "/[!Query!]/getDispo.json",
         data: {
             date: (e)?Math.floor(new Date(e.date).getTime()/1000):Math.floor(new Date().getTime()/1000)
         },
         method: 'POST'
-    }).done(function (response) {
+    }).success(function (response) {
         //mise à jour des cours
         $('.horaire-tennis').removeClass('disabled');
         $('.horaire-tennis').removeClass('warning');
@@ -55,17 +84,22 @@ function onChangeDate(e) {
                 }
             }
         }
+
     }).fail(function (reponse){
         console.log('erreur ajax',reponse);
+    }).done(function(){
+        if(e != undefined && e.date.getFullYear() == today.getFullYear() && e.date.getMonth() == today.getMonth() && e.date.getDate() == today.getDate() || e == undefined){
+            var now = new Date();
+            var horaires = $('.horaire-tennis');
+            $.each(horaires,function(i,v){
+                if($(v).data('heure') <= now.getHours()){
+                    $(v).addClass('old');
+                }
+            });
+        }
     });
 
-    //Mise à jour de la date
-    var today = new Date();
-    today.setHours(0);
-    today.setMinutes(0);
-    today.setSeconds(0);
-    console.log('DATE '+Math.floor(today.getTime()/1000));
-    $('.dateform').val((e)?Math.floor(new Date(e.date).getTime()/1000):Math.floor(today.getTime()/1000));
+
 }
 $(function () {
     onChangeDate();
@@ -103,7 +137,7 @@ $(function () {
         [STORPROC [!S::getHoraires()!]|H]
             [!splitH:=[!Utils::explode(:,[!H!])!]!]
             <div class="col-xs-6 horaire-wrapper">
-                <input type="submit" class="horaire-tennis" id="date-[!C::Id!]-[!splitH::0!]-[!splitH::1!]" name="HeureDebut" value="[!H!]" />
+                <input type="submit" class="horaire-tennis" id="date-[!C::Id!]-[!splitH::0!]-[!splitH::1!]" name="HeureDebut" value="[!H!]" data-heure="[!splitH::0!]"/>
             </div>
             [IF [!Utils::modulo([!Key!],2)!]=1]
             </div>

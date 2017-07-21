@@ -1,0 +1,98 @@
+O:4:"Bloc":23:{s:7:"RawData";s:0:"";s:7:"VarData";N;s:9:"RawLoaded";b:1;s:13:"ContentLoaded";b:1;s:7:"Content";N;s:9:"BlObjects";a:1:{i:0;O:4:"Bloc":23:{s:7:"RawData";s:0:"";s:7:"VarData";N;s:9:"RawLoaded";b:1;s:13:"ContentLoaded";b:1;s:7:"Content";N;s:9:"BlObjects";a:16:{i:0;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:44:"Skins/[!Systeme::Skin!]/Js/suivi_variable.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:1;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:39:"Skins/[!Systeme::Skin!]/Js/swfobject.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:2;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:36:"Tools/Js/Jquery/1.11.2/jquery.min.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:3;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:45:"Tools/Css/Bootstrap/3.3.1/js/bootstrap.min.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:4;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:37:"Tools/Js/Grafikart-Zoombox/zoombox.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:5;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:42:"Tools/Js/JCarousel/jquery.jcarousel.min.js";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:2:"JS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:6;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:43:"Tools/Css/Bootstrap/3.3.1/css/bootstrap.css";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:3:"CSS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:7;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:38:"Tools/Js/Grafikart-Zoombox/zoombox.css";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:3:"CSS";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:8;O:10:"editStruct":11:{s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"HEADER";s:12:"ChildObjects";a:1:{i:0;s:350:"
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+		<script src="/Tools/assets/js/html5shiv.js"></script>
+		<script src="/Tools/[!Systeme::Skin!]/assets/js/respond.min.js"></script>
+	<![endif]-->
+	<meta name="google-site-verification" content="P8rfoEmgl28bkM6ngy6lt4R8DpGAmXz5xm3asj0OnFc" />
+	
+	
+";}s:9:"ChildData";N;s:5:"Child";N;s:4:"Vars";s:0:"";s:7:"TempVar";N;s:4:"Path";N;s:4:"Conf";N;}i:9;s:51:"
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="header" class="container">
+	";i:10;O:4:"Bloc":24:{s:7:"RawData";N;s:7:"VarData";N;s:9:"RawLoaded";b:0;s:13:"ContentLoaded";b:0;s:7:"Content";N;s:9:"BlObjects";N;s:6:"BlData";N;s:8:"PostData";N;s:11:"PostObjects";N;s:10:"PostBlData";N;s:7:"ObjVars";N;s:13:"PostBlObjects";N;s:12:"ChildObjects";N;s:9:"ChildData";N;s:4:"Path";N;s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"MODULE";s:5:"Child";N;s:4:"Vars";s:24:"Systeme/Structure/Header";s:7:"TempVar";N;s:4:"Conf";N;s:6:"INITOK";s:4:"NB 0";}i:11;s:29:"
+</div>
+
+<div id="menuBar">
+	";i:12;O:4:"Bloc":24:{s:7:"RawData";N;s:7:"VarData";N;s:9:"RawLoaded";b:0;s:13:"ContentLoaded";b:0;s:7:"Content";N;s:9:"BlObjects";N;s:6:"BlData";N;s:8:"PostData";N;s:11:"PostObjects";N;s:10:"PostBlData";N;s:7:"ObjVars";N;s:13:"PostBlObjects";N;s:12:"ChildObjects";N;s:9:"ChildData";N;s:4:"Path";N;s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"MODULE";s:5:"Child";N;s:4:"Vars";s:21:"Systeme/Menu/MainMenu";s:7:"TempVar";N;s:4:"Conf";N;s:6:"INITOK";s:4:"NB 0";}i:13;s:171:"
+</div>
+
+<div id="main" class="container">
+	<div id="Content" class="fullWidth">
+		[DATA]
+	</div>
+	<div class="fullWidth hidden-xs">
+		
+
+	</div>
+</div>
+<div id="footer">
+	";i:14;O:4:"Bloc":24:{s:7:"RawData";N;s:7:"VarData";N;s:9:"RawLoaded";b:0;s:13:"ContentLoaded";b:0;s:7:"Content";N;s:9:"BlObjects";N;s:6:"BlData";N;s:8:"PostData";N;s:11:"PostObjects";N;s:10:"PostBlData";N;s:7:"ObjVars";N;s:13:"PostBlObjects";N;s:12:"ChildObjects";N;s:9:"ChildData";N;s:4:"Path";N;s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:6:"MODULE";s:5:"Child";N;s:4:"Vars";s:24:"Systeme/Structure/Footer";s:7:"TempVar";N;s:4:"Conf";N;s:6:"INITOK";s:4:"NB 0";}i:15;s:2333:"
+</div>
+
+<div id="recallRight">
+	<div>
+		<a href="/" class="col-md-3"><img src="/Skins/[!Systeme::Skin!]/Img/home.png" alt="Accueil" title="Accueil"/></a>
+		<a href="/Contact" class="col-md-3"><img src="/Skins/[!Systeme::Skin!]/Img/rappelc2s.png" alt="Contact" title="Contact"/></a>
+		
+	</div>
+	<div>
+		<a href="/Avantages-fiscaux" class="col-md-3"><img src="/Skins/[!Systeme::Skin!]/Img/logo_impot.png" alt="Avantages-fiscaux" title="Avantages-fiscaux"/></a>
+		<a href="/Charte-Paiement" class="col-md-3"><img src="/Skins/[!Systeme::Skin!]/Img/logo_cesu.png" alt="Charte-Paiement" title="Charte-Paiement"/></a>
+		<a href="/PAJE" class="col-md-3"><img src="/Skins/[!Systeme::Skin!]/Img/logo_paje.png" alt="PAJE" title="PAJE"/></a>
+	</div>
+	<div>
+		<a href="/Recrutement" class="col-md-3"><img src="/Skins/[!Systeme::Skin!]/Img/recrutement.png" alt="Recrutement" title="Recrutement"/></a>
+		<a href="/Charte-qualite" class="col-md-3"><img src="/Skins/[!Systeme::Skin!]/Img/rdv.png" alt="Charte-qualite" title="Charte-qualite"/></a>
+		<a href="/Nos-partenaires" class="col-md-3"><img src="/Skins/[!Systeme::Skin!]/Img/partenaires.png" alt="Nos-partenaires" title="Nos-partenaires"/></a>
+	</div>
+</div>
+
+
+
+
+
+
+
+<!-- Piwik -->
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://stats.abtel.fr/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 52]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="http://stats.abtel.fr/piwik.php?idsite=52" style="border:0;" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+<!-- GooglesAnalytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','http://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75618514-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+";}s:6:"BlData";N;s:8:"PostData";N;s:11:"PostObjects";N;s:10:"PostBlData";N;s:7:"ObjVars";N;s:13:"PostBlObjects";N;s:12:"ChildObjects";a:1:{i:0;s:9:"
+	[DATA]
+";}s:9:"ChildData";N;s:4:"Path";s:7:"Default";s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:4:"BLOC";s:5:"Child";N;s:4:"Vars";s:7:"Default";s:7:"TempVar";N;s:4:"Conf";N;}}s:6:"BlData";N;s:8:"PostData";N;s:11:"PostObjects";N;s:10:"PostBlData";N;s:7:"ObjVars";N;s:13:"PostBlObjects";N;s:12:"ChildObjects";a:1:{i:0;s:6:"[DATA]";}s:9:"ChildData";N;s:4:"Path";s:4:"Main";s:4:"Init";i:1;s:3:"Nom";N;s:6:"Result";N;s:6:"Beacon";s:4:"BLOC";s:5:"Child";N;s:4:"Vars";s:4:"Main";s:7:"TempVar";N;s:4:"Conf";N;}

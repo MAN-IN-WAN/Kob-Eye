@@ -6,10 +6,10 @@
 			<h1><span class="glyphicon glyphicon-home"></span> Mise En Page</h1>
 		</a>
 	</li>
-	<li [IF [!Lien!]~Categorie]class="selected"[/IF]>
+	<li [IF [!Lien!]~=Categorie]class="selected"[/IF]>
 		<a href="/MiseEnPage/Categorie"><span class="glyphicon glyphicon-th-list"></span>Catégories</a>
 	</li>
-	<li [IF [!Lien!]~Article]class="selected"[/IF]>
+	<li [IF [!Lien!]~=Article]class="selected"[/IF]>
 		<a href="/MiseEnPage/Article"><span class="glyphicon glyphicon-align-left"></span>Articles</a>
 	</li>
 	<li>
