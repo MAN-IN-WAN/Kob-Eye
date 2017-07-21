@@ -282,3 +282,8 @@ body { font-weight: normal;}
 .bootbox.modal{
     z-index: 1031 !important;
 }
+
+#avatar{
+    max-width:150px;
+    max-height: 150px;
+}

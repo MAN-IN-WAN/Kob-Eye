@@ -97,11 +97,7 @@
                     [IF [!P::value!]>0]
                         [!DF:=[!Utils::getDate(d/m/Y H:i:s,[!P::value!])!]!]
                     [ELSE]
-                        [IF [!P::Default!] != 0]
-                            [!DF:=[!Utils::getDate(d/m/Y H:i:s,[!TMS::Now!])!]!]
-                        [ELSE]
-                            [!DF:=[!Utils::getDate(d/m/Y H:i:s,1)!]!]
-                        [/IF]
+                        [!DF:=[!Utils::getDate(d/m/Y H:i:s,[!TMS::Now!])!]!]
                     [/IF]
                 [/IF]
             <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">

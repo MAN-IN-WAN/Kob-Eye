@@ -53,7 +53,7 @@
 
         function onChangeDate(e) {
 
-            console.log('change date',e);
+            //console.log('change date',e);
             $.ajax({
                 url: "/Reservations/Reservation/getDispo.json",
                 data: {
@@ -66,12 +66,12 @@
                 $('.horaire-tennis').removeClass('warning');
 
                 $('.horaire-wrapper:last-child .horaire-tennis').addClass('warning');
-                console.log('RESPONSE',response);
+                //console.log('RESPONSE',response);
 
                 for ( var r in response.data){
                     if(response.data[r].HeureFin == 0) response.data[r].HeureFin = 24;
                     for (var j=response.data[r].HeureDebut; j<=response.data[r].HeureFin; j++ ){
-                        console.log('test time', r, j ,parseInt(response.data[r].HeureDebut),parseInt(response.data[r].MinuteDebut),'FIN',parseInt(response.data[r].HeureFin),parseInt(response.data[r].MinuteFin));
+                        //console.log('test time', r, j ,parseInt(response.data[r].HeureDebut),parseInt(response.data[r].MinuteDebut),'FIN',parseInt(response.data[r].HeureFin),parseInt(response.data[r].MinuteFin));
                         //calcul 30 min avant
                         if (parseInt(response.data[r].MinuteDebut)==0){
                             $('#date-' + response.data[r].Court + '-' + (parseInt(response.data[r].HeureDebut)-1) + '-30').addClass('warning');
@@ -82,15 +82,37 @@
                         if ( (j==parseInt(response.data[r].HeureDebut) && parseInt(response.data[r].MinuteDebut)==0 )
                             || (j<parseInt(response.data[r].HeureFin)&&j>parseInt(response.data[r].HeureDebut))
                             || (j==parseInt(response.data[r].HeureFin) && parseInt(response.data[r].MinuteFin)==30)) {
-                            console.log('desactivation '+'#date-' + response.data[r].Court + '-' + parseInt(j) + '-00')
+                            //console.log('desactivation '+'#date-' + response.data[r].Court + '-' + parseInt(j) + '-00')
+
+                            //Gestion de la diferrence Reservation / Diponnibilité
+                            var href='';
+                            if(response.data[r].Type == 'Reservation'){
+                                href= '/[!Sys::getMenu(Reservations/Reservation)!]/'+response.data[r].Id;
+                            } else if(response.data[r].Type == 'Recurrence'){
+                                href= '/[!Sys::getMenu(Reservations/Disponibilite)!]/Ajouter';
+                            } else {
+                                href= '/[!Sys::getMenu(Reservations/Disponibilite)!]/'+response.data[r].Id;
+                            }
+
                             $('#date-' + response.data[r].Court + '-' + parseInt(j) + '-00').addClass('disabled-alt');
-                            $('#date-' + response.data[r].Court + '-' + parseInt(response.data[r].HeureDebut) + '-00').attr('href','/[!Sys::getMenu(Reservations/Reservation)!]/'+response.data[r].Id);
+                            $('#date-' + response.data[r].Court + '-' + parseInt(response.data[r].HeureDebut) + '-00').attr('href',href);
                             $('#date-' + response.data[r].Court + '-' + parseInt(response.data[r].HeureDebut) + '-00').attr('title',response.data[r].Client);
                         }
                         if (j < parseInt(response.data[r].HeureFin)){
-                            console.log('desactivation '+'#date-' + response.data[r].Court + '-' + parseInt(j) + '-30');
+                            //console.log('desactivation '+'#date-' + response.data[r].Court + '-' + parseInt(j) + '-30');
+
+                            //Gestion de la diferrence Reservation / Diponnibilité
+                            var href='';
+                            if(response.data[r].Type == 'Reservation'){
+                                href= '/[!Sys::getMenu(Reservations/Reservation)!]/'+response.data[r].Id;
+                            } else if(response.data[r].Type == 'Recurrence'){
+                                href= '/[!Sys::getMenu(Reservations/Disponibilite)!]/Ajouter';
+                            } else {
+                                href= '/[!Sys::getMenu(Reservations/Disponibilite)!]/'+response.data[r].Id;
+                            }
+
                             $('#date-'+response.data[r].Court+'-'+parseInt(j)+'-30').addClass('disabled-alt');
-                            $('#date-'+response.data[r].Court+'-'+parseInt(j)+'-30').attr('href','/[!Sys::getMenu(Reservations/Reservation)!]/'+response.data[r].Id);
+                            $('#date-'+response.data[r].Court+'-'+parseInt(j)+'-30').attr('href',href);
                             $('#date-'+response.data[r].Court+'-'+parseInt(j)+'-30').attr('title',response.data[r].Client);
                         }
                     }
@@ -104,7 +126,7 @@
             today.setHours(0);
             today.setMinutes(0);
             today.setSeconds(0);
-            console.log('DATE '+Math.floor(today.getTime()/1000));
+            //console.log('DATE '+Math.floor(today.getTime()/1000));
             $('.dateform').val((e)?Math.floor(new Date(e.date).getTime()/1000):Math.floor(today.getTime()/1000));
         }
         $(function () {

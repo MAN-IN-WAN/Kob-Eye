@@ -405,10 +405,67 @@ class Reservation extends genericClass {
 //            $out = Sys::getCount('Reservations','Court/'.$court->Id.'/Disponibilite/Dispo=0&Fin>='.$this->DateFin.'&Debut<='.$this->DateDebut);
 //            if ($out) return false;
 
+
             $dispos = Disponibilite::getDispo($this->DateDebut,$this->DateFin);
+            $heuredebverif = (int)date('H',$this->DateDebut);
+            $heurefinverif = (int)date('H',$this->DateFin);
+            $minutedebverif = (int)date('i',$this->DateDebut);
+            $minutefinverif = (int)date('i',$this->DateFin);
+
+            $jourdebverif = date('d',$this->DateDebut);
+            $jourfinverif = date('d',$this->DateFin);
+            if($jourdebverif != $jourfinverif)  $heurefinverif +=24;
+            
+            
             foreach ($dispos as $dispo){
-                $courtD = $dispo->getOneParent('Court');
-                if($court->Id == $courtD->Id) return false;
+                $heuredeb = (int)date('H',$dispo->Debut);
+                $heurefin = (int)date('H',$dispo->Fin);
+                $minutedeb = (int)date('i',$dispo->Debut);
+                $minutefin = (int)date('i',$dispo->Fin);
+
+                $jourdeb = date('d',$dispo->Debut);
+                $jourfin = date('d',$dispo->Fin);
+                if($jourdeb != $jourfin)  $heurefin +=24;
+
+
+                foreach($dispo->_courts as $courtD){
+                    if($court->Id == $courtD->Id) { // si la dispo et le court correspondent
+                        //Cas ou la periode correspond à la periode d'indisponobilité
+                        if(
+                            (($heuredebverif == $heuredeb && $minutedebverif <= $minutedeb) || $heuredebverif < $heuredeb) &&
+                            (($heurefinverif == $heurefin && $minutefinverif >= $minutefin) || $heurefinverif > $heurefin)
+                        ){
+                            return false;
+                        }
+
+                        //Cas ou la periode verif "mange" la fin de la periode d'indisponobilité
+                        if(
+                            (($heuredebverif == $heuredeb && $minutedebverif > $minutedeb) || $heuredebverif > $heuredeb) &&
+                            (($heuredebverif == $heurefin && $minutedebverif < $minutefin) || $heuredebverif < $heurefin) &&
+                            (($heurefinverif == $heurefin && $minutefinverif >= $minutefin) || $heurefinverif > $heurefin)
+                        ){
+                            return false;
+                        }
+                        //Cas ou la periode verif "mange" le debut de la periode d'indisponobilité
+                        if(
+                            (($heuredebverif == $heuredeb && $minutedebverif <= $minutedeb) || $heuredebverif < $heuredeb) &&
+                            (($heurefinverif == $heuredeb && $minutefinverif > $minutedeb) || $heurefinverif > $heuredeb) &&
+                            (($heurefinverif == $heurefin && $minutefinverif < $minutefin) || $heurefinverif < $heurefin)
+                        ){
+                            return false;
+                        }
+
+                        //Cas ou la periode verif "mange" le milieu de la periode d'indisponobilité
+                        if(
+                            (($heuredebverif == $heuredeb && $minutedebverif > $minutedeb) || $heuredebverif > $heuredeb) &&
+                            (($heuredebverif == $heurefin && $minutedebverif < $minutefin) || $heuredebverif < $heurefin) &&
+                            (($heurefinverif == $heuredeb && $minutefinverif > $minutedeb) || $heurefinverif > $heuredeb) &&
+                            (($heurefinverif == $heurefin && $minutefinverif < $minutefin) || $heurefinverif < $heurefin)
+                        ){
+                            return false;
+                        }
+                    }
+                }
             }
 
             return true;

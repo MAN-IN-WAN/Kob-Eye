@@ -13,6 +13,10 @@
 [HEADER CSS]Tools/Css/Bootstrap/bootstrap-switch-master/dist/css/bootstrap3/bootstrap-switch.min.css[/HEADER]
 [HEADER JS]Tools/Css/Bootstrap/bootstrap-switch-master/dist/js/bootstrap-switch.min.js[/HEADER]
 
+//FILE INPUT
+[HEADER CSS]Tools/Css/Bootstrap/Bootstrap-fileinput/css/fileinput.min.css[/HEADER]
+[HEADER JS]Tools/Css/Bootstrap/Bootstrap-fileinput/js/fileinput.min.js[/HEADER]
+
 [HEADER]
 <link rel="icon" href="http://tennisforever.fr/wp-content/uploads/2015/12/cropped-balle-32x32.png" sizes="32x32" />
 <link rel="icon" href="http://tennisforever.fr/wp-content/uploads/2015/12/cropped-balle-192x192.png" sizes="192x192" />

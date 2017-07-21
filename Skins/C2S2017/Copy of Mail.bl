@@ -1,0 +1,32 @@
+<html>
+	<body>
+		<div class="table-responsive">
+			<table class="table">
+				<tr>	
+					<td align="left" bgcolor="#ffffff">
+						<br />
+						<img src="[!Domaine!]/Skins/[!Systeme::Skin!]/Img/bandomail.jpg" alt="[!Domaine!]" />
+						<br />
+					</td>
+				</tr>			
+				<tr>
+					<td>
+						<br />
+						<font face="arial" color="#000000" size="2">[DATA]</font>
+						<br /><br />
+					</td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#cccccc">
+						<br />
+						<font face="arial" color="#000000" size="2"><strong>A bient&ocirc;t sur notre site : <a href="[!Domaine!]">[!Domaine!]</a> !</strong></font>
+						<br />
+						<br />
+					</td>
+				</tr>
+			<table>
+		</div>
+	</body>
+</html>		
+
+

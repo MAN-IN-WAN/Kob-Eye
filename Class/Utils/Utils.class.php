@@ -226,29 +226,29 @@ class Utils {
     }
     static function checkSyntaxe($P){
     	if (is_array($P))$chaine = $P[0];
-	else $chaine = $P;
-	$chaine=utf8_decode($chaine);
-	$chaine=stripslashes($chaine);
-	$chaine = preg_replace('`\s+`', '-', trim($chaine));
-	$chaine = str_replace("'", "-", $chaine);
-	$chaine = str_replace("&", "et", $chaine);
-	$chaine = str_replace('"', "-", $chaine);
-	$chaine = str_replace("?", "", $chaine);
-	$chaine = str_replace("!", "", $chaine);
-	$chaine = str_replace(".", "", $chaine);
-	$chaine = preg_replace('`[\,\ \(\)\+\'\/\:]`', '-', trim($chaine));
-	$chaine=strtr($chaine,utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ?"),"aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynn-");
-	$chaine = preg_replace('`[-]+`', '-', trim($chaine));
-	$chaine =  utf8_encode($chaine);
-	//ON verifie qu il n existe pas deja une entité avec la meme url
-	$Suffixe=(isset($Obj["Id"]))?"&Id!=".$Obj["Id"]:"";
-	$modif = false;
-	$chaine = preg_replace('`[\/]`', '-', trim($chaine));
-	return $chaine;
+        else $chaine = $P;
+        $chaine=utf8_decode($chaine);
+        $chaine=stripslashes($chaine);
+        $chaine = preg_replace('`\s+`', '-', trim($chaine));
+        $chaine = str_replace("'", "-", $chaine);
+        $chaine = str_replace("&", "et", $chaine);
+        $chaine = str_replace('"', "-", $chaine);
+        $chaine = str_replace("?", "", $chaine);
+        $chaine = str_replace("!", "", $chaine);
+        $chaine = str_replace(".", "", $chaine);
+        $chaine = preg_replace('`[\,\ \(\)\+\'\/\:]`', '-', trim($chaine));
+        $chaine=strtr($chaine,utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ?"),"aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynn-");
+        $chaine = preg_replace('`[-]+`', '-', trim($chaine));
+        $chaine =  utf8_encode($chaine);
+        //ON verifie qu il n existe pas deja une entité avec la meme url
+        $Suffixe=(isset($Obj["Id"]))?"&Id!=".$Obj["Id"]:"";
+        $modif = false;
+        $chaine = preg_replace('`[\/]`', '-', trim($chaine));
+        return $chaine;
     }
     static function  addslashes($P) {
-	return addslashes($P[0]);
-}
+        return addslashes($P[0]);
+    }
 	//Nécéssaire pour pouvoir ajouter des fonctions à la classe "à la volée"
 	public static function __callStatic($method, $args)
 	{
@@ -269,6 +269,9 @@ class Utils {
         $text = str_replace("”" , '"', $text);
         $text = str_replace('"' , '\"', $text);
         return $text;
+    }
+    public static function  isNull($P) {
+        return is_null($P[0]);
     }
 }
 

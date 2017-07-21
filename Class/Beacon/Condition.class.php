@@ -159,11 +159,12 @@ Class Condition extends Beacon{
 				else return false;
 			}
 		}
+
 		//Traitement de la condition
 //		if (isset($Result[1][0])&&$Result[1][0]=="[") return false;
 		if (isset($Result[2])&&$Result[2]=='=') $Result[2] = '==';
 		if(isset($Result[2])&&($Result[2]=="!="||$Result[2]=="<>"))return $Result[1]!=$Result[3];
-		if (isset($Result[2])&&$Result[2]=="~") {
+		if (isset($Result[2])&&($Result[2]=="~"||$Result[2]=="~=")) {
 			if ($Result[3]!="")if (preg_match("#".addcslashes($Result[3],'*.()[]/\\#')."#",$Result[1])) {
 				return true;
 			}

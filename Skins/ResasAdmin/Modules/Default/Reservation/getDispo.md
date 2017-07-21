@@ -18,12 +18,13 @@
             "MinuteFin": "[DATE i][!R::DateFin!][/DATE]",
             "Service": "[!R::Service!]",
             "Client": "[!R::Nom!] [!R::Prenom!]",
-            "Dispo": "0"
+            "Dispo": "0",
+            "Type": "Reservation"
         }
         [/STORPROC]
         [OBJ Reservations|Disponibilite|D]
         [STORPROC [!D::getDispo([!DateDeb!],[!DateFin!])!]|R]
-            [STORPROC Reservations/Court/Disponibilite/[!R::Id!]|C]
+            [STORPROC [!R::_courts!]|C]
                 [IF [!Flag!]],[/IF]{
                 "Id":[!R::Id!],
                 "HeureDebut": "[DATE H][!R::Debut!][/DATE]",
@@ -32,7 +33,9 @@
                 "MinuteDebut": "[DATE i][!R::Debut!][/DATE]",
                 "MinuteFin": "[DATE i][!R::Fin!][/DATE]",
                 "Service": "[!R::Service!]",
-                "Dispo": "[!R::Dispo!]"
+                "Client": "[!R::Titre!]",
+                "Dispo": "[!R::Dispo!]",
+                "Type": "[IF [!R::RecurrenceHebdo!]]Recurrence[ELSE]Disponibilite[/IF]"
                 }
                 [!Flag:=1!]
             [/STORPROC]

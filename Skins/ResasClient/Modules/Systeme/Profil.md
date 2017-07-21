@@ -1,12 +1,12 @@
 <div style="overflow:hidden;">
-<h2>Modification du compte</h2>
-<div id="msg"></div>
-<form method="POST" id="clientForm">
     [!O:=[!Module::Reservations::getCurrentClient()!]!]
-    [MODULE Systeme/Utils/Form?O=[!O!]]
-    <input type="hidden" class="btn btn-success btn-block" name="ValidForm" value="1" />
-    <input type="submit" class="btn btn-success btn-block" id="createClient" name="Valider" value="Valider" />
-</form>
+    <h2>Modification du compte</h2>
+    <div id="msg"></div>
+    <form method="POST" id="clientForm">
+        [MODULE Systeme/Utils/Form?O=[!O!]]
+        <input type="hidden" class="btn btn-success btn-block" name="ValidForm" value="1" />
+        <input type="submit" class="btn btn-success btn-block" id="createClient" name="Valider" value="Valider" />
+    </form>
     <a href="/" class="btn btn-danger btn-block">Retour</a>
 </div>
 <script>

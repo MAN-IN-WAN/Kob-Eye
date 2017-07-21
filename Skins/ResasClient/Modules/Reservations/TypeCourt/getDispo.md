@@ -22,7 +22,7 @@
         [/STORPROC]
         [OBJ Reservations|Disponibilite|D]
         [STORPROC [!D::getDispo([!DateDeb!],[!DateFin!])!]|R]
-            [STORPROC Reservations/Court/Disponibilite/[!R::Id!]|C]
+            [STORPROC [!R::_courts!]|C]
                 [IF [!Flag!]],[/IF]{
                 "Id":[!R::Id!],
                 "HeureDebut": "[DATE H][!R::Debut!][/DATE]",
