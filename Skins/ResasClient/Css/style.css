@@ -257,7 +257,13 @@ body { font-weight: normal;}
     pointer-events: none;
     cursor: default;
 }
+.horaire-tennis.old, .horaire-tennis.warning.old, .horaire-tennis.disabled.old , .horaire-tennis.disabled.warning.old {
+    background:grey !important;
+    color:#000 ;
+    pointer-events: none;
+    cursor: default;
 
+}
 .breadcrumb {
     padding: 8px 15px;
     margin-bottom: 20px;
@@ -281,4 +287,9 @@ body { font-weight: normal;}
 /*** BOOTBOX ***/
 .bootbox.modal{
     z-index: 1031 !important;
+}
+
+
+span.msg-suppr{
+    color: /*white*/orange;
 }
