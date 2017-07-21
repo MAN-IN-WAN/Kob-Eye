@@ -31,6 +31,7 @@ class ReservationsTypePaiementPayBox extends Plugin implements ReservationsTypeP
 	 * $paiement = Reservations/Paiement Objectclass
 	 **/
 	public function getCodeHTML( $paiement ) {
+	    $facture = $paiement->getOneParent('Facture');
 		// Params
 		//mode d'appel
 		     //$PBX_MODE        = '4';    //pour lancement paiement par exécution
@@ -55,12 +56,12 @@ class ReservationsTypePaiementPayBox extends Plugin implements ReservationsTypeP
 		//informations nécessaires aux traitements (réponse)
 		     //$PBX_RETOUR      = "auto:A;amount:M;ident:R;trans:T";
 		     $PBX_RETOUR      = "Mt:M;Ref:R;Auto:A;Erreur:E";
-		     $PBX_EFFECTUE    = "http://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Reservations/Commande/Etape5');
-		     $PBX_REFUSE      = "http://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Reservations/Commande/Etape5');
-		     $PBX_ANNULE      = "http://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Reservations/Commande/Etape5');
-		     $PBX_REPONDRE_A  = "http://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Reservations/Commande/Etape4s');
+		     $PBX_EFFECTUE    = "http://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Reservations/Facture/'.$facture->NumFac.'/Confirmation');
+		     $PBX_REFUSE      = "http://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Reservations/Facture/'.$facture->NumFac.'/Annulation');
+		     $PBX_ANNULE      = "http://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Reservations/Facture/'.$facture->NumFac.'/Annulation');
+		     $PBX_REPONDRE_A  = "http://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Reservations/Facture/'.$facture->NumFac.'/IPN');
 		//page en cas d'erreur
-		     $PBX_ERREUR      = "http://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Reservations/Commande/Etape5');
+		     $PBX_ERREUR      = "http://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Reservations/Facture/'.$facture->NumFac.'/Annulation');
 		//date
 		     $PBX_TIME	      =  date("c");
 		//paiement différé
@@ -127,7 +128,7 @@ class ReservationsTypePaiementPayBox extends Plugin implements ReservationsTypeP
 	}
 
 	public function retrouvePaiementEtape4s() {
-		if(isset($_POST['trans_id']) and !empty($_POST['trans_id'])) return round($_POST['trans_id']);
+		if(isset($_GET['Ref']) and !empty($_GET['Ref'])) return round($_GET['Ref']);
 		return false;
 	}
 
