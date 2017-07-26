@@ -1,11 +1,32 @@
-[STORPROC [!Query!]|F|0|1]
 <div class="row">
     <div class="col-md-12">
-        <form action="" method="POST">
-            <h1>Votre facture [!F::FacNum!] est en attente de paiement. Vous recevrez un email vous donnant les le statut de votre paiement.</h1>
-            <h3><b>Total à payer:</b><span class="label label-success" >[!Utils::getPrice([!F::MontantTTC!])!] €</span></h3>
-            <a href="/" class="btn btn-danger btn-large btn-block">Retour à l'accueil</a>
-        </form>
+        <h1>Nous attendons le retour de votre banque.</h1>
+        <div class="alert alert-warning">Veuillez patienter, nous procédons au traitement de votre règlement...</div>
+        <a href="/" class="btn btn-danger btn-large btn-block">Retour à l'accueil</a>
+        <script>
+            //détection du paiement en cours.
+            [!FAC:=[!CurrentClient::getCurrentFacture()!]!]
+            [!PAIEMENT:=[!FAC::getPaiement()!]!]
+            [SWITCH [!PAIEMENT::Etat!]|=]
+                [CASE 0]
+                    //on refresh
+                    var t = setTimeout(function () {
+                        window.location.replace("[!Domaine!]/Reservations/Facture/Attente");
+                    },1000);
+                [/CASE]
+                [CASE 1]
+                    //page confirmation
+                    var t = setTimeout(function () {
+                        window.location.replace("[!Domaine!]/Reservations/Facture/[!FAC::Id!]/Confirmation");
+                    },500);
+                [/CASE]
+                [DEFAULT]
+                    //paiement à refaire
+                    var t = setTimeout(function () {
+                        window.location.replace("[!Domaine!]/Reservations/Facture/[!FAC::Id!]/Annulation");
+                    },500);
+                [/DEFAULT]
+            [/SWITCH]
+        </script>
     </div>
 </div>
-[/STORPROC]
