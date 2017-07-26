@@ -11,7 +11,12 @@
 require_once( dirname(dirname(__FILE__)).'/TypePaiement.interface.php' );
 
 class ReservationsTypePaiementPayBox extends Plugin implements ReservationsTypePaiementPlugin {
-
+    private static $ABONNEMENT = false;
+    private static $AUTOSEULE = false;
+    public static function setMultiPayment($set){
+        ReservationsTypePaiementPayBox::$ABONNEMENT = true;
+        ReservationsTypePaiementPayBox::$AUTOSEULE = true;
+    }
 	/**
 	* initStatePaiement
 	* Initiliase le paiement avec ses propriétés particulières
@@ -31,7 +36,12 @@ class ReservationsTypePaiementPayBox extends Plugin implements ReservationsTypeP
 	 * $paiement = Reservations/Paiement Objectclass
 	 **/
 	public function getCodeHTML( $paiement ) {
+        //CONFIGURATION
+        $AUTOSEULE = ReservationsTypePaiementPayBox::$AUTOSEULE;
+        $ABONNEMENT = ReservationsTypePaiementPayBox::$ABONNEMENT;
+
 	    $facture = $paiement->getOneParent('Facture');
+	    $client = $facture->getOneParent('Client');
 		// Params
 		//mode d'appel
 		     //$PBX_MODE        = '4';    //pour lancement paiement par exécution
@@ -50,12 +60,14 @@ class ReservationsTypePaiementPayBox extends Plugin implements ReservationsTypeP
 		     $PBX_TOTAL       = round($paiement->Montant * 100);
 		     $PBX_DEVISE      = '978';
 		     $PBX_CMD         = sprintf("%06d", $paiement->Id);
-		     $PBX_PORTEUR     = "ledomedufoot@bbox.fr";//$GLOBALS["Systeme"]->Conf->get("GENERAL::INFO::ADMIN_MAIL");
+		     //EMAIL CLIENT
+		     $PBX_PORTEUR     = $client->Email;
              $PBX_TYPEPAIEMENT= 'CARTE';
              $PBX_TYPECARTE   = 'CB';
+             $PBX_AUTOSEULE   = 'O';
+             $PBX_REFABONNE   = 'test';
 		//informations nécessaires aux traitements (réponse)
-		     //$PBX_RETOUR      = "auto:A;amount:M;ident:R;trans:T";
-		     $PBX_RETOUR      = "Mt:M;Ref:R;Auto:A;Erreur:E";
+            $PBX_RETOUR      = "Mt:M;Ref:R;Auto:A;Erreur:E;carte:U;sign:K";
 		     $PBX_EFFECTUE    = "http://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Reservations/Facture/'.$facture->NumFac.'/Confirmation');
 		     $PBX_REFUSE      = "http://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Reservations/Facture/'.$facture->NumFac.'/Annulation');
 		     $PBX_ANNULE      = "http://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Reservations/Facture/'.$facture->NumFac.'/Annulation');
@@ -66,9 +78,19 @@ class ReservationsTypePaiementPayBox extends Plugin implements ReservationsTypeP
 		     $PBX_TIME	      =  date("c");
 		//paiement différé
              $PBX_DIFF        = "90";
-		
+             $PBX_CURRENCYDISPLAY = "EUR";
+
+        //ABONNEMENT
+//        $ABO = "PBX_AUTOSEULE=$PBX_AUTOSEULE&PBX_REFABONNE=$PBX_REFABONNE&";
+        $ABO = '';
+        if ($AUTOSEULE)
+            $ABO .= "PBX_AUTOSEULE=$PBX_AUTOSEULE&";
+        if ($ABONNEMENT)
+            $ABO .= "PBX_REFABONNE=$PBX_REFABONNE&";
+
 		//construction de la chaîne de paramètres
-             $PBX= "PBX_SITE=$PBX_SITE&PBX_RANG=$PBX_RANG&PBX_IDENTIFIANT=$PBX_IDENTIFIANT&PBX_TOTAL=$PBX_TOTAL&PBX_DEVISE=$PBX_DEVISE&PBX_CMD=$PBX_CMD&PBX_PORTEUR=$PBX_PORTEUR&PBX_RETOUR=$PBX_RETOUR&PBX_HASH=$PBX_HASH&PBX_TIME=$PBX_TIME&PBX_DIFF=$PBX_DIFF";
+        $PBX= "PBX_SITE=$PBX_SITE&PBX_RANG=$PBX_RANG&PBX_IDENTIFIANT=$PBX_IDENTIFIANT&PBX_TOTAL=$PBX_TOTAL&PBX_DEVISE=$PBX_DEVISE&PBX_CMD=$PBX_CMD&".$ABO."PBX_PORTEUR=$PBX_PORTEUR&PBX_RETOUR=$PBX_RETOUR&PBX_HASH=$PBX_HASH&PBX_TIME=$PBX_TIME";
+        //$PBX= $ABO."PBX_SITE=$PBX_SITE&PBX_RANG=$PBX_RANG&PBX_IDENTIFIANT=$PBX_IDENTIFIANT&PBX_TOTAL=$PBX_TOTAL&PBX_DEVISE=$PBX_DEVISE&PBX_PORTEUR=$PBX_PORTEUR&PBX_RETOUR=$PBX_RETOUR&PBX_HASH=$PBX_HASH&PBX_TIME=$PBX_TIME";
 
 		// Si la clé est en ASCII, On la transforme en binaire
 		$binKey = pack("H*", $this->Params['KEY']);
@@ -85,17 +107,14 @@ class ReservationsTypePaiementPayBox extends Plugin implements ReservationsTypeP
 			<input type="hidden" name="PBX_TOTAL" value="'.$PBX_TOTAL.'">
 			<input type="hidden" name="PBX_DEVISE" value="'.$PBX_DEVISE.'">
 			<input type="hidden" name="PBX_CMD" value="'.$PBX_CMD.'">
+			<!-- ABONNEMENT -->
+			'.($AUTOSEULE?'<input type="hidden" name="PBX_AUTOSEULE" value="'.$PBX_AUTOSEULE.'">':'').'
+			'.($ABONNEMENT?'<input type="hidden" name="PBX_REFABONNE" value="'.$PBX_REFABONNE.'">':'').'
+			<!-- FIN ABONNEMENT -->
 			<input type="hidden" name="PBX_PORTEUR" value="'.$PBX_PORTEUR.'">
-<!--			<input type="hidden" name="PBX_TYPEPAIEMENT" value="'.$PBX_TYPEPAIEMENT.'">
-			<input type="hidden" name="PBX_TYPECARTE" value="'.$PBX_TYPECARTE.'">-->
 			<input type="hidden" name="PBX_RETOUR" value="'.$PBX_RETOUR.'">
-<!--			<input type="hidden" name="PBX_EFFECTUE" value="'.$PBX_EFFECTUE.'">
-			<input type="hidden" name="PBX_REFUSE" value="'.$PBX_REFUSE.'">
-			<input type="hidden" name="PBX_ANNULE" value="'.$PBX_ANNULE.'">
-			<input type="hidden" name="PBX_REPONDRE_A" value="'.$PBX_REPONDRE_A.'">-->
 			<input type="hidden" name="PBX_HASH" value="'.$PBX_HASH.'">
 			<input type="hidden" name="PBX_TIME" value="'.$PBX_TIME.'">
-			<input type="hidden" name="PBX_DIFF" value="'.$PBX_DIFF.'">
 			<input type="hidden" name="PBX_HMAC" value="'.$hmac.'">
 			<input type="submit" value="Envoyer">
 		</form>
@@ -108,23 +127,36 @@ class ReservationsTypePaiementPayBox extends Plugin implements ReservationsTypeP
 	}
 
 	public function serveurAutoResponse( $paiement, $commande ) {
-		// Vérification signature
-		$signature = sha1(
-			$_POST['version'] . "+" . $_POST['site_id'] . "+" . $_POST['ctx_mode'] . "+" . $_POST['trans_id'] . "+" . $_POST['trans_date'] . "+" . 
-			$_POST['validation_mode'] . "+" . $_POST['capture_delay'] . "+" . $_POST['payment_config'] . "+" . $_POST['card_brand'] ."+" . 
-			$_POST['card_number'] . "+" . $_POST['amount'] . "+" . $_POST['currency'] ."+" . $_POST['auth_mode'] ."+" . $_POST['auth_result'] ."+" .
-			$_POST['auth_number'] ."+" . $_POST['warranty_result'] ."+" . $_POST['payment_certificate'] ."+" . $_POST['result'] ."+" . $_POST['hash'] . "+" . $this->Params["CERTIFICAT"]
-		);
-		if($signature != $_POST['signature']) {
-			return false;
-		}
+        $PUBKEY='-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDe+hkicNP7ROHUssGNtHwiT2Ew
+HFrSk/qwrcq8v5metRtTTFPE/nmzSkRnTs3GMpi57rBdxBBJW5W9cpNyGUh0jNXc
+VrOSClpD5Ri2hER/GcNrxVRP7RlWOqB1C03q4QYmwjHZ+zlM4OUhCCAtSWflB4wC
+Ka1g88CjFwRw/PB9kwIDAQAB
+-----END PUBLIC KEY-----';
+        $client = $commande->getOneParent('Client');
 
 		// Retourne le code d'état du paiement
-		$etat = ($_POST['result'] == '00') ? 1 : 2;
-		return array(
-			'etat' => $etat,
-			'ref' => $_POST['auth_number']
-		);
+        Klog::l('params','Mt='.$_GET['Mt'].'&Ref='.$_GET['Ref'].'&Auto='.$_GET['Auto'].'&Erreur='.$_GET['Erreur'].'&carte='.$_GET['carte']);
+        Klog::l('sign',$_GET['sign']);
+        //si la variable carte alors enregistrement carte
+        $str = 'Mt='.$_GET['Mt'].'&Ref='.$_GET['Ref'].'&Auto='.$_GET['Auto'].'&Erreur='.$_GET['Erreur'].'&carte='.urlencode($_GET['carte']);
+		if (openssl_verify ( $str, base64_decode($_GET['sign']) , $PUBKEY )){
+            $etat = ($_GET['Erreur'] == '00000') ? 1 : 2;
+            Klog::l('autoresponse OK');
+            //si carte alors enregistrement identifiant carte dnas le client
+            if (isset($_GET["carte"])){
+                Klog::l('carte abonne',$_GET['carte']);
+                $client->IdentifiantCB = $_GET['carte'];
+                $client->Save();
+            }
+        }else{
+            Klog::l('autoresponse NOK');
+            $etat = 2;
+        }
+        return array(
+            'etat' => $etat,
+            'ref' => $_GET['Ref']
+        );
 	}
 
 	public function retrouvePaiementEtape4s() {

@@ -343,4 +343,14 @@ class Client extends genericClass {
 
 		return true;
 	}
+
+    /**
+     * getCurrentFacture
+     * Récupère la facture en cours soit payée soit en brouillon
+     *
+     */
+	function getCurrentFacture() {
+        $fac = Sys::getOneData('Reservations','Client/'.$this->Id.'/Facture',0,1,'Id','DESC');
+        return $fac;
+    }
 }

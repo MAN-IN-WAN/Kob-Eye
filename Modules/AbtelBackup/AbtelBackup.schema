@@ -1,0 +1,44 @@
+<SCHEMA>
+	<OBJECTCLASS title="Esx" driver="mysql" AccessPoint="1" Description="Serveur ESXi"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<PROPERTIES type="titre" searchOrder="1">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" searchOrder="2">IP</PROPERTIES>
+		<PROPERTIES type="varchar" lenth="50">Login</PROPERTIES>
+		<PROPERTIES type="varchar" >Password</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="EsxVm" AccessPoint="1" driver="mysql" Description="Machine virtuelle"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<PROPERTIES type="titre" searchOrder="1">Titre</PROPERTIES>
+		<PROPERTIES type="int" searchOrder="2">Size</PROPERTIES>
+		<FKEY data="Esx,Id" card="0,1">EsxId</FKEY>
+		<FKEY data="BorgRepo,Id" card="0,1">BorgRepoId</FKEY>
+		<FKEY data="VmJob,Id" card="0,1">VmJobId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="BackupStore" AccessPoint="1" driver="mysql" Description="Stockage Sauvegarde"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<PROPERTIES type="titre" searchOrder="1">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" values="Local,Distant" searchOrder="2">Type</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" searchOrder="2">IP</PROPERTIES>
+		<PROPERTIES type="varchar" lenth="150">Domain</PROPERTIES>
+		<PROPERTIES type="varchar" lenth="50">Login</PROPERTIES>
+		<PROPERTIES type="varchar" >Password</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="BorgRepo" driver="mysql" Description="Dépôt Borg"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<PROPERTIES type="titre" searchOrder="1">Titre</PROPERTIES>
+		<FKEY data="BackupStore,Id" card="0,1">BackupStoreId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="RestorePoint" driver="mysql" Description="Point de restauration"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<PROPERTIES type="titre" searchOrder="1">Titre</PROPERTIES>
+		<FKEY data="BorgRepo,Id" card="0,1">BorgRepoId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="VmJob" AccessPoint="1" driver="mysql" Description="Job VM"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<PROPERTIES type="titre" searchOrder="1">Titre</PROPERTIES>
+		<PROPERTIES type="titre" searchOrder="2">Titre</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="SambaShare" AccessPoint="1" driver="mysql" Description="Partages Samba"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<PROPERTIES type="titre" searchOrder="1">Titre</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="SambaJob" AccessPoint="1" driver="mysql" Description="Job synchronisation Samba"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<PROPERTIES type="titre" searchOrder="1">Titre</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="RemoteJob" AccessPoint="1" driver="mysql" Description="Job synchronisation distante"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<PROPERTIES type="titre" searchOrder="1">Titre</PROPERTIES>
+	</OBJECTCLASS>
+</SCHEMA>

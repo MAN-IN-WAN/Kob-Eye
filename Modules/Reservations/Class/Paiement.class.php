@@ -12,9 +12,9 @@ class Paiement extends genericClass
 
     public function CheckPaiement()
     {
-        if (($this->Etat != 0 && $this->Etat < 3) or $this->Status != 0) {
+        /*if (($this->Etat != 0 && $this->Etat < 3) or $this->Status != 0) {
             return;
-        }
+        }*/
 
         // Récupération commande
         $facture = $this->getFacture();
@@ -39,8 +39,8 @@ class Paiement extends genericClass
         // Résultats de l'analyse par le plugin
         $results = $plugin->serveurAutoResponse($this, $facture);
         if ($results == null) {
-            mail("enguer@enguer.com", "Le paiement n'a pas pu être contrôlé.", print_r($_POST, true));
-            die("Le paiement n'a pas pu être contrôlé.");
+            mail("enguer@enguer.com", "Le paiement n'a pas pu être controle.", print_r($_POST, true));
+            die("Le paiement n'a pas pu être controle.");
         }
 
         // Mise à jour de l'objet paiement
