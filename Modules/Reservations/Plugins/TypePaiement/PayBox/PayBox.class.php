@@ -14,8 +14,8 @@ class ReservationsTypePaiementPayBox extends Plugin implements ReservationsTypeP
     private static $ABONNEMENT = false;
     private static $AUTOSEULE = false;
     public static function setMultiPayment($set){
-        ReservationsTypePaiementPayBox::$ABONNEMENT = true;
-        ReservationsTypePaiementPayBox::$AUTOSEULE = true;
+        ReservationsTypePaiementPayBox::$ABONNEMENT = $set;
+        ReservationsTypePaiementPayBox::$AUTOSEULE = $set;
     }
 	/**
 	* initStatePaiement
@@ -36,6 +36,9 @@ class ReservationsTypePaiementPayBox extends Plugin implements ReservationsTypeP
 	 * $paiement = Reservations/Paiement Objectclass
 	 **/
 	public function getCodeHTML( $paiement ) {
+	    if ($paiement->PaiementFractionne){
+            ReservationsTypePaiementPayBox::setMultiPayment(true);
+        }
         //CONFIGURATION
         $AUTOSEULE = ReservationsTypePaiementPayBox::$AUTOSEULE;
         $ABONNEMENT = ReservationsTypePaiementPayBox::$ABONNEMENT;
@@ -61,11 +64,11 @@ class ReservationsTypePaiementPayBox extends Plugin implements ReservationsTypeP
 		     $PBX_DEVISE      = '978';
 		     $PBX_CMD         = sprintf("%06d", $paiement->Id);
 		     //EMAIL CLIENT
-		     $PBX_PORTEUR     = $client->Email;
+		     $PBX_PORTEUR     = $client->Mail;
              $PBX_TYPEPAIEMENT= 'CARTE';
              $PBX_TYPECARTE   = 'CB';
              $PBX_AUTOSEULE   = 'O';
-             $PBX_REFABONNE   = 'test';
+             $PBX_REFABONNE   = sprintf("CLI%06d", $client->Id);
 		//informations nécessaires aux traitements (réponse)
             $PBX_RETOUR      = "Mt:M;Ref:R;Auto:A;Erreur:E;carte:U;sign:K";
 		     $PBX_EFFECTUE    = "http://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Reservations/Facture/'.$facture->NumFac.'/Confirmation');
@@ -91,7 +94,7 @@ class ReservationsTypePaiementPayBox extends Plugin implements ReservationsTypeP
 		//construction de la chaîne de paramètres
         $PBX= "PBX_SITE=$PBX_SITE&PBX_RANG=$PBX_RANG&PBX_IDENTIFIANT=$PBX_IDENTIFIANT&PBX_TOTAL=$PBX_TOTAL&PBX_DEVISE=$PBX_DEVISE&PBX_CMD=$PBX_CMD&".$ABO."PBX_PORTEUR=$PBX_PORTEUR&PBX_RETOUR=$PBX_RETOUR&PBX_HASH=$PBX_HASH&PBX_TIME=$PBX_TIME";
         //$PBX= $ABO."PBX_SITE=$PBX_SITE&PBX_RANG=$PBX_RANG&PBX_IDENTIFIANT=$PBX_IDENTIFIANT&PBX_TOTAL=$PBX_TOTAL&PBX_DEVISE=$PBX_DEVISE&PBX_PORTEUR=$PBX_PORTEUR&PBX_RETOUR=$PBX_RETOUR&PBX_HASH=$PBX_HASH&PBX_TIME=$PBX_TIME";
-
+echo $PBX;
 		// Si la clé est en ASCII, On la transforme en binaire
 		$binKey = pack("H*", $this->Params['KEY']);
 	
@@ -148,6 +151,7 @@ Ka1g88CjFwRw/PB9kwIDAQAB
                 Klog::l('carte abonne',$_GET['carte']);
                 $client->IdentifiantCB = $_GET['carte'];
                 $client->Save();
+                Klog::l('client cong',$client);
             }
         }else{
             Klog::l('autoresponse NOK');

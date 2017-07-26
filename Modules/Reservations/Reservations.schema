@@ -4,7 +4,7 @@
         <PROPERTIES Order="4" description="Civilite"   type="varchar" values="Madame,Monsieur" client="1" profil="1"  fiche="1" obligatoire="1" form="1">Civilite</PROPERTIES>
         <PROPERTIES Order="5" description="Nom"        type="varchar" length="100" obligatoire="1" list="1" form="1" fiche="1" client="1" profil="1"  searchOrder="1">Nom</PROPERTIES>
         <PROPERTIES Order="6" description="Prénom"     type="varchar" length="100" obligatoire="1" list="1" form="1" fiche="1" client="1" profil="1"  searchOrder="2">Prenom</PROPERTIES>
-        <PROPERTIES Order="6" description="Surnom"     type="varchar" length="100" obligatoire="1" list="1" form="1" fiche="1" client="1" profil="1"  >Surnom</PROPERTIES>
+        <PROPERTIES Order="6" description="Surnom"     type="varchar" length="100" list="1" form="1" fiche="1" client="1" profil="1"  >Surnom</PROPERTIES>
         <PROPERTIES Order="7" description="Adresse"    type="text"    special="multi" obligatoire="0" form="1" fiche="1" client="1" profil="1" >Adresse</PROPERTIES>
         <PROPERTIES Order="8" description="CodePostal" type="varchar" length="10" obligatoire="0" form="1" fiche="1" client="1" profil="1" >CodePostal</PROPERTIES>
         <PROPERTIES Order="9" description="Ville"      type="varchar" length="100" obligatoire="1" form="1" fiche="1"  client="1" profil="1"   searchOrder="3">Ville</PROPERTIES>
