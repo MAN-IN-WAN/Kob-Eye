@@ -190,7 +190,7 @@ class Reservation extends genericClass {
     function setPartenairesBis($parts){
         $cli = $this->getClient();
 
-        klog::l('$cli',$cli);
+        //klog::l('$cli',$cli);
 
         $this->_partenaires = array();
         if (is_array($parts))foreach ($parts as $k=>$p){
@@ -342,7 +342,7 @@ class Reservation extends genericClass {
         $court = $this->getCourt();
         if (!$court) return false;
 
-        if ($this->DateDebut && $this->DateFin){
+        if ($this->DateDebut && $this->DateFin && $this->DateDebut < $this->DateFin){
             return true;
         }else return false;
     }
@@ -481,7 +481,6 @@ class Reservation extends genericClass {
             $datetime = DateTime::createFromFormat('d/m/Y H:i',$this->DateFin);
             $this->DateFin = $datetime->getTimestamp();
         }
-
 
         if (!$this->checkClient()){
             $this->addError(array("Message"=>"Veuillez saisir le client pour cette réservation"));

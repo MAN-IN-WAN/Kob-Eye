@@ -1,8 +1,10 @@
 <?php
 class DeviceTask extends genericClass {
     public function getTask() {
+        klog::l('POSTXXXXX',$_POST);
+
         if (isset($_GET['success'])){
-            klog::l('POSTXXXXX',$_POST);
+
             $this->Success = $_GET['success'];
             $this->Log = $_POST['log'];
             $this->Enabled = 0;

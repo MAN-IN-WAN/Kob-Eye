@@ -293,3 +293,47 @@ body { font-weight: normal;}
 span.msg-suppr{
     color: /*white*/orange;
 }
+
+.pitch{
+    margin-bottom:15px;
+}
+
+#modeSelect{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom:15px;
+}
+.modeSelect.btn.btn-info{
+    transition: all 2s ease;
+
+}
+.modeSelect.btn.btn-info.active{
+    width: 0;
+    height: 0;
+    padding: 0;
+    border: 0;
+    opacity: 0;
+    display: none;
+    left:-50px;
+}
+
+.form-group.mode{
+    height: 0;
+    opacity: 0;
+    margin: 0;
+    transition: all 1s ease;
+}
+.form-group.mode.active{
+    height: auto;
+    opacity: 1;
+}
+
+#notes{
+    color: #bbb;
+    font-size:0.9em;
+    margin-top:50px;
+}
+#notes span{
+    color: #fff;
+}
