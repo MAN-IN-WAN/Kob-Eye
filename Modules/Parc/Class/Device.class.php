@@ -1,5 +1,8 @@
 <?php
+require_once 'Class/Lib/Zabbix.class.php';
+
 class Device extends genericClass{
+
     /*
      *
      * @override
@@ -58,20 +61,22 @@ class Device extends genericClass{
         //recherche de la version
         $log = Sys::getOneData('Parc','LogicielVersion/Release='.$prod);
         if (!$log) $log = Sys::getOneData('Parc','LogicielVersion/Release='.!$prod);
+
         $dirty = '';
-        if($dev->Dirty){
-            if($dev->ModeTest){
-                $cos=$dev->getChildren('DeviceConnexion');
-                $dirty = "Ports=";
-                foreach ($cos as $co){
-                    $ip = $co->IpRedirectDistant!=''?$co->IpRedirectDistant:'localhost';
-                    $dirty .= 'R'.$co->PortRedirectLocal.'='.$ip.':'.$co->PortRedirectDistant.',';
-                }
-                $dirty = rtrim($dirty,',');
-                $dev->Dirty = 0;
-                $dev->Save();
+        if($dev->ModeTest){
+            $ConnectionType='';
+
+            $cos=$dev->getChildren('DeviceConnexion');
+            $dirty = "Ports=";
+            //TODO : checker les doublons pour modif de mot de passe
+            foreach ($cos as $co){
+                $ip = $co->IpRedirectDistant!=''?$co->IpRedirectDistant:'localhost';
+                $dirty .= 'R'.$co->PortRedirectLocal.'='.$ip.':'.$co->PortRedirectDistant.',';
             }
+            $dirty = rtrim($dirty,',');
+            $dev->Save();
         }
+
 
 
         return "Version=$log->Version
