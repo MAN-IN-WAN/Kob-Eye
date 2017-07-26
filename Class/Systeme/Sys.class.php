@@ -658,7 +658,7 @@ class Sys extends Root{
 			$Tab[$i]->Niveau = $Niv;
 			$Url = $Tab[$i]->Url;
 			if ($Url==$T&&$Niv<sizeof($Menus)-1) {
-				$this->MenusFromUrl[]= $Tab[$i];
+                self::$MenusFromUrl[]= $Tab[$i];
 				$Result = $this->searchMenu($Men,$Tab[$i]->Menus,$Niv+1);
 				if (!$Result) {
 					//Peut etre Alias ?
@@ -668,7 +668,7 @@ class Sys extends Root{
 					return $Result;
 				}
 			}elseif ($Url==$T){
-				$this->MenusFromUrl[]= $Tab[$i];
+				self::$MenusFromUrl[]= $Tab[$i];
 				return $Tab[$i];
 			}
 		}

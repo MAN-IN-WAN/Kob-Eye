@@ -259,6 +259,8 @@ class Utils {
 		return false;
 	}
 	public static function cleanJson($text){
+        $text = implode(',',$text);
+
         $text = str_replace("&" , '\\\\&', $text);
         $text = str_replace("\r" , "\\\\r", $text);
         $text = str_replace("\n" , "\\\\n", $text);

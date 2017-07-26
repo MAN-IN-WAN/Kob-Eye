@@ -339,7 +339,7 @@ $(function () {
             '<input type="text" class="form-control" id="partenaireNom'+partenaire+'" placeholder="Nom" name="Partenaire['+partenaire+'][Nom]" value="'+nom+'" />'+
             '</div>'+
             '<div class="form-group">'+
-            '<label class="sr-only" for="partenaireNom'+partenaire+'">Prenom</label>'+
+            '<label class="sr-only" for="partenairePrenom'+partenaire+'">Prenom</label>'+
             '<input type="text" class="form-control" id="partenairePrenom'+partenaire+'" placeholder="Prenom" name="Partenaire['+partenaire+'][Prenom]" value="'+prenom+'" />'+
             '</div>'+
 

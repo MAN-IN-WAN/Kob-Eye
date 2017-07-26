@@ -147,5 +147,39 @@ class Partenaire extends genericClass {
         $Mail -> Send();
     }
 
+    public function getPartenaire($email,$nom,$prenom,$cli){
+        if($email != null && $email){
+            $pa = Sys::getOneData('Reservations','Partenaire/Email='.$email);
+        } else {
+            if($prenom == null || $prenom == '' || $nom == null || $nom == '') {
+                $this->addError(array("Message" => "Une erreur a été rencontrée avec le partenaire ! Vous devez au moins définir un Nom et un Prénom."));
+                return $this;
+            }
 
+            $pa = Sys::getOneData('Reservations','Partenaire/Nom='.$nom.'&Prenom='.$prenom);
+        }
+
+        if($pa) {
+            if(is_object($cli)){
+                $pa->addParent($cli);
+                $pa->Save();
+            }
+            return $pa;
+        }
+
+        $pa = genericClass::createInstance('Reservations','Partenaire');
+        $pa->Email = $email;
+        $pa->Nom = $nom;
+        $pa->Prenom = $prenom;
+
+        if(is_object($cli)){
+            $pa->addParent($cli);
+        }
+
+        if($pa->Verify()){
+            $pa->Save();
+        }
+
+        return $pa;
+    }
 }
