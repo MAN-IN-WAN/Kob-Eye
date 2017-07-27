@@ -70,7 +70,10 @@ class ReservationsTypePaiementPayBox extends Plugin implements ReservationsTypeP
              $PBX_AUTOSEULE   = 'O';
              $PBX_REFABONNE   = sprintf("CLI%06d", $client->Id);
 		//informations nécessaires aux traitements (réponse)
-            $PBX_RETOUR      = "Mt:M;Ref:R;Auto:A;Erreur:E;carte:U;sign:K";
+            if ($AUTOSEULE)
+                $PBX_RETOUR      = "Mt:M;Ref:R;Auto:A;Erreur:E;carte:U;sign:K";
+            else
+                $PBX_RETOUR      = "Mt:M;Ref:R;Auto:A;Erreur:E;sign:K";
 		     $PBX_EFFECTUE    = "http://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Reservations/Facture/'.$facture->NumFac.'/Confirmation');
 		     $PBX_REFUSE      = "http://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Reservations/Facture/'.$facture->NumFac.'/Annulation');
 		     $PBX_ANNULE      = "http://".$_SERVER['HTTP_HOST']."/".Sys::getMenu('Reservations/Facture/'.$facture->NumFac.'/Annulation');
@@ -94,7 +97,7 @@ class ReservationsTypePaiementPayBox extends Plugin implements ReservationsTypeP
 		//construction de la chaîne de paramètres
         $PBX= "PBX_SITE=$PBX_SITE&PBX_RANG=$PBX_RANG&PBX_IDENTIFIANT=$PBX_IDENTIFIANT&PBX_TOTAL=$PBX_TOTAL&PBX_DEVISE=$PBX_DEVISE&PBX_CMD=$PBX_CMD&".$ABO."PBX_PORTEUR=$PBX_PORTEUR&PBX_RETOUR=$PBX_RETOUR&PBX_HASH=$PBX_HASH&PBX_TIME=$PBX_TIME";
         //$PBX= $ABO."PBX_SITE=$PBX_SITE&PBX_RANG=$PBX_RANG&PBX_IDENTIFIANT=$PBX_IDENTIFIANT&PBX_TOTAL=$PBX_TOTAL&PBX_DEVISE=$PBX_DEVISE&PBX_PORTEUR=$PBX_PORTEUR&PBX_RETOUR=$PBX_RETOUR&PBX_HASH=$PBX_HASH&PBX_TIME=$PBX_TIME";
-echo $PBX;
+
 		// Si la clé est en ASCII, On la transforme en binaire
 		$binKey = pack("H*", $this->Params['KEY']);
 	
@@ -142,8 +145,12 @@ Ka1g88CjFwRw/PB9kwIDAQAB
         Klog::l('params','Mt='.$_GET['Mt'].'&Ref='.$_GET['Ref'].'&Auto='.$_GET['Auto'].'&Erreur='.$_GET['Erreur'].'&carte='.$_GET['carte']);
         Klog::l('sign',$_GET['sign']);
         //si la variable carte alors enregistrement carte
-        $str = 'Mt='.$_GET['Mt'].'&Ref='.$_GET['Ref'].'&Auto='.$_GET['Auto'].'&Erreur='.$_GET['Erreur'].'&carte='.urlencode($_GET['carte']);
-		if (openssl_verify ( $str, base64_decode($_GET['sign']) , $PUBKEY )){
+        if (isset($_GET["carte"]))
+            $str = 'Mt='.$_GET['Mt'].'&Ref='.$_GET['Ref'].'&Auto='.$_GET['Auto'].'&Erreur='.$_GET['Erreur'].'&carte='.urlencode($_GET['carte']);
+        else
+            $str = 'Mt='.$_GET['Mt'].'&Ref='.$_GET['Ref'].'&Auto='.$_GET['Auto'].'&Erreur='.$_GET['Erreur'];
+
+        if (openssl_verify ( $str, base64_decode($_GET['sign']) , $PUBKEY )){
             $etat = ($_GET['Erreur'] == '00000') ? 1 : 2;
             Klog::l('autoresponse OK');
             //si carte alors enregistrement identifiant carte dnas le client
@@ -172,5 +179,71 @@ Ka1g88CjFwRw/PB9kwIDAQAB
 		if($commande->Paye) return 'Votre commande a été enregistrée sous le numéro '. $commande->RefCommande;
 		else return 'Une erreur est survenue lors du paiement de la commande '. $commande->RefCommande . '<br /> Vous pouvez contacter le support via ce <a href="/Contact">formulaire</a> en rappelant cette référence.';
 	}
+    public function sendDirectPayment($paiement) {
+        // initialisation de la session https
+        $curl = curl_init('https://preprod-ppps.paybox.com/PPPS.php');
+        // PROD https://ppps.paybox.com/PPPS.php
+        $facture = $paiement->getOneParent('Facture');
+        $client = $facture->getOneParent('Client');
 
+        // Précise que la réponse est souhaitée
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+        // Présise que le session est nouvelle
+        curl_setopt($curl, CURLOPT_COOKIESESSION, true);
+
+        $postfields = array(
+            'VERSION'     => '00104',
+            /*  00001 Autorisation seule
+                00002 Débit (Capture)
+                00003 Autorisation + Capture
+                00004 Crédit */
+            'TYPE'        => '00053',
+            'SITE'        => $this->Params['IDSITE'],
+            'RANG'        => $this->Params['RANG'],
+            'CLE'         => $this->Params['CLE'],
+            /*'IDENTIFIANT' => $this->Params['IDENTIFIANT'],*/
+
+            'NUMQUESTION' => '0000000001',
+            'MONTANT'     => round($paiement->Montant * 100),
+            'DEVISE'      => '978',
+            'REFABONNE' => sprintf("CLI%06d", $client->Id),
+            'REFERENCE'   => sprintf("%06d", $paiement->Id),
+            'HASH'        => 'SHA512',
+
+            'DATEQ'       => date('dmYHis') //'15102013'
+        );
+        print_r($postfields);
+
+        // Crée la chaine url encodée selon la RFC1738 à partir du tableau de paramètres séparés par le caractère &
+        $trame = http_build_query($postfields, '', '&');
+        // Si la clé est en ASCII, On la transforme en binaire
+        $binKey = pack("H*", $this->Params['KEY']);
+
+        //on génère la clef HMAC
+        $hmac = strtoupper(hash_hmac('sha512', $trame, $binKey));
+
+        $trame.="&HMAC=".$hmac;
+        print_r($trame);
+
+        // Présise le type de requête HTTP : POST
+        curl_setopt($curl, CURLOPT_POST, true);
+
+        // Présise le Content-Type
+        curl_setopt($curl,CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
+
+        // Ajoute les paramètres
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $trame);
+
+        // Envoi de la requête et obtention de la réponse
+        $response = curl_exec($curl);
+
+        echo "<PRE>";
+        echo "Réponse Paybox direct pour la demande 'autorize' ";
+        var_dump($response);
+        echo "</PRE>";
+
+        // fermeture de la session
+        curl_close($curl);
+    }
 }

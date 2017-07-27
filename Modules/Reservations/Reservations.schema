@@ -73,7 +73,7 @@
         <FKEY card="1,n" data="StatusReservation,Id" form="1" parentDescription="Status partenaire/reservation" listDescr="Status partenaire/reservation">StatusReservationId</FKEY>
         <FKEY card="1,n" data="Client,Id" form="1" parentDescription="Client" listDescr="Client">ClientId</FKEY>
     </OBJECTCLASS>
-    <OBJECTCLASS title="StatusReservation" driver="mysql" AccessPoint="0" Description="Status partenaire/reservation" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png">
+    <OBJECTCLASS title="StatusReservation" driver="mysql" AccessPoint="0" Description="Status partenaire/reservation" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png" Class="Modules/Reservations/Class/StatusReservation.class.php">
         <PROPERTIES searchOrder="1" description="Nom du partenaire" type="varchar" length="200" obligatoire="1" list="1" form="1">Nom</PROPERTIES>
         <PROPERTIES searchOrder="2" description="Sera présent" type="varchar" length="20" values="Oui,Non,NC" default="NC" list="1" form="1">Present</PROPERTIES>
         <PROPERTIES  description="A payé" type="boolean" default="0" list="1" form="1">Paye</PROPERTIES>
@@ -154,13 +154,18 @@
     <OBJECTCLASS title="Paiement" driver="mysql" AccessPoint="0" master="0" Description="Paiements"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/Reservations/Class/Paiement.class.php">
         <PROPERTIES searchOrder="2" description="Montant (TTC)" type="float" list="1" listDescr="Montant" format="2dec">Montant</PROPERTIES>
         <PROPERTIES description="Detail" type="text"  special="multi" auto="1">Detail</PROPERTIES>
+        <PROPERTIES description="Mail" type="varchar" >Mail</PROPERTIES>
         <PROPERTIES description="Référence Paiement" type="varchar" auto="0" length="30" list="3" listDescr="Référence">Reference</PROPERTIES>
         <PROPERTIES description="Statut de la connexion au serveur de paiement" type="boolean" auto="1" default="0">Status</PROPERTIES>
         <PROPERTIES description="Paiement Fractionné" type="boolean" default="0">PaiementFractionne</PROPERTIES>
-        <PROPERTIES description="Paiement Fractionné: Montant restant" type="price" default="0">MontantRestant</PROPERTIES>
+        <PROPERTIES description="Debit effectué" type="boolean" default="0">DebitEffectue</PROPERTIES>
+        <PROPERTIES description="Date de Debit" type="datetime" >DateDebit</PROPERTIES>
+        <PROPERTIES description="Paiement Fractionné: Montant Initial" type="price" default="0">MontantTotal</PROPERTIES>
         <PROPERTIES searchOrder="1" description="Etat du paiement" type="int" default="0" values="0::En Cours,1::Accepté,2::Refusé,3::Initialisé,4::Attente" list="2" listDescr="Etat">Etat</PROPERTIES>
         <FKEY card="1,1" data="Facture,Id">FactureId</FKEY>
         <FKEY card="1,1" data="TypePaiement,Id">TypePaiementId</FKEY>
+        <FKEY card="0,1" data="StatusReservation,Id">StatusReservationId</FKEY>
+        <FUNCTION title="Débiter maintenant">DebiterMaintenant</FUNCTION>
         <VIEW title="PaiementList" default="1">
             <OBJECTCLASS title="Paiement" select="*" filters="">
                 <JOIN type="outer" title="TypePaiement" on="TypePaiementId" target="Id">
