@@ -159,12 +159,13 @@
         <PROPERTIES description="Statut de la connexion au serveur de paiement" type="boolean" auto="1" default="0">Status</PROPERTIES>
         <PROPERTIES description="Paiement Fractionné" type="boolean" default="0">PaiementFractionne</PROPERTIES>
         <PROPERTIES description="Debit effectué" type="boolean" default="0">DebitEffectue</PROPERTIES>
-        <PROPERTIES description="Date de Debit" type="date" >DateDebit</PROPERTIES>
+        <PROPERTIES description="Date de Debit" type="datetime" >DateDebit</PROPERTIES>
         <PROPERTIES description="Paiement Fractionné: Montant Initial" type="price" default="0">MontantTotal</PROPERTIES>
         <PROPERTIES searchOrder="1" description="Etat du paiement" type="int" default="0" values="0::En Cours,1::Accepté,2::Refusé,3::Initialisé,4::Attente" list="2" listDescr="Etat">Etat</PROPERTIES>
         <FKEY card="1,1" data="Facture,Id">FactureId</FKEY>
         <FKEY card="1,1" data="TypePaiement,Id">TypePaiementId</FKEY>
         <FKEY card="0,1" data="StatusReservation,Id">StatusReservationId</FKEY>
+        <FUNCTION title="Débiter maintenant">DebiterMaintenant</FUNCTION>
         <VIEW title="PaiementList" default="1">
             <OBJECTCLASS title="Paiement" select="*" filters="">
                 <JOIN type="outer" title="TypePaiement" on="TypePaiementId" target="Id">
