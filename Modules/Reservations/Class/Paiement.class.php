@@ -51,10 +51,26 @@ class Paiement extends genericClass
         $this->Save();
 
         if ($results['etat']=='1') {
-            //Mise à jour de la facture
-            $facture->Valide = 1;
-            $facture->Paye = 1;
-            $facture->Save();
+            $status = $this->getOneParent('StatusReservation');
+            if($status){
+                $partenaire = $status->getOneChild('Partenaire');
+
+                //Maj du status + du paiement principal
+                $status->Paye = 1;
+                $status->Save();
+
+                $mainPaiement = $facture->getOneChild('Paiement/PaiementFractionne=1');
+                $mainPaiement->Montant -= $this->Montant;
+                $mainPaiement->Detail .= PHP_EOL.'Participation de '.$this->Montant.'€ payé par '.$partenaire->Prenom.' '.$partenaire->Nom.' le '.date('d/m/Y à H:i:s');
+                $mainPaiement->Save();
+            } else {
+                //Mise à jour de la facture
+                $facture->Valide = 1;
+                $facture->Paye = 1;
+                $facture->Save();
+            }
+
+
         }
     }
 }

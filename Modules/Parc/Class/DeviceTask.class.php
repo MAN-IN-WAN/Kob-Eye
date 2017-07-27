@@ -6,7 +6,7 @@ class DeviceTask extends genericClass {
         if (isset($_GET['success'])){
 
             $this->Success = $_GET['success'];
-            $this->Log = $_POST['log'];
+            $this->Log = base64_decode($_POST['log']);
             $this->Enabled = 0;
 
             parent::Save();

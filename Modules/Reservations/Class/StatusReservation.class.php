@@ -1,99 +1,30 @@
 <?php
-class Facture extends genericClass{
-    function Save(){
-        $new = false;
-        if ($this -> Id) {
-            //Verification avec l'objet en base
-            $old = Sys::getOneData('Reservations','Facture/'.$this->Id);
 
-            //Test des comportements à déclencher
-            $this -> Apayer = (!$old->Paye && $this -> Paye);
-            $this -> Avalider = (!$old->Valide && $this -> Valide);
-            $this -> ADevalider = ($old->Valide && !$this -> Valide);
-        } else {
-            $new = true;
-            $this -> Apayer = $this -> Paye;
-            $this -> Avalider = $this -> Valide;
-        }
-
-        //Sauvegarde
-        parent::Save();
-
-        //Enregistrement de la reference
-        $this -> SaveRef();
-
-
-        //Execution des comportements
-        if ($this -> Avalider) {
-            $this->applyFacture();
-            $this->Priorite = 40;
-        }
-        if ($this -> ADevalider) {
-            $this->Priorite = 0;
-        }
-        if ($this -> Apayer) {
-        }
-
-        //Sauvegarde
-        parent::Save();
-    }
-
-    /**
-     * Création d'une référence
-     * @return	void
-     */
-    private function SaveRef() {
-        if ($this -> Valide) {
-            $num = Sys::getCount('Reservations','Facture/Valide=1')+1;
-            if (substr($this->NumFac,0,4)=='BROU') $this->NumFac = sprintf("FA".Date('Y').Date('m').'-'."%05d",$num);
-        }
-        else {
-            if($this->NumFac == '') $this->DateCommande = time();
-            $this -> NumFac = sprintf("BROU%05d", $this -> Id);
-        }
-    }
+class StatusReservation extends genericClass {
 
     function getPaiement() {
-        $paiement = Sys::getOneData('Reservations','Facture/'.$this->Id.'/Paiement');
+        $paiement = Sys::getOneData('Reservations','StatusReservation/'.$this->Id.'/Paiement');
+        $partenaire = $this->getOneChild('Partenaire');
+        $reservation = $this->getOneParent('Reservation');
+        $facture = $reservation->getOneChild('Facture');
+
         if ($paiement) return $paiement;
         else{
-            //recherch du type de paiement actif
+            //recherche du type de paiement actif
             $tp = Sys::getOneData('Reservations','TypePaiement/Actif=1');
-            //recherche réservation
-            $res = $this->getOneParent('Reservation');
 
             //création du paiement
             $paiement = genericClass::createInstance('Reservations','Paiement');
-            $paiement->Montant = $this->MontantTTC;
-            $paiement->MontantTotal = $this->MontantTTC;
-            $paiement->PaiementFractionne = $res->PaiementParticipant;
+            $paiement->Montant = $this->MontantPaye;
+            $paiement->Mail = $partenaire->Email;
             $paiement->addParent($this);
+            $paiement->addParent($facture);
             $paiement->addParent($tp);
             $paiement->Save();
             return $paiement;
         }
     }
-    function getLigneFacture() {
-        if ($this->Id){
-            //on cherche dans les parents en base
-            $this->_produits = Sys::getData('Reservations','Facture/'.$this->Id.'/LigneFacture');
-        }
-        return $this->_produits;
-    }
 
-    function getClient() {
-        return Sys::getoneData('Reservations','Client/Facture/'.$this->Id);
-    }
-    function applyFacture() {
-        //recuperation de la reservation
-        $res = Sys::getOneData('Reservations','Reservation/Facture/'.$this->Id);
-        if ($res){
-            $res->setValide();
-            $res->Facture = 1;
-            $res->Save();
-        }
-        $this->sendMail();
-    }
 
     function sendMail() {
         $cli = $this -> getClient();

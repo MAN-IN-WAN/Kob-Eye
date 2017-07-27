@@ -61,8 +61,8 @@
             <h5>Vous avez été invité à participer à un match le [DATE d/m/Y][!Reserv::DateDebut!][/DATE] A partir  de [DATE H:i:s][!Reserv::DateDebut!][/DATE]</h5>
             <h2>Souhaitez-vous y participer ?</h2>
             <input type="hidden" id="valide" name="valide" value="1">
-            <input type="submit" id="confirme" name="status" value="Oui">
-            <input type="submit" id="infirme" name="status" value="Non">
+            <input type="submit" class="btn btn-info" id="confirme" name="status" value="Oui">
+            <input type="submit" class="btn btn-info" id="infirme" name="status" value="Non">
         </div>
     </div>
 </form>
@@ -80,7 +80,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h2>Merci de bien vouloir régler votre part</h2>
-                        <a href="[!Sys::getMenu(Reservations/StatusReservation)!]/[!Status::Id!]/Payer" alt="Payer en carte bleue" title="Payer en carte bleue">Payer en carte bleue</a>
+                        <a href="/[!Sys::getMenu(Reservations/StatusReservation)!]/[!Status::Id!]/Payer" class="btn btn-info" alt="Payer en carte bleue" title="Payer en carte bleue">Payer en carte bleue</a>
                     </div>
                 </div>
             [ELSE]

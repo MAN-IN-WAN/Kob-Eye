@@ -132,6 +132,7 @@ class Reservation extends genericClass {
      * Définit la réservation
      */
     function checkReservation() {
+        klog::l('innnnnnnnnnnnnnnnnnnnnnnnnnnn checkreservation');
         //ajout de la ligne de service
         $client = $this->getClient();
         $service = $this->getService();
@@ -139,6 +140,7 @@ class Reservation extends genericClass {
         $typecourt = $court->getParents('TypeCourt');
         $typecourt = $typecourt[0];
         if ($service) {
+            klog::l('innnnnnnnnnnnnnnnnnnnnnnnnnnn service');
             //suppression si existante
             $this->deleteLigneFacture('Réservation');
             //ajout de la réservation
@@ -327,20 +329,25 @@ class Reservation extends genericClass {
         return false;
     }
     function checkDate() {
+        $service = $this->getService();
+        if (!$service) return false;
+
         if ($this->_date&&$this->_heuredebut){
             //récupération du service pour la durée
-            $service = $this->getService();
-            if (!$service) return false;
 
             //definition des heuredebut et heurefin
             $this->DateDebut = $this->_date + $this->_heuredebut;
-            $this->DateFin = $this->DateDebut + $service->Duree*60;
+            $this->DateFin = $this->DateDebut + $service->Duree*60; //TODO  verif mais je pense que ce n'est plus valide
             $this->_date = null;
             $this->_heuredebut = null;
         }
         //il faut également le court
         $court = $this->getCourt();
         if (!$court) return false;
+
+        //klog::l('dd',$this->DateDebut);
+        //klog::l('df',$this->DateFin);
+
 
         if ($this->DateDebut && $this->DateFin && $this->DateDebut < $this->DateFin){
             return true;
@@ -538,10 +545,20 @@ class Reservation extends genericClass {
             $service = $this->getService();
             $client = $this->getClient();
 
+            //Saisie des produits
+            if (is_array($this->_produits)) foreach ($this->_produits as $p) {
+                //creation du partenaire
+                $p->AddParent($this);
+                $p->Save();
+            }
+
             $ligne = $this->getOneChild('LigneFacture/Type=Reservation');
             $montant = $ligne->MontantTTC;
-            if (is_array($this->_partenaires))
-                $montantPart = $montant / sizeof($this->_partenaires);
+            if (is_array($this->_partenaires)){
+                $nb_participant = sizeof($this->_partenaires);
+                $nb_participant++;
+                $montantPart = $montant / $nb_participant;
+            }
 
             //Saisie des partenaires.
             if (is_array($this->_partenaires)) foreach ($this->_partenaires as $p) {
@@ -560,12 +577,6 @@ class Reservation extends genericClass {
                 $p->Save();
             }
 
-            //Saisie des produits
-            if (is_array($this->_produits)) foreach ($this->_produits as $p) {
-                //creation du partenaire
-                $p->AddParent($this);
-                $p->Save();
-            }
         }
 
         $cli = $this->getClient();
