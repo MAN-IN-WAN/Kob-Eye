@@ -61,12 +61,19 @@ class Facture extends genericClass{
             $tp = Sys::getOneData('Reservations','TypePaiement/Actif=1');
             //recherche réservation
             $res = $this->getOneParent('Reservation');
+            $cli = $res->getClient();
+
+            //On recup la date de reserv
+            $dd = $res->DateDebut;
+            $dd -= 86400;
 
             //création du paiement
             $paiement = genericClass::createInstance('Reservations','Paiement');
             $paiement->Montant = $this->MontantTTC;
             $paiement->MontantTotal = $this->MontantTTC;
             $paiement->PaiementFractionne = $res->PaiementParticipant;
+            $paiement->DateDebit = $dd;
+            $paiement->Mail = $cli->Mail;
             $paiement->addParent($this);
             $paiement->addParent($tp);
             $paiement->Save();

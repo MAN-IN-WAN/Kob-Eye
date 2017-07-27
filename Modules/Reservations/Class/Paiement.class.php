@@ -64,6 +64,8 @@ class Paiement extends genericClass
                 $mainPaiement->Detail .= PHP_EOL.'Participation de '.$this->Montant.'€ payé par '.$partenaire->Prenom.' '.$partenaire->Nom.' le '.date('d/m/Y à H:i:s');
                 $mainPaiement->Save();
             } else {
+
+
                 //Mise à jour de la facture
                 $facture->Valide = 1;
                 $facture->Paye = 1;
