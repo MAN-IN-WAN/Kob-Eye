@@ -148,7 +148,7 @@ class Facture extends genericClass{
         $mailContent = "
             Bonjour " . $Civilite . ",<br /><br />
             Nous vous informons que votre facture N° " . $this->NumFac. " du ".date("d/m/Y à H:i",$this->tmsCreate)." a bien été enregistrée.<br />
-            <br />Toute l'équipe de TENNIS FOREVER vous remercie de votre confiance,<br />
+            <br />Toute l'équipe du Dome du Foot vous remercie de votre confiance,<br />
             <br />Pour nous contacter : " . $GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT') . " .".$Lacommande;
 
         $bloc -> setFromVar("Mail", $mailContent, array("BEACON" => "BLOC"));

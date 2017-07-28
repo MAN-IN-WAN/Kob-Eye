@@ -72,7 +72,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <h2>Merci d'avoir confirmé votre présence</h2>
-                    <a href="/" alt="retour à l'accueil" title="Retour à l'accueil">Retour à l'accueil</a>
+                    <a href="/" alt="retour à l'accueil" class="btn btn-success btn-lg btn-block" title="Retour à l'accueil">Retour à l'accueil</a>
                 </div>
             </div>
         [ELSE]
@@ -80,14 +80,14 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h2>Merci de bien vouloir régler votre part</h2>
-                        <a href="/[!Sys::getMenu(Reservations/StatusReservation)!]/[!Status::Id!]/Payer" class="btn btn-info" alt="Payer en carte bleue" title="Payer en carte bleue">Payer en carte bleue</a>
+                        <a href="/[!Sys::getMenu(Reservations/StatusReservation)!]/[!Status::Id!]/Payer" class="btn btn-info btn-lg btn-block" alt="Payer en carte bleue" title="Payer en carte bleue">Payer en carte bleue</a>
                     </div>
                 </div>
             [ELSE]
                 <div class="row">
                     <div class="col-md-12">
                         <h2>Merci d'avoir confirmé votre présence</h2>
-                        <a href="/" alt="retour à l'accueil" title="Retour à l'accueil">Retour à l'accueil</a>
+                        <a href="/" alt="retour à l'accueil" class="btn btn-success btn-lg btn-block" title="Retour à l'accueil">Retour à l'accueil</a>
                     </div>
                 </div>
             [/IF]
@@ -96,7 +96,7 @@
     <div class="row">
         <div class="col-md-12">
             <h2>Merci de votre retour</h2>
-            <a href="/" alt="retour à l'accueil" title="Retour à l'accueil">Retour à l'accueil</a>
+            <a href="/" alt="retour à l'accueil" class="btn btn-success btn-lg btn-block" title="Retour à l'accueil">Retour à l'accueil</a>
         </div>
     </div>
     [/IF]
