@@ -80,7 +80,7 @@
 </table>
 <br />
 <table class="page_header" cellspacing="0" cellspadding="0" border="1">
-    <tr><th colspan="4"><h1>Liste des réservations récurrents de [DATE d/m/Y H:i][!DateDebut!][/DATE] à [DATE d/m/Y H:i][!DateFin!][/DATE]</h1></th></tr>
+    <tr><th colspan="4"><h1>Liste des réservations récurrentes de [DATE d/m/Y H:i][!DateDebut!][/DATE] à [DATE d/m/Y H:i][!DateFin!][/DATE]</h1></th></tr>
     <tr><th>Début</th><th>Fin</th><th>Terrain</th><th>Client</th></tr>
     [OBJ Reservations|Disponibilite|D]
     [STORPROC [!D::getDispo([!DateDebut!],[!DateFin!])!]|R|0|30|Debut|ASC]

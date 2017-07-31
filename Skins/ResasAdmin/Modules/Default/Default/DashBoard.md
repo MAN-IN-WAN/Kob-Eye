@@ -4,8 +4,15 @@
             <div class="col-xs-6 col-sm-3 placeholder">
                 <a class="btn [IF [!CP!]>0]btn-danger[ELSE]btn-success[/IF] btn-block" href="/[!Sys::getMenu(Reservations/Reservation)!]">
                     <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
-                    [COUNT Reservations/Reservation/Valide=1&DateDebut>[!Utils::getTodayMorning()!]&DateFin<[!Utils::getTodayEvening()!]|C]
-                    <h4>[!C!] Réservation(s) aujourd'hui</h4>
+                    [COUNT Reservations/Reservation/Valide=1&DateDebut>[!Utils::getTodayMorning()!]&DateFin<[!Utils::getTodayEvening()!]|C2]
+                    [!Tot:=0!]
+                    [OBJ Reservations|Disponibilite|D]
+                    [STORPROC [!D::getDispo([!Utils::getTodayMorning()!],[!Utils::getTodayEvening()!])!]|R]
+                    [STORPROC [!R::_courts!]|C]
+                        [!Tot+=1!]
+                    [/STORPROC]
+                    [/STORPROC]
+                    <h4>[!C2!] Réservation(s) et [!Tot!] récurrences aujourd'hui</h4>
                 </a>
             </div>
             <div class="col-xs-6 col-sm-3 placeholder">
