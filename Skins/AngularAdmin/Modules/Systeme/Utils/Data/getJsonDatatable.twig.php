@@ -32,6 +32,9 @@ foreach ($vars['rows'] as $k=>$v){
                 $v->{$f['name']} = Utils::cleanJson($v->{$f['name']});
                 break;
         }
+        if (isset($f['Values'])){
+            $v->{$f['name'].'Label'} = $f['Values'][$v->{$f['name']}];
+        }
     }
 }
 $vars['total'] = Sys::getCount($info['Module'],$vars['Path'].'/'.$filters);

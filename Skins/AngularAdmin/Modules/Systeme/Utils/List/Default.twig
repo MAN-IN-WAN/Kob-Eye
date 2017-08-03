@@ -15,12 +15,16 @@
                 <a href="javascript: void(0);" class="btn btn-success" ng-click="{{ identifier }}.refresh()">
                     Rafraîchir
                 </a>
-                <a href="javascript: void(0);" class="btn btn-warning" ng-click="{{ identifier }}add()">
+                {% if operation.add %}
+                <a  href="javascript: void(0);" class="btn btn-warning" ng-click="{{ identifier }}add()">
                     Ajouter
                 </a>
+                {% endif %}
+                {% if operation.export %}
                 <a href="javascript: void(0);" class="btn btn-primary" ng-click="{{ identifier }}.export()">
                     Exporter
                 </a>
+                {% endif %}
             </span>
         </div>
     </div>
@@ -56,9 +60,11 @@
                 <span class="label label-success" ng-if="item.{{ field.name }}"><i class="fa fa-check"></i></span>
                 <span class="label label-danger" ng-if="!item.{{ field.name }}"><i class="fa fa-times"></i></span>
             {% elseif field.type == "text" %}
-                <span ng-bind-html=" item.{{ field.name }} | nl2br"></span>
+                <span ng-bind-html="item.{{ field.name }} | nl2br"></span>
+            {% elseif field.Values | length > 0 %}
+                <span ng-bind-html="item.{{ field.name }}Label "></span>
             {% else %}
-                {[{ item.{{ field.name }} }]}
+                <span ng-bind-html="item.{{ field.name }}"></span>
             {% endif %}
         </td>
         {% endfor %}
@@ -66,8 +72,8 @@
         <td width="170" style="width:170px;">
             {% if Type == "Tail" %}
                 <span class="input-group-btn">
-                    <a class="btn btn-warning" href="javascript: void(0);" ng-click="{{ identifier }}modify(item)">Modifier</a>
-                    <a class="btn btn-danger" href="javascript: void(0);" ng-click="{{ identifier }}delete(item)">Supprimer</a>
+                    {% if operation.edit %}<a  class="btn btn-warning" href="javascript: void(0);" ng-click="{{ identifier }}modify(item)">Modifier</a>{% endif %}
+                    {% if operation.delete %}<a  class="btn btn-danger" href="javascript: void(0);" ng-click="{{ identifier }}delete(item)">Supprimer</a>{% endif %}
                 </span>
             {% else %}
             <!-- Split button -->
@@ -78,8 +84,8 @@
                     <span class="sr-only">Split button!</span>
                 </button>
                 <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
-                    <li><a class="dropdown-item" href="javascript: void(0);" ng-click="{{ identifier }}modify(item)">Modifier</a></li>
-                    <li><a class="dropdown-item" href="javascript: void(0);" ng-click="{{ identifier }}delete(item)">Supprimer</a></li>
+                    {% if operation.edit %}<li ><a class="dropdown-item" href="javascript: void(0);" ng-click="{{ identifier }}modify(item)">Modifier</a></li>{% endif %}
+                    {% if operation.delete %}<li ><a class="dropdown-item" href="javascript: void(0);" ng-click="{{ identifier }}delete(item)">Supprimer</a></li>{% endif %}
 <!--                    <li class="divider"></li>-->
                 </ul>
             </div>
@@ -109,7 +115,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn" data-dismiss="modal">Annuler</button>
-                <button type="button" class="btn btn-primary" ng-click="modalSave()">Enregistrer les modifications</button>
+                <button type="button" class="btn btn-primary" ng-click="{{ identifier }}modalSave()">Enregistrer les modifications</button>
             </div>
         </div>
     </div>

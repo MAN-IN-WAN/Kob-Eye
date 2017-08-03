@@ -69,8 +69,6 @@ class Paiement extends genericClass
                 $facture->Paye = 1;
                 $facture->Save();
             }
-
-
         }
     }
 }

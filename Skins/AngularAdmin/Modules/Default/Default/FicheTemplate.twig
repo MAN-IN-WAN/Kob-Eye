@@ -7,7 +7,7 @@
             <a href="#/{{ CurrentMenu.Url }}">Liste des {{ ObjectClass.getDescription() }}s</a>
         </li>
         <li>
-            <a href="javascript: void(0);">{{ ObjectClass.getDescription() }} {[{ obj.label }]}</a>
+            <a href="javascript: void(0);" ng-bind-html="obj.label"></a>
         </li>
     </ul>
 
@@ -15,10 +15,10 @@
     <section class="panel">
         <div class="panel-heading">
             <div class="pull-right">
-                <button type="button" class="btn btn-default btn-warning margin-inline" ng-click="modify(obj)">Modifier</button>
-                <button type="button" class="btn btn-default btn-danger margin-inline" ng-click="delete(obj)">Supprimer</button>
+                {% if operation.edit %}<button type="button" class="btn btn-default btn-warning margin-inline" ng-click="modify(obj)">Modifier</button>{% endif %}
+                {% if operation.delete %}<button type="button" class="btn btn-default btn-danger margin-inline" ng-click="delete(obj)">Supprimer</button>{% endif %}
             </div>
-            <h3>{[{ obj.label }]}</h3>
+            <h3 ng-bind-html="obj.label"></h3>
         </div>
         <div class="panel-body">
             <div class="row">
@@ -43,7 +43,7 @@
                                 {% elseif field.type == "fkey" and field.card == "short" %}
                                     <a class="btn btn-primary btn-xs" href="#{{ field.link }}/{[{ obj.{{ field.name }} }]}">{[{ obj.{{ field.name }}label }]}</a>
                                 {% else %}
-                                    <span >{[{ obj.{{ field.name }} }]}</span>
+                                    <span  ng-bind-html="obj.{{ field.name }}"></span>
                                 {% endif %}
                             </div>
                         </div>

@@ -118,7 +118,6 @@
 						'</div>' +
 					'</div>';
                 scope.$watch(attrs.ngTitle, function(value){
-                	console.log('watch change',value);
                     setDisplayText(value);
                 });
 				// Clear element contents
@@ -314,7 +313,7 @@
 					if (searchTerm === undefined) {
 						searchTerm = (childScope.searchTerm || "").trim();
 					}
-					var locals = { $searchTerm: searchTerm }
+					var locals = { $searchTerm: searchTerm };
 					$q.when(valuesFn(scope, locals)).then(function (matches) {
 						if (!matches) return;
 
