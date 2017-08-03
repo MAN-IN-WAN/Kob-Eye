@@ -97,16 +97,21 @@ class ReservationsTypePaiementPayBox extends Plugin implements ReservationsTypeP
 		//construction de la chaîne de paramètres
         $PBX= "PBX_SITE=$PBX_SITE&PBX_RANG=$PBX_RANG&PBX_IDENTIFIANT=$PBX_IDENTIFIANT&PBX_TOTAL=$PBX_TOTAL&PBX_DEVISE=$PBX_DEVISE&PBX_CMD=$PBX_CMD&".$ABO."PBX_PORTEUR=$PBX_PORTEUR&PBX_RETOUR=$PBX_RETOUR&PBX_HASH=$PBX_HASH&PBX_TIME=$PBX_TIME";
         //$PBX= $ABO."PBX_SITE=$PBX_SITE&PBX_RANG=$PBX_RANG&PBX_IDENTIFIANT=$PBX_IDENTIFIANT&PBX_TOTAL=$PBX_TOTAL&PBX_DEVISE=$PBX_DEVISE&PBX_PORTEUR=$PBX_PORTEUR&PBX_RETOUR=$PBX_RETOUR&PBX_HASH=$PBX_HASH&PBX_TIME=$PBX_TIME";
-
+echo $this->Params['KEY'];
 		// Si la clé est en ASCII, On la transforme en binaire
 		$binKey = pack("H*", $this->Params['KEY']);
 	
 		//on génère la clef HMAC
 		$hmac = strtoupper(hash_hmac('sha512', $PBX, $binKey));
-		
+
+		if (!$this->Params['MODEPRODUCTION']){
+		    $URL= "https://preprod-tpeweb.e-transactions.fr/cgi/MYchoix_pagepaiement.cgi";
+        }else{
+            $URL= "https://tpeweb.e-transactions.fr/cgi/MYchoix_pagepaiement.cgi";
+        }
 		//on renvoie le formulaire
 		return '
-		<form method="POST" id="payment-'.$PBX_CMD.'" action="https://preprod-tpeweb.e-transactions.fr/cgi/MYchoix_pagepaiement.cgi">
+		<form method="POST" id="payment-'.$PBX_CMD.'" action="'.$URL.'">
 			<input type="hidden" name="PBX_SITE" value="'.$PBX_SITE.'">
 			<input type="hidden" name="PBX_RANG" value="'.$PBX_RANG.'">
 			<input type="hidden" name="PBX_IDENTIFIANT" value="'.$PBX_IDENTIFIANT.'">
@@ -187,7 +192,13 @@ Ka1g88CjFwRw/PB9kwIDAQAB
 	        return;
         }
         // initialisation de la session https
-        $curl = curl_init('https://preprod-ppps.paybox.com/PPPS.php');
+        if (!$this->Params['MODEPRODUCTION']){
+            $URL= "https://preprod-ppps.paybox.com/PPPS.php";
+        }else{
+            $URL= "https://ppps.paybox.com/PPPS.php";
+        }
+
+        $curl = curl_init($URL);
         // PROD https://ppps.paybox.com/PPPS.php
         $facture = $paiement->getOneParent('Facture');
         $client = $facture->getOneParent('Client');

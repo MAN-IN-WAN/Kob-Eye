@@ -79,7 +79,7 @@ class Paiement extends genericClass
      * Exection du debit dans le cas d'un paiement fractionné
      */
     public function executionDebitPartiel() {
-        if (!$this->PaiementFractionne) return;
+        if (!$this->PaiementFractionne||$this->DebitEffectue) return;
         $type = $this->getTypePaiement();
         $plugin = $type->getPlugin();
         $out = $plugin->sendDirectPayment($this);
