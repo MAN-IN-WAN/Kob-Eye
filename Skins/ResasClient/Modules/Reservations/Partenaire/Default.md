@@ -11,7 +11,7 @@
     Mes partenaires
 </div>
 <div class="pitch">
-    Vous trouverez ici tous vos partenaires déjà enregistrés. C'est ici que vous pourrez les délier de votre compte afin de ne plus les voir apparaître lors de la création de vos réservations.
+    Vous trouvez ici tous vos partenaires déjà enregistrés. C'est ici que vous pouvez les délier de votre compte afin de ne plus les voir apparaître lors de la création de vos réservations.
 </div>
 <div id="mypartners">
 [LIMIT 0|100]
@@ -24,28 +24,11 @@
 </div>
 [/STORPROC]
 
-
-<div class="alert alert-info">
-    Recherche de nouveaux partenaires parmi les membres
-    <form method="POST" class="pull-right">
-        <div class="form-group">
-            <div class="col-sm12">
-                <input type="text" id="partnersearch" placeholder="Recherche" value="[!partnersearch!]" name="partnersearch"/>
-            </div>
-        </div>
-    </form>
-</div>
-<div class="pitch">
-    Vous trouverez ici la liste des membres possiblement disponibles pour completer votre groupe. Vous pouvez filtrer ces membres grace au champ de recherche présent ci-dessus.
-</div>
-<div id="allpartners">
-</div>
-
 <div class="alert alert-info">
     Ajouter un nouveau partenaire
 </div>
 <div class="pitch">
-    Vous pourrez ici ajouter de nouveau partenaires.  Il vous faudra renseigner au minimum un nom et un prénom. L'adresse Email est fortement recommandée car elle nous permettra d'envoyer un mail à votre partenaire qui pourra alors vous avertir de sa présence (ou non) lors de vos futures réservation.
+    Vous pouvez ici ajouter de nouveaux partenaires.  Il vous faut renseigner au minimum un nom et un prénom. L'adresse Email est fortement recommandée car elle nous permettra d'envoyer un mail à votre partenaire qui pourra alors vous avertir de sa présence (ou non) lors de vos futures réservations.
 </div>
 <div id="newPartner" class="clearfix">
     <div class="col-xs-10">
@@ -67,6 +50,24 @@
             <a class="btn btn-danger" id="PartenaireAddNew"><span class="glyphicon glyphicon-plus"></span></a>
         </div>
     </div>
+</div>
+
+
+
+<div class="alert alert-info">
+    Recherche de nouveaux partenaires parmi les membres
+    <form method="POST" class="pull-right">
+        <div class="form-group">
+            <div class="col-sm12">
+                <input type="text" id="partnersearch" placeholder="Recherche" value="[!partnersearch!]" name="partnersearch"/>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="pitch">
+    Vous trouvez ici la liste des membres possiblement disponibles pour compléter votre groupe. Vous pouvez filtrer ces membres grâce au champ de recherche présent ci-dessus.
+</div>
+<div id="allpartners">
 </div>
 
 

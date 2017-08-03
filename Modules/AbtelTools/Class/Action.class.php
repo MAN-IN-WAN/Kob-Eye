@@ -3,13 +3,13 @@ class Action extends genericClass {
         public $dbAbtel = null;
         private $error = '';
         
-        public function __construct($o,$i){
-                /*try{
+/*        public function __construct($o,$i){
+                try{
                         $this->dbAbtel = new PDO('mysql:host=10.0.3.8;dbname=gestion','gestion','',array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
                         $this->dbAbtel->query("SET AUTOCOMMIT=1");
                 } catch (Exception $e){
                         $this->error .= print_r($e,true);
-                }*/
+                }
                 parent::__construct($o,$i);
         }
         
@@ -222,7 +222,7 @@ END:VCALENDAR';
                 
                 $json = array('data'=>$result,'total'=>$total['COUNT(*)']);
                 return json_encode($json);
-        }
+        }*/
         
         //Recupère les comptes protégés par le MIB Abtel
         public function getMibProtected(){
@@ -598,7 +598,7 @@ END:VCALENDAR';
                 $classLoader->register();
                 
                 
-                $servers = array(array('10.0.88.11','Pipoute123!'));
+                $servers = array(array('10.0.88.11','hUTHach?p26B'));
 
                 // Define some constants we're going to use
                 define('ZIMBRA_PORT', '7071');
@@ -611,7 +611,7 @@ END:VCALENDAR';
                         
                         // Create a new Admin class and authenticate
                         $zimbra = new \Zimbra\ZCS\Admin($server[0], ZIMBRA_PORT);
-                        $zimbra->auth('gcandella@abtel.fr', $server[1]);
+                        $zimbra->auth('zmapi@abtel.link', $server[1]);
                         
                         try{
                                 

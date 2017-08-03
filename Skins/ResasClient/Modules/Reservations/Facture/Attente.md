@@ -4,7 +4,7 @@
         <div class="alert alert-warning">Veuillez patienter, nous procédons au traitement de votre règlement...</div>
         <a href="/" class="btn btn-danger btn-large btn-block">Retour à l'accueil</a>
         <script>
-            [!DEBUG::PAI!]
+            //[!DEBUG::PAI!]
             [IF [!PAI!]>0]  //PAI extrait des variables sessions setté via COOKIE
                 [STORPROC Reservations/Paiement/[!PAI!]|P|0|1][/STORPROC]
             [ELSE]
@@ -25,7 +25,7 @@
                 [!FAC:=[!CurrentClient::getCurrentFacture()!]!]
                 [!PAIEMENT:=[!FAC::getPaiement()!]!]
             [/IF]
-                [!DEBUG::PAIEMENT!]
+               // [!DEBUG::PAIEMENT!]
             [SWITCH [!PAIEMENT::Etat!]|=]
                 [CASE 0]
                     //on refresh
@@ -34,6 +34,12 @@
                     },1000);
                 [/CASE]
                 [CASE 1]
+                    //page confirmation
+                    var t = setTimeout(function () {
+                        window.location.replace("[!Domaine!]/Reservations/Facture/[!FAC::Id!]/Confirmation?Ref="+[!PAIEMENT::Id!]);
+                    },500);
+                [/CASE]
+                [CASE 5]
                     //page confirmation
                     var t = setTimeout(function () {
                         window.location.replace("[!Domaine!]/Reservations/Facture/[!FAC::Id!]/Confirmation?Ref="+[!PAIEMENT::Id!]);

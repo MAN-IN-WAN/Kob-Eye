@@ -1,5 +1,6 @@
 [INFO [!Query!]|I]
 
+<div>
 [IF [!I::TypeSearch!]=Direct]
     [STORPROC [!Query!]|Status][/STORPROC]
     [IF [!Status!]!=]
@@ -76,6 +77,12 @@
                 </div>
             </div>
         [ELSE]
+            [!Facture:=[!Reserv::getOneChild(Facture)!]!]
+            [!MainPaie:=[!Facture::getOneChild(Paiement/PaiementFractionne=1)!]!]
+            [IF [!MainPaie::DebitEffectue!]]
+                [!Status::MontantPaye:=0!]
+                [!Status::Save()!]
+            [/IF]
             [IF [!Status::MontantPaye!]>0]
                 <div class="row">
                     <div class="col-md-12">
