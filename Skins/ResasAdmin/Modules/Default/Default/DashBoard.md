@@ -35,6 +35,7 @@
           </div>
     <a href="/[!Sys::getMenu(Reservations/Reservation)!]/Ajouter" data-title="Ajouter une réservation" class="btn btn-danger pull-right btn-lg"><span class="glyphicon glyphicon-plus" aria-hidden="true" ></span> Ajouter un(e) Réservation</a>
     <a href="/[!Sys::getMenu(Reservations/Reservation)!]/ResaJournee" data-title="Imprimer les réservations" class="btn btn-info pull-right btn-lg" style="margin:auto 5px;"><span class="glyphicon glyphicon-print" aria-hidden="true"  target="_blank"></span> Voir les réservations</a>
+    <div class="clearfix"></div>
     <div class="row">
         <div class="col-md-12">
             <h3>Sélectionnez une date</h3>

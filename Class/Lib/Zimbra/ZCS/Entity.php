@@ -22,6 +22,7 @@ class Entity
 
         foreach ($object->children()->a as $data) {
             $key = (string) $data['n'];
+            if ($key == 'zimbraAuthTokens') continue;
 
             if (isset($this->data[$key])) {     // store multiple attributes in an array
                 $this->data[$key] = (array) $this->data[$key];

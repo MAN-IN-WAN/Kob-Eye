@@ -1,6 +1,15 @@
 [STORPROC [!Query!]|S|0|1]
     [!Reserv:=[!S::getOneParent(Reservation)!]!]
     [!Partenaire:=[!S::getOneChild(Partenaire)!]!]
+    [!Facture:=[!Reserv::getOneChild(Facture)!]!]
+    [!MainPaie:=[!Facture::getOneChild(Paiement/PaiementFractionne=1)!]!]
+
+    [IF [!MainPaie::DebitEffectue!]]
+        [!S::MontantPaye:=0!]
+        [!S::Save()!]
+        [REDIRECT][/REDIRECT]
+    [/IF]
+
 <div class="row">
     <div class="col-md-12">
 

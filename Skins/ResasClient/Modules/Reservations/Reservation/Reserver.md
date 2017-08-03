@@ -57,6 +57,9 @@
 
             [IF [!CHECK!]&&[!R::Valide!]=]
                 [IF [!R::getTotal()!]>0]
+                    [IF [!R::PaiementPaticipant!]]
+                        <p class="pitch">Attention : la somme indiquée par la suite n'est là qu'a titre indicatif. Les paiements de vos partenaires en seront déduits. Le montant restant sera débité une demi-heure avant le début de la réservation.</p>
+                    [/IF]
                     <input type="submit" class="btn btn-success btn-large btn-block" name="Valider" value="Payer en carte bleue" />
                 [ELSE]
                     <input type="submit" class="btn btn-success btn-large btn-block" name="Valider" value="Valider la réservation">

@@ -189,13 +189,13 @@
 
     <div id="modeSelect">
         <a class="btn btn-info modeSelect active" id="regisPartBtn">
-            Je choisi parmi mes partenaires enregistrés
+            Je choisis parmi mes partenaires enregistrés
         </a>
         <a class="btn btn-info modeSelect" id="newPartBtn">
             Je crée un nouveau partenaire
         </a>
         <a class="btn btn-info modeSelect" id="otherPartBtn">
-            Je choisi parmi le membres disponibles
+            Je choisis parmi les membres disponibles
         </a>
     </div>
 
