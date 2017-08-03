@@ -158,7 +158,7 @@ Ka1g88CjFwRw/PB9kwIDAQAB
                 Klog::l('carte abonne',$_GET['carte']);
                 $client->IdentifiantCB = $_GET['carte'];
                 $client->Save();
-                Klog::l('client cong',$client);
+                $etat = ($_GET['Erreur'] == '00000') ? 5 : 2;
             }
         }else{
             Klog::l('autoresponse NOK');
@@ -184,7 +184,7 @@ Ka1g88CjFwRw/PB9kwIDAQAB
          * Emepeche de passerplusieurs sur le débit.
          */
 	    if ($paiement->DebitEffectue){
-	        return true;
+	        return;
         }
         // initialisation de la session https
         $curl = curl_init('https://preprod-ppps.paybox.com/PPPS.php');
@@ -270,7 +270,7 @@ Ka1g88CjFwRw/PB9kwIDAQAB
         /*$paiement->Detail.="\n**** DEBIT AUTO ****\n".print_r($out,true);
         $paiement->DebitEffectue = true;
         $paiement->Save();*/
-        $paiement->ExecutionDebitPartiel($out);
+        return $out;
     }
 
     /**
