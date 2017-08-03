@@ -61,12 +61,19 @@ class Facture extends genericClass{
             $tp = Sys::getOneData('Reservations','TypePaiement/Actif=1');
             //recherche réservation
             $res = $this->getOneParent('Reservation');
+            $cli = $res->getClient();
+
+            //On recup la date de reserv
+            $dd = $res->DateDebut;
+            $dd -= 86400;
 
             //création du paiement
             $paiement = genericClass::createInstance('Reservations','Paiement');
             $paiement->Montant = $this->MontantTTC;
             $paiement->MontantTotal = $this->MontantTTC;
             $paiement->PaiementFractionne = $res->PaiementParticipant;
+            $paiement->DateDebit = $dd;
+            $paiement->Mail = $cli->Mail;
             $paiement->addParent($this);
             $paiement->addParent($tp);
             $paiement->Save();
@@ -141,7 +148,7 @@ class Facture extends genericClass{
         $mailContent = "
             Bonjour " . $Civilite . ",<br /><br />
             Nous vous informons que votre facture N° " . $this->NumFac. " du ".date("d/m/Y à H:i",$this->tmsCreate)." a bien été enregistrée.<br />
-            <br />Toute l'équipe de TENNIS FOREVER vous remercie de votre confiance,<br />
+            <br />Toute l'équipe du Dome du Foot vous remercie de votre confiance,<br />
             <br />Pour nous contacter : " . $GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT') . " .".$Lacommande;
 
         $bloc -> setFromVar("Mail", $mailContent, array("BEACON" => "BLOC"));

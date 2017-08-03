@@ -24,7 +24,7 @@
             [!Service:=[!R::getService()!]!]
             [!Court:=[!R::getCourt()!]!]
             <h3><b>Description: </b>[!Service::Titre!] pour [!Court::Titre!]</h3>
-            <h3><b>Date: </b>le [DATE d/m/Y][!R::DateDebut!][/DATE]</h3>
+            <h3><b>Date: </b>le [DATE d/m/Y à H:i:s][!R::DateDebut!][/DATE]</h3>
 
             [!Client:=[!Module::Reservations::getCurrentClient()!]!]
             [STORPROC Reservations/TypeCourt/Court/[!Court::Id!]|TC|0|1][/STORPROC]

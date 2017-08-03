@@ -14,7 +14,7 @@ Mes réservations non complètes
 <span class="label label-danger pull-right">[!Utils::getPrice([!RES::getTotal()!])!] €</span>
 Complèter ma réservation<br/>
     [IF [!RES::Service!]]
-    <small>Le [DATE d/m/Y][!RES::DateDebut!][/DATE] de [DATE H:i][!RES::DateDebut!][/DATE] pour une durée de [!RES::Duree!] minutes et avec [!RES::NbParticipant!] participants.</small>
+    <small>Le [DATE d/m/Y][!RES::DateDebut!][/DATE] à partir de [DATE H:i][!RES::DateDebut!][/DATE] pour une durée de [!RES::Duree!] minutes et avec [!RES::NbParticipant!] participants.</small>
     [/IF]
     <ul>
         [STORPROC [!RES::getLigneFacture()!]|Lf]
@@ -34,7 +34,7 @@ Mes réservations à venir
 <span class="label label-success pull-right">[!Utils::getPrice([!RES::getTotal()!])!] €</span>
 Consulter ma réservation<br/>
     [IF [!RES::Service!]]
-    <small>Le [DATE d/m/Y][!RES::DateDebut!][/DATE] de [DATE H:i][!RES::DateDebut!][/DATE] pour une durée de [!RES::Duree!] minutes et avec [!RES::NbParticipant!] participants.</small>
+    <small>Le [DATE d/m/Y][!RES::DateDebut!][/DATE] à partir de [DATE H:i][!RES::DateDebut!][/DATE] pour une durée de [!RES::Duree!] minutes et avec [!RES::NbParticipant!] participants.</small>
     [/IF]
     <ul>
         [STORPROC [!RES::getLigneFacture()!]|Lf]
@@ -61,7 +61,7 @@ Consulter ma réservation<br/>
     <span class="label label-primary pull-right">[!Utils::getPrice([!RES::getTotal()!])!] €</span>
     Consulter ma réservation<br/>
     [IF [!RES::Service!]]
-    <small>Le [DATE d/m/Y][!RES::DateDebut!][/DATE] de [DATE H:i][!RES::DateDebut!][/DATE] pour une durée de [!RES::Duree!] minutes et avec [!RES::NbParticipant!] participants.</small>
+    <small>Le [DATE d/m/Y][!RES::DateDebut!][/DATE] à partir de [DATE H:i][!RES::DateDebut!][/DATE] pour une durée de [!RES::Duree!] minutes et avec [!RES::NbParticipant!] participants.</small>
     [/IF]
     <ul>
         [STORPROC [!RES::getLigneFacture()!]|Lf]

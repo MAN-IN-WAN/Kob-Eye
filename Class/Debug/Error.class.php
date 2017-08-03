@@ -52,6 +52,21 @@ class KError extends Root{
 		return $o;
 	}
 
+    /**
+     * renvoie les erreurs d'un certain type
+     * @param $Type Type des erreurs à selectionner pour l'affichage
+     * @return un tableau à deux dimensions avec les erreurs demandees.
+     */
+    public static function returnErrors($Type=null){
+        $o  = Array();
+        foreach (self::$Tableau as $t){
+            if ($t[0]==$Type) {
+                $o[]=$t;
+            }
+        }
+        return $o;
+    }
+
 	/**
 	* Affiche l'entete du gestionnaire d'erreur
 	* Panneau en javascript permettant d'afficher les erreurs

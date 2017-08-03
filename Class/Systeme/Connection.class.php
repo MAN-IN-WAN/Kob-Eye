@@ -376,7 +376,10 @@ class Connection extends Root{
 			$this->pass = md5($_SERVER["PHP_AUTH_PW"]);
 			$this->clearpass = $_SERVER["PHP_AUTH_PW"];
 		}else{
-			if ($this->login==""||$this->pass=="")	return false;
+			if ($this->login==""||$this->pass=="")	{
+                $GLOBALS["Systeme"]->Error->Set('Connexion','Veuillez vérifiez vos identifiants. Login et/ou mot de passe manquants ou érronés.',5);
+                return false;
+			}
 		}
 
 	}
@@ -582,7 +585,10 @@ class Connection extends Root{
                 }
 				if (!isset($Result[0])||!is_array($Result[0])){
 					//CONNEXION AD EXTERNAL + AUTO PROVISIONNING
-					if (!defined("EXTERNAL_AUTH_AD")||!EXTERNAL_AUTH_AD)return false;
+					if (!defined("EXTERNAL_AUTH_AD")||!EXTERNAL_AUTH_AD){
+                        $GLOBALS["Systeme"]->Error->Set('Connexion','Veuillez vérifiez vos identifiants. Login et/ou mot de passe manquants ou érronés.',5);
+						return false;
+                    }
 					elseif (defined("EXTERNAL_AUTH_AD")){
 						$adldap = $this->externalLdapConnect();
 						//authenticate the user
@@ -682,6 +688,7 @@ class Connection extends Root{
 				$GLOBALS["Systeme"]->Log->log("LOGIN USER ".$this->login." OK");
 				return true;
 			}else{
+				if(!$User->Actif) $GLOBALS["Systeme"]->Error->Set('Connexion','Cet utilisateur n\'est pas activé. Si le problème persiste, n\'hésitez pas à contacter l\'administrateur du site.');
 				//OK donc il existe une session mais les dientifiants de connexion sont erron�s donc il faut detruire la session
 // 				$GLOBALS["Systeme"]->Error->sendErrorMsg(100);
 				$this->destroyAuth();

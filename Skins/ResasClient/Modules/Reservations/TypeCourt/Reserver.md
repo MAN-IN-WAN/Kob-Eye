@@ -1,4 +1,16 @@
 <form action="" method="POST">
+    //[IF [!Date!]=+[!Court!]=+[!HeureDebut!]=]
+    //    [REDIRECT]Reserver[/REDIRECT]
+    //[/IF]
+    [IF [!Date!]=]
+        [REDIRECT]Reserver[/REDIRECT]
+    [/IF]
+    [IF [!Court!]=]
+        [REDIRECT]Reserver[/REDIRECT]
+    [/IF]
+    [IF [!HeureDebut!]=]
+        [REDIRECT]/Reserver[/REDIRECT]
+    [/IF]
 
 
 [!DateDeb:=[!Date:+[!HeureDebut:*3600!]!]!]

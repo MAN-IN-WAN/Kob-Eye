@@ -1,6 +1,13 @@
 [IF [!Zob!]=Valider]
 <div class="alert alert-danger">
-    Une erreur est survenue... Veuillez vérifier vos identifiants.
+    Une erreur est survenue :
+    <ul>
+    [!Errors:=[!Sys::Error::returnErrors(Connexion)!]!]
+    [STORPROC [!Errors!]|E]
+        <li>[!E::1!]</li>
+    [/STORPROC]
+    </ul>
+    //Une erreur est survenue... Veuillez vérifier vos identifiants.
 </div>
 [/IF]
 

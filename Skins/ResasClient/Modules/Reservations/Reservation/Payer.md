@@ -7,6 +7,8 @@
             //génération de la facture et du paiement
             [!Facture:=[!R::getFacture()!]!]
             [!Paiement:=[!Facture::getPaiement()!]!]
+            [!Paie:=[!Paiement::Id!]!]
+            [COOKIE Set|PAI|Paie]
             [STORPROC Reservations/TypePaiement/Actif=1|TP]
                 [!Plugin:=[!TP::getPlugin()!]!]
                 [!Plugin::getCodeHTML([!Paiement!])!]

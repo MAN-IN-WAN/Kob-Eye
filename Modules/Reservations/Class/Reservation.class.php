@@ -132,7 +132,6 @@ class Reservation extends genericClass {
      * Définit la réservation
      */
     function checkReservation() {
-        klog::l('innnnnnnnnnnnnnnnnnnnnnnnnnnn checkreservation');
         //ajout de la ligne de service
         $client = $this->getClient();
         $service = $this->getService();
@@ -140,7 +139,6 @@ class Reservation extends genericClass {
         $typecourt = $court->getParents('TypeCourt');
         $typecourt = $typecourt[0];
         if ($service) {
-            klog::l('innnnnnnnnnnnnnnnnnnnnnnnnnnn service');
             //suppression si existante
             $this->deleteLigneFacture('Réservation');
             //ajout de la réservation
@@ -345,12 +343,24 @@ class Reservation extends genericClass {
         $court = $this->getCourt();
         if (!$court) return false;
 
-        //klog::l('dd',$this->DateDebut);
-        //klog::l('df',$this->DateFin);
-
 
         if ($this->DateDebut && $this->DateFin && $this->DateDebut < $this->DateFin){
-            return true;
+
+            $service_debut = $service->HeureOuverture;
+            $service_fin = $service->HeureFermeture;
+
+            $jour_debut = date('Y/m/d',$this->DateDebut);
+            $jour_fin = date('Y/m/d',$this->DateFin);
+
+
+            $time_debut = DateTime::createFromFormat('Y/m/d H:i',$jour_debut.' '.$service_debut); //Debut periode du jour
+            $time_debut = $time_debut->getTimestamp();
+            $time_fin = DateTime::createFromFormat('Y/m/d H:i',$jour_debut.' '.$service_fin); //Fin periode du jour
+            $time_fin = $time_fin->getTimestamp();
+
+            if($this->DateDebut >= $time_debut && $this->DateDebut <= $time_fin && $this->DateFin >= $time_debut && $this->DateFin <= $time_fin){
+                return true;
+            }else return false;
         }else return false;
     }
     function checkDateJour() {
@@ -502,14 +512,13 @@ class Reservation extends genericClass {
             $tc = $tc[0];
             if ($tc->Reservation == 'Horaire') {
                 if (!$this->checkDate()) {
-                    $this->addError(array("Message" => "Veuillez vérifier la saisie des dates"));
+                    $this->addError(array("Message" => "Veuillez vérifier la saisie des dates, ainsi que la durée choisie"));
                 }
                 //vérifie le client
                 if (!$this->checkService()) {
                     $this->addError(array("Message" => "Veuillez saisir le service pour cette réservation"));
                 }
                 if (!$this->checkDispo()) {
-                    klog::l('after');
                     $this->addError(array("Message" => "Cette horaire n'est pas disponible"));
                     $this->Valide = false;
                 }

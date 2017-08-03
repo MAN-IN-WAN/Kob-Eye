@@ -275,6 +275,9 @@ class Utils {
     public static function  isNull($P) {
         return is_null($P[0]);
     }
+    public static function  sprintf($P) {
+        return sprintf($P[0],$P[1]);
+    }
 }
 
 @include 'Utils.extend.php';
