@@ -2,6 +2,7 @@
 $info = Info::getInfos($vars['Query']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $vars['fields'] = $o->getElementsByAttribute('list','',true);
+$vars['functions'] = $o->getFunctions();
 $vars['fichefields'] = $o->getElementsByAttribute('fiche','',true);
 foreach ($vars['fichefields'] as $k=>$f){
     if ($f['type']=='fkey'&&$f['card']=='short'){

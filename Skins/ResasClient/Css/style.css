@@ -283,6 +283,8 @@ body { font-weight: normal;}
     line-height: 1;
     color: #fff;
     text-align: center;
+    margin:2px;
+    font-size:0.8em;
 }
 /*** BOOTBOX ***/
 .bootbox.modal{

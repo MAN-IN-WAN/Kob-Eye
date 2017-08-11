@@ -36,6 +36,7 @@ class ObjectClass extends Root{
 	var $className = 0;
 	var $noRecursivity = 0;							//permet la création d'une clef recursive sans le comportement recursif
 	var $stopPage = 0;							//stoppe l'exploration des pages pour les clefs sous jacentes.
+	var $Operations = Array("add"=>true,"edit"=>true,"delete"=>true,"export"=>true);
 	//DEFAULT
 	var $defaultView = false;
 	var $Default=0;
@@ -100,6 +101,7 @@ class ObjectClass extends Root{
 		if (isset($schema['@']['className']))$this->className = $schema['@']['className'];
 		if (isset($schema['@']['noRecursivity']))$this->noRecursivity = $schema['@']['noRecursivity'];
 		if (isset($schema['@']['stopPage']))$this->stopPage = $schema['@']['stopPage'];
+        if (isset($schema['@']['Operations']))$this->setOperations($schema['@']['Operations']);
 		if (isset($schema['@']['tagObjects'])){
 			$to = explode(',',$schema['@']['tagObjects']);
 			foreach ($to as $t) $this->tagObjects[] = trim($t);
@@ -117,6 +119,17 @@ class ObjectClass extends Root{
 		$this->parseXml($schema['#']);
 		//INITIALISATION DU PILOTE
 		$this->createTargets();
+	}
+	private function setOperations($str) {
+		//reset
+		$this->Operations  = Array("add"=>false,"edit"=>false,"delete"=>false,"export"=>false);
+		$str = explode(',',$str);
+		if (sizeof($str))foreach ($str as $s){
+			$this->Operations[$s] = true;
+		}
+	}
+	public function getOperations(){
+		return $this->Operations;
 	}
 	/**
 	 * __________________________________________________________________________________________________
@@ -870,7 +883,11 @@ class ObjectClass extends Root{
 					case 'values':	//Valeurs possible
 						$temp = explode(",",$tab[$tabTemp[$i]]);
 						foreach ($temp as $t) {
-							$Result["Values"][] = $t;
+							if (strpos($t,'::')) {
+								$s = explode('::', $t);
+								$Result["Values"][$s[0]] = $s[1];
+							}else
+								$Result["Values"][$t] = $t;
 						}
 						break;
 					case 'type':		//Type l information

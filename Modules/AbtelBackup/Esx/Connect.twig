@@ -1,0 +1,12 @@
+{% for er in obj.Error %}
+    <div class="alert alert-danger">{{ er.Message }}</div>
+{% endfor %}
+{% for er in obj.Warning %}
+    <div class="alert alert-warning">{{ er.Message }}</div>
+{% endfor %}
+{% for er in obj.Success %}
+    <div class="alert alert-success">{{ er.Message }}</div>
+{% endfor %}
+{% if success %}
+    <div class="alert alert-success">Connecté avec succès</div>
+{% endif %}

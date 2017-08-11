@@ -726,9 +726,15 @@ class sqlFunctions{
 		for ($j = $maxprof; $j >= 0; $j--) {
 			foreach ($brackets as $K => &$brak) {
 				if ($brak["prof"] == $j) {
+				    //echo "*********************************\r\n";
 					$FullCondition = substr($Rech, $brak["opened"], $brak["closed"] - $brak["opened"]);
-					$FullCondition = preg_replace("#(\(\!.*\!\))#", "", $FullCondition);
-					$brak["Lien"] = (strpos($FullCondition, "+")) ? "OR" : "AND";
+                    //echo $FullCondition." => ".strpos($FullCondition, "+")."\r\n";
+					$FullCondition = preg_replace("#(\(\![^\(\!]*?\!\))#", "", $FullCondition);
+                    $FullCondition = preg_replace("#(\(\![^\(\!]*?\!\))#", "", $FullCondition);
+                    $FullCondition = preg_replace("#(\(\![^\(\!]*?\!\))#", "", $FullCondition);
+                    //echo $FullCondition." => ".strpos($FullCondition, "+")."\r\n";
+					$brak["Lien"] = (strpos($FullCondition, "+")>-1) ? "OR" : "AND";
+                    //echo $brak["Lien"]."\n";
 					$Conditions = ($brak["Lien"] == "OR") ? preg_split('#(?<!\\\)[\+]{1}#', $FullCondition) : preg_split('#(?<!\\\)[\&]{1}#', $FullCondition);
 					foreach ($Conditions as $C) {
 						if (!empty($C)) {

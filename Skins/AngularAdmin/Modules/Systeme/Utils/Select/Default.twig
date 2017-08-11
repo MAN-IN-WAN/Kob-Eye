@@ -18,7 +18,7 @@
         <tr>
             <th>ID</th>
             <th>Label</th>
-            <th >Actions</th>
+            <th width="50">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -27,7 +27,7 @@
         <td scope="row">
             <span ng-bind-html="item.label"></span>
         </td>
-        <td >
+        <td width="170" style="width:170px;">
             <switch id="enabled" name="enabled" checklist-model="modalObj.{{ Field }}" checklist-value="item.id" class="green"></switch>
         </td>
     </tr>

@@ -25,7 +25,7 @@ foreach ($formfields as $f){
     }else $o->{$f["name"]} = $values->{$f["name"]};
 }
 if ($o->Verify()) {
-    $o->Save();
+    $success = $o->Save();
     foreach ($formfields as $f){
         $values->{$f["name"]} = $o->{$f["name"]};
         if ($f['type']=='date'){
@@ -39,7 +39,8 @@ if ($o->Verify()) {
     }
     $vars['retour'] = '{
         "data": '.json_encode($values).',
-        "success": true
+        "errors": '.json_encode($o->Error).',
+        "success": '.(($success)?1:0).'
     }';
 }else{
     $vars['retour'] = '{

@@ -1,6 +1,6 @@
 [STORPROC [!Query!]|P|0|1]
     [STORPROC Reservations/TypePaiement/Actif=1|TP]
         [!Plg:=[!TP::getPlugin()!]!]
-        [!Plg::sendDirectPayment([!P!])!]
+        [!DEBUG::Plg::sendDirectPayment([!P!])!]
     [/STORPROC]
 [/STORPROC]

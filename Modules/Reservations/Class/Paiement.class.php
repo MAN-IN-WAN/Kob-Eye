@@ -50,7 +50,7 @@ class Paiement extends genericClass
         $this->Set('Status', 1);
         $this->Save();
 
-        if ($results['etat']=='1') {
+        if ($results['etat']=='1'||$results['etat']=='5') {
             $status = $this->getOneParent('StatusReservation');
             if($status){
                 $partenaire = $status->getOneChild('Partenaire');
@@ -71,8 +71,20 @@ class Paiement extends genericClass
                 $facture->Paye = 1;
                 $facture->Save();
             }
-
-
         }
+    }
+
+    /**
+     * @param $out
+     * Exection du debit dans le cas d'un paiement fractionné
+     */
+    public function executionDebitPartiel() {
+        if (!$this->PaiementFractionne||$this->DebitEffectue) return;
+        $type = $this->getTypePaiement();
+        $plugin = $type->getPlugin();
+        $out = $plugin->sendDirectPayment($this);
+        $this->Detail.="\n**** DEBIT AUTO ****\n".print_r($out,true);
+        $this->DebitEffectue = true;
+        $this->Save();
     }
 }

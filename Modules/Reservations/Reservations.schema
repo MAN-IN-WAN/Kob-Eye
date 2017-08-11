@@ -161,7 +161,7 @@
         <PROPERTIES description="Debit effectué" type="boolean" default="0">DebitEffectue</PROPERTIES>
         <PROPERTIES description="Date de Debit" type="datetime" >DateDebit</PROPERTIES>
         <PROPERTIES description="Paiement Fractionné: Montant Initial" type="price" default="0">MontantTotal</PROPERTIES>
-        <PROPERTIES searchOrder="1" description="Etat du paiement" type="int" default="0" values="0::En Cours,1::Accepté,2::Refusé,3::Initialisé,4::Attente" list="2" listDescr="Etat">Etat</PROPERTIES>
+        <PROPERTIES searchOrder="1" description="Etat du paiement" type="int" default="0" values="0::En Cours,1::Accepté,2::Refusé,3::Initialisé,4::Attente,5::Différé" list="2" listDescr="Etat">Etat</PROPERTIES>
         <FKEY card="1,1" data="Facture,Id">FactureId</FKEY>
         <FKEY card="1,1" data="TypePaiement,Id">TypePaiementId</FKEY>
         <FKEY card="0,1" data="StatusReservation,Id">StatusReservationId</FKEY>

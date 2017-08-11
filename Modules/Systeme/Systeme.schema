@@ -147,14 +147,14 @@
 		<PROPERTIES type="html" form="1" fiche="1" special="multi">Html</PROPERTIES>
 		<PROPERTIES type="order"  list="1" form="1" fiche="1">Ordre</PROPERTIES>
 		<FKEY card="1,n" data="Menu,Id" behaviour="Integrated" form="1" fiche="1" parentDescription="Menu">MenuParent</FKEY>
-		<FKEY card="1,n" module="Products" data="Categorie,Id">ProductsCategorieId</FKEY>
+		<!--<FKEY card="1,n" module="Products" data="Categorie,Id">ProductsCategorieId</FKEY>
 		<FKEY card="1,n" module="Products" data="Produit,Id">ProductsProduitId</FKEY>
 		<FKEY card="1,n" module="Team" data="Equipe,Id">TeamEquipeId</FKEY>
 		<FKEY card="1,n" module="Team" data="Rider,Id">TeamRiderId</FKEY>
 		<FKEY card="1,n" module="Galerie" data="Categorie,Id">GalerieCategorieId</FKEY>
 		<FKEY card="1,n" module="Galerie" data="Media,Id">GalerieMediaId</FKEY>
 		<FKEY card="1,n" module="Blog" data="Categorie,Id">BlogCategorieId</FKEY>
-		<FKEY card="1,n" module="Blog" data="Post,Id">BlogPostId</FKEY>
+		<FKEY card="1,n" module="Blog" data="Post,Id">BlogPostId</FKEY>-->
 		<FKEY card="1,n" module="Redaction" data="Categorie,Id">RedactionCategorieId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Fichier" driver="mysql" AccessPoint="0">
@@ -271,10 +271,29 @@
         <FKEY card="0,1" data="User,Id" description="User">UserId</FKEY>
         <FUNCTION>sendNotificationTest</FUNCTION>
     </OBJECTCLASS>
-	<OBJECTCLASS title="Notification" driver="mysql" AccessPoint="0" Icon="[None]" description="Notifications">
+	<OBJECTCLASS title="Notification" driver="mysql" AccessPoint="0" Icon="[None]" Description="Notifications">
 		<PROPERTIES category="Description" type="varchar" searchOrder="1">Titre</PROPERTIES>
 		<PROPERTIES category="Description" type="varchar" searchOrder="2">Message</PROPERTIES>
 		<FKEY card="0,1" data="Device,Id" description="Périphérique">DeviceId</FKEY>
 	</OBJECTCLASS>
-
+	<!--Taches planifiées -->
+	<OBJECTCLASS title="ScheduledTask" driver="mysql" AccessPoint="1" Icon="[None]" Description="Tâches planifiées">
+        <PROPERTIES category="Description" type="varchar" searchOrder="1">Titre</PROPERTIES>
+        <PROPERTIES category="Description" type="boolean" searchOrder="2" description="Activé">Enabled</PROPERTIES>
+		<PROPERTIES type="varchar" listDescr="Minute" default="*" values="*,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59" list="1" form="1" fiche="1">Minute</PROPERTIES>
+		<PROPERTIES type="varchar" listDescr="Heure" default="*" values="*,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24" list="1" form="1" fiche="1">Heure</PROPERTIES>
+		<PROPERTIES type="varchar" listDescr="Jour Mois" default="*" values="*,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31" list="1" form="1" fiche="1">Jour</PROPERTIES>
+		<PROPERTIES type="varchar" listDescr="Mois" default="*" values="*,1,2,3,4,5,6,7,8,9,10,11,12" list="1" form="1" fiche="1">Mois</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1">Lundi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1">Mardi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1">Mercredi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1">Jeudi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1">Vendredi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1">Samedi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1">Dimanche</PROPERTIES>
+        <PROPERTIES category="Clef" type="varchar" description="Module"  searchOrder="2" list="5">TaskModule</PROPERTIES>
+        <PROPERTIES category="Clef" type="varchar" description="ObjectClass"  searchOrder="3" list="6">TaskObject</PROPERTIES>
+        <PROPERTIES category="Clef" type="int" description="Identifiant"  searchOrder="4" list="7">TaskId</PROPERTIES>
+        <PROPERTIES category="Clef" type="varchar" description="Fonction à éxécuter"  searchOrder="5" list="7">TaskFunction</PROPERTIES>
+	</OBJECTCLASS>
 </SCHEMA>

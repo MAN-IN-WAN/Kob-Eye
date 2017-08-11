@@ -64,7 +64,7 @@ class ReservationsTypePaiementPayBox extends Plugin implements ReservationsTypeP
 		     $PBX_DEVISE      = '978';
 		     $PBX_CMD         = sprintf("%06d", $paiement->Id);
 		     //EMAIL CLIENT
-		     $PBX_PORTEUR     = $client->Mail;
+		     $PBX_PORTEUR     = $paiement->Mail;
              $PBX_TYPEPAIEMENT= 'CARTE';
              $PBX_TYPECARTE   = 'CB';
              $PBX_AUTOSEULE   = 'O';
@@ -97,16 +97,21 @@ class ReservationsTypePaiementPayBox extends Plugin implements ReservationsTypeP
 		//construction de la chaîne de paramètres
         $PBX= "PBX_SITE=$PBX_SITE&PBX_RANG=$PBX_RANG&PBX_IDENTIFIANT=$PBX_IDENTIFIANT&PBX_TOTAL=$PBX_TOTAL&PBX_DEVISE=$PBX_DEVISE&PBX_CMD=$PBX_CMD&".$ABO."PBX_PORTEUR=$PBX_PORTEUR&PBX_RETOUR=$PBX_RETOUR&PBX_HASH=$PBX_HASH&PBX_TIME=$PBX_TIME";
         //$PBX= $ABO."PBX_SITE=$PBX_SITE&PBX_RANG=$PBX_RANG&PBX_IDENTIFIANT=$PBX_IDENTIFIANT&PBX_TOTAL=$PBX_TOTAL&PBX_DEVISE=$PBX_DEVISE&PBX_PORTEUR=$PBX_PORTEUR&PBX_RETOUR=$PBX_RETOUR&PBX_HASH=$PBX_HASH&PBX_TIME=$PBX_TIME";
-
+echo $this->Params['KEY'];
 		// Si la clé est en ASCII, On la transforme en binaire
 		$binKey = pack("H*", $this->Params['KEY']);
 	
 		//on génère la clef HMAC
 		$hmac = strtoupper(hash_hmac('sha512', $PBX, $binKey));
-		
+
+		if (!$this->Params['MODEPRODUCTION']){
+		    $URL= "https://preprod-tpeweb.e-transactions.fr/cgi/MYchoix_pagepaiement.cgi";
+        }else{
+            $URL= "https://tpeweb.e-transactions.fr/cgi/MYchoix_pagepaiement.cgi";
+        }
 		//on renvoie le formulaire
 		return '
-		<form method="POST" id="payment-'.$PBX_CMD.'" action="https://preprod-tpeweb.e-transactions.fr/cgi/MYchoix_pagepaiement.cgi">
+		<form method="POST" id="payment-'.$PBX_CMD.'" action="'.$URL.'">
 			<input type="hidden" name="PBX_SITE" value="'.$PBX_SITE.'">
 			<input type="hidden" name="PBX_RANG" value="'.$PBX_RANG.'">
 			<input type="hidden" name="PBX_IDENTIFIANT" value="'.$PBX_IDENTIFIANT.'">
@@ -158,7 +163,7 @@ Ka1g88CjFwRw/PB9kwIDAQAB
                 Klog::l('carte abonne',$_GET['carte']);
                 $client->IdentifiantCB = $_GET['carte'];
                 $client->Save();
-                Klog::l('client cong',$client);
+                $etat = ($_GET['Erreur'] == '00000') ? 5 : 2;
             }
         }else{
             Klog::l('autoresponse NOK');
@@ -180,11 +185,28 @@ Ka1g88CjFwRw/PB9kwIDAQAB
 		else return 'Une erreur est survenue lors du paiement de la commande '. $commande->RefCommande . '<br /> Vous pouvez contacter le support via ce <a href="/Contact">formulaire</a> en rappelant cette référence.';
 	}
     public function sendDirectPayment($paiement) {
+	    /**
+         * Emepeche de passerplusieurs sur le débit.
+         */
+	    if ($paiement->DebitEffectue){
+	        return;
+        }
         // initialisation de la session https
-        $curl = curl_init('https://preprod-ppps.paybox.com/PPPS.php');
+        if (!$this->Params['MODEPRODUCTION']){
+            $URL= "https://preprod-ppps.paybox.com/PPPS.php";
+        }else{
+            $URL= "https://ppps.paybox.com/PPPS.php";
+        }
+
+        $curl = curl_init($URL);
         // PROD https://ppps.paybox.com/PPPS.php
         $facture = $paiement->getOneParent('Facture');
         $client = $facture->getOneParent('Client');
+
+        //récupération des valeurs porteur : dateval
+        $tmp = explode('  ',$client->IdentifiantCB);
+        $PORTEUR= $tmp[0];
+        $DATEVAL= substr($tmp[1],2,2).substr($tmp[1],0,2);
 
         // Précise que la réponse est souhaitée
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -201,19 +223,18 @@ Ka1g88CjFwRw/PB9kwIDAQAB
             'TYPE'        => '00053',
             'SITE'        => $this->Params['IDSITE'],
             'RANG'        => $this->Params['RANG'],
-            'CLE'         => $this->Params['CLE'],
-            /*'IDENTIFIANT' => $this->Params['IDENTIFIANT'],*/
-
-            'NUMQUESTION' => '0000000001',
+            'NUMQUESTION' => $this->getNumQuestion(),
             'MONTANT'     => round($paiement->Montant * 100),
             'DEVISE'      => '978',
-            'REFABONNE' => sprintf("CLI%06d", $client->Id),
             'REFERENCE'   => sprintf("%06d", $paiement->Id),
-            'HASH'        => 'SHA512',
-
-            'DATEQ'       => date('dmYHis') //'15102013'
+            'PORTEUR'     => $PORTEUR,
+            'DATEVAL'     => $DATEVAL,
+            'REFABONNE'   => sprintf("CLI%06d", $client->Id),
+            'ACTIVITE'    => '027',
+            'DATEQ'       => date('dmYHis'), //'15102013'
+            'HASH'        => 'SHA512'
         );
-        print_r($postfields);
+        //print_r($postfields);
 
         // Crée la chaine url encodée selon la RFC1738 à partir du tableau de paramètres séparés par le caractère &
         $trame = http_build_query($postfields, '', '&');
@@ -224,7 +245,7 @@ Ka1g88CjFwRw/PB9kwIDAQAB
         $hmac = strtoupper(hash_hmac('sha512', $trame, $binKey));
 
         $trame.="&HMAC=".$hmac;
-        print_r($trame);
+        //print_r($trame);
 
         // Présise le type de requête HTTP : POST
         curl_setopt($curl, CURLOPT_POST, true);
@@ -238,12 +259,49 @@ Ka1g88CjFwRw/PB9kwIDAQAB
         // Envoi de la requête et obtention de la réponse
         $response = curl_exec($curl);
 
-        echo "<PRE>";
-        echo "Réponse Paybox direct pour la demande 'autorize' ";
-        var_dump($response);
-        echo "</PRE>";
+        //echo "<PRE>";
+        //echo "Réponse Paybox direct pour la demande 'autorize' ";
+        //var_dump($response);
+        //echo "</PRE>";
 
         // fermeture de la session
         curl_close($curl);
+        //traitement du retour
+        $ret= explode('&',$response);
+        $out = array();
+        foreach ($ret as $r){
+            $t = explode('=',$r,2);
+            $out[$t[0]]=utf8_encode($t[1]);
+        }
+        //modification du paieent pour définir le retour.
+        /*return array(
+            'etat' => $response,
+            'ref' => $_GET['Ref']
+        );*/
+        /*$paiement->Detail.="\n**** DEBIT AUTO ****\n".print_r($out,true);
+        $paiement->DebitEffectue = true;
+        $paiement->Save();*/
+        return $out;
+    }
+
+    /**
+     * getNumQuestion
+     * Genère un umero de question unique incrémenté par journée
+     */
+    private function getNumQuestion() {
+        $filepath='Modules/Reservations/Plugins/TypePaiement/PayBox/payboxNumQuestion';
+        //si le fichier n'existe pas ou si la date est d'hier
+	    if (!file_exists($filepath)||date('z',filemtime($filepath))!=date('z')){
+	        //creation du fichier avec première question
+            $f = fopen($filepath,'w+');
+            fputs($f,'0000000001');
+            fclose($f);
+            return '0000000001';
+        }
+        //sinon on incrémente la valeur
+        $num = intval(file_get_contents($filepath))+1;
+	    $num = sprintf('%010d',$num);
+	    file_put_contents($filepath,$num);
+	    return $num;
     }
 }

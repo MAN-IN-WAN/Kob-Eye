@@ -1,36 +1,64 @@
 <SCHEMA>
-	<OBJECTCLASS title="Esx" driver="mysql" AccessPoint="1" Description="Serveur ESXi"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
-		<PROPERTIES type="titre" searchOrder="1">Titre</PROPERTIES>
-		<PROPERTIES type="varchar" length="50" searchOrder="2">IP</PROPERTIES>
-		<PROPERTIES type="varchar" lenth="50">Login</PROPERTIES>
-		<PROPERTIES type="varchar" >Password</PROPERTIES>
+	<OBJECTCLASS title="Esx" driver="mysql" AccessPoint="1" Description="Serveur ESXi"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelBackup/Class/Esx.class.php">
+		<FILTER name="Tous les esxi" color="warning" ></FILTER>
+		<FILTER name="Esxi Actifs" color="success" >Enabled=1</FILTER>
+		<FILTER name="Esxi En ligne" >Status=1</FILTER>
+		<FUNCTION title="Test de connexion">Connect</FUNCTION>
+		<FUNCTION title="Rafraîchir l'inventaire">getInventory</FUNCTION>
+		<FUNCTION title="Regénérer les clefs SSH">installSshKey</FUNCTION>
+		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1" obligatoire="1" listDescr="Titre">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" searchOrder="2" list="1" form="1" fiche="1" listDescr="IP" obligatoire="1">IP</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="3" list="1" fiche="1" form="1" listDescr="Actif" description="Actif">Enabled</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="4" list="1" fiche="1"  listDescr="Statut" description="Connexion complête">Status</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" form="1" fiche="1" obligatoire="1" description="Nom d'utilisateur">Login</PROPERTIES>
+		<PROPERTIES type="varchar" form="1" fiche="1" obligatoire="1" description="Mot de passe">Password</PROPERTIES>
+		<PROPERTIES type="text" description="Clef privée Ssh">PrivateKey</PROPERTIES>
+		<PROPERTIES type="text" description="Clef publique Ssh">PublicKey</PROPERTIES>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="EsxVm" AccessPoint="1" driver="mysql" Description="Machine virtuelle"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
-		<PROPERTIES type="titre" searchOrder="1">Titre</PROPERTIES>
-		<PROPERTIES type="int" searchOrder="2">Size</PROPERTIES>
-		<FKEY data="Esx,Id" card="0,1">EsxId</FKEY>
-		<FKEY data="BorgRepo,Id" card="0,1">BorgRepoId</FKEY>
-		<FKEY data="VmJob,Id" card="0,1">VmJobId</FKEY>
+	<OBJECTCLASS title="EsxVm" AccessPoint="1" driver="mysql" Description="Machine virtuelle"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Operations="" Class="Modules/AbtelBackup/Class/EsxVm.class.php">
+		<FUNCTION title="Vérification du dépôt">checkBorgRepo</FUNCTION>
+		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1" listDescr="Titre" obligatoire="1">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" form="1" fiche="1" listDescr="Nom du fichier" obligatoire="1">FileName</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" listDescr="Type de vm" obligatoire="1">VmType</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" listDescr="Version de vm" obligatoire="1">VmVersion</PROPERTIES>
+		<PROPERTIES type="int" searchOrder="2" list="1" form="1" fiche="1" listDescr="Taille">Size</PROPERTIES>
+		<PROPERTIES type="int" searchOrder="2" list="1" form="1" fiche="1" listDescr="Taille">RemoteId</PROPERTIES>
+		<FKEY data="Esx,Id" card="0,1" form="1" fiche="1" list="1" listDescr="ESX" parentDescription="ESX">EsxId</FKEY>
+		<FKEY data="BorgRepo,Id" card="1,1" form="1" fiche="1" list="1" listDescr="Dépôt" parentDescription="Dépôt BORG">BorgRepoId</FKEY>
+		<RKEY data="RestorePoint,Id" card="0,n">RestorePointId</RKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="BackupStore" AccessPoint="1" driver="mysql" Description="Stockage Sauvegarde"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
-		<PROPERTIES type="titre" searchOrder="1">Titre</PROPERTIES>
-		<PROPERTIES type="varchar" values="Local,Distant" searchOrder="2">Type</PROPERTIES>
-		<PROPERTIES type="varchar" length="50" searchOrder="2">IP</PROPERTIES>
-		<PROPERTIES type="varchar" lenth="150">Domain</PROPERTIES>
-		<PROPERTIES type="varchar" lenth="50">Login</PROPERTIES>
-		<PROPERTIES type="varchar" >Password</PROPERTIES>
+		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" values="Local,Distant" searchOrder="2" list="1" form="1" fiche="1">Type</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" searchOrder="2" list="1" form="1" fiche="1">IP</PROPERTIES>
+		<PROPERTIES type="varchar" length="150" list="1" form="1" fiche="1">Domain</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" form="1" fiche="1">Login</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" form="1" fiche="1">Password</PROPERTIES>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="BorgRepo" driver="mysql" Description="Dépôt Borg"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
-		<PROPERTIES type="titre" searchOrder="1">Titre</PROPERTIES>
+	<OBJECTCLASS title="BorgRepo" driver="mysql" Description="Dépôt Borg"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelBackup/Class/BorgRepo.class.php">
+		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1">Titre</PROPERTIES>
+		<PROPERTIES type="varchar"  list="1" form="1" fiche="1" description="Chemin">Path</PROPERTIES>
 		<FKEY data="BackupStore,Id" card="0,1">BackupStoreId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="RestorePoint" driver="mysql" Description="Point de restauration"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
-		<PROPERTIES type="titre" searchOrder="1">Titre</PROPERTIES>
+		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1">Titre</PROPERTIES>
 		<FKEY data="BorgRepo,Id" card="0,1">BorgRepoId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="VmJob" AccessPoint="1" driver="mysql" Description="Job VM"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
-		<PROPERTIES type="titre" searchOrder="1">Titre</PROPERTIES>
-		<PROPERTIES type="titre" searchOrder="2">Titre</PROPERTIES>
+	<OBJECTCLASS title="VmJob" AccessPoint="1" driver="mysql" Description="Job VM"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelBackup/Class/VmJob.class.php">
+		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1"  obligatoire="1" listDescr="Titre">Titre</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="2" list="1" form="1" fiche="1"  listDescr="Activé">Enabled</PROPERTIES>
+		<PROPERTIES type="varchar" listDescr="Minute" default="*" values="*,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59" list="1" form="1" fiche="1">Minute</PROPERTIES>
+		<PROPERTIES type="varchar" listDescr="Heure" default="*" values="*,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24" list="1" form="1" fiche="1">Heure</PROPERTIES>
+		<PROPERTIES type="varchar" listDescr="Jour Mois" default="*" values="*,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31" list="1" form="1" fiche="1">Jour</PROPERTIES>
+		<PROPERTIES type="varchar" listDescr="Mois" default="*" values="*,1,2,3,4,5,6,7,8,9,10,11,12" list="1" form="1" fiche="1">Mois</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1">Lundi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1">Mardi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1">Mercredi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1">Jeudi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1">Vendredi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1">Samedi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1">Dimanche</PROPERTIES>
+		<RKEY data="EsxVm,Id" card="0,n" inline="1" form="1" fiche="1" description="Sélection des vms">VmJobId</RKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="SambaShare" AccessPoint="1" driver="mysql" Description="Partages Samba"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
 		<PROPERTIES type="titre" searchOrder="1">Titre</PROPERTIES>

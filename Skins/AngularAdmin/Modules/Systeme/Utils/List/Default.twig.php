@@ -9,7 +9,9 @@ $vars['filters'] = $o->getCustomFilters();
 if (is_object(Sys::$CurrentMenu)) {
     if ($vars['Type']=='Children') {
         $vars['CurrentUrl'] = Sys::getMenu($info['Module'] . '/' . $info['ObjectType']);
-    }else $vars['CurrentUrl'] = Sys::$CurrentMenu->Url;
+    }else {
+        $vars['CurrentUrl'] = Sys::$CurrentMenu->Url;
+    }
 }else $vars['CurrentUrl'] = $vars['Query'];
 if (!$vars['ObjectClass']->AccessPoint) $vars['Type'] = "Tail";
 ?>
