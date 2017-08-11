@@ -551,22 +551,23 @@ class genericClass extends Root {
 		$attr = explode('|',$At);
 		//Il faut le faire pour chaque langue
 		$Tab = $this -> getElements($L);
-		foreach ($attr as $A)
-            foreach ($Tab as $CatName => $Cat)
-                foreach ($Cat as $ElemsName => $Elems)
-                    foreach ($Elems as $Elem) {
-                        if (isset($Elem[$A]) && (empty($V) || $Elem[$A] == $V)||$A==null) {
-                            if ($flat){
-                                $O[] = $Elem;
-                            }else{
-                                if (!isset($O[$CatName])) {
-                                    $O[$CatName] = Array();
-                                    $O[$CatName][$ElemsName] = Array();
-                                }
-                                $O[$CatName][$ElemsName][] = $Elem;
+        foreach ($Tab as $CatName => $Cat)
+            foreach ($Cat as $ElemsName => $Elems)
+                foreach ($Elems as $Elem) {
+                    $ok = false;
+                    foreach ($attr as $A)if (isset($Elem[$A]) && (empty($V) || $Elem[$A] == $V)||$A==null) $ok = true;
+                    if ($ok){
+                        if ($flat){
+                            $O[] = $Elem;
+                        }else{
+                            if (!isset($O[$CatName])) {
+                                $O[$CatName] = Array();
+                                $O[$CatName][$ElemsName] = Array();
                             }
+                            $O[$CatName][$ElemsName][] = $Elem;
                         }
                     }
+                }
 		//on ordonne sur l'attribut
 		if (empty($V)){
 			$O = Storproc::SpBubbleSort($O,$A);
@@ -1489,7 +1490,7 @@ class genericClass extends Root {
 				switch ($Props[$i]["Type"]) {
 					case "password" :
 						if ($newValue != "*******")
-							$newValue = md5(trim($newValue));
+							$newValue = trim($newValue);
 						else
 							return false;
 						break;
@@ -2188,6 +2189,7 @@ class genericClass extends Root {
 			else
 				$this->deletePages();
 		}
+		return true;
 	}
 
 	//----------------------------------------------//

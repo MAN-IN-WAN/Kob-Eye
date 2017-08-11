@@ -17,6 +17,10 @@ foreach ($vars['fields'] as $f){
         //transformation des timestamps en format js
         $vars['row']->{$f['name']} = date('d/m/Y H:i',$vars['row']->{$f['name']});
     }
+    if ($f['type']=='text'){
+        //transformation des timestamps en format js
+        $vars['row']->{$f['name']} = str_replace("\n",'\\\n',$vars['row']->{$f['name']});
+    }
     if ($f['type']=='fkey'&&$f['card']=='short'){
         if ($vars['row']->{$f['name']} > 0) {
             $kk = Sys::getOneData($f['objectModule'], $f['objectName'] . '/' . $vars['row']->{$f['name']});
@@ -25,6 +29,11 @@ foreach ($vars['fields'] as $f){
             $vars['row']->{$f['name'].'label'} = '';
         }
     }
-}
+    if ($f['type']=='rkey'){
+        $kk = Sys::getData($f['objectModule'], $vars['Query'].'/'.$f['objectName']);
+        $vars['row']->{$f['name']} = array();
+        foreach ($kk as $k)$vars['row']->{$f['name']}[] = $k->Id;
 
+    }
+}
 ?>

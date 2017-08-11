@@ -98,4 +98,15 @@ class AbtelBackup extends Module{
      */
     private function initGlobalVars(){
     }
+    /**
+     * UTILS FUNCTIONS
+     */
+    static public function localExec( $command ){
+        exec( $command,$output,$return);
+        if( $return ) {
+            throw new RuntimeException( "L'éxécution de la commande locale a échoué. commande : ".$command." \n ".print_r($output,true));
+        }
+        return implode("\n",$output);
+    }
+
 }

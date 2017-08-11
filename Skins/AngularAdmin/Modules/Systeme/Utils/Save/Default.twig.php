@@ -25,17 +25,22 @@ foreach ($formfields as $f){
     }else $o->{$f["name"]} = $values->{$f["name"]};
 }
 if ($o->Verify()) {
-    $o->Save();
+    $success = $o->Save();
     foreach ($formfields as $f){
         $values->{$f["name"]} = $o->{$f["name"]};
         if ($f['type']=='date'){
             //transformation des timestamps en format js
             $values->{$f['name']} = date('d/m/Y H:i',$o->{$f['name']});
+        }elseif ($f['type']=='rkey') {
+            $o->resetChilds($f['objectName']);
+            if (is_array($values->{$f["name"]})) foreach ($values->{$f["name"]} as $v)
+                $o->AddChild($f['objectName'], $v);
         }
     }
     $vars['retour'] = '{
         "data": '.json_encode($values).',
-        "success": true
+        "errors": '.json_encode($o->Error).',
+        "success": '.(($success)?1:0).'
     }';
 }else{
     $vars['retour'] = '{

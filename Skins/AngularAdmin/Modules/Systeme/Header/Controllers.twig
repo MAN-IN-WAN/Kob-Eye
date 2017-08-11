@@ -3,7 +3,7 @@
         app.controller('{{ c.name }}Ctrl', function() {});
     {% else %}
     /**** LIST CONTROLLER  ****/
-    app.controller('{{ c.name }}Ctrl', function($injector,$location, $scope, $rootScope,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}) {
+    app.controller('{{ c.name }}Ctrl', function($injector,$location, $scope, $rootScope,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store{% endfor %}) {
         //test du store
         $scope.{{ c.identifier }} = {{ c.identifier }}Store;
         //on reinitialise la requete du store
@@ -15,6 +15,13 @@
         //acces aux stores parents
         {% for parent in c.parentelements %}
             $scope.{{ parent.objectModule }}{{ parent.objectName }}Store = {{ parent.objectModule }}{{ parent.objectName }}Store;
+        {% endfor %}
+
+        //acces aux stores enfants
+        {% for child in c.childrenelements %}
+            $scope.{{ child.objectModule }}{{ child.objectName }}Store = {{ child.objectModule }}{{ child.objectName }}Store;
+            $scope.{{ child.objectModule }}{{ child.objectName }}Store.resetQuery();
+            $scope.{{ child.objectModule }}{{ child.objectName }}Store.getData(1);
         {% endfor %}
 
         //recherche watcher
@@ -95,6 +102,20 @@
         {{ c.identifier }}Store.getOneData($routeParams.id).then(function (data){
             console.log('retour chargement one data',data);
             $scope.obj = data;
+            $scope.callFunction = function (obj,name,title){
+                console.log('callfunction ',obj.id,title);
+                $scope.function = {
+                    title: title,
+                    name: name,
+                    url: '/{{ c.module }}/{{ c.objecttype }}/'+obj.id+'/'+name+'.htm?rand='+new Date().getTime()
+                };
+                {{ c.identifier }}Store.getOneData(obj.id,false).then(function (data) {
+                    $scope.modalObj = data;
+
+                    console.log('function '+title+' obj',$scope.modalObj);
+                });
+                $("#modalfunction-{{ c.identifier }}").modal();
+            }
             $scope.modify = function (obj){
                 console.log('edit ',obj.id);
                 {{ c.identifier }}Store.getOneData(obj.id,false).then(function (data) {
@@ -108,7 +129,7 @@
                 console.log('save ',$scope.modalObj);
                 {{ c.identifier }}Store.saveData($scope.modalObj).then(function (data) {
                     if (data.success){
-                        $scope.modalObj = data.data;
+                        $scope.modalObj= $scope.obj = data.data;
                         $("#modalfiche-{{ c.identifier }}").modal('toggle');
                         {{ c.identifier }}Store.refresh();
                     }else {

@@ -15,6 +15,20 @@
     <section class="panel">
         <div class="panel-heading">
             <div class="pull-right">
+                {% if functions|length > 0 %}
+                <div class="btn-group  margin-inline" uib-dropdown>
+                    <span id="function-button" type="button" class="btn btn-info  btn-default">Fonctions</span>
+                    <button type="button" class="btn btn-info  btn-default" uib-dropdown-toggle>
+                        <span class="caret"></span>
+                        <span class="sr-only">Split button!</span>
+                    </button>
+                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="function-button">
+                        {% for fu in functions %}
+                        <li ><a class="dropdown-item" href="javascript: void(0);" ng-click='callFunction(obj,"{{fu.Nom}}","{{fu.title}}")'>{{fu.title}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
                 {% if operation.edit %}<button type="button" class="btn btn-default btn-warning margin-inline" ng-click="modify(obj)">Modifier</button>{% endif %}
                 {% if operation.delete %}<button type="button" class="btn btn-default btn-danger margin-inline" ng-click="delete(obj)">Supprimer</button>{% endif %}
             </div>
@@ -105,6 +119,24 @@
             <div class="modal-footer">
                 <button type="button" class="btn" data-dismiss="modal">Annuler</button>
                 <button type="button" class="btn btn-primary" ng-click="modalSave()">Enregistrer les modifications</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-size-large" id="modalfunction-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">{[{ function.title }]}</h4>
+            </div>
+            <div class="modal-body">
+                <ng-include src="function.url"></ng-include>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal">Fermer</button>
             </div>
         </div>
     </div>
