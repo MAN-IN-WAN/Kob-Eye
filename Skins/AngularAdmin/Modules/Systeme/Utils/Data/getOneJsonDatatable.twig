@@ -7,6 +7,12 @@
         {% elseif field.type == "fkey" and field.card=='short' %}
             ,"{{ field.name }}": {{ attribute(row,field.name) }}
             ,"{{ field.name }}label": "{{ attribute(row,field.name~'label') }}"
+        {% elseif field.type == "rkey" %}
+            ,"{{ field.name }}": [
+                {% for r in attribute(row,field.name) %}
+                    {% if loop.index0 > 0 %},{% endif %}"{{ r }}"
+                {% endfor %}
+            ]
         {% else %}
             ,"{{ field.name }}": "{{ attribute(row,field.name) }}"
         {% endif %}

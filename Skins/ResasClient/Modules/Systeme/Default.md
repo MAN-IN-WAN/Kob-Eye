@@ -4,13 +4,13 @@
 </div>
 [!Client:=[!Module::Reservations::getCurrentClient()!]!]
 [STORPROC Systeme/User/Id=[!Client::UserId!]|Us|0|1][/STORPROC]
- [IF [!Us::Id!]=18&&[!Client::Abonne!]=1]
-    <a href="/[!Sys::getMenu(Reservations/TypeCourt)!]" class="btn-tennis">Réserver une activité</a>
-[ELSE]
-    [IF [!SERVER::REMOTE_ADDR!]=185.71.149.9||[!SERVER::REMOTE_ADDR!]=31.35.56.84]
+//[IF [!Us::Id!]=18&&[!Client::Abonne!]=1]
+//   <a href="/[!Sys::getMenu(Reservations/TypeCourt)!]" class="btn-tennis">Réserver une activité</a>
+//[ELSE]
+// [IF [!SERVER::REMOTE_ADDR!]=185.71.149.9||[!SERVER::REMOTE_ADDR!]=31.35.56.84]
        <a href="/[!Sys::getMenu(Reservations/TypeCourt)!]" class="btn-tennis">Réserver une activité</a>
-    [/IF]
-[/IF]
+// [/IF]
+//[/IF]
 [!Client:=[!Module::Reservations::getCurrentClient()!]!]
 [STORPROC Reservations/Client/[!Client::Id!]/Reservation/Valide=0|RES]
 <div class="alert alert-danger">

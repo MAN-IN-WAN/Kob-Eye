@@ -25,6 +25,11 @@ foreach ($vars['fields'] as $f){
             $vars['row']->{$f['name'].'label'} = '';
         }
     }
-}
+    if ($f['type']=='rkey'){
+        $kk = Sys::getData($f['objectModule'], $vars['Query'].'/'.$f['objectName']);
+        $vars['row']->{$f['name']} = array();
+        foreach ($kk as $k)$vars['row']->{$f['name']}[] = $k->Id;
 
+    }
+}
 ?>

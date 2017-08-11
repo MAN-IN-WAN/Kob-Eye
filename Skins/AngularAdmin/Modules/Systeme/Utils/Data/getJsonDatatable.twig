@@ -14,6 +14,9 @@
                 {% else %}
             ,"{{ field.name }}": "{{ attribute(row,field.name) | raw}}"
                 {% endif %}
+                {% if field.Values|length >0 %}
+            ,"{{ field.name }}Label": "{{ attribute(row,field.name~'Label') | raw}}"
+                {% endif %}
             {% endfor %}
         }{% if not loop.last %},{% endif %}
         {% endfor %}

@@ -12,6 +12,7 @@ $vars['formfields'] = $o->getElementsByAttribute('form','',true);
 $vars['CurrentMenu'] = Sys::$CurrentMenu;
 $vars["CurrentObj"] = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $vars["ObjectClass"] = $vars["CurrentObj"]->getObjectClass();
+$vars['operation'] = $vars['ObjectClass']->getOperations();
 $vars["ChildrenElements"] = $vars["ObjectClass"]->getChildElements();
 $vars['identifier'] = $info['Module'] . $info['ObjectType'];
 if (is_object(Sys::$CurrentMenu))

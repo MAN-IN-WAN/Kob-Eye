@@ -3,7 +3,7 @@
         app.controller('{{ c.name }}Ctrl', function() {});
     {% else %}
     /**** LIST CONTROLLER  ****/
-    app.controller('{{ c.name }}Ctrl', function($location, $scope, $rootScope,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}) {
+    app.controller('{{ c.name }}Ctrl', function($injector,$location, $scope, $rootScope,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store{% endfor %}) {
         //test du store
         $scope.{{ c.identifier }} = {{ c.identifier }}Store;
         //on reinitialise la requete du store
@@ -15,6 +15,13 @@
         //acces aux stores parents
         {% for parent in c.parentelements %}
             $scope.{{ parent.objectModule }}{{ parent.objectName }}Store = {{ parent.objectModule }}{{ parent.objectName }}Store;
+        {% endfor %}
+
+        //acces aux stores enfants
+        {% for child in c.childrenelements %}
+            $scope.{{ child.objectModule }}{{ child.objectName }}Store = {{ child.objectModule }}{{ child.objectName }}Store;
+            $scope.{{ child.objectModule }}{{ child.objectName }}Store.resetQuery();
+            $scope.{{ child.objectModule }}{{ child.objectName }}Store.getData(1);
         {% endfor %}
 
         //recherche watcher
@@ -83,10 +90,14 @@
                         });
                 });
         }
+        $scope.getSelectData = function (store,search){
+            console.log('get select data',store,search);
+            return $injector.get(store).getDataFilter(search);
+        }
     });
 
     /**** FICHE CONTROLLER ****/
-    app.controller('{{ c.name }}FicheCtrl', function($location, $scope, $rootScope, $routeParams,$http,{{ c.identifier }}Store{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store{% endfor %}) {
+    app.controller('{{ c.name }}FicheCtrl', function($injector,$location, $scope, $rootScope, $routeParams,$http,{{ c.identifier }}Store{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store{% endfor %}) {
         //récupération des données du store.
         {{ c.identifier }}Store.getOneData($routeParams.id).then(function (data){
             console.log('retour chargement one data',data);
@@ -154,6 +165,8 @@
                 $scope.{{ child.objectModule }}{{ child.objectName }}add = function (){
                     console.log('child add {{ child.objectName }}');
                     $scope.modalObj = {{ child.objectModule }}{{ child.objectName }}Store.getNewData();
+                    $scope.modalObj.{{ child.name }} = $scope.obj.id;
+                    $scope.modalObj.{{ child.name }}label = $scope.obj.label;
                     $scope.modalObj.title = 'Ajouter un nouveau {{ child.objectDescription }}';
                     $("#modal-{{ child.objectModule }}{{ child.objectName }}").modal();
                 }
@@ -161,6 +174,8 @@
                     console.log('edit ',obj.id);
                     {{ child.objectModule }}{{ child.objectName }}Store.getOneData(obj.id,false).then(function (data) {
                         $scope.modalObj = data;
+                        $scope.modalObj.{{ child.name }} = $scope.obj.id;
+                        $scope.modalObj.{{ child.name }}label = $scope.obj.label;
                         $scope.modalObj.title = 'Modifier {{ child.objectDescription }} '+data.label;
                         console.log('edit obj',$scope.modalObj);
                     });
@@ -184,6 +199,10 @@
                         }
                         console.log('save obj {{ child.objectModule }}{{ child.objectName }}',data);
                     });
+                }
+                $scope.getSelectData = function (store,search){
+                    console.log('get select data',store,search);
+                    return $injector.get(store).getDataFilter(search);
                 }
                 $scope.{{ child.objectModule }}{{ child.objectName }}delete = function (item){
                     console.log('edit ',item);

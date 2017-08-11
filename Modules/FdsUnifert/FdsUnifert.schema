@@ -1,0 +1,149 @@
+<SCHEMA>
+	<OBJECTCLASS title="Categorie" driver="mysql" AccessPoint="1"  Description="Categories"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" browseable="1" >
+		<CATEGORY title="Affichage"  type="large">
+			<PROPERTIES type="boolean" default="1">Publier</PROPERTIES>
+			<PROPERTIES type="boolean" default="1" description="Afficher le nom du parent dans la fiche pdf">AfficheNomParent</PROPERTIES>
+			<PROPERTIES type="order">Ordre</PROPERTIES>
+		</CATEGORY>
+		<CATEGORY title="Contenu" type="large">
+			<PROPERTIES type="titre" searchOrder="1">Nom</PROPERTIES>
+			<PROPERTIES type="bbcode" >Description</PROPERTIES>
+			<PROPERTIES type="bbcode" >DescriptionCourte</PROPERTIES>
+		</CATEGORY>
+		<FKEY card="0,1" data="Categorie,Id">CategorieId</FKEY>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="Produits" driver="mysql" AccessPoint="1" master="1" Description="Produits"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" browseable="1" >
+		<CATEGORY title="Principale" type="large">
+			<PROPERTIES type="varchar" searchOrder="1" description="CodeGestion">Code</PROPERTIES>
+			<PROPERTIES type="varchar" searchOrder="2">Nom</PROPERTIES>
+			<PROPERTIES type="varchar" values="classique,mélange" default="classique">Type</PROPERTIES>
+			<PROPERTIES type="bbcode" description="Norme ou libre" >Norme</PROPERTIES>
+		</CATEGORY>
+		<CATEGORY title="Affichage">
+			<PROPERTIES type="boolean" default="1">Publier</PROPERTIES>
+			<PROPERTIES type="order">Ordre</PROPERTIES>
+		</CATEGORY>
+		<CATEGORY title="Composition Chimique" type="large">
+			<PROPERTIES type="varchar" >N</PROPERTIES>
+			<PROPERTIES type="varchar" description="Azote nitrique" >AZN</PROPERTIES>
+			<PROPERTIES type="varchar"  description="Azote ammoniacal">AZA</PROPERTIES>
+			<PROPERTIES type="varchar" description="Azote uréique" >AZU</PROPERTIES>
+			<PROPERTIES type="varchar" descriptio="P2O5" >P</PROPERTIES>
+			<PROPERTIES type="varchar" description="P2O5 soluble eau" >PH</PROPERTIES>
+			<PROPERTIES type="varchar" description="K2O" >K</PROPERTIES>
+			<PROPERTIES type="varchar" >SO3</PROPERTIES>
+			<PROPERTIES type="varchar" >MgO</PROPERTIES>
+			<PROPERTIES type="varchar" >CaO</PROPERTIES>
+			<PROPERTIES type="varchar" description="Libellé du champ divers" >LibLibre</PROPERTIES>
+			<PROPERTIES type="varchar" >Libre</PROPERTIES>
+		</CATEGORY>
+		<CATEGORY title="Granulométrie et Densité" type="large">
+			<PROPERTIES type="bbcode" >Granulometrie</PROPERTIES>
+			<PROPERTIES type="bbcode" >Densite</PROPERTIES>
+		</CATEGORY>
+		<CATEGORY title="Divers" type="large">
+			<PROPERTIES type="bbcode" >Remarques</PROPERTIES>
+			<PROPERTIES type="file" >Image</PROPERTIES>
+		</CATEGORY>
+		<FKEY card="0,n" data="Categorie,Id">CategorieId</FKEY>
+		<FKEY card="0,1" data="Fds,Id">FdsId</FKEY>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="Fichier" driver="mysql">
+		<PROPERTIES type="titre" searchOrder="1" >Titre</PROPERTIES>
+		<PROPERTIES type="varchar" values="Image,Pdf" length="20" searchOrder="3" default="Pdf">Type</PROPERTIES>
+		<PROPERTIES type="file" length="255" searchOrder="2" special="multi" >URL</PROPERTIES>
+		<FKEY card="0,n" data="Produits,Id" >ProduitsId</FKEY>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="Client" driver="mysql" AccessPoint="1" master="1" Description="Clients" Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png" Class="Modules/FdsUnifert/Class/Client.class.php" noRecursivity="1">
+		<CATEGORY title="Identification" type="large">
+			<PROPERTIES Order="10" searchOrder="1" obligatoire="1" description="Code gestion" unique="1" type="varchar" length="50" >Code</PROPERTIES>
+			<PROPERTIES Order="20" searchOrder="2" obligatoire="1" description="Société"   type="varchar" length="100">Societe</PROPERTIES>
+			<PROPERTIES Order="30" description="Mail"  type="varchar" length="100">Mail</PROPERTIES>
+			<PROPERTIES Order="40" description="Adresse 1"  type="text" >Adresse1</PROPERTIES>
+			<PROPERTIES Order="50" description="Adresse 2"  type="text" >Adresse2</PROPERTIES>
+			<PROPERTIES Order="60" description="Code Postal"  type="text" >CodePostal</PROPERTIES>
+			<PROPERTIES Order="70" description="Ville"  type="text" length="50">Ville</PROPERTIES>
+			<PROPERTIES Order="80" description="Téléphone" type="varchar" length="20" >Tel</PROPERTIES>
+			<PROPERTIES Order="90" description="Fax" type="varchar" length="20">Fax</PROPERTIES>
+			<PROPERTIES Order="100" description="Portable"  type="varchar" length="20">Portable</PROPERTIES>
+			<PROPERTIES Order="110" description="Site Web"  type="varchar" length="100">Site</PROPERTIES>
+			<PROPERTIES Order="120" description="Logo"    type="file">Logo</PROPERTIES>
+			<PROPERTIES Order="130" description="Commercial Référent"  type="varchar" query="FdsUnifert/Commercial::Id::Nom" >Commercial</PROPERTIES>
+			<PROPERTIES Order="1000" description="Utilisateur lié" type="Int"  >UserId</PROPERTIES>
+			<!--<PROPERTIES Order="30" description="Date de dernière connexion" type="date">ConnexionLe</PROPERTIES>-->
+		</CATEGORY>
+		<CATEGORY title="Affichage">
+			<PROPERTIES type="boolean" default="0">Actif</PROPERTIES>
+			<PROPERTIES type="order">Ordre</PROPERTIES>
+		</CATEGORY>
+		<FKEY card="0,n" data="Fds,Id" >FdsId</FKEY>
+		<FKEY card="0,n" data="Client,Id">ClientId</FKEY>
+		<FUNCTION Icon="/Skins/AdminV2/Img/database_go.png">NouvelleActivation</FUNCTION>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="Contact" driver="mysql" AccessPoint="1" master="0" Description="Contact Client"   Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png" >
+			<PROPERTIES Order="10" searchOrder="1" description="Nom"  type="varchar" length="100" >Nom</PROPERTIES>
+			<PROPERTIES Order="20" searchOrder="2" description="Prénom"    type="varchar" length="100" >Prenom</PROPERTIES>
+			<PROPERTIES Order="30" description="Email"  type="varchar" length="200" >Mail</PROPERTIES>
+			<PROPERTIES Order="40" description="Civilite"   type="varchar" values="Mademoiselle,Madame,Monsieur" >Civilite</PROPERTIES>
+			<PROPERTIES Order="50" description="Fonction"   type="text"    special="multi">Fonction</PROPERTIES>
+			<PROPERTIES Order="90" description="Téléphone" type="varchar" length="20" >Tel</PROPERTIES>
+			<PROPERTIES Order="100" description="Fax" type="varchar" length="20">Fax</PROPERTIES>
+			<PROPERTIES Order="110" description="Portable"  type="varchar" length="20">Portable</PROPERTIES>
+			<PROPERTIES Order="120" description="Type de contact"  type="varchar" length="20">Type</PROPERTIES>
+			<PROPERTIES Order="130" description="Contact pour FDS" type="boolean" default="0"  >Fds</PROPERTIES>
+			<FKEY card="1,1" data="Client,Id" >FdsId</FKEY>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="Commercial" driver="mysql" AccessPoint="0" Dico="1" master="0" Description="Commercial"   Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png" >
+		<PROPERTIES searchOrder="1" description="Intitulé" type="varchar" length="100"   >Nom</PROPERTIES>
+		<PROPERTIES description="Email"      type="varchar" length="200" >Mail</PROPERTIES>
+		<PROPERTIES description="Actif" type="boolean" default="1"   >Actif</PROPERTIES>
+		<PROPERTIES type="order" description="Ordre affichage">Ordre</PROPERTIES>
+	</OBJECTCLASS>	
+
+	<OBJECTCLASS title="Fds" driver="mysql" AccessPoint="1" Description="Fiche de sécurité"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png"  Class="Modules/FdsUnifert/Class/Fds.class.php">
+		<CATEGORY title="Identification" type="large">
+			<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Code ERP">Code</PROPERTIES>
+			<PROPERTIES type="boolean" default="1">Obligatoire</PROPERTIES>
+			<PROPERTIES type="boolean" default="1">Trace</PROPERTIES>
+			<PROPERTIES type="titre" searchOrder="2" description="Nom">Nom</PROPERTIES>
+			<PROPERTIES type="bbcode" description="Famille de produit">Description</PROPERTIES>
+		</CATEGORY>
+		<CATEGORY title="Configuration">
+			<PROPERTIES type="boolean" default="1">Publier</PROPERTIES>
+			<PROPERTIES type="order">Ordre</PROPERTIES>
+		</CATEGORY>
+		<FUNCTION Icon="/Skins/AdminV2/Img/database_go.png">EnvoiMails</FUNCTION>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="FichierFDS" driver="mysql">
+		<PROPERTIES type="titre" searchOrder="1" description="Version du fichier">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" values="Image,Pdf" length="20" searchOrder="3" default="Pdf">Type</PROPERTIES>
+		<PROPERTIES type="bbcode" special="multi">Commentaires</PROPERTIES>
+		<PROPERTIES type="file" length="255" searchOrder="2" special="multi" >URL</PROPERTIES>
+		<FKEY card="0,n" data="Fds,Id" >FdsId</FKEY>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="EnvoiFds" driver="mysql" AccessPoint="1" master="0" Description="Gestion des envois Fds au client"   Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png" Class="Modules/FdsUnifert/Class/EnvoiFds.class.php">
+		<PROPERTIES searchOrder="2" description="Date envoi" type="date"   >DateEnvoi</PROPERTIES>
+		<PROPERTIES searchOrder="3" description="Date lecture" type="date"   >DateLecture</PROPERTIES>
+		<PROPERTIES description="Version Fds" type="varchar"    >VersionFDS</PROPERTIES>
+		<PROPERTIES description="Ip de lecture" type="varchar"   >IpLecture</PROPERTIES>
+		<PROPERTIES type="boolean" default="0">Obsolete</PROPERTIES>
+		<FKEY card="1,1" data="Client,Id" >ClientId</FKEY>
+		<FKEY card="1,1" data="Fds,Id" >FdsId</FKEY>
+		<FUNCTION Icon="/Skins/AdminV2/Img/database_go.png">EnvoyerEnvoi</FUNCTION>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="Outils" driver="mysql" AccessPoint="0" Dico="1" master="0" Description="Outils"  Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png" >
+		<PROPERTIES searchOrder="1" description="Intitulé" type="varchar" length="100" >VosOutils</PROPERTIES>
+		<FUNCTION Icon="/Skins/AdminV2/Img/database_go.png">NouveauClient</FUNCTION>
+		<FUNCTION Icon="/Skins/AdminV2/Img/database_go.png">ListeNonActifs</FUNCTION>
+	</OBJECTCLASS>	
+
+
+</SCHEMA>

@@ -160,6 +160,7 @@ app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrene
     * Get data for combo component
     */
     function getDataFilter (filter) {
+        console.log('{{ st.module }}/{{ st.objecttype }} > getdatafilter ',filter);
         setFilters('~'+filter);
         return getData(1);
     }
@@ -167,6 +168,7 @@ app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrene
     * Load more data base on page
     */
     function getData(page) {
+        var tmpquery = query;
         if (page<1) page=1;
         return $q(function(resolve, reject) {
             if (busy) {
@@ -179,7 +181,7 @@ app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrene
             if (page!=pageLoaded){
                 busy=true;
                 $http.get(
-                    query+'/getData.json',
+                    tmpquery+'/getData.json',
                     {
                         params: {
                             filters: filters,
@@ -212,10 +214,6 @@ app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrene
                 {{ child.objectModule }}{{ child.objectName }}Store.setQuery('/{{ st.module }}/{{ st.objecttype }}/'+obj.id+'/{{ child.objectName }}');
                 if (!obj.{{ child.objectName }}) {
                     obj.{{ child.objectName }} = {{ child.objectModule }}{{ child.objectName }}Store.data;
-                    /*{{ child.objectModule }}{{ child.objectName }}Store.getData().then(function () {
-                        num--;
-                        if (num==0) resolve(obj);
-                    });*/
                     num--;
                     if (num==0) resolve(obj);
                 }else{

@@ -110,6 +110,9 @@
     <!-- PAGINATION -->
     <script src="Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.js"></script>
 
+    <!-- CHECKED LIST -->
+    <script src="Skins/AngularAdmin/assets/vendors/checklist-model/checklist-model.js"></script>
+
     <!-- Clean UI Scripts -->
     <script src="Skins/AngularAdmin/assets/common/js/common.js"></script>
     <script src="Skins/AngularAdmin/assets/common/js/demo.temp.js"></script>
@@ -124,7 +127,7 @@
     <script src="Skins/AngularAdmin/assets/vendors/angular-ui-switch/angular-ui-switch.js"></script>
 
     <!-- angualr autocomplete -->
-    --<link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/assets/vendors/js-custom-select/css/style.css">
+    <link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/assets/vendors/js-custom-select/css/style.css">
     <script src="Skins/AngularAdmin/assets/vendors/js-custom-select/js/customSelect.js"></script>
 
     <!-- angular ui bootstrap -->

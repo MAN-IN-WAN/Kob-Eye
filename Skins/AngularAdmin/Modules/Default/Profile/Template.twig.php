@@ -1,7 +1,4 @@
 <?php
-$vars['NbDomaines'] = Sys::getCount('Parc','Domain');
-$vars['NbDevices'] = Sys::getCount('Parc','Device');
-$vars['NbEmails'] = Sys::getCount('Parc','CompteMail');
 $vars['User'] = Sys::$User;
 if(!$vars['User']->Avatar)
     $vars['User']->Avatar = 'Skins/AngularAdmin/assets/common/img/neutral_avatar.png';
@@ -22,7 +19,9 @@ if(isset($vars['User']->Ville) && $vars['User']->Ville != '')
 if(isset($vars['User']->Pays) && $vars['User']->Pays != '')
     $vars['adresse'] = $vars['adresse']? $vars['adresse'].' ,'.$vars['User']->Pays : $vars['User']->Pays;
 
-if($vars['Client']){
+if(is_object($vars['Client'])){
     $vars["ObjectClass"] = $vars["Client"]->getObjectClass();
     $vars["ChildrenElements"] = $vars["ObjectClass"]->getChildElements();
 }
+
+

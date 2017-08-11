@@ -26,6 +26,7 @@ foreach (Sys::$User->Menus as $m){
             $obj = $o->getObjectClass();
             $tmp['description'] = $o->getDescription();
             $tmp['childrenelements'] = $obj->getChildElements();
+            for ($i=0; $i<sizeof($tmp['childrenelements']);$i++)if (!isset($tmp['childrenelements'][$i]['form'])) unset($tmp['childrenelements'][$i]);
             $tmp['parentelements'] = $obj->getParentElements();
             $vars["controllers"][$tmp['identifier']] = $tmp;
         }

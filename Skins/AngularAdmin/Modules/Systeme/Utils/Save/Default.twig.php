@@ -31,6 +31,10 @@ if ($o->Verify()) {
         if ($f['type']=='date'){
             //transformation des timestamps en format js
             $values->{$f['name']} = date('d/m/Y H:i',$o->{$f['name']});
+        }elseif ($f['type']=='rkey') {
+            $o->resetChilds($f['objectName']);
+            if (is_array($values->{$f["name"]})) foreach ($values->{$f["name"]} as $v)
+                $o->AddChild($f['objectName'], $v);
         }
     }
     $vars['retour'] = '{
