@@ -8,8 +8,8 @@
     </ul>
 </div>
 <div class="form-group row">
-    <div class="col-md-6">
-        <div class="input-group">
+    <div class="col-lg-6 col-md-12">
+        <div class="input-group list-search">
             <input type="text" class="form-control" name="{{ identifier }}query" ng-model="{{ identifier }}.filter" placeholder="Recherche..." >
             <span class="input-group-btn">
                 <a href="javascript: void(0);" class="btn btn-success" ng-click="{{ identifier }}.refresh()">
@@ -28,11 +28,11 @@
             </span>
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-lg-6 col-md-12">
         <dir-pagination-controls boundary-links="true" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
     </div>
 </div>
-<table class="table table-hover nowrap margin-bottom-0" id="{{ identifier }}" width="100%">
+<table class="table table-hover nowrap margin-bottom-0 straight" id="{{ identifier }}" width="100%">
     <thead>
         <tr>
             <th>ID</th>
@@ -97,6 +97,96 @@
     </tr>
     </tbody>
 </table>
+<div class="invert-wrap">
+    <table class="table table-hover nowrap margin-bottom-0 inverted" id="{{ identifier }}" width="100%">
+    {#<colgroup>
+        <col class="thead">
+        <col dir-paginate="item in {{ identifier }}.data" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination" class="tdcontent">
+    </colgroup>#}
+    <tbody>
+        <tr>
+            <th ng-show="{{ identifier }}.data.length > 0">ID</th><td dir-paginate="item in {{ identifier }}.data" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination"><div class="col-width-fixer"><span class="label label-warning">{[{ item.id }]}</span></div></td>
+        </tr>
+        <tr>
+            <th  ng-show="{{ identifier }}.data.length > 0" width="50">Actions</th>
+            <td dir-paginate="item in {{ identifier }}.data" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination">
+                <div class="col-width-fixer">
+                    {% if Type == "Tail" %}
+                        <span class="input-group-btn">
+                    {% if operation.edit %}<a  class="btn btn-warning" href="javascript: void(0);" ng-click="{{ identifier }}modify(item)">Modifier</a>{% endif %}
+                            {% if operation.delete %}<a  class="btn btn-danger" href="javascript: void(0);" ng-click="{{ identifier }}delete(item)">Supprimer</a>{% endif %}
+                </span>
+                    {% else %}
+                        <!-- Split button -->
+                        <div class="btn-group" uib-dropdown>
+                            <a id="split-button" type="button" class="btn btn-danger  btn-sm" href="#/{{ CurrentUrl }}/{[{ item.id }]}">détails</a>
+                            <button type="button" class="btn btn-danger  btn-sm" uib-dropdown-toggle>
+                                <span class="caret"></span>
+                                <span class="sr-only">Split button!</span>
+                            </button>
+                            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
+                                {% if operation.edit %}<li ><a class="dropdown-item" href="javascript: void(0);" ng-click="{{ identifier }}modify(item)">Modifier</a></li>{% endif %}
+                                {% if operation.delete %}<li ><a class="dropdown-item" href="javascript: void(0);" ng-click="{{ identifier }}delete(item)">Supprimer</a></li>{% endif %}
+                                <!--                    <li class="divider"></li>-->
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>
+            </td>
+        </tr>
+            {% for field in fields %}
+                <tr>
+                    <th  ng-show="{{ identifier }}.data.length > 0">{{ field.listDescr }}</th>
+                    <td dir-paginate="item in {{ identifier }}.data" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination" scope="row">
+                        <div class="col-width-fixer">
+                        {% if field.type == "price" or field.type == "float" %}
+                            <span class="label label-warning">{[{ item.{{ field.name }}| currency:"" }]}</span>
+                        {% elseif field.type == "extlink" %}
+                            <a class="btn btn-info btn-xs" href="https://zabbix.abtel.fr/guacamole/#/client/{[{ item.{{ field.name }} }]}" target="_blank">{{ field.listDescr }}</a>
+                        {% elseif field.type == "date" %}
+                            <span class="label label-secondary">{[{ item.{{ field.name }} | date:'dd/MM/yyyy' }]}</span>
+                        {% elseif field.type == "int" %}
+                            <span class="label label-primary">{[{ item.{{ field.name }} }]}</span>
+                        {% elseif field.type == "boolean" %}
+                            <span class="label label-success" ng-if="item.{{ field.name }}"><i class="fa fa-check"></i></span>
+                            <span class="label label-danger" ng-if="!item.{{ field.name }}"><i class="fa fa-times"></i></span>
+                        {% elseif field.type == "text" %}
+                            <span ng-bind-html="item.{{ field.name }} | nl2br"></span>
+                        {% elseif field.Values | length > 0 %}
+                            <span ng-bind-html="item.{{ field.name }}Label "></span>
+                        {% else %}
+                            <span ng-bind-html="item.{{ field.name }}"></span>
+                        {% endif %}
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        <tr>
+            <th width="50"  ng-show="{{ identifier }}.data.length > 0">Détails</th><td dir-paginate="item in {{ identifier }}.data" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination" class="table-details" ng-bind-html="item.Details"><div class="col-width-fixer">{[{ item.Details }]}</div></td>
+        </tr>
+    </tbody>
+    </table>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var ok = 0;
+            var tmp = 0;
+            var interval = setInterval(function(){
+                tmp++;
+                ok++;
+                $('.inverted th').each(function(){
+                    var h = $(this).parent('tr').height();
+                    if($(this).css('height') != h+'px') {
+                        ok =0;
+                        $(this).css('height', h);
+                    }
+                });
+                if(ok >= 20 || tmp >= 100) clearInterval(interval);
+            },25);
+
+        });
+
+    </script>
+</div>
 <dir-pagination-controls boundary-links="true" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
 
 <div class="modal fade modal-size-large" id="modal-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
