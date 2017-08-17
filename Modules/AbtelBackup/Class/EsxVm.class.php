@@ -33,7 +33,6 @@ class EsxVm extends genericClass {
                 $this->Error = array_merge($this->Error,$borg->Error);
                 return false;
             }
-
         }
         return true;
     }
@@ -42,7 +41,10 @@ class EsxVm extends genericClass {
         //récupération des processus qui tiennent la vm
         $out = $esx->remoteExec('vmkvsitools lsof | grep "'.$this->Titre.'"');
         //récupératio ndes proc ids
-        $pids = preg_match("#^([0-9]+) #",$out,$pid);
-        $this->AddError(array("Message"=>print_r($pids,true)));
+        if ($pids = preg_match("#^([0-9]+)#",$out,$pid)) {
+            $esx->remoteExec('kill -9 ' . $pid[1]);
+            return true;
+        }else $this->AddWarning(array("Message"=>"Aucun processus trouvé."));
+        return false;
     }
 }

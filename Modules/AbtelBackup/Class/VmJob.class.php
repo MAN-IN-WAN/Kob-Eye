@@ -35,21 +35,21 @@ class VmJob extends genericClass {
             $act = $this->createActivity('Nettoyage des archives');
             $act->addDetails('Suppression du script ghettoVCB','yellow');
             //nettoyage sauvegarde précédentes
-            $act->addDetails('---> suppression du script ghettoVCB');
+            $act->addDetails($v->Titre.' ---> suppression du script ghettoVCB');
             $esx->remoteExec("if [ -f /ghettoVCB.sh ]; then rm /ghettoVCB.sh; fi");
             $act->addProgression(15);
-            $act->addDetails('---> suppression des snapshots');
+            $act->addDetails($v->Titre.' ---> suppression des snapshots');
             $esx->remoteExec("vim-cmd vmsvc/snapshot.removeall ".$v->RemoteId." && sleep 5");
             $act->addProgression(15);
-            $act->addDetails('---> suppression du fichier .work');
+            $act->addDetails($v->Titre.' ---> suppression du fichier .work');
             $esx->remoteExec("if [ -d '/tmp/ghettoVCB.work' ]; then rm -Rf '/tmp/ghettoVCB.work'; fi");
             $act->addProgression(15);
-            $act->addDetails('---> suppression de la complete');
-            AbtelBackup::localExec("if [ -d '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre."' ]; then sudo rm -Rf '/backup/nfs/".$esx->IP."/".$v->Titre."'; fi");
+            $act->addDetails($v->Titre.' ---> suppression de la complete');
+            AbtelBackup::localExec("if [ -d '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre."' ]; then sudo rm -Rf '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre."'; fi");
             $act->addProgression(15);
             AbtelBackup::localExec("if [ -d '/backup/nfs/".$v->Titre."' ]; then sudo rm -Rf '/backup/nfs/".$v->Titre."'; fi");
             $act->addProgression(15);
-            $act->addDetails('---> suppression archive');
+            $act->addDetails($v->Titre.' ---> suppression archive');
             AbtelBackup::localExec("if [ -f '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar' ]; then sudo rm -f /backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar; fi");
             $act->addProgression(25);
 
@@ -89,25 +89,26 @@ VM_STARTUP_ORDER=
             $act = $this->createActivity('Configuration vmjob');
             $act->addDetails('-> configuration vmjob','yellow');
             try {
-                $act->addDetails('---> creation de la config ghettoVCB');
+                $act->addDetails($v->Titre.' ---> creation de la config ghettoVCB');
                 $esx->remoteExec("echo '$config' > /ghettovcb.conf");
                 $act->addProgression(50);
-                $act->addDetails('---> copy du script ghettoVCB');
+                $act->addDetails($v->Titre.' ---> copy du script ghettoVCB');
                 $esx->copyFile('ghettoVCB.sh');
                 $act->addProgression(50);
                 $act = $this->createActivity('Clonage vmjob');
-                $act->addDetails('---> clonage de la vm');
+                $act->addDetails($v->Titre.' ---> clonage de la vm');
                 $esx->remoteExec('sh ghettoVCB.sh -m "' . $v->Titre . '" -g ghettovcb.conf',$act);
+                $act->addProgression(2);
                 $act = $this->createActivity('Compression vmjob');
-                $act->addDetails('---> compression du clone');
+                $act->addDetails($v->Titre.' ---> compression du clone');
                 AbtelBackup::localExec("sudo tar cvSf '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar' '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre."/".$v->Titre."-A'");
                 $act->addProgression(100);
                 $act = $this->createActivity('Déduplication vmjob');
-                $act->addDetails('---> déduplication de la vm');
+                $act->addDetails($v->Titre.' ---> déduplication de la vm');
                 AbtelBackup::localExec("borg create --compression lz4 ".$borg->Path."::".time()." '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar'");
                 $act->addProgression(100);
             }catch (Exception $e){
-                $act->addDetails("ERROR => ".$e->getMessage(),'red');
+                $act->addDetails($v->Titre." ERROR => ".$e->getMessage(),'red');
                 $act->Terminated = true;
                 $act->Errors = true;
                 $act->Save();

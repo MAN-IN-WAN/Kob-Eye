@@ -17,7 +17,7 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="EsxVm" AccessPoint="1" driver="mysql" Description="Machine virtuelle"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Operations="" Class="Modules/AbtelBackup/Class/EsxVm.class.php">
 		<FUNCTION title="Vérification du dépôt">checkBorgRepo</FUNCTION>
-		<FUNCTION title="Consolidation des disques">resetState</FUNCTION>
+		<FUNCTION title="Libération des fichiers des disques">resetState</FUNCTION>
 		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1" listDescr="Titre" obligatoire="1">Titre</PROPERTIES>
 		<PROPERTIES type="varchar" form="1" fiche="1" listDescr="Nom du fichier" obligatoire="1">FileName</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" listDescr="Type de vm" obligatoire="1">VmType</PROPERTIES>
