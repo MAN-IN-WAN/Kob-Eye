@@ -37,4 +37,12 @@ class EsxVm extends genericClass {
         }
         return true;
     }
+    public function resetState() {
+        $esx = $this->getOneParent('Esx');
+        //récupération des processus qui tiennent la vm
+        $out = $esx->remoteExec('vmkvsitools lsof | grep "'.$this->Titre.'"');
+        //récupératio ndes proc ids
+        $pids = preg_match("#^([0-9]+) #",$out,$pid);
+        $this->AddError(array("Message"=>print_r($pids,true)));
+    }
 }

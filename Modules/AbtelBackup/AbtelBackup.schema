@@ -17,6 +17,7 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="EsxVm" AccessPoint="1" driver="mysql" Description="Machine virtuelle"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Operations="" Class="Modules/AbtelBackup/Class/EsxVm.class.php">
 		<FUNCTION title="Vérification du dépôt">checkBorgRepo</FUNCTION>
+		<FUNCTION title="Consolidation des disques">resetState</FUNCTION>
 		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1" listDescr="Titre" obligatoire="1">Titre</PROPERTIES>
 		<PROPERTIES type="varchar" form="1" fiche="1" listDescr="Nom du fichier" obligatoire="1">FileName</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" listDescr="Type de vm" obligatoire="1">VmType</PROPERTIES>
@@ -26,6 +27,17 @@
 		<FKEY data="Esx,Id" card="0,1" form="1" fiche="1" list="1" listDescr="ESX" parentDescription="ESX">EsxId</FKEY>
 		<FKEY data="BorgRepo,Id" card="1,1" form="1" fiche="1" list="1" listDescr="Dépôt" parentDescription="Dépôt BORG">BorgRepoId</FKEY>
 		<RKEY data="RestorePoint,Id" card="0,n">RestorePointId</RKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Activity" AccessPoint="1" driver="mysql" Description="Activité des jobs"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelBackup/Class/Activity.class.php">
+		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1" listDescr="Titre">Titre</PROPERTIES>
+		<PROPERTIES type="progress" list="1" fiche="1" form="1" listDescr="Progression">Progression</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1" list="1" description="Démarré" listDescr="Demarré">Started</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1" list="1" description="Succés" listDescr="Succès">Success</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1" list="1" description="Erreur" listDescr="Erreur">Errors</PROPERTIES>
+		<PROPERTIES type="raw" form="1" fiche="1" list="1">Details</PROPERTIES>
+		<FKEY data="VmJob,Id" form="1" fiche="1" card="0,1"  popup="1" >VmJobId</FKEY>
+		<FKEY data="SambaJob,Id" form="1" fiche="1" card="0,1"  popup="1" >SambaJobId</FKEY>
+		<FKEY data="RemoteJob,Id" form="1" fiche="1" card="0,1"  popup="1" >RemoteJobId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="BackupStore" AccessPoint="1" driver="mysql" Description="Stockage Sauvegarde"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
 		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1">Titre</PROPERTIES>
@@ -58,7 +70,7 @@
 		<PROPERTIES type="boolean" form="1" fiche="1">Vendredi</PROPERTIES>
 		<PROPERTIES type="boolean" form="1" fiche="1">Samedi</PROPERTIES>
 		<PROPERTIES type="boolean" form="1" fiche="1">Dimanche</PROPERTIES>
-		<RKEY data="EsxVm,Id" card="0,n" inline="1" form="1" fiche="1" description="Sélection des vms">VmJobId</RKEY>
+		<RKEY data="EsxVm,Id" card="0,n" inline="1" form="1" description="Sélection des vms">VmJobId</RKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="SambaShare" AccessPoint="1" driver="mysql" Description="Partages Samba"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
 		<PROPERTIES type="titre" searchOrder="1">Titre</PROPERTIES>

@@ -1,5 +1,8 @@
 {% for c in controllers %}
-    {% if not c.store %}
+    {% if c.overload %}
+    /**** OVERLOAD CONTROLLER  ****/
+        {{ include(template_from_string(module(c.overload))) }}
+    {% elseif not c.store %}
         app.controller('{{ c.name }}Ctrl', function() {});
     {% else %}
     /**** LIST CONTROLLER  ****/

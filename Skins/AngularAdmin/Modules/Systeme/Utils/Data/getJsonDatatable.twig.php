@@ -1,7 +1,7 @@
 <?php
 $info = Info::getInfos($vars['Path']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
-$vars['fields'] = $o->getElementsByAttribute('list','',true);
+$vars['fields'] = $o->getElementsByAttribute('list|fiche','',true);
 //calcul offset / limit
 $offset = (isset($_GET['offset']))?$_GET['offset']:0;
 $limit = (isset($_GET['limit']))?$_GET['limit']:30;
@@ -28,6 +28,7 @@ foreach ($vars['rows'] as $k=>$v){
                 $v->{$f['name']} = date(DATE_W3C,$v->{$f['name']});
                 break;
             case 'text':
+            case 'raw':
                 //transformation des timestamps en format js
                 $v->{$f['name']} = Utils::cleanJson($v->{$f['name']});
                 break;

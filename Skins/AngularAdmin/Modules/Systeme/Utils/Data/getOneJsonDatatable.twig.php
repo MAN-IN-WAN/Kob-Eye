@@ -17,7 +17,7 @@ foreach ($vars['fields'] as $f){
         //transformation des timestamps en format js
         $vars['row']->{$f['name']} = date('d/m/Y H:i',$vars['row']->{$f['name']});
     }
-    if ($f['type']=='text'){
+    if ($f['type']=='text'||$f['type']=='raw'){
         //transformation des timestamps en format js
         $vars['row']->{$f['name']} = str_replace("\n",'\\\n',$vars['row']->{$f['name']});
     }

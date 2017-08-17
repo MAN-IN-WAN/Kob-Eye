@@ -56,6 +56,9 @@
                 <span class="label label-secondary">{[{ item.{{ field.name }} | date:'dd/MM/yyyy' }]}</span>
             {% elseif field.type == "int" %}
                 <span class="label label-primary">{[{ item.{{ field.name }} }]}</span>
+            {% elseif field.type == "progress" %}
+                <progress class="progress progress-danger progress-striped progress-animated" ng-if="item.{{ field.name }} < 100" value="{[{ item.{{ field.name }} }]}" max="100">{[{ item.{{ field.name }} }]}</progress>
+                <progress class="progress progress-success progress-striped progress-animated" ng-if="item.{{ field.name }} == 100" value="{[{ item.{{ field.name }} }]}" max="100">{[{ item.{{ field.name }} }]}</progress>
             {% elseif field.type == "boolean" %}
                 <span class="label label-success" ng-if="item.{{ field.name }}"><i class="fa fa-check"></i></span>
                 <span class="label label-danger" ng-if="!item.{{ field.name }}"><i class="fa fa-times"></i></span>
