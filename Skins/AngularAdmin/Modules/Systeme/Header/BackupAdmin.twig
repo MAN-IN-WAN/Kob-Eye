@@ -1,14 +1,14 @@
-{% for key,st in stores %}
-app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrenelements %},{{ child.identifier }}Store{% endfor %}) {
-    var {{ st.identifier }}Store = [],
+app.service('BackupAdminTopMenuStore', function ($http,$q,$timeout) {
+    var BackupAdminTopMenuStore = [],
         currentPage = 1,
         pageLoaded = 0,
         total = 0,
         pageLength = 15,
         filters = '',
         timer = 0,
-        query = '/{{ st.module }}/{{ st.objecttype }}',
+        query = '/AbtelBackup/Activity',
         busy = false;
+
     return {
         getOneData: getOneData,
         getData: getData,
@@ -29,50 +29,57 @@ app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrene
         resetQuery: resetQuery,
         setQuery: setQuery,
         getQuery: getQuery,
-        data:{{ st.identifier }}Store
-    };
+        data:BackupAdminTopMenuStore
+};
+
     function resetQuery(q) {
         pageLoaded = 0;
-        query = '/{{ st.module }}/{{ st.objecttype }}';
+        query = '/AbtelBackup/Activity';
     }
+
     function setQuery(q) {
         pageLoaded = 0;
         query = q;
     }
+
     function getQuery(){
         return query;
     }
+
     function setPageLength(pl) {
         pageLength = pl;
     }
+
     function getPageLength() {
         return pageLength;
     }
+
     function getTotal() {
         return total;
     }
+
     function purgeStore(){
-        /*for (var i in {{ st.identifier }}Store){
-            {{ st.identifier }}Store.pop();
-        }*/
-        {{ st.identifier }}Store.splice(0,{{ st.identifier }}Store.length);
+        BackupAdminTopMenuStore.splice(0,BackupAdminTopMenuStore.length);
     }
+
     /**
-    * Définition de la page en cours
-    */
+     * Définition de la page en cours
+     */
     function setPage(page){
         getData(page);
     }
+
     /**
-    * Définition du filtre
-    **/
+     * Définition du filtre
+     **/
     function refresh(){
         pageLoaded--;
         getData(currentPage);
     }
+
     /**
-    * Définition du filtre
-    **/
+     * Définition du filtre
+     **/
     function setFilters(filter,blur = false){
         if (filter==filters) return;
         filters = (blur?'~':'')+filter;
@@ -83,35 +90,39 @@ app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrene
             getData(1);
         }, 300);
     }
+
     /**
-    * Récupération du filtre en cours
-    **/
+     * Récupération du filtre en cours
+     **/
     function getFilters(){
         return filters;
     }
+
     /**
-    * Test if this id already exists
-    */
+     * Test if this id already exists
+     */
     function alreadyExists(id){
-        for (var i in {{ st.identifier }}Store){
-            if ({{ st.identifier }}Store[i].Id==id){
+        for (var i in BackupAdminTopMenuStore){
+            if (BackupAdminTopMenuStore[i].Id==id){
                 return true;
             }
         }
         return false;
     }
+
     /**
-    * exportData
-    * export des données en fichier csv
-    */
+     * exportData
+     * export des données en fichier csv
+     */
     function exportData(){
         window.open(query+'/Export.csv','_blank');
         console.log('store > {{ key }} > export '+query);
     }
+
     /**
-    * SaveData
-    * Envoie des données vers le serveur et gestion des erreurs
-    */
+     * SaveData
+     * Envoie des données vers le serveur et gestion des erreurs
+     */
     function saveData(obj){
         return $q(function(resolve, reject) {
             var q = (obj.id > 0) ? '/{{ st.module }}/{{ st.objecttype }}/'+obj.id+'/Save.json' :'/{{ st.module }}/{{ st.objecttype }}/Save.json'
@@ -119,33 +130,35 @@ app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrene
                 .success(function(data) {
                     console.log('store > {{ key }} > save success '+obj.id, data);
                     resolve(data);
-            });
+                });
         });
     }
+
     /**
-    * Return new data with default values
-    * Return Promise
-    */
+     * Return new data with default values
+     * Return Promise
+     */
     function getNewData() {
         console.log('new data {{ st.newData }}');
         return {{ st.newData | raw }};
     }
+
     /**
-    * Look for specific id data into the store
-    * Return Promise
-    */
+     * Look for specific id data into the store
+     * Return Promise
+     */
     function getOneData(id,full = true) {
         return $q(function(resolve, reject) {
-            console.log('store > {{ st.identifier }} > getOneData '+id,id);
-            /*for (var i in {{ st.identifier }}Store){
-                if ({{ st.identifier }}Store[i].id==id){
-                    var idStore = i;
-                    loadChildren({{ st.identifier }}Store[i]).then(function (obj){
-                        {{ st.identifier }}Store[idStore] = obj;
-                        resolve(obj);
-                    });
-                    continue;
-                }
+            console.log('store > BackupAdminTopMenu > getOneData '+id,id);
+            /*for (var i in BackupAdminTopMenuStore){
+            if (BackupAdminTopMenuStore[i].id==id){
+            var idStore = i;
+            loadChildren(BackupAdminTopMenuStore[i]).then(function (obj){
+            BackupAdminTopMenuStore[idStore] = obj;
+            resolve(obj);
+            });
+            continue;
+            }
             }*/
             //si store pas chargé ou introuvable
             $http.get('/{{ st.module }}/{{ st.objecttype }}/'+id+'/getOneData.json')
@@ -157,20 +170,22 @@ app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrene
                             resolve(obj);
                         });
                     else resolve(data);
-            });
+                });
         });
     }
+
     /**
-    * Get data for combo component
-    */
+     * Get data for combo component
+     */
     function getDataFilter (filter) {
         console.log('{{ st.module }}/{{ st.objecttype }} > getdatafilter ',filter);
         setFilters('~'+filter);
         return getData(1);
     }
+
     /**
-    * Load more data base on page
-    */
+     * Load more data base on page
+     */
     function getData(page) {
         var tmpquery = query;
         if (page<1) page=1;
@@ -182,52 +197,62 @@ app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrene
             console.log('store > {{ key }} > getData '+page);
             if (!page) page = currentPage;
             else currentPage = page;
-            if (page!=pageLoaded){
-                busy=true;
-                $http.get(
-                    tmpquery+'/getData.json',
-                    {
-                        params: {
-                            filters: filters,
-                            offset: (page-1)*pageLength,
-                            limit: pageLength
-                        }
-                    }).success(function(data) {
-                        busy=false;
-                        purgeStore();
-                        pageLoaded = page;
-                        total = data.total;
-                        for (var i in data.data) {
-                            if (!alreadyExists(data.data[i].id))
-                                {{ st.identifier }}Store.push(data.data[i]);
-                        }
-                        //{{ st.identifier }}Store = data.data;
-                        console.log('store > {{ key }} > loaded success ',{{ st.identifier }}Store);
-                        resolve({{ st.identifier }}Store);
-                });
-            }else resolve({{ st.identifier }}Store);
-    });
-    }
-    /**
-    * Chargement des données enfants
-    */
-    function loadChildren(obj) {
-        var num = {{ st.childrenelements | length }};
-        return $q(function(resolve, reject) {
-            {% for child in st.childrenelements %}
-                {{ child.objectModule }}{{ child.objectName }}Store.setQuery('/{{ st.module }}/{{ st.objecttype }}/'+obj.id+'/{{ child.objectName }}');
-                if (!obj.{{ child.objectName }}) {
-                    obj.{{ child.objectName }} = {{ child.objectModule }}{{ child.objectName }}Store.data;
-                    num--;
-                    if (num==0) resolve(obj);
-                }else{
-                    {{ child.objectModule }}{{ child.objectName }}Store.data = obj.{{ child.objectName }};
-                    num--;
-                    if (num==0) resolve(obj);
+
+            busy=true;
+            $http.get(
+                tmpquery+'/getData.json',
+                {
+                    params: {
+                        filters: filters,
+                        offset: (page-1)*pageLength,
+                        limit: pageLength
+                    }
+                }).success(function(data) {
+                busy=false;
+                purgeStore();
+                pageLoaded = page;
+                total = data.total;
+                for (var i in data.data) {
+                    if (!alreadyExists(data.data[i].id))
+                    BackupAdminTopMenuStore.push(data.data[i]);
                 }
-            {% endfor %}
-            if (num==0) resolve(obj);
+//BackupAdminTopMenuStore = data.data;
+                console.log('store > {{ key }} > loaded success ',BackupAdminTopMenuStore);
+                resolve(BackupAdminTopMenuStore);
+            });
+
         });
     }
 });
-{% endfor %}
+
+
+
+
+app.controller('BackupAdminMenuTopCtrl', function($injector,$location, $scope, $rootScope,$http,BackupAdminTopMenuStore) {
+
+    $scope.BackupAdminTopMenuStore =  BackupAdminTopMenuStore;
+    $scope.BackupAdminTopMenuStore.resetQuery();
+    $scope.BackupAdminTopMenuStore.setFilters('Errors=1');
+    $scope.BackupAdminTopMenuStore.getData(1);
+
+
+
+    $scope.errCount = $scope.BackupAdminTopMenuStore.data.length;
+
+    $scope.isVm = function(){
+        return function(item){
+            return item['VmJobId'] > 0;
+        }
+    }
+    $scope.isSamba = function(){
+        return function(item){
+            return item['SambaJobId'] > 0;
+        }
+    }
+    $scope.isRemote = function(){
+        return function(item){
+            return item['RemoteJobId'] > 0;
+        }
+    }
+
+});
