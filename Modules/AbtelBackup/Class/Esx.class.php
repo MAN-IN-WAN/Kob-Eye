@@ -45,6 +45,13 @@ class Esx extends genericClass {
         }
         return true;
     }
+    public function Disconnect() {
+        if ($this->_connection) {
+            ssh2_exec($this->_connection, 'exit');
+            $this->_connection = null;
+        }
+        return true;
+    }
     public function Verify() {
         $this->Connect();
         return parent::Verify();
@@ -105,26 +112,72 @@ class Esx extends genericClass {
         return true;
     }
 
-    private function remoteExec( $command ){
-        $result = $this->rawExec( $command.';echo -en "\n$?"' );
-        if( ! preg_match( "/^(.*)\n(0|-?[1-9][0-9]*)$/s", $result[0], $matches ) ) {
+    public function remoteExec( $command ,$activity = null){
+        if (!$this->_connection)$this->Connect();
+        $result = $this->rawExec( $command.';echo -en "\n$?"', $activity);
+        if( ! preg_match( "/^(0|-?[1-9][0-9]*)$/s", $result[2], $matches ) ) {
             throw new RuntimeException( "Le retour de la commande ne contenait pas le status. commande : ".$command );
         }
-        if( $matches[2] !== "0" ) {
-            throw new RuntimeException( $result[1], (int)$matches[2] );
+        if( $matches[1] !== "0" ) {
+            throw new RuntimeException( $result[1].$result[0], (int)$matches[1] );
         }
-        return $matches[1];
+        return $result[0];
     }
 
-    private function rawExec( $command ){
+    public function copyFile( $file ){
+        if ($this->_connection){
+            $this->Disconnect();
+        }
+        if (!$this->_connection)$this->Connect();
+        //$result = ssh2_scp_send($this->_connection,$file,'/'.$file, 0644);
+        // Create SFTP session
+        $sftp = ssh2_sftp($this->_connection);
+        $sftpStream = @fopen('ssh2.sftp://'.$sftp.'/'.$file, 'w');
+        try {
+            if (!$sftpStream) {
+                throw new Exception("Could not open remote file: /$file");
+            }
+            $data_to_send = @file_get_contents($file);
+            if ($data_to_send === false) {
+                throw new Exception("Could not open local file: $file.");
+            }
+            if (@fwrite($sftpStream, $data_to_send) === false) {
+                throw new Exception("Could not send data from file: $file.");
+            }
+            fclose($sftpStream);
+
+        } catch (Exception $e) {
+            error_log('Exception: ' . $e->getMessage());
+            fclose($sftpStream);
+        }
+        $this->Disconnect();
+        return true;//$result;
+    }
+    private function rawExec( $command,$activity=null ){
         $stream = ssh2_exec( $this->_connection, $command );
         $error_stream = ssh2_fetch_stream( $stream, SSH2_STREAM_STDERR );
         stream_set_blocking( $stream, TRUE );
         stream_set_blocking( $error_stream, TRUE );
-        $output = stream_get_contents( $stream );
+        $data='';
+        while ($buf = fread($stream, 4096)) {
+            //echo $buf;
+            //tentative de récupération de la progression
+            if (preg_match('# ([0-9]{1,2})% #',$buf,$out)&&$activity) {
+                $progress = $out[1];
+                $activity->setProgression($progress);
+            }
+            $data.=$buf;
+        }
+        $output = $data;//substr($data,strlen($data)-1,1);//stream_get_contents( $stream );
         $error_output = stream_get_contents( $error_stream );
+        //alors récupération sur le dernier caractère
+        $exit_output = 0;
+        if (preg_match('/^(.*)\n(0|-?[1-9][0-9]*)$/s',$output,$out)) {
+            $output = $out[1];
+            $exit_output = $out[2];
+        }
         fclose( $stream );
         fclose( $error_stream );
-        return array( $output, $error_output );
+        return array( $output, $error_output,$exit_output);
     }
 }

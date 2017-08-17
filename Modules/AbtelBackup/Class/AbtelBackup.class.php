@@ -108,5 +108,10 @@ class AbtelBackup extends Module{
         }
         return implode("\n",$output);
     }
+    static public function getMyIp(){
+        $output = AbtelBackup::localExec('ifconfig');
+        preg_match('#inet ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)#',$output,$out);
+        return $out[1];
+    }
 
 }
