@@ -1,0 +1,40 @@
+
+<div class="header-buttons">
+    <div class="dropdown">
+        <a href="javascript: void(0);" class="dropdown-toggle dropdown-inline-button" data-toggle="dropdown" aria-expanded="false">
+            <i class="dropdown-inline-button-icon icmn-folder-open"></i>
+            {% if User.Privilege %}
+                <span id="tCount">{{ TCount }}</span>
+            {% endif %}
+            <span class="hidden-lg-down">Derniers tickets</span>
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="" role="menu">
+        {% if User.Privilege %}
+            <div class="dropdown-header">Mes derniers tickets</div>
+            <div id="myLastTickets">
+                {% for ticket in Tickets %}
+                    <a class="dropdown-item" href="#/Infrastructure/Tickets/{{ ticket.Id }}"><i class="dropdown-icon icmn-shield-notice prio_{{ ticket.Priorite }}"></i> {{ ticket.Numero }} - {{ ticket.CodeClient }} - {{ ticket.Titre }}</a>
+                {% endfor %}
+            </div>
+            <a class="dropdown-item" href="javascript:void(0)">Tous mes tickets</a>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-header">Derniers tickets Support</div>
+            <div id="lastTickets">
+                {% for ticketna in TicketsNA %}
+                    <a class="dropdown-item" href="#/Infrastructure/Tickets/{{ ticket.Id }}"><i class="dropdown-icon icmn-shield-notice prio_{{ ticketna.Priorite }}"></i> {{ ticketna.Numero }} - {{ ticketna.CodeClient }} - {{ ticketna.Titre }}</a>
+                {% endfor %}
+            </div>
+            <a class="dropdown-item" href="#/Infrastructure/Tickets">Tous les tickets</a>
+        {% else %}
+            <div class="dropdown-header">Mes derniers tickets</div>
+            <a class="dropdown-item" href="javascript:void(0)"><i class="dropdown-icon icmn-checkmark"></i> CLNUI-253 Project implemen...</a>
+            <a class="dropdown-item" href="javascript:void(0)"><i class="dropdown-icon icmn-checkmark"></i> CLNUI-234 Active history iss...</a>
+            <a class="dropdown-item" href="javascript:void(0)"><i class="dropdown-icon icmn-clock"></i> CLNUI-424 Ionicons intergrat...</a>
+            <a class="dropdown-item" href="javascript:void(0)">Tous mes tickets</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="javascript:void(0)">Créer un ticket</a>
+        {% endif %}
+        </ul>
+    </div>
+</div>

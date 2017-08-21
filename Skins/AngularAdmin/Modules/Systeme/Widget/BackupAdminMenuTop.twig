@@ -1,0 +1,113 @@
+
+<div id="AlertesJobsTop" class="header-buttons" ng-controller="BackupAdminMenuTopCtrl">
+    <div class="dropdown">
+        <a href="javascript: void(0);" class="dropdown-toggle dropdown-inline-button" data-toggle="dropdown" aria-expanded="false">
+            <i class="dropdown-inline-button-icon icmn-folder-open"></i>
+            {#<span id="eCount" class="{% if ECount > 0 %}danger{% else %}success{% endif %}">{{ ECount }}</span>#}
+            <span id="eCount" ng-class="{danger:BackupAdminTopMenuStore.data.length>0,success:BackupAdminTopMenuStore.data.length==0}">{[{ BackupAdminTopMenuStore.data.length }]}</span>
+            <span id="rCount" >{[{ BackupAdminTopMenuStoreBis.data.length }]}</span>
+            <span class="hidden-lg-down">Statut des jobs</span>
+            <span class="caret"></span>
+        </a>
+        {#ERREURS#}
+        <ul class="dropdown-menu" aria-labelledby="" role="menu">
+            <div id="vmErrors">
+                <div class="dropdown-header">Erreur(s) Job Vm :</div>
+                <a class="dropdown-item" ng-repeat="err in BackupAdminTopMenuStore.data | filter:isVm() as results1" href="#/{{ Urls.Activity }}/{[{ err.id }]}" title="{[{ err.Details }]}"><i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> {[{ err.Titre }]}</a>
+                <a class="dropdown-item" href="#" title="Aucune erreur" ng-if="results1.length === 0"><i class="dropdown-icon icmn-shield-notice prio_allGood"></i> Aucune erreur </a>
+                {#{% for vmError in Errors.vmErrors %}
+                    {% if vmError.vm != null %}
+                        <a class="dropdown-item" href="#/AbtelBackup/VmJob/{{ vmError.vm.Id }}" title="{{ vmError.texte }}"><i class="dropdown-icon icmn-shield-notice prio_{{ vmError.severite }}"></i> {{ vmError.vm.Titre }} - {{ vmError.code }}</a>
+                    {% else %}
+                        <a class="dropdown-item" href="#" title="{{ vmError.texte }}"><i class="dropdown-icon icmn-shield-notice prio_allGood"></i> {{ vmError.texte }} </a>
+                    {% endif %}
+                {% endfor %}#}
+            </div>
+            <div class="dropdown-divider"></div>
+            <div id="sambaErrors">
+                <div class="dropdown-header">Erreur(s) Job Samba :</div>
+                <a class="dropdown-item" ng-repeat="err in BackupAdminTopMenuStore.data | filter:isSamba() as results2" href="#/{{ Urls.Activity }}/{[{ err.id }]}" title="{[{ err.Details }}"><i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> {[{ err.Titre }]}</a>
+                <a class="dropdown-item" href="#" title="Aucune erreur" ng-if="results2.length === 0"><i class="dropdown-icon icmn-shield-notice prio_allGood"></i> Aucune erreur </a>
+                {# {% for sambaError in Errors.sambaErrors %}
+                     {% if sambaError.samba != null %}
+                         <a class="dropdown-item" href="#/AbtelBackup/VmJob/{{ sambaError.samba.Id }}" title="{{ sambaError.texte }}"><i class="dropdown-icon icmn-shield-notice prio_{{ sambaError.severite }}"></i> {{ sambaError.samba.Titre }} - {{ sambaError.code }}</a>
+                     {% else %}
+                         <a class="dropdown-item" href="#" title="{{ sambaError.texte }}"><i class="dropdown-icon icmn-shield-notice prio_allGood"></i> {{ sambaError.texte }} </a>
+                     {% endif %}
+                 {% endfor %}#}
+            </div>
+            <div class="dropdown-divider"></div>
+            <div id="remoteErrors">
+                <div class="dropdown-header">Erreur(s) Job Remote :</div>
+                <a class="dropdown-item" ng-repeat="err in BackupAdminTopMenuStore.data | filter:isRemote() as results3" href="#/{{ Urls.Activity }}/{[{ err.id }]}" title="{[{ err.Details }}"><i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> {[{ err.Titre }]}</a>
+                <a class="dropdown-item" href="#" title="Aucune erreur" ng-if="results3.length === 0"><i class="dropdown-icon icmn-shield-notice prio_allGood"></i> Aucune erreur </a>
+                {#{% for remoteError in Errors.remoteErrors %}
+                    {% if remoteError.remote != null %}
+                        <a class="dropdown-item" href="#/AbtelBackup/VmJob/{{ remoteError.remote.Id }}" title="{{ remoteError.texte }}"><i class="dropdown-icon icmn-shield-notice prio_{{ remoteError.severite }}"></i> {{ remoteError.remote.Titre }} - {{ remoteError.code }}</a>
+                    {% else %}
+                        <a class="dropdown-item" href="#" title="{{ remoteError.texte }}"><i class="dropdown-icon icmn-shield-notice prio_allGood"></i> {{ remoteError.texte }} </a>
+                    {% endif %}
+                {% endfor %}#}
+            </div>
+            <br>
+            <a class="dropdown-item" href="javascript:void(0)">Toutes les erreurs</a>
+
+        {#/ERREURS#}
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-divider"></div>
+        {#ENCOURS#}
+
+            <div id="vmErrors">
+                <div class="dropdown-header">Job(s) Vm en cours:</div>
+                <a class="dropdown-item" ng-repeat="jb in BackupAdminTopMenuStoreBis.data | filter:isVm() as results1" href="#/{{ Urls.Activity }}/{[{ jb.id }]}" title="{[{ jb.Details }]}">
+                    <i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> {[{ jb.Titre }]}<br>
+                    <progress class="progress progress-danger progress-striped progress-animated" ng-if="jb.Progression < 100" value="{[{ jb.Progression }]}" max="100" title="{[{ jb.Progression }]}%">{[{ jb.Progression }]}%</progress>
+                    <progress class="progress progress-success progress-striped progress-animated" ng-if="jb.Progression == 100" value="{[{ jb.Progression }]}" max="100" title="{[{ jb.Progression }]}%">{[{ jb.Progression }]}%</progress>
+                </a>
+                <a class="dropdown-item" href="#" title="Aucune erreur" ng-if="results1.length === 0"><i class="dropdown-icon icmn-shield-notice prio_allGood"></i> Aucun job en cours </a>
+
+            </div>
+            <div class="dropdown-divider"></div>
+            <div id="sambaErrors">
+                <div class="dropdown-header">Job(s) Samba en cours:</div>
+                <a class="dropdown-item" ng-repeat="jb in BackupAdminTopMenuStoreBis.data | filter:isSamba() as results2" href="#/{{ Urls.Activity }}/{[{ jb.id }]}" title="{[{ jb.Details }}">
+                    <i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> {[{ jb.Titre }]}<br>
+                    <progress class="progress progress-danger progress-striped progress-animated" ng-if="jb.Progression < 100" value="{[{ jb.Progression }]}" max="100" title="{[{ jb.Progression }]}%">{[{ jb.Progression }]}%</progress>
+                    <progress class="progress progress-success progress-striped progress-animated" ng-if="jb.Progression == 100" value="{[{ jb.Progression }]}" max="100" title="{[{ jb.Progression }]}%">{[{ jb.Progression }]}%</progress>
+                </a>
+                <a class="dropdown-item" href="#" title="Aucune erreur" ng-if="results2.length === 0"><i class="dropdown-icon icmn-shield-notice prio_allGood"></i> Aucun job en cours </a>
+            </div>
+            <div class="dropdown-divider"></div>
+            <div id="remoteErrors">
+                <div class="dropdown-header">Job(s) Remote en cours:</div>
+                <a class="dropdown-item" ng-repeat="jb in BackupAdminTopMenuStoreBis.data | filter:isRemote() as results3" href="#/{{ Urls.Activity }}/{[{ jb.id }]}" title="{[{ jb.Details }}">
+                    <i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> {[{ jb.Titre }]}<br>
+                    <progress class="progress progress-danger progress-striped progress-animated" ng-if="jb.Progression < 100" value="{[{ jb.Progression }]}" max="100" title="{[{ jb.Progression }]}%">{[{ jb.Progression }]}%</progress>
+                    <progress class="progress progress-success progress-striped progress-animated" ng-if="jb.Progression == 100" value="{[{ jb.Progression }]}" max="100" title="{[{ jb.Progression }]}%">{[{ jb.Progression }]}%</progress>
+                </a>
+                <a class="dropdown-item" href="#" title="Aucune erreur" ng-if="results3.length === 0"><i class="dropdown-icon icmn-shield-notice prio_allGood"></i> Aucun job en cours </a>
+            </div>
+            <br>
+            <a class="dropdown-item" href="javascript:void(0)">Tous les jobs en cours</a>
+        </ul>
+        {#/ENCOURS#}
+    </div>
+</div>
+<script type="text/javascript">
+    var interErrors = setInterval(function(){
+        var tempDiv = $('#AlertesJobsTop');
+        var scopus =  angular.element(tempDiv[0]).scope();
+        if(scopus != undefined && scopus.BackupAdminTopMenuStore != undefined){
+            scopus.BackupAdminTopMenuStore.pageLoaded = 0;
+            scopus.BackupAdminTopMenuStore.getData(1);
+        }
+    },60000);
+    $(document).on('hidden.bs.modal','.modal',function(){
+        var tempDiv = $('#AlertesJobsTop');
+        var scopus =  angular.element(tempDiv[0]).scope();
+        if(scopus != undefined && scopus.BackupAdminTopMenuStore != undefined){
+            scopus.BackupAdminTopMenuStore.pageLoaded = 0;
+            scopus.BackupAdminTopMenuStore.getData(1);
+        }
+    });
+</script>

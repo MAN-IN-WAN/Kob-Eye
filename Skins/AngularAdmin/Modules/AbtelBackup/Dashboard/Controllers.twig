@@ -1,3 +1,75 @@
-app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope) {
-    alert('OK {{ controller }}Ctrl');
+
+app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $scope, $rootScope, AbtelBackupActivityStore) {
+    //------------------------------------------//
+    //                 ANCHORS
+    //------------------------------------------//
+    $anchorScroll.yOffset = 50;
+    $anchorScroll();
+
+    $scope.gotoAnchor = function(x) {
+        var newHash = x;
+        if ($location.hash() !== newHash) {
+            // set the $location.hash to `newHash` and
+            // $anchorScroll will automatically scroll to it
+            $location.hash(x);
+        } else {
+            // call $anchorScroll() explicitly,
+            // since $location.hash hasn't changed
+            $anchorScroll();
+        }
+    };
+
+
+    //------------------------------------------//
+    //                 STORE
+    //------------------------------------------//
+    //RAZ du store
+    $scope.AbtelBackupActivityStore = AbtelBackupActivityStore;
+    $scope.AbtelBackupActivityStore.resetQuery();
+    $scope.AbtelBackupActivityStore.setFilters('');
+
+    //Si on est sur la bonne page on initialize le store
+    if($location.path() == '/{{ Url }}'){
+        //Init du store
+        var now = Math.floor(Date.now()/1000);
+        var seuil = now - 7200;
+
+
+        $scope.AbtelBackupActivityStore.setFilters('Started=1&Success=0&Errors=0+tmsEdit>'+seuil);
+        $scope.AbtelBackupActivityStore.getData(1);
+
+        //Raffraichissement du store
+        intervalPromise = $interval(function(){
+            var now = Math.floor(Date.now()/1000);
+            var seuil = now - 7200;
+            $scope.AbtelBackupActivityStore.setFilters('Started=1&Success=0&Errors=0+tmsEdit>'+seuil);
+            $scope.AbtelBackupActivityStore.refresh();
+            $scope.freshActivity();
+        },10000);
+
+    } else{
+
+    }
+    $scope.$on('$destroy', function () {
+        $interval.cancel(intervalPromise);
+        $scope.AbtelBackupActivityStore.setFilters('');
+    })
+
+
+    //------------------------------------------//
+    //           COMPTEUR ACTIVITE
+    //------------------------------------------//
+    $scope.NbRunning = 0;
+    $scope.freshActivity = function(){
+        $scope.NbRunning = 0;
+        for(var n in AbtelBackupActivityStore.data){
+            if( AbtelBackupActivityStore.data[n]['Started'] ==1 &&
+                AbtelBackupActivityStore.data[n]['Success'] ==0 &&
+                AbtelBackupActivityStore.data[n]['Errors'] ==0 )
+                    $scope.NbRunning++;
+        }
+    }
+
+
+
 });

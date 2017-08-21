@@ -6,7 +6,9 @@ table tr td.table-details{
     margin-bottom: 0 !important;
 }
 
-#tCount{
+#tCount,
+#eCount,
+#rCount{
     background-color: #ff3f4d;
     color: #fff;
     border-radius:30px;
@@ -16,7 +18,16 @@ table tr td.table-details{
     line-height: 20px;
     text-align: center;
 }
+#eCount.success{
+    background-color: #83bf21;
+}
+#rCount {
+    background-color: #7499FF;
+}
 
+.prio_allGood{
+    color: #83bf21;
+}
 .prio_NC{
     color: #97AAB3;
 }
@@ -63,8 +74,47 @@ table tr td.table-details{
     display: inline-block;
     padding: .375rem .75rem;
     margin-bottom: 0;
+    word-break: break-word;
 }
 
+#activity_list{
+    width:100%;
+}
+#activity_list .activity_title{
+    width:350px;
+}
+#activity_list .activity_progress{
+
+}
+#activity_list .activity_status{
+    width: 100px;
+    text-align: center;
+}
+#activity_list .bool{
+    text-align: center;
+    width:70px;
+}
+#activity_list .activity_start{
+    width:100px;
+}
+#activity_list tr{
+    border-bottom:1px solid #bbb;
+}
+#activity_list td{
+    padding: 5px 10px;
+}
+#activity_list th{
+    text-align: center;
+}
+
+
+
+
+@media screen and (max-width: 767px) {
+    .detail-label:after{
+        display: none;
+    }
+}
 
 @media screen and (max-width: 640px) {
     .input-group.list-search{

@@ -3,25 +3,26 @@
     <!-- Dashboard -->
     <div class="dashboard-container">
         <div class="row">
-            <a class="col-xl-3 col-lg-6 col-sm-6 col-xs-12" href="#/Documents/Contrats">
+            <a class="col-xl-3 col-lg-6 col-sm-6 col-xs-12" href="#/{{ Urls.Activity }}">
                 <div class="widget widget-seven background-success">
                     <div class="widget-body">
                         <div href="javascript: void(0);" class="widget-body-inner">
-                            <h5 class="text-uppercase">Job(s) en cours</h5>
-                            <i class="counter-icon icmn-cash3"></i>
+                            <h5 class="text-uppercase">Activité(s) en cours</h5>
+                            <i class="counter-icon icmn-spinner2"></i>
                             <span class="counter-count">
-                                <span class="counter-init" data-from="0" data-to="{{ NbRunning }}"></span>
+                                <i class="icmn-arrow-right5"></i>
+                                <span class="counter-init" data-from="0" data-to="{[{ NbRunning }]}"></span>
                             </span>
                         </div>
                     </div>
                 </div>
             </a>
-            <a class="col-xl-3 col-lg-6 col-sm-6 col-xs-12" href="#/Cloud/Domaines">
+            <a class="col-xl-3 col-lg-6 col-sm-6 col-xs-12" ng-click="gotoAnchor('dashCalendar');">
                 <div class="widget widget-seven background-default">
                     <div class="widget-body">
                         <div href="javascript: void(0);" class="widget-body-inner">
                             <h5 class="text-uppercase">Job(s) aujourd'hui</h5>
-                            <i class="counter-icon icmn-server"></i>
+                            <i class="counter-icon icmn-calendar3"></i>
                             <span class="counter-count">
                                 <i class="icmn-arrow-right5"></i>
                                 <span class="counter-init" data-from="0" data-to="{{ NbToday }}"></span>
@@ -30,28 +31,28 @@
                     </div>
                 </div>
             </a>
-            <a class="col-xl-3 col-lg-6 col-sm-6 col-xs-12" href="#/Infrastructure/Peripheriques">
+            <a class="col-xl-3 col-lg-6 col-sm-6 col-xs-12" href="#/{{ Urls.EsxVm }}">
                 <div class="widget widget-seven">
                     <div class="widget-body">
                         <div href="javascript: void(0);" class="widget-body-inner">
                             <h5 class="text-uppercase">VMs</h5>
-                            <i class="counter-icon icmn-users"></i>
+                            <i class="counter-icon icmn-server"></i>
                             <span class="counter-count">
-                                <i class="icmn-arrow-up5"></i>
+                                <i class="icmn-arrow-right5"></i>
                                 <span class="counter-init" data-from="0" data-to="{{ NbVm }}"></span>
                             </span>
                         </div>
                     </div>
                 </div>
             </a>
-            <a class="col-xl-3 col-lg-6 col-sm-6 col-xs-12" href="#/Cloud/Email">
+            <a class="col-xl-3 col-lg-6 col-sm-6 col-xs-12" href="#/{{ Urls.SambaShare }}">
                 <div class="widget widget-seven">
                     <div class="widget-body">
                         <div href="javascript: void(0);" class="widget-body-inner">
                             <h5 class="text-uppercase">Partages</h5>
-                            <i class="counter-icon icmn-users"></i>
+                            <i class="counter-icon icmn-display4"></i>
                             <span class="counter-count">
-                                <i class="icmn-arrow-up5"></i>
+                                <i class="icmn-arrow-right5"></i>
                                 <span class="counter-init" data-from="0" data-to="{{ NbSharing }}"></span>
                             </span>
                         </div>
@@ -128,16 +129,37 @@
         </div>
 
         -->
-        <div class="row">
+        <div class="row" id="dashCalendar">
             <div class="col-xl-6">
-                <div class="widget widget-three">
-                    <div class="example-calendar-block"></div>
+                <div class="widget widget-two">
+                    <div class="diskChart">
+                        <div class="widget-header">
+                            Utilisation de l'<strong>espace disque</strong> global
+                        </div>
+                        <div class="widget-body clearfix">
+                            {{ pieHtml | raw }}
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-xl-6">
                 <div class="widget widget-two">
+                    <div class="usageCompare">
+                        <div class="widget-header">
+                            Utilisation de l'<strong>espace disque</strong> par VM
+                        </div>
+                        <div class="widget-body clearfix">
+blublu
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="widget widget-two">
                     <div class="widget-header">
-                        <div class="dropdown pull-right">
+                        {#<div class="dropdown pull-right">
                             <a href="javascript: void(0);" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                 <i class="dropdown-inline-button-icon icmn-folder-open"></i>
                                 <span class="hidden-lg-down">Historique des alertes</span>
@@ -161,106 +183,51 @@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="dropdown-icon icmn-cog"></i> Settings</a>
                             </ul>
-                        </div>
-                        Consultez les <strong>Alertes</strong>
+                        </div>#}
+                        Consultez les <strong>Activités</strong> récentes
                     </div>
                     <div class="widget-body clearfix">
-                        <div class="conversation-block custom-scroll" style="height: 260px">
-                            <!--<div class="conversation-item">
-                                <div class="s1">
-                                    <a class="avatar" href="javascript:void(0);">
-                                        <img src="/Skins/AngularAdmin/assets/common/img/temp/avatars/3.jpg" alt="Alternative text to the image" />
+                        <div class="conversation-block custom-scroll" style="height: 260px;position: relative;">
+                            <table id="activity_list">
+                                <tr id="tableFixedHeader" class="activity-item" >
+                                    <th class="activity_title">Titre</th>
+                                    <th class="activity_progress">Progrès</th>
+                                    <th class="activity_started bool">Demarré</th>
+                                    <th class="activity_error  bool">Statut</th>
+                                    {#<th class="activity_success  bool">Succès</th>
+                                    <th class="activity_error  bool">Erreur</th>#}
+                                    <th class="activity_start">Démarré le</th>
+                                </tr>
+                                <tr class="activity-item" ng-repeat="act in AbtelBackupActivityStore.data">
+                                    <td class="activity_title"><a href="#/{{ Urls.Activity }}/{[{ act.id }]}">{[{ act.Titre }]}</a></td>
+                                        <td class="activity_progress">
+                                            <progress class="progress progress-danger progress-striped progress-animated" ng-if="act.Progression < 100" value="{[{ act.Progression }]}" max="100" title="{[{ act.Progression }]}%">{[{ act.Progression }]}%</progress>
+                                            <progress class="progress progress-success progress-striped progress-animated" ng-if="act.Progression == 100" value="{[{ act.Progression }]}" max="100" title="{[{ act.Progression }]}%">{[{ act.Progression }]}%</progress>
+                                        </td>
+                                        <td class="activity_started bool" >
+                                            <i class="icmn-checkmark4 prio_allGood act_icon" ng-if="act.Started == 1"></i>
+                                            <i class="icmn-cross2 prio_Desastre act_icon" ng-if="act.Started == 0"></i>
+                                        </td>
+                                       {# <td class="activity_success  bool">
+                                            <i class="icmn-checkmark4 prio_allGood act_icon" ng-if="act.Success == 1"></i>
+                                            <i class="icmn-cross2 prio_Desastre act_icon" ng-if="act.Success == 0"></i>
+                                        </td>
+                                        <td class="activity_error  bool">
+                                             <i class="icmn-checkmark4 prio_allGood act_icon" ng-if="act.Errors == 1"></i>
+                                            <i class="icmn-cross2 prio_Desastre act_icon" ng-if="act.Errors == 0"></i>
+                                        </td>#}
+                                        <td class="activity_status">
+                                            <span ng-if="act.Errors == 1"><i class="icmn-cross2 prio_Desastre act_icon" ></i> Erreur</span>
+                                            <span ng-if="act.Success == 1"><i class="icmn-checkmark4 prio_allGood act_icon" ></i> Succès</span>
+                                            <span ng-if="act.Success != 1 && act.Errors != 1 && act.Started == 1"><i class="icmn-spinner2 prio_Info act_icon" ></i> En cours</span>
+                                            <span ng-if="act.Success != 1 && act.Errors != 1 && act.Started == 0"><i class="icmn-hour_glass2 prio_NC act_icon" ></i> En attente</span>
+                                        </td>
+                                        <td class="activity_start">
+                                            {[{ act.create }]}
+                                        </td>
                                     </a>
-                                </div>
-                                <div class="s2">
-                                    <strong>David Scott</strong>
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
-                                </div>
-                            </div>
-                            <div class="conversation-item">
-                                <div class="s1">
-                                    <a class="avatar" href="javascript:void(0);">
-                                        <img src="/Skins/AngularAdmin/assets/common/img/temp/avatars/3.jpg" alt="Alternative text to the image" />
-                                    </a>
-                                </div>
-                                <div class="s2">
-                                    <strong>Chris Smith</strong>
-                                    <p>Lorem Ipsum is simply dummy text of the printing</p>
-                                </div>
-                            </div>
-                            <div class="conversation-item you">
-                                <div class="s1">
-                                    <a class="avatar" href="javascript:void(0);">
-                                        <img src="/Skins/AngularAdmin/assets/common/img/temp/avatars/4.jpg" alt="Alternative text to the image" />
-                                    </a>
-                                </div>
-                                <div class="s2">
-                                    <strong>Donald Trump</strong>
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy</p>
-                                </div>
-                            </div>
-                            <div class="conversation-item">
-                                <div class="s1">
-                                    <a class="avatar" href="javascript:void(0);">
-                                        <img src="/Skins/AngularAdmin/assets/common/img/temp/avatars/3.jpg" alt="Alternative text to the image" />
-                                    </a>
-                                </div>
-                                <div class="s2">
-                                    <strong>David Scott</strong>
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
-                                </div>
-                            </div>
-                            <div class="conversation-item you">
-                                <div class="s1">
-                                    <a class="avatar" href="javascript:void(0);">
-                                        <img src="/Skins/AngularAdmin/assets/common/img/temp/avatars/4.jpg" alt="Alternative text to the image" />
-                                    </a>
-                                </div>
-                                <div class="s2">
-                                    <strong>Donald Trump</strong>
-                                    <p>Ok. Thanks!</p>
-                                </div>
-                            </div>
-                            <div class="conversation-item you">
-                                <div class="s1">
-                                    <a class="avatar" href="javascript:void(0);">
-                                        <img src="/Skins/AngularAdmin/assets/common/img/temp/avatars/4.jpg" alt="Alternative text to the image" />
-                                    </a>
-                                </div>
-                                <div class="s2">
-                                    <strong>Donald Trump</strong>
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy</p>
-                                </div>
-                            </div>
-                            <div class="conversation-item">
-                                <div class="s1">
-                                    <a class="avatar" href="javascript:void(0);">
-                                        <img src="/Skins/AngularAdmin/assets/common/img/temp/avatars/3.jpg" alt="Alternative text to the image" />
-                                    </a>
-                                </div>
-                                <div class="s2">
-                                    <strong>David Scott</strong>
-                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
-                                </div>
-                            </div>
-                            <div class="conversation-item you">
-                                <div class="s1">
-                                    <a class="avatar" href="javascript:void(0);">
-                                        <img src="/Skins/AngularAdmin/assets/common/img/temp/avatars/4.jpg" alt="Alternative text to the image" />
-                                    </a>
-                                </div>
-                                <div class="s2">
-                                    <strong>Donald Trump</strong>
-                                    <p>Ok. Thanks!</p>
-                                </div>
-                            </div>-->
-                        </div>
-                        <div class="form-group padding-top-20 margin-bottom-0">
-                            <textarea id="textarea" class="form-control" placeholder="Saisissez et appuyez sur entrer"></textarea>
-                            <button class="btn width-full margin-top-10">
-                                <i class="fa fa-send margin-right-5"></i>
-                                Envoyer
-                            </button>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -433,7 +400,7 @@
 
         ///////////////////////////////////////////////////////////
         // CALENDAR
-        $('.example-calendar-block').fullCalendar({
+        /*$('.example-calendar-block').fullCalendar({
             //aspectRatio: 2,
             height: 450,
             header: {
@@ -466,7 +433,7 @@
                     $(this).addClass('event-clicked');
                 }
             }
-        });
+        });*/
 
         ///////////////////////////////////////////////////////////
         // CAROUSEL WIDGET
@@ -486,7 +453,7 @@
         });
 
         ///////////////////////////////////////////////////////////
-        // CHART 1
+       /* // CHART 1
         new Chartist.Line(".chart-line", {
             labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
             series: [
@@ -532,7 +499,9 @@
 
         new Chartist.Bar(".chart-overlapping-bar", overlappingData, overlappingOptions, overlappingResponsiveOptions);
 
+*/
 
     });
+
 </script>
 <!-- End Page Scripts -->

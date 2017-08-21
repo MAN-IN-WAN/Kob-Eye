@@ -1,0 +1,487 @@
+app.service('BackupAdminTopMenuStore', function ($http,$q,$timeout) {
+    var BackupAdminTopMenuStore = [],
+        currentPage = 1,
+        pageLoaded = 0,
+        total = 0,
+        pageLength = 15,
+        filters = '',
+        timer = 0,
+        query = '/AbtelBackup/Activity',
+        busy = false;
+
+    return {
+        getOneData: getOneData,
+        getData: getData,
+        getNewData: getNewData,
+        saveData: saveData,
+        getTotal: getTotal,
+        export: exportData,
+        setPage: setPage,
+        setFilters: setFilters,
+        getFilters: getFilters,
+        getPageLength: getPageLength,
+        setPageLength: setPageLength,
+        currentPage: currentPage,
+        itemsPerPage: pageLength,
+        getDataFilter: getDataFilter,
+        refresh: refresh,
+        filter: filters,
+        resetQuery: resetQuery,
+        setQuery: setQuery,
+        getQuery: getQuery,
+        data:BackupAdminTopMenuStore
+    };
+
+    function resetQuery(q) {
+        pageLoaded = 0;
+        query = '/AbtelBackup/Activity';
+    }
+
+    function setQuery(q) {
+        pageLoaded = 0;
+        query = q;
+    }
+
+    function getQuery(){
+        return query;
+    }
+
+    function setPageLength(pl) {
+        pageLength = pl;
+    }
+
+    function getPageLength() {
+        return pageLength;
+    }
+
+    function getTotal() {
+        return total;
+    }
+
+    function purgeStore(){
+        BackupAdminTopMenuStore.splice(0,BackupAdminTopMenuStore.length);
+    }
+
+    /**
+     * Définition de la page en cours
+     */
+    function setPage(page){
+        getData(page);
+    }
+
+    /**
+     * Définition du filtre
+     **/
+    function refresh(){
+        pageLoaded--;
+        getData(currentPage);
+    }
+
+    /**
+     * Définition du filtre
+     **/
+    function setFilters(filter,blur = false){
+        if (filter==filters) return;
+        filters = (blur?'~':'')+filter;
+        //on recharge le store
+        $timeout.cancel(timer);
+        timer=$timeout(function (){
+            pageLoaded=0;
+            getData(1);
+        }, 300);
+    }
+
+    /**
+     * Récupération du filtre en cours
+     **/
+    function getFilters(){
+        return filters;
+    }
+
+    /**
+     * Test if this id already exists
+     */
+    function alreadyExists(id){
+        for (var i in BackupAdminTopMenuStore){
+            if (BackupAdminTopMenuStore[i].Id==id){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * exportData
+     * export des données en fichier csv
+     */
+    function exportData(){
+        window.open(query+'/Export.csv','_blank');
+        console.log('store > {{ key }} > export '+query);
+    }
+
+    /**
+     * SaveData
+     * Envoie des données vers le serveur et gestion des erreurs
+     */
+    function saveData(obj){
+        return $q(function(resolve, reject) {
+            var q = (obj.id > 0) ? '/{{ st.module }}/{{ st.objecttype }}/'+obj.id+'/Save.json' :'/{{ st.module }}/{{ st.objecttype }}/Save.json'
+            $http.post(q,obj)
+                .success(function(data) {
+                    console.log('store > {{ key }} > save success '+obj.id, data);
+                    resolve(data);
+                });
+        });
+    }
+
+    /**
+     * Return new data with default values
+     * Return Promise
+     */
+    function getNewData() {
+        console.log('new data {{ st.newData }}');
+        return {{ st.newData | raw }};
+    }
+
+    /**
+     * Look for specific id data into the store
+     * Return Promise
+     */
+    function getOneData(id,full = true) {
+        return $q(function(resolve, reject) {
+            console.log('store > BackupAdminTopMenu > getOneData '+id,id);
+            /*for (var i in BackupAdminTopMenuStore){
+            if (BackupAdminTopMenuStore[i].id==id){
+            var idStore = i;
+            loadChildren(BackupAdminTopMenuStore[i]).then(function (obj){
+            BackupAdminTopMenuStore[idStore] = obj;
+            resolve(obj);
+            });
+            continue;
+            }
+            }*/
+            //si store pas chargé ou introuvable
+            $http.get('/{{ st.module }}/{{ st.objecttype }}/'+id+'/getOneData.json')
+                .success(function(data) {
+                    console.log('store > {{ key }} > load success '+id, data);
+                    //on charge les enfants uniquement si param full
+                    if (full)
+                        loadChildren(data).then(function (obj){
+                            resolve(obj);
+                        });
+                    else resolve(data);
+                });
+        });
+    }
+
+    /**
+     * Get data for combo component
+     */
+    function getDataFilter (filter) {
+        console.log('{{ st.module }}/{{ st.objecttype }} > getdatafilter ',filter);
+        setFilters('~'+filter);
+        return getData(1);
+    }
+
+    /**
+     * Load more data base on page
+     */
+    function getData(page) {
+        var tmpquery = query;
+        if (page<1) page=1;
+        return $q(function(resolve, reject) {
+            if (busy) {
+                reject('already busy');
+                return;
+            }
+            console.log('store > {{ key }} > getData '+page);
+            if (!page) page = currentPage;
+            else currentPage = page;
+
+            busy=true;
+            $http.get(
+                tmpquery+'/getData.json',
+                {
+                    params: {
+                        filters: filters,
+                        offset: (page-1)*pageLength,
+                        limit: pageLength
+                    }
+                }).success(function(data) {
+                busy=false;
+                purgeStore();
+                pageLoaded = page;
+                total = data.total;
+                for (var i in data.data) {
+                    if (!alreadyExists(data.data[i].id))
+                        BackupAdminTopMenuStore.push(data.data[i]);
+                }
+//BackupAdminTopMenuStore = data.data;
+                console.log('store > {{ key }} > loaded success ',BackupAdminTopMenuStore);
+                resolve(BackupAdminTopMenuStore);
+            });
+
+        });
+    }
+});
+
+app.service('BackupAdminTopMenuStoreBis', function ($http,$q,$timeout) {
+    var BackupAdminTopMenuStoreBis = [],
+        currentPage = 1,
+        pageLoaded = 0,
+        total = 0,
+        pageLength = 15,
+        filters = '',
+        timer = 0,
+        query = '/AbtelBackup/Activity',
+        busy = false;
+
+    return {
+        getOneData: getOneData,
+        getData: getData,
+        getNewData: getNewData,
+        saveData: saveData,
+        getTotal: getTotal,
+        export: exportData,
+        setPage: setPage,
+        setFilters: setFilters,
+        getFilters: getFilters,
+        getPageLength: getPageLength,
+        setPageLength: setPageLength,
+        currentPage: currentPage,
+        itemsPerPage: pageLength,
+        getDataFilter: getDataFilter,
+        refresh: refresh,
+        filter: filters,
+        resetQuery: resetQuery,
+        setQuery: setQuery,
+        getQuery: getQuery,
+        data:BackupAdminTopMenuStoreBis
+    };
+
+    function resetQuery(q) {
+        pageLoaded = 0;
+        query = '/AbtelBackup/Activity';
+    }
+
+    function setQuery(q) {
+        pageLoaded = 0;
+        query = q;
+    }
+
+    function getQuery(){
+        return query;
+    }
+
+    function setPageLength(pl) {
+        pageLength = pl;
+    }
+
+    function getPageLength() {
+        return pageLength;
+    }
+
+    function getTotal() {
+        return total;
+    }
+
+    function purgeStore(){
+        BackupAdminTopMenuStoreBis.splice(0,BackupAdminTopMenuStoreBis.length);
+    }
+
+    /**
+     * Définition de la page en cours
+     */
+    function setPage(page){
+        getData(page);
+    }
+
+    /**
+     * Définition du filtre
+     **/
+    function refresh(){
+        pageLoaded--;
+        getData(currentPage);
+    }
+
+    /**
+     * Définition du filtre
+     **/
+    function setFilters(filter,blur = false){
+        if (filter==filters) return;
+        filters = (blur?'~':'')+filter;
+//on recharge le store
+        $timeout.cancel(timer);
+        timer=$timeout(function (){
+            pageLoaded=0;
+            getData(1);
+        }, 300);
+    }
+
+    /**
+     * Récupération du filtre en cours
+     **/
+    function getFilters(){
+        return filters;
+    }
+
+    /**
+     * Test if this id already exists
+     */
+    function alreadyExists(id){
+        for (var i in BackupAdminTopMenuStoreBis){
+            if (BackupAdminTopMenuStoreBis[i].Id==id){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * exportData
+     * export des données en fichier csv
+     */
+    function exportData(){
+        window.open(query+'/Export.csv','_blank');
+        console.log('store > {{ key }} > export '+query);
+    }
+
+    /**
+     * SaveData
+     * Envoie des données vers le serveur et gestion des erreurs
+     */
+    function saveData(obj){
+        return $q(function(resolve, reject) {
+            var q = (obj.id > 0) ? '/{{ st.module }}/{{ st.objecttype }}/'+obj.id+'/Save.json' :'/{{ st.module }}/{{ st.objecttype }}/Save.json'
+            $http.post(q,obj)
+                .success(function(data) {
+                    console.log('store > {{ key }} > save success '+obj.id, data);
+                    resolve(data);
+                });
+        });
+    }
+
+    /**
+     * Return new data with default values
+     * Return Promise
+     */
+    function getNewData() {
+        console.log('new data {{ st.newData }}');
+        return {{ st.newData | raw }};
+    }
+
+    /**
+     * Look for specific id data into the store
+     * Return Promise
+     */
+    function getOneData(id,full = true) {
+        return $q(function(resolve, reject) {
+            console.log('store > BackupAdminTopMenu > getOneData '+id,id);
+            /*for (var i in BackupAdminTopMenuStoreBis){
+            if (BackupAdminTopMenuStoreBis[i].id==id){
+            var idStore = i;
+            loadChildren(BackupAdminTopMenuStoreBis[i]).then(function (obj){
+            BackupAdminTopMenuStoreBis[idStore] = obj;
+            resolve(obj);
+            });
+            continue;
+            }
+            }*/
+//si store pas chargé ou introuvable
+            $http.get('/{{ st.module }}/{{ st.objecttype }}/'+id+'/getOneData.json')
+                .success(function(data) {
+                    console.log('store > {{ key }} > load success '+id, data);
+//on charge les enfants uniquement si param full
+                    if (full)
+                        loadChildren(data).then(function (obj){
+                            resolve(obj);
+                        });
+                    else resolve(data);
+                });
+        });
+    }
+
+    /**
+     * Get data for combo component
+     */
+    function getDataFilter (filter) {
+        console.log('{{ st.module }}/{{ st.objecttype }} > getdatafilter ',filter);
+        setFilters('~'+filter);
+        return getData(1);
+    }
+
+    /**
+     * Load more data base on page
+     */
+    function getData(page) {
+        var tmpquery = query;
+        if (page<1) page=1;
+        return $q(function(resolve, reject) {
+            if (busy) {
+                reject('already busy');
+                return;
+            }
+            console.log('store > {{ key }} > getData '+page);
+            if (!page) page = currentPage;
+            else currentPage = page;
+
+            busy=true;
+            $http.get(
+                tmpquery+'/getData.json',
+                {
+                    params: {
+                        filters: filters,
+                        offset: (page-1)*pageLength,
+                        limit: pageLength
+                    }
+                }).success(function(data) {
+                busy=false;
+                purgeStore();
+                pageLoaded = page;
+                total = data.total;
+                for (var i in data.data) {
+                    if (!alreadyExists(data.data[i].id))
+                        BackupAdminTopMenuStoreBis.push(data.data[i]);
+                }
+//BackupAdminTopMenuStoreBis = data.data;
+                console.log('store > {{ key }} > loaded success ',BackupAdminTopMenuStoreBis);
+                resolve(BackupAdminTopMenuStoreBis);
+            });
+
+        });
+    }
+});
+
+
+app.controller('BackupAdminMenuTopCtrl', function($injector,$location, $scope, $rootScope,$http,BackupAdminTopMenuStore,BackupAdminTopMenuStoreBis) {
+
+    $scope.BackupAdminTopMenuStore =  BackupAdminTopMenuStore;
+    $scope.BackupAdminTopMenuStore.resetQuery();
+    $scope.BackupAdminTopMenuStore.setFilters('Errors=1');
+    $scope.BackupAdminTopMenuStore.getData(1);
+
+    $scope.BackupAdminTopMenuStoreBis =  BackupAdminTopMenuStoreBis;
+    $scope.BackupAdminTopMenuStoreBis.resetQuery();
+    $scope.BackupAdminTopMenuStoreBis.setFilters('Started=1&Success=0&Errors=0');
+    $scope.BackupAdminTopMenuStoreBis.getData(1);
+
+    $scope.errCount = $scope.BackupAdminTopMenuStore.data.length;
+    $scope.runCount = $scope.BackupAdminTopMenuStoreBis.data.length;
+
+    $scope.isVm = function(){
+        return function(item){
+            return item['VmJobId'] > 0;
+        }
+    }
+    $scope.isSamba = function(){
+        return function(item){
+            return item['SambaJobId'] > 0;
+        }
+    }
+    $scope.isRemote = function(){
+        return function(item){
+            return item['RemoteJobId'] > 0;
+        }
+    }
+
+});

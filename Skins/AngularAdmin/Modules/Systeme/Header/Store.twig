@@ -28,6 +28,7 @@ app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrene
         filter: filters,
         resetQuery: resetQuery,
         setQuery: setQuery,
+        getQuery: getQuery,
         data:{{ st.identifier }}Store
     };
     function resetQuery(q) {
@@ -37,6 +38,9 @@ app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrene
     function setQuery(q) {
         pageLoaded = 0;
         query = q;
+    }
+    function getQuery(){
+        return query;
     }
     function setPageLength(pl) {
         pageLength = pl;
