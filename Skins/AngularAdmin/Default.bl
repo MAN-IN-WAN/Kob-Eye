@@ -88,7 +88,7 @@
     <script src="Skins/AngularAdmin/assets/vendors/jquery-steps/build/jquery.steps.min.js"></script>
     <!-- v1.4.2 -->
     <script src="Skins/AngularAdmin/assets/vendors/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
-    <script src="Skins/AngularAdmin/assets/vendors/chart.js/src/Chart.bundle.min.js"></script>
+    <script src="Skins/AngularAdmin/assets/vendors/chart.js/Latest/Chart.bundle.min.js"></script>
     <!-- v1.7.0 -->
     <script src="Skins/AngularAdmin/assets/vendors/dropify/dist/js/dropify.min.js"></script>
 
