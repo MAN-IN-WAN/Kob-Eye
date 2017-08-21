@@ -7,15 +7,16 @@ class EsxVm extends genericClass {
             $new = true;
         }
         parent::Save();
-        if ($new) $this->checkBorgRepo();
+        if ($new&&parent::Verify()) $this->checkBorgRepo();
         return true;
     }
     public function Verify() {
-        parent::Verify();
+
         //test existence du dépo borg
         if (!$this->getOneParent('BorgRepo')){
             $this->addWarning(array('Message'=> 'Le dépôt Borg est manquant, veuillez utiliser la fonction de vérification du dépôt afin de le créer.'));
         }
+        return parent::Verify();
     }
     public function checkBorgRepo() {
         //test existence d'un borg repo correspondant
@@ -24,6 +25,7 @@ class EsxVm extends genericClass {
             $borg = genericClass::createInstance('AbtelBackup','BorgRepo');
             $borg->Titre = "BORG: ".$this->Titre;
             $borg->Path = "/backup/borg/EsxVm/".Utils::checkSyntaxe($this->Titre);
+            $borg->Save();
             if ($borg->Save()){
                 $this->addSuccess(array('Message' => 'Le dépôt Borg a été créé avec succès'));
                 $this->addParent($borg);
@@ -46,5 +48,15 @@ class EsxVm extends genericClass {
             return true;
         }else $this->AddWarning(array("Message"=>"Aucun processus trouvé."));
         return false;
+    }
+    public function createRestorePoint($time,$det) {
+        $borg = $this->getOneParent('BorgRepo');
+        $rp = genericClass::createInstance('AbtelBackup','RestorePoint');
+        $rp->addParent($this);
+        $rp->addParent($borg);
+        $rp->Titre= "[VM] ".$this->Titre." > ".date('d/m/Y H:i:s',$time)." >  ".$time;
+        $rp->Name= $time;
+        $rp->Details = $det;
+        $rp->Save();
     }
 }

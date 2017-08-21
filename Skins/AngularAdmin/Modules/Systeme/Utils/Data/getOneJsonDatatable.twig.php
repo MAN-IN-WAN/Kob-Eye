@@ -19,7 +19,7 @@ foreach ($vars['fields'] as $f){
     }
     if ($f['type']=='text'||$f['type']=='raw'){
         //transformation des timestamps en format js
-        $vars['row']->{$f['name']} = str_replace("\n",'\\\n',$vars['row']->{$f['name']});
+        $vars['row']->{$f['name']} = Utils::cleanJson($vars['row']->{$f['name']});
     }
     if ($f['type']=='fkey'&&$f['card']=='short'){
         if ($vars['row']->{$f['name']} > 0) {

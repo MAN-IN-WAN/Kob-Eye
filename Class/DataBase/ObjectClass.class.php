@@ -455,7 +455,12 @@ class ObjectClass extends Root{
 					break;
 					case "rkey":
 					case "fkey":
-						$as = $this->getAssociation($el["title"]);
+						//nom de lobjet distant
+						$name= explode(',',$el["attributes"]["data"]);
+						if ($el['type']=="fkey")
+							$as = $this->getParentAssociation($el["title"],$name[0]);
+						else
+                            $as = $this->getChildAssociation($el["title"],$name[0]);
 						if (!is_object($as)){
 							//throw new Exception("MAUVAISE DESTINATION DE CLEF OU MODULE".print_r($el,true), 1);
 							$GLOBALS["Systeme"]->Log->log("*************** ERREUR (MAUVAISE DESTINATION DE CLEF OU MODULE) ***************",$el);

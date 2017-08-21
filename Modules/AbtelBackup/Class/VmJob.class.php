@@ -18,13 +18,21 @@ class VmJob extends genericClass {
     public function createActivity($title) {
         $act = genericClass::createInstance('AbtelBackup','Activity');
         $act->addParent($this);
-        $act->Titre = '[VMJOB] '.$this->Titre.' > '.$title;
+        $act->Titre = '[VMJOB] '.date('d/m/Y H:i:s').' > '.$this->Titre.' > '.$title;
         $act->Started = true;
         $act->Progression = 0;
         $act->Save();
         return $act;
     }
     public function run() {
+        //test running
+        if ($this->Running) {
+            $act = $this->createActivity(' > Impossible de démarrer, lejob est déjà en cours d\'éxécution');
+            $act->Terminate();
+            return;
+        }
+        $this->Running = true;
+        parent::Save();
         //init
         $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=1");
         //pour chaque vm
@@ -32,12 +40,14 @@ class VmJob extends genericClass {
         foreach ($vms as $v){
             $esx = $v->getOneParent('Esx');
             $borg = $v->getOneParent('BorgRepo');
-            $act = $this->createActivity('Nettoyage des archives');
+            $act = $this->createActivity($v->Titre.' > Nettoyage des archives');
             $act->addDetails('Suppression du script ghettoVCB','yellow');
             //nettoyage sauvegarde précédentes
             $act->addDetails($v->Titre.' ---> suppression du script ghettoVCB');
             $esx->remoteExec("if [ -f /ghettoVCB.sh ]; then rm /ghettoVCB.sh; fi");
             $act->addProgression(15);
+            $this->Progression = 5;
+            parent::Save();
             $act->addDetails($v->Titre.' ---> suppression des snapshots');
             $esx->remoteExec("vim-cmd vmsvc/snapshot.removeall ".$v->RemoteId." && sleep 5");
             $act->addProgression(15);
@@ -45,15 +55,17 @@ class VmJob extends genericClass {
             $esx->remoteExec("if [ -d '/tmp/ghettoVCB.work' ]; then rm -Rf '/tmp/ghettoVCB.work'; fi");
             $act->addProgression(15);
             $act->addDetails($v->Titre.' ---> suppression de la complete');
-            AbtelBackup::localExec("if [ -d '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre."' ]; then sudo rm -Rf '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre."'; fi");
-            $act->addProgression(15);
+            //AbtelBackup::localExec("if [ -d '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre."' ]; then sudo rm -Rf '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre."'; fi");
+            //$act->addProgression(15);
             AbtelBackup::localExec("if [ -d '/backup/nfs/".$v->Titre."' ]; then sudo rm -Rf '/backup/nfs/".$v->Titre."'; fi");
-            $act->addProgression(15);
+            $act->addProgression(30);
             $act->addDetails($v->Titre.' ---> suppression archive');
-            AbtelBackup::localExec("if [ -f '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar' ]; then sudo rm -f /backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar; fi");
+            //AbtelBackup::localExec("if [ -f '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar' ]; then sudo rm -f /backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar; fi");
+            AbtelBackup::localExec("if [ -f '/backup/nfs/".$v->Titre.".tar' ]; then sudo rm -f /backup/nfs/".$v->Titre.".tar; fi");
             $act->addProgression(25);
 
-
+            $this->Progression = 10;
+            parent::Save();
             //creation de la configuration
             $config='VM_BACKUP_VOLUME=/vmfs/volumes/BORG/
 DISK_BACKUP_FORMAT=thin
@@ -86,33 +98,51 @@ WORKDIR_DEBUG=0
 VM_SHUTDOWN_ORDER=
 VM_STARTUP_ORDER=
 ';
-            $act = $this->createActivity('Configuration vmjob');
+            $act = $this->createActivity($v->Titre.' > Configuration vmjob');
             $act->addDetails('-> configuration vmjob','yellow');
             try {
                 $act->addDetails($v->Titre.' ---> creation de la config ghettoVCB');
                 $esx->remoteExec("echo '$config' > /ghettovcb.conf");
                 $act->addProgression(50);
+                $this->Progression = 15;
+                parent::Save();
                 $act->addDetails($v->Titre.' ---> copy du script ghettoVCB');
                 $esx->copyFile('ghettoVCB.sh');
                 $act->addProgression(50);
-                $act = $this->createActivity('Clonage vmjob');
+                $act = $this->createActivity($v->Titre.' > Clonage vmjob');
                 $act->addDetails($v->Titre.' ---> clonage de la vm');
                 $esx->remoteExec('sh ghettoVCB.sh -m "' . $v->Titre . '" -g ghettovcb.conf',$act);
-                $act->addProgression(2);
-                $act = $this->createActivity('Compression vmjob');
+                $act->setProgression(100);
+                $this->Progression = 50;
+                parent::Save();
+                $act = $this->createActivity($v->Titre.' > Compression vmjob');
                 $act->addDetails($v->Titre.' ---> compression du clone');
-                AbtelBackup::localExec("sudo tar cvSf '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar' '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre."/".$v->Titre."-A'");
+                //AbtelBackup::localExec("sudo tar cvSf '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar' '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre."/".$v->Titre."-A'");
+                AbtelBackup::localExec("sudo tar cvSf '/backup/nfs/".$v->Titre.".tar' '/backup/nfs/".$v->Titre."/".$v->Titre."-A'");
+                $this->Progression = 75;
+                parent::Save();
                 $act->addProgression(100);
-                $act = $this->createActivity('Déduplication vmjob');
+                $act = $this->createActivity($v->Titre.' > Déduplication vmjob');
                 $act->addDetails($v->Titre.' ---> déduplication de la vm');
-                AbtelBackup::localExec("borg create --compression lz4 ".$borg->Path."::".time()." '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar'");
-                $act->addProgression(100);
+                //AbtelBackup::localExec("export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".time()." '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar'",$act);
+                $total = AbtelBackup::getFileSize('/backup/nfs/'.$v->Titre.'.tar');
+                $point = time();
+                $det = AbtelBackup::localExec("export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".$point." '/backup/nfs/".$v->Titre.".tar'",$act,$total);
+                //création du point de restauration
+                $v->createRestorePoint($point,$det);
+                $act->setProgression(100);
             }catch (Exception $e){
                 $act->addDetails($v->Titre." ERROR => ".$e->getMessage(),'red');
                 $act->Terminated = true;
                 $act->Errors = true;
                 $act->Save();
+                $this->Running = false;
+                $this->Progression = 0;
+                parent::Save();
             }
+            $this->Running = false;
+            $this->Progression = 0;
+            parent::Save();
         }
     }
 }

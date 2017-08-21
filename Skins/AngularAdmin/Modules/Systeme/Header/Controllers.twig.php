@@ -31,12 +31,22 @@ foreach (Sys::$User->Menus as $m){
         //controller tableau de bord ou page single
         $tmp = array();
         $info = Info::getInfos($m->Alias);
-        $tab = array($info['Module'], $info['ObjectType'],'Controllers');
+        if(!isset($info['ObjectType'])) {
+            $tab = array($info['Query'], 'Controllers');
+        }else{
+            $tab = array($info['Module'], $info['ObjectType'],'Controllers');
+        }
+
         $blinfo = Bloc::lookForInterface($tab,'Skins/AngularAdmin/Modules',true);
         if (!empty($blinfo)){
             //surcharge de controller
-            $tmp['overload'] = $info['Module'].'/'.$info['ObjectType'].'/Controllers?Chemin='.$info['Module'].'/'.$info['ObjectType'].'/Controllers&Url='.$m->Url;
-            $tmp['identifier'] = $info['Module'] . $info['ObjectType'];
+            if(!isset($info['ObjectType'])) {
+                $tmp['overload'] = $info['Query'].'/Controllers?Chemin='.$info['Query'].'/Controllers&Url='.$m->Url;
+            }else{
+                $tmp['overload'] = $info['Module'].'/'.$info['ObjectType'].'/Controllers?Chemin='.$info['Module'].'/'.$info['ObjectType'].'/Controllers&Url='.$m->Url;
+            }
+
+            $tmp['identifier'] = $m->Url;
             $vars["controllers"][$tmp['identifier']] = $tmp;
         }else{
             $tmp['identifier'] = $m->Url;
