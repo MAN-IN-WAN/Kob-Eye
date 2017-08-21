@@ -134,7 +134,7 @@ class AbtelBackup extends Module{
         return $out[1];
     }
     static function getFileSize($path){
-        $output = AbtelBackup::localExec('/usr/bin/ls -l '.$path);
+        $output = AbtelBackup::localExec('/usr/bin/ls -l "'.$path.'"');
         preg_match('#^[rwx-]+ [0-9]{1} [^ ]+ [^ ]+ ([0-9]+)#',$output,$out);
         return $out[1];
     }

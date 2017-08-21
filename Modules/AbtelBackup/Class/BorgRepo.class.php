@@ -1,5 +1,14 @@
 <?php
 class BorgRepo extends genericClass {
+    public function Delete() {
+        //suppression des points de restauration
+        $rps = $this->getChildren('RestorePoint');
+        foreach ($rps as $rp)$rp->Delete();
+        //suppression du dépot borg physique
+        if (!AbtelBackup::localExec('/usr/bin/rm -Rf "'.$this->Path.'"'))
+            $this->addError(array('Message'=>'Impossible de supprimer le dossier '.$this->Path.'. Détail: '.$e->getMessage()));
+        parent::Delete();
+    }
     public function Save() {
         $new = false;
         if (!$this->Id){

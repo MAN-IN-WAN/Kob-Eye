@@ -17,6 +17,7 @@ foreach (Sys::$User->Menus as $m){
             $tmp['identifier'] = $info['Module'] . $info['ObjectType'];
             $tmp['store'] = true;
             $tmp['name'] = $m->Url . $menu->Url;
+            $tmp['url'] = $m->Url . '/' . $menu->Url;
             $tmp['module'] = $info['Module'];
             $tmp['objecttype'] = $info['ObjectType'];
             $o = genericClass::createInstance($info['Module'], $info['ObjectType']);

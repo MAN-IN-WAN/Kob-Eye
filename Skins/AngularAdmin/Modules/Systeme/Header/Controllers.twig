@@ -147,6 +147,9 @@
                     console.log('save obj',data);
                 });
             }
+            $scope.goBack = function (){
+
+            }
             $scope.delete = function (item){
                 console.log('edit ',item);
                 swal({
@@ -164,6 +167,8 @@
                         .success(function(data) {
                             console.log('store > {{ c.module }}/{{ c.objecttype }} > deleted '+item.id, data);
                             {{ c.identifier }}Store.refresh();
+                            //redirection à la liste
+                            $location.path('{{ c.url }}');
                     });
                 });
             }

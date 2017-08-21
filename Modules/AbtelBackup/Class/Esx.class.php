@@ -24,17 +24,23 @@ class Esx extends genericClass {
                 if (!ssh2_auth_password($connection, $this->Login, $this->Password)) {
                     $this->addError(array("Message" => "Impossible de s'authentifier sur l'hôte " . $this->IP . ". Veuillez vérifier vos identifiants."));
                     return false;
+                }else{
+                    $this->addWarning(array("Message" => "Connexion avec identifiant /mot de passe. Veuillez générer les clefs publique /privées."));
                 }
             }else{
                 //connexion avec clef ssh
 //                if (!ssh2_auth_pubkey_file($connection,$this->Login,$this->PublicKey,$this->PrivateKey)){
                 if (!ssh2_auth_pubkey_file($connection,$this->Login,'.ssh/id_'.$this->IP.'.pub','.ssh/id_'.$this->IP)){
-                $this->Status = false;
-                parent::Save();
+                    $this->Status = false;
+                    parent::Save();
                     $this->addError(array("Message" => "Impossible de s'authentifier sur l'hôte " . $this->IP . ". Veuillez vérifier vos clefs publique / privée ou les regénérer."));
                     return false;
                 }else{
-                    $this->addSuccess(array("Message" => "Connexion réussie avec les clefs publique / privée ."));
+                    if (!$this->Status) {
+                        $this->Status = true;
+                        parent::Save();
+                    }
+                    $this->addSuccess(array("Message" => "Connexion réussie avec les clefs publique / privée .".$this->Status));
                 }
             }
             /*$stream1= ssh2_exec($connection, trim("hostname")."\n");*/
@@ -70,7 +76,7 @@ class Esx extends genericClass {
             $stream2 =  AbtelBackup::localExec("cd .ssh && cat id_" . $this->IP . ".pub");
             $this->PublicKey = $stream2;
             //publication de la clef
-            $stream3 = $this->remoteExec("echo ".$this->PublicKey." >>/etc/ssh/keys-root/authorized_keys");
+            $stream3 = $this->remoteExec("echo '".$this->PublicKey."' >>/etc/ssh/keys-root/authorized_keys");
         }catch (Exception $e){
             $this->addError(array("Message"=>"Une erreur interne s'est produite lors de la tentative de création des clefs SSH. Détails: ".$e->getMessage()));
             $this->Status = false;
@@ -91,7 +97,9 @@ class Esx extends genericClass {
             array_shift($stream3);
             array_pop($stream3);
             foreach ($stream3 as $s){
-                $s = preg_match("#([0-9]+)[ ]{2,100}(.*?)[ ]{2,100}(.*?)[ \t]{2,100}?([^ ]+?)[ \t]{2,100}?([^ ]+?)[ \t]{2,100}(.*)$#",$s,$out);
+                print_r($s);
+                if (!preg_match("#([0-9]+)[ ]{2,100}(.*?)[ ]{2,100}(.*?)[ \t]{2,100}?([^ ]+?)[ \t]{2,100}?([^ ]+?)[ \t]{2,100}(.*)$#",$s,$out)) continue;
+                print_r($out);
                 //création des vmsen vérifiant qu'elle n'existe pas déjà , sinon mise à jour.
                 $vm = Sys::getOneData('AbtelBackup','Esx/'.$this->Id.'/EsxVm/RemoteId='.$out[1]);
                 if (!$vm){

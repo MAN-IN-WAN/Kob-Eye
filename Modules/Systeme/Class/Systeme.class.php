@@ -294,7 +294,6 @@ class Systeme extends Module {
         $month = intval(date('m',$d));
         $monthday = date('j',$d);
         $tasks = Sys::getData('Systeme','ScheduledTask/Enabled=1&(!Minute=*+Minute='.$minute.'!)&(!Heure=*+Heure='.$hour.'!)&(!Jour=*+Jour='.$monthday.'!)&(!Mois=*+Mois='.$month.'!)&(!(!Lundi=0&Mardi=0&Mercredi=0&Jeudi=0&Vendredi=0&Samedi=0&Dimanche=0!)+(!'.$weekday.'=1!)!)');
-
         foreach ($tasks as $t) {
             if ($t->TaskId>0){
                 //execution objet

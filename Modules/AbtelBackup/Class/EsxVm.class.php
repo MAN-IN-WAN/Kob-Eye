@@ -1,5 +1,12 @@
 <?php
 class EsxVm extends genericClass {
+    public function Delete() {
+        //suppression des dépots borg
+        $borg = $this->getOneParent('BorgRepo');
+        if ($borg)
+            $borg->delete();
+        parent::Delete();
+    }
     public function Save () {
         $new = false;
         if (!$this->Id){
