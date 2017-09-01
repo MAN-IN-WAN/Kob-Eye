@@ -11,7 +11,7 @@
                             <i class="counter-icon icmn-spinner2"></i>
                             <span class="counter-count">
                                 <i class="icmn-arrow-right5"></i>
-                                <span class="counter-init" data-from="0" data-to="{[{ NbRunning }]}"></span>
+                                <span class="counter-init" value="0" count-to="{[{ NbRunning }]}" duration="1"></span>
                             </span>
                         </div>
                     </div>
@@ -25,7 +25,7 @@
                             <i class="counter-icon icmn-calendar3"></i>
                             <span class="counter-count">
                                 <i class="icmn-arrow-right5"></i>
-                                <span class="counter-init" data-from="0" data-to="{{ NbToday }}"></span>
+                                <span class="counter-init" value="0" count-to="{{ NbToday }}" duration="1"></span>
                             </span>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                             <i class="counter-icon icmn-server"></i>
                             <span class="counter-count">
                                 <i class="icmn-arrow-right5"></i>
-                                <span class="counter-init" data-from="0" data-to="{{ NbVm }}"></span>
+                                <span class="counter-init" value="0" count-to="{{ NbVm }}" duration="1"></span>
                             </span>
                         </div>
                     </div>
@@ -53,7 +53,7 @@
                             <i class="counter-icon icmn-display4"></i>
                             <span class="counter-count">
                                 <i class="icmn-arrow-right5"></i>
-                                <span class="counter-init" data-from="0" data-to="{{ NbSharing }}"></span>
+                                <span class="counter-init" value="0" count-to="{{ NbSharing }}" duration="1"></span>
                             </span>
                         </div>
                     </div>
@@ -130,8 +130,8 @@
 
         -->
         <div class="row" id="dashCalendar">
-            <div class="col-xl-6">
-                <div class="widget widget-two">
+            <div class="col-xl-3">
+                <div class="widget widget-two widgetTop">
                     <div class="diskChart">
                         <div class="widget-header">
                             Utilisation de l'<strong>espace disque</strong> global
@@ -143,13 +143,40 @@
                 </div>
             </div>
             <div class="col-xl-6">
-                <div class="widget widget-two">
+                <div class="widget widget-two widgetTop">
                     <div class="usageCompare">
                         <div class="widget-header">
                             Utilisation de l'<strong>espace disque</strong> par VM
                         </div>
-                        <div class="widget-body clearfix">
-blublu
+                        <div class="widget-body clearfix" style="overflow: hidden; height: 285px;">
+                            {#<div class="custom-scroll jspScrollable" >#}
+                            <div>
+                            {{ barsHtml | raw }}
+                            </div>
+                            {#</div>#}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3">
+                <div class="widget widget-seven widgetTop background-info" style="background-image: url(/Skins/AngularAdmin/assets/common/img/temp/photos/9.jpeg)">
+                    <div class="carousel-widget-2 carousel slide" data-ride="carousel">
+                        <div class="carousel-inner" role="listbox">
+                            <div class="carousel-item active">
+                                <a href="javascript: void(0);" class="widget-body">
+                                    <h2>Voir la documentation</h2>
+                                </a>
+                            </div>
+                            <div class="carousel-item">
+                                <a href="javascript: void(0);" class="widget-body">
+                                    <h2>Clean</h2>
+                                    <p>
+                                        Simple
+                                        <br />
+                                        Responsive
+                                    </p>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -233,7 +260,7 @@ blublu
                 </div>
             </div>
         </div>
-        <div class="row">
+        {#<div class="row">
             <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
                 <div class="widget widget-seven">
                     <div class="carousel-widget carousel slide" data-ride="carousel">
@@ -328,35 +355,8 @@ blublu
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
-                <div class="widget widget-seven background-info" style="background-image: url(/Skins/AngularAdmin/assets/common/img/temp/photos/9.jpeg)">
-                    <div class="carousel-widget-2 carousel slide" data-ride="carousel">
-                        <div class="carousel-inner" role="listbox">
-                            <div class="carousel-item active">
-                                <a href="javascript: void(0);" class="widget-body">
-                                    <h2>Clean</h2>
-                                    <p>
-                                        Simple
-                                        <br />
-                                        Responsive
-                                    </p>
-                                </a>
-                            </div>
-                            <div class="carousel-item">
-                                <a href="javascript: void(0);" class="widget-body">
-                                    <h2>Clean</h2>
-                                    <p>
-                                        Simple
-                                        <br />
-                                        Responsive
-                                    </p>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+        </div> #}
 
     <!-- End Dashboard -->
 
@@ -369,9 +369,9 @@ blublu
 
         ///////////////////////////////////////////////////////////
         // COUNTERS
-        $('.counter-init').countTo({
+        /*$('.counter-init').countTo({
             speed: 1500
-        });
+        });*/
 
         ///////////////////////////////////////////////////////////
         // ADJUSTABLE TEXTAREA

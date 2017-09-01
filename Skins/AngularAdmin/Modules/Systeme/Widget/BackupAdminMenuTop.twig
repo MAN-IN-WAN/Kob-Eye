@@ -4,8 +4,8 @@
         <a href="javascript: void(0);" class="dropdown-toggle dropdown-inline-button" data-toggle="dropdown" aria-expanded="false">
             <i class="dropdown-inline-button-icon icmn-folder-open"></i>
             {#<span id="eCount" class="{% if ECount > 0 %}danger{% else %}success{% endif %}">{{ ECount }}</span>#}
-            <span id="eCount" ng-class="{danger:BackupAdminTopMenuStore.data.length>0,success:BackupAdminTopMenuStore.data.length==0}">{[{ BackupAdminTopMenuStore.data.length }]}</span>
-            <span id="rCount" >{[{ BackupAdminTopMenuStoreBis.data.length }]}</span>
+            <span id="eCount" ng-class="{danger:BackupAdminTopMenuStore.data.length>0,success:BackupAdminTopMenuStore.data.length==0}">{[{ BackupAdminTopMenuStore.getTotal() }]}</span>
+            <span id="rCount" >{[{ BackupAdminTopMenuStoreBis.getTotal() }]}</span>
             <span class="hidden-lg-down">Statut des jobs</span>
             <span class="caret"></span>
         </a>
@@ -94,14 +94,14 @@
     </div>
 </div>
 <script type="text/javascript">
-    var interErrors = setInterval(function(){
+/*    var interErrors = setInterval(function(){
         var tempDiv = $('#AlertesJobsTop');
         var scopus =  angular.element(tempDiv[0]).scope();
         if(scopus != undefined && scopus.BackupAdminTopMenuStore != undefined){
             scopus.BackupAdminTopMenuStore.pageLoaded = 0;
             scopus.BackupAdminTopMenuStore.getData(1);
         }
-    },60000);
+    },60000);*/
     $(document).on('hidden.bs.modal','.modal',function(){
         var tempDiv = $('#AlertesJobsTop');
         var scopus =  angular.element(tempDiv[0]).scope();

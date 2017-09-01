@@ -9,7 +9,8 @@ angular.module('cleanUI', [
 'uiSwitch',
 'ui.bootstrap',
 'CustomSelect',
-'checklist-model'
+'checklist-model',
+'countTo'
 ]).config(function($interpolateProvider){
 $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
 })
@@ -419,4 +420,8 @@ $('.left-menu-list-opened').removeClass('left-menu-list-opened');
 });
 }
 };
+});
+
+app.run(function($rootScope) {
+$rootScope.keys = Object.keys;
 });

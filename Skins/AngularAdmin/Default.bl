@@ -101,6 +101,7 @@
     <script src="Systeme/Header/App.json"></script>
     <script src="Systeme/Header/Controllers.json"></script>
     <script src="Systeme/Header/Store.json"></script>
+    <script src="Systeme/Header/Poller.json"></script>
 
     <!-- Angular Version Controllers -->
     <!-- <script src="Skins/AngularAdmin/pages/register.ctrl.js"></script> -->
@@ -135,6 +136,10 @@
     <script src="Skins/AngularAdmin/assets/vendors/angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
     <script src="Skins/AngularAdmin/assets/vendors/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
 
+    <!-- angular CountTO -->
+    <!--<script src="Skins/AngularAdmin/assets/vendors/angular-countTo/angular-count-to.min.js"></script>-->
+    <script src="Skins/AngularAdmin/assets/vendors/angular-countTo/count-to.js"></script>
+
     [IF [!Systeme::User::isRole(BACKUP_ADMIN)!]]
         <script src="Systeme/Header/BackupAdmin.json"></script>
     [/IF]
@@ -142,6 +147,11 @@
     [IF [!Systeme::User::isRole(PARC_TECH)!]]
 
     [/IF]
+
+    <!-- KobEye -->
+    <script src="Skins/AngularAdmin/assets/common/js/KEPoll.js"></script>
+
+
 [/HEADER]
 [BODY]class="theme-dark colorful-enabled  mode-material  mode-box-shadow menu-static" ng-controller="MainCtrl"[/BODY]
 [MODULE Systeme/Menu]

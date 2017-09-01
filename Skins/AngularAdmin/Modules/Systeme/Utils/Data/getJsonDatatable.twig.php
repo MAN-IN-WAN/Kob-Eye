@@ -36,6 +36,15 @@ foreach ($vars['rows'] as $k=>$v){
         if (isset($f['Values'])){
             $v->{$f['name'].'Label'} = $f['Values'][$v->{$f['name']}];
         }
+        if ($f['type']=='fkey'&&$f['card']=='short'){
+            if ($v->{$f['name']} > 0) {
+                $kk = Sys::getOneData($f['objectModule'], $f['objectName'] . '/' . $v->{$f['name']});
+                $v->{$f['name'].'label'} = $kk->getFirstSearchOrder();
+            }else{
+                $v->{$f['name'].'label'} = '';
+            }
+        }
+
     }
 }
 $vars['total'] = Sys::getCount($info['Module'],$vars['Path'].'/'.$filters);

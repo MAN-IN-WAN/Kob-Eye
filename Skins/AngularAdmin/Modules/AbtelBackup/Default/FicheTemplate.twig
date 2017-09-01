@@ -55,7 +55,7 @@
                                     <span class="label label-success" ng-if="obj.{{ field.name }}"><i class="fa fa-check"></i></span>
                                     <span class="label label-danger" ng-if="!obj.{{ field.name }}"><i class="fa fa-times"></i></span>
                                 {% elseif field.type == "fkey" and field.card == "short" %}
-                                    <a class="btn btn-primary btn-xs" href="#{{ field.link }}/{[{ obj.{{ field.name }} }]}">{[{ obj.{{ field.name }}label }]}</a>
+                                    <a class="btn btn-secondary btn-xs" href="#{{ field.link }}/{[{ obj.{{ field.name }} }]}">{[{ obj.{{ field.name }}label }]}</a>
                                 {% else %}
                                     <span  ng-bind-html="obj.{{ field.name }}"></span>
                                 {% endif %}
@@ -133,7 +133,20 @@
                 <h4 class="modal-title">{[{ function.title }]}</h4>
             </div>
             <div class="modal-body">
-                <ng-include src="function.url"></ng-include>
+                <div id="ajaxwrapper"
+                     ng-show="function.loaded"
+                     ng-include="function.url" onload="function.loaded = true">
+                </div>
+
+                <div class="text-center"
+                     ng-hide="function.loaded">
+                    <br />
+                    Chargement ...
+                    <br />
+                    <div class="spinload"></div>
+                </div>
+
+                <!--<ng-include src="function.url"></ng-include>-->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn" data-dismiss="modal">Fermer</button>
@@ -141,4 +154,5 @@
         </div>
     </div>
 </div>
+
 

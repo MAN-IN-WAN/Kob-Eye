@@ -1,0 +1,49 @@
+app.service('Poller',function($http){
+    var pollBreak = false,
+        interval = 1000,
+        duration = 15
+        lastPoll = null;
+
+    return {
+        poll:poll,
+        stopPoll:stopPoll
+    };
+
+    function poll(callback){
+        if(typeof callback == 'undefined')
+            callback = console.log;
+
+        pollBreak = false;
+
+        console.log('&&&&&&&&&&&&&&&&&',lastPoll);
+
+        var data = {
+            pollStart: lastPoll,
+            pollInterval : interval,
+            pollDuration : duration
+        };
+
+        $http.post("/Systeme/Utils/pollAll.json",data)
+            .then(function(data) {
+                callback(data);
+                lastPoll = data.lastSearch;
+                if(!pollBreak)
+                    poll(callback);
+            }, function(response){
+                console.log('blarg',response)
+            });
+
+
+        return false;
+    }
+
+    function stopPoll(){
+        pollBreak = true;
+    }
+
+
+});
+
+
+
+
