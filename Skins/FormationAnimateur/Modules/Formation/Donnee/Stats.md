@@ -271,4 +271,84 @@
 
         </script>
     [/CASE]
+    [CASE 6]
+        [!qty:=0!]
+        [!sum:=0!]
+        [!res:=100!]
+        [STORPROC Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|R]
+            [!qty+=1!]
+            [!sum+=[!R::Valeur!]!]
+        [/STORPROC]
+        [!moy:=[!sum!]!]
+        [!moy/=[!qty!]!]
+        [!res-=[!moy!]!]
+
+        <div class="well">
+            <p>[!moy!] %</p>
+        </div>
+        <canvas id="myChart" width="500" height="500" style="width: 55%;margin-left: 12%"></canvas>
+
+        <script>
+
+            // Get context with jQuery - using jQuery's .get() method.
+            var ctx = $("#myChart").get(0).getContext("2d");
+            var data = [{
+                    value: [!moy!],
+                    color:"#F7464A",
+                    highlight: "#FF5A5E",
+                    label: "[!TQ::Nom!]"
+                },{
+                    value: [!res!],
+                    color:"#c0c0c0",
+                    highlight: "#7e7e7e",
+                    label: "Autre"
+            }];
+
+
+            var myNewChart = new Chart(ctx).Pie(data, {
+                //Boolean - Whether we should show a stroke on each segment
+                segmentShowStroke : true,
+
+                //String - The colour of each segment stroke
+                segmentStrokeColor : "#fff",
+
+                //Number - The width of each segment stroke
+                segmentStrokeWidth : 2,
+
+                //Number - The percentage of the chart that we cut out of the middle
+                percentageInnerCutout : 0, // This is 0 for Pie charts
+
+                //Number - Amount of animation steps
+                animationSteps : 100,
+
+                //String - Animation easing effect
+                animationEasing : "easeOutBounce",
+
+                //Boolean - Whether we animate the rotation of the Doughnut
+                animateRotate : true,
+
+                //Boolean - Whether we animate scaling the Doughnut from the centre
+                animateScale : false,
+
+                //String - A legend template
+                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
+
+            });
+
+
+        </script>
+
+    [/CASE]
+    [CASE 7]
+        [STORPROC Formation/Session/[!S::Id!]/Equipe/*/Reponse/TypeQuestionId=[!CD::TypeQuestionId!]|R]
+        [IF [!R::Valeur!]]
+        [!val:=[!Utils::unserialize([!R::Valeur!])!]!]
+        <div class="well">
+            [STORPROC [!val!]|v]
+            <p>[!v!]</p>
+            [/STORPROC]
+        </div>
+        [/IF]
+        [/STORPROC]
+    [/CASE]
 [/SWITCH]

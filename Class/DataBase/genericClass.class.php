@@ -129,7 +129,7 @@ class genericClass extends Root {
 				}
 			}
 		}
-        klog::l($Data.'->'.$this -> {$Data});
+        //klog::l($Data.'->'.$this -> {$Data});
 		//Donc pas une propriete , donc il s agit d une variable
 		if (isset($this -> {$Data}))
 			return $this -> {$Data};
@@ -1470,7 +1470,7 @@ class genericClass extends Root {
     }
     //getter php
     public function __get($Prop){
-        klog::l($Prop);
+        //klog::l($Prop);
         return $this->Get($Prop);
     }
 
@@ -1503,8 +1503,7 @@ class genericClass extends Root {
 					case "text" :
 						break;
                     case "date" :
-                        if(!is_int($newValue))
-                            $newValue = strtotime($newValue);
+                            $newValue = intval($newValue);
                         break;
 					default :
 						if (is_string($newValue))

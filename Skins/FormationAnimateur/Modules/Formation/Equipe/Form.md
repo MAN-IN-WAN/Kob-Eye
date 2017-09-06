@@ -21,8 +21,7 @@
                 <div class="form-group">
                     <label for="donn-[!D::Numero!]" class="col-sm-8 control-label">[!D::Titre!] <strong>[!TQ::Nom!]</strong></label>
                     <div class="col-sm-4">
-                        [!V:=[!Utils::parseInt([!R::Valeur!])!]!]
-                        <input type="text" class="form-control" id="donn-[!D::Numero!]" name="donn-[!D::Numero!]" value="[!R::Valeur!]" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="[!V!]">
+                        <input type="text" class="form-control" id="donn-[!D::Numero!]" name="donn-[!D::Numero!]" value="[!R::Valeur!]" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="[!R::Valeur!]">
                     </div>
                 </div>
                 <script>
@@ -37,8 +36,7 @@
                 <div class="form-group">
                     <label for="donn-[!D::Numero!]" class="col-sm-8 control-label">[!D::Titre!] <strong>[!TQ::Nom!]</strong></label>
                     <div class="col-sm-4">
-                        [!V:=[!Utils::parseInt([!R::Valeur!])!]!]
-                        <input type="text" class="form-control" id="donn-[!D::Numero!]" name="donn-[!D::Numero!]" value="[!V!]">
+                        <input type="text" class="form-control" id="donn-[!D::Numero!]" name="donn-[!D::Numero!]" value="[!R::Valeur!]">
                     </div>
                 </div>
             [/CASE]
@@ -69,6 +67,25 @@
                                 <option value="[!TQV::Id!]" [IF [!R::Valeur!]=[!TQV::Id!]]selected="selected"[/IF]>[!TQV::Valeur!]</option>
                             [/STORPROC]
                         </select>
+                    </div>
+                </div>
+            [/CASE]
+            [CASE 6] //Pourcentage
+                <div class="form-group">
+                    <label for="donn-[!D::Numero!]" class="col-sm-8 control-label">[!D::Titre!] <strong>[!TQ::Nom!]</strong></label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="donn-[!D::Numero!]" name="donn-[!D::Numero!]" value="[!R::Valeur!]"><span>%</span>
+                    </div>
+                </div>
+            [/CASE]
+            [CASE 7] //3 inputs dont 1 obli
+                <div class="form-group">
+                    <label for="donn-[!D::Numero!]" class="col-sm-12 control-label">[!D::Titre!] <strong>[!TQ::Nom!]</strong></label>
+                    <div class="col-sm-12">
+                        [!vals:=[!Utils::unserialize([!R::Valeur!])!]!]
+                        <input type="text" class="form-control" id="donn-[!D::Numero!]-1" name="donn-[!D::Numero!][0]" value="[!vals::0!]">
+                        <input type="text" class="form-control" id="donn-[!D::Numero!]-2" name="donn-[!D::Numero!][1]" value="[IF [!vals::1!]!=0][!vals::1!][/IF]">
+                        <input type="text" class="form-control" id="donn-[!D::Numero!]-3" name="donn-[!D::Numero!][2]" value="[IF [!vals::2!]!=0][!vals::2!][/IF]">
                     </div>
                 </div>
             [/CASE]
