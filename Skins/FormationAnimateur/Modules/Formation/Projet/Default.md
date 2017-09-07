@@ -97,12 +97,12 @@
                             </div>
                             <div class="panel-footer">
                                 [IF [!S::EnCours!]]
-                                <span class="pull-left">Démarrée le [DATE d/m/Y H:i:s][!S::Date!][/DATE]</span>
+                                <span class="pull-left">Démarrée le [DATE m/d/Y H:i:s][!S::Date!][/DATE]</span>
                                 [ELSE]
                                 [IF [!S::Termine!]]
-                                <span class="pull-left">Session éxécutée le [DATE d/m/Y H:i:s][!S::Date!][/DATE]</span>
+                                <span class="pull-left">Terminée depuis le [DATE m/d/Y H:i:s][!S::TermineLe!][/DATE]</span>
                                 [ELSE]
-                                <div>Prévue pour le [DATE d/m/Y][!S::Date!][/DATE]</div>
+                                <div>Prévue pour le [DATE m/d/Y][!S::Date!][/DATE]</div>
                                 [/IF]
                                 [/IF]
                                 <!--<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>-->
@@ -134,13 +134,25 @@
             <div class="modal-body">
                 <div id="erreurPlace"></div>
                 <form class="form-horizontal" id="newSessionForm">
-                    <div class="form-group">
+<!--                    <div class="form-group">
                         <label for="inputRegion" class="col-sm-2 control-label">Région</label>
                         <div class="col-sm-10">
                             <select class="form-control" id="inputRegion" placeholder="Sélectionnez une région" name="Region">
                                 [STORPROC Formation/Region|R]
                                 <option value="[!R::Id!]" [IF [!Pos!]=1]selected="selected"[/IF]>[!R::Nom!]</option>
                                 [/STORPROC]
+                            </select>
+                        </div>
+                    </div>-->
+<div class="form-group">
+                        <label for="inputRegion" class="col-sm-2 control-label">Région</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="inputRegion" placeholder="Sélectionnez une session" name="Titre">
+                                <option value="Paris">Paris</option>
+                                <option value="Le mans">Le mans</option>
+                                <option value="Marne la vallée">Marne la vallée</option>
+                                <option value="Aix en provence">Aix en provence</option>
+                                <option value="Biarritz">Biarritz</option>
                             </select>
                         </div>
                     </div>

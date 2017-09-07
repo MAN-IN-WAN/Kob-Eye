@@ -108,6 +108,10 @@ table tr td.table-details{
 }
 
 
+.widgetTop{
+    height: 350px;
+}
+
 
 
 @media screen and (max-width: 767px) {

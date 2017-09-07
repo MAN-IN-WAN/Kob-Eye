@@ -316,7 +316,6 @@
                         <div class="huge">Table Num [!E::Numero!]</div>
                         <div>Progression [!Math::Round([!Prog:*100!])!] %</div>
                         <div>Question [!NbRepEq!] / [!NbTq!] </div>
-                        <!--<a href="" class="btn btn-primary btn-block devbutton" data-id="[!E::Id!]" data-table="[!E::Numero!]">Dev</a>-->
                         <a href="" class="btn btn-warning btn-block edittablebutton" data-id="[!E::Id!]" data-table="[!E::Numero!]">Modifier</a>
                         <a href="?action=SuppEq&id=[!E::Id!]" class="btn btn-danger btn-block">Supprimer</a>
                     </div>
@@ -391,20 +390,6 @@
         });
     });
 
-    //Debug mode
-    $('.devbutton').on('click',function (e){
-        e.preventDefault();
-        $('#edittable').modal('show');
-        $('#edittable .modal-title').html('Modification de la table '+$(this).attr('data-table'));
-        $('#edittable .modal-body').html('Chargement');
-        $.ajax({
-            url: '/[!Lien!]/Equipe/'+$( this ).attr('data-id')+'/FormDev.htm',
-            context: $('#edittable .modal-body')
-        }).done(function(data) {
-            console.log('formulaire chargé');
-            $('#edittable .modal-body').html(data);
-        });
-    });
 </script>
 
 [IF [!RELOAD!]=]

@@ -484,4 +484,25 @@ app.controller('BackupAdminMenuTopCtrl', function($injector,$location, $scope, $
         }
     }
 
+    $scope.poll = function(module,object,lastPoll,interval,duration,callback){
+        pollBreak = false;
+
+        var data = {
+            pollModule : module,
+            pollObject : object,
+            pollStart : lastPoll,
+            pollInterval : interval,
+            pollDuration : duration
+        };
+        $http.post("/Systeme/Utils/pollEvents.json",data)
+            .success(function(data) {
+                callback(data);
+                if(!pollBreak)
+                    $scope.poll(module,object,lastPoll,interval,duration,callback);
+            });
+
+
+        return false;
+    }
+
 });
