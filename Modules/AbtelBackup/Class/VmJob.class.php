@@ -15,14 +15,21 @@ class VmJob extends genericClass {
             $j->run();
         }
     }
-    public function createActivity($title) {
+    public function createActivity($title,$vm) {
+
         $act = genericClass::createInstance('AbtelBackup','Activity');
         $act->addParent($this);
+        $act->addParent($vm);
         $act->Titre = '[VMJOB] '.date('d/m/Y H:i:s').' > '.$this->Titre.' > '.$title;
         $act->Started = true;
         $act->Progression = 0;
         $act->Save();
         return $act;
+    }
+    public function runNow() {
+        $cmd = 'bash -c "exec nohup setsid php cron.php backup.abtel.local AbtelBackup/VmJob/'.$this->Id.'/run.cron > /dev/null 2>&1 &"';
+        exec($cmd);
+        return true;
     }
     public function run() {
         //test running
@@ -40,7 +47,7 @@ class VmJob extends genericClass {
         foreach ($vms as $v){
             $esx = $v->getOneParent('Esx');
             $borg = $v->getOneParent('BorgRepo');
-            $act = $this->createActivity($v->Titre.' > Nettoyage des archives');
+            $act = $this->createActivity($v->Titre.' > Nettoyage des archives',$v);
             $act->addDetails('Suppression du script ghettoVCB','yellow');
             //nettoyage sauvegarde précédentes
             $act->addDetails($v->Titre.' ---> suppression du script ghettoVCB');
@@ -98,7 +105,7 @@ WORKDIR_DEBUG=0
 VM_SHUTDOWN_ORDER=
 VM_STARTUP_ORDER=
 ';
-            $act = $this->createActivity($v->Titre.' > Configuration vmjob');
+            $act = $this->createActivity($v->Titre.' > Configuration vmjob',$v);
             $act->addDetails('-> configuration vmjob','yellow');
             try {
                 $act->addDetails($v->Titre.' ---> creation de la config ghettoVCB');
@@ -108,21 +115,26 @@ VM_STARTUP_ORDER=
                 parent::Save();
                 $act->addDetails($v->Titre.' ---> copy du script ghettoVCB');
                 $esx->copyFile('ghettoVCB.sh');
-                $act->addProgression(50);
+                $act->addProgression(40);
+                $act->addDetails($v->Titre.' ---> montage du NFS');
+                $esx->remoteExec("esxcfg-nas -a BORG -o ".AbtelBackup::getMyIp()." -s /backup/nfs",null,true);
+                $act->addProgression(10);
+                $this->Progression = 20;
+                parent::Save();
                 $act = $this->createActivity($v->Titre.' > Clonage vmjob');
                 $act->addDetails($v->Titre.' ---> clonage de la vm');
                 $esx->remoteExec('sh ghettoVCB.sh -m "' . $v->Titre . '" -g ghettovcb.conf',$act);
                 $act->setProgression(100);
-                $this->Progression = 50;
+                $this->Progression = 45;
                 parent::Save();
-                $act = $this->createActivity($v->Titre.' > Compression vmjob');
+                $act = $this->createActivity($v->Titre.' > Compression vmjob',$v);
                 $act->addDetails($v->Titre.' ---> compression du clone');
                 //AbtelBackup::localExec("sudo tar cvSf '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar' '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre."/".$v->Titre."-A'");
                 AbtelBackup::localExec("sudo tar cvSf '/backup/nfs/".$v->Titre.".tar' '/backup/nfs/".$v->Titre."/".$v->Titre."-A'");
                 $this->Progression = 75;
                 parent::Save();
                 $act->addProgression(100);
-                $act = $this->createActivity($v->Titre.' > Déduplication vmjob');
+                $act = $this->createActivity($v->Titre.' > Déduplication vmjob',$v);
                 $act->addDetails($v->Titre.' ---> déduplication de la vm');
                 //AbtelBackup::localExec("export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".time()." '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar'",$act);
                 $total = AbtelBackup::getFileSize('/backup/nfs/'.$v->Titre.'.tar');
@@ -131,6 +143,10 @@ VM_STARTUP_ORDER=
                 //création du point de restauration
                 $v->createRestorePoint($point,$det);
                 $act->setProgression(100);
+                $act->addDetails($v->Titre.' ---> suppression archive');
+                //AbtelBackup::localExec("if [ -f '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar' ]; then sudo rm -f /backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar; fi");
+                AbtelBackup::localExec("if [ -f '/backup/nfs/".$v->Titre.".tar' ]; then sudo rm -f /backup/nfs/".$v->Titre.".tar; fi");
+
             }catch (Exception $e){
                 $act->addDetails($v->Titre." ERROR => ".$e->getMessage(),'red');
                 $act->Terminated = true;

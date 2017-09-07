@@ -270,7 +270,8 @@ class Utils {
         $text = str_replace("‘" , "'", $text);
         $text = str_replace("“" , '"', $text);
         $text = str_replace("”" , '"', $text);
-        $text = str_replace('"' , '\"', $text);
+        $text = str_replace('"' , "'", $text);
+        $text = str_replace('\:' , ":", $text);
         return $text;
     }
     public static function  isNull($P) {

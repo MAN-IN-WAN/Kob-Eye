@@ -13,7 +13,7 @@ class Apache extends genericClass {
 		if ($this->Ssl){
 			//test de l'activation ssl
 			$old = Sys::getOneData('Parc','Apache/'.$this->Id);
-			if ($old->Ssl) {
+			if (!$old->Ssl) {
 			    if (!$this->enableSsl()) return false;
             }
 		}

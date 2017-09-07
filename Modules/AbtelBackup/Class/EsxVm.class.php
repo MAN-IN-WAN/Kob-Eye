@@ -4,7 +4,7 @@ class EsxVm extends genericClass {
         //suppression des dépots borg
         $borg = $this->getOneParent('BorgRepo');
         if ($borg)
-            $borg->delete();
+            $borg->Delete();
         parent::Delete();
     }
     public function Save () {
@@ -32,16 +32,16 @@ class EsxVm extends genericClass {
             $borg = genericClass::createInstance('AbtelBackup','BorgRepo');
             $borg->Titre = "BORG: ".$this->Titre;
             $borg->Path = "/backup/borg/EsxVm/".Utils::checkSyntaxe($this->Titre);
-            $borg->Save();
             if ($borg->Save()){
                 $this->addSuccess(array('Message' => 'Le dépôt Borg a été créé avec succès'));
-                $this->addParent($borg);
-                $this->Save();
             }
             else {
                 $this->Error = array_merge($this->Error,$borg->Error);
+                $this->addError(array('Message' => 'Impossible de créer le dépot borg'));
                 return false;
             }
+            $this->addParent($borg);
+            $this->Save();
         }
         return true;
     }

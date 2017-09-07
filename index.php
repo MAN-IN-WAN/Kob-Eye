@@ -67,6 +67,7 @@ include('Class/Utils/UtilsArray.class.php');
 include('Class/Lib/xml2array.class.php');
 include('Class/Utils/Session.class.php');
 include('Class/Utils/JsonP.class.php');
+include('Class/Utils/BashColors.class.php');
 include('Class/More.php');
 include('Class/Template/Twig.class.php');
 //Twig template

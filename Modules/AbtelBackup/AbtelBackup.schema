@@ -7,6 +7,7 @@
 		<FUNCTION title="Rafraîchir l'inventaire">getInventory</FUNCTION>
 		<FUNCTION title="Regénérer les clefs SSH">installSshKey</FUNCTION>
 		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1" obligatoire="1" listDescr="Titre">Titre</PROPERTIES>
+		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1" obligatoire="1" listDescr="Titre">Zob</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" searchOrder="2" list="1" form="1" fiche="1" listDescr="IP" obligatoire="1">IP</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="3" list="1" fiche="1" form="1" listDescr="Actif" description="Actif">Enabled</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="4" list="1" fiche="1"  listDescr="Statut" description="Connexion complête">Status</PROPERTIES>
@@ -16,6 +17,8 @@
 		<PROPERTIES type="text" description="Clef publique Ssh">PublicKey</PROPERTIES>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="EsxVm" AccessPoint="1" driver="mysql" Description="Machine virtuelle"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Operations="delete,edit" Class="Modules/AbtelBackup/Class/EsxVm.class.php">
+		<FILTER name="Toutes les vms" color="warning" ></FILTER>
+		<FILTER name="Les vms sauvegardées" color="success" >BackupSize>0</FILTER>
 		<FUNCTION title="Vérification du dépôt">checkBorgRepo</FUNCTION>
 		<FUNCTION title="Libération des fichiers des disques">resetState</FUNCTION>
 		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1" listDescr="Titre" obligatoire="1">Titre</PROPERTIES>
@@ -23,7 +26,8 @@
 		<PROPERTIES type="varchar" list="1" fiche="1" listDescr="Type de vm" >VmType</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" listDescr="Version de vm" >VmVersion</PROPERTIES>
 		<PROPERTIES type="int" searchOrder="2" list="1" form="1" fiche="1" listDescr="Taille">Size</PROPERTIES>
-		<PROPERTIES type="int" searchOrder="2" list="1" form="1" fiche="1" listDescr="Taille">RemoteId</PROPERTIES>
+		<PROPERTIES type="int"  list="1" form="1" fiche="1" listDescr="Taille Sauvegarde (Go)">BackupSize</PROPERTIES>
+		<PROPERTIES type="int" searchOrder="2" list="1" form="1" fiche="1" listDescr="ID VMware">RemoteId</PROPERTIES>
 		<FKEY data="Esx,Id" card="0,1" form="1" fiche="1" list="1" listDescr="ESX" parentDescription="ESX">EsxId</FKEY>
 		<FKEY data="BorgRepo,Id" card="1,1" form="1" fiche="1" list="1" listDescr="Dépôt" parentDescription="Dépôt BORG">BorgRepoId</FKEY>
 		<RKEY data="RestorePoint,Id" card="0,n">RestorePointId</RKEY>
@@ -38,13 +42,17 @@
 		<PROPERTIES type="boolean" form="1" fiche="1" list="1" description="Succés" listDescr="Succès">Success</PROPERTIES>
 		<PROPERTIES type="boolean" form="1" fiche="1" list="1" description="Erreur" listDescr="Erreur">Errors</PROPERTIES>
 		<PROPERTIES type="raw" form="1" fiche="1">Details</PROPERTIES>
+        <FKEY data="EsxVm,Id" form="1" fiche="1" card="0,1" popup="1" >EsxVmId</FKEY>
 		<FKEY data="VmJob,Id" form="1" fiche="1" card="0,1" popup="1" >VmJobId</FKEY>
 		<FKEY data="SambaJob,Id" form="1" fiche="1" card="0,1"  popup="1" >SambaJobId</FKEY>
 		<FKEY data="RemoteJob,Id" form="1" fiche="1" card="0,1"  popup="1" >RemoteJobId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="BackupStore" AccessPoint="1" driver="mysql" Description="Stockage Sauvegarde"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+	<OBJECTCLASS title="BackupStore" AccessPoint="1" driver="mysql" Description="Stockage Sauvegarde"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelBackup/Class/BackupStore.class.php">
 		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1">Titre</PROPERTIES>
 		<PROPERTIES type="varchar" values="Local,Distant" searchOrder="2" list="1" form="1" fiche="1">Type</PROPERTIES>
+        <PROPERTIES type="int"  list="1" form="1" fiche="1" listDescr="Taille Dispo (Ko)">Size</PROPERTIES>
+		<PROPERTIES type="int"  list="1" form="1" fiche="1" listDescr="Taille Sauvegarde Nfs (Ko)">NfsSize</PROPERTIES>
+		<PROPERTIES type="int"  list="1" form="1" fiche="1" listDescr="Taille Sauvegarde Borg (Ko)">BorgSize</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" searchOrder="2" list="1" form="1" fiche="1">IP</PROPERTIES>
 		<PROPERTIES type="varchar" length="150" list="1" form="1" fiche="1">Domain</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" form="1" fiche="1">Login</PROPERTIES>
@@ -53,15 +61,18 @@
 	<OBJECTCLASS title="BorgRepo" driver="mysql" Description="Dépôt Borg"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelBackup/Class/BorgRepo.class.php" Operations="delete">
 		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1">Titre</PROPERTIES>
 		<PROPERTIES type="varchar"  list="1" form="1" fiche="1" description="Chemin">Path</PROPERTIES>
+		<PROPERTIES type="int" searchOrder="2" list="1" form="1" fiche="1" listDescr="Taille (Mo)">Size</PROPERTIES>
 		<FKEY data="BackupStore,Id" card="0,1">BackupStoreId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="RestorePoint" driver="mysql" Description="Point de restauration"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+	<OBJECTCLASS title="RestorePoint" driver="mysql" Description="Point de restauration"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Operations="restoreNow" Class="Modules/AbtelBackup/Class/RestorePoint.class.php">
+		<FUNCTION title="Restauration">restoreNow</FUNCTION>
 		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1" listDescr="Titre">Titre</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" list="1" form="1" fiche="1" listDescr="Point de restauration">Name</PROPERTIES>
-		<PROPERTIES type="raw" searchOrder="2" list="1" form="1" fiche="1" listDescr="">Details</PROPERTIES>
+		<PROPERTIES type="raw" searchOrder="2" form="1" fiche="1" listDescr="">Details</PROPERTIES>
 		<FKEY data="BorgRepo,Id" card="0,1">BorgRepoId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="VmJob" AccessPoint="1" driver="mysql" Description="Job VM"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelBackup/Class/VmJob.class.php">
+		<FUNCTION title="Démarrer maintenant">runNow</FUNCTION>
 		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1"  obligatoire="1" listDescr="Titre">Titre</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="2" list="1" form="1" fiche="1"  listDescr="Activé">Enabled</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="3" list="1" form="1" fiche="1"  listDescr="En cours">Running</PROPERTIES>

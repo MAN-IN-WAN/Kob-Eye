@@ -268,17 +268,17 @@ class Header extends Root{
 			';
 
 		if ($this->Type=="print"){
-			$this->Content .= '<link type="text/css" rel="stylesheet" href="'.$this->Url.'Skins/'.Sys::$User->Skin.'/Css/print.css" />
+			$this->Content .= '<link type="text/css" rel="stylesheet" href="/Skins/'.Sys::$User->Skin.'/Css/print.css" />
 ';
 		}
 		if(defined('CSS_CACHE') && CSS_CACHE) {
 			$this->checkCompressedFile( 'Css' );
-			$this->Content .= '<link type="text/css" rel="stylesheet" href="'.$this->Url.'Skins/'.Sys::$User->Skin.'/Css/styles.gz.css" />
+			$this->Content .= '<link type="text/css" rel="stylesheet" href="/Skins/'.Sys::$User->Skin.'/Css/styles.gz.css" />
 ';
 		}
 		else {
 			foreach($this->Css as $f) {
-				$filename = (substr($f, 0, 4) == 'http') ? $f : $this->Url.$f;
+				$filename = (substr($f, 0, 4) == 'http') ? $f : '/'.$f;
 				$this->Content .= '<link type="text/css" rel="stylesheet" href="'.$filename.'" />
 ';
 			}

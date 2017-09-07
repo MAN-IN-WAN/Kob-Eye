@@ -52,7 +52,7 @@ class Tache extends genericClass{
         //déclenche la mise à jour Apache
         $ap = $this->getApache();
         if ($ap){
-            $ap->Save();
+            $ap->Save(true);
         }
 
         parent::Save();

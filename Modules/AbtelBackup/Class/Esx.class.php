@@ -40,7 +40,7 @@ class Esx extends genericClass {
                         $this->Status = true;
                         parent::Save();
                     }
-                    $this->addSuccess(array("Message" => "Connexion réussie avec les clefs publique / privée .".$this->Status));
+                    $this->addSuccess(array("Message" => "Connexion réussie avec les clefs publique / privée ."));
                 }
             }
             /*$stream1= ssh2_exec($connection, trim("hostname")."\n");*/
@@ -97,9 +97,7 @@ class Esx extends genericClass {
             array_shift($stream3);
             array_pop($stream3);
             foreach ($stream3 as $s){
-                print_r($s);
                 if (!preg_match("#([0-9]+)[ ]{2,100}(.*?)[ ]{2,100}(.*?)[ \t]{2,100}?([^ ]+?)[ \t]{2,100}?([^ ]+?)[ \t]{2,100}(.*)$#",$s,$out)) continue;
-                print_r($out);
                 //création des vmsen vérifiant qu'elle n'existe pas déjà , sinon mise à jour.
                 $vm = Sys::getOneData('AbtelBackup','Esx/'.$this->Id.'/EsxVm/RemoteId='.$out[1]);
                 if (!$vm){
@@ -116,6 +114,8 @@ class Esx extends genericClass {
                 $vm->VmType = $out[4];
                 $vm->VmVersion = $out[5];
                 $vm->Save();
+                $this->Error = array_merge($this->Error,$vm->Error);
+                $this->Success = array_merge($this->Success,$vm->Success);
             }
         }catch (Exception $e){
             $this->addError(array("Message"=>"Une erreur interne s'est produite lors de la tentative de récupération de la liste des vms. Détails: ".$e->getMessage()));
@@ -125,13 +125,13 @@ class Esx extends genericClass {
         return true;
     }
 
-    public function remoteExec( $command ,$activity = null){
+    public function remoteExec( $command ,$activity = null,$noerror=false){
         if (!$this->_connection)$this->Connect();
         $result = $this->rawExec( $command.';echo -en "\n$?"', $activity);
-        if( ! preg_match( "/^(0|-?[1-9][0-9]*)$/s", $result[2], $matches ) ) {
+        if(!$noerror&& ! preg_match( "/^(0|-?[1-9][0-9]*)$/s", $result[2], $matches ) ) {
             throw new RuntimeException( "Le retour de la commande ne contenait pas le status. commande : ".$command );
         }
-        if( $matches[1] !== "0" ) {
+        if( !$noerror&&$matches[1] !== "0" ) {
             throw new RuntimeException( $result[1].$result[0], (int)$matches[1] );
         }
         return $result[0];

@@ -129,7 +129,7 @@ class genericClass extends Root {
 				}
 			}
 		}
-        klog::l($Data.'->'.$this -> {$Data});
+        //klog::l($Data.'->'.$this -> {$Data});
 		//Donc pas une propriete , donc il s agit d une variable
 		if (isset($this -> {$Data}))
 			return $this -> {$Data};
@@ -2178,7 +2178,7 @@ class genericClass extends Root {
 		}
 		$obj = $this->getObjectClass();
 		$Results = Sys::$Modules[$this -> Module] -> Db -> Query($this);
-		unset($this -> Parents);
+		$this -> Parents = array();
 		$this -> initFromArray($Results);
 		$this -> launchTriggers(__FUNCTION__);
 

@@ -27,6 +27,69 @@
             $scope.{{ child.objectModule }}{{ child.objectName }}Store.getData(1);
         {% endfor %}
 
+        //mass delete
+        //sélection
+        $scope.{{ c.identifier }}selected = {};
+        $scope.{{ c.identifier }}selected.selectall = false;
+        $scope.$watch('{{ c.identifier }}selected.selectall', function() {
+            if ($scope.{{ c.identifier }}selected.selectall){
+                var data = {{ c.identifier }}Store.data;
+                for (var i in data) {
+                    $scope.{{ c.identifier }}selected[data[i].id] = true;
+                }
+            }else{
+            $scope.{{ c.identifier }}selected = {};
+            }
+        });
+
+        //call function
+        $scope.{{ c.identifier }}callFunction = function (obj,name,title){
+            console.log('callfunction ',obj.id,title);
+
+            $scope.{{ c.identifier }}function = {
+                title: title,
+                loaded: false,
+                name: name,
+                url: '/{{ c.module }}/{{ c.objecttype }}/'+obj.id+'/'+name+'.htm?rand='+new Date().getTime()
+            };
+
+            {{ c.identifier }}Store.getOneData(obj.id,false).then(function (data) {
+                $scope.modalObj = data;
+                console.log('function '+title+' obj',$scope.modalObj);
+            });
+
+            $("#modalfunction-{{ c.identifier }}").modal();
+            new Spinner({color:'#ff0000', lines: 12}).spin($('#spinload'));
+        }
+
+        //select Delete
+        $scope.{{ c.identifier }}selectDelete = function () {
+            //nettoyage de la selection
+            var sel= [];
+            for (var i in $scope.{{ c.identifier }}selected){
+                if ($scope.{{ c.identifier }}selected[i]&&parseInt(i)>0)sel.push(i);
+            }
+            console.log('Suppression de la sélection ',sel);
+            swal({
+                    title: "Êtes vous sûr de vouloir supprimer les "+sel.length+" éléments ?",
+                    text: "Cette suppression sera définitive. ",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    cancelButtonText: "Annuler",
+                    confirmButtonText: "Oui, supprimer !",
+                    closeOnConfirm: true
+                },
+                function(){
+                    $http.post('/{{ c.module }}/{{ c.objecttype }}/massDelete.json',sel)
+                    .success(function(data) {
+                        console.log('store > {{ c.module }}/{{ c.objecttype }} > deleted ', data);
+                        {{ c.identifier }}Store.refresh();
+                        $scope.selected = {};
+                    });
+                });
+        }
+
         //recherche watcher
         $scope.{{ c.identifier }}.filter = {{ c.identifier }}Store.getFilters();
         $scope.$watch('{{ c.identifier }}.filter', function() {
@@ -107,17 +170,21 @@
             $scope.obj = data;
             $scope.callFunction = function (obj,name,title){
                 console.log('callfunction ',obj.id,title);
+
                 $scope.function = {
                     title: title,
+                    loaded: false,
                     name: name,
                     url: '/{{ c.module }}/{{ c.objecttype }}/'+obj.id+'/'+name+'.htm?rand='+new Date().getTime()
                 };
+
                 {{ c.identifier }}Store.getOneData(obj.id,false).then(function (data) {
                     $scope.modalObj = data;
 
                     console.log('function '+title+' obj',$scope.modalObj);
                 });
                 $("#modalfunction-{{ c.identifier }}").modal();
+                new Spinner({color:'#ff0000', lines: 12}).spin($('#spinload'));
             }
             $scope.modify = function (obj){
                 console.log('edit ',obj.id);
@@ -147,9 +214,6 @@
                     console.log('save obj',data);
                 });
             }
-            $scope.goBack = function (){
-
-            }
             $scope.delete = function (item){
                 console.log('edit ',item);
                 swal({
@@ -175,6 +239,67 @@
             {% for child in c.childrenelements %}
                 $scope.{{ child.objectModule }}{{ child.objectName }} = {{ child.objectModule }}{{ child.objectName }}Store;
                 console.log('launch watcher {{ child.objectModule }}{{ child.objectName }}');
+                //sélection
+                $scope.{{ child.objectModule }}{{ child.objectName }}selected = {};
+                $scope.{{ child.objectModule }}{{ child.objectName }}selected.selectall = false;
+                $scope.$watch('{{ child.objectModule }}{{ child.objectName }}selected.selectall', function() {
+                    if ($scope.{{ child.objectModule }}{{ child.objectName }}selected.selectall){
+                        var data = {{ child.objectModule }}{{ child.objectName }}Store.data;
+                        console.log('tous le store',data);
+                        for (var i in data) {
+                            $scope.{{ child.objectModule }}{{ child.objectName }}selected[data[i].id] = true;
+                        }
+                    }else{
+                        $scope.{{ child.objectModule }}{{ child.objectName }}selected = {};
+                    }
+                });
+                //call function
+                $scope.{{ child.objectModule }}{{ child.objectName }}callFunction = function (obj,name,title){
+                    console.log('callfunction ',obj.id,title);
+
+                    $scope.{{ child.objectModule }}{{ child.objectName }}function = {
+                        title: title,
+                        loaded: false,
+                        name: name,
+                        url: '/{{ child.objectModule }}/{{ child.objectName }}/'+obj.id+'/'+name+'.htm?rand='+new Date().getTime()
+                    };
+
+                    {{ child.objectModule }}{{ child.objectName }}Store.getOneData(obj.id,false).then(function (data) {
+                        $scope.modalObj = data;
+                        console.log('function '+title+' obj',$scope.modalObj);
+                    });
+
+                    $("#modalfunction-{{ child.objectModule }}{{ child.objectName }}").modal();
+                    new Spinner({color:'#ff0000', lines: 12}).spin($('#spinload'));
+                }
+
+                //mass delete
+                $scope.{{ child.objectModule }}{{ child.objectName }}selectDelete = function () {
+                    //nettoyage de la selection
+                    var sel= [];
+                    for (var i in $scope.{{ child.objectModule }}{{ child.objectName }}selected){
+                        if ($scope.{{ child.objectModule }}{{ child.objectName }}selected[i]&&parseInt(i)>0)sel.push(i);
+                    }
+                    console.log('Suppression de la sélection ',sel);
+                    swal({
+                            title: "Êtes vous sûr de vouloir supprimer les "+sel.length+" éléments ?",
+                            text: "Cette suppression sera définitive. ",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonClass: "btn-danger",
+                            cancelButtonText: "Annuler",
+                            confirmButtonText: "Oui, supprimer !",
+                            closeOnConfirm: true
+                        },
+                        function(){
+                            $http.post('/{{ child.objectModule }}/{{ child.objectName }}/massDelete.json',sel)
+                            .success(function(data) {
+                                console.log('store > {{ child.objectModule }} {{ child.objectName }} > deleted ', data);
+                                {{ child.objectModule }}{{ child.objectName }}Store.refresh();
+                                $scope.{{ child.objectModule }}{{ child.objectName }}selected = {};
+                        });
+                    });
+                }
                 $scope.$watch('{{ child.objectModule }}{{ child.objectName }}.filter', function() {
                     console.log('filter ',$scope.{{ child.objectModule }}{{ child.objectName }}.filter,true);
                     //on lance la recherche depuis le store

@@ -58,6 +58,15 @@ class AbtelBackup extends Module{
             $g = $this->createGroup($r);
             $this->createUser($g);
         }
+
+
+        $store = Sys::getData('AbtelBackup','BackupStore/Titre=Sauvegarde Locale');
+        if (!sizeof($store)){
+            $s = genericClass::createInstance('AbtelBackup','BackupStore');
+            $s->Titre = 'Sauvegarde Locale';
+            $s->Type = 'Local';
+            $s->Save();
+        }
     }
     /**
      * Creation du groupe et de tout ses menus
