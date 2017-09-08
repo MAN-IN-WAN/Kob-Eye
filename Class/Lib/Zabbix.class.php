@@ -11,7 +11,7 @@ class Zabbix {
 
     //Connexion à l'api zabbix
     private static function connect(){
-        $zab = new \ZabbixApi\ZabbixApi('https://'.self::RMT_HOST.'/zabbix/api_jsonrpc.php',self::USR,self::PASS);
+        $zab = new \ZabbixApi\ZabbixApi('http://'.self::RMT_HOST.'/zabbix/api_jsonrpc.php',self::USR,self::PASS);
 
         return $zab;
     }
@@ -309,6 +309,8 @@ class Zabbix {
         //On recup les hosts a modifier
         foreach($uuids as $uuid){
             $host = self::getHostFromUuid($uuid);
+            if(!is_object($host))
+                continue;
 
             //On verifie qu'il est bien enregistré comme poste
             foreach ($host->parentTemplates as $tpl){
@@ -424,6 +426,47 @@ class Zabbix {
             }
         }
 
+    }
+
+
+    //Cale les hosts zabbix dans le groupe client auquel il appartient
+    public static function updateUser($login, $pass, $mail = "support@abtel.fr"){
+
+        $zab = self::connect();
+
+        $usr = null;
+        $usrs = $zab->userGet(array(
+            "output"=>'extend',
+            "filter"=>array("alias"=>$login)
+        ));
+        if(count($usrs)>0){
+            $usr = $usrs[0];
+            $zab->userUpdate(array(
+                "userid"=>$usr->userid,
+                "passwd"=>$pass
+            ));
+            //Eventuellement mettre a jour l'adresse mail mais ce demande de recup les media liés au user pour les maj
+        } else {
+            $zab->userCreate(array(
+                "alias"=> $login,
+                "type"=> 2,
+                "passwd"=>$pass,
+                "usrgrps"=>array(
+                    array("usrgrpid"=> "7")//Groupe Zabbix Administrators
+                ),
+                "user_medias" => array(
+                    array(
+                        "mediatypeid"=> "1", //Email
+                        "sendto"=> $mail,
+                        "active"=> 1,
+                        "severity"=> 63,
+                        "period"=> "1-7,00:00-24:00"
+                    )
+                )
+            ));
+        }
+
+        return false;
     }
 
 

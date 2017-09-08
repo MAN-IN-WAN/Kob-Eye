@@ -197,11 +197,12 @@ Task=$task
 
     public static function getOffline(){
         //Mise à jour des devices offline
-        $devs = Sys::getData('Parc','Device/Online=1&&LastSeen<'.(time()-60));
+        $devs = Sys::getData('Parc','Device/Online=1&&LastSeen<'.(time()-600));
         foreach ($devs as $d) {
             $d->Online = false;
             $d->Save();
-            Zabbix::disableOffline($d->Uuid);
+            //TODO Zabbix desactivé le temps de stabiliser l'acces au serveur via proxy
+            //Zabbix::disableOffline($d->Uuid);
         }
     }
 
