@@ -151,7 +151,7 @@ class Host extends genericClass
         $entry['description'] = json_encode(array("Quota" => $this->Quota));
         $entry['preferredLanguage'] = $this->PHPVersion;
         if ($new) {
-            $entry['uidnumber'] = $this->_KEServer->getNextUid();
+            $entry['uidnumber'] = Server::getNextUid();
             $entry['gidnumber'] = $this->_KEClient->LdapGid;
             $entry['loginshell'] = '/bin/bash';
             $entry['objectclass'][0] = 'inetOrgPerson';

@@ -212,7 +212,8 @@ class Header extends Root{
             if($pos !== FALSE) $uri = substr($uri, 0, $pos);
         }
         $code  = md5('http://'.Sys::$domain.'/'.$GLOBALS["Systeme"]->Lien);
-        $page = Sys::getOneData('Systeme','Page/MD5='.$code);
+        $code2  = md5('https://'.Sys::$domain.'/'.$GLOBALS["Systeme"]->Lien);
+        $page = Sys::getOneData('Systeme','Page/MD5='.$code.'+MD5='.$code2);
         if ($page){
             //if (!$this->ForceTitle)
             $this->Title = $page->Title;
@@ -278,6 +279,9 @@ class Header extends Root{
 		}
 		else {
 			foreach($this->Css as $f) {
+			    if(strpos($f,'/') === 0){
+			        $f = substr($f,1);
+                }
 				$filename = (substr($f, 0, 4) == 'http') ? $f : '/'.$f;
 				$this->Content .= '<link type="text/css" rel="stylesheet" href="'.$filename.'" />
 ';
@@ -290,7 +294,10 @@ class Header extends Root{
 		}
 		else {
 			foreach($this->Js as $f) {
-				$filename = (substr($f, 0, 4) == 'http') ? $f : $this->Url.$f;
+                if(strpos($f,'/') === 0){
+                    $f = substr($f,1);
+                }
+				$filename = (substr($f, 0, 4) == 'http') ? $f : '/'.$f;
 				$this->Content .= '<script type="text/javascript" src="'.$filename.'"></script>
 ';
 			}

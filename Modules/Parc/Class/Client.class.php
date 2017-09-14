@@ -9,7 +9,11 @@ class Parc_Client extends genericClass {
 	 * @return	void
 	 */
 	public function Save( $synchro = true ) {
-		parent::Save();
+        $this->AccesUser = strtolower($this->AccesUser);
+        $this->AccesUser = trim($this->AccesUser);
+        $this->AccesUser = Utils::CheckSyntaxe($this->AccesUser);
+
+        parent::Save();
 		// Forcer la vérification
 		if(!$this->_isVerified) $this->Verify( $synchro );
 		//Si le revendeur connecté modifie ou ajoute un client
@@ -30,9 +34,8 @@ class Parc_Client extends genericClass {
 
 			parent::Save();
 			$this->setUser();
-
 		}
-
+        return true;
 	}
 
 	/**
@@ -41,12 +44,27 @@ class Parc_Client extends genericClass {
 	 * @return	Verification OK ou NON
 	 */
 	public function Verify( $synchro = true ) {
-
 		if(empty($this->Nom)) $this->Nom = $this->NomLDAP;
 
 		if(parent::Verify()) {
-
-			$this->_isVerified = true;
+            $this->_isVerified = true;
+		    //si acces web alors il faut vérifier identifiant / moty de passe et email
+            if ($this->AccesActif){
+                if (empty($this->AccesUser)){
+                    $this->AddError(Array("Message"=>"Veuillez renseigner l'identifiant pour l'accès web"));
+                    $this->_isVerified = false;
+                }
+                if (empty($this->AccesPass)){
+                    $this->AddError(Array("Message"=>"Veuillez renseigner le mot de passe pour l'accès web"));
+                    $this->_isVerified = false;
+                }
+                if (empty($this->Email)){
+                    $this->AddError(Array("Message"=>"Veuillez renseigner l'adresse mail pour l'accès web"));
+                    $this->_isVerified = false;
+                }
+                if (!$this->_isVerified)
+                    return false;
+            }
 
 			if($synchro) {
 
@@ -129,11 +147,24 @@ class Parc_Client extends genericClass {
 	private function buildEntry( $new = true ) {
 		$entry = array();
 		$entry['cn'] = $this->NomLDAP;
-		if($new) {
-			$entry['gidnumber'] = Server::getNextGid();
-			$entry['objectclass'][0] = 'posixGroup';
-			$entry['objectclass'][1] = 'top';
-		}
+        //$entry['sn'] = $this->NomLDAP;
+        if ($this->AccesActif) {
+            $entry['uid'] = $this->AccesUser;
+            $entry['userPassword'] = '{MD5}' . base64_encode(pack("H*", md5($this->AccesPass)));
+        }else{
+            $entry['uid'] = $this->NomLDAP;
+            $entry['userPassword'] = '{MD5}' . base64_encode(pack("H*", md5('ZOBzobzoboizojhfdslhj')));
+        }
+        //$entry['displayname'] = $this->Nom.' '.$this->Prenom;
+//        if($new) {
+            $entry['homedirectory'] = '/home/'.$this->AccesUser;
+            $entry['objectclass'][0] = 'posixGroup';
+            $entry['objectclass'][1] = 'top';
+            $entry['objectclass'][2] = 'posixAccount';
+            $entry['objectclass'][3] = 'shadowAccount';
+            $entry['uidnumber'] = Server::getNextUid();
+            $entry['gidnumber'] = Server::getNextGid();
+//        }
 		return $entry;
 	}
 	/**
@@ -144,6 +175,7 @@ class Parc_Client extends genericClass {
 	 */
 	public function Delete() {
 		Server::ldapDelete($this->LdapID);
+		$this->deleteGuacamoleUser();
 		parent::Delete();
 	}
 
@@ -181,7 +213,9 @@ class Parc_Client extends genericClass {
 				if (!sizeof($u)){
 					//creation de l'utilisateur
 					$u = genericClass::createInstance('Systeme','User');
-					$u->Login = $this->AccesUser;
+                    $u->Nom = $this->Nom;
+                    $u->Prenom = $this->Prenom;
+                    $u->Login = $this->AccesUser;
 					$u->Pass = md5($this->AccesPass);
 					$u->Mail = $this->Email;
 					$u->Actif = true;
@@ -192,6 +226,8 @@ class Parc_Client extends genericClass {
 				}else{
 					//mise à jour utilisateur
 					$u = $u[0];
+                    $u->Nom = $this->Nom;
+                    $u->Prenom = $this->Prenom;
 					$u->Login = $this->AccesUser;
 					$u->Pass = md5($this->AccesPass);
 					$u->Mail = $this->Email;
@@ -199,10 +235,11 @@ class Parc_Client extends genericClass {
 					$u->AddParent($grp);
 					$u->Save();
 				}
-			}else{
+                //mise à jour de l'utilisateur guacamole
+                $this->updateGuacamoleUser();
+            }else{
 				//Erreur
 				$this->AddError(Array("Message"=>"Veuillez saisir toutes les informations d'accès web sur la fiche client"));
-				
 			}
 		}else{
 			if (sizeof($u)){
@@ -225,5 +262,48 @@ class Parc_Client extends genericClass {
 	public function getHostQuery() {
 		return 'Parc/Client/'.$this->Id.'/Host';
 	}
+    private function updateGuacamoleUser(){
+        $dbGuac = new PDO('mysql:host=10.0.97.5;dbname=guacamole', 'root', 'RsL5pfky', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+        $dbGuac->query("SET AUTOCOMMIT=1");
+        $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        if (isset($this->AccesUser) && $this->AccesUser != '' && $this->AccesUser != null && isset($this->AccesPass) && $this->AccesPass != '' && $this->AccesPass != null) {
+            $query = "SELECT * FROM `guacamole_user` WHERE username = '" . $this->AccesUser . "'";
+            $q = $dbGuac->query($query);
+            $result = $q->fetchALL(PDO::FETCH_ASSOC);
+            if (sizeof($result) > 0) {
+                $usr = $result;
+                $query = "UPDATE `guacamole_user` SET password_hash=UNHEX(UPPER(SHA2('" . $this->AccesPass . "',256))),password_date='" . date("Y-m-d H:i:s") . "'  WHERE username='".$this->AccesUser."'";
+                $q = $dbGuac->query($query);
+            } else {
+                $query = "INSERT INTO `guacamole_user` (username,password_hash,password_date) VALUES ('" . $this->AccesUser . "',UNHEX(UPPER(SHA2('" . $this->AccesPass . "',256))),'" . date("Y-m-d H:i:s") . "')";
+                $q = $dbGuac->query($query);
+
+            }
+            $query = "SELECT * FROM `guacamole_user` WHERE username = '" . $this->AccesUser . "'";
+            $q = $dbGuac->query($query);
+            $result = $q->fetchALL(PDO::FETCH_ASSOC);
+            $usr = $result;
+            //creation des droits
+            $query = "INSERT IGNORE INTO `guacamole_system_permission` (user_id,permission) VALUES ('" . $usr[0]['user_id'] . "','ADMINISTER')";
+            $q = $dbGuac->query($query);
+        } else if (isset($this->AccesUser) && $this->AccesUser != '' && $this->AccesUser != null && (!isset($this->AccesPass) || $this->AccesPass == '' || $this->AccesPass == null)) {
+            //$this->addError(array('Message' => 'La valeur du champ AccesPass est nulle ou non définie alors que le champ AccesUser est défini.', "Prop" => 'AccesPass'));
+        }
+        return true;
+    }
+    /**
+     * deleteGuacamole
+     *
+     */
+    private function deleteGuacamoleUser() {
+        $dbGuac = new PDO('mysql:host=10.0.97.5;dbname=guacamole', 'root', 'RsL5pfky', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+        $dbGuac->query("SET AUTOCOMMIT=1");
+        $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        if (isset($this->AccesUser) && $this->AccesUser != '' && $this->AccesUser != null && isset($this->AccesPass) && $this->AccesPass != '' && $this->AccesPass != null) {
+            $query = "DELETE FROM `guacamole_user` WHERE username = '" . $this->AccesUser . "'";
+            $q = $dbGuac->query($query);
+        }
+    }
 
 }

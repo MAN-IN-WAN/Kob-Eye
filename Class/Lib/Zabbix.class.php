@@ -4,14 +4,15 @@ require_once(__DIR__.'/Zabbix/ZabbixApi.class.php');
 
 class Zabbix {
 
-    const RMT_HOST = '10.0.97.1';
+    //const RMT_HOST = '10.0.97.1';
+    const RMT_HOST = '10.0.189.9';
     const RMT_PORT = 5555;
     const USR = 'ZSA';
     const PASS = 'CHAp*awR_7re';
 
     //Connexion à l'api zabbix
     private static function connect(){
-        $zab = new \ZabbixApi\ZabbixApi('https://'.self::RMT_HOST.'/zabbix/api_jsonrpc.php',self::USR,self::PASS);
+        $zab = new \ZabbixApi\ZabbixApi('http://'.self::RMT_HOST.'/zabbix/api_jsonrpc.php',self::USR,self::PASS,self::USR,self::PASS);
 
         return $zab;
     }
@@ -426,5 +427,57 @@ class Zabbix {
 
     }
 
+    /**
+     * createUser
+     * creation d'un utilisateur admin
+     */
+    public static function createUser($name,$params) {
+        if(!$name ) return false;
+        $zab = self::connect();
 
+        return $zab->userCreate($params, $arrayKeyProperty='');
+    }
+
+
+    /**
+     * updateUser
+     * creation d'un utilisateur admin
+     */
+    public static function updateUser($params) {
+        $zab = self::connect();
+        return $zab->userUpdate($params);
+    }
+
+    /**
+     * getUser
+     * mise à jour d'un utilisateur admin
+     */
+    public static function getUser($params) {
+        $zab = self::connect();
+        return $zab->userGet($params);
+    }
+    /**
+     * deleteUser
+     * suppression d'un utilisateur admin
+     */
+    public static function deleteUser($params) {
+        $zab = self::connect();
+        return $zab->userDelete($params);
+    }
+    /**
+     * getInterface
+     * récupère les interfaces active d'un poste
+     */
+    public static function getInterface($name){
+        $zab = self::connect();
+        $hosts = $zab->hostGet(array(
+            'selectParentTemplates' => 'extend',
+            "filter" => array('name'=>$name)
+        ));
+        if (!sizeof($hosts)) return false;
+        return $zab->hostinterfaceGet(array(
+            "output" => "extend",
+            "hostids" => $hosts[0]->hostid
+        ));
+    }
 }

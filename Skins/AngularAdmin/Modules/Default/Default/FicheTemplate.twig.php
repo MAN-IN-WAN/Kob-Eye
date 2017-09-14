@@ -15,6 +15,7 @@ $vars["CurrentObj"] = genericClass::createInstance($info['Module'],$info['Object
 $vars["ObjectClass"] = $vars["CurrentObj"]->getObjectClass();
 $vars['operation'] = $vars['ObjectClass']->getOperations();
 $vars["ChildrenElements"] = $vars["ObjectClass"]->getChildElements();
+$vars["Interfaces"] = $vars["ObjectClass"]->getInterfaces();
 $vars['identifier'] = $info['Module'] . $info['ObjectType'];
 if (is_object(Sys::$CurrentMenu))
     $vars['CurrentUrl'] = Sys::$CurrentMenu->Url;

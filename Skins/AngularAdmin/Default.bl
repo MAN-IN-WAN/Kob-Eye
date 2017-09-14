@@ -114,6 +114,10 @@
     <!-- CHECKED LIST -->
     <script src="Skins/AngularAdmin/assets/vendors/checklist-model/checklist-model.js"></script>
 
+    <!-- GOOGLE MAP -->
+    <script src='https://maps.googleapis.com/maps/api/js?sensor=false'></script>
+    <!--<script src="Skins/AngularAdmin/assets/vendors/angular-google-maps/dist/angular-google-maps.js"></script>-->
+
     <!-- Clean UI Scripts -->
     <script src="Skins/AngularAdmin/assets/common/js/common.js"></script>
     <script src="Skins/AngularAdmin/assets/common/js/demo.temp.js"></script>

@@ -131,6 +131,9 @@ class ObjectClass extends Root{
 	public function getOperations(){
 		return $this->Operations;
 	}
+    public function getInterfaces(){
+        return $this->Interfaces;
+    }
 	/**
 	 * __________________________________________________________________________________________________
 	 * 																							   PARSER
@@ -1694,14 +1697,14 @@ class ObjectClass extends Root{
 		foreach($this->Proprietes as $Key=>$Prop){
 			//Si le champ est obligatoire et que l'insertion est vide, erreur
 		  	if (isset($Prop["obligatoire"])&&$Prop["obligatoire"] && !($Prop['type']=="boolean" && $Obj[$Key]==0) && empty($Obj[$Key])){
-				KError::fatalError("$Key property is required in ".$this->Module."/".$this->titre);
-				$Error = true;
+				//KError::fatalError("$Key property is required in ".$this->Module."/".$this->titre);
+				$Error = "$Key property is required in ".$this->Module."/".$this->titre;
 			}
 			if (isset($Prop["unique"])&&$Prop["unique"] && !empty($Obj[$Key])&&empty($Obj["Id"])){
 				$Result =  Sys::$Modules[$this->Module]->callData($this->titre."/".$Key."=".$Obj[$Key]);
 				if ($Result && $Result[0]["Id"]!=$Obj["Id"]){
-					$GLOBALS["Systeme"]->Error->sendUserMsg(16,$Key.' n est pas unique : '.$Obj[$Key]);
-					$Error=true;
+					//$GLOBALS["Systeme"]->Error->sendUserMsg(16,$Key.' n est pas unique : '.$Obj[$Key]);
+					$Error='La valeur du champs '.$Key.' n\'est pas unique : '.$Obj[$Key];
 				}
 			}
 			if(isset($Prop["type"])&&$Prop["type"]=="random" ){ //&&( !isset($Obj["tmsEdit"])||$Obj["tmsEdit"]<(time()-(CONNECT_TIMEOUT*60)) || $Obj["CodeVerif"]=="")){
@@ -1737,8 +1740,8 @@ class ObjectClass extends Root{
 			}
 
 		}
-		if ($Error){
-			return false;
+		if ($Error&&!empty($Error)){
+			return $Error;
 		} 
 		//On insere ensuite les proprietes dans une variable objet
 		$Properties = $OrdreProp;

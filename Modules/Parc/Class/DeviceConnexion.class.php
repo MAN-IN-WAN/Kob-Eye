@@ -11,6 +11,7 @@ class DeviceConnexion extends genericClass{
         $dev = $this->getOneParent('Device');
         $dev->Dirty=1;
         $dev->Save();
+        return true;
     }
 
 

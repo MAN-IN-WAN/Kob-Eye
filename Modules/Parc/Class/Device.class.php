@@ -15,6 +15,8 @@ class Device extends genericClass{
             $this->ConnectionType = 'R' . $port_rdp . '=localhost:3389,R' . $port_vnc . '=localhost:15900';
         }
         parent::save();
+        $this->getIps();
+        return true;
     }
     function getVersion($uuid) {
         /*if(!isset($uuid))
@@ -30,7 +32,7 @@ class Device extends genericClass{
             $dev = Sys::getOneData('Parc','Device/Uuid='.$uuid);
         }
         if ($dev){
-            if(!$dev->Online) Zabbix::enableOnline($dev->Uuid);
+            //if(!$dev->Online) Zabbix::enableOnline($dev->Uuid);
             //mise à jour de la machine
             $dev->LastSeen = time();
             $dev->PublicIP = $_SERVER['REMOTE_ADDR'];
@@ -120,7 +122,8 @@ Task=$task
             $exists->Nom = $_GET["name"];
             $exists->Description = $_GET["os"];
             if(isset($_GET["machine"]))
-                $exists->Type = $_GET["machine"];
+                $exists->DeviceType = ($_GET["machine"]=='workstation')?'Poste':'Server';
+            else $exists->DeviceType = 'Server';
 
             if($exists->ModeTest){
                 $cos=$exists->getChildren('DeviceConnexion');
@@ -149,7 +152,9 @@ Task=$task
             } else{
                 $obj->Description = $_GET["os"];
             }
-            $obj->Type = isset($_GET["machine"])? $_GET["machine"] : 'station';
+            if(isset($_GET["machine"]))
+                $obj->DeviceType = ($_GET["machine"]=='workstation')?'Poste':'Server';
+            else $obj->DeviceType = 'Server';
             $obj->Uuid = $uuid;
             //klog::l('$obj',$obj);
             $obj->Save();
@@ -197,11 +202,11 @@ Task=$task
 
     public static function getOffline(){
         //Mise à jour des devices offline
-        $devs = Sys::getData('Parc','Device/Online=1&&LastSeen<'.(time()-60));
+        $devs = Sys::getData('Parc','Device/Online=1&&LastSeen<'.(time()-600));
         foreach ($devs as $d) {
             $d->Online = false;
             $d->Save();
-            Zabbix::disableOffline($d->Uuid);
+            //Zabbix::disableOffline($d->Uuid);
         }
     }
 
@@ -369,5 +374,13 @@ Task=$task
             $coVnc->Save();
         }
     }
-
+    /**
+     * getIps
+     * retourne la liste des ips actives du poste
+     */
+    public function getIps() {
+        $out = Zabbix::getInterface($this->CodeClient.' '.$this->Nom);
+        //print_r($out);
+        return $out;
+    }
 }

@@ -10,7 +10,11 @@ class Parc_Contact extends genericClass {
 	 * @return	void
 	 */
 	public function Save( $synchro = true ) {
-		// Enregistrement si pas d'erreur
+        $this->AccesUser = strtolower($this->AccesUser);
+        $this->AccesUser = trim($this->AccesUser);
+        $this->AccesUser = Utils::CheckSyntaxe($this->AccesUser);
+
+        // Enregistrement si pas d'erreur
         parent::Save();
         $this->setUser();
 

@@ -16,11 +16,13 @@
                         </a>
                         <ul class="left-menu-list list-unstyled">
                             {% for m2 in m.getSubMenus() %}
+                                {% if m2.Affiche %}
                                 <li>
                                     <a class="left-menu-link" href="#/{{ m.Url }}/{{ m2.Url }}">
                                         {{ m2.Titre }}
                                     </a>
                                 </li>
+                                {% endif %}
                             {%  endfor %}
                         </ul>
                     </li>

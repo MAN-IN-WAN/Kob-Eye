@@ -216,7 +216,8 @@ class sqlFunctions{
 				$Data["Table"][sizeof($Data["Table"])-1]['Nom'] = $Tab[$i+1]["Table"];
 				$Data["Table"][sizeof($Data["Table"])-1]['Alias'] = "j".($i+1)."t";
 				//Liaison entre intervalle de comparaison et la table de liaison
-				$Data['Groupe'][$NumGroupe]['Condition'][] = "m.Id=j".($i+1)."t.".$Tab[$i+1]["Parent"]."Id";
+				//$Data['Groupe'][$NumGroupe]['Condition'][] = "m.Id=j".($i+1)."t.".$Tab[$i+1]["Parent"]."Id";
+                $Data['Groupe'][$NumGroupe]['Condition'][] = "j".$i."i.Id=j".($i+1)."t.".$Tab[$i+1]["Parent"]."Id";
 				$Data['Groupe'][$NumGroupe]['Condition'][] = "j".($i+2)."p.Id=j".($i+1)."t.".$Tab[$i+1]["Champ"];
 				break;
 			case "0,1":

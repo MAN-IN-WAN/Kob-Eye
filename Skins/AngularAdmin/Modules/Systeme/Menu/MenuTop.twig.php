@@ -23,5 +23,8 @@ if (is_object($vars['Client']) && isset($vars['Client']->Nom) && $vars['Client']
         $vars['displayName'] =  'de '.$login;
     }
 }
+if (Sys::$User->isRole('PARC_TECHNICIEN'))
+    $vars['RoleSpace'] = 'technicien';
+else $vars['RoleSpace'] = 'client';
 
 

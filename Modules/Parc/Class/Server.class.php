@@ -716,7 +716,7 @@ class Server extends genericClass {
 		} else {
 			// L'enregistrement a échoué - on récupère l'erreur
 			$e['OK'] = false;
-			$e['Message'] = "Erreur LDAP lors de l'ajout - " . @ldap_error(Server::$_LDAP);
+			$e['Message'] = "Erreur LDAP lors de l'ajout - " . @ldap_error(Server::$_LDAP).' DN: '.$dn;
 			$e['Prop'] = '';
 		}
 		return $e;
@@ -744,7 +744,7 @@ class Server extends genericClass {
 		} else {
 			// L'enregistrement a échoué - on récupère l'erreur
 			$e['OK'] = false;
-			$e['Message'] = "Erreur LDAP lors du déplacement - " . @ldap_error(Server::$_LDAP);
+			$e['Message'] = "Erreur LDAP lors du déplacement - " . @ldap_error(Server::$_LDAP).' OLDDN: '.$olddn.' NEWDN: '.$newrdn;
 			$e['Prop'] = '';
 		}
 		return $e;
@@ -810,8 +810,9 @@ class Server extends genericClass {
 	 * @param Object Kob-eye
 	 */
 	static function checkTms($KEObj) {
-		$e = array('exists' => true, 'OK' => true);
-		$connect = Server::ldapConnect();
+
+        $e = array('exists' => true, 'OK' => true);
+		Server::ldapConnect();
 		if (empty($KEObj -> LdapID)) {
 		    switch (get_class($KEObj)) {
                 case "Server":
@@ -826,21 +827,62 @@ class Server extends genericClass {
                     $KEObj->LdapUserTms = intval($res2[0]['modifytimestamp'][0])-10000;
                     $KEObj->LdapUserID = $res2[0]['entryuuid'][0];
                     $KEObj->LdapUserDN = $res2[0]['dn'];
+                    if (!$res['count']) {
+                        $e['exists'] = false;
+                        return $e;
+                    }
                 break;
+                case "Parc_Technicien":
+                    $search = ldap_search(Server::$_LDAP, 'ou=users,'.PARC_LDAP_BASE, 'cn=' . $KEObj->AccesUser, array('modifytimestamp', 'entryuuid'));
+                    $res = ldap_get_entries(Server::$_LDAP, $search);
+                    //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
+                    $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                    $KEObj->LdapID = $res[0]['entryuuid'][0];
+                    $KEObj->LdapDN = $res[0]['dn'];
+                    if (!$res['count']) {
+                        $e['exists'] = false;
+                        return $e;
+                    }
+                    break;
+                case "Client":
+                    $search = ldap_search(Server::$_LDAP, 'ou=users,'.PARC_LDAP_BASE, 'cn=' . $KEObj->AccesUser, array('modifytimestamp', 'entryuuid'));
+                    $res = ldap_get_entries(Server::$_LDAP, $search);
+                    //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
+                    $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                    $KEObj->LdapID = $res[0]['entryuuid'][0];
+                    $KEObj->LdapDN = $res[0]['dn'];
+                    if (!$res['count']) {
+                        $e['exists'] = false;
+                        return $e;
+                    }
+                    break;
+                case "Contact":
+                    $search = ldap_search(Server::$_LDAP, 'ou=users,'.PARC_LDAP_BASE, 'cn=' . $KEObj->AccesUser, array('modifytimestamp', 'entryuuid'));
+                    $res = ldap_get_entries(Server::$_LDAP, $search);
+                    //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
+                    $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                    $KEObj->LdapID = $res[0]['entryuuid'][0];
+                    $KEObj->LdapDN = $res[0]['dn'];
+                    if (!$res['count']) {
+                        $e['exists'] = false;
+                        return $e;
+                    }
+                    break;
             }
         }else {
             $search = ldap_search(Server::$_LDAP, PARC_LDAP_BASE, 'entryuuid=' . $KEObj->LdapID, array('modifytimestamp'));
             $res = ldap_get_entries(Server::$_LDAP, $search);
+            if (!$res['count']) {
+                $e['exists'] = false;
+                return $e;
+            }
         }
-		if (!$res['count']) {
-			$e['exists'] = false;
-			return $e;
-		}
 		/*if (!empty($KEObj -> LdapTms) && intval($res[0]['modifytimestamp'][0])-10000 > intval($KEObj -> LdapTms )) {
 			$e['OK'] = false;
 			$e['Message'] = "Cette entrée est obsolète. Il faut faire une synchronisation avant de pouvoir la modifier.";
 			$e['Prop'] = '';
 		}else*/if (empty($KEObj -> LdapTms)) {
+            $e['exists'] = false;
 			$e['OK'] = false;
 			$e['Message'] = "Cette entrée n'est pas publiée, elle doit être incomplète. Vérifiez la cohérence de l'élément.";
 			$e['Prop'] = '';

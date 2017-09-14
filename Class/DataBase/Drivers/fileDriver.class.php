@@ -571,7 +571,11 @@ class fileDriver extends ObjectClass {
 			// 				echo "EMPLACEMENT --> ".$Path.$No
 			$Path = $Properties['Url'];
           $Properties['Nom'] = $this->getFinalName($Path,$Properties['Nom'],0);
-			if(!move_uploaded_file($_FILES[$Properties['Temp']]['tmp_name'], $Path . $Properties['Nom']) ){$BLa=true;}
+            copy($_FILES[$Properties['Temp']]['tmp_name'],$Path . $Properties['Nom']);
+			if(!move_uploaded_file($_FILES[$Properties['Temp']]['tmp_name'], $Path . $Properties['Nom']) ){
+			    $BLa=true;
+			    die('impossibel d\'uploader le fichier dans le dossier '.$Path . $Properties['Nom'].' pour le fichier temporaire '.$_FILES[$Properties['Temp']]['tmp_name'].' >>>> '.file_exists($_FILES[$Properties['Temp']]['tmp_name']));
+            }
 		}elseif (isset($_POST["Flashdata"])){
 			//UPLOAD FLASH BASE 64
 			//preparation du tableau properties

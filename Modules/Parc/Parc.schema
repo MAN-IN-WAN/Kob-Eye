@@ -1,5 +1,8 @@
 <SCHEMA>
 	<OBJECTCLASS title="Client" driver="mysql" AccessPoint="1" master="0" Description="Client" Icon="/Skins/AdminV2/Img/IconAqua/Forum.png" className="Parc_Client" Class="Modules/Parc/Class/Client.class.php" Order="Nom">
+        <FILTER name="Tous les clients" color="warning" ></FILTER>
+        <FILTER name="Accès web" color="success">AccesActif=1</FILTER>
+        <FILTER name="Avec contrats" color="primary">MontantMensuel>0</FILTER>
 		<PROPERTIES category="Intitulé" type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES category="Intitulé"  searchOrder="2" type="varchar" fiche="1" form="1" listDescr="Code Gestion">CodeGestion</PROPERTIES>
 		<PROPERTIES category="Accès client" type="boolean" obligatoire="0" searchOrder="4" description="Activation Accès web" list="1" fiche="1" form="1" listDescr="Accès Web">AccesActif</PROPERTIES>
@@ -43,7 +46,7 @@
 		<FUNCTION title="Lister les domaines sans client" type="form">AfficherDomaineSansClient</FUNCTION>
 		<FKEY card="0,1" module="Systeme" data="User,Id">UserId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Technicien" driver="mysql" Description="Accès techniciens" Icon="/Skins/AdminV2/Img/IconAqua/Forum.png" className="Parc_Technicien" Class="Modules/Parc/Class/Technicien.class.php" Order="Nom">
+	<OBJECTCLASS title="Technicien" driver="mysql" Dico="1" Description="Accès techniciens" Icon="/Skins/AdminV2/Img/IconAqua/Forum.png" className="Parc_Technicien" Class="Modules/Parc/Class/Technicien.class.php" Order="Nom">
 		<PROPERTIES category="Gestion" type="varchar" length="10"  description="Initiales dans la gestion" obligatoire="1" list="1" fiche="1" form="1">IdGestion</PROPERTIES>
 		<PROPERTIES category="Intitulé" type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES category="Intitulé" type="varchar" searchOrder="2" list="1" fiche="1" form="1" listDescr="Prenom">Prenom</PROPERTIES>
@@ -270,10 +273,14 @@
         <FUNCTION title="Executer maintenant">Executer</FUNCTION>
     </OBJECTCLASS>
 	<OBJECTCLASS title="Device" driver="mysql" AccessPoint="1" Description="Périphérique(s) réseau(x)" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Device.class.php">
+		<FUNCTION title="Récupère les ips internes">getIps</FUNCTION>
 		<FILTER name="Tous les périphériques" color="warning" ></FILTER>
 		<FILTER name="Périphériques en ligne"  color="success">Online=1</FILTER>
 		<FILTER name="Périphériques en mode test">ModeTest=1</FILTER>
 		<FILTER name="Ajoutés ces dernières 24h">tmsCreate>[!TMS::Now:-86400!]</FILTER>
+		<INTERFACES name="bottom">
+			<FORM form="Iframe" url="grafana/dashboard/db/monitoring-panel-windows-als?var-group=Supervision&amp;var-netif=All&amp;var-host=">Grafana</FORM>
+		</INTERFACES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="2" fiche="1" form="1" listDescr="Nom machine" description="Nom du périphérique">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="8" obligatoire="0" list="8" fiche="1" listDescr="IP Publique" description="IP Publique">PublicIP</PROPERTIES>
 		<PROPERTIES category="Intitulé" searchOrder="2" type="varchar" fiche="1" form="0" list="1" listDescr="Code Client" description="Code client saisi">CodeClient</PROPERTIES>
@@ -288,7 +295,7 @@
 		<PROPERTIES type="varchar" searchOrder="13" obligatoire="0" fiche="1" description="Identifiant du périphérique">Uuid</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="15" obligatoire="0" description="Numéro de série du périphérique">SerialNumber</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="14" obligatoire="0" fiche="1" description="Type de connexion">ConnectionType</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="14" obligatoire="0" fiche="1" values="Poste,Server" form="1" listDescr="Type" description="Type de machine">DeviceType</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="14" obligatoire="0" fiche="1" values="Poste,Serveur" form="1" listDescr="Type" description="Type de machine">DeviceType</PROPERTIES>
 		<PROPERTIES type="extlink" list="10" fiche="1" description="Url guacamole VNC" listDescr="VNC">GuacamoleUrlVnc</PROPERTIES>
 		<PROPERTIES type="extlink" list="11"  fiche="1" description="Url guacamole RDP" listDescr="RDP">GuacamoleUrlRdp</PROPERTIES>
 		<PROPERTIES type="varchar" description="Id guacamole RDP">GuacamoleIdRdp</PROPERTIES>
@@ -297,13 +304,13 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="DeviceConnexion" driver="mysql" Description="Connection(s) vers le Périphérique" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/DeviceConnexion.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom du périphérique">Nom</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="2" obligatoire="1"  list="1" fiche="1" description="Type de connexion" listDescr="Type" values="RDP,VNC,SSH,Telnet,Https">Type</PROPERTIES>
-		<PROPERTIES type="int" obligatoire="0" fiche="1" description="Port redirection Local">PortRedirectLocal</PROPERTIES>
-		<PROPERTIES type="int" obligatoire="0" fiche="1" description="Port redirection Distant">PortRedirectDistant</PROPERTIES>
-		<PROPERTIES type="varchar" obligatoire="0" fiche="1" description="Ip redirection Distant">IpRedirectDistant</PROPERTIES>
-		<PROPERTIES type="varchar" list="1" fiche="1" description="Login" listDescr="Login">Login</PROPERTIES>
-		<PROPERTIES type="varchar" list="1" fiche="1" description="Mot de passe" listDescr="Mot de passe">Password</PROPERTIES>
-        <PROPERTIES type="varchar" list="1" fiche="1" description="Clef Ssh">SshKey</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" obligatoire="1"  list="1" fiche="1" form="1" description="Type de connexion" listDescr="Type" values="RDP,VNC,SSH,Telnet,Https">Type</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="0" fiche="1" form="1" description="Port redirection Local">PortRedirectLocal</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="0" fiche="1" form="1" description="Port redirection Distant">PortRedirectDistant</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" fiche="1" form="1" description="Ip redirection Distant">IpRedirectDistant</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" description="Login" listDescr="Login">Login</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" description="Mot de passe" listDescr="Mot de passe">Password</PROPERTIES>
+        <PROPERTIES type="varchar" fiche="1" form="1" description="Clef Ssh">SshKey</PROPERTIES>
 		<PROPERTIES type="extlink" list="1" fiche="1" description="Url guacamole" listDescr="Lien Direct">GuacamoleUrl</PROPERTIES>
 		<PROPERTIES type="varchar" description="Id guacamole">GuacamoleId</PROPERTIES>
 		<FKEY card="0,1" data="Device,Id" fiche="1" form="1" parentDescription="Périphérique" link="1">DeviceId</FKEY>

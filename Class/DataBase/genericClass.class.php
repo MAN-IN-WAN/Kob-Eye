@@ -1346,7 +1346,11 @@ class genericClass extends Root {
 		}
 		
 		$Ie = explode('/', $Q, 2);
-		$I = Sys::$Modules[$Ie[0]] -> splitQuery($Q);
+        if (!is_object(Sys::$Modules[$Ie[0]])){
+            print_r($Q);
+            die("AddParent: Mauvais format ");
+        }
+        $I = Sys::$Modules[$Ie[0]]->splitQuery($Q);
 		if ($I[0]["Type"] == "Child" && sizeof($I) > 1)
 			$Q = $I[sizeof($I) - 2]["Module"] . "/" . $I[sizeof($I) - 2]["DataSource"] . "/" . $I[sizeof($I) - 2]["Value"];
 		else
@@ -1492,12 +1496,6 @@ class genericClass extends Root {
 						if ($newValue != "*******")
 							$newValue = trim($newValue);
 						else
-							return false;
-						break;
-					case "file" :
-						if ($this -> fileUpload(Array("Nom" => $Prop), trim($newValue)))
-							return false;
-						if ($newValue == "UPLOAD")
 							return false;
 						break;
 					case "text" :
@@ -1874,6 +1872,8 @@ class genericClass extends Root {
 			}
 			if (!move_uploaded_file($FileArray['tmp_name'], $dossier . $file_name . $d . $extension)) {
 				//$GLOBALS["Systeme"]->Error->sendWarningMsg(41);
+                //echo "IS DIR ".$dossier . $file_name . $d . $extension." => ".file_exists($dossier . $file_name . $d . $extension);
+                //print_r($Vars[$Prop["Nom"]]);
 			}
 			$N = $Prop["Nom"];
 			$this -> {$N} = $dossier . $file_name . $d . $extension;
@@ -2177,6 +2177,10 @@ class genericClass extends Root {
 		}
 		$obj = $this->getObjectClass();
 		$Results = Sys::$Modules[$this -> Module] -> Db -> Query($this);
+		if (!is_array($Results)&&is_string($Results)&&!empty($Results)){
+		    $this->addError(Array("Message"=>$Results));
+		    return false;
+        }
 		$this -> Parents = array();
 		$this -> initFromArray($Results);
 		$this -> launchTriggers(__FUNCTION__);

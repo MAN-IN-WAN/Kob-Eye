@@ -64,7 +64,7 @@
             {% if field.type == "price" or field.type == "float" %}
                 <span class="label label-warning">{[{ item.{{ field.name }}| currency:"" }]}</span>
             {% elseif field.type == "extlink" %}
-                <a class="btn btn-info btn-xs" href="https://zabbix.abtel.fr/guacamole/#/client/{[{ item.{{ field.name }} }]}" target="_blank">{{ field.listDescr }}</a>
+                <a class="btn btn-info btn-xs" href="https://proxy.abtel.fr/remote/#/client/{[{ item.{{ field.name }} }]}" target="_blank">{{ field.listDescr }}</a>
             {% elseif field.type == "date" %}
                 <span class="label label-secondary">{[{ item.{{ field.name }} | date:'dd/MM/yyyy' }]}</span>
             {% elseif field.type == "int" %}
