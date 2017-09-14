@@ -206,6 +206,7 @@ Task=$task
         foreach ($devs as $d) {
             $d->Online = false;
             $d->Save();
+           //TODO Zabbix desactivé le temps de stabiliser l'acces au serveur via proxy
             //Zabbix::disableOffline($d->Uuid);
         }
     }
