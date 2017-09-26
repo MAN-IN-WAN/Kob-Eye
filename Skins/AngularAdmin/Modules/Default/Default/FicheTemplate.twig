@@ -36,13 +36,20 @@
         </div>
         <div class="panel-body">
             <div class="row">
+                {% if Interfaces.top %}
+                <div class="col-md-12 col-lg-4">
+                    <ng-map center="41,-87" zoom="6"></ng-map>
+                </div>
+                <div class="col-md-12 col-lg-4">
+                {% else %}
                 <div class="col-md-12 col-lg-6">
+                {% endif %}
                     {% for field in fichefields %}
                         <div class="row">
-                            <div class="col-md-6 detail-label">
+                            <div class="col-md-5 detail-label">
                                 <label class="form-control-label" for="l0">{% if field.parentDescription is not empty %}{{ field.parentDescription }}{% else %}{{ field.description }}{% endif %}</label>
                             </div>
-                            <div class="col-md-6 detail-value">
+                            <div class="col-md-7 detail-value">
                                 {% if field.type == "price" %}
                                     <span class="label label-warning">{[{ obj.{{ field.name }} | currency:"" }]} €</span>
                                 {% elseif field.type == "float" %}
@@ -63,7 +70,11 @@
                         </div>
                         {% if loop.index - loop.revindex0 == 1 or loop.index - loop.revindex0 == 0 %}
                     </div>
-                    <div class="col-md-12 col-lg-6">
+                    {% if Interfaces.top %}
+                    <div class="col-md-8 col-lg-4">
+                        {% else %}
+                    <div class="col-md-8 col-lg-4">
+                        {% endif %}
                         {% endif %}
                     {% endfor %}
                 </div>

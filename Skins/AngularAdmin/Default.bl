@@ -43,6 +43,7 @@
 
     <!-- Vendors Scripts -->
     <!-- v1.0.0 -->
+
     <script src="Skins/AngularAdmin/assets/vendors/jquery/jquery.min.js"></script>
     <script src="Skins/AngularAdmin/assets/vendors/tether/dist/js/tether.min.js"></script>
     <script src="Skins/AngularAdmin/assets/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -114,10 +115,6 @@
     <!-- CHECKED LIST -->
     <script src="Skins/AngularAdmin/assets/vendors/checklist-model/checklist-model.js"></script>
 
-    <!-- GOOGLE MAP -->
-    <script src='https://maps.googleapis.com/maps/api/js?sensor=false'></script>
-    <!--<script src="Skins/AngularAdmin/assets/vendors/angular-google-maps/dist/angular-google-maps.js"></script>-->
-
     <!-- Clean UI Scripts -->
     <script src="Skins/AngularAdmin/assets/common/js/common.js"></script>
     <script src="Skins/AngularAdmin/assets/common/js/demo.temp.js"></script>
@@ -135,6 +132,10 @@
     <link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/assets/vendors/js-custom-select/css/style.css">
     <script src="Skins/AngularAdmin/assets/vendors/js-custom-select/js/customSelect.js"></script>
 
+    <!-- GOOGLE MAP -->
+    <script src='https://maps.googleapis.com/maps/api/js?sensor=false'></script>
+    <script src="Skins/AngularAdmin/assets/vendors/ngmap/build/scripts/ng-map.min.js"></script>
+
     <!-- angular ui bootstrap -->
     <link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/assets/vendors/angular-ui-bootstrap/dist/ui-bootstrap-csp.css">
     <script src="Skins/AngularAdmin/assets/vendors/angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
@@ -143,6 +144,7 @@
     <!-- angular CountTO -->
     <!--<script src="Skins/AngularAdmin/assets/vendors/angular-countTo/angular-count-to.min.js"></script>-->
     <script src="Skins/AngularAdmin/assets/vendors/angular-countTo/count-to.js"></script>
+
 
     [IF [!Systeme::User::isRole(BACKUP_ADMIN)!]]
         <script src="Systeme/Header/BackupAdmin.json"></script>

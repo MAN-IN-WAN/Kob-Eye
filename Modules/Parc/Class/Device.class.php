@@ -15,8 +15,38 @@ class Device extends genericClass{
             $this->ConnectionType = 'R' . $port_rdp . '=localhost:3389,R' . $port_vnc . '=localhost:15900';
         }
         parent::save();
-        $this->getIps();
+        //checking port redirect
+        $this->checkRedirectPort();
         return true;
+    }
+    private function checkRedirectPort(){
+        $ports = $this->getChildren('DevicePort');
+        switch ($this->OS){
+            case "Windows":
+                if (sizeof($ports)>=3)return true;
+                //RDP
+                $port = genericClass::createInstance('Parc','DevicePort');
+                $port->PortRedirectLocal =  12000 + $this->Id;
+                $port->PortRedirectDistant =  3389;
+                $port->IpRedirectDistant = 'localhost';
+                $port->addParent($this);
+                $port->Save();
+                //VNC
+                $port = genericClass::createInstance('Parc','DevicePort');
+                $port->PortRedirectLocal =  22000 + $this->Id;
+                $port->PortRedirectDistant =  15900;
+                $port->IpRedirectDistant = 'localhost';
+                $port->addParent($this);
+                $port->Save();
+                //MSG
+                $port = genericClass::createInstance('Parc','DevicePort');
+                $port->PortRedirectLocal =  32000 + $this->Id;
+                $port->PortRedirectDistant =  15902;
+                $port->IpRedirectDistant = 'localhost';
+                $port->addParent($this);
+                $port->Save();
+                break;
+        }
     }
     function getVersion($uuid) {
         /*if(!isset($uuid))
@@ -47,6 +77,29 @@ class Device extends genericClass{
                 $dev->SerialNumber = $_GET['bios'];
                 $dev->Save();
             }
+            if (isset($_GET['error'])&&sizeof($_GET['error'])>1){
+                $dev->Erreur = true;
+                $err = explode(';',$_GET['error']);
+                foreach ($err as $e){
+                    switch ($e){
+                        case 'tunnel':
+                            $this->DetailErreur.="\r\n ".date('d/m/Y H:i:s')." Le tunnel a échoué et tente de redémarrer.";
+                            break;
+                        case 'vnc':
+                            $this->DetailErreur.="\r\n ".date('d/m/Y H:i:s')." Le service VNC a échoué et tente de redémarrer.";
+                            break;
+                        case 'connexion':
+                            $this->DetailErreur.="\r\n ".date('d/m/Y H:i:s')." La connexion a été interrompue.";
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                $dev->Save();
+            }else{
+                $dev->Erreur = false;
+                $dev->Save();
+            }
             //GEstion des commandes
             if ($dev->RestartTunnel){
                 $Commands = "\r\nCommande=tunnel";
@@ -68,7 +121,7 @@ class Device extends genericClass{
         if($dev->ModeTest){
             $ConnectionType='';
 
-            $cos=$dev->getChildren('DeviceConnexion');
+            $cos=$dev->getChildren('DevicePort');
             $dirty = "Ports=";
             //TODO : checker les doublons pour modif de mot de passe
             foreach ($cos as $co){
@@ -94,6 +147,7 @@ ZabbixAgent32=http://".Sys::$domain."/$log->ZabbixAgent32
 ZabbixAgent64=http://".Sys::$domain."/$log->ZabbixAgent64$ConnectionType$Commands
 Client=$dev->CodeClient
 Computer=$dev->Nom
+Type=$dev->DeviceType
 Task=$task
 ".$dirty."
 ";
@@ -122,11 +176,11 @@ Task=$task
             $exists->Nom = $_GET["name"];
             $exists->Description = $_GET["os"];
             if(isset($_GET["machine"]))
-                $exists->DeviceType = ($_GET["machine"]=='workstation')?'Poste':'Server';
-            else $exists->DeviceType = 'Server';
+                $exists->DeviceType = ($_GET["machine"]=='station')?'Poste':'Server';
+            else $exists->DeviceType = 'Poste';
 
             if($exists->ModeTest){
-                $cos=$exists->getChildren('DeviceConnexion');
+                $cos=$exists->getChildren('DevicePort');
                 $exists->ConnectionType = "";
                 foreach ($cos as $co){
                     $ip = $co->IpRedirectDistant!=''?$co->IpRedirectDistant:'localhost';
@@ -153,8 +207,8 @@ Task=$task
                 $obj->Description = $_GET["os"];
             }
             if(isset($_GET["machine"]))
-                $obj->DeviceType = ($_GET["machine"]=='workstation')?'Poste':'Server';
-            else $obj->DeviceType = 'Server';
+                $obj->DeviceType = ($_GET["machine"]=='station')?'Poste':'Server';
+            else $obj->DeviceType = 'Poste';
             $obj->Uuid = $uuid;
             //klog::l('$obj',$obj);
             $obj->Save();
@@ -213,7 +267,7 @@ Task=$task
 
 
     private function checkGuacamoleConnections()    {
-        $dbGuac = new PDO('mysql:host=10.0.97.5;dbname=guacamole', 'root', 'RsL5pfky', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+        $dbGuac = new PDO('mysql:host=10.0.189.12;dbname=guacamole', 'root', 'RsL5pfky', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
         $dbGuac->query("SET AUTOCOMMIT=1");
         $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 

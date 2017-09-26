@@ -33,9 +33,9 @@ foreach ($vars['rows'] as $k=>$v){
                 $v->{$f['name']} = Utils::cleanJson($v->{$f['name']});
                 break;
         }
-        if (isset($f['Values'])){
+        if (isset($f['Values'])&&isset($f['Values'][$v->{$f['name']}])){
             $v->{$f['name'].'Label'} = $f['Values'][$v->{$f['name']}];
-        }
+        }else $v->{$f['name'].'Label'} = '';
         if ($f['type']=='fkey'&&$f['card']=='short'){
             if ($v->{$f['name']} > 0) {
                 $kk = Sys::getOneData($f['objectModule'], $f['objectName'] . '/' . $v->{$f['name']});

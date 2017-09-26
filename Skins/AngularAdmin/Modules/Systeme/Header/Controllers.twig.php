@@ -23,6 +23,7 @@ foreach (Sys::$User->Menus as $m){
             $o = genericClass::createInstance($info['Module'], $info['ObjectType']);
             $obj = $o->getObjectClass();
             $tmp['description'] = $o->getDescription();
+            $tmp['Interfaces'] = $obj->getInterfaces();
             $tmp['childrenelements'] = $obj->getChildElements();
             //for ($i=0; $i<sizeof($tmp['childrenelements']);$i++)if (!isset($tmp['childrenelements'][$i]['form'])) unset($tmp['childrenelements'][$i]);
             $tmp['parentelements'] = $obj->getParentElements();

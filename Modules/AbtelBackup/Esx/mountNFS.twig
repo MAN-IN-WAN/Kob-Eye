@@ -1,0 +1,30 @@
+{% if obj.Error|length %}
+    <div class="alert alert-danger">
+        <ul>
+            {% for er in obj.Error %}
+                <li>{{ er.Message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+{% if obj.Warning|length %}
+    <div class="alert alert-warning">
+        <ul>
+            {% for er in obj.Warning %}
+                <li>{{ er.Message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+{% if obj.Success|length %}
+    <div class="alert alert-success">
+        <ul>
+            {% for er in obj.Success %}
+                <li>{{ er.Message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+{% if success %}
+    <div class="alert alert-success">NFS monté avec succès</div>
+{% endif %}

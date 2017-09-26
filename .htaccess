@@ -27,7 +27,7 @@ RewriteCond %{REQUEST_FILENAME} \.(mini|limit|scale)\.[0-9]+x[0-9]+x[0-9]+\.(jpe
 RewriteRule   ^.*$	index.php  [L]
 
 #CAS GLOBAL
-RewriteCond %{REQUEST_FILENAME} !\.(ico|jpe?g|JPE?G|png|gif|map|ogg|html|swf|appcache|css|gz|js|json|mp4|ogv|f4v|flv|mp4|m4v|avi|apk|zip|ttf|eot|woff|woff2|svg|pptx|docx|xlsx|pdf)$
+RewriteCond %{REQUEST_FILENAME} !\.(ico|jpe?g|JPE?G|png|gif|map|ogg|html|swf|appcache|css|gz|js|json|mp4|ogv|f4v|bat|flv|mp4|m4v|avi|apk|zip|ttf|eot|woff|woff2|svg|pptx|docx|xlsx|pdf)$
 RewriteRule   ^.*$	index.php  [L]
 
 #GESTION DES ENTETES

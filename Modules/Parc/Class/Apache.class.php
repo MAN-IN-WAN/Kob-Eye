@@ -49,10 +49,40 @@ class Apache extends genericClass {
                 $this->Ssl = true;
                 break;
 			case "Letsencrypt":
+
                 //définition de la date d'expiration
                 $this->SslExpiration=time()+(86400*90);
                 $this->Ssl = true;
                 $serv = $this->getKEServer();
+                $sa = explode("\n",$this->ApacheServerAlias);
+
+                //test des entrées dns
+                $authdns = Array (
+                    0 => Array(
+                        "host" => "ns1.google.com",
+                        "type" => "NS",
+                        "target" => "ns1.google.com",
+                        "class" => "IN",
+                        "ttl" => 10722,
+                    )
+                );
+                require_once 'Net/DNS2.php';
+                $resolver = new Net_DNS2_Resolver( array('nameservers' => array('8.8.8.8')) );
+                $t = array($resolver->query($this->ApacheServerName, 'A'));
+                foreach ($sa as $a){
+                    $t = array_merge($t,array($resolver->query($a, 'A')));
+                }
+
+                //test des erreurs
+                $err = false;
+                foreach ($t as $dns){
+                    if ($dns->answer[sizeof($dns->answer)-1]->address!=$serv->IP){
+                        $err = true;
+                        $this->addError(array("Message"=>"Le domaine : '".$dns->answer[sizeof($dns->answer)-1]->name."' ne pointe pas sur l'adresse ip ".$serv->IP." (actuellement il pointe vers ".$dns->answer[sizeof($dns->answer)-1]->address."), ou sa propagation se terminera dans ".$dns->answer[sizeof($dns->answer)-1]->ttl." secondes"));
+                    }
+                }
+                if ($err)return false;
+
                 //pour activer ssl il faut déclencher une tache
                 $task  = genericClass::createInstance('Parc','Tache');
                 $task->Nom = "Activation SSL pour la configuration Apache ".$this->ApacheServerName." ( ".$this->Id." )";
@@ -73,7 +103,7 @@ class Apache extends genericClass {
 			default:
 			break;
 		}
-		return true;
+		return;
 	}
 
 	public function getRootPath() {

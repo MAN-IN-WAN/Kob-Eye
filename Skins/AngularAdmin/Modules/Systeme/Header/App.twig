@@ -1,19 +1,21 @@
 'use strict';
 var TEMPLATE_PATH = '/Skins/AngularAdmin/';
 angular.module('cleanUI', [
-'ngRoute',
-'cleanUI.controllers',
-'angularUtils.directives.dirPagination',
-'ngSanitize',
-'nl2br',
-'uiSwitch',
-'ui.bootstrap',
-'CustomSelect',
-'checklist-model',
-'countTo'
+    'ngRoute',
+    'cleanUI.controllers',
+    'angularUtils.directives.dirPagination',
+    'ngSanitize',
+    'nl2br',
+    'ngMap',
+    'uiSwitch',
+    'ui.bootstrap',
+    'CustomSelect',
+    'checklist-model',
+    'countTo'
 ]).config(function($interpolateProvider){
-$interpolateProvider.startSymbol('{[{').endSymbol('}]}');
+    $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
 })
+
 .config(['$locationProvider', '$routeProvider',
 function($locationProvider, $routeProvider) {
 /////////////////////////////////////////////////////////////
@@ -423,5 +425,5 @@ $('.left-menu-list-opened').removeClass('left-menu-list-opened');
 });
 
 app.run(function($rootScope) {
-$rootScope.keys = Object.keys;
+//$rootScope.keys = Object.keys;
 });

@@ -117,7 +117,7 @@ VM_STARTUP_ORDER=
                 $esx->copyFile('ghettoVCB.sh');
                 $act->addProgression(40);
                 $act->addDetails($v->Titre.' ---> montage du NFS');
-                $esx->remoteExec("esxcfg-nas -a BORG -o ".AbtelBackup::getMyIp()." -s /backup/nfs",null,true);
+                $esx->remoteExec("esxcfg-nas -a ABTEL_BACKUP -o ".AbtelBackup::getMyIp()." -s /backup/nfs",null,true);
                 $act->addProgression(10);
                 $this->Progression = 20;
                 parent::Save();

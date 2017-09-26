@@ -6,8 +6,9 @@
 		<FUNCTION title="Test de connexion">Connect</FUNCTION>
 		<FUNCTION title="Rafraîchir l'inventaire">getInventory</FUNCTION>
 		<FUNCTION title="Regénérer les clefs SSH">installSshKey</FUNCTION>
+		<FUNCTION title="Monter le NFS">mountNFS</FUNCTION>
+		<FUNCTION title="Démonter le NFS">unmountNFS</FUNCTION>
 		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1" obligatoire="1" listDescr="Titre">Titre</PROPERTIES>
-		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1" obligatoire="1" listDescr="Titre">Zob</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" searchOrder="2" list="1" form="1" fiche="1" listDescr="IP" obligatoire="1">IP</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="3" list="1" fiche="1" form="1" listDescr="Actif" description="Actif">Enabled</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="4" list="1" fiche="1"  listDescr="Statut" description="Connexion complête">Status</PROPERTIES>

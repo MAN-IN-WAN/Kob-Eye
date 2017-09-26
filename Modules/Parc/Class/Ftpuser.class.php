@@ -40,6 +40,8 @@ class Ftpuser extends genericClass {
 	 */
 	public function Verify( $synchro = true ) {
 		if (substr($this->DocumentRoot,strlen($this->DocumentRoot)-1,1)=='/') $this->DocumentRoot = substr($this->DocumentRoot,0,-1);
+        //check host
+        if (!$this->getOneParent('Host')) return false;
 
 		if(parent::Verify()) {
 
@@ -50,6 +52,7 @@ class Ftpuser extends genericClass {
 				// Outils
 				$KEHost = $this->getKEHost();
 				$KEServer = $this->getKEServer();
+				if (!$KEServer) return false;
 				$dn = 'uid='.$this->Identifiant.',ou=users,cn='.$KEHost->Nom.',ou='.$KEServer->LDAPNom.',ou=servers,'.PARC_LDAP_BASE;
 				// Verification à jour
 				$res = Server::checkTms($this);
@@ -131,7 +134,7 @@ class Ftpuser extends genericClass {
 		
 		$tab = $this->getParents('Host');
 		if(!empty($tab)) {
-			$this->LdapGid = $tab[0]->LdapGid;
+			$this->LdapGid = "100";//$tab[0]->LdapGid;
 			$this->LdapUid = $tab[0]->LdapUid;
 			if($synchro) {
 				$entry = array('ftpgid' => $this->LdapGid, 'ftpuid' => $this->LdapUid);

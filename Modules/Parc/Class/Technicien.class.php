@@ -213,45 +213,51 @@ class Parc_Technicien extends genericClass {
     }
 
     private function updateGuacamoleUser(){
-        $dbGuac = new PDO('mysql:host=10.0.97.5;dbname=guacamole', 'root', 'RsL5pfky', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-        $dbGuac->query("SET AUTOCOMMIT=1");
-        $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $servs = Sys::getData('Parc','Server/Guacamole=1');
+        foreach ($servs as $serv) {
+            $dbGuac = new PDO('mysql:host=' . $serv->IP . ';dbname=guacamole', $serv->SshUser, $serv->SshPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+            $dbGuac->query("SET AUTOCOMMIT=1");
+            $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        if (isset($this->AccesUser) && $this->AccesUser != '' && $this->AccesUser != null && isset($this->AccesPass) && $this->AccesPass != '' && $this->AccesPass != null) {
-            $query = "SELECT * FROM `guacamole_user` WHERE username = '" . $this->AccesUser . "'";
-            $q = $dbGuac->query($query);
-            $result = $q->fetchALL(PDO::FETCH_ASSOC);
-            if (sizeof($result) > 0) {
+            if (isset($this->AccesUser) && $this->AccesUser != '' && $this->AccesUser != null && isset($this->AccesPass) && $this->AccesPass != '' && $this->AccesPass != null) {
+                $query = "SELECT * FROM `guacamole_user` WHERE username = '" . $this->AccesUser . "'";
+                $q = $dbGuac->query($query);
+                $result = $q->fetchALL(PDO::FETCH_ASSOC);
+                if (sizeof($result) > 0) {
+                    $usr = $result;
+                    $query = "UPDATE `guacamole_user` SET password_hash=UNHEX(UPPER(SHA2('" . $this->AccesPass . "',256))),password_date='" . date("Y-m-d H:i:s") . "',password_salt=null  WHERE username='" . $this->AccesUser . "'";
+                    $q = $dbGuac->query($query);
+                } else {
+                    $query = "INSERT INTO `guacamole_user` (username,password_hash,password_date) VALUES ('" . $this->AccesUser . "',UNHEX(UPPER(SHA2('" . $this->AccesPass . "',256))),'" . date("Y-m-d H:i:s") . "')";
+                    $q = $dbGuac->query($query);
+                }
+                $query = "SELECT * FROM `guacamole_user` WHERE username = '" . $this->AccesUser . "'";
+                $q = $dbGuac->query($query);
+                $result = $q->fetchALL(PDO::FETCH_ASSOC);
                 $usr = $result;
-                $query = "UPDATE `guacamole_user` SET password_hash=UNHEX(UPPER(SHA2('" . $this->AccesPass . "',256))),password_date='" . date("Y-m-d H:i:s") . "'  WHERE username='".$this->AccesUser."'";
+                //creation des droits
+                $query = "INSERT IGNORE INTO `guacamole_system_permission` (user_id,permission) VALUES ('" . $usr[0]['user_id'] . "','ADMINISTER')";
                 $q = $dbGuac->query($query);
-            } else {
-                $query = "INSERT INTO `guacamole_user` (username,password_hash,password_date) VALUES ('" . $this->AccesUser . "',UNHEX(UPPER(SHA2('" . $this->AccesPass . "',256))),'" . date("Y-m-d H:i:s") . "')";
-                $q = $dbGuac->query($query);
+            } else if (isset($this->AccesUser) && $this->AccesUser != '' && $this->AccesUser != null && (!isset($this->AccesPass) || $this->AccesPass == '' || $this->AccesPass == null)) {
+                //$this->addError(array('Message' => 'La valeur du champ AccesPass est nulle ou non définie alors que le champ AccesUser est défini.', "Prop" => 'AccesPass'));
             }
-            $query = "SELECT * FROM `guacamole_user` WHERE username = '" . $this->AccesUser . "'";
-            $q = $dbGuac->query($query);
-            $result = $q->fetchALL(PDO::FETCH_ASSOC);
-            $usr = $result;
-            //creation des droits
-            $query = "INSERT IGNORE INTO `guacamole_system_permission` (user_id,permission) VALUES ('" . $usr[0]['user_id'] . "','ADMINISTER')";
-            $q = $dbGuac->query($query);
-        } else if (isset($this->AccesUser) && $this->AccesUser != '' && $this->AccesUser != null && (!isset($this->AccesPass) || $this->AccesPass == '' || $this->AccesPass == null)) {
-            //$this->addError(array('Message' => 'La valeur du champ AccesPass est nulle ou non définie alors que le champ AccesUser est défini.', "Prop" => 'AccesPass'));
+            return true;
         }
-        return true;
     }
     /**
      * deleteGuacamole
      *
      */
     private function deleteGuacamoleUser() {
-        $dbGuac = new PDO('mysql:host=10.0.97.5;dbname=guacamole', 'root', 'RsL5pfky', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-        $dbGuac->query("SET AUTOCOMMIT=1");
-        $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        if (isset($this->AccesUser) && $this->AccesUser != '' && $this->AccesUser != null && isset($this->AccesPass) && $this->AccesPass != '' && $this->AccesPass != null) {
-            $query = "DELETE FROM `guacamole_user` WHERE username = '" . $this->AccesUser . "'";
-            $q = $dbGuac->query($query);
+        $servs = Sys::getData('Parc','Server/Guacamole=1');
+        foreach ($servs as $serv) {
+            $dbGuac = new PDO('mysql:host=' . $serv->IP . ';dbname=guacamole', $serv->SshUser, $serv->SshPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+            $dbGuac->query("SET AUTOCOMMIT=1");
+            $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            if (isset($this->AccesUser) && $this->AccesUser != '' && $this->AccesUser != null && isset($this->AccesPass) && $this->AccesPass != '' && $this->AccesPass != null) {
+                $query = "DELETE FROM `guacamole_user` WHERE username = '" . $this->AccesUser . "'";
+                $q = $dbGuac->query($query);
+            }
         }
     }
     /**
@@ -259,30 +265,34 @@ class Parc_Technicien extends genericClass {
      * Create and modify zabbix user
      */
     private function updateZabbixUser() {
-        //vérification de l'existence
-        $out = Zabbix::getUser(array(
-            'filter'=>array(
-                'alias'=> "$this->AccesUser"
-            )
-        ));
-        if (!sizeof($out)) {
-            //création de l'utilisateur
-            Zabbix::createUser($this->AccesUser,array(
-                "alias" => "$this->AccesUser",
-                "name" => "$this->Nom",
-                "surname" => "$this->Prenom",
-                "type" => "3",
-                "passwd" => "$this->AccesPass",
-                "usrgrps" => array(
-                    array('usrgrpid' => 7)
-                ),
+        $servs = Sys::getData('Parc','Server/Zabbix=1');
+        foreach ($servs as $serv) {
+
+            //vérification de l'existence
+            $out = Zabbix::getUser(array(
+                'filter' => array(
+                    'alias' => "$this->AccesUser"
+                )
             ));
-        }else{
-            //mise à jour de l'utilisateur
-            Zabbix::updateUser(array(
-                "userid" => $out[0]->userid,
-                "passwd" => "$this->AccesPass"
-            ));
+            if (!sizeof($out)) {
+                //création de l'utilisateur
+                Zabbix::createUser($this->AccesUser, array(
+                    "alias" => "$this->AccesUser",
+                    "name" => "$this->Nom",
+                    "surname" => "$this->Prenom",
+                    "type" => "3",
+                    "passwd" => "$this->AccesPass",
+                    "usrgrps" => array(
+                        array('usrgrpid' => 7)
+                    ),
+                ));
+            } else {
+                //mise à jour de l'utilisateur
+                Zabbix::updateUser(array(
+                    "userid" => $out[0]->userid,
+                    "passwd" => "$this->AccesPass"
+                ));
+            }
         }
     }
     /**
@@ -290,17 +300,21 @@ class Parc_Technicien extends genericClass {
      *
      */
     private function deleteZabbixUser() {
-        //vérification de l'existence
-        $out = Zabbix::getUser(array(
-            'filter'=>array(
-                'alias'=> "$this->AccesUser"
-            )
-        ));
-        if (sizeof($out)) {
-            //mise à jour de l'utilisateur
-            Zabbix::deleteUser(array(
-                "userid" => $out[0]->userid
+        $servs = Sys::getData('Parc','Server/Zabbix=1');
+        foreach ($servs as $serv) {
+
+            //vérification de l'existence
+            $out = Zabbix::getUser(array(
+                'filter' => array(
+                    'alias' => "$this->AccesUser"
+                )
             ));
+            if (sizeof($out)) {
+                //mise à jour de l'utilisateur
+                Zabbix::deleteUser(array(
+                    "userid" => $out[0]->userid
+                ));
+            }
         }
     }
 

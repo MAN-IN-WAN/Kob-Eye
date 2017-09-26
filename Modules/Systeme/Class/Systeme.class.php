@@ -142,7 +142,7 @@ class Systeme extends Module {
             //creation de l'utilisateur login par défaut
             $u = genericClass::createInstance('Systeme','User');
             $u->Login = 'login';
-            $u->Pass = 'secret';
+            $u->Pass = md5('secret');
             $u->Mail = 'login@login.com';
             $u->Skin = 'LoginBootstrap';
             $u->Actif = true;
@@ -158,7 +158,7 @@ class Systeme extends Module {
             //creation de l'utilisateur admin par défaut
             $u = genericClass::createInstance('Systeme','User');
             $u->Login = 'admin';
-            $u->Pass = '21wyisey';
+            $u->Pass = md5('21wyisey');
             $u->Mail = 'admin@admin.com';
             $u->Skin = 'AdminV2';
             $u->Actif = true;

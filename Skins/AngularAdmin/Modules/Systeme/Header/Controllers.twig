@@ -163,7 +163,7 @@
     });
 
     /**** FICHE CONTROLLER ****/
-    app.controller('{{ c.name }}FicheCtrl', function($injector,$location, $scope, $rootScope, $routeParams,$http,{{ c.identifier }}Store{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store{% endfor %}) {
+    app.controller('{{ c.name }}FicheCtrl', function($injector,NgMap,$location, $scope, $rootScope, $routeParams,$http,{{ c.identifier }}Store{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store{% endfor %}) {
         //récupération des données du store.
         {{ c.identifier }}Store.getOneData($routeParams.id).then(function (data){
             console.log('retour chargement one data',data);
@@ -372,8 +372,44 @@
                     });
                 }
             {% endfor %}
+
+            //gestion des widget
+            {% for i in c.Interfaces %}
+                {% for w in i %}
+                    {% if w.type == 'GeolocIP' %}
+                        console.log('>>>> interface {{ w.type }}');
+                        NgMap.getMap().then(function(map) {
+                            //géolocalisation d'une ip
+                            $http({
+                                method: 'GET',
+                                url: 'https://freegeoip.net/json/'+$scope.obj.{{ w.field }}
+                            }).then(function successCallback(response) {
+                                console.log('GEOLOCIP > response ',response,'http://freegeoip.net/json/'+$scope.obj.{{ w.field }});
+                                //clearMarker
+                                if (map.markers)
+                                    for (var i=0; i< map.markers.length;i++) {
+                                        map.markers[i].setMap(null);
+                                    }
+                                else map.markers = [];
+                                //setcenter
+                                map.setCenter(new google.maps.LatLng(response.data.latitude, response.data.longitude));
+                                //add marker
+                                var marker = new google.maps.Marker({
+                                    position: new google.maps.LatLng(response.data.latitude, response.data.longitude),
+                                    map: map,
+                                    title: $scope.obj.label
+                                });
+                                map.markers.push(marker);
+                            }, function errorCallback(response) {
+                                console.log('GEOLOCIP > error ',response);
+                            });
+                        });
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+
             $scope.show = true;
         });
-    });
+        });
     {% endif %}
 {% endfor %}

@@ -167,6 +167,9 @@
 		<PROPERTIES type="boolean" searchOrder="5" list="1" fiche="1" form="1">Dns</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="6" list="1" fiche="1" form="1">Mail</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="6" list="1" fiche="1" form="1">Sql</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="8" list="1" fiche="1" form="1">Guacamole</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="9" list="1" fiche="1" form="1">Zabbix</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="10" list="1" fiche="1" form="1">Grafana</PROPERTIES>
 		<CATEGORY title="Informations">
 			<PROPERTIES type="varchar" description="SSH: Nom d'utilisateur" default="root" form="1">SshUser</PROPERTIES>
 			<PROPERTIES type="varchar" description="SSH: Mot de passe" form="1">SshPassword</PROPERTIES>
@@ -212,7 +215,7 @@
 		<PROPERTIES category="LDAP" type="int" auto="1">LdapGid</PROPERTIES>
 		<PROPERTIES category="LDAP" type="int" auto="1">LdapUid</PROPERTIES>
 		<FKEY card="1,1" data="Server,Id" form="1" list="1" fiche="1" parentDescription="Serveur">ServerId</FKEY>
-		<FKEY card="0,1" data="Client,Id" link="1">ClientId</FKEY>
+		<FKEY card="0,1" data="Client,Id" link="1" form="1" list="1" fiche="1" parentDescription="Client">ClientId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Apache" driver="mysql" Dico="1" Description="Hôte virtuel" Icon="/Skins/AdminV2/Img/IconAqua/Tasks.png" Class="Modules/Parc/Class/Apache.class.php">
 		<PROPERTIES type="function" searchOrder="2" obligatoire="1" list="1" fiche="1" form="1" description="Racine du site" function="getRootPath">DocumentRoot</PROPERTIES>
@@ -276,10 +279,14 @@
 		<FUNCTION title="Récupère les ips internes">getIps</FUNCTION>
 		<FILTER name="Tous les périphériques" color="warning" ></FILTER>
 		<FILTER name="Périphériques en ligne"  color="success">Online=1</FILTER>
-		<FILTER name="Périphériques en mode test">ModeTest=1</FILTER>
+		<FILTER name="Périphérique de type serveur"  color="primary">DeviceType=Server</FILTER>
 		<FILTER name="Ajoutés ces dernières 24h">tmsCreate>[!TMS::Now:-86400!]</FILTER>
+		<FILTER name="Périphériques en mode test">ModeTest=1</FILTER>
+		<INTERFACES name="top">
+			<FORM type="GeolocIP" field="PublicIP">Grafana</FORM>
+		</INTERFACES>
 		<INTERFACES name="bottom">
-			<FORM form="Iframe" url="grafana/dashboard/db/monitoring-panel-windows-als?var-group=Supervision&amp;var-netif=All&amp;var-host=">Grafana</FORM>
+			<FORM type="Iframe" url="grafana/dashboard/db/monitoring-panel-windows-als?var-group=Supervision&amp;var-netif=All&amp;var-host=">Grafana</FORM>
 		</INTERFACES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="2" fiche="1" form="1" listDescr="Nom machine" description="Nom du périphérique">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="8" obligatoire="0" list="8" fiche="1" listDescr="IP Publique" description="IP Publique">PublicIP</PROPERTIES>
@@ -289,6 +296,8 @@
 		<PROPERTIES type="boolean" searchOrder="10" obligatoire="0" fiche="1" form="1"  listDescr="Tunnel Restart" description="Tunnel restart">RestartTunnel</PROPERTIES>
 		<PROPERTIES type="date" searchOrder="9" obligatoire="0" fiche="1" listDescr="Last seen" description="Vu pour la dernière fois">LastSeen</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="5" obligatoire="0" fiche="1" list="5" listDescr="Online" description="En ligne">Online</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="5" obligatoire="0" fiche="1" list="5" listDescr="Erreur" description="Erreur">Erreur</PROPERTIES>
+		<PROPERTIES type="text" searchOrder="5" obligatoire="0" fiche="1" description="Détail de l'erreur">DetailErreur</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="11" obligatoire="0" list="6" fiche="1" listDescr="Version" description="Version courante">CurrentVersion</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="3" obligatoire="0" list="3" fiche="1" form="1" listDescr="Commentaire" description="Commentaires">Commentaire</PROPERTIES>
 		<PROPERTIES type="text" searchOrder="12" obligatoire="0" fiche="1" form="1" description="Description du périphérique">Description</PROPERTIES>
@@ -298,6 +307,8 @@
 		<PROPERTIES type="varchar" searchOrder="14" obligatoire="0" fiche="1" values="Poste,Serveur" form="1" listDescr="Type" description="Type de machine">DeviceType</PROPERTIES>
 		<PROPERTIES type="extlink" list="10" fiche="1" description="Url guacamole VNC" listDescr="VNC">GuacamoleUrlVnc</PROPERTIES>
 		<PROPERTIES type="extlink" list="11"  fiche="1" description="Url guacamole RDP" listDescr="RDP">GuacamoleUrlRdp</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" description="Type de système d'exploitation" listDescr="OS" default="Windows" values="Linux,Windows">OS</PROPERTIES>
+		<PROPERTIES type="varchar" fiche="1" form="1" description="Type de supervision" values="Active,Passive" default="Active" listDescr="Supervision">Monitoring</PROPERTIES>
 		<PROPERTIES type="varchar" description="Id guacamole RDP">GuacamoleIdRdp</PROPERTIES>
 		<PROPERTIES type="varchar" description="Id guacamole VNC">GuacamoleIdVnc</PROPERTIES>
 		<FKEY card="0,1" data="Client,Id" fiche="1" form="1" parentDescription="Client" link="1">ClientId</FKEY>
@@ -314,7 +325,13 @@
 		<PROPERTIES type="extlink" list="1" fiche="1" description="Url guacamole" listDescr="Lien Direct">GuacamoleUrl</PROPERTIES>
 		<PROPERTIES type="varchar" description="Id guacamole">GuacamoleId</PROPERTIES>
 		<FKEY card="0,1" data="Device,Id" fiche="1" form="1" parentDescription="Périphérique" link="1">DeviceId</FKEY>
-		<FKEY card="0,n" data="Contact,Id" fiche="1" form="1" parentDescription="Contact/Utilisateur" link="1">ContactId</FKEY>
+		<FKEY card="0,n" data="Contact,Id" parentDescription="Contact/Utilisateur" link="1">ContactId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="DevicePort" driver="mysql" Description="Redirection de port" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/DevicePort.class.php">
+		<PROPERTIES type="int" obligatoire="0" fiche="1" list="1" listDescr="Port local" description="Port redirection Local">PortRedirectLocal</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="0" fiche="1" list="1" form="1" listDescr="Port distant" description="Port de redirection de la machine distante">PortRedirectDistant</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" fiche="1" list="1" form="1" listDescr="Iip distante" description="Ip de redirection de la machine distante">IpRedirectDistant</PROPERTIES>
+		<FKEY card="0,1" data="Device,Id" fiche="1" form="1" parentDescription="Périphérique" link="1">DeviceId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="LogicielVersion" driver="mysql" Dico="1" Description="Version logMeNimes" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom de la version">Nom</PROPERTIES>
@@ -379,6 +396,10 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="DeviceTaskFiles" driver="mysql" Description="Fichiers" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" >
 		<FKEY card="1,1" data="DeviceTask,Id">TaskId</FKEY>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom du fichier" list="1" form="1" fiche="1" listDescr="Nom fichier">Nom</PROPERTIES>
+		<PROPERTIES type="file" description="Fichiers" list="1" form="1" fiche="1" listDescr="Fichier">Fichier</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="LogicielFichier" Dico="1" driver="mysql" Description="Fichiers" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" >
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom du fichier" list="1" form="1" fiche="1" listDescr="Nom fichier">Nom</PROPERTIES>
 		<PROPERTIES type="file" description="Fichiers" list="1" form="1" fiche="1" listDescr="Fichier">Fichier</PROPERTIES>
 	</OBJECTCLASS>

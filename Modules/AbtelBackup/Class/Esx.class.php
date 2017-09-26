@@ -193,4 +193,10 @@ class Esx extends genericClass {
         fclose( $error_stream );
         return array( $output, $error_output,$exit_output);
     }
+    public function mountNFS(){
+        return $this->remoteExec("esxcfg-nas -a ABTEL_BACKUP -o ".AbtelBackup::getMyIp()." -s /backup/nfs",null,true);
+    }
+    public function unmountNFS(){
+        return $this->remoteExec("esxcfg-nas -d ABTEL_BACKUP",null,true);
+    }
 }

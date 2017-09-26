@@ -152,7 +152,7 @@ class Host extends genericClass
         $entry['preferredLanguage'] = $this->PHPVersion;
         if ($new) {
             $entry['uidnumber'] = Server::getNextUid();
-            $entry['gidnumber'] = $this->_KEClient->LdapGid;
+            $entry['gidnumber'] = "100";//$this->_KEClient->LdapGid;
             $entry['loginshell'] = '/bin/bash';
             $entry['objectclass'][0] = 'inetOrgPerson';
             $entry['objectclass'][1] = 'posixAccount';

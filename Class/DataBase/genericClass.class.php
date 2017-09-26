@@ -1500,9 +1500,9 @@ class genericClass extends Root {
 						break;
 					case "text" :
 						break;
-                    case "date" :
+                    /*case "date" :
                             $newValue = intval($newValue);
-                        break;
+                        break;*/
 					default :
 						if (is_string($newValue))
 							$newValue = trim($newValue);

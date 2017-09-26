@@ -14173,4 +14173,4 @@ angular.module('uiGmapgoogle-maps.extensions')
     })
   };
 }]);
-}( window, angular, _));
+}( window, angular));

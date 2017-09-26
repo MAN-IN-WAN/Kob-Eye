@@ -340,6 +340,7 @@ class DbAnalyzer extends Root{
 		//		$this->tabCache = NULL;
 		if(is_object($Entree)){
 			$i=$this->findByTitle($Entree->ObjectType);
+			if (!is_object($this->ObjectClass[$i])) return false;
 			$Object = $this->ObjectClass[$i]->Insert($Entree);
 			$Object["ObjectType"] = $Entree->ObjectType;
 		}
