@@ -32,6 +32,7 @@ class Host extends genericClass
                 $Server->Save();
             }
         }
+        return true;
     }
 
     /**

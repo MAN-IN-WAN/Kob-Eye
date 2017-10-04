@@ -131,11 +131,19 @@ class DeviceConnexion extends genericClass{
                     $q = $dbGuac->query($query);
 
                     if(isset($this->Login) && $this->Login !='' && $this->Login != null){
-                        $query = "UPDATE `guacamole_connection_parameter` SET parameter_value = '".$this->Login."' WHERE connection_id=$this->GuacamoleId AND parameter_name='username'";
-                        $q = $dbGuac->query($query);
+                        if (strpos($this->Login,'\\')){
+                            $tt = explode('\\',$this->Login);
+                            $query = "REPLACE INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES (" . $this->GuacamoleId . ",'username','" . $tt[1] . "')";
+                            $q = $dbGuac->query($query);
+                            $query = "REPLACE INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES (" . $this->GuacamoleId . ",'domain','" . $tt[0] . "')";
+                            $q = $dbGuac->query($query);
+                        }else {
+                            $query = "REPLACE INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES (" . $this->GuacamoleId . ",'username','" . $this->Login . "')";
+                            $q = $dbGuac->query($query);
+                        }
                     }
                     if(isset($this->Password) && $this->Password !='' && $this->Password != null) {
-                        $query = "UPDATE `guacamole_connection_parameter` SET parameter_value = '".$this->Password."' WHERE connection_id=$this->GuacamoleId AND parameter_name='password'";
+                        $query = "REPLACE INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES (".$this->GuacamoleId.",'password','".$this->Password."')";
                         $q = $dbGuac->query($query);
                     }
 

@@ -1666,7 +1666,23 @@ class genericClass extends Root {
 				}
 			}
 		//Verification des cardinalites.
-		#TODO
+        $fkeys = $this->getParentElements();
+        foreach ($fkeys as $fkey){
+            if($fkey['card']=='short'&&$fkey['obligatoire']) {
+                if (empty($this -> {$fkey['name']})){
+                    //on vérifie aussi dans le tableau des linjs temporaires
+                    $found = false;
+                    foreach ($this->Parents as $p){
+                        if ($p["Module"]==$fkey["objectModule"]&&$p["Titre"]==$fkey["objectName"])$found=true;
+                    }
+                    if (!$found) {
+                        //erreur
+                        $this->AddError(array("Message" => "__LE_CHAMP__ " . (($fkey["description"] != "") ? $fkey["description"] : $fkey["name"]) . " __EST_OBLIGATOIRE__.", "Prop" => $fkey["name"]));
+                        $error = 0;
+                    }
+                }
+            }
+        }
 		return $error;
 	}
 

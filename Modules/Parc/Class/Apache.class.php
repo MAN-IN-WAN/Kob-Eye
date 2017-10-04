@@ -21,6 +21,7 @@ class Apache extends genericClass {
 		if(!$this->_isVerified) $this->Verify( $synchro );
 		// Enregistrement si pas d'erreur
 		if($this->_isVerified) parent::Save();
+		return true;
 	}
 
 	public function enableSsl($force = false) {
@@ -57,28 +58,22 @@ class Apache extends genericClass {
                 $sa = explode("\n",$this->ApacheServerAlias);
 
                 //test des entrées dns
-                $authdns = Array (
-                    0 => Array(
-                        "host" => "ns1.google.com",
-                        "type" => "NS",
-                        "target" => "ns1.google.com",
-                        "class" => "IN",
-                        "ttl" => 10722,
-                    )
-                );
                 require_once 'Net/DNS2.php';
                 $resolver = new Net_DNS2_Resolver( array('nameservers' => array('8.8.8.8')) );
                 $t = array($resolver->query($this->ApacheServerName, 'A'));
                 foreach ($sa as $a){
-                    $t = array_merge($t,array($resolver->query($a, 'A')));
+                    if (!empty(trim($a)))
+                        $t = array_merge($t,array($resolver->query($a, 'A')));
                 }
-
                 //test des erreurs
                 $err = false;
                 foreach ($t as $dns){
-                    if ($dns->answer[sizeof($dns->answer)-1]->address!=$serv->IP){
+                    if (!sizeof($dns->answer[sizeof($dns->answer)-1])){
                         $err = true;
-                        $this->addError(array("Message"=>"Le domaine : '".$dns->answer[sizeof($dns->answer)-1]->name."' ne pointe pas sur l'adresse ip ".$serv->IP." (actuellement il pointe vers ".$dns->answer[sizeof($dns->answer)-1]->address."), ou sa propagation se terminera dans ".$dns->answer[sizeof($dns->answer)-1]->ttl." secondes"));
+                        $this->addError(array("Message"=>"Le domaine : '".$dns->question[sizeof($dns->question)-1]->qname."' ne pointe pas sur l'adresse ip ".$serv->IP." (actuellement il n'est pas configuré)"));
+                    }elseif ($dns->answer[sizeof($dns->answer)-1]->address!=$serv->IP){
+                        $err = true;
+                        $this->addError(array("Message"=>"Le domaine : '".$dns->question[sizeof($dns->question)-1]->qname."' ne pointe pas sur l'adresse ip ".$serv->IP." (actuellement il pointe vers ".$dns->answer[sizeof($dns->answer)-1]->address."), ou sa propagation se terminera dans ".$dns->answer[sizeof($dns->answer)-1]->ttl." secondes"));
                     }
                 }
                 if ($err)return false;

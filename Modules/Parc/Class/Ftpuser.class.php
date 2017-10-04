@@ -19,6 +19,7 @@ class Ftpuser extends genericClass {
 			parent::Save();
 			$this->getUidGidFromHost( $synchro );
 		}
+		return true;
 	}
 	public function getRootPath() {
 		if (!$this->Id){

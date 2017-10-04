@@ -74,7 +74,7 @@ class VmJob extends genericClass {
             $this->Progression = 10;
             parent::Save();
             //creation de la configuration
-            $config='VM_BACKUP_VOLUME=/vmfs/volumes/BORG/
+            $config='VM_BACKUP_VOLUME=/vmfs/volumes/ABTEL_BACKUP/
 DISK_BACKUP_FORMAT=thin
 VM_BACKUP_ROTATION_COUNT=1
 POWER_VM_DOWN_BEFORE_BACKUP=0
@@ -90,7 +90,7 @@ UNMOUNT_NFS=0
 NFS_SERVER='.AbtelBackup::getMyIp().'
 NFS_VERSION=nfs
 NFS_MOUNT=/backup/nfs
-NFS_LOCAL_NAME=BORG
+NFS_LOCAL_NAME=ABTEL_BACKUP
 NFS_VM_BACKUP_DIR=EsxVm/'.$esx->IP.'/
 SNAPSHOT_TIMEOUT=15
 EMAIL_ALERT=0

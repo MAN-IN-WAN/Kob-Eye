@@ -10,9 +10,9 @@
 <div class="form-group row">
     <div class="col-lg-6 col-md-12">
         <div class="input-group list-search">
-            <input type="text" class="form-control" name="{{ identifier }}query" ng-model="{{ identifier }}.filter" placeholder="Recherche..." >
+            <input type="text" class="form-control" name="{{ identifier }}query" ng-model="{{ identifier }}.filter['{{ context }}']" placeholder="Recherche..." >
             <span class="input-group-btn">
-                <a href="javascript: void(0);" class="btn btn-success" ng-click="{{ identifier }}.refresh()">
+                <a href="javascript: void(0);" class="btn btn-success" ng-click="{{ identifier }}.refresh('{{ context }}')">
                     Rafraîchir
                 </a>
                 {% if operation.add %}
@@ -54,7 +54,7 @@
         </tr>
     </thead>
     <tbody>
-    <tr dir-paginate="item in {{ identifier }}.data" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination">
+    <tr dir-paginate="item in {{ identifier }}.data['{{ context }}']" current-page="{{ identifier }}.currentPage['{{ context }}']" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination">
         <td>
             <input type="checkbox" value="{[{ item.id }]}" ng-model="{{ identifier }}selected[item.id]" name="{{ identifier }}" id="{[{ item.id }]}" />&nbsp;
             <span class="label label-warning">{[{ item.id }]}</span>

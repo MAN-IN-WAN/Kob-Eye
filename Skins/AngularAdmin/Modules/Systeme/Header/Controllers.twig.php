@@ -25,7 +25,16 @@ foreach (Sys::$User->Menus as $m){
             $tmp['description'] = $o->getDescription();
             $tmp['Interfaces'] = $obj->getInterfaces();
             $tmp['childrenelements'] = $obj->getChildElements();
-            //for ($i=0; $i<sizeof($tmp['childrenelements']);$i++)if (!isset($tmp['childrenelements'][$i]['form'])) unset($tmp['childrenelements'][$i]);
+            for ($i=0; $i<sizeof($tmp['childrenelements']);$i++) {
+                //if (!isset($tmp['childrenelements'][$i]['form'])) unset($tmp['childrenelements'][$i]);
+                //recherche des parents de l'element
+                $co = genericClass::createInstance($tmp['childrenelements'][$i]['objectModule'], $tmp['childrenelements'][$i]['objectName']);
+                $cobj = $co->getObjectClass();
+                $tmp['childrenelements'][$i]['parentelements'] = $cobj->getParentElements();
+                for ($j=0; $j<sizeof($tmp['childrenelements'][$i]['parentelements']);$j++) {
+                    if (!isset($tmp['childrenelements'][$i]['parentelements'][$j]['form'])) unset($tmp['childrenelements'][$i]['parentelements'][$j]);
+                }
+            }
             $tmp['parentelements'] = $obj->getParentElements();
             $vars["controllers"][$tmp['identifier']] = $tmp;
         }

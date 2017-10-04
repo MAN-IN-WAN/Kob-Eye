@@ -2,6 +2,7 @@
 $info = Info::getInfos($vars['Query']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $vars['identifier'] = $info['Module'].$info['ObjectType'];
+$vars['context'] = $info['NbHisto'] > 1 ? 'children':'default';
 $vars['ObjectClass'] = $o->getObjectClass();
 $vars['functions'] = $o->getFunctions();
 $vars['operation'] = $vars['ObjectClass']->getOperations();

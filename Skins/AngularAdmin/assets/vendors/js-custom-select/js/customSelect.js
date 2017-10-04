@@ -46,7 +46,9 @@
 		displayText: 'Sélectionnez...',
 		emptyListText: 'Il n\'y a aucun résultat',
 		emptySearchResultText: 'Aucun résultat correspondant à "$0"',
+        loadingText: 'Chargement...',
 		addText: 'Ajouter',
+		filter: '',
 		searchDelay: 300
 	});
 
@@ -147,9 +149,9 @@
 					inputElement.focus();
 
 					// If filter is not async, perform search in case model changed
-					//if (!options.async) {
-					//	getMatches();
-					//}
+/*					if (!options.async) {
+						getMatches();
+					}*/
 				});
 				
 				if (dependsOn) {
@@ -280,7 +282,8 @@
 				}
 
 				function getOptions() {
-					return angular.extend({}, baseOptions, scope.$eval(attrs.customSelectOptions));
+					var o = angular.extend({}, baseOptions, scope.$eval(attrs.customSelectOptions));
+					return o;
 				}
 
 				function getDisplayText() {
@@ -313,28 +316,30 @@
 					if (searchTerm === undefined) {
 						searchTerm = (childScope.searchTerm || "").trim();
 					}
+					//check filter
+					if (options.filter != undefined){
+						searchTerm += '&'+options.filter;
+					}
 					var locals = { $searchTerm: searchTerm };
 					$q.when(valuesFn(scope, locals)).then(function (matches) {
 						if (!matches) return;
 
-						if (searchTerm === inputElement.val().trim()/* && hasFocus*/) {
-							matchMap = {};
-							childScope.matches.length = 0;
-							for (var i = 0; i < matches.length; i++) {
-								locals[valueName] = matches[i];
-								var value = valueFn(scope, locals),
-									label = displayFn(scope, locals);
+						matchMap = {};
+						childScope.matches.length = 0;
+						for (var i = 0; i < matches.length; i++) {
+							locals[valueName] = matches[i];
+							var value = valueFn(scope, locals),
+								label = displayFn(scope, locals);
 
-								matchMap[hashKey(value)] = {
-									value: value,
-									label: label/*,
-									model: matches[i]*/
-								};
+							matchMap[hashKey(value)] = {
+								value: value,
+								label: label/*,
+								model: matches[i]*/
+							};
 
-								childScope.matches.push(matches[i]);
-							}
-							//childScope.matches = matches;
+							childScope.matches.push(matches[i]);
 						}
+						//childScope.matches = matches;
 
 						if (needsDisplayText) setDisplayText();
 					}, function() {

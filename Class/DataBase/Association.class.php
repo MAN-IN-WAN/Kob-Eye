@@ -183,7 +183,7 @@ class Association {
 	*/
 	public function isMandatory() {
 		if ($this->isBinary()){
-			if ($this->Links[0]['Min']=='1')return true;
+			if ($this->Links[1]['Min']=='1')return true;
 		}
 		return false;
 	}

@@ -176,7 +176,7 @@ Task=$task
             $exists->Nom = $_GET["name"];
             $exists->Description = $_GET["os"];
             if(isset($_GET["machine"]))
-                $exists->DeviceType = ($_GET["machine"]=='station')?'Poste':'Server';
+                $exists->DeviceType = ($_GET["machine"]=='station')?'Poste':'Serveur';
             else $exists->DeviceType = 'Poste';
 
             if($exists->ModeTest){
@@ -207,7 +207,7 @@ Task=$task
                 $obj->Description = $_GET["os"];
             }
             if(isset($_GET["machine"]))
-                $obj->DeviceType = ($_GET["machine"]=='station')?'Poste':'Server';
+                $obj->DeviceType = ($_GET["machine"]=='station')?'Poste':'Serveur';
             else $obj->DeviceType = 'Poste';
             $obj->Uuid = $uuid;
             //klog::l('$obj',$obj);

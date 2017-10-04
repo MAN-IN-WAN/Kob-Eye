@@ -24,6 +24,14 @@ foreach ($formfields as $f){
         $o->AddParent($f['objectModule'].'/'.$f['objectName'].'/'.$values->{$f["name"]});
     }else $o->{$f["name"]} = $values->{$f["name"]};
 }
+$obj = $o->getObjectClass();
+$formfields = $obj->getParentElements();
+foreach ($formfields as $f){
+    if ($f['type']=='fkey'){
+        $o->AddParent($f['objectModule'].'/'.$f['objectName'].'/'.$values->{$f["name"]});
+    }
+}
+
 if ($o->Verify()) {
     $success = $o->Save();
     foreach ($formfields as $f){

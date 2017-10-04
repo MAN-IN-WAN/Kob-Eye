@@ -6,7 +6,9 @@ m = angular.module('nl2br', []);
 
 m.filter('nl2br', function() {
   return function(input) {
-    return input.replace(/\\&/g, '&').replace(/\\n/g, '<br>');
+    if (input)
+      return input.replace(/\\&/g, '&').replace(/\\n/g, '<br>');
+    else return '';
   };
 });
 

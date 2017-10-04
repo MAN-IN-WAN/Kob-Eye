@@ -288,8 +288,8 @@ class Parc_Client extends genericClass {
                 $result = $q->fetchALL(PDO::FETCH_ASSOC);
                 $usr = $result;
                 //creation des droits
-                $query = "INSERT IGNORE INTO `guacamole_system_permission` (user_id,permission) VALUES ('" . $usr[0]['user_id'] . "','ADMINISTER')";
-                $q = $dbGuac->query($query);
+//                $query = "INSERT IGNORE INTO `guacamole_system_permission` (user_id,permission) VALUES ('" . $usr[0]['user_id'] . "','ADMINISTER')";
+//                $q = $dbGuac->query($query);
             } else if (isset($this->AccesUser) && $this->AccesUser != '' && $this->AccesUser != null && (!isset($this->AccesPass) || $this->AccesPass == '' || $this->AccesPass == null)) {
                 //$this->addError(array('Message' => 'La valeur du champ AccesPass est nulle ou non définie alors que le champ AccesUser est défini.', "Prop" => 'AccesPass'));
             }

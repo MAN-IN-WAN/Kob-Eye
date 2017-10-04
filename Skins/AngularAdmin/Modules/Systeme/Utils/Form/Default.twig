@@ -15,7 +15,7 @@
                         </span>
                     </label>
             {% elseif field.type == "fkey" and field.card == "short" %}
-                <div custom-select="a.id as a.label for a in getSelectData('{{ field.objectModule }}{{ field.objectName }}Store',$searchTerm)" custom-select-options="{ 'async': true }" ng-model="modalObj.{{ field.name }}" class="form-control" ng-title="modalObj.{{ field.name }}label"></div>
+                <div custom-select="a.id as a.label for a in getSelectData('{{ field.objectModule }}{{ field.objectName }}Store',$searchTerm)" custom-select-options="{ 'async': true, 'filter':'{{ field.filter }}'}" ng-model="modalObj.{{ field.name }}" class="form-control" ng-title="modalObj.{{ field.name }}label"></div>
 <!--                <div custom-select="a.id as a.label for a in {{ field.objectModule }}{{ field.objectName }}Store.getDataFilter($searchTerm)" custom-select-options="{ 'async': true }" ng-model="modalObj.{{ field.name }}" class="form-control" ng-title="modalObj.{{ field.name }}label"></div>-->
             {% elseif field.type == "boolean" %}
                 <switch id="enabled" name="enabled" ng-model="modalObj.{{ field.name }}" class="green"></switch>

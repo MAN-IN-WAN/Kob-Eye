@@ -84,6 +84,7 @@
 		<PROPERTIES type="alias" category="Emplacement" fiche="1" form="1">Alias</PROPERTIES>
 		<PROPERTIES type="varchar" category="Emplacement" fiche="1" form="1">Filters</PROPERTIES>
 		<PROPERTIES type="varchar" category="Emplacement" description="Préfixe Codebarre">PrefixeCodebarre</PROPERTIES>
+		<PROPERTIES type="html" category="Emplacement" description="aide contextuelle">Aide</PROPERTIES>
 		<!-- style -->
 		<PROPERTIES type="file" category="Style" description="Icone du menu" fiche="1" form="1">Icone</PROPERTIES>
 		<PROPERTIES type="image" category="Style" description="Image de fond" fiche="1" form="1">BackgroundImage</PROPERTIES>

@@ -36,6 +36,7 @@ class Server extends genericClass {
         if($this->_isVerified) {
             parent::Save();
         }
+        return true;
     }
     /**
      * Verification des erreurs possibles
