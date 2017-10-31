@@ -1,5 +1,5 @@
 {% for field in formfields %}
-    {% if field.type != "rkey" %}
+    {% if field.type != "rkey" and field.type != "text" and field.type != "raw" and field.card != "long"%}
     <div class="row">
         <div class="col-md-6">
             <label class="form-control-label" for="l0">{{ field.description }}</label>
@@ -31,7 +31,13 @@
                     });
                 </script>
             {% else %}
-                {% if field.Values %}
+                {% if field.query %}
+                    <select class="form-control" ng-model="modalObj.{{ field.name }}" >
+                        {% for v,k in field.query %}
+                            <option value="{{ v }}">{{ k }}</option>
+                        {% endfor %}
+                    </select>
+                {% elseif field.Values %}
                     <select class="form-control" ng-model="modalObj.{{ field.name }}" >
                         {% for v,k in field.Values %}
                             <option value="{{ v }}">{{ k }}</option>
@@ -44,6 +50,18 @@
             </div>
         </div>
     </div>
+    {% elseif field.type == "fkey" and field.card == "long" %}
+        <div class="row">
+            <div class="col-md-12">
+                <label class="form-control-label" for="l0">{{ field.description }}</label>
+                <small>{{ field.help }}</small>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div>{{ include(template_from_string(module('Systeme/Utils/Select?Path='~field.objectModule~'/'~field.objectName~'&Field='~field.name))) }}</div>
+            </div>
+        </div>
     {% elseif field.type == "rkey" %}
     <div class="row">
         <div class="col-md-12">
@@ -54,6 +72,18 @@
     <div class="row">
         <div class="col-md-12">
             <div>{{ include(template_from_string(module('Systeme/Utils/Select?Path='~field.objectModule~'/'~field.objectName~'&Field='~field.name))) }}</div>
+        </div>
+    </div>
+    {% elseif field.type == "text" or field.type == "raw" %}
+    <div class="row">
+        <div class="col-md-12">
+            <label class="form-control-label" for="l0">{{ field.description }}</label>
+            <small>{{ field.help }}</small>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+        <textarea style="width:100%;min-height:300px;white-space: pre-wrap;" ng-model="modalObj.{{ field.name }}" type="text"  ng-trim="false"></textarea>
         </div>
     </div>
     {% endif %}

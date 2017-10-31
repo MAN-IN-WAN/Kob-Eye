@@ -98,6 +98,24 @@
 		<PROPERTIES type="titre" searchOrder="1">Titre</PROPERTIES>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="RemoteJob" AccessPoint="1" driver="mysql" Description="Job synchronisation distante"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
-		<PROPERTIES type="titre" searchOrder="1">Titre</PROPERTIES>
+		<FUNCTION title="Démarrer maintenant">runNow</FUNCTION>
+		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1"  obligatoire="1" listDescr="Titre">Titre</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="2" list="1" form="1" fiche="1"  listDescr="Activé">Enabled</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="3" list="1" fiche="1"  listDescr="En cours">Running</PROPERTIES>
+		<PROPERTIES type="progress"  list="1" fiche="1"  listDescr="Progression">Progression</PROPERTIES>
+		<PROPERTIES type="varchar" listDescr="Minute" default="*" values="*,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59" list="1" form="1" fiche="1">Minute</PROPERTIES>
+		<PROPERTIES type="varchar" listDescr="Heure" default="*" values="*,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24" list="1" form="1" fiche="1">Heure</PROPERTIES>
+		<PROPERTIES type="varchar" listDescr="Jour Mois" default="*" values="*,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31" list="1" form="1" fiche="1">Jour</PROPERTIES>
+		<PROPERTIES type="varchar" listDescr="Mois" default="*" values="*,1,2,3,4,5,6,7,8,9,10,11,12" list="1" form="1" fiche="1">Mois</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1">Lundi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1">Mardi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1">Mercredi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1">Jeudi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1">Vendredi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1">Samedi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1">Dimanche</PROPERTIES>
+		<RKEY data="BorgRepo,Id" card="0,n" inline="1" form="1" description="Sélection des dépots à synchroniser">BorgRepoId</RKEY>
+		<FKEY data="VmJob,Id" card="0,1" inline="1" form="1" description="Démarrer après que le job de machine virtuelle soit terminé">VmJobEndId</FKEY>
+		<FKEY data="RemoteJob,Id" card="0,1" inline="1" form="1" description="Démarrer après que le job de synchronisation distante soit terminé">RemoteJobEndId</FKEY>
 	</OBJECTCLASS>
 </SCHEMA>

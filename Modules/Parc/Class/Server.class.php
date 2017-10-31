@@ -1,6 +1,8 @@
 <?php
 
 class Server extends genericClass {
+    //connexion ssh
+    private $_connection;
 
 	// Connexion LDAP
 	static $_LDAP;
@@ -30,6 +32,11 @@ class Server extends genericClass {
     public function Save( $synchro = true ) {
         $first = ($this->Id == 0);
         parent::Save();
+        //installation de la clef
+        if (!$this->Status){
+            if (!$this->installSshKey()) return false;
+            parent::Save();
+        }
         // Forcer la vérification
         if(!$this->_isVerified) $this->Verify( $synchro );
         // Enregistrement si pas d'erreur
@@ -44,7 +51,7 @@ class Server extends genericClass {
      * @return	Verification OK ou NON
      */
     public function Verify( $synchro = true ) {
-
+        $this->Connect();
         if(parent::Verify()) {
 
             $this->_isVerified = true;
@@ -810,7 +817,7 @@ class Server extends genericClass {
 	 * Verifie la date de modification de l'objet
 	 * @param Object Kob-eye
 	 */
-	static function checkTms($KEObj) {
+	static function checkTms($KEObj,$KEServer=false) {
 
         $e = array('exists' => true, 'OK' => true);
 		Server::ldapConnect();
@@ -871,7 +878,11 @@ class Server extends genericClass {
                     break;
             }
         }else {
-            $search = ldap_search(Server::$_LDAP, PARC_LDAP_BASE, 'entryuuid=' . $KEObj->LdapID, array('modifytimestamp'));
+		    if ($KEServer){
+                $search = ldap_search(Server::$_LDAP, PARC_LDAP_BASE, 'entryuuid=' . $KEObj->getLdapID($KEServer), array('modifytimestamp'));
+            }else {
+                $search = ldap_search(Server::$_LDAP, PARC_LDAP_BASE, 'entryuuid=' . $KEObj->LdapID, array('modifytimestamp'));
+            }
             $res = ldap_get_entries(Server::$_LDAP, $search);
             if (!$res['count']) {
                 $e['exists'] = false;
@@ -882,15 +893,28 @@ class Server extends genericClass {
 			$e['OK'] = false;
 			$e['Message'] = "Cette entrée est obsolète. Il faut faire une synchronisation avant de pouvoir la modifier.";
 			$e['Prop'] = '';
-		}else*/if (empty($KEObj -> LdapTms)) {
-            $e['exists'] = false;
-			$e['OK'] = false;
-			$e['Message'] = "Cette entrée n'est pas publiée, elle doit être incomplète. Vérifiez la cohérence de l'élément.";
-			$e['Prop'] = '';
-            $e['OK'] = true;
-		}else {
-			$e['OK'] = true;
-		}
+		}else*/
+        if ($KEServer) {
+            if (!$KEObj->getLdapTms($KEServer)) {
+                $e['exists'] = false;
+                $e['OK'] = false;
+                $e['Message'] = "Cette entrée n'est pas publiée, elle doit être incomplète. Vérifiez la cohérence de l'élément.";
+                $e['Prop'] = '';
+                $e['OK'] = true;
+            } else {
+                $e['OK'] = true;
+            }
+        }else {
+            if (empty($KEObj->LdapTms)) {
+                $e['exists'] = false;
+                $e['OK'] = false;
+                $e['Message'] = "Cette entrée n'est pas publiée, elle doit être incomplète. Vérifiez la cohérence de l'élément.";
+                $e['Prop'] = '';
+                $e['OK'] = true;
+            } else {
+                $e['OK'] = true;
+            }
+        }
 		return $e;
 	}
 
@@ -925,5 +949,197 @@ class Server extends genericClass {
 		$gid = $res[sizeof($res) - 2]['gidnumber'][0] + 1;
 		return ($gid > 1000) ? $gid : 1000;
 	}
+
+    /**
+     * Fonction de connexion
+     * @return bool|resource
+     */
+    public function Connect() {
+        if (!function_exists('ssh2_connect')){
+            $this->AddError(array("Message"=>"Librairie PECL/SSH2 non disponible... Veuillez l'sintaller avec la commande 'yum install libssh2-devel && pecl install ssh2'."));
+            return false;
+        }
+        //test connectivite ssh
+        try {
+            $connection = ssh2_connect($this->InternalIP, 22);
+            if (!$connection){
+                $this->addError(array("Message"=>"Impossible de contacter l'hôte ".$this->InternalIP));
+                $this->Status = false;
+                parent::Save();
+                return false;
+            }
+            if (!$this->Status) {
+                if (!ssh2_auth_password($connection, $this->SshUser, $this->SshPassword)) {
+                    $this->addError(array("Message" => "Impossible de s'authentifier sur l'hôte " . $this->InternalIP . ". Veuillez vérifier vos identifiants."));
+                    $this->Status = false;
+                    parent::Save();
+                    return false;
+                }else{
+                    $this->addWarning(array("Message" => "Connexion avec identifiant /mot de passe. Veuillez générer les clefs publique /privées."));
+                }
+            }else{
+                //connexion avec clef ssh
+//                if (!ssh2_auth_pubkey_file($connection,$this->Login,$this->PublicKey,$this->PrivateKey)){
+                if (!ssh2_auth_pubkey_file($connection,$this->SshUser,'.ssh/id_'.$this->InternalIP.'.pub','.ssh/id_'.$this->InternalIP)){
+                    $this->Status = false;
+                    parent::Save();
+                    $this->addError(array("Message" => "Impossible de s'authentifier sur l'hôte " . $this->InternalIP . ". Veuillez vérifier vos clefs publique / privée ou les regénérer."));
+                    return false;
+                }else{
+                    if (!$this->Status) {
+                        $this->Status = true;
+                        parent::Save();
+                    }
+                    $this->addSuccess(array("Message" => "Connexion réussie avec les clefs publique / privée ."));
+                }
+            }
+            /*$stream1= ssh2_exec($connection, trim("hostname")."\n");*/
+            //stream_set_blocking($stream1, true);
+            $this->_connection= $connection;
+            return $connection;
+        }catch (Exception $e){
+            $this->Status = false;
+            parent::Save();
+            $this->addError(array("Message"=>"Une erreur interne s'est produite lors de la tentative de connexion à l'hôte ".$this->InternalIP));
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Focntion de déconnexion
+     * @return bool
+     */
+    public function Disconnect() {
+        if ($this->_connection) {
+            ssh2_exec($this->_connection, 'exit');
+            $this->_connection = null;
+        }
+        return true;
+    }
+    /**
+     * Insttalation des clefs ssh
+     * @return bool
+     */
+    public function installSshKey() {
+        //connexion par login/pass
+        if (!$this->_connection)$this->Connect();
+        //génération des clefs publiques / privées
+        try {
+            Parc::localExec("if [ ! -d '.ssh' ]; then mkdir .ssh; fi && cd .ssh && rm -f id_". $this->InternalIP."* && /usr/bin/ssh-keygen  -N \"\" -f id_" . $this->InternalIP);
+            //récupération et stockage des clefs
+            $stream2 =  Parc::localExec("cd .ssh && cat id_" . $this->InternalIP);
+            $this->PrivateKey = $stream2;
+            $stream2 =  Parc::localExec("cd .ssh && cat id_" . $this->InternalIP . ".pub");
+            $this->PublicKey = $stream2;
+            //publication de la clef
+            $stream3 = $this->remoteExec("[ -d /root/.ssh ] || mkdir /root/.ssh");
+            $stream3 = $this->remoteExec("echo '".$this->PublicKey."' >>/root/.ssh/authorized_keys");
+        }catch (Exception $e){
+            $this->addError(array("Message"=>"Une erreur interne s'est produite lors de la tentative de création des clefs SSH. Détails: ".$e->getMessage()));
+            $this->Status = false;
+            parent::Save();
+            return false;
+        }
+        //tout initialisé
+        $this->Status = true;
+        parent::Save();
+        return true;
+    }
+
+    /**
+     * execution distante sur le serveur
+     * @param $command
+     * @param null $activity
+     * @param bool $noerror
+     * @return mixed
+     */
+    public function remoteExec( $command ,$activity = null,$noerror=false){
+        if (!$this->_connection)$this->Connect();
+        if (!$this->_connection)return false;
+        $result = $this->rawExec( $command.';echo -en "\n$?"', $activity);
+        if(!$noerror&& ! preg_match( "/^(0|-?[1-9][0-9]*)$/s", $result[2], $matches ) ) {
+            throw new RuntimeException( "Le retour de la commande ne contenait pas le status. commande : ".$command );
+        }
+        if( !$noerror&&$matches[1] !== "0" ) {
+            throw new RuntimeException( $result[1].$result[0], (int)$matches[1] );
+        }
+        return $result[0];
+    }
+
+    /**
+     * Copie de fichiers
+     * @param $file
+     * @return bool
+     */
+    public function copyFile( $file ){
+        if ($this->_connection){
+            $this->Disconnect();
+        }
+        if (!$this->_connection)$this->Connect();
+        //$result = ssh2_scp_send($this->_connection,$file,'/'.$file, 0644);
+        // Create SFTP session
+        $sftp = ssh2_sftp($this->_connection);
+        $sftpStream = @fopen('ssh2.sftp://'.$sftp.'/'.$file, 'w');
+        try {
+            if (!$sftpStream) {
+                throw new Exception("Could not open remote file: /$file");
+            }
+            $data_to_send = @file_get_contents($file);
+            if ($data_to_send === false) {
+                throw new Exception("Could not open local file: $file.");
+            }
+            if (@fwrite($sftpStream, $data_to_send) === false) {
+                throw new Exception("Could not send data from file: $file.");
+            }
+            fclose($sftpStream);
+
+        } catch (Exception $e) {
+            error_log('Exception: ' . $e->getMessage());
+            fclose($sftpStream);
+        }
+        $this->Disconnect();
+        return true;//$result;
+    }
+
+    /**
+     * Fonction complementaire de l'execution ssh.
+     * @param $command
+     * @param null $activity
+     * @return array
+     */
+    private function rawExec( $command,$activity=null ){
+        $stream = ssh2_exec( $this->_connection, $command );
+        $error_stream = ssh2_fetch_stream( $stream, SSH2_STREAM_STDERR );
+        stream_set_blocking( $stream, TRUE );
+        stream_set_blocking( $error_stream, TRUE );
+        $data='';
+        while ($buf = fread($stream, 4096)) {
+            //echo $buf;
+            //tentative de récupération de la progression
+            if (preg_match('# ([0-9]{1,2})% #',$buf,$out)&&$activity) {
+                $progress = $out[1];
+                $activity->setProgression($progress);
+            }
+            $data.=$buf;
+        }
+        $output = $data;//substr($data,strlen($data)-1,1);//stream_get_contents( $stream );
+        $error_output = stream_get_contents( $error_stream );
+        //alors récupération sur le dernier caractère
+        $exit_output = 0;
+        if (preg_match('/^(.*)\n(0|-?[1-9][0-9]*)$/s',$output,$out)) {
+            $output = $out[1];
+            $exit_output = $out[2];
+        }
+        fclose( $stream );
+        fclose( $error_stream );
+        return array( $output, $error_output,$exit_output);
+    }
+    public function mountNFS(){
+        return $this->remoteExec("esxcfg-nas -a ABTEL_BACKUP -o ".AbtelBackup::getMyIp()." -s /backup/nfs",null,true);
+    }
+    public function unmountNFS(){
+        return $this->remoteExec("esxcfg-nas -d ABTEL_BACKUP",null,true);
+    }
 
 }

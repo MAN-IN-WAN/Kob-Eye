@@ -55,6 +55,7 @@
             }*/
             var itemsPerPageFilterRemoved = match[2].replace(filterPattern, '');
             var collectionGetter = $parse(itemsPerPageFilterRemoved);
+            var context = tAttrs.paginationContext || 'default';
 
             addNoCompileAttributes(tElement);
 
@@ -101,7 +102,7 @@
                     }, function(collection) {
                         if (collection) {
                             if (itemsPerPageFilterRemoved.split('.').length)
-                                var collectionLength = scope[itemsPerPageFilterRemoved.split('.')[0]].getTotal();
+                                var collectionLength = scope[itemsPerPageFilterRemoved.split('.')[0]].store.getTotal(context);
                             else var collectionLength = (collection instanceof Array) ? collection.length : Object.keys(collection).length;
                             paginationService.setCollectionLength(paginationId, collectionLength);
                         }

@@ -263,4 +263,39 @@ class Parc extends Module{
             if ($a->enableSsl()) echo "--> renew $a->ApacheServerName \r\n";
         }
     }
+    /**
+     * UTILS FUNCTIONS
+     */
+    static public function localExec( $command, $activity = null,$total=0){
+        /*exec( $command,$output,$return);
+        if( $return ) {
+            throw new RuntimeException( "L'éxécution de la commande locale a échoué. commande : ".$command." \n ".print_r($output,true));
+        }
+        return implode("\n",$output);*/
+        $proc = popen("$command 2>&1 ; echo Exit status : $?", 'r');
+        $complete_output = "";
+        while (!feof($proc)){
+            $buf     = fread($proc, 4096);
+            //cas borg
+            if (preg_match('#^([0-9\.]+) MB #',$buf,$out)&&$activity&&$total) {
+                $progress = (floatval($out[1])*100000000)/$total;
+                $activity->setProgression($progress);
+            }
+            $complete_output .= $buf;
+        }
+        pclose($proc);
+        // get exit status
+        preg_match('/[0-9]+$/', $complete_output, $matches);
+
+        // return exit status and intended output
+        if( $matches[0] !== "0" ) {
+            throw new RuntimeException( $complete_output, (int)$matches[0] );
+        }
+        return str_replace("Exit status : " . $matches[0], '', $complete_output);
+    }
+    static public function getMyIp(){
+        $output = Parc::localExec('/usr/sbin/ifconfig');
+        preg_match('#inet ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)#',$output,$out);
+        return $out[1];
+    }
 }

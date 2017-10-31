@@ -56,6 +56,7 @@ class Tache extends genericClass{
         }
 
         parent::Save();
+        return true;
     }
     private function addRetour($msg){
         //recherche du apache pour callback

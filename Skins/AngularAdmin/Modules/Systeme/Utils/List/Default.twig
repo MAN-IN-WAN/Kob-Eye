@@ -10,9 +10,9 @@
 <div class="form-group row">
     <div class="col-lg-6 col-md-12">
         <div class="input-group list-search">
-            <input type="text" class="form-control" name="{{ identifier }}query" ng-model="{{ identifier }}.filter['{{ context }}']" placeholder="Recherche..." >
+            <input type="text" class="form-control" name="{{ identifier }}query" ng-model="{{ identifier }}.filter" placeholder="Recherche..." >
             <span class="input-group-btn">
-                <a href="javascript: void(0);" class="btn btn-success" ng-click="{{ identifier }}.refresh('{{ context }}')">
+                <a href="javascript: void(0);" class="btn btn-success" ng-click="{{ identifier }}.store.refresh('{{ context }}')">
                     Rafraîchir
                 </a>
                 {% if operation.add %}
@@ -26,7 +26,7 @@
                 </a>
                 {% endif %}
                 {% if operation.delete %}
-                <a  href="javascript: void(0);" ng-show="keys({{ identifier }}selected).length > 0" class="btn btn-danger" ng-click="{{ identifier }}selectDelete()">
+                <a  href="javascript: void(0);" ng-show="keys({{ identifier }}.selected).length > 0" class="btn btn-danger" ng-click="{{ identifier }}selectDelete()">
                 Supprimer la sélection
                 </a>
                 {% endif %}
@@ -34,7 +34,7 @@
         </div>
     </div>
     <div class="col-lg-6 col-md-12">
-        <dir-pagination-controls boundary-links="true" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+        <dir-pagination-controls boundary-links="true" pagination-context="{{ context }}" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
     </div>
 </div>
 <!--<pre ng-bind="{{ identifier }}selected | json"></pre>
@@ -42,8 +42,8 @@
 <table class="table table-hover nowrap margin-bottom-0 straight" id="{{ identifier }}" width="100%">
     <thead>
         <tr>
-            <th width="100">
-                <input type="checkbox" ng-model="{{ identifier }}selected.selectall"/>&nbsp;
+            <th width="120">
+                <input type="checkbox" ng-model="{{ identifier }}.selected.selectall"/>&nbsp;
                 ID
             </th>
             {% for field in fields %}
@@ -54,13 +54,13 @@
         </tr>
     </thead>
     <tbody>
-    <tr dir-paginate="item in {{ identifier }}.data['{{ context }}']" current-page="{{ identifier }}.currentPage['{{ context }}']" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination">
+    <tr dir-paginate="item in {{ identifier }}.data['{{ context }}']" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination">
         <td>
-            <input type="checkbox" value="{[{ item.id }]}" ng-model="{{ identifier }}selected[item.id]" name="{{ identifier }}" id="{[{ item.id }]}" />&nbsp;
+            <input type="checkbox" value="{[{ item.id }]}" ng-model="{{ identifier }}.selected[item.id]" name="{{ identifier }}" id="{[{ item.id }]}" />&nbsp;
             <span class="label label-warning">{[{ item.id }]}</span>
         </td>
         {% for field in fields %}
-        <td scope="row">
+        <td scope="row" class="{{ field.type }}">
             {% if field.type == "price" or field.type == "float" %}
                 <span class="label label-warning">{[{ item.{{ field.name }}| currency:"" }]}</span>
             {% elseif field.type == "extlink" %}
@@ -124,15 +124,15 @@
     <table class="table table-hover nowrap margin-bottom-0 inverted" id="{{ identifier }}" width="100%">
     {#<colgroup>
         <col class="thead">
-        <col dir-paginate="item in {{ identifier }}.data" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination" class="tdcontent">
+        <col dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination" class="tdcontent">
     </colgroup>#}
     <tbody>
         <tr>
-            <th ng-show="{{ identifier }}.data.length > 0">ID</th><td dir-paginate="item in {{ identifier }}.data" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination"><div class="col-width-fixer"><span class="label label-warning">{[{ item.id }]}</span></div></td>
+            <th ng-show="{{ identifier }}.data.length > 0">ID</th><td dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination"><div class="col-width-fixer"><span class="label label-warning">{[{ item.id }]}</span></div></td>
         </tr>
         <tr>
             <th  ng-show="{{ identifier }}.data.length > 0" width="50">Actions</th>
-            <td dir-paginate="item in {{ identifier }}.data" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination">
+            <td dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination">
                 <div class="col-width-fixer">
                     {% if Type == "Tail" %}
                         <span class="input-group-btn">
@@ -168,7 +168,7 @@
             {% for field in fields %}
                 <tr>
                     <th  ng-show="{{ identifier }}.data.length > 0">{{ field.listDescr }}</th>
-                    <td dir-paginate="item in {{ identifier }}.data" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination" scope="row">
+                    <td dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination" scope="row">
                         <div class="col-width-fixer">
                         {% if field.type == "price" or field.type == "float" %}
                             <span class="label label-warning">{[{ item.{{ field.name }}| currency:"" }]}</span>
@@ -193,7 +193,7 @@
                 </tr>
             {% endfor %}
         <tr>
-            <th width="50"  ng-show="{{ identifier }}.data.length > 0">Détails</th><td dir-paginate="item in {{ identifier }}.data" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination" class="table-details" ng-bind-html="item.Details"><div class="col-width-fixer">{[{ item.Details }]}</div></td>
+            <th width="50"  ng-show="{{ identifier }}.data.length > 0">Détails</th><td dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination" class="table-details" ng-bind-html="item.Details"><div class="col-width-fixer">{[{ item.Details }]}</div></td>
         </tr>
     </tbody>
     </table>
@@ -218,7 +218,7 @@
 
     </script>
 </div>
-<dir-pagination-controls boundary-links="true" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+<dir-pagination-controls boundary-links="true" pagination-context="{{ context }}" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
 
 <div class="modal fade modal-size-large" id="modal-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog" role="document">

@@ -868,17 +868,16 @@ var frameLoader = new Class({
 		var rawPath = '';
 		if (!suffix) suffix = '.htm';
 		result["Raw"] = url;
+
 		if (url.search(/http/) != -1)
 		url = '/' + url.split('/').slice(3).join('/');
 		result["Relative"] = url;
-		if (url.search(/\#/) != -1)
-		{
-		var anchor = url.split('#');
-		url = anchor[0];
-		result["Anchor"] = anchor[1];
+		if (url.search(/\#/) != -1) {
+			var anchor = url.split('#');
+			url = anchor[1];
+			result["Anchor"] = anchor[1];
 		}
-		if (url.search(/\?/) != -1)
-		{
+		if (url.search(/\?/) != -1) {
 			var temp = url.split('?');
 			url = temp[0];
 			result["GetVars"] = temp[1];

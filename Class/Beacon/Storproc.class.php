@@ -548,7 +548,7 @@ class StorProc extends Beacon {
 							$Champs = $tableau[$position];
 							$ChampsPrec = $tableau[$position-1];
 						}
-						if($Champs[$triChamp]<$ChampsPrec[$triChamp]){
+						if(isset($Champs[$triChamp])&&isset($ChampsPrec[$triChamp])&&$Champs[$triChamp]<$ChampsPrec[$triChamp]){
 							$temp = $tableau[$position];
 							$tableau[$position] = $tableau[$position-1];
 							$tableau[$position-1] = $temp;

@@ -15,6 +15,10 @@ class Bdd extends genericClass {
             $dbGuac->query("SET AUTOCOMMIT=1");
             $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+            //flush privileges
+            $query = "FLUSH PRIVILEGES;";
+            $dbGuac->query($query);
+
             //vérification de l'existence de l'utilisateur
             $query = "SELECT COUNT(*) FROM user WHERE User='" . $host->Nom . "' AND Host='%';";
             $q = $dbGuac->query($query);
@@ -35,12 +39,13 @@ class Bdd extends genericClass {
             $dbGuac->query($query);
         }catch (Exception $e){
             $this->addError(Array("Message"=>"Erreur de base de donnée: ".$e->getMessage()));
+            $this->Delete(true);
             return false;
         }
         return true;
     }
-    public function Delete() {
-        if ($this->removeFromDatabase())
+    public function Delete($silent = false) {
+        if ($this->removeFromDatabase($silent))
             parent::Delete();
         else {
             //$this->AddError(Array("Message"=> ""));
@@ -48,7 +53,7 @@ class Bdd extends genericClass {
         }
         return true;
     }
-    private function removeFromDatabase(){
+    private function removeFromDatabase($silent = false){
         $serv = $this->getOneParent('Server');
         if (!is_object($serv)) return false;
         $dbGuac = new PDO('mysql:host=' . $serv->IP . ';dbname=mysql', $serv->SshUser, $serv->SshPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
@@ -57,7 +62,12 @@ class Bdd extends genericClass {
 
         //flush privileges
         $query = "DROP DATABASE " . $this->Nom.";";
-        $dbGuac->query($query);
+        try {
+            $dbGuac->query($query);
+        }catch (Exception $e){
+            if (!$silent)
+                $this->addError(Array('Message'=>'Impossible de supprimer une base de donnée inexistante'));
+        }
         return true;
     }
 }

@@ -57,14 +57,30 @@
                                 {% elseif field.type == "extlink" %}
                                     <a class="btn btn-success btn-xs" href="https://zabbix.abtel.fr/guacamole/#/client/{[{ obj.{{ field.name }} }]}" target="_blank">{{ field.listDescr }}</a>
                                 {% elseif field.type == "int" %}
-                                    <span class="label label-primary">{[{ obj.{{ field.name }} }]}</span>
+                                    {% if field.Values %}
+                                        <select class="form-control" ng-model="obj.{{ field.name }}" disabled="disabled">
+                                            {% for v,k in field.Values %}
+                                                <option value="{{ v }}">{{ k }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% else %}
+                                        <span class="label label-primary">{[{ obj.{{ field.name }} }]}</span>
+                                    {% endif %}
                                 {% elseif field.type == "boolean" %}
                                     <span class="label label-success" ng-if="obj.{{ field.name }}"><i class="fa fa-check"></i></span>
                                     <span class="label label-danger" ng-if="!obj.{{ field.name }}"><i class="fa fa-times"></i></span>
                                 {% elseif field.type == "fkey" and field.card == "short" %}
                                     <a class="btn btn-secondary btn-xs" href="#{{ field.link }}/{[{ obj.{{ field.name }} }]}">{[{ obj.{{ field.name }}label }]}</a>
                                 {% else %}
-                                    <span  ng-bind-html="obj.{{ field.name }}"></span>
+                                    {% if field.Values %}
+                                        <select class="form-control" ng-model="obj.{{ field.name }}" disabled="disabled">
+                                            {% for v,k in field.Values %}
+                                                <option value="{{ v }}">{{ k }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% else %}
+                                        <span  ng-bind-html="obj.{{ field.name }}"></span>
+                                    {% endif %}
                                 {% endif %}
                             </div>
                         </div>
@@ -86,7 +102,7 @@
         <ul class="nav nav-tabs" role="tablist">
             {% for child in ChildrenElements %}
             <li class="nav-item">
-                <a class="nav-link {% if loop.first %}active{% endif %}" href="javascript: void(0);" data-toggle="tab" data-target="#tab{{ child.objectName }}" role="tab">{{ child.objectDescription }}</a>
+                <a class="nav-link {% if loop.first %}active{% endif %}" href="javascript: void(0);" data-toggle="tab" data-target="#tab{{ child.objectName }}" role="tab"><b>{{ child.objectDescription }}</b> ({[{ {{ child.objectModule }}{{ child.objectName }}.store.total.children }]})</a>
             </li>
             {% endfor %}
         </ul>
@@ -98,7 +114,7 @@
                 {% else %}
                     <section class="panel">
                         <div class="panel-body">
-                            <ng-include src="'/{{ CurrentUrl }}/'+obj.id+'/{{ child.objectName }}/ListChildren.htm'" ng-if="show"></ng-include>
+                            <ng-include src="'/{{ CurrentUrl }}/0/{{ child.objectName }}/ListChildren.htm'" ng-if="show"></ng-include>
                         </div>
                     </section>
                     <!-- End Default Panel -->

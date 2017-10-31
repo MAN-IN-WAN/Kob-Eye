@@ -28,6 +28,9 @@ foreach ($vars['rows'] as $k=>$v){
                 $v->{$f['name']} = date(DATE_W3C,$v->{$f['name']});
                 break;
             case 'text':
+            case 'varchar':
+            case 'titre':
+            case 'html':
             case 'raw':
                 //transformation des timestamps en format js
                 $v->{$f['name']} = Utils::cleanJson($v->{$f['name']});
@@ -39,7 +42,8 @@ foreach ($vars['rows'] as $k=>$v){
         if ($f['type']=='fkey'&&$f['card']=='short'){
             if ($v->{$f['name']} > 0) {
                 $kk = Sys::getOneData($f['objectModule'], $f['objectName'] . '/' . $v->{$f['name']});
-                $v->{$f['name'].'label'} = $kk->getFirstSearchOrder();
+                if ($kk)
+                    $v->{$f['name'].'label'} = $kk->getFirstSearchOrder();
             }else{
                 $v->{$f['name'].'label'} = '';
             }

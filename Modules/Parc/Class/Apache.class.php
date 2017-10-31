@@ -50,7 +50,11 @@ class Apache extends genericClass {
                 $this->Ssl = true;
                 break;
 			case "Letsencrypt":
-
+                require_once 'Net/DNS2.php';
+                if (!class_exists('Net_DNS2_Resolver')){
+                    $this->addError(array("Message"=>"La librairie Net_DNS2 n'est pas disponible. Veuillez l'installer avec la commande suivante: 'pear install NET/DNS2'"));
+                    return false;
+                }
                 //définition de la date d'expiration
                 $this->SslExpiration=time()+(86400*90);
                 $this->Ssl = true;
@@ -58,11 +62,11 @@ class Apache extends genericClass {
                 $sa = explode("\n",$this->ApacheServerAlias);
 
                 //test des entrées dns
-                require_once 'Net/DNS2.php';
                 $resolver = new Net_DNS2_Resolver( array('nameservers' => array('8.8.8.8')) );
                 $t = array($resolver->query($this->ApacheServerName, 'A'));
                 foreach ($sa as $a){
-                    if (!empty(trim($a)))
+                    $a = trim($a);
+                    if (!empty($a))
                         $t = array_merge($t,array($resolver->query($a, 'A')));
                 }
                 //test des erreurs
@@ -113,7 +117,72 @@ class Apache extends genericClass {
 			return 'Tout neuf';
 		}else return $this->DocumentRoot;
 	}
-
+    /**
+     * getLdapID
+     * récupère le ldapId d'une entrée pour un serveur spécifique
+     */
+    public function getLdapID($KEServer) {
+        if (!empty($this->LdapID))
+            $en = json_decode($this->LdapID,true);
+        else $en=array();
+        return $en[$KEServer->Id];
+    }
+    /**
+     * setLdapID
+     * défniit le ldapId d'une entrée pour un serveur spécifique
+     */
+    public function setLdapID($KEServer,$ldapId) {
+        if (!empty($this->LdapDN))
+            $en = json_decode($this->LdapID,true);
+        else $en = Array();
+        if (!is_array($en))$en = array();
+        $en[$KEServer->Id] = $ldapId;
+        $this->LdapID = json_encode($en);
+    }
+    /**
+     * getLdapDN
+     * récupère le ldapDN d'une entrée pour un serveur spécifique
+     */
+    public function getLdapDN($KEServer) {
+        if (!empty($this->LdapDN))
+            $en = json_decode($this->LdapDN,true);
+        else $en=array();
+        return $en[$KEServer->Id];
+    }
+    /**
+     * setLdapDN
+     * définit le ldapDN d'une entrée pour un serveur spécifique
+     */
+    public function setLdapDN($KEServer,$ldapDn) {
+        if (!empty($this->LdapDN))
+            $en = json_decode($this->LdapDN,true);
+        else $en = Array();
+        if (!is_array($en))$en = array();
+        $en[$KEServer->Id] = $ldapDn;
+        $this->LdapDN = json_encode($en);
+    }
+    /**
+     * getLdapTms
+     * récupère le ldapTms d'une entrée pour un serveur spécifique
+     */
+    public function getLdapTms($KEServer) {
+        if (!empty($this->LdapTms))
+            $en = json_decode($this->LdapTms,true);
+        else $en=array();
+        return $en[$KEServer->Id];
+    }
+    /**
+     * setLdapTms
+     * définit le ldapTms d'une entrée pour un serveur spécifique
+     */
+    public function setLdapTms($KEServer,$ldapTms) {
+        if (!empty($this->LdapTms))
+            $en = json_decode($this->LdapTms,true);
+        else $en = Array();
+        if (!is_array($en))$en = array();
+        $en[$KEServer->Id] = $ldapTms;
+        $this->LdapTms = json_encode($en);
+    }
 	/**
 	 * Verification des erreurs possibles
 	 * @param	boolean	Verifie aussi sur LDAP
@@ -147,67 +216,62 @@ class Apache extends genericClass {
 
 				// Outils
 				$KEHost = $this->getKEHost();
-				$KEServer = $this->getKEServer();
-				$dn = 'apacheServerName='.$this->ApacheServerName.',cn='.$KEHost->Nom.',ou='.$KEServer->LDAPNom.',ou=servers,'.PARC_LDAP_BASE;
-	
-				// Verification à jour
-				$res = Server::checkTms($this);
-				if($res['exists']) {
-					if(!$res['OK']) {
-						$this->AddError($res);
-						$this->_isVerified = false;
-					}
-					else {
-						// Déplacement
-						$res = Server::ldapRename($this->LdapDN, 'apacheServerName='.$this->ApacheServerName, 'cn='.$KEHost->Nom.',ou='.$KEServer->LDAPNom.',ou=servers,'.PARC_LDAP_BASE);
-						if($res['OK']) {
-							// Modification
-							$entry = $this->buildEntry(false);
-							$res = Server::ldapModify($this->LdapID, $entry);
-							if($res['OK']) {
-								// Tout s'est passé correctement
-								$this->LdapDN = $dn;
-								$this->LdapTms = $res['LdapTms'];
-							}
-							else {
-								// Erreur
-								$this->AddError($res);
-								$this->_isVerified = false;
-								// Rollback du déplacement
-								$tab = explode(',', $this->LdapDN);
-								$leaf = array_shift($tab);
-								$rest = implode(',', $tab);
-								Server::ldapRename($dn, $leaf, $rest);
-							}
-						}
-						else {
-							$this->AddError($res);
-							$this->_isVerified = false;
-						}
-					}
-	
-				}
-				else {
-					////////// Nouvel élément
-					if($KEHost) {
-						$entry = $this->buildEntry();
-						$res = Server::ldapAdd($dn, $entry);
-						if($res['OK']) {
-							$this->LdapDN = $dn;
-							$this->LdapID = $res['LdapID'];
-							$this->LdapTms = $res['LdapTms'];
-						}
-						else {
-							$this->AddError($res);
-							$this->_isVerified = false;
-						}
-					}
-					else {
-						$this->AddError(array('Message' => "Une configuration Apache doit obligatoirement être créé dans un hébergement donné.", 'Prop' => ''));
-						$this->_isVerified = false;
-					}
-				}
+				$KEServers = $this->getKEServer();
+				foreach ($KEServers as $KEServer) {
+                    $dn = 'apacheServerName=' . $this->ApacheServerName . ',cn=' . $KEHost->Nom . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE;
 
+                    // Verification à jour
+                    $res = Server::checkTms($this,$KEServer);
+                    if ($res['exists']) {
+                        if (!$res['OK']) {
+                            $this->AddError($res);
+                            $this->_isVerified = false;
+                        } else {
+                            // Déplacement
+                            $res = Server::ldapRename($this->getLdapDN($KEServer), 'apacheServerName=' . $this->ApacheServerName, 'cn=' . $KEHost->Nom . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE);
+                            if ($res['OK']) {
+                                // Modification
+                                $entry = $this->buildEntry($KEServer,false);
+                                $res = Server::ldapModify($this->getLdapID($KEServer), $entry);
+                                if ($res['OK']) {
+                                    // Tout s'est passé correctement
+                                    $this->setLdapDN($KEServer,$dn);
+                                    $this->setLdapTms($KEServer,$res['LdapTms']);
+                                } else {
+                                    // Erreur
+                                    $this->AddError($res);
+                                    $this->_isVerified = false;
+                                    // Rollback du déplacement
+                                    $tab = explode(',', $this->getLdapDN($KEServer));
+                                    $leaf = array_shift($tab);
+                                    $rest = implode(',', $tab);
+                                    Server::ldapRename($dn, $leaf, $rest);
+                                }
+                            } else {
+                                $this->AddError($res);
+                                $this->_isVerified = false;
+                            }
+                        }
+
+                    } else {
+                        ////////// Nouvel élément
+                        if ($KEHost) {
+                            $entry = $this->buildEntry($KEServer);
+                            $res = Server::ldapAdd($dn, $entry);
+                            if ($res['OK']) {
+                                $this->setLdapDN($KEServer,$dn);
+                                $this->setLdapID($KEServer,$res['LdapID']);
+                                $this->setLdapTms($KEServer,$res['LdapTms']);
+                            } else {
+                                $this->AddError($res);
+                                $this->_isVerified = false;
+                            }
+                        } else {
+                            $this->AddError(array('Message' => "Une configuration Apache doit obligatoirement être créé dans un hébergement donné.", 'Prop' => ''));
+                            $this->_isVerified = false;
+                        }
+                    }
+                }
 			}
 
 		}
@@ -243,7 +307,11 @@ class Apache extends genericClass {
 	 * @param	boolean		Si FALSE c'est simplement une mise à jour
 	 * @return	Array
 	 */
-	private function buildEntry( $new = true ) {
+	private function buildEntry($KEServer, $new = true ) {
+	    //recherche multiple web servers
+        $host= $this->getOneParent('Host');
+        $webs= $host->getParents('Server');
+
 		$entry = array();
 		if(!empty($this->ApacheServerAlias)) {
 			$alias = explode("\n", $this->ApacheServerAlias);
@@ -256,7 +324,7 @@ class Apache extends genericClass {
 		$entry['apachesuexecgid'] = $Client->NomLDAP;
 		$entry['apacheservername'] = $this->ApacheServerName;
 		$entry['apachescriptalias'] = '/cgi-bin/ /home/'.$this->_KEHost->Nom.'/cgi-bin/';
-		$entry['apachedocumentroot'] = $this->DocumentRoot;
+		$entry['apachedocumentroot'] = '/home/'.$this->_KEHost->Nom.'/'.$this->DocumentRoot;
 		if($new) {
 			$entry['objectclass'][0] = 'apacheConfig';
 			$entry['objectclass'][1] = 'top';
@@ -266,7 +334,7 @@ class Apache extends genericClass {
 		if ($this->PasswordProtected) {
 			$entry['apacheOptions'][] = 'AuthType Basic';
 			$entry['apacheOptions'][] = 'AuthName "Authentication Required"';
-			$entry['apacheOptions'][] = 'AuthUserFile "'.$this->DocumentRoot.'/.htpasswd"';
+			$entry['apacheOptions'][] = 'AuthUserFile "'.'/home/'.$this->_KEHost->Nom.'/'.$this->DocumentRoot.'/.htpasswd"';
 			$entry['apacheOptions'][] = 'Require valid-user';
 			$entry['apacheHtPasswordUser'] = $this->HtaccessUser;
 			$entry['apacheHtPasswordPassword'] = $this->HtaccessPassword;
@@ -281,6 +349,11 @@ class Apache extends genericClass {
 		}else{
 			$entry['apacheSslEnabled'] = 'no';
 		}
+        $entry['apacheProxy'] = '';
+    	foreach ($webs as $web){
+    	    if (!empty($web->InternalIP))
+              $entry['apacheProxy'] .= 'server '.$web->InternalIP.";\n";
+        }
 		return $entry;
 	}
 
@@ -292,8 +365,16 @@ class Apache extends genericClass {
 	 * @return	void
 	 */
 	public function Delete() {
-		$KEServer = $this->getKEServer();
-		Server::ldapDelete($this->LdapID);
+		$KEServers = $this->getKEServer();
+		foreach ($KEServers as $KEServer) {
+            try {
+                $KEServer->remoteExec('rm /etc/httpd/sites-enabled/' . $this->ApacheServerName . '* -f && systemctl reload httpd');
+            } catch (Exception $e) {
+                $this->addError(Array("Message" => "Impossible d'effectuer la commande de suppression sur le serveur"));
+                return false;
+            }
+            Server::ldapDelete($this->LdapID);
+        }
 		parent::Delete();
 	}
 

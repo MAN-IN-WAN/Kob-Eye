@@ -1556,19 +1556,6 @@ class ObjectClass extends Root{
 
 
 
-	function genererCode(){
-		$cars="az0erty2ui3op4qs_5df6gh7jk8lm9wxcvbn-";
-		$wlong=strlen($cars);
-		$wpas="";
-		$taille=20;
-		srand((double)microtime()*1000000);
-		for($i=0;$i<$taille;$i++){
-			$wpos=rand(0,$wlong-1);
-			$wpas=$wpas.substr($cars,$wpos,1);
-		}
-		return $wpas;
-	}
-
 	function autoLink($Field,$Obj,$Prefixe="") {
 		//Analyse des searchOrder pour Detecter de la chaine a encoder
 		if ($Prefixe!="")$Prefixe.="-";
@@ -1707,8 +1694,8 @@ class ObjectClass extends Root{
 					$Error='La valeur du champs '.$Key.' n\'est pas unique : '.$Obj[$Key];
 				}
 			}
-			if(isset($Prop["type"])&&$Prop["type"]=="random" ){ //&&( !isset($Obj["tmsEdit"])||$Obj["tmsEdit"]<(time()-(CONNECT_TIMEOUT*60)) || $Obj["CodeVerif"]=="")){
-				$OrdreProp[$Key] = $this->genererCode();
+			if(isset($Prop["type"])&&$Prop["type"]=="random"&&empty($Obj[$Key])){ //&&( !isset($Obj["tmsEdit"])||$Obj["tmsEdit"]<(time()-(CONNECT_TIMEOUT*60)) || $Obj["CodeVerif"]=="")){
+				$OrdreProp[$Key] = Utils::genererCode();
 			}else{
 				if (empty($Prop["Ref"])&&isset($Obj[$Key])) $OrdreProp[$Key]=$Obj[$Key];
 			}

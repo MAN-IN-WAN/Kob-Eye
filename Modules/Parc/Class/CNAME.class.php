@@ -17,6 +17,7 @@ class CNAME extends genericClass {
             parent::Save();
             if($synchro) $this->_KEDomain->updateDnsSerial();
         }
+        return true;
 	}
 
 	/**
