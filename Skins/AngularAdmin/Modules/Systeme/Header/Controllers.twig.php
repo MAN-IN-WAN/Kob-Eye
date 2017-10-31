@@ -42,13 +42,15 @@ foreach (Sys::$User->Menus as $m){
         //controller tableau de bord ou page single
         $tmp = array();
         $info = Info::getInfos($m->Alias);
+
         if(!isset($info['ObjectType'])) {
-            $tab = array($info['Query'], 'Controllers');
+            $tab = explode('/',$info['Query']);
+            array_push($tab,'Controllers');
         }else{
             $tab = array($info['Module'], $info['ObjectType'],'Controllers');
         }
-
         $blinfo = Bloc::lookForInterface($tab,'Skins/AngularAdmin/Modules',true);
+
         if (!empty($blinfo)){
             //surcharge de controller
             if(!isset($info['ObjectType'])) {

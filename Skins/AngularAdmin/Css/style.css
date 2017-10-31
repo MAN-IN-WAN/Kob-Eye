@@ -114,6 +114,42 @@ table tr td.table-details{
 
 
 
+/* INFRA 3D */
+#infra_info{
+    height: 0;
+    position: absolute;
+    left:-4px;
+    bottom:0;
+    padding:0;
+    width:0;
+    overflow: hidden;
+    background-color: #fff;
+    transition: all 1s;
+    border:2px solid #ddd;
+}
+#infra_info.showQuick{
+    left:0;
+    padding:15px;
+    width:430px;
+    height: 400px;
+}
+#infra_info table{
+    width:400px;
+}
+#infra_info table span{
+    text-align: center;
+}
+#infra_map{
+    height: 400px;
+    background-color: #fff;
+    border-top: 2px solid #ddd;
+}
+.hideMap{
+    display: none;    
+}
+
+
+
 @media screen and (max-width: 767px) {
     .detail-label:after{
         display: none;

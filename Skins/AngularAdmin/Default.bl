@@ -122,7 +122,11 @@
     <!-- threejs -->
     <script src="Skins/AngularAdmin/threejs/lib/three.js"></script>
     <script src="Skins/AngularAdmin/threejs/lib/loaders/OBJLoader.js"></script>
-    <script src="Skins/AngularAdmin/threejs/lib/controls/OrbitControls.js"></script>
+    <script src="Skins/AngularAdmin/threejs/lib/controls/OrbitControls2.js"></script>
+    <script src="Skins/AngularAdmin/threejs/lib/controls/ParcInfraControls.js"></script>
+    <script src="Skins/AngularAdmin/threejs/lib/libs/tween.min.js"></script>
+    <script src="Skins/AngularAdmin/threejs/builder.js"></script>
+    <!--<script src="Skins/AngularAdmin/threejs/threeScene.js"></script>-->
 
     <!-- angular switch -->
     <link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/assets/vendors/angular-ui-switch/angular-ui-switch.css">
@@ -151,8 +155,9 @@
     [/IF]
 
     [IF [!Systeme::User::isRole(PARC_TECH)!]]
-
+        <script src="Systeme/Header/InfraAdmin.json"></script>
     [/IF]
+    <script src="Systeme/Header/InfraAdmin.json"></script>
 
     <!-- KobEye -->
     <script src="Skins/AngularAdmin/assets/common/js/KEPoll.js"></script>

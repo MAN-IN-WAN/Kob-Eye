@@ -1,0 +1,10 @@
+app.controller('{{ Url }}Ctrl', function($location, $scope, $rootScope, SystemeUserStore ) {
+
+    //Gestion du store
+    $scope.store = SystemeUserStore;
+    $scope.store.resetQuery('Profile');
+    $scope.store.currentPage['Profile'] = 1;
+    $scope.store.setFilters('Id={{ User.Id }}', 'Profile');
+
+
+});

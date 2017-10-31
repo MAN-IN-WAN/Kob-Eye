@@ -14,7 +14,7 @@
                 {% endfor %}
             ]
         {% else %}
-            ,"{{ field.name }}": "{{ attribute(row,field.name) }}"
+            ,"{{ field.name }}": {{ attribute(row,field.name) | json_encode() | raw}}
         {% endif %}
     {% endfor %}
 }

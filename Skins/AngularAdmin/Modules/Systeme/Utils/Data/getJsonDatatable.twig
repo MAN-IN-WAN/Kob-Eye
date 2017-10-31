@@ -16,7 +16,7 @@
                     ,"{{ field.name }}": {{ attribute(row,field.name) }}
                     ,"{{ field.name }}label": "{{ attribute(row,field.name~'label') }}"
                 {% else %}
-            ,"{{ field.name }}": "{{ attribute(row,field.name) | raw}}"
+            ,"{{ field.name }}": {{ attribute(row,field.name) | json_encode() | raw }}
                 {% endif %}
                 {% if field.Values|length >0 %}
             ,"{{ field.name }}Label": "{{ attribute(row,field.name~'Label') | raw}}"
