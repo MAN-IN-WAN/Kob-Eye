@@ -18,7 +18,8 @@ class MX extends genericClass {
 		if($this->_isVerified){
 			parent::Save();
 			if($synchro) $this->_KEDomain->updateDnsSerial();
-		} 
+		}
+		return true;
 	}
 
 	/**

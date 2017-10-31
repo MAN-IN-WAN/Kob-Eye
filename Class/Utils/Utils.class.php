@@ -261,8 +261,9 @@ class Utils {
 	public static function cleanJson($text){
         if (is_array($text))
             $text = implode(',',$text);
-
-        $text = str_replace("&" , '\\\\&', $text);
+        $text = htmlspecialchars($text);
+        //$text = str_replace("&" , '\\\\&', $text);
+        $text = str_replace("\\" , "\\\\", $text);
         $text = str_replace("\r" , "\\\\r", $text);
         $text = str_replace("\n" , "\\\\n", $text);
         $text = str_replace("\t" , "\\\\t", $text);
@@ -270,7 +271,7 @@ class Utils {
         $text = str_replace("‘" , "'", $text);
         $text = str_replace("“" , '"', $text);
         $text = str_replace("”" , '"', $text);
-        $text = str_replace('"' , "'", $text);
+        $text = str_replace('"' , '\"', $text);
         $text = str_replace('\:' , ":", $text);
         return $text;
     }
@@ -280,6 +281,19 @@ class Utils {
     public static function  sprintf($P) {
         return sprintf($P[0],$P[1]);
     }
+    public static function genererCode(){
+        $cars="az0erty2ui3op4qs_5df6gh7jk8lm9wxcvbn-";
+        $wlong=strlen($cars);
+        $wpas="";
+        $taille=12;
+        srand((double)microtime()*1000000);
+        for($i=0;$i<$taille;$i++){
+            $wpos=rand(0,$wlong-1);
+            $wpas=$wpas.substr($cars,$wpos,1);
+        }
+        return $wpas;
+    }
+
 }
 
 @include 'Utils.extend.php';

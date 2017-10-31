@@ -69,8 +69,8 @@
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
-		<FKEY card="0,1" data="Client,Id" fiche="1" description="Client" obligatoire="1" link="1">ClientId</FKEY>
-        <FKEY card="0,1" data="DomainTemplate,Id" fiche="1" description="Template de domaine" form="1">DomainTemplateId</FKEY>
+		<FKEY card="0,1" data="Client,Id" fiche="1" form="1" list="1" description="Client" obligatoire="1" link="1">ClientId</FKEY>
+        <FKEY card="0,1" data="DomainTemplate,Id" fiche="1" list="1" description="Template de domaine" form="1">DomainTemplateId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Subdomain" driver="mysql" Description="A" Icon="/Skins/AdminV2/Img/IconAqua/Search.png" Class="Modules/Parc/Class/Subdomain.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" description="Prefixe Sous Domaine" list="1" form="1">Url</PROPERTIES>
@@ -144,6 +144,7 @@
 		<FILTER name="Serveurs Web" color="primary">Web=1</FILTER>
 		<FILTER name="Serveurs SQL" color="secondary">Sql=1</FILTER>
 		<PROPERTIES type="varchar" searchOrder="1" list="1" fiche="1" listDescr="Nom" form="1">Nom</PROPERTIES>
+		<PROPERTIES type="int" searchOrder="1" list="1" fiche="1" listDescr="Status" values="0::Non intialisé,1::Connecté,2::Configuré" form="1">Status</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" list="1" fiche="1" listDescr="Nom DNS" form="1">DNSNom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="4" form="1">LDAPNom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="3" list="1" fiche="1" listDescr="IP publique" form="1">IP</PROPERTIES>
@@ -176,14 +177,9 @@
         <PROPERTIES category="LDAP" type="varchar" auto="1">LdapUserID</PROPERTIES>
         <PROPERTIES category="LDAP" type="varchar" auto="1">LdapUserTms</PROPERTIES>
 		<FKEY card="0,1" data="Client,Id">ClientId</FKEY>
-		
-		<FUNCTION>MailAvertissement</FUNCTION>
-		<FUNCTION>EnvoyerRecapitulatif</FUNCTION>
-		<FUNCTION>Synchroniser</FUNCTION>
-		<FUNCTION>Update</FUNCTION>
-		<FUNCTION>AjouterSPF</FUNCTION>
-		<FUNCTION>Majdomaine</FUNCTION>
-        <FUNCTION>GetMails</FUNCTION>
+		<FUNCTION title="Test de connexion">Connect</FUNCTION>
+		<FUNCTION title="Installation des clefs SSH">InstallSshKey</FUNCTION>
+		<FUNCTION title="Envoyer un récapitulatif">EnvoyerRecapitulatif</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Host" driver="mysql" AccessPoint="1" Description="Hébergement" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Class="Modules/Parc/Class/Host.class.php">
 		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" description="Nom (uniquement de 2 à 16 caractères comprenant a-Z et 0-9 sans espace et ponctuation.)" listDescr="Nom">Nom</PROPERTIES>
@@ -192,19 +188,19 @@
 		<PROPERTIES type="boolean" default="1" category="gestion commerciale" searchOrder="3" description="Nécessite une facturation">Facturable</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="gestion commerciale" searchOrder="4" description="Hébergement au profit de l'agence">Interne</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" category="gestion commerciale" searchOrder="5" description="Numéro de contrat">NumContrat</PROPERTIES>
-		<PROPERTIES type="random" fiche="1" form="1" description="Mot de passe">Password</PROPERTIES>
+		<PROPERTIES type="random" fiche="1" description="Mot de passe">Password</PROPERTIES>
 		<PROPERTIES type="text" category="gestion commerciale" fiche="1" form="1">Commentaires</PROPERTIES>
 		<PROPERTIES type="int" obligatoire="1" default="1000" description="Quota (en Mo)" listDescr="Quota (en Mo)" list="1" fiche="1" form="1">Quota</PROPERTIES>
-		<PROPERTIES type="varchar" length="50" obligatoire="1" default="default" description="Version de php" query="Parc/PHPVersion::Valeur" list="1" fiche="1" form="1">PHPVersion</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" obligatoire="1" default="default" description="Version de php" query="Parc/PHPVersion::Valeur::Titre" list="1" fiche="1" form="1">PHPVersion</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
 		<PROPERTIES category="LDAP" type="int" auto="1">LdapGid</PROPERTIES>
-		<PROPERTIES category="LDAP" type="int" auto="1">LdapUid</PROPERTIES>
-		<FKEY card="1,1" data="Server,Id" form="1" list="1" fiche="1" parentDescription="Serveur" description="Serveur Web" filter="Web=1">ServerId</FKEY>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapUid</PROPERTIES>
+		<FKEY card="1,n" data="Server,Id" form="1" list="1" fiche="1" parentDescription="Serveur" description="Serveur Web" filter="Web=1">ServerId</FKEY>
 		<FKEY card="1,1" data="Client,Id" link="1" form="1" list="1" fiche="1" parentDescription="Client" description="Client">ClientId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Apache" driver="mysql" Dico="1" Description="Hôte virtuel" Icon="/Skins/AdminV2/Img/IconAqua/Tasks.png" Class="Modules/Parc/Class/Apache.class.php">
-		<PROPERTIES type="function" searchOrder="2" obligatoire="1" list="1" fiche="1" form="1" description="Racine du site" function="getRootPath">DocumentRoot</PROPERTIES>
+		<PROPERTIES type="function" searchOrder="2" obligatoire="1" list="1" fiche="1" form="1" description="Racine du site (à partir de la racine du dossier utilisateur)" default="www" function="getRootPath" >DocumentRoot</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Domaine principal (sans http)" listDescr="Domaine">ApacheServerName</PROPERTIES>
 		<PROPERTIES type="text" searchOrder="3" list="1" fiche="1" form="1" description="Autres domaines">ApacheServerAlias</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
@@ -225,8 +221,8 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Ftpuser" driver="mysql" Dico="1" Description="Accès FTP" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Ftpuser.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Identifiant" list="1" fiche="1" form="1">Identifiant</PROPERTIES>
-		<PROPERTIES type="varchar" obligatoire="1" list="1" fiche="1" form="1" description="Mot de passe">Password</PROPERTIES>
-		<PROPERTIES type="function" obligatoire="1" list="1" fiche="1" form="1" function="getRootPath" description="Racine du FTP">DocumentRoot</PROPERTIES>
+		<PROPERTIES type="random" obligatoire="1" list="1" fiche="1" form="1" description="Mot de passe">Password</PROPERTIES>
+		<PROPERTIES type="function" list="1" fiche="1" form="1" function="getRootPath" description="Racine du FTP (laisser vide pour la racine du dossier utilisateur)">DocumentRoot</PROPERTIES>
 		<PROPERTIES type="int" obligatoire="0" list="1" fiche="1" form="1" description="Quota utilisateur en MB" default="5000">QuotaMb</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>

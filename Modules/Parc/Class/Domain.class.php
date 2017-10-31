@@ -20,6 +20,7 @@ class Domain extends genericClass {
 			if ($this->updateOnSave)
 				$this->AutoGenSubDomains();
 		}
+		return true;
 	}
 
 

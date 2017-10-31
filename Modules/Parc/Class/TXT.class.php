@@ -19,6 +19,7 @@ class TXT extends genericClass {
 		    parent::Save();
             if($synchro) $this->_KEDomain->updateDnsSerial();
         }
+        return true;
 	}
 
 	/**

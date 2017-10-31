@@ -18,11 +18,11 @@ class Host extends genericClass
         if (!$this->_isVerified) $this->Verify($synchro);
         // Enregistrement si pas d'erreur + Récupération GID CLIENT
         if ($this->_isVerified) {
-            $this->getGidFromClient($synchro);
+            //$this->getGidFromClient($synchro);
             parent::Save();
         }
         // Maj Quotas niveau serveur
-        if ($this->Id) {
+        /*if ($this->Id) {
             $T1 = Sys::$Modules["Parc"]->callData("Parc/Server/Host/{$this->Id}", "", 0, 1);
             if (!empty($T1)) {
                 $Server = genericClass::createInstance('Parc', $T1[0]);
@@ -31,8 +31,100 @@ class Host extends genericClass
                 if (!empty($Tab)) foreach ($Tab as $H) $Server->EspaceProvisionne += $H["Quota"];
                 $Server->Save();
             }
-        }
+        }*/
         return true;
+    }
+    /**
+     * getLdapID
+     * récupère le ldapId d'une entrée pour un serveur spécifique
+     */
+    public function getLdapID($KEServer) {
+        if (!empty($this->LdapID))
+            $en = json_decode($this->LdapID,true);
+        else $en=array();
+        return $en[$KEServer->Id];
+    }
+    /**
+     * setLdapID
+     * défniit le ldapId d'une entrée pour un serveur spécifique
+     */
+    public function setLdapID($KEServer,$ldapId) {
+        if (!empty($this->LdapDN))
+            $en = json_decode($this->LdapID,true);
+        else $en = Array();
+        if (!is_array($en))$en = array();
+        $en[$KEServer->Id] = $ldapId;
+        $this->LdapID = json_encode($en);
+    }
+    /**
+     * getLdapDN
+     * récupère le ldapDN d'une entrée pour un serveur spécifique
+     */
+    public function getLdapDN($KEServer) {
+        if (!empty($this->LdapDN))
+            $en = json_decode($this->LdapDN,true);
+        else $en=array();
+        return $en[$KEServer->Id];
+    }
+    /**
+     * setLdapDN
+     * définit le ldapDN d'une entrée pour un serveur spécifique
+     */
+    public function setLdapDN($KEServer,$ldapDn) {
+        if (!empty($this->LdapDN))
+            $en = json_decode($this->LdapDN,true);
+        else $en = Array();
+        if (!is_array($en))$en = array();
+        $en[$KEServer->Id] = $ldapDn;
+        $this->LdapDN = json_encode($en);
+    }
+    /**
+     * getLdapTms
+     * récupère le ldapTms d'une entrée pour un serveur spécifique
+     */
+    public function getLdapTms($KEServer) {
+        if (!empty($this->LdapTms))
+            $en = json_decode($this->LdapTms,true);
+        else $en=array();
+        return $en[$KEServer->Id];
+    }
+    /**
+     * setLdapTms
+     * définit le ldapTms d'une entrée pour un serveur spécifique
+     */
+    public function setLdapTms($KEServer,$ldapTms) {
+        if (!empty($this->LdapTms))
+            $en = json_decode($this->LdapTms,true);
+        else $en = Array();
+        if (!is_array($en))$en = array();
+        $en[$KEServer->Id] = $ldapTms;
+        $this->LdapTms = json_encode($en);
+    }
+    /**
+     * getLdapUid
+     * récupère le ldapUid d'une entrée pour un serveur spécifique
+     */
+    public function getLdapUid($KEServer) {
+        if (!empty($this->LdapUid))
+            $en = json_decode($this->LdapUid,true);
+        else $en=array();
+        if (!isset($en[$KEServer->Id])){
+            $en[$KEServer->Id] = Server::getNextUid();
+            $this->setLdapUid($KEServer,$en[$KEServer->Id]);
+        }
+        return $en[$KEServer->Id];
+    }
+    /**
+     * setLdapUid
+     * définit le ldapUid d'une entrée pour un serveur spécifique
+     */
+    public function setLdapUid($KEServer,$ldapUid) {
+        if (!empty($this->LdapUid))
+            $en = json_decode($this->LdapUid,true);
+        else $en = Array();
+        if (!is_array($en))$en = array();
+        $en[$KEServer->Id] = $ldapUid;
+        $this->LdapUid = json_encode($en);
     }
 
     /**
@@ -54,7 +146,7 @@ class Host extends genericClass
         if (parent::Verify()) {
             //Verification du client
             if (!$this->getKEClient()) return true;
-            //Verification du server
+            //Verification des server
             if (!$this->getKEServer()){
                 return true;
             }
@@ -63,65 +155,66 @@ class Host extends genericClass
 
             if ($synchro) {
 
-                // Outils
-                $KEServer = $this->getKEServer();
-                $dn = 'cn=' . $this->Nom . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE;
-                // Verification à jour
-                $res = Server::checkTms($this);
-                if ($res['exists']) {
-                    if (!$res['OK']) {
-                        $this->AddError($res);
-                        $this->_isVerified = false;
-                    } else {
-                        // Déplacement
-                        if ($this->LdapDN != 'cn=' . $this->Nom . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE) $res = Server::ldapRename($this->LdapDN, 'cn=' . $this->Nom, 'ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE);
-                        else $res = array('OK' => true);
-                        if ($res['OK']) {
-                            // Modification
-                            $entry = $this->buildEntry(false);
-                            $res = Server::ldapModify($this->LdapID, $entry);
+                // On boucle sur tous les serveurs
+                $KEServers = $this->getKEServer();
+                foreach ($KEServers as $KEServer) {
+                    $dn = 'cn=' . $this->Nom . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE;
+                    // Verification à jour
+                    $res = Server::checkTms($this,$KEServer);
+                    if ($res['exists']) {
+                        if (!$res['OK']) {
+                            $this->AddError($res);
+                            $this->_isVerified = false;
+                        } else {
+                            // Déplacement
+                            if ($this->getLdapDN($KEServer) != 'cn=' . $this->Nom . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE) $res = Server::ldapRename($this->getLdapDN($KEServer), 'cn=' . $this->Nom, 'ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE);
+                            else $res = array('OK' => true);
                             if ($res['OK']) {
-                                // Tout s'est passé correctement
-                                $this->LdapDN = $dn;
-                                $this->LdapTms = $res['LdapTms'];
+                                // Modification
+                                $entry = $this->buildEntry($KEServer,false);
+                                $res = Server::ldapModify($this->getLdapID($KEServer), $entry);
+                                if ($res['OK']) {
+                                    // Tout s'est passé correctement
+                                    $this->setLdapDN($KEServer,$dn);
+                                    $this->setLdapTms($KEServer,$res['LdapTms']);
+                                } else {
+                                    // Erreur
+                                    $this->AddError($res);
+                                    $this->_isVerified = false;
+                                    // Rollback du déplacement
+                                    $tab = explode(',', $this->getLdapDN($KEServer));
+                                    $leaf = array_shift($tab);
+                                    $rest = implode(',', $tab);
+                                    Server::ldapRename($dn, $leaf, $rest);
+                                }
                             } else {
-                                // Erreur
                                 $this->AddError($res);
                                 $this->_isVerified = false;
-                                // Rollback du déplacement
-                                $tab = explode(',', $this->LdapDN);
-                                $leaf = array_shift($tab);
-                                $rest = implode(',', $tab);
-                                Server::ldapRename($dn, $leaf, $rest);
+                            }
+                        }
+
+                    } else {
+                        ////////// Nouvel élément
+                        if ($KEServer) {
+                            $entry = $this->buildEntry($KEServer);
+                            $res = Server::ldapAdd($dn, $entry);
+                            if ($res['OK']) {
+                                $res2 = Server::ldapAdd('ou=users,' . $dn, array('objectclass' => array('organizationalUnit', 'top'), 'ou' => 'users'));
+                                $this->setLdapDN($KEServer,$dn);
+                                $this->setLdapUid($KEServer,$entry['uidnumber']);
+                                $this->LdapGid = $entry['gidnumber'];
+                                $this->setLdapID($KEServer,$res['LdapID']);
+                                $this->setLdapTms($KEServer,$res2['LdapTms']);
+                            } else {
+                                $this->AddError($res);
+                                $this->_isVerified = false;
                             }
                         } else {
-                            $this->AddError($res);
+                            $this->AddError(array('Message' => "Un hébergement doit obligatoirement être créé dans un serveur donné.", 'Prop' => ''));
                             $this->_isVerified = false;
                         }
-                    }
-
-                } else {
-                    ////////// Nouvel élément
-                    if ($KEServer) {
-                        $entry = $this->buildEntry();
-                        $res = Server::ldapAdd($dn, $entry);
-                        if ($res['OK']) {
-                            $res2 = Server::ldapAdd('ou=users,' . $dn, array('objectclass' => array('organizationalUnit', 'top'), 'ou' => 'users'));
-                            $this->LdapDN = $dn;
-                            $this->LdapUid = $entry['uidnumber'];
-                            $this->LdapGid = $entry['gidnumber'];
-                            $this->LdapID = $res['LdapID'];
-                            $this->LdapTms = $res2['LdapTms'];
-                        } else {
-                            $this->AddError($res);
-                            $this->_isVerified = false;
-                        }
-                    } else {
-                        $this->AddError(array('Message' => "Un hébergement doit obligatoirement être créé dans un serveur donné.", 'Prop' => ''));
-                        $this->_isVerified = false;
                     }
                 }
-
             }
 
         } else {
@@ -141,7 +234,7 @@ class Host extends genericClass
      * @param    boolean        Si FALSE c'est simplement une mise à jour
      * @return    Array
      */
-    private function buildEntry($new = true)
+    private function buildEntry($KEServer,$new = true)
     {
         $entry = array();
         $entry['cn'] = $this->Nom;
@@ -152,13 +245,13 @@ class Host extends genericClass
         $entry['description'] = json_encode(array("Quota" => $this->Quota));
         $entry['preferredLanguage'] = $this->PHPVersion;
         if ($new) {
-            $entry['uidnumber'] = Server::getNextUid();
+            $entry['uidnumber'] = $this->getLdapUid($KEServer);
             $entry['gidnumber'] = "100";//$this->_KEClient->LdapGid;
             $entry['loginshell'] = '/bin/bash';
             $entry['objectclass'][0] = 'inetOrgPerson';
             $entry['objectclass'][1] = 'posixAccount';
             $entry['objectclass'][2] = 'top';
-            $entry['userpassword'] = '{MD5}Xr4ilOzQ4PCOq3aQ0qbuaQ==';
+            $entry['userpassword'] = "{MD5}".base64_encode(pack("H*",md5($this->Password)));
         }
         return $entry;
     }
@@ -188,9 +281,30 @@ class Host extends genericClass
      * On utilise aussi la fonction de la superclasse
      * @return    void
      */
-    public function Delete()
-    {
-        if (!empty($this->LdapGid)) Server::ldapDelete($this->LdapID, true);
+    public function Delete(){
+        //suppression des apaches
+        $aps = $this->getChildren('Apache');
+        foreach ($aps as $ap) $ap->Delete();
+        //suppression des ftp
+        $ftps = $this->getChildren('Ftpuser');
+        foreach ($ftps as $ftp) $ftp->Delete();
+        //suppression des apaches
+        $bdds = $this->getChildren('Bdd');
+        foreach ($bdds as $bdd) $bdd->Delete();
+        //suppression ldap
+        $KEServers = $this->getKEServer();
+        foreach ($KEServers as $KEServer) {
+            try {
+                if (!empty($this->Nom))
+                    $KEServer->remoteExec('rm /home/' . $this->Nom . ' -Rf');
+            } catch (Exception $e) {
+                $this->addError(Array("Message" => "Impossible d'effectuer la commande de suppression sur le serveur"));
+                return false;
+            }
+            //suppression définitive
+            if ($this->getLdapID($KEServer)) Server::ldapDelete($this->getLdapID($KEServer), true);
+        }
+
         parent::Delete();
     }
 
@@ -204,10 +318,10 @@ class Host extends genericClass
      */
     public function getKEServer()
     {
-        if (!is_object($this->_KEServer)) {
+        if (!is_array($this->_KEServer)) {
             $tab = $this->getParents('Server');
             if (empty($tab)) return false;
-            else $this->_KEServer = $tab[0];
+            else $this->_KEServer = $tab;
         }
         return $this->_KEServer;
     }

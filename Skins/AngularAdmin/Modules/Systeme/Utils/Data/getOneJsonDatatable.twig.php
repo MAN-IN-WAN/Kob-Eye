@@ -17,17 +17,24 @@ foreach ($vars['fields'] as $f){
         //transformation des timestamps en format js
         $vars['row']->{$f['name']} = date('d/m/Y H:i',$vars['row']->{$f['name']});
     }
-    if ($f['type']=='text'||$f['type']=='raw'){
+    if ($f['type']=='text'||$f['type']=='raw'||$f['type']=='varchar'||$f['type']=='html'||$f['type']=='titre'){
         //transformation des timestamps en format js
         $vars['row']->{$f['name']} = Utils::cleanJson($vars['row']->{$f['name']});
     }
     if ($f['type']=='fkey'&&$f['card']=='short'){
         if ($vars['row']->{$f['name']} > 0) {
             $kk = Sys::getOneData($f['objectModule'], $f['objectName'] . '/' . $vars['row']->{$f['name']});
-            $vars['row']->{$f['name'].'label'} = $kk->getFirstSearchOrder();
+            if ($kk)
+                $vars['row']->{$f['name'].'label'} = $kk->getFirstSearchOrder();
         }else{
             $vars['row']->{$f['name'].'label'} = '';
         }
+    }
+    if ($f['type']=='fkey'&&$f['card']=='long'){
+        $kk = $vars['row']->getParents($f['objectName']);
+        $vars['row']->{$f['name']} = array();
+        foreach ($kk as $k)
+            $vars['row']->{$f['name']}[] = $k->Id;
     }
     if ($f['type']=='rkey'){
         $kk = Sys::getData($f['objectModule'], $vars['Query'].'/'.$f['objectName']);

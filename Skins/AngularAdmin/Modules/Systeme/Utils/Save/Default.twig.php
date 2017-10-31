@@ -27,8 +27,12 @@ foreach ($formfields as $f){
 $obj = $o->getObjectClass();
 $formfields = $obj->getParentElements();
 foreach ($formfields as $f){
-    if ($f['type']=='fkey'){
+    if ($f['type']=='fkey' && $f['card']=='short'){
         $o->AddParent($f['objectModule'].'/'.$f['objectName'].'/'.$values->{$f["name"]});
+    }elseif ($f['type']=='fkey' && $f['card']=='long'){
+        $o->resetParents($f['objectName']);
+        foreach ($values->{$f["name"]} as $v)
+            $o->AddParent($f['objectModule'].'/'.$f['objectName'].'/'.$v);
     }
 }
 

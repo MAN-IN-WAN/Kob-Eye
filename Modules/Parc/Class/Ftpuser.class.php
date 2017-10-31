@@ -33,7 +33,72 @@ class Ftpuser extends genericClass {
 			return 'Tout neuf';
 		}else return $this->DocumentRoot;
 	}
-
+    /**
+     * getLdapID
+     * récupère le ldapId d'une entrée pour un serveur spécifique
+     */
+    public function getLdapID($KEServer) {
+        if (!empty($this->LdapID))
+            $en = json_decode($this->LdapID,true);
+        else $en=array();
+        return $en[$KEServer->Id];
+    }
+    /**
+     * setLdapID
+     * défniit le ldapId d'une entrée pour un serveur spécifique
+     */
+    public function setLdapID($KEServer,$ldapId) {
+        if (!empty($this->LdapDN))
+            $en = json_decode($this->LdapID,true);
+        else $en = Array();
+        if (!is_array($en))$en = array();
+        $en[$KEServer->Id] = $ldapId;
+        $this->LdapID = json_encode($en);
+    }
+    /**
+     * getLdapDN
+     * récupère le ldapDN d'une entrée pour un serveur spécifique
+     */
+    public function getLdapDN($KEServer) {
+        if (!empty($this->LdapDN))
+            $en = json_decode($this->LdapDN,true);
+        else $en=array();
+        return $en[$KEServer->Id];
+    }
+    /**
+     * setLdapDN
+     * définit le ldapDN d'une entrée pour un serveur spécifique
+     */
+    public function setLdapDN($KEServer,$ldapDn) {
+        if (!empty($this->LdapDN))
+            $en = json_decode($this->LdapDN,true);
+        else $en = Array();
+        if (!is_array($en))$en = array();
+        $en[$KEServer->Id] = $ldapDn;
+        $this->LdapDN = json_encode($en);
+    }
+    /**
+     * getLdapTms
+     * récupère le ldapTms d'une entrée pour un serveur spécifique
+     */
+    public function getLdapTms($KEServer) {
+        if (!empty($this->LdapTms))
+            $en = json_decode($this->LdapTms,true);
+        else $en=array();
+        return $en[$KEServer->Id];
+    }
+    /**
+     * setLdapTms
+     * définit le ldapTms d'une entrée pour un serveur spécifique
+     */
+    public function setLdapTms($KEServer,$ldapTms) {
+        if (!empty($this->LdapTms))
+            $en = json_decode($this->LdapTms,true);
+        else $en = Array();
+        if (!is_array($en))$en = array();
+        $en[$KEServer->Id] = $ldapTms;
+        $this->LdapTms = json_encode($en);
+    }
 	/**
 	 * Verification des erreurs possibles
 	 * @param	boolean	Verifie aussi sur LDAP
@@ -52,67 +117,62 @@ class Ftpuser extends genericClass {
 
 				// Outils
 				$KEHost = $this->getKEHost();
-				$KEServer = $this->getKEServer();
-				if (!$KEServer) return false;
-				$dn = 'uid='.$this->Identifiant.',ou=users,cn='.$KEHost->Nom.',ou='.$KEServer->LDAPNom.',ou=servers,'.PARC_LDAP_BASE;
-				// Verification à jour
-				$res = Server::checkTms($this);
-				if($res['exists']) {
-					if(!$res['OK']) {
-						$this->AddError($res);
-						$this->_isVerified = false;
-					}
-					else {
-						// Déplacement
-						$res = Server::ldapRename($this->LdapDN, 'uid='.$this->Identifiant, 'ou=users,cn='.$KEHost->Nom.',ou='.$KEServer->LDAPNom.',ou=servers,'.PARC_LDAP_BASE);
-						if($res['OK']) {
-							// Modification
-							$entry = $this->buildEntry(false);
-							$res = Server::ldapModify($this->LdapID, $entry);
-							if($res['OK']) {
-								// Tout s'est passé correctement
-								$this->LdapDN = $dn;
-								$this->LdapTms = $res['LdapTms'];
-							}
-							else {
-								// Erreur
-								$this->AddError($res);
-								$this->_isVerified = false;
-								// Rollback du déplacement
-								$tab = explode(',', $this->LdapDN);
-								$leaf = array_shift($tab);
-								$rest = implode(',', $tab);
-								Server::ldapRename($dn, $leaf, $rest);
-							}
-						}
-						else {
-							$this->AddError($res);
-							$this->_isVerified = false;
-						}
-					}
-	
-				}
-				else {
-					////////// Nouvel élément
-					if($KEHost) {
-						$entry = $this->buildEntry();
-						$res = Server::ldapAdd($dn, $entry);
-						if($res['OK']) {
-							$this->LdapDN = $dn;
-							$this->LdapID = $res['LdapID'];
-							$this->LdapTms = $res['LdapTms'];
-						}
-						else {
-							$this->AddError($res);
-							$this->_isVerified = false;
-						}
-					}
-					else {
-						$this->AddError(array('Message' => "Un utilisateur FTP doit obligatoirement être créé dans un hébergement donné.", 'Prop' => ''));
-						$this->_isVerified = false;
-					}
-				}
+				$KEServers = $this->getKEServer();
+				foreach ($KEServers as $KEServer) {
+                    if (!$KEServer) return false;
+                    $dn = 'uid=' . $this->Identifiant . ',ou=users,cn=' . $KEHost->Nom . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE;
+                    // Verification à jour
+                    $res = Server::checkTms($this,$KEServer);
+                    if ($res['exists']) {
+                        if (!$res['OK']) {
+                            $this->AddError($res);
+                            $this->_isVerified = false;
+                        } else {
+                            // Déplacement
+                            $res = Server::ldapRename($this->getLdapDN($KEServer), 'uid=' . $this->Identifiant, 'ou=users,cn=' . $KEHost->Nom . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE);
+                            if ($res['OK']) {
+                                // Modification
+                                $entry = $this->buildEntry($KEServer,false);
+                                $res = Server::ldapModify($this->getLdapID($KEServer), $entry);
+                                if ($res['OK']) {
+                                    // Tout s'est passé correctement
+                                    $this->setLdapDN($KEServer,$dn);
+                                    $this->setLdapTms($KEServer,$res['LdapTms']);
+                                } else {
+                                    // Erreur
+                                    $this->AddError($res);
+                                    $this->_isVerified = false;
+                                    // Rollback du déplacement
+                                    $tab = explode(',', $this->getLdapDN($KEServer));
+                                    $leaf = array_shift($tab);
+                                    $rest = implode(',', $tab);
+                                    Server::ldapRename($dn, $leaf, $rest);
+                                }
+                            } else {
+                                $this->AddError($res);
+                                $this->_isVerified = false;
+                            }
+                        }
 
+                    } else {
+                        ////////// Nouvel élément
+                        if ($KEHost) {
+                            $entry = $this->buildEntry($KEServer);
+                            $res = Server::ldapAdd($dn, $entry);
+                            if ($res['OK']) {
+                                $this->setLdapDN($KEServer,$dn);
+                                $this->setLdapID($KEServer,$res['LdapID']);
+                                $this->setLdapTms($KEServer,$res['LdapTms']);
+                            } else {
+                                $this->AddError($res);
+                                $this->_isVerified = false;
+                            }
+                        } else {
+                            $this->AddError(array('Message' => "Un utilisateur FTP doit obligatoirement être créé dans un hébergement donné.", 'Prop' => ''));
+                            $this->_isVerified = false;
+                        }
+                    }
+                }
 			}
 
 		}
@@ -154,18 +214,18 @@ class Ftpuser extends genericClass {
 	 * @param	boolean		Si FALSE c'est simplement une mise à jour
 	 * @return	Array
 	 */
-	private function buildEntry( $new = true ) {
+	private function buildEntry($KEServer, $new = true ) {
 		$entry = array();
-		$entry['cn'] = $this->_KEServer->Nom;
+		$entry['cn'] = $KEServer->Nom;
 		$entry['homedirectory'] = $this->DocumentRoot;
 		$entry['uid'] = $this->Identifiant;
 		if($this->Password != '*******') $entry['userpassword'] = "{MD5}".base64_encode(pack("H*",md5($this->Password)));
 		$entry['ftpquotambytes'] = $this->QuotaMb;
 		if($new) {
 			$KEHost = $this->getKEHost();
-			$entry['ftpuid'] = $KEHost->LdapUid;
+			$entry['ftpuid'] = $KEHost->getLdapUid($KEServer);
 			$entry['ftpgid'] = $KEHost->LdapGid;
-			$entry['uidnumber'] = $this->_KEServer->getNextUid();
+			$entry['uidnumber'] = $KEServer->getNextUid();
 			$entry['gidnumber'] = $KEHost->LdapGid;
 			$entry['objectclass'][0] = 'posixAccount';
 			$entry['objectclass'][1] = 'PureFTPdUser';
@@ -183,8 +243,11 @@ class Ftpuser extends genericClass {
 	 * @return	void
 	 */
 	public function Delete() {
-		Server::ldapDelete($this->LdapID);
-		parent::Delete();
+	    $KEServers = $this->getKEServer();
+	    foreach ($KEServers as $KEServer) {
+            Server::ldapDelete($this->LdapID);
+        }
+        parent::Delete();
 	}
 
 

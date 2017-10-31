@@ -123,9 +123,13 @@
 		[IF [!Pos!]>1][!Re+= !][/IF]
 		[!Re+=[!Utils::Canonic([!R!])!]!]
 	[/STORPROC]
+	//correction sans la vue
+	//[!RequeteT:=[!Module::Actuel::Nom!]/[!TypeEnf!]/[!RechEnf!]/Canon~[!Re!]&[!Recherche!]!]
 	[!RequeteT:=[!Module::Actuel::Nom!]/[!TypeEnf!]/[!RechEnf!]:NOVIEW/Canon~[!Re!]&[!Recherche!]!]
 [ELSE]
+//correction sans la vue
 	[IF [!Recherche!]!=][!RequeteT+=:NOVIEW/[!Recherche!]!][/IF]
+	//[IF [!Recherche!]!=][!RequeteT+=/[!Recherche!]!][/IF]
 [/IF]
 
 //PAGINATION

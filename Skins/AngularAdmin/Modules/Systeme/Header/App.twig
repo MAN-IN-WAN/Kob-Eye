@@ -16,6 +16,7 @@ angular.module('cleanUI', [
     $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
 })
 
+
 .config(['$locationProvider', '$routeProvider',
 function($locationProvider, $routeProvider) {
 /////////////////////////////////////////////////////////////
@@ -427,3 +428,11 @@ $('.left-menu-list-opened').removeClass('left-menu-list-opened');
 app.run(function($rootScope) {
 //$rootScope.keys = Object.keys;
 });
+
+app.filter('unescape', function() {
+    return function(input) {
+        if (input)
+            return input.replace(/\\n/g, "\n");
+        else return '';
+    };
+})

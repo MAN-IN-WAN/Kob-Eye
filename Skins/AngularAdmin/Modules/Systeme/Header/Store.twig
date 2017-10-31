@@ -1,13 +1,13 @@
 {% for key,st in stores %}
     app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrenelements %},{{ child.identifier }}Store{% endfor %}) {
-        var {{ st.identifier }}Store = {'default': [] },
-            currentPage = { 'default': 1 },
-            pageLoaded = { 'default': 0 },
-            total = { 'default': 0 },
+        var {{ st.identifier }}Store = {'default': [], select: [], children: [], form: [] },
+            currentPage = { 'default': 1 , select: 1, children: 1, form: 1},
+            pageLoaded = { 'default': 0 , select: 0, children: 0, form: 0},
+            total = { 'default': 0 , select: 0, children: 0, form: 0},
             pageLength = 15,
-            filters = { 'default': '' },
+            filters = { 'default': '' , select: '', children: '', form: ''},
             timer = 0,
-            query = { 'default': '/{{ st.module }}/{{ st.objecttype }}' },
+            query = { 'default': '/{{ st.module }}/{{ st.objecttype }}', select: '/{{ st.module }}/{{ st.objecttype }}', children: '/{{ st.module }}/{{ st.objecttype }}', form: '/{{ st.module }}/{{ st.objecttype }}'},
             busy = false;
         return {
             getOneData: getOneData,
@@ -26,22 +26,35 @@
             getDataFilter: getDataFilter,
             refresh: refresh,
             filter: filters,
+            total: total,
+            currentPage: currentPage,
             resetQuery: resetQuery,
             setQuery: setQuery,
             getQuery: getQuery,
             data:{{ st.identifier }}Store
         };
+        function initContext(context) {
+            {{ st.identifier }}Store[context] = [];
+            filters[context] = '';
+            currentPage[context] = '';
+            resetQuery(context);
+         }
         function resetQuery(context = 'default') {
+            console.log(context+' >> {{ st.identifier }} >> resetquery');
             pageLoaded[context] = 0;
             query[context] = '/{{ st.module }}/{{ st.objecttype }}';
             return query[context];
         }
+
         function setQuery(q,context = 'default') {
+            console.log(context+' >> {{ st.identifier }} >> setquery >> '+q);
+            if (!query[context]) initContext(context);
             pageLoaded[context] = 0;
             query[context] = q;
+            filters[context] = '';
         }
         function getQuery(context = 'default'){
-            if (!query[context]) return resetQuery(context);
+            if (!query[context]) initContext(context);
             return query[context];
         }
         function setPageLength(pl) {
@@ -51,7 +64,8 @@
             return pageLength;
         }
         function getTotal(context = 'default') {
-            return total['default'];
+            console.log(context+' >> {{ st.identifier }} >> gettotal >> '+total[context]);
+            return total[context];
         }
         function purgeStore(context = 'default'){
             if (Array.isArray({{ st.identifier }}Store[context]))
@@ -75,7 +89,7 @@
         **/
         function setFilters(filter,context='default',blur = false,noreload = false){
             if (filter==filters[context]) return;
-            filters[context] = (blur?'~':'')+filter;
+            filters[context] = filter;
             pageLoaded[context]=0;
             //on recharge le store
             $timeout.cancel(timer);
@@ -87,6 +101,7 @@
         * Récupération du filtre en cours
         **/
         function getFilters(context = 'default'){
+            if (filters[context] == undefined) initContext(context);
             return filters[context];
         }
         /**
@@ -137,12 +152,18 @@
         function getOneData(id,context = 'default',full = true) {
             return $q(function(resolve, reject) {
                 console.log('store > {{ st.identifier }} > getOneData '+id,id);
+                var idStore = -1;
                 for (var i in {{ st.identifier }}Store[context]){
                     if ({{ st.identifier }}Store[context][i].id==id){
-                        var idStore = i;
+                        idStore = i;
+                        resolve({{ st.identifier }}Store[context][i]);
                         loadChildren({{ st.identifier }}Store[context][i]).then(function (obj){
                             {{ st.identifier }}Store[context][idStore] = obj;
-                            resolve(obj);
+                            obj = unescapeData(obj);
+                            if (obj._full){
+                                resolve(obj);
+                                return;
+                            }
                         });
                         continue;
                     }
@@ -150,15 +171,45 @@
                 //si store pas chargé ou introuvable
                 $http.get('/{{ st.module }}/{{ st.objecttype }}/'+id+'/getOneData.json')
                     .success(function(data) {
+                        data = unescapeData(data);
                         console.log(context+' >> store > {{ key }} > load success '+id, data);
+                        //mise à jour du store avec infos completes
+                        if (idStore>-1){
+                            data._full = true;
+                            {{ st.identifier }}Store[context][idStore] = data;
+                        }
                         //on charge les enfants uniquement si param full
                         if (full)
                             loadChildren(data).then(function (obj){
+                                if (idStore>-1){
+                                    obj._full = true;
+                                    {{ st.identifier }}Store[context][idStore] = obj;
+                                }
                                 resolve(obj);
                             });
                         else resolve(data);
                 });
             });
+        }
+        /**
+        * supprime les échappements
+        */
+        function unescapeData (obj){
+            for (var i in obj){
+                if (typeof obj[i] == "string"){
+                    obj[i] = obj[i].replace(/\\n/g,'\n');
+                    var map = {
+                        '&amp;': '&',
+                        '&lt;': '<',
+                        '&gt;': '>',
+                        '&quot;': '"',
+                        '&#039;': "'"
+                    };
+                    obj[i] = obj[i].replace(/&amp;|&lt;|&gt;|&quot;|&#039;/g, function(m) {return map[m];});
+                    obj[i] = obj[i].replace(/&amp;|&lt;|&gt;|&quot;|&#039;/g, function(m) {return map[m];});
+                }
+            }
+            return obj;
         }
         /**
         * Get data for combo component
@@ -173,20 +224,15 @@
         */
         function getData(page,context='default') {
             var tmpquery = getQuery(context);
-            var tmpfilters = getFilters(context);
+            var tmpfilters = '~'+getFilters(context);
             //create new context
-            if (!{{ st.identifier }}Store[context]){
-                {{ st.identifier }}Store[context] = [];
-            }
-            if (page<1) page=1;
+            if (page<1||page==undefined) page=1;
             return $q(function(resolve, reject) {
                 if (busy) {
                     reject('already busy');
                     return;
                 }
-                console.log(context+' >> store > {{ key }} > getData '+page);
-                if (!page) page = currentPage;
-                else currentPage = page;
+                console.log(context+' >> store > {{ key }} > getData >> page '+page+' >> query '+getQuery(context));
                 if (page!=pageLoaded[context]){
                     busy=true;
                     $http.get(
@@ -203,14 +249,17 @@
                             pageLoaded[context] = page;
                             total[context] = data.total;
                             for (var i in data.data) {
-                                if (!alreadyExists(data.data[i].id))
+                                if (!alreadyExists(data.data[i].id,context))
                                     {{ st.identifier }}Store[context].push(data.data[i]);
                             }
                             console.log(context+' >> store > {{ key }} > loaded success ',{{ st.identifier }}Store[context]);
                             resolve({{ st.identifier }}Store[context]);
                     });
-                }else resolve({{ st.identifier }}Store[context]);
-        });
+                }else{
+                    busy = false;
+                    resolve({{ st.identifier }}Store[context]);
+                }
+            });
         }
         /**
         * Chargement des données enfants
@@ -221,7 +270,9 @@
                 {% for child in st.childrenelements %}
                     {{ child.objectModule }}{{ child.objectName }}Store.setQuery('/{{ st.module }}/{{ st.objecttype }}/'+obj.id+'/{{ child.objectName }}','children');
                     if (!obj.{{ child.objectName }}) {
-                        obj.{{ child.objectName }} = {{ child.objectModule }}{{ child.objectName }}Store.getData(1,'children');
+                        {{ child.objectModule }}{{ child.objectName }}Store.getData(1,'children').then(function (data){
+                            obj.{{ child.objectName }} = data;
+                        });
                         num--;
                         if (num==0) resolve(obj);
                     }else{

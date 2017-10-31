@@ -184,11 +184,17 @@ class genericClass extends Root {
 			$Schema = $ObjClass -> getSchema();
 		if (is_array($Schema['Properties']))
 			foreach ($Schema['Properties'] as $Key => $Prop) {
+                $defaultValue = '';
+		        switch ($Prop["type"]){
+                    case "random":
+                        $defaultValue = Utils::genererCode();
+                        break;
+                }
 				//Priorites de langage
 				if (isset($Prop["special"]))
 					$Special = $Prop["special"];
 				//valeur par défaut
-				$defaultValue = (isset($Prop["default"]))?$Prop["default"]:'';
+				$defaultValue = (isset($Prop["default"]))?$Prop["default"]:$defaultValue;
 				if (is_object(Sys::$User) && Sys::$User -> Admin && isset($Special) && $Special == "multi") {
 					$Tab[$Key] = $defaultValue;
 					foreach ($GLOBALS["Systeme"]->Conf->get("GENERAL::LANGUAGE") as $Cod => $Lang) {
