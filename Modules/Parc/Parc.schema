@@ -264,7 +264,7 @@
         <FUNCTION title="Executer maintenant">Executer</FUNCTION>
     </OBJECTCLASS>
 	<OBJECTCLASS title="Device" driver="mysql" AccessPoint="1" Description="Périphérique(s) réseau(x)" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Device.class.php">
-		<FUNCTION title="Récupère les ips internes">getIps</FUNCTION>
+		<FUNCTION title="Envoyer un message">sendMessage</FUNCTION>
 		<FILTER name="Tous les périphériques" color="warning" ></FILTER>
 		<FILTER name="Périphériques en ligne"  color="success">Online=1</FILTER>
 		<FILTER name="Périphérique de type serveur"  color="primary">DeviceType=Serveur</FILTER>
@@ -305,8 +305,8 @@
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom du périphérique">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" obligatoire="1"  list="1" fiche="1" form="1" description="Type de connexion" listDescr="Type" values="RDP,VNC,SSH,Telnet,Https">Type</PROPERTIES>
 		<PROPERTIES type="int" obligatoire="0" fiche="1" form="1" description="Port redirection Local">PortRedirectLocal</PROPERTIES>
-		<PROPERTIES type="int" obligatoire="0" fiche="1" form="1" description="Port redirection Distant">PortRedirectDistant</PROPERTIES>
-		<PROPERTIES type="varchar" obligatoire="0" fiche="1" form="1" description="Ip redirection Distant">IpRedirectDistant</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="0"  description="Port redirection Distant">PortRedirectDistant</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" description="Ip redirection Distant">IpRedirectDistant</PROPERTIES>
 		<PROPERTIES type="varchar" fiche="1" form="1" description="Login" listDescr="Login">Login</PROPERTIES>
 		<PROPERTIES type="varchar" fiche="1" form="1" description="Mot de passe" listDescr="Mot de passe">Password</PROPERTIES>
         <PROPERTIES type="varchar" fiche="1" form="1" description="Clef Ssh">SshKey</PROPERTIES>

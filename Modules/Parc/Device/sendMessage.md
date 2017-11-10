@@ -1,0 +1,1 @@
+[STORPROC [!Query!]|O|0|1][!O::callRemoteInfo()!][/STORPROC]

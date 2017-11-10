@@ -1062,6 +1062,7 @@ class Sys extends Root{
 	 * Static call of callData
 	 */
 	 static function getData($Module, $Query, $Ofst='', $Limit='', $OrderType='', $OrderVar='', $Selection='', $GroupBy='' ){
+	 	if (!isset(Sys::$Modules[$Module])) return array();
 	 	$o= Sys::$Modules[$Module]->callData($Query, false, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy );
 		if (is_array($o)&&sizeof($o))foreach ($o as $k=>$t)
 			$o[$k] = genericClass::createInstance($Module,$t);

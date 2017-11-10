@@ -5,12 +5,21 @@ foreach (Sys::$User->Menus as $m){
     //test de l'existence d'une surcharge de controller
     if (isset($m->Menus)&&sizeof($m->Menus))foreach ($m->Menus as $menu) {
         $info = Info::getInfos($menu->Alias);
-        $tab = array($info['Module'], $info['ObjectType'],'Controllers');
+        if(!isset($info['ObjectType'])) {
+            $tab = explode('/',$info['Query']);
+            array_push($tab,'Controllers');
+        }else{
+            $tab = array($info['Module'], $info['ObjectType'],'Controllers');
+        }
         $blinfo = Bloc::lookForInterface($tab,'Skins/AngularAdmin/Modules',true);
         $tmp = array();
         if (!empty($blinfo)){
             //surcharge de controller
-            $tmp['overload'] = $info['Module'].'/'.$info['ObjectType'].'/Controllers?Chemin='.$info['Module'].'/'.$info['ObjectType'].'/Controllers&Url='.$m->Url . $menu->Url;
+            if(!isset($info['ObjectType'])) {
+                $tmp['overload'] = $info['Query'].'/Controllers?Chemin='.$info['Query'].'/Controllers&Url='.$m->Url.$menu->Url;
+            }else{
+                $tmp['overload'] = $info['Module'].'/'.$info['ObjectType'].'/Controllers?Chemin='.$info['Module'].'/'.$info['ObjectType'].'/Controllers&Url='.$m->Url.$menu->Url;
+            }
             $tmp['identifier'] = $info['Module'] . $info['ObjectType'];
             $vars["controllers"][$tmp['identifier']] = $tmp;
         }else if ($info['TypeSearch']=="Child") {
@@ -25,13 +34,13 @@ foreach (Sys::$User->Menus as $m){
             $tmp['description'] = $o->getDescription();
             $tmp['Interfaces'] = $obj->getInterfaces();
             $tmp['childrenelements'] = $obj->getChildElements();
-            for ($i=0; $i<sizeof($tmp['childrenelements']);$i++) {
+            for ($i = 0; $i < sizeof($tmp['childrenelements']); $i++) {
                 //if (!isset($tmp['childrenelements'][$i]['form'])) unset($tmp['childrenelements'][$i]);
                 //recherche des parents de l'element
                 $co = genericClass::createInstance($tmp['childrenelements'][$i]['objectModule'], $tmp['childrenelements'][$i]['objectName']);
                 $cobj = $co->getObjectClass();
                 $tmp['childrenelements'][$i]['parentelements'] = $cobj->getParentElements();
-                for ($j=0; $j<sizeof($tmp['childrenelements'][$i]['parentelements']);$j++) {
+                for ($j = 0; $j < sizeof($tmp['childrenelements'][$i]['parentelements']); $j++) {
                     if (!isset($tmp['childrenelements'][$i]['parentelements'][$j]['form'])) unset($tmp['childrenelements'][$i]['parentelements'][$j]);
                 }
             }
