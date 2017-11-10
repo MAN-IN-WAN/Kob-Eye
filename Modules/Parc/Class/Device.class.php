@@ -10,9 +10,6 @@ class Device extends genericClass{
     function save(){
         if ($this->Id) {
             $this->checkGuacamoleConnections();
-            $port_rdp = 12000 + $this->Id;
-            $port_vnc = 22000 + $this->Id;
-            $this->ConnectionType = 'R' . $port_rdp . '=localhost:3389,R' . $port_vnc . '=localhost:15900';
         }
         parent::save();
         //checking port redirect
@@ -106,7 +103,6 @@ class Device extends genericClass{
                 $dev->RestartTunnel = false;
                 $dev->Save();
             }
-            $ConnectionType .= $dev->ConnectionType;
         }
         //recherche d'un tache à accomplir
         $t = $dev->getChildren('DeviceTask/Enabled=1');
@@ -118,19 +114,17 @@ class Device extends genericClass{
         if (!$log) $log = Sys::getOneData('Parc','LogicielVersion/Release='.!$prod);
 
         $dirty = '';
-        if($dev->ModeTest){
-            $ConnectionType='';
+        $ConnectionType='';
 
-            $cos=$dev->getChildren('DevicePort');
-            $dirty = "Ports=";
-            //TODO : checker les doublons pour modif de mot de passe
-            foreach ($cos as $co){
-                $ip = $co->IpRedirectDistant!=''?$co->IpRedirectDistant:'localhost';
-                $dirty .= 'R'.$co->PortRedirectLocal.'='.$ip.':'.$co->PortRedirectDistant.',';
-            }
-            $dirty = rtrim($dirty,',');
-            $dev->Save();
+        $cos=$dev->getChildren('DevicePort');
+        $dirty = "Ports=";
+        //TODO : checker les doublons pour modif de mot de passe
+        foreach ($cos as $co){
+            $ip = $co->IpRedirectDistant!=''?$co->IpRedirectDistant:'localhost';
+            $dirty .= 'R'.$co->PortRedirectLocal.'='.$ip.':'.$co->PortRedirectDistant.',';
         }
+        $dirty = rtrim($dirty,',');
+        $dev->Save();
 
 
 
@@ -167,30 +161,22 @@ Task=$task
     }
 
     function getConfig($uuid) {
-
         if (empty($uuid)) return;
         $exists = Sys::getOneData('Parc','Device/Uuid='.$uuid);
         if ($exists){
-            $port_rdp = 12000+$exists->Id;
-            $port_vnc = 22000+$exists->Id;
             $exists->Nom = $_GET["name"];
             $exists->Description = $_GET["os"];
             if(isset($_GET["machine"]))
                 $exists->DeviceType = ($_GET["machine"]=='station')?'Poste':'Serveur';
             else $exists->DeviceType = 'Poste';
 
-            if($exists->ModeTest){
-                $cos=$exists->getChildren('DevicePort');
-                $exists->ConnectionType = "";
-                foreach ($cos as $co){
-                    $ip = $co->IpRedirectDistant!=''?$co->IpRedirectDistant:'localhost';
-                    $exists->ConnectionType .= 'R'.$co->PortRedirectLocal.'='.$ip.':'.$co->PortRedirectDistant.',';
-                }
-                $exists->ConnectionType = rtrim(',',$exists->ConnectionType);
-            }else{
-                $exists->ConnectionType = 'R'.$port_rdp.'=localhost:3389,R'.$port_vnc.'=localhost:15900';
+            $cos=$exists->getChildren('DevicePort');
+            $exists->ConnectionType = "";
+            foreach ($cos as $co){
+                $ip = $co->IpRedirectDistant!=''?$co->IpRedirectDistant:'localhost';
+                $exists->ConnectionType .= 'R'.$co->PortRedirectLocal.'='.$ip.':'.$co->PortRedirectDistant.',';
             }
-
+            $exists->ConnectionType = rtrim($exists->ConnectionType,',');
             $exists->Save();
             $obj = $exists;
         }else{
@@ -212,12 +198,13 @@ Task=$task
             $obj->Uuid = $uuid;
             //klog::l('$obj',$obj);
             $obj->Save();
-            $port_rdp = 12000+$obj->Id;
-            $port_vnc = 22000+$obj->Id;
-            if ($port_rdp==12000) die('ERROR Device port rdp');
-            $obj->ConnectionType = 'R'.$port_rdp.'=localhost:3389,R'.$port_vnc.'=localhost:15900';
-
-            //$obj->addParent('Parc/Client/2');
+            $cos=$obj->getChildren('DevicePort');
+            $obj->ConnectionType = "";
+            foreach ($cos as $co){
+                $ip = $co->IpRedirectDistant!=''?$co->IpRedirectDistant:'localhost';
+                $obj->ConnectionType .= 'R'.$co->PortRedirectLocal.'='.$ip.':'.$co->PortRedirectDistant.',';
+            }
+            $obj->ConnectionType = rtrim($obj->ConnectionType,',');
             $obj->Save();
         }
         //affectation du client
@@ -437,5 +424,64 @@ Task=$task
         $out = Zabbix::getInterface($this->CodeClient.' '.$this->Nom);
         //print_r($out);
         return $out;
+    }
+
+    public function callRemoteInfo($mess = "INFO Héhè dans ton zoooOOOOoooB 8=====B \e"){
+        $ip = '10.0.189.12';
+        $log = new Klog('Log/socket.log');
+        $port = Sys::getOneData('Parc','Device/'.$this->Id.'/DevicePort/PortRedirectDistant=15902');
+        $socket = socket_create(AF_INET,SOCK_STREAM,SOL_TCP);
+        $time = time();
+        $timeout = 2;
+        $log->log('Connexion mystere '.$ip.':'.$port->PortRedirectLocal);
+        while (!socket_connect($socket, $ip, $port->PortRedirectLocal)) {
+            $log->log('Socket retry '.time());
+            $err = socket_last_error($socket);
+            $errormsg = socket_strerror($err);
+            if ((time() - $time) >= $timeout) {
+                socket_close($socket);
+                throw new Exception('Erreur de connexion socket '.$errormsg);
+            }
+            $log->log('error '.$err);
+            sleep(1);
+        }
+        socket_set_option($socket,SOL_SOCKET,SO_RCVTIMEO,array('sec'=>$timeout,'usec'=>0));
+        $toto = socket_send($socket,$mess,strlen($mess),MSG_DONTROUTE);
+        if($toto === false || $toto === null)  {
+            $errorcode = socket_last_error();
+            $errormsg = socket_strerror($errorcode);
+            $log->log('Erreur send '.$errormsg);
+        }
+
+        /***************************
+         * RESULTAT
+         */
+        $log->log('Resultat');
+        //On lit le résultat
+        $res = '';
+        while(true){
+            $return = socket_recv($socket, $buf, 1024, 0);
+            $res .= $buf;
+            $log->log('attends pour le resultat');
+
+            if($return == false) break;
+            if(strpos($buf, PHP_EOL) !== FALSE) break;
+        }
+
+        if($buf === false || $return === false)  {
+            $errorcode = socket_last_error();
+            $errormsg = socket_strerror($errorcode);
+            $log->log('erreur mystere '.$errormsg);
+        }
+
+        //Fermeture du socket
+        socket_close($socket);
+
+
+        //traitement du retour
+        $infos = utf8_encode($res);
+        if (empty(trim($infos)))$infos= 'OK';
+        return nl2br($infos);
+
     }
 }

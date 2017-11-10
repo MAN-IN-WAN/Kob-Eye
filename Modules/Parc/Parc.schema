@@ -7,7 +7,8 @@
 		<PROPERTIES category="Accès client" type="boolean" obligatoire="0" searchOrder="4" description="Activation Accès web" list="1" fiche="1" form="1" listDescr="Accès Web">AccesActif</PROPERTIES>
 		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="5" description="Identifiant Accès web"  fiche="1" form="1">AccesUser</PROPERTIES>
 		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="6" description="Mot de passe Accès Web" fiche="1" form="1">AccesPass</PROPERTIES>
-		<PROPERTIES category="Finance" type="price" description="Montant Mensuel" fiche="1" form="1" list="1" listDescr="Montant / Mois">MontantMensuel</PROPERTIES>
+        <PROPERTIES category="Accès client" type="varchar" description="Espace Mail à distribuer" fiche="1" form="1">QuotaMail</PROPERTIES>
+        <PROPERTIES category="Finance" type="price" description="Montant Mensuel" fiche="1" form="1" list="1" listDescr="Montant / Mois">MontantMensuel</PROPERTIES>
 		<PROPERTIES category="Coordonnées" searchOrder="2" type="varchar" description="Adresse e-mail" fiche="1" form="1" list="1" listDescr="Email">Email</PROPERTIES>
 		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de téléphone" fiche="1" form="1" list="1" listDescr="Tel">Tel</PROPERTIES>
 		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de fax" fiche="1" form="1">Fax</PROPERTIES>
@@ -143,6 +144,7 @@
 		<FILTER name="Serveurs Proxy" color="success">Proxy=1</FILTER>
 		<FILTER name="Serveurs Web" color="primary">Web=1</FILTER>
 		<FILTER name="Serveurs SQL" color="secondary">Sql=1</FILTER>
+		<FILTER name="Serveurs Mail" color="secondary">Mail=1</FILTER>
 		<PROPERTIES type="varchar" searchOrder="1" list="1" fiche="1" listDescr="Nom" form="1">Nom</PROPERTIES>
 		<PROPERTIES type="int" searchOrder="1" list="1" fiche="1" listDescr="Status" values="0::Non intialisé,1::Connecté,2::Configuré" form="1">Status</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" list="1" fiche="1" listDescr="Nom DNS" form="1">DNSNom</PROPERTIES>
@@ -151,7 +153,7 @@
 		<PROPERTIES type="varchar" searchOrder="3" list="1" fiche="1" listDescr="IP interne" form="1">InternalIP</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="7" list="1" fiche="1" listDescr="Web" form="1">Web</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="5" list="1" fiche="1" listDescr="Dns" form="1">Dns</PROPERTIES>
-		<PROPERTIES type="boolean" searchOrder="6" fiche="1" form="1">Mail</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="6" list="1" fiche="1" listDescr="Mail" form="1">Mail</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="6" list="1" fiche="1" listDescr="Sql" form="1">Sql</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="8" fiche="1" form="1">Guacamole</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="9" fiche="1" form="1">Zabbix</PROPERTIES>
@@ -169,6 +171,10 @@
 			<PROPERTIES type="varchar" description="Admin mail: Nom d'utilisateur" default="admin" form="1">mailAdminUser</PROPERTIES>
 			<PROPERTIES type="varchar" description="Admin mail: Mot de passe" form="1">mailAdminPassword</PROPERTIES>
 			<PROPERTIES type="varchar" description="Admin mail: Port" default="7071" form="1">mailAdminPort</PROPERTIES>
+		</CATEGORY>
+		<CATEGORY title="Guacamole">
+			<PROPERTIES type="varchar" description="Admin Guacamole: User BDD" form="1">guacAdminUser</PROPERTIES>
+			<PROPERTIES type="varchar" description="Admin Guacamole: Pass BDD" form="1">guacAdminPassword</PROPERTIES>
 		</CATEGORY>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
@@ -196,7 +202,7 @@
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
 		<PROPERTIES category="LDAP" type="int" auto="1">LdapGid</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapUid</PROPERTIES>
-		<FKEY card="1,n" data="Server,Id" form="1" list="1" fiche="1" parentDescription="Serveur" description="Serveur Web" filter="Web=1">ServerId</FKEY>
+		<FKEY card="1,n" data="Server,Id" link="1" form="1" list="1" fiche="1" parentDescription="Serveur" description="Serveur Web" filter="Web=1">ServerId</FKEY>
 		<FKEY card="1,1" data="Client,Id" link="1" form="1" list="1" fiche="1" parentDescription="Client" description="Client">ClientId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Apache" driver="mysql" Dico="1" Description="Hôte virtuel" Icon="/Skins/AdminV2/Img/IconAqua/Tasks.png" Class="Modules/Parc/Class/Apache.class.php">
@@ -258,7 +264,7 @@
         <FUNCTION title="Executer maintenant">Executer</FUNCTION>
     </OBJECTCLASS>
 	<OBJECTCLASS title="Device" driver="mysql" AccessPoint="1" Description="Périphérique(s) réseau(x)" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Device.class.php">
-		<FUNCTION title="Récupère les ips internes">getIps</FUNCTION>
+		<FUNCTION title="Envoyer un message">sendMessage</FUNCTION>
 		<FILTER name="Tous les périphériques" color="warning" ></FILTER>
 		<FILTER name="Périphériques en ligne"  color="success">Online=1</FILTER>
 		<FILTER name="Périphérique de type serveur"  color="primary">DeviceType=Serveur</FILTER>
@@ -299,8 +305,8 @@
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom du périphérique">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" obligatoire="1"  list="1" fiche="1" form="1" description="Type de connexion" listDescr="Type" values="RDP,VNC,SSH,Telnet,Https">Type</PROPERTIES>
 		<PROPERTIES type="int" obligatoire="0" fiche="1" form="1" description="Port redirection Local">PortRedirectLocal</PROPERTIES>
-		<PROPERTIES type="int" obligatoire="0" fiche="1" form="1" description="Port redirection Distant">PortRedirectDistant</PROPERTIES>
-		<PROPERTIES type="varchar" obligatoire="0" fiche="1" form="1" description="Ip redirection Distant">IpRedirectDistant</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="0"  description="Port redirection Distant">PortRedirectDistant</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" description="Ip redirection Distant">IpRedirectDistant</PROPERTIES>
 		<PROPERTIES type="varchar" fiche="1" form="1" description="Login" listDescr="Login">Login</PROPERTIES>
 		<PROPERTIES type="varchar" fiche="1" form="1" description="Mot de passe" listDescr="Mot de passe">Password</PROPERTIES>
         <PROPERTIES type="varchar" fiche="1" form="1" description="Clef Ssh">SshKey</PROPERTIES>
@@ -337,17 +343,17 @@
 		<FILTER name="Compte en PRO" color="success">COS=MAIL_PRO</FILTER>
 		<FILTER name="Compte en BUS" color="primary">COS=MAIL_BUS</FILTER>
 		<FILTER name="Compte en POP" color="secondary">COS=MAIL_POP</FILTER>
-		<PROPERTIES type="varchar" unique="1" description="Id sur le serveur mail" >IdMail</PROPERTIES>
+		<PROPERTIES type="varchar" unique="1" fiche="1" description="Id sur le serveur mail" >IdMail</PROPERTIES>
         <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Adresse eMail" list="1" form="1" fiche="1" listDescr="Adresse">Adresse</PROPERTIES>
-		<PROPERTIES type="varchar" description="Mot de passe" list="0" form="1" fiche="1">Pass</PROPERTIES>
+		<PROPERTIES type="varchar" description="Mot de passe"  form="1" fiche="1">Pass</PROPERTIES>
         <PROPERTIES type="varchar" searchOrder="2" obligatoire="1" values="NULL,MAIL_BUS,MAIL_POP,MAIL_PRO" default="MAIL_POP" description="COS" list="1" form="1" fiche="1" listDescr="COS">COS</PROPERTIES>
-		<PROPERTIES type="int" description="Quota en Mo" list="1" form="1" fiche="1" listDescr="Quota">Quota</PROPERTIES>
-		<PROPERTIES type="int" description="Espace utilisé en Mo" list="1" form="1" fiche="1" listDescr="Utilisé">EspaceUtilise</PROPERTIES>
+		<PROPERTIES type="int" subtype="sliderGo" description="Quota en Go" list="1" form="1" fiche="1" listDescr="Quota">Quota</PROPERTIES>
+		<PROPERTIES type="int" description="Espace utilisé en Mo" list="1" fiche="1" listDescr="Utilisé">EspaceUtilise</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="3" description="Status de l'adresse" list="1" form="1" fiche="1" listDescr="Etat">Status</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="4" description="Nom du contact" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" description="Prenom du contact" list="1" form="1" fiche="1" listDescr="Prénom">Prenom</PROPERTIES>
-		<FKEY card="1,1" data="Client,Id">ClientId</FKEY>
-		<FKEY card="1,1" data="Server,Id">ServerId</FKEY>
+		<FKEY card="1,1" data="Client,Id" fiche="1" form="1" >ClientId</FKEY>
+		<FKEY card="1,1" data="Server,Id" fiche="1" form="1" filter="Mail=1">ServerId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Ticket" driver="mysql" AccessPoint="1" Description="Tickets Clients" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" >
 		<FILTER name="En cours" color="secondary">Etat=En cours</FILTER>

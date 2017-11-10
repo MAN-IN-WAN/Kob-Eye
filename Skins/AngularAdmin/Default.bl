@@ -157,7 +157,6 @@
     [IF [!Systeme::User::isRole(PARC_TECH)!]]
         <script src="Systeme/Header/InfraAdmin.json"></script>
     [/IF]
-    <script src="Systeme/Header/InfraAdmin.json"></script>
 
     <!-- KobEye -->
     <script src="Skins/AngularAdmin/assets/common/js/KEPoll.js"></script>
