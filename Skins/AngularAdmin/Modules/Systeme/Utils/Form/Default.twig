@@ -5,7 +5,7 @@
             <label class="form-control-label" for="l0">{{ field.description }}</label>
             <small>{{ field.help }}</small>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 ttttttt">
             <div class="form-group" ng-class="{'has-danger': modalObj.fieldErrors.length && modalObj.fieldErrors.indexOf('{{ field.name }}') !== -1}">
             {% if field.type == "date" %}
                     <label class="input-group datepicker-only-init">
@@ -43,6 +43,13 @@
                             <option value="{{ v }}">{{ k }}</option>
                         {% endfor %}
                     </select>
+                {% elseif field.subtype == "sliderGo" %}
+                    <script type="text/javascript">
+                        var prett = function(num){
+                            return num/1024;
+                        };
+                    </script>
+                    <input type="text" ion-range-slider stype="single" prettify="prett" min="0" max="204800" from="modalObj.{{ field.name }}" from_min="1024" step="1024" grid="true" grid_num="10" postfix=" Go" class="form-control" placeholder="" id="input-{{ field.name }}" ng-model="modalObj.{{ field.name }}" >
                 {% else %}
                     <input type="text" class="form-control" placeholder="" id="input-{{ field.name }}" ng-model="modalObj.{{ field.name }}">
                 {% endif %}

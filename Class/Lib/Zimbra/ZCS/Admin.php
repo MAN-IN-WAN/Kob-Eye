@@ -264,9 +264,18 @@ class Admin
     public function setPassword($id, $password){
         $params = array(
             'id' => $id,
-            'newPassword' => $password,
+            'newPassword' => $password
         );
         $this->zimbraConnect->request('SetPasswordRequest', array(), $params);
+    }
+
+    //Affecte le mot de passe d'un compte (depuis son id)
+    public function renameAccount($id, $newName){
+        $params = array(
+            'id' => $id,
+            'newName' => $newName
+        );
+        $this->zimbraConnect->request('RenameAccountRequest', array(), $params);
     }
     
     //Recupère la ou les préférences du compte
@@ -483,15 +492,22 @@ class Admin
     /**** ALIAS ****/
     
     //Retourne la liste des alias de compte d'un domaine
-    public function getAliases($domain){
+    public function getAliases($domain,$direct = true){
         $results = array();
 
         $response = $this->searchDirectory($domain, 0, 0, 'aliases');
         $aliases = $response->children()->SearchDirectoryResponse->children();
 
-        foreach ($aliases as $alias) {
-            $results[(string) $alias['targetName']][] = strstr($alias['name'], '@', true);
+        if($direct){
+            foreach ($aliases as $alias) {
+                $results[] = strstr($alias['name'], '@', true);
+            }
+        } else{
+            foreach ($aliases as $alias) {
+                $results[(string) $alias['targetName']][] = strstr($alias['name'], '@', true);
+            }
         }
+
 
         return $results;
     }

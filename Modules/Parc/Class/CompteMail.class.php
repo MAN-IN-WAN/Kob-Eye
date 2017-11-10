@@ -11,7 +11,6 @@ class CompteMail extends genericClass {
 	 * @return	void
 	 */
 	public function Save( $synchro = true ) {
-		parent::Save();
 		// Forcer la vérification
 		//if(!$this->_isVerified) $this->Verify( $synchro );
 		// Enregistrement si pas d'erreur
@@ -20,8 +19,22 @@ class CompteMail extends genericClass {
 		//}
 
 		if((!isset($this->IdMail) || $this->IdMail=='') && $this->getKEServer()){
-		    $this->createMail();
+		    if(!$this->createMail()){
+		        $this->Delete();
+                return false;
+            }
+        } elseif ($this->getKEServer()){
+            if(!$this->updateMail()) {
+                return false;
+            }
+
+        } else{
+            $this->Delete();
+            return false;
         }
+
+        parent::Save();
+        return true;
 	}
 
 //	/**
@@ -231,6 +244,92 @@ class CompteMail extends genericClass {
             return false;
         }
 
+        $zimbra = new \Zimbra\ZCS\Admin($srv->IP, $srv->mailAdminPort);
+        $zimbra->auth($srv->mailAdminUser, $srv->mailAdminPassword);
+
+
+        $dom = explode('@',$this->Adresse);
+        $dom = $dom[1];
+
+
+        try{
+            $domaine = $zimbra->getDomain($dom);
+        } catch (Exception $e){
+            //if($e->getMessage() == 'no such domain'){
+            $this->AddError(array('Message' => 'Erreur lors de la liason avec le serveur de mail, le domaine renseigné n\'existe pas', 'Object' => $e));
+            return false;
+            //TODO : Creation du domaine ?
+            //}
+        }
+
+        //Check que le compte existe déjà
+        try{
+            $temp = $zimbra->getAccount('abtel.fr', 'id', $this->IdMail);
+        } catch (Exception $e) {
+            $this->AddError(array('Message' => 'Erreur lors de la liason avec le serveur de mail, ce compte mail n\'existe pas', 'Object' => $e));
+            return false;
+        }
+
+        //Check que l'adresse ne soit pas déjà prise par un autre compte/Alias/Liste de diffusion
+        try{
+            $temp = $zimbra->getAccount($dom, 'name', $this->Adresse);
+            if($temp->id != $this->IdMail){
+                $this->AddError(array('Message' => 'Erreur lors de la liason avec le serveur de mail, cette adresse mail est liée à un autre compte', 'Object' => $temp));
+                return false;
+            }
+        } catch (Exception $e) {
+            //print_r($e);
+        }
+        try{
+            $temp = $zimbra->getDistributionList( $this->Adresse,'name');
+
+            $this->AddError(array('Message' => 'Erreur lors de la liason avec le serveur de mail, cette adresse mail correspond à une liste de diffusion', 'Object' => $temp));
+            return false;
+        } catch (Exception $e) {
+            //print_r($e);
+        }
+
+
+        try{
+
+            $cosesTemp = $zimbra->getAllCos();
+            $coses = array();
+            foreach ($cosesTemp as $cosTemp){
+                $coses[$cosTemp->get('name')]=$cosTemp;
+            }
+            $cos = $coses[$this->COS];
+
+            $values = array();
+
+            $resName = $zimbra->renameAccount($this->IdMail, $this->Adresse);
+
+            if( isset($this->Pass) &&  $this->Pass != ''){
+                //    $values['password'] = $this->Pass;
+                $resPass = $zimbra->setPassword($this->IdMail, $this->Pass);
+            }
+            if( isset($this->Status) &&  $this->Status != ''){
+                $values['zimbraAccountStatus'] = $this->Status;
+            }
+
+            $values['zimbraCOSId'] = $cos->get('id');
+            $values['sn'] = $this->Nom;
+            $values['givenName'] = $this->Prenom;
+            $values['displayName'] = ucfirst($this->Prenom) .' '. ucfirst($this->Nom);
+            $values['zimbraMailHost'] = $srv->DNSNom;
+            $values['id'] = $this->IdMail;
+            $values['zimbraMailQuota'] = $this->Quota*1024*1024;
+
+            $res = $zimbra->modifyAccount($values);
+
+
+        } catch (Exception $e){
+            $this->AddError(array('Message'=>'Erreur lors de la liason avec le serveur de mail','Object'=>$e));
+
+            return false;
+        }
+
+        return true;
+
     }
 
     /**
@@ -252,16 +351,35 @@ class CompteMail extends genericClass {
         $zimbra->auth($srv->mailAdminUser, $srv->mailAdminPassword);
 
 
-
         $dom = explode('@',$this->Adresse);
         $dom = $dom[1];
+
 
         try{
             $domaine = $zimbra->getDomain($dom);
         } catch (Exception $e){
-            if($e->getMessage() == ''){
-                //TODO : Creation du domaine
-            }
+            //if($e->getMessage() == 'no such domain'){
+                $this->AddError(array('Message' => 'Erreur lors de la liaison avec le serveur de mail, le domaine renseigné n\'existe pas', 'Object' => $e));
+                return false;
+                //TODO : Creation du domaine ?
+            //}
+        }
+
+        //Check que l'adresse ne soit pas déjà prise par un autre compte/Alias/Liste de diffusion
+        try{
+            $temp = $zimbra->getAccount($dom, 'name', $this->Adresse);
+            $this->AddError(array('Message' => 'Erreur lors de la liason avec le serveur de mail, l\'adresse mail existe déjà', 'Object' => $temp));
+            return false;
+        } catch (Exception $e) {
+            //On souhaite l'excpetion no_such_account pour confirmer que l'adresse n'exsite pas.
+        }
+        try{
+            $temp = $zimbra->getDistributionList( $this->Adresse,'name');
+
+            $this->AddError(array('Message' => 'Erreur lors de la liaison avec le serveur de mail, cette adresse mail correspond à une liste de diffusion', 'Object' => $temp));
+            return false;
+        } catch (Exception $e) {
+            //print_r($e);
         }
 
 
@@ -283,18 +401,18 @@ class CompteMail extends genericClass {
             $values['givenName'] = $this->Prenom;
             $values['displayName'] = ucfirst($this->Prenom) .' '. ucfirst($this->Nom);
             $values['zimbraMailHost'] = $srv->DNSNom;
+            $values['zimbraMailQuota'] = $this->Quota*1024*1024;
 
             $res = $zimbra->createAccount($values);
 
             $this->IdMail = $res->get('id');
 
-            $this->save();
-
         } catch (Exception $e){
-           print_r ($e);
+            $this->AddError(array('Message'=>'Erreur lors de la liason avec le serveur de mail','Object'=>$e));
+           return false;
         }
 
 
-	    return false;
+	    return true;
     }
 }

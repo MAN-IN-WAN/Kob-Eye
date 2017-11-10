@@ -266,7 +266,7 @@ class Parc_Client extends genericClass {
 	    //test des serveurs guacamole
         $servs = Sys::getData('Parc','Server/Guacamole=1');
         foreach ($servs as $serv) {
-            $dbGuac = new PDO('mysql:host='.$serv->IP.';dbname=guacamole', $serv->SshUser, $serv->SshPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+            $dbGuac = new PDO('mysql:host='.$serv->IP.';dbname=guacamole', $serv->guacAdminUser, $serv->guacAdminPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
             $dbGuac->query("SET AUTOCOMMIT=1");
             $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
