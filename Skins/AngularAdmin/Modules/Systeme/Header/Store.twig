@@ -8,7 +8,7 @@
             filters = { 'default': '' , select: '', children: '', form: ''},
             timer = 0,
             query = { 'default': '/{{ st.module }}/{{ st.objecttype }}', select: '/{{ st.module }}/{{ st.objecttype }}', children: '/{{ st.module }}/{{ st.objecttype }}', form: '/{{ st.module }}/{{ st.objecttype }}'},
-            busy = false;
+            busy = { 'default': 0 , select: 0, children: 0, form: 0};
         return {
             getOneData: getOneData,
             getData: getData,
@@ -119,9 +119,9 @@
         * exportData
         * export des données en fichier csv
         */
-        function exportData(){
-            window.open(query+'/Export.csv','_blank');
-            console.log('store > {{ key }} > export '+query);
+        function exportData(context = 'default'){
+            window.open(query[context]+'/Export.csv','_blank');
+            console.log('store > {{ key }} > export '+query[context]);
         }
         /**
         * SaveData
@@ -228,13 +228,13 @@
             //create new context
             if (page<1||page==undefined) page=1;
             return $q(function(resolve, reject) {
-                if (busy) {
-                    reject('already busy');
+                if (busy[context]) {
+                    reject('already busy '+context);
                     return;
                 }
                 console.log(context+' >> store > {{ key }} > getData >> page '+page+' >> query '+getQuery(context));
                 if (page!=pageLoaded[context]){
-                    busy=true;
+                    busy[context]=true;
                     $http.get(
                         tmpquery+'/getData.json',
                         {
@@ -244,7 +244,7 @@
                                 limit: pageLength
                             }
                         }).success(function(data) {
-                            busy=false;
+                            busy[context]=false;
                             purgeStore(context);
                             pageLoaded[context] = page;
                             total[context] = data.total;
@@ -256,7 +256,7 @@
                             resolve({{ st.identifier }}Store[context]);
                     });
                 }else{
-                    busy = false;
+                    busy[context] = false;
                     resolve({{ st.identifier }}Store[context]);
                 }
             });

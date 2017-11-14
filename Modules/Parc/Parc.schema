@@ -227,7 +227,7 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Ftpuser" driver="mysql" Dico="1" Description="Accès FTP" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Ftpuser.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Identifiant" list="1" fiche="1" form="1">Identifiant</PROPERTIES>
-		<PROPERTIES type="random" obligatoire="1" list="1" fiche="1" form="1" description="Mot de passe">Password</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="1" list="1" fiche="1" form="1" description="Mot de passe">Password</PROPERTIES>
 		<PROPERTIES type="function" list="1" fiche="1" form="1" function="getRootPath" description="Racine du FTP (laisser vide pour la racine du dossier utilisateur)">DocumentRoot</PROPERTIES>
 		<PROPERTIES type="int" obligatoire="0" list="1" fiche="1" form="1" description="Quota utilisateur en MB" default="5000">QuotaMb</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>

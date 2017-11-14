@@ -1,16 +1,16 @@
 <div class="form-group row">
-    <div class="col-md-12">
+    <div class="col-md-6">
         <div class="input-group">
-            <input type="text" class="form-control" name="{{ identifier }}Store.query" ng-model="{{ identifier }}Store.filter['select']" placeholder="Recherche..." >
+            <input type="text" class="form-control" name="{{ identifier }}Select.query" ng-model="{{ identifier }}Select.filter" placeholder="Recherche..." >
             <span class="input-group-btn">
-                <a href="javascript: void(0);" class="btn btn-success" ng-click="{{ identifier }}Store.refresh('select')">
+                <a href="javascript: void(0);" class="btn btn-success" ng-click="{{ identifier }}Select.store.refresh('select')">
                     Rafraîchir
                 </a>
             </span>
         </div>
     </div>
     <div class="col-md-6">
-        <dir-pagination-controls boundary-links="true" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+        <dir-pagination-controls boundary-links="true" pagination-context="select" pagination-id="{{ identifier }}select-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
     </div>
 </div>
 <table class="table table-hover nowrap margin-bottom-0" id="{{ identifier }}" width="100%">
@@ -22,7 +22,7 @@
         </tr>
     </thead>
     <tbody>
-    <tr dir-paginate="item in {{ identifier }}Store.data['select']" current-page="{{ identifier }}Store.currentPage['select']" items-per-page="{{ identifier }}Store.itemsPerPage['select']" pagination-id="{{ identifier }}-pagination">
+    <tr dir-paginate="item in {{ identifier }}Select.data" current-page="{{ identifier }}Select.currentPage" items-per-page="{{ identifier }}Select.itemsPerPage" pagination-id="{{ identifier }}select-pagination">
         <td><span class="label label-warning">{[{ item.id }]}</span></td>
         <td scope="row">
             <span ng-bind-html="item.label"></span>
@@ -33,4 +33,3 @@
     </tr>
     </tbody>
 </table>
-<dir-pagination-controls boundary-links="true" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
