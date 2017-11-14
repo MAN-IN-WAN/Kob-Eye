@@ -320,6 +320,7 @@
             disable: false,
 
             onStart: null,
+            onDrag: null,
             onChange: null,
             onFinish: null,
             onUpdate: null
@@ -762,6 +763,9 @@
             if (e.button === 2) {
                 return;
             }
+
+            this.callOnDrag();
+            //console.log('dragggggg');
 
             if (target === "both") {
                 this.setTempMinInterval();
@@ -1575,6 +1579,11 @@
         callOnStart: function () {
             if (this.options.onStart && typeof this.options.onStart === "function") {
                 this.options.onStart(this.result);
+            }
+        },
+        callOnDrag: function () {
+            if (this.options.onDrag && typeof this.options.onDrag === "function") {
+                this.options.onDrag(this.result);
             }
         },
         callOnChange: function () {

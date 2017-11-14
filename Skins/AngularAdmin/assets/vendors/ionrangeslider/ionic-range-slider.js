@@ -45,6 +45,7 @@ angular.module("ion.rangeslider").directive("ionRangeSlider",
                 decorateBoth: "@",
                 valuesSeparator: "@",
                 inputValuesSeparator: "@",
+                dragging: "@",
 
                 prettify: "&",
                 onChange: "&",
@@ -97,11 +98,12 @@ angular.module("ion.rangeslider").directive("ionRangeSlider",
 
                         return $scope.prettify( value );
                     },
-                    onChange: function(a) {
-
+                    onDrag: function(a) {
+                        $scope.dragging = true;
+                        console.log('pouet');
                     },
                     onFinish: function(a) {
-
+                        $scope.dragging = false;
                         $scope.from = a.from;
                         $scope.to = a.to;
 
@@ -114,9 +116,11 @@ angular.module("ion.rangeslider").directive("ionRangeSlider",
 
                             return $scope.onFinish();
                         });
-                    },
+                    }
                 });
+
                 var watchers = [];
+                $scope.modWatch = [];
                 watchers.push($scope.$watch("min", function(value) {
                     $element.data("ionRangeSlider").update({
                         min: value
@@ -128,6 +132,9 @@ angular.module("ion.rangeslider").directive("ionRangeSlider",
                     });
                 }));
                 watchers.push($scope.$watch('from', function(value) {
+                    if($scope.dragging === true)
+                        return false;
+
                     var slider = $element.data("ionRangeSlider");
                     if (slider.old_from !== value) {
                         slider.update({
@@ -136,7 +143,9 @@ angular.module("ion.rangeslider").directive("ionRangeSlider",
                     }
                 }));
                 watchers.push($scope.$watch('to', function(value) {
-                    if($scope.moving) return true;
+                    if($scope.dragging === true)
+                        return false;
+
                     var slider = $element.data("ionRangeSlider");
                     if (slider.old_to !== value) {
                         slider.update({

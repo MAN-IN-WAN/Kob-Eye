@@ -6,5 +6,12 @@ app.controller('{{ Url }}Ctrl', function($location, $scope, $rootScope, SystemeU
     $scope.store.currentPage['Profile'] = 1;
     $scope.store.setFilters('Id={{ User.Id }}', 'Profile');
 
+    $scope.modalObj;
+
+console.log('bleeeeeeee',data);
+    var init = $scope.store.getOneData(); //TODO
+    init.then(function(data){
+        console.log('yeaaaaaah',data);
+    });
 
 });

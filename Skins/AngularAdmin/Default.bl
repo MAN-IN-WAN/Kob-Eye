@@ -67,7 +67,8 @@
     <script src="Skins/AngularAdmin/assets/vendors/remarkable-bootstrap-notify/dist/bootstrap-notify.min.js"></script>
     <script src="Skins/AngularAdmin/assets/vendors/summernote/dist/summernote.min.js"></script>
     <script src="Skins/AngularAdmin/assets/vendors/owl.carousel/dist/owl.carousel.min.js"></script>
-    <script src="Skins/AngularAdmin/assets/vendors/ionrangeslider/js/ion.rangeSlider.min.js"></script>
+    <!--<script src="Skins/AngularAdmin/assets/vendors/ionrangeslider/js/ion.rangeSlider.min.js"></script>-->
+    <script src="Skins/AngularAdmin/assets/vendors/ionrangeslider/js/ion.rangeSlider.js"></script>
     <script src="Skins/AngularAdmin/assets/vendors/nestable/jquery.nestable.js"></script>
     <script src="Skins/AngularAdmin/assets/vendors/datatables/media/js/jquery.dataTables.min.js"></script>
     <script src="Skins/AngularAdmin/assets/vendors/datatables/media/js/dataTables.bootstrap4.min.js"></script>

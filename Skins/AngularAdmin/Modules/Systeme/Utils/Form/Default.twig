@@ -5,7 +5,7 @@
             <label class="form-control-label" for="l0">{{ field.description }}</label>
             <small>{{ field.help }}</small>
         </div>
-        <div class="col-md-6 ttttttt">
+        <div class="col-md-6">
             <div class="form-group" ng-class="{'has-danger': modalObj.fieldErrors.length && modalObj.fieldErrors.indexOf('{{ field.name }}') !== -1}">
             {% if field.type == "date" %}
                     <label class="input-group datepicker-only-init">
