@@ -426,7 +426,7 @@ Task=$task
         return $out;
     }
 
-    public function callRemoteInfo($mess = "INFO Héhè dans ton zoooOOOOoooB 8=====B \e"){
+    public function callRemoteInfo($mess = "ALERTUn technicien ABTEL vient de se connecter\x06"){
         $ip = '10.0.189.12';
         $log = new Klog('Log/socket.log');
         $port = Sys::getOneData('Parc','Device/'.$this->Id.'/DevicePort/PortRedirectDistant=15902');
@@ -465,7 +465,10 @@ Task=$task
             $log->log('attends pour le resultat');
 
             if($return == false) break;
-            if(strpos($buf, PHP_EOL) !== FALSE) break;
+            if(strpos($buf, "\x06") !== FALSE){
+                $res = str_replace("\x06",'',$res);
+                break;
+            }
         }
 
         if($buf === false || $return === false)  {
@@ -480,7 +483,8 @@ Task=$task
 
         //traitement du retour
         $infos = utf8_encode($res);
-        if (empty(trim($infos)))$infos= 'OK';
+        $infos = $res;
+        //if (empty(trim($infos)))$infos= 'OK';
         return nl2br($infos);
 
     }

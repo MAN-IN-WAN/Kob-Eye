@@ -9,7 +9,7 @@
     app.controller('{{ c.name }}Ctrl', function($injector,$location, $scope, $rootScope,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store{% endfor %}) {
         //test du store
         $scope.{{ c.identifier }} = {
-            data: {{ c.identifier }}Store.data,
+            data: {{ c.identifier }}Store.data.default,
             store: {{ c.identifier }}Store,
             filter: {{ c.identifier }}Store.filter.default,
             currentPage: {{ c.identifier }}Store.currentPage.default,
@@ -18,9 +18,6 @@
                 selectall: false
             }
         }
-        //on reinitialise la requete du store
-        //$scope.{{ c.identifier }}.resetQuery('default');
-        //$scope.{{ c.identifier }}currentPage = 1;
 
         //acces aux stores parents
         {% for parent in c.parentelements %}
@@ -31,9 +28,18 @@
 
         //acces aux stores enfants
         {% for child in c.childrenelements %}
-            $scope.{{ child.objectModule }}{{ child.objectName }}Store = {{ child.objectModule }}{{ child.objectName }}Store;
-            //$scope.{{ child.objectModule }}{{ child.objectName }}Store.resetQuery('form');
-            //$scope.{{ child.objectModule }}{{ child.objectName }}Store.getData(1,'form');
+            $scope.{{ child.objectModule }}{{ child.objectName }}Select = {
+                data: {{ child.objectModule }}{{ child.objectName }}Store.data.select,
+                store: {{ child.objectModule }}{{ child.objectName }}Store,
+                filter: {{ child.objectModule }}{{ child.objectName }}Store.filter.select,
+                currentPage: {{ child.objectModule }}{{ child.objectName }}Store.currentPage.select,
+                itemsPerPage: {{ child.objectModule }}{{ child.objectName }}Store.itemsPerPage,
+                selected: {
+                    selectall: false
+                }
+            }
+            {{ child.objectModule }}{{ child.objectName }}Store.resetQuery('select');
+            {{ child.objectModule }}{{ child.objectName }}Store.getData(1,'select');
         {% endfor %}
 
         //mass delete
@@ -122,6 +128,9 @@
                 console.log('edit obj',$scope.modalObj);
             });
             $("#modal-{{ c.identifier }}").modal();
+        }
+        $scope.{{ c.identifier }}export = function (obj){
+            {{ c.identifier }}Store.export('default');
         }
         $scope.{{ c.identifier }}modalSave = function (){
             console.log('save ',$scope.modalObj);
@@ -245,22 +254,44 @@
                 });
             }
             {% for child in c.childrenelements %}
-                $scope.{{ child.objectModule }}{{ child.objectName }} = {
-                    data : {{ child.objectModule }}{{ child.objectName }}Store.data,
+                //FORMULAIRE SELECT
+                $scope.{{ child.objectModule }}{{ child.objectName }}Select = {
+                    data : {{ child.objectModule }}{{ child.objectName }}Store.data.select,
                     store: {{ child.objectModule }}{{ child.objectName }}Store,
                     filter: '',
-                    currentPage: {{ c.identifier }}Store.currentPage.default,
+                    currentPage: {{ c.identifier }}Store.currentPage.select,
                     itemsPerPage: {{ c.identifier }}Store.itemsPerPage,
                     selected: {
                         selectall: false
                     }
                 }
+                console.log('>>>>>>>>>>>>>>> refresh {{ child.objectModule }}{{ child.objectName }}Select');
+                {{ child.objectModule }}{{ child.objectName }}Store.refresh('select');
+                $scope.$watch('{{ child.objectModule }}{{ child.objectName }}Select.filter', function() {
+                    //on lance la recherche depuis le store
+                    {{ child.objectModule }}{{ child.objectName }}Store.setFilters($scope.{{ child.objectModule }}{{ child.objectName }}Select.filter,'select');
+                });
+                $scope.$watch('{{ child.objectModule }}{{ child.objectName }}Select.currentPage', function() {
+                    {{ child.objectModule }}{{ child.objectName }}Store.setPage($scope.{{ child.objectModule }}{{ child.objectName }}Select.currentPage,'select');
+                });
 
+                //FORMULAIRE CHILDREN
+                $scope.{{ child.objectModule }}{{ child.objectName }} = {
+                    data : {{ child.objectModule }}{{ child.objectName }}Store.data.children,
+                    store: {{ child.objectModule }}{{ child.objectName }}Store,
+                    filter: '',
+                    currentPage: {{ c.identifier }}Store.currentPage.children,
+                    itemsPerPage: {{ c.identifier }}Store.itemsPerPage,
+                    selected: {
+                        selectall: false
+                    }
+                }
+                $scope.{{ child.objectModule }}{{ child.objectName }}.store.refresh('children');
 
                 //sélection
                 $scope.$watch('{{ child.objectModule }}{{ child.objectName }}.selected.selectall', function() {
                     if ($scope.{{ child.objectModule }}{{ child.objectName }}.selected.selectall){
-                        var data = {{ child.objectModule }}{{ child.objectName }}Store.data['children'];
+                        var data = {{ child.objectModule }}{{ child.objectName }}Store.data.children;
                         console.log('tous le store',data);
                         for (var i in data) {
                             $scope.{{ child.objectModule }}{{ child.objectName }}.selected[data[i].id] = true;
@@ -342,6 +373,10 @@
                         console.log('edit obj',$scope.modalObj);
                     });
                     $("#modal-{{ child.objectModule }}{{ child.objectName }}").modal();
+                }
+                $scope.{{ child.objectModule }}{{ child.objectName }}export = function (obj){
+                    console.log('export {{ child.objectModule }}{{ child.objectName }}');
+                    {{ child.objectModule }}{{ child.objectName }}Store.export('children');
                 }
                 $scope.{{ child.objectModule }}{{ child.objectName }}modalSave = function (){
                     console.log('children > save {{ child.objectModule }}{{ child.objectName }}',$scope.modalObj);
