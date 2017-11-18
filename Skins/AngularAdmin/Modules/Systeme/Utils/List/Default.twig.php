@@ -7,6 +7,12 @@ $vars['ObjectClass'] = $o->getObjectClass();
 $vars['functions'] = $o->getFunctions();
 $vars['operation'] = $vars['ObjectClass']->getOperations();
 $vars['fields'] = $o->getElementsByAttribute('list','',true);
+foreach ($vars['fields'] as $k=>$f){
+    if ($f['type']=='fkey'&&$f['card']=='short'){
+        $vars['fields'][$k]['link'] = Sys::getMenu($f['objectModule'].'/'.$f['objectName']);
+    }
+}
+
 $vars['filters'] = $o->getCustomFilters();
 if (is_object(Sys::$CurrentMenu)) {
     if ($vars['Type']=='Children') {

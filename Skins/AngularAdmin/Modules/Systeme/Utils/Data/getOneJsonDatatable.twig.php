@@ -42,5 +42,14 @@ foreach ($vars['fields'] as $f){
         foreach ($kk as $k)$vars['row']->{$f['name']}[] = $k->Id;
 
     }
+    if (isset($f['Values'])&&isset($f['Values'][$vars['row']->{$f['name']}])){
+        $vars['row']->{$f['name'].'Label'} = $f['Values'][$vars['row']->{$f['name']}];
+    }else if (isset($f['query'])&&$vars['row']->{$f['name']}>0){
+        //recherche de sa valeur
+        $str = explode('::',$f['query']);
+        $qry = explode('/',$str[0],2);
+        $val = Sys::getOneData($qry[0],$qry[1].'/'.$vars['row']->{$f['name']});
+        $vars['row']->{$f['name'].'Label'} = $val->getFirstSearchOrder();
+    }else $vars['row']->{$f['name'].'Label'} = '';
 }
 ?>

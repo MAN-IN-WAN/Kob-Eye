@@ -13,14 +13,17 @@
                 {% if field.type == "boolean" %}
             ,"{{ field.name }}": {{ attribute(row,field.name) ? 1:0 }}
                 {% elseif field.type == "fkey" and field.card=='short' %}
-                    ,"{{ field.name }}": {{ attribute(row,field.name) }}
-                    ,"{{ field.name }}label": "{{ attribute(row,field.name~'label') }}"
+                    ,"{{ field.objectName }}{{ field.name }}": {{ attribute(row,field.name) }}
+                    ,"{{ field.objectName }}{{ field.name }}label": "{{ attribute(row,field.name~'label') }}"
                 {% else %}
-            ,"{{ field.name }}": {{ attribute(row,field.name) | json_encode() | raw }}
+            ,"{{ field.objectName }}{{ field.name }}": {{ attribute(row,field.name) | json_encode() | raw }}
                 {% endif %}
                 {% if field.Values|length >0 %}
             ,"{{ field.name }}Label": "{{ attribute(row,field.name~'Label') | raw}}"
                 {% endif %}
+            {% if field.query|length >0 %}
+            ,"{{ field.name }}Label": "{{ attribute(row,field.name~'Label') | raw}}"
+            {% endif %}
             {% endfor %}
         }{% if not loop.last %},{% endif %}
         {% endfor %}

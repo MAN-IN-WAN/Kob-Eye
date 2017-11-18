@@ -36,13 +36,20 @@
         </div>
         <div class="panel-body">
             <div class="row">
+                {% if Interfaces.top %}
+                <div class="col-md-12 col-lg-4">
+                    <ng-map center="41,-87" zoom="6"></ng-map>
+                </div>
+                <div class="col-md-12 col-lg-4">
+                {% else %}
                 <div class="col-md-12 col-lg-6">
+                {% endif %}
                     {% for field in fichefields %}
                         <div class="row">
-                            <div class="col-md-6 detail-label">
+                            <div class="col-md-5 detail-label">
                                 <label class="form-control-label" for="l0">{% if field.parentDescription is not empty %}{{ field.parentDescription }}{% else %}{{ field.description }}{% endif %}</label>
                             </div>
-                            <div class="col-md-6 detail-value">
+                            <div class="col-md-7 detail-value">
                                 {% if field.type == "price" %}
                                     <span class="label label-warning">{[{ obj.{{ field.name }} | currency:"" }]} €</span>
                                 {% elseif field.type == "float" %}
@@ -50,20 +57,50 @@
                                 {% elseif field.type == "extlink" %}
                                     <a class="btn btn-success btn-xs" href="https://zabbix.abtel.fr/guacamole/#/client/{[{ obj.{{ field.name }} }]}" target="_blank">{{ field.listDescr }}</a>
                                 {% elseif field.type == "int" %}
-                                    <span class="label label-primary">{[{ obj.{{ field.name }} }]}</span>
+                                    {% if field.Values %}
+                                        <select class="form-control" ng-model="obj.{{ field.name }}" disabled="disabled">
+                                            {% for v,k in field.Values %}
+                                                <option value="{{ v }}">{{ k }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% else %}
+                                        <span class="label label-primary">{[{ obj.{{ field.name }} }]}</span>
+                                    {% endif %}
                                 {% elseif field.type == "boolean" %}
-                                    <span class="label label-success" ng-if="obj.{{ field.name }}"><i class="fa fa-check"></i></span>
-                                    <span class="label label-danger" ng-if="!obj.{{ field.name }}"><i class="fa fa-times"></i></span>
+                                    {% if field.special == "reverse" %}
+                                        <span class="label label-success" ng-if="!obj.{{ field.name }}"><i class="fa fa-check"></i></span>
+                                        <span class="label label-danger" ng-if="obj.{{ field.name }}"><i class="fa fa-times"></i></span>
+                                    {% else %}
+                                        <span class="label label-success" ng-if="obj.{{ field.name }}"><i class="fa fa-check"></i></span>
+                                        <span class="label label-danger" ng-if="!obj.{{ field.name }}"><i class="fa fa-times"></i></span>
+                                    {% endif %}
+                                {% elseif field.type == "progress" %}
+                                    <progress class="progress progress-danger progress-striped progress-animated" ng-if="obj.{{ field.name }} < 100" value="{[{ obj.{{ field.name }} }]}" max="100">{[{ obj.{{ field.name }} }]}</progress>
+                                    <progress class="progress progress-success progress-striped progress-animated" ng-if="obj.{{ field.name }} == 100" value="{[{ obj.{{ field.name }} }]}" max="100">{[{ obj.{{ field.name }} }]}</progress>
                                 {% elseif field.type == "fkey" and field.card == "short" %}
-                                    <a class="btn btn-secondary btn-xs" href="#{{ field.link }}/{[{ obj.{{ field.name }} }]}">{[{ obj.{{ field.name }}label }]}</a>
+                                    <a class="btn btn-secondary btn-xs" href="#{{ field.link }}/{[{ obj.{{ field.objectName }}{{ field.name }} }]}">{[{ obj.{{ field.objectName }}{{ field.name }}label }]}</a>
                                 {% else %}
-                                    <span  ng-bind-html="obj.{{ field.name }}"></span>
+                                    {% if field.Values %}
+                                        <select class="form-control" ng-model="obj.{{ field.name }}" disabled="disabled">
+                                            {% for v,k in field.Values %}
+                                                <option value="{{ v }}">{{ k }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% elseif field.query %}
+                                        <span class="btn btn-warning btn-xs" >{[{ obj.{{ field.name }}Label }]}</a>
+                                    {% else %}
+                                        <span  ng-bind-html="obj.{{ field.name }}"></span>
+                                    {% endif %}
                                 {% endif %}
                             </div>
                         </div>
                         {% if loop.index - loop.revindex0 == 1 or loop.index - loop.revindex0 == 0 %}
                     </div>
-                    <div class="col-md-12 col-lg-6">
+                    {% if Interfaces.top %}
+                    <div class="col-md-8 col-lg-4">
+                        {% else %}
+                    <div class="col-md-8 col-lg-4">
+                        {% endif %}
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -75,7 +112,7 @@
         <ul class="nav nav-tabs" role="tablist">
             {% for child in ChildrenElements %}
             <li class="nav-item">
-                <a class="nav-link {% if loop.first %}active{% endif %}" href="javascript: void(0);" data-toggle="tab" data-target="#tab{{ child.objectName }}" role="tab">{{ child.objectDescription }}</a>
+                <a class="nav-link {% if loop.first %}active{% endif %}" href="javascript: void(0);" data-toggle="tab" data-target="#tab{{ child.objectName }}" role="tab"><b>{{ child.objectDescription }}</b> ({[{ {{ child.objectModule }}{{ child.objectName }}.store.total.children }]})</a>
             </li>
             {% endfor %}
         </ul>
@@ -87,7 +124,7 @@
                 {% else %}
                     <section class="panel">
                         <div class="panel-body">
-                            <ng-include src="'/{{ CurrentUrl }}/'+obj.id+'/{{ child.objectName }}/ListChildren.htm'" ng-if="show"></ng-include>
+                            <ng-include src="'/{{ CurrentUrl }}/0/{{ child.objectName }}/ListChildren.htm'" ng-if="show"></ng-include>
                         </div>
                     </section>
                     <!-- End Default Panel -->
@@ -98,6 +135,12 @@
     </div>
 
 </div>
+{% if Interfaces.bottom %}
+        <div class="widget widget-three">
+            <iframe style="border:0;" ng-src="{[{ '{{ Interfaces.bottom.Grafana.url }}'+obj.CodeClient+'%20'+obj.Nom }]}" width="100%" height="1100"></iframe>
+        </div>
+{% endif %}
+
 
 <div class="modal fade modal-size-large" id="modalfiche-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -114,11 +157,24 @@
                         <li ng-repeat="e in modalObj.errors">{[{ e.Message }]}</li>
                     </ul>
                 </div>
-                {{ include(template_from_string(module('Systeme/Utils/Form?Path=[!Query!]'))) }}
+                <div class="alert alert-warning" ng-if="modalObj.warning">
+                    <ul>
+                        <li ng-repeat="e in modalObj.warning">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-success" ng-if="modalObj.infos">
+                    <ul>
+                        <li ng-repeat="e in modalObj.infos">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div  ng-if="modalObj.success == false">
+                    {{ include(template_from_string(module('Systeme/Utils/Form?Path=[!Query!]'))) }}
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn" data-dismiss="modal">Annuler</button>
-                <button type="button" class="btn btn-primary" ng-click="modalSave()">Enregistrer les modifications</button>
+                <button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == true">Fermer</button>
+                <button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == false">Annuler</button>
+                <button type="button" class="btn btn-primary" ng-if="modalObj.success == false" ng-click="modalSave()">Enregistrer les modifications</button>
             </div>
         </div>
     </div>
@@ -140,10 +196,11 @@
 
                 <div class="text-center"
                      ng-hide="function.loaded">
-                    <br />
+                    <div id="spinload"></div>
+                    <script>
+                        new Spinner({color:'#fff', lines: 12}).spin($('#spinload'));
+                    </script>
                     Chargement ...
-                    <br />
-                    <div class="spinload"></div>
                 </div>
 
                 <!--<ng-include src="function.url"></ng-include>-->
@@ -154,5 +211,4 @@
         </div>
     </div>
 </div>
-
 

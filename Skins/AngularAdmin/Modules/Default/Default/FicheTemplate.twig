@@ -67,10 +67,18 @@
                                         <span class="label label-primary">{[{ obj.{{ field.name }} }]}</span>
                                     {% endif %}
                                 {% elseif field.type == "boolean" %}
-                                    <span class="label label-success" ng-if="obj.{{ field.name }}"><i class="fa fa-check"></i></span>
-                                    <span class="label label-danger" ng-if="!obj.{{ field.name }}"><i class="fa fa-times"></i></span>
+                                    {% if field.special == "reverse" %}
+                                        <span class="label label-success" ng-if="!obj.{{ field.name }}"><i class="fa fa-check"></i></span>
+                                        <span class="label label-danger" ng-if="obj.{{ field.name }}"><i class="fa fa-times"></i></span>
+                                    {% else %}
+                                        <span class="label label-success" ng-if="obj.{{ field.name }}"><i class="fa fa-check"></i></span>
+                                        <span class="label label-danger" ng-if="!obj.{{ field.name }}"><i class="fa fa-times"></i></span>
+                                    {% endif %}
+                                {% elseif field.type == "progress" %}
+                                    <progress class="progress progress-danger progress-striped progress-animated" ng-if="obj.{{ field.name }} < 100" value="{[{ obj.{{ field.name }} }]}" max="100">{[{ obj.{{ field.name }} }]}</progress>
+                                    <progress class="progress progress-success progress-striped progress-animated" ng-if="obj.{{ field.name }} == 100" value="{[{ obj.{{ field.name }} }]}" max="100">{[{ obj.{{ field.name }} }]}</progress>
                                 {% elseif field.type == "fkey" and field.card == "short" %}
-                                    <a class="btn btn-secondary btn-xs" href="#{{ field.link }}/{[{ obj.{{ field.name }} }]}">{[{ obj.{{ field.name }}label }]}</a>
+                                    <a class="btn btn-secondary btn-xs" href="#{{ field.link }}/{[{ obj.{{ field.objectName }}{{ field.name }} }]}">{[{ obj.{{ field.objectName }}{{ field.name }}label }]}</a>
                                 {% else %}
                                     {% if field.Values %}
                                         <select class="form-control" ng-model="obj.{{ field.name }}" disabled="disabled">
@@ -78,6 +86,8 @@
                                                 <option value="{{ v }}">{{ k }}</option>
                                             {% endfor %}
                                         </select>
+                                    {% elseif field.query %}
+                                        <span class="btn btn-warning btn-xs" >{[{ obj.{{ field.name }}Label }]}</a>
                                     {% else %}
                                         <span  ng-bind-html="obj.{{ field.name }}"></span>
                                     {% endif %}
@@ -147,11 +157,24 @@
                         <li ng-repeat="e in modalObj.errors">{[{ e.Message }]}</li>
                     </ul>
                 </div>
-                {{ include(template_from_string(module('Systeme/Utils/Form?Path=[!Query!]'))) }}
+                <div class="alert alert-warning" ng-if="modalObj.warning">
+                    <ul>
+                        <li ng-repeat="e in modalObj.warning">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-success" ng-if="modalObj.infos">
+                    <ul>
+                        <li ng-repeat="e in modalObj.infos">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div  ng-if="modalObj.success == false">
+                    {{ include(template_from_string(module('Systeme/Utils/Form?Path=[!Query!]'))) }}
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn" data-dismiss="modal">Annuler</button>
-                <button type="button" class="btn btn-primary" ng-click="modalSave()">Enregistrer les modifications</button>
+                <button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == true">Fermer</button>
+                <button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == false">Annuler</button>
+                <button type="button" class="btn btn-primary" ng-if="modalObj.success == false" ng-click="modalSave()">Enregistrer les modifications</button>
             </div>
         </div>
     </div>
@@ -170,17 +193,6 @@
                      ng-show="function.loaded"
                      ng-include="function.url" onload="function.loaded = true">
                 </div>
-
-                <div class="text-center"
-                     ng-hide="function.loaded">
-                    <div id="spinload"></div>
-                    <script>
-                        new Spinner({color:'#fff', lines: 12}).spin($('#spinload'));
-                    </script>
-                    Chargement ...
-                </div>
-
-                <!--<ng-include src="function.url"></ng-include>-->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn" data-dismiss="modal">Fermer</button>

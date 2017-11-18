@@ -14,13 +14,13 @@ class EsxVm extends genericClass {
             $new = true;
         }
         parent::Save();
-        if ($new&&parent::Verify()) $this->checkBorgRepo();
+        if (parent::Verify()) $this->checkBorgRepo();
         return true;
     }
-    public function Verify() {
+    public function Verify($new = false) {
 
         //test existence du dépo borg
-        if (!$this->getOneParent('BorgRepo')){
+        if (!$new&&!$this->getOneParent('BorgRepo')){
             $this->addWarning(array('Message'=> 'Le dépôt Borg est manquant, veuillez utiliser la fonction de vérification du dépôt afin de le créer.'));
         }
         return parent::Verify();

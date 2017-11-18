@@ -38,6 +38,12 @@ foreach ($vars['rows'] as $k=>$v){
         }
         if (isset($f['Values'])&&isset($f['Values'][$v->{$f['name']}])){
             $v->{$f['name'].'Label'} = $f['Values'][$v->{$f['name']}];
+        }else if (isset($f['query'])&&$v->{$f['name']}>0){
+            //recherche de sa valeur
+            $str = explode('::',$f['query']);
+            $qry = explode('/',$str[0],2);
+            $val = Sys::getOneData($qry[0],$qry[1].'/'.$v->{$f['name']});
+            $v->{$f['name'].'Label'} = $val->getFirstSearchOrder();
         }else $v->{$f['name'].'Label'} = '';
         if ($f['type']=='fkey'&&$f['card']=='short'){
             if ($v->{$f['name']} > 0) {

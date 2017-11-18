@@ -58,6 +58,7 @@
         //call function
         $scope.{{ c.identifier }}callFunction = function (obj,name,title){
             console.log('callfunction ',obj.id,title);
+            $('#modalfunction-{{ c.identifier }} .modal-dialog').spin();
 
             $scope.{{ c.identifier }}function = {
                 title: title,
@@ -69,10 +70,10 @@
             {{ c.identifier }}Store.getOneData(obj.id,false).then(function (data) {
                 $scope.modalObj = data;
                 console.log('function '+title+' obj',$scope.modalObj);
+                $('#modalfunction-{{ c.identifier }} .modal-dialog').spin(false);
             });
 
             $("#modalfunction-{{ c.identifier }}").modal();
-            new Spinner({color:'#ff0000', lines: 12}).spin($('#spinload'));
         }
 
         //select Delete
@@ -118,12 +119,14 @@
         $scope.{{ c.identifier }}add = function (){
             console.log('add {{ c.objecttype }}');
             $scope.modalObj = {{ c.identifier }}Store.getNewData();
+            $scope.modalObj.success = false;
             $scope.modalObj.title = 'Ajouter un nouveau {{ c.description }}';
             $("#modal-{{ c.identifier }}").modal();
         }
         $scope.{{ c.identifier }}modify = function (obj){
             {{ c.identifier }}Store.getOneData(obj.id,'default',false).then(function (data) {
                 $scope.modalObj = data;
+                $scope.modalObj.success = false;
                 $scope.modalObj.title = 'Modifier {{ c.description }} '+data.label;
                 console.log('edit obj',$scope.modalObj);
             });
@@ -133,15 +136,25 @@
             {{ c.identifier }}Store.export('default');
         }
         $scope.{{ c.identifier }}modalSave = function (){
+            $('#modal-{{ c.identifier }} .modal-dialog').spin();
+
             console.log('save ',$scope.modalObj);
             {{ c.identifier }}Store.saveData($scope.modalObj,'default').then(function (data) {
+                $('#modal-{{ c.identifier }} .modal-dialog').spin(false);
                 if (data.success){
                     $scope.modalObj = data.data;
-                    $("#modal-{{ c.identifier }}").modal('toggle');
+                    $scope.modalObj.success = data.success;
+                    $scope.modalObj.warning = data.warning;
+                    $scope.modalObj.errors = data.errors;
+                    $scope.modalObj.infos = data.infos;
+                    if (!data.warning.length&&!data.success.length)
+                        $("#modal-{{ c.identifier }}").modal('toggle');
                     {{ c.identifier }}Store.refresh('default');
                 }else {
                     //gestion des erreurs
                     $scope.modalObj.errors = data.errors;
+                    $scope.modalObj.warning = data.warning;
+                    $scope.modalObj.infos = data.infos;
                     $scope.modalObj.fieldErrors = [];
                     for (var e in data.errors) {
                         $scope.modalObj.fieldErrors.push(data.errors[e].Prop);
@@ -178,34 +191,67 @@
     });
 
     /**** FICHE CONTROLLER ****/
-    app.controller('{{ c.name }}FicheCtrl', function($injector,NgMap,$location, $scope, $rootScope, $routeParams,$http,{{ c.identifier }}Store{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store{% endfor %}) {
+    app.controller('{{ c.name }}FicheCtrl', function($injector,NgMap,$location, $scope, $rootScope, $routeParams,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store{% endfor %}) {
+        //acces aux stores parents
+        {% for parent in c.parentelements %}
+            {{ parent.objectModule }}{{ parent.objectName }}Store.setFilters('{{ parent.filter }}','parentselect');
+            {{ parent.objectModule }}{{ parent.objectName }}Store.getData(1,'parentselect');
+            $scope.{{ parent.objectModule }}{{ parent.objectName }}Select = {
+                data: {{ parent.objectModule }}{{ parent.objectName }}Store.data.parentselect,
+                store: {{ parent.objectModule }}{{ parent.objectName }}Store,
+                filter: {{ parent.objectModule }}{{ parent.objectName }}Store.filter.parentselect,
+                currentPage: {{ parent.objectModule }}{{ parent.objectName }}Store.currentPage.parentselect,
+                itemsPerPage: {{ parent.objectModule }}{{ parent.objectName }}Store.itemsPerPage,
+                selected: {
+                    selectall: false
+                }
+            }
+        {% endfor %}
 
+        //acces aux stores enfants
+        {% for child in c.childrenelements %}
+            $scope.{{ child.objectModule }}{{ child.objectName }}Select = {
+                data: {{ child.objectModule }}{{ child.objectName }}Store.data.select,
+                store: {{ child.objectModule }}{{ child.objectName }}Store,
+                filter: {{ child.objectModule }}{{ child.objectName }}Store.filter.select,
+                currentPage: {{ child.objectModule }}{{ child.objectName }}Store.currentPage.select,
+                itemsPerPage: {{ child.objectModule }}{{ child.objectName }}Store.itemsPerPage,
+                selected: {
+                    selectall: false
+                }
+            }
+            {{ child.objectModule }}{{ child.objectName }}Store.resetQuery('select');
+            {{ child.objectModule }}{{ child.objectName }}Store.getData(1,'select');
+        {% endfor %}
         //récupération des données du store.
         {{ c.identifier }}Store.getOneData($routeParams.id,'default',true).then(function (data){
             console.log('retour chargement one data',data);
             $scope.obj = data;
             $scope.callFunction = function (obj,name,title){
                 console.log('callfunction ',obj.id,title);
-
+                $('#modalfunction-{{ c.identifier }} .modal-dialog').spin();
                 $scope.function = {
                     title: title,
                     loaded: false,
                     name: name,
                     url: '/{{ c.module }}/{{ c.objecttype }}/'+obj.id+'/'+name+'.htm?rand='+new Date().getTime()
                 };
-
-                {{ c.identifier }}Store.getOneData(obj.id,false).then(function (data) {
-                    $scope.modalObj = data;
-
-                    console.log('function '+title+' obj',$scope.modalObj);
+                $scope.$watch('function.loaded',function () {
+                    if ($scope.function.loaded){
+                        {{ c.identifier }}Store.getOneData(obj.id, false).then(function(data) {
+                            $('#modalfunction-{{ c.identifier }}  .modal-dialog').spin(false);
+                            $scope.modalObj = data;
+                            console.log('function ' + title + ' obj', $scope.modalObj);
+                        });
+                    }
                 });
                 $("#modalfunction-{{ c.identifier }}").modal();
-                new Spinner({color:'#ff0000', lines: 12}).spin($('#spinload'));
-            }
+        }
             $scope.modify = function (obj){
 
                 console.log('edit ',obj.id);
                 {{ c.identifier }}Store.getOneData(obj.id,false).then(function (data) {
+                    data.success = false;
                     $scope.obj = $scope.modalObj = data;
                     $scope.modalObj.title = 'Modifier {{ c.description }} '+data.label;
                     console.log('edit obj',$scope.modalObj);
@@ -214,14 +260,27 @@
             }
             $scope.modalSave = function (){
                 console.log('save ',$scope.modalObj);
+                //affichage spinner
+                $('#modalfiche-{{ c.identifier }} .modal-dialog').spin();
                 {{ c.identifier }}Store.saveData($scope.modalObj).then(function (data) {
+                    $('#modalfiche-{{ c.identifier }} .modal-dialog').spin(false);
                     if (data.success){
-                        $scope.modalObj= $scope.obj = data.data;
-                        $("#modalfiche-{{ c.identifier }}").modal('toggle');
+                        $scope.modalObj = data.data;
+                        $scope.modalObj.success = data.success;
+                        $scope.modalObj.warning = data.warning;
+                        $scope.modalObj.errors = data.errors;
+                        $scope.modalObj.infos = data.infos;
+                        $scope.modalObj = $scope.obj
+                        if (!data.warning.length&&!data.success.length)
+                            $("#modalfiche-{{ c.identifier }}").modal('toggle');
                         {{ c.identifier }}Store.refresh();
                     }else {
                         //gestion des erreurs
                         $scope.modalObj.errors = data.errors;
+                        $scope.modalObj.success = data.success;
+                        $scope.modalObj.warning = data.warning;
+                        $scope.modalObj.errors = data.errors;
+                        $scope.modalObj.infos = data.infos;
                         $scope.modalObj.fieldErrors = [];
                         for (var e in data.errors) {
                             $scope.modalObj.fieldErrors.push(data.errors[e].Prop);
@@ -304,6 +363,7 @@
                 //call function
                 $scope.{{ child.objectModule }}{{ child.objectName }}callFunction = function (obj,name,title){
                     console.log('callfunction ',obj.id,title);
+                    $('#modalfunction-{{ child.objectModule }}{{ child.objectName }} .modal-dialog').spin();
 
                     $scope.{{ child.objectModule }}{{ child.objectName }}function = {
                         title: title,
@@ -315,10 +375,10 @@
                     {{ child.objectModule }}{{ child.objectName }}Store.getOneData(obj.id,false).then(function (data) {
                         $scope.modalObj = data;
                         console.log('function '+title+' obj',$scope.modalObj);
+                        $('#modalfunction-{{ child.objectModule }}{{ child.objectName }} .modal-dialog').spin(false);
                     });
 
                     $("#modalfunction-{{ child.objectModule }}{{ child.objectName }}").modal();
-                    new Spinner({color:'#ff0000', lines: 12}).spin($('#spinload'));
                 }
 
                 //mass delete
@@ -358,8 +418,9 @@
                 $scope.{{ child.objectModule }}{{ child.objectName }}add = function (){
                     console.log('child add {{ child.objectName }}');
                     $scope.modalObj = {{ child.objectModule }}{{ child.objectName }}Store.getNewData();
-                    $scope.modalObj.{{ child.name }} = $scope.obj.id;
-                    $scope.modalObj.{{ child.name }}label = $scope.obj.label;
+                    $scope.modalObj.success = false;
+                    $scope.modalObj.{{ c.objecttype }}{{ child.name }} = $scope.obj.id;
+                    $scope.modalObj.{{ c.objecttype }}{{ child.name }}label = $scope.obj.label;
                     $scope.modalObj.title = 'Ajouter un nouveau {{ child.objectDescription }}';
                     $("#modal-{{ child.objectModule }}{{ child.objectName }}").modal();
                 }
@@ -367,8 +428,9 @@
                     console.log('edit ',obj.id);
                     {{ child.objectModule }}{{ child.objectName }}Store.getOneData(obj.id,false).then(function (data) {
                         $scope.modalObj = data;
-                        $scope.modalObj.{{ child.name }} = $scope.obj.id;
-                        $scope.modalObj.{{ child.name }}label = $scope.obj.label;
+                        $scope.modalObj.success = false;
+                        $scope.modalObj.{{ c.objecttype }}{{ child.name }} = $scope.obj.id;
+                        $scope.modalObj.{{ c.objecttype }}{{ child.name }}label = $scope.obj.label;
                         $scope.modalObj.title = 'Modifier {{ child.objectDescription }} '+data.label;
                         console.log('edit obj',$scope.modalObj);
                     });
@@ -380,14 +442,27 @@
                 }
                 $scope.{{ child.objectModule }}{{ child.objectName }}modalSave = function (){
                     console.log('children > save {{ child.objectModule }}{{ child.objectName }}',$scope.modalObj);
+                    $('#modal-{{ child.objectModule }}{{ child.objectName }} .modal-dialog').spin();
+
                     {{ child.objectModule }}{{ child.objectName }}Store.saveData($scope.modalObj).then(function (data) {
+                        $('#modal-{{ child.objectModule }}{{ child.objectName }} .modal-dialog').spin(false);
                         if (data.success){
                             $scope.modalObj = data.data;
-                            $("#modal-{{ child.objectModule }}{{ child.objectName }}").modal('toggle');
+                            $scope.modalObj.errors = data.errors;
+                            $scope.modalObj.success = data.success;
+                            $scope.modalObj.warning = data.warning;
+                            $scope.modalObj.errors = data.errors;
+                            $scope.modalObj.infos = data.infos;
+                            if (!data.warning.length&&!data.success.length)
+                                $("#modal-{{ child.objectModule }}{{ child.objectName }}").modal('toggle');
                             {{ child.objectModule }}{{ child.objectName }}Store.refresh('children');
                         }else {
                             //gestion des erreurs
                             $scope.modalObj.errors = data.errors;
+                            $scope.modalObj.success = data.success;
+                            $scope.modalObj.warning = data.warning;
+                            $scope.modalObj.errors = data.errors;
+                            $scope.modalObj.infos = data.infos;
                             $scope.modalObj.fieldErrors = [];
                             for (var e in data.errors) {
                                 $scope.modalObj.fieldErrors.push(data.errors[e].Prop);

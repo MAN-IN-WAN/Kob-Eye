@@ -9,8 +9,10 @@ class DeviceConnexion extends genericClass{
         parent::save();
 
         $dev = $this->getOneParent('Device');
-        $dev->Dirty=1;
-        $dev->Save();
+        if ($dev) {
+            $dev->Dirty = 1;
+            $dev->Save();
+        }
         return true;
     }
 

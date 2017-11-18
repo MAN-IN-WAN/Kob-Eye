@@ -5,7 +5,7 @@
             <label class="form-control-label" for="l0">{{ field.description }}</label>
             <small>{{ field.help }}</small>
         </div>
-        <div class="col-md-6 ttttttt">
+        <div class="col-md-6">
             <div class="form-group" ng-class="{'has-danger': modalObj.fieldErrors.length && modalObj.fieldErrors.indexOf('{{ field.name }}') !== -1}">
             {% if field.type == "date" %}
                     <label class="input-group datepicker-only-init">
@@ -15,7 +15,7 @@
                         </span>
                     </label>
             {% elseif field.type == "fkey" and field.card == "short" %}
-                <div custom-select="a.id as a.label for a in getSelectData('{{ field.objectModule }}{{ field.objectName }}Store',$searchTerm)" custom-select-options="{ 'async': true, 'filter':'{{ field.filter }}'}" ng-model="modalObj.{{ field.name }}" class="form-control" ng-title="modalObj.{{ field.name }}label"></div>
+                <div custom-select="a.id as a.label for a in getSelectData('{{ field.objectModule }}{{ field.objectName }}Store',$searchTerm)" custom-select-options="{ 'async': true, 'filter':'{{ field.filter }}'}" ng-model="modalObj.{{ field.objectName }}{{ field.name }}" class="form-control" ng-title="modalObj.{{ field.objectName }}{{ field.name }}label"></div>
 <!--                <div custom-select="a.id as a.label for a in {{ field.objectModule }}{{ field.objectName }}Store.getDataFilter($searchTerm)" custom-select-options="{ 'async': true }" ng-model="modalObj.{{ field.name }}" class="form-control" ng-title="modalObj.{{ field.name }}label"></div>-->
             {% elseif field.type == "boolean" %}
                 <switch id="enabled" name="enabled" ng-model="modalObj.{{ field.name }}" class="green"></switch>
@@ -66,7 +66,7 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <div>{{ include(template_from_string(module('Systeme/Utils/Select?Path='~field.objectModule~'/'~field.objectName~'&Field='~field.name))) }}</div>
+                <div>{{ include(template_from_string(module('Systeme/Utils/Select?Path='~field.objectModule~'/'~field.objectName~'&Field='~field.objectName~field.name))) }}</div>
             </div>
         </div>
     {% elseif field.type == "rkey" %}
@@ -78,7 +78,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div>{{ include(template_from_string(module('Systeme/Utils/Select?Path='~field.objectModule~'/'~field.objectName~'&Field='~field.name))) }}</div>
+            <div>{{ include(template_from_string(module('Systeme/Utils/Select?Path='~field.objectModule~'/'~field.objectName~'&Field='~field.objectName~field.name))) }}</div>
         </div>
     </div>
     {% elseif field.type == "text" or field.type == "raw" %}

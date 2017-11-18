@@ -21,17 +21,17 @@ foreach ($formfields as $f){
             $o->{$f["name"]} = 1;
         else $o->{$f["name"]} = 0;
     }elseif ($f['type']=='fkey' && $f['card']=='short'){
-        $o->AddParent($f['objectModule'].'/'.$f['objectName'].'/'.$values->{$f["name"]});
+        $o->AddParent($f['objectModule'].'/'.$f['objectName'].'/'.$values->{$f["objectName"].$f["name"]});
     }else $o->{$f["name"]} = $values->{$f["name"]};
 }
 $obj = $o->getObjectClass();
-$formfields = $obj->getParentElements();
-foreach ($formfields as $f){
+$parentelements = $obj->getParentElements();
+foreach ($parentelements as $f){
     if ($f['type']=='fkey' && $f['card']=='short'){
-        $o->AddParent($f['objectModule'].'/'.$f['objectName'].'/'.$values->{$f["name"]});
+        $o->AddParent($f['objectModule'].'/'.$f['objectName'].'/'.$values->{$f["objectName"].$f["name"]});
     }elseif ($f['type']=='fkey' && $f['card']=='long'){
         $o->resetParents($f['objectName']);
-        foreach ($values->{$f["name"]} as $v)
+        foreach ($values->{$f["objectName"].$f["name"]} as $v)
             $o->AddParent($f['objectModule'].'/'.$f['objectName'].'/'.$v);
     }
 }
@@ -45,19 +45,24 @@ if ($o->Verify()) {
             $values->{$f['name']} = date('d/m/Y H:i',$o->{$f['name']});
         }elseif ($f['type']=='rkey') {
             $o->resetChilds($f['objectName']);
-            if (is_array($values->{$f["name"]})) foreach ($values->{$f["name"]} as $v)
+            if (is_array($values->{$f["objectName"].$f["name"]})) foreach ($values->{$f["objectName"].$f["name"]} as $v){
                 $o->AddChild($f['objectName'], $v);
+            }
         }
     }
     $vars['retour'] = '{
         "data": '.json_encode($values).',
         "errors": '.json_encode($o->Error).',
+        "warning": '.json_encode($o->Warning).',
+        "infos": '.json_encode($o->Success).',
         "success": '.(($success)?1:0).'
     }';
 }else{
     $vars['retour'] = '{
         "data": '.json_encode($values).',
         "errors": '.json_encode($o->Error).',
+        "warning": '.json_encode($o->Warning).',
+        "infos": '.json_encode($o->Success).',
         "success": false
     }';
 }
