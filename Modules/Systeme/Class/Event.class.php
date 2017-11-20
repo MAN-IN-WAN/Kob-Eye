@@ -32,4 +32,77 @@ class Event extends genericClass {
 		$e->UserId = $uid;
 		$e->Save(); 
 	}
+
+
+	function pollEvents($module,$object=null,$lastAlert=0,$interval = 1000,$maxDuration=15){
+        if($lastAlert == '' || $lastAlert == null || $lastAlert == 'NULL')
+            $lastAlert=time();
+        if($interval == '' || $interval == null || $interval == 'NULL' || $interval == 0)
+            $interval=1000;
+        if($maxDuration == '' || $maxDuration == null || $maxDuration == 'NULL' || $interval == 0)
+            $maxDuration =15;
+
+        $GLOBALS['Systeme']->Db[0]->query("COMMIT");
+        $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=1");
+	    $i = 0;
+	    $nbIt = ceil($maxDuration*1000 /$interval);
+	    $delay = $interval*1000;
+
+        $query = 'Event/tmsCreate>'.$lastAlert.'&EventModule='.$module;
+        if($object != '' && $object != null && $object != 'NULL')
+            $query.='&EventObjectClass='.$object;
+
+	    while($i<$nbIt){
+            $rec = Sys::$Modules['Systeme']->callData($query, false, 0, 30);
+            Sys::$Modules['Systeme']->Db->clearLiteCache();
+            if(is_array($rec) && count($rec)) {
+                return $rec;
+            }
+            $i++;
+            usleep($delay);
+	    }
+    }
+
+    function pollAll($lastAlert=0,$interval = 1000,$maxDuration=15){
+        if($lastAlert == '' || $lastAlert == null || $lastAlert == 'NULL')
+            $lastAlert=time();
+        if($interval == '' || $interval == null || $interval == 'NULL' || $interval == 0)
+            $interval=1000;
+        if($maxDuration == '' || $maxDuration == null || $maxDuration == 'NULL' || $interval == 0)
+            $maxDuration =15;
+
+        $GLOBALS['Systeme']->Db[0]->query("COMMIT");
+        $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=1");
+
+        $i = 0;
+        $nbIt = ceil($maxDuration*1000 /$interval);
+        $delay = $interval*1000;
+
+        $queryEv = 'Event/tmsCreate>'.$lastAlert;
+        $queryAu = 'AlertUser::AlertUserList/tmsCreate>'.$lastAlert;
+
+        $res=array();
+        $ret =false;
+
+        while($i<$nbIt){
+            $recEv = Sys::$Modules['Systeme']->callData($queryEv, false, 0, 30);
+            $recAu = Sys::$Modules['Systeme']->callData($queryAu, false, 0, 30);
+            Sys::$Modules['Systeme']->Db->clearLiteCache();
+            if(is_array($recEv) && count($recEv)) {
+                $res['Ev']=$recEv;
+                $ret =true;
+            }
+            if(is_array($recAu) && count($recAu)) {
+                $res['Au']=$recAu;
+                $ret =true;
+            }
+
+            if($ret)
+                return $res;
+
+            $i++;
+            usleep($delay);
+        }
+    }
+
 }

@@ -175,6 +175,8 @@ class TXT extends genericClass {
         }
         $this->Dnstxt = str_replace('""','"',$this->Dnstxt);
         $entry['dnstxt'] = $this->Dnstxt;
+        $entry['dnsttl'] = $this->TTL ?  $this->TTL : 86400;
+
 		if($new) {
 			$entry['objectclass'][0] = 'dnsrrset';
 			$entry['objectclass'][1] = 'top';

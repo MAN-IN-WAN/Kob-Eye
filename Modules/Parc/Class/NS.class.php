@@ -141,11 +141,11 @@ class NS extends genericClass {
         $entry['dnscname'] = $this->Dnscname;
         $entry['dnsdomainname'] = $this->Dnsdomainname;
 		$entry['cn'] = $this->Nom;
+        $entry['dnsttl'] = $this->TTL ?  $this->TTL : 38400;
 		if($new) {
 			$entry['objectclass'][0] = 'dnsrrset';
 			$entry['objectclass'][1] = 'top';
 			$entry['dnsclass'] = 'IN';
-			$entry['dnsttl'] = 38400;
 			$entry['dnstype'] = 'NS';
 		}
 		return $entry;

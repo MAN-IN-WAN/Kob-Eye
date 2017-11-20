@@ -11,7 +11,9 @@ class MX extends genericClass {
 	 * @return	void
 	 */
 	public function Save( $synchro = true ) {
-		parent::Save();
+
+	    parent::Save();
+
 		// Forcer la vérification
 		if(!$this->_isVerified) $this->Verify( $synchro );
 		// Enregistrement si pas d'erreur
@@ -29,6 +31,16 @@ class MX extends genericClass {
 	 */
 	public function Verify( $synchro = true ) {
 		if (!$this->Poids) $this->Poids = 10;
+
+		$sibs = false;
+        $l = Server::ldapGet($this->LdapID);
+        if(is_array($l) && isset($l[0]['dnsttl'])){
+            $ttl = $l[0]['dnsttl'][0];
+            if($ttl != $this->TTL){
+                $updateSibsTTL = true;
+            }
+        }
+
 		if(parent::Verify()) {
 
 			$this->_isVerified = true;
@@ -100,6 +112,15 @@ class MX extends genericClass {
 
 			}
 
+			if($updateSibsTTL){
+			    $pad = $this->getOneParent('Domain');
+			    $siblings = $pad->getChildren('MX');
+			    foreach ($siblings as $sib){
+			        $sib->TTL = $this->TTL;
+			        $sib->Save();
+                }
+            }
+
 		}
 		else {
 
@@ -156,12 +177,13 @@ class MX extends genericClass {
 		}
 		$entry['cn'] = $this->Nom;
 		$entry['dnscname'] = $this->Dnscname;
+        $entry['dnsttl'] = $this->TTL ?  $this->TTL : 86400;
+        $entry['dnspreference'] = $this->Poids;
+
 		if($new) {
 			$entry['objectclass'][0] = 'dnsrrset';
 			$entry['objectclass'][1] = 'top';
 			$entry['dnsclass'] = 'IN';
-			$entry['dnspreference'] = $this->Poids;
-			$entry['dnsttl'] = 86400;
 			$entry['dnstype'] = 'MX';
 		}
 		return $entry;

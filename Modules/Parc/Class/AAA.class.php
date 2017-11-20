@@ -9,6 +9,16 @@ class AAA extends genericClass {
 	 * @return	void
 	 */
 	public function Save( $synchro = true ) {
+        $pa = $this->getOneParent('Domain');
+        $cnames = $pa->getChildren('CNAME');
+        $pref = explode(':',$this->Url)[1];
+        foreach ($cnames as $cname){
+            if($pref == $cname->Dnsdomainname){
+                $this->addError(array('Message' => "Une entrée CNAME existe déjà pour ce prefixe.", 'Prop' => ''));
+                return false;
+            }
+        }
+
 		parent::Save();
 		// Forcer la vérification
 		if(!$this->_isVerified) $this->Verify( $synchro );
@@ -25,6 +35,16 @@ class AAA extends genericClass {
 	 * @return	Verification OK ou NON
 	 */
 	public function Verify( $synchro = true ) {
+
+        $pa = $this->getOneParent('Domain');
+        $cnames = $pa->getChildren('CNAME');
+        $pref = explode(':',$this->Url)[1];
+        foreach ($cnames as $cname){
+            if($pref == $cname->Dnsdomainname){
+                $this->addError(array('Message' => "Une entrée CNAME existe déjà pour ce prefixe.", 'Prop' => ''));
+                return false;
+            }
+        }
 
 		if(parent::Verify()) {
 
@@ -123,9 +143,9 @@ class AAA extends genericClass {
 		$entry['cn'] = $this->Url;
 		$sD = substr($this->Url, 5);
 		if (!empty($sD)) $entry['dnsdomainname'] = $sD;
+        $entry['dnsttl'] = $this->TTL ?  $this->TTL : 86400;
 		if($new) {
 			$entry['dnsclass'] = 'IN';
-			$entry['dnsttl'] = 86400;
 			$entry['dnstype'] = 'AAAA';
 			$entry['objectclass'][0] = 'dnsrrset';
 			$entry['objectclass'][1] = 'top';

@@ -9,6 +9,24 @@ class CNAME extends genericClass {
 	 * @return	void
 	 */
 	public function Save( $synchro = true ) {
+	    $pa = $this->getOneParent('Domain');
+	    $as = $pa->getChildren('Subdomain');
+	    $aaas = $pa->getChildren('AAA');
+	    foreach ($as as $a){
+            $pref = explode(':',$a->Url)[1];
+            if($pref == $this->Dnsdomainname){
+                $this->addError(array('Message' => "Une entrée A existe déjà pour ce prefixe.", 'Prop' => ''));
+                return false;
+            }
+        }
+        foreach ($aaas as $aaa){
+            $pref = explode(':',$aaa->Url)[1];
+            if($pref == $this->Dnsdomainname){
+                $this->addError(array('Message' => "Une entrée AAAA existe déjà pour ce prefixe.", 'Prop' => ''));
+                return false;
+            }
+        }
+
 		parent::Save();
 		// Forcer la vérification
 		if(!$this->_isVerified) $this->Verify( $synchro );
@@ -26,6 +44,26 @@ class CNAME extends genericClass {
 	 * @return	Verification OK ou NON
 	 */
 	public function Verify( $synchro = true ) {
+        $pa = $this->getOneParent('Domain');
+        $as = $pa->getChildren('Subdomain');
+        $aaas = $pa->getChildren('AAA');
+        foreach ($as as $a){
+            $pref = explode(':',$a->Url)[1];
+            if($pref == $this->Dnsdomainname){
+                $this->addError(array('Message' => "Une entrée A existe déjà pour ce prefixe.", 'Prop' => ''));
+                $this->_isVerified = false;
+                return false;
+            }
+        }
+        foreach ($aaas as $aaa){
+            $pref = explode(':',$aaa->Url)[1];
+            if($pref == $this->Dnsdomainname){
+                $this->addError(array('Message' => "Une entrée AAAA existe déjà pour ce prefixe.", 'Prop' => ''));
+                $this->_isVerified = false;
+                return false;
+            }
+        }
+
 
 		if(parent::Verify()) {
 
@@ -141,11 +179,11 @@ class CNAME extends genericClass {
 		$entry['dnscname'] = $this->Dnscname;
 		if (empty($this->Dnsdomainname))$this->Dnsdomainname = $this->_KEDomain->Url.".";
 		$entry['dnsdomainname'] = $this->Dnsdomainname;
+        $entry['dnsttl'] = $this->TTL ?  $this->TTL : 86400;
 		if($new) {
 			$entry['objectclass'][0] = 'dnsrrset';
 			$entry['objectclass'][1] = 'top';
 			$entry['dnsclass'] = 'IN';
-			$entry['dnsttl'] = 86400;
 			$entry['dnstype'] = 'CNAME';
 		}
 		return $entry;

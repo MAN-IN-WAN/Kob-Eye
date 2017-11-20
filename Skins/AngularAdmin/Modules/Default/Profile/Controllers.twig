@@ -8,10 +8,10 @@ app.controller('{{ Url }}Ctrl', function($location, $scope, $rootScope, SystemeU
 
     $scope.modalObj;
 
-console.log('bleeeeeeee',data);
-    var init = $scope.store.getOneData(); //TODO
-    init.then(function(data){
-        console.log('yeaaaaaah',data);
+    $scope.store.getOneData({{ User.Id }}, 'Profile').then(function(data){
+        console.log('yeaaaaaah {{ User.Id }}',data);
+        $scope.modalObj = data;
     });
+
 
 });

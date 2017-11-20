@@ -127,6 +127,7 @@ class Bloc extends Beacon {
         //Analyse de l Url
         $Tab = Module::splitQuery($Lien,false);
         if (DEBUG_INTERFACE) print_r($Tab);
+
         //On appelle l interface concernee
         if (isset($Tab[0])) {
             //test twig
@@ -163,16 +164,22 @@ class Bloc extends Beacon {
             $pd = $path;
             $pd.=(($p!="")?"/":"")."Default";
         }
+
+
         if (DEBUG_INTERFACE)echo "PATH $p FILE ".file_exists(ROOT_DIR.$p)."  DIR ".is_dir(ROOT_DIR.$p)."\r\n";
         if (file_exists(ROOT_DIR.$p)&&is_dir(ROOT_DIR.$p)&&$i<sizeof($tab)-1){
             //C 'est un dossier
             if (DEBUG_INTERFACE)echo "	- $p\r\n";
-            return Bloc::lookForInterface($tab,$p,$strict,$i+1);
+            $temp = Bloc::lookForInterface($tab,$p,$strict,$i+1);
+            if($temp) return $temp;
         }
-        if (file_exists(ROOT_DIR.$pd)&&is_dir(ROOT_DIR.$pd)&&$i<sizeof($tab)-1){
+
+
+        if (file_exists(ROOT_DIR.$pd)&&is_dir(ROOT_DIR.$pd)&&$i<sizeof($tab)-1 ){
             if (DEBUG_INTERFACE)echo "	- $pd\r\n";
             //C 'est un dossier default
-            return Bloc::lookForInterface($tab,$pd,$strict,$i+1);
+            $temp = Bloc::lookForInterface($tab,$pd,$strict,$i+1,true);
+            if($temp) return $temp;
         }
         if (file_exists(ROOT_DIR.$p.".twig")){
             //C 'est un fichier twig
@@ -243,27 +250,30 @@ class Bloc extends Beacon {
         foreach ($t as $t3)if (!empty($t3))$t2[] = $t3;
         $t=$t2;
         $Mod = array_merge(Array($Module),$t);
+
         if (DEBUG_INTERFACE)echo "-----------$ObjectClass,$Interface-$Strict---------------\r\n";
         if (DEBUG_INTERFACE)print_r($Mod);
+
         if (Sys::$DefaultSkin==""&&Sys::$User->Skin=="")return true;
-        if (isset(Sys::$User)&&is_object(Sys::$User)){
-            //Skin en cours
-            $Chemin="Skins/".Sys::$User->Skin."/Modules";
+        if ($Strict) {
+            if (isset(Sys::$User)&&is_object(Sys::$User)){
+                //Skin en cours
+                $Chemin="Skins/".Sys::$User->Skin."/Modules";
+                if (DEBUG_INTERFACE)echo "TEST $Chemin \r\n";
+                if (file_exists(ROOT_DIR.$Chemin)&&$I=Bloc::lookForInterface($Mod,$Chemin,true)) return $I;
+            }
+            //SKin partagée
+            $Chemin="Skins/".Sys::$DefaultSkin."/Modules";
             if (DEBUG_INTERFACE)echo "TEST $Chemin \r\n";
             if (file_exists(ROOT_DIR.$Chemin)&&$I=Bloc::lookForInterface($Mod,$Chemin,true)) return $I;
-        }
-        //SKin partagée
-        $Chemin="Skins/".Sys::$DefaultSkin."/Modules";
-        if (DEBUG_INTERFACE)echo "TEST $Chemin \r\n";
-        if (file_exists(ROOT_DIR.$Chemin)&&$I=Bloc::lookForInterface($Mod,$Chemin,true)) return $I;
-        if (DEBUG_INTERFACE)echo "/////////////////////////////\r\n";
-        //Fichier du module
-        $Chemin="Modules";
-        if (DEBUG_INTERFACE)echo "TEST $Chemin \r\n";
-// 		if (file_exists($Chemin)&&$I=$this->testInterface($ObjectClass,$Interface,$Chemin)) return $I;
-        if (file_exists(ROOT_DIR.$Chemin)&&$I=Bloc::lookForInterface($Mod,$Chemin,true)) return $I;
-        //Skin en cours sans mode strict
-        if (!$Strict){
+            if (DEBUG_INTERFACE)echo "/////////////////////////////\r\n";
+            //Fichier du module
+            $Chemin="Modules";
+            if (DEBUG_INTERFACE)echo "TEST $Chemin \r\n";
+    // 		if (file_exists($Chemin)&&$I=$this->testInterface($ObjectClass,$Interface,$Chemin)) return $I;
+            if (file_exists(ROOT_DIR.$Chemin)&&$I=Bloc::lookForInterface($Mod,$Chemin,true)) return $I;
+            //Skin en cours sans mode strict
+        } else {
             if (isset(Sys::$User)&&is_object(Sys::$User)){
                 $Chemin="Skins/".Sys::$User->Skin."/Modules";
                 if (DEBUG_INTERFACE)echo "TEST $Chemin \r\n";
@@ -277,6 +287,7 @@ class Bloc extends Beacon {
             $Chemin="Modules";
             if (DEBUG_INTERFACE)echo "TEST $Chemin \r\n";
             if (file_exists(ROOT_DIR.$Chemin)&&$I=Bloc::lookForInterface($Mod,$Chemin,false)) return $I;
+
         }
         if (DEBUG_INTERFACE) echo "$ObjectClass $Interface FAILED !!!!";
         return false;

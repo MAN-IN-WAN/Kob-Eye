@@ -141,11 +141,11 @@ class SRV extends genericClass {
 		$entry['dnssrvport'] = $this->Port;
 		$entry['dnssrvpriority'] = $this->Priorite;
 		$entry['dnssrvweight'] = $this->Poids;
+        $entry['dnsttl'] = $this->TTL ?  $this->TTL : 3600;
 		if($new) {
 			$entry['objectclass'][0] = 'dnsrrset';
 			$entry['objectclass'][1] = 'top';
 			$entry['dnsclass'] = 'IN';
-			$entry['dnsttl'] = 3600;
 			$entry['dnstype'] = 'SRV';
 		}
 		return $entry;

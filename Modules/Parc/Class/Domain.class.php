@@ -175,14 +175,16 @@ class Domain extends genericClass {
 			}else	$entry['dnszonemaster'] = DNS_ZONE_MASTER;
 		}else	$entry['dnszonemaster'] = DNS_ZONE_MASTER;
 		$entry['dnszonename'] = $this->Url;
+
+        $entry['dnsminimum'] = $this->TTLMin ?  $this->TTLMin : 60;
+        $entry['dnsttl'] =  $this->TTL ?  $this->TTL : 86400;
+
 		if($new) {
 			$entry['dnsclass'] = 'IN';
 			$entry['dnsexpire'] = 604800;
-			$entry['dnsminimum'] = 86400;
 			$entry['dnsrefresh'] = 21600;
 			$entry['dnsretry'] = 3600;
 			$entry['dnsserial'] = date('Ymd01');
-			$entry['dnsttl'] = 86400;
 			$entry['dnstype'] = 'SOA';
 			$entry['objectclass'][0] = 'dnszone';
 			$entry['objectclass'][1] = 'top';
