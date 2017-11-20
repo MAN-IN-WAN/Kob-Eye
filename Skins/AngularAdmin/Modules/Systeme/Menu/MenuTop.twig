@@ -123,7 +123,7 @@
             </div>
         </div>
     </div>
-    {#{% if User.isRole('PARC_TECHNICIEN') %}#}
-        {#{{ include(template_from_string(module('Systeme/Widget/InfraOverview'))) }}#}
-    {#{% endif %}#}
+    {% if User.isRole('PARC_TECH') %}
+        {{ include(template_from_string(module('Systeme/Widget/InfraOverview'))) }}
+    {% endif %}
 </nav>

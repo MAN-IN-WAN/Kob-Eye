@@ -121,8 +121,16 @@ class AbtelBackup extends Module{
         while (!feof($proc)){
             $buf     = fread($proc, 4096);
             //cas borg
-            if (preg_match('#^([0-9\.]+) MB #',$buf,$out)&&$activity&&$total) {
-                $progress = (floatval($out[1])*100000000)/$total;
+            if (preg_match('#^([0-9\.]+)? MB O#',$buf,$out)&&$activity&&$total) {
+                $progress = (floatval($out[1]))/$total;
+                $activity->setProgression($progress);
+            }
+            if (preg_match('#^([0-9\.]+)? GB O#',$buf,$out)&&$activity&&$total) {
+                $progress = (floatval($out[1])*1000)/$total;
+                $activity->setProgression($progress);
+            }
+            if (preg_match('#^([0-9\.]+)? TB O#',$buf,$out)&&$activity&&$total) {
+                $progress = (floatval($out[1])*1000000)/$total;
                 $activity->setProgression($progress);
             }
             $complete_output .= $buf;
@@ -137,6 +145,15 @@ class AbtelBackup extends Module{
         }
         return str_replace("Exit status : " . $matches[0], '', $complete_output);
     }
+
+    static public function getPid($prog){
+        try {
+            $output = AbtelBackup::localExec('sudo pgrep ' . $prog);
+        }catch (Exception $e){
+            return false;
+        }
+        return $output;
+    }
     static public function getMyIp(){
         $output = AbtelBackup::localExec('/usr/sbin/ifconfig');
         preg_match('#inet ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)#',$output,$out);
@@ -146,5 +163,30 @@ class AbtelBackup extends Module{
         $output = AbtelBackup::localExec('/usr/bin/ls -l "'.$path.'"');
         preg_match('#^[rwx-]+ [0-9]{1} [^ ]+ [^ ]+ ([0-9]+)#',$output,$out);
         return $out[1];
+    }
+    static function resetData(){
+        //Suppression des fichiers
+        AbtelBackup::localExec('sudo rm /backup/nfs/* -Rf');
+        AbtelBackup::localExec('sudo rm /backup/borg/* -Rf');
+        AbtelBackup::localExec('sudo rm /backup/restore/* -Rf');
+        //AbtelBackup::localExec('sudo rm /backup/samba/* -Rf');
+        //vidage des tables
+        $GLOBALS["Systeme"]->Db[0]->query('TRUNCATE `kob-AbtelBackup-Activity`;TRUNCATE `kob-AbtelBackup-BackupStore`;TRUNCATE `kob-AbtelBackup-BorgRepo`;TRUNCATE `kob-AbtelBackup-Esx`;TRUNCATE `kob-AbtelBackup-EsxVm`;TRUNCATE `kob-AbtelBackup-EsxVmRestorePointId`;TRUNCATE `kob-AbtelBackup-RemoteJob`;TRUNCATE `kob-AbtelBackup-RestorePoint`;TRUNCATE `kob-AbtelBackup-SambaJob`;TRUNCATE `kob-AbtelBackup-SambaShare`;TRUNCATE `kob-AbtelBackup-VmJob`;');
+        return true;
+    }
+    static function initFolders(){
+        //Suppression des fichiers
+        AbtelBackup::localExec('if [ ! -d /backup ]; then sudo mkdir /backup; fi');
+        AbtelBackup::localExec('if [ ! -d /backup/nfs ]; then sudo mkdir /backup/nfs; fi');
+        AbtelBackup::localExec('sudo chown nfsnobody:nfsnobody /backup/nfs');
+        AbtelBackup::localExec('if [ ! -d /backup/borg ]; then sudo mkdir /backup/borg; fi');
+        AbtelBackup::localExec('sudo chown backup:backup /backup/borg');
+        AbtelBackup::localExec('if [ ! -d /backup/restore ]; then sudo mkdir /backup/restore; fi');
+        AbtelBackup::localExec('sudo chown backup:backup /backup/restore');
+        AbtelBackup::localExec('if [ ! -d /backup/samba ]; then sudo mkdir /backup/samba; fi');
+        AbtelBackup::localExec('sudo chown backup:backup /backup/samba');
+        //redemarrge des services
+        AbtelBackup::localExec('sudo systemctl restart nfs-server');
+        return true;
     }
 }

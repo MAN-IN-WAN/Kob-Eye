@@ -265,20 +265,15 @@
 
 				var needsDisplayText;
 				function setDisplayText(value) {
-					var locals = { };
-					locals[valueName] = controller.$modelValue;
-					//var text = displayFn(scope, locals);
 					var text = value;
 
 					if (text === undefined) {
-						var map = matchMap[hashKey(controller.$modelValue)];
-						if (map) {
-							text = map.label;
-						}
+						text = options.displayText;
 					}
 
 					needsDisplayText = !text;
-					childScope.displayText = text || options.displayText;
+					if (text!=options.displayText||!childScope.displayText)
+						childScope.displayText = text;
 				}
 
 				function getOptions() {

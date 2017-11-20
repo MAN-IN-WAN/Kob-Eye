@@ -127,23 +127,25 @@
   // Built-in defaults
 
   var defaults = {
-    lines: 12,            // The number of lines to draw
-    length: 7,            // The length of each line
-    width: 5,             // The line thickness
-    radius: 10,           // The radius of the inner circle
-    rotate: 0,            // Rotation offset
-    corners: 1,           // Roundness (0..1)
-    color: '#000',        // #rgb or #rrggbb
-    direction: 1,         // 1: clockwise, -1: counterclockwise
-    speed: 1,             // Rounds per second
-    trail: 100,           // Afterglow percentage
-    opacity: 1/4,         // Opacity of the lines
-    fps: 20,              // Frames per second when using setTimeout()
-    zIndex: 2e9,          // Use a high z-index by default
-    className: 'spinner', // CSS class to assign to the element
-    top: '50%',           // center vertically
-    left: '50%',          // center horizontally
-    position: 'absolute'  // element position
+      lines: 15, // The number of lines to draw
+      length: 20, // The length of each line
+      width: 4, // The line thickness
+      radius: 20, // The radius of the inner circle
+      scale: 1.5, // Scales overall size of the spinner
+      corners: 1, // Corner roundness (0..1)
+      color: '#000', // #rgb or #rrggbb or array of colors
+      opacity: 0.3, // Opacity of the lines
+      rotate: 0, // The rotation offset
+      direction: 1, // 1: clockwise, -1: counterclockwise
+      speed: 1, // Rounds per second
+      trail: 62, // Afterglow percentage
+      fps: 20, // Frames per second when using setTimeout() as a fallback in IE 9
+      zIndex: 2e9, // The z-index (defaults to 2000000000)
+      className: 'small_spinner', // The CSS class to assign to the spinner
+      top: '50%', // Top position relative to parent
+      left: '50%', // Left position relative to parent
+      shadow: false, // Whether to render a shadow
+      position: 'absolute' // Element positioning
   }
 
   /** The constructor */
@@ -166,7 +168,7 @@
 
       var self = this
         , o = self.opts
-        , el = self.el = css(createEl(0, {className: o.className}), {position: o.position, width: 0, zIndex: o.zIndex})
+        , el = self.el = css(createEl(0, {className: o.className}), {position: o.position, width: '100%', zIndex: o.zIndex})
 
       css(el, {
         left: o.left,

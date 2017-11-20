@@ -70,13 +70,18 @@
             {% elseif field.type == "int" %}
                 <span class="label label-primary">{[{ item.{{ field.name }} }]}</span>
             {% elseif field.type == "fkey" and field.card == "short" %}
-                <a class="btn btn-secondary btn-xs" href="#{{ field.link }}/{[{ item.{{ field.name }} }]}">{[{ item.{{ field.name }}label }]}</a>
+                <a class="btn btn-secondary btn-xs" href="#{{ field.link }}/{[{ item.{{ field.objectName }}{{ field.name }} }]}">{[{ item.{{ field.objectName }}{{ field.name }}label }]}</a>
             {% elseif field.type == "progress" %}
                 <progress class="progress progress-danger progress-striped progress-animated" ng-if="item.{{ field.name }} < 100" value="{[{ item.{{ field.name }} }]}" max="100">{[{ item.{{ field.name }} }]}</progress>
                 <progress class="progress progress-success progress-striped progress-animated" ng-if="item.{{ field.name }} == 100" value="{[{ item.{{ field.name }} }]}" max="100">{[{ item.{{ field.name }} }]}</progress>
             {% elseif field.type == "boolean" %}
-                <span class="label label-success" ng-if="item.{{ field.name }}"><i class="fa fa-check"></i></span>
-                <span class="label label-danger" ng-if="!item.{{ field.name }}"><i class="fa fa-times"></i></span>
+                {% if field.special == "reverse" %}
+                    <span class="label label-success" ng-if="!item.{{ field.name }}"><i class="fa fa-check"></i></span>
+                    <span class="label label-danger" ng-if="item.{{ field.name }}"><i class="fa fa-times"></i></span>
+                {% else %}
+                    <span class="label label-success" ng-if="item.{{ field.name }}"><i class="fa fa-check"></i></span>
+                    <span class="label label-danger" ng-if="!item.{{ field.name }}"><i class="fa fa-times"></i></span>
+                {% endif %}
             {% elseif field.type == "text" %}
                 <span ng-bind-html="item.{{ field.name }} | nl2br"></span>
             {% elseif field.Values | length > 0 %}
@@ -230,16 +235,29 @@
                 <h4 class="modal-title" id="myModalLabel">{[{ modalObj.title }]}</h4>
             </div>
             <div class="modal-body">
-                <div class="alert alert-danger" ng-if="modalObj.errors">
+                <div class="alert alert-danger" ng-if="modalObj.errors.length">
                     <ul>
                         <li ng-repeat="e in modalObj.errors">{[{ e.Message }]}</li>
                     </ul>
                 </div>
-                {{ include(template_from_string(module('Systeme/Utils/Form?Path=[!Query!]'))) }}
+                <div class="alert alert-warning" ng-if="modalObj.warning.length">
+                    <ul>
+                        <li ng-repeat="e in modalObj.warning">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-success" ng-if="modalObj.infos.length">
+                    <ul>
+                        <li ng-repeat="e in modalObj.infos">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div ng-if="modalObj.success == false">
+                    {{ include(template_from_string(module('Systeme/Utils/Form?Path=[!Query!]'))) }}
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn" data-dismiss="modal">Annuler</button>
-                <button type="button" class="btn btn-primary" ng-click="{{ identifier }}modalSave()">Enregistrer les modifications</button>
+                <button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == true">Fermer</button>
+                <button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == false">Annuler</button>
+                <button type="button" class="btn btn-primary" ng-click="{{ identifier }}modalSave()" ng-if="modalObj.success == false">Enregistrer les modifications</button>
             </div>
         </div>
     </div>

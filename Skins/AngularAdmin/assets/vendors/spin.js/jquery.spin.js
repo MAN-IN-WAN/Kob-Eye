@@ -63,7 +63,7 @@ $('#el').spin('flower', 'red');
       }
       if (opts !== false) {
         opts = $.extend(
-          { color: color || $this.css('color') },
+          { color: color},
           $.fn.spin.presets[opts] || opts
         )
         data.spinner = new Spinner(opts).spin(this)
