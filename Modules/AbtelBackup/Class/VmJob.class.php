@@ -76,6 +76,11 @@ class VmJob extends genericClass {
                     parent::Save();
                     return true;
                 break;
+                default:
+                    $this->Running = false;
+                    parent::Save();
+                    return true;
+                break;
             }
         }else{
             $this->addError(Array('Message'=>'Impossible de stopper le job. Il n\'est pas démarré.'));
@@ -96,25 +101,27 @@ class VmJob extends genericClass {
         $this->Running = true;
         parent::Save();
         //init
+        Klog::l('DEBUG demarrage vm');
         $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=1");
         //pour chaque vm
         $vms = Sys::getData('AbtelBackup','VmJob/'.$this->Id.'/EsxVm');
         foreach ($vms as $v){
+            Klog::l('DEBUG vm ==> '.$v->Id.' STEP: '.$this->Step);
             //définition de la vm en cours
             $this->setCurrentVm($v->Id);
             $esx = $v->getOneParent('Esx');
             $borg = $v->getOneParent('BorgRepo');
             try {
                 //nettoyage
-                if ($this->Step<=1)$act = $this->initJob($v,$esx);
+                if (intval($this->Step)<=1)$act = $this->initJob($v,$esx);
                 //configuration
-                if ($this->Step<=2)$act = $this->configJob($v,$esx);
+                if (intval($this->Step)<=2)$act = $this->configJob($v,$esx);
                 //clonage
-                if ($this->Step<=3)$act = $this->cloneJob($v,$esx);
+                if (intval($this->Step)<=3)$act = $this->cloneJob($v,$esx);
                 //compression
-                if ($this->Step<=4)$act = $this->compressJob($v);
+                if (intval($this->Step)<=4)$act = $this->compressJob($v);
                 //déduplication
-                if ($this->Step<=5)$act = $this->deduplicateJob($v,$borg);
+                if (intval($this->Step)<=5)$act = $this->deduplicateJob($v,$borg);
             }catch (Exception $e){
                 $act->addDetails($v->Titre." ERROR => ".$e->getMessage(),'red');
                 $act->Terminated = true;
@@ -149,7 +156,8 @@ class VmJob extends genericClass {
     /**
      * Nettoyage de l'esx et du stor elocal
      */
-    private function clean($v,$esx) {
+    private function initJob($v,$esx) {
+        Klog::l('DEBUG Test INIT JOB');
         $this->setStep(1); //Initialisation
         $act = $this->createActivity($v->Titre.' > Nettoyage des archives',$v);
         $act->addDetails('Suppression du script ghettoVCB','yellow');
