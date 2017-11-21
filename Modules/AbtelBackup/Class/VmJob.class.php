@@ -79,6 +79,7 @@ class VmJob extends genericClass {
                 default:
                     $this->Running = false;
                     parent::Save();
+                    $this->addSuccess(Array('Message' => 'Job stoppé avec succès.'));
                     return true;
                 break;
             }
@@ -255,7 +256,6 @@ VM_STARTUP_ORDER=
         $act->setProgression(100);
         $this->Progression = 45;
         parent::Save();
-        $total = AbtelBackup::getSize('/backup/nfs/'.$v->Titre);
         return $act;
     }
     /**
@@ -263,6 +263,7 @@ VM_STARTUP_ORDER=
      * Compression de la vm
      */
     private function compressJob($v){
+        $total = AbtelBackup::getSize('/backup/nfs/'.$v->Titre);
         $this->setStep(4); //'Compression'
         $act = $this->createActivity($v->Titre.' > Compression vmjob',$v);
         $act->addDetails($v->Titre.' ---> compression du clone TOTAL:'.$total);

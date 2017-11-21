@@ -1,8 +1,8 @@
-app.service('Poller',function($http){
+app.service('Poller',function($http,$rootScope){
     var pollBreak = false,
         interval = 1000,
-        duration = 15
-        lastPoll = null;
+        duration = 15,
+        lastPoll = 0;
 
     return {
         poll:poll,
@@ -15,7 +15,6 @@ app.service('Poller',function($http){
 
         pollBreak = false;
 
-        console.log('&&&&&&&&&&&&&&&&&',lastPoll);
 
         var data = {
             pollStart: lastPoll,
@@ -24,13 +23,26 @@ app.service('Poller',function($http){
         };
 
         $http.post("/Systeme/Utils/pollAll.json",data)
-            .then(function(data) {
-                callback(data);
-                lastPoll = data.lastSearch;
+            .then(function(out) {
+                //callback(out.data);
+                //en fonction du type on met à jour la donnée ou le store
+                for (var ev in out.data.events) {
+                    ev = out.data.events[ev];
+                    if (ev.Type=='Edit'){
+                        $rootScope.$broadcast(ev.Module+ev.ObjectClass+'Store',{type:'edit',id:ev.ObjectId});
+                    }else if (ev.Type == 'Add'){
+                        //mise à jour liste
+                        $rootScope.$broadcast(ev.Module+ev.ObjectClass+'Store',{type:'add',id:ev.ObjectId});
+                    }else if (ev.Type == 'Delete'){
+                        //mise à jour liste
+                        $rootScope.$broadcast(ev.Module+ev.ObjectClass+'Store',{type:'delete',id:ev.ObjectId});
+                    }
+                }
+                lastPoll = out.data.lastSearch;
                 if(!pollBreak)
                     poll(callback);
             }, function(response){
-                console.log('blarg',response)
+                console.log('blarg',response);
             });
 
 
@@ -42,6 +54,10 @@ app.service('Poller',function($http){
     }
 
 
+});
+app.run(function(Poller){
+    console.log(' -------- start Poller -------- ');
+    //Poller.poll();
 });
 
 

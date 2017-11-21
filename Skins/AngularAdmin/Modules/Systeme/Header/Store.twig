@@ -1,6 +1,7 @@
 {% for key,st in stores %}
     app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrenelements %},{{ child.identifier }}Store{% endfor %}) {
         var {{ st.identifier }}Store = {'default': [], select: [], children: [], form: [] },
+            contexts = ['default','select','children','form'],
             currentPage = { 'default': 1 , select: 1, children: 1, form: 1},
             pageLoaded = { 'default': 0 , select: 0, children: 0, form: 0},
             total = { 'default': 0 , select: 0, children: 0, form: 0},
@@ -9,6 +10,7 @@
             timer = 0,
             query = { 'default': '/{{ st.module }}/{{ st.objecttype }}', select: '/{{ st.module }}/{{ st.objecttype }}', children: '/{{ st.module }}/{{ st.objecttype }}', form: '/{{ st.module }}/{{ st.objecttype }}'},
             busy = { 'default': 0 , select: 0, children: 0, form: 0};
+
         return {
             getOneData: getOneData,
             getData: getData,
@@ -31,18 +33,21 @@
             resetQuery: resetQuery,
             setQuery: setQuery,
             getQuery: getQuery,
+            query: query,
             data:{{ st.identifier }}Store
         };
         function initContext(context) {
             {{ st.identifier }}Store[context] = [];
+            total[context] = 0;
             filters[context] = '';
             currentPage[context] = '';
             resetQuery(context);
+            contexts.push(context);
          }
         function resetQuery(context = 'default') {
-            console.log(context+' >> {{ st.identifier }} >> resetquery');
             pageLoaded[context] = 0;
             query[context] = '/{{ st.module }}/{{ st.objecttype }}';
+            console.log(context+' >> {{ st.identifier }} >> resetquery > '+query[context]);
             return query[context];
         }
 
@@ -64,7 +69,6 @@
             return pageLength;
         }
         function getTotal(context = 'default') {
-            console.log(context+' >> {{ st.identifier }} >> gettotal >> '+total[context]);
             return total[context];
         }
         function purgeStore(context = 'default'){
@@ -81,13 +85,21 @@
         * Définition du filtre
         **/
         function refresh(context = 'default'){
-            pageLoaded[context]--;
-            getData(currentPage[context],context);
+            if (context == 'all') {
+                for (var c in contexts){
+                    pageLoaded[contexts[c]]--;
+                    getData(currentPage[contexts[c]], contexts[c]);
+                }
+            }else{
+                pageLoaded[contexts[c]]--;
+                getData(currentPage[context], context);
+            }
         }
         /**
         * Définition du filtre
         **/
         function setFilters(filter,context='default',blur = false,noreload = false){
+            if (filters[context]==undefined) initContext(context);
             if (filter==filters[context]) return;
             filters[context] = filter;
             pageLoaded[context]=0;
@@ -151,21 +163,22 @@
         */
         function getOneData(id,context = 'default',full = true) {
             return $q(function(resolve, reject) {
-                console.log('store > {{ st.identifier }} > getOneData '+id,id);
+                console.log(context+' >> store > {{ st.identifier }} > getOneData '+id,id);
                 var idStore = -1;
-                for (var i in {{ st.identifier }}Store[context]){
-                    if ({{ st.identifier }}Store[context][i].id==id){
-                        idStore = i;
-                        resolve({{ st.identifier }}Store[context][i]);
-                        loadChildren({{ st.identifier }}Store[context][i]).then(function (obj){
-                            {{ st.identifier }}Store[context][idStore] = obj;
-                            obj = unescapeData(obj);
-                            if (obj._full){
-                                resolve(obj);
-                                return;
-                            }
-                        });
-                        continue;
+                if (context!='all'){
+                    for (var i in {{ st.identifier }}Store[context]){
+                        if ({{ st.identifier }}Store[context][i].id==id){
+                            idStore = i;
+                            resolve({{ st.identifier }}Store[context][i]);
+                            loadChildren({{ st.identifier }}Store[context][i]).then(function (obj){
+                                {{ st.identifier }}Store[context][idStore] = unescapeData(updateRecord({{ st.identifier }}Store[context][idStore],obj));
+                                if (obj._full){
+                                    resolve(obj);
+                                    return;
+                                }
+                            });
+                            continue;
+                        }
                     }
                 }
                 //si store pas chargé ou introuvable
@@ -174,20 +187,37 @@
                         data = unescapeData(data);
                         console.log(context+' >> store > {{ key }} > load success '+id, data);
                         //mise à jour du store avec infos completes
-                        if (idStore>-1){
-                            data._full = true;
-                            {{ st.identifier }}Store[context][idStore] = data;
+                        if (context == 'all') {
+                            for (var c in contexts){
+                                for (var i in {{ st.identifier }}Store[contexts[c]]){
+                                    if ({{ st.identifier }}Store[contexts[c]][i].id == id){
+                                        {{ st.identifier }}Store[contexts[c]][i] = updateRecord({{ st.identifier }}Store[contexts[c]][i],data);
+                                    }
+                                }
+                            }
+                        }else{
+                            if (idStore>-1){
+                                //mise à jour si existant
+                                data._full = true;
+                                {{ st.identifier }}Store[context][idStore] = updateRecord({{ st.identifier }}Store[context][idStore],data);
+                            }else {
+                                //sinon on ajoute
+                                if ({{ st.identifier }}Store[context] != undefined)
+                                    idStore = {{ st.identifier }}Store[context].length;
+                                else {{ st.identifier }}Store[context] = [];
+                                {{ st.identifier }}Store[context].push(data);
+                            }
                         }
                         //on charge les enfants uniquement si param full
                         if (full)
                             loadChildren(data).then(function (obj){
                                 if (idStore>-1){
                                     obj._full = true;
-                                    {{ st.identifier }}Store[context][idStore] = obj;
+                                    {{ st.identifier }}Store[context][idStore] = updateRecord({{ st.identifier }}Store[context][idStore],obj);
                                 }
-                                resolve(obj);
+                                resolve({{ st.identifier }}Store[context][idStore]);
                             });
-                        else resolve(data);
+                        else resolve({{ st.identifier }}Store[context][idStore]);
                 });
             });
         }
@@ -212,6 +242,16 @@
             return obj;
         }
         /**
+        * updateRecord
+        * Mise à jour des données d'une ligne
+        **/
+        function updateRecord(c,n){
+            for (var f in n){
+                c[f] = n[f];
+            }
+            return c;
+        }
+        /**
         * Get data for combo component
         */
         function getDataFilter (filter,context='default') {
@@ -232,7 +272,7 @@
                     reject('already busy '+context);
                     return;
                 }
-                console.log(context+' >> store > {{ key }} > getData >> page '+page+' >> query '+getQuery(context));
+                console.log(context+' >> store > {{ key }} > getData >> page '+page+' >> query '+getQuery(context),query);
                 if (page!=pageLoaded[context]){
                     busy[context]=true;
                     $http.get(
@@ -284,5 +324,18 @@
                 if (num==0) resolve(obj);
             });
         }
+    }).run(function ({{ key }},$rootScope) {
+        $rootScope.$on('{{ key }}',function (ev,data){
+            switch (data.type){
+                case 'edit':
+                    //raffraichir seulement une valeur
+                    {{ key }}.getOneData(data.id,'all',false,true);
+                    break;
+                default:
+                    //raffraichir seulement une valeur
+                    {{ key }}.refresh('all');
+                    break;
+            }
+        });
     });
 {% endfor %}
