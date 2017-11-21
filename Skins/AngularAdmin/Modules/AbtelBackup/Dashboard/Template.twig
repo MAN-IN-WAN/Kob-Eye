@@ -225,7 +225,7 @@
                                     <th class="activity_error  bool">Erreur</th>#}
                                     <th class="activity_start">Démarré le</th>
                                 </tr>
-                                <tr class="activity-item" ng-repeat="act in AbtelBackupActivityStore.data">
+                                <tr class="activity-item" ng-repeat="act in AbtelBackupActivityStore.data['default']">
                                     <td class="activity_title"><a href="#/{{ Urls.Activity }}/{[{ act.id }]}">{[{ act.Titre }]}</a></td>
                                         <td class="activity_progress">
                                             <progress class="progress progress-danger progress-striped progress-animated" ng-if="act.Progression < 100" value="{[{ act.Progression }]}" max="100" title="{[{ act.Progression }]}%">{[{ act.Progression }]}%</progress>

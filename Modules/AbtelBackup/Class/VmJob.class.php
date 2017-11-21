@@ -274,8 +274,17 @@ VM_STARTUP_ORDER=
         $act->addDetails($v->Titre.' ---> déduplication de la vm');
         //AbtelBackup::localExec("export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".time()." '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar'",$act);
         $total = AbtelBackup::getFileSize('/backup/nfs/'.$v->Titre.'.tar');
+
+        //Recup taille pour graphique/progression
+        $this->Size = AbtelBackup::getSize('/backup/nfs/'.$v->Titre.'.tar');
+
         $point = time();
         $det = AbtelBackup::localExec("export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".$point." '/backup/nfs/".$v->Titre.".tar'",$act,$total,'borg');
+
+        //Recup taille pour graphique/progression
+        $this->BackupSize = AbtelBackup::getSize('/backup/borg/EsxVm/'.$v->Titre);
+        parent::Save();
+
         //création du point de restauration
         $v->createRestorePoint($point,$det);
         $act->setProgression(100);

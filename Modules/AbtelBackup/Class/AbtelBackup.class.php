@@ -189,4 +189,7 @@ class AbtelBackup extends Module{
         AbtelBackup::localExec('sudo systemctl restart nfs-server');
         return true;
     }
+    static function getSize($path){
+        return AbtelBackup::localExec("du -sBM $path | sed 's/[^0-9]*//g'");
+    }
 }
