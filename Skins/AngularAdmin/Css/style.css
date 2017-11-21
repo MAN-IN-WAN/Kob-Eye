@@ -25,6 +25,25 @@ table tr td.table-details{
     background-color: #7499FF;
 }
 
+progress.progress.progress-danger{
+    position: relative;
+}
+progress.progress.progress-danger:after{
+    content: attr(value)'%';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    margin-left: -25px;
+    margin-top: -8px;
+    color: #333;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #fff, -1px -1px 1px #fff;
+}
+
 .prio_allGood{
     color: #83bf21;
 }

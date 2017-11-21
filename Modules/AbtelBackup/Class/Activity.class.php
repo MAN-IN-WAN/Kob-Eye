@@ -1,10 +1,11 @@
 <?php
 class Activity extends genericClass{
-    function addDetails($det,$color = 'cyan') {
-
-        $b = new BashColors();
+    function addDetails($det,$color = 'cyan',$mute = false) {
         $this->Details .= date('d/m/Y H:i:s').' > '.$det."\n";
-        echo $b->getColoredString($det."\n",$color);
+        if(!$mute){
+            $b = new BashColors();
+            echo $b->getColoredString($det."\n",$color);
+        }
         $this->Save();
     }
     function addProgression($prog) {

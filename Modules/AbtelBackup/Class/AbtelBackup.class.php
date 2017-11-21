@@ -110,7 +110,8 @@ class AbtelBackup extends Module{
     /**
      * UTILS FUNCTIONS
      */
-    static public function localExec( $command, $activity = null,$total=0){
+    static public function localExec( $command, $activity = null,$total=0,$path=null)
+    {
         /*exec( $command,$output,$return);
         if( $return ) {
             throw new RuntimeException( "L'éxécution de la commande locale a échoué. commande : ".$command." \n ".print_r($output,true));
@@ -118,6 +119,32 @@ class AbtelBackup extends Module{
         return implode("\n",$output);*/
         $proc = popen("$command 2>&1 ; echo Exit status : $?", 'r');
         $complete_output = "";
+        if ($path){
+            //On fork le process pour calculer le progress en parallele
+            switch ($pid = pcntl_fork()) {
+                case -1:
+                    // @fail
+                    $activity->addDetails('No Fork , No Progress');
+                    break;
+
+                case 0:
+                    // @child: Include() misbehaving code here
+                    while (!feof($proc)) {
+                        $size = AbtelBackup::getSize($path);
+                        $progress = floatval($size)*100/$total;
+                        if ($progress != $activity->Progression)
+                            $activity->setProgression($progress);
+                        sleep(5);
+                    }
+                    exit;
+                    break;
+
+                default:
+                    // @parent
+                    break;
+            }
+        }
+
         while (!feof($proc)){
             $buf     = fread($proc, 4096);
             //cas borg
@@ -133,7 +160,14 @@ class AbtelBackup extends Module{
                 $progress = (floatval($out[1])*1000000)/$total;
                 $activity->setProgression($progress);
             }
+
             $complete_output .= $buf;
+        }
+
+        if($path){
+            posix_kill ( $pid , SIGKILL );
+            //Si le fork a marché on attend la mort de l'enfant
+            if($pid > 0) pcntl_waitpid($pid, $status);
         }
         pclose($proc);
         // get exit status
