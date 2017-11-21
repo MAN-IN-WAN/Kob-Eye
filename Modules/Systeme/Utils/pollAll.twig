@@ -1,0 +1,32 @@
+{
+    "lastSearch": "{{ Now }}",
+    "totalEv": {{ EvCount }},
+    "totalAu": {{ AlCount }},
+    "events":
+    [
+        {% for Ev in items.Ev %}
+            {
+            "Module":"{{ Ev.EventModule }}",
+            "ObjectClass":"{{ Ev.EventObjectClass }}",
+            "ObjectId":"{{ Ev.EventId }}",
+            "Titre":"{{ Ev.Titre }}",
+            "Type":"{{ Ev.EventType }}",
+            "Id":"{{ Ev.Id }}"
+            }{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ],
+    "alerts":
+    [
+        {% for Ev in items.Au %}
+            {
+            "Icone":"{{ Au.Icon }}",
+            "Module":"{{ Au.AlertModule }}",
+            "ObjectClass":"{{ Au.AlertObject }}",
+            "ObjectId":"{{ Au.ObjectId }}",
+            "Titre":"{{ Au.Title }}",
+            "Date":"{{ Au.Date }}",
+            "Tag":"{{ Au.Tag }}"
+            }{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ]
+}

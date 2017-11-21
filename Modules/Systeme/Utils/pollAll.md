@@ -12,6 +12,7 @@
     "events":
     [
         [STORPROC [!items::Ev!]|Ev]
+
             {
             "Module":"[!Ev::EventModule!]",
             "ObjectClass":"[!Ev::EventObjectClass!]",

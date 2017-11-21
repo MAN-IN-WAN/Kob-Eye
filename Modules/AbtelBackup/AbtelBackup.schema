@@ -33,7 +33,7 @@
 		<FKEY data="BorgRepo,Id" card="0,1" form="1" fiche="1" list="1" listDescr="Dépôt" parentDescription="Dépôt BORG">BorgRepoId</FKEY>
 		<RKEY data="RestorePoint,Id" card="0,n">RestorePointId</RKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Activity" AccessPoint="1" driver="mysql" Description="Activité des jobs"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelBackup/Class/Activity.class.php">
+	<OBJECTCLASS title="Activity" logEvent="1"  AccessPoint="1" driver="mysql" Description="Activité des jobs"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelBackup/Class/Activity.class.php">
 		<FILTER name="Toutes les activités" color="warning" ></FILTER>
 		<FILTER name="Activités en cours" color="success" ><![CDATA[Started=1&Errors=0&Success=0]]></FILTER>
 		<FILTER name="Activités en erreur" ><![CDATA[Started=1&Errors=1]]></FILTER>
@@ -72,7 +72,7 @@
 		<PROPERTIES type="raw" searchOrder="2" form="1" fiche="1" listDescr="">Details</PROPERTIES>
 		<FKEY data="BorgRepo,Id" card="0,1">BorgRepoId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="VmJob" AccessPoint="1" driver="mysql" Description="Job VM"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelBackup/Class/VmJob.class.php">
+	<OBJECTCLASS title="VmJob" logEvent="1"  AccessPoint="1" driver="mysql" Description="Job VM"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelBackup/Class/VmJob.class.php">
 		<FUNCTION title="Démarrer maintenant">runNow</FUNCTION>
 		<FUNCTION title="Arrêter maintenant">stop</FUNCTION>
 		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1"  obligatoire="1" listDescr="Titre">Titre</PROPERTIES>

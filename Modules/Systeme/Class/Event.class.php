@@ -35,6 +35,7 @@ class Event extends genericClass {
 
 
 	function pollEvents($module,$object=null,$lastAlert=0,$interval = 1000,$maxDuration=15){
+        Connection::CloseSession();
         if($lastAlert == '' || $lastAlert == null || $lastAlert == 'NULL')
             $lastAlert=time();
         if($interval == '' || $interval == null || $interval == 'NULL' || $interval == 0)
@@ -64,6 +65,7 @@ class Event extends genericClass {
     }
 
     function pollAll($lastAlert=0,$interval = 1000,$maxDuration=15){
+        Connection::CloseSession();
         if($lastAlert == '' || $lastAlert == null || $lastAlert == 'NULL')
             $lastAlert=time();
         if($interval == '' || $interval == null || $interval == 'NULL' || $interval == 0)
