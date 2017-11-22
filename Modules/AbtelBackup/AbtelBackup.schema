@@ -17,7 +17,7 @@
 		<PROPERTIES type="text" description="Clef privée Ssh">PrivateKey</PROPERTIES>
 		<PROPERTIES type="text" description="Clef publique Ssh">PublicKey</PROPERTIES>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="EsxVm" AccessPoint="1" driver="mysql" Description="Machine virtuelle"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Operations="delete,edit" Class="Modules/AbtelBackup/Class/EsxVm.class.php">
+	<OBJECTCLASS title="EsxVm" logEvent="1" AccessPoint="1" driver="mysql" Description="Machine virtuelle"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Operations="delete,edit" Class="Modules/AbtelBackup/Class/EsxVm.class.php">
 		<FILTER name="Toutes les vms" color="warning" ></FILTER>
 		<FILTER name="Les vms sauvegardées" color="success" >BackupSize>0</FILTER>
 		<FUNCTION title="Vérification du dépôt">checkBorgRepo</FUNCTION>

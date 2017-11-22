@@ -62,22 +62,30 @@ class VmJob extends genericClass {
                         $this->addWarning(Array('Message'=>'Le processus n\'a pas été trouvé.'));
                     }
                     $this->Running = false;
+                    $this->clearAct();
                     parent::Save();
                     return true;
                 break;
                 case 5:
                     if (AbtelBackup::getPid('borg')) {
                         AbtelBackup::localExec('sudo killall -9 borg');
+                        $vms = Sys::getData('AbtelBackup','VmJob/'.$this->Id.'/EsxVm');
+                        foreach ($vms as $v){
+                            $borg = $v->getOneParent('BorgRepo');
+                            AbtelBackup::localExec('sudo rm '.$borg->Path.'/lock.* -Rf');
+                        }
                         $this->addSuccess(Array('Message' => 'Déduplication stoppée avec succès.'));
                     }else{
                         $this->addWarning(Array('Message'=>'Le processus n\'a pas été trouvé.'));
                     }
                     $this->Running = false;
+                    $this->clearAct();
                     parent::Save();
                     return true;
                 break;
                 default:
                     $this->Running = false;
+                    $this->clearAct();
                     parent::Save();
                     $this->addSuccess(Array('Message' => 'Job stoppé avec succès.'));
                     return true;
@@ -124,6 +132,7 @@ class VmJob extends genericClass {
                 //déduplication
                 if (intval($this->Step)<=5)$act = $this->deduplicateJob($v,$borg);
             }catch (Exception $e){
+                if(!$act) $act = $this->createActivity($v->Titre.' > Exception: Step '.$this->Step,$v);
                 $act->addDetails($v->Titre." ERROR => ".$e->getMessage(),'red');
                 $act->Terminated = true;
                 $act->Errors = true;
@@ -132,10 +141,11 @@ class VmJob extends genericClass {
                 $this->Running = false;
                 $this->Errors = true;
                 parent::Save();
+                return;
             }
-            //opération terminée
-            $this->resetState();
         }
+        //opération terminée
+        $this->resetState();
     }
     /**
      * setStep
@@ -250,7 +260,7 @@ VM_STARTUP_ORDER=
      */
     private function cloneJob($v,$esx){
         $this->setStep(3); //'Clonage'
-        $act = $this->createActivity($v->Titre.' > Clonage vmjob');
+        $act = $this->createActivity($v->Titre.' > Clonage vmjob',$v);
         $act->addDetails($v->Titre.' ---> clonage de la vm');
         $esx->remoteExec('sh ghettoVCB.sh -m "' . $v->Titre . '" -g ghettovcb.conf',$act);
         $act->setProgression(100);
@@ -267,7 +277,7 @@ VM_STARTUP_ORDER=
         $this->setStep(4); //'Compression'
         $act = $this->createActivity($v->Titre.' > Compression vmjob',$v);
         $act->addDetails($v->Titre.' ---> compression du clone TOTAL:'.$total);
-        AbtelBackup::localExec("sudo bsdtar cSf '/backup/nfs/".$v->Titre.".tar' '/backup/nfs/".$v->Titre."/".$v->Titre."-A'",$act,'tar');
+        AbtelBackup::localExec("sudo bsdtar cSf '/backup/nfs/".$v->Titre.".tar' '/backup/nfs/".$v->Titre."/".$v->Titre."-A'",$act,$total,'/backup/nfs/'.$v->Titre.'.tar');
         $this->Progression = 75;
         parent::Save();
         $act->addProgression(100);
@@ -279,12 +289,24 @@ VM_STARTUP_ORDER=
      */
     private function deduplicateJob($v,$borg){
         $this->setStep(5); //'Déduplication'
+        AbtelBackup::localExec('sudo rm '.$borg->Path.'/lock.* -Rf');
+        $total = AbtelBackup::getSize('/backup/nfs/'.$v->Titre.'.tar');
         $act = $this->createActivity($v->Titre.' > Déduplication vmjob TOTAL:'.$total,$v);
         $act->addDetails($v->Titre.' ---> déduplication de la vm');
         //AbtelBackup::localExec("export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".time()." '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar'",$act);
-        $total = AbtelBackup::getFileSize('/backup/nfs/'.$v->Titre.'.tar');
+
+
+        //Recup taille pour graphique/progression
+        $this->Size = $total;
+
         $point = time();
+        file_put_contents('tototoottoto',"export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".$point." '/backup/nfs/".$v->Titre.".tar'");
         $det = AbtelBackup::localExec("export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".$point." '/backup/nfs/".$v->Titre.".tar'",$act,$total,'borg');
+
+        //Recup taille pour graphique/progression
+        $this->BackupSize = AbtelBackup::getSize($borg->Path);
+        parent::Save();
+
         //création du point de restauration
         $v->createRestorePoint($point,$det);
         $act->setProgression(100);
@@ -303,5 +325,15 @@ VM_STARTUP_ORDER=
         $this->Running = false;
         $this->Progression = 0;
         parent::Save();
+    }
+
+    private function clearAct(){
+        $acts = $this->getChildren('Activity/Started=1&Errors=0&Success=0');
+        foreach($acts as $act){
+            //print_r($act);
+            $act->Errors = 1;
+            $act->addDetails(' ---> Arrêt Utilisateur','cyan',true);
+            //print_r($act);
+        }
     }
 }

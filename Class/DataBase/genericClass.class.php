@@ -2918,5 +2918,57 @@ class genericClass extends Root {
 		$pdf->Close();
 		return $res;
 	}
-
+    public function getWebServiceData() {
+        $fields = $this->getElementsByAttribute('fiche|form','',true);
+        $this->label = $this->getFirstSearchOrder();
+        $o = new stdClass();
+        $uc = Sys::getOneData('Systeme','User/'.$this->userCreate);
+        $ue = Sys::getOneData('Systeme','User/'.$this->userEdit);
+        if (is_object($uc))
+            $o->userCreateName = $uc->Login;
+        else $o->userCreateName = 'inconnu';
+        if (is_object($ue))
+            $o->userEditName = $ue->Login;
+        else $o->userEditName = 'inconnu';
+        foreach ($fields as $f){
+            if ($f['type']=='boolean') {
+                //transformation des timestamps en format js
+                $o->{$f['name']} = $this->{$f['name']} ? 1 : 0;
+            }elseif ($f['type']=='date'){
+                //transformation des timestamps en format js
+                $o->{$f['name']} = date('d/m/Y H:i',$this->{$f['name']});
+            }elseif ($f['type']=='text'||$f['type']=='raw'||$f['type']=='varchar'||$f['type']=='html'||$f['type']=='titre'){
+                //transformation des timestamps en format js
+                $o->{$f['name']} = Utils::cleanJson($this->{$f['name']});
+            }elseif ($f['type']=='fkey'&&$f['card']=='short'){
+                if ($this->{$f['name']} > 0) {
+                    $kk = Sys::getOneData($f['objectModule'], $f['objectName'] . '/' . $this->{$f['name']});
+                    if ($kk)
+                        $o->{$f['name'].'label'} = $kk->getFirstSearchOrder();
+                }else{
+                    $o->{$f['name'].'label'} = '';
+                }
+            }elseif ($f['type']=='fkey'&&$f['card']=='long'){
+                $kk = $this->getParents($f['objectName']);
+                $o->{$f['name']} = array();
+                foreach ($kk as $k)
+                    $o->{$f['name']}[] = $k->Id;
+            }elseif ($f['type']=='rkey'){
+                $kk = Sys::getData($f['objectModule'], $this->Module.'/'.$this->ObjectType.'/'.$f['objectName']);
+                $o->{$f['name']} = array();
+                foreach ($kk as $k)$o->{$f['name']}[] = $k->Id;
+            }elseif (isset($f['Values'])&&isset($f['Values'][$this->{$f['name']}])){
+                $o->{$f['name'].'Label'} = $f['Values'][$this->{$f['name']}];
+            }elseif (isset($f['query'])){
+                if ($this->{$f['name']}>0) {
+                    //recherche de sa valeur
+                    $str = explode('::', $f['query']);
+                    $qry = explode('/', $str[0], 2);
+                    $val = Sys::getOneData($qry[0], $qry[1] . '/' . $this->{$f['name']});
+                    $o->{$f['name'].'Label'} = $val->getFirstSearchOrder();
+                }else $o->{$f['name'].'Label'} = '';
+            }else $o->{$f['name']} = $this->{$f['name']};
+        }
+        return $o;
+    }
 }

@@ -1,7 +1,7 @@
 {% for key,st in stores %}
     app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrenelements %},{{ child.identifier }}Store{% endfor %}) {
         var {{ st.identifier }}Store = {'default': [], select: [], children: [], form: [] },
-            contexts = ['default','select','children','form'],
+            contexts = ['default','select','children','form','fiche'],
             currentPage = { 'default': 1 , select: 1, children: 1, form: 1},
             pageLoaded = { 'default': 0 , select: 0, children: 0, form: 0},
             total = { 'default': 0 , select: 0, children: 0, form: 0},
@@ -13,6 +13,8 @@
 
         return {
             getOneData: getOneData,
+            updateOneData: updateOneData,
+            deleteOneData: deleteOneData,
             getData: getData,
             getNewData: getNewData,
             saveData: saveData,
@@ -91,7 +93,7 @@
                     getData(currentPage[contexts[c]], contexts[c]);
                 }
             }else{
-                pageLoaded[contexts[c]]--;
+                pageLoaded[context]--;
                 getData(currentPage[context], context);
             }
         }
@@ -165,19 +167,42 @@
             return $q(function(resolve, reject) {
                 console.log(context+' >> store > {{ st.identifier }} > getOneData '+id,id);
                 var idStore = -1;
-                if (context!='all'){
+                if (context != 'all'){
+                    //recherche dans le contexte courrant
                     for (var i in {{ st.identifier }}Store[context]){
                         if ({{ st.identifier }}Store[context][i].id==id){
                             idStore = i;
                             resolve({{ st.identifier }}Store[context][i]);
-                            loadChildren({{ st.identifier }}Store[context][i]).then(function (obj){
-                                {{ st.identifier }}Store[context][idStore] = unescapeData(updateRecord({{ st.identifier }}Store[context][idStore],obj));
-                                if (obj._full){
-                                    resolve(obj);
-                                    return;
+                            console.log(context+' >> store > {{ st.identifier }} > getOneData '+id+' > store local');
+                            if (!{{ st.identifier }}Store[context][i]._full){
+                                loadChildren({{ st.identifier }}Store[context][i]).then(function (obj){
+                                    {{ st.identifier }}Store[context][idStore] = unescapeData(updateRecord({{ st.identifier }}Store[context][idStore],obj));
+                                    if (obj._full){
+                                        resolve(obj);
+                                    }
+                                });
+                            }
+                        }
+                    }
+                    if (idStore==-1){
+                        //recherche dans tous les contextes
+                        for (var c in contexts){
+                            for (var i in {{ st.identifier }}Store[contexts[c]]){
+                                if ({{ st.identifier }}Store[contexts[c]][i].id == id){
+                                    if ({{ st.identifier }}Store[context] ==undefined) {{ st.identifier }}Store[context] = [];
+                                    idStore = {{ st.identifier }}Store[context].length;
+                                    {{ st.identifier }}Store[context].push({{ st.identifier }}Store[contexts[c]][i]);
+                                    resolve({{ st.identifier }}Store[context][idStore]);
+                                    if (!{{ st.identifier }}Store[context][idStore]._full){
+                                        loadChildren({{ st.identifier }}Store[context][idStore]).then(function (obj){
+                                            {{ st.identifier }}Store[context][idStore] = unescapeData(updateRecord({{ st.identifier }}Store[context][idStore],obj));
+                                            if (obj._full){
+                                                resolve(obj);
+                                            }
+                                        });
+                                    }
                                 }
-                            });
-                            continue;
+                            }
                         }
                     }
                 }
@@ -195,29 +220,35 @@
                                     }
                                 }
                             }
+                            resolve({{ st.identifier }}Store[contexts[c]][i]);
                         }else{
                             if (idStore>-1){
                                 //mise à jour si existant
                                 data._full = true;
                                 {{ st.identifier }}Store[context][idStore] = updateRecord({{ st.identifier }}Store[context][idStore],data);
+                                console.log(context+' >> store > {{ key }} > getOneData '+id+' > update local store');
                             }else {
                                 //sinon on ajoute
-                                if ({{ st.identifier }}Store[context] != undefined)
-                                    idStore = {{ st.identifier }}Store[context].length;
-                                else {{ st.identifier }}Store[context] = [];
+                                if ({{ st.identifier }}Store[context] == undefined)
+                                    {{ st.identifier }}Store[context] = [];
+                                idStore = {{ st.identifier }}Store[context].length;
                                 {{ st.identifier }}Store[context].push(data);
+                                console.log(context+' >> store > {{ key }} > getOneData '+id+' ajout dans le store');
+                            }
+                            //on charge les enfants uniquement si param full
+                            if (full)
+                                loadChildren(data).then(function (obj){
+                                    if (idStore>-1){
+                                        obj._full = true;
+                                        {{ st.identifier }}Store[context][idStore] = updateRecord({{ st.identifier }}Store[context][idStore],obj);
+                                    }
+                                    resolve({{ st.identifier }}Store[context][idStore]);
+                                });
+                            else{
+                                console.log(context+' >> store > {{ key }} > getOneData '+id+' retour',idStore,{{ st.identifier }}Store[context][idStore]);
+                                resolve({{ st.identifier }}Store[context][idStore]);
                             }
                         }
-                        //on charge les enfants uniquement si param full
-                        if (full)
-                            loadChildren(data).then(function (obj){
-                                if (idStore>-1){
-                                    obj._full = true;
-                                    {{ st.identifier }}Store[context][idStore] = updateRecord({{ st.identifier }}Store[context][idStore],obj);
-                                }
-                                resolve({{ st.identifier }}Store[context][idStore]);
-                            });
-                        else resolve({{ st.identifier }}Store[context][idStore]);
                 });
             });
         }
@@ -251,6 +282,55 @@
             }
             return c;
         }
+
+        /**
+         * updateOneData
+         * Met à jour une donnée dans un contexte ou l'ensemble des contexte possédant cette donnée
+         */
+        function updateOneData(id,data,context = 'default'){
+            if (context == 'all') {
+                for (var c in contexts){
+                    for (var i in {{ st.identifier }}Store[contexts[c]]){
+                        if ({{ st.identifier }}Store[contexts[c]][i].id == id){
+                            {{ st.identifier }}Store[contexts[c]][i] = updateRecord({{ st.identifier }}Store[contexts[c]][i],data);
+                        }
+                    }
+                }
+            }else{
+                for (var i in {{ st.identifier }}Store[context]){
+                    if ({{ st.identifier }}Store[context][i].id==id){
+                        {{ st.identifier }}Store[context][i] = updateRecord({{ st.identifier }}Store[context][i],data);
+                    }
+                }
+            }
+        }
+
+        /**
+         * delete
+         * Supprime une donnée dasn les store et envoie la requete au serveur
+         */
+        function deleteOneData (id,context = 'default',onlyStore = false){
+            if (context == 'all') {
+                for (var c in contexts){
+                    for (var i in {{ st.identifier }}Store[contexts[c]]){
+                        if ({{ st.identifier }}Store[contexts[c]][i].id == id){
+                            {{ st.identifier }}Store[contexts[c]].splice(i,1);
+                        }
+                    }
+                }
+            }else{
+                for (var i in {{ st.identifier }}Store[context]){
+                    if ({{ st.identifier }}Store[context][i].id==id){
+                        {{ st.identifier }}Store[context].splice(i,1);
+                    }
+                }
+            }
+            if (!onlyStore)
+                $http.get('/{{ st.module }}/{{ st.objecttype }}/'+id+'/Delete.json')
+                    .success(function(data) {
+                        console.log('store > {{ st.module }}/{{ st.objecttype }} > deleted '+id, data);
+                    });
+        }
         /**
         * Get data for combo component
         */
@@ -272,7 +352,7 @@
                     reject('already busy '+context);
                     return;
                 }
-                console.log(context+' >> store > {{ key }} > getData >> page '+page+' >> query '+getQuery(context),query);
+                console.log(context+' >> store > {{ key }} > getData >> page '+page+' ');
                 if (page!=pageLoaded[context]){
                     busy[context]=true;
                     $http.get(
@@ -329,9 +409,14 @@
             switch (data.type){
                 case 'edit':
                     //raffraichir seulement une valeur
-                    {{ key }}.getOneData(data.id,'all',false,true);
+                    {{ key }}.updateOneData(data.id,data.data,'all');
                     break;
-                default:
+                case 'delete':
+                    //raffraichir seulement une valeur
+                    {{ key }}.deleteOneData(data.id,'all',true);
+                    {{ key }}.refresh('all');
+                    break;
+                case 'add':
                     //raffraichir seulement une valeur
                     {{ key }}.refresh('all');
                     break;
