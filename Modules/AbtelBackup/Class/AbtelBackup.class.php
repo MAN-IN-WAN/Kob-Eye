@@ -147,34 +147,44 @@ class AbtelBackup extends Module{
 
         while (!feof($proc)){
             $buf     = fread($proc, 4096);
+            $progress = 0;
+
             //cas borg
             if (preg_match('#^([0-9\.]+)? MB O#',$buf,$out)&&$activity&&$total) {
                 $progress = (floatval($out[1]))/$total;
-                $activity->setProgression($progress);
+                $activity->setProgression($progress*100);
             }
             if (preg_match('#^([0-9\.]+)? GB O#',$buf,$out)&&$activity&&$total) {
                 $progress = (floatval($out[1])*1000)/$total;
-                $activity->setProgression($progress);
+                $activity->setProgression($progress*100);
             }
             if (preg_match('#^([0-9\.]+)? TB O#',$buf,$out)&&$activity&&$total) {
                 $progress = (floatval($out[1])*1000000)/$total;
-                $activity->setProgression($progress);
+                $activity->setProgression($progress*100);
             }
+
+            //file_put_contents('triliilili',$buf,8);
+            //file_put_contents('truluululu',$progress,8);
 
             $complete_output .= $buf;
         }
 
+
         if($path){
-            posix_kill ( $pid , SIGKILL );
-            //Si le fork a marché on attend la mort de l'enfant
-            if($pid > 0) pcntl_waitpid($pid, $status);
+            //On tue le fork pour eviter les process zombies
+            if($pid > 0){
+                posix_kill ( $pid , SIGKILL );
+                //Si le fork a marché on attend la mort de l'enfant
+                pcntl_waitpid($pid, $status);
+            }
         }
+
         pclose($proc);
         // get exit status
         preg_match('/[0-9]+$/', $complete_output, $matches);
 
         // return exit status and intended output
-        if( $matches[0] !== "0" ) {
+        if( $matches[0] !== "0") {
             throw new RuntimeException( $complete_output, (int)$matches[0] );
         }
         return str_replace("Exit status : " . $matches[0], '', $complete_output);
