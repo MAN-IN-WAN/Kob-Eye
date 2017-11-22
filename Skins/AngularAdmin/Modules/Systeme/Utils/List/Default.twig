@@ -42,12 +42,12 @@
 <table class="table table-hover nowrap margin-bottom-0 straight" id="{{ identifier }}" width="100%">
     <thead>
         <tr>
-            <th width="120">
+            <th width="120" title="Id">
                 <input type="checkbox" ng-model="{{ identifier }}.selected.selectall"/>&nbsp;
                 ID
             </th>
             {% for field in fields %}
-                <th>{{ field.listDescr }}</th>
+                <th title="{{ field.name }}">{{ field.listDescr }}</th>
             {% endfor %}
             <th width="50">Détails</th>
             <th width="50">Actions</th>

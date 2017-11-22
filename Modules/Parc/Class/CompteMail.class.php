@@ -291,15 +291,20 @@ class CompteMail extends genericClass {
 
 
         try{
-
-            $cosesTemp = $zimbra->getAllCos();
-            $coses = array();
-            foreach ($cosesTemp as $cosTemp){
-                $coses[$cosTemp->get('name')]=$cosTemp;
-            }
-            $cos = $coses[$this->COS];
-
             $values = array();
+
+            if($this->COS && $this->COS != 'NULL'){
+
+                $cosesTemp = $zimbra->getAllCos();
+                $coses = array();
+                foreach ($cosesTemp as $cosTemp){
+                    $coses[$cosTemp->get('name')]=$cosTemp;
+                }
+
+                $cos = $coses[$this->COS];
+                $values['zimbraCOSId'] = $cos->get('id');
+            }
+
 
             $resName = $zimbra->renameAccount($this->IdMail, $this->Adresse);
 
@@ -311,7 +316,8 @@ class CompteMail extends genericClass {
                 $values['zimbraAccountStatus'] = $this->Status;
             }
 
-            $values['zimbraCOSId'] = $cos->get('id');
+            print_r('UPDATE --------'.$this->Adresse.PHP_EOL);
+
             $values['sn'] = $this->Nom;
             $values['givenName'] = $this->Prenom;
             $values['displayName'] = ucfirst($this->Prenom) .' '. ucfirst($this->Nom);
@@ -324,7 +330,7 @@ class CompteMail extends genericClass {
 
         } catch (Exception $e){
             $this->AddError(array('Message'=>'Erreur lors de la liason avec le serveur de mail','Object'=>$e));
-
+            //print_r($e);
             return false;
         }
 
@@ -384,19 +390,25 @@ class CompteMail extends genericClass {
 
 
         try{
-
-            $cosesTemp = $zimbra->getAllCos();
-            $coses = array();
-            foreach ($cosesTemp as $cosTemp){
-                $coses[$cosTemp->get('name')]=$cosTemp;
-            }
-            $cos = $coses[$this->COS];
-
             $values = array();
+
+            if($this->COS && $this->COS != 'NULL'){
+                $cosesTemp = $zimbra->getAllCos();
+                $coses = array();
+                foreach ($cosesTemp as $cosTemp){
+                    $coses[$cosTemp->get('name')]=$cosTemp;
+                }
+                $cos = $coses[$this->COS];
+
+                $cos = $coses[$this->COS];
+                $values['zimbraCOSId'] = $cos->get('id');
+            }
+
+
+            print_r('INSERT --------'.$this->Adresse.PHP_EOL);
 
             $values['name'] = $this->Adresse;
             $values['password'] = $this->Pass;
-            $values['zimbraCOSId'] = $cos->get('id');
             $values['sn'] = $this->Nom;
             $values['givenName'] = $this->Prenom;
             $values['displayName'] = ucfirst($this->Prenom) .' '. ucfirst($this->Nom);

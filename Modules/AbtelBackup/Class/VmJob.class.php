@@ -40,7 +40,15 @@ class VmJob extends genericClass {
      * Stoppe un job de backup
      */
     public function stop() {
+        $vms = Sys::getData('AbtelBackup','VmJob/'.$this->Id.'/EsxVm');
         if ($this->Running){
+            foreach ($vms as $v) {
+                $act = $this->createActivity($v->Titre . ' > Arret Utilisateur: Step ' . $this->Step, $v);
+                $act->addDetails($v->Titre . "Arret Utilisateur", 'red',true);
+                $act->setProgression(100);
+                $act->Success = true;
+                $act->Save();
+            }
             switch ($this->Step){
                 case 1:
                     $this->addError(Array('Message'=>'Impossible de stopper le job pendant l\'initialisation.'));
@@ -56,18 +64,20 @@ class VmJob extends genericClass {
                 break;
                 case 4:
                     if (AbtelBackup::getPid('bsdtar')){
+                        $this->clearAct(false);
                         AbtelBackup::localExec('sudo killall -9 bsdtar');
                         $this->addSuccess(Array('Message'=>'Compression stoppée avec succès.'));
                     }else{
+                        $this->clearAct(true);
                         $this->addWarning(Array('Message'=>'Le processus n\'a pas été trouvé.'));
                     }
                     $this->Running = false;
-                    $this->clearAct();
                     parent::Save();
                     return true;
                 break;
                 case 5:
                     if (AbtelBackup::getPid('borg')) {
+                        $this->clearAct(false);
                         AbtelBackup::localExec('sudo killall -9 borg');
                         $vms = Sys::getData('AbtelBackup','VmJob/'.$this->Id.'/EsxVm');
                         foreach ($vms as $v){
@@ -76,22 +86,28 @@ class VmJob extends genericClass {
                         }
                         $this->addSuccess(Array('Message' => 'Déduplication stoppée avec succès.'));
                     }else{
+                        $this->clearAct(true);
                         $this->addWarning(Array('Message'=>'Le processus n\'a pas été trouvé.'));
                     }
                     $this->Running = false;
-                    $this->clearAct();
                     parent::Save();
                     return true;
                 break;
                 default:
                     $this->Running = false;
-                    $this->clearAct();
+                    $this->clearAct(true);
                     parent::Save();
                     $this->addSuccess(Array('Message' => 'Job stoppé avec succès.'));
                     return true;
                 break;
             }
         }else{
+            foreach ($vms as $v) {
+                $act = $this->createActivity($v->Titre . ' > Arret Utilisateur: Step ' . $this->Step . ' > Echec' , $v);
+                $act->addDetails($v->Titre . "Arret Utilisateur : Impossible de stopper le job. Il n'est pas démarré.", 'red',true);
+                $act->Errors = true;
+                $act->Save();
+            }
             $this->addError(Array('Message'=>'Impossible de stopper le job. Il n\'est pas démarré.'));
             return false;
         }
@@ -122,15 +138,40 @@ class VmJob extends genericClass {
             $borg = $v->getOneParent('BorgRepo');
             try {
                 //nettoyage
-                if (intval($this->Step)<=1)$act = $this->initJob($v,$esx);
+                if (intval($this->Step)<=1){
+                    unset($act);
+                    $act = $this->createActivity($v->Titre.' > Nettoyage des archives',$v);
+                    $this->initJob($v,$esx,$act);
+                }
+
                 //configuration
-                if (intval($this->Step)<=2)$act = $this->configJob($v,$esx);
+                if (intval($this->Step)<=2){
+                    unset($act);
+                    $act = $this->createActivity($v->Titre.' > Configuration vmjob',$v);
+                    $act = $this->configJob($v,$esx,$act);
+                }
+
                 //clonage
-                if (intval($this->Step)<=3)$act = $this->cloneJob($v,$esx);
+                if (intval($this->Step)<=3){
+                    unset($act);
+                    $act = $this->createActivity($v->Titre.' > Clonage vmjob',$v);
+                    $act = $this->cloneJob($v,$esx,$act);
+                }
+
                 //compression
-                if (intval($this->Step)<=4)$act = $this->compressJob($v);
+                if (intval($this->Step)<=4){
+                    unset($act);
+                    $act = $this->createActivity($v->Titre.' > Compression vmjob',$v);
+                    $act = $this->compressJob($v,$act);
+                }
+
                 //déduplication
-                if (intval($this->Step)<=5)$act = $this->deduplicateJob($v,$borg);
+                if (intval($this->Step)<=5){
+                    unset($act);
+                    $act = $this->createActivity($v->Titre.' > Déduplication vmjob',$v);
+                    $act = $this->deduplicateJob($v,$borg,$act);
+                }
+
             }catch (Exception $e){
                 if(!$act) $act = $this->createActivity($v->Titre.' > Exception: Step '.$this->Step,$v);
                 $act->addDetails($v->Titre." ERROR => ".$e->getMessage(),'red');
@@ -167,10 +208,9 @@ class VmJob extends genericClass {
     /**
      * Nettoyage de l'esx et du stor elocal
      */
-    private function initJob($v,$esx) {
+    private function initJob($v,$esx,$act) {
         Klog::l('DEBUG Test INIT JOB');
         $this->setStep(1); //Initialisation
-        $act = $this->createActivity($v->Titre.' > Nettoyage des archives',$v);
         $act->addDetails('Suppression du script ghettoVCB','yellow');
         //nettoyage sauvegarde précédentes
         $act->addDetails($v->Titre.' ---> suppression du script ghettoVCB');
@@ -202,7 +242,7 @@ class VmJob extends genericClass {
      * configJob
      * Confioguration du job et de l'esx
      */
-    private function configJob($v,$esx){
+    private function configJob($v,$esx,$act){
         $this->setStep(2); //Configuration
 
         //creation de la configuration
@@ -237,7 +277,6 @@ WORKDIR_DEBUG=0
 VM_SHUTDOWN_ORDER=
 VM_STARTUP_ORDER=
 ';
-        $act = $this->createActivity($v->Titre.' > Configuration vmjob',$v);
         $act->addDetails('-> configuration vmjob','yellow');
         $act->addDetails($v->Titre.' ---> creation de la config ghettoVCB');
         $esx->remoteExec("echo '$config' > /ghettovcb.conf");
@@ -258,9 +297,8 @@ VM_STARTUP_ORDER=
      * cloneJob
      * Clonage de la vm
      */
-    private function cloneJob($v,$esx){
+    private function cloneJob($v,$esx,$act){
         $this->setStep(3); //'Clonage'
-        $act = $this->createActivity($v->Titre.' > Clonage vmjob',$v);
         $act->addDetails($v->Titre.' ---> clonage de la vm');
         $esx->remoteExec('sh ghettoVCB.sh -m "' . $v->Titre . '" -g ghettovcb.conf',$act);
         $act->setProgression(100);
@@ -272,10 +310,9 @@ VM_STARTUP_ORDER=
      * compressJob
      * Compression de la vm
      */
-    private function compressJob($v){
+    private function compressJob($v,$act){
         $total = AbtelBackup::getSize('/backup/nfs/'.$v->Titre);
         $this->setStep(4); //'Compression'
-        $act = $this->createActivity($v->Titre.' > Compression vmjob',$v);
         $act->addDetails($v->Titre.' ---> compression du clone TOTAL:'.$total);
         AbtelBackup::localExec("sudo bsdtar cSf '/backup/nfs/".$v->Titre.".tar' '/backup/nfs/".$v->Titre."/".$v->Titre."-A'",$act,$total,'/backup/nfs/'.$v->Titre.'.tar');
         $this->Progression = 75;
@@ -287,11 +324,13 @@ VM_STARTUP_ORDER=
      * deduplicateJob
      * Déduplication de la vm
      */
-    private function deduplicateJob($v,$borg){
+    private function deduplicateJob($v,$borg,$act){
         $this->setStep(5); //'Déduplication'
-        AbtelBackup::localExec('sudo rm '.$borg->Path.'/lock.* -Rf');
+        AbtelBackup::localExec('borg break-lock '.$borg->Path); //Supression des locks borg
+        //AbtelBackup::localExec('borg delete --cache-only '.$borg->Path); //Supression du cache eventuellement corrompu
+        AbtelBackup::localExec('sudo chown -R backup:backup '.$borg->Path.''); //On s'assure que les fichiers borg ne soient pas en root
         $total = AbtelBackup::getSize('/backup/nfs/'.$v->Titre.'.tar');
-        $act = $this->createActivity($v->Titre.' > Déduplication vmjob TOTAL:'.$total,$v);
+        $act->addDetails($v->Titre.' ---> TOTAL (Mo):'.$total);
         $act->addDetails($v->Titre.' ---> déduplication de la vm');
         //AbtelBackup::localExec("export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".time()." '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar'",$act);
 
@@ -300,7 +339,7 @@ VM_STARTUP_ORDER=
         $this->Size = $total;
 
         $point = time();
-        file_put_contents('tototoottoto',"export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".$point." '/backup/nfs/".$v->Titre.".tar'");
+        //file_put_contents('tototoottoto',"export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".$point." '/backup/nfs/".$v->Titre.".tar'");
         $det = AbtelBackup::localExec("export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".$point." '/backup/nfs/".$v->Titre.".tar'",$act,$total,'borg');
 
         //Recup taille pour graphique/progression
@@ -327,13 +366,16 @@ VM_STARTUP_ORDER=
         parent::Save();
     }
 
-    private function clearAct(){
+    private function clearAct($full = true){
         $acts = $this->getChildren('Activity/Started=1&Errors=0&Success=0');
         foreach($acts as $act){
             //print_r($act);
-            $act->Errors = 1;
+            if($full)
+                $act->Errors = 1;
+
             $act->addDetails(' ---> Arrêt Utilisateur','cyan',true);
             //print_r($act);
+
         }
     }
 }

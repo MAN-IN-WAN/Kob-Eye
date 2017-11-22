@@ -128,6 +128,7 @@ class Systeme extends Module {
      * Surcharge de la fonction Check
      * Vérifie l'existence du role PARC_CLIENT et son association à un groupe
      * Sinon génère le ROLE et créé un Group à la racine et lui affecte le ROLE
+     * Vérifie l'existence de la tâche planifiée de clean des Events et le crée le cas échéant
      */
     function Check () {
         parent::Check();
@@ -166,6 +167,19 @@ class Systeme extends Module {
             $u->addParent($g);
             $u->Save();
         }
+
+        $t = Sys::getCount('Systeme','ScheduledTask/Titre=ClearEvents');
+        if (!$t) {
+            //creation du groupe public
+            $t = genericClass::createInstance('Systeme', 'ScheduledTask');
+            $t->Titre = 'ClearEvents';
+            $t->Enabled = 1;
+            $t->TaskModule = 'Systeme';
+            $t->TaskObject = 'Systeme';
+            $t->TaskFunction = 'clearEvents';
+            $t->Save();
+        }
+
     }
 
     static function retrievePassword($email){
@@ -306,7 +320,24 @@ class Systeme extends Module {
 
         }
     }
+
+    public static function clearEvents () {
+        //file_put_contents('tututu',date('d/m/Y h:i:s').' : yeah'.PHP_EOL,8);
+
+        $limit = time();
+        $limit -= 600;
+        //file_put_contents('tututu',$limit.PHP_EOL,8);
+        $evs = Sys::getData('Systeme','Event/tmsEdit<='.$limit,0,10000);
+
+        foreach ($evs as $ev){
+            //file_put_contents('tututu','+'.$ev->Id.PHP_EOL,8);
+            $ev->Delete();
+        }
+
+
+    }
 }
+
 function sendNotificationParallel($dev,$devios,$msg,$API_ACCESS_KEY) {
     $pid = pcntl_fork();
     if (!$pid) die();
