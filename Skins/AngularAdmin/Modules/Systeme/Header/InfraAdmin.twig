@@ -74,6 +74,7 @@ app.controller('InfraAdminMenuTopCtrl', function($injector, $interval, $location
         var manager = new THREE.LoadingManager();
         manager.onProgress = function ( item, loaded, total ) {
             if(loaded == total){
+                $rootScope.$broadcast('objLoadComplete');
                 $scope.loadComplete = true;
                 $scope.enableClick(scene, scene.uProps.cameras[0], scene.uProps.renderers[0]);
                 var regex = new RegExp('{{ Urls.Servers }}/([0-9]+)');
@@ -325,9 +326,24 @@ app.controller('InfraAdminMenuTopCtrl', function($injector, $interval, $location
         return false;
     };
 
-    var props = {{ quickview | raw }};
+    $scope.props = {{ quickview | raw }};
 
-    $scope.quickview = '';
+    //Initialisation du bouzin
+    $scope.config = {{ config | raw }};
+
+    $scope.infraListe = '';
+    for (var c in $scope.config.devices){
+    var cluster = $scope.config['devices'][c];
+    $scope.infraListe += "<h4>"+cluster.name+"</h4>";
+    $scope.infraListe += "<ul>";
+        for(var d in cluster.devices){
+        var device = cluster.devices[d];
+        $scope.infraListe += "<li><a href=\"#/{{ Urls.Servers }}/device.id\">"+device.name+"</a></li>"
+        }
+        $scope.infraListe += "</ul>";
+    }
+
+    $scope.quickview = $scope.infraListe;
     $scope.viewClass = '';
 
     $scope.enableClick = function(scn, cam ,rend){
@@ -410,7 +426,7 @@ app.controller('InfraAdminMenuTopCtrl', function($injector, $interval, $location
 
             }else{
                 $scope.viewClass = '';
-                $scope.quickview = '';
+                $scope.quickview = $scope.infraListe;
                 $scope.$apply();
 
                 $scope.initClassicCam(scn,cam);
@@ -501,8 +517,8 @@ app.controller('InfraAdminMenuTopCtrl', function($injector, $interval, $location
         $scope.store.getOneData(item.id, 'InfraAdminMenuTop').then(function (data) {
             var obj = data;
             var html = "<table>";
-                for (var n in props) {
-                    var prop = props[n];
+                for (var n in $scope.props) {
+                    var prop = $scope.props[n];
                     //console.log('prop',prop);
                     for (var m in obj) {
                         var val;
@@ -535,9 +551,6 @@ app.controller('InfraAdminMenuTopCtrl', function($injector, $interval, $location
     };
 
 
-    //Initialisation du bouzin
-    $scope.config = {{ config | raw }};
-
     var scene = $scope.initScene('infra_map');
     $scope.base = new MapItem({type:'switch',rotateAxis:'x',colors:[0x888888],name:'Internet'},scene);
     scene.add($scope.base.threeObj);
@@ -559,6 +572,7 @@ app.controller('InfraAdminMenuTopCtrl', function($injector, $interval, $location
     //Variantes en fonction de l'endroit ou l'on se trouve
     $scope.display = true;
     $rootScope.$on('$locationChangeSuccess', function(event){
+            console.log('Blah');
             var reg = new RegExp('{{ Urls.Profil }}');
             if( $location.path().match(reg) ){
                 $scope.display = false;
@@ -591,7 +605,7 @@ app.controller('InfraAdminMenuTopCtrl', function($injector, $interval, $location
                     focus.selected = true;
                 } else{
                     $scope.viewClass = '';
-                    $scope.quickview = '';
+                    $scope.quickview = $scope.infraListe;
                     //$scope.$apply();
 
                     $scope.initClassicCam(scene,camera);
@@ -602,5 +616,12 @@ app.controller('InfraAdminMenuTopCtrl', function($injector, $interval, $location
 
 
     });
+
+    $rootScope.$on('objLoadComplete', function(event){
+        var camera = $scope.scnList[0].uProps.cameras[0];
+        var scene = $scope.scnList[0];
+        $scope.initClassicCam(scene,camera);
+    });
+
 
 });

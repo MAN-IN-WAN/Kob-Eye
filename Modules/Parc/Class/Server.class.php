@@ -227,8 +227,9 @@ class Server extends genericClass {
             $cosesTemp = $zimbra->getAllCos();
             $coses = array();
             foreach ($cosesTemp as $cosTemp){
-                $coses[$cosTemp->get('id')]=$cosTemp;
+                $coses[$cosTemp->get('id')]=$cosTemp->get('name');
             }
+
 
 
             foreach($domaines as $domain){
@@ -258,7 +259,6 @@ class Server extends genericClass {
                     //echo '</pre>';
                     //exit;
 
-
                     $accHost = $account->get('zimbraMailHost');
                     if($accHost != $this->DNSNom){
                         continue;
@@ -271,13 +271,13 @@ class Server extends genericClass {
                     //print_r($quotas[$accId]['limit'].' / '.$quotas[$accId]['used'] .'<br>');
                     $userQuota = $quotas[$accId]['limit'];
                     $userUsed = $quotas[$accId]['used'];
-                    $accStatus = $account->get('zimbraMailStatus');
+                    $accStatus = $account->get('zimbraAccountStatus');
                     $cosId = $account->get('zimbraCOSId');
                     $cos ='NULL';
                     if(isset($cosId) && $cosId != '')
                         $cos = $coses[$cosId];
 
-                    $o = Sys::getOneData('Parc','CompteMail/Adresse='.$accName);
+                    $o = Sys::getOneData('Parc','CompteMail/IdMail='.$accId);
                     if(!is_object($o)){
                         $o = genericClass::createInstance('Parc','CompteMail');
                         $o->IdMail = $accId;

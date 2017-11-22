@@ -155,11 +155,11 @@ class AbtelBackup extends Module{
                 $activity->setProgression($progress*100);
             }
             if (preg_match('#^([0-9\.]+)? GB O#',$buf,$out)&&$activity&&$total) {
-                $progress = (floatval($out[1])*1000)/$total;
+                $progress = (floatval($out[1])*1024)/$total;
                 $activity->setProgression($progress*100);
             }
             if (preg_match('#^([0-9\.]+)? TB O#',$buf,$out)&&$activity&&$total) {
-                $progress = (floatval($out[1])*1000000)/$total;
+                $progress = (floatval($out[1])*1048576)/$total;
                 $activity->setProgression($progress*100);
             }
 

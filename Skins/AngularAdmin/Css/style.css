@@ -138,24 +138,28 @@ table tr td.text span.ng-binding,table tr td.raw span.ng-binding{
 
 
 /* INFRA 3D */
-#infra_info{
-    height: 0;
-    position: absolute;
-    left:-4px;
-    bottom:0;
-    padding:0;
-    width:0;
-    overflow: hidden;
-    background-color: #fff;
-    transition: all 1s;
-    border:2px solid #ddd;
-}
-#infra_info.showQuick{
-    left:0;
+#infra_container{
+    height: 430px;
     padding:15px;
-    width:430px;
-    height: 400px;
 }
+#infra_container ul{
+    list-style-type: none;
+}
+
+#infra_info{
+    height: 100%;
+    padding: 15px;
+    width:33%;
+    float: left;
+    overflow: auto;
+    background-color: #fff;
+}
+/*#infra_info.showQuick{*/
+    /*left:0;*/
+    /*padding:15px;*/
+    /*width:430px;*/
+    /*height: 400px;*/
+/*}*/
 #infra_info table{
     width:400px;
 }
@@ -163,9 +167,10 @@ table tr td.text span.ng-binding,table tr td.raw span.ng-binding{
     text-align: center;
 }
 #infra_map{
-    height: 400px;
+    height: 100%;
+    width:65%;
+    float: right;
     background-color: #fff;
-    border-top: 2px solid #ddd;
 }
 .hideMap{
     display: none;    
