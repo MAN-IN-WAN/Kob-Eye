@@ -4,4 +4,4 @@
     $vars['items'] = $e->pollAll($pr->pollStart,$pr->pollInterval,$pr->pollDuration);
     $vars['EvCount'] = sizeof($vars['items']['Ev']);
     $vars['AlCount'] = sizeof($vars['items']['Au']);
-    $vars['Now'] = time();
+    $vars['Now'] = (sizeof($vars['items']['Ev']))?$vars['items']['Ev'][sizeof($vars['items']['Ev'])-1]['tmsCreate']:time();

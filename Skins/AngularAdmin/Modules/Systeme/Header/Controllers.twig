@@ -149,7 +149,6 @@
                     $scope.modalObj.infos = data.infos;
                     if (!data.warning.length&&!data.success.length)
                         $("#modal-{{ c.identifier }}").modal('toggle');
-                    {{ c.identifier }}Store.refresh('default');
                 }else {
                     //gestion des erreurs
                     $scope.modalObj.errors = data.errors;
@@ -165,7 +164,7 @@
             });
         }
         $scope.{{ c.identifier }}delete = function (item){
-            console.log('edit ',item);
+            console.log('delete ',item);
             swal({
                     title: "Êtes vous sûr de vouloir supprimer "+item["label"]+"?",
                     text: "Cette suppression sera définitive. ",
@@ -177,11 +176,7 @@
                     closeOnConfirm: true
                 },
                 function(){
-                    $http.get('/{{ c.module }}/{{ c.objecttype }}/'+item.id+'/Delete.json')
-                        .success(function(data) {
-                            console.log('store > {{ c.module }}/{{ c.objecttype }} > deleted '+item.id, data);
-                            {{ c.identifier }}Store.refresh('default');
-                        });
+                    {{ c.identifier }}Store.deleteOneData(item.id,'all');
                 });
         }
         $scope.getSelectData = function (store,search){
@@ -224,8 +219,7 @@
             {{ child.objectModule }}{{ child.objectName }}Store.getData(1,'select');
         {% endfor %}
         //récupération des données du store.
-        {{ c.identifier }}Store.getOneData($routeParams.id,'default',true).then(function (data){
-            console.log('retour chargement one data',data);
+        {{ c.identifier }}Store.getOneData($routeParams.id,'fiche',true).then(function (data){
             $scope.obj = data;
             $scope.callFunction = function (obj,name,title){
                 console.log('callfunction ',obj.id,title);
@@ -246,11 +240,10 @@
                     }
                 });
                 $("#modalfunction-{{ c.identifier }}").modal();
-        }
+            }
             $scope.modify = function (obj){
-
                 console.log('edit ',obj.id);
-                {{ c.identifier }}Store.getOneData(obj.id,false).then(function (data) {
+                {{ c.identifier }}Store.getOneData(obj.id,'fiche',false).then(function (data) {
                     data.success = false;
                     $scope.obj = $scope.modalObj = data;
                     $scope.modalObj.title = 'Modifier {{ c.description }} '+data.label;
@@ -303,14 +296,9 @@
                         closeOnConfirm: true
                     },
                     function(){
-                        $http.get('/{{ c.module }}/{{ c.objecttype }}/'+item.id+'/Delete.json')
-                        .success(function(data) {
-                            console.log('store > {{ c.module }}/{{ c.objecttype }} > deleted '+item.id, data);
-                            {{ c.identifier }}Store.refresh();
-                            //redirection à la liste
-                            $location.path('{{ c.url }}');
+                        {{ c.identifier }}Store.deleteOneData(item.id,'all');
+                        $location.path('{{ c.url }}');
                     });
-                });
             }
             {% for child in c.childrenelements %}
                 //FORMULAIRE SELECT
@@ -426,7 +414,7 @@
                 }
                 $scope.{{ child.objectModule }}{{ child.objectName }}modify = function (obj){
                     console.log('edit ',obj.id);
-                    {{ child.objectModule }}{{ child.objectName }}Store.getOneData(obj.id,false).then(function (data) {
+                    {{ child.objectModule }}{{ child.objectName }}Store.getOneData(obj.id,'children',false).then(function (data) {
                         $scope.modalObj = data;
                         $scope.modalObj.success = false;
                         $scope.modalObj.{{ c.objecttype }}{{ child.name }} = $scope.obj.id;
@@ -477,7 +465,7 @@
                     return $injector.get(store).getDataFilter(search,'form');
                 }
                 $scope.{{ child.objectModule }}{{ child.objectName }}delete = function (item){
-                    console.log('edit ',item);
+                    console.log('delete ',item);
                     swal({
                             title: "Êtes vous sûr de vouloir supprimer {{ child.objectDescription }} "+item["label"]+"?",
                             text: "Cette suppression sera définitive. ",
@@ -489,11 +477,7 @@
                             closeOnConfirm: true
                         },
                         function(){
-                            $http.get('/{{ child.objectModule }}/{{ child.objectName }}/'+item.id+'/Delete.json')
-                                .success(function(data) {
-                                    console.log('store > {{ child.objectModule }}/{{ child.objectName }} > deleted '+item.id, data);
-                                    {{ child.objectModule }}{{ child.objectName }}Store.refresh('children');
-                            });
+                            {{ child.objectModule }}{{ child.objectName }}Store.deleteOneData(item.id,'all');
                     });
                 }
             {% endfor %}

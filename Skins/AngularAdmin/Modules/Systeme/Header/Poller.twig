@@ -11,7 +11,10 @@ app.service('Poller',function($http,$rootScope){
 
     function poll(callback){
         if(typeof callback == 'undefined')
-            callback = console.log;
+            callback = function (data) {
+                for ( var ev in data.events)
+                    console.log('EventPoller '+data.events[ev].Type+' '+data.events[ev].ObjectClass+' '+data.events[ev].ObjectId+' >> ',data.events[ev]);
+            };
 
         pollBreak = false;
 
@@ -24,18 +27,18 @@ app.service('Poller',function($http,$rootScope){
 
         $http.post("/Systeme/Utils/pollAll.json",data)
             .then(function(out) {
-                //callback(out.data);
+                callback(out.data);
                 //en fonction du type on met à jour la donnée ou le store
                 for (var ev in out.data.events) {
                     ev = out.data.events[ev];
                     if (ev.Type=='Edit'){
-                        $rootScope.$broadcast(ev.Module+ev.ObjectClass+'Store',{type:'edit',id:ev.ObjectId});
-                    }else if (ev.Type == 'Add'){
+                        $rootScope.$broadcast(ev.Module+ev.ObjectClass+'Store',{type:'edit',id:ev.ObjectId, data: ev.Data});
+                    }else if (ev.Type == 'Create'){
                         //mise à jour liste
-                        $rootScope.$broadcast(ev.Module+ev.ObjectClass+'Store',{type:'add',id:ev.ObjectId});
+                        $rootScope.$broadcast(ev.Module+ev.ObjectClass+'Store',{type:'add',id:ev.ObjectId, data: ev.Data});
                     }else if (ev.Type == 'Delete'){
                         //mise à jour liste
-                        $rootScope.$broadcast(ev.Module+ev.ObjectClass+'Store',{type:'delete',id:ev.ObjectId});
+                        $rootScope.$broadcast(ev.Module+ev.ObjectClass+'Store',{type:'delete',id:ev.ObjectId, data: ev.Data});
                     }
                 }
                 lastPoll = out.data.lastSearch;
@@ -57,7 +60,7 @@ app.service('Poller',function($http,$rootScope){
 });
 app.run(function(Poller){
     console.log(' -------- start Poller -------- ');
-    //Poller.poll();
+    Poller.poll();
 });
 
 

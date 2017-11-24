@@ -83,7 +83,7 @@ class Event extends genericClass {
         $queryEv = 'Event/tmsCreate>'.$lastAlert;
         $queryAu = 'AlertUser::AlertUserList/tmsCreate>'.$lastAlert;
 
-        $res=array();
+        $res=array('Ev' => Array(),'Au' => Array());
         $ret =false;
 
         while($i<$nbIt){
@@ -99,8 +99,13 @@ class Event extends genericClass {
                 $ret =true;
             }
 
-            if($ret)
+            if($ret) {
+                foreach ($res['Ev'] as $k=>$ev){
+                    $o = unserialize($res['Ev'][$k]['Data']);
+                    $res['Ev'][$k]['Data'] = json_encode($o->getWebServiceData());
+                }
                 return $res;
+            }
 
             $i++;
             usleep($delay);

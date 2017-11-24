@@ -11,13 +11,14 @@
             "ObjectId":"{{ Ev.EventId }}",
             "Titre":"{{ Ev.Titre }}",
             "Type":"{{ Ev.EventType }}",
+            "Data": {{ Ev.Data | raw}},
             "Id":"{{ Ev.Id }}"
             }{% if not loop.last %},{% endif %}
         {% endfor %}
     ],
     "alerts":
     [
-        {% for Ev in items.Au %}
+        {% for Au in items.Au %}
             {
             "Icone":"{{ Au.Icon }}",
             "Module":"{{ Au.AlertModule }}",

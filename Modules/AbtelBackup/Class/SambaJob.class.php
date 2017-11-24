@@ -1,5 +1,5 @@
 <?php
-class VmJob extends genericClass {
+class SambaJob extends genericClass {
     public static function execute() {
         //intialisation des dates
         $d = time();
@@ -9,7 +9,7 @@ class VmJob extends genericClass {
         $minute = intval(date('i',$d));
         $month = intval(date('m',$d));
         $monthday = date('j',$d);
-        $jobs = Sys::getData('AbtelBackup','VmJob/Enabled=1&(!Minute=*+Minute='.$minute.'!)&(!Heure=*+Heure='.$hour.'!)&(!Jour=*+Jour='.$monthday.'!)&(!Mois=*+Mois='.$month.'!)&(!(!Lundi=0&Mardi=0&Mercredi=0&Jeudi=0&Vendredi=0&Samedi=0&Dimanche=0!)+(!'.$weekday.'=1!)!)');
+        $jobs = Sys::getData('AbtelBackup','SambaJob/Enabled=1&(!Minute=*+Minute='.$minute.'!)&(!Heure=*+Heure='.$hour.'!)&(!Jour=*+Jour='.$monthday.'!)&(!Mois=*+Mois='.$month.'!)&(!(!Lundi=0&Mardi=0&Mercredi=0&Jeudi=0&Vendredi=0&Samedi=0&Dimanche=0!)+(!'.$weekday.'=1!)!)');
 
         foreach ($jobs as $j) {
             $j->run();
@@ -20,7 +20,7 @@ class VmJob extends genericClass {
         $act = genericClass::createInstance('AbtelBackup','Activity');
         $act->addParent($this);
         $act->addParent($vm);
-        $act->Titre = '[VMJOB] '.date('d/m/Y H:i:s').' > '.$this->Titre.' > '.$title;
+        $act->Titre = '[SAMBAJOB] '.date('d/m/Y H:i:s').' > '.$this->Titre.' > '.$title;
         $act->Started = true;
         $act->Progression = 0;
         $act->Save();
@@ -31,7 +31,7 @@ class VmJob extends genericClass {
             $this->addError(Array('Message'=>'Impossible de démarrer le job. Il est déjà en cours.'));
             return false;
         }
-        $cmd = 'bash -c "exec nohup setsid php cron.php backup.abtel.local AbtelBackup/VmJob/'.$this->Id.'/run.cron > /dev/null 2>&1 &"';
+        $cmd = 'bash -c "exec nohup setsid php cron.php backup.abtel.local AbtelBackup/SambaJob/'.$this->Id.'/run.cron > /dev/null 2>&1 &"';
         exec($cmd);
         return true;
     }
@@ -40,7 +40,7 @@ class VmJob extends genericClass {
      * Stoppe un job de backup
      */
     public function stop() {
-        $vms = Sys::getData('AbtelBackup','VmJob/'.$this->Id.'/EsxVm');
+        $vms = Sys::getData('AbtelBackup','SambaJob/'.$this->Id.'/EsxVm');
         if ($this->Running){
             foreach ($vms as $v) {
                 $act = $this->createActivity($v->Titre . ' > Arret Utilisateur: Step ' . $this->Step, $v);

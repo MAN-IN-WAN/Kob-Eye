@@ -18,7 +18,7 @@ foreach ($vars['rows'] as $k=>$v){
     if (is_object($ue))
         $v->userEditName = $ue->Login;
     else $v->userEditName = 'inconnu';
-    $v->label = $v->getFirstSearchOrder();
+    $v->label = Utils::cleanJson($v->getFirstSearchOrder());
     if ($v->getSecondSearchOrder())
         $v->description = $v->getSecondSearchOrder();
     foreach ($vars['fields'] as $f){
