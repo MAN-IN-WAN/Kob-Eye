@@ -17,6 +17,10 @@ class CompteMail extends genericClass {
 		//if($this->_isVerified) {
 		//	parent::Save();
 		//}
+        if(!$synchro){
+            parent::Save();
+            return true;
+        }
 
 		if((!isset($this->IdMail) || $this->IdMail=='') && $this->getKEServer()){
 		    if(!$this->createMail()){
