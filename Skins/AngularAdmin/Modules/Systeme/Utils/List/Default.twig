@@ -26,7 +26,7 @@
                 </a>
                 {% endif %}
                 {% if operation.delete %}
-                <a  href="javascript: void(0);" ng-show="keys({{ identifier }}.selected).length > 0" class="btn btn-danger" ng-click="{{ identifier }}selectDelete()">
+                <a  href="javascript: void(0);" ng-show="keys({{ identifier }}.selected).length > 1" class="btn btn-danger" ng-click="{{ identifier }}selectDelete()">
                 Supprimer la sélection
                 </a>
                 {% endif %}

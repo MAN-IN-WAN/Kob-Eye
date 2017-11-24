@@ -310,7 +310,7 @@
 		<PROPERTIES type="varchar" description="Id guacamole VNC">GuacamoleIdVnc</PROPERTIES>
 		<FKEY card="0,1" data="Client,Id" fiche="1" form="1" parentDescription="Client" link="1">ClientId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="DeviceConnexion" driver="mysql" Description="Connection(s) vers le Périphérique" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/DeviceConnexion.class.php">
+	<OBJECTCLASS title="DeviceConnexion" driver="mysql" Description="Connexion(s) vers le Périphérique" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/DeviceConnexion.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom du périphérique">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" obligatoire="1"  list="1" fiche="1" form="1" description="Type de connexion" listDescr="Type" values="RDP,VNC,SSH,Telnet,Https">Type</PROPERTIES>
 		<PROPERTIES type="int" obligatoire="0" fiche="1" form="1" description="Port redirection Local">PortRedirectLocal</PROPERTIES>
@@ -323,6 +323,15 @@
 		<PROPERTIES type="varchar" description="Id guacamole">GuacamoleId</PROPERTIES>
 		<FKEY card="1,1" data="Device,Id" fiche="1"  parentDescription="Périphérique" link="1">DeviceId</FKEY>
 		<FKEY card="0,n" data="Contact,Id" parentDescription="Contact/Utilisateur" link="1">ContactId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="ReverseConnexion" Dico="1" driver="mysql" Description="Connexion Rescue" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/ReverseConnexion.class.php">
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" listDescr="Nom" description="Nom de la connexion d'assistance">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" list="1" fiche="1" form="1"  listDescr="Code" description="Code de connexion à transmettre au client">CodeConnexion</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="5" obligatoire="0" fiche="1" form="1" list="1" special="reverse" listDescr="Occuppé" description="Occupé">Busy</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="0" form="1" fiche="1" list="1" listDescr="Port local" description="Port redirection Local">PortRedirectLocal</PROPERTIES>
+		<PROPERTIES type="int" obligatoire="0" form="1" fiche="1" list="1" listDescr="Port d'écoute" description="Port d'écoute">PortEcoute</PROPERTIES>
+		<PROPERTIES type="extlink" list="1" fiche="1" description="Url guacamole" listDescr="Lien Direct">GuacamoleUrl</PROPERTIES>
+		<PROPERTIES type="varchar" description="Id guacamole">GuacamoleId</PROPERTIES>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="DevicePort" driver="mysql" Description="Redirection de port" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/DevicePort.class.php">
 		<PROPERTIES type="int" obligatoire="0" fiche="1" list="1" listDescr="Port local" description="Port redirection Local">PortRedirectLocal</PROPERTIES>

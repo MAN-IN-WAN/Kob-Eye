@@ -35,9 +35,10 @@ class BorgRepo extends genericClass {
         }
         //intialisation du dépot
         try {
-            AbtelBackup::localExec('export BORG_PASSPHRASE=\''.BORG_SECRET.'\' && borg init ' . $this->Path);
+            $cmd = 'export BORG_PASSPHRASE=\''.BORG_SECRET.'\' && borg init --encryption=repokey-blake2 ' . $this->Path;
+            AbtelBackup::localExec($cmd);
         }catch (Exception $e) {
-            $this->addError(array('Message'=>'Impossible de créer le dépôt  Borg '.$this->Path.'. Détail: '.$e->getMessage()));
+            $this->addError(array('Message'=>'Impossible de créer le dépôt  Borg '.$this->Path.'. Cmd: '.$cmd.' Détail: '.$e->getMessage()));
             return false;
         }
         return true;

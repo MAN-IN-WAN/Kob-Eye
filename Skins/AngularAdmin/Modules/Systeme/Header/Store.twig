@@ -370,7 +370,7 @@
                             total[context] = data.total;
                             for (var i in data.data) {
                                 if (!alreadyExists(data.data[i].id,context))
-                                    {{ st.identifier }}Store[context].push(data.data[i]);
+                                    {{ st.identifier }}Store[context].push(unescapeData(data.data[i]));
                             }
                             console.log(context+' >> store > {{ key }} > loaded success ',{{ st.identifier }}Store[context]);
                             resolve({{ st.identifier }}Store[context]);

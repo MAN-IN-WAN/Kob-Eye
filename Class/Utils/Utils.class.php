@@ -262,17 +262,17 @@ class Utils {
         if (is_array($text))
             $text = implode(',',$text);
         $text = htmlspecialchars($text);
-        //$text = str_replace("&" , '\\\\&', $text);
         $text = str_replace("\\" , "\\\\", $text);
         $text = str_replace("\r" , "\\\\r", $text);
         $text = str_replace("\n" , "\\\\n", $text);
-        $text = str_replace("\t" , "\\\\t", $text);
+        $text = str_replace("\t" , "\\t", $text);
         $text = str_replace("’" , "'", $text);
         $text = str_replace("‘" , "'", $text);
         $text = str_replace("“" , '"', $text);
         $text = str_replace("”" , '"', $text);
         $text = str_replace('"' , '\"', $text);
         $text = str_replace('\:' , ":", $text);
+        //$text = str_replace("&" , '\u0026', $text);
         return $text;
     }
     public static function  isNull($P) {
