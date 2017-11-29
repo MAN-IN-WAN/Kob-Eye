@@ -34,7 +34,8 @@ class genericClass extends Root {
 		Sys::$Modules[$this -> Module] -> loadSchema();
 		$ClassName = (gettype($Data) == "array") ? $Data["ObjectType"] : $Data;
 		$ObjClass = Sys::$Modules[$refMod] -> Db -> getObjectClass($ClassName);
-		$this ->Interface = $ObjClass ->Interface;
+		if (is_object($ObjClass))
+		    $this ->Interface = $ObjClass ->Interface;
 		if ($Data != NULL) {
 			switch(gettype($Data)) {
 				case 'array' :
@@ -1578,7 +1579,7 @@ class genericClass extends Root {
 	 * @param String Name of the function to tigger
 	 * @param
 	 */
-	private function launchTriggers($function_name, $param = "") {
+	private function launchTriggers($function_name, $new = false) {
 		if (!isset($this -> Module) || !isset($this -> ObjectType) || ($this -> Module == "Systeme" && $this -> ObjectType == "Event"))
 			return;
 		//extraction de l'objectclass
@@ -1626,7 +1627,7 @@ class genericClass extends Root {
 				break;
 			case "save" :
 				//NEW
-				if (isset($this -> tmsCreate) && isset($this -> tmsEdit) && $this -> tmsCreate == $this -> tmsEdit) {
+				if ($new) {
 					//declenche action
 					if (in_array("New", array_keys($KnownEvents)))
 						$v = array_merge($v, $KnownEvents["New"]);
@@ -2198,6 +2199,10 @@ class genericClass extends Root {
 			}
 		}
 		$obj = $this->getObjectClass();
+		$new = false;
+		if (!$this->Id) {
+		    $new = true;
+        }
 		$Results = Sys::$Modules[$this -> Module] -> Db -> Query($this);
 		if (!is_array($Results)&&is_string($Results)&&!empty($Results)){
 		    $this->addError(Array("Message"=>$Results));
@@ -2205,7 +2210,7 @@ class genericClass extends Root {
         }
 		$this -> Parents = array();
 		$this -> initFromArray($Results);
-		$this -> launchTriggers(__FUNCTION__);
+		$this -> launchTriggers(__FUNCTION__,$new);
 
 		//si l'element possede le generateUrl = true alors on génère ses mots clefs
 		if ($obj->browseable){
@@ -2922,6 +2927,7 @@ class genericClass extends Root {
         $fields = $this->getElementsByAttribute('fiche|form','',true);
         $this->label = $this->getFirstSearchOrder();
         $o = new stdClass();
+        $o->id = $this->Id;
         $uc = Sys::getOneData('Systeme','User/'.$this->userCreate);
         $ue = Sys::getOneData('Systeme','User/'.$this->userEdit);
         if (is_object($uc))
@@ -2930,6 +2936,7 @@ class genericClass extends Root {
         if (is_object($ue))
             $o->userEditName = $ue->Login;
         else $o->userEditName = 'inconnu';
+        $o->_details = "créé le ".date('d/m/Y H:i',$this->tmsCreate )." par ".$o->userCreateName."\nmodifié le ".date('d/m/Y H:i',$this->tmsEdit)." par ".$o->userEditName."";
         foreach ($fields as $f){
             if ($f['type']=='boolean') {
                 //transformation des timestamps en format js
@@ -2948,6 +2955,7 @@ class genericClass extends Root {
                 }else{
                     $o->{$f['name'].'label'} = '';
                 }
+                $o->{$f['name']} = $this->{$f['name']};
             }elseif ($f['type']=='fkey'&&$f['card']=='long'){
                 $kk = $this->getParents($f['objectName']);
                 $o->{$f['name']} = array();

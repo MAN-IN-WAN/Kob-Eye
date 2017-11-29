@@ -22,7 +22,7 @@ foreach ($formfields as $f){
         else $o->{$f["name"]} = 0;
     }elseif ($f['type']=='fkey' && $f['card']=='short'){
         $o->AddParent($f['objectModule'].'/'.$f['objectName'].'/'.$values->{$f["objectName"].$f["name"]});
-    }else $o->{$f["name"]} = $values->{$f["name"]};
+    }elseif (isset($values->{$f["name"]})) $o->{$f["name"]} = $values->{$f["name"]};
 }
 $obj = $o->getObjectClass();
 $parentelements = $obj->getParentElements();

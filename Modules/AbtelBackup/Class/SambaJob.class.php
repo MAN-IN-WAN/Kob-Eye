@@ -1,5 +1,6 @@
 <?php
 class SambaJob extends genericClass {
+    private $TotalProgression = 100;
     public static function execute() {
         //intialisation des dates
         $d = time();
@@ -39,77 +40,50 @@ class SambaJob extends genericClass {
      * stop
      * Stoppe un job de backup
      */
-    public function stop() {
-        $vms = Sys::getData('AbtelBackup','SambaJob/'.$this->Id.'/EsxVm');
-        if ($this->Running){
-            foreach ($vms as $v) {
-                $act = $this->createActivity($v->Titre . ' > Arret Utilisateur: Step ' . $this->Step, $v);
-                $act->addDetails($v->Titre . "Arret Utilisateur", 'red',true);
-                $act->setProgression(100);
-                $act->Success = true;
-                $act->Save();
-            }
-            switch ($this->Step){
-                case 1:
-                    $this->addError(Array('Message'=>'Impossible de stopper le job pendant l\'initialisation.'));
-                    return false;
+    public function stop()
+    {
+        $vms = Sys::getData('AbtelBackup', 'SambaJob/' . $this->Id . '/SambaShare');
+        foreach ($vms as $v) {
+            $act = $this->createActivity($v->Titre . ' > Arret Utilisateur: Step ' . $this->Step, $v);
+            $act->addDetails($v->Titre . "Arret Utilisateur", 'red', true);
+            $act->setProgression(100);
+            $act->Success = true;
+            $act->Save();
+        }
+        switch ($this->Step) {
+            case 1:
+                $this->addError(Array('Message' => 'Impossible de stopper le job pendant l\'initialisation.'));
+                return false;
                 break;
-                case 2:
-                    $this->addError(Array('Message'=>'Impossible de stopper le job pendant la configuration.'));
-                    return false;
+            case 2:
+                $this->addError(Array('Message' => 'Impossible de stopper le job pendant la configuration.'));
+                return false;
                 break;
-                case 3:
-                    $this->addError(Array('Message'=>'Impossible de stopper le job pendant le clonage.'));
-                    return false;
-                break;
-                case 4:
-                    if (AbtelBackup::getPid('bsdtar')){
-                        $this->clearAct(false);
-                        AbtelBackup::localExec('sudo killall -9 bsdtar');
-                        $this->addSuccess(Array('Message'=>'Compression stoppée avec succès.'));
-                    }else{
-                        $this->clearAct(true);
-                        $this->addWarning(Array('Message'=>'Le processus n\'a pas été trouvé.'));
+            case 3:
+                if (AbtelBackup::getPid('borg')) {
+                    $this->clearAct(false);
+                    AbtelBackup::localExec('sudo killall -9 borg');
+                    $vms = Sys::getData('AbtelBackup', 'SambaJob/' . $this->Id . '/SambaShare');
+                    foreach ($vms as $v) {
+                        $borg = $v->getOneParent('BorgRepo');
+                        AbtelBackup::localExec('sudo rm ' . $borg->Path . '/lock.* -Rf');
                     }
-                    $this->Running = false;
-                    parent::Save();
-                    return true;
-                break;
-                case 5:
-                    if (AbtelBackup::getPid('borg')) {
-                        $this->clearAct(false);
-                        AbtelBackup::localExec('sudo killall -9 borg');
-                        $vms = Sys::getData('AbtelBackup','VmJob/'.$this->Id.'/EsxVm');
-                        foreach ($vms as $v){
-                            $borg = $v->getOneParent('BorgRepo');
-                            AbtelBackup::localExec('sudo rm '.$borg->Path.'/lock.* -Rf');
-                        }
-                        $this->addSuccess(Array('Message' => 'Déduplication stoppée avec succès.'));
-                    }else{
-                        $this->clearAct(true);
-                        $this->addWarning(Array('Message'=>'Le processus n\'a pas été trouvé.'));
-                    }
-                    $this->Running = false;
-                    parent::Save();
-                    return true;
-                break;
-                default:
-                    $this->Running = false;
+                    $this->addSuccess(Array('Message' => 'Déduplication stoppée avec succès.'));
+                } else {
                     $this->clearAct(true);
-                    parent::Save();
-                    $this->addSuccess(Array('Message' => 'Job stoppé avec succès.'));
-                    return true;
+                    $this->addWarning(Array('Message' => 'Le processus n\'a pas été trouvé.'));
+                }
+                $this->Running = false;
+                parent::Save();
+                return true;
                 break;
-            }
-        }else{
-            foreach ($vms as $v) {
-                $act = $this->createActivity($v->Titre . ' > Arret Utilisateur: Step ' . $this->Step . ' > Echec' , $v);
-                $act->addDetails($v->Titre . "Arret Utilisateur : Impossible de stopper le job. Il n'est pas démarré.", 'red',true);
-                $act->Errors = true;
-                $act->Save();
-            }
-            $this->addError(Array('Message'=>'Impossible de stopper le job. Il n\'est pas démarré.'));
-            return false;
+            default:
+                $this->clearAct(true);
+                $this->resetState();
+                parent::Save();
+                $this->addSuccess(Array('Message' => 'Job stoppé avec succès.'));
+                return true;
+                break;
         }
     }
     /**
@@ -119,62 +93,52 @@ class SambaJob extends genericClass {
     public function run() {
         //test running
         if ($this->Running) {
-            $act = $this->createActivity(' > Impossible de démarrer, lejob est déjà en cours d\'éxécution');
+            $act = $this->createActivity(' > Impossible de démarrer, le job est déjà en cours d\'éxécution');
             $act->Terminate();
             return;
         }
+        $this->resetState();
         $this->Running = true;
         parent::Save();
         //init
-        Klog::l('DEBUG demarrage vm');
+        Klog::l('DEBUG demarrage samba');
         $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=1");
-        //pour chaque vm
-        $vms = Sys::getData('AbtelBackup','VmJob/'.$this->Id.'/EsxVm');
-        foreach ($vms as $v){
-            Klog::l('DEBUG vm ==> '.$v->Id.' STEP: '.$this->Step);
+        //pour chaque partage
+        $sss = Sys::getData('AbtelBackup','SambaJob/'.$this->Id.'/SambaShare');
+        $this->TotalProgression =  Sys::getCount('AbtelBackup','SambaJob/'.$this->Id.'/SambaShare')*100;
+
+        foreach ($sss as $ss){
+            Klog::l('DEBUG share ==> '.$ss->Id.' STEP: '.$this->Step);
             //définition de la vm en cours
-            $this->setCurrentVm($v->Id);
-            $esx = $v->getOneParent('Esx');
-            $borg = $v->getOneParent('BorgRepo');
+            $this->setStep(1);
+            $this->setCurrentSambaShare($ss->Id);
+            $dev = $ss->getOneParent('SambaDevice');
+            $borg = $dev->getOneParent('BorgRepo');
             try {
-                //nettoyage
+                //initialisation
                 if (intval($this->Step)<=1){
                     unset($act);
-                    $act = $this->createActivity($v->Titre.' > Nettoyage des archives',$v);
-                    $this->initJob($v,$esx,$act);
+                    $act = $this->createActivity($ss->Titre.' > Initialisation du job Samba',$ss);
+                    $this->initJob($ss,$dev,$act);
                 }
 
-                //configuration
+                //montage
                 if (intval($this->Step)<=2){
                     unset($act);
-                    $act = $this->createActivity($v->Titre.' > Configuration vmjob',$v);
-                    $act = $this->configJob($v,$esx,$act);
-                }
-
-                //clonage
-                if (intval($this->Step)<=3){
-                    unset($act);
-                    $act = $this->createActivity($v->Titre.' > Clonage vmjob',$v);
-                    $act = $this->cloneJob($v,$esx,$act);
-                }
-
-                //compression
-                if (intval($this->Step)<=4){
-                    unset($act);
-                    $act = $this->createActivity($v->Titre.' > Compression vmjob',$v);
-                    $act = $this->compressJob($v,$act);
+                    $act = $this->createActivity($ss->Titre.' > Montage du partage Samba',$ss);
+                    $act = $this->mountJob($ss,$dev,$act);
                 }
 
                 //déduplication
-                if (intval($this->Step)<=5){
+                if (intval($this->Step)<=3){
                     unset($act);
-                    $act = $this->createActivity($v->Titre.' > Déduplication vmjob',$v);
-                    $act = $this->deduplicateJob($v,$borg,$act);
+                    $act = $this->createActivity($ss->Titre.' > Déduplication vmjob',$ss);
+                    $act = $this->deduplicateJob($ss,$dev,$borg,$act);
                 }
 
             }catch (Exception $e){
-                if(!$act) $act = $this->createActivity($v->Titre.' > Exception: Step '.$this->Step,$v);
-                $act->addDetails($v->Titre." ERROR => ".$e->getMessage(),'red');
+                if(!$act) $act = $this->createActivity($ss->Titre.' > Exception: Step '.$this->Step,$ss);
+                $act->addDetails($ss->Titre." ERROR => ".$e->getMessage(),'red');
                 $act->Terminated = true;
                 $act->Errors = true;
                 $act->Save();
@@ -201,157 +165,81 @@ class SambaJob extends genericClass {
      * setCurrentVm
      * Déinfition de la vm en cours de traitement
      */
-    private function setCurrentVm($v){
-        $this->currentVm = $v;
+    private function setCurrentSambaShare($ss){
+        $this->CurrentShare = $ss;
         parent::Save();
     }
     /**
      * Nettoyage de l'esx et du stor elocal
      */
-    private function initJob($v,$esx,$act) {
+    private function initJob($ss,$dev,$act) {
         Klog::l('DEBUG Test INIT JOB');
         $this->setStep(1); //Initialisation
-        $act->addDetails('Suppression du script ghettoVCB','yellow');
+        $act->addDetails('Création des dossier','yellow');
+        AbtelBackup::localExec("if [ ! -d '/backup/samba/".$dev->IP."/".$ss->Partage."' ]; then mkdir -p '/backup/samba/".$dev->IP."/".$ss->Partage."'; fi");
+        //démontage si toujours présent
+        try {
+            AbtelBackup::localExec("sudo umount '/backup/samba/" . $dev->IP . "/" . $ss->Partage . "'");
+        } catch (Exception $e){
+
+        }
         //nettoyage sauvegarde précédentes
-        $act->addDetails($v->Titre.' ---> suppression du script ghettoVCB');
-        $esx->remoteExec("if [ -f /ghettoVCB.sh ]; then rm /ghettoVCB.sh; fi");
-        $act->addProgression(15);
-        $this->Progression = 5;
-        parent::Save();
-        $act->addDetails($v->Titre.' ---> suppression des snapshots');
-        $esx->remoteExec("vim-cmd vmsvc/snapshot.removeall ".$v->RemoteId." && sleep 5");
-        $act->addProgression(15);
-        $act->addDetails($v->Titre.' ---> suppression du fichier .work');
-        $esx->remoteExec("if [ -d '/tmp/ghettoVCB.work' ]; then rm -Rf '/tmp/ghettoVCB.work'; fi");
-        $act->addProgression(15);
-        $act->addDetails($v->Titre.' ---> suppression de la complete');
-        //AbtelBackup::localExec("if [ -d '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre."' ]; then sudo rm -Rf '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre."'; fi");
-        //$act->addProgression(15);
-        AbtelBackup::localExec("if [ -d '/backup/nfs/".$v->Titre."' ]; then sudo rm -Rf '/backup/nfs/".$v->Titre."'; fi");
-        $act->addProgression(30);
-        $act->addDetails($v->Titre.' ---> suppression archive');
-        //AbtelBackup::localExec("if [ -f '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar' ]; then sudo rm -f /backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar; fi");
-        AbtelBackup::localExec("if [ -f '/backup/nfs/".$v->Titre.".tar' ]; then sudo rm -f /backup/nfs/".$v->Titre.".tar; fi");
-        $act->addProgression(25);
-
-        $this->Progression = 10;
-        parent::Save();
-        return $act;
-    }
-    /**
-     * configJob
-     * Confioguration du job et de l'esx
-     */
-    private function configJob($v,$esx,$act){
-        $this->setStep(2); //Configuration
-
-        //creation de la configuration
-        $config='VM_BACKUP_VOLUME=/vmfs/volumes/ABTEL_BACKUP/
-DISK_BACKUP_FORMAT=thin
-VM_BACKUP_ROTATION_COUNT=1
-POWER_VM_DOWN_BEFORE_BACKUP=0
-ENABLE_HARD_POWER_OFF=0
-ITER_TO_WAIT_SHUTDOWN=3
-POWER_DOWN_TIMEOUT=5
-ENABLE_COMPRESSION=0
-VM_SNAPSHOT_MEMORY=0
-VM_SNAPSHOT_QUIESCE=0
-ALLOW_VMS_WITH_SNAPSHOTS_TO_BE_BACKEDUP=0
-ENABLE_NON_PERSISTENT_NFS=0
-UNMOUNT_NFS=0
-NFS_SERVER='.AbtelBackup::getMyIp().'
-NFS_VERSION=nfs
-NFS_MOUNT=/backup/nfs
-NFS_LOCAL_NAME=ABTEL_BACKUP
-NFS_VM_BACKUP_DIR=EsxVm/'.$esx->IP.'/
-SNAPSHOT_TIMEOUT=15
-EMAIL_ALERT=0
-EMAIL_LOG=0
-EMAIL_SERVER=
-EMAIL_SERVER_PORT=25
-EMAIL_DELAY_INTERVAL=1
-EMAIL_TO=
-EMAIL_ERRORS_TO=
-EMAIL_FROM=
-WORKDIR_DEBUG=0
-VM_SHUTDOWN_ORDER=
-VM_STARTUP_ORDER=
-';
-        $act->addDetails('-> configuration vmjob','yellow');
-        $act->addDetails($v->Titre.' ---> creation de la config ghettoVCB');
-        $esx->remoteExec("echo '$config' > /ghettovcb.conf");
-        $act->addProgression(50);
-        $this->Progression = 15;
-        parent::Save();
-        $act->addDetails($v->Titre.' ---> copy du script ghettoVCB');
-        $esx->copyFile('ghettoVCB.sh');
-        $act->addProgression(40);
-        $act->addDetails($v->Titre.' ---> montage du NFS');
-        $esx->remoteExec("esxcfg-nas -a ABTEL_BACKUP -o ".AbtelBackup::getMyIp()." -s /backup/nfs",null,true);
-        $act->addProgression(10);
-        $this->Progression = 20;
-        parent::Save();
-        return $act;
-    }
-    /**
-     * cloneJob
-     * Clonage de la vm
-     */
-    private function cloneJob($v,$esx,$act){
-        $this->setStep(3); //'Clonage'
-        $act->addDetails($v->Titre.' ---> clonage de la vm');
-        $esx->remoteExec('sh ghettoVCB.sh -m "' . $v->Titre . '" -g ghettovcb.conf',$act);
-        $act->setProgression(100);
-        $this->Progression = 45;
-        parent::Save();
-        return $act;
-    }
-    /**
-     * compressJob
-     * Compression de la vm
-     */
-    private function compressJob($v,$act){
-        $total = AbtelBackup::getSize('/backup/nfs/'.$v->Titre);
-        $this->setStep(4); //'Compression'
-        $act->addDetails($v->Titre.' ---> compression du clone TOTAL:'.$total);
-        AbtelBackup::localExec("sudo bsdtar cSf '/backup/nfs/".$v->Titre.".tar' '/backup/nfs/".$v->Titre."/".$v->Titre."-A'",$act,$total,'/backup/nfs/'.$v->Titre.'.tar');
-        $this->Progression = 75;
-        parent::Save();
         $act->addProgression(100);
+        $this->addProgression(10);
+        parent::Save();
+        return $act;
+    }
+    /**
+     * mountJob
+     * Montage du partage
+     */
+    private function mountJob($ss,$dev,$act){
+        $this->setStep(2); //Montage
+        $act->addDetails('-> Montage du partage '.$ss->Titre,'yellow');
+        $cmd = 'sudo mount -t cifs -v "//'.$dev->IP.'/'.$ss->Partage.'" \'/backup/samba/'.$dev->IP.'/'.$ss->Partage."' -o ";
+
+        if (!empty($dev->Login)) {
+            $cmd .= "user='" . $dev->Login . "',pass='" . $dev->Password . "'";
+            if (!empty($dev->Domain))
+                $cmd .= ",dom='".$dev->Domain."'";
+        }
+        $cmd.=((!empty($dev->Login))?",":"")."uid=1000,gid=1000";
+        $act->addDetails('CMD: '.$cmd);
+        //AbtelBackup::localExec($cmd);
+        shell_exec($cmd);
+        $act->addProgression(100);
+        $this->addProgression(20);
+        parent::Save();
         return $act;
     }
     /**
      * deduplicateJob
      * Déduplication de la vm
      */
-    private function deduplicateJob($v,$borg,$act){
-        $this->setStep(5); //'Déduplication'
+    private function deduplicateJob($ss,$dev,$borg,$act){
+        $this->setStep(3); //'Déduplication'
         AbtelBackup::localExec('borg break-lock '.$borg->Path); //Supression des locks borg
         //AbtelBackup::localExec('borg delete --cache-only '.$borg->Path); //Supression du cache eventuellement corrompu
         AbtelBackup::localExec('sudo chown -R backup:backup '.$borg->Path.''); //On s'assure que les fichiers borg ne soient pas en root
-        $total = AbtelBackup::getSize('/backup/nfs/'.$v->Titre.'.tar');
-        $act->addDetails($v->Titre.' ---> TOTAL (Mo):'.$total);
-        $act->addDetails($v->Titre.' ---> déduplication de la vm');
-        //AbtelBackup::localExec("export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".time()." '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar'",$act);
-
+        $total = AbtelBackup::getSize('/backup/samba/'.$dev->IP.'/'.$ss->Partage.'');
+        $act->addDetails($ss->Titre.' ---> TOTAL (Mo):'.$total);
+        $act->addDetails($ss->Titre.' ---> déduplication du partage');
 
         //Recup taille pour graphique/progression
         $this->Size = $total;
 
         $point = time();
         //file_put_contents('tototoottoto',"export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".$point." '/backup/nfs/".$v->Titre.".tar'");
-        $det = AbtelBackup::localExec("export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".$point." '/backup/nfs/".$v->Titre.".tar'",$act,$total,'borg');
+        $det = AbtelBackup::localExec("export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".$point." '/backup/samba/".$dev->IP."/".$ss->Partage."'",$act,$total,'borg');
 
         //Recup taille pour graphique/progression
         $this->BackupSize = AbtelBackup::getSize($borg->Path);
         parent::Save();
 
         //création du point de restauration
-        $v->createRestorePoint($point,$det);
+        $dev->createRestorePoint($point,$det);
         $act->setProgression(100);
-        $act->addDetails($v->Titre.' ---> suppression archive');
-        //AbtelBackup::localExec("if [ -f '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar' ]; then sudo rm -f /backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar; fi");
-        AbtelBackup::localExec("if [ -f '/backup/nfs/".$v->Titre.".tar' ]; then sudo rm -f /backup/nfs/".$v->Titre.".tar; fi");
+        $this->addProgression(80);
         return $act;
     }
     /**
@@ -360,7 +248,7 @@ VM_STARTUP_ORDER=
      */
     private function resetState(){
         $this->setStep(0); //'Attente'
-        $this->setCurrentVm('');
+        $this->setCurrentSambaShare(0);
         $this->Running = false;
         $this->Progression = 0;
         parent::Save();
@@ -377,5 +265,8 @@ VM_STARTUP_ORDER=
             //print_r($act);
 
         }
+    }
+    private function addProgression($nb){
+        $this->Progression += ($nb/$this->TotalProgression)*100;
     }
 }

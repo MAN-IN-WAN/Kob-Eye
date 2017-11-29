@@ -315,26 +315,10 @@ class Systeme extends Module {
                 $obj->{$t->TaskFunction}();
             }else{
                 //execution statique
-                call_user_func(__NAMESPACE__.'\\'.$t->TaskObject.'::'.$t->TaskFunction);
+                call_user_func($t->TaskObject.'::'.$t->TaskFunction);
             }
 
         }
-    }
-
-    public static function clearEvents () {
-        //file_put_contents('tututu',date('d/m/Y h:i:s').' : yeah'.PHP_EOL,8);
-
-        $limit = time();
-        $limit -= 600;
-        //file_put_contents('tututu',$limit.PHP_EOL,8);
-        $evs = Sys::getData('Systeme','Event/tmsEdit<='.$limit,0,10000);
-
-        foreach ($evs as $ev){
-            //file_put_contents('tututu','+'.$ev->Id.PHP_EOL,8);
-            $ev->Delete();
-        }
-
-
     }
 }
 

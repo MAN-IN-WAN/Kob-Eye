@@ -117,7 +117,7 @@ class AbtelBackup extends Module{
             throw new RuntimeException( "L'éxécution de la commande locale a échoué. commande : ".$command." \n ".print_r($output,true));
         }
         return implode("\n",$output);*/
-        $proc = popen("$command 2>&1 ; echo Exit status : $?", 'r');
+        $proc = popen($command.' 2>&1 ; echo Exit status : $?', 'r');
         $complete_output = "";
         if ($path){
             //On fork le process pour calculer le progress en parallele

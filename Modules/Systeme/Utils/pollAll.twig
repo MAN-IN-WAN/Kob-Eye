@@ -11,6 +11,8 @@
             "ObjectId":"{{ Ev.EventId }}",
             "Titre":"{{ Ev.Titre }}",
             "Type":"{{ Ev.EventType }}",
+            "Context":"{{ Ev.Context }}",
+            "MicroTime":"{{ Ev.MicroTime }}",
             "Data": {{ Ev.Data | raw}},
             "Id":"{{ Ev.Id }}"
             }{% if not loop.last %},{% endif %}

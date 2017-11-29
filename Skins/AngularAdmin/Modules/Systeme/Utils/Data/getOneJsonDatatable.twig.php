@@ -2,6 +2,10 @@
 $info = Info::getInfos($vars['Query']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $vars['fields'] = $o->getElementsByAttribute('fiche|form','',true);
+$context = (isset($_GET['context']))?$_GET['context']:'default';
+//souscription au push
+Event::registerPush($info['Module'],$info['ObjectType'],$info['ObjectType'],'~',0,1,$context);
+//requete
 $vars['row'] = Sys::getOneData($info['Module'],$vars['Query']);
 if (!$vars['row'])return;
 $vars['row']->label = $vars['row']->getFirstSearchOrder();
