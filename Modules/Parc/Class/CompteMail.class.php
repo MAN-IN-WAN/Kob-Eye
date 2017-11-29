@@ -269,6 +269,7 @@ class CompteMail extends genericClass {
         //Check que le compte existe déjà
         try{
             $temp = $zimbra->getAccount('abtel.fr', 'id', $this->IdMail);
+            $actuName = $temp->get('name');
         } catch (Exception $e) {
             $this->AddError(array('Message' => 'Erreur lors de la liason avec le serveur de mail, ce compte mail n\'existe pas', 'Object' => $e));
             return false;
@@ -309,8 +310,8 @@ class CompteMail extends genericClass {
                 $values['zimbraCOSId'] = $cos->get('id');
             }
 
-
-            $resName = $zimbra->renameAccount($this->IdMail, $this->Adresse);
+            if($actuName != $this->Adresse)
+                $resName = $zimbra->renameAccount($this->IdMail, $this->Adresse);
 
             if( isset($this->Pass) &&  $this->Pass != ''){
                 //    $values['password'] = $this->Pass;
@@ -320,7 +321,7 @@ class CompteMail extends genericClass {
                 $values['zimbraAccountStatus'] = $this->Status;
             }
 
-            print_r('UPDATE --------'.$this->Adresse.PHP_EOL);
+            //print_r('UPDATE --------'.$this->Adresse.PHP_EOL);
 
             $values['sn'] = $this->Nom;
             $values['givenName'] = $this->Prenom;
@@ -409,7 +410,7 @@ class CompteMail extends genericClass {
             }
 
 
-            print_r('INSERT --------'.$this->Adresse.PHP_EOL);
+            //print_r('INSERT --------'.$this->Adresse.PHP_EOL);
 
             $values['name'] = $this->Adresse;
             $values['password'] = $this->Pass;
