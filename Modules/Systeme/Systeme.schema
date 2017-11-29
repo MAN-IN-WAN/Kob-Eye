@@ -129,6 +129,7 @@
 		<PROPERTIES type="varchar" unique="1" searchOrder="1">Title</PROPERTIES>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Event" driver="mysql" AccessPoint="0" Dico="1" Icon="/Skins/AdminV2/Img/brick.png" Class="Modules/Systeme/Class/Event.class.php">
+		<PROPERTIES type="float" searchOrder="1" description="MicroTime">MicroTime</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" listWidth="350" description="Name">Titre</PROPERTIES>
 		<PROPERTIES type="varchar" length="30" searchOrder="2" description="Type">EventType</PROPERTIES>
 		<PROPERTIES type="varchar" length="30" searchOrder="3">EventModule</PROPERTIES>

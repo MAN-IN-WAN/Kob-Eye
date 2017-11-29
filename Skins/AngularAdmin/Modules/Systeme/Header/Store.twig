@@ -13,6 +13,7 @@
 
         return {
             getOneData: getOneData,
+            addOneData: addOneData,
             updateOneData: updateOneData,
             deleteOneData: deleteOneData,
             getData: getData,
@@ -306,6 +307,20 @@
         }
 
         /**
+        * addOneData
+        * Met à jour une donnée dans un contexte ou l'ensemble des contexte possédant cette donnée
+        */
+        function addOneData(id,data,context = 'default'){
+            if (context == 'all') {
+                for (var c in contexts){
+                    {{ st.identifier }}Store[contexts[c]].unshift(data);
+                }
+            }else{
+                {{ st.identifier }}Store[context].unshift(data);
+            }
+        }
+
+        /**
          * delete
          * Supprime une donnée dasn les store et envoie la requete au serveur
          */
@@ -349,20 +364,23 @@
             if (page<1||page==undefined) page=1;
             return $q(function(resolve, reject) {
                 if (busy[context]) {
-                    reject('already busy '+context);
-                    return;
+                    busy[context].resolve();
+                    busy[context] = false;
                 }
                 console.log(context+' >> store > {{ key }} > getData >> page '+page+' ');
                 if (page!=pageLoaded[context]){
-                    busy[context]=true;
+                    var canceler = $q.defer();
+                    busy[context]=canceler;
                     $http.get(
                         tmpquery+'/getData.json',
                         {
                             params: {
                                 filters: tmpfilters,
                                 offset: (page-1)*pageLength,
-                                limit: pageLength
-                            }
+                                limit: pageLength,
+                                context: context
+                            },
+                            timeout: canceler.promise
                         }).success(function(data) {
                             busy[context]=false;
                             purgeStore(context);
@@ -414,11 +432,10 @@
                 case 'delete':
                     //raffraichir seulement une valeur
                     {{ key }}.deleteOneData(data.id,'all',true);
-                    {{ key }}.refresh('all');
                     break;
                 case 'add':
-                    //raffraichir seulement une valeur
-                    {{ key }}.refresh('all');
+                    //raffraichir seulement une valeur dans un context
+                    {{ key }}.addOneData(data.id,data.data,data.context);
                     break;
             }
         });

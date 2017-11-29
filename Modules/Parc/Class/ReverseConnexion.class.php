@@ -34,7 +34,7 @@ class ReverseConnexion extends genericClass{
             $q = $dbGuac->query($query);
             $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'reverse-connect','true')";
             $q = $dbGuac->query($query);
-            $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'autoretry','5')";
+            $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'autoretry','0')";
             $q = $dbGuac->query($query);
             $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'listen-timeout','600000')";
             $q = $dbGuac->query($query);
@@ -51,7 +51,7 @@ class ReverseConnexion extends genericClass{
             $q = $dbGuac->query($query);
             $query = "REPLACE INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($this->GuacamoleId,'reverse-connect','true')";
             $q = $dbGuac->query($query);
-            $query = "REPLACE INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($this->GuacamoleId,'autoretry','5')";
+            $query = "REPLACE INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($this->GuacamoleId,'autoretry','0')";
             $q = $dbGuac->query($query);
             $query = "REPLACE INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($this->GuacamoleId,'listen-timeout','600000')";
             $q = $dbGuac->query($query);

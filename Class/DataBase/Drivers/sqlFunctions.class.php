@@ -960,7 +960,7 @@ class sqlFunctions{
 				$Order[1] = $CustomOrder[1];
 
             //Traitement des Casts
-            $trueCast = false;
+            $trueCast=false;
             if (isset($Order[0]) && !empty($Order[0]) ){
                 $matches= array();
                 $cast = preg_match('/cast\(.+\.([a-z]*) .*\)/i',$Order[0],$matches);
@@ -970,7 +970,7 @@ class sqlFunctions{
             }
 
 			//Definition des ordres
-			if (isset($Order[0]) && isset($Order[1])&& !empty($Order[0]) && !empty($Order[1]) && ($O->isProperties($Order[0])||$Type=="VIEW"||$trueCast==1)) {
+			if (isset($Order[0]) && isset($Order[1]) && !empty($Order[0]) && !empty($Order[1]) && ($O->isProperties($Order[0])||$Type=="VIEW"||$trueCast==1)) {
 				$tmp = '';
 				if ($Type!="VIEW") {
 					$fld = explode(',', $Order[0]);

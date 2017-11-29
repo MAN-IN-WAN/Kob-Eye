@@ -1,6 +1,6 @@
 app.service('Poller',function($http,$rootScope){
     var pollBreak = false,
-        interval = 1000,
+        interval = 300,
         duration = 15,
         lastPoll = 0;
 
@@ -35,7 +35,7 @@ app.service('Poller',function($http,$rootScope){
                         $rootScope.$broadcast(ev.Module+ev.ObjectClass+'Store',{type:'edit',id:ev.ObjectId, data: ev.Data});
                     }else if (ev.Type == 'Create'){
                         //mise à jour liste
-                        $rootScope.$broadcast(ev.Module+ev.ObjectClass+'Store',{type:'add',id:ev.ObjectId, data: ev.Data});
+                        $rootScope.$broadcast(ev.Module+ev.ObjectClass+'Store',{type:'add',id:ev.ObjectId, data: ev.Data, context: ev.Context});
                     }else if (ev.Type == 'Delete'){
                         //mise à jour liste
                         $rootScope.$broadcast(ev.Module+ev.ObjectClass+'Store',{type:'delete',id:ev.ObjectId, data: ev.Data});

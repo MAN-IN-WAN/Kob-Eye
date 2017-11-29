@@ -24,7 +24,9 @@ table tr td.table-details{
 #rCount {
     background-color: #7499FF;
 }
-
+progress.big{
+    height:30px;
+}
 progress.progress.progress-danger{
     position: relative;
 }

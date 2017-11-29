@@ -6,8 +6,12 @@ $vars['fields'] = $o->getElementsByAttribute('list|fiche','',true);
 $offset = (isset($_GET['offset']))?$_GET['offset']:0;
 $limit = (isset($_GET['limit']))?$_GET['limit']:30;
 $filters = (isset($_GET['filters']))?$_GET['filters']:'';
+$context = (isset($_GET['context']))?$_GET['context']:'default';
 $path = explode('/',$vars['Path'],2);
 $path = $path[1];
+//souscription au push
+Event::registerPush($info['Module'],$info['ObjectType'],$path,$filters,$offset,$limit,$context);
+//requete
 $vars['rows'] = Sys::getData($info['Module'],$path.'/'.$filters,$offset,$limit);
 foreach ($vars['rows'] as $k=>$v){
     $uc = Sys::getOneData('Systeme','User/'.$v->userCreate);

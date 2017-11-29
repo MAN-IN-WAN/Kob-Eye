@@ -119,7 +119,7 @@ class VmJob extends genericClass {
     public function run() {
         //test running
         if ($this->Running) {
-            $act = $this->createActivity(' > Impossible de démarrer, lejob est déjà en cours d\'éxécution');
+            $act = $this->createActivity(' > Impossible de démarrer, le job est déjà en cours d\'éxécution');
             $act->Terminate();
             return;
         }

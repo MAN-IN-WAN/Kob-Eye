@@ -115,7 +115,7 @@
 		<PROPERTIES list="1" fiche="1" form="1" listDescr="Titre" description="Titre du partage" type="titre" searchOrder="1">Titre</PROPERTIES>
 		<PROPERTIES list="1" fiche="1" form="1" listDescr="Partage" description="Partage" type="varchar" searchOrder="2">Partage</PROPERTIES>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="SambaJob" AccessPoint="1" driver="mysql" Description="Job synchronisation Samba"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+	<OBJECTCLASS title="SambaJob" AccessPoint="1" logEvent="1" driver="mysql" Description="Job synchronisation Samba"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelBackup/Class/SambaJob.class.php">
 		<FUNCTION title="Démarrer maintenant">runNow</FUNCTION>
 		<FUNCTION title="Arrêter maintenant">stop</FUNCTION>
 		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1"  obligatoire="1" listDescr="Titre">Titre</PROPERTIES>
