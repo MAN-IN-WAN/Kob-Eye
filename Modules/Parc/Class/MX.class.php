@@ -177,6 +177,13 @@ class MX extends genericClass {
 		}
 		$entry['cn'] = $this->Nom;
 		$entry['dnscname'] = $this->Dnscname;
+
+        //Recup le parent par defaut
+        $pa = $this->getOneParent('Domain');
+        $default = $pa->Url.'.';
+
+		$entry['dnsdomainname'] = $this->Dnsdomainname ? $this->Dnsdomainname : $default;
+
         $entry['dnsttl'] = $this->TTL ?  $this->TTL : 86400;
         $entry['dnspreference'] = $this->Poids;
 

@@ -110,7 +110,7 @@ class AbtelBackup extends Module{
     /**
      * UTILS FUNCTIONS
      */
-    static public function localExec( $command, $activity = null,$total=0,$path=null)
+    static public function localExec( $command, $activity = null,$total=0,$path=null,$progData=null)
     {
         /*exec( $command,$output,$return);
         if( $return ) {
@@ -132,8 +132,14 @@ class AbtelBackup extends Module{
                     while (!feof($proc)) {
                         $size = AbtelBackup::getSize($path);
                         $progress = floatval($size)*100/$total;
-                        if ($progress != $activity->Progression)
+                        if ($progress != $activity->Progression){
                             $activity->setProgression($progress);
+                            if($progData){
+                                $progData['job']->Progression = ($progData['init'] + $progData['span']*$progress/100);
+                                $progData['job']->Save();
+                            }
+                        }
+
                         sleep(5);
                     }
                     exit;
@@ -152,16 +158,21 @@ class AbtelBackup extends Module{
             //cas borg
             if (preg_match('#^([0-9\.]+)? MB O#',$buf,$out)&&$activity&&$total) {
                 $progress = (floatval($out[1]))/$total;
-                $activity->setProgression($progress*100);
             }
             if (preg_match('#^([0-9\.]+)? GB O#',$buf,$out)&&$activity&&$total) {
                 $progress = (floatval($out[1])*1024)/$total;
-                $activity->setProgression($progress*100);
             }
             if (preg_match('#^([0-9\.]+)? TB O#',$buf,$out)&&$activity&&$total) {
                 $progress = (floatval($out[1])*1048576)/$total;
-                $activity->setProgression($progress*100);
             }
+            if($progress){
+                $activity->setProgression($progress*100);
+                if($progData){
+                    $progData['job']->Progression = ($progData['init'] + $progData['span']*$progress/100);
+                    $progData['job']->Save();
+                }
+            }
+
 
             //file_put_contents('triliilili',$buf,8);
             //file_put_contents('truluululu',$progress,8);

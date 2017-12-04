@@ -216,24 +216,29 @@ class VmJob extends genericClass {
         $act->addDetails($v->Titre.' ---> suppression du script ghettoVCB');
         $esx->remoteExec("if [ -f /ghettoVCB.sh ]; then rm /ghettoVCB.sh; fi");
         $act->addProgression(15);
-        $this->Progression = 5;
+        $this->Progression = 1.5;
         parent::Save();
         $act->addDetails($v->Titre.' ---> suppression des snapshots');
         $esx->remoteExec("vim-cmd vmsvc/snapshot.removeall ".$v->RemoteId." && sleep 5");
         $act->addProgression(15);
+        $this->Progression = 3;
+        parent::Save();
         $act->addDetails($v->Titre.' ---> suppression du fichier .work');
         $esx->remoteExec("if [ -d '/tmp/ghettoVCB.work' ]; then rm -Rf '/tmp/ghettoVCB.work'; fi");
         $act->addProgression(15);
+        $this->Progression = 4.5;
+        parent::Save();
         $act->addDetails($v->Titre.' ---> suppression de la complete');
         //AbtelBackup::localExec("if [ -d '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre."' ]; then sudo rm -Rf '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre."'; fi");
         //$act->addProgression(15);
         AbtelBackup::localExec("if [ -d '/backup/nfs/".$v->Titre."' ]; then sudo rm -Rf '/backup/nfs/".$v->Titre."'; fi");
         $act->addProgression(30);
+        $this->Progression = 7.5;
+        parent::Save();
         $act->addDetails($v->Titre.' ---> suppression archive');
         //AbtelBackup::localExec("if [ -f '/backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar' ]; then sudo rm -f /backup/nfs/EsxVm/".$esx->IP."/".$v->Titre.".tar; fi");
         AbtelBackup::localExec("if [ -f '/backup/nfs/".$v->Titre.".tar' ]; then sudo rm -f /backup/nfs/".$v->Titre.".tar; fi");
         $act->addProgression(25);
-
         $this->Progression = 10;
         parent::Save();
         return $act;
@@ -286,6 +291,8 @@ VM_STARTUP_ORDER=
         $act->addDetails($v->Titre.' ---> copy du script ghettoVCB');
         $esx->copyFile('ghettoVCB.sh');
         $act->addProgression(40);
+        $this->Progression = 19;
+        parent::Save();
         $act->addDetails($v->Titre.' ---> montage du NFS');
         $esx->remoteExec("esxcfg-nas -a ABTEL_BACKUP -o ".AbtelBackup::getMyIp()." -s /backup/nfs",null,true);
         $act->addProgression(10);
@@ -298,11 +305,16 @@ VM_STARTUP_ORDER=
      * Clonage de la vm
      */
     private function cloneJob($v,$esx,$act){
+        $iProg = $this->Progression;
+        $fProg = 45;
+        $sProg = $fProg - $iProg;
+        $progData = array( 'init' => $iProg, 'span' => $sProg, 'job' => $this);
+
         $this->setStep(3); //'Clonage'
         $act->addDetails($v->Titre.' ---> clonage de la vm');
-        $esx->remoteExec('sh ghettoVCB.sh -m "' . $v->Titre . '" -g ghettovcb.conf',$act);
+        $esx->remoteExec('sh ghettoVCB.sh -m "' . $v->Titre . '" -g ghettovcb.conf',$act ,false ,$progData);
         $act->setProgression(100);
-        $this->Progression = 45;
+        $this->Progression = $fProg;
         parent::Save();
         return $act;
     }
@@ -311,11 +323,16 @@ VM_STARTUP_ORDER=
      * Compression de la vm
      */
     private function compressJob($v,$act){
+        $iProg = $this->Progression;
+        $fProg = 75;
+        $sProg = $fProg - $iProg;
+        $progData = array( 'init' => $iProg, 'span' => $sProg, 'job' => $this);
+
         $total = AbtelBackup::getSize('/backup/nfs/'.$v->Titre);
         $this->setStep(4); //'Compression'
         $act->addDetails($v->Titre.' ---> compression du clone TOTAL:'.$total);
-        AbtelBackup::localExec("sudo bsdtar cSf '/backup/nfs/".$v->Titre.".tar' '/backup/nfs/".$v->Titre."/".$v->Titre."-A'",$act,$total,'/backup/nfs/'.$v->Titre.'.tar');
-        $this->Progression = 75;
+        AbtelBackup::localExec("sudo bsdtar cSf '/backup/nfs/".$v->Titre.".tar' '/backup/nfs/".$v->Titre."/".$v->Titre."-A'",$act,$total,'/backup/nfs/'.$v->Titre.'.tar',$progData);
+        $this->Progression = $fProg;
         parent::Save();
         $act->addProgression(100);
         return $act;
@@ -325,6 +342,11 @@ VM_STARTUP_ORDER=
      * Déduplication de la vm
      */
     private function deduplicateJob($v,$borg,$act){
+        $iProg = $this->Progression;
+        $fProg = 100;
+        $sProg = $fProg - $iProg;
+        $progData = array( 'init' => $iProg, 'span' => $sProg, 'job' => $this);
+
         $this->setStep(5); //'Déduplication'
         AbtelBackup::localExec('borg break-lock '.$borg->Path); //Supression des locks borg
         //AbtelBackup::localExec('borg delete --cache-only '.$borg->Path); //Supression du cache eventuellement corrompu
@@ -340,7 +362,7 @@ VM_STARTUP_ORDER=
 
         $point = time();
         //file_put_contents('tototoottoto',"export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".$point." '/backup/nfs/".$v->Titre.".tar'");
-        $det = AbtelBackup::localExec("export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".$point." '/backup/nfs/".$v->Titre.".tar'",$act,$total,'borg');
+        $det = AbtelBackup::localExec("export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".$point." '/backup/nfs/".$v->Titre.".tar'", $act, $total,null,$progData);
 
         //Recup taille pour graphique/progression
         $this->BackupSize = AbtelBackup::getSize($borg->Path);
