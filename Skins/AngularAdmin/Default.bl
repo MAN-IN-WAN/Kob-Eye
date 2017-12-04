@@ -101,6 +101,8 @@
     <script src="Skins/AngularAdmin/assets/vendors/angular-sanitize/angular-sanitize.min.js"></script>
     <script src="Skins/AngularAdmin/assets/vendors/angular-nl2br/angular-nl2br.js"></script>
     <!--<script src="Skins/AngularAdmin/assets/common/js/version_angular/app.js"></script>-->
+    <script src="Skins/AngularAdmin/assets/vendors/angular-file-upload/dist/angular-file-upload.min.js"></script>
+
     <script src="Systeme/Header/App.json"></script>
     <script src="Systeme/Header/Controllers.json"></script>
     <script src="Systeme/Header/Store.json"></script>

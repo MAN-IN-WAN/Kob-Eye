@@ -30,6 +30,22 @@
                         grid_num: 10
                     });
                 </script>
+            {% elseif field.type == "file" %}
+                <input type="file" nv-file-select uploader="uploader"/><br/>
+                <ul>
+                    <li ng-repeat="item in uploader.queue">
+                        Name: <span ng-bind="item.file.name"></span><br/>
+                        <button ng-click="item.upload()">upload</button>
+                    </li>
+                </ul>
+            {% elseif field.type == "image" %}
+                <input type="file" nv-file-select uploader="uploader"/><br/>
+                <ul>
+                    <li ng-repeat="item in uploader.queue">
+                        Name: <span ng-bind="item.file.name"></span><br/>
+                        <button ng-click="item.upload()">upload</button>
+                    </li>
+                </ul>
             {% else %}
                 {% if field.query %}
                     <select class="form-control" ng-model="modalObj.{{ field.name }}" >
