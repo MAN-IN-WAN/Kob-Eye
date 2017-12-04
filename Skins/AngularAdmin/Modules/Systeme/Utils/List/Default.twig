@@ -60,7 +60,7 @@
             <span class="label label-warning">{[{ item.id }]}</span>
         </td>
         {% for field in fields %}
-        <td scope="row" class="{{ field.type }}">
+        <td scope="row" class="type{{ field.type }}">
             {% if field.type == "price" or field.type == "float" %}
                 <span class="label label-warning">{[{ item.{{ field.name }}| currency:"" }]}</span>
             {% elseif field.type == "extlink" %}
@@ -72,8 +72,15 @@
             {% elseif field.type == "fkey" and field.card == "short" %}
                 <a class="btn btn-secondary btn-xs" href="#{{ field.link }}/{[{ item.{{ field.objectName }}{{ field.name }} }]}">{[{ item.{{ field.objectName }}{{ field.name }}label }]}</a>
             {% elseif field.type == "progress" %}
-                <progress class="progress progress-danger progress-striped progress-animated" ng-if="item.{{ field.name }} < 100" value="{[{ item.{{ field.name }} }]}" max="100">{[{ item.{{ field.name }} }]}</progress>
-                <progress class="progress progress-success progress-striped progress-animated" ng-if="item.{{ field.name }} == 100" value="{[{ item.{{ field.name }} }]}" max="100">{[{ item.{{ field.name }} }]}</progress>
+                <!--<progress class="progress progress-danger progress-striped progress-animated" ng-if="item.{{ field.name }} < 100" value="{[{ item.{{ field.name }} }]}" max="100">{[{ item.{{ field.name }} }]}</progress>
+                <progress class="progress progress-success progress-striped progress-animated" ng-if="item.{{ field.name }} == 100" value="{[{ item.{{ field.name }} }]}" max="100">{[{ item.{{ field.name }} }]}</progress>-->
+                <uib-progress ng-if="item.{{ field.name }} < 100">
+                    <uib-bar value="item.{{ field.name }}" type="warning" class=" progress-bar-striped progress-bar-animated"><span ng-hide="item.{{ field.name }} < 5">{[{ item.{{ field.name }} }]}%</span></uib-bar>
+                </uib-progress>
+                <uib-progress ng-if="item.{{ field.name }} >= 100">
+                    <uib-bar value="item.{{ field.name }}" type="success" class=" progress-bar-striped progress-bar-animated"><span ng-hide="item.{{ field.name }} < 5">{[{ item.{{ field.name }} }]}%</span></uib-bar>
+                </uib-progress>
+
             {% elseif field.type == "boolean" %}
                 {% if field.special == "reverse" %}
                     <span class="label label-success" ng-if="!item.{{ field.name }}"><i class="fa fa-check"></i></span>

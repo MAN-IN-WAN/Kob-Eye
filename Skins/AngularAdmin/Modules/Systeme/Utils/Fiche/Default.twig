@@ -113,8 +113,15 @@
                             <label class="form-control-label" for="l0">{% if field.parentDescription is not empty %}{{ field.parentDescription }}{% else %}{{ field.description }}{% endif %}</label>
                         </div>
                         <div class="col-md-10 detail-value">
+                            <uib-progress class="big" ng-if="obj.{{ field.name }} >= 100">
+                                <uib-bar value="obj.{{ field.name }}" type="success" class=" progress-bar-striped progress-bar-animated"><span ng-hide="obj.{{ field.name }} < 5">{[{ obj.{{ field.name }} }]}%</span></uib-bar>
+                            </uib-progress>
+                            <uib-progress class="big" ng-if="obj.{{ field.name }} < 100">
+                                <uib-bar value="obj.{{ field.name }}" type="warning" class=" progress-bar-striped progress-bar-animated"><span ng-hide="obj.{{ field.name }} < 5">{[{ obj.{{ field.name }} }]}%</span></uib-bar>
+                            </uib-progress>
+                            <!--
                             <progress class="progress progress-danger progress-striped progress-animated big" ng-if="obj.{{ field.name }} < 100" value="{[{ obj.{{ field.name }} }]}" max="100">{[{ obj.{{ field.name }} }]}</progress>
-                            <progress class="progress progress-success progress-striped progress-animated big" ng-if="obj.{{ field.name }} == 100" value="{[{ obj.{{ field.name }} }]}" max="100">{[{ obj.{{ field.name }} }]}</progress>
+                            <progress class="progress progress-success progress-striped progress-animated big" ng-if="obj.{{ field.name }} == 100" value="{[{ obj.{{ field.name }} }]}" max="100">{[{ obj.{{ field.name }} }]}</progress>-->
                         </div>
                     </div>
                 {% endif %}

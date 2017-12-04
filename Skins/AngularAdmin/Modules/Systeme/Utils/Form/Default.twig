@@ -19,6 +19,8 @@
 <!--                <div custom-select="a.id as a.label for a in {{ field.objectModule }}{{ field.objectName }}Store.getDataFilter($searchTerm)" custom-select-options="{ 'async': true }" ng-model="modalObj.{{ field.name }}" class="form-control" ng-title="modalObj.{{ field.name }}label"></div>-->
             {% elseif field.type == "boolean" %}
                 <switch id="enabled" name="enabled" ng-model="modalObj.{{ field.name }}" class="green"></switch>
+            {% elseif field.type == "password" %}
+                <input type="password" class="form-control" id="input-{{ field.name }}" ng-model="modalObj.{{ field.name }}" data-toggle="input-{{ field.name }}">
             {% elseif field.type == "progress" %}
                 <input type="text" id="slider-{{ field.name }}" name="example_name" ng-model="modalObj.{{ field.name }}" ng-value="modalObj.{{ field.name }}"/>
                 <script>
