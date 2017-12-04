@@ -281,9 +281,9 @@ class Server extends genericClass {
                     if(!is_object($o)){
                         $o = genericClass::createInstance('Parc','CompteMail');
                         $o->IdMail = $accId;
-                        $o->Adresse = $accName;
                         $report .= '<b>Nouvelle adresse trouvée</b> : '.$accName.'.<br>'.PHP_EOL;
                     }
+                    $o->Adresse = $accName;
                     $o->COS = $cos;
                     $o->Nom = $userNom;
                     $o->Prenom = $userPrenom;
@@ -296,7 +296,7 @@ class Server extends genericClass {
                     $o->addParent($kCli);
 
                     if(!$dryrun){
-                        $o->Save();
+                        $o->Save(false);
                     }
                 }
             }

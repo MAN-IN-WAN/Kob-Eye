@@ -354,6 +354,8 @@ class Apache extends genericClass {
     	    if (!empty($web->InternalIP))
               $entry['apacheProxy'] .= 'server '.$web->InternalIP.";\n";
         }
+        if($entry['apacheProxy'] == '') unset($entry['apacheProxy']);
+
 		return $entry;
 	}
 
