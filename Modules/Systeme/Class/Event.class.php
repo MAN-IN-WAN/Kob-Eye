@@ -219,23 +219,20 @@ class Event extends genericClass {
                             $contexts = $push->{$ev['EventModule'].$ev['EventObjectClass']};
                             foreach ($contexts as $name=>$context){
                                 $query = explode('/',$context->query);
-
                                 //si on est pas en page une on ne dispatch pas l'evenement
                                 if ($context->offset>0) {
-                                    if ($name=='children') echo "sortie offset children \r\n";
                                     continue;
                                 }
 
                                 //cas du filtre
-                                if ($context->filters!='~'){
+                                if ($context->filters!='~'&&$context->filters!='~&'){
                                     if (!Event::filterCheck($context->filters,$o)){
-                                        if ($name=='children') echo "sortie filtre children \r\n";
                                         continue;
                                     }
                                 }
 
                                 //cas de query complexe
-                                if (sizeof($query)>=1){
+                                if (sizeof($query)>1){
                                     //récupération du nom de la clef
                                     $ps = $obj->getParentElements();
                                     $flag = false;

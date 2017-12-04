@@ -15,6 +15,7 @@ foreach (Sys::$Modules as $k=>$mod){
                 $out[$f['name']] = $o->{$f['name']};
         }
         $tmp['newData'] = json_encode($out);
+        $tmp['logEvent'] = $obj->logEvent;
         $tmp['childrenelements'] = array();
         foreach ($obj->getChildElements() as $sub){
             if ($sub['objectModule'] . $sub['objectName']!=$tmp['identifier']) {

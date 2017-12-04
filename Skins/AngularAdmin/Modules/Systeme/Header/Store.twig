@@ -148,6 +148,9 @@
                 $http.post(q,obj)
                     .success(function(data) {
                         console.log('store > {{ key }} > save success '+obj.id, data);
+                        {% if not st.logEvent %}
+                        refresh('all');
+                        {% endif %}
                         resolve(data);
                 });
             });
@@ -313,10 +316,12 @@
         function addOneData(id,data,context = 'default'){
             if (context == 'all') {
                 for (var c in contexts){
-                    {{ st.identifier }}Store[contexts[c]].unshift(data);
+                    if ({{ st.identifier }}Store[contexts[c]])
+                        {{ st.identifier }}Store[contexts[c]].unshift(data);
                 }
             }else{
-                {{ st.identifier }}Store[context].unshift(data);
+                if ({{ st.identifier }}Store[context])
+                    {{ st.identifier }}Store[context].unshift(data);
             }
         }
 

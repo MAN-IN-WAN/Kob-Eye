@@ -2924,7 +2924,7 @@ class genericClass extends Root {
 		return $res;
 	}
     public function getWebServiceData() {
-        $fields = $this->getElementsByAttribute('fiche|form','',true);
+        $fields = $this->getElementsByAttribute('fiche|form|list','',true);
         $this->label = $this->getFirstSearchOrder();
         $o = new stdClass();
         $o->id = $this->Id;
@@ -2938,16 +2938,27 @@ class genericClass extends Root {
         else $o->userEditName = 'inconnu';
         $o->_details = "créé le ".date('d/m/Y H:i',$this->tmsCreate )." par ".$o->userCreateName."\nmodifié le ".date('d/m/Y H:i',$this->tmsEdit)." par ".$o->userEditName."";
         foreach ($fields as $f){
-            if ($f['type']=='boolean') {
-                //transformation des timestamps en format js
-                $o->{$f['name']} = $this->{$f['name']} ? 1 : 0;
-            }elseif ($f['type']=='date'){
-                //transformation des timestamps en format js
-                $o->{$f['name']} = date('d/m/Y H:i',$this->{$f['name']});
-            }elseif ($f['type']=='text'||$f['type']=='raw'||$f['type']=='varchar'||$f['type']=='html'||$f['type']=='titre'){
-                //transformation des timestamps en format js
-                $o->{$f['name']} = Utils::cleanJson($this->{$f['name']});
-            }elseif ($f['type']=='fkey'&&$f['card']=='short'){
+            switch ($f['type']){
+                case 'date':
+                    //transformation des timestamps en format js
+                    $o->{$f['name']} = date('d/m/Y H:i',$this->{$f['name']});
+                    break;
+                case 'boolean':
+                    //transformation des timestamps en format js
+                    $o->{$f['name']} = $this->{$f['name']} ? 1 : 0;
+                    break;
+                case 'text':
+                case 'varchar':
+                case 'titre':
+                case 'html':
+                case 'raw':
+                    $o->{$f['name']} = Utils::cleanJson($this->{$f['name']});
+                    break;
+                default:
+                    $o->{$f['name']} = $this->{$f['name']};
+                break;
+            }
+            if ($f['type']=='fkey'&&$f['card']=='short'){
                 if ($this->{$f['name']} > 0) {
                     $kk = Sys::getOneData($f['objectModule'], $f['objectName'] . '/' . $this->{$f['name']});
                     if ($kk)
@@ -2975,7 +2986,7 @@ class genericClass extends Root {
                     $val = Sys::getOneData($qry[0], $qry[1] . '/' . $this->{$f['name']});
                     $o->{$f['name'].'Label'} = $val->getFirstSearchOrder();
                 }else $o->{$f['name'].'Label'} = '';
-            }else $o->{$f['name']} = $this->{$f['name']};
+            }
         }
         return $o;
     }
