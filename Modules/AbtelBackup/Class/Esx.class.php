@@ -178,9 +178,12 @@ class Esx extends genericClass {
             if (preg_match('# ([0-9]{1,2})% #',$buf,$out)&&$activity) {
                 $progress = $out[1];
                 $activity->setProgression($progress);
-                if($progData){
-                    $progData['job']->Progression = ($progData['init'] + $progData['span']*$progress/100);
-                    $progData['job']->Save();
+                if($progData) {
+                    $temp = intval($progData['init'] + $progData['span'] * $progress / 100);
+                    if ($progData['job']->Progression != $temp) {
+                        $progData['job']->Progression = $temp;
+                        $progData['job']->Save();
+                    }
                 }
             }
             $data.=$buf;

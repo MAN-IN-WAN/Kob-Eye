@@ -42,6 +42,17 @@ progress.progress.progress-danger:after{
     font-weight: bold;
     text-shadow: 1px 1px 1px #fff, -1px -1px 1px #fff;
 }
+.dropdown-item-wrap{
+    padding: 0 15px;
+    width: 800px;
+}
+.dropdown-item-right{
+    float: right;
+    margin-left: 5px;
+}
+.dropdown-item-left{
+    float: left;
+}
 
 .prio_allGood{
     color: #83bf21;

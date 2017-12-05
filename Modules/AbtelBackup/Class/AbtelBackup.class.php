@@ -119,7 +119,7 @@ class AbtelBackup extends Module{
         return implode("\n",$output);*/
         $proc = popen($command.' 2>&1 ; echo Exit status : $?', 'r');
         $complete_output = "";
-        if ($path){
+        if ($path && is_file($path) && is_readable($path)){
             //On fork le process pour calculer le progress en parallele
             switch ($pid = pcntl_fork()) {
                 case -1:
@@ -135,8 +135,11 @@ class AbtelBackup extends Module{
                         if ($progress != $activity->Progression){
                             $activity->setProgression($progress);
                             if($progData){
-                                $progData['job']->Progression = ($progData['init'] + $progData['span']*$progress/100);
-                                $progData['job']->Save();
+                                $temp = intval($progData['init'] + $progData['span'] * $progress / 100);
+                                if ($progData['job']->Progression != $temp) {
+                                    $progData['job']->Progression = $temp;
+                                    $progData['job']->Save();
+                                }
                             }
                         }
 
@@ -168,8 +171,11 @@ class AbtelBackup extends Module{
             if($progress){
                 $activity->setProgression($progress*100);
                 if($progData){
-                    $progData['job']->Progression = ($progData['init'] + $progData['span']*$progress/100);
-                    $progData['job']->Save();
+                    $temp = intval($progData['init'] + $progData['span'] * $progress / 100);
+                    if ($progData['job']->Progression != $temp) {
+                        $progData['job']->Progression = $temp;
+                        $progData['job']->Save();
+                    }
                 }
             }
 
@@ -227,6 +233,16 @@ class AbtelBackup extends Module{
         //AbtelBackup::localExec('sudo rm /backup/samba/* -Rf');
         //vidage des tables
         $GLOBALS["Systeme"]->Db[0]->query('TRUNCATE `kob-AbtelBackup-Activity`;TRUNCATE `kob-AbtelBackup-BackupStore`;TRUNCATE `kob-AbtelBackup-BorgRepo`;TRUNCATE `kob-AbtelBackup-Esx`;TRUNCATE `kob-AbtelBackup-EsxVm`;TRUNCATE `kob-AbtelBackup-EsxVmRestorePointId`;TRUNCATE `kob-AbtelBackup-RemoteJob`;TRUNCATE `kob-AbtelBackup-RestorePoint`;TRUNCATE `kob-AbtelBackup-SambaJob`;TRUNCATE `kob-AbtelBackup-SambaShare`;TRUNCATE `kob-AbtelBackup-VmJob`;');
+
+        //Remise en place du Store par defaut
+        $s = genericClass::createInstance('AbtelBackup','BackupStore');
+        $s->Titre = 'Sauvegarde Locale';
+        $s->Type = 'Local';
+        $s->Save();
+
+        //Recalcul espace disque
+        BackupStore::getDiskUsage();
+
         return true;
     }
     static function initFolders(){

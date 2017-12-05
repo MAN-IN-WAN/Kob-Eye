@@ -13,24 +13,35 @@
         <ul class="dropdown-menu" aria-labelledby="" role="menu">
             <div id="vmErrors">
                 <div class="dropdown-header">Erreur(s) Job Vm :</div>
-                <a class="dropdown-item" ng-repeat="err in store.data['TopMenuErr'] | filter:isVm() as results1" href="#/{{ Urls.Activity }}/{[{ err.id }]}" title="{[{ err.Details }]}"><i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> {[{ err.Titre }]}</a>
+                <div class="dropdown-item-wrap clearfix" ng-repeat="err in store.data['TopMenuErr'] | filter:isVm() as results1">
+                    <a class="dropdown-item-left"  href="#/{{ Urls.Activity }}/{[{ err.id }]}" title="{[{ err.Details | limitTo:240 }]}"><i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> {[{ err.Titre }]}</a>
+                    <a class="dropdown-item-right"  href="#/{{ Urls.Activity }}/{[{ err.id }]}" title="Vu"><i class="dropdown-icon icmn-user-check prio_Info"></i> Vu</a>
+                </div>
                 <a class="dropdown-item" href="#" title="Aucune erreur" ng-if="results1.length === 0"><i class="dropdown-icon icmn-shield-notice prio_allGood"></i> Aucune erreur </a>
             </div>
             <div class="dropdown-divider"></div>
             <div id="sambaErrors">
                 <div class="dropdown-header">Erreur(s) Job Samba :</div>
-                <a class="dropdown-item" ng-repeat="err in store.data['TopMenuErr'] | filter:isSamba() as results2" href="#/{{ Urls.Activity }}/{[{ err.id }]}" title="{[{ err.Details }}"><i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> {[{ err.Titre }]}</a>
+                <div class="dropdown-item-wrap clearfix" ng-repeat="err in store.data['TopMenuErr'] | filter:isSamba() as results2">
+                    <a class="dropdown-item-left"  href="#/{{ Urls.Activity }}/{[{ err.id }]}" title="{[{ err.Details | limitTo:240 }]}"><i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> {[{ err.Titre }]}</a>
+                    <a class="dropdown-item-right"  href="#/{{ Urls.Activity }}/{[{ err.id }]}" title="Vu"><i class="dropdown-icon icmn-user-check prio_Info"></i> Vu</a>
+                </div>
                 <a class="dropdown-item" href="#" title="Aucune erreur" ng-if="results2.length === 0"><i class="dropdown-icon icmn-shield-notice prio_allGood"></i> Aucune erreur </a>
             </div>
             <div class="dropdown-divider"></div>
             <div id="remoteErrors">
                 <div class="dropdown-header">Erreur(s) Job Remote :</div>
-                <a class="dropdown-item" ng-repeat="err in store.data['TopMenuErr'] | filter:isRemote() as results3" href="#/{{ Urls.Activity }}/{[{ err.id }]}" title="{[{ err.Details }}"><i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> {[{ err.Titre }]}</a>
+                <div class="dropdown-item-wrap clearfix" ng-repeat="err in store.data['TopMenuErr'] | filter:isRemote() as results3">
+                    <a class="dropdown-item-left"  href="#/{{ Urls.Activity }}/{[{ err.id }]}" title="{[{ err.Details | limitTo:240 }]}"><i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> {[{ err.Titre }]}</a>
+                    <a class="dropdown-item-right"  href="#/{{ Urls.Activity }}/{[{ err.id }]}" title="Vu"><i class="dropdown-icon icmn-user-check prio_Info"></i> Vu</a>
+                </div>
                 <a class="dropdown-item" href="#" title="Aucune erreur" ng-if="results3.length === 0"><i class="dropdown-icon icmn-shield-notice prio_allGood"></i> Aucune erreur </a>
             </div>
             <br>
-            <a class="dropdown-item" href="javascript:void(0)">Toutes les erreurs</a>
-
+            <div class="dropdown-item-wrap clearfix">
+                {#<a class="dropdown-item-left" href="javascript:void(0)">Toutes les erreurs</a>#}
+                <a class="dropdown-item-right"  href="#/" title="Vu"><i class="dropdown-icon icmn-user-check prio_Info"></i> Tous vus</a>
+            </div>
         {#/ERREURS#}
             <div class="dropdown-divider"></div>
             <div class="dropdown-divider"></div>
@@ -67,7 +78,7 @@
                 <a class="dropdown-item" href="#" title="Aucune erreur" ng-if="results3.length === 0"><i class="dropdown-icon icmn-shield-notice prio_allGood"></i> Aucun job en cours </a>
             </div>
             <br>
-            <a class="dropdown-item" href="javascript:void(0)">Tous les jobs en cours</a>
+            {#<a class="dropdown-item" href="javascript:void(0)">Tous les jobs en cours</a>#}
         </ul>
         {#/ENCOURS#}
     </div>
