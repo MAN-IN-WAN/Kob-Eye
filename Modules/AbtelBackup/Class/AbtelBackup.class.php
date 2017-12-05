@@ -168,7 +168,11 @@ class AbtelBackup extends Module{
             if (preg_match('#^([0-9\.]+)? TB O#',$buf,$out)&&$activity&&$total) {
                 $progress = (floatval($out[1])*1048576)/$total;
             }
-            if($progress){
+            //cas rsync
+            if (preg_match('#([0-9]+)?%#',$buf,$out)&&$activity) {
+                $progress = intval($out[1])/100;
+            }
+            if($progress&&$progress*100!=$activity->Progression){
                 $activity->setProgression($progress*100);
                 if($progData){
                     $temp = intval($progData['init'] + $progData['span'] * $progress / 100);
@@ -263,4 +267,19 @@ class AbtelBackup extends Module{
     static function getSize($path){
         return AbtelBackup::localExec("du -sBM $path | sed 's/[^0-9]*//g'");
     }
+    /**
+     * sync
+     * Rsync command avec limite de bande passante.
+     * @param $path
+     * @param string $bw
+     * @return mixed
+     */
+    public static function sync( $path,$dest,$user,$ip,$bw = '5000',$act = null){
+        $cmd = 'rsync -az --info=progress2 -e " ssh -o StrictHostKeychecking=no -i /var/www/html/.ssh/id_'.$ip.'" --bwlimit='.$bw.' '.$path.' '.$user.'@'.$ip.':/home/'.$user.'/'.$dest;
+        if ($act){
+            $act->addDetails('CMD: '.$cmd);
+        }
+        return AbtelBackup::localExec($cmd,$act);
+    }
+
 }
