@@ -125,9 +125,9 @@ class Esx extends genericClass {
         return true;
     }
 
-    public function remoteExec( $command ,$activity = null,$noerror=false){
+    public function remoteExec( $command ,$activity = null,$noerror=false, $progData = null){
         if (!$this->_connection)$this->Connect();
-        $result = $this->rawExec( $command.';echo -en "\n$?"', $activity);
+        $result = $this->rawExec( $command.';echo -en "\n$?"', $activity, $progData);
         if(!$noerror&& ! preg_match( "/^(0|-?[1-9][0-9]*)$/s", $result[2], $matches ) ) {
             throw new RuntimeException( "Le retour de la commande ne contenait pas le status. commande : ".$command );
         }
@@ -166,7 +166,7 @@ class Esx extends genericClass {
         $this->Disconnect();
         return true;//$result;
     }
-    private function rawExec( $command,$activity=null ){
+    private function rawExec( $command,$activity=null , $progData = null ){
         $stream = ssh2_exec( $this->_connection, $command );
         $error_stream = ssh2_fetch_stream( $stream, SSH2_STREAM_STDERR );
         stream_set_blocking( $stream, TRUE );
@@ -178,6 +178,10 @@ class Esx extends genericClass {
             if (preg_match('# ([0-9]{1,2})% #',$buf,$out)&&$activity) {
                 $progress = $out[1];
                 $activity->setProgression($progress);
+                if($progData){
+                    $progData['job']->Progression = ($progData['init'] + $progData['span']*$progress/100);
+                    $progData['job']->Save();
+                }
             }
             $data.=$buf;
         }

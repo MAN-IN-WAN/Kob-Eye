@@ -217,6 +217,11 @@ class SambaJob extends genericClass {
      * Déduplication de la vm
      */
     private function deduplicateJob($ss,$dev,$borg,$act){
+        $iProg = $this->Progression;
+        $fProg = 100;
+        $sProg = $fProg - $iProg;
+        $progData = array( 'init' => $iProg, 'span' => $sProg, 'job' => $this);
+
         $this->setStep(3); //'Déduplication'
         AbtelBackup::localExec('borg break-lock '.$borg->Path); //Supression des locks borg
         //AbtelBackup::localExec('borg delete --cache-only '.$borg->Path); //Supression du cache eventuellement corrompu
@@ -230,7 +235,7 @@ class SambaJob extends genericClass {
 
         $point = time();
         //file_put_contents('tototoottoto',"export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".$point." '/backup/nfs/".$v->Titre.".tar'");
-        $det = AbtelBackup::localExec("export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".$point." '/backup/samba/".$dev->IP."/".$ss->Partage."'",$act,$total,'borg');
+        $det = AbtelBackup::localExec("export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".$point." '/backup/samba/".$dev->IP."/".$ss->Partage."'",$act,$total,null, $progData);
 
         //Recup taille pour graphique/progression
         $this->BackupSize = AbtelBackup::getSize($borg->Path);
@@ -239,7 +244,7 @@ class SambaJob extends genericClass {
         //création du point de restauration
         $dev->createRestorePoint($point,$det);
         $act->setProgression(100);
-        $this->addProgression(80);
+        $this->Progression = $fProg;
         return $act;
     }
     /**

@@ -12,7 +12,8 @@ angular.module('cleanUI', [
     'CustomSelect',
     'checklist-model',
     'countTo',
-    'ion.rangeslider'
+    'ion.rangeslider',
+    'angularFileUpload'
 ]).config(function($interpolateProvider){
     $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
 })
@@ -365,7 +366,11 @@ controller: 'registerPageCtrl'
 
 var app = angular.module('cleanUI.controllers', []);
 
-app.controller('MainCtrl', function($location, $scope, $rootScope, $timeout) {
+app.controller('MainCtrl', function($location, $scope, $rootScope, $timeout, FileUploader) {
+
+$scope.uploader = new FileUploader({
+    url:'/Systeme/Utils/Upload.json'
+});
 
 NProgress.configure({
 minimum: 0.2,

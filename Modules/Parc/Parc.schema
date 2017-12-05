@@ -96,6 +96,7 @@
 	<OBJECTCLASS title="MX" driver="mysql" Description="MX" Icon="/Skins/AdminV2/Img/IconAqua/Tasks_mini.png" Class="Modules/Parc/Class/MX.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" list="1" listDescr="Nom" form="1">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" list="1" listDescr="Nom DNS" form="1" description="Nom DNS du serveur de mail (ou type A mail)">Dnscname</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" listDescr="Domaine cible" form="1" description="Domaine cible (pour la racine: '[Domaine].')">Dnsdomainname</PROPERTIES>
 		<PROPERTIES type="varchar" values="1,5,10,15,20,25,30,35,40,45,50" default="10" list="1" listDescr="Poids" form="1">Poids</PROPERTIES>
 		<PROPERTIES type="int" searchOrder="3"  list="1" form="1" default="86400" listDescr="TTL" >TTL</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
