@@ -42,6 +42,7 @@
 		<PROPERTIES type="boolean" form="1" fiche="1" list="1" description="Démarré" listDescr="Demarré">Started</PROPERTIES>
 		<PROPERTIES type="boolean" form="1" fiche="1" list="1" description="Succés" listDescr="Succès">Success</PROPERTIES>
 		<PROPERTIES type="boolean" form="1" fiche="1" list="1" special="reverse" description="Erreur" listDescr="Erreur">Errors</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" description="Acknowledge" listDescr="Vue" default="0">Acknowledge</PROPERTIES>
 		<PROPERTIES type="raw" form="1" fiche="1">Details</PROPERTIES>
         <FKEY data="EsxVm,Id" form="1" fiche="1" card="0,1" popup="1" >EsxVmId</FKEY>
 		<FKEY data="VmJob,Id" form="1" fiche="1" card="0,1" popup="1" >VmJobId</FKEY>

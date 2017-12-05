@@ -14,8 +14,8 @@
             <div id="vmErrors">
                 <div class="dropdown-header">Erreur(s) Job Vm :</div>
                 <div class="dropdown-item-wrap clearfix" ng-repeat="err in store.data['TopMenuErr'] | filter:isVm() as results1">
-                    <a class="dropdown-item-left"  href="#/{{ Urls.Activity }}/{[{ err.id }]}" title="{[{ err.Details | limitTo:240 }]}"><i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> {[{ err.Titre }]}</a>
-                    <a class="dropdown-item-right"  href="#/{{ Urls.Activity }}/{[{ err.id }]}" title="Vu"><i class="dropdown-icon icmn-user-check prio_Info"></i> Vu</a>
+                    <a class="dropdown-item-left"  href="#/{{ Urls.Activity }}/{[{ err.id }]}" title="{[{ err.Details | limitTo:240 }]}"><i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> <span ng-bind-html="err.Titre"></span></a>
+                    <a class="dropdown-item-right"  href="javascript: void(0);" ng-click="ackActivity(err)" title="Vu"><i class="dropdown-icon icmn-user-check prio_Info"></i> Vu</a>
                 </div>
                 <a class="dropdown-item" href="#" title="Aucune erreur" ng-if="results1.length === 0"><i class="dropdown-icon icmn-shield-notice prio_allGood"></i> Aucune erreur </a>
             </div>
@@ -23,8 +23,8 @@
             <div id="sambaErrors">
                 <div class="dropdown-header">Erreur(s) Job Samba :</div>
                 <div class="dropdown-item-wrap clearfix" ng-repeat="err in store.data['TopMenuErr'] | filter:isSamba() as results2">
-                    <a class="dropdown-item-left"  href="#/{{ Urls.Activity }}/{[{ err.id }]}" title="{[{ err.Details | limitTo:240 }]}"><i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> {[{ err.Titre }]}</a>
-                    <a class="dropdown-item-right"  href="#/{{ Urls.Activity }}/{[{ err.id }]}" title="Vu"><i class="dropdown-icon icmn-user-check prio_Info"></i> Vu</a>
+                    <a class="dropdown-item-left"  href="#/{{ Urls.Activity }}/{[{ err.id }]}" title="{[{ err.Details | limitTo:240 }]}"><i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> <span ng-bind-html="err.Titre"></span></a>
+                    <a class="dropdown-item-right"  href="javascript: void(0);" ng-click="ackActivity(err)" title="Vu"><i class="dropdown-icon icmn-user-check prio_Info"></i> Vu</a>
                 </div>
                 <a class="dropdown-item" href="#" title="Aucune erreur" ng-if="results2.length === 0"><i class="dropdown-icon icmn-shield-notice prio_allGood"></i> Aucune erreur </a>
             </div>
@@ -32,15 +32,15 @@
             <div id="remoteErrors">
                 <div class="dropdown-header">Erreur(s) Job Remote :</div>
                 <div class="dropdown-item-wrap clearfix" ng-repeat="err in store.data['TopMenuErr'] | filter:isRemote() as results3">
-                    <a class="dropdown-item-left"  href="#/{{ Urls.Activity }}/{[{ err.id }]}" title="{[{ err.Details | limitTo:240 }]}"><i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> {[{ err.Titre }]}</a>
-                    <a class="dropdown-item-right"  href="#/{{ Urls.Activity }}/{[{ err.id }]}" title="Vu"><i class="dropdown-icon icmn-user-check prio_Info"></i> Vu</a>
+                    <a class="dropdown-item-left"  href="#/{{ Urls.Activity }}/{[{ err.id }]}" title="{[{ err.Details | limitTo:240 }]}"><i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> <span ng-bind-html="err.Titre"></span></a>
+                    <a class="dropdown-item-right"  href="javascript: void(0);" ng-click="ackActivity(err)" title="Vu"><i class="dropdown-icon icmn-user-check prio_Info"></i> Vu</a>
                 </div>
                 <a class="dropdown-item" href="#" title="Aucune erreur" ng-if="results3.length === 0"><i class="dropdown-icon icmn-shield-notice prio_allGood"></i> Aucune erreur </a>
             </div>
             <br>
             <div class="dropdown-item-wrap clearfix">
                 {#<a class="dropdown-item-left" href="javascript:void(0)">Toutes les erreurs</a>#}
-                <a class="dropdown-item-right"  href="#/" title="Vu"><i class="dropdown-icon icmn-user-check prio_Info"></i> Tous vus</a>
+                <a class="dropdown-item-right"  href="javascript: void(0);" ng-click="ackActivity('all')" title="Vu"><i class="dropdown-icon icmn-user-check prio_Info"></i> Tous vus</a>
             </div>
         {#/ERREURS#}
             <div class="dropdown-divider"></div>
@@ -50,7 +50,7 @@
             <div id="vmErrors">
                 <div class="dropdown-header">Job(s) Vm en cours:</div>
                 <a class="dropdown-item" ng-repeat="jb in store.data['TopMenuRun'] | filter:isVm() as results1" href="#/{{ Urls.Activity }}/{[{ jb.id }]}" title="{[{ jb.Details }]}">
-                    <i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> {[{ jb.Titre }]}<br>
+                    <i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> <span ng-bind-html="jb.Titre"></span><br>
                     <progress class="progress progress-danger progress-striped progress-animated" ng-if="jb.Progression < 100" value="{[{ jb.Progression }]}" max="100" title="{[{ jb.Progression }]}%">{[{ jb.Progression }]}%</progress>
                     <progress class="progress progress-success progress-striped progress-animated" ng-if="jb.Progression == 100" value="{[{ jb.Progression }]}" max="100" title="{[{ jb.Progression }]}%">{[{ jb.Progression }]}%</progress>
                 </a>
@@ -61,7 +61,7 @@
             <div id="sambaErrors">
                 <div class="dropdown-header">Job(s) Samba en cours:</div>
                 <a class="dropdown-item" ng-repeat="jb in store.data['TopMenuRun'] | filter:isSamba() as results2" href="#/{{ Urls.Activity }}/{[{ jb.id }]}" title="{[{ jb.Details }}">
-                    <i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> {[{ jb.Titre }]}<br>
+                    <i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> <span ng-bind-html="jb.Titre"></span><br>
                     <progress class="progress progress-danger progress-striped progress-animated" ng-if="jb.Progression < 100" value="{[{ jb.Progression }]}" max="100" title="{[{ jb.Progression }]}%">{[{ jb.Progression }]}%</progress>
                     <progress class="progress progress-success progress-striped progress-animated" ng-if="jb.Progression == 100" value="{[{ jb.Progression }]}" max="100" title="{[{ jb.Progression }]}%">{[{ jb.Progression }]}%</progress>
                 </a>
@@ -71,7 +71,7 @@
             <div id="remoteErrors">
                 <div class="dropdown-header">Job(s) Remote en cours:</div>
                 <a class="dropdown-item" ng-repeat="jb in store.data['TopMenuRun'] | filter:isRemote() as results3" href="#/{{ Urls.Activity }}/{[{ jb.id }]}" title="{[{ jb.Details }}">
-                    <i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> {[{ jb.Titre }]}<br>
+                    <i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> <span ng-bind-html="jb.Titre"></span><br>
                     <progress class="progress progress-danger progress-striped progress-animated" ng-if="jb.Progression < 100" value="{[{ jb.Progression }]}" max="100" title="{[{ jb.Progression }]}%">{[{ jb.Progression }]}%</progress>
                     <progress class="progress progress-success progress-striped progress-animated" ng-if="jb.Progression == 100" value="{[{ jb.Progression }]}" max="100" title="{[{ jb.Progression }]}%">{[{ jb.Progression }]}%</progress>
                 </a>

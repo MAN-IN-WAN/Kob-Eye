@@ -159,13 +159,13 @@ class AbtelBackup extends Module{
             $progress = 0;
 
             //cas borg
-            if (preg_match('#^([0-9\.]+)? MB O#',$buf,$out)&&$activity&&$total) {
+            if (preg_match('#O ([0-9\.]+)? MB C#',$buf,$out)&&$activity&&$total) {
                 $progress = (floatval($out[1]))/$total;
             }
-            if (preg_match('#^([0-9\.]+)? GB O#',$buf,$out)&&$activity&&$total) {
+            if (preg_match('#O ([0-9\.]+)? GB C#',$buf,$out)&&$activity&&$total) {
                 $progress = (floatval($out[1])*1024)/$total;
             }
-            if (preg_match('#^([0-9\.]+)? TB O#',$buf,$out)&&$activity&&$total) {
+            if (preg_match('#O ([0-9\.]+)? TB C#',$buf,$out)&&$activity&&$total) {
                 $progress = (floatval($out[1])*1048576)/$total;
             }
             //cas rsync
@@ -181,6 +181,9 @@ class AbtelBackup extends Module{
                         $progData['job']->Save();
                     }
                 }
+            }
+            if($progress){
+                continue;
             }
 
 
@@ -265,7 +268,7 @@ class AbtelBackup extends Module{
         return true;
     }
     static function getSize($path){
-        return AbtelBackup::localExec("du -sBM $path | sed 's/[^0-9]*//g'");
+        return AbtelBackup::localExec("du -sBM \"$path\" | sed 's/[^0-9]*//g'");
     }
     /**
      * sync

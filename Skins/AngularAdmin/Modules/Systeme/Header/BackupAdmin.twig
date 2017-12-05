@@ -1,15 +1,11 @@
-app.controller('BackupAdminMenuTopCtrl', function( $scope, AbtelBackupActivityStore) {
+app.controller('BackupAdminMenuTopCtrl', function( $scope, AbtelBackupActivityStore, $rootScope) {
 
     $scope.store =  AbtelBackupActivityStore;
 
-    $scope.store.setFilters('Errors=1','TopMenuErr');
-    $scope.store.getData(1,'TopMenuErr');
+    $scope.store.setFilters('Errors=1&Acknowledge!=1','TopMenuErr');
 
     $scope.store.setFilters('Started=1&Success=0&Errors=0','TopMenuRun');
-    $scope.store.getData(1,'TopMenuRun');
 
-    $scope.errCount = $scope.store.data['TopMenuErr'].length;
-    $scope.runCount = $scope.store.data['TopMenuRun'].length;
 
     $scope.isVm = function(){
         return function(item){
@@ -26,5 +22,33 @@ app.controller('BackupAdminMenuTopCtrl', function( $scope, AbtelBackupActivitySt
             return item['RemoteJobRemoteJobId'] > 0;
         }
     }
+
+    $scope.ackActivity = function(act){
+        if (act == 'all'){
+            for(var n in $scope.store.data['TopMenuErr']){
+                var tempAct = $scope.store.data['TopMenuErr'][n];
+                tempAct.Acknowledge = 1;
+                $scope.store.saveData(tempAct);
+            }
+            $scope.store.data['TopMenuErr'] = new Array();
+            $scope.store.total['TopMenuErr'] = 0;
+        } else {
+            act.Acknowledge = 1;
+            $scope.store.saveData(act);
+            $scope.store.deleteOneData(act.id,'TopMenuErr',true);
+        }
+    }
+
+    $rootScope.$on('AbtelBackupActivityStore',function (ev,data){
+        switch (data.type){
+            case 'edit':
+            case 'add':
+                if(data.data.Success || data.data.Errors || !data.data.Started){
+                    console.log('innnnnnnnnnnnnnn');
+                    $scope.store.deleteOneData(data.id,'TopMenuRun',true);
+                }
+                break;
+        }
+    });
 
 });
