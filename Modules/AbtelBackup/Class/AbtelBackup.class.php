@@ -110,7 +110,7 @@ class AbtelBackup extends Module{
     /**
      * UTILS FUNCTIONS
      */
-    static public function localExec( $command, $activity = null,$total=0,$path=null)
+    static public function localExec( $command, $activity = null,$total=0,$path=null,$progData=null)
     {
         /*exec( $command,$output,$return);
         if( $return ) {
@@ -119,7 +119,7 @@ class AbtelBackup extends Module{
         return implode("\n",$output);*/
         $proc = popen($command.' 2>&1 ; echo Exit status : $?', 'r');
         $complete_output = "";
-        if ($path){
+        if ($path && is_file($path) && is_readable($path)){
             //On fork le process pour calculer le progress en parallele
             switch ($pid = pcntl_fork()) {
                 case -1:
@@ -132,8 +132,17 @@ class AbtelBackup extends Module{
                     while (!feof($proc)) {
                         $size = AbtelBackup::getSize($path);
                         $progress = floatval($size)*100/$total;
-                        if ($progress != $activity->Progression)
+                        if ($progress != $activity->Progression){
                             $activity->setProgression($progress);
+                            if($progData){
+                                $temp = intval($progData['init'] + $progData['span'] * $progress / 100);
+                                if ($progData['job']->Progression != $temp) {
+                                    $progData['job']->Progression = $temp;
+                                    $progData['job']->Save();
+                                }
+                            }
+                        }
+
                         sleep(5);
                     }
                     exit;
@@ -152,16 +161,28 @@ class AbtelBackup extends Module{
             //cas borg
             if (preg_match('#^([0-9\.]+)? MB O#',$buf,$out)&&$activity&&$total) {
                 $progress = (floatval($out[1]))/$total;
-                $activity->setProgression($progress*100);
             }
             if (preg_match('#^([0-9\.]+)? GB O#',$buf,$out)&&$activity&&$total) {
                 $progress = (floatval($out[1])*1024)/$total;
-                $activity->setProgression($progress*100);
             }
             if (preg_match('#^([0-9\.]+)? TB O#',$buf,$out)&&$activity&&$total) {
                 $progress = (floatval($out[1])*1048576)/$total;
-                $activity->setProgression($progress*100);
             }
+            //cas rsync
+            if (preg_match('#([0-9]+)?%#',$buf,$out)&&$activity) {
+                $progress = intval($out[1])/100;
+            }
+            if($progress&&$progress*100!=$activity->Progression){
+                $activity->setProgression($progress*100);
+                if($progData){
+                    $temp = intval($progData['init'] + $progData['span'] * $progress / 100);
+                    if ($progData['job']->Progression != $temp) {
+                        $progData['job']->Progression = $temp;
+                        $progData['job']->Save();
+                    }
+                }
+            }
+
 
             //file_put_contents('triliilili',$buf,8);
             //file_put_contents('truluululu',$progress,8);
@@ -216,6 +237,16 @@ class AbtelBackup extends Module{
         //AbtelBackup::localExec('sudo rm /backup/samba/* -Rf');
         //vidage des tables
         $GLOBALS["Systeme"]->Db[0]->query('TRUNCATE `kob-AbtelBackup-Activity`;TRUNCATE `kob-AbtelBackup-BackupStore`;TRUNCATE `kob-AbtelBackup-BorgRepo`;TRUNCATE `kob-AbtelBackup-Esx`;TRUNCATE `kob-AbtelBackup-EsxVm`;TRUNCATE `kob-AbtelBackup-EsxVmRestorePointId`;TRUNCATE `kob-AbtelBackup-RemoteJob`;TRUNCATE `kob-AbtelBackup-RestorePoint`;TRUNCATE `kob-AbtelBackup-SambaJob`;TRUNCATE `kob-AbtelBackup-SambaShare`;TRUNCATE `kob-AbtelBackup-VmJob`;');
+
+        //Remise en place du Store par defaut
+        $s = genericClass::createInstance('AbtelBackup','BackupStore');
+        $s->Titre = 'Sauvegarde Locale';
+        $s->Type = 'Local';
+        $s->Save();
+
+        //Recalcul espace disque
+        BackupStore::getDiskUsage();
+
         return true;
     }
     static function initFolders(){
@@ -236,4 +267,19 @@ class AbtelBackup extends Module{
     static function getSize($path){
         return AbtelBackup::localExec("du -sBM $path | sed 's/[^0-9]*//g'");
     }
+    /**
+     * sync
+     * Rsync command avec limite de bande passante.
+     * @param $path
+     * @param string $bw
+     * @return mixed
+     */
+    public static function sync( $path,$dest,$user,$ip,$bw = '5000',$act = null){
+        $cmd = 'rsync -az --info=progress2 -e " ssh -o StrictHostKeychecking=no -i /var/www/html/.ssh/id_'.$ip.'" --bwlimit='.$bw.' '.$path.' '.$user.'@'.$ip.':/home/'.$user.'/'.$dest;
+        if ($act){
+            $act->addDetails('CMD: '.$cmd);
+        }
+        return AbtelBackup::localExec($cmd,$act);
+    }
+
 }

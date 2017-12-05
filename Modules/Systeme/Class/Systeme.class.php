@@ -175,7 +175,7 @@ class Systeme extends Module {
             $t->Titre = 'ClearEvents';
             $t->Enabled = 1;
             $t->TaskModule = 'Systeme';
-            $t->TaskObject = 'Systeme';
+            $t->TaskObject = 'Event';
             $t->TaskFunction = 'clearEvents';
             $t->Save();
         }

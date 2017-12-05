@@ -658,7 +658,7 @@ class Sys extends Root{
 			$Tab[$i]->Niveau = $Niv;
 			$Url = $Tab[$i]->Url;
 			if ($Url==$T&&$Niv<sizeof($Menus)-1) {
-				$this->MenusFromUrl[]= $Tab[$i];
+				Sys::$MenusFromUrl[]= $Tab[$i];
 				$Result = $this->searchMenu($Men,$Tab[$i]->Menus,$Niv+1);
 				if (!$Result) {
 					//Peut etre Alias ?
@@ -682,7 +682,7 @@ class Sys extends Root{
 		if (is_object($Results)){
 			//Modification de l'url du menu en cours
 			$U = $Menus[0];
-			for ($i=1;$i<sizeof($this->MenusFromUrl);$i++)$U.='/'.$this->MenusFromUrl[$i]->Url;
+			for ($i=1;$i<sizeof(Sys::$MenusFromUrl);$i++)$U.='/'.Sys::$MenusFromUrl[$i]->Url;
 			Sys::$CurrentMenu = $Results->getClone(true);
 			Sys::$CurrentMenu->Url=$U;
 		}

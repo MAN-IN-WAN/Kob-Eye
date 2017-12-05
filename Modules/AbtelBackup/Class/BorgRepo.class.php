@@ -22,6 +22,10 @@ class BorgRepo extends genericClass {
         }
         return true;
     }
+    public function getName() {
+        $p = explode('/',$this->Path);
+        return $p[sizeof($p)-1];
+    }
     public function createDepot () {
         //test de l'existence du chemin
         if (!file_exists($this->Path)){
