@@ -169,9 +169,14 @@ class RemoteJob extends genericClass {
      * Syncrhonisation du dépôt
      */
     private function syncJob($ss,$dev,$act){
+        $iProg = $this->Progression;
+        $fProg = 100;
+        $sProg = $fProg - $iProg;
+        $progData = array( 'init' => $iProg, 'span' => $sProg, 'job' => $this);
+
         $this->setStep(2); //Montage
         $act->addDetails('-> Synchronisation  '.$ss->Titre,'yellow');
-        AbtelBackup::sync($ss->Path,$ss->getName(),$dev->Login,$dev->IP,$this->BandePassante*1000,$act);
+        AbtelBackup::sync($ss->Path,$ss->getName(),$dev->Login,$dev->IP,$this->BandePassante*1000,$act,$progData);
         $act->addProgression(100);
         parent::Save();
         return $act;

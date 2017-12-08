@@ -358,14 +358,14 @@ VM_STARTUP_ORDER=
 
 
         //Recup taille pour graphique/progression
-        $this->Size = $total;
+        $v->Size = $total;
 
         $point = time();
         //file_put_contents('tototoottoto',"export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".$point." '/backup/nfs/".$v->Titre.".tar'");
         $det = AbtelBackup::localExec("export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".$point." '/backup/nfs/".$v->Titre.".tar'", $act, $total,null,$progData);
 
         //Recup taille pour graphique/progression
-        $this->BackupSize = AbtelBackup::getSize($borg->Path);
+        $v->BackupSize = AbtelBackup::getSize($borg->Path);
         parent::Save();
 
         //création du point de restauration
