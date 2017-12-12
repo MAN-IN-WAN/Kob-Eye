@@ -310,7 +310,7 @@ class AbtelBackup extends Module{
         //on copie la clef privée
         AbtelBackup::localExec('scp /var/www/.ssh/id_'.$esx->IP.' root@'.$esxsrc->IP.':/tmp/id_'.$esx->IP);
         //on copie le dossier vm vers le nouvel esx
-        $esxsrc->remoteExec('scp -i /tmp/id_'.$esx->IP.' /vmfs/volumes/datastore1/BORG/BORG.vmx root@'.$esx->IP.':/vmfs/volumes/'.);
+        $esxsrc->remoteExec('scp -i /tmp/id_'.$esx->IP.' /vmfs/volumes/datastore1/BORG/BORG.vmx root@'.$esx->IP.':/vmfs/volumes/');
         //on modifie le fichier vmx
         //on ajoute la vm à l'inventaire
 
