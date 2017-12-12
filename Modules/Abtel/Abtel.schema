@@ -58,7 +58,7 @@
 	</OBJECTCLASS>
 
 
-	<OBJECTCLASS title="Contrat" driver="mysql" AccessPoint="1" Description="Contrats Clients" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" >
+	<OBJECTCLASS title="Contrat" driver="mysql" AccessPoint="1" Description="Contrats Clients" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Operations="" >
         <FILTER name="En cours" color="primary"><![CDATA[DateDebut<[!TMS::Now!]&ContratFin>[!TMS::Now!]]]></FILTER>
         <FILTER name="Echeance - de 6 mois" color="warning" ><![CDATA[ContratFin>[!TMS::Now:+7776000!]&ContratFin<[!TMS::Now:+15552000!]]]></FILTER>
         <FILTER name="Echeance - de 3 mois" color="danger" ><![CDATA[ContratFin<[!TMS::Now:+7776000!]]]></FILTER>

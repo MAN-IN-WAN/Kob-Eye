@@ -1,4 +1,9 @@
-app.controller('{{ controller }}Ctrl', function ($location, $scope, $rootScope,$http) {
+app.controller('{{ controller }}Ctrl', function ($location, $scope, $rootScope,$http,AbtelBackupEsxStore) {
+    AbtelBackupEsxStore.getData(1,'deploiement');
+    $scope.esxs = AbtelBackupEsxStore.data['deploiement'];
+    $scope.deployAbtelBackup = function () {
+        console.log('$scope.esxs',$scope.esxs);
+    }
     $scope.resetData = function () {
         swal({
                 title: "Êtes vous sûr de vouloir réinitialiser l'ensemble des données et configurations ?",

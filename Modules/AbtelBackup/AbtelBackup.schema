@@ -29,8 +29,9 @@
 		<PROPERTIES type="int" searchOrder="2" list="1" form="1" fiche="1" listDescr="Taille">Size</PROPERTIES>
 		<PROPERTIES type="int"  list="1" form="1" fiche="1" listDescr="Taille Sauvegarde (Go)">BackupSize</PROPERTIES>
 		<PROPERTIES type="int" searchOrder="2" list="1" form="1" fiche="1" listDescr="ID VMware">RemoteId</PROPERTIES>
-		<FKEY data="Esx,Id" card="1,1" form="1" fiche="1" list="1" listDescr="ESX" parentDescription="ESX">EsxId</FKEY>
-		<FKEY data="BorgRepo,Id" card="0,1" form="1" fiche="1" list="1" listDescr="Dépôt" parentDescription="Dépôt BORG">BorgRepoId</FKEY>
+		<PROPERTIES type="boolean" form="1" fiche="1" listDescr="Vm Source pour déploiement" description="Vm Source pour déploiement">SrcVm</PROPERTIES>
+		<FKEY data="Esx,Id" card="1,1" form="1" fiche="1" list="1" listDescr="ESX" description="ESX">EsxId</FKEY>
+		<FKEY data="BorgRepo,Id" card="0,1" form="1" fiche="1" list="1" listDescr="Dépôt" description="Dépôt BORG">BorgRepoId</FKEY>
 		<RKEY data="RestorePoint,Id" card="0,n">RestorePointId</RKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Activity" logEvent="1"  AccessPoint="1" driver="mysql" Description="Activité des jobs"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelBackup/Class/Activity.class.php">

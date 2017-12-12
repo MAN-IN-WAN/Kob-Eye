@@ -133,6 +133,7 @@ class VmJob extends genericClass {
         foreach ($vms as $v){
             Klog::l('DEBUG vm ==> '.$v->Id.' STEP: '.$this->Step);
             //définition de la vm en cours
+            $this->setStep(1);
             $this->setCurrentVm($v->Id);
             $esx = $v->getOneParent('Esx');
             $borg = $v->getOneParent('BorgRepo');

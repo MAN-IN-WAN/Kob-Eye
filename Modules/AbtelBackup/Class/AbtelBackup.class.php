@@ -161,16 +161,21 @@ class AbtelBackup extends Module{
             //cas borg
             if (preg_match('#O ([0-9\.]+)? MB C#',$buf,$out)&&$activity&&$total) {
                 $progress = (floatval($out[1]))/$total;
+                $buf = '';
             }
+            //347.08 GB O 285.33 GB C 212.73 G
             if (preg_match('#O ([0-9\.]+)? GB C#',$buf,$out)&&$activity&&$total) {
                 $progress = (floatval($out[1])*1024)/$total;
+                $buf = '';
             }
             if (preg_match('#O ([0-9\.]+)? TB C#',$buf,$out)&&$activity&&$total) {
                 $progress = (floatval($out[1])*1048576)/$total;
+                $buf = '';
             }
             //cas rsync
             if (preg_match('#([0-9]+)?%#',$buf,$out)&&$activity) {
                 $progress = intval($out[1])/100;
+                $buf = '';
             }
             if($progress&&$progress*100!=$activity->Progression){
                 $activity->setProgression($progress*100);
@@ -186,9 +191,6 @@ class AbtelBackup extends Module{
                 continue;
             }
 
-
-            //file_put_contents('triliilili',$buf,8);
-            //file_put_contents('truluululu',$progress,8);
 
             $complete_output .= $buf;
         }
@@ -237,9 +239,10 @@ class AbtelBackup extends Module{
         AbtelBackup::localExec('sudo rm /backup/nfs/* -Rf');
         AbtelBackup::localExec('sudo rm /backup/borg/* -Rf');
         AbtelBackup::localExec('sudo rm /backup/restore/* -Rf');
+        AbtelBackup::localExec('sudo rm /var/www/html/.ssh/* -Rf');
         //AbtelBackup::localExec('sudo rm /backup/samba/* -Rf');
         //vidage des tables
-        $GLOBALS["Systeme"]->Db[0]->query('TRUNCATE `kob-AbtelBackup-Activity`;TRUNCATE `kob-AbtelBackup-BackupStore`;TRUNCATE `kob-AbtelBackup-BorgRepo`;TRUNCATE `kob-AbtelBackup-Esx`;TRUNCATE `kob-AbtelBackup-EsxVm`;TRUNCATE `kob-AbtelBackup-EsxVmRestorePointId`;TRUNCATE `kob-AbtelBackup-RemoteJob`;TRUNCATE `kob-AbtelBackup-RestorePoint`;TRUNCATE `kob-AbtelBackup-SambaJob`;TRUNCATE `kob-AbtelBackup-SambaShare`;TRUNCATE `kob-AbtelBackup-VmJob`;');
+        $GLOBALS["Systeme"]->Db[0]->query('TRUNCATE `kob-AbtelBackup-Activity`;TRUNCATE `kob-AbtelBackup-BackupStore`;TRUNCATE `kob-AbtelBackup-BorgRepo`;TRUNCATE `kob-AbtelBackup-Esx`;TRUNCATE `kob-AbtelBackup-EsxVm`;TRUNCATE `kob-AbtelBackup-EsxVmRestorePointId`;TRUNCATE `kob-AbtelBackup-RemoteJob`;TRUNCATE `kob-AbtelBackup-RestorePoint`;TRUNCATE `kob-AbtelBackup-SambaJob`;TRUNCATE `kob-AbtelBackup-SambaShare`;TRUNCATE `kob-AbtelBackup-VmJob`;TRUNCATE `kob-AbtelBackup-RemoteJob;TRUNCATE `kob-AbtelBackup-RemoteServer');
 
         //Remise en place du Store par defaut
         $s = genericClass::createInstance('AbtelBackup','BackupStore');
@@ -263,6 +266,7 @@ class AbtelBackup extends Module{
         AbtelBackup::localExec('sudo chown backup:backup /backup/restore');
         AbtelBackup::localExec('if [ ! -d /backup/samba ]; then sudo mkdir /backup/samba; fi');
         AbtelBackup::localExec('sudo chown backup:backup /backup/samba');
+        AbtelBackup::localExec('sudo chown backup:backup /backup');
         //redemarrge des services
         AbtelBackup::localExec('sudo systemctl restart nfs-server');
         return true;
@@ -284,5 +288,31 @@ class AbtelBackup extends Module{
         }
         return AbtelBackup::localExec($cmd,$act);
     }
+    /**
+     * deploy
+     * Utilisataire de déploiment.
+     */
+    public static function deploy($esxid){
+        //vm source
+        $vmsrc = Sys::getOneData('AbtelBackup','EsxVm/VmSrc=1');
+        if (!$vmsrc) return false;
+        $esxsrc = $vmsrc->getOneParent('Esx');
+        $esx = Sys::getOneData('AbtelBackup','Esx/'.$esxid);
+        //On modifie le fichier fstab
+        AbtelBackup::localExec('mv /etc/fstab /etc/fstab.bck && mv /etc/fstab.mig /etc/fstab');
+        //on crée un snapshot
+        if ($esxsrc->checkSnapshot($vmsrc))
+            //si pas de snapshot en cours
+            $esxsrc->remoteExec('vim-cmd vmsvc/snapshot.create '.$vmsrc->RemoteId.' deploy');
+        else return false;
+        //on remet le fichier fstab
+        AbtelBackup::localExec('mv /etc/fstab /etc/fstab.mig && mv /etc/fstab.bck /etc/fstab');
+        //on copie la clef privée
+        AbtelBackup::localExec('scp /var/www/.ssh/id_'.$esx->IP.' root@'.$esxsrc->IP.':/tmp/id_'.$esx->IP);
+        //on copie le dossier vm vers le nouvel esx
+        $esxsrc->remoteExec('scp -i /tmp/id_'.$esx->IP.' /vmfs/volumes/datastore1/BORG/BORG.vmx root@'.$esx->IP.':/vmfs/volumes/'.);
+        //on modifie le fichier vmx
+        //on ajoute la vm à l'inventaire
 
+    }
 }

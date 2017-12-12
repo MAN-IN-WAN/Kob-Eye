@@ -16,13 +16,13 @@ class SambaDevice extends genericClass {
     }
     public function Delete() {
         //Suppresion des partages
+        $shares = $this->getChildren('SambaShare');
         foreach ($shares as $s) $s->Delete();
         //suppression des dépots borg
         $borg = $this->getOneParent('BorgRepo');
         if ($borg)
             $borg->Delete();
         parent::Delete();
-        $shares = $this->getChildren('SambaShare');
     }
     public function Verify($new = false) {
         //test existence du dépo borg
