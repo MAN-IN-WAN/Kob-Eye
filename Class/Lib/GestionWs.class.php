@@ -264,7 +264,7 @@ class GestionWs {
                     continue;
 
                 $nom = preg_replace('/[^a-zA-Z0-9]/','',$cli->nom);
-                print_r(Utils::KEAddSlashes($cli->code).' : ');
+                //print_r(Utils::KEAddSlashes($cli->code).' : ');
                 $kecli = Sys::getOneData('Parc','Client/CodeGestion='.Utils::KEAddSlashes($cli->code));
                 if(!$kecli){
                     $kecli =  genericClass::createInstance('Parc','Client');
@@ -273,7 +273,7 @@ class GestionWs {
                     $kecli->NomLDAP = strtolower($nom);
 
                     $kecli->addParent('Parc/Revendeur/1');
-                    print_r($kecli);
+                    //print_r($kecli);
                     $kecli->Save();
 
                     echo 'Client '.$cli->nom.' créé !!!!!'.PHP_EOL;

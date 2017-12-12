@@ -281,12 +281,12 @@ class AbtelBackup extends Module{
      * @param string $bw
      * @return mixed
      */
-    public static function sync( $path,$dest,$user,$ip,$bw = '5000',$act = null){
+    public static function sync( $path,$dest,$user,$ip,$bw = '5000',$act = null,$progData=null){
         $cmd = 'rsync -az --info=progress2 -e " ssh -o StrictHostKeychecking=no -i /var/www/html/.ssh/id_'.$ip.'" --bwlimit='.$bw.' '.$path.' '.$user.'@'.$ip.':/home/'.$user.'/'.$dest;
         if ($act){
             $act->addDetails('CMD: '.$cmd);
         }
-        return AbtelBackup::localExec($cmd,$act);
+        return AbtelBackup::localExec($cmd,$act,0,null,$progData);
     }
     /**
      * deploy

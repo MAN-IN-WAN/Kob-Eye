@@ -342,7 +342,12 @@ class DbAnalyzer extends Root{
 			$i=$this->findByTitle($Entree->ObjectType);
 			if (!is_object($this->ObjectClass[$i])) return false;
 			$Object = $this->ObjectClass[$i]->Insert($Entree);
-			$Object["ObjectType"] = $Entree->ObjectType;
+			if(is_array($Object)){
+                $Object["ObjectType"] = $Entree->ObjectType;
+			} else{
+				klog::l('Erreur de query :',$Object);
+			}
+
 		}
 		return $Object;
 	}

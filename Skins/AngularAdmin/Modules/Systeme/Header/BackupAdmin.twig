@@ -9,16 +9,25 @@ app.controller('BackupAdminMenuTopCtrl', function( $scope, AbtelBackupActivitySt
 
     $scope.isVm = function(){
         return function(item){
-            return item['VmJobVmJobId'] > 0;
+            if( item['VmJobVmJobId'] > 0 || item['Titre'].indexOf('VMJOB') != -1 )
+                return true;
+
+            return false;
         }
     }
     $scope.isSamba = function(){
         return function(item){
-            return item['SambaJobSambaJobId'] > 0;
+            if( item['SambaJobSambaJobId'] > 0 || item['Titre'].indexOf('SAMBAJOB') != -1 )
+                return true;
+
+            return false;
         }
     }
     $scope.isRemote = function(){
         return function(item){
+            if( item['RemoteJobRemoteJobId'] > 0 || item['Titre'].indexOf('REMOTEJOB') != -1 )
+                return true;
+
             return item['RemoteJobRemoteJobId'] > 0;
         }
     }
@@ -42,10 +51,16 @@ app.controller('BackupAdminMenuTopCtrl', function( $scope, AbtelBackupActivitySt
     $rootScope.$on('AbtelBackupActivityStore',function (ev,data){
         switch (data.type){
             case 'edit':
+                if(data.data.Success || data.data.Errors || !data.data.Started){
+                    $scope.store.deleteOneData(data.id,'TopMenuRun',true);
+                }
+                break;
             case 'add':
                 if(data.data.Success || data.data.Errors || !data.data.Started){
-                    console.log('innnnnnnnnnnnnnn');
                     $scope.store.deleteOneData(data.id,'TopMenuRun',true);
+                }
+                if(!data.data.Success && !data.data.Errors && data.data.Started){
+                    $scope.store.addOneData(data.id,data.data,'TopMenuRun');
                 }
                 break;
         }

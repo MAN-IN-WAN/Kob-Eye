@@ -340,18 +340,18 @@
                     for (var i in {{ st.identifier }}Store[contexts[c]]){
                         if ({{ st.identifier }}Store[contexts[c]][i].id == id){
                             {{ st.identifier }}Store[contexts[c]].splice(i,1);
+                            total[contexts[c]]-=1;
+                            break;
                         }
-                        total[contexts[c]]-=1;
-                        break;
                     }
                 }
             }else{
                 for (var i in {{ st.identifier }}Store[context]){
                     if ({{ st.identifier }}Store[context][i].id==id){
                         {{ st.identifier }}Store[context].splice(i,1);
+                        total[context]-=1;
+                        break;
                     }
-                    total[context]-=1;
-                    break;
                 }
             }
             if (!onlyStore)
