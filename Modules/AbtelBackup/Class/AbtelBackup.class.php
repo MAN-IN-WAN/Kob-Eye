@@ -59,7 +59,6 @@ class AbtelBackup extends Module{
             $this->createUser($g);
         }
 
-
         $store = Sys::getData('AbtelBackup','BackupStore/Titre=Sauvegarde Locale');
         if (!sizeof($store)){
             $s = genericClass::createInstance('AbtelBackup','BackupStore');
@@ -67,6 +66,52 @@ class AbtelBackup extends Module{
             $s->Type = 'Local';
             $s->Save();
         }
+
+        $t = Sys::getCount('Systeme','ScheduledTask/TaskModule=AbtelBackup&TaskObject=RemoteJob&TaskFunction=execute');
+        if (!$t) {
+            //creation du groupe public
+            $t = genericClass::createInstance('Systeme', 'ScheduledTask');
+            $t->Titre = 'Execution AbtelBackup RemoteJob toutes les minutes';
+            $t->Enabled = 1;
+            $t->TaskModule = 'AbtelBackup';
+            $t->TaskObject = 'RemoteJob';
+            $t->TaskFunction = 'execute';
+            $t->Save();
+        }
+        $t = Sys::getCount('Systeme','ScheduledTask/TaskModule=AbtelBackup&TaskObject=SambaJob&TaskFunction=execute');
+        if (!$t) {
+            //creation du groupe public
+            $t = genericClass::createInstance('Systeme', 'ScheduledTask');
+            $t->Titre = 'Execution AbtelBackup SambaJob toutes les minutes';
+            $t->Enabled = 1;
+            $t->TaskModule = 'AbtelBackup';
+            $t->TaskObject = 'SambaJob';
+            $t->TaskFunction = 'execute';
+            $t->Save();
+        }
+        $t = Sys::getCount('Systeme','ScheduledTask/TaskModule=AbtelBackup&TaskObject=VmJob&TaskFunction=execute');
+        if (!$t) {
+            //creation du groupe public
+            $t = genericClass::createInstance('Systeme', 'ScheduledTask');
+            $t->Titre = 'Execution AbtelBackup VmJob toutes les minutes';
+            $t->Enabled = 1;
+            $t->TaskModule = 'AbtelBackup';
+            $t->TaskObject = 'VmJob';
+            $t->TaskFunction = 'execute';
+            $t->Save();
+        }
+        $t = Sys::getCount('Systeme','ScheduledTask/TaskModule=AbtelBackup&TaskObject=BackupStore&TaskFunction=getDiskUsage');
+        if (!$t) {
+            //creation du groupe public
+            $t = genericClass::createInstance('Systeme', 'ScheduledTask');
+            $t->Titre = 'Recalcul espace disque toutes les minutes';
+            $t->Enabled = 1;
+            $t->TaskModule = 'AbtelBackup';
+            $t->TaskObject = 'BackupStore';
+            $t->TaskFunction = 'getDiskUsage';
+            $t->Save();
+        }
+
     }
     /**
      * Creation du groupe et de tout ses menus
@@ -110,7 +155,7 @@ class AbtelBackup extends Module{
     /**
      * UTILS FUNCTIONS
      */
-    static public function localExec( $command, $activity = null,$total=0,$path=null,$progData=null)
+    static public function localExec( $command, $activity = null,$total=0,$path=null)
     {
         /*exec( $command,$output,$return);
         if( $return ) {
@@ -132,15 +177,9 @@ class AbtelBackup extends Module{
                     while (!feof($proc)) {
                         $size = AbtelBackup::getSize($path);
                         $progress = floatval($size)*100/$total;
+                        $progress = intval($progress);
                         if ($progress != $activity->Progression){
                             $activity->setProgression($progress);
-                            if($progData){
-                                $temp = intval($progData['init'] + $progData['span'] * $progress / 100);
-                                if ($progData['job']->Progression != $temp) {
-                                    $progData['job']->Progression = $temp;
-                                    $progData['job']->Save();
-                                }
-                            }
                         }
 
                         sleep(5);
@@ -161,34 +200,26 @@ class AbtelBackup extends Module{
             //cas borg
             if (preg_match('#O ([0-9\.]+)? MB C#',$buf,$out)&&$activity&&$total) {
                 $progress = (floatval($out[1]))/$total;
+                $buf = '';
             }
+            //347.08 GB O 285.33 GB C 212.73 G
             if (preg_match('#O ([0-9\.]+)? GB C#',$buf,$out)&&$activity&&$total) {
                 $progress = (floatval($out[1])*1024)/$total;
+                $buf = '';
             }
             if (preg_match('#O ([0-9\.]+)? TB C#',$buf,$out)&&$activity&&$total) {
                 $progress = (floatval($out[1])*1048576)/$total;
+                $buf = '';
             }
             //cas rsync
             if (preg_match('#([0-9]+)?%#',$buf,$out)&&$activity) {
                 $progress = intval($out[1])/100;
+                $buf = '';
             }
-            if($progress&&$progress*100!=$activity->Progression){
+            if($progress&&intval($progress*100)!=$activity->Progression){
                 $activity->setProgression($progress*100);
-                if($progData){
-                    $temp = intval($progData['init'] + $progData['span'] * $progress / 100);
-                    if ($progData['job']->Progression != $temp) {
-                        $progData['job']->Progression = $temp;
-                        $progData['job']->Save();
-                    }
-                }
-            }
-            if($progress){
-                continue;
             }
 
-
-            //file_put_contents('triliilili',$buf,8);
-            //file_put_contents('truluululu',$progress,8);
 
             $complete_output .= $buf;
         }

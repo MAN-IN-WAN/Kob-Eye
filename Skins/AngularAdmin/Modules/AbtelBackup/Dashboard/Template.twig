@@ -136,8 +136,8 @@
                         <div class="widget-header">
                             Utilisation de l'<strong>espace disque</strong> global
                         </div>
-                        <div class="widget-body clearfix">
-                            {{ pieHtml | raw }}
+                        <div class="widget-body clearfix" style="overflow: hidden; height: 285px;position: relative;">
+                            <canvas class="chart-pie" chart-data="pie.data" chart-labels="pie.labels" chart-dataset-override="pie.dsOverride" chart-options="pie.options" id="chart-pie" width="400" height="300"></canvas>
                         </div>
                     </div>
                 </div>
@@ -148,11 +148,9 @@
                         <div class="widget-header">
                             Utilisation de l'<strong>espace disque</strong> par VM
                         </div>
-                        <div class="widget-body clearfix" style="overflow: hidden; height: 285px;">
+                        <div class="widget-body clearfix" style="overflow: hidden; height: 285px;position: relative;">
                             {#<div class="custom-scroll jspScrollable" >#}
-                            <div>
-                            {{ barsHtml | raw }}
-                            </div>
+                                <canvas class="chart-bar" chart-data="bar.data" chart-labels="bar.labels" chart-dataset-override="bar.dsOverride" chart-options="bar.options" id="chart-bar" width="400" height="250"></canvas>
                             {#</div>#}
                         </div>
                     </div>
@@ -225,8 +223,8 @@
                                     <th class="activity_error  bool">Erreur</th>#}
                                     <th class="activity_start">Démarré le</th>
                                 </tr>
-                                <tr class="activity-item" ng-repeat="act in AbtelBackupActivityStore.data['default']">
-                                    <td class="activity_title"><a href="#/{{ Urls.Activity }}/{[{ act.id }]}">{[{ act.Titre }]}</a></td>
+                                <tr class="activity-item" ng-repeat="act in AbtelBackupActivityStore.data['dash']">
+                                    <td class="activity_title"><a href="#/{{ Urls.Activity }}/{[{ act.id }]}" ng-bind-html="act.Titre"></a></td>
                                         <td class="activity_progress">
                                             <progress class="progress progress-danger progress-striped progress-animated" ng-if="act.Progression < 100" value="{[{ act.Progression }]}" max="100" title="{[{ act.Progression }]}%">{[{ act.Progression }]}%</progress>
                                             <progress class="progress progress-success progress-striped progress-animated" ng-if="act.Progression == 100" value="{[{ act.Progression }]}" max="100" title="{[{ act.Progression }]}%">{[{ act.Progression }]}%</progress>

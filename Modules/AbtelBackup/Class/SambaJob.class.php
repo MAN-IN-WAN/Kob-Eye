@@ -1,41 +1,16 @@
 <?php
-class SambaJob extends genericClass {
-    private $TotalProgression = 100;
-    public static function execute() {
-        //intialisation des dates
-        $d = time();
-        $week = array('Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche');
-        $weekday = $week[date('w',$d)];
-        $hour = date('H',$d);
-        $minute = intval(date('i',$d));
-        $month = intval(date('m',$d));
-        $monthday = date('j',$d);
-        $jobs = Sys::getData('AbtelBackup','SambaJob/Enabled=1&(!Minute=*+Minute='.$minute.'!)&(!Heure=*+Heure='.$hour.'!)&(!Jour=*+Jour='.$monthday.'!)&(!Mois=*+Mois='.$month.'!)&(!(!Lundi=0&Mardi=0&Mercredi=0&Jeudi=0&Vendredi=0&Samedi=0&Dimanche=0!)+(!'.$weekday.'=1!)!)');
+require_once 'Modules/AbtelBackup/Class/Job.class.php';
 
-        foreach ($jobs as $j) {
-            $j->run();
-        }
-    }
-    public function createActivity($title,$vm) {
+class SambaJob extends Job {
+    protected $tag = '[SAMBAJOB]';
+    protected static $KEObj = 'SambaJob';
+    protected $pStarts = array(
+        0,
+        10,
+        20,
+        100
+    );
 
-        $act = genericClass::createInstance('AbtelBackup','Activity');
-        $act->addParent($this);
-        $act->addParent($vm);
-        $act->Titre = '[SAMBAJOB] '.date('d/m/Y H:i:s').' > '.$this->Titre.' > '.$title;
-        $act->Started = true;
-        $act->Progression = 0;
-        $act->Save();
-        return $act;
-    }
-    public function runNow() {
-        if ($this->Running){
-            $this->addError(Array('Message'=>'Impossible de démarrer le job. Il est déjà en cours.'));
-            return false;
-        }
-        $cmd = 'bash -c "exec nohup setsid php cron.php backup.abtel.local AbtelBackup/SambaJob/'.$this->Id.'/run.cron > /dev/null 2>&1 &"';
-        exec($cmd);
-        return true;
-    }
     /**
      * stop
      * Stoppe un job de backup
@@ -107,6 +82,12 @@ class SambaJob extends genericClass {
         $sss = Sys::getData('AbtelBackup','SambaJob/'.$this->Id.'/SambaShare');
         $this->TotalProgression =  Sys::getCount('AbtelBackup','SambaJob/'.$this->Id.'/SambaShare')*100;
 
+        //calcul des progress span
+        $pSpan = array();
+        for($n =0; $n < count($this->pStarts);$n++){
+            $pSpan[] = ($this->pStarts[$n+1] - $this->pStarts[$n])/count($sss);
+        }
+
         foreach ($sss as $ss){
             Klog::l('DEBUG share ==> '.$ss->Id.' STEP: '.$this->Step);
             //définition de la vm en cours
@@ -118,21 +99,21 @@ class SambaJob extends genericClass {
                 //initialisation
                 if (intval($this->Step)<=1){
                     unset($act);
-                    $act = $this->createActivity($ss->Titre.' > Initialisation du job Samba',$ss);
+                    $act = $this->createActivity($ss->Titre.' > Initialisation du job Samba',$ss,$pSpan[0]);
                     $this->initJob($ss,$dev,$act);
                 }
 
                 //montage
                 if (intval($this->Step)<=2){
                     unset($act);
-                    $act = $this->createActivity($ss->Titre.' > Montage du partage Samba',$ss);
+                    $act = $this->createActivity($ss->Titre.' > Montage du partage Samba',$ss,$pSpan[1]);
                     $act = $this->mountJob($ss,$dev,$act);
                 }
 
                 //déduplication
                 if (intval($this->Step)<=3){
                     unset($act);
-                    $act = $this->createActivity($ss->Titre.' > Déduplication vmjob',$ss);
+                    $act = $this->createActivity($ss->Titre.' > Déduplication vmjob',$ss,$pSpan[2]);
                     $act = $this->deduplicateJob($ss,$dev,$borg,$act);
                 }
 
@@ -152,15 +133,7 @@ class SambaJob extends genericClass {
         //opération terminée
         $this->resetState();
     }
-    /**
-     * setStep
-     * Définie l'étape en cours.
-     * Permet une reprise en repartant de l'étape en erreur
-     */
-    private function setStep($step){
-        $this->Step = $step;
-        parent::Save();
-    }
+
     /**
      * setCurrentVm
      * Déinfition de la vm en cours de traitement
@@ -185,7 +158,6 @@ class SambaJob extends genericClass {
         }
         //nettoyage sauvegarde précédentes
         $act->addProgression(100);
-        $this->addProgression(10);
         parent::Save();
         return $act;
     }
@@ -208,7 +180,6 @@ class SambaJob extends genericClass {
         //AbtelBackup::localExec($cmd);
         shell_exec($cmd);
         $act->addProgression(100);
-        $this->addProgression(20);
         parent::Save();
         return $act;
     }
@@ -217,11 +188,6 @@ class SambaJob extends genericClass {
      * Déduplication de la vm
      */
     private function deduplicateJob($ss,$dev,$borg,$act){
-        $iProg = $this->Progression;
-        $fProg = 100;
-        $sProg = $fProg - $iProg;
-        $progData = array( 'init' => $iProg, 'span' => $sProg, 'job' => $this);
-
         $this->setStep(3); //'Déduplication'
         AbtelBackup::localExec('borg break-lock '.$borg->Path); //Supression des locks borg
         //AbtelBackup::localExec('borg delete --cache-only '.$borg->Path); //Supression du cache eventuellement corrompu
@@ -231,20 +197,19 @@ class SambaJob extends genericClass {
         $act->addDetails($ss->Titre.' ---> déduplication du partage');
 
         //Recup taille pour graphique/progression
-        $this->Size = $total;
+        //$this->Size = $total;
 
         $point = time();
         //file_put_contents('tototoottoto',"export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".$point." '/backup/nfs/".$v->Titre.".tar'");
-        $det = AbtelBackup::localExec("export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".$point." '/backup/samba/".$dev->IP."/".$ss->Partage."'",$act,$total,null, $progData);
+        $det = AbtelBackup::localExec("export BORG_PASSPHRASE='".BORG_SECRET."' && borg create --progress --compression lz4 ".$borg->Path."::".$point." '/backup/samba/".$dev->IP."/".$ss->Partage."'",$act,$total,null);
 
         //Recup taille pour graphique/progression
-        $this->BackupSize = AbtelBackup::getSize($borg->Path);
-        parent::Save();
+        //$this->BackupSize = AbtelBackup::getSize($borg->Path);
+        //parent::Save();
 
         //création du point de restauration
         $dev->createRestorePoint($point,$det);
         $act->setProgression(100);
-        $this->Progression = $fProg;
         return $act;
     }
     /**
@@ -259,19 +224,4 @@ class SambaJob extends genericClass {
         parent::Save();
     }
 
-    private function clearAct($full = true){
-        $acts = $this->getChildren('Activity/Started=1&Errors=0&Success=0');
-        foreach($acts as $act){
-            //print_r($act);
-            if($full)
-                $act->Errors = 1;
-
-            $act->addDetails(' ---> Arrêt Utilisateur','cyan',true);
-            //print_r($act);
-
-        }
-    }
-    private function addProgression($nb){
-        $this->Progression += ($nb/$this->TotalProgression)*100;
-    }
 }
