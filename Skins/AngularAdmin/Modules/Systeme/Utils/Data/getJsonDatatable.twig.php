@@ -12,7 +12,15 @@ $path = $path[1];
 //souscription au push
 Event::registerPush($info['Module'],$info['ObjectType'],$path,$filters,$offset,$limit,$context);
 //requete
+if(connection_aborted()){
+    endPacket();
+    exit;
+}
 $vars['rows'] = Sys::getData($info['Module'],$path.'/'.$filters,$offset,$limit);
+if(connection_aborted()){
+    endPacket();
+    exit;
+}
 foreach ($vars['rows'] as $k=>$v){
     $uc = Sys::getOneData('Systeme','User/'.$v->userCreate);
     $ue = Sys::getOneData('Systeme','User/'.$v->userEdit);

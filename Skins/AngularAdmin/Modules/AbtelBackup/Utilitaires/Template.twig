@@ -30,6 +30,27 @@
             <section class="panel profile-user-content">
                 <div class="panel-body">
                     <div class="form-group padding-top-10 margin-bottom-0">
+                        <h2>Déploiement</h2>
+                        <blockquote>Cette fonctionnalités vous permet de déployer un AbtelBackup sur un esxi configuré au préalable. Pour configurer un esxi, veuillez ajouter un esxi <a href="#/vm/esx">en cliquant ici</a>, cliquez sur "Ajouter" et saisissez toutes les informations nécessaires. Revenez ensuite sur cette page pour déployer AbtelBackup.</blockquote>
+                        <div class="card">
+                            <div class="card-header">
+                                Featured
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item" ng-repeat="esx in esxs">
+                                    {[{ esx.label }]} - {[{ esx.description }]}
+                                    <button class="btn btn-small btn-primary pull-right" ng-click="deployAbtelBackup()">
+                                        <i class="fa fa-delete margin-right-5"></i>
+                                        Déployer
+                                    </button></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="panel profile-user-content">
+                <div class="panel-body">
+                    <div class="form-group padding-top-10 margin-bottom-0">
                         <h2>Réinitialisation</h2>
                         <blockquote>Cette fonctionnalités vous permet de réinitialiser aux valeurs d'usines l'ensemble des valeurs, historiques et encore configurations de votre abtel Backup. Toutes les données seront perdues.</blockquote>
                         <button class="btn btn-primary width-200 margin-top-10" ng-click="resetData()">
