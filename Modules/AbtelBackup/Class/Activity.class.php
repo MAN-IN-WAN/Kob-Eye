@@ -9,11 +9,13 @@ class Activity extends genericClass{
         $this->Save();
     }
     function addProgression($prog) {
+        if (!intval($prog)) return;
         $this->Progression += intval($prog);
         $this->Save();
         if ($this->Progression>=100) $this->Terminate();
     }
     function setProgression($prog) {
+        if ($this->Progression==intval($prog)) return;
         $this->Progression = intval($prog);
         $this->Save();
         if ($this->Progression>=100) $this->Terminate();

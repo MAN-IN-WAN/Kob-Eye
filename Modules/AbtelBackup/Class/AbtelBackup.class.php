@@ -59,7 +59,6 @@ class AbtelBackup extends Module{
             $this->createUser($g);
         }
 
-
         $store = Sys::getData('AbtelBackup','BackupStore/Titre=Sauvegarde Locale');
         if (!sizeof($store)){
             $s = genericClass::createInstance('AbtelBackup','BackupStore');
@@ -67,6 +66,52 @@ class AbtelBackup extends Module{
             $s->Type = 'Local';
             $s->Save();
         }
+
+        $t = Sys::getCount('Systeme','ScheduledTask/TaskModule=AbtelBackup&TaskObject=RemoteJob&TaskFunction=execute');
+        if (!$t) {
+            //creation du groupe public
+            $t = genericClass::createInstance('Systeme', 'ScheduledTask');
+            $t->Titre = 'Execution AbtelBackup RemoteJob toutes les minutes';
+            $t->Enabled = 1;
+            $t->TaskModule = 'AbtelBackup';
+            $t->TaskObject = 'RemoteJob';
+            $t->TaskFunction = 'execute';
+            $t->Save();
+        }
+        $t = Sys::getCount('Systeme','ScheduledTask/TaskModule=AbtelBackup&TaskObject=SambaJob&TaskFunction=execute');
+        if (!$t) {
+            //creation du groupe public
+            $t = genericClass::createInstance('Systeme', 'ScheduledTask');
+            $t->Titre = 'Execution AbtelBackup SambaJob toutes les minutes';
+            $t->Enabled = 1;
+            $t->TaskModule = 'AbtelBackup';
+            $t->TaskObject = 'SambaJob';
+            $t->TaskFunction = 'execute';
+            $t->Save();
+        }
+        $t = Sys::getCount('Systeme','ScheduledTask/TaskModule=AbtelBackup&TaskObject=VmJob&TaskFunction=execute');
+        if (!$t) {
+            //creation du groupe public
+            $t = genericClass::createInstance('Systeme', 'ScheduledTask');
+            $t->Titre = 'Execution AbtelBackup VmJob toutes les minutes';
+            $t->Enabled = 1;
+            $t->TaskModule = 'AbtelBackup';
+            $t->TaskObject = 'VmJob';
+            $t->TaskFunction = 'execute';
+            $t->Save();
+        }
+        $t = Sys::getCount('Systeme','ScheduledTask/TaskModule=AbtelBackup&TaskObject=BackupStore&TaskFunction=getDiskUsage');
+        if (!$t) {
+            //creation du groupe public
+            $t = genericClass::createInstance('Systeme', 'ScheduledTask');
+            $t->Titre = 'Recalcul espace disque toutes les minutes';
+            $t->Enabled = 1;
+            $t->TaskModule = 'AbtelBackup';
+            $t->TaskObject = 'BackupStore';
+            $t->TaskFunction = 'getDiskUsage';
+            $t->Save();
+        }
+
     }
     /**
      * Creation du groupe et de tout ses menus
@@ -110,7 +155,7 @@ class AbtelBackup extends Module{
     /**
      * UTILS FUNCTIONS
      */
-    static public function localExec( $command, $activity = null,$total=0,$path=null,$progData=null)
+    static public function localExec( $command, $activity = null,$total=0,$path=null)
     {
         /*exec( $command,$output,$return);
         if( $return ) {
@@ -132,15 +177,9 @@ class AbtelBackup extends Module{
                     while (!feof($proc)) {
                         $size = AbtelBackup::getSize($path);
                         $progress = floatval($size)*100/$total;
+                        $progress = intval($progress);
                         if ($progress != $activity->Progression){
                             $activity->setProgression($progress);
-                            if($progData){
-                                $temp = intval($progData['init'] + $progData['span'] * $progress / 100);
-                                if ($progData['job']->Progression != $temp) {
-                                    $progData['job']->Progression = $temp;
-                                    $progData['job']->Save();
-                                }
-                            }
                         }
 
                         sleep(5);
@@ -177,18 +216,8 @@ class AbtelBackup extends Module{
                 $progress = intval($out[1])/100;
                 $buf = '';
             }
-            if($progress&&$progress*100!=$activity->Progression){
+            if($progress&&intval($progress*100)!=$activity->Progression){
                 $activity->setProgression($progress*100);
-                if($progData){
-                    $temp = intval($progData['init'] + $progData['span'] * $progress / 100);
-                    if ($progData['job']->Progression != $temp) {
-                        $progData['job']->Progression = $temp;
-                        $progData['job']->Save();
-                    }
-                }
-            }
-            if($progress){
-                continue;
             }
 
 
@@ -239,10 +268,9 @@ class AbtelBackup extends Module{
         AbtelBackup::localExec('sudo rm /backup/nfs/* -Rf');
         AbtelBackup::localExec('sudo rm /backup/borg/* -Rf');
         AbtelBackup::localExec('sudo rm /backup/restore/* -Rf');
-        AbtelBackup::localExec('sudo rm /var/www/html/.ssh/* -Rf');
         //AbtelBackup::localExec('sudo rm /backup/samba/* -Rf');
         //vidage des tables
-        $GLOBALS["Systeme"]->Db[0]->query('TRUNCATE `kob-AbtelBackup-Activity`;TRUNCATE `kob-AbtelBackup-BackupStore`;TRUNCATE `kob-AbtelBackup-BorgRepo`;TRUNCATE `kob-AbtelBackup-Esx`;TRUNCATE `kob-AbtelBackup-EsxVm`;TRUNCATE `kob-AbtelBackup-EsxVmRestorePointId`;TRUNCATE `kob-AbtelBackup-RemoteJob`;TRUNCATE `kob-AbtelBackup-RestorePoint`;TRUNCATE `kob-AbtelBackup-SambaJob`;TRUNCATE `kob-AbtelBackup-SambaShare`;TRUNCATE `kob-AbtelBackup-VmJob`;TRUNCATE `kob-AbtelBackup-RemoteJob;TRUNCATE `kob-AbtelBackup-RemoteServer');
+        $GLOBALS["Systeme"]->Db[0]->query('TRUNCATE `kob-AbtelBackup-Activity`;TRUNCATE `kob-AbtelBackup-BackupStore`;TRUNCATE `kob-AbtelBackup-BorgRepo`;TRUNCATE `kob-AbtelBackup-Esx`;TRUNCATE `kob-AbtelBackup-EsxVm`;TRUNCATE `kob-AbtelBackup-EsxVmRestorePointId`;TRUNCATE `kob-AbtelBackup-RemoteJob`;TRUNCATE `kob-AbtelBackup-RestorePoint`;TRUNCATE `kob-AbtelBackup-SambaJob`;TRUNCATE `kob-AbtelBackup-SambaShare`;TRUNCATE `kob-AbtelBackup-VmJob`;');
 
         //Remise en place du Store par defaut
         $s = genericClass::createInstance('AbtelBackup','BackupStore');
@@ -301,18 +329,24 @@ class AbtelBackup extends Module{
         //On modifie le fichier fstab
         AbtelBackup::localExec('mv /etc/fstab /etc/fstab.bck && mv /etc/fstab.mig /etc/fstab');
         //on crée un snapshot
-        if ($esxsrc->checkSnapshot($vmsrc))
+        if (!sizeof($esxsrc->getSnapshot($vmsrc)))
             //si pas de snapshot en cours
-            $esxsrc->remoteExec('vim-cmd vmsvc/snapshot.create '.$vmsrc->RemoteId.' deploy');
+            $esxsrc->createSnapshot($vmsrc,'deploy');
         else return false;
         //on remet le fichier fstab
         AbtelBackup::localExec('mv /etc/fstab /etc/fstab.mig && mv /etc/fstab.bck /etc/fstab');
         //on copie la clef privée
         AbtelBackup::localExec('scp /var/www/.ssh/id_'.$esx->IP.' root@'.$esxsrc->IP.':/tmp/id_'.$esx->IP);
         //on copie le dossier vm vers le nouvel esx
-        $esxsrc->remoteExec('scp -i /tmp/id_'.$esx->IP.' /vmfs/volumes/datastore1/BORG/BORG.vmx root@'.$esx->IP.':/vmfs/volumes/');
+        $esxsrc->remoteExec('mkdir /vmfs/volumes/NL-SAS/BORG');
+        $esxsrc->remoteExec('scp -i /tmp/id_'.$esx->IP.' /vmfs/volumes/datastore1/BORG/BORG.vmx root@'.$esx->IP.':/vmfs/volumes/NL-SAS/BORG/');
+        $esxsrc->remoteExec('scp -i /tmp/id_'.$esx->IP.' /vmfs/volumes/datastore1/BORG/BORG-thin.vmdk root@'.$esx->IP.':/vmfs/volumes/NL-SAS/BORG/');
+        $esxsrc->remoteExec('scp -i /tmp/id_'.$esx->IP.' /vmfs/volumes/datastore1/BORG/BORG-thin-flat.vmdk root@'.$esx->IP.':/vmfs/volumes/NL-SAS/BORG/');
         //on modifie le fichier vmx
+        $vmx = $esxsrc->remoteExec('mkdir /vmfs/volumes/NL-SAS/BORG/BORg.vmx');
+        $vmx = str_replace('scsi0:0.fileName = "BORG-thin-000001.vmdk','scsi0:0.fileName = "BORG-thin.vmdk',$vmx);
+        preg_replace('#scsi0:1.*$#','',$vmx);
         //on ajoute la vm à l'inventaire
-
+        $esxsrc->registerVm();
     }
 }

@@ -125,9 +125,9 @@ class Esx extends genericClass {
         return true;
     }
 
-    public function remoteExec( $command ,$activity = null,$noerror=false, $progData = null){
+    public function remoteExec( $command ,$activity = null,$noerror=false){
         if (!$this->_connection)$this->Connect();
-        $result = $this->rawExec( $command.';echo -en "\n$?"', $activity, $progData);
+        $result = $this->rawExec( $command.';echo -en "\n$?"', $activity);
         if(!$noerror&& ! preg_match( "/^(0|-?[1-9][0-9]*)$/s", $result[2], $matches ) ) {
             throw new RuntimeException( "Le retour de la commande ne contenait pas le status. commande : ".$command );
         }
@@ -166,7 +166,7 @@ class Esx extends genericClass {
         $this->Disconnect();
         return true;//$result;
     }
-    private function rawExec( $command,$activity=null , $progData = null ){
+    private function rawExec( $command,$activity=null ){
         $stream = ssh2_exec( $this->_connection, $command );
         $error_stream = ssh2_fetch_stream( $stream, SSH2_STREAM_STDERR );
         stream_set_blocking( $stream, TRUE );
@@ -178,13 +178,6 @@ class Esx extends genericClass {
             if (preg_match('# ([0-9]{1,2})% #',$buf,$out)&&$activity) {
                 $progress = $out[1];
                 $activity->setProgression($progress);
-                if($progData) {
-                    $temp = intval($progData['init'] + $progData['span'] * $progress / 100);
-                    if ($progData['job']->Progression != $temp) {
-                        $progData['job']->Progression = $temp;
-                        $progData['job']->Save();
-                    }
-                }
             }
             $data.=$buf;
         }
@@ -205,5 +198,68 @@ class Esx extends genericClass {
     }
     public function unmountNFS(){
         return $this->remoteExec("esxcfg-nas -d ABTEL_BACKUP",null,true);
+    }
+    /**
+     * getSnapshots
+     * Récupère la liste des snapshots
+     * @vm
+     */
+    public function getSnapshots($vm) {
+        try {
+            $out = $this->remoteExec('vim-cmd vmsvc/snapshot.get ' . $vm->RemoteId);
+
+        } catch (Exception $e){
+            $this->addError(Array('Message'=> 'Impossible de récupérer l\'état des snapshots. Détails: '.$e->getMessage()));
+            return false;
+        }
+        $this->addSuccess(Array('Message'=> 'Snapshot vérifié avec succès'));
+        if (preg_match("#Snapshot Name [ ]+: (.+)#",$out,$snaps)){
+            return $snaps;
+        }else array();
+        return true;
+    }
+    /**
+     * createSnapshot
+     * créé un snapshot
+     * @vm
+     */
+    public function createSnapshot($vm,$name='deploy') {
+        try {
+            $this->remoteExec('vim-cmd vmsvc/snapshot.create ' . $vm->RemoteId . ' ' . $name);
+        } catch (Exception $e){
+            $this->addError(Array('Message'=> 'Impossible de créer un snapshot. Détails: '.$e->getMessage()));
+            return false;
+        }
+        $this->addSuccess(Array('Message'=> 'Snapshot créé avec succès'));
+        return true;
+    }
+    /**
+     * removeAllSnapshot
+     * supprime tous les snapshots un snapshot
+     * @vm
+     */
+    public function removeAllSnapshot($vm) {
+        try {
+            $this->remoteExec('vim-cmd vmsvc/snapshot.removeall ' . $vm->RemoteId);
+        } catch (Exception $e){
+            $this->addError(Array('Message'=> 'Impossible de supprimer les snapshots. Détails: '.$e->getMessage()));
+            return false;
+        }
+        $this->addSuccess(Array('Message'=> 'Snapshots supprimés avec succès'));
+        return true;
+    }
+    /**
+     * registervm
+     * ajoute une vm à l'inventaire
+     */
+    public function registerVm(){
+        try {
+            $this->remoteExec('vim-cmd solo/registervm /vmfs/volumes/NL-SAS/BORG/BORG.vmx');
+        } catch (Exception $e){
+            $this->addError(Array('Message'=> 'Impossible d\'enregistrer la vm. Détails: '.$e->getMessage()));
+            return false;
+        }
+        $this->addSuccess(Array('Message'=> 'Vm ajoutée à l\'inventaire avec succès'));
+        return true;
     }
 }
