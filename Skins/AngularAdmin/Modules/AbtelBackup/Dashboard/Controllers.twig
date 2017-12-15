@@ -39,7 +39,7 @@ app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $s
     $rootScope.$on('AbtelBackupActivityStore',function (ev,data){
         switch (data.type){
             case 'add':
-                $scope.store.addOneData(data.id,data.data,'dash');
+                $scope.AbtelBackupActivityStore.addOneData(data.id,data.data,'dash');
                 break;
         }
     });
@@ -127,6 +127,9 @@ app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $s
     $scope.AbtelBackupEsxVmStore.setFilters('BackupSize>0','dash');
 
     $scope.bar = {};
+    var numberWithCommas = function(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    };
     var refreshSizesBar = function(){
         var data = $scope.AbtelBackupEsxVmStore.data['dash'];
         if(!data.length) return false;
@@ -149,32 +152,71 @@ app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $s
         $scope.bar.dsOverride =[
                 {
                     label:'Taille Backup',
-                    backgroundColor: '#f39834',
-                    hoverBackgroundColor: '#e38824',
-                    borderColor:'#d37814'
+                    backgroundColor: 'rgba(243,152,52,0.5)',
+                    hoverBackgroundColor: 'rgba(227,136,36,0.8)',
+                    borderColor:'#d37814',
+                    stack: 1,
+                    xAxisID: 'Xaxis1'
                 },
                 {
                     label:'Taille Vm',
-                    backgroundColor: '#46be8a',
-                    hoverBackgroundColor: '#36ae7a',
-                    borderColor:'#26bc6a'
+                    backgroundColor: 'rgba(70,190,138,0.5)',
+                    hoverBackgroundColor: 'rgba(54,174,122,0.8',
+                    borderColor:'#26bc6a',
+                    stack: 1,
+                    xAxisID: 'Xaxis2'
                 }
         ];
 
         $scope.bar.options = {
             legend: {display: true},
+            maintainAspectRatio: false,
             tooltips: {
                 callbacks: {
                     label: function(tooltipItems, data) { // Solution found on https://stackoverflow.com/a/34855201/6660135
-                        console.log(tooltipItems,data);
+                        //console.log(tooltipItems,data);
                         //Return value for label
                         return ' '+data.datasets[tooltipItems.datasetIndex].label+' : ' + humanReadable(data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index]) ;
                     }
                 }
+            },
+            scales: {
+                xAxes: [{
+                    stacked: true,
+                    barThickness: 20,
+                    id: 'Xaxis1'
+                },{
+                    stacked: true,
+                    barThickness: 40,
+                    id: 'Xaxis2',
+                    type: 'category',
+                    categoryPercentage: 1.5,
+                    barPercentage: 1,
+                    gridLines: {
+                        offsetGridLines: true
+                    },
+                    offset:true,
+                    display: false
+                }],
+                yAxes: [{
+                    stacked: false,
+                    ticks: {
+                        callback: function(value) { return numberWithCommas(value); },
+                    },
+                }]
             }
         };
         return true;
     }
+    $scope.myCharts = {};
+    $scope.$on('chart-create', function (event, chart) {
+        //console.log(chart.chart.canvas.id);
+        //console.log(chart.chart.config.type);
+        //console.log(chart);
+        //If id is the same, reference will be updated
+        $scope.myCharts[chart.chart.canvas.id] = chart;
+    });
+
     $scope.AbtelBackupEsxVmStore.getData(1,'dash').then(refreshSizesBar)
 
 

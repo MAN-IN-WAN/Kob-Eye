@@ -17,48 +17,63 @@ class SambaJob extends Job {
      */
     public function stop()
     {
-        $vms = Sys::getData('AbtelBackup', 'SambaJob/' . $this->Id . '/SambaShare');
-        foreach ($vms as $v) {
-            $act = $this->createActivity($v->Titre . ' > Arret Utilisateur: Step ' . $this->Step, $v);
-            $act->addDetails($v->Titre . "Arret Utilisateur", 'red', true);
-            $act->setProgression(100);
-            $act->Success = true;
-            $act->Save();
-        }
-        switch ($this->Step) {
-            case 1:
-                $this->addError(Array('Message' => 'Impossible de stopper le job pendant l\'initialisation.'));
-                return false;
-                break;
-            case 2:
-                $this->addError(Array('Message' => 'Impossible de stopper le job pendant la configuration.'));
-                return false;
-                break;
-            case 3:
-                if (AbtelBackup::getPid('borg')) {
-                    $this->clearAct(false);
-                    AbtelBackup::localExec('sudo killall -9 borg');
-                    $vms = Sys::getData('AbtelBackup', 'SambaJob/' . $this->Id . '/SambaShare');
-                    foreach ($vms as $v) {
-                        $borg = $v->getOneParent('BorgRepo');
-                        AbtelBackup::localExec('sudo rm ' . $borg->Path . '/lock.* -Rf');
+        $v = Sys::getData('AbtelBackup', 'SambaShare/'.$this->CurrentShare);
+        $act = $this->createActivity($v->Titre . ' > Arret Utilisateur: Step ' . $this->Step, $v,0,'Info');
+        $act->addDetails($v->Titre . "Arret Utilisateur", 'red', true);
+
+        if ($this->Running){
+            switch ($this->Step) {
+                case 1:
+                    $this->addError(Array('Message' => 'Impossible de stopper le job pendant l\'initialisation.'));
+                    $act->Terminate(false);
+
+                    return false;
+                    break;
+                case 2:
+                    $this->addError(Array('Message' => 'Impossible de stopper le job pendant la configuration.'));
+                    $act->Terminate(false);
+
+                    return false;
+                    break;
+                case 3:
+                    if (AbtelBackup::getPid('borg')) {
+                        $this->clearAct(false);
+                        AbtelBackup::localExec('sudo killall -9 borg');
+                        $vms = Sys::getData('AbtelBackup', 'SambaJob/' . $this->Id . '/SambaShare');
+                        foreach ($vms as $v) {
+                            $borg = $v->getOneParent('BorgRepo');
+                            AbtelBackup::localExec('sudo rm ' . $borg->Path . '/lock.* -Rf');
+                        }
+                        $this->addSuccess(Array('Message' => 'Déduplication stoppée avec succès.'));
+                        $act->Terminate();
+
+                    } else {
+                        $this->clearAct(true);
+                        $this->addWarning(Array('Message' => 'Le processus n\'a pas été trouvé.'));
+                        $act->Terminate(false);
+
                     }
-                    $this->addSuccess(Array('Message' => 'Déduplication stoppée avec succès.'));
-                } else {
+                    $this->Running = false;
+                    parent::Save();
+                    return true;
+                    break;
+                default:
                     $this->clearAct(true);
-                    $this->addWarning(Array('Message' => 'Le processus n\'a pas été trouvé.'));
-                }
-                $this->Running = false;
-                parent::Save();
-                return true;
-                break;
-            default:
-                $this->clearAct(true);
-                $this->resetState();
-                parent::Save();
-                $this->addSuccess(Array('Message' => 'Job stoppé avec succès.'));
-                return true;
-                break;
+                    $this->resetState();
+                    parent::Save();
+                    $this->addSuccess(Array('Message' => 'Job stoppé avec succès.'));
+                    $act->Terminate();
+
+                    return true;
+                    break;
+            }
+        }else{
+
+            $act->addDetails("Arret Utilisateur : Impossible de stopper le job $this->Titre. Il n'est pas démarré.", 'red',true);
+            $act->Terminate(false);
+
+            $this->addError(Array('Message'=>'Impossible de stopper le job. Il n\'est pas démarré.'));
+            return false;
         }
     }
     /**
@@ -68,8 +83,8 @@ class SambaJob extends Job {
     public function run() {
         //test running
         if ($this->Running) {
-            $act = $this->createActivity(' > Impossible de démarrer, le job est déjà en cours d\'éxécution');
-            $act->Terminate();
+            $act = $this->createActivity(' > Impossible de démarrer, le job est déjà en cours d\'éxécution',null,0,'Info');
+            $act->Terminate(false);
             return;
         }
         $this->resetState();
@@ -77,6 +92,9 @@ class SambaJob extends Job {
         parent::Save();
         //init
         Klog::l('DEBUG demarrage samba');
+        $act = $this->createActivity(' > Demarrage du Job Samba : '.$this->Titre.' ('.$this->Id.')',null,0,'Info');
+        $act->Terminate();
+
         $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=1");
         //pour chaque partage
         $sss = Sys::getData('AbtelBackup','SambaJob/'.$this->Id.'/SambaShare');
@@ -90,6 +108,9 @@ class SambaJob extends Job {
 
         foreach ($sss as $ss){
             Klog::l('DEBUG share ==> '.$ss->Id.' STEP: '.$this->Step);
+            $act = $this->createActivity(' > Demarrage du partage : '.$ss->Titre.' ('.$ss->Id.')',$ss,0,'Info');
+            $act->Terminate();
+
             //définition de la vm en cours
             $this->setStep(1);
             $this->setCurrentSambaShare($ss->Id);
@@ -113,7 +134,7 @@ class SambaJob extends Job {
                 //déduplication
                 if (intval($this->Step)<=3){
                     unset($act);
-                    $act = $this->createActivity($ss->Titre.' > Déduplication vmjob',$ss,$pSpan[2]);
+                    $act = $this->createActivity($ss->Titre.' > Déduplication Sambajob',$ss,$pSpan[2]);
                     $act = $this->deduplicateJob($ss,$dev,$borg,$act);
                 }
 

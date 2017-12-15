@@ -19,26 +19,28 @@ class VmJob extends Job {
      * Stoppe un job de backup
      */
     public function stop() {
-        $vms = Sys::getData('AbtelBackup','VmJob/'.$this->Id.'/EsxVm');
+        $v = Sys::getData('AbtelBackup','EsxVm/'.$this->currentVm);
+        $act = $this->createActivity($v->Titre . ' > Arret Utilisateur: Step ' . $this->Step, $v,0,'Info');
+        $act->addDetails($v->Titre . "Arret Utilisateur", 'red', true);
+
         if ($this->Running){
-            foreach ($vms as $v) {
-                $act = $this->createActivity($v->Titre . ' > Arret Utilisateur: Step ' . $this->Step, $v);
-                $act->addDetails($v->Titre . "Arret Utilisateur", 'red',true);
-                $act->setProgression(100);
-                $act->Success = true;
-                $act->Save();
-            }
             switch ($this->Step){
                 case 1:
                     $this->addError(Array('Message'=>'Impossible de stopper le job pendant l\'initialisation.'));
+                    $act->Terminate(false);
+
                     return false;
                 break;
                 case 2:
                     $this->addError(Array('Message'=>'Impossible de stopper le job pendant la configuration.'));
+                    $act->Terminate(false);
+
                     return false;
                 break;
                 case 3:
                     $this->addError(Array('Message'=>'Impossible de stopper le job pendant le clonage.'));
+                    $act->Terminate(false);
+
                     return false;
                 break;
                 case 4:
@@ -46,9 +48,11 @@ class VmJob extends Job {
                         $this->clearAct(false);
                         AbtelBackup::localExec('sudo killall -9 bsdtar');
                         $this->addSuccess(Array('Message'=>'Compression stoppée avec succès.'));
+                        $act->Terminate();
                     }else{
                         $this->clearAct(true);
                         $this->addWarning(Array('Message'=>'Le processus n\'a pas été trouvé.'));
+                        $act->Terminate(false);
                     }
                     $this->Running = false;
                     parent::Save();
@@ -64,9 +68,12 @@ class VmJob extends Job {
                             AbtelBackup::localExec('sudo rm '.$borg->Path.'/lock.* -Rf');
                         }
                         $this->addSuccess(Array('Message' => 'Déduplication stoppée avec succès.'));
+                        $act->Terminate();
+
                     }else{
                         $this->clearAct(true);
                         $this->addWarning(Array('Message'=>'Le processus n\'a pas été trouvé.'));
+                        $act->Terminate(false);
                     }
                     $this->Running = false;
                     parent::Save();
@@ -77,16 +84,16 @@ class VmJob extends Job {
                     $this->resetState();
                     parent::Save();
                     $this->addSuccess(Array('Message' => 'Job stoppé avec succès.'));
+                    $act->Terminate();
+
                     return true;
                 break;
             }
         }else{
-            foreach ($vms as $v) {
-                $act = $this->createActivity($v->Titre . ' > Arret Utilisateur: Step ' . $this->Step . ' > Echec' , $v);
-                $act->addDetails($v->Titre . "Arret Utilisateur : Impossible de stopper le job. Il n'est pas démarré.", 'red',true);
-                $act->Errors = true;
-                $act->Save();
-            }
+
+            $act->addDetails("Arret Utilisateur : Impossible de stopper le job $this->Titre. Il n'est pas démarré.", 'red',true);
+            $act->Terminate(false);
+
             $this->addError(Array('Message'=>'Impossible de stopper le job. Il n\'est pas démarré.'));
             return false;
         }
@@ -99,7 +106,7 @@ class VmJob extends Job {
         //test running
         if ($this->Running) {
             $act = $this->createActivity(' > Impossible de démarrer, le job est déjà en cours d\'éxécution');
-            $act->Terminate();
+            $act->Terminate(false);
             return;
         }
         $this->resetState();
@@ -107,6 +114,8 @@ class VmJob extends Job {
         parent::Save();
         //init
         Klog::l('DEBUG demarrage vm');
+        $act = $this->createActivity(' > Demarrage du Job Vm : '.$this->Titre.' ('.$this->Id.')',null,0,'Info');
+        $act->Terminate();
         $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=1");
 
         //pour chaque vm
@@ -122,6 +131,8 @@ class VmJob extends Job {
 
         foreach ($vms as $v){
             Klog::l('DEBUG vm ==> '.$v->Id.' STEP: '.$this->Step);
+            $act = $this->createActivity(' > Demarrage de la VM : '.$v->Titre.' ('.$v->Id.')',$v,0,'Info');
+            $act->Terminate();
             //définition de la vm en cours
             $this->setStep(1);
             $this->setCurrentVm($v->Id);
@@ -164,11 +175,9 @@ class VmJob extends Job {
                 }
 
             }catch (Exception $e){
-                if(!$act) $act = $this->createActivity($v->Titre.' > Exception: Step '.$this->Step,$v);
+                if(!$act) $act = $this->createActivity($v->Titre.' > Exception: Step '.$this->Step,$v,0,'Info');
                 $act->addDetails($v->Titre." ERROR => ".$e->getMessage(),'red');
-                $act->Terminated = true;
-                $act->Errors = true;
-                $act->Save();
+                $act->Terminate(false);
                 //opération terminée
                 $this->Running = false;
                 $this->Errors = true;

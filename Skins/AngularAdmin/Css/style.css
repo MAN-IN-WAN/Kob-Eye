@@ -9,7 +9,7 @@ table tr td.table-details{
 #tCount,
 #eCount,
 #rCount{
-    background-color: #ff3f4d;
+    background-color: #fb434a;
     color: #fff;
     border-radius:30px;
     display: inline-block;
@@ -19,10 +19,10 @@ table tr td.table-details{
     text-align: center;
 }
 #eCount.success{
-    background-color: #83bf21;
+    background-color: #46be8a;
 }
 #rCount {
-    background-color: #7499FF;
+    background-color: #01a8fe;
 }
 progress.progress.progress-danger{
     position: relative;
@@ -55,25 +55,25 @@ progress.progress.progress-danger:after{
 }
 
 .prio_allGood{
-    color: #83bf21;
+    color: #46be8a;
 }
 .prio_NC{
-    color: #97AAB3;
+    color: #acb7bf;
 }
 .prio_Info{
-    color: #7499FF;
+    color: #01a8fe;
 }
 .prio_Warning{
     color: #FFC859;
 }
 .prio_Moyenne{
-    color: #FFA059;
+    color: #f39834;
 }
 .prio_Haute{
     color: #E97659;
 }
 .prio_Desastre{
-    color: #E45959;
+    color: #fb434a;
 }
 
 .inverted{
@@ -109,22 +109,30 @@ progress.progress.progress-danger:after{
 #activity_list{
     width:100%;
 }
+#activity_list .activity_title.success{
+    /*background-color: rgba(70,190,138,0.4);!*HEx :#46be8a;*!*/
+    border-left: 45px solid #46be8a;
+}
+#activity_list .activity_title.error{
+    /*background-color: rgba(251,67,74,0.4);!*HEx :#fb434a;*!*/
+    border-left: 45px solid #fb434a;
+}
+#activity_list .activity_title.info{
+    /*background-color: rgba(1,168,254,0.4);!*HEx :#01a8fe;*!*/
+    border-left: 45px solid #01a8fe;
+}
+#activity_list .activity_title.runnig{
+    /*background-color: rgba(172,183,191,0.4);!*HEx :#acb7bf;*!*/
+    border-left: 45px solid #f39834;
+}
 #activity_list .activity_title{
-    width:350px;
 }
 #activity_list .activity_progress{
-
-}
-#activity_list .activity_status{
-    width: 100px;
-    text-align: center;
-}
-#activity_list .bool{
-    text-align: center;
-    width:70px;
+    width: 150px;
 }
 #activity_list .activity_start{
-    width:100px;
+    width:175px;
+    text-align: center;
 }
 #activity_list tr{
     border-bottom:1px solid #bbb;

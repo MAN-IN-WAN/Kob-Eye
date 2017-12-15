@@ -19,12 +19,14 @@ class Job extends genericClass {
         }
     }
 
-    public function createActivity($title,$obj,$jPSpan=0) {
+    public function createActivity($title,$obj=null,$jPSpan=0,$Type='Exec') {
         $act = genericClass::createInstance('AbtelBackup','Activity');
         $act->addParent($this);
+        if($obj)
         $act->addParent($obj);
         $act->Titre = $this->tag.date('d/m/Y H:i:s').' > '.$this->Titre.' > '.$title;
         $act->Started = true;
+        $act->Type= $Type;
         $act->Progression = 0;
         $act->ProgressStart = $this->Progression;
         $act->ProgressSpan = $jPSpan;
@@ -59,7 +61,7 @@ class Job extends genericClass {
 
 
     protected function clearAct($full = true){
-        $acts = $this->getChildren('Activity/Started=1&Errors=0&Success=0');
+        $acts = $this->getChildren('Activity/Started=1&Errors=0&Success=0&Type=Exec');
         foreach($acts as $act){
             //print_r($act);
             if($full)

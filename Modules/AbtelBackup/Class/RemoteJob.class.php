@@ -15,39 +15,53 @@ class RemoteJob extends Job {
      */
     public function stop()
     {
-        $vms = Sys::getData('AbtelBackup', 'RemoteJob/' . $this->Id . '/SambaShare');
-        foreach ($vms as $v) {
-            $act = $this->createActivity($v->Titre . ' > Arret Utilisateur: Step ' . $this->Step, $v);
-            $act->addDetails($v->Titre . "Arret Utilisateur", 'red', true);
-            $act->setProgression(100);
-            $act->Success = true;
-            $act->Save();
-        }
-        switch ($this->Step) {
-            case 1:
-                $this->addError(Array('Message' => 'Impossible de stopper le job pendant l\'initialisation.'));
-                return false;
-                break;
-            case 2:
-                if ($pid = AbtelBackup::getPid('rsync')) {
-                    $this->clearAct(false);
-                    AbtelBackup::localExec('sudo kill -9 '.$pid);
-                    $this->addSuccess(Array('Message' => 'Synchronisation stoppée avec succès.'));
-                } else {
+        $v = Sys::getData('AbtelBackup','BorgRepo/'.$this->CurrentBorgRepo);
+        $act = $this->createActivity($v->Titre . ' > Arret Utilisateur: Step ' . $this->Step, $v,0,'Info');
+        $act->addDetails($v->Titre . "Arret Utilisateur", 'red', true);
+
+
+        if ($this->Running){
+            switch ($this->Step) {
+                case 1:
+                    $this->addError(Array('Message' => 'Impossible de stopper le job pendant l\'initialisation.'));
+                    $act->Terminate(false);
+
+                    return false;
+                    break;
+                case 2:
+                    if ($pid = AbtelBackup::getPid('rsync')) {
+                        $this->clearAct(false);
+                        AbtelBackup::localExec('sudo kill -9 '.$pid);
+                        $this->addSuccess(Array('Message' => 'Synchronisation stoppée avec succès.'));
+                        $act->Terminate();
+
+                    } else {
+                        $this->clearAct(true);
+                        $this->addWarning(Array('Message' => 'Le processus n\'a pas été trouvé.'));
+                        $act->Terminate(false);
+
+                    }
+                    $this->Running = false;
+                    parent::Save();
+                    return true;
+                    break;
+                default:
                     $this->clearAct(true);
-                    $this->addWarning(Array('Message' => 'Le processus n\'a pas été trouvé.'));
-                }
-                $this->Running = false;
-                parent::Save();
-                return true;
-                break;
-            default:
-                $this->clearAct(true);
-                $this->resetState();
-                parent::Save();
-                $this->addSuccess(Array('Message' => 'Job stoppé avec succès.'));
-                return true;
-                break;
+                    $this->resetState();
+                    parent::Save();
+                    $this->addSuccess(Array('Message' => 'Job stoppé avec succès.'));
+                    $act->Terminate();
+
+                    return true;
+                    break;
+            }
+        }else{
+
+            $act->addDetails("Arret Utilisateur : Impossible de stopper le job $this->Titre. Il n'est pas démarré.", 'red',true);
+            $act->Terminate(false);
+
+            $this->addError(Array('Message'=>'Impossible de stopper le job. Il n\'est pas démarré.'));
+            return false;
         }
     }
     /**
@@ -57,8 +71,8 @@ class RemoteJob extends Job {
     public function run() {
         //test running
         if ($this->Running) {
-            $act = $this->createActivity(' > Impossible de démarrer, le job est déjà en cours d\'éxécution');
-            $act->Terminate();
+            $act = $this->createActivity(' > Impossible de démarrer, le job est déjà en cours d\'éxécution',null,0,'Info');
+            $act->Terminate(false);
             return;
         }
         $this->resetState();
@@ -66,10 +80,12 @@ class RemoteJob extends Job {
         parent::Save();
         //init
         Klog::l('DEBUG demarrage remote job');
+        $act = $this->createActivity(' > Demarrage du Job Remote : '.$this->Titre.' ('.$this->Id.')',null,0,'Info');
+        $act->Terminate();
+
         $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=1");
         //pour chaque partage
         $sss = Sys::getData('AbtelBackup','RemoteJob/'.$this->Id.'/BorgRepo');
-        $this->TotalProgression =  Sys::getCount('AbtelBackup','RemoteJob/'.$this->Id.'/BorgRepo')*100;
 
         //calcul des progress span
         $pSpan = array();
@@ -79,6 +95,8 @@ class RemoteJob extends Job {
 
         foreach ($sss as $ss){
             Klog::l('DEBUG remote ==> '.$ss->Id.' STEP: '.$this->Step);
+            $act = $this->createActivity(' > Demarrage du Depot : '.$ss->Titre.' ('.$ss->Id.')',$ss,0,'Info');
+            $act->Terminate();
             //définition de la vm en cours
             $this->setStep(1);
             $this->setCurrentBorgRepo($ss->Id);
@@ -99,11 +117,9 @@ class RemoteJob extends Job {
                 }
 
             }catch (Exception $e){
-                if(!$act) $act = $this->createActivity($ss->Titre.' > Exception: Step '.$this->Step);
+                if(!$act) $act = $this->createActivity($ss->Titre.' > Exception: Etape '.$this->Step,$ss,0,'Info');
                 $act->addDetails($ss->Titre." ERROR => ".$e->getMessage(),'red');
-                $act->Terminated = true;
-                $act->Errors = true;
-                $act->Save();
+                $act->Terminate(false);
                 //opération terminée
                 $this->Running = false;
                 $this->Errors = true;

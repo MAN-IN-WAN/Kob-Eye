@@ -215,42 +215,23 @@
                         <div class="conversation-block custom-scroll" style="height: 260px;position: relative;">
                             <table id="activity_list">
                                 <tr id="tableFixedHeader" class="activity-item" >
+                                    <th class="activity_start">Démarré le</th>
                                     <th class="activity_title">Titre</th>
                                     <th class="activity_progress">Progrès</th>
-                                    <th class="activity_started bool">Demarré</th>
-                                    <th class="activity_error  bool">Statut</th>
-                                    {#<th class="activity_success  bool">Succès</th>
-                                    <th class="activity_error  bool">Erreur</th>#}
-                                    <th class="activity_start">Démarré le</th>
                                 </tr>
-                                <tr class="activity-item" ng-repeat="act in AbtelBackupActivityStore.data['dash']">
-                                    <td class="activity_title"><a href="#/{{ Urls.Activity }}/{[{ act.id }]}" ng-bind-html="act.Titre"></a></td>
-                                        <td class="activity_progress">
-                                            <progress class="progress progress-danger progress-striped progress-animated" ng-if="act.Progression < 100" value="{[{ act.Progression }]}" max="100" title="{[{ act.Progression }]}%">{[{ act.Progression }]}%</progress>
-                                            <progress class="progress progress-success progress-striped progress-animated" ng-if="act.Progression == 100" value="{[{ act.Progression }]}" max="100" title="{[{ act.Progression }]}%">{[{ act.Progression }]}%</progress>
-                                        </td>
-                                        <td class="activity_started bool" >
-                                            <i class="icmn-checkmark4 prio_allGood act_icon" ng-if="act.Started == 1"></i>
-                                            <i class="icmn-cross2 prio_Desastre act_icon" ng-if="act.Started == 0"></i>
-                                        </td>
-                                       {# <td class="activity_success  bool">
-                                            <i class="icmn-checkmark4 prio_allGood act_icon" ng-if="act.Success == 1"></i>
-                                            <i class="icmn-cross2 prio_Desastre act_icon" ng-if="act.Success == 0"></i>
-                                        </td>
-                                        <td class="activity_error  bool">
-                                             <i class="icmn-checkmark4 prio_allGood act_icon" ng-if="act.Errors == 1"></i>
-                                            <i class="icmn-cross2 prio_Desastre act_icon" ng-if="act.Errors == 0"></i>
-                                        </td>#}
-                                        <td class="activity_status">
-                                            <span ng-if="act.Errors == 1"><i class="icmn-cross2 prio_Desastre act_icon" ></i> Erreur</span>
-                                            <span ng-if="act.Success == 1"><i class="icmn-checkmark4 prio_allGood act_icon" ></i> Succès</span>
-                                            <span ng-if="act.Success != 1 && act.Errors != 1 && act.Started == 1"><i class="icmn-spinner2 prio_Info act_icon" ></i> En cours</span>
-                                            <span ng-if="act.Success != 1 && act.Errors != 1 && act.Started == 0"><i class="icmn-hour_glass2 prio_NC act_icon" ></i> En attente</span>
-                                        </td>
-                                        <td class="activity_start">
-                                            {[{ act.create }]}
-                                        </td>
-                                    </a>
+                                <tr class="activity-item" ng-repeat="act in AbtelBackupActivityStore.data['dash']" >
+                                    <td class="activity_start">
+                                        {[{ act.create }]}
+                                    </td>
+                                    <td class="activity_title" ng-class="{success: (act.Success == 1 && act.Type ==Exec),error: (act.Errors == 1 && act.Type ==Exec),running:(act.Success != 1  && act.Errors != 1 && act.Started == 1 && act.Type ==Exec),info: act.Type =='Info'}"><a href="#/{{ Urls.Activity }}/{[{ act.id }]}" ng-bind-html="act.Titre" colspan="{[{ act.Type == 'Exec' ? 1:2 }]}"></a></td>
+                                    <td class="activity_progress" ng-if="act.Type == 'Exec'">
+                                        <uib-progress ng-if="act.Progression < 100">
+                                            <uib-bar value="act.Progression" type="warning" class=" progress-bar-striped progress-bar-animated"><span ng-hide="act.Progression < 5">{[{ act.Progression }]}%</span></uib-bar>
+                                        </uib-progress>
+                                        <uib-progress ng-if="act.Progression >= 100">
+                                            <uib-bar value="act.Progression" type="success" class=" progress-bar-striped progress-bar-animated"><span ng-hide="act.Progression < 5">{[{ act.Progression }]}%</span></uib-bar>
+                                        </uib-progress>
+                                    </td>
                                 </tr>
                             </table>
                         </div>
@@ -258,103 +239,6 @@
                 </div>
             </div>
         </div>
-        {#<div class="row">
-            <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
-                <div class="widget widget-seven">
-                    <div class="carousel-widget carousel slide" data-ride="carousel">
-                        <div class="carousel-inner" role="listbox">
-                            <div class="carousel-item active">
-                                <div class="widget-body">
-                                    <div class="widget-body-icon">
-                                        <i class="icmn-accessibility"></i>
-                                    </div>
-                                    <a href="javascript: void(0);" class="widget-body-inner">
-                                        <h2>Sales Growth</h2>
-                                        <p>View Report</p>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="carousel-item">
-                                <div class="widget-body">
-                                    <div class="widget-body-icon">
-                                        <i class="icmn-download"></i>
-                                    </div>
-                                    <a href="javascript: void(0);" class="widget-body-inner">
-                                        <h2>All Reports</h2>
-                                        <p>Pdf Download</p>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
-                <div class="widget widget-seven">
-                    <div class="carousel-widget-2 carousel slide" data-ride="carousel">
-                        <div class="carousel-inner" role="listbox">
-                            <div class="carousel-item active">
-                                <a href="javascript: void(0);" class="widget-body">
-                                    <h2>
-                                        <i class="icmn-database"></i> Databases
-                                    </h2>
-                                    <p>
-                                        Total: 765
-                                        <br />
-                                        New: 36
-                                    </p>
-                                </a>
-                            </div>
-                            <div class="carousel-item">
-                                <a href="javascript: void(0);" class="widget-body">
-                                    <h2>
-                                        <i class="icmn-users"></i> Users
-                                    </h2>
-                                    <p>
-                                        Total: 24 467
-                                        <br />
-                                        New: 456
-                                    </p>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
-                <div class="widget widget-seven background-danger">
-                    <div class="carousel-widget carousel slide" data-ride="carousel">
-                        <div class="carousel-inner" role="listbox">
-                            <div class="carousel-item active">
-                                <a href="javascript: void(0);" class="widget-body">
-                                    <h2>
-                                        <i class="icmn-books"></i> Todo
-                                    </h2>
-                                    <p>
-                                        1. Upgrade
-                                        <br />
-                                        2. Finish
-                                    </p>
-                                </a>
-                            </div>
-                            <div class="carousel-item">
-                                <a href="javascript: void(0);" class="widget-body">
-                                    <h2>
-                                        <i class="icmn-download"></i> Finish
-                                    </h2>
-                                    <p>
-                                        1. Upgrade
-                                        <br />
-                                        2. Prepare
-                                    </p>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div> #}
 
     <!-- End Dashboard -->
 

@@ -51,8 +51,12 @@
                 <div class="dropdown-header">Job(s) Vm en cours:</div>
                 <a class="dropdown-item" ng-repeat="jb in store.data['TopMenuRun'] | filter:isVm() as results1" href="#/{{ Urls.Activity }}/{[{ jb.id }]}" title="{[{ jb.Details }]}">
                     <i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> <span ng-bind-html="jb.Titre"></span><br>
-                    <progress class="progress progress-danger progress-striped progress-animated" ng-if="jb.Progression < 100" value="{[{ jb.Progression }]}" max="100" title="{[{ jb.Progression }]}%">{[{ jb.Progression }]}%</progress>
-                    <progress class="progress progress-success progress-striped progress-animated" ng-if="jb.Progression == 100" value="{[{ jb.Progression }]}" max="100" title="{[{ jb.Progression }]}%">{[{ jb.Progression }]}%</progress>
+                    <uib-progress ng-if="jb.Progression < 100">
+                        <uib-bar value="jb.Progression" type="warning" class=" progress-bar-striped progress-bar-animated"><span ng-hide="jb.Progression < 5">{[{ jb.Progression }]}%</span></uib-bar>
+                    </uib-progress>
+                    <uib-progress ng-if="jb.Progression >= 100">
+                        <uib-bar value="jb.Progression" type="success" class=" progress-bar-striped progress-bar-animated"><span ng-hide="jb.Progression < 5">{[{ jb.Progression }]}%</span></uib-bar>
+                    </uib-progress>
                 </a>
                 <a class="dropdown-item" href="#" title="Aucune erreur" ng-if="results1.length === 0"><i class="dropdown-icon icmn-shield-notice prio_allGood"></i> Aucun job en cours </a>
 
@@ -62,8 +66,12 @@
                 <div class="dropdown-header">Job(s) Samba en cours:</div>
                 <a class="dropdown-item" ng-repeat="jb in store.data['TopMenuRun'] | filter:isSamba() as results2" href="#/{{ Urls.Activity }}/{[{ jb.id }]}" title="{[{ jb.Details }}">
                     <i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> <span ng-bind-html="jb.Titre"></span><br>
-                    <progress class="progress progress-danger progress-striped progress-animated" ng-if="jb.Progression < 100" value="{[{ jb.Progression }]}" max="100" title="{[{ jb.Progression }]}%">{[{ jb.Progression }]}%</progress>
-                    <progress class="progress progress-success progress-striped progress-animated" ng-if="jb.Progression == 100" value="{[{ jb.Progression }]}" max="100" title="{[{ jb.Progression }]}%">{[{ jb.Progression }]}%</progress>
+                    <uib-progress ng-if="jb.Progression < 100">
+                        <uib-bar value="jb.Progression" type="warning" class=" progress-bar-striped progress-bar-animated"><span ng-hide="jb.Progression < 5">{[{ jb.Progression }]}%</span></uib-bar>
+                    </uib-progress>
+                    <uib-progress ng-if="jb.Progression >= 100">
+                        <uib-bar value="jb.Progression" type="success" class=" progress-bar-striped progress-bar-animated"><span ng-hide="jb.Progression < 5">{[{ jb.Progression }]}%</span></uib-bar>
+                    </uib-progress>
                 </a>
                 <a class="dropdown-item" href="#" title="Aucune erreur" ng-if="results2.length === 0"><i class="dropdown-icon icmn-shield-notice prio_allGood"></i> Aucun job en cours </a>
             </div>
@@ -72,8 +80,12 @@
                 <div class="dropdown-header">Job(s) Remote en cours:</div>
                 <a class="dropdown-item" ng-repeat="jb in store.data['TopMenuRun'] | filter:isRemote() as results3" href="#/{{ Urls.Activity }}/{[{ jb.id }]}" title="{[{ jb.Details }}">
                     <i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> <span ng-bind-html="jb.Titre"></span><br>
-                    <progress class="progress progress-danger progress-striped progress-animated" ng-if="jb.Progression < 100" value="{[{ jb.Progression }]}" max="100" title="{[{ jb.Progression }]}%">{[{ jb.Progression }]}%</progress>
-                    <progress class="progress progress-success progress-striped progress-animated" ng-if="jb.Progression == 100" value="{[{ jb.Progression }]}" max="100" title="{[{ jb.Progression }]}%">{[{ jb.Progression }]}%</progress>
+                    <uib-progress ng-if="jb.Progression < 100">
+                        <uib-bar value="jb.Progression" type="warning" class=" progress-bar-striped progress-bar-animated"><span ng-hide="jb.Progression < 5">{[{ jb.Progression }]}%</span></uib-bar>
+                    </uib-progress>
+                    <uib-progress ng-if="jb.Progression >= 100">
+                        <uib-bar value="jb.Progression" type="success" class=" progress-bar-striped progress-bar-animated"><span ng-hide="jb.Progression < 5">{[{ jb.Progression }]}%</span></uib-bar>
+                    </uib-progress>
                 </a>
                 <a class="dropdown-item" href="#" title="Aucune erreur" ng-if="results3.length === 0"><i class="dropdown-icon icmn-shield-notice prio_allGood"></i> Aucun job en cours </a>
             </div>

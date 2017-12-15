@@ -33,9 +33,10 @@ class Activity extends genericClass{
         //Traitement de la progression du Job
         $this->setJobProgress();
     }
-    function Terminate() {
+    function Terminate($success = true) {
         $this->Terminated = true;
-        $this->Success = true;
+        $this->Success = $success;
+        $this->Error = !$success;
         $this->Save();
     }
     function setJobProgress(){

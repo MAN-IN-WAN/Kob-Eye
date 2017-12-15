@@ -321,7 +321,7 @@
                     if ({{ st.identifier }}Store[contexts[c]]){
                         for(var d in {{ st.identifier }}Store[contexts[c]]){
                             var temp = {{ st.identifier }}Store[contexts[c]][d];
-                            if(temp.Id = id) {
+                            if(temp.id == id) {
                                 check = true;
                                 break;
                             }
@@ -336,7 +336,7 @@
                 if ({{ st.identifier }}Store[context]){
                     for(var d in {{ st.identifier }}Store[context]){
                         var temp = {{ st.identifier }}Store[context][d];
-                        if(temp.Id = id) {
+                        if(temp.id == id) {
                             check = true;
                             break;
                         }
