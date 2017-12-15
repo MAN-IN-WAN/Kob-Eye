@@ -2937,11 +2937,12 @@ class genericClass extends Root {
             $o->userEditName = $ue->Login;
         else $o->userEditName = 'inconnu';
         $o->_details = "créé le ".date('d/m/Y H:i',$this->tmsCreate )." par ".$o->userCreateName."\nmodifié le ".date('d/m/Y H:i',$this->tmsEdit)." par ".$o->userEditName."";
+        $o->create= date('d/m/Y H:i',$this->tmsCreate );
         foreach ($fields as $f){
             switch ($f['type']){
                 case 'date':
                     //transformation des timestamps en format js
-                    $o->{$f['name']} = date('d/m/Y H:i',$this->{$f['name']});
+                    $o->{$f['objectName'].$f['name']} = date('d/m/Y H:i',$this->{$f['name']});
                     break;
                 case 'boolean':
                     //transformation des timestamps en format js
@@ -2952,19 +2953,19 @@ class genericClass extends Root {
                 case 'titre':
                 case 'html':
                 case 'raw':
-                    $o->{$f['name']} = Utils::cleanJson($this->{$f['name']});
+                    $o->{$f['objectName'].$f['name']} = Utils::cleanJson($this->{$f['name']});
                     break;
                 default:
-                    $o->{$f['name']} = $this->{$f['name']};
+                    $o->{$f['objectName'].$f['name']} = $this->{$f['name']};
                 break;
             }
             if ($f['type']=='fkey'&&$f['card']=='short'){
                 if ($this->{$f['name']} > 0) {
                     $kk = Sys::getOneData($f['objectModule'], $f['objectName'] . '/' . $this->{$f['name']});
                     if ($kk)
-                        $o->{$f['name'].'label'} = $kk->getFirstSearchOrder();
+                        $o->{$f['objectName'].$f['name'].'label'} = $kk->getFirstSearchOrder();
                 }else{
-                    $o->{$f['name'].'label'} = '';
+                    $o->{$f['objectName'].$f['name'].'label'} = '';
                 }
                 $o->{$f['name']} = $this->{$f['name']};
             }elseif ($f['type']=='fkey'&&$f['card']=='long'){

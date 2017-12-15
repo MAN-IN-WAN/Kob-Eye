@@ -1,5 +1,5 @@
 
-app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $scope, $rootScope, $http, AbtelBackupActivityStore) {
+app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $scope, $rootScope,  AbtelBackupActivityStore, AbtelBackupBackupStoreStore, AbtelBackupEsxVmStore) {
     //------------------------------------------//
     //                 ANCHORS
     //------------------------------------------//
@@ -20,81 +20,212 @@ app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $s
     };
 
 
-
     //------------------------------------------//
-    //           COMPTEUR ACTIVITE
+    //                 STORES                   //
     //------------------------------------------//
-    $scope.NbRunning = 0;
-
-    $scope.freshActivity = function(){
-        $scope.NbRunning = 0;
-        for(var n in AbtelBackupActivityStore.data){
-            if( AbtelBackupActivityStore.data[n]['Started'] ==1 &&
-                AbtelBackupActivityStore.data[n]['Success'] ==0 &&
-                AbtelBackupActivityStore.data[n]['Errors'] ==0 )
-                    $scope.NbRunning++;
-        }
-    }
-
-
-    //------------------------------------------//
-    //                 STORE
-    //------------------------------------------//
-    //RAZ du store
-    $scope.AbtelBackupActivityStore = AbtelBackupActivityStore;
-    $scope.AbtelBackupActivityStore.resetQuery();
-    $scope.AbtelBackupActivityStore.setFilters('');
-
-    //Si on est sur la bonne page on initialize le store
-    if($location.path() == '/{{ Url }}'){
+    //
+    //      Activity
+    //
     //Init du store
+    $scope.AbtelBackupActivityStore = AbtelBackupActivityStore;
+
     var now = Math.floor(Date.now()/1000);
     var seuil = now - 7200;
 
 
-    $scope.AbtelBackupActivityStore.setFilters('Started=1&Success=0&Errors=0+tmsEdit>'+seuil);
-    $scope.AbtelBackupActivityStore.getData(1).then(function(){
-        $scope.freshActivity();
+    $scope.AbtelBackupActivityStore.setFilters('Started=1&Success=0&Errors=0+tmsEdit>'+seuil,'dash');
+    $scope.AbtelBackupActivityStore.getData(1,'dash');
+
+    $rootScope.$on('AbtelBackupActivityStore',function (ev,data){
+        switch (data.type){
+            case 'add':
+                $scope.AbtelBackupActivityStore.addOneData(data.id,data.data,'dash');
+                break;
+        }
+    });
+
+    var refresh = $interval(function(){
+        var now = Math.floor(Date.now()/1000);
+        var seuil = now - 7200;
+        for(var n in $scope.AbtelBackupActivityStore.data['dash']){
+            var StData = $scope.AbtelBackupActivityStore.data['dash'][n];
+            if(StData.tmsEdit < seuil) $scope.AbtelBackupActivityStore.deleteOneData(StData.id,'dash',true);
+        }
+    },5000);
+
+
+    //
+    //      BackupStore
+    //
+    //Init du store
+    $scope.AbtelBackupBackupStoreStore = AbtelBackupBackupStoreStore;
+    $scope.AbtelBackupBackupStoreStore.setFilters('Titre=Sauvegarde Locale','dash');
+
+    $scope.pie = {};
+    //traitement des données pour générer le chart
+    var humanReadable = function(Mo){
+        var units = new Array('Mo','Go','To','Po');
+
+        var pow = 0;
+        while(Mo > 1024){
+            Mo /= 1024;
+            pow++;
+        }
+        Mo = Mo.toFixed(2)
+        return Mo + units[pow];
+    }
+    var refreshSizes = function(){
+        var data = $scope.AbtelBackupBackupStoreStore.data['dash'][0];
+        if(!data) return false;
+        var size = parseInt(data.Size);
+        var nfsSize = parseInt(data.NfsSize);
+        var borgSize = parseInt(data.BorgSize);
+        var freeSize = size-nfsSize-borgSize;
+        $scope.pie.data = [nfsSize,borgSize,freeSize];
+        if($scope.pie.labels) return true;
+
+        //$scope.pie.labels = ['Nfs '+humanReadable(nfsSize),'Backup '+humanReadable(borgSize),'Disponible '+humanReadable(freeSize)];
+        $scope.pie.labels = ['Nfs','Backup','Disponible'];
+
+        $scope.pie.dsOverride ={
+            data: $scope.pie.data,
+            backgroundColor: ['#f39834','#fb434a','#46be8a'],
+            hoverBackgroundColor: ['#e38824','#eb333a','#36ae7a'],
+        };
+
+        $scope.pie.options = {
+            legend: {display: true},
+            tooltips: {
+                callbacks: {
+                    label: function(tooltipItems, data) { // Solution found on https://stackoverflow.com/a/34855201/6660135
+                        //console.log(tooltipItems,data);
+                        //Return value for label
+                        return ' '+data.labels[tooltipItems.index]+' : ' + humanReadable(data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index]) ;
+                    }
+                }
+            }
+        };
+        return true;
+    }
+    $scope.AbtelBackupBackupStoreStore.getData(1,'dash').then(refreshSizes);
+
+    $rootScope.$on('AbtelBackupBackupStoreStore',function (ev,data){
+        if(data.type == 'edit' && data.data.Titre=='Sauvegarde Locale'){
+            refreshSizes(true);
+        }
     });
 
 
-    //Raffraichissement du store
-    {# intervalPromise = $interval(function(){
-         var now = Math.floor(Date.now()/1000);
-         var seuil = now - 7200;
-         $scope.AbtelBackupActivityStore.setFilters('Started=1&Success=0&Errors=0+tmsEdit>'+seuil);
-         $scope.AbtelBackupActivityStore.refresh();
-         $scope.freshActivity();
-     },10000);#}
-
-    } else{
-
-    }
-    $scope.$on('$destroy', function () {
-    {#if(intervalPromise != undefined)
-        $interval.cancel(intervalPromise);#}
-    $scope.AbtelBackupActivityStore.setFilters('');
-    })
 
 
-    $scope.testLongPoll = function(){
-            $http({
-                method: 'GET',
-                url: '/test.php',
-                timeout: 45000,
-                reportProgress: true,
-                eventHandlers: {
-                    progress: function (e) {
-                        console.log('prog',e);
+
+    //
+    //      EsxVm
+    //
+    //Init du store
+    $scope.AbtelBackupEsxVmStore = AbtelBackupEsxVmStore;
+    $scope.AbtelBackupEsxVmStore.setFilters('BackupSize>0','dash');
+
+    $scope.bar = {};
+    var numberWithCommas = function(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    };
+    var refreshSizesBar = function(){
+        var data = $scope.AbtelBackupEsxVmStore.data['dash'];
+        if(!data.length) return false;
+
+        var datasetVM = [];
+        var datasetBorg = [];
+        for (var n in data){
+            datasetVM.push(parseInt(data[n].Size));
+            datasetBorg.push(parseInt(data[n].BackupSize));
+        }
+
+        $scope.bar.data = [datasetVM,datasetBorg];
+        if($scope.bar.labels) return true;
+
+        $scope.bar.labels = [];
+        for (var n in data) {
+            $scope.bar.labels.push(data[n].Titre);
+        }
+
+        $scope.bar.dsOverride =[
+                {
+                    label:'Taille Backup',
+                    backgroundColor: 'rgba(243,152,52,0.5)',
+                    hoverBackgroundColor: 'rgba(227,136,36,0.8)',
+                    borderColor:'#d37814',
+                    stack: 1,
+                    xAxisID: 'Xaxis1'
+                },
+                {
+                    label:'Taille Vm',
+                    backgroundColor: 'rgba(70,190,138,0.5)',
+                    hoverBackgroundColor: 'rgba(54,174,122,0.8',
+                    borderColor:'#26bc6a',
+                    stack: 1,
+                    xAxisID: 'Xaxis2'
+                }
+        ];
+
+        $scope.bar.options = {
+            legend: {display: true},
+            maintainAspectRatio: false,
+            tooltips: {
+                callbacks: {
+                    label: function(tooltipItems, data) { // Solution found on https://stackoverflow.com/a/34855201/6660135
+                        //console.log(tooltipItems,data);
+                        //Return value for label
+                        return ' '+data.datasets[tooltipItems.datasetIndex].label+' : ' + humanReadable(data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index]) ;
                     }
                 }
-            }).then(function successCallback(response) {
-                console.log('response',response);
-            }, function errorCallback(response) {
-                console.log('kwak',response);
-            });
-
-            return false;
+            },
+            scales: {
+                xAxes: [{
+                    stacked: true,
+                    barThickness: 20,
+                    id: 'Xaxis1'
+                },{
+                    stacked: true,
+                    barThickness: 40,
+                    id: 'Xaxis2',
+                    type: 'category',
+                    categoryPercentage: 1.5,
+                    barPercentage: 1,
+                    gridLines: {
+                        offsetGridLines: true
+                    },
+                    offset:true,
+                    display: false
+                }],
+                yAxes: [{
+                    stacked: false,
+                    ticks: {
+                        callback: function(value) { return numberWithCommas(value); },
+                    },
+                }]
+            }
+        };
+        return true;
     }
+    $scope.myCharts = {};
+    $scope.$on('chart-create', function (event, chart) {
+        //console.log(chart.chart.canvas.id);
+        //console.log(chart.chart.config.type);
+        //console.log(chart);
+        //If id is the same, reference will be updated
+        $scope.myCharts[chart.chart.canvas.id] = chart;
+    });
+
+    $scope.AbtelBackupEsxVmStore.getData(1,'dash').then(refreshSizesBar)
+
+
+
+    $rootScope.$on('AbtelBackupEsxVmStore',function (ev,data){
+        if(data.type == 'edit'){
+            refreshSizesBar(true);
+        }
+    });
+
 
 });
