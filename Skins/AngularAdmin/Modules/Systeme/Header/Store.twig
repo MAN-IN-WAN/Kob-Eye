@@ -328,7 +328,7 @@
                         }
                         if(!check){
                             {{ st.identifier }}Store[contexts[c]].unshift(data);
-                            total[contexts[c]]+=1;
+                            total[contexts[c]]=parseInt(total[contexts[c]])+1;
                         }
                     }
                 }
@@ -343,7 +343,7 @@
                     }
                     if(!check){
                         {{ st.identifier }}Store[context].unshift(data);
-                        total[context]+=1;
+                        total[context]=parseInt(total[context])+1;
                     }
                 }
             }
@@ -359,7 +359,7 @@
                     for (var i in {{ st.identifier }}Store[contexts[c]]){
                         if ({{ st.identifier }}Store[contexts[c]][i].id == id){
                             {{ st.identifier }}Store[contexts[c]].splice(i,1);
-                            total[contexts[c]]-=1;
+                            total[contexts[c]]=parseInt(total[contexts[c]])-1;
                             break;
                         }
                     }
@@ -368,7 +368,7 @@
                 for (var i in {{ st.identifier }}Store[context]){
                     if ({{ st.identifier }}Store[context][i].id==id){
                         {{ st.identifier }}Store[context].splice(i,1);
-                        total[context]-=1;
+                        total[context]=parseInt(total[context])-1;
                         break;
                     }
                 }

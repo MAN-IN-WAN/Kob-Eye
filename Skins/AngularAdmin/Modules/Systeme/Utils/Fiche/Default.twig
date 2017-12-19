@@ -87,7 +87,7 @@
                                         {% endfor %}
                                     </select>
                                     {% elseif field.query %}
-                                    <span class="btn btn-warning btn-xs" >{[{ obj.{{ field.name }}Label }]}</a>
+                                        <span class="btn btn-warning btn-xs" >{[{ obj.{{ field.name }}Label }]}</span>
                                     {% else %}
                                         <span  ng-bind-html="obj.{{ field.name }}"></span>
                                     {% endif %}

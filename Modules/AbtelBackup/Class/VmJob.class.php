@@ -18,27 +18,36 @@ class VmJob extends Job {
      * stop
      * Stoppe un job de backup
      */
-    public function stop() {
-        $v = Sys::getData('AbtelBackup','EsxVm/'.$this->currentVm);
-        $act = $this->createActivity($v->Titre . ' > Arret Utilisateur: Step ' . $this->Step, $v,0,'Info');
-        $act->addDetails($v->Titre . "Arret Utilisateur", 'red', true);
+    public function stop()
+    {
+        $v = Sys::getOneData('AbtelBackup', 'EsxVm/' . $this->CurrentVm);
+        if ($v) {
+            $act = $this->createActivity($v->Titre . ' > Arret Utilisateur: Step ' . $this->Step, $v, 0, 'Info');
+            $act->addDetails($v->Titre . " > Arret Utilisateur", 'red', true);
+        } else{
+            $act = $this->createActivity(' > Vm non définie > Arret Utilisateur: Step ' . $this->Step, null, 0, 'Info');
+            $act->addDetails(" Arret Utilisateur", 'red', true);
+        }
 
         if ($this->Running){
             switch ($this->Step){
                 case 1:
                     $this->addError(Array('Message'=>'Impossible de stopper le job pendant l\'initialisation.'));
+                    $act->addDetails("Impossible de stopper le job pendant l'initialisation.", 'red', true);
                     $act->Terminate(false);
 
                     return false;
                 break;
                 case 2:
                     $this->addError(Array('Message'=>'Impossible de stopper le job pendant la configuration.'));
+                    $act->addDetails("Impossible de stopper le job pendant la configuration.", 'red', true);
                     $act->Terminate(false);
 
                     return false;
                 break;
                 case 3:
                     $this->addError(Array('Message'=>'Impossible de stopper le job pendant le clonage.'));
+                    $act->addDetails("Impossible de stopper le job pendant le clonage.", 'red', true);
                     $act->Terminate(false);
 
                     return false;
@@ -52,6 +61,7 @@ class VmJob extends Job {
                     }else{
                         $this->clearAct(true);
                         $this->addWarning(Array('Message'=>'Le processus n\'a pas été trouvé.'));
+                        $act->addDetails(" > Le processus n'a pas été trouvé.", 'red', true);
                         $act->Terminate(false);
                     }
                     $this->Running = false;
@@ -73,6 +83,7 @@ class VmJob extends Job {
                     }else{
                         $this->clearAct(true);
                         $this->addWarning(Array('Message'=>'Le processus n\'a pas été trouvé.'));
+                        $act->addDetails(" > Le processus n'a pas été trouvé.", 'red', true);
                         $act->Terminate(false);
                     }
                     $this->Running = false;
@@ -174,6 +185,9 @@ class VmJob extends Job {
                     $act = $this->deduplicateJob($v,$borg,$act);
                 }
 
+                $act = $this->createActivity(' > Fin de la VM : '.$v->Titre.' ('.$v->Id.')',$v,0,'Info');
+                $act->Terminate();
+
             }catch (Exception $e){
                 if(!$act) $act = $this->createActivity($v->Titre.' > Exception: Step '.$this->Step,$v,0,'Info');
                 $act->addDetails($v->Titre." ERROR => ".$e->getMessage(),'red');
@@ -194,7 +208,7 @@ class VmJob extends Job {
      * Déinfition de la vm en cours de traitement
      */
     private function setCurrentVm($v){
-        $this->currentVm = $v;
+        $this->CurrentVm = $v;
         parent::Save();
     }
     /**

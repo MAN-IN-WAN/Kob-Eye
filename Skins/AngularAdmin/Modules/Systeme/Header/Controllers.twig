@@ -373,8 +373,8 @@
                 $scope.{{ child.objectModule }}{{ child.objectName }}selectDelete = function () {
                     //nettoyage de la selection
                     var sel= [];
-                    for (var i in $scope.{{ child.objectModule }}{{ child.objectName }}selected){
-                        if ($scope.{{ child.objectModule }}{{ child.objectName }}selected[i]&&parseInt(i)>0)sel.push(i);
+                    for (var i in $scope.{{ child.objectModule }}{{ child.objectName }}.selected){
+                        if ($scope.{{ child.objectModule }}{{ child.objectName }}.selected[i]&&parseInt(i)>0)sel.push(i);
                     }
                     console.log('Suppression de la sélection ',sel);
                     swal({

@@ -63,11 +63,13 @@ class Job extends genericClass {
     protected function clearAct($full = true){
         $acts = $this->getChildren('Activity/Started=1&Errors=0&Success=0&Type=Exec');
         foreach($acts as $act){
-            //print_r($act);
+            print_r($act);
             if($full)
                 $act->Errors = 1;
 
+            $act->Started=0;
             $act->addDetails(' ---> Arrêt Utilisateur','cyan',true);
+            $act->Save();
             //print_r($act);
 
         }

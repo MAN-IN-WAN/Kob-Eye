@@ -1,0 +1,114 @@
+<div class="nav-tabs-horizontal margin-bottom-20">
+    <ul class="nav nav-tabs" role="tablist">
+        {% for filter in filters %}
+            <li class="nav-item">
+                <a class="nav-link {% if loop.index0 == 0 %}active{% endif %}" ng-click="setFilter('{{ filter.filter }}')" data-toggle="tab" data-target="#h1" role="tab">{{ filter.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+<div class="form-group row">
+    <div class="col-lg-6 col-md-12">
+        <div class="input-group list-search">
+            <input type="text" class="form-control" name="{{ identifier }}query" ng-model="{{ identifier }}.filter" placeholder="Recherche..." >
+            <span class="input-group-btn">
+                <a href="javascript: void(0);" class="btn btn-success" ng-click="{{ identifier }}.store.refresh('{{ context }}')">
+                    Rafraîchir
+                </a>
+                {% if operation.add %}
+                    <a  href="javascript: void(0);" class="btn btn-warning" ng-click="{{ identifier }}add()">
+                    Ajouter
+                </a>
+                {% endif %}
+                {% if operation.export %}
+                    <a href="javascript: void(0);" class="btn btn-primary" ng-click="{{ identifier }}export()">
+                    Exporter
+                </a>
+                {% endif %}
+                {% if operation.delete %}
+                    <a  href="javascript: void(0);" ng-show="keys({{ identifier }}.selected).length > 1" class="btn btn-danger" ng-click="{{ identifier }}selectDelete()">
+                Supprimer la sélection
+                </a>
+                {% endif %}
+            </span>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-12">
+        <dir-pagination-controls boundary-links="true" pagination-context="{{ context }}" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+    </div>
+</div>
+<!--<pre ng-bind="{{ identifier }}selected | json"></pre>
+<pre ng-bind="{{ identifier }}selectedAll | json"></pre>-->
+
+{{ include(template_from_string(module('Systeme/Utils/List/ChildActivity'))) }}
+
+<dir-pagination-controls boundary-links="true" pagination-context="{{ context }}" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+
+<div class="modal fade modal-size-large" id="modal-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">{[{ modalObj.title }]}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" ng-if="modalObj.errors.length">
+                    <ul>
+                        <li ng-repeat="e in modalObj.errors">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-warning" ng-if="modalObj.warning.length">
+                    <ul>
+                        <li ng-repeat="e in modalObj.warning">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-success" ng-if="modalObj.infos.length">
+                    <ul>
+                        <li ng-repeat="e in modalObj.infos">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div ng-if="modalObj.success == false">
+                    {{ include(template_from_string(module('Systeme/Utils/Form?Path=[!Query!]'))) }}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == true">Fermer</button>
+                <button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == false">Annuler</button>
+                <button type="button" class="btn btn-primary" ng-click="{{ identifier }}modalSave()" ng-if="modalObj.success == false">Enregistrer les modifications</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-size-large" id="modalfunction-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">{[{ function.title }]}</h4>
+            </div>
+            <div class="modal-body">
+                <div id="ajaxwrapper"
+                     ng-show="{{ identifier }}function.loaded"
+                     ng-include="{{ identifier }}function.url" onload="{{ identifier }}function.loaded = true">
+                </div>
+
+                <div class="text-center"
+                     ng-hide="{{ identifier }}function.loaded">
+                    <br />
+                    Chargement ...
+                    <br />
+                    <div class="spinload"></div>
+                </div>
+
+                <!--<ng-include src="function.url"></ng-include>-->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>

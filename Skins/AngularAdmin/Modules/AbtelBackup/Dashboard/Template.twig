@@ -212,28 +212,8 @@
                         Consultez les <strong>Activités</strong> récentes
                     </div>
                     <div class="widget-body clearfix">
-                        <div class="conversation-block custom-scroll" style="height: 260px;position: relative;">
-                            <table id="activity_list">
-                                <tr id="tableFixedHeader" class="activity-item" >
-                                    <th class="activity_start">Démarré le</th>
-                                    <th class="activity_title">Titre</th>
-                                    <th class="activity_progress">Progrès</th>
-                                </tr>
-                                <tr class="activity-item" ng-repeat="act in AbtelBackupActivityStore.data['dash']" >
-                                    <td class="activity_start">
-                                        {[{ act.create }]}
-                                    </td>
-                                    <td class="activity_title" ng-class="{success: (act.Success == 1 && act.Type ==Exec),error: (act.Errors == 1 && act.Type ==Exec),running:(act.Success != 1  && act.Errors != 1 && act.Started == 1 && act.Type ==Exec),info: act.Type =='Info'}"><a href="#/{{ Urls.Activity }}/{[{ act.id }]}" ng-bind-html="act.Titre" colspan="{[{ act.Type == 'Exec' ? 1:2 }]}"></a></td>
-                                    <td class="activity_progress" ng-if="act.Type == 'Exec'">
-                                        <uib-progress ng-if="act.Progression < 100">
-                                            <uib-bar value="act.Progression" type="warning" class=" progress-bar-striped progress-bar-animated"><span ng-hide="act.Progression < 5">{[{ act.Progression }]}%</span></uib-bar>
-                                        </uib-progress>
-                                        <uib-progress ng-if="act.Progression >= 100">
-                                            <uib-bar value="act.Progression" type="success" class=" progress-bar-striped progress-bar-animated"><span ng-hide="act.Progression < 5">{[{ act.Progression }]}%</span></uib-bar>
-                                        </uib-progress>
-                                    </td>
-                                </tr>
-                            </table>
+                        <div class="conversation-block custom-scroll" style="height: 400px;position: relative;">
+                            {{ include(template_from_string(module('Systeme/Utils/List/ChildActivity?Path=AbtelBackup/Activity&templateContext=dash'))) }}
                         </div>
                     </div>
                 </div>

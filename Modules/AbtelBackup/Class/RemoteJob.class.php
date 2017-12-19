@@ -15,15 +15,22 @@ class RemoteJob extends Job {
      */
     public function stop()
     {
-        $v = Sys::getData('AbtelBackup','BorgRepo/'.$this->CurrentBorgRepo);
-        $act = $this->createActivity($v->Titre . ' > Arret Utilisateur: Step ' . $this->Step, $v,0,'Info');
-        $act->addDetails($v->Titre . "Arret Utilisateur", 'red', true);
+        $v = Sys::getOneData('AbtelBackup','BorgRepo/'.$this->CurrentBorgRepo);
+        if($v){
+            $act = $this->createActivity($v->Titre . ' > Arret Utilisateur: Step ' . $this->Step, $v,0,'Info');
+            $act->addDetails($v->Titre . "Arret Utilisateur", 'red', true);
+        } else{
+            $act = $this->createActivity('Borg non défini > Arret Utilisateur: Step ' . $this->Step, null,0,'Info');
+            $act->addDetails("Arret Utilisateur", 'red', true);
+        }
+
 
 
         if ($this->Running){
             switch ($this->Step) {
                 case 1:
                     $this->addError(Array('Message' => 'Impossible de stopper le job pendant l\'initialisation.'));
+                    $act->addDetails("Impossible de stopper le job pendant l'initialisation.", 'red', true);
                     $act->Terminate(false);
 
                     return false;
@@ -38,6 +45,7 @@ class RemoteJob extends Job {
                     } else {
                         $this->clearAct(true);
                         $this->addWarning(Array('Message' => 'Le processus n\'a pas été trouvé.'));
+                        $act->addDetails("Le processus n'a pas été trouvé.", 'red', true);
                         $act->Terminate(false);
 
                     }
@@ -115,6 +123,9 @@ class RemoteJob extends Job {
                     $act = $this->createActivity($ss->Titre.' > Synchronisation',$ss,$pSpan[1]);
                     $act = $this->syncJob($ss,$dev,$act);
                 }
+
+                $act = $this->createActivity(' > Fin du Depot : '.$ss->Titre.' ('.$ss->Id.')',$ss,0,'Info');
+                $act->Terminate();
 
             }catch (Exception $e){
                 if(!$act) $act = $this->createActivity($ss->Titre.' > Exception: Etape '.$this->Step,$ss,0,'Info');

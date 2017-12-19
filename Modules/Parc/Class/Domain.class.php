@@ -310,11 +310,14 @@ class Domain extends genericClass {
 			if (!$e[0]['COUNT(*)']){
 				$KEObj = genericClass::createInstance('Parc', $sub['TYPE']);
 				$KEObj->Nom = $sub['CN'];
+                $KEObj->Dnscname = $sub['DNSCNAME'];
+                $KEObj->Dnsdomainname = $this->Url.'.';
 				$KEObj->AddParent($this);
 				//recherche du serveur de nom associé
-				$Sn = Sys::$Modules['Parc']->callData('Server/DNSNom='.$sub['DNSCNAME']);
-				$Sn = genericClass::createInstance('Parc',$Sn[0]);
-				$KEObj->AddParent($Sn);
+//				$Sn = Sys::$Modules['Parc']->callData('Server/DNSNom='.$sub['DNSCNAME']);
+//				$Sn = genericClass::createInstance('Parc',$Sn[0]);
+//				$KEObj->AddParent($Sn);
+
 				$KEObj->Save();
 				$out.= '<li><div style="color:red" class="debug">Add Nameserver '.$KEObj->Nom.'</div> </li>';
 			}

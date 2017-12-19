@@ -28,13 +28,23 @@ app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $s
     //
     //Init du store
     $scope.AbtelBackupActivityStore = AbtelBackupActivityStore;
-
+    // Utile seulement a cause de la template d'affichage commun avec la listchildren
     var now = Math.floor(Date.now()/1000);
     var seuil = now - 7200;
 
 
     $scope.AbtelBackupActivityStore.setFilters('Started=1&Success=0&Errors=0+tmsEdit>'+seuil,'dash');
     $scope.AbtelBackupActivityStore.getData(1,'dash');
+    $scope.AbtelBackupActivity = {
+        data: AbtelBackupActivityStore.data.dash,
+        store: AbtelBackupActivityStore,
+        filter: AbtelBackupActivityStore.filter.dash,
+        currentPage: AbtelBackupActivityStore.currentPage.dash,
+        itemsPerPage: AbtelBackupActivityStore.itemsPerPage,
+        selected: {
+            selectall: false
+        }
+    }
 
     $rootScope.$on('AbtelBackupActivityStore',function (ev,data){
         switch (data.type){
@@ -182,15 +192,16 @@ app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $s
             },
             scales: {
                 xAxes: [{
-                    stacked: true,
+                    stacked: false,
                     barThickness: 20,
+                    categoryPercentage: 0.5,
                     id: 'Xaxis1'
                 },{
-                    stacked: true,
+                    stacked: false,
                     barThickness: 40,
                     id: 'Xaxis2',
                     type: 'category',
-                    categoryPercentage: 1.5,
+                    categoryPercentage: 0.5,
                     barPercentage: 1,
                     gridLines: {
                         offsetGridLines: true

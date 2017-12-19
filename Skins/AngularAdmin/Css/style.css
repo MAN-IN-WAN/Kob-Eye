@@ -121,28 +121,109 @@ progress.progress.progress-danger:after{
     /*background-color: rgba(1,168,254,0.4);!*HEx :#01a8fe;*!*/
     border-left: 45px solid #01a8fe;
 }
-#activity_list .activity_title.runnig{
+#activity_list .activity_title.info_error{
+    /*background-color: rgba(1,168,254,0.4);!*HEx :#01a8fe;*!*/
+    border-left: 45px solid #fba8fe;
+}
+#activity_list .activity_title.running{
     /*background-color: rgba(172,183,191,0.4);!*HEx :#acb7bf;*!*/
     border-left: 45px solid #f39834;
+}
+#activity_list .activity_title.stopped{
+    /*background-color: rgba(1,168,254,0.4);!*HEx :#01a8fe;*!*/
+    border-left: 45px solid #444;
 }
 #activity_list .activity_title{
 }
 #activity_list .activity_progress{
     width: 150px;
 }
+#activity_list .activity_progress .progress-bar{
+    height: 100%;
+}
+#activity_list .activity_progress > .progress{
+    vertical-align: middle;
+}
 #activity_list .activity_start{
     width:175px;
     text-align: center;
 }
 #activity_list tr{
-    border-bottom:1px solid #bbb;
+    border-bottom:1px solid #eee;
 }
+#activity_list tr.cursor{
+    cursor: cell;
+}
+
 #activity_list td{
     padding: 5px 10px;
 }
 #activity_list th{
     text-align: center;
 }
+#activity_list .actWrap{
+    padding: 0;
+}
+#activity_list .actSub{
+    width: 100%;
+}
+#activity_list .actDetail{
+    border: none;
+}
+#activity_list .actDetail td{
+    padding: 0;
+}
+#activity_list .actDetail pre{
+    white-space: pre-wrap;       /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+
+    color: #fff;
+    margin: 0;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+
+    max-height: 0;
+    padding: 0;
+}
+#activity_list .actInfo .activity_title{
+    position: relative;
+}
+#activity_list .actInfo.cursor .activity_title:before{
+    content: "\f0fe";
+    position: absolute;
+    top: 7px;
+    left: -27px;
+    color: #fff;
+    font-family: FontAwesome;
+}
+#activity_list .showDetail .actInfo.cursor .activity_title:before{
+    content: "\f146";
+}
+#activity_list .showDetail pre{
+    background-color: #686671;
+}
+#activity_list .showDetail .actInfo{
+    background-color: #d4d4d4;
+}
+#activity_list .actSub.error pre{
+    background-color: #fb434a;
+}
+#activity_list .actSub.error .actInfo{
+    background-color: #ffbec1;
+}
+#activity_list .showDetail .actDetail pre,
+#activity_list .actSub.error pre{
+    max-height: 3000px;
+    padding: 20px;
+}
+
+
 
 
 .widgetTop{
