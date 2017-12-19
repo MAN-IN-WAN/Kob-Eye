@@ -10,7 +10,7 @@ class Activity extends genericClass{
         $this->Save();
     }
     function addProgression($prog) {
-        if(!$prog) return false;
+        if (!intval($prog)) return;
         $this->Progression += intval($prog);
         $this->Save();
         if ($this->Progression>=100){
@@ -22,7 +22,7 @@ class Activity extends genericClass{
         $this->setJobProgress();
     }
     function setProgression($prog) {
-        if(intval($prog) == $this->Progression) return false;
+        if ($this->Progression==intval($prog)) return;
         $this->Progression = intval($prog);
         $this->Save();
         if ($this->Progression>=100){
@@ -40,16 +40,6 @@ class Activity extends genericClass{
         $this->Save();
     }
     function setJobProgress(){
-//        if($job = $this->getOneParent('VmJob')){
-//
-//        }elseif ($job = $this->getOneParent('SambaJob')){
-//
-//        }elseif ($job = $this->getOneParent('RemoteJob')){
-//
-//        }else{
-//            $this->addError(Array('Message'=>'Activité sans job parent'));
-//            return false;
-//        }
         if(!$this->PJob) return false;
         $job = $this->PJob;
 

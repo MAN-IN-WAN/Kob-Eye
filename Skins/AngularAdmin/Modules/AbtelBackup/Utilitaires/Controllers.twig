@@ -1,8 +1,29 @@
 app.controller('{{ controller }}Ctrl', function ($location, $scope, $rootScope,$http,AbtelBackupEsxStore) {
     AbtelBackupEsxStore.getData(1,'deploiement');
     $scope.esxs = AbtelBackupEsxStore.data['deploiement'];
-    $scope.deployAbtelBackup = function () {
-        console.log('$scope.esxs',$scope.esxs);
+    $scope.deployAbtelBackup = function (id,key) {
+        console.log('deploy esx',id);
+        swal({
+                title: "Êtes vous sûr de vouloir déployer AbtelBackup ?",
+                text: "Cette opération peut prendre quelques minutes. ",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                cancelButtonText: "Annuler",
+                confirmButtonText: "Oui, vas-y !",
+                closeOnConfirm: true
+            },
+            function () {
+                $scope.esxs[key].deploy = true;
+                $scope.obj = $scope.esxs[key];
+                AbtelBackupEsxStore.getOneData(id,'utils',true).then(function (data){
+                    $scope.obj = data;
+                    $http.get('/AbtelBackup/Esx/'+id+'/deployNow.json')
+                    .success(function (data) {
+
+                    });
+                });
+        });
     }
     $scope.resetData = function () {
         swal({

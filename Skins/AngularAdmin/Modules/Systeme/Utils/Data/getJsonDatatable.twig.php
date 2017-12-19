@@ -1,4 +1,5 @@
 <?php
+session_write_close();
 $info = Info::getInfos($vars['Path']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $vars['fields'] = $o->getElementsByAttribute('list|fiche','',true);

@@ -231,7 +231,6 @@
 
     </script>
 </div>
-
 <dir-pagination-controls boundary-links="true" pagination-context="{{ context }}" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
 
 <div class="modal fade modal-size-large" id="modal-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
@@ -260,7 +259,7 @@
                     </ul>
                 </div>
                 <div ng-if="modalObj.success == false">
-                    {{ include(template_from_string(module('Systeme/Utils/Form?Path=[!Query!]'))) }}
+                    {{ include(template_from_string(module('Systeme/Utils/Form?Path='~Path))) }}
                 </div>
             </div>
             <div class="modal-footer">

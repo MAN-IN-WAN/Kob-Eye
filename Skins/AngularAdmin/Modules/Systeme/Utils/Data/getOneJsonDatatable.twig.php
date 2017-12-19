@@ -1,4 +1,5 @@
 <?php
+session_write_close();
 $info = Info::getInfos($vars['Query']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $vars['fields'] = $o->getElementsByAttribute('fiche|form','',true);
