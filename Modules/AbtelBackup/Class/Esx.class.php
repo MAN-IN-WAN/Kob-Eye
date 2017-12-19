@@ -185,7 +185,7 @@ class Esx extends genericClass {
         $error_output = stream_get_contents( $error_stream );
         //alors récupération sur le dernier caractère
         $exit_output = 0;
-        if (preg_match('/^(.*)\n(0|-?[1-9][0-9]*)$/s',$output,$out)) {
+        if (preg_match('/(.*)\n(0|-?[1-9][0-9]*)/s',$output,$out)) {
             $output = $out[1];
             $exit_output = $out[2];
         }
@@ -262,4 +262,117 @@ class Esx extends genericClass {
         $this->addSuccess(Array('Message'=> 'Vm ajoutée à l\'inventaire avec succès'));
         return true;
     }
+    public function enableEsxiClient() {
+        try {
+            $this->remoteExec('esxcli network firewall ruleset set -e true -r sshClient');
+        } catch (Exception $e){
+            $this->addError(Array('Message'=> 'Impossible d\'activer le sshClient. Détails: '.$e->getMessage()));
+            return false;
+        }
+        $this->addSuccess(Array('Message'=> 'SSh client activé avec succès avec succès'));
+        return true;
+    }
+
+    /**
+     * createActivity
+     * créé une activité en liaison avec l'esx
+     * @param $title
+     * @param null $obj
+     * @param int $jPSpan
+     * @param string $Type
+     * @return genericClass
+     */
+    public function createActivity($title,$Type='Exec') {
+        $act = genericClass::createInstance('AbtelBackup','Activity');
+        $act->addParent($this);
+        $act->Titre = $this->tag.date('d/m/Y H:i:s').' > '.$this->Titre.' > '.$title;
+        $act->Started = true;
+        $act->Type= $Type;
+        $act->Progression = 0;
+        $act->Save();
+        return $act;
+    }
+    /**
+     * deployNow Wrapper
+     * @param $esxid
+     * @return bool
+     */
+    public function deployNow() {
+        $cmd = 'bash -c "exec nohup setsid php cron.php backup.abtel.local AbtelBackup/Esx/'.$this->Id.'/deploy.cron > /dev/null 2>&1 &"';
+        exec($cmd);
+        return true;
+    }
+    /**
+     * deploy
+     * Utilisataire de déploiment.
+     */
+    public function deploy(){
+        //vm source
+        $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=1");
+        $vmsrc = Sys::getOneData('AbtelBackup','EsxVm/SrcVm=1');
+        if (!$vmsrc) return false;
+        $esxsrc = $vmsrc->getOneParent('Esx');
+        $esxsrc->enableEsxiClient();
+        $esx = $this;
+        //On modifie le fichier fstab
+        //echo "Modification du fichier fstab\r\n";
+        $act = $esx->createActivity("Modification du fichier fstab",'Info');
+        $act->addDetails(AbtelBackup::localExec('sudo cp /etc/fstab.mig /etc/fstab'));
+        //on crée un snapshot
+        $snpas = $esxsrc->getSnapshots($vmsrc);
+
+        if (!sizeof($snpas)) {
+            //echo "Creation du snapshot deploy\r\n";
+            $act = $esx->createActivity("Creation du snapshot deploy",'Info');
+            //si pas de snapshot en cours
+            $act->addDetails($esxsrc->createSnapshot($vmsrc, 'deploy'));
+        }else{
+            //echo "suppression des snapshots\r\n";
+            $act = $esx->createActivity("Suppression des snapshots",'Info');
+            //on supprime les snapshots
+            $act->addDetails($esxsrc->removeAllSnapshot($vmsrc));
+            //echo "Creation du snapshot deploy\r\n";
+            $act = $esx->createActivity("Suppression des snapshots",'Info');
+            //et on créé le snapshots quand meme
+            $act->addDetails($esxsrc->createSnapshot($vmsrc,'deploy'));
+        }
+        //echo "Reset fichier fstab\r\n";
+        $act = $esx->createActivity("Reset fichier fstab",'Info');
+        //on remet le fichier fstab
+        $act->addDetails(AbtelBackup::localExec('sudo cp /etc/fstab.bck /etc/fstab'));
+        //echo "Copie de la clef privée\r\n";
+        $act = $esx->createActivity("Copie de la clef privée",'Info');
+        //on copie la clef privée
+        $act->addDetails(AbtelBackup::localExec('scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q -i /var/www/html/.ssh/id_'.$esxsrc->IP.' /var/www/html/.ssh/id_'.$esx->IP.' root@'.$esxsrc->IP.':/tmp/id_'.$esx->IP));
+        //echo "Création du dossier BORG\r\n";
+        $act = $esx->createActivity("Création du dossier BORG",'Info');
+        //on copie le dossier vm vers le nouvel esx
+        $act->addDetails($esx->remoteExec('if [ ! -d /vmfs/volumes/NL-SAS/BORG ]; then mkdir /vmfs/volumes/NL-SAS/BORG; fi'));
+        //echo "Copie du fichier BORG.vmx\r\n";
+        $act = $esx->createActivity("Copie du fichier BORG.vmx",'Info');
+        //echo 'scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q -i /tmp/id_'.$esx->IP.' /vmfs/volumes/datastore1/BORG/BORG.vmx root@'.$esx->IP.':/vmfs/volumes/NL-SAS/BORG/'."\r\n";
+        $act->addDetails($esxsrc->remoteExec('scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q -i /tmp/id_'.$esx->IP.' /vmfs/volumes/datastore1/BORG/BORG.vmx root@'.$esx->IP.':/vmfs/volumes/NL-SAS/BORG/'));
+        //echo "Copie du fichier BORG-thin.vmdk\r\n";
+        $act = $esx->createActivity("Copie du fichier BORG.vmx",'Info');
+        $act->addDetails($esxsrc->remoteExec('scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q -i /tmp/id_'.$esx->IP.' /vmfs/volumes/datastore1/BORG/BORG-thin.vmdk root@'.$esx->IP.':/vmfs/volumes/NL-SAS/BORG/'));
+        //echo "Copie du fichier BORG-thin-flat.vmdk\r\n";
+        $act = $esx->createActivity("Copie du fichier BORG-thin-flat.vmdk",'Info');
+        $act->addDetails($esxsrc->remoteExec('scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q -i /tmp/id_'.$esx->IP.' /vmfs/volumes/datastore1/BORG/BORG-thin-flat.vmdk root@'.$esx->IP.':/vmfs/volumes/NL-SAS/BORG/'));
+        //on modifie le fichier vmx
+        //echo "Modification duy fichier BORG.vmx\r\n";
+        $act = $esx->createActivity("Modification duy fichier BORG.vmx",'Info');
+        $vmx = $esxsrc->remoteExec('cat /vmfs/volumes/NL-SAS/BORG/BORG.vmx');
+        $vmx = str_replace('scsi0:0.fileName = "BORG-thin-000001.vmdk','scsi0:0.fileName = "BORG-thin.vmdk',$vmx);
+        $vmx = preg_replace('#scsi0:1.*$#','',$vmx);
+        $act->addDetails($vmx);
+        //echo "Ajout de la vm à l'inventaire\r\n";
+        $act = $esx->createActivity("Ajout de la vm à l'inventaire",'Info');
+        //on ajoute la vm à l'inventaire
+        $act->addDetails($esxsrc->registerVm());
+        //echo "suppression des snapshots\r\n";
+        $act = $esx->createActivity("Suppression des snapshots",'Info');
+        //on supprime les snapshots
+        $act->addDetails($esxsrc->removeAllSnapshot($vmsrc));
+    }
+
 }

@@ -2942,7 +2942,7 @@ class genericClass extends Root {
             switch ($f['type']){
                 case 'date':
                     //transformation des timestamps en format js
-                    $o->{$f['objectName'].$f['name']} = date('d/m/Y H:i',$this->{$f['name']});
+                    $o->{$f['name']} = date('d/m/Y H:i',$this->{$f['name']});
                     break;
                 case 'boolean':
                     //transformation des timestamps en format js
@@ -2953,10 +2953,14 @@ class genericClass extends Root {
                 case 'titre':
                 case 'html':
                 case 'raw':
-                    $o->{$f['objectName'].$f['name']} = Utils::cleanJson($this->{$f['name']});
+                    if (isset($this->{$f['name']}))
+                        $o->{$f['name']} = Utils::cleanJson($this->{$f['name']});
+                    else $o->{$f['name']} = '';
                     break;
                 default:
-                    $o->{$f['objectName'].$f['name']} = $this->{$f['name']};
+                    if (isset($this->{$f['name']}))
+                        $o->{$f['name']} = $this->{$f['name']};
+                    else $o->{$f['name']} = '';
                 break;
             }
             if ($f['type']=='fkey'&&$f['card']=='short'){

@@ -316,37 +316,4 @@ class AbtelBackup extends Module{
         }
         return AbtelBackup::localExec($cmd,$act,0,null,$progData);
     }
-    /**
-     * deploy
-     * Utilisataire de déploiment.
-     */
-    public static function deploy($esxid){
-        //vm source
-        $vmsrc = Sys::getOneData('AbtelBackup','EsxVm/VmSrc=1');
-        if (!$vmsrc) return false;
-        $esxsrc = $vmsrc->getOneParent('Esx');
-        $esx = Sys::getOneData('AbtelBackup','Esx/'.$esxid);
-        //On modifie le fichier fstab
-        AbtelBackup::localExec('mv /etc/fstab /etc/fstab.bck && mv /etc/fstab.mig /etc/fstab');
-        //on crée un snapshot
-        if (!sizeof($esxsrc->getSnapshot($vmsrc)))
-            //si pas de snapshot en cours
-            $esxsrc->createSnapshot($vmsrc,'deploy');
-        else return false;
-        //on remet le fichier fstab
-        AbtelBackup::localExec('mv /etc/fstab /etc/fstab.mig && mv /etc/fstab.bck /etc/fstab');
-        //on copie la clef privée
-        AbtelBackup::localExec('scp /var/www/.ssh/id_'.$esx->IP.' root@'.$esxsrc->IP.':/tmp/id_'.$esx->IP);
-        //on copie le dossier vm vers le nouvel esx
-        $esxsrc->remoteExec('mkdir /vmfs/volumes/NL-SAS/BORG');
-        $esxsrc->remoteExec('scp -i /tmp/id_'.$esx->IP.' /vmfs/volumes/datastore1/BORG/BORG.vmx root@'.$esx->IP.':/vmfs/volumes/NL-SAS/BORG/');
-        $esxsrc->remoteExec('scp -i /tmp/id_'.$esx->IP.' /vmfs/volumes/datastore1/BORG/BORG-thin.vmdk root@'.$esx->IP.':/vmfs/volumes/NL-SAS/BORG/');
-        $esxsrc->remoteExec('scp -i /tmp/id_'.$esx->IP.' /vmfs/volumes/datastore1/BORG/BORG-thin-flat.vmdk root@'.$esx->IP.':/vmfs/volumes/NL-SAS/BORG/');
-        //on modifie le fichier vmx
-        $vmx = $esxsrc->remoteExec('mkdir /vmfs/volumes/NL-SAS/BORG/BORg.vmx');
-        $vmx = str_replace('scsi0:0.fileName = "BORG-thin-000001.vmdk','scsi0:0.fileName = "BORG-thin.vmdk',$vmx);
-        preg_replace('#scsi0:1.*$#','',$vmx);
-        //on ajoute la vm à l'inventaire
-        $esxsrc->registerVm();
-    }
 }

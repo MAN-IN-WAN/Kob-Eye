@@ -39,6 +39,45 @@
 </div>
 <!--<pre ng-bind="{{ identifier }}selected | json"></pre>
 <pre ng-bind="{{ identifier }}selectedAll | json"></pre>-->
+{% if Type == 'Children' and ObjectType =='Activity' %}
+    <div styl="position:relative;">
+        <table id="activity_list">
+            <tr id="tableFixedHeader" class="activity-item" >
+                <th class="activity_start">Démarré le</th>
+                <th class="activity_title">Titre</th>
+                <th class="activity_progress">Progrès</th>
+            </tr>
+            <tr class="activity-item" dir-paginate="act in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination" ng-init="hover = false" ng-click="hover = !hover" ng-class="{showDetail:hover}">
+                <td class="actWrap" colspan="3">
+                    <table class="actSub">
+                        <tr class="actInfo" ng-class="{cursor:act.Details}">
+                            <td class="activity_start">
+                                {[{ act.create }]}
+                            </td>
+                            <td class="activity_title" ng-class="{success: (act.Success == 1 && act.Type =='Exec'),error: (act.Errors == 1 && act.Type =='Exec'),running:(act.Success != 1  && act.Errors != 1 && act.Started == 1 && act.Type =='Exec'),info: (act.Type =='Info' && act.Errors != 1), info_error:(act.Type =='Info' && act.Errors == 1), stopped:(act.Success != 1  && act.Errors != 1 && act.Started != 1 && act.Type =='Exec')}"  colspan="{[{ act.Type == 'Exec' ? 1:2 }]}"><span ng-bind-html="act.Titre"></span></td>
+                            <td class="activity_progress" ng-if="act.Type == 'Exec'">
+                                <uib-progress ng-if="act.Progression < 100">
+                                    <uib-bar value="act.Progression" type="warning" class=" progress-bar-striped progress-bar-animated"><span ng-hide="act.Progression < 5">{[{ act.Progression }]}%</span></uib-bar>
+                                </uib-progress>
+                                <uib-progress ng-if="act.Progression >= 100">
+                                    <uib-bar value="act.Progression" type="success" class=" progress-bar-striped progress-bar-animated"><span ng-hide="act.Progression < 5">{[{ act.Progression }]}%</span></uib-bar>
+                                </uib-progress>
+                            </td>
+                        </tr>
+                        <tr class="actDetail" ng-if="act.Details" ng-class="{error: act.Errors == 1}">
+                            <td colspan="3" >
+                                <pre ng-bind-html="act.Details"  ng-class="{show:act.Errors == 1,hide:act.Errors == 0}">
+
+                                </pre>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+
+            </tr>
+        </table>
+    </div>
+{% else %}
 <table class="table table-hover nowrap margin-bottom-0 straight" id="{{ identifier }}" width="100%">
     <thead>
         <tr>
@@ -132,6 +171,7 @@
     </tr>
     </tbody>
 </table>
+
 <div class="invert-wrap">
     <table class="table table-hover nowrap margin-bottom-0 inverted" id="{{ identifier }}" width="100%">
     {#<colgroup>
@@ -230,6 +270,7 @@
 
     </script>
 </div>
+{% endif %}
 <dir-pagination-controls boundary-links="true" pagination-context="{{ context }}" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
 
 <div class="modal fade modal-size-large" id="modal-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
@@ -258,7 +299,7 @@
                     </ul>
                 </div>
                 <div ng-if="modalObj.success == false">
-                    {{ include(template_from_string(module('Systeme/Utils/Form?Path=[!Query!]'))) }}
+                    {{ include(template_from_string(module('Systeme/Utils/Form?Path='~Path))) }}
                 </div>
             </div>
             <div class="modal-footer">
