@@ -39,9 +39,10 @@ class Host extends genericClass
      * récupère le ldapId d'une entrée pour un serveur spécifique
      */
     public function getLdapID($KEServer) {
-        if (!empty($this->LdapID))
-            $en = json_decode($this->LdapID,true);
-        else $en=array();
+        if (!empty($this->LdapID)) {
+            if (!$en = json_decode($this->LdapID, true))
+                $en = array($KEServer->Id => $this->LdapID);
+        }else $en=array();
         return $en[$KEServer->Id];
     }
     /**
@@ -61,9 +62,10 @@ class Host extends genericClass
      * récupère le ldapDN d'une entrée pour un serveur spécifique
      */
     public function getLdapDN($KEServer) {
-        if (!empty($this->LdapDN))
-            $en = json_decode($this->LdapDN,true);
-        else $en=array();
+        if (!empty($this->LdapDN)) {
+            if (!$en = json_decode($this->LdapDN, true))
+                $en = array($KEServer->Id => $this->LdapDN);
+        }else $en=array();
         return $en[$KEServer->Id];
     }
     /**
@@ -83,9 +85,10 @@ class Host extends genericClass
      * récupère le ldapTms d'une entrée pour un serveur spécifique
      */
     public function getLdapTms($KEServer) {
-        if (!empty($this->LdapTms))
-            $en = json_decode($this->LdapTms,true);
-        else $en=array();
+        if (!empty($this->LdapTms)) {
+            if (!$en = json_decode($this->LdapTms, true))
+                $en = array($KEServer->Id => $this->LdapTms);
+        }else $en=array();
         return $en[$KEServer->Id];
     }
     /**

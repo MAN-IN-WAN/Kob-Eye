@@ -3,132 +3,19 @@
     <!-- Dashboard -->
     <div class="dashboard-container">
         <div class="row">
-            <a class="col-xl-3 col-lg-6 col-sm-6 col-xs-12" href="#/{{ Urls.Activity }}">
-                <div class="widget widget-seven background-success">
-                    <div class="widget-body">
-                        <div href="javascript: void(0);" class="widget-body-inner">
-                            <h5 class="text-uppercase">Activité(s) en cours</h5>
-                            <i class="counter-icon icmn-spinner2"></i>
-                            <span class="counter-count">
-                                <i class="icmn-arrow-right5"></i>
-                                <span class="counter-init" value="0" count-to="{[{ NbRunning }]}" duration="1"></span>
-                            </span>
+            <div class="col-md-12">
+                <div class="widget widget-two widgetTop" style="height: auto;">
+                    <div class="bandWidth">
+                        <div class="widget-header">
+                            Utilisation de la <strong>bande passante</strong>
                         </div>
-                    </div>
-                </div>
-            </a>
-            <a class="col-xl-3 col-lg-6 col-sm-6 col-xs-12" ng-click="gotoAnchor('dashCalendar');">
-                <div class="widget widget-seven background-default">
-                    <div class="widget-body">
-                        <div href="javascript: void(0);" class="widget-body-inner">
-                            <h5 class="text-uppercase">Job(s) aujourd'hui</h5>
-                            <i class="counter-icon icmn-calendar3"></i>
-                            <span class="counter-count">
-                                <i class="icmn-arrow-right5"></i>
-                                <span class="counter-init" value="0" count-to="{{ NbToday }}" duration="1"></span>
-                            </span>
+                        <div class="widget-body clearfix" style="overflow: hidden;position: relative; padding-bottom: 0;">
+                            <canvas class="chart-line" chart-data="line.data" chart-labels="line.labels" chart-dataset-override="line.dsOverride" chart-options="line.options" chart-series="line.series" id="chart-line" width="1000" height="250"></canvas>
                         </div>
-                    </div>
-                </div>
-            </a>
-            <a class="col-xl-3 col-lg-6 col-sm-6 col-xs-12" href="#/{{ Urls.EsxVm }}">
-                <div class="widget widget-seven">
-                    <div class="widget-body">
-                        <div href="javascript: void(0);" class="widget-body-inner">
-                            <h5 class="text-uppercase">VMs</h5>
-                            <i class="counter-icon icmn-server"></i>
-                            <span class="counter-count">
-                                <i class="icmn-arrow-right5"></i>
-                                <span class="counter-init" value="0" count-to="{{ NbVm }}" duration="1"></span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </a>
-            <a class="col-xl-3 col-lg-6 col-sm-6 col-xs-12" href="#/{{ Urls.SambaShare }}">
-                <div class="widget widget-seven">
-                    <div class="widget-body">
-                        <div href="javascript: void(0);" class="widget-body-inner">
-                            <h5 class="text-uppercase">Partages</h5>
-                            <i class="counter-icon icmn-display4"></i>
-                            <span class="counter-count">
-                                <i class="icmn-arrow-right5"></i>
-                                <span class="counter-init" value="0" count-to="{{ NbSharing }}" duration="1"></span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <!--
-        <div class="row">
-            <div class="col-xl-6">
-                <div class="widget widget-six">
-                    <div class="widget-header">
-                        <div class="dropdown pull-right">
-                            <a href="javascript: void(0);" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <i class="dropdown-inline-button-icon icmn-cog"></i>
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="" role="menu">
-                                <a class="dropdown-item" href="javascript:void(0)">Remove</a>
-                                <a class="dropdown-item" href="javascript:void(0)">Edit</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="javascript:void(0)">Remove All</a>
-                            </ul>
-                        </div>
-                        <strong class="margin-right-10">Sales Statistics, Billions</strong>
-                        <span class="margin-right-10 nowrap">
-                            <span class="donut donut-success"></span>
-                            Guns
-                        </span>
-                        <span class="margin-right-10 nowrap">
-                            <span class="donut donut-primary"></span>
-                            Girls
-                        </span>
-                        <span class="margin-right-10 nowrap">
-                            <span class="donut donut-yellow"></span>
-                            Drugs
-                        </span>
-                    </div>
-                    <div class="widget-body">
-                        <div class="chart-line height-250 chartist"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-6">
-                <div class="widget widget-six">
-                    <div class="widget-header">
-                        <div class="dropdown pull-right">
-                            <a href="javascript: void(0);" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <i class="dropdown-inline-button-icon icmn-cog"></i>
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="" role="menu">
-                                <a class="dropdown-item" href="javascript:void(0)">Remove</a>
-                                <a class="dropdown-item" href="javascript:void(0)">Edit</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="javascript:void(0)">Remove All</a>
-                            </ul>
-                        </div>
-                        <strong class="margin-right-10">Growth, %</strong>
-                        <span class="margin-right-10 nowrap">
-                            <span class="donut donut-primary"></span>
-                            Income
-                        </span>
-                        <span class="margin-right-10 nowrap">
-                            <span class="donut donut-success"></span>
-                            Outcome
-                        </span>
-                    </div>
-                    <div class="widget-body">
-                        <div class="chart-overlapping-bar height-250 chartist"></div>
                     </div>
                 </div>
             </div>
         </div>
-
-        -->
         <div class="row" id="dashCalendar">
             <div class="col-xl-3">
                 <div class="widget widget-two widgetTop">
@@ -137,7 +24,7 @@
                             Utilisation de l'<strong>espace disque</strong> global
                         </div>
                         <div class="widget-body clearfix" style="overflow: hidden; height: 285px;position: relative;">
-                            <canvas class="chart-pie" chart-data="pie.data" chart-labels="pie.labels" chart-dataset-override="pie.dsOverride" chart-options="pie.options" id="chart-pie" width="400" height="300"></canvas>
+                            <canvas class="chart-pie" chart-data="pie.data" chart-labels="pie.labels" chart-dataset-override="pie.dsOverride" chart-options="pie.options" id="chart-pie" width="400" height="400"></canvas>
                         </div>
                     </div>
                 </div>
@@ -150,7 +37,7 @@
                         </div>
                         <div class="widget-body clearfix" style="overflow: hidden; height: 285px;position: relative;">
                             {#<div class="custom-scroll jspScrollable" >#}
-                                <canvas class="chart-bar" chart-data="bar.data" chart-labels="bar.labels" chart-dataset-override="bar.dsOverride" chart-options="bar.options" id="chart-bar" width="400" height="250"></canvas>
+                                <canvas class="chart-bar" chart-data="bar.data" chart-labels="bar.labels" chart-dataset-override="bar.dsOverride" chart-options="bar.options" id="chart-bar" width="400" height="350"></canvas>
                             {#</div>#}
                         </div>
                     </div>
@@ -161,19 +48,55 @@
                     <div class="carousel-widget-2 carousel slide" data-ride="carousel">
                         <div class="carousel-inner" role="listbox">
                             <div class="carousel-item active">
-                                <a href="javascript: void(0);" class="widget-body">
-                                    <h2>Voir la documentation</h2>
+                                <a href="javascript: void(0);" class="widget-body widget-full">
+                                    <i class="icmn-bookmark" style="font-size: 35px;"></i>
+                                    <h2>Voir <br/>la <br/>documentation</h2>
+                                    <p>Bientôt ...</p>
                                 </a>
                             </div>
                             <div class="carousel-item">
-                                <a href="javascript: void(0);" class="widget-body">
-                                    <h2>Clean</h2>
-                                    <p>
-                                        Simple
-                                        <br />
-                                        Responsive
-                                    </p>
-                                </a>
+                                <div class="widget-body widget-half">
+                                    <div href="javascript: void(0);" class="widget-body-inner">
+                                        <h5 class="text-uppercase">Activité(s) en cours</h5>
+                                        <i class="counter-icon icmn-spinner2"></i>
+                                        <span class="counter-count">
+                                            <i class="icmn-arrow-right5"></i>
+                                            <span class="counter-init" value="0" count-to="{[{ NbRunning }]}" duration="1"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="widget-body widget-half">
+                                    <div href="javascript: void(0);" class="widget-body-inner">
+                                        <h5 class="text-uppercase">Job(s) aujourd'hui</h5>
+                                        <i class="counter-icon icmn-calendar3"></i>
+                                        <span class="counter-count">
+                                            <i class="icmn-arrow-right5"></i>
+                                            <span class="counter-init" value="0" count-to="{{ NbToday }}" duration="1"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="widget-body widget-half">
+                                    <div href="javascript: void(0);" class="widget-body-inner">
+                                        <h5 class="text-uppercase">VMs</h5>
+                                        <i class="counter-icon icmn-server"></i>
+                                        <span class="counter-count">
+                                            <i class="icmn-arrow-right5"></i>
+                                            <span class="counter-init" value="0" count-to="{{ NbVm }}" duration="1"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="widget-body widget-half">
+                                    <div href="javascript: void(0);" class="widget-body-inner">
+                                        <h5 class="text-uppercase">Partages</h5>
+                                        <i class="counter-icon icmn-display4"></i>
+                                        <span class="counter-count">
+                                            <i class="icmn-arrow-right5"></i>
+                                            <span class="counter-init" value="0" count-to="{{ NbSharing }}" duration="1"></span>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -217,6 +140,11 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div abt-timeline="AbtelBackupActivityStore" abt-tl-context="timeline" abt-tl-filter=""></div>
             </div>
         </div>
 

@@ -59,6 +59,7 @@ class Apache extends genericClass {
                 $this->SslExpiration=time()+(86400*90);
                 $this->Ssl = true;
                 $serv = $this->getKEServer();
+                $serv = $serv[0];
                 $sa = explode("\n",$this->ApacheServerAlias);
 
                 //test des entrées dns
@@ -80,6 +81,7 @@ class Apache extends genericClass {
                         $this->addError(array("Message"=>"Le domaine : '".$dns->question[sizeof($dns->question)-1]->qname."' ne pointe pas sur l'adresse ip ".$serv->IP." (actuellement il pointe vers ".$dns->answer[sizeof($dns->answer)-1]->address."), ou sa propagation se terminera dans ".$dns->answer[sizeof($dns->answer)-1]->ttl." secondes"));
                     }
                 }
+
                 if ($err)return false;
 
                 //pour activer ssl il faut déclencher une tache
@@ -122,9 +124,10 @@ class Apache extends genericClass {
      * récupère le ldapId d'une entrée pour un serveur spécifique
      */
     public function getLdapID($KEServer) {
-        if (!empty($this->LdapID))
-            $en = json_decode($this->LdapID,true);
-        else $en=array();
+        if (!empty($this->LdapID)) {
+            if (!$en = json_decode($this->LdapID, true))
+                $en = array($KEServer->Id => $this->LdapID);
+        }else $en=array();
         return $en[$KEServer->Id];
     }
     /**
@@ -144,9 +147,10 @@ class Apache extends genericClass {
      * récupère le ldapDN d'une entrée pour un serveur spécifique
      */
     public function getLdapDN($KEServer) {
-        if (!empty($this->LdapDN))
-            $en = json_decode($this->LdapDN,true);
-        else $en=array();
+        if (!empty($this->LdapDN)) {
+            if (!$en = json_decode($this->LdapDN, true))
+                $en = array($KEServer->Id => $this->LdapDN);
+        }else $en=array();
         return $en[$KEServer->Id];
     }
     /**
@@ -166,9 +170,10 @@ class Apache extends genericClass {
      * récupère le ldapTms d'une entrée pour un serveur spécifique
      */
     public function getLdapTms($KEServer) {
-        if (!empty($this->LdapTms))
-            $en = json_decode($this->LdapTms,true);
-        else $en=array();
+        if (!empty($this->LdapTms)) {
+            if (!$en = json_decode($this->LdapTms, true))
+                $en = array($KEServer->Id => $this->LdapTms);
+        }else $en=array();
         return $en[$KEServer->Id];
     }
     /**
@@ -222,6 +227,7 @@ class Apache extends genericClass {
 
                     // Verification à jour
                     $res = Server::checkTms($this,$KEServer);
+                    //print_r($res);
                     if ($res['exists']) {
                         if (!$res['OK']) {
                             $this->AddError($res);

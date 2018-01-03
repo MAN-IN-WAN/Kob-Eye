@@ -316,4 +316,57 @@ class AbtelBackup extends Module{
         }
         return AbtelBackup::localExec($cmd,$act,0,null,$progData);
     }
+
+    static function getBandWidthCron(){
+        try{
+            $ret = AbtelBackup::localExec('cd /var/www/html/Modules/AbtelBackup/Cron && sh /var/www/html/Modules/AbtelBackup/Cron/nethogs.sh');
+            $ret = preg_replace('/\s+/', '',$ret);
+
+            if(file_exists($ret)){
+                $str = file_get_contents($ret);
+
+                $tics = explode('Refreshing:',$str);
+                array_shift($tics);
+                //array_splice($tics,0,10); //Enleve les 10 premiers tics pour eviter les erreurs du au demarrage laborieux de nethogs
+                array_walk($tics,function(&$i){
+                    $i = trim($i);
+                    $temp = explode(PHP_EOL,$i);
+                    array_walk($temp,function(&$j){
+                        $j = preg_split('/\t+/',$j);
+                    });
+                    $i = $temp;
+                    $total = array( 'Total',0,0);
+                    foreach ($i as $proc){
+                        $total[1] += $proc[1];
+                        $total[2] += $proc[2];
+                    }
+                    $i[] = $total;
+                });
+
+
+                //file_put_contents('toto',print_r($tics,true),8);
+
+                $ev = genericClass::createInstance('Systeme','Event');
+                $ev->EventType = 'BandWidth';
+                $ev->Titre = 'BandWidth Update';
+                $ev->EventModule = 'AbtelBackup';
+                $ev->EventObjectClass = 'AbtelBackup';
+                $ev->EventId = 123;
+                $ev->UserId = 0;
+                $ev->Data = json_encode($tics);
+                $ev->Save();
+
+            } else{
+                //file_put_contents('toto','nooooooooo '.$ret.PHP_EOL,8);
+            }
+
+        } catch (Exception $e){
+//            file_put_contents('toto','+++++++++++++++++++'.PHP_EOL,8);
+//            file_put_contents('toto',print_r($e,true),8);
+//            file_put_contents('toto','+++++++++++++++++++'.PHP_EOL,8);
+        }
+
+
+
+    }
 }

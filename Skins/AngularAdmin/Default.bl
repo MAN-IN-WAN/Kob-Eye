@@ -156,7 +156,9 @@
 
     <script src="Skins/AngularAdmin/assets/vendors/ionrangeslider/ionic-range-slider.js"></script>
 
-
+    <!-- Abtel TimeLine -->
+    <link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/assets/vendors/abtTimeline/style.css">
+    <script src="Skins/AngularAdmin/assets/vendors/abtTimeline/abtTimeline.js"></script>
 
     [IF [!Systeme::User::isRole(BACKUP_ADMIN)!]]
         <script src="Systeme/Header/BackupAdmin.json"></script>

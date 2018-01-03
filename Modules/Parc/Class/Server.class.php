@@ -884,6 +884,7 @@ class Server extends genericClass {
                 $search = ldap_search(Server::$_LDAP, PARC_LDAP_BASE, 'entryuuid=' . $KEObj->LdapID, array('modifytimestamp'));
             }
             $res = ldap_get_entries(Server::$_LDAP, $search);
+            //print_r($res);
             if (!$res['count']) {
                 $e['exists'] = false;
                 return $e;

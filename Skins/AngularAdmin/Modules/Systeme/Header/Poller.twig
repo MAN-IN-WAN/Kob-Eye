@@ -39,6 +39,9 @@ app.service('Poller',function($http,$rootScope){
                     }else if (ev.Type == 'Delete'){
                         //mise à jour liste
                         $rootScope.$broadcast(ev.Module+ev.ObjectClass+'Store',{type:'delete',id:ev.ObjectId, data: ev.Data});
+                    }else if (ev.Type == 'BandWidth'){
+                        //mise à jour liste
+                        $rootScope.$broadcast('BandWidth',{type:'bandwidth',id:ev.ObjectId, data: ev.Data});
                     }
                 }
                 lastPoll = out.data.lastSearch;

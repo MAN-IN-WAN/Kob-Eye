@@ -30,8 +30,7 @@ app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $s
     $scope.AbtelBackupActivityStore = AbtelBackupActivityStore;
     // Utile seulement a cause de la template d'affichage commun avec la listchildren
     var now = Math.floor(Date.now()/1000);
-    var seuil = now - 7200;
-
+    var seuil = now - 86400;
 
     $scope.AbtelBackupActivityStore.setFilters('Started=1&Success=0&Errors=0+tmsEdit>'+seuil,'dash');
     $scope.AbtelBackupActivityStore.getData(1,'dash');
@@ -56,10 +55,12 @@ app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $s
 
     var refresh = $interval(function(){
         var now = Math.floor(Date.now()/1000);
-        var seuil = now - 7200;
+        var seuil = now - 86400;
         for(var n in $scope.AbtelBackupActivityStore.data['dash']){
             var StData = $scope.AbtelBackupActivityStore.data['dash'][n];
-            if(StData.tmsEdit < seuil) $scope.AbtelBackupActivityStore.deleteOneData(StData.id,'dash',true);
+            if(StData.tmsEdit < seuil) {
+                $scope.AbtelBackupActivityStore.deleteOneData(StData.id,'dash',true);
+            }
         }
     },5000);
 
@@ -160,22 +161,22 @@ app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $s
         }
 
         $scope.bar.dsOverride =[
-                {
-                    label:'Taille Backup',
-                    backgroundColor: 'rgba(243,152,52,0.5)',
-                    hoverBackgroundColor: 'rgba(227,136,36,0.8)',
-                    borderColor:'#d37814',
-                    stack: 1,
-                    xAxisID: 'Xaxis1'
-                },
-                {
-                    label:'Taille Vm',
-                    backgroundColor: 'rgba(70,190,138,0.5)',
-                    hoverBackgroundColor: 'rgba(54,174,122,0.8',
-                    borderColor:'#26bc6a',
-                    stack: 1,
-                    xAxisID: 'Xaxis2'
-                }
+            {
+                label:'Taille Backup',
+                backgroundColor: 'rgba(243,152,52,0.5)',
+                hoverBackgroundColor: 'rgba(227,136,36,0.8)',
+                borderColor:'#d37814',
+                stack: 1,
+                xAxisID: 'Xaxis1'
+            },
+            {
+                label:'Taille Vm',
+                backgroundColor: 'rgba(70,190,138,0.5)',
+                hoverBackgroundColor: 'rgba(54,174,122,0.8',
+                borderColor:'#26bc6a',
+                stack: 1,
+                xAxisID: 'Xaxis2'
+            }
         ];
 
         $scope.bar.options = {
@@ -238,5 +239,64 @@ app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $s
         }
     });
 
+
+    //
+    //      BandWidth
+    //
+    $scope.line = {};
+
+    $scope.line.data = [Array.apply(null, Array(60)).map(Number.prototype.valueOf,0),Array.apply(null, Array(60)).map(Number.prototype.valueOf,0)];
+
+    var min = -60;
+    $scope.line.labels = Array.apply(null, Array(60)).map(function(a){
+        min++;
+        return min+' sec.';
+    });
+
+    $scope.line.series = ['Total Upload','Total Download'];
+
+    $scope.line.dsOverride =[
+        {
+            yAxisID: 'Yaxis1',
+            borderColor: 'rgba(70,190,138,0.5)',
+            backgroundColor: 'rgba(255,255,255,0)',
+            fill: false
+        },
+        {
+            borderColor: 'rgba(70,190,138,0.5)',
+            backgroundColor: 'rgba(255,255,255,0)',
+            borderDash: [5,4],
+            fill: false
+        }
+    ];
+
+    $scope.line.options = {
+        scales: {
+            yAxes: [
+                {
+                    id: 'Yaxis1',
+                    type: 'linear',
+                    display: true,
+                    position: 'left'
+                }
+            ]
+        }
+    };
+
+    $rootScope.$on('BandWidth',function (ev,data){
+        var dots = data.data;
+        console.log('dots',dots);
+
+        var update = $interval(function(){
+            var dot = dots.shift();
+            if(dots.length < 1) $interval.cancel(update);
+            $scope.line.data[0].shift();
+            $scope.line.data[0].push(dot[dot.length-1][dot[dot.length-1].length-2]);
+
+            $scope.line.data[1].shift();
+            $scope.line.data[1].push(dot[dot.length-1][dot[dot.length-1].length-1]);
+        },1000);
+
+    });
 
 });

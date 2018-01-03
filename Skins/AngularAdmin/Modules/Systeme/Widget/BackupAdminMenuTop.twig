@@ -14,7 +14,8 @@
             <div id="vmErrors">
                 <div class="dropdown-header">Erreur(s) Job Vm :</div>
                 <div class="dropdown-item-wrap clearfix" ng-repeat="err in store.data['TopMenuErr'] | filter:isVm() as results1">
-                    <a class="dropdown-item-left"  href="#/{{ Urls.Activity }}/{[{ err.id }]}" title="{[{ err.Details | limitTo:240 }]}"><i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> <span ng-bind-html="err.Titre"></span></a>
+                    {#<a class="dropdown-item-left"  href="#/{{ Urls.Activity }}/{[{ err.id }]}" title="{[{ err.Details | limitTo:240 }]}"><i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> <span ng-bind-html="err.Titre"></span></a>#}
+                    <span class="dropdown-item-left"  title="{[{ err.Details | limitTo:240 }]}"><i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> <span ng-bind-html="err.Titre"></span></span>
                     <a class="dropdown-item-right"  href="javascript: void(0);" ng-click="ackActivity(err)" title="Vu"><i class="dropdown-icon icmn-user-check prio_Info"></i> Vu</a>
                 </div>
                 <a class="dropdown-item" href="#" title="Aucune erreur" ng-if="results1.length == 0"><i class="dropdown-icon icmn-shield-notice prio_allGood"></i> Aucune erreur </a>
@@ -23,7 +24,8 @@
             <div id="sambaErrors">
                 <div class="dropdown-header">Erreur(s) Job Samba :</div>
                 <div class="dropdown-item-wrap clearfix" ng-repeat="err in store.data['TopMenuErr'] | filter:isSamba() as results2">
-                    <a class="dropdown-item-left"  href="#/{{ Urls.Activity }}/{[{ err.id }]}" title="{[{ err.Details | limitTo:240 }]}"><i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> <span ng-bind-html="err.Titre"></span></a>
+                    {#<a class="dropdown-item-left"  href="#/{{ Urls.Activity }}/{[{ err.id }]}" title="{[{ err.Details | limitTo:240 }]}"><i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> <span ng-bind-html="err.Titre"></span></a>#}
+                    <span class="dropdown-item-left" title="{[{ err.Details | limitTo:240 }]}"><i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> <span ng-bind-html="err.Titre"></span></span>
                     <a class="dropdown-item-right"  href="javascript: void(0);" ng-click="ackActivity(err)" title="Vu"><i class="dropdown-icon icmn-user-check prio_Info"></i> Vu</a>
                 </div>
                 <a class="dropdown-item" href="#" title="Aucune erreur" ng-if="results2.length == 0"><i class="dropdown-icon icmn-shield-notice prio_allGood"></i> Aucune erreur </a>
@@ -32,7 +34,8 @@
             <div id="remoteErrors">
                 <div class="dropdown-header">Erreur(s) Job Remote :</div>
                 <div class="dropdown-item-wrap clearfix" ng-repeat="err in store.data['TopMenuErr'] | filter:isRemote() as results3">
-                    <a class="dropdown-item-left"  href="#/{{ Urls.Activity }}/{[{ err.id }]}" title="{[{ err.Details | limitTo:240 }]}"><i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> <span ng-bind-html="err.Titre"></span></a>
+                    {#<a class="dropdown-item-left"  href="#/{{ Urls.Activity }}/{[{ err.id }]}" title="{[{ err.Details | limitTo:240 }]}"><i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> <span ng-bind-html="err.Titre"></span></a>#}
+                    <span class="dropdown-item-left"  title="{[{ err.Details | limitTo:240 }]}"><i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> <span ng-bind-html="err.Titre"></span></span>
                     <a class="dropdown-item-right"  href="javascript: void(0);" ng-click="ackActivity(err)" title="Vu"><i class="dropdown-icon icmn-user-check prio_Info"></i> Vu</a>
                 </div>
                 <a class="dropdown-item" href="#" title="Aucune erreur" ng-if="results3.length == 0"><i class="dropdown-icon icmn-shield-notice prio_allGood"></i> Aucune erreur </a>
@@ -49,7 +52,7 @@
 
             <div id="vmErrors">
                 <div class="dropdown-header">Job(s) Vm en cours:</div>
-                <a class="dropdown-item" ng-repeat="jb in store.data['TopMenuRun'] | filter:isVm() as results1" href="#/{{ Urls.Activity }}/{[{ jb.id }]}" title="{[{ jb.Details }]}">
+                <span class="dropdown-item" ng-repeat="jb in store.data['TopMenuRun'] | filter:isVm() as results1" title="{[{ jb.Details | limitTo:240 }]}">
                     <i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> <span ng-bind-html="jb.Titre"></span><br>
                     <uib-progress ng-if="jb.Progression < 100">
                         <uib-bar value="jb.Progression" type="warning" class=" progress-bar-striped progress-bar-animated"><span ng-hide="jb.Progression < 5">{[{ jb.Progression }]}%</span></uib-bar>
@@ -57,14 +60,14 @@
                     <uib-progress ng-if="jb.Progression >= 100">
                         <uib-bar value="jb.Progression" type="success" class=" progress-bar-striped progress-bar-animated"><span ng-hide="jb.Progression < 5">{[{ jb.Progression }]}%</span></uib-bar>
                     </uib-progress>
-                </a>
-                <a class="dropdown-item" href="#" title="Aucune erreur" ng-if="results1.length == 0"><i class="dropdown-icon icmn-shield-notice prio_allGood"></i> Aucun job en cours </a>
+                </span>
+                <span class="dropdown-item"  title="Aucun job en cours" ng-if="results1.length == 0"><i class="dropdown-icon icmn-shield-notice prio_allGood"></i> Aucun job en cours </span>
 
             </div>
             <div class="dropdown-divider"></div>
             <div id="sambaErrors">
                 <div class="dropdown-header">Job(s) Samba en cours:</div>
-                <a class="dropdown-item" ng-repeat="jb in store.data['TopMenuRun'] | filter:isSamba() as results2" href="#/{{ Urls.Activity }}/{[{ jb.id }]}" title="{[{ jb.Details }]}">
+                <span class="dropdown-item" ng-repeat="jb in store.data['TopMenuRun'] | filter:isSamba() as results2" title="{[{ jb.Details | limitTo:240 }]}">
                     <i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> <span ng-bind-html="jb.Titre"></span><br>
                     <uib-progress ng-if="jb.Progression < 100">
                         <uib-bar value="jb.Progression" type="warning" class=" progress-bar-striped progress-bar-animated"><span ng-hide="jb.Progression < 5">{[{ jb.Progression }]}%</span></uib-bar>
@@ -72,13 +75,13 @@
                     <uib-progress ng-if="jb.Progression >= 100">
                         <uib-bar value="jb.Progression" type="success" class=" progress-bar-striped progress-bar-animated"><span ng-hide="jb.Progression < 5">{[{ jb.Progression }]}%</span></uib-bar>
                     </uib-progress>
-                </a>
-                <a class="dropdown-item" href="#" title="Aucune erreur" ng-if="results2.length == 0"><i class="dropdown-icon icmn-shield-notice prio_allGood"></i> Aucun job en cours </a>
+                </span>
+                <span class="dropdown-item" title="Aucun job en cours" ng-if="results2.length == 0"><i class="dropdown-icon icmn-shield-notice prio_allGood"></i> Aucun job en cours </span>
             </div>
             <div class="dropdown-divider"></div>
             <div id="remoteErrors">
                 <div class="dropdown-header">Job(s) Remote en cours:</div>
-                <a class="dropdown-item" ng-repeat="jb in store.data['TopMenuRun'] | filter:isRemote() as results3" href="#/{{ Urls.Activity }}/{[{ jb.id }]}" title="{[{ jb.Details }]}">
+                <span class="dropdown-item" ng-repeat="jb in store.data['TopMenuRun'] | filter:isRemote() as results3" title="{[{ jb.Details | limitTo:240 }]}">
                     <i class="dropdown-icon icmn-shield-notice prio_Desastre"></i> <span ng-bind-html="jb.Titre"></span><br>
                     <uib-progress ng-if="jb.Progression < 100">
                         <uib-bar value="jb.Progression" type="warning" class=" progress-bar-striped progress-bar-animated"><span ng-hide="jb.Progression < 5">{[{ jb.Progression }]}%</span></uib-bar>
@@ -86,8 +89,8 @@
                     <uib-progress ng-if="jb.Progression >= 100">
                         <uib-bar value="jb.Progression" type="success" class=" progress-bar-striped progress-bar-animated"><span ng-hide="jb.Progression < 5">{[{ jb.Progression }]}%</span></uib-bar>
                     </uib-progress>
-                </a>
-                <a class="dropdown-item" href="#" title="Aucune erreur" ng-if="results3.length == 0"><i class="dropdown-icon icmn-shield-notice prio_allGood"></i> Aucun job en cours </a>
+                </span>
+                <span class="dropdown-item" title="Aucun job en cours" ng-if="results3.length == 0"><i class="dropdown-icon icmn-shield-notice prio_allGood"></i> Aucun job en cours </span>
             </div>
             <br>
             {#<a class="dropdown-item" href="javascript:void(0)">Tous les jobs en cours</a>#}

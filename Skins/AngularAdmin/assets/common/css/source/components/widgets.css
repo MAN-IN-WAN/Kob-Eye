@@ -376,3 +376,11 @@
         margin-left: 0px;
     }
 }
+
+
+/* Abtel Special */
+.widget .widget-body.widget-full{
+    height: 100%;
+    text-align: center;
+    line-height: 100px;
+}

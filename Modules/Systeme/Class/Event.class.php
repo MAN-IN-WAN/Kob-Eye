@@ -206,8 +206,10 @@ class Event extends genericClass {
                 $out = array();
                 foreach ($res['Ev'] as $k=>$ev){
                     $obj = unserialize($res['Ev'][$k]['Data']);
-                    $o = $obj->getWebServiceData();
-                    $res['Ev'][$k]['Data'] = json_encode($o);
+                    if($obj){
+                        $o = $obj->getWebServiceData();
+                        $res['Ev'][$k]['Data'] = json_encode($o);
+                    }
                     $ev = $res['Ev'][$k];
                     //résolution du contexte
                     //on vérifie déjà que le push a été enregistré pour ce type de donnée
