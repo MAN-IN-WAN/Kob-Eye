@@ -33,6 +33,7 @@
             filter: filters,
             total: total,
             currentPage: currentPage,
+            initContext: initContext,
             resetQuery: resetQuery,
             setQuery: setQuery,
             getQuery: getQuery,
@@ -105,13 +106,9 @@
         function setFilters(filter,context='default',blur = false,noreload = false){
             if (filters[context]==undefined) initContext(context);
             if (filter==filters[context]) return;
+            console.log(context+' > {{ st.identifier }} > setFilters '+filter);
             filters[context] = filter;
             pageLoaded[context]=0;
-            {#//on recharge le store
-            $timeout.cancel(timer[context]);
-            timer[context]=$timeout(function (){
-                getData(1,context);
-            }, 100);#}
         }
         /**
         * Récupération du filtre en cours
@@ -180,12 +177,12 @@
                             resolve({{ st.identifier }}Store[context][i]);
                             console.log(context+' >> store > {{ st.identifier }} > getOneData '+id+' > store local');
                             if (!{{ st.identifier }}Store[context][i]._full){
-                                loadChildren({{ st.identifier }}Store[context][i]).then(function (obj){
+                                /*loadChildren({{ st.identifier }}Store[context][i]).then(function (obj){
                                     {{ st.identifier }}Store[context][idStore] = unescapeData(updateRecord({{ st.identifier }}Store[context][idStore],obj));
                                     if (obj._full){
                                         resolve(obj);
                                     }
-                                });
+                                });*/
                             }
                         }
                     }
@@ -199,12 +196,12 @@
                                     {{ st.identifier }}Store[context].push({{ st.identifier }}Store[contexts[c]][i]);
                                     resolve({{ st.identifier }}Store[context][idStore]);
                                     if (!{{ st.identifier }}Store[context][idStore]._full){
-                                        loadChildren({{ st.identifier }}Store[context][idStore]).then(function (obj){
+                                        /*loadChildren({{ st.identifier }}Store[context][idStore]).then(function (obj){
                                             {{ st.identifier }}Store[context][idStore] = unescapeData(updateRecord({{ st.identifier }}Store[context][idStore],obj));
                                             if (obj._full){
                                                 resolve(obj);
                                             }
-                                        });
+                                        });*/
                                     }
                                 }
                             }
@@ -241,7 +238,7 @@
                                 console.log(context+' >> store > {{ key }} > getOneData '+id+' ajout dans le store');
                             }
                             //on charge les enfants uniquement si param full
-                            if (full)
+                            if (full){
                                 loadChildren(data).then(function (obj){
                                     if (idStore>-1){
                                         obj._full = true;
@@ -249,7 +246,7 @@
                                     }
                                     resolve({{ st.identifier }}Store[context][idStore]);
                                 });
-                            else{
+                            }else{
                                 console.log(context+' >> store > {{ key }} > getOneData '+id+' retour',idStore,{{ st.identifier }}Store[context][idStore]);
                                 resolve({{ st.identifier }}Store[context][idStore]);
                             }
@@ -263,7 +260,9 @@
         function unescapeData (obj){
             for (var i in obj){
                 if (typeof obj[i] == "string"){
-                    obj[i] = obj[i].replace(/\\n/g,'\n');
+                    obj[i] = obj[i].replace(/\\\\n/g,'\n');
+                    obj[i] = obj[i].replace(/\\\\r/g,'');
+
                     var map = {
                         '&amp;': '&',
                         '&lt;': '<',
@@ -297,14 +296,14 @@
                 for (var c in contexts){
                     for (var i in {{ st.identifier }}Store[contexts[c]]){
                         if ({{ st.identifier }}Store[contexts[c]][i].id == id){
-                            {{ st.identifier }}Store[contexts[c]][i] = updateRecord({{ st.identifier }}Store[contexts[c]][i],data);
+                            {{ st.identifier }}Store[contexts[c]][i] = updateRecord({{ st.identifier }}Store[contexts[c]][i],unescapeData(data));
                         }
                     }
                 }
             }else{
                 for (var i in {{ st.identifier }}Store[context]){
                     if ({{ st.identifier }}Store[context][i].id==id){
-                        {{ st.identifier }}Store[context][i] = updateRecord({{ st.identifier }}Store[context][i],data);
+                        {{ st.identifier }}Store[context][i] = updateRecord({{ st.identifier }}Store[context][i],unescapeData(data));
                     }
                 }
             }
@@ -315,9 +314,9 @@
         * Met à jour une donnée dans un contexte ou l'ensemble des contexte possédant cette donnée
         */
         function addOneData(id,data,context = 'default'){
-            var check = false;
             if (context == 'all') {
                 for (var c in contexts){
+                    var check = false;
                     if ({{ st.identifier }}Store[contexts[c]]){
                         for(var d in {{ st.identifier }}Store[contexts[c]]){
                             var temp = {{ st.identifier }}Store[contexts[c]][d];
@@ -327,6 +326,7 @@
                             }
                         }
                         if(!check){
+                            //test de la query
                             {{ st.identifier }}Store[contexts[c]].unshift(data);
                             total[contexts[c]]=parseInt(total[contexts[c]])+1;
                         }
@@ -342,7 +342,7 @@
                         }
                     }
                     if(!check){
-                        {{ st.identifier }}Store[context].unshift(data);
+                        {{ st.identifier }}Store[context].unshift(unescapeData(data));
                         total[context]=parseInt(total[context])+1;
                     }
                 }
@@ -392,19 +392,31 @@
         */
         function getData(page,context='default') {
             var tmpquery = getQuery(context);
-            var tmpfilters = '~'+getFilters(context);
+            var tmpfilters = getFilters(context);
             //create new context
             if (page<1||page==undefined) page=1;
-            return $q(function(resolve, reject) {
-                if (busy[context]) {
-                    busy[context].resolve();
+            //si occupé
+            if (busy[context]) {
+                //si meme requete et meme filtre
+                if (busy[context].query == tmpquery && busy[context].filter){
+                    //on renvoie le promise
+                    return busy[context].promise;
+                }else{
+                    //on annule la requete
+                    busy[context].promise.defer().resolve();
                     busy[context] = false;
                 }
+            }
+            return $q(function(resolve, reject) {
                 //console.trace();
                 console.log(context+' >> store > {{ key }} > getData >> page '+page+' ');
                 if (page!=pageLoaded[context]){
                     var canceler = $q.defer();
-                    busy[context]=canceler;
+                    busy[context]={
+                        promise: $q,
+                        query: tmpquery,
+                        filter: tmpfilters
+                    };
                     $http.get(
                         tmpquery+'/getData.json',
                         {
@@ -437,12 +449,13 @@
         * Chargement des données enfants
         */
         function loadChildren(obj) {
+            console.log('{{ st.identifier }} > loadchildren',obj);
             var num = {{ st.childrenelements | length }};
             return $q(function(resolve, reject) {
                 {% for child in st.childrenelements %}
                     {{ child.objectModule }}{{ child.objectName }}Store.setQuery('/{{ st.module }}/{{ st.objecttype }}/'+obj.id+'/{{ child.objectName }}','children');
                     if (!obj.{{ child.objectName }}) {
-                        {{ child.objectModule }}{{ child.objectName }}Store.getData(1,'children').then(function (data){
+                       {{ child.objectModule }}{{ child.objectName }}Store.getData(1,'children').then(function (data){
                             obj.{{ child.objectName }} = data;
                         });
                         num--;
