@@ -38,8 +38,13 @@
                     selectall: false
                 }
             }
-            {{ child.objectModule }}{{ child.objectName }}Store.resetQuery('select');
-            {{ child.objectModule }}{{ child.objectName }}Store.getData(1,'select');
+            $scope.$watch('{{ child.objectModule }}{{ child.objectName }}Select.filter', function() {
+                //on lance la recherche depuis le store
+                {{ child.objectModule }}{{ child.objectName }}Store.setFilters($scope.{{ child.objectModule }}{{ child.objectName }}Select.filter,'select');
+            });
+            $scope.$watch('{{ child.objectModule }}{{ child.objectName }}Select.currentPage', function() {
+                {{ child.objectModule }}{{ child.objectName }}Store.setPage($scope.{{ child.objectModule }}{{ child.objectName }}Select.currentPage,'select');
+            });
         {% endfor %}
 
         //mass delete
@@ -202,22 +207,6 @@
                 }
             }
         {% endfor %}
-
-        //acces aux stores enfants
-        {% for child in c.childrenelements %}
-            $scope.{{ child.objectModule }}{{ child.objectName }}Select = {
-                data: {{ child.objectModule }}{{ child.objectName }}Store.data.select,
-                store: {{ child.objectModule }}{{ child.objectName }}Store,
-                filter: {{ child.objectModule }}{{ child.objectName }}Store.filter.select,
-                currentPage: {{ child.objectModule }}{{ child.objectName }}Store.currentPage.select,
-                itemsPerPage: {{ child.objectModule }}{{ child.objectName }}Store.itemsPerPage,
-                selected: {
-                    selectall: false
-                }
-            }
-            {{ child.objectModule }}{{ child.objectName }}Store.resetQuery('select');
-            {{ child.objectModule }}{{ child.objectName }}Store.getData(1,'select');
-        {% endfor %}
         //récupération des données du store.
         {{ c.identifier }}Store.getOneData($routeParams.id,'fiche',true).then(function (data){
             $scope.obj = data;
@@ -301,27 +290,6 @@
                     });
             }
             {% for child in c.childrenelements %}
-                //FORMULAIRE SELECT
-                $scope.{{ child.objectModule }}{{ child.objectName }}Select = {
-                    data : {{ child.objectModule }}{{ child.objectName }}Store.data.select,
-                    store: {{ child.objectModule }}{{ child.objectName }}Store,
-                    filter: '',
-                    currentPage: {{ c.identifier }}Store.currentPage.select,
-                    itemsPerPage: {{ c.identifier }}Store.itemsPerPage,
-                    selected: {
-                        selectall: false
-                    }
-                }
-                console.log('>>>>>>>>>>>>>>> refresh {{ child.objectModule }}{{ child.objectName }}Select');
-                {{ child.objectModule }}{{ child.objectName }}Store.refresh('select');
-                $scope.$watch('{{ child.objectModule }}{{ child.objectName }}Select.filter', function() {
-                    //on lance la recherche depuis le store
-                    {{ child.objectModule }}{{ child.objectName }}Store.setFilters($scope.{{ child.objectModule }}{{ child.objectName }}Select.filter,'select');
-                });
-                $scope.$watch('{{ child.objectModule }}{{ child.objectName }}Select.currentPage', function() {
-                    {{ child.objectModule }}{{ child.objectName }}Store.setPage($scope.{{ child.objectModule }}{{ child.objectName }}Select.currentPage,'select');
-                });
-
                 //FORMULAIRE CHILDREN
                 $scope.{{ child.objectModule }}{{ child.objectName }} = {
                     data : {{ child.objectModule }}{{ child.objectName }}Store.data.children,
@@ -333,7 +301,26 @@
                         selectall: false
                     }
                 }
-                $scope.{{ child.objectModule }}{{ child.objectName }}.store.refresh('children');
+
+                //FORMULAIRE SELECT
+                $scope.{{ child.objectModule }}{{ child.objectName }}Select = {
+                    data : {{ child.objectModule }}{{ child.objectName }}Store.data.select,
+                    store: {{ child.objectModule }}{{ child.objectName }}Store,
+                    filter: '',
+                    currentPage: {{ c.identifier }}Store.currentPage.select,
+                    itemsPerPage: {{ c.identifier }}Store.itemsPerPage,
+                    selected: {
+                        selectall: false
+                    }
+                }
+
+                $scope.$watch('{{ child.objectModule }}{{ child.objectName }}Select.filter', function() {
+                    //on lance la recherche depuis le store
+                    {{ child.objectModule }}{{ child.objectName }}Store.setFilters($scope.{{ child.objectModule }}{{ child.objectName }}Select.filter,'select');
+                });
+                $scope.$watch('{{ child.objectModule }}{{ child.objectName }}Select.currentPage', function() {
+                    {{ child.objectModule }}{{ child.objectName }}Store.setPage($scope.{{ child.objectModule }}{{ child.objectName }}Select.currentPage,'select');
+                });
 
                 //sélection
                 $scope.$watch('{{ child.objectModule }}{{ child.objectName }}.selected.selectall', function() {

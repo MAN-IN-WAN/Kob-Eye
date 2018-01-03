@@ -1,3 +1,4 @@
+{% if not Mini %}
 <div class="nav-tabs-horizontal margin-bottom-20">
     <ul class="nav nav-tabs" role="tablist">
         {% for filter in filters %}
@@ -37,11 +38,13 @@
         <dir-pagination-controls boundary-links="true" pagination-context="{{ context }}" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
     </div>
 </div>
+{% endif %}
+
 <!--<pre ng-bind="{{ identifier }}selected | json"></pre>
 <pre ng-bind="{{ identifier }}selectedAll | json"></pre>-->
 
 {{ include(template_from_string(module('Systeme/Utils/List/ChildActivity'))) }}
-
+{% if not Mini %}
 <dir-pagination-controls boundary-links="true" pagination-context="{{ context }}" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
 
 <div class="modal fade modal-size-large" id="modal-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
@@ -112,3 +115,4 @@
         </div>
     </div>
 </div>
+{% endif %}

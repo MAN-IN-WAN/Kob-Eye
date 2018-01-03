@@ -249,6 +249,7 @@ class Event extends genericClass {
                                 array_push($out,$ev2);
                             }
                         }else{
+                            //TODO Gérer les déplacement et modifiacation de clefs.
                             //on publie les évenements
                             array_push($out,$ev);
                         }
@@ -346,11 +347,34 @@ class Event extends genericClass {
     public static function filterCheck($filters,$data) {
         $filters=explode('&',$filters);
         foreach ($filters as $f){
+            //cas supérieur
+            if (preg_match('#^(.*)?>([^=]+)$#',$f,$fi)){
+                if (floatval($data->{$fi[1]}) <= floatval($fi[2])){
+                    return false;
+                }
+            }
+            //cas supérieur ou égal
+            if (preg_match('#^(.*)?>=(.+)$#',$f,$fi)){
+                if (floatval($data->{$fi[1]}) < floatval($fi[2])){
+                    echo floatval($data->{$fi[1]}).' < '.floatval($fi[2]);
+                    print_r($fi);
+                    return false;
+                }
+            }
+            /*//cas inférieur
+            if (preg_match('#^(.*)?<([^\=]+)$#',$f,$fi)){
+                if (floatval($data->{$fi[1]}) >= floatval($fi[2])) return false;
+            }
+            //cas inférieur ou égal
+            if (preg_match('#^(.*)?<=(.+)$#',$f,$fi)){
+                if (floatval($data->{$fi[1]}) > floatval($fi[2])) return false;
+            }
             //cas égalité
-            if (preg_match('#(.*)?[\=](.*)#',$f,$fi)){
+            if (preg_match('#^(.*)?[\=](.+)$#',$f,$fi)){
                 if ($data->{$fi[1]} != $fi[2]) return false;
             }
-            if (preg_match('#~(.*)#',$f,$fi)){
+            //cas flou
+            if (preg_match('#~(.+)#',$f,$fi)){
                 $flag=false;
                 foreach ($data as $k=>$d) {
                     if (is_string($d) && strpos($d,$fi[1])){
@@ -360,7 +384,7 @@ class Event extends genericClass {
                 if (!$flag){
                     return false;
                 }
-            }
+            }*/
         }
         return true;
     }

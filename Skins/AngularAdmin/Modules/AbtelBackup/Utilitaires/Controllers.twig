@@ -1,11 +1,13 @@
-app.controller('{{ controller }}Ctrl', function ($location, $scope, $rootScope,$http,AbtelBackupEsxStore) {
+app.controller('{{ controller }}Ctrl', function ($location, $scope, $rootScope,$http,AbtelBackupEsxStore,AbtelBackupActivityStore) {
     AbtelBackupEsxStore.getData(1,'deploiement');
     $scope.esxs = AbtelBackupEsxStore.data['deploiement'];
+
     $scope.deployAbtelBackup = function (id,key) {
+
         console.log('deploy esx',id);
         swal({
                 title: "Êtes vous sûr de vouloir déployer AbtelBackup ?",
-                text: "Cette opération peut prendre quelques minutes. ",
+                text: "Cette opération peut prendre plusieurs minutes. ",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonClass: "btn-danger",
@@ -14,6 +16,23 @@ app.controller('{{ controller }}Ctrl', function ($location, $scope, $rootScope,$
                 closeOnConfirm: true
             },
             function () {
+
+                AbtelBackupActivityStore.initContext('deploiement');
+                var d = new Date();
+                AbtelBackupActivityStore.setQuery('/AbtelBackup/Esx/'+id+'/Activity','deploiement');
+                AbtelBackupActivityStore.setFilters('tmsCreate>='+parseInt(d.getTime()/1000),'deploiement');
+                AbtelBackupActivityStore.getData(1,'deploiement');
+                $scope.AbtelBackupActivity = {
+                    data: AbtelBackupActivityStore.data.deploiement,
+                    store: AbtelBackupActivityStore,
+                    filter: AbtelBackupActivityStore.filter.deploiement,
+                    currentPage: AbtelBackupActivityStore.currentPage.deploiement,
+                    itemsPerPage: AbtelBackupActivityStore.itemsPerPage.deploiement,
+                    selected: {
+                        selectall: false
+                    }
+                }
+
                 $scope.esxs[key].deploy = true;
                 $scope.obj = $scope.esxs[key];
                 AbtelBackupEsxStore.getOneData(id,'utils',true).then(function (data){

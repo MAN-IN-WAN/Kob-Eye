@@ -2938,6 +2938,8 @@ class genericClass extends Root {
         else $o->userEditName = 'inconnu';
         $o->_details = "créé le ".date('d/m/Y H:i',$this->tmsCreate )." par ".$o->userCreateName."\nmodifié le ".date('d/m/Y H:i',$this->tmsEdit)." par ".$o->userEditName."";
         $o->create= date('d/m/Y H:i',$this->tmsCreate );
+        $o->tmsCreate= $this->tmsCreate;
+        $o->tmsEdit= $this->tmsEdit;
         foreach ($fields as $f){
             switch ($f['type']){
                 case 'date':
@@ -2971,15 +2973,15 @@ class genericClass extends Root {
                 }else{
                     $o->{$f['objectName'].$f['name'].'label'} = '';
                 }
-                $o->{$f['name']} = $this->{$f['name']};
+                $o->{$f['objectName'].$f['name']} = $this->{$f['name']};
             }elseif ($f['type']=='fkey'&&$f['card']=='long'){
                 $kk = $this->getParents($f['objectName']);
-                $o->{$f['name']} = array();
+                $o->{$f['objectName'].$f['name']} = array();
                 foreach ($kk as $k)
-                    $o->{$f['name']}[] = $k->Id;
+                    $o->{$f['objectName'].$f['name']}[] = $k->Id;
             }elseif ($f['type']=='rkey'){
                 $kk = Sys::getData($f['objectModule'], $this->Module.'/'.$this->ObjectType.'/'.$f['objectName']);
-                $o->{$f['name']} = array();
+                $o->{$f['objectName'].$f['name']} = array();
                 foreach ($kk as $k)$o->{$f['name']}[] = $k->Id;
             }elseif (isset($f['Values'])&&isset($f['Values'][$this->{$f['name']}])){
                 $o->{$f['name'].'Label'} = $f['Values'][$this->{$f['name']}];

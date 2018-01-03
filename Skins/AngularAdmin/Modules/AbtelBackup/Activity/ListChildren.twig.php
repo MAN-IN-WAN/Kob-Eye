@@ -1,4 +1,5 @@
 <?php
+$vars['Mini'] = isset($_GET['Mini']) ? $_GET['Mini']:0;
 if (isset($vars['Path']))
     $Path = $vars['Path'];
 else
@@ -6,7 +7,8 @@ else
 $info = Info::getInfos($Path);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $vars['identifier'] = $info['Module'].$info['ObjectType'];
-$vars['context'] = $info['NbHisto'] > 1 ? 'children':'default';
+if (!isset($vars['context']))
+    $vars['context'] = $info['NbHisto'] > 1 ? 'children':'default';
 $vars['ObjectClass'] = $o->getObjectClass();
 $vars['functions'] = $o->getFunctions();
 $vars['operation'] = $vars['ObjectClass']->getOperations();
