@@ -1,8 +1,8 @@
 # Created by .ignore support plugin (hsz.mobi)
-/Home/*
-/.idea/*
-!/Home/no-image.png
-/Log/Systeme.log
-/Class/Utils/Utils.extend.php
-/Conf/General.conf
+Home/*
+!Home/no-image.png
+Log/Systeme.log
+Class/Utils/Utils.extend.php
+Conf/General.conf
 .idea/*
+Data/*
