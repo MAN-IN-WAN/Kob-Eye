@@ -198,7 +198,9 @@ class Apache extends genericClass {
 
 		//check documentRoot
 		if (substr($this->DocumentRoot,strlen($this->DocumentRoot)-1,1)=='/') $this->DocumentRoot = substr($this->DocumentRoot,0,-1);
-
+        //test du documentroot
+        $host = $this->getKEHost();
+        $this->DocumentRoot = str_replace('/home/'.$host->Nom.'/','',$this->DocumentRoot);
 		if(parent::Verify()) {
             //check ssl
             if ($this->Ssl&&$this->SslMethod=='Manuel'&&(empty($this->SslCertificate)||empty($this->SslCertificateKey))){

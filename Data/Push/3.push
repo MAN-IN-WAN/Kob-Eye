@@ -1,0 +1,155 @@
+<?php $push3 = (object)(array(
+   'AbtelBackupActivity' => 
+  array (
+    'TopMenuErr' => 
+    (object)(array(
+       'query' => 'Activity',
+       'filters' => 'Errors=1&Acknowledge!=1&Type=Exec',
+       'offset' => '0',
+       'limit' => '15',
+    )),
+    'TopMenuRun' => 
+    (object)(array(
+       'query' => 'Activity',
+       'filters' => 'Started=1&Success=0&Errors=0&Type=Exec',
+       'offset' => '0',
+       'limit' => '15',
+    )),
+    'dash' => 
+    (object)(array(
+       'query' => 'Activity',
+       'filters' => 'Started=1&Success=0&Errors=0+tmsEdit>1514360276',
+       'offset' => '0',
+       'limit' => '15',
+    )),
+    'select' => 
+    (object)(array(
+       'query' => 'Activity',
+       'filters' => '',
+       'offset' => '0',
+       'limit' => '15',
+    )),
+    'default' => 
+    (object)(array(
+       'query' => 'Activity',
+       'filters' => '',
+       'offset' => '0',
+       'limit' => '15',
+    )),
+  ),
+   'AbtelBackupBackupStore' => 
+  array (
+    'dash' => 
+    (object)(array(
+       'query' => 'BackupStore',
+       'filters' => 'Titre=Sauvegarde Locale',
+       'offset' => '0',
+       'limit' => '15',
+    )),
+  ),
+   'AbtelBackupEsxVm' => 
+  array (
+    'dash' => 
+    (object)(array(
+       'query' => 'EsxVm',
+       'filters' => 'BackupSize>0',
+       'offset' => '0',
+       'limit' => '15',
+    )),
+    'select' => 
+    (object)(array(
+       'query' => 'EsxVm',
+       'filters' => '',
+       'offset' => '0',
+       'limit' => '15',
+    )),
+    'default' => 
+    (object)(array(
+       'query' => 'EsxVm',
+       'filters' => '',
+       'offset' => '0',
+       'limit' => '15',
+    )),
+  ),
+   'AbtelBackupEsx' => 
+  array (
+    'default' => 
+    (object)(array(
+       'query' => 'Esx',
+       'filters' => '',
+       'offset' => '0',
+       'limit' => '15',
+    )),
+    'select' => 
+    (object)(array(
+       'query' => 'Esx',
+       'filters' => '',
+       'offset' => '0',
+       'limit' => '15',
+    )),
+    'deploiement' => 
+    (object)(array(
+       'query' => 'Esx',
+       'filters' => '',
+       'offset' => '0',
+       'limit' => '15',
+    )),
+  ),
+   'AbtelBackupSambaJob' => 
+  array (
+    'select' => 
+    (object)(array(
+       'query' => 'SambaJob',
+       'filters' => '',
+       'offset' => '0',
+       'limit' => '15',
+    )),
+  ),
+   'AbtelBackupRemoteJob' => 
+  array (
+    'select' => 
+    (object)(array(
+       'query' => 'RemoteJob',
+       'filters' => '',
+       'offset' => '0',
+       'limit' => '15',
+    )),
+  ),
+   'AbtelBackupBorgRepo' => 
+  array (
+    'select' => 
+    (object)(array(
+       'query' => 'BorgRepo',
+       'filters' => '',
+       'offset' => '0',
+       'limit' => '15',
+    )),
+    'default' => 
+    (object)(array(
+       'query' => 'BorgRepo',
+       'filters' => '',
+       'offset' => '0',
+       'limit' => '15',
+    )),
+  ),
+   'AbtelBackupRestorePoint' => 
+  array (
+    'select' => 
+    (object)(array(
+       'query' => 'RestorePoint',
+       'filters' => '',
+       'offset' => '0',
+       'limit' => '15',
+    )),
+  ),
+   'AbtelBackupSambaDevice' => 
+  array (
+    'select' => 
+    (object)(array(
+       'query' => 'SambaDevice',
+       'filters' => '',
+       'offset' => '0',
+       'limit' => '15',
+    )),
+  ),
+));

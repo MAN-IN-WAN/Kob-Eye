@@ -25,17 +25,6 @@ foreach (Sys::$Modules as $k=>$mod){
             }
         }
         $stores[$tmp['identifier'].'Store'] = $tmp;
-/*        foreach ($obj->getChildElements() as $sub){
-            if (in_array($children,$sub['objectModule'] . $sub['objectName'])) continue;
-            $children = array_push($children,$sub['objectModule'] . $sub['objectName']);
-            $tmp['identifier'] = $sub['objectModule'] . $sub['objectName'];
-            $tmp['module'] = $sub['objectModule'];
-            $tmp['objecttype'] = $sub['objectName'];
-            $o = genericClass::createInstance($sub['objectModule'] , $sub['objectName']);
-            $obj = $o->getObjectClass();
-            $tmp['childrenelements'] = $obj->getChildElements();
-            $stores[$tmp['identifier'].'StoreChild'] = $tmp;
-        }*/
     }
 }
 $vars['stores'] = $stores;

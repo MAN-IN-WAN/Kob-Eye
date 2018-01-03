@@ -1,0 +1,37 @@
+<?php $mt15143668169207 = Event::__set_state(array(
+   'Id' => NULL,
+   'Module' => 'Systeme',
+   'Referent' => NULL,
+   'ObjectType' => 'Event',
+   'Historique' => 
+  array (
+  ),
+   'Parents' => 
+  array (
+  ),
+   'Enfants' => 
+  array (
+  ),
+   'Error' => 
+  array (
+  ),
+   'Success' => 
+  array (
+  ),
+   'Warning' => 
+  array (
+  ),
+   'setPost' => NULL,
+   'isHeritage' => false,
+   'Triggers' => NULL,
+   '_view' => '',
+   'dirtyPage' => false,
+   'Interface' => NULL,
+   'Titre' => 'NEW: Systeme/Groupes [DEFAULT] PUBLIC',
+   'EventType' => 'Create',
+   'EventModule' => 'Systeme',
+   'EventObjectClass' => 'Group',
+   'Data' => 'O:5:"Group":30:{s:2:"Id";s:1:"1";s:6:"Module";s:7:"Systeme";s:8:"Referent";N;s:10:"ObjectType";s:5:"Group";s:10:"Historique";a:0:{}s:7:"Parents";a:0:{}s:7:"Enfants";a:0:{}s:5:"Error";a:0:{}s:7:"Success";a:0:{}s:7:"Warning";a:0:{}s:7:"setPost";N;s:10:"isHeritage";b:0;s:8:"Triggers";N;s:5:"_view";s:0:"";s:9:"dirtyPage";b:0;s:9:"Interface";N;s:3:"Nom";s:16:"[DEFAULT] PUBLIC";s:11:"Commentaire";s:0:"";s:4:"Skin";s:14:"LoginBootstrap";s:11:"ArrierePlan";s:0:"";s:7:"Couleur";s:0:"";s:3:"uid";i:0;s:3:"gid";i:0;s:9:"tmsCreate";i:1514366816;s:10:"userCreate";i:0;s:7:"tmsEdit";i:1514366816;s:8:"userEdit";i:0;s:4:"gmod";i:7;s:4:"umod";i:7;s:4:"omod";i:7;}',
+   'EventId' => '1',
+   'MicroTime' => 1514366816.920707,
+));

@@ -31,19 +31,19 @@
                 <div class="panel-body">
                     <div class="form-group padding-top-10 margin-bottom-0">
                         <h2>Déploiement</h2>
-                        <blockquote>Cette fonctionnalités vous permet de déployer un AbtelBackup sur un esxi configuré au préalable. Pour configurer un esxi, veuillez ajouter un esxi <a href="#/vm/esx">en cliquant ici</a>, cliquez sur "Ajouter" et saisissez toutes les informations nécessaires. Revenez ensuite sur cette page pour déployer AbtelBackup.</blockquote>
+                        <blockquote>Cette fonctionnalités vous permet de déployer un AbtelBackup sur un esxi configuré au préalable. Pour configurer un esxi, veuillez ajouter un esxi <a href="#/vm/esx">en cliquant ici</a>, cliquez sur "Ajouter" et saisissez toutes les informations nécessaires. Revenez ensuite sur cette page pour déployer AbtelBackup. Attention ne pas exécuter cette fonction simulaténment sur deux esxi.</blockquote>
                         <div class="card">
                             <div class="card-header">
-                                Featured
+                                Liste des ESXIs
                             </div>
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item" ng-repeat="esx in esxs">
                                     {[{ esx.label }]} - {[{ esx.description }]}
-                                    <button class="btn btn-small btn-primary pull-right" ng-click="deployAbtelBackup( esx.id, $index )">
-                                        <i class="fa fa-delete margin-right-5"></i>
+                                    <button class="btn btn-xs btn-primary pull-right" ng-click="deployAbtelBackup( esx.id, $index )">
+                                        <i class="fa fa-action margin-right-5"></i>
                                         Déployer
                                     </button>
-                                    <ng-include src="'/AbtelBackup/Esx/0/Activity/ListChildren.htm'" ng-if="esx.deploy"></ng-include>
+                                    <ng-include src="'/AbtelBackup/Esx/0/Activity/ListChildren.htm?Mini=1&context=deploiement'" ng-if="esx.deploy"></ng-include>
                                 </li>
                             </ul>
                         </div>
