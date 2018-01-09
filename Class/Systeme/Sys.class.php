@@ -738,8 +738,9 @@ class Sys extends Root{
 		//Resoplution des problemes d encodages dues a l AJAX
 		if (is_array($this->PostVars))foreach ($this->PostVars as $K=>$P) {
 //			if (!is_array($P)&&!is_object($P))$this->PostVars[$K] = stripslashes($P);
-			if (!is_array($P)&&!is_object($P))$this->PostVars[$K] = $P;
-			else $this->PostVars[$K] = $P;
+			$this->PostVars[$K] = $P;
+			Process::$TempVar[$K] = $P;
+
 		}
 		//Detection des variables JSON (AJAX)
 		if (isset($_POST["data"])){

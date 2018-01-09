@@ -33,6 +33,8 @@ class Menu extends genericClass {
 		 }else{
 			 $this->deletePages();
 		 }
+
+		 return true;
 	 }
 
 	/**

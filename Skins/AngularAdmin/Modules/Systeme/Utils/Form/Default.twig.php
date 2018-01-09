@@ -18,6 +18,7 @@ foreach ($vars['formfields'] as $k=>$field){
 }
 $vars["CurrentObj"] = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $vars["Module"] = $info["Module"];
+$vars['ObjectType'] = $info['ObjectType'];
 $vars["ObjectClass"] = $vars["CurrentObj"]->getObjectClass();
 $vars["ChildrenElements"] = $vars["ObjectClass"]->getChildElements();
 ?>

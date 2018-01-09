@@ -6,12 +6,12 @@
 			$dirs = $this->listDirectory('Skins');
 			if (is_array($dirs))foreach ($dirs as $dir){
 				if ($dir!=SHARED_SKIN)
-					$out = array_merge($out,$this->listFilesDirectory('Skins/'.$dir.'/Modules/Cms/Modeles',"$dir > "));
+					$out = array_merge($out,$this->listFilesDirectory('Skins/'.$dir.'/Modules/Cms/Modeles/Page',"$dir > "));
 			}
 			//Modules
-			$out = array_merge($out,$this->listFilesDirectory('Modules/Cms/Modeles',"module > "));
+			$out = array_merge($out,$this->listFilesDirectory('Modules/Cms/Modeles/Page',"module > "));
 			//Common
-			$out = array_merge($out,$this->listFilesDirectory('Skins/'.SHARED_SKIN.'/Modules/Cms/Modeles',"commun > "));
+			$out = array_merge($out,$this->listFilesDirectory('Skins/'.SHARED_SKIN.'/Modules/Cms/Modeles/Page',"commun > "));
 			return $out;
 		}
 		function listFilesDirectory($dirname,$prefixe=""){

@@ -1,4 +1,6 @@
+
 'use strict';
+
 var TEMPLATE_PATH = '/Skins/AngularAdmin/';
 angular.module('cleanUI', [
     'ngRoute',
@@ -373,6 +375,23 @@ app.controller('MainCtrl', function($location, $scope, $rootScope, $timeout, Fil
 $scope.uploader = new FileUploader({
     url:'/Systeme/Utils/Upload.json'
 });
+$scope.uploader.onSuccessItem = function(item, response, status, headers){
+        var scope = angular.element(document.getElementById(item.inputId)).scope();
+        var props = item.model.split('.');
+        switch(props.length){
+            case 1:
+                    scope[props[0]] = response.url;
+                break;
+            case 2:
+                    scope[props[0]][props[1]] = response.url;
+                break;
+            default:
+                console.log('Input Model Error (App.twig -> $scope.uploader.onSuccessItem)');
+                ;
+        }
+        console.log(angular.element(document.getElementById(item.inputId)));
+}
+
 
 NProgress.configure({
 minimum: 0.2,

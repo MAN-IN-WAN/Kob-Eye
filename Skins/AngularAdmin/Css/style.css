@@ -382,3 +382,25 @@ SPINNER
     display: block;
     content: " ";
 }
+
+/* Minisites*/
+.color_display{
+    display: block;
+    width: 30px;
+    height: 20px;
+}
+.img_display{
+    display: block;
+    width: 200px;
+    height: 100px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center ;
+    margin: auto;
+}
+
+label.clickable{
+    cursor: pointer;
+    margin-top: 10px;
+    padding: 5px;
+}

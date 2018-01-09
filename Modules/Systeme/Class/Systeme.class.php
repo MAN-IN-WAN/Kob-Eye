@@ -168,6 +168,15 @@ class Systeme extends Module {
             $u->Save();
         }
 
+        $minis = Sys::getCount('Systeme','Group/Nom=MiniSites');
+        if(!$minis){
+            //creation du groupe minisites
+            $g = genericClass::createInstance('Systeme','Group');
+            $g->Nom = "MiniSites";
+            $g->Skin = "LoginBootstrap";
+            $g->Save();
+        }
+
         $t = Sys::getCount('Systeme','ScheduledTask/Titre=ClearEvents');
         if (!$t) {
             //creation du groupe public

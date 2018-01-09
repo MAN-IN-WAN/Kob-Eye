@@ -1,0 +1,139 @@
+app.controller('ServicesMinisiteCtrl', function($location, $scope, $rootScope,$http,$timeout, ParcInstanceStore, ParcDomainStore) {
+
+    $scope.cliId = {{ Client.Id }};
+
+    $scope.ParcDomainStore = ParcDomainStore;
+    $scope.ParcInstanceStore = ParcInstanceStore;
+
+    //Domaines associés à l'utilisateur
+    $scope.ParcDomainStore.setFilters('','MiniSite');
+    $scope.ParcDomainStore.getData(1,'MiniSite');
+
+    //Instances associés à l'utilisateur
+    $scope.ParcInstanceStore.setFilters('Type=Minimal','MiniSite');
+    $scope.ParcInstanceStore.getData(1,'MiniSite');
+
+    $scope.ParcInstance = {
+        data: ParcInstanceStore.data.MiniSite,
+        store: ParcInstanceStore,
+        filter: ParcInstanceStore.filter.MiniSite,
+        currentPage: ParcInstanceStore.currentPage.MiniSite,
+        itemsPerPage: ParcInstanceStore.itemsPerPage,
+        selected: {
+            selectall: false
+        }
+    }
+    $scope.$watch('ParcInstance.currentPage', function() {
+        $scope.ParcInstanceStore.setPage($scope.ParcInstance.currentPage,'MiniSite');
+    });
+
+
+    $scope.ParcInstanceAdd = function (){
+        console.log('add Instance');
+        $scope.modalObj = ParcInstanceStore.getNewData();
+        $scope.modalObj.success = false;
+        $scope.modalObj.title = 'Ajouter un nouveau Site Web';
+        $("#modal-ParcInstance").modal();
+    }
+
+    $scope.ParcInstanceModify = function (obj){
+        ParcInstanceStore.getOneData(obj.id,'default',false).then(function (data) {
+            $scope.modalObj = data;
+            $scope.modalObj.success = false;
+            $scope.modalObj.title = 'Modifier Site Web '+data.label;
+            console.log('edit obj',$scope.modalObj);
+        });
+        $("#modal-ParcInstance").modal();
+    }
+
+    $scope.ParcInstanceExport = function (obj){
+        ParcInstanceStore.export('MiniSite');
+    }
+
+    $scope.ParcInstanceModalSave = function (){
+        $('#modal-ParcInstance .modal-dialog').spin();
+
+        console.log('save ',$scope.modalObj);
+        ParcInstanceStore.saveData($scope.modalObj,'default').then(function (data) {
+            $('#modal-ParcInstance .modal-dialog').spin(false);
+            if (data.success){
+                $scope.modalObj = data.data;
+                $scope.modalObj.success = data.success;
+                $scope.modalObj.warning = data.warning;
+                $scope.modalObj.errors = data.errors;
+                $scope.modalObj.infos = data.infos;
+                if (!data.warning.length&&!data.success.length)
+                    $("#modal-ParcInstance").modal('toggle');
+            }else {
+                //gestion des erreurs
+                $scope.modalObj.errors = data.errors;
+                $scope.modalObj.warning = data.warning;
+                $scope.modalObj.infos = data.infos;
+                $scope.modalObj.fieldErrors = [];
+                for (var e in data.errors) {
+                    $scope.modalObj.fieldErrors.push(data.errors[e].Prop);
+                }
+                console.log('tab field error',$scope.modalObj.fieldErrors);
+            }
+            console.log('save obj',data);
+        });
+    }
+
+    $scope.ParcInstanceDelete = function (item){
+        console.log('delete ',item);
+        swal({
+            title: "Êtes vous sûr de vouloir supprimer "+item["label"]+"?",
+            text: "Cette suppression sera définitive. ",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            cancelButtonText: "Annuler",
+            confirmButtonText: "Oui, supprimer !",
+            closeOnConfirm: true
+        },  function(){
+            ParcInstanceStore.deleteOneData(item.id,'all');
+        });
+    }
+
+
+
+    //FORMULAIRE SELECT
+    $scope.ParcDomainSelect = {
+        data : ParcDomainStore.data.select,
+        store: ParcDomainStore,
+        filter: '',
+        currentPage: ParcDomainStore.currentPage.select,
+        itemsPerPage: ParcDomainStore.itemsPerPage,
+        selected: {
+            selectall: false
+        }
+    }
+
+
+    //RECHERCHE SELECT
+    var lasttimeoutSelectParcDomain = false;
+    $scope.$watch('ParcDomainSelect.filter', function() {
+        //on lance la recherche depuis le store
+        ParcDomainStore.setFilters($scope.ParcDomainSelect.filter,'select');
+        if (lasttimeoutSelectParcDomain){
+            $timeout.cancel(lasttimeoutSelectParcDomain);
+            lasttimeoutSelectParcDomain = false;
+        }
+        if ($scope.ParcDomainSelect.filter!=ParcDomainStore.getFilters('select'))
+        $timeout(function () {
+            console.log('lancement recherche select ',ParcDomainSelect.filter,ParcDomainStore.getFilters('select'));
+            ParcDomainStore.getData(1,'select');
+        },100);
+    });
+
+    //PAGINATION SELECT
+    $scope.$watch('ParcDomainSelect.currentPage', function() {
+        if ($scope.ParcDomainSelect.currentPage!=ParcDomainStore.getCurrentPage('select')){
+            console.log('select > ParcDomain > changeCurrentPage > '+$scope.ParcDomainSelect.currentPage+' <> '+ParcDomainStore.getCurrentPage('select'));
+            ParcDomainStore.setPage($scope.ParcDomainSelect.currentPage,'select');
+        }
+    });
+
+
+
+});

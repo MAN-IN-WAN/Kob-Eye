@@ -33,7 +33,9 @@
                     });
                 </script>
             {% elseif field.type == "file" %}
-                <input type="file" nv-file-select uploader="uploader"/><br/>
+                <input type="text" class="form-control" placeholder="" id="input-{{ field.name }}" ng-model="modalObj.{{ field.name }}">
+                <label for="input-{{ field.name }}-file" class="clickable"> Choisissez un fichier </label>
+                <input id="input-{{ field.name }}-file" type="file" nv-file-select options="{ alias:'FileData',formData:[{ 'Module':'{{ Module }}' }, { 'Obj' : '{{ ObjectType }}' }],removeAfterUpload: true, inputId: 'input-{{ field.name }}', model:'modalObj.{{ field.name }}' }" uploader="uploader" style="display:none;" /><br/>
                 <ul>
                     <li ng-repeat="item in uploader.queue">
                         Name: <span ng-bind="item.file.name"></span><br/>
@@ -41,11 +43,14 @@
                     </li>
                 </ul>
             {% elseif field.type == "image" %}
-                <input type="file" nv-file-select uploader="uploader"/><br/>
+                <input type="text" class="form-control" placeholder="" id="input-{{ field.name }}" ng-model="modalObj.{{ field.name }}">
+                <label for="input-{{ field.name }}-file" class="clickable"> Choisissez une image </label>
+                <input id="input-{{ field.name }}-file" type="file" nv-file-select options="{ alias:'FileData',formData:[{ 'Module':'{{ Module }}' }, { 'Obj' : '{{ ObjectType }}' }],removeAfterUpload: true ,inputId: 'input-{{ field.name }}', model:'modalObj.{{ field.name }}' }" uploader="uploader" style="display:none;" /><br/>
                 <ul>
                     <li ng-repeat="item in uploader.queue">
                         Name: <span ng-bind="item.file.name"></span><br/>
-                        <button ng-click="item.upload()">upload</button>
+                        <button ng-click="item.upload()" class="btn btn-success btn-left">Envoyer</button>
+                        <button ng-click="item.remove()" class="btn btn-danger btn-right">Annuler</button>
                     </li>
                 </ul>
             {% else %}
