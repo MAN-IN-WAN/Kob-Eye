@@ -1,0 +1,28 @@
+{% if submitted %}
+{
+    "success": {{ success }},
+    "message": "Tous les comptes emails ont été créés avec succès",
+    "controls": {
+        "save": {% if success %}false{% else %}true{% endif %},
+        "cancel": {% if success %}false{% else %}true{% endif %},
+        "close": {% if success %}true{% else %}false{% endif %}
+    },
+    "errors": {{ errors | raw }}
+}
+{% else %}
+<form enctype="multipart/form-data" action="" method="post" name="frm" >
+    <div class="row">
+        <div class="col-md-12">
+            <label class="form-control-label" for="l0">Comptes emails</label>
+            <small>A soumettre avec le format suivant: email;pass;COS;quota</small>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group" ng-class="{'has-danger': function.fieldErrors.length &amp;&amp; function.fieldErrors.indexOf('emails') !== -1}">
+                <textarea class="form-control ng-pristine ng-untouched ng-valid ng-not-empty" placeholder="" id="input-emails" ng-model="function.fields.emails"></textarea>
+            </div>
+        </div>
+    </div>
+</form>
+{% endif %}

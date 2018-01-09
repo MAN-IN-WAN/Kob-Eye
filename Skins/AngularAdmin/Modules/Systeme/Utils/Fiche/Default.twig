@@ -24,7 +24,7 @@
                         </button>
                         <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="function-button">
                             {% for fu in functions %}
-                                <li ><a class="dropdown-item" href="javascript: void(0);" ng-click='callFunction(obj,"{{fu.Nom}}","{{fu.title}}")'>{{fu.title}}</a></li>
+                                <li ><a class="dropdown-item" href="javascript: void(0);" ng-click='callFunction(obj,"{{fu.Nom}}","{{fu.title}}","{{fu.type}}")'>{{fu.title}}</a></li>
                             {% endfor %}
                         </ul>
                     </div>
@@ -210,13 +210,21 @@
                 <h4 class="modal-title">{[{ function.title }]}</h4>
             </div>
             <div class="modal-body">
+                <div class="alert alert-success" ng-show="function.success">{[{ function.message }]}</div>
+                <div class="alert alert-danger" ng-show="function.errors.length > 0">
+                    <ul>
+                        <li ng-repeat="err in function.errors">{[{ err }]}</li>
+                    </ul>
+                </div>
                 <div id="ajaxwrapper"
                      ng-show="function.loaded"
                      ng-include="function.url" onload="function.loaded = true">
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn" data-dismiss="modal">Fermer</button>
+                <button type="button" class="btn btn-warning" ng-show="function.controls.cancel" data-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-success" ng-show="function.controls.save" ng-click="callFunctionSave(function)">Enregistrer</button>
+                <button type="button" class="btn btn-info" ng-show="function.controls.close" data-dismiss="modal">Fermer</button>
             </div>
         </div>
     </div>

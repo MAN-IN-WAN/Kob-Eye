@@ -432,4 +432,22 @@ class CompteMail extends genericClass {
 
 	    return true;
     }
+
+    public function deletegateAccess() {
+        $srv = $this->getOneParent('Server');
+
+        if(!is_object($srv) || $srv->ObjectType != 'Server'){
+            $this->AddError(array('Message'=>'Un compte mail doit être lié a un serveur.'));
+            return false;
+        }
+        $zimbra = new \Zimbra\ZCS\Admin($srv->IP, $srv->mailAdminPort);
+        $zimbra->auth($srv->mailAdminUser, $srv->mailAdminPassword);
+        //$token = $zimbra->delegateAuth($this->Adresse);
+        $token = "88454e0d1242342df2de81063b7bbc04c18331a7dbc978fdb422200f3bab63fe";
+        $timestamp = (time()*1000);
+        $expires = 0;
+        $preauth = hash_hmac('sha1',$this->Adresse.'|name|0|'.$timestamp,$token);
+        $url = 'https://'.$srv->DNSNom.'/service/preauth?account='.$this->Adresse.'&by=name&timestamp='.$timestamp.'&expires='.$expires.'&preauth='.$preauth;
+        return $url;
+    }
 }
