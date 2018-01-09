@@ -215,7 +215,7 @@ class Parc_Technicien extends genericClass {
     private function updateGuacamoleUser(){
         $servs = Sys::getData('Parc','Server/Guacamole=1');
         foreach ($servs as $serv) {
-            $dbGuac = new PDO('mysql:host=' . $serv->IP . ';dbname=guacamole', $serv->SshUser, $serv->SshPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+            $dbGuac = new PDO('mysql:host=' . $serv->IP . ';dbname=guacamole', $serv->guacAdminUser, $serv->guacAdminPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
             $dbGuac->query("SET AUTOCOMMIT=1");
             $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -251,7 +251,7 @@ class Parc_Technicien extends genericClass {
     private function deleteGuacamoleUser() {
         $servs = Sys::getData('Parc','Server/Guacamole=1');
         foreach ($servs as $serv) {
-            $dbGuac = new PDO('mysql:host=' . $serv->IP . ';dbname=guacamole', $serv->SshUser, $serv->SshPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+            $dbGuac = new PDO('mysql:host=' . $serv->IP . ';dbname=guacamole',  $serv->guacAdminUser, $serv->guacAdminPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
             $dbGuac->query("SET AUTOCOMMIT=1");
             $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             if (isset($this->AccesUser) && $this->AccesUser != '' && $this->AccesUser != null && isset($this->AccesPass) && $this->AccesPass != '' && $this->AccesPass != null) {

@@ -20,6 +20,7 @@
 		<FUNCTION title="Envoyer un mail d'avertissement" type="form">MailAvertissement</FUNCTION>
 		<FUNCTION title="Envoyer un mail récapitulatif" type="form">EnvoyerRecapitulatif</FUNCTION>
 		<FUNCTION title="Importer plusieurs domaines" type="form">ImporterPlusieursDomaines</FUNCTION>
+		<FUNCTION title="Importation de comptes emails" type="form">ImporterPlusieursEmails</FUNCTION>
 		<FKEY card="0,1" module="Systeme" data="User,Id">UserId</FKEY>
 		<FKEY card="0,1" module="Parc" data="Revendeur,Id">RevendeurId</FKEY>
 	</OBJECTCLASS>
@@ -178,6 +179,7 @@
 			<PROPERTIES type="text" list="1" form="1">Commentaire</PROPERTIES>
 		</CATEGORY>
 		<CATEGORY title="Mail">
+			<PROPERTIES type="boolean" description="Serveur email par défaut" form="1">defaultMailServer</PROPERTIES>
 			<PROPERTIES type="varchar" description="Admin mail: Nom d'utilisateur" default="admin" form="1">mailAdminUser</PROPERTIES>
 			<PROPERTIES type="varchar" description="Admin mail: Mot de passe" form="1">mailAdminPassword</PROPERTIES>
 			<PROPERTIES type="varchar" description="Admin mail: Port" default="7071" form="1">mailAdminPort</PROPERTIES>
@@ -273,7 +275,7 @@
         <FKEY card="0,1" data="Apache,Id" fiche="1" form="1" parentDescription="Hôte virtuel" link="1">ApacheId</FKEY>
         <FUNCTION title="Executer maintenant">Executer</FUNCTION>
     </OBJECTCLASS>
-	<OBJECTCLASS title="Device" driver="mysql" AccessPoint="1" Description="Périphérique(s) réseau(x)" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Device.class.php">
+	<OBJECTCLASS title="Device" logEvent="0" driver="mysql" AccessPoint="1" Description="Périphérique(s) réseau(x)" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Device.class.php">
 		<FUNCTION title="Envoyer un message">sendMessage</FUNCTION>
 		<FILTER name="Tous les périphériques" color="warning" ></FILTER>
 		<FILTER name="Périphériques en ligne"  color="success">Online=1</FILTER>
@@ -364,6 +366,7 @@
 		<FILTER name="Compte en PRO" color="success">COS=MAIL_PRO</FILTER>
 		<FILTER name="Compte en BUS" color="primary">COS=MAIL_BUS</FILTER>
 		<FILTER name="Compte en POP" color="secondary">COS=MAIL_POP</FILTER>
+		<FUNCTION title="Se connecter au webmail">connectWebmail</FUNCTION>
 		<PROPERTIES type="varchar" unique="1" fiche="1" description="Id sur le serveur mail" >IdMail</PROPERTIES>
         <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Adresse eMail" list="1" form="1" fiche="1" listDescr="Adresse">Adresse</PROPERTIES>
 		<PROPERTIES type="varchar" description="Mot de passe"  form="1" fiche="1">Pass</PROPERTIES>

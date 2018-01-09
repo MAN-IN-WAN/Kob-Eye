@@ -26,6 +26,7 @@
             getFilters: getFilters,
             getPageLength: getPageLength,
             setPageLength: setPageLength,
+            getCurrentPage: getCurrentPage,
             currentPage: currentPage,
             itemsPerPage: pageLength,
             getDataFilter: getDataFilter,
@@ -86,6 +87,9 @@
         function setPage(page,context = 'default'){
             getData(page,context);
         }
+        function getCurrentPage(context = 'default'){
+            return currentPage[context];
+        }
         /**
         * Définition du filtre
         **/
@@ -106,6 +110,8 @@
         function setFilters(filter,context='default',blur = false,noreload = false){
             if (filters[context]==undefined) initContext(context);
             if (filter==filters[context]) return;
+            //test des égalités
+            if (!filter.match(/[=><!]{1,2}/g)) filter = '~'+filter;
             console.log(context+' > {{ st.identifier }} > setFilters '+filter);
             filters[context] = filter;
             pageLoaded[context]=0;
@@ -113,9 +119,13 @@
         /**
         * Récupération du filtre en cours
         **/
-        function getFilters(context = 'default'){
+        function getFilters(context = 'default',raw = false){
             if (filters[context] == undefined) initContext(context);
-            return filters[context];
+            var out  = filters[context];
+            if (raw&&out.charAt(0)==='~'){
+                out = out.substr(1);
+            }
+            return out;
         }
         /**
         * Test if this id already exists

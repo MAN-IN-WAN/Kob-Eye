@@ -1,0 +1,7 @@
+{% if authorized %}
+    <div style="text-align:center">
+    <a href="{{ url }}" class="btn btn-lg btn-success" target="_blank">Se connecter au webmail</a>
+    </div>
+{% else %}
+    <div class="alert alert-danger">Nous sommes désolé mais l'accès à ce compte email est restreint</div>
+{% endif %}

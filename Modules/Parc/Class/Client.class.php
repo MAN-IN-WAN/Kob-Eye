@@ -304,7 +304,7 @@ class Parc_Client extends genericClass {
         $servs = Sys::getData('Parc','Server/Guacamole=1');
         foreach ($servs as $serv) {
 
-            $dbGuac = new PDO('mysql:host='.$serv->IP.';dbname=guacamole', $serv->SshUser, $serv->SshPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+            $dbGuac = new PDO('mysql:host='.$serv->IP.';dbname=guacamole',  $serv->guacAdminUser, $serv->guacAdminPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
             $dbGuac->query("SET AUTOCOMMIT=1");
             $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             if (isset($this->AccesUser) && $this->AccesUser != '' && $this->AccesUser != null && isset($this->AccesPass) && $this->AccesPass != '' && $this->AccesPass != null) {
@@ -313,5 +313,80 @@ class Parc_Client extends genericClass {
             }
         }
     }
+    /**
+     * importEmails
+     * Function permettant d'importer et de créer des comptes clients en masse.
+     * Au format: email;pass;COS;quota
+     */
+    public function importEmails($emails){
+        $srv = Sys::getOneData('Parc','Server/defaultMailServer=1');
 
+        if(!is_object($srv) || $srv->ObjectType != 'Server'){
+            $this->AddError(array('Message'=>'Un compte mail doit être lié a un serveur.'));
+            return false;
+        }
+        $zimbra = new \Zimbra\ZCS\Admin($srv->IP, $srv->mailAdminPort);
+        $zimbra->auth($srv->mailAdminUser, $srv->mailAdminPassword);
+
+        //traitement du csv
+        $emails = explode("\n",$emails);
+        $error = false;
+        $domainToCreate = array();
+        //verification du fichier
+        foreach ($emails as $e){
+            $e = explode(';',$e);
+            $email = $e[0];
+            $pass = $e[1];
+            $cos = $e[2];
+            $quota = ($e[3]>1000)?$e[3]*1024:1024;
+            if (empty($email)||empty($pass)||empty($cos)) {
+                $error = true;
+                $this->addError(Array('Message' => 'Compte email incomplet ' . $email . ' ' . $pass . ' ' . $cos . ' ' . $quota));
+            }
+            $domain = explode('@',$email);
+            //verification du domaine
+            $domainToCreate[] = $domain[1];
+        }
+        if ($error)
+            return false;
+        //creation des domaines
+        foreach ($domainToCreate as $dom){
+            try {
+                $zimbra->createDomain(Array('name' =>$dom));
+            }catch (Exception $e){
+                //$this->addError(Array('Message' => 'Erreur lors de la création du domaine '.$dom));
+            }
+        }
+
+        //création des compte emails
+        foreach ($emails as $e) {
+            $e = explode(';', $e);
+            $email = $e[0];
+            $pass = $e[1];
+            $cos = $e[2];
+            $quota = ($e[3])?$e[3]*1024:1024;
+            if (Sys::getCount('Parc','CompteMail/Adresse='.$email)){
+                $compte = Sys::getOneData('Parc','CompteMail/Adresse='.$email);
+            }else {
+                $compte = genericClass::createInstance('Parc', 'CompteMail');
+                $compte->Adresse = $email;
+            }
+            $compte->Pass = $pass;
+            $compte->COS = $cos;
+            $compte->Quota = $quota;
+            $compte->addParent($this);
+            $compte->addParent($srv);
+            if ($compte->Verify()){
+                if (!$compte->Save()){
+                    $this->Error = array_merge($this->Error,$compte->Error);
+                    return false;
+                }
+            }else{
+                $this->Error = array_merge($this->Error,$compte->Error);
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

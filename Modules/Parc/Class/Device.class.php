@@ -14,7 +14,23 @@ class Device extends genericClass{
         parent::save();
         //checking port redirect
         $this->checkRedirectPort();
+        //check base connection creation
+        $this->createBaseConnection();
         return true;
+    }
+
+    /**
+     * delete
+     * @return bool
+     */
+    public function Delete() {
+        $conns = $this->getChildren('DeviceConnexion');
+        foreach ($conns as $conn) $conn->Delete();
+        $ports = $this->getChildren('DevicePort');
+        foreach ($ports as $port) $port->Delete();
+        $tasks = $this->getChildren('DeviceTask');
+        foreach ($tasks as $task) $task->Delete();
+        parent::Delete();
     }
     private function checkRedirectPort(){
         $ports = $this->getChildren('DevicePort');
