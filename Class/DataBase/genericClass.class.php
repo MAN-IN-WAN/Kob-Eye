@@ -2940,6 +2940,7 @@ class genericClass extends Root {
         $o->create= date('d/m/Y H:i',$this->tmsCreate );
         $o->tmsCreate= $this->tmsCreate;
         $o->tmsEdit= $this->tmsEdit;
+        if(!is_array($fields)) return $o;
         foreach ($fields as $f){
             switch ($f['type']){
                 case 'date':

@@ -1,774 +1,195 @@
 [HEADER JS]/Tools/Js/Jquery/1.9.2/jquery.min.js[/HEADER]
+[OBJ Systeme|Site|S]
+
+[!Sitos:=[!S::getCurrentSite()!]!]
+[!Instance:=[!Sitos::getOneChild(Instance)!]!]
+
 
 <div class="banner">
-  <div class="header">
-    <div class="header-inner container clear">
-      <a class="logo" href="#"><span class="sr">ENG.SYSTEMS</span></a>
-      <input type="checkbox" id="navigation-toggle-checkbox" name="navigation-toggle-checkbox" class="navigation-toggle-checkbox none">
-      <label for="navigation-toggle-checkbox" class="navigation-toggle-label" onclick>
+    <div class="header">
+        <div class="header-inner container clear">
+            [IF [!Instance::Logo!]]
+                <a class="logo" href="" style="background-image: url(/[!Instance::Logo!]);">
+                    <span class="sr">[!Instance::Nom!]</span>
+                </a>
+            [ELSE]
+                <a class="logo" href="" style="background-image: none;">
+                    <span class="sr">[!Instance::Nom!]</span>
+                </a>
+            [/IF]
+            <input type="checkbox" id="navigation-toggle-checkbox" name="navigation-toggle-checkbox" class="navigation-toggle-checkbox none">
+            <label for="navigation-toggle-checkbox" class="navigation-toggle-label" onclick>
         <span class="navigation-toggle-label-inner">
           <span class="sr">Navigation</span>
         </span>
-      </label>
-      <div class="navigation">
-        <ul class="navigation-menu">
-          <li class="navigation-item"><a href="#home">Accueil</a></li>
-          <li class="navigation-item"><a href="#services">Services</a></li>
-          <li class="navigation-item"><a href="#about">A propos</a></li>
-          <li class="navigation-item"><a href="#news">Actualités</a></li>
-            <li class="navigation-item"><a href="#contact">Contactez-nous</a></li>
-            <li class="navigation-item"><a href="http://client.eng.systems" target="_blank">Espace client</a></li>
-        </ul>
-      </div>
+            </label>
+            <div class="navigation">
+                <ul class="navigation-menu">
+                    <li class="navigation-item"><a href="#home">Accueil</a></li>
+                    <li class="navigation-item"><a href="#about">A propos</a></li>
+                    <li class="navigation-item"><a href="#maps">Rencontrez-nous</a></li>
+                    <li class="navigation-item"><a href="#contact">Contactez-nous</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
-  </div>
-  <div class="container">
-    <div class="banner-inner">
-      <h1 class="banner-lead">
-        <span class="banner-lead-1">Hébergement de vos solutions</span>
-        <span class="banner-lead-2">Performance et services</span>
-      </h1>
-      <div class="banner-content">
-        <p>
-          Parce que vos besoins trouvent chez nous une solution. Parce que nous misons sur l'écoute et sur le service.
-        </p>
-      </div>
-      <div class="banner-buttons">
-        <a href="#services" class="button button-primary">Découvrir</a>
-        <a href="#about" class="button button-secondary">En savoir plus</a>
-      </div>
+    <div class="container">
+        <div class="banner-inner">
+            <h1 class="banner-lead">
+                [!Instance::Titre!]
+            </h1>
+            <div class="banner-buttons">
+                <a href="#about" class="button button-primary" style="background-color: [!Instance::Couleur1!];">En savoir plus</a>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
-
-<div id="services" class="animate-block content-block services-block">
-  <div class="services-block-inner container">
-    <div class="content-block-inner text-center">
-      <h2>Nos Services</h2>
-      <div class="col-10-desktop no-float center-element">
-        <p>
-          Nos consultants sont à votre écoute et seront force de proposition pour l'ensemble de vos problèmatiques d'hébergement. Que vous soyez un professionnel de la communication ou une agence web, vous trouverez chez nous une explication claire, un service intégré vous permettant d'oublier les problèmatiques lièes à l'hébergement de vos solutions internet / intranet.
-        </p>
-      </div>
-    </div>
-    <ul class="services-list clear">
-      <li class="service-item">
-        <h3 class="service-item-heading service-icon service-icon-performance">Performances</h3>
-        <p>
-          Besoin de performance ? Nous étudierons votre projet et vous proposerons la solution pertinente.
-        </p>
-      </li>
-      <li class="service-item">
-        <h3 class="service-item-heading service-icon service-icon-customer">Des solutions sur mesure</h3>
-        <p>
-          Chaque client est différent, et nous sommes à même de vous proposer l'infrastructure adaptée.
-        </p>
-      </li>
-      <li class="service-item">
-        <h3 class="service-item-heading service-icon service-icon-it">Technologie innovante</h3>
-        <p>
-          Nos équipes sont toujours en quête de nouveautés pour que vous soyez toujours à la pointe.
-        </p>
-      </li>
-      <li class="service-item">
-        <h3 class="service-item-heading service-icon service-icon-transformation">Evolution sans limite</h3>
-        <p>
-          Développez votre activité sans vous soucier des problèmatiques de montée en charge et de sécurité.
-        </p>
-      </li>
-      <li class="service-item">
-        <h3 class="service-item-heading service-icon service-icon-delivery">Hébergement mutualisé</h3>
-        <p>
-          Profitez de notre infrastructure mutualisé haute performance et débarrassez-vous de l'admnistration système.
-        </p>
-      </li>
-      <li class="service-item">
-        <h3 class="service-item-heading service-icon service-icon-digital">Serveur dédié</h3>
-        <p>
-          Vous souhaitez conserver la maîtrise de votre système mais en profitant d'un environnement sécurisé.
-        </p>
-      </li>
-      <li class="service-item">
-        <h3 class="service-item-heading service-icon service-icon-strategy">Infrastructure dédiée</h3>
-        <p>
-          Vous souhaitez présenter à vos clients une infrastructure entière et gérer vous-meme vos services mutualisés. Optez pour l'infrastructure dédiée.
-        </p>
-      </li>
-      <li class="service-item">
-        <h3 class="service-item-heading service-icon service-icon-equity">Facturation détaillée</h3>
-        <p>
-          Maîtrisez vos coûts avec la facturation par service. retrouvez tous les détails sur votre facture détaillée.
-        </p>
-      </li>
-    </ul>
-  </div>
 </div>
 
 <div class="animate-block feature-block contact-feature-block">
-  <div class="feature-block-inner container">
-    <div class="text-center">
-      <h2 class="feature-block-heading">Contactez-nous, nous étudierons vos besoins et vous proposerons la solution la plus efficace à vos besoins en hébergement.</h2>
-      <a class="button button-primary" href="#contact">Contactez-nous</a>
+    <div class="feature-block-inner container">
+        <div class="text-center">
+            <h2 class="feature-block-heading">Contactez-nous, nous étudierons vos besoins et vous proposerons la solution la plus efficace pour répondre à vos besoins.</h2>
+            <a class="button button-primary" href="#contact" style="background-color: [!Instance::Couleur1!];">Contactez-nous</a>
+        </div>
     </div>
-  </div>
 </div>
 
 <div id="about" class="content-block about-block">
-  <div class="about-block-inner container">
-    <div class="animate-block content-block-inner text-center">
-      <h2>A propos</h2>
-      <div class="col-10-desktop no-float center-element">
-        <p>
-          ENG.SYSTEMS, la solution technique d'avant garde pour les entreprises digitales du sud.
-        </p>
-      </div>
+    <div class="about-block-inner container">
+        <div class="animate-block content-block-inner text-center">
+            <h2>A propos</h2>
+            [IF [!Instance::Slogan!]]
+            <div class="col-10-desktop no-float center-element">
+                <p>
+                    [!Instance::Slogan!]
+                </p>
+            </div>
+            [/IF]
+        </div>
+        <div class="animate-block about-content clear">
+            <div class="what-we-do-block col-12-tablet">
+                [!Instance::Description!]
+            </div>
+        </div>
     </div>
-    <div class="animate-block about-content clear">
-      <div class="what-we-do-block col-6-tablet">
-        <h3 class="h3">Que faisons nous</h3>
-        <p>
-          Nous sommes une entreprise spécialisée dans l'hébergement de solutions digitales professionnelles. Nous proposons des solutions sur mesure allant de l'hébergement mutualisé haute performance à l'infrastructure dédiée infogérée.
-        </p>
-        <p>
-          Nous travaillons la proximité avec nos clients afin de leurs proposer une écoute et un service de grande qualité. Nos collaborateurs sont compétents et justifient tous de la double casquette Ingénieur Système / Développeur. Nous permettant ainsi de nous intégrer facilement dans les problèmatiques de déploiement logicielles.
-        </p>
-        <p>
-          Nous proposons des reporting sur mesure et en tant que client vous profiterez d'un responsable de projet dédié qui vous connaît et qui peut agir en toute liberté.
-        </p>
-        <p>
-          Nous proposons nos outils en libre service et en marque blanche. Vous permettant de travailler votre image auprès de vos clients.
-        </p>
-      </div>
-      <div class="our-clients-block col-6-tablet clear">
-        <h3 class="h3">Nos Clients</h3>
-        <input type="radio" name="clients" id="client-tab-1" class="client-tab-radio client-tab-radio-1 none" checked>
-        <label class="client-tab-label client-tab-label-1" for="client-tab-1" onclick><span class="none">Client Tab</span></label>
-        <div class="client-tab client-tab-1">
-          <ul class="clients-list clear">
-            <li class="client-item">
-              <a href="http://www.keole.net" target="_blank"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/keole.png" alt="Keole"></a>
-            </li>
-            <li class="client-item">
-              <a href="http://www.bleucerise.com" target="_blank"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/bleucerise.png" alt="Bleucerise"></a>
-            </li>
-            <li class="client-item">
-              <a href="http://www.azko.fr" target="_blank"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/azko.jpg" alt="Azko"></a>
-            </li>
-            <li class="client-item">
-              <a href="http://www.folcomedia.fr" target="_blank"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/folcomedia.jpg" alt="Folcomédia"></a>
-            </li>
-            <li class="client-item">
-              <a href="http://www.m-w.solutions" target="_blank"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/mwsolutions.png" alt="M-W.SOLUTIONS"></a>
-            </li>
-            <li class="client-item">
-              <a href="http://www.secib.fr" target="_blank"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/secib.jpg" alt="Secib"></a>
-            </li>
-          </ul>
-        </div>
-        <!--
-        <input type="radio" name="clients" id="client-tab-2" class="client-tab-radio client-tab-radio-2 none">
-        <label class="client-tab-label client-tab-label-2" for="client-tab-2" onclick><span class="none">Client Tab</span></label>
-        <div class="client-tab client-tab-2">
-          <ul class="clients-list clear">
-            <li class="client-item">
-              <a href="#"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/sony.png" alt="Sony"></a>
-            </li>
-            <li class="client-item">
-              <a href="#"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/oracle.png" alt="Oracle"></a>
-            </li>
-            <li class="client-item">
-              <a href="#"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/sandisk.png" alt="SanDisk"></a>
-            </li>
-            <li class="client-item">
-              <a href="#"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/mcafee.png" alt="McAfee"></a>
-            </li>
-            <li class="client-item">
-              <a href="#"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/sap.png" alt="SAP"></a>
-            </li>
-            <li class="client-item">
-              <a href="#"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/netflix.png" alt="Netflix"></a>
-            </li>
-          </ul>
-        </div>
-        <input type="radio" name="clients" id="client-tab-3" class="client-tab-radio client-tab-radio-3 none">
-        <label class="client-tab-label client-tab-label-3" for="client-tab-3" onclick><span class="none">Client Tab</span></label>
-        <div class="client-tab client-tab-3">
-          <ul class="clients-list clear">
-            <li class="client-item">
-              <a href="#"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/netflix.png" alt="Netflix"></a>
-            </li>
-            <li class="client-item">
-              <a href="#"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/oracle.png" alt="Oracle"></a>
-            </li>
-            <li class="client-item">
-              <a href="#"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/sony.png" alt="Sony"></a>
-            </li>
-            <li class="client-item">
-              <a href="#"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/mcafee.png" alt="McAfee"></a>
-            </li>
-            <li class="client-item">
-              <a href="#"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/sandisk.png" alt="SanDisk"></a>
-            </li>
-            <li class="client-item">
-              <a href="#"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/sap.png" alt="SAP"></a>
-            </li>
-          </ul>
-        </div>
-        -->
-      </div>
-    </div>
- <!--
-    <div class="animate-block our-team-block">
-      <h3 class="h3">Our Team</h3>
-      <ul id="team" class="team-list clear">
-        <li class="team-item">
-          <a id="team-1" href="#team-1-profile"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/team-01.jpg" alt="Team Member 1">
-            <span class="team-item-content">
-              <strong class="team-item-name">Clark Kent</strong>
-              <strong class="team-item-title">Bad Debt Manager</strong>
-              <span class="team-item-position">Team Leader</span>
-            </span>
-          </a>
-        </li>
-        <li class="team-item">
-          <a id="team-2" href="#team-2-profile"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/team-02.jpg" alt="Team Member 2">
-            <span class="team-item-content">
-              <strong class="team-item-name">Clark Kent</strong>
-              <strong class="team-item-title">Bad Debt Manager</strong>
-              <span class="team-item-position">Team Leader</span>
-            </span>
-          </a>
-        </li>
-        <li class="team-item">
-          <a id="team-3" href="#team-3-profile"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/team-03.jpg" alt="Team Member 3">
-            <span class="team-item-content">
-              <strong class="team-item-name">Clark Kent</strong>
-              <strong class="team-item-title">Bad Debt Manager</strong>
-              <span class="team-item-position">Team Leader</span>
-            </span>
-          </a>
-        </li>
-        <li class="team-item">
-          <a id="team-4" href="#team-4-profile"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/team-04.jpg" alt="Team Member 4">
-            <span class="team-item-content">
-              <strong class="team-item-name">Clark Kent</strong>
-              <strong class="team-item-title">Bad Debt Manager</strong>
-              <span class="team-item-position">Team Leader</span>
-            </span>
-          </a>
-        </li>
-        <li class="team-item">
-          <a id="team-5" href="#team-5-profile"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/team-05.jpg" alt="Team Member 5">
-            <span class="team-item-content">
-              <strong class="team-item-name">Clark Kent</strong>
-              <strong class="team-item-title">Bad Debt Manager</strong>
-              <span class="team-item-position">Team Leader</span>
-            </span>
-          </a>
-        </li>
-        <li class="team-item">
-          <a id="team-6" href="#team-6-profile"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/team-06.jpg" alt="Team Member 6">
-            <span class="team-item-content">
-              <strong class="team-item-name">Clark Kent</strong>
-              <strong class="team-item-title">Bad Debt Manager</strong>
-              <span class="team-item-position">Team Leader</span>
-            </span>
-          </a>
-        </li>
-        <li class="team-item">
-          <a id="team-7" href="#team-7-profile"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/team-07.jpg" alt="Team Member 7">
-            <span class="team-item-content">
-              <strong class="team-item-name">Clark Kent</strong>
-              <strong class="team-item-title">Bad Debt Manager</strong>
-              <span class="team-item-position">Team Leader</span>
-            </span>
-          </a>
-        </li>
-        <li class="team-item">
-          <a id="team-8" href="#team-8-profile"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/team-08.jpg" alt="Team Member 8">
-            <span class="team-item-content">
-              <strong class="team-item-name">Clark Kent</strong>
-              <strong class="team-item-title">Bad Debt Manager</strong>
-              <span class="team-item-position">Team Leader</span>
-            </span>
-          </a>
-        </li>
-        <li class="team-item">
-          <a id="team-9" href="#team-9-profile"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/team-09.jpg" alt="Team Member 9">
-            <span class="team-item-content">
-              <strong class="team-item-name">Clark Kent</strong>
-              <strong class="team-item-title">Bad Debt Manager</strong>
-              <span class="team-item-position">Team Leader</span>
-            </span>
-          </a>
-        </li>
-        <li class="team-item">
-          <a id="team-10" href="#team-10-profile"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/team-10.jpg" alt="Team Member 10">
-            <span class="team-item-content">
-              <strong class="team-item-name">Clark Kent</strong>
-              <strong class="team-item-title">Bad Debt Manager</strong>
-              <span class="team-item-position">Team Leader</span>
-            </span>
-          </a>
-        </li>
-        <li class="team-item">
-          <a id="team-11" href="#team-11-profile"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/team-11.jpg" alt="Team Member 11">
-            <span class="team-item-content">
-              <strong class="team-item-name">Clark Kent</strong>
-              <strong class="team-item-title">Bad Debt Manager</strong>
-              <span class="team-item-position">Team Leader</span>
-            </span>
-          </a>
-        </li>
-        <li class="team-item">
-          <a id="team-12" href="#team-12-profile"><img class="block img-full" src="/Skins/[!Systeme::Skin!]/img/team-12.jpg" alt="Team Member 12">
-            <span class="team-item-content">
-              <strong class="team-item-name">Clark Kent</strong>
-              <strong class="team-item-title">Bad Debt Manager</strong>
-              <span class="team-item-position">Team Leader</span>
-            </span>
-          </a>
-        </li>
-      </ul>
-    </div>
-    <div class="team-profiles-block">
-      <div class="modal" id="team-1-profile">
-        <a href="#team-1" class="modal-close"><span class="sr">Close</span></a>
-        <div class="modal-inner">
-          <h2 class="team-profile-heading">Clark Kent</h2>
-          <strong class="block">Bad Debt Manager - Team Leader</strong>
-          <div class="clear team-profile-content">
-            <img class="team-profile-image block" src="/Skins/[!Systeme::Skin!]/img/team-01.jpg" alt="Team Member 1">
-            <div class="team-profile-content-block">
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal" id="team-2-profile">
-        <a href="#team-2" class="modal-close"><span class="sr">Close</span></a>
-        <div class="modal-inner">
-          <h2 class="team-profile-heading">Clark Kent</h2>
-          <strong class="block">Bad Debt Manager - Team Leader</strong>
-          <div class="clear team-profile-content">
-            <img class="team-profile-image block" src="/Skins/[!Systeme::Skin!]/img/team-02.jpg" alt="Team Member 2">
-            <div class="team-profile-content-block">
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal" id="team-3-profile">
-        <a href="#team-3" class="modal-close"><span class="sr">Close</span></a>
-        <div class="modal-inner">
-          <h2 class="team-profile-heading">Clark Kent</h2>
-          <strong class="block">Bad Debt Manager - Team Leader</strong>
-          <div class="clear team-profile-content">
-            <img class="team-profile-image block" src="/Skins/[!Systeme::Skin!]/img/team-03.jpg" alt="Team Member 3">
-            <div class="team-profile-content-block">
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal" id="team-4-profile">
-        <a href="#team-4" class="modal-close"><span class="sr">Close</span></a>
-        <div class="modal-inner">
-          <h2 class="team-profile-heading">Clark Kent</h2>
-          <strong class="block">Bad Debt Manager - Team Leader</strong>
-          <div class="clear team-profile-content">
-            <img class="team-profile-image block" src="/Skins/[!Systeme::Skin!]/img/team-04.jpg" alt="Team Member 4">
-            <div class="team-profile-content-block">
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal" id="team-5-profile">
-        <a href="#team-5" class="modal-close"><span class="sr">Close</span></a>
-        <div class="modal-inner">
-          <h2 class="team-profile-heading">Clark Kent</h2>
-          <strong class="block">Bad Debt Manager - Team Leader</strong>
-          <div class="clear team-profile-content">
-            <img class="team-profile-image block" src="/Skins/[!Systeme::Skin!]/img/team-05.jpg" alt="Team Member 5">
-            <div class="team-profile-content-block">
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal" id="team-6-profile">
-        <a href="#team-6" class="modal-close"><span class="sr">Close</span></a>
-        <div class="modal-inner">
-          <h2 class="team-profile-heading">Clark Kent</h2>
-          <strong class="block">Bad Debt Manager - Team Leader</strong>
-          <div class="clear team-profile-content">
-            <img class="team-profile-image block" src="/Skins/[!Systeme::Skin!]/img/team-06.jpg" alt="Team Member 6">
-            <div class="team-profile-content-block">
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal" id="team-7-profile">
-        <a href="#team-7" class="modal-close"><span class="sr">Close</span></a>
-        <div class="modal-inner">
-          <h2 class="team-profile-heading">Clark Kent</h2>
-          <strong class="block">Bad Debt Manager - Team Leader</strong>
-          <div class="clear team-profile-content">
-            <img class="team-profile-image block" src="/Skins/[!Systeme::Skin!]/img/team-07.jpg" alt="Team Member 7">
-            <div class="team-profile-content-block">
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal" id="team-8-profile">
-        <a href="#team-8" class="modal-close"><span class="sr">Close</span></a>
-        <div class="modal-inner">
-          <h2 class="team-profile-heading">Clark Kent</h2>
-          <strong class="block">Bad Debt Manager - Team Leader</strong>
-          <div class="clear team-profile-content">
-            <img class="team-profile-image block" src="/Skins/[!Systeme::Skin!]/img/team-08.jpg" alt="Team Member 8">
-            <div class="team-profile-content-block">
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal" id="team-9-profile">
-        <a href="#team-9" class="modal-close"><span class="sr">Close</span></a>
-        <div class="modal-inner">
-          <h2 class="team-profile-heading">Clark Kent</h2>
-          <strong class="block">Bad Debt Manager - Team Leader</strong>
-          <div class="clear team-profile-content">
-            <img class="team-profile-image block" src="/Skins/[!Systeme::Skin!]/img/team-09.jpg" alt="Team Member 9">
-            <div class="team-profile-content-block">
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal" id="team-10-profile">
-        <a href="#team-10" class="modal-close"><span class="sr">Close</span></a>
-        <div class="modal-inner">
-          <h2 class="team-profile-heading">Clark Kent</h2>
-          <strong class="block">Bad Debt Manager - Team Leader</strong>
-          <div class="clear team-profile-content">
-            <img class="team-profile-image block" src="/Skins/[!Systeme::Skin!]/img/team-10.jpg" alt="Team Member 10">
-            <div class="team-profile-content-block">
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal" id="team-11-profile">
-        <a href="#team-11" class="modal-close"><span class="sr">Close</span></a>
-        <div class="modal-inner">
-          <h2 class="team-profile-heading">Clark Kent</h2>
-          <strong class="block">Bad Debt Manager - Team Leader</strong>
-          <div class="clear team-profile-content">
-            <img class="team-profile-image block" src="/Skins/[!Systeme::Skin!]/img/team-11.jpg" alt="Team Member 11">
-            <div class="team-profile-content-block">
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal" id="team-12-profile">
-        <a href="#team-12" class="modal-close"><span class="sr">Close</span></a>
-        <div class="modal-inner">
-          <h2 class="team-profile-heading">Clark Kent</h2>
-          <strong class="block">Bad Debt Manager - Team Leader</strong>
-          <div class="clear team-profile-content">
-            <img class="team-profile-image block" src="/Skins/[!Systeme::Skin!]/img/team-12.jpg" alt="Team Member 12">
-            <div class="team-profile-content-block">
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  -->
-  </div>
-
-  </div>
-
-<div id="video-feature-block" class="feature-block video-feature-block">
-  <div class="video-feature-inner container">
-    <div class="animate-block content-block-inner text-center">
-      <a id="video" class="button button-play" href="#feature-video"><span class="sr">Play</span></a>
-      <h2 class="feature-block-heading">Allons plus loin ensemble.</h2>
-      <div class="col-10-desktop no-float center-element">
-        <p>
-          Nous sommes sans cesse en recherche de nouveautés. Découvrez nos axes de développement et profitez de nos nouveaux services.
-        </p>
-      </div>
-    </div>
-    <div class="modal" id="feature-video">
-      <a href="#video" class="modal-close"><span class="sr">Fermer</span></a>
-      <div class="modal-inner">
-        <h3>Prévisions pour l'année 2016 </h3>
-        <p>
-          Nous vous présenterons les nouveaus services et évolutions suivants:
-        </p>
-        <ul>
-          <li>Proposition d'un CDN par défaut pour les solutions mutualisées.</li>
-          <li>Mise en place d'un service d'email marketing avec retour statistiques et API.</li>
-          <li>Mise en place d'un serveur de cache par proxy redondant et debrayable.</li>
-          <li>Mise en place d'un système de monitoring avec dashboard par client.</li>
-          <li>Mise en place de l'espace client et revendeur permettant la gestion de tous les services.</li>
-          <li>Mise en place des enreogstrements SVR automatique pour le service mail mutualisé.</li>
-          <li>Configuration des rotations et retentions des backups mutualisés depuis l'interface client.</li>
-        </ul>
-        <p>Suivez les évolutions de la plateforme ...</p>
-      </div>
-    </div>
-  </div>
 </div>
 
-<div id="news" class="animate-block content-block news-block">
-  <div class="news-block-inner container">
-    <div class="content-block-inner text-center">
-      <h2>Actualités</h2>
-      <div class="col-10-desktop no-float center-element">
-        <p>
-          Suivez l'actualité ENG.SYSTEMS depuis nos pages sur les réseaux sociaux. Nous publierons les reussites et nouveautés de nos clients.
-        </p>
-      </div>
-    </div>
-    <div class="animate-block news-list clear">
-      <div class="news-list-left">
-        <div class="news-item clear">
-            <a href="#" class="news-item-image">
-              <img class="block" src="/Skins/[!Systeme::Skin!]/img/news-item-01.jpg" alt="Un serveur CDN">
-            </a>
-          <div class="news-item-content">
-            <div class="news-item-content-inner">
-              <h3 class="news-item-title"><a href="#">Améliorez la rapidité d'affichage de vos sites web avec un CDN</a></h3>
-              <p>
-                ENG.SYSTEMS proposera bientôt un serveur CDN en standard dans sa solution d'hébergement mutualisé. Stockez vos images et vos fichiers sur cette plateforme dédié afin d'améliorer l'affichage de vos pages.
-              </p>
-              <em class="news-item-publish-date">
-                Posted: 12.12.2015
-              </em>
-            </div>
-          </div>
-        </div>
-        <div class="news-item news-item-secondary clear">
-          <a href="#" class="news-item-image">
-            <img class="block" src="/Skins/[!Systeme::Skin!]/img/news-item-02.jpg" alt="Nouveaux bureaux">
-          </a>
-          <div class="news-item-content">
-            <div class="news-item-content-inner">
-              <h3 class="news-item-title"><a href="#">ENG.SYSTEMS s'installe dans ses nouveaux locaux.</a></h3>
-              <p>
-                Depuis maintenant le mois de Novembre, la société ENG.SYSTEMS s'est installée dans ses nouveaux locaux Nîmois.
-              </p>
-              <em class="news-item-publish-date">
-                Posted: 20.11.2015
-              </em>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="news-list-right">
-        <div class="news-item news-item-third clear">
-          <a href="#" class="news-item-image">
-            <img class="block" src="/Skins/[!Systeme::Skin!]/img/news-item-03.jpg" alt="Instagram">
-          </a>
-          <div class="news-item-content">
-            <div class="news-item-content-inner">
-              <h3 class="news-item-title"><a href="#">Gagnez de nouvelles visites en jouant la carte Instagram</a></h3>
-              <p>
-                Publiez vos médias sur les réseaux sociaux spécilisés comme Instagram / Pinterest et gagnez en popularité et en visite.
-              </p>
-              <em class="news-item-publish-date">
-                Posted: 08.09.2015
-              </em>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+
+<div id="maps" class="animate-block content-block map-block" style="overflow:hidden;">
+    <iframe height="400" width="100%" style="border:0"  src="https://www.google.com/maps/embed/v1/place?q=[!Utils::UrlEncode([!Instance::Adresse!])!]&key=..." allowfullscreen style="width: 100%;"></iframe>
 </div>
+
 
 <div id="contact" class="animate-block content-block contact-block">
-  <div class="contact-block-inner container">
-    <div class="clear">
-      <div class="contact-block-content col-6-tablet">
-        <h2 class="h2 uppercase">ENG.SYSTEMS</h2>
-        <p>
-          Merci de l'intéret que vous portez à notre société. Si vous avez des questions, besoins d'informations ou encore faire une demande de rappel, n'hésitez pas à utiliser le formulaire de contact suivant.
-        </p>
-        <ul class="contact-list">
-          <li><span class="icon contact-icon contact-icon-location">1, chemin des alouettes 30230 Bouillargues</span></li>
-          <li><span class="icon contact-icon contact-icon-phone">+33 (0) 676 568 14</span></li>
-          <li><span class="icon contact-icon contact-icon-email"><a href="mailto:contact@eng.systems?subject=Demande d'information&amp;body=">contact@eng.systems</a></span></li>
-        </ul>
-      </div>
-      <div class="contact-block-form col-6-tablet">
-        <h2 class="h2">Contact</h2>
-        <p>
-          Veuillez saisir votre message dans le formulaire ci-dessous
-        </p>
-        <form class="contact-form" id="contact-form">
-          <fieldset>
-            <legend class="sr">Contactez-nous</legend>
-            <div class="field-group">
-              <label class="sr" for="name">Nom</label>
-              <input name="name" class="field" id="name" type="text" placeholder="Nom ou Société" required>
+    <div class="contact-block-inner container">
+        <div class="clear">
+            <div class="contact-block-content col-6-tablet">
+                <h2 class="h2 uppercase" style="color: [!Instance::Couleur1!];">[!Instance::Nom!]</h2>
+                <p>
+                    Merci de l'intéret que vous portez à notre société. Si vous avez des questions, besoins d'informations ou encore faire une demande de rappel, n'hésitez pas à utiliser le formulaire de contact suivant.
+                </p>
+                <ul class="contact-list">
+                    <li>
+                        <p class="contact-infos">
+                            <span class="icon contact-icon contact-icon-location" style="color: [!Instance::Couleur1!];"></span>
+                            [!Instance::Adresse!]
+                        </p>
+                    </li>
+                    [IF [!Instance::Telephone!]]
+                    <li>
+                        <p class="contact-infos">
+                            <span class="icon contact-icon contact-icon-phone" style="color: [!Instance::Couleur1!];"></span>
+                            [!Instance::Telephone!]
+                        </p>
+                    </li>
+                    [/IF]
+                    <li>
+                        <p class="contact-infos">
+                            <span class="icon contact-icon contact-icon-email" style="color: [!Instance::Couleur1!];"></span>
+                            <a href="mailto:[!Instance::AdresseMail!]?subject=Demande d'information&amp;body=">[!Instance::AdresseMail!]</a>
+                        </p>
+                    </li>
+                </ul>
             </div>
-            <div class="field-group">
-              <label class="sr" for="email">Email</label>
-              <input name="email" class="field" id="email" type="email" placeholder="Email" required>
+            <div class="contact-block-form col-6-tablet">
+                <h2 class="h2" style="color: [!Instance::Couleur1!];">Contact</h2>
+                <p>
+                    Veuillez saisir votre message dans le formulaire ci-dessous
+                </p>
+                <form class="contact-form" id="contact-form">
+                    <fieldset>
+                        <legend class="sr">Contactez-nous</legend>
+                        <div class="field-group">
+                            <label class="sr" for="name">Nom</label>
+                            <input name="name" class="field" id="name" type="text" placeholder="Nom ou Société" required>
+                        </div>
+                        <div class="field-group">
+                            <label class="sr" for="email">Email</label>
+                            <input name="email" class="field" id="email" type="email" placeholder="Email" required>
+                        </div>
+                        <div class="field-group">
+                            <label class="sr" for="subject">Sujet</label>
+                            <input name="subject" class="field" id="subject" type="text" placeholder="Sujet" required>
+                        </div>
+                        <div class="field-group">
+                            <label for="message" class="sr">Message</label>
+                            <textarea placeholder="Message" class="field" name="message" id="message" cols="30" rows="7"></textarea>
+                        </div>
+                        <div class="text-right">
+                            <input type="submit" class="button button-primary contact-submit" value="Envoyer" style="background-color: [!Instance::Couleur1!];">
+                        </div>
+                    </fieldset>
+                </form>
+                <script>
+                    $('#contact-form').submit(function (e) {
+                        e.preventDefault();
+                        $.ajax({
+                            url: '/Systeme/User/sendContact.htm',
+                            data: {
+                                name: $('input#name').val(),
+                                email: $('input#email').val(),
+                                subject: $('input#subject').val(),
+                                message: $('textarea#message').val(),
+                                origin: '[!Instance::AdresseMail!]',
+                                societe: '[!Instance::Nom!]'
+                            },
+                            method: 'post'
+                        }).done(function (response){
+                            //console.log("reponses",response);
+                            $('#contact-form').html('<div class="alert alert-success">Le message a été envoyé avec succès. Consultez votre boîte de réception, vous devriez y trouver un message de confirmation. Merci pour votre interet.</div>');
+                        });
+                    });
+                </script>
             </div>
-            <div class="field-group">
-              <label class="sr" for="subject">Sujet</label>
-              <input name="subject" class="field" id="subject" type="text" placeholder="Sujet" required>
-            </div>
-            <div class="field-group">
-              <label for="message" class="sr">Message</label>
-              <textarea placeholder="Message" class="field" name="message" id="message" cols="30" rows="7"></textarea>
-            </div>
-            <div class="text-right">
-              <input type="submit" class="button button-primary contact-submit" value="Envoyer">
-            </div>
-          </fieldset>
-        </form>
-          <script>
-              $('#contact-form').submit(function (e) {
-                  e.preventDefault();
-                  $.ajax({
-                      url: '/Systeme/User/sendContact.htm',
-                      data: {
-                          name: $('input#name').val(),
-                          email: $('input#email').val(),
-                          subject: $('input#subject').val(),
-                          message: $('textarea#message').val()
-                      },
-                      method: 'post'
-                  }).done(function (response){
-                      console.log("reponses",response);
-                      $('#contact-form').html('<div class="alert alert-success">Le message a été envoyé avec succès. Consultez votre boîte de réception, vous devriez y trouver un message de confirmation. Merci pour votre interet.</div>');
-                  });
-              });
-          </script>
-      </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <div class="footer">
-  <div class="footer-inner container">
-    <div class="clear">
-      <div class="footer-column col-8-tablet">
-        <p>
-          &copy; Copyright 2015 &mdash;ENG.SYSTEMS All Rights Reserved
-        </p>
-      </div>
-      <div class="footer-column col-4-tablet">
-        <ul class="footer-social-list icon-list-inline">
-          <!--
-          <li class="navigation-item-social"><a class="social-icon social-linkedin" href="#"><span class="sr">LinkedIn</span></a></li>
-          <li class="navigation-item-social"><a class="social-icon social-facebook" href="#"><span class="sr">Facebook</span></a></li>
-          <li class="navigation-item-social"><a class="social-icon social-twitter" href="#"><span class="sr">Twitter</span></a></li>
-          <li class="navigation-item-social"><a class="social-icon social-youtube" href="#"><span class="sr">YouTube</span></a></li>
-          -->
-        </ul>
-      </div>
+    <div class="footer-inner container">
+        <div class="clear">
+            <div class="footer-column col-8-tablet">
+                <p>
+                    &copy; Copyright [DATE Y][!TMS::Now!][/DATE] &mdash; Abtel. All Rights Reserved
+                </p>
+            </div>
+            <div class="footer-column col-4-tablet">
+                <ul class="footer-social-list icon-list-inline">
+                    <!--
+                    <li class="navigation-item-social"><a class="social-icon social-linkedin" href="#"><span class="sr">LinkedIn</span></a></li>
+                    <li class="navigation-item-social"><a class="social-icon social-facebook" href="#"><span class="sr">Facebook</span></a></li>
+                    <li class="navigation-item-social"><a class="social-icon social-twitter" href="#"><span class="sr">Twitter</span></a></li>
+                    <li class="navigation-item-social"><a class="social-icon social-youtube" href="#"><span class="sr">YouTube</span></a></li>
+                    -->
+                </ul>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <script src="/Skins/[!Systeme::Skin!]/js/vendor/wow.js"></script>
 <script src="/Skins/[!Systeme::Skin!]/js/default.js"></script>
-<!-- Piwik -->
+<!-- Piwik
 <script type="text/javascript">
     var _paq = _paq || [];
     _paq.push(['trackPageView']);
@@ -782,4 +203,4 @@
     })();
 </script>
 <noscript><p><img src="http://piwik.enguer.com/piwik.php?idsite=9" style="border:0;" alt="" /></p></noscript>
-<!-- End Piwik Code -->
+ End Piwik Code -->

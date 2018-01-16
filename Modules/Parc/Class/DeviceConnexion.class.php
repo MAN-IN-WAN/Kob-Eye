@@ -8,11 +8,11 @@ class DeviceConnexion extends genericClass{
         $this->checkGuacamoleConnection();
         parent::save();
 
-        $dev = $this->getOneParent('Device');
-        if ($dev) {
-            $dev->Dirty = 1;
-            $dev->Save();
-        }
+//        $dev = $this->getOneParent('Device');
+//        if ($dev) {
+//            $dev->Dirty = 1;
+//            $dev->Save();
+//        }
         return true;
     }
 
@@ -66,7 +66,7 @@ class DeviceConnexion extends genericClass{
                     $usr = array_merge($usr,$result);
                 }
             } elseif (isset($cli->AccesUser) && $cli->AccesUser != '' && $cli->AccesUser != null && (!isset($cli->AccesPass) || $cli->AccesPass == '' || $cli->AccesPass == null)) {
-                $cli->addError(array('Message' => 'La valeur du champ AccesPass est nulle ou non définie alors que le champ AccesUser est défini.', "Prop" => 'AccesPass'));
+                $contact->addError(array('Message' => 'La valeur du champ AccesPass est nulle ou non définie alors que le champ AccesUser est défini.', "Prop" => 'AccesPass'));
             }
         }
 
@@ -222,7 +222,7 @@ class DeviceConnexion extends genericClass{
                     $q = $dbGuac->query($query);
                     $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'password','$this->Password')";
                     $q = $dbGuac->query($query);
-                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'color-scheme','green-black')";
+                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'color-scheme','white-black')";
                     $q = $dbGuac->query($query);
                     $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'enable-sftp','true')";
                     $q = $dbGuac->query($query);
@@ -251,6 +251,9 @@ class DeviceConnexion extends genericClass{
                     $q = $dbGuac->query($query);
 
                     $query = "UPDATE `guacamole_connection_parameter` SET parameter_value = '$this->Password' WHERE connection_id=$this->GuacamoleId AND parameter_name='password'";
+                    $q = $dbGuac->query($query);
+
+                    $query = "UPDATE `guacamole_connection_parameter` SET parameter_value = 'white-black' WHERE connection_id=$this->GuacamoleId AND parameter_name='color-scheme'";
                     $q = $dbGuac->query($query);
 
                 }
@@ -282,9 +285,30 @@ class DeviceConnexion extends genericClass{
 
 
 
+    public function Delete() {
+        $this->removeGuacamoleConnection();
+        parent::Delete();
+    }
 
     private function removeGuacamoleConnection(){
+        $dbGuac = new PDO('mysql:host=10.0.189.12;dbname=guacamole', 'root', 'RsL5pfky', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+        $dbGuac->query("SET AUTOCOMMIT=1");
+        $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+        //Suppression des parametres
+        $query = "DELETE FROM `guacamole_connection_parameter` WHERE connection_id=$this->GuacamoleId";
+        $q = $dbGuac->query($query);
+
+        //Suppression des permission
+        $query = "DELETE FROM `guacamole_connection_permission` WHERE connection_id=$this->GuacamoleId";
+        $q = $dbGuac->query($query);
+
+        //Suppression des sharing profile + params + perms
+        //TODO
+
+        //Suppression de la connection
+        $query = "DELETE FROM `guacamole_connection` WHERE connection_id=$this->GuacamoleId";
+        $q = $dbGuac->query($query);
     }
 
 }

@@ -293,8 +293,7 @@ class Event extends genericClass {
     public static function getRegisteredPush() {
         if (!file_exists("Data/Push/".Sys::$User->Id.".push")){
             //creation d'une nouvelle configuration push
-            return (object) [
-            ];
+            return (object) array();
         }else{
             @include "Data/Push/".Sys::$User->Id.".push";
             $var = 'push'.Sys::$User->Id;
@@ -316,19 +315,19 @@ class Event extends genericClass {
         //ajout de la requete et des paramètres
         if (!isset($obj->{$module.$objectclass}))
             $obj->{$module.$objectclass} = array(
-                $context => (object) [
+                $context => (object) array(
                     'query' => $query,
                     'filters' => $filters,
                     'offset' => $offset,
                     'limit' => $limit
-                ]
+                )
             );
-        else $obj->{$module.$objectclass}[$context] = (object) [
+        else $obj->{$module.$objectclass}[$context] = (object) array(
                 'query' => $query,
                 'filters' => $filters,
                 'offset' => $offset,
                 'limit' => $limit
-            ];
+        );
         //mis à jour du fichier
         $obj = var_export($obj, true);
         $obj = str_replace('stdClass::__set_state', '(object)', $obj);

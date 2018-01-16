@@ -20,9 +20,9 @@
                         Domaine
                     </th>
                     <th width="50">Titre</th>
-                    <th width="50">Couleur 1</th>
-                    <th width="50">Couleur 2</th>
-                    <th width="50">Image</th>
+                    <th width="50" style="text-align: center;">Couleur 1</th>
+                    <th width="50" style="text-align: center;">Couleur 2</th>
+                    <th width="50" style="text-align: center;">Logo</th>
                     <th width="50">Action</th>
                 </tr>
                 </thead>
@@ -35,15 +35,26 @@
                     <td>{[{ item.Titre }]}</td>
                     <td><span class="color_display" style="background-color: {[{ item.Couleur1 }]};"></span></td>
                     <td><span class="color_display" style="background-color: {[{ item.Couleur2 }]};"></span></td>
-                    <td><span class="img_display" style="background-image: url('{[{ item.Image }]}');"></span></td>
-                    <td><a class="btn btn-warning" href="javascript: void(0);" ng-click="ParcInstanceModify(item)">Modifier</a></td>
+                    <td><span class="img_display" style="background-image: url('{[{ item.Logo }]}');"></span></td>
+                    <td>
+                        <a class="btn btn-warning" href="javascript: void(0);" ng-click="ParcInstanceModify(item)">Modifier</a>
+                        <a  class="btn btn-danger" href="javascript: void(0);" ng-click="ParcInstanceDelete(item)">Supprimer</a>
+                    </td>
                 </tr>
                 </tbody>
             </table>
+
             <div>
                 <dir-pagination-controls boundary-links="true" pagination-context="MiniSite" pagination-id="ParcInstance-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
             </div>
         </div>
+        {% if canCreate %}
+            <div class="panel">
+                <a  href="javascript: void(0);" class="btn btn-warning" ng-click="ParcInstanceAdd()">
+                    Ajouter
+                </a>
+            </div>
+        {% endif %}
     </section>
 
 </div>

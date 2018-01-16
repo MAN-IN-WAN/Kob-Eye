@@ -49,6 +49,9 @@
             {% for field in fields %}
                 <th title="{{ field.name }}">{{ field.listDescr }}</th>
             {% endfor %}
+            {% for interface in Interfaces %}
+                <th>{{ interface.name }}</th>
+            {% endfor %}
             <th width="50">Détails</th>
             <th width="50">Actions</th>
         </tr>
@@ -97,6 +100,17 @@
                 <span ng-bind-html="item.{{ field.name }}"></span>
             {% endif %}
         </td>
+        {% endfor %}
+        {% for interface in Interfaces %}
+            {% if interface.child  %}
+            <td scope="row" class="type{{ interface.type }}">
+                {% if interface.type == "price" or interface.type == "float" %}
+                    <span class="label label-warning" ng-repeat="child in item.{{ interface.child }}">{[{ child.{{ interface.property }}| currency:"" }]}</span>
+                {% elseif interface.type == "extlink" %}
+                    <a class="btn btn-info btn-xs type_{[{ child.{{ interface.title }} }]}" href="https://proxy.abtel.fr/remote/#/client/{[{ child.{{ interface.property }} }]}" target="_blank" ng-repeat="child in item.{{ interface.child }} | limitTo:2">{[{ child.{{ interface.title }} }]}</a>
+                {% endif %}
+            </td>
+            {% endif %}
         {% endfor %}
         <td width="200" class="table-details" ng-bind-html="item._details">{[{ item._details }]}</td>
         <td width="170" style="width:170px;">

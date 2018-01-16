@@ -384,10 +384,15 @@ SPINNER
 }
 
 /* Minisites*/
+#ParcInstance td{
+    vertical-align: middle;
+}
+
 .color_display{
     display: block;
     width: 30px;
     height: 20px;
+    margin: auto;
 }
 .img_display{
     display: block;
@@ -403,4 +408,41 @@ label.clickable{
     cursor: pointer;
     margin-top: 10px;
     padding: 5px;
+}
+
+/* liste Device -> Connexions*/
+.btn.btn-info.type_RDP{
+
+}
+.btn.btn-info.type_VNC{
+    background-color:  #f0ad4e;
+    border-color: #f0ad4e;
+}
+.btn.btn-info.type_VNC:hover{
+    background-color:  #e09d3e;
+    border-color: #e09d3e;
+}
+.btn.btn-info.type_SSH{
+    background-color:  #636c72;
+    border-color: #636c72;
+}
+.btn.btn-info.type_SSH:hover{
+    background-color:  #535c62;
+    border-color: #535c62;
+}
+.btn.btn-info.type_Telnet{
+    background-color:  #5cb85c;
+    border-color: #5cb85c;
+}
+.btn.btn-info.type_Telnet:hover{
+    background-color:  #4ca84c;
+    border-color: #4ca84c;
+}
+.btn.btn-info.type_Https{
+    background-color:  #fff;
+    border-color: #333;
+}
+.btn.btn-info.type_Https:hover{
+    background-color:  #ddd;
+    border-color: #333;
 }

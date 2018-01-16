@@ -260,7 +260,7 @@ class CompteMail extends genericClass {
             $domaine = $zimbra->getDomain($dom);
         } catch (Exception $e){
             //if($e->getMessage() == 'no such domain'){
-            $this->AddError(array('Message' => 'Erreur lors de la liaison avec le serveur de mail, le domaine renseigné n\'existe pas', 'Object' => $e));
+            $this->AddError(array('Message' => 'Erreur, le domaine renseigné n\'existe pas', 'Object' => $e));
             return false;
             //TODO : Creation du domaine ?
             //}
@@ -271,7 +271,7 @@ class CompteMail extends genericClass {
             $temp = $zimbra->getAccount('abtel.fr', 'id', $this->IdMail);
             $actuName = $temp->get('name');
         } catch (Exception $e) {
-            $this->AddError(array('Message' => 'Erreur lors de la liaison avec le serveur de mail, ce compte mail n\'existe pas', 'Object' => $e));
+            $this->AddError(array('Message' => 'Erreur, ce compte mail n\'existe plus', 'Object' => $e));
             return false;
         }
 
@@ -279,7 +279,7 @@ class CompteMail extends genericClass {
         try{
             $temp = $zimbra->getAccount($dom, 'name', $this->Adresse);
             if($temp->id != $this->IdMail){
-                $this->AddError(array('Message' => 'Erreur lors de la liaison avec le serveur de mail, cette adresse mail est liée à un autre compte', 'Object' => $temp));
+                $this->AddError(array('Message' => 'Erreur, cette adresse mail est liée à un autre compte', 'Object' => $temp));
                 return false;
             }
         } catch (Exception $e) {
@@ -288,7 +288,7 @@ class CompteMail extends genericClass {
         try{
             $temp = $zimbra->getDistributionList( $this->Adresse,'name');
 
-            $this->AddError(array('Message' => 'Erreur lors de la liaison avec le serveur de mail, cette adresse mail correspond à une liste de diffusion', 'Object' => $temp));
+            $this->AddError(array('Message' => 'Erreur, cette adresse mail correspond à une liste de diffusion', 'Object' => $temp));
             return false;
         } catch (Exception $e) {
             //print_r($e);
@@ -442,12 +442,13 @@ class CompteMail extends genericClass {
         }
         $zimbra = new \Zimbra\ZCS\Admin($srv->IP, $srv->mailAdminPort);
         $zimbra->auth($srv->mailAdminUser, $srv->mailAdminPassword);
-        //$token = $zimbra->delegateAuth($this->Adresse);
-        $token = "88454e0d1242342df2de81063b7bbc04c18331a7dbc978fdb422200f3bab63fe";
-        $timestamp = (time()*1000);
-        $expires = 0;
-        $preauth = hash_hmac('sha1',$this->Adresse.'|name|0|'.$timestamp,$token);
-        $url = 'https://'.$srv->DNSNom.'/service/preauth?account='.$this->Adresse.'&by=name&timestamp='.$timestamp.'&expires='.$expires.'&preauth='.$preauth;
+        $datoken = $zimbra->delegateAuth($this->Adresse);
+        //$token = "f6bb13efeafaa432f1f05991f7d55a56f60940f825f2b258b40f813065a37f4d";
+        //$timestamp = (time()*1000);
+        //$expires = 0;
+        //$preauth = hash_hmac('sha1',$this->Adresse.'|name|0|'.$timestamp,$token);
+        //$url = 'https://'.$srv->DNSNom.'/service/preauth?account='.$this->Adresse.'&by=name&timestamp='.$timestamp.'&expires='.$expires.'&preauth='.$preauth;
+        $url = 'https://'.$srv->DNSNom.'/mail?auth=qp&zauthtoken='.$datoken;
         return $url;
     }
 }

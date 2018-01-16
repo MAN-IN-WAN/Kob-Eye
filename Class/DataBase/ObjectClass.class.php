@@ -1609,6 +1609,7 @@ class ObjectClass extends Root{
 			//             echo $this->titre."/".$Field."=$int".$chaine.$Suffixe." => ".$Result[0]["COUNT(*)"]."\r\n";
 		}
 		if ($modif)$chaine=$int.$chaine;
+        if(''.intval($chaine) == $chaine) $chaine = 'u-'.$chaine;
 		return $chaine;
 	}
 	function autoCanon($Obj,$Prefixe="") {

@@ -1,10 +1,10 @@
 [IF [!Utils::isMail([!email!])!]]
     //Verification des informations du formulaire
     [LIB Mail|LeMail]
-    [METHOD LeMail|Subject][PARAM][ENG.SYSTEMS] Nouveau message du formulaire de contact [!name!][/PARAM][/METHOD]
-    [METHOD LeMail|From][PARAM][!email!][/PARAM][/METHOD]
+    [METHOD LeMail|Subject][PARAM][!societe!] Nouveau message du formulaire de contact [!name!][/PARAM][/METHOD]
+    [METHOD LeMail|From][PARAM]noreply.minisites@abtel.fr[/PARAM][/METHOD]
     [METHOD LeMail|ReplyTo][PARAM][!email!][/PARAM][/METHOD]
-    [METHOD LeMail|To][PARAM]contact@eng.systems[/PARAM][/METHOD]
+    [METHOD LeMail|To][PARAM][!origin!][/PARAM][/METHOD]
     [METHOD LeMail|Body]
         [PARAM]
             [BLOC Mail]
@@ -21,16 +21,16 @@
 
     //Mail de confirmation
     [LIB Mail|LeMail]
-    [METHOD LeMail|Subject][PARAM][ENG.SYSTEMS] Votre message a bien été envoyé.[/PARAM][/METHOD]
-    [METHOD LeMail|From][PARAM]contact@eng.systems[/PARAM][/METHOD]
-    [METHOD LeMail|ReplyTo][PARAM]contact@eng.systems[/PARAM][/METHOD]
+    [METHOD LeMail|Subject][PARAM][!societe!] Votre message a bien été envoyé.[/PARAM][/METHOD]
+    [METHOD LeMail|From][PARAM]noreply.minisites@abtel.fr[/PARAM][/METHOD]
+    [METHOD LeMail|ReplyTo][PARAM][!origin!][/PARAM][/METHOD]
     [METHOD LeMail|To][PARAM][!email!][/PARAM][/METHOD]
     [METHOD LeMail|Body]
     [PARAM]
     [BLOC Mail]
         Votre message a bien été envoyé et est en cours de traitement par nos services.<br/>
-    Nous nous effrocons de répondre aussi vite que possible.<br/>
-    Merci pour l'intéret que vous portez à la société ENG.SYSTEMS.<br/>
+    Nous nous efforçons de répondre aussi vite que possible.<br/>
+    Merci pour l'intéret que vous portez à la société [!societe!].<br/>
     <br/>
 
     Cordialement.

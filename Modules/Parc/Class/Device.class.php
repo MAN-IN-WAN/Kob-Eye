@@ -8,15 +8,14 @@ class Device extends genericClass{
      * @override
      */
     function save(){
-        if ($this->Id) {
-            $this->checkGuacamoleConnections();
+        if (parent::save()){
+            //checking port redirect
+            $this->checkRedirectPort();
+            //check base connection creation
+            $this->checkBaseConnection();
+            return true;
         }
-        parent::save();
-        //checking port redirect
-        $this->checkRedirectPort();
-        //check base connection creation
-        $this->createBaseConnection();
-        return true;
+        return false;
     }
 
     /**
@@ -31,7 +30,10 @@ class Device extends genericClass{
         $tasks = $this->getChildren('DeviceTask');
         foreach ($tasks as $task) $task->Delete();
         parent::Delete();
+
+        return true;
     }
+
     private function checkRedirectPort(){
         $ports = $this->getChildren('DevicePort');
         switch ($this->OS){
@@ -61,12 +63,14 @@ class Device extends genericClass{
                 break;
         }
     }
+
+
     function getVersion($uuid) {
         /*if(!isset($uuid))
             return false;*/
         $prod = true;
         $Commands = "";
-        $ConnectionType = "\r\nPorts=";
+
         //recherche de la machine
         $dev = Sys::getOneData('Parc','Device/Uuid='.$uuid);
         if (!$dev&&isset($uuid)){
@@ -80,16 +84,20 @@ class Device extends genericClass{
             $dev->LastSeen = time();
             $dev->PublicIP = $_SERVER['REMOTE_ADDR'];
             $dev->Online = true;
-            $dev->Save();
+
             if ($dev->ModeTest) $prod=false;
+
+            //Rafraichissement de la version du dev si besoin
             if (isset($_GET['version'])&&$_GET['version']!=$dev->CurrentVersion){
                 $dev->CurrentVersion = $_GET['version'];
-                $dev->Save();
             }
-            if (isset($_GET['bios'])&&$_GET['bios']!=$dev->CurrentVersion){
+
+            // raffraichissement du NS du BIOS
+            if (isset($_GET['bios'])&&$_GET['bios']!=$dev->SerialNumber){
                 $dev->SerialNumber = $_GET['bios'];
-                $dev->Save();
             }
+
+            //Gestion des erreurs
             if (isset($_GET['error'])&&sizeof($_GET['error'])>1){
                 $dev->Erreur = true;
                 $err = explode(';',$_GET['error']);
@@ -108,18 +116,20 @@ class Device extends genericClass{
                             break;
                     }
                 }
-                $dev->Save();
             }else{
                 $dev->Erreur = false;
-                $dev->Save();
             }
-            //GEstion des commandes
+
+
+            //Gestion des commandes
             if ($dev->RestartTunnel){
                 $Commands = "\r\nCommande=tunnel";
                 $dev->RestartTunnel = false;
-                $dev->Save();
             }
+
+            $dev->Save();
         }
+
         //recherche d'un tache à accomplir
         $t = $dev->getChildren('DeviceTask/Enabled=1');
         if (sizeof($t)>0){
@@ -129,19 +139,14 @@ class Device extends genericClass{
         $log = Sys::getOneData('Parc','LogicielVersion/Release='.$prod);
         if (!$log) $log = Sys::getOneData('Parc','LogicielVersion/Release='.!$prod);
 
-        $dirty = '';
-        $ConnectionType='';
-
         $cos=$dev->getChildren('DevicePort');
-        $dirty = "Ports=";
+        $Redirect = "Ports=";
         //TODO : checker les doublons pour modif de mot de passe
         foreach ($cos as $co){
             $ip = $co->IpRedirectDistant!=''?$co->IpRedirectDistant:'localhost';
-            $dirty .= 'R'.$co->PortRedirectLocal.'='.$ip.':'.$co->PortRedirectDistant.',';
+            $Redirect .= 'R'.$co->PortRedirectLocal.'='.$ip.':'.$co->PortRedirectDistant.',';
         }
-        $dirty = rtrim($dirty,',');
-        $dev->Save();
-
+        $Redirect = rtrim($Redirect,',');
 
 
         return "Version=$log->Version
@@ -156,30 +161,20 @@ VncDll64=http://".Sys::$domain."/$log->VncDllFile64
 ZabbixAgent32=http://".Sys::$domain."/$log->ZabbixAgent32
 ZabbixAgent64=http://".Sys::$domain."/$log->ZabbixAgent64
 EAYssl32=http://".Sys::$domain."/$log->EAYssl32
-EAYlib32=http://".Sys::$domain."/$log->EAYlib32$ConnectionType$Commands
+EAYlib32=http://".Sys::$domain."/$log->EAYlib32$Commands
 Client=$dev->CodeClient
 Computer=$dev->Nom
 Type=$dev->DeviceType
 Task=$task
-".$dirty."
+".$Redirect."
 ";
-
-        /*Tasklist
-            Ports= **Chaine régénérée**   //Reinit les redirection de ports avec les infos fournies
-
-
-
-
-
-        */
-
-
 
 
     }
 
     function getConfig($uuid) {
         if (empty($uuid)) return;
+
         $exists = Sys::getOneData('Parc','Device/Uuid='.$uuid);
         if ($exists){
             $exists->Nom = $_GET["name"];
@@ -187,15 +182,6 @@ Task=$task
             if(isset($_GET["machine"]))
                 $exists->DeviceType = ($_GET["machine"]=='station')?'Poste':'Serveur';
             else $exists->DeviceType = 'Poste';
-
-            $cos=$exists->getChildren('DevicePort');
-            $exists->ConnectionType = "";
-            foreach ($cos as $co){
-                $ip = $co->IpRedirectDistant!=''?$co->IpRedirectDistant:'localhost';
-                $exists->ConnectionType .= 'R'.$co->PortRedirectLocal.'='.$ip.':'.$co->PortRedirectDistant.',';
-            }
-            $exists->ConnectionType = rtrim($exists->ConnectionType,',');
-            $exists->Save();
             $obj = $exists;
         }else{
             //creation du device
@@ -215,16 +201,8 @@ Task=$task
             else $obj->DeviceType = 'Poste';
             $obj->Uuid = $uuid;
             //klog::l('$obj',$obj);
-            $obj->Save();
-            $cos=$obj->getChildren('DevicePort');
-            $obj->ConnectionType = "";
-            foreach ($cos as $co){
-                $ip = $co->IpRedirectDistant!=''?$co->IpRedirectDistant:'localhost';
-                $obj->ConnectionType .= 'R'.$co->PortRedirectLocal.'='.$ip.':'.$co->PortRedirectDistant.',';
-            }
-            $obj->ConnectionType = rtrim($obj->ConnectionType,',');
-            $obj->Save();
         }
+
         //affectation du client
         $client = $_GET["clientid"];
         if (!empty($client)){
@@ -237,13 +215,15 @@ Task=$task
             if ($cli) {
                 $obj->addParent($cli);
             }
+
             $obj->Save();
-        }
-        return $obj->ConnectionType;
+        }else die('CLIENT INTROUVABLE');
+
+        return true;
     }
 
     /**
-     * check client name and device hostname
+     * check client name and device hostname while installing ALS
      */
     function checkClient($uuid) {
         //check client
@@ -392,46 +372,30 @@ Task=$task
         return true;
     }
 
-    public function createBaseConnection(){
-        $ports = explode(',',$this->ConnectionType);
-        array_walk($ports,function(&$a){
-            $a = ltrim($a,'R');
-            $temp = explode('=',$a);
-            $a = array('local'=>$temp[0],'distant'=>$temp[1]);
-            $a['distant']=explode(':',$a['distant'])[1];
-        });
+    public function checkBaseConnection(){
 
+        switch ($this->OS){
+            case "Windows":
+                $rdp = $this->getOneChild('DeviceConnexion/Type=RDP&(!PortRedirectLocal='.(12000 + $this->Id).'+PortRedirectLocal='.(32000 + $this->Id).'!)');
+                $vnc = $this->getOneChild('DeviceConnexion/PortRedirectLocal='.(22000 + $this->Id).'&Type=VNC');
 
-        if($this->GuacamoleIdRdp != "" || $this->GuacamoleIdRdp != null)
-            $rdp = $this->getOneChild('DeviceConnexion/GuacamoleId='.$this->GuacamoleIdRdp);
-
-        if($this->GuacamoleIdVnc != "" || $this->GuacamoleIdVnc != null)
-            $vnc = $this->getOneChild('DeviceConnexion/GuacamoleId='.$this->GuacamoleIdVnc);
-
-
-        if(!isset($rdp) || !$rdp){
-            $coRdp = genericClass::createInstance('Parc','DeviceConnexion');
-            $coRdp->Nom = $this->Nom . "_rdp";
-            $coRdp->Type = 'RDP';
-            $coRdp->PortRedirectLocal = $ports[0]['local'];
-            $coRdp->PortRedirectDistant = $ports[0]['distant'];
-            $coRdp->GuacamoleUrl = $this->GuacamoleUrlRdp;
-            $coRdp->GuacamoleId = $this->GuacamoleIdRdp;
-            $coRdp->addParent($this);
-            $coRdp->Save();
-        }
-
-
-        if(!isset($vnc) || !$vnc){
-            $coVnc = genericClass::createInstance('Parc','DeviceConnexion');
-            $coVnc->Nom = $this->Nom . "_vnc";
-            $coVnc->Type = 'VNC';
-            $coVnc->PortRedirectLocal = $ports[1]['local'];
-            $coVnc->PortRedirectDistant = $ports[1]['distant'];
-            $coVnc->GuacamoleUrl = $this->GuacamoleUrlVnc;
-            $coVnc->GuacamoleId = $this->GuacamoleIdVnc;
-            $coVnc->addParent($this);
-            $coVnc->Save();
+                if(!isset($rdp) || !$rdp){
+                    $coRdp = genericClass::createInstance('Parc','DeviceConnexion');
+                    $coRdp->Nom = $this->Nom . "_rdp";
+                    $coRdp->Type = 'RDP';
+                    $coRdp->PortRedirectLocal = 12000 + $this->Id;
+                    $coRdp->addParent($this);
+                    $coRdp->Save();
+                }
+                if(!isset($vnc) || !$vnc){
+                    $coVnc = genericClass::createInstance('Parc','DeviceConnexion');
+                    $coVnc->Nom = $this->Nom . "_vnc";
+                    $coVnc->Type = 'VNC';
+                    $coVnc->PortRedirectLocal = 22000 + $this->Id;
+                    $coVnc->addParent($this);
+                    $coVnc->Save();
+                }
+                break;
         }
     }
     /**

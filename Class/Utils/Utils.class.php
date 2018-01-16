@@ -203,6 +203,10 @@ class Utils {
         return explode($P[0], $P[1]);
     }
 
+    static function UrlEncode($P) {
+	    $c = implode(',',$P);
+        return urlencode($c);
+    }
     static function UrlDecode($P) {
         return urldecode($P[0]);
     }
