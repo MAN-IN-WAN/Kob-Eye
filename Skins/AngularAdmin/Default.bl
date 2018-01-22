@@ -156,6 +156,14 @@
 
     <script src="Skins/AngularAdmin/assets/vendors/ionrangeslider/ionic-range-slider.js"></script>
 
+    <!-- Ckeditor -->
+    <script src="Tools/Js/ckeditor4.8/ckeditor.js"></script>
+    <script src="Skins/AngularAdmin/assets/vendors/angular-ckeditor-master/angular-ckeditor.min.js"></script>
+
+    <!-- Color Picker -->
+    <script src="Skins/AngularAdmin/assets/vendors/angular-bootstrap-colorpicker-master/js/bootstrap-colorpicker-module.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/assets/vendors/angular-bootstrap-colorpicker-master/css/colorpicker.min.css">
+
     <!-- Abtel TimeLine -->
     <link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/assets/vendors/abtTimeline/style.css">
     <script src="Skins/AngularAdmin/assets/vendors/abtTimeline/abtTimeline.js"></script>
@@ -170,6 +178,7 @@
 
     <!-- KobEye -->
     <script src="Skins/AngularAdmin/assets/common/js/KEPoll.js"></script>
+
 
 
 [/HEADER]

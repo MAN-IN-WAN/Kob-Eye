@@ -9,6 +9,9 @@ if ($info["TypeSearch"]=="Direct"){
     $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
 }
 $formfields = $o->getElementsByAttribute('form','',true);
+$hiddenfields = $o->getElementsByAttribute('hidden','',true);
+if(!$hiddenfields) $hiddenfields = array();
+$formfields = array_merge($formfields,$hiddenfields);
 $values = json_decode(file_get_contents('php://input'));
 $out = array();
 foreach ($formfields as $f){

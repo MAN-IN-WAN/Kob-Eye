@@ -288,6 +288,9 @@
 		<INTERFACES name="bottom">
 			<FORM type="Iframe" url="grafana/dashboard/db/monitoring-panel-windows-als?var-group=Supervision&amp;var-netif=All&amp;var-host=">Grafana</FORM>
 		</INTERFACES>
+		<INTERFACES name="list">
+			<FORM type="extlink" child="DeviceConnexion" property="GuacamoleUrl" title="Type">Connexions</FORM>
+		</INTERFACES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="2" fiche="1" form="1" listDescr="Nom machine" description="Nom du périphérique">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="8" obligatoire="0" list="8" fiche="1" listDescr="IP Publique" description="IP Publique">PublicIP</PROPERTIES>
 		<PROPERTIES category="Intitulé" searchOrder="2" type="varchar" fiche="1" form="0" list="1" listDescr="Code Client" description="Code client saisi">CodeClient</PROPERTIES>
@@ -303,10 +306,10 @@
 		<PROPERTIES type="text" searchOrder="12" obligatoire="0" fiche="1" form="1" description="Description du périphérique">Description</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="13" obligatoire="0" fiche="1" description="Identifiant du périphérique">Uuid</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="15" obligatoire="0" description="Numéro de série du périphérique">SerialNumber</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="14" obligatoire="0" fiche="1" description="Type de connexion">ConnectionType</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="14" obligatoire="0" description="Type de connexion">ConnectionType</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="14" obligatoire="0" fiche="1" list="5" values="Poste,Serveur" form="1" listDescr="Type" description="Type de machine">DeviceType</PROPERTIES>
-		<PROPERTIES type="extlink" list="10" fiche="1" description="Url guacamole VNC" listDescr="VNC">GuacamoleUrlVnc</PROPERTIES>
-		<PROPERTIES type="extlink" list="11"  fiche="1" description="Url guacamole RDP" listDescr="RDP">GuacamoleUrlRdp</PROPERTIES>
+		<PROPERTIES type="extlink"  description="Url guacamole VNC" listDescr="VNC">GuacamoleUrlVnc</PROPERTIES>
+		<PROPERTIES type="extlink"  description="Url guacamole RDP" listDescr="RDP">GuacamoleUrlRdp</PROPERTIES>
 		<PROPERTIES type="varchar" fiche="1" form="1" description="Type de système d'exploitation" listDescr="OS" default="Windows" values="Linux,Windows">OS</PROPERTIES>
 		<PROPERTIES type="varchar" fiche="1" form="1" description="Type de supervision" values="Active,Passive" default="Active" listDescr="Supervision">Monitoring</PROPERTIES>
 		<PROPERTIES type="varchar" description="Id guacamole RDP">GuacamoleIdRdp</PROPERTIES>
@@ -420,18 +423,23 @@
 		<FKEY card="1,1" data="Server,Id" description="Serveur SQL" filter="SQL=1" list="1" form="1" fiche="1" listDescr="Serveur SQL">ServerId</FKEY>
 		<FKEY card="1,1" data="Host,Id" description="Hébergement" list="1" form="1" fiche="1" listDescr="Hébergement">HostId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Instance" AccessPoint="1" driver="mysql" Description="Site web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Instance.class.php">
+	<OBJECTCLASS title="Instance" logEvent="1" AccessPoint="1" driver="mysql" Description="Site web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Instance.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de l'instance" list="1" form="1" fiche="1" unique="1" listDescr="Nom">Nom</PROPERTIES>
-        <PROPERTIES type="varchar" description="Type" values="Standard,Easy,Minimal" default="Standard">Type</PROPERTIES>
+        <PROPERTIES type="varchar" description="Type" values="Standard,Easy,Minimal" hidden="1" default="Standard">Type</PROPERTIES>
         <CATEGORY title="MiniSite">
-            <PROPERTIES type="image" list="1" form="1" fiche="1" description="Image">Image</PROPERTIES>
-            <PROPERTIES type="varchar" list="1" form="1" fiche="1" description="Titre">Titre</PROPERTIES>
-            <PROPERTIES type="text" form="1" fiche="1" description="Description">Description</PROPERTIES>
-            <PROPERTIES type="color" list="1" form="1" fiche="1" description="Couleur 1">Couleur1</PROPERTIES>
-            <PROPERTIES type="color" list="1" form="1" fiche="1" description="Couleur 2">Couleur2</PROPERTIES>
+            <PROPERTIES type="image" list="1" form="1" fiche="1" description="Logo">Logo</PROPERTIES>
+            <PROPERTIES type="varchar" list="1" form="2" fiche="1" description="Titre">Titre</PROPERTIES>
+            <PROPERTIES type="varchar" list="1" form="2" fiche="1" description="Slogan">Slogan</PROPERTIES>
+            <PROPERTIES type="image" list="1" form="3" fiche="1" description="Image">Image</PROPERTIES>
+            <PROPERTIES type="html" form="4" fiche="1" description="Description">Description</PROPERTIES>
+            <PROPERTIES type="color" list="1" form="5" fiche="1" description="Couleur 1">Couleur1</PROPERTIES>
+            <PROPERTIES type="color" list="1" form="6" fiche="1" description="Couleur 2">Couleur2</PROPERTIES>
+            <PROPERTIES type="varchar" list="1" form="7" fiche="1" description="Adresse eMail de contact">AdresseMail</PROPERTIES>
+            <PROPERTIES type="varchar" list="1" form="7" fiche="1" description="Numéro de téléphone">Telephone</PROPERTIES>
+            <PROPERTIES type="varchar" list="1" form="8" fiche="1" description="Adresse pour carte Maps">Adresse</PROPERTIES>
             <FKEY card="0,1" module="Systeme" data="Site,Id" description="Site" listDescr="Site">SiteId</FKEY>
         </CATEGORY>
-		<FKEY card="0,n" data="Domain,Id" description="Domaine(s)" list="1" form="1" fiche="1" listDescr="Domaine(s)">DomainId</FKEY>
+		<FKEY card="0,n" data="Domain,Id" description="Domaine(s)" list="1" form="20" fiche="1" listDescr="Domaine(s)">DomainId</FKEY>
 		<FKEY card="0,n" data="Host,Id" description="Hébergement" listDescr="Hébergement">HostId</FKEY>
         <FKEY card="0,n" data="Server,Id" description="Serveur SQL" filter="SQL=1" listDescr="Serveur SQL">ServerId</FKEY>
         <FKEY card="1,1" data="Client,Id" description="Client" listDescr="Serveur SQL">ClientId</FKEY>

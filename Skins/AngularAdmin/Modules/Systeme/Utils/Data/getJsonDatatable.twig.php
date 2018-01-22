@@ -27,10 +27,11 @@ $children = array();
 foreach ($interfaces as $i){
     foreach ($i as $form) {
         if (isset($form['child'])) {
-            $children = array_push($children, $form['child']);
+            array_push($children, $form['child']);
         }
     }
 }
+
 foreach ($vars['rows'] as $k=>$v){
     $uc = Sys::getOneData('Systeme','User/'.$v->userCreate);
     $ue = Sys::getOneData('Systeme','User/'.$v->userEdit);
@@ -76,12 +77,17 @@ foreach ($vars['rows'] as $k=>$v){
                 $v->{$f['name'].'label'} = '';
             }
         }
-        //cas widget
-        if (sizeof($children)){
-            foreach ($children as $c)
-                $v->{$c} = $v->getChildren($c);
-        }
+    }
+    //cas widget
+    if (sizeof($children)){
+        foreach ($children as $c)
+            $v->{$c} = array_reverse($v->getChildren($c));
     }
 }
+if (sizeof($children)){
+    foreach ($children as $c)
+        array_push($vars['fields'],array('type'=>'children','name'=>$c));
+}
+
 $vars['total'] = Sys::getCount($info['Module'],$vars['Path'].'/'.$filters);
 ?>

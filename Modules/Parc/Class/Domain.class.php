@@ -327,17 +327,32 @@ class Domain extends genericClass {
 		$out.= "<li>Check <strong>mailservers</strong><ul>\r\n";
 		//mail server
 		if (is_array($conf['MAIL_SERVER'])) {
-			//test existence
-			$e = Sys::$Modules['Parc']->callData('Domain/'.$this->Id.'/'.$conf['MAIL_SERVER']['TYPE'].'/Nom='.$conf['MAIL_SERVER']['CN'],false,0,1,'DESC','Id','COUNT(*)');
-			if (!$e[0]['COUNT(*)']){
-				$KEObj = genericClass::createInstance('Parc', $conf['MAIL_SERVER']['TYPE']);
-				$KEObj->Nom = $conf['MAIL_SERVER']['CN'];
-				$KEObj->Dnscname = $conf['MAIL_SERVER']['DNSCNAME'];
-				$KEObj->Poids = (isset($conf['MAIL_SERVER']['WEIGHT'])&&$conf['MAIL_SERVER']['WEIGHT']>0)?$conf['MAIL_SERVER']['WEIGHT']:'10';
-				$KEObj->AddParent($this);
-				$KEObj->Save();
-				$out.= '<li><div style="color:red" class="debug">Add Mailserver '.$KEObj->Nom.'</div> </li>';
-			}
+		    if(isset($conf['MAIL_SERVER']['TYPE'])){
+                //test existence
+                $e = Sys::$Modules['Parc']->callData('Domain/'.$this->Id.'/'.$conf['MAIL_SERVER']['TYPE'].'/Nom='.$conf['MAIL_SERVER']['CN'],false,0,1,'DESC','Id','COUNT(*)');
+                if (!$e[0]['COUNT(*)']){
+                    $KEObj = genericClass::createInstance('Parc', $conf['MAIL_SERVER']['TYPE']);
+                    $KEObj->Nom = $conf['MAIL_SERVER']['CN'];
+                    $KEObj->Dnscname = $conf['MAIL_SERVER']['DNSCNAME'];
+                    $KEObj->Poids = (isset($conf['MAIL_SERVER']['WEIGHT'])&&$conf['MAIL_SERVER']['WEIGHT']>0)?$conf['MAIL_SERVER']['WEIGHT']:'10';
+                    $KEObj->AddParent($this);
+                    $KEObj->Save();
+                    $out.= '<li><div style="color:red" class="debug">Add Mailserver '.$KEObj->Nom.'</div> </li>';
+                }
+            } else{
+		        foreach($conf['MAIL_SERVER'] as $ms){
+                    $e = Sys::$Modules['Parc']->callData('Domain/'.$this->Id.'/'.$ms['TYPE'].'/Nom='.$ms['CN'],false,0,1,'DESC','Id','COUNT(*)');
+                    if (!$e[0]['COUNT(*)']){
+                        $KEObj = genericClass::createInstance('Parc', $ms['TYPE']);
+                        $KEObj->Nom = $ms['CN'];
+                        $KEObj->Dnscname = $ms['DNSCNAME'];
+                        $KEObj->Poids = (isset($ms['WEIGHT'])&&$ms['WEIGHT']>0)?$ms['WEIGHT']:'10';
+                        $KEObj->AddParent($this);
+                        $KEObj->Save();
+                        $out.= '<li><div style="color:red" class="debug">Add Mailserver '.$KEObj->Nom.'</div> </li>';
+                    }
+                }
+            }
 		}
 		$out.= "</ul></li>\r\n";
 		$out.= "</ul></li></ul>";

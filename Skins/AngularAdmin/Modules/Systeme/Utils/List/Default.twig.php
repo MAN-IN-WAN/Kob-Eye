@@ -27,4 +27,8 @@ if (is_object(Sys::$CurrentMenu)) {
     }
 }else $vars['CurrentUrl'] = $Path;
 if (!$vars['ObjectClass']->AccessPoint) $vars['Type'] = "Tail";
+
+$vars["Interfaces"] = $vars["ObjectClass"]->getInterfaces();
+$vars["Interfaces"] = $vars["Interfaces"]['list'];
+
 ?>

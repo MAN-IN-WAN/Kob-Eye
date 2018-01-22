@@ -33,6 +33,8 @@ app.controller('ServicesMinisiteCtrl', function($location, $scope, $rootScope,$h
         $scope.modalObj = ParcInstanceStore.getNewData();
         $scope.modalObj.success = false;
         $scope.modalObj.title = 'Ajouter un nouveau Site Web';
+        $scope.modalObj.ClientClientId = [{{ Client.Id }}];
+        $scope.modalObj.Type = 'Minimal';
         $("#modal-ParcInstance").modal();
     }
 

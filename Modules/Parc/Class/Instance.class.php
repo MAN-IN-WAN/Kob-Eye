@@ -17,17 +17,25 @@ public function Save(){
             //Check du domaine
             $dom = $this->getOneParent('Domain');
             if(!$dom){
+
+                $GLOBALS['Systeme']->Db[0]->query('ROLLBACK');
                 $this->addError(Array("Message"=>'Un minisite doit être lié à un domaine'));
+                return false;
+            }
+            $temp = $dom->getChildren('Instance/Type=Minimal');
+            if(count($temp) > 1){
+                $GLOBALS['Systeme']->Db[0]->query('ROLLBACK');
+                $this->addError(Array("Message"=>'Un minisite est déjà lié à ce domaine'));
                 return false;
             }
 
             //Check du site et création l cas échéant
             $sit = Sys::getOneData('Parc','Site/Instance/'.$this->Id);
-
             if(!$sit) {
                 $sit =  genericClass::createInstance('Systeme','Site');
                 $sit->Domaine = 'www.'.$dom->Url;
                 if(!$sit->Save()) {
+                    $GLOBALS['Systeme']->Db[0]->query('ROLLBACK');
                     $this->addError(Array("Message"=>'Une Erreur est survenue lors de la création du site :'.$sit->Error[0]['Message']));
                     return false;
                 }
@@ -51,6 +59,7 @@ public function Save(){
                     $par->addParent($grp);
 
                 if(!$par->Save()) {
+                    $GLOBALS['Systeme']->Db[0]->query('ROLLBACK');
                     $this->addError(Array("Message"=>'Une Erreur est survenue lors de la création de l\'utilisateur lié au site :'.$par->Error[0]['Message']));
                     return false;
                 }
@@ -66,6 +75,7 @@ public function Save(){
                 $men->Titre = $this->Titre;
                 $men->addParent($par);
                 if(!$men->Save()) {
+                    $GLOBALS['Systeme']->Db[0]->query('ROLLBACK');
                     $this->addError(Array("Message"=>'Une Erreur est survenue lors de la création du menu lié au site :'.$men->Error[0]['Message']));
                     return false;
                 }
@@ -111,6 +121,34 @@ public function Save(){
 
     parent::Save();
     return true;
+}
+
+public function Delete(){
+    switch ($this->Type) {
+        case 'Standard':
+
+            break;
+        case 'Easy':
+
+            break;
+        case 'Minimal':
+            $site = Sys::getOneData('Parc','Site/Instance/'.$this->Id);
+            if($site){
+                $user = $site->getOneParent('User');
+                if($user){
+                    $menu = $user->getOneChild('Menu');
+                    if($menu) {
+                        $menu->Delete();
+                    }
+                    $user->Delete();
+                }
+
+                $site->Delete();
+            }
+
+            break;
+    }
+    parent::Delete();
 }
 
 
