@@ -21,12 +21,12 @@ class DeviceConnexion extends genericClass{
         $dbGuac = new PDO('mysql:host=10.0.189.12;dbname=guacamole', 'root', 'RsL5pfky', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
         $dbGuac->query("SET AUTOCOMMIT=1");
         $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
         $device = $this->getOneParent('Device');
         if(!$device) return false;
 
         //Vérif l'existence du client et le crée le cas échéant
         $cli = $device->getOneParent('Client');
+
         //klog::l('$cli',$cli);
         if (isset($cli->AccesUser) && $cli->AccesUser != '' && $cli->AccesUser != null && isset($cli->AccesPass) && $cli->AccesPass != '' && $cli->AccesPass != null) {
             $query = "SELECT * FROM `guacamole_user` WHERE username = '" . $cli->AccesUser . "'";
@@ -82,6 +82,7 @@ class DeviceConnexion extends genericClass{
                 $gid = $grp['connection_group_id'];
             } else {
                 $query = "INSERT INTO `guacamole_connection_group` (connection_group_name) VALUES ('" . strtoupper(str_replace('\'',' ',$cli->Nom)) . "')";
+                echo $query;
                 $q = $dbGuac->query($query);
 
                 $gid = $dbGuac->lastInsertId();

@@ -9,14 +9,16 @@ class Device extends genericClass{
      */
     function save(){
         if ($this->Id) {
-            $this->checkGuacamoleConnections();
+            //$this->checkGuacamoleConnections();
         }
-        parent::save();
-        //checking port redirect
-        $this->checkRedirectPort();
-        //check base connection creation
-        $this->createBaseConnection();
-        return true;
+        if (parent::save()) {
+            //checking port redirect
+            $this->checkRedirectPort();
+            //check base connection creation
+            //$this->createBaseConnection();
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -66,7 +68,6 @@ class Device extends genericClass{
             return false;*/
         $prod = true;
         $Commands = "";
-        $ConnectionType = "\r\nPorts=";
         //recherche de la machine
         $dev = Sys::getOneData('Parc','Device/Uuid='.$uuid);
         if (!$dev&&isset($uuid)){
@@ -187,15 +188,6 @@ Task=$task
             if(isset($_GET["machine"]))
                 $exists->DeviceType = ($_GET["machine"]=='station')?'Poste':'Serveur';
             else $exists->DeviceType = 'Poste';
-
-            $cos=$exists->getChildren('DevicePort');
-            $exists->ConnectionType = "";
-            foreach ($cos as $co){
-                $ip = $co->IpRedirectDistant!=''?$co->IpRedirectDistant:'localhost';
-                $exists->ConnectionType .= 'R'.$co->PortRedirectLocal.'='.$ip.':'.$co->PortRedirectDistant.',';
-            }
-            $exists->ConnectionType = rtrim($exists->ConnectionType,',');
-            $exists->Save();
             $obj = $exists;
         }else{
             //creation du device
@@ -215,15 +207,6 @@ Task=$task
             else $obj->DeviceType = 'Poste';
             $obj->Uuid = $uuid;
             //klog::l('$obj',$obj);
-            $obj->Save();
-            $cos=$obj->getChildren('DevicePort');
-            $obj->ConnectionType = "";
-            foreach ($cos as $co){
-                $ip = $co->IpRedirectDistant!=''?$co->IpRedirectDistant:'localhost';
-                $obj->ConnectionType .= 'R'.$co->PortRedirectLocal.'='.$ip.':'.$co->PortRedirectDistant.',';
-            }
-            $obj->ConnectionType = rtrim($obj->ConnectionType,',');
-            $obj->Save();
         }
         //affectation du client
         $client = $_GET["clientid"];
@@ -237,8 +220,18 @@ Task=$task
             if ($cli) {
                 $obj->addParent($cli);
             }
+
             $obj->Save();
+        }else die('CLIENT INTROUVABLE');
+
+        $cos=$obj->getChildren('DevicePort');
+        $obj->ConnectionType = "";
+        foreach ($cos as $co){
+            $ip = $co->IpRedirectDistant!=''?$co->IpRedirectDistant:'localhost';
+            $obj->ConnectionType .= 'R'.$co->PortRedirectLocal.'='.$ip.':'.$co->PortRedirectDistant.',';
         }
+        $obj->ConnectionType = rtrim($obj->ConnectionType,',');
+        $obj->Save();
         return $obj->ConnectionType;
     }
 

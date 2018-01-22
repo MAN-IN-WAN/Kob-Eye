@@ -4,40 +4,23 @@
         <FILTER name="Accès web" color="success">AccesActif=1</FILTER>
 		<PROPERTIES category="Intitulé" type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES category="Intitulé"  searchOrder="2" type="varchar" fiche="1" form="1" listDescr="Code Gestion">CodeGestion</PROPERTIES>
-		<PROPERTIES category="Accès client" type="boolean" obligatoire="0" searchOrder="4" description="Activation Accès web" list="1" fiche="1" form="1" listDescr="Accès Web">AccesActif</PROPERTIES>
-		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="5" description="Identifiant Accès web"  fiche="1" form="1">AccesUser</PROPERTIES>
-		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="6" description="Mot de passe Accès Web" fiche="1" form="1">AccesPass</PROPERTIES>
-        <PROPERTIES category="Accès client" type="varchar" description="Espace Mail à distribuer" fiche="1" form="1">QuotaMail</PROPERTIES>
-        <PROPERTIES category="Finance" type="price" description="Montant Mensuel" fiche="1" form="1" list="1" listDescr="Montant / Mois">MontantMensuel</PROPERTIES>
+		<PROPERTIES category="Accès client" type="boolean" obligatoire="0" searchOrder="4" description="Activation Accès web" listDescr="Accès Web">AccesActif</PROPERTIES>
+		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="5" description="Identifiant Accès web" >AccesUser</PROPERTIES>
+		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="6" description="Mot de passe Accès Web" >AccesPass</PROPERTIES>
+        <PROPERTIES category="Accès client" type="varchar" description="Espace Mail à distribuer">QuotaMail</PROPERTIES>
+        <PROPERTIES category="Finance" type="price" description="Montant Mensuel" listDescr="Montant / Mois">MontantMensuel</PROPERTIES>
 		<PROPERTIES category="Coordonnées" searchOrder="2" type="varchar" description="Adresse e-mail" fiche="1" form="1" list="1" listDescr="Email">Email</PROPERTIES>
-		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de téléphone" fiche="1" form="1" list="1" listDescr="Tel">Tel</PROPERTIES>
-		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de fax" fiche="1" form="1">Fax</PROPERTIES>
+		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de téléphone" listDescr="Tel">Tel</PROPERTIES>
+		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de fax" >Fax</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" obligatoire="1" unique="1" length="50" description="Nom sous LDAP (de 8-50 caractères sans caractère spéciaux ou espace)" fiche="1" form="1">NomLDAP</PROPERTIES>
 		<PROPERTIES category="LDAP" type="int" auto="1">LdapGid</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
-		<FUNCTION title="Envoyer un mail d'avertissement" type="form">MailAvertissement</FUNCTION>
-		<FUNCTION title="Envoyer un mail récapitulatif" type="form">EnvoyerRecapitulatif</FUNCTION>
-		<FUNCTION title="Importer plusieurs domaines" type="form">ImporterPlusieursDomaines</FUNCTION>
-		<FUNCTION title="Importation de comptes emails" type="form">ImporterPlusieursEmails</FUNCTION>
 		<FKEY card="0,1" module="Systeme" data="User,Id">UserId</FKEY>
 		<FKEY card="0,1" module="Parc" data="Revendeur,Id">RevendeurId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Contact" driver="mysql" Description="Contact/Utilisateur Client" Icon="/Skins/AdminV2/Img/IconAqua/Forum.png" className="Parc_Contact" Class="Modules/Parc/Class/Contact.class.php" Order="Nom">
-		<PROPERTIES category="Gestion" type="int"  description="Id dans la gestion" >IdGestion</PROPERTIES>
-		<PROPERTIES category="Intitulé" type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" listDescr="Nom">Nom</PROPERTIES>
-		<PROPERTIES category="Intitulé" type="varchar" searchOrder="2" list="1" fiche="1" form="1" listDescr="Prenom">Prenom</PROPERTIES>
-		<PROPERTIES category="Accès client" type="boolean" obligatoire="0" description="Activation Accès web" list="1" fiche="1" form="1" listDescr="Accès Web">AccesActif</PROPERTIES>
-		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="5" description="Identifiant Accès web"  fiche="1" form="1">AccesUser</PROPERTIES>
-		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="6" description="Mot de passe Accès Web" fiche="1" form="1">AccesPass</PROPERTIES>
-		<PROPERTIES category="Coordonnées" searchOrder="2" type="varchar" description="Adresse e-mail" fiche="1" form="1" list="1" listDescr="Email">Email</PROPERTIES>
-		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de téléphone" fiche="1" form="1" list="1" listDescr="Tel">Tel</PROPERTIES>
-		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de mobile" fiche="1" form="1">Mobile</PROPERTIES>
-		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de fax" fiche="1" form="1">Fax</PROPERTIES>
-		<FKEY card="0,1" module="Systeme" data="User,Id">UserId</FKEY>
-		<FKEY card="0,1" data="Client,Id">ClientId</FKEY>
-	</OBJECTCLASS>
+
 	<OBJECTCLASS title="Revendeur" driver="mysql" AccessPoint="1" master="0" Description="Revendeur" Icon="/Skins/AdminV2/Img/IconAqua/Forum.png" className="Parc_Revendeur" Class="Modules/Parc/Class/Revendeur.class.php">
 		<PROPERTIES category="Intitulé" type="varchar" obligatoire="1" searchOrder="1">Nom</PROPERTIES>
 		<PROPERTIES category="Accès client" type="boolean" obligatoire="0" searchOrder="4" description="Activation Accès web">AccesActif</PROPERTIES>
@@ -164,12 +147,12 @@
 		<PROPERTIES type="varchar" searchOrder="3" quickview="1" list="1" fiche="1" listDescr="IP interne" form="1">InternalIP</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="7" quickview="1" list="1" fiche="1" listDescr="Web" form="1">Web</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="5" list="1" fiche="1" listDescr="Dns" form="1">Dns</PROPERTIES>
-		<PROPERTIES type="boolean" searchOrder="6" list="1" fiche="1" listDescr="Mail" form="1">Mail</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="6"  listDescr="Mail" form="1">Mail</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="6" quickview="1" list="1" fiche="1" listDescr="Sql" form="1">Sql</PROPERTIES>
-		<PROPERTIES type="boolean" searchOrder="8" fiche="1" form="1">Guacamole</PROPERTIES>
-		<PROPERTIES type="boolean" searchOrder="9" fiche="1" form="1">Zabbix</PROPERTIES>
-		<PROPERTIES type="boolean" searchOrder="10" fiche="1" form="1">Grafana</PROPERTIES>
-		<PROPERTIES type="boolean" searchOrder="11" quickview="1" fiche="1"  listDescr="Proxy" form="1">Proxy</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="8" >Guacamole</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="9" >Zabbix</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="10" >Grafana</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="11" quickview="1" fiche="1" list="1" listDescr="Proxy" form="1">Proxy</PROPERTIES>
 		<CATEGORY title="Informations">
 			<PROPERTIES type="varchar" description="SSH: Nom d'utilisateur" default="root" form="1">SshUser</PROPERTIES>
 			<PROPERTIES type="varchar" description="SSH: Mot de passe" form="1">SshPassword</PROPERTIES>
@@ -179,14 +162,14 @@
 			<PROPERTIES type="text" list="1" form="1">Commentaire</PROPERTIES>
 		</CATEGORY>
 		<CATEGORY title="Mail">
-			<PROPERTIES type="boolean" description="Serveur email par défaut" form="1">defaultMailServer</PROPERTIES>
-			<PROPERTIES type="varchar" description="Admin mail: Nom d'utilisateur" default="admin" form="1">mailAdminUser</PROPERTIES>
-			<PROPERTIES type="varchar" description="Admin mail: Mot de passe" form="1">mailAdminPassword</PROPERTIES>
-			<PROPERTIES type="varchar" description="Admin mail: Port" default="7071" form="1">mailAdminPort</PROPERTIES>
+			<PROPERTIES type="boolean" description="Serveur email par défaut">defaultMailServer</PROPERTIES>
+			<PROPERTIES type="varchar" description="Admin mail: Nom d'utilisateur" default="admin" >mailAdminUser</PROPERTIES>
+			<PROPERTIES type="varchar" description="Admin mail: Mot de passe">mailAdminPassword</PROPERTIES>
+			<PROPERTIES type="varchar" description="Admin mail: Port" default="7071" >mailAdminPort</PROPERTIES>
 		</CATEGORY>
 		<CATEGORY title="Guacamole">
-			<PROPERTIES type="varchar" description="Admin Guacamole: User BDD" form="1">guacAdminUser</PROPERTIES>
-			<PROPERTIES type="varchar" description="Admin Guacamole: Pass BDD" form="1">guacAdminPassword</PROPERTIES>
+			<PROPERTIES type="varchar" description="Admin Guacamole: User BDD" >guacAdminUser</PROPERTIES>
+			<PROPERTIES type="varchar" description="Admin Guacamole: Pass BDD" >guacAdminPassword</PROPERTIES>
 		</CATEGORY>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
@@ -202,12 +185,12 @@
 	<OBJECTCLASS title="Host" driver="mysql" AccessPoint="1" Description="Hébergement" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Class="Modules/Parc/Class/Host.class.php">
 		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" description="Nom (uniquement de 2 à 16 caractères comprenant a-Z et 0-9 sans espace et ponctuation.)" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
-		<PROPERTIES type="boolean" default="0" category="gestion commerciale" searchOrder="2" description="En production" fiche="1" form="1">Production</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="gestion commerciale" searchOrder="2" description="En production" >Production</PROPERTIES>
 		<PROPERTIES type="boolean" default="1" category="gestion commerciale" searchOrder="3" description="Nécessite une facturation">Facturable</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="gestion commerciale" searchOrder="4" description="Hébergement au profit de l'agence">Interne</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" category="gestion commerciale" searchOrder="5" description="Numéro de contrat">NumContrat</PROPERTIES>
 		<PROPERTIES type="random" fiche="1" description="Mot de passe">Password</PROPERTIES>
-		<PROPERTIES type="text" category="gestion commerciale" fiche="1" form="1">Commentaires</PROPERTIES>
+		<PROPERTIES type="text" category="gestion commerciale">Commentaires</PROPERTIES>
 		<PROPERTIES type="int" obligatoire="1" default="1000" description="Quota (en Mo)" listDescr="Quota (en Mo)" list="1" fiche="1" form="1">Quota</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" obligatoire="1" default="default" description="Version de php" query="Parc/PHPVersion::Valeur::Titre" list="1" fiche="1" form="1">PHPVersion</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
@@ -275,73 +258,8 @@
         <FKEY card="0,1" data="Apache,Id" fiche="1" form="1" parentDescription="Hôte virtuel" link="1">ApacheId</FKEY>
         <FUNCTION title="Executer maintenant">Executer</FUNCTION>
     </OBJECTCLASS>
-	<OBJECTCLASS title="Device" logEvent="0" driver="mysql" AccessPoint="1" Description="Périphérique(s) réseau(x)" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Device.class.php">
-		<FUNCTION title="Envoyer un message">sendMessage</FUNCTION>
-		<FILTER name="Tous les périphériques" color="warning" ></FILTER>
-		<FILTER name="Périphériques en ligne"  color="success">Online=1</FILTER>
-		<FILTER name="Périphérique de type serveur"  color="primary">DeviceType=Serveur</FILTER>
-		<FILTER name="Ajoutés ces dernières 24h">tmsCreate>[!TMS::Now:-86400!]</FILTER>
-		<FILTER name="Périphériques en mode test">ModeTest=1</FILTER>
-		<INTERFACES name="top">
-			<FORM type="GeolocIP" field="PublicIP">Grafana</FORM>
-		</INTERFACES>
-		<INTERFACES name="bottom">
-			<FORM type="Iframe" url="grafana/dashboard/db/monitoring-panel-windows-als?var-group=Supervision&amp;var-netif=All&amp;var-host=">Grafana</FORM>
-		</INTERFACES>
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="2" fiche="1" form="1" listDescr="Nom machine" description="Nom du périphérique">Nom</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="8" obligatoire="0" list="8" fiche="1" listDescr="IP Publique" description="IP Publique">PublicIP</PROPERTIES>
-		<PROPERTIES category="Intitulé" searchOrder="2" type="varchar" fiche="1" form="0" list="1" listDescr="Code Client" description="Code client saisi">CodeClient</PROPERTIES>
-		<PROPERTIES type="boolean" searchOrder="2" obligatoire="0"  fiche="1" form="1"  listDescr="Test" description="Machine test">ModeTest</PROPERTIES>
-        <PROPERTIES type="int" obligatoire="0" fiche="1" description="Modifié récemment">Dirty</PROPERTIES>
-		<PROPERTIES type="boolean" searchOrder="10" obligatoire="0" fiche="1" form="1"  listDescr="Tunnel Restart" description="Tunnel restart">RestartTunnel</PROPERTIES>
-		<PROPERTIES type="date" searchOrder="9" obligatoire="0" fiche="1" listDescr="Last seen" description="Vu pour la dernière fois">LastSeen</PROPERTIES>
-		<PROPERTIES type="boolean" searchOrder="5" obligatoire="0" fiche="1" list="5" listDescr="Online" description="En ligne">Online</PROPERTIES>
-		<PROPERTIES type="boolean" searchOrder="5" obligatoire="0" fiche="1"  listDescr="Erreur" description="Erreur">Erreur</PROPERTIES>
-		<PROPERTIES type="text" searchOrder="5" obligatoire="0" fiche="1" description="Détail de l'erreur">DetailErreur</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="11" obligatoire="0" list="6" fiche="1" listDescr="Version" description="Version courante">CurrentVersion</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="3" obligatoire="0" list="3" fiche="1" form="1" listDescr="Commentaire" description="Commentaires">Commentaire</PROPERTIES>
-		<PROPERTIES type="text" searchOrder="12" obligatoire="0" fiche="1" form="1" description="Description du périphérique">Description</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="13" obligatoire="0" fiche="1" description="Identifiant du périphérique">Uuid</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="15" obligatoire="0" description="Numéro de série du périphérique">SerialNumber</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="14" obligatoire="0" fiche="1" description="Type de connexion">ConnectionType</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="14" obligatoire="0" fiche="1" list="5" values="Poste,Serveur" form="1" listDescr="Type" description="Type de machine">DeviceType</PROPERTIES>
-		<PROPERTIES type="extlink" list="10" fiche="1" description="Url guacamole VNC" listDescr="VNC">GuacamoleUrlVnc</PROPERTIES>
-		<PROPERTIES type="extlink" list="11"  fiche="1" description="Url guacamole RDP" listDescr="RDP">GuacamoleUrlRdp</PROPERTIES>
-		<PROPERTIES type="varchar" fiche="1" form="1" description="Type de système d'exploitation" listDescr="OS" default="Windows" values="Linux,Windows">OS</PROPERTIES>
-		<PROPERTIES type="varchar" fiche="1" form="1" description="Type de supervision" values="Active,Passive" default="Active" listDescr="Supervision">Monitoring</PROPERTIES>
-		<PROPERTIES type="varchar" description="Id guacamole RDP">GuacamoleIdRdp</PROPERTIES>
-		<PROPERTIES type="varchar" description="Id guacamole VNC">GuacamoleIdVnc</PROPERTIES>
-		<FKEY card="0,1" data="Client,Id" fiche="1" form="1" parentDescription="Client" link="1">ClientId</FKEY>
-	</OBJECTCLASS>
-	<OBJECTCLASS title="DeviceConnexion" driver="mysql" Description="Connexion(s) vers le Périphérique" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/DeviceConnexion.class.php">
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom du périphérique">Nom</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="2" obligatoire="1"  list="1" fiche="1" form="1" description="Type de connexion" listDescr="Type" values="RDP,VNC,SSH,Telnet,Https">Type</PROPERTIES>
-		<PROPERTIES type="int" obligatoire="0" fiche="1" form="1" description="Port redirection Local">PortRedirectLocal</PROPERTIES>
-		<PROPERTIES type="int" obligatoire="0"  description="Port redirection Distant">PortRedirectDistant</PROPERTIES>
-		<PROPERTIES type="varchar" obligatoire="0" description="Ip redirection Distant">IpRedirectDistant</PROPERTIES>
-		<PROPERTIES type="varchar" fiche="1" form="1" description="Login" listDescr="Login">Login</PROPERTIES>
-		<PROPERTIES type="varchar" fiche="1" form="1" description="Mot de passe" listDescr="Mot de passe">Password</PROPERTIES>
-        <PROPERTIES type="varchar" fiche="1" form="1" description="Clef Ssh">SshKey</PROPERTIES>
-		<PROPERTIES type="extlink" list="1" fiche="1" description="Url guacamole" listDescr="Lien Direct">GuacamoleUrl</PROPERTIES>
-		<PROPERTIES type="varchar" description="Id guacamole">GuacamoleId</PROPERTIES>
-		<FKEY card="1,1" data="Device,Id" fiche="1"  parentDescription="Périphérique" link="1">DeviceId</FKEY>
-		<FKEY card="0,n" data="Contact,Id" parentDescription="Contact/Utilisateur" link="1">ContactId</FKEY>
-	</OBJECTCLASS>
-	<OBJECTCLASS title="ReverseConnexion" Dico="1" driver="mysql" Description="Connexion Rescue" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/ReverseConnexion.class.php">
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" listDescr="Nom" description="Nom de la connexion d'assistance">Nom</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="1" list="1" fiche="1" form="1"  listDescr="Code" description="Code de connexion à transmettre au client">CodeConnexion</PROPERTIES>
-		<PROPERTIES type="boolean" searchOrder="5" obligatoire="0" fiche="1" form="1" list="1" special="reverse" listDescr="Occuppé" description="Occupé">Busy</PROPERTIES>
-		<PROPERTIES type="int" obligatoire="0" form="1" fiche="1" list="1" listDescr="Port local" description="Port redirection Local">PortRedirectLocal</PROPERTIES>
-		<PROPERTIES type="int" obligatoire="0" form="1" fiche="1" list="1" listDescr="Port d'écoute" description="Port d'écoute">PortEcoute</PROPERTIES>
-		<PROPERTIES type="extlink" list="1" fiche="1" description="Url guacamole" listDescr="Lien Direct">GuacamoleUrl</PROPERTIES>
-		<PROPERTIES type="varchar" description="Id guacamole">GuacamoleId</PROPERTIES>
-	</OBJECTCLASS>
-	<OBJECTCLASS title="DevicePort" driver="mysql" Description="Redirection de port" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/DevicePort.class.php">
-		<PROPERTIES type="int" obligatoire="0" fiche="1" list="1" listDescr="Port local" description="Port redirection Local">PortRedirectLocal</PROPERTIES>
-		<PROPERTIES type="int" obligatoire="0" fiche="1" list="1" form="1" listDescr="Port distant" description="Port de redirection de la machine distante">PortRedirectDistant</PROPERTIES>
-		<PROPERTIES type="varchar" obligatoire="0" fiche="1" list="1" form="1" listDescr="Iip distante" description="Ip de redirection de la machine distante">IpRedirectDistant</PROPERTIES>
-		<FKEY card="1,1" data="Device,Id" fiche="1" parentDescription="Périphérique" link="1">DeviceId</FKEY>
-	</OBJECTCLASS>
+
+
 	<OBJECTCLASS title="LogicielVersion" driver="mysql" Dico="1" Description="Version logMeNimes" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom de la version">Nom</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="2" obligatoire="0" list="1" fiche="1" form="1" description="Production">Release</PROPERTIES>
@@ -361,43 +279,7 @@
 		<PROPERTIES type="text" obligatoire="0" list="1" fiche="1" form="1" description="Notice installation">Description</PROPERTIES>
 		<FUNCTION title="Cloner">Cloner</FUNCTION>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="CompteMail" driver="mysql" AccessPoint="1" Description="Comptes Mail" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/CompteMail.class.php">
-		<FILTER name="Tous les comptes" color="warning" ></FILTER>
-		<FILTER name="Compte en PRO" color="success">COS=MAIL_PRO</FILTER>
-		<FILTER name="Compte en BUS" color="primary">COS=MAIL_BUS</FILTER>
-		<FILTER name="Compte en POP" color="secondary">COS=MAIL_POP</FILTER>
-		<FUNCTION title="Se connecter au webmail">connectWebmail</FUNCTION>
-		<PROPERTIES type="varchar" unique="1" fiche="1" description="Id sur le serveur mail" >IdMail</PROPERTIES>
-        <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Adresse eMail" list="1" form="1" fiche="1" listDescr="Adresse">Adresse</PROPERTIES>
-		<PROPERTIES type="varchar" description="Mot de passe"  form="1" fiche="1">Pass</PROPERTIES>
-        <PROPERTIES type="varchar" searchOrder="2" obligatoire="1" values="NULL,MAIL_BUS,MAIL_POP,MAIL_PRO" default="MAIL_POP" description="COS" list="1" form="1" fiche="1" listDescr="COS">COS</PROPERTIES>
-		<PROPERTIES type="int" subtype="sliderGo" description="Quota en Go" list="1" form="1" fiche="1" listDescr="Quota">Quota</PROPERTIES>
-		<PROPERTIES type="int" description="Espace utilisé en Mo" list="1" fiche="1" listDescr="Utilisé">EspaceUtilise</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="3" description="Status de l'adresse" values="active,maintenance,locked,closed,lockout,pending" default="active" list="1" form="1" fiche="1" listDescr="Etat">Status</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="4" description="Nom du contact" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
-		<PROPERTIES type="varchar" description="Prenom du contact" list="1" form="1" fiche="1" listDescr="Prénom">Prenom</PROPERTIES>
-		<FKEY card="1,1" data="Client,Id" fiche="1" form="1" >ClientId</FKEY>
-		<FKEY card="1,1" data="Server,Id" fiche="1" form="1" filter="Mail=1">ServerId</FKEY>
-	</OBJECTCLASS>
-	<OBJECTCLASS title="Ticket" driver="mysql" AccessPoint="1" Description="Tickets Clients" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" >
-		<FILTER name="En cours" color="secondary">Etat=En cours</FILTER>
-		<FILTER name="Incidents" color="warning"><![CDATA[Type=Incident&Etat=En cours]]></FILTER>
-		<FILTER name="Demandes" color="secondary"><![CDATA[Type=Demande&Etat=En cours]]></FILTER>
-		<FILTER name="Tous les tickets" color="primary" ></FILTER>
-		<PROPERTIES type="int" unique="1" description="Id dans la gestion" >IdGestion</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Numero du ticket" list="1" form="1" fiche="1" listDescr="N° Ticket">Numero</PROPERTIES>
-		<PROPERTIES type="varchar" description="Type de ticket" list="0" form="1" fiche="1" listDescr="Type" values="Incident,Demande,NC" default="NC" >Type</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="2" obligatoire="1"  description="Intitulé" list="1" form="1" fiche="1" listDescr="Intitulé">Titre</PROPERTIES>
-		<PROPERTIES type="date" description="Date de création" list="1" form="1" fiche="1" listDescr="Date de création">DateCrea</PROPERTIES>
-        <PROPERTIES type="date" description="Date d'échéance" list="1" form="1" fiche="1" listDescr="Date d'échance">DateEcheance</PROPERTIES>
-        <PROPERTIES type="varchar" description="Etat" list="1" form="1" fiche="1" listDescr="Etat" values="A facturer,En cours,Terminé,Abandonné,Commercial">Etat</PROPERTIES>
-		<PROPERTIES type="varchar" description="Intervenant original" list="0" form="1" fiche="1" listDescr="Créateur">UserCrea</PROPERTIES>
-		<PROPERTIES type="varchar" description="Prochain intervenant" list="1" form="1" fiche="1" listDescr="Prochain">UserNext</PROPERTIES>
-		<PROPERTIES type="varchar" description="Source du ticket" list="1" form="1" fiche="1" listDescr="Source" values="Gestion,Zabbix,Glpi,Web" default="Gestion" >Source</PROPERTIES>
-        <PROPERTIES type="varchar" description="Priorité" list="1" form="1" fiche="1" listDescr="Priorité" values="NC,Info,Warning,Moyenne,Haute,Désastre" default="NC" >Priorite</PROPERTIES>
-		<FKEY card="0,n" data="Device,Id">DeviceId</FKEY>
-		<FKEY card="1,1" data="Client,Id">ClientId</FKEY>
-	</OBJECTCLASS>
+
 	<OBJECTCLASS title="DeviceTask" driver="mysql" AccessPoint="1" Description="Taches machines" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/DeviceTask.class.php">
 		<FKEY card="1,1" data="Device,Id">DeviceId</FKEY>
 		<PROPERTIES type="boolean" description="Activation" list="1" form="1" fiche="1" listDescr="Active">Enabled</PROPERTIES>
@@ -420,7 +302,7 @@
 		<FKEY card="1,1" data="Server,Id" description="Serveur SQL" filter="SQL=1" list="1" form="1" fiche="1" listDescr="Serveur SQL">ServerId</FKEY>
 		<FKEY card="1,1" data="Host,Id" description="Hébergement" list="1" form="1" fiche="1" listDescr="Hébergement">HostId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Instance" AccessPoint="1" driver="mysql" Description="Site web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Instance.class.php">
+	<OBJECTCLASS title="Instance" driver="mysql" Description="Site web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Instance.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de l'instance" list="1" form="1" fiche="1" unique="1" listDescr="Nom">Nom</PROPERTIES>
         <PROPERTIES type="varchar" description="Type" values="Standard,Easy,Minimal" default="Standard">Type</PROPERTIES>
         <CATEGORY title="MiniSite">
@@ -431,7 +313,7 @@
             <PROPERTIES type="color" list="1" form="1" fiche="1" description="Couleur 2">Couleur2</PROPERTIES>
             <FKEY card="0,1" module="Systeme" data="Site,Id" description="Site" listDescr="Site">SiteId</FKEY>
         </CATEGORY>
-		<FKEY card="0,n" data="Domain,Id" description="Domaine(s)" list="1" form="1" fiche="1" listDescr="Domaine(s)">DomainId</FKEY>
+		<FKEY card="0,n" data="Domain,Id" description="Domaine(s)" listDescr="Domaine(s)">DomainId</FKEY>
 		<FKEY card="0,n" data="Host,Id" description="Hébergement" listDescr="Hébergement">HostId</FKEY>
         <FKEY card="0,n" data="Server,Id" description="Serveur SQL" filter="SQL=1" listDescr="Serveur SQL">ServerId</FKEY>
         <FKEY card="1,1" data="Client,Id" description="Client" listDescr="Serveur SQL">ClientId</FKEY>

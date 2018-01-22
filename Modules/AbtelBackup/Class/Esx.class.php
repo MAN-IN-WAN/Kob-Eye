@@ -352,7 +352,7 @@ class Esx extends genericClass {
         $act->addDetails($esxsrc->remoteExec('scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q -i /tmp/id_'.$esx->IP.' /vmfs/volumes/datastore1/BORG/BORG-thin.vmdk root@'.$esx->IP.':/vmfs/volumes/NL-SAS/BORG/'));
         //echo "Copie du fichier BORG-thin-flat.vmdk\r\n";
         $act = $esx->createActivity("Copie du fichier BORG-thin-flat.vmdk",'Info');
-        //$act->addDetails($esxsrc->remoteExec('scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q -i /tmp/id_'.$esx->IP.' /vmfs/volumes/datastore1/BORG/BORG-thin-flat.vmdk root@'.$esx->IP.':/vmfs/volumes/NL-SAS/BORG/'));
+        $act->addDetails($esxsrc->remoteExec('scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q -i /tmp/id_'.$esx->IP.' /vmfs/volumes/datastore1/BORG/BORG-thin-flat.vmdk root@'.$esx->IP.':/vmfs/volumes/NL-SAS/BORG/'));
         //on modifie le fichier vmx
         //echo "Modification duy fichier BORG.vmx\r\n";
         $act = $esx->createActivity("Modification du fichier BORG.vmx",'Info');

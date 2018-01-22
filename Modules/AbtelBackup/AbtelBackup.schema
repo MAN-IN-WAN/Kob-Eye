@@ -97,6 +97,7 @@
 		<PROPERTIES type="boolean" form="1" fiche="1">Vendredi</PROPERTIES>
 		<PROPERTIES type="boolean" form="1" fiche="1">Samedi</PROPERTIES>
 		<PROPERTIES type="boolean" form="1" fiche="1">Dimanche</PROPERTIES>
+		<PROPERTIES type="varchar" form="1" fiche="1">VdiskExclusion</PROPERTIES>
 		<RKEY data="EsxVm,Id" card="0,n" inline="1" form="1" description="Sélection des vms">EsxVmJobId</RKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="SambaDevice" AccessPoint="1" driver="mysql" Description="Machines à sauvegarder"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelBackup/Class/SambaDevice.class.php">

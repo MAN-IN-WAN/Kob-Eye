@@ -9,16 +9,16 @@
 		<PROPERTIES type="bbcode"  special="multi" category="Informations">Description</PROPERTIES>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Nouvelle" driver="mysql" master="0" AccessPoint="1" Description="Actualités"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" generateUrl="1">
-		<PROPERTIES type="varchar" searchOrder="1" category="Intitulé" special="multi" >Titre</PROPERTIES>
-		<PROPERTIES type="varchar" category="Intitulé" special="multi" >Chapo</PROPERTIES>
-		<PROPERTIES type="date" category="Intitulé">Date</PROPERTIES>
-		<PROPERTIES type="bbcode" category="Contenu" special="multi" >Contenu</PROPERTIES>
-		<PROPERTIES type="boolean" category="Publication" default="1">Publier</PROPERTIES>
-		<PROPERTIES type="file" category="Contenu">Image</PROPERTIES>
-		<PROPERTIES type="boolean" category="Publication">AlaUne</PROPERTIES>
-		<PROPERTIES type="boolean" category="Publication">InfoDuJour</PROPERTIES>
-		<FKEY card="1,1" data="Categorie,Id">CategorieId</FKEY>
-		<FKEY card="0,n" data="FluxRss,Id" action="Link" behaviour="Integrated">FluxRssId</FKEY>
+		<PROPERTIES type="varchar" searchOrder="1" category="Intitulé" special="multi" form="1" list="1" fiche="1" listDescr="Titre">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" category="Intitulé" special="multi" form="1" fiche="1">Chapo</PROPERTIES>
+		<PROPERTIES type="date" category="Intitulé" form="1" list="1" fiche="1" listDescr="Date">Date</PROPERTIES>
+		<PROPERTIES type="text" category="Contenu" special="multi" form="1" fiche="1" >Contenu</PROPERTIES>
+		<PROPERTIES type="boolean" category="Publication" default="1" form="1" list="1" fiche="1" listDescr="Publier">Publier</PROPERTIES>
+		<PROPERTIES type="image" category="Contenu" form="1" list="1" fiche="1" listDescr="Image">Image</PROPERTIES>
+		<PROPERTIES type="boolean" category="Publication" form="1" list="1" fiche="1" listDescr="A la une" description="A la une">AlaUne</PROPERTIES>
+		<PROPERTIES type="boolean" category="Publication" form="1" list="1" fiche="1" listDescr="Information" description="Information du jour">InfoDuJour</PROPERTIES>
+		<FKEY card="1,1" data="Categorie,Id" form="1" list="1" fiche="1" listDescr="Catégorie" description="Catégorie (entité)">CategorieId</FKEY>
+		<FKEY card="0,n" data="FluxRss,Id" action="Link" behaviour="Integrated" form="1" list="1" fiche="1" listDescr="Réseaux sociaux" description="Réseaux sociaux">FluxRssId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Lien" driver="mysql">
 		<PROPERTIES type="titre" searchOrder="1" category="Intitulé">Titre</PROPERTIES>

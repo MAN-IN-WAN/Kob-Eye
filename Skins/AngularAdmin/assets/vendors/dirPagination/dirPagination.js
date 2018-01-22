@@ -57,6 +57,11 @@
             var collectionGetter = $parse(itemsPerPageFilterRemoved);
             var context = tAttrs.paginationContext || 'default';
 
+            var autoLoad = tAttrs.autoLoad || false;
+            var filter = tAttrs.filter || false;
+
+
+
             addNoCompileAttributes(tElement);
 
             // If any value is specified for paginationId, we register the un-evaluated expression at this stage for the benefit of any
@@ -66,6 +71,16 @@
 
             return function dirPaginationLinkFn(scope, element, attrs){
 
+                /** gestion filter */
+                if (filter) {
+                    console.log('dirPaginate filter '+context+' '+filter);
+                    scope[itemsPerPageFilterRemoved.split('.')[0]].store.setFilters(filter, context);
+                }
+                /** gestion autoLoad */
+                if (autoLoad) {
+                    /*console.log('dirPaginate autoLoad '+context+' '+itemsPerPageFilterRemoved.split('.')[0]);*/
+                    scope[itemsPerPageFilterRemoved.split('.')[0]].store.getData(1, context);
+                }
                 // Now that we have access to the `scope` we can interpolate any expression given in the paginationId attribute and
                 // potentially register a new ID if it evaluates to a different value than the rawId.
                 var paginationId = $parse(attrs.paginationId)(scope) || attrs.paginationId || DEFAULT_ID;
