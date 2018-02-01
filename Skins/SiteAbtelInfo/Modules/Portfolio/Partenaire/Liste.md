@@ -16,7 +16,7 @@
 //			[STORPROC Portfolio/Reference/Publier=1|Ref|0|100|DateSortie|DESC]
 			[STORPROC Portfolio/Partenaire/Publier=1|Ref|0|100|DateCollaboration|DESC]
 
-			<div class="col-md-3 reference [STORPROC Portfolio/Categorie/Partenaire/[!Ref::Id!]|CP] [!CP::Url!][/STORPROC]">
+			<div class="col-md-3 col-sm-4 reference [STORPROC Portfolio/Categorie/Partenaire/[!Ref::Id!]|CP] [!CP::Url!][/STORPROC]">
 				<div class="inner">
 					<figure class="imgreferences">
 					//	<a href="/[!Systeme::CurrentMenu::Url!]/Partenaire/[!Ref::Url!]" title="Voir le d&eacute;tail de [!Ref::Titre!]">

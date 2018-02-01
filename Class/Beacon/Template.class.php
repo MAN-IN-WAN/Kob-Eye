@@ -38,7 +38,7 @@ class Template extends Beacon {
 	* @param String Config
 	* @void
 	*/
-	public function setConfig($Config,$Name=""){
+	public function setConfig($Config,$Name="",$data=null){
 		$x = new xml2array($Config);
 		$this->Config = $x->Tableau["TEMPLATE"]["#"];
 		$this->Titre = $this->Config["TITLE"][0]["#"];
@@ -58,7 +58,11 @@ class Template extends Beacon {
 			$this->Css = $this->Config["CSS"][0]["#"];
 		}
 		$this->Name = $Name;
-		$this->loadData(@file_get_contents(ROOT_DIR.$this->getFilePath("Default.md")));
+		if($data){
+            $this->loadData($data);
+        } else {
+		    $this->loadData(@file_get_contents(ROOT_DIR.$this->getFilePath("Default.md")));
+        }
 	}
 	/**
 	* @override

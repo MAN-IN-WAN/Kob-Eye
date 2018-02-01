@@ -343,15 +343,15 @@ class Connection extends Root{
 		if (defined("EXTERNAL_AUTH_AD")&&EXTERNAL_AUTH_AD&&isset($_SERVER["PHP_AUTH_USER"])&&!isset($_SERVER["PHP_AUTH_PW"])){
 			//CAS DU TICKET KERBEROS WINDOWS
 			$l = explode("@",$_SERVER["PHP_AUTH_USER"]);
-                        $this->login = $l[0];
+			$this->login = $l[0];
 			$this->kerberosAuth = true;
 			$GLOBALS["Systeme"]->Log->log("KERBEROS AUTH ".$_SERVER["PHP_AUTH_USER"]." => USER ".$l[0]);
 		}elseif (defined("EXTERNAL_AUTH_AD")&&EXTERNAL_AUTH_AD&&isset($_SERVER["PHP_AUTH_USER"])&&isset($_SERVER["PHP_AUTH_PW"])){
 			//CAS KERBEROS SANS TICKET WINDOWS
-                        $this->login = $_SERVER["PHP_AUTH_USER"];
-                        $this->pass = md5($_SERVER["PHP_AUTH_PW"]);
-                        $this->clearpass = $_SERVER["PHP_AUTH_PW"];
-                }elseif ($GLOBALS["Systeme"]->getPostVars("login")!=""){
+            $this->login = $_SERVER["PHP_AUTH_USER"];
+            $this->pass = md5($_SERVER["PHP_AUTH_PW"]);
+            $this->clearpass = $_SERVER["PHP_AUTH_PW"];
+		}elseif ($GLOBALS["Systeme"]->getPostVars("login")!=""){
 			//Ils sont dans les parametres Post
 			$this->login = $GLOBALS["Systeme"]->getPostVars("login");
 			$this->pass = md5($GLOBALS["Systeme"]->getPostVars("pass"));
@@ -368,7 +368,7 @@ class Connection extends Root{
 			$this->passmd5 = $GLOBALS["Systeme"]->getGetVars("passmd5");
 			$this->codeverif = $GLOBALS["Systeme"]->getGetVars("codeverif");
 			return true;
-	       }elseif (isset($_SESSION['login'])&&$_SESSION['login'] && $_SESSION['pass']){
+		}elseif (isset($_SESSION['login'])&&$_SESSION['login'] && $_SESSION['pass']){
         		$this->login = $_SESSION['login'];
 		       	$this->pass = $_SESSION['pass'];
 		}elseif (isset($_SERVER["PHP_AUTH_USER"])&&isset($_SERVER["PHP_AUTH_PW"])){
@@ -552,7 +552,12 @@ class Connection extends Root{
 			if (!is_null($this->passmd5)&&!is_null($this->codeverif)){
 				//CAS LOGIN JETON MD5
 				$Result = Sys::$Modules["Systeme"]->callData("User/Login=".$this->login."&Pass=".$this->passmd5."&CodeVerif=".$this->codeverif);
-				$GLOBALS["Systeme"]->Log->log("DETECT USER >> PASSMD5 GET ".$Result[0]["Id"]);
+                if (!is_array($Result[0])) $Result = Sys::$Modules["Systeme"]->callData("User/Login=".$this->login."&Pass=[md5]".$this->passmd5."&CodeVerif=".$this->codeverif);
+                if (!isset($Result[0])||!is_array($Result[0])) {
+                    //Cas ou le mot de passe a été transformé alors que le champ en base comptait encore 32 caractères
+                    $Result = Sys::$Modules["Systeme"]->callData("User/Login=" . $this->login . "&Pass=[md5]" . substr($this->pass, 0, -5));
+                }
+                $GLOBALS["Systeme"]->Log->log("DETECT USER >> PASSMD5 GET ".$Result[0]["Id"]);
 				if (!is_array($Result[0])) return false;
 				$User = genericClass::createInstance("Systeme",$Result[0]);
 				$User->Save();
@@ -581,6 +586,15 @@ class Connection extends Root{
 					$Result = Sys::$Modules["Systeme"]->callData("User/Login=".$this->login);
 				else {
                     $Result = Sys::$Modules["Systeme"]->callData("User/Login=" . $this->login . "&Pass=" . $this->pass);
+                    if (!isset($Result[0])||!is_array($Result[0])) {
+                    	//Cas ou le mot de passe est deja trransformé
+                        $Result = Sys::$Modules["Systeme"]->callData("User/Login=" . $this->login . "&Pass=[md5]" . $this->pass);
+                        if (!isset($Result[0])||!is_array($Result[0])) {
+                            //Cas ou le mot de passea été transformé alors que le champ en base comptait encore 32 caractères
+                            $Result = Sys::$Modules["Systeme"]->callData("User/Login=" . $this->login . "&Pass=[md5]" . substr($this->pass, 0, -5));
+                        }
+                    }
+
                     klog::l('DETECT USER',"User/Login=" . $this->login . "&Pass=" . $this->pass);
                 }
 				if (!isset($Result[0])||!is_array($Result[0])){

@@ -221,7 +221,11 @@ class Ftpuser extends genericClass {
 		$entry = array();
 		$host = $this->getKEHost();
 		$entry['cn'] = $KEServer->Nom;
-		$entry['homedirectory'] = '/home/'.$host->Nom.'/'.$this->DocumentRoot;
+		if($this->DocumentRoot){
+		    $entry['homedirectory'] = '/home/'.$host->Nom.'/'.$this->DocumentRoot;
+        } else{
+            $entry['homedirectory'] = '/home/'.$host->Nom;
+        }
 		$entry['uid'] = $this->Identifiant;
 		if($this->Password != '*******') $entry['userpassword'] = "{MD5}".base64_encode(pack("H*",md5($this->Password)));
 		$entry['ftpquotambytes'] = $this->QuotaMb;

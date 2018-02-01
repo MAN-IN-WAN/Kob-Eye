@@ -425,7 +425,7 @@ class sqlCheck{
 				break;
 			case "password":			//generation de mot de passe en md5
 				$Tab['type']="varchar";
-				$Tab['length']="32";
+				$Tab['length']="37";
 				$Tab['special']='password';
 				$Tab['displayType']="normal";
 				break;

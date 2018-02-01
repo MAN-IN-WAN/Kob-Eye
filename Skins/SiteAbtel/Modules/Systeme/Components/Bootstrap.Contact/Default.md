@@ -206,28 +206,34 @@
 
 	[IF [!SendContact!]=||[!C_Error!]]
 		<div id="contactContainer" class="row">
+			<div id="textecontact" class="col-md-9"> <span>N'hésitez pas à nous contacter en nous téléphonant où en nous envoyant un message.</span><br>
+								   Abtel se tient à votre disposition pour répondre à vos interrogations et demande de devis,
+				<br> dans les plus brefs délais.
+			</div><figure id="imgcontact"  class="col-md-3">
+			<img src="https://agence-web.abtel.fr/Home/21/MiseEnPage/Image/seo4_0.jpg" alt="">
+			</figure>
 			<div id="contactForm" class="col-md-12">
 				<form id="formContact" method="post" action="/[!Lien!]" class="form-horizontal">
 					<div id="formInputs">
 						<div class="row">
 							<div class="col-md-6">
 								<div class="control-group  [IF [!C_Nom_Error!]]error[/IF]">
-									<label class="control-label" for="C_Nom">Nom <span class="Obligatoire">*</span></label>
+									<label class="control-label labelcontact" for="C_Nom">Nom <span class="Obligatoire">*</span></label>
 									<input type="text" id="C_Nom" name="C_Nom" class="" style="text-transform:uppercase" value="[!C_Nom!]" required placeholder="Nom"/>
 								</div>
                                 [IF [!TEL_ACTIF!]]
                                 <div class="control-group [IF [!C_Tel_Error!]]error[/IF]">
-                                    <label class="control-label" for="C_Tel">Numéro de téléphone</label>
-                                    <input type="text" name="C_Tel" class=""  value="[!C_Tel!]" placeholder="N° de Téléphone"/>
+                                    <label class="control-label labelcontact" for="C_Tel">Numéro de téléphone</label>
+                                    <input type="text" name="C_Tel" id="C_Tel" class=""  value="[!C_Tel!]" placeholder="N° de Téléphone"/>
                                 </div>
                                 [/IF]
 								[IF [!ADRESSE_ACTIF!]]
 								<div class="control-group  [IF [!C_Adresse_Error!]]error[/IF]">
-									<label class="control-label" for="C_Adresse">Adresse<span class="Obligatoire">*</span></label>
+									<label class="control-label labelcontact" for="C_Adresse">Adresse<span class="Obligatoire">*</span></label>
 									<input type="text" name="C_Adresse" id="C_Adresse" value="[!C_Adresse!]" class="" required placeholder="Adresse"/>
 								</div>
 								<div class="control-group [IF [!C_Ville_Error!]]error[/IF]">
-									<label class="control-label" for="C_Ville">Ville<span class="Obligatoire">*</span></label>
+									<label class="control-label labelcontact" for="C_Ville">Ville<span class="Obligatoire">*</span></label>
 									<input type="text" name="C_Ville" id="C_Ville" value="[!C_Ville!]" class="" required placeholder="Ville"/>
 								</div>
 								[/IF]
@@ -236,17 +242,17 @@
 							<div class="col-md-6">
                                 [IF [!PRENOM_ACTIF!]]
                                 <div class="control-group  [IF [!C_Prenom_Error!]]error[/IF]">
-                                    <label class="control-label" for="C_Prenom">Prénom</label>
-                                    <input type="text" name="C_Prenom" class="" value="[!C_Prenom!]" placeholder="Prenom"/>
+                                    <label class="control-label labelcontact" for="C_Prenom">Prénom</label>
+                                    <input type="text" name="C_Prenom" id="C_Prenom" class="" value="[!C_Prenom!]" placeholder="Prenom"/>
                                 </div>
                                 [/IF]
 								<div class="control-group  [IF [!C_Mail_Error!]]error[/IF]">
-									<label class="control-label" for="C_Mail">Adresse e-mail <span class="Obligatoire">*</span></label>
+									<label class="control-label labelcontact" for="C_Mail">Adresse e-mail <span class="Obligatoire">*</span></label>
 									<input type="text" id="C_Mail" name="C_Mail" value="[!C_Mail!]" required placeholder="E-mail"/>
 								</div>
                                 [IF [!ADRESSE_ACTIF!]]
                                 <div class="control-group  [IF [!C_Code_Error!]]error[/IF]">
-                                    <label class="control-label" for="C_Code">Code postal <span class="Obligatoire">*</span></label>
+                                    <label class="control-label labelcontact" for="C_Code">Code postal <span class="Obligatoire">*</span></label>
                                     <input type="text" name="C_Code" id="C_Code" value="[!C_Code!]"  class="" required placeholder="Code Postal"/>
                                 </div>
                                 [/IF]
@@ -255,8 +261,8 @@
                             <hr>
 							<div class="col-md-12">
 								<div class="control-group ">
-									<label class="control-label" for="C_Objet">Votre contact <span class="Obligatoire">*</span></label>
-									<select type="text" name="C_ContactName" class="input-large" required>
+									<label class="control-label labelcontact" for="C_ContactName">Votre contact <span class="Obligatoire">*</span></label>
+									<select type="text" name="C_ContactName" id="C_ContactName" class="input-large" required>
 										[!options:=[!Utils::getMailsContact([!CONTACTMAIL!])!]!]
 										[STORPROC [!options!]|opt]
 											[!selected:=0!]
@@ -275,16 +281,19 @@
                             [IF [!SUJET_ACTIF!]]
                             <div class="col-md-6">
                                 <div class="control-group  [IF [!C_Objet_Error!]]error[/IF]">
-                                    <label class="control-label" for="C_Objet">Sujet <span class="Obligatoire">*</span></label>
-                                    <input type="text" name="C_Objet" value="[!C_Objet!]"  class="input-large" required placeholder="Sujet"/>
+                                    <label class="control-label labelcontact" for="C_Objet">Sujet <span class="Obligatoire">*</span></label>
+                                    <input type="text" name="C_Objet" id="C_Objet" value="[!C_Objet!]"  class="input-large" required placeholder="Sujet"/>
                                 </div>
                             </div>
                             [/IF]
                             [IF [!MESSAGE_ACTIF!]]
                             <div class="col-md-12">
                                 <div class="control-group [IF [!C_Mess_Error!]]error[/IF]">
-                                    <label class="control-label" for="C_Mess">Message <span class="Obligatoire">*</span></label>
-                                    <textarea cols="80" rows="6" name="C_Mess" class="input-xlarge" required>[!C_Mess!]</textarea>
+                                    <label class="control-label labelcontact message" for="C_Mess">Message <span class="Obligatoire">*</span></label>
+                                    <textarea cols="80" rows="6" name="C_Mess" id="C_Mess" class="input-xlarge" required>[!C_Mess!]</textarea>
+									<figure id="imgtextarea">
+										<img src="https://agence-web.abtel.fr/Home/21/MiseEnPage/Image/mcorrective1_0.jpg" alt="Page contact pour votre message à Abtel" title="Cet espace est le votre. N'hésitez pas à nous contacter">
+									</figure>
                                 </div>
                             </div>
                             [/IF]
@@ -295,7 +304,7 @@
 						<div class="row">
 							<div class="col-md-12">
 								<div class="control-group last [IF [!C_Calc_Error!]]error[/IF]">
-									<label class="control-label" for="C_Nom">Merci de résoudre l'opération suivante avant de valider <span class="Obligatoire">*</span></label>
+									<label class="control-label labelcontact" for="C_Nom">Merci de résoudre l'opération suivante avant de valider <span class="Obligatoire">*</span></label>
 									<div class="controls form-inline">
 										<input type="text" name="n3" id="n3" value="[!Utils::Random(9)!]" maxlength="2" readonly="readonly" class=""/>
 										<span class="symb">+</span>
@@ -322,9 +331,9 @@
 				</form>
 			</div>
 		</div>
-        <div id="contactMap">
-            [!Groupe::Map!]
-        </div>
+ //       <div id="contactMap">
+ //           [!Groupe::Map!]
+ //       </div>
 		<div id="infoSupp">
             <hr>
             <p>Les champs marqués (<span class="Obligatoire">*</span>) sont obligatoires.</p>

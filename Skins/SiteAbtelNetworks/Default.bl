@@ -54,14 +54,16 @@
 
 [COMPONENT Systeme/Bootstrap.Login/Default?TITRE=S'identifier]
 
+[IF [!Systeme::CurrentMenu::Url!]=]
 <script type="text/javascript">
     $(document).on('ready',function(){
         fitHeight();
-        $('.customScroll').mCustomScrollbar();
+        //$('.customScroll').mCustomScrollbar();
     });
     $(window).resize(function(){
         fitHeight();
     });
 </script>
+[/IF]
 
 [MODULE Systeme/Cookies/Default?gaProperty=UA-XXXXXX-Y&piwikSiteId=XXX]

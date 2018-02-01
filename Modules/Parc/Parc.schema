@@ -35,6 +35,11 @@
 		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de téléphone" fiche="1" form="1" list="1" listDescr="Tel">Tel</PROPERTIES>
 		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de mobile" fiche="1" form="1">Mobile</PROPERTIES>
 		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de fax" fiche="1" form="1">Fax</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" unique="1" length="50" description="Nom sous LDAP (de 8-50 caractères sans caractère spéciaux ou espace)" fiche="1" form="1">NomLDAP</PROPERTIES>
+		<PROPERTIES category="LDAP" type="int" auto="1">LdapGid</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
 		<FKEY card="0,1" module="Systeme" data="User,Id">UserId</FKEY>
 		<FKEY card="0,1" data="Client,Id">ClientId</FKEY>
 	</OBJECTCLASS>
