@@ -26,7 +26,7 @@
 				<span class="Deco1">&nbsp;</span><h2>Technologies</h2>
 				<div>[!R::Technologies!]</div>
 				<hr style="color:#827152;background:#827152;height:1px;border:0;margin-bottom:10px;"/>
-				<span class="Deco1">&nbsp;</span><h2>R&Eacute;ALISATION</h2>
+				<span class="Deco1">&nbsp;</span><h2>Réalisation</h2>
 				<div>[!R::Moyens!]</div>
 				<hr style="color:#827152;background:#827152;height:1px;border:0;margin-bottom:10px;"/>
 				[STORPROC Portfolio/Reference/[!R::Id!]/Donnee/Type=image|Img]

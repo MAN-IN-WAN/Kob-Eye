@@ -2,14 +2,15 @@
 <div class="page-content-inner">
     <section class="panel">
         <div class="panel-heading">
-            <h3>Mes minisites</h3>
+            <h3 ng-if="!forceDisplayList">Mes minisites</h3>
+            <h3 ng-if="forceDisplayList">Minisites existants</h3>
         </div>
-        <div ng-if="!cliId">
+        <div ng-if="!cliId && !forceDisplayList">
             <p class="minisite_error error_cli">
                 Désolé, nous n'avons pas trouvé de client associé à votre utilisateur.
             </p>
         </div>
-        <div class="panel" ng-if="cliId != 0">
+        <div class="panel" ng-if="cliId != 0 || forceDisplayList">
             <div >
                 <dir-pagination-controls boundary-links="true" pagination-context="MiniSite" pagination-id="ParcInstance-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
             </div>

@@ -15,22 +15,22 @@
             </div>
     </div>
     <div class="container">
-        <nav class="col-lg-3">
+        <nav class="col-lg-3 col-sm-6">
             <a href="https://agence-web.abtel.fr/references" class="grandsliens" id="imgnosrefs">
             Nos références
             </a>
         </nav>
-        <nav class="col-lg-3">
-            <a href="https://agence-web.abtel.fr/developpement-web" class="grandsliens" id="imgdevweb">
+        <nav class="col-lg-3 col-sm-6">
+            <a href="https://agence-web.abtel.fr/developpement-services" class="grandsliens" id="imgdevweb">
             Développement Web
             </a>
         </nav>
-        <nav class="col-lg-3">
+        <nav class="col-lg-3 col-sm-6">
             <a href="https://agence-web.abtel.fr/hebergement-services" class="grandsliens" id="imghebergement">
             Hébergement et services
             </a>
         </nav>
-        <nav class="col-lg-3">
+        <nav class="col-lg-3 col-sm-6">
             <a href="https://agence-web.abtel.fr/actualite" class="grandsliens" id="actualite">
             Actualité
             </a>
@@ -39,22 +39,22 @@
 
 
     <div class="container">
-        <nav class="col-lg-3">
+        <nav class="col-lg-3 col-sm-6">
             <a href="https://www.abtel.fr/" class="grandsliens2" id="imggroupe">
 
             </a>
         </nav>
-            <nav class="col-lg-3">
+            <nav class="col-lg-3 col-sm-6">
             <a href="https://informatique.abtel.fr/" class="grandsliens2"  id="imginformatique">
 
             </a>
         </nav>
-            <nav class="col-lg-3">
+            <nav class="col-lg-3 col-sm-6">
             <a href="https://networks.abtel.fr/" class="grandsliens2" id="imgnetwork">
 
             </a>
         </nav>
-        <nav class="col-lg-3">
+        <nav class="col-lg-3 col-sm-6">
             <a href="https://formation.abtel.fr/" class="grandsliens2" id="imginformation">
 
             </a>
@@ -68,8 +68,15 @@
     <div class="separefootergris"></div>
 
     <nav>
-        <a href="" class="liensbasfooter">accès clients</a>
-        <a href="" class="liensbasfooter">mentions légales</a>
+        [STORPROC [!Systeme::Menus!]/Affiche=1&MenuSpecial=1&MenuPrincipal=0|M|0|10|Ordre|ASC]
+        [IF [!M::Url!]~http]
+        <a href="[!M::Url!]" target="_blank" class="liensbasfooter [IF [!Systeme::CurrentMenu::Url!]=[!M::Url!]] active [/IF]"  >
+            [ELSE]
+            <a href="/[!M::Url!]" class="liensbasfooter [IF [!Systeme::CurrentMenu::Url!]=[!M::Url!]] active [/IF]" [IF [!Pos!]=[!NbResult!]]style="background-color:[!EntiteSite::CodeCouleur!];"[/IF] >
+                [/IF]
+                [!M::Titre!] [!M::SousTitre!]
+            </a>
+            [/STORPROC]
     </nav>
 
 </div>

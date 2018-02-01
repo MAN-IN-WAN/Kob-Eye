@@ -29,8 +29,8 @@
                                 </a>
                                 <div class="abtelMainSubMenu">
                                     [IF [!Grp!]!=0]
-                                        [STORPROC Systeme/Group/[!Grp::Id!]/Menu/MenuSpecial=1|Mnu|0|50]
-                                        <a href="[!link!]/[!Mnu::Url!]" class="abtelMainSubMenuLink">[!Mnu::Titre!] <span class="sub">[!Mnu::SousTitre!]</span></a><br/>
+                                        [STORPROC Systeme/Group/[!Grp::Id!]/Menu/MenuSpecial=1|Mnu|0|3]
+                                        <a href="[IF [!Mnu::Url!]~www||[!Mnu::Url!]~http][ELSE][!link!]/[/IF][!Mnu::Url!]" [IF [!link!]!=]target="_blank"[/IF] class="abtelMainSubMenuLink">[!Mnu::Titre!] <span class="sub">[!Mnu::SousTitre!]</span></a><br/>
                                             [NORESULT]
                                                 <div>[!Entite::Description!]</div>
                                             [/NORESULT]

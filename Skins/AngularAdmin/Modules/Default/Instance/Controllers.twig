@@ -1,6 +1,7 @@
 app.controller('ServicesMinisiteCtrl', function($location, $scope, $rootScope,$http,$timeout, ParcInstanceStore, ParcDomainStore) {
 
     $scope.cliId = {{ Client.Id }};
+    $scope.forceDisplayList = {{ forceDisplayList }};
 
     $scope.ParcDomainStore = ParcDomainStore;
     $scope.ParcInstanceStore = ParcInstanceStore;

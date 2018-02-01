@@ -8,6 +8,16 @@ if ($info["TypeSearch"]=="Direct"){
     //alors création
     $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
 }
+if(!$o){
+    $vars['retour'] = '{
+        "data": "",
+        "errors": [{ "Message" : "Vous n\'avez pas l\'autorisation d\'accéder à cet objet" }],
+        "warning": "",
+        "infos": "",
+        "success": false
+    }';
+    return false;
+}
 $formfields = $o->getElementsByAttribute('form','',true);
 $hiddenfields = $o->getElementsByAttribute('hidden','',true);
 if(!$hiddenfields) $hiddenfields = array();
