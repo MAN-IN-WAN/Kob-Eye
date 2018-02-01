@@ -685,7 +685,8 @@ class Server extends genericClass {
 		Server::$_LDAP = ldap_connect(PARC_LDAP_IP);
 		if (Server::$_LDAP) {
 			ldap_set_option(Server::$_LDAP, LDAP_OPT_PROTOCOL_VERSION, 3);
-			$bind = ldap_bind(Server::$_LDAP, PARC_LDAP_LOGIN, PARC_LDAP_PASSWORD);
+            ldap_set_option(Server::$_LDAP, LDAP_OPT_SIZELIMIT,10000);
+            $bind = ldap_bind(Server::$_LDAP, PARC_LDAP_LOGIN, PARC_LDAP_PASSWORD);
 			if ($bind)
 				return Server::$_LDAP;
 		}
@@ -924,16 +925,58 @@ class Server extends genericClass {
 	 FONCTIONS UTILES
 
 	 ********************************************************************************************************************************/
+    /**
+     * sort_ldap_entries
+     * Fonction de tri des résultats ldap
+     * @param $e results
+     * @param $fld field
+     * @param $order A or D
+     * @param $as_int traiter en tant qu'entier
+     * @return mixed
+     */
+    static function sort_ldap_entries($e, $fld, $order,$as_int=false){
+        for ($i = 0; $i < $e['count']; $i++) {
+            for ($j = $i; $j < $e['count']; $j++) {
+                if (!$as_int)
+                    $d = strcasecmp($e[$i][$fld][0], $e[$j][$fld][0]);
+                else
+                    $d = intval($e[$i][$fld][0])>intval($e[$j][$fld][0]);
+                switch ($order) {
+                    case 'A':
+                        if ($d > 0)
+                            Server::swap($e, $i, $j);
+                        break;
+                    case 'D':
+                        if ($d < 0)
+                            Server::swap($e, $i, $j);
+                        break;
+                }
+            }
+        }
+        return ($e);
+    }
 
-	/**
+    /**
+     * swap
+     * fonction accessoire de tri ldap
+     * @param $ary
+     * @param $i
+     * @param $j
+     */
+    static function swap(&$ary, $i, $j){
+        $temp = $ary[$i];
+        $ary[$i] = $ary[$j];
+        $ary[$j] = $temp;
+    }
+    /**
 	 * Retourne le max uid + 1
 	 * @return	Prochain uid
 	 */
 	static function getNextUid() {
 		Server::ldapConnect();
 		$search = ldap_search(Server::$_LDAP, PARC_LDAP_BASE, 'objectClass=posixAccount', array('uidnumber'));
-		$sort = ldap_sort(Server::$_LDAP, $search, 'uidnumber');
 		$res = ldap_get_entries(Server::$_LDAP, $search);
+		$res = Server::sort_ldap_entries($res,'uidnumber','A',true);
 		$uid = $res[sizeof($res) - 2]['uidnumber'][0] + 1;
 		return ($uid > 1000) ? $uid : 1000;
 	}
@@ -945,8 +988,8 @@ class Server extends genericClass {
 	static function getNextGid() {
 		Server::ldapConnect();
 		$search = ldap_search(Server::$_LDAP, PARC_LDAP_BASE, '(|(objectClass=posixAccount)(objectClass=posixGroup))', array('gidnumber'));
-		$sort = ldap_sort(Server::$_LDAP, $search, 'gidnumber');
 		$res = ldap_get_entries(Server::$_LDAP, $search);
+        $res = Server::sort_ldap_entries($res,'gidnumber','A',true);
 		$gid = $res[sizeof($res) - 2]['gidnumber'][0] + 1;
 		return ($gid > 1000) ? $gid : 1000;
 	}

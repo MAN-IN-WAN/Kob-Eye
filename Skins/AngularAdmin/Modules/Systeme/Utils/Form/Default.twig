@@ -92,7 +92,7 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <div>{{ include(template_from_string(module('Systeme/Utils/Select?Path='~field.objectModule~'/'~field.objectName~'&Field='~field.objectName~field.name))) }}</div>
+                <div>{{ include(template_from_string(module('Systeme/Utils/Select?Path='~field.objectModule~'/'~field.objectName~'&Field='~field.objectName~field.name~'&FieldKey='~field.name~'&ParentObject='~ObjectType))) }}</div>
             </div>
         </div>
     {% elseif field.type == "rkey" %}

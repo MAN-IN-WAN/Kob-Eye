@@ -23,7 +23,6 @@ if(connection_aborted()){
     exit;
 }
 $interfaces = $o->getInterfaces();
-
 $children = array();
 foreach ($interfaces as $i){
     foreach ($i as $form) {

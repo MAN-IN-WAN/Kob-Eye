@@ -275,10 +275,10 @@ class Sys extends Root{
 		//   SINON PAGE KOB-EYE DEFAUT DANS LA CONF			     //
 		//-------------------------------------------------------------------//
 		if ($this->Lien=="") {
-			$DefaultMenu = $this->getDefaultUserMenu();
-			if ($DefaultMenu!=NULL) {
+			Sys::$DefaultMenu = $this->getDefaultUserMenu();
+			if (Sys::$DefaultMenu!=NULL) {
 				//Alors on afiche le menu par defaut de l utilisateur
-				$this->setQuery($DefaultMenu->Alias);
+				$this->setQuery(Sys::$DefaultMenu->Alias);
 			}else{
 				//Alors il faut definir le lien par defaut de la skin
 
@@ -307,6 +307,8 @@ class Sys extends Root{
 	function getDefaultUserMenu(){
 		//Le menu par defaut le l'utilisateur est un menu du premier niveau ou le champ url est nul
 		if (isset($this->Menus)&&is_array($this->Menus))foreach ($this->Menus as $M) if ($M->Url=="") return $M;
+		//si pas de menu par defaut on prends le premier
+        if (isset($this->Menus)&&is_array($this->Menus)) return $this->Menus[0];
 	}
 
 //*************//
@@ -639,8 +641,8 @@ class Sys extends Root{
 		//Ici on definit les variables globales necessaires.
 		$this->Query=$this->AnalyseMenu($this->Lien);
 		//Définition du men par défaut
-		$Results = $this->searchMenu('');
-		Sys::$DefaultMenu = $Results;
+		/*$Results = $this->searchMenu('');
+		Sy::$DefaultMenu = $Results;*/
 		//Recuperation des Donnï¿œes du Module
 		$Out = explode("/",$this->Query);
 		$this->CurrentModule = ($Out[0]!="")?$Out[0]:"Systeme";

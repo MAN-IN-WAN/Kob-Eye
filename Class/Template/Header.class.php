@@ -223,6 +223,12 @@ class Header extends Root{
                 $this->Keywords = $page->Keywords;
             if (!$this->ForceImage)
                 $this->Image = $page->Image;
+        }else{
+            //on prends le titre du menu par défaut
+            $defmenu = Sys::$DefaultMenu;
+            $this->Title = $defmenu->Title;
+            $this->Description = $defmenu->Description;
+            $this->Keywords = $defmenu->Keywords;
         }
     }
     function Affich() {

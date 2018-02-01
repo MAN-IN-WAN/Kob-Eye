@@ -70,7 +70,6 @@ class Device extends genericClass{
             return false;*/
         $prod = true;
         $Commands = "";
-
         //recherche de la machine
         $dev = Sys::getOneData('Parc','Device/Uuid='.$uuid);
         if (!$dev&&isset($uuid)){
@@ -218,7 +217,6 @@ Task=$task
 
             $obj->Save();
         }else die('CLIENT INTROUVABLE');
-
         return true;
     }
 
