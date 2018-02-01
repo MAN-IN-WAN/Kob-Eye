@@ -175,7 +175,7 @@ class Module extends Root{
 	/**
 	* Chargement de templates
 	*/
-	private function loadTemplate($t){
+	public function loadTemplate($t){
 		//Recuperation de la template
 		$Te = false;
 		if (isset($_GET["TemplateId"]))$Te =  Sys::$Modules['Systeme']->callData('ActiveTemplate/'.$_GET["TemplateId"],false,0,1);
@@ -582,8 +582,8 @@ class Module extends Root{
 			is_array(Sys::$User->Access)) 
 			foreach (Sys::$User->Access as $A) {
 				//echo "test ".$A->ObjectModule.'/'.$A->ObjectClass.'  =>  '.$Query." -- ".preg_match('#^'.$A->ObjectModule.'\/'.$A->ObjectClass.'#',$Query)."\r\n";
-                if (preg_match('#^'.$A->ObjectModule.'\/'.$A->ObjectClass."#",$Query)) {
-					$Query = preg_replace('#^'.$A->ObjectModule.'\/' . $A->ObjectClass . '#', $A->Alias, $Query);
+                if (preg_match('#^'.$A->ObjectModule.'/'.$A->ObjectClass."(/.*)?$#",$Query)) {
+					$Query = preg_replace('#^'.$A->ObjectModule.'/' . $A->ObjectClass . '#', $A->Alias, $Query);
 					$Query = Process::searchAndReplaceVars($Query);
                     $GLOBALS["Systeme"]->Log->log("ACCESS " . $Query);
                 }
