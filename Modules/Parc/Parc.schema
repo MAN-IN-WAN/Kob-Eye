@@ -35,7 +35,7 @@
 		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de téléphone" fiche="1" form="1" list="1" listDescr="Tel">Tel</PROPERTIES>
 		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de mobile" fiche="1" form="1">Mobile</PROPERTIES>
 		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de fax" fiche="1" form="1">Fax</PROPERTIES>
-		<PROPERTIES category="LDAP" type="varchar" unique="1" length="50" description="Nom sous LDAP (de 8-50 caractères sans caractère spéciaux ou espace)" fiche="1" form="1">NomLDAP</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" unique="1" length="50" description="Nom sous LDAP (de 8-50 caractères sans caractère spéciaux ou espace)">NomLDAP</PROPERTIES>
 		<PROPERTIES category="LDAP" type="int" auto="1">LdapGid</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
@@ -333,7 +333,7 @@
 		<PROPERTIES type="extlink" list="1" fiche="1" description="Url guacamole" listDescr="Lien Direct">GuacamoleUrl</PROPERTIES>
 		<PROPERTIES type="varchar" description="Id guacamole">GuacamoleId</PROPERTIES>
 		<FKEY card="1,1" data="Device,Id" fiche="1"  parentDescription="Périphérique" link="1">DeviceId</FKEY>
-		<FKEY card="0,n" data="Contact,Id" parentDescription="Contact/Utilisateur" link="1">ContactId</FKEY>
+		<FKEY card="0,n" data="Contact,Id" parentDescription="Contact/Utilisateur" form="1" link="1">ContactId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="ReverseConnexion" Dico="1" driver="mysql" Description="Connexion Rescue" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/ReverseConnexion.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" listDescr="Nom" description="Nom de la connexion d'assistance">Nom</PROPERTIES>

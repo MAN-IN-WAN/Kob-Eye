@@ -279,6 +279,13 @@ class Parc extends Module{
                 if (sizeof($Rvs)){
                     $this->_ParcClient = $Rvs[0];
                     $GLOBALS["Systeme"]->registerVar("ParcClient",$this->_ParcClient);
+                } else {
+                    //test si contact
+                    $ct = Sys::$User->getOneChild('Contact');
+                    if ($ct){
+                        $this->_ParcClient = $ct;
+                        $GLOBALS["Systeme"]->registerVar("ParcContact",$this->_ParcClient);
+                    }
                 }
             }
         }

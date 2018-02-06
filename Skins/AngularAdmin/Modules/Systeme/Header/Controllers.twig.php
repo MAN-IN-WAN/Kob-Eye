@@ -41,6 +41,7 @@ foreach (Sys::$User->Menus as $m){
                 $cobj = $co->getObjectClass();
                 $tmp['childrenelements'][$i]['parentelements'] = $cobj->getParentElements();
                 for ($j = 0; $j < sizeof($tmp['childrenelements'][$i]['parentelements']); $j++) {
+                    //print_r($tmp['childrenelements'][$i]['parentelements'][$j]);
                     if (!isset($tmp['childrenelements'][$i]['parentelements'][$j]['form'])) unset($tmp['childrenelements'][$i]['parentelements'][$j]);
                 }
             }

@@ -9,6 +9,7 @@ class KeTwig{
         KeTwig::$Loader = new Twig_Loader_Filesystem('.');
         KeTwig::$Twig = new Twig_Environment(KeTwig::$Loader, array(
             /*'cache' => 'Data/Twig'*/
+            'debug' => true
         ));
         KeTwig::$Twig->addExtension(new Twig_Extension_StringLoader());
         KeTwig::$Twig->addFunction(new Twig_SimpleFunction('module','KeTwig::callModule'));
