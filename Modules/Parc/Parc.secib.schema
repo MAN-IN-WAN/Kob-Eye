@@ -12,7 +12,7 @@
 		<PROPERTIES category="Coordonnées" searchOrder="2" type="varchar" description="Adresse e-mail" fiche="1" form="1" list="1" listDescr="Email">Email</PROPERTIES>
 		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de téléphone" listDescr="Tel">Tel</PROPERTIES>
 		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de fax" >Fax</PROPERTIES>
-		<PROPERTIES category="LDAP" type="varchar" obligatoire="1" unique="1" length="50" description="Nom sous LDAP (de 8-50 caractères sans caractère spéciaux ou espace)" fiche="1" form="1">NomLDAP</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" obligatoire="1" unique="1" length="50" description="Nom sous LDAP (de 3-50 caractères sans caractère spéciaux ou espace)" fiche="1" form="1">NomLDAP</PROPERTIES>
 		<PROPERTIES category="LDAP" type="int" auto="1">LdapGid</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
@@ -161,8 +161,12 @@
 			<PROPERTIES type="int" description="Espace provisionné (en Mo)" fiche="1" list="1" listDescr="HDD" form="1">EspaceProvisionne</PROPERTIES>
 			<PROPERTIES type="text" list="1" form="1">Commentaire</PROPERTIES>
 		</CATEGORY>
-		<CATEGORY title="Mail">
+		<CATEGORY title="Serveurs par défaut">
 			<PROPERTIES type="boolean" description="Serveur email par défaut">defaultMailServer</PROPERTIES>
+			<PROPERTIES type="boolean" description="Serveur web par défaut" fiche="1" list="1" form="1" listDescr="Web defaut">defaultWebServer</PROPERTIES>
+			<PROPERTIES type="boolean" description="Serveur sql par défaut" fiche="1" list="1" form="1" listDescr="Sql defaut">defaultSqlServer</PROPERTIES>
+		</CATEGORY>
+		<CATEGORY title="Mail">
 			<PROPERTIES type="varchar" description="Admin mail: Nom d'utilisateur" default="admin" >mailAdminUser</PROPERTIES>
 			<PROPERTIES type="varchar" description="Admin mail: Mot de passe">mailAdminPassword</PROPERTIES>
 			<PROPERTIES type="varchar" description="Admin mail: Port" default="7071" >mailAdminPort</PROPERTIES>
@@ -177,10 +181,11 @@
         <PROPERTIES category="LDAP" type="varchar" auto="1">LdapUserDN</PROPERTIES>
         <PROPERTIES category="LDAP" type="varchar" auto="1">LdapUserID</PROPERTIES>
         <PROPERTIES category="LDAP" type="varchar" auto="1">LdapUserTms</PROPERTIES>
+        <PROPERTIES category="LDAP" type="varchar" auto="1">LdapUserTms</PROPERTIES>
 		<FKEY card="0,1" data="Client,Id">ClientId</FKEY>
 		<FUNCTION title="Test de connexion">Connect</FUNCTION>
+		<FUNCTION title="Vider le cache">clearCache</FUNCTION>
 		<FUNCTION title="Installation des clefs SSH">InstallSshKey</FUNCTION>
-		<FUNCTION title="Envoyer un récapitulatif">EnvoyerRecapitulatif</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Host" driver="mysql" AccessPoint="1" Description="Hébergement" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Class="Modules/Parc/Class/Host.class.php">
 		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" description="Nom (uniquement de 2 à 16 caractères comprenant a-Z et 0-9 sans espace et ponctuation.)" listDescr="Nom">Nom</PROPERTIES>
@@ -244,17 +249,25 @@
 	</OBJECTCLASS>
     <OBJECTCLASS title="DomainTemplate" driver="mysql" Dico="1" Description="Template de domaine" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" >
         <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom du fichier">Nom</PROPERTIES>
-        <PROPERTIES type="raw" obligatoire="1" fiche="1" form="1">Contenu</PROPERTIES>
+        <PROPERTIES type="raw" subtype="xml" obligatoire="1" fiche="1" form="1">Contenu</PROPERTIES>
     </OBJECTCLASS>
-    <OBJECTCLASS title="Tache" driver="mysql" Dico="1" Description="Tache" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Tache.class.php" >
+    <OBJECTCLASS title="Tache" driver="mysql" Description="Tache" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Tache.class.php" logEvent="1"  AccessPoint="1">
         <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom de la tache">Nom</PROPERTIES>
-        <PROPERTIES type="varchar" searchOrder="2" obligatoire="1" list="1" values="Ssh,Auto,Manuel" fiche="1" form="1" description="Type de tache">Type</PROPERTIES>
+        <PROPERTIES type="varchar" searchOrder="2" obligatoire="1" list="1" values="Ssh,Auto,Manuel,Fonction" fiche="1" form="1" description="Type de tache">Type</PROPERTIES>
         <PROPERTIES type="boolean" searchOrder="3" fiche="1" list="1" form="1" description="Tache terminé">Termine</PROPERTIES>
         <PROPERTIES type="boolean" searchOrder="4" fiche="1" list="1" form="1" description="Tache démarrée">Demarre</PROPERTIES>
         <PROPERTIES type="boolean" searchOrder="5" fiche="1" list="1" form="1" description="Erreur">Erreur</PROPERTIES>
+		<PROPERTIES type="date" list="1" fiche="1" form="1" description="Date de déclenchement" listDescr="Date" default="[!TMS::Now!]">DateDebut</PROPERTIES>
         <PROPERTIES type="raw" fiche="1" form="1">Contenu</PROPERTIES>
         <PROPERTIES type="html" fiche="1" form="1">Retour</PROPERTIES>
-        <FKEY card="1,1" data="Server,Id" fiche="1" form="1" parentDescription="Serveur" link="1">ServerId</FKEY>
+		<PROPERTIES category="Fonction" type="varchar" description="Module"  searchOrder="2" fiche="1" list="1" form="1" >TaskModule</PROPERTIES>
+		<PROPERTIES category="Fonction" type="varchar" description="ObjectClass"  searchOrder="3" fiche="1" list="1" form="1" >TaskObject</PROPERTIES>
+		<PROPERTIES category="Fonction" type="int" description="Identifiant"  searchOrder="4" fiche="1" list="1" form="1" >TaskId</PROPERTIES>
+		<PROPERTIES category="Fonction" type="varchar" description="Fonction à éxécuter"  searchOrder="5" fiche="1" list="1" form="1" >TaskFunction</PROPERTIES>
+
+		<FKEY card="1,1" data="Server,Id" fiche="1" form="1" parentDescription="Serveur" link="1">ServerId</FKEY>
+		<FKEY card="0,1" data="Host,Id" fiche="1" form="1" parentDescription="Hébergement" link="1">HostId</FKEY>
+		<FKEY card="0,1" data="InstanceSecib,Id" fiche="1" form="1" parentDescription="Instance" link="1">InstanceSecibId</FKEY>
         <FKEY card="0,1" data="Apache,Id" fiche="1" form="1" parentDescription="Hôte virtuel" link="1">ApacheId</FKEY>
         <FUNCTION title="Executer maintenant">Executer</FUNCTION>
     </OBJECTCLASS>
@@ -302,21 +315,45 @@
 		<FKEY card="1,1" data="Server,Id" description="Serveur SQL" filter="SQL=1" list="1" form="1" fiche="1" listDescr="Serveur SQL">ServerId</FKEY>
 		<FKEY card="1,1" data="Host,Id" description="Hébergement" list="1" form="1" fiche="1" listDescr="Hébergement">HostId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Instance" driver="mysql" Description="Site web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Instance.class.php">
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de l'instance" list="1" form="1" fiche="1" unique="1" listDescr="Nom">Nom</PROPERTIES>
-        <PROPERTIES type="varchar" description="Type" values="Standard,Easy,Minimal" default="Standard">Type</PROPERTIES>
-        <CATEGORY title="MiniSite">
-            <PROPERTIES type="image" list="1" form="1" fiche="1" description="Image">Image</PROPERTIES>
-            <PROPERTIES type="varchar" list="1" form="1" fiche="1" description="Titre">Titre</PROPERTIES>
-            <PROPERTIES type="text" form="1" fiche="1" description="Description">Description</PROPERTIES>
-            <PROPERTIES type="color" list="1" form="1" fiche="1" description="Couleur 1">Couleur1</PROPERTIES>
-            <PROPERTIES type="color" list="1" form="1" fiche="1" description="Couleur 2">Couleur2</PROPERTIES>
-            <FKEY card="0,1" module="Systeme" data="Site,Id" description="Site" listDescr="Site">SiteId</FKEY>
-        </CATEGORY>
-		<FKEY card="0,n" data="Domain,Id" description="Domaine(s)" listDescr="Domaine(s)">DomainId</FKEY>
-		<FKEY card="0,n" data="Host,Id" description="Hébergement" listDescr="Hébergement">HostId</FKEY>
-        <FKEY card="0,n" data="Server,Id" description="Serveur SQL" filter="SQL=1" listDescr="Serveur SQL">ServerId</FKEY>
-        <FKEY card="1,1" data="Client,Id" description="Client" listDescr="Serveur SQL">ClientId</FKEY>
+	<OBJECTCLASS title="InstanceSecib" driver="mysql" Description="Secib Web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/InstanceSecib.class.php" logEvent="1" AccessPoint="1">
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de l'instance (le sous domaine ex: [sous-domaine].mondomaine.ext)" list="1" form="1" fiche="1" unique="1" listDescr="Nom" default="">Nom</PROPERTIES>
+		<FKEY card="0,1" data="VersionLogiciel,Id" description="Numéro de la version (au format N.X.Y.Z)" list="1" form="1" fiche="1"  listDescr="Version">VersionId</FKEY>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Url du webservice" form="1" fiche="1"  listDescr="WebService" default="https://secibneo.secib.fr">WebService</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Guid du cabinet" form="1" fiche="1"  listDescr="Guid">Guid</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Type de l'instance" list="1" form="1" fiche="1" values="dev,pre-prod,prod" listDescr="Type" default="prod" >Type</PROPERTIES>
+		<PROPERTIES type="boolean" description="Actif" listDescr="Actif" list="1">Enabled</PROPERTIES>
+		<PROPERTIES type="boolean" description="Ssl" listDescr="Ssl"  list="1" form="1" fiche="1">EnableSsl</PROPERTIES>
+		<FKEY card="1,n" data="Domain,Id" description="Domaine(s)" listDescr="Domaine(s)" form="1" fiche="1">DomainId</FKEY>
+		<FKEY card="0,1" data="Host,Id" description="Hébergement" listDescr="Hébergement" list="1" fiche="1">HostId</FKEY>
+        <FKEY card="1,1" data="Client,Id" description="Client" listDescr="Client" list="1" form="1" fiche="1">ClientId</FKEY>
+		<FUNCTION title="Activer le SSL">enableSSL</FUNCTION>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Activity" logEvent="1"  driver="mysql" Description="Activité des jobs"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/Parc/Class/Activity.class.php" Operations="">
+		<FILTER name="Toutes les activités" color="warning" ></FILTER>
+		<FILTER name="Activités en cours" color="success" ><![CDATA[Started=1&Errors=0&Success=0]]></FILTER>
+		<FILTER name="Activités en erreur" ><![CDATA[Started=1&Errors=1]]></FILTER>
+		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1" listDescr="Titre">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" form="1" fiche="1" listDescr="Type d'activité" obligatoire="1" values="Exec,Info" default="Exec">Type</PROPERTIES>
+		<PROPERTIES type="progress" list="1" fiche="1" form="1" listDescr="Progression">Progression</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1" list="1" description="Démarré" listDescr="Demarré">Started</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1" list="1" description="Succés" listDescr="Succès">Success</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1" list="1" special="reverse" description="Erreur" listDescr="Erreur">Errors</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" description="Acknowledge" listDescr="Vue" default="0">Acknowledge</PROPERTIES>
+		<PROPERTIES type="raw" form="1" fiche="1">Details</PROPERTIES>
+		<FKEY data="Tache,Id" form="1" fiche="1" card="0,1" >TacheId</FKEY>
+		<FKEY data="Server,Id" form="1" fiche="1" card="0,1" popup="1" >ServerId</FKEY>
+		<FKEY data="Host,Id" form="1" fiche="1" card="0,1" popup="1" >HostId</FKEY>
+		<FKEY data="Apache,Id" form="1" fiche="1" card="0,1"  popup="1" >ApacheId</FKEY>
+		<FKEY data="InstanceSecib,Id" form="1" fiche="1" card="0,1"  popup="1" >InstanceSecibId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="VersionLogiciel" driver="mysql" Description="Version de Secib Web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png">
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de la version" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Numéro de la version (au format N.X.Y.Z)" list="1" form="1" fiche="1"  listDescr="Version">Version</PROPERTIES>
+		<PROPERTIES type="varchar" description="Type" values="dev,pre-prod,prod" default="prod" list="1" form="1" fiche="1">Type</PROPERTIES>
+		<PROPERTIES type="file" description="Fichier" listDescr="" form="1" fiche="1">Fichier</PROPERTIES>
+		<PROPERTIES type="text" description="SQL intialisation (dump)" subtype="sql" form="1" fiche="1">SQLInit</PROPERTIES>
+		<PROPERTIES type="text" description="SQL Mise à jour" subtype="sql" form="1" fiche="1">SQLPatch</PROPERTIES>
+		<PROPERTIES type="text" description="Commenaires" subtype="text" form="1" fiche="1">Commentaire</PROPERTIES>
 	</OBJECTCLASS>
 </SCHEMA>
 

@@ -1,0 +1,22 @@
+[HEADER CSS]/Tools/Css/Bootstrap/3.3/css/bootstrap.min.css[/HEADER]
+[HEADER CSS]/Tools/Css/Bootstrap/3.3/css/bootstrap-theme.min.css[/HEADER]
+[HEADER JS]/Tools/Css/Bootstrap/3.3/js/bootstrap.min.js[/HEADER]
+[TITLE]Gestionnaire d'infrastructure[/TITLE]
+    <div class="container">
+        <div class="card card-container">
+            [IF [!Zob!]=Valider]
+            <div class="alert alert-danger">
+                Une erreur est survenue... Veuillez vérifier vos identifiants.
+            </div>
+            [/IF]
+            <!--<img id="profile-img" class="profile-img-card" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" />-->
+            <img id="profile-img" class="profile-img-card" src="/Skins/LoginParc/Img/logo.png" />
+            <p id="profile-name" class="profile-name-card"></p>
+            <form class="form-signin" method="POST">
+                <span id="reauth-email" class="reauth-email"></span>
+                <input type="text" id="inputEmail" class="form-control" placeholder="Nom d'utilisateur" name="login" required autofocus>
+                <input type="password" id="inputPassword" class="form-control" placeholder="Mot de passe"  name="pass" required>
+                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" name="Zob" value="Valider">Se connecter</button>
+            </form><!-- /form -->
+        </div><!-- /card-container -->
+    </div><!-- /container -->

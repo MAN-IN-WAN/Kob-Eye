@@ -85,7 +85,8 @@ class Sys extends Root{
 		$this->PostVarsToPhp();
 		$this->GetVarsToPhp();
 		$this->FilesVarsToPhp();
-		define('DEBUG_INTERFACE',false);
+		if (!defined('DEBUG_INTERFACE'))
+			define('DEBUG_INTERFACE',false);
 		define('OBJECTCLASS_CATEGORY_DEFAULT',"none");
 	}
 

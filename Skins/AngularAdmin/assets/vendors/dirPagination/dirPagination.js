@@ -73,7 +73,7 @@
 
                 /** gestion filter */
                 if (filter) {
-                    console.log('dirPaginate filter '+context+' '+filter);
+                    console.log('dirPaginate filter '+context+' '+filter+' '+itemsPerPageFilterRemoved,scope[itemsPerPageFilterRemoved.split('.')[0]]);
                     scope[itemsPerPageFilterRemoved.split('.')[0]].store.setFilters(filter, context);
                 }
                 /** gestion autoLoad */

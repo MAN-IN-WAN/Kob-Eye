@@ -24,8 +24,7 @@ class Apache extends genericClass {
 		return true;
 	}
 
-	public function enableSsl($force = false) {
-	    $this->Ssl = false;
+	public function enableSsl($force = false,$instance = null) {
 		if (empty($this->SslMethod))$this->SslMethod = "Letsencrypt";
 		//check already exists
 		if (!$force&&$this->Ssl&&!empty($this->SslCertificate)&&!empty($this->SslCertificateKey)&&$this->SslExpiration>time()+2592000){
@@ -33,8 +32,11 @@ class Apache extends genericClass {
 			return false;
 		}
 		//on vérifie qu'il n'y ait pas déjà une tache
-        if (Sys::getCount('Parc','Apache/'.$this->Id.'/Tache/Termine=0')) return false;
-
+        if (Sys::getCount('Parc','Apache/'.$this->Id.'/Tache/Termine=0')){
+            $this->addError(array("Message"=>"Il y a déjà une tache à venir pour l'activation SSL."));
+            return false;
+        }
+        $this->Ssl = false;
 		switch($this->SslMethod){
             case "Manuel":
                 if (!$force&&$this->Ssl&&(empty($this->SslCertificate)||empty($this->SslCertificateKey))){
@@ -49,6 +51,7 @@ class Apache extends genericClass {
                 }
                 $this->Ssl = true;
                 break;
+
 			case "Letsencrypt":
                 require_once 'Net/DNS2.php';
                 if (!class_exists('Net_DNS2_Resolver')){
@@ -58,17 +61,29 @@ class Apache extends genericClass {
                 //définition de la date d'expiration
                 $this->SslExpiration=time()+(86400*90);
                 $this->Ssl = true;
-                $serv = $this->getKEServer();
+                //recherche du serveur proxy
+                $serv = Sys::getData('Parc','Server/Proxy=1&Status>1');
+                if (!sizeof($serv))
+                    $serv = $this->getKEServer();
                 $serv = $serv[0];
                 $sa = explode("\n",$this->ApacheServerAlias);
 
                 //test des entrées dns
                 $resolver = new Net_DNS2_Resolver( array('nameservers' => array('8.8.8.8')) );
-                $t = array($resolver->query($this->ApacheServerName, 'A'));
+                try {
+                    $t = array($resolver->query($this->ApacheServerName, 'A'));
+                }catch (Exception $e){
+                    $this->addWarning(array("Message"=>"Timeout DNS : ".$e->getMessage()));
+                }
                 foreach ($sa as $a){
                     $a = trim($a);
-                    if (!empty($a))
-                        $t = array_merge($t,array($resolver->query($a, 'A')));
+                    if (!empty($a)) {
+                        try {
+                            $t = array_merge($t, array($resolver->query($a, 'A')));
+                        }catch (Exception $e){
+                            $this->addWarning(array("Message"=>"Erreur DNS : ".$e->getMessage()));
+                        }
+                    }
                 }
                 //test des erreurs
                 $err = false;
@@ -88,9 +103,11 @@ class Apache extends genericClass {
                 $task  = genericClass::createInstance('Parc','Tache');
                 $task->Nom = "Activation SSL pour la configuration Apache ".$this->ApacheServerName." ( ".$this->Id." )";
                 $task->Type = "Ssh";
+                $task->DateDebut = time()+120;
                 $task->Contenu = "/usr/src/certbot/certbot-auto --renew-by-default --webroot certonly --webroot-path /var/www/letsencrypt --quiet -d ".$this->ApacheServerName;
                 // ajout des server alias
                 $sa = explode("\n",$this->ApacheServerAlias);
+                if (sizeof($sa)==1)$sa = explode(" ",$this->ApacheServerAlias);
                 if (!empty($sa[0]))foreach ($sa as $s ){
                     $task->Contenu .= " -d ".trim($s);
                 }
@@ -98,13 +115,14 @@ class Apache extends genericClass {
                 $task->Contenu .= "\n cat /etc/letsencrypt/live/".$this->ApacheServerName."/privkey.pem";
                 $task->addParent($this);
                 $task->addParent($serv);
+                if ($instance)$task->addParent($instance);
                 $task->Save();
                 parent::Save();
 			break;
 			default:
 			break;
 		}
-		return;
+		return true;
 	}
 
 	public function getRootPath() {
@@ -194,7 +212,9 @@ class Apache extends genericClass {
 	 * @return	Verification OK ou NON
 	 */
 	public function Verify( $synchro = true ) {
-		$this->addWarning(array("Message"=>"Veuillez bien vérifier que les ServerName soit bien configuré et pointe bien vers le serveur. Les ServerAlias doivent également bien pointer sur le serveur, sinon l'activation SSL échouera."));
+        if ($this->Ssl&&$this->SslMethod=='Letsencrypt') {
+            $this->addWarning(array("Message" => "Veuillez bien vérifier que les ServerName soit bien configuré et pointe bien vers le serveur. Les ServerAlias doivent également bien pointer sur le serveur, sinon l'activation SSL échouera."));
+        }
 
 		//check documentRoot
 		if (substr($this->DocumentRoot,strlen($this->DocumentRoot)-1,1)=='/') $this->DocumentRoot = substr($this->DocumentRoot,0,-1);
@@ -229,7 +249,6 @@ class Apache extends genericClass {
 
                     // Verification à jour
                     $res = Server::checkTms($this,$KEServer);
-                    //print_r($res);
                     if ($res['exists']) {
                         if (!$res['OK']) {
                             $this->AddError($res);

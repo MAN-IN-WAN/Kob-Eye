@@ -116,7 +116,8 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <textarea  style="width:100%;min-height:300px;white-space: pre-wrap;" ng-model="modalObj.{{ field.name }}" ng-trim="false"></textarea>
+            <div ui-ace="{useWrapMode : true,mode: '{{ field.subtype }}',onLoad: aceLoaded,onChange: aceChanged}" ng-model="modalObj.{{ field.name }}" class="ace_editor"></div>
+            <!--<textarea  ckeditor="ckLite" contenteditable="false" style="width:100%;min-height:300px;white-space: pre-wrap;" ng-model="modalObj.{{ field.name }}" ng-trim="false"></textarea>-->
         </div>
     </div>
     {% elseif field.type == "html" or field.type == "bbcode" %}

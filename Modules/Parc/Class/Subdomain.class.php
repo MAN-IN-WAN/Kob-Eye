@@ -41,6 +41,14 @@ class Subdomain extends genericClass {
         $pa = $this->getOneParent('Domain');
         $cnames = $pa->getChildren('CNAME');
         $pref = explode(':',$this->Url)[1];
+
+        //check name
+        if ($pref!=Subdomain::checkName($pref)){
+            $this->addError(array('Message' => "Un sous domaine ne doit pas contenir de caractères spéciaux.", 'Prop' => 'Url'));
+            $this->_isVerified = false;
+            return false;
+        }
+
         foreach ($cnames as $cname){
             if($pref == $cname->Dnsdomainname){
                 $this->addError(array('Message' => "Une entrée CNAME existe déjà pour ce prefixe.", 'Prop' => ''));
@@ -238,5 +246,22 @@ class Subdomain extends genericClass {
 		$res = Server::checkTms($this);
 		return $res['exists'];
 	}
+    static function checkName($chaine) {
+        $chaine=utf8_decode($chaine);
+        $chaine=stripslashes($chaine);
+        $chaine = preg_replace('`\s+`', '-', trim($chaine));
+        $chaine = str_replace("'", "-", $chaine);
+        $chaine = str_replace("&", "et", $chaine);
+        $chaine = str_replace('"', "-", $chaine);
+        $chaine = str_replace("?", "", $chaine);
+        $chaine = str_replace("!", "", $chaine);
+        $chaine = str_replace(".", "", $chaine);
+        $chaine = preg_replace('`[\,\ \(\)\+\'\/\:_]`', '-', trim($chaine));
+        $chaine=strtr($chaine,utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ?"),"aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynn-");
+        $chaine = preg_replace('`[-]+`', '-', trim($chaine));
+        $chaine =  utf8_encode($chaine);
+        $chaine = preg_replace('`[\/]`', '-', trim($chaine));
+        return $chaine;
+    }
 
 }

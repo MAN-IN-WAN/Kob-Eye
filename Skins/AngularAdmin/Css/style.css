@@ -446,3 +446,7 @@ label.clickable{
     background-color:  #ddd;
     border-color: #333;
 }
+/**
+ACE
+ */
+.ace_editor { height: 300px; }

@@ -24,6 +24,16 @@
             $scope.{{ parent.objectModule }}{{ parent.objectName }}Store = {{ parent.objectModule }}{{ parent.objectName }}Store;
             //$scope.{{ parent.objectModule }}{{ parent.objectName }}Store.setFilters('{{ parent.filter }}','select');
             //$scope.{{ parent.objectModule }}{{ parent.objectName }}Store.getData(1,'select');
+            $scope.{{ parent.objectModule }}{{ parent.objectName }}Select = {
+                data: {{ parent.objectModule }}{{ parent.objectName }}Store.data.select,
+                store: {{ parent.objectModule }}{{ parent.objectName }}Store,
+                filter: {{ parent.objectModule }}{{ parent.objectName }}Store.getFilters('select',true),
+                currentPage: {{ parent.objectModule }}{{ parent.objectName }}Store.currentPage.select,
+                itemsPerPage: {{ parent.objectModule }}{{ parent.objectName }}Store.itemsPerPage,
+                selected: {
+                    selectall: false
+                }
+            }
         {% endfor %}
 
         //acces aux stores enfants
@@ -201,13 +211,13 @@
     app.controller('{{ c.name }}FicheCtrl', function($injector,NgMap,$location, $scope,$timeout, $rootScope, $routeParams,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store{% endfor %}) {
         //acces aux stores parents
         {% for parent in c.parentelements %}
-            {{ parent.objectModule }}{{ parent.objectName }}Store.setFilters('{{ parent.filter }}','parentselect');
-            //{{ parent.objectModule }}{{ parent.objectName }}Store.getData(1,'parentselect');
+            {{ parent.objectModule }}{{ parent.objectName }}Store.setFilters('{{ parent.filter }}','select');
+            //{{ parent.objectModule }}{{ parent.objectName }}Store.getData(1,'select');
             $scope.{{ parent.objectModule }}{{ parent.objectName }}Select = {
-                data: {{ parent.objectModule }}{{ parent.objectName }}Store.data.parentselect,
+                data: {{ parent.objectModule }}{{ parent.objectName }}Store.data.select,
                 store: {{ parent.objectModule }}{{ parent.objectName }}Store,
-                filter: {{ parent.objectModule }}{{ parent.objectName }}Store.filter.parentselect,
-                currentPage: {{ parent.objectModule }}{{ parent.objectName }}Store.currentPage.parentselect,
+                filter: {{ parent.objectModule }}{{ parent.objectName }}Store.filter.select,
+                currentPage: {{ parent.objectModule }}{{ parent.objectName }}Store.currentPage.select,
                 itemsPerPage: {{ parent.objectModule }}{{ parent.objectName }}Store.itemsPerPage,
                 selected: {
                     selectall: false

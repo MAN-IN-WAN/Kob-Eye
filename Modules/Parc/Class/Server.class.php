@@ -885,7 +885,6 @@ class Server extends genericClass {
                 $search = ldap_search(Server::$_LDAP, PARC_LDAP_BASE, 'entryuuid=' . $KEObj->LdapID, array('modifytimestamp'));
             }
             $res = ldap_get_entries(Server::$_LDAP, $search);
-            //print_r($res);
             if (!$res['count']) {
                 $e['exists'] = false;
                 return $e;
@@ -1100,7 +1099,6 @@ class Server extends genericClass {
      */
     public function remoteExec( $command ,$activity = null,$noerror=false){
         if (!$this->_connection)$this->Connect();
-        if (!$this->_connection)return false;
         $result = $this->rawExec( $command.';echo -en "\n$?"', $activity);
         if(!$noerror&& ! preg_match( "/^(0|-?[1-9][0-9]*)$/s", $result[2], $matches ) ) {
             throw new RuntimeException( "Le retour de la commande ne contenait pas le status. commande : ".$command );
@@ -1179,11 +1177,75 @@ class Server extends genericClass {
         fclose( $error_stream );
         return array( $output, $error_output,$exit_output);
     }
-    public function mountNFS(){
-        return $this->remoteExec("esxcfg-nas -a ABTEL_BACKUP -o ".AbtelBackup::getMyIp()." -s /backup/nfs",null,true);
+    /**
+     * createActivity
+     * créé une activité en liaison avec l'esx
+     * @param $title
+     * @param null $obj
+     * @param int $jPSpan
+     * @param string $Type
+     * @return genericClass
+     */
+    public function createActivity($title,$Type='Exec') {
+        $act = genericClass::createInstance('Parc','Activity');
+        $act->addParent($this);
+        $act->Titre = $this->tag.date('d/m/Y H:i:s').' > '.$this->Titre.' > '.$title;
+        $act->Started = true;
+        $act->Type= $Type;
+        $act->Progression = 0;
+        $act->Save();
+        return $act;
     }
-    public function unmountNFS(){
-        return $this->remoteExec("esxcfg-nas -d ABTEL_BACKUP",null,true);
+    /**
+     * callLdap2Service
+     * execute remotely ldap2service
+     */
+    public function callLdap2Service($task = null) {
+        $act = $this->createActivity('Execution de synchronisation','Exec');
+        try {
+            $out = $this->remoteExec('/usr/bin/ldap2service', $act);
+        }catch (Exception $e){
+            $act->addDetails($e->getMessage());
+            $act->Terminate(false);
+            return;
+        }
+        $act->addDetails($out);
+        $act->Terminate($out);
     }
-
+    /**
+     * clearCache
+     * clear Nginx cache
+     */
+    public function clearCache() {
+        $act = $this->createActivity('Vidage du cache','Exec');
+        try {
+            $out = $this->remoteExec('rm /tmp/nginx -Rf', $act);
+        }catch (Exception $e){
+            $act->addDetails($e->getMessage());
+            $act->Terminate(false);
+            return;
+        }
+        $this->
+        $act->addDetails($out);
+        $act->Terminate(true);
+        $this->restartServiceNginx();
+        return true;
+    }
+    /**
+     * clearCache
+     * clear Nginx cache
+     */
+    public function restartServiceNginx() {
+        $act = $this->createActivity('Redemarrage du service Proxy (NGINX)','Exec');
+        try {
+            $out = $this->remoteExec('systemctl restart nginx', $act);
+        }catch (Exception $e){
+            $act->addDetails($e->getMessage());
+            $act->Terminate(false);
+            return;
+        }
+        $act->addDetails($out);
+        $act->Terminate(true);
+        return true;
+    }
 }

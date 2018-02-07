@@ -68,7 +68,22 @@
                     {{ include(template_from_string(module('Systeme/Widget/InfraOverview'))) }}
                 </div>
             </div>
-        </div> </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="widget widget-two">
+                    <div class="widget-header">
+                        Consultez les <strong>Activités</strong> récentes
+                    </div>
+                    <div class="widget-body clearfix">
+                        <div class="conversation-block custom-scroll" style="height: 400px;position: relative;">
+                            {{ include(template_from_string(module('Systeme/Utils/List/ChildActivity?Path=Parc/Activity&templateContext=dash'))) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- End Dashboard -->
 </div>
 

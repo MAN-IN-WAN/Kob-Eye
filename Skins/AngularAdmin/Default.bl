@@ -158,7 +158,7 @@
 
     <!-- Ckeditor -->
     <script src="Tools/Js/ckeditor4.8/ckeditor.js"></script>
-    <script src="Skins/AngularAdmin/assets/vendors/angular-ckeditor-master/angular-ckeditor.min.js"></script>
+    <script src="Skins/AngularAdmin/assets/vendors/angular-ckeditor-master/angular-ckeditor.js"></script>
 
     <!-- Color Picker -->
     <script src="Skins/AngularAdmin/assets/vendors/angular-bootstrap-colorpicker-master/js/bootstrap-colorpicker-module.min.js"></script>
@@ -172,12 +172,16 @@
         <script src="Systeme/Header/BackupAdmin.json"></script>
     [/IF]
 
-    [IF [!Systeme::User::isRole(PARC_TECH)!]]
+    [IF [!Systeme::User::isRole(PARC_TECHNICIEN)!]]
         <script src="Systeme/Header/InfraAdmin.json"></script>
     [/IF]
 
     <!-- KobEye -->
     <script src="Skins/AngularAdmin/assets/common/js/KEPoll.js"></script>
+
+    <!-- ACE -->
+    <script type="text/javascript" src="Skins/AngularAdmin/assets/vendors/angular-ui-ace/src/ui-ace.js"></script>
+    <script type="text/javascript" src="Tools/Js/ace/src-min-noconflict/ace.js"></script>
 
 
 

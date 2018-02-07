@@ -1,3 +1,50 @@
 app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope) {
 
+
+    //------------------------------------------//
+    //                 STORES                   //
+    //------------------------------------------//
+    //
+    //      Activity
+    //
+    //Init du store
+    $scope.ParcActivityStore = ParcActivityStore;
+    // Utile seulement a cause de la template d'affichage commun avec la listchildren
+    var now = Math.floor(Date.now()/1000);
+    var seuil = now - 86400;
+
+    $scope.ParcActivityStore.setFilters('Started=1&Success=0&Errors=0+tmsEdit>'+seuil,'dash');
+    $scope.ParcActivityStore.getData(1,'dash');
+    $scope.ParcActivity = {
+        data: ParcActivityStore.data.dash,
+        store: ParcActivityStore,
+        filter: ParcActivityStore.filter.dash,
+        currentPage: ParcActivityStore.currentPage.dash,
+        itemsPerPage: ParcActivityStore.itemsPerPage,
+        selected: {
+            selectall: false
+        }
+    }
+
+    $rootScope.$on('ParcActivityStore',function (ev,data){
+        switch (data.type){
+            case 'add':
+                $scope.ParcActivityStore.addOneData(data.id,data.data,'dash');
+            break;
+        }
+    });
+
+    var refresh = $interval(function(){
+        var now = Math.floor(Date.now()/1000);
+        var seuil = now - 86400;
+        for(var n in $scope.ParcActivityStore.data['dash']){
+            var StData = $scope.ParcActivityStore.data['dash'][n];
+            if(StData.tmsEdit < seuil) {
+                $scope.ParcActivityStore.deleteOneData(StData.id,'dash',true);
+            }
+        }
+    },5000);
+
+
+
 });

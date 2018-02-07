@@ -8,6 +8,7 @@ angular.module('cleanUI', [
     'ngSanitize',
     'nl2br',
     'ngMap',
+    'ui.ace',
     'uiSwitch',
     'ui.bootstrap',
     'CustomSelect',
@@ -439,11 +440,28 @@ app.controller('MainCtrl', function($location, $scope, $rootScope, $timeout, Fil
     $scope.CKInstances = CKEDITOR.instances;
 
     //Diverses config differents pour differents options
+    $scope.ckLite = {
+        language: 'fr',
+        allowedContent: true,
+        entities: false,
+        toolbarGroups : [
+            {name: 'pbckcode'}
+        ],
+        extraPlugins: 'pbckcode',
+        pbckcode : {
+            cls: '',
+            highlighter: 'PRETTIFY',
+            modes: [['HTML', 'html'], ['CSS', 'css'], ['PHP', 'php'], ['JS', 'javascript']],
+            theme: 'textmate',
+            tab_size: '4'
+        }
+    };
+    //Diverses config differents pour differents options
     $scope.ckFull = {
-                        language: 'fr',
-                        allowedContent: true,
-                        entities: false
-                    }
+        language: 'fr',
+        allowedContent: true,
+        entities: false
+    }
     //Callback à l'initialisation d'une instance
     $scope.ckReady = function (a,b,c,d) {
         console.log(a,b,c,d);
