@@ -5,8 +5,9 @@ foreach (Sys::$Modules as $k=>$mod){
     $mods[$k] = array_keys($obj->getObjectClass());
 }*/
 $vars['modules'] = Sys::$Modules;
-$vars['menus'] = Sys::$User->Menus[0]->getMainMenus();
-
+if(count(Sys::$User->Menus))
+    $vars['menus'] = Sys::$User->Menus[0]->getMainMenus();
+//print_r(Sys::$User->Menus);
 $vars['user'] = Sys::$User;
 
 ?>

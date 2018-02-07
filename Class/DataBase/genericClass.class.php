@@ -2203,6 +2203,28 @@ class genericClass extends Root {
 		if (!$this->Id) {
 		    $new = true;
         }
+
+        if ( isset(Sys::$User->Access) && is_array(Sys::$User->Access) ){
+            foreach (Sys::$User->Access as $A) {
+                if($this->Module == $A->ObjectModule && $this->ObjectType == $A->ObjectClass){
+                    $Query = $A->Alias.'/'.$this->Id;
+                    $Query = Process::searchAndReplaceVars($Query);
+                    klog::l("ACCESS Save" . $Query);
+                    $i = Info::getInfos($Query);
+                    $pI = explode('/',$i['LastDirect'],2);
+                    $exists = $this->getOneParent($pI[0],$pI[1]);
+                    if(!$exists){
+                        $parent = Sys::getOneData($pI[0],$pI[1]);
+                        //print_r($parent);
+                        $this->addParent($parent);
+                    } else{
+                        print_r($exists);
+                    }
+                    break;
+                }
+            }
+        }
+
 		$Results = Sys::$Modules[$this -> Module] -> Db -> Query($this);
 		if (!is_array($Results)&&is_string($Results)&&!empty($Results)){
 		    $this->addError(Array("Message"=>$Results));
@@ -2210,6 +2232,9 @@ class genericClass extends Root {
         }
 		$this -> Parents = array();
 		$this -> initFromArray($Results);
+
+
+
 		$this -> launchTriggers(__FUNCTION__,$new);
 
 		//si l'element possede le generateUrl = true alors on génère ses mots clefs
@@ -2219,6 +2244,10 @@ class genericClass extends Root {
 			else
 				$this->deletePages();
 		}
+
+
+
+
 		return true;
 	}
 

@@ -1,5 +1,5 @@
 //Modèle pour affichage de l'accueil GroupeAbtel
-<div class="row noMargin">
+<div class="row noMargin testMichael">
 	<div id="projectHome" class="homeLateralLeft col-md-3">
 		<div id="tiersLogo">
 		</div>

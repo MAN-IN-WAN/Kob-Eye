@@ -35,6 +35,11 @@
 		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de téléphone" fiche="1" form="1" list="1" listDescr="Tel">Tel</PROPERTIES>
 		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de mobile" fiche="1" form="1">Mobile</PROPERTIES>
 		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de fax" fiche="1" form="1">Fax</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" unique="1" length="50" description="Nom sous LDAP (de 8-50 caractères sans caractère spéciaux ou espace)">NomLDAP</PROPERTIES>
+		<PROPERTIES category="LDAP" type="int" auto="1">LdapGid</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
 		<FKEY card="0,1" module="Systeme" data="User,Id">UserId</FKEY>
 		<FKEY card="0,1" data="Client,Id">ClientId</FKEY>
 	</OBJECTCLASS>
@@ -333,7 +338,7 @@
 		<PROPERTIES type="extlink" list="1" fiche="1" description="Url guacamole" listDescr="Lien Direct">GuacamoleUrl</PROPERTIES>
 		<PROPERTIES type="varchar" description="Id guacamole">GuacamoleId</PROPERTIES>
 		<FKEY card="1,1" data="Device,Id" fiche="1"  parentDescription="Périphérique" link="1">DeviceId</FKEY>
-		<FKEY card="0,n" data="Contact,Id" parentDescription="Contact/Utilisateur" link="1">ContactId</FKEY>
+		<FKEY card="0,n" data="Contact,Id" parentDescription="Contact/Utilisateur" form="1" link="1">ContactId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="ReverseConnexion" Dico="1" driver="mysql" Description="Connexion Rescue" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/ReverseConnexion.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" listDescr="Nom" description="Nom de la connexion d'assistance">Nom</PROPERTIES>
@@ -364,8 +369,8 @@
 		<PROPERTIES type="file" fiche="1" form="1" description="Fichier dll de vnc 64bits">VncDllFile64</PROPERTIES>
 		<PROPERTIES type="file" fiche="1" form="1" description="Zabbix agent 32bits">ZabbixAgent32</PROPERTIES>
 		<PROPERTIES type="file" fiche="1" form="1" description="Zabbix agent 64bits">ZabbixAgent64</PROPERTIES>
-		<PROPERTIES type="file" fiche="1" form="1" description="OpenSSL EAY ssl 32bits (dll)">EAYssl32</PROPERTIES>
-		<PROPERTIES type="file" fiche="1" form="1" description="OpenSSL EAY lib 32bits (dll)">EAYlib32</PROPERTIES>
+		<PROPERTIES type="file" fiche="1" form="1" description="Executable Guardian">Guardian</PROPERTIES>
+		<PROPERTIES type="file" fiche="1" form="1" description="Executable Info">Info</PROPERTIES>
 		<PROPERTIES type="text" obligatoire="0" list="1" fiche="1" form="1" description="Notice installation">Description</PROPERTIES>
 		<FUNCTION title="Cloner">Cloner</FUNCTION>
 	</OBJECTCLASS>

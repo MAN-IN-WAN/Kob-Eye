@@ -1,0 +1,323 @@
+<SCHEMA>
+<!--	<OBJECTCLASS title="Simulateur" driver="mysql" AccessPoint="1"  Description="Simulateur" Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png">
+		<PROPERTIES type="varchar" searchOrder="1" category="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES Order="10" description="Date limite de validité" type="date" obligatoire="1">DateLimite</PROPERTIES>
+		<PROPERTIES type="boolean"  default="0" description="Produits proposés répondront à tous les critères" category="Intitulé">ToutCritere</PROPERTIES>
+		<PROPERTIES type="bbcode" category="Intitulé">Chapo</PROPERTIES>
+		<PROPERTIES type="bbcode" category="Contenu">Description</PROPERTIES>
+		<FUNCTION Icon="/Skins/AdminV2/Img/database_go.png">ExportReponse</FUNCTION>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Etape" driver="mysql"  Icon="/Skins/AdminV2/Img/IconAqua/IconAqua.png" >
+		<PROPERTIES type="varchar" length="150" searchOrder="1" category="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="boolean"  default="1" description="Affiche Titre" category="Intitulé">AfficheTitre</PROPERTIES>
+		<PROPERTIES type="file" category="Intitulé">IconeTitre</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" category="Descriptif">Libelle</PROPERTIES>
+		<PROPERTIES type="bbcode"  category="Intitulé">LibelleReponse</PROPERTIES>
+		<PROPERTIES type="order" category="Descriptif">Ordre</PROPERTIES>
+		<PROPERTIES type="boolean"  default="1" description="Publier" category="Descriptif">Publier</PROPERTIES>
+		<FKEY card="1,n" data="Simulateur,Id">SimulateurId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Question" driver="mysql"  Icon="/Skins/AdminV2/Img/IconAqua/Mail1.png">
+		<PROPERTIES type="varchar" length="200" searchOrder="1" category="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="boolean"  default="1" description="Affiche Titre" category="Intitulé">AfficheTitre</PROPERTIES>
+		<PROPERTIES type="boolean"  default="0" description="Sert à choix prime" category="Intitulé">ChoixPrime</PROPERTIES>
+		<PROPERTIES type="bbcode" category="Descriptif">Description</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Caractéristiques" description="Champ Produit" values="SolMurale,Evacuation,ConfortSanitaire,EmetteurChauffage,Niveau123,Energie">ChampProduit</PROPERTIES>
+		<PROPERTIES type="boolean"  default="1"  category="Caractéristiques">Filtre</PROPERTIES>
+		<PROPERTIES type="order" category="Descriptif">Ordre</PROPERTIES>
+		<PROPERTIES type="boolean"  default="1" description="Publier" category="Descriptif">Publier</PROPERTIES>
+		<FKEY card="0,n" data="Etape,Id">EtapeId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Choix" driver="mysql" Description="Choix"  Icon="/Skins/AdminV2/Img/IconAqua/Mail1.png" >
+		<PROPERTIES type="varchar" length="200" searchOrder="1" >Titre</PROPERTIES>
+		<PROPERTIES type="bbcode"  searchOrder="2" category="Intitulé">LibelleReponse</PROPERTIES>
+		<PROPERTIES type="varchar" values="Combo,Radio,CheckBox,TexteLibre,Booleen" length="20">Type</PROPERTIES>
+		<PROPERTIES type="bbcode" category="Descriptif">Description</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Caractéristiques" description="Valeur Testée" >ValeurChamp</PROPERTIES>
+		<PROPERTIES type="file" length="255">Icone</PROPERTIES>
+		<FKEY card="0,n" data="Question,Id">QuestionId</FKEY>
+		<FKEY card="0,n" data="Produit,Id">ProduitId</FKEY>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="Devis" driver="mysql" AccessPoint="1"  Description="DevisEnLigne"  Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png">
+		<PROPERTIES type="varchar" searchOrder="1" category="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" length="150" searchOrder="2" category="Contact">Nom</PROPERTIES>
+		<PROPERTIES type="email" searchOrder="1" category="Contact">Email</PROPERTIES>
+		<PROPERTIES type="varchar" length="30" category="Contact">Telephone</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" category="Contact">Adresse</PROPERTIES>
+		<PROPERTIES type="int" category="Contact">CodePostal</PROPERTIES>
+		<PROPERTIES type="varchar" length="150" category="Contact">Ville</PROPERTIES>
+		<PROPERTIES type="boolean"  default="0" description="Premier mail envoyé" category="Descriptif">MailEnvoye</PROPERTIES>
+		<PROPERTIES type="boolean"  default="1" description="Rdv Confirmé" category="Descriptif">RdvConfirme</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" values="1::Matin,2::Après-midi">Horaires</PROPERTIES>
+		<PROPERTIES  description="Date Rdv" type="date" >DateRdv</PROPERTIES>
+		<FKEY card="1,n" data="Simulateur,Id">SimulateurId</FKEY>
+		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png">VoirSimulation</FUNCTION>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="Souscription" driver="mysql" AccessPoint="1"  Description="ContratEnLigne"  Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png">
+		<PROPERTIES type="varchar" searchOrder="1" category="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" length="150" searchOrder="2" category="Contact">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" length="150" searchOrder="3" category="Contact">Prenom</PROPERTIES>
+		<PROPERTIES type="varchar" length="10" category="Contact">Civilite</PROPERTIES>
+		<PROPERTIES type="email" searchOrder="1" category="Contact">Email</PROPERTIES>
+		<PROPERTIES type="varchar" length="30" category="Contact">Telephone</PROPERTIES>
+		<PROPERTIES type="varchar" length="30" category="Contact">Mobile</PROPERTIES>
+		<PROPERTIES type="varchar" length="250" category="Contact">Adresse</PROPERTIES>
+		<PROPERTIES type="int" category="Contact">CodePostal</PROPERTIES>
+		<PROPERTIES type="varchar" length="150" category="Contact">Ville</PROPERTIES>
+		<PROPERTIES type="boolean"  default="0" description="Premier mail envoyé" category="Descriptif">MailEnvoye</PROPERTIES>
+		<PROPERTIES type="boolean"  default="1" description="Rdv Confirmé" category="Descriptif">RdvConfirme</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" values="1::Matin,2::Après-midi">Horaires</PROPERTIES>
+		<PROPERTIES  description="Date Rdv" type="date" >DateRdv</PROPERTIES>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="Reponse" driver="mysql" Description="Reponse"  Icon="/Skins/AdminV2/Img/IconAqua/Mail1.png">
+		<PROPERTIES type="varchar" length="200" searchOrder="1" >Etape</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" searchOrder="1" >Question</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" searchOrder="1" >Reponse</PROPERTIES>
+		<FKEY card="0,n" data="Devis,Id">DevisId</FKEY>
+		<FKEY card="0,n" data="Souscription,Id">SouscriptionId</FKEY>
+	</OBJECTCLASS>
+	-->
+
+	<OBJECTCLASS title="Categorie" driver="mysql" AccessPoint="1" Description="Categories"  Master="1" browseable="1" Icon="/Skins/AdminV2/Img/IconAqua/Mail1.png">
+		<PROPERTIES type="titre" searchOrder="1" category="Intitulé">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" category="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="file" category="Intitulé" description="Image Principale">Image</PROPERTIES>
+		<PROPERTIES type="bbcode"  category="Contenu">Description</PROPERTIES>
+		<PROPERTIES type="bbcode"  category="Contenu" description="Texte conseil du Pro">ConseilPro</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" description="Texte du lien vers produits" category="Intitulé">TexteLien</PROPERTIES>
+		<PROPERTIES type="file" category="Informations">Icone</PROPERTIES>
+		<PROPERTIES type="boolean" default="1" category="Publication">Publier</PROPERTIES>
+		<PROPERTIES type="boolean" default="1" category="Publication" descritpion="AffichePartieFinancement">Financement</PROPERTIES>
+		<PROPERTIES type="boolean" default="1" category="Publication">EnteteCategorie</PROPERTIES>
+		<PROPERTIES type="order" category="Descriptif">Ordre</PROPERTIES>
+		<FKEY card="0,1" data="Categorie,Id">CategorieId</FKEY>
+		<FUNCTION Icon="/Skins/AdminV2/Img/database_go.png">ExporterAddWords</FUNCTION>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="Produit" driver="mysql" AccessPoint="1"  Description="Produits"  Icon="/Skins/AdminV2/Img/IconAqua/Mail1.png" browseable="1" Class="Modules/Catalogue/Class/Produit.class.php">
+		<PROPERTIES type="boolean" category="Publication" default="0">CoupCoeur</PROPERTIES>
+		<PROPERTIES type="boolean" category="Publication" default="0">AfficheMenu</PROPERTIES>
+		<PROPERTIES type="boolean" category="Referencement" default="0">AddWords</PROPERTIES>
+		<PROPERTIES type="boolean" category="Publication" default="1">Publier</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" length="200"  description="Modèle" category="Caractéristiques">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" description="Fabricant"   query="Catalogue/Fabricant::Url" category="Caractéristiques" >Fabricant</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" description="SousTitre" category="Caractéristiques">Chapo</PROPERTIES>
+		<PROPERTIES type="file" category="Caractéristiques" description="Image Principale">Image</PROPERTIES>
+		<PROPERTIES type="varchar"  category="Caractéristiques">References</PROPERTIES>
+		<PROPERTIES description="Tarif Pose en HT" type="float"  category="Simulateur" >PxPose</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" category="Simulateur" values="0::non assujetti,5.5::5.5% pvttc,15::15% pvttc,25::25% pvttc,30::30% pvttc" description="Credit d'impot" default="0" >CreditImpot</PROPERTIES>
+		<PROPERTIES description="Forfait Accessoires Montage" type="float"  category="Simulateur" >PxAccMont</PROPERTIES>
+		<PROPERTIES description="Certificat conformité" type="price"  category="Simulateur" >PxCertiConf</PROPERTIES>
+		<PROPERTIES type="boolean" category="Simulateur" default="1" description="Certificat Offert" >CertificatOffert</PROPERTIES>
+		<PROPERTIES type="varchar" length="250"  description="Prime Energie" category="Simulateur" values="0::non assujetti,90::Prime énergie"  default="0" >PrimeEnergie</PROPERTIES>
+		<PROPERTIES type="varchar"  category="Caractéristiques" description="H/L/P" >Dimensions</PROPERTIES>
+		<PROPERTIES type="varchar"  length="200"  category="Caractéristiques"  >Puissance</PROPERTIES>
+		<PROPERTIES type="varchar"  length="150" category="Caractéristiques" values="Instantanée,Micro accumulation,Mini accumulation,semi accumulation,accumulation" >Sanitaire</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" category="Caractéristiques">DebitSanitaire</PROPERTIES>
+		<PROPERTIES type="varchar" length="150" category="Caractéristiques" values="Chauffage seul,Sanitaire et Chauffage" >Service</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" category="Autres Caractéristiques" description="Niveau sonore" >NiveauSonore</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" category="Autres Caractéristiques" description="Relève(Electrique/Chaudière)" >Releve</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" category="Autres Caractéristiques">CapaciteBallon</PROPERTIES>
+		<PROPERTIES type="boolean" category="Autres Caractéristiques" default="0">Programmable</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Autres Caractéristiques" values="Plan,Tubulaire" description="Type de capteur">Capteur</PROPERTIES>
+		<PROPERTIES type="bbcode"  category="Descriptif">Avantages</PROPERTIES>
+		<PROPERTIES type="bbcode"  category="Descriptif">Description</PROPERTIES>
+		<PROPERTIES type="boolean" category="Descriptif" default="0">DescriptionDansListe</PROPERTIES>
+		<PROPERTIES description="Prix Public Indicatif en HT" type="price"  category="Publication">PPHT</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Publication" values="0::pas de tva,1::Un taux spécifique,2::Deux Taux de tva" default="2" description="Spécificité de TVA" >Tva</PROPERTIES>
+		<PROPERTIES  type="varchar"   category="Publication"   query="Catalogue/TypeTaux/Application=Tva::Nom" description="Type de Taux de Tva" >TypeTaux</PROPERTIES>
+		<PROPERTIES  type="varchar"   category="Publication"   query="Catalogue/TypeTaux/Application=Tva::Nom" description="Type de Taux de Tva - 2 ans">TypeTaux2</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Caractéristiques" values="0::Pas de Niveau, 1::Niveau, 2::Niveau, 3::Niveau 3" default="0" hidden="1">ConfortSanitaire</PROPERTIES>
+		<PROPERTIES description="Prix Public Indicatif" type="price"  category="Publication" hidden="1" >PPI</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" category="Autres Caractéristiques" hidden="1">COP</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" category="Publication" query="Catalogue/Tauxtva/Taux!=0::Taux" description="Avant 2014 : Taux tva si un seul taux applicable à ce produit" hidden="1">TauxTva</PROPERTIES>
+		<FKEY card="0,n" data="Categorie,Id">CategorieId</FKEY>
+		<FKEY card="0,n" data="PictoProduit,Id">PictoProduitId</FKEY>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="PictoProduit" driver="mysql" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Dico="1">
+		<PROPERTIES type="titre" searchOrder="1">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" values="Description,Avantages,Energie" description="Positionnement sur la fiche" default="Avantages">Position</PROPERTIES>
+		<PROPERTIES type="bbcode" >Commentaire</PROPERTIES>
+		<PROPERTIES type="file">Picto</PROPERTIES>
+		<PROPERTIES type="ordre">Ordre</PROPERTIES>
+	</OBJECTCLASS>
+<!--
+	<OBJECTCLASS title="Contrat" driver="mysql" AccessPoint="1"  Description="Contrat"  Icon="/Skins/AdminV2/Img/IconAqua/Mail1.png" browseable="1">
+		<PROPERTIES type="varchar" searchOrder="1" length="200"  description="Titre" category="Caractéristiques">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" category="Caractéristiques">Description</PROPERTIES>
+		<PROPERTIES type="file" category="Caractéristiques" description="Image Principale">Image</PROPERTIES>
+		<PROPERTIES type="varchar"  category="Caractéristiques">References</PROPERTIES>
+		<PROPERTIES type="float"  description="Prix indicatif" category="Caractéristiques">Prix</PROPERTIES>
+		<PROPERTIES type="boolean" category="Publication" default="1">Publier</PROPERTIES>
+		<FKEY card="0,n" data="Categorie,Id">CategorieId</FKEY>
+		<FKEY card="1,n" data="Souscription,Id">SouscriptionId</FKEY>
+		<FKEY card="0,n" module="Questionnaires" data="Reponse,Id">ReponseId</FKEY>
+	</OBJECTCLASS>	
+	<OBJECTCLASS title="Donnees" driver="mysql">
+		<PROPERTIES type="titre" searchOrder="1" >Titre</PROPERTIES>
+		<PROPERTIES type="varchar" values="Image,Fichier" searchOrder="2"  default="Fichier">Type</PROPERTIES>
+		<PROPERTIES type="file" length="255" searchOrder="3" >URL</PROPERTIES>
+		<FKEY card="0,n" data="Contrat,Id" >ContratId</FKEY>
+	</OBJECTCLASS>
+-->
+	<OBJECTCLASS title="TypeTaux" driver="mysql" AccessPoint="0" Dico="1" master="0" Description="TypeTaux"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png">
+		<PROPERTIES searchOrder="1" description="Nom" type="varchar" length="100"   >Nom</PROPERTIES>
+		<PROPERTIES type="varchar" lenght="50" description="Taux applicable pour" values="Tva,Simulateur,CreditImpot" default="Tva">Application</PROPERTIES>
+		<PROPERTIES Order="2"  description="description" type="bbcode"  special="multi">Description</PROPERTIES>
+		<PROPERTIES searchOrder="3"  description="Defaut" type="boolean"  >Defaut</PROPERTIES>
+		<PROPERTIES searchOrder="4"  description="Actif" type="boolean"  >Actif</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Tauxtva" driver="mysql" Dico="1" Description="TauxTva"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png"  >
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Libellé du taux">Nom</PROPERTIES>
+		<PROPERTIES type="float" searchOrder="2"  description="Taux de tva ">Taux</PROPERTIES>
+		<PROPERTIES type="boolean">TauxDefaut</PROPERTIES>
+		<PROPERTIES type="boolean">TauxSimulateur</PROPERTIES>
+		<PROPERTIES type="boolean">Publier</PROPERTIES>
+		<PROPERTIES type="date" description="Date d application du taux">DateApplication</PROPERTIES>
+		<PROPERTIES type="date" description="Date de fin du taux">DateFin</PROPERTIES>
+		<PROPERTIES type="order" >Ordre</PROPERTIES>
+		<FKEY card="1,1" data="TypeTaux,Id">TypeTauxId</FKEY>
+		<FKEY card="0,n" data="Produit,Id">ProduitId</FKEY>
+	</OBJECTCLASS>
+<!--
+	<OBJECTCLASS title="MotClef" driver="mysql" AccessPoint="0" Dico="1" master="0" Description="MotClefs"  Icon="/Skins/AdminV2/Img/IconAqua/Search1.png">
+		<PROPERTIES searchOrder="1" description="Nom" type="varchar" length="50"   special="multi" >Nom</PROPERTIES>
+		<PROPERTIES searchOrder="2" description="Forme Canonique du Nom" type="canon" length="50"  >Canon</PROPERTIES>
+		<FKEY card="0,n" data="Produit,Id">ProduitId</FKEY>
+	</OBJECTCLASS>		
+	<OBJECTCLASS title="BlackList" Description="Mots à exclure de la recherche" driver="mysql"  Dico="0"
+		     Icon="/Skins/AdminV2/Img/IconAqua/Search1_mini.png">
+		<PROPERTIES type="varchar" length="30" searchOrder="1" obligatoire="1" description="Mot" category="Black list"  special="multi" >Titre</PROPERTIES>
+	</OBJECTCLASS>
+-->
+	<OBJECTCLASS title="Lien" driver="mysql" >
+		<PROPERTIES type="titre" searchOrder="1" category="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="text"  category="Description">Commentaires</PROPERTIES>
+		<PROPERTIES type="varchar" values="Interne,Externe,ConseilPro" length="20"  category="Emplacement"  >Type</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" category="Emplacement">URL</PROPERTIES>
+		<PROPERTIES type="file" category="Description">Icone</PROPERTIES>
+		<FKEY card="1,1" data="Produit,Id" >ProduitId</FKEY>
+		<FKEY card="0,1" data="Categorie,Id" >CategorieId</FKEY>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="Fichier" driver="mysql">
+		<PROPERTIES type="titre" searchOrder="1" category="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" values="VideoSwf,VideoFlv,Son,Fichier,ConseilPro" length="20" searchOrder="3" category="Intitulé"  default="Fichier">Type</PROPERTIES>
+		<PROPERTIES type="file" length="255" searchOrder="2" special="multi" category="Emplacement">URL</PROPERTIES>
+		<FKEY card="0,1" data="Produit,Id" >ProduitId</FKEY>
+		<FKEY card="0,1" data="Categorie,Id" >CategorieId</FKEY>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="Image" driver="mysql">
+		<PROPERTIES type="titre" searchOrder="1" category="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="order" category="Intitulé">Ordre</PROPERTIES>
+		<PROPERTIES type="bbcode" searchOrder="2" category="Description">Commentaires</PROPERTIES>
+		<PROPERTIES type="varchar" values="Produit,Energie" length="20"  category="Emplacement"  default="Produit">Type</PROPERTIES>
+		<PROPERTIES type="file" category="Emplacement">URL</PROPERTIES>
+		<FKEY card="0,1" data="Produit,Id" >ProduitId</FKEY>
+	</OBJECTCLASS>
+	
+<!--	<OBJECTCLASS title="Marque" driver="mysql" Dico="1" Description="Marques"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" browseable="1" >
+		<PROPERTIES type="titre" searchOrder="1" obligatoire="1" category="Intitulé">Nom</PROPERTIES>
+		<PROPERTIES type="boolean" category="Publication">Publier</PROPERTIES>
+		<PROPERTIES type="order" category="Publication">Ordre</PROPERTIES>
+		<PROPERTIES type="metat" >TitleMeta</PROPERTIES>
+		<PROPERTIES type="metad" >DescriptionMeta</PROPERTIES>
+		<PROPERTIES type="metak">KeywordsMeta</PROPERTIES>
+		<FKEY card="0,n" data="Produit,Id">ProduitId</FKEY>
+	</OBJECTCLASS>
+-->
+	<OBJECTCLASS title="Fabricant" driver="mysql"   Dico="1" Description="Fabricants"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" browseable="1">
+		<PROPERTIES type="titre" searchOrder="1" obligatoire="1" category="Intitulé">Nom</PROPERTIES>
+		<PROPERTIES type="file" category="Emplacement">Logo</PROPERTIES>
+		<PROPERTIES type="bbcode"  category="Contenu">Reference</PROPERTIES>
+		<PROPERTIES type="boolean" category="Publication">Publier</PROPERTIES>
+		<PROPERTIES type="order" category="Publication">Ordre</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Agence" driver="mysql" Dico="1"  Description="Agences" Icon="/Skins/AdminV2/Img/IconAqua/App1.png" browseable="1" >
+		<PROPERTIES type="varchar" length="200" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES type="bbcode" category="Description">Adresse</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" category="Description" searchOrder="2">CodePostal</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" category="Description" searchOrder="3">Ville</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" category="Description" >Telephone</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" category="Description" >Fax</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" category="Description" >Email</PROPERTIES>
+		<PROPERTIES type="text" category="Description">GG</PROPERTIES>
+		<PROPERTIES type="file" category="Description">Photo</PROPERTIES>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="ServicesAgence" driver="mysql" Description="ServicesAgence" browseable="1"  Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png">
+		<PROPERTIES Order="5" description="Nom"     searchOrder="1"   type="varchar" length="100" obligatoire="1">Nom</PROPERTIES>
+		<PROPERTIES Order="3" description="Email"      type="varchar" length="200" >Mail</PROPERTIES>
+		<PROPERTIES Order="11" description="Téléphone" searchOrder="2"  type="varchar" length="20" obligatoire="0">Tel</PROPERTIES>
+		<PROPERTIES Order="11" description="Fax" type="varchar" length="20">Fax</PROPERTIES>
+		<PROPERTIES Order="12" description="Portable"  type="varchar" length="20">Portable</PROPERTIES>
+		<FKEY card="0,n" data="ContactAgence,Id">ContactAgenceId</FKEY>
+		<FKEY card="0,1" data="Agence,Id">AgenceId</FKEY>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="ContactAgence" driver="mysql" Description="ContactAgence" browseable="1"  Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png">
+		<PROPERTIES searchOrder="1" description="Fonction" type="varchar" length="100"  values="Technicien,Administratif">Fonction</PROPERTIES>
+		<PROPERTIES Order="3" description="Email"      type="varchar" length="200" obligatoire="1">Mail</PROPERTIES>
+		<PROPERTIES Order="4" description="Civilite"   type="varchar" values="Mademoiselle,Madame,Monsieur" obligatoire="1">Civilite</PROPERTIES>
+		<PROPERTIES Order="5" description="Nom"    searchOrder="2"    type="varchar" length="100" obligatoire="1">Nom</PROPERTIES>
+		<PROPERTIES Order="6" description="Prénom"     type="varchar" length="100" obligatoire="1">Prenom</PROPERTIES>
+		<PROPERTIES Order="11" description="Téléphone" searchOrder="3" type="varchar" length="20" obligatoire="0">Tel</PROPERTIES>
+		<PROPERTIES Order="11" description="Fax" type="varchar" length="20">Fax</PROPERTIES>
+		<PROPERTIES Order="12" description="Portable"  type="varchar" length="20">Portable</PROPERTIES>
+		<PROPERTIES Order="16" description="Ce client est Actif"     type="boolean"  >Actif</PROPERTIES>
+		<FKEY card="0,1" data="Agence,Id">AgenceId</FKEY>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Paiement" driver="mysql" AccessPoint="1" master="0" Description="Paiements"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png"  Class="Modules/Catalogue/Class/Paiement.class.php">
+		<PROPERTIES searchOrder="1" type="int" description="Etat du paiement" default="0" values="0::Attente,1::Acceptee,2::Refusee,3::Initialisé">Etat</PROPERTIES>
+		<PROPERTIES searchOrder="2" type="varchar" length="200" >Nom</PROPERTIES>
+		<PROPERTIES type="email"  >Email</PROPERTIES>
+		<PROPERTIES searchOrder="4" description="Montant (TTC)" type="float"  >Montant</PROPERTIES>
+		<PROPERTIES description="Detail" type="text"  special="multi">Detail</PROPERTIES>
+		<PROPERTIES searchOrder="3" description="Référence Paiement Payeur" type="varchar" auto="1" length="30">Reference</PROPERTIES>
+		<PROPERTIES description="Référence Paiement Banque" type="varchar"  auto="1" length="30">ReferenceBanque</PROPERTIES>
+		<PROPERTIES description="Statut de la connexion au serveur de paiement" type="boolean" auto="1" default="0">Status</PROPERTIES>
+		<FKEY card="1,1" data="TypePaiement,Id">TypePaiementId</FKEY>
+	</OBJECTCLASS>
+	
+	<OBJECTCLASS title="TypePaiement" driver="mysql" AccessPoint="0" Dico="1" master="0" Description="TypePaiements"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png"  Class="Modules/Catalogue/Class/TypePaiement.class.php" plugin="1">
+		<PROPERTIES searchOrder="1" description="Nom" type="varchar" length="100"   >Nom</PROPERTIES>
+		<PROPERTIES Order="2" description="description" type="bbcode"  special="multi">Description</PROPERTIES>
+		<PROPERTIES Order="3" description="Logo" type="file">Logo</PROPERTIES>
+		<PROPERTIES Order="4" description="Actif" type="boolean" default="1">Actif</PROPERTIES>
+		<PROPERTIES Order="5" description="Ordre" type="order" >Ordre</PROPERTIES>
+	</OBJECTCLASS>
+
+<!--	<OBJECTCLASS title="ProImmo" driver="mysql" AccessPoint="1"  Description="ProImmo" Icon="/Skins/AdminV2/Img/IconAqua/App1.png" browseable="1" >
+		<PROPERTIES type="varchar" length="200" category="Description" values="Devis,Formulaire" description="Devis ou Formulaire">Formulaire</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" searchOrder="1">Nom</PROPERTIES>
+		<PROPERTIES type="bbcode" category="Description">Adresse</PROPERTIES>
+		<PROPERTIES type="bbcode" category="Description">Message</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" category="Description" >CodePostal</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" category="Description" >Ville</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" category="Description" description="Telephone Client" >Telephone</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" category="Description" description="Locataire Sortant">Sortant</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" category="Description" description="Locataire Entrant ou Propriétaire acquereur">Entrant</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" category="Description" values="Locataire,Acquereur" >Clientele</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" category="Description" >Devis</PROPERTIES>
+		<PROPERTIES type="boolean" category="Description" default="1" >Accord</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" searchOrder="2">Agence</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Parametres" driver="mysql" Dico="1" Description="Parametres"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" browseable="1" >
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé">Famille</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" obligatoire="1" category="Intitulé">Type</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="3" obligatoire="1" category="Intitulé">Code</PROPERTIES>
+		<PROPERTIES type="varchar" length="200" category="Description" >Libelle</PROPERTIES>
+		<PROPERTIES type="boolean" category="Publication" default="1" >Actif</PROPERTIES>
+		<PROPERTIES type="order" >Ordre</PROPERTIES>
+	</OBJECTCLASS>
+-->
+
+</SCHEMA>

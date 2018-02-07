@@ -406,7 +406,7 @@ class Reservation extends genericClass {
             }
 
 
-
+klog::l('this',$this);
 
             //DISPONIBILITE
 //            //test du debut à cheval
@@ -491,12 +491,16 @@ class Reservation extends genericClass {
 
     function Verify() {
         if(strpos($this->DateDebut,'/') || strpos($this->DateDebut,':')){
+            klog::l($this->DateDebut.PHP_EOL);
             $datetime = DateTime::createFromFormat('d/m/Y H:i',$this->DateDebut);
             $this->DateDebut = $datetime->getTimestamp();
+            klog::l($this->DateDebut.PHP_EOL);
         }
         if(strpos($this->DateFin,'/') || strpos($this->DateFin,':')){
+            klog::l($this->DateFin.PHP_EOL);
             $datetime = DateTime::createFromFormat('d/m/Y H:i',$this->DateFin);
             $this->DateFin = $datetime->getTimestamp();
+            klog::l($this->DateFin.PHP_EOL);
         }
 
         if (!$this->checkClient()){

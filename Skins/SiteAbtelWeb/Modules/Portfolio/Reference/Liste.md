@@ -15,7 +15,7 @@
 		<div id="referenceContainer">
 			[STORPROC Portfolio/Reference/Publier=1|Ref|0|100|DateSortie|DESC]
 
-			<div class="col-md-3 reference [STORPROC Portfolio/Categorie/Reference/[!Ref::Id!]|CP] [!CP::Url!][/STORPROC]">
+			<div class="col-md-3 col-sm-4 reference [STORPROC Portfolio/Categorie/Reference/[!Ref::Id!]|CP] [!CP::Url!][/STORPROC]">
 				<div class="inner">
 					<figure class="imgreferences">
 						<a href="/[!Systeme::CurrentMenu::Url!]/[!Ref::Url!]" title="Voir le d&eacute;tail de [!Ref::Titre!]">

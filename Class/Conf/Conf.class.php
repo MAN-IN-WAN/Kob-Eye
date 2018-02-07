@@ -136,7 +136,7 @@ class Conf extends Root{
 					//->Lancement du parse en mode recursif
 					// 					echo "-> Enregistrement recursif du tableau \r\n";
 					$Result[$Keys[0]]=$this->Parse($Tab["#"][$Keys[0]],$option,$Keys[0]);
-						
+
 				}
 			}elseif(sizeof($Tab["#"])>1){
 				//Le cas ou il y plusieurs elements du meme type

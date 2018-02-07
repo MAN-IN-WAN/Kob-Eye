@@ -189,5 +189,37 @@ class User extends genericClass{
 		return $out;
 	  }
 
+
+    /**
+     * set
+     * Define properties of this object
+     * @param String Name of the property to define
+     * @param Mixed Value of the property to define
+     */
+    public function Set($Prop, $newValue) {
+        if (empty($Prop)) return;
+        parent::Set($Prop, $newValue);
+
+        $Props = $this -> Proprietes(false, true);
+        for ($i = 0; $i < sizeof($Props); $i++) {
+            if ($Props[$i]["Nom"] == $Prop) {
+                if ($Props[$i]["Type"] == "password" ) {
+                    if ($newValue != "*******" && strpos($newValue,'[md5]') === false && strlen($newValue) <= 20) {
+                            $newValue = '[md5]'.md5(trim($newValue));
+                    } elseif (strlen($newValue)> 20 && strpos($newValue,'[md5]') === false){
+                        $newValue = '[md5]'.trim($newValue);
+                    } elseif($newValue == "*******") {
+                        //print_r($newValue);
+                        return false;
+                    }
+                }
+            }
+        }
+        if (is_string($newValue))
+            $newValue = trim($newValue);
+        $this -> {$Prop} = $newValue;
+        return true;
+    }
+
 }
 ?>

@@ -110,7 +110,7 @@
 	<OBJECTCLASS title="Access" logEvent="1" driver="mysql" Icon="/Skins/AdminV2/Img/brick.png">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé">Titre</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" values="Parc,Systeme,Abtel" category="Definition" description="Module">ObjectModule</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="3" values="Client,Device,Ticket,Facture,Contrat,Domain,CompteMail,Host,Server" category="Definition">ObjectClass</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="3" values="Client,Device,Ticket,Facture,Contrat,Domain,CompteMail,Host,Server,Contact,DeviceConnexion" category="Definition">ObjectClass</PROPERTIES>
 		<PROPERTIES type="varchar" category="Definition">Alias</PROPERTIES>
 		<PROPERTIES type="varchar" category="Definition">Filters</PROPERTIES>
 		<PROPERTIES type="order" category="Definition">Ordre</PROPERTIES>

@@ -198,7 +198,7 @@ html, body {
 }
 
 #siteWrap {
-    min-height: 100%;
+
     position: relative;
 }
 
@@ -224,6 +224,9 @@ h1, h2, h3, h4, h5, h6 {
 li {
     list-style: disc inside;
 }
+
+li ul li {list-style-type: circle;
+        padding: 0 0 0 15px; }
 
 div.noMargin {
     margin: 0;
@@ -383,102 +386,192 @@ div.noMargin {
 
 /*----- MoreFooter Michaël -----*/
 
-#fondnoir {background-color: black;
-    margin-top: -17px;}
 
-#fondnoir li{list-style-type: none;
-    padding: 5px 0 5px 0;}
 
-.titrefooter {font-size:1.2em;
+#moreFooter {padding:0;}
+
+.grandsliens {color:#ffffff;
+    opacity: 1;
+    font-size: 1.2em;
     text-transform: uppercase;
-    color:#ffffff;}
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    height:170px;
+    margin-bottom: 30px;
+    padding:140px 0 0 15px; }
 
-.titrefooter2 {font-size:1.2em;
-    text-transform: uppercase;
-    color:#aaa;}
-
-
-.textefooter {font-size: 1em;
-    color:#aaa;}
-
-
-.classinfo {text-decoration: none;
-    transition all 0.5s;}
-
-
-.classinfo:hover {color: #0e8ec1;
-    text-decoration:none;}
+.grandsliens:hover {filter: brightness(120%);
+    -webkit-filter: brightness(120%);
+    -moz-filter: brightness(120%);
+    -o-filter: brightness(120%);
+    -ms-filter: brightness(120%);
+    color: #ffffff;}
 
 
-.classweb {text-decoration: none;
-    transition all 0.5s;}
 
 
-.classweb:hover {color: #ee7805;
-    text-decoration:none;}
+.grandsliens2 {color:#ffffff;
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    height:100px;
+    margin-bottom: 30px;}
 
-.classnetworks {text-decoration: none;
-    transition all 0.5s;}
-
-
-.classnetworks:hover {color: #6eb126;
-    text-decoration:none;}
-
-.classformation {text-decoration: none;
-    transition all 0.5s;}
-
-
-.classformation:hover {color: #e6008d;
-    text-decoration:none;}
-
-.classautre {text-decoration: none;
-    transition all 0.5s;}
+.grandsliens2:hover {filter: brightness(120%);
+    -webkit-filter: brightness(120%);
+    -moz-filter: brightness(120%);
+    -o-filter: brightness(120%);
+    -ms-filter: brightness(120%);
+    color: #ffffff;}
 
 
-.classautre:hover {color: #aaa;
-    text-decoration: none;}
+#imgbureautique {background-image: url("https://formation.abtel.fr/Home/3/Systeme/Menu/accueil_formation_03_1.png");
+    background-size: cover;
+}
+
+#imgadministration {background-image: url("https://formation.abtel.fr/Home/3/Systeme/Menu/accueil_formation_05_1.png");
+    background-size: cover;}
+
+#imgconception {background-image: url("https://formation.abtel.fr/Home/3/Systeme/Menu/accueil_formation_07_1.png");
+    background-size: cover;}
+
+#actualite {background-image: url("https://agence-web.abtel.fr/Home/3/Systeme/Menu/accueil_web_09_1.png");
+    background-size: cover;}
+
+.separefootergris {border-top: 1px solid #aaa;
+    margin-bottom: 15px;}
 
 
-#news {position: relative;}
+#imggroupe {background-image: url("https://www.abtel.fr/Home/3/Abtel/Entite/Abtel_Mediterranee_4.svg");
+    background-color: #aaa;
+    background-repeat: no-repeat;}
 
-#emailNewsletter {display: inline-block;
-    vertical-align: top;
-    background-color: #000;
-    font-family: 'latoregular';
+#imginformatique {background-image: url("https://informatique.abtel.fr/Home/3/Abtel/Entite/Abtel_Informatique_2.svg");
+    background-color: #0e8ec1;
+    background-repeat: no-repeat;
+    background-position: 15px 10px;}
+
+#imgnetwork {background-image: url("https://networks.abtel.fr/Home/3/Abtel/Entite/Abtel_Networks_1.svg");
+    background-color: #6eb126;
+    background-repeat: no-repeat;
+    background-position: 15px 10px;}
+
+#imginformation {background-image: url("https://formation.abtel.fr/Home/3/Abtel/Entite/Abtel_Formation_1.svg");
+    background-color: #e6008d;
+    background-repeat: no-repeat;
+    background-position: 15px 10px;}
+
+#imgagenceweb {background-image: url("https://agence-web.abtel.fr/Home/3/Abtel/Entite/Abtel_Agence_Web_1.svg");
+    background-color: #ee7805;
+    background-repeat: no-repeat;
+    background-position: 15px 10px;}
+
+#divmap {margin: 0 0 30px 0;
+    position:relative;
+    border-bottom: 5px solid #e6008d;
+    border-top: 5px solid #e6008d;}
+
+.adressefooter1 {display:block;
     color:#ffffff;
-    border-top: none;
-    border-right: none;
-    border-left: none;
-    border-bottom: 1px solid #aaa;}
+    text-transform:uppercase;
+    font-size: 1.5em;
+    margin-top: 10px;
+    padding:0 0 5px 15px;}
 
-#emailNewsletter:focus {outline: 0;}
+.adressefooter2 {display:block;
+    color: #aaa;
+    font-size: 1.2em;
+    padding: 5px 0 5px 15px;}
 
+#mapfooter {display:inline-block;
+    width:100%;
+    height:300px;
+    overflow: hidden;
+    vertical-align: top; }
 
-#emailNewsletter::placeholder-shown {color:#aaa;}
+#iframefooter {width:100%;}
 
-#emailNewsletter::-webkit-placeholder-shown {color:#aaa;}
-
-#emailNewsletter::-ms-placeholder-shown {color:#aaa;}
-
-#emailNewsletter::-webkit-input-placeholder {color:#aaa;}
-
-#emailNewsletter:-ms-input-placeholder{color:#aaa;}
-
-#emailNewsletter + button {background-color: #000;
-    color:#fff;
-    display: inline-block;
-    border:none;
-    font-size: 3em;
+#adressemap {width:34%;
+    display:inline-block;
+    background-color: rgba(0, 0, 0, 0.8);
+    height:300px;
     vertical-align: top;
-    height:40px;
+    padding-left: 15px;
     position:absolute;
-    top:-13px; }
+    top:0;
+    right:0;}
+
+.liensbasfooter {display:inline-block;
+    color:#aaa;
+    font-size: 1em;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    padding-left: 15px;
+    padding-right: 15px;}
+
+.liensbasfooter:hover {color: #ffffff;}
 
 
+#hautfooter {text-align: right;}
 
+#iconefooter1::before {font-family:'Glyphicons Halflings';
+    content: "\e062";
+    padding-right: 15px;}
+
+#iconefooter2::before {font-family:'Glyphicons Halflings';
+    content: "\e182";
+    padding-right: 15px;}
+
+#iconefooter3::before {font-family:'Glyphicons Halflings';
+    content: "\e023";
+    padding-right: 15px;}
+
+#iconefooter1 {padding-left: 15px;}
+
+.ssicone {padding-left: 43px;}
 
 /*----- Fin MoreFooter Michaël -----*/
 
+/*----- page contact Michaël -----*/
+
+#textecontact {padding: 0 15px 30px 15px;
+    font-size: 18px;
+    color: #e6008d;}
+
+#textecontact span {display:block;
+    padding-top: 30px;}
+
+#imgcontact {padding: 0 15px 15px 0;
+    overflow:hidden;}
+
+#imgcontact img {width:270px;
+    object-fit: cover;}
+
+.labelcontact {font-weight: normal;
+    font-size: 14px;}
+
+
+.labelcontact:not(.message) {padding-top: 0 !important;}
+
+
+.input-large {margin-left: 10px;}
+
+.last input {background-color: #fafafa;}
+
+.control-group textarea+figure {display:inline-block;
+    width:17%;
+    object-fit: contain;
+    margin: 0 2%;}
+
+.control-group img {width:100%;}
+
+.control-group textarea {display: inline-block;}
+
+#submitButtons button, #submitButtons a {width:50%;
+                                         margin:0 auto;}
+
+/*----- fin page contact Michaël -----*/
 
 
 /* Main Content */
@@ -487,7 +580,6 @@ div.noMargin {
     z-index: 100;
     overflow: hidden;
     background-color: #fff;
-    height:1500px;
     padding-bottom: 30px; /*padding-bottom rajouté par Michaël */
 }
 
@@ -926,30 +1018,10 @@ ul li ul  {list-style:circle; } /* padding-left:15px; enlevé par Michaël */
 #detailArticle {
     /*padding: 35px;*/
 }
-#articleHeader{
-    padding:15px 0;
-    color: #fff;
-}
-#articleHeader h2{
-    font-size:1.5em;
-}
-#articleHeader .container{
-    padding-left:100px;
-    position: relative;
-}
-#articleHeader .container:after{
-    content: "\e165";
-    font-size: 80px;
-    font-weight: 600;
-    position: absolute;
-    top: 50%;
-    height: 100px;
-    margin-top: -50px;
-    left: 0;
-    color: #fff;
-    font-family: 'Glyphicons Halflings';
-    opacity: 0.5;
-}
+#articleHeader{color: #fff;}
+
+#articleHeader h2{font-size:1.5em;}
+
 
 #detailArticle .contenuMEP {
     margin-top: 15px;
@@ -1035,7 +1107,7 @@ ul li ul  {list-style:circle; } /* padding-left:15px; enlevé par Michaël */
 }
 #contactWrap #captchaContact input,
 #contactWrap #formInputs input{
-    background-color: #fafafa;
+    /*background-color: #fafafa; mis en commentaire par Michaël*/
     text-align: left;
     width: 65%;
     margin-left: 10px;
@@ -1043,18 +1115,18 @@ ul li ul  {list-style:circle; } /* padding-left:15px; enlevé par Michaël */
     border: none;
     color: #000;
     padding: 2px 10px;
-    border-bottom:1px solid #ffddb2; /*couleur changé de #ffddb2 en #fafafa par Michaël */
+    border-bottom:1px solid #ffdbf1; /*couleur changé de #ffdbf1 en #fafafa par Michaël */
     margin-bottom: 5px;
 }
 
 #contactWrap #formInputs textarea {
-    background-image:  -webkit-linear-gradient(transparent 30px, #ffddb2 30px, #ffddb2 31px, transparent 31px);
-    background-image:  -moz-linear-gradient(transparent 30px, #ffddb2 30px, #ffddb2 31px, transparent 31px);
-    background-image:  -ms-linear-gradient(transparent 30px, #ffddb2 30px, #ffddb2 31px, transparent 31px);
-    background-image:  -o-linear-gradient(transparent 30px, #ffddb2 30px, #ffddb2 31px, transparent 31px);
-    background-image:  linear-gradient(transparent 30px, #ffddb2 30px, #ffddb2 31px, transparent 31px);
+    background-image:  -webkit-linear-gradient(transparent 30px, #ffdbf1 30px, #ffdbf1 31px, transparent 31px);
+    background-image:  -moz-linear-gradient(transparent 30px, #ffdbf1 30px, #ffdbf1 31px, transparent 31px);
+    background-image:  -ms-linear-gradient(transparent 30px, #ffdbf1 30px, #ffdbf1 31px, transparent 31px);
+    background-image:  -o-linear-gradient(transparent 30px, #ffdbf1 30px, #ffdbf1 31px, transparent 31px);
+    background-image:  linear-gradient(transparent 30px, #ffdbf1 30px, #ffdbf1 31px, transparent 31px);
     background-size:  100% 31px;
-    background-color: #fafafa;
+    /*background-color: #fafafa; mis en commentaire par Michaël*/
     line-height: 31px;
     margin-left: 10px;
     border:none;
@@ -1093,9 +1165,16 @@ ul li ul  {list-style:circle; } /* padding-left:15px; enlevé par Michaël */
 /*********************    Responsive/Adaptative    ************************/
 /**************************************************************************/
 
+/*----- préparation au responsive Michaël -----*/
+
+#burger-top, #label-top, .navbar-top2 {display:none;}
+
+/*----- fin préparation au responsive Michaël -----*/
+
+
 /*=========== 992 - 1199 : tablette paysage ======*/
 @media (min-width: 992px) and (max-width: 1199px) {
-	/* CORRESPOND 1024 * 768 */
+    /* CORRESPOND 1024 * 768 */
 
 
 
@@ -1103,40 +1182,415 @@ ul li ul  {list-style:circle; } /* padding-left:15px; enlevé par Michaël */
 
 /*=========== 801 - 991 : petite tablette paysage ======*/
 @media (min-width: 801px) and (max-width: 991px) {
-	/*CORRESPOND À 800X600  */
+    /*CORRESPOND À 800X600  */
+
+    /*----- partie générale Michaël -----*/
+
+    #siteWrap .MEPNav {width:60%;
+        margin: 0 auto;}
+
+
+    /*----- fin partie générale Michaël -----*/
+
+    /*----- entête Michaël -----*/
+    #articleHeader>div>h1 {font-size: 24px;}
+
+    #articleHeader>div>h2 {font-size: 16px;}
+    /*----- fin entête Michaël -----*/
+
+    /*----- menu principal section Michaël -----*/
+
+    #siteWrap #mainMenu .mainMenuLink {width:30%;}
+
+    #siteWrap #mainMenu {background-color: transparent;}
+
+    /*----- fin menu principal section Michaël -----*/
+
+    /*----- fiche clients web Michaël -----*/
+
+    .WebSite {left:50%;}
+
+    .cliDesc {padding-bottom: 30px;}
+
+    /*----- fin fiche clients web Michaël -----*/
+
+
 
 
 }
 
 /*=========== 768 - 800 : tablette portrait ======*/
 @media (min-width: 768px) and (max-width: 800px) {
-	/*CORRESPOND  768*1024 */
+    /*CORRESPOND  768*1024 */
 
+    /*----- partie générale Michaël -----*/
 
-	
+    #siteWrap .MEPNav {width:60%;
+        margin: 0 auto;}
+
+    /*----- fin partie générale Michaël -----*/
+
+    /*----- entête Michaël -----*/
+    #articleHeader>div>h1 {font-size: 24px;}
+
+    #articleHeader>div>h2 {font-size: 14px;}
+    /*----- fin entête Michaël -----*/
+
+    /*----- menu principal section Michaël -----*/
+
+    #siteWrap #mainMenu .mainMenuLink {width:30%;}
+
+    #siteWrap #mainMenu {background-color: transparent;}
+
+    /*----- fin menu principal section Michaël -----*/
+
+    /*----- fiche clients web Michaël -----*/
+
+    .WebSite {left:50%;}
+
+    .cliDesc {padding-bottom: 30px;}
+
+    /*----- fin fiche clients web Michaël -----*/
 }
 
 
 /*=========== <767 : tablette portrait ======*/
 @media (min-width: 481px) and (max-width: 767px) {
-	/*CORRESPOND À 600*800 */
- 
- 	
+    /*CORRESPOND À 600*800 */
 
+    /*----- partie générale Michaël -----*/
+
+    .colonneMEP {width:100% !important;}
+
+    #siteWrap .MEPNav {width:60%;
+        margin: 0 auto;}
+
+    .imgMEPContainer {width:30%;
+        margin: 0 auto 15px;}
+
+    #detailArticle .contenuMEP .colonneMEP + .colonneMEP {padding-left: 0;}
+
+    .grandsliens, .grandsliens2 {width:60%;
+        margin:0 auto 30px;}
+
+
+
+    /*----- fin partie générale Michaël -----*/
+
+    /*----- Nos références Michaël -----*/
+    .reference {margin:0 auto;
+        position: static !important;
+        width:290px;}
+
+    /*----- fin Nos références Michaël -----*/
+
+    /*----- entête Michaël -----*/
+    #articleHeader>div>h1 {font-size: 24px;}
+
+    #articleHeader>div>h2 {font-size: 14px;}
+    /*----- fin entête Michaël -----*/
+
+    /*----- more footer Michaël -----*/
+
+    #adressemap {position:static;
+        width:100%; }
+
+    /*----- fin more footer Michaël -----*/
+
+    /*----- menuTop Michaël -----*/
+
+    #siteWrap #header {height:100%;}
+
+    .navbar-top {display:none;}
+
+
+    #label-top {display: inline-block;}
+
+    #topNavigation {text-align: right;}
+
+    #menuTop {width:100%;}
+
+    #label-top:before {font-family: 'Glyphicons Halflings';
+        content: "\e236";
+        color: #ffffff;
+        font-size: 36px;
+        position: absolute;
+        right: 15px;
+        top: -80px;}
+
+    #burger-top:checked~.navbar-top2 {display:block;
+        float:none;
+        width:200px;
+        color:#868585;
+        text-transform: uppercase;
+        text-align: center;
+        padding:40px 0 20px 0;
+        margin: 0 auto;}
+
+    .navbar-top2 a {padding: 5px;
+        font-size: 14px;}
+
+    .navbar-top2 a:hover {color: #535353;}
+
+    #burger-top:checked~.navbar-top2 li {float: none;
+        display: block;
+        margin: 5px auto;
+        list-style-type: none;
+        padding: 5px 0 5px 0;}
+
+
+
+    /*----- fin menuTop Michaël -----*/
+
+    /*----- menu principal section Michaël -----*/
+
+    #siteWrap #mainMenu .mainMenuLink {width:45%;}
+
+    #siteWrap #mainMenu {background-color: transparent;}
+
+    /*----- fin menu principal section Michaël -----*/
+
+    /*----- fiche clients web Michaël -----*/
+
+    .WebSite {left:50%;}
+
+    .cliDesc {padding-bottom: 30px;}
+
+    /*----- fin fiche clients web Michaël -----*/
 }
 
 
 /*=========== <480 : smartphone paysage ======*/
 @media (min-width: 466px) and (max-width: 599px) {
-	/*CORRESPOND À 480*320 */
- 	
- 	
-	
-}
+    /*CORRESPOND À 480*320 */
 
+
+    /*----- partie générale Michaël -----*/
+    .colonneMEP {
+        width: 100% !important;;
+    }
+
+    #mapDiv {
+        width: 100%;
+    }
+
+    #adressemap {
+        width: 50%;
+    }
+
+    #adressefooter2 {
+        padding: 5px 0 5px 0;
+    }
+
+    .imgMEPContainer {
+        margin: 0 auto 15px;
+        width: 50%;
+    }
+
+    #detailArticle .contenuMEP .colonneMEP + .colonneMEP {
+        padding-left: 0;
+    }
+
+    .menu01:onload {
+        height: 0;
+    }
+
+
+
+    /*----- fin partie générale Michaël -----*/
+
+    /*----- Nos références Michaël -----*/
+    .reference {margin:0 auto;
+        position: static !important;
+        width:290px;}
+
+    /*----- fin Nos références Michaël -----*/
+
+    /*----- entête Michaël -----*/
+    #articleHeader>div>h1 {font-size: 24px;}
+
+    #articleHeader>div>h2 {font-size: 14px;}
+    /*----- fin entête Michaël -----*/
+
+    /*----- more footer Michaël -----*/
+
+    #adressemap {position:static;
+        width:100%; }
+
+    /*----- fin more footer Michaël -----*/
+
+    /*----- menuTop Michaël -----*/
+
+    #siteWrap #header {height:100%;}
+
+    .navbar-top {display:none;}
+
+
+    #label-top {display: inline-block;}
+
+    #topNavigation {text-align: right;}
+
+    #menuTop {width:100%;}
+
+    #label-top:before {font-family: 'Glyphicons Halflings';
+        content: "\e236";
+        color: #ffffff;
+        font-size: 36px;
+        position: absolute;
+        right: 15px;
+        top:-80px;}
+
+    #burger-top:checked~.navbar-top2 {display:block;
+        float:none;
+        width:200px;
+        color:#868585;
+        text-transform: uppercase;
+        text-align: center;
+        padding:40px 0 20px 0;
+        margin:0 auto;}
+
+    .navbar-top2 a {padding: 5px;
+        font-size: 14px;}
+
+    .navbar-top2 a:hover {color: #535353;}
+
+    #burger-top:checked~.navbar-top2 li {float: none;
+        display: block;
+        margin: 5px auto;
+        list-style-type: none;
+        padding: 5px 0 5px 0;}
+
+
+
+    /*----- fin menuTop Michaël -----*/
+
+    /*----- menu principal section Michaël -----*/
+
+    #siteWrap #mainMenu .mainMenuLink {width:45%;}
+
+    #siteWrap #mainMenu {background-color: transparent;}
+
+    /*----- fin menu principal section Michaël -----*/
+
+    /*----- fiche clients web Michaël -----*/
+
+    .WebSite {left:50%;}
+
+    .cliDesc {padding-bottom: 30px;}
+
+    /*----- fin fiche clients web Michaël -----*/
+
+}
 
 /*=========== <465 : smartphone portrait======*/
 @media (max-width: 466px) {
+
+    /*----- partie générale Michaël -----*/
+
+    .colonneMEP {width:100% !important;;}
+
+    .artContact {width:70%;}
+
+    #mapDiv {width:100%;}
+
+    #adressemap {width: 50%;}
+
+    #adressefooter2 {padding: 5px 0 5px 0;}
+
+    .imgMEPContainer {margin: 0 auto 15px;
+        width:50%;}
+    #detailArticle .contenuMEP .colonneMEP + .colonneMEP {padding-left: 0;}
+
+    .txtMEPContainer li {font-size: 12px;}
+    /*----- fin partie générale Michaël -----*/
+
+    /*----- entête Michaël -----*/
+    #breadcrumb .breadcrumb {font-size: 10px;}
+
+    #articleHeader>div>h1 {font-size: 24px;
+        padding-top: 20px; }
+
+
+
+    #articleHeader>div>h2 {display:none;}
+
+    /*----- fin entête Michaël -----*/
+
+    /*----- Nos références Michaël -----*/
+    .reference {margin:0 auto;
+        position: static !important;
+        width:290px;}
+
+    /*----- fin Nos références Michaël -----*/
+
+    /*----- more footer Michaël -----*/
+
+    #adressemap {position:static;
+        width:100%; }
+
+    /*----- fin more footer Michaël -----*/
+
+    /*----- menuTop Michaël -----*/
+
+    #siteWrap #header {height:100%;}
+
+    .navbar-top {display:none;}
+
+
+    #label-top {display: inline-block;}
+
+    #topNavigation {text-align: right;}
+
+    #menuTop {width:100%;}
+
+    #label-top:before {font-family: 'Glyphicons Halflings';
+        content: "\e236";
+        color: #ffffff;
+        font-size: 36px;
+        position: absolute;
+        right: 15px;
+        top: -80px;}
+
+    #burger-top:checked~.navbar-top2 {display:block;
+        float:none;
+        width:200px;
+        color:#868585;
+        text-transform: uppercase;
+        text-align:center;
+        padding:40px 0 20px 0;
+        margin: 0 auto;}
+
+    .navbar-top2 a {padding: 5px;
+        font-size: 14px;}
+
+    .navbar-top2 a:hover {color: #535353;}
+
+    #burger-top:checked~.navbar-top2 li {float: none;
+        display: block;
+        margin: 10px auto;
+        list-style-type: none;
+        padding: 5px 0 5px 0;}
+
+
+
+    /*----- fin menuTop Michaël -----*/
+
+    /*----- menu principal section Michaël -----*/
+
+    #siteWrap #mainMenu .mainMenuLink {width:90%;}
+
+    #siteWrap #mainMenu {background-color: transparent;}
+
+    /*----- fin menu principal section Michaël -----*/
+
+    /*----- fiche clients web Michaël -----*/
+
+    .WebSite {left:50%;}
+
+    .cliDesc {padding-bottom: 30px;}
+
+    /*----- fin fiche clients web Michaël -----*/
+
 
 	html, body {
     	font-size: 10px;
@@ -1177,7 +1631,43 @@ ul li ul  {list-style:circle; } /* padding-left:15px; enlevé par Michaël */
     	vertical-align: top;
     }
 	
-}/****************************************************************
+}
+
+@media (max-width: 1199px) {
+
+    /*----- page contact Michaël -----*/
+
+    #contactWrap #formInputs input {margin-left:0;}
+
+    /*----- fin page contact Michaël -----*/
+
+}
+
+
+@media (max-width: 991px) {
+    /*----- page contact Michaël -----*/
+
+    #imgtextarea {display:none; }
+
+    #imgcontact {display:block;
+        text-align: center;}
+
+    .btn-danger {margin: 15px auto 0 !important;}
+
+    /*----- fin page contact Michaël -----*/
+}
+
+@media (max-width: 488px) {
+
+    /*----- page contact Michaël -----*/
+    #contactWrap #formInputs input, #contactWrap #formInputs textarea {
+        width: 100%;
+    }
+
+    /*----- fin page contact Michaël -----*/
+}
+
+/****************************************************************
  *								*
  *			MENU DU Gauche	   			*
  *								*
@@ -1205,6 +1695,42 @@ ul li ul  {list-style:circle; } /* padding-left:15px; enlevé par Michaël */
 }
 */
 
+
+/*----- entête site Michaël -----*/
+
+.articleHeader, #articleHeader {color:#ffffff;
+    position: relative;}
+
+.articleHeader, #articleHeader .container {height:86px;}
+
+.articleHeader, #articleHeader {overflow: hidden;}
+
+
+#articleHeader>div>h1 {padding-top: 10px;
+    position:relative;
+    padding-left: 90px;}
+
+.articleHeader>div>h2, #articleHeader>div>h2 {padding-left: 90px;}
+
+
+.articleHeader h1:before, #articleHeader h1:before{
+    font-family: 'Glyphicons Halflings';
+    content: "\e135";
+    font-size: 80px;
+    font-weight: 600;
+    position: absolute;
+    height: 70px;
+    top:0 ;
+    left: 0;
+    color: #ffdbf1;
+}
+
+.navbar-top a {font-size: 12px;}
+
+.breadcrumb a {font-size: 12px;}
+
+/*----- fin entête site Michaël -----*/
+
 /*Menu Gauche Michaël*/
 
 
@@ -1217,7 +1743,7 @@ ul li ul  {list-style:circle; } /* padding-left:15px; enlevé par Michaël */
 .niveau01 {background-color: #e6008d;
     border: 1px none #e6008d;
     color: #fff;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
     padding-left: 10;}
@@ -1230,7 +1756,7 @@ ul li ul  {list-style:circle; } /* padding-left:15px; enlevé par Michaël */
 .niveau02 {background-color: black;
     border: 1px none black;
     color: #ffffff;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
     padding-left: 20px;}
@@ -1243,7 +1769,7 @@ ul li ul  {list-style:circle; } /* padding-left:15px; enlevé par Michaël */
 .niveau03 {background-color: #535353;
     border: 1px none #535353;
     color: #ffffff ;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
     padding-left: 30px;}
@@ -1255,7 +1781,7 @@ ul li ul  {list-style:circle; } /* padding-left:15px; enlevé par Michaël */
 
 .menu04 {background-color: #fff;
     color: #e6008d;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
     padding-left: 40px;}
@@ -1266,7 +1792,7 @@ ul li ul  {list-style:circle; } /* padding-left:15px; enlevé par Michaël */
 
 .niveau05 {background-color: #fff;
     color: black;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
     padding-left: 50px;}
@@ -1277,7 +1803,7 @@ ul li ul  {list-style:circle; } /* padding-left:15px; enlevé par Michaël */
 
 .niveau06 {background-color: #fff;
     color: #535353;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
     padding-left: 60px;}
@@ -1288,7 +1814,7 @@ ul li ul  {list-style:circle; } /* padding-left:15px; enlevé par Michaël */
 
 .niveau07 {background-color: #fff;
     color: #ee7805;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: bold;
     padding-left: 70px;}
 
@@ -1298,7 +1824,7 @@ ul li ul  {list-style:circle; } /* padding-left:15px; enlevé par Michaël */
 
 .niveau08 {background-color: #fff;
     color: black;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: bold;
     padding-left: 80px;}
 
@@ -1308,7 +1834,7 @@ ul li ul  {list-style:circle; } /* padding-left:15px; enlevé par Michaël */
 
 .niveau09 {background-color: #fff;
     color: #535353;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: bold;
     padding-left: 90px;}
 
@@ -1318,3 +1844,32 @@ ul li ul  {list-style:circle; } /* padding-left:15px; enlevé par Michaël */
 
 
 /*fin menu gauche Michaël*/
+
+/*----- liens bas corps Michaël -----*/
+
+.subArts {}
+
+.subArts li {list-style: none;}
+
+
+.subArts a {display:inline-block;
+    margin: 15px 0 15px 0; }
+
+.subArts a:hover {text-decoration: none;}
+
+.subArts a h4:before {font-family:'Glyphicons Halflings';
+    content: "\e092";
+    padding-right: 15px;
+    vertical-align: top;}
+
+
+.subArts a h4 {font-weight: bold;
+    color:#000000;
+    vertical-align: top;}
+
+.subArts a h5 {color: #535353;
+    font-style: italic;}
+
+.subArts a h4:hover, .subArts a h5:hover {color:#e6008d;}
+
+/*----- fin liens bas corps Michaël -----*/

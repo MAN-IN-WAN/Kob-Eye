@@ -1,93 +1,265 @@
 <?php
 	class CmsPage extends genericClass{
-		function getModele (){
-			$out = Array();
-			//skin
-			$dirs = $this->listDirectory('Skins');
-			if (is_array($dirs))foreach ($dirs as $dir){
-				if ($dir!=SHARED_SKIN)
-					$out = array_merge($out,$this->listFilesDirectory('Skins/'.$dir.'/Modules/Cms/Modeles/Page',"$dir > "));
-			}
-			//Modules
-			$out = array_merge($out,$this->listFilesDirectory('Modules/Cms/Modeles/Page',"module > "));
-			//Common
-			$out = array_merge($out,$this->listFilesDirectory('Skins/'.SHARED_SKIN.'/Modules/Cms/Modeles/Page',"commun > "));
-			return $out;
-		}
-		function listFilesDirectory($dirname,$prefixe=""){
-			$out=Array();
-			if (file_exists($dirname)){
-				$dir = opendir($dirname); 
-				while($file = readdir($dir)) {
-					if($file != '.' && $file != '..' && !is_dir($dirname.'/'.$file) && !preg_match("#^\..*#", $file)){
-						preg_match("#(.*)\.(.*)$#", $file,$fi);
-						if ($fi[2]=="md")
-							$out[$fi[1]] = $prefixe.$fi[1];
-					}
-				}
-				closedir($dir);
-			}
-			return $out;
-		}
-		function listDirectory($dirname){
-			$out=Array();
-			if (file_exists($dirname)){
-				$dir = opendir($dirname); 
-				while($file = readdir($dir)) {
-					if($file != '.' && $file != '..' && is_dir($dirname.'/'.$file)&& !preg_match("#^\..*#", $file)){
-						$out[] = $file;
-					}
-				}
-				closedir($dir);
-			}
-			return $out;
-		}
-
+        var $TemplateObject;		//Object Template Beacon
+        var $Screen;			//Screenshot issu de la config XML
+        /*_________________________________________________________________________________________
+                                                    PRIVATE
+        */
         /**
-         * getAncestry
-         * Build array listing all parents
-         * @param $id Integer Optional Id de l'article de base
-         * @param $full Boolean Optional Objet complet/simpleId
-         * @return Mixed
+         * Initialisation de la template beacon avec chargement de la config
+         * Declenchement automatique
          */
-        public static function getAncestry($id=null,$full=true){
-            if(!$id) return false;
-
-
-            $obj=Sys::getData('Cms','Page/'.$id);
-
-            if(isset($obj[0])){
-                $base=$obj[0];
-            } else {
-                return array();
-            }
-
-            $list = $full ? array($base) : array($base->Id);
-            $par = $base->getParents('Page');
-            if(sizeof($par) && isset($par[0])){
-                $prev =  CmsPage::getAncestry($par[0]->Id,$full);
-                return array_merge($prev,$list);
-            }
-
-            return $list;
+        public function initTemplate() {
+            //Chargement de la template beacon afin de gérer les interactions
+            $this->TemplateObject = Template::initFrom($this);
+            $this->Screen = $this->TemplateObject->Screen;
         }
+        /*_________________________________________________________________________________________
+                                                     PUBLIC
+        */
 
-        /**
-         * Delete
-         * Delete this function
-         * @return Boolean
-         */
-        public function Delete(){
-            $ch = $this -> getChildTypes();
-            if (is_array($ch)) {
-                foreach ($ch as $c) {
-                    $chs = $this->getChilds($c["Titre"]);
-                    if (is_array($chs))
-                        foreach ($chs as $cs)
-                            $cs->Delete();
+        public function getTemplates() {
+            $dir = "Modules/Cms/Templates/";
+            $out=Array();
+            if ($handle = opendir($dir)) {
+                while (false !== ($file = readdir($handle))) {
+                    if ($file != "." && $file != ".." && is_dir($dir.'/'.$file) && !preg_match("#^\..*#",$file)) {
+                        $out[] = $file;
+                    }
                 }
+                closedir($handle);
             }
-            parent::Delete();
+            return $out;
         }
+
+        /**
+         * Enregistrement et verification des données
+         */
+        public function Save() {
+            if (isset($this->CmsTemplate)&&!empty($this->CmsTemplate)&&empty($this->TemplateConfig)){
+                //Si la configuration est vide alors on charge la configuration de la template
+                $Path = 'Modules/Cms/Templates/'.$this->CmsTemplate;
+                if (is_dir($Path)){
+                    //On verifie que le chemin existe
+                    $Path .= '/Template.conf';
+                    $this->TemplateConfig = @file_get_contents($Path);
+                } else{
+                    $this->TemplateConfig = @file_get_contents('Modules/Cms/Templates/Default/Template.conf');
+                }
+            } elseif (!isset($this->CmsTemplate)||empty($this->CmsTemplate)&&empty($this->TemplateConfig)){
+                $this->TemplateConfig = @file_get_contents('Modules/Cms/Templates/Default/Template.conf');
+            }
+            if (isset($this->CmsTemplate)&&!empty($this->CmsTemplate)&&empty($this->HtmlConfig)){
+                //Si la configuration est vide alors on charge la configuration de la template
+                $Path = 'Modules/Cms/Templates/'.$this->CmsTemplate;
+                if (is_dir($Path)){
+                    //On verifie que le chemin existe
+                    $Path .= '/Default.md';
+                    $this->HtmlConfig = @file_get_contents($Path);
+                } else{
+                    $this->HtmlConfig = @file_get_contents('Modules/Cms/Templates/Default/Default.md');
+                }
+            }elseif (!isset($this->CmsTemplate)||empty($this->CmsTemplate)&&empty($this->HtmlConfig)){
+                $this->HtmlConfig = @file_get_contents('Modules/Cms/Templates/Default/Default.md');
+            }
+
+            //Enregistrement de la nouvelle config
+            if (isset($this->TemplateObject)) $this->TemplateConfig = $this->TemplateObject->ExportXml();
+            parent::Save();
+
+            if(!$this->getOneParent('Menu')){
+                $men = genericClass::createInstance('Systeme','Menu');
+                $object = $this->getObjectClass();
+                $url = $object->autoLink('Url',get_object_vars($this));
+                $men->Url = $url;
+                $men->Alias = 'Cms/Page/'.$this->Id;
+                $men->Titre = $this->Nom;
+                $men->Save();
+                //print_r($men);
+                $this->addParent($men);
+            }
+
+            parent::Save();
+        }
+        /**
+         * getZones
+         * sans parametre, renvoie la liste des zones de la template
+         * @param $z Tag zone
+         * Avec le parametre , renvoie une zone en particulier identifiée par son tag
+         */
+        public function getZones($t=""){
+            if (!isset($this->TemplateObject))$this->initTemplate();
+            return $this->TemplateObject->getZones($t);
+        }
+        /**
+         * Screen
+         * initise la template Object et renvoie le screenshot
+         * @return String
+         */
+        public function getScreen() {
+            if (!isset($this->TemplateObject))$this->initTemplate();
+            return $this->TemplateObject->Screen;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+        /**
+         * Ajoute un composant au template courant (selon ce qui est validé dans le formulaire)
+         * @param	String	Description du composant sous la form Module/Composant
+         * @param	String	Zone dans laquelle on ajoute
+         * @return	void
+         */
+        function addComponent( $Path, $z ) {
+            $cpt = Component::getInstance(array($Path));
+            $str = 'tag="'.$z.'">';
+            $pos = strpos($this->TemplateConfig, $str);
+            if($pos !== FALSE) :
+                // Decoupe Avant / Apres
+                $before = substr($this->TemplateConfig, 0, $pos + strlen($str));
+                $after = substr($this->TemplateConfig, $pos + strlen($str));
+
+                // Params
+                $params = "";
+                foreach($cpt->Proprietes as $Prop) :
+                    $nom = $Prop['Nom'];
+                    $params .= "\r\n\t\t\t\t\t<PARAM name=\"$nom\" type=\"".$Prop['Type']."\" description=\"".$Prop["description"]."\"><![CDATA[".addslashes($_POST['CC_'.$nom])."]]></PARAM>";
+                endforeach;
+                if(!empty($params)) $params .= "\r\n\t\t\t\t";
+
+                // Insertion
+                $this->TemplateConfig = $before . '
+			<COMPONENT title="'.$cpt->Title.'" module="'.$cpt->Module.'">
+				<TITLE>'.$cpt->Name.'</TITLE>
+				<CSS>Modules/'.$cpt->Module.'/Components/'.$cpt->Title.'/style.css</CSS>
+				<SCREEN></SCREEN>
+				<PARAMS>'.$params.'</PARAMS>
+			</COMPONENT>' . $after;
+            else :
+                // Erreur
+                echo 'ERREUR : IMPOSSIBLE DE TROUVER LA ZONE DANS LA CONFIGURATION DU TEMPLATE !'; die;
+            endif;
+        }
+
+        /**
+         * Retourne les détails d'un composant
+         * @param	String	Zone que l'on cible
+         * @param	int		Indice de l'élement que l'on veut récupérer
+         * @return	objet composant
+         */
+        function getComponent( $z, $cmp ) {
+            $x = new xml2array($this->TemplateConfig);
+            $TC = $x->Tableau;
+            $zones = $TC['TEMPLATE']['#']['ZONES'][0]['#']['ZONE'];
+            $idxZone = -1;
+            foreach($zones as $kZ => $zone) if($zone['@']['tag'] == $z) $idxZone = $kZ;
+            if($idxZone < 0) exit('Zone non trouvée');
+            $component = array("COMPONENT" => $zones[$idxZone]['#']['COMPONENT'][$cmp]);
+            $cmpConfig = array2xml::convertToXML($component);
+            $return = new Component();
+            $return->setConfig($cmpConfig);
+            return $return;
+        }
+
+        /**
+         * Modifie les paramètres d'un composant de la zone indiquée pour ce template
+         * ( à partir des données POST )
+         * @param	String	Zone que l'on cible
+         * @param	int		Indice de l'élement à supprimer
+         * @return	void
+         */
+        function updateComponent( $z, $cmp ) {
+            $x = new xml2array($this->TemplateConfig);
+            $TC = $x->Tableau;
+            $zones = $TC['TEMPLATE']['#']['ZONES'][0]['#']['ZONE'];
+            $idxZone = -1;
+            foreach($zones as $kZ => $zone) if($zone['@']['tag'] == $z) $idxZone = $kZ;
+            if($idxZone < 0) exit('Zone non trouvée');
+            $component = $zones[$idxZone]['#']['COMPONENT'][$cmp];
+            $cpmModel = Component::getInstance(array($component['@']['module'].'/'.$component['@']['title']));
+            foreach($cpmModel->Proprietes as $Prop) $this->updateProp($Prop, $component);
+            $TC['TEMPLATE']['#']['ZONES'][0]['#']['ZONE'][$idxZone]['#']['COMPONENT'][$cmp] = $component;
+            $this->TemplateConfig = array2xml::convertToXML($TC);
+        }
+
+        /**
+         * Met à jour une propriété dans un composant
+         * @param	array	Propriété à mettre à jour
+         * @param	array	! REFERENCE ! Composant
+         * @return	void
+         */
+        function updateProp( $Prop, &$Cmp ) {
+            // Déjà présente on l'update si elle est renseignée
+            foreach($Cmp['#']['PARAMS'][0]['#']['PARAM'] as $k => $Param) :
+                if($Param['@']['name'] == $Prop['Nom']) :
+                    if(isset($_POST['CC_'.$Prop['Nom']])){
+                        $Cmp['#']['PARAMS'][0]['#']['PARAM'][$k]['#'] = addslashes($_POST['CC_'.$Prop['Nom']]);
+                    }
+                    return;
+                endif;
+            endforeach;
+            // N'existait pas encore, on l'ajoute
+            $Cmp['#']['PARAMS'][0]['#']['PARAM'][] = array('#' => addslashes($_POST['CC_'.$Prop['Nom']]), '@' => array('name' => $Prop['Nom'], 'type' => $Prop['Type']));
+        }
+
+        /**
+         * Réorganise une zone pour ce template en modifiant le positionnement d'un composant
+         * @param	int		Indice de l'élement à déplacer
+         * @param	int		Son nouvel indice
+         * @param	String	Zone d'origine
+         * @param	String	Zone de destination
+         * @return	void
+         */
+        function reOrder( $from, $to, $fromZone, $toZone ) {
+            $x = new xml2array($this->TemplateConfig);
+            $TC = $x->Tableau;
+            $zones = $TC['TEMPLATE']['#']['ZONES'][0]['#']['ZONE'];
+            $idxZoneFrom = $idxZoneTo = -1;
+
+            foreach($zones as $kZ => $zone) :
+                if($zone['@']['tag'] == $fromZone) $idxZoneFrom = $kZ;
+                if($zone['@']['tag'] == $toZone) $idxZoneTo = $kZ;
+            endforeach;
+            if($idxZoneFrom < 0 and $idxZoneTo < 0) exit('Zone non trouvée');
+
+            $cmp = array($zones[$idxZoneFrom]['#']['COMPONENT'][$from]);
+            unset($zones[$idxZoneFrom]['#']['COMPONENT'][$from]);
+            if(empty($zones[$idxZoneFrom]['#']['COMPONENT'])) $zones[$idxZoneFrom]['#'] = "";
+            if(!is_array($zones[$idxZoneTo]['#'])) $zones[$idxZoneTo]['#'] = array('COMPONENT' => array());
+            array_splice($zones[$idxZoneTo]['#']['COMPONENT'], $to, 0, $cmp);
+
+
+            $TC['TEMPLATE']['#']['ZONES'][0]['#']['ZONE'] = $zones;
+            $this->TemplateConfig = array2xml::convertToXML($TC);
+        }
+
+
+        /**
+         * Supprime un composant de la zone indiquée pour ce template
+         * @param	String	Zone que l'on cible
+         * @param	int		Indice de l'élement à supprimer
+         * @return	void
+         */
+        function removeComponent( $z, $cmp ) {
+            $x = new xml2array($this->TemplateConfig);
+            $TC = $x->Tableau;
+            $zones = $TC['TEMPLATE']['#']['ZONES'][0]['#']['ZONE'];
+            $idxZone = -1;
+            foreach($zones as $kZ => $zone) if($zone['@']['tag'] == $z) $idxZone = $kZ;
+            if($idxZone < 0) exit('Zone non trouvée');
+            $components = $zones[$idxZone]['#']['COMPONENT'];
+            unset($components[$cmp]);
+            $TC['TEMPLATE']['#']['ZONES'][0]['#']['ZONE'][$idxZone]['#']['COMPONENT'] = $components;
+            $this->TemplateConfig = array2xml::convertToXML($TC);
+        }
+
 	}
 ?>

@@ -1,107 +1,80 @@
-<div id="fondnoir">
-    <div class="container">
-        <div class="col-lg-2 col-sm-4">
-            <ul>
-                <li>
-                    <a href="https://informatique.abtel.fr/" class="classinfo titrefooter">Abtel informatique</a>
-                </li>
-                <li>
-                    <a href="https://informatique.abtel.fr/infrastructure" class="classinfo textefooter">Infrastructure informatique</a>
-                </li>
-                <li>
-                    <a href="https://informatique.abtel.fr/poste-detravail" class="classinfo textefooter">Poste de travail</a>
-                </li>
-                <li>
-                    <a href="https://informatique.abtel.fr/maintien-operationnel" class="classinfo textefooter">Maintien opérationnel</a>
-                </li>
-            </ul>
-        </div>
-        <div class="col-lg-2 col-sm-4">
-            <ul>
-                <li>
-                    <a href="https://agence-web.abtel.fr/" class="classweb titrefooter">Abtel agence web</a>
-                </li>
 
-                <li>
-                    <a href="https://agence-web.abtel.fr/references" class="classweb textefooter">Nos références</a>
-                </li>
-                <li>
-                    <a href="https://agence-web.abtel.fr/developpement-web" class="classweb textefooter">Développement Web</a>
-                </li>
-                <li>
-                    <a href="https://agence-web.abtel.fr/hebergement-services" class="classweb textefooter">Hébergement</a>
-                </li>
-            </ul>
-        </div>
-        <div class="col-lg-2 col-sm-4">
-            <ul>
-                <li>
-                    <a href="https://networks.abtel.fr/" class="titrefooter classnetworks">Abtel networks</a>
-                </li>
-
-                <li>
-                    <a href="https://networks.abtel.fr/connectivite" class="classnetworks textefooter">Connectivité</a>
-                </li>
-                <li>
-                    <a href="https://networks.abtel.fr/telephonie" class="classnetworks textefooter">Téléphonie</a>
-                </li>
-                <li>
-                    <a href="https://networks.abtel.fr/service" class="classnetworks textefooter">Services</a>
-                </li>
-            </ul>
-        </div>
-        <div class="col-lg-2 col-sm-4">
-            <ul>
-                <li>
-                    <a href="https://formation.abtel.fr/" class="titrefooter classformation">Abtel formation</a>
-                </li>
-
-                <li>
-                    <a href="https://formation.abtel.fr/formation-bureautique" class="classformation textefooter">Bureautique</a>
-                </li>
-                <li>
-                    <a href="https://formation.abtel.fr/administration-site-internet" class="classformation textefooter">Administration site internet</a>
-                </li>
-                <li>
-                    <a href="https://formation.abtel.fr/conception-graphique" class="classformation textefooter">Conception graphique</a>
-                </li>
-            </ul>
-        </div>
-        <div class="col-lg-2 col-sm-4">
-            <ul>
-                <li><span class="titrefooter">Notre adresse</span></li>
-
-                <li>
-                    <span class="textefooter">Groupe Delta Km 4</span>
-                </li>
-                <li>
-                    <span class="textefooter">Rte Dep, D6113</span>
-                </li>
-                <li>
-                    <span class="textefooter">30230 Bouillargues</span>
-                </li>
-                <li>
-                    <span class="textefooter">04 66 04 06 13</span>
-                </li>
-
-            </ul>
-        </div>
-        <div class="col-lg-2 col-sm-4">
-            <ul>
-                <li>
-                    <a href="/contact" class="titrefooter classautre">Contactez-nous</a>
-                </li>
-                <li>
-                    <span class="titrefooter2">Notre Newsletter</span>
-                </li>
-                <li>
-                    <form id="news" action="/" method="post"> <input id="emailNewsletter" placeholder="Votre Adresse E-mail" name="emailNewsletter" type="text"> <button type="submit">&gt;</button></form>
-                </li>
-                <li>
-                    <a href="" class="textefooter classautre">Mentions Légales</a>
-                </li>
-            </ul>
-        </div>
+<div id="plusfooter">
+    <div id="divmap">
+        <div id="mapfooter">
+            <iframe id="iframefooter" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d46080.56660669501!2d4.3697939480563495!3d43.792878205528034!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb8dc56a9efeb9743!2sAbtel+Informatique!5e0!3m2!1sfr!2sfr!4v1495026817055" width="1140" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
+        </div><div id="adressemap">
+        <span class="adressefooter1">Abtel Méditerranée</span>
+        <span id="iconefooter1" class="adressefooter2">Adresse:</span>
+        <span class="ssicone adressefooter2">Groupe Delta Km 4</span>
+        <span class="ssicone adressefooter2">Route Départementale, D6113</span>
+        <span class="ssicone adressefooter2">30230 Bouillargues</span>
+        <span id="iconefooter2"class="adressefooter2">04 66 04 06 13</span>
+        <span class="adressefooter2"></span>
+        <span id="iconefooter3"class="adressefooter2">Ouvert de 8h à 19h</span>
     </div>
-</div>
+    </div>
+    <!--<div class="container">-->
+        <!--<nav class="col-lg-3 col-sm-6">-->
+            <!--<a href="https://agence-web.abtel.fr/references" class="grandsliens" id="imgnosrefs">-->
+                <!--Nos références-->
+            <!--</a>-->
+        <!--</nav>-->
+        <!--<nav class="col-lg-3 col-sm-6">-->
+            <!--<a href="https://agence-web.abtel.fr/developpement-web" class="grandsliens" id="imgdevweb">-->
+                <!--Développement Web-->
+            <!--</a>-->
+        <!--</nav>-->
+        <!--<nav class="col-lg-3 col-sm-6">-->
+            <!--<a href="https://agence-web.abtel.fr/hebergement-services" class="grandsliens" id="imghebergement">-->
+                <!--Hébergement et services-->
+            <!--</a>-->
+        <!--</nav>-->
+        <!--<nav class="col-lg-3 col-sm-6">-->
+            <!--<a href="https://agence-web.abtel.fr/actualite" class="grandsliens" id="actualite">-->
+                <!--Actualité-->
+            <!--</a>-->
+        <!--</nav>-->
+    <!--</div>-->
 
+
+    <div class="container">
+        <nav class="col-lg-3 col-sm-6">
+            <a href="https://www.abtel.fr/" class="grandsliens2" id="imggroupe">
+
+            </a>
+        </nav>
+        <nav class="col-lg-3 col-sm-6">
+            <a href="https://informatique.abtel.fr/" class="grandsliens2"  id="imginformatique">
+
+            </a>
+        </nav>
+        <nav class="col-lg-3 col-sm-6">
+            <a href="https://networks.abtel.fr/" class="grandsliens2" id="imgnetwork">
+
+            </a>
+        </nav>
+        <nav class="col-lg-3 col-sm-6">
+            <a href="https://formation.abtel.fr/" class="grandsliens2" id="imginformation">
+
+            </a>
+        </nav>
+
+
+    </div>
+
+    <div class="separefootergris"></div>
+    // Utilisation menu spécial pour le bas de page
+    <nav>
+        [STORPROC [!Systeme::Menus!]/Affiche=1&&MenuSpecial=1&&MenuPrincipal=0&&MenuBas=0|M|0|10|Ordre|ASC]
+        [IF [!M::Url!]~http]
+        <a href="[!M::Url!]" target="_blank" class="liensbasfooter [IF [!Systeme::CurrentMenu::Url!]=[!M::Url!]] active [/IF]"  >
+            [ELSE]
+            <a href="/[!M::Url!]" class="liensbasfooter [IF [!Systeme::CurrentMenu::Url!]=[!M::Url!]] active [/IF]" [IF [!Pos!]=[!NbResult!]]style="background-color:[!EntiteSite::CodeCouleur!];"[/IF] >
+                [/IF]
+                [!M::Titre!] [!M::SousTitre!]
+            </a>
+            [/STORPROC]
+    </nav>
+
+</div>

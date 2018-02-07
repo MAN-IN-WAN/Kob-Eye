@@ -1,0 +1,1 @@
+[MODULE Catalogue/Categorie/Fiche]

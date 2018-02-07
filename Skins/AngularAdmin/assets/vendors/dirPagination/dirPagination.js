@@ -73,13 +73,34 @@
 
                 /** gestion filter */
                 if (filter) {
-                    console.log('dirPaginate filter '+context+' '+filter+' '+itemsPerPageFilterRemoved,scope[itemsPerPageFilterRemoved.split('.')[0]]);
+                    console.log('dirPaginate filter '+context+' '+filter);
+                    var scopino = Object.assign({}, scope);
+                    while(scopino.$parent){
+                        scopino = Object.assign({}, scopino.$parent);
+                        //console.log('AAAAAAAAAAAAAAAAAAA',scopino,itemsPerPageFilterRemoved,itemsPerPageFilterRemoved.split('.')[0],scopino[itemsPerPageFilterRemoved.split('.')[0]]);
+                        if(scopino[itemsPerPageFilterRemoved.split('.')[0]] != undefined){
+                            scope[itemsPerPageFilterRemoved.split('.')[0]] = scopino[itemsPerPageFilterRemoved.split('.')[0]];
+                            scope[itemsPerPageFilterRemoved.split('.')[0]].store.getData(1, context);
+                            break;
+                        }
+                    }
                     scope[itemsPerPageFilterRemoved.split('.')[0]].store.setFilters(filter, context);
                 }
                 /** gestion autoLoad */
                 if (autoLoad) {
-                    /*console.log('dirPaginate autoLoad '+context+' '+itemsPerPageFilterRemoved.split('.')[0]);*/
-                    scope[itemsPerPageFilterRemoved.split('.')[0]].store.getData(1, context);
+                    console.log('dirPaginate autoLoad '+context+' '+itemsPerPageFilterRemoved.split('.')[0]);
+                    //recup du scope utile
+                    var scopino = Object.assign({}, scope);
+                    while(scopino.$parent){
+                        scopino = Object.assign({}, scopino.$parent);
+                        //console.log('AAAAAAAAAAAAAAAAAAA',scopino,itemsPerPageFilterRemoved,itemsPerPageFilterRemoved.split('.')[0],scopino[itemsPerPageFilterRemoved.split('.')[0]]);
+                        if(scopino[itemsPerPageFilterRemoved.split('.')[0]] != undefined){
+                            scope[itemsPerPageFilterRemoved.split('.')[0]] = scopino[itemsPerPageFilterRemoved.split('.')[0]];
+                            scope[itemsPerPageFilterRemoved.split('.')[0]].store.getData(1, context);
+                            break;
+                        }
+                    }
+                    //console.log(scope);
                 }
                 // Now that we have access to the `scope` we can interpolate any expression given in the paginationId attribute and
                 // potentially register a new ID if it evaluates to a different value than the rawId.

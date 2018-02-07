@@ -1,49 +1,20 @@
 <SCHEMA>
 	<OBJECTCLASS title="Page" driver="mysql" AccessPoint="1" master="1" Description="Page"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" browseable="1" className="CmsPage" Class="Modules/Cms/Class/Page.class.php" >
 		<CATEGORY title="Contenu" type="large">
-			<PROPERTIES type="titre" searchOrder="1">Nom</PROPERTIES>
+			<PROPERTIES type="titre" obligatoire="1" searchOrder="1">Nom</PROPERTIES>
 			<PROPERTIES type="varchar" searchOrder="2">Titre</PROPERTIES>
 			<PROPERTIES type="html" special="multi">Description</PROPERTIES>
 		</CATEGORY>
 		<CATEGORY title="Configuration">
 			<PROPERTIES type="file" >Icone</PROPERTIES>
 			<PROPERTIES type="boolean" default="1">Publier</PROPERTIES>
-			<PROPERTIES type="varchar" method="getModele">Modele</PROPERTIES>
-			<PROPERTIES type="order">Ordre</PROPERTIES>
 			<FKEY card="0,1" data="Page,Id" hidden="1">PageId</FKEY>
+			<FKEY card="0,1" module="Systeme" data="Menu,Id" hidden="1">MenuId</FKEY>
 		</CATEGORY>
-	</OBJECTCLASS>
-	<OBJECTCLASS title="Section" driver="mysql" AccessPoint="1" Description="Section"   Icon="/Skins/AdminV2/Img/IconAqua/Document.png" className="CmsSection" Class="Modules/Cms/Class/Section.class.php">
-		<PROPERTIES type="titre" searchOrder="1" special="multi" obligatoire="1" category="Intitulé">Titre</PROPERTIES>
-		<PROPERTIES type="html" category="Intitulé" special="multi" >Chapo</PROPERTIES>
-		<PROPERTIES type="date" category="Intitulé">Date</PROPERTIES>
-		<PROPERTIES type="varchar" category="Intitulé">Auteur</PROPERTIES>
-		<PROPERTIES type="boolean" category="Intitulé" default="1">AfficheTitre</PROPERTIES>
-		<PROPERTIES type="html" special="multi" category="Contenu">Contenu</PROPERTIES>
-		<PROPERTIES type="boolean" category="Publication">Publier</PROPERTIES>
-		<PROPERTIES type="order" category="Publication">Ordre</PROPERTIES>
-		<FKEY card="1,n" data="Page,Id">PageId</FKEY>
-	</OBJECTCLASS>
-	<OBJECTCLASS title="Ligne" driver="mysql" AccessPoint="1" Description="Ligne"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" className="CmsLigne" Class="Modules/Cms/Class/Ligne.class.php">
-		<PROPERTIES type="titre" searchOrder="1" obligatoire="1" category="Intitulé">Titre</PROPERTIES>
-		<PROPERTIES type="boolean" category="Publication">Publier</PROPERTIES>
-		<PROPERTIES type="order" category="Publication">Ordre</PROPERTIES>
-		<FKEY card="1,1" data="Section,Id">SectionId</FKEY>
-	</OBJECTCLASS>
-	<OBJECTCLASS title="Colonne" driver="mysql" Description="Colonne"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" className="CmsColonne" Class="Modules/Cms/Class/Colonne.class.php">
-		<PROPERTIES type="titre" searchOrder="1" obligatoire="1" category="Intitulé">Titre</PROPERTIES>
-		<CATEGORY title="Organistaion">
-			<PROPERTIES type="varchar" description="Largeur en %">Ratio</PROPERTIES>
-			<PROPERTIES type="order">Ordre</PROPERTIES>
-			<FKEY card="1,1" data="Ligne,Id">LigneId</FKEY>
-		</CATEGORY>
-	</OBJECTCLASS>
-	<OBJECTCLASS title="Module" driver="mysql" Description="Module"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" className="CmsModule" Class="Modules/Cms/Class/Module.class.php">
-		<PROPERTIES type="titre" searchOrder="1" obligatoire="1" category="Intitulé">Titre</PROPERTIES>
-		<CATEGORY title="Organistaion">
-			<PROPERTIES type="varchar" description="Largeur en %">Ratio</PROPERTIES>
-			<PROPERTIES type="order">Ordre</PROPERTIES>
-			<FKEY card="1,1" data="Colonne,Id">ColonneId</FKEY>
+		<CATEGORY title="Templating">
+			<PROPERTIES type="template" >CmsTemplate</PROPERTIES>
+			<PROPERTIES type="templateconfig" >TemplateConfig</PROPERTIES>
+			<PROPERTIES type="templateconfig" >HtmlConfig</PROPERTIES>
 		</CATEGORY>
 	</OBJECTCLASS>
 </SCHEMA>
