@@ -17,13 +17,28 @@
         /*_________________________________________________________________________________________
                                                      PUBLIC
         */
+
+        public function getTemplates() {
+            $dir = "Modules/Cms/Templates/";
+            $out=Array();
+            if ($handle = opendir($dir)) {
+                while (false !== ($file = readdir($handle))) {
+                    if ($file != "." && $file != ".." && is_dir($dir.'/'.$file) && !preg_match("#^\..*#",$file)) {
+                        $out[] = $file;
+                    }
+                }
+                closedir($handle);
+            }
+            return $out;
+        }
+
         /**
          * Enregistrement et verification des données
          */
         public function Save() {
-            if (isset($this->Template)&&!empty($this->Template)&&empty($this->TemplateConfig)){
+            if (isset($this->CmsTemplate)&&!empty($this->CmsTemplate)&&empty($this->TemplateConfig)){
                 //Si la configuration est vide alors on charge la configuration de la template
-                $Path = 'Modules/Cms/Templates/'.$this->Template;
+                $Path = 'Modules/Cms/Templates/'.$this->CmsTemplate;
                 if (is_dir($Path)){
                     //On verifie que le chemin existe
                     $Path .= '/Template.conf';
@@ -31,7 +46,23 @@
                 } else{
                     $this->TemplateConfig = @file_get_contents('Modules/Cms/Templates/Default/Template.conf');
                 }
+            } elseif (!isset($this->CmsTemplate)||empty($this->CmsTemplate)&&empty($this->TemplateConfig)){
+                $this->TemplateConfig = @file_get_contents('Modules/Cms/Templates/Default/Template.conf');
             }
+            if (isset($this->CmsTemplate)&&!empty($this->CmsTemplate)&&empty($this->HtmlConfig)){
+                //Si la configuration est vide alors on charge la configuration de la template
+                $Path = 'Modules/Cms/Templates/'.$this->CmsTemplate;
+                if (is_dir($Path)){
+                    //On verifie que le chemin existe
+                    $Path .= '/Default.md';
+                    $this->HtmlConfig = @file_get_contents($Path);
+                } else{
+                    $this->HtmlConfig = @file_get_contents('Modules/Cms/Templates/Default/Default.md');
+                }
+            }elseif (!isset($this->CmsTemplate)||empty($this->CmsTemplate)&&empty($this->HtmlConfig)){
+                $this->HtmlConfig = @file_get_contents('Modules/Cms/Templates/Default/Default.md');
+            }
+
             //Enregistrement de la nouvelle config
             if (isset($this->TemplateObject)) $this->TemplateConfig = $this->TemplateObject->ExportXml();
             parent::Save();

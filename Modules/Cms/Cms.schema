@@ -12,9 +12,9 @@
 			<FKEY card="0,1" module="Systeme" data="Menu,Id" hidden="1">MenuId</FKEY>
 		</CATEGORY>
 		<CATEGORY title="Templating">
-			<PROPERTIES type="varchar" >Template</PROPERTIES>
+			<PROPERTIES type="template" >CmsTemplate</PROPERTIES>
 			<PROPERTIES type="templateconfig" >TemplateConfig</PROPERTIES>
-			<PROPERTIES type="html" >HtmlConfig</PROPERTIES>
+			<PROPERTIES type="templateconfig" >HtmlConfig</PROPERTIES>
 		</CATEGORY>
 	</OBJECTCLASS>
 </SCHEMA>

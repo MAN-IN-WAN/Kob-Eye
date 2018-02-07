@@ -216,7 +216,11 @@
 				var myElement = document.moo('[!Prefixe!]TemplateConfig');
 				myElement.set('text','TEST');
 				var myRequest = new Request({
+                    [IF [!O::Module!]=Cms]
+                    url: 'Modules/Cms/Templates/'+v+'/Template.conf',
+                    [ELSE]]
 					url: 'Templates/'+v+'/Template.conf',
+                    [/IF]
 					method: 'post',
 					onRequest: function(){
 						myElement.set('text', 'chargement...');

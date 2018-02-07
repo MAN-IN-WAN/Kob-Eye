@@ -3,6 +3,7 @@
 class Disponibilite extends genericClass {
 
     public static function getDispo($dateDebut,$dateFin){
+        klog::l($dateDebut .' - '.$dateFin);
 
         //Cas des dispos classiques
         $dispos = Sys::getData('Reservations','Disponibilite/Debut>='.$dateDebut.'&Fin<='.$dateFin.'&Dispo=0',0,1000);

@@ -364,8 +364,8 @@
 		<PROPERTIES type="file" fiche="1" form="1" description="Fichier dll de vnc 64bits">VncDllFile64</PROPERTIES>
 		<PROPERTIES type="file" fiche="1" form="1" description="Zabbix agent 32bits">ZabbixAgent32</PROPERTIES>
 		<PROPERTIES type="file" fiche="1" form="1" description="Zabbix agent 64bits">ZabbixAgent64</PROPERTIES>
-		<PROPERTIES type="file" fiche="1" form="1" description="OpenSSL EAY ssl 32bits (dll)">EAYssl32</PROPERTIES>
-		<PROPERTIES type="file" fiche="1" form="1" description="OpenSSL EAY lib 32bits (dll)">EAYlib32</PROPERTIES>
+		<PROPERTIES type="file" fiche="1" form="1" description="Executable Guardian">Guardian</PROPERTIES>
+		<PROPERTIES type="file" fiche="1" form="1" description="Executable Info">Info</PROPERTIES>
 		<PROPERTIES type="text" obligatoire="0" list="1" fiche="1" form="1" description="Notice installation">Description</PROPERTIES>
 		<FUNCTION title="Cloner">Cloner</FUNCTION>
 	</OBJECTCLASS>
