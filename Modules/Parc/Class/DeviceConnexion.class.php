@@ -82,12 +82,23 @@ class DeviceConnexion extends genericClass{
                 $gid = $grp['connection_group_id'];
             } else {
                 $query = "INSERT INTO `guacamole_connection_group` (connection_group_name) VALUES ('" . strtoupper(str_replace('\'',' ',$cli->Nom)) . "')";
-                echo $query;
                 $q = $dbGuac->query($query);
 
                 $gid = $dbGuac->lastInsertId();
             }
         }
+
+        //Verif au cas ou la connection a été supprimée à l'arrache dans guacamole
+        if($this->GuacamoleId){
+            $query = "SELECT * FROM `guacamole_connection` WHERE connection_id = $this->GuacamoleId";
+            $q = $dbGuac->query($query);
+            $result = $q->fetchALL(PDO::FETCH_ASSOC);
+            if(!count($result)){
+                $this->GuacamoleUrl = '';
+                $this->GuacamoleId = '';
+            }
+        }
+
 
         switch($this->Type){
             case 'RDP':
