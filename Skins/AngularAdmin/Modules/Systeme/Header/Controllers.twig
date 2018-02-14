@@ -1,4 +1,8 @@
 {% for c in controllers %}
+    {% if c.extends %}
+        {{ include(template_from_string(module(c.extends))) }}
+    {% endif %}
+
     {% if c.overload %}
     /**** OVERLOAD CONTROLLER  ****/
         {{ include(template_from_string(module(c.overload))) }}
@@ -6,7 +10,7 @@
         app.controller('{{ c.name }}Ctrl', function() {});
     {% else %}
     /**** LIST CONTROLLER  ****/
-    app.controller('{{ c.name }}Ctrl', function($injector,$location, $scope,$timeout, $rootScope,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store{% endfor %}) {
+    app.controller('{{ c.name }}Ctrl', function($controller,$injector,$location, $scope,$timeout, $rootScope,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store{% endfor %}) {
         //test du store
         $scope.{{ c.identifier }} = {
             data: {{ c.identifier }}Store.data.default,
@@ -205,10 +209,23 @@
             console.log('get select data',store,search);
             return $injector.get(store).getDataFilter(search,'form');
         }
+
+        var isExtended = false;
+        if(typeof window['{{ c.name }}CtrlExtends'] == 'function') {
+            isExtended = true;
+        }
+        try {
+            $controller('{{ c.name }}CtrlExtends',{$scope: $rootScope.$new()});
+            isExtended = true;
+        } catch (error) {
+            console.log('No extends',error);
+        }
+        if(isExtended)
+            angular.extend(this, $controller('{{ c.name }}CtrlExtends', {$scope: $scope}));
     });
 
     /**** FICHE CONTROLLER ****/
-    app.controller('{{ c.name }}FicheCtrl', function($injector,NgMap,$location, $scope,$timeout, $rootScope, $routeParams,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store {% for cParent in child.parentelements %},{{ cParent.objectModule }}{{ cParent.objectName }}Store{% endfor %}{% endfor %}) {
+    app.controller('{{ c.name }}FicheCtrl', function($controller,$injector,NgMap,$location, $scope,$timeout, $rootScope, $routeParams,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store {% for cParent in child.parentelements %},{{ cParent.objectModule }}{{ cParent.objectName }}Store{% endfor %}{% endfor %}) {
         //acces aux stores parents
         {% for parent in c.parentelements %}
             var lasttimeoutParent{{ parent.objectModule }}{{ parent.objectName }} = false;
@@ -658,6 +675,19 @@
             {% endfor %}
 
             $scope.show = true;
+
+            var isExtended = false;
+            if(typeof window['{{ c.name }}FicheCtrlExtends'] == 'function') {
+                isExtended = true;
+            }
+            try {
+                $controller('{{ c.name }}FicheCtrlExtends',{$scope: $rootScope.$new()});
+                isExtended = true;
+            } catch (error) {
+                console.log('No extends',error);
+            }
+            if(isExtended)
+                angular.extend(this, $controller('{{ c.name }}FicheCtrlExtends', {$scope: $scope}));
         });
         });
     {% endif %}

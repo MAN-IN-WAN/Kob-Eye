@@ -83,6 +83,13 @@ progress.progress.progress-danger:after{
 .form-control-label{
     font-weight:600;
 }
+.cat-title{
+    background-color: #ddd;
+    padding: 3px 15px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
 .detail-label{
     position: relative;
 }
@@ -99,7 +106,7 @@ progress.progress.progress-danger:after{
 .detail-value{
     text-align: center;
 }
-.detail-value span{
+.detail-value > span{
     display: inline-block;
     padding: .375rem .75rem;
     margin-bottom: 0;

@@ -576,9 +576,14 @@ class genericClass extends Root {
                     }
                 }
 		//on ordonne sur l'attribut
-		if (empty($V)){
+		if (empty($V) && $flat){
 			$O = Storproc::SpBubbleSort($O,$A);
-		}
+		} elseif (empty($V) && !$flat){
+            array_walk($O,function(&$elem) use ($A){
+                $elem['elements'] = Storproc::SpBubbleSort($elem['elements'],$A);
+            });
+        }
+
 		if (!sizeof($O))
 			return false;
 		return $O;

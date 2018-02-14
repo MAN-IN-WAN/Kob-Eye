@@ -1,0 +1,11 @@
+app.controller('{{ identifier }}FicheCtrlExtends', function($location, $scope, $rootScope, $routeParams,$http,{{ identifier }}Store) {
+
+    $scope.getTemplate =  function(){
+        if($scope.obj)
+            $scope.template = {
+                'name': $scope.obj.CmsTemplate,
+                'config': $scope.obj.TemplateConfig,
+                'html': $scope.obj.HtmlConfig
+            };
+    }
+});

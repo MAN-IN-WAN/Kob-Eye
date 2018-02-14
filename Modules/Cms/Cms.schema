@@ -1,20 +1,20 @@
 <SCHEMA>
-	<OBJECTCLASS title="Page" driver="mysql" AccessPoint="1" master="1" Description="Page"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" browseable="1" className="CmsPage" Class="Modules/Cms/Class/Page.class.php" >
+	<OBJECTCLASS title="Page" driver="mysql"  master="1" AccessPoint="1" Description="Page"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" browseable="1" Operations="delete" className="CmsPage" Class="Modules/Cms/Class/Page.class.php" >
 		<CATEGORY title="Contenu" type="large">
-			<PROPERTIES type="titre" obligatoire="1" searchOrder="1">Nom</PROPERTIES>
-			<PROPERTIES type="varchar" searchOrder="2">Titre</PROPERTIES>
-			<PROPERTIES type="html" special="multi">Description</PROPERTIES>
+			<PROPERTIES type="titre" obligatoire="1" searchOrder="1" list="1" listDescr="Nom de la page" fiche="1" form="1">Nom</PROPERTIES>
+			<PROPERTIES type="varchar" searchOrder="2" list="1" listDescr="Titre(h1) de la page" fiche="1" form="1">Titre</PROPERTIES>
+			<PROPERTIES type="html" special="multi" fiche="1" form="1">Description</PROPERTIES>
 		</CATEGORY>
 		<CATEGORY title="Configuration">
-			<PROPERTIES type="file" >Icone</PROPERTIES>
-			<PROPERTIES type="boolean" default="1">Publier</PROPERTIES>
-			<FKEY card="0,1" data="Page,Id" hidden="1">PageId</FKEY>
+			<PROPERTIES type="file"  fiche="1" form="1">Icone</PROPERTIES>
+			<!--<PROPERTIES type="boolean" default="1" list="1" listDescr="Publier" fiche="1" form="1">Publier</PROPERTIES>-->
+			<FKEY card="0,1" data="Page,Id" hidden="1" fiche="1" form="1">PageId</FKEY>
 			<FKEY card="0,1" module="Systeme" data="Menu,Id" hidden="1">MenuId</FKEY>
 		</CATEGORY>
 		<CATEGORY title="Templating">
-			<PROPERTIES type="template" >CmsTemplate</PROPERTIES>
-			<PROPERTIES type="templateconfig" >TemplateConfig</PROPERTIES>
-			<PROPERTIES type="templateconfig" >HtmlConfig</PROPERTIES>
+			<PROPERTIES type="template" form="1" fiche="1" hiddenPage="1" >CmsTemplate</PROPERTIES>
+			<PROPERTIES type="templateconfig" subtype="xml" large="1" fiche="1" >TemplateConfig</PROPERTIES>
+			<PROPERTIES type="templateconfig" subtype="html" large="1" fiche="1" >HtmlConfig</PROPERTIES>
 		</CATEGORY>
 	</OBJECTCLASS>
 </SCHEMA>

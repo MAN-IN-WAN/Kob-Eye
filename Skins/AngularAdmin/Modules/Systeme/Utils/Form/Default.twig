@@ -107,7 +107,7 @@
             <div>{{ include(template_from_string(module('Systeme/Utils/Select?Path='~field.objectModule~'/'~field.objectName~'&Field='~field.objectName~field.name))) }}</div>
         </div>
     </div>
-    {% elseif field.type == "text" or field.type == "raw" %}
+    {% elseif field.type == "text" or field.type == "raw" or field.type == "templateconfig"%}
     <div class="row">
         <div class="col-md-12">
             <label class="form-control-label" for="l0">{{ field.description }}</label>

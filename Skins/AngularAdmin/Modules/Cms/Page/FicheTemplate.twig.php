@@ -3,7 +3,7 @@ $info = Info::getInfos($vars['Query']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $vars['fields'] = $o->getElementsByAttribute('list','',true);
 $vars['functions'] = $o->getFunctions();
-$vars['fichefields'] = $o->getElementsByAttribute('fiche','',true);
+$vars['fichefields'] = $o->getElementsByAttribute('fiche','',false);
 foreach ($vars['fichefields'] as $k=>$f){
     if ($f['type']=='fkey'&&$f['card']=='short'){
         $vars['fichefields'][$k]['link'] = Sys::getMenu($f['objectModule'].'/'.$f['objectName']);
@@ -20,4 +20,5 @@ $vars['identifier'] = $info['Module'] . $info['ObjectType'];
 if (is_object(Sys::$CurrentMenu))
     $vars['CurrentUrl'] = Sys::$CurrentMenu->Url;
 else $vars['CurrentUrl'] = $vars['Query'];
+
 ?>

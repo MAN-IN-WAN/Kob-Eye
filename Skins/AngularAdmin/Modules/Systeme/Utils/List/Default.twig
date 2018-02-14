@@ -118,7 +118,7 @@
                 <span class="input-group-btn">
                     {% if operation.edit %}<a  class="btn btn-warning" href="javascript: void(0);" ng-click="{{ identifier }}modify(item)">Modifier</a>{% endif %}
                     {% if operation.delete %}<a  class="btn btn-danger" href="javascript: void(0);" ng-click="{{ identifier }}delete(item)">Supprimer</a>{% endif %}
-                    {% for fu in functions %}
+                    {% for fu in functions %}{{ fu.Nom }}
                         {% if attribute(operation,fu.Nom) %}
                             <a  class="btn btn-primary"  href="javascript: void(0);" ng-click='{{ identifier }}callFunction(item,"{{fu.Nom}}","{{fu.title}}")'>{{ fu.title }}</a>
                         {% endif %}
@@ -127,7 +127,7 @@
             {% else %}
             <!-- Split button -->
             <div class="btn-group" uib-dropdown>
-                <a id="split-button" type="button" class="btn btn-danger  btn-sm" href="#/{{ CurrentUrl }}/{[{ item.id }]}">détails</a>
+                <a id="split-button" type="button" class="btn btn-danger  btn-sm" href="#/{{ CurrentUrl }}/{[{ item.id }]}">Détails</a>
                 <button type="button" class="btn btn-danger  btn-sm" uib-dropdown-toggle>
                     <span class="caret"></span>
                     <span class="sr-only">Split button!</span>

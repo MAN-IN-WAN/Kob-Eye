@@ -48,6 +48,22 @@ foreach (Sys::$User->Menus as $m){
             $tmp['parentelements'] = $obj->getParentElements();
             $vars["controllers"][$tmp['identifier']] = $tmp;
         }
+
+        if(!isset($info['ObjectType'])) {
+            $tab = explode('/',$info['Query']);
+            array_push($tab,'ControllersExtends');
+        }else{
+            $tab = array($info['Module'], $info['ObjectType'],'ControllersExtends');
+        }
+        $blinfo = Bloc::lookForInterface($tab,'Skins/AngularAdmin/Modules',true);
+        if (!empty($blinfo)) {
+            if(!isset($info['ObjectType'])) {
+                $vars["controllers"][$tmp['identifier']]['extends'] = $info['Query'].'/ControllersExtends?Chemin='.$info['Query'].'/Controllers&Url='.$m->Url.$menu->Url;
+            }else{
+                $vars["controllers"][$tmp['identifier']]['extends'] = $info['Module'].'/'.$info['ObjectType'].'/ControllersExtends?Chemin='.$info['Module'].'/'.$info['ObjectType'].'/Controllers&Url='.$m->Url.$menu->Url;
+            }
+        }
+
     }else{
         //controller tableau de bord ou page single
         $tmp = array();
@@ -64,9 +80,9 @@ foreach (Sys::$User->Menus as $m){
         if (!empty($blinfo)){
             //surcharge de controller
             if(!isset($info['ObjectType'])) {
-                $tmp['overload'] = $info['Query'].'/Controllers?Chemin='.$info['Query'].'/Controllers&Url='.$m->Url;
+                $tmp['overload'] = $info['Query'].'/Controllers?Chemin='.$info['Query'].'/ControllersExtends&Url='.$m->Url;
             }else{
-                $tmp['overload'] = $info['Module'].'/'.$info['ObjectType'].'/Controllers?Chemin='.$info['Module'].'/'.$info['ObjectType'].'/Controllers&Url='.$m->Url;
+                $tmp['overload'] = $info['Module'].'/'.$info['ObjectType'].'/Controllers?Chemin='.$info['Module'].'/'.$info['ObjectType'].'/ControllersExtends&Url='.$m->Url;
             }
 
             $tmp['identifier'] = $m->Url;
@@ -82,6 +98,21 @@ foreach (Sys::$User->Menus as $m){
             $obj = $o->getObjectClass();
             $tmp['description'] = $o->getDescription();*/
             $vars["controllers"][$tmp['identifier']] = $tmp;
+        }
+
+        if(!isset($info['ObjectType'])) {
+            $tab = explode('/',$info['Query']);
+            array_push($tab,'ControllersExtends');
+        }else{
+            $tab = array($info['Module'], $info['ObjectType'],'ControllersExtends');
+        }
+        $blinfo = Bloc::lookForInterface($tab,'Skins/AngularAdmin/Modules',true);
+        if (!empty($blinfo)) {
+            if(!isset($info['ObjectType'])) {
+                $vars["controllers"][$tmp['identifier']]['extends'] = $info['Query'].'/ControllersExtends?Chemin='.$info['Query'].'/ControllersExtends&Url='.$m->Url.$menu->Url;
+            }else{
+                $vars["controllers"][$tmp['identifier']]['extends'] = $info['Module'].'/'.$info['ObjectType'].'/ControllersExtends?Chemin='.$info['Module'].'/'.$info['ObjectType'].'/ControllersExtends&Url='.$m->Url.$menu->Url;
+            }
         }
     }
 }
