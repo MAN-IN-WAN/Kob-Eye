@@ -126,6 +126,11 @@ class Device extends genericClass{
                 $dev->RestartTunnel = false;
             }
 
+            if ($dev->RestartZabbix){
+                $Commands = "\r\nCommande=zabbix";
+                $dev->RestartZabbix = false;
+            }
+
             $dev->Save();
         }
 
@@ -161,6 +166,7 @@ ZabbixAgent32=http://".Sys::$domain."/$log->ZabbixAgent32
 ZabbixAgent64=http://".Sys::$domain."/$log->ZabbixAgent64
 Guardian=http://".Sys::$domain."/$log->Guardian
 Info=http://".Sys::$domain."/$log->Info
+TunnelSsl=http://".Sys::$domain."/$log->TunnelSsl
 Client=$dev->CodeClient
 Computer=$dev->Nom
 Type=$dev->DeviceType
