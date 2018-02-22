@@ -307,6 +307,7 @@
 		<PROPERTIES type="boolean" searchOrder="2" obligatoire="0"  fiche="1" form="1"  listDescr="Test" description="Machine test">ModeTest</PROPERTIES>
         <PROPERTIES type="int" obligatoire="0" fiche="1" description="Modifié récemment">Dirty</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="10" obligatoire="0" fiche="1" form="1"  listDescr="Tunnel Restart" description="Tunnel restart">RestartTunnel</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="10" obligatoire="0" fiche="1" form="1"  listDescr="Zabbix Restart" description="Zabbix restart">RestartZabbix</PROPERTIES>
 		<PROPERTIES type="date" searchOrder="9" obligatoire="0" fiche="1" listDescr="Last seen" description="Vu pour la dernière fois">LastSeen</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="5" obligatoire="0" fiche="1" list="5" listDescr="Online" description="En ligne">Online</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="5" obligatoire="0" fiche="1"  listDescr="Erreur" description="Erreur">Erreur</PROPERTIES>
@@ -361,8 +362,8 @@
 		<PROPERTIES type="varchar" searchOrder="2" obligatoire="0" list="1" fiche="1" form="1" description="Version">Version</PROPERTIES>
 		<PROPERTIES type="file" fiche="1" form="1" description="Fichier de service">ServiceFile</PROPERTIES>
 		<PROPERTIES type="file" fiche="1" form="1" description="Fichier d'installation">InstallFile</PROPERTIES>
-		<PROPERTIES type="file" fiche="1" form="1" description="Fichier de tunnel 32bits">TunnelFile</PROPERTIES>
-		<PROPERTIES type="file" fiche="1" form="1" description="Fichier de tunnel 64bits">TunnelFile64</PROPERTIES>
+		<PROPERTIES type="file" fiche="1" form="1" description="Fichier de tunnel SSH 32bits">TunnelFile</PROPERTIES>
+		<PROPERTIES type="file" fiche="1" form="1" description="Fichier de tunnel SSH 64bits">TunnelFile64</PROPERTIES>
 		<PROPERTIES type="file" fiche="1" form="1" description="Fichier de vnc 32bits">VncFile</PROPERTIES>
 		<PROPERTIES type="file" fiche="1" form="1" description="Fichier de vnc 64bits">VncFile64</PROPERTIES>
 		<PROPERTIES type="file" fiche="1" form="1" description="Fichier dll de vnc 32bits">VncDllFile</PROPERTIES>
@@ -371,6 +372,7 @@
 		<PROPERTIES type="file" fiche="1" form="1" description="Zabbix agent 64bits">ZabbixAgent64</PROPERTIES>
 		<PROPERTIES type="file" fiche="1" form="1" description="Executable Guardian">Guardian</PROPERTIES>
 		<PROPERTIES type="file" fiche="1" form="1" description="Executable Info">Info</PROPERTIES>
+		<PROPERTIES type="file" fiche="1" form="1" description="Fichier de tunnel SSL">TunnelSsl</PROPERTIES>
 		<PROPERTIES type="text" obligatoire="0" list="1" fiche="1" form="1" description="Notice installation">Description</PROPERTIES>
 		<FUNCTION title="Cloner">Cloner</FUNCTION>
 	</OBJECTCLASS>

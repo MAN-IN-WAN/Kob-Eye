@@ -1,0 +1,12 @@
+<SCHEMA>
+	<OBJECTCLASS title="IPWatcher" AccessPoint="1" driver="mysql" Icon="[None]" Class="Modules/MailIpWatcher/Class/IPWatcher.class.php" logEvent="1">
+		<PROPERTIES  type="varchar" form="1" list="1" fiche="1" description="Nom DNS" listDescr="DNS">DNSNom</PROPERTIES>
+		<PROPERTIES  type="varchar" length="60" form="1" list="1" fiche="1" description="Adresse IP" listDescr="IP">IP</PROPERTIES>
+		<PROPERTIES  type="boolean" default="1" list="1" fiche="1" description="Existe dans Senderscore" listDescr="Existe dans Senderscore" >HasReputation</PROPERTIES>
+		<PROPERTIES  type="int" list="1" fiche="1" description="Score de réputation" listDescr="Réputation" >Reputation</PROPERTIES>
+		<PROPERTIES  type="boolean" special="reverse" list="1" fiche="1" description="UceProtect" listDescr="UceProtect" >UceProtect</PROPERTIES>
+		<PROPERTIES  type="boolean" special="reverse" list="1" fiche="1" description="Sorbs" listDescr="Sorbs" >Sorbs</PROPERTIES>
+		<PROPERTIES  type="boolean" special="reverse" list="1" fiche="1" description="SpamHaus" listDescr="SpamHaus" >SpamHaus</PROPERTIES>
+		<PROPERTIES  type="boolean" special="reverse" form="1" list="1" fiche="1" description="Barracuda" listDescr="Barracuda" >Barracuda</PROPERTIES>
+	</OBJECTCLASS>
+</SCHEMA>

@@ -312,25 +312,48 @@ class Esx extends genericClass {
         $vmsrc = Sys::getOneData('AbtelBackup','EsxVm/SrcVm=1');
         if (!$vmsrc) return false;
         $esxsrc = $vmsrc->getOneParent('Esx');
-        $esxsrc->enableEsxiClient();
         $esx = $this;
+        $act = $esx->createActivity("Demarrage du déploiement",'Info');
+        $esxsrc->enableEsxiClient();
+        $act->Terminate(true);
         //On modifie le fichier fstab
         //echo "Modification du fichier fstab\r\n";
         $act = $esx->createActivity("Modification du fichier fstab",'Info');
         $act->addDetails(AbtelBackup::localExec('sudo cp /etc/fstab.mig /etc/fstab'));
         //on crée un snapshot
         $snpas = $esxsrc->getSnapshots($vmsrc);
-
-        if (sizeof($snpas)) {
+        $act->addDetails('Snapshots: '.sizeof($snpas).' => '.print_r($snpas,true));
+        if (sizeof($snpas)&&$snpas[0]!='') {
             //echo "suppression des snapshots\r\n";
             $act = $esx->createActivity("Suppression des snapshots",'Info');
             //on supprime les snapshots
-            $act->addDetails($esxsrc->removeAllSnapshot($vmsrc));
+            if ($esxsrc->removeAllSnapshot($vmsrc))
+                $act->addDetails('Suppression des snapshots success');
+            else {
+                $act->addDetails('Suppression des snapshots error');
+                foreach ($this->Error as $e){
+                    $act->addDetails(' - '.$e["Message"]);
+                }
+                //revert fstab file
+                AbtelBackup::localExec('sudo cp /etc/fstab.bck /etc/fstab');
+                $act->Terminate(false);
+                return false;
+            }
         }
         //echo "Creation du snapshot deploy\r\n";
         $act = $esx->createActivity("Creation du snapshot deploy",'Info');
         //si pas de snapshot en cours
-        $act->addDetails($esxsrc->createSnapshot($vmsrc, 'deploy'));
+        if ($esxsrc->createSnapshot($vmsrc, 'deploy'))
+            $act->addDetails('Création du snapshot success');
+        else{
+            $act->addDetails('Création du snapshot error');
+            foreach ($this->Error as $e){
+                $act->addDetails(' - '.$e["Message"]);
+            }
+            $act->Terminate(false);
+            AbtelBackup::localExec('sudo cp /etc/fstab.bck /etc/fstab');
+            return;
+        }
         //echo "Reset fichier fstab\r\n";
         $act = $esx->createActivity("Reset fichier fstab",'Info');
         //on remet le fichier fstab
@@ -352,14 +375,29 @@ class Esx extends genericClass {
         $act->addDetails($esxsrc->remoteExec('scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q -i /tmp/id_'.$esx->IP.' /vmfs/volumes/datastore1/BORG/BORG-thin.vmdk root@'.$esx->IP.':/vmfs/volumes/NL-SAS/BORG/'));
         //echo "Copie du fichier BORG-thin-flat.vmdk\r\n";
         $act = $esx->createActivity("Copie du fichier BORG-thin-flat.vmdk",'Info');
-        $act->addDetails($esxsrc->remoteExec('scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q -i /tmp/id_'.$esx->IP.' /vmfs/volumes/datastore1/BORG/BORG-thin-flat.vmdk root@'.$esx->IP.':/vmfs/volumes/NL-SAS/BORG/'));
+        $act->addDetails('scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q -i /tmp/id_'.$esx->IP.' /vmfs/volumes/datastore1/BORG/BORG-thin-flat.vmdk root@'.$esx->IP.':/vmfs/volumes/NL-SAS/BORG/');
+        try {
+            $act->addDetails($esxsrc->remoteExec('scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q -i /tmp/id_' . $esx->IP . ' /vmfs/volumes/datastore1/BORG/BORG-thin-flat.vmdk root@' . $esx->IP . ':/vmfs/volumes/NL-SAS/BORG/'));
+        }catch (Eception $e){
+            $act->addDetails('Erreur lors de la copie du fichier: '.$e->getMEssage());
+            //echo "suppression des snapshots\r\n";
+            $act = $esx->createActivity("Suppression des snapshots",'Info');
+            //on supprime les snapshots
+            $act->addDetails($esx->removeAllSnapshot($vmsrc));
+            $act->Terminate(false);
+            return false;
+        }
         //on modifie le fichier vmx
         //echo "Modification duy fichier BORG.vmx\r\n";
         $act = $esx->createActivity("Modification du fichier BORG.vmx",'Info');
         $vmx = $esx->remoteExec('cat /vmfs/volumes/NL-SAS/BORG/BORG.vmx');
+        $act->addDetails($vmx);
         $vmx = str_replace('scsi0:0.fileName = "BORG-thin-000001.vmdk','scsi0:0.fileName = "BORG-thin.vmdk',$vmx);
-        $vmx = preg_replace('#scsi0:1.*$#','',$vmx);
+        //on découpe le fichier par ligne
+        $lines = preg_split('/\r?\n/', $vmx);
+        $vmx = implode("\r\n",preg_grep("/scsi0:1/", $lines, PREG_GREP_INVERT));
         $esx->remoteExec('echo \''.$vmx.'\' > /vmfs/volumes/NL-SAS/BORG/BORG.vmx');
+        $vmx = $esx->remoteExec('cat /vmfs/volumes/NL-SAS/BORG/BORG.vmx');
         $act->addDetails($vmx);
         //echo "Ajout de la vm à l'inventaire\r\n";
         $act = $esx->createActivity("Ajout de la vm à l'inventaire",'Info');
