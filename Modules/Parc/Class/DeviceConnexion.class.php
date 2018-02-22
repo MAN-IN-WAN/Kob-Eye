@@ -26,6 +26,7 @@ class DeviceConnexion extends genericClass{
 
         //Vérif l'existence du client et le crée le cas échéant
         $cli = $device->getOneParent('Client');
+        $usr = array();
 
         //klog::l('$cli',$cli);
         if (isset($cli->AccesUser) && $cli->AccesUser != '' && $cli->AccesUser != null && isset($cli->AccesPass) && $cli->AccesPass != '' && $cli->AccesPass != null) {
@@ -281,7 +282,6 @@ class DeviceConnexion extends genericClass{
             default:
                 return false;
         }
-
 
 
 

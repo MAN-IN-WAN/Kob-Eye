@@ -236,10 +236,9 @@ progress.progress.progress-danger:after{
 .widgetTop{
     height: 350px;
 }
-table tr td.text span.ng-binding,table tr td.raw span.ng-binding{
-    display:block;
-    word-wrap: break-word;
-    max-width:500px;
+table tr td.typetext span.ng-binding,
+table tr td.typeraw span.ng-binding{
+    word-break: break-word;
 }
 
 
@@ -457,3 +456,49 @@ label.clickable{
 ACE
  */
 .ace_editor { height: 300px; }
+
+/**
+Page Edit DIVI Staïle
+ */
+#AgencementPage{
+    border: 1px solid #0a6aa1;
+    padding: 5px 10px;
+    text-align: center;
+    background-color : #ddddff;
+}
+#AgencementPage .row{
+    margin: 0;
+}
+#AgencementPage .dvContent{
+    position: relative;
+}
+#AgencementPage .cms-row{
+    border: 1px solid #0a6aa1;
+    background-color : #fff;
+    margin-bottom: 10px;
+    padding: 5px;
+    position: relative;
+}
+#AgencementPage .cms-col{
+    border: 1px solid #0a6aa1;
+    background-color : #fff;
+    position: relative;
+    float: left;
+}
+
+#AgencementPage .dragHandle{
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: #000;
+}
+#AgencementPage .cms-row .dragHandle{
+    top: 5px;
+    right: 5px;
+}
+
+#AgencementPage .cms-col .dragHandle{
+    top: 15px;
+    right: 15px;
+}
+

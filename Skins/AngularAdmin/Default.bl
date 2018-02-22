@@ -164,6 +164,10 @@
     <script src="Skins/AngularAdmin/assets/vendors/angular-bootstrap-colorpicker-master/js/bootstrap-colorpicker-module.min.js"></script>
     <link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/assets/vendors/angular-bootstrap-colorpicker-master/css/colorpicker.min.css">
 
+    <!-- Drag'n'Drop -->
+    <script src="Skins/AngularAdmin/assets/vendors/ngDraggable-master/ngDraggable.js"></script>
+
+
     <!-- Abtel TimeLine -->
     <link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/assets/vendors/abtTimeline/style.css">
     <script src="Skins/AngularAdmin/assets/vendors/abtTimeline/abtTimeline.js"></script>
