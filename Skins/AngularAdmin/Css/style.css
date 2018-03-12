@@ -1,6 +1,3 @@
-table tr td.table-details{
-    font-size:0.7em;
-}
 .pagination {
     margin-top: 0 !important;
     margin-bottom: 0 !important;
@@ -230,7 +227,44 @@ progress.progress.progress-danger:after{
     padding: 20px;
 }
 
-
+/**
+LISTE CLASSIQUE
+ */
+.table thead th,.table tr td{
+    border-bottom: 1px solid #efefef !important;
+}
+table tr th.list-col-th-dark{
+    line-height: 0.3 !important;
+    background-color: #efefef;
+}
+table tr th.list-col-th-id{
+    background-color: #f9f9f9;
+}
+table tr td.list-col-td-dark{
+    line-height: 0.3 !important;
+    background-color: #efefef;
+    padding-top: 14px !important;
+}
+table tr td.list-col-td-id{
+    background-color: #f9f9f9;
+    font-weight:bold;
+}
+table tr td.table-details{
+    font-size:0.7em;
+    padding: .45rem;
+}
+table tr td{
+    padding: .45rem;
+}
+table {
+    margin-bottom:1rem;
+}
+.table.table-hover tbody tr:hover {
+    background: #efefef !important;
+}
+table tr td.table-action{
+    padding: .45rem;
+}
 
 
 .widgetTop{
@@ -456,3 +490,49 @@ label.clickable{
 ACE
  */
 .ace_editor { height: 300px; }
+
+/**
+Page Edit DIVI Staïle
+ */
+#AgencementPage{
+    border: 1px solid #0a6aa1;
+    padding: 5px 10px;
+    text-align: center;
+    background-color : #ddddff;
+}
+#AgencementPage .row{
+    margin: 0;
+}
+#AgencementPage .dvContent{
+    position: relative;
+}
+#AgencementPage .cms-row{
+    border: 1px solid #0a6aa1;
+    background-color : #fff;
+    margin-bottom: 10px;
+    padding: 5px;
+    position: relative;
+}
+#AgencementPage .cms-col{
+    border: 1px solid #0a6aa1;
+    background-color : #fff;
+    position: relative;
+    float: left;
+}
+
+#AgencementPage .dragHandle{
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: #000;
+}
+#AgencementPage .cms-row .dragHandle{
+    top: 5px;
+    right: 5px;
+}
+
+#AgencementPage .cms-col .dragHandle{
+    top: 15px;
+    right: 15px;
+}
+

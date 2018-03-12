@@ -295,8 +295,8 @@ class Parc_Contact extends genericClass {
                 foreach ($cons as $con) {
                     $query .= "INSERT IGNORE INTO `guacamole_connection_permission` (user_id,connection_id,permission) VALUES ('" . $usr[0]['user_id'] . "','" . $con->GuacamoleId . "','READ');";
                 }
-                if (!empty($query))
-                    $dbGuac->query($query);
+
+                $q = $dbGuac->query($query);
             } else if (isset($this->AccesUser) && $this->AccesUser != '' && $this->AccesUser != null && (!isset($this->AccesPass) || $this->AccesPass == '' || $this->AccesPass == null)) {
                 //$this->addError(array('Message' => 'La valeur du champ AccesPass est nulle ou non définie alors que le champ AccesUser est défini.', "Prop" => 'AccesPass'));
             }

@@ -17,6 +17,7 @@
             store: {{ c.identifier }}Store,
             filter: {{ c.identifier }}Store.getFilters('default',true),
             currentPage: {{ c.identifier }}Store.currentPage.default,
+            pageLength: {{ c.identifier }}Store.getPageLength(),
             itemsPerPage: {{ c.identifier }}Store.itemsPerPage,
             selected: {
                 selectall: false
@@ -136,6 +137,10 @@
             }
         });
 
+        $scope.$watch('{{ c.identifier }}.pageLength', function() {
+            console.log('pageLength',$scope.{{ c.identifier }}.pageLength);
+            {{ c.identifier }}Store.setPageLength($scope.{{ c.identifier }}.pageLength,'default');
+        });
         $scope.$watch('{{ c.identifier }}.currentPage', function() {
             {{ c.identifier }}Store.setPage($scope.{{ c.identifier }}.currentPage,'default');
         });
