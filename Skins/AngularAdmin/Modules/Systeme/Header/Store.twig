@@ -5,7 +5,7 @@
             currentPage = { 'default': 1 , select: 1, children: 1, form: 1},
             pageLoaded = { 'default': 0 , select: 0, children: 0, form: 0},
             total = { 'default': 0 , select: 0, children: 0, form: 0},
-            pageLength = 15,
+            pageLength = 25,
             filters = { 'default': '' , select: '', children: '', form: ''},
             timer = { 'default': 0 , select: 0, children: 0, form: 0},
             query = { 'default': '/{{ st.module }}/{{ st.objecttype }}', select: '/{{ st.module }}/{{ st.objecttype }}', children: '/{{ st.module }}/{{ st.objecttype }}', form: '/{{ st.module }}/{{ st.objecttype }}'},
@@ -68,8 +68,11 @@
             if (!query[context]) initContext(context);
             return query[context];
         }
-        function setPageLength(pl) {
+        function setPageLength(pl,context = 'default') {
+            console.log(context+' >> {{ st.identifier }} >> pageLength > '+pl);
             pageLength = pl;
+            pageLoaded[context]--;
+            setPage(1,context);
         }
         function getPageLength() {
             return pageLength;

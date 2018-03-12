@@ -8,7 +8,7 @@
     </ul>
 </div>
 <div class="form-group row">
-    <div class="col-lg-6 col-md-12">
+    <div class="col-lg-5 col-md-12">
         <div class="input-group list-search">
             <input type="text" class="form-control" name="{{ identifier }}query" ng-model="{{ identifier }}.filter" placeholder="Recherche..." >
             <span class="input-group-btn">
@@ -33,34 +33,48 @@
             </span>
         </div>
     </div>
-    <div class="col-lg-6 col-md-12">
+    <div class="col-lg-1 col-md-12">
+        <select class="form-control" ng-model="{{ identifier }}.pageLength" >
+            <option ng-selected="{{ identifier }}.pageLength == 15" value="15">15</option>
+            <option ng-selected="{{ identifier }}.pageLength == 25" value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </select>
+    </div>
+
+    <div class="col-lg-2 col-md-12">
+    </div>
+    <div class="col-lg-4 col-md-12">
         <dir-pagination-controls boundary-links="true" pagination-context="{{ context }}" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
     </div>
 </div>
 <!--<pre ng-bind="{{ identifier }}selected | json"></pre>
 <pre ng-bind="{{ identifier }}selectedAll | json"></pre>-->
-<table class="table table-hover nowrap margin-bottom-0 straight" id="{{ identifier }}" width="100%">
+<table class="table table-hover nowrap straight" id="{{ identifier }}" width="100%">
     <thead>
         <tr>
-            <th width="120" title="Id">
+            <th width="30" title="Ch" class="list-col-th-dark">
                 <input type="checkbox" ng-model="{{ identifier }}.selected.selectall"/>&nbsp;
-                ID
             </th>
+            <th title="Id" class="list-col-th-id">ID</th>
             {% for field in fields %}
                 <th title="{{ field.name }}">{{ field.listDescr }}</th>
             {% endfor %}
             {% for interface in Interfaces %}
                 <th>{{ interface.name }}</th>
             {% endfor %}
-            <th width="50">Détails</th>
-            <th width="50">Actions</th>
+            <th width="220">Détails</th>
+            <th width="170">Actions</th>
         </tr>
     </thead>
     <tbody>
     <tr dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination">
-        <td>
+        <td  class="list-col-td-dark">
             <input type="checkbox" value="{[{ item.id }]}" ng-model="{{ identifier }}.selected[item.id]" name="{{ identifier }}" id="{[{ item.id }]}" />&nbsp;
-            <span class="label label-warning">{[{ item.id }]}</span>
+        </td>
+        <td class="list-col-td-id">
+            <!--<span class="label label-warning">{[{ item.id }]}</span>-->
+            {[{ item.id }]}
         </td>
         {% for field in fields %}
         <td scope="row" class="type{{ field.type }}">
@@ -97,7 +111,11 @@
             {% elseif field.Values | length > 0 %}
                 <span ng-bind-html="item.{{ field.name }}Label "></span>
             {% else %}
-                <span ng-bind-html="item.{{ field.name }}"></span>
+                {% if  Type == "Tail" %}
+                    <span ng-bind-html="item.{{ field.name }}"></span>
+                {% else %}
+                    <a href="#/{{ CurrentUrl }}/{[{ item.id }]}" ng-bind-html="item.{{ field.name }}"></a>
+                {% endif %}
             {% endif %}
         </td>
         {% endfor %}
@@ -112,8 +130,8 @@
             </td>
             {% endif %}
         {% endfor %}
-        <td width="200" class="table-details" ng-bind-html="item._details">{[{ item._details }]}</td>
-        <td width="170" style="width:170px;">
+        <td  class="table-details" ng-bind-html="item._details">{[{ item._details }]}</td>
+        <td  class="table-action">
             {% if Type == "Tail" %}
                 <span class="input-group-btn">
                     {% if operation.edit %}<a  class="btn btn-warning" href="javascript: void(0);" ng-click="{{ identifier }}modify(item)">Modifier</a>{% endif %}
@@ -128,7 +146,7 @@
             <!-- Split button -->
             <div class="btn-group" uib-dropdown>
                 <a id="split-button" type="button" class="btn btn-danger  btn-sm" href="#/{{ CurrentUrl }}/{[{ item.id }]}">Détails</a>
-                <button type="button" class="btn btn-danger  btn-sm" uib-dropdown-toggle>
+                <button type="button" class="btn btn-danger btn-sm " uib-dropdown-toggle>
                     <span class="caret"></span>
                     <span class="sr-only">Split button!</span>
                 </button>
@@ -146,7 +164,7 @@
     </tr>
     </tbody>
 </table>
-
+<!--
 <div class="invert-wrap">
     <table class="table table-hover nowrap margin-bottom-0 inverted" id="{{ identifier }}" width="100%">
     {#<colgroup>
@@ -172,7 +190,6 @@
                         {% endfor %}
                         </span>
                     {% else %}
-                        <!-- Split button -->
                         <div class="btn-group" uib-dropdown>
                             <a id="split-button" type="button" class="btn btn-danger  btn-sm" href="#/{{ CurrentUrl }}/{[{ item.id }]}">détails</a>
                             <button type="button" class="btn btn-danger  btn-sm" uib-dropdown-toggle>
@@ -245,7 +262,14 @@
 
     </script>
 </div>
-<dir-pagination-controls boundary-links="true" pagination-context="{{ context }}" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+-->
+<div class="form-group row">
+    <div class="col-lg-6 col-md-12">
+    </div>
+    <div class="col-lg-6 col-md-12">
+        <dir-pagination-controls boundary-links="true" pagination-context="{{ context }}" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+    </div>
+</div>
 
 <div class="modal fade modal-size-large" id="modal-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog" role="document">
