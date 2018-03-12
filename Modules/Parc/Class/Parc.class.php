@@ -338,4 +338,73 @@ class Parc extends Module{
         preg_match('#inet ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)#',$output,$out);
         return $out[1];
     }
+    /**
+     * Incoming Connexion
+     *
+     */
+    static public function incoming () {
+        $rc = genericClass::createInstance('Parc','ReverseConnexion');
+        $rc->Nom ='Connexion entrante depuis '.$_SERVER['SERVER_ADDR'];
+        $rc->Save();
+        echo "port=".$rc->PortEcoute."\ncode=".$rc->CodeConnexion."\n".ReverseConnexion::getFilePath();
+    }
+
+    /**
+     * est ce qu'il y un technicien en ecoute
+     * @param code de connexion GET
+     */
+    static public function listening () {
+        $code=isset($_GET['code'])?$_GET['code']:false;
+        $text=isset($_GET['text'])?$_GET['text']:'';
+        if (!$code) return "0";
+        //recherche de la connexion
+        $rc = Sys::getOneData('Parc','ReverseConnexion/CodeConnexion='.$code);
+        if (!$rc) return "0";
+
+        //définition de l'état
+        //1 -> waiting
+        //2 -> connecting
+        //3 -> connecté
+        //4 -> deconnexion -> busy false
+        //5 -> erreur -> delete
+        //6 -> terminé -> delete
+        if (isset($_GET['state'])){
+            $state = $_GET['state'];
+            switch ($state){
+                case 0:
+                    $rc->Status = 'Initialisation '.$text;
+                    $rc->Save();
+                    break;
+                case 1:
+                    $rc->Status = 'En attente de connexion '.$text;
+                    $rc->Save();
+                    break;
+                case 2:
+                    $rc->Status = 'En cours de connexion '.$text;
+                    $rc->Save();
+                    break;
+                case 3:
+                    $rc->Status = 'Connecté '.$text;
+                    $rc->Save();
+                    break;
+                case 4:
+                    $rc->Status = 'Déconnecté '.$text;
+                    $rc->Busy = false;
+                    $rc->Save();
+                    break;
+                case 5:
+                    $rc->Status = 'Erreur '.$text;
+                    $rc->Busy = false;
+                    $rc->Save();
+                    break;
+                case 6:
+                    $rc->Status = 'Terminé '.$text;
+                    $rc->Delete();
+                    return "0";
+                    break;
+            }
+        }
+        if ($rc->Busy) return "1";
+        else return "2";
+    }
 }

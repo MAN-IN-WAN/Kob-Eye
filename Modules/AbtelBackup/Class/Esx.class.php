@@ -352,34 +352,76 @@ class Esx extends genericClass {
             }
             $act->Terminate(false);
             AbtelBackup::localExec('sudo cp /etc/fstab.bck /etc/fstab');
-            return;
+            return false;
         }
         //echo "Reset fichier fstab\r\n";
         $act = $esx->createActivity("Reset fichier fstab",'Info');
         //on remet le fichier fstab
-        $act->addDetails(AbtelBackup::localExec('sudo cp /etc/fstab.bck /etc/fstab'));
+        try {
+            $out = AbtelBackup::localExec('sudo cp /etc/fstab.bck /etc/fstab');
+            $act->addDetails('Reinitialisation du fichier fstab OK: '.$out);
+            $act->Terminate(true);
+        }catch (Exception $e){
+            $act->addDetails('Erreur lors du renommage du fichiet /etc/fstab: '.$e->getMessage().' - '.$out);
+            $act->Terminate(false);
+            return false;
+        }
         //echo "Copie de la clef privée\r\n";
         $act = $esx->createActivity("Copie de la clef privée",'Info');
         //on copie la clef privée
-        $act->addDetails(AbtelBackup::localExec('scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q -i /var/www/html/.ssh/id_'.$esxsrc->IP.' /var/www/html/.ssh/id_'.$esx->IP.' root@'.$esxsrc->IP.':/tmp/id_'.$esx->IP));
+        try {
+            $out = AbtelBackup::localExec('scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q -i /var/www/html/.ssh/id_' . $esxsrc->IP . ' /var/www/html/.ssh/id_' . $esx->IP . ' root@' . $esxsrc->IP . ':/tmp/id_' . $esx->IP);
+            $act->addDetails('Copie du fichier de  clef privé OK');
+            $act->Terminate(true);
+        } catch (Exception $e) {
+            $act->addDetails('Copie du fichier de  clef privé error '.$e->getMessage().' - '.$out);
+            $act->Terminate(false);
+            return false;
+        }
         //echo "Création du dossier BORG\r\n";
         $act = $esx->createActivity("Création du dossier BORG",'Info');
         //on copie le dossier vm vers le nouvel esx
-        $act->addDetails($esx->remoteExec('if [ ! -d /vmfs/volumes/NL-SAS/BORG ]; then mkdir /vmfs/volumes/NL-SAS/BORG; fi'));
+        try {
+            $out = $esx->remoteExec('if [ ! -d /vmfs/volumes/NL-SAS/BORG ]; then mkdir /vmfs/volumes/NL-SAS/BORG; fi');
+            $act->addDetails('Copie du fichier de  clef privé success '.$out);
+            $act->Terminate(true);
+        }catch (Exception $e) {
+            $act->addDetails('Copie du fichier de  clef privé error '.$e->getMessage().' - '.$out);
+            $act->Terminate(false);
+            return false;
+        }
         //echo "Copie du fichier BORG.vmx\r\n";
         $act = $esx->createActivity("Copie du fichier BORG.vmx",'Info');
-        //echo 'scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q -i /tmp/id_'.$esx->IP.' /vmfs/volumes/datastore1/BORG/BORG.vmx root@'.$esx->IP.':/vmfs/volumes/NL-SAS/BORG/'."\r\n";
-        $act->addDetails($esxsrc->remoteExec('scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q -i /tmp/id_'.$esx->IP.' /vmfs/volumes/datastore1/BORG/BORG.vmx root@'.$esx->IP.':/vmfs/volumes/NL-SAS/BORG/'));
+        //echo 'scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q -i /tmp/id_'.$esx->IP.' /vmfs/volumes/NL-SAS/BORG/BORG.vmx root@'.$esx->IP.':/vmfs/volumes/NL-SAS/BORG/'."\r\n";
+        try {
+            $cmd = 'scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q -i /tmp/id_'.$esx->IP.' /vmfs/volumes/NL-SAS/BORG/BORG.vmx root@'.$esx->IP.':/vmfs/volumes/NL-SAS/BORG/';
+            $out = $esxsrc->remoteExec($cmd);
+            $act->addDetails('Copie du fichier BORG.vmx success');
+            $act->Terminate(true);
+        }catch (Exception $e) {
+            $act->addDetails('Copie du fichier BORG.vmx error '.$e->getMessage().' - '.$cmd);
+            $act->Terminate(false);
+            return false;
+        }
         //echo "Copie du fichier BORG-thin.vmdk\r\n";
         $act = $esx->createActivity("Copie du fichier BORG.vmdk",'Info');
-        $act->addDetails($esxsrc->remoteExec('scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q -i /tmp/id_'.$esx->IP.' /vmfs/volumes/datastore1/BORG/BORG-thin.vmdk root@'.$esx->IP.':/vmfs/volumes/NL-SAS/BORG/'));
+        try {
+            $out = $esxsrc->remoteExec('scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q -i /tmp/id_'.$esx->IP.' /vmfs/volumes/NL-SAS/BORG/BORG-thin.vmdk root@'.$esx->IP.':/vmfs/volumes/NL-SAS/BORG/');
+            $act->addDetails('Copie du fichier BORG-thin.vmdk success');
+            $act->Terminate(true);
+        }catch (Exception $e) {
+            $act->addDetails('Copie du fichier BORG-thin.vmdk error '.$e->getMessage().' - '.$out);
+            $act->Terminate(false);
+            return false;
+        }
         //echo "Copie du fichier BORG-thin-flat.vmdk\r\n";
         $act = $esx->createActivity("Copie du fichier BORG-thin-flat.vmdk",'Info');
-        $act->addDetails('scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q -i /tmp/id_'.$esx->IP.' /vmfs/volumes/datastore1/BORG/BORG-thin-flat.vmdk root@'.$esx->IP.':/vmfs/volumes/NL-SAS/BORG/');
+        $act->addDetails('scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q -i /tmp/id_'.$esx->IP.' /vmfs/volumes/NL-SAS/BORG/BORG-thin-flat.vmdk root@'.$esx->IP.':/vmfs/volumes/NL-SAS/BORG/');
         try {
-            $act->addDetails($esxsrc->remoteExec('scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q -i /tmp/id_' . $esx->IP . ' /vmfs/volumes/datastore1/BORG/BORG-thin-flat.vmdk root@' . $esx->IP . ':/vmfs/volumes/NL-SAS/BORG/'));
+            $out = $esxsrc->remoteExec('scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q -i /tmp/id_' . $esx->IP . ' /vmfs/volumes/NL-SAS/BORG/BORG-thin-flat.vmdk root@' . $esx->IP . ':/vmfs/volumes/NL-SAS/BORG/');
+            $act->addDetails('Copie du fichier vmdk ok');
         }catch (Eception $e){
-            $act->addDetails('Erreur lors de la copie du fichier: '.$e->getMEssage());
+            $act->addDetails('Erreur lors de la copie du fichier: '.$e->getMessage().' - '.$out);
             //echo "suppression des snapshots\r\n";
             $act = $esx->createActivity("Suppression des snapshots",'Info');
             //on supprime les snapshots
@@ -392,7 +434,7 @@ class Esx extends genericClass {
         $act = $esx->createActivity("Modification du fichier BORG.vmx",'Info');
         $vmx = $esx->remoteExec('cat /vmfs/volumes/NL-SAS/BORG/BORG.vmx');
         $act->addDetails($vmx);
-        $vmx = str_replace('scsi0:0.fileName = "BORG-thin-000001.vmdk','scsi0:0.fileName = "BORG-thin.vmdk',$vmx);
+        $vmx = str_replace('scsi0:0.fileName = "BORG-thin-000001.vmdk"','scsi0:0.fileName = "BORG-thin.vmdk',$vmx);
         //on découpe le fichier par ligne
         $lines = preg_split('/\r?\n/', $vmx);
         $vmx = implode("\r\n",preg_grep("/scsi0:1/", $lines, PREG_GREP_INVERT));

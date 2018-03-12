@@ -1,6 +1,7 @@
 <?php
 $info = Info::getInfos($vars['Path']);
-$parent = genericClass::createInstance($info['Module'],$vars['ParentObject']);
+$infoParent = Info::getInfos($vars['Query']);
+$parent = genericClass::createInstance($info['Module'],$infoParent['ObjectType']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $f = $parent->getElement($vars['FieldKey']);
 

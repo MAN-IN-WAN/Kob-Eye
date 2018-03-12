@@ -205,7 +205,11 @@ class Event extends genericClass {
             if($ret) {
                 $out = array();
                 foreach ($res['Ev'] as $k=>$ev){
-                    $obj = unserialize($res['Ev'][$k]['Data']);
+                    try {
+                        $obj = unserialize($res['Ev'][$k]['Data']);
+                    }catch (Exception $e){
+                        continue;
+                    }
                     if($obj){
                         $o = $obj->getWebServiceData();
                         $res['Ev'][$k]['Data'] = json_encode($o);

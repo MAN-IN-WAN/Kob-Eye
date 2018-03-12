@@ -236,10 +236,9 @@ progress.progress.progress-danger:after{
 .widgetTop{
     height: 350px;
 }
-table tr td.text span.ng-binding,table tr td.raw span.ng-binding{
-    display:block;
-    word-wrap: break-word;
-    max-width:500px;
+table tr td.typetext span.ng-binding,
+table tr td.typeraw span.ng-binding{
+    word-break: break-word;
 }
 
 

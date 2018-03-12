@@ -1,6 +1,6 @@
 <?php
 
-class Instance extends genericClass{
+class MiniSite extends genericClass{
 
 public function Save(){
     parent::Save();

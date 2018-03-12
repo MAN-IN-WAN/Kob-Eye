@@ -66,7 +66,19 @@ class AbtelBackup extends Module{
             $s->Type = 'Local';
             $s->Save();
         }
-
+        //BANDWITH
+        $t = Sys::getCount('Systeme','ScheduledTask/TaskModule=AbtelBackup&TaskObject=AbtelBackup&TaskFunction=getBandWidthCron');
+        if (!$t) {
+            //creation du groupe public
+            $t = genericClass::createInstance('Systeme', 'ScheduledTask');
+            $t->Titre = 'Moniteur BandWidth';
+            $t->Enabled = 1;
+            $t->TaskModule = 'AbtelBackup';
+            $t->TaskObject = 'AbtelBackup';
+            $t->TaskFunction = 'getBandWidthCron';
+            $t->Save();
+        }
+        //REMOTE JOB
         $t = Sys::getCount('Systeme','ScheduledTask/TaskModule=AbtelBackup&TaskObject=RemoteJob&TaskFunction=execute');
         if (!$t) {
             //creation du groupe public
@@ -78,6 +90,7 @@ class AbtelBackup extends Module{
             $t->TaskFunction = 'execute';
             $t->Save();
         }
+
         $t = Sys::getCount('Systeme','ScheduledTask/TaskModule=AbtelBackup&TaskObject=SambaJob&TaskFunction=execute');
         if (!$t) {
             //creation du groupe public

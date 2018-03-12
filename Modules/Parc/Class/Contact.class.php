@@ -102,6 +102,29 @@ class Parc_Contact extends genericClass {
      * @return	Verification OK ou NON
      */
     public function Verify( $synchro = true ) {
+        if(!$this->NomLDAP || empty($this->NomLDAP) || $this->NomLDAP == ''){
+            $chaine = $this->Email;
+            $chaine = str_replace("°", "-", $chaine);
+            $chaine = utf8_decode($chaine);
+            $chaine = stripslashes($chaine);
+            $chaine = preg_replace('`\s+`', '-', trim($chaine));
+            $chaine = str_replace("'", "-", $chaine);
+            $chaine = str_replace("&", "et", $chaine);
+            $chaine = str_replace('"', "-", $chaine);
+            $chaine = str_replace("?", "", $chaine);
+            $chaine = str_replace("+", "-", $chaine);
+            $chaine = str_replace("=", "-", $chaine);
+            $chaine = str_replace("!", "", $chaine);
+            $chaine = str_replace(".", "", $chaine);
+            $chaine = str_replace("%", "", $chaine);
+            $chaine = str_replace("²", "", $chaine);
+            $chaine = preg_replace('`[\,\ \(\)\+\'\/\:]`', '-', trim($chaine));
+            $chaine = strtr($chaine,utf8_decode("ÀÁÂÃÄÅàáâãäå@ÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ?>#<+;,²³°"),"aaaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynn-------23o");
+            $chaine = preg_replace('`[-]+`', '-', trim($chaine));
+            $chaine = utf8_encode($chaine);
+            $this->NomLDAP = $chaine;
+        }
+
         if(parent::Verify()) {
             $this->_isVerified = true;
             //si acces web alors il faut vérifier identifiant / moty de passe et email
@@ -124,27 +147,7 @@ class Parc_Contact extends genericClass {
 
 
 
-            if($synchro && !empty($this->AccesUser)) {
-                $chaine = $this->AccesUser;
-                $chaine = str_replace("°", "-", $chaine);
-                $chaine=utf8_decode($chaine);
-                $chaine=stripslashes($chaine);
-                $chaine = preg_replace('`\s+`', '-', trim($chaine));
-                $chaine = str_replace("'", "-", $chaine);
-                $chaine = str_replace("&", "et", $chaine);
-                $chaine = str_replace('"', "-", $chaine);
-                $chaine = str_replace("?", "", $chaine);
-                $chaine = str_replace("+", "-", $chaine);
-                $chaine = str_replace("=", "-", $chaine);
-                $chaine = str_replace("!", "", $chaine);
-                $chaine = str_replace(".", "", $chaine);
-                $chaine = str_replace("%", "", $chaine);
-                $chaine = str_replace("²", "", $chaine);
-                $chaine = preg_replace('`[\,\ \(\)\+\'\/\:]`', '-', trim($chaine));
-                $chaine=strtr($chaine,utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ?>#<+;,²³°"),"aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynn-------23o");
-                $chaine = preg_replace('`[-]+`', '-', trim($chaine));
-                $chaine =  utf8_encode($chaine);
-                $this->NomLDAP = $chaine;
+            if($synchro) {
 
                 // Outils
                 $dn = 'cn='.$this->NomLDAP.',ou=clients,'.PARC_LDAP_BASE;
@@ -285,6 +288,15 @@ class Parc_Contact extends genericClass {
                 //creation des droits
 //                $query = "INSERT IGNORE INTO `guacamole_system_permission` (user_id,permission) VALUES ('" . $usr[0]['user_id'] . "','ADMINISTER')";
 //                $q = $dbGuac->query($query);
+
+                //Maj de ses connexions
+                $query = "";
+                $cons = $this->getChildren('DeviceConnexion');
+                foreach ($cons as $con) {
+                    $query .= "INSERT IGNORE INTO `guacamole_connection_permission` (user_id,connection_id,permission) VALUES ('" . $usr[0]['user_id'] . "','" . $con->GuacamoleId . "','READ');";
+                }
+                if (!empty($query))
+                    $dbGuac->query($query);
             } else if (isset($this->AccesUser) && $this->AccesUser != '' && $this->AccesUser != null && (!isset($this->AccesPass) || $this->AccesPass == '' || $this->AccesPass == null)) {
                 //$this->addError(array('Message' => 'La valeur du champ AccesPass est nulle ou non définie alors que le champ AccesUser est défini.', "Prop" => 'AccesPass'));
             }
