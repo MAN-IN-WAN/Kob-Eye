@@ -536,3 +536,22 @@ Page Edit DIVI Staïle
     right: 15px;
 }
 
+/********
+ * PANEL FILTER
+ **/
+.panel-filter{
+    background-color: #efefef;
+    max-height: 0;
+    transition: all 1s cubic-bezier(0.23, 1, 0.32, 1);
+    overflow: hidden;
+    padding: -50px 75px 50px 75px;
+    box-shadow: 3px 3px 3px 3px rgba(128, 128, 128, 0.15) inset;
+}
+.panel-filter-closed{
+    max-height: 500px;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    padding: 15px 75px;
+}
+.panel-filter .form-group {
+    margin-bottom:2px;
+}

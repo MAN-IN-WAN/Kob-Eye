@@ -13,6 +13,7 @@ $vars['Module'] = $info['Module'];
 $vars['functions'] = $o->getFunctions();
 $vars['operation'] = $vars['ObjectClass']->getOperations();
 $vars['fields'] = $o->getElementsByAttribute('list','',true);
+$vars['searchfields'] = $o->getElementsByAttribute('searchOrder|search','',true);
 $vars['ObjectType'] = $info['ObjectType'];
 foreach ($vars['fields'] as $k=>$f){
     if ($f['type']=='fkey'&&$f['card']=='short'){

@@ -5,11 +5,18 @@
             currentPage = { 'default': 1 , select: 1, children: 1, form: 1},
             pageLoaded = { 'default': 0 , select: 0, children: 0, form: 0},
             total = { 'default': 0 , select: 0, children: 0, form: 0},
-            pageLength = 25,
-            filters = { 'default': '' , select: '', children: '', form: ''},
+            pageLength = 15,
+
             timer = { 'default': 0 , select: 0, children: 0, form: 0},
             query = { 'default': '/{{ st.module }}/{{ st.objecttype }}', select: '/{{ st.module }}/{{ st.objecttype }}', children: '/{{ st.module }}/{{ st.objecttype }}', form: '/{{ st.module }}/{{ st.objecttype }}'},
-            busy = { 'default': 0 , select: 0, children: 0, form: 0};
+            busy = { 'default': 0 , select: 0, children: 0, form: 0},
+            filters = { };
+
+        //init filters
+        initContext('default');
+        initContext('select');
+        initContext('children');
+        initContext('form');
 
         return {
             getOneData: getOneData,
@@ -23,7 +30,12 @@
             export: exportData,
             setPage: setPage,
             setFilters: setFilters,
+            setOptionFilter: setOptionFilter,
+            setOptionsFilters: setOptionsFilters,
+            setGlobalFilter: setGlobalFilter,
+            getQueryFilter: getQueryFilter,
             getFilters: getFilters,
+            resetFilters: resetFilters,
             getPageLength: getPageLength,
             setPageLength: setPageLength,
             getCurrentPage: getCurrentPage,
@@ -45,7 +57,7 @@
             {{ st.identifier }}Store[context] = [];
             total[context] = 0;
             timer[context] = 0;
-            filters[context] = '';
+            resetFilters(context);
             currentPage[context] = '';
             resetQuery(context);
             contexts.push(context);
@@ -62,7 +74,7 @@
             if (!query[context]) initContext(context);
             pageLoaded[context] = 0;
             query[context] = q;
-            filters[context] = '';
+            resetFilters(context);
         }
         function getQuery(context = 'default'){
             if (!query[context]) initContext(context);
@@ -107,27 +119,120 @@
                 getData(currentPage[context], context);
             }
         }
+
+        /**
+        * Mise à jour de toutes les option de filtre (xxx = yyyy & xxx= yyyy)
+        **/
+        function setOptionsFilters(filter,context='default'){
+            if (filters[context]==undefined) initContext(context);
+            filters[context].options = [];
+            var opt = filter.split(/&/);
+            if (opt.length>0&&opt[0] !=''){
+                for (var i in opt) {
+                    setOptionFilter(opt[i],context)
+                }
+            }else{
+                filters[context].options = [];
+            }
+            pageLoaded[context]=0;
+            return true;
+        }
+        /**
+        * Reset du filtre
+        **/
+        function resetFilters(context='default'){
+            filters[context] = {
+                global: '',
+                options: []
+            };
+            pageLoaded[context]=0;
+        }
+        /**
+        * Mise à jour ou ajout d'une option de filtre (xxx = yyyy)
+        **/
+        function setOptionFilter(filter,context='default'){
+            if (filters[context]==undefined) initContext(context);
+            var opt = filter.match(/^(.*?)([=><!]{1,2}?)(.*?)$/);
+            for (var i in filters[context].options) {
+                if (filters[context].options[i].name == opt[1]){
+                    filters[context].options[i] = {
+                        name: opt[1],
+                        operator: opt[2],
+                        value: opt[3]
+                    };
+                    return true;
+                }
+            }
+            filters[context].options.push({
+                name: opt[1],
+                operator: opt[2],
+                value: opt[3]
+            });
+            pageLoaded[context]=0;
+            return true;
+        }
+        /**
+        * Définition du filtre global ( ~xxx )
+        **/
+        function setGlobalFilter(filter,context='default'){
+            if (filters[context]==undefined) initContext(context);
+            if (filter==filters[context].global) return;
+            filters[context].global = filter;
+            pageLoaded[context] = 0;
+        }
         /**
         * Définition du filtre
         **/
-        function setFilters(filter,context='default',blur = false,noreload = false){
+        function setFilters(filter,context='default'){
             if (filters[context]==undefined) initContext(context);
             if (filter==filters[context]) return;
+            var tmp = {
+                global: '',
+                options:[]
+            }
             //test des égalités
-            if (!filter.match(/[=><!]{1,2}/g)) filter = '~'+filter;
-            console.log(context+' > {{ st.identifier }} > setFilters '+filter);
-            filters[context] = filter;
+            if (!filter.match(/[=><!]{1,2}/g)){
+                //cas global
+                tmp.global = filter;
+            }else{
+                var fi = filter.split('&');
+                for (var i in fi){
+                    if (!fi[i].match(/[=><!]{1,2}/g)){
+                        //cas global
+                        tmp.global = filter;
+                    }else{
+                        //cas option
+                        var opt = fi[i].match(/^(.*?)([=><!]{1,2}?)(.*?)$/);
+                        tmp.options.push({
+                            name: opt[1],
+                            operator: opt[2],
+                            value: opt[3],
+                        });
+                    }
+                }
+            }
+            filters[context] = tmp;
+            console.log(context+' > {{ st.identifier }} > setFilters ',tmp);
             pageLoaded[context]=0;
+        }
+        /**
+        * Creation de la chaine de recherche
+        */
+        function getQueryFilter(context = 'default') {
+            if (!filters[context]) return '';
+            var query = '~'+filters[context].global;
+            for (var i in filters[context].options) {
+                query+='&'+filters[context].options[i].name+filters[context].options[i].operator+filters[context].options[i].value;
+            }
+            console.log(context+' > {{ st.identifier }} > getQueryFilter ',query);
+            return query;
         }
         /**
         * Récupération du filtre en cours
         **/
-        function getFilters(context = 'default',raw = false){
+        function getFilters(context = 'default'){
             if (filters[context] == undefined) initContext(context);
             var out  = filters[context];
-            if (raw&&out.charAt(0)==='~'){
-                out = out.substr(1);
-            }
             return out;
         }
         /**
@@ -405,14 +510,15 @@
         */
         function getData(page,context='default') {
             var tmpquery = getQuery(context);
-            var tmpfilters = getFilters(context);
+            var tmpfilters = getQueryFilter(context);
             //create new context
             if (page<1||page==undefined) page=1;
             //si occupé
             if (busy[context]) {
                 //si meme requete et meme filtre
-                if (busy[context].query == tmpquery && busy[context].filter){
+                if (busy[context].query == tmpquery && busy[context].filter == tmpfilters && page == busy[context].page){
                     //on renvoie le promise
+                    console.log('STOP LIST BUSY ',busy[context].query, '==' ,tmpquery, '&&', busy[context].filter, '==' ,tmpfilters, '&&' ,page, '==' ,busy[context].page);
                     return busy[context].promise;
                 }else{
                     //on annule la requete
@@ -422,13 +528,14 @@
             }
             return $q(function(resolve, reject) {
                 //console.trace();
-                console.log(context+' >> store > {{ key }} > getData >> page '+page+' ');
+                console.log(context+' >> store > {{ key }} > getData >> page '+page+' / '+pageLoaded[context]);
                 if (page!=pageLoaded[context]){
                     var canceler = $q.defer();
                     busy[context]={
                         promise: $q,
                         query: tmpquery,
-                        filter: tmpfilters
+                        filter: tmpfilters,
+                        page: page
                     };
                     $http.get(
                         tmpquery+'/getData.json',
