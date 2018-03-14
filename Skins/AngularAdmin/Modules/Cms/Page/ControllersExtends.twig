@@ -1,10 +1,16 @@
 app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile, $sce, $scope, $rootScope, $routeParams,$http,{{ identifier }}Store) {
+
+    console.log({{ identifier }}Store);
     if($scope.obj){
         var parser = new DOMParser();
 
         $scope.tempHtml = parser.parseFromString($scope.obj.HtmlConfig,"text/html");
         $scope.tempConfig = parser.parseFromString($scope.obj.TemplateConfig,"text/xml");
+        $scope.compoList = {{ Components | raw }};
+        //console.log($scope.compoList);
+        $scope.component = {};
         $scope.ui = '';
+        $scope.modalObj = {fieldErrors: []};
 
         //Init du compte des zones
         $scope.maxZone = 0;
@@ -23,7 +29,7 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
         var rows = $scope.tempHtml.querySelectorAll('[data-row]');
         for(var n in rows){
             if(rows[n] instanceof HTMLDivElement && $scope.maxRow < rows[n].getAttribute('data-row'))
-            $scope.maxRow = rows[n].getAttribute('data-row')
+                $scope.maxRow = rows[n].getAttribute('data-row')
         }
 
 
@@ -32,16 +38,15 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
         },function(){
             $scope.updateInterface();
         });
+
     }
-
-
 
     /////Gestion des lignes
     $scope.createRow = function(parent,order){
         $scope.maxRow++;
         $scope.maxZone++;
         var newDiv = '<div data-row="'+ $scope.maxRow +'" data-order="'+order+'" class="row cms-row"> \
-                            <div data-col="'+$scope.maxZone+'" data-order="1" class="cms-col" data-zone="ZONE_'+$scope.maxZone+'">[ZONE_'+$scope.maxZone+']</div> \
+                            <div data-col="'+$scope.maxZone+'" data-order="1" class="cms-col" data-width="100" data-zone="ZONE_'+$scope.maxZone+'" style="width:100%;">[ZONE_'+$scope.maxZone+']</div> \
                       </div>';
         //transformation string en node html
         var div = document.createElement('div');
@@ -63,7 +68,6 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
         $scope.reorder();
         $scope.obj.HtmlConfig = $scope.tempHtml.querySelectorAll('body')[0].innerHTML;
 
-        $scope.maxZone++;
         var parser = new DOMParser();
         var newZone = parser.parseFromString('<TEMP><ZONE tag="ZONE_'+$scope.maxZone+'"> </ZONE></TEMP>',"text/xml");
         newZone =  newZone.getElementsByTagName('ZONE')[0];
@@ -71,7 +75,7 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
         var parent = $scope.tempConfig.getElementsByTagName('ZONES')[0];
         parent.insertBefore(newZone,null);
         $scope.obj.TemplateConfig = $scope.tempConfig.documentElement.outerHTML;
-    }
+    };
     $scope.moveRow = function(rowId,order,dvId){
         var row = $scope.tempHtml.querySelectorAll('[data-row="'+rowId+'"]')[0];
         var current = $scope.tempHtml.querySelectorAll('[data-order="'+order+'"]');
@@ -87,36 +91,36 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
         }
         $scope.reorder();
         $scope.obj.HtmlConfig = $scope.tempHtml.querySelectorAll('body')[0].innerHTML;
-    }
+    };
     $scope.delRow = function(rowId){
         swal({
-            title: "Êtes vous sûr de vouloir supprimer cette section ?",
-            text: "Cette suppression sera définitive, et elle entraînera la suppression de tout les composants affectés à cette section. ",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonClass: "btn-danger",
-            cancelButtonText: "Annuler",
-            confirmButtonText: "Oui, supprimer !",
-            closeOnConfirm: true
-        },
-        function(){
-            var row = $scope.tempHtml.querySelectorAll('[data-row="'+rowId+'"]')[0];
-            var cols = row.querySelectorAll('[data-col]');
+                title: "Êtes vous sûr de vouloir supprimer cette section ?",
+                text: "Cette suppression sera définitive, et elle entraînera la suppression de tout les composants affectés à cette section. ",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                cancelButtonText: "Annuler",
+                confirmButtonText: "Oui, supprimer !",
+                closeOnConfirm: true
+            },
+            function(){
+                var row = $scope.tempHtml.querySelectorAll('[data-row="'+rowId+'"]')[0];
+                var cols = row.querySelectorAll('[data-col]');
 
-            for(var n in cols){
-                if( !(cols[n] instanceof HTMLDivElement)) continue;
+                for(var n in cols){
+                    if( !(cols[n] instanceof HTMLDivElement)) continue;
 
-                var zone = cols[n].getAttribute('data-zone');
+                    var zone = cols[n].getAttribute('data-zone');
 
-                $scope.tempConfig.querySelectorAll('[tag='+zone+']')[0].remove();
-                $scope.obj.TemplateConfig = $scope.tempConfig.documentElement.outerHTML;
-            }
-            row.remove();
-            $scope.reorder();
-            $scope.obj.HtmlConfig = $scope.tempHtml.querySelectorAll('body')[0].innerHTML;
-            $scope.$apply();
-        });
-    }
+                    $scope.tempConfig.querySelectorAll('[tag='+zone+']')[0].remove();
+                    $scope.obj.TemplateConfig = $scope.tempConfig.documentElement.outerHTML;
+                }
+                row.remove();
+                $scope.reorder();
+                $scope.obj.HtmlConfig = $scope.tempHtml.querySelectorAll('body')[0].innerHTML;
+                $scope.$apply();
+            });
+    };
 
     /////Gestion des colonnes
     $scope.createCol = function(rowId,order){
@@ -148,7 +152,7 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
         var parent = $scope.tempConfig.getElementsByTagName('ZONES')[0];
         parent.insertBefore(newZone,null);
         $scope.obj.TemplateConfig = $scope.tempConfig.documentElement.outerHTML;
-    }
+    };
     $scope.moveCol = function(colId,order,rowId){
         var col = $scope.tempHtml.querySelectorAll('[data-col="'+colId+'"]')[0];
         var row = $scope.tempHtml.querySelectorAll('[data-row="'+rowId+'"]')[0];
@@ -159,49 +163,147 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
         }
         var current = $scope.tempHtml.querySelectorAll('[data-order="'+order+'"]');
         if(current.length){
-        parent.insertBefore(row,current[0]);
+            parent.insertBefore(row,current[0]);
         }else{
-        parent.insertBefore(row,null);
+            parent.insertBefore(row,null);
         }
         $scope.reorder();
         $scope.obj.HtmlConfig = $scope.tempHtml.querySelectorAll('body')[0].innerHTML;
-    }
+    };
     $scope.delCol = function(colId){
         swal({
-            title: "Êtes vous sûr de vouloir supprimer ce composant ?",
-            text: "Cette suppression sera définitive et elle entraînera la perte de la configuration qui lui était liée.",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonClass: "btn-danger",
-            cancelButtonText: "Annuler",
-            confirmButtonText: "Oui, supprimer !",
-            closeOnConfirm: true
-        },
-        function(){
-            var col = $scope.tempHtml.querySelectorAll('[data-col="'+colId+'"]')[0];
-            var row = col.parentNode;
+                title: "Êtes vous sûr de vouloir supprimer ce composant ?",
+                text: "Cette suppression sera définitive et elle entraînera la perte de la configuration qui lui était liée.",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                cancelButtonText: "Annuler",
+                confirmButtonText: "Oui, supprimer !",
+                closeOnConfirm: true
+            },
+            function(){
+                var col = $scope.tempHtml.querySelectorAll('[data-col="'+colId+'"]')[0];
+                var row = col.parentNode;
 
-            col.remove();
-            $scope.reorder(row.getAttribute('data-row'));
-            $scope.obj.HtmlConfig = $scope.tempHtml.querySelectorAll('body')[0].innerHTML;
+                col.remove();
+                $scope.reorder(row.getAttribute('data-row'));
+                $scope.obj.HtmlConfig = $scope.tempHtml.querySelectorAll('body')[0].innerHTML;
 
-            var zone = col.getAttribute('data-zone');
+                var zone = col.getAttribute('data-zone');
 
-            $scope.tempConfig.querySelectorAll('[tag='+zone+']')[0].remove();
-            $scope.obj.TemplateConfig = $scope.tempConfig.documentElement.outerHTML;
-            $scope.$apply();
-        });
+                $scope.tempConfig.querySelectorAll('[tag='+zone+']')[0].remove();
+                $scope.obj.TemplateConfig = $scope.tempConfig.documentElement.outerHTML;
+                $scope.$apply();
+            });
+    };
+
+    //Gestion de composants
+    $scope.getComponent = function(zoneId){
+        var zone = $scope.tempConfig.querySelectorAll('[tag="'+zoneId+'"]')[0];
+
+        if(!zone)
+            return false;
+
+        $scope.component = {zone:zone};
+
+        if(!(compo = zone.firstElementChild))
+            return false;
+
+        var title = compo.getAttribute('title');
+        var module = compo.getAttribute('module');
+
+        $scope.setComponent(module+title);
+
+        for(var n=0; n< $scope.component.Proprietes.length; n++){
+            var param = zone.querySelectorAll('[name="'+$scope.component.Proprietes[n].Nom+'"]')[0];
+            $scope.modalObj[$scope.component.Proprietes[n].Nom] = param.childNodes[0].nodeValue;
+        }
+
+        return true;
+    }
+    $scope.setComponent = function(identifier){
+        if(!identifier)
+            return false;
+
+
+        var component = $scope.compoList[identifier];
+        if(component){
+            $scope.component = angular.merge($scope.component,component);
+            $scope.component.chemin = $scope.component.Path.split('/')
+            $scope.component.chemin.pop();
+            $scope.component.chemin.push('Component.conf');
+            $scope.component.chemin = $scope.component.chemin.join('/');
+            $scope.compoUrl = '/Systeme/Utils/Component/configComponent.htm?Module='+$scope.component.Module+'&Component='+$scope.component.Title;
+            console.log($scope.component);
+        } else {
+            return false;
+        }
+
+        return true;
+    }
+    $scope.configComponent = function(zone){
+        $scope.getComponent(zone);
+
+        console.log($scope.component);
+        console.log('edit component', $scope.component);
+
+        $("#modalComponent").modal();
+    };
+    $scope.addComponent = function(identifier){
+        $scope.setComponent(identifier);
+
+        for(var n=0; n< $scope.component.Proprietes.length; n++){
+            $scope.modalObj[$scope.component.Proprietes[n].Nom] = null;
+        }
+
+        //modalobj = $scope.modalObj;
+        $scope.compoUrl = '/Systeme/Utils/Component/configComponent.htm?Module='+$scope.component.Module+'&Component='+$scope.component.Title;
+
+    };
+    $scope.delComponent = function(zone){
+
+    };
+    $scope.componentSave = function (){
+        console.log('save component',$scope.component,$scope.modalObj);
+        var zone = $scope.component.zone;
+        var zId = zone.getAttribute('tag');
+        var compo = $scope.component;
+
+
+        if(zone.getElementsByTagName('COMPONENT').length){
+            zone.getElementsByTagName('COMPONENT')[0].remove();
+        }
+
+        var compoString ='  <COMPONENT title="'+compo.Title+'" module="'+compo.Module+'"> \
+                            <TITLE>'+compo.Name+'</TITLE> \
+                            <CSS>'+compo.Css+'</CSS> \
+                            <SCREEN>'+compo.Screen+'</SCREEN> \
+                            <PARAMS>';
+        for(var n=0;n < compo.Proprietes.length;n++){
+            compoString +=   '<PARAM name="'+compo.Proprietes[n].Nom+'" type="'+compo.Proprietes[n].Type+'" description="'+compo.Proprietes[n].description+'"><![CDATA['+$scope.modalObj[compo.Proprietes[n].Nom]+']]></PARAM>';
+        }
+        compoString += '</PARAMS> \
+                        </COMPONENT>';
+        var parser = new DOMParser();
+        var newcompo = parser.parseFromString('<TEMP>'+compoString+'</TEMP>',"text/xml");
+        newcompo =  newcompo.getElementsByTagName('COMPONENT')[0];
+
+        var parent = $scope.tempConfig.querySelectorAll('[tag="'+zId+'"]')[0];
+        parent.insertBefore(newcompo,null);
+
+
+
+        $scope.obj.TemplateConfig = $scope.tempConfig.documentElement.outerHTML;
+
+        //affichage spinner
+        $('#modalComponent .modal-dialog').spin();
+
+        //todo
+        $('#modalComponent .modal-dialog').spin(false);
     }
 
-    $scope.addComponent = function(zone){
 
-    }
-    $scope.moveComponent = function(){
 
-    }
-    $scope.delComponent = function(){
-
-    }
 
     //Reorganisation des  rows/cols
     $scope.reorder = function(rowId){
@@ -216,16 +318,19 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
                 }
             }
         }else{
-            var rows = $scope.tempHtml.querySelectorAll('[data-row]');
-            var rowOrder = 1;
-            for(var n in rows){
-                if(rows[n] instanceof HTMLDivElement){
-                    rows[n].setAttribute('data-order',rowOrder);
-                    rowOrder++;
+            var dvContainers = $scope.tempHtml.querySelectorAll('[data-dv]');
+            for(var n=0; n < dvContainers.length; n++){
+                var rows = dvContainers[n].querySelectorAll('[data-row]');
+                var rowOrder = 1;
+                for(var n in rows){
+                    if(rows[n] instanceof HTMLDivElement){
+                        rows[n].setAttribute('data-order',rowOrder);
+                        rowOrder++;
+                    }
                 }
             }
         }
-    }
+    };
     //Recalcul de largeurs en gardant les ratios des premieres colonnes
     $scope.recalc = function(rowId){
         var row = $scope.tempHtml.querySelectorAll('[data-row="'+rowId+'"]')[0];
@@ -245,7 +350,7 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
         }
         newColWidth = 100 - used ;
         return newColWidth;
-    }
+    };
 
     //Generation de l'interface utilisateur
     $scope.updateInterface = function(){
@@ -293,39 +398,36 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
         }
 
         //Ajout de boutons pour supprimer des rows / ajouter des colonnes / Mise en place du dragndrop
-        for(n in rows){
-            if(!(rows[n] instanceof HTMLDivElement))
+        for(n in rows) {
+            if (!(rows[n] instanceof HTMLDivElement))
                 continue;
 
-            var newDiv = '<div class="addCol">  \
-                            <button type="button" class="btn btn btn-primary"  ng-click="createCol('+rows[n].getAttribute('data-row')+')">Ajouter un composant</button> \
+            var newDiv = '<div class="row button-container"> \
+                            <div class="addCol">  \
+                                <button type="button" class="btn btn btn-primary"  ng-click="createCol(' + rows[n].getAttribute('data-row') + ')">Ajouter un composant</button> \
+                            </div><div class="delRow">  \
+                                <button type="button" class="btn btn btn-danger"  ng-click="delRow(' + rows[n].getAttribute('data-row') + ')">Supprimer la section</button> \
+                            </div> \
                         </div>';
             //transformation string en node html
             var div = document.createElement('div');
             div.innerHTML = newDiv;
             newDiv = div.firstChild;
-            rows[n].insertBefore(newDiv,null);
+            var par = rows[n].parentNode;
+            par.insertBefore(newDiv, rows[n].nextSibling);
 
-            var newDiv = '<div class="delRow">  \
-                            <button type="button" class="btn btn btn-danger"  ng-click="delRow('+rows[n].getAttribute('data-row')+')">Supprimer la section</button> \
-                        </div>';
+            var newDiv = '<div class="dragHandle" r-ignore ng-drag-handle></div>';
             //transformation string en node html
             var div = document.createElement('div');
             div.innerHTML = newDiv;
             newDiv = div.firstChild;
-            rows[n].insertBefore(newDiv,null);
+            rows[n].insertBefore(newDiv, null);
 
-            var newDiv = '<div class="dragHandle" ng-drag-handle></div>';
-            //transformation string en node html
-            var div = document.createElement('div');
-            div.innerHTML = newDiv;
-            newDiv = div.firstChild;
-            rows[n].insertBefore(newDiv,null);
+            rows[n].setAttribute('ng-drag', 'true');
+            rows[n].setAttribute('ng-drop', 'true');
+            rows[n].setAttribute('data-drop', 'col');
+            rows[n].setAttribute('ng-drop-success', 'dropCol($data,$event,$target,$source)');
 
-            rows[n].setAttribute('ng-drag','true');
-            rows[n].setAttribute('ng-drop','true');
-            rows[n].setAttribute('data-drop','col');
-            rows[n].setAttribute('ng-drop-success','dropCol($data,$event,$target,$source)');
         }
 
 
@@ -335,7 +437,7 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
 
 
             var newDiv = '<div class="configComp">  \
-                            <button type="button" class="btn btn btn-warning"  ng-click="configureComponent('+cols[n].getAttribute('data-col')+')">Configurer le composant</button> \
+                            <button type="button" class="btn btn btn-warning"  ng-click="configComponent(\''+cols[n].getAttribute('data-zone')+'\')">Configurer le composant</button> \
                         </div>';
             //transformation string en node html
             var div = document.createElement('div');
@@ -360,32 +462,229 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
             cols[n].insertBefore(newDiv,null);
 
             cols[n].setAttribute('ng-drag','true');
+
+            var sib  = cols[n].nextElementSibling;
+
+            if( sib instanceof HTMLDivElement && sib.getAttribute('data-col')){
+                cols[n].setAttribute('resizable','');
+                cols[n].setAttribute('r-directions',"['right']");
+                cols[n].setAttribute('r-type','fullRow');
+            }
         }
 
         $scope.ui= base.querySelectorAll('body')[0].innerHTML;
 
-    }
+
+    };
 
     $scope.dropRow = function(data,evt,target,source){
-        console.log('dropRow',data,evt,target,source);
-    }
+        var droped = evt.element[0];
+        var dropedOn = source.node[0];
+
+        var tempDroped = $scope.tempHtml.querySelectorAll('[data-row="'+evt.element[0].getAttribute('data-row')+'"]')[0];
+        var tempDropedOn = $scope.tempHtml.querySelectorAll('[data-dv="'+source.node[0].getAttribute('data-dv')+'"]')[0];
+
+        if(!droped.getAttribute("data-row")) return false;
+
+        var rows = dropedOn.querySelectorAll('[data-row]');
+        var next = null;
+        var tempNext =null;
+
+        for(var n=0; n < rows.length; n++){
+            if(droped == rows[n]) continue;
+            var bounds = rows[n].getBoundingClientRect();
+            var posX = Math.ceil(bounds.left+window.scrollX);
+            var posY = Math.ceil(bounds.top+window.scrollY);
+            var width = rows[n].offsetWidth;
+            var height = rows[n].offsetHeight;
+            var middleX = (posX + width/2);
+            var middleY = (posY + height/2);
+
+            if(middleY < evt.y) continue;
+            if(middleY >= evt.y){
+                next = rows[n];
+                tempNext = $scope.tempHtml.querySelectorAll('[data-row="'+next.getAttribute('data-row')+'"]')[0];
+                break;
+            }
+        }
+
+        dropedOn.insertBefore(droped,next);
+        tempDropedOn.insertBefore(tempDroped,tempNext);
+
+
+        $scope.obj.HtmlConfig = $scope.tempHtml.querySelectorAll('body')[0].innerHTML;
+        //console.log('dropRow',data,evt,target,source);
+    };
     $scope.dropCol = function(data,evt,target,source){
-        console.log('dropCol',data,evt,target,source);
-    }
+        var droped = evt.element[0];
+        var dropedOn = source.node[0];
+
+        var tempDroped = $scope.tempHtml.querySelectorAll('[data-col="'+evt.element[0].getAttribute('data-col')+'"]')[0];
+        var tempDropedOn = $scope.tempHtml.querySelectorAll('[data-row="'+source.node[0].getAttribute('data-row')+'"]')[0];
+
+        if(!droped.getAttribute("data-col")) return false;
+
+        var cWidth = droped.getAttribute('data-width');
+        var cols = dropedOn.querySelectorAll('[data-col]');
+
+        var aSib = null;
+        var tempASib =null;
+        var next = null;
+        var tempNext =null;
 
 
+        for(var n=0; n < cols.length; n++){
+            if(droped == cols[n]) continue;
+            var bounds = cols[n].getBoundingClientRect();
+            var posX = Math.ceil(bounds.left+window.scrollX);
+            var posY = Math.ceil(bounds.top+window.scrollY);
+            var width = cols[n].offsetWidth;
+            var height = cols[n].offsetHeight;
+            var middleX = (posX + width/2);
+            var middleY = (posY + height/2);
+
+            if(middleX < evt.x) {
+                aSib = cols[n];
+                tempASib = $scope.tempHtml.querySelectorAll('[data-col="'+aSib.getAttribute('data-col')+'"]')[0];
+            };
+            if(middleX >= evt.x){
+                next = aSib = cols[n];
+                tempNext = tempASib = $scope.tempHtml.querySelectorAll('[data-col="'+next.getAttribute('data-col')+'"]')[0];
+                console.log('[data-col="'+next.getAttribute('data-col')+'"]');
+                console.log(aSib,tempASib);
+                console.log(next,tempNext);
+                break;
+            }
+        }
 
 
+        if(dropedOn !== droped.parentNode){
+            var bSib = nextByAttribute(droped,'data-col');
+            if(!bSib) bSib = nextByAttribute(droped,'data-col',true);
 
+
+            if(bSib){
+                tempBSib = $scope.tempHtml.querySelectorAll('[data-col="'+bSib.getAttribute('data-col')+'"]')[0];
+
+                bSWidth =parseInt(bSib.getAttribute('data-width'))+parseInt(cWidth);
+                bSib.setAttribute('data-width',bSWidth);
+                bSib.setAttribute('style','width:'+bSWidth+'%;');
+
+                tempBSib.setAttribute('data-width',bSWidth);
+                tempBSib.setAttribute('style','width:'+bSWidth+'%;');
+            }
+
+            var sWidth = null;
+            var nSWidth = null;
+            var nCWidth = null;
+            if(aSib){
+                sWidth = parseInt(aSib.getAttribute('data-width'));
+                cWidth = parseInt(cWidth);
+                nSWidth = Math.floor(sWidth*sWidth/(sWidth+cWidth));
+                nCWidth = Math.ceil(cWidth*sWidth/(sWidth+cWidth));
+
+                aSib.setAttribute('data-width',nSWidth);
+                aSib.setAttribute('style','width:'+nSWidth+'%;');
+                droped.setAttribute('data-width',nCWidth);
+                droped.setAttribute('style','width:'+nCWidth+'%;');
+
+                tempASib.setAttribute('data-width',nSWidth);
+                tempASib.setAttribute('style','width:'+nSWidth+'%;');
+                tempDroped.setAttribute('data-width',nCWidth);
+                tempDroped.setAttribute('style','width:'+nCWidth+'%;');
+
+            } else{
+                droped.setAttribute('data-width',100);
+                droped.setAttribute('style','width:100%;');
+
+                tempDroped.setAttribute('data-width',100);
+                tempDroped.setAttribute('style','width:100%;');
+            }
+        }
+
+
+        dropedOn.insertBefore(droped,next);
+        tempDropedOn.insertBefore(tempDroped,tempNext);
+
+
+        $scope.obj.HtmlConfig = $scope.tempHtml.querySelectorAll('body')[0].innerHTML;
+        //console.log('dropRow',data,evt,target,source);
+    };
 
 
     //Save ou reinit ou suivant/precedant
     $scope.pageSave = function(){
         console.log('saveeeeeee');
-    }
+    };
 
     $scope.pageReinit = function(){
         console.log('reinittttttttt');
+    };
+
+    $scope.$on('abt-resizable.resizeEnd', function(event,info){
+        var elem = info.element;
+        if( rcol = elem.getAttribute('data-col')){
+            var clearElem = $scope.tempHtml.querySelectorAll('[data-col="'+rcol+'"]')[0];
+        }else if( rrow = elem.getAttribute('data-row')){
+            var clearElem = $scope.tempHtml.querySelectorAll('[data-row="'+rrow+'"]')[0];
+        }else if( rdv = elem.getAttribute('data-dv')){
+            var clearElem = $scope.tempHtml.querySelectorAll('[data-dv="'+rdv+'"]')[0];
+        }
+
+        if( cEWidth = elem.getAttribute('data-width')){
+            clearElem.setAttribute('data-width',cEWidth);
+        }
+        if( cEHeight = elem.getAttribute('data-height')) {
+            clearElem.setAttribute('data-height',cEHeight);
+        }
+        clearElem.setAttribute('style',elem.getAttribute('style'));
+
+        var next = info.next;
+        if(next ){
+
+            if( nrcol = next.getAttribute('data-col')){
+                var nclearElem = $scope.tempHtml.querySelectorAll('[data-col="'+nrcol+'"]')[0];
+            }else if( nrrow = next.getAttribute('data-row')){
+                var nclearElem = $scope.tempHtml.querySelectorAll('[data-row="'+nrrow+'"]')[0];
+            }else if( nrdv = next.getAttribute('data-dv')){
+                var nclearElem = $scope.tempHtml.querySelectorAll('[data-dv="'+nrdv+'"]')[0];
+            }
+
+            if( ncEWidth = next.getAttribute('data-width')){
+                nclearElem.setAttribute('data-width',ncEWidth);
+            }
+            if( ncEHeight = next.getAttribute('data-height')) {
+                nclearElem.setAttribute('data-height',ncEHeight);
+            }
+            nclearElem.setAttribute('style',next.getAttribute('style'));
+        }
+
+
+        $scope.obj.HtmlConfig = $scope.tempHtml.querySelectorAll('body')[0].innerHTML;
+    });
+
+
+    function nextByAttribute(node, attr, previous) {
+        while (node) {
+            node = previous ? node.previousElementSibling : node.nextElementSibling;
+            if (node && node.getAttribute(attr)) {
+                return node;
+            }
+        }
+        return null;
+    }
+
+
+
+    //OVERRRIDE
+    $scope.modify = function (obj){
+        console.log('edit ',obj.id);
+
+        $scope.modalObj = $scope.obj ;
+        $scope.modalObj.success = false ;
+        $scope.modalObj.title = 'Modifier {{ description }} '+obj.label;
+        console.log('edit obj',$scope.modalObj);
+        $("#modalfiche-{{ identifier }}").modal();
     }
 
 });

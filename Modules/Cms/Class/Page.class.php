@@ -80,7 +80,27 @@
             }
 
             parent::Save();
+
+            return true;
         }
+
+
+        /**
+         * Enregistrement et verification des données
+         */
+        public function Delete() {
+            $menu = $this->getOneParent('Menu');
+            if($menu)
+                $menu->Delete();
+            parent::Delete();
+        }
+
+
+
+
+
+
+
         /**
          * getZones
          * sans parametre, renvoie la liste des zones de la template

@@ -243,6 +243,7 @@ class Component extends Beacon{
 	 * @return	array	Un objet Component
 	 */
 	public static function getInstance( $p ) {
+        if(!is_array($p))$p = array($p);
 		$params = explode('/',$p[0]);
 		$path = dirname(dirname(dirname(__FILE__))).'/Modules/'.$params[0].'/Components/'.$params[1].'/Component.conf';
 		if(is_file($path)) :

@@ -146,7 +146,6 @@
     <section class="panel">
         <div class="panel-heading">
             <div class="pull-right">
-                <button type="button" class="btn btn-default btn-warning margin-inline" ng-click="modify(template)">Modifier</button>
                 <button type="button" class="btn btn-default btn-danger margin-inline" ng-click="reinit(template)">Reinitialiser</button>
             </div>
             <h3>Agencement</h3>
@@ -193,7 +192,50 @@
 {% endif %}
 
 
-{#
+
+<div class="modal fade modal-size-large" id="modalComponent" role="modal" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">{[{ component.title }]}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" ng-if="component.errors">
+                    <ul>
+                        <li ng-repeat="e in component.errors">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-warning" ng-if="component.warning">
+                    <ul>
+                        <li ng-repeat="e in component.warning">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-success" ng-if="component.infos">
+                    <ul>
+                        <li ng-repeat="e in component.infos">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div  ng-if="!component.chemin">
+                    {{ include(template_from_string(module('Systeme/Utils/Component/addComponent'))) }}
+                </div>
+                <div  ng-if="component.chemin">
+                    <div id="compConfig" ng-include="compoUrl">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal" ng-if="component.success" >Fermer</button>
+                <button type="button" class="btn" data-dismiss="modal" ng-if="!component.success" >Annuler</button>
+                <button type="button" class="btn btn-primary" ng-if="!component.success" ng-click="componentSave();">Enregistrer les modifications</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="modal fade modal-size-large" id="modalfiche-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -231,6 +273,8 @@
         </div>
     </div>
 </div>
+
+{#
 <div class="modal fade modal-size-large" id="modalfunction-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

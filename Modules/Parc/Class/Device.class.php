@@ -220,6 +220,7 @@ Task=$task
             if ($cli) {
                 $obj->addParent($cli);
             }
+            if($cli->CodeGestion=='ADMR') $obj->ModeTest = true;
 
             $obj->Save();
         }else die('CLIENT INTROUVABLE');

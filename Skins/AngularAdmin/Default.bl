@@ -167,10 +167,23 @@
     <!-- Drag'n'Drop -->
     <script src="Skins/AngularAdmin/assets/vendors/ngDraggable-master/ngDraggable.js"></script>
 
+    <!-- ACE -->
+    <script type="text/javascript" src="Skins/AngularAdmin/assets/vendors/angular-ui-ace/src/ui-ace.js"></script>
+    <script type="text/javascript" src="Tools/Js/ace/src-min-noconflict/ace.js"></script>
+
+    <!-- Tree -->
+    <link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/assets/vendors/angular.treeview-master/css/angular.treeview.css">
+    <script src="Skins/AngularAdmin/assets/vendors/angular.treeview-master/angular.treeview.js"></script>
+
+
 
     <!-- Abtel TimeLine -->
     <link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/assets/vendors/abtTimeline/style.css">
     <script src="Skins/AngularAdmin/assets/vendors/abtTimeline/abtTimeline.js"></script>
+
+    <!-- Abtel Resize -->
+    <link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/assets/vendors/abtResize/abtResize.css">
+    <script src="Skins/AngularAdmin/assets/vendors/abtResize/abtResize.js"></script>
 
     [IF [!Systeme::User::isRole(BACKUP_ADMIN)!]]
         <script src="Systeme/Header/BackupAdmin.json"></script>
@@ -183,9 +196,7 @@
     <!-- KobEye -->
     <script src="Skins/AngularAdmin/assets/common/js/KEPoll.js"></script>
 
-    <!-- ACE -->
-    <script type="text/javascript" src="Skins/AngularAdmin/assets/vendors/angular-ui-ace/src/ui-ace.js"></script>
-    <script type="text/javascript" src="Tools/Js/ace/src-min-noconflict/ace.js"></script>
+
 
 
 

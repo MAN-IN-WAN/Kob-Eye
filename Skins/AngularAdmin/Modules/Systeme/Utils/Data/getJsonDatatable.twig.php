@@ -17,6 +17,7 @@ if(connection_aborted()){
     endPacket();
     exit;
 }
+
 $vars['rows'] = Sys::getData($info['Module'],$path.'/'.$filters,$offset,$limit);
 if(connection_aborted()){
     endPacket();
@@ -90,4 +91,11 @@ if (sizeof($children)){
 }
 
 $vars['total'] = Sys::getCount($info['Module'],$vars['Path'].'/'.$filters);
+
+
+function endPacket(){
+    echo "0\r\n\r\n";
+    ob_flush();
+    flush();
+}
 ?>

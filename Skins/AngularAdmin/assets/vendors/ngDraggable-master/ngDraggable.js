@@ -69,13 +69,13 @@ angular.module("ngDraggable", [])
                         if(element.attr('ng-drop')){
                             //cas ou  l'element est a la fois draggable et zone de drop ( enfant draggble)
                             //Pour le moment je restreint le draghandle aux enfants directs mais voir si besoin à prendre tout ceux qui ne sont pas dans un child lui meme draggable
-                            for(var n in dragHandles){
-                                if(! (dragHandles[n] instanceof HTMLElement)) continue;
-                                 var pa = dragHandles[n].parentNode;
+                            dragHandles=dragHandles.filter(function(item){
+                                var pa = dragHandles[item].parentNode;
                                 if(pa != element[0]){
-                                    dragHandles.splice(n,1);
+                                    return false;
                                 }
-                            }
+                                return true;
+                            });
                         }
                         _dragHandle = dragHandles;
                     }
@@ -356,7 +356,6 @@ angular.module("ngDraggable", [])
                     }
                     if (isTouching(obj.x, obj.y, obj.element)) {
                         // call the ngDraggable ngDragSuccess element callback
-                        console.log(obj,element);
                         if(obj.callback){
                             obj.callback(obj);
                         }

@@ -1,0 +1,15 @@
+
+<div class="component-list">
+    <div class="row">
+    {% for compo in Components %}
+        <div class="col-md-4">
+            <img class="clickable" ng-src="{{ compo.Screen ? compo.Screen : 'Tools/Images/NoPhoto.jpg' }}" title="{{ compo.Name }}" alt="{{ compo.Name }}" ng-click="addComponent('{{ compo.Module }}{{ compo.Title }}');"/>
+            <p ng-click="addComponent('{{ compo.Module }}{{ compo.Title }}');">{{ compo.Name }}</p>
+        </div>
+        {% if loop.index is divisible by(3) and not loop.last%}
+            </div>
+            <div class="row">
+        {% endif %}
+    {% endfor %}
+    </div>
+</div>

@@ -49,8 +49,10 @@ foreach ($parentelements as $f){
     }
 }
 
+
 if ($o->Verify()) {
     $success = $o->Save();
+
     foreach ($formfields as $f){
         $values->{$f["name"]} = $o->{$f["name"]};
         if ($f['type']=='date'){

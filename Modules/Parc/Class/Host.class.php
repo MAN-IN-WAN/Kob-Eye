@@ -40,7 +40,8 @@ class Host extends genericClass
      */
     public function getLdapID($KEServer) {
         if (!empty($this->LdapID)) {
-            if (!$en = json_decode($this->LdapID, true))
+            $en = json_decode($this->LdapID, true);
+            if (!is_array($en))
                 $en = array($KEServer->Id => $this->LdapID);
         }else $en=array();
         return $en[$KEServer->Id];
@@ -50,9 +51,11 @@ class Host extends genericClass
      * défniit le ldapId d'une entrée pour un serveur spécifique
      */
     public function setLdapID($KEServer,$ldapId) {
-        if (!empty($this->LdapDN))
-            $en = json_decode($this->LdapID,true);
-        else $en = Array();
+        if (!empty($this->LdapID)) {
+            $en = json_decode($this->LdapID, true);
+            if (!is_array($en))
+                $en = array($KEServer->Id => $this->LdapID);
+        }else $en = Array();
         if (!is_array($en))$en = array();
         $en[$KEServer->Id] = $ldapId;
         $this->LdapID = json_encode($en);
@@ -63,7 +66,8 @@ class Host extends genericClass
      */
     public function getLdapDN($KEServer) {
         if (!empty($this->LdapDN)) {
-            if (!$en = json_decode($this->LdapDN, true))
+            $en = json_decode($this->LdapDN, true);
+            if (!is_array($en))
                 $en = array($KEServer->Id => $this->LdapDN);
         }else $en=array();
         return $en[$KEServer->Id];
@@ -73,9 +77,11 @@ class Host extends genericClass
      * définit le ldapDN d'une entrée pour un serveur spécifique
      */
     public function setLdapDN($KEServer,$ldapDn) {
-        if (!empty($this->LdapDN))
-            $en = json_decode($this->LdapDN,true);
-        else $en = Array();
+        if (!empty($this->LdapDN)) {
+            $en = json_decode($this->LdapDN, true);
+            if (!is_array($en))
+                $en = array($KEServer->Id => $this->LdapDN);
+        } else $en = Array();
         if (!is_array($en))$en = array();
         $en[$KEServer->Id] = $ldapDn;
         $this->LdapDN = json_encode($en);
@@ -86,7 +92,8 @@ class Host extends genericClass
      */
     public function getLdapTms($KEServer) {
         if (!empty($this->LdapTms)) {
-            if (!$en = json_decode($this->LdapTms, true))
+            $en = json_decode($this->LdapTms, true);
+            if (!is_array($en))
                 $en = array($KEServer->Id => $this->LdapTms);
         }else $en=array();
         return $en[$KEServer->Id];
@@ -96,9 +103,11 @@ class Host extends genericClass
      * définit le ldapTms d'une entrée pour un serveur spécifique
      */
     public function setLdapTms($KEServer,$ldapTms) {
-        if (!empty($this->LdapTms))
-            $en = json_decode($this->LdapTms,true);
-        else $en = Array();
+        if (!empty($this->LdapTms)) {
+            $en = json_decode($this->LdapTms, true);
+            if (!is_array($en))
+                $en = array($KEServer->Id => $this->LdapTms);
+        }else $en = Array();
         if (!is_array($en))$en = array();
         $en[$KEServer->Id] = $ldapTms;
         $this->LdapTms = json_encode($en);
@@ -107,10 +116,14 @@ class Host extends genericClass
      * getLdapUid
      * récupère le ldapUid d'une entrée pour un serveur spécifique
      */
-    public function getLdapUid($KEServer) {
-        if (!empty($this->LdapUid))
-            $en = json_decode($this->LdapUid,true);
-        else $en=array();
+    public function getLdapUid($KEServer)
+    {
+
+        if (!empty($this->LdapUid)){
+            $en = json_decode($this->LdapUid, true);
+            if (!is_array($en))
+                $en = array($KEServer->Id => $this->LdapUid);
+        }else $en=array();
         if (!isset($en[$KEServer->Id])){
             $en[$KEServer->Id] = Server::getNextUid();
             $this->setLdapUid($KEServer,$en[$KEServer->Id]);
@@ -122,9 +135,11 @@ class Host extends genericClass
      * définit le ldapUid d'une entrée pour un serveur spécifique
      */
     public function setLdapUid($KEServer,$ldapUid) {
-        if (!empty($this->LdapUid))
-            $en = json_decode($this->LdapUid,true);
-        else $en = Array();
+        if (!empty($this->LdapUid)){
+            $en = json_decode($this->LdapUid, true);
+            if (!is_array($en))
+                $en = array($KEServer->Id => $this->LdapUid);
+        }else $en = Array();
         if (!is_array($en))$en = array();
         $en[$KEServer->Id] = $ldapUid;
         $this->LdapUid = json_encode($en);
@@ -771,11 +786,11 @@ class TerminalProcess {
     }
 
     public function open($command) {
-/*        $spec = array(
-            array("pty"), // MAGIC - THE GATHERING!! MWAHAHAHAHA
-            array("pty"),
-            array("pty")
-        );*/
+        /*        $spec = array(
+                    array("pty"), // MAGIC - THE GATHERING!! MWAHAHAHAHA
+                    array("pty"),
+                    array("pty")
+                );*/
         $spec = array(
             array("pipe","r"), // MAGIC - THE GATHERING!! MWAHAHAHAHA
             array("pipe","w"),

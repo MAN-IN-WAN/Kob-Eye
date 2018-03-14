@@ -1,5 +1,5 @@
 <SCHEMA>
-	<OBJECTCLASS title="Page" driver="mysql"  master="1" AccessPoint="1" Description="Page"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" browseable="1" Operations="delete" className="CmsPage" Class="Modules/Cms/Class/Page.class.php" >
+	<OBJECTCLASS title="Page" driver="mysql"  master="1" AccessPoint="1" Description="Page"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" browseable="1" Operations="delete,edit,add" className="CmsPage" Class="Modules/Cms/Class/Page.class.php" >
 		<CATEGORY title="Contenu" type="large">
 			<PROPERTIES type="titre" obligatoire="1" searchOrder="1" list="1" listDescr="Nom de la page" fiche="1" form="1">Nom</PROPERTIES>
 			<PROPERTIES type="varchar" searchOrder="2" list="1" listDescr="Titre(h1) de la page" fiche="1" form="1">Titre</PROPERTIES>
@@ -13,8 +13,8 @@
 		</CATEGORY>
 		<CATEGORY title="Templating">
 			<PROPERTIES type="template" form="1" fiche="1" hiddenPage="1" >CmsTemplate</PROPERTIES>
-			<PROPERTIES type="templateconfig" subtype="xml" large="1" fiche="1" >TemplateConfig</PROPERTIES>
-			<PROPERTIES type="templateconfig" subtype="html" large="1" fiche="1" >HtmlConfig</PROPERTIES>
+			<PROPERTIES type="templateconfig" subtype="xml" large="1" form="1" fiche="1" >TemplateConfig</PROPERTIES>
+			<PROPERTIES type="templateconfig" subtype="html" large="1" form="1" fiche="1" >HtmlConfig</PROPERTIES>
 		</CATEGORY>
 	</OBJECTCLASS>
 </SCHEMA>
