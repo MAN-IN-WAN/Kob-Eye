@@ -29,9 +29,9 @@ class Bdd extends genericClass {
             }
 
             //creation de la base de donnée et obtention des droits
-            $query = "CREATE DATABASE IF NOT EXISTS " . $this->Nom.";";
+            $query = "CREATE DATABASE IF NOT EXISTS `" . $this->Nom."`;";
             $dbGuac->query($query);
-            $query = "GRANT ALL PRIVILEGES ON " . $this->Nom . " . * TO '" . $host->Nom . "'@'%';";
+            $query = "GRANT ALL PRIVILEGES ON `" . $this->Nom . "` . * TO '" . $host->Nom . "'@'%';";
             $dbGuac->query($query);
 
             //flush privileges
@@ -61,7 +61,7 @@ class Bdd extends genericClass {
         $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         //flush privileges
-        $query = "DROP DATABASE " . $this->Nom.";";
+        $query = "DROP DATABASE `" . $this->Nom."`;";
         try {
             $dbGuac->query($query);
         }catch (Exception $e){

@@ -20,7 +20,7 @@ app.controller('{{ controller }}Ctrl', function ($location, $scope, $rootScope,$
                 AbtelBackupActivityStore.initContext('deploiement');
                 var d = new Date();
                 AbtelBackupActivityStore.setQuery('/AbtelBackup/Esx/'+id+'/Activity','deploiement');
-                AbtelBackupActivityStore.setFilters('tmsCreate>='+parseInt(d.getTime()/1000),'deploiement');
+                //AbtelBackupActivityStore.setFilters('tmsCreate>='+parseInt(d.getTime()/1000),'deploiement');
                 AbtelBackupActivityStore.getData(1,'deploiement');
                 $scope.AbtelBackupActivity = {
                     data: AbtelBackupActivityStore.data.deploiement,

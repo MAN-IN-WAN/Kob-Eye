@@ -8,9 +8,12 @@ $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $vars['identifier'] = $info['Module'].$info['ObjectType'];
 $vars['context'] = $info['NbHisto'] > 1 ? 'children':'default';
 $vars['ObjectClass'] = $o->getObjectClass();
+$vars['ObjectType'] = $info['ObjectType'];
+$vars['Module'] = $info['Module'];
 $vars['functions'] = $o->getFunctions();
 $vars['operation'] = $vars['ObjectClass']->getOperations();
 $vars['fields'] = $o->getElementsByAttribute('list','',true);
+$vars['searchfields'] = $o->getElementsByAttribute('searchOrder|search','',true);
 $vars['ObjectType'] = $info['ObjectType'];
 foreach ($vars['fields'] as $k=>$f){
     if ($f['type']=='fkey'&&$f['card']=='short'){

@@ -2,13 +2,13 @@
     <ul class="nav nav-tabs" role="tablist">
         {% for filter in filters %}
         <li class="nav-item">
-            <a class="nav-link {% if loop.index0 == 0 %}active{% endif %}" ng-click="setFilter('{{ filter.filter }}')" data-toggle="tab" data-target="#h1" role="tab">{{ filter.name }}</a>
+            <a class="nav-link {% if loop.index0 == 0 %}active{% endif %}" ng-click="{{ identifier }}setOptionsFilters('{{ filter.filter }}')" data-toggle="tab" data-target="#h1" role="tab">{{ filter.name }}</a>
         </li>
         {% endfor %}
     </ul>
 </div>
 <div class="form-group row">
-    <div class="col-lg-6 col-md-12">
+    <div class="col-lg-5 col-md-12">
         <div class="input-group list-search">
             <input type="text" class="form-control" name="{{ identifier }}query" ng-model="{{ identifier }}.filter" placeholder="Recherche..." >
             <span class="input-group-btn">
@@ -30,44 +30,133 @@
                 Supprimer la sélection
                 </a>
                 {% endif %}
+                <a  href="javascript: void(0);" class="btn btn-info" ng-click="{{ identifier }}switchPanelFilters();">
+                    Filtres
+                </a>
             </span>
         </div>
     </div>
-    <div class="col-lg-6 col-md-12">
+    <div class="col-lg-1 col-md-12">
+        <select class="form-control" ng-model="{{ identifier }}.pageLength" >
+            <option ng-selected="{{ identifier }}.pageLength == 15" value="15">15</option>
+            <option ng-selected="{{ identifier }}.pageLength == 25" value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </select>
+    </div>
+
+    <div class="col-lg-2 col-md-12">
+    </div>
+    <div class="col-lg-4 col-md-12">
         <dir-pagination-controls boundary-links="true" pagination-context="{{ context }}" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
     </div>
 </div>
-<!--<pre ng-bind="{{ identifier }}selected | json"></pre>
-<pre ng-bind="{{ identifier }}selectedAll | json"></pre>-->
-<table class="table table-hover nowrap margin-bottom-0 straight" id="{{ identifier }}" width="100%">
+<div class="col-md-12 panel-filter" ng-class="{{ identifier }}.filterPanel ? 'panel-filter-closed' : '' ">
+    <div class="row">
+        <div class="col-md-12">
+            <h5>Requète complête: {[{ {{ identifier }}.filterQuery }]}</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-lg-6">
+        {% for field in searchfields %}
+            {% if field.type != "rkey" and field.type != "html" and field.type != "bbcode" and field.type != "text" and field.type != "raw" and field.card != "long" and field.type != "date" and field.type != "date" %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-control-label" for="l0">{{ field.description }}</label>
+                        <small>{{ field.help }}</small>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" ng-class="{'has-danger': modalObj.fieldErrors.length && modalObj.fieldErrors.indexOf('{{ field.name }}') !== -1}">
+                            {% if field.type == "fkey" and field.card == "short" %}
+                                <div custom-select="a.id as a.label for a in getSelectData('{{ field.objectModule }}{{ field.objectName }}Store',$searchTerm)" custom-select-options="{ 'async': true, 'filter':'{{ field.filter }}'}"  ng-model="{{ identifier }}.filters.{{ field.name }}.value" ng-change="{{ identifier }}applyFilters()" class="form-control form-control-sm"></div>
+                            {% elseif field.type == "boolean" %}
+                                <switch id="enabled" name="enabled" ng-model="{{ identifier }}.filters.{{ field.name }}.value" class="green" ng-change="{{ identifier }}applyFilters()"></switch>
+                            {% else %}
+                                {% if field.query %}
+                                    <select class="form-control form-control-sm" ng-model="{{ identifier }}.filters.{{ field.name }}.value" ng-change="{{ identifier }}applyFilters()">
+                                        {% for v,k in field.query %}
+                                            <option value="{{ v }}">{{ k }}</option>
+                                        {% endfor %}
+                                    </select>
+                                {% elseif field.Values %}
+                                    <select class="form-control form-control-sm"  ng-model="{{ identifier }}.filters.{{ field.name }}.value" ng-change="{{ identifier }}applyFilters()">
+                                        {% for v,k in field.Values %}
+                                            <option value="{{ v }}">{{ k }}</option>
+                                        {% endfor %}
+                                    </select>
+                                {% else %}
+                                    <input type="text" class="form-control form-control-sm" placeholder="" id="input-{{ field.name }}"  ng-model="{{ identifier }}.filters.{{ field.name }}.value" ng-change="{{ identifier }}applyFilters()">
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% if loop.index - loop.revindex0 == 1 or loop.index - loop.revindex0 == 0 %}
+        </div>
+        <div class="col-md-12 col-lg-6">
+            {% endif %}
+        {% endfor %}
+        </div>
+        <script>
+            $('.datepicker-only-init').datetimepicker({
+                widgetPositioning: {
+                    horizontal: 'left'
+                },
+                locale: 'fr',
+                icons: {
+                    time: "fa fa-clock-o",
+                    date: "fa fa-calendar",
+                    up: "fa fa-arrow-up",
+                    down: "fa fa-arrow-down"
+                }
+            });
+        </script>
+    </div>
+    <div class=" row">
+        <div class="col-md-10">
+            <a href="javascript: void(0);" class="btn btn-info " ng-click="{{ identifier }}applyFilters()">
+                Appliquer les filtres
+            </a>
+            <a href="javascript: void(0);" class="btn btn-warning " ng-click="{{ identifier }}resetFilters()">
+                Réinitialiser les filtres
+            </a>
+        </div>
+    </div>
+</div>
+<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%">
     <thead>
         <tr>
-            <th width="120" title="Id">
+            <th width="30" title="Ch" class="list-col-th-dark">
                 <input type="checkbox" ng-model="{{ identifier }}.selected.selectall"/>&nbsp;
-                ID
             </th>
+            <th title="Id" class="list-col-th-id">ID</th>
             {% for field in fields %}
                 <th title="{{ field.name }}">{{ field.listDescr }}</th>
             {% endfor %}
             {% for interface in Interfaces %}
                 <th>{{ interface.name }}</th>
             {% endfor %}
-            <th width="50">Détails</th>
-            <th width="50">Actions</th>
+            <th width="220">Détails</th>
+            <th width="170">Actions</th>
         </tr>
     </thead>
     <tbody>
-    <tr dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination">
-        <td>
+    <tr dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination">
+        <td  class="list-col-td-dark">
             <input type="checkbox" value="{[{ item.id }]}" ng-model="{{ identifier }}.selected[item.id]" name="{{ identifier }}" id="{[{ item.id }]}" />&nbsp;
-            <span class="label label-warning">{[{ item.id }]}</span>
+        </td>
+        <td class="list-col-td-id">
+            <!--<span class="label label-warning">{[{ item.id }]}</span>-->
+            {[{ item.id }]}
         </td>
         {% for field in fields %}
         <td scope="row" class="type{{ field.type }}">
             {% if field.type == "price" or field.type == "float" %}
                 <span class="label label-warning">{[{ item.{{ field.name }}| currency:"" }]}</span>
             {% elseif field.type == "extlink" %}
-                <a class="btn btn-info btn-xs" href="https://proxy.abtel.fr/remote/#/client/{[{ item.{{ field.name }} }]}" target="_blank">{{ field.listDescr }}</a>
+                <a class="btn btn-info btn-xs" href="/{{ Module }}/{{ ObjectType }}/{[{ item.id }]}/callback{{ field.name }}.htm" target="_blank">{{ field.listDescr }}</a>
             {% elseif field.type == "date" %}
                 <span class="label label-secondary">{[{ item.{{ field.name }} | date:'dd/MM/yyyy' }]}</span>
             {% elseif field.type == "int" %}
@@ -97,7 +186,11 @@
             {% elseif field.Values | length > 0 %}
                 <span ng-bind-html="item.{{ field.name }}Label "></span>
             {% else %}
-                <span ng-bind-html="item.{{ field.name }}"></span>
+                {% if  Type == "Tail" %}
+                    <span ng-bind-html="item.{{ field.name }}"></span>
+                {% else %}
+                    <a href="#/{{ CurrentUrl }}/{[{ item.id }]}" ng-bind-html="item.{{ field.name }}"></a>
+                {% endif %}
             {% endif %}
         </td>
         {% endfor %}
@@ -112,8 +205,8 @@
             </td>
             {% endif %}
         {% endfor %}
-        <td width="200" class="table-details" ng-bind-html="item._details">{[{ item._details }]}</td>
-        <td width="170" style="width:170px;">
+        <td  class="table-details" ng-bind-html="item._details">{[{ item._details }]}</td>
+        <td  class="table-action">
             {% if Type == "Tail" %}
                 <span class="input-group-btn">
                     {% if operation.edit %}<a  class="btn btn-warning" href="javascript: void(0);" ng-click="{{ identifier }}modify(item)">Modifier</a>{% endif %}
@@ -128,7 +221,7 @@
             <!-- Split button -->
             <div class="btn-group" uib-dropdown>
                 <a id="split-button" type="button" class="btn btn-danger  btn-sm" href="#/{{ CurrentUrl }}/{[{ item.id }]}">Détails</a>
-                <button type="button" class="btn btn-danger  btn-sm" uib-dropdown-toggle>
+                <button type="button" class="btn btn-danger btn-sm " uib-dropdown-toggle>
                     <span class="caret"></span>
                     <span class="sr-only">Split button!</span>
                 </button>
@@ -146,20 +239,20 @@
     </tr>
     </tbody>
 </table>
-
+<!--
 <div class="invert-wrap">
     <table class="table table-hover nowrap margin-bottom-0 inverted" id="{{ identifier }}" width="100%">
     {#<colgroup>
         <col class="thead">
-        <col dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination" class="tdcontent">
+        <col dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination" class="tdcontent">
     </colgroup>#}
     <tbody>
         <tr>
-            <th ng-show="{{ identifier }}.data.length > 0">ID</th><td dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination"><div class="col-width-fixer"><span class="label label-warning">{[{ item.id }]}</span></div></td>
+            <th ng-show="{{ identifier }}.data.length > 0">ID</th><td dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination"><div class="col-width-fixer"><span class="label label-warning">{[{ item.id }]}</span></div></td>
         </tr>
         <tr>
             <th  ng-show="{{ identifier }}.data.length > 0" width="50">Actions</th>
-            <td dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination">
+            <td dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination">
                 <div class="col-width-fixer">
                     {% if Type == "Tail" %}
                         <span class="input-group-btn">
@@ -172,7 +265,6 @@
                         {% endfor %}
                         </span>
                     {% else %}
-                        <!-- Split button -->
                         <div class="btn-group" uib-dropdown>
                             <a id="split-button" type="button" class="btn btn-danger  btn-sm" href="#/{{ CurrentUrl }}/{[{ item.id }]}">détails</a>
                             <button type="button" class="btn btn-danger  btn-sm" uib-dropdown-toggle>
@@ -195,7 +287,7 @@
             {% for field in fields %}
                 <tr>
                     <th  ng-show="{{ identifier }}.data.length > 0">{{ field.listDescr }}</th>
-                    <td dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination" scope="row">
+                    <td dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination" scope="row">
                         <div class="col-width-fixer">
                         {% if field.type == "price" or field.type == "float" %}
                             <span class="label label-warning">{[{ item.{{ field.name }}| currency:"" }]}</span>
@@ -220,7 +312,7 @@
                 </tr>
             {% endfor %}
         <tr>
-            <th width="50"  ng-show="{{ identifier }}.data.length > 0">Détails</th><td dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination" class="table-details" ng-bind-html="item.Details"><div class="col-width-fixer">{[{ item.Details }]}</div></td>
+            <th width="50"  ng-show="{{ identifier }}.data.length > 0">Détails</th><td dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination" class="table-details" ng-bind-html="item.Details"><div class="col-width-fixer">{[{ item.Details }]}</div></td>
         </tr>
     </tbody>
     </table>
@@ -245,7 +337,14 @@
 
     </script>
 </div>
-<dir-pagination-controls boundary-links="true" pagination-context="{{ context }}" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+-->
+<div class="form-group row">
+    <div class="col-lg-6 col-md-12">
+    </div>
+    <div class="col-lg-6 col-md-12">
+        <dir-pagination-controls boundary-links="true" pagination-context="{{ context }}" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+    </div>
+</div>
 
 <div class="modal fade modal-size-large" id="modal-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog" role="document">

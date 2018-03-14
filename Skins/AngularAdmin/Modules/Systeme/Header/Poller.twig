@@ -12,8 +12,9 @@ app.service('Poller',function($http,$rootScope){
     function poll(callback){
         if(typeof callback == 'undefined')
             callback = function (data) {
-                for ( var ev in data.events)
+                /*for ( var ev in data.events)
                     console.log('EventPoller '+data.events[ev].Type+' '+data.events[ev].ObjectClass+' '+data.events[ev].ObjectId+' >> ',data.events[ev]);
+                */
             };
 
         pollBreak = false;

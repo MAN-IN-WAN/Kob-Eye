@@ -80,21 +80,21 @@ class editStruct extends Beacon {
 		switch ($this->Beacon) {
 			CASE "REDIRECT":
 				$p = $this->getString();
-                                if(preg_match("#\.htm#",$_SERVER["REQUEST_URI"]) )
-                                {
-                                    $T = explode("?",$p);
-                                    if ( sizeof($T) > 1 ) {
-                                        $pt = $T[0] . ".htm";
-                                   $p = $pt . "?". $T[1];
-                                    }else {
-                                        $pt = $p . ".htm";
-                                   $p = $pt."?";
-                                    }
-                                }
 				if (preg_match("#^http#",$p)){
 					header("Location:".$p);
 				}
 				else {
+                    if(preg_match("#\.htm#",$_SERVER["REQUEST_URI"]) )
+                    {
+                        $T = explode("?",$p);
+                        if ( sizeof($T) > 1 ) {
+                            $pt = $T[0] . ".htm";
+                            $p = $pt . "?". $T[1];
+                        }else {
+                            $pt = $p . ".htm";
+                            $p = $pt."?";
+                        }
+                    }
                     header("Location: http://".$_SERVER["HTTP_HOST"]."/".$p);
                 }
 				$GLOBALS["Systeme"]->Close();

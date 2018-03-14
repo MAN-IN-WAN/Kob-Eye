@@ -83,6 +83,7 @@ class RemoteServer extends genericClass {
             //publication de la clef
             $stream4 = $this->remoteExec("if [ ! -d /home/".$this->Login."/.ssh ]; then mkdir /home/".$this->Login."/.ssh; fi");
             $stream3 = $this->remoteExec("echo '".$this->PublicKey."' >>/home/".$this->Login."/.ssh/authorized_keys");
+            $stream3 = $this->remoteExec("chmod 750 /home/".$this->Login."/.ssh/authorized_keys");
         }catch (Exception $e){
             $this->addError(array("Message"=>"Une erreur interne s'est produite lors de la tentative de création des clefs SSH. Détails: ".$e->getMessage()));
             $this->Status = false;

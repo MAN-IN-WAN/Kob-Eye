@@ -15,8 +15,19 @@
         $scope.{{ c.identifier }} = {
             data: {{ c.identifier }}Store.data.default,
             store: {{ c.identifier }}Store,
-            filter: {{ c.identifier }}Store.getFilters('default',true),
+            filter: {{ c.identifier }}Store.getFilters('default',true).global,
+            filterPanel: false,
+            filters: (function(){
+                var opts = {{ c.identifier }}Store.getFilters('default',true).options;
+                var out = {};
+                for (var o in opts){
+                    out[opts[o].name] = opts[o];
+                }
+                return out;
+            })(),
+            filterQuery: {{ c.identifier }}Store.getQueryFilter('default'),
             currentPage: {{ c.identifier }}Store.currentPage.default,
+            pageLength: {{ c.identifier }}Store.getPageLength(),
             itemsPerPage: {{ c.identifier }}Store.itemsPerPage,
             selected: {
                 selectall: false
@@ -26,12 +37,12 @@
         //acces aux stores parents
         {% for parent in c.parentelements %}
             $scope.{{ parent.objectModule }}{{ parent.objectName }}Store = {{ parent.objectModule }}{{ parent.objectName }}Store;
-            //$scope.{{ parent.objectModule }}{{ parent.objectName }}Store.setFilters('{{ parent.filter }}','select');
-            //$scope.{{ parent.objectModule }}{{ parent.objectName }}Store.getData(1,'select');
             $scope.{{ parent.objectModule }}{{ parent.objectName }}Select = {
                 data: {{ parent.objectModule }}{{ parent.objectName }}Store.data.select,
                 store: {{ parent.objectModule }}{{ parent.objectName }}Store,
-                filter: {{ parent.objectModule }}{{ parent.objectName }}Store.getFilters('select',true),
+                filter: {{ parent.objectModule }}{{ parent.objectName }}Store.getFilters('select',true).global,
+                filterPanel: false,
+                filters: {{ parent.objectModule }}{{ parent.objectName }}Store.getFilters('default',true).options,
                 currentPage: {{ parent.objectModule }}{{ parent.objectName }}Store.currentPage.select,
                 itemsPerPage: {{ parent.objectModule }}{{ parent.objectName }}Store.itemsPerPage,
                 selected: {
@@ -45,7 +56,9 @@
             $scope.{{ child.objectModule }}{{ child.objectName }}Select = {
                 data: {{ child.objectModule }}{{ child.objectName }}Store.data.select,
                 store: {{ child.objectModule }}{{ child.objectName }}Store,
-                filter: {{ child.objectModule }}{{ child.objectName }}Store.getFilters('select',true),
+                filter: {{ child.objectModule }}{{ child.objectName }}Store.getFilters('select',true).global,
+                filterPanel: false,
+                filters: {{ child.objectModule }}{{ child.objectName }}Store.getFilters('default',true).options,
                 currentPage: {{ child.objectModule }}{{ child.objectName }}Store.currentPage.select,
                 itemsPerPage: {{ child.objectModule }}{{ child.objectName }}Store.itemsPerPage,
                 selected: {
@@ -54,7 +67,7 @@
             }
             $scope.$watch('{{ child.objectModule }}{{ child.objectName }}Select.filter', function() {
                 //on lance la recherche depuis le store
-                {{ child.objectModule }}{{ child.objectName }}Store.setFilters($scope.{{ child.objectModule }}{{ child.objectName }}Select.filter,'select');
+                {{ child.objectModule }}{{ child.objectName }}Store.setGlobalFilter($scope.{{ child.objectModule }}{{ child.objectName }}Select.filter,'select');
             });
         {% endfor %}
 
@@ -124,23 +137,69 @@
         var lasttimeout = false;
         $scope.$watch('{{ c.identifier }}.filter', function() {
             //on lance la recherche depuis le store
-            if ($scope.{{ c.identifier }}.filter!={{ c.identifier }}Store.getFilters('default',true)){
+            if ($scope.{{ c.identifier }}.filter!={{ c.identifier }}Store.getFilters('default',true).global){
                 if (lasttimeout){
                     $timeout.cancel(lasttimeout);
                     lasttimeout = false;
                 }
-                {{ c.identifier }}Store.setFilters($scope.{{ c.identifier }}.filter,'default');
+                {{ c.identifier }}Store.setGlobalFilter($scope.{{ c.identifier }}.filter,'default');
                 lasttimeout = $timeout(function () {
                     {{ c.identifier }}Store.getData(1,'default');
                 },200);
             }
         });
 
+        //FILTERS
+        $scope.{{ c.identifier }}resetFilters = function (){
+            $scope.{{ c.identifier }}.filterPanel = false;
+            var opts = $scope.{{ c.identifier }}.filters;
+            for ( var o in opts ) {
+                $scope.{{ c.identifier }}.filters[o].value = '';
+                delete $scope.{{ c.identifier }}.filters[o];
+            }
+            $scope.{{ c.identifier }}.filter='';
+            {{ c.identifier }}Store.resetFilters('default');
+            {{ c.identifier }}Store.getData(1,'default');
+        }
+        $scope.{{ c.identifier }}switchPanelFilters = function (){
+            if ($scope.{{ c.identifier }}.filterPanel)
+                $scope.{{ c.identifier }}.filterPanel = false;
+            else
+                $scope.{{ c.identifier }}.filterPanel = true;
+        }
+        $scope.{{ c.identifier }}applyFilters = function (){
+            var opts = $scope.{{ c.identifier }}.filters,
+                query = "";
+            for ( var o in opts ) {
+                if (query.length) query+='&';
+                var value = opts[o].value;
+                switch (value){
+                    case true:
+                        value = 1;
+                        break;
+                    case false:
+                        value = 0;
+                        break;
+                }
+
+                query+=o+((opts[o].operator==undefined)?'=':opts[o].operator)+value;
+            }
+            $scope.{{ c.identifier }}.filterQuery = '~'+$scope.{{ c.identifier }}.filter+'&'+query;
+            console.log('controller >> list {{ c.identifier }} >> applyFilter ',query);
+            {{ c.identifier }}Store.setOptionsFilters(query,'default');
+            {{ c.identifier }}Store.getData(1,'default');
+        }
+
+        $scope.$watch('{{ c.identifier }}.pageLength', function() {
+            console.log('pageLength',$scope.{{ c.identifier }}.pageLength);
+            {{ c.identifier }}Store.setPageLength($scope.{{ c.identifier }}.pageLength,'default');
+        });
         $scope.$watch('{{ c.identifier }}.currentPage', function() {
             {{ c.identifier }}Store.setPage($scope.{{ c.identifier }}.currentPage,'default');
         });
-        $scope.setFilter = function (filter){
-            {{ c.identifier }}Store.setFilters(filter,'default',false);
+        $scope.{{ c.identifier }}setOptionsFilters = function (filter){
+            {{ c.identifier }}Store.setOptionsFilters(filter,'default',false);
+            {{ c.identifier }}Store.getData(1,'default');
         }
         $scope.{{ c.identifier }}add = function (){
             console.log('add {{ c.objecttype }}');
@@ -383,8 +442,9 @@
                     data : {{ child.objectModule }}{{ child.objectName }}Store.data.children,
                     store: {{ child.objectModule }}{{ child.objectName }}Store,
                     filter: '',
-                    currentPage: {{ c.identifier }}Store.currentPage.children,
-                    itemsPerPage: {{ c.identifier }}Store.itemsPerPage,
+                    pageLength: {{ child.objectModule }}{{ child.objectName }}Store.getPageLength(),
+                    currentPage: {{ child.objectModule }}{{ child.objectName }}Store.currentPage.children,
+                    itemsPerPage: {{ child.objectModule }}{{ child.objectName }}Store.itemsPerPage,
                     selected: {
                         selectall: false
                     }
@@ -395,8 +455,9 @@
                     data : {{ child.objectModule }}{{ child.objectName }}Store.data.select,
                     store: {{ child.objectModule }}{{ child.objectName }}Store,
                     filter: '',
-                    currentPage: {{ c.identifier }}Store.currentPage.select,
-                    itemsPerPage: {{ c.identifier }}Store.itemsPerPage,
+                    pageLength: {{ child.objectModule }}{{ child.objectName }}Store.getPageLength(),
+                    currentPage: {{ child.objectModule }}{{ child.objectName }}Store.currentPage.select,
+                    itemsPerPage: {{ child.objectModule }}{{ child.objectName }}Store.itemsPerPage,
                     selected: {
                         selectall: false
                     }

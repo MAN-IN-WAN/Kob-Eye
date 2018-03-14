@@ -1,6 +1,3 @@
-table tr td.table-details{
-    font-size:0.7em;
-}
 .pagination {
     margin-top: 0 !important;
     margin-bottom: 0 !important;
@@ -230,7 +227,44 @@ progress.progress.progress-danger:after{
     padding: 20px;
 }
 
-
+/**
+LISTE CLASSIQUE
+ */
+.table thead th,.table tr td{
+    border-bottom: 1px solid #efefef !important;
+}
+table tr th.list-col-th-dark{
+    line-height: 0.3 !important;
+    background-color: #efefef;
+}
+table tr th.list-col-th-id{
+    background-color: #f9f9f9;
+}
+table tr td.list-col-td-dark{
+    line-height: 0.3 !important;
+    background-color: #efefef;
+    padding-top: 14px !important;
+}
+table tr td.list-col-td-id{
+    background-color: #f9f9f9;
+    font-weight:bold;
+}
+table tr td.table-details{
+    font-size:0.7em;
+    padding: .45rem;
+}
+table tr td{
+    padding: .45rem;
+}
+table {
+    margin-bottom:1rem;
+}
+.table.table-hover tbody tr:hover {
+    background: #efefef !important;
+}
+table tr td.table-action{
+    padding: .45rem;
+}
 
 
 .widgetTop{
@@ -502,3 +536,22 @@ Page Edit DIVI Staïle
     right: 15px;
 }
 
+/********
+ * PANEL FILTER
+ **/
+.panel-filter{
+    background-color: #efefef;
+    max-height: 0;
+    transition: all 1s cubic-bezier(0.23, 1, 0.32, 1);
+    overflow: hidden;
+    padding: -50px 75px 50px 75px;
+    box-shadow: 3px 3px 3px 3px rgba(128, 128, 128, 0.15) inset;
+}
+.panel-filter-closed{
+    max-height: 500px;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    padding: 15px 75px;
+}
+.panel-filter .form-group {
+    margin-bottom:2px;
+}

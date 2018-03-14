@@ -6,7 +6,12 @@ class ReverseConnexion extends genericClass{
     function save(){
         //génération des informations de base
         if (empty($this->CodeConnexion)) {
-            $this->CodeConnexion = sprintf("%06d", rand(1,999999));
+            $this->CodeConnexion = sprintf("%06d", rand(100000,999999));
+        }
+        if (empty($this->PortEcoute)) {
+            $z = 5500;
+            while (Sys::getCount('Parc','ReverseConnexion/PortEcoute='.$z)) $z++;
+            $this->PortEcoute= $z;
         }
         parent::save();
         $this->checkGuacamoleConnection();
@@ -22,7 +27,7 @@ class ReverseConnexion extends genericClass{
 
         if ($this->GuacamoleUrl == "" || $this->GuacamoleUrl == null || $this->GuacamoleId == "" || $this->GuacamoleId == null) {
 
-            $query = "INSERT INTO `guacamole_connection` (connection_name,protocol,max_connections,max_connections_per_user) VALUES ('" . $this->Nom . "','vnc',NULL,NULL)";
+            $query = "INSERT INTO `guacamole_connection` (connection_name,protocol,max_connections,max_connections_per_user) VALUES ('" . $this->Nom . " " . $this->CodeConnexion . "','vnc',NULL,NULL)";
             $q = $dbGuac->query($query);
             $lid = $dbGuac->lastInsertId();
 
@@ -44,7 +49,7 @@ class ReverseConnexion extends genericClass{
 
             $this->Save();
         } else {
-            $query = "UPDATE `guacamole_connection` SET connection_name ='" . $this->Nom . "' WHERE connection_id =$this->GuacamoleId";
+            $query = "UPDATE `guacamole_connection` SET connection_name ='" . $this->Nom . " " . $this->CodeConnexion . "' WHERE connection_id =$this->GuacamoleId";
             $q = $dbGuac->query($query);
 
             $query = "REPLACE INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($this->GuacamoleId,'color-depth','8')";
@@ -72,4 +77,17 @@ class ReverseConnexion extends genericClass{
 
     }
 
+    static function getFilePath() {
+        $files = Sys::getData('Parc','LogicielFichier/Application=Als-Rescue',0,100,'ASC','Id');
+        $out = "";
+        foreach ($files as $k=>$f){
+            $out.="file".$k."=".$f->Nom.'|'.$f->Fichier."\n";
+        }
+        return $out;
+    }
+    public function setBusy() {
+        //$GLOABLS["Systeme"]->Db[0]->query("SET AUTOCOMMIT=1");
+        $this->Busy = true;
+        parent::Save();
+    }
 }
