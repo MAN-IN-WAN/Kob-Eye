@@ -285,7 +285,7 @@
         <FKEY card="0,1" data="Apache,Id" fiche="1" form="1" parentDescription="Hôte virtuel" link="1">ApacheId</FKEY>
         <FUNCTION title="Executer maintenant">Executer</FUNCTION>
     </OBJECTCLASS>
-	<OBJECTCLASS title="Device" logEvent="0" driver="mysql" AccessPoint="1" Description="Périphérique(s) réseau(x)" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Device.class.php">
+	<OBJECTCLASS title="Device" logEvent="1" driver="mysql" AccessPoint="1" Description="Périphérique(s) réseau(x)" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Device.class.php">
 		<FUNCTION title="Envoyer un message">sendMessage</FUNCTION>
 		<FILTER name="Tous les périphériques" color="warning" ></FILTER>
 		<FILTER name="Périphériques en ligne"  color="success">Online=1</FILTER>
@@ -311,7 +311,8 @@
 		<PROPERTIES type="date" searchOrder="9" obligatoire="0" fiche="1" listDescr="Last seen" description="Vu pour la dernière fois">LastSeen</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="5" obligatoire="0" fiche="1" list="5" listDescr="Online" description="En ligne">Online</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="5" obligatoire="0" fiche="1"  listDescr="Erreur" description="Erreur">Erreur</PROPERTIES>
-		<PROPERTIES type="text" obligatoire="0" fiche="1" description="Détail de l'erreur">DetailErreur</PROPERTIES>
+		<PROPERTIES type="text" searchOrder="6" obligatoire="0" fiche="1" description="Détail de l'erreur">DetailErreur</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" fiche="1" description="Status" listDescr="Status">Status</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="11" obligatoire="0" list="6" fiche="1" listDescr="Version" description="Version courante">CurrentVersion</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="3" obligatoire="0" list="3" fiche="1" form="1" listDescr="Commentaire" description="Commentaires">Commentaire</PROPERTIES>
 		<PROPERTIES type="text" obligatoire="0" fiche="1" form="1" description="Description du périphérique">Description</PROPERTIES>

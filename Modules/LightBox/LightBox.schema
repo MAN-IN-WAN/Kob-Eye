@@ -1,0 +1,6 @@
+<SCHEMA>
+	<OBJECTCLASS title="Apn" driver="mysql" AccessPoint="0" master="0" Description="Appareil Photo"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" >
+		<PROPERTIES searchOrder="1" description="Titre" type="varchar">Titre</PROPERTIES>
+		<PROPERTIES searchOrder="2" description="Type" type="varchar" values="Sony">Type</PROPERTIES>
+	</OBJECTCLASS>
+</SCHEMA>
