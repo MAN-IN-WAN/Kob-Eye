@@ -14,7 +14,16 @@ $vars['CurrentMenu'] = Sys::$CurrentMenu;
 $vars["CurrentObj"] = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $vars["ObjectClass"] = $vars["CurrentObj"]->getObjectClass();
 $vars['operation'] = $vars['ObjectClass']->getOperations();
-$vars["ChildrenElements"] = $vars["ObjectClass"]->getChildElements();
+$childs = $vars["ObjectClass"]->getChildElements();
+$vars["ChildrenElements"] = array();
+foreach ($childs as $child){
+    if (
+        //test role
+        (!isset($child['hasRole'])||Sys::$User->hasRole($child['hasRole']))&&
+        //test hidden
+        !isset($child['childrenHidden'])&&!isset($child['hidden']))
+            array_push($vars["ChildrenElements"],$child);
+}
 $vars["Interfaces"] = $vars["ObjectClass"]->getInterfaces();
 $vars['identifier'] = $info['Module'] . $info['ObjectType'];
 if (is_object(Sys::$CurrentMenu))

@@ -244,9 +244,6 @@ class Utils {
         $chaine=strtr($chaine,utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ?"),"aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynn-");
         $chaine = preg_replace('`[-]+`', '-', trim($chaine));
         $chaine =  utf8_encode($chaine);
-        //ON verifie qu il n existe pas deja une entité avec la meme url
-        $Suffixe=(isset($Obj["Id"]))?"&Id!=".$Obj["Id"]:"";
-        $modif = false;
         $chaine = preg_replace('`[\/]`', '-', trim($chaine));
         return $chaine;
     }

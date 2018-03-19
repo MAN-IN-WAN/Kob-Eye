@@ -1115,7 +1115,7 @@ class Commande extends genericClass {
 		}
 		if(!isset($this->TypePaiement)) {
 			//var_dump($this->Paiement);
-			$typeP  = $this->storproc('Boutique/TypePaiement/Paiement/' . $this->Paiement->Id);
+			$typeP  = $this->storproc('Boutique/Instance/Paiement/' . $this->Paiement->Id);
 			if(is_array($typeP) && sizeof($typeP)>0) $this->TypePaiement = genericClass::createInstance('Boutique',$typeP[0]);
 		}
 		return $this->TypePaiement;
@@ -1349,7 +1349,7 @@ class Commande extends genericClass {
 // 		$mailContent = "
 // 			Bonjour " . $Civilite . ",<br /><br />
 // 			Nous vous informons que votre commande N° " . $this -> RefCommande . " a bien été prise en compte.<br />
-// 			Votre commande vous sera livrée dès réception de votre paiment " . $this->TypePaiement->Nom . ".<br />
+// 			Votre commande vous sera livrée dès réception de votre paiment " . $this->Instance->Nom . ".<br />
 // 			Vous pouvez d'ores et déjà vous rendre sur <a style='text-decoration:underline' href='" . $this->Site->Domaine . "/" . $GLOBALS['Systeme'] -> getMenu('Systeme/User') . "' > votre espace client </a> et suivre l'évolution de votre commande.<br /><br />
 // 			Adresse de livraison de votre commande " . $AdressLiv . "<br /><br /> " . $Lacommande . "<br /><br />
 // 			Toute l'équipe de " . $this -> Magasin -> Nom . " vous remercie de votre confiance,<br />
@@ -1601,7 +1601,7 @@ class Commande extends genericClass {
 			foreach($pay as $p) {
 				if($p['Etat'] == 1) {
 					$etatP = $p['Etat'];
-					$tpy = Sys::$Modules['Boutique']->callData("TypePaiement/Paiement/".$p['Id'],false,0,1);
+					$tpy = Sys::$Modules['Boutique']->callData("Instance/Paiement/".$p['Id'],false,0,1);
 					$d['TypePaiement'] = $tpy[0]['Nom'];
 					$d['EtatPaiement'] = $etat[$etatP];
 					break;
@@ -1610,7 +1610,7 @@ class Commande extends genericClass {
 			if($etatP == -1) {
 				foreach($pay as $p) {
 					$etatP = $p['Etat'];
-					$tpy = Sys::$Modules['Boutique']->callData("TypePaiement/Paiement/".$p['Id'],false,0,1);
+					$tpy = Sys::$Modules['Boutique']->callData("Instance/Paiement/".$p['Id'],false,0,1);
 					$d['TypePaiement'] = $tpy[0]['Nom'];
 					$d['EtatPaiement'] = $etat[$etatP];
 					break;

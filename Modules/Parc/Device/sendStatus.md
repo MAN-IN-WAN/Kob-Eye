@@ -1,0 +1,1 @@
+[OBJ Parc|Device|D][!D::sendStatus([!uuid!],[!status!])!]

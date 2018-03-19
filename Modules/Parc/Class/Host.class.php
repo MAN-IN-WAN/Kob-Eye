@@ -13,7 +13,6 @@ class Host extends genericClass
      */
     public function Save($synchro = true)
     {
-        parent::Save();
         // Forcer la vérification
         if (!$this->_isVerified) $this->Verify($synchro);
         // Enregistrement si pas d'erreur + Récupération GID CLIENT
@@ -153,10 +152,11 @@ class Host extends genericClass
     public function Verify($synchro = true)
     {
         //test du nom
-        if (!preg_match('#[a-z0-9]+#',$this->Nom)){
-            $this->addError(array("Prop"=>"Nom","Message"=>"Le nom ne peut contenir de caractères accentués, de majuscule, d'espaces ou de ponctuations."));
-            return false;
+        if (empty($this->NomLDAP)) {
+            $this->NomLDAP = Utils::CheckSyntaxe($this->Nom);
         }
+        $this->NomLDAP = strtolower($this->NomLDAP);
+        $this->NomLDAP = Utils::CheckSyntaxe($this->NomLDAP);
         if (strlen($this->Nom)>25||strlen($this->Nom)<2){
             $this->addError(array("Prop"=>"Nom","Message"=>"Le nom doit comporter de 2 à 25 caractères"));
             return false;
@@ -166,7 +166,13 @@ class Host extends genericClass
             if (!$this->getKEClient()) return true;
             //Verification des server
             if (!$this->getKEServer()){
-                return true;
+                //si pas de serveur alors on affecte le serveur Web par défaut
+                $defserv = Sys::getOneData('Parc','Server/defaultWebServer=1');
+                if (!$defserv){
+                    $this->addError(array('Message'=>'Aucun serveur Web par défaut n\'est définie. Veuillez contacter votre administrateur.'));
+                    return false;
+                }
+                $this->addParent($defserv);
             }
 
             $this->_isVerified = true;
@@ -176,7 +182,7 @@ class Host extends genericClass
                 // On boucle sur tous les serveurs
                 $KEServers = $this->getKEServer();
                 foreach ($KEServers as $KEServer) {
-                    $dn = 'cn=' . $this->Nom . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE;
+                    $dn = 'cn=' . $this->NomLDAP . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE;
                     // Verification à jour
                     $res = Server::checkTms($this,$KEServer);
                     if ($res['exists']) {
@@ -185,7 +191,7 @@ class Host extends genericClass
                             $this->_isVerified = false;
                         } else {
                             // Déplacement
-                            if ($this->getLdapDN($KEServer) != 'cn=' . $this->Nom . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE) $res = Server::ldapRename($this->getLdapDN($KEServer), 'cn=' . $this->Nom, 'ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE);
+                            if ($this->getLdapDN($KEServer) != 'cn=' . $this->NomLDAP . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE) $res = Server::ldapRename($this->getLdapDN($KEServer), 'cn=' . $this->NomLDAP, 'ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE);
                             else $res = array('OK' => true);
                             if ($res['OK']) {
                                 // Modification
@@ -255,11 +261,11 @@ class Host extends genericClass
     private function buildEntry($KEServer,$new = true)
     {
         $entry = array();
-        $entry['cn'] = $this->Nom;
+        $entry['cn'] = $this->NomLDAP;
         $entry['givenname'] = $this->Nom;
-        $entry['homedirectory'] = '/home/' . $this->Nom;
-        $entry['sn'] = $this->Nom;
-        $entry['uid'] = $this->Nom;
+        $entry['homedirectory'] = '/home/' . $this->NomLDAP;
+        $entry['sn'] = $this->NomLDAP;
+        $entry['uid'] = $this->NomLDAP;
         $entry['description'] = json_encode(array("Quota" => $this->Quota));
         $entry['preferredLanguage'] = $this->PHPVersion;
         if ($new) {

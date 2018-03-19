@@ -6,6 +6,7 @@ class Parc_Revendeur extends Parc_Client {
         genericClass::Save();
         if ($this->AccesActif)
             $this->setUser();
+        return true;
     }
     public function Verify($synchro = true) {
         return genericClass::Verify($synchro);

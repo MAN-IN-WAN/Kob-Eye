@@ -11,7 +11,7 @@ class StatusReservation extends genericClass {
         if ($paiement) return $paiement;
         else{
             //recherche du type de paiement actif
-            $tp = Sys::getOneData('Reservations','TypePaiement/Actif=1');
+            $tp = Sys::getOneData('Reservations','Instance/Actif=1');
 
             //création du paiement
             $paiement = genericClass::createInstance('Reservations','Paiement');

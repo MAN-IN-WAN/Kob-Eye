@@ -450,6 +450,13 @@ class genericClass extends Root {
 		$t = $Obj->getElements($this->_view);
 		foreach ($t as $c=>$o){
 			for ($j=0;$j<sizeof($t[$c]["elements"]);$j++){
+			    //vérification des droits
+                if (isset($t[$c]["elements"][$j]["hasRole"])&&!Sys::$User->hasRole($t[$c]["elements"][$j]["hasRole"])){
+                    //on supprime les elements si l'utilisateur n'a pas le bon role
+                    array_splice($t[$c]["elements"],$j,1);
+                    $j--;
+                    continue;
+                }
 				if ($default||(isset($t[$c]["elements"][$j]["special"])&&$t[$c]["elements"][$j]["special"]=="multi")){
 					$p = &$t[$c]["elements"][$j];
 					$n = $Prefixe.$p["name"];
@@ -2108,6 +2115,7 @@ class genericClass extends Root {
 		if ($obj->browseable){
 			$this->SaveHeaderVars();
 		}
+
 		//Sauvegarde l'enregistrement en cours dans la base de donnees
 		//On traite les dictionnaires automatiques
 		foreach ($GLOBALS["Systeme"]->Language as $Lang => $Pref) {
@@ -2170,7 +2178,8 @@ class genericClass extends Root {
 				}
 			}
 		}
-		//if (sizeof($this->Error))return false;
+
+        //if (sizeof($this->Error))return false;
 		//Si il n a pas ï¿œtï¿œ dï¿œfini de paren
 		//print_r($this->Parents);
 		//print_r($this->typesParent());
@@ -2203,7 +2212,8 @@ class genericClass extends Root {
 				$this -> Heritages[$i]["Value"] = $this -> {$Name};
 			}
 		}
-		$obj = $this->getObjectClass();
+
+        $obj = $this->getObjectClass();
 		$new = false;
 		if (!$this->Id) {
 		    $new = true;
@@ -2223,36 +2233,32 @@ class genericClass extends Root {
                         //print_r($parent);
                         $this->addParent($parent);
                     } else{
-                        print_r($exists);
+                        //TODO surement un truc à fair emais je ne vois pas quoi ...
+                        //print_r($exists);
                     }
                     break;
                 }
             }
         }
 
-		$Results = Sys::$Modules[$this -> Module] -> Db -> Query($this);
+        $Results = Sys::$Modules[$this -> Module] -> Db -> Query($this);
 		if (!is_array($Results)&&is_string($Results)&&!empty($Results)){
 		    $this->addError(Array("Message"=>$Results));
 		    return false;
         }
-		$this -> Parents = array();
+
+        $this -> Parents = array();
 		$this -> initFromArray($Results);
 
+        $this -> launchTriggers(__FUNCTION__,$new);
 
-
-		$this -> launchTriggers(__FUNCTION__,$new);
-
-		//si l'element possede le generateUrl = true alors on génère ses mots clefs
+        //si l'element possede le generateUrl = true alors on génère ses mots clefs
 		if ($obj->browseable){
 			if (isset($this->Display)&&$this->Display)
 				$this->SaveKeywords();
 			else
 				$this->deletePages();
 		}
-
-
-
-
 		return true;
 	}
 

@@ -353,4 +353,14 @@ Task=$task
         return nl2br($infos);
 
     }
+
+    public function sendStatus($uuid,$status){
+        if (empty($uuid)) return;
+
+        $exists = Sys::getOneData('Parc','Device/Uuid='.$uuid);
+        if ($exists) {
+            $exists->Status = $status;
+            $exists->Save();
+        }
+    }
 }

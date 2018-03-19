@@ -2,17 +2,16 @@
 	<OBJECTCLASS title="Client" driver="mysql" AccessPoint="1" master="0" Description="Client" Icon="/Skins/AdminV2/Img/IconAqua/Forum.png" className="Parc_Client" Class="Modules/Parc/Class/Client.class.php" Order="Nom">
         <FILTER name="Tous les clients" color="warning" ></FILTER>
         <FILTER name="Accès web" color="success">AccesActif=1</FILTER>
-		<PROPERTIES category="Intitulé" type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" listDescr="Nom">Nom</PROPERTIES>
-		<PROPERTIES category="Intitulé"  searchOrder="2" type="varchar" fiche="1" form="1" listDescr="Code Gestion">CodeGestion</PROPERTIES>
+		<PROPERTIES category="Intitulé" type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" listDescr="Nom" unique="1">Nom</PROPERTIES>
+		<PROPERTIES category="Intitulé"  searchOrder="2" type="varchar" fiche="1" form="1" listDescr="Code Gestion" hasRole="PARC_TECHNICIEN">CodeGestion</PROPERTIES>
 		<PROPERTIES category="Accès client" type="boolean" obligatoire="0" searchOrder="4" description="Activation Accès web" list="1" fiche="1" form="1" listDescr="Accès Web">AccesActif</PROPERTIES>
 		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="5" description="Identifiant Accès web"  fiche="1" form="1">AccesUser</PROPERTIES>
-		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="6" description="Mot de passe Accès Web" fiche="1" form="1">AccesPass</PROPERTIES>
-        <PROPERTIES category="Accès client" type="varchar" description="Espace Mail à distribuer" fiche="1" form="1">QuotaMail</PROPERTIES>
-        <PROPERTIES category="Finance" type="price" description="Montant Mensuel" fiche="1" form="1" list="1" listDescr="Montant / Mois">MontantMensuel</PROPERTIES>
+		<PROPERTIES category="Accès client" type="password" obligatoire="0" searchOrder="6" description="Mot de passe Accès Web" fiche="1" form="1">AccesPass</PROPERTIES>
+        <PROPERTIES category="Accès client" type="varchar" description="Espace Mail à distribuer"  hasRole="PARC_TECHNICIEN" fiche="1" form="1">QuotaMail</PROPERTIES>
+        <PROPERTIES category="Finance" type="price" description="Montant Mensuel" fiche="1" form="1" list="1" hasRole="PARC_TECHNICIEN" listDescr="Montant / Mois">MontantMensuel</PROPERTIES>
 		<PROPERTIES category="Coordonnées" searchOrder="2" type="varchar" description="Adresse e-mail" fiche="1" form="1" list="1" listDescr="Email">Email</PROPERTIES>
 		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de téléphone" fiche="1" form="1" list="1" listDescr="Tel">Tel</PROPERTIES>
-		<PROPERTIES category="Coordonnées" type="varchar" description="Numéro de fax" fiche="1" form="1">Fax</PROPERTIES>
-		<PROPERTIES category="LDAP" type="varchar" obligatoire="1" unique="1" length="50" description="Nom sous LDAP (de 8-50 caractères sans caractère spéciaux ou espace)" fiche="1" form="1">NomLDAP</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1" unique="1" length="50" hasRole="PARC_TECHNICIEN" description="Nom sous LDAP (de 8-50 caractères sans caractère spéciaux ou espace)" fiche="1" form="1">NomLDAP</PROPERTIES>
 		<PROPERTIES category="LDAP" type="int" auto="1">LdapGid</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
@@ -41,14 +40,14 @@
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
 		<FKEY card="0,1" module="Systeme" data="User,Id">UserId</FKEY>
-		<FKEY card="0,1" data="Client,Id">ClientId</FKEY>
+		<FKEY card="0,1" data="Client,Id" childrenHidden="1">ClientId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Revendeur" driver="mysql" AccessPoint="1" master="0" Description="Revendeur" Icon="/Skins/AdminV2/Img/IconAqua/Forum.png" className="Parc_Revendeur" Class="Modules/Parc/Class/Revendeur.class.php">
-		<PROPERTIES category="Intitulé" type="varchar" obligatoire="1" searchOrder="1">Nom</PROPERTIES>
-		<PROPERTIES category="Accès client" type="boolean" obligatoire="0" searchOrder="4" description="Activation Accès web">AccesActif</PROPERTIES>
-		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="5" description="Identifiant Accès web">AccesUser</PROPERTIES>
-		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="6" description="Mot de passe Accès Web">AccesPass</PROPERTIES>
-		<PROPERTIES category="Coordonnées" type="varchar" description="Adresse e-mail" obligatoire="1">Email</PROPERTIES>
+		<PROPERTIES category="Intitulé" type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1">Nom</PROPERTIES>
+		<PROPERTIES category="Accès client" type="boolean" obligatoire="0" searchOrder="4" description="Activation Accès web" list="1" fiche="1" form="1">AccesActif</PROPERTIES>
+		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="5" description="Identifiant Accès web" fiche="1" form="1">AccesUser</PROPERTIES>
+		<PROPERTIES category="Accès client" type="varchar" obligatoire="0" searchOrder="6" description="Mot de passe Accès Web" fiche="1" form="1">AccesPass</PROPERTIES>
+		<PROPERTIES category="Coordonnées" type="varchar" description="Adresse e-mail" obligatoire="1" fiche="1" form="1">Email</PROPERTIES>
 		<FUNCTION title="Lister les domaines sans client" type="form">AfficherDomaineSansClient</FUNCTION>
 		<FKEY card="0,1" module="Systeme" data="User,Id">UserId</FKEY>
 	</OBJECTCLASS>
@@ -185,6 +184,7 @@
 		</CATEGORY>
 		<CATEGORY title="Mail">
 			<PROPERTIES type="boolean" description="Serveur email par défaut" form="1">defaultMailServer</PROPERTIES>
+			<PROPERTIES type="boolean" description="Serveur web par défaut" form="1">defaultWebServer</PROPERTIES>
 			<PROPERTIES type="varchar" description="Admin mail: Nom d'utilisateur" default="admin" form="1">mailAdminUser</PROPERTIES>
 			<PROPERTIES type="varchar" description="Admin mail: Mot de passe" form="1">mailAdminPassword</PROPERTIES>
 			<PROPERTIES type="varchar" description="Admin mail: Port" default="7071" form="1">mailAdminPort</PROPERTIES>
@@ -205,7 +205,7 @@
 		<FUNCTION title="Envoyer un récapitulatif">EnvoyerRecapitulatif</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Host" driver="mysql" AccessPoint="1" Description="Hébergement" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Class="Modules/Parc/Class/Host.class.php">
-		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" description="Nom (uniquement de 2 à 16 caractères comprenant a-Z et 0-9 sans espace et ponctuation.)" listDescr="Nom">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" description="Nom" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="gestion commerciale" searchOrder="2" description="En production" fiche="1" form="1">Production</PROPERTIES>
 		<PROPERTIES type="boolean" default="1" category="gestion commerciale" searchOrder="3" description="Nécessite une facturation">Facturable</PROPERTIES>
@@ -215,11 +215,12 @@
 		<PROPERTIES type="text" category="gestion commerciale" fiche="1" form="1">Commentaires</PROPERTIES>
 		<PROPERTIES type="int" obligatoire="1" default="1000" description="Quota (en Mo)" listDescr="Quota (en Mo)" list="1" fiche="1" form="1">Quota</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" obligatoire="1" default="default" description="Version de php" query="Parc/PHPVersion::Valeur::Titre" list="1" fiche="1" form="1">PHPVersion</PROPERTIES>
+		<PROPERTIES category="LDAP" type="varchar" auto="1" unique="1" length="50" hasRole="PARC_TECHNICIEN" description="Nom sous LDAP (de 8-50 caractères sans caractère spéciaux ou espace)" fiche="1" form="1">NomLDAP</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
 		<PROPERTIES category="LDAP" type="int" auto="1">LdapGid</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapUid</PROPERTIES>
-		<FKEY card="1,n" data="Server,Id" link="1" form="1" list="1" fiche="1" parentDescription="Serveur" description="Serveur Web" filter="Web=1">ServerId</FKEY>
+		<FKEY card="1,n" data="Server,Id" link="1" form="1" list="1" fiche="1" parentDescription="Serveur" description="Serveur Web" filter="Web=1" hasRole="PARC_TECHNICIEN">ServerId</FKEY>
 		<FKEY card="1,1" data="Client,Id" link="1" form="1" list="1" fiche="1" parentDescription="Client" description="Client">ClientId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Apache" driver="mysql" Dico="1" Description="Hôte virtuel" Icon="/Skins/AdminV2/Img/IconAqua/Tasks.png" Class="Modules/Parc/Class/Apache.class.php">
@@ -285,7 +286,7 @@
         <FKEY card="0,1" data="Apache,Id" fiche="1" form="1" parentDescription="Hôte virtuel" link="1">ApacheId</FKEY>
         <FUNCTION title="Executer maintenant">Executer</FUNCTION>
     </OBJECTCLASS>
-	<OBJECTCLASS title="Device" logEvent="0" driver="mysql" AccessPoint="1" Description="Périphérique(s) réseau(x)" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Device.class.php">
+	<OBJECTCLASS title="Device" logEvent="1" driver="mysql" AccessPoint="1" Description="Périphérique(s) réseau(x)" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Device.class.php">
 		<FUNCTION title="Envoyer un message">sendMessage</FUNCTION>
 		<FILTER name="Tous les périphériques" color="warning" ></FILTER>
 		<FILTER name="Périphériques en ligne"  color="success">Online=1</FILTER>
@@ -311,7 +312,8 @@
 		<PROPERTIES type="date" searchOrder="9" obligatoire="0" fiche="1" listDescr="Last seen" description="Vu pour la dernière fois">LastSeen</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="5" obligatoire="0" fiche="1" list="5" listDescr="Online" description="En ligne">Online</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="5" obligatoire="0" fiche="1"  listDescr="Erreur" description="Erreur">Erreur</PROPERTIES>
-		<PROPERTIES type="text" obligatoire="0" fiche="1" description="Détail de l'erreur">DetailErreur</PROPERTIES>
+		<PROPERTIES type="text" searchOrder="6" obligatoire="0" fiche="1" description="Détail de l'erreur">DetailErreur</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="0" fiche="1" description="Status" listDescr="Status">Status</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="11" obligatoire="0" list="6" fiche="1" listDescr="Version" description="Version courante">CurrentVersion</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="3" obligatoire="0" list="3" fiche="1" form="1" listDescr="Commentaire" description="Commentaires">Commentaire</PROPERTIES>
 		<PROPERTIES type="text" obligatoire="0" fiche="1" form="1" description="Description du périphérique">Description</PROPERTIES>
@@ -325,7 +327,7 @@
 		<PROPERTIES type="varchar" searchOrder="14" fiche="1" form="1" description="Type de supervision" values="Active,Passive" default="Active" listDescr="Supervision">Monitoring</PROPERTIES>
 		<PROPERTIES type="varchar" description="Id guacamole RDP">GuacamoleIdRdp</PROPERTIES>
 		<PROPERTIES type="varchar" description="Id guacamole VNC">GuacamoleIdVnc</PROPERTIES>
-		<FKEY card="0,1" data="Client,Id" search="1" fiche="1" form="1" parentDescription="Client" link="1">ClientId</FKEY>
+		<FKEY card="0,1" data="Client,Id" search="1" fiche="1" form="1" hasRole="PARC_TECHNICIEN" parentDescription="Client" link="1">ClientId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="DeviceConnexion" driver="mysql" Description="Connexion(s) vers le Périphérique" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/DeviceConnexion.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom du périphérique">Nom</PROPERTIES>
@@ -385,14 +387,14 @@
 		<PROPERTIES type="varchar" unique="1" fiche="1" description="Id sur le serveur mail" >IdMail</PROPERTIES>
         <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Adresse eMail" list="1" form="1" fiche="1" listDescr="Adresse">Adresse</PROPERTIES>
 		<PROPERTIES type="varchar" description="Mot de passe"  form="1" fiche="1">Pass</PROPERTIES>
-        <PROPERTIES type="varchar" searchOrder="2" obligatoire="1" values="NULL,MAIL_BUS,MAIL_POP,MAIL_PRO" default="MAIL_POP" description="COS" list="1" form="1" fiche="1" listDescr="COS">COS</PROPERTIES>
+        <PROPERTIES type="varchar" searchOrder="2" obligatoire="1" values="NULL,MAIL_BUS,MAIL_POP,MAIL_PRO" default="MAIL_POP" description="Classe de service" list="1" form="1" fiche="1" listDescr="COS">COS</PROPERTIES>
 		<PROPERTIES type="int" subtype="sliderGo" description="Quota en Go" list="1" form="1" fiche="1" listDescr="Quota">Quota</PROPERTIES>
 		<PROPERTIES type="int" description="Espace utilisé en Mo" list="1" fiche="1" listDescr="Utilisé">EspaceUtilise</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="3" description="Status de l'adresse" values="active,maintenance,locked,closed,lockout,pending" default="active" list="1" form="1" fiche="1" listDescr="Etat">Status</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="4" description="Nom du contact" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" description="Prenom du contact" list="1" form="1" fiche="1" listDescr="Prénom">Prenom</PROPERTIES>
-		<FKEY card="1,1" data="Client,Id" fiche="1" form="1" >ClientId</FKEY>
-		<FKEY card="1,1" data="Server,Id" fiche="1" form="1" filter="Mail=1">ServerId</FKEY>
+		<FKEY card="1,1" data="Client,Id" fiche="1" form="1" description="Client" >ClientId</FKEY>
+		<FKEY card="1,1" data="Server,Id" fiche="1" form="1" filter="Mail=1" description="Serveur Mail" hasRole="PARC_TECHNICIEN">ServerId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Ticket" driver="mysql" AccessPoint="1" Description="Tickets Clients" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" >
 		<FILTER name="En cours" color="secondary">Etat=En cours</FILTER>
@@ -411,7 +413,7 @@
 		<PROPERTIES type="varchar" description="Source du ticket" list="1" form="1" fiche="1" listDescr="Source" values="Gestion,Zabbix,Glpi,Web" default="Gestion" >Source</PROPERTIES>
         <PROPERTIES type="varchar" description="Priorité" list="1" form="1" fiche="1" listDescr="Priorité" values="NC,Info,Warning,Moyenne,Haute,Désastre" default="NC" >Priorite</PROPERTIES>
 		<FKEY card="0,n" data="Device,Id">DeviceId</FKEY>
-		<FKEY card="1,1" data="Client,Id">ClientId</FKEY>
+		<FKEY card="1,1" data="Client,Id" hasRole="PARC_TECHNICIEN">ClientId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="DeviceTask" driver="mysql" AccessPoint="1" Description="Taches machines" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/DeviceTask.class.php">
 		<FKEY card="1,1" data="Device,Id">DeviceId</FKEY>
@@ -455,20 +457,20 @@
 		<FKEY card="0,n" data="Domain,Id" description="Domaine(s)" list="1" form="20" fiche="1" listDescr="Domaine(s)">DomainId</FKEY>
 		<FKEY card="0,n" data="Host,Id" description="Hébergement" listDescr="Hébergement">HostId</FKEY>
         <FKEY card="0,n" data="Server,Id" description="Serveur SQL" filter="SQL=1" listDescr="Serveur SQL">ServerId</FKEY>
-        <FKEY card="1,1" data="Client,Id" description="Client" listDescr="Serveur SQL">ClientId</FKEY>
+        <FKEY card="1,1" data="Client,Id" description="Client" listDescr="Client" hasRole="PARC_TECHNICIEN">ClientId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Instance" driver="mysql" Description="Secib Web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Instance.class.php" logEvent="1" AccessPoint="1">
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de l'instance (le sous domaine ex: [sous-domaine].mondomaine.ext)" list="1" form="1" fiche="1" unique="1" listDescr="Nom" default="">Nom</PROPERTIES>
-		<FKEY card="0,1" data="VersionLogiciel,Id" description="Numéro de la version (au format N.X.Y.Z)" list="1" form="1" fiche="1"  listDescr="Version">VersionId</FKEY>
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Url du webservice" form="1" fiche="1"  listDescr="WebService" default="https://secibneo.secib.fr">WebService</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Guid du cabinet" form="1" fiche="1"  listDescr="Guid">Guid</PROPERTIES>
+	<OBJECTCLASS title="Instance" driver="mysql" Description="Instance" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Instance.class.php" logEvent="1" AccessPoint="1" plugin="1">
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de l'instance (le sous domaine ex: [sous-domaine].mondomaine.ext)" list="1" form="1" fiche="1" listDescr="Nom" default="">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Type de l'instance" list="1" form="1" fiche="1" values="dev,pre-prod,prod" listDescr="Type" default="prod" >Type</PROPERTIES>
 		<PROPERTIES type="boolean" description="Actif" listDescr="Actif" list="1">Enabled</PROPERTIES>
 		<PROPERTIES type="boolean" description="Ssl" listDescr="Ssl"  list="1" form="1" fiche="1">EnableSsl</PROPERTIES>
 		<FKEY card="1,n" data="Domain,Id" description="Domaine(s)" listDescr="Domaine(s)" form="1" fiche="1">DomainId</FKEY>
 		<FKEY card="0,1" data="Host,Id" description="Hébergement" listDescr="Hébergement" list="1" fiche="1">HostId</FKEY>
-		<FKEY card="1,1" data="Client,Id" description="Client" listDescr="Client" list="1" form="1" fiche="1">ClientId</FKEY>
+		<FKEY card="1,1" data="Bdd,Id" description="Base de donnée(s)" listDescr="Base de donnée" form="1" fiche="1">BddId</FKEY>
 		<FUNCTION title="Activer le SSL">enableSSL</FUNCTION>
+		<FUNCTION title="Dupliquer cette instance">duplicateInstance</FUNCTION>
+		<FUNCTION title="Restaurer une instance">restoreInstance</FUNCTION>
+		<FUNCTION title="Archiver cette instance">archiveInstance</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Activity" logEvent="1"  AccessPoint="1" driver="mysql" Description="Activité des jobs"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/Parc/Class/Activity.class.php" Operations="">
 		<FILTER name="Toutes les activités" color="warning" ></FILTER>
@@ -487,5 +489,26 @@
 		<FKEY data="Host,Id" form="1" fiche="1" card="0,1" popup="1" >HostId</FKEY>
 		<FKEY data="Apache,Id" form="1" fiche="1" card="0,1"  popup="1" >ApacheId</FKEY>
 	</OBJECTCLASS>
+	<OBJECTCLASS title="ScheduledTesk" AccessPoint="1" driver="mysql" Description="Tache planifiée"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+		<FUNCTION title="Démarrer maintenant">runNow</FUNCTION>
+		<FUNCTION title="Arrêter maintenant">stop</FUNCTION>
+		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1"  obligatoire="1" listDescr="Titre">Titre</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="2" list="1" form="1" fiche="1"  listDescr="Actif" description="Actif">Enabled</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="3" list="1" fiche="1"  listDescr="En cours" description="En cours">Running</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1" list="1" special="reverse" description="Erreur" listDescr="Erreur">Errors</PROPERTIES>
+		<PROPERTIES type="varchar" listDescr="Minute" default="*" values="*,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59" list="1" form="1" fiche="1">Minute</PROPERTIES>
+		<PROPERTIES type="varchar" listDescr="Heure" default="*" values="*,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24" list="1" form="1" fiche="1">Heure</PROPERTIES>
+		<PROPERTIES type="varchar" listDescr="Jour Mois" default="*" values="*,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31" list="1" form="1" fiche="1">Jour</PROPERTIES>
+		<PROPERTIES type="varchar" listDescr="Mois" default="*" values="*,1,2,3,4,5,6,7,8,9,10,11,12" list="1" form="1" fiche="1">Mois</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1">Lundi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1">Mardi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1">Mercredi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1">Jeudi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1">Vendredi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1">Samedi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" fiche="1">Dimanche</PROPERTIES>
+		<FKEY data="Instance,Id" card="1,1" inline="1" form="1" description="Instance">SambaShareId</FKEY>
+	</OBJECTCLASS>
+
 </SCHEMA>
 

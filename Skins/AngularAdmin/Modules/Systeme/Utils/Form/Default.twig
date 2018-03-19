@@ -77,7 +77,7 @@
                     </script>
                     <input type="text" ion-range-slider stype="single" prettify="prett" min="0" max="204800" from="modalObj.{{ field.name }}" from_min="1024" step="1024" grid="true" grid_num="10" postfix=" Go" class="form-control" placeholder="" id="input-{{ field.name }}" ng-model="modalObj.{{ field.name }}" >
                 {% else %}
-                    <input type="text" class="form-control" placeholder="" id="input-{{ field.name }}" ng-model="modalObj.{{ field.name }}">
+                    <input type="text" class="form-control" placeholder="" ng-model="modalObj.{{ field.name }}">
                 {% endif %}
             {% endif %}
             </div>

@@ -58,7 +58,7 @@ class Facture extends genericClass{
         if ($paiement) return $paiement;
         else{
             //recherch du type de paiement actif
-            $tp = Sys::getOneData('Reservations','TypePaiement/Actif=1');
+            $tp = Sys::getOneData('Reservations','Instance/Actif=1');
             //recherche réservation
             $res = $this->getOneParent('Reservation');
             $cli = $res->getClient();
