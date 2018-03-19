@@ -13,6 +13,25 @@ class User extends genericClass{
 		}
 		return $ROLE;
 	}
+
+    /**
+     * Détecte les roles depuis plusieurs roles délimités par un |.
+     * ex: PARC_TECHNICIEN|PARC_CLIENT
+     * @param $role
+     * @return bool
+     */
+    function hasRole($role){
+	    $roles = explode('|',$role);
+        $USR_ROLES = $this->getRoles();
+
+	    foreach ($roles as $r) {
+            //Detection de la nature du pere (ne fonctionne que pour le niveau deux)
+            if (in_array($role, $USR_ROLES)) {
+                return true;
+            }
+        }
+        return false;
+    }
 	function isRole($role){
 		//Detection de la nature du pere (ne fonctionne que pour le niveau deux)
 		$ROLES = $this->getRoles();

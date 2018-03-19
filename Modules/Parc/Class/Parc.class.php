@@ -269,16 +269,16 @@ class Parc extends Module{
 	private function initGlobalVars(){
         if (!Sys::$User->Public){
             //initialisation client si connecté
-            $Cls = Sys::$User->getChildren('Client');
-            if (sizeof($Cls)){
-                $this->_ParcClient = $Cls[0];
+            $Cls = Sys::$User->getOneChild('Client');
+            if ($Cls){
+                $this->_ParcClient = $Cls;
                 $GLOBALS["Systeme"]->registerVar("ParcClient",$this->_ParcClient);
             }else{
                 //test si revendeur
-                $Rvs = Sys::$User->getChildren('Revendeur');
-                if (sizeof($Rvs)){
-                    $this->_ParcClient = $Rvs[0];
-                    $GLOBALS["Systeme"]->registerVar("ParcClient",$this->_ParcClient);
+                $Rvs = Sys::$User->getOneChild('Revendeur');
+                if ($Rvs){
+                    $this->_ParcRevendeur = $Rvs;
+                    $GLOBALS["Systeme"]->registerVar("ParcRevendeur",$this->_ParcRevendeur);
                 } else {
                     //test si contact
                     $ct = Sys::$User->getOneChild('Contact');

@@ -619,7 +619,7 @@ class ObjectClass extends Root{
 				//definition de la description
 				if (isset($FKAT['description']))$As->setDescription($FKAT['description']);
 				//configuration des attributs accessoires
-				$As->initCustomAttributes($FKAT);
+				$As->initCustomAttributes($FK["@"]);
 				//Configuration de l'association
 				$As->addLink($this,"0,n");
 				//Recherche du module

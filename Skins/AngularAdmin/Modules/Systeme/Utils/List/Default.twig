@@ -86,7 +86,7 @@
                                         {% endfor %}
                                     </select>
                                 {% else %}
-                                    <input type="text" class="form-control form-control-sm" placeholder="" id="input-{{ field.name }}"  ng-model="{{ identifier }}.filters.{{ field.name }}.value" ng-change="{{ identifier }}applyFilters()">
+                                    <input type="text" class="form-control form-control-sm" placeholder=""  ng-model="{{ identifier }}.filters.{{ field.name }}.value" ng-change="{{ identifier }}applyFilters()">
                                 {% endif %}
                             {% endif %}
                         </div>

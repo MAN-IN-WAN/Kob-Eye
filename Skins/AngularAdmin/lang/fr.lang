@@ -52,3 +52,7 @@ __EST_OBLIGATOIRE__|est obligatoire
 
 #######COMMANDES###########
 __CURRENT_ORDER__|Commande en cours
+
+#######ERREURS###########
+__LA_VALEUR_DU_CHAMP__|La valeur du champ
+__ALREADY_EXISTS__|existe déjà.

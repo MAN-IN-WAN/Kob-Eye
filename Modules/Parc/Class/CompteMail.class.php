@@ -17,6 +17,7 @@ class CompteMail extends genericClass {
 		//if($this->_isVerified) {
 		//	parent::Save();
 		//}
+
         if(!$synchro){
             parent::Save();
             return true;

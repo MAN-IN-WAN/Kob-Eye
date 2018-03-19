@@ -58,7 +58,7 @@ class Facture extends genericClass{
         if ($paiement) return $paiement;
         else{
             //recherch du type de paiement actif
-            $tp = Sys::getOneData('TennisForever','TypePaiement/Actif=1');
+            $tp = Sys::getOneData('TennisForever','Instance/Actif=1');
 
             //création du paiement
             $paiement = genericClass::createInstance('TennisForever','Paiement');

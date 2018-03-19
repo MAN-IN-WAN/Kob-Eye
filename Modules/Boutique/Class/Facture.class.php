@@ -145,7 +145,7 @@ class Facture extends genericClass {
 				}
 			}
 			if($p) {
-				$typ = Sys::getData('Boutique',"TypePaiement/Paiement/".$p['Id'],0,1);
+				$typ = Sys::getData('Boutique',"Instance/Paiement/".$p['Id'],0,1);
 				$typ = $typ[0];
 				$paiement = $typ->Nom;
 				$compteClient = $typ->CompteComptable;
