@@ -103,6 +103,10 @@
 		<PROPERTIES type="metak" special="multi" fiche="1" form="1">Keywords</PROPERTIES>
 		<PROPERTIES type="image" fiche="1" form="1">Image</PROPERTIES>
 		<PROPERTIES type="modele" category="Configuration" query="Systeme/ActiveTemplate::Id::Nom">Template</PROPERTIES>
+		<!-- html -->
+		<PROPERTIES type="html" category="Page" description="Titre (h1) de la page">PageTitre</PROPERTIES>
+		<PROPERTIES type="html" category="Page" description="Description html de l page">PageDescription</PROPERTIES>
+
 		<FKEY card="0,1" data="Menu,Id" link="1" parentDescription="Menus" childDescription="Menus" Description="Menus">MenuParent</FKEY>
 		<FKEY card="0,n" data="User,Id" inherit="Group" hidden="1">UserId</FKEY>
 		<FKEY card="0,n" data="Group,Id" hidden="1">GroupId</FKEY>
