@@ -152,7 +152,7 @@ class Paiement extends genericClass {
 	 * @return	Objet KE Type Paiement
 	 */
 	public function getTypePaiement() {
-		$tps = $this->storproc('Catalogue/TypePaiement/Paiement/'.$this->Id);
+		$tps = $this->storproc('Catalogue/Instance/Paiement/'.$this->Id);
 		if(is_array($tps)) return genericClass::createInstance('Catalogue', $tps[0]);
 	}
 

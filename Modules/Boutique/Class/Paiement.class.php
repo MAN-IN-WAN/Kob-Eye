@@ -28,7 +28,7 @@ class Paiement extends genericClass {
 		if($this->Etat == 2 && $commande->Valide) {
 			$commande->setUnValid();
 		}
-	/*	if(($this->Etat == 0 && $commande->Valide&& $this->TypePaiement=0) {
+	/*	if(($this->Etat == 0 && $commande->Valide&& $this->Instance=0) {
 			$commande->setUnValid();
 		}*/
 	}
@@ -88,7 +88,7 @@ class Paiement extends genericClass {
 	 * @return	Objet KE Type Paiement
 	 */
 	public function getTypePaiement() {
-		$tps = $this->storproc('Boutique/TypePaiement/Paiement/'.$this->Id);
+		$tps = $this->storproc('Boutique/Instance/Paiement/'.$this->Id);
 		if(is_array($tps)) return genericClass::createInstance('Boutique', $tps[0]);
 	}
 

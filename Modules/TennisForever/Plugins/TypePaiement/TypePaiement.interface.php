@@ -3,7 +3,7 @@
 /*********************************************
 *
 * Interface pour plugin
-* Boutique / TypePaiement
+* Boutique / Instance
 * Abtel
 * 
 *********************************************/

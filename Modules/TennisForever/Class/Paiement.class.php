@@ -3,7 +3,7 @@ class Paiement extends genericClass
 {
     function getTypePaiement()
     {
-        return Sys::getOneData('TennisForever', 'TypePaiement/Paiement/' . $this->Id);
+        return Sys::getOneData('TennisForever', 'Instance/Paiement/' . $this->Id);
     }
     function getFacture()
     {

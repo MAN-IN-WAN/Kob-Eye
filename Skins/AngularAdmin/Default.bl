@@ -189,7 +189,7 @@
         <script src="Systeme/Header/BackupAdmin.json"></script>
     [/IF]
 
-    [IF [!Systeme::User::isRole(PARC_TECHNICIEN)!]]
+    [IF [!Systeme::User::isRole(PARC_TECHNICIEN)!]||[!Systeme::User::isRole(PARC_REVENDEUR)!]]
         <script src="Systeme/Header/InfraAdmin.json"></script>
     [/IF]
 

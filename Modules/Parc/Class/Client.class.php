@@ -9,19 +9,16 @@ class Parc_Client extends genericClass {
 	 * @return	void
 	 */
 	public function Save( $synchro = true ) {
-        $this->AccesUser = strtolower($this->AccesUser);
-        $this->AccesUser = trim($this->AccesUser);
-        $this->AccesUser = Utils::CheckSyntaxe($this->AccesUser);
+        //ajout auto du revendeur
+        if (Sys::$User->isRole('PARC_REVENDEUR')){
+            $rev = Process::getRegVars('ParcRevendeur');
+            $this->AddParent($rev);
+        }
 
-        parent::Save();
 		// Forcer la vérification
 		if(!$this->_isVerified) $this->Verify( $synchro );
-		//Si le revendeur connecté modifie ou ajoute un client
-		//on l'ajoute
-		if (Sys::$User->isRole('PARC_REVENDEUR')){
-			$rev = Process::getRegVars('ParcClient');
-			$this->AddParent($rev);
-		}
+        parent::Save();
+
 		// Enregistrement si pas d'erreur
 		if($this->_isVerified){
             //Calcul montant mensuel
@@ -44,11 +41,22 @@ class Parc_Client extends genericClass {
 	 * @return	Verification OK ou NON
 	 */
 	public function Verify( $synchro = true ) {
-		if(empty($this->Nom)) $this->Nom = $this->NomLDAP;
+        if (empty($this->NomLDAP)) {
+            $this->NomLDAP = Utils::CheckSyntaxe($this->Nom);
+        }
+        $this->NomLDAP = strtolower($this->NomLDAP);
+        $this->NomLDAP = Utils::CheckSyntaxe($this->NomLDAP);
+        if (empty($this->AccesUser)) {
+            $this->AccesUser = $this->NomLDAP;
+        }
+        $this->AccesUser = strtolower($this->AccesUser);
+        $this->AccesUser = Utils::CheckSyntaxe($this->AccesUser);
 
 		if(parent::Verify()) {
+
             $this->_isVerified = true;
-		    //si acces web alors il faut vérifier identifiant / moty de passe et email
+
+            //si acces web alors il faut vérifier identifiant / moty de passe et email
             if ($this->AccesActif){
                 if (empty($this->AccesUser)){
                     $this->AddError(Array("Message"=>"Veuillez renseigner l'identifiant pour l'accès web"));
