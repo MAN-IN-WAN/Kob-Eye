@@ -537,6 +537,7 @@ class DbAnalyzer extends Root{
 	//----------------------------------------------//
 	//renvoie la liste des accesspoint ou un accesspoint en particulier si le parametre est renseignï¿œ
 	function AccessPoint($Name=""){
+		$Result= array();
 		if ($Name=="") {
 			foreach ($this->ObjectClass as $Obj) {
 				if (isset($Obj->AccessPoint)&&$Obj->AccessPoint&&$Obj->Module==$this->Module) $Result[] = $Obj;

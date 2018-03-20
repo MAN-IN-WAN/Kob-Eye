@@ -150,7 +150,7 @@
         /**
         * Mise à jour ou ajout d'une option de filtre (xxx = yyyy)
         **/
-        function setOptionFilter(filter,context='default'){
+        function setOptionFilter(filter='',context='default'){
             if (filters[context]==undefined) initContext(context);
             var opt = filter.match(/^(.*?)([=><!]{1,2}?)(.*?)$/);
             for (var i in filters[context].options) {

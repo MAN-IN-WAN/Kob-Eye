@@ -1,6 +1,10 @@
 <SCHEMA>
-	<OBJECTCLASS title="Apn" driver="mysql" AccessPoint="0" master="0" Description="Appareil Photo"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" >
+	<OBJECTCLASS title="Apn" driver="mysql" AccessPoint="1" master="0" Description="Appareil Photo"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" >
 		<PROPERTIES searchOrder="1" description="Titre" type="varchar">Titre</PROPERTIES>
 		<PROPERTIES searchOrder="2" description="Type" type="varchar" values="Sony">Type</PROPERTIES>
+		<PROPERTIES searchOrder="3" description="SSID: Nom du WIFI" type="varchar">SSID</PROPERTIES>
+		<PROPERTIES searchOrder="4" description="Mot de passe" type="varchar">Password</PROPERTIES>
+		<PROPERTIES searchOrder="5" description="Actif" type="boolean">Actif</PROPERTIES>
+		<PROPERTIES searchOrder="5" description="Connecte" type="boolean">Connecte</PROPERTIES>
 	</OBJECTCLASS>
 </SCHEMA>

@@ -13,8 +13,9 @@ class Chrono extends Root{
 	}
 
 	function stop($Type="Chrono",$level=0) {
-		$Temp = (isset($this->total[$level][$Type]))?$this->total[$level][$Type]:"";
-		$Temp += $this->microtime_float() - $this->compteur[$Type];
+		$Temp = (isset($this->total[$level][$Type]))?$this->total[$level][$Type]:0;
+		$Temp += floatval($this->microtime_float());
+        $Temp -= floatval($this->compteur[$Type]);
 		$this->total[$level][$Type] = $Temp;
 	}
 

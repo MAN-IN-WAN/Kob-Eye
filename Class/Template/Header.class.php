@@ -226,9 +226,11 @@ class Header extends Root{
         }else{
             //on prends le titre du menu par défaut
             $defmenu = Sys::$DefaultMenu;
-            $this->Title = $defmenu->Title;
-            $this->Description = $defmenu->Description;
-            $this->Keywords = $defmenu->Keywords;
+            if ($defmenu) {
+                $this->Title = $defmenu->Title;
+                $this->Description = $defmenu->Description;
+                $this->Keywords = $defmenu->Keywords;
+            }
         }
     }
     function Affich() {

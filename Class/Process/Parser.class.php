@@ -312,6 +312,7 @@ class Parser {
 			$Flag=false;
 			$nbFerm = $nbOuv = $nbReplace= 0;
 			$Begin = false;
+            $BigResult = array();
 			foreach ($Data as $DataTab) {
 				if (is_string($DataTab)) {
 					if ((sizeof(explode("[".$Beacon,$DataTab,2))>1)||$Begin) {
@@ -351,7 +352,7 @@ class Parser {
 											$Temp=$TempResult="";
 											$Attributes = $TempData3[0];
 											$Donnee = $TempData3[1];
-											$BigResult=$Donnee;
+											//$BigResult=$Donnee;
 											if (strlen($Function)) {
 												//Le cas d une execution de fonction
 												/*$FuncString = "return \$this->".$Function."(stripslashes('".addslashes($Attributes)."'),\$BigResult";
@@ -367,7 +368,7 @@ class Parser {
 												$ReplaceResult[$Replace."-".$nbReplace] = $Attributes."]".$Donnee;
 												$nbReplace++;
 											}
-											$BigResult="";
+											$BigResult=array();
 											//On reinitialise les variables
 											$nbFerm=$nbOuv=0;
 											$Flag =true;

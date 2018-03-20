@@ -741,7 +741,7 @@ class genericClass extends Root {
 	}
 
 	public function getSearchOrder($Langue = "") {
-		$Result = "";
+		$Result = array();
 		if (!in_array($Langue, $GLOBALS["Systeme"] -> Language)) {
 			//On recupere le language par defaut
 			$DefaultLanguage = $GLOBALS["Systeme"] -> DefaultLanguage;

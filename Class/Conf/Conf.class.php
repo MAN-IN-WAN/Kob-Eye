@@ -85,7 +85,7 @@ class Conf extends Root{
 			$TabXml[0] = $Obj->Tableau["CONF"];
 			$this->Files[] = $Url;
 			//Traitement des donn�es du tableau
-			$this->TabConf = $this->Parse($TabXml,"","CONF");
+			$this->TabConf = $this->Parse($TabXml,array(),"CONF");
 			/*if ($this->Consts["CONF_CACHE"]){
 				$T["TabConf"] = $this->TabConf;
 				$T["Files"] = $this->Files;
@@ -105,7 +105,10 @@ class Conf extends Root{
 	}
 	//Fonction recursive qui est appel�e a chaque niveau de recursivite
 	//Elle reagit aux attributs standards de la configuration
-	function Parse($TabOrig,$option="",$Name="",$formatonly = false) {
+	private function Parse($TabOrig,$option = array(),$Name="",$formatonly = false) {
+	    // DIRTY WORKAROUND PHP 7.1
+        $Result = array();
+	    if (is_string($option))$option = array();
 		//@ Defini les attributs
 		//# Defini les classes
 		if (is_array($TabOrig))foreach ($TabOrig as $Tab) {
@@ -135,12 +138,14 @@ class Conf extends Root{
 					//Le cas ou il n y qu un seul element du meme type
 					//->Lancement du parse en mode recursif
 					// 					echo "-> Enregistrement recursif du tableau \r\n";
+                    if (!is_array($Result)) $Result = array();
 					$Result[$Keys[0]]=$this->Parse($Tab["#"][$Keys[0]],$option,$Keys[0]);
 
 				}
 			}elseif(sizeof($Tab["#"])>1){
 				//Le cas ou il y plusieurs elements du meme type
 				//->Lancement du parse en mode recursif
+                if (!is_array($Result)) $Result = array();
 				foreach ($Tab["#"] as $Item=>$Value){
 					// 					echo "-> on relance recursivement TEST la methode parse pour ".$Item."\r\n";
 					$Result[$Item]=$this->Parse($Value,$option,$Item);
@@ -159,8 +164,10 @@ class Conf extends Root{
 
 	//Fonction recursive qui est appel�e a chaque niveau de recursivite
 	//Elle reagit aux attributs standards de la configuration
-	static function parseOnly($TabOrig,$option="") {
-		//@ Defini les attributs
+	static function parseOnly($TabOrig,$option=array()) {
+        // DIRTY WORKAROUND PHP 7.1
+        if (is_string($option))$option = array();
+        //@ Defini les attributs
 		//# Defini les classes
 		if (is_array($TabOrig))foreach ($TabOrig as $Tab) {
 			if (isset($Tab["@"]))if (sizeof($Tab["@"]))foreach ($Tab["@"] as $Att=>$Value) {

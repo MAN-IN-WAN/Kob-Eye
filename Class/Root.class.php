@@ -35,7 +35,7 @@ class Root {
 	}
 
 	final public function __clone_array($d) {
-		$t = "";
+		$t = array();
 		if (is_array($d))
 			foreach ($d as $k2 => $d2) {
 				switch (gettype($d2)) {

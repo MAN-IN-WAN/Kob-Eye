@@ -313,7 +313,7 @@ class Sys extends Root{
 		//Le menu par defaut le l'utilisateur est un menu du premier niveau ou le champ url est nul
 		if (isset($this->Menus)&&is_array($this->Menus))foreach ($this->Menus as $M) if ($M->Url=="") return $M;
 		//si pas de menu par defaut on prends le premier
-        if (isset($this->Menus)&&is_array($this->Menus)) return $this->Menus[0];
+        if (isset($this->Menus)&&is_array($this->Menus)&&sizeof($this->Menus)) return $this->Menus[0];
 	}
 
 //*************//

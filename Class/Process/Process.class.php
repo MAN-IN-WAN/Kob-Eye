@@ -88,7 +88,7 @@ class Process extends Root{
 				case ":=":
 					//Affectation par defaut
 					if (strlen($Out[1])&&(Process::ProcessPostVars($Out[1])==""||Process::ProcessPostVars($Out[1])==$Out[1])){
-						if (preg_match("#(.*?)(\:\=|\=\=|\:\+|\:\*|(?<!http|https)\:\/|\:\-|\*\=|\/\=)([^`]*)#s",$Out[3],$Out2)) $Out[3]=Process::GetTempVar($Out[3]);
+						if (preg_match('#(.*?)(\:\=|\=\=|\:\+|\:\*|(?<!http|https)\:\/|\:\-|\*\=|\/\=)([^`]*)#s',$Out[3],$Out2)) $Out[3]=Process::GetTempVar($Out[3]);
 						//On verifie qu il ne s agissent pas d un tableau
 						if (sizeof($Tab = explode ('::',$Out[1]))>1) {
 							//C un tableau
@@ -98,7 +98,11 @@ class Process extends Root{
 							if (is_array($Temp))$Temp[$a] = $Out[3];
 							elseif (is_object($Temp)){
 								$Temp->{$a} = $Out[3];
-							}else $Temp[] = $Out[3];
+							}else{
+							    $Temp = array();
+							    $Temp[] = $Out[3];
+                            }
+
 // 							echo "-------------------------\r\n";
 							Process::RegisterTempVar($Tab[0],Process::searchAndReplaceVars($Temp,$DebBeacon,$FinBeancon));
 						}else{
@@ -106,7 +110,7 @@ class Process extends Root{
 // 							print_r($Out);
 // 							echo "\r\n";
 							
-							if (preg_match("#^\[\!(.*?)\!\]$#",$Out[3],$o)){
+							if (preg_match('#^\[\!(.*?)\!\]$#',$Out[3],$o)){
 //								echo "LAUNCH PROCESS ".$Out[3]." => ";
 								$Out[3] = Process::processVars($o[1]);
 //								print_r($Out[3]);
@@ -155,8 +159,8 @@ class Process extends Root{
 				break;
 				case ":-":
 					if (!is_numeric($Val1)) $Val1=Process::processVars($Val1);
-					$Data = $Val1-$Val2;
-//  					echo "Soustraction ".$Out[1]."|".$Out[3]."|".$Val1."-".$Val2."=".$Data."</BR>";
+					$Data = floatval($Val1)-floatval($Val2);
+  					//echo "Soustraction ".$Out[1]."|".$Out[3]."|".$Val1."-".$Val2."=".$Data."</BR>";
 				break;
 				case "*=":
 					$Temp = Process::processVars($Val1);
