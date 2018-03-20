@@ -67,16 +67,28 @@
             if (isset($this->TemplateObject)) $this->TemplateConfig = $this->TemplateObject->ExportXml();
             parent::Save();
 
-            if(!$this->getOneParent('Menu')){
+            $men = $this->getOneParent('Menu');
+            $object = $this->getObjectClass();
+            if(!$men){
                 $men = genericClass::createInstance('Systeme','Menu');
-                $object = $this->getObjectClass();
-                $url = $object->autoLink('Url',get_object_vars($this));
-                $men->Url = $url;
                 $men->Alias = 'Cms/Page/'.$this->Id;
-                $men->Titre = $this->Nom;
+            }
+            if(!$this->Home){
+                $men->Url =  $object->autoLink('Url',get_object_vars($this),'',true);
+            } else{
+                $men->Url = '';
+            }
+            $men->Titre = $this->Nom;
+            $men->PageTitre = $this->Titre;
+            $men->PageDescription = $this->Description;
+            $men->Save();
+            $this->addParent($men);
+
+            $par = $this->getOneParent('Page');
+            if($par){
+                $pMen = $par->getOneParent('Menu');
+                $men->addParent($pMen);
                 $men->Save();
-                //print_r($men);
-                $this->addParent($men);
             }
 
             parent::Save();

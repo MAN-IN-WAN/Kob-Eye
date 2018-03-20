@@ -1556,19 +1556,24 @@ class ObjectClass extends Root{
 
 
 
-	function autoLink($Field,$Obj,$Prefixe="") {
+	function autoLink($Field,$Obj,$Prefixe="",$keep=false) {
 		//Analyse des searchOrder pour Detecter de la chaine a encoder
 		if ($Prefixe!="")$Prefixe.="-";
-		$Ok = false;
-		
-		foreach ($this->SearchOrder as $K=>$C) {
-			if ($C>0&&!$Ok){
-				if ($this->getPropType($K)=="string") {
-					$Prop=$K;
-					$Ok=true;
-				}
-			}
+
+		if($keep && $this->getPropType($Field)=="string"){
+            $Prop=$Field;
+		}else{
+            $Ok = false;
+            foreach ($this->SearchOrder as $K=>$C) {
+                if ($C>0&&!$Ok){
+                    if ($this->getPropType($K)=="string") {
+                        $Prop=$K;
+                        $Ok=true;
+                    }
+                }
+            }
 		}
+
 		if ($Prefixe!=""){
 			$chaine = $Obj[$Prefixe.$Prop];
 			if ($chaine == ""){

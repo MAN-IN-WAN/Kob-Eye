@@ -1,6 +1,6 @@
 {% for field in formfields %}
     {% if field.type != "rkey" and field.type != "html" and field.type != "bbcode" and field.type != "text" and field.type != "raw" and field.card != "long"%}
-    <div class="row">
+    <div class="row {% if field.hidden %}hidden{% endif %}">
         <div class="col-md-6">
             <label class="form-control-label" for="l0">{{ field.description }}</label>
             <small>{{ field.help }}</small>

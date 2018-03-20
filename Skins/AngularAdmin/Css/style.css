@@ -1,3 +1,9 @@
+
+.hidden{
+    display: none;
+}
+
+
 .pagination {
     margin-top: 0 !important;
     margin-bottom: 0 !important;
@@ -494,14 +500,22 @@ ACE
 /**
 Page Edit DIVI Staïle
  */
+#pageOrg{
+    position: relative;
+}
 #AgencementPage{
     border: 1px solid #0a6aa1;
     padding: 5px 10px;
     text-align: center;
     background-color : #ddddff;
+    position: relative;
+    min-height: 200px;
 }
 #AgencementPage .row{
     margin: 0;
+}
+#AgencementPage .pageHeader{
+    border-bottom: 1px solid #fff;
 }
 #AgencementPage .dvContent{
     position: relative;
@@ -522,9 +536,10 @@ Page Edit DIVI Staïle
 
 #AgencementPage .dragHandle{
     position: absolute;
-    width: 15px;
-    height: 15px;
+    width: 20px;
+    height: 20px;
     background-color: #000;
+    border-radius: 2px;
 }
 #AgencementPage .cms-row .dragHandle{
     top: 5px;
@@ -532,9 +547,40 @@ Page Edit DIVI Staïle
 }
 
 #AgencementPage .cms-col .dragHandle{
-    top: 15px;
-    right: 15px;
+    top: 25px;
+    right: 25px;
 }
+
+
+/*
+Choix des composants
+ */
+.compo{
+    border: 1px solid #000;
+    margin-bottom: 15px;
+    cursor: pointer;
+}
+.compo:hover{
+    background-color: rgba(1,168,254,0.1);
+    box-shadow: #01a8fe 0px 0px 9px 1px;
+    border-color: #01a8fe;
+}
+.compoTitle{
+    display: inline-block;
+    width: 200px;
+    vertical-align: middle;
+}
+.compoScreen {
+    font-size: 4em;
+    vertical-align: middle;
+    padding: 15px;
+    border-right: 1px solid #000;
+    display: inline-block;
+    width: 100px;
+    text-align: center;
+}
+
+
 
 /********
  * PANEL FILTER
