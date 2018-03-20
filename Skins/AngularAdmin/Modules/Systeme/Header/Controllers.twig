@@ -292,7 +292,7 @@
             $scope.{{ parent.objectModule }}{{ parent.objectName }}Select = {
                 data: {{ parent.objectModule }}{{ parent.objectName }}Store.data.select,
                 store: {{ parent.objectModule }}{{ parent.objectName }}Store,
-                filter: {{ parent.objectModule }}{{ parent.objectName }}Store.filter.select,
+                filter: '',
                 currentPage: {{ parent.objectModule }}{{ parent.objectName }}Store.currentPage.select,
                 itemsPerPage: {{ parent.objectModule }}{{ parent.objectName }}Store.itemsPerPage,
                 selected: {
@@ -307,7 +307,7 @@
             });
             $scope.$watch('{{ parent.objectModule }}{{ parent.objectName }}Select.filter', function() {
                 //on lance la recherche depuis le store
-                if ($scope.{{ parent.objectModule }}{{ parent.objectName }}Select.filter!={{ parent.objectModule }}{{ parent.objectName }}Store.getFilters('parentselect',true)){
+                if ($scope.{{ parent.objectModule }}{{ parent.objectName }}Select.filter!={{ parent.objectModule }}{{ parent.objectName }}Store.getFilters('parentselect',true).global){
                     {{ parent.objectModule }}{{ parent.objectName }}Store.setFilters($scope.{{ parent.objectModule }}{{ parent.objectName }}Select.filter,'parentselect');
                     if (lasttimeoutParent{{ parent.objectModule }}{{ parent.objectName }}){
                         $timeout.cancel(lasttimeoutParent{{ parent.objectModule }}{{ parent.objectName }});
