@@ -467,7 +467,7 @@
                 var lasttimeoutSelect{{ child.objectModule }}{{ child.objectName }} = false;
                 $scope.$watch('{{ child.objectModule }}{{ child.objectName }}Select.filter', function() {
                     //on lance la recherche depuis le store
-                    if ($scope.{{ child.objectModule }}{{ child.objectName }}Select.filter!={{ child.objectModule }}{{ child.objectName }}Store.getFilters('select',true)){
+                    if ($scope.{{ child.objectModule }}{{ child.objectName }}Select.filter!={{ child.objectModule }}{{ child.objectName }}Store.getFilters('select',true).global){
                         {{ child.objectModule }}{{ child.objectName }}Store.setFilters($scope.{{ child.objectModule }}{{ child.objectName }}Select.filter,'select');
                         if (lasttimeoutSelect{{ child.objectModule }}{{ child.objectName }}){
                             $timeout.cancel(lasttimeoutSelect{{ child.objectModule }}{{ child.objectName }});
