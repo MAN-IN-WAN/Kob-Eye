@@ -4,6 +4,37 @@ class Site extends genericClass {
     var $cpt;
     var $currentUrl;
 
+
+    public function Save(){
+        //parent::Save();
+
+        $user = $this->getOneParent('User');
+        if(!$user){
+            $user = genericClass::createInstance('Systeme','User');
+            $user->Login = str_replace('.','_',$this->Domaine);
+            $user->Mail = 'basemail@'.$this->Domaine;
+            $user->Pass = '21wyisey';
+
+            $user->Save();
+            $this->addParent($user);
+        }
+
+        $grp = $user->getOneParent('Group');
+        if(!$grp){
+            $grp = Sys::getOneData('Systeme','Group/Nom='.strtoupper(str_replace('.','-',$this->Domaine)));
+            if(!$grp){
+                $grp = genericClass::createInstance('Systeme','Group');
+                $grp->Nom = strtoupper(str_replace('.','-',$this->Domaine));
+                $grp->Save();
+            }
+            $user->addParent($grp);
+            $user->Save();
+        }
+
+        parent::Save();
+    }
+
+
      //____________________________________________________________________________________________
     //                                                                                    STANDARD
     /**

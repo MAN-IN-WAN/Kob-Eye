@@ -86,8 +86,23 @@ class Component extends Beacon{
 		if(!empty($Config)) {
 			$this->Name = (isset($Config["TITLE"]))?$Config["TITLE"][0]["#"]:"*** sans titre ***";
 			$this->Screen = $Config["SCREEN"][0]["#"];
-			if (isset($Config["PARAMS"][0]["#"]['PARAM'])&&is_array($Config["PARAMS"][0]["#"]['PARAM']))foreach ($Config["PARAMS"][0]["#"]['PARAM'] as $P){
-				$this->Proprietes[] = array("Type" => $P["@"]["type"], "Nom" => $P["@"]["name"], "Valeur" => $P["#"],"description" => (empty($P["@"]["description"]) ? $P["@"]["name"] : $P["@"]["description"]));
+			if (isset($Config["PARAMS"][0]["#"]['PARAM'])&&is_array($Config["PARAMS"][0]["#"]['PARAM']))foreach ($Config["PARAMS"][0]["#"]['PARAM'] as $P) {
+                if (!empty($P["@"]["values"])){
+                    $temp = explode(",", $P["@"]["values"]);
+                    $values = array();
+                    foreach ($temp as $t) {
+                        if (strpos($t, '::')) {
+                            $s = explode('::', $t);
+                            $values[$s[0]] = $s[1];
+                        } else
+                            $values[$t] = $t;
+                    }
+                }
+                $tempProps = array("Type" => $P["@"]["type"], "Nom" => $P["@"]["name"], "Valeur" => $P["#"],"description" => (empty($P["@"]["description"]) ? $P["@"]["name"] : $P["@"]["description"]));
+                if(isset($values))
+                    $tempProps['Values']=$values;
+                $this->Proprietes[] = $tempProps;
+
 			}
 			if (isset($Config["CSS"])){
 				$this->Css = $this->getFilePath($Config["CSS"][0]["#"]);

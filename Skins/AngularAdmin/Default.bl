@@ -175,6 +175,8 @@
     <link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/assets/vendors/angular.treeview-master/css/angular.treeview.css">
     <script src="Skins/AngularAdmin/assets/vendors/angular.treeview-master/angular.treeview.js"></script>
 
+    <!-- Isotope -->
+    <script src="Tools/Js/Isotope/isotope.pkgd.min.js"></script>
 
 
     <!-- Abtel TimeLine -->

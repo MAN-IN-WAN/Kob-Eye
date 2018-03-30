@@ -12,6 +12,7 @@ class KeTwig{
             'debug' => true
         ));
         KeTwig::$Twig->addExtension(new Twig_Extension_StringLoader());
+        KeTwig::$Twig->addExtension(new Twig_Extension_Debug());
         KeTwig::$Twig->addFunction(new Twig_SimpleFunction('module','KeTwig::callModule'));
         KeTwig::$Twig->addFunction(new Twig_SimpleFunction('component','KeTwig::callComponent'));
     }

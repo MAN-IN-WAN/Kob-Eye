@@ -11,6 +11,26 @@
         </li>
     </ul>
 
+    <section id="pageOrg" class="panel">
+        <div class="panel-heading">
+            <div class="pull-right">
+                <button type="button" class="btn btn-success btn-right"  ng-click="pageSave();"><i class="icmn-floppy-disk2"></i><span>Enregistrer</span></button>
+                <button type="button" class="btn btn-warning btn-right"  ng-click="pageCancel();"><i class="icmn-eraser"></i><span>Tout annuler</span></button>
+                <button type="button" class="btn btn-default btn-danger" ng-click="pageReinit(template)">Reinitialiser</button>
+            </div>
+            <h3>Agencement</h3>
+        </div>
+        <div class="panel-body">
+            <div compile-bind="ui" id="AgencementPage" class="row">
+                <div class="small_spinner" style="position: absolute; width: 100%; z-index: 2000000000; left: 50%; top: 50%;" role="progressbar"><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-0-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(0deg) translate(20px, 0px); border-radius: 2px;"></div></div><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-1-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(24deg) translate(20px, 0px); border-radius: 2px;"></div></div><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-2-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(48deg) translate(20px, 0px); border-radius: 2px;"></div></div><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-3-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(72deg) translate(20px, 0px); border-radius: 2px;"></div></div><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-4-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(96deg) translate(20px, 0px); border-radius: 2px;"></div></div><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-5-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(120deg) translate(20px, 0px); border-radius: 2px;"></div></div><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-6-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(144deg) translate(20px, 0px); border-radius: 2px;"></div></div><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-7-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(168deg) translate(20px, 0px); border-radius: 2px;"></div></div><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-8-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(192deg) translate(20px, 0px); border-radius: 2px;"></div></div><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-9-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(216deg) translate(20px, 0px); border-radius: 2px;"></div></div><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-10-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(240deg) translate(20px, 0px); border-radius: 2px;"></div></div><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-11-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(264deg) translate(20px, 0px); border-radius: 2px;"></div></div><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-12-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(288deg) translate(20px, 0px); border-radius: 2px;"></div></div><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-13-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(312deg) translate(20px, 0px); border-radius: 2px;"></div></div><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-14-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(336deg) translate(20px, 0px); border-radius: 2px;"></div></div></div>
+            </div>
+            <div class="row pageFooter">
+                <button type="button" class="btn btn-success btn-right"  ng-click="pageSave();"><i class="icmn-floppy-disk2"></i><span>Enregistrer</span></button>
+                <button type="button" class="btn btn-warning btn-right"  ng-click="pageCancel();"><i class="icmn-eraser"></i><span>Tout annuler</span></button>
+            </div>
+        </div>
+    </section>
+
     <!-- Default Panel -->
     <section class="panel">
         <div class="panel-heading">
@@ -44,9 +64,14 @@
                     {% else %}
                     <div class="col-md-12 col-lg-12">
                         {% endif %}
+                        <div id="fichePanel" class="row">
                         {% for cat,fields in fichefields %}
-                        <div class="row">
-                            <h5 class="cat-title">{{ cat }}</h5>
+                            <div class="col-md-6 col-lg-4 ficheCat">
+                            <h5 class="cat-title">
+                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseCat_{{ loop.index }}" aria-expanded="true" aria-controls="collapseCat_{{ loop.index }}">{{ cat }}</button>
+                            </h5>
+                            <div id="collapseCat_{{ loop.index }}" class="collapse{% if not fields.fold %} in{% endif %} {{ fields.type }}">
+
                         {% for field in fields.elements %}
                             {% if field.large == 1 %}
                             <div class="col-md-12">
@@ -58,15 +83,19 @@
                                 <!-- NE RIEN FAIRE-->
                             {% else %}
                                 <div class="row">
-                                    {% if field.large == 1 %}
+                                    {% if field.fullTitle %}
+                                        <div class="col-md-12">
+                                    {% elseif field.large == 1 %}
                                         <div class="col-md-2 detail-label">
                                     {% else %}
                                         <div class="col-md-5 detail-label">
                                     {% endif %}
                                         <label class="form-control-label" for="l0">{% if field.parentDescription is not empty %}{{ field.parentDescription }}{% else %}{{ field.description }}{% endif %}</label>
                                     </div>
-                                    {% if field.large == 1 %}
-                                    <div class="col-md-10 detail-value">
+                                    {% if field.fullTitle %}
+                                        <div class="col-md-12">
+                                    {% elseif field.large == 1 %}
+                                        <div class="col-md-10 detail-value">
                                     {% else %}
                                     <div class="col-md-7 detail-value">
                                     {% endif %}
@@ -116,8 +145,10 @@
                             {% endif %}
                             </div>
                         {% endfor %}
-                        </div>
+                            </div>
+                            </div>
                         {% endfor %}
+                            </div>
                         </div>
                     </div>
                     {% for field in fichefields %}
@@ -143,19 +174,6 @@
                 </div>
     </section>
 
-    <section id="pageOrg" class="panel">
-        <div class="panel-heading">
-            <div class="pull-right">
-                <button type="button" class="btn btn-default btn-danger margin-inline" ng-click="pageReinit(template)">Reinitialiser</button>
-            </div>
-            <h3>Agencement</h3>
-        </div>
-        <div class="panel-body">
-            <div compile-bind="ui" id="AgencementPage">
-                <div class="small_spinner" style="position: absolute; width: 100%; z-index: 2000000000; left: 50%; top: 50%;" role="progressbar"><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-0-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(0deg) translate(20px, 0px); border-radius: 2px;"></div></div><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-1-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(24deg) translate(20px, 0px); border-radius: 2px;"></div></div><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-2-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(48deg) translate(20px, 0px); border-radius: 2px;"></div></div><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-3-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(72deg) translate(20px, 0px); border-radius: 2px;"></div></div><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-4-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(96deg) translate(20px, 0px); border-radius: 2px;"></div></div><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-5-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(120deg) translate(20px, 0px); border-radius: 2px;"></div></div><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-6-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(144deg) translate(20px, 0px); border-radius: 2px;"></div></div><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-7-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(168deg) translate(20px, 0px); border-radius: 2px;"></div></div><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-8-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(192deg) translate(20px, 0px); border-radius: 2px;"></div></div><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-9-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(216deg) translate(20px, 0px); border-radius: 2px;"></div></div><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-10-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(240deg) translate(20px, 0px); border-radius: 2px;"></div></div><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-11-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(264deg) translate(20px, 0px); border-radius: 2px;"></div></div><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-12-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(288deg) translate(20px, 0px); border-radius: 2px;"></div></div><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-13-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(312deg) translate(20px, 0px); border-radius: 2px;"></div></div><div style="position: absolute; top: -2px; opacity: 0.3; animation: opacity-62-30-14-15 1s linear infinite;"><div style="position: absolute; width: 24px; height: 4px; background: rgb(0, 0, 0); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center 0px; transform: rotate(336deg) translate(20px, 0px); border-radius: 2px;"></div></div></div>
-            </div>
-        </div>
-    </section>
 
     <!-- End Default Panel -->
     <div class="nav-tabs-horizontal">
@@ -228,8 +246,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn" data-dismiss="modal" ng-if="component.success" >Fermer</button>
-                <button type="button" class="btn" data-dismiss="modal" ng-if="!component.success" >Annuler</button>
-                <button type="button" class="btn btn-primary" ng-if="!component.success" ng-click="componentSave();">Enregistrer les modifications</button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal" ng-if="!component.success" >Annuler</button>
+                <button type="button" class="btn btn-success" ng-if="!component.success" ng-click="componentSave();">Enregistrer les modifications</button>
             </div>
         </div>
     </div>
@@ -267,8 +285,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == true">Fermer</button>
-                <button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == false">Annuler</button>
-                <button type="button" class="btn btn-primary" ng-if="modalObj.success == false" ng-click="modalSave()">Enregistrer les modifications</button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal" ng-if="modalObj.success == false">Annuler</button>
+                <button type="button" class="btn btn-success" ng-if="modalObj.success == false" ng-click="modalSave()">Enregistrer les modifications</button>
             </div>
         </div>
     </div>
@@ -306,3 +324,24 @@
 </div>
 
 #}
+<style>
+    .collapsing {
+        -webkit-transition: none;
+        transition: none;
+        display: none;
+    }
+
+</style>
+<script type="text/javascript">
+    $(document).ready(function(){
+        setTimeout(function(){
+            $('#fichePanel').isotope({
+                itemSelector: '.ficheCat'
+            });
+        },500);
+    });
+    $('.collapse').on('shown.bs.collapse hidden.bs.collapse',function(){
+        $('#fichePanel').isotope('layout');
+    });
+
+</script>

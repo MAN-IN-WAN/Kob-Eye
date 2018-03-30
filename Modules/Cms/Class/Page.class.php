@@ -79,6 +79,7 @@
                 $men->Url = '';
             }
             $men->Titre = $this->Nom;
+            $men->Ordre = $this->Ordre;
             $men->PageTitre = $this->Titre;
             $men->PageDescription = $this->Description;
             $men->Save();

@@ -567,7 +567,7 @@ class genericClass extends Root {
 		$Tab = $this -> getElements($L);
         foreach ($Tab as $CatName => $Cat)
             foreach ($Cat as $ElemsName => $Elems)
-                foreach ($Elems as $Elem) {
+                if (is_array($Elems))foreach ($Elems as $Elem) {
                     $ok = false;
                     foreach ($attr as $A)if (isset($Elem[$A]) && (empty($V) || $Elem[$A] == $V)||$A==null) $ok = true;
                     if ($ok){
@@ -575,7 +575,7 @@ class genericClass extends Root {
                             $O[] = $Elem;
                         }else{
                             if (!isset($O[$CatName])) {
-                                $O[$CatName] = Array();
+                                $O[$CatName] = $Cat;
                                 $O[$CatName][$ElemsName] = Array();
                             }
                             $O[$CatName][$ElemsName][] = $Elem;
@@ -2981,6 +2981,11 @@ class genericClass extends Root {
         $o->tmsCreate= $this->tmsCreate;
         $o->tmsEdit= $this->tmsEdit;
         if(!is_array($fields)) return $o;
+        if ($o->isRecursiv()){
+            if ($o->isTail())
+                $o->_tail = true;
+            else $o->_tail = false;
+        }
         foreach ($fields as $f){
             switch ($f['type']){
                 case 'date':

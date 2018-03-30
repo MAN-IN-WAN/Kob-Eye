@@ -334,6 +334,11 @@ class Sys extends Root{
 
 	//Selectionne le type de rendu en fonction du type
 	function getContent() {
+		$domain = Sys::$domain;
+		$site = Sys::getOneData('Systeme','Site/Domaine='.$domain);
+		if($site && $site->Api) {
+            $this->type = 'json';
+        }
 		$detectmime = true;
 		switch($this->type){
 			case "jpg":if ($this->type=="jpg")header("Content-type:  image/jpg");$detectmime=false;

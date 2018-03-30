@@ -4,10 +4,18 @@ $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $vars['fields'] = $o->getElementsByAttribute('list','',true);
 $vars['functions'] = $o->getFunctions();
 $vars['fichefields'] = $o->getElementsByAttribute('fiche','',false);
-foreach ($vars['fichefields'] as $k=>$f){
-    if ($f['type']=='fkey'&&$f['card']=='short'){
-        $vars['fichefields'][$k]['link'] = Sys::getMenu($f['objectModule'].'/'.$f['objectName']);
+
+foreach ($vars['fichefields'] as $kc=>$fc){
+    foreach ($fc['elements'] as $k=>$f) {
+        if ($f['hidden'] == 1) {
+            unset($vars['fichefields'][$kc]['elements'][$k]);
+            continue;
+        }
+        if ($f['type'] == 'fkey' && $f['card'] == 'short') {
+            $vars['fichefields'][$kc]['elements'][$k]['link'] = Sys::getMenu($f['objectModule'] . '/' . $f['objectName']);
+        }
     }
+    if(!count($vars['fichefields'][$kc]['elements'])) unset($vars['fichefields'][$kc]);
 }
 $vars['formfields'] = $o->getElementsByAttribute('form','',true);
 $vars['CurrentMenu'] = Sys::$CurrentMenu;
