@@ -1,0 +1,67 @@
+<nav class="left-menu" left-menu ng-class="{'hidden-left-menu': hideLeftMenu}">
+    <div class="logo-container" style="background: #8b8898 !important;    padding: 10px;">
+        <a href="#/TableauDeBord" class="logo" style="height: 100%;">
+            <img class="logo-inverse" src="Skins/API/img/logo.png" alt="Abtel informatique" />
+        </a>
+    </div>
+    <div class="left-menu-inner scroll-pane">
+        <ul class="left-menu-list left-menu-list-root list-unstyled">
+            {% for a in anchors %}
+                <li>
+                    <a class="left-menu-link" href="{{ a.Url }}">
+                        <i class="left-menu-link-icon {{ a.Icon }}"><!-- --></i>
+                        <span class="menu-top-hidden">{{ a.Titre }}</span>
+                    </a>
+                </li>
+            {% endfor %}
+            {%  for m in menus %}
+                {% if m.getSubMenus()|length > 0 %}
+                    <li class="left-menu-list-submenu">
+                        <a class="left-menu-link" href="javascript: void(0);">
+                            <i class="left-menu-link-icon icmn-files-empty2"><!-- --></i>
+                            {{ m.Titre }}
+                        </a>
+                        <ul class="left-menu-list list-unstyled">
+                            {% for m2 in m.getSubMenus() %}
+                                {% if m2.Affiche %}
+                                <li>
+                                    <a class="left-menu-link" href="#/{{ m.Url }}/{{ m2.Url }}">
+                                        {{ m2.Titre }}
+                                    </a>
+                                </li>
+                                {% endif %}
+                            {%  endfor %}
+                        </ul>
+                    </li>
+                {% else %}
+                    <li>
+                        <a class="left-menu-link" href="#/{{ m.Url }}">
+                            <i class="left-menu-link-icon icmn-home2"><!-- --></i>
+                            <span class="menu-top-hidden">{{ m.Titre }}</span>
+                        </a>
+                    </li>
+                {% endif %}
+            {%  endfor %}
+            {% if user.Admin %}
+                <li class="left-menu-list-separator"></li>
+                {%  for mod in modules %}
+                <li class="left-menu-list-submenu">
+                    <a class="left-menu-link" href="javascript: void(0);">
+                        <i class="left-menu-link-icon icmn-files-empty2"><!-- --></i>
+                        {{ mod.Description }}
+                    </a>
+                    <ul class="left-menu-list list-unstyled">
+                        {% for obj in mod.getAccessPoint() %}
+                        <li>
+                            <a class="left-menu-link" href="#/{{ mod.Nom }}/{{ obj.titre }}">
+                                {{ obj.description }}
+                            </a>
+                        </li>
+                        {%  endfor %}
+                    </ul>
+                </li>
+                {%  endfor %}
+            {% endif %}
+        </ul>
+    </div>
+</nav>

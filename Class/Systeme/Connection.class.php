@@ -45,7 +45,7 @@ class Connection extends Root{
 		    $domain = Sys::$domain;
 
             $site = Sys::getOneData('Systeme', 'Site/Domaine=' . $domain);
-            if ($site && $site->Api) {
+            if ($site && $site->Api && $_SERVER['REQUEST_URI'] != '/Documentation') {
                 header("Content-type: text/json; charset=".CHARSET_CODE."");
                 header("Accept-Ranges:bytes");
                 header("Access-Control-Allow-Headers:Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token");
@@ -117,7 +117,7 @@ class Connection extends Root{
 			if ($this->DetectUser()) {
                 $domain = Sys::$domain;
                 $site = Sys::getOneData('Systeme','Site/Domaine='.$domain);
-                if($site && $site->Api){
+                if($site && $site->Api && $_SERVER['REQUEST_URI'] != '/Documentation'){
                     header("Content-type: text/json; charset=".CHARSET_CODE."");
                     header("Accept-Ranges:bytes");
                     header("Access-Control-Allow-Headers:Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token");
@@ -164,7 +164,7 @@ class Connection extends Root{
  				$domain = Sys::$domain;
 
                 $site = Sys::getOneData('Systeme', 'Site/Domaine=' . $domain);
-                if ($site && $site->Api) {
+                if ($site && $site->Api && $_SERVER['REQUEST_URI'] != '/Documentation') {
                     http_response_code (401);
                     die(json_encode(array('success'=>false,'error'=>'invalid_credentials','error_description'=>'L\'utilisation de cett API nécéssite un utilisateur authentifié')));
                 }
@@ -255,6 +255,23 @@ class Connection extends Root{
 		if ($t) return true ;else  return false;
 	}
 	public function DetectToken(){
+	    $types= array(
+            'application/json',
+            'application/x-javascript',
+            'text/javascript',
+            'text/x-javascript',
+            'text/x-json',
+            'text/json'
+        );
+	    if(!isset($_SERVER['CONTENT_TYPE']) || !in_array($_SERVER['CONTENT_TYPE'],$types)){
+            if($_SERVER['REQUEST_URI'] != '/Documentation'){
+                header('Location: /Documentation');
+                die();
+            }
+             return true;
+        }
+
+
 		$apiKey = isset($_COOKIE["API_KEY"]) ? $_COOKIE["API_KEY"] : ( isset($_GET["API_KEY"]) ? $_GET["API_KEY"] : ( isset($_POST["API_KEY"]) ? $_POST["API_KEY"] : false));
         if(!$apiKey){
             $data = array();

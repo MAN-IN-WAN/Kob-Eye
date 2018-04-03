@@ -1,0 +1,625 @@
+<section class="panel">
+
+
+    <div id="Prereq" class="panel-heading">
+
+        <h3><i class="icmn-bubble-notification"></i> Prérequis</h3>
+    </div>
+    <div class="panel-body  prereq">
+        Les requêtes doivent être être présentées au serveur avec un content type de JSON.<br/>
+        Pour des raison de commodités les content-types suivant sont acceptés :<br/>
+        <ul>
+            <li>'application/json',</li>
+            <li>'application/x-javascript',</li>
+            <li>'text/javascript',</li>
+            <li>'text/x-javascript',</li>
+            <li>'text/x-json',</li>
+            <li>'text/json'</li>
+        </ul>
+        Tout appel à l'Api devra contenir en paramètre une clé Api valide liée au user authentifié sous la forme "API_KEY=yyyyyyyyyyyyyyyyyyyyy".
+    </div>
+    <div id="Auth" class="panel-heading">
+        <h3><i class="icmn-user-check"></i> Authentification</h3>
+    </div>
+    <div class="panel-body  auth">
+        L'authentification se déroule en 2 étapes:<br/>
+        <ol>
+            <li>Le premier appel à l'api doit avoir pour paramètre le login et le mot de passe de l'utilisateur afin de récupérer un token d'authentification valide.</li>
+            Lors de ce premier appel les informations devront être envoyées en POST.</li>
+            <li>Un token d'authentification valide vous est retourné au sein d'un JSON.</li>
+            <li>Ce token devra être passé en paramètre de toute requête subséquente. ce paramètre sera présenté sous la forme "AUTH_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxx"</li>
+        </ol>
+        Rappel : Tout appel devra contenir en paramètre une clé Api valide liée au user authentifié sous la forme "API_KEY=yyyyyyyyyyyyyyyyyyyyy".<br/>
+
+        <div class="accordion exemple">
+            <div class="panel panel-default">
+            <div class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" data-target="#auth_exe" aria-expanded="true" aria-controls="auth_exe">
+                <div class="panel-title">
+                    <span class="accordion-indicator pull-right">
+                        <i class="plus fa fa-plus"></i>
+                        <i class="minus fa fa-minus"></i>
+                    </span>
+                    <a>
+                        <h5>Example(s) </h5>
+                    </a>
+                </div>
+            </div>
+            <div id="auth_exe" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="true" style="">
+                <div class="panel-body">
+
+                        <p>Requete :</p>
+                        <pre>
+<code>curl -X POST "http(s)://<b>[[Url du serveur]]</b>" -d API_KEY=<b>[[clé Api]]</b> -d login=<b>[[Login]]</b> -d pass=<b>[[Mot de passe]]</b>
+    -H "Content-Type:text/json"</code>
+            </pre>
+                        <hr>
+
+                        <p>Réponse :</p>
+                        <pre>
+<code>
+    {
+        "success": "authentication_success",
+        "error": false,
+        "auth_token": "<b>[[Token d'authentification]]</b>"
+    }
+</code>
+
+            </pre>
+                        <hr>
+
+                        <p>Requetes suivantes :</p>
+                        <pre>
+<code>curl -X GET "http(s)://<b>[[Url du serveur]]</b>" -d API_KEY=<b>[[clé Api]]</b> -d AUTH_TOKEN=<b>[[Token d'authentification]]</b></b>
+    -H "Content-Type:text/json"</code>
+            </pre>
+                        <hr>
+
+                </div>
+            </div>
+            </div>
+        </div>
+
+    </div>
+    <div id="Methods" class="panel-heading">
+        <h3><i class="icmn-cog2"></i> Methodes HTTP</h3>
+    </div>
+    <div class="panel-body  methods accordion">
+        <div class="panel panel-default get">
+            <div class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" data-target="#get_method" aria-expanded="true" aria-controls="get_method">
+                <div class="panel-title">
+                    <span class="accordion-indicator pull-right">
+                        <i class="plus fa fa-plus"></i>
+                        <i class="minus fa fa-minus"></i>
+                    </span>
+                    <a>
+                        <h4>GET</h4>
+                    </a>
+                </div>
+            </div>
+            <div id="get_method" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="true" style="">
+                <div class="panel-body">
+                    <div class="get">
+                        Les appels à l'Api à l'aide de la méthode HTTP GET servent à récupérer des données.
+                        Cette Api ne permet de récupérer des données que sur 2 niveaux.
+                        Ainsi:
+                        <ul>
+                            <li>GET /Entité retourne la liste des objets "Entité"</li>
+                            <li>GET /Entité/:id retourne l'objet "Entité" désigné par l'id ":id"</li>
+                            <li>GET /Entité/:id/Sous-Entité retourne la liste des objets Sous-Entité enfants de l'objet "Entité" désigné par l'id ":id"</li>
+                            <li>GET /Entité/:id/Sous-Entité/:sId retourne l'objet "Sous-Entité" désigné par l'id ":sId" si il est enfant de l'objet "Entité" désigné par l'id ":id"</li>
+                            <li>GET /Entité/:id/Sous-Entité/:sId/Sous-Sous-Entité retournera une erreur</li>
+                        </ul>
+                        <div class="accordion exemple">
+                            <div class="panel panel-default">
+                                <div class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" data-target="#get_exe1" aria-expanded="true" aria-controls="get_exe1">
+                                    <div class="panel-title">
+                                        <span class="accordion-indicator pull-right">
+                                            <i class="plus fa fa-plus"></i>
+                                            <i class="minus fa fa-minus"></i>
+                                        </span>
+                                        <a>
+                                            <h5>Example(s) </h5>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div id="get_exe1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="true" style="">
+                                    <div class="panel-body">
+                                        <p>Requête :</p>
+                                        <pre>
+<code>curl -X GET "http(s)://<b>[[Url du serveur]]</b>/<b>[[Entité]]</b>" -d API_KEY=<b>[[clé Api]]</b> -d AUTH_TOKEN=<b>[[Token d'authentification]]</b>
+    -H "Content-Type:text/json"</code>
+            </pre>
+                                        <hr>
+
+                                        <p>Réponse :</p>
+                                        <pre>
+<code>
+    {
+        "success": "operation_complete_partial_result",
+        "error": false,
+        "data": [{
+            "Id": "42",
+            "Prop1": "Valeur1",
+            "Prop2": null,
+            "Prop3": "Valeur3",
+            <i>[...]</i>
+        }, {
+            "Id": "23",
+            "Prop1": "Valeur1",
+            "Prop2": "Valeur2",
+            "Prop3": "Valeur3",
+            <i>[...]</i>
+        }, <i>[...]</i>],
+        "pagination": {
+            "offset": "",
+            "limit": "",
+            "total": 9
+        }
+    }
+</code>
+            </pre>
+                                        <hr>
+
+                                        <p>Requête :</p>
+                                        <pre>
+<code>curl -X GET "http(s)://<b>[[Url du serveur]]</b>/<b>[[Entité]]</b>/<b>[[:id]]</b>" -d API_KEY=<b>[[clé Api]]</b> -d AUTH_TOKEN=<b>[[Token d'authentification]]</b>
+    -H "Content-Type:text/json"</code>
+            </pre>
+                                        <hr>
+
+
+                                        <p>Réponse :</p>
+                                        <pre>
+<code>
+    {
+        "success": "operation_complete",
+        "error": false,
+        "data": {
+            "Id": "23",
+            "Prop1": "Valeur1",
+            "Prop2": "Valeur2",
+            "Prop3": "Valeur3",
+            <i>[...]</i>
+        }
+    }
+</code>
+            </pre>
+                                        <hr>
+
+                                        <p>Requête :</p>
+                                        <pre>
+<code>curl -X GET "http(s)://<b>[[Url du serveur]]</b>/<b>[[Entité]]</b>/<b>[[:id]]</b>/<b>[[Sous-Entité]]</b>/<b>[[:id]]</b>/<b>[[Plus de Sous-Entités]]</b>" -d API_KEY=<b>[[clé Api]]</b> -d AUTH_TOKEN=<b>[[Token d'authentification]]</b>
+    -H "Content-Type:text/json"</code>
+            </pre>
+                                        <hr>
+
+
+                                        <p>Réponse :</p>
+                                        <pre>
+<code>
+    {
+        "success": false,
+        "error": "protected_ressource",
+        "data": null,
+        "error_description": "Vous n'avez pas le droit d'acceder \u00e0 cette ressource depuis cette route."
+    }
+</code>
+            </pre>
+                                        <hr>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        Il est possible d'utiliser des filtres pour affiner la sélection de données retournées.
+                        Pour cela on peut adjoindre à la requête un paramètre "params" sous la forme d'un JSON dont chaque clé sera un attribut de l'Entité sur lequel on souhaite filtrer.
+
+                        <div class="accordion exemple">
+                            <div class="panel panel-default">
+                                <div class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" data-target="#get_exe2" aria-expanded="true" aria-controls="get_exe2">
+                                    <div class="panel-title">
+                                        <span class="accordion-indicator pull-right">
+                                            <i class="plus fa fa-plus"></i>
+                                            <i class="minus fa fa-minus"></i>
+                                        </span>
+                                        <a>
+                                            <h5>Example(s) </h5>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div id="get_exe2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="true" style="">
+                                    <div class="panel-body">
+                                            <p>Requête :</p>
+                                            <pre>
+<code>curl -X GET "http(s)://<b>[[Url du serveur]]</b>/<b>[[Entité]]</b>" -d API_KEY=<b>[[clé Api]]</b> -d AUTH_TOKEN=<b>[[Token d'authentification]]</b>
+    -d params='{"[[Filtre1]]":"[[Valeur1]]",<i>[...]</i>}'  -H "Content-Type:text/json"</code>
+            </pre>
+                                            <hr>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        En cas de résultats multiples, un système ordonnancement ainsi que de pseudo-pagination est prévu.
+                        Pour trier les valeurs retournées il suffit de passer le paramètre "orderBy" à la manière d'un filtre ainsi que le paramètre "order" suivi des valeurs "ASC" ou "DESC" pour définir une ordre acsendant ou descendant.
+                        Pour la pseudo-pagination les paramètre "limit" et "offset" peuvent être fournis, eux aussi à la manière de filtres.
+
+                        <div class="accordion exemple">
+                            <div class="panel panel-default">
+                                <div class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" data-target="#get_exe3" aria-expanded="true" aria-controls="get_exe3">
+                                    <div class="panel-title">
+                                        <span class="accordion-indicator pull-right">
+                                            <i class="plus fa fa-plus"></i>
+                                            <i class="minus fa fa-minus"></i>
+                                        </span>
+                                        <a>
+                                            <h5>Example(s) </h5>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div id="get_exe3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="true" style="">
+                                    <div class="panel-body">
+                                        <div id="example_get_tidy" class="exemple collapse in">
+
+
+                                            <p>Requête :</p>
+                                            <pre>
+<code>curl -X GET "http(s)://<b>[[Url du serveur]]</b>/<b>[[Entité]]</b>" -d API_KEY=<b>[[clé Api]]</b> -d AUTH_TOKEN=<b>[[Token d'authentification]]</b>
+    -d params='{"<b>[[Filtre1]]</b>":"<b>[[Valeur1]]</b>",<i>[...]</i>,"orderBy":"<b>[[Prop1]]</b>","order":"<b>[[ASC/DESC]]</b>","offset":<b>[[Index  du premier résultat]]</b>,"limit":<b>[[Nombre de résultats]]</b>}'
+    -H "Content-Type:text/json"</code>
+            </pre>
+                                            <hr>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default post">
+            <div class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" data-target="#post_method" aria-expanded="true" aria-controls="post_method">
+                <div class="panel-title">
+                    <span class="accordion-indicator pull-right">
+                        <i class="plus fa fa-plus"></i>
+                        <i class="minus fa fa-minus"></i>
+                    </span>
+                    <a>
+                        <h4>POST</h4>
+                    </a>
+                </div>
+            </div>
+            <div id="post_method" class="panel-collapse collapse " role="tabpanel" aria-labelledby="headingOne" aria-expanded="true" style="">
+                <div class="panel-body">
+                    <div class="post">
+                        Les appels à l'Api à l'aide de la méthode HTTP POST servent à créer des données.<br/>
+                        Pour cela il suffit de passer dans le paramètre JSON "params" la clé "data" étant elle même une version JSON de l'objet à créer.<br/>
+                        Il n'est toutefois pas nécessaire de renseigner toutes les propriétés de l'objet. Seules celles notées obligatoires dans cette documentation sont nécessaires.<br/>
+                        Les autres ne seront juste pas renseignée ou renseignées avec leurs valeurs par défaut.<br/>
+                        Il vous est ensuite retourné l'objet ainsi créé sous forme d'un JSON.<br/>
+                        <br/>
+                        Syntaxe : POST /Entité<br/>
+
+                        <div class="accordion exemple">
+                            <div class="panel panel-default">
+                                <div class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" data-target="#post_exe1" aria-expanded="true" aria-controls="post_exe1">
+                                    <div class="panel-title">
+                                        <span class="accordion-indicator pull-right">
+                                            <i class="plus fa fa-plus"></i>
+                                            <i class="minus fa fa-minus"></i>
+                                        </span>
+                                        <a>
+                                            <h5>Example(s) </h5>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div id="post_exe1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="true" style="">
+                                    <div class="panel-body">
+                                        <div id="example_get_tidy" class="exemple collapse in">
+
+                                            <p>Requête :</p>
+                                            <pre>
+<code>curl -X POST "http(s)://<b>[[Url du serveur]]</b>/<b>[[Entité]]</b>" -d API_KEY=<b>[[clé Api]]</b> -d AUTH_TOKEN=<b>[[Token d'authentification]]</b>
+    -d params='{"data":{"<b>[[Prop1]]</b>":"<b>[[Valeur1]]</b>","<b>[[Prop3]]</b>":"<b>[[Valeur3]]</b>",<i>[...]</i>}}'
+    -H "Content-Type:text/json"</code>
+            </pre>
+                                            <hr>
+                                            <p>Réponse :</p>
+                                            <pre>
+<code>
+    {
+        "success": "entity_created",
+        "error": false,
+        "data": {
+            "Prop1": "Valeur1",
+            "Prop2": "Valeur par défaut",
+            "Prop3": "Valeur3",
+            [...]
+        }
+    }
+</code>
+            </pre>
+                                            <hr>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        Si jamais vous essayez de fournir une propriété invalide, une erreur vous sera retournée.
+
+                        <div class="accordion exemple">
+                            <div class="panel panel-default">
+                                <div class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" data-target="#post_exe2" aria-expanded="true" aria-controls="post_exe2">
+                                    <div class="panel-title">
+                                        <span class="accordion-indicator pull-right">
+                                            <i class="plus fa fa-plus"></i>
+                                            <i class="minus fa fa-minus"></i>
+                                        </span>
+                                        <a>
+                                            <h5>Example(s) </h5>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div id="post_exe2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="true" style="">
+                                    <div class="panel-body">
+                                        <div id="example_get_tidy" class="exemple collapse in">
+
+                                            <p>Requête :</p>
+                                            <pre>
+<code>curl -X POST "http(s)://<b>[[Url du serveur]]</b>/<b>[[Entité]]</b>" -d API_KEY=<b>[[clé Api]]</b> -d AUTH_TOKEN=<b>[[Token d'authentification]]</b>
+    -d params='{"data":{"<b>[[Prop1 invalide]]</b>":"<b>[[Valeur1]]</b>","<b>[[Prop3]]</b>":"<b>[[Valeur3]]</b>",<i>[...]</i>}}'
+    -H "Content-Type:text/json"</code>
+            </pre>
+                                            <hr>
+                                            <p>Réponse :</p>
+                                            <pre>
+<code>
+    {
+        "success": false,
+        "error": "invalid_request",
+        "data": null,
+        "error_description": "Propri\u00e9t\u00e9 invalide : [[Prop1 invalide]]"
+    }
+</code>
+            </pre>
+                                            <hr>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default put">
+            <div class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" data-target="#put_method" aria-expanded="true" aria-controls="put_method">
+                <div class="panel-title">
+                    <span class="accordion-indicator pull-right">
+                        <i class="plus fa fa-plus"></i>
+                        <i class="minus fa fa-minus"></i>
+                    </span>
+                    <a>
+                        <h4>PUT</h4>
+                    </a>
+                </div>
+            </div>
+            <div id="put_method" class="panel-collapse collapse " role="tabpanel" aria-labelledby="headingOne" aria-expanded="true" style="">
+                <div class="panel-body">
+                    <div class="put">
+                        Les appels à l'Api à l'aide de la méthode HTTP PUT servent à remplacer/modifier/créer des données.<br/>
+                        Ils se font sur le même modèle que les appels POST. ( cf. méthode précédente )<br/>
+
+                        Il faut noter que contrairement à un appel PATCH les données non renseignées se verront réinitialisées ( vides/par defaut ).<br/>
+                        <br/>
+                        Syntaxe :  PUT /Entité/:id<br/>
+
+                        <div class="accordion exemple">
+                            <div class="panel panel-default">
+                                <div class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" data-target="#put_exe1" aria-expanded="true" aria-controls="put_exe1">
+                                    <div class="panel-title">
+                                        <span class="accordion-indicator pull-right">
+                                            <i class="plus fa fa-plus"></i>
+                                            <i class="minus fa fa-minus"></i>
+                                        </span>
+                                        <a>
+                                            <h5>Example(s) </h5>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div id="put_exe1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="true" style="">
+                                    <div class="panel-body">
+                                        <div id="example_get_tidy" class="exemple collapse in">
+
+
+                                            <p>Requête GET:</p>
+                                            <pre>
+<code>curl -X GET "http(s)://<b>[[Url du serveur]]</b>/<b>[[Entité]]</b>/<b>[[:id]]</b>" -d API_KEY=<b>[[clé Api]]</b> -d AUTH_TOKEN=<b>[[Token d'authentification]]</b>
+    -H "Content-Type:text/json"</code>
+            </pre>
+                                            <hr>
+
+
+                                            <p>Réponse GET:</p>
+                                            <pre>
+<code>
+    {
+        "success": "operation_complete",
+        "error": false,
+        "data": {
+            "Id": "23",
+            "Prop1": "Valeur1",
+            "Prop2": "Valeur2",
+            "Prop3": "Valeur1",
+            <i>[...]</i>
+        }
+    }
+</code>
+            </pre>
+                                            <hr>
+
+                                            <p>Requête :</p>
+                                            <pre>
+
+<code>curl -X PUT "http(s)://<b>[[Url du serveur]]</b>/<b>[[Entité]]</b>/<b>[[:id]]</b>" -d API_KEY=<b>[[clé Api]]</b> -d AUTH_TOKEN=<b>[[Token d'authentification]]</b>
+    -d params='{"data":{"<b>[[Prop3]]</b>":"<b>[[Valeur3]]</b>",<i>[...]</i>}}'
+    -H "Content-Type:text/json"</code>
+            </pre>
+                                            <hr>
+                                            <p>Réponse :</p>
+                                            <pre>
+<code>
+    {
+        "success": "entity_created",
+        "error": false,
+        "data": {
+            "Prop1": "Valeur1 pa défaut",
+            "Prop2": "Valeur2 par défaut",
+            "Prop3": "Valeur3",
+            [...]
+        }
+    }
+</code>
+            </pre>
+                                            <hr>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        Si jamais l'entité ayant cet id n'existait pas elle serait créée.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default patch">
+            <div class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" data-target="#patch_method" aria-expanded="true" aria-controls="patch_method">
+                <div class="panel-title">
+                    <span class="accordion-indicator pull-right">
+                        <i class="plus fa fa-plus"></i>
+                        <i class="minus fa fa-minus"></i>
+                    </span>
+                    <a>
+                        <h4>PATCH</h4>
+                    </a>
+                </div>
+            </div>
+            <div id="patch_method" class="panel-collapse collapse " role="tabpanel" aria-labelledby="headingOne" aria-expanded="true" style="">
+                <div class="panel-body">
+                    <div class="patch">
+                        Les appels à l'Api à l'aide de la méthode HTTP PATCH servent à modifier des données.<br/>
+                        Si la syntaxe et les paramètres restent les même que ceux de la méthode PUT précédente. Son fonctionnement implique seulement la modification des propriétés renseignés, les autres restent inchangées.<br/>
+                        Dans le cas ou l'entité n'existerait pas, un erreur serait renvoyée.<br/>
+                        <br/>
+                        Syntaxe :  PATCH /Entité/:id<br/>
+
+                        <div id="example_patch_nok" class="exemple collapse">
+
+
+                            <p>Requête :</p>
+                            <pre>
+
+<code>curl -X PATCH "http(s)://<b>[[Url du serveur]]</b>/<b>[[Entité]]</b>/<b>[[:id]]</b>" -d API_KEY=<b>[[clé Api]]</b> -d AUTH_TOKEN=<b>[[Token d'authentification]]</b>
+    -d params='{"data":{"<b>[[Prop2]]</b>":"<b>[[Valeur2]]</b>",<i>[...]</i>}}'
+    -H "Content-Type:text/json"</code>
+            </pre>
+                            <hr>
+                            <p>Réponse :</p>
+                            <pre>
+<code>
+    {
+        "success": false,
+        "error": "not_found",
+        "data": null,
+        "error_description": null
+    }
+</code>
+            </pre>
+                            <hr>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default delete">
+            <div class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" data-target="#delete_method" aria-expanded="true" aria-controls="delete_method">
+                <div class="panel-title">
+                    <span class="accordion-indicator pull-right">
+                        <i class="plus fa fa-plus"></i>
+                        <i class="minus fa fa-minus"></i>
+                    </span>
+                    <a>
+                        <h4>DELETE</h4>
+                    </a>
+                </div>
+            </div>
+            <div id="delete_method" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="true" style="">
+                <div class="panel-body">
+                    <div class="delete">
+                        Les appels à l'Api à l'aide de la méthode HTTP DELETE servent à supprimer des données.<br/>
+                        Hormis les paramètres d'authentification aucun paramètre n'est nécessaire.<br/>
+                        <br/>
+                        Syntaxe : DELETE /Entité/:id<br/>
+
+                        Aucune valeur n'est retournée.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="Props" class="panel-heading">
+        <h3><i class="icmn-zoom-in3"></i> Propriétés</h3>
+    </div>
+    <div class="panel-body  entity">
+    {% for title,props in  entities%}
+        <div class="panel-heading">
+            <h4>{{ title }}</h4>
+        </div>
+        <div class="panel-body itemProperties">
+            <table>
+                <tr>
+                    <th>Nom</th><th>Description</th><th>Type</th>
+                </tr>
+                {% for prop in  props%}
+                    <tr class="property">
+                        <td>{{ prop.name }}</td><td>{{ prop.description }}</td><td>{{ prop.type }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% endfor %}
+    </div>
+    <div id="Codes" class="panel-heading">
+        <h3><i class="icmn-html-five2"></i> Code HTTP de retour</h3>
+    </div>
+    <div class="panel-body  codes">
+        Chaque appel, outre les différentes valeurs de retour se verra caractérisé par un code HTTP de réponse spécifique.
+        <br/>
+        <table>
+            <tr>
+                <th> Code </th> <th> Etat </th> <th> Signification </th>
+            </tr>
+            <tr><td> 200 </td> <td class="success"> Succès </td> <td> Tout à fonctionné comme prévu. </td></tr>
+            <tr> <td> 201 </td> <td class="success"> Succès </td> <td> L'entité à été correctement créée. </td></tr>
+            <tr><td> 202 </td> <td class="success"> Succès </td> <td> Opération en cours de traitement. </td></tr>
+            <tr><td> 204 </td> <td class="success"> Succès </td> <td> Tout à fonctionné comme prévu. Aucune donnée ne sera renvoyée. </td></tr>
+            <tr> <td> 206 </td> <td class="success"> Succès </td> <td> Tout à fonctionné comme prévu. Les résultats sont présentés en partie (pagination). </td></tr>
+            <tr><td> 400 </td> <td class="error"> Erreur </td> <td> Requête mal formatée ou paramètre invalide. </td></tr>
+            <tr><td> 401 </td> <td class="error"> Erreur </td> <td> Problème d'authentification. </td></tr>
+            <tr><td> 403 </td> <td class="error"> Erreur </td> <td> Problème de droits vis à vis de l'netité voulue. </td></tr>
+            <tr><td> 404 </td> <td class="error"> Erreur </td> <td> Entité non trouvée. </td></tr>
+            <tr><td> 405 </td> <td class="error"> Erreur </td> <td> Méthode on implémentée ou prohibée. </td></tr>
+            {#<tr><td> 406 </td> <td class="error"> Erreur </td> <td> Format de la requète non pris en compte. </td></tr>#}
+            <tr><td> 500 </td> <td class="error"> Erreur </td> <td> Erreur serveur interne. </td></tr>
+        </table>
+    </div>
+
+</section>

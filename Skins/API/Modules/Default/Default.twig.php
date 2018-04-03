@@ -21,21 +21,12 @@ if(strpos( $query,$lien) == 0 || count($info['Historique']) > 2){
 
 //Recup des données
 $data = array();
-switch($method){
-    case 'GET':
-        $data = $_GET;
-        break;
-    case 'POST':
-        $data = json_decode($_POST['params'],true);
-        break;
-    case 'PUT':
-    case 'DELETE':
-    case 'PATCH':
-        $request = array();
-        parse_str(file_get_contents("php://input"),$request);
-        $data = json_decode($request['params'],true);
-        break;
-}
+
+$request = array();
+parse_str(file_get_contents("php://input"),$request);
+
+$data = json_decode($request['params'],true);
+
 
 unset($data['API_KEY']);
 unset($data['AUTH_TOKEN']);
