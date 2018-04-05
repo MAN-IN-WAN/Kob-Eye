@@ -178,6 +178,10 @@
     <link rel="stylesheet" href="Skins/AngularAdmin/assets/vendors/angular-ui-tree-master/dist/angular-ui-tree.min.css">
     <script type="text/javascript" src="Skins/AngularAdmin/assets/vendors/angular-ui-tree-master/dist/angular-ui-tree.js"></script>
 
+    <!-- Isotope -->
+    <script src="Tools/Js/Isotope/isotope.pkgd.min.js"></script>
+
+
     <!-- Abtel TimeLine -->
     <link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/assets/vendors/abtTimeline/style.css">
     <script src="Skins/AngularAdmin/assets/vendors/abtTimeline/abtTimeline.js"></script>
