@@ -308,6 +308,7 @@ class Systeme extends Module {
      * TACHES PLANIFIES
      */
     public static function runScheduledTask() {
+        echo "Démarrage tache planifiée...\r\n";
         //intialisation des dates
         $d = time();
         $week = array('Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche');

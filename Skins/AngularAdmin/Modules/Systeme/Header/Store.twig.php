@@ -22,6 +22,9 @@ foreach (Sys::$Modules as $k=>$mod){
                 $tmpchildren = $sub;
                 $tmpchildren['identifier'] = $sub['objectModule'] . $sub['objectName'];
                 $tmp['childrenelements'][] = $tmpchildren;
+            }else{
+                $tmp['recursivelement'] = $sub;
+                $tmp['recursivelement']['identifier'] = $sub['objectModule'] . $sub['objectName'];
             }
         }
         $stores[$tmp['identifier'].'Store'] = $tmp;

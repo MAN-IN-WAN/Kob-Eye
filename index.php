@@ -1,6 +1,6 @@
 <?php
 define('ROOT_DIR', dirname(__FILE__).'/');
-
+header("Access-Control-Allow-Origin: *");
 // Verif taille fichier log
 if(filesize(ROOT_DIR.'Log/Systeme.log') > 1500000000) file_put_contents(ROOT_DIR.'Log/Systeme.log', '');
 

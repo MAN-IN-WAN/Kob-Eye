@@ -45,7 +45,7 @@
                     <div class="col-md-12 col-lg-6">
                     {% endif %}
                     {% for field in fichefields %}
-                        {% if field.type == "progress" %}
+                        {% if field.type == "progress" or field.type == "raw" or field.type == "html" or field.type == "text" or field.type == "bbcode" %}
                         <!-- NE RIEN FAIRE-->
                         {% else %}
                         <div class="row">
@@ -122,6 +122,30 @@
                             <!--
                             <progress class="progress progress-danger progress-striped progress-animated big" ng-if="obj.{{ field.name }} < 100" value="{[{ obj.{{ field.name }} }]}" max="100">{[{ obj.{{ field.name }} }]}</progress>
                             <progress class="progress progress-success progress-striped progress-animated big" ng-if="obj.{{ field.name }} == 100" value="{[{ obj.{{ field.name }} }]}" max="100">{[{ obj.{{ field.name }} }]}</progress>-->
+                        </div>
+                    </div>
+                {% elseif field.type == "raw" or field.type == "text" %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="form-control-label" for="l0">{{ field.description }}</label>
+                            <small>{{ field.help }}</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div ui-ace="{useWrapMode : true,mode: '{{ field.subtype }}',onLoad: aceLoaded}" ng-model="modalObj.{{ field.name }}" class="ace_editor" readonly="true"></div>
+                        </div>
+                    </div>
+                {% elseif field.type == "html" or field.type == "bbcode" %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="form-control-label" for="l0">{{ field.description }}</label>
+                            <small>{{ field.help }}</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div ui-ace="{useWrapMode : true,mode: '{{ field.subtype }}',onLoad: aceLoaded}" ng-model="modalObj.{{ field.name }}" class="ace_editor"  readonly="true"></div>
                         </div>
                     </div>
                 {% endif %}

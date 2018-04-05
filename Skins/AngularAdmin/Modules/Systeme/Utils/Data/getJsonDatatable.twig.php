@@ -84,6 +84,13 @@ foreach ($vars['rows'] as $k=>$v){
         foreach ($children as $c)
             $v->{$c} = array_reverse($v->getChildren($c));
     }
+    //recursivity
+    if ($o->isRecursiv()){
+        $v->isTail = ($v->isTail()) ? '1':'0';
+    }
+}
+if ($o->isRecursiv()) {
+    $vars['recursiv'] = true;
 }
 if (sizeof($children)){
     foreach ($children as $c)

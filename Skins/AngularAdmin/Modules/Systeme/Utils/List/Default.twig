@@ -155,6 +155,8 @@
         <td scope="row" class="type{{ field.type }}">
             {% if field.type == "price" or field.type == "float" %}
                 <span class="label label-warning">{[{ item.{{ field.name }}| currency:"" }]}</span>
+            {% elseif field.type == "image" %}
+                <img class="img-responsive" src="{[{ item.{{ field.name }} }]}.mini.250x40.jpg" {{ field.listDescr }} />
             {% elseif field.type == "extlink" %}
                 <a class="btn btn-info btn-xs" href="/{{ Module }}/{{ ObjectType }}/{[{ item.id }]}/callback{{ field.name }}.htm" target="_blank">{{ field.listDescr }}</a>
             {% elseif field.type == "date" %}

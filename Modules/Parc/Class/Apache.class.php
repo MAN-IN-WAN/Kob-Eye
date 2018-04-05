@@ -91,7 +91,7 @@ class Apache extends genericClass {
                     if (!sizeof($dns->answer[sizeof($dns->answer)-1])){
                         $err = true;
                         $this->addError(array("Message"=>"Le domaine : '".$dns->question[sizeof($dns->question)-1]->qname."' ne pointe pas sur l'adresse ip ".$serv->IP." (actuellement il n'est pas configuré)"));
-                    }elseif ($dns->answer[sizeof($dns->answer)-1]->address!=$serv->IP){
+                    }elseif (trim($dns->answer[sizeof($dns->answer)-1]->address)!=trim($serv->IP)){
                         $err = true;
                         $this->addError(array("Message"=>"Le domaine : '".$dns->question[sizeof($dns->question)-1]->qname."' ne pointe pas sur l'adresse ip ".$serv->IP." (actuellement il pointe vers ".$dns->answer[sizeof($dns->answer)-1]->address."), ou sa propagation se terminera dans ".$dns->answer[sizeof($dns->answer)-1]->ttl." secondes"));
                     }
