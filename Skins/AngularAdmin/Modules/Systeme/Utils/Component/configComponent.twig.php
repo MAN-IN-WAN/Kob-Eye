@@ -7,6 +7,7 @@ $comp = Component::getInstance($Module.'/'.$Component);
 
 
 $vars['formfields'] = $comp->Proprietes;
+
 array_walk($vars['formfields'] ,function(&$a){
         $a['name'] = $a['Nom'];
         $a['type'] = $a['Type'];

@@ -30,41 +30,124 @@ class Connection extends Root{
 	//------------------------------------------------------------//
 	//C est ici que l on configure la connexion et que l on définit les processus d identification
 	function Connection() {
+	    $newCo = false;
+
 		//On enregistre le nunmero de session
 		$this->DetectSessions();
+
 		//Recherche de la connexion ou creation si inexistante
  		$this->GetConn();
+
 		//Detection de la langue (cas par défaut)
 		$this->DetectLanguage();
 		//On detecte l existence de cookies envoyés par le navigateur
 		if (!empty($this->SessId)) {
-			//Si l id de session est envoyé directement depuis un cookie alors on demarre la session
-			//Sinon on charge les variables presentes dans le cookie
-			if ($this->DetectAuth()&&!$this->Disconnected) {
-				//Demarrage Session
-				$this->DemarreAuthSession();
-				//Chargement des variables
-				if (!$this->ChargementAuthVars())$this->LoadLoginVars();
-				//Initialisation du usersession
-				if (!$this->DetectUser()) $this->DestroyAuth();
-				if($this->DetectSess()) $this->DestroySess();
-			}elseif($this->DetectSess()){
-				//Utilisateur public
-				$this->initPublicSession();
-				$this->LoadLoginVars();
-				//Verficiation de la connexion
-				if (!$this->DetectUser()){
-				 	$this->initDefaultUser();
-				}else{
-					//Il faut basculer les informations de la session
-					$this->SessionPublicToPrivate();
-				}
-			}else{
-				//PAS DE CAS
-			}
+		    $domain = Sys::$domain;
+
+            $site = Sys::getOneData('Systeme', 'Site/Domaine=' . $domain);
+            if ($site && $site->Api && $_SERVER['REQUEST_URI'] != '/Documentation') {
+                header("Content-type: text/json; charset=".CHARSET_CODE."");
+                header("Accept-Ranges:bytes");
+                header("Access-Control-Allow-Headers:Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token");
+                header("Access-Control-Allow-Methods:GET, POST, PUT, DELETE, PATCH");
+                header("Access-Control-Allow-Origin: *");
+
+                //Demarrage Session
+                $this->DemarreAuthSession();
+                //Chargement des variables
+                if (!$this->ChargementAuthVars()) $this->LoadLoginVars();
+                //Initialisation du usersession
+                if (!$this->DetectUser()) {
+                    $this->DestroyAuth();
+                }
+
+                if (!Sys::$User) {
+                    $this->DestroyAuth();
+                    setcookie(PHP_SESSION_NAME, '', time() - 42000, '/');
+                    http_response_code(401);
+                    die(json_encode(array('success'=>false,'error' => 'invalid_credentials', 'error_description' => 'Probleme d\'identification. Essayez de vous reconnecter.')));
+                }
+
+
+                $apiKey = isset($_COOKIE["API_KEY"]) ? $_COOKIE["API_KEY"] : (isset($_GET["API_KEY"]) ? $_GET["API_KEY"] : (isset($_POST["API_KEY"]) ? $_POST["API_KEY"] : false));
+                if(!$apiKey){
+                    $data = array();
+                    parse_str(file_get_contents("php://input"),$data);
+                    if(isset($data['API_KEY'])) $apiKey = $data['API_KEY'];
+                }
+                $uApi = Sys::$User->getOneParent('ApiKey');
+                if ($uApi->Key != $apiKey) {
+                    $this->DestroyAuth();
+                    setcookie(PHP_SESSION_NAME, '', time() - 42000, '/');
+                    http_response_code(401);
+                    die(json_encode(array('success'=>false,'error' => 'invalid_credentials', 'error_description' => 'Clef Api invalide - 1')));
+                    return false;
+                }
+
+
+                if ($this->DetectSess()) $this->DestroySess();
+            }else{
+                //Si l id de session est envoyé directement depuis un cookie alors on demarre la session
+                //Sinon on charge les variables presentes dans le cookie
+                if ($this->DetectAuth() && !$this->Disconnected) {
+                    //Demarrage Session
+                    $this->DemarreAuthSession();
+                    //Chargement des variables
+                    if (!$this->ChargementAuthVars()) $this->LoadLoginVars();
+                    //Initialisation du usersession
+                    if (!$this->DetectUser()) $this->DestroyAuth();
+                    if ($this->DetectSess()) $this->DestroySess();
+                } elseif ($this->DetectSess()) {
+                    //Utilisateur public
+                    $this->initPublicSession();
+                    $this->LoadLoginVars();
+                    //Verficiation de la connexion
+                    if (!$this->DetectUser()) {
+                        $this->initDefaultUser();
+                    } else {
+                        //Il faut basculer les informations de la session
+                        $this->SessionPublicToPrivate();
+                    }
+                } else{
+                    //PAS DE CAS
+                }
+            }
 		}else{
 			$this->LoadLoginVars();
 			if ($this->DetectUser()) {
+                $domain = Sys::$domain;
+                $site = Sys::getOneData('Systeme','Site/Domaine='.$domain);
+                if($site && $site->Api && $_SERVER['REQUEST_URI'] != '/Documentation'){
+                    header("Content-type: text/json; charset=".CHARSET_CODE."");
+                    header("Accept-Ranges:bytes");
+                    header("Access-Control-Allow-Headers:Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token");
+                    header("Access-Control-Allow-Methods:GET, POST, PUT, DELETE, PATCH");
+                    header("Access-Control-Allow-Origin: *");
+
+                    $apiKey = isset($_COOKIE["API_KEY"]) ? $_COOKIE["API_KEY"] : ( isset($_GET["API_KEY"]) ? $_GET["API_KEY"] : ( isset($_POST["API_KEY"]) ? $_POST["API_KEY"] : false));
+                    if(!$apiKey){
+                    	$data = array();
+                        parse_str(file_get_contents("php://input"),$data);
+                        if(isset($data['API_KEY'])) $apiKey = $data['API_KEY'];
+					}
+                    $exists = false;
+                    if($apiKey)
+                        $exists = Sys::getOneData('Systeme','ApiKey/Key='.$apiKey);
+
+                    if(!$exists) {
+                        http_response_code (401);
+                        die(json_encode(array('success'=>false,'error'=>'invalid_credentials','error_description'=>'Clef Api invalide - 2')));
+                        return false;
+                    }
+
+                    $uApi = Sys::$User->getOneParent('ApiKey');
+                    if($uApi->Key != $apiKey){
+                        http_response_code (401);
+                        die(json_encode(array('success'=>false,'error'=>'invalid_credentials','error_description'=>'Clef Api invalide - 3')));
+                        return false;
+					}
+                }
+
 				//On genere l id de session
 				$this->SessId = $this->genSessId($this->login,$this->pass,Sys::$Session->Id);
 				//Creation Session
@@ -74,8 +157,19 @@ class Connection extends Root{
 				//derniere conexion
 				Sys::$User->LastConnection = time();
 				Sys::$User->Save();
+
+				$newCo = true;
+
 			}else{
- 				$this->initDefaultUser();
+ 				$domain = Sys::$domain;
+
+                $site = Sys::getOneData('Systeme', 'Site/Domaine=' . $domain);
+                if ($site && $site->Api && $_SERVER['REQUEST_URI'] != '/Documentation') {
+                    http_response_code (401);
+                    die(json_encode(array('success'=>false,'error'=>'invalid_credentials','error_description'=>'L\'utilisation de cett API nécéssite un utilisateur authentifié')));
+                }
+
+                $this->initDefaultUser();
 			}
 		}
 
@@ -95,6 +189,12 @@ class Connection extends Root{
 			Sys::$Session->Save();
 		}else $GLOBALS["Systeme"]->Log->log("ERROR CONNEXION");
 
+        if($site && $site->Api && $newCo){
+            setcookie(PHP_SESSION_NAME, '', time()-42000, '/');
+            http_response_code (200);
+            die(json_encode(array('success'=>'authentication_success','error'=>false,'auth_token'=>$this->SessId)));
+        }
+
     }
 
 	//----------------------------------------
@@ -111,6 +211,10 @@ class Connection extends Root{
 	function DetectSessions() {
 		$this->DetectSess();
 		$this->DetectAuth();
+		$domain = Sys::$domain;
+		$site = Sys::getOneData('Systeme','Site/Domaine='.$domain);
+		if($site && $site->Api)
+			$this->DetectToken();
 		if (!empty($this->SessId)) return true ;else  return false;
 	}
 	function DetectSess() {
@@ -149,6 +253,68 @@ class Connection extends Root{
 			$t=true;
 		}
 		if ($t) return true ;else  return false;
+	}
+	public function DetectToken(){
+	    $types= array(
+            'application/json',
+            'application/x-javascript',
+            'text/javascript',
+            'text/x-javascript',
+            'text/x-json',
+            'text/json'
+        );
+	    if(!isset($_SERVER['CONTENT_TYPE']) || !in_array($_SERVER['CONTENT_TYPE'],$types)){
+            if($_SERVER['REQUEST_URI'] != '/Documentation'){
+                header('Location: /Documentation');
+                die();
+            }
+             return true;
+        }
+
+
+		$apiKey = isset($_COOKIE["API_KEY"]) ? $_COOKIE["API_KEY"] : ( isset($_GET["API_KEY"]) ? $_GET["API_KEY"] : ( isset($_POST["API_KEY"]) ? $_POST["API_KEY"] : false));
+        if(!$apiKey){
+            $data = array();
+            parse_str(file_get_contents("php://input"),$data);
+            if(isset($data['API_KEY'])) $apiKey = $data['API_KEY'];
+        }
+		$exists = false;
+		if($apiKey)
+            $exists = Sys::getOneData('Systeme','ApiKey/Key='.$apiKey);
+
+		if(!$exists) {
+            header("Content-type: text/json; charset=".CHARSET_CODE."");
+            header("Accept-Ranges:bytes");
+            header("Access-Control-Allow-Headers:Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token");
+            header("Access-Control-Allow-Methods:GET, POST, PUT, DELETE, PATCH");
+            header("Access-Control-Allow-Origin: *");
+            http_response_code (401);
+            die(json_encode(array('success'=>false,'error'=>'invalid_credentials','error_description'=>'Clef Api invalide')));
+			return false;
+        }
+
+        $t=false;
+        if (isset($_COOKIE["AUTH_TOKEN"])&& $_COOKIE["AUTH_TOKEN"]!="" ) {
+            $this->SessId  = $_COOKIE["AUTH_TOKEN"];
+            $t=true;
+        }
+        if (isset($_POST["AUTH_TOKEN"])&& $_POST["AUTH_TOKEN"]!="" ) {
+            $this->SessId  = $_POST["AUTH_TOKEN"];
+            $t=true;
+        }
+        if (isset($_GET["AUTH_TOKEN"])&& $_GET["AUTH_TOKEN"]!="" ) {
+            $this->SessId  = $_GET["AUTH_TOKEN"];
+            $t=true;
+        }
+        if(!$t){
+                $data = array();
+                parse_str(file_get_contents("php://input"),$data);
+                if(isset($data['AUTH_TOKEN'])){
+                    $this->SessId  = $data["AUTH_TOKEN"];
+                    $t=true;
+				}
+		}
+        return $t;
 	}
 
 	//------------------------------------------------------------//

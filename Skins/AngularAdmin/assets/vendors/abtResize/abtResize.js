@@ -107,7 +107,7 @@ angular.module('abt.Resizable', []).directive('resizable', function() {
                                         var tocut = percent - maxper;
                                         var nexth = next.outerHeight();
                                         var nextper = Math.ceil(nexth / parh*100);
-                                        var maxcut = nextper - 1
+                                        var maxcut = nextper - 1;
                                         if(maxcut - tocut > 1){
                                             nextper -= tocut;
                                             next[0].style[prop] = nextper + '%';
@@ -166,7 +166,7 @@ angular.module('abt.Resizable', []).directive('resizable', function() {
                                         var tocut = percent - maxper;
                                         var nexth = next.outerHeight();
                                         var nextper = Math.ceil(nexth / parh*100);
-                                        var maxcut = nextper - 1
+                                        var maxcut = nextper - 1;
                                         if(maxcut - tocut > 1){
                                             nextper -= tocut;
                                             next[0].style[prop] = nextper + '%';
@@ -224,9 +224,9 @@ angular.module('abt.Resizable', []).directive('resizable', function() {
                                     if(next.length){
                                         var tocut = percent - maxper;
                                         var nextw = next.outerWidth();
-                                        var nextper = Math.ceil(nextw / parw*100);
-                                        var maxcut = nextper - 1
-                                        if(maxcut - tocut > 1){
+                                        var nextper = Math.floor(nextw / parw*100);
+                                        var maxcut = nextper - 5;
+                                        if(maxcut - tocut > 5){
                                             nextper -= tocut;
                                             next[0].style[prop] = nextper + '%';
                                             if(next[0].getAttribute('data-width')) {
@@ -235,7 +235,7 @@ angular.module('abt.Resizable', []).directive('resizable', function() {
                                         }
                                         else {
                                             percent = maxper + maxcut;
-                                            next[0].style[prop] = '1%';
+                                            next[0].style[prop] = '5%';
                                             if(next[0].getAttribute('data-width')) {
                                                 next[0].setAttribute('data-width', 1);
                                             }
@@ -246,12 +246,12 @@ angular.module('abt.Resizable', []).directive('resizable', function() {
                                     }
 
                                 } else{
-                                    if(percent < 1)
-                                        percent =1;
+                                    if(percent < 5)
+                                        percent =5;
                                     next = element.nextAll().not('[r-ignore]').first();
                                     if(next.length) {
                                         var nextw = next.outerWidth();
-                                        var nextper = Math.ceil(nextw / parw*100);
+                                        var nextper = Math.floor(nextw / parw*100);
                                         var tocomplete = 100 - (sibPer + percent);
                                         nextper += tocomplete;
                                         next[0].style[prop] = nextper + '%';
@@ -285,8 +285,8 @@ angular.module('abt.Resizable', []).directive('resizable', function() {
                                         var tocut = percent - maxper;
                                         var nextw = next.outerWidth();
                                         var nextper = Math.ceil(nextw / parw*100);
-                                        var maxcut = nextper - 1
-                                        if(maxcut - tocut > 1){
+                                        var maxcut = nextper - 5;
+                                        if(maxcut - tocut > 5){
                                             nextper -= tocut;
                                             next[0].style[prop] = nextper + '%';
                                             if(next[0].getAttribute('data-width')) {
@@ -295,9 +295,9 @@ angular.module('abt.Resizable', []).directive('resizable', function() {
                                         }
                                         else {
                                             percent = maxper + maxcut;
-                                            next[0].style[prop] = '1%';
+                                            next[0].style[prop] = '5%';
                                             if(next[0].getAttribute('data-width')) {
-                                                next[0].setAttribute('data-width', 1);
+                                                next[0].setAttribute('data-width', 5);
                                             }
                                         }
 
@@ -306,8 +306,8 @@ angular.module('abt.Resizable', []).directive('resizable', function() {
                                     }
 
                                 } else{
-                                    if(percent < 1)
-                                        percent =1;
+                                    if(percent < 5)
+                                        percent =5;
                                     next = element.prevAll().not('[r-ignore]').first();
                                     if(next) {
                                         var nextw = next.outerWidth();

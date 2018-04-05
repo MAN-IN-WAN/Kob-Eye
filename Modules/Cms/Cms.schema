@@ -2,20 +2,34 @@
 	<OBJECTCLASS title="Page" driver="mysql"  master="1" AccessPoint="1" Description="Page"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" browseable="1" Operations="delete,edit,add" className="CmsPage" Class="Modules/Cms/Class/Page.class.php" >
 		<CATEGORY title="Contenu" type="large">
 			<PROPERTIES type="titre" obligatoire="1" searchOrder="1" list="1" listDescr="Nom de la page" fiche="1" form="1">Nom</PROPERTIES>
-			<PROPERTIES type="html" list="1" listDescr="Titre(h1) de la page" fiche="1" form="1">Titre</PROPERTIES>
+			<PROPERTIES type="html" list="1" listDescr="Titre(h1) de la page" fiche="1" form="1" large="1" fullTitle="1">Titre</PROPERTIES>
 			<PROPERTIES type="boolean" form="1" fiche="1" >Home</PROPERTIES>
-			<PROPERTIES type="html" special="multi" fiche="1" form="1">Description</PROPERTIES>
+			<PROPERTIES type="html" special="multi" fiche="1" form="1" large="1" fullTitle="1">Description</PROPERTIES>
 		</CATEGORY>
-		<CATEGORY title="Configuration">
+		<CATEGORY title="Configuration" fold="1">
 			<PROPERTIES type="file"  fiche="1" form="1">Icone</PROPERTIES>
-			<!--<PROPERTIES type="boolean" default="1" list="1" listDescr="Publier" fiche="1" form="1">Publier</PROPERTIES>-->
-			<FKEY card="0,1" data="Page,Id" fiche="1" form="1">PageId</FKEY>
+			<PROPERTIES type="int"  fiche="1" form="1">Ordre</PROPERTIES>
+			<PROPERTIES type="modele" query="Systeme/ActiveTemplate::Id::Nom" form="1" fiche="0" auto="1" hidden="1">Template</PROPERTIES>
+			<FKEY card="0,1" data="Page,Id" fiche="1" form="1" >PageId</FKEY>
 			<FKEY card="0,1" module="Systeme" data="Menu,Id" hidden="1">MenuId</FKEY>
 		</CATEGORY>
-		<CATEGORY title="Templating">
-			<PROPERTIES type="template" form="1" hidden="1" >CmsTemplate</PROPERTIES>
-			<PROPERTIES type="templateconfig" subtype="xml" large="1" form="1" hidden="1">TemplateConfig</PROPERTIES>
-			<PROPERTIES type="templateconfig" subtype="html" large="1" form="1" hidden="1">HtmlConfig</PROPERTIES>
+		<CATEGORY title="Templating" fold="1">
+			<PROPERTIES type="template" form="1" fiche="1" description="Modèle" values="Page pleine::Default,Colonne à gauche::LeftCol">CmsTemplate</PROPERTIES>
+			<PROPERTIES type="templateconfig" subtype="xml" large="1" form="1" fiche="1" hidden="1">TemplateConfig</PROPERTIES>
+			<PROPERTIES type="templateconfig" subtype="html" large="1" form="1" fiche="1"  hidden="1">HtmlConfig</PROPERTIES>
+		</CATEGORY>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Modele" driver="mysql"  master="1" AccessPoint="1" Description="Modele"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png"  className="CmsModele" Class="Modules/Cms/Class/Modele.class.php">
+		<CATEGORY title="Contenu" type="large">
+			<PROPERTIES type="titre" obligatoire="1" searchOrder="1" list="1" listDescr="Nom de la page" fiche="1" form="1">Nom</PROPERTIES>
+			<PROPERTIES type="varchar" list="1" listDescr="Type de modèle" fiche="1" form="1" vlaues="Page,Ligne,Colonne">Type</PROPERTIES>
+			<PROPERTIES type="html" special="multi" fiche="1" form="1">Description</PROPERTIES>
+		</CATEGORY>
+		<CATEGORY title="Templating" fold="1">
+			<PROPERTIES type="template" form="1" fiche="1" description="Template" >CmsTemplate</PROPERTIES>
+			<PROPERTIES type="templateconfig" subtype="xml" large="1" form="1" fiche="1" hidden="1">TemplateConfig</PROPERTIES>
+			<PROPERTIES type="templateconfig" subtype="html" large="1" form="1" fiche="1"  hidden="1">HtmlConfig</PROPERTIES>
 		</CATEGORY>
 	</OBJECTCLASS>
 </SCHEMA>

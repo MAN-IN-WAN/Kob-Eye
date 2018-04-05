@@ -575,7 +575,7 @@ class genericClass extends Root {
                             $O[] = $Elem;
                         }else{
                             if (!isset($O[$CatName])) {
-                                $O[$CatName] = Array();
+                                $O[$CatName] = $Cat;
                                 $O[$CatName][$ElemsName] = Array();
                             }
                             $O[$CatName][$ElemsName][] = $Elem;

@@ -42,19 +42,21 @@
 		<PROPERTIES type="boolean" default="0" category="Connexion" list="7" listDescr="Dev">Developper</PROPERTIES>
 		<!--<PROPERTIES type="order" category="Intégration">Ordre</PROPERTIES>-->
 		<FKEY card="1,n" data="Group,Id">GroupId</FKEY>
+		<FKEY card="0,1" data="ApiKey,Id">ApiKeyId</FKEY>
 		<FUNCTION>exportMenus</FUNCTION>
 		<FUNCTION>importMenus</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Site" driver="mysql" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Wiki2.png" generateUrl="0" Class="Modules/Systeme/Class/Site.class.php" cache="1">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé" list="1">Domaine</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" description="Mettre UA" values="Mobile,Desktop">UserAgent</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Connexion">Api</PROPERTIES>
 		<PROPERTIES type="text" description="Contenu du robots.txt">Robots</PROPERTIES>
 		<PROPERTIES type="text" category="Code Google Analytics">AnalyticsCode</PROPERTIES>
 		<PROPERTIES type="text" category="Clé Piwik">PiwikCle</PROPERTIES>
 		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png">Motsclefs</FUNCTION>
 		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png">Sitemap</FUNCTION>
 		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png">Reset</FUNCTION>
-		<FKEY card="1,1" data="User,Id" inherit="Group">UserId</FKEY>
+		<FKEY card="0,1" data="User,Id" inherit="Group">UserId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Page" driver="mysql" Icon="/Skins/AdminV2/Img/IconAqua/Wiki2.png" generateUrl="0" Class="Modules/Systeme/Class/Page.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé" list="2">Url</PROPERTIES>
@@ -301,5 +303,11 @@
         <PROPERTIES category="Clef" type="varchar" description="ObjectClass"  searchOrder="3" list="6">TaskObject</PROPERTIES>
         <PROPERTIES category="Clef" type="int" description="Identifiant"  searchOrder="4" list="7">TaskId</PROPERTIES>
         <PROPERTIES category="Clef" type="varchar" description="Fonction à éxécuter"  searchOrder="5" list="7">TaskFunction</PROPERTIES>
+	</OBJECTCLASS>
+
+	<!-- API Key -->
+	<OBJECTCLASS title="ApiKey" driver="mysql" AccessPoint="1" Icon="[None]" Description="Clef Api" Class="Modules/Systeme/Class/ApiKey.class.php">
+		<PROPERTIES type="varchar" searchOrder="1">Key</PROPERTIES>
+		<PROPERTIES type="text" searchOrder="2">Commentaire</PROPERTIES>
 	</OBJECTCLASS>
 </SCHEMA>

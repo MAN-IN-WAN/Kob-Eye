@@ -334,6 +334,11 @@ class Sys extends Root{
 
 	//Selectionne le type de rendu en fonction du type
 	function getContent() {
+		$domain = Sys::$domain;
+		$site = Sys::getOneData('Systeme','Site/Domaine='.$domain);
+		if($site && $site->Api && $_SERVER['REQUEST_URI'] != '/Documentation') {
+            $this->type = 'json';
+        }
 		$detectmime = true;
 		switch($this->type){
 			case "jpg":if ($this->type=="jpg")header("Content-type:  image/jpg");$detectmime=false;
@@ -741,7 +746,12 @@ class Sys extends Root{
 	}
 
 	function PostVarsToPhp() {
+
 		$this->PostVars = $_POST;
+        if(!count($_POST)){
+            parse_str(file_get_contents("php://input"),$this->PostVars);
+		}
+
 		//Resoplution des problemes d encodages dues a l AJAX
 		if (is_array($this->PostVars))foreach ($this->PostVars as $K=>$P) {
 //			if (!is_array($P)&&!is_object($P))$this->PostVars[$K] = stripslashes($P);
@@ -758,6 +768,9 @@ class Sys extends Root{
 	
 	function GetVarsToPhp() {
 		$this->GetVars = $_GET;
+        if(!count($_GET)){
+            parse_str(file_get_contents("php://input"),$this->PostVars);
+        }
 	}
 
 	function GetVarsLink() {

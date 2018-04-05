@@ -1,56 +1,102 @@
-app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile, $sce, $scope, $rootScope, $routeParams,$http,{{ identifier }}Store) {
+app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location, $compile, $sce, $scope, $rootScope, $routeParams,$http,{{ identifier }}Store) {
 
+    //Gestion du 'snapping' pour tomber sur des col-md-x
+    var step = 100/12;
+    var snaps = new Array();
+    for(i=1; i<13;i++){
+        snaps[i] = i*step;
+    }
 
-    if($scope.obj){
-        var parser = new DOMParser();
-
-        $scope.tempHtml = parser.parseFromString($scope.obj.HtmlConfig,"text/html");
-        $scope.tempConfig = parser.parseFromString($scope.obj.TemplateConfig,"text/xml");
-
-        $scope.initHtml = parser.parseFromString($scope.obj.HtmlConfig,"text/html");
-        $scope.initConfig = parser.parseFromString($scope.obj.TemplateConfig,"text/xml");
-
-        $scope.compoList = {{ Components | raw }};
-        //console.log($scope.compoList);
-        $scope.component = {};
-        $scope.ui = '';
-        $scope.modalObj = {fieldErrors: []};
-
-        //Init du compte des zones
-        $scope.maxZone = 0;
-        var zones = $scope.tempConfig.getElementsByTagName('ZONE');
-        for(var n in zones){
-            if(zones[n] instanceof Element){
-                var zid = zones[n].getAttribute('tag');
-                zid = zid.split('_')[1];
-                if($scope.maxZone < zid)
-                    $scope.maxZone = zid;
+    //Recupere le col-md- et la nouvelle size correspondant a une size flottante
+    var snapSize = function(size){
+        var diff = 100;
+        var index = false;
+        for(var n in snaps){
+            if(Math.abs(size - snaps[n]) < diff){
+                diff = Math.abs(size - snaps[n]);
+                index = n;
             }
         }
 
-        //Init du compte des row
-        $scope.maxRow = 0;
-        var rows = $scope.tempHtml.querySelectorAll('[data-row]');
-        for(var n in rows){
-            if(rows[n] instanceof HTMLDivElement && $scope.maxRow < rows[n].getAttribute('data-row'))
-                $scope.maxRow = rows[n].getAttribute('data-row')
-        }
-
-
-        $scope.$watch(function($scope){
-            return $scope.obj.HtmlConfig;
-        },function(){
-            $scope.updateInterface();
-        });
-
+        return index;
     }
+
+    //Recupere le prochain (ou le precedent) élément sibling
+    function nextByAttribute(node, attr, previous) {
+        while (node) {
+            node = previous ? node.previousElementSibling : node.nextElementSibling;
+            if (node && node.getAttribute(attr)) {
+                return node;
+            }
+        }
+        return null;
+    }
+
+
+
+
+    var getObj = $interval(function(){
+        if($scope.obj){
+            $interval.cancel(getObj);
+            var parser = new DOMParser();
+
+            $scope.tempHtml = parser.parseFromString($scope.obj.HtmlConfig,"text/html");
+            $scope.tempConfig = parser.parseFromString($scope.obj.TemplateConfig,"text/xml");
+
+            $scope.initHtml = parser.parseFromString($scope.obj.HtmlConfig,"text/html");
+            $scope.initConfig = parser.parseFromString($scope.obj.TemplateConfig,"text/xml");
+
+            $scope.compoList = {{ Components | raw }};
+            //console.log($scope.compoList);
+            $scope.component = {};
+            $scope.ui = '';
+            $scope.modalObj = {fieldErrors: []};
+
+            //Init du compte des zones
+            $scope.maxZone = 0;
+            var zones = $scope.tempConfig.getElementsByTagName('ZONE');
+            for(var n in zones){
+                if(zones[n] instanceof Element){
+                    var zid = zones[n].getAttribute('tag');
+                    zid = zid.split('_')[1];
+                    if(parseInt($scope.maxZone) < parseInt(zid)){
+                        $scope.maxZone = zid;
+                    }
+                }
+            }
+
+            //Init du compte des row
+            $scope.maxRow = 0;
+            var rows = $scope.tempHtml.querySelectorAll('[data-row]');
+            for(var n in rows){
+                if(rows[n] instanceof HTMLDivElement && $scope.maxRow < rows[n].getAttribute('data-row'))
+                    $scope.maxRow = rows[n].getAttribute('data-row')
+            }
+
+
+            $scope.$watch(function($scope){
+                return $scope.obj.HtmlConfig;
+            },function(){
+                //console.log($scope.obj.HtmlConfig);
+                $scope.updateInterface();
+            });
+
+            $scope.$watch(function($scope){
+                return $scope.obj.TemplateConfig;
+            },function(){
+                //console.log($scope.obj.TemplateConfig);
+                $scope.updateInterface();
+            });
+        }
+    },100,50);
+
 
     /////Gestion des lignes
     $scope.createRow = function(parent,order){
         $scope.maxRow++;
         $scope.maxZone++;
         var newDiv = '<div data-row="'+ $scope.maxRow +'" data-order="'+order+'" class="row cms-row"> \
-                            <div data-col="'+$scope.maxZone+'" data-order="1" class="cms-col" data-width="100" data-zone="ZONE_'+$scope.maxZone+'" style="width:100%;">[ZONE_'+$scope.maxZone+']</div> \
+                            <div data-col="'+$scope.maxZone+'" data-order="1" class="cms-col col-md-12" data-width="100" data-zone="ZONE_'+$scope.maxZone+'">[ZONE_'+$scope.maxZone+']</div> \
                       </div>';
         //transformation string en node html
         var div = document.createElement('div');
@@ -132,13 +178,14 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
         var row = $scope.tempHtml.querySelectorAll('[data-row="'+rowId+'"]')[0];
         var cols = row.querySelectorAll('[data-col]');
         var colWidth = $scope.recalc(rowId);
-        var newDiv = '<div data-col="'+$scope.maxZone+'" data-order="1" class="cms-col" data-zone="ZONE_'+$scope.maxZone+'" data-width="'+colWidth+'" style="width: '+colWidth+'%;">[ZONE_'+$scope.maxZone+']</div>';
+        if(!colWidth) return false;
+        var newDiv = '<div data-col="'+$scope.maxZone+'" data-order="1" class="cms-col col-md-'+colWidth+'" data-zone="ZONE_'+$scope.maxZone+'" data-width="'+snaps[colWidth]+'">[ZONE_'+$scope.maxZone+']</div>';
         //transformation string en node html
         var div = document.createElement('div');
         div.innerHTML = newDiv;
         newDiv = div.firstChild;
 
-        var current = $scope.tempHtml.querySelectorAll('[data-order="'+order+'"]');
+        var current = row.querySelectorAll('[data-order="'+order+'"]');
         if(current.length){
             row.insertBefore(newDiv,current[0]);
         }else{
@@ -193,8 +240,7 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
                 if(!bSib) bSib = nextByAttribute(col,'data-col',true);
                 if(bSib){
                     bSWidth = parseInt(bSib.getAttribute('data-width'))+parseInt(col.getAttribute('data-width'));
-                    bSib.setAttribute('data-width',bSWidth);
-                    bSib.setAttribute('style','width:'+bSWidth+'%;');
+                    $scope.resizeWidth(bSib,bSWidth);
                 }
 
                 col.remove();
@@ -226,8 +272,9 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
         var title = compo.getAttribute('title');
         var module = compo.getAttribute('module');
 
-        $scope.setComponent(module+title);
+        if(!$scope.setComponent(module+title)) return false;
         $scope.modalObj.title = $scope.component.Name;
+
 
         for(var n=0; n< $scope.component.Proprietes.length; n++){
             var param = zone.querySelectorAll('[name="'+$scope.component.Proprietes[n].Nom+'"]')[0];
@@ -240,7 +287,6 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
         if(!identifier)
             return false;
 
-
         var component = $scope.compoList[identifier];
         if(component){
             $scope.component = angular.merge($scope.component,component);
@@ -249,7 +295,7 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
             $scope.component.chemin.push('Component.conf');
             $scope.component.chemin = $scope.component.chemin.join('/');
             $scope.compoUrl = '/Systeme/Utils/Component/configComponent.htm?Module='+$scope.component.Module+'&Component='+$scope.component.Title;
-            console.log($scope.component);
+            //console.log($scope.component);
         } else {
             return false;
         }
@@ -376,19 +422,33 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
         var row = $scope.tempHtml.querySelectorAll('[data-row="'+rowId+'"]')[0];
         var cols = row.querySelectorAll('[data-col]');
         var nbCols = parseInt(cols.length) + 1;
-        var newColWidth = 100/nbCols;
-        var spare = (100-newColWidth)/100;
+        if(nbCols > 12) return false;
+        var newColWidth = snapSize(100/nbCols);
+        var spare = 12-newColWidth;
         var used = 0;
+        var colSnaps = new Array();
         for(var n in cols){
             if(cols[n] instanceof HTMLDivElement){
-                var oldWidth = cols[n].getAttribute('data-width');
-                var newWidth = parseInt(oldWidth*spare);
-                used += newWidth;
-                cols[n].setAttribute('data-width',newWidth);
-                cols[n].setAttribute('style','width:'+newWidth+'%;');
+                var oldRatio =  parseInt(cols[n].getAttribute('data-width'))/100;
+                var newWidth = Math.floor(oldRatio*spare);
+                if(newWidth == 0) newWidth=1;
+                colSnaps.push(newWidth);
+                used += parseInt(newWidth);
             }
         }
-        newColWidth = 100 - used ;
+
+        var left = spare - used;
+        var i = 0;
+        while (left > 0){
+            colSnaps[i]++;
+            i++;
+            left--;
+        }
+        for(var n in colSnaps){
+            $scope.resizeWidth(cols[n],snaps[colSnaps[n]]);
+        }
+
+
         return newColWidth;
     };
 
@@ -498,34 +558,23 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
         var dvContainers = base.querySelectorAll('[data-dv]');
         var rows = base.querySelectorAll('[data-row]');
         var cols = base.querySelectorAll('[data-col]');
-
+{#
         //Ajout du titre
         var newDiv = '<div class="row pageHeader" ng-bind-html="obj.Titre"></div>';
         //transformation string en node html
         var div = document.createElement('div');
         div.innerHTML = newDiv;
         newDiv = div.firstChild;
-        body.insertBefore(newDiv,body.firstChild);
+        body.insertBefore(newDiv,body.firstChild);#}
 
-
-        //Ajout des boutons pour créer des rows/sauvegarder...
-        var newDiv = '<div class="row pageFooter">  \
-                            <button type="button" class="btn btn-success btn-right"  ng-click="pageSave();">Enregistrer</button> \
-                            <button type="button" class="btn btn-warning btn-right"  ng-click="pageCancel();">Tout annuler</button> \
-                        </div>';
-        //transformation string en node html
-        var div = document.createElement('div');
-        div.innerHTML = newDiv;
-        newDiv = div.firstChild;
-        body.insertBefore(newDiv,null);
-
+        //Ajout des boutons pour ajouter des lignes...
         for(n in dvContainers){
             if(!(dvContainers[n] instanceof HTMLDivElement))
                 continue;
 
             var newDiv = '<div class="row addRow">  \
-                <button type="button" class="btn btn btn-primary"  ng-click="createRow('+dvContainers[n].getAttribute('data-dv')+')">Ajouter une section</button> \
-            </div>';
+                            <button type="button" class="btn btn-primary"  ng-click="createRow('+dvContainers[n].getAttribute('data-dv')+')" title="Ajouter une section"><i class="icmn-plus2"></i><span class="sectButton">Ajouter une section</span></button> \
+                          </div>';
             //transformation string en node html
             var div = document.createElement('div');
             div.innerHTML = newDiv;
@@ -543,9 +592,9 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
 
             var newDiv = '<div class="row button-container" r-ignore > \
                             <div class="addCol">  \
-                                <button type="button" class="btn btn btn-primary"  ng-click="createCol(' + rows[n].getAttribute('data-row') + ')">Ajouter un composant</button> \
+                                <button type="button" class="btn btn-primary"  ng-click="createCol(' + rows[n].getAttribute('data-row') + ')" title="Ajouter un composant"><i class="icmn-plus2"></i><span class="compoButton">Ajouter un composant</button> \
                             </div><div class="delRow">  \
-                                <button type="button" class="btn btn btn-danger"  ng-click="delRow(' + rows[n].getAttribute('data-row') + ')">Supprimer la section</button> \
+                                <button type="button" class="btn btn-danger"  ng-click="delRow(' + rows[n].getAttribute('data-row') + ')" title="Supprimer la section"><i class="icmn-cross"></i><span class="sectButton">Supprimer la section</button> \
                             </div> \
                         </div>';
             //transformation string en node html
@@ -575,9 +624,23 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
         for(n in cols){
             if(!(cols[n] instanceof HTMLDivElement)) continue;
 
+            //Affichage du composant à l'intérieur
+            if($scope.getComponent(cols[n].getAttribute('data-zone'))){
+            var compoHtml = '<div class="compoShow"> \
+                <i class="compoDisplay '+($scope.component.Screen ? $scope.component.Screen : 'icmn-question3' )+'" title="'+ $scope.component.Name +'" alt="'+ $scope.component.Name +'"></i> \
+                <span class="compoTitle">'+ $scope.component.Name +'</span> \
+            </div>';
+            } else{
+            var compoHtml = '<div class="compoShow emptyCompo"> \
+                <i class="compoDisplay icmn-cog3" title="Non choisi" alt="Non Choisi"></i> \
+                <span class="compoTitle">Composant non choisi</span> \
+            </div>';
+            }
+            cols[n].innerHTML = compoHtml;
+
 
             var newDiv = '<div class="configComp">  \
-                            <button type="button" class="btn btn btn-warning"  ng-click="configComponent(\''+cols[n].getAttribute('data-zone')+'\')">Configurer le composant</button> \
+                            <button type="button" class="btn btn-warning"  ng-click="configComponent(\''+cols[n].getAttribute('data-zone')+'\')" title="Configurer le composant"><i class="icmn-pencil"></i><span class="compoButton" >Configurer le composant</span></button> \
                         </div>';
             //transformation string en node html
             var div = document.createElement('div');
@@ -586,7 +649,7 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
             cols[n].insertBefore(newDiv,null);
 
             var newDiv = '<div class="delCol">  \
-                                <button type="button" class="btn btn btn-danger"  ng-click="delCol('+cols[n].getAttribute('data-col')+')">Supprimer le composant</button> \
+                                <button type="button" class="btn btn-danger"  ng-click="delCol('+cols[n].getAttribute('data-col')+')" title="Supprimer le composant"><i class="icmn-cross"></i><span class="compoButton">Supprimer le composant</button> \
                             </div>';
             //transformation string en node html
             var div = document.createElement('div');
@@ -613,6 +676,7 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
         }
 
         $scope.ui= base.querySelectorAll('body')[0].innerHTML;
+        $scope.component = {};
 
         $('#pageOrg').spin(false);
     };
@@ -627,7 +691,7 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
         if(!droped.getAttribute("data-row")) return false;
 
         var rows = dropedOn.querySelectorAll('[data-row]');
-        var next = null;
+        var next = dropedOn.querySelectorAll('.addRow')[0];
         var tempNext =null;
 
         for(var n=0; n < rows.length; n++){
@@ -669,7 +733,7 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
 
         var aSib = null;
         var tempASib =null;
-        var next = null;
+        var next = dropedOn.querySelectorAll('.button-container')[0];
         var tempNext =null;
 
 
@@ -690,9 +754,9 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
             if(middleX >= evt.x){
                 next = aSib = cols[n];
                 tempNext = tempASib = $scope.tempHtml.querySelectorAll('[data-col="'+next.getAttribute('data-col')+'"]')[0];
-                console.log('[data-col="'+next.getAttribute('data-col')+'"]');
+                {#console.log('[data-col="'+next.getAttribute('data-col')+'"]');
                 console.log(aSib,tempASib);
-                console.log(next,tempNext);
+                console.log(next,tempNext);#}
                 break;
             }
         }
@@ -704,14 +768,8 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
 
 
             if(bSib){
-                tempBSib = $scope.tempHtml.querySelectorAll('[data-col="'+bSib.getAttribute('data-col')+'"]')[0];
-
                 bSWidth =parseInt(bSib.getAttribute('data-width'))+parseInt(cWidth);
-                bSib.setAttribute('data-width',bSWidth);
-                bSib.setAttribute('style','width:'+bSWidth+'%;');
-
-                tempBSib.setAttribute('data-width',bSWidth);
-                tempBSib.setAttribute('style','width:'+bSWidth+'%;');
+                $scope.resizeWidth(bSib,bSWidth);
             }
 
             var sWidth = null;
@@ -723,22 +781,10 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
                 nSWidth = Math.floor(sWidth*sWidth/(sWidth+cWidth));
                 nCWidth = Math.ceil(cWidth*sWidth/(sWidth+cWidth));
 
-                aSib.setAttribute('data-width',nSWidth);
-                aSib.setAttribute('style','width:'+nSWidth+'%;');
-                droped.setAttribute('data-width',nCWidth);
-                droped.setAttribute('style','width:'+nCWidth+'%;');
-
-                tempASib.setAttribute('data-width',nSWidth);
-                tempASib.setAttribute('style','width:'+nSWidth+'%;');
-                tempDroped.setAttribute('data-width',nCWidth);
-                tempDroped.setAttribute('style','width:'+nCWidth+'%;');
-
+                $scope.resizeWidth(aSib,nSWidth);
+                $scope.resizeWidth(droped,nCWidth);
             } else{
-                droped.setAttribute('data-width',100);
-                droped.setAttribute('style','width:100%;');
-
-                tempDroped.setAttribute('data-width',100);
-                tempDroped.setAttribute('style','width:100%;');
+                $scope.resizeWidth(droped,100);
             }
         }
 
@@ -763,15 +809,17 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
         }
 
         if( cEWidth = elem.getAttribute('data-width')){
-            clearElem.setAttribute('data-width',cEWidth);
+            $scope.resizeWidth(elem,cEWidth);
         }
         if( cEHeight = elem.getAttribute('data-height')) {
             clearElem.setAttribute('data-height',cEHeight);
+            clearElem.setAttribute('style',elem.getAttribute('style'));
         }
-        clearElem.setAttribute('style',elem.getAttribute('style'));
+
+
 
         var next = info.next;
-        if(next ){
+        if(next){
 
             if( nrcol = next.getAttribute('data-col')){
                 var nclearElem = $scope.tempHtml.querySelectorAll('[data-col="'+nrcol+'"]')[0];
@@ -782,12 +830,13 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
             }
 
             if( ncEWidth = next.getAttribute('data-width')){
-                nclearElem.setAttribute('data-width',ncEWidth);
+                $scope.resizeWidth(next,ncEWidth);
             }
             if( ncEHeight = next.getAttribute('data-height')) {
                 nclearElem.setAttribute('data-height',ncEHeight);
+                nclearElem.setAttribute('style',next.getAttribute('style'));
             }
-            nclearElem.setAttribute('style',next.getAttribute('style'));
+
         }
 
 
@@ -795,14 +844,23 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
     });
 
 
-    function nextByAttribute(node, attr, previous) {
-        while (node) {
-            node = previous ? node.previousElementSibling : node.nextElementSibling;
-            if (node && node.getAttribute(attr)) {
-                return node;
-            }
-        }
-        return null;
+
+
+    //Resize une div pour la fitter a du col-md-x
+    $scope.resizeWidth = function(elem,size){
+            var rcol = elem.getAttribute('data-col');
+            var clearElem = $scope.tempHtml.querySelectorAll('[data-col="'+rcol+'"]')[0];
+
+            snapIndex = snapSize(size);
+            clearElem.setAttribute('data-width',snaps[snapIndex]);
+
+            clearElem.className = clearElem.className.replace(/col-md-[0-9]{1,2}/,'');
+            clearElem.className += ' col-md-'+snapIndex;
+
+            if(clearElem.getAttribute('style'))
+                clearElem.setAttribute('style', clearElem.getAttribute('style').replace(/width.*;/,''));
+
+            return snapIndex;
     }
 
 
@@ -817,6 +875,8 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($location, $compile,
         console.log('edit obj',$scope.modalObj);
         $("#modalfiche-{{ identifier }}").modal();
     }
+
+
 
 });
 
