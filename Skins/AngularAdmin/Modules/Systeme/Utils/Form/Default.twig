@@ -33,21 +33,22 @@
                     });
                 </script>
             {% elseif field.type == "file" %}
-                <input type="text" class="form-control" placeholder="" id="input-{{ field.name }}" ng-model="modalObj.{{ field.name }}">
-                <label for="input-{{ field.name }}-file" class="clickable"> Choisissez un fichier </label>
-                <input id="input-{{ field.name }}-file" type="file" nv-file-select options="{ alias:'FileData',formData:[{ 'Module':'{{ Module }}' }, { 'Obj' : '{{ ObjectType }}' }],removeAfterUpload: true, inputId: 'input-{{ field.name }}', model:'modalObj.{{ field.name }}' }" ng-init="up_{{ field.name }} = angular.copy(uploader)" uploader="up_{{ field.name }}" style="display:none;" /><br/>
-                <ul>
-                    <li ng-repeat="item in up_{{ field.name }}.queue">
+                <input type="text" class="form-control" placeholder="" id="input-{{ ObjectType }}{{ field.name }}" ng-model="modalObj.{{ field.name }}">
+                <label for="input-{{ ObjectType }}{{ field.name }}-file" class="clickable"> Choisissez un fichier </label>
+                <input id="input-{{ ObjectType }}{{ field.name }}-file" type="file" nv-file-select options="{ alias:'FileData',formData:[{ 'Module':'{{ Module }}' }, { 'Obj' : '{{ ObjectType }}' }],removeAfterUpload: true, inputId: 'input-{{ ObjectType }}{{ field.name }}', model:'modalObj.{{ field.name }}' }" ng-init="up_{{ ObjectType }}{{ field.name }} = angular.copy(uploader)" uploader="up_{{ ObjectType }}{{ field.name }}" style="display:none;" /><br/>
+                <ul id="toto">
+                    <li ng-repeat="item in up_{{ ObjectType }}{{ field.name }}.queue">
                         Name: <span ng-bind="item.file.name"></span><br/>
-                        <button ng-click="item.upload()">upload</button>
+                        <button ng-click="item.upload()" class="btn btn-success btn-left">Envoyer</button>
+                        <button ng-click="item.remove()" class="btn btn-danger btn-right">Annuler</button>
                     </li>
                 </ul>
             {% elseif field.type == "image" %}
-                <input type="text" class="form-control" placeholder="" id="input-{{ field.name }}" ng-model="modalObj.{{ field.name }}">
-                <label for="input-{{ field.name }}-file" class="clickable"> Choisissez une image </label>
-                <input id="input-{{ field.name }}-file" type="file" nv-file-select options="{ alias:'FileData',formData:[{ 'Module':'{{ Module }}' }, { 'Obj' : '{{ ObjectType }}' }],removeAfterUpload: true ,inputId: 'input-{{ field.name }}', model:'modalObj.{{ field.name }}' }" ng-init="up_{{ field.name }} = angular.copy(uploader)" uploader="up_{{ field.name }}" style="display:none;" /><br/>
+                <input type="text" class="form-control" placeholder="" id="input-{{ ObjectType }}{{ field.name }}" ng-model="modalObj.{{ field.name }}">
+                <label for="input-{{ ObjectType }}{{ field.name }}-file" class="clickable"> Choisissez une image </label>
+                <input id="input-{{ ObjectType }}{{ field.name }}-file" type="file" nv-file-select options="{ alias:'FileData',formData:[{ 'Module':'{{ Module }}' }, { 'Obj' : '{{ ObjectType }}' }],removeAfterUpload: true ,inputId: 'input-{{ ObjectType }}{{ field.name }}', model:'modalObj.{{ field.name }}' }" ng-init="up_{{ ObjectType }}{{ field.name }} = angular.copy(uploader)" uploader="up_{{ ObjectType }}{{ field.name }}" style="display:none;" /><br/>
                 <ul>
-                    <li ng-repeat="item in up_{{ field.name }}.queue">
+                    <li ng-repeat="item in up_{{ ObjectType }}{{ field.name }}.queue">
                         Name: <span ng-bind="item.file.name"></span><br/>
                         <button ng-click="item.upload()" class="btn btn-success btn-left">Envoyer</button>
                         <button ng-click="item.remove()" class="btn btn-danger btn-right">Annuler</button>

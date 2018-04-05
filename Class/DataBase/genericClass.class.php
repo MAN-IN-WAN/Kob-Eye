@@ -2981,8 +2981,8 @@ class genericClass extends Root {
         $o->tmsCreate= $this->tmsCreate;
         $o->tmsEdit= $this->tmsEdit;
         if(!is_array($fields)) return $o;
-        if ($o->isRecursiv()){
-            if ($o->isTail())
+        if ($this->isRecursiv()){
+            if ($this->isTail())
                 $o->_tail = true;
             else $o->_tail = false;
         }

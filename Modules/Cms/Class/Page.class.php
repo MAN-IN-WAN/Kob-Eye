@@ -82,6 +82,8 @@
             $men->Ordre = $this->Ordre;
             $men->PageTitre = $this->Titre;
             $men->PageDescription = $this->Description;
+            //$men->Affiche = $this->AfficheMenu;
+            $men->MenuPrincipal = $this->AfficheMenu;
             $men->Save();
             $this->addParent($men);
 

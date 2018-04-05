@@ -512,18 +512,23 @@ class ObjectClass extends Root{
 	 * getSearchOrder()
 	 * Recupere la liste des searchOrder de la config en cours
 	 */
-	 function getSearchOrder($viewname="") {
-		$O = Array();
-		$A = "searchOrder";
-		//Il faut le faire pour chaque langue
-		$Tab = $this -> getElements($viewname);
-		foreach ($Tab as $CatName => $Cat)
-			foreach ($Cat as $ElemsName => $Elems)
-				foreach ($Elems as $Elem) {
-					if (isset($Elem[$A])) {
-						$O[] = $Elem;
-					}
-				}
+	 function getSearchOrder($viewname="")
+     {
+        $O = Array();
+        $A = "searchOrder";
+        //Il faut le faire pour chaque langue
+        $Tab = $this->getElements($viewname);
+        foreach ($Tab as $CatName => $Cat) {
+            if(!is_array($Cat)) continue;
+            foreach ($Cat as $ElemsName => $Elems) {
+                if(!is_array($Elems)) continue;
+                foreach ($Elems as $Elem) {
+                    if (isset($Elem[$A])) {
+                        $O[] = $Elem;
+                    }
+                }
+            }
+        }
 		if (!sizeof($O))
 			return false;
 		return $O;

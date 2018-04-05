@@ -680,7 +680,7 @@ class Sys extends Root{
 					return $Result;
 				}
 			}elseif ($Url==$T){
-				$this->MenusFromUrl[]= $Tab[$i];
+                Sys::$MenusFromUrl[]= $Tab[$i];
 				return $Tab[$i];
 			}
 		}
@@ -1230,7 +1230,7 @@ class Sys extends Root{
 	 * SEARCH TAGS
 	 ***********************************/
 	public static function getKeywordsProcessing() {
-		return KEYWORDS_PROCESSING;
+		return defined('KEYWORDS_PROCESSING')? KEYWORDS_PROCESSING:false;
 		//return Sys::$keywordsProcessing;
 	}
 	public static function disableKeywordsProcessing() {
