@@ -7,6 +7,9 @@
             "id":"{{ row.Id }}",
             "label":"{{ row.label }}",
             "description":"{{ row.description }}",
+            {% if recursiv %}
+            "_tail":{{ row.isTail }},
+            {% endif %}
             "_details":"créé le {{ row.tmsCreate | date('d/m/Y H:i') }} par {{ row.userCreateName }}\nmodifié le {{ row.tmsEdit  | date('d/m/Y H:i')  }} par {{ row.userEditName }}"
             ,"create":"{{ row.tmsCreate | date('d/m/Y H:i') }}"
             {% for field in fields %}

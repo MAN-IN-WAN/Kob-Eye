@@ -36,19 +36,36 @@
 
         //acces aux stores parents
         {% for parent in c.parentelements %}
-            $scope.{{ parent.objectModule }}{{ parent.objectName }}Store = {{ parent.objectModule }}{{ parent.objectName }}Store;
             $scope.{{ parent.objectModule }}{{ parent.objectName }}Select = {
-                data: {{ parent.objectModule }}{{ parent.objectName }}Store.data.select,
+                data: {{ parent.objectModule }}{{ parent.objectName }}Store.data.parentselect,
                 store: {{ parent.objectModule }}{{ parent.objectName }}Store,
-                filter: {{ parent.objectModule }}{{ parent.objectName }}Store.getFilters('select',true).global,
+                filter: {{ parent.objectModule }}{{ parent.objectName }}Store.getFilters('parentselect',true).global,
                 filterPanel: false,
-                filters: {{ parent.objectModule }}{{ parent.objectName }}Store.getFilters('default',true).options,
-                currentPage: {{ parent.objectModule }}{{ parent.objectName }}Store.currentPage.select,
+                filters: {{ parent.objectModule }}{{ parent.objectName }}Store.getFilters('parentselect',true).options,
+                currentPage: {{ parent.objectModule }}{{ parent.objectName }}Store.currentPage.parentselect,
                 itemsPerPage: {{ parent.objectModule }}{{ parent.objectName }}Store.itemsPerPage,
                 selected: {
                     selectall: false
                 }
             }
+            //watcher recherche
+            var {{ parent.objectModule }}{{ parent.objectName }}lasttimeout = false;
+            $scope.$watch('{{ parent.objectModule }}{{ parent.objectName }}Select.filter', function() {
+                //on lance la recherche depuis le store
+                if ({{ parent.objectModule }}{{ parent.objectName }}lasttimeout){
+                    $timeout.cancel({{ parent.objectModule }}{{ parent.objectName }}lasttimeout);
+                    {{ parent.objectModule }}{{ parent.objectName }}lasttimeout = false;
+                }
+                {{ parent.objectModule }}{{ parent.objectName }}Store.setGlobalFilter($scope.{{ parent.objectModule }}{{ parent.objectName }}Select.filter,'parentselect');
+                {{ parent.objectModule }}{{ parent.objectName }}lasttimeout = $timeout(function () {
+                    {{ parent.objectModule }}{{ parent.objectName }}Store.getData(1,'parentselect');
+                },200);
+            });
+            //watcher currentPage
+            $scope.$watch('{{ parent.objectModule }}{{ parent.objectName }}Select.currentPage', function() {
+                {{ parent.objectModule }}{{ parent.objectName }}Store.setPage($scope.{{ parent.objectModule }}{{ parent.objectName }}Select.currentPage,'parentselect');
+            });
+
         {% endfor %}
 
         //acces aux stores enfants
@@ -58,16 +75,29 @@
                 store: {{ child.objectModule }}{{ child.objectName }}Store,
                 filter: {{ child.objectModule }}{{ child.objectName }}Store.getFilters('select',true).global,
                 filterPanel: false,
-                filters: {{ child.objectModule }}{{ child.objectName }}Store.getFilters('default',true).options,
+                filters: {{ child.objectModule }}{{ child.objectName }}Store.getFilters('select',true).options,
                 currentPage: {{ child.objectModule }}{{ child.objectName }}Store.currentPage.select,
                 itemsPerPage: {{ child.objectModule }}{{ child.objectName }}Store.itemsPerPage,
                 selected: {
                     selectall: false
                 }
             }
+            //watcher recherche
+            var {{ child.objectModule }}{{ child.objectName }}lasttimeout = false;
             $scope.$watch('{{ child.objectModule }}{{ child.objectName }}Select.filter', function() {
                 //on lance la recherche depuis le store
+                if ({{ child.objectModule }}{{ child.objectName }}lasttimeout){
+                    $timeout.cancel({{ child.objectModule }}{{ child.objectName }}lasttimeout);
+                    {{ child.objectModule }}{{ child.objectName }}lasttimeout = false;
+                }
                 {{ child.objectModule }}{{ child.objectName }}Store.setGlobalFilter($scope.{{ child.objectModule }}{{ child.objectName }}Select.filter,'select');
+                {{ child.objectModule }}{{ child.objectName }}lasttimeout = $timeout(function () {
+                    {{ child.objectModule }}{{ child.objectName }}Store.getData(1,'select');
+                },200);
+            });
+            //watcher currentPage
+            $scope.$watch('{{ child.objectModule }}{{ child.objectName }}Select.currentPage', function() {
+                {{ child.objectModule }}{{ child.objectName }}Store.setPage($scope.{{ child.objectModule }}{{ child.objectName }}Select.currentPage,'select');
             });
         {% endfor %}
 
@@ -268,6 +298,35 @@
             console.log('get select data',store,search);
             return $injector.get(store).getDataFilter(search,'form');
         }
+        /*******
+        * TREE
+        *******/
+        $scope.treeOptions = {
+        };
+
+        $scope.selectedItem = {};
+
+        $scope.toggleChildren = function (scope) {
+            console.log('toggle children');
+            if (!scope.$nodeScope.$modelValue.children) {
+                {{ c.identifier }}Store.loadRecursivChildren(scope.$nodeScope.$modelValue).then(function(data) {
+                    scope.$nodeScope.$modelValue.children = data.children;
+                    console.log('data load success',data);
+                    if (scope.$nodeScope.$modelValue.children && scope.$nodeScope.$modelValue.children.length > 0) {
+                        scope.$nodeScope.$modelValue.expanded = true;
+                        scope.toggle();
+                    }
+                });
+            } else {
+                if (scope.$nodeScope.$modelValue.children.length > 0) {
+                    scope.toggle();
+                }
+            }
+        }
+
+        /********
+        * EXTENSION
+        ********/
 
         var isExtended = false;
         if(typeof window['{{ c.name }}CtrlExtends'] == 'function') {
@@ -660,7 +719,31 @@
                             {{ child.objectModule }}{{ child.objectName }}Store.deleteOneData(item.id,'all');
                     });
                 }
+                /*******
+                * TREE
+                *******/
+                $scope.treeOptions = {
+                };
 
+                $scope.selectedItem = {};
+
+                $scope.toggleChildren = function (scope) {
+                    console.log('toggle children');
+                    if (!scope.$nodeScope.$modelValue.children) {
+                        {{ c.identifier }}Store.loadRecursivChildren(scope.$nodeScope.$modelValue).then(function(data) {
+                            scope.$nodeScope.$modelValue.children = data.children;
+                            console.log('data load success',data);
+                            if (scope.$nodeScope.$modelValue.children && scope.$nodeScope.$modelValue.children.length > 0) {
+                                scope.$nodeScope.$modelValue.expanded = true;
+                                scope.toggle();
+                            }
+                        });
+                    } else {
+                        if (scope.$nodeScope.$modelValue.children.length > 0) {
+                            scope.toggle();
+                        }
+                    }
+                }
 
                 {% for cParent in child.parentelements %}
                     var lasttimeoutCParent{{ cParent.objectModule }}{{ cParent.objectName }} = false;

@@ -1,22 +1,23 @@
 {% for key,st in stores %}
     app.service('{{ key }}', function ($http,$q,$timeout{% for child in st.childrenelements %},{{ child.identifier }}Store{% endfor %}) {
-        var {{ st.identifier }}Store = {'default': [], select: [], children: [], form: [] },
-            contexts = ['default','select','children','form','fiche'],
-            currentPage = { 'default': 1 , select: 1, children: 1, form: 1},
-            pageLoaded = { 'default': 0 , select: 0, children: 0, form: 0},
-            total = { 'default': 0 , select: 0, children: 0, form: 0},
+        var {{ st.identifier }}Store = {'default': [], select: [], children: [], form: [] , parentselect: [] },
+            contexts = [],
+            currentPage = {},
+            pageLoaded = {},
+            total = {},
             pageLength = 15,
 
-            timer = { 'default': 0 , select: 0, children: 0, form: 0},
-            query = { 'default': '/{{ st.module }}/{{ st.objecttype }}', select: '/{{ st.module }}/{{ st.objecttype }}', children: '/{{ st.module }}/{{ st.objecttype }}', form: '/{{ st.module }}/{{ st.objecttype }}'},
-            busy = { 'default': 0 , select: 0, children: 0, form: 0},
-            filters = { };
+            timer = {},
+            query = {},
+            busy = {},
+            filters = {};
 
         //init filters
         initContext('default');
         initContext('select');
         initContext('children');
         initContext('form');
+        initContext('parentselect');
 
         return {
             getOneData: getOneData,
@@ -51,14 +52,16 @@
             setQuery: setQuery,
             getQuery: getQuery,
             query: query,
+            loadRecursivChildren:loadRecursivChildren,
             data:{{ st.identifier }}Store
         };
         function initContext(context) {
             {{ st.identifier }}Store[context] = [];
             total[context] = 0;
             timer[context] = 0;
+            busy[context] = 0;
             resetFilters(context);
-            currentPage[context] = '';
+            currentPage[context] = 1;
             resetQuery(context);
             contexts.push(context);
          }
@@ -70,8 +73,8 @@
         }
 
         function setQuery(q,context = 'default') {
-            console.log(context+' >> {{ st.identifier }} >> setquery >> '+q);
             if (!query[context]) initContext(context);
+            console.log(context+' >> {{ st.identifier }} >> setquery >> '+q);
             pageLoaded[context] = 0;
             query[context] = q;
             resetFilters(context);
@@ -574,9 +577,9 @@
             return $q(function(resolve, reject) {
                 {% for child in st.childrenelements %}
                     {{ child.objectModule }}{{ child.objectName }}Store.setQuery('/{{ st.module }}/{{ st.objecttype }}/'+obj.id+'/{{ child.objectName }}','children');
-                    if (!obj.{{ child.objectName }}) {
+                    if (!obj.{{ child.objectModule }}{{ child.objectName }}) {
                        {{ child.objectModule }}{{ child.objectName }}Store.getData(1,'children').then(function (data){
-                            obj.{{ child.objectName }} = data;
+                            obj.{{ child.objectModule }}{{ child.objectName }} = data;
                         });
                         num--;
                         if (num==0) resolve(obj);
@@ -587,6 +590,28 @@
                     }
                 {% endfor %}
                 if (num==0) resolve(obj);
+            });
+        }
+        /**
+        * Chargement des données récursives
+        */
+        function loadRecursivChildren(obj) {
+                console.log('{{ st.identifier }} > load recursiv children',obj);
+                return $q(function(resolve, reject) {
+                setQuery('/{{ st.module }}/{{ st.objecttype }}/'+obj.id+'/{{ st.recursivelement.objectName }}','recursivchildren-'+obj.id);
+                if (!obj.children) {
+                    getData(1,'recursivchildren-'+obj.id).then(function (data){
+                        console.log('{{ st.identifier }} > load data success',data);
+                        obj.children = data;
+                        resolve(obj);
+                    });
+                    return;
+                }else{
+                    console.log('{{ st.identifier }} > load data already success',data);
+                    data['recursivchildren-'+obj.id] = obj.{{ st.recursivelement.objectName }};
+                    return resolve(obj);
+                }
+                reject('pas récursif');
             });
         }
     }).run(function ({{ key }},$rootScope) {

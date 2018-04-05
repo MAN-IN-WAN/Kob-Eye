@@ -23,7 +23,7 @@ foreach ($vars['fields'] as $k=>$f){
 
 $vars['filters'] = $o->getCustomFilters();
 if (is_object(Sys::$CurrentMenu)) {
-    if ($vars['Type']=='Children') {
+    if (isset($vars['Type'])&&$vars['Type']=='Children') {
         $vars['CurrentUrl'] = Sys::getMenu($info['Module'] . '/' . $info['ObjectType']);
     }else {
         $vars['CurrentUrl'] = Sys::$CurrentMenu->Url;
@@ -32,6 +32,7 @@ if (is_object(Sys::$CurrentMenu)) {
 if (!$vars['ObjectClass']->AccessPoint) $vars['Type'] = "Tail";
 
 $vars["Interfaces"] = $vars["ObjectClass"]->getInterfaces();
-$vars["Interfaces"] = $vars["Interfaces"]['list'];
+if (isset($vars["Interfaces"]['list']))
+    $vars["Interfaces"] = $vars["Interfaces"]['list'];
 
 ?>

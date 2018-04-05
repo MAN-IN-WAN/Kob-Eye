@@ -171,9 +171,12 @@
     <script type="text/javascript" src="Skins/AngularAdmin/assets/vendors/angular-ui-ace/src/ui-ace.js"></script>
     <script type="text/javascript" src="Tools/Js/ace/src-min-noconflict/ace.js"></script>
 
-    <!-- Tree -->
-    <link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/assets/vendors/angular.treeview-master/css/angular.treeview.css">
-    <script src="Skins/AngularAdmin/assets/vendors/angular.treeview-master/angular.treeview.js"></script>
+    <!-- Isotope -->
+    <script src="Tools/Js/Isotope/isotope.pkgd.min.js"></script>
+
+    <!-- Tree Ui -->
+    <link rel="stylesheet" href="Skins/AngularAdmin/assets/vendors/angular-ui-tree-master/dist/angular-ui-tree.min.css">
+    <script type="text/javascript" src="Skins/AngularAdmin/assets/vendors/angular-ui-tree-master/dist/angular-ui-tree.js"></script>
 
     <!-- Isotope -->
     <script src="Tools/Js/Isotope/isotope.pkgd.min.js"></script>
