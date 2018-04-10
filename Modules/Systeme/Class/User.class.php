@@ -21,12 +21,12 @@ class User extends genericClass{
      * @return bool
      */
     function hasRole($role){
-	    $roles = explode('|',$role);
+	    $roles = explode(',',$role);
         $USR_ROLES = $this->getRoles();
 
 	    foreach ($roles as $r) {
             //Detection de la nature du pere (ne fonctionne que pour le niveau deux)
-            if (in_array($role, $USR_ROLES)) {
+            if (in_array(trim($r), $USR_ROLES)) {
                 return true;
             }
         }

@@ -396,6 +396,13 @@
 		<FKEY card="1,1" data="Client,Id" fiche="1" form="1" description="Client" >ClientId</FKEY>
 		<FKEY card="1,1" data="Server,Id" fiche="1" form="1" filter="Mail=1" description="Serveur Mail" hasRole="PARC_TECHNICIEN">ServerId</FKEY>
 	</OBJECTCLASS>
+	<OBJECTCLASS title="EmailDelegation" driver="mysql" Dico="1" Description="Délégation de comptes Mail" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/EmailDelegation.class.php">
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Titre" list="1" form="1" fiche="1" listDescr="Titre">Titre</PROPERTIES>
+		<PROPERTIES type="boolean" description="Activation" list="1" form="1" fiche="1" listDescr="Active">Enabled</PROPERTIES>
+		<PROPERTIES type="boolean" description="Permettre l'envoi en tant que" list="1" form="1" fiche="1" listDescr="En tant que">sendAs</PROPERTIES>
+		<PROPERTIES type="boolean" description="Status" list="1" fiche="1" listDescr="Status">Status</PROPERTIES>
+		<FKEY card="1,1" data="CompteMail,Id" fiche="1" form="1" description="CompteMail" >CompteMailId</FKEY>
+	</OBJECTCLASS>
 	<OBJECTCLASS title="Ticket" driver="mysql" AccessPoint="1" Description="Tickets Clients" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" >
 		<FILTER name="En cours" color="secondary">Etat=En cours</FILTER>
 		<FILTER name="Incidents" color="warning"><![CDATA[Type=Incident&Etat=En cours]]></FILTER>

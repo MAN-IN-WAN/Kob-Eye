@@ -349,10 +349,10 @@
             var lasttimeoutParent{{ parent.objectModule }}{{ parent.objectName }} = false;
             {{ parent.objectModule }}{{ parent.objectName }}Store.setFilters('{{ parent.filter }}','parentselect');
             $scope.{{ parent.objectModule }}{{ parent.objectName }}Select = {
-                data: {{ parent.objectModule }}{{ parent.objectName }}Store.data.select,
+                data: {{ parent.objectModule }}{{ parent.objectName }}Store.data.parentselect,
                 store: {{ parent.objectModule }}{{ parent.objectName }}Store,
                 filter: '',
-                currentPage: {{ parent.objectModule }}{{ parent.objectName }}Store.currentPage.select,
+                currentPage: {{ parent.objectModule }}{{ parent.objectName }}Store.currentPage.parentselect,
                 itemsPerPage: {{ parent.objectModule }}{{ parent.objectName }}Store.itemsPerPage,
                 selected: {
                     selectall: false
