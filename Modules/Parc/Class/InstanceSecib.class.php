@@ -31,10 +31,16 @@ class InstanceSecib extends genericClass
 
         //Check du domaine
         $client = $this->getOneParent('Client');
-        if (!$client) {
+        if (!$client&&!$this->ClientCreateAuto) {
             $GLOBALS["Systeme"]->Db[0]->exec('ROLLBACK');
             $this->addError(Array("Message" => 'Une instance de Secib web doit être liée à un client'));
             return false;
+        }elseif ($this->ClientCreateAuto){
+            $client = genericClass::createInstance('Parc','Client');
+            $client->Nom = $this->Titre;
+            $client->Save();
+            $this->addParent($client);
+            parent::Save();
         }
 
         //Check du domaine

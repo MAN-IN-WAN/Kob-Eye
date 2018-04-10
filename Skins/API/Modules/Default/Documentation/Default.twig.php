@@ -21,6 +21,10 @@ foreach ($vars['menus'] as $menu){
     $info = Info::getInfos($menu->Alias);
     $gen = genericClass::createInstance($info['Module'],$info['ObjectType']);
     $props = $gen->getElementsByAttribute('','',true);
-    $vars['entities'][$menu->Url] = $props;
+    $pro = array();
+    foreach ($props as $p){
+        if (!isset($p['hideApi'])||!$p['hideApi'])array_push($pro,$p);
+    }
+    $vars['entities'][$menu->Url] = $pro;
 
 }
