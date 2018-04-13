@@ -323,9 +323,10 @@
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Type de l'instance" list="1" form="1" fiche="1" values="dev,pre-prod,prod" listDescr="Type" default="prod" >Type</PROPERTIES>
 		<PROPERTIES type="boolean" description="Actif" listDescr="Actif" list="1">Enabled</PROPERTIES>
 		<PROPERTIES type="boolean" description="Ssl" listDescr="Ssl"  list="1" form="1" fiche="1">EnableSsl</PROPERTIES>
+		<PROPERTIES type="boolean" description="Création automatique du client" listDescr="Creation auto"  list="1" form="1" fiche="1">ClientCreateAuto</PROPERTIES>
 		<FKEY card="1,n" data="Domain,Id" description="Domaine(s)" listDescr="Domaine(s)" form="1" fiche="1">DomainId</FKEY>
-		<FKEY card="0,1" data="Host,Id" description="Hébergement" listDescr="Hébergement" list="1" fiche="1">HostId</FKEY>
-        <FKEY card="1,1" data="Client,Id" description="Client" listDescr="Client" list="1" form="1" fiche="1">ClientId</FKEY>
+		<FKEY card="0,1" data="Host,Id" description="Hébergement" listDescr="Hébergement" list="1" fiche="1" hideApi="1">HostId</FKEY>
+        <FKEY card="1,1" data="Client,Id" description="Client" listDescr="Client" list="1" form="1" fiche="1" hideApi="1">ClientId</FKEY>
 		<FUNCTION title="Activer le SSL">enableSSL</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Activity" logEvent="1"  driver="mysql" Description="Activité des jobs"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/Parc/Class/Activity.class.php" Operations="">

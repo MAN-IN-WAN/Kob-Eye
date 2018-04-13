@@ -598,7 +598,7 @@
         function loadRecursivChildren(obj) {
                 console.log('{{ st.identifier }} > load recursiv children',obj);
                 return $q(function(resolve, reject) {
-                setQuery('/{{ st.module }}/{{ st.objecttype }}/'+obj.id+'/{{ st.recursivelement.objectName }}','recursivchildren-'+obj.id);
+                setQuery('/{{ st.module }}/{{ st.objecttype }}/'+obj.id+'/{{ st.objecttype }}','recursivchildren-'+obj.id);
                 if (!obj.children) {
                     getData(1,'recursivchildren-'+obj.id).then(function (data){
                         console.log('{{ st.identifier }} > load data success',data);
@@ -608,7 +608,7 @@
                     return;
                 }else{
                     console.log('{{ st.identifier }} > load data already success',data);
-                    data['recursivchildren-'+obj.id] = obj.{{ st.recursivelement.objectName }};
+                    data['recursivchildren-'+obj.id] = obj.{{ st.objecttype }};
                     return resolve(obj);
                 }
                 reject('pas récursif');

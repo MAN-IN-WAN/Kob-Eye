@@ -396,6 +396,14 @@
 		<FKEY card="1,1" data="Client,Id" fiche="1" form="1" description="Client" >ClientId</FKEY>
 		<FKEY card="1,1" data="Server,Id" fiche="1" form="1" filter="Mail=1" description="Serveur Mail" hasRole="PARC_TECHNICIEN">ServerId</FKEY>
 	</OBJECTCLASS>
+	<OBJECTCLASS title="EmailDelegation" driver="mysql" Dico="1" Description="Délégation de comptes Mail" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/EmailDelegation.class.php">
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Titre" list="1" form="1" fiche="1" listDescr="Titre">Titre</PROPERTIES>
+		<PROPERTIES type="boolean" description="Activation" list="1" form="1" fiche="1" listDescr="Active">Enabled</PROPERTIES>
+		<PROPERTIES type="boolean" description="Permettre l'envoi en tant que" list="1" form="1" fiche="1" listDescr="En tant que">sendAs</PROPERTIES>
+		<PROPERTIES type="boolean" description="Status" list="1" fiche="1" listDescr="Status">Status</PROPERTIES>
+		<FKEY card="1,1" data="CompteMail,Id" fiche="1" description="CompteMail" >CompteMailId</FKEY>
+		<RKEY card="1,1" data="CompteMail,Id" fiche="1" form="1" description="CompteMail cible" >ToMailId</RKEY>
+	</OBJECTCLASS>
 	<OBJECTCLASS title="Ticket" driver="mysql" AccessPoint="1" Description="Tickets Clients" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" >
 		<FILTER name="En cours" color="secondary">Etat=En cours</FILTER>
 		<FILTER name="Incidents" color="warning"><![CDATA[Type=Incident&Etat=En cours]]></FILTER>
@@ -467,6 +475,7 @@
 		<FKEY card="1,n" data="Domain,Id" description="Domaine(s)" listDescr="Domaine(s)" form="1" fiche="1">DomainId</FKEY>
 		<FKEY card="0,1" data="Host,Id" description="Hébergement" listDescr="Hébergement" list="1" fiche="1">HostId</FKEY>
 		<FKEY card="1,1" data="Bdd,Id" description="Base de donnée(s)" listDescr="Base de donnée" form="1" fiche="1">BddId</FKEY>
+		<FKEY card="1,1" data="Client,Id" description="Client" listDescr="Client" hasRole="PARC_TECHNICIEN">ClientId</FKEY>
 		<FUNCTION title="Activer le SSL">enableSSL</FUNCTION>
 		<FUNCTION title="Dupliquer cette instance">duplicateInstance</FUNCTION>
 		<FUNCTION title="Restaurer une instance">restoreInstance</FUNCTION>
@@ -489,7 +498,7 @@
 		<FKEY data="Host,Id" form="1" fiche="1" card="0,1" popup="1" >HostId</FKEY>
 		<FKEY data="Apache,Id" form="1" fiche="1" card="0,1"  popup="1" >ApacheId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="ScheduledTesk" AccessPoint="1" driver="mysql" Description="Tache planifiée"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
+	<OBJECTCLASS title="ScheduledTask" AccessPoint="1" driver="mysql" Description="Tache planifiée"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png">
 		<FUNCTION title="Démarrer maintenant">runNow</FUNCTION>
 		<FUNCTION title="Arrêter maintenant">stop</FUNCTION>
 		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1"  obligatoire="1" listDescr="Titre">Titre</PROPERTIES>

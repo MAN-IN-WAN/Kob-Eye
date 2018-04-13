@@ -67,7 +67,7 @@ class PhotoSession extends genericClass{
                 return false;
             }
         }else{
-            $this->addError(array('Message' => 'Le fichier Masque a bien été affectée à la session en cours'));
+            $this->addError(array('Message' => 'La clef usb n\'est pas détectée'));
             return false;
         }
     }

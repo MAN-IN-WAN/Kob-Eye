@@ -147,7 +147,7 @@ class LightBox extends Module{
         return $out[1];
     }
     static public function checkPort($ip,$port){
-        $time = 1;
+        $time = 2;
         $connection = @fsockopen($ip, $port,$errno, $errstr, $time);
         if (is_resource($connection)) {
             fclose($connection);
@@ -158,15 +158,19 @@ class LightBox extends Module{
     }
 
     static public function isUsbAvailable() {
-        $output = LightBox::localExec('if [ -e /dev/sda ]; then  echo 1; else echo 0; fi');
+        $output = LightBox::localExec('if [ -e /dev/sdb ]; then  echo 1; else echo 0; fi');
         if (intval($output)) return true;
         else return false;
     }
     static public function mountUsb() {
         try {
-            $output = LightBox::localExec('sudo umount ~/usb && sudo mount /dev/sda ~/usb');
+            LightBox::localExec('sudo umount /home/lightbox/usb');
         }catch (Exception $e){
-            return true;
+        }
+        try {
+            LightBox::localExec('sudo mount /dev/sdb /home/lightbox/usb');
+        }catch (Exception $e){
+            return false;
         }
         return true;
     }

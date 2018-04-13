@@ -25,9 +25,8 @@ class User extends genericClass{
         $USR_ROLES = $this->getRoles();
 
 	    foreach ($roles as $r) {
-	        $r = trim($r);
             //Detection de la nature du pere (ne fonctionne que pour le niveau deux)
-            if (in_array($r, $USR_ROLES)) {
+            if (in_array(trim($r), $USR_ROLES)) {
                 return true;
             }
         }

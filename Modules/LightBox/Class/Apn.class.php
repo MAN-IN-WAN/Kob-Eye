@@ -33,7 +33,7 @@ class Apn extends genericClass{
             "liveview" => $this->LiveView,
             "liveviewproxy" => $this->LiveViewProxy,
 /*            "liveview_url"=> $this->LiveViewUrl*/
-            "liveview_url"=> 'http://127.0.0.1:5000/video_feed',
+            "liveview_url"=> 'http://127.0.0.1:8081/?action=stream',
             "diskused" => 40,
             "freespace" => 60,
             "network" => LightBox::getMyIp(),
@@ -155,7 +155,9 @@ class Apn extends genericClass{
             if (preg_match("#([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+):([0-9]+)#",$this->ApiUrl,$out)) {
                 if (!LightBox::checkPort($out[1],$out[2])){
                     //pas connecté
+                    $act = $this->addLog('Deconnexion API détectée');
                     $this->resetApi();
+                    $act->Terminate(false);
                     return false;
                 }else return true;
             }else {
@@ -170,14 +172,16 @@ class Apn extends genericClass{
      */
     function checkLiveViewProxy(){
         //on vérifie si le processus est lancé
-        $u = LightBox::localExec('ps auxwww | grep startFlask.py | wc -l');
+        $u = LightBox::localExec('ps auxwww | grep mjpg_streamer | wc -l');
         if (intval($u) <= 2){
             $this->LiveViewProxy = false;
+            $act = $this->addLog('Perte du proxy liveview');
+            $act->Terminate(false);
             parent::Save();
             return false;
         }else return true;
         //on véridie que le port soit bien ouvert.
-        if (!LightBox::checkPort('127.0.0.1','5000')){
+        if (!LightBox::checkPort('127.0.0.1','8081')){
             //pas connecté
             $this->LiveViewProxy = false;
             parent::Save();
@@ -218,11 +222,14 @@ class Apn extends genericClass{
         if (LightBox::getUptime()>$apn->tmsEdit) {
             $apn->Reset();
             echo "FIRST EXEC => RESET STATE\r\n";
-            return false;
+            $act = $apn->addLog('Première execution - Reset des status');
+            $act->Terminate(false);
         }
         //on vérifie l'état de la mémoire
         if (LightBox::getFreeMem()<500000){
             //il ne reste que 500 Mo => on restarte le live view
+            $act = $apn->addLog('Détection de dépassement mémoire '.LightBox::getFreeMem().' < 500000');
+            $act->Terminate(false);
             $apn->stopLiveView();
         }
         while ($m<12){
@@ -318,7 +325,7 @@ class Apn extends genericClass{
             "id" => 1,
             "version" => "1.0"
         ));
-        $this->addLog('API request: '.$data_string);
+        //$this->addLog('API request: '.$data_string);
         $ch=curl_init($url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
@@ -331,7 +338,7 @@ class Apn extends genericClass{
                 'Content-Length: ' . strlen($data_string))
         );
         $result = curl_exec($ch);
-        $this->addLog('API response: '.$result);
+        //$this->addLog('API response: '.$result);
         if (empty(trim($result)))$this->addLog('API error: '.curl_error($ch));
         curl_close($ch);
         $result = json_decode($result);
@@ -387,10 +394,11 @@ class Apn extends genericClass{
         $act = $this->addLog('Démarrage du proxy liveview');
         $this->Busy = true;
         parent::Save();
-        $act->addDetails('python ~/app/sony_camera_api/src/example/startFlask.py');
+        $act->addDetails('/usr/bin/nohup /usr/local/bin/mjpg_streamer -i "/usr/local/lib/mjpg-streamer/input_sony.so" -o "/usr/local/lib/mjpg-streamer/output_http.so -p 8081"  >/dev/null 2>&1 &');
         try {
-            $out = LightBox::localExec('/usr/bin/nohup /usr/bin/python ~/app/sony_camera_api/src/example/startFlask.py  >/dev/null 2>&1 &');
-            sleep(5);
+            //$out = LightBox::localExec('/usr/bin/nohup mjpeg_stream   >/dev/null 2>&1 &');
+            $out = LightBox::localExec('/usr/bin/nohup /usr/local/bin/mjpg_streamer -b -i "/usr/local/lib/mjpg-streamer/input_sony.so" -o "/usr/local/lib/mjpg-streamer/output_http.so -p 8081"  >/dev/null 2>&1 &');
+            sleep(3);
         }catch (Exception $e){
             $act->addDetails('error: '.$e->getMessage());
             $act->Terminate(false);
@@ -411,9 +419,9 @@ class Apn extends genericClass{
      */
     function stopLiveView() {
         $act = $this->addLog('Arret du proxy liveview');
-        $act->addDetails('python ~/app/sony_camera_api/src/example/startFlask.py');
+        $act->addDetails('killall -9 mjpg_streamer');
         try {
-            LightBox::localExec('killall -9 python');
+            LightBox::localExec('killall -9 mjpg_streamer');
         }catch (Exception $e){
             $act->Terminate(true);
             return true;
