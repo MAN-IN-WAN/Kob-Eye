@@ -83,6 +83,9 @@ class Skin extends Root{
 				Sys::$DefaultSkin = $this->DefaultSkin;
 			}
 		}else{
+//		    echo '<pre>';
+//		    debug_print_backtrace();
+//            echo '</pre>';
 			echo 'Le fichier de la skin '.$Num.' n\'a pas &#233;t&#233; ouvert.<BR/>';
 			//Si ce n'est la skin par defaut, on la charge (si ok: -1, sinon 0). Si c'est la skin par defaut, on renvoie 0 car son fichier de conf n'est pas ouvrable.
 			if ($Num !=Sys::$DefaultSkin){

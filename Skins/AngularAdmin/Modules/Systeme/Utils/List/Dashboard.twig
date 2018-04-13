@@ -1,5 +1,4 @@
-{% if not headless %}
-<div class="nav-tabs-horizontal margin-bottom-20">
+{#<div class="nav-tabs-horizontal margin-bottom-20">
     <ul class="nav nav-tabs" role="tablist">
         {% for filter in filters %}
         <li class="nav-item">
@@ -126,8 +125,7 @@
             </a>
         </div>
     </div>
-</div>
-{% endif %}
+</div>#}
 <table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%">
     <thead>
         <tr>
@@ -142,7 +140,7 @@
                 <th>{{ interface.name }}</th>
             {% endfor %}
             <th width="220">Détails</th>
-            <th width="170">Actions</th>
+            {#<th width="170">Actions</th>#}
         </tr>
     </thead>
     <tbody>
@@ -211,7 +209,7 @@
             {% endif %}
         {% endfor %}
         <td  class="table-details" ng-bind-html="item._details">{[{ item._details }]}</td>
-        <td  class="table-action">
+        {#<td  class="table-action">
             {% if Type == "Tail" %}
                 <span class="input-group-btn">
                     {% if operation.edit %}<a  class="btn btn-warning" href="javascript: void(0);" ng-click="{{ identifier }}modify(item)">Modifier</a>{% endif %}
@@ -240,7 +238,7 @@
                 </ul>
             </div>
             {% endif %}
-        </td>
+        </td>#}
     </tr>
     </tbody>
 </table>

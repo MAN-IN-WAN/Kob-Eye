@@ -1,0 +1,98 @@
+<SCHEMA>
+	<OBJECTCLASS title="Client" driver="mysql" AccessPoint="1" master="1" Description="Client"  Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png" Class="Modules/IncidentClient/Class/Client.class.php">
+		<PROPERTIES Order="1" 	searchOrder="2" 	description="Ce client est Actif"			type="boolean"  							 		listDescr="Actif" 				form="1" 	list="6"  fiche="1">Actif</PROPERTIES>
+		<PROPERTIES Order="2" 	searchOrder="1" 	description="CodeClient" 					type="varchar"  length="100" 	obligatoire="1" 	listDescr="Code Client" 		form="1" 	list="1"  fiche="2">CodeClient</PROPERTIES>
+		<PROPERTIES Order="3"				  		description="Logo du client" 				type="file"  					obligatoire="0"		listDescr="Logo" 				form="2" 	list="2"  fiche="3" >Logo</PROPERTIES>
+		<PROPERTIES Order="4" 	searchOrder="1"		description="Société"      					type="varchar" 	length="100" 	obligatoire="0"		listDescr="Societé" 			form="3" 	list="3"  fiche="4">Societe</PROPERTIES>
+		<PROPERTIES Order="5" 	searchOrder="3"  	description="Email et login"    			type="varchar" 	length="200" 	obligatoire="0" 	listDescr="Mail du client" 		form="6" 	list="3"  fiche="5">Mail</PROPERTIES>
+		<PROPERTIES Order="6"						description="Mot de passe" 					type="varchar" 	length="100" 	obligatoire="1" 	listDescr="Mot de passe" 		form="1" 			  fiche="6">Pass</PROPERTIES>
+		<PROPERTIES Order="7" 	values="Madame,Monsieur" description="Civilite"   					type="varchar" 	 				obligatoire="0" 	listDescr="Civilite" 			form="4"	 		  fiche="7" >Civilite</PROPERTIES>
+		<PROPERTIES Order="8" 	searchOrder="4" 	description="Nom"        					type="varchar" 	length="100" 	obligatoire="0" 	listDescr="Nom" 				form="5" 			  fiche="8" >Nom</PROPERTIES>
+		<PROPERTIES Order="9" 						description="Prénom"     					type="varchar" 	length="100" 	obligatoire="0" 	listDescr="Prenom" 				form="6" 			  fiche="9" >Prenom</PROPERTIES>
+		<PROPERTIES Order="10" 						description="Adresse"    					type="text"     				obligatoire="0"		listDescr="Adresse" 			form="1" 			  fiche="10" >Adresse</PROPERTIES>
+		<PROPERTIES Order="11" 						description="CodePostal" 					type="varchar" 	length="10" 	obligatoire="0" 	listDescr="Code Postal" 		form="7" 			  fiche="11" >CodePostal</PROPERTIES>
+		<PROPERTIES Order="12" 						description="Ville"     					type="varchar" 	length="100" 	obligatoire="0" 	listDescr="Ville" 				form="1" 	list="8"  fiche="12">Ville</PROPERTIES>
+		<PROPERTIES Order="13" 						description="Téléphone" 					type="varchar" 	length="20" 	obligatoire="1" 	listDescr="Téléphone" 			form="1" 	list="9"  fiche="13">Tel</PROPERTIES>
+		<PROPERTIES Order="14" 						description="Fax" 							type="varchar" 	length="20" 	obligatoire="0" 	listDescr="Fax" 				form="11" 			  fiche="14" >Fax</PROPERTIES>
+		<PROPERTIES Order="15" 						description="Portable"  					type="varchar" 	length="20" 	obligatoire="0" 	listDescr="Mobile" 				form="1" 	list="11" fiche="15">Portable</PROPERTIES>
+		<PROPERTIES Order="16" 						description="Date de dernière connexion" 	type="date" 					obligatoire="0" 	listDescr="Derniere Connexion" 			  fiche="16">ConnexionLe</PROPERTIES>
+		<PROPERTIES Order="17" 																	type="Int"  >UserId</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Technicien" driver="mysql" AccessPoint="1" master="0" Description="Technicien"  Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png">
+		<PROPERTIES Order="1"		 description="Code" type="varchar" length="100" obligatoire="0" listDescr="Code Technicien" form="1" list="1" fiche="1">CodeTechnicien</PROPERTIES>
+		<PROPERTIES Order="14" description="Société"    searchOrder="3"  type="varchar" length="100" listDescr="Societé" form="1" list="1" fiche="1">Societe</PROPERTIES>
+		<PROPERTIES Order="5" description="Nom"      searchOrder="1"  type="varchar" length="100" obligatoire="1" listDescr="Nom" form="1" fiche="1" >Nom</PROPERTIES>
+		<PROPERTIES Order="3" description="Email"     searchOrder="2" type="varchar" length="200" obligatoire="1" listDescr="Mail du client" form="1" list="1" fiche="1">Mail</PROPERTIES>
+		<PROPERTIES Order="6" description="Prénom"     type="varchar" length="100" obligatoire="1" listDescr="Prenom" form="1" fiche="1">Prenom</PROPERTIES>
+		<PROPERTIES Order="11" description="Téléphone" type="varchar" length="20" obligatoire="1" listDescr="Téléphone" form="1" list="1" fiche="1">Tel</PROPERTIES>
+		<PROPERTIES Order="12" description="Portable"  type="varchar" length="20" listDescr="Mobile" form="1" list="1" fiche="1">Portable</PROPERTIES>
+		<PROPERTIES Order="16" description="Ce technicien est Actif"     type="boolean"   listDescr="Actif" form="1" list="1" fiche="1">Actif</PROPERTIES>
+		<PROPERTIES Order="17" type="Int"  >UserId</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Incident" logEvent="1" driver="mysql" order="Ordre" orderType="ASC" AccessPoint="1" Description="Incident"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png"  Class="Modules/IncidentClient/Class/Incident.class.php">
+		<PROPERTIES type="varchar" searchOrder="1" 		description="Numéro de l'incident" 		listDescr="Numéro Incident" 							list="1"  				fiche="2" >Numero</PROPERTIES>
+		<PROPERTIES type="date" 						description="Date Incident" 			listDescr="Date constat" 			now="1'"					list="2" 	form="2" 	fiche="3">DateIncident</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" 		description="Titre"  					listDescr="Titre Incident" 								list="5" 	form="1" 	fiche="1">Titre</PROPERTIES>
+		<PROPERTIES type="text"    						description="Lieu Incident"          	listDescr="Lieu Incident" 											form="5" 	fiche="6" >LieuIncident</PROPERTIES>
+		<PROPERTIES type="varchar" length="150"    obligatoire="1"		description="Commune"   listDescr="Commune" 									list="6" 	form="6" 	fiche="7" >Commune</PROPERTIES>
+		<PROPERTIES type="html" 						description="Observations"				listDescr="Observations"  											form="7" 	fiche="8" >Observations</PROPERTIES>
+		<PROPERTIES type="html" 						description="Observations Technicien"	listDescr="Observations Technicien"									form="9" 	fiche="9" >ObservationsTech</PROPERTIES>
+		<PROPERTIES type="date" 						description="Date de clôture" 			listDescr="Date de clôture" 								list="12" 	form="13" 	fiche="13">DateCloture</PROPERTIES>
+		<FKEY card="0,1" data="ParametresDelai,Id" 		description="Délai souhaité" 			listDescr="Délai souhaité" 							list="3" 	form="3"  	fiche="4">DelaiVoulu</FKEY>
+		<FKEY card="0,1" data="ParametresTypo,Id"  		description="Typologie de la demande" 	listDescr="Typologie" 									list="4" 	form="4" 	fiche="5">ParametresTypoId</FKEY>
+		<FKEY card="0,1" data="Client,Id" 		searchOrder="3"		description="Client" 					listDescr="Client"										list="7"	form="8"  	fiche="9"
+			 																													hasRole="[INCIDENT] Technicien, [INCIDENT] Administrateur">ClientId</FKEY>
+
+		<FKEY card="0,1" data="Technicien,Id"			description="Technicien" 				listDescr="Technicien"  								list="8" 	form="9"  	fiche="10"
+			  																													hasRole="[INCIDENT] Technicien, [INCIDENT] Administrateur">TechnicienId</FKEY>
+
+		<FKEY card="0,1" data="ParametresDemande,Id" 	description="Origine de la demande" 	listDescr="Type" 										list="9" 	form="10"  fiche="11"
+			  																													hasRole="[INCIDENT] Technicien, [INCIDENT] Administrateur">ParametresDemandeId</FKEY>
+
+		<FKEY card="0,1" data="ParametresDelai,Id" 		description="Délai Océan" 				listDescr="Délai Océan" 								list="10" 	form="11" 	fiche="12"
+			  	  																												hasRole="[INCIDENT] Technicien, [INCIDENT] Administrateur">ParametresDelaiId</FKEY>
+
+		<FKEY card="0,1" data="ParametresEtat,Id" 		description="Etat demande" 				 listDescr="Etat" 										list="11"	form="12" fiche="13">ParametresEtatId</FKEY>
+	</OBJECTCLASS>
+	<!--<OBJECTCLASS title="Rapport" driver="mysql" order="Ordre" orderType="ASC" AccessPoint="1" Description="Rapport Intervention"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png"  >
+		<PROPERTIES type="varchar" searchOrder="1" 							description="Titre"  					listDescr="Titre Rapport" 		list="2" form="2" fiche="2"	>Titre</PROPERTIES>
+		<PROPERTIES type="date" 											description="Date Intervention"			listDescr="Date Rapport" 		list="3" form="3" fiche="3"	>DateIntervention</PROPERTIES>
+		<PROPERTIES type="html" 											description="Rapport d'intervention" 	listDescr="Rapport" 			list="4" form="4" fiche="4"	>Rapport</PROPERTIES>
+		<PROPERTIES type="boolean"  										description="Visibilité Client"			listDescr="Visibilité Client" 	list="5" form="5" fiche="5"	>DispoClient</PROPERTIES>
+		<FKEY card="0,1" searchOrder="3" data="Client,Id"  					description="Client"  					listDescr="Client" 											>ClientId</FKEY>
+		<FKEY card="0,1" searchOrder="4" data="Technicien,Id" 		 		description="Technicien" 				listDescr="Technicien"			list="6" form="6" fiche="6"
+			 																										hasRole="[INCIDENT] Technicien, [INCIDENT] Administrateur"	>TechnicienId</FKEY>
+		<FKEY card="0,1" searchOrder="2" data="Incident,Id" 				description="Incident" 					listDescr="Incident"			 list="1"  fiche="1"
+			  														hasRole="[INCIDENT] Technicien, [INCIDENT] Administrateur"													>IncidentId</FKEY>
+	</OBJECTCLASS>-->
+	<OBJECTCLASS title="Donnees" driver="mysql" Description="Données liées" Operations="add,edit,delete">
+		<PROPERTIES type="varchar" searchOrder="1" listDescr="Titre Fichier"  list="1" form="1" fiche="1">Titre</PROPERTIES>
+		<PROPERTIES type="file"  list="2" form="1" listDescr="Fichier" fiche="1">Fichier</PROPERTIES>
+		<!--<FKEY card="0,n" data="Rapport,Id" >RapportId</FKEY>-->
+		<FKEY card="0,n" data="Incident,Id">IncidentId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="DocumentClient" driver="mysql" Description="DocumentClient" AccessPoint="1">
+		<PROPERTIES type="varchar" searchOrder="1" listDescr="Titre Fichier"  list="1" form="1" fiche="1">Titre</PROPERTIES>
+		<PROPERTIES type="file"  list="2" form="1" listDescr="Fichier" fiche="1">Fichier</PROPERTIES>
+		<FKEY card="0,n" data="Client,Id">ClientId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="ParametresDelai" driver="mysql" AccessPoint="1" order="Ordre" orderType="ASC" master="0" Description="Type de délais"   Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png" >
+		<PROPERTIES searchOrder="1"  type="varchar" length="100" 		description="Type de Délai" 	listDescr="Type de Délai" 			list="2" form="1"  	fiche="1" >Nom</PROPERTIES>
+		<PROPERTIES type="int" 											description="Ordre affichage"  	listDescr="Ordre" 					list="1" form="2" 	fiche="2" >Ordre</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="ParametresDemande" driver="mysql" AccessPoint="1" order="Ordre" orderType="ASC" master="0" Description="Origine des demandes"   Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png" >
+		<PROPERTIES type="varchar" length="100" searchOrder="1" 		description="Type d'origine"   				listDescr="Type d'origine" 		 list="2" 	form="1" fiche="1"  	>Nom</PROPERTIES>
+		<PROPERTIES type="int" 											description="Ordre affichage" 				listDescr="Ordre" 				 list="1" 	form="3" fiche="3" >Ordre</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="ParametresTypo" driver="mysql" AccessPoint="1" order="Ordre" orderType="ASC" master="0" Description="Type des typologies"   Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png" >
+		<PROPERTIES type="varchar"  length="100"   searchOrder="1" 		description="Typo" 				listDescr="Typo" 	list="1" form="1" fiche="1" >Nom</PROPERTIES>
+		<PROPERTIES type="email" 										description="Email réception incident"  	listDescr="Réception incident" 	 list="3" 	form="2" fiche="2"	>Mail</PROPERTIES>
+		<PROPERTIES type="int" 											description="Ordre affichage"   listDescr="Ordre" 	list="2" form="2" fiche="2"	>Ordre</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="ParametresEtat" driver="mysql" AccessPoint="1" order="Ordre" orderType="ASC"  master="0" Description="Etats incidents"   Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png" >
+		<PROPERTIES searchOrder="1" description="Etat" type="varchar" length="100"   listDescr="Etat" list="1" form="1"  fiche="1">Nom</PROPERTIES>
+		<PROPERTIES type="int" 												description="Ordre affichage"  listDescr="Ordre" list="1" form="1" fiche="1" >Ordre</PROPERTIES>
+		<PROPERTIES type="boolean"  										description="Etat par Défaut"			listDescr="Etat par Défaut" 	list="3" form="3" fiche="3"	>Defaut</PROPERTIES>
+		<PROPERTIES type="boolean"  										description="Maj Date de fin"			listDescr="Maj Date de fin" 	list="4" form="4" fiche="4"	>Cloture</PROPERTIES>
+	</OBJECTCLASS>
+</SCHEMA>
