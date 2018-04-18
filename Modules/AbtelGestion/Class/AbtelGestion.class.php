@@ -57,7 +57,7 @@ class AbtelGestion extends Module {
 	static function getRecord($sql, $sql1 = '') {
 		try {
 			$result = self::getSQLData($sql);
-			if($sql1) $result['_LIGNES_'] = $this->getSQLData($sql1, true);
+			if($result !== FALSE && !empty($sql1)) $result['_LIGNES_'] = self::getSQLData($sql1, true);
 		} catch(Exception $e) {
 			throw $e;
 		}
