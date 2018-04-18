@@ -1090,13 +1090,13 @@ class Sys extends Root{
 	 * @return Object or null
 	 */
 	 static function getOneData($Module, $Query, $Ofst='', $Limit='', $OrderType='', $OrderVar='', $Selection='', $GroupBy='' ){
-         $obj = explode('/',$Query,2);
-         $RestQuery = $obj[1];
-         $obj = $obj[0];
-         //on vérfiie la surchagre de getData
-         if (method_exists($obj, "getOneData")){
-             return call_user_func($obj .'::getOneData',$RestQuery, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy);
-         }
+        $obj = explode('/',$Query,2);
+        $RestQuery = $obj[1];
+        $obj = $obj[0];
+        //on vérfiie la surchagre de getData
+        if (method_exists($obj, "getOneData")){
+            return call_user_func($obj .'::getOneData',$RestQuery, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy);
+        }
 	 	$o= Sys::getData($Module, $Query, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy );
 		if (is_array($o)&&sizeof($o))foreach ($o as $k=>$t)
 			return $o[0];
@@ -1113,9 +1113,9 @@ class Sys extends Root{
 	 	$RestQuery = $obj[1];
 	 	$obj = $obj[0];
 	 	//on vérfiie la surchagre de getData
-		 if (method_exists($obj, "getData")){
-			 return call_user_func($obj .'::getData',$RestQuery, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy);
-		 }
+		if (method_exists($obj, "getData")){
+			return call_user_func($obj .'::getData',$RestQuery, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy);
+		}
 	 	$o= Sys::$Modules[$Module]->callData($Query, false, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy );
 		if (is_array($o)&&sizeof($o))foreach ($o as $k=>$t)
 			$o[$k] = genericClass::createInstance($Module,$t);
@@ -1128,6 +1128,13 @@ class Sys extends Root{
 	 * Static call of callData
 	 */
 	 static function getCount($Module, $Query){
+	 	$obj = explode('/',$Query,2);
+	 	$RestQuery = $obj[1];
+	 	$obj = $obj[0];
+	 	//on vérfiie la surchagre de getCount
+		if (method_exists($obj, "getCount")){
+			return call_user_func($obj .'::getCount',$RestQuery);
+		}
 	 	$o= Sys::$Modules[$Module]->callData($Query, false, 0, 1000000, '', '', 'COUNT(DISTINCT(m.Id))', '' );
 		return isset($o[0]) ? $o[0]['COUNT(DISTINCT(m.Id))'] : 0;
 	 }

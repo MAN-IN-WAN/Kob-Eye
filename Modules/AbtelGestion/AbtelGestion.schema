@@ -2,7 +2,11 @@
         <OBJECTCLASS title="Contrat" driver="mysql" AccessPoint="1" Description="Contrat"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelGestion/Class/Contrat.class.php">
             <PROPERTIES type="titre" searchOrder="1">Nom</PROPERTIES>
         </OBJECTCLASS>
-        <OBJECTCLASS title="Ticket" driver="mysql" AccessPoint="1" Description="Ticket"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelGestion/Class/Ticket.class.php">
+        <OBJECTCLASS title="Tache" driver="mysql" AccessPoint="1" Description="Ticket"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelGestion/Class/Tache.class.php">
             <PROPERTIES type="titre" searchOrder="1">Nom</PROPERTIES>
+        </OBJECTCLASS>
+        <OBJECTCLASS title="Action" driver="mysql" AccessPoint="1" Description="Ticket"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelGestion/Class/Action.class.php">
+            <PROPERTIES type="titre" searchOrder="1">Nom</PROPERTIES>
+            <FKEY card="1,n" data="Tache,NumeroTicket">TacheNumeroTicket</FKEY>
         </OBJECTCLASS>
 </SCHEMA>

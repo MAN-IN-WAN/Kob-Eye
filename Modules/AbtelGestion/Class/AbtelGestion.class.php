@@ -31,13 +31,14 @@ class AbtelGestion extends Module {
 	/**
 	 * paramètres de liste standard envoyés lors de l'appel
 	 */
-	static function getListParam(&$where, &$order, &$limit) {
+	static function getListParam(&$where, &$order, &$offset, &$limit) {
 		$where = isset(self::$Input['filter']) ? self::$Input['filter'] : '';
 		$order = isset(self::$Input['order']) ? self::$Input['order'] : '';
+		$offset = isset(self::$Input['offset']) ? self::$Input['offset'] : '';
 		$limit = isset(self::$Input['limit']) ? self::$Input['limit'] : '';
 	}
 
-		/*
+	/*
 	 * exécute use requete SQL
 	 */
 	static function getSQLData($sql, $all = false) {
@@ -67,19 +68,16 @@ class AbtelGestion extends Module {
 	/*
 	 * demande une liste d'enregistrements type kobeye
 	 */
-	static function getRecords($sql, $where='', $order='', $limit='') {
-		$w = $o = $l = '';
-		AbtelGestion::getListParam($w, $o, $l);
-		if($w) {
-			if(isEmpty($where)) $sql .= "where $w\n";
-			else $sql .= " and ($w)\n";
+	static function getRecords($sql, $where='', $order='', &$offset=0, &$limit=0) {
+		if($where) $sql .= "where $where ";
+		if($order) $sql .= "order by $order ";
+		if($limit) {
+			$sql .= "limit $limit ";
+			if($offset) $sql .= "offset $offset ";
 		}
-		if($o) $order = $o;
-		if($order) $sql .= "order by $order\n";
-		if($l) $limit = $l;
-		if($limit) $sql .= "limit $limit";
 		try {
 			$result = self::getSQLData($sql, true);
+			$limit = count($result);
 		} catch(Exception $e) {
 			throw $e;
 		}
