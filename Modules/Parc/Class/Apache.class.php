@@ -237,7 +237,8 @@ class Apache extends genericClass {
                     return false;
                 }
             }
-			$this->_isVerified = true;
+
+            $this->_isVerified = true;
 
 			if($synchro) {
 

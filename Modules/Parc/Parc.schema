@@ -185,6 +185,7 @@
 		<CATEGORY title="Mail">
 			<PROPERTIES type="boolean" description="Serveur email par défaut" form="1">defaultMailServer</PROPERTIES>
 			<PROPERTIES type="boolean" description="Serveur web par défaut" form="1">defaultWebServer</PROPERTIES>
+			<PROPERTIES type="boolean" description="Serveur sql par défaut" form="1">defaultSqlServer</PROPERTIES>
 			<PROPERTIES type="varchar" description="Admin mail: Nom d'utilisateur" default="admin" form="1">mailAdminUser</PROPERTIES>
 			<PROPERTIES type="varchar" description="Admin mail: Mot de passe" form="1">mailAdminPassword</PROPERTIES>
 			<PROPERTIES type="varchar" description="Admin mail: Port" default="7071" form="1">mailAdminPort</PROPERTIES>
@@ -220,8 +221,8 @@
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
 		<PROPERTIES category="LDAP" type="int" auto="1">LdapGid</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapUid</PROPERTIES>
-		<FKEY card="1,n" data="Server,Id" link="1" form="1" list="1" fiche="1" parentDescription="Serveur" description="Serveur Web" filter="Web=1" hasRole="PARC_TECHNICIEN">ServerId</FKEY>
-		<FKEY card="1,1" data="Client,Id" link="1" form="1" list="1" fiche="1" parentDescription="Client" description="Client">ClientId</FKEY>
+		<FKEY card="1,n" data="Server,Id" link="1" form="1" list="1" fiche="1" parentDescription="Serveur" description="Serveur Web" listDescr="Server" filter="Web=1" hasRole="PARC_TECHNICIEN">ServerId</FKEY>
+		<FKEY card="1,1" data="Client,Id" link="1" form="1" list="1" fiche="1" parentDescription="Client" description="Client" listDescr="Client">ClientId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Apache" driver="mysql" Dico="1" Description="Hôte virtuel" Icon="/Skins/AdminV2/Img/IconAqua/Tasks.png" Class="Modules/Parc/Class/Apache.class.php">
 		<PROPERTIES type="function" searchOrder="2" obligatoire="1" list="1" fiche="1" form="1" description="Racine du site (à partir de la racine du dossier utilisateur)" default="www" function="getRootPath" >DocumentRoot</PROPERTIES>
@@ -397,12 +398,12 @@
 		<FKEY card="1,1" data="Server,Id" fiche="1" form="1" filter="Mail=1" description="Serveur Mail" hasRole="PARC_TECHNICIEN">ServerId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="EmailDelegation" driver="mysql" Dico="1" Description="Délégation de comptes Mail" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/EmailDelegation.class.php">
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Titre" list="1" form="1" fiche="1" listDescr="Titre">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" description="Titre" list="1" fiche="1" listDescr="Titre">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Mail cible" list="1" form="1" fiche="1" listDescr="Mail cible">TargetMail</PROPERTIES>
 		<PROPERTIES type="boolean" description="Activation" list="1" form="1" fiche="1" listDescr="Active">Enabled</PROPERTIES>
 		<PROPERTIES type="boolean" description="Permettre l'envoi en tant que" list="1" form="1" fiche="1" listDescr="En tant que">sendAs</PROPERTIES>
 		<PROPERTIES type="boolean" description="Status" list="1" fiche="1" listDescr="Status">Status</PROPERTIES>
 		<FKEY card="1,1" data="CompteMail,Id" fiche="1" description="CompteMail" >CompteMailId</FKEY>
-		<RKEY card="1,1" data="CompteMail,Id" fiche="1" form="1" description="CompteMail cible" >ToMailId</RKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Ticket" driver="mysql" AccessPoint="1" Description="Tickets Clients" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" >
 		<FILTER name="En cours" color="secondary">Etat=En cours</FILTER>
@@ -467,15 +468,19 @@
         <FKEY card="0,n" data="Server,Id" description="Serveur SQL" filter="SQL=1" listDescr="Serveur SQL">ServerId</FKEY>
         <FKEY card="1,1" data="Client,Id" description="Client" listDescr="Client" hasRole="PARC_TECHNICIEN">ClientId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Instance" driver="mysql" Description="Instance" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Instance.class.php" logEvent="1" AccessPoint="1" plugin="1">
+	<OBJECTCLASS title="Instance" driver="mysql" Description="Espace Web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Instance.class.php" logEvent="1" AccessPoint="1" plugin="1">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de l'instance (le sous domaine ex: [sous-domaine].mondomaine.ext)" list="1" form="1" fiche="1" listDescr="Nom" default="">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Sous domaine (le sous domaine ex: [sous-domaine].mondomaine.ext)" list="1" form="1" fiche="1" listDescr="Sous-Domaine" default="www" hasRole="PARC_TECHNICIEN" >SousDomaine</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Type de l'instance" list="1" form="1" fiche="1" values="dev,pre-prod,prod" listDescr="Type" default="prod" >Type</PROPERTIES>
-		<PROPERTIES type="boolean" description="Actif" listDescr="Actif" list="1">Enabled</PROPERTIES>
-		<PROPERTIES type="boolean" description="Ssl" listDescr="Ssl"  list="1" form="1" fiche="1">EnableSsl</PROPERTIES>
-		<FKEY card="1,n" data="Domain,Id" description="Domaine(s)" listDescr="Domaine(s)" form="1" fiche="1">DomainId</FKEY>
-		<FKEY card="0,1" data="Host,Id" description="Hébergement" listDescr="Hébergement" list="1" fiche="1">HostId</FKEY>
-		<FKEY card="1,1" data="Bdd,Id" description="Base de donnée(s)" listDescr="Base de donnée" form="1" fiche="1">BddId</FKEY>
-		<FKEY card="1,1" data="Client,Id" description="Client" listDescr="Client" hasRole="PARC_TECHNICIEN">ClientId</FKEY>
+		<PROPERTIES type="password" searchOrder="1" obligatoire="1" description="Mot de passe" form="1" fiche="1" >Password</PROPERTIES>
+		<PROPERTIES type="boolean" description="Actif" listDescr="Actif" list="1" form="1" fiche="1" default="1" hasRole="PARC_TECHNICIEN" >Enabled</PROPERTIES>
+		<PROPERTIES type="boolean" description="Ssl" listDescr="Ssl"  list="1" form="1" hasRole="PARC_TECHNICIEN" fiche="1">EnableSsl</PROPERTIES>
+		<PROPERTIES type="varchar" description="Domaine" listDescr="Domaine"  list="1" fiche="1">FullDomain</PROPERTIES>
+		<FKEY card="1,n" data="Domain,Id" description="Domaine(s)" listDescr="Domaine(s)" fiche="1">DomainId</FKEY>
+		<FKEY card="0,1" data="Host,Id" description="Hébergement" listDescr="Hébergement" fiche="1">HostId</FKEY>
+		<FKEY card="0,1" data="Bdd,Id" description="Base de donnée(s)" hasRole="PARC_TECHNICIEN" listDescr="Base de donnée" fiche="1">BddId</FKEY>
+		<FKEY card="1,1" data="Client,Id" description="Client" listDescr="Client" hasRole="PARC_TECHNICIEN" form="1" fiche="1" list="1">ClientId</FKEY>
+		<PROPERTIES type="varchar" length="50" obligatoire="1" default="default" description="Version de php" query="Parc/PHPVersion::Valeur::Titre" list="1" fiche="1" form="1" hasRole="PARC_TECHNICIEN">PHPVersion</PROPERTIES>
 		<FUNCTION title="Activer le SSL">enableSSL</FUNCTION>
 		<FUNCTION title="Dupliquer cette instance">duplicateInstance</FUNCTION>
 		<FUNCTION title="Restaurer une instance">restoreInstance</FUNCTION>

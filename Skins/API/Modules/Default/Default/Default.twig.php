@@ -21,16 +21,18 @@ if(strpos( $query,$lien) == 0 || count($info['Historique']) > 2){
 
 //Recup des données
 $data = array();
-
-$request = array();
-parse_str(file_get_contents("php://input"),$request);
-
-$data = json_decode($request['params'],true);
-
-
-
-
-
+switch ($method){
+    case 'GET':
+        $data = json_decode($_GET['params'],true);
+        break;
+    default:
+        $request = array();
+//        $request = file_get_contents("php://input");
+//        $data = json_decode($request,true);
+        parse_str(file_get_contents("php://input"),$request);
+        $data = json_decode($request['params'],true);
+        break;
+}
 
 switch($info['TypeSearch']){
     case 'Interface':
@@ -62,7 +64,6 @@ switch($info['TypeSearch']){
             $i=$i['name'];
         });
         $offset = '';
-
 
         if(isset($data['offset'])){
             $offset = $data['offset'];

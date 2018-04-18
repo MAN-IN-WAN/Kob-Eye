@@ -158,24 +158,47 @@ class LightBox extends Module{
     }
 
     static public function isUsbAvailable() {
-        $output = LightBox::localExec('if [ -e /dev/sdb ]; then  echo 1; else echo 0; fi');
+        //$output = LightBox::localExec('if [ -e /dev/sdb ]; then  echo 1; else echo 0; fi');
+        $output = LightBox::localExec('ls -l /dev/sd* | tail -n 1 | awk \'{print $NF}\' | wc -l');
+        error_log('is usb available '.intval($output));
         if (intval($output)) return true;
         else return false;
     }
     static public function mountUsb() {
         try {
-            LightBox::localExec('sudo umount /home/lightbox/usb');
-        }catch (Exception $e){
-        }
-        try {
-            LightBox::localExec('sudo mount /dev/sdb /home/lightbox/usb');
+            //@LightBox::localExec('sudo umount /home/lightbox/usb');
+            //sleep(2);
+            $drive = LightBox::localExec('ls -l /dev/sd* | tail -n 1 | awk \'{print $NF}\'');
+            $drive = trim($drive);
+            error_log('drive found '.$drive);
         }catch (Exception $e){
             return false;
         }
+        try {
+            error_log('executing '.'sudo  mount '.$drive.' /home/lightbox/usb');
+            LightBox::localExec('sudo bash -c "source ~/.bashrc && mount -tvfat -o rw,users,umask=000 '.$drive.' /home/lightbox/usb"');
+        }catch (Exception $e){
+            error_log('error while mouting '.$e->getMessage());
+            return false;
+        }
+        error_log('/home/lightbox/usb mounted successfully. '.LightBox::localExec('df -h | grep usb'));
         return true;
     }
     static public function getFreeMem() {
         $output = LightBox::localExec('cat /proc/meminfo | grep MemFree | awk \'{ print $2 }\'');
+        return intval($output);
+    }
+    static public function emptyCache() {
+        LightBox::localExec('sudo rm -rf /home/kiosk/.{config,cache}/google-chrome/');
+        return true;
+    }
+    static public function restartBrowser() {
+        LightBox::localExec('sudo killall -9 google-chrome && sudo /opt/kiosk.sh');
+        return true;
+    }
+
+    static function getUsedSpace() {
+        $output = LightBox::localExec('df -h | grep lightbox | awk \'{print $5 }\' | sed -e \'s/%//\'');
         return intval($output);
     }
 }

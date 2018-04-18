@@ -45,6 +45,14 @@ class DbAnalyzer extends Root{
 		//Lecture du schema et initialisation des objets
 		$this->initObjectClass($Schema);
 	}
+    /**
+     * updateSchema
+	 * Met les objectclass à jour à partir d'un fichier xml
+	 * @params array
+     */
+    function updateSchema($Schema){
+        $this->updateObjectClass($Schema);
+	}
 	/**
 	* initObjectClass
 	* Traitement du schema et initialisation des objectclass
@@ -66,6 +74,20 @@ class DbAnalyzer extends Root{
 			}
 		}
 	}
+    /**
+     * updateObjectClass
+     * Traitement du schema et mise à jour des objectclass
+     */
+    function updateObjectClass($XmlResult) {
+        //Extraction des cles du tableau associatif
+		foreach ($XmlResult as $obj) {
+			$o = $this->getObjectClass($obj['@']['title']);
+			if (is_object($o)){
+				//mise à jour des informations
+				$o->initFromXml($obj);
+			}
+		}
+    }
 	/**
 	* initAssociation
 	* Initialisation des associations entres objectclass

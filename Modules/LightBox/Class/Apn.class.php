@@ -34,8 +34,8 @@ class Apn extends genericClass{
             "liveviewproxy" => $this->LiveViewProxy,
 /*            "liveview_url"=> $this->LiveViewUrl*/
             "liveview_url"=> 'http://127.0.0.1:8081/?action=stream',
-            "diskused" => 40,
-            "freespace" => 60,
+            "diskused" => LightBox::getUsedSpace(),
+            "freespace" => (100-LightBox::getUsedSpace()),
             "network" => LightBox::getMyIp(),
             );
     }
@@ -498,6 +498,24 @@ class Apn extends genericClass{
     static function getCurrent() {
         $apn = Sys::getOneData('LightBox','Apn/Actif=1');
         return $apn;
+    }
+    /**
+     * reboot
+     * Redemarre
+     * @return mixed
+     */
+    static function reboot() {
+        LightBox::localExec('sudo /sbin/reboot');
+        return true;
+    }
+    /**
+     * halt
+     * Arret
+     * @return mixed
+     */
+    static function halt() {
+        LightBox::localExec('sudo /sbin/halt');
+        return true;
     }
     /**
      * printLast

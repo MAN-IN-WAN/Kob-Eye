@@ -11,12 +11,12 @@
 		<FUNCTION>importMenus</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="User" driver="mysql" logEvent="1" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Contact.png" Description="Utilisateurs" Heritage="0" Class="Modules/Systeme/Class/User.class.php">
-		<PROPERTIES type="varchar" length="100" searchOrder="1" obligatoire="1" category="Connexion"  formLabel="1" list="1">Login</PROPERTIES>
-		<PROPERTIES type="varchar"  length="255" searchOrder="2" obligatoire="0" category="Contact" list="2" fiche="1" form="1">Nom</PROPERTIES>
-		<PROPERTIES type="varchar"  length="10" searchOrder="3" obligatoire="0" category="Contact" fiche="3"  form="3">Initiales</PROPERTIES>
-		<PROPERTIES type="mail" length="255" obligatoire="1" searchOrder="4" unique="1" category="Contact" list="4" fiche="4" form="4">Mail</PROPERTIES>
-		<PROPERTIES type="varchar"  length="100" obligatoire="0" category="Contact" list="3" fiche="2"  form="2">Prenom</PROPERTIES>
-		<PROPERTIES type="varchar"  length="255" obligatoire="0" category="Contact" form="8">Adresse</PROPERTIES>
+		<PROPERTIES type="varchar" length="100" searchOrder="1" obligatoire="1" category="Connexion"  form="1" list="1" listDescr="Login">Login</PROPERTIES>
+		<PROPERTIES type="varchar"  length="255" searchOrder="2" obligatoire="0" category="Contact" list="2" fiche="1" form="1" listDescr="Nom">Nom</PROPERTIES>
+		<PROPERTIES type="varchar"  length="10" searchOrder="3" obligatoire="0" category="Contact" fiche="3" >Initiales</PROPERTIES>
+		<PROPERTIES type="mail" length="255" obligatoire="1" searchOrder="4" unique="1" category="Contact" list="4" fiche="4" form="4" listDescr="Email">Mail</PROPERTIES>
+		<PROPERTIES type="varchar"  length="100" obligatoire="0" category="Contact" list="3" fiche="2" form="2" listDescr="Prénom">Prenom</PROPERTIES>
+		<PROPERTIES type="varchar"  length="255" obligatoire="0" category="Contact" >Adresse</PROPERTIES>
 		<PROPERTIES type="varchar" obligatoire="0" category="Contact" form="9">CodPos</PROPERTIES>
 		<PROPERTIES type="varchar"  length="100" obligatoire="0" category="Contact" form="10">Ville</PROPERTIES>
 		<PROPERTIES type="varchar" length="20" obligatoire="0" category="Contact" fiche="5" form="5">Tel</PROPERTIES>
@@ -28,13 +28,13 @@
 		<PROPERTIES type="image" category="Description" form="13">Avatar</PROPERTIES>
 		<PROPERTIES type="varchar" query="Explorateur/_Dossier/Skins/_Dossier::Nom::Nom" category="Intégration">Skin</PROPERTIES>
 		<PROPERTIES type="varchar" query="Explorateur/_Dossier/Skins/LoginApaloosa/swf/_Fichier::Nom::Nom" category="Appaloosa">Style</PROPERTIES>
-		<PROPERTIES type="image" category="Description" description="Image Arrière plan"  form="14">ArrierePlan</PROPERTIES>
+		<PROPERTIES type="image" category="Description" description="Image Arrière plan">ArrierePlan</PROPERTIES>
 		<PROPERTIES type="color" category="Description" description="Couleur Arrière plan">Couleur</PROPERTIES>
 		<PROPERTIES type="conf" query="GENERAL::LANGUAGE" category="Intégration">Langue</PROPERTIES>
 		<PROPERTIES type="random" hidden="1">CodeVerif</PROPERTIES>
-		<PROPERTIES type="password" obligatoire="1" category="Connexion">Pass</PROPERTIES>
-		<PROPERTIES type="boolean" default="0" category="Connexion" list="5">Admin</PROPERTIES>
-		<PROPERTIES type="boolean" default="1" category="Connexion" list="6">Actif</PROPERTIES>
+		<PROPERTIES type="password" obligatoire="1" category="Connexion" fiche="1" form="1">Pass</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Connexion" list="5" listDescr="Admin">Admin</PROPERTIES>
+		<PROPERTIES type="boolean" default="1" category="Connexion" list="6" listDescr="Actif">Actif</PROPERTIES>
 		<PROPERTIES type="date" category="Connexion" description="Date d'Expiration" >DateExpiration</PROPERTIES>
 		<PROPERTIES type="date" category="Connexion" description="Dernière connexion">LastConnection</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Connexion">ExternalAuth</PROPERTIES>

@@ -272,7 +272,7 @@ class ObjectClass extends Root{
 					//clef parentes internes
 					$temp = $Xml[$XmlKeys[$i]];
 					for ($j=0;$j<sizeof($temp);$j++) {
-						$this->FKEY[]=$temp[$j];
+						$this->FKEY[$temp[$j]['#']]=$temp[$j];
 						$categoryName = (isset($temp[$j]['@']['category']))?$temp[$j]['@']['category']:((!empty($lc))?$lc:OBJECTCLASS_CATEGORY_DEFAULT);
 						$this->addCategory(Array("title"=>$categoryName),Array("type"=>"fkey","title"=>$temp[$j]['#'],"attributes"=>$temp[$j]['@']));
 						$o[] = Array("type"=>"fkey","name"=>$temp[$j]['#'],"attributes"=>$temp[$j]['@']);
@@ -283,7 +283,7 @@ class ObjectClass extends Root{
 					//clefs enfantes internes
 					$temp = $Xml[$XmlKeys[$i]];
 					for ($j=0;$j<sizeof($temp);$j++) {
-						$this->RKEY[]=$temp[$j];
+						$this->RKEY[$temp[$j]['#']]=$temp[$j];
 						$categoryName = (isset($temp[$j]['@']['category']))?$temp[$j]['@']['category']:((!empty($lc))?$lc:OBJECTCLASS_CATEGORY_DEFAULT);
 						$this->addCategory(Array("title"=>$categoryName),Array("type"=>"rkey","title"=>$temp[$j]['#'],"attributes"=>$temp[$j]['@']));
 						$o[] = Array("type"=>"rkey","name"=>$temp[$j]['#'],"attributes"=>$temp[$j]['@']);
@@ -326,7 +326,7 @@ class ObjectClass extends Root{
 		//GESTION DES PLUGINS
 		if (isset($this->plugin)&&$this->plugin){
 			//On ajoute une proprietes Plugin
-			$this->Proprietes["Plugin"] = $this->parseAttributes(array("type"=>"plugin","category"=>"Configuration","query"=>"Explorateur/Dossier/Modules/".$this->Module."/Plugins/".$this->titre."/Dossier::Nom"),"Plugin");
+			$this->Proprietes["Plugin"] = $this->parseAttributes(array("type"=>"plugin","category"=>"Configuration","query"=>"Explorateur/_Dossier/Modules/".$this->Module."/Plugins/".$this->titre."/_Dossier::Nom", "form"=>1,"fiche"=>1, "obligatoire"=>1),"Plugin");
 			$this->addCategory(Array("title"=>"Configuration"),Array("type"=>"property","title"=>"Plugin"));
 			//On ajoute une propriete PluginConfig
 			$this->Proprietes["PluginConfig"] = $this->parseAttributes(array("type"=>"pluginconfig","category"=>"Configuration", "form"=>1,"fiche"=>1, "auto"=>1),"PluginConfig");
@@ -410,8 +410,14 @@ class ObjectClass extends Root{
 		//configuration des elements internes
 		if ($inner){
 			$alreadyexists = false;
-			foreach ($c["elements"] as $e)if ($e["title"]==$inner["title"]) $alreadyexists = true;
-			if (!$alreadyexists)$c["elements"][] = $inner;
+			foreach ($c["elements"] as $k=>$e)if ($e["title"]==$inner["title"]){
+                $alreadyexists = true;
+                $index = $k;
+			}
+			if ($alreadyexists)
+				$c["elements"][$index] = $inner;
+			else
+                $c["elements"][] = $inner;
 		}
 		//enregistrement
 		$this->Categories[$opts["title"]] = $c;

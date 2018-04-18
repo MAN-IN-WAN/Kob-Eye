@@ -1,0 +1,5 @@
+<SCHEMA>
+    <OBJECTCLASS title="Technicien" driver="mysql" AccessPoint="1" master="0" Description="Technicien"  Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png">
+        <PROPERTIES Order="1"		 description="Code" type="varchar" length="100" obligatoire="0" listDescr="Code Technicien XXXX" form="1" list="1" fiche="1">CodeTechnicien</PROPERTIES>
+    </OBJECTCLASS>
+</SCHEMA>
