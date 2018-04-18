@@ -6,3 +6,4 @@ Class/Utils/Utils.extend.php
 Conf/General.conf
 .idea/*
 Data/*
+/nbproject/private/
