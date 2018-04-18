@@ -9,7 +9,7 @@
             <div class="form-group" ng-class="{'has-danger': modalObj.fieldErrors.length && modalObj.fieldErrors.indexOf('{{ field.name }}') !== -1}">
             {% if field.type == "date" %}
                     <label class="input-group datepicker-only-init">
-                        <input type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="modalObj.{{ field.name }}"/>
+                        <input id="input-{{ ObjectType }}{{ field.name }}" type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="modalObj.{{ field.name }}" {% if field.now %}ng-init="modalObj.{{ field.name }} = '{{ "now"|date("d/m/Y H:i") }}'"{% endif %}/>
                         <span class="input-group-addon">
                             <i class="icmn-calendar"></i>
                         </span>
@@ -155,5 +155,14 @@
             up: "fa fa-arrow-up",
             down: "fa fa-arrow-down"
         }
+    });
+
+
+    //Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
+    $(".datepicker-only-init").on("dp.change", function() {
+        var input = $(this).children('input').eq(0);
+        var scope = angular.element(input).scope();
+        var indexes = input.attr('ng-model').split('.',2);
+        scope[indexes[0]][indexes[1]] = input.val();
     });
 </script>

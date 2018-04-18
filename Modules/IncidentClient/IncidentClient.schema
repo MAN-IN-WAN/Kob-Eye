@@ -82,7 +82,7 @@
 		<PROPERTIES type="varchar" searchOrder="1" listDescr="Titre Fichier"  list="1" form="1" fiche="1">Titre</PROPERTIES>
 		<PROPERTIES type="file"  list="2" form="1" listDescr="Fichier" fiche="1">Fichier</PROPERTIES>
 	</OBJECTCLASS>
-	
+
 
 	<OBJECTCLASS title="ParametresDelai" driver="mysql" AccessPoint="1" order="Ordre" orderType="ASC" master="0" Description="Type de délais"   Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png" >
 		<PROPERTIES searchOrder="1"  type="varchar" length="100" 		description="Type de Délai" 	listDescr="Type de Délai" 			list="2" form="1"  	fiche="1" >Nom</PROPERTIES>

@@ -392,21 +392,21 @@ class Reservation extends genericClass {
             if ($tc->Reservation=='Horaire') {
 
                 //test du debut à cheval
-                $out = Sys::getCount('Reservations', 'Court/' . $court->Id . '/Reservation/Valide=1&DateDebut>=' . $this->DateDebut . '&DateDebut<' . $this->DateFin);
+                $out = Sys::getCount('Reservations', 'Court/' . $court->Id . '/Reservation/Valide=1&DateDebut>=' . $this->DateDebut . '&DateDebut<' . $this->DateFin .'&Id!='. $this->Id);
                 if ($out) return false;
                 //test de la fin à cheval
-                $out = Sys::getCount('Reservations', 'Court/' . $court->Id . '/Reservation/Valide=1&DateFin>' . $this->DateDebut . '&DateFin<=' . $this->DateFin);
+                $out = Sys::getCount('Reservations', 'Court/' . $court->Id . '/Reservation/Valide=1&DateFin>' . $this->DateDebut . '&DateFin<=' . $this->DateFin.'&Id!='. $this->Id);
                 if ($out) return false;
                 //test des deux en encadrement intérieur
-                $out = Sys::getCount('Reservations', 'Court/' . $court->Id . '/Reservation/Valide=1&DateFin<=' . $this->DateFin . '&DateDebut>=' . $this->DateDebut);
+                $out = Sys::getCount('Reservations', 'Court/' . $court->Id . '/Reservation/Valide=1&DateFin<=' . $this->DateFin . '&DateDebut>=' . $this->DateDebut.'&Id!='. $this->Id);
                 if ($out) return false;
                 //test les deux en encadrement extérieur
-                $out = Sys::getCount('Reservations', 'Court/' . $court->Id . '/Reservation/Valide=1&DateFin>=' . $this->DateFin . '&DateDebut<=' . $this->DateDebut);
+                $out = Sys::getCount('Reservations', 'Court/' . $court->Id . '/Reservation/Valide=1&DateFin>=' . $this->DateFin . '&DateDebut<=' . $this->DateDebut.'&Id!='. $this->Id);
                 if ($out) return false;
             }
 
 
-klog::l('this',$this);
+//klog::l('this',$this);
 
             //DISPONIBILITE
 //            //test du debut à cheval
@@ -491,16 +491,16 @@ klog::l('this',$this);
 
     function Verify() {
         if(strpos($this->DateDebut,'/') || strpos($this->DateDebut,':')){
-            klog::l($this->DateDebut.PHP_EOL);
+           // klog::l($this->DateDebut.PHP_EOL);
             $datetime = DateTime::createFromFormat('d/m/Y H:i',$this->DateDebut);
             $this->DateDebut = $datetime->getTimestamp();
-            klog::l($this->DateDebut.PHP_EOL);
+           // klog::l($this->DateDebut.PHP_EOL);
         }
         if(strpos($this->DateFin,'/') || strpos($this->DateFin,':')){
-            klog::l($this->DateFin.PHP_EOL);
+           // klog::l($this->DateFin.PHP_EOL);
             $datetime = DateTime::createFromFormat('d/m/Y H:i',$this->DateFin);
             $this->DateFin = $datetime->getTimestamp();
-            klog::l($this->DateFin.PHP_EOL);
+           // klog::l($this->DateFin.PHP_EOL);
         }
 
         if (!$this->checkClient()){
@@ -606,7 +606,7 @@ klog::l('this',$this);
         }
 
         //enregistrement de la réservation
-        parent::Save();
+        return parent::Save();
     }
 
     function Delete() {
@@ -646,11 +646,100 @@ klog::l('this',$this);
         return $total;
     }
 
+
+    function setPending() {
+        $this->Valide=0;
+        $this->Attente=1;
+        $this->Save();
+
+        //envoi du mail
+        $this->sendPendingMail();
+    }
+    function sendPendingMail() {
+        $cli = $this -> getClient();
+
+
+        $Civilite = $cli -> Civilite . " " . $cli -> Prenom . ' <span style="text-transform:uppercase">' . $cli -> Nom . '</span>';
+
+
+        require_once ("Class/Lib/Mail.class.php");
+        $Mail = new Mail();
+        $Mail -> Subject("Mairie d'Amberieu : Confirmation de reservation");
+        $Mail -> From( $GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
+        $Mail -> ReplyTo($GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
+        $Mail -> To($cli -> Mail);
+        //$Mail -> To('enguer@enguer.com');
+        $Mail -> Bcc('gcandella@abtel.fr');
+        $Mail -> Cc($GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
+        $bloc = new Bloc();
+
+        $mailContent = "
+            Bonjour " . $Civilite . ",<br /><br />
+            Nous vous informons que votre réservation N° " . $this->Id . " pour le " . date("d/m/Y à H:i", $this->DateDebut) . " est actuellement en attente de validation. Nous vous informerons de toute évolution.<br />
+            <br />Toute l'équipe de la mairie d'Amberieu vous remercie de votre confiance,<br />
+            <br />Pour nous contacter : " . $GLOBALS['Systeme']->Conf->get('MODULE::RESERVATIONS::CONTACT') . " .";
+
+
+        $bloc -> setFromVar("Mail", $mailContent, array("BEACON" => "BLOC"));
+        $Pr = new Process();
+        $bloc -> init($Pr);
+        $bloc -> generate($Pr);
+        $Mail -> Body($bloc -> Affich());
+        $Mail -> Send();
+    }
+
+
+    /**
+     * Annulation / Refus de la réservation
+     */
+    function setInvalid() {
+        $this->Valide=0;
+        $this->Attente=0;
+        if($this->Save()){
+            //envoi du mail
+            $this->sendInvalidMail();
+        }
+    }
+    function sendInvalidMail() {
+        $cli = $this -> getClient();
+
+
+        $Civilite = $cli -> Civilite . " " . $cli -> Prenom . ' <span style="text-transform:uppercase">' . $cli -> Nom . '</span>';
+
+
+        require_once ("Class/Lib/Mail.class.php");
+        $Mail = new Mail();
+        $Mail -> Subject("Mairie d'Amberieu : Confirmation de reservation");
+        $Mail -> From( $GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
+        $Mail -> ReplyTo($GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
+        $Mail -> To($cli -> Mail);
+        //$Mail -> To('enguer@enguer.com');
+        $Mail -> Bcc('gcandella@abtel.fr');
+        $Mail -> Cc($GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
+        $bloc = new Bloc();
+
+        $mailContent = "
+            Bonjour " . $Civilite . ",<br /><br />
+            Nous vous informons que votre réservation N° " . $this->Id . " pour le " . date("d/m/Y à H:i", $this->DateDebut) . " ne pourra être honorée pour la raison suivante:<br />
+            ".$this->Commentaire."
+            <br />Toute l'équipe de la mairie d'Amberieu vous prie de bien vouloir accepter ses excuses pour le dérangement occasionné,<br />
+            <br />Pour nous contacter : " . $GLOBALS['Systeme']->Conf->get('MODULE::RESERVATIONS::CONTACT') . " .";
+
+
+        $bloc -> setFromVar("Mail", $mailContent, array("BEACON" => "BLOC"));
+        $Pr = new Process();
+        $bloc -> init($Pr);
+        $bloc -> generate($Pr);
+        $Mail -> Body($bloc -> Affich());
+        $Mail -> Send();
+    }
+
     /**
      * Validation de la réservation
      */
     function setValide() {
         $this->Valide=1;
+        $this->Attente=1;
         $this->Save();
         //TODO
         //envoi du mail
@@ -671,43 +760,48 @@ klog::l('this',$this);
 
         $Civilite = $cli -> Civilite . " " . $cli -> Prenom . ' <span style="text-transform:uppercase">' . $cli -> Nom . '</span>';
 
-        $lf = $this->getLigneFacture();
-        if (!sizeof($lf)) {
-            $Lacommande = "Erreur";
-        } else {
-            $Lacommande = "<br /> Vous avez déclaré $this->NbParticipant participant(s) au total ";
-            $parts = $this->getPartenaires();
-            if (sizeof($parts)) {
-                $Lacommande .= "<br /> Vous jouerez avec le(s) partenaire(s) suivant(s): <ul>";
-                foreach ($parts as $p) {
-                    $Lacommande .= "<li>$p->Nom $p->Prenom</li>";
-                }
-                $Lacommande .= "</ul>";
-            }
-            $Lacommande .= "<h2>Récapitulatif de votre réservation  : </h2><br /><br /><table width='100%'>";
-            $Lacommande .= "<tr bgcolor='#666' padding='5'><td><font color='#ffffff'>Quantite</font></td><td><font color='#ffffff'>Titre</font></td><td><font color='#ffffff'>Tarif TTC</font></td></tr>";
-            $total = 0;
-            foreach ($lf as $l) :
-                //récupération du produit
-                $Lacommande .= "<td><h3>" . $l->Quantite . "</h3> </td>";
-                $Lacommande .= "<td><h3>" . $l->Libelle . "</h3></td>";
-                $Lacommande .= "<td><h2>" . $l->MontantTTC . " € TTC</h2></td></tr>";
-                $total += $l->MontantTTC;
-            endforeach;
-            $Lacommande .= "
-                <tr bgcolor='#666' padding='5'>
-                    <td colspan='2'></td>
-                    <td><font color='#ffffff'>TOTAL</font></td>
-                    <td><font color='#ffffff'><h2>$total € TTC</h2></font></td>
-                </tr>
-            </table>";
+        if($this->getTotal() >0) {
 
+            $lf = $this->getLigneFacture();
+            if (!sizeof($lf)) {
+                $Lacommande = "Erreur";
+            } else {
+                $Lacommande = "<br /> Vous avez déclaré $this->NbParticipant participant(s) au total ";
+                $parts = $this->getPartenaires();
+                if (sizeof($parts)) {
+                    $Lacommande .= "<br /> Vous jouerez avec le(s) partenaire(s) suivant(s): <ul>";
+                    foreach ($parts as $p) {
+                        $Lacommande .= "<li>$p->Nom $p->Prenom</li>";
+                    }
+                    $Lacommande .= "</ul>";
+                }
+                $Lacommande .= "<h2>Récapitulatif de votre réservation  : </h2><br /><br /><table width='100%'>";
+                $Lacommande .= "<tr bgcolor='#666' padding='5'><td><font color='#ffffff'>Quantite</font></td><td><font color='#ffffff'>Titre</font></td><td><font color='#ffffff'>Tarif TTC</font></td></tr>";
+                $total = 0;
+                foreach ($lf as $l) :
+                    //récupération du produit
+                    $Lacommande .= "<td><h3>" . $l->Quantite . "</h3> </td>";
+                    $Lacommande .= "<td><h3>" . $l->Libelle . "</h3></td>";
+                    $Lacommande .= "<td><h2>" . $l->MontantTTC . " € TTC</h2></td></tr>";
+                    $total += $l->MontantTTC;
+                endforeach;
+                $Lacommande .= "
+                    <tr bgcolor='#666' padding='5'>
+                        <td colspan='2'></td>
+                        <td><font color='#ffffff'>TOTAL</font></td>
+                        <td><font color='#ffffff'><h2>$total € TTC</h2></font></td>
+                    </tr>
+                </table>";
+
+            }
+        }else{
+            $Lacommande = '';
         }
 
 
         require_once ("Class/Lib/Mail.class.php");
         $Mail = new Mail();
-        $Mail -> Subject("Dome du Foot : Confirmation de reservation");
+        $Mail -> Subject("Mairie d'Amberieu : Confirmation de reservation");
         $Mail -> From( $GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
         $Mail -> ReplyTo($GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
         $Mail -> To($cli -> Mail);
@@ -732,7 +826,7 @@ klog::l('this',$this);
             $mailContent = "
                 Bonjour " . $Civilite . ",<br /><br />
                 Nous vous informons que votre réservation N° " . $this->Id . " pour le " . date("d/m/Y à H:i", $this->DateDebut) . " a bien été prise en compte.<br />
-                <br />Toute l'équipe du Dome du Foot vous remercie de votre confiance,<br />
+                <br />Toute l'équipe de la mairie d'Amberieu  vous remercie de votre confiance,<br />
                 <br />Pour nous contacter : " . $GLOBALS['Systeme']->Conf->get('MODULE::RESERVATIONS::CONTACT') . " ." . $Lacommande;
         }
 
