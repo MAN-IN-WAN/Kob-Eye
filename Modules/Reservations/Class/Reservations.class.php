@@ -74,12 +74,14 @@ class Reservations extends Module {
 		}
         return false;
     }
-    static function createReservation($date, $court, $heuredeb,$service){
+    static function createReservation($date, $court, $heuredeb,$service,$hasCli = true){
         $res = genericClass::createInstance('Reservations','Reservation');
 
-        //récupération du client
-        $cli = Reservations::getCurrentClient();
-        $res->setClient($cli);
+        if($hasCli){
+            //récupération du client
+            $cli = Reservations::getCurrentClient();
+            $res->setClient($cli);
+        }
 
         //vérification du court
         $court = Sys::getOneData('Reservations','Court/'.$court);

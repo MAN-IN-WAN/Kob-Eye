@@ -9,6 +9,7 @@
             ,"{{ field.objectName }}{{ field.name }}label": "{{ attribute(row,field.name~'label') }}"
         {% elseif field.type == "fkey" and field.card=='long' %}
             ,"{{ field.objectName }}{{ field.name }}": [{% for k in attribute(row,field.name) %}{% if loop.index0 > 0 %},{% endif %} {{ k }} {% endfor %}]
+            ,"{{ field.objectName }}{{ field.name }}label": [{% for k in attribute(row,field.name~'label') %}{% if loop.index0 > 0 %},{% endif %} "{{ k }}"{% endfor %}]
         {% elseif field.type == "rkey" %}
             ,"{{ field.objectName }}{{ field.name }}": [
                 {% for r in attribute(row,field.name) %}

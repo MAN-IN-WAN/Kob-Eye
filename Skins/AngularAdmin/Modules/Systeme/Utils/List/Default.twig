@@ -1,3 +1,4 @@
+{% if not headless %}
 <div class="nav-tabs-horizontal margin-bottom-20">
     <ul class="nav nav-tabs" role="tablist">
         {% for filter in filters %}
@@ -51,6 +52,7 @@
         <dir-pagination-controls boundary-links="true" pagination-context="{{ context }}" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
     </div>
 </div>
+
 <div class="col-md-12 panel-filter" ng-class="{{ identifier }}.filterPanel ? 'panel-filter-closed' : '' ">
     <div class="row">
         <div class="col-md-12">
@@ -125,6 +127,7 @@
         </div>
     </div>
 </div>
+{% endif %}
 <table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%">
     <thead>
         <tr>

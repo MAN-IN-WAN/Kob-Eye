@@ -135,9 +135,27 @@ class Sys extends Root{
 		if (isset($_GET["Ke-Url"])){
 			header('Ke-Url: '.$this->Lien);
 		}
+		//vérification des curcharges du schéma pour les roles de l'utilisateur
+        $this->moduleOverride();
 		//post initialisation des modules
 		$this->postInitModules();
 	}
+	function moduleOverride() {
+        $roles = Sys::$User->getRoles();
+        foreach ($roles as $r){
+            //pour chaque module
+            foreach (Sys::$Modules as $n=>$module){
+                //echo 'Modules/'.$n.'/'.$n.'.'.$r.'.schema <br />';
+                if (file_exists('Modules/'.$n.'/'.$n.'.'.$r.'.schema')){
+                    //on envoi les modifications au module.
+                    $schemaUpdate = new xml2array('Modules/'.$n.'/'.$n.'.'.$r.'.schema');
+                    if (isset($schemaUpdate->Tableau['SCHEMA']['#']['OBJECTCLASS'])) {
+                        $module->Db->updateSchema($schemaUpdate->Tableau['SCHEMA']['#']['OBJECTCLASS']);
+                    }else die('Surcharge schema illisible: '.'Modules/'.$n.'/'.$n.'.'.$r.'.schema');
+                }
+            }
+        }
+    }
 
 	//***********************************
 	//	Fonction D Initialisation
@@ -1072,6 +1090,13 @@ class Sys extends Root{
 	 * @return Object or null
 	 */
 	 static function getOneData($Module, $Query, $Ofst='', $Limit='', $OrderType='', $OrderVar='', $Selection='', $GroupBy='' ){
+         $obj = explode('/',$Query,2);
+         $obj = $obj[0];
+         $RestQuery = $obj[1];
+         //on vérfiie la surchagre de getData
+         if (method_exists($obj, "getData")){
+             return call_user_func($class_name .'::getData',array($RestQuery, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy));
+         }
 	 	$o= Sys::getData($Module, $Query, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy );
 		if (is_array($o)&&sizeof($o))foreach ($o as $k=>$t)
 			return $o[0];
@@ -1084,6 +1109,13 @@ class Sys extends Root{
 	 */
 	 static function getData($Module, $Query, $Ofst='', $Limit='', $OrderType='', $OrderVar='', $Selection='', $GroupBy='' ){
 	 	if (!isset(Sys::$Modules[$Module])) return array();
+	 	$obj = explode('/',$Query,2);
+	 	$obj = $obj[0];
+	 	$RestQuery = $obj[1];
+	 	//on vérfiie la surchagre de getData
+		 if (method_exists($obj, "getData")){
+			 return call_user_func($class_name .'::getData',array($RestQuery, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy));
+		 }
 	 	$o= Sys::$Modules[$Module]->callData($Query, false, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy );
 		if (is_array($o)&&sizeof($o))foreach ($o as $k=>$t)
 			$o[$k] = genericClass::createInstance($Module,$t);

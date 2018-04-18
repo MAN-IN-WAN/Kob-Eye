@@ -6,7 +6,7 @@ class Disponibilite extends genericClass {
         klog::l($dateDebut .' - '.$dateFin);
 
         //Cas des dispos classiques
-        $dispos = Sys::getData('Reservations','Disponibilite/Debut>='.$dateDebut.'&Fin<='.$dateFin.'&Dispo=0',0,1000);
+        $dispos = Sys::getData('Reservations','Disponibilite/RecurrenceHebdo=0&Debut>='.$dateDebut.'&Fin<='.$dateFin.'&Dispo=0',0,1000);
 
         //Cas des récurentes
         $recus = Sys::getData('Reservations','Disponibilite/RecurrenceHebdo=1&Dispo=0',0,1000);

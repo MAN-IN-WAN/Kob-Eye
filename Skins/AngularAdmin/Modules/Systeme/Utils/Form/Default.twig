@@ -1,5 +1,5 @@
 {% for field in formfields %}
-    {% if field.type != "rkey" and field.type != "html" and field.type != "bbcode" and field.type != "text" and field.type != "raw" and field.card != "long"%}
+    {% if field.type != "rkey" and field.type != "pluginconfig" and field.type != "html" and field.type != "bbcode" and field.type != "text" and field.type != "raw" and field.card != "long"%}
     <div class="row {% if field.hidden %}hidden{% endif %}">
         <div class="col-md-6">
             <label class="form-control-label" for="l0">{{ field.description }}</label>
@@ -9,7 +9,7 @@
             <div class="form-group" ng-class="{'has-danger': modalObj.fieldErrors.length && modalObj.fieldErrors.indexOf('{{ field.name }}') !== -1}">
             {% if field.type == "date" %}
                     <label class="input-group datepicker-only-init">
-                        <input type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="modalObj.{{ field.name }}"/>
+                        <input id="input-{{ ObjectType }}{{ field.name }}" type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="modalObj.{{ field.name }}" {% if field.now %}ng-init="modalObj.{{ field.name }} = '{{ "now"|date("d/m/Y H:i") }}'"{% endif %}/>
                         <span class="input-group-addon">
                             <i class="icmn-calendar"></i>
                         </span>
@@ -17,6 +17,14 @@
             {% elseif field.type == "fkey" and field.card == "short" %}
                 <div custom-select="a.id as a.label for a in getSelectData('{{ field.objectModule }}{{ field.objectName }}Store',$searchTerm)" custom-select-options="{ 'async': true, 'filter':'{{ field.filter }}'}" ng-model="modalObj.{{ field.objectName }}{{ field.name }}" class="form-control" ng-title="modalObj.{{ field.objectName }}{{ field.name }}label"></div>
 <!--                <div custom-select="a.id as a.label for a in {{ field.objectModule }}{{ field.objectName }}Store.getDataFilter($searchTerm)" custom-select-options="{ 'async': true }" ng-model="modalObj.{{ field.name }}" class="form-control" ng-title="modalObj.{{ field.name }}label"></div>-->
+            {% elseif field.type == "plugin" %}
+                <select class="form-control" ng-model="modalObj.{{ field.name }}" >
+                    {% for v,k in field.query %}
+                        <option value="{{ v }}">{{ k }}</option>
+                    {% endfor %}
+                </select>
+            {% elseif field.type == "pluginconfig" %}
+                {# TODO #}
             {% elseif field.type == "boolean" %}
                 <switch id="enabled" name="enabled" ng-model="modalObj.{{ field.name }}" class="green"></switch>
             {% elseif field.type == "password" %}
@@ -147,5 +155,14 @@
             up: "fa fa-arrow-up",
             down: "fa fa-arrow-down"
         }
+    });
+
+
+    //Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
+    $(".datepicker-only-init").on("dp.change", function() {
+        var input = $(this).children('input').eq(0);
+        var scope = angular.element(input).scope();
+        var indexes = input.attr('ng-model').split('.',2);
+        scope[indexes[0]][indexes[1]] = input.val();
     });
 </script>

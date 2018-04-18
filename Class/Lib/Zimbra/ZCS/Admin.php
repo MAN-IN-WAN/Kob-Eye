@@ -668,9 +668,9 @@ class Admin
     //Crée un dossier (Note : Les calendriers sont des dossiers)
     public function createFolder($mail,$params=array()){
         $default=array(
-                'name'=>'DefaultName',
-                'view'=>'message',
-                '_'=>array('acl'=>array())
+            'name'=>'DefaultName',
+            'view'=>'message',
+            '_'=>array('acl'=>array())
         );
         $params = array_replace($default,$params);
 
@@ -681,7 +681,29 @@ class Admin
         
         return new \Zimbra\ZCS\Entity\Folder($fold[0]);
     }
-    
+    //Effectue des actions sur les dossiers
+    public function actionFolder($params=array()){
+        $default=array(
+            'recursive' => true,
+            'url' => '/',                           //exemple d'url du dossier
+            'op' => 'grant',                             //type d'opération ex: read|delete|rename|move|trash|empty|color|[!]grant|revokeorphangrants |url|import|sync|fb|[!]check|update|[!]syncon|retentionpolicy
+            '_'=>array(
+                'grant'=>array(
+                    'perm' => 'rwixa',                   //les permissions ex: rwixa
+                    'gt' => 'account',                     //le type de permission ex: usr ou account
+                    'zid' => '',                    //id du user
+                    ''
+                )
+            )
+        );
+        $params = array_replace($default,$params);
+
+        //$this->delegateAuth($mail);
+        $response = $this->zimbraConnectChild->requestMail('FolderActionRequest', array(), array('action'=>$params));
+        $fold = $response->children()->CreateFolderResponse->children();
+        return new \Zimbra\ZCS\Entity\Folder($fold[0]);
+    }
+
     //Retourne un dossier
     public function getFolder($mail,$view = 'appointment',$path =null){
         /*views:

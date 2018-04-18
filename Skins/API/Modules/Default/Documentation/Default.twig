@@ -69,7 +69,7 @@
 
                         <p>Requetes suivantes :</p>
                         <pre>
-<code>curl -X GET "http(s)://<b>[[Url du serveur]]</b>" -d API_KEY=<b>[[clé Api]]</b> -d AUTH_TOKEN=<b>[[Token d'authentification]]</b></b>
+<code>curl -X GET "http(s)://<b>[[Url du serveur]]</b>?API_KEY=<b>[[clé Api]]</b>&AUTH_TOKEN=<b>[[Token d'authentification]]</b>"
     -H "Content-Type:text/json"</code>
             </pre>
                         <hr>
@@ -126,7 +126,7 @@
                                     <div class="panel-body">
                                         <p>Requête :</p>
                                         <pre>
-<code>curl -X GET "http(s)://<b>[[Url du serveur]]</b>/<b>[[Entité]]</b>" -d API_KEY=<b>[[clé Api]]</b> -d AUTH_TOKEN=<b>[[Token d'authentification]]</b>
+<code>curl -X GET "http(s)://<b>[[Url du serveur]]</b>/<b>[[Entité]]</b>?API_KEY=<b>[[clé Api]]</b>&AUTH_TOKEN=<b>[[Token d'authentification]]</b>"
     -H "Content-Type:text/json"</code>
             </pre>
                                         <hr>
@@ -162,7 +162,7 @@
 
                                         <p>Requête :</p>
                                         <pre>
-<code>curl -X GET "http(s)://<b>[[Url du serveur]]</b>/<b>[[Entité]]</b>/<b>[[:id]]</b>" -d API_KEY=<b>[[clé Api]]</b> -d AUTH_TOKEN=<b>[[Token d'authentification]]</b>
+<code>curl -X GET "http(s)://<b>[[Url du serveur]]</b>/<b>[[Entité]]</b>/<b>[[:id]]</b>?API_KEY=<b>[[clé Api]]</b>&AUTH_TOKEN=<b>[[Token d'authentification]]</b>"
     -H "Content-Type:text/json"</code>
             </pre>
                                         <hr>
@@ -188,7 +188,7 @@
 
                                         <p>Requête :</p>
                                         <pre>
-<code>curl -X GET "http(s)://<b>[[Url du serveur]]</b>/<b>[[Entité]]</b>/<b>[[:id]]</b>/<b>[[Sous-Entité]]</b>/<b>[[:id]]</b>/<b>[[Plus de Sous-Entités]]</b>" -d API_KEY=<b>[[clé Api]]</b> -d AUTH_TOKEN=<b>[[Token d'authentification]]</b>
+<code>curl -X GET "http(s)://<b>[[Url du serveur]]</b>/<b>[[Entité]]</b>/<b>[[:id]]</b>/<b>[[Sous-Entité]]</b>/<b>[[:id]]</b>/<b>[[Plus de Sous-Entités]]</b>?API_KEY=<b>[[clé Api]]</b>&AUTH_TOKEN=<b>[[Token d'authentification]]</b>"
     -H "Content-Type:text/json"</code>
             </pre>
                                         <hr>
@@ -232,8 +232,7 @@
                                     <div class="panel-body">
                                             <p>Requête :</p>
                                             <pre>
-<code>curl -X GET "http(s)://<b>[[Url du serveur]]</b>/<b>[[Entité]]</b>" -d API_KEY=<b>[[clé Api]]</b> -d AUTH_TOKEN=<b>[[Token d'authentification]]</b>
-    -d params='{"[[Filtre1]]":"[[Valeur1]]",<i>[...]</i>}'  -H "Content-Type:text/json"</code>
+<code>curl -X GET "http(s)://<b>[[Url du serveur]]</b>/<b>[[Entité]]</b>?API_KEY=<b>[[clé Api]]</b>&AUTH_TOKEN=<b>[[Token d'authentification]]</b>&params={"[[Filtre1]]":"[[Valeur1]]",<i>[...]</i>}"  -H "Content-Type:text/json"</code>
             </pre>
                                             <hr>
                                     </div>
@@ -266,8 +265,7 @@
 
                                             <p>Requête :</p>
                                             <pre>
-<code>curl -X GET "http(s)://<b>[[Url du serveur]]</b>/<b>[[Entité]]</b>" -d API_KEY=<b>[[clé Api]]</b> -d AUTH_TOKEN=<b>[[Token d'authentification]]</b>
-    -d params='{"<b>[[Filtre1]]</b>":"<b>[[Valeur1]]</b>",<i>[...]</i>,"orderBy":"<b>[[Prop1]]</b>","order":"<b>[[ASC/DESC]]</b>","offset":<b>[[Index  du premier résultat]]</b>,"limit":<b>[[Nombre de résultats]]</b>}'
+<code>curl -X GET "http(s)://<b>[[Url du serveur]]</b>/<b>[[Entité]]</b>?API_KEY=<b>[[clé Api]]</b>&AUTH_TOKEN=<b>[[Token d'authentification]]</b>&params={"<b>[[Filtre1]]</b>":"<b>[[Valeur1]]</b>",<i>[...]</i>,"orderBy":"<b>[[Prop1]]</b>","order":"<b>[[ASC/DESC]]</b>","offset":<b>[[Index  du premier résultat]]</b>,"limit":<b>[[Nombre de résultats]]</b>}"
     -H "Content-Type:text/json"</code>
             </pre>
                                             <hr>
@@ -439,7 +437,7 @@
 
                                             <p>Requête GET:</p>
                                             <pre>
-<code>curl -X GET "http(s)://<b>[[Url du serveur]]</b>/<b>[[Entité]]</b>/<b>[[:id]]</b>" -d API_KEY=<b>[[clé Api]]</b> -d AUTH_TOKEN=<b>[[Token d'authentification]]</b>
+<code>curl -X GET "http(s)://<b>[[Url du serveur]]</b>/<b>[[Entité]]</b>/<b>[[:id]]</b>?API_KEY=<b>[[clé Api]]</b>&AUTH_TOKEN=<b>[[Token d'authentification]]</b>"
     -H "Content-Type:text/json"</code>
             </pre>
                                             <hr>

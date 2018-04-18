@@ -39,8 +39,11 @@ foreach ($vars['fields'] as $f){
     if ($f['type']=='fkey'&&$f['card']=='long'){
         $kk = $vars['row']->getParents($f['objectName']);
         $vars['row']->{$f['name']} = array();
-        foreach ($kk as $k)
+        $vars['row']->{$f['name'].'label'} = array();
+        foreach ($kk as $k) {
             $vars['row']->{$f['name']}[] = $k->Id;
+            $vars['row']->{$f['name'].'label'}[] = $k->getFirstSearchOrder();
+        }
     }
     if ($f['type']=='rkey'){
         $kk = Sys::getData($f['objectModule'], $vars['Query'].'/'.$f['objectName']);

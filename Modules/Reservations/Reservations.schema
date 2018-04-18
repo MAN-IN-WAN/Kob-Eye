@@ -1,13 +1,13 @@
 <SCHEMA>
     <OBJECTCLASS title="Client" driver="mysql" AccessPoint="1" order="Nom" orderType="ASC" Description="Client" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png" Class="Modules/Reservations/Class/Client.class.php">
         <PROPERTIES Order="3" description="Email"      type="varchar" length="200" obligatoire="1" form="1" client="1" profil="1" fiche="1" searchOrder="5" unique="1">Mail</PROPERTIES>
-        <PROPERTIES Order="4" description="Civilite"   type="varchar" values="Madame,Monsieur" client="1" profil="1"  fiche="1" obligatoire="1" form="1">Civilite</PROPERTIES>
+        <PROPERTIES Order="4" description="Civilite"   type="varchar" values="Madame,Monsieur" client="1" profil="1"  fiche="1" form="1">Civilite</PROPERTIES>
         <PROPERTIES Order="5" description="Nom"        type="varchar" length="100" obligatoire="1" list="1" form="1" fiche="1" client="1" profil="1"  searchOrder="1">Nom</PROPERTIES>
         <PROPERTIES Order="6" description="Prénom"     type="varchar" length="100" obligatoire="1" list="1" form="1" fiche="1" client="1" profil="1"  searchOrder="2">Prenom</PROPERTIES>
         <PROPERTIES Order="6" description="Surnom"     type="varchar" length="100" list="1" form="1" fiche="1" client="1" profil="1"  >Surnom</PROPERTIES>
         <PROPERTIES Order="7" description="Adresse"    type="text"    special="multi" obligatoire="0" form="1" fiche="1" client="1" profil="1" >Adresse</PROPERTIES>
         <PROPERTIES Order="8" description="CodePostal" type="varchar" length="10" obligatoire="0" form="1" fiche="1" client="1" profil="1" >CodePostal</PROPERTIES>
-        <PROPERTIES Order="9" description="Ville"      type="varchar" length="100" obligatoire="1" form="1" fiche="1"  client="1" profil="1"   searchOrder="3">Ville</PROPERTIES>
+        <PROPERTIES Order="9" description="Ville"      type="varchar" length="100"  form="1" fiche="1"  client="1" profil="1"   searchOrder="3">Ville</PROPERTIES>
         <PROPERTIES Order="10" description="Pays"      type="varchar" length="100" form="1" fiche="1" default="France">Pays</PROPERTIES>
         <PROPERTIES Order="11" description="Téléphone" type="varchar" length="20" obligatoire="1" list="1" fiche="1" form="1"  searchOrder="4" client="1" profil="1" >Tel</PROPERTIES>
         <PROPERTIES Order="11" description="Mot de passe" type="varchar" length="100" obligatoire="1" form="1" client="1" profil="1" >Pass</PROPERTIES>
@@ -40,12 +40,16 @@
         <PROPERTIES searchOrder="2" description="Date de fin" type="datetime" obligatoire="1" list="1" form="1" fiche="1">DateFin</PROPERTIES>
         <PROPERTIES searchOrder="2" description="Paiement des participants" type="boolean" list="1" fiche="1">PaiementParticipant</PROPERTIES>
         <PROPERTIES searchOrder="2" description="Validité" type="boolean" list="1" form="1" fiche="1">Valide</PROPERTIES>
+        <PROPERTIES searchOrder="2" description="En attente de validation" type="boolean" list="1" form="1" fiche="1">Attente</PROPERTIES>
         <PROPERTIES searchOrder="2" description="Facturé" type="boolean" list="1" fiche="1">Facture</PROPERTIES>
         <PROPERTIES searchOrder="3" description="Nombre total de participant" listDescr="Participants" type="int" list="1" default="1" fiche="1">NbParticipant</PROPERTIES>
+        <PROPERTIES description="Commentaire" type="text" fiche="1" form="1">Commentaire</PROPERTIES>
         <FKEY card="1,1" data="Client,Id" form="1" parentDescription="Client" fiche="1">ClientId</FKEY>
         <FKEY card="1,1" data="Service,Id" form="1" parentDescription="Type de réservation" fiche="1">ServiceId</FKEY>
         <FKEY card="1,1" data="Court,Id" form="1" parentDescription="Terrain" fiche="1">CourtId</FKEY>
         <FUNCTION title="Renvoyer le mail">SendMail</FUNCTION>
+        <FUNCTION title="Valider la réservation">SetValid</FUNCTION>
+        <FUNCTION title="Annuler / Refuser la réservation">SetInvalid</FUNCTION>
         <VIEW title="ReservationList" default="1">
             <OBJECTCLASS title="Reservation" select="*" filters="">
                 <JOIN type="outer" title="Client" on="ClientId" target="Id">
