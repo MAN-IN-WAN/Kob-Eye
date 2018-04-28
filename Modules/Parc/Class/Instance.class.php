@@ -4,15 +4,16 @@ class Instance extends genericClass{
 
     public function Save(){
         $old = Sys::getOneData('Parc', 'Instance/' . $this->Id);
-        if (!$old) $new = true;
+        if (!$old) $new = true; else $new = false;
         if (!$new&&$old->SousDomaine!=$this->SousDomaine){
             $this->addError(Array("Message" => 'Impossible de modifier le sous domaine d\'une instance. Veuillez dupliquer ou créer une nouvelle instance.'));
             return false;
         }
-        parent::Save();
         //serveurs par défaut
         $apachesrv = Sys::getOneData('Parc', 'Server/Web=1&defaultWebServer=1');
         $mysqlsrv = Sys::getOneData('Parc', 'Server/Sql=1&defaultSqlServer=1');
+        $dom = Sys::getOneData('Parc','Domain/defaultDomain=1',0,1,'','','','',true);
+
         if (!$apachesrv) {
             $GLOBALS["Systeme"]->Db[0]->exec('ROLLBACK');
             $this->addError(Array("Message" => 'Il n\'y a pas de serveur apache par défaut. Veuillez en définir un.'));
@@ -23,7 +24,11 @@ class Instance extends genericClass{
             $this->addError(Array("Message" => 'Il n\'y a pas de serveur mysql par défaut. Veuillez contacter votre administrateur.'));
             return false;
         }
-
+        if (!$dom) {
+            $GLOBALS["Systeme"]->Db[0]->exec('ROLLBACK');
+            $this->addError(Array("Message" => 'Il n\'y a pas de domaine par défaut. Veuillez contacter votre administrateur.'));
+            return false;
+        }
 
         //Verification du nom
         if ($this->SousDomaine != Subdomain::checkName($this->SousDomaine)) {
@@ -32,21 +37,47 @@ class Instance extends genericClass{
             return false;
         }
 
+        parent::Save();
         //Check du client
         $client = $this->getOneParent('Client');
         if (!$client) {
-            $GLOBALS["Systeme"]->Db[0]->exec('ROLLBACK');
+            /*$GLOBALS["Systeme"]->Db[0]->exec('ROLLBACK');
             $this->addError(Array("Message" => 'Une instance doit être liée à un client. Si il n\'existe pas , veuillez le créer au préalable.'));
-            return false;
+            return false;*/
+            //création d'un client par défaut
+            $client = genericClass::createInstance('Parc','Client');
+            $client->Nom = $this->Nom;
+            $client->Save();
+            $this->addParent($client);
+            parent::Save();
         }
 
-        //Check du domaine
+        //Vérification du mot de passe
+        if (empty($this->Password)){
+            $this->Password = str_shuffle(bin2hex(openssl_random_pseudo_bytes(12)));
+        }
+
+        //creation du nom temporaire
+        $tmpname = 'instance-'.$client->NomLDAP;
+
+        //vérification de l'existence
+        $as = Sys::getOneData('Parc','Domain/'.$dom->Id.'/Subdomain/Url='.$tmpname);
+        if (!$as){
+            $as = genericClass::createInstance('Parc','Subdomain');
+            $as->Url = $tmpname;
+            $as->IP = $apachesrv->IP;
+            $as->addParent($dom);
+            $as->Save();
+        }
+        $this->FullDomain = $as->Url.'.'.$dom->Url;
+        parent::Save();
+
+        //Check des domaine
         $dom = $this->getParents('Domain');
         if (!is_array($dom) || !sizeof($dom)) {
-
-            $GLOBALS["Systeme"]->Db[0]->exec('ROLLBACK');
+            /*$GLOBALS["Systeme"]->Db[0]->exec('ROLLBACK');
             $this->addError(Array("Message" => 'Une instance doit être liée à un ou plusieurs domaines'));
-            return false;
+            return false;*/
         } else {
             $defaulturl = false;
             $otherurls = array();
@@ -73,7 +104,7 @@ class Instance extends genericClass{
         if (!$heb) {
             //alors création de l'hébergement
             $heb = genericClass::createInstance('Parc', 'Host');
-            $heb->Nom = 'instance-'.$client->NomLDAP.'-'.$this->SousDomaine;
+            $heb->Nom = $tmpname;
             $heb->Production = true;
             $heb->PHPVersion = $this->PHPVersion;
             $heb->addParent($apachesrv);
@@ -94,14 +125,14 @@ class Instance extends genericClass{
             //alors création du apache
             $apache = genericClass::createInstance('Parc', 'Apache');
             $apache->DocumentRoot = $this->SousDomaine;
-            $apache->ApacheServerName = $defaulturl;
+            $apache->ApacheServerName = $this->FullDomain;
             $apache->ApacheServerAlias = implode(' ', $otherurls);
             $apache->Actif = true;
             $apache->addParent($heb);
             $apache->Save();
         } else {
-            $apache->ApacheServerName = $defaulturl;
-            $apache->ApacheServerAlias = implode(' ', $otherurls);
+            $apache->ApacheServerName = $this->FullDomain;
+            $apache->ApacheServerAlias = $defaulturl.' '.implode(' ', $otherurls);
             $apache->Actif = true;
             $apache->addParent($heb);
             $apache->Save();
@@ -112,7 +143,22 @@ class Instance extends genericClass{
         if (!$bdd) {
             //alors création du apache
             $bdd = genericClass::createInstance('Parc', 'Bdd');
-            $bdd->Nom = 'instance-'.$client->NomLDAP.'-'.$this->SousDomaine;
+            $bdd->Nom = $tmpname;
+            $bdd->addParent($heb);
+            $bdd->addParent($mysqlsrv);
+            $bdd->Save();
+        } else {
+            $bdd->addParent($heb);
+            $bdd->Save();
+        }
+        $this->addParent($bdd);
+
+        //check ftp
+        $bdd = $heb->getOneChild('Bdd');
+        if (!$bdd) {
+            //alors création du apache
+            $bdd = genericClass::createInstance('Parc', 'Bdd');
+            $bdd->Nom = $tmpname;
             $bdd->addParent($heb);
             $bdd->addParent($mysqlsrv);
             $bdd->Save();
@@ -168,7 +214,8 @@ class Instance extends genericClass{
     public function Delete(){
         //suppression hébergement
         $host = $this->getOneParent('Host');
-        $host->Delete();
+        if ($host)
+            $host->Delete();
         parent::Delete();
     }
 

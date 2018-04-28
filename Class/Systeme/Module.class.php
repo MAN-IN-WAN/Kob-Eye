@@ -572,13 +572,14 @@ class Module extends Root{
         return $Result;
 	}
 	//Appel depuis storproc pour lexecution de requete
-	function callData($Query,$recurs="",$Ofst="",$Limit="",$OrderType="",$OrderVar="",$Selection="",$GroupBy=""){
+	function callData($Query,$recurs="",$Ofst="",$Limit="",$OrderType="",$OrderVar="",$Selection="",$GroupBy="",$NoRights=false){
 		//correctio nau cas ou on ait pas le module
 		if (!preg_match("#^".$this->Nom."\/#",$Query)){
 			$Query = $this->Nom.'/'.$Query;
 		}
 		//Traitement des access
-		if (isset(Sys::$User->Access)&&
+		if (!$NoRights&&
+			isset(Sys::$User->Access)&&
 			is_array(Sys::$User->Access)) 
 			foreach (Sys::$User->Access as $A) {
 				//echo "test ".$A->ObjectModule.'/'.$A->ObjectClass.'  =>  '.$Query." -- ".preg_match('#^'.$A->ObjectModule.'\/'.$A->ObjectClass.'#',$Query)."\r\n";

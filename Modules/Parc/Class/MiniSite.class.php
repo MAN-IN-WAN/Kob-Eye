@@ -22,7 +22,7 @@ public function Save(){
                 $this->addError(Array("Message"=>'Un minisite doit être lié à un domaine'));
                 return false;
             }
-            $temp = $dom->getChildren('Instance/Type=Minimal');
+            $temp = $dom->getChildren('MiniSite/Type=Minimal');
             if(count($temp) > 1){
                 $GLOBALS['Systeme']->Db[0]->query('ROLLBACK');
                 $this->addError(Array("Message"=>'Un minisite est déjà lié à ce domaine'));
@@ -30,7 +30,7 @@ public function Save(){
             }
 
             //Check du site et création l cas échéant
-            $sit = Sys::getOneData('Parc','Site/Instance/'.$this->Id);
+            $sit = Sys::getOneData('Parc','Site/MiniSite/'.$this->Id);
             if(!$sit) {
                 $sit =  genericClass::createInstance('Systeme','Site');
                 $sit->Domaine = 'www.'.$dom->Url;
@@ -132,7 +132,7 @@ public function Delete(){
 
             break;
         case 'Minimal':
-            $site = Sys::getOneData('Parc','Site/Instance/'.$this->Id);
+            $site = Sys::getOneData('Parc','Site/MiniSite/'.$this->Id);
             if($site){
                 $user = $site->getOneParent('User');
                 if($user){

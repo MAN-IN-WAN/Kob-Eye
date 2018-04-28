@@ -77,6 +77,7 @@
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
+		<PROPERTIES type="boolean" description="Domaine par défaut pour la création des sous domaines temporaires" form="1" hasRole="PARC_TECHNICIEN">defaultDomain</PROPERTIES>
 		<FKEY card="0,1" data="Client,Id" fiche="1" form="1" list="1" description="Client"  listDescr="Client" obligatoire="1" link="1">ClientId</FKEY>
         <FKEY card="0,1" data="DomainTemplate,Id" fiche="1" list="1" description="Template de domaine"  listDescr="Template" form="1">DomainTemplateId</FKEY>
 	</OBJECTCLASS>
@@ -469,18 +470,19 @@
         <FKEY card="1,1" data="Client,Id" description="Client" listDescr="Client" hasRole="PARC_TECHNICIEN">ClientId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Instance" driver="mysql" Description="Espace Web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Instance.class.php" logEvent="1" AccessPoint="1" plugin="1">
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de l'instance (le sous domaine ex: [sous-domaine].mondomaine.ext)" list="1" form="1" fiche="1" listDescr="Nom" default="">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de l'instance" list="1" form="1" fiche="1" listDescr="Nom" default="">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Sous domaine (le sous domaine ex: [sous-domaine].mondomaine.ext)" list="1" form="1" fiche="1" listDescr="Sous-Domaine" default="www" hasRole="PARC_TECHNICIEN" >SousDomaine</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Type de l'instance" list="1" form="1" fiche="1" values="dev,pre-prod,prod" listDescr="Type" default="prod" >Type</PROPERTIES>
-		<PROPERTIES type="password" searchOrder="1" obligatoire="1" description="Mot de passe" form="1" fiche="1" >Password</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Mode de l'instance" list="1" form="1" fiche="1" values="dev::Développement (Pas de proxy),pre-prod::Pré-Production (Pas de proxy),prod::Production" listDescr="Type" default="dev" >Type</PROPERTIES>
+		<PROPERTIES type="password" searchOrder="1" description="Mot de passe" form="1" fiche="1"  hasRole="PARC_TECHNICIEN">Password</PROPERTIES>
 		<PROPERTIES type="boolean" description="Actif" listDescr="Actif" list="1" form="1" fiche="1" default="1" hasRole="PARC_TECHNICIEN" >Enabled</PROPERTIES>
 		<PROPERTIES type="boolean" description="Ssl" listDescr="Ssl"  list="1" form="1" hasRole="PARC_TECHNICIEN" fiche="1">EnableSsl</PROPERTIES>
 		<PROPERTIES type="varchar" description="Domaine" listDescr="Domaine"  list="1" fiche="1">FullDomain</PROPERTIES>
 		<FKEY card="1,n" data="Domain,Id" description="Domaine(s)" listDescr="Domaine(s)" fiche="1">DomainId</FKEY>
 		<FKEY card="0,1" data="Host,Id" description="Hébergement" listDescr="Hébergement" fiche="1">HostId</FKEY>
 		<FKEY card="0,1" data="Bdd,Id" description="Base de donnée(s)" hasRole="PARC_TECHNICIEN" listDescr="Base de donnée" fiche="1">BddId</FKEY>
-		<FKEY card="1,1" data="Client,Id" description="Client" listDescr="Client" hasRole="PARC_TECHNICIEN" form="1" fiche="1" list="1">ClientId</FKEY>
+		<FKEY card="0,1" data="Client,Id" description="Client" listDescr="Client" hasRole="PARC_TECHNICIEN" form="1" fiche="1" list="1">ClientId</FKEY>
 		<PROPERTIES type="varchar" length="50" obligatoire="1" default="default" description="Version de php" query="Parc/PHPVersion::Valeur::Titre" list="1" fiche="1" form="1" hasRole="PARC_TECHNICIEN">PHPVersion</PROPERTIES>
+		<PROPERTIES type="plugin" category="Configuration" query="Explorateur/_Dossier/Modules/Parc/Plugins/Instance/_Dossier::Nom" form="1" fiche="1" obligatoire="1" default="Vide" description="Sélection de l'environnement CMS">Plugin</PROPERTIES>
 		<FUNCTION title="Activer le SSL">enableSSL</FUNCTION>
 		<FUNCTION title="Dupliquer cette instance">duplicateInstance</FUNCTION>
 		<FUNCTION title="Restaurer une instance">restoreInstance</FUNCTION>

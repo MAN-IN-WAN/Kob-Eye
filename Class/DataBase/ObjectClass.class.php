@@ -326,7 +326,8 @@ class ObjectClass extends Root{
 		//GESTION DES PLUGINS
 		if (isset($this->plugin)&&$this->plugin){
 			//On ajoute une proprietes Plugin
-			$this->Proprietes["Plugin"] = $this->parseAttributes(array("type"=>"plugin","category"=>"Configuration","query"=>"Explorateur/_Dossier/Modules/".$this->Module."/Plugins/".$this->titre."/_Dossier::Nom", "form"=>1,"fiche"=>1, "obligatoire"=>1),"Plugin");
+			if (!isset($this->Proprietes["Plugin"]))
+				$this->Proprietes["Plugin"] = $this->parseAttributes(array("type"=>"plugin","category"=>"Configuration","query"=>"Explorateur/_Dossier/Modules/".$this->Module."/Plugins/".$this->titre."/_Dossier::Nom", "form"=>1,"fiche"=>1, "obligatoire"=>1),"Plugin");
 			$this->addCategory(Array("title"=>"Configuration"),Array("type"=>"property","title"=>"Plugin"));
 			//On ajoute une propriete PluginConfig
 			$this->Proprietes["PluginConfig"] = $this->parseAttributes(array("type"=>"pluginconfig","category"=>"Configuration", "form"=>1,"fiche"=>1, "auto"=>1),"PluginConfig");
