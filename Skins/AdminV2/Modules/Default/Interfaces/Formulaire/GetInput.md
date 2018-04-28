@@ -346,7 +346,7 @@
 				[STORPROC [![!Prop::query!]:/::!]|Ov|1|1][/STORPROC]
 				[STORPROC [![!Prop::query!]:/::!]|Ov2|2|1][/STORPROC]
 				[COUNT [!Q!]|Con]
-				[IF [!Con!]>100]
+				[IF [!Con!]>100000]
 					// Auto completion
 					[IF [!Valeur!]=][!Val:=-1!][ELSE][!Val:=[!Valeur!]!][/IF]
 					<input class="Champ AC" type="text" autocomplete="off" name="[!Prefixe!][!Prop::Nom!]" id="[!Prefixe!][!Prop::Nom!]" />

@@ -192,7 +192,9 @@ class Connection extends Root{
         if($site && $site->Api && $newCo){
             setcookie(PHP_SESSION_NAME, '', time()-42000, '/');
             http_response_code (200);
-            die(json_encode(array('success'=>'authentication_success','error'=>false,'auth_token'=>$this->SessId)));
+            echo (json_encode(array('success'=>'authentication_success','error'=>false,'auth_token'=>$this->SessId)));
+			$GLOBALS['Systeme']->Close();
+			die();
         }
 
     }

@@ -1110,8 +1110,8 @@ class Sys extends Root{
 	 static function getData($Module, $Query, $Ofst='', $Limit='', $OrderType='', $OrderVar='', $Selection='', $GroupBy='', $NoRights = false ){
 	 	if (!isset(Sys::$Modules[$Module])) return array();
 	 	$obj = explode('/',$Query,2);
-	 	$obj = $obj[0];
 	 	$RestQuery = $obj[1];
+	 	$obj = $obj[0];
 	 	//on vérfiie la surchagre de getData
 		 if (method_exists($obj, "getData")){
 			 return call_user_func($obj .'::getData',array($RestQuery, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy));
@@ -1128,6 +1128,13 @@ class Sys extends Root{
 	 * Static call of callData
 	 */
 	 static function getCount($Module, $Query){
+	 	$obj = explode('/',$Query,2);
+	 	$RestQuery = $obj[1];
+	 	$obj = $obj[0];
+	 	//on vérfiie la surchagre de getCount
+		if (method_exists($obj, "getCount")){
+			return call_user_func($obj .'::getCount',$RestQuery);
+		}
 	 	$o= Sys::$Modules[$Module]->callData($Query, false, 0, 1000000, '', '', 'COUNT(DISTINCT(m.Id))', '' );
 		return isset($o[0]) ? $o[0]['COUNT(DISTINCT(m.Id))'] : 0;
 	 }

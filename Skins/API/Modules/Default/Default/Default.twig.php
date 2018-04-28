@@ -14,7 +14,7 @@ $lien = $GLOBALS['Systeme']->getRegVars('Lien');
 $info = Info::getInfos($query);
 
 
-if(strpos( $query,$lien) == 0 || count($info['Historique']) > 2){
+if(strpos( $query,$lien) === 0 || $info['NbHisto'] > 2){
     sendResult(403,null,'Vous n\'avez pas le droit d\'acceder à cette ressource depuis cette route.');
     die();
 }
