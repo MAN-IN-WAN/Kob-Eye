@@ -154,10 +154,10 @@ class Instance extends genericClass{
         $this->addParent($bdd);
 
         //check ftp
-        $bdd = $heb->getOneChild('Bdd');
+        $bdd = $heb->getOneChild('Ftpuser');
         if (!$bdd) {
             //alors création du apache
-            $bdd = genericClass::createInstance('Parc', 'Bdd');
+            $bdd = genericClass::createInstance('Parc', 'Ftpuser');
             $bdd->Nom = $tmpname;
             $bdd->addParent($heb);
             $bdd->addParent($mysqlsrv);
