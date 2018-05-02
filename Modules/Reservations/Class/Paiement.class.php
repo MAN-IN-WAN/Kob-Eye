@@ -3,7 +3,7 @@ class Paiement extends genericClass
 {
     function getTypePaiement()
     {
-        return Sys::getOneData('Reservations', 'Instance/Paiement/' . $this->Id);
+        return Sys::getOneData('Reservations', 'TypePaiement/Paiement/' . $this->Id);
     }
     function getFacture()
     {

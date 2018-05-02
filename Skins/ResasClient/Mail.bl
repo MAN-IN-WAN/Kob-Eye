@@ -3,8 +3,8 @@
 <div align="center">
     <table width="800" cellpadding="0" cellspacing="0"  bgcolor="#ffffff">
         <tr>
-            <td align="left"  >
-                <img src="[!Domaine!]/Skins/ResasClient/Img/Logo.png" alt="Logo du site" />
+            <td align="center"  >
+               // <img src="[!Domaine!]/Skins/ResasClient/Img/Logo.png" alt="Logo du site" style="max-width:350px;"/>
             </td>
         </tr>
         <tr>
@@ -29,7 +29,7 @@
             <td  align="center" style="padding-left:10px;" bgcolor="#666">
                 <br />
                 <font face="arial" color="#ffffff" size="2"><strong>A bient&ocirc;t sur </strong></font>
-                <a href="[!Domaine!]"><font face="arial" color="#ffffff" size="2"><strong>notre site  [!Domaine!]</strong></font></a>
+                <a href="[!Domaine!]"><font face="arial" color="#ffffff" size="2"><strong>notre site  http://www.ville-amberieuenbugey.fr</strong></font></a>
                 <br /><br />
             </td>
         </tr>

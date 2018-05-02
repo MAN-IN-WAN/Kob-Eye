@@ -37,9 +37,15 @@
             <h1>Détail de votre réservation</h1>
             [!Service:=[!R::getService()!]!]
             [!Court:=[!R::getCourt()!]!]
-            <h3><b>Description: </b>[!Service::Titre!] pour [!Court::Titre!]</h3>
-            <h3><b>Date: </b>le [DATE d/m/Y][!R::DateDebut!][/DATE]</h3>
-            <h3><b>Nombre de participant(s) total(s):</b>[!R::NbParticipant!]</h3>
+            [!TC:=[!Court::getOneParent(TypeCourt)!]!]
+//            <h3><b>Description: </b>[!Service::Titre!] pour [!Court::Titre!]</h3>
+            <h3>[!Service::Titre!] pour [!Court::Titre!]</h3>
+            <h3><b>Date: </b>le [DATE d/m/Y à H:i][!R::DateDebut!][/DATE]</h3>
+            [IF [!TC::GestionInvite!]=Aucun !]
+            [ELSE]
+            [!TC::GestionInvite!]
+                <h3><b>Nombre de participant(s) total(s):</b>[!R::NbParticipant!]</h3>
+            [/IF]
             [STORPROC [!R::getPartenaires()!]|Pa]
             <h3><b>Partenaire(s) adhérent(s):</b>
             <ul>

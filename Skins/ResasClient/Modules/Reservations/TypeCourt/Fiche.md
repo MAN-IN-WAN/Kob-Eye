@@ -2,9 +2,9 @@
 
 <div class="row">
     <div class="col-md-12">
-        <h3>Sélectionnez une date</h3>
-        <div id="datepicker-wrap" class="input-group date">
-            <input type="text" class="form-control" id="datepicker" value="[DATE d/m/Y][!TMS::Now!][/DATE]"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+        <h3>Sélectionnez une date </h3>
+        <div id="datepicker-wrap" class="input-group date" data-date="[DATE d/m/Y][!TMS::Now!][/DATE]">
+            <input type="hidden" class="form-control" id="datepicker" value="[DATE d/m/Y][!TMS::Now!][/DATE]">
         </div>
     </div>
 </div>
@@ -21,6 +21,11 @@ $('#datepicker-wrap').datepicker({
 
 
 function onChangeDate(e) {
+
+    $('#datepicker').val(
+        $('#datepicker-wrap').datepicker('getFormattedDate')
+    );
+
 
     console.log('change date',e);
 

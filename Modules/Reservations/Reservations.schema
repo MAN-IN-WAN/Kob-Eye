@@ -38,15 +38,15 @@
         <PROPERTIES searchOrder="1" description="Description" type="varchar" list="1" >Nom</PROPERTIES>
         <PROPERTIES searchOrder="1" description="Date de début" type="datetime" obligatoire="1" list="1" form="1" fiche="1">DateDebut</PROPERTIES>
         <PROPERTIES searchOrder="2" description="Date de fin" type="datetime" obligatoire="1" list="1" form="1" fiche="1">DateFin</PROPERTIES>
-        <PROPERTIES searchOrder="2" description="Paiement des participants" type="boolean" list="1" fiche="1">PaiementParticipant</PROPERTIES>
+        <PROPERTIES searchOrder="2" description="Paiement des participants" type="boolean" >PaiementParticipant</PROPERTIES>
         <PROPERTIES searchOrder="2" description="Validité" type="boolean" list="1" form="1" fiche="1">Valide</PROPERTIES>
         <PROPERTIES searchOrder="2" description="En attente de validation" type="boolean" list="1" form="1" fiche="1">Attente</PROPERTIES>
-        <PROPERTIES searchOrder="2" description="Facturé" type="boolean" list="1" fiche="1">Facture</PROPERTIES>
-        <PROPERTIES searchOrder="3" description="Nombre total de participant" listDescr="Participants" type="int" list="1" default="1" fiche="1">NbParticipant</PROPERTIES>
+        <PROPERTIES searchOrder="2" description="Facturé" type="boolean" >Facture</PROPERTIES>
+        <PROPERTIES searchOrder="3" description="Nombre total de participant" listDescr="Participants" type="int" default="1">NbParticipant</PROPERTIES>
         <PROPERTIES description="Commentaire" type="text" fiche="1" form="1">Commentaire</PROPERTIES>
         <FKEY card="1,1" data="Client,Id" form="1" parentDescription="Client" fiche="1">ClientId</FKEY>
         <FKEY card="1,1" data="Service,Id" form="1" parentDescription="Type de réservation" fiche="1">ServiceId</FKEY>
-        <FKEY card="1,1" data="Court,Id" form="1" parentDescription="Terrain" fiche="1">CourtId</FKEY>
+        <FKEY card="1,1" data="Court,Id" form="1" parentDescription="Bureau" fiche="1">CourtId</FKEY>
         <FUNCTION title="Renvoyer le mail">SendMail</FUNCTION>
         <FUNCTION title="Valider la réservation">SetValid</FUNCTION>
         <FUNCTION title="Annuler / Refuser la réservation">SetInvalid</FUNCTION>
@@ -57,8 +57,8 @@
                     <PROPERTIES type="varchar" description="Nom" alias="ClientNom">Nom</PROPERTIES>
                 </JOIN>
                 <JOIN type="outer" title="Court" on="CourtId" target="Id">
-                    <PROPERTIES type="varchar" description="Court" alias="Court" list="1">Titre</PROPERTIES>
-                    <PROPERTIES type="int" description="Court ID" alias="CourtId">Id</PROPERTIES>
+                    <PROPERTIES type="varchar" description="Bureau" alias="Court" list="1">Titre</PROPERTIES>
+                    <PROPERTIES type="int" description="Bureau ID" alias="CourtId">Id</PROPERTIES>
                 </JOIN>
                 <JOIN type="outer" title="Service" on="ServiceId" target="Id">
                     <PROPERTIES type="varchar" description="Service" alias="Service">Titre</PROPERTIES>
@@ -98,9 +98,9 @@
     </OBJECTCLASS>
     <OBJECTCLASS title="Court" driver="mysql" AccessPoint="1" Description="Emplacement" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png">
         <PROPERTIES Order="1" description="Titre" type="varchar" length="200" obligatoire="1" list="1" form="1" fiche="1" searchOrder="1">Titre</PROPERTIES>
-        <PROPERTIES Order="2" description="Capacité" type="Int" list="1" form="1" fiche="1" searchOrder="1">Capacite</PROPERTIES>
-        <PROPERTIES description="Ordre" type="order" length="200" obligatoire="1" list="1" form="1" fiche="1" searchOrder="1">Ordre</PROPERTIES>
-        <FKEY card="1,1" data="TypeCourt,Id" form="1" fiche="1" parentDescription="Type de court">TypeCourtId</FKEY>
+        <PROPERTIES Order="2" description="Capacité" type="Int"  searchOrder="1">Capacite</PROPERTIES>
+        <PROPERTIES description="Ordre" type="order" length="200" obligatoire="1"  searchOrder="1">Ordre</PROPERTIES>
+        <FKEY card="1,1" data="TypeCourt,Id" form="1" fiche="1" parentDescription="Type de Bureau">TypeCourtId</FKEY>
         <VIEW title="CourtList" default="1">
             <OBJECTCLASS title="Court" select="*" filters="">
                 <JOIN type="outer" title="TypeCourt" on="TypeCourtId" target="Id">
@@ -119,28 +119,28 @@
     <OBJECTCLASS title="Service" driver="mysql" AccessPoint="1" Description="Produit" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png" Class="Modules/Reservations/Class/Service.class.php">
         <PROPERTIES Order="1" description="Titre" type="varchar" length="200" obligatoire="1" list="1" form="1" fiche="1" searchOrder="1">Titre</PROPERTIES>
         <PROPERTIES Order="4" description="Type de produit" type="varchar" values="Reservation,Abonnement,Produit,Cotisation" list="1" form="1" fiche="1">Type</PROPERTIES>
-        <PROPERTIES Order="2" description="Tarif TTC" type="price" category="Produit" list="1" form="1" fiche="1">Tarif</PROPERTIES>
+        <PROPERTIES Order="2" description="Tarif TTC" type="price" category="Produit" >Tarif</PROPERTIES>
         <PROPERTIES Order="1" description="Demande la quantité" type="boolean" category="Produit"  form="1" default="0" fiche="1">SaisieQuantite</PROPERTIES>
 
-        <PROPERTIES Order="2" description="Tarif Matin" type="price" category="Reservation tarifs" list="1" form="1" fiche="1">Tarif1</PROPERTIES>
-        <PROPERTIES Order="4" description="Tarif Matin debut (hh:mm)" type="varchar" category="Reservation tarifs" form="1" fiche="1">HeureDebutTarif1</PROPERTIES>
-        <PROPERTIES Order="4" description="Tarif Matin fin (hh:mm)" type="varchar" category="Reservation tarifs" form="1" fiche="1">HeureFinTarif1</PROPERTIES>
-        <PROPERTIES Order="2" description="Tarif Apres-midi" type="price" category="Reservation tarifs"  list="1" form="1" fiche="1">Tarif2</PROPERTIES>
-        <PROPERTIES Order="4" description="Tarif Apres-midi debut (hh:mm)" type="varchar" category="Reservation tarifs" form="1" fiche="1">HeureDebutTarif2</PROPERTIES>
-        <PROPERTIES Order="4" description="Tarif Apres-midi fin (hh:mm)" type="varchar" category="Reservation tarifs" form="1" fiche="1">HeureFinTarif2</PROPERTIES>
-        <PROPERTIES Order="3" description="Tarif Soir" type="price" category="Reservation tarifs"  list="1" form="1" fiche="1">Tarif3</PROPERTIES>
-        <PROPERTIES Order="4" description="Tarif Soir debut (hh:mm)" type="varchar" category="Reservation tarifs" form="1" fiche="1">HeureDebutTarif3</PROPERTIES>
-        <PROPERTIES Order="4" description="Tarif Soir fin (hh:mm)" type="varchar" category="Reservation tarifs" form="1" fiche="1">HeureFinTarif3</PROPERTIES>
-        <PROPERTIES Order="3" description="Tarif Week-end" type="price" category="Reservation tarifs"  list="1" form="1" fiche="1">Tarif4</PROPERTIES>
-        <PROPERTIES Order="4" description="Tarif Week-end debut (hh:mm)" type="varchar" category="Reservation tarifs" form="1" fiche="1">HeureDebutTarif4</PROPERTIES>
-        <PROPERTIES Order="4" description="Tarif Week-end fin (hh:mm)" type="varchar" category="Reservation tarifs" form="1" fiche="1">HeureFinTarif4</PROPERTIES>
+        <PROPERTIES Order="2" description="Tarif Matin" type="price" category="Reservation tarifs">Tarif1</PROPERTIES>
+        <PROPERTIES Order="4" description="Tarif Matin debut (hh:mm)" type="varchar" category="Reservation tarifs">HeureDebutTarif1</PROPERTIES>
+        <PROPERTIES Order="4" description="Tarif Matin fin (hh:mm)" type="varchar" category="Reservation tarifs" >HeureFinTarif1</PROPERTIES>
+        <PROPERTIES Order="2" description="Tarif Apres-midi" type="price" category="Reservation tarifs" >Tarif2</PROPERTIES>
+        <PROPERTIES Order="4" description="Tarif Apres-midi debut (hh:mm)" type="varchar" category="Reservation tarifs" >HeureDebutTarif2</PROPERTIES>
+        <PROPERTIES Order="4" description="Tarif Apres-midi fin (hh:mm)" type="varchar" category="Reservation tarifs">HeureFinTarif2</PROPERTIES>
+        <PROPERTIES Order="3" description="Tarif Soir" type="price" category="Reservation tarifs">Tarif3</PROPERTIES>
+        <PROPERTIES Order="4" description="Tarif Soir debut (hh:mm)" type="varchar" category="Reservation tarifs" >HeureDebutTarif3</PROPERTIES>
+        <PROPERTIES Order="4" description="Tarif Soir fin (hh:mm)" type="varchar" category="Reservation tarifs">HeureFinTarif3</PROPERTIES>
+        <PROPERTIES Order="3" description="Tarif Week-end" type="price" category="Reservation tarifs" >Tarif4</PROPERTIES>
+        <PROPERTIES Order="4" description="Tarif Week-end debut (hh:mm)" type="varchar" category="Reservation tarifs" >HeureDebutTarif4</PROPERTIES>
+        <PROPERTIES Order="4" description="Tarif Week-end fin (hh:mm)" type="varchar" category="Reservation tarifs">HeureFinTarif4</PROPERTIES>
 
-        <PROPERTIES Order="4" description="Heure d'ouverture (hh:mm)" type="varchar" category="Reservation horaires" form="1" fiche="1">HeureOuverture</PROPERTIES>
+        <PROPERTIES Order="4" description="Heure d'ouverture (hh:mm)" type="varchar" category="Reservation horaires" list="1" form="1" fiche="1">HeureOuverture</PROPERTIES>
         <PROPERTIES Order="3" description="Heure de fermeture (hh:mm)" type="varchar" category="Reservation horaires"  list="1" form="1" fiche="1">HeureFermeture</PROPERTIES>
         <PROPERTIES Order="4" description="Durée en minute" type="duration" category="Reservation horaires" form="1" fiche="1">Duree</PROPERTIES>
         <PROPERTIES Order="1" description="Date de fin des cotisation" type="varchar" default="31/08" form="1" fiche="1">DateFinCotisation</PROPERTIES>
-        <FKEY card="0,n" data="TypeCourt,Id" form="1" childDescription="Liste des Services" parentDescription="Type de court">TypeCourtId</FKEY>
-        <FKEY card="0,n" data="Court,Id" form="1" childDescription="Liste des Services" parentDescription="Court concernés">CourtId</FKEY>
+        <FKEY card="0,n" data="TypeCourt,Id" form="1" childDescription="Liste des Services" parentDescription="Type de bureau">TypeCourtId</FKEY>
+        <FKEY card="0,n" data="Court,Id" form="1" childDescription="Liste des Services" parentDescription="Bureaux concernés">CourtId</FKEY>
     </OBJECTCLASS>
     <OBJECTCLASS title="Sponsor" driver="mysql" AccessPoint="1" Description="Sponsor" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png">
         <PROPERTIES Order="1" description="Titre" type="varchar" length="200" obligatoire="1" default="test" list="1" form="1" fiche="1">Titre</PROPERTIES>
@@ -153,7 +153,7 @@
         <PROPERTIES Order="4" description="Recurrence Hebdo" type="boolean" Default="0" list="1" form="1" fiche="1" >RecurrenceHebdo</PROPERTIES>
         <PROPERTIES Order="4" description="Date fin de la Recurrence Hebdo" Default="0" type="datetime" list="1" form="1" fiche="1" >DateFinRecurrence</PROPERTIES>
         <PROPERTIES Order="4" description="Disponible" type="boolean" Default="0" list="1" form="1" fiche="1" >Dispo</PROPERTIES>
-        <FKEY card="0,n" data="Court,Id" list="1" form="1" fiche="1" parentDescription="Terrain">CourtId</FKEY>
+        <FKEY card="0,n" data="Court,Id" list="1" form="1" fiche="1" parentDescription="Bureau">CourtId</FKEY>
     </OBJECTCLASS>
     <OBJECTCLASS title="Paiement" driver="mysql" AccessPoint="0" master="0" Description="Paiements"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/Reservations/Class/Paiement.class.php">
         <PROPERTIES searchOrder="2" description="Montant (TTC)" type="float" list="1" listDescr="Montant" format="2dec">Montant</PROPERTIES>
@@ -189,7 +189,7 @@
         <PROPERTIES Order="6" description="Ordre" type="order" >Ordre</PROPERTIES>
     </OBJECTCLASS>
 
-    <OBJECTCLASS title="Facture" driver="mysql" AccessPoint="1" master="0" Description="Facture"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/Reservations/Class/Facture.class.php">
+    <OBJECTCLASS title="Facture" driver="mysql" AccessPoint="0" master="0" Description="Facture"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/Reservations/Class/Facture.class.php">
         <PROPERTIES searchOrder="1"	description="Numéro Facture" type="varchar" list="2" fiche="1" listDescr="Numéro" listWidth="100" category="Total Facture">NumFac</PROPERTIES>
         <PROPERTIES searchOrder="2"	description="Total Facture TTC" type="price" list="3" fiche="1" listDescr="TTC" format="2dec" category="Total Facture">MontantTTC</PROPERTIES>
         <PROPERTIES searchOrder="2"	description="Total Facture HT" type="price" list="3" fiche="1" listDescr="HT" format="2dec" category="Total Facture">MontantHT</PROPERTIES>

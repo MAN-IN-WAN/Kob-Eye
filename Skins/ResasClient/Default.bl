@@ -1,14 +1,14 @@
-[HEADER CSS]/Tools/Css/Bootstrap/3.0/css/bootstrap.min.css[/HEADER]
-[HEADER CSS]/Tools/Css/Bootstrap/3.0/css/bootstrap-theme.min.css[/HEADER]
-[HEADER JS]/Tools/Js/Jquery/1.9.2/jquery.min.js[/HEADER]
-[HEADER JS]/Tools/Css/Bootstrap/3.0/js/bootstrap.min.js[/HEADER]
+[HEADER CSS]Tools/Css/Bootstrap/3.0/css/bootstrap.min.css[/HEADER]
+[HEADER CSS]Tools/Css/Bootstrap/3.0/css/bootstrap-theme.min.css[/HEADER]
+[HEADER JS]Tools/Js/Jquery/1.9.2/jquery.min.js[/HEADER]
+[HEADER JS]Tools/Css/Bootstrap/3.0/js/bootstrap.min.js[/HEADER]
 
 //DATE PICKER
-[HEADER JS]/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/js/bootstrap-datepicker.min.js[/HEADER]
-[HEADER CSS]/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/css/bootstrap-datepicker3.min.css[/HEADER]
-[HEADER JS]/Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.fr.min.js[/HEADER]
+[HEADER JS]Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/js/bootstrap-datepicker.min.js[/HEADER]
+[HEADER CSS]Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/css/bootstrap-datepicker3.min.css[/HEADER]
+[HEADER JS]Tools/Css/Bootstrap/bootstrap-datepicker-master/dist/locales/bootstrap-datepicker.fr.min.js[/HEADER]
 //BOOTBOX CONFIRM
-[HEADER JS]/Tools/Css/Bootstrap/BootBox/bootbox.min.js[/HEADER]
+[HEADER JS]Tools/Css/Bootstrap/BootBox/bootbox.min.js[/HEADER]
 //SWITCH
 [HEADER CSS]Tools/Css/Bootstrap/bootstrap-switch-master/dist/css/bootstrap3/bootstrap-switch.min.css[/HEADER]
 [HEADER JS]Tools/Css/Bootstrap/bootstrap-switch-master/dist/js/bootstrap-switch.min.js[/HEADER]
@@ -18,6 +18,7 @@
 [HEADER JS]Tools/Css/Bootstrap/Bootstrap-fileinput/js/fileinput.min.js[/HEADER]
 
 [HEADER]
+<link rel="apple-touch-icon" sizes="57x57" href="squelettes/favicons/apple-touch-icon-57x57.png">
 <link rel="icon" href="http://tennisforever.fr/wp-content/uploads/2015/12/cropped-balle-32x32.png" sizes="32x32" />
 <link rel="icon" href="http://tennisforever.fr/wp-content/uploads/2015/12/cropped-balle-192x192.png" sizes="192x192" />
 <link rel="apple-touch-icon-precomposed" href="http://tennisforever.fr/wp-content/uploads/2015/12/cropped-balle-180x180.png" />
@@ -29,6 +30,8 @@
 
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
+        //bouton retour
+        <a class="btn-success btnRetour" href="http://www.ville-amberieuenbugey.fr" target="_blank">Revenir sur le site</a>
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
@@ -52,10 +55,33 @@
 
 <!--login modal-->
 <div id="loginModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
+    //début rajout
+    <div class="logoAmberieu"></div>
+    <div class="texteModal"> 
+        [IF [!Lien!]!=]
+            <nav>
+                <h5>Merci de lire attentivement les instructions qui suivent :</h5>
+                <h3 style="font-weight: bold;color:red;">Attention, un créneau de rendez-vous = 1 personne</h3>
+                Vous pouvez vous rendre à n'importe quelle mairie en France à condition qu'elle soit équipée d'une station d'enregistrement et à l'étranger auprès de votre consulat ou votre ambassade.<br>
+                <b>La carte d’identité est valable 15 ans pour les personnes majeures qui ont une carte sécurisée émise depuis le 2 janvier 2004.
+                    Elle reste valable 10 ans pour les cartes antérieures à cette date ainsi que pour les personnes mineures</b>
+                Cette application vous permet de demander en ligne un rendez-vous sur le créneau horaire qui vous convient
+                Attention, votre rendez-vous ne sera effectif que lorsque vous aurez reçu un mail et/ou sms de confirmation
+                Le demandeur (y compris l’enfant mineur) doit être personnellement présent au rendez-vous.
+                Pour chaque rendez-vous pour une Carte Nationale d’Identité et/ou un passeport, il convient de <span style="color:red;">privilégier les pré-demandes en ligne</span>.et de vous munir des pièces demandées.
+                Pour cela, il vous faut suivre les procédures indiquées dans les onglets ci-dessous.
+                <a class="btn-success" href="https://www.service-public.fr/particuliers/vosdroits/F21089" target="_blank">Pour votre pièce d'identité</a>
+                <a class="btn-success" href="https://www.service-public.fr/particuliers/vosdroits/N360" target="_blank">Pour votre passeport</a>
+
+            </nav>
+        [/IF]
+    </div>
+    //fin rajout
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
                 [MODULE Systeme/Utils/BreadCrumbs]
+                <h3>Le planning des RDV étant complet jusqu'au 20 juillet 2018 inclus, vous pouvez dès à présent fixer votre RDV pour les jours suivants sur <span style="color:red;">l’une</span> des 2 stations passeports.</h3>
                 [DATA]
             </div>
 <!--            <div class="modal-footer">

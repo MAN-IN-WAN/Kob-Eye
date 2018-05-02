@@ -664,7 +664,7 @@ class Reservation extends genericClass {
 
         require_once ("Class/Lib/Mail.class.php");
         $Mail = new Mail();
-        $Mail -> Subject("Mairie d'Amberieu : Confirmation de reservation");
+        $Mail -> Subject("Mairie d'Amberieu : Accusé réception de votre demande de réservation");
         $Mail -> From( $GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
         $Mail -> ReplyTo($GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
         $Mail -> To($cli -> Mail);
@@ -709,7 +709,7 @@ class Reservation extends genericClass {
 
         require_once ("Class/Lib/Mail.class.php");
         $Mail = new Mail();
-        $Mail -> Subject("Mairie d'Amberieu : Confirmation de reservation");
+        $Mail -> Subject("Mairie d'Amberieu : Annulation de réservation");
         $Mail -> From( $GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
         $Mail -> ReplyTo($GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
         $Mail -> To($cli -> Mail);
@@ -801,7 +801,7 @@ class Reservation extends genericClass {
 
         require_once ("Class/Lib/Mail.class.php");
         $Mail = new Mail();
-        $Mail -> Subject("Mairie d'Amberieu : Confirmation de reservation");
+        $Mail -> Subject("Mairie d'Amberieu : Confirmation de réservation");
         $Mail -> From( $GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
         $Mail -> ReplyTo($GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
         $Mail -> To($cli -> Mail);

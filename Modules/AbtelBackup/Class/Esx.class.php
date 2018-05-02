@@ -444,7 +444,9 @@ class Esx extends genericClass {
         //echo "Ajout de la vm à l'inventaire\r\n";
         $act = $esx->createActivity("Ajout de la vm à l'inventaire",'Info');
         //on ajoute la vm à l'inventaire
-        $act->addDetails($esx->registerVm());
+        $esx->registerVm();
+        $act->addDetails('Ajout de la vm à l\'inventaire');
+        $this->Error = array_merge($this->Error,$esx->Error);
         //echo "suppression des snapshots\r\n";
         $act = $esx->createActivity("Suppression des snapshots",'Info');
         //on supprime les snapshots

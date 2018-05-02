@@ -13,6 +13,6 @@
 [BASH COLOR|yellow] Fin : [!Utils::getDate(d/m/Y H:i:s,[!DF!])!][/BASH]
 
 [STORPROC Reservations/Reservation/DateDebut>[!DD!]&&DateDebut<[!DF!]|R]
-    //[!R::sendRappel()!]
+    [!R::sendRappel()!]
     [BASH COLOR|green] Reservation : [!R::Id!] - [!Utils::getDate(d/m/Y H:i:s,[!R::DateDebut!])!][/BASH]
 [/STORPROC]

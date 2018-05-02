@@ -109,14 +109,15 @@
     </div>
     [/CASE]
     [CASE Nominatif]
-    <div class="form-group group-PaiementParticipant row">
-        <label class="col-sm-7 control-label">Paiement des participants
-            <p style="font-weight: normal;">Chaque particpant recevra un email lui permettant de régler sa propre participation.</p>
-        </label>
-        <div class="col-sm-5" style="text-align: right;">
-            <input type="checkbox" name="PaiementParticipant" [IF [!PaiementParticipant!]]checked="checked"[/IF] class="switch pull-right" value="1">
-        </div>
-    </div>
+        //Paiement participant désactivé le 27/09/2017 pour ne plus faire payer que la place de celui qui a reservé
+//    <div class="form-group group-PaiementParticipant row">
+//        <label class="col-sm-7 control-label">Paiement des participants
+//            <p style="font-weight: normal;">Chaque particpant recevra un email lui permettant de régler sa propre participation.</p>
+//        </label>
+//        <div class="col-sm-5" style="text-align: right;">
+//            <input type="checkbox" name="PaiementParticipant" [IF [!PaiementParticipant!]]checked="checked"[/IF] class="switch pull-right" value="1">
+//        </div>
+//    </div>
     <h5>Sélectionnez les participants</h5>
     <div id="Partenaires">
     </div>

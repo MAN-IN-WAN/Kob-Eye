@@ -289,7 +289,7 @@ Ka1g88CjFwRw/PB9kwIDAQAB
      * Genère un umero de question unique incrémenté par journée
      */
     private function getNumQuestion() {
-        $filepath='Modules/Reservations/Plugins/Instance/PayBox/payboxNumQuestion';
+        $filepath='Modules/Reservations/Plugins/TypePaiement/PayBox/payboxNumQuestion';
         //si le fichier n'existe pas ou si la date est d'hier
 	    if (!file_exists($filepath)||date('z',filemtime($filepath))!=date('z')){
 	        //creation du fichier avec première question

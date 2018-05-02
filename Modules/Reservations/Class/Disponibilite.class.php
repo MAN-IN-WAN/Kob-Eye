@@ -6,7 +6,25 @@ class Disponibilite extends genericClass {
         klog::l($dateDebut .' - '.$dateFin);
 
         //Cas des dispos classiques
-        $dispos = Sys::getData('Reservations','Disponibilite/RecurrenceHebdo=0&Debut>='.$dateDebut.'&Fin<='.$dateFin.'&Dispo=0',0,1000);
+        $dispos = Sys::getData('Reservations','Disponibilite/RecurrenceHebdo=0&Fin>='.$dateDebut.'&Debut<='.$dateFin.'&Dispo=0',0,1000);
+        foreach ($dispos as $dispo){
+            $dispo->_courts = $dispo->getParents('Court');
+            $jourdeb = date('d',$dispo->Debut);
+            $jourfin = date('d',$dispo->Fin);
+
+            $moisdeb = date('m',$dispo->Debut);
+            $moisfin = date('m',$dispo->Fin);
+
+            $anneedeb = date('Y',$dispo->Debut);
+            $anneefin = date('Y',$dispo->Fin);
+
+            if ($jourdeb!=date('d',$dateDebut)){
+                $dispo->Debut = mktime(0,0,0,$moisdeb,$jourdeb,$anneedeb);
+            }
+            if ($jourfin!=date('d',$dateFin)){
+                $dispo->Fin = mktime(23,59,59,$moisfin,$jourfin,$anneefin);
+            }
+        }
 
         //Cas des récurentes
         $recus = Sys::getData('Reservations','Disponibilite/RecurrenceHebdo=1&Dispo=0',0,1000);
@@ -14,6 +32,7 @@ class Disponibilite extends genericClass {
             $weekDay = date('D',$dateDebut);
             foreach ($recus as $recu){
                 $wDay = date('D',$recu->Debut);
+                $recu->_courts = $recu->getParents('Court');
                 if($weekDay != $wDay) continue;
 
                 if($recu->DateFinRecurrence <= $recu->Fin) $recu->DateFinRecurrence = 99999999999;
@@ -28,9 +47,6 @@ class Disponibilite extends genericClass {
                     array_push($dispos,$recu);
                 }
             }
-        }
-        foreach ($dispos as $d){
-            $d->_courts = $d->getParents('Court');
         }
 
         //klog::l('$dispos',$dispos);
@@ -80,7 +96,9 @@ class Disponibilite extends genericClass {
 
                     $jourdeb = date('d',$dispo->Debut);
                     $jourfin = date('d',$dispo->Fin);
+
                     if($jourdeb != $jourfin)  $heurefin +=24;
+
 
 //                    klog::l('dispo',$dispo);
 //                    klog::l('+++++++++++');
@@ -92,7 +110,9 @@ class Disponibilite extends genericClass {
 //                    klog::l('+++++++++++');
 
 
-
+                    /***
+                     * CAS SUPERPOSITON
+                     */
                     //Cas ou la periode englobe à la periode d'indisponobilité
                     if(
                         (($heuredebforce == $heuredeb && $minutedebforce <= $minutedeb) || $heuredebforce < $heuredeb) &&
@@ -172,6 +192,7 @@ class Disponibilite extends genericClass {
                         if(!sizeof($dispo->_courts)) unset($dispos[$k]); //Si la dispo n'a plus de courts on la vire
                         continue;
                     }
+                    $dispos[$k] = $dispo;
                 }
             }
         }

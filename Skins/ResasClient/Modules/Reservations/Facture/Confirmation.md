@@ -1,15 +1,12 @@
-[IF [!PAI!]>0]  //PAI extrait des variables sessions setté via COOKIE
-    [STORPROC Reservations/Paiement/[!PAI!]|P|0|1][/STORPROC]
-[ELSE]
-    [STORPROC Reservations/TypePaiement/Actif=1|TP]
-        [!Plg:=[!TP::getPlugin()!]!]
-        [!PaiementID:=[!Plg::retrouvePaiementEtape4s()!]!]
-        [LOG]PAIEMENT [!PaiementID!][/LOG]
-        [IF [!PaiementID!]>0]
-            [STORPROC Reservations/Paiement/[!PaiementID!]|P|0|1][/STORPROC]
-        [/IF]
-    [/STORPROC]
-[/IF]
+[STORPROC Reservations/TypePaiement/Actif=1|TP]
+    [!Plg:=[!TP::getPlugin()!]!]
+    [!PaiementID:=[!Plg::retrouvePaiementEtape4s()!]!]
+    [LOG]PAIEMENT [!PaiementID!][/LOG]
+    [IF [!PaiementID!]>0]
+        [STORPROC Reservations/Paiement/[!PaiementID!]|P|0|1][/STORPROC]
+    [/IF]
+[/STORPROC]
+
 [IF [!P!]]
     [!Status:=[!P::getOneParent(StatusReservation)!]!]
 [/IF]
@@ -21,7 +18,7 @@
             <h2>Votre paiement [!P::Reference!] a bien été pris en compte</h2>
 
             <h3><b>Total payé:</b><span class="label label-success" >[!Utils::getPrice([!P::Montant!])!] €</span></h3>
-            <a href="/" class="btn btn-success btn-lg btn-block">Retour à l'accueil</a>
+            <a href="/" class="btn btn-danger btn-lg btn-block">Retour à l'accueil</a>
         </div>
     </div>
 [ELSE]
@@ -34,7 +31,7 @@
                 [/STORPROC]
             </ul></h3>
             <h3><b>Total payé:</b><span class="label label-success" >[!Utils::getPrice([!F::MontantTTC!])!] €</span></h3>
-            <a href="/" class="btn btn-success btn-lg btn-block">Retour à l'accueil</a>
+            <a href="/" class="btn btn-danger btn-lg btn-block">Retour à l'accueil</a>
         </div>
     </div>
     [/STORPROC]

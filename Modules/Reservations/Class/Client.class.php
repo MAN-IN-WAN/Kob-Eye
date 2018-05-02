@@ -231,7 +231,7 @@ class Client extends genericClass {
 		require_once ("Class/Lib/Mail.class.php");
 		$user = $this->getUser();
 		$Mail = new Mail();
-		$Mail->Subject("D.D.F: Confirmation d'inscription");
+		$Mail->Subject("Ambérieu en bugey : Confirmation d'inscription");
 		$Mail -> From( $GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
 		$Mail -> ReplyTo($GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
 		$Mail -> To($this -> Mail);
@@ -239,13 +239,13 @@ class Client extends genericClass {
 		$mailContent = "
 			Bonjour " . $this->Civilite . " ".$this->Nom." ".$this->Prenom.",<br />
 			Veuillez confirmer votre adresse email et activer votre compte en cliquant sur le lien ci-dessous: <br/>
-			<a href='http://reservation.le-dome-du-foot.fr/Reservations/Client/ConfirmEmail?code=".$user->CodeVerif."'>Confirmer votre adresse maintenant</a>";
+			<a href='http://resa.ville-amberieuenbugey.fr/Reservations/Client/ConfirmEmail?code=".$user->CodeVerif."'>Confirmer votre adresse maintenant</a>";
 		$bloc -> setFromVar("Mail", $mailContent, array("BEACON" => "BLOC"));
 		$Pr = new Process();
 		$bloc -> init($Pr);
 		$bloc -> generate($Pr);
 		$Mail -> Body($bloc -> Affich());
-		$Mail -> Send();
+		//$Mail -> Send();
 	}
 
     function  sendConfirmationPartenaireMail($present,$partenaire,$reservation) {
@@ -253,7 +253,7 @@ class Client extends genericClass {
         $user = $this->getUser();
 
         $Mail = new Mail();
-        $sub = $present ? "D.D.F: Présence Confirmée" : "D.D.F: Absence signalée";
+        $sub = $present ? "Ambérieu en bugey : Présence Confirmée" : "Ambérieu en bugey: Absence signalée";
         $Mail -> Subject($sub);
         $Mail -> From( $GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
         $Mail -> ReplyTo($GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
@@ -267,7 +267,7 @@ class Client extends genericClass {
         $mailContent2 = "
 			Bonjour " . $this->Civilite . " ".$this->Nom." ".$this->Prenom.",<br />
 			Votre partenaire ".$partenaire->Nom." ".$partenaire->Prenom." vient juste de nous signaler qu'il ne pourrait pas être présent lors du match du ".date('d/m/Y à H:i:s',$reservation->DateDebut).".<br/>
-			<br />Toute l'équipe du Dome du Foot vous remercie de votre confiance,<br />
+			<br />Nous vous remercions de votre confiance,<br />
             <br />Pour nous contacter : " . $GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT') . " .";
 
         $bloc -> setFromVar("Mail", ($present)?$mailContent1:$mailContent2, array("BEACON" => "BLOC"));
@@ -283,7 +283,7 @@ class Client extends genericClass {
 
         require_once ("Class/Lib/Mail.class.php");
         $Mail = new Mail();
-        $Mail->Subject("D.D.F: Rappel Reservation");
+        $Mail->Subject("Ambérieu en bugey : Rappel Reservation");
         $Mail -> From( $GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
         $Mail -> ReplyTo($GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
         $Mail -> To($this -> Mail);
@@ -293,9 +293,9 @@ class Client extends genericClass {
         $bloc = new Bloc();
         $mailContent = "
             Bonjour  " . $this->Civilite . " ".$this->Nom." ".$this->Prenom.",<br /><br />
-            Nous vous rappelons que vous avez réservé un terrain pour le ".date("d/m/Y à H:i",$reserv->DateDebut)." (Reservation N° " . $reserv->Id . ").<br /> 
+            Nous vous rappelons que vous avez réservé un rdv pour le ".date("d/m/Y à H:i",$reserv->DateDebut)." (Reservation N° " . $reserv->Id . ").<br /> 
            
-            <br />Toute l'équipe du Dome du Foot vous remercie de votre confiance,<br />
+            <br />Nous vous remercions de votre confiance,<br />
             <br />Pour nous contacter : " . $GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT') . " .";
 
         $bloc -> setFromVar("Mail", $mailContent, array("BEACON" => "BLOC"));
@@ -312,7 +312,7 @@ class Client extends genericClass {
 
         require_once ("Class/Lib/Mail.class.php");
         $Mail = new Mail();
-        $Mail->Subject("D.D.F: Annulation Reservation");
+        $Mail->Subject("Ambérieu en bugey : Annulation Reservation");
         $Mail -> From( $GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
         $Mail -> ReplyTo($GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
         $Mail -> To($this -> Mail);
@@ -325,7 +325,7 @@ class Client extends genericClass {
             Bonjour  " . $this->Civilite . " ".$this->Nom." ".$this->Prenom.",<br /><br />
             Nous avons le regret d'apprendre que la réservation du ".date("d/m/Y à H:i",$reserv->DateDebut)." (Reservation N° " . $reserv->Id . ") par ". $Civilite ." vient d'être annulée .<br /> 
            
-            <br />Toute l'équipe du Dome du Foot vous remercie de votre confiance et espère vous revoir bientôt,<br />
+            <br />Nous vous remercions de votre confiance et nous espérons vous revoir bientôt,<br />
             <br />Pour nous contacter : " . $GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT') . " .";
 
         $bloc -> setFromVar("Mail", $mailContent, array("BEACON" => "BLOC"));

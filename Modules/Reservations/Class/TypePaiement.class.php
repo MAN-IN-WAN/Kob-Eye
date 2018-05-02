@@ -3,7 +3,7 @@
 class TypePaiement extends genericClass {
 
     /**
-     * Retourne un plugin Boutique / Instance
+     * Retourne un plugin Boutique / TypePaiement
      * @return	Implémentation d'interface
      */
     public function getPlugin() {
