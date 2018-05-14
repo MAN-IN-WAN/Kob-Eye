@@ -1,0 +1,165 @@
+<!--<div id="datepicker"></div>-->
+
+    {% for bureau in bureaux %}
+<div id="bureau{{ bureau.Id }}" class="row" style="display:none;">
+    <div class="col-lg-6">
+        <h3>Sélectionnez une date </h3>
+        <div id="datepicker-wrap-{{ bureau.Id }}" class="input-group date" data-date="{{ 'now'|date('d/m/Y')}}">
+            <input type="hidden" class="form-control" id="datepicker-{{ bureau.Id }}" value="{{ 'now'|date('d/m/Y')}}">
+        </div>
+    </div>
+    <script>
+            function onChangeDate{{ bureau.Id }}(e) {
+
+                $('#datepicker-{{ bureau.Id }}').val(
+                    $('#datepicker-wrap-{{ bureau.Id }}').datepicker('getFormattedDate')
+                );
+
+
+                console.log('change date',e);
+
+
+
+                //Mise à jour de la date
+                var today = new Date();
+                today.setHours(0);
+                today.setMinutes(0);
+                today.setSeconds(0);
+                console.log('DATE '+Math.floor(today.getTime()/1000));
+                $('.dateform-{{ bureau.Id }}').val((e)?Math.floor(new Date(e.date).getTime()/1000):Math.floor(today.getTime()/1000));
+
+                if(e != undefined && e.date.getFullYear() < today.getFullYear()){
+                    $('#bureau{{ bureau.Id }} .horaire-tennis').addClass('disabled');
+                    return false;
+                }
+                if(e != undefined && e.date.getFullYear() == today.getFullYear() && e.date.getMonth() < today.getMonth()){
+                    $('#bureau{{ bureau.Id }} .horaire-tennis').addClass('disabled');
+                    return false;
+                }
+                if(e != undefined && e.date.getFullYear() == today.getFullYear() && e.date.getMonth() == today.getMonth() && e.date.getDate() < today.getDate()){
+                    $('#bureau{{ bureau.Id }} .horaire-tennis').addClass('disabled');
+                    return false;
+                }
+
+
+                $.ajax({
+                    url: "/{{ Query }}/getDispo.json",
+                    data: {
+                        date: (e)?Math.floor(new Date(e.date).getTime()/1000):Math.floor(new Date().getTime()/1000)
+                    },
+                    method: 'POST'
+                }).success(function (response) {
+                    //mise à jour des cours
+                    $('#bureau{{ bureau.Id }} .horaire-tennis').removeClass('disabled');
+                    $('#bureau{{ bureau.Id }} .horaire-tennis').removeClass('warning');
+                    $('#bureau{{ bureau.Id }} .horaire-tennis').removeClass('old');
+
+                    // $('.horaire-wrapper:last-child .horaire-tennis').addClass('warning');
+                    console.log('RESPONSE',response);
+
+                    for ( var r in response.data){
+                        if(response.data[r].Court != {{ bureau.Id }}) continue;
+                        if(response.data[r].HeureFin == 0) response.data[r].HeureFin = 24;
+                        for (var j=response.data[r].HeureDebut; j<=response.data[r].HeureFin; j++ ){
+                            console.log('test time', r, j ,parseInt(response.data[r].HeureDebut),parseInt(response.data[r].MinuteDebut),'FIN',parseInt(response.data[r].HeureFin),parseInt(response.data[r].MinuteFin));
+                            //calcul 30 min avant
+                            // if (parseInt(response.data[r].MinuteDebut)==0){
+                            //     $('#date-' + response.data[r].Court + '-' + (parseInt(response.data[r].HeureDebut)-1) + '-30').addClass('warning');
+                            // }else $('#date-' + response.data[r].Court + '-' + parseInt(response.data[r].HeureDebut) + '-00').addClass('warning');
+
+                            if ( (j==parseInt(response.data[r].HeureDebut) && parseInt(response.data[r].MinuteDebut)==0 )
+                                || (j<parseInt(response.data[r].HeureFin)&&j>parseInt(response.data[r].HeureDebut))
+                                || (j==parseInt(response.data[r].HeureFin) && parseInt(response.data[r].MinuteFin)==30)) {
+                                console.log('desactivation '+'#date-' + response.data[r].Court + '-' + parseInt(j) + '-00')
+                                $('#date-' + response.data[r].Court + '-' + parseInt(j) + '-00').addClass('disabled');
+                            }
+                            if (j < parseInt(response.data[r].HeureFin)){
+                                console.log('desactivation '+'#date-' + response.data[r].Court + '-' + parseInt(j) + '-30')
+                                $('#date-'+response.data[r].Court+'-'+parseInt(j)+'-30').addClass('disabled');
+                            }
+                        }
+                    }
+
+                }).fail(function (reponse){
+                    console.log('erreur ajax',reponse);
+                }).done(function(){
+                    $('#bureau{{ bureau.Id }}').show();
+                    $('#load{{ bureau.Id }}').hide();
+                    if(e != undefined && e.date.getFullYear() == today.getFullYear() && e.date.getMonth() == today.getMonth() && e.date.getDate() == today.getDate() || e == undefined){
+                        var now = new Date();
+                        var horaires = $('.horaire-tennis');
+                        $.each(horaires,function(i,v){
+                            if($(v).data('heure') <= now.getHours()){
+                                $(v).addClass('old');
+                            }
+                        });
+                    }
+                });
+
+
+            }
+            $(function () {
+                var today = new Date();
+                today.setHours(0);
+                today.setMinutes(0);
+                today.setSeconds(0);
+                $.ajax({
+                    url: "/{{ Query }}/getDayDispo.json",
+                    data: {
+                        date: Math.floor(today.getTime()/1000),
+                        court: {{ bureau.Id }}
+                    },
+                    method: 'POST'
+                }).success(function (response) {
+                    fullList{{ bureau.Id }} = response;
+                }).fail(function (reponse){
+                    console.log('erreur ajax',reponse);
+                }).done(function(){
+                    $('#datepicker-wrap-{{ bureau.Id }}').datepicker({
+                        format:"dd/mm/yyyy",
+                        language: "fr",
+                        minDate: today,
+                        startDate: today,
+                        autoclose:true,
+                        daysOfWeekDisabled:'06',
+                        beforeShowDay: function(date){
+                            var tempDate = Math.floor(new Date(date).getTime()/1000);
+                            console.log('>> Bureau {{ bureau.Id }}',date,fullList{{ bureau.Id }}[tempDate]);
+                            if(fullList{{ bureau.Id }}[tempDate] && fullList{{ bureau.Id }}[tempDate].full) return false;
+                            return true;
+                        }
+                    }).on('changeDate',onChangeDate{{ bureau.Id }});
+                    onChangeDate{{ bureau.Id }}();
+                });
+            });
+        </script>
+    <form action="/{{ Lien }}/Reserver" method="POST">
+        <input type="hidden" name="Date" value="" class="dateform-{{ bureau.Id }}" />
+        <input type="hidden" name="Court" value="{{ bureau.Id }}" id="courform" />
+        <div class="col-lg-6">
+            <h3>{{ bureau.Titre }}</h3>
+            {% for h in horaires|batch(2) %}
+            <div class="row">
+                {% for k,m in h %}
+                <div class="col-xs-6 horaire-wrapper">
+                    <input type="submit" class="horaire-tennis" id="date-{{ bureau.Id }}-{{ m[0] }}-{{ m[1] }}" name="HeureDebut" value="{{ k }}" data-heure="{{ m[0] }}"/>
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+    </form>
+</div>
+<div id="load{{ bureau.Id }}" class="loader">
+    <p>Nous vous prions de bien vouloir patienter durant le chargement des données.</p>
+    <img src="/Tools/Images/loading.gif" alt="Loading" title="Chargement">
+</div>
+    {%  endfor %}
+
+<style>
+    @media screen and (min-width: 768px) {
+        .modal-dialog {
+            width: 40%;
+        }
+    }
+</style>

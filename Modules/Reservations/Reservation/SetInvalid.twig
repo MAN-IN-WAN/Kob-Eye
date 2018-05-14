@@ -1,0 +1,14 @@
+{% if not done %}
+    </form>
+    <h3>Veuillez renseigner un motif de refus/annulation</h3>
+    <form action="" method="post" id="test">
+        <textarea name="Commentaire">{{ com }}</textarea>
+        <button type="submit" name="confirmInvalid" value="1" class="btn btn-warning navbar-btn popup " form="test">Refuser/Annuler la réservation</button>
+    </form>
+    <form>
+{% else %}
+    <div class="alert alert-success">
+        La réservation a été invalidée avec succès.<br/>
+        Un notification du refus viens d'être envoyée à l'utilisateur.
+    </div>
+{% endif %}

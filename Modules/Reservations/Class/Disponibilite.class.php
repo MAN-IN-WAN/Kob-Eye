@@ -1,6 +1,37 @@
 <?php
 
 class Disponibilite extends genericClass {
+    function Save(){
+        parent::Save();
+        $courts = $this->getParents('Court');
+        $jourdeb = date('d',$this->Debut);
+        $joursem = date('w',$this->Debut);
+        $moisdeb = date('m',$this->Debut);
+        $anneedeb = date('Y',$this->Debut);
+        foreach ($courts as $c) {
+            //recherche des journées correspondantes.
+            if (!$this->RecurrenceHebdo) {
+                $jrs = Sys::getData('Reservations', 'Court/' . $c->Id . '/ResaJour/Date>=' . mktime(0, 0, 0, $moisdeb, $jourdeb, $anneedeb) . '&Date<' . $this->Fin);
+                foreach ($jrs as $jr) {
+                    $this->addParent($jr);
+                }
+            }else{
+                $day = mktime(0,0,0,date('m'),date('d'),date('Y'));
+                $i=0;
+                while ($i < LIMITE_RESA){
+                    if ($joursem == date('w',$day)){
+                        $jrs = Sys::getData('Reservations', 'Court/' . $c->Id . '/ResaJour/Date=' .$day);
+                        foreach ($jrs as $jr) {
+                            $this->addParent($jr);
+                        }
+                    }
+                    $day+= 86400;
+                    $i++;
+                }
+            }
+        }
+        parent::Save();
+    }
 
     public static function getDispo($dateDebut,$dateFin){
         klog::l($dateDebut .' - '.$dateFin);

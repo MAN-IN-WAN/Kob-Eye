@@ -1,0 +1,447 @@
+<form action="" method="POST">
+
+
+{% if ResSucces %}
+    <div class="alert alert-success">Création de la réservation en cours ....</div>
+
+{% elseif RES.Error|length >0 %}
+    <div class="alert alert-warning">
+        <h4>Impossible d'enregistrer la réservation:</h4>
+        <ul>
+            {% for err in Res.Error  %}
+                <li>{{ err.Message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+
+
+
+    <input type="hidden" name="Date" value="{{ Date }}" />
+    <input type="hidden" name="Court" value="{{ Court }}" />
+    <input type="hidden" name="HeureDebut" value="{{ HeureDebut }}" />
+    <div class="row">
+        <div class="col-md-12">
+            <h5>Votre réservation pour le {{ Date|date('d/m/Y') }} à partir  de {{ HeureDebut }}<sup>*</sup></h5>
+            {% if srvReserv|length > 1 and Client%}
+            <h2>Sélectionnez la durée</h2>
+                <select name="ServiceDuree"  class="form-control">
+                    <option value=""> -- choisissez une durée -- </option>
+                    {% for srv in srvReserv %}
+                        <option value="{{ srv.Id }}" {% if ServiceDuree == srv.Id %}selected="selected"{% endif %}>{{ srv.Titre }} -  {{ srv.getTarif(Client,DateDeb,DateDeb+3600) | number_format(2, '.') }} €</option>
+                    {% endfor %}
+                </select>
+            {% elseif srvReserv|length == 1 %}
+                <input type="hidden" name="ServiceDuree" value="{{ srvReserv[0].Id }}" />
+            {% endif %}
+
+            <div class="amberieu">
+                <input type="hidden" name="unregister" value="1" />
+                <div class="form-group">
+                    <label class="sr-only" for="unregisterNom">Nom</label>
+                    <input type="text" class="form-control" id="unregisterNom" placeholder="Nom" name="unregisterNom" value="" />
+                </div><br/>
+                <div class="form-group">
+                    <label class="sr-only" for="unregisterPrenom">Prenom</label>
+                    <input type="text" class="form-control" id="unregisterPrenom" placeholder="Prenom" name="unregisterPrenom" value="" />
+                </div><br/>
+                <div class="form-group">
+                    <label class="sr-only" for="unregisterMail">Adresse E-mail</label>
+                    <input type="email" class="form-control" id="unregisterMail" placeholder="Adresse E-mail" name="unregisterMail" value="" />
+                </div><br/>
+                <div class="form-group">
+                    <label class="sr-only" for="unregisterTel">Téléphone mobile <span class="minus">(ou fixe)</span></label>
+                    <input type="text" class="form-control" id="unregisterTel" placeholder="Téléphone" name="unregisterTel" value="" />
+                </div><br/>
+                <div class="form-group">
+                   <!-- <label class="sr-only" >Objet du rendez-vous : </label>  -->
+                   <h5> <label>Objet du rendez-vous : </label> </h5>
+                    {% for srv in srvReserv %}
+                    <!-- <input type="radio" class="form-control" id="ServiceDuree{{ srv.Id }}" name="ServiceDuree" value="{{ srv.Id }}" />
+                    <label class="sr-only radio" for="ServiceDuree{{ srv.Id }}">{{ srv.Titre }}</label> -->
+                        <label class="sr-only radio" for="ServiceDuree{{ srv.Id }}">{{ srv.Titre }}</label>
+                        <input type="radio" class="form-control" id="ServiceDuree{{ srv.Id }}" name="ServiceDuree" value="{{ srv.Id }}" />
+                    {% endfor %}
+                </div><br/>
+            </div>
+
+
+
+            {#<h2>Les participants</h2>
+            {% if TypeCourt.GestionInvite == 'Quantitatif' %}
+
+            <div class="well" style="overflow:hidden">
+                <div class="row">
+                    <div class="col-xs-7">
+                        <h4>Sélectionnez le nombre de participants total</h4>
+                    </div>
+                    <div class="col-xs-5">
+                        <a class="btn btn-danger pull-right" onclick="onPlus()"><span class="glyphicon glyphicon-plus"></span></a>
+                        <input type="text" class=" pull-right" style="width: 34px;height: 34px;text-align: center;" name="NombreParticipant" id="NombreParticipant" value="[!NombreParticipant!]"/>
+                        <a class="btn btn-danger pull-right" onclick="onMoins()"><span class="glyphicon glyphicon-minus"></span></a>
+                        <script>
+                            function onPlus(){
+                                if ($('#NombreParticipant').val()<100)
+                                    $('#NombreParticipant').val(parseInt($('#NombreParticipant').val())+1);
+                            }
+                            function onMoins(){
+                                if ($('#NombreParticipant').val()>1)
+                                    $('#NombreParticipant').val(parseInt($('#NombreParticipant').val())-1);
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+            {% elseif TypeCourt.GestionInvite == 'Nominatif' %}
+#}{#            //Paiement participant désactivé le 27/09/2017 pour ne plus faire payer que la place de celui qui a reservé
+            //    <div class="form-group group-PaiementParticipant row">
+                //        <label class="col-sm-7 control-label">Paiement des participants
+                    //            <p style="font-weight: normal;">Chaque particpant recevra un email lui permettant de régler sa propre participation.</p>
+                    //        </label>
+                //        <div class="col-sm-5" style="text-align: right;">
+                    //            <input type="checkbox" name="PaiementParticipant" [IF [!PaiementParticipant!]]checked="checked"[/IF] class="switch pull-right" value="1">
+                    //        </div>
+                //    </div>#}{#
+            <h5>Sélectionnez les participants</h5>
+            <div id="Partenaires">
+            </div>
+
+            <div id="regisPart" class="form-group row mode active">
+                <div class="col-xs-12 pitch">
+                    Choisissez parmi les partenaires avec lesquels vous avez déjà joué <a href="#notes">(*)</a>. Si vous souhaitez créer un nouveau partenaire ou completer votre groupe avec un autre membre du Dome du Foot, utilisez les boutons prévus à cet effet.
+                </div>
+                <div class="col-xs-10">
+                    <label class="sr-only" for="SelectPartenaire">Partenaire enregistré</label>
+                    <select class="form-control" name="SelectPartenaire" id="SelectPartenaire" >
+                        <option value="">-- Liste de mes partenaires déjà enregistrés --</option>
+                        {% for P in Partenaires %}
+                        <option value="{{ P.Id }}" data-nom="{{ P.Nom }}" data-prenom="{{ P.Prenom }}" data-details="{{ P.Details }}" data-email="{{ P.Email }}" data-type="partner" {% if SelectPartenaire == P.Id %}selected{% endif %}>{{ P.Nom }} {{ P.Prenom }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-xs-2">
+                    <div class="form-group pull-right">
+                        <a class="btn btn-danger" id="PartenaireAdd"><span class="glyphicon glyphicon-plus"></span></a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="newPart" class="form-group row mode">
+                <div class="col-xs-12 pitch">
+                    Créez un nouveau partenaire <a href="#notes">(*)(**)</a>. Si vous souhaitez completer votre groupe avec un partenaire avec lequel vous avez déjà joué ou un autre membre du Dome du Foot, utilisez les boutons prévus à cet effet.
+                </div>
+                <div class="col-xs-10">
+                    <div class="form-group">
+                        <label class="sr-only" for="partenaireEmail">Email address</label>
+                        <input type="email" class="form-control" id="partenaireEmail" placeholder="Adresse email" name="Temp[Email]" value="" />
+                    </div><br/>
+                    <div class="form-group">
+                        <label class="sr-only" for="partenaireNom">Nom</label>
+                        <input type="text" class="form-control" id="partenaireNom" placeholder="Nom" name="Temp[Nom]" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only" for="partenairePrenom">Prenom</label>
+                        <input type="text" class="form-control" id="partenairePrenom" placeholder="Prenom" name="Temp[Prenom]" value="" />
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                    <div class="form-group pull-right">
+                        <a class="btn btn-danger" id="PartenaireAddNew"><span class="glyphicon glyphicon-plus"></span></a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="otherPart" class="form-group row mode">
+                <div class="col-xs-12 pitch">
+                    Choisissez parmi les membres du dome du foot <a href="#notes">(*)</a>. Si vous souhaitez créer un nouveau partenaire ou completer votre groupe avec un partenaire avec lequel vous avez déjà joué, utilisez les boutons prévus à cet effet.
+                </div>
+                <div class="col-xs-10">
+                    <label class="sr-only" for="SelectPartenaire">Autre membre inscrit</label>
+                    <select class="form-control" name="SelectMember" id="SelectMember" >
+                        <option value="">-- Liste des membres éventuellement disponibles --</option>
+                        {% for P in Dispos %}
+                            <option value="{{ P.Id }}" data-nom="{{ P.Nom }}" data-prenom="{{ P.Prenom }}" data-details="{{ P.Details }}" data-email="{{ P.Email }}" data-type="member" {% if SelectMember == P.Id %}selected{% endif %}>{{ P.Nom }} {{ P.Prenom }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-xs-2">
+                    <div class="form-group pull-right">
+                        <a class="btn btn-danger" id="PartenaireAddMember"><span class="glyphicon glyphicon-plus"></span></a>
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="modeSelect">
+                <a class="btn btn-info modeSelect active" id="regisPartBtn">
+                    Je choisis parmi mes partenaires enregistrés
+                </a>
+                <a class="btn btn-info modeSelect" id="newPartBtn">
+                    Je crée un nouveau partenaire
+                </a>
+                <a class="btn btn-info modeSelect" id="otherPartBtn">
+                    Je choisis parmi les membres disponibles
+                </a>
+            </div>
+            {% endif %}
+            {% if Prods|length >0 %}
+                <h3>Choisissez les services annexes / compléter votre réservation</h3>
+                {% for p in Prods %}
+                    {{ module('Reservations/Service/Mini?S='~p.Id) }}
+                {% endfor %}
+            {% endif %}#}
+            <input type="submit" name="Action" value="Réserver" class="btn btn-success btn-lg btn-block" />
+            <a href="/Reservations/TypeCourt/1" class="RetourPlanning">Retour au planning de réservation</a>
+
+            <div id="notes">
+                <p><span>(*)</span> Veuillez noter que l'ensemble des champs est à compléter.</p>
+
+                {#<p><span>(*)</span> Veuillez noter que le fait de choisir ou de renseigner les champs textes ne suffit pas à ajouter un partenaire à votre réservation. Pour celà, il vous faudra cliquer sur le petit bouton rouge "+" à droite.</p>#}
+                {#<p><span>(**)</span> En cas de création de nouveau partenaire, il vous faudra renseigner au minimum un nom et un prénom. L'adresse Email est fortement recommandée car elle nous permettra d'envoyer un mail à votre partenaire qui pourra alors vous avertir de sa présence (ou non) lors de votre réservation.</p>#}
+            </div>
+        </div>
+    </div>
+</form>
+{#
+<script type="text/javascript">
+    var detached = new Array();
+    //var button ='<a class="btn btn-info modeSelect active" id="regisPartBtn">' +
+    //    '            Je choisi parmi mes partenaires enregistrés' +
+    //    '        </a>';
+
+    function addListener(){
+        $('#modeSelect .btn').on('click',function(e){
+            e.preventDefault();
+            e.stopPropagation();
+
+            //$('#modeSelect .btn').off('click');
+
+            $(this).addClass('active');
+            //$('#modeSelect').append(button);
+            $(this).siblings().removeClass('active');
+            //button = $(this).detach();
+
+            //addListener();
+
+            switch ($(this).attr('id')){
+                case 'newPartBtn':
+                    $('#newPart').addClass('active');
+                    $('#newPart').siblings('.mode').removeClass('active');
+                    break;
+                case 'otherPartBtn':
+                    $('#otherPart').addClass('active');
+                    $('#otherPart').siblings('.mode').removeClass('active');
+                    break;
+                default:
+                    $('#regisPart').addClass('active');
+                    $('#regisPart').siblings('.mode').removeClass('active');
+            }
+        });
+    }
+
+
+    $('#PartenaireAdd').on('click',function () {
+        //récupération du partenaire sélectionné
+
+        var id = $('#SelectPartenaire option:selected').val();
+        if (!id||$('#part-'+id)[0])return;
+        var nom = $('#SelectPartenaire option:selected').attr('data-nom');
+        var prenom = $('#SelectPartenaire option:selected').attr('data-prenom');
+        var details = $('#SelectPartenaire option:selected').attr('data-details');
+        var email = $('#SelectPartenaire option:selected').attr('data-email');
+        addPartenaire(id,nom,email,prenom,details,'partner');
+        detached.push($('#SelectPartenaire option:selected').detach());
+
+    });
+
+    $('#PartenaireAddNew').on('click',function () {
+        //récupération du partenaire sélectionné
+
+        var nom = $('#partenaireNom').val();
+        var prenom = $('#partenairePrenom').val();
+        var email = $('#partenaireEmail').val();
+        $.ajax({
+            url: "/{{ Query }}/newPartner.json",
+            data: {
+                nom:nom,
+                prenom:prenom,
+                email:email
+            },
+            method: 'POST'
+        }).success(function (response) {
+            if(response.success){
+                var opts = $('option[data-nom]');
+                var type = 'new'
+                $.each(opts,function(k,opt){
+                    var d = $(opt).data();
+                    if($(opt).val() == response.data.id && d.email == response.data.email && d.nom == response.data.nom && d.prenom == response.data.prenom ){
+                        type = d.type;
+                        detached.push($(opt).detach());
+                    }
+                });
+                addPartenaire(response.data.id,response.data.nom,response.data.email,response.data.prenom,response.data.details,type);
+                $('#partenaireEmail').val('');
+                $('#partenaireNom').val('');
+                $('#partenairePrenom').val('');
+            }else{
+                var errors ="";
+                $.each(response.data.errors,function(k,v){
+                    errors += '<li>'+v+'</li>';
+                })
+                var html = '<div id="partner_error" class="alert alert-warning"> \
+                            <h4>Impossible d\'ajouter le partenaire:</h4> \
+                            <ul>'+
+                    errors
+                    +' </ul> \
+                        </div>';
+                $('#Partenaires').append(html);
+            }
+
+        }).fail(function (reponse){
+            console.log('erreur ajax',reponse);
+        }).done(function (reponse){
+
+        });
+
+
+
+
+
+    });
+
+    $('#PartenaireAddMember').on('click',function () {
+        //récupération du partenaire sélectionné
+
+        var id = $('#SelectMember option:selected').val();
+        if (!id||$('#part-'+id)[0])return;
+        var nom = $('#SelectMember option:selected').attr('data-nom');
+        var prenom = $('#SelectMember option:selected').attr('data-prenom');
+        var details = $('#SelectMember option:selected').attr('data-details');
+        var email = $('#SelectMember option:selected').attr('data-email');
+        addPartenaire(id,nom,email,prenom,details,'member');
+        detached.push($('#SelectMember option:selected').detach());
+    });
+
+    var partenaire= 0;
+    function addPartenaire(id,nom,email,prenom,details,type) {
+        $('#partner_error').remove();
+
+        var alr = $('#Partenaires .btn-tennis');
+        console.log(alr);
+        for (var i = 0; i < alr.length; i++){
+            var v = alr[i];
+            if ($(v).data('id') == id) {
+                var html = '<div id="partner_error" class="alert alert-warning"> \
+                            <h4>Impossible d\'ajouter le partenaire:</h4> \
+                            <ul>\
+                                <li>Ce partenaire est déjà inscrit</li> \
+                            </ul> \
+                        </div>';
+                $('#Partenaires').append(html);
+                return false;
+            }
+        }
+
+
+        {% if CourtObj.Capacite %}
+            if(partenaire >= {{ CourtObj.Capacite -1 }}) return false;
+            if(partenaire == {{ CourtObj.Capacite -1 }} - 1) $('#PartenaireAjout').hide();
+        {% endif %}
+        if (!nom)nom='';
+        if (!email)email='';
+        if (!prenom)prenom='';
+        if (!details)details='';
+        partenaire++;
+        //console.log('Ajout partenaire',partenaire);
+        $('#Partenaires').append($('<div class="btn-tennis del" data-nom="'+nom+'" data-id="'+id+'" data-details="'+details+'" id="part-'+id+'" onclick="suppPartenaire('+id+',\''+type+'\')">'+
+            '<input type="hidden" name="Partenaire['+partenaire+'][Details]" value="'+details+'" />'+
+            '<input type="hidden" name="Partenaire['+partenaire+'][Id]" value="'+id+'" />'+
+            '<input type="hidden" name="Partenaire['+partenaire+'][Nom]" value="'+nom+'" />'+
+            '<input type="hidden" name="Partenaire['+partenaire+'][Prenom]" value="'+prenom+'" />'+
+            '<input type="hidden" name="Partenaire['+partenaire+'][Email]" value="'+email+'" />'+
+            '<a class="btn btn-danger pull-right"><span class="glyphicon glyphicon-minus"></span></a>'+
+            '<h3>'+nom+' '+prenom+'</h3>'+
+            '<p>'+details+'</p>'+
+            '</div>'));
+    }
+    function suppPartenaire(id,type) {
+        $('#partner_error').remove();
+
+        //console.log('supp partenaire',id);
+        $('#part-'+id).detach();
+        partenaire--;
+        $('#PartenaireAjout').show();
+
+
+        if(type == 'partner'){
+            $.each(detached,function(k,v){
+                if($(v).val()==id) $('#SelectPartenaire').append($(v));
+                return;
+            });
+        }
+        if(type == 'member'){
+            $.each(detached,function(k,v){
+                if($(v).val()==id) $('#SelectMember').append($(v));
+                return;
+            });
+        }
+        if(type == 'new'){
+            var option = ' <option value="'+$(this).data('id')+'" data-nom="'+$(this).data('nom')+'" data-prenom="'+$(this).data('prenom')+'" data-details="'+$(this).data('details')+'" data-email="'+$(this).data('email')+'" data-type="partner">'+$(this).data('nom')+' '+$(this).data('prenom')+'</option>'
+            $('#SelectPartenaire').append(option);
+        }
+    }
+
+    $(
+        function () {
+
+            addListener();
+
+
+            var thisId = {{ CPart.Id }};
+            //Clean des doublons partenaire et membre dispo à la fois
+            var parts = $('option[data-type=partner]');
+            var membs = $('option[data-type=member]');
+            for(var n = 0; n < parts.length; n++){
+                var part = parts[n];
+                for(var m = 0; m < membs.length; m++) {
+                    var memb = membs[m];
+                    if($(part).val() == thisId) {
+                        $(part).remove();
+                    }
+                    if($(part).val() == $(memb).val() || $(memb).val() == thisId ){
+                        $(memb).remove();
+                        membs.splice(m,1);
+                    }
+                }
+            }
+
+
+            var added = new Array();
+            {% if Partenaire %}
+                {% for P in Partenaire %}
+                    addPartenaire('{{ P.Id }}', '[UTIL ADDSLASHES]{{ P.Nom }}[/UTIL]', '[UTIL ADDSLASHES]{{ P.Email }}[/UTIL]', '[UTIL ADDSLASHES]{{ P.Prenom }}[/UTIL]','[UTIL ADDSLASHES]{{ P.Details }}[/UTIL]');
+                    added.push({{ P.Id }});
+                {% endfor %}
+            {% endif %}
+
+                $.each(parts,function(k1,v1){
+                    $.each(added,function(k2,v2){
+                        if($(v1).val() == v2){
+                            detached.push($(v1).detach());
+                            $('.btn-tennis[data-id='+v2+']').data('type','partner');
+                        }
+                    });
+                });
+
+            $.each(membs,function(k1,v1){
+                $.each(added,function(k2,v2){
+                    if($(v1).val() == v2){
+                        detached.push($(v1).detach());
+                        $('.btn-tennis[data-id='+v2+']').data('type','member');
+                    }
+                });
+            });
+        }
+    );
+</script>#}

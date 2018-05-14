@@ -604,6 +604,17 @@ class Reservation extends genericClass {
                 $s->Save();
             }
         }
+        //enregistrement des jourresa.
+        $jourdeb = date('d',$this->DateDebut);
+        $moisdeb = date('m',$this->DateDebut);
+        $anneedeb = date('Y',$this->DateDebut);
+        $c = $this->getOneParent('Court');
+
+        //recherche des journées correspondantes.
+        $jrs = Sys::getData('Reservations', 'Court/' . $c->Id . '/ResaJour/Date=' . mktime(0, 0, 0, $moisdeb, $jourdeb, $anneedeb));
+        foreach ($jrs as $jr) {
+            $this->addParent($jr);
+        }
 
         //enregistrement de la réservation
         return parent::Save();

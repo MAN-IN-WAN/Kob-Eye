@@ -1,0 +1,84 @@
+
+
+{#VERIFICATION#}
+{% if not CHECK%}
+<div class="alert alert-danger">
+    <ul>
+        {% for err in Res.Error %}
+        <li>{{ err.Message }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{% if valider=='Valider la réservation' %}
+<div class="alert alert-success">
+    La réservation a été validée avec succès.
+</div>
+{% endif %}
+
+
+{% if valider=='Payer en carte bleue' %}
+<div class="alert alert-success">
+    La réservation a été validée avec succès.
+</div>
+{% endif %}
+
+<div class="row">
+    <div class="col-md-12">
+        <form action="" method="POST">
+            <h1>Détail de votre réservation</h1>
+<!--            <h3><b>Description: </b>{{ Service.Titre }} pour {{ Court.Titre }}</h3>-->
+            <h3>{{ Service.Titre }} pour {{ Court.Titre }}</h3>
+            <h3><b>Date: </b>le {{ RES.DateDebut|date('d/m/Y à H:i') }}</h3>
+            {% if TypeCourt.GestionInvite != 'Aucun' %}
+                <h3><b>Nombre de participant(s) total(s):</b>[!R::NbParticipant!]</h3>
+            {% endif %}
+
+
+            {% if Partenaires %}
+            <h3><b>Partenaire(s) adhérent(s):</b>
+                <ul>
+                    {% for Pa in Partenaires %}
+                    <li>{{ Pa.Nom }} <span class="label label-primary" >{{ Pa.Email }}</span></li>
+                    {% endfor %}
+                </ul></h3>
+            {% endif %}
+
+            {% if Total > 0 %}
+            <h3><b>Total :</b>
+            {% for Lf in LigneFacture %}
+            <div class="alert alert-info">{{ Lf.Libelle }} (x{{ Lf.Quantite }})  <span class="label label-primary pull-right" >{{ Lf.MontantTTC  | number_format(2, '.') }} €</span></div>
+            {% endfor %}
+
+            <h3><b>Total à payer:</b><span class="label label-success" >{{ Total  | number_format(2, '.') }} €</span></h3>
+            {% endif %}
+
+            {% if CHECK and not RES.Valide and not RES.Attente %}
+                {% if Total > 0 %}
+                    {% if RES.PaiementPaticipant %}
+                        <p class="pitch">Attention : la somme indiquée par la suite n'est là qu'a titre indicatif. Les paiements de vos partenaires en seront déduits. Le montant restant sera débité une demi-heure avant le début de la réservation.</p>
+                    {% endif %}
+
+                    <input type="submit" class="btn btn-success btn-large btn-block" name="Valider" value="Payer en carte bleue" />
+                {% else %}
+                    <input type="submit" class="btn btn-success btn-large btn-block" name="Valider" value="Valider la réservation">
+                {% endif %}
+            {% endif %}
+            {% if CHECK and RES.Attente and not RES.Valide %}
+                <div class="alert alert-success">
+                    Cette réservation est à présent en attente de validation par notre équipe.
+                </div>
+            {% endif %}
+            {% if CHECK and RES.Valide %}
+                <div class="alert alert-success">
+                    Cette réservation est validée.
+                </div>
+            {% endif %}
+
+
+            <br />
+            <a href="/" class="btn btn-danger btn-large btn-block">Retour à l'accueil</a>
+        </form>
+    </div>
+</div>

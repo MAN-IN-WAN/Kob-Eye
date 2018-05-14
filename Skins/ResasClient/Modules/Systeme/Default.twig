@@ -1,0 +1,11 @@
+<div class="alert alert-warning">
+    Bienvenue sur l'espace client d'Amberieu-en-Bugey  <br />
+</div>
+
+{% if not missingType %}
+<a href="/{{ url }}" class="btn-tennis">Prise de rendez-vous</a>
+{% else %}
+    <div class="error">
+        Nous sommes désolés mais il n'est actuellement pas possible de prendre rendez-vous. Veuillez re-essayer plus tard.
+    </div>
+{% endif %}
