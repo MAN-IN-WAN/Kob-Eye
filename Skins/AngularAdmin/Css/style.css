@@ -601,3 +601,13 @@ Choix des composants
 .panel-filter .form-group {
     margin-bottom:2px;
 }
+
+
+
+/* Color preview */
+.colorBlock{
+    width: 70px;
+    height: 30px;
+    display: inline-block;
+    border: 1px solid #777;
+}

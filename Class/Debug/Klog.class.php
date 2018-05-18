@@ -222,6 +222,13 @@ class Klog extends Root
 		if(!$text)                       #No Text, no Output (useful for ErrorMsgs)
 		return false;
 
+        if(defined('LOG_DEVICES')&& !LOG_DEVICES){
+            if(strpos($_SERVER['REQUEST_URI'] , '/Parc/Device') === 0) return false;
+        }
+        if(defined('LOG_POLLS')&& !LOG_POLLS){
+            if($_SERVER['REQUEST_URI'] == '/Systeme/Utils/pollAll.json') return false;
+        }
+
 		//On analyse la variable en entree
 		if ($var!="") $text .= "\r\n".$this->varToStr($var);
 

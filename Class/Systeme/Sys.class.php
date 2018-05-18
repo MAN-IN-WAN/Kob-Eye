@@ -102,19 +102,7 @@ class Sys extends Root{
 	***********************************/
 
 	function Connect() {
-		if (isset($_GET["ACTION"])&&$_GET["ACTION"]=="UPDATE"){
-			//$this->connectSQL();
-			//$this->connectSQLITE();
-			//Intialisation des modules
-			$this->initModules();
-			//Intialisation des langages
-			$this->initLanguages();
-			foreach (Sys::$Modules as $K=>$M){
-				$M->loadSchema();
-				$M->Check();
-			}
-			die('UPDATE OK');
-		}
+
 		//Intialisation des langages
   		$this->initLanguages();
 		//Intialisation des modules
@@ -123,6 +111,16 @@ class Sys extends Root{
 		$GLOBALS["Chrono"]->start("Connexion");
   		$this->Connection =new Connection();
 		$GLOBALS["Chrono"]->stop("Connexion");
+
+		//Petit coommentaire sympa
+        if (isset($_GET["ACTION"])&&$_GET["ACTION"]=="UPDATE" && Sys::$User->Admin){
+            foreach (Sys::$Modules as $K=>$M){
+                $M->loadSchema();
+                $M->Check();
+            }
+            die('UPDATE OK');
+        }
+
   		$this->registerVar("DefaultUser",MAIN_USER_NUM);
   		if (isset(Sys::$User->Skin)) Sys::$Skin=Sys::$User->Skin;
   		if (isset(Sys::$User->Menus)) $this->Menus=Sys::$User->Menus;

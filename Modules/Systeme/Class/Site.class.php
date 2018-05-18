@@ -5,8 +5,8 @@ class Site extends genericClass {
     var $currentUrl;
 
 
-    public function Save(){
-        //parent::Save();
+    public function Save($lite = false){
+        if($lite) return parent::Save();
 
         $user = $this->getOneParent('User');
         if(!$user){
@@ -31,7 +31,7 @@ class Site extends genericClass {
             $user->Save();
         }
 
-        parent::Save();
+        return parent::Save();
     }
 
 

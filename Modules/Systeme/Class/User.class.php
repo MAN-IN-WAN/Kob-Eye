@@ -21,6 +21,7 @@ class User extends genericClass{
      * @return bool
      */
     function hasRole($role){
+        if($this->Admin) return true;
 	    $roles = explode(',',$role);
         $USR_ROLES = $this->getRoles();
 
@@ -33,6 +34,7 @@ class User extends genericClass{
         return false;
     }
 	function isRole($role){
+        if($this->Admin) return true;
 		//Detection de la nature du pere (ne fonctionne que pour le niveau deux)
 		$ROLES = $this->getRoles();
 		$GLOBALS["Systeme"]->Log->log("ROLES",$ROLES);
@@ -109,7 +111,11 @@ class User extends genericClass{
 		//Initilisation des menus
 		$R = Connection::recursivMenu($Menus);
 		$this->Menus = $R;
-		
+
+
+		if($this->Admin) return true;
+
+
 		//Recherche des acces de l'utilisateur
 		$Acces = Array();
 		$Mt = Sys::$Modules["Systeme"]->callData("Systeme/User/".$this->Id."/Access");

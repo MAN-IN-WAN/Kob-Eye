@@ -42,13 +42,14 @@ class Subdomain extends genericClass {
 	 */
 	public function Verify( $synchro = true ) {
         $this->Url = Subdomain::checkName($this->Url);
+
         $pa = $this->getOneParent('Domain');
         if ($pa) {
             $cnames = $pa->getChildren('CNAME');
             $pref = explode(':', $this->Url)[1];
 
             //check name
-            if ($pref != Subdomain::checkName($pref)) {
+            if ($pref != substr(Subdomain::checkName($pref),2)) {
                 $this->addError(array('Message' => "Un sous domaine ne doit pas contenir de caractères spéciaux.", 'Prop' => 'Url'));
                 $this->_isVerified = false;
                 return false;
@@ -253,6 +254,9 @@ class Subdomain extends genericClass {
 		return $res['exists'];
 	}
     static function checkName($chaine) {
+        $pre = substr($chaine, 0, 2);
+        if($pre == 'A:') $chaine = substr($chaine,2);
+
         $chaine=utf8_decode($chaine);
         $chaine=stripslashes($chaine);
         $chaine = preg_replace('`\s+`', '-', trim($chaine));
@@ -267,6 +271,9 @@ class Subdomain extends genericClass {
         $chaine = preg_replace('`[-]+`', '-', trim($chaine));
         $chaine =  utf8_encode($chaine);
         $chaine = preg_replace('`[\/]`', '-', trim($chaine));
+
+        $chaine = 'A:' . $chaine;
+
         return $chaine;
     }
 

@@ -2,7 +2,7 @@
 [OBJ Systeme|Site|S]
 
 [!Sitos:=[!S::getCurrentSite()!]!]
-[!Instance:=[!Sitos::getOneChild(Instance)!]!]
+[!Instance:=[!Sitos::getOneChild(MiniSite)!]!]
 
 
 <div class="banner">
@@ -27,7 +27,9 @@
                 <ul class="navigation-menu">
                     <li class="navigation-item"><a href="#home">Accueil</a></li>
                     <li class="navigation-item"><a href="#about">A propos</a></li>
+                    [IF [!Instance::Adresse!]]
                     <li class="navigation-item"><a href="#maps">Rencontrez-nous</a></li>
+                    [/IF]
                     <li class="navigation-item"><a href="#contact">Contactez-nous</a></li>
                 </ul>
             </div>
@@ -74,11 +76,11 @@
     </div>
 </div>
 
-
+[IF [!Instance::Adresse!]]
 <div id="maps" class="animate-block content-block map-block" style="overflow:hidden;">
-    <iframe height="400" width="100%" style="border:0"  src="https://www.google.com/maps/embed/v1/place?q=[!Utils::UrlEncode([!Instance::Adresse!])!]&key=..." allowfullscreen style="width: 100%;"></iframe>
+    <iframe height="400" width="100%" style="border:0"  src="https://www.google.com/maps/embed/v1/place?q=[!Utils::UrlEncode([!Instance::Adresse!])!]&key=AIzaSyA8WzSVq6D0wZFAsNwdsqSExgHlNO3_S68" allowfullscreen style="width: 100%;"></iframe>
 </div>
-
+[/IF]
 
 <div id="contact" class="animate-block content-block contact-block">
     <div class="contact-block-inner container">
@@ -89,12 +91,14 @@
                     Merci de l'intéret que vous portez à notre société. Si vous avez des questions, besoins d'informations ou encore faire une demande de rappel, n'hésitez pas à utiliser le formulaire de contact suivant.
                 </p>
                 <ul class="contact-list">
+                    [IF [!Instance::Adresse!]]
                     <li>
                         <p class="contact-infos">
                             <span class="icon contact-icon contact-icon-location" style="color: [!Instance::Couleur1!];"></span>
                             [!Instance::Adresse!]
                         </p>
                     </li>
+                    [/IF]
                     [IF [!Instance::Telephone!]]
                     <li>
                         <p class="contact-infos">
@@ -113,10 +117,10 @@
             </div>
             <div class="contact-block-form col-6-tablet">
                 <h2 class="h2" style="color: [!Instance::Couleur1!];">Contact</h2>
-                <p>
-                    Veuillez saisir votre message dans le formulaire ci-dessous
-                </p>
                 <form class="contact-form" id="contact-form">
+                    <p>
+                        Veuillez saisir votre message dans le formulaire ci-dessous
+                    </p>
                     <fieldset>
                         <legend class="sr">Contactez-nous</legend>
                         <div class="field-group">
@@ -135,14 +139,36 @@
                             <label for="message" class="sr">Message</label>
                             <textarea placeholder="Message" class="field" name="message" id="message" cols="30" rows="7"></textarea>
                         </div>
+                        <div id="captchaContact">
+                            <div class="control-group last [IF [!C_Calc_Error!]]error[/IF]">
+                                <label class="control-label labelcontact" for="tot2">Merci de résoudre l'opération suivante avant de valider <span class="Obligatoire">*</span></label>
+                                <div class="controls form-inline">
+                                    <input type="text" name="n3" id="n3" value="[!Utils::Random(9)!]" maxlength="2" readonly="readonly" class="field"/>
+                                    <span class="symb">+</span>
+                                    <input type="text" name="n4" id="n4" value="[!Utils::Random(9)!]" maxlength="2" readonly="readonly" class="field"/>
+                                    <span class="symb">=</span>
+                                    <input type="text" name="tot2" id="tot2" value=""  maxlength="2"  class="field" required/>
+                                </div>
+                            </div>
+                        </div>
                         <div class="text-right">
                             <input type="submit" class="button button-primary contact-submit" value="Envoyer" style="background-color: [!Instance::Couleur1!];">
                         </div>
                     </fieldset>
+
                 </form>
                 <script>
                     $('#contact-form').submit(function (e) {
                         e.preventDefault();
+
+                        if( parseInt($('#tot2').val()) !=  parseInt($('#n3').val())+parseInt($('#n4').val())){
+                            $('#tot2').addClass('Error');
+                            return false;
+                        } else{
+                            $('#tot2').removeClass('Error');
+                        }
+
+
                         $.ajax({
                             url: '/Systeme/User/sendContact.htm',
                             data: {

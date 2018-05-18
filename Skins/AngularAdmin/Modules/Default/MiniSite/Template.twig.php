@@ -14,3 +14,5 @@ $inss = Sys::getCount('Parc', 'Client/'.$cli->Id.'/Instance');
 
 
 if($doms && $doms>$inss) $vars['canCreate']  = true;
+
+$vars['identifier'] = 'ParcMiniSite';
