@@ -1108,7 +1108,7 @@ class Sys extends Root{
 	 static function getData($Module, $Query, $Ofst='', $Limit='', $OrderType='', $OrderVar='', $Selection='', $GroupBy='', $NoRights = false ){
 	 	if (!isset(Sys::$Modules[$Module])) return array();
 	 	$obj = explode('/',$Query,2);
-	 	$RestQuery = $obj[1];
+	 	$RestQuery = isset($obj[1]) ? $obj[1] : '';
 	 	$obj = $obj[0];
 	 	//on vérfiie la surchagre de getData
 		 if (method_exists($obj, "getData")){

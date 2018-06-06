@@ -5,7 +5,7 @@
 [!Instance:=[!Sitos::getOneChild(MiniSite)!]!]
 
 
-<div class="banner">
+<div class="banner" style="border-color:[IF [!Instance::Couleur2!]][!Instance::Couleur2!][ELSE][!Instance::Couleur1!][/IF]; [IF [!Instance::Image!]]background-image:url([!Instance::Image!]);[/IF]">
     <div class="header">
         <div class="header-inner container clear">
             [IF [!Instance::Logo!]]
@@ -40,6 +40,13 @@
             <h1 class="banner-lead">
                 [!Instance::Titre!]
             </h1>
+            [IF [!Instance::Slogan!]]
+            <div class="col-10-desktop no-float center-element">
+                <h3 class="slogan" style="color:[IF [!Instance::Couleur2!]][!Instance::Couleur2!][ELSE][!Instance::Couleur1!][/IF]">
+                    [!Instance::Slogan!]
+                </h3>
+            </div>
+            [/IF]
             <div class="banner-buttons">
                 <a href="#about" class="button button-primary" style="background-color: [!Instance::Couleur1!];">En savoir plus</a>
             </div>
@@ -60,13 +67,6 @@
     <div class="about-block-inner container">
         <div class="animate-block content-block-inner text-center">
             <h2>A propos</h2>
-            [IF [!Instance::Slogan!]]
-            <div class="col-10-desktop no-float center-element">
-                <p>
-                    [!Instance::Slogan!]
-                </p>
-            </div>
-            [/IF]
         </div>
         <div class="animate-block about-content clear">
             <div class="what-we-do-block col-12-tablet">
@@ -82,7 +82,7 @@
 </div>
 [/IF]
 
-<div id="contact" class="animate-block content-block contact-block">
+<div id="contact" class="animate-block content-block contact-block" style="border-color:[IF [!Instance::Couleur2!]][!Instance::Couleur2!][ELSE][!Instance::Couleur1!][/IF]; [IF [!Instance::Image!]]background-image:url([!Instance::Image!]);[/IF]">
     <div class="contact-block-inner container">
         <div class="clear">
             <div class="contact-block-content col-6-tablet">
@@ -102,8 +102,8 @@
                     [IF [!Instance::Telephone!]]
                     <li>
                         <p class="contact-infos">
-                            <span class="icon contact-icon contact-icon-phone" style="color: [!Instance::Couleur1!];"></span>
-                            [!Instance::Telephone!]
+                            <span class="icon contact-icon contact-icon-phone" style="color: [IF [!Instance::Couleur2!]][!Instance::Couleur2!][ELSE][!Instance::Couleur1!][/IF];"></span>
+                            <a href="tel:[!Instance::Telephone!]" alt="Tel : [!Instance::Telephone!]" title="Tel : [!Instance::Telephone!]" >[!Instance::Telephone!]</a>
                         </p>
                     </li>
                     [/IF]
@@ -196,7 +196,7 @@
         <div class="clear">
             <div class="footer-column col-8-tablet">
                 <p>
-                    &copy; Copyright [DATE Y][!TMS::Now!][/DATE] &mdash; Abtel. All Rights Reserved
+                    &copy; Copyright [DATE Y][!TMS::Now!][/DATE] &mdash; <a href="https://www.abtel.fr">Abtel. All Rights Reserved</a>
                 </p>
             </div>
             <div class="footer-column col-4-tablet">
@@ -211,6 +211,26 @@
             </div>
         </div>
     </div>
+</div>
+
+[IF [!Instance::Adresse!]||[!Instance::Telephone!]]
+<div id="floatingLinks" style="border-color:[!Instance::Couleur1!]">
+    [IF [!Instance::Adresse!]]
+    <p>
+        <a href="https://maps.google.com/?daddr=[!Utils::UrlEncode([!Instance::Adresse!])!]&views=transit"  title="Venir chez nous!" target="_blank"><span class="icon contact-icon contact-icon-location" style="color: [IF [!Instance::Couleur2!]][!Instance::Couleur2!][ELSE][!Instance::Couleur1!][/IF];"></span></a>
+    </p>
+    [/IF]
+
+    [IF [!Instance::Telephone!]]
+    <p>
+        <a href="tel:[!Instance::Telephone!]" title="Tel : [!Instance::Telephone!]"><span class="icon contact-icon contact-icon-phone" style="color: [IF [!Instance::Couleur2!]][!Instance::Couleur2!][ELSE][!Instance::Couleur1!][/IF];"></span></a>
+    </p>
+    [/IF]
+</div>
+[/IF]
+
+<div id="goToTop" style="border-color:[!Instance::Couleur1!]">
+        <a href="#top" title="Retour au haut de la page" style="color:[IF [!Instance::Couleur2!]][!Instance::Couleur2!][ELSE][!Instance::Couleur1!][/IF];">^</a>
 </div>
 
 <script src="/Skins/[!Systeme::Skin!]/js/vendor/wow.js"></script>

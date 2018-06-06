@@ -13,18 +13,18 @@ class Menu extends genericClass {
 		//génération des pages associées (sitemap + recherche)
 		//------------------------------------------------------
 		$sites = $this->getSites();
-		if (!empty($this->Alias))
-			$pages = Array();//$this->getSubPagesFromQuery($this->FullUrl,$this->Alias);
-		else $pages = Array();
+//		if (!empty($this->Alias))
+//			$pages = Array();//$this->getSubPagesFromQuery($this->FullUrl,$this->Alias);
+//		else $pages = Array();
 		//Pour chaque site on ajoute la page correpondante
 		foreach ($sites as $s){
-		     if ($this->Affiche){
-			$s->addPage($this->FullUrl,$this->Alias,$this);
-			foreach ($pages as $k=>$p) $s->addPage($k,$p->Module.'/'.$p->ObjectType.'/'.$p->Id,null,$p->FromUrl);
-		     }else {
-			foreach ($pages as $k=>$p)
-			    $s->delPage($k);
-		     }
+            if ($this->Affiche){
+                $s->addPage($this->FullUrl,$this->Alias,$this);
+//                foreach ($pages as $k=>$p) $s->addPage($k,$p->Module.'/'.$p->ObjectType.'/'.$p->Id,null,$p->FromUrl);
+            }else {
+//			    foreach ($pages as $k=>$p)
+//			    $s->delPage($k);
+            }
 		}
 		parent::Save();
 		 //enregistrement des metas pour les menus

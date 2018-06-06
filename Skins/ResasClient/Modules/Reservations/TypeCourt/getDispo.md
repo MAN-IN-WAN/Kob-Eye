@@ -7,7 +7,7 @@
     "success": true,
     //"query": "[!Query!]/Court/*/Reservation/DateDebut>[!DateDeb!]&DateFin<[!DateFin!]",
     "data": [
-        [STORPROC [!Query!]/Court/*/Reservation/DateDebut>[!DateDeb!]&DateFin<[!DateFin!]&Valide=1|R|0|1000|Id|DESC||Id]
+        [STORPROC [!Query!]/Court/*/Reservation/DateDebut>[!DateDeb!]&DateFin<[!DateFin!]&(!Valide=1+Attente=1!)|R|0|1000|Id|DESC||Id]
         [!Flag:=1!]
         [IF [!Pos!]>1],[/IF]{
             "Id":[!R::Id!],
@@ -17,7 +17,8 @@
             "MinuteDebut": "[DATE i][!R::DateDebut!][/DATE]",
             "MinuteFin": "[DATE i][!R::DateFin!][/DATE]",
             "Service": "[!R::Service!]",
-            "Dispo": "0"
+            "Dispo": "0",
+            "Attente": [!R::Attente!]
         }
         [/STORPROC]
         [OBJ Reservations|Disponibilite|D]

@@ -183,6 +183,11 @@
                     <a class="nav-link {% if loop.first %}active{% endif %}" href="javascript: void(0);" data-toggle="tab" data-target="#tab{{ child.objectName }}" role="tab"><b>{{ child.objectDescription }}</b> ({[{ {{ child.objectModule }}{{ child.objectName }}.store.total.children }]})</a>
                 </li>
             {% endfor %}
+            {% if browseable %}
+                <li class="nav-item">
+                    <a class="nav-link {% if not ChildrenElements|length %}active{% endif %}" href="javascript: void(0);" data-toggle="tab" data-target="#tabPagesSite" role="tab"><b>Pages correspondantes</b> {# ({[{ {{ child.objectModule }}{{ child.objectName }}.store.total.children }]}) #}</a>
+                </li>
+            {% endif %}
         </ul>
         <div class="tab-content">
             {% for child in ChildrenElements %}
@@ -199,6 +204,16 @@
                     {% endif %}
                 </div>
             {% endfor %}
+            {% if browseable %}
+                <div class="tab-pane {% if not ChildrenElements|length %}active{% endif %}" id="tabPagesSite" role="tabpanel">
+                    <section class="panel">
+                        <div class="panel-body">
+                            {{ include(template_from_string(module('Systeme/Utils/List/PageList?headless=1&CurrentObj='~ CurrentObjQuery))) }}
+                        </div>
+                    </section>
+                    <!-- End Default Panel -->
+                </div>
+            {% endif %}
         </div>
     </div>
 
@@ -280,7 +295,7 @@
                     </ul>
                 </div>
                 <div  ng-if="modalObj.success == false">
-                    {{ include(template_from_string(module('Systeme/Utils/Form?Path=[!Query!]'))) }}
+                    {{ include(template_from_string(module('Systeme/Utils/Form?Path='~CurrentObjQuery))) }}
                 </div>
             </div>
             <div class="modal-footer">

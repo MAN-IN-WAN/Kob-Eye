@@ -611,3 +611,43 @@ Choix des composants
     display: inline-block;
     border: 1px solid #777;
 }
+
+
+/* Field Help */
+.help-wrapper{
+    position: relative;
+    color: #5e9dbc;
+}
+.help-wrapper .fieldHelp{
+    width: 0;
+    height: 0;
+    display: inline-block;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 20px;
+    background-color: #fff;
+    color: #000;
+}
+.help-wrapper:hover .fieldHelp,
+.help-wrapper.active .fieldHelp{
+    height: auto;
+    text-align: center;
+    font-size: 1.4em;
+    width: 600px;
+    max-height: 600px;
+    border: 1px dotted #27a725;
+    padding: 15px;
+    z-index: 600;
+}
+
+
+/* Char count sur les metas */
+.charCount{
+    text-align: right;
+    font-size: 0.8em;
+}
+.charCount span {
+    color: #0a6aa1;
+    font-weight: 600;
+}

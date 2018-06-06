@@ -342,19 +342,19 @@ class ObjectClass extends Root{
 			//TitleMeta
 			$this->addCategory(Array("title"=>"Référencement","fold"=>'1'),Array("type"=>"property","title"=>"TitleMeta"));
 			$o[] = Array("type"=>"property","name"=>"TitleMeta");
-			$this->Proprietes['TitleMeta'] = Array('type'=>'metat','special'=>'multi','description'=>'META: Titre de la page (réseaux sociaux également)', "form"=>1,"fiche"=>1, "auto"=>1, "large"=>"1", "fullTitle"=>"1");
+			$this->Proprietes['TitleMeta'] = Array('type'=>'metat','special'=>'multi','description'=>'META: Titre de la page (réseaux sociaux également)', "form"=>1, "auto"=>1, "large"=>"1", "fullTitle"=>"1");
 			//DescriptionMeta
 			$this->addCategory(Array("title"=>"Référencement"),Array("type"=>"property","title"=>"DescriptionMeta", "form"=>1,"fiche"=>1, "auto"=>1));
 			$o[] = Array("type"=>"property","name"=>"DescriptionMeta");
-			$this->Proprietes['DescriptionMeta'] = Array('type'=>'metad','special'=>'multi','description'=>'META: Description de la page (réseaux sociaux également)', "form"=>1,"fiche"=>1, "auto"=>1, "large"=>"1", "fullTitle"=>"1");
+			$this->Proprietes['DescriptionMeta'] = Array('type'=>'metad','special'=>'multi','description'=>'META: Description de la page (réseaux sociaux également)', "form"=>1, "auto"=>1, "large"=>"1", "fullTitle"=>"1");
 			//KeywordsMeta
 			$this->addCategory(Array("title"=>"Référencement"),Array("type"=>"property","title"=>"KeywordsMeta"));
 			$o[] = Array("type"=>"property","name"=>"KeywordsMeta");
-			$this->Proprietes['KeywordsMeta'] = Array('type'=>'metak','special'=>'multi','description'=>'META: Mots clefs de la page (réseaux sociaux également)', "form"=>1,"fiche"=>1, "auto"=>1, "large"=>"1", "fullTitle"=>"1");
+			$this->Proprietes['KeywordsMeta'] = Array('type'=>'metak','special'=>'multi','description'=>'META: Mots clefs de la page (réseaux sociaux également)', "form"=>1, "auto"=>1, "large"=>"1", "fullTitle"=>"1");
 			//ImgMeta
 			$this->addCategory(Array("title"=>"Référencement"),Array("type"=>"property","title"=>"ImgMeta"));
 			$o[] = Array("type"=>"property","name"=>"ImgMeta");
-			$this->Proprietes['ImgMeta'] = Array('type'=>'image','description'=>'META: Image de la page pour les réseaux sociaux', "form"=>1,"fiche"=>1, "auto"=>1, "large"=>"1", "fullTitle"=>"1");
+			$this->Proprietes['ImgMeta'] = Array('type'=>'image','description'=>'META: Image de la page pour les réseaux sociaux', "form"=>1, "auto"=>1, "large"=>"1", "fullTitle"=>"1");
 			//Displayed
 			$this->addCategory(Array("title"=>"Configuration"),Array("type"=>"property","title"=>"Display"));
 			$o[] = Array("type"=>"property","name"=>"Display");

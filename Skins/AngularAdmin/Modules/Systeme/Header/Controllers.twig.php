@@ -115,6 +115,11 @@ foreach (Sys::$User->Menus as $m){
             }
         }
     }
+    if($obj){
+        $vars["controllers"][$tmp['identifier']]['browseable'] = $obj->browseable;
+    }else{
+        $vars["controllers"][$tmp['identifier']]['browseable'] = false;
+    }
 }
 if (Sys::$User->Admin) {
     foreach ($modules as $mod) {
@@ -135,5 +140,8 @@ if (Sys::$User->Admin) {
         }
     }
 }
+
+
+
 
 ?>

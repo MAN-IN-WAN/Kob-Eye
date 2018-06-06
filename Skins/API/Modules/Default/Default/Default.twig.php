@@ -33,7 +33,6 @@ switch ($method){
         $data = json_decode($request['params'],true);
         break;
 }
-
 switch($info['TypeSearch']){
     case 'Interface':
         switch($method){
@@ -174,10 +173,14 @@ switch($info['TypeSearch']){
     case 'Direct':
         //Verif de la validité des datas envoyés
         $generic = genericClass::createInstance($info['Module'],$info['ObjectType']);
-        $props = $generic->getProperties();
+        $props = $generic->getElementsByAttribute('','',true);
         array_walk($props,function (&$i){
             $i=$i['name'];
-        });        $offset = '';
+        });
+
+
+
+        $offset = '';
         if(isset($data['offset'])){
             $offset = $data['offset'];
             unset($data['offset']);
@@ -298,7 +301,6 @@ switch($info['TypeSearch']){
                     die();
                 }
                 $parent = false;
-                $item = $generic;
                 $tempLegacy = explode('/',$info['LastDirect'],2);
                 if(isset($tempLegacy[1]) && $tempLegacy[1] != ''){
                     $parent = Sys::getOneData($tempLegacy[0],$tempLegacy[1]);
@@ -306,6 +308,7 @@ switch($info['TypeSearch']){
                 }
                 foreach ($info['typesParent'] as $tp){
                     if(isset($newProps[$tp['Nom']])){
+                        $item->resetParents($tp['Titre']);
                         if(!is_array($newProps[$tp['Nom']]))
                             $newProps[$tp['Nom']] = array($newProps[$tp['Nom']]);
 
@@ -317,7 +320,6 @@ switch($info['TypeSearch']){
                         }
                     }
                 }
-                $item->Set('Id',$info['LastId']);
                 foreach($newProps as $k=>$n){
                     $item->Set($k,$n);
                 }
