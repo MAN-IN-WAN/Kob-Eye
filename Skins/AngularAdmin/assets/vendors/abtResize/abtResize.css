@@ -29,12 +29,11 @@
 }
 
 .rg-right span, .rg-left span {
-    border-width: 0 1px;
+    border-width: 0 2px;
     top: 50%;
-    margin-top: -10px;
     margin: -10px 0 0 3.5px;
     height: 20px;
-    width: 7px;
+    width: 15px;
 }
 
 .rg-top span, .rg-bottom span {
@@ -58,7 +57,7 @@
     height: 100%;
     right: 0;
     top: 0;
-    margin-right: -14px;
+    margin-right: -4px;
 }
 
 .rg-bottom {

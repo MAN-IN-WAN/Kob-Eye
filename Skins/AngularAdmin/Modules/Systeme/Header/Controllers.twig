@@ -185,8 +185,10 @@
             var opts = $scope.{{ c.identifier }}.filters;
             for ( var o in opts ) {
                 $scope.{{ c.identifier }}.filters[o].value = '';
-                delete $scope.{{ c.identifier }}.filters[o];
+                delete $scope.{{ c.identifier }}.filters[o].value;
+                delete $scope.{{ c.identifier }}.filters[o].operator;
             }
+             $scope.{{ c.identifier }}.filterQuery = '~';
             $scope.{{ c.identifier }}.filter='';
             {{ c.identifier }}Store.resetFilters('default');
             {{ c.identifier }}Store.getData(1,'default');
@@ -201,6 +203,7 @@
             var opts = $scope.{{ c.identifier }}.filters,
                 query = "";
             for ( var o in opts ) {
+                if(opts[o].value == undefined) continue;
                 if (query.length) query+='&';
                 var value = opts[o].value;
                 switch (value){
@@ -211,8 +214,10 @@
                         value = 0;
                         break;
                 }
-
-                query+=o+((opts[o].operator==undefined)?'=':opts[o].operator)+value;
+                if(opts[o].operator==undefined || opts[o].operator=='=' || opts[o].operator=='~' ){
+                    opts[o].operator=(opts[o].strict===false)?'~':'=';
+                }
+                query+=o+opts[o].operator+value;
             }
             $scope.{{ c.identifier }}.filterQuery = '~'+$scope.{{ c.identifier }}.filter+'&'+query;
             console.log('controller >> list {{ c.identifier }} >> applyFilter ',query);
@@ -545,6 +550,91 @@
                         {{ child.objectModule }}{{ child.objectName }}Store.setPage($scope.{{ child.objectModule }}{{ child.objectName }}Select.currentPage,'select');
                     }
                 });
+
+
+                //FORMULAIRE LINK
+                $scope.{{ child.objectModule }}{{ child.objectName }}Link = {
+                    data : {{ child.objectModule }}{{ child.objectName }}Store.data.link,
+                    store: {{ child.objectModule }}{{ child.objectName }}Store,
+                    filter: '',
+                    pageLength: {{ child.objectModule }}{{ child.objectName }}Store.getPageLength(),
+                    currentPage: {{ child.objectModule }}{{ child.objectName }}Store.currentPage.select,
+                    itemsPerPage: {{ child.objectModule }}{{ child.objectName }}Store.itemsPerPage,
+                    selected: {
+                        //selectall: false
+                    }
+                }
+                //RECHERCHE LINK
+                var lasttimeoutLink{{ child.objectModule }}{{ child.objectName }} = false;
+                $scope.$watch('{{ child.objectModule }}{{ child.objectName }}Link.filter', function() {
+                    //on lance la recherche depuis le store
+                    if ($scope.{{ child.objectModule }}{{ child.objectName }}Link.filter!={{ child.objectModule }}{{ child.objectName }}Store.getFilters('link',true).global){
+                        {{ child.objectModule }}{{ child.objectName }}Store.setFilters($scope.{{ child.objectModule }}{{ child.objectName }}Select.filter,'link');
+                        if (lasttimeoutLink{{ child.objectModule }}{{ child.objectName }}){
+                            $timeout.cancel(lasttimeoutLink{{ child.objectModule }}{{ child.objectName }});
+                            lasttimeoutLink{{ child.objectModule }}{{ child.objectName }} = false;
+                        }
+                        lasttimeoutLink{{ child.objectModule }}{{ child.objectName }} = $timeout(function () {
+                            {{ child.objectModule }}{{ child.objectName }}Store.getData(1,'link');
+                        },200);
+                    }
+                });
+                //PAGINATION LINK
+                $scope.$watch('{{ child.objectModule }}{{ child.objectName }}Link.currentPage', function() {
+                    if ($scope.{{ child.objectModule }}{{ child.objectName }}Link.currentPage!={{ child.objectModule }}{{ child.objectName }}Store.getCurrentPage('link')){
+                        console.log('link > {{ child.objectModule }}{{ child.objectName }} > changeCurrentPage > '+$scope.{{ child.objectModule }}{{ child.objectName }}Link.currentPage+' <> '+{{ child.objectModule }}{{ child.objectName }}Store.getCurrentPage('link'));
+                        {{ child.objectModule }}{{ child.objectName }}Store.setPage($scope.{{ child.objectModule }}{{ child.objectName }}Link.currentPage,'link');
+                    }
+                });
+
+                $scope.{{ child.objectModule }}{{ child.objectName }}linkSave = function (){
+                    console.log('link save','{{ child.objectModule }}{{ child.objectName }}');
+                    var list = new Array();
+                    for(var n in  $scope.{{ child.objectModule }}{{ child.objectName }}Link.selected){
+                        if(!$scope.{{ child.objectModule }}{{ child.objectName }}Link.selected.hasOwnProperty(n)) continue;
+                        if($scope.{{ child.objectModule }}{{ child.objectName }}Link.selected[n] === true) list.push(n);
+                    }
+                    console.log(list);
+
+                    var data = { Module:'{{ c.module }}',ObjectName:'{{ c.objecttype }}',Id:$scope.obj.id,list:list }
+
+                    $http.post('/{{ child.objectModule }}/{{ child.objectName }}/SaveLink.json',data)
+                    .success(function(data) {
+                        console.log('store > {{ child.objectModule }} {{ child.objectName }} > saveLink ', data);
+                        $scope.link.success = data.success;
+                        $scope.link.message = data.message;
+                        $scope.{{ child.objectModule }}{{ child.objectName }}.store.refresh('children');
+                    });
+                }
+                $scope.{{ child.objectModule }}{{ child.objectName }}linkSelect = function (){
+                    console.log('link ','{{ child.objectModule }}{{ child.objectName }}');
+                     {{ child.objectModule }}{{ child.objectName }}Store.getData(1,'link');
+                    $scope.{{ child.objectModule }}{{ child.objectName }}Link.selected = {
+                        //selectall: false
+                    }
+                    var data = { Module:'{{ c.module }}',ObjectName:'{{ c.objecttype }}',Id:$scope.obj.id }
+                    $http.post('/{{ child.objectModule }}/{{ child.objectName }}/getLink.json',data)
+                            .success(function(data) {
+                                console.log('store > {{ child.objectModule }} {{ child.objectName }} > getLink ', data);
+                            for(var n=0; n < data.data.length; n++){
+                                $scope.{{ child.objectModule }}{{ child.objectName }}Link.selected[data.data[n]] = true;
+                            }
+                    });
+
+                    $scope.link = {
+                        title:'Selection : {{ child.objectModule }} > {{ child.objectName }}',
+                        url:'/Systeme/Utils/Link.htm?Module={{ child.objectModule }}&ObjectName={{ child.objectName }}',
+                        message:'',
+                        errors: new Array(),
+                        module: '{{ child.objectModule }}',
+                        objectName: '{{ child.objectName }}',
+                        success: false,
+                        Save: $scope.{{ child.objectModule }}{{ child.objectName }}linkSave
+                    };
+                    $("#modallink-{{ c.identifier }}").modal();
+                }
+
+
 
                 //SELECTION
                 $scope.$watch('{{ child.objectModule }}{{ child.objectName }}.selected.selectall', function() {

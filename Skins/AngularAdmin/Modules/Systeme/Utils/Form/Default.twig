@@ -90,7 +90,11 @@
                     </script>
                     <input type="text" ion-range-slider stype="single" prettify="prett" min="0" max="204800" from="{{ scopeObj }}.{{ field.name }}" from_min="1024" step="1024" grid="true" grid_num="10" postfix=" Go" class="form-control" placeholder="" id="input-{{ field.name }}" ng-model="{{ scopeObj }}.{{ field.name }}" >
                 {% else %}
+                    {% if field.name == "Url" %}
+                    <input type="text" pattern="[A-Za-z0-9_\-]*" ng-pattern="[A-Za-z0-9_\-]*" class="form-control urlInput" placeholder="" ng-model="{{ scopeObj }}.{{ field.name }}">
+                    {% else %}
                     <input type="text" class="form-control" placeholder="" ng-model="{{ scopeObj }}.{{ field.name }}">
+                    {% endif %}
                 {% endif %}
             {% endif %}
             </div>
@@ -166,7 +170,9 @@
         }
     });
 
-
+    $('.urlInput').on('keyup',function(){
+       $(this).val($(this).val().replace(/[^A-Za-z0-9_\-]*\s*/g,''));
+    });
     //Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
     $(".datepicker-only-init").on("dp.change", function() {
         var input = $(this).children('input').eq(0);

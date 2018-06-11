@@ -60,6 +60,6 @@ __ALREADY_EXISTS__|existe déjà.
 
 
 
-#######MODULES pour AngularAdmin###########
-__CATALOGUE_PRODUIT_TITRE__|Le nom du modèle, évidemment !
+#######HELP pour AngularAdmin###########
+__CATALOGUE_PRODUIT_TITRE_HELP__|Le nom du modèle, évidemment !
 

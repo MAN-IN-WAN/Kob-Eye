@@ -86,11 +86,17 @@ progress.progress.progress-danger:after{
 .form-control-label{
     font-weight:600;
 }
-.cat-title{
+.cat-title {
     background-color: #ddd;
     padding: 3px 15px;
-    margin-top: 20px;
+    margin-top: 0;
     margin-bottom: 10px;
+}
+
+.cat-title button.btn-link {
+    box-shadow: none;
+    padding-top: 0;
+    padding-bottom:0 ;
 }
 
 .detail-label{
@@ -114,6 +120,15 @@ progress.progress.progress-danger:after{
     padding: .375rem .75rem;
     margin-bottom: 0;
     word-break: break-word;
+
+}
+
+
+.label-danger, .label-success {
+    min-width:36px;
+    -webkit-box-shadow: 0 2px 4px -2px rgba(55, 58, 60, 0.6);
+    box-shadow: 0 2px 4px -2px rgba(55, 58, 60, 0.6);
+
 }
 
 #activity_list{
@@ -300,10 +315,10 @@ table tr td.typeraw span.ng-binding{
     background-color: #fff;
 }
 /*#infra_info.showQuick{*/
-    /*left:0;*/
-    /*padding:15px;*/
-    /*width:430px;*/
-    /*height: 400px;*/
+/*left:0;*/
+/*padding:15px;*/
+/*width:430px;*/
+/*height: 400px;*/
 /*}*/
 #infra_info table{
     width:400px;
@@ -318,7 +333,7 @@ table tr td.typeraw span.ng-binding{
     background-color: #fff;
 }
 .hideMap{
-    display: none;    
+    display: none;
 }
 
 
@@ -375,9 +390,9 @@ table tr td.typeraw span.ng-binding{
         width:100%;
         overflow-x: scroll;
     }
-/*    col.tdcontent{
-        width:300px;
-    }*/
+    /*    col.tdcontent{
+            width:300px;
+        }*/
     .col-width-fixer{
         width:250px;
         text-align: center;
@@ -498,57 +513,448 @@ ACE
 .ace_editor { height: 300px; }
 
 /**
-Page Edit DIVI Staïle
+Page Edit DIVI StaĆÆle
  */
 #pageOrg{
     position: relative;
 }
 #AgencementPage{
-    border: 1px solid #0a6aa1;
-    padding: 5px 10px;
+    padding: 20px;
     text-align: center;
-    background-color : #ddddff;
+    background-color : #efeff4;
     position: relative;
     min-height: 200px;
+    border-radius: 5px;
+    -webkit-box-shadow:inset 0 1px 2px 0 rgba(55,58,60,0.6);
+    box-shadow:inset 0 1px 2px 0 rgba(55,58,60,0.6);
 }
+
 #AgencementPage .row{
     margin: 0;
 }
-#AgencementPage .pageHeader{
-    border-bottom: 1px solid #fff;
-}
+
 #AgencementPage .dvContent{
     position: relative;
+    padding: 20px 20px 10px 20px;
+    border-radius: 5px;
+    border-left:1px solid #6b35b6;
+    border-right:1px solid #6b35b6;
+    border-top: 1px solid #6b35b6;
+    border-bottom: 40px solid #6b35b6;
+    background-color: #dddddd;
+    -webkit-box-shadow: 0 2px 4px -2px rgba(55, 58, 60, 0.3);
+    box-shadow: 0 2px 4px -2px rgba(55, 58, 60, 0.3);
 }
+
 #AgencementPage .cms-row{
-    border: 1px solid #0a6aa1;
-    background-color : #fff;
+    border-radius: 5px;
+    background-color : #ffffff;
     margin-bottom: 10px;
-    padding: 5px;
+    padding: 15px;
     position: relative;
+    -webkit-box-shadow: 0 2px 4px -2px rgba(55, 58, 60, 0.3);
+    box-shadow: 0 2px 4px -2px rgba(55, 58, 60, 0.3);
+    border-bottom: 40px solid;
+
 }
+
+
+#AgencementPage .cms-row:nth-child(odd) {
+    border-bottom-color: #168cd8;
+}
+
+#AgencementPage .cms-row:nth-child(even) {
+    border-bottom-color:#ee5659;
+}
+
+#AgencementPage .cms-row[style*="transform"] {
+    border-right: none;
+    -webkit-box-shadow: 30px 30px 3px 3px rgba(55,58,60,0.3);
+    box-shadow: 30px 30px 3px 3px rgba(55,58,60,0.3);
+}
+
+
 #AgencementPage .cms-col{
-    border: 1px solid #0a6aa1;
-    background-color : #fff;
+    height:140px;
+    border-radius: 5px;
+    background-color : #5d5d5d;
     position: relative;
     float: left;
+    border-left:1px solid #cdcdcd;
+    border-right:1px solid #cdcdcd;
+    -webkit-box-shadow: 0 2px 4px -2px rgba(55, 58, 60, 0.6);
+    box-shadow: 0 2px 4px -2px rgba(55, 58, 60, 0.6);
+    border-bottom: 40px solid;
 }
+
+
+#AgencementPage .cms-row:nth-child(odd) .cms-col:nth-child(odd) {
+    border-bottom-color: #1fc2aa;
+}
+
+#AgencementPage .cms-row:nth-child(odd) .cms-col:nth-child(even) {
+    border-bottom-color: #158272;
+}
+
+#AgencementPage .cms-row:nth-child(even) .cms-col:nth-child(odd) {
+    border-bottom-color: #fd913f;
+}
+
+#AgencementPage .cms-row:nth-child(even) .cms-col:nth-child(even) {
+    border-bottom-color: #bd6c2f;
+}
+
+#AgencementPage .cms-col[style*="transform"] {
+    border-right: none;
+    border-left:none;
+    -webkit-box-shadow: 20px 20px 3px 3px rgba(55,58,60,0.6);
+    box-shadow: 20px 20px 3px 3px rgba(55,58,60,0.6);
+}
+
+#AgencementPage .cms-col[style*="transform"] .rg-right {
+    display:none;
+}
+
 
 #AgencementPage .dragHandle{
     position: absolute;
-    width: 20px;
-    height: 20px;
-    background-color: #000;
-    border-radius: 2px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    background-color: transparent;
+    font-size: 1.5rem;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.4);
+    border-radius: 3px;
 }
+
+
 #AgencementPage .cms-row .dragHandle{
-    top: 5px;
+    bottom: -34px;
     right: 5px;
 }
 
 #AgencementPage .cms-col .dragHandle{
-    top: 25px;
-    right: 25px;
+    top: 10px;
+    right: 10px;
+}
+
+
+/*
+Choix des composants
+ */
+.compo{
+    border: 1px solid #000;
+    margin-bottom: 15px;
+    cursor: pointer;
+}
+.compo:hover{
+    background-color: rgba(1,168,254,0.1);
+    box-shadow: #01a8fe 0px 0px 9px 1px;
+    border-color: #01a8fe;
+}
+.compoTitle{
+    display: inline-block;
+    width: 200px;
+    vertical-align: middle;
+    padding: 2px 10px;
+}
+.compoScreen {
+    font-size: 4em;
+    vertical-align: middle;
+    padding: 15px;
+    border-right: 1px solid #000;
+    display: inline-block;
+    width: 100px;
+    text-align: center;
+}
+
+
+.compoDisplay {
+    position: absolute;
+    top: 12px;
+    left: 15px;
+    font-size: 5rem;}
+
+.emptyCompo {
+    color: #fb434A;
+}
+
+/********
+ * PANEL FILTER
+ **/
+.panel-filter{
+    background-color: #efefef;
+    max-height: 0;
+    transition: all 1s cubic-bezier(0.23, 1, 0.32, 1);
+    overflow: hidden;
+    padding: -50px 75px 50px 75px;
+    box-shadow: 3px 3px 3px 3px rgba(128, 128, 128, 0.15) inset;
+}
+.panel-filter-closed{
+    max-height: 500px;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    padding: 15px 75px;
+}
+.panel-filter .form-group {
+    margin-bottom:2px;
+}
+
+
+
+/*
+Aspect Titre
+ */
+
+
+.pageHeader p {
+    font-size: 2em;
+    text-transform: uppercase;
+    color: #51505a;
+    margin-top: 1rem;
+    font-weight: bold;}
+
+
+
+/*
+Aspect Composants
+ */
+
+.cms-col.ng-scope {
+    font-size: 1.5em;
+    color: #ffffff;
+    padding: 15px 0 15px 0;}
+
+
+#AgencementPage .cms-row[style*="transform"] span {
+    display:none;
+}
+
+
+
+.cms-col.ng-scope .rg-right span {
+    border: solid #ffffff;
+    border-width: 0px 2px;
+    margin: -15px 0 0 3.5px;
+    height: 30px; }
+
+
+
+
+.pageFooter {
+    padding-top: 15px;}
+
+.panel-heading button,
+.pageFooter button {
+    font-size: 1.1rem;
+    text-align: center;
+    margin: 0 10px 0 0;
+}
+
+.panel-heading button > i,
+.pageFooter button > i {
+    padding: 0 15px 0 0;
+}
+
+.panel-heading .pull-right {
+    margin-top: -8px;
+}
+
+.pageFooter .btn-success,
+.pageFooter .btn-warning {
+    float: right;
+}
+.form-group .clickable,
+.form-group button {
+    background-color: #01a8fe;
+    border-color: #01a8fe;
+    border-radius:3px;
+    color:#ffffff;
+    -webkit-box-shadow: 0 2px 4px -2px rgba(55, 58, 60, 0.6);
+    box-shadow: 0 2px 4px -2px rgba(55, 58, 60, 0.6);
+}
+
+
+/*
+Position et comportement des boutons en col, en raw et en dvContent
+ */
+.addRow,
+.addCol,
+.configComp  {
+    position:absolute;
+    bottom: -42px;
+    left: 5px;
+}
+#AgencementPage .addRow .btn-primary,
+#AgencementPage .delRow .btn-danger,
+#AgencementPage .addCol .btn-primary,
+#AgencementPage .delCol .btn-danger,
+#AgencementPage .configComp .btn-warning {
+    margin:0;
+    background-color: transparent;
+    border-color: transparent;
+    color: rgba(0, 0, 0, 0.4);
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    max-width: 42px;
+    text-align: left;
+    transition: all 0.5s;
+}
+
+#AgencementPage .addRow .btn-primary,
+#AgencementPage .addCol .btn-primary,
+#AgencementPage .configComp .btn-warning {
+    padding: 7px 8px 7px 8px;
+}
+
+
+#AgencementPage .delRow .btn-danger,
+#AgencementPage .delCol .btn-danger {
+    padding: 7px;
+}
+
+
+#AgencementPage .addRow .btn-primary:hover,
+#AgencementPage .delRow .btn-danger:hover,
+#AgencementPage .addCol .btn-primary:hover,
+#AgencementPage .delCol .btn-danger:hover,
+#AgencementPage .configComp .btn-warning:hover {
+    max-width: 190px;
+}
+
+
+
+#AgencementPage .addRow .btn-primary span:not(.ink),
+#AgencementPage .delRow .btn-danger span:not(.ink),
+#AgencementPage .addCol .btn-primary span:not(.ink),
+#AgencementPage .delCol .btn-danger span:not(.ink),
+#AgencementPage .configComp .btn-warning span:not(.ink) {
+    display: none;
+}
+
+#AgencementPage .addRow .btn-primary:hover span,
+#AgencementPage .delRow .btn-danger:hover span,
+#AgencementPage .addCol .btn-primary:hover span,
+#AgencementPage .delCol .btn-danger:hover span,
+#AgencementPage .configComp .btn-warning:hover span {
+    display:inline-block;
+}
+
+.addCol .btn-primary,
+.configComp .btn-warning {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.addRow,
+.delRow,
+.delCol {
+    position:absolute;
+}
+
+
+.delCol {
+    bottom: -42px;
+    left:50px;
+    transition: all 0.5s;
+}
+
+
+.delRow {
+    bottom: -42px;
+    left:50px;
+    transition: all 0.5s;
+}
+
+.delRow .btn-danger,
+.delCol .btn-danger {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+
+
+#AgencementPage .addCol:hover~.delRow {
+    left:190px;
+}
+
+
+#AgencementPage .configComp:hover~.delCol {
+    left:200px;
+}
+
+
+
+
+
+/*#AgencementPage .cms-col[data-width="17"] button,
+#AgencementPage .cms-col[data-width="16"] button,
+#AgencementPage .cms-col[data-width="15"] button,
+#AgencementPage .cms-col[data-width="14"] button,
+#AgencementPage .cms-col[data-width="13"] button,
+#AgencementPage .cms-col[data-width="12"] button,
+#AgencementPage .cms-col[data-width="11"] button,
+#AgencementPage .cms-col[data-width="10"] button,
+#AgencementPage .cms-col[data-width="9"] button,
+#AgencementPage .cms-col[data-width="8"] button,
+#AgencementPage .cms-col[data-width="7"] button,
+#AgencementPage .cms-col[data-width="6"] button,
+#AgencementPage .cms-col[data-width="5"] button,
+#AgencementPage .cms-col[data-width="4"] button,
+#AgencementPage .cms-col[data-width="3"] button,
+#AgencementPage .cms-col[data-width="2"] button,
+#AgencementPage .cms-col[data-width="1"] button {
+    width: 42px;
+    text-align: center;
+    padding: 7px 30px 7px 16px;
+}
+
+
+#AgencementPage .cms-col[data-width="17"] button span,
+#AgencementPage .cms-col[data-width="16"] button span,
+#AgencementPage .cms-col[data-width="15"] button span,
+#AgencementPage .cms-col[data-width="14"] button span,
+#AgencementPage .cms-col[data-width="13"] button span,
+#AgencementPage .cms-col[data-width="12"] button span,
+#AgencementPage .cms-col[data-width="11"] button span,
+#AgencementPage .cms-col[data-width="10"] button span,
+#AgencementPage .cms-col[data-width="9"] button span,
+#AgencementPage .cms-col[data-width="8"] button span,
+#AgencementPage .cms-col[data-width="7"] button span,
+#AgencementPage .cms-col[data-width="6"] button span,
+#AgencementPage .cms-col[data-width="5"] button span,
+#AgencementPage .cms-col[data-width="4"] button span,
+#AgencementPage .cms-col[data-width="3"] button span,
+#AgencementPage .cms-col[data-width="2"] button span,
+#AgencementPage .cms-col[data-width="1"] button span  {
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+/*
+Responsive
+ */
+
+@media(max-width: 1200px) {
+
+    #AgencementPage button {
+        width: 42px;
+        text-align: center;
+        padding: 7px 30px 7px 16px;
+    }
+
+    #AgencementPage button span {
+        display:none;
+    }
+
+    .cms-col.ng-scope {font-size: 1.2rem;}
 }
 
 

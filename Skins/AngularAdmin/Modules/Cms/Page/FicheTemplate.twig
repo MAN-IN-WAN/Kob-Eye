@@ -66,39 +66,24 @@
                         {% endif %}
                         <div id="fichePanel" class="row">
                         {% for cat,fields in fichefields %}
-                            <div class="col-md-6 col-lg-4 ficheCat">
+                            <div class="col-md-6 col-lg-6 ficheCat">
                             <h5 class="cat-title">
                                 <button class="btn btn-link" data-toggle="collapse" data-target="#collapseCat_{{ loop.index }}" aria-expanded="true" aria-controls="collapseCat_{{ loop.index }}">{{ cat }}</button>
                             </h5>
                             <div id="collapseCat_{{ loop.index }}" class="collapse{% if not fields.fold %} in{% endif %} {{ fields.type }}">
 
                         {% for field in fields.elements %}
-                            {% if field.large == 1 %}
                             <div class="col-md-12">
-                            {% else %}
-                            <div class="col-md-6">
-                            {% endif %}
-
                             {% if field.type == "progress" %}
                                 <!-- NE RIEN FAIRE-->
                             {% else %}
-                                <div class="row">
-                                    {% if field.fullTitle %}
-                                        <div class="col-md-12">
-                                    {% elseif field.large == 1 %}
-                                        <div class="col-md-2 detail-label">
-                                    {% else %}
-                                        <div class="col-md-5 detail-label">
-                                    {% endif %}
+                                <div class="row ficheField">
+
+                                    <div class="col-md-3 detail-label">
                                         <label class="form-control-label" for="l0">{% if field.parentDescription is not empty %}{{ field.parentDescription }}{% else %}{{ field.description }}{% endif %}</label>
                                     </div>
-                                    {% if field.fullTitle %}
-                                        <div class="col-md-12">
-                                    {% elseif field.large == 1 %}
-                                        <div class="col-md-10 detail-value">
-                                    {% else %}
-                                    <div class="col-md-7 detail-value">
-                                    {% endif %}
+
+                                    <div class="col-md-9 detail-value">
                                         {% if field.type == "price" %}
                                             <span class="label label-warning">{[{ obj.{{ field.name }} | currency:"" }]} €</span>
                                         {% elseif field.type == "float" %}

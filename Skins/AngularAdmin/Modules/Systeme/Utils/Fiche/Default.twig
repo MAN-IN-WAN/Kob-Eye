@@ -48,7 +48,7 @@
                         {% if field.type == "progress" or field.type == "pluginconfig" or field.type == "raw" or field.type == "html" or field.type == "text" or field.type == "bbcode" %}
                         <!-- NE RIEN FAIRE-->
                         {% else %}
-                        <div class="row">
+                        <div class="row  ficheField">
                             <div class="col-md-5 detail-label">
                                 <label class="form-control-label" for="l0">{% if field.parentDescription is not empty %}{{ field.parentDescription }}{% else %}{{ field.description }}{% endif %}</label>
                             </div>
@@ -276,3 +276,36 @@
     </div>
 </div>
 
+{% if ChildrenElements|length %}
+    <div class="modal fade modal-size-large" id="modallink-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">{[{ link.title }]}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-success" ng-show="link.success">{[{ link.message }]}</div>
+                    <div class="alert alert-danger" ng-show="link.errors.length > 0">
+                        <ul>
+                            <li ng-repeat="err in link.errors">{[{ err }]}</li>
+                        </ul>
+                    </div>
+                    <div  ng-if="link.success == false">
+                        <div id="ajaxwrapper"
+                             ng-include="link.url" >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal" ng-if="link.success == true">Fermer</button>
+                    <button type="button" class="btn" data-dismiss="modal" ng-if="link.success == false">Annuler</button>
+                    <button type="button" class="btn btn-primary" ng-if="link.success == false" ng-click="link.Save()">Enregistrer les modifications</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

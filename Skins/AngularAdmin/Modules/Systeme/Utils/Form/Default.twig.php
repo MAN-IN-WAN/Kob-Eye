@@ -22,7 +22,7 @@ foreach ($vars['formfields'] as $k=>$field){
         }
     }
     if(isset($field['help']) && $field['help']){
-        $vars['formfields'][$k]['helpLang'] = strtoupper("__".$info["Module"]."_".$info['ObjectType']."_".$vars['formfields'][$k]['name']."__");
+        $vars['formfields'][$k]['helpLang'] = strtoupper("__".$info["Module"]."_".$info['ObjectType']."_".$vars['formfields'][$k]['name']."_HELP__");
     }
 }
 $vars["CurrentObj"] = genericClass::createInstance($info['Module'],$info['ObjectType']);
