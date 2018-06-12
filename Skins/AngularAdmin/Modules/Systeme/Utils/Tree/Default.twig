@@ -42,6 +42,11 @@
                     Filtres
                 </a>
                         {% endif %}
+                        {% if context == 'children' %}
+                            <a  href="javascript: void(0);" class="btn btn-info" ng-click="{{ identifier }}linkSelect();">
+                    Selection
+                </a>
+                        {% endif %}
             </span>
                 </div>
             </div>

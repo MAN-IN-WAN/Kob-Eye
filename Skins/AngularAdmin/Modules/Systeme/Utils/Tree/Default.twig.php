@@ -6,7 +6,9 @@ else
 $info = Info::getInfos($Path);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $vars['identifier'] = $info['Module'].$info['ObjectType'];
-$vars['context'] = $info['NbHisto'] > 1 ? 'children':'default';
+
+if(!isset($vars['context']))
+    $vars['context'] = $info['NbHisto'] > 1 ? 'children':'default';
 $vars['ObjectClass'] = $o->getObjectClass();
 $vars['ObjectType'] = $info['ObjectType'];
 $vars['Module'] = $info['Module'];

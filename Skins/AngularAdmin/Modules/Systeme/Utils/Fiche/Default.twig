@@ -177,7 +177,14 @@
             {% for child in ChildrenElements %}
                 <div class="tab-pane {% if loop.first %}active{% endif %}" id="tab{{ child.objectName }}" role="tabpanel">
                     {% if child.recursive %}
-                        {{ include(template_from_string(module(Query~'/Tree'))) }}
+                        {#{{ include(template_from_string(module(Query~'/0/'~child.objectName~'/TreeChildren'))) }}#}
+                        <section class="panel">
+                            <div class="panel-body">
+                                <div id="ajaxwrapper"
+                                     ng-include="'/{{ CurrentUrl }}/'+obj.id+'/{{ child.objectName }}/TreeChildren.htm'" >
+                                </div>
+                            </div>
+                        </section>
                     {% else %}
                         <section class="panel">
                             <div class="panel-body">

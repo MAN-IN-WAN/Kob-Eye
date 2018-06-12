@@ -608,7 +608,11 @@
                 }
                 $scope.{{ child.objectModule }}{{ child.objectName }}linkSelect = function (){
                     console.log('link ','{{ child.objectModule }}{{ child.objectName }}');
-                     {{ child.objectModule }}{{ child.objectName }}Store.getData(1,'link');
+
+                    {% if child.reflexive %}
+                        {{ child.objectModule }}{{ child.objectName }}Store.setQuery('/{{ child.objectModule }}/{{ child.objectName }}/*/{{ child.objectName }}','link');
+                    {% endif %}
+                    {{ child.objectModule }}{{ child.objectName }}Store.getData(1,'link');
                     $scope.{{ child.objectModule }}{{ child.objectName }}Link.selected = {
                         //selectall: false
                     }

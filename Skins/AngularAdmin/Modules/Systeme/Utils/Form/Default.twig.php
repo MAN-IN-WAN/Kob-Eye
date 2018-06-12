@@ -25,6 +25,7 @@ foreach ($vars['formfields'] as $k=>$field){
         $vars['formfields'][$k]['helpLang'] = strtoupper("__".$info["Module"]."_".$info['ObjectType']."_".$vars['formfields'][$k]['name']."_HELP__");
     }
 }
+
 $vars["CurrentObj"] = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $vars["Module"] = $info["Module"];
 $vars['ObjectType'] = $info['ObjectType'];

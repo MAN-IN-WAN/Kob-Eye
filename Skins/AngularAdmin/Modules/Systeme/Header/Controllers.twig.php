@@ -39,6 +39,8 @@ foreach (Sys::$User->Menus as $m){
                 //recherche des parents de l'element
                 $co = genericClass::createInstance($tmp['childrenelements'][$i]['objectModule'], $tmp['childrenelements'][$i]['objectName']);
                 $cobj = $co->getObjectClass();
+                if($cobj->isReflexive())
+                    $tmp['childrenelements'][$i]['reflexive'] = true;
                 $tmp['childrenelements'][$i]['parentelements'] = $cobj->getParentElements();
                 for ($j = 0; $j < sizeof($tmp['childrenelements'][$i]['parentelements']); $j++) {
                     //print_r($tmp['childrenelements'][$i]['parentelements'][$j]);

@@ -178,7 +178,14 @@
             {% for child in ChildrenElements %}
                 <div class="tab-pane {% if loop.first %}active{% endif %}" id="tab{{ child.objectName }}" role="tabpanel">
                     {% if child.recursive %}
-                        {{ include(template_from_string(module(Query~'/Tree'))) }}
+                        {#{{ include(template_from_string(module(Query~'/0/'~child.objectName~'/TreeChildren'))) }}#}
+                        <section class="panel">
+                            <div class="panel-body">
+                                <div id="ajaxwrapper"
+                                     ng-include="'/{{ CurrentUrl }}/'+obj.id+'/{{ child.objectName }}/TreeChildren.htm'" >
+                                </div>
+                            </div>
+                        </section>
                     {% else %}
                         <section class="panel">
                             <div class="panel-body">
@@ -291,6 +298,40 @@
         </div>
     </div>
 </div>
+
+{% if ChildrenElements|length %}
+    <div class="modal fade modal-size-large" id="modallink-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">{[{ link.title }]}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-success" ng-show="link.success">{[{ link.message }]}</div>
+                    <div class="alert alert-danger" ng-show="link.errors.length > 0">
+                        <ul>
+                            <li ng-repeat="err in link.errors">{[{ err }]}</li>
+                        </ul>
+                    </div>
+                    <div  ng-if="link.success == false">
+                        <div id="ajaxwrapper"
+                             ng-include="link.url" >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal" ng-if="link.success == true">Fermer</button>
+                    <button type="button" class="btn" data-dismiss="modal" ng-if="link.success == false">Annuler</button>
+                    <button type="button" class="btn btn-primary" ng-if="link.success == false" ng-click="link.Save()">Enregistrer les modifications</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 
 {#
 <div class="modal fade modal-size-large" id="modalfunction-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
