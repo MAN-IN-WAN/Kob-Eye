@@ -803,7 +803,7 @@ nav.left-menu .left-menu-list-color-yellow:hover:before, nav.left-menu .left-men
 }
 
 .panel .panel-body {
-    padding: 25px;
+    padding: 25px 25px 15px 25px;
 }
 
 .panel .panel-body + .panel-footer {
