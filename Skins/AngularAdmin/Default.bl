@@ -169,7 +169,7 @@
 
     <!-- ACE -->
     <script type="text/javascript" src="Skins/AngularAdmin/assets/vendors/angular-ui-ace/src/ui-ace.js"></script>
-    <script type="text/javascript" src="Tools/Js/ace/src-min-noconflict/ace.js"></script>
+    <script type="text/javascript" src="Tools/Js/ace/src-noconflict/ace.js"></script>
 
     <!-- Isotope -->
     <script src="Tools/Js/Isotope/isotope.pkgd.min.js"></script>

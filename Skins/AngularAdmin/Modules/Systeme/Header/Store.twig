@@ -555,6 +555,7 @@
                             busy[context]=false;
                             purgeStore(context);
                             pageLoaded[context] = page;
+                            currentPage[context] = page;
                             total[context] = data.total;
                             for (var i in data.data) {
                                 if (!alreadyExists(data.data[i].id,context))
@@ -566,6 +567,7 @@
                 }else{
                     busy[context] = false;
                     resolve({{ st.identifier }}Store[context]);
+                    currentPage[context] = page;
                 }
             });
         }

@@ -320,7 +320,7 @@ class ObjectClass extends Root{
 		//INITILISATION DES PROPRIETES DYNAMIQUES
 		if (isset($this->generateUrl)&&$this->generateUrl){
 			//On ajoute une proprietes Url
-			$this->Proprietes["Url"] = $this->parseAttributes(array("type"=>"link","searchOrder"=>3,"auto"=>0,"category"=>"Configuration", "form"=>1,"fiche"=>1),"Url");
+			$this->Proprietes["Url"] = $this->parseAttributes(array("type"=>"link","searchOrder"=>3,"auto"=>0,"category"=>"Configuration", "form"=>1,"fiche"=>1, "help"=>1),"Url");
 			$this->addCategory(Array("title"=>"Configuration"),Array("type"=>"property","title"=>"Url"));
 		}
 		//GESTION DES PLUGINS
@@ -356,9 +356,11 @@ class ObjectClass extends Root{
 			$o[] = Array("type"=>"property","name"=>"ImgMeta");
 			$this->Proprietes['ImgMeta'] = Array('type'=>'image','description'=>'META: Image de la page pour les réseaux sociaux', "form"=>1, "auto"=>1, "large"=>"1", "fullTitle"=>"1");
 			//Displayed
-			$this->addCategory(Array("title"=>"Configuration"),Array("type"=>"property","title"=>"Display"));
-			$o[] = Array("type"=>"property","name"=>"Display");
-			$this->Proprietes['Display'] = Array('type'=>'boolean','default'=> 1,'description'=>'Publier', "form"=>1,"fiche"=>1, "auto"=>1, "list"=>1,'listDescr'=>'Publier');
+			if(!isset($this->Proprietes["Display"])) {
+                $this->addCategory(Array("title" => "Configuration"), Array("type" => "property", "title" => "Display"));
+                $o[] = Array("type" => "property", "name" => "Display");
+                $this->Proprietes['Display'] = Array('type' => 'boolean', 'default' => 1, 'description' => 'Publier', "form" => 1, "fiche" => 1, "auto" => 1, "list" => 1, 'listDescr' => 'Publier');
+            }
 		}
 		return $o;
 	}

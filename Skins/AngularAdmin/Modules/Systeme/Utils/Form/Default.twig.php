@@ -6,6 +6,9 @@ $info = Info::getInfos($query);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $vars['fields'] = $o->getElementsByAttribute('list','',true);
 $vars['formfields'] = $o->getElementsByAttribute('form','',true);
+if (!is_object(Sys::$CurrentMenu) && Sys::$User->Admin){
+    $vars['formfields'] = $o->getElementsByAttribute('','',true);
+}
 foreach ($vars['formfields'] as $k=>$field){
     if($info['TypeSearch'] == 'Direct' && ($field['type'] == 'metak' || $field['type'] == 'metad' || $field['type'] == 'metat' || $field['name'] == 'ImgMeta'  )){
         unset($vars['formfields'][$k]);

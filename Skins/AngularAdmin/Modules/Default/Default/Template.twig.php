@@ -9,6 +9,10 @@ foreach ($vars['filters'] as $k=>$f){
     $vars['filters'][$k]->count = Sys::getCount($info['Module'],$info['ObjectType'].'/'.$f->filter);
 }
 $vars['CurrentMenu'] = Sys::$CurrentMenu;
+if(Sys::$User->Admin && !$vars['CurrentMenu']){
+    $oc = $o->getObjectClass();
+    $vars['CurrentMenu'] = ['Titre' =>$oc->Description ];
+}
 $vars['identifier'] = $info['Module'] . $info['ObjectType'];
 
 ?>

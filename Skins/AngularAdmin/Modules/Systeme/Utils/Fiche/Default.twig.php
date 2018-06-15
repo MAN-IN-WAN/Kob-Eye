@@ -4,6 +4,10 @@ $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $vars['fields'] = $o->getElementsByAttribute('list','',true);
 $vars['functions'] = $o->getFunctions();
 $vars['fichefields'] = $o->getElementsByAttribute('fiche','',true);
+if (!is_object(Sys::$CurrentMenu) && Sys::$User->Admin){
+    $vars['fichefields'] = $o->getElementsByAttribute('','',true);
+}
+
 foreach ($vars['fichefields'] as $k=>$f){
     if ($f['type']=='fkey'&&$f['card']=='short'){
         $vars['fichefields'][$k]['link'] = Sys::getMenu($f['objectModule'].'/'.$f['objectName']);

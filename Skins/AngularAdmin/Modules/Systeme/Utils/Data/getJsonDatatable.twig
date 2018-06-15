@@ -6,7 +6,7 @@
         {
             "id":"{{ row.Id }}",
             "label":"{{ row.label }}",
-            "description":"{{ row.description }}",
+            "description":"{{ row.description |json_encode }}",
             {% if recursiv %}
             "_tail":{{ row.isTail }},
             {% endif %}
