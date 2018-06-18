@@ -52,10 +52,11 @@
             </div>
             <div class="col-lg-1 col-md-12">
                 <select class="form-control" ng-model="{{ identifier }}.pageLength" >
-                    <option ng-selected="{{ identifier }}.pageLength == 15" value="15">15</option>
-                    <option ng-selected="{{ identifier }}.pageLength == 25" value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
+                    <option ng-selected="{{ identifier }}.pageLength == 15" value="15">15 </option>
+                    <option ng-selected="{{ identifier }}.pageLength == 25" value="25">25 </option>
+                    <option ng-selected="{{ identifier }}.pageLength == 50" value="50">50 </option>
+                    <option ng-selected="{{ identifier }}.pageLength == 100" value="100">100 </option>
+                    <option ng-selected="{{ identifier }}.pageLength ==  9999" value="9999">Tous </option>
                 </select>
             </div>
 
@@ -156,7 +157,7 @@
                 </th>
                 <th title="Id" class="list-col-th-id">ID</th>
                 {% for field in fields %}
-                    <th title="{{ field.name }}" class="type{{ field.type }}">{{ field.listDescr }}</th>
+                    <th title="{{ field.name }}" class="type{{ field.type }}">{% if field.listDescr %}{{ field.listDescr }}{% else %}{{ field.name }}{% endif %}</th>
                 {% endfor %}
                 {% for interface in Interfaces %}
                     <th>{{ interface.name }}</th>

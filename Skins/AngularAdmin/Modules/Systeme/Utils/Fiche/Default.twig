@@ -164,7 +164,7 @@
         <ul class="nav nav-tabs" role="tablist">
             {% for child in ChildrenElements %}
                 <li class="nav-item">
-                    <a class="nav-link {% if loop.first %}active{% endif %}" href="javascript: void(0);" data-toggle="tab" data-target="#tab{{ child.objectName }}" role="tab"><b>{{ child.objectDescription }}</b> ({[{ {{ child.objectModule }}{{ child.objectName }}.store.total.children }]})</a>
+                    <a class="nav-link {% if loop.first %}active{% endif %}" href="javascript: void(0);" data-toggle="tab" data-target="#tab{{ child.objectName }}" role="tab"><b>{% if child.objectDescription %}{{ child.objectDescription }}{% else %}{{ child.objectName }}{% endif %}</b> ({[{ {{ child.objectModule }}{{ child.objectName }}.store.total.children }]})</a>
                 </li>
             {% endfor %}
             {% if browseable %}

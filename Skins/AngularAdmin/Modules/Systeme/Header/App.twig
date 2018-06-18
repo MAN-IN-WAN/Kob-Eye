@@ -364,7 +364,7 @@ angular.module('cleanUI', [
 // Admin
             {% if user.Admin %}
                 {%  for mod in modules %}
-                    {% for obj in mod.getAccessPoint() %}
+                    {% for obj in mod.getObjectClass() %}
                         $routeProvider.when('/{{ mod.Nom }}/{{ obj.titre }}', {
                             templateUrl: '{{ mod.Nom }}/{{ obj.titre }}/Template.htm',
                             controller: '{{ mod.Nom }}{{ obj.titre }}Ctrl'

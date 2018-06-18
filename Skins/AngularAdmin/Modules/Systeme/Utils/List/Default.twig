@@ -150,7 +150,7 @@
             </th>
             <th title="Id" class="list-col-th-id">ID</th>
             {% for field in fields %}
-                <th title="{{ field.name }}">{{ field.listDescr }}</th>
+                <th title="{{ field.name }}">{% if field.listDescr %}{{ field.listDescr }}{% else %}{{ field.name }}{% endif %}</th>
             {% endfor %}
             {% for interface in Interfaces %}
                 <th>{{ interface.name }}</th>

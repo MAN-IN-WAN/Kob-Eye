@@ -20,12 +20,15 @@ $vars["ObjectClass"] = $vars["CurrentObj"]->getObjectClass();
 $vars['operation'] = $vars['ObjectClass']->getOperations();
 $childs = $vars["ObjectClass"]->getChildElements();
 $vars["ChildrenElements"] = array();
+
 foreach ($childs as $child){
     if (
         //test role
-        (!isset($child['hasRole'])||Sys::$User->hasRole($child['hasRole']))&&
-        //test hidden
+         ((!isset($child['hasRole'])||Sys::$User->hasRole($child['hasRole']))&&
+         //test hidden
         !isset($child['childrenHidden'])&&!isset($child['hidden']))
+         //test admin
+         || (!is_object(Sys::$CurrentMenu) && Sys::$User->Admin))
             array_push($vars["ChildrenElements"],$child);
 }
 $vars["Interfaces"] = $vars["ObjectClass"]->getInterfaces();
