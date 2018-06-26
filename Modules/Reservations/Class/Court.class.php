@@ -17,16 +17,20 @@ class Court extends genericClass {
      */
     function checkResaJours() {
         //on vérifie le nombre de jour
-        $nb = Sys::getCount('Reservations','Court/'.$this->Id.'/ResaJour/Date>'.time());
+        $d = date('d');
+        $y = date('Y');
+        $m = date('m');
+        $today =  mktime(0,0,0,$m,$d,$y);
+        $nb = Sys::getCount('Reservations','Court/'.$this->Id.'/ResaJour/Date>='.$today);
+        //die('OK '.$nb.' / '.LIMITE_RESA.' | '.$today);
         if ($nb<LIMITE_RESA) {
-            $d = date('d');
-            $y = date('Y');
-            $m = date('m');
-            for ($i=$nb;$i<LIMITE_RESA;$i++){
-                $jr = genericClass::createInstance('Reservations','ResaJour');
-                $jr->addParent($this);
-                $jr->Date = mktime(0,0,0,$m,$d,$y) + $i*86400;
-                $jr->Save();
+            for ($i=0;$i<LIMITE_RESA;$i++) {
+                if (!Sys::getCount('Reservations', 'Court/' . $this->Id . '/ResaJour/Date=' . $today + $i * 86400)){
+                    $jr = genericClass::createInstance('Reservations', 'ResaJour');
+                    $jr->addParent($this);
+                    $jr->Date = $today + $i * 86400;
+                    $jr->Save();
+                }
             }
         }
         return true;

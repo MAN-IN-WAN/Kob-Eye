@@ -1,7 +1,6 @@
 <SCHEMA>
-	<OBJECTCLASS title="Apn" driver="mysql" AccessPoint="1" logEvent="1" master="0" Description="Appareil Photo"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/LightBox/Class/Apn.class.php">
+	<OBJECTCLASS title="Apn" driver="mysql" AccessPoint="1" logEvent="1" master="0" Description="Appareil Photo"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/LightBox/Class/Apn.class.php" plugin="1">
 		<PROPERTIES searchOrder="1" description="Titre" type="varchar" list="1" fiche="1" form="1" listDescr="Titre">Titre</PROPERTIES>
-		<PROPERTIES searchOrder="2" description="Type" type="varchar" values="Sony" list="1" fiche="1" form="1" listDescr="Type">Type</PROPERTIES>
 		<PROPERTIES searchOrder="3" description="SSID: Nom du WIFI" type="varchar" list="1" fiche="1" form="1" listDescr="SSID">SSID</PROPERTIES>
 		<PROPERTIES searchOrder="4" description="Mot de passe" type="varchar" fiche="1" form="1">Password</PROPERTIES>
 		<PROPERTIES searchOrder="5" description="Actif" type="boolean" list="1" fiche="1" form="1" listDescr="Actif">Actif</PROPERTIES>
@@ -13,8 +12,8 @@
 		<PROPERTIES searchOrder="5" description="Busy" type="boolean" list="1" fiche="1" listDescr="Busy">Busy</PROPERTIES>
 		<PROPERTIES searchOrder="2" description="Url Api" type="varchar" fiche="1" form="1" listDescr="Api Url">ApiUrl</PROPERTIES>
 		<PROPERTIES searchOrder="2" description="Url LiveView" type="varchar" fiche="1" form="1" listDescr="LiveView Url">LiveViewUrl</PROPERTIES>
-		<FUNCTION title="Connecte le wifi">addWifi</FUNCTION>
-		<FUNCTION title="Déconnecte le wifi">delWifi</FUNCTION>
+		<FUNCTION title="Connecte">addWifi</FUNCTION>
+		<FUNCTION title="Déconnecte">delWifi</FUNCTION>
 		<FUNCTION title="Appareil Photo en mode enregistrement">startRecMode</FUNCTION>
 		<FUNCTION title="Appareil Photo en mode veille">stopRecMode</FUNCTION>
 		<FUNCTION title="Prendre une photo">takePhoto</FUNCTION>

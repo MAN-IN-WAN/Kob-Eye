@@ -254,9 +254,9 @@
     <OBJECTCLASS title="Tache" driver="mysql" Description="Tache" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Tache.class.php" logEvent="1"  AccessPoint="1">
         <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom de la tache">Nom</PROPERTIES>
         <PROPERTIES type="varchar" searchOrder="2" obligatoire="1" list="1" values="Ssh,Auto,Manuel,Fonction" fiche="1" form="1" description="Type de tache">Type</PROPERTIES>
-        <PROPERTIES type="boolean" searchOrder="3" fiche="1" list="1" form="1" description="Tache terminé">Termine</PROPERTIES>
-        <PROPERTIES type="boolean" searchOrder="4" fiche="1" list="1" form="1" description="Tache démarrée">Demarre</PROPERTIES>
-        <PROPERTIES type="boolean" searchOrder="5" fiche="1" list="1" form="1" description="Erreur">Erreur</PROPERTIES>
+        <PROPERTIES type="boolean" searchOrder="3" fiche="1" list="1" form="1" description="Tache terminé" listDescr="Terminé">Termine</PROPERTIES>
+        <PROPERTIES type="boolean" searchOrder="4" fiche="1" list="1" form="1" description="Tache démarrée" listDescr="Demarré">Demarre</PROPERTIES>
+        <PROPERTIES type="boolean" searchOrder="5" fiche="1" list="1" form="1" description="Erreur" listDescr="Erreur">Erreur</PROPERTIES>
 		<PROPERTIES type="date" list="1" fiche="1" form="1" description="Date de déclenchement" listDescr="Date" default="[!TMS::Now!]">DateDebut</PROPERTIES>
         <PROPERTIES type="raw" fiche="1" form="1">Contenu</PROPERTIES>
         <PROPERTIES type="html" fiche="1" form="1">Retour</PROPERTIES>
@@ -320,14 +320,20 @@
 		<FKEY card="0,1" data="VersionLogiciel,Id" description="Numéro de la version (au format N.X.Y.Z)" list="1" form="1" fiche="1"  listDescr="Version">VersionId</FKEY>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Url du webservice" form="1" fiche="1"  listDescr="WebService" default="https://secibneo.secib.fr">WebService</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Guid du cabinet" form="1" fiche="1"  listDescr="Guid">Guid</PROPERTIES>
+		<PROPERTIES type="int" description="Type d'Application" listDescr="Type d'application" list="1" fiche="1" form="1" query="Parc/TypeApplication::Id::Nom" default="1">TypeApplication</PROPERTIES>
+		<PROPERTIES type="varchar" description="Langue" listDescr="Langue" default="fr" list="1" form="1" fiche="1">Langue</PROPERTIES>
+		<PROPERTIES type="varchar" description="URLWopi" listDescr="UrlWopi"  list="1" form="1" fiche="1">UrlWopi</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Type de l'instance" list="1" form="1" fiche="1" values="dev,pre-prod,prod" listDescr="Type" default="prod" >Type</PROPERTIES>
 		<PROPERTIES type="boolean" description="Actif" listDescr="Actif" list="1">Enabled</PROPERTIES>
 		<PROPERTIES type="boolean" description="Ssl" listDescr="Ssl"  list="1" form="1" fiche="1">EnableSsl</PROPERTIES>
 		<PROPERTIES type="boolean" description="Création automatique du client" listDescr="Creation auto"  list="1" form="1" fiche="1">ClientCreateAuto</PROPERTIES>
 		<FKEY card="1,n" data="Domain,Id" description="Domaine(s)" listDescr="Domaine(s)" form="1" fiche="1">DomainId</FKEY>
 		<FKEY card="0,1" data="Host,Id" description="Hébergement" listDescr="Hébergement" list="1" fiche="1" hideApi="1">HostId</FKEY>
-        <FKEY card="1,1" data="Client,Id" description="Client" listDescr="Client" list="1" form="1" fiche="1" hideApi="1">ClientId</FKEY>
+        <FKEY card="0,1" data="Client,Id" description="Client" listDescr="Client" list="1" form="1" fiche="1" hideApi="1">ClientId</FKEY>
 		<FUNCTION title="Activer le SSL">enableSSL</FUNCTION>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="TypeApplication" AccessPoint="1" driver="mysql" Description="Type d'application" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png">
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de l'application" list="1" form="1" fiche="1" unique="1" listDescr="Nom">Nom</PROPERTIES>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Activity" logEvent="1"  driver="mysql" Description="Activité des jobs"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/Parc/Class/Activity.class.php" Operations="">
 		<FILTER name="Toutes les activités" color="warning" ></FILTER>

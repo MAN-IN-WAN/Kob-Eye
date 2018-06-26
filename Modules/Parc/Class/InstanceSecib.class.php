@@ -29,16 +29,21 @@ class InstanceSecib extends genericClass
             return false;
         }
 
-        //Check du domaine
+        //Check du client
         $client = $this->getOneParent('Client');
         if (!$client&&!$this->ClientCreateAuto) {
             $GLOBALS["Systeme"]->Db[0]->exec('ROLLBACK');
+            $this->Delete();
             $this->addError(Array("Message" => 'Une instance de Secib web doit être liée à un client'));
             return false;
         }elseif ($this->ClientCreateAuto){
-            $client = genericClass::createInstance('Parc','Client');
-            $client->Nom = $this->Titre;
-            $client->Save();
+            //test existence
+            $client = Sys::getOneData('Parc','Client/NomLDAP='.$this->Nom);
+            if (!$client){
+                $client = genericClass::createInstance('Parc', 'Client');
+                $client->NomLDAP = $client->Nom = $this->Nom;
+                $client->Save();
+            }
             $this->addParent($client);
             parent::Save();
         }
@@ -158,7 +163,10 @@ class InstanceSecib extends genericClass
 
     public function Delete()
     {
+        $host = $this->getOneParent('Host');
+        if ($host)$host->Delete();
         parent::Delete();
+
     }
 
     /**
@@ -187,6 +195,7 @@ class InstanceSecib extends genericClass
         return $act;
     }
 
+
     /**
      * installSecibWeb
      * Fonction d'installation ou de mise à jour de secib web
@@ -206,23 +215,57 @@ class InstanceSecib extends genericClass
         $bdd = $host->getOneChild('Bdd');
         $apache = $host->getOneChild('Apache');
 
+        $db = new PDO('mysql:host=' . $mysqlsrv->InternalIP . ';dbname=' . $bdd->Nom, $mysqlsrv->SshUser, $mysqlsrv->SshPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+        $db->query("SET AUTOCOMMIT=1");
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $db->query("GRANT USAGE ON *.* TO `".$host->Nom."` @'%';");
+        $db->query("GRANT ALL PRIVILEGES ON `Analytics`.* TO `".$host->Nom."` @'%';");
+
+        $act = $this->createActivity('Modification du dump', 'Info', $task);
+        try {
+            //test de l'existence de certains champs
+            $SQLInit = preg_replace_callback('/#IF_COLUMN_NOT_EXISTS\|(.*?)\|(.*?)#(.*?)#END_IF_COLUMN_NOT_EXISTS#/', function ($matches) use ($db, $bdd,$act) {
+                $column = $matches[1];
+                $table = $matches[2];
+                $alter = $matches[3];
+                $sql2 = "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='" . $table . "' AND column_name='" . $column . "' AND TABLE_SCHEMA='" . $bdd->Nom . "'";
+                $act->addDetails($sql2);
+                $res =$db->query($sql2);
+                $re1 = $res->fetchALL(PDO::FETCH_ASSOC);
+                $act->addDetails(print_r($re1,true));
+                if (!$re1[0]['COUNT(*)'])
+                    return $alter;
+                else return '';
+            }, $version->SQLInit);
+        }catch (Exception $e){
+            $act->addDetails('Erreur :'.$e->getMessage());
+            $act->Terminate(false);
+            return;
+        }
+        $act->addDetails(print_r($SQLInit,true));
+        $act->Terminate(true);
+
         //Connexion à la base de donnée
         $act = $this->createActivity('Initialisation de la base de donnée', 'Info', $task);
         $db = new PDO('mysql:host=' . $mysqlsrv->InternalIP . ';dbname=' . $bdd->Nom, $host->Nom, $host->Password, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
         $db->query("SET AUTOCOMMIT=1");
+        $db->query("SET FOREIGN_KEY_CHECKS=0");
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         //mise à jour de la base de donnée des domaines
         $domains = $apache->ApacheServerName . ' ' . $apache->ApacheServerAlias;
         $domains = explode(' ', $domains);
-        $act->addDetails($version->SQLInit);
-        $db->query($version->SQLInit);
-        $db->query('TRUNCATE secibweb_domaine');
+
+        $act->addDetails($SQLInit);
+        $db->query($SQLInit);
         $db->query('TRUNCATE secibweb_webservice');
-        $sql = 'INSERT INTO `secibweb_domaine` (`dom_domaine`, `dom_ws_id`, `dom_lg`, `dom_actif`, `dom_crea_date`, `dom_crea_user_id`, `dom_modif_date`, `dom_modif_user_id`) VALUES';
+        $act->addDetails('TRUNCATE secibweb_webservice');
+        $db->query('TRUNCATE secibweb_domaine');
+        $act->addDetails('TRUNCATE secibweb_domaine');
+        $sql = 'INSERT INTO `secibweb_domaine` (`dom_domaine`, `dom_ws_id`, `dom_lg`, `dom_actif`, `dom_crea_date`, `dom_crea_user_id`, `dom_modif_date`, `dom_modif_user_id`, `dom_ta_id`, `dom_url_wopi`) VALUES';
         $flag = false;
         foreach ($domains as $d) {
             if ($flag) $sql .= ',';
-            $sql .= '(\'' . $d . '\', 1, \'fr\', 1, \'' . date('Y-m-d') . ' 10:58:00\', 0, \'' . date('Y-m-d') . ' 10:58:00\', 0)';
+            $sql .= '(\'' . $d . '\', 1, \''.$this->Langue.'\', 1, \'' . date('Y-m-d') . ' 10:58:00\', 0, \'' . date('Y-m-d') . ' 10:58:00\', 0, '.$this->TypeApplication.',\''.$this->UrlWopi.'\')';
             $flag = true;
         }
         $act->addDetails($sql);

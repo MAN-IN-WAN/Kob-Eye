@@ -301,6 +301,7 @@ class Parc extends Module{
         //pour chaque apache on crée une tache pour renouveller le certificat
         foreach ($aps as $a){
             if ($a->enableSsl()) echo "--> renew $a->ApacheServerName \r\n";
+            //else print_r($a->Error);
         }
     }
     /**

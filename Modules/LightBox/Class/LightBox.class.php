@@ -193,7 +193,7 @@ class LightBox extends Module{
         return true;
     }
     static public function restartBrowser() {
-        LightBox::localExec('sudo killall -9 google-chrome && sudo /opt/kiosk.sh');
+        LightBox::localExec('sudo killall -9 chrome && sudo /opt/kiosk.sh');
         return true;
     }
 

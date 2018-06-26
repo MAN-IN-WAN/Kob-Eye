@@ -451,7 +451,7 @@ class genericClass extends Root {
 		foreach ($t as $c=>$o){
 			for ($j=0;$j<sizeof($t[$c]["elements"]);$j++){
 			    //vérification des droits
-                if (isset($t[$c]["elements"][$j]["hasRole"])&&!Sys::$User->hasRole($t[$c]["elements"][$j]["hasRole"])){
+                if (isset($t[$c]["elements"][$j]["hasRole"])&&!Sys::$User->hasRole($t[$c]["elements"][$j]["hasRole"]&&HASROLE_ENABLED)){
                     //on supprime les elements si l'utilisateur n'a pas le bon role
                     array_splice($t[$c]["elements"],$j,1);
                     $j--;
@@ -2981,7 +2981,7 @@ class genericClass extends Root {
         $o->tmsCreate= $this->tmsCreate;
         $o->tmsEdit= $this->tmsEdit;
         if(!is_array($fields)) return $o;
-        if ($this->isRecursiv()){
+        if (method_exists($this,'isRecursiv')&&$this->isRecursiv()){
             if ($this->isTail())
                 $o->_tail = true;
             else $o->_tail = false;

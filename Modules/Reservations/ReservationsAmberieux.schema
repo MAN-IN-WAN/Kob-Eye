@@ -47,7 +47,7 @@
         <FKEY card="1,1" data="Client,Id" form="1" parentDescription="Client" fiche="1">ClientId</FKEY>
         <FKEY card="1,1" data="Service,Id" form="1" parentDescription="Type de réservation" fiche="1">ServiceId</FKEY>
         <FKEY card="1,1" data="Court,Id" form="1" parentDescription="Poste" description="Poste" fiche="1">CourtId</FKEY>
-        <FKEY card="0,n" data="ResaJour,Id" list="1" form="1" fiche="1" parentDescription="Journée réservées" description="Journée réservée">ResaJourId</FKEY>
+        <FKEY card="0,n" data="ResaJour,Id" list="1" form="1" fiche="1" hidden="1" parentDescription="Journée réservées" description="Journée réservée">ResaJourId</FKEY>
         <FUNCTION title="Renvoyer le mail">SendMail</FUNCTION>
         <FUNCTION title="Valider la réservation">SetValid</FUNCTION>
         <FUNCTION title="Annuler / Refuser la réservation">SetInvalid</FUNCTION>
@@ -111,6 +111,7 @@
                 </JOIN>
             </OBJECTCLASS>
         </VIEW>
+        <FUNCTION title="reset">reset</FUNCTION>
     </OBJECTCLASS>
     <OBJECTCLASS title="TypeCourt" driver="mysql" AccessPoint="0" Dico="1" Description="Type d'emplacement" Icon="/Skins/AdminV2/Img/IconAqua/Folder.png" browseable="1">
         <PROPERTIES searchOrder="1" description="Titre" type="varchar" length="200" obligatoire="1" list="1" form="1" fiche="1">Titre</PROPERTIES>

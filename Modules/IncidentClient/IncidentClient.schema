@@ -31,13 +31,15 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Incident" logEvent="1" driver="mysql" order="Ordre" orderType="ASC" AccessPoint="1" Description="Incident"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png"  Class="Modules/IncidentClient/Class/Incident.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" 		description="Numéro de l'incident" 		listDescr="Numéro Incident" 							list="1"  				fiche="2" >Numero</PROPERTIES>
-		<PROPERTIES type="date" 						description="Date Incident" 			listDescr="Date constat" 			now="1'"					list="2" 	form="2" 	fiche="3">DateIncident</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="2" 		description="Titre"  					listDescr="Titre Incident" 								list="5" 	form="1" 	fiche="1">Titre</PROPERTIES>
-		<PROPERTIES type="text"    						description="Lieu Incident"          	listDescr="Lieu Incident" 											form="5" 	fiche="6" >LieuIncident</PROPERTIES>
-		<PROPERTIES type="varchar" length="150"    obligatoire="1"		description="Commune"   listDescr="Commune" 									list="6" 	form="6" 	fiche="7" >Commune</PROPERTIES>
+		<PROPERTIES type="varchar" length="150"		    description="Nom du déclarant" 		    listDescr="Déclarant"        							list="1"  				fiche="2" >Declarant</PROPERTIES>
+		<PROPERTIES type="date" 						description="Date Incident" 			listDescr="Date constat" 			now="1"					list="2" 	form="2" 	fiche="3">DateIncident</PROPERTIES>
+		<PROPERTIES type="varchar" 				 		description="Titre"  					listDescr="Titre Incident" 								list="5" 	form="1" 	fiche="1">Titre</PROPERTIES>
+		<PROPERTIES type="varchar"    						description="Lieu Incident"          	listDescr="Lieu Incident" 											form="5" 	fiche="6" >LieuIncident</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" length="150"    obligatoire="1"		description="Commune"   listDescr="Commune" 									list="6" 	form="6" 	fiche="7" >Commune</PROPERTIES>
 		<PROPERTIES type="html" 						description="Observations"				listDescr="Observations"  											form="7" 	fiche="8" >Observations</PROPERTIES>
 		<PROPERTIES type="html" 						description="Observations Technicien"	listDescr="Observations Technicien"									form="9" 	fiche="9" >ObservationsTech</PROPERTIES>
 		<PROPERTIES type="date" 						description="Date de clôture" 			listDescr="Date de clôture" 								list="12" 	form="13" 	fiche="13">DateCloture</PROPERTIES>
+		<PROPERTIES type="date" 						description="Date de résolution souhaitée" 			listDescr="Résolution souhaitée"	    	list="8" 	form="8"  	fiche="8" >DateSouhait</PROPERTIES>
 		<FKEY card="0,1" data="ParametresDelai,Id" 		description="Délai souhaité" 			listDescr="Délai souhaité" 							list="3" 	form="3"  	fiche="4">DelaiVoulu</FKEY>
 		<FKEY card="0,1" data="ParametresTypo,Id"  		description="Typologie de la demande" 	listDescr="Typologie" 									list="4" 	form="4" 	fiche="5">ParametresTypoId</FKEY>
 		<FKEY card="0,1" data="Client,Id" 		searchOrder="3"		description="Client" 					listDescr="Client"										list="7"	form="8"  	fiche="9"
@@ -82,7 +84,7 @@
 		<PROPERTIES type="varchar" searchOrder="1" listDescr="Titre Fichier"  list="1" form="1" fiche="1">Titre</PROPERTIES>
 		<PROPERTIES type="file"  list="2" form="1" listDescr="Fichier" fiche="1">Fichier</PROPERTIES>
 	</OBJECTCLASS>
-
+	
 
 	<OBJECTCLASS title="ParametresDelai" driver="mysql" AccessPoint="1" order="Ordre" orderType="ASC" master="0" Description="Type de délais"   Icon="/Skins/AdminV2/Img/IconAqua/LibraryFolder.png" >
 		<PROPERTIES searchOrder="1"  type="varchar" length="100" 		description="Type de Délai" 	listDescr="Type de Délai" 			list="2" form="1"  	fiche="1" >Nom</PROPERTIES>

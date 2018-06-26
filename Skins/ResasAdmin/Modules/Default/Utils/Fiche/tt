@@ -1,0 +1,242 @@
+#REQUETE
+Isendpro\Model\SmsUniqueRequest Object
+(
+    [container:protected] => Array
+        (
+            [keyid] => 586a9113aa0093bf9358cd2e89b70790
+            [gmt_zone] =>
+            [date_envoi] =>
+            [sms] => Bonjour, nous vous informons que votre réservation N° 232 pour le 02/08/2018 à 15:30 est actuellement en attente de validation. La mairie d'Amberieu.
+            [num] => 0676568114
+            [emetteur] =>
+            [tracker] =>
+            [smslong] =>
+            [nostop] =>
+            [num_azur] =>
+            [ucs2] =>
+        )
+
+)
+
+#REPONSE
+Exception when calling SmsApi->sendSms: Isendpro\ApiException Object
+(
+    [responseBody:protected] =>
+    [responseHeaders:protected] =>
+    [responseObject:protected] => Array
+        (
+            [url] => https://apirest.isendpro.com/cgi-bin/sms
+            [content_type] =>
+            [http_code] => 0
+            [header_size] => 0
+            [request_size] => 0
+            [filetime] => -1
+            [ssl_verify_result] => 0
+            [redirect_count] => 0
+            [total_time] => 0
+            [namelookup_time] => 0.000894
+            [connect_time] => 0.044889
+            [pretransfer_time] => 0
+            [size_upload] => 0
+            [size_download] => 0
+            [speed_download] => 0
+            [speed_upload] => 0
+            [download_content_length] => -1
+            [upload_content_length] => -1
+            [starttransfer_time] => 0
+            [redirect_time] => 0
+            [redirect_url] =>
+            [primary_ip] => 82.97.2.86
+            [certinfo] => Array
+                (
+                )
+
+        )
+
+    [message:protected] => API call to https://apirest.isendpro.com/cgi-bin/sms failed: SSL connect error
+    [string:Exception:private] =>
+    [code:protected] => 0
+    [file:protected] => /home/villeamb/kobeye/Class/Lib/Isendpro/lib/ApiClient.php
+    [line:protected] => 268
+    [trace:Exception:private] => Array
+        (
+            [0] => Array
+                (
+                    [file] => /home/villeamb/kobeye/Class/Lib/Isendpro/lib/Api/SmsApi.php
+                    [line] => 153
+                    [function] => callApi
+                    [class] => Isendpro\ApiClient
+                    [type] => ->
+                    [args] => Array
+                        (
+                            [0] => /sms
+                            [1] => POST
+                            [2] => Array
+                                (
+                                )
+
+                            [3] => {"keyid":"586a9113aa0093bf9358cd2e89b70790","sms":"Bonjour, nous vous informons que votre r\u00e9servation N\u00b0 232 pour le 02\/08\/2018 \u00e0 15:30 est actuellement en attente de validation. La mairie d'Amberieu.","num":"0676568114"}
+                            [4] => Array
+                                (
+                                    [Accept] => application/json
+                                    [Content-Type] => application/json
+                                )
+
+                            [5] => \Isendpro\Model\SMSReponse
+                            [6] => /sms
+                        )
+
+                )
+
+            [1] => Array
+                (
+                    [file] => /home/villeamb/kobeye/Class/Lib/Isendpro/lib/Api/SmsApi.php
+                    [line] => 101
+                    [function] => sendSmsWithHttpInfo
+                    [class] => Isendpro\Api\SmsApi
+                    [type] => ->
+                    [args] => Array
+                        (
+                            [0] => Isendpro\Model\SmsUniqueRequest Object
+                                (
+                                    [container:protected] => Array
+                                        (
+                                            [keyid] => 586a9113aa0093bf9358cd2e89b70790
+                                            [gmt_zone] =>
+                                            [date_envoi] =>
+                                            [sms] => Bonjour, nous vous informons que votre réservation N° 232 pour le 02/08/2018 à 15:30 est actuellement en attente de validation. La mairie d'Amberieu.
+                                            [num] => 0676568114
+                                            [emetteur] =>
+                                            [tracker] =>
+                                            [smslong] =>
+                                            [nostop] =>
+                                            [num_azur] =>
+                                            [ucs2] =>
+                                        )
+
+                                )
+
+                        )
+
+                )
+
+            [2] => Array
+                (
+                    [file] => /home/villeamb/kobeye/Modules/Reservations/Class/Reservation.class.php
+                    [line] => 674
+                    [function] => sendSms
+                    [class] => Isendpro\Api\SmsApi
+                    [type] => ->
+                    [args] => Array
+                        (
+                            [0] => Isendpro\Model\SmsUniqueRequest Object
+                                (
+                                    [container:protected] => Array
+                                        (
+                                            [keyid] => 586a9113aa0093bf9358cd2e89b70790
+                                            [gmt_zone] =>
+                                            [date_envoi] =>
+                                            [sms] => Bonjour, nous vous informons que votre réservation N° 232 pour le 02/08/2018 à 15:30 est actuellement en attente de validation. La mairie d'Amberieu.
+                                            [num] => 0676568114
+                                            [emetteur] =>
+                                            [tracker] =>
+                                            [smslong] =>
+                                            [nostop] =>
+                                            [num_azur] =>
+                                            [ucs2] =>
+                                        )
+
+                                )
+
+                        )
+
+                )
+
+            [3] => Array
+                (
+                    [file] => /home/villeamb/kobeye/Modules/Reservations/Class/Reservation.class.php
+                    [line] => 696
+                    [function] => sendSms
+                    [class] => Reservation
+                    [type] => ->
+                    [args] => Array
+                        (
+                            [0] => Bonjour, nous vous informons que votre réservation N° 232 pour le 02/08/2018 à 15:30 est actuellement en attente de validation. La mairie d'Amberieu.
+                        )
+
+                )
+
+            [4] => Array
+                (
+                    [file] => /home/villeamb/kobeye/Modules/Reservations/Class/Reservation.class.php
+                    [line] => 691
+                    [function] => sendPendingMail
+                    [class] => Reservation
+                    [type] => ->
+                    [args] => Array
+                        (
+                        )
+
+                )
+
+            [5] => Array
+                (
+                    [file] => /home/villeamb/kobeye/Skins/ResasClient/Modules/Reservations/Reservation/Reserver.twig.php
+                    [line] => 7
+                    [function] => setPending
+                    [class] => Reservation
+                    [type] => ->
+                    [args] => Array
+                        (
+                        )
+
+                )
+
+            [6] => Array
+                (
+                    [file] => /home/villeamb/kobeye/Class/Template/Twig.class.php
+                    [line] => 29
+                    [args] => Array
+                        (
+                            [0] => /home/villeamb/kobeye/Skins/ResasClient/Modules/Reservations/Reservation/Reserver.twig.php
+                        )
+
+                    [function] => include
+                )
+
+            [7] => Array
+                (
+                    [file] => /home/villeamb/kobeye/Class/Beacon/Bloc.class.php
+                    [line] => 138
+                    [function] => render
+                    [class] => KeTwig
+                    [type] => ::
+                    [args] => Array
+                        (
+                            [0] => Skins/ResasClient/Modules/Reservations/Reservation/Reserver.twig
+                            [1] => Array
+                                (
+                                    [Valider] => Valider la réservation
+                                    [RES] => Reservation Object
+                                        (
+                                            [_partenaires] => Array
+                                                (
+                                                )
+
+                                            [_produits] => Array
+                                                (
+                                                    [0] => genericClass Object
+                                                        (
+                                                            [Id] => 232
+                                                            [Module] => Reservations
+                                                            [Referent] =>
+                                                            [ObjectType] => LigneFacture
+                                                            [Historique] => Array
+                                                                (
+                                                                )
+
+                                                            [Parents] => Array
+                                                                (
+                                                                )
+
+                                                            [Enf…

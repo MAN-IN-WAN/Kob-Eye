@@ -426,7 +426,8 @@ class Sys extends Root{
             case "dll": if ($this->type=="dll") { header("Content-type:application/octet-stream");$detectmime=false;  }
 			case "doc": if ($this->type=="doc") { header("Content-type:application/msword");$detectmime=false;  }
 			case "odt": if ($this->type=="odt") { header("Content-type:application/vnd.oasis.opendocument.text");$detectmime=false;  }
-			case "xlsx": if ($this->type=="xlsx") { header("Content-type:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");$detectmime=false;  }
+            case "xlsx": if ($this->type=="xlsx") { header("Content-type:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");$detectmime=false;  }
+            case "docx": if ($this->type=="docx") { header("Content-type:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");$detectmime=false;  }
 			case "conf":
 				//Fichiers qui déclenchent un téléchargement
 				$this->setNavCache();

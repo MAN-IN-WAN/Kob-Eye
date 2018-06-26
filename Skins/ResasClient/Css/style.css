@@ -4,6 +4,8 @@ body{
 
 }
 
+
+
 /*.modal-header-inner {border-radius: 5px;height: 145px; background: url('/Skins/LoginBootstrap/Img/Arabesque.jpg') top right no-repeat; }
 .modal-header {border-radius: 5px;padding: 0; height: 145px; background: url('/Skins/LoginBootstrap/Img/Degrade.jpg') top repeat-x; }*/
 .modal-header-logo {
@@ -16,37 +18,212 @@ body{
 .modal-footer {   border-top: 0px; }
 .modal-header {border:0;}
 @media screen and (min-width: 768px) {
-    .modal-content {
+    /*.modal-content {
         -webkit-box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         box-shadow: 0 0px 64px rgba(0,0,0,0.3);
-    }
+    }*/
 }
 
 .btn-primary {
-    background-image: -webkit-gradient(linear,left 0,left 100%,from(#02a6e3),to(#0088b0));
-    background-image: -webkit-linear-gradient(top,#02a6e3 0,#0088b0 100%);
-    background-image: -moz-linear-gradient(top,#02a6e3 0,#0088b0 100%);
-    background-image: linear-gradient(to bottom,#02a6e3 0,#0088b0 100%);
+    background-image: -webkit-gradient(linear,left 0,left 100%,from(#1dc0c9),to(#1799a0));
+    background-image: -webkit-linear-gradient(top,#1dc0c9 0,#1799a0 100%);
+    background-image: -moz-linear-gradient(top,#1dc0c9 0,#1799a0 100%);
+    background-image: linear-gradient(to bottom,#1dc0c9 0,#1799a0 100%);
     background-repeat: repeat-x;
-    border-color: #02a6e3;
+    border-color: #1799a0;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff02a6e3',endColorstr='#ff0088b0',GradientType=0);
     filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
 
-@media screen and (min-width: 768px) {
-    .modal-dialog {
-        width: 700px;
-        padding-top: 200px;
+@media screen and (min-width: 1200px) {
+    #loginModal .modal-dialog {
+        width: calc(100% - 520px);
+        padding-top: 100px;
         padding-bottom: 30px;
+        display: inline-block;
+        vertical-align: top;
     }
 }
-.modal-dialog {
-    padding-top: 80px;
+
+#loginModal .modal-body {
+    background-color: #f5f5f5;
+    width:700px;
+    margin:0 auto;
 }
+
+/*
+Barre de bienvenue
+ */
+
+.navbar.navbar-inverse.navbar-fixed-top,
+.navbar.navbar-inverse.navbar-fixed-top div{
+    background-color: #f5f5f5;
+    border: none;
+}
+
+.navbar.navbar-inverse.navbar-fixed-top .navbar-brand {
+    color:#f5f5f5;
+    font-size:2em;
+    font-weight: bold;
+    text-shadow: none;
+}
+
+/* bouton retour */
+.btnRetour {
+    float: right;
+    padding: 5px 10px;
+    border-radius: 3px;
+    margin-top: 15px;
+    margin-right: 15px;
+}
+
+/*
+texte colonne de gauche
+ */
+
+.logoAmberieu {
+    background-image: url(/Skins/ResasLogin/Img/siteon0.png);
+    background-size: 480px 177px;
+    background-repeat: no-repeat;
+    background-color: #f5f5f5;
+    height:177px;
+    margin-top: 50px;
+    margin-left: 15px;
+}
+
+.texteModal {
+    max-width:480px;
+    display: inline-block;
+    vertical-align: top;
+    margin: 70px 0 0 17px;
+}
+
+.texteModal nav {
+    margin-top: 30px;
+}
+
+.texteModal nav b {
+    display: block;
+    color:#799721;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.texteModal a {
+    display:block;
+    padding: 5px 10px;
+    border-radius: 3px;
+    width: 190px;
+    text-align: center;
+    margin:10px auto;
+}
+
+    /*
+    login rdv passeport
+     */
+#loginModal .alert-warning {
+    background-image: -webkit-gradient(linear,left 0,left 100%,from(#97bd29),to(#799721));
+    background-image: -webkit-linear-gradient(top,#97bd29 0,#799721 100%);
+    background-image: -moz-linear-gradient(top,#97bd29 0,#799721 100%);
+    background-image: linear-gradient(to bottom,#97bd29 0,#799721 100%);
+    background-repeat: repeat-x;
+    border-color: #97bd29;
+    color:#ffffff;
+    font-size: 1.9em;
+    text-shadow: none;
+    border-radius: 10px;
+}
+
+#loginModal .btn-tennis {
+    background-color:#1799a0;
+    border-radius: 10px;
+    transition: all 0.5s;
+}
+
+#loginModal .btn-tennis {
+    background-image: -webkit-gradient(linear,left 0,left 100%,from(#1dc0c9),to(#1799a0));
+    background-image: -webkit-linear-gradient(top,#1dc0c9 0,#1799a0 100%);
+    background-image: -moz-linear-gradient(top,#1dc0c9 0,#1799a0 100%);
+    background-image: linear-gradient(to bottom,#1dc0c9 0,#1799a0 100%);
+    background-repeat: repeat-x;
+    border-color: #1799a0;
+    color: #ffffff;
+    font-size: 2em;
+    text-shadow: none;
+    border-radius: 10px;
+    transition: all 0.3s;
+}
+
+#loginModal .btn-tennis:hover{
+    color: #fff;
+    background-image: none;
+    background-color:#1799a0;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+/*
+réservation
+ */
+
+input[type="radio"].form-control {
+    box-shadow: none;
+}
+
+/*
+validation réservation
+ */
+
+#loginModal .RetourPlanning,
+#loginModal .btn-danger {
+
+    background-image: -webkit-gradient(linear, left 0, left 100%, from(#c31377), to(#9a0f5d));
+    background-image: -webkit-linear-gradient(top, #c31377 0, #9a0f5d 100%);
+    background-image: -moz-linear-gradient(top, #c31377 0, #9a0f5d 100%);
+    background-image: linear-gradient(to bottom, #c31377 0, #9a0f5d 100%);
+    background-repeat: repeat-x;
+    border-color: #9a0f5d;
+}
+
+#loginModal .RetourPlanning {
+    width:100%;
+    text-shadow: 0 -1px 0 rgba(0,0,0,0.2);
+    -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.15),0 1px 1px rgba(0,0,0,0.075);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.15),0 1px 1px rgba(0,0,0,0.075);
+    display: block;
+    padding:10px 0;
+    font-size: 18px;
+    line-height: 1.33;
+    border-radius: 6px;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    color:#fff;
+    margin-top: 15px;
+}
+
+#loginModal .RetourPlanning:hover,
+#loginModal .btn-danger:hover {
+    background-image: none;
+}
+
+#loginModal .RetourPlanning:hover,
+#loginModal .RetourPlanning:focus {
+    background-color: #9a0f5d;
+}
+
+
+h3~.btn-success {margin-top: 50px;}
+
+/*.modal-dialog {
+    padding-top: 80px;
+}*/
 .modal-content {
 
     /*   background-color: #302e33;*/
-    background-color: rgba(0,0,0,0.8)
+    background-color: transparent;
 }
 .form-group {
     margin-bottom: 15px;
@@ -61,6 +238,31 @@ h5 { font: normal 19px/26px "Trebuchet MS", Arial, Helvetica, sans-serif;  color
 h6 { font: italic 12px/18px Ubuntu;  color:#ffffff; }
 body { font-weight: normal;}
 
+
+.modal-content h1 {
+    color:#97bd29;
+    margin-bottom: 50px;
+    margin-top: 0;
+}
+
+.modal-content h3 {
+    color:#1799A0;
+    font-weight: bold;
+    font-size: 2em;
+}
+
+.texteModal h5,
+.modal-body h5 {
+    color:#1799A0;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.modal-content .breadcrumb {
+    color:#1799a0;
+    display:none;
+}
+
 .modal {
     position: fixed;
     top: 0;
@@ -68,25 +270,27 @@ body { font-weight: normal;}
     bottom: 0;
     left: 0;
     z-index: 1024 !important;
-    display: none;
     overflow: auto;
     overflow-y: auto !important;
 }
-.btn-tennis{
+
+.btn-tennis {
     padding: 20px;
     display: block;
     position: relative;
-    margin: 20px;
+    margin: 20px 0;
     background-color: rgba(255,255,255,0.3);
-    font-weight: 600;
     border-radius: 10px;
-    font: normal 18px/24px "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font: 600 18px/24px "Trebuchet MS", Arial, Helvetica, sans-serif;
     color: #ffffff;
 }
+
 .btn-tennis h3{
     margin:0;padding:0;font-size:1.5em;font-weight:bold;
 }
-.btn-tennis:before{
+
+
+/*.btn-tennis:before{
     position: absolute;
     content: "";
     height: 50%;
@@ -146,7 +350,7 @@ body { font-weight: normal;}
     -webkit-transition: all 0.35s ease;
     -moz-transition: all 0.35s ease;
     -o-transition: all 0.35s ease;
-}
+}*/
 
 /** tennis horaire **/
 
@@ -155,7 +359,7 @@ body { font-weight: normal;}
     display: block;
     position: relative;
     margin: 2px 0px;
-    background-color: rgba(0,255,0,0.8);
+    background-color: #97bd29;
     font-weight: 600;
     /* border-radius: 10px; */
     font: normal 18px/24px "Trebuchet MS", Arial, Helvetica, sans-serif;
@@ -198,7 +402,7 @@ body { font-weight: normal;}
 }
 .horaire-tennis:hover{
     color: #fff;
-    background: transparent;
+    background: rgba(151, 189, 41, 0.3);
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
     -o-transition: all 0.3s ease;
@@ -245,7 +449,7 @@ body { font-weight: normal;}
     border-radius: 0 6px 6px 0;
 }
 .horaire-tennis.disabled,.horaire-tennis.disabled.warning{
-    background:red !important;
+    background:#9a0f5d !important;
     color: white;
     pointer-events: none;
     cursor: default;
@@ -274,6 +478,11 @@ body { font-weight: normal;}
 .breadcrumb a,.breadcrumb a:visited{
     color: #fff;
 }
+
+.modal-content .breadcrumb a,.breadcrumb a:visited {
+    color:#9a0f5d;
+}
+
 .label-custom{
     border-radius:  0.25em;
     display: inline;
@@ -337,5 +546,72 @@ span.msg-suppr{
     margin-top:50px;
 }
 #notes span{
-    color: #fff;
+    color: #1799a0;
+}
+
+/*----- Responsive ------ */
+
+@media (max-width:1662px) {
+
+    body {
+        background-size: 160px 59px;
+        background-position: 1% -90%;
+    }
+}
+
+
+@media (max-width: 1200px) {
+
+    .logoAmberieu {
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+        background-color: #f5f5f5;
+        margin-right: 15px;
+        max-width: 480px;
+    }
+
+    #loginModal .modal-dialog {
+        width: 100%;
+        padding-top: 100px;
+        padding-bottom: 30px;
+        display: block;
+
+    }
+
+    .texteModal {
+        max-width:480px;
+        margin: 70px auto 0 auto;
+        display: block;
+        padding: 0 15px;
+    }
+
+    #loginModal .modal-content {
+        width:100%;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width:767px) {
+
+    body {
+        background-position: 1% -120%;
+    }
+
+    #loginModal .row > div {
+
+        background-color: #f5f5f5;
+    }
+
+    #loginModal .modal-dialog {
+        width:100%;
+        padding: 0;
+    }
+
+    #loginModal .modal-body {
+        margin-top: 70px;
+        background-color: #f5f5f5;
+        width:100%;
+    }
+
+
 }

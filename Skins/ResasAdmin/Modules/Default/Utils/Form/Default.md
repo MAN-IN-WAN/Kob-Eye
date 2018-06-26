@@ -130,38 +130,40 @@
         </div>
         [/CASE]
         [CASE fkey]
-            [IF [!P::card!]=long]
-                <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
-                    <label class="col-sm-5 control-label">[!P::parentDescription!]</label>
-                    <div class="col-sm-7">
-                        <div class="row">
-                        [STORPROC [!P::objectModule!]/[!P::objectName!]|C]
-                            <div class="col-md-6">
-                                [!C::getFirstSearchOrder()!] [!C::getSecondSearchOrder()!]
-                                [IF [!O::Id!]]
-                                    [COUNT [!P::objectModule!]/[!P::objectName!]/[!C::Id!]/[!O::ObjectType!]/[!O::Id!]|DF]
-                                [ELSE]
-                                    [!DF:=0!]
-                                [/IF]
-                                <input type="checkbox" name="Form_[!P::name!][]" [IF [!DF!]]checked="checked"[/IF] class="switch " value="[!C::Id!]">
+            [IF [!P::hidden!]=0]
+                [IF [!P::card!]=long]
+                    <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
+                        <label class="col-sm-5 control-label">[!P::parentDescription!]</label>
+                        <div class="col-sm-7">
+                            <div class="row">
+                            [STORPROC [!P::objectModule!]/[!P::objectName!]|C]
+                                <div class="col-md-6">
+                                    [!C::getFirstSearchOrder()!] [!C::getSecondSearchOrder()!]
+                                    [IF [!O::Id!]]
+                                        [COUNT [!P::objectModule!]/[!P::objectName!]/[!C::Id!]/[!O::ObjectType!]/[!O::Id!]|DF]
+                                    [ELSE]
+                                        [!DF:=0!]
+                                    [/IF]
+                                    <input type="checkbox" name="Form_[!P::name!][]" [IF [!DF!]]checked="checked"[/IF] class="switch " value="[!C::Id!]">
+                                </div>
+                            [/STORPROC]
                             </div>
-                        [/STORPROC]
                         </div>
                     </div>
-                </div>
-            [ELSE]
-                [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]
-                <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
-                    <label class="col-sm-5 control-label">[!P::parentDescription!]</label>
-                    <div class="col-sm-7">
-                        <select class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!][]">
-                            <option value=""></option>
-                            [STORPROC [!P::objectModule!]/[!P::objectName!]|C]
-                            <option value="[!C::Id!]" [IF [!DF!]=[!C::Id!]]selected="selected"[/IF]>[!C::getFirstSearchOrder()!] [!C::getSecondSearchOrder()!]</option>
-                            [/STORPROC]
-                        </select>
+                [ELSE]
+                    [IF [!Form_[!P::name!]!]][!DF:=[!Form_[!P::name!]!]!][ELSE][!DF:=[!P::value!]!][/IF]
+                    <div class="form-group group-[!P::name!] [IF [!Error_[!P::name!]!]] has-error[/IF]">
+                        <label class="col-sm-5 control-label">[!P::parentDescription!]</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" id="Form_[!P::name!]" name="Form_[!P::name!][]">
+                                <option value=""></option>
+                                [STORPROC [!P::objectModule!]/[!P::objectName!]|C]
+                                <option value="[!C::Id!]" [IF [!DF!]=[!C::Id!]]selected="selected"[/IF]>[!C::getFirstSearchOrder()!] [!C::getSecondSearchOrder()!]</option>
+                                [/STORPROC]
+                            </select>
+                        </div>
                     </div>
-                </div>
+                [/IF]
             [/IF]
         [/CASE]
         [CASE image]

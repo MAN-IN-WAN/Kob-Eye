@@ -104,7 +104,7 @@ class SambaDevice extends genericClass {
             //analyse du retour de la liste
             $list = explode("\n", $list);
             foreach ($list as $l) {
-                if (preg_match("#^(.+)[\ ]+Disk[\ ]+$#", $l, $out)) {
+                if (preg_match("#^(.+)[\ ]+Disk[\ ]+(.*)$#", $l, $out)) {
                     $share = trim($out[1]);
                     $this->addShare($share,$this->Titre." -> ".$share);
                 }

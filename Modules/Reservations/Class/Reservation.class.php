@@ -657,6 +657,31 @@ class Reservation extends genericClass {
         return $total;
     }
 
+    /**
+     * sendSms
+     * Envoi un sms
+     */
+    function sendSms($message) {
+        $cli = $this -> getClient();
+        if (!empty($cli->Tel)) {
+            require_once("Class/Lib/Isendpro/autoload.php");
+            $api_instance = new Isendpro\Api\SmsApi();
+            $api_instance->getApiClient()->getConfig()->setSSLVerification(false);
+            $smsrequest = new Isendpro\Model\SmsUniqueRequest();
+            $smsrequest["keyid"] = SMS_API;
+            $smsrequest["num"] = $cli->Tel;
+            $smsrequest["sms"] = $message;
+            try {
+                $result = $api_instance->sendSms($smsrequest);
+                //print_r($result);
+            } catch (Exception $e) {
+                /*print_r($smsrequest);
+                echo 'Exception when calling SmsApi->sendSms: ',print_r($e), PHP_EOL;
+                print_r($e->getResponseObject());
+                die('ERREUR');*/
+            }
+        }
+    }
 
     function setPending() {
         $this->Valide=0;
@@ -669,6 +694,7 @@ class Reservation extends genericClass {
     function sendPendingMail() {
         $cli = $this -> getClient();
 
+        $this->sendSms("Bonjour, nous vous informons que votre réservation N° " . $this->Id . " pour le " . date("d/m/Y à H:i", $this->DateDebut) . " est actuellement en attente de validation. La mairie d'Amberieu.");
 
         $Civilite = $cli -> Civilite . " " . $cli -> Prenom . ' <span style="text-transform:uppercase">' . $cli -> Nom . '</span>';
 
@@ -713,6 +739,9 @@ class Reservation extends genericClass {
     }
     function sendInvalidMail() {
         $cli = $this -> getClient();
+
+
+        $this->sendSms("Bonjour, nous vous informons que votre réservation N° " . $this->Id . " pour le " . date("d/m/Y à H:i", $this->DateDebut) . " ne pourra être honorée. La mairie d'Amberieu.");
 
 
         $Civilite = $cli -> Civilite . " " . $cli -> Prenom . ' <span style="text-transform:uppercase">' . $cli -> Nom . '</span>';
@@ -808,6 +837,8 @@ class Reservation extends genericClass {
         }else{
             $Lacommande = '';
         }
+
+        $this->sendSms("Bonjour, nous vous informons que votre réservation N° " . $this->Id . " pour le " . date("d/m/Y à H:i", $this->DateDebut) . " a bien été prise en compte. La mairie d'Amberieu.");
 
 
         require_once ("Class/Lib/Mail.class.php");
