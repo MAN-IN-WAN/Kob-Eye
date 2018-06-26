@@ -157,6 +157,9 @@ tr.angular-ui-tree-empty {
     left: -2px;
     z-index: 2;
 }
+table.tree-header{
+    margin-left: 20px;
+}
 table.tree{
     width:100%;
     margin:0;
@@ -167,17 +170,21 @@ table.tree tr td.table-action{
 table.tree tr td.table-details{
     width:250px;
 }
-table.tree tr td.list-col-td-folded{
+table.tree tr td.list-col-td-folded,table tr th.list-col-td-folded{
     width:45px;
 }
-table.tree tr td.list-col-td-dark{
+table.tree tr td.list-col-td-dark, table tr th.list-col-th-dark{
+    padding: .75rem;
     width:30px;
 }
-table.tree tr td.list-col-td-id{
+table.tree tr td.list-col-td-id,table tr th.list-col-th-id{
     width:40px;
 }
-table.tree tr td.typeboolean,table.tree tr th.typeboolean{
+table.tree tr td.typeboolean,table tr th.typeboolean{
     width:25px;
+}
+table.tree tr td.typeorder,table tr th.typeorder{
+    width:30px;
 }
 table.tree tr td{
     flex:1;

@@ -5,8 +5,8 @@ class Site extends genericClass {
     var $currentUrl;
 
 
-    public function Save(){
-        //parent::Save();
+    public function Save($lite = false){
+        if($lite) return parent::Save();
 
         $user = $this->getOneParent('User');
         if(!$user){
@@ -31,7 +31,7 @@ class Site extends genericClass {
             $user->Save();
         }
 
-        parent::Save();
+        return parent::Save();
     }
 
 
@@ -47,8 +47,18 @@ class Site extends genericClass {
     public function addPage($url,$alias="",$men=""){
         if(strpos($url,'http://') !== false || strpos($url,'https://') !== false ) return false;
         $url = 'http://'.$this->Domaine.'/'.$url;
+
         //Verification de l'existence
         $p = $this->getChildren('Page/MD5=' . md5($url));
+        if(!sizeof($p)){
+            if (is_object($men)) {
+                $i = Info::getInfos($men->Alias);
+                if ($i['TypeSearch'] == 'Direct') {
+                    $p =  Sys::getData('Systeme','Page/PageModule='.$i['Module'].'&PageObject='.$i['ObjectType'].'&PageId='.$i['LastId']);
+                }
+            }
+        }
+
         if (!sizeof($p)){
             //creation de la page
             $p = genericClass::createInstance('Systeme','Page');
@@ -60,7 +70,14 @@ class Site extends genericClass {
         //analyse de la requete
         $i = Info::getInfos($alias);
         if (is_object($men)){
-            $el = $men;
+            $i = Info::getInfos($men->Alias);
+            if($i['TypeSearch']!='Direct'){
+                $el = $men;
+            } else{
+                $el = Sys::getOneData($i['Module'],$i['ObjectType'].'/'.$i['LastId']);
+            }
+
+
             //mise à jour des donnés
             if (empty($p->Title)&&isset($el->TitleMeta))$p->Title = $el->TitleMeta;
             if (empty($p->Description)&&isset($el->DescriptionMeta))$p->Description = $el->DescriptionMeta;

@@ -87,7 +87,7 @@
     var editorElement = $element[0];
     var instance;
     var readyDeferred = $q.defer(); // a deferred to be resolved when the editor is ready
-      console.log(' >>>>>>>>>>>>>>>>>>>> ckeditor config ',config);
+
     // Create editor instance.
     if (editorElement.hasAttribute('contenteditable') &&
         editorElement.getAttribute('contenteditable').toLowerCase() == 'true') {

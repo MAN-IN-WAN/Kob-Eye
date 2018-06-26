@@ -40,7 +40,8 @@
 }
 
 .btn.btn-link {
-    color: #827ca1;
+    color: #514d6a;
+    font-size: 1em;
     border-color: transparent !important;
     background: none !important;
     text-decoration: none;
@@ -119,7 +120,7 @@
 }
 
 .btn.btn-default, .btn.btn-primary, .btn.btn-secondary, .btn.btn-success, .btn.btn-info, .btn.btn-warning, .btn.btn-danger, .open > .btn.btn-default, .open > .btn.btn-primary, .open > .btn.btn-secondary, .open > .btn.btn-success, .open > .btn.btn-info, .open > .btn.btn-warning, .open > .btn.btn-danger {
-    color: #ffffff !important;
+    color: #ffffff /*!important*/;
 }
 
 .btn.btn-default, .open > .btn.btn-default {

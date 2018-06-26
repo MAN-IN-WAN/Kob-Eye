@@ -44,7 +44,7 @@
                         {{ mod.Description }}
                     </a>
                     <ul class="left-menu-list list-unstyled">
-                        {% for obj in mod.getAccessPoint() %}
+                        {% for obj in mod.getObjectClass() %}
                         <li>
                             <a class="left-menu-link" href="#/{{ mod.Nom }}/{{ obj.titre }}">
                                 {{ obj.description }}

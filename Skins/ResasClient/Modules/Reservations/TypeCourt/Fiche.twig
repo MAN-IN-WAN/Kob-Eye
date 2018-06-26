@@ -71,11 +71,19 @@
                                 || (j<parseInt(response.data[r].HeureFin)&&j>parseInt(response.data[r].HeureDebut))
                                 || (j==parseInt(response.data[r].HeureFin) && parseInt(response.data[r].MinuteFin)==30)) {
                                 console.log('desactivation '+'#date-' + response.data[r].Court + '-' + parseInt(j) + '-00')
-                                $('#date-' + response.data[r].Court + '-' + parseInt(j) + '-00').addClass('disabled');
+                                if(!response.data[r].Attente) {
+                                    $('#date-' + response.data[r].Court + '-' + parseInt(j) + '-00').addClass('disabled');
+                                } else{
+                                    $('#date-' + response.data[r].Court + '-' + parseInt(j) + '-00').addClass('warning');
+                                }
                             }
                             if (j < parseInt(response.data[r].HeureFin)){
                                 console.log('desactivation '+'#date-' + response.data[r].Court + '-' + parseInt(j) + '-30')
-                                $('#date-'+response.data[r].Court+'-'+parseInt(j)+'-30').addClass('disabled');
+                                if(!response.data[r].Attente) {
+                                    $('#date-'+response.data[r].Court+'-'+parseInt(j)+'-30').addClass('disabled');
+                                } else{
+                                    $('#date-'+response.data[r].Court+'-'+parseInt(j)+'-30').addClass('warning');
+                                }
                             }
                         }
                     }

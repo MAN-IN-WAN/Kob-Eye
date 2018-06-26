@@ -15,7 +15,7 @@
 			<FKEY card="0,1" module="Systeme" data="Menu,Id" hidden="1">MenuId</FKEY>
 		</CATEGORY>
 		<CATEGORY title="Templating" fold="1">
-			<PROPERTIES type="template" form="1" fiche="1" description="Modèle" values="Page pleine::Default,Colonne à gauche::LeftCol">CmsTemplate</PROPERTIES>
+			<PROPERTIES type="template" form="1" description="Modèle" values="Page pleine::Default,Colonne à gauche::LeftCol">CmsTemplate</PROPERTIES>
 			<PROPERTIES type="templateconfig" subtype="xml" large="1" form="1" fiche="1" hidden="1">TemplateConfig</PROPERTIES>
 			<PROPERTIES type="templateconfig" subtype="html" large="1" form="1" fiche="1"  hidden="1">HtmlConfig</PROPERTIES>
 		</CATEGORY>

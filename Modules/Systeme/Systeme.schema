@@ -1,6 +1,6 @@
 <SCHEMA>
 	<OBJECTCLASS title="Group" driver="mysql"  master="1" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png" Description="Groupes" Heritage="0" Class="Modules/Systeme/Class/Group.class.php" cache="1">
-		<PROPERTIES type="private"  searchOrder="1" obligatoire="1" category="Intitulé" formLabel="1">Nom</PROPERTIES>
+		<PROPERTIES type="private"  searchOrder="1" obligatoire="1" category="Intitulé" formLabel="1" listDescr="Nom" list="1">Nom</PROPERTIES>
 		<PROPERTIES type="private"  searchOrder="2" category="Intitulé">Commentaire</PROPERTIES>
 		<PROPERTIES type="varchar" query="Explorateur/_Dossier/Skins/_Dossier::Nom::Nom" category="Intégration">Skin</PROPERTIES>
 		<PROPERTIES type="image" category="Intégration" description="Arrière plan">ArrierePlan</PROPERTIES>
@@ -47,10 +47,10 @@
 		<FUNCTION>importMenus</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Site" driver="mysql" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Wiki2.png" generateUrl="0" Class="Modules/Systeme/Class/Site.class.php" cache="1">
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé" list="1">Domaine</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé" listDescr="Domaine" list="1">Domaine</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" description="Mettre UA" values="Mobile,Desktop">UserAgent</PROPERTIES>
-		<PROPERTIES type="boolean" default="0" category="Connexion">Api</PROPERTIES>
-		<PROPERTIES type="text" description="Contenu du robots.txt">Robots</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Connexion"  listDescr="Api" list="1">Api</PROPERTIES>
+		<PROPERTIES type="text" description="Contenu du robots.txt"  listDescr="Robots.txt" list="1">Robots</PROPERTIES>
 		<PROPERTIES type="text" category="Code Google Analytics">AnalyticsCode</PROPERTIES>
 		<PROPERTIES type="text" category="Clé Piwik">PiwikCle</PROPERTIES>
 		<FUNCTION Icon="/Skins/AdminV2/Img/email_go.png">Motsclefs</FUNCTION>
@@ -59,26 +59,26 @@
 		<FKEY card="0,1" data="User,Id" inherit="Group">UserId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Page" driver="mysql" Icon="/Skins/AdminV2/Img/IconAqua/Wiki2.png" generateUrl="0" Class="Modules/Systeme/Class/Page.class.php">
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé" list="2">Url</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé" list="2" form="1" listDescr="Url">Url</PROPERTIES>
       		<PROPERTIES type="varchar" auto="1">FromUrl</PROPERTIES>
 		<PROPERTIES type="varchar" auto="1">MD5</PROPERTIES>
 		<PROPERTIES type="varchar">LastMod</PROPERTIES>
-		<PROPERTIES type="metat" special="multi" list="4">Title</PROPERTIES>
-		<PROPERTIES type="metad" special="multi">Description</PROPERTIES>
-		<PROPERTIES type="metak" special="multi">Keywords</PROPERTIES>
-		<PROPERTIES type="image" list="1">Image</PROPERTIES>
-		<PROPERTIES category="Clef" type="varchar"  searchOrder="2" list="5">PageModule</PROPERTIES>
-		<PROPERTIES category="Clef" type="varchar"  searchOrder="3" list="6">PageObject</PROPERTIES>
-		<PROPERTIES category="Clef" type="int"  searchOrder="4" list="7">PageId</PROPERTIES>
+		<PROPERTIES type="metat" special="multi" list="4" ListDescr="Title" form="1">Title</PROPERTIES>
+		<PROPERTIES type="metad" special="multi" form="1">Description</PROPERTIES>
+		<PROPERTIES type="metak" special="multi" form="1">Keywords</PROPERTIES>
+		<PROPERTIES type="image" list="1" form="1" listDescr="Image">Image</PROPERTIES>
+		<PROPERTIES category="Clef" type="varchar"  searchOrder="2" listDescr="Module">PageModule</PROPERTIES>
+		<PROPERTIES category="Clef" type="varchar"  searchOrder="3" listDescr="Type d'objet">PageObject</PROPERTIES>
+		<PROPERTIES category="Clef" type="int"  searchOrder="4"  listDescr="Identifiant">PageId</PROPERTIES>
 		<PROPERTIES type="varchar" values="daily,weekly,monthly" default="monthly">ChangeFreq</PROPERTIES>
 		<PROPERTIES type="varchar" default="0.5">Priority</PROPERTIES>
-		<PROPERTIES type="boolean" default="1" list="3">Publier</PROPERTIES>
+		<PROPERTIES type="boolean" default="1" list="3" listDescr="Publier">Publier</PROPERTIES>
 		<PROPERTIES type="boolean" default="1">Valid</PROPERTIES>
-		<FKEY card="1,1" data="Site,Id">SiteId</FKEY>
+		<FKEY card="1,1" data="Site,Id" list="10" listDescr="Site">SiteId</FKEY>
 		<FKEY card="0,n" data="Tag,Id">Tags</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Menu" logEvent="1" driver="mysql" AccessPoint="0" Icon="/Skins/AdminV2/Img/folder.gif" Description="Menu" Class="Modules/Systeme/Class/Menu.class.php" cache="1">
-		<PROPERTIES type="varchar" searchOrder="2" category="Intitulé" fiche="1" form="1" list="1">Url</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" category="Intitulé" fiche="1" form="1" >Url</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé" special="multi" fiche="1" form="1" list="1">Titre</PROPERTIES>
 		<PROPERTIES type="varchar" category="Intitulé" special="multi">SousTitre</PROPERTIES>
 		<PROPERTIES type="varchar" category="Emplacement">Lien</PROPERTIES>
@@ -113,10 +113,10 @@
 		<FKEY card="0,n" data="User,Id" inherit="Group" hidden="1">UserId</FKEY>
 		<FKEY card="0,n" data="Group,Id" hidden="1">GroupId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Access" Dico="1" driver="mysql" Icon="/Skins/AdminV2/Img/brick.png">
+	<OBJECTCLASS title="Access" Dico="1" driver="mysql" Icon="/Skins/AdminV2/Img/brick.png" Description="Access">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé">Titre</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" values="Parc,Systeme,Abtel" category="Definition" description="Module">ObjectModule</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="3" values="Client,Device,Ticket,Facture,Contrat,Domain,CompteMail,Host,Server,Contact,DeviceConnexion" category="Definition">ObjectClass</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="3" values="Client,Device,Ticket,Facture,Contrat,Domain,CompteMail,Host,Server,Contact,DeviceConnexion,MiniSite" category="Definition">ObjectClass</PROPERTIES>
 		<PROPERTIES type="varchar" category="Definition">Alias</PROPERTIES>
 		<PROPERTIES type="varchar" category="Definition">Filters</PROPERTIES>
 		<PROPERTIES type="order" category="Definition">Ordre</PROPERTIES>

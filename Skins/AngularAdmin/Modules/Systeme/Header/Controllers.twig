@@ -185,8 +185,10 @@
             var opts = $scope.{{ c.identifier }}.filters;
             for ( var o in opts ) {
                 $scope.{{ c.identifier }}.filters[o].value = '';
-                delete $scope.{{ c.identifier }}.filters[o];
+                delete $scope.{{ c.identifier }}.filters[o].value;
+                delete $scope.{{ c.identifier }}.filters[o].operator;
             }
+             $scope.{{ c.identifier }}.filterQuery = '~';
             $scope.{{ c.identifier }}.filter='';
             {{ c.identifier }}Store.resetFilters('default');
             {{ c.identifier }}Store.getData(1,'default');
@@ -201,6 +203,7 @@
             var opts = $scope.{{ c.identifier }}.filters,
                 query = "";
             for ( var o in opts ) {
+                if(opts[o].value == undefined) continue;
                 if (query.length) query+='&';
                 var value = opts[o].value;
                 switch (value){
@@ -211,8 +214,10 @@
                         value = 0;
                         break;
                 }
-
-                query+=o+((opts[o].operator==undefined)?'=':opts[o].operator)+value;
+                if(opts[o].operator==undefined || opts[o].operator=='=' || opts[o].operator=='~' ){
+                    opts[o].operator=(opts[o].strict===false)?'~':'=';
+                }
+                query+=o+opts[o].operator+value;
             }
             $scope.{{ c.identifier }}.filterQuery = '~'+$scope.{{ c.identifier }}.filter+'&'+query;
             console.log('controller >> list {{ c.identifier }} >> applyFilter ',query);
@@ -343,7 +348,7 @@
     });
 
     /**** FICHE CONTROLLER ****/
-    app.controller('{{ c.name }}FicheCtrl', function($controller,$injector,NgMap,$location, $scope,$timeout, $rootScope, $routeParams,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store {% for cParent in child.parentelements %},{{ cParent.objectModule }}{{ cParent.objectName }}Store{% endfor %}{% endfor %}) {
+    app.controller('{{ c.name }}FicheCtrl', function($controller,$injector,NgMap,$location, $scope,$timeout, $rootScope, $routeParams,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store {% for cParent in child.parentelements %},{{ cParent.objectModule }}{{ cParent.objectName }}Store{% endfor %}{% endfor %}{% if c.browseable%},SystemePageStore{% endif %}) {
         //acces aux stores parents
         {% for parent in c.parentelements %}
             var lasttimeoutParent{{ parent.objectModule }}{{ parent.objectName }} = false;
@@ -545,6 +550,95 @@
                         {{ child.objectModule }}{{ child.objectName }}Store.setPage($scope.{{ child.objectModule }}{{ child.objectName }}Select.currentPage,'select');
                     }
                 });
+
+
+                //FORMULAIRE LINK
+                $scope.{{ child.objectModule }}{{ child.objectName }}Link = {
+                    data : {{ child.objectModule }}{{ child.objectName }}Store.data.link,
+                    store: {{ child.objectModule }}{{ child.objectName }}Store,
+                    filter: '',
+                    pageLength: {{ child.objectModule }}{{ child.objectName }}Store.getPageLength(),
+                    currentPage: {{ child.objectModule }}{{ child.objectName }}Store.currentPage.select,
+                    itemsPerPage: {{ child.objectModule }}{{ child.objectName }}Store.itemsPerPage,
+                    selected: {
+                        //selectall: false
+                    }
+                }
+                //RECHERCHE LINK
+                var lasttimeoutLink{{ child.objectModule }}{{ child.objectName }} = false;
+                $scope.$watch('{{ child.objectModule }}{{ child.objectName }}Link.filter', function() {
+                    //on lance la recherche depuis le store
+                    if ($scope.{{ child.objectModule }}{{ child.objectName }}Link.filter!={{ child.objectModule }}{{ child.objectName }}Store.getFilters('link',true).global){
+                        {{ child.objectModule }}{{ child.objectName }}Store.setFilters($scope.{{ child.objectModule }}{{ child.objectName }}Select.filter,'link');
+                        if (lasttimeoutLink{{ child.objectModule }}{{ child.objectName }}){
+                            $timeout.cancel(lasttimeoutLink{{ child.objectModule }}{{ child.objectName }});
+                            lasttimeoutLink{{ child.objectModule }}{{ child.objectName }} = false;
+                        }
+                        lasttimeoutLink{{ child.objectModule }}{{ child.objectName }} = $timeout(function () {
+                            {{ child.objectModule }}{{ child.objectName }}Store.getData(1,'link');
+                        },200);
+                    }
+                });
+                //PAGINATION LINK
+                $scope.$watch('{{ child.objectModule }}{{ child.objectName }}Link.currentPage', function() {
+                    if ($scope.{{ child.objectModule }}{{ child.objectName }}Link.currentPage!={{ child.objectModule }}{{ child.objectName }}Store.getCurrentPage('link')){
+                        console.log('link > {{ child.objectModule }}{{ child.objectName }} > changeCurrentPage > '+$scope.{{ child.objectModule }}{{ child.objectName }}Link.currentPage+' <> '+{{ child.objectModule }}{{ child.objectName }}Store.getCurrentPage('link'));
+                        {{ child.objectModule }}{{ child.objectName }}Store.setPage($scope.{{ child.objectModule }}{{ child.objectName }}Link.currentPage,'link');
+                    }
+                });
+
+                $scope.{{ child.objectModule }}{{ child.objectName }}linkSave = function (){
+                    console.log('link save','{{ child.objectModule }}{{ child.objectName }}');
+                    var list = new Array();
+                    for(var n in  $scope.{{ child.objectModule }}{{ child.objectName }}Link.selected){
+                        if(!$scope.{{ child.objectModule }}{{ child.objectName }}Link.selected.hasOwnProperty(n)) continue;
+                        if($scope.{{ child.objectModule }}{{ child.objectName }}Link.selected[n] === true) list.push(n);
+                    }
+                    console.log(list);
+
+                    var data = { Module:'{{ c.module }}',ObjectName:'{{ c.objecttype }}',Id:$scope.obj.id,list:list }
+
+                    $http.post('/{{ child.objectModule }}/{{ child.objectName }}/SaveLink.json',data)
+                    .success(function(data) {
+                        console.log('store > {{ child.objectModule }} {{ child.objectName }} > saveLink ', data);
+                        $scope.link.success = data.success;
+                        $scope.link.message = data.message;
+                        $scope.{{ child.objectModule }}{{ child.objectName }}.store.refresh('children');
+                    });
+                }
+                $scope.{{ child.objectModule }}{{ child.objectName }}linkSelect = function (){
+                    console.log('link ','{{ child.objectModule }}{{ child.objectName }}');
+
+                    {% if child.reflexive %}
+                        {{ child.objectModule }}{{ child.objectName }}Store.setQuery('/{{ child.objectModule }}/{{ child.objectName }}/*/{{ child.objectName }}','link');
+                    {% endif %}
+                    {{ child.objectModule }}{{ child.objectName }}Store.getData(1,'link');
+                    $scope.{{ child.objectModule }}{{ child.objectName }}Link.selected = {
+                        //selectall: false
+                    }
+                    var data = { Module:'{{ c.module }}',ObjectName:'{{ c.objecttype }}',Id:$scope.obj.id }
+                    $http.post('/{{ child.objectModule }}/{{ child.objectName }}/getLink.json',data)
+                            .success(function(data) {
+                                console.log('store > {{ child.objectModule }} {{ child.objectName }} > getLink ', data);
+                            for(var n=0; n < data.data.length; n++){
+                                $scope.{{ child.objectModule }}{{ child.objectName }}Link.selected[data.data[n]] = true;
+                            }
+                    });
+
+                    $scope.link = {
+                        title:'Selection : {{ child.objectModule }} > {{ child.objectName }}',
+                        url:'/Systeme/Utils/Link.htm?Module={{ child.objectModule }}&ObjectName={{ child.objectName }}',
+                        message:'',
+                        errors: new Array(),
+                        module: '{{ child.objectModule }}',
+                        objectName: '{{ child.objectName }}',
+                        success: false,
+                        Save: $scope.{{ child.objectModule }}{{ child.objectName }}linkSave
+                    };
+                    $("#modallink-{{ c.identifier }}").modal();
+                }
+
+
 
                 //SELECTION
                 $scope.$watch('{{ child.objectModule }}{{ child.objectName }}.selected.selectall', function() {
@@ -819,6 +913,95 @@
             {% endfor %}
 
             $scope.show = true;
+
+
+            //gestion des pages
+            {% if c.browseable%}
+                var lasttimeoutSystemePage = false;
+                SystemePageStore.setFilters('PageModule={{ c.module }}&PageObject={{ c.objecttype }}&PageId='+$scope.obj.id,'SystemePage{{ c.identifier }}');
+                $scope.SystemePage = {
+                    data: SystemePageStore.data.SystemePage{{ c.identifier }},
+                    store: SystemePageStore,
+                    filter: 'PageModule={{ c.module }}&PageObject={{ c.objecttype }}&PageId='+$scope.obj.id,
+                    currentPage: SystemePageStore.currentPage.SystemePage{{ c.identifier }},
+                    itemsPerPage: SystemePageStore.itemsPerPage,
+                    selected: {
+                        selectall: false
+                    }
+                }
+
+
+                $scope.$watch('SystemePage.currentPage', function() {
+                    if ($scope.SystemePage.currentPage!=SystemePageStore.getCurrentPage('SystemePage{{ c.identifier }}')){
+                        console.log('SystemePage{{ c.identifier }} > SystemePage > changeCurrentPage > '+$scope.SystemePage.currentPage+' <> '+SystemePageStore.getCurrentPage('SystemePage{{ c.identifier }}'));
+                        SystemePageStore.setPage($scope.SystemePage.currentPage,'SystemePage{{ c.identifier }}');
+                    }
+                });
+                $scope.$watch('SystemePage.filter', function() {
+                    //on lance la recherche depuis le store
+                    if ($scope.SystemePage.filter!=SystemePageStore.getFilters('SystemePage{{ c.identifier }}',true).global){
+                        SystemePageStore.setFilters($scope.SystemePage.filter,'SystemePage{{ c.identifier }}');
+                        if (lasttimeoutSystemePage){
+                            $timeout.cancel(lasttimeoutSystemePage);
+                            lasttimeoutSystemePage = false;
+                        }
+                        lasttimeoutSystemePage=$timeout(function () {
+                            SystemePageStore.getData(1,'SystemePage{{ c.identifier }}');
+                        },200);
+                    }
+                });
+
+
+                //MODIFY
+                $scope.SystemePagemodify = function (obj){
+                    console.log('edit ',obj.id);
+                    SystemePageStore.getOneData(obj.id,'SystemePage{{ c.identifier }}',false).then(function (data) {
+                        $scope.pageObj = data;
+                        $scope.pageObj.success = false;
+                        $scope.pageObj.SystemePage = $scope.obj.id;
+                        $scope.pageObj.SystemePagelabel = $scope.obj.label;
+                        $scope.pageObj.title = 'Modifier Page Systeme '+data.label;
+                        console.log('edit obj',$scope.pageObj);
+                    });
+                    $("#modal-SystemePage").modal();
+                }
+
+
+                //MODALSAVE
+                $scope.SystemePagemodalSave = function (){
+                    console.log('children > save SystemePage',$scope.pageObj);
+                    $('#modal-SystemePage .modal-dialog').spin();
+
+                    SystemePageStore.saveData($scope.pageObj).then(function (data) {
+                        $('#modal-SystemePage .modal-dialog').spin(false);
+                        if (data.success){
+                            $scope.pageObj = data.data;
+                            $scope.pageObj.errors = data.errors;
+                            $scope.pageObj.success = data.success;
+                            $scope.pageObj.warning = data.warning;
+                            $scope.pageObj.errors = data.errors;
+                            $scope.pageObj.infos = data.infos;
+                            if (!data.warning.length&&!data.success.length)
+                                $("#modal-SystemePage").modal('toggle');
+                            SystemePageStore.refresh('SystemePage{{ c.identifier }}');
+                        }else {
+                            //gestion des erreurs
+                            $scope.pageObj.errors = data.errors;
+                            $scope.pageObj.success = data.success;
+                            $scope.pageObj.warning = data.warning;
+                            $scope.pageObj.errors = data.errors;
+                            $scope.pageObj.infos = data.infos;
+                            $scope.pageObj.fieldErrors = [];
+                            for (var e in data.errors) {
+                                $scope.pageObj.fieldErrors.push(data.errors[e].Prop);
+                            }
+                            console.log('tab field error',$scope.pageObj.fieldErrors);
+                        }
+                    console.log('save obj SystemePage',data);
+                    });
+                }
+
+            {% endif %}
 
             var isExtended = false;
             if(typeof window['{{ c.name }}FicheCtrlExtends'] == 'function') {

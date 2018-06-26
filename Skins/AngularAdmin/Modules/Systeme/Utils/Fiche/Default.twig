@@ -4,7 +4,7 @@
             <a href="#/TableauDeBord">Tableau de bord</a>
         </li>
         <li>
-            <a href="#/{{ CurrentMenu.Url }}">Liste des {{ ObjectClass.getDescription() }}s</a>
+            <a href="#/{{ CurrentMenu.Url }}">Liste des {{ ObjectClass.getDescription() }}</a>
         </li>
         <li>
             <a href="javascript: void(0);" ng-bind-html="'Fiche {{ ObjectClass.getDescription() }} '+(obj.label)"></a>
@@ -48,13 +48,16 @@
                         {% if field.type == "progress" or field.type == "pluginconfig" or field.type == "raw" or field.type == "html" or field.type == "text" or field.type == "bbcode" %}
                         <!-- NE RIEN FAIRE-->
                         {% else %}
-                        <div class="row">
+                        <div class="row  ficheField">
                             <div class="col-md-5 detail-label">
                                 <label class="form-control-label" for="l0">{% if field.parentDescription is not empty %}{{ field.parentDescription }}{% else %}{{ field.description }}{% endif %}</label>
                             </div>
                             <div class="col-md-7 detail-value">
                                 {% if field.type == "price" %}
                                 <span class="label label-warning">{[{ obj.{{ field.name }} | currency:"" }]} €</span>
+                                {% elseif field.type == "image" %}
+                                    <img class="img-responsive" src="{[{ obj.{{ field.name }} }]}.limit.250x40.jpg" {{ field.listDescr }} ng-if="obj.{{ field.name }} "/>
+                                    <img class="img-responsive" src="/Tools/Images/NoPhoto.jpg.limit.250x40.jpg" {{ field.listDescr }} ng-if="!obj.{{ field.name }} "/>
                                 {% elseif field.type == "plugin" %}
                                     <span  class="label label-danger" ng-bind-html="obj.{{ field.name }}"></span>
                                 {% elseif field.type == "float" %}
@@ -161,15 +164,27 @@
         <ul class="nav nav-tabs" role="tablist">
             {% for child in ChildrenElements %}
                 <li class="nav-item">
-                    <a class="nav-link {% if loop.first %}active{% endif %}" href="javascript: void(0);" data-toggle="tab" data-target="#tab{{ child.objectName }}" role="tab"><b>{{ child.objectDescription }}</b> ({[{ {{ child.objectModule }}{{ child.objectName }}.store.total.children }]})</a>
+                    <a class="nav-link {% if loop.first %}active{% endif %}" href="javascript: void(0);" data-toggle="tab" data-target="#tab{{ child.objectName }}" role="tab"><b>{% if child.objectDescription %}{{ child.objectDescription }}{% else %}{{ child.objectName }}{% endif %}</b> ({[{ {{ child.objectModule }}{{ child.objectName }}.store.total.children }]})</a>
                 </li>
             {% endfor %}
+            {% if browseable %}
+            <li class="nav-item">
+                <a class="nav-link {% if not ChildrenElements|length %}active{% endif %}" href="javascript: void(0);" data-toggle="tab" data-target="#tabPagesSite" role="tab"><b>Pages correspondantes</b> {# ({[{ {{ child.objectModule }}{{ child.objectName }}.store.total.children }]}) #}</a>
+            </li>
+            {% endif %}
         </ul>
         <div class="tab-content">
             {% for child in ChildrenElements %}
                 <div class="tab-pane {% if loop.first %}active{% endif %}" id="tab{{ child.objectName }}" role="tabpanel">
                     {% if child.recursive %}
-                        {{ include(template_from_string(module(Query~'/Tree'))) }}
+                        {#{{ include(template_from_string(module(Query~'/0/'~child.objectName~'/TreeChildren'))) }}#}
+                        <section class="panel">
+                            <div class="panel-body">
+                                <div id="ajaxwrapper"
+                                     ng-include="'/{{ CurrentUrl }}/'+obj.id+'/{{ child.objectName }}/TreeChildren.htm'" >
+                                </div>
+                            </div>
+                        </section>
                     {% else %}
                         <section class="panel">
                             <div class="panel-body">
@@ -180,6 +195,16 @@
                     {% endif %}
                 </div>
             {% endfor %}
+            {% if browseable %}
+                <div class="tab-pane {% if not ChildrenElements|length %}active{% endif %}" id="tabPagesSite" role="tabpanel">
+                        <section class="panel">
+                            <div class="panel-body">
+                                {{ include(template_from_string(module('Systeme/Utils/List/PageList?headless=1'))) }}
+                            </div>
+                        </section>
+                        <!-- End Default Panel -->
+                </div>
+            {% endif %}
         </div>
     </div>
 
@@ -217,7 +242,7 @@
                     </ul>
                 </div>
                 <div  ng-if="modalObj.success == false">
-                    {{ include(template_from_string(module('Systeme/Utils/Form?Path=[!Query!]'))) }}
+                    {{ include(template_from_string(module('Systeme/Utils/Form?Path='~CurrentObjQuery))) }}
                 </div>
             </div>
             <div class="modal-footer">
@@ -258,3 +283,36 @@
     </div>
 </div>
 
+{% if ChildrenElements|length %}
+    <div class="modal fade modal-size-large" id="modallink-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">{[{ link.title }]}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-success" ng-show="link.success">{[{ link.message }]}</div>
+                    <div class="alert alert-danger" ng-show="link.errors.length > 0">
+                        <ul>
+                            <li ng-repeat="err in link.errors">{[{ err }]}</li>
+                        </ul>
+                    </div>
+                    <div  ng-if="link.success == false">
+                        <div id="ajaxwrapper"
+                             ng-include="link.url" >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal" ng-if="link.success == true">Fermer</button>
+                    <button type="button" class="btn" data-dismiss="modal" ng-if="link.success == false">Annuler</button>
+                    <button type="button" class="btn btn-primary" ng-if="link.success == false" ng-click="link.Save()">Enregistrer les modifications</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

@@ -30,7 +30,7 @@ foreach ($formfields as $f){
         $a = strptime($values->{$f["name"]}, '%d/%m/%Y %H:%M');
         $o->{$f["name"]} = mktime($a['tm_hour'], $a['tm_min'], 0, $a['tm_mon'] + 1, $a['tm_mday'], $a['tm_year'] + 1900);
     }elseif ($f['type']=='boolean'){
-        if ($values->{$f["name"]}==='true'||$values->{$f["name"]}===1||$values->{$f["name"]}===TRUE)
+        if ($values->{$f["name"]}==='true'||$values->{$f["name"]}===1||$values->{$f["name"]}===TRUE||$values->{$f["name"]}==='1')
             $o->{$f["name"]} = 1;
         else $o->{$f["name"]} = 0;
     }elseif ($f['type']=='fkey' && $f['card']=='short'){
@@ -41,6 +41,7 @@ foreach ($formfields as $f){
     }elseif (isset($values->{$f["name"]})) $o->{$f["name"]} = $values->{$f["name"]};
 
 }
+
 $obj = $o->getObjectClass();
 $parentelements = $obj->getParentElements();
 foreach ($parentelements as $f){

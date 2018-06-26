@@ -31,9 +31,16 @@
                 Supprimer la sélection
                 </a>
                 {% endif %}
+                {% if context != 'children' %}
                 <a  href="javascript: void(0);" class="btn btn-info" ng-click="{{ identifier }}switchPanelFilters();">
                     Filtres
                 </a>
+                {% endif %}
+                {% if context == 'children' %}
+                    <a  href="javascript: void(0);" class="btn btn-info" ng-click="{{ identifier }}linkSelect();">
+                    Selection
+                </a>
+                {% endif %}
             </span>
         </div>
     </div>
@@ -53,6 +60,7 @@
     </div>
 </div>
 
+{% if context != 'children' %}
 <div class="col-md-12 panel-filter" ng-class="{{ identifier }}.filterPanel ? 'panel-filter-closed' : '' ">
     <div class="row">
         <div class="col-md-12">
@@ -66,7 +74,11 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label class="form-control-label" for="l0">{{ field.description }}</label>
-                        <small>{{ field.help }}</small>
+                        {% if field.help %}
+                            <small>
+                                <i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.helpLang }}</span></i>
+                            </small>
+                        {% endif %}
                     </div>
                     <div class="col-md-6">
                         <div class="form-group" ng-class="{'has-danger': modalObj.fieldErrors.length && modalObj.fieldErrors.indexOf('{{ field.name }}') !== -1}">
@@ -89,6 +101,7 @@
                                     </select>
                                 {% else %}
                                     <input type="text" class="form-control form-control-sm" placeholder=""  ng-model="{{ identifier }}.filters.{{ field.name }}.value" ng-change="{{ identifier }}applyFilters()">
+                                    <label for="{{ identifier }}{{ field.name }}">Correspondance stricte</label><input type="checkbox" id="{{ identifier }}{{ field.name }}" ng-checked="{{ identifier }}.filters.{{ field.name }}.strict" ng-init="{{ identifier }}.filters.{{ field.name }}.strict=true" ng-model="{{ identifier }}.filters.{{ field.name }}.strict" ng-change="{{ identifier }}applyFilters()">
                                 {% endif %}
                             {% endif %}
                         </div>
@@ -128,6 +141,7 @@
     </div>
 </div>
 {% endif %}
+{% endif %}
 <table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%">
     <thead>
         <tr>
@@ -136,7 +150,7 @@
             </th>
             <th title="Id" class="list-col-th-id">ID</th>
             {% for field in fields %}
-                <th title="{{ field.name }}">{{ field.listDescr }}</th>
+                <th title="{{ field.name }}">{% if field.listDescr %}{{ field.listDescr }}{% else %}{{ field.name }}{% endif %}</th>
             {% endfor %}
             {% for interface in Interfaces %}
                 <th>{{ interface.name }}</th>
@@ -159,7 +173,8 @@
             {% if field.type == "price" or field.type == "float" %}
                 <span class="label label-warning">{[{ item.{{ field.name }}| currency:"" }]}</span>
             {% elseif field.type == "image" %}
-                <img class="img-responsive" src="{[{ item.{{ field.name }} }]}.mini.250x40.jpg" {{ field.listDescr }} />
+                    <img class="img-responsive" src="{[{ item.{{ field.name }} }]}.limit.250x40.jpg" {{ field.listDescr }} ng-if="item.{{ field.name }} "/>
+                    <img class="img-responsive" src="/Tools/Images/NoPhoto.jpg.limit.250x40.jpg" {{ field.listDescr }} ng-if="!item.{{ field.name }} "/>
             {% elseif field.type == "extlink" %}
                 <a class="btn btn-info btn-xs" href="/{{ Module }}/{{ ObjectType }}/{[{ item.id }]}/callback{{ field.name }}.htm" target="_blank">{{ field.listDescr }}</a>
             {% elseif field.type == "date" %}
@@ -167,7 +182,8 @@
             {% elseif field.type == "int" %}
                 <span class="label label-primary">{[{ item.{{ field.name }} }]}</span>
             {% elseif field.type == "fkey" and field.card == "short" %}
-                <a class="btn btn-secondary btn-xs" href="#{{ field.link }}/{[{ item.{{ field.objectName }}{{ field.name }} }]}">{[{ item.{{ field.objectName }}{{ field.name }}label }]}</a>
+                <a class="btn btn-secondary btn-xs" href="#{{ field.link }}/{[{ item.{{ field.objectName }}{{ field.name }} }]}" ng-if="item.{{ field.objectName }}{{ field.name }}">{[{ item.{{ field.objectName }}{{ field.name }}label }]}</a>
+                <span ng-if="!item.{{ field.objectName }}{{ field.name }}"> - </span>
             {% elseif field.type == "progress" %}
                 <!--<progress class="progress progress-danger progress-striped progress-animated" ng-if="item.{{ field.name }} < 100" value="{[{ item.{{ field.name }} }]}" max="100">{[{ item.{{ field.name }} }]}</progress>
                 <progress class="progress progress-success progress-striped progress-animated" ng-if="item.{{ field.name }} == 100" value="{[{ item.{{ field.name }} }]}" max="100">{[{ item.{{ field.name }} }]}</progress>-->
@@ -190,6 +206,8 @@
                 <span ng-bind-html="item.{{ field.name }} | nl2br"></span>
             {% elseif field.Values | length > 0 %}
                 <span ng-bind-html="item.{{ field.name }}Label "></span>
+            {% elseif field.type == "color" %}
+                <span class="colorBlock" style="background-color: {[{ item.{{ field.name }} }]}"></span>
             {% else %}
                 {% if  Type == "Tail" %}
                     <span ng-bind-html="item.{{ field.name }}"></span>

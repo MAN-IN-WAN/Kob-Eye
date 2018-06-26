@@ -459,25 +459,25 @@
 		<FKEY card="1,1" data="Host,Id" description="Hébergement" list="1" form="1" fiche="1" listDescr="Hébergement">HostId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="MiniSite" logEvent="1" AccessPoint="1" driver="mysql" Description="Site web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/MiniSite.class.php">
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de l'instance" list="1" form="1" fiche="1" unique="1" listDescr="Nom">Nom</PROPERTIES>
-        <PROPERTIES type="varchar" description="Type" values="Standard,Easy,Minimal" hidden="1" default="Standard">Type</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom du minisite" list="1" form="1" fiche="1" unique="1" listDescr="Nom">Nom</PROPERTIES>
+        <PROPERTIES type="varchar" description="Type" values="Standard,Easy,Minimal" hidden="1" default="Minimal">Type</PROPERTIES>
         <CATEGORY title="MiniSite">
-            <PROPERTIES type="image" list="1" form="1" fiche="1" description="Logo">Logo</PROPERTIES>
-            <PROPERTIES type="varchar" list="1" form="2" fiche="1" description="Titre">Titre</PROPERTIES>
-            <PROPERTIES type="varchar" list="1" form="2" fiche="1" description="Slogan">Slogan</PROPERTIES>
-            <PROPERTIES type="image" list="1" form="3" fiche="1" description="Image">Image</PROPERTIES>
+            <PROPERTIES type="image" list="1" form="1" fiche="1" description="Logo" listDescr="Logo">Logo</PROPERTIES>
+            <PROPERTIES type="varchar" list="1" form="2" fiche="1" description="Titre" listDescr="Titre">Titre</PROPERTIES>
+            <PROPERTIES type="varchar" form="2" fiche="1" description="Slogan">Slogan</PROPERTIES>
+            <PROPERTIES type="image" form="3" fiche="1" description="Image">Image</PROPERTIES>
             <PROPERTIES type="html" form="4" fiche="1" description="Description">Description</PROPERTIES>
-            <PROPERTIES type="color" list="1" form="5" fiche="1" description="Couleur 1">Couleur1</PROPERTIES>
-            <PROPERTIES type="color" list="1" form="6" fiche="1" description="Couleur 2">Couleur2</PROPERTIES>
-            <PROPERTIES type="varchar" list="1" form="7" fiche="1" description="Adresse eMail de contact">AdresseMail</PROPERTIES>
-            <PROPERTIES type="varchar" list="1" form="7" fiche="1" description="Numéro de téléphone">Telephone</PROPERTIES>
-            <PROPERTIES type="varchar" list="1" form="8" fiche="1" description="Adresse pour carte Maps">Adresse</PROPERTIES>
+            <PROPERTIES type="color" list="1" form="5" fiche="1" description="Couleur Principale" listDescr="Couleur Principale">Couleur1</PROPERTIES>
+            <PROPERTIES type="color" form="6" fiche="1" description="Couleur Secondaire">Couleur2</PROPERTIES>
+            <PROPERTIES type="varchar" list="1" form="7" fiche="1" description="Adresse eMail de contact" listDescr="Adresse eMail de contact">AdresseMail</PROPERTIES>
+            <PROPERTIES type="varchar" form="7" fiche="1" description="Numéro de téléphone">Telephone</PROPERTIES>
+            <PROPERTIES type="varchar" form="8" fiche="1" description="Adresse pour carte Maps">Adresse</PROPERTIES>
             <FKEY card="0,1" module="Systeme" data="Site,Id" description="Site" listDescr="Site">SiteId</FKEY>
         </CATEGORY>
-		<FKEY card="0,n" data="Domain,Id" description="Domaine(s)" list="1" form="20" fiche="1" listDescr="Domaine(s)">DomainId</FKEY>
-		<FKEY card="0,n" data="Host,Id" description="Hébergement" listDescr="Hébergement">HostId</FKEY>
+		<FKEY card="0,1" data="Domain,Id" description="Domaine(s)" list="1" form="20" fiche="1" listDescr="Domaine">DomainId</FKEY>
+		<FKEY card="0,n" data="Host,Id" description="Hébergement" >HostId</FKEY>
         <FKEY card="0,n" data="Server,Id" description="Serveur SQL" filter="SQL=1" listDescr="Serveur SQL">ServerId</FKEY>
-        <FKEY card="1,1" data="Client,Id" description="Client" listDescr="Client" hasRole="PARC_TECHNICIEN">ClientId</FKEY>
+        <FKEY card="0,1" data="Client,Id" description="Client" listDescr="Client" form="10" fiche="1" list="1" hasRole="PARC_TECHNICIEN">ClientId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Instance" driver="mysql" Description="Espace Web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Instance.class.php" logEvent="1" AccessPoint="1" plugin="1">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de l'instance" list="1" form="1" fiche="1" listDescr="Nom" default="">Nom</PROPERTIES>

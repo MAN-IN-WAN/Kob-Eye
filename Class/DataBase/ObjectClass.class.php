@@ -320,7 +320,7 @@ class ObjectClass extends Root{
 		//INITILISATION DES PROPRIETES DYNAMIQUES
 		if (isset($this->generateUrl)&&$this->generateUrl){
 			//On ajoute une proprietes Url
-			$this->Proprietes["Url"] = $this->parseAttributes(array("type"=>"link","searchOrder"=>3,"auto"=>0,"category"=>"Configuration", "form"=>1,"fiche"=>1),"Url");
+			$this->Proprietes["Url"] = $this->parseAttributes(array("type"=>"link","searchOrder"=>3,"auto"=>0,"category"=>"Configuration", "form"=>1,"fiche"=>1, "help"=>1),"Url");
 			$this->addCategory(Array("title"=>"Configuration"),Array("type"=>"property","title"=>"Url"));
 		}
 		//GESTION DES PLUGINS
@@ -342,23 +342,25 @@ class ObjectClass extends Root{
 			//TitleMeta
 			$this->addCategory(Array("title"=>"Référencement","fold"=>'1'),Array("type"=>"property","title"=>"TitleMeta"));
 			$o[] = Array("type"=>"property","name"=>"TitleMeta");
-			$this->Proprietes['TitleMeta'] = Array('type'=>'metat','special'=>'multi','description'=>'META: Titre de la page (réseaux sociaux également)', "form"=>1,"fiche"=>1, "auto"=>1, "large"=>"1", "fullTitle"=>"1");
+			$this->Proprietes['TitleMeta'] = Array('type'=>'metat','special'=>'multi','description'=>'META: Titre de la page (réseaux sociaux également)', "form"=>1, "auto"=>1, "large"=>"1", "fullTitle"=>"1");
 			//DescriptionMeta
 			$this->addCategory(Array("title"=>"Référencement"),Array("type"=>"property","title"=>"DescriptionMeta", "form"=>1,"fiche"=>1, "auto"=>1));
 			$o[] = Array("type"=>"property","name"=>"DescriptionMeta");
-			$this->Proprietes['DescriptionMeta'] = Array('type'=>'metad','special'=>'multi','description'=>'META: Description de la page (réseaux sociaux également)', "form"=>1,"fiche"=>1, "auto"=>1, "large"=>"1", "fullTitle"=>"1");
+			$this->Proprietes['DescriptionMeta'] = Array('type'=>'metad','special'=>'multi','description'=>'META: Description de la page (réseaux sociaux également)', "form"=>1, "auto"=>1, "large"=>"1", "fullTitle"=>"1");
 			//KeywordsMeta
 			$this->addCategory(Array("title"=>"Référencement"),Array("type"=>"property","title"=>"KeywordsMeta"));
 			$o[] = Array("type"=>"property","name"=>"KeywordsMeta");
-			$this->Proprietes['KeywordsMeta'] = Array('type'=>'metak','special'=>'multi','description'=>'META: Mots clefs de la page (réseaux sociaux également)', "form"=>1,"fiche"=>1, "auto"=>1, "large"=>"1", "fullTitle"=>"1");
+			$this->Proprietes['KeywordsMeta'] = Array('type'=>'metak','special'=>'multi','description'=>'META: Mots clefs de la page (réseaux sociaux également)', "form"=>1, "auto"=>1, "large"=>"1", "fullTitle"=>"1");
 			//ImgMeta
 			$this->addCategory(Array("title"=>"Référencement"),Array("type"=>"property","title"=>"ImgMeta"));
 			$o[] = Array("type"=>"property","name"=>"ImgMeta");
-			$this->Proprietes['ImgMeta'] = Array('type'=>'image','description'=>'META: Image de la page pour les réseaux sociaux', "form"=>1,"fiche"=>1, "auto"=>1, "large"=>"1", "fullTitle"=>"1");
+			$this->Proprietes['ImgMeta'] = Array('type'=>'image','description'=>'META: Image de la page pour les réseaux sociaux', "form"=>1, "auto"=>1, "large"=>"1", "fullTitle"=>"1");
 			//Displayed
-			$this->addCategory(Array("title"=>"Configuration"),Array("type"=>"property","title"=>"Display"));
-			$o[] = Array("type"=>"property","name"=>"Display");
-			$this->Proprietes['Display'] = Array('type'=>'boolean','default'=> 1,'description'=>'Publier', "form"=>1,"fiche"=>1, "auto"=>1, "list"=>1,'listDescr'=>'Publier');
+			if(!isset($this->Proprietes["Display"])) {
+                $this->addCategory(Array("title" => "Configuration"), Array("type" => "property", "title" => "Display"));
+                $o[] = Array("type" => "property", "name" => "Display");
+                $this->Proprietes['Display'] = Array('type' => 'boolean', 'default' => 1, 'description' => 'Publier', "form" => 1, "fiche" => 1, "auto" => 1, "list" => 1, 'listDescr' => 'Publier');
+            }
 		}
 		return $o;
 	}

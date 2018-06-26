@@ -34,7 +34,7 @@ public function Save(){
             if(!$sit) {
                 $sit =  genericClass::createInstance('Systeme','Site');
                 $sit->Domaine = 'www.'.$dom->Url;
-                if(!$sit->Save()) {
+                if(!$sit->Save(true)) {
                     $GLOBALS['Systeme']->Db[0]->query('ROLLBACK');
                     $this->addError(Array("Message"=>'Une Erreur est survenue lors de la création du site :'.$sit->Error[0]['Message']));
                     return false;
@@ -45,9 +45,10 @@ public function Save(){
 
             //Check du user du site creation/affectation le cas échéant
             $par = $sit->getOneParent('User');
+            $grp = Sys::getOneData('Systeme','Group/Nom=MiniSites');
+
             if(!$par){
                 //recup du groupe des sites mini
-                $grp = Sys::getOneData('Systeme','Group/Nom=MiniSites');
 
                 $par = genericClass::createInstance('Systeme','User');
                 $par->Login = 'mini_'.$this->Id;
@@ -55,6 +56,7 @@ public function Save(){
                 $par->Mail = 'mini_'.$this->Id.'@abtel.fr';
                 $par->Actif = true;
                 $par->Skin = 'Minisite';
+
                 if($grp)
                     $par->addParent($grp);
 
@@ -64,7 +66,17 @@ public function Save(){
                     return false;
                 }
                 $sit->addParent($par);
-                $sit->Save();
+                $sit->Save(true);
+            } else{
+                $par->Skin = 'Minisite';
+                if($grp)
+                    $par->addParent($grp);
+
+                if(!$par->Save()) {
+                    $GLOBALS['Systeme']->Db[0]->query('ROLLBACK');
+                    $this->addError(Array("Message"=>'Une Erreur est survenue lors de la  mise à jour de l\'utilisateur lié au site :'.$par->Error[0]['Message']));
+                    return false;
+                }
             }
 
             //Check du menu et creation le cas échéant
@@ -119,8 +131,7 @@ public function Save(){
 
     }
 
-    parent::Save();
-    return true;
+    return parent::Save();
 }
 
 public function Delete(){
