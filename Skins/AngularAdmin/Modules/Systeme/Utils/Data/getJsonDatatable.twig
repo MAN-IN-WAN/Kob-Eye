@@ -18,6 +18,7 @@
                 {% elseif field.type == "fkey" and field.card=='short' %}
                     ,"{{ field.objectName }}{{ field.name }}": {{ attribute(row,field.name) }}
                     ,"{{ field.objectName }}{{ field.name }}label": "{{ attribute(row,field.name~'label') }}"
+                    ,"{{ field.objectName }}{{ field.name }}color": "{{ attribute(row,field.name~'color') }}"
                 {% else %}
             ,"{{ field.objectName }}{{ field.name }}": {{ attribute(row,field.name) | json_encode() | raw }}
                 {% endif %}

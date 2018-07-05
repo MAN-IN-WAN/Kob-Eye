@@ -21,7 +21,17 @@ else $vars['row']->userEditName = 'inconnu';
 foreach ($vars['fields'] as $f){
     if ($f['type']=='date'){
         //transformation des timestamps en format js
-        $vars['row']->{$f['name']} = date('d/m/Y H:i',$vars['row']->{$f['name']});
+        if($vars['row']->{$f['name']} > 0)
+            $vars['row']->{$f['name']} = date('d/m/Y',$vars['row']->{$f['name']});
+        else
+            $vars['row']->{$f['name']} = '';
+    }
+    if ($f['type']=='datetime'){
+        //transformation des timestamps en format js
+        if($vars['row']->{$f['name']} > 0)
+            $vars['row']->{$f['name']} = date('d/m/Y H:i',$vars['row']->{$f['name']});
+        else
+            $vars['row']->{$f['name']} = '';
     }
     if ($f['type']=='text'||$f['type']=='raw'||$f['type']=='varchar'||$f['type']=='html'||$f['type']=='titre'){
         //transformation des timestamps en format js

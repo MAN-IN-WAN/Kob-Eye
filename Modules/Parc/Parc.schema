@@ -458,7 +458,7 @@
 		<FKEY card="1,1" data="Server,Id" description="Serveur SQL" filter="SQL=1" list="1" form="1" fiche="1" listDescr="Serveur SQL">ServerId</FKEY>
 		<FKEY card="1,1" data="Host,Id" description="Hébergement" list="1" form="1" fiche="1" listDescr="Hébergement">HostId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="MiniSite" logEvent="1" AccessPoint="1" driver="mysql" Description="Site web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/MiniSite.class.php">
+	<OBJECTCLASS title="MiniSite" logEvent="1" AccessPoint="1" driver="mysql" Description="MiniSite web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/MiniSite.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom du minisite" list="1" form="1" fiche="1" unique="1" listDescr="Nom">Nom</PROPERTIES>
         <PROPERTIES type="varchar" description="Type" values="Standard,Easy,Minimal" hidden="1" default="Minimal">Type</PROPERTIES>
         <CATEGORY title="MiniSite">

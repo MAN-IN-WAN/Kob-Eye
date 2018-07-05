@@ -32,6 +32,7 @@ class ObjectClass extends Root{
 	var $color;
 	var $cache;
 	var $hidden;
+    var $searchFilters = 1;
 	var $Interface;
 	var $className = 0;
 	var $noRecursivity = 0;							//permet la création d'une clef recursive sans le comportement recursif
@@ -98,6 +99,7 @@ class ObjectClass extends Root{
 		if (isset($schema['@']['color']))$this->color = $schema['@']['color'];
 		if (isset($schema['@']['cache']))$this->cache = $schema['@']['cache'];
 		if (isset($schema['@']['hidden']))$this->hidden = $schema['@']['hidden'];
+        if (isset($schema['@']['searchFilters']))$this->searchFilters = $schema['@']['searchFilters'];
 		if (isset($schema['@']['className']))$this->className = $schema['@']['className'];
 		if (isset($schema['@']['noRecursivity']))$this->noRecursivity = $schema['@']['noRecursivity'];
 		if (isset($schema['@']['stopPage']))$this->stopPage = $schema['@']['stopPage'];
@@ -307,7 +309,16 @@ class ObjectClass extends Root{
 						$t->name = $temp[$j]['@']['name'];
 						if (isset($temp[$j]['@']['color'])) $t->color = $temp[$j]['@']['color'];
 						if (isset($temp[$j]['@']['view'])) $t->view = $temp[$j]['@']['view'];
-						$this->Filters[] = $t; 
+						$new = true;
+						foreach($this->Filters as $k=>$f){
+							if($f->filter == $t->filter){
+                                $this->Filters[$k] = $t;
+                                $new = false;
+                                break;
+                            }
+						}
+						if($new)
+							$this->Filters[] = $t;
 					}
 				break;
 				default:

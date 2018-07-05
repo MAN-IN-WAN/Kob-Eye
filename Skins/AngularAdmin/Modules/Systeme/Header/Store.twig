@@ -158,7 +158,7 @@
             if (filters[context]==undefined) initContext(context);
             var opt = filter.match(/^(.*?)([=><!~]{1,2}?)(.*?)$/);
             for (var i in filters[context].options) {
-                if (filters[context].options[i].name == opt[1]){
+                if (filters[context].options[i].name == opt[1] && filters[context].options[i].operator == opt[2]){
                     filters[context].options[i] = {
                         name: opt[1],
                         operator: opt[2],

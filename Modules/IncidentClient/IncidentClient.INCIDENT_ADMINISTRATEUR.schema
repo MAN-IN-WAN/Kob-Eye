@@ -27,8 +27,32 @@
         <PROPERTIES values="Madame,Monsieur" description="Civilite"   		    	type="varchar" 	 				obligatoire="0" 	listDescr="Civilite" 			form="13"	 		  fiche="13" >Civilite</PROPERTIES>
         <PROPERTIES                  	description="Nom"        					type="varchar" 	length="100" 	obligatoire="0" 	listDescr="Nom" 				form="14" 			  fiche="14" >Nom</PROPERTIES>
         <PROPERTIES 					description="Prénom"     					type="varchar" 	length="100" 	obligatoire="0" 	listDescr="Prenom" 				form="15" 			  fiche="15" >Prenom</PROPERTIES>
-        <PROPERTIES 					description="Date de dernière connexion" 	type="date" 					obligatoire="0" 	listDescr="Derniere Connexion" 	form="16" 	list="7"  fiche="16">ConnexionLe</PROPERTIES>
+        <PROPERTIES 					description="Date de dernière connexion" 	type="date" 					obligatoire="0" 	listDescr="Derniere Connexion" 	>ConnexionLe</PROPERTIES>
         <PROPERTIES 																type="Int"  >UserId</PROPERTIES>
     </OBJECTCLASS>
 
+    <OBJECTCLASS title="Incident" logEvent="1" driver="mysql" order="Ordre" orderType="ASC" AccessPoint="1" Description="Incident"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png"  Class="Modules/IncidentClient/Class/Incident.class.php">
+        <FILTER name="Tous"></FILTER>
+        <FILTER name="Incidents en cours" color="danger"><![CDATA[ParametresEtatId=1]]></FILTER>
+        <FILTER name="Incidents pris en compte" color="warning"><![CDATA[ParametresEtatId>=2&ParametresEtatId<5]]></FILTER>
+        <FILTER name="Incidents cloturés" color="success"><![CDATA[ParametresEtatId=5]]></FILTER>
+        <PROPERTIES type="varchar" searchOrder="1" 		description="Numéro de l'incident" 		listDescr="Numéro Incident" 							list="1"  				fiche="2" >Numero</PROPERTIES>
+        <PROPERTIES type="varchar" length="150"		    description="Nom du déclarant" 		    listDescr="Déclarant"        							list="1"  				fiche="2" >Declarant</PROPERTIES>
+        <PROPERTIES type="date" 						description="Date Incident" 	search="1"		listDescr="Date constat" 			now="1"					list="2" 	form="2" 	fiche="3">DateIncident</PROPERTIES>
+        <PROPERTIES type="time" 						description="Heure Incident" 			listDescr="Heure constat" 			now="1"					list="3" 	form="3" 	fiche="3">HeureIncident</PROPERTIES>
+        <PROPERTIES type="varchar" 				 		description="Titre"  					listDescr="Titre Incident" 								list="5" 	form="1" 	fiche="1">Titre</PROPERTIES>
+        <PROPERTIES type="varchar"    						description="Lieu Incident"          	listDescr="Lieu Incident" 											form="5" 	fiche="6" >LieuIncident</PROPERTIES>
+        <PROPERTIES type="varchar" searchOrder="2" length="150"    obligatoire="1"		description="Commune"   listDescr="Commune" 									list="6" 	form="6" 	fiche="7" >Commune</PROPERTIES>
+        <PROPERTIES type="html" 						description="Observations"				listDescr="Observations"  											form="7" 	fiche="8" >Observations</PROPERTIES>
+        <PROPERTIES type="html" 						description="Observations Technicien"	listDescr="Observations Technicien"									form="9" 	fiche="9" >ObservationsTech</PROPERTIES>
+        <PROPERTIES type="date" 						description="Date de clôture" 			listDescr="Date de clôture" 								list="12" 	form="13" 	fiche="13">DateCloture</PROPERTIES>
+        <PROPERTIES type="date" 						description="Date de résolution souhaitée" 			listDescr="Résolution souhaitée"	    	list="8" 	form="8"  	fiche="8" >DateSouhait</PROPERTIES>
+        <FKEY card="0,1" data="ParametresDelai,Id" 		description="Délai souhaité" 			listDescr="Délai souhaité" 							list="3" 	form="3"  	fiche="4">DelaiVoulu</FKEY>
+        <FKEY card="1,1" data="ParametresTypo,Id"  		description="Typologie de la demande" 	listDescr="Typologie" 									list="4" 	form="4" 	fiche="5">ParametresTypoId</FKEY>
+        <FKEY card="0,1" data="Client,Id" 		searchOrder="3"		description="Client" 	search="1"				listDescr="Client"										list="7"	form="8"  	fiche="9"     hasRole="[INCIDENT] Technicien, [INCIDENT] Administrateur">ClientId</FKEY>
+        <FKEY card="0,1" data="Technicien,Id"			description="Technicien" 				listDescr="Technicien"  								list="8" 	form="9"  	fiche="10"            hasRole="[INCIDENT] Technicien, [INCIDENT] Administrateur">TechnicienId</FKEY>
+        <FKEY card="0,1" data="ParametresDemande,Id" 	description="Origine de la demande" 	listDescr="Type" 										list="9" 	form="10"  fiche="11"              hasRole="[INCIDENT] Technicien, [INCIDENT] Administrateur">ParametresDemandeId</FKEY>
+        <FKEY card="0,1" data="ParametresDelai,Id" 		description="Délai Océan" 				listDescr="Délai Océan" 								list="10" 	form="11" 	fiche="12"              hasRole="[INCIDENT] Technicien, [INCIDENT] Administrateur">ParametresDelaiId</FKEY>
+        <FKEY card="0,1" data="ParametresEtat,Id" 		description="Etat demande" 				 listDescr="Etat" 										list="11"	form="12" fiche="13">ParametresEtatId</FKEY>
+    </OBJECTCLASS>
 </SCHEMA>

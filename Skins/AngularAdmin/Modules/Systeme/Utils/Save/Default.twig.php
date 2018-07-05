@@ -25,9 +25,13 @@ $formfields = array_merge($formfields,$hiddenfields);
 $values = json_decode(file_get_contents('php://input'));
 $out = array();
 foreach ($formfields as $f){
-    if ($f['type']=='date') {
+    if ($f['type']=='datetime') {
         //transformation des timestamps en format js
         $a = strptime($values->{$f["name"]}, '%d/%m/%Y %H:%M');
+        $o->{$f["name"]} = mktime($a['tm_hour'], $a['tm_min'], 0, $a['tm_mon'] + 1, $a['tm_mday'], $a['tm_year'] + 1900);
+    }if ($f['type']=='date') {
+        //transformation des timestamps en format js
+        $a = strptime($values->{$f["name"]}, '%d/%m/%Y');
         $o->{$f["name"]} = mktime($a['tm_hour'], $a['tm_min'], 0, $a['tm_mon'] + 1, $a['tm_mday'], $a['tm_year'] + 1900);
     }elseif ($f['type']=='boolean'){
         if ($values->{$f["name"]}==='true'||$values->{$f["name"]}===1||$values->{$f["name"]}===TRUE||$values->{$f["name"]}==='1')

@@ -49,7 +49,17 @@ foreach ($vars['rows'] as $k=>$v){
         switch ($f['type']){
             case 'date':
                 //transformation des timestamps en format js
-                $v->{$f['name']} = date(DATE_W3C,$v->{$f['name']});
+                if($v->{$f['name']} > 0)
+                    $v->{$f['name']} = date('d/m/Y',$v->{$f['name']});
+                else
+                    $v->{$f['name']} = '';
+                break;
+            case 'datetime':
+                //transformation des timestamps en format js
+                if($v->{$f['name']} > 0)
+                    $v->{$f['name']} = date('d/m/Y H:i',$v->{$f['name']});
+                else
+                    $v->{$f['name']} = '';
                 break;
             case 'text':
             case 'varchar':
@@ -72,8 +82,11 @@ foreach ($vars['rows'] as $k=>$v){
         if ($f['type']=='fkey'&&$f['card']=='short'){
             if ($v->{$f['name']} > 0) {
                 $kk = Sys::getOneData($f['objectModule'], $f['objectName'] . '/' . $v->{$f['name']});
-                if ($kk)
-                    $v->{$f['name'].'label'} = $kk->getFirstSearchOrder();
+                if ($kk) {
+                    $v->{$f['name'] . 'label'} = $kk->getFirstSearchOrder();
+                    if(isset($kk->Couleur))
+                        $v->{$f['name'].'color'} = $kk->Couleur;
+                }
             }else{
                 $v->{$f['name'].'label'} = '';
             }

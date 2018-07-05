@@ -15,7 +15,7 @@
     <section class="panel">
         <div class="panel-heading">
             <div class="pull-right">
-                {% if functions|length > 0 %}
+                {% if functions|length > 1 %}
                     <div class="btn-group  margin-inline" uib-dropdown>
                         <span id="function-button" type="button" class="btn btn-info  btn-default">Fonctions</span>
                         <button type="button" class="btn btn-info  btn-default" uib-dropdown-toggle>
@@ -28,7 +28,10 @@
                             {% endfor %}
                         </ul>
                     </div>
+                {% elseif functions|length == 1 %}
+                    <a href="javascript: void(0);" class="btn btn-primary" ng-click='callFunction(obj,"{{functions.0.Nom}}","{{functions.0.title}}","{{functions.0.type}}")'>{{functions.0.title}}</a>
                 {% endif %}
+
                 {% if operation.edit %}<button type="button" class="btn btn-default btn-warning margin-inline" ng-click="modify(obj)">Modifier</button>{% endif %}
                 {% if operation.delete %}<button type="button" class="btn btn-default btn-danger margin-inline" ng-click="delete(obj)">Supprimer</button>{% endif %}
             </div>
@@ -58,6 +61,8 @@
                                 {% elseif field.type == "image" %}
                                     <img class="img-responsive" src="{[{ obj.{{ field.name }} }]}.limit.250x40.jpg" {{ field.listDescr }} ng-if="obj.{{ field.name }} "/>
                                     <img class="img-responsive" src="/Tools/Images/NoPhoto.jpg.limit.250x40.jpg" {{ field.listDescr }} ng-if="!obj.{{ field.name }} "/>
+                                {% elseif field.type == "file" %}
+                                    <a  class="fileLink" href="{[{ obj.{{ field.name }} }]}" title="{[{ obj.{{ field.name }} }]}" target="_blank" >Voir le fichier</a>
                                 {% elseif field.type == "plugin" %}
                                     <span  class="label label-danger" ng-bind-html="obj.{{ field.name }}"></span>
                                 {% elseif field.type == "float" %}
@@ -85,7 +90,7 @@
                                 {% elseif field.type == "fkey" and field.card == "long" %}
                                     <a class="btn btn-secondary btn-xs" ng-repeat="(key, value) in obj.{{ field.objectName }}{{ field.name }}label">{[{ value }]}</a>
                                 {% elseif field.type == "fkey" and field.card == "short" %}
-                                    <a class="btn btn-primary btn-xs" href="#{{ field.link }}/{[{ obj.{{ field.objectName }}{{ field.name }} }]}">{[{ obj.{{ field.objectName }}{{ field.name }}label }]}</a>
+                                    <a class="btn btn-primary btn-xs" href="#/{{ field.link }}/{[{ obj.{{ field.objectName }}{{ field.name }} }]}">{[{ obj.{{ field.objectName }}{{ field.name }}label }]}</a>
                                 {% else %}
                                     {% if field.Values %}
                                     <select class="form-control" ng-model="obj.{{ field.name }}" disabled="disabled">
