@@ -451,7 +451,7 @@ class genericClass extends Root {
 		foreach ($t as $c=>$o){
 			for ($j=0;$j<sizeof($t[$c]["elements"]);$j++){
 			    //vérification des droits
-                if (isset($t[$c]["elements"][$j]["hasRole"])&&!Sys::$User->hasRole($t[$c]["elements"][$j]["hasRole"]&&HASROLE_ENABLED)){
+                if (isset($t[$c]["elements"][$j]["hasRole"])&&!Sys::$User->hasRole($t[$c]["elements"][$j]["hasRole"])&&( !defined('HASROLE_ENABLED') || HASROLE_ENABLED ) ){
                     //on supprime les elements si l'utilisateur n'a pas le bon role
                     array_splice($t[$c]["elements"],$j,1);
                     $j--;

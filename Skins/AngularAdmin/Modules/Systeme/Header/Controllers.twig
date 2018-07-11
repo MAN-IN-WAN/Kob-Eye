@@ -184,9 +184,13 @@
             $scope.{{ c.identifier }}.filterPanel = false;
             var opts = $scope.{{ c.identifier }}.filters;
             for ( var o in opts ) {
-                $scope.{{ c.identifier }}.filters[o].value = '';
-                delete $scope.{{ c.identifier }}.filters[o].value;
-                delete $scope.{{ c.identifier }}.filters[o].operator;
+                if(Array.isArray($scope.{{ c.identifier }}.filters[o].value)){
+                    $scope.{{ c.identifier }}.filters[o].value = ['',''];
+                } else{
+                    $scope.{{ c.identifier }}.filters[o].value = '';
+                    delete $scope.{{ c.identifier }}.filters[o].value;
+                    delete $scope.{{ c.identifier }}.filters[o].operator;
+                }
             }
              $scope.{{ c.identifier }}.filterQuery = '~';
             $scope.{{ c.identifier }}.filter='';
@@ -203,21 +207,47 @@
             var opts = $scope.{{ c.identifier }}.filters,
                 query = "";
             for ( var o in opts ) {
-                if(opts[o].value == undefined) continue;
-                if (query.length) query+='&';
+                if(opts[o].value == undefined || opts[o].value == '' ) continue;
+
                 var value = opts[o].value;
-                switch (value){
-                    case true:
-                        value = 1;
+                if(Array.isArray(value)){
+                    if(value[0] != '' &&  value[0] != 'NC'){
+                        var temp = value[0];
+                        if(opts[o].type == 'date' || opts[o].type == 'datetime' || opts[o].type == 'time' ){
+                            var date = value[0].split('/')
+                            date = [date[1],date[0],date[2]];
+                            date = date.join('/')
+                            temp = Date.parse(date)/1000;
+                        }
+                        if (query.length) query+='&';
+                        query+=o+'>'+temp;
+                    }
+                    if(value[1] != '' &&  value[1] != 'NC'){
+                        var temp = value[1];
+                        if(opts[o].type == 'date' || opts[o].type == 'datetime' || opts[o].type == 'time' ){
+                            var date = value[1].split('/')
+                            date = [date[1],date[0],date[2]];
+                            date = date.join('/')
+                            temp = Date.parse(date)/1000;
+                        }
+                        if (query.length) query+='&';
+                        query+=o+'<'+temp;
+                    }
+                } else {
+                    if (query.length) query+='&';
+                    switch (value){
+                        case true:
+                            value = 1;
                         break;
-                    case false:
-                        value = 0;
+                        case false:
+                            value = 0;
                         break;
+                    }
+                    if(opts[o].operator==undefined || opts[o].operator=='=' || opts[o].operator=='~' ){
+                        opts[o].operator=(opts[o].strict===false)?'~':'=';
+                    }
+                    query+=o+opts[o].operator+value;
                 }
-                if(opts[o].operator==undefined || opts[o].operator=='=' || opts[o].operator=='~' ){
-                    opts[o].operator=(opts[o].strict===false)?'~':'=';
-                }
-                query+=o+opts[o].operator+value;
             }
             $scope.{{ c.identifier }}.filterQuery = '~'+$scope.{{ c.identifier }}.filter+'&'+query;
             console.log('controller >> list {{ c.identifier }} >> applyFilter ',query);

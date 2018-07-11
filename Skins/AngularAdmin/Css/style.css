@@ -991,6 +991,40 @@ Choix des composants
 /********
  * PANEL FILTER
  **/
+
+.list-filter{
+
+}
+.filter-danger{
+    color: #FB434A;
+}
+.filter-info{
+    color: #01A4F8;
+}
+.filter-warning{
+    color: #F39834;
+}
+.filter-success{
+    color: #46BE8A;
+}
+.nav-tabs-horizontal .nav-tabs .nav-item .nav-link.filter-danger.active,
+.nav-tabs-horizontal .nav-tabs .nav-item .nav-link.filter-danger:focus{
+    border-bottom-color: #FB434A !important;
+}
+.nav-tabs-horizontal .nav-tabs .nav-item .nav-link.filter-info.active,
+.nav-tabs-horizontal .nav-tabs .nav-item .nav-link.filter-info:focus{
+    border-bottom-color: #01A4F8 !important;
+}
+.nav-tabs-horizontal .nav-tabs .nav-item .nav-link.filter-warning.active,
+.nav-tabs-horizontal .nav-tabs .nav-item .nav-link.filter-warning:focus{
+    border-bottom-color: #F39834 !important;
+}
+.nav-tabs-horizontal .nav-tabs .nav-item .nav-link.filter-success.active,
+.nav-tabs-horizontal .nav-tabs .nav-item .nav-link.filter-success:focus{
+    border-bottom-color: #46BE8A !important;
+}
+
+
 .panel-filter{
     background-color: #efefef;
     max-height: 0;
@@ -1003,6 +1037,7 @@ Choix des composants
     max-height: 500px;
     transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
     padding: 15px 75px;
+    overflow: visible;
 }
 .panel-filter .form-group {
     margin-bottom:2px;
