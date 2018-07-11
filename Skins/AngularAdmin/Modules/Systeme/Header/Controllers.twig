@@ -1008,13 +1008,11 @@
                 isExtended = true;
             }
             try {
-                $controller('{{ c.name }}FicheCtrlExtends',{$scope: $rootScope.$new()});
-                isExtended = true;
-            } catch (error) {
-                console.log('No extends',error);
-            }
-            if(isExtended){}
                 angular.extend(this, $controller('{{ c.name }}FicheCtrlExtends', {$scope: $scope}));
+                console.log('>> extended {{ c.name }} OK');
+            } catch (error) {
+                console.log('No extends {{ c.name }}',error);
+            }
         });
         });
     {% endif %}

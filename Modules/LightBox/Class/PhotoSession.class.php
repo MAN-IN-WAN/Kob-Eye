@@ -90,6 +90,8 @@ class PhotoSession extends genericClass{
             "title" => $this->Titre,
             "mask" => !empty($this->Masque),
             "mask_file" => $this->Masque,
+            "liveviewenable" => $this->LiveView,
+            "background" => 'http://'.LightBox::getMyIp().'/'.$this->Fond,
             "nb_photos" => Sys::getCount('LightBox','PhotoSession/'.$this->Id.'/Photo')
         );
     }

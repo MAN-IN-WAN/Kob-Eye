@@ -31,7 +31,9 @@
 	<OBJECTCLASS title="PhotoSession" driver="mysql" AccessPoint="1" logEvent="1" master="0" Description="Session"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" Class="Modules/LightBox/Class/PhotoSession.class.php">
 		<PROPERTIES searchOrder="1" description="Titre" type="varchar" list="1" fiche="1" form="1" listDescr="Titre">Titre</PROPERTIES>
 		<PROPERTIES searchOrder="3" description="Masque" type="image" list="1" fiche="1" form="1" listDescr="Photo">Masque</PROPERTIES>
+		<PROPERTIES searchOrder="3" description="Image de fond" type="image" list="1" fiche="1" form="1" listDescr="Fond">Fond</PROPERTIES>
 		<PROPERTIES searchOrder="3" description="Courrante" type="boolean" list="1" fiche="1" form="1" listDescr="Courrante">Current</PROPERTIES>
+		<PROPERTIES searchOrder="3" description="LiveView" type="boolean" list="1" fiche="1" form="1" listDescr="LiveView">LiveView</PROPERTIES>
 		<FUNCTION title="Redéfinir le masque (depuis le fichier mask.png à la racine de la clef)">setMask</FUNCTION>
 		<FUNCTION title="Copier toute la session sur la clef usb">copySession</FUNCTION>
 	</OBJECTCLASS>

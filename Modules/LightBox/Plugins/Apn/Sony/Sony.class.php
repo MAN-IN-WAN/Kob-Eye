@@ -148,7 +148,7 @@ class LightBoxApnSony extends Plugin implements LightBoxApnPlugin {
                 $this->_apn->Api = true;
                 $this->_apn->ApiUrl = $out;
                 $this->_apn->addLog('Connection API OK');
-            }
+            }else throw new Exception('Impossible de se connecter à l\'api');
         }catch (Exception $e){
             $this->_apn->addError(array('Message'=>'Impossible de se connecter à l\'api. Détails: '.$e->getMessage()));
             $this->_apn->Busy = false;

@@ -24,15 +24,18 @@ class LightBoxApnCanon extends Plugin implements LightBoxApnPlugin {
      * retourne l'état
      */
     function getStatus() {
-
+        //récupération de la photosession
+        $ps = PhotoSession::getCurrent();
         return array(
             "connected" => $this->_apn->Connecte,
             "api" => $this->_apn->Api,
             "recmode" => $this->_apn->RecMode,
+            "background" => 'http://'.LightBox::getMyIp().'/'.$ps->Fond,
             "liveview" => $this->_apn->LiveView,
+            "liveviewenable" => $ps->LiveView,
             "liveviewproxy" => $this->_apn->LiveViewProxy,
             /*            "liveview_url"=> $this->LiveViewUrl*/
-            "liveview_url"=> 'http://127.0.0.1:8081/?action=stream',
+            "liveview_url"=> 'http://'.LightBox::getMyIp().':8888/liveview',
             "diskused" => LightBox::getUsedSpace(),
             "freespace" => (100-LightBox::getUsedSpace()),
             "network" => LightBox::getMyIp(),
@@ -63,7 +66,7 @@ class LightBoxApnCanon extends Plugin implements LightBoxApnPlugin {
      */
     function checkConnected(){
         $out = LightBox::localExec('gphoto2 --auto-detect | grep Canon | wc -l');
-        if ($out){
+        if (intval($out) == 1){
             //recherche de l'appareil correspondant
             $apn = Sys::getOneData('LightBox','Apn/Plugin=Canon');
             if (!$apn) return false;
@@ -113,8 +116,10 @@ class LightBoxApnCanon extends Plugin implements LightBoxApnPlugin {
         $this->_apn->RecMode = false;
         $this->_apn->LiveView = false;
         $this->_apn->LiveViewProxy = false;
-        $this->_apn->ApiUrl = '';
+        $this->_apn->ApiUrl = 'http://127.0.0.1:8888/';
         $this->_apn->stopLiveView();
+        sleep(1);
+        LightBox::localExec('gphoto2 --reset');
         $this->_apn->RawSave();
     }
 
@@ -123,10 +128,24 @@ class LightBoxApnCanon extends Plugin implements LightBoxApnPlugin {
      * Connecte à l'api de l'appareil photo
      */
     function connectApi(){
+        $act = $this->_apn->addLog('Connexion Api');
+        $this->_apn->Busy = true;
+        $this->_apn->RawSave();
+        try {
+            $out = LightBox::localExec('/usr/bin/nohup /home/lightbox/app/CameraControllerApi/bin/CameraControllerApi >/dev/null 2>&1 &');
+        }catch (Exception $e){
+            $act->addDetails('error: '.$e->getMessage());
+            $act->Terminate(false);
+            $this->_apn->Busy = false;
+            $this->_apn->RawSave();
+            return false;
+        }
+        $act->addDetails('result: '.$out);
         $this->_apn->Busy = false;
         $this->_apn->Api = true;
-        //$this->_apn->ApiUrl = $out;
+        $this->_apn->ApiUrl = 'http://127.0.0.1:8888/';
         $this->_apn->addLog('Connection API OK');
+        $act->Terminate(true);
         return true;
     }
 
@@ -135,7 +154,14 @@ class LightBoxApnCanon extends Plugin implements LightBoxApnPlugin {
      * Vérifie si l'api est bien connecté et que l'on a bien l'url
      */
     function checkApiConnected(){
-        return $this->_apn->Api;
+        //on vérifie si le processus est lancé
+        $u = LightBox::localExec('ps auxwww | grep CameraControllerApi | wc -l');
+        if (intval($u) < 2){
+            $act = $this->_apn->addLog('Perte du proxy liveview => nb process '.$u);
+            $act->Terminate(false);
+            $this->resetApi();
+            return false;
+        }else return true;
     }
 
     /**
@@ -143,22 +169,45 @@ class LightBoxApnCanon extends Plugin implements LightBoxApnPlugin {
      * Vérifie si le proxy est bien lancé.
      */
     function checkLiveViewProxy(){
-        //on vérifie si le processus est lancé
-        $u = LightBox::localExec('ps auxwww | grep mjpg_streamer | wc -l');
-        if (intval($u) <= 2){
-            $this->_apn->LiveViewProxy = false;
-            $act = $this->_apn->addLog('Perte du proxy liveview');
+        try {
+            $out = $this->callApi('capture?action=autofocus');
+        } catch (Exception $e) {
+            $act = $this->_apn->addLog('Check LiveView Proxy');
             $act->Terminate(false);
+            return false;
+        }
+        if (is_object($out) && $out->cca_response->state == "success") {
+            if (!$this->_apn->LiveViewProxy){
+                $this->_apn->LiveViewProxy = true;
+                $this->_apn->RawSave();
+            }
+            return true;
+        }else{
+            if (is_object($out) && $out->cca_response->message == "Camera not found"){
+                $this->resetUsb();
+                return false;
+            }else{
+                return false;
+            }
+        }
+    }
+    /**
+     * resetUsb
+     * Reset all usb
+     */
+    function resetUsb() {
+        $act = $this->_apn->addLog('RESET USB ');
+        try {
+            $out = LightBox::localExec('sudo /home/lightbox/app/usbreset.sh');
+        }catch (Exception $e){
+            $act->addDetails('error: '.$e->getMessage());
+            $act->Terminate(false);
+            $this->_apn->Busy = false;
             $this->_apn->RawSave();
             return false;
-        }else return true;
-        //on véridie que le port soit bien ouvert.
-        if (!LightBox::checkPort('127.0.0.1','8081')){
-            //pas connecté
-            $this->_apn->LiveViewProxy = false;
-            $this->_apn->RawSave();
-            return false;
-        }else return true;
+        }
+        $act->Terminate(true);
+        return true;
     }
 
     /**
@@ -179,6 +228,8 @@ class LightBoxApnCanon extends Plugin implements LightBoxApnPlugin {
             $this->_apn->addError(array('Message'=> 'Impossible de supprimer le réseau wifi '.$this->SSID.'. Détails: '.$e->getMessage().'  '.$cmd. print_r($uuid,true) ));
             return false;
         }
+        return true;*/
+        $this->resetApi();
         return true;
     }
 
@@ -206,7 +257,7 @@ class LightBoxApnCanon extends Plugin implements LightBoxApnPlugin {
             $act->Terminate(false);
             $apn->stopLiveView();
         }
-        while ($m<12){
+        while ($m<3){
             echo "-----> c parti pour un checkState CANON \r\n";
             Sys::$Modules['LightBox']->Db->clearLiteCache();
             $apn = Sys::getOneData('LightBox','Apn/Actif=1');
@@ -216,7 +267,7 @@ class LightBoxApnCanon extends Plugin implements LightBoxApnPlugin {
                 $apn->Save();
             }
             if (!$apn->Busy) {
-                //teste si l'appareil est bien connecté en wifi
+                //teste si l'appareil est bien connecté
                 if ($apn->checkConnected()) {
                     echo "$m | OK c'est bien connecté \r\n";
                     if ($apn->Api && !$apn->Busy) {
@@ -246,7 +297,11 @@ class LightBoxApnCanon extends Plugin implements LightBoxApnPlugin {
                                 }
                             }else{
                                 //on vérifie quand meme le proxy live view
-                                if (!$apn->checkLiveViewProxy()) $apn->startLiveView();
+                                echo "--> checkLiveViewProxy  ";
+                                if (!$apn->checkLiveViewProxy()){
+                                    echo "--> FAILED \r\n";
+                                    $apn->resetApi();
+                                }else echo "--> OK \r\n";
                             }
                         } else {
                             echo "NOK \r\n";
@@ -272,7 +327,7 @@ class LightBoxApnCanon extends Plugin implements LightBoxApnPlugin {
                     echo "$m | KO c'est pas connecté \r\n";
                 }
             }
-            sleep(5);
+            sleep(20);
             $m++;
         }
     }
@@ -283,35 +338,6 @@ class LightBoxApnCanon extends Plugin implements LightBoxApnPlugin {
      */
     function setConfigApn(){
         $act = $this->_apn->addLog('Configuration de l\'appareil');
-        /*$result = $this->callApi('setStillSize',array(0 => "3:2",1 => "13M"));
-        //$result = $this->callApi('getAvailablePostviewImageSize',array());
-        if (isset($result->error)||!is_object($result)){
-            $act->addDetails('Impossible de définir le setStillSize '.$result->error[1]);
-            $this->addError(array('Message'=>'Impossible de définir le setStillSize '.$result->error[1]));
-            $act->Terminate(false);
-            return false;
-        }else{
-            $act->addDetails('Définition du setStillSize OK. Détails: '.print_r($result,true));
-        }*/
-        /*$result = $this->callApi('setSelfTimer',array(0 => 0));
-        if (isset($result->error)||!is_object($result)){
-            $act->addDetails('Impossible de définir le setSelfTimer '.$result->error[1]);
-            $this->_apn->addError(array('Message'=>'Impossible de définir le setSelfTimer '.$result->error[1]));
-            $act->Terminate(false);
-            return false;
-        }else{
-            $act->addDetails('Définition du setSelfTimer OK. Détails: '.print_r($result,true));
-        }
-        $result = $this->callApi('startLiveviewWithSize',array("L"));
-        if (isset($result->error)||!is_object($result)){
-            $act->addDetails('Impossible de définir le startLiveviewSize '.$result->error[1]);
-            $this->_apn->addError(array('Message'=>'Impossible de définir le startLiveviewSize '.$result->error[1]));
-            $act->Terminate(false);
-            return false;
-        }else{
-            $this->_apn->LiveViewUrl = $result->result[0];
-            $act->addDetails('Démarrage du startLiveviewWithSize OK. Détails: '.print_r($result,true));
-        }*/
         $this->_apn->LiveView = true;
         $this->_apn->RawSave();
         $act->Terminate(true);
@@ -322,39 +348,22 @@ class LightBoxApnCanon extends Plugin implements LightBoxApnPlugin {
      * Demarre le proxy liveview
      */
     function startLiveView(){
-        //on vérifie d'abord si il n'est pas lancé
-        if ($this->_apn->checkLiveViewProxy()) $this->_apn->stopLiveView();
-        $act = $this->_apn->addLog('Démarrage du proxy liveview');
-        $this->_apn->Busy = true;
-        $this->_apn->RawSave();
-        //$act->addDetails('/usr/bin/nohup /usr/local/bin/mjpg_streamer -i "/usr/local/lib/mjpg-streamer/input_sony.so" -o "/usr/local/lib/mjpg-streamer/output_http.so -p 8081"  >/dev/null 2>&1 &');
-        try {
-            $out = LightBox::localExec('mkfifo ~/app/fifo.mjpg && gphoto2 --capture-movie --stdout> ~/app/fifo.mjpg &');
-            $out = LightBox::localExec('/usr/bin/nohup mjpeg_stream -i "/usr/local/lib/mjpg-streamer/input_file.so" -o "/usr/local/lib/mjpg-streamer/output_http.so -p 8081 >/dev/null 2>&1 &');
-            sleep(3);
-        }catch (Exception $e){
-            $act->addDetails('error: '.$e->getMessage());
-            $act->Terminate(false);
-            $this->_apn->Busy = false;
-            parent::Save();
-            return false;
-        }
-        $act->addDetails('result: '.$out);
-        $this->_apn->Busy = false;
         $this->_apn->LiveViewProxy = true;
         $this->_apn->RawSave();
-        $act->Terminate(true);
+        //on vérifie d'abord si il n'est pas lancé
+        return true;
     }
     /**
      * stopLiveView
      * Stoppe le liveview
      * En mode python pour l'instant
      */
-    function stopLiveView(){
+    function stopLiveView($silent = false){
         $act = $this->_apn->addLog('Arret du proxy liveview');
-        $act->addDetails('killall -9 gphoto2');
+        echo 'STOP LIVE VIEW'."\r\n";
+        $act->addDetails('killall -9 CameraControllerApi');
         try {
-            LightBox::localExec('killall -9 gphoto2');
+            LightBox::localExec('killall -9 CameraControllerApi');
         }catch (Exception $e){
             $act->Terminate(true);
             return true;
@@ -398,16 +407,34 @@ class LightBoxApnCanon extends Plugin implements LightBoxApnPlugin {
      */
     function takePhoto(){
         $act = $this->_apn->addLog('Prendre une photo');
-        $result = LightBox::localExec('gphoto2 --capture-image-and-download');
-        if (isset($result->error)||!is_object($result)) {
-            $act->addDetails('Impossible de prendre une photo. détails: '.$result->error[1]);
-            $this->_apn->addError(Array('Message'=> 'Impossible de prendre une photo. détails: '.$result->error[1]));
+        $result = $this->callApi('capture?action=shot');
+        if (!is_object($result)||$result->cca_response->state!="success") {
+            $act->addDetails('Impossible de prendre une photo.');
+            $this->_apn->addError(Array('Message'=> 'Impossible de prendre une photo.'));
             $act->Terminate(false);
             return false;
         }
+        $this->_apn->Busy = true;
+        $this->_apn->RawSave();
+        /*LightBox::localExec('killall -9 CameraControllerApi');
+        sleep(1);
+        try {
+            //$this->resetUsb();
+            //LightBox::localExec('gphoto2 --reset');
+            sleep(1);
+            LightBox::localExec('/usr/bin/nohup /home/lightbox/app/CameraControllerApi/bin/CameraControllerApi >/dev/null 2>&1 &');
+        }catch (Exception $e){
+            sleep(1);
+            //$this->resetUsb();
+            //LightBox::localExec('gphoto2 --reset');
+            sleep(1);
+            LightBox::localExec('/usr/bin/nohup /home/lightbox/app/CameraControllerApi/bin/CameraControllerApi >/dev/null 2>&1 &');
+        }*/
         //création de la photo
-        $url = Photo::create($result->result[0][0]);
+        $url = Photo::download(base64_decode($result->cca_response->data->image));
         $act->Terminate(true);
+        $this->_apn->Busy = false;
+        $this->_apn->RawSave();
         return $url;
     }
     /**
@@ -416,30 +443,22 @@ class LightBoxApnCanon extends Plugin implements LightBoxApnPlugin {
      * @return mixed
      */
     function callApi($f,$params = array()) {
-        /*$url = $this->_apn->ApiUrl.'/sony/camera';
+        $url = $this->_apn->ApiUrl.$f;
         $data_string = json_encode(array(
-            "method" => $f,
-            "params" => $params,
-            "id" => 1,
-            "version" => "1.0"
         ));
         //$this->addLog('API request: '.$data_string);
         $ch=curl_init($url);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+        //curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
         curl_setopt($ch, CURLOPT_HEADER, false);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
         curl_setopt($ch, CURLOPT_TIMEOUT, 5);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
-        curl_setopt($ch, CURLOPT_HTTPHEADER,
-            array('Content-Type:application/json',
-                'Content-Length: ' . strlen($data_string))
-        );
         $result = curl_exec($ch);
         //$this->addLog('API response: '.$result);
-        if (empty(trim($result)))$this->_apn->addLog('API error: '.curl_error($ch));
+        if (empty(trim($result)))$this->_apn->addLog('API error: '.curl_error($ch).' api '.$f);
         curl_close($ch);
         $result = json_decode($result);
-        return $result;*/
+        return $result;
     }
 }
