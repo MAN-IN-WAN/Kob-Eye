@@ -256,7 +256,11 @@
             {% elseif field.type == "datetime" %}
                 <span class="label">{[{ item.{{ field.name }} | date:'dd/MM/yyyy HH:mm' }]}</span>
             {% elseif field.type == "int" %}
+                {% if  field.query %}
+                <span class="label label-primary">{[{ item.{{ field.name }}Label }]}</span>
+                {% else %}
                 <span class="label label-primary">{[{ item.{{ field.name }} }]}</span>
+                {% endif %}
             {% elseif field.type == "fkey" and field.card == "short" %}
                 <a class="btn btn-secondary btn-xs" href="#/{{ field.link }}/{[{ item.{{ field.objectName }}{{ field.name }} }]}" ng-if="item.{{ field.objectName }}{{ field.name }}">{[{ item.{{ field.objectName }}{{ field.name }}label }]}</a>
                 <span ng-if="!item.{{ field.objectName }}{{ field.name }}"> - </span>
