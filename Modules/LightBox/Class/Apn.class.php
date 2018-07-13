@@ -234,12 +234,13 @@ class Apn extends genericClass{
     /**
      * printLast
      * Imprime la dernière photo
+     * ATTENTION DEFINIR LA PAGE SIZE EN 4x6 DANS CUPS !!!!!!!
      * @return mixed
      */
     function printLast() {
         $photos = Sys::getData('LightBox','Photo',0,1,'DESC','Id');
         foreach ($photos as $photo){
-            LightBox::localExec('lp '.$photo->Final);
+            LightBox::localExec('lp -o media=Custom.10x15cm '.$photo->Final);
         }
     }
 }

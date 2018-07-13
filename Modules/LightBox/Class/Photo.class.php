@@ -15,6 +15,16 @@ class Photo extends genericClass{
      * @param $url
      * @return mixed
      */
+    static function download($data) {
+        file_put_contents('/home/lightbox/app/temp_image.jpg',$data);
+        return Photo::create('/home/lightbox/app/temp_image.jpg');
+    }
+    /**
+     * create
+     * télécharge un photo et créé l'objet correspondant
+     * @param $url
+     * @return mixed
+     */
     static function create($url) {
         //récupération de la session en cours
         $sess = PhotoSession::getCurrent();
