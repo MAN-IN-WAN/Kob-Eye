@@ -76,8 +76,12 @@ foreach ($vars['rows'] as $k=>$v){
             //recherche de sa valeur
             $str = explode('::',$f['query']);
             $qry = explode('/',$str[0],2);
-            $val = Sys::getOneData($qry[0],$qry[1].'/'.$v->{$f['name']});
-            $v->{$f['name'].'Label'} = $val->getFirstSearchOrder();
+			$val = Sys::getOneData($qry[0],$qry[1].'/'.$v->{$f['name']});
+			if ($val){
+	            $v->{$f['name'].'Label'} = $val->getFirstSearchOrder();
+			}else{
+				$v->{$f['name'].'Label'} = '';
+			}
         }else $v->{$f['name'].'Label'} = '';
         if ($f['type']=='fkey'&&$f['card']=='short'){
             if ($v->{$f['name']} > 0) {
