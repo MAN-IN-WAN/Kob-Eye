@@ -27,14 +27,14 @@ insert into kbabtel.`kob-Cadref-Section` (umod,gmod,omod,Section,Libelle)
 select 7,7,7,Sect,Libelle from cadref17.Sections;
 
 truncate kbabtel.`kob-Cadref-Discipline`;
-insert into kbabtel.`kob-Cadref-Discipline` (umod,gmod,omod,Section,Discipline,Libelle,Visite,Certificat,SectionId)
-select 7,7,7,d.Sect,d.Discipline,d.Libelle,ifnull(d.Visites='O',0),d.Certificat<>0,s.id
+insert into kbabtel.`kob-Cadref-Discipline` (umod,gmod,omod,Section,Discipline,CodeDiscipline,Libelle,Visite,Certificat,SectionId)
+select 7,7,7,d.Sect,d.Discipline,concat(d.Sect,'.',d.Discipline),d.Libelle,ifnull(d.Visites='O',0),d.Certificat<>0,s.id
 from cadref17.Disciplines d
 left join kbabtel.`kob-Cadref-Section` s on s.Section=d.Sect;
 
 truncate kbabtel.`kob-Cadref-Niveau`;
-insert into kbabtel.`kob-Cadref-Niveau` (umod,gmod,omod,Antenne,Section,Discipline,Niveau,Libelle,AntenneId,SectionId,DisciplineId)
-select 7,7,7,n.Antenne,n.Sect,n.Discipline,n.Niveau,n.Libelle,a.id,s.id,d.id
+insert into kbabtel.`kob-Cadref-Niveau` (umod,gmod,omod,Antenne,Section,Discipline,Niveau,CodeNiveau,Libelle,AntenneId,SectionId,DisciplineId)
+select 7,7,7,n.Antenne,n.Sect,n.Discipline,n.Niveau,concat(n.Antenne,'.',n.Sect,'.',n.Discipline,'.',n.Niveau),n.Libelle,a.id,s.id,d.id
 from cadref17.Niveaux n
 left join kbabtel.`kob-Cadref-Antenne` a on a.Antenne=n.Antenne
 left join kbabtel.`kob-Cadref-Section` s on s.Section=n.Sect
