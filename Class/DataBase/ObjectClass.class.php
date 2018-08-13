@@ -55,7 +55,7 @@ class ObjectClass extends Root{
 	var $searchType = "keywords"; 						//plaintext | keywords
 	//BASE DE DONNEE PAR DEFAUT
 	var $Bdd = 0;
-
+	var $Attributes = Array(); // PGF 20180809
 	/* ----------------------------
 	 |       Initialisation       |
 	 -----------------------------*/
@@ -117,6 +117,7 @@ class ObjectClass extends Root{
 			$this->ObjectClass = $schema['@']['ObjectClass'];
 		}
 		if (isset($schema['@']['driver'])&&$schema['@']['driver']=="sqlite")$this->Bdd = 1;
+        if (isset($schema['@']['Attributes']))$this->setAttributes($schema['@']['Attributes']); // PGF 20180809
 		//PARSE XML 
 		$this->parseXml($schema['#']);
 		//INITIALISATION DU PILOTE
@@ -136,6 +137,16 @@ class ObjectClass extends Root{
     public function getInterfaces(){
         return $this->Interfaces;
     }
+	// PGF 20180809
+	private function setAttributes($str) {
+		$str = explode(',',$str);
+		if(sizeof($str)) foreach($str as $s){
+			$this->Attributes[$s] = true;
+		}
+	}
+	public function getAttributes() {
+		return $this->Attributes;
+	}
 	/**
 	 * __________________________________________________________________________________________________
 	 * 																							   PARSER

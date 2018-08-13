@@ -220,14 +220,16 @@
             <th width="30" title="Ch" class="list-col-th-dark">
                 <input type="checkbox" ng-model="{{ identifier }}.selected.selectall"/>&nbsp;
             </th>
-            <th title="Id" class="list-col-th-id">ID</th>
+            <th title="Id" class="list-col-th-id"{% if attributes.hideIds %} style="display:none"{% endif %}>ID</th>
             {% for field in fields %}
                 <th title="{{ field.name }}">{% if field.listDescr %}{{ field.listDescr }}{% else %}{{ field.name }}{% endif %}</th>
             {% endfor %}
             {% for interface in Interfaces %}
                 <th>{{ interface.name }}</th>
             {% endfor %}
+            {% if not attributes.hideDetails %}
             <th width="220">Détails</th>
+            {% endif %}
             <th width="170">Actions</th>
         </tr>
     </thead>
@@ -236,7 +238,7 @@
         <td  class="list-col-td-dark">
             <input type="checkbox" value="{[{ item.id }]}" ng-model="{{ identifier }}.selected[item.id]" name="{{ identifier }}" id="{[{ item.id }]}" />&nbsp;
         </td>
-        <td class="list-col-td-id">
+        <td class="list-col-td-id"{% if attributes.hideIds %} style="display:none"{% endif %}>
             <!--<span class="label label-warning">{[{ item.id }]}</span>-->
             {[{ item.id }]}
         </td>
@@ -308,7 +310,9 @@
             </td>
             {% endif %}
         {% endfor %}
+        {% if not attributes.hideDetails %}
         <td  class="table-details" ng-bind-html="item._details">{[{ item._details }]}</td>
+        {% endif %}
         <td  class="table-action">
             {% if Type == "Tail" %}
                 <span class="input-group-btn">
@@ -479,7 +483,7 @@
                     </ul>
                 </div>
                 <div ng-if="modalObj.success == false">
-                    {{ include(template_from_string(module('Systeme/Utils/Form?Path='~Path))) }}
+                    {{ include(template_from_string(module(formPath~'?Path='~Path))) }}
                 </div>
             </div>
             <div class="modal-footer">

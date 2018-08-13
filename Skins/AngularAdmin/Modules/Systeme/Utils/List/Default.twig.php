@@ -51,4 +51,19 @@ $vars["Interfaces"] = $vars["ObjectClass"]->getInterfaces();
 if (isset($vars["Interfaces"]['list']))
     $vars["Interfaces"] = $vars["Interfaces"]['list'];
 
+$vars['attributes'] = $vars['ObjectClass']->getAttributes();  //PGF 20180809
+$vars['formPath'] = 'Systeme/Utils/Form';
+
+if (!isset($info['ObjectType'])) {
+$tab = explode('/', $info['Query']);
+	array_push($tab, 'Form');
+} else {
+	$tab = array($info['Module'], $info['ObjectType'], 'Form');
+}
+$blinfo = Bloc::lookForInterface($tab, 'Skins/AngularAdmin/Modules', true);
+if(strpos($blinfo, '/'.$info['Module'].'/')) {
+	$p = strpos($blinfo, 'Modules/') + strlen('Modules/');
+	$vars['formPath'] = substr(trim($blinfo, '.twig'), $p);
+}
+
 ?>
