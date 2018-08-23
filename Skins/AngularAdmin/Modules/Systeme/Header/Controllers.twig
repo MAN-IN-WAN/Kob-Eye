@@ -11,6 +11,10 @@
     {% else %}
     /**** LIST CONTROLLER  ****/
     app.controller('{{ c.name }}Ctrl', function($controller,$injector,$location, $scope,$timeout, $rootScope,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store{% endfor %}) {
+        $scope.log = function(toto){
+            console.log(toto);
+        }
+
         //test du store
         $scope.{{ c.identifier }} = {
             data: {{ c.identifier }}Store.data.default,
@@ -378,7 +382,11 @@
     });
 
     /**** FICHE CONTROLLER ****/
-    app.controller('{{ c.name }}FicheCtrl', function($controller,$injector,NgMap,$location, $scope,$timeout, $rootScope, $routeParams,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store {% for cParent in child.parentelements %},{{ cParent.objectModule }}{{ cParent.objectName }}Store{% endfor %}{% endfor %}{% if c.browseable%},SystemePageStore{% endif %}) {
+    app.controller('{{ c.name }}FicheCtrl', function($controller,$injector,NgMap,$location, $scope,$timeout, $rootScope, $routeParams,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store {% for cParent in child.parentelements %},{{ cParent.objectModule }}{{ cParent.objectName }}Store{% endfor %}{% for cChild in child.childrenelements %},{{ cChild.objectModule }}{{ cChild.objectName }}Store{% endfor %}{% endfor %}{% if c.browseable%},SystemePageStore{% endif %}) {
+        $scope.log = function(toto){
+            console.log(toto);
+        }
+
         //acces aux stores parents
         {% for parent in c.parentelements %}
             var lasttimeoutParent{{ parent.objectModule }}{{ parent.objectName }} = false;
@@ -582,6 +590,7 @@
                 });
 
 
+
                 //FORMULAIRE LINK
                 $scope.{{ child.objectModule }}{{ child.objectName }}Link = {
                     data : {{ child.objectModule }}{{ child.objectName }}Store.data.link,
@@ -599,7 +608,7 @@
                 $scope.$watch('{{ child.objectModule }}{{ child.objectName }}Link.filter', function() {
                     //on lance la recherche depuis le store
                     if ($scope.{{ child.objectModule }}{{ child.objectName }}Link.filter!={{ child.objectModule }}{{ child.objectName }}Store.getFilters('link',true).global){
-                        {{ child.objectModule }}{{ child.objectName }}Store.setFilters($scope.{{ child.objectModule }}{{ child.objectName }}Select.filter,'link');
+                        {{ child.objectModule }}{{ child.objectName }}Store.setFilters($scope.{{ child.objectModule }}{{ child.objectName }}Link.filter,'link');
                         if (lasttimeoutLink{{ child.objectModule }}{{ child.objectName }}){
                             $timeout.cancel(lasttimeoutLink{{ child.objectModule }}{{ child.objectName }});
                             lasttimeoutLink{{ child.objectModule }}{{ child.objectName }} = false;
@@ -616,6 +625,11 @@
                         {{ child.objectModule }}{{ child.objectName }}Store.setPage($scope.{{ child.objectModule }}{{ child.objectName }}Link.currentPage,'link');
                     }
                 });
+                $scope.$watch('{{ child.objectModule }}{{ child.objectName }}Link.pageLength', function() {
+                    console.log('pageLength',$scope.{{ child.objectModule }}{{ child.objectName }}Link.pageLength);
+                    {{ child.objectModule }}{{ child.objectName }}Store.setPageLength($scope.{{ child.objectModule }}{{ child.objectName }}Link.pageLength,'link');
+                });
+
 
                 $scope.{{ child.objectModule }}{{ child.objectName }}linkSave = function (){
                     console.log('link save','{{ child.objectModule }}{{ child.objectName }}');
@@ -753,6 +767,10 @@
                     if ($scope.{{ child.objectModule }}{{ child.objectName }}.currentPage!={{ child.objectModule }}{{ child.objectName }}Store.getCurrentPage('children')){
                         {{ child.objectModule }}{{ child.objectName }}Store.setPage($scope.{{ child.objectModule }}{{ child.objectName }}.currentPage,'children');
                     }
+                });
+                $scope.$watch('{{ child.objectModule }}{{ child.objectName }}.pageLength', function() {
+                    console.log('pageLength',$scope.{{ child.objectModule }}{{ child.objectName }}.pageLength);
+                    {{ child.objectModule }}{{ child.objectName }}Store.setPageLength($scope.{{ child.objectModule }}{{ child.objectName }}.pageLength,'children');
                 });
 
                 //ADD
@@ -900,6 +918,41 @@
                             }
                             lasttimeoutCParent{{ cParent.objectModule }}{{ cParent.objectName }}=$timeout(function () {
                                 {{ cParent.objectModule }}{{ cParent.objectName }}Store.getData(1,'cparentselect');
+                            },200);
+                        }
+                    });
+                {% endfor %}
+                {% for cChild in child.childrenelements %}
+                    var lasttimeoutCChild{{ cChild.objectModule }}{{ cChild.objectName }} = false;
+
+                    {{ cChild.objectModule }}{{ cChild.objectName }}Store.setFilters('{{ cChild.filter }}','cchildselect');
+
+                    $scope.{{ cChild.objectModule }}{{ cChild.objectName }}CCSelect = {
+                        data: {{ cChild.objectModule }}{{ cChild.objectName }}Store.data.cchildselect,
+                        store: {{ cChild.objectModule }}{{ cChild.objectName }}Store,
+                        filter: {{ cChild.objectModule }}{{ cChild.objectName }}Store.filter.cchildselect,
+                        currentPage: {{ cChild.objectModule }}{{ cChild.objectName }}Store.currentPage.cchildselect,
+                        itemsPerPage: {{ cChild.objectModule }}{{ cChild.objectName }}Store.itemsPerPage,
+                        selected: {
+                            selectall: false
+                        }
+                    }
+                    $scope.$watch('{{ cChild.objectModule }}{{ cChild.objectName }}CCSelect.currentPage', function() {
+                        if ($scope.{{ cChild.objectModule }}{{ cChild.objectName }}CCSelect.currentPage!={{ cChild.objectModule }}{{ cChild.objectName }}Store.getCurrentPage('cchildselect')){
+                            console.log('cchildselect > {{ cChild.objectModule }}{{ cChild.objectName }} > changeCurrentPage > '+$scope.{{ cChild.objectModule }}{{ cChild.objectName }}CCSelect.currentPage+' <> '+{{ cChild.objectModule }}{{ cChild.objectName }}Store.getCurrentPage('cchildselect'));
+                            {{ cParent.objectModule }}{{ cParent.objectName }}Store.setPage($scope.{{ cParent.objectModule }}{{ cParent.objectName }}CPSelect.currentPage,'cparentselect');
+                        }
+                    });
+                    $scope.$watch('{{ cChild.objectModule }}{{ cChild.objectName }}CCSelect.filter', function() {
+                        //on lance la recherche depuis le store
+                        if ($scope.{{ cChild.objectModule }}{{ cChild.objectName }}CCSelect.filter!={{ cChild.objectModule }}{{ cChild.objectName }}Store.getFilters('cchildselect',true)){
+                            {{ cChild.objectModule }}{{ cChild.objectName }}Store.setFilters($scope.{{ cChild.objectModule }}{{ cChild.objectName }}CCSelect.filter,'cchildselect');
+                            if (lasttimeoutCChild{{ cChild.objectModule }}{{ cChild.objectName }}){
+                                $timeout.cancel(lasttimeoutCParent{{ cChild.objectModule }}{{ cChild.objectName }});
+                                lasttimeoutCChild{{ cChild.objectModule }}{{ cChild.objectName }} = false;
+                            }
+                            lasttimeoutCChild{{ cChild.objectModule }}{{ cChild.objectName }}=$timeout(function () {
+                                {{ cChild.objectModule }}{{ cChild.objectName }}Store.getData(1,'cchildselect');
                             },200);
                         }
                     });

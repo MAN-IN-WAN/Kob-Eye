@@ -86,6 +86,23 @@ public function Save(){
         }
     }
 
+    //Check de la page et création le cas échéant
+    $pag = $sit->getOneChild('Page');
+
+    if(!$pag){
+        $pag = genericClass::createInstance('Systeme','Page');
+        $pag->Url = 'http://www.'.$dom->Url.'/';
+        $pag->PageModule = 'Systeme';
+        $pag->PageObject = 'Minisite';
+        $pag->PageId = $this->Id;
+        $pag->Title =$this->Titre;
+
+        $pag->addParent($sit);
+        $pag->Save();
+
+        print_r($pag);
+    }
+
 
     $upd = false;
     $A = $dom->getOneChild('Subdomain/Url=A:');

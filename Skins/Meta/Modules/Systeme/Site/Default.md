@@ -10,7 +10,7 @@
 			<th>Keywords</th>
 			<th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
 		</tr>
-		[STORPROC Systeme/Site/[!S::Id!]/Page/Publier=1&Valid=1|P|0|1000|Url|ASC]
+		[STORPROC Systeme/Site/[!S::Id!]/Page|P|0|1000|Url|ASC]
 			[METHOD S|getRelativePath|Path][PARAM][!P::Url!][/PARAM][/METHOD]
 			<tr rel="[!P::Id!]">
 				<td><a href="[!P::Url!]" target="_blank">[IF [!Path!]=]/[ELSE][!Path!][/IF]</a></td>

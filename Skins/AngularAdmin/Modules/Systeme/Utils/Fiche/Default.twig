@@ -110,12 +110,16 @@
                         {% if loop.index - loop.revindex0 == 1 or loop.index - loop.revindex0 == 0 %}
                                 </div>
                             {% if Interfaces.top %}
-                                <div class="col-md-8 col-lg-4">
+                                <div class="col-md-8 col-lg-6">
                             {% else %}
-                                <div class="col-md-8 col-lg-4">
+                                <div class="col-md-8 col-lg-6">
                             {% endif %}
                         {% endif %}
                     {% endfor %}
+                                    <div class="row  ficheField">
+                                        <div class="col-md-5 detail-label"> <label class="form-control-label" for="l0">Détails</label></div>
+                                        <div class="col-md-7 detail-value" ng-bind-html="obj._details" ng-inti="log(obj)"></div>
+                                    </div>
                 </div>
             </div>
             {% for field in fichefields %}
@@ -253,7 +257,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == true">Fermer</button>
                 <button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == false">Annuler</button>
-                <button type="button" class="btn btn-primary" ng-if="modalObj.success == false" ng-click="modalSave()">Enregistrer les modifications</button>
+                <button type="button" class="btn btn-primary" ng-if="modalObj.success == false" ng-click="modalSave()">__SAVE_MODAL_OBJ__</button>
             </div>
         </div>
     </div>
@@ -315,7 +319,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn" data-dismiss="modal" ng-if="link.success == true">Fermer</button>
                     <button type="button" class="btn" data-dismiss="modal" ng-if="link.success == false">Annuler</button>
-                    <button type="button" class="btn btn-primary" ng-if="link.success == false" ng-click="link.Save()">Enregistrer les modifications</button>
+                    <button type="button" class="btn btn-primary" ng-if="link.success == false" ng-click="link.Save()">__SAVE_MODAL_OBJ__</button>
                 </div>
             </div>
         </div>

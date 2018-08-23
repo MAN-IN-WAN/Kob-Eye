@@ -2,7 +2,7 @@
 	<OBJECTCLASS title="Page" driver="mysql"  master="1" AccessPoint="1" Description="Page"  Icon="/Skins/AdminV2/Img/IconAqua/My-Docs.png" browseable="1" Operations="delete,edit,add" className="CmsPage" Class="Modules/Cms/Class/Page.class.php" >
 		<CATEGORY title="Contenu" type="large">
 			<PROPERTIES type="titre" obligatoire="1" searchOrder="1" list="1" listDescr="Nom de la page" fiche="1" form="1">Nom</PROPERTIES>
-			<PROPERTIES type="html" list="1" listDescr="Titre(h1) de la page" fiche="1" form="1" large="1" fullTitle="1">Titre</PROPERTIES>
+			<PROPERTIES type="html" listDescr="Titre(h1) de la page" fiche="1" form="1" large="1" fullTitle="1">Titre</PROPERTIES>
 			<PROPERTIES type="boolean" form="1" fiche="1" description="Accueil" >Home</PROPERTIES>
 			<PROPERTIES type="boolean" form="1" fiche="1" description="Afficher le menu" default="1">AfficheMenu</PROPERTIES>
 			<PROPERTIES type="html" special="multi" fiche="1" form="1" large="1" fullTitle="1">Description</PROPERTIES>
@@ -15,7 +15,7 @@
 			<FKEY card="0,1" module="Systeme" data="Menu,Id" hidden="1">MenuId</FKEY>
 		</CATEGORY>
 		<CATEGORY title="Templating" fold="1">
-			<PROPERTIES type="template" form="1" description="Modèle" values="Page pleine::Default,Colonne à gauche::LeftCol">CmsTemplate</PROPERTIES>
+			<PROPERTIES type="template" form="1" description="Modèle" values="Default::Page pleine,LeftCol::Colonne à gauche,RightCol::Colonne à droite">CmsTemplate</PROPERTIES>
 			<PROPERTIES type="templateconfig" subtype="xml" large="1" form="1" fiche="1" hidden="1">TemplateConfig</PROPERTIES>
 			<PROPERTIES type="templateconfig" subtype="html" large="1" form="1" fiche="1"  hidden="1">HtmlConfig</PROPERTIES>
 		</CATEGORY>

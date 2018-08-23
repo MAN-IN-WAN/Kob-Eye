@@ -5,20 +5,18 @@ class DeviceConnexion extends genericClass{
 
     function save(){
         parent::save();
-        $this->checkGuacamoleConnection();
+        $dev = $this->getOneParent('Device');
+        if ($dev)
+            $this->checkGuacamoleConnection();
         parent::save();
-
-//        $dev = $this->getOneParent('Device');
-//        if ($dev) {
-//            $dev->Dirty = 1;
-//            $dev->Save();
-//        }
         return true;
     }
 
 
     private function checkGuacamoleConnection(){
-        $dbGuac = new PDO('mysql:host=10.0.189.12;dbname=guacamole', 'root', 'RsL5pfky', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+        $guac_serv = Sys::getOneData('Parc','Server/Guacamole=1');
+
+        $dbGuac = new PDO('mysql:host='.$guac_serv->InternalIP.';dbname=guacamole', $guac_serv->guacAdminUser, $guac_serv->guacAdminPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
         $dbGuac->query("SET AUTOCOMMIT=1");
         $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $device = $this->getOneParent('Device');
@@ -84,10 +82,9 @@ class DeviceConnexion extends genericClass{
             } else {
                 $query = "INSERT INTO `guacamole_connection_group` (connection_group_name) VALUES ('" . strtoupper(str_replace('\'',' ',$cli->Nom)) . "')";
                 $q = $dbGuac->query($query);
-
                 $gid = $dbGuac->lastInsertId();
             }
-        }
+        }else $gid = 1;
 
         //Verif au cas ou la connection a été supprimée à l'arrache dans guacamole
         if($this->GuacamoleId){
@@ -104,38 +101,45 @@ class DeviceConnexion extends genericClass{
         switch($this->Type){
             case 'RDP':
                 if ($this->GuacamoleUrl == "" || $this->GuacamoleUrl == null || $this->GuacamoleId == "" || $this->GuacamoleId == null) {
+                    $query = "SELECT connection_id FROM `guacamole_connection` WHERE connection_name='" . addslashes($this->Nom) . "' and protocol = 'rdp'";
+                    if (!empty($gid)) $query.=" AND parent_id=$gid";
+                    $q = $dbGuac->query($query);
+                    $result = $q->fetchALL(PDO::FETCH_ASSOC);
 
-                    $query = "INSERT INTO `guacamole_connection` (connection_name,protocol,parent_id,max_connections,max_connections_per_user) VALUES ('" . $this->Nom . "','rdp',$gid,NULL,NULL)";
-                    $q = $dbGuac->query($query);
-                    $lid = $dbGuac->lastInsertId();
+                    if (!sizeof($result)) {
 
-                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'hostname','127.0.0.1')";
-                    $q = $dbGuac->query($query);
-
-                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'port','".$this->PortRedirectLocal."')";
-                    $q = $dbGuac->query($query);
-
-
-                    //Imprimante
-                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'enable-printing','true')";
-                    $q = $dbGuac->query($query);
-                    //Drive
-                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'enable-drive','true')";
-                    $q = $dbGuac->query($query);
-                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'drive-path','/home/dakota')";
-                    $q = $dbGuac->query($query);
-                    //Clavier
-                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'server-layout','fr-fr-azerty')";
-                    $q = $dbGuac->query($query);
-
-                    if(isset($this->Login) && $this->Login !='' && $this->Login != null){
-                        $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'username','".$this->Login."')";
+                        $query = "INSERT INTO `guacamole_connection` (connection_name,protocol,parent_id,max_connections,max_connections_per_user) VALUES ('" . $this->Nom . "','rdp',$gid,NULL,NULL)";
                         $q = $dbGuac->query($query);
-                    }
-                    if(isset($this->Password) && $this->Password !='' && $this->Password != null) {
-                        $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'password','" . $this->Password . "')";
+                        $lid = $dbGuac->lastInsertId();
+
+                        $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'hostname','127.0.0.1')";
                         $q = $dbGuac->query($query);
-                    }
+
+                        $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'port','" . $this->PortRedirectLocal . "')";
+                        $q = $dbGuac->query($query);
+
+
+                        //Imprimante
+                        $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'enable-printing','true')";
+                        $q = $dbGuac->query($query);
+                        //Drive
+                        $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'enable-drive','true')";
+                        $q = $dbGuac->query($query);
+                        $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'drive-path','/home/dakota')";
+                        $q = $dbGuac->query($query);
+                        //Clavier
+                        $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'server-layout','fr-fr-azerty')";
+                        $q = $dbGuac->query($query);
+
+                        if (isset($this->Login) && $this->Login != '' && $this->Login != null) {
+                            $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'username','" . $this->Login . "')";
+                            $q = $dbGuac->query($query);
+                        }
+                        if (isset($this->Password) && $this->Password != '' && $this->Password != null) {
+                            $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'password','" . $this->Password . "')";
+                            $q = $dbGuac->query($query);
+                        }
+                    }else $lid = $result[0]['connection_id'];
 
                     $this->GuacamoleId = $lid;
                     $this->GuacamoleUrl = base64_encode($lid . "\0" . 'c' . "\0" . 'mysql');
@@ -164,7 +168,11 @@ class DeviceConnexion extends genericClass{
 
                     if(isset($gid)&&$gid!=null){
                         $query = "UPDATE `guacamole_connection` SET parent_id ='" . $gid . "' WHERE connection_id =$this->GuacamoleId";
-                        $q = $dbGuac->query($query);
+                        try {
+                            $q = $dbGuac->query($query);
+                        }catch (Exception $e){
+
+                        }
                     }
                     $query = "REPLACE INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($this->GuacamoleId,'enable-printing','true')";
                     $q = $dbGuac->query($query);
@@ -184,31 +192,51 @@ class DeviceConnexion extends genericClass{
                 break;
             case 'VNC':
                 if ($this->GuacamoleUrl == "" || $this->GuacamoleUrl == null || $this->GuacamoleId == "" || $this->GuacamoleId == null) {
+                    //on vérifie l'existence en base
+                    $query = "SELECT connection_id FROM `guacamole_connection` WHERE connection_name='" . addslashes($this->Nom) . "' and protocol = 'vnc'";
+                    if (!empty($gid)) $query.=" AND parent_id=$gid";
 
-                    $query = "INSERT INTO `guacamole_connection` (connection_name,protocol,parent_id,max_connections,max_connections_per_user) VALUES ('" . $this->Nom . "','vnc',$gid,NULL,NULL)";
-                    $q = $dbGuac->query($query);
-                    $lid = $dbGuac->lastInsertId();
+                    try{
+                        $q = $dbGuac->query($query);
+                    }catch (Exception $e){
+                        echo 'erreur '.$e->getMessage().' requete '.$query;
+                    }
+                    $result = $q->fetchALL(PDO::FETCH_ASSOC);
 
-                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'hostname','127.0.0.1')";
-                    $q = $dbGuac->query($query);
-                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'port','$this->PortRedirectLocal')";
-                    $q = $dbGuac->query($query);
-                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'password','secret')";
-                    $q = $dbGuac->query($query);
-                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'color-depth','8')";
-                    $q = $dbGuac->query($query);
+                    if (!sizeof($result)) {
+                        $query = "INSERT INTO `guacamole_connection` (connection_name,protocol,parent_id,max_connections,max_connections_per_user) VALUES ('" . addslashes($this->Nom) . "','vnc',$gid,NULL,NULL)";
+                        try{
+                            $q = $dbGuac->query($query);
+                        }catch (Exception $e){
+                            echo 'erreur '.$e->getMessage().' requete '.$query;
+                        }
+                        $lid = $dbGuac->lastInsertId();
+                        $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'hostname','127.0.0.1')";
+                        $q = $dbGuac->query($query);
+                        $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'port','$this->PortRedirectLocal')";
+                        $q = $dbGuac->query($query);
+                        $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'password','secret')";
+                        $q = $dbGuac->query($query);
+                        $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'color-depth','8')";
+                        $q = $dbGuac->query($query);
+                    }else $lid = $result[0]['connection_id'];
+
 
                     $this->GuacamoleId = $lid;
                     $this->GuacamoleUrl = base64_encode($lid . "\0" . 'c' . "\0" . 'mysql');
 
                     $this->Save();
                 } else {
-                    $query = "UPDATE `guacamole_connection` SET connection_name ='" . $this->Nom . "' WHERE connection_id =$this->GuacamoleId";
+                    $query = "UPDATE `guacamole_connection` SET connection_name ='" . addslashes($this->Nom) . "' WHERE connection_id =$this->GuacamoleId";
                     $q = $dbGuac->query($query);
 
                     if(isset($gid)&&$gid!=null){
                         $query = "UPDATE `guacamole_connection` SET parent_id ='" . $gid . "' WHERE connection_id =$this->GuacamoleId";
-                        $q = $dbGuac->query($query);
+                        try {
+                            $q = $dbGuac->query($query);
+                        }catch (Exception $e){
+
+                        }
                     }
                     $query = "REPLACE INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($this->GuacamoleId,'color-depth','8')";
                     $q = $dbGuac->query($query);
@@ -222,27 +250,34 @@ class DeviceConnexion extends genericClass{
                 break;
             case 'SSH':
                 if ($this->GuacamoleUrl == "" || $this->GuacamoleUrl == null || $this->GuacamoleId == "" || $this->GuacamoleId == null) {
+                    $query = "SELECT connection_id FROM `guacamole_connection` WHERE connection_name='" . addslashes($this->Nom) . "' and protocol = 'ssh'";
+                    if (!empty($gid)) $query.=" AND parent_id=$gid";
+                    $q = $dbGuac->query($query);
+                    $result = $q->fetchALL(PDO::FETCH_ASSOC);
 
-                    $query = "INSERT INTO `guacamole_connection` (connection_name,protocol,parent_id,max_connections,max_connections_per_user) VALUES ('" . $this->Nom . "','ssh',$gid,NULL,NULL)";
-                    $q = $dbGuac->query($query);
-                    $lid = $dbGuac->lastInsertId();
+                    if (!sizeof($result)) {
+                        $query = "INSERT INTO `guacamole_connection` (connection_name,protocol,parent_id,max_connections,max_connections_per_user) VALUES ('" . $this->Nom . "','ssh',$gid,NULL,NULL)";
+                        $q = $dbGuac->query($query);
+                        $lid = $dbGuac->lastInsertId();
 
-                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'hostname','localhost')";
-                    $q = $dbGuac->query($query);
-                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'port','$this->PortRedirectLocal')";
-                    $q = $dbGuac->query($query);
-                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'username','$this->Login')";
-                    $q = $dbGuac->query($query);
-                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'password','$this->Password')";
-                    $q = $dbGuac->query($query);
-                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'color-scheme','white-black')";
-                    $q = $dbGuac->query($query);
-                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'enable-sftp','true')";
-                    $q = $dbGuac->query($query);
-                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'font-name','Terminus')";
-                    $q = $dbGuac->query($query);
-                    $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'font-size','11')";
-                    $q = $dbGuac->query($query);
+                        $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'hostname','localhost')";
+                        $q = $dbGuac->query($query);
+                        $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'port','$this->PortRedirectLocal')";
+                        $q = $dbGuac->query($query);
+                        $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'username','$this->Login')";
+                        $q = $dbGuac->query($query);
+                        $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'password','$this->Password')";
+                        $q = $dbGuac->query($query);
+                        $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'color-scheme','white-black')";
+                        $q = $dbGuac->query($query);
+                        $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'enable-sftp','true')";
+                        $q = $dbGuac->query($query);
+                        $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'font-name','Terminus')";
+                        $q = $dbGuac->query($query);
+                        $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'font-size','11')";
+                        $q = $dbGuac->query($query);
+                    }else $lid = $result[0]['connection_id'];
+
 
                     $this->GuacamoleId = $lid;
                     $this->GuacamoleUrl = base64_encode($lid . "\0" . 'c' . "\0" . 'mysql');
@@ -254,7 +289,11 @@ class DeviceConnexion extends genericClass{
 
                     if(isset($gid)&&$gid!=null){
                         $query = "UPDATE `guacamole_connection` SET parent_id ='" . $gid . "' WHERE connection_id =$this->GuacamoleId";
-                        $q = $dbGuac->query($query);
+                        try {
+                            $q = $dbGuac->query($query);
+                        }catch (Exception $e){
+
+                        }
                     }
 
                     $query = "UPDATE `guacamole_connection_parameter` SET parameter_value = '$this->PortRedirectLocal' WHERE connection_id=$this->GuacamoleId AND parameter_name='port'";
@@ -303,7 +342,10 @@ class DeviceConnexion extends genericClass{
     }
 
     private function removeGuacamoleConnection(){
-        $dbGuac = new PDO('mysql:host=10.0.189.12;dbname=guacamole', 'root', 'RsL5pfky', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+        $guac_serv = Sys::getOneData('Parc','Server/Guacamole=1');
+
+        $dbGuac = new PDO('mysql:host='.$guac_serv->InternalIP.';dbname=guacamole', $guac_serv->guacAdminUser, $guac_serv->guacAdminPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+
         $dbGuac->query("SET AUTOCOMMIT=1");
         $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 

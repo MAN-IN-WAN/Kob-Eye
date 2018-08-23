@@ -35,7 +35,17 @@ foreach (Sys::$User->Menus as $m){
                 $tmp['description'] = $o->getDescription();
                 $tmp['Interfaces'] = $obj->getInterfaces();
                 $tmp['childrenelements'] = $obj->getChildElements();
+
                 for ($i = 0; $i < sizeof($tmp['childrenelements']); $i++) {
+                    $child = $tmp['childrenelements'][$i];
+                        //test role                                                             //test hidden                                                  //test admin
+                    if (((isset($child['hasRole'])&&!Sys::$User->hasRole($child['hasRole'])) || isset($child['childrenHidden']) || isset($child['hidden'])) && ( is_object(Sys::$CurrentMenu) || !Sys::$User->Admin) ){
+                        $tmp['childrenelements'][$i]=null;
+                        continue;
+                    }
+
+
+
                     //if (!isset($tmp['childrenelements'][$i]['form'])) unset($tmp['childrenelements'][$i]);
                     //recherche des parents de l'element
                     $co = genericClass::createInstance($tmp['childrenelements'][$i]['objectModule'], $tmp['childrenelements'][$i]['objectName']);
@@ -47,10 +57,22 @@ foreach (Sys::$User->Menus as $m){
                         //print_r($tmp['childrenelements'][$i]['parentelements'][$j]);
                         if (!isset($tmp['childrenelements'][$i]['parentelements'][$j]['form'])) unset($tmp['childrenelements'][$i]['parentelements'][$j]);
                     }
+                    $tmp['childrenelements'][$i]['childrenelements'] = $cobj->getChildElements();
+                    for ($j = 0; $j < sizeof($tmp['childrenelements'][$i]['childrenelements']); $j++) {
+                        //print_r($tmp['childrenelements'][$i]['childrenelements'][$j]);
+                        if (!isset($tmp['childrenelements'][$i]['childrenelements'][$j]['listParent'])) unset($tmp['childrenelements'][$i]['childrenelements'][$j]);
+                    }
                 }
+
+                foreach($tmp['childrenelements'] as $k=>$ce){
+                    if($ce===null) unset($tmp['childrenelements'][$k]);
+                }
+
+
                 $tmp['parentelements'] = $obj->getParentElements();
                 $vars["controllers"][$tmp['identifier']] = $tmp;
             }
+
 
             if (!isset($info['ObjectType'])) {
                 $tab = explode('/', $info['Query']);

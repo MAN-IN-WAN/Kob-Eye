@@ -64,4 +64,9 @@ __SAVE_MODAL_OBJ__|Enregistrer les modifications
 
 #######HELP pour AngularAdmin###########
 __CATALOGUE_PRODUIT_TITRE_HELP__|Le nom du modèle, évidemment !
+__CATALOGUE_LIEN_URL_HELP__|Entrer le lien sans le nom de domaine (ne pas saisir https://www.gaz-service.fr/)
+__CMS_PAGE_URL_HELP__|Attention ce champ sert à l'url des pages, si vous le changez certaines pages déjà référencées dans google ne seront plus accessible !)
+__CATALOGUE_PRODUIT_URL_HELP__|Attention ce champ sert à l'url des Produits, si vous le changez certaines pages déjà référencées dans google ne seront plus accessible !)
+__CATALOGUE_CATEGORIE_URL_HELP__|Attention ce champ sert à l'url des Catégories, si vous le changez certaines pages déjà référencées dans google ne seront plus accessible !)
+
 

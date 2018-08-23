@@ -46,10 +46,11 @@
     </div>
     <div class="col-lg-1 col-md-12">
         <select class="form-control" ng-model="{{ identifier }}.pageLength" >
-            <option ng-selected="{{ identifier }}.pageLength == 15" value="15">15</option>
-            <option ng-selected="{{ identifier }}.pageLength == 25" value="25">25</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
+            <option ng-selected="{{ identifier }}.pageLength == 15" value="15">15 </option>
+            <option ng-selected="{{ identifier }}.pageLength == 25" value="25">25 </option>
+            <option ng-selected="{{ identifier }}.pageLength == 50" value="50">50 </option>
+            <option ng-selected="{{ identifier }}.pageLength == 100" value="100">100 </option>
+            <option ng-selected="{{ identifier }}.pageLength ==  9999" value="9999">Tous </option>
         </select>
     </div>
 
@@ -227,7 +228,7 @@
             {% for interface in Interfaces %}
                 <th>{{ interface.name }}</th>
             {% endfor %}
-            <th width="220">Détails</th>
+            {#<th width="220">Détails</th>#}
             <th width="170">Actions</th>
         </tr>
     </thead>
@@ -264,6 +265,9 @@
             {% elseif field.type == "fkey" and field.card == "short" %}
                 <a class="btn btn-secondary btn-xs" href="#/{{ field.link }}/{[{ item.{{ field.objectName }}{{ field.name }} }]}" ng-if="item.{{ field.objectName }}{{ field.name }}">{[{ item.{{ field.objectName }}{{ field.name }}label }]}</a>
                 <span ng-if="!item.{{ field.objectName }}{{ field.name }}"> - </span>
+            {% elseif field.type == "rkey" and field.card == "short" %}
+                <a href="#/{{ CurrentUrl }}/{[{ item.id }]}" ng-bind-html="item.{{ field.name }}{{ field.objectName }}CLabel" ng-if="item.{{ field.name }}{{ field.objectName }}CLabel"></a>
+                <span ng-if="!item.{{ field.name }}{{ field.objectName }}CLabel"> - </span>
             {% elseif field.type == "progress" %}
                 <!--<progress class="progress progress-danger progress-striped progress-animated" ng-if="item.{{ field.name }} < 100" value="{[{ item.{{ field.name }} }]}" max="100">{[{ item.{{ field.name }} }]}</progress>
                 <progress class="progress progress-success progress-striped progress-animated" ng-if="item.{{ field.name }} == 100" value="{[{ item.{{ field.name }} }]}" max="100">{[{ item.{{ field.name }} }]}</progress>-->
@@ -308,7 +312,7 @@
             </td>
             {% endif %}
         {% endfor %}
-        <td  class="table-details" ng-bind-html="item._details">{[{ item._details }]}</td>
+        {#<td  class="table-details" ng-bind-html="item._details">{[{ item._details }]}</td>#}
         <td  class="table-action">
             {% if Type == "Tail" %}
                 <span class="input-group-btn">

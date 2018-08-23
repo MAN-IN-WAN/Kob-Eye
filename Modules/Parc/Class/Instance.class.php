@@ -180,12 +180,12 @@ class Instance extends genericClass{
         return true;
     }
     /**
-     * Retourne un plugin Boutique / Instance
+     * Retourne un plugin Parc / Instance
      * @return	Implémentation d'interface
      */
     public function getPlugin() {
-        $plugin = Plugin::createInstance('Boutique','TypePaiement', $this->Plugin);
-        $plugin->setConfig( $this->PluginConfig );
+        $plugin = Plugin::createInstance('Parc','Instance', $this->Plugin);
+        $plugin->setConfig( $this->PluginConfig , $this);
         return $plugin;
     }
 

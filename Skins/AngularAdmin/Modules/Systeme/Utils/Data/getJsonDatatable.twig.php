@@ -33,15 +33,28 @@ foreach ($interfaces as $i){
     }
 }
 
+$oc = $o->getObjectClass();
+$childrenelements = $oc->getChildElements();
+$getCchild = array();
+foreach ($childrenelements as $childelem){
+    //test role                                                             //test hidden                                               //test admin
+    if (((!isset($childelem['hasRole'])||Sys::$User->hasRole($childelem['hasRole'])) && !isset($childelem['childrenHidden'])&&!isset($childelem['hidden'])) || (!is_object(Sys::$CurrentMenu) && Sys::$User->Admin)){
+        if($childelem['listParent'] && $childelem['card']=='short' ){
+            array_push($getCchild,$childelem);
+        }
+    }
+}
+$vars['children'] = $getCchild;
+
 foreach ($vars['rows'] as $k=>$v){
-    $uc = Sys::getOneData('Systeme','User/'.$v->userCreate);
-    $ue = Sys::getOneData('Systeme','User/'.$v->userEdit);
-    if (is_object($uc))
-        $v->userCreateName = $uc->Login;
-    else $v->userCreateName = 'inconnu';
-    if (is_object($ue))
-        $v->userEditName = $ue->Login;
-    else $v->userEditName = 'inconnu';
+//    $uc = Sys::getOneData('Systeme','User/'.$v->userCreate);
+//    $ue = Sys::getOneData('Systeme','User/'.$v->userEdit);
+//    if (is_object($uc))
+//        $v->userCreateName = $uc->Login;
+//    else $v->userCreateName = 'inconnu';
+//    if (is_object($ue))
+//        $v->userEditName = $ue->Login;
+//    else $v->userEditName = 'inconnu';
     $v->label = Utils::cleanJson($v->getFirstSearchOrder());
     if ($v->getSecondSearchOrder())
         $v->description = $v->getSecondSearchOrder();
@@ -96,6 +109,16 @@ foreach ($vars['rows'] as $k=>$v){
             }
         }
     }
+
+    foreach($getCchild as $gc){
+        $vc = $v->getOneChild($gc['objectName']);
+        if($vc)
+            $v->{$gc['objectName'].'Clabel'} = $vc->getFirstSearchOrder();
+    }
+
+
+
+
     //cas widget
     if (sizeof($children)){
         foreach ($children as $c)
@@ -106,6 +129,7 @@ foreach ($vars['rows'] as $k=>$v){
         $v->isTail = ($v->isTail()) ? '1':'0';
     }
 }
+
 if ($o->isRecursiv()) {
     $vars['recursiv'] = true;
 }
@@ -114,7 +138,8 @@ if (sizeof($children)){
         array_push($vars['fields'],array('type'=>'children','name'=>$c));
 }
 
-$vars['total'] = Sys::getCount($info['Module'],$vars['Path'].'/'.$filters);
+
+$vars['total'] = Sys::getCount($info['Module'],$path.'/'.$filters);
 
 
 function endPacket(){

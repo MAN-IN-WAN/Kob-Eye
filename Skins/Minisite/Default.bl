@@ -4,7 +4,6 @@
 [!Sitos:=[!S::getCurrentSite()!]!]
 [!Instance:=[!Sitos::getOneChild(MiniSite)!]!]
 
-
 <div class="banner" style="border-color:[IF [!Instance::Couleur2!]][!Instance::Couleur2!][ELSE][!Instance::Couleur1!][/IF]; [IF [!Instance::Image!]]background-image:url([!Instance::Image!]);[/IF]">
     <div class="header">
         <div class="header-inner container clear">
@@ -107,12 +106,12 @@
                         </p>
                     </li>
                     [/IF]
-                    <li>
+                    <!--<li>
                         <p class="contact-infos">
                             <span class="icon contact-icon contact-icon-email" style="color: [!Instance::Couleur1!];"></span>
                             <a href="mailto:[!Instance::AdresseMail!]?subject=Demande d'information&amp;body=">[!Instance::AdresseMail!]</a>
                         </p>
-                    </li>
+                    </li>-->
                 </ul>
             </div>
             <div class="contact-block-form col-6-tablet">
@@ -127,7 +126,7 @@
                             <label class="sr" for="name">Nom</label>
                             <input name="name" class="field" id="name" type="text" placeholder="Nom ou Société" required>
                         </div>
-                        <div class="field-group">
+                        <div class="field-group" >
                             <label class="sr" for="email">Email</label>
                             <input name="email" class="field" id="email" type="email" placeholder="Email" required>
                         </div>
