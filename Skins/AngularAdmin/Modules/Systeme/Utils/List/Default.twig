@@ -483,7 +483,7 @@
                     </ul>
                 </div>
                 <div ng-if="modalObj.success == false">
-                    {{ include(template_from_string(module('Systeme/Utils/Form?Path='~Path))) }}
+                    {{ include(template_from_string(module(formPath~'?Path='~Path))) }}
                 </div>
             </div>
             <div class="modal-footer">

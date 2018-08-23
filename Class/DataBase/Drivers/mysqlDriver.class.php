@@ -420,7 +420,7 @@ class mysqlDriver extends ObjectClass{
 	//Execution d une requete SQL
 	static function executeSql($O,$sql,$type='SELECT',$GroupBy=""){
 		if (empty($sql))return;
-//if(strpos($sql,'INSERT') !== false) klog::l(">>>>>>>>>>>>>>>>>".$sql);
+//if(strpos($sql,'Classe') !== false) klog::l(">>>>>>>>>>>>>>>>>".$sql);
 		$GLOBALS["Systeme"]->connectSQL();
 		$i=false;
         $GLOBALS["Chrono"]->start("SQL");
