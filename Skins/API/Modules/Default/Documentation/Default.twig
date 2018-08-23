@@ -574,26 +574,71 @@
         </div>
     </div>
     <div id="Props" class="panel-heading">
-        <h3><i class="icmn-zoom-in3"></i> Propriétés</h3>
+        <h3><i class="icmn-zoom-in3"></i> Entités et sous-entités avec les propriétés</h3>
     </div>
-    <div class="panel-body  entity">
-    {% for title,props in  entities%}
-        <div class="panel-heading">
-            <h4>{{ title }}</h4>
-        </div>
-        <div class="panel-body itemProperties">
-            <table>
-                <tr>
-                    <th>Nom</th><th>Description</th><th>Type</th>
-                </tr>
-                {% for prop in  props%}
-                    <tr class="property">
-                        <td>{{ prop.name }}</td><td>{{ prop.description }}</td><td>{{ prop.type }}</td>
-                    </tr>
-                {% endfor %}
-            </table>
-        </div>
-    {% endfor %}
+    <div class="panel-body  methods accordion">
+        {% for title,props in  entities%}
+            <div class="panel panel-default pos{{ loop.index }}">
+                <div class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" data-target="#{{ title }}_master" aria-expanded="true" aria-controls="delete_method">
+                    <div class="panel-title">
+                                <span class="accordion-indicator pull-right">
+                                    <i class="plus fa fa-plus"></i>
+                                    <i class="minus fa fa-minus"></i>
+                                </span>
+                        <a>
+                            <h4>{{ title }}</h4>
+                        </a>
+                    </div>
+                </div>
+                <div id="{{ title }}_master" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="true" style="">
+                    <div class="panel-body">
+                        <div class="delete">
+                            <table width="100%">
+                                <tr>
+                                    <th>Nom</th><th>Description</th><th>Type</th><th>Obligatoire</th>
+                                </tr>
+                                {% for prop in  props%}
+                                    <tr class="property">
+                                        <td>{{ prop.name }}</td><td>{{ prop.description }}</td><td>{{ prop.type }}</td><td>{{ prop.obligatoire }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                            {% for c_title,c_props in  props.entities %}
+                                <div class="panel panel-default pos{{ loop.index }}">
+                                    <div class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" data-target="#{{ title }}_child_{{ c_title }}" aria-expanded="true" aria-controls="delete_method">
+                                        <div class="panel-title">
+                                        <span class="accordion-indicator pull-right">
+                                            <i class="plus fa fa-plus"></i>
+                                            <i class="minus fa fa-minus"></i>
+                                        </span>
+                                            <a>
+                                                <h4>{{ c_title }}</h4>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div id="{{ title }}_child_{{ c_title }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="true" style="">
+                                        <div class="panel-body">
+                                            <div class="delete">
+                                                <table width="100%">
+                                                    <tr>
+                                                        <th>Nom</th><th>Description</th><th>Type</th><th>Obligatoire</th>
+                                                    </tr>
+                                                    {% for c_prop in  c_props%}
+                                                        <tr class="property">
+                                                            <td>{{ c_prop.name }}</td><td>{{ c_prop.description }}</td><td>{{ c_prop.type }}</td><td>{{ c_prop.obligatoire }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
     <div id="Codes" class="panel-heading">
         <h3><i class="icmn-html-five2"></i> Code HTTP de retour</h3>

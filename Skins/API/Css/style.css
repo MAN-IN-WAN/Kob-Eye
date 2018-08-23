@@ -435,18 +435,33 @@ h3 i {
 .methods.accordion .panel:hover{
     border-left-width: 50px;
 }
-.accordion .panel.get{
+.accordion .panel.get,.accordion .panel.pos1{
     border-left: 35px solid #01a8fe;
 }
-.accordion .panel.post{
+.accordion .panel.post,.accordion .panel.pos2{
     border-left: 35px solid #46be8a;
 }
-.accordion .panel.put{
+.accordion .panel.put,.accordion .panel.pos3{
     border-left: 35px solid #E5AC0E;
 }
-.accordion .panel.patch{
+.accordion .panel.patch,.accordion .panel.pos4{
     border-left: 35px solid #f39834;
 }
-.accordion .panel.delete{
+.accordion .panel.delete,.accordion .panel.pos5{
     border-left: 35px solid #fb434a;
+}
+.accordion .panel.pos6{
+    border-left: 35px solid #b70070;
+}
+.accordion .panel.pos7{
+    border-left: 35px solid #563d7c;
+}
+.accordion .panel.pos8{
+    border-left: 35px solid #744411;
+}
+.accordion .panel.pos9{
+    border-left: 35px solid #747474;
+}
+.accordion .panel.pos10{
+    border-left: 35px solid #000000;
 }

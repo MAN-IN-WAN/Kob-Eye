@@ -9,11 +9,11 @@ class Apache extends genericClass {
 	 * @param	boolean	Enregistrer aussi sur LDAP
 	 * @return	void
 	 */
-	public function Save( $synchro = true ) {
+	public function Save( $synchro = true , $force = false) {
 		if ($this->Ssl){
 			//test de l'activation ssl
 			$old = Sys::getOneData('Parc','Apache/'.$this->Id);
-			if (!$old->Ssl) {
+			if (!$old->Ssl&&!$force) {
 			    if (!$this->enableSsl()) return false;
             }
 		}
@@ -21,6 +21,19 @@ class Apache extends genericClass {
 		if(!$this->_isVerified) $this->Verify( $synchro );
 		// Enregistrement si pas d'erreur
 		if($this->_isVerified) parent::Save();
+		//mise à jour des serveurs
+        try {
+            $srvs = $this->getKEServer();
+            foreach ($srvs as $srv)
+                $srv->callLdap2Service();
+            $pxs = Sys::getData('Parc','Server/Proxy=1');
+            foreach ($pxs as $px)
+                $px->callLdap2Service();
+
+        }catch (Exception $e){
+            $this->addError(array("Message"=>"Impossible de mettre le serveur à jour. Serveur injoignable.".$e->getMessage()));
+            return false;
+        }
 		return true;
 	}
 
@@ -246,10 +259,9 @@ class Apache extends genericClass {
 				$KEHost = $this->getKEHost();
 				$KEServers = $this->getKEServer();
 				foreach ($KEServers as $KEServer) {
-                    $dn = 'apacheServerName=' . $this->ApacheServerName . ',cn=' . $KEHost->Nom . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE;
-
+                    $dn = 'apacheServerName=' . $this->ApacheServerName.',cn=' . $KEHost->Nom . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE;
                     // Verification à jour
-                    $res = Server::checkTms($this,$KEServer);
+                    $res = Server::checkTms($this,$KEServer,'cn=' . $KEHost->Nom . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE,'apacheServerName=' . $this->ApacheServerName);
                     if ($res['exists']) {
                         if (!$res['OK']) {
                             $this->AddError($res);
@@ -347,12 +359,12 @@ class Apache extends genericClass {
 			foreach($alias as $k => $a)	$entry['apacheserveralias'][$k] = $a;
 		}elseif (!$new) $entry['apacheserveralias'] = array();
 
-		$entry['apachesuexecuid'] = $this->_KEHost->Nom;
+		$entry['apachesuexecuid'] = $this->_KEHost->NomLDAP;
 		$Client = $this->_KEHost->getKEClient();
 		$entry['apachesuexecgid'] = $Client->NomLDAP;
 		$entry['apacheservername'] = $this->ApacheServerName;
-		$entry['apachescriptalias'] = '/cgi-bin/ /home/'.$this->_KEHost->Nom.'/cgi-bin/';
-		$entry['apachedocumentroot'] = '/home/'.$this->_KEHost->Nom.'/'.$this->DocumentRoot;
+		$entry['apachescriptalias'] = '/cgi-bin/ /home/'.$this->_KEHost->NomLDAP.'/cgi-bin/';
+		$entry['apachedocumentroot'] = '/home/'.$this->_KEHost->NomLDAP.'/'.$this->DocumentRoot;
 		if($new) {
 			$entry['objectclass'][0] = 'apacheConfig';
 			$entry['objectclass'][1] = 'top';
@@ -362,7 +374,7 @@ class Apache extends genericClass {
 		if ($this->PasswordProtected) {
 			$entry['apacheOptions'][] = 'AuthType Basic';
 			$entry['apacheOptions'][] = 'AuthName "Authentication Required"';
-			$entry['apacheOptions'][] = 'AuthUserFile "'.'/home/'.$this->_KEHost->Nom.'/'.$this->DocumentRoot.'/.htpasswd"';
+			$entry['apacheOptions'][] = 'AuthUserFile "'.'/home/'.$this->_KEHost->NomLDAP.'/'.$this->DocumentRoot.'/.htpasswd"';
 			$entry['apacheOptions'][] = 'Require valid-user';
 			$entry['apacheHtPasswordUser'] = $this->HtaccessUser;
 			$entry['apacheHtPasswordPassword'] = $this->HtaccessPassword;
@@ -378,12 +390,25 @@ class Apache extends genericClass {
 			$entry['apacheSslEnabled'] = 'no';
 		}
         $entry['apacheProxy'] = '';
+
+		//ALias Config
+        if (!empty($this->ApacheConfig))
+            $entry['apacheconfigalias'] = $this->ApacheConfig;
+        else if (!$new) $entry['apacheconfigalias'] = Array();
+
+        //Proxy config
+		if ($this->ProxyCache){
+            $entry['apacheProxyCacheConfig'] = "proxy_cache            STATIC;\n    proxy_cache_valid      200  1d;\n    proxy_cache_use_stale  error timeout invalid_header updating http_500 http_502 http_503 http_504;\n";
+            $entry['apacheProxyCacheConfigSsl'] = "    proxy_cache STATIC;\n    proxy_cache_valid      200  1d;\n    proxy_cache_use_stale  error timeout invalid_header updating http_500 http_502 http_503 http_504;\n";
+        }else if (!$new) {
+		    $entry['apacheProxyCacheConfig'] = Array();
+            $entry['apacheProxyCacheConfigSsl'] = Array();
+        }
     	foreach ($webs as $web){
     	    if (!empty($web->InternalIP))
               $entry['apacheProxy'] .= 'server '.$web->InternalIP.";\n";
         }
         if($entry['apacheProxy'] == '') unset($entry['apacheProxy']);
-
 		return $entry;
 	}
 
@@ -400,12 +425,22 @@ class Apache extends genericClass {
             try {
                 $KEServer->remoteExec('rm /etc/httpd/sites-enabled/' . $this->ApacheServerName . '* -f && systemctl reload httpd');
             } catch (Exception $e) {
-                $this->addError(Array("Message" => "Impossible d'effectuer la commande de suppression sur le serveur"));
-                return false;
+                $this->addError(Array("Message" => "Impossible d'effectuer la commande de suppression sur le serveur ".$KEServer->Nom));
             }
             Server::ldapDelete($this->LdapID);
         }
-		parent::Delete();
+        //suppresion de la config sur les serveurs proxy
+        $pxs = Sys::getData('Parc','Proxy=1');
+        foreach ($pxs as $px){
+            try {
+                $KEServer->remoteExec('rm /etc/nginx/conf.d/' . $this->ApacheServerName . '* -f && systemctl reload nginx');
+            } catch (Exception $e) {
+                $this->addError(Array("Message" => "Impossible d'effectuer la commande de suppression sur le serveur ".$px->Nom));
+            }
+        }
+
+        parent::Delete();
+        return true;
 	}
 
 	/**
@@ -489,4 +524,26 @@ class Apache extends genericClass {
 			parent::Save();
 		}
 	}
+
+	/**
+     * getDomains
+     * renvoie la slite séparée pâr des esapces de tous les domaines
+     *
+     */
+	public function getDomains() {
+	    return $this->ApacheServerName.' '.(implode(" ",explode("\n",$this->ApacheServerAlias)));
+    }
+    /**
+     * getDomains
+     * renvoie la slite séparée pâr des esapces de tous les domaines
+     *
+     */
+    public function getDomainsLink() {{}
+        $out = '<a href="http://'.$this->ApacheServerName.'">'.$this->ApacheServerName.'</a><br />';
+        $oth = explode("\n",$this->ApacheServerAlias);
+        foreach ($oth as $o){
+            $out.='<a href="http://'.$o.'">'.$o.'</a><br />';
+        }
+        return $out;
+    }
 }

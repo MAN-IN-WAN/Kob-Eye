@@ -1,0 +1,6 @@
+<SCHEMA>
+	<OBJECTCLASS title="CloudProject" driver="mysql" AccessPoint="1" Icon="[None]" Description="Projets cloud">
+        <PROPERTIES type="varchar" searchOrder="1" length="100" obligatoire="1" category="Intitulé" description="Titre" list="1" form="1" fiche="1">Titre</PROPERTIES>
+        <PROPERTIES type="raw" category="Intitulé" description="Code soumis">Data</PROPERTIES>
+	</OBJECTCLASS>
+</SCHEMA>

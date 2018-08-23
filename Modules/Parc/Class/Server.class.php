@@ -818,7 +818,7 @@ class Server extends genericClass {
 	 * Verifie la date de modification de l'objet
 	 * @param Object Kob-eye
 	 */
-	static function checkTms($KEObj,$KEServer=false) {
+	static function checkTms($KEObj,$KEServer=false,$dn='',$filter='') {
 
         $e = array('exists' => true, 'OK' => true);
 		Server::ldapConnect();
@@ -841,6 +841,23 @@ class Server extends genericClass {
                         return $e;
                     }
                 break;
+                case "Apache":
+                    $search = ldap_search(Server::$_LDAP, $dn,$filter, array('modifytimestamp', 'entryuuid'));
+                    $res = ldap_get_entries(Server::$_LDAP, $search);
+                    //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
+                    //$KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                    $KEObj->setLdapTms($KEServer,intval($res[0]['modifytimestamp'][0])-10000);
+                    //$KEObj->LdapID = $res[0]['entryuuid'][0];
+                    $KEObj->setLdapID($KEServer,$res[0]['entryuuid'][0]);
+                    //$KEObj->LdapDN = $res[0]['dn'];
+                    $KEObj->setLdapDN($KEServer,$res[0]['dn']);
+                    if (!$res['count']) {
+                        $e['exists'] = false;
+                        return $e;
+                    }else{
+                        $e['exists'] = true;
+                    }
+                    break;
                 case "Parc_Technicien":
                     $search = ldap_search(Server::$_LDAP, 'ou=users,'.PARC_LDAP_BASE, 'cn=' . $KEObj->AccesUser, array('modifytimestamp', 'entryuuid'));
                     $res = ldap_get_entries(Server::$_LDAP, $search);
@@ -877,6 +894,22 @@ class Server extends genericClass {
                         return $e;
                     }
                     break;
+                default:
+                    //on recherche pour voir si il ya quand meêm l'entrée
+                    $search = ldap_search(Server::$_LDAP, $dn,$filter, array('modifytimestamp', 'entryuuid'));
+                    $res = ldap_get_entries(Server::$_LDAP, $search);
+                    //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
+                    //$KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                    $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                    $KEObj->LdapID = $res[0]['entryuuid'][0];
+                    $KEObj->LdapDN = $res[0]['dn'];
+                    if (!$res['count']) {
+                        $e['exists'] = false;
+                        return $e;
+                    }else{
+                        $e['exists'] = true;
+                    }
+                break;
             }
         }else {
 		    if ($KEServer){
@@ -886,7 +919,6 @@ class Server extends genericClass {
             }
             $res = ldap_get_entries(Server::$_LDAP, $search);
             if (!$res['count']) {
-                $e['exists'] = false;
                 return $e;
             }
         }
@@ -1206,6 +1238,9 @@ class Server extends genericClass {
             $out = $this->remoteExec('/usr/bin/ldap2service', $act);
         }catch (Exception $e){
             $act->addDetails($e->getMessage());
+            //si erreur il faut vérfiier le fichier de date
+            $ct = $this->getFileContent('/etc/ldap2service/ldap2service.time');
+
             $act->Terminate(false);
             return;
         }
@@ -1247,5 +1282,45 @@ class Server extends genericClass {
         $act->addDetails($out);
         $act->Terminate(true);
         return true;
+    }
+    /**
+     * folderExists
+     * Check if a folder exists
+     */
+    public function folderExists($path){
+        $act = $this->createActivity('Test existence dossier '.$path,'Exec');
+        try {
+            $out = $this->remoteExec('if [ -d '.$path.' ]; then echo 1; else echo 0; fi');
+            $act->addDetails('if [ -d '.$path.' ]; then echo 1; else echo 0; fi');
+            if (intval($out)>0){
+                $act->addDetails('retour => true ');
+                $act->Terminate(true);
+                return true;
+            }else{
+                $act->addDetails('retour => false ');
+                $act->Terminate(true);
+                return false;
+            }
+        }catch (Exception $e){
+            $act->addDetails($e->getMessage());
+            $act->Terminate(false);
+            return false;
+        }
+    }
+    /**
+     * getFileContent
+     * Return file content
+     */
+    public function getFileContent($path){
+        try {
+            $out = $this->remoteExec('cat '.$path.' ');
+            if (!empty($out)){
+                return $out;
+            }else{
+                return false;
+            }
+        }catch (Exception $e){
+            return false;
+        }
     }
 }

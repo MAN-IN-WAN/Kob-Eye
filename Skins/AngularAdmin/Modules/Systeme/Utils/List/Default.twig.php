@@ -18,7 +18,9 @@ $vars['searchfields'] = $o->getElementsByAttribute('searchOrder|search','',true)
 $vars['ObjectType'] = $info['ObjectType'];
 foreach ($vars['fields'] as $k=>$f){
     if ($f['type']=='fkey'&&$f['card']=='short'){
-        $vars['fields'][$k]['link'] = Sys::getMenu($f['objectModule'].'/'.$f['objectName']);
+        $vars['fields'][$k]['link'] = Sys::getMenu($f['objectModule'].'/'.$f['objectName'],true);
+        if ($vars['fields'][$k]['link']==$f['objectModule'].'/'.$f['objectName'])
+            $vars['fields'][$k]['link'] = false;
     }
 }
 foreach ($vars['searchfields'] as $k=>$f){

@@ -108,18 +108,19 @@ class Sys extends Root{
 		//Intialisation des modules
   		$this->initModules();
 		//Crï¿œtion de la connexion
-		$GLOBALS["Chrono"]->start("Connexion");
-  		$this->Connection =new Connection();
-		$GLOBALS["Chrono"]->stop("Connexion");
-
-		//Petit coommentaire sympa
-        if (isset($_GET["ACTION"])&&$_GET["ACTION"]=="UPDATE" && Sys::$User->Admin){
+        //Petit coommentaire sympa
+        if (isset($_GET["ACTION"])&&$_GET["ACTION"]=="UPDATE"){
             foreach (Sys::$Modules as $K=>$M){
                 $M->loadSchema();
                 $M->Check();
             }
             die('UPDATE OK');
         }
+		$GLOBALS["Chrono"]->start("Connexion");
+  		$this->Connection =new Connection();
+		$GLOBALS["Chrono"]->stop("Connexion");
+        $this->Db[0]->query("COMMIT");
+        $this->Db[0]->query("START TRANSACTION");
 
   		$this->registerVar("DefaultUser",MAIN_USER_NUM);
   		if (isset(Sys::$User->Skin)) Sys::$Skin=Sys::$User->Skin;
@@ -1061,8 +1062,8 @@ class Sys extends Root{
 	* @param query Requete 
 	* @return String 
 	*/
-	static public function getMenu($Query){
-		$m = Sys::getMenus($Query,false,false);
+	static public function getMenu($Query, $strict = false){
+		$m = Sys::getMenus($Query,false,$strict);
 		$out='';
 		if ($m){
 			foreach ($m as $a) {

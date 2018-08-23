@@ -26,13 +26,20 @@ switch ($method){
         $data = json_decode($_GET['params'],true);
         break;
     default:
-        $request = array();
-//        $request = file_get_contents("php://input");
-//        $data = json_decode($request,true);
-        parse_str(file_get_contents("php://input"),$request);
-        $data = json_decode($request['params'],true);
+        if (isset($_POST['params'])){
+            $data = json_decode($_POST['params'],true);
+        }else {
+            $request = file_get_contents("php://input");
+            $data = json_decode($request, true);
+            $data = $data["params"];
+        }
         break;
 }
+/*echo $method."\r\n";
+var_dump($_POST['params']);
+echo "-------------\r\n";
+var_dump(json_decode($_POST['params'],true));
+die();*/
 switch($info['TypeSearch']){
     case 'Interface':
         switch($method){
@@ -478,13 +485,8 @@ function sendResult($code,$obj=null,$more=null){
             );
             break;
     }
-
-    echo json_encode($return);
+    //systeme anti plugin recursion
+    $tmp = json_encode($return);
+    if (empty($tmp)) echo json_last_error_msg();
+    else echo $tmp;
 }
-
-//function flatten($arrayIn, &$arrayOut){
-//    foreach($arrayIn as $ki=>$ai){
-//        if(!is_array($ai))$arrayOut[$ki] = $ai;
-//        flatten($ai,$arrayOut);
-//    }
-//}

@@ -26,6 +26,10 @@ class Bdd extends genericClass {
             if (!$result[0]["COUNT(*)"]) {
                 $query = "CREATE USER '" . $host->Nom . "'@'%' IDENTIFIED BY '" . $host->Password . "';";
                 $dbGuac->query($query);
+            }else{
+                //sinon modification du mot de passe.
+                $query = "ALTER USER '" . $host->Nom . "'@'%' IDENTIFIED BY '" . $host->Password . "';";
+                $dbGuac->query($query);
             }
 
             //creation de la base de donnée et obtention des droits
@@ -56,9 +60,14 @@ class Bdd extends genericClass {
     private function removeFromDatabase($silent = false){
         $serv = $this->getOneParent('Server');
         if (!is_object($serv)) return false;
-        $dbGuac = new PDO('mysql:host=' . $serv->IP . ';dbname=mysql', $serv->SshUser, $serv->SshPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-        $dbGuac->query("SET AUTOCOMMIT=1");
-        $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        try {
+            $dbGuac = new PDO('mysql:host=' . $serv->IP . ';dbname=mysql', $serv->SshUser, $serv->SshPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+            $dbGuac->query("SET AUTOCOMMIT=1");
+            $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        }catch(Exception $e){
+            $this->addError(Array('Message'=>'Impossible de contacter le serveur SQL'));
+            return true;
+        }
 
         //flush privileges
         $query = "DROP DATABASE `" . $this->Nom."`;";

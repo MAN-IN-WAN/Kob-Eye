@@ -15,6 +15,11 @@ class Host extends genericClass
     {
         // Forcer la vérification
         if (!$this->_isVerified) $this->Verify($synchro);
+        if (!$this->_isVerified) return false;
+        //Vérification du mot de passe
+        if (empty($this->Password)){
+            $this->Password = str_shuffle(bin2hex(openssl_random_pseudo_bytes(12)));
+        }
         // Enregistrement si pas d'erreur + Récupération GID CLIENT
         if ($this->_isVerified) {
             //$this->getGidFromClient($synchro);
@@ -306,30 +311,57 @@ class Host extends genericClass
      * @return    void
      */
     public function Delete(){
+        $act = $this->createActivity('Suppression de l\'hébergement '.$this->getFirstSearchOrder());
         //suppression des apaches
         $aps = $this->getChildren('Apache');
-        foreach ($aps as $ap) $ap->Delete();
+        foreach ($aps as $ap){
+            if ($ap->Delete()) {
+                $act->addDetails('-> Suppression de de l\'hôte virtuel '.$ap->getFirstSearchOrder().' OK');
+            }else  $act->addDetails('-> Suppression de de l\'hôte virtuel '.$ap->getFirstSearchOrder().' NOK');
+        }
         //suppression des ftp
         $ftps = $this->getChildren('Ftpuser');
-        foreach ($ftps as $ftp) $ftp->Delete();
+        foreach ($ftps as $ftp){
+            if ($ftp->Delete()) {
+                $act->addDetails('-> Suppression de de l\'utilisateur ftp '.$ftp->getFirstSearchOrder().' OK');
+            }else  $act->addDetails('-> Suppression de de l\'utilisateur ftp '.$ftp->getFirstSearchOrder().' NOK');
+        }
         //suppression des apaches
         $bdds = $this->getChildren('Bdd');
-        foreach ($bdds as $bdd) $bdd->Delete();
+        foreach ($bdds as $bdd){
+            if ($bdd->Delete()) {
+                $act->addDetails('-> Suppression de la base de donnée '.$bdd->getFirstSearchOrder().' OK');
+            }else  $act->addDetails('-> Suppression de la base de donnée '.$bdd->getFirstSearchOrder().' NOK');
+        }
         //suppression ldap
         $KEServers = $this->getKEServer();
         foreach ($KEServers as $KEServer) {
             try {
-                if (!empty($this->Nom))
-                    $KEServer->remoteExec('rm /home/' . $this->Nom . ' -Rf');
+                if (!empty($this->NomLDAP)) {
+                    if ($KEServer->folderExists('/home/'.$this->NomLDAP)) {
+                        $cmd = 'for file in $(ls /home/' . $this->NomLDAP . '/); do mountpoint -q /home/' . $this->NomLDAP . '/$file && umount /home/' . $this->NomLDAP . '/$file; done';
+                        $act->addDetails($cmd);
+                        try{
+                            $KEServer->remoteExec($cmd);
+                        }catch (Exception $e){}
+                        $KEServer->remoteExec('rm -Rf /home/'.$this->NomLDAP);
+                        $act->addDetails('-> Suppression des fichiers  OK');
+                    }else $act->addDetails('-> Le dossier '."/home/".$this->NomLDAP.' n\'existe pas.'.$KEServer->folderExists('/home/'.$this->NomLDAP));
+                }else $act->addDetails('-> Suppression des fichiers  NOK, pas de nom LDAP');
             } catch (Exception $e) {
+                $act->addDetails('-> Suppression des fichiers  NOK. Détails: '.$e->getMessage());
+                $act->Terminate(false);
                 $this->addError(Array("Message" => "Impossible d'effectuer la commande de suppression sur le serveur"));
                 return false;
             }
             //suppression définitive
             if ($this->getLdapID($KEServer)) Server::ldapDelete($this->getLdapID($KEServer), true);
+            else $act->addDetails('-> Suppression des entrées LDAP NOK');
         }
-
         parent::Delete();
+        $act->addDetails('Suppression terminée avec succès');
+        $act->Terminate(true);
+        return true;
     }
 
 
@@ -414,6 +446,29 @@ class Host extends genericClass
 
 //        return Terminal::run($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
         return Terminal::run('enguer', '21wyisey');
+    }
+    /**
+     * createActivity
+     * créé une activité en liaison avec l'hébergement
+     * @param $title
+     * @param null $obj
+     * @param int $jPSpan
+     * @param string $Type
+     * @return genericClass
+     */
+    public function createActivity($title, $Type = 'Exec', $Task = null){
+        $act = genericClass::createInstance('Parc', 'Activity');
+        $host = $this;
+        $srv = $host->getOneParent('Server');
+        $act->addParent($host);
+        $act->addParent($srv);
+        if ($Task) $act->addParent($Task);
+        $act->Titre = $this->tag . date('d/m/Y H:i:s') . ' > ' . $this->Titre . ' > ' . $title;
+        $act->Started = true;
+        $act->Type = $Type;
+        $act->Progression = 0;
+        $act->Save();
+        return $act;
     }
 }
 /**
@@ -773,6 +828,8 @@ class Terminal {
         self::$process->put(chr(13));
         usleep(500000);
     }
+
+
 }/**
  * Class to control the process.
  * @author Thiago Bocchile <tykoth@gmail.com>

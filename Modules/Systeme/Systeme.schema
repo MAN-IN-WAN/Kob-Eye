@@ -10,6 +10,12 @@
 		<FUNCTION>exportMenus</FUNCTION>
 		<FUNCTION>importMenus</FUNCTION>
 	</OBJECTCLASS>
+	<!-- API Key -->
+	<OBJECTCLASS title="ApiKey" driver="mysql" AccessPoint="1" Icon="[None]" Description="Clef Api" Class="Modules/Systeme/Class/ApiKey.class.php">
+		<PROPERTIES type="varchar" searchOrder="1">Key</PROPERTIES>
+		<PROPERTIES type="text" searchOrder="2">Commentaire</PROPERTIES>
+	</OBJECTCLASS>
+
 	<OBJECTCLASS title="User" driver="mysql" logEvent="1" AccessPoint="1" Icon="/Skins/AdminV2/Img/IconAqua/Contact.png" Description="Utilisateurs" Heritage="0" Class="Modules/Systeme/Class/User.class.php">
 		<PROPERTIES type="varchar" length="100" searchOrder="1" obligatoire="1" category="Connexion"  form="1" list="1" listDescr="Login">Login</PROPERTIES>
 		<PROPERTIES type="varchar"  length="255" searchOrder="2" obligatoire="0" category="Contact" list="2" fiche="1" form="1" listDescr="Nom">Nom</PROPERTIES>
@@ -305,9 +311,4 @@
         <PROPERTIES category="Clef" type="varchar" description="Fonction à éxécuter"  searchOrder="5" list="7">TaskFunction</PROPERTIES>
 	</OBJECTCLASS>
 
-	<!-- API Key -->
-	<OBJECTCLASS title="ApiKey" driver="mysql" AccessPoint="1" Icon="[None]" Description="Clef Api" Class="Modules/Systeme/Class/ApiKey.class.php">
-		<PROPERTIES type="varchar" searchOrder="1">Key</PROPERTIES>
-		<PROPERTIES type="text" searchOrder="2">Commentaire</PROPERTIES>
-	</OBJECTCLASS>
 </SCHEMA>

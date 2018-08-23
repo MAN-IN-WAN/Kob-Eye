@@ -1,0 +1,2 @@
+[STORPROC Parc/Revendeur/2/Client/*/Host/*/Apache/Actif=1&Ssl=1&SslExpiration>[!TMS::Now:+512000!]|A|0|1000|SslExpiration|ASC][DATE d/m/Y][!A::SslExpiration!][/DATE] [!A::getDomainsLink()!]<br />
+[/STORPROC]

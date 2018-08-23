@@ -2,6 +2,9 @@
 class Tache extends genericClass{
     var $_apache = null;
     public function Execute() {
+        //on rafraichit les infos
+        $t = Sys::getOneData('Parc','Tache/'.$this->Id);
+        if ($t->Demarre) return true;
         switch ($this->Type) {
             default:
                 try {

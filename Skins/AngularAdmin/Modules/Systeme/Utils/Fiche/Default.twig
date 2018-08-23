@@ -145,7 +145,8 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <div ui-ace="{useWrapMode : true,mode: '{{ field.subtype }}',onLoad: aceLoaded}" ng-model="modalObj.{{ field.name }}" class="ace_editor" readonly="true"></div>
+                            {%  if field.subtype %}{% set subtype = field.subtype %}{% else %}{% set subtype = 'text' %}{% endif %}
+                            <div ui-ace="{useWrapMode : true,mode: '{{ subtype }}',onLoad: aceLoaded}" ng-model="obj.{{ field.name }}" class="ace_editor" readonly="true"></div>
                         </div>
                     </div>
                 {% elseif field.type == "html" or field.type == "bbcode" %}
@@ -157,7 +158,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <div ui-ace="{useWrapMode : true,mode: '{{ field.subtype }}',onLoad: aceLoaded}" ng-model="modalObj.{{ field.name }}" class="ace_editor"  readonly="true"></div>
+                            <div ui-ace="{useWrapMode : true,mode: '{{ field.subtype }}',onLoad: aceLoaded}" ng-model="obj.{{ field.name }}" class="ace_editor"  readonly="true"></div>
                         </div>
                     </div>
                 {% endif %}

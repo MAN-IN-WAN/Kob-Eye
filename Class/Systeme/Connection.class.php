@@ -32,7 +32,7 @@ class Connection extends Root{
 	function Connection() {
 	    $newCo = false;
 
-		//On enregistre le nunmero de session
+        //On enregistre le nunmero de session
 		$this->DetectSessions();
 
 		//Recherche de la connexion ou creation si inexistante
@@ -40,7 +40,8 @@ class Connection extends Root{
 
 		//Detection de la langue (cas par défaut)
 		$this->DetectLanguage();
-		//On detecte l existence de cookies envoyés par le navigateur
+
+        //On detecte l existence de cookies envoyés par le navigateur
 		if (!empty($this->SessId)) {
 		    $domain = Sys::$domain;
 
@@ -67,13 +68,11 @@ class Connection extends Root{
                     http_response_code(401);
                     die(json_encode(array('success'=>false,'error' => 'invalid_credentials', 'error_description' => 'Probleme d\'identification. Essayez de vous reconnecter.')));
                 }
-
-
                 $apiKey = isset($_COOKIE["API_KEY"]) ? $_COOKIE["API_KEY"] : (isset($_GET["API_KEY"]) ? $_GET["API_KEY"] : (isset($_POST["API_KEY"]) ? $_POST["API_KEY"] : false));
                 if(!$apiKey){
                     $data = array();
-                    parse_str(file_get_contents("php://input"),$data);
-                    if(isset($data['API_KEY'])) $apiKey = $data['API_KEY'];
+                    $data = json_decode(file_get_contents("php://input"));
+                    if(isset($data->API_KEY)) $apiKey = $data->API_KEY;
                 }
                 $uApi = Sys::$User->getOneParent('ApiKey');
                 if ($uApi->Key != $apiKey) {
@@ -114,7 +113,8 @@ class Connection extends Root{
             }
 		}else{
 			$this->LoadLoginVars();
-			if ($this->DetectUser()) {
+
+            if ($this->DetectUser()) {
                 $domain = Sys::$domain;
                 $site = Sys::getOneData('Systeme','Site/Domaine='.$domain);
                 if($site && $site->Api && $_SERVER['REQUEST_URI'] != '/Documentation'){
@@ -123,12 +123,10 @@ class Connection extends Root{
                     header("Access-Control-Allow-Headers:Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token");
                     header("Access-Control-Allow-Methods:GET, POST, PUT, DELETE, PATCH");
                     header("Access-Control-Allow-Origin: *");
-
                     $apiKey = isset($_COOKIE["API_KEY"]) ? $_COOKIE["API_KEY"] : ( isset($_GET["API_KEY"]) ? $_GET["API_KEY"] : ( isset($_POST["API_KEY"]) ? $_POST["API_KEY"] : false));
                     if(!$apiKey){
-                    	$data = array();
-                        parse_str(file_get_contents("php://input"),$data);
-                        if(isset($data['API_KEY'])) $apiKey = $data['API_KEY'];
+                        $data = json_decode(file_get_contents("php://input"));
+                        if(isset($data->API_KEY)) $apiKey = $data->API_KEY;
 					}
                     $exists = false;
                     if($apiKey)
@@ -258,6 +256,7 @@ class Connection extends Root{
 	}
 	public function DetectToken(){
 	    $types= array(
+	    	'application/x-www-form-urlencoded',
             'application/json',
             'application/x-javascript',
             'text/javascript',
@@ -276,9 +275,8 @@ class Connection extends Root{
 
 		$apiKey = isset($_COOKIE["API_KEY"]) ? $_COOKIE["API_KEY"] : ( isset($_GET["API_KEY"]) ? $_GET["API_KEY"] : ( isset($_POST["API_KEY"]) ? $_POST["API_KEY"] : false));
         if(!$apiKey){
-            $data = array();
-            parse_str(file_get_contents("php://input"),$data);
-            if(isset($data['API_KEY'])) $apiKey = $data['API_KEY'];
+            $data = json_decode(file_get_contents("php://input"));
+            if(isset($data->API_KEY)) $apiKey = $data->API_KEY;
         }
 		$exists = false;
 		if($apiKey)
@@ -507,7 +505,6 @@ class Connection extends Root{
 	//------------------------------------------------------------//
 	//Recuperation des variables pouvant correspondre au login.
 	function LoadLoginVars() {
-
 		if (defined("EXTERNAL_AUTH_AD")&&EXTERNAL_AUTH_AD&&isset($_SERVER["PHP_AUTH_USER"])&&!isset($_SERVER["PHP_AUTH_PW"])){
 			//CAS DU TICKET KERBEROS WINDOWS
 			$l = explode("@",$_SERVER["PHP_AUTH_USER"]);
@@ -543,7 +540,11 @@ class Connection extends Root{
 			$this->login = $_SERVER["PHP_AUTH_USER"];
 			$this->pass = md5($_SERVER["PHP_AUTH_PW"]);
 			$this->clearpass = $_SERVER["PHP_AUTH_PW"];
-		}else{
+        }elseif (is_object(json_decode(file_get_contents('php://input')))){
+			$data = json_decode(file_get_contents('php://input'));
+            $this->login = $data->login;
+            $this->pass =  md5($data->pass);
+        }else{
 			if ($this->login==""||$this->pass=="")	{
                 $GLOBALS["Systeme"]->Error->Set('Connexion','Veuillez vérifiez vos identifiants. Login et/ou mot de passe manquants ou érronés.',5);
                 return false;

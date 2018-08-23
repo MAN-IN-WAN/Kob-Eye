@@ -305,6 +305,19 @@ class Parc extends Module{
         }
     }
     /**
+     * Execution des taches
+     */
+    public function executeTasks() {
+        $ts = Sys::getData('Parc','Tache/Demarre=0&Date<'.time());
+        $start = time();
+        foreach ($ts as $t){
+            //test de la date d'execution qui ne doit pas dépasser 1 minute
+            if (time()>$start+60) return;
+            //execution de la tache
+            $t->Execute();
+        }
+    }
+    /**
      * UTILS FUNCTIONS
      */
     static public function localExec( $command, $activity = null,$total=0){

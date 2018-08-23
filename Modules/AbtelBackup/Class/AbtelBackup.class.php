@@ -168,14 +168,14 @@ class AbtelBackup extends Module{
     /**
      * UTILS FUNCTIONS
      */
-    static public function localExec( $command, $activity = null,$total=0,$path=null)
+    static public function localExec( $command, $activity = null,$total=0,$path=null,$stderr = false)
     {
         /*exec( $command,$output,$return);
         if( $return ) {
             throw new RuntimeException( "L'éxécution de la commande locale a échoué. commande : ".$command." \n ".print_r($output,true));
         }
         return implode("\n",$output);*/
-        $proc = popen($command.' 2>&1 ; echo Exit status : $?', 'r');
+        $proc = popen($command.' '.($stderr?'2>&1':'').' ; echo Exit status : $?', 'r');
         $complete_output = "";
         if ($path && is_file($path) && is_readable($path)){
             //On fork le process pour calculer le progress en parallele
@@ -252,7 +252,7 @@ class AbtelBackup extends Module{
         preg_match('/[0-9]+$/', $complete_output, $matches);
 
         // return exit status and intended output
-        if( $matches[0] !== "0") {
+        if( $matches[0] !== "0" && !$stderr) {
             throw new RuntimeException( $complete_output, (int)$matches[0] );
         }
         return str_replace("Exit status : " . $matches[0], '', $complete_output);

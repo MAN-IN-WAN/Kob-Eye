@@ -10,6 +10,7 @@ class Subdomain extends genericClass {
 	 */
 	public function Save( $synchro = true ) {
         $this->Url = Subdomain::checkName($this->Url);
+        $this->Nom = 'A:'.$this->Url;
         parent::Save();
         $pa = $this->getOneParent('Domain');
         if ($pa) {
@@ -34,6 +35,62 @@ class Subdomain extends genericClass {
 		}
 		return true;
 	}
+    /**
+     * getLdapID
+     * récupère le ldapId d'une entrée pour un serveur spécifique
+     */
+    public function getLdapID() {
+        return $this->LdapID;
+    }
+    /**
+     * setLdapID
+     * défniit le ldapId d'une entrée pour un serveur spécifique
+     */
+    public function setLdapID($ldapId) {
+        $this->LdapID = $ldapId;
+    }
+    /**
+     * getLdapDN
+     * récupère le ldapDN d'une entrée pour un serveur spécifique
+     */
+    public function getLdapDN() {
+        if (empty($this->LdapDN)) {
+            //on construit le dn si il n'existe pas.
+            $KEDomain = $this->getKEDomain();
+            $this->LdapDN = 'cn='.$this->Nom.',cn='.$KEDomain->Url.',ou=domains,'.PARC_LDAP_BASE;
+        }
+        return $this->LdapDN;
+    }
+    /**
+     * getLdapDN
+     * récupère le ldapDN d'une entrée pour un serveur spécifique
+     */
+    public function getLdapBaseDN() {
+        $KEDomain = $this->getKEDomain();
+        return 'cn='.$KEDomain->Url.',ou=domains,'.PARC_LDAP_BASE;
+
+    }
+    /**
+     * setLdapDN
+     * définit le ldapDN d'une entrée pour un serveur spécifique
+     */
+    public function setLdapDN($ldapDn) {
+        $this->LdapDN = $ldapDn;
+    }
+    /**
+     * getLdapTms
+     * récupère le ldapTms d'une entrée pour un serveur spécifique
+     */
+    public function getLdapTms() {
+        return $this->LdapTms;
+    }
+    /**
+     * setLdapTms
+     * définit le ldapTms d'une entrée pour un serveur spécifique
+     */
+    public function setLdapTms($ldapTms) {
+        $this->LdapTms = $ldapTms;
+    }
 
 	/**
 	 * Verification des erreurs possibles
@@ -42,7 +99,7 @@ class Subdomain extends genericClass {
 	 */
 	public function Verify( $synchro = true ) {
         $this->Url = Subdomain::checkName($this->Url);
-
+        $this->Nom = 'A:'.$this->Url;
         $pa = $this->getOneParent('Domain');
         if ($pa) {
             $cnames = $pa->getChildren('CNAME');
@@ -72,9 +129,9 @@ class Subdomain extends genericClass {
 
 				// Outils
 				$KEDomain = $this->getKEDomain();
-				$dn = 'cn='.$this->Url.',cn='.$KEDomain->Url.',ou=domains,'.PARC_LDAP_BASE;
+				$dn = 'cn='.$this->Nom.',cn='.$KEDomain->Url.',ou=domains,'.PARC_LDAP_BASE;
 				// Verification à jour
-				$res = Server::checkTms($this);
+				$res = Server::checkTms($this,null,$this->getLdapBaseDN(),'cn='.$this->Nom);
 				if($res['exists']) {
 					if(!$res['OK']) {
 						$this->AddError($res);
@@ -82,7 +139,7 @@ class Subdomain extends genericClass {
 					}
 					else {
 						// Déplacement
-						$res = Server::ldapRename($this->LdapDN, 'cn='.$this->Url, 'cn='.$KEDomain->Url.',ou=domains,'.PARC_LDAP_BASE);
+						$res = Server::ldapRename($this->LdapDN, 'cn='.$this->Nom, 'cn='.$KEDomain->Url.',ou=domains,'.PARC_LDAP_BASE);
 						if($res['OK']) {
 							// Modification
 							$entry = $this->buildEntry(false);
@@ -153,13 +210,9 @@ class Subdomain extends genericClass {
 	private function buildEntry( $new = true ) {
 		$entry = array();
 		$entry['dnsipaddr'] = $this->IP;
-		// Vérifie qu'il y a le A:
-		$pre = substr($this->Url, 0, 2);
-		if($pre != 'A:') $this->Url = 'A:' . $this->Url;
 		// Récupère la partie "sous domaine"
-		$entry['cn'] = $this->Url;
-		$sD = substr($this->Url, 2);
-		if (!empty($sD)) $entry['dnsdomainname'] = $sD;
+		$entry['cn'] = $this->Nom;
+		$entry['dnsdomainname'] = $this->Url;
 
         $entry['dnsttl'] = $this->TTL ?  $this->TTL : 86400;
 		if($new) {
@@ -272,7 +325,7 @@ class Subdomain extends genericClass {
         $chaine =  utf8_encode($chaine);
         $chaine = preg_replace('`[\/]`', '-', trim($chaine));
 
-        $chaine = 'A:' . $chaine;
+        //$chaine = 'A:' . $chaine;
 
         return $chaine;
     }

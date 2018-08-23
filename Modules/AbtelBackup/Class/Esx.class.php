@@ -414,12 +414,25 @@ class Esx extends genericClass {
             $act->Terminate(false);
             return false;
         }
+        //on modifie le fichier vmx
+        //echo "Modification duy fichier BORG.vmx\r\n";
+        $act = $esx->createActivity("Modification du fichier BORG.vmx",'Info');
+        $vmx = $esx->remoteExec('cat /vmfs/volumes/NL-SAS/BORG/BORG.vmx');
+        //$act->addDetails($vmx);
+        $vmx = str_replace('scsi0:0.fileName = "BORG-thin-000001.vmdk"','scsi0:0.fileName = "BORG-thin.vmdk"',$vmx);
+        //on découpe le fichier par ligne
+        $lines = preg_split('/\r?\n/', $vmx);
+        $vmx = implode("\r\n",preg_grep("/scsi0:1/", $lines, PREG_GREP_INVERT));
+        $esx->remoteExec('echo \''.$vmx.'\' > /vmfs/volumes/NL-SAS/BORG/BORG.vmx');
+        $vmx = $esx->remoteExec('cat /vmfs/volumes/NL-SAS/BORG/BORG.vmx');
+        $act->addDetails($vmx);
         //echo "Copie du fichier BORG-thin-flat.vmdk\r\n";
         $act = $esx->createActivity("Copie du fichier BORG-thin-flat.vmdk",'Info');
         $act->addDetails('scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q -i /tmp/id_'.$esx->IP.' /vmfs/volumes/NL-SAS/BORG/BORG-thin-flat.vmdk root@'.$esx->IP.':/vmfs/volumes/NL-SAS/BORG/');
         try {
             $out = $esxsrc->remoteExec('scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q -i /tmp/id_' . $esx->IP . ' /vmfs/volumes/NL-SAS/BORG/BORG-thin-flat.vmdk root@' . $esx->IP . ':/vmfs/volumes/NL-SAS/BORG/');
             $act->addDetails('Copie du fichier vmdk ok');
+            $act->Terminate(true);
         }catch (Eception $e){
             $act->addDetails('Erreur lors de la copie du fichier: '.$e->getMessage().' - '.$out);
             //echo "suppression des snapshots\r\n";
@@ -429,18 +442,6 @@ class Esx extends genericClass {
             $act->Terminate(false);
             return false;
         }
-        //on modifie le fichier vmx
-        //echo "Modification duy fichier BORG.vmx\r\n";
-        $act = $esx->createActivity("Modification du fichier BORG.vmx",'Info');
-        $vmx = $esx->remoteExec('cat /vmfs/volumes/NL-SAS/BORG/BORG.vmx');
-        $act->addDetails($vmx);
-        $vmx = str_replace('scsi0:0.fileName = "BORG-thin-000001.vmdk"','scsi0:0.fileName = "BORG-thin.vmdk',$vmx);
-        //on découpe le fichier par ligne
-        $lines = preg_split('/\r?\n/', $vmx);
-        $vmx = implode("\r\n",preg_grep("/scsi0:1/", $lines, PREG_GREP_INVERT));
-        $esx->remoteExec('echo \''.$vmx.'\' > /vmfs/volumes/NL-SAS/BORG/BORG.vmx');
-        $vmx = $esx->remoteExec('cat /vmfs/volumes/NL-SAS/BORG/BORG.vmx');
-        $act->addDetails($vmx);
         //echo "Ajout de la vm à l'inventaire\r\n";
         $act = $esx->createActivity("Ajout de la vm à l'inventaire",'Info');
         //on ajoute la vm à l'inventaire
