@@ -1,6 +1,7 @@
 {
     "id":"{{ row.Id }}",
     "label": "{{ row.label }}"
+    ,"_details":"créé le {{ row.tmsCreate | date('d/m/Y H:i') }} par {{ row.userCreateName }} <br> modifié le {{ row.tmsEdit  | date('d/m/Y H:i')  }} par {{ row.userEditName }}"
     {% for field in fields %}
         {% if field.type == "boolean" %}
             ,"{{ field.name }}": {{ attribute(row,field.name) ? 1:0  }}

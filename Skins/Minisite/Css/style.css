@@ -140,7 +140,7 @@ h3,
     line-height: 1.5rem;
     text-transform: uppercase;
     margin-top: 1em;
-    margin-bottom: .2em;
+    margin-bottom: 2.5em;
     color: #fe504f;
     font-weight: 700;
 }
@@ -1353,8 +1353,8 @@ input::-moz-focus-inner {
 }
 .center-element {
     float: none;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 0;
+    padding-left: 0;
 }
 .sr {
     border: 0;
@@ -2392,8 +2392,8 @@ img {
     font-size: 0.8125rem;
     line-height: 16px;
     line-height: 1rem;
-    padding-top: 40px;
-    padding-bottom: 40px;
+    padding-top: 60px;
+    padding-bottom: 60px;
     color: #fff;
     background: #212121;
     text-transform: uppercase;
@@ -3095,11 +3095,11 @@ img {
 
 
 
-/* Ministes */
+/* Minisites */
 #floatingLinks{
     position: fixed;
     top: 50%;
-    height: 102px;
+    height: 98px;
     width: 56px;
     padding: 10px;
     margin-top: -50px;
@@ -3138,4 +3138,29 @@ img {
 }
 #goToTop a{
     display: block;
+}
+
+div.controls.form-inline input {width:10%;}
+
+fieldset > .text-right {
+    padding-bottom: 25px;
+}
+
+
+@media(max-width:768px) {
+
+    #floatingLinks {
+        width: 90px;
+        height: 56px;
+        top: 97%;
+        border-radius: 15px;
+        border-width: 3px;
+        left: calc(50% - 46px);
+        padding: 10px 9px 10px 10px;
+    }
+
+
+    #floatingLinks p {
+        display:inline-block;
+    }
 }

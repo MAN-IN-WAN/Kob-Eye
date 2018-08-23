@@ -111,13 +111,11 @@ class DeviceConnexion extends genericClass{
                         $query = "INSERT INTO `guacamole_connection` (connection_name,protocol,parent_id,max_connections,max_connections_per_user) VALUES ('" . $this->Nom . "','rdp',$gid,NULL,NULL)";
                         $q = $dbGuac->query($query);
                         $lid = $dbGuac->lastInsertId();
-
                         $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'hostname','127.0.0.1')";
                         $q = $dbGuac->query($query);
 
                         $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'port','" . $this->PortRedirectLocal . "')";
                         $q = $dbGuac->query($query);
-
 
                         //Imprimante
                         $query = "INSERT INTO `guacamole_connection_parameter` (connection_id,parameter_name,parameter_value) VALUES ($lid,'enable-printing','true')";
@@ -342,7 +340,10 @@ class DeviceConnexion extends genericClass{
     }
 
     private function removeGuacamoleConnection(){
-        $dbGuac = new PDO('mysql:host=10.0.189.12;dbname=guacamole', 'root', 'RsL5pfky', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+        $guac_serv = Sys::getOneData('Parc','Server/Guacamole=1');
+
+        $dbGuac = new PDO('mysql:host='.$guac_serv->InternalIP.';dbname=guacamole', $guac_serv->guacAdminUser, $guac_serv->guacAdminPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+
         $dbGuac->query("SET AUTOCOMMIT=1");
         $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 

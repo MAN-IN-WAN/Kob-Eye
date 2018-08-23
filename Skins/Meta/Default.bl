@@ -1,9 +1,10 @@
 [HEADER JS]Skins/[!Systeme::Skin!]/Js/mootools.js[/HEADER]
-
+[HEADER JS]Tools/Js/Jquery/1.11.2/jquery.min.js[/HEADER]
 <div class="Header">
 	Sélectionner un site
 	[STORPROC Systeme/Site|S]
-		| <a href="/Systeme/Site/[!S::Id!]">[!S::Domaine!]</a> (<a href="/Systeme/Site/[!S::Id!]/Export.csv">Export</a>)
+//		| <a href="/Systeme/Site/[!S::Id!]">[!S::Domaine!]</a> (<a href="/Systeme/Site/[!S::Id!]/Export.csv">Export</a>)
+		| <a href="/Systeme/Site/[!S::Id!]">[!S::Domaine!]</a> (<a href="/Systeme/Site/[!S::Id!]/Export.csv">Export</a> / <a href="/Systeme/Site/[!S::Id!]/Import">Import</a>)
 	[/STORPROC]
 	<a id="Deco" href="/Systeme/Deconnexion">Deconnexion</a>
 </div>
