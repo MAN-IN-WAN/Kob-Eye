@@ -1,0 +1,2 @@
+[!Module::Parc::createCheckStateTask()!]
+<div class="alert alert-success">Une tache a été créée afin de faire l'inventaire des instances à vérifier. Rendez vous dans le menu Configuration / Taches machines</div>

@@ -66,7 +66,8 @@ class Domain extends genericClass {
 		
 				// Verification à jour
 				$res = Server::checkTms($this);
-				if($res['exists']) {
+
+                if($res['exists']) {
 					if(!$res['OK']) {
 						$this->AddError($res);
 						$this->_isVerified = false;

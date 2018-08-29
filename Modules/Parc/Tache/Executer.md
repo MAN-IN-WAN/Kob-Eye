@@ -1,5 +1,5 @@
-<h1>Execution tache SSH</h1>
+<h1>Execution tache</h1>
 [STORPROC [!Query!]|O|0|1]
-[IF [!O::Demarre!]][ELSE][!O::Execute()!][/IF]
+[!O::Execute(1)!]
 [!O::Retour!]
 [/STORPROC]

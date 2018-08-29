@@ -1,1 +1,0 @@
-[STORPROC [!Query!]|O|0|1][!O::Id:=0!][!O::Save()!][/STORPROC]

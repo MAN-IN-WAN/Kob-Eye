@@ -874,42 +874,41 @@ class Server extends genericClass {
                     $search = ldap_search(Server::$_LDAP, 'ou=users,'.PARC_LDAP_BASE, 'cn=' . $KEObj->AccesUser, array('modifytimestamp', 'entryuuid'));
                     $res = ldap_get_entries(Server::$_LDAP, $search);
                     //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
-                    $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
-                    $KEObj->LdapID = $res[0]['entryuuid'][0];
-                    $KEObj->LdapDN = $res[0]['dn'];
                     if (!$res['count']) {
                         $e['exists'] = false;
                         return $e;
+                    }else{
+                        $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                        $KEObj->LdapID = $res[0]['entryuuid'][0];
+                        $KEObj->LdapDN = $res[0]['dn'];
                     }
                     break;
                 case "Contact":
                     $search = ldap_search(Server::$_LDAP, 'ou=users,'.PARC_LDAP_BASE, 'cn=' . $KEObj->AccesUser, array('modifytimestamp', 'entryuuid'));
                     $res = ldap_get_entries(Server::$_LDAP, $search);
                     //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
-                    $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
-                    $KEObj->LdapID = $res[0]['entryuuid'][0];
-                    $KEObj->LdapDN = $res[0]['dn'];
-                    if (!$res['count']) {
-                        $e['exists'] = false;
-                        return $e;
-                    }
-                    break;
-                default:
-                    //on recherche pour voir si il ya quand meêm l'entrée
-                    $search = ldap_search(Server::$_LDAP, $dn,$filter, array('modifytimestamp', 'entryuuid'));
-                    $res = ldap_get_entries(Server::$_LDAP, $search);
-                    //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
-                    //$KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
-                    $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
-                    $KEObj->LdapID = $res[0]['entryuuid'][0];
-                    $KEObj->LdapDN = $res[0]['dn'];
                     if (!$res['count']) {
                         $e['exists'] = false;
                         return $e;
                     }else{
-                        $e['exists'] = true;
+                        $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                        $KEObj->LdapID = $res[0]['entryuuid'][0];
+                        $KEObj->LdapDN = $res[0]['dn'];
                     }
-                break;
+                    break;
+                case "Domain":
+                    $search = ldap_search(Server::$_LDAP, 'ou=domains,'.PARC_LDAP_BASE, 'cn=' . $KEObj->Url, array('modifytimestamp', 'entryuuid'));
+                    $res = ldap_get_entries(Server::$_LDAP, $search);
+                    //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
+                    if (!$res['count']) {
+                        $e['exists'] = false;
+                        return $e;
+                    }else{
+                        $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                        $KEObj->LdapID = $res[0]['entryuuid'][0];
+                        $KEObj->LdapDN = $res[0]['dn'];
+                    }
+                    break;
             }
         }else {
 		    if ($KEServer){
@@ -919,6 +918,7 @@ class Server extends genericClass {
             }
             $res = ldap_get_entries(Server::$_LDAP, $search);
             if (!$res['count']) {
+                $e = array('exists' => false, 'OK' => true);
                 return $e;
             }
         }
@@ -1232,20 +1232,30 @@ class Server extends genericClass {
      * callLdap2Service
      * execute remotely ldap2service
      */
-    public function callLdap2Service($task = null) {
+    public function callLdap2Service($task = null,$retry=false) {
         $act = $this->createActivity('Execution de synchronisation','Exec');
         try {
             $out = $this->remoteExec('/usr/bin/ldap2service', $act);
+            /*if ($this->Proxy)
+                $out = $this->remoteExec('/usr/bin/systemctl restart nginx', $act);*/
         }catch (Exception $e){
             $act->addDetails($e->getMessage());
             //si erreur il faut vérfiier le fichier de date
-            $ct = $this->getFileContent('/etc/ldap2service/ldap2service.time');
-
             $act->Terminate(false);
-            return;
+            return false;
         }
+        //on vérifie quand mêmle la date
+        $ct = $this->getFileContent('/etc/ldap2service/ldap2service.time');
+        $ct = trim($ct);
+        if (empty($ct)&&!$retry){
+            //alors on pousse une valeur
+            $this->putFileContent('/etc/ldap2service/ldap2service.time',date('YmdHis',time()-60));
+            $this->callLdap2Service($task,true);
+        }
+
         $act->addDetails($out);
         $act->Terminate($out);
+        return true;
     }
     /**
      * clearCache
@@ -1314,6 +1324,23 @@ class Server extends genericClass {
     public function getFileContent($path){
         try {
             $out = $this->remoteExec('cat '.$path.' ');
+            if (!empty($out)){
+                return $out;
+            }else{
+                return false;
+            }
+        }catch (Exception $e){
+            $this->addError(array('Message'=>'ERROR: '.$e->getMessage()));
+            return false;
+        }
+    }
+    /**
+     * putFileContent
+     * Inject file content
+     */
+    public function putFileContent($path,$content){
+        try {
+            $out = $this->remoteExec('echo \''.$content.'\' > '.$path);
             if (!empty($out)){
                 return $out;
             }else{
