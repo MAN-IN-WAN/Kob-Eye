@@ -9,9 +9,11 @@ namespace Zimbra\ZCS;
 
 class Exception extends \Exception
 {
+    private $errCode = '';
 
     public function __construct($code)
     {
+        $this->errCode = $code;
         parent::__construct(self::getErrorMessage($code));
     }
 
@@ -35,4 +37,8 @@ class Exception extends \Exception
         }
     }
 
+    public function getErrorCode()
+    {
+        return (string) $this->errCode;
+    }
 }

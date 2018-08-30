@@ -4,6 +4,7 @@
             contexts = [],
             currentPage = {},
             pageLoaded = {},
+            sort = {},
             total = {},
             pageLength = 15,
 
@@ -61,6 +62,7 @@
             total[context] = 0;
             timer[context] = 0;
             busy[context] = 0;
+            sort[context] = [];
             resetFilters(context);
             currentPage[context] = 1;
             resetQuery(context);
@@ -548,7 +550,8 @@
                                 filters: tmpfilters,
                                 offset: (page-1)*pageLength,
                                 limit: pageLength,
-                                context: context
+                                context: context,
+                                sort: JSON.stringify(sort)
                             },
                             timeout: canceler.promise
                         }).success(function(data) {
