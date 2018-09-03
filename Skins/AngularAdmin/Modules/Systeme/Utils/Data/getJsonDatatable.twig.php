@@ -8,8 +8,12 @@ $offset = (isset($_GET['offset']))?$_GET['offset']:0;
 $limit = (isset($_GET['limit']))?$_GET['limit']:30;
 $filters = (isset($_GET['filters']))?$_GET['filters']:'';
 $context = (isset($_GET['context']))?$_GET['context']:'default';
+$sort = (isset($_GET['store']))?$_GET['store']:array();
 $path = explode('/',$vars['Path'],2);
 $path = $path[1];
+
+
+
 //souscription au push
 Event::registerPush($info['Module'],$info['ObjectType'],$path,$filters,$offset,$limit,$context);
 //requete
@@ -17,8 +21,12 @@ if(connection_aborted()){
     endPacket();
     exit;
 }
+if(count($sort))
+    $vars['rows'] = Sys::getData($info['Module'],$path.'/'.$filters,$offset,$limit,$sort[0],$sort[1]);
+else
+    $vars['rows'] = Sys::getData($info['Module'],$path.'/'.$filters,$offset,$limit);
 
-$vars['rows'] = Sys::getData($info['Module'],$path.'/'.$filters,$offset,$limit);
+
 if(connection_aborted()){
     endPacket();
     exit;

@@ -628,6 +628,7 @@
                 $scope.$watch('{{ child.objectModule }}{{ child.objectName }}Link.pageLength', function() {
                     console.log('pageLength',$scope.{{ child.objectModule }}{{ child.objectName }}Link.pageLength);
                     {{ child.objectModule }}{{ child.objectName }}Store.setPageLength($scope.{{ child.objectModule }}{{ child.objectName }}Link.pageLength,'link');
+                    $scope.{{ child.objectModule }}{{ child.objectName }}Link.currentPage = 1;
                 });
 
 
@@ -771,6 +772,7 @@
                 $scope.$watch('{{ child.objectModule }}{{ child.objectName }}.pageLength', function() {
                     console.log('pageLength',$scope.{{ child.objectModule }}{{ child.objectName }}.pageLength);
                     {{ child.objectModule }}{{ child.objectName }}Store.setPageLength($scope.{{ child.objectModule }}{{ child.objectName }}.pageLength,'children');
+                $scope.{{ child.objectModule }}{{ child.objectName }}.currentPage = 1;
                 });
 
                 //ADD

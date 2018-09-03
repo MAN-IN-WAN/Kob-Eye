@@ -269,6 +269,7 @@
 
 					if (text === undefined) {
 						text = options.displayText;
+                        childScope.displayText = text;
 					}
 
 					needsDisplayText = !text;

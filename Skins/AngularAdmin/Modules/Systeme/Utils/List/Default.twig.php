@@ -53,7 +53,7 @@ $vars["Interfaces"] = $vars["ObjectClass"]->getInterfaces();
 if (isset($vars["Interfaces"]['list']))
     $vars["Interfaces"] = $vars["Interfaces"]['list'];
 
-//$vars['attributes'] = $vars['ObjectClass']->getAttributes();  //PGF 20180809
+
 $vars['formPath'] = 'Systeme/Utils/Form';
 
 if (!isset($info['ObjectType'])) {
