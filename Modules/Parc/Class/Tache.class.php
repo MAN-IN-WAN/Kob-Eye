@@ -1,10 +1,10 @@
 <?php
 class Tache extends genericClass{
     var $_apache = null;
-    public function Execute() {
+    public function Execute($force=false) {
         //on rafraichit les infos
         $t = Sys::getOneData('Parc','Tache/'.$this->Id);
-        if ($t->Demarre) return true;
+        if ($t->Demarre&&!$force) return true;
         switch ($this->Type) {
             default:
                 try {
@@ -13,6 +13,7 @@ class Tache extends genericClass{
                     $this->Demarre = true;
                     $this->Retour = "";
                     parent::Save();
+                    Sys::commitTransaction();
                     $this->Retour = '<pre width="80" style="color: white; background: black">';
                     $connection = ssh2_connect($serv->DNSNom, 22);
                     ssh2_auth_password($connection, $serv->SshUser, $serv->SshPassword);
@@ -42,6 +43,7 @@ class Tache extends genericClass{
                 $this->Demarre = true;
                 $this->Retour = "";
                 parent::Save();
+                Sys::commitTransaction();
                 if ($this->TaskId>0){
                     //execution objet
                     $obj = Sys::getOneData($this->TaskModule,$this->TaskObject.'/'.$this->TaskId);
@@ -68,7 +70,7 @@ class Tache extends genericClass{
         }
         return true;
     }
-    private function addRetour($msg){
+    public function addRetour($msg){
         //recherche du apache pour callback
         $ap = $this->getApache();
         if ($ap){

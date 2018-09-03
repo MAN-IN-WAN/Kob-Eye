@@ -29,6 +29,7 @@ class Apache extends genericClass {
             $pxs = Sys::getData('Parc','Server/Proxy=1');
             foreach ($pxs as $px)
                 $px->callLdap2Service();
+                $px->createRestartProxyTask();
 
         }catch (Exception $e){
             $this->addError(array("Message"=>"Impossible de mettre le serveur à jour. Serveur injoignable.".$e->getMessage()));
@@ -37,7 +38,7 @@ class Apache extends genericClass {
 		return true;
 	}
 
-	public function enableSsl($force = false,$instance = null) {
+	public function enableSsl($force = true,$instance = null) {
 		if (empty($this->SslMethod))$this->SslMethod = "Letsencrypt";
 		//check already exists
 		if (!$force&&$this->Ssl&&!empty($this->SslCertificate)&&!empty($this->SslCertificateKey)&&$this->SslExpiration>time()+2592000){
@@ -75,11 +76,11 @@ class Apache extends genericClass {
                 $this->SslExpiration=time()+(86400*90);
                 $this->Ssl = true;
                 //recherche du serveur proxy
-                $serv = Sys::getData('Parc','Server/Proxy=1&Status>1');
-                if (!sizeof($serv))
-                    $serv = $this->getKEServer();
-                $serv = $serv[0];
-                $sa = explode("\n",$this->ApacheServerAlias);
+                $serv = Sys::getOneData('Parc','Server/Proxy=1',0,1,'ASC','Id');
+                /*if (!sizeof($serv))
+                    $serv = $this->getKEServer();*/
+                //$serv = $serv[0];
+                $sa = explode("\n",str_replace("\r","",$this->ApacheServerAlias));
 
                 //test des entrées dns
                 $resolver = new Net_DNS2_Resolver( array('nameservers' => array('8.8.8.8')) );
@@ -109,7 +110,6 @@ class Apache extends genericClass {
                         $this->addError(array("Message"=>"Le domaine : '".$dns->question[sizeof($dns->question)-1]->qname."' ne pointe pas sur l'adresse ip ".$serv->IP." (actuellement il pointe vers ".$dns->answer[sizeof($dns->answer)-1]->address."), ou sa propagation se terminera dans ".$dns->answer[sizeof($dns->answer)-1]->ttl." secondes"));
                     }
                 }
-
                 if ($err)return false;
 
                 //pour activer ssl il faut déclencher une tache
@@ -117,15 +117,26 @@ class Apache extends genericClass {
                 $task->Nom = "Activation SSL pour la configuration Apache ".$this->ApacheServerName." ( ".$this->Id." )";
                 $task->Type = "Ssh";
                 $task->DateDebut = time()+120;
-                $task->Contenu = "/usr/src/certbot/certbot-auto --renew-by-default --webroot certonly --webroot-path /var/www/letsencrypt --quiet -d ".$this->ApacheServerName;
+                $prefixe = "/usr/src/certbot/certbot-auto --renew-by-default --webroot certonly --webroot-path /var/www/letsencrypt ";
+                if (!preg_match("#azko.site#",$this->ApacheServerName))
+                    $task->Contenu="-d ".$this->ApacheServerName;
                 // ajout des server alias
-                $sa = explode("\n",$this->ApacheServerAlias);
+                $first='';
+                $sa = explode(PHP_EOL,$this->ApacheServerAlias);
                 if (sizeof($sa)==1)$sa = explode(" ",$this->ApacheServerAlias);
                 if (!empty($sa[0]))foreach ($sa as $s ){
-                    $task->Contenu .= " -d ".trim($s);
+                    if (!preg_match("#azko.site#",$s)) {
+                        if (empty($first)) $first=$s;
+                        $task->Contenu .= " -d " . trim($s);
+                    }
                 }
-                $task->Contenu .= "\n cat /etc/letsencrypt/live/".$this->ApacheServerName."/fullchain.pem";
-                $task->Contenu .= "\n cat /etc/letsencrypt/live/".$this->ApacheServerName."/privkey.pem";
+                if (!empty($task->Contenu))$task->Contenu=$prefixe.$task->Contenu;
+                else{
+                    $this->addError(array("Message"=>"Il n'y a aucun domaine à certifier."));
+                    return false;
+                }
+                $task->Contenu .= "\n cat /etc/letsencrypt/live/".$first."/fullchain.pem";
+                $task->Contenu .= "\n cat /etc/letsencrypt/live/".$first."/privkey.pem";
                 $task->addParent($this);
                 $task->addParent($serv);
                 if ($instance)$task->addParent($instance);
@@ -398,8 +409,8 @@ class Apache extends genericClass {
 
         //Proxy config
 		if ($this->ProxyCache){
-            $entry['apacheProxyCacheConfig'] = "proxy_cache            STATIC;\n    proxy_cache_valid      200  1d;\n    proxy_cache_use_stale  error timeout invalid_header updating http_500 http_502 http_503 http_504;\n";
-            $entry['apacheProxyCacheConfigSsl'] = "    proxy_cache STATIC;\n    proxy_cache_valid      200  1d;\n    proxy_cache_use_stale  error timeout invalid_header updating http_500 http_502 http_503 http_504;\n";
+            $entry['apacheProxyCacheConfig'] = "proxy_cache            STATIC;\n    proxy_cache_valid      200  1h;\n    proxy_cache_use_stale  error timeout invalid_header updating http_500 http_502 http_503 http_504;\n";
+            $entry['apacheProxyCacheConfigSsl'] = "    proxy_cache STATIC;\n    proxy_cache_valid      200  1h;\n    proxy_cache_use_stale  error timeout invalid_header updating http_500 http_502 http_503 http_504;\n";
         }else if (!$new) {
 		    $entry['apacheProxyCacheConfig'] = Array();
             $entry['apacheProxyCacheConfigSsl'] = Array();
@@ -531,7 +542,7 @@ class Apache extends genericClass {
      *
      */
 	public function getDomains() {
-	    return $this->ApacheServerName.' '.(implode(" ",explode("\n",$this->ApacheServerAlias)));
+	    return $this->ApacheServerName.' '.(implode(" ",explode("\n",str_replace("\r","",$this->ApacheServerAlias))));
     }
     /**
      * getDomains
@@ -546,4 +557,9 @@ class Apache extends genericClass {
         }
         return $out;
     }
+    /**
+     * executeLetsencrypt
+     * Execution de letsencrypt sur le serveur
+     */
+
 }

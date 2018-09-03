@@ -304,19 +304,65 @@ class Parc extends Module{
             //else print_r($a->Error);
         }
     }
+    public static function Renew(){
+        $parc = Sys::getModule('Parc');
+        $parc->renewCertificate();
+    }
     /**
      * Execution des taches
      */
-    public function executeTasks() {
-        $ts = Sys::getData('Parc','Tache/Demarre=0&Date<'.time());
+    public  function executeTasks() {
         $start = time();
-        foreach ($ts as $t){
-            //test de la date d'execution qui ne doit pas dépasser 1 minute
-            if (time()>$start+60) return;
+        while(time()<$start+240){
+            $t = Sys::getOneData('Parc','Tache/Demarre=0&DateDebut<'.time(),0,1,'ASC','Id');
             //execution de la tache
-            $t->Execute();
+            if ($t)
+                $t->Execute($t);
+            else sleep(1);
         }
+        return true;
     }
+    public static function Execute(){
+        $parc = Sys::getModule('Parc');
+        $parc->executeTasks();
+    }
+    /**
+     * checkState
+     * Vérification des instances
+     */
+    public  function createCheckState($task=null) {
+        echo "check State\r\n";
+        $nb = Sys::getCount('Parc','Instance/Enabled=1');
+        $it = abs($nb/100)+1;
+        //recherche des hébergements à renouveller avec une expiration dans les prochains 30 jours
+        for ($i=0;$i<=$it;$i++) {
+            $aps = Sys::getData('Parc', 'Instance/Enabled=1', $i*100, 100);
+            //pour chaque instance on crée une tache pour vérifier l'etat
+            foreach ($aps as $a) {
+                if ($a->createCheckStateTask()) echo "--> checkState $a->Nom \r\n";
+                //else print_r($a->Error);
+            }
+        }
+        if ($task){
+            $task->Termine = true;
+            $task->Save();
+        }
+        return true;
+    }
+    public static function checkState($task = null){
+        $parc = Sys::getModule('Parc');
+        return $parc->createCheckState($task);
+    }
+    public static function createCheckStateTask(){
+        $task = genericClass::createInstance('Parc', 'Tache');
+        $task->Type = 'Fonction';
+        $task->Nom = 'Lancement d\'une vérification globale des instances';
+        $task->TaskModule = 'Parc';
+        $task->TaskObject = 'Parc';
+        $task->TaskFunction = 'checkState';
+        $task->Save();
+    }
+
     /**
      * UTILS FUNCTIONS
      */

@@ -487,6 +487,7 @@ function sendResult($code,$obj=null,$more=null){
     }
     //systeme anti plugin recursion
     $tmp = json_encode($return);
+    Klog::l('RETOUR API',$tmp);
     if (empty($tmp)) echo json_last_error_msg();
     else echo $tmp;
 }

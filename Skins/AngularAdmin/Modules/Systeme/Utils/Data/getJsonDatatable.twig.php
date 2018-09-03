@@ -39,7 +39,7 @@ $getCchild = array();
 foreach ($childrenelements as $childelem){
     //test role                                                             //test hidden                                               //test admin
     if (((!isset($childelem['hasRole'])||Sys::$User->hasRole($childelem['hasRole'])) && !isset($childelem['childrenHidden'])&&!isset($childelem['hidden'])) || (!is_object(Sys::$CurrentMenu) && Sys::$User->Admin)){
-        if($childelem['listParent'] && $childelem['card']=='short' ){
+        if(isset($childelem['listParent']) && $childelem['card']=='short' ){
             array_push($getCchild,$childelem);
         }
     }

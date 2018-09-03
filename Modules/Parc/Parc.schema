@@ -78,7 +78,7 @@
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
 		<PROPERTIES type="boolean" description="Domaine par défaut pour la création des sous domaines temporaires" form="1" hasRole="PARC_TECHNICIEN">defaultDomain</PROPERTIES>
-		<FKEY card="1,1" data="Client,Id" fiche="1" form="1" list="1" description="Client"  listDescr="Client" obligatoire="1" link="1">ClientId</FKEY>
+		<FKEY card="0,1" data="Client,Id" fiche="1" form="1" list="1" description="Client"  listDescr="Client" link="1">ClientId</FKEY>
         <FKEY card="0,1" data="DomainTemplate,Id" fiche="1" list="1" description="Template de domaine"  listDescr="Template" form="1">DomainTemplateId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Subdomain" driver="mysql" Description="A" Icon="/Skins/AdminV2/Img/IconAqua/Search.png" Class="Modules/Parc/Class/Subdomain.class.php">
@@ -207,6 +207,9 @@
 		<FUNCTION title="Test de connexion">Connect</FUNCTION>
 		<FUNCTION title="Installation des clefs SSH">InstallSshKey</FUNCTION>
 		<FUNCTION title="Envoyer un récapitulatif">EnvoyerRecapitulatif</FUNCTION>
+		<FUNCTION title="Demander une mise à jour de configuration">callLdap2Service</FUNCTION>
+		<FUNCTION title="Vider le cache proxy">clearCache</FUNCTION>
+		<FUNCTION title="Lancer une vérification des instances">checkState</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="ServerProfile" driver="mysql" AccessPoint="1" Description="Profil Serveur" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Class="Modules/Parc/Class/ServerProfile.class.php">
 		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" description="Nom" listDescr="Nom">Nom</PROPERTIES>
@@ -218,6 +221,7 @@
 		<FKEY card="0,1" data="ServerProfile,Id">ServerProfileId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Host" driver="mysql" AccessPoint="1" Description="Hébergement" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Class="Modules/Parc/Class/Host.class.php">
+		<FILTER name="Tous les hébergements" color="success" ></FILTER>
 		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" description="Nom" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="gestion commerciale" searchOrder="2" description="En production" fiche="1" form="1">Production</PROPERTIES>
@@ -286,8 +290,10 @@
     </OBJECTCLASS>
     <OBJECTCLASS title="Tache" driver="mysql" Dico="0" logEvent="1" AccessPoint="1" Description="Tache" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Tache.class.php" >
 		<FILTER name="Toutes les taches" color="primary" ></FILTER>
-		<FILTER name="Incidents" color="warning"><![CDATA[Erreur=1]]></FILTER>
+		<FILTER name="En erreur" color="warning"><![CDATA[Erreur=1]]></FILTER>
+		<FILTER name="En cours" color="warning"><![CDATA[Erreur=0&Demarre=1&Termine=0]]></FILTER>
 		<FILTER name="Pas encore démarrée" color="secondary"><![CDATA[Demarre=0]]></FILTER>
+		<FILTER name="Terminés" color="primary"><![CDATA[Termine=1]]></FILTER>
         <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom de la tache">Nom</PROPERTIES>
         <PROPERTIES type="varchar" searchOrder="2" obligatoire="1" list="1" values="Ssh,Auto,Manuel,Fonction" fiche="1" form="1" description="Type de tache">Type</PROPERTIES>
         <PROPERTIES type="boolean" searchOrder="3" fiche="1" list="1" form="1" description="Tache terminé">Termine</PROPERTIES>
@@ -296,13 +302,13 @@
         <PROPERTIES type="raw" fiche="1" form="1">Contenu</PROPERTIES>
         <PROPERTIES type="html" fiche="1" form="1">Retour</PROPERTIES>
 		<PROPERTIES type="date" list="1" fiche="1" form="1" description="Date de déclenchement" listDescr="Date" default="[!TMS::Now!]">DateDebut</PROPERTIES>
-		<PROPERTIES category="Fonction" type="varchar" description="Module"  searchOrder="2" list="5">TaskModule</PROPERTIES>
-		<PROPERTIES category="Fonction" type="varchar" description="ObjectClass"  searchOrder="3" list="6">TaskObject</PROPERTIES>
-		<PROPERTIES category="Fonction" type="int" description="Identifiant"  searchOrder="4" list="7">TaskId</PROPERTIES>
-		<PROPERTIES category="Fonction" type="varchar" description="Fonction à éxécuter"  searchOrder="5" list="7">TaskFunction</PROPERTIES>
+		<PROPERTIES category="Fonction" type="varchar" description="Module"  searchOrder="2" fiche="5">TaskModule</PROPERTIES>
+		<PROPERTIES category="Fonction" type="varchar" description="ObjectClass"  searchOrder="3" fiche="6">TaskObject</PROPERTIES>
+		<PROPERTIES category="Fonction" type="int" description="Identifiant"  searchOrder="4" fiche="7">TaskId</PROPERTIES>
+		<PROPERTIES category="Fonction" type="varchar" description="Fonction à éxécuter"  searchOrder="5" fiche="7">TaskFunction</PROPERTIES>
         <FKEY card="0,1" data="Instance,Id" fiche="1" form="1" parentDescription="Instance" link="1">InstanceId</FKEY>
         <FKEY card="0,1" data="Host,Id" fiche="1" form="1" parentDescription="Hébergement" link="1">HostId</FKEY>
-        <FKEY card="1,1" data="Server,Id" fiche="1" form="1" parentDescription="Serveur" link="1">ServerId</FKEY>
+        <FKEY card="0,1" data="Server,Id" fiche="1" form="1" parentDescription="Serveur" link="1">ServerId</FKEY>
 		<FKEY card="0,1" data="Apache,Id" fiche="1" form="1" parentDescription="Hôte virtuel" link="1">ApacheId</FKEY>
 		<FKEY card="0,1" data="VersionLogiciel,Id" fiche="1" form="1" parentDescription="Version d'pplication" link="1">VersionLogicielId</FKEY>
         <FUNCTION title="Executer maintenant">Executer</FUNCTION>
@@ -497,9 +503,9 @@
 		<PROPERTIES type="password" searchOrder="1" description="Mot de passe" form="1" fiche="1" >Password</PROPERTIES>
 		<PROPERTIES type="boolean" description="Actif" listDescr="Actif" list="1" form="1" fiche="1" default="1" hasRole="PARC_TECHNICIEN" >Enabled</PROPERTIES>
 		<PROPERTIES type="boolean" description="Ssl" listDescr="Ssl"  list="1" form="1" hasRole="PARC_TECHNICIEN" fiche="1">EnableSsl</PROPERTIES>
-		<PROPERTIES type="varchar" description="Domaine" listDescr="Domaine"  list="1" fiche="1">FullDomain</PROPERTIES>
+		<PROPERTIES type="varchar" description="Domaine" searchOrder="3" listDescr="Domaine"  list="1" fiche="1">FullDomain</PROPERTIES>
 		<PROPERTIES type="varchar" description="Version" listDescr="Version"  list="1" fiche="1">CurrentVersion</PROPERTIES>
-		<PROPERTIES type="int" description="Status" searchOrder="2"  listDescr="Status"  list="1" fiche="1" values="1::Non installé,2::Installé et configuré,3::Mise à jour en attente" default="1">Status</PROPERTIES>
+		<PROPERTIES type="int" description="Status" searchOrder="2"  listDescr="Status"  list="1" fiche="1" form="1" values="1::Non installé,2::Installé et configuré,3::Mise à jour en attente" default="1">Status</PROPERTIES>
 		<FKEY card="1,n" data="Domain,Id" description="Domaine(s)" listDescr="Domaine(s)" >DomainId</FKEY>
 		<FKEY card="0,1" data="Host,Id" description="Hébergement" listDescr="Hébergement" fiche="1">HostId</FKEY>
 		<FKEY card="0,1" data="Bdd,Id" description="Base de donnée(s)" hasRole="PARC_TECHNICIEN" listDescr="Base de donnée" fiche="1">BddId</FKEY>
@@ -511,6 +517,7 @@
 		<FUNCTION title="Restaurer une instance">restoreInstance</FUNCTION>
 		<FUNCTION title="Archiver cette instance">archiveInstance</FUNCTION>
 		<FUNCTION title="Verifier cette instance">checkState</FUNCTION>
+		<FUNCTION title="Reinstaller le logiciel">reinstallSoftware</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Activity" logEvent="1"  AccessPoint="1" driver="mysql" Description="Activité des jobs"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/Parc/Class/Activity.class.php" Operations="">
 		<FILTER name="Toutes les activités" color="warning" ></FILTER>
@@ -531,6 +538,9 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Incident" logEvent="1"  AccessPoint="1" driver="mysql" Description="Incidents"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/Parc/Class/Incident.class.php" Operations="delete">
 		<FILTER name="Tous les incidents" color="warning" ></FILTER>
+		<FILTER name="Les incidents" color="danger" ><![CDATA[Solved=0&Acknowledge=0]]></FILTER>
+		<FILTER name="Les incidents résolus" color="success" >Solved=1</FILTER>
+		<FILTER name="Les incidents reconnus" color="success" ><![CDATA[Solved=0&Acknowledge=1]]></FILTER>
 		<PROPERTIES type="varchar" searchOrder="1" list="1" form="1" fiche="1" listDescr="Titre">Titre</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" list="1" form="1" fiche="1" listDescr="Code">Code</PROPERTIES>
 		<PROPERTIES type="boolean" form="1" fiche="1" list="1" description="Résolu" listDescr="Résolu">Solved</PROPERTIES>

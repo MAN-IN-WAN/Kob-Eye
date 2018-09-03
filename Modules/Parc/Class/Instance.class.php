@@ -38,6 +38,7 @@ class Instance extends genericClass{
             return false;
         }
         parent::Save();
+
         //Check du client
         $client = $this->getOneParent('Client');
         if (!$client) {
@@ -138,7 +139,7 @@ class Instance extends genericClass{
         }
 
         //check apache
-        $apache = $heb->getOneChild('Apache');
+        $apache = Sys::getOneData('Parc','Host/'.$heb->Id.'/Apache',0,1,'ASC','Id');
         if (!$apache) {
             //alors création du apache
             $apache = genericClass::createInstance('Parc', 'Apache');
@@ -149,7 +150,10 @@ class Instance extends genericClass{
             $apache->addParent($heb);
         } else {
             $apache->ApacheServerName = $this->FullDomain;
-            $apache->ApacheServerAlias = $this->ServerAlias;
+            if (empty($this->ServerAlias)){
+                $this->ApacheServerAlias = $apache->ServerAlias;
+            }else $apache->ApacheServerAlias = $this->ServerAlias;
+
             $apache->Actif = true;
             $apache->addParent($heb);
         }
@@ -177,7 +181,7 @@ class Instance extends genericClass{
         $this->addParent($bdd);
 
         //check ftp
-        $bdd = $heb->getOneChild('Ftpuser');
+        /*$bdd = $heb->getOneChild('Ftpuser');
         if (!$bdd) {
             //alors création du apache
             $bdd = genericClass::createInstance('Parc', 'Ftpuser');
@@ -188,13 +192,13 @@ class Instance extends genericClass{
         } else {
             $bdd->addParent($heb);
             $bdd->Save();
-        }
-        $this->addParent($bdd);
+        }*/
+        //$this->addParent($bdd);
         parent::Save();
         //if (!$this->Enabled||$old->VersionId!=$this->VersionId||$old->Type!=$this->Type){
         //$this->Enabled = false;
         $apachesrv->callLdap2Service();
-        if ($this->Status <= 1)
+        if (intval($this->Status) <= 1)
             $this->createInstallTask();
         parent::Save();
         //}
@@ -205,7 +209,12 @@ class Instance extends genericClass{
         //execution postinit plugin
         $plugin = $this->getPlugin();
         $plugin->postInit();
+        //redemarrages de proxys
+        Server::createRestartProxyTask();
         return true;
+    }
+    public function softSave(){
+        return parent::Save();
     }
     /**
      * Retourne un plugin Parc / Instance
@@ -226,7 +235,7 @@ class Instance extends genericClass{
      */
     public function createInstallTask(){
         //on vérifie que la tache n'est pas déjà crée
-        $nb = Sys::getCount('Parc','Instance/'.$this->Id.'/Tache/Termine=0');
+        $nb = Sys::getCount('Parc','Instance/'.$this->Id.'/Tache/Termine=0&Erreur=0');
         if ($nb) return true;
         $plugin = $this->getPlugin();
         $this->Status=1;
@@ -240,6 +249,27 @@ class Instance extends genericClass{
     public function createUpdateTask($orig = null){
         $plugin = $this->getPlugin();
         return $plugin->createUpdateTask($orig);
+    }
+    /**
+     * createCheckStateTask
+     * Creation de la tache de vérification
+     */
+    public function createCheckStateTask($orig=null){
+        //gestion depuis le plugin
+        $task = genericClass::createInstance('Parc', 'Tache');
+        $task->Type = 'Fonction';
+        $task->Nom = 'Vérification de l\'instance ' . $this->Nom;
+        $task->TaskModule = 'Parc';
+        $task->TaskObject = 'Instance';
+        $task->TaskId = $this->Id;
+        $task->TaskFunction = 'checkState';
+        $task->addParent($this);
+        $host = $this->getOneParent('Host');
+        if (!$host) return false;
+        $task->addParent($host);
+        $task->addParent($host->getOneParent('Server'));
+        if (is_object($orig)) $task->addParent($orig);
+        $task->Save();
     }
 
     /**
@@ -337,8 +367,8 @@ class Instance extends genericClass{
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,$https);
         curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
         $rt = curl_exec($ch);
         $info = curl_getinfo($ch);
         return $info;
@@ -384,7 +414,7 @@ class Instance extends genericClass{
      * checkState
      * Vérifie l'état d'une instance
      */
-    public function checkState() {
+    public function checkState($task=null) {
         $host = $this->getOneParent('Host');
         $aps = $host->getChildren('Apache');
         //vérifie le retour http sur page accueil
@@ -393,29 +423,29 @@ class Instance extends genericClass{
             foreach ($domains as $domain){
                 $domain = trim($domain);
                 if (empty($domain)) continue;
+                if (preg_match('#azko.site#',$domain)) continue;
                 //test http
                 $code = self::getHttpCode('http://'.$domain);
-                if (!in_array($code["http_code"],array('200','301','302'))){
+                if (!in_array($code["http_code"],array(200,301,302))){
                     //alors incident
                     $incident = Incident::createIncident('Le domaine '.$domain.' ne répond pas correctement en http.','Le code de retour est '.print_r($code,true),$this,'HTTP_CODE',4,false);
                 }else Incident::createIncident('Le domaine '.$domain.' ne répond pas correctement en http.','Le code de retour est '.print_r($code,true),$this,'HTTP_CODE',4,true);
                 //si ssl vérifie l'état du certificat et le code retour
-                if ($this->EnableSsl){
+                if ($ap->Ssl){
                     $code = self::getHttpCode('https://'.$domain,true);
-                    if (!in_array($code["http_code"],array('200','301','302'))){
+                    if (!in_array($code["http_code"],array(200,301,302))){
                         //alors incident
                         $incident = Incident::createIncident('Le domaine '.$domain.' ne répond pas correctement en https.','Le code de retour est '.print_r($code,true),$this,'HTTPS_CODE',4,false);
-                    }
-                    if (!in_array($code["ssl_verify_result"],array('0'))){
+                    }else $incident = Incident::createIncident('Le domaine '.$domain.' ne répond pas correctement en https.','Le code de retour est '.print_r($code,true),$this,'HTTPS_CODE',4,true);
+                    if ($code["ssl_verify_result"]!==0){
                         //alors incident
-                        $incident = Incident::createIncident('Le cettificat du domaine '.$domain.' n\'est pas valide.','Le code de retour est '.print_r($code,true),$this,'SSL_ERROR',4,false);
-                    }
+                        $incident = Incident::createIncident('Le certificat du domaine '.$domain.' n\'est pas valide.','Le code de retour est '.print_r($code,true),$this,'SSL_ERROR',4,false);
+                    }else $incident = Incident::createIncident('Le certificat du domaine '.$domain.' n\'est pas valide.','Le code de retour est '.print_r($code,true),$this,'SSL_ERROR',4,true);
                 }
             }
         }
         $plugin = $this->getPlugin();
         //appel checkState du plugin
-        $plugin->checkState();
-        return true;
+        return $plugin->checkState($task);
     }
 }
