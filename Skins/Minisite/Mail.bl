@@ -1,7 +1,7 @@
 [OBJ Systeme|Site|S]
 
 [!Sitos:=[!S::getCurrentSite()!]!]
-[!Instance:=[!Sitos::getOneChild(Instance)!]!]
+[!Instance:=[!Sitos::getOneChild(MiniSite)!]!]
 
 <html>
 <body style="background-color: #2e2e2e">
