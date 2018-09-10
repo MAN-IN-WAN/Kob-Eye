@@ -38,6 +38,7 @@ class ObjectClass extends Root{
 	var $noRecursivity = 0;							//permet la création d'une clef recursive sans le comportement recursif
 	var $stopPage = 0;							//stoppe l'exploration des pages pour les clefs sous jacentes.
 	var $Operations = Array("add"=>true,"edit"=>true,"delete"=>true,"export"=>true);
+	var $OperationsDefined = false;
 	//DEFAULT
 	var $defaultView = false;
 	var $Default=0;
@@ -129,9 +130,17 @@ class ObjectClass extends Root{
 		$str = explode(',',$str);
 		if (sizeof($str))foreach ($str as $s){
 			$this->Operations[$s] = true;
+			$this->OperationsDefined = true;
 		}
 	}
 	public function getOperations(){
+		if (!$this->OperationsDefined){
+			//alors on ajoute aussi toutes les fonctions
+            if (is_array($this->Functions))foreach ($this->Functions as $nf=>$f){
+            	if (!array_key_exists($nf))
+            		$this->Operations[$nf]=true;
+            }
+		}
 		return $this->Operations;
 	}
     public function getInterfaces(){

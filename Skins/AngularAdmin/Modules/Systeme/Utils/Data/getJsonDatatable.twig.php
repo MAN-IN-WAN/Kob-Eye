@@ -2,7 +2,7 @@
 session_write_close();
 $info = Info::getInfos($vars['Path']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
-$vars['fields'] = $o->getElementsByAttribute('list|fiche','',true);
+$vars['fields'] = $o->getElementsByAttribute('list','',true);
 //calcul offset / limit
 $offset = (isset($_GET['offset']))?$_GET['offset']:0;
 $limit = (isset($_GET['limit']))?$_GET['limit']:30;
@@ -155,4 +155,5 @@ function endPacket(){
     ob_flush();
     flush();
 }
+//echo $GLOBALS['Chrono']->total();
 ?>

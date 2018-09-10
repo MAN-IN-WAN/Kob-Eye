@@ -270,7 +270,7 @@ VM_SNAPSHOT_QUIESCE=0
 ALLOW_VMS_WITH_SNAPSHOTS_TO_BE_BACKEDUP=0
 ENABLE_NON_PERSISTENT_NFS=0
 UNMOUNT_NFS=0
-NFS_SERVER='.AbtelBackup::getMyIp().'
+NFS_SERVER='.AbtelBackup::getMyIp(true).'
 NFS_VERSION=nfs
 NFS_MOUNT=/backup/nfs
 NFS_LOCAL_NAME=ABTEL_BACKUP
@@ -298,7 +298,7 @@ VM_STARTUP_ORDER=
         $act->addProgression(40);
         parent::Save();
         $act->addDetails($v->Titre.' ---> montage du NFS');
-        $esx->remoteExec("esxcfg-nas -a ABTEL_BACKUP -o ".AbtelBackup::getMyIp()." -s /backup/nfs",null,true);
+        $esx->remoteExec("esxcfg-nas -a ABTEL_BACKUP -o ".AbtelBackup::getMyIp(true)." -s /backup/nfs",null,true);
         $act->addProgression(10);
         parent::Save();
         return $act;

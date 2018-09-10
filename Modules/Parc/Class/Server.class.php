@@ -794,6 +794,7 @@ class Server extends genericClass {
 		$res = Server::ldapGet($ldapID);
 		$GLOBALS["Systeme"]->Log->log("DELETE HOST: $ldapID RECURSIVE: $recursive");
 		if ($recursive == false) {
+		    if (!isset($res[0]))return false;
 			$req = ldap_delete(Server::$_LDAP, $res[0]['dn']);
 		} else {
 			//searching for sub entries
@@ -1281,7 +1282,7 @@ class Server extends genericClass {
     public function restartServiceNginx() {
         $act = $this->createActivity('Redemarrage du service Proxy (NGINX)','Exec');
         try {
-            $out = $this->remoteExec('systemctl restart nginx', $act);
+            $out = $this->remoteExec('/usr/sbin/nginx -s reload', $act);
         }catch (Exception $e){
             $act->addDetails($e->getMessage());
             $act->Terminate(false);
@@ -1369,4 +1370,5 @@ class Server extends genericClass {
             }
         }
     }
+
 }

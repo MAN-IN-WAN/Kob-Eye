@@ -1,0 +1,2 @@
+[!Module::Parc::checkSslState()!]
+<div class="alert alert-success">Une tache a été créée afin de faire l'inventaire des certificats à vérifier. Rendez vous dans le menu Configuration / Taches machines</div>

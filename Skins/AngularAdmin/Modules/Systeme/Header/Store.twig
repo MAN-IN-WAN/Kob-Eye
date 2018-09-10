@@ -87,6 +87,7 @@
             return query[context];
         }
         function setPageLength(pl,context = 'default') {
+            if (pageLength==pl)return false;
             console.log(context+' >> {{ st.identifier }} >> pageLength > '+pl);
             pageLength = pl;
             pageLoaded[context]--;
@@ -226,7 +227,9 @@
         */
         function getQueryFilter(context = 'default') {
             if (!filters[context]) return '';
-            var query = '~'+filters[context].global;
+            var query = '';
+            if (filters[context].global)
+                query += '~'+filters[context].global;
             for (var i in filters[context].options) {
                 query+='&'+filters[context].options[i].name+filters[context].options[i].operator+filters[context].options[i].value;
             }
@@ -320,12 +323,12 @@
                                     {{ st.identifier }}Store[context].push({{ st.identifier }}Store[contexts[c]][i]);
                                     resolve({{ st.identifier }}Store[context][idStore]);
                                     if (!{{ st.identifier }}Store[context][idStore]._full){
-                                        /*loadChildren({{ st.identifier }}Store[context][idStore]).then(function (obj){
+                                        loadChildren({{ st.identifier }}Store[context][idStore]).then(function (obj){
                                             {{ st.identifier }}Store[context][idStore] = unescapeData(updateRecord({{ st.identifier }}Store[context][idStore],obj));
                                             if (obj._full){
                                                 resolve(obj);
                                             }
-                                        });*/
+                                        });
                                     }
                                 }
                             }
@@ -515,6 +518,7 @@
         * Load more data base on page
         */
         function getData(page,context='default') {
+            if (context=='link') console.trace();
             var tmpquery = getQuery(context);
             var tmpfilters = getQueryFilter(context);
             //create new context
@@ -524,8 +528,11 @@
                 //si meme requete et meme filtre
                 if (busy[context].query == tmpquery && busy[context].filter == tmpfilters && page == busy[context].page){
                     //on renvoie le promise
-                    console.log('STOP LIST BUSY ',busy[context].query, '==' ,tmpquery, '&&', busy[context].filter, '==' ,tmpfilters, '&&' ,page, '==' ,busy[context].page);
-                    return busy[context].promise;
+                    console.log('STOP LIST BUSY ',busy[context].query, '==' ,tmpquery, '&&', busy[context].filter, '==' ,tmpfilters, '&&' ,page, '==' ,busy[context].page,'-----',busy[context]);
+                    //return busy[context].promise;
+                    return $q(function(resolve, reject) {
+                        resolve({{ st.identifier }}Store[context]);
+                    });
                 }else{
                     //on annule la requete
                     busy[context].promise.defer().resolve();

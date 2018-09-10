@@ -3,6 +3,7 @@
 class Instance extends genericClass{
     private $_plugin = null;
     public function Save($force=false){
+        Sys::startTransaction();
         $old = Sys::getOneData('Parc', 'Instance/' . $this->Id);
         if (!$old) $new = true; else $new = false;
         if (!$new&&$old->SousDomaine!=$this->SousDomaine){
@@ -98,7 +99,7 @@ class Instance extends genericClass{
             $otherurls = array();
             foreach ($dom as $d) {
                 //vérification des sous domaines
-                $www = $d->getOneChild('Subdomain/Url=A:' . $this->InstanceNom);
+                $www = $d->getOneChild('Subdomain/Url=' . $this->InstanceNom);
                 if (!$www) {
                     //création du A
                     $www = genericClass::createInstance('Parc', 'Subdomain');
@@ -145,14 +146,14 @@ class Instance extends genericClass{
             $apache = genericClass::createInstance('Parc', 'Apache');
             $apache->DocumentRoot = $this->SousDomaine;
             $apache->ApacheServerName = $this->FullDomain;
-            $apache->ApacheServerAlias = $this->ServerAlias;
+            //$apache->ApacheServerAlias = $this->ServerAlias;
             $apache->Actif = true;
             $apache->addParent($heb);
         } else {
             $apache->ApacheServerName = $this->FullDomain;
-            if (empty($this->ServerAlias)){
+            /*if (empty($this->ServerAlias)){
                 $this->ApacheServerAlias = $apache->ServerAlias;
-            }else $apache->ApacheServerAlias = $this->ServerAlias;
+            }else $apache->ApacheServerAlias = $this->ServerAlias;*/
 
             $apache->Actif = true;
             $apache->addParent($heb);
@@ -428,19 +429,19 @@ class Instance extends genericClass{
                 $code = self::getHttpCode('http://'.$domain);
                 if (!in_array($code["http_code"],array(200,301,302))){
                     //alors incident
-                    $incident = Incident::createIncident('Le domaine '.$domain.' ne répond pas correctement en http.','Le code de retour est '.print_r($code,true),$this,'HTTP_CODE',4,false);
-                }else Incident::createIncident('Le domaine '.$domain.' ne répond pas correctement en http.','Le code de retour est '.print_r($code,true),$this,'HTTP_CODE',4,true);
+                    $incident = Incident::createIncident('Le domaine '.$domain.' ne répond pas correctement en http.','Le code de retour est '.print_r($code,true),$this,'HTTP_CODE',$domain,4,false);
+                }else Incident::createIncident('Le domaine '.$domain.' ne répond pas correctement en http.','Le code de retour est '.print_r($code,true),$this,'HTTP_CODE',$domain,4,true);
                 //si ssl vérifie l'état du certificat et le code retour
                 if ($ap->Ssl){
                     $code = self::getHttpCode('https://'.$domain,true);
                     if (!in_array($code["http_code"],array(200,301,302))){
                         //alors incident
-                        $incident = Incident::createIncident('Le domaine '.$domain.' ne répond pas correctement en https.','Le code de retour est '.print_r($code,true),$this,'HTTPS_CODE',4,false);
-                    }else $incident = Incident::createIncident('Le domaine '.$domain.' ne répond pas correctement en https.','Le code de retour est '.print_r($code,true),$this,'HTTPS_CODE',4,true);
+                        $incident = Incident::createIncident('Le domaine '.$domain.' ne répond pas correctement en https.','Le code de retour est '.print_r($code,true),$this,'HTTPS_CODE',$domain,4,false);
+                    }else $incident = Incident::createIncident('Le domaine '.$domain.' ne répond pas correctement en https.','Le code de retour est '.print_r($code,true),$this,'HTTPS_CODE',$domain,4,true);
                     if ($code["ssl_verify_result"]!==0){
                         //alors incident
-                        $incident = Incident::createIncident('Le certificat du domaine '.$domain.' n\'est pas valide.','Le code de retour est '.print_r($code,true),$this,'SSL_ERROR',4,false);
-                    }else $incident = Incident::createIncident('Le certificat du domaine '.$domain.' n\'est pas valide.','Le code de retour est '.print_r($code,true),$this,'SSL_ERROR',4,true);
+                        $incident = Incident::createIncident('Le certificat du domaine '.$domain.' n\'est pas valide.','Le code de retour est '.print_r($code,true),$this,'SSL_ERROR',$domain,4,false);
+                    }else $incident = Incident::createIncident('Le certificat du domaine '.$domain.' n\'est pas valide.','Le code de retour est '.print_r($code,true),$this,'SSL_ERROR',$domain,4,true);
                 }
             }
         }

@@ -1,4 +1,5 @@
 <?php
+session_write_close();
 $query = isset($vars['Path']) ? $vars['Path']: $vars['Query'];
 $info = Info::getInfos($query);
 if ($info["TypeSearch"]=="Direct"){

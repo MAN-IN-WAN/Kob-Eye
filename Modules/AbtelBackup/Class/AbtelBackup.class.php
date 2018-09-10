@@ -266,10 +266,12 @@ class AbtelBackup extends Module{
         }
         return $output;
     }
-    static public function getMyIp(){
+    static public function getMyIp($last = false){
         $output = AbtelBackup::localExec('/usr/sbin/ifconfig');
-        preg_match('#inet ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)#',$output,$out);
-        return $out[1];
+        preg_match_all('#inet ([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)#',$output,$out);
+        if (sizeof($out[1])>2&&$last)
+            return $out[1][1];
+        else $out[1][0];
     }
     static function getFileSize($path){
         $output = AbtelBackup::localExec('/usr/bin/ls -l "'.$path.'"');

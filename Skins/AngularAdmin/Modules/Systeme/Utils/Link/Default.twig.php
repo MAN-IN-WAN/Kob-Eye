@@ -1,5 +1,5 @@
 <?php
-
+session_write_close();
 $Path = $GLOBALS["Systeme"]->getGetVars("Module").'/'.$GLOBALS["Systeme"]->getGetVars("ObjectName");
 
 $info = Info::getInfos($Path);

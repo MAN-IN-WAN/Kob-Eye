@@ -542,8 +542,10 @@ class Connection extends Root{
 			$this->clearpass = $_SERVER["PHP_AUTH_PW"];
         }elseif (is_object(json_decode(file_get_contents('php://input')))){
 			$data = json_decode(file_get_contents('php://input'));
-            $this->login = $data->login;
-            $this->pass =  md5($data->pass);
+			if (isset($data->login)) {
+                $this->login = $data->login;
+                $this->pass = md5($data->pass);
+            }
         }else{
 			if ($this->login==""||$this->pass=="")	{
                 $GLOBALS["Systeme"]->Error->Set('Connexion','Veuillez vérifiez vos identifiants. Login et/ou mot de passe manquants ou érronés.',5);

@@ -2990,7 +2990,7 @@ class genericClass extends Root {
             switch ($f['type']){
                 case 'date':
                     //transformation des timestamps en format js
-                    $o->{$f['name']} = date('d/m/Y H:i',$this->{$f['name']});
+                    $o->{$f['name']} = date('d/m/Y H:i',isset($this->{$f['name']})&&$this->{$f['name']}>0?$this->{$f['name']}:time());
                     break;
                 case 'boolean':
                     //transformation des timestamps en format js

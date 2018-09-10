@@ -111,6 +111,7 @@ class Sys extends Root{
         $GLOBALS["Chrono"]->start("Connexion");
         $this->Connection =new Connection();
         $GLOBALS["Chrono"]->stop("Connexion");
+        //Sys::commitTransaction();
         //Petit coommentaire sympa
         if (isset($_GET["ACTION"])&&$_GET["ACTION"]=="UPDATE"){
             foreach (Sys::$Modules as $K=>$M){
@@ -166,8 +167,8 @@ class Sys extends Root{
 			preg_match('#^(.*?)\:\/\/(.*?)\:(.*)\@(.*?)/(.*)$#',$this->Conf->get("GENERAL::BDD::MYSQL_DSN"),$Out);
 			try {
 				$this->Db[0] = new PDO($Out[1].':host='.$Out[4].';dbname='.$Out[5],$Out[2],$Out[3],array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-				$this->Db[0]->query("SET AUTOCOMMIT=0");
-				$this->Db[0]->query("START TRANSACTION");
+				$this->Db[0]->query("SET AUTOCOMMIT=1");
+				//$this->Db[0]->query("START TRANSACTION");
 			} catch (PDOException $e) {
 				echo 'impossible de se connecter à la abase de donnée';
 				print_r($e);
@@ -1177,11 +1178,25 @@ class Sys extends Root{
     /**
      * Cloture transaction
      */
-    function CommitTransaction() {
+    /*function CommitTransaction() {
         if (is_object($this->Db[0])) $this->Db[0]->query("COMMIT");
         if (is_object($this->Db[0])) $this->Db[0]->query("START TRANSACTION");
+    }*/
+    public static function commitTransaction() {
+        if (is_object($GLOBALS['Systeme']->Db[0])) $GLOBALS['Systeme']->Db[0]->query("COMMIT");
+        if (is_object($GLOBALS['Systeme']->Db[0])) $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=1");
     }
-	/**
+    public static function startTransaction() {
+        if (is_object($GLOBALS['Systeme']->Db[0])) $GLOBALS['Systeme']->Db[0]->query("COMMIT");
+        if (is_object($GLOBALS['Systeme']->Db[0])) $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=0");
+        if (is_object($GLOBALS['Systeme']->Db[0])) $GLOBALS['Systeme']->Db[0]->query("START TRANSACTION");
+    }
+    public static function autocommitTransaction() {
+        if (is_object($GLOBALS['Systeme']->Db[0])) $GLOBALS['Systeme']->Db[0]->query("COMMIT");
+        if (is_object($GLOBALS['Systeme']->Db[0])) $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=1");
+    }
+    /**
+	 *
 	* Fermeture des connexions
 	*/
 	function Close() {

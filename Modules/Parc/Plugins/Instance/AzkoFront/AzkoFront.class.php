@@ -281,7 +281,7 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
         $apachesrv = $host->getOneParent('Server');
         try {
             $GLOBALS['Chrono']->start('AZKOFRONT: checkState check mount');
-            $act = $this->_obj->createActivity('Vérification des points de montage '.$apachesrv->Nom, 'Info', $task);
+            $act = $this->_obj->createActivity('Vérification des points de montage '.$apachesrv->Nom.' PID:'.getmypid(), 'Info', $task);
             $cmd = 'mountpoint -q /home/' . $host->NomLDAP . '/azkocms_medias && mountpoint -q /home/' . $host->NomLDAP . '/azkocms_skins && echo 2';
             $act->addDetails($cmd);
             try {
@@ -295,16 +295,16 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
                 $out=0;
             }
             if (intval($out)<2){
-                $act = $this->_obj->createActivity('Montage des dossiers skins et médias sur le serveur '.$apachesrv->Nom, 'Info', $task);
+                $act = $this->_obj->createActivity('Montage des dossiers skins et médias sur le serveur '.$apachesrv->Nom.' PID:'.getmypid(), 'Info', $task);
                 try {
-                    $incident = Incident::createIncident('Les dossiers médias et skins de l\'instance '.$this->_obj->Nom.' ne sont pas montés.','Le code de retour est ',$this->_obj,'FOLDER_MOUNT',3,false);
+                    $incident = Incident::createIncident('Les dossiers médias et skins de l\'instance '.$this->_obj->Nom.' ne sont pas montés.','Le code de retour est ',$this->_obj,'FOLDER_MOUNT',$this->_obj->NomInstance,3,false);
                     if ($this->createAndMountFolders($apachesrv, $host,$task)) {
-                        $incident = Incident::createIncident('Les dossiers médias et skins de l\'instance '.$this->_obj->Nom.' ne sont pas montés.','Le code de retour est ',$this->_obj,'FOLDER_MOUNT',3,true);
+                        $incident = Incident::createIncident('Les dossiers médias et skins de l\'instance '.$this->_obj->Nom.' ne sont pas montés.','Le code de retour est ',$this->_obj,'FOLDER_MOUNT',$this->_obj->NomInstance,3,true);
                     }
                 }catch (Exception $e){
                     $act->addDetails('ERREUR DE MONTAGE : '.$e->getMessage());
                 }
-            }else $incident = Incident::createIncident('Les dossiers médias et skins de l\'instance '.$this->_obj->Nom.' ne sont pas montés.','Le code de retour est ',$this->_obj,'FOLDER_MOUNT',3,true);
+            }else $incident = Incident::createIncident('Les dossiers médias et skins de l\'instance '.$this->_obj->Nom.' ne sont pas montés.','Le code de retour est ',$this->_obj,'FOLDER_MOUNT',$this->_obj->NomInstance,3,true);
 
 
             $GLOBALS['Chrono']->stop('AZKOFRONT: checkState check mount');
