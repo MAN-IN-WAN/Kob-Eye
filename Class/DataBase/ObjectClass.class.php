@@ -117,7 +117,7 @@ class ObjectClass extends Root{
 			$this->ObjectClass = $schema['@']['ObjectClass'];
 		}
 		if (isset($schema['@']['driver'])&&$schema['@']['driver']=="sqlite")$this->Bdd = 1;
-        if (isset($schema['@']['Attributes']))$this->setAttributes($schema['@']['Attributes']); // PGF 20180809
+        //if (isset($schema['@']['Attributes']))$this->setAttributes($schema['@']['Attributes']); // PGF 20180809
 		//PARSE XML 
 		$this->parseXml($schema['#']);
 		//INITIALISATION DU PILOTE
@@ -137,6 +137,7 @@ class ObjectClass extends Root{
     public function getInterfaces(){
         return $this->Interfaces;
     }
+/*
 	// PGF 20180809
 	private function setAttributes($str) {
 		$str = explode(',',$str);
@@ -147,6 +148,7 @@ class ObjectClass extends Root{
 	public function getAttributes() {
 		return $this->Attributes;
 	}
+ */
 	/**
 	 * __________________________________________________________________________________________________
 	 * 																							   PARSER

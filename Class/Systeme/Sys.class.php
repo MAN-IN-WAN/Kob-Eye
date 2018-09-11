@@ -119,8 +119,6 @@ class Sys extends Root{
 		$GLOBALS["Chrono"]->start("Connexion");
   		$this->Connection =new Connection();
 		$GLOBALS["Chrono"]->stop("Connexion");
-        $this->Db[0]->query("COMMIT");
-        $this->Db[0]->query("START TRANSACTION");
 
   		$this->registerVar("DefaultUser",MAIN_USER_NUM);
   		if (isset(Sys::$User->Skin)) Sys::$Skin=Sys::$User->Skin;
