@@ -10,25 +10,31 @@ class Apache extends genericClass {
 	 * @return	void
 	 */
 	public function Save( $synchro = true , $force = false) {
-		if ($this->Ssl){
+		if ($this->Ssl&$this->Id){
 			//test de l'activation ssl
 			$old = Sys::getOneData('Parc','Apache/'.$this->Id);
 			if (!$old->Ssl&&!$force) {
 			    if (!$this->enableSsl()) return false;
             }
-		}
+		}elseif($this->Ssl){
+		    parent::Save();
+            $this->enableSsl();
+        }
 		// Forcer la vérification
 		if(!$this->_isVerified) $this->Verify( $synchro );
 		// Enregistrement si pas d'erreur
 		if($this->_isVerified) parent::Save();
+
 		//mise à jour des serveurs
         try {
             $srvs = $this->getKEServer();
             foreach ($srvs as $srv)
                 $srv->callLdap2Service();
             $pxs = Sys::getData('Parc','Server/Proxy=1');
-            foreach ($pxs as $px)
+            foreach ($pxs as $px) {
                 $px->callLdap2Service();
+                $px->createRestartProxyTask();
+            }
 
         }catch (Exception $e){
             $this->addError(array("Message"=>"Impossible de mettre le serveur à jour. Serveur injoignable.".$e->getMessage()));
@@ -37,11 +43,25 @@ class Apache extends genericClass {
 		return true;
 	}
 
-	public function enableSsl($force = false,$instance = null) {
+    /**
+     * softSave
+     * @return bool
+     */
+    public function softSave() {
+        return parent::Save();
+    }
+
+    /**
+     * enableSsl
+     * @param bool $force
+     * @param null $instance
+     * @return bool
+     */
+	public function enableSsl($force = true) {
 		if (empty($this->SslMethod))$this->SslMethod = "Letsencrypt";
 		//check already exists
-		if (!$force&&$this->Ssl&&!empty($this->SslCertificate)&&!empty($this->SslCertificateKey)&&$this->SslExpiration>time()+2592000){
-			$this->addError(array("Message"=>"Le certificat est déjà généré et valide."));
+		if (!$force&&$this->Ssl&&!empty($this->SslCertificate)&&!empty($this->SslCertificateKey)&&$this->SslExpiration>time()-86400){
+			$this->addError(array("Message"=>"Le certificat est déjà généré et valide. Son expiratio n'interviendra pas dans les prochaines 24 heures."));
 			return false;
 		}
 		//on vérifie qu'il n'y ait pas déjà une tache
@@ -72,14 +92,14 @@ class Apache extends genericClass {
                     return false;
                 }
                 //définition de la date d'expiration
-                $this->SslExpiration=time()+(86400*90);
                 $this->Ssl = true;
                 //recherche du serveur proxy
-                $serv = Sys::getData('Parc','Server/Proxy=1&Status>1');
-                if (!sizeof($serv))
+                $serv = Sys::getOneData('Parc','Server/Proxy=1',0,1,'ASC','Id');
+                if (!sizeof($serv)) {
                     $serv = $this->getKEServer();
-                $serv = $serv[0];
-                $sa = explode("\n",$this->ApacheServerAlias);
+                    $serv = $serv[0];
+                }
+                $sa = explode(" ",$this->getDomains());
 
                 //test des entrées dns
                 $resolver = new Net_DNS2_Resolver( array('nameservers' => array('8.8.8.8')) );
@@ -109,26 +129,24 @@ class Apache extends genericClass {
                         $this->addError(array("Message"=>"Le domaine : '".$dns->question[sizeof($dns->question)-1]->qname."' ne pointe pas sur l'adresse ip ".$serv->IP." (actuellement il pointe vers ".$dns->answer[sizeof($dns->answer)-1]->address."), ou sa propagation se terminera dans ".$dns->answer[sizeof($dns->answer)-1]->ttl." secondes"));
                     }
                 }
-
                 if ($err)return false;
 
                 //pour activer ssl il faut déclencher une tache
                 $task  = genericClass::createInstance('Parc','Tache');
-                $task->Nom = "Activation SSL pour la configuration Apache ".$this->ApacheServerName." ( ".$this->Id." )";
-                $task->Type = "Ssh";
-                $task->DateDebut = time()+120;
-                $task->Contenu = "/usr/src/certbot/certbot-auto --renew-by-default --webroot certonly --webroot-path /var/www/letsencrypt --quiet -d ".$this->ApacheServerName;
-                // ajout des server alias
-                $sa = explode("\n",$this->ApacheServerAlias);
-                if (sizeof($sa)==1)$sa = explode(" ",$this->ApacheServerAlias);
-                if (!empty($sa[0]))foreach ($sa as $s ){
-                    $task->Contenu .= " -d ".trim($s);
-                }
-                $task->Contenu .= "\n cat /etc/letsencrypt/live/".$this->ApacheServerName."/fullchain.pem";
-                $task->Contenu .= "\n cat /etc/letsencrypt/live/".$this->ApacheServerName."/privkey.pem";
+                $task->Nom = "Activation SSL pour la configuration Apache ".$this->getDomains()." ( ".$this->Id." )";
+                $task->Type = "Fonction";
+                $task->TaskModule = "Parc";
+                $task->TaskObject = "Apache";
+                $task->TaskFunction = "executeLetsencrypt";
+                $task->TaskId = $this->Id;
                 $task->addParent($this);
                 $task->addParent($serv);
-                if ($instance)$task->addParent($instance);
+                //on va charcher l'hébergement
+                $host = $this->getOneParent('Host');
+                $task->addParent($host);
+                //on va chercher l'instance
+                $instance = $host->getOneChild('Instance');
+                $task->addParent($instance);
                 $task->Save();
                 parent::Save();
 			break;
@@ -233,7 +251,7 @@ class Apache extends genericClass {
 		if (substr($this->DocumentRoot,strlen($this->DocumentRoot)-1,1)=='/') $this->DocumentRoot = substr($this->DocumentRoot,0,-1);
         //test du documentroot
         $host = $this->getKEHost();
-        $this->DocumentRoot = str_replace('/home/'.$host->Nom.'/','',$this->DocumentRoot);
+        $this->DocumentRoot = str_replace('/home/'.$host->NomLDAP.'/','',$this->DocumentRoot);
 		if(parent::Verify()) {
             //check ssl
             if ($this->Ssl&&$this->SslMethod=='Manuel'&&(empty($this->SslCertificate)||empty($this->SslCertificateKey))){
@@ -259,16 +277,16 @@ class Apache extends genericClass {
 				$KEHost = $this->getKEHost();
 				$KEServers = $this->getKEServer();
 				foreach ($KEServers as $KEServer) {
-                    $dn = 'apacheServerName=' . $this->ApacheServerName.',cn=' . $KEHost->Nom . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE;
+                    $dn = 'apacheServerName=' . $this->ApacheServerName.',cn=' . $KEHost->NomLDAP . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE;
                     // Verification à jour
-                    $res = Server::checkTms($this,$KEServer,'cn=' . $KEHost->Nom . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE,'apacheServerName=' . $this->ApacheServerName);
+                    $res = Server::checkTms($this,$KEServer,'cn=' . $KEHost->NomLDAP . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE,'apacheServerName=' . $this->ApacheServerName);
                     if ($res['exists']) {
                         if (!$res['OK']) {
                             $this->AddError($res);
                             $this->_isVerified = false;
                         } else {
                             // Déplacement
-                            $res = Server::ldapRename($this->getLdapDN($KEServer), 'apacheServerName=' . $this->ApacheServerName, 'cn=' . $KEHost->Nom . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE);
+                            $res = Server::ldapRename($this->getLdapDN($KEServer), 'apacheServerName=' . $this->ApacheServerName, 'cn=' . $KEHost->NomLDAP . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE);
                             if ($res['OK']) {
                                 // Modification
                                 $entry = $this->buildEntry($KEServer,false);
@@ -398,8 +416,8 @@ class Apache extends genericClass {
 
         //Proxy config
 		if ($this->ProxyCache){
-            $entry['apacheProxyCacheConfig'] = "proxy_cache            STATIC;\n    proxy_cache_valid      200  1d;\n    proxy_cache_use_stale  error timeout invalid_header updating http_500 http_502 http_503 http_504;\n";
-            $entry['apacheProxyCacheConfigSsl'] = "    proxy_cache STATIC;\n    proxy_cache_valid      200  1d;\n    proxy_cache_use_stale  error timeout invalid_header updating http_500 http_502 http_503 http_504;\n";
+            $entry['apacheProxyCacheConfig'] = "proxy_cache            STATIC;\n    proxy_cache_valid      200  1h;\n    proxy_cache_use_stale  error timeout invalid_header updating http_500 http_502 http_503 http_504;\n";
+            $entry['apacheProxyCacheConfigSsl'] = "    proxy_cache STATIC;\n    proxy_cache_valid      200  1h;\n    proxy_cache_use_stale  error timeout invalid_header updating http_500 http_502 http_503 http_504;\n";
         }else if (!$new) {
 		    $entry['apacheProxyCacheConfig'] = Array();
             $entry['apacheProxyCacheConfigSsl'] = Array();
@@ -531,7 +549,7 @@ class Apache extends genericClass {
      *
      */
 	public function getDomains() {
-	    return $this->ApacheServerName.' '.(implode(" ",explode("\n",$this->ApacheServerAlias)));
+	    return $this->ApacheServerName.' '.(implode(" ",explode("\n",str_replace("\r","",$this->ApacheServerAlias))));
     }
     /**
      * getDomains
@@ -546,4 +564,109 @@ class Apache extends genericClass {
         }
         return $out;
     }
+    /**
+     * executeLetsencrypt
+     * Execution de letsencrypt sur le serveur
+     */
+    public function executeLetsencrypt($task) {
+        $prefixe = "/usr/src/certbot/certbot-auto --renew-by-default --webroot certonly --webroot-path /var/www/letsencrypt ";
+        $first='';
+        $cmd = '';
+        // ajout des server alias
+        $sa = explode(' ',$this->getDomains());
+        foreach ($sa as $s ){
+            if (!preg_match("#azko.site#",$s)) {
+                if (empty($first)) $first=trim($s);
+                $cmd .= " -d " . trim($s);
+            }
+        }
+        //récupératio ndu serveur
+        $srv = $task->getOneParent('Server');
+
+        //Vérification du dépot letsencrypt
+        $act = $task->createActivity('Vérification du dépot letsencrypt');
+        $err = false;
+        $cert = $srv->getFileContent("/etc/letsencrypt/live/".$first."/fullchain.pem");
+        $certinfo = openssl_x509_parse($cert);
+        //on vérifie qu'on a la bonne date d'expiration
+        if ($certinfo['validTo_time_t']>time()+86400){
+            //on compare la liste des domaines à certifier et les domaines dans le certificat
+            $domains=explode(' ',$this->getDomains());
+            $certdomains = array();
+            preg_match_all('#DNS:([^\ ,]*)#',$certinfo['extensions']['subjectAltName'],$othersdomains);
+            $certdomains=array_merge($certdomains,$othersdomains[1]);
+            foreach ($domains as $d){
+                if (!in_array($d,$certdomains)){
+                    $this->addError(array('Message'=>'Le domaine '.$d.' n\' est pas compris dans le certificat en production. Il serait nécessaire de le regénérer.'));
+                }
+            }
+        }
+
+
+
+        //execution de la commande
+        $cmd = $prefixe.$cmd;
+        $act = $task->createActivity('Execution de la commande certbot');
+        $act->addDetails($cmd);
+        try {
+            $out = $srv->remoteExec($cmd);
+        }catch (Exception $e) {
+            $act->addDetails($e->getMessage());
+            $act->Terminate(false);
+            $task->Erreur = 1;
+            $task->Save();
+            return false;
+        }
+        $act->addDetails($out);
+        $act = $task->createActivity('Récupération des certificats');
+        //récupération des certificats
+        $this->SslCertificate = $srv->getFileContent("/etc/letsencrypt/live/".$first."/fullchain.pem");
+        $act->addDetails($this->SslCertificate);
+        $this->SslCertificateKey = $srv->getFileContent("/etc/letsencrypt/live/".$first."/privkey.pem");
+        $act->addDetails($this->SslCertificateKey);
+        $act->Terminate(true);
+        $this->Save();
+        return true;
+    }
+    /**
+     * checkCertificate
+     * Vérifie la validité du certificat et récupère sa date d'expiration
+     */
+    public function checkCertificate($task = null) {
+        if ($this->Ssl) {
+            $certinfo = openssl_x509_parse($this->SslCertificate);
+            //on vérifie qu'on a la bonne date d'expiration
+            if ($this->SslExpiration!=$certinfo['validTo_time_t']){
+                $this->SslExpiration = $certinfo['validTo_time_t'];
+            }
+
+            //on compare la liste des domaines à certifier et les domaines dans le certificat
+            $domains=explode(' ',$this->getDomains());
+            $certdomains = array();
+            preg_match_all('#DNS:([^\ ,]*)#',$certinfo['extensions']['subjectAltName'],$othersdomains);
+            $certdomains=array_merge($certdomains,$othersdomains[1]);
+            foreach ($domains as $d){
+                if (!in_array($d,$certdomains)){
+                    $this->addError(array('Message'=>'Le domaine '.$d.' n\' est pas compris dans le certificat en production. Il serait nécessaire de le regénérer.'));
+                }
+            }
+            //on sauvegarde
+            $this->softSave();
+
+            if ($task){
+                foreach ($this->Error as $err){
+                    $task->addRetour($err['Message']."\r\n");
+                }
+            }
+
+            if ($this->SslExpiration>time()){
+                return true;
+            }else{
+                $this->addError(array('Message'=>'Le certificat a expiré le '.date('d/m/Y à H:i:s',$certinfo['validTo_time_t']).'. Il serait nécessaire de le regénérer.'));
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

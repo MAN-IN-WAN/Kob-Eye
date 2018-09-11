@@ -1,10 +1,10 @@
 <?php
 class Tache extends genericClass{
     var $_apache = null;
-    public function Execute() {
+    public function Execute($force=false) {
         //on rafraichit les infos
-        $t = Sys::getOneData('Parc','Tache/'.$this->Id);
-        if ($t->Demarre) return true;
+        if ($this->Demarre&&!$force) return true;
+        Sys::autocommitTransaction();
         switch ($this->Type) {
             default:
                 try {
@@ -58,17 +58,19 @@ class Tache extends genericClass{
                 }else{
                     //execution statique
                     try {
-                        call_user_func($this->TaskObject.'::'.$this->TaskFunction);
+                        call_user_func($this->TaskObject.'::'.$this->TaskFunction,$this);
                     }catch (Exception $e){
                         $this->addRetour('ERROR: '.$e->getMessage());
                         $this->Erreur = true;
                     }
+                    $this->Termine = true;
+                    parent::Save();
                 }
             break;
         }
         return true;
     }
-    private function addRetour($msg){
+    public function addRetour($msg){
         //recherche du apache pour callback
         $ap = $this->getApache();
         if ($ap){
@@ -83,4 +85,24 @@ class Tache extends genericClass{
         }
         return $this->_apache;
     }
+    /**
+     * createActivity
+     * créé une activité
+     * @param $title
+     * @param null $obj
+     * @param int $jPSpan
+     * @param string $Type
+     * @return genericClass
+     */
+    public function createActivity($title, $Type = 'Exec'){
+        $act = genericClass::createInstance('Parc', 'Activity');
+        $act->addParent($this);
+        $act->Titre = $this->tag . date('d/m/Y H:i:s') . ' > ' . $this->Titre . ' > ' . $title;
+        $act->Started = true;
+        $act->Type = $Type;
+        $act->Progression = 0;
+        $act->Save();
+        return $act;
+    }
+
 }

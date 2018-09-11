@@ -13,14 +13,14 @@ class CNAME extends genericClass {
 	    $as = $pa->getChildren('Subdomain');
 	    $aaas = $pa->getChildren('AAA');
 	    foreach ($as as $a){
-            $pref = explode(':',$a->Url)[1];
+            $pref = $a->Url;
             if($pref == $this->Dnsdomainname){
                 $this->addError(array('Message' => "Une entrée A existe déjà pour ce prefixe.", 'Prop' => ''));
                 return false;
             }
         }
         foreach ($aaas as $aaa){
-            $pref = explode(':',$aaa->Url)[1];
+            $pref = $aaa->Url;
             if($pref == $this->Dnsdomainname){
                 $this->addError(array('Message' => "Une entrée AAAA existe déjà pour ce prefixe.", 'Prop' => ''));
                 return false;

@@ -212,7 +212,8 @@ class Subdomain extends genericClass {
 		$entry['dnsipaddr'] = $this->IP;
 		// Récupère la partie "sous domaine"
 		$entry['cn'] = $this->Nom;
-		$entry['dnsdomainname'] = $this->Url;
+		if (!empty($this->Url))
+		    $entry['dnsdomainname'] = $this->Url;
 
         $entry['dnsttl'] = $this->TTL ?  $this->TTL : 86400;
 		if($new) {
@@ -318,7 +319,7 @@ class Subdomain extends genericClass {
         $chaine = str_replace('"', "-", $chaine);
         $chaine = str_replace("?", "", $chaine);
         $chaine = str_replace("!", "", $chaine);
-        $chaine = str_replace(".", "", $chaine);
+        //$chaine = str_replace(".", "", $chaine);
         $chaine = preg_replace('`[\,\ \(\)\+\'\/\:_\;]`', '-', trim($chaine));
         $chaine=strtr($chaine,utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ?"),"aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynn-");
         $chaine = preg_replace('`[-]+`', '-', trim($chaine));

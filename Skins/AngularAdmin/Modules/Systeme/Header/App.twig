@@ -355,7 +355,7 @@ angular.module('cleanUI', [
                     $routeProvider.when('/{{ m.Url }}/{{ m2.Url }}/:id', {
                         //templateUrl: '{{ m.Url }}/{{ m2.Url }}/FicheTemplate.htm?CurrentObjId=2',
                         templateUrl:function(params) {
-                            return '{{ m.Url }}/{{ m2.Url }}/FicheTemplate.htm?CurrentObjId='+params.id;
+                            return '{{ m.Url }}/{{ m2.Url }}/FicheTemplate.htm';
                         },
                         controller: '{{ m.Url }}{{ m2.Url }}FicheCtrl'
                     });

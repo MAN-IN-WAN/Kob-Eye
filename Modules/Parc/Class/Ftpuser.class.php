@@ -233,9 +233,9 @@ class Ftpuser extends genericClass {
 		$host = $this->getKEHost();
 		$entry['cn'] = $KEServer->Nom;
 		if($this->DocumentRoot){
-		    $entry['homedirectory'] = '/home/'.$host->Nom.'/'.$this->DocumentRoot;
+		    $entry['homedirectory'] = '/home/'.$host->NomLDAP.'/'.$this->DocumentRoot;
         } else{
-            $entry['homedirectory'] = '/home/'.$host->Nom;
+            $entry['homedirectory'] = '/home/'.$host->NomLDAP;
         }
 		$entry['uid'] = $this->Identifiant;
 		if($this->Password != '*******') $entry['userpassword'] = "{MD5}".base64_encode(pack("H*",md5($this->Password)));

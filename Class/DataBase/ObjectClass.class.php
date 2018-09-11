@@ -38,6 +38,7 @@ class ObjectClass extends Root{
 	var $noRecursivity = 0;							//permet la création d'une clef recursive sans le comportement recursif
 	var $stopPage = 0;							//stoppe l'exploration des pages pour les clefs sous jacentes.
 	var $Operations = Array("add"=>true,"edit"=>true,"delete"=>true,"export"=>true);
+	var $OperationsDefined = false;
 	//DEFAULT
 	var $defaultView = false;
 	var $Default=0;
@@ -129,9 +130,17 @@ class ObjectClass extends Root{
 		$str = explode(',',$str);
 		if (sizeof($str))foreach ($str as $s){
 			$this->Operations[$s] = true;
+			$this->OperationsDefined = true;
 		}
 	}
 	public function getOperations(){
+		if (!$this->OperationsDefined){
+			//alors on ajoute aussi toutes les fonctions
+            if (is_array($this->Functions))foreach ($this->Functions as $nf=>$f){
+            	if (!array_key_exists($nf))
+            		$this->Operations[$nf]=true;
+            }
+		}
 		return $this->Operations;
 	}
     public function getInterfaces(){
@@ -139,7 +148,7 @@ class ObjectClass extends Root{
     }
 /*
 	// PGF 20180809
-	private function setAttributes($str) {
+/*	private function setAttributes($str) {
 		$str = explode(',',$str);
 		if(sizeof($str)) foreach($str as $s){
 			$this->Attributes[$s] = true;
@@ -147,8 +156,12 @@ class ObjectClass extends Root{
 	}
 	public function getAttributes() {
 		return $this->Attributes;
+<<<<<<< HEAD
 	}
  */
+=======
+	}*/
+>>>>>>> b62c6e095ea082737edbe92943329dcc76ced898
 	/**
 	 * __________________________________________________________________________________________________
 	 * 																							   PARSER

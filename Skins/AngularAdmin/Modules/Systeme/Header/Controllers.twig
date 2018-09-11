@@ -63,7 +63,7 @@
                 {{ parent.objectModule }}{{ parent.objectName }}Store.setGlobalFilter($scope.{{ parent.objectModule }}{{ parent.objectName }}Select.filter,'parentselect');
                 {{ parent.objectModule }}{{ parent.objectName }}lasttimeout = $timeout(function () {
                     {{ parent.objectModule }}{{ parent.objectName }}Store.getData(1,'parentselect');
-                },200);
+                },400);
             });
             //watcher currentPage
             $scope.$watch('{{ parent.objectModule }}{{ parent.objectName }}Select.currentPage', function() {
@@ -97,7 +97,7 @@
                 {{ child.objectModule }}{{ child.objectName }}Store.setGlobalFilter($scope.{{ child.objectModule }}{{ child.objectName }}Select.filter,'select');
                 {{ child.objectModule }}{{ child.objectName }}lasttimeout = $timeout(function () {
                     {{ child.objectModule }}{{ child.objectName }}Store.getData(1,'select');
-                },200);
+                },400);
             });
             //watcher currentPage
             $scope.$watch('{{ child.objectModule }}{{ child.objectName }}Select.currentPage', function() {
@@ -179,7 +179,7 @@
                 {{ c.identifier }}Store.setGlobalFilter($scope.{{ c.identifier }}.filter,'default');
                 lasttimeout = $timeout(function () {
                     {{ c.identifier }}Store.getData(1,'default');
-                },200);
+                },400);
             }
         });
 
@@ -196,7 +196,7 @@
                     delete $scope.{{ c.identifier }}.filters[o].operator;
                 }
             }
-             $scope.{{ c.identifier }}.filterQuery = '~';
+             $scope.{{ c.identifier }}.filterQuery = '';
             $scope.{{ c.identifier }}.filter='';
             {{ c.identifier }}Store.resetFilters('default');
             {{ c.identifier }}Store.getData(1,'default');
@@ -417,12 +417,13 @@
                     }
                     lasttimeoutParent{{ parent.objectModule }}{{ parent.objectName }}=$timeout(function () {
                         {{ parent.objectModule }}{{ parent.objectName }}Store.getData(1,'parentselect');
-                    },200);
+                    },400);
                 }
             });
         {% endfor %}
         //récupération des données du store.
         {{ c.identifier }}Store.getOneData($routeParams.id,'fiche',true).then(function (data){
+            console.log('{{ c.identifier }} >> Fiche >> receive obj definition',obj);
             $scope.obj = data;
 
             $scope.callFunction = function (obj,name,title,type){
@@ -577,7 +578,7 @@
                         }
                         lasttimeoutSelect{{ child.objectModule }}{{ child.objectName }} = $timeout(function () {
                             {{ child.objectModule }}{{ child.objectName }}Store.getData(1,'select');
-                        },200);
+                        },400);
                     }
                 });
 
@@ -615,7 +616,7 @@
                         }
                         lasttimeoutLink{{ child.objectModule }}{{ child.objectName }} = $timeout(function () {
                             {{ child.objectModule }}{{ child.objectName }}Store.getData(1,'link');
-                        },200);
+                        },400);
                     }
                 });
                 //PAGINATION LINK
@@ -626,8 +627,8 @@
                     }
                 });
                 $scope.$watch('{{ child.objectModule }}{{ child.objectName }}Link.pageLength', function() {
-                    console.log('pageLength',$scope.{{ child.objectModule }}{{ child.objectName }}Link.pageLength);
                     {{ child.objectModule }}{{ child.objectName }}Store.setPageLength($scope.{{ child.objectModule }}{{ child.objectName }}Link.pageLength,'link');
+                    $scope.{{ child.objectModule }}{{ child.objectName }}Link.currentPage = 1;
                 });
 
 
@@ -749,8 +750,9 @@
                 //RECHERCHE CHILDREN
                 var lasttimeout{{ child.objectModule }}{{ child.objectName }} = false;
                 $scope.$watch('{{ child.objectModule }}{{ child.objectName }}.filter', function() {
+                    //console.log('NJouvelle valeur de filter {{ child.objectModule }}{{ child.objectName }}',$scope.{{ child.objectModule }}{{ child.objectName }}.filter,'-----',{{ child.objectModule }}{{ child.objectName }}Store.getFilters('children',true));
                     //on lance la recherche depuis le store
-                    if ($scope.{{ child.objectModule }}{{ child.objectName }}.filter!={{ child.objectModule }}{{ child.objectName }}Store.getFilters('children',true)){
+                    if ($scope.{{ child.objectModule }}{{ child.objectName }}.filter!={{ child.objectModule }}{{ child.objectName }}Store.getFilters('children',true).global){
                         {{ child.objectModule }}{{ child.objectName }}Store.setFilters($scope.{{ child.objectModule }}{{ child.objectName }}.filter,'children');
                         if (lasttimeout{{ child.objectModule }}{{ child.objectName }}){
                             $timeout.cancel(lasttimeoutSelect{{ child.objectModule }}{{ child.objectName }});
@@ -758,7 +760,7 @@
                         }
                         lasttimeout{{ child.objectModule }}{{ child.objectName }}=$timeout(function () {
                             {{ child.objectModule }}{{ child.objectName }}Store.getData(1,'children');
-                        },200);
+                        },400);
                     }
                 });
 
@@ -771,6 +773,7 @@
                 $scope.$watch('{{ child.objectModule }}{{ child.objectName }}.pageLength', function() {
                     console.log('pageLength',$scope.{{ child.objectModule }}{{ child.objectName }}.pageLength);
                     {{ child.objectModule }}{{ child.objectName }}Store.setPageLength($scope.{{ child.objectModule }}{{ child.objectName }}.pageLength,'children');
+                $scope.{{ child.objectModule }}{{ child.objectName }}.currentPage = 1;
                 });
 
                 //ADD
@@ -918,7 +921,7 @@
                             }
                             lasttimeoutCParent{{ cParent.objectModule }}{{ cParent.objectName }}=$timeout(function () {
                                 {{ cParent.objectModule }}{{ cParent.objectName }}Store.getData(1,'cparentselect');
-                            },200);
+                            },400);
                         }
                     });
                 {% endfor %}
@@ -953,7 +956,7 @@
                             }
                             lasttimeoutCChild{{ cChild.objectModule }}{{ cChild.objectName }}=$timeout(function () {
                                 {{ cChild.objectModule }}{{ cChild.objectName }}Store.getData(1,'cchildselect');
-                            },200);
+                            },400);
                         }
                     });
                 {% endfor %}
@@ -1030,7 +1033,7 @@
                         }
                         lasttimeoutSystemePage=$timeout(function () {
                             SystemePageStore.getData(1,'SystemePage{{ c.identifier }}');
-                        },200);
+                        },400);
                     }
                 });
 

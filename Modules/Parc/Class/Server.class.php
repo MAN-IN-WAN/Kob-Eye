@@ -794,6 +794,7 @@ class Server extends genericClass {
 		$res = Server::ldapGet($ldapID);
 		$GLOBALS["Systeme"]->Log->log("DELETE HOST: $ldapID RECURSIVE: $recursive");
 		if ($recursive == false) {
+		    if (!isset($res[0]))return false;
 			$req = ldap_delete(Server::$_LDAP, $res[0]['dn']);
 		} else {
 			//searching for sub entries
@@ -874,42 +875,41 @@ class Server extends genericClass {
                     $search = ldap_search(Server::$_LDAP, 'ou=users,'.PARC_LDAP_BASE, 'cn=' . $KEObj->AccesUser, array('modifytimestamp', 'entryuuid'));
                     $res = ldap_get_entries(Server::$_LDAP, $search);
                     //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
-                    $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
-                    $KEObj->LdapID = $res[0]['entryuuid'][0];
-                    $KEObj->LdapDN = $res[0]['dn'];
                     if (!$res['count']) {
                         $e['exists'] = false;
                         return $e;
+                    }else{
+                        $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                        $KEObj->LdapID = $res[0]['entryuuid'][0];
+                        $KEObj->LdapDN = $res[0]['dn'];
                     }
                     break;
                 case "Contact":
                     $search = ldap_search(Server::$_LDAP, 'ou=users,'.PARC_LDAP_BASE, 'cn=' . $KEObj->AccesUser, array('modifytimestamp', 'entryuuid'));
                     $res = ldap_get_entries(Server::$_LDAP, $search);
                     //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
-                    $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
-                    $KEObj->LdapID = $res[0]['entryuuid'][0];
-                    $KEObj->LdapDN = $res[0]['dn'];
-                    if (!$res['count']) {
-                        $e['exists'] = false;
-                        return $e;
-                    }
-                    break;
-                default:
-                    //on recherche pour voir si il ya quand meêm l'entrée
-                    $search = ldap_search(Server::$_LDAP, $dn,$filter, array('modifytimestamp', 'entryuuid'));
-                    $res = ldap_get_entries(Server::$_LDAP, $search);
-                    //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
-                    //$KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
-                    $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
-                    $KEObj->LdapID = $res[0]['entryuuid'][0];
-                    $KEObj->LdapDN = $res[0]['dn'];
                     if (!$res['count']) {
                         $e['exists'] = false;
                         return $e;
                     }else{
-                        $e['exists'] = true;
+                        $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                        $KEObj->LdapID = $res[0]['entryuuid'][0];
+                        $KEObj->LdapDN = $res[0]['dn'];
                     }
-                break;
+                    break;
+                case "Domain":
+                    $search = ldap_search(Server::$_LDAP, 'ou=domains,'.PARC_LDAP_BASE, 'cn=' . $KEObj->Url, array('modifytimestamp', 'entryuuid'));
+                    $res = ldap_get_entries(Server::$_LDAP, $search);
+                    //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
+                    if (!$res['count']) {
+                        $e['exists'] = false;
+                        return $e;
+                    }else{
+                        $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                        $KEObj->LdapID = $res[0]['entryuuid'][0];
+                        $KEObj->LdapDN = $res[0]['dn'];
+                    }
+                    break;
             }
         }else {
 		    if ($KEServer){
@@ -919,6 +919,7 @@ class Server extends genericClass {
             }
             $res = ldap_get_entries(Server::$_LDAP, $search);
             if (!$res['count']) {
+                $e = array('exists' => false, 'OK' => true);
                 return $e;
             }
         }
@@ -1232,20 +1233,28 @@ class Server extends genericClass {
      * callLdap2Service
      * execute remotely ldap2service
      */
-    public function callLdap2Service($task = null) {
+    public function callLdap2Service($task = null,$retry=false) {
         $act = $this->createActivity('Execution de synchronisation','Exec');
         try {
             $out = $this->remoteExec('/usr/bin/ldap2service', $act);
         }catch (Exception $e){
             $act->addDetails($e->getMessage());
             //si erreur il faut vérfiier le fichier de date
-            $ct = $this->getFileContent('/etc/ldap2service/ldap2service.time');
-
             $act->Terminate(false);
-            return;
+            return false;
         }
+        //on vérifie quand mêmle la date
+        $ct = $this->getFileContent('/etc/ldap2service/ldap2service.time');
+        $ct = trim($ct);
+        if (empty($ct)&&!$retry){
+            //alors on pousse une valeur
+            $this->putFileContent('/etc/ldap2service/ldap2service.time',date('YmdHis',time()-60));
+            $this->callLdap2Service($task,true);
+        }
+
         $act->addDetails($out);
         $act->Terminate($out);
+        return true;
     }
     /**
      * clearCache
@@ -1273,7 +1282,7 @@ class Server extends genericClass {
     public function restartServiceNginx() {
         $act = $this->createActivity('Redemarrage du service Proxy (NGINX)','Exec');
         try {
-            $out = $this->remoteExec('systemctl restart nginx', $act);
+            $out = $this->remoteExec('/usr/sbin/nginx -s reload', $act);
         }catch (Exception $e){
             $act->addDetails($e->getMessage());
             $act->Terminate(false);
@@ -1320,7 +1329,46 @@ class Server extends genericClass {
                 return false;
             }
         }catch (Exception $e){
+            $this->addError(array('Message'=>'ERROR: '.$e->getMessage()));
             return false;
         }
     }
+    /**
+     * putFileContent
+     * Inject file content
+     */
+    public function putFileContent($path,$content){
+        try {
+            $out = $this->remoteExec('echo \''.$content.'\' > '.$path);
+            if (!empty($out)){
+                return $out;
+            }else{
+                return false;
+            }
+        }catch (Exception $e){
+            return false;
+        }
+    }
+    /**
+     * createRestartTask
+     * Creation de la tache de redemarrage des services
+     */
+    public static function createRestartProxyTask() {
+        $pxs = Sys::getData('Parc','Server/Proxy=1');
+        foreach ($pxs as $px){
+            //on vérifie d'abord qu'il n'y en a pas une à venir.
+            $nb = Sys::getCount('Parc','Tache/TaskModule=Parc&TaskObject=Server&TaskId='.$px->Id.'&TaskFunction=restartServiceNginx&Demarre=0');
+            if (!$nb) {
+                $task = genericClass::createInstance('Parc', 'Tache');
+                $task->Type = 'Fonction';
+                $task->Nom = 'Redemarrage des service du proxy ' . $px->Nom;
+                $task->TaskModule = 'Parc';
+                $task->TaskObject = 'Server';
+                $task->TaskId = $px->Id;
+                $task->TaskFunction = 'restartServiceNginx';
+                $task->Save();
+            }
+        }
+    }
+
 }

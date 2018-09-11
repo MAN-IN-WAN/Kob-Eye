@@ -335,7 +335,7 @@ class CompteMail extends genericClass {
 
 
         } catch (Exception $e){
-            $this->AddError(array('Message'=>'Erreur lors de la liaison avec le serveur de mail','Object'=>$e));
+            $this->AddError(array('Message'=>'Erreur lors l\'enregistrement : '.$e->getErrorCode(),'Object'=>''));
             //print_r($e);
             return false;
         }
@@ -426,7 +426,7 @@ class CompteMail extends genericClass {
             $this->IdMail = $res->get('id');
 
         } catch (Exception $e){
-            $this->AddError(array('Message'=>'Erreur lors de la liaison avec le serveur de mail','Object'=>$e));
+            $this->AddError(array('Message'=>'Erreur lors l\'enregistrement : '.$e->getErrorCode(),'Object'=>''));
            return false;
         }
 

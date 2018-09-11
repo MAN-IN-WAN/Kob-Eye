@@ -53,6 +53,10 @@ $vars["Interfaces"] = $vars["ObjectClass"]->getInterfaces();
 if (isset($vars["Interfaces"]['list']))
     $vars["Interfaces"] = $vars["Interfaces"]['list'];
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b62c6e095ea082737edbe92943329dcc76ced898
 $vars['formPath'] = 'Systeme/Utils/Form';
 
 if (!isset($info['ObjectType'])) {
@@ -77,5 +81,4 @@ foreach ($childs as $child){
         }
     }
 }
-
 ?>

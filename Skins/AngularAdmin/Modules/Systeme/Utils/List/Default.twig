@@ -229,7 +229,7 @@
                 <th>{{ interface.name }}</th>
             {% endfor %}
             {#<th width="220">Détails</th>#}
-            <th width="170">Actions</th>
+            <th width="345">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -322,11 +322,29 @@
                 <span class="input-group-btn">
                     {% if operation.edit %}<a  class="btn btn-warning" href="javascript: void(0);" ng-click="{{ identifier }}modify(item)">Modifier</a>{% endif %}
                     {% if operation.delete %}<a  class="btn btn-danger" href="javascript: void(0);" ng-click="{{ identifier }}delete(item)">Supprimer</a>{% endif %}
-                    {% for fu in functions %}{{ fu.Nom }}
-                        {% if attribute(operation,fu.Nom) %}
-                            <a  class="btn btn-primary"  href="javascript: void(0);" ng-click='{{ identifier }}callFunction(item,"{{fu.Nom}}","{{fu.title}}")'>{{ fu.title }}</a>
-                        {% endif %}
-                    {% endfor %}
+                    {% if functions|length >1 %}
+                    <div class="btn-group" uib-dropdown>
+                        <a id="split-button" type="button" class="btn btn-primary" href="#/{{ CurrentUrl }}/{[{ item.id }]}">Fonctions</a>
+                        <button type="button" class="btn btn-primary " uib-dropdown-toggle>
+                            <span class="caret"></span>
+                            <span class="sr-only">Split button!</span>
+                        </button>
+                        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
+                            <li class="divider"></li>
+                            {% for fu in functions %}
+                                {% if attribute(operation,fu.Nom) %}
+                                    <li ><a class="dropdown-item" href="javascript: void(0);" ng-click='{{ identifier }}callFunction(item,"{{fu.Nom}}","{{fu.title}}")'>{{ fu.title }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% else %}
+                        {% for fu in functions %}{{ fu.Nom }}
+                            {% if attribute(operation,fu.Nom) %}
+                                <a  class="btn btn-primary"  href="javascript: void(0);" ng-click='{{ identifier }}callFunction(item,"{{fu.Nom}}","{{fu.title}}")'>{{ fu.title }}</a>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
                 </span>
             {% else %}
             <!-- Split button -->
@@ -342,7 +360,9 @@
                         {% if operation.delete %}<li ><a class="dropdown-item" href="javascript: void(0);" ng-click="{{ identifier }}delete(item)">Supprimer</a></li>{% endif %}
                         <li class="divider"></li>
                         {% for fu in functions %}
-                            <li ><a class="dropdown-item" href="javascript: void(0);" ng-click='{{ identifier }}callFunction(item,"{{fu.Nom}}","{{fu.title}}")'>{{ fu.title }}</a></li>
+                            {% if attribute(operation,fu.Nom) %}
+                                <li ><a class="dropdown-item" href="javascript: void(0);" ng-click='{{ identifier }}callFunction(item,"{{fu.Nom}}","{{fu.title}}")'>{{ fu.title }}</a></li>
+                            {% endif %}
                         {% endfor %}
                     </ul>
                 {% else %}
