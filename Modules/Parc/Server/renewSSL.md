@@ -1,0 +1,2 @@
+[!Module::Parc::Renew()!]
+<div class="alert alert-success">Une tache a été créée afin de faire l'inventaire des certificats à mettre à jour. Rendez vous dans le menu Configuration / Taches machines</div>

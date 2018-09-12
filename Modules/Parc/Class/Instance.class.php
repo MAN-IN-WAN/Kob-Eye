@@ -368,8 +368,8 @@ class Instance extends genericClass{
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,$https);
         curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 20);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 20);
         $rt = curl_exec($ch);
         $info = curl_getinfo($ch);
         return $info;
