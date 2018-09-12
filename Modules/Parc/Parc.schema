@@ -211,6 +211,7 @@
 		<FUNCTION title="Vider le cache proxy">clearCache</FUNCTION>
 		<FUNCTION title="Lancer une vérification des instances">checkState</FUNCTION>
 		<FUNCTION title="Lancer une vérification des certificats">checkSslState</FUNCTION>
+		<FUNCTION title="Lancer une mise à jour des certificats">renewSSL</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="ServerProfile" driver="mysql" AccessPoint="1" Description="Profil Serveur" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Class="Modules/Parc/Class/ServerProfile.class.php">
 		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" description="Nom" listDescr="Nom">Nom</PROPERTIES>
@@ -253,7 +254,7 @@
 		<PROPERTIES category="Configuration" type="varchar" fiche="1" form="1" values="Letsencrypt,Manuel" description="SSL Methode">SslMethod</PROPERTIES>
 		<PROPERTIES category="Configuration" type="raw" fiche="1" form="1" description="SSL Certificat (chaine complete)" default="">SslCertificate</PROPERTIES>
 		<PROPERTIES category="Configuration" type="raw" fiche="1" form="1" description="SSL Clef " default="">SslCertificateKey</PROPERTIES>
-		<PROPERTIES category="Configuration" type="date" fiche="1" form="1" description="SSL Date d'expiration">SslExpiration</PROPERTIES>
+		<PROPERTIES category="Configuration" type="datetime" fiche="1" form="1" description="SSL Date d'expiration">SslExpiration</PROPERTIES>
 		<PROPERTIES category="Configuration" type="raw" fiche="1" form="1" description="Configuration apache spécifique">ApacheConfig</PROPERTIES>
 		<PROPERTIES category="Configuration" type="boolean" fiche="1" form="1" list="1" description="Activiation du cache de proxy">ProxyCache</PROPERTIES>
 		<PROPERTIES category="Protection" type="boolean" description="Protéger avec un mot de passe" listDescr="Protection" list="1" fiche="1" form="1">PasswordProtected</PROPERTIES>
@@ -303,7 +304,7 @@
         <PROPERTIES type="boolean" searchOrder="5" fiche="1" list="1" form="1"  special="reverse" description="Erreur">Erreur</PROPERTIES>
         <PROPERTIES type="raw" fiche="1" form="1">Contenu</PROPERTIES>
         <PROPERTIES type="html" fiche="1" form="1">Retour</PROPERTIES>
-		<PROPERTIES type="date" list="1" fiche="1" form="1" description="Date de déclenchement" listDescr="Date" default="[!TMS::Now!]">DateDebut</PROPERTIES>
+		<PROPERTIES type="datetime" list="1" fiche="1" form="1" description="Date de déclenchement" listDescr="Date" default="[!TMS::Now!]">DateDebut</PROPERTIES>
 		<PROPERTIES category="Fonction" type="varchar" description="Module"  searchOrder="2" fiche="5" form="1">TaskModule</PROPERTIES>
 		<PROPERTIES category="Fonction" type="varchar" description="ObjectClass"  searchOrder="3" fiche="6" form="1">TaskObject</PROPERTIES>
 		<PROPERTIES category="Fonction" type="int" description="Identifiant"  searchOrder="4" fiche="7" form="1">TaskId</PROPERTIES>
@@ -414,7 +415,7 @@
 		<FILTER name="Compte en POP" color="secondary">COS=MAIL_POP</FILTER>
 		<FUNCTION title="Se connecter au webmail">connectWebmail</FUNCTION>
 		<PROPERTIES type="varchar" unique="1" fiche="1" description="Id sur le serveur mail" >IdMail</PROPERTIES>
-        <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Adresse eMail" list="1" form="1" fiche="1" listDescr="Adresse">Adresse</PROPERTIES>
+        <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Adresse Email" list="1" form="1" fiche="1" listDescr="Adresse">Adresse</PROPERTIES>
 		<PROPERTIES type="password" description="Mot de passe"  form="1" fiche="1">Pass</PROPERTIES>
         <PROPERTIES type="varchar" searchOrder="2" obligatoire="1" values="NULL,MAIL_BUS,MAIL_POP,MAIL_PRO" default="MAIL_POP" description="Classe de service" list="1" form="1" fiche="1" listDescr="COS">COS</PROPERTIES>
 		<PROPERTIES type="int" subtype="sliderGo" description="Quota en Go" list="1" form="1" fiche="1" listDescr="Quota">Quota</PROPERTIES>
@@ -422,8 +423,8 @@
 		<PROPERTIES type="varchar" searchOrder="3" description="Status de l'adresse" values="active,maintenance,locked,closed,lockout,pending" default="active" list="1" form="1" fiche="1" listDescr="Etat">Status</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="4" description="Nom du contact" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" description="Prenom du contact" list="1" form="1" fiche="1" listDescr="Prénom">Prenom</PROPERTIES>
-		<FKEY card="1,1" data="Client,Id" fiche="1" form="1" description="Client" >ClientId</FKEY>
-		<FKEY card="1,1" data="Server,Id" fiche="1" form="1" filter="Mail=1" description="Serveur Mail" hasRole="PARC_TECHNICIEN">ServerId</FKEY>
+		<FKEY card="0,1" data="Client,Id" fiche="1" form="1" description="Client">ClientId</FKEY>
+		<FKEY card="0,1" data="Server,Id" fiche="1" form="1" filter="Mail=1" description="Serveur Mail">ServerId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="EmailDelegation" driver="mysql" Dico="1" Description="Délégation de comptes Mail" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/EmailDelegation.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" description="Titre" list="1" fiche="1" listDescr="Titre">Titre</PROPERTIES>

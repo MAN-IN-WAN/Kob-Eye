@@ -17,6 +17,12 @@ class CompteMail extends genericClass {
 		//if($this->_isVerified) {
 		//	parent::Save();
 		//}
+        //vérificatio du client
+        $client = $this->getKEClient();
+        if (!$client){
+            $this->addError(array('Message'=>'Compte client introuvable.'));
+            return false;
+        }
 
         if(!$synchro){
             parent::Save();
@@ -25,7 +31,8 @@ class CompteMail extends genericClass {
 
 		if((!isset($this->IdMail) || $this->IdMail=='') && $this->getKEServer()){
 		    if(!$this->createMail()){
-		        $this->Delete();
+		        //$this->Delete();
+                $this->addError(array('Message'=>'Impossible de créer le compte email...'));
                 return false;
             }
         } elseif ($this->getKEServer()){
@@ -34,7 +41,8 @@ class CompteMail extends genericClass {
             }
 
         } else{
-            $this->Delete();
+            $this->addError(array('Message'=>'Impossible de trouver le serveur.'));
+            //$this->Delete();
             return false;
         }
 
@@ -193,10 +201,15 @@ class CompteMail extends genericClass {
 	 */
 	public function getKEServer() {
 		if(!is_object($this->_KEServer)) {
-			$tab = $this->getParents('Server');
-			if(empty($tab)) return false;
-			else $this->_KEServer = $tab[0];
+			$this->_KEServer = Sys::getOneData('Parc','Server/CompteMail/'.$this->Id,0,1,'','','','',true);
 		}
+		if (!is_object($this->_KEServer)){
+		    //retroune le serveur de mail par defaut
+            $this->_KEServer = Sys::getOneData('Parc','Server/defaultMailServer=1',0,1,'','','','',true);
+        }
+        if (!is_object($this->_KEServer)){
+		    return false;
+        }
 		return $this->_KEServer;
 	}
 
@@ -209,10 +222,15 @@ class CompteMail extends genericClass {
 	 */
 	public function getKEClient() {
 		if(!is_object($this->_KEClient)) {
-			$tab = $this->getParents('Client');
-			if(empty($tab)) return false;
-			else $this->_KEClient = $tab[0];
+			$this->_KEClient = $this->getOneParent('Client');
 		}
+        if(!is_object($this->_KEClient)&&Sys::$User->hasRole('PARC_CLIENT')) {
+		    //donc i ls'agit d'un client connecté, on récupère l'objet client
+            $this->_KEClient = Sys::$User->getOneChild('Client');
+        }
+        if(!is_object($this->_KEClient)) {
+		    return false;
+        }
 		return $this->_KEClient;
 	}
 
@@ -242,7 +260,7 @@ class CompteMail extends genericClass {
      * @return	false
      */
     public function updateMail(){
-        $srv = $this->getOneParent('Server');
+        $srv = $this->getKEServer();
 
         if(!is_object($srv) || $srv->ObjectType != 'Server'){
             $this->AddError(array('Message'=>'Un compte mail doit être lié a un serveur.'));
@@ -350,8 +368,7 @@ class CompteMail extends genericClass {
      */
 	public function createMail(){
 
-	    $srv = $this->getOneParent('Server');
-
+	    $srv = $this->getKEServer();
 	    if(!is_object($srv) || $srv->ObjectType != 'Server'){
             $this->AddError(array('Message'=>'Un compte mail doit être lié a un serveur.'));
 	        return false;
@@ -435,7 +452,7 @@ class CompteMail extends genericClass {
     }
 
     public function deletegateAccess() {
-        $srv = $this->getOneParent('Server');
+        $srv = $this->getKEServer();
 
         if(!is_object($srv) || $srv->ObjectType != 'Server'){
             $this->AddError(array('Message'=>'Un compte mail doit être lié a un serveur.'));

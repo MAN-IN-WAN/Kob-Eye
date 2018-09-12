@@ -910,6 +910,19 @@ class Server extends genericClass {
                         $KEObj->LdapDN = $res[0]['dn'];
                     }
                     break;
+                case "Subdomain":
+                    $search = ldap_search(Server::$_LDAP, $dn, 'cn=' . $KEObj->Nom, array('modifytimestamp', 'entryuuid'));
+                    $res = ldap_get_entries(Server::$_LDAP, $search);
+                    //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
+                    if (!$res['count']) {
+                        $e['exists'] = false;
+                        return $e;
+                    }else{
+                        $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                        $KEObj->LdapID = $res[0]['entryuuid'][0];
+                        $KEObj->LdapDN = $res[0]['dn'];
+                    }
+                    break;
             }
         }else {
 		    if ($KEServer){
