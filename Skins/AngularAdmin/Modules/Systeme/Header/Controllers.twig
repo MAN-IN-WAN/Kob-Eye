@@ -423,7 +423,7 @@
         {% endfor %}
         //récupération des données du store.
         {{ c.identifier }}Store.getOneData($routeParams.id,'fiche',true).then(function (data){
-            console.log('{{ c.identifier }} >> Fiche >> receive obj definition',obj);
+            console.log('{{ c.identifier }} >> Fiche >> receive obj definition',data);
             $scope.obj = data;
 
             $scope.callFunction = function (obj,name,title,type){
