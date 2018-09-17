@@ -255,6 +255,7 @@
 		<PROPERTIES category="Configuration" type="raw" fiche="1" form="1" description="SSL Certificat (chaine complete)" default="">SslCertificate</PROPERTIES>
 		<PROPERTIES category="Configuration" type="raw" fiche="1" form="1" description="SSL Clef " default="">SslCertificateKey</PROPERTIES>
 		<PROPERTIES category="Configuration" type="datetime" fiche="1" form="1" description="SSL Date d'expiration">SslExpiration</PROPERTIES>
+		<PROPERTIES category="Configuration" type="varchar" fiche="1" form="1" description="Domaine principal">SslMainDomain</PROPERTIES>
 		<PROPERTIES category="Configuration" type="raw" fiche="1" form="1" description="Configuration apache spécifique">ApacheConfig</PROPERTIES>
 		<PROPERTIES category="Configuration" type="boolean" fiche="1" form="1" list="1" description="Activiation du cache de proxy">ProxyCache</PROPERTIES>
 		<PROPERTIES category="Protection" type="boolean" description="Protéger avec un mot de passe" listDescr="Protection" list="1" fiche="1" form="1">PasswordProtected</PROPERTIES>
@@ -433,6 +434,11 @@
 		<FKEY card="0,1" data="Client,Id" fiche="1" form="1" description="Client">ClientId</FKEY>
 		<FKEY card="0,1" data="Server,Id" fiche="1" form="1" filter="Mail=1" description="Serveur Mail">ServerId</FKEY>
 	</OBJECTCLASS>
+	<OBJECTCLASS title="EmailAlias" driver="mysql" Dico="1" Description="Alias de comptes Mail" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/EmailAlias.class.php">
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Adresse alias" list="1" form="1" fiche="1" listDescr="Adresse alias">TargetMail</PROPERTIES>
+		<PROPERTIES type="boolean" description="Status" list="1" fiche="1" listDescr="Status">Status</PROPERTIES>
+		<FKEY card="1,1" data="CompteMail,Id" fiche="1" description="CompteMail" >CompteMailId</FKEY>
+	</OBJECTCLASS>
 	<OBJECTCLASS title="EmailDelegation" driver="mysql" Dico="1" Description="Délégation de comptes Mail" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/EmailDelegation.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" description="Titre" list="1" fiche="1" listDescr="Titre">Titre</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Mail cible" list="1" form="1" fiche="1" listDescr="Mail cible">TargetMail</PROPERTIES>
@@ -554,7 +560,7 @@
 		<FILTER name="Les incidents reconnus" color="success" ><![CDATA[Solved=0&Acknowledge=1]]></FILTER>
 		<PROPERTIES type="varchar" searchOrder="1" list="1" form="1" fiche="1" listDescr="Titre">Titre</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" list="1" form="1" fiche="1" listDescr="Code">Code</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="2" list="1" form="1" fiche="1" listDescr="Idneitifant">Identifiant</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" list="1" form="1" fiche="1" listDescr="Identifiant">Identifiant</PROPERTIES>
 		<PROPERTIES type="boolean" form="1" fiche="1" list="1" description="Résolu" listDescr="Résolu">Solved</PROPERTIES>
 		<PROPERTIES type="boolean" form="1" fiche="1" list="1" description="Reconnu" listDescr="Reconnu">Acknowledge</PROPERTIES>
 		<PROPERTIES type="int" form="1" fiche="1" list="1" description="Sévérité" listDescr="Sévérité" default="1" values="1::Information,2::Attention,3::Critique,4::Fatal">Severity</PROPERTIES>

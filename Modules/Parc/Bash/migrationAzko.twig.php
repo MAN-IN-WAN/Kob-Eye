@@ -2,14 +2,8 @@
 //décoration
 $bc = new BashColors();
 
-echo $bc->getColoredString("DUMP AZKOCMS_COMMON\n",'green');
-$cmd = 'mysqldump -h 192.168.100.2 -u root -p125iAS34470 azkocms_common |  mysql -h 192.168.200.5 -u root -pwCENJbD9DUz76Ty4 azkocms_common';
-exec($cmd);
-die();
 //connexion ancien serveur mysql
-$db = new PDO('mysql:host=192.168.100.2;dbname=azkocms_common', 'root', '125iAS34470', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$dbke = new PDO('mysql:host=192.168.100.2;dbname=parc', 'root', '125iAS34470', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+$dbke = new PDO('mysql:host=192.168.100.50;dbname=parc', 'root', 'zH34Y6u5', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 $dbke->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $dbnp = new PDO('mysql:host=192.168.200.5;dbname=azkocms_common', 'root', 'wCENJbD9DUz76Ty4', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 $dbnp->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
