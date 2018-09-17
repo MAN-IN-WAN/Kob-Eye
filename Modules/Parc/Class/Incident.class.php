@@ -11,7 +11,7 @@ class Incident extends genericClass {
      */
     public static function createIncident($title,$detail,$parent,$code,$identifiant,$severity=1,$solved = false){
         //test si exsite alors on modifie
-        $incident = $parent->getChildren('Incident/Code='.$code.'&identifiant='.$identifiant);
+        $incident = $parent->getChildren('Incident/Code='.$code.'&Identifiant='.$identifiant);
         if (!isset($incident[0])) {
             if ($solved) return true;
             //si existe pas, alors le crée

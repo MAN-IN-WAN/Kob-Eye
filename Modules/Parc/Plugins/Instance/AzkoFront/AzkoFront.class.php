@@ -304,7 +304,7 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
                 }catch (Exception $e){
                     $act->addDetails('ERREUR DE MONTAGE : '.$e->getMessage());
                 }
-            }else $incident = Incident::createIncident('Les dossiers médias et skins de l\'instance '.$this->_obj->Nom.' ne sont pas montés.','Le code de retour est ',$this->_obj,'FOLDER_MOUNT',$this->_obj->NomInstance,3,true);
+            }else $incident = Incident::createIncident('Les dossiers médias et skins de l\'instance '.$this->_obj->Nom.' ne sont pas montés.','Le code de retour est ',$this->_obj,'FOLDER_MOUNT',$this->_obj->InstanceNom,3,true);
 
 
             $GLOBALS['Chrono']->stop('AZKOFRONT: checkState check mount');

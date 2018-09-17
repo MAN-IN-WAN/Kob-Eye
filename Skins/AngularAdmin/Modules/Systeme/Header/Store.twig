@@ -313,7 +313,7 @@
                             }
                         }
                     }
-                    if (idStore==-1){
+                    {#if (idStore==-1){
                         //recherche dans tous les contextes
                         for (var c in contexts){
                             for (var i in {{ st.identifier }}Store[contexts[c]]){
@@ -333,7 +333,7 @@
                                 }
                             }
                         }
-                    }
+                    }#}
                 }
                 //si store pas chargé ou introuvable
                 $http.get('/{{ st.module }}/{{ st.objecttype }}/'+id+'/getOneData.json')

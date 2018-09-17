@@ -14,7 +14,7 @@ class DeviceConnexion extends genericClass{
 
 
     private function checkGuacamoleConnection(){
-        $guac_serv = Sys::getOneData('Parc','Server/Guacamole=1');
+        $guac_serv = Sys::getOneData('Parc','Server/Guacamole=1',0,1,null,null,null,null,true);
 
         $dbGuac = new PDO('mysql:host='.$guac_serv->InternalIP.';dbname=guacamole', $guac_serv->guacAdminUser, $guac_serv->guacAdminPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
         $dbGuac->query("SET AUTOCOMMIT=1");
@@ -340,7 +340,7 @@ class DeviceConnexion extends genericClass{
     }
 
     private function removeGuacamoleConnection(){
-        $guac_serv = Sys::getOneData('Parc','Server/Guacamole=1');
+        $guac_serv = Sys::getOneData('Parc','Server/Guacamole=1',0,1,null,null,null,null,true);
 
         $dbGuac = new PDO('mysql:host='.$guac_serv->InternalIP.';dbname=guacamole', $guac_serv->guacAdminUser, $guac_serv->guacAdminPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 

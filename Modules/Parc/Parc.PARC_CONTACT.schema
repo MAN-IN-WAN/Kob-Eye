@@ -1,0 +1,16 @@
+<SCHEMA>
+    <OBJECTCLASS title="DeviceConnexion" driver="mysql" Description="Connexion(s) vers le Périphérique" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/DeviceConnexion.class.php" Operations="">
+        <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom du périphérique">Nom</PROPERTIES>
+        <PROPERTIES type="varchar" searchOrder="2" obligatoire="1"  list="1" fiche="1" form="1" description="Type de connexion" listDescr="Type" values="RDP,VNC,SSH,Telnet,Https">Type</PROPERTIES>
+        <PROPERTIES type="int" obligatoire="0" fiche="1" form="1" description="Port redirection Local">PortRedirectLocal</PROPERTIES>
+        <PROPERTIES type="int" obligatoire="0"  description="Port redirection Distant">PortRedirectDistant</PROPERTIES>
+        <PROPERTIES type="varchar" obligatoire="0" description="Ip redirection Distant">IpRedirectDistant</PROPERTIES>
+        <PROPERTIES type="varchar" description="Login" listDescr="Login">Login</PROPERTIES>
+        <PROPERTIES type="varchar" description="Mot de passe" listDescr="Mot de passe">Password</PROPERTIES>
+        <PROPERTIES type="varchar" description="Clef Ssh">SshKey</PROPERTIES>
+        <PROPERTIES type="extlink" list="1" fiche="1" description="Url guacamole" listDescr="Lien Direct">GuacamoleUrl</PROPERTIES>
+        <PROPERTIES type="varchar" description="Id guacamole">GuacamoleId</PROPERTIES>
+        <FKEY card="1,1" data="Device,Id" fiche="1"  parentDescription="Périphérique" link="1">DeviceId</FKEY>
+        <FKEY card="0,n" data="Contact,Id" parentDescription="Contact/Utilisateur" form="1" link="1">ContactId</FKEY>
+    </OBJECTCLASS>
+</SCHEMA>

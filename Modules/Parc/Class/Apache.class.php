@@ -124,10 +124,10 @@ class Apache extends genericClass {
                     if (!sizeof($dns->answer[sizeof($dns->answer)-1])){
                         $err = true;
                         $this->addError(array("Message"=>"Le domaine : '".$dns->question[sizeof($dns->question)-1]->qname."' ne pointe pas sur l'adresse ip ".$serv->IP." (actuellement il n'est pas configuré)"));
-                    }elseif (trim($dns->answer[sizeof($dns->answer)-1]->address)!=trim($serv->IP)){
+                    }/*elseif (trim($dns->answer[sizeof($dns->answer)-1]->address)!=trim($serv->IP)){
                         $err = true;
                         $this->addError(array("Message"=>"Le domaine : '".$dns->question[sizeof($dns->question)-1]->qname."' ne pointe pas sur l'adresse ip ".$serv->IP." (actuellement il pointe vers ".$dns->answer[sizeof($dns->answer)-1]->address."), ou sa propagation se terminera dans ".$dns->answer[sizeof($dns->answer)-1]->ttl." secondes"));
-                    }
+                    }*/
                 }
                 if ($err)return false;
 
@@ -149,7 +149,7 @@ class Apache extends genericClass {
                 $task->addParent($instance);
                 //recherch de la prochaine d'execution pour eviter les collision de letsencrypt
                 $nb = Sys::getCount('Parc','Tache/DateDebut>'.time());
-                $task->DateDebut = time()+(60*$nb);
+                $task->DateDebut = time()+(60*($nb+1));
                 $task->Save();
                 parent::Save();
 			break;
@@ -572,7 +572,7 @@ class Apache extends genericClass {
      * Execution de letsencrypt sur le serveur
      */
     public function executeLetsencrypt($task) {
-        $first='';
+        $first=$this->SslMainDomain;
         //récupératio ndu serveur
         $srv = $task->getOneParent('Server');
 
@@ -580,32 +580,34 @@ class Apache extends genericClass {
         $act = $task->createActivity('Vérification du dépot letsencrypt');
         $err = false;
         $cert = $srv->getFileContent("/etc/letsencrypt/live/".$first."/fullchain.pem");
-        $certinfo = openssl_x509_parse($cert);
-        //on vérifie qu'on a la bonne date d'expiration et qu'il est différent de celui actif
-        if ($certinfo['validTo_time_t']>time()+(86400*30)&&$this->SslCertificate!=$cert){
-            //alors on utilise ce certificat
-            $act = $task->createActivity('Récupération des certificats');
-            //récupération des certificats
-            $this->SslCertificate = $srv->getFileContent("/etc/letsencrypt/live/".$first."/fullchain.pem");
-            $act->addDetails($this->SslCertificate);
-            $this->SslCertificateKey = $srv->getFileContent("/etc/letsencrypt/live/".$first."/privkey.pem");
-            $act->addDetails($this->SslCertificateKey);
-            $this->SslExpiration = $certinfo['validTo_time_t'];
-            $act->addDetails('Date d\'Expiration: '.$this->SslExpiration);
-            $act->Terminate(true);
-            $this->Save();
-            return true;
-            //on compare la liste des domaines à certifier et les domaines dans le certificat
-            /*$domains=explode(' ',$this->getDomains());
-            $certdomains = array();
-            preg_match_all('#DNS:([^\ ,]*)#',$certinfo['extensions']['subjectAltName'],$othersdomains);
-            $certdomains=array_merge($certdomains,$othersdomains[1]);
-            foreach ($domains as $d){
-                if (!in_array($d,$certdomains)){
-                    $this->addError(array('Message'=>'Le domaine '.$d.' n\' est pas compris dans le certificat en production. Il serait nécessaire de le regénérer.'));
-                }
-            }*/
+        if (!empty($cert)) {
+            $certinfo = openssl_x509_parse($cert);
+            //on vérifie qu'on a la bonne date d'expiration et qu'il est différent de celui actif
+            if ($certinfo['validTo_time_t'] > time() + (86400 * 30) && $this->SslCertificate != $cert) {
+                //alors on utilise ce certificat
+                $act = $task->createActivity('Récupération des certificats');
+                //récupération des certificats
+                $this->SslCertificate = $srv->getFileContent("/etc/letsencrypt/live/" . $first . "/fullchain.pem");
+                $act->addDetails($this->SslCertificate);
+                $this->SslCertificateKey = $srv->getFileContent("/etc/letsencrypt/live/" . $first . "/privkey.pem");
+                $act->addDetails($this->SslCertificateKey);
+                $this->SslExpiration = $certinfo['validTo_time_t'];
+                $act->addDetails('Date d\'Expiration: ' . $this->SslExpiration);
+                $act->Terminate(true);
+                $this->Save();
+                return true;
+                //on compare la liste des domaines à certifier et les domaines dans le certificat
+                /*$domains=explode(' ',$this->getDomains());
+                $certdomains = array();
+                preg_match_all('#DNS:([^\ ,]*)#',$certinfo['extensions']['subjectAltName'],$othersdomains);
+                $certdomains=array_merge($certdomains,$othersdomains[1]);
+                foreach ($domains as $d){
+                    if (!in_array($d,$certdomains)){
+                        $this->addError(array('Message'=>'Le domaine '.$d.' n\' est pas compris dans le certificat en production. Il serait nécessaire de le regénérer.'));
+                    }
+                }*/
 
+            }
         }
 
         //execution de la commande
@@ -638,6 +640,13 @@ class Apache extends genericClass {
             return false;
         }
         $act->addDetails($out);
+        if (preg_match('#/etc/letsencrypt/live/(.*?)/fullchain.pem#',$out,$path)) {
+            //analyse du retour et récupération du path
+            $this->SslMainDomain = $path[1];
+            parent::Save();
+            $act->addDetails('Définition du domaine par défaut du certificat: '.$this->SslMainDomain);
+        }
+
         $act = $task->createActivity('Récupération des certificats');
         //récupération des certificats
         $this->SslCertificate = $srv->getFileContent("/etc/letsencrypt/live/".$first."/fullchain.pem");
