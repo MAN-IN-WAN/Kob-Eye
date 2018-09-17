@@ -307,6 +307,101 @@ class Server extends genericClass {
          return $report;
     }
 
+    public function getDiffs($dryrun=false) {
+        //TODO: Vérifier que les comptes admin sont bien actifs avant !!!
+        $report = '';
+
+        if(!isset($this->IP) || $this->IP =='' || !isset($this->mailAdminPort) || $this->mailAdminPort == '' || !isset($this->mailAdminUser) || $this->mailAdminUser == '' || !isset($this->mailAdminPassword) || $this->mailAdminPassword == ''){
+            $report = 'Veuillez vérifier la configuration du serveur. En l\'état il nous est impossible de nous connecter a l\'administration du serveur de mail';
+            return $report;
+        }
+
+        // Create a new Admin class and authenticate
+        $zimbra = new \Zimbra\ZCS\Admin($this->IP, $this->mailAdminPort);
+        $zimbra->auth($this->mailAdminUser, $this->mailAdminPassword);
+
+        try{
+            $domaines = $zimbra->getDomains();
+
+
+
+            foreach($domaines as $domain){
+                //echo '<pre>';
+                //print_r($domain);
+                //echo '</pre>';
+
+                $dname = $domain->get('name');
+                //print_r($dname.'<br/>');
+                $kDom = Sys::getOneData('Parc','Domain/Url='.$dname);
+                if(!is_object($kDom)){
+                    $report .= '<b>Domaine</b> "'.$dname.'" absent du Parc. Les adresses appartenant à ce domaine seront ignorées car impossible à relier à un client.<br>'.PHP_EOL;
+                    continue;
+                }
+                $kCli = $kDom->getOneParent('Client');
+                if(!is_object($kCli)){
+                    $report .= '<b>Client</b> introuvable pour le domaine "'.$dname.'". Les adresses appartenant à ce domaine seront ignorées car impossible à relier à un client.<br>'.PHP_EOL;
+                    continue;
+                }
+
+                $report .= '<b>Domaine</b> "'.$dname.': .<br>'.PHP_EOL;
+
+                $diffList = $zimbra->getDistributionLists($dname);
+                foreach($diffList as $diff){
+
+
+                    $diffId = $diff->get('id');
+                    $diffName = $diff->get('name');
+
+                    $o = Sys::getOneData('Parc','ListeDiffusion/IdDiffusion='.$diffId);
+                    if(!is_object($o)){
+                        $o = genericClass::createInstance('Parc','ListeDiffusion');
+                        $o->IdDiffusion = $diffId;
+                        $report .= '<b>Nouvelle liste de diffusion trouvée</b> : '.$diffName.'.<br>'.PHP_EOL;
+                    }
+
+                    $o->Nom = $diffName;
+
+                    $o->addParent($this);
+                    $o->addParent($kCli);
+
+                    if(!$dryrun){
+                        $o->Save(false);
+
+                        foreach($diff->getMembers() as $memb) {
+                            $report .= '------- synchronisation du membre : "'.$memb.': .<br>'.PHP_EOL;
+                            try {
+                                $temp = $zimbra->getAccount($dname, 'name', $memb);
+                                $id = $temp->get('id');
+                                $compte = Sys::getOneData('Parc', 'CompteMail/IdMail=' . $id);
+                                if ($compte) {
+                                    $compte->addParent($o);
+                                    $compte->Save(false);
+                                } else{
+                                    $report .= 'ERREUR :  Compte introuvable sur le proxy ( Tentez un synchronisation des comptes mails et réessayez. )'.PHP_EOL;
+                                }
+                            }catch (Exception $e){
+                                $report .= 'ERREUR :  Compte introuvable sur le serveur de mail ( Probablement une liste de diffusion. )'.PHP_EOL;
+                                //$report .= print_r ($e,true);
+                            }
+                        }
+                    }
+
+                    if(count($o->Error)){
+                        $report .= '************************* ERRORS ********************************';
+                        $report .= print_r($o->Error, true);
+                        $report .= '*****************************************************************';
+                    }
+
+
+                }
+            }
+        } catch (Exception $e){
+            $report .= print_r ($e,true);
+        }
+
+        return $report;
+    }
+
 
     /*******************************************************************************************************************************
 

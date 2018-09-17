@@ -4,11 +4,12 @@ class CompteMail extends genericClass {
 	//var $_isVerified = false;
 	var $_KEServer = false;
 	var $_KEClient = false;
+	private $dirtyList = false;
 
 	/**
 	 * Force la vérification avant enregistrement
 	 * @param	boolean	Enregistrer aussi sur LDAP
-	 * @return	void
+	 * @return	boolean
 	 */
 	public function Save( $synchro = true ) {
 		// Forcer la vérification
@@ -29,6 +30,8 @@ class CompteMail extends genericClass {
             return true;
         }
 
+
+
 		if((!isset($this->IdMail) || $this->IdMail=='') && $this->getKEServer()){
 		    if(!$this->createMail()){
 		        //$this->Delete();
@@ -47,6 +50,16 @@ class CompteMail extends genericClass {
         }
 
         parent::Save();
+
+        if($this->dirtyList){
+            $pars = $this->getParents('ListeDiffiusion');
+            foreach($pars as $par){
+                $par->checkListMember($this);
+            }
+
+            $this->dirtyList = false;
+        }
+
         return true;
 	}
 
@@ -287,7 +300,7 @@ class CompteMail extends genericClass {
 
         //Check que le compte existe déjà
         try{
-            $temp = $zimbra->getAccount('abtel.fr', 'id', $this->IdMail);
+            $temp = $zimbra->getAccount($dom, 'id', $this->IdMail);
             $actuName = $temp->get('name');
         } catch (Exception $e) {
             $this->AddError(array('Message' => 'Erreur, ce compte mail n\'existe plus', 'Object' => $e));
@@ -466,7 +479,54 @@ class CompteMail extends genericClass {
         //$expires = 0;
         //$preauth = hash_hmac('sha1',$this->Adresse.'|name|0|'.$timestamp,$token);
         //$url = 'https://'.$srv->DNSNom.'/service/preauth?account='.$this->Adresse.'&by=name&timestamp='.$timestamp.'&expires='.$expires.'&preauth='.$preauth;
-        $url = 'https://'.$srv->DNSNom.'/mail?auth=qp&zauthtoken='.$datoken;
+        //$url = 'https://'.$srv->DNSNom.'/mail?auth=qp&zauthtoken='.$datoken;
+        $url = 'https://mx1.abtel.link/mail?auth=qp&zauthtoken='.$datoken;
         return $url;
+    }
+
+
+
+
+    /**
+     * addParent
+     * Add a parent link
+     * @param String Object Type name
+     * @param Int Id of the parent object
+     */
+    #DEPRECATED
+    public function addParent($Q = "", $SpeFKey = "") {
+        $ret = parent::addParent($Q, $SpeFKey );
+        if($ret) {
+            $NbQ = sizeof($ret) - 1;
+            if ($ret[$NbQ - 1] == "ListDiffusion")
+                $this->dirtyList = true;
+        }
+    }
+
+    /**
+     * delParent
+     * Delete a parent link
+     * @param String Object Type name
+     * @param Int Id of the parent object
+     */
+    #DEPRECATED
+    public function delParent($Q = "", $SpeFKey = "") {
+        $ret = parent::delParent($Q , $SpeFKey );
+        if($ret) {
+            $NbQ = sizeof($ret) - 1;
+            if ($ret[$NbQ - 1] == "ListDiffusion")
+                $this->dirtyList = true;
+        }
+    }
+
+    /**
+     * resetParents
+     * delete all parent link from an object Type
+     * @param String Object Type name
+     */
+    public function resetParents($Class,$SpeFKey = "") {
+        $ret = parent::resetParents($Class , $SpeFKey );
+        if($ret == "ListDiffusion")
+            $this->dirtyList = true;
     }
 }

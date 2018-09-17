@@ -608,6 +608,7 @@
                 var lasttimeoutLink{{ child.objectModule }}{{ child.objectName }} = false;
                 $scope.$watch('{{ child.objectModule }}{{ child.objectName }}Link.filter', function() {
                     //on lance la recherche depuis le store
+                    console.log('linksearch : '+$scope.{{ child.objectModule }}{{ child.objectName }}Link.filter);
                     if ($scope.{{ child.objectModule }}{{ child.objectName }}Link.filter!={{ child.objectModule }}{{ child.objectName }}Store.getFilters('link',true).global){
                         {{ child.objectModule }}{{ child.objectName }}Store.setFilters($scope.{{ child.objectModule }}{{ child.objectName }}Link.filter,'link');
                         if (lasttimeoutLink{{ child.objectModule }}{{ child.objectName }}){

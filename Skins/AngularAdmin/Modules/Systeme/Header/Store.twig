@@ -191,6 +191,8 @@
         * Définition du filtre
         **/
         function setFilters(filter,context='default'){
+
+    console.log(filter);
             if (filters[context]==undefined) initContext(context);
             if (filter==filters[context]) return;
             var tmp = {
@@ -226,6 +228,7 @@
         * Creation de la chaine de recherche
         */
         function getQueryFilter(context = 'default') {
+            console.log(filters[context]);
             if (!filters[context]) return '';
             var query = '';
             if (filters[context].global)
@@ -313,7 +316,7 @@
                             }
                         }
                     }
-                    if (idStore==-1){
+                    {#if (idStore==-1){
                         //recherche dans tous les contextes
                         for (var c in contexts){
                             for (var i in {{ st.identifier }}Store[contexts[c]]){
@@ -333,7 +336,7 @@
                                 }
                             }
                         }
-                    }
+                    }#}
                 }
                 //si store pas chargé ou introuvable
                 $http.get('/{{ st.module }}/{{ st.objecttype }}/'+id+'/getOneData.json')
@@ -518,7 +521,7 @@
         * Load more data base on page
         */
         function getData(page,context='default') {
-            if (context=='link') console.trace();
+            //if (context=='link') console.trace();
             var tmpquery = getQuery(context);
             var tmpfilters = getQueryFilter(context);
             //create new context
