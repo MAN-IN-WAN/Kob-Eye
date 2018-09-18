@@ -48,7 +48,9 @@ class CNAME extends genericClass {
         $as = $pa->getChildren('Subdomain');
         $aaas = $pa->getChildren('AAA');
         foreach ($as as $a){
-            $pref = explode(':',$a->Url)[1];
+            $pref = explode(':',$a->Url);
+            if (isset($pref[1]))$pref = $pref[1];
+            else $pref = $pref[0];
             if($pref == $this->Dnsdomainname){
                 $this->addError(array('Message' => "Une entrée A existe déjà pour ce prefixe.", 'Prop' => ''));
                 $this->_isVerified = false;

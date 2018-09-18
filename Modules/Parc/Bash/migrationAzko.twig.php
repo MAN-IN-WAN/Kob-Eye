@@ -133,24 +133,22 @@ $result = explode(PHP_EOL,$csv);
 $i=0;
 foreach ($result as $org){
     $i++;
+    if ($i==2) die();
     $fields = explode(';',$org);
     $fields[3] = explode('+',$fields[3]);
     list($host,$client,$bdds) = $fields;
 
     //test existence
     $nb = Sys::getOneData('Parc','Instance/InstanceNom=instance-'.$host);
-    if ($nb) continue;
     echo $bc->getColoredString("-> [$i] ".$host."\n",'green');
 
     if (!$nb){
         echo $bc->getColoredString("    -> CREATING INSTANCE ".$org['org_id'], 'red');
         //création de l'instance
         $inst = genericClass::createInstance('Parc', 'Instance');
-        $inst->Nom = $org["org_nom"];
-        $inst->InstanceNom = 'azkocms_org_' . $org['org_id'];
-        $inst->ServerAlias = $doms;
+        $inst->Nom = $host;
+        $inst->InstanceNom = 'instance-' . $host;
         $inst->Type = 'prod';
-        $inst->Password = $org['org_db_pass'];
         $inst->Actif = true;
         //$inst->Ssl = ($ssl)?true:false;
         $inst->PHPVersion = '7.0.29';
@@ -163,40 +161,70 @@ foreach ($result as $org){
         echo $bc->getColoredString(" OK \n", 'green');
     }else $inst = $nb;
 
+    //récupération de l'host
+    $host = $inst->getOneParent('Host');
 
     //récupération des vhosts et certifs
-    $query = "SELECT * FROM `parc-Parc-Host` as hs LEFT JOIN `parc-Parc-Apache` as ap ON hs.Id = ap.HostId WHERE ap.Enabled = 1;";
+    $query = "SELECT * FROM `parc-Parc-Host` as hs LEFT JOIN `parc-Parc-Apache` as ap ON hs.Id = ap.HostId WHERE ap.Enabled = 1 and hs.NomLDAP='".$host."';";
     $q = $db->query($query);
     $aps = $q->fetchALL(PDO::FETCH_ASSOC);
-    foreach ($aps as $dom){
-        //TEST SSL ORGA
-        if ($ssl) {
-            //recuperation du vhost
-            $host = $inst->getOneParent('Host');
-            $apache = Sys::getOneData('Parc','Host/'.$host->Id.'/Apache',0,1,'ASC','Id');
-            //injection du certif
-            $apache->Ssl = true;
-            $apache->SslCertificate = $cert;
-            $apache->SslCertificateKey = $key;
-            $apache->SslExpiration = $expire;
-            $apache->SslMethod = 'Letsencrypt';
-            $apache->Save(false,true);
-            $inst->EnableSsl = true;
-            echo $bc->getColoredString("    -> SSL ENABLED ". "\n", 'green');
+    foreach ($aps as $ap){
+        //recuperation du vhost
+        echo $bc->getColoredString("    -> CREATION VHOST ".$ap['ApacheServerName']."\n", 'green');
+        $apache = Sys::getOneData('Parc','Host/'.$host->Id.'/Apache/ApacheServerName='.$ap['ApacheServerName'],0,1,'ASC','Id');
+        if (!$apache){
+            $apache = genericClass::createInstance('Parc','Apache');
+            $apache->initFromArray($ap);
+            $apache->addParent($host);
+            unset($apache->Id);
+            unset($apache->LdapID);
+            unset($apache->LdapDN);
+            unset($apache->LdapTms);
         }
     }
 
+    //récupération des accès ftps
+    $query = "SELECT * FROM `parc-Parc-Host` as hs LEFT JOIN `parc-Parc-Ftpuser` as fu ON hs.Id = fu.HostId WHERE hs.NomLDAP='".$host."';";
+    $q = $db->query($query);
+    $ftps = $q->fetchALL(PDO::FETCH_ASSOC);
+    foreach ($ftps as $ftp){
+        //recuperation du vhost
+        echo $bc->getColoredString("    -> CREATION FTPUSER ".$ftp['Identifiant']."\n", 'green');
+        $ftpuser = Sys::getOneData('Parc','Host/'.$host->Id.'/Ftpuser/Identifiant='.$ftp['Identifiant'],0,1,'ASC','Id');
+        if (!$ftpuser){
+            $ftpuser = genericClass::createInstance('Parc','Ftpuser');
+            $ftpuser->initFromArray($ftp);
+            $ftpuser->addParent($host);
+            unset($ftpuser->Id);
+            unset($ftpuser->LdapID);
+            unset($ftpuser->LdapDN);
+            unset($ftpuser->LdapTms);
+        }
+    }
 
-    if ($inst->tmsEdit<time()-86400) {
-        echo $bc->getColoredString("  -> SQL DUMP ... ", 'red');
+    //creation des bdds
+    foreach ($bdds as $bdd){
+        echo $bc->getColoredString("    -> BDD ".$bdd."\n", 'green');
+        $base = Sys::getOneData('Parc','Host/'.$host->Id.'/Bdd/Nom='.$bdd,0,1,'ASC','Id');
+        if (!$base){
+            $base = genericClass::createInstance('Parc','Bdd');
+            $base->Nom = $bdd;
+            $base->addParent($host);
+            $base->Save();
+        }
+        echo $bc->getColoredString("      -> SQL DUMP ... ", 'red');
         //importation de la base de donnée
-        $cmd = 'mysqldump -h 192.168.100.2 -u root -p125iAS34470 azkocms_org_' . $org['org_id'] . ' |  mysql -h 192.168.200.5 -u root -pwCENJbD9DUz76Ty4 azkocms_org_' . $org['org_id'];
+        $cmd = 'mysqldump -h 192.168.100.50 -u root -pzH34Y6u5 ' . $bdd . ' | sed -e "s/MyISAM/InnoDB/i"  |  mysql -h 192.168.160.4 -u root -pzH34Y6u5 ' . $bdd;
         exec($cmd);
         echo $bc->getColoredString(" OK " . "\n", 'green');
     }
 
-    /*if (!$inst->Save()) {
-        print_r($inst->Error);
-        die('Erreur de création instance');
-    }*/
+    //récupération du serveur
+    $srv = $inst->getOneParent('Server');
+    //excution rsync
+    echo $bc->getColoredString("  -> RSYNC FICHIER ... ", 'red');
+    //importation de la base de donnée
+    $cmd = 'rsync -avz root@ws1.eng.systems:/home/'.$host.'/ /home/instance-'.$host.'/ --exclude backups logs cgi-bin';
+    exec($cmd);
+    echo $bc->getColoredString(" OK " . "\n", 'green');
 }
