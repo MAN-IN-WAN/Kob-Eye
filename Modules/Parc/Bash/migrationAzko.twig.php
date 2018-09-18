@@ -5,112 +5,144 @@ $bc = new BashColors();
 //connexion ancien serveur mysql
 $dbke = new PDO('mysql:host=192.168.100.50;dbname=parc', 'root', 'zH34Y6u5', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 $dbke->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$dbnp = new PDO('mysql:host=192.168.200.5;dbname=azkocms_common', 'root', 'wCENJbD9DUz76Ty4', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-$dbnp->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-//On boucle sur les orgas contenant des sites
-//$query = "SELECT o.*,COUNT(s.site_id) as NBSITE FROM organisation as o LEFT JOIN site as s ON o.org_id = s.site_org_id GROUP BY o.org_id HAVING NBSITE>0;";
-$query = "SELECT o.* FROM organisation as o LIMIT 0,1000";
-$q = $db->query($query);
+$csv = "
+acei;acei;acei
+acrotaille;acrotaille;acrotaille
+ah-avocats;ah-avocats;ah-avocats
+aimetti-auteur;aimetti-auteur;aimetti-auteur
+alex;engsystems;alex
+ama;rgsystem;ama+wp_amaassurances+wp_amaassurancesblog
+amisdufondsmedar;amisdufondsmedar;amisdufondsmedar
+appartementcabourg;appartementcabourg;appartement-cabo
+aqualiss;aqualiss;aqualiss
+aquazurservices;aquazurservi;aquazurservices
+atelier-corps;atelier-corps-et-mouvemen;atelier-corps
+autoecole;autoecoledef;autoecole
+autoecoleamd;autoecoleamd;autoecoleamd
+autoecole-easy;autoecole-ea;autoecole-easy
+autoecoleinris;autoecoleinr;autoecoleinris
+automotoecole;automotoecol;automotoecole
+bacotec;bacotec;bacotec
+barocante;barocante;barocante
+bertrand;bertrandimmo;bertrand+bertrand2017
+bgelr;bgelr;bgelr
+boxsete;pescatore;boxsete_boxlocation+boxsete_chezpescatore
+byvirginie;byvirginie;byvirginie
+camarguevtc;camargue-vtc;camarguevtc
+camassel;camassel;camassel
+cap-ocean;cap-ocean;cap-ocean
+carrosserie-reis;carrosserie-;carrosserie-reis
+cdefi;cdefi;cdefi
+ce3d;ce3d;ce3d
+ceciledesserle;ceciledesserle;ceciledesserle
+permis-bateau;permis-batea;cercle-nautique
+chape-liquide;chape-liquide;chape-liquide
+chefsdoc;chefsdoc;chefsdoc
+citeoingenierie;citeo;citeo-ingenierie
+clamousemetaller;clamousemeta;clamousemetaller
+code23;code23;code23
+collectif-saint;collectif-sa;collectif-saint
+dagobafilms;dagobafilms;dagobafilms
+dm-detect;dm-detect;dm-detect
+driveo;mwsolutions;driveo
+dronerealisation;dronerealisa;dronerealisation
+dumartinetj;dumartinet;dumartinetj
+easypanneau;easypanneau;easypanneau
+ecolederaseteurs;ecolederaset;ecolederaseteurs
+ecopub;ecopub;ecopub
+editionsmo;editions-monemvassia;editionsmo
+enguer;enguer;enguer
+epconsulting;ep.consultin;epconsulting
+espace-proprete;espace-propr;espace-proprete
+ethique-perfusi;ethique-perf;ethique-perfusi
+expert-comptable;expert-compt;expert-comptable
+funkyfurnish;funkyfurnish;funkyfurnish
+geodev;geodev;geodev
+gestion;enguer;enguergest
+gestion2;enguer;enguergest2
+grandcreme;grandcreme;grandcreme+grandcreme_pydio
+groupevet;groupevet;groupevet
+hconsulting;hconsulting;hconsulting
+hhealth-group;hhealth-grou;hhealth-group
+hydrosol;hydrosol;hydrosol
+idh-montpellier;idh-montpell;idh-montpellier
+insightcom;insightcom;insightcom
+intrasens;intrasens;intrasens
+iplusmedia.eu;iplusmedia.eu;iplusmedia.eu
+jsaavocats;jsaavocats;jsaavocats
+labanane;labanane;labanane
+laboratoire-val;laboratoire-;laboratoire-val
+lace-restaurant;lace-restaurant.fr;lace-restaurant
+lagrignotte;lagrignotte;lagrignotte
+laprimavera;laprimavera-;laprimavera
+lemasdemestre;lemasdemestr;lemasdemestre
+lepasseurdemots;lepasseurdem;lepasseurdemots
+lexnot;ws1;lexnot.fr
+maf82;montaubanath;maf82
+maformation;maformation;maformation
+mara-pro;mara-pro;mara-pro
+mcsini;mcsini;mcsini
+mediation-consommation;mediationmon;mediationconso
+mediationmontpellier;mediationmon;mediationmontpel
+mldurand;mldurand;mldurand
+mobilygo;mobilygo;mobilygo+mobilygo_2014
+montpellierfans;montpellierf;montpellierfans
+murviel;murviel;murviel
+mw;mwsolutions;mw+mwsolutions
+nino-robotics;nino-robotic;nino-robotics+nino-robotics-dev+nino-robotics-sup
+nutrition-expert;nutrition-ex;nutrition-expert
+ouiche-lorraine;ouiche-lorra;ouiche-lorraine
+permis-bateau;permis-batea;permis-bateau
+perseides-courta;perseides-co;perseides-courta
+pianoconcertino;pianoconcert;pianoconcertino
+pizzajerome;pizzajerome;pizzajerome
+prescriptionnature;prescriptionnature;prescriptionnature
+privilegeberricar;privilegeber;privilegeberrica
+pronotrot;pronotrot;pronotrot
+psychotherapieintegrative;psychotherap;psychotherapiein
+psychotherapiesatm;christinebuo;psychotherapiesat
+pushrdv;pushrdv;pushrdv
+quentinmultiservices;quentinmultiservices;quentinmultiserv
+racinespubliques;racinespubliques;racinespubliques
+rdksolutions;rdksolutions;rdksolutions
+residencelehome;residenceleh;residencelehome
+rws-relocation;rws-relocati;rws-relocation
+safetygreen;safetygreen;safetygreen
+scproux;scproux;scproux
+secreteam;secreteam;secreteam
+selfcopy;selfcopy;selfcopy
+serenity-services;serenity-services;serenity-service
+sexologue;sexologue;sexologue
+sinergiasud;sinergiasud;sinergiasud
+snap-pole-emploi;snap-pole-em;snap-pole-emploi
+spiruline;spirulineala;spiruline
+sudmarquage;sudmarquage;sudmarquage
+sudvtc;sudvtc;sudvtc
+sweet-home34;sweet-home34;sweet-home34
+technifer;technifer;technifer
+tennisforever;tennisforeve;tennisforever+tennisforever_reservation
+terre2sens;terre2sens;terre2sens
+tisseyre-avocats;tisseyre-avo;tisseyre-avocats
+travaux-speciaux;travaux-spec;travaux-speciaux
+veterinaire-lang;veterinaire-languedocia;veterinaire-lang
+veterinaire-veto;veterinaire-vetocia;veterinaire-veto
+vmid;vmid;vmid";
 
-$servs = array(7,8,9);
-//on remet le premier serveur en serveur web par défaut
-/*$s = Sys::getOneData('Parc','Server/defaultWebServer=1');
-$s->defaultWebServer = false;
-$s->Save();
-$srv = Sys::getOneData('Parc','Server/'.$servs[0]);
-$srv->defaultWebServer = true;
-$srv->Save();*/
-
-$result = $q->fetchALL(PDO::FETCH_ASSOC);
+$result = explode(PHP_EOL,$csv);
 $i=0;
 foreach ($result as $org){
     $i++;
-    //if ($org["org_id"]!=474) continue;
-    //gestion server web par defaut
-    /*if ($i==250||$i==500) {
-        echo $bc->getColoredString("***** CHANGEMENT SERVEUR WEB PAR DEFAUT *****"."\n",'green');
-
-        //on remet le premier serveur en serveur web par défaut
-        $s = Sys::getOneData('Parc', 'Server/defaultWebServer=1');
-        $s->defaultWebServer = false;
-        $s->Save();
-        $srv = Sys::getOneData('Parc', 'Server/' . $servs[($i==250)?1:2]);
-        $srv->defaultWebServer = true;
-        $srv->Save();
-    }*/
+    $fields = explode(';',$org);
+    $fields[3] = explode('+',$fields[3]);
+    list($host,$client,$bdds) = $fields;
 
     //test existence
-    /*$nb = Sys::getOneData('Parc','Instance/InstanceNom=azkocms_org_'.$org['org_id']);
-    //if ($nb) continue;
-    echo $bc->getColoredString("-> [$i] ".$org["org_nom"]."\n",'green');
-    //récupération des sites et domaines
-//    $query = "SELECT *,COUNT(s.site_id) as NBDOM FROM site as s LEFT JOIN domaine as d ON s.site_id = d.dom_site_id WHERE s.site_org_id = '".$org['org_id']."' GROUP BY s.site_id HAVING NBDOM>1;";
-    $query = "grant select on azkocms_common.* to 'azkocms_org_".$org['org_id']."'@'%'  ;";
-    try {
-        $q = $dbnp->query($query);
-    }catch (Exception $e){
+    $nb = Sys::getOneData('Parc','Instance/InstanceNom=instance-'.$host);
+    if ($nb) continue;
+    echo $bc->getColoredString("-> [$i] ".$host."\n",'green');
 
-    }
-
-
-    $query = "SELECT * FROM site as s LEFT JOIN domaine as d ON s.site_id = d.dom_site_id WHERE s.site_org_id = '".$org['org_id']."';";
-    $q = $db->query($query);
-
-    $resu = $q->fetchALL(PDO::FETCH_ASSOC);
-    $doms = "";
-    $search_doms = '';
-    $sodom = '';
-    $secibonline = '';
-    foreach ($resu as $dom){
-        if (empty($dom["dom_name"]))continue;
-        if (preg_match('#secibonline#',$dom["dom_name"])){
-            echo $bc->getColoredString("  -> SECIBONLINE ".$dom["dom_name"]."\n",'blue');
-            $secibonline .=  (!empty($secibonline)?" OR ":" ")."`ApacheServerAlias` LIKE '%".$dom['dom_name']."%' OR `ApacheServerName` = '".$dom['dom_name']."'";
-            $sodom.=$dom['dom_name'];
-        }else{
-            echo $bc->getColoredString("  -> ".$dom["dom_name"]."\n",'blue');
-            $doms.=$dom['dom_name']."\r\n";
-            $search_doms .=  (!empty($search_doms)?" OR ":" ")."`ApacheServerAlias` LIKE '%".$dom['dom_name']."%' OR `ApacheServerName` = '".$dom['dom_name']."'";
-        }
-    }
-    $doms = trim($doms);
-    $ssl = false;
-    //recherche du vhost et des certifs
-    echo $bc->getColoredString("    -> LOOKING FOR SSL CONFIG " . "\n", 'yellow');
-    if (!empty($search_doms)) {
-        $query = "SELECT *  FROM `parc-Parc-Apache` WHERE " . $search_doms . ";";
-        //echo $bc->getColoredString("    -> SSL " . $query . "\n", 'yellow');
-        $q = $dbke->query($query);
-        $apaches = $q->fetchALL(PDO::FETCH_ASSOC);
-        foreach ($apaches as $apache) {
-            if ($apache["Ssl"] == 1) {
-                echo $bc->getColoredString("    -> SSL FOUND " . $apache["ApacheServerName"] . "\n", 'yellow');
-                $ssl = true;
-                $cert = $apache["SslCertificate"];
-                $key = $apache["SslCertificateKey"];
-                $expire = $apache["SslExpiration"];
-            }
-        }
-    }
-    $sossl = false;
-    echo $bc->getColoredString("    -> LOOKING FOR SECIBONLINE SSL CONFIG " . "\n", 'yellow');
-    if (!empty($secibonline)) {
-        $query = "SELECT *  FROM `parc-Parc-Apache` WHERE " . $secibonline . ";";
-        //echo $bc->getColoredString("    -> SSL " . $query . "\n", 'yellow');
-        $q = $dbke->query($query);
-        $apaches = $q->fetchALL(PDO::FETCH_ASSOC);
-        foreach ($apaches as $apache) {
-            if ($apache["Ssl"] == 1) {
-                echo $bc->getColoredString("    -> SECIBONLINE SSL FOUND " . $apache["ApacheServerName"] . "\n", 'yellow');
-                $sossl = true;
-                $socert = $apache["SslCertificate"];
-                $sokey = $apache["SslCertificateKey"];
-                $soexpire = $apache["SslExpiration"];
-            }
-        }
-    }
-    if (!$nb) {
+    if (!$nb){
         echo $bc->getColoredString("    -> CREATING INSTANCE ".$org['org_id'], 'red');
         //création de l'instance
         $inst = genericClass::createInstance('Parc', 'Instance');
@@ -122,68 +154,46 @@ foreach ($result as $org){
         $inst->Actif = true;
         //$inst->Ssl = ($ssl)?true:false;
         $inst->PHPVersion = '7.0.29';
-        $inst->Plugin = 'AzkoFront';
+        $inst->Plugin = 'Vide';
         if (!$inst->Save()) {
             //continue;
             print_r($inst->Error);
             die('Erreur de création instance');
         }
         echo $bc->getColoredString(" OK \n", 'green');
-    }else if ($sossl){
-        $inst = $nb;
-        $inst->ServerAlias = $doms;
-        $inst->Save();
-    }else        $inst = $nb;
+    }else $inst = $nb;
 
 
-    //TEST SSL ORGA
-    if ($ssl) {
-        //recuperation du vhost
-        $host = $inst->getOneParent('Host');
-        $apache = Sys::getOneData('Parc','Host/'.$host->Id.'/Apache',0,1,'ASC','Id');
-        //injection du certif
-        $apache->Ssl = true;
-        $apache->SslCertificate = $cert;
-        $apache->SslCertificateKey = $key;
-        $apache->SslExpiration = $expire;
-        $apache->SslMethod = 'Letsencrypt';
-        $apache->Save(false,true);
-        $inst->EnableSsl = true;
-        echo $bc->getColoredString("    -> SSL ENABLED ". "\n", 'green');
-    }*//*else echo $bc->getColoredString("    -> SSL NOT DETECTED ". "\n", 'pink');*/
-/*
-    //TEST SSL SECIBONLINE
-    if ($sossl) {
-        //recuperation du vhost
-        $host = $inst->getOneParent('Host');
-        $apache = Sys::getOneData('Parc','Host/'.$host->Id.'/Apache',1,1,'ASC','Id');
-        if ($apache) $apache->Delete();
-        $apache = genericClass::createInstance('Parc','Apache');
-        $apache->addParent($host);
-        //injection du certif
-        $apache->ApacheServerName = $sodom;
-        $apache->DocumentRoot = 'www/azkocms/front';
-        $apache->Actif = true;
-        $apache->Ssl = true;
-        $apache->ProxyCache = true;
-        $apache->SslCertificate = $socert;
-        $apache->SslCertificateKey = $sokey;
-        $apache->SslExpiration = $soexpire;
-        $apache->SslMethod = 'Letsencrypt';
-        $apache->Save();
-        $inst->EnableSsl = true;
-        $inst->Save();
-        echo $bc->getColoredString("    -> SECIBONLINE SSL ENABLED ". "\n", 'green');
-    }else echo $bc->getColoredString("    -> SECIBONLINE SSL NOT DETECTED ". "\n", 'pink');
+    //récupération des vhosts et certifs
+    $query = "SELECT * FROM `parc-Parc-Host` as hs LEFT JOIN `parc-Parc-Apache` as ap ON hs.Id = ap.HostId WHERE ap.Enabled = 1;";
+    $q = $db->query($query);
+    $aps = $q->fetchALL(PDO::FETCH_ASSOC);
+    foreach ($aps as $dom){
+        //TEST SSL ORGA
+        if ($ssl) {
+            //recuperation du vhost
+            $host = $inst->getOneParent('Host');
+            $apache = Sys::getOneData('Parc','Host/'.$host->Id.'/Apache',0,1,'ASC','Id');
+            //injection du certif
+            $apache->Ssl = true;
+            $apache->SslCertificate = $cert;
+            $apache->SslCertificateKey = $key;
+            $apache->SslExpiration = $expire;
+            $apache->SslMethod = 'Letsencrypt';
+            $apache->Save(false,true);
+            $inst->EnableSsl = true;
+            echo $bc->getColoredString("    -> SSL ENABLED ". "\n", 'green');
+        }
+    }
 
-*/
-    //if ($inst->tmsEdit<time()-86400) {
+
+    if ($inst->tmsEdit<time()-86400) {
         echo $bc->getColoredString("  -> SQL DUMP ... ", 'red');
         //importation de la base de donnée
         $cmd = 'mysqldump -h 192.168.100.2 -u root -p125iAS34470 azkocms_org_' . $org['org_id'] . ' |  mysql -h 192.168.200.5 -u root -pwCENJbD9DUz76Ty4 azkocms_org_' . $org['org_id'];
         exec($cmd);
         echo $bc->getColoredString(" OK " . "\n", 'green');
-    //}
+    }
 
     /*if (!$inst->Save()) {
         print_r($inst->Error);
