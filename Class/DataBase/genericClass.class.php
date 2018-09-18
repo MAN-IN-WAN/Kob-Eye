@@ -1379,6 +1379,7 @@ class genericClass extends Root {
 			return false;
 		$NbQ = sizeof($ExplQ) - 1;
 		$this -> addFkey($ExplQ[$NbQ - 2], $ExplQ[$NbQ - 1], $ExplQ[$NbQ], 2, $SpeFKey);
+        return $ExplQ;
 	}
 
 	/**
@@ -1408,6 +1409,7 @@ class genericClass extends Root {
 			return false;
 		$NbQ = sizeof($ExplQ) - 1;
 		$this -> addFkey($ExplQ[$NbQ - 2], $ExplQ[$NbQ - 1], $ExplQ[$NbQ], 0,$SpeFKey);
+		return $ExplQ;
 	}
 
 	/**
@@ -1426,6 +1428,7 @@ class genericClass extends Root {
 					$this -> addFKey($Parents[$i] -> Module, $Class, $Parents[$i] -> Id, 0, $SpeFKey);
 				}
 		}
+		return $Class;
 	}
 
 	/**
@@ -1440,6 +1443,8 @@ class genericClass extends Root {
 		$Enfant -> initFromId($Id, $Type);
 		$Enfant -> addFkey($Enfant -> Module, $this -> ObjectType, $this -> Id);
 		$Enfant -> Save();
+
+		return $Enfant;
 	}
 
 	/**
@@ -1454,6 +1459,8 @@ class genericClass extends Root {
 		$Enfant -> initFromId($Id, $Type);
 		$Enfant -> addFkey($this -> Module, $this -> ObjectType, $this -> Id, 0);
 		$Enfant -> Save();
+
+        return $Enfant;
 	}
 
 	/**
@@ -1470,6 +1477,8 @@ class genericClass extends Root {
 				$Childs[$i] -> addFKey($this -> Module, $this -> ObjectType, $this -> Id, 0);
 				$Childs[$i] -> Save();
 			}
+
+        return $Class;
 	}
 
 	/**

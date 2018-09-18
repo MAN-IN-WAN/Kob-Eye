@@ -547,6 +547,7 @@ class Admin
 
         $response = $this->searchDirectory($domain, 0, 0, 'distributionlists');
 
+
         foreach ($response->children()->SearchDirectoryResponse->children() as $listData) {
             $results[] = new \Zimbra\ZCS\Entity\DistributionList($listData);
         }
@@ -628,7 +629,14 @@ class Admin
         return true;
     }
 
-    
+    //Renomme une liste de diffusion
+    public function renameDistributionList($id, $newName){
+        $params = array(
+            'id' => $id,
+            'newName' => $newName
+        );
+        $this->zimbraConnect->request('RenameDistributionListRequest', array(), $params);
+    }
     
     
     /**** COS ****/

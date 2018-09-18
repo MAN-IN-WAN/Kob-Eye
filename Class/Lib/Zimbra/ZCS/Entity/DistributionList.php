@@ -19,15 +19,20 @@ class DistributionList extends \Zimbra\ZCS\Entity
     {
         parent::__construct($list);
 
+        foreach ($list->children() as $lc){
+            if($lc['n'] == 'zimbraMailForwardingAddress')
+                $this->members[] = (string)$lc;
+        }
         foreach ($list->children()->dlm as $data) {
             $this->members[] = (string) $data;
         }
-        $this->set('members', implode("\r\n", $this->members));
+        array_unique($this->members);
+        $this->set('members', $this->members);
     }
 
     public function getMembers()
     {
-        return implode(', ', $this->members);
+        return $this->members;
     }
 
 }

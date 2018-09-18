@@ -33,6 +33,7 @@ class ObjectClass extends Root{
 	var $cache;
 	var $hidden;
     var $searchFilters = 1;
+    var $hideSelect = 0;
 	var $Interface;
 	var $className = 0;
 	var $noRecursivity = 0;							//permet la création d'une clef recursive sans le comportement recursif
@@ -101,6 +102,7 @@ class ObjectClass extends Root{
 		if (isset($schema['@']['cache']))$this->cache = $schema['@']['cache'];
 		if (isset($schema['@']['hidden']))$this->hidden = $schema['@']['hidden'];
         if (isset($schema['@']['searchFilters']))$this->searchFilters = $schema['@']['searchFilters'];
+        if (isset($schema['@']['hideSelect']))$this->hideSelect = $schema['@']['hideSelect'];
 		if (isset($schema['@']['className']))$this->className = $schema['@']['className'];
 		if (isset($schema['@']['noRecursivity']))$this->noRecursivity = $schema['@']['noRecursivity'];
 		if (isset($schema['@']['stopPage']))$this->stopPage = $schema['@']['stopPage'];

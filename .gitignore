@@ -7,3 +7,4 @@ Conf/General.conf
 .idea/*
 Data/*
 /nbproject/private/
+/Skins/AngularAdmin/assets/vendors/bootstrap/dist/jboots.zip

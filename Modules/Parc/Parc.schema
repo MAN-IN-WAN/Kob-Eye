@@ -410,6 +410,13 @@
 		<PROPERTIES type="text" obligatoire="0" list="1" fiche="1" form="1" description="Notice installation">Description</PROPERTIES>
 		<FUNCTION title="Cloner">Cloner</FUNCTION>
 	</OBJECTCLASS>
+	<OBJECTCLASS title="ListeDiffusion" driver="mysql" AccessPoint="1" Description="Liste de diffusion" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/ListeDiffusion.class.php">
+		<PROPERTIES type="varchar" unique="1" fiche="1" description="Id sur le serveur mail" >IdDiffusion</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
+		<FKEY card="0,1" data="Client,Id" fiche="1" form="1" description="Client">ClientId</FKEY>
+		<FKEY card="0,1" data="Server,Id" fiche="1" form="1" filter="Mail=1" description="Serveur Mail">ServerId</FKEY>
+		<RKEY card="0,n" data="CompteMail,Id" fiche="1" description="CompteMail" >CompteMailId</RKEY>
+	</OBJECTCLASS>
 	<OBJECTCLASS title="CompteMail" driver="mysql" AccessPoint="1" Description="Comptes Mail" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/CompteMail.class.php">
 		<FILTER name="Tous les comptes" color="warning" ></FILTER>
 		<FILTER name="Compte en PRO" color="success">COS=MAIL_PRO</FILTER>
@@ -428,7 +435,7 @@
 		<FKEY card="0,1" data="Client,Id" fiche="1" form="1" description="Client">ClientId</FKEY>
 		<FKEY card="0,1" data="Server,Id" fiche="1" form="1" filter="Mail=1" description="Serveur Mail">ServerId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="EmailAlias" driver="mysql" Dico="1" Description="Alias de comptes Mail" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/EmailAlias.class.php">
+	<OBJECTCLASS title="EmailAlias" driver="mysql" Dico="1" Description="Alias de comptes Mail" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/EmailAlias.class.php" hideSelect="1">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Adresse alias" list="1" form="1" fiche="1" listDescr="Adresse alias">TargetMail</PROPERTIES>
 		<PROPERTIES type="boolean" description="Status" list="1" fiche="1" listDescr="Status">Status</PROPERTIES>
 		<FKEY card="1,1" data="CompteMail,Id" fiche="1" description="CompteMail" >CompteMailId</FKEY>
@@ -441,6 +448,7 @@
 		<PROPERTIES type="boolean" description="Status" list="1" fiche="1" listDescr="Status">Status</PROPERTIES>
 		<FKEY card="1,1" data="CompteMail,Id" fiche="1" description="CompteMail" >CompteMailId</FKEY>
 	</OBJECTCLASS>
+
 	<OBJECTCLASS title="Ticket" driver="mysql" AccessPoint="1" Description="Tickets Clients" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" >
 		<FILTER name="En cours" color="secondary">Etat=En cours</FILTER>
 		<FILTER name="Incidents" color="warning"><![CDATA[Type=Incident&Etat=En cours]]></FILTER>
