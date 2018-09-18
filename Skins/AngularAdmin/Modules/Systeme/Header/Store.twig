@@ -191,8 +191,6 @@
         * Définition du filtre
         **/
         function setFilters(filter,context='default'){
-
-    console.log(filter);
             if (filters[context]==undefined) initContext(context);
             if (filter==filters[context]) return;
             var tmp = {
@@ -228,7 +226,6 @@
         * Creation de la chaine de recherche
         */
         function getQueryFilter(context = 'default') {
-            console.log(filters[context]);
             if (!filters[context]) return '';
             var query = '';
             if (filters[context].global)

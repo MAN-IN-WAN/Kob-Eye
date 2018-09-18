@@ -276,6 +276,7 @@ class ListeDiffusion extends genericClass {
      * @return	bool
      */
     public function delListMember($cptMail){
+
         $srv = $this->getKEServer();
 
         if(!is_object($srv) || $srv->ObjectType != 'Server'){
@@ -303,11 +304,17 @@ class ListeDiffusion extends genericClass {
             }
         }
 
-        $members[] = $cptMail->Adresse;
-        $temp = $zimbra->modifyDistributionList(array(
-            'id' => $this->IdDiffusion,
-            'zimbraMailForwardingAddress'=> $newMembs
-        ));
+        if(!count($newMembs))
+            $newMembs = '';
+        try {
+            $temp = $zimbra->modifyDistributionList(array(
+                'id' => $this->IdDiffusion,
+                'zimbraMailForwardingAddress'=> $newMembs
+            ));
+        }catch (Exception $e) {
+            $this->AddError(array('Message' => 'Erreur, lors de la suppression ', 'Object' => $e));
+            return false;
+        }
 
         return true;
     }
@@ -335,10 +342,15 @@ class ListeDiffusion extends genericClass {
             return false;
         }
 
-        $temp = $zimbra->modifyDistributionList(array(
-            'id' => $this->IdDiffusion,
-            'zimbraMailForwardingAddress'=> $list
-        ));
+        try {
+            $temp = $zimbra->modifyDistributionList(array(
+                'id' => $this->IdDiffusion,
+                'zimbraMailForwardingAddress' => $list
+            ));
+        }catch (Exception $e) {
+            $this->AddError(array('Message' => 'Erreur, lors de l\'actualisation de la liste. ', 'Object' => $e));
+            return false;
+        }
 
         return true;
     }

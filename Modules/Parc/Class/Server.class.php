@@ -297,6 +297,30 @@ class Server extends genericClass {
 
                     if(!$dryrun){
                         $o->Save(false);
+                        $mAliases = $account->get('zimbraMailAlias');
+                        if(!is_array($mAliases))
+                            $mAliases = array($mAliases);
+
+                        $pAliases = $o->getChildren('EmailAlias');
+
+                        foreach($pAliases as $pAlias){
+                            if(!in_array($pAlias->TargetMail,$mAliases)){
+                                echo '**************************************** Suppression Alias :'.$pAlias->TargetMail.PHP_EOL;
+                                $pAlias->Delete(false);
+                            }
+                        }
+                        foreach($mAliases as $mAlias){
+                            foreach($pAliases as $pAlias){
+                                if($mAlias == $pAlias->TargetMail){
+                                    continue 2;
+                                }
+                            }
+                            echo '**************************************** Ajout Alias :'.$mAlias.PHP_EOL;
+                            $a = genericClass::createInstance('Parc','EmailAlias');
+                            $a->TargetMail = $mAlias;
+                            $a->addParent($o);
+                            $a->Save(false);
+                        }
                     }
                 }
             }
