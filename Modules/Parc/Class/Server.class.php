@@ -426,6 +426,96 @@ class Server extends genericClass {
         return $report;
     }
 
+    public function getRessources($dryrun=false) {
+        //TODO: Vérifier que les comptes admin sont bien actifs avant !!!
+        $report = '';
+
+        if(!isset($this->IP) || $this->IP =='' || !isset($this->mailAdminPort) || $this->mailAdminPort == '' || !isset($this->mailAdminUser) || $this->mailAdminUser == '' || !isset($this->mailAdminPassword) || $this->mailAdminPassword == ''){
+            $report = 'Veuillez vérifier la configuration du serveur. En l\'état il nous est impossible de nous connecter a l\'administration du serveur de mail';
+            return $report;
+        }
+
+        // Create a new Admin class and authenticate
+        $zimbra = new \Zimbra\ZCS\Admin($this->IP, $this->mailAdminPort);
+        $zimbra->auth($this->mailAdminUser, $this->mailAdminPassword);
+
+        try{
+            $domaines = $zimbra->getDomains();
+
+//            $cosesTemp = $zimbra->getAllCos();
+//            $coses = array();
+//            foreach ($cosesTemp as $cosTemp){
+//                $coses[$cosTemp->get('id')]=$cosTemp->get('name');
+//            }
+
+
+
+            foreach($domaines as $domain){
+                //echo '<pre>';
+                //print_r($domain);
+                //echo '</pre>';
+
+                $dname = $domain->get('name');
+                //print_r($dname.'<br/>');
+                $kDom = Sys::getOneData('Parc','Domain/Url='.$dname);
+                if(!is_object($kDom)){
+                    $report .= '<b>Domaine</b> "'.$dname.'" absent du Parc. Les adresses appartenant à ce domaine seront ignorées car impossible à relier à un client.<br>'.PHP_EOL;
+                    continue;
+                }
+                $kCli = $kDom->getOneParent('Client');
+                if(!is_object($kCli)){
+                    $report .= '<b>Client</b> introuvable pour le domaine "'.$dname.'". Les adresses appartenant à ce domaine seront ignorées car impossible à relier à un client.<br>'.PHP_EOL;
+                    continue;
+                }
+
+                $report .= '<b>Domaine</b> "'.$dname.': .<br>'.PHP_EOL;
+
+                $ressList = $zimbra->getAllRessources($dname);
+                foreach($ressList as $ress){
+
+
+                    $accHost = $ress->get('zimbraMailHost');
+                    if($accHost != $this->DNSNom){
+                        continue;
+                    }
+                    $accId = $ress->get('id');
+                    $accName = $ress->get('name');
+                    $accStatus = $ress->get('zimbraAccountStatus');
+                    $accType = $ress->get('zimbraCalResType');
+                    $accDisplay = $ress->get('displayName');
+//                    $cosId = $ress->get('zimbraCOSId');
+//                    $cos ='NULL';
+//                    if(isset($cosId) && $cosId != '')
+//                        $cos = $coses[$cosId];
+
+                    $o = Sys::getOneData('Parc','EmailRessource/IdMail='.$accId);
+                    if(!is_object($o)){
+                        $o = genericClass::createInstance('Parc','EmailRessource');
+                        $o->IdMail = $accId;
+                        $report .= '<b>Nouvelle ressource trouvée</b> : '.$accName.'.<br>'.PHP_EOL;
+                    }
+                    $o->Adresse = $accName;
+                    //$o->COS = $cos;
+                    $o->Status = $accStatus;
+                    $o->Type = $accType;
+                    $o->Nom = $accDisplay;
+
+
+                    $o->addParent($this);
+                    $o->addParent($kCli);
+
+                    if(!$dryrun){
+                        $o->Save(false);
+                    }
+                }
+            }
+        } catch (Exception $e){
+            $report .= print_r ($e,true);
+        }
+
+        return $report;
+    }
+
 
     /*******************************************************************************************************************************
 

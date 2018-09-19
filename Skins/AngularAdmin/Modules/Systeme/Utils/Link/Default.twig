@@ -210,7 +210,8 @@
                     {% if  Type == "Tail" %}
                         <span ng-bind-html="item.{{ field.name }}"></span>
                     {% else %}
-                        <a href="#/{{ CurrentUrl }}/{[{ item.id }]}" ng-bind-html="item.{{ field.name }}"></a>
+                        {#<a href="#/{{ CurrentUrl }}/{[{ item.id }]}" ng-bind-html="item.{{ field.name }}"></a>#}
+                        <label ng-bind-html="item.{{ field.name }}" for="{[{ item.id }]}"></label>
                     {% endif %}
                 {% endif %}
             </td>

@@ -51,7 +51,7 @@
                         {% if field.type == "progress" or field.type == "pluginconfig" or field.type == "raw" or field.type == "html" or field.type == "text" or field.type == "bbcode" %}
                         <!-- NE RIEN FAIRE-->
                         {% else %}
-                        <div class="row  ficheField">
+                        <div class="row  ficheField  type_{{ field.type }}{{ field.card }}">
                             <div class="col-md-5 detail-label">
                                 <label class="form-control-label" for="l0">{% if field.parentDescription is not empty %}{{ field.parentDescription }}{% else %}{{ field.description }}{% endif %}</label>
                             </div>
@@ -90,7 +90,11 @@
                                 {% elseif field.type == "fkey" and field.card == "long" %}
                                     <a class="btn btn-secondary btn-xs" ng-repeat="(key, value) in obj.{{ field.objectName }}{{ field.name }}label">{[{ value }]}</a>
                                 {% elseif field.type == "fkey" and field.card == "short" %}
-                                    <a class="btn btn-primary btn-xs" href="#/{{ field.link }}/{[{ obj.{{ field.objectName }}{{ field.name }} }]}">{[{ obj.{{ field.objectName }}{{ field.name }}label }]}</a>
+                                    {% if field.link %}
+                                        <a class="btn btn-primary btn-xs" href="#/{{ field.link }}/{[{ obj.{{ field.objectName }}{{ field.name }} }]}">{[{ obj.{{ field.objectName }}{{ field.name }}label }]}</a>
+                                    {% else  %}
+                                        <span class="btn btn-primary btn-xs" ng-if="obj.{{ field.objectName }}{{ field.name }}">{[{ obj.{{ field.objectName }}{{ field.name }}label }]}</span>
+                                    {% endif %}
                                 {% else %}
                                     {% if field.Values %}
                                     <select class="form-control" ng-model="obj.{{ field.name }}" disabled="disabled">
