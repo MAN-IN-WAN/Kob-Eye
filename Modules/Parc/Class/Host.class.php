@@ -162,8 +162,8 @@ class Host extends genericClass
         }
         $this->NomLDAP = strtolower($this->NomLDAP);
         $this->NomLDAP = Utils::CheckSyntaxe($this->NomLDAP);
-        if (strlen($this->Nom)>25||strlen($this->Nom)<2){
-            $this->addError(array("Prop"=>"Nom","Message"=>"Le nom doit comporter de 2 à 25 caractères"));
+        if (strlen($this->Nom)>50||strlen($this->Nom)<2){
+            $this->addError(array("Prop"=>"Nom","Message"=>"Le nom doit comporter de 2 à 50 caractères"));
             return false;
         }
         if (parent::Verify()) {

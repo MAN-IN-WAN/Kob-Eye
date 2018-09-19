@@ -116,10 +116,10 @@ foreach ($result as $domain){
     $queryTXT= "SELECT * FROM `parc-Parc-TXT` WHERE DomainId=".$domain['Id']." LIMIT 0,1000";
     $qTXT = $db->query($queryTXT);
     $resultTXT = $qTXT->fetchALL(PDO::FETCH_ASSOC);
-    //foreach ($dom->getChildren('TXT') as $txt) $txt->Delete();
     foreach ($resultTXT as $r){
+        print_r($r);
         echo "---> ".$r['Nom']." ".$r['Dnsdomainname']."\r\n";
-        $s = Sys::getOneData('Parc','Domain/'.$dom->Id.'/TXT/Dnstxt='.Utils::KEAddSlashes($r['Dnstxt']));
+        $s = Sys::getOneData('Parc','Domain/'.$dom->Id.'/TXT/Nom='.$r['Nom']);
         if (!$s) {
             $s = genericClass::createInstance('Parc', 'TXT');
             $s->LdapID = "";

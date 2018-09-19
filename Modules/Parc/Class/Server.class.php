@@ -1471,7 +1471,7 @@ class Server extends genericClass {
      */
     public function putFileContent($path,$content){
         try {
-            $out = $this->remoteExec('echo \''.$content.'\' > '.$path);
+            $out = $this->remoteExec('echo  \''.base64_encode($content).'\' | base64 --decode > '.$path);
             if (!empty($out)){
                 return $out;
             }else{

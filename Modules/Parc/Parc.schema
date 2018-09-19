@@ -488,7 +488,7 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Bdd" AccessPoint="1" driver="mysql" Description="Base de données" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Bdd.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de la base de donnée" list="1" form="1" fiche="1" unique="1" listDescr="Nom">Nom</PROPERTIES>
-		<FKEY card="1,1" data="Server,Id" description="Serveur SQL" filter="SQL=1" list="1" form="1" fiche="1" listDescr="Serveur SQL">ServerId</FKEY>
+		<FKEY card="0,1" data="Server,Id" description="Serveur SQL" filter="SQL=1" list="1" form="1" fiche="1" listDescr="Serveur SQL">ServerId</FKEY>
 		<FKEY card="1,1" data="Host,Id" description="Hébergement" list="1" form="1" fiche="1" listDescr="Hébergement">HostId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="MiniSite" logEvent="1" AccessPoint="1" driver="mysql" Description="MiniSite web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/MiniSite.class.php">
@@ -601,6 +601,7 @@
 		<PROPERTIES type="varchar" description="Url Git" form="1" fiche="1">GitUrl</PROPERTIES>
 		<PROPERTIES type="varchar" description="Branche Git" form="1" fiche="1" default="origin/master">GitBranche</PROPERTIES>
 		<PROPERTIES type="varchar" description="Revision Git" form="1" fiche="1">GitRevision</PROPERTIES>
+		<PROPERTIES type="boolean" description="Reinitialisation du dépôt" form="1" fiche="1">GitReset</PROPERTIES>
 		<PROPERTIES type="text" description="Commenaires" subtype="text" form="1" fiche="1">Commentaire</PROPERTIES>
 	</OBJECTCLASS>
 </SCHEMA>
