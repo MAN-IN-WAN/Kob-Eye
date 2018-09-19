@@ -33,6 +33,7 @@ class MX extends genericClass {
 		if (!$this->Poids) $this->Poids = 10;
 
 		$sibs = false;
+        $updateSibsTTL = false;
         $l = Server::ldapGet($this->LdapID);
         if(is_array($l) && isset($l[0]['dnsttl'])){
             $ttl = $l[0]['dnsttl'][0];

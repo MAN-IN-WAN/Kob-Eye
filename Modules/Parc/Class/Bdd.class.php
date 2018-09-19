@@ -2,6 +2,12 @@
 class Bdd extends genericClass {
     public function Save () {
         parent::Save();
+        $serv = $this->getOneParent('Server');
+        if (!$serv) {
+            $serv = Sys::getOneData('Parc','Server/defaultSqlServer=1');
+            $this->addParent($serv);
+            parent::Save();
+        }
         if ($this->checkDatabase())
             return true;
         else return false;

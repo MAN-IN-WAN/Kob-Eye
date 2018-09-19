@@ -98,7 +98,7 @@ class genericClass extends Root {
 			return (!$Nom && isset($this -> {$Key})) ? $this -> {$Key} : $Key;
 		}
 		//On verifie si c est un mot reserve
-		if ($Data == "Id")
+		if ($Data == "Id" && isset($this->Id))
 			return $this -> Id;
 		//Sinon, on recherche le type: si c'est une clef etrangere, on recherche les enfants
 		/*		echo "---------------$Data--------------\r\n";
@@ -1367,7 +1367,7 @@ class genericClass extends Root {
 		$Ie = explode('/', $Q, 2);
         if (!is_object(Sys::$Modules[$Ie[0]])){
             print_r($Q);
-            die("AddParent: Mauvais format ");
+            throw new Exception("AddParent: Mauvais format ");
         }
         $I = Sys::$Modules[$Ie[0]]->splitQuery($Q);
 		if ($I[0]["Type"] == "Child" && sizeof($I) > 1)

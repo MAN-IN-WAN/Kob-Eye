@@ -92,6 +92,7 @@
 		<FKEY card="1,1" data="Domain,Id" popup="1">DomainId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="AAA" driver="mysql" Description="AAAA" Icon="/Skins/AdminV2/Img/IconAqua/Search.png" Class="Modules/Parc/Class/AAA.class.php">
+		<PROPERTIES type="varchar" searchOrder="1" list="1" listDescr="Nom" fiche="1">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" description="Prefixe Sous Domaine" list="1" listDescr="Prefixe" form="1">Url</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" description="Adresse IPV6 du sous domaine" list="1" listDescr="IP" form="1">IP</PROPERTIES>
 		<PROPERTIES type="int" searchOrder="3"  list="1" form="1" default="86400" listDescr="TTL">TTL</PROPERTIES>
@@ -112,7 +113,7 @@
 		<FKEY card="1,1" data="Domain,Id" popup="1">DomainId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="NS" driver="mysql" Description="NS" Icon="/Skins/AdminV2/Img/IconAqua/Tasks_mini.png" Class="Modules/Parc/Class/NS.class.php">
-		<PROPERTIES type="varchar" searchOrder="1" list="1" listDescr="Nom" form="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" list="1" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" description="Nom de domaine racine (ex: exemple.com.)" searchOrder="2" list="1" listDescr="Domaine Racine" form="1">Dnsdomainname</PROPERTIES>
 		<PROPERTIES type="varchar" description="Nom DNS du serveur de nom" searchOrder="3" list="1" listDescr="Nom DNS" form="1">Dnscname</PROPERTIES>
 		<PROPERTIES type="int" searchOrder="3"  list="1" listDescr="TTL" form="1" default="38400" >TTL</PROPERTIES>
@@ -133,7 +134,7 @@
 		<FKEY card="1,1" data="Domain,Id" popup="1">DomainId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="CNAME" driver="mysql" Description="CNAME" Icon="/Skins/AdminV2/Img/IconAqua/Tasks_mini.png" Class="Modules/Parc/Class/CNAME.class.php">
-		<PROPERTIES type="varchar" searchOrder="1" list="1" listDescr="Nom" form="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" list="1" listDescr="Nom" >Nom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" description="Domaine cible (pour la racine: '[Domaine].')" list="1" listDescr="Domaine cible" form="1">Dnscname</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" listDescr="Prefixe" form="1" description="Préfixe sous-domaine">Dnsdomainname</PROPERTIES>
 		<PROPERTIES type="int" searchOrder="3"  list="1" listDescr="TTL" form="1" default="86400" >TTL</PROPERTIES>
@@ -143,7 +144,7 @@
 		<FKEY card="1,1" data="Domain,Id" popup="1">DomainId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="SRV" driver="mysql" Description="SRV" Icon="/Skins/AdminV2/Img/IconAqua/Tasks_mini.png" Class="Modules/Parc/Class/SRV.class.php">
-		<PROPERTIES type="varchar" searchOrder="1" list="1" listDescr="Nom" form="1" description="Nom ([Service].[Protocole])">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" list="1" listDescr="Nom" description="Nom ([Service].[Protocole])">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" list="1" listDescr="Cible" form="1" description="Cible (pensez à ajouter le point à la fin)">Target</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="3" list="1" listDescr="Service" form="1">Service</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" listDescr="Protocole" form="1">Protocole</PROPERTIES>
@@ -487,7 +488,7 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Bdd" AccessPoint="1" driver="mysql" Description="Base de données" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Bdd.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de la base de donnée" list="1" form="1" fiche="1" unique="1" listDescr="Nom">Nom</PROPERTIES>
-		<FKEY card="1,1" data="Server,Id" description="Serveur SQL" filter="SQL=1" list="1" form="1" fiche="1" listDescr="Serveur SQL">ServerId</FKEY>
+		<FKEY card="0,1" data="Server,Id" description="Serveur SQL" filter="SQL=1" list="1" form="1" fiche="1" listDescr="Serveur SQL">ServerId</FKEY>
 		<FKEY card="1,1" data="Host,Id" description="Hébergement" list="1" form="1" fiche="1" listDescr="Hébergement">HostId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="MiniSite" logEvent="1" AccessPoint="1" driver="mysql" Description="MiniSite web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/MiniSite.class.php">
@@ -600,6 +601,7 @@
 		<PROPERTIES type="varchar" description="Url Git" form="1" fiche="1">GitUrl</PROPERTIES>
 		<PROPERTIES type="varchar" description="Branche Git" form="1" fiche="1" default="origin/master">GitBranche</PROPERTIES>
 		<PROPERTIES type="varchar" description="Revision Git" form="1" fiche="1">GitRevision</PROPERTIES>
+		<PROPERTIES type="boolean" description="Reinitialisation du dépôt" form="1" fiche="1">GitReset</PROPERTIES>
 		<PROPERTIES type="text" description="Commenaires" subtype="text" form="1" fiche="1">Commentaire</PROPERTIES>
 	</OBJECTCLASS>
 </SCHEMA>
