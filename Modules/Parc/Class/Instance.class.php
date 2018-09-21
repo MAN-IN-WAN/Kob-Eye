@@ -48,7 +48,7 @@ class Instance extends genericClass{
             return false;*/
             //création d'un client par défaut
             //on vérifie que le client n'existe pas déjà
-            $client = Sys::getOneData('Parc','Client/NomLdap='.Utils::CheckSyntaxe($this->Nom));
+            $client = Sys::getOneData('Parc','Client/NomLDAP='.Utils::CheckSyntaxe($this->Nom));
             if (!$client) {
                 $client = genericClass::createInstance('Parc', 'Client');
                 $client->Nom = $this->Nom;
@@ -461,4 +461,13 @@ class Instance extends genericClass{
         //appel checkState du plugin
         return $plugin->checkState($task);
     }
+    /**
+     * rewriteConfig
+     * Réécrire Configuration
+     */
+    public function rewriteConfig(){
+        $plugin = $this->getPlugin();
+        return $plugin->rewriteConfig();
+    }
+
 }

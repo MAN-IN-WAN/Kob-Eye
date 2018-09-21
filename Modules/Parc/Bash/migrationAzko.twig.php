@@ -11,7 +11,6 @@ acei;acei;acei
 acrotaille;acrotaille;acrotaille
 ah-avocats;ah-avocats;ah-avocats
 aimetti-auteur;aimetti-auteur;aimetti-auteur
-alex;engsystems;alex
 ama;rgsystem;ama+wp_amaassurances+wp_amaassurancesblog
 amisdufondsmedar;amisdufondsmedar;amisdufondsmedar
 appartementcabourg;appartementcabourg;appartement-cabo
@@ -31,7 +30,7 @@ boxsete;pescatore;boxsete_boxlocation+boxsete_chezpescatore
 byvirginie;byvirginie;byvirginie
 camarguevtc;camargue-vtc;camarguevtc
 camassel;camassel;camassel
-cap-ocean;cap-ocean;cap-ocean
+cap-ocean;cap-ocean;cap-ocean;sql2.eng.systems
 carrosserie-reis;carrosserie-;carrosserie-reis
 cdefi;cdefi;cdefi
 ce3d;ce3d;ce3d
@@ -45,22 +44,17 @@ code23;code23;code23
 collectif-saint;collectif-sa;collectif-saint
 dagobafilms;dagobafilms;dagobafilms
 dm-detect;dm-detect;dm-detect
-driveo;mwsolutions;driveo
 dronerealisation;dronerealisa;dronerealisation
 dumartinetj;dumartinet;dumartinetj
 easypanneau;easypanneau;easypanneau
 ecolederaseteurs;ecolederaset;ecolederaseteurs
 ecopub;ecopub;ecopub
 editionsmo;editions-monemvassia;editionsmo
-enguer;enguer;enguer
 epconsulting;ep.consultin;epconsulting
 espace-proprete;espace-propr;espace-proprete
 ethique-perfusi;ethique-perf;ethique-perfusi
 expert-comptable;expert-compt;expert-comptable
-funkyfurnish;funkyfurnish;funkyfurnish
 geodev;geodev;geodev
-gestion;enguer;enguergest
-gestion2;enguer;enguergest2
 grandcreme;grandcreme;grandcreme+grandcreme_pydio
 groupevet;groupevet;groupevet
 hconsulting;hconsulting;hconsulting
@@ -74,11 +68,9 @@ jsaavocats;jsaavocats;jsaavocats
 labanane;labanane;labanane
 laboratoire-val;laboratoire-;laboratoire-val
 lace-restaurant;lace-restaurant.fr;lace-restaurant
-lagrignotte;lagrignotte;lagrignotte
 laprimavera;laprimavera-;laprimavera
 lemasdemestre;lemasdemestr;lemasdemestre
 lepasseurdemots;lepasseurdem;lepasseurdemots
-lexnot;ws1;lexnot.fr
 maf82;montaubanath;maf82
 maformation;maformation;maformation
 mara-pro;mara-pro;mara-pro
@@ -89,17 +81,13 @@ mldurand;mldurand;mldurand
 mobilygo;mobilygo;mobilygo+mobilygo_2014
 montpellierfans;montpellierf;montpellierfans
 murviel;murviel;murviel
-mw;mwsolutions;mw+mwsolutions
 nino-robotics;nino-robotic;nino-robotics+nino-robotics-dev+nino-robotics-sup
 nutrition-expert;nutrition-ex;nutrition-expert
-ouiche-lorraine;ouiche-lorra;ouiche-lorraine
 permis-bateau;permis-batea;permis-bateau
 perseides-courta;perseides-co;perseides-courta
 pianoconcertino;pianoconcert;pianoconcertino
 pizzajerome;pizzajerome;pizzajerome
-prescriptionnature;prescriptionnature;prescriptionnature
 privilegeberricar;privilegeber;privilegeberrica
-pronotrot;pronotrot;pronotrot
 psychotherapieintegrative;psychotherap;psychotherapiein
 psychotherapiesatm;christinebuo;psychotherapiesat
 pushrdv;pushrdv;pushrdv
@@ -109,7 +97,6 @@ rdksolutions;rdksolutions;rdksolutions
 residencelehome;residenceleh;residencelehome
 rws-relocation;rws-relocati;rws-relocation
 safetygreen;safetygreen;safetygreen
-scproux;scproux;scproux
 secreteam;secreteam;secreteam
 selfcopy;selfcopy;selfcopy
 serenity-services;serenity-services;serenity-service
@@ -119,10 +106,8 @@ snap-pole-emploi;snap-pole-em;snap-pole-emploi
 spiruline;spirulineala;spiruline
 sudmarquage;sudmarquage;sudmarquage
 sudvtc;sudvtc;sudvtc
-sweet-home34;sweet-home34;sweet-home34
 technifer;technifer;technifer
 tennisforever;tennisforeve;tennisforever+tennisforever_reservation
-terre2sens;terre2sens;terre2sens
 tisseyre-avocats;tisseyre-avo;tisseyre-avocats
 travaux-speciaux;travaux-spec;travaux-speciaux
 veterinaire-lang;veterinaire-languedocia;veterinaire-lang
@@ -130,16 +115,18 @@ veterinaire-veto;veterinaire-vetocia;veterinaire-veto
 vmid;vmid;vmid";
 
 $result = explode(PHP_EOL,$csv);
+$total = sizeof($result);
 $i=0;
 foreach ($result as $org){
     if (empty(trim($org)))continue;
     $i++;
+    if ($i<92)continue;
     $fields = explode(';',$org);
     $fields[2] = explode('+',$fields[2]);
-    list($host,$cli,$bdds) = $fields;
+    list($host,$cli,$bdds,$mysqlsrv) = $fields;
     //test existence
     $nb = Sys::getOneData('Parc','Instance/InstanceNom=instance-'.$host);
-    echo $bc->getColoredString("-> [$i] ".$host."\n",'green');
+    echo $bc->getColoredString("-> [$i / $total] ".$host."\n",'green');
 
     if (!$nb){
         echo $bc->getColoredString("    -> CREATING INSTANCE ".$host, 'red');
@@ -148,7 +135,7 @@ foreach ($result as $org){
         //création de l'instance
         $inst = genericClass::createInstance('Parc', 'Instance');
         //définition du client
-        $client = Sys::getOneData('Parc','Client/NomLDAP='.$host);
+        $client = Sys::getOneData('Parc','Client/NomLDAP='.$cli);
         if ($client) $inst->addParent($client);
         $inst->Nom = $host;
         $inst->InstanceNom = 'instance-' . $host;
@@ -165,6 +152,10 @@ foreach ($result as $org){
         echo $bc->getColoredString(" OK \n", 'green');
     }else {
         $inst = $nb;
+        //définition du client
+        $client = Sys::getOneData('Parc','Client/NomLDAP='.$cli);
+        if ($client) $inst->addParent($client);
+        $inst->softSave();
     }
 
     //récupération de l'host
@@ -227,46 +218,39 @@ foreach ($result as $org){
             $base->addParent($hos);
             $base->Save();
         }
-        if ($base->tmsEdit<time()-3600) {
+        //if ($base->tmsEdit<time()-3600) {
             echo $bc->getColoredString("      -> SQL DUMP ... ", 'red');
             //importation de la base de donnée
-            $cmd = 'mysqldump -h 192.168.100.50 -u root -pzH34Y6u5 ' . $bdd . ' | sed -e "s/MyISAM/InnoDB/i"  |  mysql -h 192.168.160.4 -u root -pzH34Y6u5 ' . $bdd;
+            if ($mysqlsrv=='sql2.eng.systems'){
+                $cmd = 'mysqldump -h 192.168.100.53 -u root -pzH34Y6u5; ' . $bdd . ' | sed -e "s/MyISAM/InnoDB/i"  |  mysql -h 192.168.160.4 -u root -pzH34Y6u5 ' . $bdd;
+            }else $cmd = 'mysqldump -h 192.168.100.50 -u root -pzH34Y6u5 ' . $bdd . ' | sed -e "s/MyISAM/InnoDB/i"  |  mysql -h 192.168.160.4 -u root -pzH34Y6u5 ' . $bdd;
             exec($cmd);
             echo $bc->getColoredString(" OK " . "\n", 'green');
             $base->Save();
-        }
+        //}
     }
 
     //excution rsync
     //importation de la base de donnée
-    $cmd = 'rsync -avz -e \'ssh -i /root/.ssh/id_rsa\' root@ws1.eng.systems:/home/'.$host.'/ /home/instance-'.$host.'/ --exclude backups --exclude logs --exclude cgi-bin';
     try {
+        $cmd = 'rsync -avz -e \'ssh -i /root/.ssh/id_rsa\' root@ws1.eng.systems:/home/'.$host.'/ /home/'.$hos->NomLDAP.'/ --exclude backups --exclude logs --exclude cgi-bin';
         echo $bc->getColoredString("       -> RUN RSYNC " , 'yellow');
         $out = $srv->remoteExec($cmd);
-        echo $bc->getColoredString(" OK "."\n".$out."\n", 'green');
+        echo $bc->getColoredString(" OK "."\n", 'green');
         echo $bc->getColoredString("       -> SETTING RIGHTS " , 'yellow');
-        $out = $srv->remoteExec('chown instance-'.$host.':users /home/instance-'.$host.' -R');
-        echo $bc->getColoredString(" OK "."\n".$out."\n", 'green');
+        $out = $srv->remoteExec('chown '.$hos->NomLDAP.':users /home/'.$hos->NomLDAP.' -R');
+        echo $bc->getColoredString(" OK "."\n", 'green');
     }catch(Exception $e){
         echo $bc->getColoredString(" ERREUR" . "\n".$e->getMessage()."\n".$cmd."\n", 'red');
         die();
     }
-    echo $bc->getColoredString(" OK " . "\n", 'green');
 
-    //si c'est un wordpress on refait la conf
-    $conf = $srv->getFileContent('/home/instance-'.$host.'/www/wp-config.php');
-    if (!empty($conf)){
-        echo $bc->getColoredString("       -> CONFIG WORDPRESS \n" , 'yellow');
-        $conf = preg_replace('#define\(\'DB_USER\', \'(.*)\'\);#','define(\'DB_USER\', \'instance-'.$host.'\');',$conf);
-        $conf = preg_replace('#define\(\'DB_PASSWORD\', \'(.*)\'\);#','define(\'DB_PASSWORD\', \''.$hos->Password.'\');',$conf);
-        $conf = preg_replace('#define\(\'DB_HOST\', \'(.*)\'\);#','define(\'DB_HOST\', \'db.maninwan.fr'.'\');',$conf);
-        $srv->putFileContent('/home/instance-'.$host.'/www/wp-config.php',$conf."\r\nif(\$_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'){
-    \$_SERVER['HTTPS'] = 'on';
-    \$_SERVER['SERVER_PORT'] = 443;
-}
-");
-        $htaccess = $srv->getFileContent('/home/instance-'.$host.'/www/.htaccess');
-        $htaccess = preg_replace('#RewriteCond %\{HTTPS\} off#','RewriteCond %{HTTP:X-Forwarded-Proto} !https',$htaccess);
-        $srv->putFileContent('/home/instance-'.$host.'/www/.htaccess',$htaccess);
+    //détection du cms
+    if ($srv->fileExists('/home/'.$hos->NomLDAP.'/www/wp-config.php')){
+        //c'est un wordpress
+        $int->Plugin = 'Wordpress';
+    }else if ($srv->fileExists('/home/'.$hos->NomLDAP.'/www/Conf/General.conf')){
+        //c'est un kobeye
     }
+
 }

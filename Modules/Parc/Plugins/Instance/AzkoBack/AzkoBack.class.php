@@ -125,5 +125,11 @@ class ParcInstanceAzkoBack extends Plugin implements ParcInstancePlugin {
     public function checkState(){
 
     }
+    /**
+     * rewriteConfig
+     */
+    public function rewriteConfig() {
+
+    }
 
 }

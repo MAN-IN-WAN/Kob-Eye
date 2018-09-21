@@ -30,7 +30,21 @@ class MX extends genericClass {
 	 * @return	Verification OK ou NON
 	 */
 	public function Verify( $synchro = true ) {
+        // Outils
+        $KEDomain = $this->getKEDomain();
+        $KEServer = $this->getKEServer();
 		if (!$this->Poids) $this->Poids = 10;
+        //création du nom
+        if (empty($this->Nom)){
+            //génératio automatique du nom
+            for ($i=1;$i<100;$i++){
+                $nb = Sys::getCount('Parc','Domain/'.$KEDomain->Id.'/MX/Nom=MX:'.$i);
+                if (!$nb){
+                    $this->Nom = 'MX:'.$i;
+                    break;
+                }
+            }
+        }
 
 		$sibs = false;
         $updateSibsTTL = false;
@@ -48,9 +62,6 @@ class MX extends genericClass {
 
 			if($synchro) {
 
-				// Outils
-				$KEDomain = $this->getKEDomain();
-				$KEServer = $this->getKEServer();
 				$dn = 'cn='.$this->Nom.',cn='.$KEDomain->Url.',ou=domains,'.PARC_LDAP_BASE;
 				// Verification à jour
 				$res = Server::checkTms($this);

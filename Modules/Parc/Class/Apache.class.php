@@ -279,7 +279,11 @@ class Apache extends genericClass {
 				// Outils
 				$KEHost = $this->getKEHost();
 				$KEServers = $this->getKEServer();
-				foreach ($KEServers as $KEServer) {
+                if (empty($KEHost->NomLDAP)) {
+                    $this->addWarning(array("Message" => "L'hébergement n'est pas à jour... Enregistrement forcé..."));
+                    $KEHost->Save();
+                }
+                foreach ($KEServers as $KEServer) {
                     $dn = 'apacheServerName=' . $this->ApacheServerName.',cn=' . $KEHost->NomLDAP . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE;
                     // Verification à jour
                     $res = Server::checkTms($this,$KEServer,'cn=' . $KEHost->NomLDAP . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE,'apacheServerName=' . $this->ApacheServerName);
@@ -642,7 +646,7 @@ class Apache extends genericClass {
         $act->addDetails($out);
         if (preg_match('#/etc/letsencrypt/live/(.*?)/fullchain.pem#',$out,$path)) {
             //analyse du retour et récupération du path
-            $this->SslMainDomain = $path[1];
+            $first = $this->SslMainDomain = $path[1];
             parent::Save();
             $act->addDetails('Définition du domaine par défaut du certificat: '.$this->SslMainDomain);
         }

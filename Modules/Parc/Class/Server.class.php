@@ -1449,6 +1449,30 @@ class Server extends genericClass {
         }
     }
     /**
+     * fileExists
+     * Check if a file exists
+     */
+    public function fileExists($path){
+        $act = $this->createActivity('Test existence fichier '.$path,'Exec');
+        try {
+            $out = $this->remoteExec('if [ -f '.$path.' ]; then echo 1; else echo 0; fi');
+            $act->addDetails('if [ -f '.$path.' ]; then echo 1; else echo 0; fi');
+            if (intval($out)>0){
+                $act->addDetails('retour => true ');
+                $act->Terminate(true);
+                return true;
+            }else{
+                $act->addDetails('retour => false ');
+                $act->Terminate(true);
+                return false;
+            }
+        }catch (Exception $e){
+            $act->addDetails($e->getMessage());
+            $act->Terminate(false);
+            return false;
+        }
+    }
+    /**
      * getFileContent
      * Return file content
      */

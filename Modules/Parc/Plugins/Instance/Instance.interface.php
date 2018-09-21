@@ -48,4 +48,9 @@ interface ParcInstancePlugin {
      * Vérifie l'état d'une instance
      */
     public function checkState();
+    /**
+     * rewriteConfig
+     * Réécrire la configuration
+     */
+    public function rewriteConfig();
 }

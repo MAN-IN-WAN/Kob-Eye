@@ -102,10 +102,10 @@
 		<FKEY card="1,1" data="Domain,Id" popup="1">DomainId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="MX" driver="mysql" Description="MX" Icon="/Skins/AdminV2/Img/IconAqua/Tasks_mini.png" Class="Modules/Parc/Class/MX.class.php">
-		<PROPERTIES type="varchar" searchOrder="1" list="1" listDescr="Nom" form="1">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" list="1" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" list="1" listDescr="Nom DNS" form="1" description="Nom DNS du serveur de mail (ou type A mail)">Dnscname</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" listDescr="Domaine cible" form="1" description="Domaine cible (pour la racine: '[Domaine].')">Dnsdomainname</PROPERTIES>
-		<PROPERTIES type="varchar" values="1,5,10,15,20,25,30,35,40,45,50" default="10" list="1" listDescr="Poids" form="1">Poids</PROPERTIES>
+		<PROPERTIES type="varchar" values="1,5,10,15,20,25,30,35,40,45,50" default="10" list="1" listDescr="Distance" form="1">Poids</PROPERTIES>
 		<PROPERTIES type="int" searchOrder="3"  list="1" form="1" default="86400" listDescr="TTL" >TTL</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
@@ -293,7 +293,7 @@
         <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom du fichier">Nom</PROPERTIES>
         <PROPERTIES type="raw" obligatoire="1" fiche="1" form="1">Contenu</PROPERTIES>
     </OBJECTCLASS>
-    <OBJECTCLASS title="Tache" driver="mysql" Dico="0" logEvent="1" AccessPoint="1" Description="Tache" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Tache.class.php" >
+    <OBJECTCLASS title="Tache" driver="mysql" Dico="0" logEvent="0" AccessPoint="1" Description="Tache" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Tache.class.php" >
 		<FILTER name="Toutes les taches" color="primary" ></FILTER>
 		<FILTER name="En erreur" color="warning"><![CDATA[Erreur=1]]></FILTER>
 		<FILTER name="En cours" color="warning"><![CDATA[Erreur=0&Demarre=1&Termine=0]]></FILTER>
@@ -318,7 +318,7 @@
 		<FKEY card="0,1" data="VersionLogiciel,Id" fiche="1" form="1" parentDescription="Version d'pplication" link="1">VersionLogicielId</FKEY>
         <FUNCTION title="Executer maintenant">Executer</FUNCTION>
     </OBJECTCLASS>
-	<OBJECTCLASS title="Device" logEvent="1" driver="mysql" AccessPoint="1" Description="Périphérique(s) réseau(x)" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Device.class.php">
+	<OBJECTCLASS title="Device" logEvent="0" driver="mysql" AccessPoint="1" Description="Périphérique(s) réseau(x)" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Device.class.php">
 		<FUNCTION title="Envoyer un message">sendMessage</FUNCTION>
 		<FILTER name="Tous les périphériques" color="warning" ></FILTER>
 		<FILTER name="Périphériques en ligne"  color="success">Online=1</FILTER>
@@ -491,7 +491,7 @@
 		<FKEY card="0,1" data="Server,Id" description="Serveur SQL" filter="SQL=1" list="1" form="1" fiche="1" listDescr="Serveur SQL">ServerId</FKEY>
 		<FKEY card="1,1" data="Host,Id" description="Hébergement" list="1" form="1" fiche="1" listDescr="Hébergement">HostId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="MiniSite" logEvent="1" AccessPoint="1" driver="mysql" Description="MiniSite web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/MiniSite.class.php">
+	<OBJECTCLASS title="MiniSite" logEvent="0" AccessPoint="1" driver="mysql" Description="MiniSite web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/MiniSite.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom du minisite" list="1" form="1" fiche="1" unique="1" listDescr="Nom">Nom</PROPERTIES>
         <PROPERTIES type="varchar" description="Type" values="Standard,Easy,Minimal" hidden="1" default="Minimal">Type</PROPERTIES>
         <CATEGORY title="MiniSite">
@@ -537,7 +537,7 @@
 		<FUNCTION title="Verifier cette instance">checkState</FUNCTION>
 		<FUNCTION title="Reinstaller le logiciel">reinstallSoftware</FUNCTION>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Activity" logEvent="1"  AccessPoint="1" driver="mysql" Description="Activité des jobs"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/Parc/Class/Activity.class.php" Operations="">
+	<OBJECTCLASS title="Activity" logEvent="0"  AccessPoint="1" driver="mysql" Description="Activité des jobs"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/Parc/Class/Activity.class.php" Operations="">
 		<FILTER name="Toutes les activités" color="warning" ></FILTER>
 		<FILTER name="Activités en cours" color="success" ><![CDATA[Started=1&Errors=0&Success=0]]></FILTER>
 		<FILTER name="Activités en erreur" ><![CDATA[Started=1&Errors=1]]></FILTER>
@@ -554,7 +554,7 @@
 		<FKEY data="Host,Id" form="1" fiche="1" card="0,1" popup="1" >HostId</FKEY>
 		<FKEY data="Apache,Id" form="1" fiche="1" card="0,1"  popup="1" >ApacheId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Incident" logEvent="1"  AccessPoint="1" driver="mysql" Description="Incidents"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/Parc/Class/Incident.class.php" Operations="delete">
+	<OBJECTCLASS title="Incident" logEvent="0"  AccessPoint="1" driver="mysql" Description="Incidents"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/Parc/Class/Incident.class.php" Operations="delete">
 		<FILTER name="Tous les incidents" color="warning" ></FILTER>
 		<FILTER name="Les incidents" color="danger" ><![CDATA[Solved=0&Acknowledge=0]]></FILTER>
 		<FILTER name="Les incidents résolus" color="success" >Solved=1</FILTER>
