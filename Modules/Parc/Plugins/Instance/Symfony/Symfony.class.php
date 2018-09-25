@@ -10,7 +10,7 @@
 
 require_once( dirname(dirname(__FILE__)).'/Instance.interface.php' );
 
-class ParcInstanceVide extends Plugin implements ParcInstancePlugin {
+class ParcInstanceSymfony extends Plugin implements ParcInstancePlugin {
 
     /**
      * Delete
