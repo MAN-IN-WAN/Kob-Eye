@@ -27,6 +27,12 @@ foreach (Sys::$Modules as $k=>$mod){
                 $tmp['recursivelement']['identifier'] = $sub['objectModule'] . $sub['objectName'];
             }
         }
+
+        $flt =$o->getCustomFilters();
+        $tmp['baseFilter'] = false;
+        if(is_array($flt) && $flt[0]->filter != '')
+            $tmp['baseFilter'] = $flt[0]->filter;
+
         $stores[$tmp['identifier'].'Store'] = $tmp;
     }
 }

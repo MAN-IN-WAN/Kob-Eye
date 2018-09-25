@@ -16,7 +16,7 @@
         <div class="panel-heading">
             <div class="pull-right">
                 {% if functions|length > 1 %}
-                    <div class="btn-group  margin-inline" uib-dropdown>
+                    <div class="btn-group " uib-dropdown>
                         <span id="function-button" type="button" class="btn btn-info  btn-default">Fonctions</span>
                         <button type="button" class="btn btn-info  btn-default" uib-dropdown-toggle>
                             <span class="caret"></span>
@@ -24,7 +24,7 @@
                         </button>
                         <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="function-button">
                             {% for fu in functions %}
-                                <li ><a class="dropdown-item" href="javascript: void(0);" ng-click='callFunction(obj,"{{fu.Nom}}","{{fu.title}}","{{fu.type}}")'>{{fu.title}}</a></li>
+                                <li ><a class="dropdown-item" href="javascript: void(0);" ng-click='callFunction(obj,"{{fu.Nom}}","{{fu.title}}","{{fu.type}}",{{ fu.needConfirm }})'>{{fu.title}}</a></li>
                             {% endfor %}
                         </ul>
                     </div>

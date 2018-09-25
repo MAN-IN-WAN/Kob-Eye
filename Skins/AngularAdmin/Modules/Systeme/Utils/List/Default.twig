@@ -3,7 +3,7 @@
     <ul class="nav nav-tabs" role="tablist">
         {% for filter in filters %}
         <li class="nav-item">
-            <a class="nav-link {% if loop.index0 == 0 %}active{% endif %} list-filter {% if filter.color %}filter-{{ filter.color }}{% endif %}" ng-click="{{ identifier }}setOptionsFilters('{{ filter.filter }}')" data-toggle="tab" data-target="#h1" role="tab">{{ filter.name }}</a>
+            <a class="nav-link {% if loop.index0 == 0 %}active{% endif %} list-filter {% if filter.color %}filter-{{ filter.color }}{% endif %}" ng-click="{{ identifier }}setOptionsFilters('{{ filter.filter }}','{{ context }}');" data-toggle="tab" data-target="#h1" role="tab">{{ filter.name }}</a>
         </li>
         {% endfor %}
     </ul>
@@ -361,7 +361,7 @@
                         <li class="divider"></li>
                         {% for fu in functions %}
                             {% if attribute(operation,fu.Nom) %}
-                                <li ><a class="dropdown-item" href="javascript: void(0);" ng-click='{{ identifier }}callFunction(item,"{{fu.Nom}}","{{fu.title}}")'>{{ fu.title }}</a></li>
+                                <li ><a class="dropdown-item" href="javascript: void(0);" ng-click='{{ identifier }}callFunction(item,"{{fu.Nom}}","{{fu.title}}",{{ fu.needConfirm }})'>{{ fu.title }}</a></li>
                             {% endif %}
                         {% endfor %}
                     </ul>
@@ -542,6 +542,27 @@
                 </div>
 
                 <!--<ng-include src="function.url"></ng-include>-->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-size-large" id="modalcomm-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">{[{ comm.title }]}</h4>
+            </div>
+            <div class="modal-body">
+                <div id="ajaxwrapper"
+                     ng-bind-html="comm.html">
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn" data-dismiss="modal">Fermer</button>

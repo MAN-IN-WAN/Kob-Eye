@@ -7,11 +7,12 @@
             sort = {},
             total = {},
             pageLength = 15,
-
+            errors = [],
             timer = {},
             query = {},
             busy = {},
             filters = {};
+
 
         //init filters
         initContext('default');
@@ -54,9 +55,19 @@
             setQuery: setQuery,
             getQuery: getQuery,
             query: query,
-            loadRecursivChildren:loadRecursivChildren,
+            loadRecursivChildren: loadRecursivChildren,
+            getErrors: getErrors,
+            clearErrors: clearErrors,
             data:{{ st.identifier }}Store
         };
+        function getErrors(){
+            return errors;
+        }
+        function clearErrors(){
+            errors = [];
+            return true
+        }
+
         function initContext(context) {
             {{ st.identifier }}Store[context] = [];
             total[context] = 0;
@@ -152,6 +163,11 @@
                 global: '',
                 options: []
             };
+
+            {% if st.baseFilter %}
+                setOptionFilter( '{{ st.baseFilter|raw }}', context);
+            {% endif %}
+
             pageLoaded[context]=0;
         }
         /**
@@ -504,6 +520,9 @@
                 $http.get('/{{ st.module }}/{{ st.objecttype }}/'+id+'/Delete.json')
                     .success(function(data) {
                         console.log('store > {{ st.module }}/{{ st.objecttype }} > deleted '+id, data);
+                        if(!data.success){
+                            errors = data.errors;
+                        }
                     });
         }
         /**

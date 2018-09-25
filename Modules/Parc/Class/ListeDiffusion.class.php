@@ -426,7 +426,26 @@ class ListeDiffusion extends genericClass {
         return true;
     }
 
+    /**
+     * Delete
+     * Suppression d'une ressource
+     */
+    public function Delete($sync = true){
+        if($sync) {
+            $srv = $this->getKEServer();
 
+            if (!is_object($srv) || $srv->ObjectType != 'Server') {
+                $this->AddError(array('Message' => 'Une liste de diffusion doit être liée a un serveur.'));
+                return false;
+            }
 
+            $zimbra = new \Zimbra\ZCS\Admin($srv->IP, $srv->mailAdminPort);
+            $zimbra->auth($srv->mailAdminUser, $srv->mailAdminPassword);
+
+            $zimbra->deleteDistributionList($this->IdDiffusion);
+        }
+
+        parent::Delete();
+    }
 
 }

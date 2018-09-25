@@ -273,6 +273,7 @@ class Server extends genericClass {
                     $userUsed = $quotas[$accId]['used'];
                     $accStatus = $account->get('zimbraAccountStatus');
                     $cosId = $account->get('zimbraCOSId');
+                    $externe = $account->get('zimbraIsExternalVirtualAccount');
                     $cos ='NULL';
                     if(isset($cosId) && $cosId != '')
                         $cos = $coses[$cosId];
@@ -290,6 +291,7 @@ class Server extends genericClass {
                     $o->Quota = floor($userQuota/1048576); //En Mo
                     $o->EspaceUtilise =floor($userUsed/1048576); //En Mo
                     $o->Status = $accStatus;
+                    $o->Externe = $externe;
 
 
                     $o->addParent($this);

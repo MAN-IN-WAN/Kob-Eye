@@ -118,7 +118,7 @@ class EmailAlias extends genericClass {
     }
 
     /**
-    * updateAlias
+    * Delete
     * Suppression d'un alias
     */
     public function Delete($sync = true) {
