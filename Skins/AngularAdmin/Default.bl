@@ -62,6 +62,7 @@
     <script src="Skins/AngularAdmin/assets/vendors/moment/locale/fr.js"></script>
     <script src="Skins/AngularAdmin/assets/vendors/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
     <script src="Skins/AngularAdmin/assets/vendors/fullcalendar/dist/fullcalendar.min.js"></script>
+    <script src="Skins/AngularAdmin/assets/vendors/fullcalendar/dist/locale/fr.js"></script>
     <script src="Skins/AngularAdmin/assets/vendors/cleanhtmlaudioplayer/src/jquery.cleanaudioplayer.js"></script>
     <script src="Skins/AngularAdmin/assets/vendors/cleanhtmlvideoplayer/src/jquery.cleanvideoplayer.js"></script>
     <script src="Skins/AngularAdmin/assets/vendors/bootstrap-sweetalert/dist/sweetalert.min.js"></script>

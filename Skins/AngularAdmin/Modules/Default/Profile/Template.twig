@@ -6,14 +6,14 @@
             <div class="profile-header-info">
                 <div class="row">
                     <div class="col-xl-8 col-xl-offset-4">
-                        <div class="width-100 text-center pull-right hidden-md-down">
+                        {#<div class="width-100 text-center pull-right hidden-md-down">
                             <h2>154</h2>
                             <p>Followers</p>
                         </div>
                         <div class="width-100 text-center pull-right hidden-md-down">
                             <h2>17</h2>
                             <p>Posts</p>
-                        </div>
+                        </div>#}
                         <div class="profile-header-title">
                             <h2>{% if User.Nom or User.Prenom %} {{ User.Prenom }} {{ User.Nom }} {% else %} John Doe {% endif %}<small>@{{ User.Login }}</small></h2>
                             <p><i class="icmn-quill3"></i> {{ User.Mail }}</p>
@@ -61,8 +61,8 @@
                 <div class="panel-body">
                     <h6>Actions</h6>
                     <div class="btn-group-vertical btn-group-justified">
-                        <button type="button" class="btn">Contacter Abtel</button>
-                        <button type="button" class="btn">Créer un Ticket</button>
+                        <a href="https://www.abtel.fr/contact" target="_blank" class="btn">Contacter Abtel</a>
+                        <button type="button" class="btn" title="Prochainement..." disabled>Créer un Ticket</button>
                     </div>
                 </div>
             </section>
@@ -131,20 +131,19 @@
                                         <i class="icmn-spam"></i> Non renseigné
                                     {% endif %}
                                 {% else %}
-                                    {% if attribute(User,field.name) %}
-                                        <span >{{ attribute(User,field.name) }}</span>
-                                    {% else %}
-                                        <i class="icmn-spam"></i> Non renseigné
-                                    {% endif %}
+                                    <span ng-if="userObj.{{ field.name }}" ng-bind-html="userObj.{{ field.name }}"></span>
+                                    <span  ng-if="!userObj.{{ field.name }}"><i class="icmn-spam"></i> Non renseigné</span>
                                 {% endif %}
                             </dd>
                         {% endfor %}
                         <dt>Adresse</dt>
+                        <dd>
                         {% if adresse %}
-                            <dd>{{ adresse }}</dd>
+                            {{ adresse }}
                         {% else %}
                             <i class="icmn-spam"></i> Non renseigné
                         {% endif %}
+                        </dd>
                     </dl>
                     {% if adresse %}
                         <iframe src="https://www.google.com/maps?q={{ adresse|url_encode }}&output=embed"></iframe>
@@ -152,7 +151,9 @@
 
 
                     <div class="btn-group-vertical btn-group-justified">
-                        <button type="button" class="btn">Modifier mes informations</button>
+                        <a class="btn" href="javascript: void(0);" ng-click="gotoAnchor('set_infos')" data-toggle="tab" data-target="#settings" role="tab" aria-expanded="false">
+                            Modifier mes informations
+                        </a>
                     </div>
                 </div>
             </section>
@@ -164,8 +165,9 @@
             <section class="panel profile-user-content">
                 <div class="panel-body">
                     <div class="nav-tabs-horizontal">
+                        <div id="top_profile"></div>
                         <ul class="nav nav-tabs" role="tablist">
-                            <li class="nav-item">
+                           {# <li class="nav-item">
                                 <a class="nav-link active" href="javascript: void(0);" data-toggle="tab" data-target="#posts" role="tab">
                                     <i class="icmn-menu3"></i>
                                     Wall
@@ -176,7 +178,7 @@
                                     <i class="icmn-bubbles5"></i>
                                     Messages
                                 </a>
-                            </li>
+                            </li>#}
                             <li class="nav-item">
                                 <a class="nav-link" href="javascript: void(0);" data-toggle="tab" data-target="#settings" role="tab">
                                     <i class="icmn-cog"></i>
@@ -185,7 +187,7 @@
                             </li>
                         </ul>
                         <div class="tab-content padding-vertical-20">
-                            <div class="tab-pane active" id="posts" role="tabpanel">
+                            {#<div class="tab-pane active" id="posts" role="tabpanel">
                                 <div class="user-wall">
                                     <div class="user-wall-posting">
                                         <div class="form-group padding-top-10 margin-bottom-0">
@@ -516,21 +518,29 @@
                                         Attach File
                                     </button>
                                 </div>
-                            </div>
+                            </div>#}
                             <div class="tab-pane" id="settings" role="tabpanel">
                                 <br />
-                                {#<div class="alert alert-danger" ng-if="modalObj.errors">#}
-                                    {#<ul>#}
-                                        {#<li ng-repeat="e in modalObj.errors">{[{ e.Message }]}</li>#}
-                                    {#</ul>#}
-                                {#</div>#}
 
-                               {{ include(template_from_string(module('Systeme/Utils/Form?Path=Systeme/User/' ~ User.Id))) }}
+                                <form action="" >
+                                    <fieldset>
+                                        <legend id="set_infos">Modifier mes informations :</legend>
+                                        <div class="alert alert-danger" ng-if="userObj.errors.length">
+                                            <ul>
+                                                <li ng-repeat="e in userObj.errors">{[{ e.Message }]}</li>
+                                            </ul>
+                                        </div>
 
-                                <div class="modal-footer">
-                                    <button type="button" class="btn" data-dismiss="modal">Annuler</button>
-                                    <button type="button" class="btn btn-primary" ng-click="modalSave()">Enregistrer les modifications</button>
-                                </div>
+                                       {{ include(template_from_string(module('Systeme/Utils/Form?Path=Systeme/User/' ~ User.Id ~ '&scopeObj=userObj'))) }}
+
+                                        <div class="modal-footer">
+                                            <a class="btn btn-danger" href="javascript: void(0);" data-toggle="tab" data-target="#posts" role="tab" aria-expanded="true" ng-click="initUser();gotoAnchor('top_profile');">
+                                                Annuler
+                                            </a>
+                                            <button type="button" class="btn btn-primary" ng-click="userSave();">Enregistrer les modifications</button>
+                                        </div>
+                                    </fieldset>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -559,9 +569,12 @@
 
         ///////////////////////////////////////////////////////////
         // CALENDAR
+        var date = new Date();
+        var now = date.toISOString();
         $('.example-calendar-block').fullCalendar({
             //aspectRatio: 2,
             height: 450,
+            locale: 'fr',
             header: {
                 left: 'prev, next',
                 center: 'title',
@@ -573,6 +586,23 @@
                 prevYear: 'none fa fa-arrow-left',
                 nextYear: 'none fa fa-arrow-right'
             },
+            buttonText: {
+                today:    'Aujourdh\'ui',
+                month:    'Mois',
+                week:     'Semaine',
+                day:      'Jour',
+                list:     'Liste'
+            },
+            businessHours: {
+                // days of week. an array of zero-based day of week integers (0=Sunday)
+                dow: [  1, 2, 3, 4, 5  ], // Monday - Thursday
+
+                start: '08:00', // a start time (10am in this example)
+                end: '18:00', // an end time (6pm in this example)
+            },
+            nowIndicator: true,
+            weekNumbers: true,
+            weekNumbersWithinDays:true,
             Actionable: true,
             eventLimit: true, // allow "more" link when too many events
             viewRender: function(view, element) {
@@ -589,7 +619,7 @@
                     $(this).addClass('event-clicked');
                 }
             },
-            defaultDate: '2016-05-12',
+            defaultDate: now,
             events: [
                 {
                     title: 'All Day Event',

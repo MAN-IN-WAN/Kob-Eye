@@ -284,7 +284,7 @@ table {
     background: #efefef !important;
 }
 table tr td.table-action{
-    padding: .45rem;
+    text-align: right;
 }
 
 
@@ -472,38 +472,38 @@ label.clickable{
 }
 
 /* liste Device -> Connexions*/
-.btn.btn-info.type_RDP{
+.btn-abt.btn-primary.type_RDP{
 
 }
-.btn.btn-info.type_VNC{
+.btn-abt.btn-primary.type_VNC{
     background-color:  #f0ad4e;
     border-color: #f0ad4e;
 }
-.btn.btn-info.type_VNC:hover{
+.btn-abt.btn-primary.type_VNC:hover{
     background-color:  #e09d3e;
     border-color: #e09d3e;
 }
-.btn.btn-info.type_SSH{
+.btn-abt.btn-primary.type_SSH{
     background-color:  #636c72;
     border-color: #636c72;
 }
-.btn.btn-info.type_SSH:hover{
+.btn-abt.btn-primary.type_SSH:hover{
     background-color:  #535c62;
     border-color: #535c62;
 }
-.btn.btn-info.type_Telnet{
+.btn-abt.btn-primary.type_Telnet{
     background-color:  #5cb85c;
     border-color: #5cb85c;
 }
-.btn.btn-info.type_Telnet:hover{
+.btn-abt.btn-primary.type_Telnet:hover{
     background-color:  #4ca84c;
     border-color: #4ca84c;
 }
-.btn.btn-info.type_Https{
+.btn-abt.btn-primary.type_Https{
     background-color:  #fff;
     border-color: #333;
 }
-.btn.btn-info.type_Https:hover{
+.btn-abt.btn-primary.type_Https:hover{
     background-color:  #ddd;
     border-color: #333;
 }
@@ -1091,4 +1091,131 @@ Choix des composants
 .charCount span {
     color: #0a6aa1;
     font-weight: 600;
+}
+
+
+/* Profile */
+.dl-horizontal.user-profile-dl{
+    border-left: 2px solid #46be8a;
+    overflow: hidden;
+}
+.dl-horizontal.user-profile-dl dt{
+    width: 110px;
+    text-align: left;
+    padding-left: 10px;
+}
+.dl-horizontal.user-profile-dl dd{
+    margin-left: 120px;
+    padding-left: 10px;
+}
+.dl-horizontal.user-profile-dl dd:nth-of-type(2n+1),
+.dl-horizontal.user-profile-dl dt:nth-of-type(2n+1){
+    background-color: #ddd;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#settings fieldset {
+    padding: 15px;
+    border: 2px solid #01a8fe;
+    border-radius: 10px;
+}
+
+#settings legend {
+    width: auto;
+    padding: 5px;
+}
+
+
+/* fullcalendar */
+.fc-unthemed .fc-toolbar h2{
+    text-transform: capitalize;
+}
+
+
+/* Menu Contact */
+.avatar_wrap{
+    padding: 0 10px;
+}
+
+.header-container .btn{
+    line-height: 1em;
+}
+
+
+.spinner-list{
+    position: relative;
+    min-height: 100px;
+}
+.sortable{
+    cursor: row-resize;
+    position: relative;
+}
+.sortable:after{
+    position: absolute;
+    right: 0;
+    color: #ccc;
+    width: 20px;
+    height: 20px;
+    content: "\ee3b";
+    font-family: 'icomoon-ultimate', serif ;
+}
+
+.sortable:hover {
+    background-color: #edfff9;
+}
+
+.sortable-up:after{
+    color: #f39834;
+    content: "\edc7";
+}
+.sortable-down:after{
+    color: #f39834;
+    content: "\edc9";
+}
+
+.btn-abt{
+    display: inline-block;
+    position: relative;
+    min-width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    margin: 1px;
+    padding: 3px 5px;
+}
+.btn-abt:after{
+    position: absolute;
+    content: ' ';
+    top: 5px;
+    left: 9px;
+    font-family: 'icomoon-ultimate', serif ;
+}
+.btn-abt-del:after{
+    content: "\ebfd";
+}
+.btn-abt-mod:after{
+    content: "\e910";
+}
+.btn-abt-nfo:after{
+    content: "\ed63";
+}
+
+.btn-abt-func{
+    background-color: #6f42c1;
+    color: #fff;
+    border: none;
+}
+.btn-abt-func:before{
+    content: "\eb60";
+    position: absolute;
+    top: 5px;
+    left: 8px;
+    font-family: 'icomoon-ultimate', serif ;
+}
+.btn-abt-func:after{
+    display: none !important;
+}
+.table-action .dropdown-menu{
+    right: 0;
+    left:  auto;
 }

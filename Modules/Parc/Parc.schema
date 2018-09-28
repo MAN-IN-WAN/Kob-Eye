@@ -322,7 +322,7 @@
 		<FUNCTION title="Envoyer un message">sendMessage</FUNCTION>
 		<FILTER name="Tous les périphériques" color="warning" ></FILTER>
 		<FILTER name="Périphériques en ligne"  color="success">Online=1</FILTER>
-		<FILTER name="Périphérique de type serveur"  color="primary">DeviceType=Serveur</FILTER>
+		<FILTER name="Serveurs"  color="primary">DeviceType=Serveur</FILTER>
 		<FILTER name="Ajoutés ces dernières 24h">tmsCreate>[!TMS::Now:-86400!]</FILTER>
 		<FILTER name="Périphériques en mode test">ModeTest=1</FILTER>
 		<INTERFACES name="top">
@@ -433,7 +433,7 @@
 		<PROPERTIES type="int" subtype="sliderGo" description="Quota en Go" list="1" form="1" fiche="1" listDescr="Quota">Quota</PROPERTIES>
 		<PROPERTIES type="int" description="Espace utilisé en Mo" list="1" fiche="1" listDescr="Utilisé">EspaceUtilise</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="3" description="Status de l'adresse" values="active::Active,maintenance::Maintenance,locked::Verrouillée,closed::Fermée,pending::En attente" default="active" list="1" form="1" fiche="1" listDescr="Etat">Status</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="4" description="Nom du contact" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="1" searchOrder="4" description="Nom du contact" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" description="Prénom du contact" list="1" form="1" fiche="1" listDescr="Prénom">Prenom</PROPERTIES>
         <PROPERTIES type="boolean" description="Compte externe (pour partage)" fiche="1" default="0" listDescr="Compte externe">Externe</PROPERTIES>
         <PROPERTIES type="date" description="Marqué pour suppression le" fiche="1" canBeNull="1" listDescr="Marqué pour suppression le">Suppression</PROPERTIES>
@@ -449,7 +449,7 @@
         <FUNCTION title="Forcer suppression locale">forceDel</FUNCTION>
 		<FUNCTION title="Retablir ">unDel</FUNCTION>
         <FILTER name="Toutes les ressources" color="warning" ><![CDATA[Suppression!!]]></FILTER>
-        <FILTER name="Ressources en attente de suppression" color="danger"><![CDATA[Suppression=!]]></FILTER>
+        <FILTER name="En attente de suppression" color="danger"><![CDATA[Suppression=!]]></FILTER>
         <PROPERTIES type="varchar" unique="1" fiche="1" description="Id sur le serveur mail" >IdMail</PROPERTIES>
 		<PROPERTIES type="varchar" fiche="1" form="1" obligatoire="1" description="Type de ressource"  default="Equipment" values="Equipment::Materiel,Location::Emplacement">Type</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Adresse de la ressource" list="1" form="1" fiche="1" listDescr="Adresse">Adresse</PROPERTIES>

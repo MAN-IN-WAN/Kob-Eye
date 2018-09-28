@@ -433,9 +433,11 @@
 
             ///////////////////////////////////////////////////////////
             // CALENDAR
+            var date = new Date();
+            var now = date.toISOString();
             $('.example-calendar-block').fullCalendar({
                 //aspectRatio: 2,
-                height: 450,
+                locale: 'fr',
                 header: {
                     left: 'prev, next',
                     center: 'title',
@@ -447,7 +449,24 @@
                     prevYear: 'none fa fa-arrow-left',
                     nextYear: 'none fa fa-arrow-right'
                 },
-                editable: true,
+                buttonText: {
+                    today:    'Aujourdh\'ui',
+                    month:    'Mois',
+                    week:     'Semaine',
+                    day:      'Jour',
+                    list:     'Liste'
+                },
+                businessHours: {
+                    // days of week. an array of zero-based day of week integers (0=Sunday)
+                    dow: [  1, 2, 3, 4, 5  ], // Monday - Thursday
+
+                    start: '08:00', // a start time (10am in this example)
+                    end: '18:00', // an end time (6pm in this example)
+                },
+                nowIndicator: true,
+                weekNumbers: true,
+                weekNumbersWithinDays:true,
+                Actionable: true,
                 eventLimit: true, // allow "more" link when too many events
                 viewRender: function(view, element) {
                     if (!cleanUI.hasTouch) {
@@ -457,15 +476,13 @@
                         });
                     }
                 },
-                defaultDate: '2017-04-26',
-                events: [
-                ],
                 eventClick: function(calEvent, jsEvent, view) {
                     if (!$(this).hasClass('event-clicked')) {
                         $('.fc-event').removeClass('event-clicked');
                         $(this).addClass('event-clicked');
                     }
-                }
+                },
+                defaultDate: now
             });
 
             ///////////////////////////////////////////////////////////

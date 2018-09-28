@@ -38,6 +38,8 @@
             }
         }
 
+
+        //Gestion des erreurs sur les  suppressions qui nont pas lieu danss un modal.
         $scope.$watch(function($scope){
             return $scope.{{ c.identifier }}.store.getErrors();
         }, function() {
@@ -396,6 +398,34 @@
             console.log('get select data',store,search);
             return $injector.get(store).getDataFilter(search,'form');
         }
+
+
+
+        /* Fonction de tri par colonne des listes */
+        $scope.triggerSort = function($event,identifier,field,context){
+            var elem = $event.currentTarget;
+            var elems = $(elem).siblings('.sortable').andSelf();
+            elems.removeClass('sortable-up');
+            elems.removeClass('sortable-down');
+
+            var actual = $scope[identifier].store.sort[context];
+
+            if(actual === [] || actual[0] != field){
+                $scope[identifier].store.sort[context] = [field,'ASC'];
+                $(elem).addClass('sortable-up');
+            } else {
+                if(actual[1] == 'ASC'){
+                    $scope[identifier].store.sort[context][1] = 'DESC'
+                    $(elem).addClass('sortable-down');
+                } else {
+                    $scope[identifier].store.sort[context] = [];
+                }
+            }
+
+            $scope[identifier].store.refresh(context);
+        }
+
+
         /*******
         * TREE
         *******/
@@ -1154,6 +1184,30 @@
 
             $scope.show = true;
 
+
+            /* Fonction de tri par colonne des listes */
+            $scope.triggerSort = function($event,identifier,field,context){
+                var elem = $event.currentTarget;
+                var elems = $(elem).siblings('.sortable').andSelf();
+                elems.removeClass('sortable-up');
+                elems.removeClass('sortable-down');
+
+                var actual = $scope[identifier].store.sort[context];
+
+                if(actual === [] || actual[0] != field){
+                    $scope[identifier].store.sort[context] = [field,'ASC'];
+                    $(elem).addClass('sortable-up');
+                } else {
+                    if(actual[1] == 'ASC'){
+                        $scope[identifier].store.sort[context][1] = 'DESC'
+                        $(elem).addClass('sortable-down');
+                    } else {
+                        $scope[identifier].store.sort[context] = [];
+                    }
+                }
+
+                $scope[identifier].store.refresh(context);
+            }
 
             //gestion des pages
             {% if c.browseable%}

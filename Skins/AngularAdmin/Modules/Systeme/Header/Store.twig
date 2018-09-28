@@ -57,9 +57,13 @@
             query: query,
             loadRecursivChildren: loadRecursivChildren,
             getErrors: getErrors,
+            busy:busy,
+            sort,sort,
             clearErrors: clearErrors,
             data:{{ st.identifier }}Store
         };
+
+        //Gestion des erreurs pour le cas ou on ne travaille pas dans un modal.
         function getErrors(){
             return errors;
         }
@@ -67,6 +71,7 @@
             errors = [];
             return true
         }
+
 
         function initContext(context) {
             {{ st.identifier }}Store[context] = [];
@@ -405,6 +410,8 @@
                 if (typeof obj[i] == "string"){
                     obj[i] = obj[i].replace(/\\\\n/g,'\n');
                     obj[i] = obj[i].replace(/\\\\r/g,'');
+                    obj[i] = obj[i].replace(/\\t/g,'\t');
+                    obj[i] = obj[i].replace(/\\\\/g,'\\');
 
                     var map = {
                         '&amp;': '&',
@@ -540,12 +547,13 @@
             //if (context=='link') console.trace();
             var tmpquery = getQuery(context);
             var tmpfilters = getQueryFilter(context);
+            var tmpsort = sort[context];
             //create new context
             if (page<1||page==undefined) page=1;
             //si occupé
             if (busy[context]) {
                 //si meme requete et meme filtre
-                if (busy[context].query == tmpquery && busy[context].filter == tmpfilters && page == busy[context].page){
+                if (busy[context].query == tmpquery && busy[context].filter == tmpfilters && page == busy[context].page && tmpsort[0] == busy[context].sort[0] && tmpsort[1] == busy[context].sort[1]){
                     //on renvoie le promise
                     console.log('STOP LIST BUSY ',busy[context].query, '==' ,tmpquery, '&&', busy[context].filter, '==' ,tmpfilters, '&&' ,page, '==' ,busy[context].page,'-----',busy[context]);
                     //return busy[context].promise;
@@ -567,7 +575,8 @@
                         promise: $q,
                         query: tmpquery,
                         filter: tmpfilters,
-                        page: page
+                        page: page,
+                        sort : tmpsort
                     };
                     $http.get(
                         tmpquery+'/getData.json',
@@ -577,7 +586,7 @@
                                 offset: (page-1)*pageLength,
                                 limit: pageLength,
                                 context: context,
-                                sort: JSON.stringify(sort)
+                                sort: JSON.stringify(tmpsort)
                             },
                             timeout: canceler.promise
                         }).success(function(data) {

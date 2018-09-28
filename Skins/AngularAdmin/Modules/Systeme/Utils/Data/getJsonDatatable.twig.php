@@ -8,7 +8,7 @@ $offset = (isset($_GET['offset']))?$_GET['offset']:0;
 $limit = (isset($_GET['limit']))?$_GET['limit']:30;
 $filters = (isset($_GET['filters']))?$_GET['filters']:'';
 $context = (isset($_GET['context']))?$_GET['context']:'default';
-$sort = (isset($_GET['store']))?$_GET['store']:array();
+$sort = (isset($_GET['sort']))?json_decode($_GET['sort']):array();
 $path = explode('/',$vars['Path'],2);
 $path = $path[1];
 
@@ -21,10 +21,11 @@ if(connection_aborted()){
     endPacket();
     exit;
 }
-if(count($sort))
-    $vars['rows'] = Sys::getData($info['Module'],$path.'/'.$filters,$offset,$limit,$sort[0],$sort[1]);
-else
-    $vars['rows'] = Sys::getData($info['Module'],$path.'/'.$filters,$offset,$limit);
+if(count($sort)) {
+    $vars['rows'] = Sys::getData($info['Module'], $path . '/' . $filters, $offset, $limit, $sort[1], $sort[0]);
+}else {
+    $vars['rows'] = Sys::getData($info['Module'], $path . '/' . $filters, $offset, $limit);
+}
 
 
 if(connection_aborted()){

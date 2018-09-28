@@ -1,4 +1,4 @@
-app.controller('{{ Url }}Ctrl', function($location, $scope, $rootScope, SystemeUserStore ) {
+app.controller('{{ Url }}Ctrl', function($location, $anchorScroll , $scope, $rootScope, SystemeUserStore ) {
 
     //Gestion du store
     $scope.store = SystemeUserStore;
@@ -6,12 +6,60 @@ app.controller('{{ Url }}Ctrl', function($location, $scope, $rootScope, SystemeU
     $scope.store.currentPage['Profile'] = 1;
     $scope.store.setFilters('Id={{ User.Id }}', 'Profile');
 
-    $scope.modalObj;
+    $scope.userObj;
 
-    $scope.store.getOneData({{ User.Id }}, 'Profile').then(function(data){
-        console.log('yeaaaaaah {{ User.Id }}',data);
-        $scope.modalObj = data;
-    });
+
+
+    $scope.gotoAnchor = function(x) {
+        var newHash =  x;
+        if ($location.hash() !== newHash) {
+            // set the $location.hash to `newHash` and
+            // $anchorScroll will automatically scroll to it
+            $location.hash(x);
+        } else {
+            // call $anchorScroll() explicitly,
+            // since $location.hash hasn't changed
+            $anchorScroll();
+        }
+    };
+
+    $scope.initUser = function(){
+        $scope.store.getOneData({{ User.Id }}, 'Profile').then(function(data){
+            console.log('yeaaaaaah {{ User.Id }}',data);
+            $scope.userObj = data;
+        });
+    }
+
+    $scope.initUser();
+
+    $scope.userSave = function (){
+        console.log('save ',$scope.userObj);
+        //affichage spinner
+        $('#settings').spin();
+        $scope.store.saveData($scope.userObj).then(function (data) {
+            $('#settings').spin(false);
+            if (data.success){
+                $scope.userObj = data.data;
+                $scope.userObj.success = data.success;
+                $scope.userObj.warning = data.warning;
+                $scope.userObj.errors = data.errors;
+                $scope.userObj.infos = data.infos;
+            }else {
+                //gestion des erreurs
+                $scope.userObj.errors = data.errors;
+                $scope.userObj.success = data.success;
+                $scope.userObj.warning = data.warning;
+                $scope.userObj.errors = data.errors;
+                $scope.userObj.infos = data.infos;
+                $scope.userObj.fieldErrors = [];
+                for (var e in data.errors) {
+                    $scope.userObj.fieldErrors.push(data.errors[e].Prop);
+                }
+                console.log('tab field error',$scope.userObj.fieldErrors);
+            }
+            console.log('save obj',data);
+        });
+    }
 
 
 });

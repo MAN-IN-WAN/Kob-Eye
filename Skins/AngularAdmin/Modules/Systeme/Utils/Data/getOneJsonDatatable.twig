@@ -23,7 +23,8 @@
             {% elseif field.query|length >0 %}
             ,"{{ field.name }}Label": "{{ attribute(row,field.name~'Label') | raw}}"
             {% endif %}
-            ,"{{ field.name }}": {{ attribute(row,field.name) | json_encode() | raw}}
+            ,"{{ field.name }}": {{ attribute(row,field.name) |
+        () | raw}}
         {% endif %}
     {% endfor %}
 }

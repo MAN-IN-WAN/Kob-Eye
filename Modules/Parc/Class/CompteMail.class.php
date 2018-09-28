@@ -21,6 +21,9 @@ class CompteMail extends genericClass {
 		//}
         //vérificatio du client
 
+        if(!$this->Suppression)
+            $this->Suppression = NULL;
+
 
         if($this->Suppression> 0 && $this->Suppression < time()){
             $this->finalDelete();
@@ -219,6 +222,7 @@ class CompteMail extends genericClass {
         $this->Suppression = NULL;
         $this->Status = 'active';
         $this->Save();
+
     }
 
 
@@ -417,12 +421,27 @@ class CompteMail extends genericClass {
         try{
             $domaine = $zimbra->getDomain($dom);
         } catch (Exception $e){
+
+            $values['name'] = $dom;
+            $values['zimbraDomainCOSMaxAccounts'] = array(
+                '631a8837-830a-4d1d-87be-f5172781a94e:100',
+                '1f940798-8cd7-4ebe-ba83-ef5326336523:100',
+                'ea710a54-8d3e-4226-a4d3-aac949cb3609:100',
+                '695c3a56-2e01-46dc-86a4-ecdd2dd3107d:100'
+            );
+
+            try{
+                $domaine = $zimbra->createDomain($values);
+            } catch (Exception $e){
+                print_r($e);
+            }
             //if($e->getMessage() == 'no such domain'){
-                $this->AddError(array('Message' => 'Erreur lors de la liaison avec le serveur de mail, le domaine renseigné n\'existe pas', 'Object' => $e));
-                return false;
-                //TODO : Creation du domaine ?
+//                $this->AddError(array('Message' => 'Erreur lors de la liaison avec le serveur de mail, le domaine renseigné n\'existe pas', 'Object' => $e));
+//                return false;
             //}
         }
+        //print_r($domaine);
+
 
         //Check que l'adresse ne soit pas déjà prise par un autre compte/Alias/Liste de diffusion
         try{
