@@ -1219,3 +1219,7 @@ Choix des composants
     right: 0;
     left:  auto;
 }
+
+.btn-abt.btn-primary{
+    background-color: #01a8fe;
+}

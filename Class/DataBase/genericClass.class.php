@@ -2978,6 +2978,7 @@ class genericClass extends Root {
         $this->label = $this->getFirstSearchOrder();
         $o = new stdClass();
         $o->id = $this->Id;
+        $o->Id = $this->Id;
         $uc = Sys::getOneData('Systeme','User/'.$this->userCreate);
         $ue = Sys::getOneData('Systeme','User/'.$this->userEdit);
         if (is_object($uc))

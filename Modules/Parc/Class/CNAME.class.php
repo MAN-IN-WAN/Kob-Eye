@@ -65,7 +65,7 @@ class CNAME extends genericClass {
                 return false;
             }
         }
-
+        $this->Nom = 'CNAME:'.$this->Dnsdomainname;
 
 		if(parent::Verify()) {
 

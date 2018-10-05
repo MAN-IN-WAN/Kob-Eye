@@ -13,9 +13,6 @@ $path = explode('/',$vars['Path'],2);
 $path = $path[1];
 
 
-
-//souscription au push
-Event::registerPush($info['Module'],$info['ObjectType'],$path,$filters,$offset,$limit,$context);
 //requete
 if(connection_aborted()){
     endPacket();
@@ -26,6 +23,10 @@ if(count($sort)) {
 }else {
     $vars['rows'] = Sys::getData($info['Module'], $path . '/' . $filters, $offset, $limit);
 }
+
+$ids= array_map(function($i){return $i->Id;},$vars['rows']);
+//souscription au push
+Event::registerPush($info['Module'],$info['ObjectType'],$path,$filters,$offset,$limit,$context,$ids,$sort);
 
 
 if(connection_aborted()){

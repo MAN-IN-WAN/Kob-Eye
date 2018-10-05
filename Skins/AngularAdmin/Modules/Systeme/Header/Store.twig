@@ -11,6 +11,7 @@
             timer = {},
             query = {},
             busy = {},
+            toRefresh = {},
             filters = {};
 
 
@@ -57,10 +58,11 @@
             query: query,
             loadRecursivChildren: loadRecursivChildren,
             getErrors: getErrors,
-            busy:busy,
-            sort,sort,
+            busy: busy,
+            sort: sort,
+            askForRefresh: askForRefresh,
             clearErrors: clearErrors,
-            data:{{ st.identifier }}Store
+            data: {{ st.identifier }}Store
         };
 
         //Gestion des erreurs pour le cas ou on ne travaille pas dans un modal.
@@ -79,6 +81,7 @@
             timer[context] = 0;
             busy[context] = 0;
             sort[context] = [];
+            toRefresh[context] = 0;
             resetFilters(context);
             currentPage[context] = 1;
             resetQuery(context);
@@ -655,6 +658,23 @@
                 reject('pas récursif');
             });
         }
+
+        /*
+        * Demande de rerfresh après creation ou suppression
+        */
+        function askForRefresh(context){
+            if(toRefresh[context] != 0){
+                console.log('Refraichissement déjà en attente pour le contexte "'+context+'"');
+            } else {
+                console.log('Refraichissement demandé pour le contexte "'+context+'"');
+                toRefresh[context] = $timeout(function(){
+                    refresh(context);
+                    toRefresh[context] = 0;
+                }, 5000);
+            }
+
+        }
+
     }).run(function ({{ key }},$rootScope) {
         $rootScope.$on('{{ key }}',function (ev,data){
             switch (data.type){
@@ -669,6 +689,7 @@
                 case 'add':
                     //raffraichir seulement une valeur dans un context
                     {{ key }}.addOneData(data.id,data.data,data.context);
+                    {{ key }}.askForRefresh(data.context);
                     break;
             }
         });

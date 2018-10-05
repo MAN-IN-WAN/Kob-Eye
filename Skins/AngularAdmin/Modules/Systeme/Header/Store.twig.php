@@ -30,7 +30,7 @@ foreach (Sys::$Modules as $k=>$mod){
 
         $flt =$o->getCustomFilters();
         $tmp['baseFilter'] = false;
-        if(is_array($flt) && $flt[0]->filter != '')
+        if(is_array($flt) && sizeof($flt) && $flt[0]->filter != '')
             $tmp['baseFilter'] = $flt[0]->filter;
 
         $stores[$tmp['identifier'].'Store'] = $tmp;

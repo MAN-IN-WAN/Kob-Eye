@@ -1262,6 +1262,8 @@ class Server extends genericClass {
         //test connectivite ssh
         try {
             $connection = ssh2_connect($this->InternalIP, 22);
+            if(!$connection) $connection = ssh2_connect($this->IP, 22);
+
             if (!$connection){
                 $this->addError(array("Message"=>"Impossible de contacter l'hôte ".$this->InternalIP));
                 $this->Status = false;
