@@ -146,22 +146,7 @@ class ObjectClass extends Root{
     public function getInterfaces(){
         return $this->Interfaces;
     }
-/*
-	// PGF 20180809
-/*	private function setAttributes($str) {
-		$str = explode(',',$str);
-		if(sizeof($str)) foreach($str as $s){
-			$this->Attributes[$s] = true;
-		}
-	}
-	public function getAttributes() {
-		return $this->Attributes;
-<<<<<<< HEAD
-	}
- */
-=======
-	}*/
->>>>>>> b62c6e095ea082737edbe92943329dcc76ced898
+
 	/**
 	 * __________________________________________________________________________________________________
 	 * 																							   PARSER
