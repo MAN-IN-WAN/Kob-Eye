@@ -19,7 +19,12 @@ class Domain extends genericClass {
 			parent::Save();
 			if ($this->updateOnSave)
 				$this->AutoGenSubDomains();
-		}
+			//mise à jour des serveur dns
+            $pxs = Sys::getData('Parc','Server/Dns=1');
+            foreach ($pxs as $px) {
+                $px->callLdap2Service();
+            }
+        }
 		return true;
 	}
 
@@ -166,7 +171,7 @@ class Domain extends genericClass {
 		$entry['dnsadminmailbox'] = 'postmaster.' . $this->Url . '.';
 		if (!$new){
 			$sd = Sys::$Modules["Parc"]->callData("Domain/".$this->Id."/NS/Nom=NS:1",false,0,1);
-			if (is_array($sd[0])){
+			if (isset($sd[0])&&is_array($sd[0])){
 				$sd[0] = genericClass::createInstance("Parc",$sd[0]);
 				$ns = $sd[0]->getParents("Server");
 				if (isset($ns[0])&&is_object($ns[0]))

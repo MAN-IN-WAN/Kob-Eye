@@ -48,7 +48,7 @@ class Instance extends genericClass{
             return false;*/
             //création d'un client par défaut
             //on vérifie que le client n'existe pas déjà
-            $client = Sys::getOneData('Parc','Client/NomLdap='.Utils::CheckSyntaxe($this->Nom));
+            $client = Sys::getOneData('Parc','Client/NomLDAP='.Utils::CheckSyntaxe($this->Nom));
             if (!$client) {
                 $client = genericClass::createInstance('Parc', 'Client');
                 $client->Nom = $this->Nom;
@@ -368,8 +368,8 @@ class Instance extends genericClass{
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,$https);
         curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 20);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 20);
         $rt = curl_exec($ch);
         $info = curl_getinfo($ch);
         return $info;
@@ -427,21 +427,33 @@ class Instance extends genericClass{
                 if (preg_match('#azko.site#',$domain)) continue;
                 //test http
                 $code = self::getHttpCode('http://'.$domain);
-                if (!in_array($code["http_code"],array(200,301,302))){
+                if (!in_array($code["http_code"],array(200,301,302,0))){
                     //alors incident
-                    $incident = Incident::createIncident('Le domaine '.$domain.' ne répond pas correctement en http.','Le code de retour est '.print_r($code,true),$this,'HTTP_CODE',$domain,4,false);
+                    Incident::createIncident('Le domaine '.$domain.' ne répond pas correctement en http.','Le code de retour est '.print_r($code,true),$this,'HTTP_CODE',$domain,4,false);
                 }else Incident::createIncident('Le domaine '.$domain.' ne répond pas correctement en http.','Le code de retour est '.print_r($code,true),$this,'HTTP_CODE',$domain,4,true);
                 //si ssl vérifie l'état du certificat et le code retour
                 if ($ap->Ssl){
                     $code = self::getHttpCode('https://'.$domain,true);
-                    if (!in_array($code["http_code"],array(200,301,302))){
+                    if (!in_array($code["http_code"],array(200,301,302,0))){
                         //alors incident
-                        $incident = Incident::createIncident('Le domaine '.$domain.' ne répond pas correctement en https.','Le code de retour est '.print_r($code,true),$this,'HTTPS_CODE',$domain,4,false);
-                    }else $incident = Incident::createIncident('Le domaine '.$domain.' ne répond pas correctement en https.','Le code de retour est '.print_r($code,true),$this,'HTTPS_CODE',$domain,4,true);
-                    if ($code["ssl_verify_result"]!==0){
-                        //alors incident
-                        $incident = Incident::createIncident('Le certificat du domaine '.$domain.' n\'est pas valide.','Le code de retour est '.print_r($code,true),$this,'SSL_ERROR',$domain,4,false);
-                    }else $incident = Incident::createIncident('Le certificat du domaine '.$domain.' n\'est pas valide.','Le code de retour est '.print_r($code,true),$this,'SSL_ERROR',$domain,4,true);
+                        Incident::createIncident('Le domaine '.$domain.' ne répond pas correctement en https.','Le code de retour est '.print_r($code,true),$this,'HTTPS_CODE',$domain,4,false);
+                    }else Incident::createIncident('Le domaine '.$domain.' ne répond pas correctement en https.','Le code de retour est '.print_r($code,true),$this,'HTTPS_CODE',$domain,4,true);
+
+                    //vérification du certificat
+                    $certinfo = Instance::checkSsl('https://'.$domain);
+                    if (!$certinfo)return;
+                    //test de la date d'expiration
+                    if ($certinfo['validTo_time_t']<time()){
+                        Incident::createIncident('Le certificat du domaine '.$domain.' a expirté le '.date('d/m/Y H:i:s',$certinfo['validTo_time_t']),'Le code de retour est '.print_r($certinfo,true),$this,'SSL_ERROR',$domain,4,false);
+                    }else Incident::createIncident('Le certificat du domaine '.$domain.' a expirté le '.date('d/m/Y H:i:s',$certinfo['validTo_time_t']),'Le code de retour est '.print_r($certinfo,true),$this,'SSL_ERROR',$domain,4,true);
+
+                    //on compare la liste des domaines à certifier et les domaines dans le certificat
+                    $certdomains = array();
+                    preg_match_all('#DNS:([^\ ,]*)#',$certinfo['extensions']['subjectAltName'],$othersdomains);
+                    $certdomains=array_merge($certdomains,$othersdomains[1]);
+                    if (!in_array($domain,$certdomains)){
+                        Incident::createIncident('Le certificat ne gère pas le domaine '.$domain.'.','Le code de retour est '.print_r($certinfo,true),$this,'SSL_ERROR',$domain,4,false);
+                    }else Incident::createIncident('Le certificat ne gère pas le domaine '.$domain.'.','Le code de retour est '.print_r($certinfo,true),$this,'SSL_ERROR',$domain,4,true);
                 }
             }
         }
@@ -449,4 +461,13 @@ class Instance extends genericClass{
         //appel checkState du plugin
         return $plugin->checkState($task);
     }
+    /**
+     * rewriteConfig
+     * Réécrire Configuration
+     */
+    public function rewriteConfig(){
+        $plugin = $this->getPlugin();
+        return $plugin->rewriteConfig();
+    }
+
 }

@@ -272,7 +272,8 @@ class StorProc extends Beacon {
 				}
 				//Tri
 				if (!empty($this->OrderVar)&&!empty($this->OrderType)){
-					$this->Result = Storproc::SpBubbleSort($this->Result,$this->OrderVar,$this->OrderType);
+                    if (isset($this->Result)&&sizeof($this->Result))
+						$this->Result = Storproc::SpBubbleSort($this->Result,$this->OrderVar,$this->OrderType);
 				}
                 if (isset($this->Result)&&sizeof($this->Result))
                     $this->parseContents($this->Result);

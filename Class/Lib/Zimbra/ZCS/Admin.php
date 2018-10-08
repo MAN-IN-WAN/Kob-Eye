@@ -547,6 +547,7 @@ class Admin
 
         $response = $this->searchDirectory($domain, 0, 0, 'distributionlists');
 
+
         foreach ($response->children()->SearchDirectoryResponse->children() as $listData) {
             $results[] = new \Zimbra\ZCS\Entity\DistributionList($listData);
         }
@@ -628,7 +629,14 @@ class Admin
         return true;
     }
 
-    
+    //Renomme une liste de diffusion
+    public function renameDistributionList($id, $newName){
+        $params = array(
+            'id' => $id,
+            'newName' => $newName
+        );
+        $this->zimbraConnect->request('RenameDistributionListRequest', array(), $params);
+    }
     
     
     /**** COS ****/
@@ -657,6 +665,104 @@ class Admin
 
         return new \Zimbra\ZCS\Entity\Cos($coses[0]);
     }
+
+
+    /**** RESSOURCES ****/
+    //Retourne une ressource
+    public function getRessource($ress,$by = 'id'){
+        $params = array(
+            'calresource ' => array(
+                '_'  => $ress,
+                'by' => $by,
+            )
+        );
+
+        $response = $this->zimbraConnect->request('GetCalendarResourceRequest', array(), $params);
+        $ressource = $response->children()->GetCalendarResourceResponse->children();
+
+        return new \Zimbra\ZCS\Entity\Ressource($ressource[0]);
+    }
+
+    //retourne l'ensemble des ressources d'un domaine
+    public function getAllRessources($domain = null){
+        $params=array();
+        if($domain){
+            $params = array(
+                'domain' => array(
+                    '_'  => $domain,
+                    'by' => 'name',
+                )
+            );
+        }
+        $ressources= $this->zimbraConnect->request('GetAllCalendarResourcesRequest',array(),$params);
+
+        $results = array();
+
+        foreach ($ressources->children()->GetAllCalendarResourcesResponse->children() as $ressource) {
+            $res = new \Zimbra\ZCS\Entity\Ressource($ressource);
+
+            $uidClean = $res->get('uid');
+            $uidClean = explode('.',$uidClean);
+            $uidClean = $uidClean[0];
+
+            if(in_array($uidClean ,$this->systemUsers)) continue; //Ignore les postmasters...
+            $results[] = $res;
+        }
+
+        return $results;
+    }
+
+    //Crée une ressource
+    public function createRessource($values){
+        $params = array();
+
+        $params['name'] = $values['name'];
+        unset($values['name']);
+
+        $params['password'] = $values['password'];
+        unset($values['password']);
+
+        $params['attributes'] = $values;
+
+        $response = $this->zimbraConnect->request('CreateCalendarResourceRequest', array(), $params);
+        $ressource = $response->children()->CreateCalendarResourceResponse->children();
+
+        return new \Zimbra\ZCS\Entity\Ressource($ressource[0]);
+    }
+
+
+
+    //Modifie une ressource (Nécéssite l'id)
+    public function modifyRessource($values){
+        $params = array();
+        $params['id'] = $values['id'];
+        unset($values['id']);
+        $params['attributes'] = $values;
+
+        $response = $this->zimbraConnect->request('ModifyCalendarResourceRequest', array(), $params);
+        $ressource = $response->children()->ModifyCalendarResourceResponse->children();
+
+        return new \Zimbra\ZCS\Entity\Account($ressource[0]);
+    }
+
+
+    //Supprime une ressource (depuis son id)
+    public function deleteRessource($id){
+        $this->zimbraConnect->request('DeleteCalendarResourceRequest', array(), array('id' => $id));
+
+        return true;
+    }
+
+
+    //Renomme une ressource
+    public function renameRessource($id, $newName){
+        $params = array(
+            'id' => $id,
+            'newName' => $newName
+        );
+        $this->zimbraConnect->request('RenameCalendarResourceRequest', array(), $params);
+    }
+
 
     
     /**************************************************/

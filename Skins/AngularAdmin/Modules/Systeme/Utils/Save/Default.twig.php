@@ -51,7 +51,7 @@ $parentelements = $obj->getParentElements();
 foreach ($parentelements as $f){
     if ($f['type']=='fkey' && $f['card']=='short'){
         $o->AddParent($f['objectModule'].'/'.$f['objectName'].'/'.$values->{$f["objectName"].$f["name"]});
-    }elseif ($f['type']=='fkey' && $f['card']=='long'){
+    }elseif ($f['type']=='fkey' && $f['card']=='long' && isset($values->{$f["objectName"].$f["name"]})){
         $o->resetParents($f['objectName']);
         foreach ($values->{$f["objectName"].$f["name"]} as $v)
             $o->AddParent($f['objectModule'].'/'.$f['objectName'].'/'.$v);

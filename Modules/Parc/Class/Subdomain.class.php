@@ -15,7 +15,9 @@ class Subdomain extends genericClass {
         $pa = $this->getOneParent('Domain');
         if ($pa) {
             $cnames = $pa->getChildren('CNAME');
-            $pref = explode(':', $this->Url)[1];
+            $pref = explode(':', $this->Url);
+            if (isset($pref[1]))$pref = $pref[1];
+            else $pref = $pref[0];
             foreach ($cnames as $cname) {
                 if ($pref == $cname->Dnsdomainname) {
                     $this->addError(array('Message' => "Une entrée CNAME existe déjà pour ce prefixe.", 'Prop' => ''));
@@ -103,10 +105,12 @@ class Subdomain extends genericClass {
         $pa = $this->getOneParent('Domain');
         if ($pa) {
             $cnames = $pa->getChildren('CNAME');
-            $pref = explode(':', $this->Url)[1];
+            $pref = explode(':', $this->Url);
+            if (isset($pref[1]))$pref = $pref[1];
+            else $pref = $pref[0];
 
             //check name
-            if ($pref != substr(Subdomain::checkName($pref),2)) {
+            if ($pref != Subdomain::checkName($pref)) {
                 $this->addError(array('Message' => "Un sous domaine ne doit pas contenir de caractères spéciaux.", 'Prop' => 'Url'));
                 $this->_isVerified = false;
                 return false;

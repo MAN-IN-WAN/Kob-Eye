@@ -28,16 +28,26 @@ class NS extends genericClass {
 	 * @return	Verification OK ou NON
 	 */
 	public function Verify( $synchro = true ) {
-
+        // Outils
+        $KEServer = $this->getKEServer();
+        $KEDomain = $this->getKEDomain();
+        //création du nom
+        if (empty($this->Nom)){
+            //génératio automatique du nom
+            for ($i=1;$i<100;$i++){
+                $nb = Sys::getCount('Parc','Domain/'.$KEDomain->Id.'/NS/Nom=NS:'.$i);
+                if (!$nb){
+                    $this->Nom = 'NS:'.$i;
+                    break;
+                }
+            }
+        }
 		if(parent::Verify()) {
 
 			$this->_isVerified = true;
 
 			if($synchro) {
 
-				// Outils
-				$KEDomain = $this->getKEDomain();
-				$KEServer = $this->getKEServer();
 				$dn = 'cn='.$this->Nom.',cn='.$KEDomain->Url.',ou=domains,'.PARC_LDAP_BASE;
 				// Verification à jour
 				$res = Server::checkTms($this);

@@ -273,6 +273,7 @@ class Server extends genericClass {
                     $userUsed = $quotas[$accId]['used'];
                     $accStatus = $account->get('zimbraAccountStatus');
                     $cosId = $account->get('zimbraCOSId');
+                    $externe = $account->get('zimbraIsExternalVirtualAccount');
                     $cos ='NULL';
                     if(isset($cosId) && $cosId != '')
                         $cos = $coses[$cosId];
@@ -290,6 +291,216 @@ class Server extends genericClass {
                     $o->Quota = floor($userQuota/1048576); //En Mo
                     $o->EspaceUtilise =floor($userUsed/1048576); //En Mo
                     $o->Status = $accStatus;
+                    $o->Externe = $externe;
+
+
+                    $o->addParent($this);
+                    $o->addParent($kCli);
+
+                    if(!$dryrun){
+                        $o->Save(false);
+                        $mAliases = $account->get('zimbraMailAlias');
+                        if(!is_array($mAliases))
+                            $mAliases = array($mAliases);
+
+                        $pAliases = $o->getChildren('EmailAlias');
+
+                        foreach($pAliases as $pAlias){
+                            if(!in_array($pAlias->TargetMail,$mAliases)){
+                                echo '**************************************** Suppression Alias :'.$pAlias->TargetMail.PHP_EOL;
+                                $pAlias->Delete(false);
+                            }
+                        }
+                        foreach($mAliases as $mAlias){
+                            foreach($pAliases as $pAlias){
+                                if($mAlias == $pAlias->TargetMail){
+                                    continue 2;
+                                }
+                            }
+                            echo '**************************************** Ajout Alias :'.$mAlias.PHP_EOL;
+                            $a = genericClass::createInstance('Parc','EmailAlias');
+                            $a->TargetMail = $mAlias;
+                            $a->addParent($o);
+                            $a->Save(false);
+                        }
+                    }
+                }
+            }
+        } catch (Exception $e){
+            $report .= print_r ($e,true);
+        }
+
+         return $report;
+    }
+
+    public function getDiffs($dryrun=false) {
+        //TODO: Vérifier que les comptes admin sont bien actifs avant !!!
+        $report = '';
+
+        if(!isset($this->IP) || $this->IP =='' || !isset($this->mailAdminPort) || $this->mailAdminPort == '' || !isset($this->mailAdminUser) || $this->mailAdminUser == '' || !isset($this->mailAdminPassword) || $this->mailAdminPassword == ''){
+            $report = 'Veuillez vérifier la configuration du serveur. En l\'état il nous est impossible de nous connecter a l\'administration du serveur de mail';
+            return $report;
+        }
+
+        // Create a new Admin class and authenticate
+        $zimbra = new \Zimbra\ZCS\Admin($this->IP, $this->mailAdminPort);
+        $zimbra->auth($this->mailAdminUser, $this->mailAdminPassword);
+
+        try{
+            $domaines = $zimbra->getDomains();
+
+
+
+            foreach($domaines as $domain){
+                //echo '<pre>';
+                //print_r($domain);
+                //echo '</pre>';
+
+                $dname = $domain->get('name');
+                //print_r($dname.'<br/>');
+                $kDom = Sys::getOneData('Parc','Domain/Url='.$dname);
+                if(!is_object($kDom)){
+                    $report .= '<b>Domaine</b> "'.$dname.'" absent du Parc. Les adresses appartenant à ce domaine seront ignorées car impossible à relier à un client.<br>'.PHP_EOL;
+                    continue;
+                }
+                $kCli = $kDom->getOneParent('Client');
+                if(!is_object($kCli)){
+                    $report .= '<b>Client</b> introuvable pour le domaine "'.$dname.'". Les adresses appartenant à ce domaine seront ignorées car impossible à relier à un client.<br>'.PHP_EOL;
+                    continue;
+                }
+
+                $report .= '<b>Domaine</b> "'.$dname.': .<br>'.PHP_EOL;
+
+                $diffList = $zimbra->getDistributionLists($dname);
+                foreach($diffList as $diff){
+
+
+                    $diffId = $diff->get('id');
+                    $diffName = $diff->get('name');
+
+                    $o = Sys::getOneData('Parc','ListeDiffusion/IdDiffusion='.$diffId);
+                    if(!is_object($o)){
+                        $o = genericClass::createInstance('Parc','ListeDiffusion');
+                        $o->IdDiffusion = $diffId;
+                        $report .= '<b>Nouvelle liste de diffusion trouvée</b> : '.$diffName.'.<br>'.PHP_EOL;
+                    }
+
+                    $o->Nom = $diffName;
+
+                    $o->addParent($this);
+                    $o->addParent($kCli);
+
+                    if(!$dryrun){
+                        $o->Save(false);
+
+                        foreach($diff->getMembers() as $memb) {
+                            $report .= '------- synchronisation du membre : "'.$memb.': .<br>'.PHP_EOL;
+                            try {
+                                $temp = $zimbra->getAccount($dname, 'name', $memb);
+                                $id = $temp->get('id');
+                                $compte = Sys::getOneData('Parc', 'CompteMail/IdMail=' . $id);
+                                if ($compte) {
+                                    $compte->addParent($o);
+                                    $compte->Save(false);
+                                } else{
+                                    $report .= 'ERREUR :  Compte introuvable sur le proxy ( Tentez un synchronisation des comptes mails et réessayez. )'.PHP_EOL;
+                                }
+                            }catch (Exception $e){
+                                $report .= 'ERREUR :  Compte introuvable sur le serveur de mail ( Probablement une liste de diffusion. )'.PHP_EOL;
+                                //$report .= print_r ($e,true);
+                            }
+                        }
+                    }
+
+                    if(count($o->Error)){
+                        $report .= '************************* ERRORS ********************************';
+                        $report .= print_r($o->Error, true);
+                        $report .= '*****************************************************************';
+                    }
+
+
+                }
+            }
+        } catch (Exception $e){
+            $report .= print_r ($e,true);
+        }
+
+        return $report;
+    }
+
+    public function getRessources($dryrun=false) {
+        //TODO: Vérifier que les comptes admin sont bien actifs avant !!!
+        $report = '';
+
+        if(!isset($this->IP) || $this->IP =='' || !isset($this->mailAdminPort) || $this->mailAdminPort == '' || !isset($this->mailAdminUser) || $this->mailAdminUser == '' || !isset($this->mailAdminPassword) || $this->mailAdminPassword == ''){
+            $report = 'Veuillez vérifier la configuration du serveur. En l\'état il nous est impossible de nous connecter a l\'administration du serveur de mail';
+            return $report;
+        }
+
+        // Create a new Admin class and authenticate
+        $zimbra = new \Zimbra\ZCS\Admin($this->IP, $this->mailAdminPort);
+        $zimbra->auth($this->mailAdminUser, $this->mailAdminPassword);
+
+        try{
+            $domaines = $zimbra->getDomains();
+
+//            $cosesTemp = $zimbra->getAllCos();
+//            $coses = array();
+//            foreach ($cosesTemp as $cosTemp){
+//                $coses[$cosTemp->get('id')]=$cosTemp->get('name');
+//            }
+
+
+
+            foreach($domaines as $domain){
+                //echo '<pre>';
+                //print_r($domain);
+                //echo '</pre>';
+
+                $dname = $domain->get('name');
+                //print_r($dname.'<br/>');
+                $kDom = Sys::getOneData('Parc','Domain/Url='.$dname);
+                if(!is_object($kDom)){
+                    $report .= '<b>Domaine</b> "'.$dname.'" absent du Parc. Les adresses appartenant à ce domaine seront ignorées car impossible à relier à un client.<br>'.PHP_EOL;
+                    continue;
+                }
+                $kCli = $kDom->getOneParent('Client');
+                if(!is_object($kCli)){
+                    $report .= '<b>Client</b> introuvable pour le domaine "'.$dname.'". Les adresses appartenant à ce domaine seront ignorées car impossible à relier à un client.<br>'.PHP_EOL;
+                    continue;
+                }
+
+                $report .= '<b>Domaine</b> "'.$dname.': .<br>'.PHP_EOL;
+
+                $ressList = $zimbra->getAllRessources($dname);
+                foreach($ressList as $ress){
+
+
+                    $accHost = $ress->get('zimbraMailHost');
+                    if($accHost != $this->DNSNom){
+                        continue;
+                    }
+                    $accId = $ress->get('id');
+                    $accName = $ress->get('name');
+                    $accStatus = $ress->get('zimbraAccountStatus');
+                    $accType = $ress->get('zimbraCalResType');
+                    $accDisplay = $ress->get('displayName');
+//                    $cosId = $ress->get('zimbraCOSId');
+//                    $cos ='NULL';
+//                    if(isset($cosId) && $cosId != '')
+//                        $cos = $coses[$cosId];
+
+                    $o = Sys::getOneData('Parc','EmailRessource/IdMail='.$accId);
+                    if(!is_object($o)){
+                        $o = genericClass::createInstance('Parc','EmailRessource');
+                        $o->IdMail = $accId;
+                        $report .= '<b>Nouvelle ressource trouvée</b> : '.$accName.'.<br>'.PHP_EOL;
+                    }
+                    $o->Adresse = $accName;
+                    //$o->COS = $cos;
+                    $o->Status = $accStatus;
+                    $o->Type = $accType;
+                    $o->Nom = $accDisplay;
 
 
                     $o->addParent($this);
@@ -304,7 +515,7 @@ class Server extends genericClass {
             $report .= print_r ($e,true);
         }
 
-         return $report;
+        return $report;
     }
 
 
@@ -910,6 +1121,19 @@ class Server extends genericClass {
                         $KEObj->LdapDN = $res[0]['dn'];
                     }
                     break;
+                case "Subdomain":
+                    $search = ldap_search(Server::$_LDAP, $dn, 'cn=' . $KEObj->Nom, array('modifytimestamp', 'entryuuid'));
+                    $res = ldap_get_entries(Server::$_LDAP, $search);
+                    //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
+                    if (!$res['count']) {
+                        $e['exists'] = false;
+                        return $e;
+                    }else{
+                        $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                        $KEObj->LdapID = $res[0]['entryuuid'][0];
+                        $KEObj->LdapDN = $res[0]['dn'];
+                    }
+                    break;
             }
         }else {
 		    if ($KEServer){
@@ -1038,6 +1262,8 @@ class Server extends genericClass {
         //test connectivite ssh
         try {
             $connection = ssh2_connect($this->InternalIP, 22);
+            if(!$connection) $connection = ssh2_connect($this->IP, 22);
+
             if (!$connection){
                 $this->addError(array("Message"=>"Impossible de contacter l'hôte ".$this->InternalIP));
                 $this->Status = false;
@@ -1317,6 +1543,30 @@ class Server extends genericClass {
         }
     }
     /**
+     * fileExists
+     * Check if a file exists
+     */
+    public function fileExists($path){
+        $act = $this->createActivity('Test existence fichier '.$path,'Exec');
+        try {
+            $out = $this->remoteExec('if [ -f '.$path.' ]; then echo 1; else echo 0; fi');
+            $act->addDetails('if [ -f '.$path.' ]; then echo 1; else echo 0; fi');
+            if (intval($out)>0){
+                $act->addDetails('retour => true ');
+                $act->Terminate(true);
+                return true;
+            }else{
+                $act->addDetails('retour => false ');
+                $act->Terminate(true);
+                return false;
+            }
+        }catch (Exception $e){
+            $act->addDetails($e->getMessage());
+            $act->Terminate(false);
+            return false;
+        }
+    }
+    /**
      * getFileContent
      * Return file content
      */
@@ -1339,7 +1589,7 @@ class Server extends genericClass {
      */
     public function putFileContent($path,$content){
         try {
-            $out = $this->remoteExec('echo \''.$content.'\' > '.$path);
+            $out = $this->remoteExec('echo  \''.base64_encode($content).'\' | base64 --decode > '.$path);
             if (!empty($out)){
                 return $out;
             }else{

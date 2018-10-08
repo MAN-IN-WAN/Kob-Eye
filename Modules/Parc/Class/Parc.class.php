@@ -295,18 +295,32 @@ class Parc extends Module{
      * Renouvellement des certificats
      */
 	public function renewCertificates () {
-        echo "renew certificate\r\n";
+        $task = genericClass::createInstance('Parc', 'Tache');
+        $task->Type = 'Fonction';
+        $task->Nom = 'Mise à jour des certificats expirés';
+        $task->TaskModule = 'Parc';
+        $task->TaskObject = 'Parc';
+        $task->Demarre = true;
+        $task->TaskFunction = 'Renew';
+        $task->Save();
+        $task->createActivity('Recherche des certificats à mettre à jour');
 	    //recherche des hébergements à renouveller avec une expiration dans les prochaines 24 heures
-        $aps = Sys::getData('Parc','Apache/Ssl=1&&SslMethod=Letsencrypt&SslExpiration<'.(time()-86400));
+        $aps = Sys::getData('Parc','Apache/Ssl=1&&SslMethod=Letsencrypt&SslExpiration<'.(time()+86400));
         //pour chaque apache on crée une tache pour renouveller le certificat
         foreach ($aps as $a){
-            if ($a->enableSsl()) echo "--> renew $a->ApacheServerName \r\n";
-            //else print_r($a->Error);
+            $act = $task->createActivity('Mise à jour du certificat des domaines '.$a->getDomains());
+            if ($a->enableSsl()) $act->Terminate(true);
+            else{
+                $act->addDetails(print_r($a->Error,true));
+                $act->Terminate(false);
+            }
         }
+        $task->Termine = true;
+        $task->Save();
     }
     public static function Renew(){
         $parc = Sys::getModule('Parc');
-        $parc->renewCertificate();
+        $parc->renewCertificates();
     }
     /**
      * Execution des taches

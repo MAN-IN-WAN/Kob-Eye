@@ -98,7 +98,7 @@ class genericClass extends Root {
 			return (!$Nom && isset($this -> {$Key})) ? $this -> {$Key} : $Key;
 		}
 		//On verifie si c est un mot reserve
-		if ($Data == "Id")
+		if ($Data == "Id" && isset($this->Id))
 			return $this -> Id;
 		//Sinon, on recherche le type: si c'est une clef etrangere, on recherche les enfants
 		/*		echo "---------------$Data--------------\r\n";
@@ -952,6 +952,7 @@ class genericClass extends Root {
 			foreach ($Funcs as $Name => $F) {
 				$Temp = $F;
 				$Temp["Nom"] = $Name;
+                $Temp["needConfirm"] = isset($Temp["needConfirm"]) ? $Temp["needConfirm"]:0;
 				$Functions[] = $Temp;
 			}
 		return $Functions;
@@ -1367,7 +1368,7 @@ class genericClass extends Root {
 		$Ie = explode('/', $Q, 2);
         if (!is_object(Sys::$Modules[$Ie[0]])){
             print_r($Q);
-            die("AddParent: Mauvais format ");
+            throw new Exception("AddParent: Mauvais format ");
         }
         $I = Sys::$Modules[$Ie[0]]->splitQuery($Q);
 		if ($I[0]["Type"] == "Child" && sizeof($I) > 1)
@@ -1379,6 +1380,7 @@ class genericClass extends Root {
 			return false;
 		$NbQ = sizeof($ExplQ) - 1;
 		$this -> addFkey($ExplQ[$NbQ - 2], $ExplQ[$NbQ - 1], $ExplQ[$NbQ], 2, $SpeFKey);
+        return $ExplQ;
 	}
 
 	/**
@@ -1408,6 +1410,7 @@ class genericClass extends Root {
 			return false;
 		$NbQ = sizeof($ExplQ) - 1;
 		$this -> addFkey($ExplQ[$NbQ - 2], $ExplQ[$NbQ - 1], $ExplQ[$NbQ], 0,$SpeFKey);
+		return $ExplQ;
 	}
 
 	/**
@@ -1426,6 +1429,7 @@ class genericClass extends Root {
 					$this -> addFKey($Parents[$i] -> Module, $Class, $Parents[$i] -> Id, 0, $SpeFKey);
 				}
 		}
+		return $Class;
 	}
 
 	/**
@@ -1440,6 +1444,8 @@ class genericClass extends Root {
 		$Enfant -> initFromId($Id, $Type);
 		$Enfant -> addFkey($Enfant -> Module, $this -> ObjectType, $this -> Id);
 		$Enfant -> Save();
+
+		return $Enfant;
 	}
 
 	/**
@@ -1454,6 +1460,8 @@ class genericClass extends Root {
 		$Enfant -> initFromId($Id, $Type);
 		$Enfant -> addFkey($this -> Module, $this -> ObjectType, $this -> Id, 0);
 		$Enfant -> Save();
+
+        return $Enfant;
 	}
 
 	/**
@@ -1470,6 +1478,8 @@ class genericClass extends Root {
 				$Childs[$i] -> addFKey($this -> Module, $this -> ObjectType, $this -> Id, 0);
 				$Childs[$i] -> Save();
 			}
+
+        return $Class;
 	}
 
 	/**
@@ -2968,6 +2978,7 @@ class genericClass extends Root {
         $this->label = $this->getFirstSearchOrder();
         $o = new stdClass();
         $o->id = $this->Id;
+        $o->Id = $this->Id;
         $uc = Sys::getOneData('Systeme','User/'.$this->userCreate);
         $ue = Sys::getOneData('Systeme','User/'.$this->userEdit);
         if (is_object($uc))

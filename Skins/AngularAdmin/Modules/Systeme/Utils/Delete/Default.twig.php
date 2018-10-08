@@ -5,6 +5,7 @@ $info = Info::getInfos($query);
 if ($info["TypeSearch"]=="Direct"){
     //alors modification
     $o = Sys::getOneData($info['Module'],$query);
-    $o->Delete();
+    $vars['res'] = $o->Delete();
+    $vars['errors'] = json_encode($o->Error);
 }
 ?>

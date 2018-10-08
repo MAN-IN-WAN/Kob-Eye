@@ -122,7 +122,7 @@
 	<OBJECTCLASS title="Access" Dico="1" driver="mysql" Icon="/Skins/AdminV2/Img/brick.png" Description="Access">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé">Titre</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" values="Parc,Systeme,Abtel" category="Definition" description="Module">ObjectModule</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="3" values="Client,Device,Ticket,Facture,Contrat,Domain,CompteMail,Host,Server,Contact,DeviceConnexion,MiniSite" category="Definition">ObjectClass</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="3" values="Client,Device,Ticket,Facture,Contrat,Domain,CompteMail,Host,Server,Contact,DeviceConnexion,MiniSite,ListeDiffusion,EmailRessource" category="Definition">ObjectClass</PROPERTIES>
 		<PROPERTIES type="varchar" category="Definition">Alias</PROPERTIES>
 		<PROPERTIES type="varchar" category="Definition">Filters</PROPERTIES>
 		<PROPERTIES type="order" category="Definition">Ordre</PROPERTIES>
@@ -292,8 +292,8 @@
 	</OBJECTCLASS>
 	<!--Taches planifiées -->
 	<OBJECTCLASS title="ScheduledTask" driver="mysql" AccessPoint="1" Icon="[None]" Description="Tâches planifiées">
-        <PROPERTIES category="Description" type="varchar" searchOrder="1">Titre</PROPERTIES>
-        <PROPERTIES category="Description" type="boolean" searchOrder="2" description="Activé">Enabled</PROPERTIES>
+        <PROPERTIES category="Description" type="varchar" searchOrder="1" form="1" fiche="1" list="1">Titre</PROPERTIES>
+        <PROPERTIES category="Description" type="boolean" searchOrder="2" description="Activé" form="1" fiche="1" list="2">Enabled</PROPERTIES>
 		<PROPERTIES type="varchar" listDescr="Minute" default="*" values="*,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59" list="1" form="1" fiche="1">Minute</PROPERTIES>
 		<PROPERTIES type="varchar" listDescr="Heure" default="*" values="*,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24" list="1" form="1" fiche="1">Heure</PROPERTIES>
 		<PROPERTIES type="varchar" listDescr="Jour Mois" default="*" values="*,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31" list="1" form="1" fiche="1">Jour</PROPERTIES>
@@ -305,10 +305,10 @@
 		<PROPERTIES type="boolean" form="1" fiche="1">Vendredi</PROPERTIES>
 		<PROPERTIES type="boolean" form="1" fiche="1">Samedi</PROPERTIES>
 		<PROPERTIES type="boolean" form="1" fiche="1">Dimanche</PROPERTIES>
-        <PROPERTIES category="Clef" type="varchar" description="Module"  searchOrder="2" list="5">TaskModule</PROPERTIES>
-        <PROPERTIES category="Clef" type="varchar" description="ObjectClass"  searchOrder="3" list="6">TaskObject</PROPERTIES>
-        <PROPERTIES category="Clef" type="int" description="Identifiant"  searchOrder="4" list="7">TaskId</PROPERTIES>
-        <PROPERTIES category="Clef" type="varchar" description="Fonction à éxécuter"  searchOrder="5" list="7">TaskFunction</PROPERTIES>
+        <PROPERTIES category="Clef" type="varchar" description="Module"  searchOrder="2" list="5" form="1" fiche="1">TaskModule</PROPERTIES>
+        <PROPERTIES category="Clef" type="varchar" description="ObjectClass"  searchOrder="3" list="6" form="1" fiche="1">TaskObject</PROPERTIES>
+        <PROPERTIES category="Clef" type="int" description="Identifiant"  searchOrder="4" list="7" form="1" fiche="1">TaskId</PROPERTIES>
+        <PROPERTIES category="Clef" type="varchar" description="Fonction à éxécuter"  searchOrder="5" list="7" form="1" fiche="1">TaskFunction</PROPERTIES>
 	</OBJECTCLASS>
 
 </SCHEMA>

@@ -220,53 +220,70 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
         $version = VersionLogiciel::getLastVersion('AzkoFront',$this->_obj->Type);
         if (!is_object($version))throw new Exception('Pas de version disponible pour l\'app AzkoFront Type '.$this->_obj->Type);
         try {
-            $GLOBALS['Chrono']->start('AZKOFRONT: git init');
-            $act = $this->_obj->createActivity('Initialisation du git clone et connexion à '.$apachesrv->Nom, 'Info', $task);
-            $cmd = 'cd /home/' . $host->NomLDAP . '/www && git remote -v';
-            $act->addDetails($cmd);
-            $out = $apachesrv->remoteExec($cmd);
-            $act->addDetails($out);
-            if (!empty($out)) {
-                $cmd = 'cd /home/' . $host->NomLDAP . '/www && git remote rm origin';
+            if ($version->GitReset) {
+                $GLOBALS['Chrono']->start('AZKOFRONT: git init');
+                $act = $this->_obj->createActivity('Initialisation du git clone et connexion à ' . $apachesrv->Nom, 'Info', $task);
+                $cmd = 'cd /home/' . $host->NomLDAP . '/www && git remote -v';
                 $act->addDetails($cmd);
                 $out = $apachesrv->remoteExec($cmd);
                 $act->addDetails($out);
+                if (!empty($out)) {
+                    $cmd = 'cd /home/' . $host->NomLDAP . '/www && git remote rm origin';
+                    $act->addDetails($cmd);
+                    $out = $apachesrv->remoteExec($cmd);
+                    $act->addDetails($out);
+                }
+                $cmd = 'cd /home/' . $host->NomLDAP . '/www && git remote add origin ' . $version->GitUrl;
+                $act->addDetails($cmd);
+                $out .= $apachesrv->remoteExec($cmd);
+                $act->addDetails($out);
+                $GLOBALS['Chrono']->stop('AZKOFRONT: git init');
+                $GLOBALS['Chrono']->start('AZKOFRONT: git fetch');
+                $cmd = 'cd /home/' . $host->NomLDAP . '/www && git fetch';
+                $act->addDetails($cmd);
+                $out = $apachesrv->remoteExec($cmd);
+                $act->addDetails($out);
+                if (!empty($version->GitBranche))
+                    $cmd = 'cd /home/' . $host->NomLDAP . '/www && git reset --hard origin/' . $version->GitBranche;
+                else $cmd = 'cd /home/' . $host->NomLDAP . '/www && git reset --hard origin/master';
+                $act->addDetails($cmd);
+                $out .= $apachesrv->remoteExec($cmd);
+                $act->addDetails($out);
+                $act->Terminate(true);
+                $GLOBALS['Chrono']->stop('AZKOFRONT: git fetch');
+                $GLOBALS['Chrono']->start('AZKOFRONT: edit rights');
+                $act = $this->_obj->createActivity('Modification des droits', 'Info', $task);
+                $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . '/www -R';
+                $act->addDetails($cmd);
+                $out = $apachesrv->remoteExec($cmd);
+                $act->addDetails($out);
+                $act->Terminate(true);
+                $GLOBALS['Chrono']->stop('AZKOFRONT: edit rights');
+                $GLOBALS['Chrono']->start('AZKOFRONT: save instance changes');
+                //changement du statut de l'instance
+                $this->_obj->CurrentVersion = $version->Version;
+                $this->_obj->setStatus(2);
+                if ($task) {
+                    $task->addRetour($GLOBALS['Chrono']->total());
+                }
+                $GLOBALS['Chrono']->stop('AZKOFRONT: save instance changes');
+                return true;
+            }else{
+                $GLOBALS['Chrono']->start('AZKOFRONT: git pull');
+                $act = $this->_obj->createActivity('Execution du git pull et connexion à ' . $apachesrv->Nom, 'Info', $task);
+                $cmd = 'cd /home/' . $host->NomLDAP . '/www && git pull ' . $version->GitUrl.' '.$version->GitBranche;
+                $act->addDetails($cmd);
+                $out = $apachesrv->remoteExec($cmd);
+                $act->addDetails($out);
+                $act->Terminate(true);
+                $GLOBALS['Chrono']->stop('AZKOFRONT: git pull');
+                //changement du statut de l'instance
+                $this->_obj->CurrentVersion = $version->Version;
+                $this->_obj->setStatus(2);
+                if ($task) {
+                    $task->addRetour($GLOBALS['Chrono']->total());
+                }
             }
-            $cmd = 'cd /home/' . $host->NomLDAP . '/www && git remote add origin '.$version->GitUrl;
-            $act->addDetails($cmd);
-            $out .= $apachesrv->remoteExec($cmd);
-            $act->addDetails($out);
-            $GLOBALS['Chrono']->stop('AZKOFRONT: git init');
-            $GLOBALS['Chrono']->start('AZKOFRONT: git fetch');
-            $cmd = 'cd /home/' . $host->NomLDAP . '/www && git fetch';
-            $act->addDetails($cmd);
-            $out = $apachesrv->remoteExec($cmd);
-            $act->addDetails($out);
-            if (!empty($version->GitBranche))
-                $cmd = 'cd /home/' . $host->NomLDAP . '/www && git reset --hard origin/'.$version->GitBranche;
-            else $cmd = 'cd /home/' . $host->NomLDAP . '/www && git reset --hard origin/master';
-            $act->addDetails($cmd);
-            $out .= $apachesrv->remoteExec($cmd);
-            $act->addDetails($out);
-            $act->Terminate(true);
-            $GLOBALS['Chrono']->stop('AZKOFRONT: git fetch');
-            $GLOBALS['Chrono']->start('AZKOFRONT: edit rights');
-            $act = $this->_obj->createActivity('Modification des droits', 'Info', $task);
-            $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . '/www -R';
-            $act->addDetails($cmd);
-            $out = $apachesrv->remoteExec($cmd);
-            $act->addDetails($out);
-            $act->Terminate(true);
-            $GLOBALS['Chrono']->stop('AZKOFRONT: edit rights');
-            $GLOBALS['Chrono']->start('AZKOFRONT: save instance changes');
-            //changement du statut de l'instance
-            $this->_obj->CurrentVersion = $version->Version;
-            $this->_obj->setStatus(2);
-            if ($task){
-                $task->addRetour($GLOBALS['Chrono']->total());
-            }
-            $GLOBALS['Chrono']->stop('AZKOFRONT: save instance changes');
-            return true;
         }catch (Exception $e){
             $act->addDetails('Erreur: '.$e->getMessage());
             $act->Terminate(false);
@@ -304,7 +321,7 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
                 }catch (Exception $e){
                     $act->addDetails('ERREUR DE MONTAGE : '.$e->getMessage());
                 }
-            }else $incident = Incident::createIncident('Les dossiers médias et skins de l\'instance '.$this->_obj->Nom.' ne sont pas montés.','Le code de retour est ',$this->_obj,'FOLDER_MOUNT',$this->_obj->NomInstance,3,true);
+            }else $incident = Incident::createIncident('Les dossiers médias et skins de l\'instance '.$this->_obj->Nom.' ne sont pas montés.','Le code de retour est ',$this->_obj,'FOLDER_MOUNT',$this->_obj->InstanceNom,3,true);
 
 
             $GLOBALS['Chrono']->stop('AZKOFRONT: checkState check mount');
@@ -332,6 +349,12 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
             $act->Terminate(false);
             throw new Exception($e->getMessage());
         }
+    }
+    /**
+     * rewriteConfig
+     */
+    public function rewriteConfig() {
+
     }
 
 }

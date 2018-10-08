@@ -7,8 +7,12 @@ class Cms extends Module {
      */
     public function loadTemplate($t){
         //Recuperation de la Page
-        $menu = Sys::$CurrentMenu;
-        $page = $menu->getOneChild('Page');
+        $query = $GLOBALS['Systeme']->getRegVars('Query');
+        $obj = explode('/', $query, 2);
+        $page = Sys::getOneData($obj[0], $obj[1]);
+
+        if(!$page->Display)
+            header('Location: /');
 
         $Bloc=new Template();
         $Bloc->setConfig($page->TemplateConfig,'CmsDefault',$page->HtmlConfig);

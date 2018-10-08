@@ -33,6 +33,7 @@ class ObjectClass extends Root{
 	var $cache;
 	var $hidden;
     var $searchFilters = 1;
+    var $hideSelect = 0;
 	var $Interface;
 	var $className = 0;
 	var $noRecursivity = 0;							//permet la création d'une clef recursive sans le comportement recursif
@@ -101,6 +102,7 @@ class ObjectClass extends Root{
 		if (isset($schema['@']['cache']))$this->cache = $schema['@']['cache'];
 		if (isset($schema['@']['hidden']))$this->hidden = $schema['@']['hidden'];
         if (isset($schema['@']['searchFilters']))$this->searchFilters = $schema['@']['searchFilters'];
+        if (isset($schema['@']['hideSelect']))$this->hideSelect = $schema['@']['hideSelect'];
 		if (isset($schema['@']['className']))$this->className = $schema['@']['className'];
 		if (isset($schema['@']['noRecursivity']))$this->noRecursivity = $schema['@']['noRecursivity'];
 		if (isset($schema['@']['stopPage']))$this->stopPage = $schema['@']['stopPage'];
@@ -1742,7 +1744,14 @@ class ObjectClass extends Root{
 			if(isset($Prop["type"])&&$Prop["type"]=="random"&&empty($Obj[$Key])){ //&&( !isset($Obj["tmsEdit"])||$Obj["tmsEdit"]<(time()-(CONNECT_TIMEOUT*60)) || $Obj["CodeVerif"]=="")){
 				$OrdreProp[$Key] = Utils::genererCode();
 			}else{
-				if (empty($Prop["Ref"])&&isset($Obj[$Key])) $OrdreProp[$Key]=$Obj[$Key];
+				if (empty($Prop["Ref"])&&isset($Obj[$Key])) {
+					$OrdreProp[$Key]=$Obj[$Key];
+                } else{
+                    if (isset($Prop['canBeNull']) && $Prop['canBeNull'] && in_array($Key,array_keys($Obj))){
+                        $OrdreProp[$Key]= null;
+                    }
+				}
+
 			}
 			if ((isset($Prop["content"])&&$Prop["content"]=="link")||(isset($Prop["type"])&&$Prop["type"]=="link")&&empty($OrdreProp[$Key])) {
 				$OrdreProp[$Key] = $this->autoLink($Key,$Obj);

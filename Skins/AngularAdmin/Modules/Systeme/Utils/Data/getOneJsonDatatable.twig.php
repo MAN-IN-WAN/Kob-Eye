@@ -5,10 +5,14 @@ $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $vars['fields'] = $o->getElementsByAttribute('fiche|form','',true);
 $context = (isset($_GET['context']))?$_GET['context']:'default';
 //souscription au push
-Event::registerPush($info['Module'],$info['ObjectType'],$info['ObjectType'],'~',0,1,$context);
+
 //requete
 $vars['row'] = Sys::getOneData($info['Module'],$vars['Query']);
 if (!$vars['row'])return;
+Event::registerPush($info['Module'],$info['ObjectType'],$info['ObjectType'],'~',0,1,$context,$vars['row']->Id);
+
+
+
 $vars['row']->label = $vars['row']->getFirstSearchOrder();
 $uc = Sys::getOneData('Systeme','User/'.$vars['row']->userCreate);
 $ue = Sys::getOneData('Systeme','User/'.$vars['row']->userEdit);

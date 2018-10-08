@@ -218,15 +218,17 @@ class Klog extends Root
 	 * @access public
 	 **/
 	function log($text, $var="", $modus=-1, $prio=false, $line=false)
-	{
-		if(!$text)                       #No Text, no Output (useful for ErrorMsgs)
-		return false;
+    {
+        if (!$text)                       #No Text, no Output (useful for ErrorMsgs)
+            return false;
 
-        if(defined('LOG_DEVICES')&& !LOG_DEVICES){
-            if(strpos($_SERVER['REQUEST_URI'] , '/Parc/Device') === 0) return false;
-        }
-        if(defined('LOG_POLLS')&& !LOG_POLLS){
-            if($_SERVER['REQUEST_URI'] == '/Systeme/Utils/pollAll.json') return false;
+        if (isset($_SERVER['REQUEST_URI'])){
+            if (defined('LOG_DEVICES') && !LOG_DEVICES) {
+                if (strpos($_SERVER['REQUEST_URI'], '/Parc/Device') === 0) return false;
+            }
+            if (defined('LOG_POLLS') && !LOG_POLLS) {
+                if ($_SERVER['REQUEST_URI'] == '/Systeme/Utils/pollAll.json') return false;
+            }
         }
 
 		//On analyse la variable en entree

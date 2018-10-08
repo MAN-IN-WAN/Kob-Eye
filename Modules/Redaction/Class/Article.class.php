@@ -62,7 +62,7 @@ class RedactionArticle extends genericClass{
 		}
 		//On enregistre les nouveaux
 		$Mcs = $this->genKeyWords();
-		if (is_array($Mcs))foreach ($Mcs as $Mc){
+		/*if (is_array($Mcs))foreach ($Mcs as $Mc){
 			//On verifie d'abord si il n'existe pas dasn la base des mots clefs en tant que canonique
 			$Tab2 = Sys::$Modules["Redaction"]->callData("Redaction/Article/".$this->Id."/Motclef/Canon=".Utils::Canonic($Mc),null,0,1,"","","COUNT(DISTINCT(m.Id))");
 			if ($Tab2[0]["COUNT(DISTINCT(m.Id))"]==0){
@@ -72,7 +72,7 @@ class RedactionArticle extends genericClass{
 				$Mcf->AddParent("Redaction/Article/".$this->Id);
 				$Mcf->Save();
 			}
-		}
+		}*/
 	}
 }
 ?>

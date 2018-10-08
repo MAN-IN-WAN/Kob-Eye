@@ -27,7 +27,7 @@ class MailIpWatcher extends Module{
     function Check () {
         parent::Check();
         //creation de la tache planifiée
-        $t = Sys::getCount('Systeme','ScheduledTask/TaskModule=MailIpWatcher&TaskObject=IPWatcher&TaskFunction=checkIp');
+        $t = Sys::getCount('Systeme','ScheduledTask/TaskModule=MailIpWatcher&TaskObject=IPWatcher&TaskFunction=checkAllIp');
         if (!$t) {
             //creation du groupe public
             $t = genericClass::createInstance('Systeme', 'ScheduledTask');

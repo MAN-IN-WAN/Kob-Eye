@@ -57,11 +57,11 @@ class Apache extends genericClass {
      * @param null $instance
      * @return bool
      */
-	public function enableSsl($force = true) {
+	public function enableSsl($force = false) {
 		if (empty($this->SslMethod))$this->SslMethod = "Letsencrypt";
 		//check already exists
-		if (!$force&&$this->Ssl&&!empty($this->SslCertificate)&&!empty($this->SslCertificateKey)&&$this->SslExpiration>time()-86400){
-			$this->addError(array("Message"=>"Le certificat est déjà généré et valide. Son expiratio n'interviendra pas dans les prochaines 24 heures."));
+		if (!$force&&$this->Ssl&&!empty($this->SslCertificate)&&!empty($this->SslCertificateKey)&&$this->SslExpiration>time()+86400){
+			$this->addError(array("Message"=>"Le certificat est déjà généré et valide. Son expiration n'interviendra pas dans les prochaines 24 heures."));
 			return false;
 		}
 		//on vérifie qu'il n'y ait pas déjà une tache
@@ -124,10 +124,10 @@ class Apache extends genericClass {
                     if (!sizeof($dns->answer[sizeof($dns->answer)-1])){
                         $err = true;
                         $this->addError(array("Message"=>"Le domaine : '".$dns->question[sizeof($dns->question)-1]->qname."' ne pointe pas sur l'adresse ip ".$serv->IP." (actuellement il n'est pas configuré)"));
-                    }elseif (trim($dns->answer[sizeof($dns->answer)-1]->address)!=trim($serv->IP)){
+                    }/*elseif (trim($dns->answer[sizeof($dns->answer)-1]->address)!=trim($serv->IP)){
                         $err = true;
                         $this->addError(array("Message"=>"Le domaine : '".$dns->question[sizeof($dns->question)-1]->qname."' ne pointe pas sur l'adresse ip ".$serv->IP." (actuellement il pointe vers ".$dns->answer[sizeof($dns->answer)-1]->address."), ou sa propagation se terminera dans ".$dns->answer[sizeof($dns->answer)-1]->ttl." secondes"));
-                    }
+                    }*/
                 }
                 if ($err)return false;
 
@@ -147,6 +147,9 @@ class Apache extends genericClass {
                 //on va chercher l'instance
                 $instance = $host->getOneChild('Instance');
                 $task->addParent($instance);
+                //recherch de la prochaine d'execution pour eviter les collision de letsencrypt
+                $nb = Sys::getCount('Parc','Tache/DateDebut>'.time());
+                $task->DateDebut = time()+(60*($nb+1));
                 $task->Save();
                 parent::Save();
 			break;
@@ -276,7 +279,11 @@ class Apache extends genericClass {
 				// Outils
 				$KEHost = $this->getKEHost();
 				$KEServers = $this->getKEServer();
-				foreach ($KEServers as $KEServer) {
+                if (empty($KEHost->NomLDAP)) {
+                    $this->addWarning(array("Message" => "L'hébergement n'est pas à jour... Enregistrement forcé..."));
+                    $KEHost->Save();
+                }
+                foreach ($KEServers as $KEServer) {
                     $dn = 'apacheServerName=' . $this->ApacheServerName.',cn=' . $KEHost->NomLDAP . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE;
                     // Verification à jour
                     $res = Server::checkTms($this,$KEServer,'cn=' . $KEHost->NomLDAP . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE,'apacheServerName=' . $this->ApacheServerName);
@@ -569,17 +576,7 @@ class Apache extends genericClass {
      * Execution de letsencrypt sur le serveur
      */
     public function executeLetsencrypt($task) {
-        $prefixe = "/usr/src/certbot/certbot-auto --renew-by-default --webroot certonly --webroot-path /var/www/letsencrypt ";
-        $first='';
-        $cmd = '';
-        // ajout des server alias
-        $sa = explode(' ',$this->getDomains());
-        foreach ($sa as $s ){
-            if (!preg_match("#azko.site#",$s)) {
-                if (empty($first)) $first=trim($s);
-                $cmd .= " -d " . trim($s);
-            }
-        }
+        $first=$this->SslMainDomain;
         //récupératio ndu serveur
         $srv = $task->getOneParent('Server');
 
@@ -587,24 +584,53 @@ class Apache extends genericClass {
         $act = $task->createActivity('Vérification du dépot letsencrypt');
         $err = false;
         $cert = $srv->getFileContent("/etc/letsencrypt/live/".$first."/fullchain.pem");
-        $certinfo = openssl_x509_parse($cert);
-        //on vérifie qu'on a la bonne date d'expiration
-        if ($certinfo['validTo_time_t']>time()+86400){
-            //on compare la liste des domaines à certifier et les domaines dans le certificat
-            $domains=explode(' ',$this->getDomains());
-            $certdomains = array();
-            preg_match_all('#DNS:([^\ ,]*)#',$certinfo['extensions']['subjectAltName'],$othersdomains);
-            $certdomains=array_merge($certdomains,$othersdomains[1]);
-            foreach ($domains as $d){
-                if (!in_array($d,$certdomains)){
-                    $this->addError(array('Message'=>'Le domaine '.$d.' n\' est pas compris dans le certificat en production. Il serait nécessaire de le regénérer.'));
-                }
+        if (!empty($cert)) {
+            $certinfo = openssl_x509_parse($cert);
+            //on vérifie qu'on a la bonne date d'expiration et qu'il est différent de celui actif
+            if ($certinfo['validTo_time_t'] > time() + (86400 * 30) && $this->SslCertificate != $cert) {
+                //alors on utilise ce certificat
+                $act = $task->createActivity('Récupération des certificats');
+                //récupération des certificats
+                $this->SslCertificate = $srv->getFileContent("/etc/letsencrypt/live/" . $first . "/fullchain.pem");
+                $act->addDetails($this->SslCertificate);
+                $this->SslCertificateKey = $srv->getFileContent("/etc/letsencrypt/live/" . $first . "/privkey.pem");
+                $act->addDetails($this->SslCertificateKey);
+                $this->SslExpiration = $certinfo['validTo_time_t'];
+                $act->addDetails('Date d\'Expiration: ' . $this->SslExpiration);
+                $act->Terminate(true);
+                $this->Save();
+                return true;
+                //on compare la liste des domaines à certifier et les domaines dans le certificat
+                /*$domains=explode(' ',$this->getDomains());
+                $certdomains = array();
+                preg_match_all('#DNS:([^\ ,]*)#',$certinfo['extensions']['subjectAltName'],$othersdomains);
+                $certdomains=array_merge($certdomains,$othersdomains[1]);
+                foreach ($domains as $d){
+                    if (!in_array($d,$certdomains)){
+                        $this->addError(array('Message'=>'Le domaine '.$d.' n\' est pas compris dans le certificat en production. Il serait nécessaire de le regénérer.'));
+                    }
+                }*/
+
             }
         }
 
-
-
         //execution de la commande
+        $prefixe = "/usr/src/certbot/certbot-auto --renew-by-default --webroot certonly --webroot-path /var/www/letsencrypt ";
+        $cmd = '';
+        // ajout des server alias
+        $sa = explode(' ',$this->getDomains());
+        foreach ($sa as $s ){
+            $s = trim($s);
+            if (!preg_match("#azko.site#",$s)&&!empty($s)) {
+                if (empty($first)) $first=$s;
+                $cmd .= " -d " . $s;
+            }
+        }
+        if (empty($cmd)){
+            $act = $task->createActivity('Aucun domaine à certifier.');
+            $act->Terminate(true);
+            return true;
+        }
         $cmd = $prefixe.$cmd;
         $act = $task->createActivity('Execution de la commande certbot');
         $act->addDetails($cmd);
@@ -618,12 +644,22 @@ class Apache extends genericClass {
             return false;
         }
         $act->addDetails($out);
+        if (preg_match('#/etc/letsencrypt/live/(.*?)/fullchain.pem#',$out,$path)) {
+            //analyse du retour et récupération du path
+            $first = $this->SslMainDomain = $path[1];
+            parent::Save();
+            $act->addDetails('Définition du domaine par défaut du certificat: '.$this->SslMainDomain);
+        }
+
         $act = $task->createActivity('Récupération des certificats');
         //récupération des certificats
         $this->SslCertificate = $srv->getFileContent("/etc/letsencrypt/live/".$first."/fullchain.pem");
+        $certinfo = openssl_x509_parse($this->SslCertificate);
         $act->addDetails($this->SslCertificate);
         $this->SslCertificateKey = $srv->getFileContent("/etc/letsencrypt/live/".$first."/privkey.pem");
         $act->addDetails($this->SslCertificateKey);
+        $this->SslExpiration = $certinfo['validTo_time_t'];
+        $act->addDetails('Date d\'Expiration: '.$this->SslExpiration);
         $act->Terminate(true);
         $this->Save();
         return true;
