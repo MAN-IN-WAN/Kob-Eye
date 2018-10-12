@@ -18,6 +18,15 @@ class Ftpuser extends genericClass {
 		if($this->_isVerified) {
 			parent::Save();
 			$this->getUidGidFromHost( $synchro );
+			//vérification de l'existence du dossier
+            $srvs = $this->getKEServer();
+            $host = $this->getKEHost();
+            foreach ($srvs as $srv){
+                //die('creatio du dossier '.'/home/'.$host->NomLDAP.'/'.$this->DocumentRoot);
+                if (!$srv->folderExists('/home/'.$host->NomLDAP.'/'.$this->DocumentRoot)){
+                    $srv->createFolder('/home/'.$host->NomLDAP.'/'.$this->DocumentRoot,$host->NomLDAP);
+                }
+            }
 		}
 		return true;
 	}
@@ -134,7 +143,7 @@ class Ftpuser extends genericClass {
 				$KEServers = $this->getKEServer();
 				foreach ($KEServers as $KEServer) {
                     if (!$KEServer) return false;
-                    $dn = 'uid=' . $this->Identifiant . ',ou=users,cn=' . $KEHost->Nom . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE;
+                    $dn = 'uid=' . $this->Identifiant . ',ou=users,cn=' . $KEHost->NomLDAP . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE;
                     // Verification à jour
                     $res = Server::checkTms($this,$KEServer);
                     if ($res['exists']) {

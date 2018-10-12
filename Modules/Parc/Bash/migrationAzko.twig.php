@@ -5,8 +5,8 @@ $bc = new BashColors();
 //connexion ancien serveur mysql
 $db = new PDO('mysql:host=192.168.100.50;dbname=parc', 'root', 'zH34Y6u5', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-$csv = "
+$serveur='ws2.eng.systems';
+/*$csv = "
 acei;acei;acei
 acrotaille;acrotaille;acrotaille
 ah-avocats;ah-avocats;ah-avocats
@@ -113,14 +113,17 @@ travaux-speciaux;travaux-spec;travaux-speciaux
 veterinaire-lang;veterinaire-languedocia;veterinaire-lang
 veterinaire-veto;veterinaire-vetocia;veterinaire-veto
 vmid;vmid;vmid";
-
+*/
+$csv= "
+distillerie;distillerie;distillerie
+";
 $result = explode(PHP_EOL,$csv);
 $total = sizeof($result);
 $i=0;
 foreach ($result as $org){
     if (empty(trim($org)))continue;
     $i++;
-    if ($i<92)continue;
+    //if ($i!=45)continue;
     $fields = explode(';',$org);
     $fields[2] = explode('+',$fields[2]);
     list($host,$cli,$bdds,$mysqlsrv) = $fields;
@@ -222,8 +225,8 @@ foreach ($result as $org){
             echo $bc->getColoredString("      -> SQL DUMP ... ", 'red');
             //importation de la base de donnée
             if ($mysqlsrv=='sql2.eng.systems'){
-                $cmd = 'mysqldump -h 192.168.100.53 -u root -pzH34Y6u5; ' . $bdd . ' | sed -e "s/MyISAM/InnoDB/i"  |  mysql -h 192.168.160.4 -u root -pzH34Y6u5 ' . $bdd;
-            }else $cmd = 'mysqldump -h 192.168.100.50 -u root -pzH34Y6u5 ' . $bdd . ' | sed -e "s/MyISAM/InnoDB/i"  |  mysql -h 192.168.160.4 -u root -pzH34Y6u5 ' . $bdd;
+                $cmd = 'mysqldump -h 192.168.100.53 -u root -p"zH34Y6u5;" ' . $bdd . ' | sed -e "s/MyISAM/InnoDB/i"  |  mysql -h 192.168.160.5 -u root -pzH34Y6u5 ' . $bdd;
+            }else $cmd = 'mysqldump -h 192.168.100.50 -u root -pzH34Y6u5 ' . $bdd . ' | sed -e "s/MyISAM/InnoDB/i"  |  mysql -h 192.168.160.5 -u root -pzH34Y6u5 ' . $bdd;
             exec($cmd);
             echo $bc->getColoredString(" OK " . "\n", 'green');
             $base->Save();
@@ -233,7 +236,7 @@ foreach ($result as $org){
     //excution rsync
     //importation de la base de donnée
     try {
-        $cmd = 'rsync -avz -e \'ssh -i /root/.ssh/id_rsa\' root@ws1.eng.systems:/home/'.$host.'/ /home/'.$hos->NomLDAP.'/ --exclude backups --exclude logs --exclude cgi-bin';
+        $cmd = 'rsync -avz -e \'ssh -i /root/.ssh/id_rsa\' root@'.$serveur.':/home/'.$host.'/ /home/'.$hos->NomLDAP.'/ --exclude backups --exclude logs --exclude cgi-bin';
         echo $bc->getColoredString("       -> RUN RSYNC " , 'yellow');
         $out = $srv->remoteExec($cmd);
         echo $bc->getColoredString(" OK "."\n", 'green');
@@ -248,9 +251,18 @@ foreach ($result as $org){
     //détection du cms
     if ($srv->fileExists('/home/'.$hos->NomLDAP.'/www/wp-config.php')){
         //c'est un wordpress
-        $int->Plugin = 'Wordpress';
+        $inst->Plugin = 'Wordpress';
+        echo $bc->getColoredString("    -> Wordpress\n",'green');
     }else if ($srv->fileExists('/home/'.$hos->NomLDAP.'/www/Conf/General.conf')){
         //c'est un kobeye
+        $inst->Plugin = 'KobEye';
+        echo $bc->getColoredString("    -> KobEye\n",'green');
+    }else if ($srv->fileExists('/home/'.$hos->NomLDAP.'/www/config/settings.inc.php')){
+        //c'est un prestashop
+        $inst->Plugin = 'Prestashop';
+        echo $bc->getColoredString("    -> Prestashop\n",'green');
     }
 
+    $inst->softSave();
+    $inst->rewriteConfig();
 }

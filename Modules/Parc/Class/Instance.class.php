@@ -4,10 +4,16 @@ class Instance extends genericClass{
     private $_plugin = null;
     public function Save($force=false){
         Sys::startTransaction();
-        $old = Sys::getOneData('Parc', 'Instance/' . $this->Id);
+        if ($this->Id)
+            $old = Sys::getOneData('Parc', 'Instance/' . $this->Id);
+        else $old=false;
         if (!$old) $new = true; else $new = false;
         if (!$new&&$old->SousDomaine!=$this->SousDomaine){
-            $this->addError(Array("Message" => 'Impossible de modifier le sous domaine d\'une instance. Veuillez dupliquer ou créer une nouvelle instance.'));
+            $this->addError(Array("Message" => 'Impossible de modifier le sous domaine d\'une instance. Veuillez créer une nouvelle instance.'));
+            return false;
+        }
+        if (!$new&&$old->InstanceNom!=$this->InstanceNom){
+            $this->addError(Array("Message" => 'Impossible de modifier le nom technique d\'une instance. Veuillez créer une nouvelle instance.'));
             return false;
         }
         //serveurs par défaut
@@ -53,7 +59,6 @@ class Instance extends genericClass{
                 $client = genericClass::createInstance('Parc', 'Client');
                 $client->Nom = $this->Nom;
                 if (!$client->Save()) {
-                    $this->Delete();
                     $this->Error = array_merge($this->Error,$client->Error);
                     return false;
                 }
@@ -127,7 +132,6 @@ class Instance extends genericClass{
             $heb->addParent($apachesrv);
             $heb->addParent($client);
             if (!$heb->Save()) {
-                $this->Delete();
                 $this->Error = array_merge($this->Error,$heb->Error);
                 return false;
             }
@@ -182,19 +186,18 @@ class Instance extends genericClass{
         $this->addParent($bdd);
 
         //check ftp
-        /*$bdd = $heb->getOneChild('Ftpuser');
-        if (!$bdd) {
+        $ftp = $heb->getOneChild('Ftpuser');
+        if (!$ftp) {
             //alors création du apache
-            $bdd = genericClass::createInstance('Parc', 'Ftpuser');
-            $bdd->Nom = $tmpname;
-            $bdd->addParent($heb);
-            $bdd->addParent($mysqlsrv);
-            $bdd->Save();
+            $ftp = genericClass::createInstance('Parc', 'Ftpuser');
+            $ftp->Identifiant = 'admin@'.$tmpname;
+            $ftp->Password = $this->Password;
+            $ftp->addParent($heb);
+            $ftp->Save();
         } else {
-            $bdd->addParent($heb);
-            $bdd->Save();
-        }*/
-        //$this->addParent($bdd);
+            $ftp->addParent($heb);
+            $ftp->Save();
+        }
         parent::Save();
         //if (!$this->Enabled||$old->VersionId!=$this->VersionId||$old->Type!=$this->Type){
         //$this->Enabled = false;
@@ -236,8 +239,11 @@ class Instance extends genericClass{
      */
     public function createInstallTask(){
         //on vérifie que la tache n'est pas déjà crée
-        $nb = Sys::getCount('Parc','Instance/'.$this->Id.'/Tache/Termine=0&Erreur=0');
-        if ($nb) return true;
+        $nb = Sys::getCount('Parc','Instance/'.$this->Id.'/Tache/Termine=0&Erreur=0&TaskType=install');
+        if ($nb){
+            $this->addError(array('Message'=>'Une tache d\'installation est déjà en cours'));
+            return true;
+        }
         $plugin = $this->getPlugin();
         $this->Status=1;
         parent::Save();

@@ -381,6 +381,42 @@ class Parc extends Module{
     }
 
     /**
+     * backup
+     * Sauvegarde des hébergements
+     */
+    public  function createBackup($task=null) {
+        echo "backup\r\n";
+        $nb = Sys::getCount('Parc','Host');
+        $it = abs($nb/100)+1;
+        //recherche des hébergements à renouveller avec une expiration dans les prochains 30 jours
+        for ($i=0;$i<=$it;$i++) {
+            $aps = Sys::getData('Parc', 'Host', $i*100, 100);
+            //pour chaque instance on crée une tache pour vérifier l'etat
+            foreach ($aps as $a) {
+                if ($a->createBackupTask()) echo "--> backup $a->Nom \r\n";
+                //else print_r($a->Error);
+            }
+        }
+        if ($task){
+            $task->Termine = true;
+            $task->Save();
+        }
+        return true;
+    }
+    public static function backup($task = null){
+        $parc = Sys::getModule('Parc');
+        return $parc->createBackup($task);
+    }
+    public static function createBackupTask(){
+        $task = genericClass::createInstance('Parc', 'Tache');
+        $task->Type = 'Fonction';
+        $task->Nom = 'Lancement de la création des taches de backup';
+        $task->TaskModule = 'Parc';
+        $task->TaskObject = 'Parc';
+        $task->TaskFunction = 'backup';
+        $task->Save();
+    }
+    /**
      * UTILS FUNCTIONS
      */
     static public function localExec( $command, $activity = null,$total=0){
@@ -537,7 +573,7 @@ class Parc extends Module{
      */
     public static function startMaintenanceTask($task = null){
         //suppression des taches vielle de plsu d'une heure
-        $GLOBALS['Systeme']->Db[0]->query('DELETE FROM `'.MAIN_DB_PREFIX.'Parc-Tache` WHERE tmsCreate<'.(time()-(3600*12)).' AND Erreur=0;');
+        $GLOBALS['Systeme']->Db[0]->query('DELETE FROM `'.MAIN_DB_PREFIX.'Parc-Tache` WHERE tmsCreate<'.(time()-(3600*12)).' AND Erreur=0 AND TaskType="Vérification";');
         $GLOBALS['Systeme']->Db[0]->query('REPAIR TABLE `'.MAIN_DB_PREFIX.'Parc-Tache`;');
         $GLOBALS['Systeme']->Db[0]->query('OPTIMIZE TABLE `'.MAIN_DB_PREFIX.'Parc-Tache`;');
         //suppression des activités vielle de plsu d'une heure

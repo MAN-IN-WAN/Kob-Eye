@@ -13,6 +13,19 @@ class Host extends genericClass
      */
     public function Save($synchro = true)
     {
+        if ($this->Id)
+            $old = Sys::getOneData('Parc','Host/'.$this->Id);
+        else $old = false;
+        //test de modification du ApacheServerName
+        if ($old&&$old->Nom!=$this->Nom){
+            $this->addError(array("Message"=>"Impossible de modifier le nom de l'hébergement. Si c'est nécessaire, veuillez supprimer et recréer cet hébergement en réimportant vos données."));
+            return false;
+        }
+        if ($old&&$old->NomLDAP!=$this->NomLDAP){
+            $this->addError(array("Message"=>"Impossible de modifier le nom technique de l'hébergement. Si c'est nécessaire, veuillez supprimer et recréer cet hébergement en réimportant vos données."));
+            return false;
+        }
+
         // Forcer la vérification
         if (!$this->_isVerified) $this->Verify($synchro);
         if (!$this->_isVerified) return false;
@@ -162,6 +175,16 @@ class Host extends genericClass
         }
         $this->NomLDAP = strtolower($this->NomLDAP);
         $this->NomLDAP = Utils::CheckSyntaxe($this->NomLDAP);
+        $old = Sys::getOneData('Parc','Host/'.$this->Id);
+        //test de modification du ApacheServerName
+        if ($this->Id&&$old->Nom!=$this->Nom){
+            $this->addError(array("Message"=>"Impossible de modifier le nom de l'hébergement. Si c'est nécessaire, veuillez supprimer et recréer cet hébergement en réimportant vos données."));
+            return false;
+        }
+        if ($this->Id&&$old->NomLDAP!=$this->NomLDAP){
+            $this->addError(array("Message"=>"Impossible de modifier le nom technique de l'hébergement. Si c'est nécessaire, veuillez supprimer et recréer cet hébergement en réimportant vos données."));
+            return false;
+        }
         if (strlen($this->Nom)>50||strlen($this->Nom)<2){
             $this->addError(array("Prop"=>"Nom","Message"=>"Le nom doit comporter de 2 à 50 caractères"));
             return false;
@@ -279,9 +302,10 @@ class Host extends genericClass
             $entry['loginshell'] = '/bin/bash';
             $entry['objectclass'][0] = 'inetOrgPerson';
             $entry['objectclass'][1] = 'posixAccount';
-            $entry['objectclass'][2] = 'top';
-            $entry['userpassword'] = "{MD5}".base64_encode(pack("H*",md5($this->Password)));
+            $entry['objectclass'][2] = 'shadowAccount';
+            $entry['objectclass'][3] = 'top';
         }
+        $entry['userpassword'] = "{MD5}".base64_encode(pack("H*",md5($this->Password)));
         return $entry;
     }
 
@@ -375,7 +399,8 @@ class Host extends genericClass
     public function getKEServer()
     {
         if (!is_array($this->_KEServer)) {
-            $tab = $this->getParents('Server');
+            //$tab = $this->getParents('Server');
+            $tab = Sys::getData('Parc','Server/Host/'.$this->Id,0,100,null,null,null,null,true);
             if (empty($tab)) return false;
             else $this->_KEServer = $tab;
         }
@@ -470,6 +495,94 @@ class Host extends genericClass
         $act->Save();
         return $act;
     }
+    /**
+     * createBackupTask
+     * Creation de la tache de backup
+     */
+    public function createBackupTask($orig=null){
+        if (!$this->BackupEnabled) return false;
+        $task = genericClass::createInstance('Parc', 'Tache');
+        $task->Type = 'Fonction';
+        $task->Nom = 'Sauvegarde de l\'hébergement ' . $this->Nom;
+        $task->TaskModule = 'Parc';
+        $task->TaskObject = 'Host';
+        $task->TaskId = $this->Id;
+        $task->TaskFunction = 'backup';
+        $task->addParent($this);
+        $inst = $this->getOneChild('Instance');
+        if (!$inst)
+            $task->addParent($inst);
+        $task->addParent($this->getOneParent('Server'));
+        if (is_object($orig)) $task->addParent($orig);
+        $task->Save();
+    }
+    /**
+     * backup
+     * Fonction de sauvegarde
+     * @param Object Tache
+     */
+    public function backup($task = null){
+        $host = $this;
+        $bdds = $host->getChildren('Bdd');
+        $apachesrv = $host->getOneParent('Server');
+        $inst = $host->getOneChild('Instance');
+        try {
+            //Préparation du backup
+            $act = $this->_obj->createActivity('Prépration et nettoyage backup ', 'Info', $task);
+            //test des dossiers
+            $cmd = 'if [ ! -d /home/' . $host->NomLDAP . '/sql ]; then mkdir /home/' . $host->NomLDAP . '/sql; fi';
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($cmd);
+            $act->addDetails($out);
+            $cmd = 'if [ ! -d /home/' . $host->NomLDAP . '/backup ]; then mkdir /home/' . $host->NomLDAP . '/backup;borg init --encryption=D4nsT0n208 /home/' . $host->NomLDAP . '/backup; fi';
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($cmd);
+            $act->addDetails($out);
+            //suppression des dump précédents
+            $cmd = 'rm /home/' . $host->NomLDAP . '/sql/* -f';
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($cmd);
+            $act->addDetails($out);
+            //Sauvegarde base des donnée
+            foreach ($bdds as $bdd) {
+                $act = $this->_obj->createActivity('Sauvegarde base de donnée '.$bdd->Nom, 'Info', $task);
+                $cmd = 'cd /home/' . $host->NomLDAP . '/ && mysqldump -h db.maninwan.fr -u ' . $host->NomLDAP . ' -p' . $host->Password . ' ' . $bdd->Nom . ' > sql/'.$bdd->Nom.'-'.date('YmdHis').'.sql';
+                $out = $apachesrv->remoteExec($cmd);
+                $act->addDetails($cmd);
+                $act->addDetails($out);
+                $act->Terminate(true);
+            }
+            $restopoint = date('YmdHis');
+            $restodate = date('d/m/Y à H:i:s');
+            $act = $this->_obj->createActivity('Backup fichier', 'Info', $task);
+            $cmd = 'cd /home/' . $host->NomLDAP . '/www && borg create backup::'.$restopoint.' * --exclude "backup" --exclude "cgi-bin" --exclude "logs"';
+            $act->addDetails($cmd);
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($out);
+            $act->Terminate(true);
+            //modification des droits
+            $act = $this->_obj->createActivity('Modification des droits', 'Info', $task);
+            $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . ' -R';
+            $act->addDetails($cmd);
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($out);
+            $act->Terminate(true);
+            //création du point de restauration
+            $rp = genericClass::createInstance('Parc','RestorePoint');
+            $rp->Titre = 'Sauvegarde date: '.$restodate;
+            $rp->Identifiant = $restopoint;
+            $rp->addParent($host);
+            if ($inst)
+                $rp->addParent($inst);
+            $rp->Save();
+            return true;
+        }catch (Exception $e){
+            $act->addDetails('Erreur: '.$e->getMessage());
+            $act->Terminate(false);
+            throw new Exception($e->getMessage());
+        }
+    }
+
 }
 /**
  * Terminal
