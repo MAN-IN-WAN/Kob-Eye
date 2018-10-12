@@ -6,6 +6,12 @@ if(!$vars['User']->Avatar)
 $vars['Client'] = $vars['User']->getOneChild('Client');
 $vars['formfields'] = $vars['User']->getElementsByAttribute('form','',true);
 $vars['fichefields'] = $vars['User']->getElementsByAttribute('fiche','',true);
+foreach($vars['fichefields'] as $k=>$ff){
+    if($ff['type']=='password'){
+        unset($vars['fichefields'][$k]);
+        break;
+    }
+}
 
 if(isset($vars['User']->Adresse) && $vars['User']->Adresse != '')
     $vars['adresse'] = $vars['User']->Adresse;

@@ -1,10 +1,12 @@
 <SCHEMA>
     <OBJECTCLASS title="CompteMail" driver="mysql" AccessPoint="1" Description="Comptes Mail" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/CompteMail.class.php">
-        <FILTER name="Tous les comptes" color="warning" ></FILTER>
-        <FILTER name="Compte en PRO" color="success">COS=MAIL_PRO</FILTER>
-        <FILTER name="Compte en BUS" color="primary">COS=MAIL_BUS</FILTER>
-        <FILTER name="Compte en POP" color="secondary">COS=MAIL_POP</FILTER>
+        <FILTER name="Tous les comptes" color="warning" ><![CDATA[Suppression!!]]></FILTER>
+        <FILTER name="Compte en PRO" color="success"><![CDATA[Suppression!!&COS=MAIL_PRO]]></FILTER>
+        <FILTER name="Compte en BUS" color="primary"><![CDATA[Suppression!!&COS=MAIL_BUS]]></FILTER>
+        <FILTER name="Compte en POP" color="secondary"><![CDATA[Suppression!!&COS=MAIL_POP]]></FILTER>
+        <FILTER name="Compte en attente de suppression" color="danger"><![CDATA[Suppression=!]]></FILTER>
         <FUNCTION title="Se connecter au webmail">connectWebmail</FUNCTION>
+        <FUNCTION title="Rétablir / Re-activer">unDel</FUNCTION>
         <PROPERTIES type="varchar" unique="1" fiche="1" description="Id sur le serveur mail" >IdMail</PROPERTIES>
         <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Adresse eMail" list="1" form="1" fiche="1" listDescr="Adresse">Adresse</PROPERTIES>
         <PROPERTIES type="password" description="Mot de passe"  form="1" fiche="1">Pass</PROPERTIES>

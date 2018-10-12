@@ -4,6 +4,7 @@ class EmailRessource extends genericClass {
 	//var $_isVerified = false;
 	var $_KEServer = false;
 	var $_KEClient = false;
+    private $delaiSuppression = 28*84600;  //(4 semaines)
 
 	/**
 	 * Force la vérification avant enregistrement
@@ -18,6 +19,14 @@ class EmailRessource extends genericClass {
 		//	parent::Save();
 		//}
         //vérificatio du client
+
+
+        if($this->Suppression > 0  && $this->Suppression < time()){
+            $this->finalDelete();
+            return true;
+        }
+
+
         $client = $this->getKEClient();
         if (!$client){
             $this->addError(array('Message'=>'Compte client introuvable.'));
@@ -58,15 +67,21 @@ class EmailRessource extends genericClass {
 
 
 	/**
-	 * Suppression de la BDD
-	 * Relai de cette suppression à LDAP
-	 * On utilise aussi la fonction de la superclasse
-	 * @return	void
-	 */
-	public function Delete() {
-		//TODO : close and delete later
-		parent::Delete();
-	}
+    /**
+     * Suppression de la BDD apres un temps donné. Jusque la boite sera simplement fermée
+     * @return	void
+     */
+    public function Delete() {
+        $this->Suppression = time() + $this->delaiSuppression;
+        $this->Status = 'closed';
+        $this->Save();
+    }
+
+    public function unDelete() {
+        $this->Suppression = NULL;
+        $this->Status = 'active';
+        $this->Save();
+    }
 
 
 	/**
@@ -328,4 +343,29 @@ class EmailRessource extends genericClass {
     }
 
 
+    public function finalDelete(){
+        $srv = $this->getKEServer();
+
+        if(!is_object($srv) || $srv->ObjectType != 'Server'){
+            $this->AddError(array('Message'=>'Un compte mail doit être lié a un serveur.'));
+            return false;
+        }
+
+        $zimbra = new \Zimbra\ZCS\Admin($srv->IP, $srv->mailAdminPort);
+        $zimbra->auth($srv->mailAdminUser, $srv->mailAdminPassword);
+
+        try{
+            $zimbra->deleteRessource($this->IdMail);
+        } catch (Exception $e){
+            $this->AddError(array('Message'=>'Erreur lors l\'effacement : '.$e->getErrorCode(),'Object'=>''));
+            return false;
+        }
+
+        parent::Delete();
+    }
+
+
+    public function forceDelete(){
+	    parent::Delete();
+    }
 }

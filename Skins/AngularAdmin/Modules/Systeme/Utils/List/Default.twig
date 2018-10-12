@@ -3,7 +3,7 @@
     <ul class="nav nav-tabs" role="tablist">
         {% for filter in filters %}
         <li class="nav-item">
-            <a class="nav-link {% if loop.index0 == 0 %}active{% endif %} list-filter {% if filter.color %}filter-{{ filter.color }}{% endif %}" ng-click="{{ identifier }}setOptionsFilters('{{ filter.filter }}')" data-toggle="tab" data-target="#h1" role="tab">{{ filter.name }}</a>
+            <a class="nav-link {% if loop.index0 == 0 %}active{% endif %} list-filter {% if filter.color %}filter-{{ filter.color }}{% endif %}" ng-click="{{ identifier }}setOptionsFilters('{{ filter.filter }}','{{ context }}');" data-toggle="tab" data-target="#h1" role="tab">{{ filter.name }}</a>
         </li>
         {% endfor %}
     </ul>
@@ -223,16 +223,16 @@
             </th>
             <th title="Id" class="list-col-th-id">ID</th>
             {% for field in fields %}
-                <th title="{{ field.name }}">{% if field.listDescr %}{{ field.listDescr }}{% else %}{{ field.name }}{% endif %}</th>
+                <th title="{{ field.name }}" {% if field.type != "fkey" and field.type != "rkey" %}ng-click="triggerSort($event,'{{ identifier }}','{{ field.name }}','{{ context }}')" class="sortable"{% endif %}>{% if field.listDescr %}{{ field.listDescr }}{% else %}{{ field.name }}{% endif %}</th>
             {% endfor %}
             {% for interface in Interfaces %}
                 <th>{{ interface.name }}</th>
             {% endfor %}
             {#<th width="220">Détails</th>#}
-            <th width="345">Actions</th>
+            <th width="160">Actions</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody ng-if="!{{ identifier }}.store.busy['{{ context }}']">
     <tr dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination">
         <td  class="list-col-td-dark">
             <input type="checkbox" value="{[{ item.id }]}" ng-model="{{ identifier }}.selected[item.id]" name="{{ identifier }}" id="{[{ item.id }]}" />&nbsp;
@@ -311,68 +311,47 @@
                 {% if interface.type == "price" or interface.type == "float" %}
                     <span class="label label-warning" ng-repeat="child in item.{{ interface.child }}">{[{ child.{{ interface.property }}| currency:"" }]}</span>
                 {% elseif interface.type == "extlink" %}
-                    <a class="btn btn-info btn-xs type_{[{ child.{{ interface.title }} }]}" href="https://proxy.abtel.fr/remote/#/client/{[{ child.{{ interface.property }} }]}" target="_blank" ng-repeat="child in item.{{ interface.child }} | limitTo:2">{[{ child.{{ interface.title }} }]}</a>
+                    <a class="btn-abt btn-primary btn-xs type_{[{ child.{{ interface.title }} }]}" href="https://proxy.abtel.fr/remote/#/client/{[{ child.{{ interface.property }} }]}" target="_blank" ng-repeat="child in item.{{ interface.child }} | limitTo:2">{[{ child.{{ interface.title }} }]}</a>
                 {% endif %}
             </td>
             {% endif %}
         {% endfor %}
         {#<td  class="table-details" ng-bind-html="item._details">{[{ item._details }]}</td>#}
         <td  class="table-action">
-            {% if Type == "Tail" %}
-                <span class="input-group-btn">
-                    {% if operation.edit %}<a  class="btn btn-warning" href="javascript: void(0);" ng-click="{{ identifier }}modify(item)">Modifier</a>{% endif %}
-                    {% if operation.delete %}<a  class="btn btn-danger" href="javascript: void(0);" ng-click="{{ identifier }}delete(item)">Supprimer</a>{% endif %}
-                    {% if functions|length >1 %}
-                    <div class="btn-group" uib-dropdown>
-                        <a id="split-button" type="button" class="btn btn-primary" href="#/{{ CurrentUrl }}/{[{ item.id }]}">Fonctions</a>
-                        <button type="button" class="btn btn-primary " uib-dropdown-toggle>
-                            <span class="caret"></span>
-                            <span class="sr-only">Split button!</span>
-                        </button>
+            <div >
+                {% if not Type == "Tail" %}
+                    <a class="btn-abt btn-abt-nfo btn-primary" href="#/{{ CurrentUrl }}/{[{ item.id }]}" title="Détails"></a>
+                {% endif %}
+                {% if operation.edit %}
+                    <a class="btn-abt btn-abt-mod btn-warning" href="javascript: void(0);" ng-click="{{ identifier }}modify(item)" title="Modifier"></a>
+                {% endif %}
+                {% if operation.delete %}
+                    <a class="btn-abt btn-abt-del btn-danger" href="javascript: void(0);" ng-click="{{ identifier }}delete(item)" title="Supprimer"></a>
+                {% endif %}
+                {% if functions|length >0 %}
+                    <div style="vertical-align: top;" uib-dropdown>
+                        <button type="button" class="btn-abt btn-abt-func " uib-dropdown-toggle title="Fonctions"></button>
                         <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
-                            <li class="divider"></li>
                             {% for fu in functions %}
                                 {% if attribute(operation,fu.Nom) %}
-                                    <li ><a class="dropdown-item" href="javascript: void(0);" ng-click='{{ identifier }}callFunction(item,"{{fu.Nom}}","{{fu.title}}")'>{{ fu.title }}</a></li>
+                                    <a class="dropdown-item" href="javascript: void(0);" ng-click='{{ identifier }}callFunction(item,"{{fu.Nom}}","{{fu.title}}",{{ fu.needConfirm }})'>{{ fu.title }}</a>
                                 {% endif %}
                             {% endfor %}
                         </ul>
                     </div>
-                    {% else %}
-                        {% for fu in functions %}{{ fu.Nom }}
-                            {% if attribute(operation,fu.Nom) %}
-                                <a  class="btn btn-primary"  href="javascript: void(0);" ng-click='{{ identifier }}callFunction(item,"{{fu.Nom}}","{{fu.title}}")'>{{ fu.title }}</a>
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                </span>
-            {% else %}
-            <!-- Split button -->
-            <div class="btn-group" uib-dropdown>
-                {% if functions|length > 0 or operation.edit or operation.delete %}
-                    <a id="split-button" type="button" class="btn btn-danger  btn-sm" href="#/{{ CurrentUrl }}/{[{ item.id }]}">Détails</a>
-                    <button type="button" class="btn btn-danger btn-sm " uib-dropdown-toggle>
-                        <span class="caret"></span>
-                        <span class="sr-only">Split button!</span>
-                    </button>
-                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
-                        {% if operation.edit %}<li ><a class="dropdown-item" href="javascript: void(0);" ng-click="{{ identifier }}modify(item)">Modifier</a></li>{% endif %}
-                        {% if operation.delete %}<li ><a class="dropdown-item" href="javascript: void(0);" ng-click="{{ identifier }}delete(item)">Supprimer</a></li>{% endif %}
-                        <li class="divider"></li>
-                        {% for fu in functions %}
-                            {% if attribute(operation,fu.Nom) %}
-                                <li ><a class="dropdown-item" href="javascript: void(0);" ng-click='{{ identifier }}callFunction(item,"{{fu.Nom}}","{{fu.title}}")'>{{ fu.title }}</a></li>
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <a class="btn btn-danger" href="#/{{ CurrentUrl }}/{[{ item.id }]}">Détails</a>
                 {% endif %}
             </div>
-            {% endif %}
         </td>
     </tr>
     </tbody>
+    <tbody ng-if="{{ identifier }}.store.busy['{{ context }}']">
+        <tr>
+            <td colspan="100">
+                <div class="spinner-list"></div>
+            </td>
+        </tr>
+    </tbody>
+
 </table>
 <!--
 <div class="invert-wrap">
@@ -549,3 +528,29 @@
         </div>
     </div>
 </div>
+<div class="modal fade modal-size-large" id="modalcomm-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">{[{ comm.title }]}</h4>
+            </div>
+            <div class="modal-body">
+                <div id="ajaxwrapper"
+                     ng-bind-html="comm.html">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $('.spinner-list').spin();
+</script>

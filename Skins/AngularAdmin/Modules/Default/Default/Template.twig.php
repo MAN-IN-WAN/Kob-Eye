@@ -15,4 +15,14 @@ if(Sys::$User->Admin && !$vars['CurrentMenu']){
 }
 $vars['identifier'] = $info['Module'] . $info['ObjectType'];
 
+// PGF 20180912
+if (isset($vars['Path']))
+    $Path = $vars['Path'];
+else
+    $vars['Path'] = $Path = $vars['Query'];
+
+$file = $o->isRecursiv() ? 'Tree' : 'List';
+$vars['listPath'] = 'Systeme/Utils/'.$file;
+
+
 ?>

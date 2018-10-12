@@ -73,7 +73,7 @@ $childs = $vars["ObjectClass"]->getChildElements();
 foreach ($childs as $child){
         //test role                                                             //test hidden                                               //test admin
     if (((!isset($child['hasRole'])||Sys::$User->hasRole($child['hasRole'])) && !isset($child['childrenHidden'])&&!isset($child['hidden'])) || (!is_object(Sys::$CurrentMenu) && Sys::$User->Admin)){
-        if($child['listParent']){
+        if(isset($child['listParent']) && $child['listParent']){
             array_push($vars['fields'],$child);
         }
     }

@@ -209,7 +209,7 @@ Task=$task
         }
 
         //affectation du client
-        $client = $_GET["clientid"];
+        $client = isset($_GET["clientid"])? $_GET["clientid"] : false;
         if (!empty($client)){
             $obj->CodeClient = $client;
             if (is_int($client)) {

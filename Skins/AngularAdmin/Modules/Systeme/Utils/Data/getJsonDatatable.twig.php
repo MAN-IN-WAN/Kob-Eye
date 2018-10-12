@@ -2,29 +2,32 @@
 session_write_close();
 $info = Info::getInfos($vars['Path']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
+$o->setView();
 $vars['fields'] = $o->getElementsByAttribute('list','',true);
 //calcul offset / limit
 $offset = (isset($_GET['offset']))?$_GET['offset']:0;
 $limit = (isset($_GET['limit']))?$_GET['limit']:30;
 $filters = (isset($_GET['filters']))?$_GET['filters']:'';
 $context = (isset($_GET['context']))?$_GET['context']:'default';
-$sort = (isset($_GET['store']))?$_GET['store']:array();
+$sort = (isset($_GET['sort']))?json_decode($_GET['sort']):array();
 $path = explode('/',$vars['Path'],2);
 $path = $path[1];
 
 
-
-//souscription au push
-Event::registerPush($info['Module'],$info['ObjectType'],$path,$filters,$offset,$limit,$context);
 //requete
 if(connection_aborted()){
     endPacket();
     exit;
 }
-if(count($sort))
-    $vars['rows'] = Sys::getData($info['Module'],$path.'/'.$filters,$offset,$limit,$sort[0],$sort[1]);
-else
-    $vars['rows'] = Sys::getData($info['Module'],$path.'/'.$filters,$offset,$limit);
+if(count($sort)) {
+    $vars['rows'] = Sys::getData($info['Module'], $path . '/' . $filters, $offset, $limit, $sort[1], $sort[0]);
+}else {
+    $vars['rows'] = Sys::getData($info['Module'], $path . '/' . $filters, $offset, $limit);
+}
+
+$ids= array_map(function($i){return $i->Id;},$vars['rows']);
+//souscription au push
+Event::registerPush($info['Module'],$info['ObjectType'],$path,$filters,$offset,$limit,$context,$ids,$sort);
 
 
 if(connection_aborted()){

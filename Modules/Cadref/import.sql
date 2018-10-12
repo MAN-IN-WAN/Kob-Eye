@@ -42,8 +42,8 @@ left join kbabtel.`kob-Cadref-Discipline` d on d.SectionId=s.Id and d.Discipline
 
 truncate kbabtel.`kob-Cadref-Classe`;
 insert into kbabtel.`kob-Cadref-Classe` (umod,gmod,omod,CodeClasse,Antenne,Section,Discipline,Niveau,Classe,Annee,
-Jour,HeureDebut,HeureFin,Notes,Places,Inscrits,Attentes,Prix,Seances,Lieu,CycleDebut,CycleFin,AntenneId,SectionId,DisciplineId,NiveauId)
-select 7,7,7,c.Code,c.Antenne,c.Sect,c.Discipline,c.Niveau,c.Classe,'2017',
+JourId,HeureDebut,HeureFin,Notes,Places,Inscrits,Attentes,Prix,Seances,Lieu,CycleDebut,CycleFin,AntenneId,SectionId,DisciplineId,NiveauId)
+select 7,7,7,concat(c.Antenne,'.',c.Sect,'.',c.Discipline,'.',c.Niveau,'.',c.Classe),c.Antenne,c.Sect,c.Discipline,c.Niveau,c.Classe,'2017',
 Jour,Debut,Fin,Notes,Places,Inscrits,Attentes,Prix,Seances,Lieu,Date1,Date2,a.id,s.id,d.id,n.id
 from cadref17.Classes c
 left join kbabtel.`kob-Cadref-Antenne` a on a.Antenne=c.Antenne
@@ -102,11 +102,11 @@ from cadref17.Communes;
 
 truncate kbabtel.`kob-Cadref-Inscription`;
 insert into kbabtel.`kob-Cadref-Inscription` (umod,gmod,omod,Numero,CodeClasse,Antenne,Annee,DateInscription,Attente,DateAttente,Prix,Reduction1,Reduction2,Supprime,DateSupprime,AdherentId,ClasseId)
-select 7,7,7,i.Numero,i.Code,i.Antenne,'2017',if(DateInscr<'2017',null,unix_timestamp(DateInscr)),Attente,if(DateAtte<'2017',null,unix_timestamp(DateAtte)),i.Prix,i.Reduction,i.Reduc2,
+select 7,7,7,i.Numero,concat(i.Antenne,'.',i.Sect,'.',i.Discipline,'.',i.Niveau,'.',i.Classe),i.Antenne,'2017',if(DateInscr<'2017',null,unix_timestamp(DateInscr)),Attente,if(DateAtte<'2017',null,unix_timestamp(DateAtte)),i.Prix,i.Reduction,i.Reduc2,
 Supprime,if(DateSuppr<'2017',null,unix_timestamp(DateSuppr)),a.Id,c.Id
 from cadref17.Inscriptions i
 left join kbabtel.`kob-Cadref-Adherent` a on a.Numero=i.Numero
-left join kbabtel.`kob-Cadref-Classe` c on c.CodeClasse=i.Code
+left join kbabtel.`kob-Cadref-Classe` c on c.CodeClasse=concat(i.Antenne,'.',i.Sect,'.',i.Discipline,'.',i.Niveau,'.',i.Classe)
 order by i.Numero,i.Code;
 
 truncate kbabtel.`kob-Cadref-Reglement`;

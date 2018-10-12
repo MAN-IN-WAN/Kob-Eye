@@ -226,7 +226,7 @@ class Event extends genericClass {
                             foreach ($contexts as $name=>$context){
                                 $query = explode('/',$context->query);
                                 //si on est pas en page une on ne dispatch pas l'evenement
-                                if ($context->offset>0) {
+                                if ($context->offset>0 && (!isset($context->sort) || empty($context->sort) )) {
                                     continue;
                                 }
 
@@ -249,6 +249,16 @@ class Event extends genericClass {
                                     if (!$flag) continue;
                                 }
 
+                                //cas du sort
+                                if(isset($context->sort) || !empty($context->sort)){
+                                    $list = Sys::getData($ev['EventModule'], $ev['EventObjectClass'] . '/' . $context->filters, $context->offset, $context->limit, $context->sort[1], $context->sort[0]);
+                                    $flag = false;
+                                    foreach($list as $item){
+                                        if($item->Id == $o->Id) $flag = true;
+                                    }
+                                    if (!$flag) continue;
+                                }
+
                                 //on ajoute à la liste
                                 $ev2 = unserialize(serialize($ev));
                                 $ev2['Context'] = $name;
@@ -257,7 +267,11 @@ class Event extends genericClass {
                         }else{
                             //TODO Gérer les déplacement et modifiacation de clefs.
                             //on publie les évenements
-                            array_push($out,$ev);
+                            foreach($push->{$ev['EventModule'].$ev['EventObjectClass']} as $context){
+                                if(isset($context->ids) && is_array($context->ids) && in_array($ev['EventId'],$context->ids)){
+                                    array_push($out,$ev);
+                                }
+                            }
                         }
                     }
                 }
@@ -314,24 +328,35 @@ class Event extends genericClass {
      * @param $limit
      * @param $context
      */
-    public static function registerPush($module,$objectclass,$query,$filters,$offset,$limit,$context){
+    public static function registerPush($module,$objectclass,$query,$filters,$offset,$limit,$context,$ids,$sort=array()){
         $obj = self::getRegisteredPush();
         //ajout de la requete et des paramètres
-        if (!isset($obj->{$module.$objectclass}))
-            $obj->{$module.$objectclass} = array(
-                $context => (object) array(
+        if (!isset($obj->{$module.$objectclass})) {
+            if (!is_array($ids)) {
+                $ids = array($ids);
+            }
+            $obj->{$module . $objectclass} = array(
+                $context => (object)array(
                     'query' => $query,
                     'filters' => $filters,
                     'offset' => $offset,
-                    'limit' => $limit
+                    'limit' => $limit,
+                    'sort' => $sort,
+                    'ids' => $ids
                 )
             );
-        else $obj->{$module.$objectclass}[$context] = (object) array(
+        } else {
+
+
+            $obj->{$module.$objectclass}[$context] = (object) array(
                 'query' => $query,
                 'filters' => $filters,
                 'offset' => $offset,
-                'limit' => $limit
-        );
+                'limit' => $limit,
+                'sort' => $sort,
+                'ids' => $ids
+            );
+        }
         //mis à jour du fichier
         $obj = var_export($obj, true);
         $obj = str_replace('stdClass::__set_state', '(object)', $obj);
@@ -352,6 +377,10 @@ class Event extends genericClass {
     public static function filterCheck($filters,$data) {
         $filters=explode('&',$filters);
         foreach ($filters as $f){
+            if(preg_match('#(<|>|=)#',$f)){
+                $f=trim($f,'~');
+            }
+
             //cas supérieur
             if (preg_match('#^(.*)?>([^=]+)$#',$f,$fi)){
                 if (floatval($data->{$fi[1]}) <= floatval($fi[2])){
@@ -361,23 +390,28 @@ class Event extends genericClass {
             //cas supérieur ou égal
             if (preg_match('#^(.*)?>=(.+)$#',$f,$fi)){
                 if (floatval($data->{$fi[1]}) < floatval($fi[2])){
-                    echo floatval($data->{$fi[1]}).' < '.floatval($fi[2]);
-                    print_r($fi);
                     return false;
                 }
             }
-            /*//cas inférieur
+            //cas inférieur
             if (preg_match('#^(.*)?<([^\=]+)$#',$f,$fi)){
-                if (floatval($data->{$fi[1]}) >= floatval($fi[2])) return false;
+                if (floatval($data->{$fi[1]}) >= floatval($fi[2])) {
+                    return false;
+                }
             }
             //cas inférieur ou égal
             if (preg_match('#^(.*)?<=(.+)$#',$f,$fi)){
-                if (floatval($data->{$fi[1]}) > floatval($fi[2])) return false;
+                if (floatval($data->{$fi[1]}) > floatval($fi[2])) {
+                    return false;
+                }
             }
             //cas égalité
             if (preg_match('#^(.*)?[\=](.+)$#',$f,$fi)){
-                if ($data->{$fi[1]} != $fi[2]) return false;
+                if ($data->{$fi[1]} != $fi[2]) {
+                    return false;
+                }
             }
+
             //cas flou
             if (preg_match('#~(.+)#',$f,$fi)){
                 $flag=false;
@@ -389,8 +423,18 @@ class Event extends genericClass {
                 if (!$flag){
                     return false;
                 }
-            }*/
+            }
         }
         return true;
+    }
+
+
+    public static function clearPush(){
+        if(is_dir("Data/Push")){
+            $files = glob('Data/Push/*.push');
+            foreach($files as $file){
+                if(is_file($file)) unlink($file);
+            }
+        }
     }
 }

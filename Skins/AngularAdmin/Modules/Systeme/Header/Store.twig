@@ -7,11 +7,13 @@
             sort = {},
             total = {},
             pageLength = 15,
-
+            errors = [],
             timer = {},
             query = {},
             busy = {},
+            toRefresh = {},
             filters = {};
+
 
         //init filters
         initContext('default');
@@ -54,15 +56,32 @@
             setQuery: setQuery,
             getQuery: getQuery,
             query: query,
-            loadRecursivChildren:loadRecursivChildren,
-            data:{{ st.identifier }}Store
+            loadRecursivChildren: loadRecursivChildren,
+            getErrors: getErrors,
+            busy: busy,
+            sort: sort,
+            askForRefresh: askForRefresh,
+            clearErrors: clearErrors,
+            data: {{ st.identifier }}Store
         };
+
+        //Gestion des erreurs pour le cas ou on ne travaille pas dans un modal.
+        function getErrors(){
+            return errors;
+        }
+        function clearErrors(){
+            errors = [];
+            return true
+        }
+
+
         function initContext(context) {
             {{ st.identifier }}Store[context] = [];
             total[context] = 0;
             timer[context] = 0;
             busy[context] = 0;
             sort[context] = [];
+            toRefresh[context] = 0;
             resetFilters(context);
             currentPage[context] = 1;
             resetQuery(context);
@@ -152,6 +171,11 @@
                 global: '',
                 options: []
             };
+
+            {% if st.baseFilter %}
+                setOptionFilter( '{{ st.baseFilter|raw }}', context);
+            {% endif %}
+
             pageLoaded[context]=0;
         }
         /**
@@ -389,6 +413,8 @@
                 if (typeof obj[i] == "string"){
                     obj[i] = obj[i].replace(/\\\\n/g,'\n');
                     obj[i] = obj[i].replace(/\\\\r/g,'');
+                    obj[i] = obj[i].replace(/\\t/g,'\t');
+                    obj[i] = obj[i].replace(/\\\\/g,'\\');
 
                     var map = {
                         '&amp;': '&',
@@ -504,6 +530,9 @@
                 $http.get('/{{ st.module }}/{{ st.objecttype }}/'+id+'/Delete.json')
                     .success(function(data) {
                         console.log('store > {{ st.module }}/{{ st.objecttype }} > deleted '+id, data);
+                        if(!data.success){
+                            errors = data.errors;
+                        }
                     });
         }
         /**
@@ -521,12 +550,13 @@
             //if (context=='link') console.trace();
             var tmpquery = getQuery(context);
             var tmpfilters = getQueryFilter(context);
+            var tmpsort = sort[context];
             //create new context
             if (page<1||page==undefined) page=1;
             //si occupé
             if (busy[context]) {
                 //si meme requete et meme filtre
-                if (busy[context].query == tmpquery && busy[context].filter == tmpfilters && page == busy[context].page){
+                if (busy[context].query == tmpquery && busy[context].filter == tmpfilters && page == busy[context].page && tmpsort[0] == busy[context].sort[0] && tmpsort[1] == busy[context].sort[1]){
                     //on renvoie le promise
                     console.log('STOP LIST BUSY ',busy[context].query, '==' ,tmpquery, '&&', busy[context].filter, '==' ,tmpfilters, '&&' ,page, '==' ,busy[context].page,'-----',busy[context]);
                     //return busy[context].promise;
@@ -548,7 +578,8 @@
                         promise: $q,
                         query: tmpquery,
                         filter: tmpfilters,
-                        page: page
+                        page: page,
+                        sort : tmpsort
                     };
                     $http.get(
                         tmpquery+'/getData.json',
@@ -558,7 +589,7 @@
                                 offset: (page-1)*pageLength,
                                 limit: pageLength,
                                 context: context,
-                                sort: JSON.stringify(sort)
+                                sort: JSON.stringify(tmpsort)
                             },
                             timeout: canceler.promise
                         }).success(function(data) {
@@ -627,6 +658,23 @@
                 reject('pas récursif');
             });
         }
+
+        /*
+        * Demande de rerfresh après creation ou suppression
+        */
+        function askForRefresh(context){
+            if(toRefresh[context] != 0){
+                console.log('Refraichissement déjà en attente pour le contexte "'+context+'"');
+            } else {
+                console.log('Refraichissement demandé pour le contexte "'+context+'"');
+                toRefresh[context] = $timeout(function(){
+                    refresh(context);
+                    toRefresh[context] = 0;
+                }, 5000);
+            }
+
+        }
+
     }).run(function ({{ key }},$rootScope) {
         $rootScope.$on('{{ key }}',function (ev,data){
             switch (data.type){
@@ -641,6 +689,7 @@
                 case 'add':
                     //raffraichir seulement une valeur dans un context
                     {{ key }}.addOneData(data.id,data.data,data.context);
+                    {{ key }}.askForRefresh(data.context);
                     break;
             }
         });

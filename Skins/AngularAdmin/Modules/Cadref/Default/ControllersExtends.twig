@@ -1,0 +1,13 @@
+
+
+{% if not noExtend %}
+    app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location, $compile, $sce, $scope, $rootScope, $routeParams,$http) {
+        var getObj = $interval(function(){
+            if($scope.obj){
+                $interval.cancel(getObj);
+                $scope.modalObj = $scope.obj;
+            }
+        },100,50);
+        
+    });
+{% endif %}
