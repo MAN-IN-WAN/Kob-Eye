@@ -1,6 +1,6 @@
 {% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext %} 
 {% set f=fields %}
-{% set o=obj %}
+{% set o='obj' %}
 
 <div class="page-content-inner">
     <ul class="list-unstyled breadcrumb">
@@ -20,7 +20,9 @@
         <div class="panel-body">
 				<div class="pull-right">
 					<button type="button" class="btn btn-default btn-info margin-inline" ng-click="openInscription(obj)">Inscription</button>
-					<button type="button" class="btn btn-default btn-info margin-inline" ng-click="printCarte(obj)">Carte</button>
+{#					<button type="button" class="btn btn-default btn-info margin-inline" ng-click="openInscription(obj)">Carte</button>
+					<a href="javascript: void(0);" class="btn btn-primary" ng-click="callFunction(obj,'SendMessage','Envoi mail','')">Envoi mail</a>					<button type="button" class="btn btn-default btn-info margin-inline" ng-click="printCarte(obj)">Carte</button>
+#}
 				</div>
             <div class="row no-gutters">
                 <div class="col-md-8" >
@@ -288,3 +290,4 @@
         input.trigger('input');
     });
 </script>
+{{ include(template_from_string(module('Systeme/Utils/Modal/Function?identifier='~identifier))) }}

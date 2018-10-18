@@ -73,6 +73,8 @@
                         $blinfoNext = Bloc::getInterface($tabNext[0], $tabNext[1], $tabNext[2]);
                         if($blinfoNext &&  (!strpos($blinfoNext,'Default.md') && !strpos($blinfoNext,'Default.twig'))) {
                             $loadTemp($blinfoNext,$path);
+							if(isset($temp['step']))
+								$vars['toReturn']['data'].='<input type="hidden" ng-init="'.$info['Module'].$info['ObjectType'].'function.args.step='.$temp['step'].'">';
                         } else{
                             $vars['toReturn']['data'] = "Template non trouvé";
                         }

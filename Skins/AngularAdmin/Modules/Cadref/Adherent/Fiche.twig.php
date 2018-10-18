@@ -32,7 +32,6 @@ if (!is_object(Sys::$CurrentMenu) && Sys::$User->Admin){
     $vars['fichefields'] = $o->getElementsByAttribute('','',true);
 }
 
-
 foreach ($vars['fichefields'] as $k=>$f){
     if ($f['type']=='fkey'&&$f['card']=='short'){
         $vars['fichefields'][$k]['link'] = Sys::getMenu($f['objectModule'].'/'.$f['objectName']);
@@ -62,11 +61,6 @@ if (is_object(Sys::$CurrentMenu))
     $vars['CurrentUrl'] = Sys::$CurrentMenu->Url;
 else $vars['CurrentUrl'] = $vars['Query'];
 
-
 $vars['browseable'] = $vars["ObjectClass"]->browseable;
 $vars['CurrentObjQuery'] = $vars['Path'];
-
-//pgf
-$vars['scopeObj'] = 'modalObj';
-
 ?>
