@@ -1261,8 +1261,22 @@ class Server extends genericClass {
         }
         //test connectivite ssh
         try {
-            $connection = ssh2_connect($this->InternalIP, 22);
-            if(!$connection) $connection = ssh2_connect($this->IP, 22);
+            //Test de connectivité pour ne pas bloquer l'appli
+            $connection = false;
+            if(!empty($this->InternalIP)) {
+                $tc = @fsockopen($this->InternalIP, 22, $errno, $errstr, 0.5);
+                if ($tc !== false) {
+                    fclose($tc);
+                    $connection = ssh2_connect($this->InternalIP, 22);
+                }
+            }
+            if(!$connection && !empty($this->IP)) {
+                $tc = @fsockopen($this->IP, 22, $errno, $errstr, 0.5);
+                if ($tc !== false) {
+                    fclose($tc);
+                    $connection = ssh2_connect($this->IP, 22);
+                }
+            }
 
             if (!$connection){
                 $this->addError(array("Message"=>"Impossible de contacter l'hôte ".$this->InternalIP));

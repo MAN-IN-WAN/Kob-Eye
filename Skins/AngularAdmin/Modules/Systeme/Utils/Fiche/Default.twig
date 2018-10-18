@@ -17,19 +17,19 @@
             <div class="pull-right">
                 {% if functions|length > 1 %}
                     <div class="btn-group " uib-dropdown>
-                        <span id="function-button" type="button" class="btn btn-info  btn-default">Fonctions</span>
-                        <button type="button" class="btn btn-info  btn-default" uib-dropdown-toggle>
+                        <span id="function-button" type="button" class="btn btn-func">Fonctions</span>
+                        <button type="button" class="btn btn-func" uib-dropdown-toggle>
                             <span class="caret"></span>
                             <span class="sr-only">Split button!</span>
                         </button>
                         <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="function-button">
                             {% for fu in functions %}
-                                <li ><a class="dropdown-item" href="javascript: void(0);" ng-click='callFunction(obj,"{{fu.Nom}}","{{fu.title}}","{{fu.type}}",{{ fu.needConfirm }})'>{{fu.title}}</a></li>
+                                <li ><a class="dropdown-item" href="javascript: void(0);" ng-click='{{ identifier }}callFunction(obj,"{{fu.Nom}}","{{fu.title}}",{{ fu.needConfirm }})'>{{fu.title}}</a></li>
                             {% endfor %}
                         </ul>
                     </div>
                 {% elseif functions|length == 1 %}
-                    <a href="javascript: void(0);" class="btn btn-primary" ng-click='callFunction(obj,"{{functions.0.Nom}}","{{functions.0.title}}","{{functions.0.type}}")'>{{functions.0.title}}</a>
+                    <a href="javascript: void(0);" class="btn btn-primary" ng-click='{{ identifier }}callFunction(obj,"{{functions.0.Nom}}","{{functions.0.title}}",{{functions.0.needConfirm}})'>{{functions.0.title}}</a>
                 {% endif %}
 
                 {% if operation.edit %}<button type="button" class="btn btn-default btn-warning margin-inline" ng-click="modify(obj)">Modifier</button>{% endif %}
@@ -267,35 +267,8 @@
         </div>
     </div>
 </div>
-<div class="modal fade modal-size-large" id="modalfunction-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">{[{ function.title }]}</h4>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-success" ng-show="function.success">{[{ function.message }]}</div>
-                <div class="alert alert-danger" ng-show="function.errors.length > 0">
-                    <ul>
-                        <li ng-repeat="err in function.errors">{[{ err }]}</li>
-                    </ul>
-                </div>
-                <div id="ajaxwrapper"
-                     ng-show="function.loaded"
-                     ng-include="function.url" onload="function.loaded = true">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-warning" ng-show="function.controls.cancel" data-dismiss="modal">Annuler</button>
-                <button type="button" class="btn btn-success" ng-show="function.controls.save" ng-click="callFunctionSave(function)">Enregistrer</button>
-                <button type="button" class="btn btn-info" ng-show="function.controls.close" data-dismiss="modal">Fermer</button>
-            </div>
-        </div>
-    </div>
-</div>
+
+{{ include(template_from_string(module('Systeme/Utils/Modal/Function?identifier='~identifier))) }}
 
 {% if ChildrenElements|length %}
     <div class="modal fade modal-size-large" id="modallink-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">

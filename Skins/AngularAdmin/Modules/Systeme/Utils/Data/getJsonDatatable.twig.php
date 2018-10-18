@@ -2,6 +2,7 @@
 session_write_close();
 $info = Info::getInfos($vars['Path']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
+$o->setView();
 $vars['fields'] = $o->getElementsByAttribute('list','',true);
 //calcul offset / limit
 $offset = (isset($_GET['offset']))?$_GET['offset']:0;

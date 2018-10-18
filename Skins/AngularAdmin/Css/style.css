@@ -253,6 +253,7 @@ LISTE CLASSIQUE
  */
 .table thead th,.table tr td{
     border-bottom: 1px solid #efefef !important;
+    vertical-align: middle;
 }
 table tr th.list-col-th-dark{
     line-height: 0.3 !important;
@@ -1204,6 +1205,15 @@ Choix des composants
     background-color: #6f42c1;
     color: #fff;
     border: none;
+}
+.btn.btn-func{
+    background-color: #6f42c1;
+    color: #fff;
+    border-color: #6f42c1;
+}
+.btn.btn-func:hover{
+    background-color: #7f56c1;
+    border-color: #7f56c1;
 }
 .btn-abt-func:before{
     content: "\eb60";
