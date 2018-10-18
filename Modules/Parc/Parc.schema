@@ -20,6 +20,7 @@
 		<FUNCTION title="Envoyer un mail récapitulatif" type="form">EnvoyerRecapitulatif</FUNCTION>
 		<FUNCTION title="Importer plusieurs domaines" type="form">ImporterPlusieursDomaines</FUNCTION>
 		<FUNCTION title="Importation de comptes emails" type="form">ImporterPlusieursEmails</FUNCTION>
+		<FUNCTION title="Test" type="form" group="1">Test</FUNCTION>
 		<FKEY card="0,1" module="Systeme" data="User,Id">UserId</FKEY>
 		<FKEY card="0,1" module="Parc" data="Revendeur,Id">RevendeurId</FKEY>
 	</OBJECTCLASS>
@@ -309,8 +310,8 @@
         <PROPERTIES type="raw" fiche="1" form="1">Contenu</PROPERTIES>
         <PROPERTIES type="html" fiche="1" form="1">Retour</PROPERTIES>
 		<PROPERTIES type="datetime" list="1" fiche="1" form="1" description="Date de déclenchement" listDescr="Date" default="[!TMS::Now!]">DateDebut</PROPERTIES>
-		<PROPERTIES type="datetime" list="1" fiche="1" form="1" values="maintenance::Maintenance,install::Installation,edit::Modification,check::Vérification,update::Mise à jour" description="Type de tache" listDescr="Type" default="Vérification">TaskType</PROPERTIES>
-		<PROPERTIES type="datetime" list="1" fiche="1" form="1" description="Code de la tache" listDescr="Code">TaskCode</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" values="maintenance::Maintenance,install::Installation,edit::Modification,check::Vérification,update::Mise à jour" description="Type de tache" listDescr="Type" default="Vérification">TaskType</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" description="Code de la tache" listDescr="Code">TaskCode</PROPERTIES>
 		<PROPERTIES category="Fonction" type="varchar" description="Module"  searchOrder="2" fiche="5" form="1">TaskModule</PROPERTIES>
 		<PROPERTIES category="Fonction" type="varchar" description="ObjectClass"  searchOrder="3" fiche="6" form="1">TaskObject</PROPERTIES>
 		<PROPERTIES category="Fonction" type="int" description="Identifiant"  searchOrder="4" fiche="7" form="1">TaskId</PROPERTIES>
@@ -629,11 +630,6 @@
 		<PROPERTIES type="varchar" description="Revision Git" form="1" fiche="1">GitRevision</PROPERTIES>
 		<PROPERTIES type="boolean" description="Reinitialisation du dépôt" form="1" fiche="1">GitReset</PROPERTIES>
 		<PROPERTIES type="text" description="Commenaires" subtype="text" form="1" fiche="1">Commentaire</PROPERTIES>
-	</OBJECTCLASS>
-	<OBJECTCLASS title="SshKeys" driver="mysql" Description="Clefs SSH" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/SshKeys.class.php" AccessPoint="1">
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de l'applicatif" values="AzkoFront,AzkoBack" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
-		<PROPERTIES type="raw" subtype="text" description="Clef ssh">Clef</PROPERTIES>
-		<PROPERTIES type="boolean" description="Activé" list="1" form="1" fiche="1">Enabled</PROPERTIES>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="SshKeys" driver="mysql" Description="Clefs SSH" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/SshKeys.class.php" AccessPoint="1">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de l'applicatif" values="AzkoFront,AzkoBack" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>

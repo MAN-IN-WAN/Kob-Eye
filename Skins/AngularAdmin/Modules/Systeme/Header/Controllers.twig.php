@@ -35,6 +35,15 @@ foreach (Sys::$User->Menus as $m){
                 $tmp['description'] = $o->getDescription();
                 $tmp['Interfaces'] = $obj->getInterfaces();
                 $tmp['childrenelements'] = $obj->getChildElements();
+                $tmp['searchOrders'] = $o->getSearchOrder();
+                foreach($tmp['searchOrders'] as $so){
+                    if(isset($so['list']) && $so['list'] == 1) {
+                        $tmp['listSO'] = $so;
+                        break;
+                    }
+                }
+                if(!isset($tmp['listSO'])) $tmp['listSO'] = $tmp['searchOrders'][0];
+
 
                 for ($i = 0; $i < sizeof($tmp['childrenelements']); $i++) {
                     $child = $tmp['childrenelements'][$i];

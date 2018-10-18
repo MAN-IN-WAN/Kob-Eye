@@ -323,6 +323,8 @@ class CompteMail extends genericClass {
         try{
             $temp = $zimbra->getAccount($dom, 'id', $this->IdMail);
             $actuName = $temp->get('name');
+            $transp = $temp->get('zimbraMailTransport');
+            $isTrans = strpos($transp,$srv->DNSNom) === false;
         } catch (Exception $e) {
             $this->AddError(array('Message' => 'Erreur, ce compte mail n\'existe plus', 'Object' => $e));
             return false;
@@ -379,7 +381,8 @@ class CompteMail extends genericClass {
             $values['sn'] = $this->Nom;
             $values['givenName'] = $this->Prenom;
             $values['displayName'] = ucfirst($this->Prenom) .' '. ucfirst($this->Nom);
-            $values['zimbraMailHost'] = $srv->DNSNom;
+            if(!$isTrans)
+                $values['zimbraMailHost'] = $srv->DNSNom;
             $values['id'] = $this->IdMail;
             $values['zimbraMailQuota'] = $this->Quota*1024*1024;
 
