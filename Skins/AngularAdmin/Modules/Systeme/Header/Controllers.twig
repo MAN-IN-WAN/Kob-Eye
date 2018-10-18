@@ -242,7 +242,7 @@
                         $templateCache.remove(present);
 #}
 
-                    $http.post('/{{ c.module }}/{{ c.objecttype }}/Function.json',{"Func":JSON.stringify($scope.{{ c.identifier }}function)})
+                    $http.post('/{{ c.url }}/'+obj.id+'/Function.json',{"Func":JSON.stringify($scope.{{ c.identifier }}function)})
                     .success(function(data) {
                         console.log('store > {{ c.module }}/{{ c.objecttype }} > Function  ', data);
 
@@ -315,7 +315,7 @@
                     $templateCache.remove(present);#}
 
 
-                $http.post('/{{ c.module }}/{{ c.objecttype }}/Function.json',{"Func":JSON.stringify($scope.{{ c.identifier }}function)})
+                $http.post('/{{ c.url }}/'+obj.id+'/Function.json',{"Func":JSON.stringify($scope.{{ c.identifier }}function)})
                 .success(function(data) {
                     console.log('store > {{ c.module }}/{{ c.objecttype }} > Function  ', data);
 
@@ -406,7 +406,7 @@
                         $scope.{{ c.identifier }}function.id = list[i].id;
                         $scope.{{ c.identifier }}function.retours[list[i].id] = {title:'{% if c.listSO.Nom %}'+ list[i]['{{ c.listSO.Nom }}'] +' {% endif %}( '+list[i].id+' )',content:'', loaded:false};
 
-                        $http.post('/{{ c.module }}/{{ c.objecttype }}/Function.json',{"Func":JSON.stringify($scope.{{ c.identifier }}function)},{timeout:30000})
+                        $http.post('/{{ c.url }}/'+list[i].id+'/Function.json',{"Func":JSON.stringify($scope.{{ c.identifier }}function)},{timeout:30000})
                         .success(function(data) {
 
                             console.log('functiongroup > {{ c.module }}/{{ c.objecttype }} > Function  ', data);
@@ -455,7 +455,7 @@
                     $scope.{{ c.identifier }}function.id = list[i].id;
                     $scope.{{ c.identifier }}function.retours[list[i].id] = {title:'{% if c.listSO.Nom %}'+ list[i]['{{ c.listSO.Nom }}'] +' {% endif %}( '+list[i].id+' )',content:'', loaded:false};
 
-                    $http.post('/{{ c.module }}/{{ c.objecttype }}/Function.json',{"Func":JSON.stringify($scope.{{ c.identifier }}function)},{timeout:30000})
+                    $http.post('/{{ c.url }}/'+list[i].id+'/Function.json',{"Func":JSON.stringify($scope.{{ c.identifier }}function)},{timeout:30000})
                     .success(function(data) {
 
                         console.log('functiongroup > {{ c.module }}/{{ c.objecttype }} > Function  ', data);
@@ -905,7 +905,7 @@
                             $templateCache.remove(present);#}
 
 
-                        $http.post('/{{ c.module }}/{{ c.objecttype }}/Function.json',{"Func":JSON.stringify($scope.{{ c.identifier }}function)})
+                        $http.post('/{{ c.url }}/'+obj.id+'/Function.json',{"Func":JSON.stringify($scope.{{ c.identifier }}function)})
                         .success(function(data) {
                             console.log('store > {{ c.module }}/{{ c.objecttype }} > Function  ', data);
 
@@ -978,7 +978,7 @@
                         $templateCache.remove(present);#}
 
 
-                    $http.post('/{{ c.module }}/{{ c.objecttype }}/Function.json',{"Func":JSON.stringify($scope.{{ c.identifier }}function)})
+                    $http.post('/{{ c.url }}/'+obj.id+'/Function.json',{"Func":JSON.stringify($scope.{{ c.identifier }}function)})
                     .success(function(data) {
                         console.log('store > {{ c.module }}/{{ c.objecttype }} > Function  ', data);
 
