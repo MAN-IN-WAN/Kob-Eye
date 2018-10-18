@@ -1,26 +1,43 @@
 <?php
-echo "fiche system";
 session_write_close();
 $info = Info::getInfos($vars['Query']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
-//$vars['fields'] = $o->getElementsByAttribute('list','',true);
+
+$temp = $o->getElementsByAttribute('','',true);
+$fields = Array();
+foreach ($temp as $k=>$field){
+    if($info['TypeSearch'] == 'Direct' && ($field['type'] == 'metak' || $field['type'] == 'metad' || $field['type'] == 'metat' || $field['name'] == 'ImgMeta'  )){
+        continue;
+    }
+    if (isset($field['query'])&&!empty($field['query'])){
+        $t = explode('::',$field["query"]);
+        if (sizeof($t)==2)$t[2] = $t[1];
+        $q = explode('/',$t[0],2);
+        $vals = Sys::getData($q[0],$q[1]);
+        $field['query'] = array();
+        foreach ($vals as $v) {
+            $field['query'][$v->{$t[1]}] = $v->{$t[2]};
+        }
+    }
+    if(isset($field['help']) && $field['help']){
+        $field['helpLang'] = strtoupper("__".$info["Module"]."_".$info['ObjectType']."_".$vars['formfields'][$k]['name']."_HELP__");
+    }
+	$fields[$field['name']] = $field;
+}
+$vars['fields'] = $fields;
+
 $vars['functions'] = $o->getFunctions();
 $vars['fichefields'] = $o->getElementsByAttribute('fiche','',true);
 if (!is_object(Sys::$CurrentMenu) && Sys::$User->Admin){
     $vars['fichefields'] = $o->getElementsByAttribute('','',true);
 }
 
+
 foreach ($vars['fichefields'] as $k=>$f){
     if ($f['type']=='fkey'&&$f['card']=='short'){
         $vars['fichefields'][$k]['link'] = Sys::getMenu($f['objectModule'].'/'.$f['objectName']);
-
-        if ($vars['fichefields'][$k]['link']==$f['objectModule'].'/'.$f['objectName'])
-            $vars['fichefields'][$k]['link'] = false;
     }
 }
-$vars['fields'] = $vars['fichefields'];
-
-
 $vars['formfields'] = $o->getElementsByAttribute('form','',true);
 $vars['CurrentMenu'] = Sys::$CurrentMenu;
 $vars["CurrentObj"] = genericClass::createInstance($info['Module'],$info['ObjectType']);
@@ -48,5 +65,8 @@ else $vars['CurrentUrl'] = $vars['Query'];
 
 $vars['browseable'] = $vars["ObjectClass"]->browseable;
 $vars['CurrentObjQuery'] = $vars['Path'];
+
+//pgf
+$vars['scopeObj'] = 'modalObj';
 
 ?>

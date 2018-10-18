@@ -62,6 +62,13 @@ class ParcInstanceKobEye extends Plugin implements ParcInstancePlugin {
      * rewriteConfig
      */
     public function rewriteConfig() {
-
+        $hos = $this->_obj->getOneParent('Host');
+        $srv = $hos->getOneParent('Server');
+        $conf = $srv->getFileContent('/home/'.$hos->NomLDAP.'/www/Conf/General.conf');
+        if (!empty($conf)){
+            $conf = preg_replace('#<MYSQL_DSN>mysql\:\/\/(.*):(.*)@(.*)\/(.*)</MYSQL_DSN>#','<MYSQL_DSN>mysql://'.$hos->NomLDAP.':'.$hos->Password.'@db.maninwan.fr/\4</MYSQL_DSN>',$conf);
+            $srv->putFileContent('/home/'.$hos->NomLDAP.'/www/Conf/General.conf',$conf);
+        }
+        return true;
     }
 }

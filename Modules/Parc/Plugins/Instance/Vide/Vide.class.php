@@ -62,6 +62,6 @@ class ParcInstanceVide extends Plugin implements ParcInstancePlugin {
      * rewriteConfig
      */
     public function rewriteConfig() {
-
+        return true;
     }
 }

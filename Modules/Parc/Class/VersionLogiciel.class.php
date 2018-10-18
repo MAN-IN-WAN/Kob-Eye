@@ -52,7 +52,7 @@ class VersionLogiciel extends genericClass {
     public function createUpdateTask() {
         $task = genericClass::createInstance('Parc', 'Tache');
         $task->Type = 'Fonction';
-        $task->Nom = 'Recherche des instances de type '.$this->Type.' à mettre à jour en version '.$this->Version.'';
+        $task->Nom = 'Recherche des instances '.$this->Nom.' de type '.$this->Type.' à mettre à jour en version '.$this->Version.'';
         $task->TaskModule = 'Parc';
         $task->TaskObject = 'VersionLogiciel';
         $task->TaskId = $this->Id;

@@ -120,6 +120,9 @@ class Sys extends Root{
             }
             die('UPDATE OK');
         }
+		$GLOBALS["Chrono"]->start("Connexion");
+  		$this->Connection =new Connection();
+		$GLOBALS["Chrono"]->stop("Connexion");
 
   		$this->registerVar("DefaultUser",MAIN_USER_NUM);
   		if (isset(Sys::$User->Skin)) Sys::$Skin=Sys::$User->Skin;

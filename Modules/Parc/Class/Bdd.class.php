@@ -1,6 +1,14 @@
 <?php
 class Bdd extends genericClass {
     public function Save () {
+        $this->Nom = Instance::checkName($this->Nom);
+        $old = Sys::getOneData('Parc','Bdd/'.$this->Id);
+        //test de modification du ApacheServerName
+        if ($this->Id &&$old->Nom!=$this->Nom){
+            $this->addError(array("Message"=>"Impossible de modifier le nom de la base de donnée. Si c'est nécessaire, veuillez supprimer et recréer cette base de donnée en réimportant vos données."));
+            return false;
+        }
+
         parent::Save();
         $serv = $this->getOneParent('Server');
         if (!$serv) {
@@ -11,6 +19,15 @@ class Bdd extends genericClass {
         if ($this->checkDatabase())
             return true;
         else return false;
+    }
+    public function Verify() {
+        $old = Sys::getOneData('Parc','Bdd/'.$this->Id);
+        //test de modification du ApacheServerName
+        if ($this->Id &&$old->Nom!=$this->Nom){
+            $this->addError(array("Message"=>"Impossible de modifier le nom de la base de donnée. Si c'est nécessaire, veuillez supprimer et recréer cette base de donnée en réimportant vos données."));
+            return false;
+        }
+        return parent::Verify();
     }
     private function checkDatabase(){
         $serv = $this->getOneParent('Server');
@@ -26,22 +43,22 @@ class Bdd extends genericClass {
             $dbGuac->query($query);
 
             //vérification de l'existence de l'utilisateur
-            $query = "SELECT COUNT(*) FROM user WHERE User='" . $host->Nom . "' AND Host='%';";
+            $query = "SELECT COUNT(*) FROM user WHERE User='" . $host->NomLDAP . "' AND Host='%';";
             $q = $dbGuac->query($query);
             $result = $q->fetchALL(PDO::FETCH_ASSOC);
             if (!$result[0]["COUNT(*)"]) {
-                $query = "CREATE USER '" . $host->Nom . "'@'%' IDENTIFIED BY '" . $host->Password . "';";
+                $query = "CREATE USER '" . $host->NomLDAP . "'@'%' IDENTIFIED BY '" . $host->Password . "';";
                 $dbGuac->query($query);
             }else{
                 //sinon modification du mot de passe.
-                $query = "ALTER USER '" . $host->Nom . "'@'%' IDENTIFIED BY '" . $host->Password . "';";
+                $query = "ALTER USER '" . $host->NomLDAP . "'@'%' IDENTIFIED BY '" . $host->Password . "';";
                 $dbGuac->query($query);
             }
 
             //creation de la base de donnée et obtention des droits
             $query = "CREATE DATABASE IF NOT EXISTS `" . $this->Nom."`;";
             $dbGuac->query($query);
-            $query = "GRANT ALL PRIVILEGES ON `" . $this->Nom . "` . * TO '" . $host->Nom . "'@'%';";
+            $query = "GRANT ALL PRIVILEGES ON `" . $this->Nom . "` . * TO '" . $host->NomLDAP . "'@'%';";
             $dbGuac->query($query);
 
             //flush privileges

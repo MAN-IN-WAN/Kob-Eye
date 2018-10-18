@@ -1,5 +1,5 @@
 <div class="page-content-inner">
-    {% if filters|length >0 %}
+    {#{% if filters|length >0 %}
     <div class="widget widget-four background-transparent" >
         <div class="row">
             {% for filter in filters | slice(0,4) %}
@@ -19,20 +19,20 @@
             {% endfor %}
         </div>
     </div>
-    {% endif %}
+    {% endif %}#}
 
     <section class="panel">
-        <div class="panel-heading">
-            <h3>
+        <div class="panel-heading" style="padding-bottom:10px; padding-top:10px">
+            <h4>
                 {{ CurrentMenu.Titre }}
-            </h3>
+            </h4>
             {% if CurrentMenu.SousTitre %}
             <h5>
                 {{ CurrentMenu.SousTitre }}
             </h5>
             {% endif %}
         </div>
-        <div class="panel-body">
+        <div class="panel-body" style="padding:5px 5px 5px 5px">
             <div class="row">
                 <div class="col-xl-12">
                     <div class="panel panel-with-borders m-b-0">

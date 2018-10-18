@@ -22,7 +22,7 @@ else
     $vars['Path'] = $Path = $vars['Query'];
 
 $file = $o->isRecursiv() ? 'Tree' : 'List';
-$vars['listPath'] = 'Systeme/Utils/'.$file;
+$vars['listPath'] = 'Cadref/Default/'.$file;
 
 
 ?>

@@ -1581,12 +1581,48 @@ class Server extends genericClass {
         }
     }
     /**
+     * createFolder
+     * create a folder
+     */
+    public function createFolder($path,$usr = null,$rights='705'){
+        $act = $this->createActivity('Création du dossier '.$path,'Exec');
+        try {
+            $cmd = 'mkdir -p '.$path.' && chmod '.$rights.' '.$path;
+            if ($usr){
+                $cmd.=' && chown '.$usr.':users '.$path;
+            }
+            $out = $this->remoteExec($cmd);
+            $act->addDetails($cmd);
+            if (intval($out)>0){
+                $act->addDetails('retour => true ');
+                $act->Terminate(true);
+                return true;
+            }else{
+                $act->addDetails('retour => false ');
+                $act->Terminate(true);
+                return false;
+            }
+        }catch (Exception $e){
+            $act->addDetails($e->getMessage());
+            $act->Terminate(false);
+            return false;
+        }
+    }
+    /**
      * getFileContent
      * Return file content
      */
     public function getFileContent($path){
         try {
-            $out = $this->remoteExec('cat '.$path.' ');
+//            $out = $this->remoteExec('cat '.$path.' ');
+            if (!$this->_connection)$this->Connect();
+            //créatio nd'un fichier temporaire
+            $tmpfile = 'Data/'.microtime().'.tmp';
+            //$cmd = 'echo  \''.base64_encode($content).'\' > | base64 --decode '.$path;
+            //$out = $this->remoteExec($cmd);
+            $out = ssh2_scp_recv($this->_connection,$path,$tmpfile);
+            $out = file_get_contents($tmpfile);
+            unlink($tmpfile);
             if (!empty($out)){
                 return $out;
             }else{
@@ -1603,7 +1639,14 @@ class Server extends genericClass {
      */
     public function putFileContent($path,$content){
         try {
-            $out = $this->remoteExec('echo  \''.base64_encode($content).'\' | base64 --decode > '.$path);
+            if (!$this->_connection)$this->Connect();
+            //créatio nd'un fichier temporaire
+            $tmpfile = 'Data/'.microtime().'.tmp';
+            file_put_contents($tmpfile,$content);
+            //$cmd = 'echo  \''.base64_encode($content).'\' > | base64 --decode '.$path;
+            //$out = $this->remoteExec($cmd);
+            $out = ssh2_scp_send($this->_connection,$tmpfile,$path);
+            unlink($tmpfile);
             if (!empty($out)){
                 return $out;
             }else{

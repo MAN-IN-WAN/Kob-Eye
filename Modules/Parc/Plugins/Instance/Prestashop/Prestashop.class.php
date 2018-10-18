@@ -62,6 +62,15 @@ class ParcInstancePrestashop extends Plugin implements ParcInstancePlugin {
      * rewriteConfig
      */
     public function rewriteConfig() {
-
+        $hos = $this->_obj->getOneParent('Host');
+        $srv = $hos->getOneParent('Server');
+        $conf = $srv->getFileContent('/home/'.$hos->NomLDAP.'/www/config/settings.inc.php');
+        if (!empty($conf)){
+            $conf = preg_replace('#define\(\'_DB_USER_\', \'(.*)\'\);#','define(\'_DB_USER_\', \''.$hos->NomLDAP.'\');',$conf);
+            $conf = preg_replace('#define\(\'_DB_PASSWD_\', \'(.*)\'\);#','define(\'_DB_PASSWD_\', \''.$hos->Password.'\');',$conf);
+            $conf = preg_replace('#define\(\'_DB_SERVER_\', \'(.*)\'\);#','define(\'_DB_SERVER_\', \'db.maninwan.fr'.'\');',$conf);
+            $srv->putFileContent('/home/'.$hos->NomLDAP.'/www/config/settings.inc.php',$conf);
+        }
+        return true;
     }
 }

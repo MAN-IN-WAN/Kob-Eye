@@ -1,9 +1,8 @@
 <?php
-echo "fiche system";
 session_write_close();
 $info = Info::getInfos($vars['Query']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
-//$vars['fields'] = $o->getElementsByAttribute('list','',true);
+$vars['fields'] = $o->getElementsByAttribute('list','',true);
 $vars['functions'] = $o->getFunctions();
 $vars['fichefields'] = $o->getElementsByAttribute('fiche','',true);
 if (!is_object(Sys::$CurrentMenu) && Sys::$User->Admin){
@@ -13,14 +12,8 @@ if (!is_object(Sys::$CurrentMenu) && Sys::$User->Admin){
 foreach ($vars['fichefields'] as $k=>$f){
     if ($f['type']=='fkey'&&$f['card']=='short'){
         $vars['fichefields'][$k]['link'] = Sys::getMenu($f['objectModule'].'/'.$f['objectName']);
-
-        if ($vars['fichefields'][$k]['link']==$f['objectModule'].'/'.$f['objectName'])
-            $vars['fichefields'][$k]['link'] = false;
     }
 }
-$vars['fields'] = $vars['fichefields'];
-
-
 $vars['formfields'] = $o->getElementsByAttribute('form','',true);
 $vars['CurrentMenu'] = Sys::$CurrentMenu;
 $vars["CurrentObj"] = genericClass::createInstance($info['Module'],$info['ObjectType']);
