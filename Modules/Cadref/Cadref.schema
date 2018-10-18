@@ -38,7 +38,6 @@
 		<PROPERTIES type="varchar" length="50" category="Description" list="5" form="5" fiche="5" description="Libellé">Libelle</PROPERTIES>
 		<PROPERTIES type="boolean" default="1" category="Description" form="6" fiche="6" description="Accès Web">AccesWeb</PROPERTIES>
 		<PROPERTIES type="text" obligatoire="0" category="Description" form="7" fiche="6" description="Description">Description</PROPERTIES>
-		<FUNCTION Icon="/Skins/AdminV2/Img/database_go.png">EnvoiMails</FUNCTION>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Classe" driver="mysql" order="CodeClasse" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Classes" Operations="add,edit" Dico="1" Class="Modules/Cadref/Class/Classe.class.php">
@@ -63,25 +62,41 @@
 		<PROPERTIES type="int" default="0" category="Planning" form="13" fiche="13" description="Programmation 1sem/2, 1/mois">Programmation</PROPERTIES>
 		<PROPERTIES type="varchar" length="5" obligatoire="0" form="14" fiche="14" category="Planning" description="Lieu">Lieu</PROPERTIES>
 
-		<PROPERTIES type="int" default="0" category="Inscriptions" form="15" fiche="15" description="Places">Places</PROPERTIES>
-		<PROPERTIES type="int" default="0" category="Inscriptions" readOnly="1" form="16" fiche="16" description="Inscrits">Inscrits</PROPERTIES>
-		<PROPERTIES type="int" default="0" category="Inscriptions" readOnly="1" form="17" fiche="17" description="Attentes">Attentes</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Inscriptions" list="4" form="15" fiche="15" description="Places">Places</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Inscriptions" readOnly="1" list="4" form="16" fiche="16" description="Inscrits">Inscrits</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Inscriptions" readOnly="1" list="4" form="17" fiche="17" description="Attentes">Attentes</PROPERTIES>
 
-		<PROPERTIES type="float" default="0" category="Tarif" form="18" fiche="18" description="Prix">Prix</PROPERTIES>
-		<PROPERTIES type="float" default="0" category="Tarif" form="19" fiche="19" description="Réduction 1">Reduction1</PROPERTIES>
-		<PROPERTIES type="date" category="Tarif" form="20" fiche="20" description="Date réduction 1">DateReduction1</PROPERTIES>
-		<PROPERTIES type="float" default="0" category="Tarif" form="21" fiche="21" description="Réduction 2">Reduction2</PROPERTIES>
-		<PROPERTIES type="date" category="Tarif" form="22" fiche="22" description="Date réduction 2">DateReduction2</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Tarif" list="4" form="18" fiche="18" description="Prix">Prix</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Tarif" list="4" form="19" fiche="19" description="Réduction 1">Reduction1</PROPERTIES>
+		<PROPERTIES type="date" category="Tarif" list="4" form="20" fiche="20" description="Date réduction 1">DateReduction1</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Tarif" list="4" form="21" fiche="21" description="Réduction 2">Reduction2</PROPERTIES>
+		<PROPERTIES type="date" category="Tarif" list="4" form="22" fiche="22" description="Date réduction 2">DateReduction2</PROPERTIES>
 
 		<PROPERTIES type="text" obligatoire="0" category="Autre" form="23" fiche="23" description="Notes">Notes</PROPERTIES>
 		<FKEY card="0,n" module="Cadref" data="Enseignant,Id" category="Autre" form="24" fiche="24" description="Enseignants">Enseignants</FKEY>
+
+		<VIEW title="ClasseList" default="1">
+			<OBJECTCLASS title="ClasseTete" select="Id,CodeClasse,Annee,Prix,Reduction1,Reduction2,JourId,DisciplineId,NiveauId,HeureDebut,HeureFin,CycleDebut,CycleFin,DateReduction1,DateReduction2,Places,Inscrits,Attentes" filters="">
+   				<JOIN type="outer" module="Cadref" title="Jour" on="JourId" target="Id">
+           			<PROPERTIES type="int" list="4" listDescr="Jour" >Jour</PROPERTIES>
+       			</JOIN>
+				<JOIN type="outer" module="Cadref" title="Discipline" on="DisciplineId" target="Id">
+					<PROPERTIES type="int" list="4" alias="LibelleD">Libelle</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" module="Cadref" title="Niveau" on="NiveauId" target="Id">
+					<PROPERTIES type="int" list="4" alias="LibelleN">Libelle</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Jour" driver="mysql" order="Id" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Jours de la semaine" Dico="1">
 		<PROPERTIES type="varchar" searchOrder="1" length="8" obligatoire="1" category="Description" description="Jour">Jour</PROPERTIES>
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="Enseignant" driver="mysql" searchType="plaintext" order="Nom" orderType="ASC" master="1" AccessPoint="1" Icon="[None]" Description="Enseignants" Operations="add,edit" Class="Modules/Cadref/Class/Enseignant.class.php">
+	<OBJECTCLASS title="Enseignant" driver="mysql" searchType="plaintext" order="Nom" orderType="ASC" master="1" AccessPoint="1" Icon="[None]" Description="Enseignants" Operations="add,edit," Class="Modules/Cadref/Class/Enseignant.class.php">
+		<FUNCTION Icon="/Skins/AdminV2/Img/database_go.png" title="Envoi mail">EnvoiMails</FUNCTION>
 		<PROPERTIES type="varchar" length="4" searchOrder="1" obligatoire="1" category="Description" list="1" form="1" fiche="1" listDescr="Code" description="Code">Code</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" searchOrder="2" obligatoire="1" category="Description" list="2" form="2" fiche="2" listDescr="Nom" description="Nom">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" searchOrder="3" obligatoire="0" category="Description" list="3" form="3" fiche="3" listDescr="Prénom" description="Prénom">Prenom</PROPERTIES>
@@ -115,6 +130,8 @@
 
 
 	<OBJECTCLASS title="Adherent" driver="mysql" searchType="plaintext" order="Nom" orderType="ASC" master="1" AccessPoint="1" Icon="[None]" Description="Adhérents" Operations="add,edit" Class="Modules/Cadref/Class/Adherent.class.php">
+        <FILTER name="Tous" color="warning" ></FILTER>
+        <FILTER name="Année en cours" color="success">Annee=2017</FILTER>
 		<PROPERTIES type="varchar" length="6" width="200px" searchOrder="1" displayOrder="1" filterMode="generic" obligatoire="1" category="Description" list="1" form="1" fiche="1" listDescr="Numéro" description="Numéro">Numero</PROPERTIES>
 		<PROPERTIES type="varchar" length="100" searchOrder="1" displayOrder="2" filterMode="generic" obligatoire="1" category="Description" list="2" form="2" fiche="2" listDescr="Nom" description="Nom">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" length="100" searchOrder="0" displayOrder="3" obligatoire="1" category="Description" list="3" form="3" fiche="3" listDescr="Prénom" description="Prénom">Prenom</PROPERTIES>
@@ -135,14 +152,14 @@
 
 		<PROPERTIES type="varchar" length="1" category="Personnel" values="H::Homme,F::Femme" form="16" fiche="16" description="Sexe">Sexe</PROPERTIES>
 		<PROPERTIES type="varchar" length="4" category="Personnel" form="17" fiche="17" description="Année de naissance">Naissance</PROPERTIES>
-                <PROPERTIES type="int" category="Personnel" query="Cadref/Profession::Id::Libelle" form="18" fiche="18" description="Profession">ProfessionId</PROPERTIES>
-                <PROPERTIES type="int" category="Personnel" query="Cadref/Cursus::Id::Libelle" form="19" fiche="19" description="Cursus">CursusId</PROPERTIES>
-                <PROPERTIES type="int" category="Personnel" query="Cadref/Situation::Id::Libelle" form="20" fiche="20" description="Situation">SituationId</PROPERTIES>
+		<PROPERTIES type="int" category="Personnel" query="Cadref/Profession::Id::Libelle" form="18" fiche="18" description="Profession">ProfessionId</PROPERTIES>
+		<PROPERTIES type="int" category="Personnel" query="Cadref/Cursus::Id::Libelle" form="19" fiche="19" description="Cursus">CursusId</PROPERTIES>
+		<PROPERTIES type="int" category="Personnel" query="Cadref/Situation::Id::Libelle" form="20" fiche="20" description="Situation">SituationId</PROPERTIES>
 		<PROPERTIES type="date" category="Personnel" form="21" fiche="21" description="Certificat médical">Certificat</PROPERTIES>
 
 		<PROPERTIES type="text" obligatoire="0" category="Interne" form="22" fiche="22" description="Notes">Notes</PROPERTIES>
 		<PROPERTIES type="text" obligatoire="0" category="Interne" form="23" fiche="23" description="Notes">NotesAnnuelles</PROPERTIES>
-                <PROPERTIES type="int" default="0" category="Interne" form="24" fiche="24" description="Etoiles">Etoiles</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Interne" form="24" fiche="24" description="Etoiles">Etoiles</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Interne" form="25" fiche="25" description="Inactif">Inactif</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Interne" form="26" fiche="26" description="Inscription Web">Web</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Interne" form="27" fiche="27" description="Téléphone confirmé">TelephoneOk</PROPERTIES>
@@ -200,24 +217,30 @@
 		<VIEW title="InscriptionList" default="1">
 			<OBJECTCLASS title="InscriptionTete" select="Id,CodeClasse,Annee,Attente,Prix,Reduction1,Reduction2,Supprime" filters="">
 				<JOIN type="outer" module="Cadref" title="Classe" on="ClasseId" target="Id">
-                       			<PROPERTIES type="int" list="5" >JourId</PROPERTIES>
-                       			<PROPERTIES type="int" list="5" >DisciplineId</PROPERTIES>
-                       			<PROPERTIES type="int" list="5" >NiveauId</PROPERTIES>
-                       			<PROPERTIES type="varchar" list="4" >HeureDebut</PROPERTIES>
-                       			<PROPERTIES type="varchar" list="4" >HeureFin</PROPERTIES>
-                       			<PROPERTIES type="varchar" list="4" >CycleDebut</PROPERTIES>
-                       			<PROPERTIES type="varchar" list="4" >CycleFin</PROPERTIES>
-                       			<PROPERTIES type="varchar" list="4" >Places</PROPERTIES>
-                       			<PROPERTIES type="varchar" list="4" >Inscrits</PROPERTIES>
-        				<JOIN type="outer" module="Cadref" title="Jour" on="JourId" target="Id">
-                        			<PROPERTIES type="int" list="4" listDescr="Jour" >Jour</PROPERTIES>
-                			</JOIN>
-        				<JOIN type="outer" module="Cadref" title="Discipline" on="DisciplineId" target="Id">
-                        			<PROPERTIES type="int" list="4" alias="LibelleD">Libelle</PROPERTIES>
-                			</JOIN>
-        				<JOIN type="outer" module="Cadref" title="Niveau" on="NiveauId" target="Id">
-                        			<PROPERTIES type="int" list="4" Alias="LibelleN">Libelle</PROPERTIES>
-                			</JOIN>
+					<PROPERTIES type="int" list="5" >JourId</PROPERTIES>
+					<PROPERTIES type="int" list="5" >DisciplineId</PROPERTIES>
+					<PROPERTIES type="int" list="5" >NiveauId</PROPERTIES>
+					<PROPERTIES type="varchar" list="4" >HeureDebut</PROPERTIES>
+					<PROPERTIES type="varchar" list="4" >HeureFin</PROPERTIES>
+					<PROPERTIES type="varchar" list="4" >CycleDebut</PROPERTIES>
+					<PROPERTIES type="varchar" list="4" >CycleFin</PROPERTIES>
+					<PROPERTIES type="int" list="4" >Places</PROPERTIES>
+					<PROPERTIES type="int" list="4" >Inscrits</PROPERTIES>
+					<PROPERTIES type="int" list="4" >Attentes</PROPERTIES>
+					<PROPERTIES type="float" list="4" alias="CPrix">Prix</PROPERTIES>
+					<PROPERTIES type="float" list="4" alias="CReduction1">Reduction1</PROPERTIES>
+					<PROPERTIES type="float" list="4" alias="CReduction2">Reduction2</PROPERTIES>
+					<PROPERTIES type="float" list="4" alias="CDateReduction1">DateReduction1</PROPERTIES>
+					<PROPERTIES type="float" list="4" alias="CDateReduction2">DateReduction2</PROPERTIES>
+					<JOIN type="outer" module="Cadref" title="Jour" on="JourId" target="Id">
+						<PROPERTIES type="int" list="4" listDescr="Jour" >Jour</PROPERTIES>
+					</JOIN>
+					<JOIN type="outer" module="Cadref" title="Discipline" on="DisciplineId" target="Id">
+						<PROPERTIES type="int" list="4" alias="LibelleD">Libelle</PROPERTIES>
+					</JOIN>
+					<JOIN type="outer" module="Cadref" title="Niveau" on="NiveauId" target="Id">
+						<PROPERTIES type="int" list="4" alias="LibelleN">Libelle</PROPERTIES>
+					</JOIN>
 				</JOIN>
 			</OBJECTCLASS>
 		</VIEW>

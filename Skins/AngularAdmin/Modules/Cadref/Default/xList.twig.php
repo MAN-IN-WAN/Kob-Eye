@@ -5,6 +5,7 @@ else
     $vars['Path'] = $Path = $vars['Query'];
 $info = Info::getInfos($Path);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
+$o->setView();
 $vars['identifier'] = $info['Module'].$info['ObjectType'];
 if(!isset($vars['context']))
     $vars['context'] = $info['NbHisto'] > 1 ? 'children':'default';
@@ -68,7 +69,6 @@ if(strpos($blinfo, '/'.$info['Module'].'/')) {
 	$vars['formPath'] = substr(trim($blinfo, '.twig'), $p);
 }
 
-
 $childs = $vars["ObjectClass"]->getChildElements();
 foreach ($childs as $child){
         //test role                                                             //test hidden                                               //test admin
@@ -78,4 +78,7 @@ foreach ($childs as $child){
         }
     }
 }
+
+$vars['icons'] = 'Skins/AngularAdmin/Modules/Cadref/assets/img/png32x32/';
+$vars['headless'] = $_GET['headless'];
 ?>
