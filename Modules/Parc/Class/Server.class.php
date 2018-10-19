@@ -1495,7 +1495,6 @@ class Server extends genericClass {
             $act->Terminate(false);
             return;
         }
-        $this->
         $act->addDetails($out);
         $act->Terminate(true);
         $this->restartServiceNginx();

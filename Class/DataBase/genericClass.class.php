@@ -952,6 +952,8 @@ class genericClass extends Root {
 			foreach ($Funcs as $Name => $F) {
 				$Temp = $F;
 				$Temp["Nom"] = $Name;
+				if (isset($Temp['confirm']))
+                    $Temp["needConfirm"] = $Temp["confirm"];
                 $Temp["needConfirm"] = isset($Temp["needConfirm"]) ? $Temp["needConfirm"]:0;
 				$Functions[] = $Temp;
 			}

@@ -7,6 +7,9 @@
  */
 class Parc extends Module{
     public $classLoader=null;
+    private $_ParcRevendeur = null;
+    private $_ParcClient = null;
+    private $_ParcTechnicien = null;
     /**
 	 * Surcharge de la fonction init
 	 * Avant l'authentification de l'utilisateur
@@ -274,17 +277,23 @@ class Parc extends Module{
                 $this->_ParcClient = $Cls;
                 $GLOBALS["Systeme"]->registerVar("ParcClient",$this->_ParcClient);
             }else{
-                //test si revendeur
-                $Rvs = Sys::$User->getOneChild('Revendeur');
-                if ($Rvs){
-                    $this->_ParcRevendeur = $Rvs;
-                    $GLOBALS["Systeme"]->registerVar("ParcRevendeur",$this->_ParcRevendeur);
-                } else {
-                    //test si contact
-                    $ct = Sys::$User->getOneChild('Contact');
-                    if ($ct){
-                        $this->_ParcClient = $ct;
-                        $GLOBALS["Systeme"]->registerVar("ParcContact",$this->_ParcClient);
+                $Tcs = Sys::$User->getOneChild('Technicien');
+                if ($Tcs) {
+                    $this->_ParcRevendeur = $Tcs;
+                    $GLOBALS["Systeme"]->registerVar("ParcTechnicien", $this->_ParcTechnicien);
+                }else {
+                    //test si revendeur
+                    $Rvs = Sys::$User->getOneChild('Revendeur');
+                    if ($Rvs) {
+                        $this->_ParcRevendeur = $Rvs;
+                        $GLOBALS["Systeme"]->registerVar("ParcRevendeur", $this->_ParcRevendeur);
+                    } else {
+                        //test si contact
+                        $ct = Sys::$User->getOneChild('Contact');
+                        if ($ct) {
+                            $this->_ParcClient = $ct;
+                            $GLOBALS["Systeme"]->registerVar("ParcContact", $this->_ParcClient);
+                        }
                     }
                 }
             }

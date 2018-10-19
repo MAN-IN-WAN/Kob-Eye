@@ -261,6 +261,9 @@ class Parc_Client extends genericClass {
 	public function getDomain() {
 		return $this->getChildren('Domain');
 	}
+    public function getRevendeur() {
+        return $this->getOneParent('Revendeur');
+    }
 	public function getHost() {
 		return $this->getChildren('Host');
 	}

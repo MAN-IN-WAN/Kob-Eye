@@ -17,9 +17,9 @@ class Instance extends genericClass{
             return false;
         }
         //serveurs par défaut
-        $apachesrv = Sys::getOneData('Parc', 'Server/Web=1&defaultWebServer=1');
-        $proxysrv = Sys::getOneData('Parc', 'Server/Proxy=1');
-        $mysqlsrv = Sys::getOneData('Parc', 'Server/Sql=1&defaultSqlServer=1');
+        $apachesrv = Sys::getOneData('Parc', 'Server/Web=1&defaultWebServer=1',null,null,null,null,null,null,true);
+        $proxysrv = Sys::getOneData('Parc', 'Server/Proxy=1',null,null,null,null,null,null,true);
+        $mysqlsrv = Sys::getOneData('Parc', 'Server/Sql=1&defaultSqlServer=1',null,null,null,null,null,null,true);
         $dom = Sys::getOneData('Parc','Domain/defaultDomain=1',0,1,'','','','',true);
 
         if (!$apachesrv) {
@@ -129,6 +129,7 @@ class Instance extends genericClass{
             $heb->Password = $this->Password;
             $heb->Production = true;
             $heb->PHPVersion = $this->PHPVersion;
+            $heb->BackupEnabled = $this->BackupEnabled;
             $heb->addParent($apachesrv);
             $heb->addParent($client);
             if (!$heb->Save()) {
@@ -140,6 +141,7 @@ class Instance extends genericClass{
             $heb->Production = true;
             $heb->Password = $this->Password;
             $heb->PHPVersion = $this->PHPVersion;
+            $heb->BackupEnabled = $this->BackupEnabled;
             $heb->Save();
         }
 

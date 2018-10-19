@@ -85,6 +85,13 @@ class Tache extends genericClass{
         }
         return $this->_apache;
     }
+    public function Delete(){
+        $acts = $this->getChildren('Activity');
+        foreach ($acts as $act) {
+            $act->Delete();
+        }
+        return parent::Delete();
+    }
     /**
      * createActivity
      * créé une activité
