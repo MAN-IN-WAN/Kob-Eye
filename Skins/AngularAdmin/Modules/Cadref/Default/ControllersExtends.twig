@@ -1,13 +1,176 @@
-
-
 {% if not noExtend %}
-    app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location, $compile, $sce, $scope, $rootScope, $routeParams,$http) {
+	app.controller('{{ identifier }}FicheCtrlExtends', function($interval, $location, $compile, $timeout, $sce, $scope, $filter, $rootScope, $routeParams, $http, CadrefInscriptionStore, CadrefClasseStore) {
         var getObj = $interval(function(){
             if($scope.obj){
                 $interval.cancel(getObj);
-                $scope.modalObj = $scope.obj;
+                //$scope.modalObj = $scope.obj;
             }
         },100,50);
         
+		// controleur de store
+		CadrefClasseStore.setPageLength(10);
+		CadrefClasseStore.getData(1, 'default');
+        $scope.CadrefClasse = {
+            data: CadrefClasseStore.data.default,
+            store: CadrefClasseStore,
+            filter: CadrefClasseStore.getFilters('default',true).global,
+            filterPanel: false,
+            filters: (function(){
+                var opts = CadrefClasseStore.getFilters('default',true).options;
+                var out = {};
+                for (var o in opts){
+                    out[opts[o].name] = opts[o];
+                }
+                return out;
+            })(),
+            filterQuery: CadrefClasseStore.getQueryFilter('default'),
+            currentPage: CadrefClasseStore.currentPage.default,
+            pageLength: CadrefClasseStore.getPageLength(),
+            itemsPerPage: CadrefClasseStore.itemsPerPage,
+            selected: {
+                selectall: false
+            }
+        }
+		// recherche sur le store
+        var lasttimeout = false;
+		var noEvent = false;
+        $scope.$watch('CadrefClasse.filter', function() {
+			if(noEvent) return;
+			noEvent = true;
+			
+            if (lasttimeout){
+                $timeout.cancel(lasttimeout);
+                lasttimeout = false;
+            }
+            lasttimeout = $timeout(function () {
+	            CadrefClasseStore.setFilters('CodeClasse~'+$scope.CadrefClasse.filter+'%','default');
+                CadrefClasseStore.getData(1,'default');
+            },400);
+			noEvent = false;
+        });
+
+		// ouverture popup inscription
+		$scope.addDisabled = true;
+        $scope.openInscription = function(obj) {
+			$scope.modalObj = {};
+            angular.copy(obj, $scope.modalObj);
+            CadrefInscriptionStore.cloneContext('children','temp');
+            $scope.{{ ident }}callFunction(obj,'EditInscriptions','Inscriptions','');
+			$scope.CadrefClasse.filter = '';
+			$('#searchClasse').focus();
+        }
+		
+		$scope.clearSearch = function() {
+			$scope.CadrefClasse.filter = '';
+			$('#searchClasse').focus();
+		}
+		
+		$scope.classeControle = function() {
+			enb = false;
+			var s = $scope.CadrefClasse.filter;
+			if(s.length == 11) {
+				enb = true;
+				var t = $scope.CadrefInscription.store.data.temp;
+				var l = t.length;
+				for(var i = 0; i < l; i++) {
+					if(t[i].CodeClasse == s) {
+						enb = false;
+						break;
+					}
+				}
+			}
+			$scope.addDisabled = !enb;
+		}
+		
+		// mode = true : ajoute
+		// mode = false : retire
+		$scope.classeCalcul = function(item, mode) {
+		
+			$scope.CadrefClasse.cours += item.Prix;
+			$scope.CadrefClasse.solde -= item.Prix;
+		}
+		
+		$scope.classeAjoute = function(item) {
+			
+			var c = item == null ? $scope.CadrefClasse.data[0] : item;
+			var o = {};
+			o.id = 0;
+			o.CodeClasse = c.CodeClasse;
+			o.LibelleD = c.LibelleD;
+			o.LibelleN = c.LibelleN;
+			o.Jour = c.Jour;
+			o.HeureDebut = c.HeureDebut;
+			o.HeureFin = c.HeureFin;
+			o.CycleDebut = c.CycleDebut;
+			o.CycleFin = c.CycleFin;
+			o.Prix = c.Prix;
+			o.Reduction1 = c.Reduction1;
+			o.Reduction2 = c.Reduction2;
+			o.Places = c.Places;
+			o.Inscrits = c.Inscrits;
+			o.Attentes = c.Attentes;
+			o.Attente = 0;
+			o.Supprime = 0;
+			o.DateSupprime = null;
+			o.Utilisateur = '';
+			o.updated = 1;
+			var t = $scope.CadrefInscription.store.data.temp;
+			t[t.length] = o;
+			$scope.CadrefClasse.filter = '';
+			$scope.addDisabled = true;
+			
+			$scope.CadrefClasse.cours = parseInt($scope.CadrefClasse.cours)+parseInt(item.Prix);
+			$scope.CadrefClasse.solde = parseInt($scope.CadrefClasse.solde)-parseInt(item.Prix);
+		}
+		
+	
+		// mode = 1 : supprime
+		// mode = 2 : attente
+		$scope.classeSupprime = function(item, mode) {
+			if(item.Supprime > 0) return;
+			
+			// recalcul des montants
+			$scope.CadrefClasse.cours = parseInt($scope.CadrefClasse.cours)-parseInt(item.Prix);
+			$scope.CadrefClasse.solde = parseInt($scope.CadrefClasse.solde)+parseInt(item.Prix);
+			
+			// insciption non enregistrée : suppression de la liste
+			if(item.id == 0) {
+				var t = $scope.CadrefInscription.store.data.temp;
+				var l = t.length;
+				var s = item.CodeClasse;
+				for(var i = 0; i < l; i++) {
+					if(t[i].CodeClasse == s) {
+						t.splice(i, 1);
+						break;
+					}
+				}
+				return;
+			}
+			// flag supperssion
+			var dt = new Date();
+			item.DateSupprime = $filter('date')(new Date(), "dd-MM-yyyy");
+			item.Supprime = mode;
+			item.updated = 1;
+		}
+
+		// mode = 0 : isncription
+		// mode = 1 : attente
+		$scope.classeInscrire = function(item, mode) {
+			if(item.Supprime > 0) {
+				if(mode == 0) {
+					item.Supprime = 0;
+					item.Attente = 0;
+					item.DateSupprime = null;
+					item.updated = 1
+				}
+			}
+			else if(item.Attente != mode) {
+				item.Attente = mode;
+				item.updated = 1
+			}
+		}
+
     });
+    
+
 {% endif %}

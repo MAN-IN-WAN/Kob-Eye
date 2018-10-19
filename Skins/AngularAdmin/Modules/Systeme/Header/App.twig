@@ -23,8 +23,42 @@ angular.module('cleanUI', [
     'colorpicker.module',
     'ngDraggable',
     'ui.tree'
-]).config(function($interpolateProvider){
+]).config(function($interpolateProvider,$provide){
     $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
+
+    //Utile pour ngInclude plusieurs fois le meme template sans garder de cache.
+    $provide.decorator('$templateCache', [
+            '$delegate', function($delegate) {
+
+                var keys = [], origPut = $delegate.put, origRemove = $delegate.remove;
+
+                $delegate.put = function(key, value) {
+                    origPut(key, value);
+                    var yet = false;
+                    angular.forEach(keys, function(kvalue, kkey) {
+                        if(key == kvalue) yet = true;
+                    });
+                    if(!yet)
+                        keys.push(key);
+                };
+                $delegate.remove = function(key) {
+                    origRemove(key);
+                    angular.forEach(keys, function(kvalue, kkey) {
+                        if(key == kvalue) delete keys[kkey];
+                    });
+                };
+
+                // we would need cache.peek() to get all keys from $templateCache, but this features was never
+                // integrated into Angular: https://github.com/angular/angular.js/pull/3760
+                // please note: this is not feature complete, removing templates is NOT considered
+                $delegate.getKeys = function() {
+                    return keys;
+                };
+
+                return $delegate;
+            }
+        ]);
+
 })
 
 
@@ -527,4 +561,18 @@ app.filter('unescape', function() {
             return input.replace(/\\n/g, "\n");
         else return '';
     };
-})
+});
+
+app.directive('compile', ['$compile', function ($compile) {
+    return function(scope, element, attrs) {
+        scope.$watch(
+            function(scope) {
+                return scope.$eval(attrs.compile);
+            },
+            function(value) {
+                element.html(value);
+                $compile(element.contents())(scope);
+            }
+        )
+    };
+}]);

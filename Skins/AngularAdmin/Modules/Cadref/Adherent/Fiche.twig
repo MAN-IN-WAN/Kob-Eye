@@ -1,6 +1,6 @@
 {% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext %} 
 {% set f=fields %}
-{% set o=scopeObj %}
+{% set o='obj' %}
 
 <div class="page-content-inner">
     <ul class="list-unstyled breadcrumb">
@@ -18,6 +18,12 @@
     <!-- Default Panel -->
     <section class="panel">
         <div class="panel-body">
+				<div class="pull-right">
+					<button type="button" class="btn btn-default btn-info margin-inline" ng-click="openInscription(obj)">Inscription</button>
+{#					<button type="button" class="btn btn-default btn-info margin-inline" ng-click="openInscription(obj)">Carte</button>
+					<a href="javascript: void(0);" class="btn btn-primary" ng-click="callFunction(obj,'SendMessage','Envoi mail','')">Envoi mail</a>					<button type="button" class="btn btn-default btn-info margin-inline" ng-click="printCarte(obj)">Carte</button>
+#}
+				</div>
             <div class="row no-gutters">
                 <div class="col-md-8" >
                     <div class="row">
@@ -25,10 +31,10 @@
                             {{ label("Numéro") }}
                         </div>
                         <div class="col-md-2">
-                            {{ finput(f.Numero, o) }}
+                            {{ finput(f.Numero, o, true, '', 'width:100px') }}
                         </div>
                     </div>
-                    {{ flinput(f.Nom, o) }}
+                    {{ flinput(f.Nom, o, false, '', 'text-transform:uppercase;') }}
                     {{ flinput(f.Prenom, o) }}
                     {{ flinput(f.Adresse1, o) }}
                     {{ flinput(f.Adresse2, o) }}
@@ -37,7 +43,7 @@
                             {{ label("CP Ville") }}
                         </div>
                         <div class="col-md-2">
-                            {{ finput(f.CP, o) }}
+                            {{ finput(f.CP, o, false, 'ddddd') }}
                         </div>
                         <div class="col-md-8">
                             {{ finput(f.Ville, o) }}
@@ -200,7 +206,7 @@
                     {{ flinput(f.Solde, o, 'max-width:150px') }}
                     <section class="panel">
                         <div class="panel-body">
-                            <ng-include src="'/{{ CurrentUrl }}/0/Reglement/ListChildren.htm?headless=1'" ng-if="show"></ng-include>
+                            <ng-include src="'/{{ CurrentUrl }}/0/Reglement/ListReglement.htm'" ng-if="show"></ng-include>
                         </div>
                     </section>
                 </div>
@@ -284,3 +290,4 @@
         input.trigger('input');
     });
 </script>
+{{ include(template_from_string(module('Systeme/Utils/Modal/Function?identifier='~identifier))) }}

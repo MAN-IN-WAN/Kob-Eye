@@ -415,4 +415,51 @@ class Parc_Client extends genericClass {
 
         return true;
     }
+
+    public function Test($params){
+        sleep(1);
+        return 'toto'. rand(500 , 7985321);
+
+
+
+        if($params['MAILSEND']){
+            require_once ("Class/Lib/Mail.class.php");
+            $Mail = new Mail();
+            $Mail -> Subject($params['SUBJECT']);
+            $Mail -> From( 'no-reply@abtel.fr');
+            $Mail -> ReplyTo('contact@abtel.fr');
+            //$Mail -> To($this -> Email);
+            $Mail -> To('gcandella@abtel.fr');
+
+            //$Mail -> To('enguer@enguer.com');
+            $Mail -> Bcc('gcandella@abtel.fr');
+            //$Mail -> Cc($GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
+            $bloc = new Bloc();
+
+            $mailContent = $params['CONTENT'];
+
+
+
+            $bloc -> setFromVar("Mail", $mailContent, array("BEACON" => "BLOC"));
+            $Pr = new Process();
+            $bloc -> init($Pr);
+            $bloc -> generate($Pr);
+            $Mail -> Body($bloc -> Affich());
+
+            //klog::l('$Mail',print_r($Mail,true));
+
+            $Mail -> Send();
+            return 'Mail envoyé avec succès';
+        } else{
+            return array(
+                'template'=>'SendRecap',
+                'callNext' => array(
+                    'nom'=>'Test',
+                    'title' => 'Envoi du mail',
+                    'needConfirm' => false
+                )
+            );
+        }
+
+    }
 }

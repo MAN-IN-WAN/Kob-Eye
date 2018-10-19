@@ -1,5 +1,4 @@
 <?php
-echo "fiche system";
 session_write_close();
 $info = Info::getInfos($vars['Query']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
