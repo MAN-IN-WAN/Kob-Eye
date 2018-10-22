@@ -20,7 +20,6 @@
 		<FUNCTION title="Envoyer un mail récapitulatif" type="form">EnvoyerRecapitulatif</FUNCTION>
 		<FUNCTION title="Importer plusieurs domaines" type="form">ImporterPlusieursDomaines</FUNCTION>
 		<FUNCTION title="Importation de comptes emails" type="form">ImporterPlusieursEmails</FUNCTION>
-		<FUNCTION title="Test" type="form" group="1">Test</FUNCTION>
 		<FKEY card="0,1" module="Systeme" data="User,Id">UserId</FKEY>
 		<FKEY card="0,1" module="Parc" data="Revendeur,Id">RevendeurId</FKEY>
 	</OBJECTCLASS>
@@ -215,6 +214,7 @@
 		<FUNCTION title="Lancer une vérification des instances">checkState</FUNCTION>
 		<FUNCTION title="Lancer une vérification des certificats">checkSslState</FUNCTION>
 		<FUNCTION title="Lancer une mise à jour des certificats">renewSSL</FUNCTION>
+		<FUNCTION title="Lancer une sauvegarde globale">backup</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="ServerProfile" driver="mysql" AccessPoint="1" Description="Profil Serveur" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Class="Modules/Parc/Class/ServerProfile.class.php">
 		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" description="Nom" listDescr="Nom">Nom</PROPERTIES>
@@ -237,7 +237,7 @@
 		<PROPERTIES type="text" category="gestion commerciale" fiche="1" form="1">Commentaires</PROPERTIES>
 		<PROPERTIES type="int" obligatoire="1" default="1000" description="Quota (en Mo)" listDescr="Quota (en Mo)" list="1" fiche="1" form="1">Quota</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" obligatoire="1" default="default" description="Version de php" query="Parc/PHPVersion::Valeur::Titre" list="1" fiche="1" form="1">PHPVersion</PROPERTIES>
-		<PROPERTIES type="boolean" description="Activation sauvegarde" listDescr="Backup"  list="1" form="1" fiche="1">BackupEnabled</PROPERTIES>
+		<PROPERTIES type="boolean" description="Activation sauvegarde" listDescr="Backup"  list="1" form="1" fiche="1" default="1">BackupEnabled</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1" unique="1" length="50" hasRole="PARC_TECHNICIEN" description="Nom sous LDAP (de 8-50 caractères sans caractère spéciaux ou espace)" fiche="1" form="1">NomLDAP</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
@@ -245,6 +245,8 @@
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapUid</PROPERTIES>
 		<FKEY card="1,n" data="Server,Id" link="1" form="1" list="1" fiche="1" parentDescription="Serveur" description="Serveur Web" listDescr="Server" filter="Web=1" hasRole="PARC_TECHNICIEN">ServerId</FKEY>
 		<FKEY card="1,1" data="Client,Id" link="1" form="1" list="1" fiche="1" parentDescription="Client" description="Client" listDescr="Client">ClientId</FKEY>
+		<FUNCTION title="Créer un point de restauration">createRestorePoint</FUNCTION>
+		<FUNCTION title="Mise à jour des clefs SSH">refreshSshKeys</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Apache" driver="mysql" Dico="1" Description="Hôte virtuel" Icon="/Skins/AdminV2/Img/IconAqua/Tasks.png" Class="Modules/Parc/Class/Apache.class.php">
 		<PROPERTIES type="function" searchOrder="2" obligatoire="1" list="1" fiche="1" form="1" description="Racine du site (à partir de la racine du dossier utilisateur)" default="www" function="getRootPath" >DocumentRoot</PROPERTIES>
@@ -296,7 +298,7 @@
         <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom du fichier">Nom</PROPERTIES>
         <PROPERTIES type="raw" obligatoire="1" fiche="1" form="1">Contenu</PROPERTIES>
     </OBJECTCLASS>
-    <OBJECTCLASS title="Tache" driver="mysql" Dico="0" logEvent="0" AccessPoint="1" Description="Tache" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Tache.class.php" >
+    <OBJECTCLASS title="Tache" driver="mysql" Dico="0" logEvent="1" AccessPoint="1" Description="Tache" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Tache.class.php" >
 		<FILTER name="Toutes les taches" color="primary" ></FILTER>
 		<FILTER name="En erreur" color="warning"><![CDATA[Erreur=1]]></FILTER>
 		<FILTER name="En cours" color="warning"><![CDATA[Erreur=0&Demarre=1&Termine=0]]></FILTER>
@@ -546,7 +548,7 @@
 		<PROPERTIES type="password" searchOrder="1" description="Mot de passe" form="1" fiche="1" >Password</PROPERTIES>
 		<PROPERTIES type="boolean" description="Actif" listDescr="Actif" list="1" form="1" fiche="1" default="1" hasRole="PARC_TECHNICIEN" >Enabled</PROPERTIES>
 		<PROPERTIES type="boolean" description="Ssl" listDescr="Ssl"  list="1" form="1" hasRole="PARC_TECHNICIEN" fiche="1">EnableSsl</PROPERTIES>
-		<PROPERTIES type="boolean" description="Activation sauvegarde" listDescr="Backup"  list="1" form="1" fiche="1">BackupEnabled</PROPERTIES>
+		<PROPERTIES type="boolean" description="Activation sauvegarde" listDescr="Backup"  list="1" form="1" fiche="1" default="1">BackupEnabled</PROPERTIES>
 		<PROPERTIES type="varchar" description="Domaine" searchOrder="3" listDescr="Domaine"  list="1" fiche="1">FullDomain</PROPERTIES>
 		<PROPERTIES type="varchar" description="Version" listDescr="Version"  list="1" fiche="1">CurrentVersion</PROPERTIES>
 		<PROPERTIES type="int" description="Status" searchOrder="2"  listDescr="Status"  list="1" fiche="1" form="1" values="1::Non installé,2::Installé et configuré,3::Mise à jour en attente" default="1">Status</PROPERTIES>
@@ -558,13 +560,11 @@
 		<PROPERTIES type="plugin" category="Configuration" query="Explorateur/_Dossier/Modules/Parc/Plugins/Instance/_Dossier::Nom" form="1" fiche="1" obligatoire="1" default="Vide" description="Sélection de l'environnement CMS" list="1">Plugin</PROPERTIES>
 		<FUNCTION title="Activer le SSL">enableSSL</FUNCTION>
 		<FUNCTION title="Dupliquer cette instance">duplicateInstance</FUNCTION>
-		<FUNCTION title="Restaurer une instance">restoreInstance</FUNCTION>
-		<FUNCTION title="Archiver cette instance">archiveInstance</FUNCTION>
 		<FUNCTION title="Verifier cette instance">checkState</FUNCTION>
 		<FUNCTION title="Reinstaller le logiciel">reinstallSoftware</FUNCTION>
 		<FUNCTION title="Reconfigurer le CMS">configCms</FUNCTION>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="Activity" logEvent="0"  AccessPoint="1" driver="mysql" Description="Activité des jobs"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/Parc/Class/Activity.class.php" Operations="">
+	<OBJECTCLASS title="Activity" logEvent="1"  AccessPoint="1" driver="mysql" Description="Activité des jobs"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/Parc/Class/Activity.class.php" Operations="">
 		<FILTER name="Toutes les activités" color="warning" ></FILTER>
 		<FILTER name="Activités en cours" color="success" ><![CDATA[Started=1&Errors=0&Success=0]]></FILTER>
 		<FILTER name="Activités en erreur" ><![CDATA[Started=1&Errors=1]]></FILTER>
@@ -631,10 +631,22 @@
 		<PROPERTIES type="boolean" description="Reinitialisation du dépôt" form="1" fiche="1">GitReset</PROPERTIES>
 		<PROPERTIES type="text" description="Commenaires" subtype="text" form="1" fiche="1">Commentaire</PROPERTIES>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="SshKeys" driver="mysql" Description="Clefs SSH" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/SshKeys.class.php" AccessPoint="1">
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de l'applicatif" values="AzkoFront,AzkoBack" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
-		<PROPERTIES type="raw" subtype="text" description="Clef ssh">Clef</PROPERTIES>
-		<PROPERTIES type="boolean" description="Activé" list="1" form="1" fiche="1">Enabled</PROPERTIES>
+	<OBJECTCLASS title="SshKeys" driver="mysql" Description="Clefs SSH" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/SshKeys.class.php" Dico="1">
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de la clef" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
+		<PROPERTIES type="raw" subtype="text" form="1" list="1" description="Clef ssh">Clef</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" description="Type de clef" form="1" hasRole="PARC_TECHNICIEN" values="client,revendeur,technicien">Type</PROPERTIES>
+		<FKEY data="Client,Id" card="0,1" inline="1" description="Client" form="1" hasRole="PARC_TECHNICIEN">ClientId</FKEY>
+		<FKEY data="Technicien,Id" card="0,1" inline="1" description="Technicien" form="1"  hasRole="PARC_TECHNICIEN">TechnicienId</FKEY>
+		<FKEY data="Revendeur,Id" card="0,1" inline="1" description="Revendeur" form="1" hasRole="PARC_TECHNICIEN">RevendeurId</FKEY>
+		<FKEY data="Host,Id" card="0,n" description="Hébergement" form="1" >HostId</FKEY>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="RestorePoint" driver="mysql" Description="Point de restauration" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/RestorePoint.class.php" Dico="1" Operations="delete,restore,testRestore">
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Titre" list="1" form="1" fiche="1" listDescr="Titre">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" description="Identifiant">Identifiant</PROPERTIES>
+		<FKEY data="Instance,Id" card="0,n" inline="1" description="Instance">InstanceId</FKEY>
+		<FKEY data="Host,Id" card="0,n" inline="1" form="1" description="Hébergement">HostId</FKEY>
+		<FUNCTION title="Restaurer en production" confirm="1">restore</FUNCTION>
+		<FUNCTION title="Monter cette version dans un dossier temporaire accéssible en ftp" confirm="1">testRestore</FUNCTION>
 	</OBJECTCLASS>
 </SCHEMA>
 

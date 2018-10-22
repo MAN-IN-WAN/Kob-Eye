@@ -1,7 +1,7 @@
 <?php
 class Bdd extends genericClass {
     public function Save () {
-        $this->Nom = Instance::checkName($this->Nom);
+        $this->Nom = Bdd::checkName($this->Nom);
         $old = Sys::getOneData('Parc','Bdd/'.$this->Id);
         //test de modification du ApacheServerName
         if ($this->Id &&$old->Nom!=$this->Nom){
@@ -110,4 +110,29 @@ class Bdd extends genericClass {
         }
         return true;
     }
+    /**
+     * checkName
+     * Vérifie le nom de la base de donnée
+     * @param $chaine
+     * @return mixed|string
+     */
+    static function checkName($chaine) {
+        $chaine=utf8_decode($chaine);
+        $chaine=stripslashes($chaine);
+        $chaine = preg_replace('`\s+`', '-', trim($chaine));
+        $chaine = str_replace("'", "-", $chaine);
+        $chaine = str_replace("&", "et", $chaine);
+        $chaine = str_replace('"', "-", $chaine);
+        $chaine = str_replace("?", "", $chaine);
+        $chaine = str_replace("!", "", $chaine);
+        //$chaine = str_replace(".", "", $chaine);
+        $chaine = preg_replace('`[\,\ \(\)\+\'\/\:_\;]`', '-', trim($chaine));
+        $chaine=strtr($chaine,utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ?"),"aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynn-");
+        $chaine = preg_replace('`[-]+`', '-', trim($chaine));
+        $chaine =  utf8_encode($chaine);
+        $chaine = preg_replace('`[\/]`', '-', trim($chaine));
+
+        return $chaine;
+    }
+
 }

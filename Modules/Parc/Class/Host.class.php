@@ -49,6 +49,57 @@ class Host extends genericClass
                 $Server->Save();
             }
         }*/
+
+        //affectation des clefs ssh
+        $this->sshKeysCheck();
+        return true;
+    }
+    /**
+     * sshKeyCheck
+     * Affectation automatique des clefs ssh
+     */
+    private function sshKeysCheck() {
+        //clef technicien
+        $techs = Sys::getData('Parc','SshKeys/Type=technicien');
+        foreach ($techs as $tech){
+            $tech->addParent($this);
+            $tech->Save();
+        }
+        //clef revendeur
+        $cli = $this->getKEClient();
+        if ($rev = $cli->getRevendeur()){
+            $keys = Sys::getData('Parc','Revendeur/'.$rev->Id.'/SshKeys/Type=revendeur');
+            foreach ($keys as $key){
+                $key->addParent($this);
+                $key->Save();
+            }
+        }
+        //clef client
+        $keys = Sys::getData('Parc','Client/'.$cli->Id.'/SshKeys/Type=client');
+        foreach ($keys as $key){
+            $key->addParent($this);
+            $key->Save();
+        }
+    }
+    /**
+     * refreshSshKeys
+     * regénère les clefs ssh de l'hébergement
+     */
+    public function refreshSshKeys(){
+        //generation du fichier authorized_keys à pousser sur l'hébergement du client.
+        $keys = $this->getChildren('SshKeys');
+        $f = '';
+        foreach ($keys as $key){
+            $f.= $key->Clef."\n";
+        }
+        $servs = $this->getKEServer();
+        foreach ($servs as $serv){
+            $cmd = 'if [ ! -d /home/' . $this->NomLDAP . '/.ssh ]; then mkdir /home/' . $this->NomLDAP . '/.ssh; fi';
+            $serv->remoteExec($cmd);
+            $serv->putFileContent('/home/'.$this->NomLDAP.'/.ssh/authorized_keys',$f);
+            $serv->remoteExec('chown ' . $this->NomLDAP . ':users /home/' . $this->NomLDAP . '/.ssh -R');
+            $serv->remoteExec('chmod 600 /home/' . $this->NomLDAP . '/.ssh -R');
+        }
         return true;
     }
     /**
@@ -510,11 +561,12 @@ class Host extends genericClass
         $task->TaskFunction = 'backup';
         $task->addParent($this);
         $inst = $this->getOneChild('Instance');
-        if (!$inst)
+        if ($inst)
             $task->addParent($inst);
         $task->addParent($this->getOneParent('Server'));
         if (is_object($orig)) $task->addParent($orig);
         $task->Save();
+        return true;
     }
     /**
      * backup
@@ -528,13 +580,18 @@ class Host extends genericClass
         $inst = $host->getOneChild('Instance');
         try {
             //Préparation du backup
-            $act = $this->_obj->createActivity('Prépration et nettoyage backup ', 'Info', $task);
+            $act = $this->createActivity('Préparation et nettoyage backup ', 'Info', $task);
             //test des dossiers
             $cmd = 'if [ ! -d /home/' . $host->NomLDAP . '/sql ]; then mkdir /home/' . $host->NomLDAP . '/sql; fi';
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails($out);
-            $cmd = 'if [ ! -d /home/' . $host->NomLDAP . '/backup ]; then mkdir /home/' . $host->NomLDAP . '/backup;borg init --encryption=D4nsT0n208 /home/' . $host->NomLDAP . '/backup; fi';
+            $cmd = 'if [ ! -d /home/' . $host->NomLDAP . '/backup ]; then mkdir /home/' . $host->NomLDAP . '/backup;borg init --encryption=none /home/' . $host->NomLDAP . '/backup; fi';
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($cmd);
+            $act->addDetails($out);
+            //test du dépot
+            $cmd = 'if [ $(ls /home/' . $host->NomLDAP . '/backup | wc -l) == 0 ]; then borg init --encryption=none /home/' . $host->NomLDAP . '/backup; fi';
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails($out);
@@ -545,7 +602,7 @@ class Host extends genericClass
             $act->addDetails($out);
             //Sauvegarde base des donnée
             foreach ($bdds as $bdd) {
-                $act = $this->_obj->createActivity('Sauvegarde base de donnée '.$bdd->Nom, 'Info', $task);
+                $act = $this->createActivity('Sauvegarde base de donnée '.$bdd->Nom, 'Info', $task);
                 $cmd = 'cd /home/' . $host->NomLDAP . '/ && mysqldump -h db.maninwan.fr -u ' . $host->NomLDAP . ' -p' . $host->Password . ' ' . $bdd->Nom . ' > sql/'.$bdd->Nom.'-'.date('YmdHis').'.sql';
                 $out = $apachesrv->remoteExec($cmd);
                 $act->addDetails($cmd);
@@ -554,14 +611,14 @@ class Host extends genericClass
             }
             $restopoint = date('YmdHis');
             $restodate = date('d/m/Y à H:i:s');
-            $act = $this->_obj->createActivity('Backup fichier', 'Info', $task);
-            $cmd = 'cd /home/' . $host->NomLDAP . '/www && borg create backup::'.$restopoint.' * --exclude "backup" --exclude "cgi-bin" --exclude "logs"';
+            $act = $this->createActivity('Backup fichier', 'Info', $task);
+            $cmd = 'cd /home/' . $host->NomLDAP . ' && borg create backup::'.$restopoint.' * --exclude "backup" --exclude "cgi-bin" --exclude "logs"';
             $act->addDetails($cmd);
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($out);
             $act->Terminate(true);
             //modification des droits
-            $act = $this->_obj->createActivity('Modification des droits', 'Info', $task);
+            $act = $this->createActivity('Modification des droits', 'Info', $task);
             $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . ' -R';
             $act->addDetails($cmd);
             $out = $apachesrv->remoteExec($cmd);
