@@ -68,6 +68,8 @@
             parent::Save();
 
             $men = $this->getOneParent('Menu');
+
+
             $object = $this->getObjectClass();
             if(!$men){
                 $men = genericClass::createInstance('Systeme','Menu');
@@ -84,13 +86,20 @@
             $men->PageDescription = $this->Description;
             //$men->Affiche = $this->AfficheMenu;
             $men->MenuPrincipal = $this->AfficheMenu;
+            $men->Module = 'Systeme';
+
             $men->Save();
             $this->addParent($men);
 
             $par = $this->getOneParent('Page');
+            $men->delParent('Systeme/Group/1');
+            $men->resetParents('Menu');
             if($par){
                 $pMen = $par->getOneParent('Menu');
                 $men->addParent($pMen);
+                $men->Save();
+            } else{
+                $men->addParent('Systeme/Group/1');
                 $men->Save();
             }
 

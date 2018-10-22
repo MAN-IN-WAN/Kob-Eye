@@ -2695,7 +2695,8 @@ class genericClass extends Root {
 	 * @return	void
 	 */
 	function SaveKeywords($secondpass = false) {
-
+	    //On vide le cache du module systeme pour avoir les dernières données de page et non pas celles en cache
+        Sys::$Modules['Systeme'] -> Db -> clearLiteCache();
 		//On recherche les pages
 		$tls = $this->getPages();
 

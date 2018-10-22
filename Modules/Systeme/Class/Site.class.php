@@ -50,11 +50,13 @@ class Site extends genericClass {
 
         //Verification de l'existence
         $p = $this->getChildren('Page/MD5=' . md5($url));
+        $sameUrl = true;
         if(!sizeof($p)){
             if (is_object($men)) {
                 $i = Info::getInfos($men->Alias);
                 if ($i['TypeSearch'] == 'Direct') {
                     $p =  Sys::getData('Systeme','Page/PageModule='.$i['Module'].'&PageObject='.$i['ObjectType'].'&PageId='.$i['LastId']);
+                    $sameUrl = false;
                 }
             }
         }
@@ -65,7 +67,32 @@ class Site extends genericClass {
             $p->Url = $url;
             $p->MD5 = md5($p->Url);
             $p->addParent($this);
-        }else $p=$p[0];
+        }else {
+            if($sameUrl){
+                $p = $p[0];
+            }else{
+                $olds = $p;
+                $p = genericClass::createInstance('Systeme','Page');
+                foreach($olds as $old){
+                    if(!$old->Redirect) {
+                        $p->Title = $old->Title;
+                        $p->Description = $old->Description;
+                        $p->Keywords = $old->Keywords;
+                        $p->Image = $old->Image;
+                        $p->PageModule = $old->PageModule;
+                        $p->PageObject = $old->PageObject;
+                        $p->PageId = $old->PageId;
+                    }
+
+                    $old->Redirect = $url;
+                    $old->Save();
+                }
+                $p->Url = $url;
+                $p->MD5 = md5($p->Url);
+                $p->addParent($this);
+            }
+
+        }
         $p->Set('LastMod', date('Y-m-d'));
         //analyse de la requete
         $i = Info::getInfos($alias);

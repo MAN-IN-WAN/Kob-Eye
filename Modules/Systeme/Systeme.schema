@@ -66,7 +66,8 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Page" driver="mysql" Icon="/Skins/AdminV2/Img/IconAqua/Wiki2.png" generateUrl="0" Class="Modules/Systeme/Class/Page.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé" list="2" form="1" listDescr="Url">Url</PROPERTIES>
-      		<PROPERTIES type="varchar" auto="1">FromUrl</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="5"  category="Intitulé" list="3" form="2" listDescr="Redirection">Redirect</PROPERTIES>
+		<PROPERTIES type="varchar" auto="1">FromUrl</PROPERTIES>
 		<PROPERTIES type="varchar" auto="1">MD5</PROPERTIES>
 		<PROPERTIES type="varchar">LastMod</PROPERTIES>
 		<PROPERTIES type="metat" special="multi" list="4" ListDescr="Title" form="1">Title</PROPERTIES>
