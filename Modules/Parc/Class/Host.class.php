@@ -21,7 +21,7 @@ class Host extends genericClass
             $this->addError(array("Message"=>"Impossible de modifier le nom de l'hébergement. Si c'est nécessaire, veuillez supprimer et recréer cet hébergement en réimportant vos données."));
             return false;
         }
-        if ($old&&$old->NomLDAP!=$this->NomLDAP){
+        if ($old&&!empty($old->NomLDAP)&&$old->NomLDAP!=$this->NomLDAP){
             $this->addError(array("Message"=>"Impossible de modifier le nom technique de l'hébergement. Si c'est nécessaire, veuillez supprimer et recréer cet hébergement en réimportant vos données."));
             return false;
         }
@@ -218,7 +218,7 @@ class Host extends genericClass
      * @param    boolean    Verifie aussi sur LDAP
      * @return    Verification OK ou NON
      */
-    public function Verify($synchro = true)
+    public function Verify($synchro = false)
     {
         //test du nom
         if (empty($this->NomLDAP)) {
@@ -232,7 +232,7 @@ class Host extends genericClass
             $this->addError(array("Message"=>"Impossible de modifier le nom de l'hébergement. Si c'est nécessaire, veuillez supprimer et recréer cet hébergement en réimportant vos données."));
             return false;
         }
-        if ($this->Id&&$old->NomLDAP!=$this->NomLDAP){
+        if ($this->Id&&!empty($old->NomLDAP)&&$old->NomLDAP!=$this->NomLDAP){
             $this->addError(array("Message"=>"Impossible de modifier le nom technique de l'hébergement. Si c'est nécessaire, veuillez supprimer et recréer cet hébergement en réimportant vos données."));
             return false;
         }

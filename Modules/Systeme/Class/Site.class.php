@@ -84,8 +84,13 @@ class Site extends genericClass {
                         $p->PageId = $old->PageId;
                     }
 
-                    $old->Redirect = $url;
-                    $old->Save();
+
+                    $sit = $old->getOneParent('Site');
+                    if($this->Id == $sit->Id){
+                        $old->Redirect = $url;
+                        $old->Save();
+                    }
+
                 }
                 $p->Url = $url;
                 $p->MD5 = md5($p->Url);
