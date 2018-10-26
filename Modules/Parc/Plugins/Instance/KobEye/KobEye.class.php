@@ -55,7 +55,7 @@ class ParcInstanceKobEye extends Plugin implements ParcInstancePlugin {
     /**
      * checkState
      */
-    public function checkState(){
+    public function checkState($task){
 
     }
     /**

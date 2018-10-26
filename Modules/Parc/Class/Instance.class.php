@@ -265,7 +265,7 @@ class Instance extends genericClass{
      */
     public function createCheckStateTask($orig=null){
         //gestion depuis le plugin
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Vérification de l\'instance ' . $this->Nom;
         $task->TaskModule = 'Parc';
@@ -293,32 +293,6 @@ class Instance extends genericClass{
             $host->Delete();
         parent::Delete();
         return true;
-    }
-
-    /**
-     * createActivity
-     * créé une activité en liaison avec l'esx
-     * @param $title
-     * @param null $obj
-     * @param int $jPSpan
-     * @param string $Type
-     * @return genericClass
-     */
-    public function createActivity($title, $Type = 'Exec', $Task = null)
-    {
-        $act = genericClass::createInstance('Parc', 'Activity');
-        $host = $this->getOneParent('Host');
-        $srv = $host->getOneParent('Server');
-        $act->addParent($this);
-        $act->addParent($host);
-        $act->addParent($srv);
-        if ($Task) $act->addParent($Task);
-        $act->Titre = $this->tag . date('d/m/Y H:i:s') . ' > ' . $this->Titre . ' > ' . $title;
-        $act->Started = true;
-        $act->Type = $Type;
-        $act->Progression = 0;
-        $act->Save();
-        return $act;
     }
 
     /**

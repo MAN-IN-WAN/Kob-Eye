@@ -217,6 +217,18 @@ class Parc extends Module{
                     $n->Save();
                 }
             }*/
+
+            //teste le role technicien
+            $r = Sys::getOneData('Systeme','Tache/Nom=ActivityDump');
+            if (!$r){
+                //il faut tout créer
+                //création du role
+                $r = genericClass::createInstance('Systeme','Tache');
+                $r->Nom = "ActivityDump";
+                $r->Type = "Collecteur";
+                $r->Save();
+            }
+
         }
         /**
          * Creation du groupe et de tout ses menus
@@ -304,7 +316,7 @@ class Parc extends Module{
      * Renouvellement des certificats
      */
 	public function renewCertificates () {
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Mise à jour des certificats expirés';
         $task->TaskModule = 'Parc';
@@ -380,7 +392,7 @@ class Parc extends Module{
         return $parc->createCheckState($task);
     }
     public static function createCheckStateTask(){
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Lancement d\'une vérification globale des instances';
         $task->TaskModule = 'Parc';
@@ -417,7 +429,7 @@ class Parc extends Module{
         return $parc->createBackup($task);
     }
     public static function createBackupTask(){
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Lancement de la création des taches de backup';
         $task->TaskModule = 'Parc';
@@ -541,7 +553,7 @@ class Parc extends Module{
      * Créatio de la tache qui crééera toutes les taches de vérification
      */
     public static function createCheckSslStateTask(){
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Lancement d\'une vérification globale des certificats';
         $task->TaskModule = 'Parc';
@@ -557,7 +569,7 @@ class Parc extends Module{
         $pxs = Sys::getData('Parc','Apache/Ssl=1',0,100000);
         $i=1;
         foreach ($pxs as $px){
-            $t = genericClass::createInstance('Parc', 'Tache');
+            $t = genericClass::createInstance('Systeme', 'Tache');
             $t->Type = 'Fonction';
             $t->Nom = 'Vérification du certificat SSL ' . $px->ApacheServerName;
             $t->TaskModule = 'Parc';
@@ -582,11 +594,11 @@ class Parc extends Module{
      */
     public static function startMaintenanceTask($task = null){
         //suppression des taches vielle de plsu d'une heure
-        $GLOBALS['Systeme']->Db[0]->query('DELETE FROM `'.MAIN_DB_PREFIX.'Parc-Tache` WHERE tmsCreate<'.(time()-(3600*12)).' AND Erreur=0 AND TaskType="Vérification";');
+        $GLOBALS['Systeme']->Db[0]->query('DELETE FROM `'.MAIN_DB_PREFIX.'Systeme-Tache` WHERE tmsCreate<'.(time()-(3600*12)).' AND Erreur=0 AND TaskType="Vérification";');
         $GLOBALS['Systeme']->Db[0]->query('REPAIR TABLE `'.MAIN_DB_PREFIX.'Parc-Tache`;');
         $GLOBALS['Systeme']->Db[0]->query('OPTIMIZE TABLE `'.MAIN_DB_PREFIX.'Parc-Tache`;');
         //suppression des activités vielle de plsu d'une heure
-        $GLOBALS['Systeme']->Db[0]->query('DELETE FROM `'.MAIN_DB_PREFIX.'Parc-Activity` WHERE tmsCreate<'.(time()-(3600*12)).';');
+        $GLOBALS['Systeme']->Db[0]->query('DELETE FROM `'.MAIN_DB_PREFIX.'Systeme-Activity` WHERE tmsCreate<'.(time()-(3600*12)).';');
         $GLOBALS['Systeme']->Db[0]->query('REPAIR TABLE `'.MAIN_DB_PREFIX.'Parc-Activity`;');
         $GLOBALS['Systeme']->Db[0]->query('OPTIMIZE TABLE `'.MAIN_DB_PREFIX.'Parc-Activity`;');
     }

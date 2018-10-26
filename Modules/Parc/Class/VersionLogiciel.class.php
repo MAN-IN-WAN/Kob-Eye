@@ -25,11 +25,11 @@ class VersionLogiciel extends genericClass {
         if ($nb) throw new Exception('Ce n\'est aps la versio la plus récente');
         //détecte les instances à mettre à jour et génère les taches de mise à jour
         $nb = Sys::getCount('Parc','Instance/CurrentVersion<'.$this->Version.'&Type='.$this->Type,0,100000);
-        $act = $this->createActivity('Inventaire des instances à mettre à jour : '.$nb, 'Info', $task);
+        $act = $task->createActivity('Inventaire des instances à mettre à jour : '.$nb, 'Info');
         $insts = Sys::getData('Parc','Instance/CurrentVersion<'.$this->Version.'&Type='.$this->Type,0,100000);
         $act->Terminate(true);
         foreach ($insts as $inst){
-            $act = $this->createActivity('Création de la tache de mise à jour pour l\'instance '.$inst->Nom, 'Info', $task);
+            $act = $task->createActivity('Création de la tache de mise à jour pour l\'instance '.$inst->Nom, 'Info');
             $inst->createUpdateTask($this);
             $act->Terminate(true);
         }
@@ -50,7 +50,7 @@ class VersionLogiciel extends genericClass {
      * Création de la tache de mise à jour
      */
     public function createUpdateTask() {
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Recherche des instances '.$this->Nom.' de type '.$this->Type.' à mettre à jour en version '.$this->Version.'';
         $task->TaskModule = 'Parc';
@@ -60,26 +60,6 @@ class VersionLogiciel extends genericClass {
         $task->addParent($this);
         $task->Save();
     }
-    /**
-     * createActivity
-     * créé une activité en liaison avec la version logicielle
-     * @param $title
-     * @param null $obj
-     * @param int $jPSpan
-     * @param string $Type
-     * @return genericClass
-     */
-    public function createActivity($title, $Type = 'Exec', $Task = null)
-    {
-        $act = genericClass::createInstance('Parc', 'Activity');
-        $act->addParent($this);
-        if ($Task) $act->addParent($Task);
-        $act->Titre = $this->tag . date('d/m/Y H:i:s') . ' > ' . $this->Titre . ' > ' . $title;
-        $act->Started = true;
-        $act->Type = $Type;
-        $act->Progression = 0;
-        $act->Save();
-        return $act;
-    }
+
 
 }

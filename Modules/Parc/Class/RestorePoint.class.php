@@ -6,7 +6,7 @@ class RestorePoint extends genericClass{
      */
     public function createRestoreTask($orig=null) {
         $host = $this->getOneParent('Host');
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Restauration de l\'hébergement ' . $host->Nom.' du point de restauration '.$this->Nom;
         $task->TaskModule = 'Parc';
@@ -27,14 +27,14 @@ class RestorePoint extends genericClass{
      * Fonction de sauvegarde
      * @param Object Tache
      */
-    public function restore($task = null){
+    public function restore($task){
         $host = $this->getOneParent('Host');
         $bdds = $host->getChildren('Bdd');
         $apachesrv = $host->getOneParent('Server');
         $inst = $host->getOneChild('Instance');
         try {
             //Préparation du backup
-            $act = $this->createActivity('Préparation et nettoyage de la restauration ', 'Info', $task);
+            $act = $task->createActivity('Préparation et nettoyage de la restauration ', 'Info');
             //suppression des dossiers
             $cmd = 'cd /home/' . $host->NomLDAP . ' && ls';
             $out = $apachesrv->remoteExec($cmd);
@@ -56,7 +56,7 @@ class RestorePoint extends genericClass{
             $act->addDetails($out);
             //Sauvegarde base des donnée
             foreach ($bdds as $bdd) {
-                $act = $this->createActivity('Sauvegarde base de donnée '.$bdd->Nom, 'Info', $task);
+                $act = $task->createActivity('Sauvegarde base de donnée '.$bdd->Nom, 'Info');
                 $cmd = 'cd /home/' . $host->NomLDAP . '/ && mysqldump -h db.maninwan.fr -u ' . $host->NomLDAP . ' -p' . $host->Password . ' ' . $bdd->Nom . ' > sql/'.$bdd->Nom.'-'.date('YmdHis').'.sql';
                 $out = $apachesrv->remoteExec($cmd);
                 $act->addDetails($cmd);
@@ -65,14 +65,14 @@ class RestorePoint extends genericClass{
             }
             $restopoint = date('YmdHis');
             $restodate = date('d/m/Y à H:i:s');
-            $act = $this->createActivity('Backup fichier', 'Info', $task);
+            $act = $task->createActivity('Backup fichier', 'Info');
             $cmd = 'cd /home/' . $host->NomLDAP . ' && borg create backup::'.$restopoint.' * --exclude "backup" --exclude "cgi-bin" --exclude "logs"';
             $act->addDetails($cmd);
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($out);
             $act->Terminate(true);
             //modification des droits
-            $act = $this->createActivity('Modification des droits', 'Info', $task);
+            $act = $task->createActivity('Modification des droits', 'Info');
             $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . ' -R';
             $act->addDetails($cmd);
             $out = $apachesrv->remoteExec($cmd);

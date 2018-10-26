@@ -385,8 +385,8 @@ class Host extends genericClass
      * On utilise aussi la fonction de la superclasse
      * @return    void
      */
-    public function Delete(){
-        $act = $this->createActivity('Suppression de l\'hébergement '.$this->getFirstSearchOrder());
+    public function Delete($task){
+        $act = $task->createActivity('Suppression de l\'hébergement '.$this->getFirstSearchOrder());
         //suppression des apaches
         $aps = $this->getChildren('Apache');
         foreach ($aps as $ap){
@@ -523,36 +523,14 @@ class Host extends genericClass
 //        return Terminal::run($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
         return Terminal::run('enguer', '21wyisey');
     }
-    /**
-     * createActivity
-     * créé une activité en liaison avec l'hébergement
-     * @param $title
-     * @param null $obj
-     * @param int $jPSpan
-     * @param string $Type
-     * @return genericClass
-     */
-    public function createActivity($title, $Type = 'Exec', $Task = null){
-        $act = genericClass::createInstance('Parc', 'Activity');
-        $host = $this;
-        $srv = $host->getOneParent('Server');
-        $act->addParent($host);
-        $act->addParent($srv);
-        if ($Task) $act->addParent($Task);
-        $act->Titre = $this->tag . date('d/m/Y H:i:s') . ' > ' . $this->Titre . ' > ' . $title;
-        $act->Started = true;
-        $act->Type = $Type;
-        $act->Progression = 0;
-        $act->Save();
-        return $act;
-    }
+
     /**
      * createBackupTask
      * Creation de la tache de backup
      */
     public function createBackupTask($orig=null){
         if (!$this->BackupEnabled) return false;
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Sauvegarde de l\'hébergement ' . $this->Nom;
         $task->TaskModule = 'Parc';
@@ -573,14 +551,14 @@ class Host extends genericClass
      * Fonction de sauvegarde
      * @param Object Tache
      */
-    public function backup($task = null){
+    public function backup($task ){
         $host = $this;
         $bdds = $host->getChildren('Bdd');
         $apachesrv = $host->getOneParent('Server');
         $inst = $host->getOneChild('Instance');
         try {
             //Préparation du backup
-            $act = $this->createActivity('Préparation et nettoyage backup ', 'Info', $task);
+            $act = $task->createActivity('Préparation et nettoyage backup ', 'Info');
             //test des dossiers
             $cmd = 'if [ ! -d /home/' . $host->NomLDAP . '/sql ]; then mkdir /home/' . $host->NomLDAP . '/sql; fi';
             $out = $apachesrv->remoteExec($cmd);
@@ -602,7 +580,7 @@ class Host extends genericClass
             $act->addDetails($out);
             //Sauvegarde base des donnée
             foreach ($bdds as $bdd) {
-                $act = $this->createActivity('Sauvegarde base de donnée '.$bdd->Nom, 'Info', $task);
+                $act = $task->createActivity('Sauvegarde base de donnée '.$bdd->Nom, 'Info');
                 $cmd = 'cd /home/' . $host->NomLDAP . '/ && mysqldump -h db.maninwan.fr -u ' . $host->NomLDAP . ' -p' . $host->Password . ' ' . $bdd->Nom . ' > sql/'.$bdd->Nom.'-'.date('YmdHis').'.sql';
                 $out = $apachesrv->remoteExec($cmd);
                 $act->addDetails($cmd);
@@ -611,14 +589,14 @@ class Host extends genericClass
             }
             $restopoint = date('YmdHis');
             $restodate = date('d/m/Y à H:i:s');
-            $act = $this->createActivity('Backup fichier', 'Info', $task);
+            $act = $task->createActivity('Backup fichier', 'Info');
             $cmd = 'cd /home/' . $host->NomLDAP . ' && borg create backup::'.$restopoint.' * --exclude "backup" --exclude "cgi-bin" --exclude "logs"';
             $act->addDetails($cmd);
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($out);
             $act->Terminate(true);
             //modification des droits
-            $act = $this->createActivity('Modification des droits', 'Info', $task);
+            $act = $task->createActivity('Modification des droits', 'Info');
             $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . ' -R';
             $act->addDetails($cmd);
             $out = $apachesrv->remoteExec($cmd);
