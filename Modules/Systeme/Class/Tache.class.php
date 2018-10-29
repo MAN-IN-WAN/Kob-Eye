@@ -118,15 +118,16 @@ class Tache extends genericClass{
      * @param string $Type
      * @return genericClass
      */
-    public function createActivity($title, $Type = 'Exec'){
+    public function createActivity($title, $Type = 'Exec',$jPSpan=0){
         $act = genericClass::createInstance('Systeme', 'Activity');
         $act->addParent($this);
         $act->Titre = $this->tag . date('d/m/Y H:i:s') . ' > ' . $this->Titre . ' > ' . $title;
         $act->Started = true;
         $act->Type = $Type;
         $act->Progression = 0;
+        $act->ProgressStart = $this->Progression;
+        $act->ProgressSpan = $jPSpan;
         $act->Save();
         return $act;
     }
-
 }

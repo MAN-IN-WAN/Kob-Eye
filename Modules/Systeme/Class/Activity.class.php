@@ -41,8 +41,9 @@ class Activity extends genericClass{
         $this->Save();
     }
     function setJobProgress(){
-        if(!$this->PJob) return false;
-        $job = $this->PJob;
+        $task = $this->getOneParent('Tache');
+        if(!$task) return false;
+        $job = $task;
 
         $prog = intval($this->ProgressStart + $this->ProgressSpan*$this->Progression/100);
         if($prog != $job->Progression){

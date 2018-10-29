@@ -778,36 +778,38 @@
         }
 
         $scope.injectStore = function(toto,context, query){
-            if($scope[toto] != undefined) return;
             var store = $injector.get(toto+'Store');
-            $scope[toto] = {
-                data: store.data[context],
-                store: store,
-                filter: store.getFilters(context,true).global,
-                filterPanel: false,
-                filters: (function(){
-                    var opts = store.getFilters(context,true).options;
-                    var out = {};
-                    for (var o in opts){
-                        out[opts[o].name] = opts[o];
+            if($scope[toto] == undefined) {
+                $scope[toto] = {
+                    data: store.data[context],
+                    store: store,
+                    filter: store.getFilters(context,true).global,
+                    filterPanel: false,
+                    filters: (function(){
+                        var opts = store.getFilters(context,true).options;
+                        var out = {};
+                        for (var o in opts){
+                            out[opts[o].name] = opts[o];
+                        }
+                        return out;
+                    })(),
+                    filterQuery: store.getQueryFilter(context),
+                    currentPage: store.currentPage[context],
+                    pageLength: store.getPageLength(),
+                    itemsPerPage: store.itemsPerPage,
+                    selected: {
+                        selectall: false
                     }
-                    return out;
-                })(),
-                filterQuery: store.getQueryFilter(context),
-                currentPage: store.currentPage[context],
-                pageLength: store.getPageLength(),
-                itemsPerPage: store.itemsPerPage,
-                selected: {
-                    selectall: false
                 }
+
+
+                //watcher currentPage
+                $scope.$watch(toto+'.currentPage', function() {
+                    store.setPage($scope[toto].currentPage,context);
+                });
+
+
             }
-
-
-            //watcher currentPage
-            $scope.$watch(toto+'.currentPage', function() {
-                store.setPage($scope[toto].currentPage,context);
-            });
-
 
             if(query != undefined){
                 $scope[toto].store.setQuery(query,context);

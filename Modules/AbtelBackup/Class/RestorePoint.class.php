@@ -5,25 +5,25 @@ class RestorePoint extends genericClass {
         exec($cmd);
         return true;
     }
-    public function createActivity($title) {
-        $v =  $this->getOneParent('EsxVm');
-        $act = genericClass::createInstance('AbtelBackup','Activity');
-        $act->addParent($v);
-        $act->Titre = '[VMJOB] '.date('d/m/Y H:i:s').' > '.$title;
-        $act->Started = true;
-        $act->Progression = 0;
-        $act->Save();
-        return $act;
-    }
+
 
     public function restore(){
         //init
         $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=1");
+
         //pour chaque vm
         $v =  $this->getOneParent('EsxVm');
         $borg = $this->getOneParent('BorgRepo');
+
+        $task = genericClass::createInstance('Systeme', 'Tache');
+        $task->Type = 'Collecteur';
+        $task->Nom = 'Restore :' . $v->Titre .' -> '.$this->Titre;
+        $task->addParent($v);
+        $task->Save();
+
+
         try{
-            $act = $this->createActivity(' > Restauration de la vm '.$v->Titre.' au point '.$this->Name.'');
+            $act = $task->createActivity(' > Restauration de la vm '.$v->Titre.' au point '.$this->Name.'');
             $act->addDetails('Création du chemin de restauration /backup/nfs/Restore/'.$v->Titre.'::'.$this->Name.'','yellow');
             AbtelBackup::localExec("if [ ! -d '/backup/nfs/Restore/".$v->Titre."::".$this->Name."' ]; then sudo mkdir -p '/backup/nfs/Restore/'; fi");
             $act->setProgression(15);
