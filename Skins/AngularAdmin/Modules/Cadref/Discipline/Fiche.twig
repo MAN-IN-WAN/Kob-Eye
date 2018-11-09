@@ -1,0 +1,98 @@
+{# fiche Discipline #}
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean %} 
+{% set f=fields %}
+{% set o='obj' %}
+
+<div class="page-content-inner">
+    <ul class="list-unstyled breadcrumb">
+        <li>
+            <a href="#/TableauDeBord">Tableau de bord</a>
+        </li>
+        <li>
+            <a href="#/{{ CurrentMenu.Url }}">Liste des {{ ObjectClass.getDescription() }}</a>
+        </li>
+        <li>
+            <a href="javascript: void(0);" ng-bind-html="'Fiche {{ ObjectClass.getDescription() }} '+(obj.label)"></a>
+        </li>
+    </ul>
+
+    <!-- Default Panel -->
+    <section class="panel">
+        <div class="panel-body">
+            <div class="row no-gutters">
+                <div class="col-md-11" >
+					<div class="row">
+						<div class="col-md-7" >
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Section") }}
+								</div>
+								<div class="col-md-10">
+									{{ finput(f.LibelleS, o, true) }}
+								</div>
+							</div>
+							<div class="row" style="height:10px"></div>
+							{{ flinput(f.Discipline, o, false, '@@', 'width:100px; text-transform:uppercase;') }}
+							{{ flinput(f.Libelle, o, false, '', 'text-transform:uppercase;') }}
+							<div class="row" style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Visites guidées") }}
+								</div>
+								<div class="col-md-10">
+									{{ fboolean(f.Visite, o) }}
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Certificat médical") }}
+								</div>
+								<div class="col-md-10">
+									{{ fboolean(f.Certificat, o) }}
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Inactif") }}
+								</div>
+								<div class="col-md-10">
+									{{ fboolean(f.Inactif, o, true) }}
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Description") }}
+								</div>
+								<div class="col-md-10">
+									{{ ftext(f.Description, o) }}
+								</div>
+							</div>
+								
+						</div>
+						{# block right #}                    
+						<div class="col-md-5">
+						</div>
+					</div>
+					<div class="row">
+						{# disciplines #}
+						<div class="col-md-12">
+							<section class="panel">
+								<div class="panel-body">
+									<ng-include src="'/{{ CurrentUrl }}/0/Niveau/ListChildren.htm'" ng-if="show"></ng-include>
+								</div>
+							</section>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-1">
+					<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="saveFicheCadref()">Enregistrer</button>
+					<a type="button" class="btn btn-warning cadref-btn-100" href="#/{{ CurrentMenu.Url }}">Annuler</a>
+				</div>
+			</div>
+			<div class="modal-footer">
+			</div>
+		</div>
+    </section>
+</div>
+{{ include(template_from_string(module('Systeme/Utils/Modal/Function?identifier='~identifier))) }}
+

@@ -32,11 +32,11 @@
             </h5>
             {% endif %}
         </div>
-        <div class="panel-body" style="padding:5px 5px 5px 5px">
+        <div class="panel-body">
             <div class="row">
                 <div class="col-xl-12">
                     <div class="panel panel-with-borders m-b-0">
-                        <div class="panel-body">
+                        <div class="panel-body cadref-no-padding">
                             {{ include(template_from_string(module(listPath~'?Query='~Path))) }}
                         </div>
                     </div>

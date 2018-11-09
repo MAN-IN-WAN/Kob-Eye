@@ -234,15 +234,15 @@
     </thead>
     <tbody ng-if="!{{ identifier }}.store.busy['{{ context }}']">
     <tr dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination">
-        <td  class="list-col-td-dark">
+        <td  class="list-col-td-dark cadref-td">
             <input type="checkbox" value="{[{ item.id }]}" ng-model="{{ identifier }}.selected[item.id]" name="{{ identifier }}" id="{[{ item.id }]}" />&nbsp;
         </td>
-        <td class="list-col-td-id">
+        <td class="list-col-td-id cadref-td">
             <!--<span class="label label-warning">{[{ item.id }]}</span>-->
             {[{ item.id }]}
         </td>
         {% for field in fields %}
-        <td scope="row" class="type{{ field.type }}" {% if field.type == "fkey" and field.card == "short" %}ng-style="item.{{ field.objectName }}{{ field.name }}color ? {'background-color':  item.{{ field.objectName }}{{ field.name }}color} : {'background-color':'transparent' } "{% endif %}>
+        <td scope="row" class="type{{ field.type }} cadref-td" {% if field.type == "fkey" and field.card == "short" %}ng-style="item.{{ field.objectName }}{{ field.name }}color ? {'background-color':  item.{{ field.objectName }}{{ field.name }}color} : {'background-color':'transparent' } "{% endif %}>
             {% if field.type == "price" or field.type == "float" %}
                 <span class="label label-warning">{[{ item.{{ field.name }}| currency:"" }]}</span>
             {% elseif field.type == "image" %}
@@ -307,7 +307,7 @@
         {% endfor %}
         {% for interface in Interfaces %}
             {% if interface.child  %}
-            <td scope="row" class="type{{ interface.type }}">
+            <td scope="row" class="type{{ interface.type }} cadref-td">
                 {% if interface.type == "price" or interface.type == "float" %}
                     <span class="label label-warning" ng-repeat="child in item.{{ interface.child }}">{[{ child.{{ interface.property }}| currency:"" }]}</span>
                 {% elseif interface.type == "extlink" %}
@@ -317,7 +317,7 @@
             {% endif %}
         {% endfor %}
         {#<td  class="table-details" ng-bind-html="item._details">{[{ item._details }]}</td>#}
-        <td  class="table-action">
+        <td  class="table-action  cadref-td-btn">
             <div >
                 {% if not Type == "Tail" %}
                     <a class="btn-abt btn-abt-nfo btn-primary" href="#/{{ CurrentUrl }}/{[{ item.id }]}" title="Détails"></a>

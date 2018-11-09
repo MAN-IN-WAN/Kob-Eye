@@ -19,9 +19,15 @@ class Niveau extends genericClass {
 			$this->addError(array("Message"=>"Cette fiche ne peut être supprimée", "Prop"=>""));
 			return false;
 		}
-
 		return parent::Delete();
 	}
 
+	function GetFormInfo() {
+		$a = $this->getOneParent('Antenne');
+		$s = $this->getOneParent('Section');
+		$d = $this->getOneParent('Discipline');
+		return array('LibelleA'=>$a->Libelle, 'LibelleS'=>$s->Libelle, 'LibelleD'=>$d->Libelle);
+	}
 	
+
 }

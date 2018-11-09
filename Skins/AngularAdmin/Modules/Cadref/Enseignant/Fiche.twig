@@ -1,0 +1,119 @@
+{# fiche Enseignant #}
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean %} 
+{% set f=fields %}
+{% set o='obj' %}
+
+<div class="page-content-inner">
+    <ul class="list-unstyled breadcrumb">
+        <li>
+            <a href="#/TableauDeBord">Tableau de bord</a>
+        </li>
+        <li>
+            <a href="#/{{ CurrentMenu.Url }}">Liste des {{ ObjectClass.getDescription() }}</a>
+        </li>
+        <li>
+            <a href="javascript: void(0);" ng-bind-html="'Fiche {{ ObjectClass.getDescription() }} '+(obj.label)"></a>
+        </li>
+    </ul>
+
+    <!-- Default Panel -->
+    <section class="panel">
+        <div class="panel-body">
+            <div class="row no-gutters">
+                <div class="col-md-11" >
+					<div class="row">
+						<div class="col-md-7" >
+							{{ flinput(f.Code, o, false, '@@@@', 'width:100px; text-transform:uppercase;') }}
+							{{ flinput(f.Nom, o, false, '', 'text-transform:uppercase;') }}
+							{{ flinput(f.Prenom, o) }}
+							{{ flinput(f.Adresse1, o) }}
+							{{ flinput(f.Adresse2, o) }}
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("CP Ville") }}
+								</div>
+								<div class="col-md-2">
+									{{ finput(f.CP, o, false, 'ddddd') }}
+								</div>
+								<div class="col-md-8">
+									{{ finput(f.Ville, o) }}
+								</div>
+							</div>
+							<div class="row" style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Téléphones") }}
+								</div>
+								<div class="col-md-10">
+									<div class="row">
+										<div class="col-md-6">
+											{{ finput(f.Telephone1, o) }}
+										</div>
+										<div class="col-md-6">
+											{{ finput(f.Telephone2, o) }}
+										</div>
+									</div>
+								</div>
+							</div>
+							{{ flinput(f.Mail, o) }}
+							<div class="row" style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Delegué des professeurs") }}
+								</div>
+								<div class="col-md-10">
+									{{ fboolean(f.Delegue, o) }}
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Inactif") }}
+								</div>
+								<div class="col-md-10">
+									{{ fboolean(f.Inactif, o, true) }}
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Notes") }}
+								</div>
+								<div class="col-md-10">
+									{{ ftext(f.Notes, o) }}
+								</div>
+							</div>
+						</div>
+						{# block right #}                    
+						<div class="col-md-5">
+							<section class="panel">
+								{{ label('Absences') }}
+								<div class="panel-body cadref-no-padding">
+									<ng-include src="'/{{ CurrentUrl }}/0/Absence/Annee={{ Annee }}/ListAbsence.htm'" ng-if="show"></ng-include>
+								</div>
+							</section>
+						</div>
+					</div>
+					<div class="row">
+
+						{# classes #}
+						<div class="col-md-12">
+							<section class="panel">
+								<div class="panel-body">
+									<ng-include src="'/{{ CurrentUrl }}/0/Classe/Annee={{ Annee }}/ListClasse.htm'" ng-if="show"></ng-include>
+								</div>
+							</section>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-1">
+					<button type="button" class="btn btn-default margin-inline cadref-btn-100" ng-click="CadrefEnseignantcallFunction(obj,'SendMessage','Envoi mail','')">Message</button>
+					<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="saveFicheCadref()">Enregistrer</button>
+					<a type="button" class="btn btn-warning cadref-btn-100" href="#/{{ CurrentMenu.Url }}">Annuler</a>
+				</div>
+			</div>
+			<div class="modal-footer">
+			</div>
+		</div>
+    </section>
+</div>
+{{ include(template_from_string(module('Systeme/Utils/Modal/Function?identifier='~identifier))) }}
+

@@ -16,9 +16,12 @@ class Discipline extends genericClass {
 			$this->addError(array("Message"=>"Cette fiche ne peut être supprimée", "Prop"=>""));
 			return false;
 		}
-
 		return parent::Delete();
 	}
 
+	function GetFormInfo() {
+		$s = $this->getOneParent('Section');
+		return array('LibelleS'=>$s->Libelle);
+	}
 	
 }

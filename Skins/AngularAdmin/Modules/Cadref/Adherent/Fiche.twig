@@ -1,3 +1,4 @@
+{# fiche Adherent #}
 {% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext %} 
 {% set f=fields %}
 {% set o='obj' %}
@@ -18,276 +19,305 @@
     <!-- Default Panel -->
     <section class="panel">
         <div class="panel-body">
-				<div class="pull-right">
-					<button type="button" class="btn btn-default btn-info margin-inline" ng-click="openInscription(obj)">Inscription</button>
-{#					<button type="button" class="btn btn-default btn-info margin-inline" ng-click="openInscription(obj)">Carte</button>
-					<a href="javascript: void(0);" class="btn btn-primary" ng-click="callFunction(obj,'SendMessage','Envoi mail','')">Envoi mail</a>					<button type="button" class="btn btn-default btn-info margin-inline" ng-click="printCarte(obj)">Carte</button>
-#}
-				</div>
             <div class="row no-gutters">
-                <div class="col-md-8" >
-                    <div class="row">
-                        <div class="col-md-2">
-                            {{ label("Numéro") }}
-                        </div>
-                        <div class="col-md-2">
-                            {{ finput(f.Numero, o, true, '', 'width:100px') }}
-                        </div>
-                    </div>
-                    {{ flinput(f.Nom, o, false, '', 'text-transform:uppercase;') }}
-                    {{ flinput(f.Prenom, o) }}
-                    {{ flinput(f.Adresse1, o) }}
-                    {{ flinput(f.Adresse2, o) }}
-                    <div class="row">
-                        <div class="col-md-2">
-                            {{ label("CP Ville") }}
-                        </div>
-                        <div class="col-md-2">
-                            {{ finput(f.CP, o, false, 'ddddd') }}
-                        </div>
-                        <div class="col-md-8">
-                            {{ finput(f.Ville, o) }}
-                        </div>
-                    </div>
-                    <div class="row" style="height:10px"></div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            {{ label("Téléphones") }}
-                        </div>
-                        <div class="col-md-10">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    {{ finput(f.Telephone1, o) }}
-                                </div>
-                                <div class="col-md-6">
-                                    {{ finput(f.Telephone2, o) }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {{ flinput(f.Mail, o) }}
-                    <div class="row" style="height:10px"></div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    {{ label("Année de Naissance") }}
-                                </div>
-                                <div class="col-md-7">
-                                    {{ finput(f.Naissance, o) }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    {{ label("Sexe") }}
-                                </div>
-                                <div class="col-md-7">
-                                    {{ fvalues(f.Sexe, o) }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    {{ label("Certificat médical") }}
-                                </div>
-                                <div class="col-md-7">
-                                    {{ fdate(f.Certificat, o) }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    {{ label("Année d'inscription") }}
-                                </div>
-                                <div class="col-md-7">
-                                    {{ finput(f.Inscription, o) }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    {{ label("Origine") }}
-                                </div>
-                                <div class="col-md-7">
-                                    {{ fvalues(f.Origine, o) }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    {{ label("Dernière année") }}
-                                </div>
-                                <div class="col-md-7">
-                                    {{ finput(f.Annee, o) }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    {{ label("Situation") }}
-                                </div>
-                                <div class="col-md-7">
-                                    {{ fquery(f.SituationId, o) }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    {{ label("Profession") }}
-                                </div>
-                                <div class="col-md-7">
-                                    {{ fquery(f.ProfessionId, o) }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    {{ label("Role associatif") }}
-                                </div>
-                                <div class="col-md-7">
-                                    {{ fvalues(f.Adherent, o) }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    {{ label("Délégué de classe") }}
-                                </div>
-                                <div class="col-md-7">
-                                    {{ fquery(f.ClasseId, o) }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    {{ label("Responsable d'antenne") }}
-                                </div>
-                                <div class="col-md-7">
-                                    {{ fquery(f.AntenneId, o) }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" style="height:10px"></div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            {{ label("Notes") }}
-                        </div>
-                        <div class="col-md-10">
-                            {{ ftext(f.Notes, o) }}
-                        </div>
-                    </div>
+                <div class="col-md-11" >
+					<div class="row">
+						<div class="col-md-8" >
+							{{ flinput(f.Numero, o, true, '', 'width:100px') }}
+							{{ flinput(f.Nom, o, false, '', 'text-transform:uppercase;') }}
+							{{ flinput(f.Prenom, o) }}
+							{{ flinput(f.Adresse1, o) }}
+							{{ flinput(f.Adresse2, o) }}
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("CP Ville") }}
+								</div>
+								<div class="col-md-2">
+									{{ finput(f.CP, o, false, 'ddddd') }}
+								</div>
+								<div class="col-md-8">
+									{{ finput(f.Ville, o) }}
+								</div>
+							</div>
+							<div class="row" style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Téléphones") }}
+								</div>
+								<div class="col-md-10">
+									<div class="row">
+										<div class="col-md-6">
+											{{ finput(f.Telephone1, o) }}
+										</div>
+										<div class="col-md-6">
+											{{ finput(f.Telephone2, o) }}
+										</div>
+									</div>
+								</div>
+							</div>
+							{{ flinput(f.Mail, o) }}
+							<div class="row" style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Année de Naissance") }}
+										</div>
+										<div class="col-md-7">
+											{{ finput(f.Naissance, o) }}
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Sexe") }}
+										</div>
+										<div class="col-md-7">
+											{{ fvalues(f.Sexe, o) }}
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Certificat médical") }}
+										</div>
+										<div class="col-md-7">
+											<label class="input-group datepicker-only-init cadref-no-margin">
+												<input id="input-objCertificat" type="text" class="form-control cadref-input" placeholder="Date" mask="dd/dd/dddd" ng-model="obj.Certificat" ng-class="{'cadref-highlight': obj.certifInvalide}"/>
+												<span class="input-group-addon">
+													<i class="icmn-calendar"></i>
+												</span>
+											</label>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Année d'inscription") }}
+										</div>
+										<div class="col-md-7">
+											{{ finput(f.Inscription, o) }}
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Origine") }}
+										</div>
+										<div class="col-md-7">
+											{{ fvalues(f.Origine, o) }}
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Dernière année") }}
+										</div>
+										<div class="col-md-7">
+											{{ finput(f.Annee, o) }}
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Situation") }}
+										</div>
+										<div class="col-md-7">
+											{{ fquery(f.SituationId, o) }}
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Profession") }}
+										</div>
+										<div class="col-md-7">
+											{{ fquery(f.ProfessionId, o) }}
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Role associatif") }}
+										</div>
+										<div class="col-md-7">
+											{{ fvalues(f.Adherent, o) }}
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Délégué de classe") }}
+										</div>
+										<div class="col-md-7">
+											{{ fquery(f.ClasseId, o) }}
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Responsable d'antenne") }}
+										</div>
+										<div class="col-md-7">
+											{{ fquery(f.AntenneId, o) }}
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row" style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Notes") }}
+								</div>
+								<div class="col-md-10">
+									{{ ftext(f.Notes, o) }}
+								</div>
+							</div>
+						</div>
+						{# block right #}                    
+						<div class="col-md-4">
+							<section class="panel">
+								<table>
+									<thead>
+										<tr>
+											<th>Cotisation</th>
+											<th>Cours</th>
+											<th>Règlé</th>
+											<th>Différé</th>
+											<th>Régularis.</th>
+											<th>Solde</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="cadref-td-inscr">{{ finput(f.Cotisation, o, true, '', '') }}</td>
+											<td class="cadref-td-inscr">{{ finput(f.Cours, o, true, '', '') }}</td>
+											<td class="cadref-td-inscr">{{ finput(f.Reglement, o, true, '', '') }}</td>
+											<td class="cadref-td-inscr">{{ finput(f.Differe, o, true, '', '') }}</td>
+											<td class="cadref-td-inscr">
+												<div class="control-group">
+													<input type="text" class="form-control cadref-input" ng-change="regularisation()" ng-model="obj.Regularisation" mask="ddddd"/>
+												</div>
 
-                </div>
-                {# block right #}                    
-                <div class="col-md-4">
-                    {{ flinput(f.Cotisation, o, 'max-width:150px') }}
-                    {{ flinput(f.Cours, o, 'max-width:150px') }}
-                    {{ flinput(f.Reglement, o, 'max-width:150px') }}
-                    {{ flinput(f.Differe, o, 'max-width:150px') }}
-                    {{ flinput(f.Regularisation, o, 'max-width:150px') }}
-                    {{ flinput(f.Solde, o, 'max-width:150px') }}
-                    <section class="panel">
-                        <div class="panel-body">
-                            <ng-include src="'/{{ CurrentUrl }}/0/Reglement/ListReglement.htm'" ng-if="show"></ng-include>
-                        </div>
-                    </section>
-                </div>
-                {# inscriptions #}
-                <div class="col-md-12">
-                    <section class="panel">
-                        <div class="panel-body">
-                            <ng-include src="'/{{ CurrentUrl }}/0/Inscription/ListInscription.htm'" ng-if="show"></ng-include>
-                        </div>
-                    </section>
-                </div>
-            </div>
+											</td>
+											<td class="cadref-td-inscr">
+												<div class="control-group">
+													<input type="text" class="form-control cadref-input" placeholder="" ng-model="obj.Solde" readonly ng-class="{'cadref-highlight': Number(obj.Solde) != 0}"/>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</section>
+							<section class="panel">
+								<div class="panel-body cadref-no-padding">
+									<ng-include src="'/{{ CurrentUrl }}/0/Reglement/Annee={{ Annee }}/ListReglement.htm'" ng-if="show"></ng-include>
+								</div>
+							</section>
+						</div>
+					</div>
+					<div class="row">
 
-            <div class="modal-footer">
-                <a type="button" class="btn" href="#/{{ CurrentMenu.Url }}">Annuler</a>
-                <button type="button" class="btn btn-primary" ng-click="modalSave()">__SAVE_MODAL_OBJ__</button>
-            </div>
-        </div>
+						{# inscriptions #}
+						<div class="col-md-12">
+							<section class="panel">
+								<div class="panel-body">
+									<ng-include src="'/{{ CurrentUrl }}/0/Inscription/Annee={{ Annee }}/ListInscription.htm'" ng-if="show"></ng-include>
+								</div>
+							</section>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-1">
+					<button type="button" class="btn btn-info margin-inline cadref-btn-100" ng-click="openInscription(obj)">Inscription</button>
+					<button type="button" class="btn btn-primary margin-inline cadref-btn-100" ng-click="CadrefAdherentcallFunction(obj,'PrintCarte','Carte adhérent','')">Carte</button>
+					<button type="button" class="btn btn-default margin-inline cadref-btn-100" ng-click="CadrefAdherentcallFunction(obj,'SendMessage','Envoi mail','')">Message</button>
+					<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="saveFicheCadref()">Enregistrer</button>
+					<a type="button" class="btn btn-warning cadref-btn-100" href="#/{{ CurrentMenu.Url }}">Annuler</a>
+				</div>
+			</div>
+			<div class="modal-footer">
+			</div>
+		</div>
     </section>
 </div>
+{{ include(template_from_string(module('Systeme/Utils/Modal/Function?identifier='~identifier))) }}
 
 
 <script>
-    $('.datepicker-only-init').datetimepicker({
-        widgetPositioning: {
-            horizontal: 'left'
-        },
-        locale: 'fr',
-        format: 'DD/MM/YY',
-        icons: {
-            time: "fa fa-clock-o",
-            date: "fa fa-calendar",
-            up: "fa fa-arrow-up",
-            down: "fa fa-arrow-down"
-        }
-    });
-    $('.timepicker-only-init').datetimepicker({
-        widgetPositioning: {
-            horizontal: 'left'
-        },
-        locale: 'fr',
-        format: 'HH:mm',
-        icons: {
-            time: "fa fa-clock-o",
-            date: "fa fa-calendar",
-            up: "fa fa-arrow-up",
-            down: "fa fa-arrow-down"
-        }
-    });
-    $('.datetimepicker-init').datetimepicker({
-        widgetPositioning: {
-            horizontal: 'left'
-        },
-        locale: 'fr',
-        icons: {
-            time: "fa fa-clock-o",
-            date: "fa fa-calendar",
-            up: "fa fa-arrow-up",
-            down: "fa fa-arrow-down"
-        }
-    });
+	$('.datepicker-only-init').datetimepicker({
+		widgetPositioning: {
+			horizontal: 'left'
+		},
+		locale: 'fr',
+		format: 'DD/MM/YYYY',
+		icons: {
+			time: "fa fa-clock-o",
+			date: "fa fa-calendar",
+			up: "fa fa-arrow-up",
+			down: "fa fa-arrow-down"
+		}
+	});
+	$('.timepicker-only-init').datetimepicker({
+		widgetPositioning: {
+			horizontal: 'left'
+		},
+		locale: 'fr',
+		format: 'HH:mm',
+		icons: {
+			time: "fa fa-clock-o",
+			date: "fa fa-calendar",
+			up: "fa fa-arrow-up",
+			down: "fa fa-arrow-down"
+		}
+	});
+	$('.datetimepicker-init').datetimepicker({
+		widgetPositioning: {
+			horizontal: 'left'
+		},
+		locale: 'fr',
+		icons: {
+			time: "fa fa-clock-o",
+			date: "fa fa-calendar",
+			up: "fa fa-arrow-up",
+			down: "fa fa-arrow-down"
+		}
+	});
 
 
-    $('.urlInput').on('keyup', function () {
-        $(this).val($(this).val().replace(/[^A-Za-z0-9_\-\.]*\s*/g, ''));
-    });
-    //Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
-    $(".datepicker-only-init").on("dp.change", function () {
-        var input = $(this).children('input').eq(0);
-        input.trigger('change');
-        input.trigger('input');
-    });
-    $(".timepicker-only-init").on("dp.change", function () {
-        var input = $(this).children('input').eq(0);
-        input.trigger('change');
-        input.trigger('input');
-    });
-    $(".datetimepicker-init").on("dp.change", function () {
-        var input = $(this).children('input').eq(0);
-        input.trigger('change');
-        input.trigger('input');
-    });
+	$('.urlInput').on('keyup', function () {
+		$(this).val($(this).val().replace(/[^A-Za-z0-9_\-\.]*\s*/g, ''));
+	});
+	//Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
+	$(".datepicker-only-init").on("dp.change", function () {
+		var input = $(this).children('input').eq(0);
+		input.trigger('change');
+		input.trigger('input');
+	});
+	$(".timepicker-only-init").on("dp.change", function () {
+		var input = $(this).children('input').eq(0);
+		input.trigger('change');
+		input.trigger('input');
+	});
+	$(".datetimepicker-init").on("dp.change", function () {
+		var input = $(this).children('input').eq(0);
+		input.trigger('change');
+		input.trigger('input');
+	});
 </script>
-{{ include(template_from_string(module('Systeme/Utils/Modal/Function?identifier='~identifier))) }}

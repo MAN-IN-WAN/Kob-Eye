@@ -1,10 +1,12 @@
 <?php
+$vars['Annee'] = $GLOBALS['Systeme']->getRegVars('AnneeEnCours');
 if (isset($vars['Path']))
     $Path = $vars['Path'];
 else
     $vars['Path'] = $Path = $vars['Query'];
 $info = Info::getInfos($Path);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
+$o->setView();
 $vars['identifier'] = $info['Module'].$info['ObjectType'];
 if(!isset($vars['context']))
     $vars['context'] = $info['NbHisto'] > 1 ? 'children':'default';
@@ -78,4 +80,5 @@ foreach ($childs as $child){
         }
     }
 }
+
 ?>

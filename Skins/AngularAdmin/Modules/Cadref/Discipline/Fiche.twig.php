@@ -1,8 +1,9 @@
 <?php
 session_write_close();
+$vars['Annee'] = $GLOBALS['Systeme']->getRegVars('AnneeEnCours');
 $info = Info::getInfos($vars['Query']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
-
+$o->setView();
 $temp = $o->getElementsByAttribute('','',true);
 $fields = Array();
 foreach ($temp as $k=>$field){
@@ -63,6 +64,5 @@ else $vars['CurrentUrl'] = $vars['Query'];
 
 $vars['browseable'] = $vars["ObjectClass"]->browseable;
 $vars['CurrentObjQuery'] = $vars['Path'];
-$vars['Annee'] = $GLOBALS['Systeme']->getRegVars('AnneeEnCours');
 
 ?>
