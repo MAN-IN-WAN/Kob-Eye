@@ -230,7 +230,7 @@ class MX extends genericClass {
 	 */
 	private function getKEServer() {
 		if(!is_object($this->_KEServer)) {
-			$Tab = Sys::$Modules["Parc"]->callData('Parc/Server/1', "", 0, 1);
+			$Tab = Sys::$Modules["Parc"]->callData('Parc/Server/1', "", 0, 1,null,null,null,null,true);
 			$this->_KEServer = genericClass::createInstance('Parc', $Tab[0]);
 		}
 		return $this->_KEServer;
