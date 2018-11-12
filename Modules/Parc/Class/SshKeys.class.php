@@ -6,6 +6,9 @@ class SshKeys extends genericClass {
      * Affectation automatique et définition des droits en 700
      */
     function Save() {
+        if ($this->Id){
+            $old = Sys::getOneData('Parc','SshKeys/'.$this->Id);
+        }else $old = genericClass::createInstance('Parc','SshKeys');
         if (!$this->Id||(!sizeof($this->getParents('Client'))&&!sizeof($this->getParents('Revendeur'))&&!sizeof($this->getParents('Technicien')))) {
             if (Sys::$User->hasRole('PARC_CLIENT')) {
                 //On associe au client connecté
@@ -21,12 +24,16 @@ class SshKeys extends genericClass {
         }
         if (sizeof($this->getParents('Revendeur'))) {
             $this->Type = 'revendeur';
+            //modification des droits
         }
         if (sizeof($this->getParents('Technicien'))) {
+            $this->setRights(0,Sys::$User->Id,1,7,0,0);
             $this->Type = 'technicien';
         }
         parent::Save();
-        return $this->createRefreshSshKeysTask();
+        //return true;
+        if ($this->Clef!=$old->Clef)
+            return $this->createRefreshSshKeysTask();
     }
 
     /**

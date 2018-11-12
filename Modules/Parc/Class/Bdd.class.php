@@ -10,9 +10,10 @@ class Bdd extends genericClass {
         }
 
         parent::Save();
-        $serv = $this->getOneParent('Server');
+        //$serv = $this->getOneParent('Server');
+        $serv = Sys::getOneData('Parc','Server/Bdd/'.$this->Id,null,null,null,null,null, null,true);
         if (!$serv) {
-            $serv = Sys::getOneData('Parc','Server/defaultSqlServer=1');
+            $serv = Sys::getOneData('Parc','Server/defaultSqlServer=1',null,null,null,null,null, null,true);
             $this->addParent($serv);
             parent::Save();
         }
@@ -29,8 +30,8 @@ class Bdd extends genericClass {
         }
         return parent::Verify();
     }
-    private function checkDatabase(){
-        $serv = $this->getOneParent('Server');
+    public function checkDatabase(){
+        $serv = Sys::getOneData('Parc','Server/Bdd/'.$this->Id,null,null,null,null,null, null,true);
         $host = $this->getOneParent('Host');
         if (!is_object($serv)) return false;
         try {
@@ -81,7 +82,7 @@ class Bdd extends genericClass {
         return true;
     }
     private function removeFromDatabase($silent = false){
-        $serv = $this->getOneParent('Server');
+        $serv = Sys::getOneData('Parc','Server/Bdd/'.$this->Id,null,null,null,null,null, null,true);
         if (!is_object($serv)) return false;
         try {
             $dbGuac = new PDO('mysql:host=' . $serv->IP . ';dbname=mysql', $serv->SshUser, $serv->SshPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));

@@ -1,8 +1,8 @@
 <SCHEMA>
     <OBJECTCLASS title="Incident" logEvent="1" driver="mysql" order="Ordre" orderType="ASC" AccessPoint="1" Description="Incident"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png"  Class="Modules/IncidentClient/Class/Incident.class.php" Operations="Cloture,add" searchFilters="0" >
-        <FILTER name="Incidents en cours" color="danger"><![CDATA[ParametresEtatId=1]]></FILTER>
-        <FILTER name="Incidents pris en compte" color="warning"><![CDATA[ParametresEtatId>=2&ParametresEtatId<5]]></FILTER>
-        <FILTER name="Incidents cloturés" color="success"><![CDATA[ParametresEtatId=5]]></FILTER>
+        <FILTER name="Incidents en cours" color="danger" code="encours"><![CDATA[ParametresEtatId=1]]></FILTER>
+        <FILTER name="Incidents pris en compte" color="warning" code="prisencompte"><![CDATA[ParametresEtatId>=2&ParametresEtatId<5]]></FILTER>
+        <FILTER name="Incidents cloturés" color="success" code="clotures"><![CDATA[ParametresEtatId=5]]></FILTER>
         <PROPERTIES type="varchar" searchOrder="1" 		description="Numéro de l'incident" 		    listDescr="Numéro Incident " 							                                  >Numero</PROPERTIES>
         <PROPERTIES type="varchar" length="150"		    description="Nom du déclarant" 		        listDescr="Déclarant "        							list="1"  	form="1" 	fiche="1"  obligatoire="1">Declarant</PROPERTIES>
         <PROPERTIES type="varchar"               		description="Titre"  					    listDescr="Titre Incident" 								list="2" 	form="2" 	fiche="2">Titre</PROPERTIES>
@@ -28,7 +28,7 @@
         <PROPERTIES type="file" auto="1" list="2" form="1" listDescr="Fichier" fiche="1">Fichier</PROPERTIES>
         <FKEY card="1,1" data="Client,Id">ClientId</FKEY>
     </OBJECTCLASS>
-    <OBJECTCLASS title="DocumentCommun" driver="mysql" Description="Document pour tou" AccessPoint="1" Operations="">
+    <OBJECTCLASS title="DocumentCommun" driver="mysql" Description="Documents communs" AccessPoint="1" Operations="">
         <PROPERTIES type="varchar" searchOrder="1" listDescr="Titre Fichier"  list="1" form="1" fiche="1">Titre</PROPERTIES>
         <PROPERTIES type="file" list="2" form="1" listDescr="Fichier" fiche="1">Fichier</PROPERTIES>
     </OBJECTCLASS>

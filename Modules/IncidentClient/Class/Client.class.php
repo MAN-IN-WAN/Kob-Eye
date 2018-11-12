@@ -3,148 +3,73 @@
 class Client extends genericClass {
 
     /**
-     * Créé un mot de passe aléatoire pour l'utilisateur.
-     *
-     * @return string
-     */
-    function makePassword($i=0){
-        if ($i==8) return "";
-        else{
-            $Caracteres = "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN";
-            $Nombres = "0123456789";
-            $CharOuNbr = rand(0,1);
-            if ($CharOuNbr == 0){
-                $Char = rand(0,strlen($Caracteres)-1);
-                return $Caracteres[$Char] . $this->makePassword($i+1);
-            }else{
-                $Nbr = rand(0,strlen($Nombres)-1);
-                return $Nombres[$Nbr] . $this->makePassword($i+1);
-            }
-        }
-    }
-
-    function changePassword(){
-        $Pass = $this->makePassword();
-        $Utilisateur=$this->getUser();
-        $Utilisateur->Set("Pass",$Pass);
-        $Utilisateur->Save();
-        return $Pass;
-    }
-    /**
      * surchage de la fonction delete pour supprimer l'utilisateur
      */
     function Delete() {
-        if ($this->UserId>0){
-            $u = $this->getUser();
-            $u->Delete();
+        if ($this->GroupId>0){
+            $g = $this->getGroup();
+            $g->Delete();
+        }
+        $contacts = $this->getChildren('Contact');
+        foreach ($contacts as $contact){
+            $contacts->Delete();
         }
         parent::Delete();
     }
 
     /**
-     * Renvoie le mot de passe précédemment affecté à $this->Pass.
+     * Créé le groupe correspondant au client
      *
-     * @return string
+     * @return mixed:Systeme/Group
      */
-    function getPass(){
-        return $this->Pass;
-    }
-    /**
-     * Créé l'utilisateur correspondant au client
-     *
-     * @return mixed:Systeme/Utilisateur
-     */
-    function makeUser() {
+    function makeGroup() {
         // on enleve la création du pass car il est saisi
         //$this->Pass = $this->makePassword();
-        $Utilisateur = genericClass::createInstance("Systeme","User");
-        $Utilisateur->Set("Nom",$this->Get("Nom"));
-        $Utilisateur->Set("Prenom",$this->Get("Prenom"));
-        $Utilisateur->Set("Mail",$this->Get("Mail"));
-        $Utilisateur->Set("Login",$this->Get("Mail"));
-        $Utilisateur->Set("Adresse",$this->Get("Adresse"));
-        $Utilisateur->Set("Tel",$this->Get("Tel"));
-        $Utilisateur->Set("CodPos",$this->Get("CodePostal"));
-        $Utilisateur->Set("Ville",$this->Get("Ville"));
-        $Utilisateur->Set("Adresse",$this->Get("Adresse"));
-        $Utilisateur->Set("Pass",$this->Pass);
-        $Utilisateur->Set("Admin","0");
-        $Utilisateur->Set("Actif",$this->Actif);
-
+        $Groupe = genericClass::createInstance("Systeme","Group");
+        $Groupe->Set("Nom",$this->Get("CodeClient"));
         $grp = Sys::getOneData('Systeme','Group/Nom=[INCIDENT] Client');
         if($grp){
-            $Utilisateur->AddParent($grp);
+            $Groupe->AddParent($grp);
         }else{
             return false;
         }
 
-        return $Utilisateur;
+        return $Groupe;
     }
 
-    function updateUser($Utilisateur=null) {
-        if($Utilisateur == null) $Utilisateur = $this->getUser();
-        if($Utilisateur == null) return;
-        $Utilisateur->Set("Nom",$this->Get("Nom"));
-        $Utilisateur->Set("Prenom",$this->Get("Prenom"));
-        $Utilisateur->Set("Mail",$this->Get("Mail"));
-        $Utilisateur->Set("Login",$this->Get("Mail"));
-        $Utilisateur->Set("Adresse",$this->Get("Adresse"));
-        $Utilisateur->Set("Tel",$this->Get("Tel"));
-        $Utilisateur->Set("CodPos",$this->Get("CodePostal"));
-        $Utilisateur->Set("Ville",$this->Get("Ville"));
-        $Utilisateur->Set("Adresse",$this->Get("Adresse"));
-        $Utilisateur->Set("Actif",$this->Actif);
-// ajout du pass à la modification et du coup on se reconnecte à chaque modification du user
-        if($this->Pass != ''){
-            $Utilisateur->Set("Pass",$this->Pass);
-        }
-        $Utilisateur->Set("Admin","0");
+    function updateGroup($Groupe=null) {
+        if($Groupe == null) $Groupe = $this->getGroup();
+        if($Groupe == null) return;
+        $Groupe->Set("Nom",$this->Get("CodeClient"));
         $grp = Sys::getOneData('Systeme','Group/Nom=[INCIDENT] Client');
         if($grp){
-            $Utilisateur->AddParent($grp);
+            $Groupe->AddParent($grp);
         }else{
             return false;
         }
-        $Utilisateur->Save();
-        return $Utilisateur;
+        $Groupe->Save();
+        return $Groupe;
     }
-    /**
-     * Créé l'utilisateur correspondant à la personne
-     *
-     * @return Objet:Systeme/Utilisateur
-     */
-    function initFromUser() {
-        $U = Sys::$User;
-        $this->Nom = $U->Nom;
-        $this->Prenom = $U->Prenom;
-        $this->Mail = $U->Mail;
-        $this->Login = $U->Login;
-        $this->Adresse = $U->Adresse;
-        $this->Tel = $U->Tel;
-        $this->CodePostal = $U->CodePos;
-        $this->Ville = $U->Ville;
-    }
-
     /**
      * Ajoute la vérification appdes paramètres utilisateur (surtout les mails)
      *
      * @return bool
      */
     function Verify() {
-        if ( intval($this->UserId)>0 )$Utilisateur = $this->getUser();
-        else $Utilisateur = $this->makeUser();
-
-        $Utilisateur->Verify();
-        genericClass::Verify();
-        array_merge($this->Error,$Utilisateur->Error);
-
+        parent::Verify();
+        if ($this->Id) {
+            if (intval($this->GroupId) > 0) $Groupe = $this->getGroup();
+            else $Groupe = $this->makeGroup();
+            $Groupe->Verify();
+            array_merge($this->Error,$Groupe->Error);
+        }
         return sizeof($this->Error)>0 ? 0:1;
     }
 
-    function getUser(){
-        if(intval($this->UserId)>0){
-            $U = Sys::getOneData('Systeme',"User/".$this->UserId);
-            return $U;
+    function getGroup(){
+        if(intval($this->GroupId)>0){
+            $G = Sys::getOneData('Systeme',"Group/".$this->GroupId);
+            return $G;
         }
 
         return false;
@@ -156,34 +81,34 @@ class Client extends genericClass {
      * @return bool
      */
     function Save() {
-        if(!$this->Verify()) return false;
-        if($this->Id!="") {
-            if( intval($this->UserId)>0 ) {
-                $Utilisateur = $this->getUser();
-                $Utilisateur = $this->updateUser($Utilisateur);
-                $Utilisateur->Save();
+        //if(!$this->Verify()) return false;
+        if($this->Id) {
+            if( intval($this->GroupId)>0 ) {
+                $Groupe = $this->getGroup();
+                $Groupe = $this->updateGroup($Groupe);
+                $Groupe->Save();
             } else {
-                $Utilisateur = $this->makeUser();
-                $Utilisateur->Save();
-                $this->Set("UserId",$Utilisateur->Id);
+                $Groupe = $this->makeGroup();
+                $Groupe->Save();
+                $this->Set("GroupId",$Groupe->Id);
             }
         } else {
-            $Utilisateur = $this->makeUser();
-            $Utilisateur->Save();
-            $this->Set("UserId",$Utilisateur->Get("Id"));
+            $Groupe = $this->makeGroup();
+            $Groupe->Save();
+            $this->Set("GroupId",$Groupe->Get("Id"));
 
             @include_once('Class/Lib/Mail.class.php');
 
             $mailRecipient = $GLOBALS['Systeme']->Conf->get('GENERAL::INFO::NEWUSER_MAIL');
-            $mailRecipient = 'gcandella@abtel.fr';
+            //$mailRecipient = 'gcandella@abtel.fr';
 
             $Mail = new Mail();
-            $Mail->Subject("Nouvel utilisateur ".Sys::$domain);
+            $Mail->Subject("Nouveau client".Sys::$domain);
             $Mail -> From("noreply@ocean-nimes.com");
             $Mail -> ReplyTo("noreply@ocean-nimes.com");
             $Mail -> To($mailRecipient);
             $bloc = new Bloc();
-            $mailContent = "Bonjour un nouvel utilisateur viens d'être créé :".$this->Nom.' '.$this->Prenom.''.$this->CodeClient ;
+            $mailContent = "Bonjour un nouveau client vient d'être créé :".$this->Nom.'';
             $bloc -> setFromVar("Mail", $mailContent, array("BEACON" => "BLOC"));
             $Pr = new Process();
             $bloc -> init($Pr);
@@ -192,11 +117,11 @@ class Client extends genericClass {
             $Mail -> Send();
         }
 
-        if(!count($Utilisateur->getErrors())){
+        if(!count($Groupe->getErrors())){
             genericClass::Save();
             return true;
         } else {
-            $this->addError(array("Message" => "Erreur lors de la sauvegarde de l'utilisateur", "Err" => $Utilisateur->getErrors()));
+            $this->addError(array("Message" => "Erreur lors de la sauvegarde du client", "Err" => $Groupe->getErrors()));
         }
 
 

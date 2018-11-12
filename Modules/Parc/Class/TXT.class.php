@@ -21,7 +21,62 @@ class TXT extends genericClass {
         }
         return true;
 	}
+    /**
+     * getLdapID
+     * récupère le ldapId d'une entrée pour un serveur spécifique
+     */
+    public function getLdapID() {
+        return $this->LdapID;
+    }
+    /**
+     * setLdapID
+     * défniit le ldapId d'une entrée pour un serveur spécifique
+     */
+    public function setLdapID($ldapId) {
+        $this->LdapID = $ldapId;
+    }
+    /**
+     * getLdapDN
+     * récupère le ldapDN d'une entrée pour un serveur spécifique
+     */
+    public function getLdapDN() {
+        if (empty($this->LdapDN)) {
+            //on construit le dn si il n'existe pas.
+            $KEDomain = $this->getKEDomain();
+            $this->LdapDN = 'cn='.$this->Nom.',cn='.$KEDomain->Url.',ou=domains,'.PARC_LDAP_BASE;
+        }
+        return $this->LdapDN;
+    }
+    /**
+     * getLdapDN
+     * récupère le ldapDN d'une entrée pour un serveur spécifique
+     */
+    public function getLdapBaseDN() {
+        $KEDomain = $this->getKEDomain();
+        return 'cn='.$KEDomain->Url.',ou=domains,'.PARC_LDAP_BASE;
 
+    }
+    /**
+     * setLdapDN
+     * définit le ldapDN d'une entrée pour un serveur spécifique
+     */
+    public function setLdapDN($ldapDn) {
+        $this->LdapDN = $ldapDn;
+    }
+    /**
+     * getLdapTms
+     * récupère le ldapTms d'une entrée pour un serveur spécifique
+     */
+    public function getLdapTms() {
+        return $this->LdapTms;
+    }
+    /**
+     * setLdapTms
+     * définit le ldapTms d'une entrée pour un serveur spécifique
+     */
+    public function setLdapTms($ldapTms) {
+        $this->LdapTms = $ldapTms;
+    }
 	/**
 	 * Verification des erreurs possibles
 	 * @param	boolean	Verifie aussi sur LDAP
@@ -42,7 +97,7 @@ class TXT extends genericClass {
 				$KEServer = $this->getKEServer();
 				$dn = 'cn='.$this->Nom.',cn='.$KEDomain->Url.',ou=domains,'.PARC_LDAP_BASE;
 				// Verification à jour
-				$res = Server::checkTms($this);
+				$res = Server::checkTms($this,$this->getKEServer(),$dn);
 				if($res['exists']) {
 					if(!$res['OK']) {
 						$this->AddError($res);
@@ -167,8 +222,11 @@ class TXT extends genericClass {
 			$this->Nom=$this->Type.':'.$nb;
 			parent::Save();
 		}
-		$entry['cn'] = $this->Nom;
-		$entry['dnsdomainname'] = $this->Dnsdomainname;
+        $pa = $this->getOneParent('Domain');
+        $default = $pa->Url.'.';
+
+        $entry['cn'] = $this->Nom;
+		$entry['dnsdomainname'] = $this->Dnsdomainname ? $this->Dnsdomainname:$default;
 		if ($retrocompat&&!strpos($this->Dnstxt,'"')) {
             $this->Dnstxt = '"' . $this->Dnstxt . '"';
             parent::Save();
@@ -207,8 +265,7 @@ class TXT extends genericClass {
 	 */
 	private function getKEServer() {
 		if(!is_object($this->_KEServer)) {
-			$Tab = Sys::$Modules["Parc"]->callData('Parc/Server/1', "", 0, 1);
-			$this->_KEServer = genericClass::createInstance('Parc', $Tab[0]);
+            $this->_KEServer = Sys::getOneData('Parc', "/Server/1", 0, 1,null,null,null,null,true);
 		}
 		return $this->_KEServer;
 	}

@@ -247,7 +247,8 @@ class User extends genericClass{
     }
     function Save() {
 
-        parent::Save();
+        return parent::Save();
+
     }
 }
 ?>

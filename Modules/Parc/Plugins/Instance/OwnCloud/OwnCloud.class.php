@@ -44,34 +44,32 @@ class ParcInstanceOwnCloud extends Plugin implements ParcInstancePlugin {
         $task->addParent($host);
         $task->addParent($host->getOneParent('Server'));
         $task->Save();
-        return true;
+        return array('task'=>$task);
     }
     /**
      * installSecibWeb
      * Fonction d'installation ou de mise à jour de secib web
      * @param Object Tache
      */
-    public function installSoftware($task = null){
+    public function installSoftware($task){
         $host = $this->_obj->getOneParent('Host');
         $bdd = $host->getOneChild('Bdd');
         $mysqlsrv = $bdd->getOneParent('Server');
         $apachesrv = $host->getOneParent('Server');
-        $version = VersionLogiciel::getLastVersion('OwnCloud',$this->_obj->Type);
-        if (!is_object($version))throw new Exception('Pas de version disponible pour l\'app OwnCloud Type '.$this->_obj->Type);
         try {
             //Installation des fichiers
-            $act = $this->_obj->createActivity('Suppression du dossier www', 'Info', $task);
+            $act = $task->createActivity('Suppression du dossier www', 'Info');
             $out = $apachesrv->remoteExec('rm -Rf /home/' . $host->NomLDAP . '/www');
             $act->addDetails($out);
             $act->Terminate(true);
             //Installation des fichiers
-            $act = $this->_obj->createActivity('Initialisation de la synchronisation', 'Info', $task);
+            $act = $task->createActivity('Initialisation de la synchronisation', 'Info');
             $cmd = 'cd /home/' . $host->NomLDAP . '/ && rsync -avz root@ws1.maninwan.fr:/home/modele-owncloud/www/ www';
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails($out);
             $act->Terminate(true);
-            $act = $this->_obj->createActivity('Modification des droits', 'Info', $task);
+            $act = $task->createActivity('Modification des droits', 'Info');
             $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . '/www -R';
             $act->addDetails($cmd);
             $out = $apachesrv->remoteExec($cmd);
@@ -79,7 +77,6 @@ class ParcInstanceOwnCloud extends Plugin implements ParcInstancePlugin {
             $act->Terminate(true);
             //changement du statut de l'instance
             $this->_obj->setStatus(2);
-            $this->_obj->CurrentVersion = $version->Version;
             $this->_obj->Save();
             return true;
         }catch (Exception $e){
@@ -111,28 +108,27 @@ class ParcInstanceOwnCloud extends Plugin implements ParcInstancePlugin {
         $task->Save();
         //changement du statut de l'instance
         $this->_obj->setStatus(3);
+        return array('task'=>$task);
     }
     /**
      * updateSoftware
      * Fonction de mise à jour de l'applicatif
      * @param Object Tache
      */
-    public function updateSoftware($task = null){
+    public function updateSoftware($task){
         $host = $this->_obj->getOneParent('Host');
         $bdd = $host->getOneChild('Bdd');
         $mysqlsrv = $bdd->getOneParent('Server');
         $apachesrv = $host->getOneParent('Server');
-        $version = VersionLogiciel::getLastVersion('OwnCloud',$this->_obj->Type);
-        if (!is_object($version))throw new Exception('Pas de version disponible pour l\'app OwnCloud Type '.$this->_obj->Type);
         try {
             //Installation des fichiers
-            $act = $this->_obj->createActivity('Initialisation de la synchronisation', 'Info', $task);
+            $act = $task->createActivity('Initialisation de la synchronisation', 'Info');
             $cmd = 'cd /home/' . $host->NomLDAP . '/ && rsync -avz root@ws1.maninwan.fr:/home/modele-owncloud/www/ www';
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails($out);
             $act->Terminate(true);
-            $act = $this->_obj->createActivity('Modification des droits', 'Info', $task);
+            $act = $task->createActivity('Modification des droits', 'Info');
             $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . '/www -R';
             $act->addDetails($cmd);
             $out = $apachesrv->remoteExec($cmd);
@@ -140,7 +136,6 @@ class ParcInstanceOwnCloud extends Plugin implements ParcInstancePlugin {
             $act->Terminate(true);
             //changement du statut de l'instance
             $this->_obj->setStatus(2);
-            $this->_obj->CurrentVersion = $version->Version;
             $this->_obj->Save();
             return true;
         }catch (Exception $e){

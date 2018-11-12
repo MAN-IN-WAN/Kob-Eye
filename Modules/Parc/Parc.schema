@@ -21,7 +21,7 @@
 		<FUNCTION title="Importer plusieurs domaines" type="form">ImporterPlusieursDomaines</FUNCTION>
 		<FUNCTION title="Importation de comptes emails" type="form">ImporterPlusieursEmails</FUNCTION>
 		<FKEY card="0,1" module="Systeme" data="User,Id">UserId</FKEY>
-		<FKEY card="0,1" module="Parc" data="Revendeur,Id">RevendeurId</FKEY>
+		<FKEY card="0,1" module="Parc" data="Revendeur,Id" form="1" fiche="1" list="1" hasRole="PARC_TECHNICIEN" description="Revendeur">RevendeurId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Contact" driver="mysql" Description="Contact/Utilisateur Client" Icon="/Skins/AdminV2/Img/IconAqua/Forum.png" className="Parc_Contact" Class="Modules/Parc/Class/Contact.class.php" Order="Nom">
 		<PROPERTIES category="Gestion" type="int"  description="Id dans la gestion" >IdGestion</PROPERTIES>
@@ -105,7 +105,7 @@
 	<OBJECTCLASS title="MX" driver="mysql" Description="MX" Icon="/Skins/AdminV2/Img/IconAqua/Tasks_mini.png" Class="Modules/Parc/Class/MX.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" list="1" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" list="1" listDescr="Nom DNS" form="1" description="Nom DNS du serveur de mail (ou type A mail)">Dnscname</PROPERTIES>
-		<PROPERTIES type="varchar" list="1" listDescr="Domaine cible" form="1" description="Domaine cible (pour la racine: '[Domaine].')">Dnsdomainname</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" listDescr="Domaine cible" form="1" description="Domaine cible (pour la racine: '[Domaine].'). Laissez vide pour le domaine racine courrant. (configuration par défaut)">Dnsdomainname</PROPERTIES>
 		<PROPERTIES type="varchar" values="1,5,10,15,20,25,30,35,40,45,50" default="10" list="1" listDescr="Distance" form="1">Poids</PROPERTIES>
 		<PROPERTIES type="int" searchOrder="3"  list="1" form="1" default="86400" listDescr="TTL" >TTL</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
@@ -245,7 +245,7 @@
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapUid</PROPERTIES>
 		<FKEY card="1,n" data="Server,Id" link="1" form="1" list="1" fiche="1" parentDescription="Serveur" description="Serveur Web" listDescr="Server" filter="Web=1" hasRole="PARC_TECHNICIEN">ServerId</FKEY>
 		<FKEY card="1,1" data="Client,Id" link="1" form="1" list="1" fiche="1" parentDescription="Client" description="Client" listDescr="Client">ClientId</FKEY>
-		<FUNCTION title="Créer un point de restauration">createRestorePoint</FUNCTION>
+		<FUNCTION title="Créer un point de restauration">createBackupTask</FUNCTION>
 		<FUNCTION title="Mise à jour des clefs SSH">refreshSshKeys</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Apache" driver="mysql" Dico="1" Description="Hôte virtuel" Icon="/Skins/AdminV2/Img/IconAqua/Tasks.png" Class="Modules/Parc/Class/Apache.class.php">
@@ -299,9 +299,9 @@
         <PROPERTIES type="raw" obligatoire="1" fiche="1" form="1">Contenu</PROPERTIES>
     </OBJECTCLASS>
     <OBJECTCLASS title="Tache" driver="mysql" Dico="0" logEvent="1" AccessPoint="1" Description="Tache" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Tache.class.php" >
+        <FILTER name="En cours" color="warning"><![CDATA[Erreur=0&Demarre=1&Termine=0]]></FILTER>
 		<FILTER name="Toutes les taches" color="primary" ></FILTER>
 		<FILTER name="En erreur" color="warning"><![CDATA[Erreur=1]]></FILTER>
-		<FILTER name="En cours" color="warning"><![CDATA[Erreur=0&Demarre=1&Termine=0]]></FILTER>
 		<FILTER name="Pas encore démarrée" color="secondary"><![CDATA[Demarre=0]]></FILTER>
 		<FILTER name="Terminés" color="primary"><![CDATA[Termine=1]]></FILTER>
         <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom de la tache">Nom</PROPERTIES>
@@ -312,7 +312,7 @@
         <PROPERTIES type="raw" fiche="1" form="1">Contenu</PROPERTIES>
         <PROPERTIES type="html" fiche="1" form="1">Retour</PROPERTIES>
 		<PROPERTIES type="datetime" list="1" fiche="1" form="1" description="Date de déclenchement" listDescr="Date" default="[!TMS::Now!]">DateDebut</PROPERTIES>
-		<PROPERTIES type="varchar" list="1" fiche="1" form="1" values="maintenance::Maintenance,install::Installation,edit::Modification,check::Vérification,update::Mise à jour" description="Type de tache" listDescr="Type" default="Vérification">TaskType</PROPERTIES>
+		<PROPERTIES type="varchar" list="1" fiche="1" form="1" values="maintenance::Maintenance,install::Installation,edit::Modification,check::Vérification,update::Mise à jour" description="Type de tache" listDescr="Type" default="check">TaskType</PROPERTIES>
 		<PROPERTIES type="varchar" list="1" fiche="1" form="1" description="Code de la tache" listDescr="Code">TaskCode</PROPERTIES>
 		<PROPERTIES category="Fonction" type="varchar" description="Module"  searchOrder="2" fiche="5" form="1">TaskModule</PROPERTIES>
 		<PROPERTIES category="Fonction" type="varchar" description="ObjectClass"  searchOrder="3" fiche="6" form="1">TaskObject</PROPERTIES>
@@ -515,8 +515,8 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Bdd" AccessPoint="1" driver="mysql" Description="Base de données" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Bdd.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de la base de donnée" list="1" form="1" fiche="1" unique="1" listDescr="Nom">Nom</PROPERTIES>
-		<FKEY card="0,1" data="Server,Id" description="Serveur SQL" filter="SQL=1" list="1" form="1" fiche="1" listDescr="Serveur SQL">ServerId</FKEY>
-		<FKEY card="1,1" data="Host,Id" description="Hébergement" list="1" form="1" fiche="1" listDescr="Hébergement">HostId</FKEY>
+		<FKEY card="0,1" data="Server,Id" description="Serveur SQL" filter="SQL=1" list="1"  hasRole="PARC_TECHNICIEN" form="1" fiche="1" listDescr="Serveur SQL">ServerId</FKEY>
+		<FKEY card="1,1" data="Host,Id" description="Hébergement" list="1" fiche="1" listDescr="Hébergement">HostId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="MiniSite" logEvent="0" AccessPoint="1" driver="mysql" Description="MiniSite web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/MiniSite.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom du minisite" list="1" form="1" fiche="1" unique="1" listDescr="Nom">Nom</PROPERTIES>
@@ -540,6 +540,11 @@
         <FKEY card="0,1" data="Client,Id" description="Client" listDescr="Client" form="10" fiche="1" list="1" hasRole="PARC_TECHNICIEN">ClientId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Instance" driver="mysql" Description="Espace Web" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Instance.class.php" logEvent="1" AccessPoint="1" plugin="1">
+		<FILTER name="Toutes les instances" color="warning" ></FILTER>
+		<FILTER name="Instances en développement" color="danger" ><![CDATA[Type=dev]]></FILTER>
+		<FILTER name="Instances de type Wordpress" color="success" >Plugin=Wordpress</FILTER>
+		<FILTER name="Instances de type Prestashop" color="primary" ><![CDATA[Plugin=Prestashop]]></FILTER>
+		<FILTER name="Instances de type Symfony" color="primary" ><![CDATA[Plugin=Symfony]]></FILTER>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de l'instance" list="1" form="1" fiche="1" unique="1" listDescr="Nom" default="">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" description="Nom technique de l'instance (génération automatique si vide)" form="1" fiche="1" unique="1" listDescr="Nom technique" default="">InstanceNom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Sous domaine (le sous domaine ex: [sous-domaine].mondomaine.ext)" listDescr="Sous-Domaine" default="www" hasRole="PARC_TECHNICIEN" >SousDomaine</PROPERTIES>
@@ -558,11 +563,12 @@
 		<FKEY card="0,1" data="Client,Id" description="Client" listDescr="Client" form="1" fiche="1" list="1">ClientId</FKEY>
 		<PROPERTIES type="varchar" length="50" obligatoire="1" default="default" description="Version de php" query="Parc/PHPVersion::Valeur::Titre" list="1" fiche="1" form="1" >PHPVersion</PROPERTIES>
 		<PROPERTIES type="plugin" category="Configuration" query="Explorateur/_Dossier/Modules/Parc/Plugins/Instance/_Dossier::Nom" form="1" fiche="1" obligatoire="1" default="Vide" description="Sélection de l'environnement CMS" list="1">Plugin</PROPERTIES>
-		<FUNCTION title="Activer le SSL">enableSSL</FUNCTION>
+		<FUNCTION title="Activer le SSL">enableSsl</FUNCTION>
 		<FUNCTION title="Dupliquer cette instance">duplicateInstance</FUNCTION>
-		<FUNCTION title="Verifier cette instance">checkState</FUNCTION>
-		<FUNCTION title="Reinstaller le logiciel">reinstallSoftware</FUNCTION>
-		<FUNCTION title="Reconfigurer le CMS">configCms</FUNCTION>
+		<FUNCTION title="Verifier cette instance">createCheckStateTask</FUNCTION>
+		<FUNCTION title="Reinstaller le logiciel">createInstallTask</FUNCTION>
+		<FUNCTION title="Reconfigurer le CMS">rewriteConfig</FUNCTION>
+		<FUNCTION title="Créer un point de restauration">createBackupTask</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Activity" logEvent="1"  AccessPoint="1" driver="mysql" Description="Activité des jobs"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/Parc/Class/Activity.class.php" Operations="">
 		<FILTER name="Toutes les activités" color="warning" ></FILTER>
@@ -577,15 +583,12 @@
 		<PROPERTIES type="boolean" form="1" description="Acknowledge" listDescr="Vue" default="0">Acknowledge</PROPERTIES>
 		<PROPERTIES type="raw" form="1" fiche="1" list="1">Details</PROPERTIES>
 		<FKEY data="Tache,Id" form="1" fiche="1" card="0,1" popup="1" >TacheId</FKEY>
-		<FKEY data="Server,Id" form="1" fiche="1" card="0,1" popup="1" >ServerId</FKEY>
-		<FKEY data="Host,Id" form="1" fiche="1" card="0,1" popup="1" >HostId</FKEY>
-		<FKEY data="Apache,Id" form="1" fiche="1" card="0,1"  popup="1" >ApacheId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Incident" logEvent="0"  AccessPoint="1" driver="mysql" Description="Incidents"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/Parc/Class/Incident.class.php" Operations="delete">
-		<FILTER name="Tous les incidents" color="warning" ></FILTER>
 		<FILTER name="Les incidents" color="danger" ><![CDATA[Solved=0&Acknowledge=0]]></FILTER>
+		<FILTER name="Tous les incidents" color="warning" ></FILTER>
 		<FILTER name="Les incidents résolus" color="success" >Solved=1</FILTER>
-		<FILTER name="Les incidents reconnus" color="success" ><![CDATA[Solved=0&Acknowledge=1]]></FILTER>
+		<FILTER name="Les incidents reconnus" color="primary" ><![CDATA[Solved=0&Acknowledge=1]]></FILTER>
 		<PROPERTIES type="varchar" searchOrder="1" list="1" form="1" fiche="1" listDescr="Titre">Titre</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" list="1" form="1" fiche="1" listDescr="Code">Code</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" list="1" form="1" fiche="1" listDescr="Identifiant">Identifiant</PROPERTIES>
@@ -634,19 +637,21 @@
 	<OBJECTCLASS title="SshKeys" driver="mysql" Description="Clefs SSH" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/SshKeys.class.php" Dico="1">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de la clef" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
 		<PROPERTIES type="raw" subtype="text" form="1" list="1" description="Clef ssh">Clef</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="2" description="Type de clef" form="1" hasRole="PARC_TECHNICIEN" values="client,revendeur,technicien">Type</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" description="Type de clef" list="1" form="1" hasRole="PARC_TECHNICIEN" values="client,revendeur,technicien">Type</PROPERTIES>
 		<FKEY data="Client,Id" card="0,1" inline="1" description="Client" form="1" hasRole="PARC_TECHNICIEN">ClientId</FKEY>
 		<FKEY data="Technicien,Id" card="0,1" inline="1" description="Technicien" form="1"  hasRole="PARC_TECHNICIEN">TechnicienId</FKEY>
 		<FKEY data="Revendeur,Id" card="0,1" inline="1" description="Revendeur" form="1" hasRole="PARC_TECHNICIEN">RevendeurId</FKEY>
 		<FKEY data="Host,Id" card="0,n" description="Hébergement" form="1" >HostId</FKEY>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="RestorePoint" driver="mysql" Description="Point de restauration" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/RestorePoint.class.php" Dico="1" Operations="delete,restore,testRestore">
+	<OBJECTCLASS title="RestorePoint" driver="mysql" Description="Point de restauration" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/RestorePoint.class.php" Dico="1" Operations="delete,createRestoreTask,createMountTask">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Titre" list="1" form="1" fiche="1" listDescr="Titre">Titre</PROPERTIES>
-		<PROPERTIES type="varchar" description="Identifiant">Identifiant</PROPERTIES>
+		<PROPERTIES type="varchar" description="Identifiant" list="1">Identifiant</PROPERTIES>
+		<PROPERTIES type="boolean" description="Resussite" list="1">Success</PROPERTIES>
+		<PROPERTIES type="boolean" description="Montage" list="1">Mounted</PROPERTIES>
 		<FKEY data="Instance,Id" card="0,n" inline="1" description="Instance">InstanceId</FKEY>
 		<FKEY data="Host,Id" card="0,n" inline="1" form="1" description="Hébergement">HostId</FKEY>
-		<FUNCTION title="Restaurer en production" confirm="1">restore</FUNCTION>
-		<FUNCTION title="Monter cette version dans un dossier temporaire accéssible en ftp" confirm="1">testRestore</FUNCTION>
+		<FUNCTION title="Restaurer en production" confirm="1">createRestoreTask</FUNCTION>
+		<FUNCTION title="Monter cette version dans un dossier temporaire accéssible en ftp" confirm="1">createMountTask</FUNCTION>
 	</OBJECTCLASS>
 </SCHEMA>
 

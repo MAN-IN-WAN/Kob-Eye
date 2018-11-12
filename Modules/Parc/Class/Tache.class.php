@@ -62,6 +62,9 @@ class Tache extends genericClass{
                     }catch (Exception $e){
                         $this->addRetour('ERROR: '.$e->getMessage());
                         $this->Erreur = true;
+                    }catch (Error $e){
+                        $this->addRetour('ERROR: '.$e->getMessage());
+                        $this->Erreur = true;
                     }
                     $this->Termine = true;
                     parent::Save();

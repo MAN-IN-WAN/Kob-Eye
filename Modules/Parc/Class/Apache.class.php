@@ -99,7 +99,7 @@ class Apache extends genericClass {
                 //définition de la date d'expiration
                 $this->Ssl = true;
                 //recherche du serveur proxy
-                $serv = Sys::getOneData('Parc','Server/Proxy=1',0,1,'ASC','Id');
+                $serv = Sys::getOneData('Parc','Server/Proxy=1',0,1,'ASC','Id',null,null,true);
                 if (!sizeof($serv)) {
                     $serv = $this->getKEServer();
                     $serv = $serv[0];
@@ -385,7 +385,8 @@ class Apache extends genericClass {
 	private function buildEntry($KEServer, $new = true ) {
 	    //recherche multiple web servers
         $host= $this->getOneParent('Host');
-        $webs= $host->getParents('Server');
+        $webs= $this->getKEServer();
+            //$host->getParents('Server');
 
 		$entry = array();
 		if(!empty($this->ApacheServerAlias)) {
@@ -465,7 +466,7 @@ class Apache extends genericClass {
             Server::ldapDelete($this->LdapID);
         }
         //suppresion de la config sur les serveurs proxy
-        $pxs = Sys::getData('Parc','Proxy=1');
+        $pxs = Sys::getData('Parc','Server/Proxy=1',null,null,null,null,null,null,true);
         foreach ($pxs as $px){
             try {
                 $KEServer->remoteExec('rm /etc/nginx/conf.d/' . $this->ApacheServerName . '* -f && systemctl reload nginx');

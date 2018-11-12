@@ -60,6 +60,8 @@ class ParcInstanceAzkoBack extends Plugin implements ParcInstancePlugin {
         $task->Save();
         //changement du statut de l'instance
         $this->_obj->setStatus(3);
+        return array('task'=>$task);
+
     }
     /**
      * updateSoftware
@@ -67,7 +69,7 @@ class ParcInstanceAzkoBack extends Plugin implements ParcInstancePlugin {
      * @param Object Tache
      * @return bool
      */
-    public function updateSoftware($task = null){
+    public function updateSoftware($task){
         $apachesrv = Sys::getOneData('Parc', 'Server/Web=1&defaultWebServer=1');
         $mysqlsrv = Sys::getOneData('Parc', 'Server/Sql=1&defaultSqlServer=1');
         $host = $this->_obj->getOneParent('Host');

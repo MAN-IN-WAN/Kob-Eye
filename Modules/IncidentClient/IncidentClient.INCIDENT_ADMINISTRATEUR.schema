@@ -33,9 +33,9 @@
 
     <OBJECTCLASS title="Incident" logEvent="1" driver="mysql" order="Ordre" orderType="ASC" AccessPoint="1" Description="Incident"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png"  Class="Modules/IncidentClient/Class/Incident.class.php">
         <FILTER name="Tous"></FILTER>
-        <FILTER name="Incidents en cours" color="danger"><![CDATA[ParametresEtatId=1]]></FILTER>
-        <FILTER name="Incidents pris en compte" color="warning"><![CDATA[ParametresEtatId>=2&ParametresEtatId<5]]></FILTER>
-        <FILTER name="Incidents cloturés" color="success"><![CDATA[ParametresEtatId=5]]></FILTER>
+        <FILTER name="Incidents en cours" color="danger" code="encours"><![CDATA[ParametresEtatId=1]]></FILTER>
+        <FILTER name="Incidents pris en compte" color="warning" code="prisencompte"><![CDATA[ParametresEtatId>=2&ParametresEtatId<5]]></FILTER>
+        <FILTER name="Incidents cloturés" color="success" code="clotures"><![CDATA[ParametresEtatId=5]]></FILTER>
         <PROPERTIES type="varchar" searchOrder="1" 		description="Numéro de l'incident" 		listDescr="Numéro Incident" 							list="1"  				fiche="2" >Numero</PROPERTIES>
         <PROPERTIES type="varchar" length="150"		    description="Nom du déclarant" 		    listDescr="Déclarant"        							list="1"  				fiche="2" >Declarant</PROPERTIES>
         <PROPERTIES type="date" 						description="Date Incident" 	search="1"		listDescr="Date constat" 			now="1"					list="2" 	form="2" 	fiche="3">DateIncident</PROPERTIES>
