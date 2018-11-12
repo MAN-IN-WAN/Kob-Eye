@@ -63,17 +63,19 @@ class Incident extends genericClass  {
             @include_once('Class/Lib/Mail.class.php');
 
             $mailRecipient = $GLOBALS['Systeme']->Conf->get('GENERAL::INFO::INCIDENT_MAIL');
-            $mailRecipient = 'gcandella@abtel.fr';
 
             $typo = $this->getOneParent('ParametresTypo');
-            if($typo && isset($typo->Mail) && !empty($typo->Mail))
-                $mailRecipient .= ', '.$typo->Mail;
+
 
             $Mail = new Mail();
             $Mail->Subject("Nouvel Incident ".Sys::$domain);
             $Mail -> From("noreply@ocean-nimes.com");
             $Mail -> ReplyTo("noreply@ocean-nimes.com");
             $Mail -> To($mailRecipient);
+            if($typo && isset($typo->Mail) && !empty($typo->Mail))
+                $Mail -> Cc($typo->Mail);
+
+            $Mail -> Cc('gcandella@abtel.fr');
             $bloc = new Bloc();
             $mailContent = "Bonjour un nouvel incident viens d'être renseigné :".$this->Numero;
             $bloc -> setFromVar("Mail", $mailContent, array("BEACON" => "BLOC"));
@@ -89,13 +91,13 @@ class Incident extends genericClass  {
             @include_once('Class/Lib/Mail.class.php');
 
             $mailRecipient = $cli->Mail;
-            $mailRecipient = 'gcandella@abtel.fr';
 
             $Mail = new Mail();
             $Mail->Subject("Changement de status Incident ".Sys::$domain);
             $Mail -> From("noreply@ocean-nimes.com");
             $Mail -> ReplyTo("noreply@ocean-nimes.com");
             $Mail -> To($mailRecipient);
+            $Mail -> Cc('gcandella@abtel.fr');
             $bloc = new Bloc();
             $mailContent = "Bonjour un incident viens de changer de statut :".$this->Numero.' / '.date('d/m/Y H:i',$this->DateIncident).' / '.$etat->Nom.'->'.$state->Nom;
             $bloc -> setFromVar("Mail", $mailContent, array("BEACON" => "BLOC"));

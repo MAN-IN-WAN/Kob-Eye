@@ -1,0 +1,67 @@
+
+app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $scope, $rootScope,  IncidentClientIncidentStore) {
+    //------------------------------------------//
+    //                 ANCHORS
+    //------------------------------------------//
+    $anchorScroll.yOffset = 50;
+    $anchorScroll();
+
+    $scope.gotoAnchor = function(x) {
+        var newHash = x;
+        if ($location.hash() !== newHash) {
+            // set the $location.hash to `newHash` and
+            // $anchorScroll will automatically scroll to it
+            $location.hash(x);
+        } else {
+            // call $anchorScroll() explicitly,
+            // since $location.hash hasn't changed
+            $anchorScroll();
+        }
+    };
+
+
+    //------------------------------------------//
+    //                 STORES                   //
+    //------------------------------------------//
+    //
+    //      Incident
+    //
+
+    //Init du store
+    $scope.IncidentClientIncidentStore = IncidentClientIncidentStore;
+    // Utile seulement a cause de la template d'affichage commun avec la listchildren
+    var now = Math.floor(Date.now()/1000);
+    var seuil = now - 86400;
+
+    $scope.IncidentClientIncidentStore.setFilters('','counters');
+    $scope.IncidentClientIncidentStore.getData(1,'counters');
+
+    $scope.IncidentClientIncidentStore.setFilters('ParametresEtatId<5','dash');
+    $scope.IncidentClientIncidentStore.getData(1,'dash');
+
+    var getCountState = function(stateId){
+        var count = 0;
+        for(var n = 0; n < IncidentClientIncidentStore.data.counters.length; n++ ){
+            if((stateId != 5 && IncidentClientIncidentStore.data.counters[n].ParametresEtatParametresEtatId >= stateId && IncidentClientIncidentStore.data.counters[n].ParametresEtatParametresEtatId < 5) ||
+                (stateId == 5 && IncidentClientIncidentStore.data.counters[n].ParametresEtatParametresEtatId >= stateId) )
+                count++;
+        }
+
+        return count;
+    }
+
+    $scope.IncidentClientIncident = {
+        data: IncidentClientIncidentStore.data.dash,
+        store: IncidentClientIncidentStore,
+        filter: IncidentClientIncidentStore.filter.dash,
+        currentPage: IncidentClientIncidentStore.currentPage.dash,
+        itemsPerPage: IncidentClientIncidentStore.itemsPerPage,
+        getCountState: getCountState,
+        selected: {
+            selectall: false
+        }
+    }
+
+
+
+});

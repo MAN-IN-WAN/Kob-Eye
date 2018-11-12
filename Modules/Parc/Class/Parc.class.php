@@ -321,6 +321,8 @@ class Parc extends Module{
         $task->Nom = 'Mise à jour des certificats expirés';
         $task->TaskModule = 'Parc';
         $task->TaskObject = 'Parc';
+        $task->TaskType = 'update';
+        $task->TaskCode = 'CERTIFICATE_UPDATE';
         $task->Demarre = true;
         $task->TaskFunction = 'Renew';
         $task->Save();
@@ -352,7 +354,10 @@ class Parc extends Module{
         while(time()<$start+240){
             //empty query cache
             Sys::$Modules['Parc']->Db->clearLiteCache();
-            $t = Sys::getOneData('Parc','Tache/Demarre=0&DateDebut<'.time(),0,1);
+            //gestion des priorités
+            $t = Sys::getOneData('Systeme','Tache/Demarre=0&DateDebut<'.time().'&TaskType!=check',0,1);
+            if (!$t)
+                $t = Sys::getOneData('Systeme','Tache/Demarre=0&DateDebut<'.time(),0,1);
             //execution de la tache
             if ($t)
                 $t->Execute($t);
@@ -398,6 +403,8 @@ class Parc extends Module{
         $task->TaskModule = 'Parc';
         $task->TaskObject = 'Parc';
         $task->TaskFunction = 'checkState';
+        $task->TaskType = 'check';
+        $task->TaskCode = 'CHECK_STATE_INIT';
         $task->Save();
     }
 
@@ -435,6 +442,8 @@ class Parc extends Module{
         $task->TaskModule = 'Parc';
         $task->TaskObject = 'Parc';
         $task->TaskFunction = 'backup';
+        $task->TaskType = 'maintenance';
+        $task->TaskCode = 'BACKUP_CREATE';
         $task->Save();
     }
     /**
@@ -559,6 +568,8 @@ class Parc extends Module{
         $task->TaskModule = 'Parc';
         $task->TaskObject = 'Parc';
         $task->TaskFunction = 'createAllCheckSslTask';
+        $task->TaskType = 'check';
+        $task->TaskCode = 'CHECK_SSL_INIT';
         $task->Save();
     }
     /**
@@ -575,6 +586,8 @@ class Parc extends Module{
             $t->TaskModule = 'Parc';
             $t->TaskObject = 'Apache';
             $t->TaskId = $px->Id;
+            $task->TaskType = 'check';
+            $task->TaskCode = 'CHECK_SSL';
             $t->TaskFunction = 'checkCertificate';
             $t->Save();
             $task->addRetour('- ('.$i.')' . $px->ApacheServerName);
@@ -594,7 +607,7 @@ class Parc extends Module{
      */
     public static function startMaintenanceTask($task = null){
         //suppression des taches vielle de plsu d'une heure
-        $GLOBALS['Systeme']->Db[0]->query('DELETE FROM `'.MAIN_DB_PREFIX.'Systeme-Tache` WHERE tmsCreate<'.(time()-(3600*12)).' AND Erreur=0 AND TaskType="Vérification";');
+        $GLOBALS['Systeme']->Db[0]->query('DELETE FROM `'.MAIN_DB_PREFIX.'Systeme-Tache` WHERE tmsCreate<'.(time()-(3600*12)).' AND Erreur=0 AND TaskType="check";');
         $GLOBALS['Systeme']->Db[0]->query('REPAIR TABLE `'.MAIN_DB_PREFIX.'Parc-Tache`;');
         $GLOBALS['Systeme']->Db[0]->query('OPTIMIZE TABLE `'.MAIN_DB_PREFIX.'Parc-Tache`;');
         //suppression des activités vielle de plsu d'une heure

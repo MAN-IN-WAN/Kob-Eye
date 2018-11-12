@@ -71,7 +71,7 @@ foreach ($vars['fields'] as $f){
         //recherche de sa valeur
         $str = explode('::',$f['query']);
         $qry = explode('/',$str[0],2);
-        $val = Sys::getOneData($qry[0],$qry[1].'/'.$vars['row']->{$f['name']});
+        $val = Sys::getOneData($qry[0],$qry[1].'/'.$str[1].'='.$vars['row']->{$f['name']});
         $vars['row']->{$f['name'].'Label'} = $val->getFirstSearchOrder();
     }else $vars['row']->{$f['name'].'Label'} = '';
 }

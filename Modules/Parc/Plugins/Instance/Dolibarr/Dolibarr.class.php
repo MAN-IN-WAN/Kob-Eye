@@ -10,7 +10,7 @@
 
 require_once( dirname(dirname(__FILE__)).'/Instance.interface.php' );
 
-class ParcInstancePydio extends Plugin implements ParcInstancePlugin {
+class ParcInstanceDolibarr extends Plugin implements ParcInstancePlugin {
 
     /**
      * Delete
@@ -23,6 +23,11 @@ class ParcInstancePydio extends Plugin implements ParcInstancePlugin {
      * Initialisation du plugin
      */
     public function postInit(){
+        //modification du apache
+        $host = $this->_obj->getOneParent('Host');
+        $apache = $host->getOneChild('Apache');
+        $apache->DocumentRoot = 'www/htdocs';
+        $apache->Save();
     }
     /**
      * createInstallTask
@@ -30,14 +35,14 @@ class ParcInstancePydio extends Plugin implements ParcInstancePlugin {
      */
     public function createInstallTask(){
 //gestion depuis le plugin
-        $version = VersionLogiciel::getLastVersion('Pydio',$this->_obj->Type);
-        $task = genericClass::createInstance('Systeme', 'Tache');
+        $version = VersionLogiciel::getLastVersion('Dolibarr',$this->_obj->Type);
+        $task = genericClass::createInstance('Parc', 'Tache');
         $task->Type = 'Fonction';
-        $task->Nom = 'Installation de la version '.$version->Version.' de Pydio sur l\'instance ' . $this->_obj->Nom;
+        $task->Nom = 'Installation de Dolibarr sur l\'instance ' . $this->_obj->Nom;
         $task->TaskModule = 'Parc';
+        $task->TaskType = 'install';
         $task->TaskObject = 'Instance';
         $task->TaskId = $this->_obj->Id;
-        $task->TaskType = 'install';
         $task->TaskFunction = 'installSoftware';
         $task->addParent($this->_obj);
         $host = $this->_obj->getOneParent('Host');
@@ -56,8 +61,6 @@ class ParcInstancePydio extends Plugin implements ParcInstancePlugin {
         $bdd = $host->getOneChild('Bdd');
         $mysqlsrv = $bdd->getOneParent('Server');
         $apachesrv = $host->getOneParent('Server');
-        $version = VersionLogiciel::getLastVersion('Pydio',$this->_obj->Type);
-        if (!is_object($version))throw new Exception('Pas de version disponible pour l\'app Pydio Type '.$this->_obj->Type);
         try {
             //Installation des fichiers
             $act = $task->createActivity('Suppression du dossier www', 'Info');
@@ -66,7 +69,7 @@ class ParcInstancePydio extends Plugin implements ParcInstancePlugin {
             $act->Terminate(true);
             //Installation des fichiers
             $act = $task->createActivity('Initialisation de la synchronisation', 'Info');
-            $cmd = 'cd /home/' . $host->NomLDAP . '/ && rsync -avz root@ws1.maninwan.fr:/home/modele-pydio/www/ www';
+            $cmd = 'cd /home/' . $host->NomLDAP . '/ && rsync -avz root@ws1.maninwan.fr:/home/modele-dolibarr/www/ www';
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails($out);
@@ -79,24 +82,33 @@ class ParcInstancePydio extends Plugin implements ParcInstancePlugin {
             $act->Terminate(true);
             //Dump de la base
             $act = $task->createActivity('Dump de la base Mysql', 'Info');
-            $cmd = 'mysqldump -h db.maninwan.fr -u modele-pydio -p02e532ba74a03544ea7208b8 modele-pydio | mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom;
+            $cmd = 'mysqldump -h db.maninwan.fr -u modele-dolibarr -pD4nsT0n208 modele-dolibarr | mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom;
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails($out);
             $act->Terminate(true);
+            $act = $task->createActivity('Mot de passe administrateur', 'Info');
+            $cmd = 'mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom.' -e "UPDATE llx_user SET pass_crypted=\'\', pass=\''.$host->Password.'\' WHERE rowid=1"';
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($cmd);
+            $act->addDetails($out);
+            $act->Terminate(true);
+            //configuration
+            $act = $task->createActivity('Configuration', 'Info');
+            $act->Terminate($this->rewriteConfig());
             //changement du statut de l'instance
             $this->_obj->setStatus(2);
-            $this->_obj->CurrentVersion = $version->Version;
             $this->_obj->Save();
+            return true;
         }catch (Exception $e){
             $act->addDetails('Erreur: '.$e->getMessage());
             $act->Terminate(false);
             throw new Exception($e->getMessage());
+        }catch (Error $e){
+            $act->addDetails('Erreur: '.$e->getMessage());
+            $act->Terminate(false);
+            throw new Exception($e->getMessage());
         }
-        //execution de la configuration
-        $act = $task->createActivity('Création de la config', 'Info');
-        $act->Terminate($this->rewriteConfig());
-        return true;
     }
     /**
      * createUpdateTask
@@ -104,15 +116,14 @@ class ParcInstancePydio extends Plugin implements ParcInstancePlugin {
      */
     public function createUpdateTask($orig = null){
 //gestion depuis le plugin
-        $version = VersionLogiciel::getLastVersion('Pydio',$this->_obj->Type);
-        $task = genericClass::createInstance('Systeme', 'Tache');
+        $task = genericClass::createInstance('Parc', 'Tache');
         $task->Type = 'Fonction';
-        $task->Nom = 'Mise à jour en version '.$version->Version.' d\'Pydio sur l\'instance ' . $this->_obj->Nom;
+        $task->Nom = 'Mise à jour  de Dolibarr sur l\'instance ' . $this->_obj->Nom;
         $task->TaskModule = 'Parc';
         $task->TaskObject = 'Instance';
+        $task->TaskType = 'update';
         $task->TaskId = $this->_obj->Id;
         $task->TaskFunction = 'updateSoftware';
-        $task->TaskType = 'update';
         $task->addParent($this->_obj);
         $host = $this->_obj->getOneParent('Host');
         $task->addParent($host);
@@ -136,7 +147,7 @@ class ParcInstancePydio extends Plugin implements ParcInstancePlugin {
         try {
             //Installation des fichiers
             $act = $task->createActivity('Initialisation de la synchronisation', 'Info');
-            $cmd = 'cd /home/' . $host->NomLDAP . '/ && rsync -avz root@ws1.maninwan.fr:/home/modele-pydio/www/ www';
+            $cmd = 'cd /home/' . $host->NomLDAP . '/ && rsync -avz root@ws1.maninwan.fr:/home/modele-dolibarr/www/ www';
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails($out);
@@ -160,7 +171,7 @@ class ParcInstancePydio extends Plugin implements ParcInstancePlugin {
     /**
      * checkState
      */
-    public function checkState($task){
+    public function checkState(){
 
     }
     /**
@@ -168,21 +179,17 @@ class ParcInstancePydio extends Plugin implements ParcInstancePlugin {
      */
     public function rewriteConfig() {
         $hos = $this->_obj->getOneParent('Host');
-        $bdd = $hos->getOneChild('Bdd');
-        $ap = $hos->getOneChild('Apache');
         $srv = $hos->getOneParent('Server');
-        $conf = $srv->getFileContent('/home/'.$hos->NomLDAP.'/www/data/plugins/boot.conf/bootstrap.json');
+        $conf = $srv->getFileContent('/home/'.$hos->NomLDAP.'/www/htdocs/conf/conf.php');
         if (!empty($conf)){
-            $conf = preg_replace('#"mysql_username":"(.*)",#','"mysql_username":"'.$hos->NomLDAP.'",',$conf);
-            $conf = preg_replace('#"mysql_password":"(.*)",#','"mysql_password":"'.$hos->Password.'",',$conf);
-            $conf = preg_replace('#"mysql_host":"(.*)",#','"mysql_host":"db.maninwan.fr",',$conf);
-            $conf = preg_replace('#"mysql_database":"(.*)",#','"mysql_database":"'.$bdd->Nom.'",',$conf);
-            $srv->putFileContent('/home/'.$hos->NomLDAP.'/www/data/plugins/boot.conf/bootstrap.json',$conf);
-
-            //suppression du cache
-            $srv->remoteExec('rm /home/'.$hos->NomLDAP.'/www/data/cache/plugins_*.ser -f');
-            //modification des droits
-            $srv->remoteExec('chown '.$hos->NomLDAP.':users /home/'.$hos->NomLDAP.'/www -R');
+            $conf = preg_replace('#\$dolibarr_main_url_root=.*#','$dolibarr_main_url_root=\'http://'.$this->_obj->FullDomain.'\';',$conf);
+            $conf = preg_replace('#\$dolibarr_main_document_root=.*#','$dolibarr_main_document_root=\'/home/'.$hos->NomLDAP.'/www/htdocs\';',$conf);
+            $conf = preg_replace('#\$dolibarr_main_document_root_alt=.*#','$dolibarr_main_document_root_alt=\'/home/'.$hos->NomLDAP.'/www/htdocs/custom\';',$conf);
+            $conf = preg_replace('#\$dolibarr_main_data_root=.*#','$dolibarr_main_data_root=\'/home/'.$hos->NomLDAP.'/www/documents\';',$conf);
+            $conf = preg_replace('#\$dolibarr_main_db_name=.*#','$dolibarr_main_db_name=\''.$hos->NomLDAP.'\';',$conf);
+            $conf = preg_replace('#\$dolibarr_main_db_user=.*#','$dolibarr_main_db_user=\''.$hos->NomLDAP.'\';',$conf);
+            $conf = preg_replace('#\$dolibarr_main_db_pass=.*#','$dolibarr_main_db_pass=\''.$hos->Password.'\';',$conf);
+            $srv->putFileContent('/home/'.$hos->NomLDAP.'/www/htdocs/conf/conf.php',$conf);
         }
         return true;
     }

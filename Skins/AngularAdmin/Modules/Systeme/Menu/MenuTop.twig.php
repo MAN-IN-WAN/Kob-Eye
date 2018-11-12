@@ -27,4 +27,9 @@ if (Sys::$User->isRole('PARC_TECHNICIEN'))
     $vars['RoleSpace'] = 'technicien';
 else $vars['RoleSpace'] = 'client';
 
+if (Sys::$User->isRole('INCIDENT_CLIENT')){
+    $vars['GroupName'] = 'SOCIETE '.IncidentClient::$CurrentClient->Societe;
+}
+
+
 

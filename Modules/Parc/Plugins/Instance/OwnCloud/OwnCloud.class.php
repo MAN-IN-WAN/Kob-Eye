@@ -44,7 +44,7 @@ class ParcInstanceOwnCloud extends Plugin implements ParcInstancePlugin {
         $task->addParent($host);
         $task->addParent($host->getOneParent('Server'));
         $task->Save();
-        return true;
+        return array('task'=>$task);
     }
     /**
      * installSecibWeb
@@ -56,8 +56,6 @@ class ParcInstanceOwnCloud extends Plugin implements ParcInstancePlugin {
         $bdd = $host->getOneChild('Bdd');
         $mysqlsrv = $bdd->getOneParent('Server');
         $apachesrv = $host->getOneParent('Server');
-        $version = VersionLogiciel::getLastVersion('OwnCloud',$this->_obj->Type);
-        if (!is_object($version))throw new Exception('Pas de version disponible pour l\'app OwnCloud Type '.$this->_obj->Type);
         try {
             //Installation des fichiers
             $act = $task->createActivity('Suppression du dossier www', 'Info');
@@ -79,7 +77,6 @@ class ParcInstanceOwnCloud extends Plugin implements ParcInstancePlugin {
             $act->Terminate(true);
             //changement du statut de l'instance
             $this->_obj->setStatus(2);
-            $this->_obj->CurrentVersion = $version->Version;
             $this->_obj->Save();
             return true;
         }catch (Exception $e){
@@ -111,6 +108,7 @@ class ParcInstanceOwnCloud extends Plugin implements ParcInstancePlugin {
         $task->Save();
         //changement du statut de l'instance
         $this->_obj->setStatus(3);
+        return array('task'=>$task);
     }
     /**
      * updateSoftware
@@ -122,8 +120,6 @@ class ParcInstanceOwnCloud extends Plugin implements ParcInstancePlugin {
         $bdd = $host->getOneChild('Bdd');
         $mysqlsrv = $bdd->getOneParent('Server');
         $apachesrv = $host->getOneParent('Server');
-        $version = VersionLogiciel::getLastVersion('OwnCloud',$this->_obj->Type);
-        if (!is_object($version))throw new Exception('Pas de version disponible pour l\'app OwnCloud Type '.$this->_obj->Type);
         try {
             //Installation des fichiers
             $act = $task->createActivity('Initialisation de la synchronisation', 'Info');
@@ -140,7 +136,6 @@ class ParcInstanceOwnCloud extends Plugin implements ParcInstancePlugin {
             $act->Terminate(true);
             //changement du statut de l'instance
             $this->_obj->setStatus(2);
-            $this->_obj->CurrentVersion = $version->Version;
             $this->_obj->Save();
             return true;
         }catch (Exception $e){

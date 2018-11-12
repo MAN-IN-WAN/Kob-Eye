@@ -57,7 +57,7 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
         $task->addParent($host);
         $task->addParent($host->getOneParent('Server'));
         $task->Save();
-        return true;
+        return array('task'=>$task);
     }
     /**
      * installAzkoBack
@@ -206,6 +206,7 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
         $task->Save();
         //changement du statut de l'instance
         $this->_obj->setStatus(3);
+        return array('task'=>$task);
     }
 
     /**

@@ -60,6 +60,8 @@ class ParcInstanceAzkoBack extends Plugin implements ParcInstancePlugin {
         $task->Save();
         //changement du statut de l'instance
         $this->_obj->setStatus(3);
+        return array('task'=>$task);
+
     }
     /**
      * updateSoftware

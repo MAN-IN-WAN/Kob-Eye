@@ -1,7 +1,8 @@
 <?php
 
 class IncidentClient extends Module {
-
+    public static $CurrentClient = null;
+    public static $CurrentTechnicien = null;
     /**
      * Surcharge de la fonction postInit
      * Après l'authentification de l'utilisateur
@@ -126,12 +127,14 @@ class IncidentClient extends Module {
         if (!Sys::$User->Public){
             $usr = Sys::$User;
             //initialisation client si connecté
-            $cli = Sys::getOneData('IncidentClient','Client/UserId='.$usr->Id);
+            $cli = Sys::getOneData('IncidentClient','Client/Contact/UserId='.$usr->Id);
             if ($cli){
                 $GLOBALS["Systeme"]->registerVar("IncidentClientClient",$cli);
+                IncidentClient::$CurrentClient = $cli;
             }else{
                 //test si Technicien
                 $tech = Sys::$User->getOneChild('Technicien');
+                IncidentClient::$CurrentTechnicien = $tech;
                 if ($tech){
                     $GLOBALS["Systeme"]->registerVar("IncidentClientTechnicien",$tech);
                 }

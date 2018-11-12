@@ -3,7 +3,7 @@
     <ul class="nav nav-tabs" role="tablist">
         {% for filter in filters %}
         <li class="nav-item">
-            <a class="nav-link {% if loop.index0 == 0 %}active{% endif %} list-filter {% if filter.color %}filter-{{ filter.color }}{% endif %}" ng-click="{{ identifier }}setOptionsFilters('{{ filter.filter }}','{{ context }}');" data-toggle="tab" data-target="#h1" role="tab">{{ filter.name }}</a>
+            <a class="nav-link {% if loop.index0 == 0 %}active{% endif %} list-filter {% if filter.color %}filter-{{ filter.color }}{% endif %}" ng-click="{{ identifier }}setOptionsFilters('{{ filter.filter }}','{{ context }}');" id="{{ identifier }}-{{ filter.code }}" data-toggle="tab" data-target="#h1" role="tab">{{ filter.name }}</a>
         </li>
         {% endfor %}
     </ul>

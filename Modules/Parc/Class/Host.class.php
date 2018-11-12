@@ -28,7 +28,10 @@ class Host extends genericClass
 
         // Forcer la vérification
         $this->Verify($synchro);
-        if (!$this->_isVerified) return false;
+        if (!$this->_isVerified) {
+            $this->addError(array("Message"=>"Impossible de valider l'enregistrement Contactez votre administrateur préféré."));
+            return false;
+        }
         //Vérification du mot de passe
         if (empty($this->Password)){
             $this->Password = str_shuffle(bin2hex(openssl_random_pseudo_bytes(12)));
@@ -37,22 +40,54 @@ class Host extends genericClass
         if ($this->_isVerified) {
             //$this->getGidFromClient($synchro);
             parent::Save();
-        }
-        // Maj Quotas niveau serveur
-        /*if ($this->Id) {
-            $T1 = Sys::$Modules["Parc"]->callData("Parc/Server/Host/{$this->Id}", "", 0, 1);
-            if (!empty($T1)) {
-                $Server = genericClass::createInstance('Parc', $T1[0]);
-                $Server->EspaceProvisionne = 0;
-                $Tab = Sys::$Modules["Parc"]->callData("Parc/Server/{$Server->Id}/Host", "", 0, 1000);
-                if (!empty($Tab)) foreach ($Tab as $H) $Server->EspaceProvisionne += $H["Quota"];
-                $Server->Save();
-            }
-        }*/
 
-        //affectation des clefs ssh
-        $this->sshKeysCheck();
+            //application des configurations
+            $this->configHost();
+
+            //affectation des clefs ssh
+            $this->sshKeysCheck();
+
+            //configuration des clefs
+            $this->refreshSshKeys();
+
+            //si le mot de passe a été modifié on répercute sur la base de donnée uniquement si le host existait déjà
+            if ($this->Password!=$old->Password&&$old){
+                $bdd = $this->getOneChild('Bdd');
+                if ($bdd){
+                    $bdd->checkDatabase();
+                }
+            }
+        }
         return true;
+    }
+    /**
+     * configHost
+     * Configuration supplémentairte de l'hébergemen t
+     */
+    private function configHost() {
+        //execution du ldap2service
+        $servs = $this->getKEServer();
+        foreach ($servs as $serv) {
+            $serv->callLdap2Service();
+            //création du fichier .bashrc
+            $f = '# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+        . /etc/bashrc
+fi
+
+PS1=\'\[\033[32m\]\u\[\e[1;33m\] PROD :\[\033[34m\]\w\[\033[31m\]$(__git_ps1)\[\033[00m\]\$ \'
+
+source ~/.bash_git
+# User specific aliases and functions
+alias php="/usr/local/php-'.$this->PHPVersion.'/bin/php"
+export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
+';
+            $serv->putFileContent('/home/'.$this->NomLDAP.'/.bashrc',$f);
+            $serv->remoteExec('chown ' . $this->NomLDAP . ':users /home/' . $this->NomLDAP . '/.bashrc');
+
+        }
     }
     /**
      * sshKeyCheck
@@ -98,7 +133,7 @@ class Host extends genericClass
             $serv->remoteExec($cmd);
             $serv->putFileContent('/home/'.$this->NomLDAP.'/.ssh/authorized_keys',$f);
             $serv->remoteExec('chown ' . $this->NomLDAP . ':users /home/' . $this->NomLDAP . '/.ssh -R');
-            $serv->remoteExec('chmod 600 /home/' . $this->NomLDAP . '/.ssh -R');
+            $serv->remoteExec('chmod 700 /home/' . $this->NomLDAP . '/.ssh -R');
         }
         return true;
     }
@@ -242,7 +277,10 @@ class Host extends genericClass
         }
         if (parent::Verify()) {
             //Verification du client
-            if (!$this->getKEClient()) return true;
+            if (!$this->getKEClient()){
+                $this->addError(array("Prop"=>"Nom","Message"=>"Client introuvable."));
+                return true;
+            }
             //Verification des server
             if (!$this->getKEServer()){
                 //si pas de serveur alors on affecte le serveur Web par défaut
@@ -476,8 +514,12 @@ class Host extends genericClass
      * pour le cas d'une utilisation ultérieure
      * @return    L'objet Kob-Eye
      */
-    public function getKEClient()
-    {
+    public function getKEClient(){
+        foreach ($this->Parents as $p){
+            if($p['Titre'] == 'Client'){
+                $this->_KEClient = Sys::getOneData('Parc','Client/'.$p['Id'],0,1,null,null,null,null,true);
+            }
+        }
         if (!is_object($this->_KEClient)) {
             $tab = $this->getParents('Client');
             if (empty($tab)) return false;
@@ -548,6 +590,8 @@ class Host extends genericClass
         $task->TaskObject = 'Host';
         $task->TaskId = $this->Id;
         $task->TaskFunction = 'backup';
+        $task->TaskType = 'maintenance';
+        $task->TaskCode = 'BACKUP_CREATE';
         $task->addParent($this);
         $inst = $this->getOneChild('Instance');
         if ($inst)
@@ -555,7 +599,7 @@ class Host extends genericClass
         $task->addParent($this->getOneParent('Server'));
         if (is_object($orig)) $task->addParent($orig);
         $task->Save();
-        return true;
+        return array('task' => $task);
     }
     /**
      * backup
@@ -564,68 +608,32 @@ class Host extends genericClass
      */
     public function backup($task ){
         $host = $this;
-        $bdds = $host->getChildren('Bdd');
-        $apachesrv = $host->getOneParent('Server');
         $inst = $host->getOneChild('Instance');
+        $restopoint = date('YmdHis');
+        $restodate = date('d/m/Y à H:i:s');
+        //création du point de restauration
+        $rp = genericClass::createInstance('Parc','RestorePoint');
+        $rp->Titre = 'Sauvegarde date: '.$restodate;
+        $rp->Identifiant = $restopoint;
+        $rp->addParent($host);
+        if ($inst)
+            $rp->addParent($inst);
+        $rp->Save();
         try {
-            //Préparation du backup
-            $act = $task->createActivity('Préparation et nettoyage backup ', 'Info');
-            //test des dossiers
-            $cmd = 'if [ ! -d /home/' . $host->NomLDAP . '/sql ]; then mkdir /home/' . $host->NomLDAP . '/sql; fi';
-            $out = $apachesrv->remoteExec($cmd);
-            $act->addDetails($cmd);
-            $act->addDetails($out);
-            $cmd = 'if [ ! -d /home/' . $host->NomLDAP . '/backup ]; then mkdir /home/' . $host->NomLDAP . '/backup;borg init --encryption=none /home/' . $host->NomLDAP . '/backup; fi';
-            $out = $apachesrv->remoteExec($cmd);
-            $act->addDetails($cmd);
-            $act->addDetails($out);
-            //test du dépot
-            $cmd = 'if [ $(ls /home/' . $host->NomLDAP . '/backup | wc -l) == 0 ]; then borg init --encryption=none /home/' . $host->NomLDAP . '/backup; fi';
-            $out = $apachesrv->remoteExec($cmd);
-            $act->addDetails($cmd);
-            $act->addDetails($out);
-            //suppression des dump précédents
-            $cmd = 'rm /home/' . $host->NomLDAP . '/sql/* -f';
-            $out = $apachesrv->remoteExec($cmd);
-            $act->addDetails($cmd);
-            $act->addDetails($out);
-            //Sauvegarde base des donnée
-            foreach ($bdds as $bdd) {
-                $act = $task->createActivity('Sauvegarde base de donnée '.$bdd->Nom, 'Info');
-                $cmd = 'cd /home/' . $host->NomLDAP . '/ && mysqldump -h db.maninwan.fr -u ' . $host->NomLDAP . ' -p' . $host->Password . ' ' . $bdd->Nom . ' > sql/'.$bdd->Nom.'-'.date('YmdHis').'.sql';
-                $out = $apachesrv->remoteExec($cmd);
-                $act->addDetails($cmd);
-                $act->addDetails($out);
-                $act->Terminate(true);
-            }
-            $restopoint = date('YmdHis');
-            $restodate = date('d/m/Y à H:i:s');
-            $act = $task->createActivity('Backup fichier', 'Info');
-            $cmd = 'cd /home/' . $host->NomLDAP . ' && borg create backup::'.$restopoint.' * --exclude "backup" --exclude "cgi-bin" --exclude "logs"';
-            $act->addDetails($cmd);
-            $out = $apachesrv->remoteExec($cmd);
-            $act->addDetails($out);
-            $act->Terminate(true);
-            //modification des droits
-            $act = $task->createActivity('Modification des droits', 'Info');
-            $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . ' -R';
-            $act->addDetails($cmd);
-            $out = $apachesrv->remoteExec($cmd);
-            $act->addDetails($out);
-            $act->Terminate(true);
-            //création du point de restauration
-            $rp = genericClass::createInstance('Parc','RestorePoint');
-            $rp->Titre = 'Sauvegarde date: '.$restodate;
-            $rp->Identifiant = $restopoint;
-            $rp->addParent($host);
-            if ($inst)
-                $rp->addParent($inst);
-            $rp->Save();
-            return true;
+            $result = $rp->backup($task);
+            return $result;
         }catch (Exception $e){
-            $act->addDetails('Erreur: '.$e->getMessage());
-            $act->Terminate(false);
-            throw new Exception($e->getMessage());
+            //création d'un incident
+            $incident = genericClass::createInstance('Parc','Incident');
+            $incident->Titre = 'Erreur sur la sauvegarde de l\'hébergement '.$host->Nom;
+            $incident->Code = 'BACKUP_ERROR';
+            $incident->Severity = 'Warning';
+            $incident->addParent($this);
+            if ($inst)
+                $incident->addParent($inst);
+            $incident->Details = $e->getMessage();
+            $incident->Save();
+            return false;
         }
     }
 

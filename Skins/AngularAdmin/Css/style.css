@@ -1233,3 +1233,6 @@ Choix des composants
 .btn-abt.btn-primary{
     background-color: #01a8fe;
 }
+.panel.panel-with-borders > .panel-body {
+    padding-top: 0 !important;
+}

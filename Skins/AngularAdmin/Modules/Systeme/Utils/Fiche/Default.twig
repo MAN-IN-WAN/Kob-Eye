@@ -99,7 +99,7 @@
                                 {% if field.Values %}
                                 <select class="form-control" ng-model="obj.{{ field.name }}" disabled="disabled">
                                     {% for v,k in field.Values %}
-                                        <option value="{{ v }}">{{ k }}</option>
+                                        <option value="{{ v }}" >{{ k }}</option>
                                     {% endfor %}
                                 </select>
                                 {% elseif field.query %}
