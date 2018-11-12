@@ -423,7 +423,8 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
      * On utilise aussi la fonction de la superclasse
      * @return    void
      */
-    public function Delete($task){
+    public function Delete($task = null){
+        if(!$task)$this->addError(Array("Message" => "Impossible de lance la supression, aucuné tâche à laquelle rattacher cette activité"));
         $act = $task->createActivity('Suppression de l\'hébergement '.$this->getFirstSearchOrder());
         //suppression des apaches
         $aps = $this->getChildren('Apache');

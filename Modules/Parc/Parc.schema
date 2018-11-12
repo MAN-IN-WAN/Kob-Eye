@@ -207,7 +207,7 @@
 		<FKEY card="0,1" data="Client,Id">ClientId</FKEY>
 		<FKEY card="0,1" data="ServerProfile,Id">ServerProfileId</FKEY>
 
-		<RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">TacheId</RKEY>
+		<RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">ServerTacheId</RKEY>
 
 		<FUNCTION title="Test de connexion">Connect</FUNCTION>
 		<FUNCTION title="Installation des clefs SSH">InstallSshKey</FUNCTION>
@@ -249,9 +249,8 @@
 		<FKEY card="1,n" data="Server,Id" link="1" form="1" list="1" fiche="1" parentDescription="Serveur" description="Serveur Web" listDescr="Server" filter="Web=1" hasRole="PARC_TECHNICIEN">ServerId</FKEY>
 		<FKEY card="1,1" data="Client,Id" link="1" form="1" list="1" fiche="1" parentDescription="Client" description="Client" listDescr="Client">ClientId</FKEY>
 
-        <RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">TacheId</RKEY>
-        <FUNCTION title="Créer un point de restauration">createBackupTask</FUNCTION>
-        <FUNCTION title="Créer un point de restauration">createRestorePoint</FUNCTION>
+        <RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">HostTacheId</RKEY>
+        <FUNCTION title="Créer un backup">createBackupTask</FUNCTION>
 		<FUNCTION title="Mise à jour des clefs SSH">refreshSshKeys</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Apache" driver="mysql" Dico="1" Description="Hôte virtuel" Icon="/Skins/AdminV2/Img/IconAqua/Tasks.png" Class="Modules/Parc/Class/Apache.class.php">
@@ -275,7 +274,7 @@
 		<PROPERTIES category="Protection" type="varchar" description="Mot de passe" fiche="1" form="1">HtaccessPassword</PROPERTIES>
 		<FKEY card="1,1" data="Host,Id" link="1">HostId</FKEY>
 
-        <RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">TacheId</RKEY>
+        <RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">ApacheTacheId</RKEY>
 
         <FUNCTION title="Activer SSL">ActiverSSL</FUNCTION>
 		<FUNCTION title="Vérifier le certificat SSL">checkSSL</FUNCTION>
@@ -544,7 +543,7 @@
 		<FKEY card="0,1" data="Bdd,Id" description="Base de donnée(s)" hasRole="PARC_TECHNICIEN" listDescr="Base de donnée" fiche="1">BddId</FKEY>
 		<FKEY card="0,1" data="Client,Id" description="Client" listDescr="Client" form="1" fiche="1" list="1">ClientId</FKEY>
 
-        <RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">TacheId</RKEY>
+        <RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">InstanceTacheId</RKEY>
 
         <PROPERTIES type="varchar" length="50" obligatoire="1" default="default" description="Version de php" query="Parc/PHPVersion::Valeur::Titre" list="1" fiche="1" form="1" >PHPVersion</PROPERTIES>
 		<PROPERTIES type="plugin" category="Configuration" query="Explorateur/_Dossier/Modules/Parc/Plugins/Instance/_Dossier::Nom" form="1" fiche="1" obligatoire="1" default="Vide" description="Sélection de l'environnement CMS" list="1">Plugin</PROPERTIES>
@@ -585,7 +584,7 @@
 		<PROPERTIES type="boolean" description="Reinitialisation du dépôt" form="1" fiche="1">GitReset</PROPERTIES>
 		<PROPERTIES type="text" description="Commenaires" subtype="text" form="1" fiche="1">Commentaire</PROPERTIES>
 
-        <RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">TacheId</RKEY>
+        <RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">VersionLogicielTacheId</RKEY>
 
     </OBJECTCLASS>
 	<OBJECTCLASS title="SshKeys" driver="mysql" Description="Clefs SSH" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/SshKeys.class.php" Dico="1">

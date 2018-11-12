@@ -41,7 +41,7 @@ foreach ($vars['searchfields'] as $k=>$f){
 }
 
 $vars['filters'] = $o->getCustomFilters();
-print_r($vars['filters']);
+
 if (is_object(Sys::$CurrentMenu)) {
     if (isset($vars['Type'])&&$vars['Type']=='Children') {
         $vars['CurrentUrl'] = Sys::getMenu($info['Module'] . '/' . $info['ObjectType']);

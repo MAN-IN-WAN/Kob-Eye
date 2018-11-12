@@ -4,7 +4,7 @@
 			<PROPERTIES type="titre" obligatoire="1" searchOrder="1" list="1" listDescr="Nom de la page" fiche="1" form="1">Nom</PROPERTIES>
 			<PROPERTIES type="html" listDescr="Titre(h1) de la page" fiche="1" form="1" large="1" fullTitle="1">Titre</PROPERTIES>
 			<PROPERTIES type="boolean" form="1" fiche="1" description="Accueil" >Home</PROPERTIES>
-			<PROPERTIES type="boolean" form="1" fiche="1" description="Afficher le menu" default="1">AfficheMenu</PROPERTIES>
+			<PROPERTIES type="boolean" form="1" fiche="1" description="Afficher dans le menu" default="1">AfficheMenu</PROPERTIES>
 			<PROPERTIES type="html" special="multi" fiche="1" form="1" large="1" fullTitle="1">Description</PROPERTIES>
 		</CATEGORY>
 		<CATEGORY title="Configuration" fold="1">
