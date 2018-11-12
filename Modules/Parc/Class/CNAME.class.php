@@ -43,7 +43,7 @@ class CNAME extends genericClass {
 	 * @param	boolean	Verifie aussi sur LDAP
 	 * @return	Verification OK ou NON
 	 */
-	public function Verify( $synchro = true ) {
+	public function Verify( $synchro = false ) {
         $pa = $this->getOneParent('Domain');
         $as = $pa->getChildren('Subdomain');
         $aaas = $pa->getChildren('AAA');

@@ -21,7 +21,7 @@ class Host extends genericClass
             $this->addError(array("Message"=>"Impossible de modifier le nom de l'hébergement. Si c'est nécessaire, veuillez supprimer et recréer cet hébergement en réimportant vos données."));
             return false;
         }
-        if ($old&&$old->NomLDAP!=$this->NomLDAP){
+        if ($old&&!empty($old->NomLDAP)&&$old->NomLDAP!=$this->NomLDAP){
             $this->addError(array("Message"=>"Impossible de modifier le nom technique de l'hébergement. Si c'est nécessaire, veuillez supprimer et recréer cet hébergement en réimportant vos données."));
             return false;
         }
@@ -253,7 +253,7 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
      * @param    boolean    Verifie aussi sur LDAP
      * @return    Verification OK ou NON
      */
-    public function Verify($synchro = true)
+    public function Verify($synchro = false)
     {
         //test du nom
         if (empty($this->NomLDAP)) {
@@ -267,7 +267,7 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
             $this->addError(array("Message"=>"Impossible de modifier le nom de l'hébergement. Si c'est nécessaire, veuillez supprimer et recréer cet hébergement en réimportant vos données."));
             return false;
         }
-        if ($this->Id&&$old->NomLDAP!=$this->NomLDAP){
+        if ($this->Id&&!empty($old->NomLDAP)&&$old->NomLDAP!=$this->NomLDAP){
             $this->addError(array("Message"=>"Impossible de modifier le nom technique de l'hébergement. Si c'est nécessaire, veuillez supprimer et recréer cet hébergement en réimportant vos données."));
             return false;
         }
@@ -423,8 +423,8 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
      * On utilise aussi la fonction de la superclasse
      * @return    void
      */
-    public function Delete(){
-        $act = $this->createActivity('Suppression de l\'hébergement '.$this->getFirstSearchOrder());
+    public function Delete($task){
+        $act = $task->createActivity('Suppression de l\'hébergement '.$this->getFirstSearchOrder());
         //suppression des apaches
         $aps = $this->getChildren('Apache');
         foreach ($aps as $ap){
@@ -566,35 +566,12 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
         return Terminal::run('enguer', '21wyisey');
     }
     /**
-     * createActivity
-     * créé une activité en liaison avec l'hébergement
-     * @param $title
-     * @param null $obj
-     * @param int $jPSpan
-     * @param string $Type
-     * @return genericClass
-     */
-    public function createActivity($title, $Type = 'Exec', $Task = null){
-        $act = genericClass::createInstance('Parc', 'Activity');
-        $host = $this;
-        $srv = $host->getOneParent('Server');
-        $act->addParent($host);
-        $act->addParent($srv);
-        if ($Task) $act->addParent($Task);
-        $act->Titre = $this->tag . date('d/m/Y H:i:s') . ' > ' . $this->Titre . ' > ' . $title;
-        $act->Started = true;
-        $act->Type = $Type;
-        $act->Progression = 0;
-        $act->Save();
-        return $act;
-    }
-    /**
      * createBackupTask
      * Creation de la tache de backup
      */
     public function createBackupTask($orig=null){
         if (!$this->BackupEnabled) return false;
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Sauvegarde de l\'hébergement ' . $this->Nom;
         $task->TaskModule = 'Parc';
@@ -617,7 +594,7 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
      * Fonction de sauvegarde
      * @param Object Tache
      */
-    public function backup($task = null){
+    public function backup($task ){
         $host = $this;
         $inst = $host->getOneChild('Instance');
         $restopoint = date('YmdHis');

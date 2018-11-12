@@ -7,13 +7,13 @@ class Domain extends genericClass {
 	/**
 	 * Force la vérification avant enregistrement
 	 * @param	boolean	Enregistrer aussi sur LDAP
-	 * @return	void
+	 * @return	bool void
 	 */
 	public function Save( $synchro = true ) {
 		$first = ($this->Id == 0);
 		parent::Save();
 		// Forcer la vérification
-		if(!$this->_isVerified) $this->Verify( $synchro );
+		$this->Verify( $synchro );
 		// Enregistrement si pas d'erreur
 		if($this->_isVerified) {
 			parent::Save();
@@ -56,9 +56,9 @@ class Domain extends genericClass {
 	/**
 	 * Verification des erreurs possibles
 	 * @param	boolean	Verifie aussi sur LDAP
-	 * @return	Verification OK ou NON
+	 * @return	bool Verification OK ou NON
 	 */
-	public function Verify( $synchro = true ) {
+	public function Verify( $synchro = false ) {
 
 		if(parent::Verify()) {
 

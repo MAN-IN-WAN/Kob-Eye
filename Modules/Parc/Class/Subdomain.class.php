@@ -99,7 +99,7 @@ class Subdomain extends genericClass {
 	 * @param	boolean	Verifie aussi sur LDAP
 	 * @return	Verification OK ou NON
 	 */
-	public function Verify( $synchro = true ) {
+	public function Verify( $synchro = false ) {
         $this->Url = Subdomain::checkName($this->Url);
         $this->Nom = 'A:'.$this->Url;
         $pa = $this->getOneParent('Domain');

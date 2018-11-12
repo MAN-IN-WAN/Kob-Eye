@@ -31,7 +31,7 @@ class ParcInstanceWordpress extends Plugin implements ParcInstancePlugin {
     public function createInstallTask(){
 //gestion depuis le plugin
         $version = VersionLogiciel::getLastVersion('Wordpress',$this->_obj->Type);
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Installation de la version '.$version->Version.' de Wordpress sur l\'instance ' . $this->_obj->Nom;
         $task->TaskModule = 'Parc';
@@ -111,7 +111,7 @@ class ParcInstanceWordpress extends Plugin implements ParcInstancePlugin {
     public function createUpdateTask($orig = null){
 //gestion depuis le plugin
         $version = VersionLogiciel::getLastVersion('Wordpress',$this->_obj->Type);
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Mise à jour en version '.$version->Version.' d\'Wordpress sur l\'instance ' . $this->_obj->Nom;
         $task->TaskModule = 'Parc';
@@ -169,7 +169,7 @@ class ParcInstanceWordpress extends Plugin implements ParcInstancePlugin {
     /**
      * checkState
      */
-    public function checkState(){
+    public function checkState($task){
 
     }
     /**

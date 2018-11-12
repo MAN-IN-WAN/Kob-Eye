@@ -52,7 +52,7 @@ class SshKeys extends genericClass {
                 break;
         }
         //inventaire des hébergements
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Publication des clefs ssh pour le ' . $this->Type.' '.$obj->Nom;
         $task->TaskModule = 'Parc';

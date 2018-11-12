@@ -25,7 +25,7 @@ class SRV extends genericClass {
 	 * @param	boolean	Verifie aussi sur LDAP
 	 * @return	Verification OK ou NON
 	 */
-	public function Verify( $synchro = true ) {
+	public function Verify( $synchro = false ) {
 
 		if(parent::Verify()) {
 

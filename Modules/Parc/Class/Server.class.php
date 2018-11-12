@@ -50,7 +50,7 @@ class Server extends genericClass {
      * @param	boolean	Verifie aussi sur LDAP
      * @return	Verification OK ou NON
      */
-    public function Verify( $synchro = true ) {
+    public function Verify( $synchro = false ) {
         $this->Connect();
         if(parent::Verify()) {
 
@@ -1476,31 +1476,14 @@ class Server extends genericClass {
         fclose( $error_stream );
         return array( $output, $error_output,$exit_output);
     }
-    /**
-     * createActivity
-     * créé une activité en liaison avec l'esx
-     * @param $title
-     * @param null $obj
-     * @param int $jPSpan
-     * @param string $Type
-     * @return genericClass
-     */
-    public function createActivity($title,$Type='Exec') {
-        $act = genericClass::createInstance('Parc','Activity');
-        $act->addParent($this);
-        $act->Titre = $this->tag.date('d/m/Y H:i:s').' > '.$this->Titre.' > '.$title;
-        $act->Started = true;
-        $act->Type= $Type;
-        $act->Progression = 0;
-        $act->Save();
-        return $act;
-    }
+
     /**
      * callLdap2Service
      * execute remotely ldap2service
      */
-    public function callLdap2Service($task = null,$retry=false) {
-        $act = $this->createActivity('Execution de synchronisation','Exec');
+    public function callLdap2Service($retry=false) {
+        $task = Sys::getOneData('Systeme','Tache/Nom=ActivityDump');
+        $act = $task->createActivity('Execution de synchronisation');
         try {
             $out = $this->remoteExec('/usr/bin/ldap2service', $act);
         }catch (Exception $e){
@@ -1515,7 +1498,7 @@ class Server extends genericClass {
         if (empty($ct)&&!$retry){
             //alors on pousse une valeur
             $this->putFileContent('/etc/ldap2service/ldap2service.time',date('YmdHis',time()-60));
-            $this->callLdap2Service($task,true);
+            $this->callLdap2Service(true);
         }
 
         $act->addDetails($out);
@@ -1526,8 +1509,8 @@ class Server extends genericClass {
      * clearCache
      * clear Nginx cache
      */
-    public function clearCache() {
-        $act = $this->createActivity('Vidage du cache','Exec');
+    public function clearCache($task) {
+        $act = $task->createActivity('Vidage du cache');
         try {
             $out = $this->remoteExec('rm /tmp/nginx -Rf', $act);
         }catch (Exception $e){
@@ -1537,15 +1520,15 @@ class Server extends genericClass {
         }
         $act->addDetails($out);
         $act->Terminate(true);
-        $this->restartServiceNginx();
+        $this->restartServiceNginx($task);
         return true;
     }
     /**
      * clearCache
      * clear Nginx cache
      */
-    public function restartServiceNginx() {
-        $act = $this->createActivity('Redemarrage du service Proxy (NGINX)','Exec');
+    public function restartServiceNginx($task) {
+        $act = $task->createActivity('Redemarrage du service Proxy (NGINX)');
         try {
             $out = $this->remoteExec('/usr/sbin/nginx -s reload', $act);
         }catch (Exception $e){
@@ -1562,7 +1545,8 @@ class Server extends genericClass {
      * Check if a folder exists
      */
     public function folderExists($path){
-        $act = $this->createActivity('Test existence dossier '.$path,'Exec');
+        $task = Sys::getOneData('Systeme','Tache/Nom=ActivityDump');
+        $act = $task->createActivity('Test existence dossier '.$path);
         try {
             $out = $this->remoteExec('if [ -d '.$path.' ]; then echo 1; else echo 0; fi');
             $act->addDetails('if [ -d '.$path.' ]; then echo 1; else echo 0; fi');
@@ -1586,7 +1570,8 @@ class Server extends genericClass {
      * Check if a file exists
      */
     public function fileExists($path){
-        $act = $this->createActivity('Test existence fichier '.$path,'Exec');
+        $task = Sys::getOneData('Systeme','Tache/Nom=ActivityDump');
+        $act = $task->createActivity('Test existence fichier '.$path);
         try {
             $out = $this->remoteExec('if [ -f '.$path.' ]; then echo 1; else echo 0; fi');
             $act->addDetails('if [ -f '.$path.' ]; then echo 1; else echo 0; fi');
@@ -1610,7 +1595,8 @@ class Server extends genericClass {
      * create a folder
      */
     public function createFolder($path,$usr = null,$rights='705'){
-        $act = $this->createActivity('Création du dossier '.$path,'Exec');
+        $task = Sys::getOneData('Systeme','Tache/Nom=ActivityDump');
+        $act = $task->createActivity('Création du dossier '.$path);
         try {
             $cmd = 'mkdir -p '.$path.' && chmod '.$rights.' '.$path;
             if ($usr){
@@ -1689,9 +1675,9 @@ class Server extends genericClass {
         $pxs = Sys::getData('Parc','Server/Proxy=1');
         foreach ($pxs as $px){
             //on vérifie d'abord qu'il n'y en a pas une à venir.
-            $nb = Sys::getCount('Parc','Tache/TaskModule=Parc&TaskObject=Server&TaskId='.$px->Id.'&TaskFunction=restartServiceNginx&Demarre=0');
+            $nb = Sys::getCount('Systeme','Tache/TaskModule=Parc&TaskObject=Server&TaskId='.$px->Id.'&TaskFunction=restartServiceNginx&Demarre=0');
             if (!$nb) {
-                $task = genericClass::createInstance('Parc', 'Tache');
+                $task = genericClass::createInstance('Systeme', 'Tache');
                 $task->Type = 'Fonction';
                 $task->Nom = 'Redemarrage des service du proxy ' . $px->Nom;
                 $task->TaskModule = 'Parc';

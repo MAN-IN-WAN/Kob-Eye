@@ -273,7 +273,7 @@ class Instance extends genericClass{
      */
     public function createCheckStateTask($orig=null){
         //gestion depuis le plugin
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Vérification de l\'instance ' . $this->Nom;
         $task->TaskModule = 'Parc';
@@ -305,6 +305,7 @@ class Instance extends genericClass{
         parent::Delete();
         return true;
     }
+
     /**
      * installSoftware
      * Fonction d'installation ou de mise à jour de l'applicatif

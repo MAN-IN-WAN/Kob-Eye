@@ -101,7 +101,7 @@ class Parc_Contact extends genericClass {
      * @param	boolean	Verifie aussi sur LDAP
      * @return	Verification OK ou NON
      */
-    public function Verify( $synchro = true ) {
+    public function Verify( $synchro = false ) {
         if(!$this->NomLDAP || empty($this->NomLDAP) || $this->NomLDAP == ''){
             $chaine = $this->Email;
             $chaine = str_replace("°", "-", $chaine);

@@ -47,7 +47,7 @@ interface ParcInstancePlugin {
      * checkState
      * Vérifie l'état d'une instance
      */
-    public function checkState();
+    public function checkState($task);
     /**
      * rewriteConfig
      * Réécrire la configuration

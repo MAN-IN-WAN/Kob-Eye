@@ -15,26 +15,18 @@ class Job extends genericClass {
         $jobs = Sys::getData('AbtelBackup',static::$KEObj.'/Enabled=1&(!Minute=*+Minute='.$minute.'!)&(!Heure=*+Heure='.$hour.'!)&(!Jour=*+Jour='.$monthday.'!)&(!Mois=*+Mois='.$month.'!)&(!(!Lundi=0&Mardi=0&Mercredi=0&Jeudi=0&Vendredi=0&Samedi=0&Dimanche=0!)+(!'.$weekday.'=1!)!)');
 
         foreach ($jobs as $j) {
-            $j->run();
+            $task = genericClass::createInstance('Systeme', 'Tache');
+            $task->Type = 'Fonction';
+            $task->Nom = 'Job Remote :' . $j->Titre;
+            $task->TaskModule = 'AbtelBackup';
+            $task->TaskObject = 'RemoteJob';
+            $task->TaskId = $j->Id;
+            $task->TaskFunction = 'run';
+            $task->addParent($j);
+            $task->Save();
         }
     }
 
-    public function createActivity($title,$obj=null,$jPSpan=0,$Type='Exec') {
-        $act = genericClass::createInstance('AbtelBackup','Activity');
-        $act->addParent($this);
-        if($obj)
-        $act->addParent($obj);
-        $act->Titre = $this->tag.date('d/m/Y H:i:s').' > '.$this->Titre.' > '.$title;
-        $act->Started = true;
-        $act->Type= $Type;
-        $act->Progression = 0;
-        $act->ProgressStart = $this->Progression;
-        $act->ProgressSpan = $jPSpan;
-        $act->PJob = $this;
-        $act->Save();
-
-        return $act;
-    }
 
     public function runNow() {
 

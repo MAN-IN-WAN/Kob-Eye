@@ -31,7 +31,7 @@ class ParcInstancePydio extends Plugin implements ParcInstancePlugin {
     public function createInstallTask(){
 //gestion depuis le plugin
         $version = VersionLogiciel::getLastVersion('Pydio',$this->_obj->Type);
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Installation de la version '.$version->Version.' de Pydio sur l\'instance ' . $this->_obj->Nom;
         $task->TaskModule = 'Parc';
@@ -94,7 +94,7 @@ class ParcInstancePydio extends Plugin implements ParcInstancePlugin {
             throw new Exception($e->getMessage());
         }
         //execution de la configuration
-        $act = $this->_obj->createActivity('Création de la config', 'Info', $task);
+        $act = $task->createActivity('Création de la config', 'Info');
         $act->Terminate($this->rewriteConfig());
         return true;
     }
@@ -105,7 +105,7 @@ class ParcInstancePydio extends Plugin implements ParcInstancePlugin {
     public function createUpdateTask($orig = null){
 //gestion depuis le plugin
         $version = VersionLogiciel::getLastVersion('Pydio',$this->_obj->Type);
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Mise à jour en version '.$version->Version.' d\'Pydio sur l\'instance ' . $this->_obj->Nom;
         $task->TaskModule = 'Parc';
@@ -160,7 +160,7 @@ class ParcInstancePydio extends Plugin implements ParcInstancePlugin {
     /**
      * checkState
      */
-    public function checkState(){
+    public function checkState($task){
 
     }
     /**

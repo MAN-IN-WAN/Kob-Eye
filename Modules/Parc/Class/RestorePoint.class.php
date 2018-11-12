@@ -6,7 +6,7 @@ class RestorePoint extends genericClass{
      */
     public function createRestoreTask($orig=null) {
         $host = $this->getOneParent('Host');
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Restauration de l\'hébergement ' . $host->Nom.' du point de restauration '.$this->Nom;
         $task->TaskModule = 'Parc';
@@ -29,7 +29,7 @@ class RestorePoint extends genericClass{
      * Fonction de restauration
      * @param Object Tache
      */
-    public function restore($task = null){
+    public function restore($task){
         $host = $this->getOneParent('Host');
         $bdds = $host->getChildren('Bdd');
         $apachesrv = $host->getOneParent('Server');

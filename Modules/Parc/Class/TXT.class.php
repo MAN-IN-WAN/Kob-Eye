@@ -82,7 +82,7 @@ class TXT extends genericClass {
 	 * @param	boolean	Verifie aussi sur LDAP
 	 * @return	Verification OK ou NON
 	 */
-	public function Verify( $synchro = true ) {
+	public function Verify( $synchro = false ) {
         if (!$this->Type) {
             $this->Type = 'TXT';
         }

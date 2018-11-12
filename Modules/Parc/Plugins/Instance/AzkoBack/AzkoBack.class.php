@@ -45,7 +45,7 @@ class ParcInstanceAzkoBack extends Plugin implements ParcInstancePlugin {
     public function createUpdateTask($orig=null){
         //gestion depuis le plugin
         $version = VersionLogiciel::getLastVersion('AzkoBack',$this->_obj->Type);
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Mise à jour en version '.$version->Version.' d\'AzkoBack sur l\'instance ' . $this->_obj->Nom;
         $task->TaskModule = 'Parc';
@@ -78,7 +78,7 @@ class ParcInstanceAzkoBack extends Plugin implements ParcInstancePlugin {
         $version = VersionLogiciel::getLastVersion('AzkoBack',$this->_obj->Type);
         if (!is_object($version))throw new Exception('Pas de version disponible pour l\'app AzkoBack Type '.$this->_obj->Type);
         try {
-            $act = $this->_obj->createActivity('Initialisation du git clone', 'Info', $task);
+            $act = $task->createActivity('Initialisation du git clone', 'Info');
             $cmd = 'cd /home/' . $host->NomLDAP . '/www && git remote -v';
             $act->addDetails($cmd);
             $out = $apachesrv->remoteExec($cmd);
@@ -104,7 +104,7 @@ class ParcInstanceAzkoBack extends Plugin implements ParcInstancePlugin {
             $out .= $apachesrv->remoteExec($cmd);
             $act->addDetails($out);
             $act->Terminate(true);
-            $act = $this->_obj->createActivity('Modification des droits', 'Info', $task);
+            $act = $task->createActivity('Modification des droits', 'Info');
             $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . '/www -R';
             $act->addDetails($cmd);
             $out = $apachesrv->remoteExec($cmd);

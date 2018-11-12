@@ -137,7 +137,7 @@ class Apache extends genericClass {
                 if ($err)return false;
 
                 //pour activer ssl il faut déclencher une tache
-                $task  = genericClass::createInstance('Parc','Tache');
+                $task  = genericClass::createInstance('Systeme','Tache');
                 $task->Nom = "Activation SSL pour la configuration Apache ".$this->getDomains()." ( ".$this->Id." )";
                 $task->Type = "Fonction";
                 $task->TaskModule = "Parc";
@@ -153,7 +153,7 @@ class Apache extends genericClass {
                 $instance = $host->getOneChild('Instance');
                 $task->addParent($instance);
                 //recherch de la prochaine d'execution pour eviter les collision de letsencrypt
-                $nb = Sys::getCount('Parc','Tache/DateDebut>'.time());
+                $nb = Sys::getCount('Systeme','Tache/DateDebut>'.time());
                 $task->DateDebut = time()+(60*($nb+1));
                 $task->Save();
                 parent::Save();
@@ -250,7 +250,7 @@ class Apache extends genericClass {
 	 * @param	boolean	Verifie aussi sur LDAP
 	 * @return	Verification OK ou NON
 	 */
-	public function Verify( $synchro = true ) {
+	public function Verify( $synchro = false ) {
         if ($this->Ssl&&$this->SslMethod=='Letsencrypt') {
             $this->addWarning(array("Message" => "Veuillez bien vérifier que les ServerName soit bien configuré et pointe bien vers le serveur. Les ServerAlias doivent également bien pointer sur le serveur, sinon l'activation SSL échouera."));
         }
