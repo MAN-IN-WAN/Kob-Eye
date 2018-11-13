@@ -381,7 +381,7 @@ table tr td.typeraw span.ng-binding{
         left:4px;
         background-color: #ddd;
         z-index: 2;
-        /*height: 55px;*/
+        height: 90px;
     }
     table.inverted td, table.inverted th{
         border: 1px solid #f6f8f9;
