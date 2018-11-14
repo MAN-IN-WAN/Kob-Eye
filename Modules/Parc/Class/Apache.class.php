@@ -3,6 +3,7 @@
 class Apache extends genericClass {
 	var $_KEHost;
 	var $_KEServer;
+	var $_KEInfra;
 	var $_isVerified = false;
 	/**
 	 * Force la vérification avant enregistrement
@@ -26,20 +27,24 @@ class Apache extends genericClass {
             $this->enableSsl();
         }
 		// Forcer la vérification
-		if(!$this->_isVerified) $this->Verify( $synchro );
+		$this->Verify( $synchro );
 		// Enregistrement si pas d'erreur
 		if($this->_isVerified) parent::Save();
 
 		//mise à jour des serveurs
         try {
             $srvs = $this->getKEServer();
-            foreach ($srvs as $srv)
+            $infra = $this->getInfra();
+
+            foreach ($srvs as $srv) {
                 $srv->callLdap2Service();
-            $pxs = Sys::getData('Parc','Server/Proxy=1');
+            }
+
+            $pxs = $this->getProxy();
             foreach ($pxs as $px) {
                 $px->callLdap2Service();
-                $px->createRestartProxyTask();
             }
+            Server::createRestartProxyTask($infra);
 
         }catch (Exception $e){
             $this->addError(array("Message"=>"Impossible de mettre le serveur à jour. Serveur injoignable.".$e->getMessage()));
@@ -99,11 +104,13 @@ class Apache extends genericClass {
                 //définition de la date d'expiration
                 $this->Ssl = true;
                 //recherche du serveur proxy
-                $serv = Sys::getOneData('Parc','Server/Proxy=1',0,1,'ASC','Id',null,null,true);
+                //$serv = Sys::getOneData('Parc','Server/Proxy=1',0,1,'ASC','Id',null,null,true);
+                $serv = $this->getProxy();
                 if (!sizeof($serv)) {
                     $serv = $this->getKEServer();
-                    $serv = $serv[0];
                 }
+                $serv = $serv[0];
+
                 $sa = explode(" ",$this->getDomains());
 
                 //test des entrées dns
@@ -466,10 +473,10 @@ class Apache extends genericClass {
             Server::ldapDelete($this->LdapID);
         }
         //suppresion de la config sur les serveurs proxy
-        $pxs = Sys::getData('Parc','Server/Proxy=1',null,null,null,null,null,null,true);
+        $pxs = $this->getProxy();
         foreach ($pxs as $px){
             try {
-                $KEServer->remoteExec('rm /etc/nginx/conf.d/' . $this->ApacheServerName . '* -f && systemctl reload nginx');
+                $px->remoteExec('rm /etc/nginx/conf.d/' . $this->ApacheServerName . '* -f && systemctl reload nginx');
             } catch (Exception $e) {
                 $this->addError(Array("Message" => "Impossible d'effectuer la commande de suppression sur le serveur ".$px->Nom));
             }
@@ -494,6 +501,38 @@ class Apache extends genericClass {
 		}
 		return $this->_KEServer;
 	}
+
+    /**
+     * Récupère les proxy qui ont un impact sur cet apache
+     * @return	Array d'objet Kob-Eye
+     */
+    private function getProxy() {
+        $pref = '';
+        if($this->getInfra())
+            $pref='Infra/'.$this->_KEInfra->Id.'/';
+
+        $pxs = Sys::getData('Parc',$pref.'Server/Proxy=1',null,null,null,null,null,null,true);
+        return $pxs;
+    }
+
+    /**
+     * Récupère une référence vers l'objet KE "Infra"
+     * pour effectuer des requetes LDAP
+     * On conserve une référence vers le serveur
+     * pour le cas d'une utilisation ultérieure
+     * @return	L'objet Kob-Eye
+     */
+    private function getInfra() {
+        if(!is_object($this->_KEInfra)) {
+            $srv = $this->getKEServer;
+            if(is_array($srv)) {
+                $srv = $srv[0];
+                $this->_KEInfra = $srv->getOneParent('Infra');
+            }
+        }
+        return $this->_KEInfra;
+    }
+
 
 	/**
 	 * Retrouve les parents lors d'une synchronisation

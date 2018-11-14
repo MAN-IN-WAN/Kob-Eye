@@ -5,6 +5,7 @@ class Host extends genericClass
     var $_isVerified = false;
     var $_KEServer = false;
     var $_KEClient = false;
+    var $_KEInfra = false;
 
     /**
      * Force la vérification avant enregistrement
@@ -283,8 +284,15 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
             }
             //Verification des server
             if (!$this->getKEServer()){
+
+                //Gestion des infra si existante
+                $infra = $this->getInfra();
+                $pref = '';
+                if($infra)
+                    $pref='Infra/'.$infra->Id.'/';
+
                 //si pas de serveur alors on affecte le serveur Web par défaut
-                $defserv = Sys::getOneData('Parc','Server/defaultWebServer=1');
+                $defserv = Sys::getOneData('Parc',$pref.'Server/defaultWebServer=1');
                 if (!$defserv){
                     $this->addError(array('Message'=>'Aucun serveur Web par défaut n\'est définie. Veuillez contacter votre administrateur.'));
                     return false;
@@ -527,6 +535,25 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
             else $this->_KEClient = $tab[0];
         }
         return $this->_KEClient;
+    }
+
+    /**
+     * Récupère une référence vers l'objet KE "Infra"
+     * pour effectuer des requetes LDAP
+     * On conserve une référence vers le serveur
+     * pour le cas d'une utilisation ultérieure
+     * @return	L'objet Kob-Eye
+     */
+    private function getInfra() {
+        if(!is_object($this->_KEInfra)) {
+            $this->_KEInfra = $this->getOneParent('Infra');
+            if(!is_object($this->_KEInfra)) {
+                if($inst = $this->getOneChild('Instance')){
+                    $this->_KEInfra = $inst->getOneParent('Infra');
+                }
+            }
+        }
+        return $this->_KEInfra;
     }
 
     /**

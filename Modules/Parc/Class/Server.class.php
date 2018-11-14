@@ -1290,17 +1290,17 @@ class Server extends genericClass {
             //Test de connectivité pour ne pas bloquer l'appli
             $connection = false;
             if(!empty($this->InternalIP)) {
-                $tc = @fsockopen($this->InternalIP, 22, $errno, $errstr, 0.5);
+                $tc = @fsockopen($this->InternalIP, $this->Port, $errno, $errstr, 0.5);
                 if ($tc !== false) {
                     fclose($tc);
-                    $connection = ssh2_connect($this->InternalIP, 22);
+                    $connection = ssh2_connect($this->InternalIP, $this->Port);
                 }
             }
             if(!$connection && !empty($this->IP)) {
-                $tc = @fsockopen($this->IP, 22, $errno, $errstr, 0.5);
+                $tc = @fsockopen($this->IP, $this->Port, $errno, $errstr, 0.5);
                 if ($tc !== false) {
                     fclose($tc);
-                    $connection = ssh2_connect($this->IP, 22);
+                    $connection = ssh2_connect($this->IP, $this->Port);
                 }
             }
 
@@ -1671,8 +1671,12 @@ class Server extends genericClass {
      * createRestartTask
      * Creation de la tache de redemarrage des services
      */
-    public static function createRestartProxyTask() {
-        $pxs = Sys::getData('Parc','Server/Proxy=1');
+    public static function createRestartProxyTask($infra = null) {
+        $pref = '';
+        if($infra)
+            $pref = 'Infra/'.$infra->Id.'/';
+
+        $pxs = Sys::getData('Parc',$pref.'Server/Proxy=1');
         foreach ($pxs as $px){
             //on vérifie d'abord qu'il n'y en a pas une à venir.
             $nb = Sys::getCount('Systeme','Tache/TaskModule=Parc&TaskObject=Server&TaskId='.$px->Id.'&TaskFunction=restartServiceNginx&Demarre=0');

@@ -461,10 +461,26 @@
                     </td>
                 </tr>
             {% endfor %}#}
+            {% for interface in Interfaces %}
+                {% if interface.child  %}
+                    <tr class="{{ interface.name }}">
+                        <th >{{ interface.name }}</th>
+                        <td dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination" scope="row"   class="type{{ interface.type }}">
+                            <div class="col-width-fixer">
+                            {% if interface.type == "price" or interface.type == "float" %}
+                                <span class="label label-warning" ng-repeat="child in item.{{ interface.child }}">{[{ child.{{ interface.property }}| currency:"" }]}</span>
+                            {% elseif interface.type == "extlink" %}
+                                <a class="btn-abt btn-primary btn-xs type_{[{ child.{{ interface.title }} }]}" href="https://proxy.abtel.fr/remote/#/client/{[{ child.{{ interface.property }} }]}" target="_blank" ng-repeat="child in item.{{ interface.child }} | limitTo:2">{[{ child.{{ interface.title }} }]}</a>
+                            {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
              {% for field in fields %}
-             <tr>
+             <tr class="{{ field.name }}">
                     <th  ng-show="{{ identifier }}.data.length > 0">{{ field.listDescr }}</th>
-                    <td dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination" scope="row"  >
+                    <td dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination" scope="row"  class="type{{ interface.type }}">
                         <div class="col-width-fixer">
                         {% if field.type == "price" or field.type == "float" %}
                             <span class="label label-warning">{[{ item.{{ field.name }}| currency:"" }]}</span>
@@ -546,8 +562,8 @@
                         $(this).css('height', h);
                     }
                 });
-                if(ok >= 20 || tmp >= 100) clearInterval(interval);
-            },25);
+                if(ok >= 60 || tmp >= 200) clearInterval(interval);
+            },20);
 
         });
 

@@ -70,9 +70,22 @@ class ParcInstanceAzkoBack extends Plugin implements ParcInstancePlugin {
      * @return bool
      */
     public function updateSoftware($task){
-        $apachesrv = Sys::getOneData('Parc', 'Server/Web=1&defaultWebServer=1');
-        $mysqlsrv = Sys::getOneData('Parc', 'Server/Sql=1&defaultSqlServer=1');
         $host = $this->_obj->getOneParent('Host');
+
+        $pref ='';
+        if($infra = $this->getOneParent('Infra')){
+            $pref = 'Infra/'.$infra->Id.'/';
+        } else {
+            if($inst = $this->getOneChild('Instance')){
+                if($infra = $inst->getOneParent('Infra')){
+                    $pref = 'Infra/'.$infra->Id.'/';
+                }
+            }
+        }
+
+        $apachesrv = Sys::getOneData('Parc', $pref.'Server/Web=1&defaultWebServer=1');
+        $mysqlsrv = Sys::getOneData('Parc', $pref.'Server/Sql=1&defaultSqlServer=1');
+
         $bdd = $host->getOneChild('Bdd');
         $apache = $host->getOneChild('Apache');
         $version = VersionLogiciel::getLastVersion('AzkoBack',$this->_obj->Type);

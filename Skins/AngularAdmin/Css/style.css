@@ -373,15 +373,16 @@ table tr td.typeraw span.ng-binding{
         margin-left: 90px;
     }
     table.inverted tr{
-        /*height: 55px;*/
+        overflow: hidden;
     }
     table.inverted th{
         position: absolute;
-        width:90px;
+        width:100px;
         left:4px;
         background-color: #ddd;
         z-index: 2;
-        height: 90px;
+        height: 150px;
+        font-size: 0.9em;
     }
     table.inverted td, table.inverted th{
         border: 1px solid #f6f8f9;
@@ -396,6 +397,7 @@ table tr td.typeraw span.ng-binding{
         }*/
     .col-width-fixer{
         width:250px;
+        min-height: 45px;
         text-align: center;
     }
 

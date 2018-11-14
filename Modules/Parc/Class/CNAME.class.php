@@ -29,7 +29,7 @@ class CNAME extends genericClass {
 
 		parent::Save();
 		// Forcer la vérification
-		if(!$this->_isVerified) $this->Verify( $synchro );
+		$this->Verify( $synchro );
 		// Enregistrement si pas d'erreur
         if($this->_isVerified) {
             parent::Save();
