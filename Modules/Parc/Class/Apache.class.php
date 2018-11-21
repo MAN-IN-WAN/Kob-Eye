@@ -106,10 +106,18 @@ class Apache extends genericClass {
                 //recherche du serveur proxy
                 //$serv = Sys::getOneData('Parc','Server/Proxy=1',0,1,'ASC','Id',null,null,true);
                 $serv = $this->getProxy();
+                if(sizeof($serv)){
+                    $servP = $serv[0];
+                    $infra = $servP->getOneParent('Infra');
+                    if( ($infra && !$this->_KEInfra) || ($infra && ($infra->Id != $this->_KEInfra->Id)) ){
+                        $serv=array();
+                    }
+                }
                 if (!sizeof($serv)) {
                     $serv = $this->getKEServer();
                 }
                 $serv = $serv[0];
+
 
                 $sa = explode(" ",$this->getDomains());
 

@@ -314,7 +314,6 @@
         <PROPERTIES category="Clef" type="varchar" description="ObjectClass"  searchOrder="3" list="6" form="1" fiche="1">TaskObject</PROPERTIES>
         <PROPERTIES category="Clef" type="int" description="Identifiant"  searchOrder="4" list="7" form="1" fiche="1">TaskId</PROPERTIES>
         <PROPERTIES category="Clef" type="varchar" description="Fonction à éxécuter"  searchOrder="5" list="7" form="1" fiche="1">TaskFunction</PROPERTIES>
-        <FKEY data="Instance,Id" module="Parc" card="1,1" inline="1" form="1" description="Instance">SambaShareId</FKEY>
 	</OBJECTCLASS>
     <!-- Taches -->
     <OBJECTCLASS title="Tache" driver="mysql" Dico="0" logEvent="1" AccessPoint="1" Description="Tache" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Systeme/Class/Tache.class.php" >

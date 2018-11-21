@@ -170,7 +170,7 @@
 		<PROPERTIES type="varchar" searchOrder="4" form="1">LDAPNom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="3" list="1" fiche="1" listDescr="IP publique" form="1">IP</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="3" quickview="1" list="1" fiche="1" listDescr="IP interne" form="1">InternalIP</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="12" quickview="1" list="1" fiche="1" listDescr="Port d'administration" form="1" default="22">Port</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="12" quickview="1"  fiche="1" listDescr="Port d'administration" form="1" default="22">Port</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="7" quickview="1" list="1" fiche="1" listDescr="Web" form="1">Web</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="5" list="1" fiche="1" listDescr="Dns" form="1">Dns</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="6" list="1" fiche="1" listDescr="Mail" form="1">Mail</PROPERTIES>

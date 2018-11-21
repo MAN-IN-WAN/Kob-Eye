@@ -407,7 +407,8 @@ class Bloc extends Beacon {
 	//GENERATION
 	function Generate(){
         if ($this->Twig){
-			$this->Content = KeTwig::render($this->Path,Process::$TempVar);
+            if($this->Vars != '')
+			    $this->Content = KeTwig::render($this->Path,Process::$TempVar);
             $this->Data = $this->ChildObjects[0];
 		}else{
             if ($this->Beacon=="MODULE") {
