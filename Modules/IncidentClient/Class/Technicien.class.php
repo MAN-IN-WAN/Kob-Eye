@@ -1,6 +1,6 @@
 <?php
 
-class Contact extends genericClass {
+class Technicien extends genericClass {
 
     /**
      * Créé un mot de passe aléatoire pour l'utilisateur.
@@ -71,8 +71,7 @@ class Contact extends genericClass {
         $Utilisateur->Set("Admin","0");
         $Utilisateur->Set("Actif",$this->Actif);
 
-        $cli = $this->getClient();
-        $grp = Sys::getOneData('Systeme','Group/'.$cli->GroupId);
+        $grp = Sys::getOneData('Systeme','Group/Nom=[INCIDENT] Technicien');
         if($grp){
             $Utilisateur->AddParent($grp);
         }else{
@@ -100,8 +99,7 @@ class Contact extends genericClass {
             $Utilisateur->Set("Pass",$this->Pass);
         }
         $Utilisateur->Set("Admin","0");
-        $cli = $this->getClient();
-        $grp = Sys::getOneData('Systeme','Group/'.$cli->GroupId);
+        $grp = Sys::getOneData('Systeme','Group/Nom=[INCIDENT] Technicien');
         if($grp){
             $Utilisateur->AddParent($grp);
         }else{
@@ -126,18 +124,7 @@ class Contact extends genericClass {
         $this->CodePostal = $U->CodePos;
         $this->Ville = $U->Ville;
     }
-    function getClient() {
-        foreach ($this->Parents as $p){
-            if($p['Titre'] == 'Client'){
-                $this->_KEClient = Sys::getOneData('IncidentClient','Client/'.$p['Id'],0,1,null,null,null,null,true);
-            }
-        }
-        if (!is_object($this->_KEClient)) {
-            $this->_KEClient = $this->getOneParents('Client');
-            if (!$this->_KEClient) return false;
-        }
-        return $this->_KEClient;
-    }
+
     /**
      * Ajoute la vérification appdes paramètres utilisateur (surtout les mails)
      *
@@ -173,8 +160,8 @@ class Contact extends genericClass {
         if($this->Id) {
             if( intval($this->UserId)>0 ) {
                 $Utilisateur = $this->getUser();
-                if (!$Utilisateur)$Utilisateur = $this->makeUser();
-                $Utilisateur = $this->updateUser($Utilisateur);
+                if (!$Utilisateur) $Utilisateur = $this->makeUser();
+                else $Utilisateur = $this->updateUser($Utilisateur);
                 $Utilisateur->Save();
             } else {
                 $Utilisateur = $this->makeUser();
@@ -190,41 +177,27 @@ class Contact extends genericClass {
 
             $mailRecipient = $GLOBALS['Systeme']->Conf->get('GENERAL::INFO::NEWUSER_MAIL');
             ///$mailRecipient = 'gcandella@abtel.fr';
-            $cli = $this->getClient();
 
             $Mail = new Mail();
-            $Mail->Subject("Nouvel utilisateur ".Sys::$domain);
+            $Mail->Subject("Nouveau technicien ".Sys::$domain);
             $Mail -> From("noreply@ocean-nimes.com");
             $Mail -> ReplyTo("noreply@ocean-nimes.com");
-            $Mail -> Bcc("enguerrand@abtel.fr;myriam790@gmail.com");
+            $Mail -> Bcc("enguerrand@abtel.fr");
             $Mail -> To($mailRecipient);
             $bloc = new Bloc();
-            $mailContent = "Bonjour un nouveau contact du client '.$cli->Societe.' viens d'être créé :".$this->Nom.' '.$this->Prenom.''.$this->CodeClient ;
+            $mailContent = "Bonjour un nouveau technicien viens d'être créé :".$this->Nom.' '.$this->Prenom.''.$this->CodeClient ;
             $bloc -> setFromVar("Mail", $mailContent, array("BEACON" => "BLOC"));
             $Pr = new Process();
             $bloc -> init($Pr);
             $bloc -> generate($Pr);
             $Mail -> Body($bloc -> Affich());
             $Mail -> Send();
-
-            //confirmation
-            $Mail = new Mail();
-            $Mail->Subject("[OCEAN-NIMES.COM] Nouvel contact ".$this->Nom.' '.$this->Prenom.' de la societe '.$cli->Societe);
-            $Mail -> From("noreply@ocean-nimes.com");
-            $Mail -> ReplyTo("noreply@ocean-nimes.com");
-            $Mail -> Bcc("enguerrand@abtel.fr;myriam790@gmail.com");
-            $Mail -> To($this->Mail);
-            $bloc = new Bloc();
-            $mailContent = "Bonjour un nouveau contact du client '.$cli->Societe.' viens d'être créé :".$this->Nom.' '.$this->Prenom.''.$this->CodeClient ;
-            $bloc -> setFromVar("Mail", $mailContent, array("BEACON" => "BLOC"));
-            $Pr = new Process();
-            $bloc -> init($Pr);
-            $bloc -> generate($Pr);
-            $Mail -> Body($bloc -> Affich());
-            $Mail -> Send();
-
         }
+
         parent::Save();
         return true;
     }
+
+
+
 }

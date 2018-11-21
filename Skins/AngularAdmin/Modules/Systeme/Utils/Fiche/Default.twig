@@ -62,7 +62,7 @@
                                 <img class="img-responsive" src="{[{ obj.{{ field.name }} }]}.limit.250x40.jpg" {{ field.listDescr }} ng-if="obj.{{ field.name }} "/>
                                 <img class="img-responsive" src="/Tools/Images/NoPhoto.jpg.limit.250x40.jpg" {{ field.listDescr }} ng-if="!obj.{{ field.name }} "/>
                             {% elseif field.type == "file" %}
-                                <a  class="fileLink" href="{[{ obj.{{ field.name }} }]}" title="{[{ obj.{{ field.name }} }]}" target="_blank" >Voir le fichier</a>
+                                <a  class="fileLink btn btn-small btn-danger" href="{[{ obj.{{ field.name }} }]}" title="{[{ obj.{{ field.name }} }]}" target="_blank" >Voir le fichier</a>
                             {% elseif field.type == "plugin" %}
                                 <span  class="label label-danger" ng-bind-html="obj.{{ field.name }}"></span>
                             {% elseif field.type == "float" %}
@@ -93,7 +93,7 @@
                                 {% if field.link %}
                                     <a class="btn btn-primary btn-xs" href="#/{{ field.link }}/{[{ obj.{{ field.objectName }}{{ field.name }} }]}">{[{ obj.{{ field.objectName }}{{ field.name }}label }]}</a>
                                 {% else  %}
-                                    <span class="btn btn-primary btn-xs" ng-if="obj.{{ field.objectName }}{{ field.name }}">{[{ obj.{{ field.objectName }}{{ field.name }}label }]}</span>
+                                    <span ng-if="obj.{{ field.objectName }}{{ field.name }}">{[{ obj.{{ field.objectName }}{{ field.name }}label }]}</span>
                                 {% endif %}
                             {% else %}
                                 {% if field.Values %}
@@ -165,9 +165,10 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
+                        <!--<div class="col-md-12">
                             <div ui-ace="{useWrapMode : true,mode: '{{ field.subtype }}',onLoad: aceLoaded}" ng-model="obj.{{ field.name }}" class="ace_editor"  readonly="true"></div>
-                        </div>
+                        </div>-->
+                        <div ng-bind-html="obj.{{ field.name }}"></div>
                     </div>
                 {% endif %}
             {% endfor %}

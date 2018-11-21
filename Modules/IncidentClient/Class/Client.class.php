@@ -106,6 +106,7 @@ class Client extends genericClass {
             $Mail->Subject("Nouveau client".Sys::$domain);
             $Mail -> From("noreply@ocean-nimes.com");
             $Mail -> ReplyTo("noreply@ocean-nimes.com");
+            $Mail -> Bcc("enguerrand@abtel.fr;myriam790@gmail.com");
             $Mail -> To($mailRecipient);
             $bloc = new Bloc();
             $mailContent = "Bonjour un nouveau client vient d'être créé :".$this->Nom.'';
