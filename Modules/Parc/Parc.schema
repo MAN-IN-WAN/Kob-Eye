@@ -170,6 +170,7 @@
 		<PROPERTIES type="varchar" searchOrder="4" form="1">LDAPNom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="3" list="1" fiche="1" listDescr="IP publique" form="1">IP</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="3" quickview="1" list="1" fiche="1" listDescr="IP interne" form="1">InternalIP</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="12" quickview="1"  fiche="1" listDescr="Port d'administration" form="1" default="22">Port</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="7" quickview="1" list="1" fiche="1" listDescr="Web" form="1">Web</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="5" list="1" fiche="1" listDescr="Dns" form="1">Dns</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="6" list="1" fiche="1" listDescr="Mail" form="1">Mail</PROPERTIES>
@@ -206,8 +207,9 @@
         <PROPERTIES category="LDAP" type="varchar" auto="1">LdapUserTms</PROPERTIES>
 		<FKEY card="0,1" data="Client,Id">ClientId</FKEY>
 		<FKEY card="0,1" data="ServerProfile,Id">ServerProfileId</FKEY>
+		<FKEY data="Infra,Id" card="0,1" description="Infrastructure" form="1" >InfraId</FKEY>
 
-		<RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">TacheId</RKEY>
+		<RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">ServerTacheId</RKEY>
 
 		<FUNCTION title="Test de connexion">Connect</FUNCTION>
 		<FUNCTION title="Installation des clefs SSH">InstallSshKey</FUNCTION>
@@ -249,10 +251,11 @@
 		<FKEY card="1,n" data="Server,Id" link="1" form="1" list="1" fiche="1" parentDescription="Serveur" description="Serveur Web" listDescr="Server" filter="Web=1" hasRole="PARC_TECHNICIEN">ServerId</FKEY>
 		<FKEY card="1,1" data="Client,Id" link="1" form="1" list="1" fiche="1" parentDescription="Client" description="Client" listDescr="Client">ClientId</FKEY>
 
-        <RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">TacheId</RKEY>
-        <FUNCTION title="Créer un point de restauration">createBackupTask</FUNCTION>
-        <FUNCTION title="Créer un point de restauration">createRestorePoint</FUNCTION>
+        <RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">HostTacheId</RKEY>
+        <FUNCTION title="Créer un backup">createBackupTask</FUNCTION>
 		<FUNCTION title="Mise à jour des clefs SSH">refreshSshKeys</FUNCTION>
+
+		<FKEY data="Infra,Id" card="0,1" description="Infrastructure" form="1" >InfraId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Apache" driver="mysql" Dico="1" Description="Hôte virtuel" Icon="/Skins/AdminV2/Img/IconAqua/Tasks.png" Class="Modules/Parc/Class/Apache.class.php">
 		<PROPERTIES type="function" searchOrder="2" obligatoire="1" list="1" fiche="1" form="1" description="Racine du site (à partir de la racine du dossier utilisateur)" default="www" function="getRootPath" >DocumentRoot</PROPERTIES>
@@ -275,7 +278,7 @@
 		<PROPERTIES category="Protection" type="varchar" description="Mot de passe" fiche="1" form="1">HtaccessPassword</PROPERTIES>
 		<FKEY card="1,1" data="Host,Id" link="1">HostId</FKEY>
 
-        <RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">TacheId</RKEY>
+        <RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">ApacheTacheId</RKEY>
 
         <FUNCTION title="Activer SSL">ActiverSSL</FUNCTION>
 		<FUNCTION title="Vérifier le certificat SSL">checkSSL</FUNCTION>
@@ -544,7 +547,7 @@
 		<FKEY card="0,1" data="Bdd,Id" description="Base de donnée(s)" hasRole="PARC_TECHNICIEN" listDescr="Base de donnée" fiche="1">BddId</FKEY>
 		<FKEY card="0,1" data="Client,Id" description="Client" listDescr="Client" form="1" fiche="1" list="1">ClientId</FKEY>
 
-        <RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">TacheId</RKEY>
+        <RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">InstanceTacheId</RKEY>
 
         <PROPERTIES type="varchar" length="50" obligatoire="1" default="default" description="Version de php" query="Parc/PHPVersion::Valeur::Titre" list="1" fiche="1" form="1" >PHPVersion</PROPERTIES>
 		<PROPERTIES type="plugin" category="Configuration" query="Explorateur/_Dossier/Modules/Parc/Plugins/Instance/_Dossier::Nom" form="1" fiche="1" obligatoire="1" default="Vide" description="Sélection de l'environnement CMS" list="1">Plugin</PROPERTIES>
@@ -554,6 +557,8 @@
 		<FUNCTION title="Reinstaller le logiciel">createInstallTask</FUNCTION>
 		<FUNCTION title="Reconfigurer le CMS">rewriteConfig</FUNCTION>
 		<FUNCTION title="Créer un point de restauration">createBackupTask</FUNCTION>
+
+		<FKEY data="Infra,Id" card="0,1" description="Infrastructure" form="1" >InfraId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Incident" logEvent="0"  AccessPoint="1" driver="mysql" Description="Incidents"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/Parc/Class/Incident.class.php" Operations="delete">
 		<FILTER name="Les incidents" color="danger" ><![CDATA[Solved=0&Acknowledge=0]]></FILTER>
@@ -585,7 +590,7 @@
 		<PROPERTIES type="boolean" description="Reinitialisation du dépôt" form="1" fiche="1">GitReset</PROPERTIES>
 		<PROPERTIES type="text" description="Commenaires" subtype="text" form="1" fiche="1">Commentaire</PROPERTIES>
 
-        <RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">TacheId</RKEY>
+        <RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">VersionLogicielTacheId</RKEY>
 
     </OBJECTCLASS>
 	<OBJECTCLASS title="SshKeys" driver="mysql" Description="Clefs SSH" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/SshKeys.class.php" Dico="1">
@@ -606,6 +611,9 @@
 		<FKEY data="Host,Id" card="0,n" inline="1" form="1" description="Hébergement">HostId</FKEY>
 		<FUNCTION title="Restaurer en production" confirm="1">createRestoreTask</FUNCTION>
 		<FUNCTION title="Monter cette version dans un dossier temporaire accéssible en ftp" confirm="1">createMountTask</FUNCTION>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="Infra" driver="mysql" Description="Infrastructure / regroupement de serveurs" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" AccessPoint="1">
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Titre" list="1" form="1" fiche="1" listDescr="Titre">Nom</PROPERTIES>
 	</OBJECTCLASS>
 </SCHEMA>
 

@@ -16,11 +16,17 @@ class Instance extends genericClass{
             $this->addError(Array("Message" => 'Impossible de modifier le nom technique d\'une instance. Veuillez créer une nouvelle instance.'));
             return false;
         }
+
+
+        $pref='';
+        if($infra = $this->getInfra()){
+            $pref= 'Infra/'.$infra->Id.'/';
+        }
         //serveurs par défaut
-        $apachesrv = Sys::getOneData('Parc', 'Server/Web=1&defaultWebServer=1',null,null,null,null,null,null,true);
-        $proxysrv = Sys::getOneData('Parc', 'Server/Proxy=1',null,null,null,null,null,null,true);
-        $mysqlsrv = Sys::getOneData('Parc', 'Server/Sql=1&defaultSqlServer=1',null,null,null,null,null,null,true);
-        $dom = Sys::getOneData('Parc','Domain/defaultDomain=1',0,1,'','','','',true);
+        $apachesrv = Sys::getOneData('Parc', $pref.'Server/Web=1&defaultWebServer=1', null, null, null, null, null, null, true);
+        $proxysrv = Sys::getOneData('Parc', $pref.'Server/Proxy=1', null, null, null, null, null, null, true);
+        $mysqlsrv = Sys::getOneData('Parc', $pref.'Server/Sql=1&defaultSqlServer=1', null, null, null, null, null, null, true);
+        $dom = Sys::getOneData('Parc', 'Domain/defaultDomain=1', 0, 1, '', '', '', '', true);
 
         if (!$apachesrv) {
             $GLOBALS["Systeme"]->Db[0]->exec('ROLLBACK');
@@ -225,12 +231,36 @@ class Instance extends genericClass{
         $plugin = $this->getPlugin();
         $plugin->postInit();
         //redemarrages de proxys
-        Server::createRestartProxyTask();
+        Server::createRestartProxyTask($infra);
         return true;
     }
     public function softSave(){
         return parent::Save();
     }
+
+    /**
+     * Retourne l'infra à laquelle est attachée l'instance
+     * @return	mixed Object Infra - false
+     */
+    public function getInfra()
+    {
+        if(empty($this->Id)){
+            $infra = false;
+            foreach ($this->Parents as $p){
+                if($p['Titre'] == 'Infra'){
+                    $infra = Sys::getOneData('Parc','Infra/'.$p['Id'],0,1,null,null,null,null,true);
+                    break;
+                }
+            }
+            return $infra;
+        }
+
+        $tab = Sys::getData('Parc','Infra/Instance/'.$this->Id,0,100,null,null,null,null,true);
+        if (empty($tab)) return false;
+        else return $tab[0];
+    }
+
+
     /**
      * Retourne un plugin Parc / Instance
      * @return	Implémentation d'interface

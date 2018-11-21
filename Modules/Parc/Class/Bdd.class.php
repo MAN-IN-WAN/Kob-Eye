@@ -13,7 +13,14 @@ class Bdd extends genericClass {
         //$serv = $this->getOneParent('Server');
         $serv = Sys::getOneData('Parc','Server/Bdd/'.$this->Id,null,null,null,null,null, null,true);
         if (!$serv) {
-            $serv = Sys::getOneData('Parc','Server/defaultSqlServer=1',null,null,null,null,null, null,true);
+
+            $host = Sys::getOneData('Parc','Host/Bdd/'.$this->Id,null,null,null,null,null, null,true);
+            $infra = $host->getInfra();
+            $pref = '';
+            if($infra)
+                $pref = 'Infra/'.$infra->Id.'/';
+
+            $serv = Sys::getOneData('Parc',$pref.'Server/defaultSqlServer=1',null,null,null,null,null, null,true);
             $this->addParent($serv);
             parent::Save();
         }

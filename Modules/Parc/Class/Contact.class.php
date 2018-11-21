@@ -16,6 +16,8 @@ class Parc_Contact extends genericClass {
 
         // Enregistrement si pas d'erreur
         parent::Save();
+        $this->Verify(true);
+
         if($this->setUser()){
             return true;
         }

@@ -234,6 +234,17 @@ class CompteMail extends genericClass {
 	 * @return	L'objet Kob-Eye
 	 */
 	public function getKEServer() {
+        if(empty($this->Id)){
+            $pars = array();
+            foreach ($this->Parents as $p){
+                if($p['Titre'] == 'Server'){
+                    $pa = Sys::getOneData('Parc','Server/'.$p['Id'],0,1,null,null,null,null,true);
+                    $pars[] = $pa;
+                }
+
+            }
+            $this->_KEServer = $pars;
+        }
 		if(!is_object($this->_KEServer)) {
 			$this->_KEServer = Sys::getOneData('Parc','Server/CompteMail/'.$this->Id,0,1,'','','','',true);
 		}

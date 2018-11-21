@@ -13,7 +13,7 @@ class Ftpuser extends genericClass {
 	public function Save( $synchro = true ) {
 		parent::Save();
 		// Forcer la vérification
-		if(!$this->_isVerified) $this->Verify( $synchro );
+		$this->Verify( $synchro );
 		// Enregistrement si pas d'erreur + Récupération GID & UID HOST
 		if($this->_isVerified) {
 			parent::Save();

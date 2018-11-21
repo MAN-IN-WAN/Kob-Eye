@@ -15,7 +15,7 @@ class MX extends genericClass {
 	    parent::Save();
 
 		// Forcer la vérification
-		if(!$this->_isVerified) $this->Verify( $synchro );
+		$this->Verify( $synchro );
 		// Enregistrement si pas d'erreur
 		if($this->_isVerified){
 			parent::Save();
@@ -286,7 +286,7 @@ class MX extends genericClass {
 	 */
 	private function getKEServer() {
 		if(!is_object($this->_KEServer)) {
-			$Tab = Sys::$Modules["Parc"]->callData('Parc/Server/1', "", 0, 1);
+			$Tab = Sys::$Modules["Parc"]->callData('Parc/Server/1', "", 0, 1,null,null,null,null,true);
 			$this->_KEServer = genericClass::createInstance('Parc', $Tab[0]);
 		}
 		return $this->_KEServer;

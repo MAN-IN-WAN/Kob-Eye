@@ -1284,7 +1284,7 @@
                 });
 
                 //CALL FUNCTION
-                $scope.{{ child.objectModule }}{{ child.objectName }}callFunction = function (obj,name,title,needConfirm){
+                 $scope.{{ child.objectModule }}{{ child.objectName }}callFunction = function (obj,name,title,needConfirm){
                      if(needConfirm != undefined && needConfirm){
                          swal({
                              title: "Êtes vous sûr de vouloir effectuer cette action ?",
@@ -1304,7 +1304,7 @@
                                  args = angular.extend({},$scope.{{ child.objectModule }}{{ child.objectName }}function.args);
                              }
                              console.error('ccccccccccccccccccccc',args);
-        
+
                              $scope.{{ child.objectModule }}{{ child.objectName }}function = {
                                  title: title,
                                  loaded: false,
@@ -1321,19 +1321,19 @@
                                  callBack : false,
                                  args : args
                              };
-        
+
                              $("#modalfunction-{{ child.objectModule }}{{ child.objectName }}").modal();
-        
+
                              $http.post('/{{ c.url }}/'+obj.id+'/Function.json',{"Func":JSON.stringify($scope.{{ child.objectModule }}{{ child.objectName }}function)})
                              .success(function(data) {
                                  console.log('store > {{ child.objectModule }}/{{ child.objectName }} > Function  ', data);
-        
+
                                  var hasData = false;
                                  $scope.{{ child.objectModule }}{{ child.objectName }}function = data;
                                  if(typeof $scope.{{ child.objectModule }}{{ child.objectName }}function.data == 'string'){
                                      hasData = true;
                                  }
-        
+
                                  if($scope.{{ child.objectModule }}{{ child.objectName }}function.callNext){
                                      $scope.{{ child.objectModule }}{{ child.objectName }}function.callNext.item = obj;
                                  } else if(!hasData) {
@@ -1343,18 +1343,18 @@
                                          $scope.{{ child.objectModule }}{{ child.objectName }}function.data = 'L\'opération ne s\'est pas déroulée correctement.';
                                      }
                                  }
-        
+
                                  if($scope.{{ child.objectModule }}{{ child.objectName }}function.callBack){
                                      $scope[$scope.{{ child.objectModule }}{{ child.objectName }}function.callBack.nom](...$scope.{{ child.objectModule }}{{ child.objectName }}function.callBack.args);
                                  }
-        
-        
+
+
                                  {{ child.objectModule }}{{ child.objectName }}Store.getOneData(obj.id,false).then(function (data) {
                                      $scope.modalObj = data;
                                      console.log('function '+title+' obj',$scope.modalObj);
                                      $('#modalfunction-{{ child.objectModule }}{{ child.objectName }} .modal-dialog').spin(false);
                                  });
-        
+
                              }).finally(function(){
                                  $scope.{{ child.objectModule }}{{ child.objectName }}function.loaded = true;
                              });
@@ -1367,7 +1367,7 @@
                              args = angular.extend({},$scope.{{ child.objectModule }}{{ child.objectName }}function.args);
                          }
                          //console.error('ccccccccccccccccccccc',args);
-        
+
                          $scope.{{ child.objectModule }}{{ child.objectName }}function = {
                              title: title,
                              loaded: false,
@@ -1384,19 +1384,19 @@
                              callBack : false,
                              args : args
                          };
-        
+
                          $("#modalfunction-{{ child.objectModule }}{{ child.objectName }}").modal();
-        
+
                          $http.post('/{{ c.url }}/'+obj.id+'/Function.json',{"Func":JSON.stringify($scope.{{ child.objectModule }}{{ child.objectName }}function)})
                          .success(function(data) {
                              console.log('store > {{ child.objectModule }}/{{ child.objectName }} > Function  ', data);
-        
+
                              var hasData = false;
                              $scope.{{ child.objectModule }}{{ child.objectName }}function = data;
                              if(typeof $scope.{{ child.objectModule }}{{ child.objectName }}function.data == 'string'){
                                  hasData = true;
                              }
-        
+
                              if($scope.{{ child.objectModule }}{{ child.objectName }}function.callNext){
                                  $scope.{{ child.objectModule }}{{ child.objectName }}function.callNext.item = obj;
                              } else if(!hasData) {
@@ -1406,23 +1406,22 @@
                                      $scope.{{ child.objectModule }}{{ child.objectName }}function.data = 'L\'opération ne s\'est pas déroulée correctement.';
                                  }
                              }
-        
+
                              if($scope.{{ child.objectModule }}{{ child.objectName }}function.callBack){
                                  $scope[$scope.{{ child.objectModule }}{{ child.objectName }}function.callBack.nom](...$scope.{{ child.objectModule }}{{ child.objectName }}function.callBack.args);
                              }
-        
-        
+
+
                              {{ child.objectModule }}{{ child.objectName }}Store.getOneData(obj.id,false).then(function (data) {
                                  $scope.modalObj = data;
                                  console.log('function '+title+' obj',$scope.modalObj);
                                  $('#modalfunction-{{ child.objectModule }}{{ child.objectName }} .modal-dialog').spin(false);
                              });
-        
+
                          }).finally(function(){
                              $scope.{{ child.objectModule }}{{ child.objectName }}function.loaded = true;
                          });
                      }
-
                 }
 
                 //MASS DELETE

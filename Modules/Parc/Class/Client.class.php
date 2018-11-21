@@ -16,7 +16,7 @@ class Parc_Client extends genericClass {
         }
 
 		// Forcer la vérification
-		if(!$this->_isVerified) $this->Verify( $synchro );
+		$this->Verify( $synchro );
         parent::Save();
 
 		// Enregistrement si pas d'erreur
