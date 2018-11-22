@@ -1,10 +1,10 @@
 {# fiche Section #}
 {% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean %} 
 {% set f=fields %}
-{% set o='obj' %}
+{% set o=Create ? 'modalObj' : 'obj' %}
 
 <div class="page-content-inner">
-    <ul class="list-unstyled breadcrumb">
+    <ul class="list-unstyled breadcrumb" ng-if="{{ o }}.id">
         <li>
             <a href="#/TableauDeBord">Tableau de bord</a>
         </li>
@@ -18,31 +18,23 @@
 
     <!-- Default Panel -->
     <section class="panel">
-        <div class="panel-body">
+        <div class="panel-body cadref-panel-body">
             <div class="row no-gutters">
-                <div class="col-md-11" >
+                <div {% if Create %}class="col-md-10"{% else %}class="col-md-11"{% endif %}>
 					<div class="row">
-						<div class="col-md-7" >
-							{{ flinput(f.Section, o, false, '@@', 'width:100px; text-transform:uppercase;') }}
-							{{ flinput(f.Libelle, o, false, '', 'text-transform:uppercase;') }}
-							<div class="row">
-								<div class="col-md-2">
-									{{ label("Inactif") }}
-								</div>
-								<div class="col-md-10">
-									{{ fboolean(f.Inactif, o, true) }}
-								</div>
-							</div>
-							<div class="row" style="height:10px"></div>
+						<div class="col-md-8" >
+							{{ flinput(f.Section, o, false, 'AA', 'width:60px; text-transform:uppercase;', true) }}
+							{{ flinput(f.Libelle, o, false, '', 'text-transform:uppercase;', true) }}
 						</div>
 						{# block right #}                    
-						<div class="col-md-5">
+						<div class="col-md-4">
 						</div>
 					</div>
+					<div class="row" style="height:10px"></div>
 					<div class="row">
 						{# disciplines #}
 						<div class="col-md-12">
-							<section class="panel">
+							<section class="panel" ng-if="{{ o }}.id">
 								<div class="panel-body">
 									<ng-include src="'/{{ CurrentUrl }}/0/Discipline/ListChildren.htm'" ng-if="show"></ng-include>
 								</div>
@@ -50,77 +42,13 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-1">
-					<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="saveFicheCadref()">Enregistrer</button>
-					<a type="button" class="btn btn-warning cadref-btn-100" href="#/{{ CurrentMenu.Url }}">Annuler</a>
+				<div {% if Create %}class="col-md-2"{% else %}class="col-md-1"{% endif %}>
+					<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="{{ identifier }}modalSave()">Sauver</button>
+					<button type="button" class="btn btn-danger margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="delete(obj)">Supprimer</button>
+					<a type="button" class="btn btn-warning margin-inline cadref-btn-100" {% if Create %}data-dismiss="modal"{% else %}href="#/{{ CurrentMenu.Url }}"{% endif %}>Annuler</a>
 				</div>
-			</div>
-			<div class="modal-footer">
 			</div>
 		</div>
     </section>
 </div>
-{{ include(template_from_string(module('Systeme/Utils/Modal/Function?identifier='~identifier))) }}
 
-
-<script>
-	$('.datepicker-only-init').datetimepicker({
-		widgetPositioning: {
-			horizontal: 'left'
-		},
-		locale: 'fr',
-		format: 'DD/MM/YY',
-		icons: {
-			time: "fa fa-clock-o",
-			date: "fa fa-calendar",
-			up: "fa fa-arrow-up",
-			down: "fa fa-arrow-down"
-		}
-	});
-	$('.timepicker-only-init').datetimepicker({
-		widgetPositioning: {
-			horizontal: 'left'
-		},
-		locale: 'fr',
-		format: 'HH:mm',
-		icons: {
-			time: "fa fa-clock-o",
-			date: "fa fa-calendar",
-			up: "fa fa-arrow-up",
-			down: "fa fa-arrow-down"
-		}
-	});
-	$('.datetimepicker-init').datetimepicker({
-		widgetPositioning: {
-			horizontal: 'left'
-		},
-		locale: 'fr',
-		icons: {
-			time: "fa fa-clock-o",
-			date: "fa fa-calendar",
-			up: "fa fa-arrow-up",
-			down: "fa fa-arrow-down"
-		}
-	});
-
-
-	$('.urlInput').on('keyup', function () {
-		$(this).val($(this).val().replace(/[^A-Za-z0-9_\-\.]*\s*/g, ''));
-	});
-	//Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
-	$(".datepicker-only-init").on("dp.change", function () {
-		var input = $(this).children('input').eq(0);
-		input.trigger('change');
-		input.trigger('input');
-	});
-	$(".timepicker-only-init").on("dp.change", function () {
-		var input = $(this).children('input').eq(0);
-		input.trigger('change');
-		input.trigger('input');
-	});
-	$(".datetimepicker-init").on("dp.change", function () {
-		var input = $(this).children('input').eq(0);
-		input.trigger('change');
-		input.trigger('input');
-	});
-</script>

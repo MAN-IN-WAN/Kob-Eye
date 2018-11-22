@@ -1,0 +1,3 @@
+<?php
+$vars['controller'] = 'TableauDeBord';
+?>

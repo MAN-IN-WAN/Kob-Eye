@@ -1,0 +1,187 @@
+<div class="page-content-inner">
+
+    <!-- Dashboard -->
+    <div class="dashboard-container">
+        <div class="row">
+            <a class="col-xl-3 col-lg-6 col-sm-6 col-xs-12" href="#/gestion/adherents">
+                <div class="widget widget-seven background-info">
+                    <div class="widget-body">
+                        <div href="javascript: void(0);" class="widget-body-inner">
+                            <h5 class="text-uppercase">Adhérents</h5>
+                            <i class="counter-icon icmn-users"></i>
+                            <span class="counter-count">
+                                <i class="icmn-arrow-up5"></i>
+                                <span >{[{ NbAdherents }]}</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
+                <div class="widget widget-seven background-success">
+                    <div class="widget-body">
+                        <div href="javascript: void(0);" class="widget-body-inner">
+                            <h5 class="text-uppercase">Inscriptions</h5>
+                            <i class="counter-icon icmn-users"></i>
+                            <span class="counter-count">
+                                <i class="icmn-arrow-up5"></i>
+                                <span >{[{ NbInscriptions }]}</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>
+		<div class="row">
+			<div class="col-lg-6">
+				<h4>Répartition par antenne</h4>
+				<br />
+				<div id="bagel" class="margin-bottom-50">
+					<div class="chart-donut-chart"></div>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<h4></h4>
+				<br />
+				<div class="margin-bottom-50">
+					<div id="bargraph" class="chart-stacked-bar height-300 chartist"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+							
+</div>
+
+
+<!-- Page Scripts -->
+<script>
+	$(function () {
+		var colors = {
+            _primary: '#01a8fe',
+            _default: '#acb7bf',
+            _success: '#46be8a',
+            _danger: '#fb434a'
+        };
+		///////////////////////////////////////////////////////////
+		// COUNTERS
+		$('.counter-init').countTo({
+			speed: 1500
+		});
+
+		///////////////////////////////////////////////////////////
+		// ADJUSTABLE TEXTAREA
+		autosize($('#textarea'));
+
+		///////////////////////////////////////////////////////////
+		// CUSTOM SCROLL
+		if (!cleanUI.hasTouch) {
+			$('.custom-scroll').each(function () {
+				$(this).jScrollPane({
+					autoReinitialise: true,
+					autoReinitialiseDelay: 100
+				});
+				var api = $(this).data('jsp'),
+						throttleTimeout;
+				$(window).bind('resize', function () {
+					if (!throttleTimeout) {
+						throttleTimeout = setTimeout(function () {
+							api.reinitialise();
+							throttleTimeout = null;
+						}, 50);
+					}
+				});
+			});
+		}
+
+		///////////////////////////////////////////////////////////
+		// CALENDAR
+		$('.example-calendar-block').fullCalendar({
+			//aspectRatio: 2,
+			height: 450,
+			header: {
+				left: 'prev, next',
+				center: 'title',
+				right: 'month, agendaWeek, agendaDay'
+			},
+			buttonIcons: {
+				prev: 'none fa fa-arrow-left',
+				next: 'none fa fa-arrow-right',
+				prevYear: 'none fa fa-arrow-left',
+				nextYear: 'none fa fa-arrow-right'
+			},
+			editable: true,
+			eventLimit: true, // allow "more" link when too many events
+			viewRender: function (view, element) {
+				if (!cleanUI.hasTouch) {
+					$('.fc-scroller').jScrollPane({
+						autoReinitialise: true,
+						autoReinitialiseDelay: 100
+					});
+				}
+			},
+			defaultDate: '2017-04-26',
+			events: [
+			],
+			eventClick: function (calEvent, jsEvent, view) {
+				if (!$(this).hasClass('event-clicked')) {
+					$('.fc-event').removeClass('event-clicked');
+					$(this).addClass('event-clicked');
+				}
+			}
+		});
+
+		///////////////////////////////////////////////////////////
+		// CAROUSEL WIDGET
+		$('.carousel-widget').carousel({
+			interval: 4000
+		});
+
+		$('.carousel-widget-2').carousel({
+			interval: 6000
+		});
+
+		///////////////////////////////////////////////////////////
+		// DATATABLES
+		$('#example1').DataTable({
+			responsive: true,
+			"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]]
+		});
+
+		c3.generate({
+            bindto: '.chart-donut-chart',
+            data: {
+                columns: [
+                    ['a', 100]
+                ],
+                type : 'donut'
+            },
+            color: {
+                pattern: [colors._danger, colors._success, colors._default]
+            },
+            donut: {
+                title: "Répartition par antenne"
+            }
+        });
+		// STACKED BAR
+        var repAntenne = new Chartist.Bar(".chart-stacked-bar", {
+            labels: ["Q1", "Q2", "Q3", "Q4"],
+            series: [
+                [Math.random()*200, 125, 145, 135],
+                [25, 45, 55, 35],
+                [15, 25, 45, 65]
+            ]
+        }, {
+            stackBars: !0,
+			horizontalBars: !0,
+            plugins: [
+                Chartist.plugins.tooltip()
+            ]
+        }).on("draw", function(data) {
+            "bar" === data.type && data.element.attr({
+                style: "stroke-width: 30px"
+            })
+        });
+
+	});
+</script>
+<!-- End Page Scripts -->

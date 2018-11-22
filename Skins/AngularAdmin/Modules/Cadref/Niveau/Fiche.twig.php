@@ -3,7 +3,6 @@ session_write_close();
 $vars['Annee'] = $GLOBALS['Systeme']->getRegVars('AnneeEnCours');
 $info = Info::getInfos($vars['Query']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
-$o->setView();
 $temp = $o->getElementsByAttribute('','',true);
 $fields = Array();
 foreach ($temp as $k=>$field){
@@ -21,10 +20,16 @@ foreach ($temp as $k=>$field){
         }
     }
     if(isset($field['help']) && $field['help']){
-        $field['helpLang'] = strtoupper("__".$info["Module"]."_".$info['ObjectType']."_".$vars['formfields'][$k]['name']."_HELP__");
+        $field['helpLang'] = strtoupper("__".$info["Module"]."_".$info['ObjectType']."_".$field['name']."_HELP__");
+    }
+    if($field['type']=='fkey'&&$field['card']=='short'){
+        $field['link'] = Sys::getMenu($field['objectModule'].'/'.$field['objectName']);
     }
 	$fields[$field['name']] = $field;
 }
+$fields['LibelleA'] = array('name'=>'LibelleA','type'=>'varchar','form'=>'1','fiche'=>'1');
+$fields['LibelleS'] = array('name'=>'LibelleS','type'=>'varchar','form'=>'1','fiche'=>'1');
+$fields['LibelleD'] = array('name'=>'LibelleD','type'=>'varchar','form'=>'1','fiche'=>'1');
 $vars['fields'] = $fields;
 
 $vars['functions'] = $o->getFunctions();

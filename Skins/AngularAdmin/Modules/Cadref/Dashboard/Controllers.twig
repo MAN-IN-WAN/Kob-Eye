@@ -1,0 +1,20 @@
+app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $http, $interval) {
+
+	$scope.NbAdherents = 0;
+	$scope.NbInscriptions = 0;
+	$scope.getStat = function() {
+		$http.get('/Cadref/Dashboard/getStat.json')
+		.success(function(data) {
+			$scope.NbAdherents = Number(data.NbAdherents);
+			$scope.NbInscriptions = Number(data.NbInscriptions);
+			var bar = $('#bargraph')
+			if(bar == undefined || bar.get(0) == undefined) {
+				$interval.cancel(intv);
+				return;
+			}
+			bar.get(0).__chartist__.update(data.bars);
+		});
+	}
+	$scope.getStat();
+	var intv = $interval($scope.getStat, 30000);
+});

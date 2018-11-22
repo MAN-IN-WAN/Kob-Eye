@@ -1,6 +1,6 @@
 <?php
 $info = Info::getInfos($vars['Chemin']);
-if($info['ObjectType']){
+if(isset($info['ObjectType'])){
 	$vars['CurrentObj'] = genericClass::createInstance($info['Module'],$info['ObjectType']);
 	$vars['identifier'] = $vars['Url'];
 	$vars['ident'] = $info['Module'].$info['ObjectType'];

@@ -1,7 +1,11 @@
 <nav class="left-menu" left-menu ng-class="{'hidden-left-menu': hideLeftMenu}">
     <div class="logo-container">
         <a href="#/TableauDeBord" class="logo">
+			{% if group.ArrierePlan %}
+            <img class="logo-inverse" src="{{ group.ArrierePlan }}" alt="{{ group.Commentaire }}" />
+			{% else %}
             <img class="logo-inverse" src="Skins/AngularAdmin/img/logo.png" alt="Abtel informatique" />
+			{% endif %}
         </a>
     </div>
     <div class="left-menu-inner scroll-pane">

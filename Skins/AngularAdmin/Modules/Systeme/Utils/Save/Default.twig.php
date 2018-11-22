@@ -74,6 +74,7 @@ if ($o->Verify()) {
         }
     }
     $vars['retour'] = '{
+		"id": '.($o->Id ? $o->Id : 0).',
         "data": '.json_encode($values).',
         "errors": '.json_encode($o->Error).',
         "warning": '.json_encode($o->Warning).',
@@ -82,6 +83,7 @@ if ($o->Verify()) {
     }';
 }else{
     $vars['retour'] = '{
+		"id": '.($o->Id ? $o->Id : 0).',
         "data": '.json_encode($values).',
         "errors": '.json_encode($o->Error).',
         "warning": '.json_encode($o->Warning).',

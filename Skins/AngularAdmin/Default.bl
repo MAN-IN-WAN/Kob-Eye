@@ -210,6 +210,8 @@
     <script src="Skins/AngularAdmin/assets/vendors/pdf-viewer/angular-pdfjs-viewer.js"></script>
 	<link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/assets/vendors/pdf-viewer/pdf.js-viewer/viewer.css">
 -->
+    <script src="Skins/AngularAdmin/assets/vendors/angularMultipleSelect/multiple-select.js"></script>
+	<link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/assets/vendors/angularMultipleSelect/multiple-select.css">
 
 	<!-- Cadref -->
 	<link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/Modules/Cadref/Css/style.css">

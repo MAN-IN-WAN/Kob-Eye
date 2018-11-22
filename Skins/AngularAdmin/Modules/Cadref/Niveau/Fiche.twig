@@ -1,10 +1,10 @@
 {# fiche Niveau #}
-{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean %} 
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean,fkey %} 
 {% set f=fields %}
-{% set o='obj' %}
+{% set o=Create ? 'modalObj' : 'obj' %}
 
 <div class="page-content-inner">
-    <ul class="list-unstyled breadcrumb">
+    <ul class="list-unstyled breadcrumb" ng-if="{{ o }}.id">
         <li>
             <a href="#/TableauDeBord">Tableau de bord</a>
         </li>
@@ -20,45 +20,74 @@
     <section class="panel">
         <div class="panel-body">
             <div class="row no-gutters">
-                <div class="col-md-11" >
+                <div {% if Create %}class="col-md-10"{% else %}class="col-md-11"{% endif %}>
 					<div class="row">
 						<div class="col-md-7" >
 							<div class="row">
 								<div class="col-md-2">
 									{{ label("Antenne") }}
 								</div>
-								<div class="col-md-10">
-									{{ finput(f.LibelleA, o, true) }}
+								<div class="col-md-10" ng-if="!{{ o }}.id">
+									<div custom-select="a.id as a.label+'  -  '+a.Libelle for a in getSelectData('CadrefAntenneStore',$searchTerm)" 
+										 custom-select-options="{ 'async': true, 'filter':''}" 
+										 ng-model="{{ o }}.AntenneAntenneId" 
+										 class="form-control" 
+										 ng-title="{{ o }}.AntenneAntenneIdlabel+'  -  '+{{ o }}.LibelleA">
+									</div>
+								</div>
+								<div class="col-md-10" ng-if="{{ o }}.id">
+									<div class="row">
+										<div class="col-md-1">
+											{{ fkey(f.AntenneId, o) }}
+										</div>
+										<div class="col-md-11">
+											{{ finput(f.LibelleA, 'obj', true) }}
+										</div>
+									</div>
 								</div>
 							</div>
-							<div class="row">
+							<div class="row" ng-if="show">
 								<div class="col-md-2">
 									{{ label("Section") }}
 								</div>
 								<div class="col-md-10">
-									{{ finput(f.LibelleS, o, true) }}
+									<div class="row">
+										<div class="col-md-1">
+											{{ fkey(f.SectionId, 'obj') }}
+										</div>
+										<div class="col-md-11">
+											{{ finput(f.LibelleS, 'obj', true) }}
+										</div>
+									</div>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-md-2">
 									{{ label("Discipline") }}
 								</div>
-								<div class="col-md-10">
-									{{ finput(f.LibelleD, o, true) }}
+								<div class="col-md-10" ng-if="!{{ o }}.DisciplineDisciplineId">
+									<div custom-select="a.id as a.CodeDiscipline+'  -  '+a.Libelle for a in getSelectData('CadrefDisciplineStore',$searchTerm)" 
+										 custom-select-options="{ 'async': true, 'filter':''}" 
+										 ng-model="obj.DisciplineDisciplineId" 
+										 class="form-control" 
+										 ng-title="obj.SectionSectionIdlabel+'.'+obj.DisciplineDisciplineIdlabel+'  -  '+obj.LibelleD">
+									</div>
+								</div>
+								<div class="col-md-10" ng-if="{{ o }}.DisciplineDisciplineId">
+									<div class="row">
+										<div class="col-md-1">
+											{{ fkey(f.DisciplineId, o) }}
+										</div>
+										<div class="col-md-11">
+											{{ finput(f.LibelleD, 'obj', true) }}
+										</div>
+									</div>
 								</div>
 							</div>
 							<div class="row" style="height:10px"></div>
-							{{ flinput(f.Niveau, o, false, '9', 'width:60px; text-transform:uppercase;') }}
-							{{ flinput(f.Libelle, o, false, '', 'text-transform:uppercase;') }}
+							{{ flinput(f.Niveau, o, false, 'd', 'width:40px') }}
+							{{ flinput(f.Libelle, o, false) }}
 							<div class="row" style="height:10px"></div>
-							<div class="row">
-								<div class="col-md-2">
-									{{ label("Inactif") }}
-								</div>
-								<div class="col-md-10">
-									{{ fboolean(f.Inactif, o, true) }}
-								</div>
-							</div>
 							<div class="row">
 								<div class="col-md-2">
 									{{ label("Description") }}
@@ -67,32 +96,31 @@
 									{{ ftext(f.Description, o) }}
 								</div>
 							</div>
-								
+
 						</div>
 						{# block right #}                    
 						<div class="col-md-5">
 						</div>
 					</div>
-					<div class="row">
+					<div class="row" ng-if="{{ o }}.id">
 						{# disciplines #}
 						<div class="col-md-12">
 							<section class="panel">
 								<div class="panel-body">
-									<ng-include src="'/{{ CurrentUrl }}/0/Classe/ListClasse.htm?children=1'" ng-if="show"></ng-include>
+									<ng-include src="'/{{ CurrentUrl }}/0/Classe/ListChildren.htm'" ng-if="show"></ng-include>
 								</div>
 							</section>
 						</div>
 					</div>
 				</div>
-				<div class="col-md-1">
-					<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="saveFicheCadref()">Enregistrer</button>
-					<a type="button" class="btn btn-warning cadref-btn-100" href="#/{{ CurrentMenu.Url }}">Annuler</a>
+				<div {% if Create %}class="col-md-2"{% else %}class="col-md-1"{% endif %}>
+					<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="{{ identifier }}modalSave()">Sauver</button>
+					<button type="button" class="btn btn-danger margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="delete(obj)">Supprimer</button>
+					<a type="button" class="btn btn-warning margin-inline cadref-btn-100" {% if Create %}data-dismiss="modal"{% else %}href="#/{{ CurrentMenu.Url }}"{% endif %}>Annuler</a>
 				</div>
-			</div>
-			<div class="modal-footer">
 			</div>
 		</div>
     </section>
 </div>
-{{ include(template_from_string(module('Systeme/Utils/Modal/Function?identifier='~identifier))) }}
+
 

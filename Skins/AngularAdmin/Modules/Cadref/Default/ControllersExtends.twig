@@ -1,17 +1,56 @@
 {% if not noExtend %}
+	app.controller('{{ identifier }}CtrlExtends', function($interval, $location, $compile, $timeout, $sce, $scope, $filter, $window, $rootScope, $routeParams, $http, 
+		{{ ident }}Store) {
+
+		// hook sur modalSave pour afficher la fiche crée
+		var currentUrl = $window.location.href;
+		$scope.{{ ident }}callbakSave = function(data) {
+			var url = currentUrl + '/' + data.id;					
+			$window.location.href = url;					
+		}
+		$scope.{{ ident }}saveExt  = $scope.{{ ident }}modalSave;
+		$scope.{{ ident }}modalSave = function() {
+			$scope.{{ ident }}saveExt($scope.{{ ident }}callbakSave);
+		}
+		
+		// efface le contenu du filtre
+		$scope.clearFilter = function() {
+			$scope.{{ ident }}.filter = '';
+			$('#search{{ ident }}').focus();
+		}
+	});
+
+
+	
 	app.controller('{{ identifier }}FicheCtrlExtends', function($interval, $location, $compile, $timeout, $sce, $scope, $filter, $window, $rootScope, $routeParams, $http, 
-		CadrefInscriptionStore, CadrefClasseStore, CadrefAdherentStore) {
-        var getObj = $interval(function(){
+		CadrefInscriptionStore, CadrefClasseStore, CadrefAdherentStore, CadrefEnseignantStore) {
+
+		var getObj = $interval(function(){
             if($scope.obj){
                 $interval.cancel(getObj);
 				{% if objecttype == 'Adherent' %}$scope.checkCertificat();{% endif %}
+				{% if objecttype == 'Section' %}$scope.sectionInfo();{% endif %}
 				{% if objecttype == 'Discipline' %}$scope.disciplineInfo();{% endif %}
 				{% if objecttype == 'Niveau' %}$scope.niveauInfo();{% endif %}
 				{% if objecttype == 'Classe' %}$scope.classeInfo();{% endif %}
             }
         },100,50);
-        
+
 		
+		// efface le contenu du filtre
+		$scope.clearFilter = function(child) {
+			$scope[child].filter = '';
+			$('#search'+child).focus();
+		}
+
+		$scope.optionsList = [
+  {id: 1,  label : "Javaxxxxxxxx xxxxxxxxxx"},
+  {id: 2,  label : "C xxxxxxxxxxx xxxxxxxxxxxx xxxxxxxx"},
+  {id: 3,  label : "C++ xxxxxxxxxxx xx " },
+  {id: 27,  label : "AngularJs"},
+  {id: 5,  label : "JavaScript"}
+];
+				
 		// appel de function kobeye avec retour objet
 		$scope.{{ identifier }}callMethod = function(obj, name, args, explodeArgs) {
 			if (args == undefined) args = [];
@@ -27,13 +66,6 @@
 			return $http.post('/{{ url }}/'+obj.id+'/Method.json',{"Func":JSON.stringify({{ identifier }}method)});
 		}
 
-		
-		// save fiche
-		$scope.saveFicheCadref = function() {
-            $scope.modalObj = $scope.obj;
-			$scope.modalSave();
-		}
-		
 		
 		{% if objecttype == 'Adherent' %}
 		// controleur de store
@@ -81,10 +113,17 @@
 			noEvent = false;
         });
 
+		// save fiche 
+		$scope.saveFicheCadref = function() {
+            $scope.modalObj = $scope.obj;
+			$scope.modalSave();
+		}
+		
+
 		// regularisation
 		$scope.regularisation = function() {
 			var o = $scope.obj;
-			var s = parseInt(o.Cotisation) + parseInt(o.Cours) - parseInt(o.Reglement) - parseInt(o.Differe) - parseInt(o.Regularisation);
+			var s = Number(o.Cotisation) + Number(o.Cours) - Number(o.Reglement) - Number(o.Differe) - Number(o.Regularisation);
 			o.Solde = s;
 		}
 		
@@ -325,7 +364,6 @@
 		$scope.diffPaye = function(lig) {
 			var reg = $scope.CadrefClasse.Diff.regl;
 			var r = reg[lig];
-			console.log(lig, reg, r[lig],'ccccccc');
 			if(Number(r.paye) != 0) {
 				if(r.mois == '' && r.user == '') {
 					if(lig == 0) r.mois = $filter('date')(new Date(), "MM");
@@ -347,8 +385,9 @@
 			for(var i = 0; i < 12; i++) {
 				if(!reg[i].encais) p += Number(reg[i].paye);
 			}
-			console.log(p, $scope.CadrefClasse.Diff.solde, $scope.obj.Solde, parseInt($scope.obj.Solde)-p);
-			$scope.CadrefClasse.Diff.solde = Number($scope.obj.Solde)-p;
+			var o = $scope.obj;
+			var s = Number(o.Cotisation) + Number(o.Cours) - Number(o.Reglement) - Number(o.Regularisation);
+			$scope.CadrefClasse.Diff.solde = s-p;
 		}
 		{% endif %}
 		
@@ -367,11 +406,22 @@
 		{% endif %}
 
 		
+		{% if objecttype == 'Section' %}
+		//--------------------------------------
+		// DISCIPLINE
+		//--------------------------------------		
+		$scope.sectionInfo = function() {
+			$scope.obj.LibelleS = $scope.obj.Libelle;
+		}
+		{% endif %}
+		
+		
 		{% if objecttype == 'Discipline' %}
 		//--------------------------------------
 		// DISCIPLINE
 		//--------------------------------------		
 		$scope.disciplineInfo = function() {
+			$scope.obj.LibelleD = $scope.obj.Libelle;
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo');
 			ajax.success(
 				function(data) {
@@ -391,13 +441,35 @@
 		// NIVEAU
 		//--------------------------------------		
 		$scope.niveauInfo = function() {
+			$scope.obj.LibelleN = $scope.obj.Libelle;
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo');
 			ajax.success(
 				function(data) {
-				console.log('xxxxxxxxxxxxxxxxx',data);
 					$scope.obj.LibelleA = data.data.LibelleA;
 					$scope.obj.LibelleS = data.data.LibelleS;
 					$scope.obj.LibelleD = data.data.LibelleD;
+				}
+			).error(
+				function() {
+					console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+				}
+			);
+		}
+		{% endif %}
+		
+		
+		{% if objecttype == 'Classe' %}
+		//--------------------------------------
+		// CLASSE
+		//--------------------------------------		
+		$scope.classeInfo = function() {
+			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo');
+			ajax.success(
+				function(data) {
+					$scope.obj.LibelleA = data.data.LibelleA;
+					$scope.obj.LibelleS = data.data.LibelleS;
+					$scope.obj.LibelleD = data.data.LibelleD;
+					$scope.obj.LibelleN = data.data.LibelleN;
 				}
 			).error(
 				function() {

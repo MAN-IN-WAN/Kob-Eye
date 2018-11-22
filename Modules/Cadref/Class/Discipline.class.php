@@ -2,8 +2,9 @@
 class Discipline extends genericClass {
 	
 	function Save() {
-		$p = $this->getParents('Section');
-		$this->Section = $p[0]->Section;
+		$id = $this->Id;
+		$p = $this->getOneParent('Section');
+		$this->Section = $p->Section;
 		$this->CodeDiscipline = "$this->Section.$this->Discipline";
 		parent::Save();
 		$sts[] = array($id ? 'edit' : 'add', 1, $this->Id, $this->Module, $this->ObjectType, '', '', null, null);

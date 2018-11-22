@@ -1,4 +1,6 @@
 <?php
+$vars['Annee'] = $GLOBALS['Systeme']->getRegVars('AnneeEnCours');
+
 $info = Info::getInfos($vars['Query']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
 //$o->setView();
@@ -29,6 +31,5 @@ $file = $o->isRecursiv() ? 'Tree' : 'List';
 $q = $info['Module'].'/'.$info['ObjectType'].'/';
 $p = getcwd().'/Skins/'.Sys::$Skin.'/Modules/'.$q.$file;
 $vars['listPath'] = file_exists($p.'.twig') ? $q.$file : 'Cadref/Default/'.$file;
-$vars['Annee'] = $GLOBALS['Systeme']->getRegVars('AnneeEnCours');
 
 ?>

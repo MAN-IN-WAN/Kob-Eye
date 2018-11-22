@@ -647,7 +647,7 @@
         $scope.{{ c.identifier }}export = function (obj){
             {{ c.identifier }}Store.export('default');
         }
-        $scope.{{ c.identifier }}modalSave = function (){
+        $scope.{{ c.identifier }}modalSave = function (callback){
             $('#modal-{{ c.identifier }} .modal-dialog').spin();
 
             console.log('save ',$scope.modalObj);
@@ -659,8 +659,11 @@
                     $scope.modalObj.warning = data.warning;
                     $scope.modalObj.errors = data.errors;
                     $scope.modalObj.infos = data.infos;
-                    if (!data.warning.length&&!data.success.length)
+                    if (!data.warning.length&&!data.success.length) {
                         $("#modal-{{ c.identifier }}").modal('toggle');
+						if(callback != undefined) callback(data);
+						
+					}
                 }else {
                     //gestion des erreurs
                     $scope.modalObj.errors = data.errors;

@@ -3,14 +3,13 @@ session_write_close();
 $vars['Annee'] = $GLOBALS['Systeme']->getRegVars('AnneeEnCours');
 $info = Info::getInfos($vars['Query']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
-$o->setView();
 $temp = $o->getElementsByAttribute('','',true);
 $fields = Array();
 foreach ($temp as $k=>$field){
     if($info['TypeSearch'] == 'Direct' && ($field['type'] == 'metak' || $field['type'] == 'metad' || $field['type'] == 'metat' || $field['name'] == 'ImgMeta'  )){
         continue;
     }
-    if (isset($field['query'])&&!empty($field['query'])){
+    if(isset($field['query'])&&!empty($field['query'])){
         $t = explode('::',$field["query"]);
         if (sizeof($t)==2)$t[2] = $t[1];
         $q = explode('/',$t[0],2);
@@ -21,11 +20,16 @@ foreach ($temp as $k=>$field){
         }
     }
     if(isset($field['help']) && $field['help']){
-        $field['helpLang'] = strtoupper("__".$info["Module"]."_".$info['ObjectType']."_".$vars['formfields'][$k]['name']."_HELP__");
+        $field['helpLang'] = strtoupper("__".$info["Module"]."_".$info['ObjectType']."_".$field['name']."_HELP__");
+    }
+    if($field['type']=='fkey'&&$field['card']=='short'){
+        $field['link'] = Sys::getMenu($field['objectModule'].'/'.$field['objectName']);
     }
 	$fields[$field['name']] = $field;
 }
+$fields['LibelleS'] = array('name'=>'LibelleS','type'=>'varchar','form'=>'1','fiche'=>'1');
 $vars['fields'] = $fields;
+
 
 $vars['functions'] = $o->getFunctions();
 $vars['fichefields'] = $o->getElementsByAttribute('fiche','',true);
