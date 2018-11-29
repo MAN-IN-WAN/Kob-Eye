@@ -179,7 +179,10 @@ class ParcInstanceWordpress extends Plugin implements ParcInstancePlugin {
         $hos = $this->_obj->getOneParent('Host');
         $srv = $hos->getOneParent('Server');
         $bdd = $hos->getOneChild('Bdd');
-        $mysqlsrv = $bdd->getOneParent('Server');
+        if (!$bdd){
+            $this->_obj->addError(array('Message'=>'Base de donnée introuvable'));
+            //return false;
+        }else $mysqlsrv = $bdd->getOneParent('Server');
         $conf = $srv->getFileContent('/home/'.$hos->NomLDAP.'/www/wp-config.php');
         if (!empty($conf)){
             $conf = preg_replace('#define\(\'DB_NAME\', \'(.*)\'\);#','define(\'DB_NAME\', \''.$bdd->Nom.'\');',$conf);
@@ -189,9 +192,22 @@ class ParcInstanceWordpress extends Plugin implements ParcInstancePlugin {
             $srv->putFileContent('/home/'.$hos->NomLDAP.'/www/wp-config.php',$conf);
 
             //reconfiguration de la base de donnée
-            $cmd = 'mysqldump -h db.maninwan.fr -u '.$hos->NomLDAP.' -p'.$hos->Password.' '.$bdd->Nom.' | sed -e "s/modele-wordpress.maninwan.fr/'.$hos->NomLDAP.'.maninwan.fr/g" > /home/'.$hos->NomLDAP.'/'.$bdd->Nom.'-rewiteconfig.sql && cat /home/'.$hos->NomLDAP.'/'.$bdd->Nom.'-rewiteconfig.sql | mysql -u '.$hos->NomLDAP.' -h db.maninwan.fr -p'.$hos->Password.' '.$bdd->Nom;
-            //echo $cmd;
-            $srv->remoteExec($cmd);
+            if ($bdd) {
+                $cmd = 'mysqldump -h db.maninwan.fr -u ' . $hos->NomLDAP . ' -p' . $hos->Password . ' ' . $bdd->Nom . ' | sed -e "s/modele-wordpress.maninwan.fr/' . $hos->NomLDAP . '.maninwan.fr/g" > /home/' . $hos->NomLDAP . '/' . $bdd->Nom . '-rewiteconfig.sql && cat /home/' . $hos->NomLDAP . '/' . $bdd->Nom . '-rewiteconfig.sql | mysql -u ' . $hos->NomLDAP . ' -h db.maninwan.fr -p' . $hos->Password . ' ' . $bdd->Nom;
+                //echo $cmd;
+                $srv->remoteExec($cmd);
+            }
+
+            //correction du .htaccess
+            $conf = $srv->getFileContent('/home/'.$hos->NomLDAP.'/www/.htaccess');
+            $conf = str_replace('RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]','#RewriteEngine On
+#RewriteCond %{HTTPS} off
+#RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]',$conf);
+            $srv->putFileContent('/home/'.$hos->NomLDAP.'/www/.htaccess',$conf);
+
+
 
             //modification du mot de passe
 /*            $db = new PDO('mysql:host=' . $mysqlsrv->InternalIP . ';dbname=' . $bdd->Nom, $mysqlsrv->SshUser, $mysqlsrv->SshPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));

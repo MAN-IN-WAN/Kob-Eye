@@ -262,6 +262,7 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
         }
         $this->NomLDAP = strtolower($this->NomLDAP);
         $this->NomLDAP = Utils::CheckSyntaxe($this->NomLDAP);
+        $this->NomLDAP = substr($this->NomLDAP,0,32);
         $old = Sys::getOneData('Parc','Host/'.$this->Id);
         //test de modification du ApacheServerName
         if ($this->Id&&$old->Nom!=$this->Nom){

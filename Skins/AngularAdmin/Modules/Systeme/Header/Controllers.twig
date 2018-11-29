@@ -625,14 +625,49 @@
         /**
         * PREDEFINED FILTERS
         */
+        //si déjà définie
+        //si définition par le lien
         if ($route.current.params.filter){
             //définition du currentoptionfilter
             $scope.currentOptionFilter = $route.current.params.filter;
+            //simulation d'un click sur le filtre
+            $timeout(function() {
+                angular.element(document.querySelector('#{{ c.identifier }}-'+$scope.currentOptionFilter)).click();
+            },0);
+        }else{
+            {{ c.identifier }}Store.resetFilters();
         }
+
+        //mise à jour automatique des compte de filtre sur event push
+        $rootScope.$on(' {{ c.identifier }}Store',function (ev,data){
+            $scope.{{ c.identifier }}updateCustomFilters();
+        });
+
+        //fonction de mise à jour des compteurs
+        {% for filter in c.filters %}
+            $scope.filter{{ filter.code }} = 0;
+        {% endfor %}
+        $scope.{{ c.identifier }}updateCustomFilters = function () {
+           {% for filter in c.filters %}
+               {{ c.identifier }}Store.getCount('{{ filter.filter }}').then(function (cnt) {
+                $scope.filter{{ filter.code }} = cnt;
+               });
+           {% endfor %}
+        }
+
+        //mise à jour des compteurs à l'affichage
+        $timeout(function() {
+            $scope.{{ c.identifier }}updateCustomFilters();
+        },0);
+
         $scope.{{ c.identifier }}setOptionsFilters = function (filter, context){
             if(context == undefined) context = 'default';
             {{ c.identifier }}Store.setOptionsFilters(filter,context,false);
             {{ c.identifier }}Store.getData(1,context);
+        }
+        $scope.{{ c.identifier }}refresh = function (context){
+            {{ c.identifier }}Store.refresh(context);
+            $scope.{{ c.identifier }}updateCustomFilters();
         }
         $scope.{{ c.identifier }}add = function (){
             console.log('add {{ c.objecttype }}');

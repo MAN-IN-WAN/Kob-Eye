@@ -72,6 +72,7 @@ class Incident extends genericClass  {
             $Mail -> From("noreply@ocean-nimes.com");
             $Mail -> ReplyTo("noreply@ocean-nimes.com");
             $Mail -> To($mailRecipient);
+            $Mail -> Bcc("enguerrand@abtel.fr;myriam790@gmail.com");
             if($typo && isset($typo->Mail) && !empty($typo->Mail))
                 $Mail -> Cc($typo->Mail);
 
@@ -83,7 +84,9 @@ class Incident extends genericClass  {
             $bloc -> init($Pr);
             $bloc -> generate($Pr);
             $Mail -> Body($bloc -> Affich());
-            $Mail -> Send();
+            if (!$Mail -> Send()) {
+                $this->addError(array('Message'=>'Impossible d\'envoyer le mail.'));
+            }
         }
         if($newState){
             $state = Sys::getOneData('IncidentClient','ParametresEtat/'.$p['Id']);
@@ -96,6 +99,7 @@ class Incident extends genericClass  {
             $Mail->Subject("Changement de status Incident ".Sys::$domain);
             $Mail -> From("noreply@ocean-nimes.com");
             $Mail -> ReplyTo("noreply@ocean-nimes.com");
+            $Mail -> Bcc("enguerrand@abtel.fr;myriam790@gmail.com");
             $Mail -> To($mailRecipient);
             $Mail -> Cc('gcandella@abtel.fr');
             $bloc = new Bloc();
@@ -105,7 +109,9 @@ class Incident extends genericClass  {
             $bloc -> init($Pr);
             $bloc -> generate($Pr);
             $Mail -> Body($bloc -> Affich());
-            $Mail -> Send();
+            if (!$Mail -> Send()) {
+                $this->addError(array('Message'=>'Impossible d\'envoyer le mail.'));
+            }
         }
 
 

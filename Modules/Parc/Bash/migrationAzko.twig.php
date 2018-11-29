@@ -5,11 +5,10 @@ $bc = new BashColors();
 //connexion ancien serveur mysql
 $db = new PDO('mysql:host=192.168.100.50;dbname=parc', 'root', 'zH34Y6u5', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$serveur='ws2.eng.systems';
+$serveur='ws1.eng.systems';
 /*$csv = "
 acei;acei;acei
 acrotaille;acrotaille;acrotaille
-ah-avocats;ah-avocats;ah-avocats
 aimetti-auteur;aimetti-auteur;aimetti-auteur
 ama;rgsystem;ama+wp_amaassurances+wp_amaassurancesblog
 amisdufondsmedar;amisdufondsmedar;amisdufondsmedar
@@ -57,25 +56,19 @@ expert-comptable;expert-compt;expert-comptable
 geodev;geodev;geodev
 grandcreme;grandcreme;grandcreme+grandcreme_pydio
 groupevet;groupevet;groupevet
-hconsulting;hconsulting;hconsulting
-hhealth-group;hhealth-grou;hhealth-group
 hydrosol;hydrosol;hydrosol
 idh-montpellier;idh-montpell;idh-montpellier
 insightcom;insightcom;insightcom
 intrasens;intrasens;intrasens
 iplusmedia.eu;iplusmedia.eu;iplusmedia.eu
-jsaavocats;jsaavocats;jsaavocats
 labanane;labanane;labanane
 laboratoire-val;laboratoire-;laboratoire-val
 lace-restaurant;lace-restaurant.fr;lace-restaurant
 laprimavera;laprimavera-;laprimavera
-lemasdemestre;lemasdemestr;lemasdemestre
 lepasseurdemots;lepasseurdem;lepasseurdemots
 maf82;montaubanath;maf82
 maformation;maformation;maformation
 mara-pro;mara-pro;mara-pro
-mcsini;mcsini;mcsini
-mediation-consommation;mediationmon;mediationconso
 mediationmontpellier;mediationmon;mediationmontpel
 mldurand;mldurand;mldurand
 mobilygo;mobilygo;mobilygo+mobilygo_2014
@@ -88,7 +81,6 @@ perseides-courta;perseides-co;perseides-courta
 pianoconcertino;pianoconcert;pianoconcertino
 pizzajerome;pizzajerome;pizzajerome
 privilegeberricar;privilegeber;privilegeberrica
-psychotherapieintegrative;psychotherap;psychotherapiein
 psychotherapiesatm;christinebuo;psychotherapiesat
 pushrdv;pushrdv;pushrdv
 quentinmultiservices;quentinmultiservices;quentinmultiserv
@@ -115,7 +107,7 @@ veterinaire-veto;veterinaire-vetocia;veterinaire-veto
 vmid;vmid;vmid";
 */
 $csv= "
-distillerie;distillerie;distillerie
+psychotherapieintegrative;psychotherap;psychotherapiein
 ";
 $result = explode(PHP_EOL,$csv);
 $total = sizeof($result);
@@ -186,9 +178,13 @@ foreach ($result as $org){
             unset($apache->LdapDN);
             unset($apache->LdapTms);
             $apache->Save();
+        }else{
+            $apache->SslCertificate = $ap['SslCertificate'];
+            $apache->SslCertificateKey = $ap['SslCertificateKey'];
+            $apache->SslExpiration = $ap['SslExpiration'];
+            $apache->Save();
         }
     }
-
     //récupération des accès ftps
     $query = "SELECT * FROM `parc-Parc-Host` as hs LEFT JOIN `parc-Parc-Ftpuser` as fu ON hs.Id = fu.HostId WHERE hs.Nom='".$host."';";
     $q = $db->query($query);
@@ -225,8 +221,9 @@ foreach ($result as $org){
             echo $bc->getColoredString("      -> SQL DUMP ... ", 'red');
             //importation de la base de donnée
             if ($mysqlsrv=='sql2.eng.systems'){
-                $cmd = 'mysqldump -h 192.168.100.53 -u root -p"zH34Y6u5;" ' . $bdd . ' | sed -e "s/MyISAM/InnoDB/i"  |  mysql -h 192.168.160.5 -u root -pzH34Y6u5 ' . $bdd;
-            }else $cmd = 'mysqldump -h 192.168.100.50 -u root -pzH34Y6u5 ' . $bdd . ' | sed -e "s/MyISAM/InnoDB/i"  |  mysql -h 192.168.160.5 -u root -pzH34Y6u5 ' . $bdd;
+                $cmd = 'mysqldump -h 192.168.100.53 -u root -p"zH34Y6u5;" ' . $bdd . ' | sed -e "s/^UNLOCK.*\$//"   | sed -e "s/^LOCK TABLE.*\$//"  | sed -e "s/MyISAM/InnoDB/i"  |  mysql -h 192.168.160.5 -u root -pzH34Y6u5 ' . $bdd;
+            }else $cmd = 'mysqldump -h 192.168.100.50 -u root -pzH34Y6u5 ' . $bdd . '  | sed -e "s/^UNLOCK.*\$//"   | sed -e "s/^LOCK TABLE.*\$//" | sed -e "s/MyISAM/InnoDB/i"  |  mysql -h 192.168.160.5 -u root -pzH34Y6u5 ' . $bdd;
+            echo $cmd."\n";
             exec($cmd);
             echo $bc->getColoredString(" OK " . "\n", 'green');
             $base->Save();

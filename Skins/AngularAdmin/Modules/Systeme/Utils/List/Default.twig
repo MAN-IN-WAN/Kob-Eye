@@ -13,7 +13,7 @@
         <div class="input-group list-search">
             <input type="text" class="form-control" name="{{ identifier }}query" ng-model="{{ identifier }}.filter" placeholder="Recherche..." >
             <span class="input-group-btn">
-                <a href="javascript: void(0);" class="btn btn-success" ng-click="{{ identifier }}.store.refresh('{{ context }}')">
+                <a href="javascript: void(0);" class="btn btn-success" ng-click="{{ identifier }}refresh('{{ context }}')">
                     Rafraîchir
                 </a>
                 {% if operation.add %}
@@ -277,7 +277,7 @@
             {% elseif field.type == "extlink" %}
                 <a class="btn btn-info btn-xs" href="/{{ Module }}/{{ ObjectType }}/{[{ item.id }]}/callback{{ field.name }}.htm" target="_blank">{{ field.listDescr }}</a>
             {% elseif field.type == "file" %}
-                <a  class="fileLink" href="{[{ item.{{ field.name }} }]}" target="_blank" >Voir le fichier</a>
+                <a  class="fileLink btn btn-danger btn-small" href="{[{ item.{{ field.name }} }]}" target="_blank" >Voir le fichier</a>
             {% elseif field.type == "date" %}
                 <span class="label">{[{ item.{{ field.name }} | date:'dd/MM/yyyy' }]}</span>
             {% elseif field.type == "datetime" %}
@@ -292,7 +292,7 @@
                 {% if field.link %}
                     <a class="btn btn-secondary btn-xs" href="#/{{ field.link }}/{[{ item.{{ field.objectName }}{{ field.name }} }]}" ng-if="item.{{ field.objectName }}{{ field.name }}">{[{ item.{{ field.objectName }}{{ field.name }}label }]}</a>
                 {% else  %}
-                    <span class="btn btn-secondary btn-xs" ng-if="item.{{ field.objectName }}{{ field.name }}">{[{ item.{{ field.objectName }}{{ field.name }}label }]}</span>
+                    <span ng-if="item.{{ field.objectName }}{{ field.name }}">{[{ item.{{ field.objectName }}{{ field.name }}label }]}</span>
                 {% endif %}
                 <span ng-if="!item.{{ field.objectName }}{{ field.name }}"> - </span>
             {% elseif field.type == "rkey" and field.card == "short" %}

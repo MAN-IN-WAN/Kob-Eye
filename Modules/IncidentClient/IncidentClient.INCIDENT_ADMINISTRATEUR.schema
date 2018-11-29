@@ -11,26 +11,6 @@
         <PROPERTIES type="Int"  >UserId</PROPERTIES>
     </OBJECTCLASS>
 
-    <OBJECTCLASS title="Client" driver="mysql" AccessPoint="1" master="1" Description="Client"  Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png" Class="Modules/IncidentClient/Class/Client.class.php">
-        <PROPERTIES searchOrder="1"		description="Société"      					type="varchar" 	length="100" 	obligatoire="0"		listDescr="Societé" 			form="1" 	list="1"  fiche="1">Societe</PROPERTIES>
-        <PROPERTIES searchOrder="2" 	description="Ce client est Actif"			type="boolean"  							 		listDescr="Actif" 				form="2" 	list="2"  fiche="2">Actif</PROPERTIES>
-        <PROPERTIES searchOrder="3" 	description="CodeClient" 					type="varchar"  length="100" 	obligatoire="1" 	listDescr="Code Client" 		form="3" 	list="3"  fiche="3">CodeClient</PROPERTIES>
-        <PROPERTIES 					description="Mot de passe" 					type="varchar" 	length="100" 	obligatoire="1" 	listDescr="Mot de passe" 		form="4" 			  fiche="4">Pass</PROPERTIES>
-        <PROPERTIES 			  		description="Logo du client" 				type="file"  					obligatoire="0"		listDescr="Logo" 				form="5" 	          fiche="5" >Logo</PROPERTIES>
-        <PROPERTIES 					description="Adresse"    					type="text"     				obligatoire="0"		listDescr="Adresse" 			form="6" 			  fiche="6" >Adresse</PROPERTIES>
-        <PROPERTIES 					description="CodePostal" 					type="varchar" 	length="10" 	obligatoire="0" 	listDescr="Code Postal" 		form="7" 			  fiche="7" >CodePostal</PROPERTIES>
-        <PROPERTIES 					description="Ville"     					type="varchar" 	length="100" 	obligatoire="0" 	listDescr="Ville" 				form="8" 	          fiche="8">Ville</PROPERTIES>
-        <PROPERTIES searchOrder="4"  	description="Email et login"    			type="varchar" 	length="200" 	obligatoire="0" 	listDescr="Mail du client" 		form="9" 	list="4"  fiche="9">Mail</PROPERTIES>
-        <PROPERTIES 					description="Téléphone" 					type="varchar" 	length="20" 	obligatoire="1" 	listDescr="Téléphone" 			form="10" 	list="5"  fiche="10">Tel</PROPERTIES>
-        <PROPERTIES 					description="Portable"  					type="varchar" 	length="20" 	obligatoire="0" 	listDescr="Mobile" 				form="11" 	list="6"  fiche="11">Portable</PROPERTIES>
-        <PROPERTIES 					description="Fax" 							type="varchar" 	length="20" 	obligatoire="0" 	listDescr="Fax" 				form="12" 			  fiche="12" >Fax</PROPERTIES>
-        <PROPERTIES values="Madame,Monsieur" description="Civilite"   		    	type="varchar" 	 				obligatoire="0" 	listDescr="Civilite" 			form="13"	 		  fiche="13" >Civilite</PROPERTIES>
-        <PROPERTIES                  	description="Nom"        					type="varchar" 	length="100" 	obligatoire="0" 	listDescr="Nom" 				form="14" 			  fiche="14" >Nom</PROPERTIES>
-        <PROPERTIES 					description="Prénom"     					type="varchar" 	length="100" 	obligatoire="0" 	listDescr="Prenom" 				form="15" 			  fiche="15" >Prenom</PROPERTIES>
-        <PROPERTIES 					description="Date de dernière connexion" 	type="date" 					obligatoire="0" 	listDescr="Derniere Connexion" 	>ConnexionLe</PROPERTIES>
-        <PROPERTIES 																type="Int"  >UserId</PROPERTIES>
-    </OBJECTCLASS>
-
     <OBJECTCLASS title="Incident" logEvent="1" driver="mysql" order="Ordre" orderType="ASC" AccessPoint="1" Description="Incident"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png"  Class="Modules/IncidentClient/Class/Incident.class.php">
         <FILTER name="Tous"></FILTER>
         <FILTER name="Incidents en cours" color="danger" code="encours"><![CDATA[ParametresEtatId=1]]></FILTER>

@@ -12,7 +12,7 @@
         <PROPERTIES Order="17" type="Int">GroupId</PROPERTIES>
     </OBJECTCLASS>
     <OBJECTCLASS title="Contact" driver="mysql" AccessPoint="1" Description="Contact" Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png" Class="Modules/IncidentClient/Class/Contact.class.php">
-        <PROPERTIES Order="5" searchOrder="3" description="Email et login" type="varchar" length="200" obligatoire="0" listDescr="Mail du client" form="6" list="3" fiche="5">Mail</PROPERTIES>
+        <PROPERTIES Order="1" searchOrder="3" description="Email et login" type="varchar" length="200" obligatoire="0" listDescr="Mail du client" form="1" list="3" fiche="5">Mail</PROPERTIES>
         <PROPERTIES Order="6" description="Mot de passe" type="varchar" length="100" obligatoire="1" listDescr="Mot de passe" form="1" fiche="6">Pass</PROPERTIES>
         <PROPERTIES Order="7" values="Madame,Monsieur" description="Civilite" type="varchar" obligatoire="0" listDescr="Civilite" form="4" fiche="7">Civilite</PROPERTIES>
         <PROPERTIES Order="8" searchOrder="4" description="Nom" type="varchar" length="100" obligatoire="0" listDescr="Nom" form="5" fiche="8">Nom</PROPERTIES>
@@ -23,11 +23,12 @@
         <PROPERTIES Order="17" type="Int">UserId</PROPERTIES>
         <FKEY card="0,1" data="Client,Id" description="Client" list="1" fiche="1">ClientId</FKEY>
     </OBJECTCLASS>
-    <OBJECTCLASS title="Technicien" driver="mysql" AccessPoint="1" master="0" Description="Technicien" Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png">
+    <OBJECTCLASS title="Technicien" driver="mysql" AccessPoint="1" master="0" Description="Technicien" Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png" Class="Modules/IncidentClient/Class/Technicien.class.php">
         <PROPERTIES Order="1" description="Code" type="varchar" length="100" obligatoire="0" listDescr="Code Technicien" form="1" list="1" fiche="1">CodeTechnicien</PROPERTIES>
         <PROPERTIES Order="14" description="Société" searchOrder="3" type="varchar" length="100" listDescr="Societé" form="1" list="1" fiche="1">Societe</PROPERTIES>
         <PROPERTIES Order="5" description="Nom" searchOrder="1" type="varchar" length="100" obligatoire="1" listDescr="Nom" form="1" fiche="1">Nom</PROPERTIES>
-        <PROPERTIES Order="3" description="Email" searchOrder="2" type="varchar" length="200" obligatoire="1" listDescr="Mail du client" form="1" list="1" fiche="1">Mail</PROPERTIES>
+        <PROPERTIES Order="1" searchOrder="3" description="Email et login" type="varchar" length="200" obligatoire="1" unique="1" listDescr="Mail du client" form="1" list="3" fiche="5">Mail</PROPERTIES>
+        <PROPERTIES Order="6" description="Mot de passe" type="varchar" length="100" obligatoire="1" listDescr="Mot de passe" form="1" fiche="6">Pass</PROPERTIES>
         <PROPERTIES Order="6" description="Prénom" type="varchar" length="100" obligatoire="1" listDescr="Prenom" form="1" fiche="1">Prenom</PROPERTIES>
         <PROPERTIES Order="11" description="Téléphone" type="varchar" length="20" obligatoire="1" listDescr="Téléphone" form="1" list="1" fiche="1">Tel</PROPERTIES>
         <PROPERTIES Order="12" description="Portable" type="varchar" length="20" listDescr="Mobile" form="1" list="1" fiche="1">Portable</PROPERTIES>
@@ -70,20 +71,20 @@
         <FKEY card="0,1" searchOrder="2" data="Incident,Id" 				description="Incident" 					listDescr="Incident"			 list="1"  fiche="1"
                                                                       hasRole="INCIDENT_TECHNICIEN, INCIDENT_ADMINISTRATEUR"													>IncidentId</FKEY>
     </OBJECTCLASS>-->
-    <OBJECTCLASS title="Donnees" driver="mysql" Description="Données liées" Operations="add,edit,delete">
+    <OBJECTCLASS title="Donnees" driver="mysql" Description="Document attaché" Operations="add,edit,delete">
         <PROPERTIES type="varchar" searchOrder="1" listDescr="Titre Fichier" list="1" form="1" fiche="1">Titre</PROPERTIES>
         <PROPERTIES type="file" list="2" form="1" listDescr="Fichier" fiche="1">Fichier</PROPERTIES>
         <!--<FKEY card="0,n" data="Rapport,Id" >RapportId</FKEY>-->
-        <FKEY card="0,n" data="Incident,Id">IncidentId</FKEY>
+        <FKEY card="1,1" data="Incident,Id">IncidentId</FKEY>
     </OBJECTCLASS>
 
     <OBJECTCLASS title="DocumentClient" driver="mysql" Description="DocumentClient" Dico="1">
         <PROPERTIES type="varchar" searchOrder="1" listDescr="Titre Fichier" list="1" form="1" fiche="1">Titre</PROPERTIES>
         <PROPERTIES type="file" auto="1" list="2" form="1" listDescr="Fichier" fiche="1">Fichier</PROPERTIES>
-        <FKEY card="1,1" data="Client,Id">ClientId</FKEY>
+        <FKEY card="0,1" data="Client,Id">ClientId</FKEY>
     </OBJECTCLASS>
 
-    <OBJECTCLASS title="DocumentCommun" driver="mysql" Description="Document pour tou" AccessPoint="1">
+    <OBJECTCLASS title="DocumentCommun" driver="mysql" Description="Document pour tou" Dico="1">
         <PROPERTIES type="varchar" searchOrder="1" listDescr="Titre Fichier" list="1" form="1" fiche="1">Titre</PROPERTIES>
         <PROPERTIES type="file" auto="1" list="2" form="1" listDescr="Fichier" fiche="1">Fichier</PROPERTIES>
     </OBJECTCLASS>
