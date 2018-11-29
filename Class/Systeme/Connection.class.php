@@ -327,6 +327,13 @@ class Connection extends Root{
 		//On enregistre le numero de session
 		Sys::$Session->Session = $this->SessId;
 		session_id($this->SessId);
+/*		if($_SERVER['REMOTE_ADDR'] == '185.71.149.9'){
+            ob_start();
+            debug_print_backtrace();
+            $data = ob_get_clean();
+            file_put_contents('debugSessions',$data,8);
+        }*/
+
 		session_start();
 	}
 	//Chargement des variables de la session prive
