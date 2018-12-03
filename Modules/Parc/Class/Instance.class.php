@@ -75,7 +75,7 @@ class Instance extends genericClass{
         //creation du nom temporaire
         if (empty($this->InstanceNom))
             $this->InstanceNom = substr('instance-'.Instance::checkName($this->Nom),0,32);
-        else $this->InstanceNom = substr($this->InstanceNom,0,16);
+        else $this->InstanceNom = substr($this->InstanceNom,0,32);
 
         //Vérification du mot de passe
         if (empty($this->Password)){
@@ -500,6 +500,18 @@ class Instance extends genericClass{
 
     public function createApache($ssl=0,$proxycache=0){
         $host = $this->getOneParent('Host');
+        if(!$host){
+            $pars = array();
+            foreach ($this->Parents as $p){
+                if($p['Titre'] == 'Host'){
+                    $pa = Sys::getOneData('Parc','Host/'.$p['Id'],0,1,null,null,null,null,true);
+                    $pars[] = $pa;
+                }
+
+            }
+            $host = $pars[0];
+        }
+
 
         $apache = genericClass::createInstance('Parc','Apache');
         $apache->Ssl = $ssl;

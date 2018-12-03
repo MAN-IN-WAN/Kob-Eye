@@ -433,7 +433,18 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
      * @return    void
      */
     public function Delete($task = null){
-        if(!$task)$this->addError(Array("Message" => "Impossible de lance la supression, aucuné tâche à laquelle rattacher cette activité"));
+        if(!$task){
+           $task = genericClass::createInstance('Systeme','Tache');
+            $task->Type = 'Fonction';
+            $task->Nom = 'Suppression de l\'Host '.$this->Id;
+            $task->TaskModule = 'Parc';
+            $task->TaskObject = 'Host';
+            $task->TaskType = 'delete';
+            $task->TaskCode = 'HOST_DELETE';
+            $task->Demarre = true;
+            $task->TaskFunction = 'Delete';
+            $task->Save();
+        }
         $act = $task->createActivity('Suppression de l\'hébergement '.$this->getFirstSearchOrder());
         //suppression des apaches
         $aps = $this->getChildren('Apache');

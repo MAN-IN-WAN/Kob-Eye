@@ -24,12 +24,12 @@
             </label>
             <div class="navigation">
                 <ul class="navigation-menu">
-                    <li class="navigation-item"><a href="#home">Accueil</a></li>
-                    <li class="navigation-item"><a href="#about">A propos</a></li>
+                    <li class="navigation-item"><a href="#home" [IF [!Instance::CouleurMenu!]!=!]style="color:[!Instance::CouleurMenu!];"[/IF]>Accueil</a></li>
+                    <li class="navigation-item"><a href="#about" [IF [!Instance::CouleurMenu!]!=!]style="color:[!Instance::CouleurMenu!];"[/IF]>A propos</a></li>
                     [IF [!Instance::Adresse!]]
-                    <li class="navigation-item"><a href="#maps">Rencontrez-nous</a></li>
+                    <li class="navigation-item"><a href="#maps" [IF [!Instance::CouleurMenu!]!=!]style="color:[!Instance::CouleurMenu!];"[/IF]>Rencontrez-nous</a></li>
                     [/IF]
-                    <li class="navigation-item"><a href="#contact">Contactez-nous</a></li>
+                    <li class="navigation-item"><a href="#contact" [IF [!Instance::CouleurMenu!]!=!]style="color:[!Instance::CouleurMenu!];"[/IF]>Contactez-nous</a></li>
                 </ul>
             </div>
         </div>
@@ -56,8 +56,20 @@
 <div class="animate-block feature-block contact-feature-block">
     <div class="feature-block-inner container">
         <div class="text-center">
-            <h2 class="feature-block-heading">Contactez-nous, nous étudierons vos besoins et vous proposerons la solution la plus efficace pour répondre à vos besoins.</h2>
-            <a class="button button-primary" href="#contact" style="background-color: [!Instance::Couleur1!];">Contactez-nous</a>
+            <h2 class="feature-block-heading">
+                [IF [!Instance::PhraseContact!]!=]
+                    [!Instance::PhraseContact!]
+                [ELSE]
+                    Contactez-nous, nous étudierons vos besoins et vous proposerons la solution la plus efficace pour répondre à vos besoins.
+                [/IF]
+            </h2>
+            <a class="button button-primary" href="#contact" style="background-color: [!Instance::Couleur1!];">
+                [IF [!Instance::TexteBoutonContact!]!=]
+                    [!Instance::TexteBoutonContact!]
+                [ELSE]
+                    Contactez-nous
+                [/IF]
+            </a>
         </div>
     </div>
 </div>
@@ -81,19 +93,23 @@
 </div>
 [/IF]
 
-<div id="contact" class="animate-block content-block contact-block" style="border-color:[IF [!Instance::Couleur2!]][!Instance::Couleur2!][ELSE][!Instance::Couleur1!][/IF]; [IF [!Instance::Image!]]background-image:url([!Instance::Image!]);[/IF]">
+<div id="contact" class="animate-block content-block contact-block" style="border-color:[IF [!Instance::Couleur2!]][!Instance::Couleur2!][ELSE][!Instance::Couleur1!][/IF]; [IF [!Instance::Image!]]background-image:url([!Instance::Image!]);[/IF] [IF [!Instance::CouleurMenu!]!=!]color:[!Instance::CouleurMenu!];[/IF]">
     <div class="contact-block-inner container">
         <div class="clear">
             <div class="contact-block-content col-6-tablet">
                 <h2 class="h2 uppercase" style="color: [!Instance::Couleur1!];">[!Instance::Nom!]</h2>
                 <p>
-                    Merci de l'intéret que vous portez à notre société. Si vous avez des questions, besoins d'informations ou encore faire une demande de rappel, n'hésitez pas à utiliser le formulaire de contact suivant.
+                    [IF [!Instance::PhraseContact2!]!=]
+                        [!Instance::PhraseContact2!]
+                    [ELSE]
+                        Merci de l'intéret que vous portez à notre société. Si vous avez des questions, besoins d'informations ou encore faire une demande de rappel, n'hésitez pas à utiliser le formulaire de contact suivant.
+                    [/IF]
                 </p>
                 <ul class="contact-list">
                     [IF [!Instance::Adresse!]]
                     <li>
                         <p class="contact-infos">
-                            <span class="icon contact-icon contact-icon-location" style="color: [!Instance::Couleur1!];"></span>
+                            <span class="icon coPhraseContact2ntact-icon contact-icon-location" style="color: [!Instance::Couleur1!];"></span>
                             [!Instance::Adresse!]
                         </p>
                     </li>

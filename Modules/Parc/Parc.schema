@@ -519,6 +519,13 @@
             <PROPERTIES type="varchar" form="8" fiche="1" description="Adresse pour carte Maps">Adresse</PROPERTIES>
             <FKEY card="0,1" module="Systeme" data="Site,Id" description="Site" listDescr="Site">SiteId</FKEY>
         </CATEGORY>
+		<CATEGORY title="Advanced">
+			<PROPERTIES type="varchar" form="20" fiche="20" description="Remplacement h2 contact" >PhraseContact</PROPERTIES>
+			<PROPERTIES type="varchar" form="21" fiche="21" description="Remplacement phrase contact" >PhraseContact2</PROPERTIES>
+			<PROPERTIES type="varchar" form="22" fiche="22" description="Texte du bouton de contact" >TexteBoutonContact</PROPERTIES>
+			<PROPERTIES type="color" form="23" fiche="23" description="Couleur du menu" >CouleurMenu</PROPERTIES>
+			<PROPERTIES type="color" form="24" fiche="24" description="Couleur du texte du pavé de contact" >CouleurTexteContact</PROPERTIES>
+		</CATEGORY>
 		<FKEY card="0,1" data="Domain,Id" description="Domaine(s)" list="1" form="20" fiche="1" listDescr="Domaine">DomainId</FKEY>
 		<FKEY card="0,n" data="Host,Id" description="Hébergement" >HostId</FKEY>
         <FKEY card="0,n" data="Server,Id" description="Serveur SQL" filter="SQL=1" listDescr="Serveur SQL">ServerId</FKEY>
