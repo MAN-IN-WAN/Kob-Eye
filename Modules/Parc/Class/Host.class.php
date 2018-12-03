@@ -434,16 +434,18 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
      */
     public function Delete($task = null){
         if(!$task){
-           $task = genericClass::createInstance('Systeme','Tache');
-            $task->Type = 'Fonction';
-            $task->Nom = 'Suppression de l\'Host '.$this->Id;
+            //creatio nde la tache
+            $task = genericClass::createInstance('Systeme', 'Tache');
+            $task->Type = 'Manuel';
+            $task->Nom = 'Suppression de l\'instance '.$this->Nom;
             $task->TaskModule = 'Parc';
-            $task->TaskObject = 'Host';
-            $task->TaskType = 'delete';
-            $task->TaskCode = 'HOST_DELETE';
+            $task->TaskObject = 'Instance';
+            $task->TaskType = 'update';
+            $task->TaskCode = 'INSTANCE_DELETE';
             $task->Demarre = true;
-            $task->TaskFunction = 'Delete';
+            $task->TaskFunction = '';
             $task->Save();
+
         }
         $act = $task->createActivity('Suppression de l\'hébergement '.$this->getFirstSearchOrder());
         //suppression des apaches
@@ -495,6 +497,8 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
         parent::Delete();
         $act->addDetails('Suppression terminée avec succès');
         $act->Terminate(true);
+        $task->Termine = true;
+        $task->Save();
         return true;
     }
 
@@ -556,7 +560,7 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
      * pour le cas d'une utilisation ultérieure
      * @return	L'objet Kob-Eye
      */
-    private function getInfra() {
+    public function getInfra() {
         if(!is_object($this->_KEInfra)) {
             $this->_KEInfra = $this->getOneParent('Infra');
             if(!is_object($this->_KEInfra)) {

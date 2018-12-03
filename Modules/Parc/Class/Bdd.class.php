@@ -15,6 +15,11 @@ class Bdd extends genericClass {
         if (!$serv) {
 
             $host = Sys::getOneData('Parc','Host/Bdd/'.$this->Id,null,null,null,null,null, null,true);
+            if (!$host){
+                $this->addError(array('Message'=>'Impossible de trouver un hote associé'));
+                parent::Delete();
+                return false;
+            }
             $infra = $host->getInfra();
             $pref = '';
             if($infra)
@@ -83,7 +88,8 @@ class Bdd extends genericClass {
         if ($this->removeFromDatabase($silent))
             parent::Delete();
         else {
-            //$this->AddError(Array("Message"=> ""));
+            //$this->AddError(Array("Message"=> "Impossible de supprimer la base de donnée"));
+            parent::Delete();
             return false;
         }
         return true;
@@ -134,7 +140,7 @@ class Bdd extends genericClass {
         $chaine = str_replace("?", "", $chaine);
         $chaine = str_replace("!", "", $chaine);
         //$chaine = str_replace(".", "", $chaine);
-        $chaine = preg_replace('`[\,\ \(\)\+\'\/\:_\;]`', '-', trim($chaine));
+        $chaine = preg_replace('`[\,\ \(\)\+\'\/\:\;]`', '-', trim($chaine));
         $chaine=strtr($chaine,utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ?"),"aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynn-");
         $chaine = preg_replace('`[-]+`', '-', trim($chaine));
         $chaine =  utf8_encode($chaine);

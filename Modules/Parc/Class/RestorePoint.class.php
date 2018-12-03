@@ -74,7 +74,7 @@ class RestorePoint extends genericClass{
             //Restauration des bases des données
             foreach ($bdds as $bdd) {
                 $act = $task->createActivity('Restauration base de donnée '.$bdd->Nom, 'Info', $task);
-                $cmd = 'cd /home/' . $host->NomLDAP . '/ && mysql -h db.maninwan.fr -u ' . $host->NomLDAP . ' -p' . $host->Password . ' -e "DROP DATABASE \`' . $bdd->Nom . '\`;" && mysql -h db.maninwan.fr -u ' . $host->NomLDAP . ' -p' . $host->Password . ' -e "CREATE DATABASE \`' . $bdd->Nom . '\`;" && mysql -h db.maninwan.fr -u ' . $host->NomLDAP . ' -p' . $host->Password . ' ' . $bdd->Nom . ' < sql/'.$bdd->Nom.'-'.$this->Identifiant.'.sql';
+                $cmd = 'cd /home/' . $host->NomLDAP . '/ && mysql -h '.PARC_BDD_DOMAIN.' -u ' . $host->NomLDAP . ' -p' . $host->Password . ' -e "DROP DATABASE \`' . $bdd->Nom . '\`;" && mysql -h '.PARC_BDD_DOMAIN.' -u ' . $host->NomLDAP . ' -p' . $host->Password . ' -e "CREATE DATABASE \`' . $bdd->Nom . '\`;" && mysql -h '.PARC_BDD_DOMAIN.' -u ' . $host->NomLDAP . ' -p' . $host->Password . ' ' . $bdd->Nom . ' < sql/'.$bdd->Nom.'-'.$this->Identifiant.'.sql';
                 $act->addDetails($cmd);
                 $out = $apachesrv->remoteExec($cmd);
                 $act->addDetails($out);
@@ -206,21 +206,21 @@ class RestorePoint extends genericClass{
             //Sauvegarde base des donnée
             foreach ($bdds as $bdd) {
                 $act = $task->createActivity('Sauvegarde base de donnée '.$bdd->Nom, 'Info', $task);
-                $cmd = 'cd /home/' . $host->NomLDAP . '/ && mysqldump -h db.maninwan.fr -u ' . $host->NomLDAP . ' -p' . $host->Password . ' ' . $bdd->Nom . ' > sql/'.$bdd->Nom.'-'.$restopoint.'.sql';
+                $cmd = 'cd /home/' . $host->NomLDAP . '/ && mysqldump -h '.PARC_BDD_DOMAIN.' -u ' . $host->NomLDAP . ' -p' . $host->Password . ' ' . $bdd->Nom . ' > sql/'.$bdd->Nom.'-'.$restopoint.'.sql';
                 $out = $apachesrv->remoteExec($cmd);
                 $act->addDetails($cmd);
                 $act->addDetails($out);
                 $act->Terminate(true);
             }
             $act = $task->createActivity('Backup fichier', 'Info', $task);
-            $cmd = 'cd /home/' . $host->NomLDAP . ' && borg create backup::'.$restopoint.' * --exclude "backup" --exclude "cgi-bin" --exclude "logs"';
+            $cmd = 'cd /home/' . $host->NomLDAP . ' && borg create backup::'.$restopoint.' * --exclude "backup" --exclude "cgi-bin" --exclude "logs" --exclude "azkocms_medias" --exclude "azkocms_skins"';
             $act->addDetails($cmd);
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($out);
             $act->Terminate(true);
             //modification des droits
             $act = $task->createActivity('Modification des droits', 'Info', $task);
-            $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . ' -R';
+            $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . '/backup -R';
             $act->addDetails($cmd);
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($out);

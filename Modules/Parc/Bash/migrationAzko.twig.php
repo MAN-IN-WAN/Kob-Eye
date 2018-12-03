@@ -7,110 +7,54 @@ $db = new PDO('mysql:host=192.168.100.50;dbname=parc', 'root', 'zH34Y6u5', array
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $serveur='ws1.eng.systems';
 /*$csv = "
-acei;acei;acei
-acrotaille;acrotaille;acrotaille
 aimetti-auteur;aimetti-auteur;aimetti-auteur
 ama;rgsystem;ama+wp_amaassurances+wp_amaassurancesblog
-amisdufondsmedar;amisdufondsmedar;amisdufondsmedar
-appartementcabourg;appartementcabourg;appartement-cabo
-aqualiss;aqualiss;aqualiss
-aquazurservices;aquazurservi;aquazurservices
-atelier-corps;atelier-corps-et-mouvemen;atelier-corps
 autoecole;autoecoledef;autoecole
 autoecoleamd;autoecoleamd;autoecoleamd
-autoecole-easy;autoecole-ea;autoecole-easy
 autoecoleinris;autoecoleinr;autoecoleinris
-automotoecole;automotoecol;automotoecole
-bacotec;bacotec;bacotec
-barocante;barocante;barocante
-bertrand;bertrandimmo;bertrand+bertrand2017
-bgelr;bgelr;bgelr
 boxsete;pescatore;boxsete_boxlocation+boxsete_chezpescatore
-byvirginie;byvirginie;byvirginie
-camarguevtc;camargue-vtc;camarguevtc
-camassel;camassel;camassel
-cap-ocean;cap-ocean;cap-ocean;sql2.eng.systems
-carrosserie-reis;carrosserie-;carrosserie-reis
-cdefi;cdefi;cdefi
-ce3d;ce3d;ce3d
-ceciledesserle;ceciledesserle;ceciledesserle
 permis-bateau;permis-batea;cercle-nautique
-chape-liquide;chape-liquide;chape-liquide
-chefsdoc;chefsdoc;chefsdoc
-citeoingenierie;citeo;citeo-ingenierie
-clamousemetaller;clamousemeta;clamousemetaller
 code23;code23;code23
-collectif-saint;collectif-sa;collectif-saint
-dagobafilms;dagobafilms;dagobafilms
-dm-detect;dm-detect;dm-detect
-dronerealisation;dronerealisa;dronerealisation
 dumartinetj;dumartinet;dumartinetj
-easypanneau;easypanneau;easypanneau
-ecolederaseteurs;ecolederaset;ecolederaseteurs
-ecopub;ecopub;ecopub
-editionsmo;editions-monemvassia;editionsmo
 epconsulting;ep.consultin;epconsulting
-espace-proprete;espace-propr;espace-proprete
-ethique-perfusi;ethique-perf;ethique-perfusi
-expert-comptable;expert-compt;expert-comptable
 geodev;geodev;geodev
 grandcreme;grandcreme;grandcreme+grandcreme_pydio
-groupevet;groupevet;groupevet
-hydrosol;hydrosol;hydrosol
-idh-montpellier;idh-montpell;idh-montpellier
 insightcom;insightcom;insightcom
-intrasens;intrasens;intrasens
-iplusmedia.eu;iplusmedia.eu;iplusmedia.eu
-labanane;labanane;labanane
-laboratoire-val;laboratoire-;laboratoire-val
 lace-restaurant;lace-restaurant.fr;lace-restaurant
 laprimavera;laprimavera-;laprimavera
-lepasseurdemots;lepasseurdem;lepasseurdemots
 maf82;montaubanath;maf82
-maformation;maformation;maformation
-mara-pro;mara-pro;mara-pro
-mediationmontpellier;mediationmon;mediationmontpel
-mldurand;mldurand;mldurand
-mobilygo;mobilygo;mobilygo+mobilygo_2014
-montpellierfans;montpellierf;montpellierfans
 murviel;murviel;murviel
 nino-robotics;nino-robotic;nino-robotics+nino-robotics-dev+nino-robotics-sup
-nutrition-expert;nutrition-ex;nutrition-expert
-permis-bateau;permis-batea;permis-bateau
-perseides-courta;perseides-co;perseides-courta
 pianoconcertino;pianoconcert;pianoconcertino
-pizzajerome;pizzajerome;pizzajerome
-privilegeberricar;privilegeber;privilegeberrica
 psychotherapiesatm;christinebuo;psychotherapiesat
-pushrdv;pushrdv;pushrdv
-quentinmultiservices;quentinmultiservices;quentinmultiserv
 racinespubliques;racinespubliques;racinespubliques
-rdksolutions;rdksolutions;rdksolutions
-residencelehome;residenceleh;residencelehome
-rws-relocation;rws-relocati;rws-relocation
-safetygreen;safetygreen;safetygreen
-secreteam;secreteam;secreteam
-selfcopy;selfcopy;selfcopy
 serenity-services;serenity-services;serenity-service
-sexologue;sexologue;sexologue
-sinergiasud;sinergiasud;sinergiasud
-snap-pole-emploi;snap-pole-em;snap-pole-emploi
+
+
 spiruline;spirulineala;spiruline
-sudmarquage;sudmarquage;sudmarquage
-sudvtc;sudvtc;sudvtc
-technifer;technifer;technifer
 tennisforever;tennisforeve;tennisforever+tennisforever_reservation
-tisseyre-avocats;tisseyre-avo;tisseyre-avocats
 travaux-speciaux;travaux-spec;travaux-speciaux
-veterinaire-lang;veterinaire-languedocia;veterinaire-lang
-veterinaire-veto;veterinaire-vetocia;veterinaire-veto
 vmid;vmid;vmid";
+
+
+REFAIRE
+laboratoire-val;laboratoire-;laboratoire-val
+
 */
 $csv= "
-psychotherapieintegrative;psychotherap;psychotherapiein
+quentinmultiservices;quentinmultiservices;quentinmultiserv
+technifer;technifer;technifer
+pushrdv;pushrdv;pushrdv
+sudvtc;sudvtc;sudvtc
+selfcopy;selfcopy;selfcopy
+rdksolutions;rdksolutions;rdksolutions
+safetygreen;safetygreen;safetygreen
+secreteam;secreteam;secreteam
+veterinaire-lang;veterinaire-languedocia;veterinaire-lang
+veterinaire-veto;veterinaire-vetocia;veterinaire-veto
 ";
 $result = explode(PHP_EOL,$csv);
-$total = sizeof($result);
+$total = sizeof($result)-2;
 $i=0;
 foreach ($result as $org){
     if (empty(trim($org)))continue;
@@ -120,7 +64,7 @@ foreach ($result as $org){
     $fields[2] = explode('+',$fields[2]);
     list($host,$cli,$bdds,$mysqlsrv) = $fields;
     //test existence
-    $nb = Sys::getOneData('Parc','Instance/InstanceNom=instance-'.$host);
+    $nb = Sys::getOneData('Parc','Instance/InstanceNom='.substr('instance-'.$host,0,32));
     echo $bc->getColoredString("-> [$i / $total] ".$host."\n",'green');
 
     if (!$nb){
@@ -152,7 +96,6 @@ foreach ($result as $org){
         if ($client) $inst->addParent($client);
         $inst->softSave();
     }
-
     //récupération de l'host
     $hos = $inst->getOneParent('Host');
     //récupération du serveur
@@ -183,6 +126,7 @@ foreach ($result as $org){
             $apache->SslCertificateKey = $ap['SslCertificateKey'];
             $apache->SslExpiration = $ap['SslExpiration'];
             $apache->Save();
+            echo 'instance ok ';
         }
     }
     //récupération des accès ftps
@@ -242,7 +186,6 @@ foreach ($result as $org){
         echo $bc->getColoredString(" OK "."\n", 'green');
     }catch(Exception $e){
         echo $bc->getColoredString(" ERREUR" . "\n".$e->getMessage()."\n".$cmd."\n", 'red');
-        die();
     }
 
     //détection du cms
