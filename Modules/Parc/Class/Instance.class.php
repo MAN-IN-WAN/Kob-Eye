@@ -75,7 +75,7 @@ class Instance extends genericClass{
         //creation du nom temporaire
         if (empty($this->InstanceNom))
             $this->InstanceNom = substr('instance-'.Instance::checkName($this->Nom),0,32);
-        else $this->InstanceNom = substr($this->InstanceNom,0,16);
+        else $this->InstanceNom = substr($this->InstanceNom,0,32);
 
         //Vérification du mot de passe
         if (empty($this->Password)){

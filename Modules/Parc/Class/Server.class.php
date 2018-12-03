@@ -1482,7 +1482,15 @@ class Server extends genericClass {
      * execute remotely ldap2service
      */
     public function callLdap2Service($retry=false) {
-        $task = Sys::getOneData('Systeme','Tache/Nom=ActivityDump');
+        $task = genericClass::createInstance('Systeme', 'Tache');
+        $task->Type = 'Fonction';
+        $task->Nom = 'Raifraichissement des configuration (ldap2service) ' . $this->Nom;
+        $task->TaskModule = 'Parc';
+        $task->TaskObject = 'Server';
+        $task->TaskId = $this->Id;
+        $task->TaskFunction = 'callLdap2service';
+        $task->Demarre = true;
+        $task->Save();
         $act = $task->createActivity('Execution de synchronisation');
         try {
             $out = $this->remoteExec('/usr/bin/ldap2service', $act);
@@ -1503,6 +1511,8 @@ class Server extends genericClass {
 
         $act->addDetails($out);
         $act->Terminate($out);
+        $task->Termine = true;
+        $task->Save();
         return true;
     }
     /**
@@ -1545,23 +1555,14 @@ class Server extends genericClass {
      * Check if a folder exists
      */
     public function folderExists($path){
-        $task = Sys::getOneData('Systeme','Tache/Nom=ActivityDump');
-        $act = $task->createActivity('Test existence dossier '.$path);
         try {
             $out = $this->remoteExec('if [ -d '.$path.' ]; then echo 1; else echo 0; fi');
-            $act->addDetails('if [ -d '.$path.' ]; then echo 1; else echo 0; fi');
             if (intval($out)>0){
-                $act->addDetails('retour => true ');
-                $act->Terminate(true);
                 return true;
             }else{
-                $act->addDetails('retour => false ');
-                $act->Terminate(true);
                 return false;
             }
         }catch (Exception $e){
-            $act->addDetails($e->getMessage());
-            $act->Terminate(false);
             return false;
         }
     }
@@ -1570,23 +1571,14 @@ class Server extends genericClass {
      * Check if a file exists
      */
     public function fileExists($path){
-        $task = Sys::getOneData('Systeme','Tache/Nom=ActivityDump');
-        $act = $task->createActivity('Test existence fichier '.$path);
         try {
             $out = $this->remoteExec('if [ -f '.$path.' ]; then echo 1; else echo 0; fi');
-            $act->addDetails('if [ -f '.$path.' ]; then echo 1; else echo 0; fi');
             if (intval($out)>0){
-                $act->addDetails('retour => true ');
-                $act->Terminate(true);
                 return true;
             }else{
-                $act->addDetails('retour => false ');
-                $act->Terminate(true);
                 return false;
             }
         }catch (Exception $e){
-            $act->addDetails($e->getMessage());
-            $act->Terminate(false);
             return false;
         }
     }
@@ -1595,27 +1587,18 @@ class Server extends genericClass {
      * create a folder
      */
     public function createFolder($path,$usr = null,$rights='705'){
-        $task = Sys::getOneData('Systeme','Tache/Nom=ActivityDump');
-        $act = $task->createActivity('Création du dossier '.$path);
         try {
             $cmd = 'mkdir -p '.$path.' && chmod '.$rights.' '.$path;
             if ($usr){
                 $cmd.=' && chown '.$usr.':users '.$path;
             }
             $out = $this->remoteExec($cmd);
-            $act->addDetails($cmd);
             if (intval($out)>0){
-                $act->addDetails('retour => true ');
-                $act->Terminate(true);
                 return true;
             }else{
-                $act->addDetails('retour => false ');
-                $act->Terminate(true);
                 return false;
             }
         }catch (Exception $e){
-            $act->addDetails($e->getMessage());
-            $act->Terminate(false);
             return false;
         }
     }

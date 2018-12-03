@@ -107,10 +107,6 @@ class Sys extends Root{
   		$this->initLanguages();
 		//Intialisation des modules
   		$this->initModules();
-		//Crï¿œtion de la connexion
-        $GLOBALS["Chrono"]->start("Connexion");
-        $this->Connection =new Connection();
-        $GLOBALS["Chrono"]->stop("Connexion");
         //Sys::commitTransaction();
         //Petit coommentaire sympa
         if (isset($_GET["ACTION"])&&$_GET["ACTION"]=="UPDATE"){

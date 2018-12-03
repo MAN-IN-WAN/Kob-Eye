@@ -219,7 +219,7 @@ class Parc extends Module{
             }*/
 
             //teste le role technicien
-            $r = Sys::getOneData('Systeme','Tache/Nom=ActivityDump');
+            $r = Sys::getCount('Systeme','Tache/Nom=ActivityDump');
             if (!$r){
                 //il faut tout créer
                 //création du role

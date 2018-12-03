@@ -769,7 +769,9 @@ class Apache extends genericClass {
             $certdomains = array();
             preg_match_all('#DNS:([^\ ,]*)#',$certinfo['extensions']['subjectAltName'],$othersdomains);
             $certdomains=array_merge($certdomains,$othersdomains[1]);
+            $domainstocert = array();
             foreach ($domains as $d){
+                if (empty($d))continue;
                 $exception = false;
                 foreach ($exceptionDomains as $ed){
                     //test des exceptions
@@ -781,7 +783,16 @@ class Apache extends genericClass {
                 if (!in_array($d,$certdomains)&&!$exception){
                     $this->addError(array('Message'=>'Le domaine '.$d.' n\' est pas compris dans le certificat en production. Il serait nécessaire de le regénérer.'));
                 }
+                if (!$exception)array_push($domainstocert,$d);
             }
+            //si pas de domaine à certifier , on désactive ssl
+            if (!sizeof($domainstocert)){
+                $this->Ssl = 0;
+                $this->softSave();
+                $this->addError(array('Message'=>'Aucun domaine à certifier. Désactivation du ssl.'));
+                return false;
+            }
+
             //on sauvegarde
             $this->softSave();
 
@@ -798,7 +809,8 @@ class Apache extends genericClass {
                 return false;
             }
         }
-        return true;
+        $this->addError(array('Message'=>'Aucun domaine à certifier.'));
+        return false;
     }
 
 }
