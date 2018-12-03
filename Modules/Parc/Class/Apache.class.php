@@ -813,4 +813,40 @@ class Apache extends genericClass {
         return false;
     }
 
+    /**
+     * addDomain
+     * Ajoute un sous domaine au vhost si il n'est pas déjà présent
+     * @param string $domain  Url du sous-domaine a ajouter
+     * @return boolean
+     */
+    public function addDomain($domain){
+        $subs = $this->getDomains();
+        $subs = explode(' ',$subs);
+        if (!in_array($domain, $subs)) {
+            $this->ApacheServerAlias .= ' ' . $domain;
+            $this->Save();
+        }
+        return true;
+    }
+
+    /**
+     * addDomain
+     * Ajoute un sous domaine au vhost si il n'est pas déjà présent
+     * @param string $domain  Url du sous-domaine a retirer
+     * @return boolean
+     */
+    public function delDomain($domain){
+        $subs = $this->getDomains();
+        $subs = explode(' ',$subs);
+        if (in_array($domain, $subs) && $domain != $this->ApacheServerName) {
+            $this->ApacheServerAlias = str_replace($domain,'',$this->ApacheServerAlias);
+            $this->Save();
+        } else{
+            return false;
+        }
+        return true;
+    }
+
+
+
 }

@@ -560,6 +560,14 @@
 
 		<FKEY data="Infra,Id" card="0,1" description="Infrastructure" form="1" >InfraId</FKEY>
 	</OBJECTCLASS>
+	<OBJECTCLASS title="InstanceDomain" driver="mysql" Description="Domaine de l'instance" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/InstanceDomain.class.php" >
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Url du dmoaine" list="1" form="1" fiche="1" listDescr="Nom">Url</PROPERTIES>
+		<PROPERTIES type="boolean" description="Actif" listDescr="Actif" list="1" form="1" fiche="1" default="1" hasRole="PARC_TECHNICIEN" >Enabled</PROPERTIES>
+		<PROPERTIES type="boolean" description="Ssl" listDescr="Ssl" list="1" form="1" fiche="1" default="0" hasRole="PARC_TECHNICIEN" >Ssl</PROPERTIES>
+		<PROPERTIES type="boolean" description="Cache Proxy" listDescr="Cache Proxy" list="1" form="1" fiche="1" default="0" hasRole="PARC_TECHNICIEN" >ProxyCache</PROPERTIES>
+		<FKEY data="Instance,Id" card="1,1" description="Hébergement" form="1" >InstanceId</FKEY>
+	</OBJECTCLASS>
+
 	<OBJECTCLASS title="Incident" logEvent="0"  AccessPoint="1" driver="mysql" Description="Incidents"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/Parc/Class/Incident.class.php" Operations="delete">
 		<FILTER name="Les incidents" color="danger" ><![CDATA[Solved=0&Acknowledge=0]]></FILTER>
 		<FILTER name="Tous les incidents" color="warning" ></FILTER>

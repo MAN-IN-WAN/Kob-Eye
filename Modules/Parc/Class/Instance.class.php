@@ -165,12 +165,7 @@ class Instance extends genericClass{
         $apache = Sys::getOneData('Parc','Host/'.$heb->Id.'/Apache',0,1,'ASC','Id');
         if (!$apache) {
             //alors création du apache
-            $apache = genericClass::createInstance('Parc', 'Apache');
-            $apache->DocumentRoot = $this->SousDomaine;
-            $apache->ApacheServerName = $this->FullDomain;
-            //$apache->ApacheServerAlias = $this->ServerAlias;
-            $apache->Actif = true;
-            $apache->addParent($heb);
+            $apache = $this->createApache();
         } else {
             $apache->ApacheServerName = $this->FullDomain;
             /*if (empty($this->ServerAlias)){
@@ -501,6 +496,24 @@ class Instance extends genericClass{
     public function createBackupTask() {
         $host = $this->getOneParent('Host');
         return $host->createBackupTask();
+    }
+
+    public function createApache($ssl=0,$proxycache=0){
+        $host = $this->getOneParent('Host');
+
+        $apache = genericClass::createInstance('Parc','Apache');
+        $apache->Ssl = $ssl;
+        $apache->Proxycache = $proxycache;
+
+        $pref = $ssl ? ( $proxycache ? 'ssl-cache-' : 'ssl-') : ( $proxycache ? 'cache-' : '' );
+
+        $apache->ApacheServerName = $pref.$this->FullDomain;
+        $apache->DocumentRoot = $this->SousDomaine;
+        $apache->Actif = true;
+        $apache->addParent($host);
+        $apache->Save();
+
+        return $apache;
     }
 
 }
