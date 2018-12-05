@@ -175,7 +175,7 @@ class ParcInstanceSecib extends Plugin implements ParcInstancePlugin {
         $task->TaskModule = 'Parc';
         $task->TaskObject = 'Instance';
         $task->TaskId = $this->_obj->Id;
-        $task->TaskFunction = 'updateSoftware';
+        $task->TaskFunction = 'installSoftware';
         $task->addParent($this->_obj);
         $host = $this->_obj->getOneParent('Host');
         $task->addParent($host);

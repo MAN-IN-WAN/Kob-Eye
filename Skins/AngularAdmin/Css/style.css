@@ -79,9 +79,6 @@ progress.progress.progress-danger:after{
     color: #fb434a;
 }
 
-.inverted{
-    display: none;
-}
 
 .form-control-label{
     font-weight:600;
@@ -129,6 +126,19 @@ progress.progress.progress-danger:after{
     -webkit-box-shadow: 0 2px 4px -2px rgba(55, 58, 60, 0.6);
     box-shadow: 0 2px 4px -2px rgba(55, 58, 60, 0.6);
 
+}
+
+.listWrap{
+    position: relative;
+    width: 100%;
+    overflow: auto;
+}
+.listWrap table {
+    width: auto;
+    min-width: 100%;
+}
+.listWrap .table-action{
+    min-width: 170px;
 }
 
 #activity_list{
@@ -358,39 +368,6 @@ table tr td.typeraw span.ng-binding{
     .input-group.list-search .input-group-btn a:first-child{
         border-top-left-radius: .25rem;
         border-bottom-left-radius: .25rem;
-    }
-    .inverted{
-        display: block;
-    }
-    .straight{
-        display: none;
-    }
-    table.inverted{
-        width:auto;
-        max-width: none;
-        overflow: visible;
-        table-layout: fixed;
-        margin-left: 90px;
-    }
-    table.inverted tr{
-        overflow: hidden;
-    }
-    table.inverted th{
-        position: absolute;
-        width:100px;
-        left:4px;
-        background-color: #ddd;
-        z-index: 2;
-        height: 150px;
-        font-size: 0.9em;
-    }
-    table.inverted td, table.inverted th{
-        border: 1px solid #f6f8f9;
-        border-right: 1px solid #eceeef;
-    }
-    .invert-wrap{
-        width:100%;
-        overflow-x: scroll;
     }
     /*    col.tdcontent{
             width:300px;

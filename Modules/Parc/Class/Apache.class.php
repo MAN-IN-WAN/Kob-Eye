@@ -516,8 +516,11 @@ class Apache extends genericClass {
      */
     private function getProxy() {
         $pref = '';
+
         if($this->getInfra())
             $pref='Infra/'.$this->_KEInfra->Id.'/';
+
+
 
         $pxs = Sys::getData('Parc',$pref.'Server/Proxy=1',null,null,null,null,null,null,true);
         return $pxs;
@@ -532,7 +535,7 @@ class Apache extends genericClass {
      */
     private function getInfra() {
         if(!is_object($this->_KEInfra)) {
-            $srv = $this->getKEServer;
+            $srv = $this->getKEServer();
             if(is_array($srv)) {
                 $srv = $srv[0];
                 $this->_KEInfra = $srv->getOneParent('Infra');
