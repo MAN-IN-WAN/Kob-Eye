@@ -28,11 +28,28 @@ class VersionLogiciel extends genericClass {
         $act = $task->createActivity('Inventaire des instances à mettre à jour : '.$nb, 'Info');
         $insts = Sys::getData('Parc','Instance/CurrentVersion<'.$this->Version.'&Type='.$this->Type,0,100000);
         $act->Terminate(true);
+        $tms = 0;
         foreach ($insts as $inst){
+            $tms+=25;
             $act = $task->createActivity('Création de la tache de mise à jour pour l\'instance '.$inst->Nom, 'Info');
             $inst->createUpdateTask($this);
             $act->Terminate(true);
         }
+        $proxys = Sys::getData('Parc','Server/Proxy=1');
+        foreach($proxys as $p){
+            $task = genericClass::createInstance('Systeme', 'Tache');
+            $task->Type = 'Fonction';
+            $task->Nom = 'Nettoyage des caches du proxy : '.$p->Nom.' ('.$p->Id.')';
+            $task->TaskModule = 'Parc';
+            $task->TaskObject = 'Server';
+            $task->TaskId = $p->Id;
+            $task->TaskFunction = 'clearCache';
+            $task->DateDebut = time() + $tms;
+            $task->addParent($p);
+            $task->Save();
+        }
+
+
         return true;
     }
     /**

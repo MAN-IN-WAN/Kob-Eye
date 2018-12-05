@@ -3,9 +3,21 @@ class Tache extends genericClass{
     var $_apache = null;
 
     public function Execute($force=false) {
+        Sys::autocommitTransaction();
+
         //on rafraichit les infos
         if ($this->Demarre&&!$force) return true;
-        Sys::autocommitTransaction();
+
+        if(!empty($this->ThreadId) && $this->ThreadId != getmypid()) return true;
+        $this->ThreadId = getmypid();
+        parent::Save();
+
+        sleep(1);
+
+        Sys::$Modules['Systeme'] -> Db -> clearLiteCache();
+        $upd = Sys::getOneData('Systeme','Tache/'.$this->Id);
+        if($upd->ThreadId != $this->ThreadId) return true;
+
         switch ($this->Type) {
 
             case "Fonction":

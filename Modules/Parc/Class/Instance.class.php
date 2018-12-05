@@ -167,13 +167,20 @@ class Instance extends genericClass{
             //alors création du apache
             $apache = $this->createApache();
         } else {
-            $apache->ApacheServerName = $this->FullDomain;
+            //$apache->ApacheServerName = $this->FullDomain;
             /*if (empty($this->ServerAlias)){
                 $this->ApacheServerAlias = $apache->ServerAlias;
             }else $apache->ApacheServerAlias = $this->ServerAlias;*/
 
             $apache->Actif = true;
             $apache->addParent($heb);
+        }
+        //Gestion des alias
+        if (is_array($dom) && sizeof($dom)) {
+            foreach ($dom as $d) {
+                if($this->FullDomain != $this->InstanceNom.'.'.$d->Url && strpos($apache->ApacheServerAlias,$this->InstanceNom.'.'.$d->Url) === false)
+                    $apache->ApacheServerAlias .= '\n '.$this->InstanceNom.'.'.$d->Url;
+            }
         }
         //Test
         if ($this->Type=='prod'){
