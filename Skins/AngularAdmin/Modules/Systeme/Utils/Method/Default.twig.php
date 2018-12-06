@@ -8,7 +8,8 @@
     $info = Info::getInfos($path);
 
 		//Si pas de retro compat on vérifie que l'objet ai une method portant ce nom
-		$obj = Sys::getOneData($info['Module'],explode('/',$path,2)[1]);
+		if(! intval(explode('/',$path)[2])) $obj = genericClass::createInstance($info['Module'],$info['ObjectType']);
+		else $obj = Sys::getOneData($info['Module'],explode('/',$path,2)[1]);
 		$methods = get_class_methods($obj);
 
 		if(!in_array($name,$methods)){

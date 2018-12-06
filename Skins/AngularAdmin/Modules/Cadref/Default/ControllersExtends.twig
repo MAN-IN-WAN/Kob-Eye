@@ -43,14 +43,6 @@
 			$('#search'+child).focus();
 		}
 
-		$scope.optionsList = [
-  {id: 1,  label : "Javaxxxxxxxx xxxxxxxxxx"},
-  {id: 2,  label : "C xxxxxxxxxxx xxxxxxxxxxxx xxxxxxxx"},
-  {id: 3,  label : "C++ xxxxxxxxxxx xx " },
-  {id: 27,  label : "AngularJs"},
-  {id: 5,  label : "JavaScript"}
-];
-				
 		// appel de function kobeye avec retour objet
 		$scope.{{ identifier }}callMethod = function(obj, name, args, explodeArgs) {
 			if (args == undefined) args = [];
@@ -65,6 +57,14 @@
 			};
 			return $http.post('/{{ url }}/'+obj.id+'/Method.json',{"Func":JSON.stringify({{ identifier }}method)});
 		}
+
+		// save fiche 
+		$scope.saveFicheCadref = function() {
+            $scope.modalObj = $scope.obj;
+			$scope.modalSave();
+		}
+		
+
 
 		
 		{% if objecttype == 'Adherent' %}
@@ -113,13 +113,6 @@
 			noEvent = false;
         });
 
-		// save fiche 
-		$scope.saveFicheCadref = function() {
-            $scope.modalObj = $scope.obj;
-			$scope.modalSave();
-		}
-		
-
 		// regularisation
 		$scope.regularisation = function() {
 			var o = $scope.obj;
@@ -156,6 +149,7 @@
 		$scope.displayCard = function() {
 			$timeout(function(){
 				angular.element($('#displayCard')).triggerHandler('click');
+				angular.element($('#modalfunction-{{ ident }}')).modal('hide');
 			},0);
 		}
 		
@@ -477,6 +471,9 @@
 				}
 			);
 		}
+		
+		$scope.Enseignants = JSON.parse('{{ enseignants|raw }}');
+
 		{% endif %}
 		
     });

@@ -23,8 +23,18 @@
                 <div {% if Create %}class="col-md-10"{% else %}class="col-md-11"{% endif %}>
 					<div class="row">
 						<div class="col-md-8" >
-							{{ flinput(f.Section, o, false, 'AA', 'width:60px; text-transform:uppercase;', true) }}
-							{{ flinput(f.Libelle, o, false, '', 'text-transform:uppercase;', true) }}
+							{{ flinput(f.Lieu, o, false, 'AA', 'width:60px; text-transform:uppercase;', true) }}
+							{{ flinput(f.Libelle, o) }}
+							<div class="row" style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Type") }}
+								</div>
+								<div class="col-md-10">
+									{{ fvalues(f.Type, o) }}
+								</div>
+							</div>
+							{{ flinput(f.GPS, o) }}
 						</div>
 						{# block right #}                    
 						<div class="col-md-4">

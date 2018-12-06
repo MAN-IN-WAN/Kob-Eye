@@ -14,9 +14,17 @@ if(isset($info['ObjectType'])){
 	$vars['description'] = $vars['CurrentObj']->getDescription();
 
 	$vars['url'] = Sys::getMenu($info['Module'].'/'.$info['ObjectType']);
-	
+
+	if($info['ObjectType'] == 'Classe') {
+		$t = array();
+		$ens = Sys::getData('Cadref','Enseignant'); 
+		foreach($ens as $e) $t[] = array('id'=>$e->Id, 'label'=>$e->Nom.' '.$e->Prenom);
+		
+		$vars['enseignants'] = json_encode($t);
+	}
 } else {
 	$vars['noExtend'] = true;
 }
-$vars['Annee'] = $GLOBALS['Systeme']->getRegVars('AnneeEnCours');
+$vars['Annee'] = Cadref::$Annee;
+
 ?>

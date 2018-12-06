@@ -1,6 +1,7 @@
 <SCHEMA>
 	<OBJECTCLASS title="Annee" driver="mysql" order="Annee" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Années scolaires" hidden="1" Operations="add,edit" Dico="1">
-		<PROPERTIES type="varchar" length="4" searchOrder="1" obligatoire="1" category="Description" description="Année de début">Annee</PROPERTIES>
+		<PROPERTIES type="varchar" length="4" searchOrder="1" obligatoire="1" unique="1" category="Description" description="Année de début">Annee</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Description" description="Cotisation">Cotisation</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" description="Année en cours">EnCours</PROPERTIES>
 	</OBJECTCLASS>
 
@@ -207,11 +208,26 @@
 		<PROPERTIES type="varchar" length="8" category="Interne" form="29" fiche="29" description="Newsletters">Newletters</PROPERTIES>
 
 		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Cotisation">Cotisation</PROPERTIES>
-		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Inscription">Cours</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Cours">Cours</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Règlement">Reglement</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Différé">Differe</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Régularisation">Regularisation</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Solde">Solde</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="AdherentAnnee" driver="mysql" order="AdherentId,Annee" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Professions" Operations="add,edit" Dico="1">
+		<FKEY card="1,1" module="Cadref" data="Adherent,Id" category="Description" description="Adhérent">AdherentId</FKEY>
+		<PROPERTIES type="varchar" length="6" searchOrder="1" obligatoire="1" category="Description" description="Numéro">Numero</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" length="4" obligatoire="1" category="Description" description="Annee">Annee</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Cotisation">Cotisation</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Cours">Cours</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Règlement">Reglement</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Différé">Differe</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Régularisation">Regularisation</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Solde">Solde</PROPERTIES>
+		<PROPERTIES type="text" category="Interne" form="23" fiche="23" description="Notes">Notes</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" category="Association" values="B::Bureau,A::Administrateur,D::Délégué" form="14" fiche="14" description="Role associatif">Adherent</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Association" query="Cadref/Classe::Id::CodeClasse" form="15" fiche="15" description="Délégué de classe">ClasseId</PROPERTIES>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Profession" driver="mysql" order="Profession" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Professions" Operations="add,edit" Dico="1">
@@ -303,7 +319,7 @@
 
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="Reglement" driver="mysql" order="DateReglement" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Réglements" hidden="0" Operations="add,edit" Dico="0">
+	<OBJECTCLASS title="Reglement" driver="mysql" order="DateReglement" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Réglements" hidden="0" Operations="" Dico="0" Class="Modules/Cadref/Class/Reglement.class.php">
 		<FILTER name="Année en cours" color="success">Annee=[!AnneeEnCours!]</FILTER>
         <FILTER name="Tous" color="success"></FILTER>
 		<FKEY card="1,1" module="Cadref" data="Adherent,Id" category="Description" description="Adhérent" >AdherentId</FKEY>
@@ -320,38 +336,56 @@
 		<PROPERTIES type="boolean" default="0" category="Description" list="6" description="Supprimé">Supprime</PROPERTIES>
 		<PROPERTIES type="varchar" length="3" category="Description" list="7" description="Utilisateur">Utilisateur</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" description="Réglement web">Web</PROPERTIES>
+
+		<VIEW title="DiffereList" default="0">
+			<OBJECTCLASS title="DifferetTete" select="Id,Annee,DateReglement,Montant,Differe,Encaisse,Supprime,AdherentId,Numero" filters="">
+				<JOIN type="outer" module="Cadref" title="Adherent" on="AdherentId" target="Id">
+					<PROPERTIES type="varchar" list="4" >Nom</PROPERTIES>
+					<PROPERTIES type="varchar" list="4" >Prenom</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
 	</OBJECTCLASS>
 
 
 	<OBJECTCLASS title="Visite" driver="mysql" searchType="plaintext" order="Visite" orderType="ASC" master="1" AccessPoint="1" Icon="[None]" Description="Visites" Heritage="0" Operations="add,edit" >
-		<PROPERTIES type="varchar" length="6" searchOrder="1" obligatoire="1" category="Description" description="Code">Visite</PROPERTIES>
-		<PROPERTIES type="varchar" length="50" searchOrder="2" obligatoire="1" category="Description" description="Libellé">Libelle</PROPERTIES>
-		<PROPERTIES type="varchar" length="4" obligatoire="1" category="Description" description="Année scolaire">Annee</PROPERTIES>
+		<FILTER name="Année en cours" color="success">Annee=[!AnneeEnCours!]</FILTER>
+        <FILTER name="Toutes" color="success"></FILTER>
+		<PROPERTIES type="varchar" length="10" searchOrder="2" obligatoire="1" category="Description" list="3" form="2" fiche="2" description="Code">Visite</PROPERTIES>
+		<PROPERTIES type="varchar" length="60" searchOrder="1" obligatoire="1" category="Description" list="3" form="3" fiche="3" description="Libellé">Libelle</PROPERTIES>
+		<PROPERTIES type="varchar" length="4" obligatoire="1" list="1" form="1" fiche="1" category="Description" description="Année scolaire">Annee</PROPERTIES>
 		<PROPERTIES type="text" obligatoire="0" category="Description" description="Description">Description</PROPERTIES>
-		<PROPERTIES type="date" obligatoire="0" category="Description" description="Date et Heure">DateHeure</PROPERTIES>
+		<PROPERTIES type="date" obligatoire="1" category="Description" list="2" form="1" fiche="1" description="Date">DateVisite</PROPERTIES>
+		<PROPERTIES type="varchar" length="5" category="Description" list="2" form="1" fiche="1" description="Heure">HeureVisite</PROPERTIES>
 		<PROPERTIES type="date" obligatoire="0" category="Description" description="Limite d'inscription">DateLimite</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Description" list="4" form="1" fiche="1" description="Coordonnées GPS">GPS</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" special="reverse" category="Description" form="13" fiche="13" description="Inactif">Inactif</PROPERTIES>
 
-		<PROPERTIES type="int" default="0" category="Inscriptions" description="Places">Places</PROPERTIES>
-		<PROPERTIES type="int" default="0" category="Inscriptions" description="Inscrits">Inscrits</PROPERTIES>
-		<PROPERTIES type="int" default="0" category="Inscriptions" description="Attentes">Attentes</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Inscriptions" list="1" form="1" fiche="1" description="Places">Places</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Inscriptions" list="1" form="1" fiche="1" description="Inscrits">Inscrits</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Inscriptions" list="1" form="1" fiche="1" description="Attentes">Attentes</PROPERTIES>
 
-		<PROPERTIES type="float" default="0" category="Tarif" description="Prix 1">Prix1</PROPERTIES>
-		<PROPERTIES type="float" default="0" category="Tarif" description="Prix 2">Prix2</PROPERTIES>
-		<PROPERTIES type="float" default="0" category="Tarif" description="Prix 3">Prix3</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Tarif" list="1" form="1" fiche="1" description="Prix 1">Prix1</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Tarif" list="1" form="1" fiche="1" description="Prix 2">Prix2</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Tarif" list="1" form="1" fiche="1" description="Prix 3">Prix3</PROPERTIES>
+
+		<FKEY card="0,n" module="Cadref" data="Lieu,Id" category="Autre" form="24" fiche="24" description="Points de rencontre">Lieux</FKEY>
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Lieu" driver="mysql" order="Commune" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Lieux" DOperations="add,edit" ico="1">
-		<PROPERTIES type="varchar" searchOrder="1" length="6" obligatoire="1" category="Description" description="Lieu">Lieu</PROPERTIES>
-		<PROPERTIES type="varchar" length="50" category="Description" description="Libellé">Libelle</PROPERTIES>
-		<PROPERTIES type="varchar" length="1" category="Description" values="L::Lieu,R::Regroument" description="Type">Type</PROPERTIES>
-		<PROPERTIES type="boolean" default="0" special="reverse" category="Description" description="Inactif">Inactif</PROPERTIES>
+		<PROPERTIES type="varchar" length="6" searchOrder="2" obligatoire="1" category="Description" list="1" form="1" fiche="1" description="Lieu">Lieu</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" searchOrder="1" category="Description" list="2" form="1" fiche="1" description="Libellé">Libelle</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" category="Description" values="L::Lieu,R::Regroument" list="3" form="1" fiche="1" description="Type">Type</PROPERTIES>
+		<PROPERTIES type="varchar" length="32" category="Description" list="4" form="1" fiche="1" description="Coordonnées GPS">GPS</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" special="reverse" category="Description" list="1" form="1" fiche="1" description="Inactif">Inactif</PROPERTIES>
 	</OBJECTCLASS>
 
+<!--
 	<OBJECTCLASS title="VisiteLieu" driver="mysql" order="Commune" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Positions" Operations="add,edit" Dico="1">
 		<FKEY card="1,1" module="Cadref" data="Visite,Id" category="Description" description="Classe" >VisiteId</FKEY>
 		<FKEY card="1,1" module="Cadref" data="Lieu,Id" category="Description" description="Lieu" >LieuId</FKEY>
 	</OBJECTCLASS>
+-->
 
 	<OBJECTCLASS title="Reservation" driver="mysql" order="Classe" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Réservations" hidden="0" Operations="add,edit" Dico="0">
 		<FKEY card="1,1" module="Cadref" data="Adherent,Id" category="Description" description="Adhérent" >AdherentId</FKEY>
@@ -371,5 +405,6 @@
 		<PROPERTIES type="date" category="Description" description="Date suppression">DateSupprime</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" description="Inscription web">Web</PROPERTIES>
 	</OBJECTCLASS>
+
 
 </SCHEMA>

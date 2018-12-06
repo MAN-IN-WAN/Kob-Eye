@@ -1,5 +1,5 @@
 {# fiche Adherent #}
-{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext %} 
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean %} 
 {% set f=fields %}
 {% set o= Create ? 'modalObj' : 'obj' %}
 
@@ -23,7 +23,24 @@
                 <div {% if Create %}class="col-md-10"{% else %}class="col-md-11"{% endif %}>
 					<div class="row">
 						<div class="col-md-8" >
-							{{ flinput(f.Numero, o, true, '', 'width:100px') }}
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Numéro") }}
+								</div>
+								<div class="col-md-2">
+									{{ finput(f.Numero, o, true, '', 'width:80px') }}
+								</div>
+								<div class="col-md-1">
+									{{ label("Année sélectionnée") }}
+								</div>
+								<div class="col-md-2">
+									<select class="form-control cadref-input" ng-model="{{ o }}.AnneeSelect" ng-init="{{ o }}.AnneeSelect='{{ Annee }}'" style="width:64px">
+										{% for v in annees %}
+											<option value="{{ v }}">{{ v }}</option>
+										{% endfor %}
+									</select>
+								</div>
+							</div>
 							{{ flinput(f.Nom, o, false, '', 'text-transform:uppercase;', true) }}
 							{{ flinput(f.Prenom, o) }}
 							{{ flinput(f.Adresse1, o) }}
@@ -147,6 +164,16 @@
 										</div>
 									</div>
 								</div>
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Inactif") }}
+										</div>
+										<div class="col-md-7">
+											{{ fboolean(f.Inactif, o, true) }}
+										</div>
+									</div>
+								</div>
 							</div>
 							<div class="row">
 								<div class="col-md-4">
@@ -255,7 +282,7 @@
 					<button type="button" class="btn btn-info margin-inline cadref-btn-100" accesskey="i" title="Alt I" ng-click="openInscription(obj)">Inscription</button>
 					<button type="button" class="btn btn-primary margin-inline cadref-btn-100" accesskey="p" title="Alt P" ng-click="CadrefAdherentcallFunction(obj,'PrintCarte','Carte adhérent','')">Carte</button>
 					<button type="button" class="btn btn-default margin-inline cadref-btn-100" accesskey="g" title="Alt G" ng-click="CadrefAdherentcallFunction(obj,'SendMessage','Envoi mail','')">Message</button>
-					<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="{{ identifier }}modalSave()">Sauver</button>
+					<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="saveFicheCadref()">Sauver</button>
 					<button type="button" class="btn btn-danger margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="delete(obj)">Supprimer</button>
 					<a type="button" class="btn btn-warning margin-inline cadref-btn-100" {% if Create %}data-dismiss="modal"{% else %}href="#/{{ CurrentMenu.Url }}"{% endif %}>Annuler</a>
 				</div>
