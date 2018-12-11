@@ -12,7 +12,7 @@
     </ul>
 
     <!-- Default Panel -->
-    <section class="panel">
+    <section class="panel" ng-if="obj.id > 0">
         <div class="panel-heading">
             <div class="pull-right">
                 {% if functions|length > 1 %}
@@ -175,7 +175,7 @@
         </div>
     </section>
     <!-- End Default Panel -->
-    <div class="nav-tabs-horizontal">
+    <div class="nav-tabs-horizontal" ng-if="obj.id > 0">
         <ul class="nav nav-tabs" role="tablist">
             {% for child in ChildrenElements %}
                 <li class="nav-item">
@@ -230,6 +230,22 @@
     </div>
 {% endif %}
 
+
+<section class="panel" ng-if="!obj.id">
+    <div class="panel-heading">
+        <h3>Oups, j'ai glissé chef !</h3>
+    </div>
+    <div class="panel-body panel-empty">
+            <p>
+                On aurait volontiers mis une jolie image bien design pour signaler qu'il n'y a rien ici, mais on a oublié de charger le module "Talent graphique" sur nos Devs...<br/>
+                La seule chose dont ils sont capable c'est d'écrire ce genre de choses:
+            </p>
+            <div class="lostBgCode"></div>
+            <p>
+                Enfin bref, nous sommes désolés mais vous ne trouverez rien d'intéressant ici.
+            </p>
+    </div>
+</section>
 
 <div class="modal fade modal-size-large" id="modalfiche-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -304,3 +320,4 @@
         </div>
     </div>
 {% endif %}
+
