@@ -80,7 +80,7 @@ class Event extends genericClass {
                         @include "Data/Events/$t/$f";
                         $var = 'mt'.$t.$f;
                         //echo '--> BINGO file '.$f." \r\n";
-                        if (is_array(${$var})) {
+                        if (isset(${$var}) && is_array(${$var})) {
                             //print_r(${$var});
                             array_push($out, ${$var});
                         }
@@ -182,13 +182,15 @@ class Event extends genericClass {
         $queryEv = 'Event/MicroTime>'.$lastAlert;
         $queryAu = 'AlertUser::AlertUserList/tmsCreate>'.$lastAlert;
 
-        $res=array('Ev' => Array(),'Au' => Array());
+        $res=array('Ev' => Array(),'Au' => Array(),'Stats' => Array('cycles'=>0,'duration'=>0,'cd'=>array()));
         $ret =false;
 
         //recherche des enregistrements push
         $push = Event::getRegisteredPush();
 
-        while($i<$nbIt){
+        $tmsStart = microtime(true);
+        $elapsed = 0;
+        while($i<$nbIt && $elapsed < $maxDuration){
             //$recEv = Sys::$Modules['Systeme']->callData($queryEv, false, 0, 30,'Id','ASC');
             $recEv = $this->cache_get($lastAlert);
             $recAu = Sys::$Modules['Systeme']->callData($queryAu, false, 0, 30);
@@ -204,7 +206,9 @@ class Event extends genericClass {
 
             if($ret) {
                 $out = array();
+
                 foreach ($res['Ev'] as $k=>$ev){
+
                     try {
                         $obj = unserialize($res['Ev'][$k]['Data']);
                     }catch (Exception $e){
@@ -251,6 +255,9 @@ class Event extends genericClass {
 
                                 //cas du sort
                                 if(isset($context->sort) || !empty($context->sort)){
+                                    if(! is_array($context->sort)){
+                                        $context->sort = array('Id','ASC');
+                                    }
                                     $list = Sys::getData($ev['EventModule'], $ev['EventObjectClass'] . '/' . $context->filters, $context->offset, $context->limit, $context->sort[1], $context->sort[0]);
                                     $flag = false;
                                     foreach($list as $item){
@@ -271,18 +278,37 @@ class Event extends genericClass {
                                 if(isset($context->ids) && is_array($context->ids) && in_array($ev['EventId'],$context->ids)){
                                     array_push($out,$ev);
                                 }
+                                if(isset($context->ids) && !is_array($context->ids) && $ev['EventId'] == $context->ids){
+                                    array_push($out,$ev);
+                                }
                             }
                         }
                     }
                 }
+                //$tmp = $elapsed;
+                $elapsed = microtime(true) - $tmsStart;
                 $res['Ev'] = $out;
-                if (sizeof($out))
+
+                //$res['stats']['cd'][] = $elapsed-$tmp;
+
+                if (sizeof($out)){
+                    $res['stats']['cycles'] = $i;
+                    $res['stats']['duration'] = $elapsed;
                     return $res;
+                }
+
             }
+
+
 
             $i++;
             usleep($delay);
         }
+
+        $elapsed = microtime(true) - $tmsStart;
+        $res['stats']['cycles'] = $i;
+        $res['stats']['duration'] = $elapsed;
+        return $res;
     }
 
     /**
@@ -291,16 +317,18 @@ class Event extends genericClass {
     public static function clearEvents () {
         $limit = time();
         //toutes les 60 secondes
-        $now = $limit -= 60;
+        $now = $limit - 60;
         $evs = Sys::getData('Systeme','Event/tmsEdit<='.$limit,0,10000);
         foreach ($evs as $ev){
             $ev->Delete();
         }
-        for ($t = $limit-60;$t<$now;$t++){
-            try{
-                Utils::deleteDir('Data/Events/'.$t);
-            }catch (Exception $e){
-
+        for ($t = $now-120;$t<$now;$t++){
+            if(is_dir('Data/Events/' . $t)) {
+                try {
+                    Utils::deleteDir('Data/Events/' . $t);
+                } catch (Exception $e) {
+                    file_put_contents('/tmp/ClearEvent.log', print_r($e, true), 8);
+                }
             }
         }
     }

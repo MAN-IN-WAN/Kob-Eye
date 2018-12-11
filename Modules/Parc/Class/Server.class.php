@@ -1450,6 +1450,7 @@ class Server extends genericClass {
      * @return array
      */
     private function rawExec( $command,$activity=null ){
+        klog::l('Server',$this);
         $stream = ssh2_exec( $this->_connection, $command );
         $error_stream = ssh2_fetch_stream( $stream, SSH2_STREAM_STDERR );
         stream_set_blocking( $stream, TRUE );

@@ -32,13 +32,13 @@ function humanReadable($Mo){
 
 
 
-$vars['NbRunning'] = Sys::getCount('AbtelBackup','Activity/Started=1&Success=0&Errors=0');
+$vars['NbRunning'] = Sys::getCount('Systeme','Activity/Started=1&Success=0&Errors=0');
 $vars['NbToday'] = jobsToday();
 $vars['NbVm'] = Sys::getCount('AbtelBackup','EsxVm');
 $vars['NbSharing'] = Sys::getCount('AbtelBackup','SambaShare');
 
 $vars['Urls'] = array(
-        'Activity'=>Sys::getMenu('AbtelBackup/Activity'),
+        'Activity'=>Sys::getMenu('Systeme/Activity'),
         'EsxVm'=>Sys::getMenu('AbtelBackup/EsxVm'),
         'SambaShare'=>Sys::getMenu('AbtelBackup/SambaShare')
 );

@@ -2982,7 +2982,7 @@ class genericClass extends Root {
         $o = new stdClass();
         $o->id = $this->Id;
         $o->Id = $this->Id;
-        $uc = Sys::getOneData('Systeme','User/'.$this->userCreate);
+        /*$uc = Sys::getOneData('Systeme','User/'.$this->userCreate);
         $ue = Sys::getOneData('Systeme','User/'.$this->userEdit);
         if (is_object($uc))
             $o->userCreateName = $uc->Login;
@@ -2990,7 +2990,7 @@ class genericClass extends Root {
         if (is_object($ue))
             $o->userEditName = $ue->Login;
         else $o->userEditName = 'inconnu';
-        $o->_details = "créé le ".date('d/m/Y H:i',$this->tmsCreate )." par ".$o->userCreateName."\nmodifié le ".date('d/m/Y H:i',$this->tmsEdit)." par ".$o->userEditName."";
+        $o->_details = "créé le ".date('d/m/Y H:i',$this->tmsCreate )." par ".$o->userCreateName."\nmodifié le ".date('d/m/Y H:i',$this->tmsEdit)." par ".$o->userEditName."";*/
         $o->create= date('d/m/Y H:i',$this->tmsCreate );
         $o->tmsCreate= $this->tmsCreate;
         $o->tmsEdit= $this->tmsEdit;

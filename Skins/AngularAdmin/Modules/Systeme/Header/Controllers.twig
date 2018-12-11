@@ -892,10 +892,14 @@
                 }
             });
         {% endfor %}
+
         //récupération des données du store.
+        $scope.currentStore = {{ c.identifier }}Store;
         {{ c.identifier }}Store.getOneData($routeParams.id,'fiche',true).then(function (data){
             console.log('{{ c.identifier }} >> Fiche >> receive obj definition',data);
             $scope.obj = data;
+
+
 
             //call function
             $scope.{{ c.identifier }}callFunction = function (obj,name,title,needConfirm,follow){
