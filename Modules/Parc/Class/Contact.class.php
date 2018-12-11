@@ -2,7 +2,7 @@
 
 class Parc_Contact extends genericClass {
     var $Role = 'PARC_CONTACT';
-
+    var $_isVerified = false;
 
 	/**
 	 * Force la vérification avant enregistrement
@@ -15,12 +15,18 @@ class Parc_Contact extends genericClass {
         $this->AccesUser = Utils::CheckSyntaxe($this->AccesUser);
 
         // Enregistrement si pas d'erreur
-        parent::Save();
-        $this->Verify(true);
+        // Forcer la vérification
+        $this->Verify( $synchro );
+        // Enregistrement si pas d'erreur
+        if($this->_isVerified) {
+            if($this->setUser()){
+                parent::Save();
+                return true;
+            } else{
 
-        if($this->setUser()){
-            return true;
+            }
         }
+
 
         return false;
 	}
@@ -31,7 +37,7 @@ class Parc_Contact extends genericClass {
 	public function setUser() {
 		//récupération du groupe de stockage des accès clients
 		$u = $this->getOneParent('User');
-		$cli = $this->getOneParent('Client');
+		$cli = $this->getClient();
 
 		if ($this->AccesActif){
             if($cli){
@@ -69,9 +75,15 @@ class Parc_Contact extends genericClass {
 					$u->Mail = $this->Email;
 					$u->Actif = true;
 					$u->AddParent($grp);
-					$u->Save();
-					$this->AddParent($u);
-					parent::Save();
+					//Si on arrive bien à créer le user
+					if($u->Save()){
+                        $this->AddParent($u);
+                    } else{
+                        Server::ldapDelete($this->LdapID);
+                        $this->Error=array_merge($this->Error,$u->Error);
+					    return false;
+                    }
+
 				}else{
 
 					//mise à jour utilisateur
@@ -80,7 +92,12 @@ class Parc_Contact extends genericClass {
 					$u->Mail = $this->Email;
 					$u->Actif = true;
 					$u->AddParent($grp);
-					$u->Save();
+                    if($u->Save()){
+                        $this->AddParent($u);
+                    } else{
+                        $this->Error=array_merge($this->Error,$u->Error);
+                        return false;
+                    }
 				}
                 $this->updateGuacamoleUser();
 			}else{
@@ -97,6 +114,32 @@ class Parc_Contact extends genericClass {
 		}
 		return true;
 	}
+
+
+	public function getClient(){
+        if(empty($this->Id)){
+            $pars = array();
+            foreach ($this->Parents as $p){
+                if($p['Titre'] == 'Client'){
+                    $pa = Sys::getOneData('Parc','Client/'.$p['Id'],0,1,null,null,null,null,true);
+                    $pars[] = $pa;
+                }
+
+            }
+            $cli = $pars;
+        }
+        if (!is_array($cli)) {
+            //$tab = $this->getParents('Server');
+            $tab = Sys::getData('Parc','Client/Contact/'.$this->Id,0,100,null,null,null,null,true);
+            if (empty($tab)) {
+                $this->_isVerified = false;
+                $this->AddError(Array("Message"=>"Ce contact n'est rattaché à aucun client"));
+                return false;
+            }
+            else $cli = $tab;
+        }
+        return $cli[0];
+    }
 
     /**
      * Verification des erreurs possibles
@@ -134,6 +177,14 @@ class Parc_Contact extends genericClass {
                 if (empty($this->AccesUser)){
                     $this->AddError(Array("Message"=>"Veuillez renseigner l'identifiant pour l'accès web"));
                     $this->_isVerified = false;
+                }
+                if (!empty($this->AccesUser)){
+                    $cli = $this->getClient();
+
+                    if($cli->AccesUser == $this->AccesUser) {
+                        $this->AddError(Array("Message" => "L'identifiant doit être unique et different de celui du client principal."));
+                        $this->_isVerified = false;
+                    }
                 }
                 if (empty($this->AccesPass)){
                     $this->AddError(Array("Message"=>"Veuillez renseigner le mot de passe pour l'accès web"));
@@ -259,6 +310,9 @@ class Parc_Contact extends genericClass {
     public function Delete() {
         Server::ldapDelete($this->LdapID);
         $this->deleteGuacamoleUser();
+        $u = $this->getOneParent('User');
+        if($u)
+            $u->Delete();
         parent::Delete();
     }
 
