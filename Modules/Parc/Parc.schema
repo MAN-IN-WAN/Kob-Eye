@@ -462,24 +462,77 @@
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Ticket" driver="mysql" AccessPoint="1" Description="Tickets Clients" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" >
-		<FILTER name="En cours" color="secondary">Etat=En cours</FILTER>
-		<FILTER name="Incidents" color="warning"><![CDATA[Type=Incident&Etat=En cours]]></FILTER>
-		<FILTER name="Demandes" color="secondary"><![CDATA[Type=Demande&Etat=En cours]]></FILTER>
+		<FILTER name="Bloquant" color="secondary"><![CDATA[Etat=10&Priorite=4]]></FILTER>
+		<FILTER name="En cours" color="secondary">Etat=10</FILTER>
+		<FILTER name="Terminés" color="warning">Etat=20</FILTER>
+		<FILTER name="A facturer" color="secondary">Etat=30</FILTER>
 		<FILTER name="Tous les tickets" color="primary" ></FILTER>
+
 		<PROPERTIES type="int" unique="1" description="Id dans la gestion" >IdGestion</PROPERTIES>
+		<PROPERTIES type="varchar" description="Source du ticket" list="1" form="1" fiche="1" listDescr="Source" values="Gestion,Zabbix,Glpi,Web" default="Web" >Source</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Numero du ticket" list="1" form="1" fiche="1" listDescr="N° Ticket">Numero</PROPERTIES>
-		<PROPERTIES type="varchar" description="Type de ticket" list="0" form="1" fiche="1" listDescr="Type" values="Incident,Demande,NC" default="NC" >Type</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="2" obligatoire="1"  description="Intitulé" list="1" form="1" fiche="1" listDescr="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="varchar" length="10" obligatoire="1" description="Code entité Abtel" list="1" form="1" fiche="1" listDescr="Entité Abtel" values="AI::Informatique,AW::Web,AN::Network" default="AI" hasRole="PARC_TECHNICIEN">CodeEntite</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" obligatoire="1" description="Code Client Abtel" list="1" form="1" fiche="1" listDescr="Client Abtel" hasRole="PARC_TECHNICIEN">CodeClient</PROPERTIES>
+		<PROPERTIES type="varchar" description="Type de ticket" list="0" form="1" fiche="1" listDescr="Categorie" values="AVV::Avant-Vente,OPE::Opérationnel,COM::Commercial,ADM::Administratif" default="OPE" hasRole="PARC_TECHNICIEN">Categorie</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" description="Intitulé" list="1" form="1" fiche="1" listDescr="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="date" description="Date d'échéance" list="1" form="1" fiche="1" listDescr="Date d'échance" hasRole="PARC_TECHNICIEN">DateEcheance</PROPERTIES>
+		<PROPERTIES type="varchar" description="Etat" list="1" form="1" fiche="1" listDescr="Etat" values="10::En cours,20::Terminé,30::A facturer,40::Clôturé,41::Abandonné">Etat</PROPERTIES>
+		<PROPERTIES type="boolean" list="1" form="1" fiche="1" listDescr="Prioritaire" hasRole="PARC_TECHNICIEN">Prioritaire</PROPERTIES>
+		<PROPERTIES type="text" description="Information complémentaires" fiche="1" listDescr="Retour">Note</PROPERTIES>
 		<PROPERTIES type="date" description="Date de création" list="1" form="1" fiche="1" listDescr="Date de création">DateCrea</PROPERTIES>
-        <PROPERTIES type="date" description="Date d'échéance" list="1" form="1" fiche="1" listDescr="Date d'échance">DateEcheance</PROPERTIES>
-        <PROPERTIES type="varchar" description="Etat" list="1" form="1" fiche="1" listDescr="Etat" values="A facturer,En cours,Terminé,Abandonné,Commercial">Etat</PROPERTIES>
 		<PROPERTIES type="varchar" description="Intervenant original" list="0" form="1" fiche="1" listDescr="Créateur">UserCrea</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" description="Code Client Abtel" fiche="1" listDescr="Client Abtel" hasRole="PARC_TECHNICIEN">CodeContrat</PROPERTIES>
 		<PROPERTIES type="varchar" description="Prochain intervenant" list="1" form="1" fiche="1" listDescr="Prochain">UserNext</PROPERTIES>
-		<PROPERTIES type="varchar" description="Source du ticket" list="1" form="1" fiche="1" listDescr="Source" values="Gestion,Zabbix,Glpi,Web" default="Gestion" >Source</PROPERTIES>
-        <PROPERTIES type="varchar" description="Priorité" list="1" form="1" fiche="1" listDescr="Priorité" values="NC,Info,Warning,Moyenne,Haute,Désastre" default="NC" >Priorite</PROPERTIES>
+		<PROPERTIES type="varchar" description="Urgence" list="1" form="1" fiche="1" listDescr="Priorité" values="1::Reportable,2::Normal,3::Perturbant,4::Bloquant" default="2" >Priorite</PROPERTIES>
+		<PROPERTIES type="date" description="Terminé le" form="1" fiche="1" listDescr="Terminé le">DateTermine</PROPERTIES>
+		<PROPERTIES type="varchar" description="Terminé par"  form="1" fiche="1" listDescr="Terminé par">UserTermine</PROPERTIES>
+		<PROPERTIES type="date" description="Cloturé le" form="1" fiche="1" listDescr="Terminé le">DateCloture</PROPERTIES>
+		<PROPERTIES type="varchar" description="Cloturé par"  form="1" fiche="1" listDescr="Terminé par">UserCloture</PROPERTIES>
+
 		<FKEY card="0,n" data="Device,Id">DeviceId</FKEY>
 		<FKEY card="1,1" data="Client,Id" hasRole="PARC_TECHNICIEN">ClientId</FKEY>
+		<FKEY card="0,1" data="Contrat,Id" hasRole="PARC_TECHNICIEN">ContratId</FKEY>
+		<FKEY card="0,1" data="Contact,Id">ContactId</FKEY>
+
+		<!--PROPERTIES type="varchar" description="Cadre" list="1" form="1" fiche="1" listDescr="Cadre contractuel" values="1::Sous contrat,2::Hors contrat,3::Gratuit" hasRole="PARC_TECHNICIEN">Cadre</PROPERTIES-->
+		<!--PROPERTIES type="varchar" description="Contact" fiche="1" listDescr="Contact client" hasRole="PARC_TECHNICIEN">Contact</PROPERTIES-->
+		<!--PROPERTIES type="varchar" length="50" description="Code Projet Abtel" fiche="1" listDescr="Projet Abtel" hasRole="PARC_TECHNICIEN">CodeProjet</PROPERTIES-->
+		<!--FKEY card="0,1" data="Projet,Id" hasRole="PARC_TECHNICIEN">ProjetId</FKEY-->
+		<!--PROPERTIES type="varchar" length="50" description="Code Site Client" fiche="1" listDescr="Site Client" hasRole="PARC_TECHNICIEN">CodeSite</PROPERTIES-->
+		<!--FKEY card="0,1" data="Site,Id" hasRole="PARC_TECHNICIEN">SiteId</FKEY-->
+		<!--PROPERTIES type="date" description="Date de première lecture" fiche="1" listDescr="Date de lecture">DateLecture</PROPERTIES-->
+		<!--PROPERTIES type="varchar" description="Lecteur original" list="0" form="1" fiche="1" listDescr="Lecteur">UserLecture</PROPERTIES-->
 	</OBJECTCLASS>
+
+	<OBJECTCLASS title="Action" driver="mysql" AccessPoint="1" Description="Action des tickets" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" >
+		<PROPERTIES type="int" unique="1" description="Id dans la gestion" >IdGestion</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Numero du ticket" list="1" form="1" fiche="1" listDescr="N° Ticket">NumeroTicket</PROPERTIES>
+		<PROPERTIES type="varchar" length="10" obligatoire="1" description="Code entité Abtel" list="1" form="1" fiche="1" listDescr="Entité Abtel" values="AI::Informatique,AW::Web,AN::Network" default="AI" hasRole="PARC_TECHNICIEN">CodeEntite</PROPERTIES>
+		<PROPERTIES type="varchar" description="Type de ticket" list="0" form="1" fiche="1" listDescr="Categorie" values="AVV::Avant-Vente,OPE::Opérationnel,COM::Commercial,ADM::Administratif" default="OPE" hasRole="PARC_TECHNICIEN">Categorie</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" description="Intitulé" list="1" form="1" fiche="1" listDescr="Intitulé">Titre</PROPERTIES>
+		<PROPERTIES type="date" description="Date de création" list="1" form="1" fiche="1" listDescr="Date de création">DateCrea</PROPERTIES>
+		<PROPERTIES type="varchar" description="Intervenant original" list="0" form="1" fiche="1" listDescr="Créateur">UserCrea</PROPERTIES>
+		<PROPERTIES type="varchar"  description="Créneau horaire" form="1" fiche="1" listDescr="Créneau" values="1::Libre,2::Matin,3::Après-midi,4::Journée" default="1">Creneau</PROPERTIES>
+		<PROPERTIES type="time" description="Date de début" list="1" form="1" fiche="1" listDescr="Début">HeureDebut</PROPERTIES>
+		<PROPERTIES type="time" description="Date de fin" list="1" form="1" fiche="1" listDescr="Fin">HeureFin</PROPERTIES>
+		<PROPERTIES type="time" description="Temps de trajet" form="1" fiche="1" listDescr="Trajet">Trajet</PROPERTIES>
+		<PROPERTIES type="time" description="Temps de pause" form="1" fiche="1" listDescr="Pause">Pause</PROPERTIES>
+		<PROPERTIES type="varchar"  description="Contexte" form="1" fiche="1" listDescr="Créneau" values="1::Sur site (déplacement),2::Télémaintenance,3::Atelier ou bureau (pas de déplacement)," default="3">Contexte</PROPERTIES>
+		<PROPERTIES type="text" description="Information complémentaires" fiche="1" listDescr="Retour">Note</PROPERTIES>
+		<PROPERTIES type="varchar" description="Etat" list="1" form="1" fiche="1" listDescr="Etat" values="1::Planifié,2::En cours,3::Terminé">Etat</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" description="Code Client Abtel" fiche="1" listDescr="Client Abtel" hasRole="PARC_TECHNICIEN">CodeContrat</PROPERTIES>
+		<PROPERTIES type="varchar" description="Appel" form="1" fiche="1" values="1::Pas d'appel,2::Reçu,3::Emis" default="1">Appel</PROPERTIES>
+
+		<FKEY card="1,1" data="Ticket,Id" hasRole="PARC_TECHNICIEN">TicketId</FKEY>
+		<FKEY card="0,1" data="Contrat,Id" hasRole="PARC_TECHNICIEN">ContratId</FKEY>
+
+		<!--PROPERTIES type="varchar" description="Cadre" list="1" form="1" fiche="1" listDescr="Cadre contractuel" values="1::Sous contrat,2::Hors contrat,3::Gratuit" hasRole="PARC_TECHNICIEN">Cadre</PROPERTIES-->
+		<!--PROPERTIES type="varchar" description="Contact" fiche="1" listDescr="Contact client" hasRole="PARC_TECHNICIEN">Contact</PROPERTIES-->
+		<!--PROPERTIES type="time" description="Duree" form="1" fiche="1" listDescr="Duree">Duree</PROPERTIES-->
+		<!--PROPERTIES type="varchar" length="50" description="Code Projet Abtel" fiche="1" listDescr="Projet Abtel" hasRole="PARC_TECHNICIEN">CodeProjet</PROPERTIES-->
+		<!--FKEY card="0,1" data="Projet,Id" hasRole="PARC_TECHNICIEN">ProjetId</FKEY-->
+	</OBJECTCLASS>
+
 	<OBJECTCLASS title="DeviceTask" driver="mysql" AccessPoint="1" Description="Taches machines" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/DeviceTask.class.php">
 		<FKEY card="1,1" data="Device,Id">DeviceId</FKEY>
 		<PROPERTIES type="boolean" description="Activation" list="1" form="1" fiche="1" listDescr="Active">Enabled</PROPERTIES>

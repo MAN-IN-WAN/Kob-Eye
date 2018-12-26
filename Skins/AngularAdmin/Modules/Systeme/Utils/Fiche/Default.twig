@@ -12,7 +12,7 @@
     </ul>
 
     <!-- Default Panel -->
-    <section class="panel" ng-if="obj.id > 0">
+    <section class="panel" ng-if="displayFiche">
         <div class="panel-heading">
             <div class="pull-right">
                 {% if functions|length > 1 %}
@@ -175,7 +175,7 @@
         </div>
     </section>
     <!-- End Default Panel -->
-    <div class="nav-tabs-horizontal" ng-if="obj.id > 0">
+    <div class="nav-tabs-horizontal" ng-if="displayFiche">
         <ul class="nav nav-tabs" role="tablist">
             {% for child in ChildrenElements %}
                 <li class="nav-item">
@@ -231,7 +231,7 @@
 {% endif %}
 
 
-<section class="panel" ng-if="!obj.id">
+<section class="panel" ng-if="!displayFiche">
     <div class="panel-heading">
         <h3>Oups, j'ai glissé chef !</h3>
     </div>

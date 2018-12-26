@@ -65,7 +65,7 @@ function loadImages() {
             }
             if($file_style == "block") { ?>
                 <div class="fileDiv"
-                     onclick="showEditBar('<?php echo $image_url; ?>','<?php echo $image_height; ?>','<?php echo $count; ?>','<?php echo ltrim($folder,'/').'/'.$image_basename; ?>',<?php echo$_SESSION['CKEditorFuncNum']; ?>);"
+                     onclick="showEditBar('<?php echo $image_url; ?>','<?php echo $image_height; ?>','<?php echo $count; ?>','<?php echo ltrim($folder,'/').'/'.$image_basename; ?>',<?php echo $_SESSION['CKEditorFuncNum']; ?>);"
                      ondblclick="showImage('<?php echo $image_url; ?>','<?php echo $image_height; ?>','<?php echo ltrim($folder,'/').'/'.$image_basename; ?>');"
                      data-imgid="<?php echo $count; ?>">
                     <div class="imgDiv"><img class="fileImg lazy" data-original="<?php echo $image_url; ?>"></div>
@@ -75,7 +75,7 @@ function loadImages() {
                 </div>
             <?php } elseif($file_style == "list") { ?>
                 <div class="fullWidthFileDiv"
-                     onclick="showEditBar('<?php echo $image_url; ?>','<?php echo $image_height; ?>','<?php echo $count; ?>','<?php echo ltrim($folder,'/').'/'.$image_basename; ?>',<?php echo$_SESSION['CKEditorFuncNum']; ?>);"
+                     onclick="showEditBar('<?php echo $image_url; ?>','<?php echo $image_height; ?>','<?php echo $count; ?>','<?php echo ltrim($folder,'/').'/'.$image_basename; ?>',<?php echo $_SESSION['CKEditorFuncNum']; ?>);"
                      ondblclick="showImage('<?php echo $image_url; ?>','<?php echo $image_height; ?>','<?php echo ltrim($folder,'/').'/'.$image_basename; ?>');"
                      data-imgid="<?php echo $count; ?>">
                     <div class="fullWidthimgDiv"><img class="fullWidthfileImg lazy" data-original="<?php echo $image_url; ?>"></div>
