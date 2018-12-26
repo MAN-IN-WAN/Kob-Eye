@@ -23,17 +23,14 @@ insightcom;insightcom;insightcom
 lace-restaurant;lace-restaurant.fr;lace-restaurant
 laprimavera;laprimavera-;laprimavera
 maf82;montaubanath;maf82
-murviel;murviel;murviel
-nino-robotics;nino-robotic;nino-robotics+nino-robotics-dev+nino-robotics-sup
 pianoconcertino;pianoconcert;pianoconcertino
 psychotherapiesatm;christinebuo;psychotherapiesat
 racinespubliques;racinespubliques;racinespubliques
 serenity-services;serenity-services;serenity-service
 
 
-spiruline;spirulineala;spiruline
+
 tennisforever;tennisforeve;tennisforever+tennisforever_reservation
-travaux-speciaux;travaux-spec;travaux-speciaux
 vmid;vmid;vmid";
 
 
@@ -42,16 +39,11 @@ laboratoire-val;laboratoire-;laboratoire-val
 
 */
 $csv= "
-quentinmultiservices;quentinmultiservices;quentinmultiserv
-technifer;technifer;technifer
-pushrdv;pushrdv;pushrdv
-sudvtc;sudvtc;sudvtc
-selfcopy;selfcopy;selfcopy
-rdksolutions;rdksolutions;rdksolutions
-safetygreen;safetygreen;safetygreen
-secreteam;secreteam;secreteam
-veterinaire-lang;veterinaire-languedocia;veterinaire-lang
-veterinaire-veto;veterinaire-vetocia;veterinaire-veto
+murviel;murviel;murviel
+privilegeberricar;privilegeber;privilegeberrica
+nino-robotics;nino-robotic;nino-robotics+nino-robotics-dev+nino-robotics-sup
+spiruline;spirulineala;spiruline
+travaux-speciaux;travaux-spec;travaux-speciaux
 ";
 $result = explode(PHP_EOL,$csv);
 $total = sizeof($result)-2;

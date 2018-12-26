@@ -2,14 +2,15 @@
 class Esx extends genericClass {
     private $_connection;
     public function Save() {
-        parent::Save();
         //installation de la clef
-        if (!$this->Status){
-            if (!$this->installSshKey()) return false;
-            parent::Save();
-        }
-        //inventaire
-        if (!$this->getInventory()) return false;
+        if ($this->Enabled){
+            if (!$this->Status){
+                if (!$this->installSshKey()) return false;
+                parent::Save();
+            }
+            //inventaire
+            if (!$this->getInventory()) return false;
+        }else parent::Save();
         return true;
     }
     public function Connect() {
@@ -17,7 +18,7 @@ class Esx extends genericClass {
         try {
             $connection = ssh2_connect($this->IP, 22);
             if (!$connection){
-                $this->addError(array("Message"=>"Impossible de contacter l'hôte ".$this->IP));
+                $this->addError(array("Message"=>"Impossible de contacter l'hôte ".$this->IP.". Le port 22 (SSH) ne semble pas etre ouvert. Veuillez vérifier que le service SSH est bien actif sur l'ESX cible."));
                 return false;
             }
             if (!$this->Status) {
@@ -66,7 +67,11 @@ class Esx extends genericClass {
     }
     public function installSshKey() {
         //connexion par login/pass
-        if (!$this->_connection)$this->Connect();
+        if (!$this->_connection){
+            if (!$this->Connect()) {
+                return false;
+            }
+        }
         //génération des clefs publiques / privées
         try {
             AbtelBackup::localExec("if [ ! -d '.ssh' ]; then mkdir .ssh; fi && cd .ssh && rm -f id_". $this->IP."* && /usr/bin/ssh-keygen  -N \"\" -f id_" . $this->IP);
@@ -80,7 +85,7 @@ class Esx extends genericClass {
         }catch (Exception $e){
             $this->addError(array("Message"=>"Une erreur interne s'est produite lors de la tentative de création des clefs SSH. Détails: ".$e->getMessage()));
             $this->Status = false;
-    	    parent::Save();
+    	    //parent::Save();
             return false;
         }
         //tout initialisé

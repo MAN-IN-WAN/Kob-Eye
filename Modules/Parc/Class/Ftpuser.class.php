@@ -273,7 +273,7 @@ class Ftpuser extends genericClass {
 	public function Delete() {
 	    $KEServers = $this->getKEServer();
 	    foreach ($KEServers as $KEServer) {
-            Server::ldapDelete($this->LdapID);
+            Server::ldapDelete($this->getLdapID($KEServer));
         }
         parent::Delete();
 	}

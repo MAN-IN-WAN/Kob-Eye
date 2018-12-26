@@ -128,18 +128,6 @@ progress.progress.progress-danger:after{
 
 }
 
-.listWrap{
-    position: relative;
-    width: 100%;
-    overflow: auto;
-}
-.listWrap table {
-    width: auto;
-    min-width: 100%;
-}
-.listWrap .table-action{
-    min-width: 170px;
-}
 
 #activity_list{
     width:100%;
@@ -183,7 +171,7 @@ progress.progress.progress-danger:after{
     width:175px;
     text-align: center;
 }
-#activity_list tr{
+#activity_list > tbody > tr{
     border-bottom:1px solid #eee;
 }
 #activity_list tr.cursor{
@@ -289,7 +277,7 @@ table tr td{
     padding: .45rem;
 }
 table {
-    margin-bottom:1rem;
+    /*margin-bottom:1rem;*/
 }
 .table.table-hover tbody tr:hover {
     background: #efefef !important;
@@ -394,6 +382,18 @@ table tr td.typeraw span.ng-binding{
         margin-top:60px;
         text-align: center;
         width:100%;
+    }
+    .listWrap{
+        position: relative;
+        width: 100%;
+        overflow: auto;
+    }
+    .listWrap table {
+        width: auto;
+        min-width: 100%;
+    }
+    .listWrap .table-action{
+        min-width: 170px;
     }
 
 }

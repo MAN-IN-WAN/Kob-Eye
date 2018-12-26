@@ -345,30 +345,7 @@ class Parc extends Module{
         $parc = Sys::getModule('Parc');
         $parc->renewCertificates();
     }
-    /**
-     * Execution des taches
-     */
-    public  function executeTasks() {
-        $start = time();
-        Sys::autocommitTransaction();
-        while(time()<$start+240){
-            //empty query cache
-            Sys::$Modules['Parc']->Db->clearLiteCache();
-            //gestion des priorités
-            $t = Sys::getOneData('Systeme','Tache/Demarre=0&DateDebut<'.time().'&TaskType!=check',0,1);
-            if (!$t)
-                $t = Sys::getOneData('Systeme','Tache/Demarre=0&DateDebut<'.time(),0,1);
-            //execution de la tache
-            if ($t)
-                $t->Execute($t);
-            else sleep(1);
-        }
-        return true;
-    }
-    public static function Execute(){
-        $parc = Sys::getModule('Parc');
-        $parc->executeTasks();
-    }
+
     /**
      * checkState
      * Vérification des instances
