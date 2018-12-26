@@ -4,10 +4,17 @@
 // For licensing, see LICENSE.md
 
 session_start();
+//print_r($_FILES);
+//print_r($_POST);
+//print_r($_COOKIE);
+//print_r($_SESSION);
 
 if(!isset($_SESSION['username'])) {
+    echo 'nom d\'utilisateur incorrect';
     exit;
 }
+
+echo 'Pouet';
 
 // checking lang value
 if(isset($_COOKIE['sy_lang'])) {
@@ -65,7 +72,8 @@ if (file_exists($target_file)) {
     $uploadOk = 0;
 }
 // Check file size
-if ($_FILES["upload"]["size"] > 1024000) {
+if ($_FILES["upload"]["size"] > 20024000) {
+    die ('bad file size : '.$_FILES["upload"]["size"]);
     echo "<script>alert('".$uploadimgerrors3."');</script>";
     $uploadOk = 0;
 }

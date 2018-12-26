@@ -809,7 +809,7 @@
     });
 
     /**** FICHE CONTROLLER ****/
-    app.controller('{{ c.name }}FicheCtrl', function($sce, $window, $templateCache,$controller,$injector,NgMap,$location, $scope,$timeout, $rootScope, $routeParams,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store {% for cParent in child.parentelements %},{{ cParent.objectModule }}{{ cParent.objectName }}Store{% endfor %}{% for cChild in child.childrenelements %},{{ cChild.objectModule }}{{ cChild.objectName }}Store{% endfor %}{% endfor %}{% if c.browseable%},SystemePageStore{% endif %}) {
+    app.controller('{{ c.name }}FicheCtrl', function($sce, $window, $templateCache,$controller,$injector,NgMap,$location, $scope, $timeout, $interval, $rootScope, $routeParams,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store {% for cParent in child.parentelements %},{{ cParent.objectModule }}{{ cParent.objectName }}Store{% endfor %}{% for cChild in child.childrenelements %},{{ cChild.objectModule }}{{ cChild.objectName }}Store{% endfor %}{% endfor %}{% if c.browseable%},SystemePageStore{% endif %}) {
         $scope.log = function(toto){
             console.log(toto);
         }
@@ -818,7 +818,8 @@
             return $window[toto];
         }
 
-        $scope.injectStore = function(toto,context, query){
+        $scope.displayFiche =true;
+       $scope.injectStore = function(toto,context, query){
             var store = $injector.get(toto+'Store');
             if($scope[toto] == undefined) {
                 $scope[toto] = {
@@ -898,6 +899,7 @@
         {{ c.identifier }}Store.getOneData($routeParams.id,'fiche',true).then(function (data){
             console.log('{{ c.identifier }} >> Fiche >> receive obj definition',data);
             $scope.obj = data;
+            if($scope.obj.id == undefined) $scope.displayFiche = false;
 
 
 

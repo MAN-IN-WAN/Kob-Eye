@@ -5,10 +5,7 @@ $info = Info::getInfos($query);
 if ($info["TypeSearch"]=="Direct"){
     //alors modification
     $o = Sys::getOneData($info['Module'],$query);
-
-    $tache = Sys::getOneData('Systeme','Tache/Nom=ActivityDump');
-
-    $vars['res'] = $o->Delete($tache);
+    $vars['res'] = $o->Delete();
     $vars['errors'] = json_encode($o->Error);
 }
 ?>
