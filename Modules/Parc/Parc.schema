@@ -207,7 +207,7 @@
         <PROPERTIES category="LDAP" type="varchar" auto="1">LdapUserTms</PROPERTIES>
 		<FKEY card="0,1" data="Client,Id">ClientId</FKEY>
 		<FKEY card="0,1" data="ServerProfile,Id">ServerProfileId</FKEY>
-		<FKEY data="Infra,Id" card="0,1" description="Infrastructure" form="1" >InfraId</FKEY>
+		<FKEY data="Infra,Id" card="0,n" description="Infrastructure" form="1" >InfraId</FKEY>
 
 		<RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">ServerTacheId</RKEY>
 
