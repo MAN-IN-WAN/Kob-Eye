@@ -104,8 +104,6 @@ left join kbabtel.`kob-Cadref-Profession` p on p.Profession=e.Profession
 left join kbabtel.`kob-Cadref-Cursus` u on u.Cursus=e.Cursus
 left join kbabtel.`kob-Cadref-Situation` s on s.Situation=e.Situation;
 
-
-
 truncate kbabtel.`kob-Cadref-AdherentAnnee`;
 insert into kbabtel.`kob-Cadref-AdherentAnnee` (umod,gmod,omod,AdherentId,Numero,Annee,Notes,Adherent,ClasseId,
 Cotisation,Cours,Reglement,Differe,Regularisation)
@@ -116,13 +114,27 @@ inner join kbabtel.`kob-Cadref-Adherent` a on a.Numero=e.Numero
 left join kbabtel.`kob-Cadref-Classe` c on c.CodeClasse=concat(substr(e.Delegue,1,1),'.',substr(e.Delegue,2,2),'.',substr(e.Delegue,4,2),'.',substr(e.Delegue,6,1),'.',substr(e.Delegue,7,1))
 where e.Annee='2017';
 
-sum(cours)
-sum(regl)...
+update `kob-Cadref-AdherentAnnee` a
+set a.Cours=(select ifnull(sum(ifnull(Prix-Reduction1-Reduction2,0)),0) from `kob-Cadref-Inscription` i where i.AdherentId=a.AdherentId and i.Annee='2017' and i.Supprime=0),
+a.Reglement=(select ifnull(sum(ifnull(Montant,0)),0) from `kob-Cadref-Reglement` r where r.AdherentId=a.AdherentId and r.Annee='2017' and r.Supprime=0 and (r.Differe=0 or r.Encaisse=1)),
+a.Differe=(select ifnull(sum(ifnull(Montant,0)),0) from `kob-Cadref-Reglement` r where r.AdherentId=a.AdherentId and r.Annee='2017' and r.Supprime=0 and (r.Differe=1 and r.Encaisse=0));
+
+where a.Annee='2017' 
+update kbabtel.`kob-Cadref-AdherentAnnee` a
+left join (
+select AdherentId,min(DateReglement) as dt
+from kbabtel.`kob-Cadref-Reglement`
+where Annee='2017'
+group by AdherentId
+) t on t.AdherentId=a.AdherentId
+set a.DateCotisation=t.dt
+where a.Annee='2017'
+
 
 
 truncate kbabtel.`kob-Cadref-Inscription`;
 insert into kbabtel.`kob-Cadref-Inscription` (umod,gmod,omod,Numero,CodeClasse,Antenne,Annee,DateInscription,Attente,DateAttente,Prix,Reduction1,Reduction2,Supprime,DateSupprime,AdherentId,ClasseId)
-select 7,7,7,i.Numero,concat(i.Antenne,'.',i.Sect,'.',i.Discipline,'.',i.Niveau,'.',i.Classe),i.Antenne,'2017',if(DateInscr<'2017',null,unix_timestamp(DateInscr)),Attente,if(DateAtte<'2017',null,unix_timestamp(DateAtte)),i.Prix,i.Reduction,i.Reduc2,
+select 7,7,7,i.Numero,concat(i.Antenne,'.',i.Sect,'.',i.Discipline,'.',i.Niveau,'.',i.Classe),i.Antenne,'2017',if(Creation<'2017',null,unix_timestamp(Creation)),Attente,if(DateAtte<'2017',null,unix_timestamp(DateAtte)),i.Prix,i.Reduction,i.Reduc2,
 Supprime,if(DateSuppr<'2017',null,unix_timestamp(DateSuppr)),a.Id,c.Id
 from cadref17.Inscriptions i
 left join kbabtel.`kob-Cadref-Adherent` a on a.Numero=i.Numero

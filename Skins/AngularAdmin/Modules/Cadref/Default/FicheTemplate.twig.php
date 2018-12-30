@@ -28,5 +28,5 @@ $vars['CurrentObjId'] = $GLOBALS["Systeme"]->getGetVars("CurrentObjId");
 $vars['CurrentObjQuery'] = $q.$vars['CurrentObjId'];
 $p = getcwd().'/Skins/'.Sys::$Skin.'/Modules/'.$q;
 $vars['FichePath'] = file_exists($p.'Fiche.twig') ? $q : $info['Module'].'/Default/';
-$vars['Annee'] = $GLOBALS['Systeme']->getRegVars('AnneeEnCours');
+$vars['Annee'] = Cadref::$Annee;
 ?>

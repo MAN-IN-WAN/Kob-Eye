@@ -662,7 +662,6 @@
                     if (!data.warning.length&&!data.success.length) {
                         $("#modal-{{ c.identifier }}").modal('toggle');
 						if(callback != undefined) callback(data);
-						
 					}
                 }else {
                     //gestion des erreurs
@@ -1043,7 +1042,7 @@
                 });
                 $("#modalfiche-{{ c.identifier }}").modal();
             }
-            $scope.modalSave = function (){
+            $scope.modalSave = function (callback){
                 console.log('save ',$scope.modalObj);
                 //affichage spinner
                 $('#modalfiche-{{ c.identifier }} .modal-dialog').spin();
@@ -1056,8 +1055,10 @@
                         $scope.modalObj.errors = data.errors;
                         $scope.modalObj.infos = data.infos;
                         $scope.modalObj = $scope.obj
-                        if (!data.warning.length&&!data.success.length)
+                        if (!data.warning.length&&!data.success.length) {
                             $("#modalfiche-{{ c.identifier }}").modal('toggle');
+							if(callback != undefined) callback(data);
+						}
                         {{ c.identifier }}Store.refresh();
                     }else {
                         //gestion des erreurs

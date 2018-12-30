@@ -1,6 +1,6 @@
 <?php
 session_write_close();
-$vars['Annee'] = $GLOBALS['Systeme']->getRegVars('AnneeEnCours');
+$vars['Annee'] = $annee = Cadref::$Annee;
 $info = Info::getInfos($vars['Query']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
 
@@ -70,5 +70,18 @@ $tmp = array();
 $ans = Sys::getData('Cadref','Annee');
 foreach($ans as $an) $tmp[] = $an->Annee;
 $vars['annees'] = $tmp;
+// liste des classes
+$tmp = array('0'=>'');
+$cls = Sys::getData('Cadref','Classe/Annee='.$annee);
+foreach($cls as $cl) $tmp[] = $cl->CodeClasse;
+$vars['classes'] = $tmp;
+// liste des antennes
+$tmp = array('0'=>'');
+$as = Sys::getData('Cadref','Antenne');
+foreach($as as $a) $tmp[$a->Id] = $a->Libelle;
+$vars['antennes'] = $tmp;
+// type adhérent
+$vars['typeAdh'] = array(''=>'','B'=>'Bureau','A'=>'Administrateur','D'=>'Délégué');
+
 
 ?>

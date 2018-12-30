@@ -1,4 +1,4 @@
-{# fiche printAttestation #}
+{# fiche printReglement #}
 {% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean %} 
 <div class="page-content-inner">
     <section class="panel">
@@ -15,39 +15,32 @@
                         <div class="panel-body cadref-no-padding">
 							<div class="row">
 								<div class="col-xl-8">
+
 									<div class="row">
 										<div class="col-md-2">
-											{{ label("Année cotisation") }}
+											{{ label("Date de début") }}
 										</div>
 										<div class="col-md-2">
-											<select class="form-control cadref-input" ng-model="obj.AttestAnnee" ng-change="selectAttestAnnee(obj)">
-												{% for k,v in attestAnnees %}
-													<option value="{{ k }}">{{ v }}</option>
-												{% endfor %}
-											</select>
+											<label class="input-group datepicker-only-init cadref-no-margin">
+												<input id="input-objDateDebut" type="text" class="form-control cadref-input" mask="dd/dd/dddd" ng-model="obj.DateDebut" ng-init="obj.DateDebut='{{ dateDebut }}'"/>
+												<span class="input-group-addon">
+													<i class="icmn-calendar"></i>
+												</span>
+											</label>
 										</div>
 									</div>
 									<div class="row" style="height:10px"></div>
 									<div class="row">
 										<div class="col-md-2">
-											{{ label("Année fiscale") }}
+											{{ label("Date de fin") }}
 										</div>
 										<div class="col-md-2">
-											<select class="form-control cadref-input" ng-model="obj.AttestFiscale" ng-options="label for label in obj.fiscales">
-											</select>
-										</div>
-									</div>
-									<div class="row" style="height:10px"></div>
-									<div class="row">
-										<div class="col-md-2">
-											{{ label("Antenne") }}
-										</div>
-										<div class="col-md-4">
-											<select class="form-control cadref-input" ng-model="obj.Antenne">
-												{% for k,v in antennes %}
-													<option value="{{ k }}">{{ v }}</option>
-												{% endfor %}
-											</select>
+											<label class="input-group datepicker-only-init cadref-no-margin">
+												<input id="input-objDateFin" type="text" class="form-control cadref-input" mask="dd/dd/dddd" ng-model="obj.DateFin" ng-init="obj.DateFin='{{ "now"|date("d/m/Y") }}'"/>
+												<span class="input-group-addon">
+													<i class="icmn-calendar"></i>
+												</span>
+											</label>
 										</div>
 									</div>
 									<div class="row" style="height:10px"></div>
@@ -67,3 +60,26 @@
     </section>
 </div>
 
+
+<script>
+	$('.datepicker-only-init').datetimepicker({
+		widgetPositioning: {
+			horizontal: 'left'
+		},
+		locale: 'fr',
+		format: 'DD/MM/YYYY',
+		icons: {
+			time: "fa fa-clock-o",
+			date: "fa fa-calendar",
+			up: "fa fa-arrow-up",
+			down: "fa fa-arrow-down"
+		}
+	});
+
+	//Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
+	$(".datepicker-only-init").on("dp.change", function () {
+		var input = $(this).children('input').eq(0);
+		input.trigger('change');
+		input.trigger('input');
+	});
+</script>

@@ -3,6 +3,14 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 	$scope.obj = {};
 	$scope.obj.CurrentUrl = '{{ Url }}';
 	
+	$scope.obj.AttestAnnee = '{{ Annee }}';	
+	$scope.selectAttestAnnee = function(obj) {
+		obj.fiscales = [obj.AttestAnnee];
+		obj.fiscales.push((Number(obj.AttestAnnee)+1).toString());
+		obj.AttestFiscale = obj.AttestAnnee;
+	}
+	$scope.selectAttestAnnee($scope.obj);
+	
 	// appel de function kobeye avec retour objet
 	$scope.{{ identifier }}callMethod = function(obj, name) {
 

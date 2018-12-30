@@ -1,4 +1,4 @@
-{# fiche printReglement #}
+{# fiche gestionDiffere #}
 {% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean %} 
 <div class="page-content-inner">
     <section class="panel">
@@ -20,56 +20,65 @@
 										<div class="col-md-2">
 											{{ label("Utilisateur") }}
 										</div>
-										<div class="col-md-10">
+										<div class="col-md-2">
 											<select class="form-control cadref-input" ng-model="obj.Utilisateur" ng-init="obj.Utilisateur='{{ initiales }}'" style="width:80px">
 												{% for u in users %}
 													<option value="{{ u }}">{{ u }}</option>
 												{% endfor %}
 											</select>
 										</div>
+										<div class="col-md-2">
+											{{ label("Mois d'échéance") }}
+										</div>
+										<div class="col-md-2">
+											<div class="control-group">
+												<input type="text" class="form-control cadref-input" placeholder="" ng-model="obj.DateDebut" ng-init="obj.DateDebut='{{ "now"|date("m/Y") }}'" mask="dd/dddd" style="width:80px"/>
+											</div>
+										</div>
 									</div>
 									<div class="row" style="height:10px"></div>
-									{% if mode == 0 %}
-										<div class="row">
-											<div class="col-md-2">
-												{{ label("Date de début") }}
-											</div>
-											<div class="col-md-2">
-												<label class="input-group datepicker-only-init cadref-no-margin">
-													<input id="input-objDateDebut" type="text" class="form-control cadref-input" mask="dd/dd/dddd" ng-model="obj.DateDebut" ng-init="obj.DateDebut='{{ "now"|date("d/m/Y") }}'"/>
-													<span class="input-group-addon">
-														<i class="icmn-calendar"></i>
-													</span>
-												</label>
-											</div>
+									<div class="row">
+										<div class="col-md-6">
+							<section class="panel" >
+								<div class="panel-body cadref-no-padding">
+
+<table class="table table-hover nowrap straight" id="CadrefReglement-table" width="100%" style="line-height:1" >
+    <thead>
+        <tr>
+            <th title="Id" class="list-col-th-id" hidden>ID</th>
+           <th>N°</th>
+           <th>Nom</th>
+            <th>Date</th>
+            <th>Règlé</th>
+            <th>M</th>
+            <th>Notes</th>
+            <th>U</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr dir-paginate="item in CadrefReglement.data" >
+        <td class="list-col-td-id" hidden>{[{ item.id }]}</td>
+        <td scope="row" class="cadref-td typedate"><span class="label">{[{ item.Numero }]}</span></td>
+        <td scope="row" class="cadref-td typedate"><span class="label">{[{ item.Nom }]} {[{ item.Prenom }]}</span></td>
+        <td scope="row" class="cadref-td typedate"><span class="label">{[{ item.DateReglement }]}</span></td>
+        <td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Montant }]}</span></td>
+        <td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.ModeReglement }]}</span></td>
+        <td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Notes }]}</span></td>
+        <td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Utilisateur }]}</span></td>
+    </tr>
+    </tbody>
+</table>
+
+
+								</div>
+							</section>
 										</div>
-										<div class="row" style="height:10px"></div>
-										<div class="row">
-											<div class="col-md-2">
-												{{ label("Date de fin") }}
-											</div>
-											<div class="col-md-2">
-												<label class="input-group datepicker-only-init cadref-no-margin">
-													<input id="input-objDateFin" type="text" class="form-control cadref-input" mask="dd/dd/dddd" ng-model="obj.DateFin" ng-init="obj.DateFin='{{ "now"|date("d/m/Y") }}'"/>
-													<span class="input-group-addon">
-														<i class="icmn-calendar"></i>
-													</span>
-												</label>
-											</div>
+										<div class="col-md-6">
 										</div>
-									{% else %}
-										<div class="row">
-											<div class="col-md-2">
-												{% if mode == 1 %}{{ label("Mois d'échéance") }}{% else %}{{ label("Echéance antérieure à") }}{% endif %}
-											</div>
-											<div class="col-md-2">
-												<div class="control-group">
-													<input type="text" class="form-control cadref-input" placeholder="" ng-model="obj.DateDebut" ng-init="obj.DateDebut='{{ "now"|date("m/Y") }}'" mask="dd/dddd" style="width:80px"/>
-												</div>
-											</div>
-										</div>
-									{% endif %}
-									<div class="row" style="height:10px"></div>
+									</div>
+
+
+
 									<div class="row">
 										<div class="col-md-2">
 										</div>

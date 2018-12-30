@@ -26,5 +26,6 @@ if(isset($info['ObjectType'])){
 	$vars['noExtend'] = true;
 }
 $vars['Annee'] = Cadref::$Annee;
+$vars['Cotisation'] = Cadref::$Annee;
 
 ?>

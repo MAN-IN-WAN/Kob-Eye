@@ -12,3 +12,10 @@ $tmp = array(''=>'');
 $as = Sys::getData('Cadref','Antenne');
 foreach($as as $a) $tmp[$a->Id] = $a->Libelle;
 $vars['antennes'] = $tmp;
+
+$ta = array();
+$as = Sys::getData('Cadref','Annee');
+foreach($as as $a) $ta[$a->Annee] = $a->Annee.'-'.($a->Annee+1);
+$vars['attestAnnees'] = $ta;
+
+

@@ -1,4 +1,4 @@
-{# fiche printAttestation #}
+{# fiche printCheque classe #}
 {% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean %} 
 <div class="page-content-inner">
     <section class="panel">
@@ -17,39 +17,47 @@
 								<div class="col-xl-8">
 									<div class="row">
 										<div class="col-md-2">
-											{{ label("Année cotisation") }}
+											{{ label("Date") }}
 										</div>
 										<div class="col-md-2">
-											<select class="form-control cadref-input" ng-model="obj.AttestAnnee" ng-change="selectAttestAnnee(obj)">
-												{% for k,v in attestAnnees %}
-													<option value="{{ k }}">{{ v }}</option>
-												{% endfor %}
-											</select>
-										</div>
-									</div>
-									<div class="row" style="height:10px"></div>
-									<div class="row">
-										<div class="col-md-2">
-											{{ label("Année fiscale") }}
-										</div>
-										<div class="col-md-2">
-											<select class="form-control cadref-input" ng-model="obj.AttestFiscale" ng-options="label for label in obj.fiscales">
-											</select>
+											<label class="input-group datepicker-only-init cadref-no-margin">
+												<input id="input-objDateCheque" type="text" class="form-control cadref-input" mask="dd/dd/dddd" ng-model="obj.DateCheque" ng-init="obj.DateCheque='{{ "now"|date("d/m/Y") }}'"/>
+												<span class="input-group-addon">
+													<i class="icmn-calendar"></i>
+												</span>
+											</label>
 										</div>
 									</div>
-									<div class="row" style="height:10px"></div>
 									<div class="row">
 										<div class="col-md-2">
-											{{ label("Antenne") }}
+											{{ label("Montant") }}
+										</div>
+										<div class="col-md-2">
+											<div class="control-group">
+												<input type="text" class="form-control cadref-input" placeholder="" ng-model="obj.Montant"/>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Objet") }}
 										</div>
 										<div class="col-md-4">
-											<select class="form-control cadref-input" ng-model="obj.Antenne">
-												{% for k,v in antennes %}
-													<option value="{{ k }}">{{ v }}</option>
-												{% endfor %}
-											</select>
+											<div class="control-group">
+												<input type="text" class="form-control cadref-input" placeholder="" ng-model="obj.Montant"/>
+											</div>
 										</div>
 									</div>
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Description") }}
+										</div>
+										<div class="col-md-4">
+											<div ui-ace="{useWrapMode : true,mode: '',onLoad: aceLoaded,onChange: aceChanged}" ng-model="obj.Description" class="ace_editor" style="height:60px"></div>
+										</div>
+									</div>
+
+
 									<div class="row" style="height:10px"></div>
 									<div class="row">
 										<div class="col-md-2">

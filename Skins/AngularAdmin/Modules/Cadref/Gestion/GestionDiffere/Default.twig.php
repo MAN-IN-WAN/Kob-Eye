@@ -1,5 +1,5 @@
 <?php
-// fiche printReglement
+// fiche gestionDiffere
 $vars['Annee'] = Cadref::$Annee;
 $vars['CurrentMenu'] = Sys::$CurrentMenu;
 if(Sys::$User->Admin && !$vars['CurrentMenu']){
@@ -14,6 +14,6 @@ foreach($gs as $g) $tmp[] = $g->Initiales;
 $vars['users'] = $tmp;
 $vars['initiales'] = Sys::$User->Initiales;
 
-$menus = ['impressionslistereglements','impressionsreglementsdifferes','impressionsdifferesnonencaisses'];
-$t = explode('/', Sys::$CurrentMenu->Url);
-$vars['mode'] = array_search($t[0].$t[1], $menus);
+if (is_object(Sys::$CurrentMenu))
+    $vars['CurrentUrl'] = Sys::$CurrentMenu->Url;
+else $vars['CurrentUrl'] = $vars['Query'];
