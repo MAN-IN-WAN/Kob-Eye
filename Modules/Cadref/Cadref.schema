@@ -5,16 +5,17 @@
 		<PROPERTIES type="boolean" default="0" category="Description" description="Année en cours">EnCours</PROPERTIES>
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="Antenne" driver="mysql" order="Antenne" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Antennes" Operations="add,edit" Dico="1">
+	<OBJECTCLASS title="Antenne" driver="mysql" order="Antenne" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Antennes" Operations="edit" Dico="0">
 		<FILTER name="Actives" color="success">Inactif=0</FILTER>
         <FILTER name="Toutes" color="warning"></FILTER>
 		<PROPERTIES type="varchar" length="1" searchOrder="1" obligatoire="1" category="Description" list="1" form="1" fiche="1" description="Antenne">Antenne</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" searchOrder="2" obligatoire="1" category="Description" list="2" form="2" fiche="2" description="Libellé">Libelle</PROPERTIES>
-		<PROPERTIES type="varchar" length="3" obligatoire="1" category="Description" description="Libellé court">Abrege</PROPERTIES>
+		<PROPERTIES type="varchar" length="3" obligatoire="1" category="Description" form="3" fiche="3" description="Libellé court">Abrege</PROPERTIES>
 		<PROPERTIES type="varchar" length="255" obligatoire="0" category="Description" form="4" fiche="4" description="Adresse 1">Adresse1</PROPERTIES>
 		<PROPERTIES type="varchar" length="255" obligatoire="0" category="Description" form="5" fiche="5" description="Adresse 2">Adresse2</PROPERTIES>
 		<PROPERTIES type="varchar" length="6"  searchOrder="3" obligatoire="0" category="Description" form="6" fiche="6" description="Code postal" listDescr="CP">CP</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" searchOrder="4" filterMode="generic" obligatoire="0" category="Description" form="7" fiche="7" description="Ville">Ville</PROPERTIES>
+		<PROPERTIES type="varchar" length="20" obligatoire="0" category="Contact" list="4" form="8" fiche="8" listDescr="Téléphone" description="Téléphone">Telephone</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" special="reverse" category="Description" form="13" fiche="13" description="Inactif">Inactif</PROPERTIES>
 	</OBJECTCLASS>
 
