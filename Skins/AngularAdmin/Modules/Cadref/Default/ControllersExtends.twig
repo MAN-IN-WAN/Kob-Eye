@@ -196,7 +196,7 @@
 		}
 		
 		$scope.printCarte = function(obj) {
-			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintCarte');
+			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintCarte',[false]);
 			ajax.success(
 				function(data) {
 					$window.open(data.data.pdf,'_blank');

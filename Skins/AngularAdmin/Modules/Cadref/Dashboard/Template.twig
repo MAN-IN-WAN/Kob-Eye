@@ -1,9 +1,9 @@
 <div class="page-content-inner">
-
     <!-- Dashboard -->
     <div class="dashboard-container">
+		{% if role == 'CADREF_ADMIN' %}
         <div class="row">
-            <a class="col-xl-3 col-lg-6 col-sm-6 col-xs-12" href="#/gestion/adherents">
+            <a class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12" href="#/gestion/adherents">
                 <div class="widget widget-seven background-info">
                     <div class="widget-body">
                         <div href="javascript: void(0);" class="widget-body-inner">
@@ -17,7 +17,7 @@
                     </div>
                 </div>
             </a>
-            <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
                 <div class="widget widget-seven background-success">
                     <div class="widget-body">
                         <div href="javascript: void(0);" class="widget-body-inner">
@@ -31,21 +31,19 @@
                     </div>
                 </div>
             </div>
-		</div>
-		<div class="row">
-			<div class="col-lg-6">
-				<h4>Répartition par antenne</h4>
-				<br />
-				<div id="bagel" class="margin-bottom-50">
-					<div class="chart-donut-chart"></div>
-				</div>
-			</div>
-			<div class="col-lg-6">
-				<h4></h4>
-				<br />
+        <div class="row">
+            <div class="col-xl-9 col-lg-9 col-md-9 col-sm-6 col-xs-12">
 				<div class="margin-bottom-50">
 					<div id="bargraph" class="chart-stacked-bar height-300 chartist"></div>
 				</div>
+			</div>
+		</div>
+		{% endif %}
+        <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="widget widget-three">
+                    <div id="calendar" class="example-calendar-block"></div>
+                </div>
 			</div>
 		</div>
 	</div>
@@ -53,6 +51,7 @@
 </div>
 
 
+			
 <!-- Page Scripts -->
 <script>
 	$(function () {
@@ -94,42 +93,72 @@
 		}
 
 		///////////////////////////////////////////////////////////
-		// CALENDAR
-		$('.example-calendar-block').fullCalendar({
-			//aspectRatio: 2,
-			height: 450,
-			header: {
-				left: 'prev, next',
-				center: 'title',
-				right: 'month, agendaWeek, agendaDay'
-			},
-			buttonIcons: {
-				prev: 'none fa fa-arrow-left',
-				next: 'none fa fa-arrow-right',
-				prevYear: 'none fa fa-arrow-left',
-				nextYear: 'none fa fa-arrow-right'
-			},
-			editable: true,
-			eventLimit: true, // allow "more" link when too many events
-			viewRender: function (view, element) {
-				if (!cleanUI.hasTouch) {
-					$('.fc-scroller').jScrollPane({
-						autoReinitialise: true,
-						autoReinitialiseDelay: 100
-					});
-				}
-			},
-			defaultDate: '2017-04-26',
-			events: [
-			],
-			eventClick: function (calEvent, jsEvent, view) {
-				if (!$(this).hasClass('event-clicked')) {
-					$('.fc-event').removeClass('event-clicked');
-					$(this).addClass('event-clicked');
-				}
-			}
-		});
-
+        // CALENDAR
+{#        $('.example-calendar-block').fullCalendar({
+            //aspectRatio: 2,
+            height: 450,
+            header: {
+                left: 'prev, next',
+                center: 'title',
+                right: 'month, agendaWeek, agendaDay'
+            },
+            buttonIcons: {
+                prev: 'none fa fa-arrow-left',
+                next: 'none fa fa-arrow-right',
+                prevYear: 'none fa fa-arrow-left',
+                nextYear: 'none fa fa-arrow-right'
+            },
+			minTime: "08:00",
+			maxTime: "19:00",
+	        defaultView: 'agendaWeek',
+	        allDayDefault: false,
+		    hiddenDays: [0,6],
+			//allDaySlot: true,
+            editable: true,
+            eventLimit: true, // allow "more" link when too many events
+            viewRender: function(view, element) {
+                if (!cleanUI.hasTouch) {
+                    $('.fc-scroller').jScrollPane({
+                        autoReinitialise: true,
+                        autoReinitialiseDelay: 100
+                    });
+                }
+            },
+            defaultDate: '2017-12-05',
+           events: [
+                {
+                    title: 'All Day Event',
+                    start: '2017-12-20',
+                    className: 'fc-event-success'
+                },
+                {
+                    id: 999,
+                    title: 'Repeating Event',
+                    start: '2017-12-21T09:00:00',
+                    className: 'fc-event-default'
+                },
+                {
+                    id: 999,
+                    title: 'Repeating Event',
+                    start: '2017-12-16T10:00:00',
+                    end: '2017-12-16T17:30:00',
+                    className: 'fc-event-success'
+                },
+                {
+                    title: 'Conference',
+                    start: '2017-12-11',
+                    end: '2017-12-14',
+                    className: 'fc-event-danger'
+                }
+            ],
+            eventClick: function(calEvent, jsEvent, view) {
+                if (!$(this).hasClass('event-clicked')) {
+                    $('.fc-event').removeClass('event-clicked');
+                    $(this).addClass('event-clicked');
+                }
+            }
+        });
+#}
 		///////////////////////////////////////////////////////////
 		// CAROUSEL WIDGET
 		$('.carousel-widget').carousel({

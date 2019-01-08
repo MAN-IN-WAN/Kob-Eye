@@ -1,5 +1,4 @@
 app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $http, $interval) {
-
 	$scope.NbAdherents = 0;
 	$scope.NbInscriptions = 0;
 	$scope.getStat = function() {
@@ -7,6 +6,7 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 		.success(function(data) {
 			$scope.NbAdherents = Number(data.NbAdherents);
 			$scope.NbInscriptions = Number(data.NbInscriptions);
+			// repartition
 			var bar = $('#bargraph')
 			if(bar == undefined || bar.get(0) == undefined) {
 				$interval.cancel(intv);
@@ -16,5 +16,63 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 		});
 	}
 	$scope.getStat();
-	var intv = $interval($scope.getStat, 30000);
+	var intv = $interval($scope.getStat, 60000);
+	
+	$scope.visites = true;
+	$('.example-calendar-block').fullCalendar({
+		//aspectRatio: 2,
+		height: 650,
+		header: {
+			left: 'prev, next',
+			center: 'title',
+			right: 'visites, month, agendaWeek, agendaDay'
+		},
+		buttonIcons: {
+			prev: 'none fa fa-arrow-left',
+			next: 'none fa fa-arrow-right',
+			prevYear: 'none fa fa-arrow-left',
+			nextYear: 'none fa fa-arrow-right'
+		},
+		customButtons: {
+			visites: {
+				text: 'Visites',
+				click: function() {
+					$scope.visites = ! $scope.visites;
+					$('.fc-visites-button').toggleClass('fc-event-success');
+					$('.example-calendar-block').fullCalendar('refetchEvents');
+				}
+			}
+		},
+		minTime: "08:00",
+		maxTime: "19:00",
+		//defaultView: 'agendaMonth',
+		//allDayDefault: false,
+		hiddenDays: [0,6],
+		//allDaySlot: true,
+		editable: true,
+		eventLimit: true, // allow "more" link when too many events
+		viewRender: function(view, element) {
+			if (!cleanUI.hasTouch) {
+				$('.fc-scroller').jScrollPane({
+					autoReinitialise: true,
+					autoReinitialiseDelay: 100
+				});
+			}
+		},
+		defaultDate: '2017-12-05',
+		events: function(start, end, timezone, callback) {
+			var args = {start: start, end: end, visites: $scope.visites};
+			$http.post('/Cadref/Dashboard/getCalendar.json',{"args":JSON.stringify(args)})
+			.success(function(data) {
+				callback(data.events);
+			});
+		},
+		eventClick: function(calEvent, jsEvent, view) {
+			if (!$(this).hasClass('event-clicked')) {
+				$('.fc-event').removeClass('event-clicked');
+				$(this).addClass('event-clicked');
+			}
+		}
+	});
+
 });
