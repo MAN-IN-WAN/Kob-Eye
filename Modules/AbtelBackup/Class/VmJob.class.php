@@ -28,9 +28,10 @@ class VmJob extends Job {
         foreach ($jobs as $j) {
             $task = genericClass::createInstance('Systeme', 'Tache');
             $task->Type = 'Fonction';
-            $task->Nom = 'Job Remote :' . $j->Titre;
+            $task->Nom = 'Job machine virtuelle :' . $j->Titre.'. éxécution du '.date('d/m/Y H:i:s');
             $task->TaskModule = 'AbtelBackup';
             $task->TaskObject = 'VmJob';
+            $task->Type = 'backup';
             $task->TaskId = $j->Id;
             $task->TaskFunction = 'run';
             $task->addParent($j);

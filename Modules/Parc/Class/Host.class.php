@@ -565,7 +565,8 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
             $this->_KEInfra = $this->getOneParent('Infra');
             if(!is_object($this->_KEInfra)) {
                 if($inst = $this->getOneChild('Instance')){
-                    $this->_KEInfra = $inst->getOneParent('Infra');
+                    $this->_KEInfra = $inst->getInfra();
+                    $this->addParent($this->_KEInfra);
                 }
             }
         }

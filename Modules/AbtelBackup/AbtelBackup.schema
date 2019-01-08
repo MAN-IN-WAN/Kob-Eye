@@ -68,6 +68,7 @@
 		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1"  obligatoire="1" listDescr="Titre">Titre</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="2" list="1" form="1" fiche="1"  listDescr="Actif" description="Actif">Enabled</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="2" list="1" form="1" fiche="1"  listDescr="Comp" description="Compression active" help="La compression permet de réduire l'espace disque lors du clonage. A n'utiliser seulement si la vm dispose d'une grande capacité libre.(ex Espace libre sur le disque supérieure à 1 To.)">Compression</PROPERTIES>
+		<PROPERTIES type="int" searchOrder="2" list="1" form="1" fiche="1"  listDescr="Rétention" description="Durée de rétention"  values="1::1 jour,2::2 jours,3::3 jours,5::5 jours,7::7 jours,15::15 jours,30::30 jours" help="Durée de rétention en jour.">Retention</PROPERTIES>
 		<PROPERTIES type="varchar" listDescr="Minute" default="*" values="*,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59" list="1" form="1" fiche="1">Minute</PROPERTIES>
 		<PROPERTIES type="varchar" listDescr="Heure" default="*" values="*,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24" list="1" form="1" fiche="1">Heure</PROPERTIES>
 		<PROPERTIES type="varchar" listDescr="Jour Mois" default="*" values="*,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31" list="1" form="1" fiche="1">Jour</PROPERTIES>

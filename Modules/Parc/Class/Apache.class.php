@@ -635,8 +635,19 @@ class Apache extends genericClass {
      */
     public function executeLetsencrypt($task) {
         $first=$this->SslMainDomain;
-        //récupératio ndu serveur
-        $srv = $task->getOneParent('Server');
+        //récupération du serveur apache
+        $host = $this->getOneParent('Host');
+        $srv = $host->getOneParent('Server');
+        //récupération de l'infrastructure
+        $infra = $srv->getOneParent('Infra');
+        //sélection du proxy par défaut
+        if ($infra) {
+            $pxsrv = $infra->getOneChild('Server/Proxy=1');
+            if ($pxsrv) $srv = $pxsrv;
+        }else {
+            $act = $task->createActivity('Pas d\'infrastructure détectée');
+            $act->Terminate(false);
+        }
 
         //Vérification du dépot letsencrypt
         $act = $task->createActivity('Vérification du dépot letsencrypt');
@@ -645,6 +656,7 @@ class Apache extends genericClass {
         $cert = $srv->getFileContent("/etc/letsencrypt/live/".$first."/fullchain.pem");
         $exceptionDomains = Sys::getData('Parc','Domain/NoSSL=1');
         $incompleteDomain = false;
+        $act->Terminate(true);
         if (!empty($cert)) {
             $certinfo = openssl_x509_parse($cert);
             //on compare la liste des domaines à certifier et les domaines dans le certificat
@@ -718,7 +730,7 @@ class Apache extends genericClass {
             return true;
         }
         $cmd = $prefixe.$cmd;
-        $act = $task->createActivity('Execution de la commande certbot');
+        $act = $task->createActivity('Execution de la commande certbot sur le serveur '.$srv->Nom);
         $act->addDetails($cmd);
         try {
             $out = $srv->remoteExec($cmd);

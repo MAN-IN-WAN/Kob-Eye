@@ -46,6 +46,8 @@ class Tache extends genericClass{
                     //execution objet
                     $obj = Sys::getOneData($this->TaskModule,$this->TaskObject.'/'.$this->TaskId);
                     try {
+                        $act = $this->createActivity('Démarrage de la tache');
+                        $act->Terminate(true);
                         $out = $obj->{$this->TaskFunction}($this);
                         $this->addRetour($out);
                         $this->Termine = true;

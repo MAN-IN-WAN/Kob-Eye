@@ -19,9 +19,11 @@ class Instance extends genericClass{
 
 
         $pref='';
-        if($infra = $this->getInfra()){
+        $infra = $this->getInfra();
+        if($infra){
             $pref= 'Infra/'.$infra->Id.'/';
         }
+
         //serveurs par défaut
         $apachesrv = Sys::getOneData('Parc', $pref.'Server/Web=1&defaultWebServer=1', null, null, null, null, null, null, true);
         $proxysrv = Sys::getOneData('Parc', $pref.'Server/Proxy=1', null, null, null, null, null, null, true);
@@ -140,6 +142,7 @@ class Instance extends genericClass{
                 $heb->BackupEnabled = $this->BackupEnabled;
                 $heb->addParent($apachesrv);
                 $heb->addParent($client);
+                $heb->addParent($infra);
                 if (!$heb->Save()) {
                     $GLOBALS["Systeme"]->Db[0]->exec('ROLLBACK');
                     $this->Error = array_merge($this->Error, $heb->Error);
@@ -151,6 +154,8 @@ class Instance extends genericClass{
                 $heb->Password = $this->Password;
                 $heb->PHPVersion = $this->PHPVersion;
                 $heb->BackupEnabled = $this->BackupEnabled;
+                $heb->addParent($infra);
+                $heb->addParent($client);
                 $heb->Save();
             }
         }catch (Exception $e){
@@ -254,12 +259,22 @@ class Instance extends genericClass{
                     break;
                 }
             }
+            if (!$infra){
+                //affectation à l'infra par défaut
+                $infra = Sys::getOneData('Parc','Infra/Default=1',0,100,null,null,null,null,true);
+                $this->addParent($infra);
+            }
             return $infra;
         }
 
-        $tab = Sys::getData('Parc','Infra/Instance/'.$this->Id,0,100,null,null,null,null,true);
-        if (empty($tab)) return false;
-        else return $tab[0];
+        $infra = Sys::getOneData('Parc','Infra/Instance/'.$this->Id,0,100,null,null,null,null,true);
+        if (!$infra){
+            //affectation à l'infra par défaut
+            $infra = Sys::getOneData('Parc','Infra/Default=1');
+            $this->addParent($infra);
+            return $infra;
+        }
+        else return $infra;
     }
 
 

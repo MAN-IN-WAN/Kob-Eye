@@ -47,7 +47,7 @@ class Bdd extends genericClass {
         $host = $this->getOneParent('Host');
         if (!is_object($serv)) return false;
         try {
-            $dbGuac = new PDO('mysql:host=' . $serv->InternalIP . ';dbname=mysql', $serv->SshUser, $serv->SshPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+            $dbGuac = new PDO('mysql:host=' . $serv->InternalIP . ';dbname=mysql', $serv->SqlUser, $serv->SqlPass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
             $dbGuac->query("SET AUTOCOMMIT=1");
             $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -98,11 +98,11 @@ class Bdd extends genericClass {
         $serv = Sys::getOneData('Parc','Server/Bdd/'.$this->Id,null,null,null,null,null, null,true);
         if (!is_object($serv)) return false;
         try {
-            $dbGuac = new PDO('mysql:host=' . $serv->IP . ';dbname=mysql', $serv->SshUser, $serv->SshPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+            $dbGuac = new PDO('mysql:host=' . $serv->IP . ';dbname=mysql', $serv->SqlUser, $serv->SqlPass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
             $dbGuac->query("SET AUTOCOMMIT=1");
             $dbGuac->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }catch(Exception $e){
-            $this->addError(Array('Message'=>'Impossible de contacter le serveur SQL'));
+            $this->addError(Array('Message'=>'Impossible de contacter le serveur SQL '.$serv->Nom));
             return true;
         }
 
