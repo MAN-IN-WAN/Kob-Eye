@@ -258,6 +258,7 @@
         <RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">HostTacheId</RKEY>
         <FUNCTION title="Créer un backup">createBackupTask</FUNCTION>
 		<FUNCTION title="Mise à jour des clefs SSH">refreshSshKeys</FUNCTION>
+		<FUNCTION title="Creation d'un clone">cloneHost</FUNCTION>
 
 		<FKEY data="Infra,Id" card="0,1" description="Infrastructure" form="1" >InfraId</FKEY>
 	</OBJECTCLASS>

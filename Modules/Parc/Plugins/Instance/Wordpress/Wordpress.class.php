@@ -85,7 +85,7 @@ class ParcInstanceWordpress extends Plugin implements ParcInstancePlugin {
             $act->addDetails($out);
             $act->Terminate(true);
             $act = $task->createActivity('Mot de passe administrateur', 'Info');
-            $cmd = 'mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom.' -e "UPDATE wp_users SET user_pass=\''.$host->Password.'\' WHERE ID=1"';
+            $cmd = 'mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom.' -e "UPDATE wp_users SET user_pass=\''.md5($host->Password).'\' WHERE ID=1"';
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails($out);

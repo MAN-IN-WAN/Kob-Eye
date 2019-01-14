@@ -650,6 +650,9 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
      * backup
      * Fonction de sauvegarde
      * @param Object Tache
+     * @throws Exception
+     *
+     * @return Boolean
      */
     public function backup($task ){
         $host = $this;
@@ -682,6 +685,26 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
         }
     }
 
+    /**
+     * backup
+     * Fonction de clonage
+     * @param Int Etape
+     * @param String Nouveau Nom Facultatif
+     * @param String Nouveau Serveur Facultatif
+     *
+     * @return Mixed
+     */
+    public function cloneHost($step = 0 ,$newName = null, $server = null){
+
+        switch($step){
+            case 1:
+                return 'pouet';
+                break;
+            default:
+                return array('template'=>"Clone",'step'=>1);
+        }
+
+    }
 }
 /**
  * Terminal
