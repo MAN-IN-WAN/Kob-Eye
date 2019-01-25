@@ -9,8 +9,8 @@ session_start();
 <?php
 
 // Don't remove the following two rows
-$link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-$root = "http://$_SERVER[HTTP_HOST]";
+$link = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+$root = "https://$_SERVER[HTTP_HOST]";
 
 $_SESSION = array_merge($_SESSION,$_GET);
 
@@ -67,12 +67,12 @@ if ($username == "" and $password == "") {
     <link rel="stylesheet" href="styles.css">
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<!--    <script src="http://www.maleck.org/imageuploader/plugininfo.js"></script>-->
+<!--    <script src="https://www.maleck.org/imageuploader/plugininfo.js"></script>-->
     <script>
         var pluginname = "Image Uploader and Browser for CKEditor";
         var pluginversion = "4.1.8";
         var pluginchangelog = "";
-        var plugindwonload = "http://download.ckeditor.com/imageuploader/releases/imageuploader_4.1.9.zip";
+        var plugindwonload = "https://download.ckeditor.com/imageuploader/releases/imageuploader_4.1.9.zip";
 
         $(window).load(function() {
             $('head').append('<link rel="stylesheet" href="https://www.maleck.org/imageuploader/plugincss.css">');
@@ -91,11 +91,11 @@ if ($username == "" and $password == "") {
         // Plugin version
         var currentpluginver = "<?php echo $currentpluginver; ?>";
         // ajax request to register the plugin for better support
-        $.ajax({
-          method: "POST",
-          url: "http://ibm.bplaced.com/imageuploader/register.php",
-          data: { root: "<?php echo $root; ?>", link: "<?php echo $link; ?>", ver: ""+ currentpluginver +"" }
-        })
+        //$.ajax({
+        //  method: "POST",
+        //  url: "https://ibm.bplaced.com/imageuploader/register.php",
+        //  data: { root: "<?php //echo $root; ?>//", link: "<?php //echo $link; ?>//", ver: ""+ currentpluginver +"" }
+        //})
     </script>
     
 </head>
@@ -148,14 +148,14 @@ if ($username == "" and $password == "") {
 
     
 <?php //if($file_style == "block") { ?>
-<!--    <div class="fileDiv" onclick="window.location.href = 'http://imageuploaderforckeditor.altervista.org';">-->
+<!--    <div class="fileDiv" onclick="window.location.href = 'https://imageuploaderforckeditor.altervista.org';">-->
 <!--        <div class="imgDiv">Image Uploader for CKEditor</div>-->
 <!--        <p class="fileDescription">&copy; 2016 by Moritz Maleck</p>-->
 <!--        <p class="fileTime">imageuploaderforckeditor.altervista.org</p>-->
 <!--        <p class="fileTime">180 KB</p>-->
 <!--    </div>-->
 <?php //} elseif($file_style == "list") { ?>
-<!--    <div class="fullWidthFileDiv" onclick="window.location.href = 'http://imageuploaderforckeditor.altervista.org';">-->
+<!--    <div class="fullWidthFileDiv" onclick="window.location.href = 'https://imageuploaderforckeditor.altervista.org';">-->
 <!--        <div class="fullWidthimgDiv"><img class="fullWidthfileImg lazy" data-original="img/cd-icon-credits.png"></div>-->
 <!--        <p class="fullWidthfileDescription">Image Uploader for CKEditor</p>-->
 <!--        <p class="fullWidthfileTime fullWidthfileMime">png</p>-->
@@ -246,9 +246,9 @@ if ($username == "" and $password == "") {
         <br><h3 class="settingsh3"><?php echo $panelsettings4; ?></h3>
         <!--Hide/show news section-->
         <?php if($news_sction == "yes"){ ?>
-            <p class="uploadP" onclick="disableNews()"><img src="http://www.maleck.org/imageuploader/img/hide.png" class="headerIcon"> <?php echo $panelsettings21; ?></p>
+            <p class="uploadP" onclick="disableNews()"><img src="https://www.maleck.org/imageuploader/img/hide.png" class="headerIcon"> <?php echo $panelsettings21; ?></p>
         <?php } elseif($news_sction == "no") { ?>
-            <p class="uploadP" onclick="enableNews()"><img src="http://www.maleck.org/imageuploader/img/show.png" class="headerIcon"> <?php echo $panelsettings22; ?></p>
+            <p class="uploadP" onclick="enableNews()"><img src="https://www.maleck.org/imageuploader/img/show.png" class="headerIcon"> <?php echo $panelsettings22; ?></p>
         <?php } ?>
         <!--Hide/show file extension-->
         <?php if($file_extens == "yes"){ ?>
@@ -265,7 +265,7 @@ if ($username == "" and $password == "") {
             <!--logout-->
             <p class="uploadP" onclick="logOut();"><img src="img/cd-icon-logout.png" class="headerIcon"> <?php echo $panelsettings8; ?></p>
             <!--disable password-->
-            <p class="uploadP" onclick="window.open('http://imageuploaderforckeditor.altervista.org/disable_pw.html','about:blank', 'toolbar=no, scrollbars=yes, resizable=no, width=900, height=600');"><img src="img/cd-icon-disable.png" class="headerIcon"> <?php echo $panelsettings9; ?></p>
+            <p class="uploadP" onclick="window.open('https://imageuploaderforckeditor.altervista.org/disable_pw.html','about:blank', 'toolbar=no, scrollbars=yes, resizable=no, width=900, height=600');"><img src="img/cd-icon-disable.png" class="headerIcon"> <?php echo $panelsettings9; ?></p>
         <?php } ?>
 
         <br><h3 class="settingsh3"><?php echo $panelsettings10; ?></h3>
@@ -274,9 +274,9 @@ if ($username == "" and $password == "") {
 
         <br><h3 class="settingsh3"><?php echo $panelsettings12; ?></h3>
         <!--FAQ button-->
-        <p class="uploadP" onclick="window.open('http://imageuploaderforckeditor.altervista.org/support/','_blank');"><img src="img/cd-icon-faq.png" class="headerIcon"> <?php echo $panelsettings13; ?></p>
+        <p class="uploadP" onclick="window.open('https://imageuploaderforckeditor.altervista.org/support/','_blank');"><img src="img/cd-icon-faq.png" class="headerIcon"> <?php echo $panelsettings13; ?></p>
         <!--report a bug-->
-        <p class="uploadP" onclick="window.open('http://ibm.bplaced.com/contact/index.php?cdproject=Image%20Uploader%20and%20Browser%20for%20CKEditor&cdlink=<?php echo $link; ?>//////&cdver='+currentpluginver,'_blank');"><img src="img/cd-icon-bug.png" class="headerIcon"> <?php echo $panelsettings14; ?></p>
+        <p class="uploadP" onclick="window.open('https://ibm.bplaced.com/contact/index.php?cdproject=Image%20Uploader%20and%20Browser%20for%20CKEditor&cdlink=<?php echo $link; ?>//////&cdver='+currentpluginver,'_blank');"><img src="img/cd-icon-bug.png" class="headerIcon"> <?php echo $panelsettings14; ?></p>
 
         <br><h3 class="settingsh3"><?php echo $panelsettings15; ?></h3>
         <!--current version-->
@@ -305,11 +305,12 @@ if ($username == "" and $password == "") {
 <div id="background4" class="background" onclick="$('#setLangDiv').hide(); $('#background4').slideUp(250, 'swing');"></div>
 
 <!--Noscript part if js is disabled-->
-<noscript> <div class="noscript"> <div id="folderError" class="noscriptContainer popout"> <b><?php echo $alerts1; ?></b><br><br><?php echo $alerts5; ?> <a href="http://www.enable-javascript.com/" target="_blank"><?php echo $alerts6; ?></a><br><br><?php echo $alerts4; ?> </div></div></noscript>
+<noscript> <div class="noscript"> <div id="folderError" class="noscriptContainer popout"> <b><?php echo $alerts1; ?></b><br><br><?php echo $alerts5; ?> <a href="https://www.enable-javascript.com/" target="_blank"><?php echo $alerts6; ?></a><br><br><?php echo $alerts4; ?> </div></div></noscript>
     
 <?php   
 // Including the language file, don't delete the following row!
 require(__DIR__ . '/lang/lang.php');
+session_write_close();
 ?>
 
 </body>

@@ -36,6 +36,7 @@ foreach (Sys::$User->Menus as $m){
                 $obj = $o->getObjectClass();
                 $tmp['description'] = $o->getDescription();
                 $tmp['Interfaces'] = $obj->getInterfaces();
+                $tmp['filters'] = $o->getCustomFilters();
                 $tmp['childrenelements'] = $obj->getChildElements();
                 $tmp['searchOrders'] = $o->getSearchOrder();
                 foreach($tmp['searchOrders'] as $so){

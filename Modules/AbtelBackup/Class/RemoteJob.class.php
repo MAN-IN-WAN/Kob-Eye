@@ -15,12 +15,18 @@ class RemoteJob extends Job {
      */
     public function stop()
     {
+        $task = genericClass::createInstance('Systeme', 'Tache');
+        $task->Type = 'Collecteur';
+        $task->Nom = 'Stop :' . $this->Titre;
+        $task->addParent($this);
+        $task->Save();
+
         $v = Sys::getOneData('AbtelBackup','BorgRepo/'.$this->CurrentBorgRepo);
         if($v){
-            $act = $this->createActivity($v->Titre . ' > Arret Utilisateur: Step ' . $this->Step, $v,0,'Info');
+            $act = $task->createActivity($v->Titre . ' > Arret Utilisateur: Step ' . $this->Step,'Info');
             $act->addDetails($v->Titre . "Arret Utilisateur", 'red', true);
         } else{
-            $act = $this->createActivity('Borg non défini > Arret Utilisateur: Step ' . $this->Step, null,0,'Info');
+            $act = $task->createActivity('Borg non défini > Arret Utilisateur: Step ' . $this->Step,'Info');
             $act->addDetails("Arret Utilisateur", 'red', true);
         }
 
@@ -76,10 +82,10 @@ class RemoteJob extends Job {
      * run
      * Demarre ou resume un job de backup de vm
      */
-    public function run() {
+    public function run($task) {
         //test running
         if ($this->Running) {
-            $act = $this->createActivity(' > Impossible de démarrer, le job est déjà en cours d\'éxécution',null,0,'Info');
+            $act = $task->createActivity(' > Impossible de démarrer, le job est déjà en cours d\'éxécution','Info');
             $act->Terminate(false);
             return;
         }
@@ -88,7 +94,7 @@ class RemoteJob extends Job {
         parent::Save();
         //init
         Klog::l('DEBUG demarrage remote job');
-        $act = $this->createActivity(' > Demarrage du Job Remote : '.$this->Titre.' ('.$this->Id.')',null,0,'Info');
+        $act = $task->createActivity(' > Demarrage du Job Remote : '.$this->Titre.' ('.$this->Id.')','Info');
         $act->Terminate();
 
         $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=1");
@@ -103,7 +109,7 @@ class RemoteJob extends Job {
 
         foreach ($sss as $ss){
             Klog::l('DEBUG remote ==> '.$ss->Id.' STEP: '.$this->Step);
-            $act = $this->createActivity(' > Demarrage du Depot : '.$ss->Titre.' ('.$ss->Id.')',$ss,0,'Info');
+            $act = $task->createActivity(' > Demarrage du Depot : '.$ss->Titre.' ('.$ss->Id.')','Info');
             $act->Terminate();
             //définition de la vm en cours
             $this->setStep(1);
@@ -113,22 +119,22 @@ class RemoteJob extends Job {
                 //initialisation
                 if (intval($this->Step)<=1){
                     unset($act);
-                    $act = $this->createActivity($ss->Titre.' > Initialisation du dépôt distant',$ss,$pSpan[0]);
+                    $act = $task->createActivity($ss->Titre.' > Initialisation du dépôt distant','Exec',$pSpan[0]);
                     $this->initJob($ss,$dev,$act);
                 }
 
                 //montage
                 if (intval($this->Step)<=2){
                     unset($act);
-                    $act = $this->createActivity($ss->Titre.' > Synchronisation',$ss,$pSpan[1]);
+                    $act = $task->createActivity($ss->Titre.' > Synchronisation','Exec',$pSpan[1]);
                     $act = $this->syncJob($ss,$dev,$act);
                 }
 
-                $act = $this->createActivity(' > Fin du Depot : '.$ss->Titre.' ('.$ss->Id.')',$ss,0,'Info');
+                $act = $task->createActivity(' > Fin du Depot : '.$ss->Titre.' ('.$ss->Id.')','Info');
                 $act->Terminate();
 
             }catch (Exception $e){
-                if(!$act) $act = $this->createActivity($ss->Titre.' > Exception: Etape '.$this->Step,$ss,0,'Info');
+                if(!$act) $act = $task->createActivity($ss->Titre.' > Exception: Etape '.$this->Step,'Info');
                 $act->addDetails($ss->Titre." ERROR => ".$e->getMessage(),'red');
                 $act->Terminate(false);
                 //opération terminée

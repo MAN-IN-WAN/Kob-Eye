@@ -5,6 +5,7 @@ class Host extends genericClass
     var $_isVerified = false;
     var $_KEServer = false;
     var $_KEClient = false;
+    var $_KEInfra = false;
 
     /**
      * Force la vérification avant enregistrement
@@ -21,14 +22,17 @@ class Host extends genericClass
             $this->addError(array("Message"=>"Impossible de modifier le nom de l'hébergement. Si c'est nécessaire, veuillez supprimer et recréer cet hébergement en réimportant vos données."));
             return false;
         }
-        if ($old&&$old->NomLDAP!=$this->NomLDAP){
+        if ($old&&!empty($old->NomLDAP)&&$old->NomLDAP!=$this->NomLDAP){
             $this->addError(array("Message"=>"Impossible de modifier le nom technique de l'hébergement. Si c'est nécessaire, veuillez supprimer et recréer cet hébergement en réimportant vos données."));
             return false;
         }
 
         // Forcer la vérification
-        if (!$this->_isVerified) $this->Verify($synchro);
-        if (!$this->_isVerified) return false;
+        $this->Verify($synchro);
+        if (!$this->_isVerified) {
+            $this->addError(array("Message"=>"Impossible de valider l'enregistrement Contactez votre administrateur préféré."));
+            return false;
+        }
         //Vérification du mot de passe
         if (empty($this->Password)){
             $this->Password = str_shuffle(bin2hex(openssl_random_pseudo_bytes(12)));
@@ -37,18 +41,101 @@ class Host extends genericClass
         if ($this->_isVerified) {
             //$this->getGidFromClient($synchro);
             parent::Save();
-        }
-        // Maj Quotas niveau serveur
-        /*if ($this->Id) {
-            $T1 = Sys::$Modules["Parc"]->callData("Parc/Server/Host/{$this->Id}", "", 0, 1);
-            if (!empty($T1)) {
-                $Server = genericClass::createInstance('Parc', $T1[0]);
-                $Server->EspaceProvisionne = 0;
-                $Tab = Sys::$Modules["Parc"]->callData("Parc/Server/{$Server->Id}/Host", "", 0, 1000);
-                if (!empty($Tab)) foreach ($Tab as $H) $Server->EspaceProvisionne += $H["Quota"];
-                $Server->Save();
+
+            //application des configurations
+            $this->configHost();
+
+            //affectation des clefs ssh
+            $this->sshKeysCheck();
+
+            //configuration des clefs
+            $this->refreshSshKeys();
+
+            //si le mot de passe a été modifié on répercute sur la base de donnée uniquement si le host existait déjà
+            if ($this->Password!=$old->Password&&$old){
+                $bdd = $this->getOneChild('Bdd');
+                if ($bdd){
+                    $bdd->checkDatabase();
+                }
             }
-        }*/
+        }
+        return true;
+    }
+    /**
+     * configHost
+     * Configuration supplémentairte de l'hébergemen t
+     */
+    private function configHost() {
+        //execution du ldap2service
+        $servs = $this->getKEServer();
+        foreach ($servs as $serv) {
+            $serv->callLdap2Service();
+            //création du fichier .bashrc
+            $f = '# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+        . /etc/bashrc
+fi
+
+PS1=\'\[\033[32m\]\u\[\e[1;33m\] PROD :\[\033[34m\]\w\[\033[31m\]$(__git_ps1)\[\033[00m\]\$ \'
+
+source ~/.bash_git
+# User specific aliases and functions
+alias php="/usr/local/php-'.$this->PHPVersion.'/bin/php"
+export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
+';
+            $serv->putFileContent('/home/'.$this->NomLDAP.'/.bashrc',$f);
+            $serv->remoteExec('chown ' . $this->NomLDAP . ':users /home/' . $this->NomLDAP . '/.bashrc');
+
+        }
+    }
+    /**
+     * sshKeyCheck
+     * Affectation automatique des clefs ssh
+     */
+    private function sshKeysCheck() {
+        //clef technicien
+        $techs = Sys::getData('Parc','SshKeys/Type=technicien');
+        foreach ($techs as $tech){
+            $tech->addParent($this);
+            $tech->Save();
+        }
+        //clef revendeur
+        $cli = $this->getKEClient();
+        if ($rev = $cli->getRevendeur()){
+            $keys = Sys::getData('Parc','Revendeur/'.$rev->Id.'/SshKeys/Type=revendeur');
+            foreach ($keys as $key){
+                $key->addParent($this);
+                $key->Save();
+            }
+        }
+        //clef client
+        $keys = Sys::getData('Parc','Client/'.$cli->Id.'/SshKeys/Type=client');
+        foreach ($keys as $key){
+            $key->addParent($this);
+            $key->Save();
+        }
+    }
+    /**
+     * refreshSshKeys
+     * regénère les clefs ssh de l'hébergement
+     */
+    public function refreshSshKeys(){
+        //generation du fichier authorized_keys à pousser sur l'hébergement du client.
+        $keys = $this->getChildren('SshKeys');
+        $f = '';
+        foreach ($keys as $key){
+            $f.= $key->Clef."\n";
+        }
+        $servs = $this->getKEServer();
+        foreach ($servs as $serv){
+            $cmd = 'if [ ! -d /home/' . $this->NomLDAP . '/.ssh ]; then mkdir /home/' . $this->NomLDAP . '/.ssh; fi';
+            $serv->remoteExec($cmd);
+            $serv->putFileContent('/home/'.$this->NomLDAP.'/.ssh/authorized_keys',$f);
+            $serv->remoteExec('chown ' . $this->NomLDAP . ':users /home/' . $this->NomLDAP . '/.ssh -R');
+            $serv->remoteExec('chmod 700 /home/' . $this->NomLDAP . '/.ssh -R');
+        }
         return true;
     }
     /**
@@ -167,7 +254,7 @@ class Host extends genericClass
      * @param    boolean    Verifie aussi sur LDAP
      * @return    Verification OK ou NON
      */
-    public function Verify($synchro = true)
+    public function Verify($synchro = false)
     {
         //test du nom
         if (empty($this->NomLDAP)) {
@@ -175,13 +262,14 @@ class Host extends genericClass
         }
         $this->NomLDAP = strtolower($this->NomLDAP);
         $this->NomLDAP = Utils::CheckSyntaxe($this->NomLDAP);
+        $this->NomLDAP = substr($this->NomLDAP,0,32);
         $old = Sys::getOneData('Parc','Host/'.$this->Id);
         //test de modification du ApacheServerName
         if ($this->Id&&$old->Nom!=$this->Nom){
             $this->addError(array("Message"=>"Impossible de modifier le nom de l'hébergement. Si c'est nécessaire, veuillez supprimer et recréer cet hébergement en réimportant vos données."));
             return false;
         }
-        if ($this->Id&&$old->NomLDAP!=$this->NomLDAP){
+        if ($this->Id&&!empty($old->NomLDAP)&&$old->NomLDAP!=$this->NomLDAP){
             $this->addError(array("Message"=>"Impossible de modifier le nom technique de l'hébergement. Si c'est nécessaire, veuillez supprimer et recréer cet hébergement en réimportant vos données."));
             return false;
         }
@@ -191,11 +279,21 @@ class Host extends genericClass
         }
         if (parent::Verify()) {
             //Verification du client
-            if (!$this->getKEClient()) return true;
+            if (!$this->getKEClient()){
+                $this->addError(array("Prop"=>"Nom","Message"=>"Client introuvable."));
+                return true;
+            }
             //Verification des server
             if (!$this->getKEServer()){
+
+                //Gestion des infra si existante
+                $infra = $this->getInfra();
+                $pref = '';
+                if($infra)
+                    $pref='Infra/'.$infra->Id.'/';
+
                 //si pas de serveur alors on affecte le serveur Web par défaut
-                $defserv = Sys::getOneData('Parc','Server/defaultWebServer=1');
+                $defserv = Sys::getOneData('Parc',$pref.'Server/defaultWebServer=1');
                 if (!$defserv){
                     $this->addError(array('Message'=>'Aucun serveur Web par défaut n\'est définie. Veuillez contacter votre administrateur.'));
                     return false;
@@ -334,8 +432,22 @@ class Host extends genericClass
      * On utilise aussi la fonction de la superclasse
      * @return    void
      */
-    public function Delete(){
-        $act = $this->createActivity('Suppression de l\'hébergement '.$this->getFirstSearchOrder());
+    public function Delete($task = null){
+        if(!$task){
+            //creatio nde la tache
+            $task = genericClass::createInstance('Systeme', 'Tache');
+            $task->Type = 'Manuel';
+            $task->Nom = 'Suppression de l\'instance '.$this->Nom;
+            $task->TaskModule = 'Parc';
+            $task->TaskObject = 'Instance';
+            $task->TaskType = 'update';
+            $task->TaskCode = 'INSTANCE_DELETE';
+            $task->Demarre = true;
+            $task->TaskFunction = '';
+            $task->Save();
+
+        }
+        $act = $task->createActivity('Suppression de l\'hébergement '.$this->getFirstSearchOrder());
         //suppression des apaches
         $aps = $this->getChildren('Apache');
         foreach ($aps as $ap){
@@ -385,6 +497,8 @@ class Host extends genericClass
         parent::Delete();
         $act->addDetails('Suppression terminée avec succès');
         $act->Terminate(true);
+        $task->Termine = true;
+        $task->Save();
         return true;
     }
 
@@ -398,6 +512,17 @@ class Host extends genericClass
      */
     public function getKEServer()
     {
+        if(empty($this->Id)){
+            $pars = array();
+            foreach ($this->Parents as $p){
+                if($p['Titre'] == 'Server'){
+                    $pa = Sys::getOneData('Parc','Server/'.$p['Id'],0,1,null,null,null,null,true);
+                    $pars[] = $pa;
+                }
+
+            }
+            $this->_KEServer = $pars;
+        }
         if (!is_array($this->_KEServer)) {
             //$tab = $this->getParents('Server');
             $tab = Sys::getData('Parc','Server/Host/'.$this->Id,0,100,null,null,null,null,true);
@@ -414,14 +539,38 @@ class Host extends genericClass
      * pour le cas d'une utilisation ultérieure
      * @return    L'objet Kob-Eye
      */
-    public function getKEClient()
-    {
+    public function getKEClient(){
+        foreach ($this->Parents as $p){
+            if($p['Titre'] == 'Client'){
+                $this->_KEClient = Sys::getOneData('Parc','Client/'.$p['Id'],0,1,null,null,null,null,true);
+            }
+        }
         if (!is_object($this->_KEClient)) {
             $tab = $this->getParents('Client');
             if (empty($tab)) return false;
             else $this->_KEClient = $tab[0];
         }
         return $this->_KEClient;
+    }
+
+    /**
+     * Récupère une référence vers l'objet KE "Infra"
+     * pour effectuer des requetes LDAP
+     * On conserve une référence vers le serveur
+     * pour le cas d'une utilisation ultérieure
+     * @return	L'objet Kob-Eye
+     */
+    public function getInfra() {
+        if(!is_object($this->_KEInfra)) {
+            $this->_KEInfra = $this->getOneParent('Infra');
+            if(!is_object($this->_KEInfra)) {
+                if($inst = $this->getOneChild('Instance')){
+                    $this->_KEInfra = $inst->getInfra();
+                    $this->addParent($this->_KEInfra);
+                }
+            }
+        }
+        return $this->_KEInfra;
     }
 
     /**
@@ -472,117 +621,90 @@ class Host extends genericClass
 //        return Terminal::run($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
         return Terminal::run('enguer', '21wyisey');
     }
-    /**
-     * createActivity
-     * créé une activité en liaison avec l'hébergement
-     * @param $title
-     * @param null $obj
-     * @param int $jPSpan
-     * @param string $Type
-     * @return genericClass
-     */
-    public function createActivity($title, $Type = 'Exec', $Task = null){
-        $act = genericClass::createInstance('Parc', 'Activity');
-        $host = $this;
-        $srv = $host->getOneParent('Server');
-        $act->addParent($host);
-        $act->addParent($srv);
-        if ($Task) $act->addParent($Task);
-        $act->Titre = $this->tag . date('d/m/Y H:i:s') . ' > ' . $this->Titre . ' > ' . $title;
-        $act->Started = true;
-        $act->Type = $Type;
-        $act->Progression = 0;
-        $act->Save();
-        return $act;
-    }
+
     /**
      * createBackupTask
      * Creation de la tache de backup
      */
     public function createBackupTask($orig=null){
         if (!$this->BackupEnabled) return false;
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Sauvegarde de l\'hébergement ' . $this->Nom;
         $task->TaskModule = 'Parc';
         $task->TaskObject = 'Host';
         $task->TaskId = $this->Id;
         $task->TaskFunction = 'backup';
+        $task->TaskType = 'maintenance';
+        $task->TaskCode = 'BACKUP_CREATE';
         $task->addParent($this);
         $inst = $this->getOneChild('Instance');
-        if (!$inst)
+        if ($inst)
             $task->addParent($inst);
         $task->addParent($this->getOneParent('Server'));
         if (is_object($orig)) $task->addParent($orig);
         $task->Save();
+        return array('task' => $task);
     }
     /**
      * backup
      * Fonction de sauvegarde
      * @param Object Tache
+     * @throws Exception
+     *
+     * @return Boolean
      */
-    public function backup($task = null){
+    public function backup($task ){
         $host = $this;
-        $bdds = $host->getChildren('Bdd');
-        $apachesrv = $host->getOneParent('Server');
         $inst = $host->getOneChild('Instance');
+        $restopoint = date('YmdHis');
+        $restodate = date('d/m/Y à H:i:s');
+        //création du point de restauration
+        $rp = genericClass::createInstance('Parc','RestorePoint');
+        $rp->Titre = 'Sauvegarde date: '.$restodate;
+        $rp->Identifiant = $restopoint;
+        $rp->addParent($host);
+        if ($inst)
+            $rp->addParent($inst);
+        $rp->Save();
         try {
-            //Préparation du backup
-            $act = $this->_obj->createActivity('Prépration et nettoyage backup ', 'Info', $task);
-            //test des dossiers
-            $cmd = 'if [ ! -d /home/' . $host->NomLDAP . '/sql ]; then mkdir /home/' . $host->NomLDAP . '/sql; fi';
-            $out = $apachesrv->remoteExec($cmd);
-            $act->addDetails($cmd);
-            $act->addDetails($out);
-            $cmd = 'if [ ! -d /home/' . $host->NomLDAP . '/backup ]; then mkdir /home/' . $host->NomLDAP . '/backup;borg init --encryption=D4nsT0n208 /home/' . $host->NomLDAP . '/backup; fi';
-            $out = $apachesrv->remoteExec($cmd);
-            $act->addDetails($cmd);
-            $act->addDetails($out);
-            //suppression des dump précédents
-            $cmd = 'rm /home/' . $host->NomLDAP . '/sql/* -f';
-            $out = $apachesrv->remoteExec($cmd);
-            $act->addDetails($cmd);
-            $act->addDetails($out);
-            //Sauvegarde base des donnée
-            foreach ($bdds as $bdd) {
-                $act = $this->_obj->createActivity('Sauvegarde base de donnée '.$bdd->Nom, 'Info', $task);
-                $cmd = 'cd /home/' . $host->NomLDAP . '/ && mysqldump -h db.maninwan.fr -u ' . $host->NomLDAP . ' -p' . $host->Password . ' ' . $bdd->Nom . ' > sql/'.$bdd->Nom.'-'.date('YmdHis').'.sql';
-                $out = $apachesrv->remoteExec($cmd);
-                $act->addDetails($cmd);
-                $act->addDetails($out);
-                $act->Terminate(true);
-            }
-            $restopoint = date('YmdHis');
-            $restodate = date('d/m/Y à H:i:s');
-            $act = $this->_obj->createActivity('Backup fichier', 'Info', $task);
-            $cmd = 'cd /home/' . $host->NomLDAP . '/www && borg create backup::'.$restopoint.' * --exclude "backup" --exclude "cgi-bin" --exclude "logs"';
-            $act->addDetails($cmd);
-            $out = $apachesrv->remoteExec($cmd);
-            $act->addDetails($out);
-            $act->Terminate(true);
-            //modification des droits
-            $act = $this->_obj->createActivity('Modification des droits', 'Info', $task);
-            $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . ' -R';
-            $act->addDetails($cmd);
-            $out = $apachesrv->remoteExec($cmd);
-            $act->addDetails($out);
-            $act->Terminate(true);
-            //création du point de restauration
-            $rp = genericClass::createInstance('Parc','RestorePoint');
-            $rp->Titre = 'Sauvegarde date: '.$restodate;
-            $rp->Identifiant = $restopoint;
-            $rp->addParent($host);
-            if ($inst)
-                $rp->addParent($inst);
-            $rp->Save();
-            return true;
+            $result = $rp->backup($task);
+            return $result;
         }catch (Exception $e){
-            $act->addDetails('Erreur: '.$e->getMessage());
-            $act->Terminate(false);
-            throw new Exception($e->getMessage());
+            //création d'un incident
+            $incident = genericClass::createInstance('Parc','Incident');
+            $incident->Titre = 'Erreur sur la sauvegarde de l\'hébergement '.$host->Nom;
+            $incident->Code = 'BACKUP_ERROR';
+            $incident->Severity = 'Warning';
+            $incident->addParent($this);
+            if ($inst)
+                $incident->addParent($inst);
+            $incident->Details = $e->getMessage();
+            $incident->Save();
+            return false;
         }
     }
 
+    /**
+     * backup
+     * Fonction de clonage
+     * @param Int Etape
+     * @param String Nouveau Nom Facultatif
+     * @param String Nouveau Serveur Facultatif
+     *
+     * @return Mixed
+     */
+    public function cloneHost($step = 0 ,$newName = null, $server = null){
+
+        switch($step){
+            case 1:
+                return 'pouet';
+                break;
+            default:
+                return array('template'=>"Clone",'step'=>1);
+        }
+
+    }
 }
 /**
  * Terminal

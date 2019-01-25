@@ -31,7 +31,7 @@ class ParcInstancePydio extends Plugin implements ParcInstancePlugin {
     public function createInstallTask(){
 //gestion depuis le plugin
         $version = VersionLogiciel::getLastVersion('Pydio',$this->_obj->Type);
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Installation de la version '.$version->Version.' de Pydio sur l\'instance ' . $this->_obj->Nom;
         $task->TaskModule = 'Parc';
@@ -44,14 +44,14 @@ class ParcInstancePydio extends Plugin implements ParcInstancePlugin {
         $task->addParent($host);
         $task->addParent($host->getOneParent('Server'));
         $task->Save();
-        return true;
+        return array('task'=>$task);
     }
     /**
      * installSecibWeb
      * Fonction d'installation ou de mise à jour de secib web
      * @param Object Tache
      */
-    public function installSoftware($task = null){
+    public function installSoftware($task){
         $host = $this->_obj->getOneParent('Host');
         $bdd = $host->getOneChild('Bdd');
         $mysqlsrv = $bdd->getOneParent('Server');
@@ -60,25 +60,25 @@ class ParcInstancePydio extends Plugin implements ParcInstancePlugin {
         if (!is_object($version))throw new Exception('Pas de version disponible pour l\'app Pydio Type '.$this->_obj->Type);
         try {
             //Installation des fichiers
-            $act = $this->_obj->createActivity('Suppression du dossier www', 'Info', $task);
+            $act = $task->createActivity('Suppression du dossier www', 'Info');
             $out = $apachesrv->remoteExec('rm -Rf /home/' . $host->NomLDAP . '/www');
             $act->addDetails($out);
             $act->Terminate(true);
             //Installation des fichiers
-            $act = $this->_obj->createActivity('Initialisation de la synchronisation', 'Info', $task);
+            $act = $task->createActivity('Initialisation de la synchronisation', 'Info');
             $cmd = 'cd /home/' . $host->NomLDAP . '/ && rsync -avz root@ws1.maninwan.fr:/home/modele-pydio/www/ www';
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails($out);
             $act->Terminate(true);
-            $act = $this->_obj->createActivity('Modification des droits', 'Info', $task);
+            $act = $task->createActivity('Modification des droits', 'Info');
             $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . '/www -R';
             $act->addDetails($cmd);
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($out);
             $act->Terminate(true);
             //Dump de la base
-            $act = $this->_obj->createActivity('Dump de la base Mysql', 'Info', $task);
+            $act = $task->createActivity('Dump de la base Mysql', 'Info');
             $cmd = 'mysqldump -h db.maninwan.fr -u modele-pydio -p02e532ba74a03544ea7208b8 modele-pydio | mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom;
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
@@ -94,7 +94,7 @@ class ParcInstancePydio extends Plugin implements ParcInstancePlugin {
             throw new Exception($e->getMessage());
         }
         //execution de la configuration
-        $act = $this->_obj->createActivity('Création de la config', 'Info', $task);
+        $act = $task->createActivity('Création de la config', 'Info');
         $act->Terminate($this->rewriteConfig());
         return true;
     }
@@ -105,7 +105,7 @@ class ParcInstancePydio extends Plugin implements ParcInstancePlugin {
     public function createUpdateTask($orig = null){
 //gestion depuis le plugin
         $version = VersionLogiciel::getLastVersion('Pydio',$this->_obj->Type);
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Mise à jour en version '.$version->Version.' d\'Pydio sur l\'instance ' . $this->_obj->Nom;
         $task->TaskModule = 'Parc';
@@ -121,28 +121,27 @@ class ParcInstancePydio extends Plugin implements ParcInstancePlugin {
         $task->Save();
         //changement du statut de l'instance
         $this->_obj->setStatus(3);
+        return array('task'=>$task);
     }
     /**
      * updateSoftware
      * Fonction de mise à jour de l'applicatif
      * @param Object Tache
      */
-    public function updateSoftware($task = null){
+    public function updateSoftware($task){
         $host = $this->_obj->getOneParent('Host');
         $bdd = $host->getOneChild('Bdd');
         $mysqlsrv = $bdd->getOneParent('Server');
         $apachesrv = $host->getOneParent('Server');
-        $version = VersionLogiciel::getLastVersion('Pydio',$this->_obj->Type);
-        if (!is_object($version))throw new Exception('Pas de version disponible pour l\'app Pydio Type '.$this->_obj->Type);
         try {
             //Installation des fichiers
-            $act = $this->_obj->createActivity('Initialisation de la synchronisation', 'Info', $task);
+            $act = $task->createActivity('Initialisation de la synchronisation', 'Info');
             $cmd = 'cd /home/' . $host->NomLDAP . '/ && rsync -avz root@ws1.maninwan.fr:/home/modele-pydio/www/ www';
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails($out);
             $act->Terminate(true);
-            $act = $this->_obj->createActivity('Modification des droits', 'Info', $task);
+            $act = $task->createActivity('Modification des droits', 'Info');
             $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . '/www -R';
             $act->addDetails($cmd);
             $out = $apachesrv->remoteExec($cmd);
@@ -150,7 +149,6 @@ class ParcInstancePydio extends Plugin implements ParcInstancePlugin {
             $act->Terminate(true);
             //changement du statut de l'instance
             $this->_obj->setStatus(2);
-            $this->_obj->CurrentVersion = $version->Version;
             $this->_obj->Save();
             return true;
         }catch (Exception $e){
@@ -162,7 +160,7 @@ class ParcInstancePydio extends Plugin implements ParcInstancePlugin {
     /**
      * checkState
      */
-    public function checkState(){
+    public function checkState($task){
 
     }
     /**

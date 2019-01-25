@@ -31,5 +31,6 @@
             "Tag":"{{ Au.Tag }}"
             }{% if not loop.last %},{% endif %}
         {% endfor %}
-    ]
+    ],
+    "stats": {{ stats | raw }}
 }

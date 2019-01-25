@@ -247,6 +247,26 @@ class Utils {
         $chaine = preg_replace('`[\/]`', '-', trim($chaine));
         return $chaine;
     }
+    static function strToCode($P){
+        if (is_array($P))$chaine = $P[0];
+        else $chaine = $P;
+        $chaine=utf8_decode($chaine);
+        $chaine=stripslashes($chaine);
+        $chaine = preg_replace('`\s+`', '', trim($chaine));
+        $chaine = str_replace("'", "", $chaine);
+        $chaine = str_replace("&", "et", $chaine);
+        $chaine = str_replace('"', "", $chaine);
+        $chaine = str_replace("?", "", $chaine);
+        $chaine = str_replace("!", "", $chaine);
+        $chaine = str_replace(".", "", $chaine);
+        $chaine = preg_replace('`[\,\ \(\)\+\'\/\:]`', '', trim($chaine));
+        $chaine=strtr($chaine,utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ?"),"aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynn-");
+        $chaine = preg_replace('`[-]+`', '', trim($chaine));
+        $chaine =  utf8_encode($chaine);
+        $chaine = preg_replace('`[\/]`', '', trim($chaine));
+        $chaine = strtolower(trim($chaine));
+        return $chaine;
+    }
     static function  addslashes($P) {
         return addslashes($P[0]);
     }

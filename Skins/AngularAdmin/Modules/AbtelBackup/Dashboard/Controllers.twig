@@ -1,5 +1,5 @@
 
-app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $scope, $rootScope,  AbtelBackupActivityStore, AbtelBackupBackupStoreStore, AbtelBackupEsxVmStore) {
+app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $scope, $rootScope,  SystemeActivityStore, AbtelBackupBackupStoreStore, AbtelBackupEsxVmStore) {
     //------------------------------------------//
     //                 ANCHORS
     //------------------------------------------//
@@ -27,28 +27,28 @@ app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $s
     //      Activity
     //
     //Init du store
-    $scope.AbtelBackupActivityStore = AbtelBackupActivityStore;
+    $scope.SystemeActivityStore = SystemeActivityStore;
     // Utile seulement a cause de la template d'affichage commun avec la listchildren
     var now = Math.floor(Date.now()/1000);
     var seuil = now - 86400;
 
-    $scope.AbtelBackupActivityStore.setFilters('Started=1&Success=0&Errors=0+tmsEdit>'+seuil,'dash');
-    $scope.AbtelBackupActivityStore.getData(1,'dash');
+    $scope.SystemeActivityStore.setFilters('Started=1&Success=0&Errors=0+tmsEdit>'+seuil,'dash');
+    $scope.SystemeActivityStore.getData(1,'dash');
     $scope.AbtelBackupActivity = {
-        data: AbtelBackupActivityStore.data.dash,
-        store: AbtelBackupActivityStore,
-        filter: AbtelBackupActivityStore.filter.dash,
-        currentPage: AbtelBackupActivityStore.currentPage.dash,
-        itemsPerPage: AbtelBackupActivityStore.itemsPerPage,
+        data: SystemeActivityStore.data.dash,
+        store: SystemeActivityStore,
+        filter: SystemeActivityStore.filter.dash,
+        currentPage: SystemeActivityStore.currentPage.dash,
+        itemsPerPage: SystemeActivityStore.itemsPerPage,
         selected: {
             selectall: false
         }
     }
 
-    $rootScope.$on('AbtelBackupActivityStore',function (ev,data){
+    $rootScope.$on('SystemeActivityStore',function (ev,data){
         switch (data.type){
             case 'add':
-                $scope.AbtelBackupActivityStore.addOneData(data.id,data.data,'dash');
+                $scope.SystemeActivityStore.addOneData(data.id,data.data,'dash');
                 break;
         }
     });
@@ -56,10 +56,10 @@ app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $s
     var refresh = $interval(function(){
         var now = Math.floor(Date.now()/1000);
         var seuil = now - 86400;
-        for(var n in $scope.AbtelBackupActivityStore.data['dash']){
-            var StData = $scope.AbtelBackupActivityStore.data['dash'][n];
+        for(var n in $scope.SystemeActivityStore.data['dash']){
+            var StData = $scope.SystemeActivityStore.data['dash'][n];
             if(StData.tmsEdit < seuil) {
-                $scope.AbtelBackupActivityStore.deleteOneData(StData.id,'dash',true);
+                $scope.SystemeActivityStore.deleteOneData(StData.id,'dash',true);
             }
         }
     },5000);

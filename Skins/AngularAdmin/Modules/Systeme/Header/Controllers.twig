@@ -10,7 +10,7 @@
         app.controller('{{ c.name }}Ctrl', function() {});
     {% else %}
     /**** LIST CONTROLLER  ****/
-    app.controller('{{ c.name }}Ctrl', function($interval,$sce, $window, $templateCache, $controller, $injector, $location, $scope,$timeout, $rootScope,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store{% endfor %}) {
+    app.controller('{{ c.name }}Ctrl', function($interval,$sce, $window, $templateCache, $controller, $injector, $location, $scope,$timeout, $rootScope,$route,$routeParams,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store{% endfor %}) {
         $scope.log = function(toto){
             console.log(toto);
         }
@@ -20,36 +20,36 @@
         }
 
         $scope.injectStore = function(toto,context, query){
-            if($scope[toto] != undefined) return;
             var store = $injector.get(toto+'Store');
-            $scope[toto] = {
-                data: store.data[context],
-                store: store,
-                filter: store.getFilters(context,true).global,
-                filterPanel: false,
-                filters: (function(){
-                    var opts = store.getFilters(context,true).options;
-                    var out = {};
-                    for (var o in opts){
-                        out[opts[o].name] = opts[o];
+            if($scope[toto] == undefined) {
+                $scope[toto] = {
+                    data: store.data[context],
+                    store: store,
+                    filter: store.getFilters(context,true).global,
+                    filterPanel: false,
+                    filters: (function(){
+                        var opts = store.getFilters(context,true).options;
+                        var out = {};
+                        for (var o in opts){
+                            out[opts[o].name] = opts[o];
+                        }
+                        return out;
+                    })(),
+                    filterQuery: store.getQueryFilter(context),
+                    currentPage: store.currentPage[context],
+                    pageLength: store.getPageLength(),
+                    itemsPerPage: store.itemsPerPage,
+                    selected: {
+                        selectall: false
                     }
-                    return out;
-                })(),
-                filterQuery: store.getQueryFilter(context),
-                currentPage: store.currentPage[context],
-                pageLength: store.getPageLength(),
-                itemsPerPage: store.itemsPerPage,
-                selected: {
-                    selectall: false
                 }
+
+
+                //watcher currentPage
+                $scope.$watch(toto+'.currentPage', function() {
+                    store.setPage($scope[toto].currentPage,context);
+                });
             }
-
-
-            //watcher currentPage
-            $scope.$watch(toto+'.currentPage', function() {
-                store.setPage($scope[toto].currentPage,context);
-            });
-
 
             if(query != undefined){
                 $scope[toto].store.setQuery(query,context);
@@ -313,7 +313,6 @@
                 });
                 if(present)
                     $templateCache.remove(present);#}
-
 
                 $http.post('/{{ c.url }}/'+obj.id+'/Function.json',{"Func":JSON.stringify($scope.{{ c.identifier }}function)})
                 .success(function(data) {
@@ -623,10 +622,52 @@
         $scope.$watch('{{ c.identifier }}.currentPage', function() {
             {{ c.identifier }}Store.setPage($scope.{{ c.identifier }}.currentPage,'default');
         });
+        /**
+        * PREDEFINED FILTERS
+        */
+        //si déjà définie
+        //si définition par le lien
+        if ($route.current.params.filter){
+            //définition du currentoptionfilter
+            $scope.currentOptionFilter = $route.current.params.filter;
+            //simulation d'un click sur le filtre
+            $timeout(function() {
+                angular.element(document.querySelector('#{{ c.identifier }}-'+$scope.currentOptionFilter)).click();
+            },0);
+        }else{
+            {{ c.identifier }}Store.resetFilters();
+        }
+
+        //mise à jour automatique des compte de filtre sur event push
+        $rootScope.$on(' {{ c.identifier }}Store',function (ev,data){
+            $scope.{{ c.identifier }}updateCustomFilters();
+        });
+
+        //fonction de mise à jour des compteurs
+        {% for filter in c.filters %}
+            $scope.filter{{ filter.code }} = 0;
+        {% endfor %}
+        $scope.{{ c.identifier }}updateCustomFilters = function () {
+           {% for filter in c.filters %}
+               {{ c.identifier }}Store.getCount('{{ filter.filter }}').then(function (cnt) {
+                $scope.filter{{ filter.code }} = cnt;
+               });
+           {% endfor %}
+        }
+
+        //mise à jour des compteurs à l'affichage
+        $timeout(function() {
+            $scope.{{ c.identifier }}updateCustomFilters();
+        },0);
+
         $scope.{{ c.identifier }}setOptionsFilters = function (filter, context){
             if(context == undefined) context = 'default';
             {{ c.identifier }}Store.setOptionsFilters(filter,context,false);
             {{ c.identifier }}Store.getData(1,context);
+        }
+        $scope.{{ c.identifier }}refresh = function (context){
+            {{ c.identifier }}Store.refresh(context);
+            $scope.{{ c.identifier }}updateCustomFilters();
         }
         $scope.{{ c.identifier }}add = function (callback){
             console.log('add {{ c.objecttype }}');
@@ -776,7 +817,7 @@
     });
 
     /**** FICHE CONTROLLER ****/
-    app.controller('{{ c.name }}FicheCtrl', function($sce, $window, $templateCache,$controller,$injector,NgMap,$location, $scope,$timeout, $rootScope, $routeParams,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store {% for cParent in child.parentelements %},{{ cParent.objectModule }}{{ cParent.objectName }}Store{% endfor %}{% for cChild in child.childrenelements %},{{ cChild.objectModule }}{{ cChild.objectName }}Store{% endfor %}{% endfor %}{% if c.browseable%},SystemePageStore{% endif %}) {
+    app.controller('{{ c.name }}FicheCtrl', function($sce, $window, $templateCache,$controller,$injector,NgMap,$location, $scope, $timeout, $interval, $rootScope, $routeParams,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store {% for cParent in child.parentelements %},{{ cParent.objectModule }}{{ cParent.objectName }}Store{% endfor %}{% for cChild in child.childrenelements %},{{ cChild.objectModule }}{{ cChild.objectName }}Store{% endfor %}{% endfor %}{% if c.browseable%},SystemePageStore{% endif %}) {
         $scope.log = function(toto){
             console.log(toto);
         }
@@ -785,37 +826,40 @@
             return $window[toto];
         }
 
-        $scope.injectStore = function(toto,context, query){
-            if($scope[toto] != undefined) return;
+        $scope.displayFiche =true;
+       $scope.injectStore = function(toto,context, query){
             var store = $injector.get(toto+'Store');
-            $scope[toto] = {
-                data: store.data[context],
-                store: store,
-                filter: store.getFilters(context,true).global,
-                filterPanel: false,
-                filters: (function(){
-                    var opts = store.getFilters(context,true).options;
-                    var out = {};
-                    for (var o in opts){
-                        out[opts[o].name] = opts[o];
+            if($scope[toto] == undefined) {
+                $scope[toto] = {
+                    data: store.data[context],
+                    store: store,
+                    filter: store.getFilters(context,true).global,
+                    filterPanel: false,
+                    filters: (function(){
+                        var opts = store.getFilters(context,true).options;
+                        var out = {};
+                        for (var o in opts){
+                            out[opts[o].name] = opts[o];
+                        }
+                        return out;
+                    })(),
+                    filterQuery: store.getQueryFilter(context),
+                    currentPage: store.currentPage[context],
+                    pageLength: store.getPageLength(),
+                    itemsPerPage: store.itemsPerPage,
+                    selected: {
+                        selectall: false
                     }
-                    return out;
-                })(),
-                filterQuery: store.getQueryFilter(context),
-                currentPage: store.currentPage[context],
-                pageLength: store.getPageLength(),
-                itemsPerPage: store.itemsPerPage,
-                selected: {
-                    selectall: false
                 }
+
+
+                //watcher currentPage
+                $scope.$watch(toto+'.currentPage', function() {
+                    store.setPage($scope[toto].currentPage,context);
+                });
+
+
             }
-
-
-            //watcher currentPage
-            $scope.$watch(toto+'.currentPage', function() {
-                store.setPage($scope[toto].currentPage,context);
-            });
-
 
             if(query != undefined){
                 $scope[toto].store.setQuery(query,context);
@@ -857,10 +901,15 @@
                 }
             });
         {% endfor %}
+
         //récupération des données du store.
+        $scope.currentStore = {{ c.identifier }}Store;
         {{ c.identifier }}Store.getOneData($routeParams.id,'fiche',true).then(function (data){
             console.log('{{ c.identifier }} >> Fiche >> receive obj definition',data);
             $scope.obj = data;
+            if($scope.obj.id == undefined) $scope.displayFiche = false;
+
+
 
             //call function
             $scope.{{ c.identifier }}callFunction = function (obj,name,title,needConfirm,follow){
@@ -904,15 +953,6 @@
 
                         $("#modalfunction-{{ c.identifier }}").modal();
 
-                        {#var keys = $templateCache.getKeys();
-                        var present = false;
-                        angular.forEach(keys,function(kvalue,kkey){
-                            if(kvalue.indexOf('Systeme/Utils/Function') != -1) present = kvalue;
-                        });
-                        if(present)
-                            $templateCache.remove(present);#}
-
-
                         $http.post('/{{ c.url }}/'+obj.id+'/Function.json',{"Func":JSON.stringify($scope.{{ c.identifier }}function)})
                         .success(function(data) {
                             console.log('store > {{ c.module }}/{{ c.objecttype }} > Function  ', data);
@@ -920,7 +960,6 @@
                             var hasData = false;
                             $scope.{{ c.identifier }}function = data;
                             if(typeof $scope.{{ c.identifier }}function.data == 'string'){
-                                {#$scope.{{ c.identifier }}function.data = $sce.trustAsHtml($scope.{{ c.identifier }}function.data); // Seulement utile avec ng-bind-html mais ne compilait pas#}
                                 hasData = true;
                             }
 
@@ -977,15 +1016,6 @@
 
                     $("#modalfunction-{{ c.identifier }}").modal();
 
-                   {# var keys = $templateCache.getKeys();
-                    var present = false;
-                    angular.forEach(keys,function(kvalue,kkey){
-                        if(kvalue.indexOf('Systeme/Utils/Function') != -1) present = kvalue;
-                    });
-                    if(present)
-                        $templateCache.remove(present);#}
-
-
                     $http.post('/{{ c.url }}/'+obj.id+'/Function.json',{"Func":JSON.stringify($scope.{{ c.identifier }}function)})
                     .success(function(data) {
                         console.log('store > {{ c.module }}/{{ c.objecttype }} > Function  ', data);
@@ -993,7 +1023,6 @@
                         var hasData = false;
                         $scope.{{ c.identifier }}function = data;
                         if(typeof $scope.{{ c.identifier }}function.data == 'string'){
-                            {#$scope.{{ c.identifier }}function.data = $sce.trustAsHtml($scope.{{ c.identifier }}function.data); // Seulement utile avec ng-bind-html mais ne compilait pas#}
                             hasData = true;
                         }
 
@@ -1276,56 +1305,144 @@
                 });
 
                 //CALL FUNCTION
-                $scope.{{ child.objectModule }}{{ child.objectName }}callFunction = function (obj,name,title,needConfirm){
-                    if(needConfirm != undefined && needConfirm){
-                        swal({
-                            title: "Êtes vous sûr de vouloir effectuer cette action ?",
-                            text: "Cette action risque d'avoir des répercutions définitives. ",
-                            type: "warning",
-                            showCancelButton: true,
-                            confirmButtonClass: "btn-danger",
-                            cancelButtonText: "Annuler",
-                            confirmButtonText: "Oui, continuer !",
-                            closeOnConfirm: true
-                        },
-                        function(){
-                            console.log('callfunction ',obj.id,title);
-                            $('#modalfunction-{{ child.objectModule }}{{ child.objectName }} .modal-dialog').spin();
+                 $scope.{{ child.objectModule }}{{ child.objectName }}callFunction = function (obj,name,title,needConfirm){
+                     if(needConfirm != undefined && needConfirm){
+                         swal({
+                             title: "Êtes vous sûr de vouloir effectuer cette action ?",
+                             text: "Cette action risque d'avoir des répercutions définitives. ",
+                             type: "warning",
+                             showCancelButton: true,
+                             confirmButtonClass: "btn-danger",
+                             cancelButtonText: "Annuler",
+                             confirmButtonText: "Oui, continuer !",
+                             closeOnConfirm: true
+                         },
+                         function(){
+                             console.log('callfunction ',obj.id,title);
+                             $('#modalfunction-{{ child.objectModule }}{{ child.objectName }} .modal-dialog').spin();
+                             var args = {};
+                             if( $scope.{{ child.objectModule }}{{ child.objectName }}function != undefined &&  $scope.{{ child.objectModule }}{{ child.objectName }}function.callNext && follow){
+                                 args = angular.extend({},$scope.{{ child.objectModule }}{{ child.objectName }}function.args);
+                             }
+                             console.error('ccccccccccccccccccccc',args);
 
-                            $scope.{{ child.objectModule }}{{ child.objectName }}function = {
-                            title: title,
-                            loaded: false,
-                            name: name,
-                            url: '/{{ child.objectModule }}/{{ child.objectName }}/'+obj.id+'/'+name+'.htm?rand='+new Date().getTime()
-                            };
+                             $scope.{{ child.objectModule }}{{ child.objectName }}function = {
+                                 title: title,
+                                 loaded: false,
+                                 name: name,
+                                 query: '{{ child.objectModule }}/{{ child.objectName }}/'+obj.id,
+                                 loading: true,
+                                 errors : [],
+                                 warning: [],
+                                 infos: [],
+                                 success: false,
+                                 tms : Date.now(),
+                                 data : '',
+                                 callNext : false,
+                                 callBack : false,
+                                 args : args
+                             };
 
-                            {{ child.objectModule }}{{ child.objectName }}Store.getOneData(obj.id,false).then(function (data) {
-                            $scope.modalObj = data;
-                            console.log('function '+title+' obj',$scope.modalObj);
-                            $('#modalfunction-{{ child.objectModule }}{{ child.objectName }} .modal-dialog').spin(false);
-                            });
+                             $("#modalfunction-{{ child.objectModule }}{{ child.objectName }}").modal();
 
-                            $("#modalfunction-{{ child.objectModule }}{{ child.objectName }}").modal();
-                        });
-                    } else {
-                        console.log('callfunction ',obj.id,title);
-                        $('#modalfunction-{{ child.objectModule }}{{ child.objectName }} .modal-dialog').spin();
+                             $http.post('/{{ c.url }}/'+obj.id+'/Function.json',{"Func":JSON.stringify($scope.{{ child.objectModule }}{{ child.objectName }}function)})
+                             .success(function(data) {
+                                 console.log('store > {{ child.objectModule }}/{{ child.objectName }} > Function  ', data);
 
-                        $scope.{{ child.objectModule }}{{ child.objectName }}function = {
-                            title: title,
-                            loaded: false,
-                            name: name,
-                            url: '/{{ child.objectModule }}/{{ child.objectName }}/'+obj.id+'/'+name+'.htm?rand='+new Date().getTime()
-                        };
+                                 var hasData = false;
+                                 $scope.{{ child.objectModule }}{{ child.objectName }}function = data;
+                                 if(typeof $scope.{{ child.objectModule }}{{ child.objectName }}function.data == 'string'){
+                                     hasData = true;
+                                 }
 
-                        {{ child.objectModule }}{{ child.objectName }}Store.getOneData(obj.id,false).then(function (data) {
-                            $scope.modalObj = data;
-                            console.log('function '+title+' obj',$scope.modalObj);
-                            $('#modalfunction-{{ child.objectModule }}{{ child.objectName }} .modal-dialog').spin(false);
-                        });
+                                 if($scope.{{ child.objectModule }}{{ child.objectName }}function.callNext){
+                                     $scope.{{ child.objectModule }}{{ child.objectName }}function.callNext.item = obj;
+                                 } else if(!hasData) {
+                                     if($scope.{{ child.objectModule }}{{ child.objectName }}function.success){
+                                         $scope.{{ child.objectModule }}{{ child.objectName }}function.data = 'L\'opération s\'est déroulée avec succès.';
+                                     } else {
+                                         $scope.{{ child.objectModule }}{{ child.objectName }}function.data = 'L\'opération ne s\'est pas déroulée correctement.';
+                                     }
+                                 }
 
-                        $("#modalfunction-{{ child.objectModule }}{{ child.objectName }}").modal();
-                    }
+                                 if($scope.{{ child.objectModule }}{{ child.objectName }}function.callBack){
+                                     $scope[$scope.{{ child.objectModule }}{{ child.objectName }}function.callBack.nom](...$scope.{{ child.objectModule }}{{ child.objectName }}function.callBack.args);
+                                 }
+
+
+                                 {{ child.objectModule }}{{ child.objectName }}Store.getOneData(obj.id,false).then(function (data) {
+                                     $scope.modalObj = data;
+                                     console.log('function '+title+' obj',$scope.modalObj);
+                                     $('#modalfunction-{{ child.objectModule }}{{ child.objectName }} .modal-dialog').spin(false);
+                                 });
+
+                             }).finally(function(){
+                                 $scope.{{ child.objectModule }}{{ child.objectName }}function.loaded = true;
+                             });
+                         });
+                     } else {
+                         console.log('callfunction ',obj.id,title);
+                         $('#modalfunction-{{ child.objectModule }}{{ child.objectName }} .modal-dialog').spin();
+                         var args = {};
+                         if( $scope.{{ child.objectModule }}{{ child.objectName }}function != undefined &&  $scope.{{ child.objectModule }}{{ child.objectName }}function.callNext && follow){
+                             args = angular.extend({},$scope.{{ child.objectModule }}{{ child.objectName }}function.args);
+                         }
+                         //console.error('ccccccccccccccccccccc',args);
+
+                         $scope.{{ child.objectModule }}{{ child.objectName }}function = {
+                             title: title,
+                             loaded: false,
+                             name: name,
+                             query: '{{ child.objectModule }}/{{ child.objectName }}/'+obj.id,
+                             loading: true,
+                             errors : [],
+                             warning: [],
+                             infos: [],
+                             success: false,
+                             tms : Date.now(),
+                             data : '',
+                             callNext : false,
+                             callBack : false,
+                             args : args
+                         };
+
+                         $("#modalfunction-{{ child.objectModule }}{{ child.objectName }}").modal();
+
+                         $http.post('/{{ c.url }}/'+obj.id+'/Function.json',{"Func":JSON.stringify($scope.{{ child.objectModule }}{{ child.objectName }}function)})
+                         .success(function(data) {
+                             console.log('store > {{ child.objectModule }}/{{ child.objectName }} > Function  ', data);
+
+                             var hasData = false;
+                             $scope.{{ child.objectModule }}{{ child.objectName }}function = data;
+                             if(typeof $scope.{{ child.objectModule }}{{ child.objectName }}function.data == 'string'){
+                                 hasData = true;
+                             }
+
+                             if($scope.{{ child.objectModule }}{{ child.objectName }}function.callNext){
+                                 $scope.{{ child.objectModule }}{{ child.objectName }}function.callNext.item = obj;
+                             } else if(!hasData) {
+                                 if($scope.{{ child.objectModule }}{{ child.objectName }}function.success){
+                                     $scope.{{ child.objectModule }}{{ child.objectName }}function.data = 'L\'opération s\'est déroulée avec succès.';
+                                 } else {
+                                     $scope.{{ child.objectModule }}{{ child.objectName }}function.data = 'L\'opération ne s\'est pas déroulée correctement.';
+                                 }
+                             }
+
+                             if($scope.{{ child.objectModule }}{{ child.objectName }}function.callBack){
+                                 $scope[$scope.{{ child.objectModule }}{{ child.objectName }}function.callBack.nom](...$scope.{{ child.objectModule }}{{ child.objectName }}function.callBack.args);
+                             }
+
+
+                             {{ child.objectModule }}{{ child.objectName }}Store.getOneData(obj.id,false).then(function (data) {
+                                 $scope.modalObj = data;
+                                 console.log('function '+title+' obj',$scope.modalObj);
+                                 $('#modalfunction-{{ child.objectModule }}{{ child.objectName }} .modal-dialog').spin(false);
+                             });
+
+                         }).finally(function(){
+                             $scope.{{ child.objectModule }}{{ child.objectName }}function.loaded = true;
+                         });
+                     }
                 }
 
                 //MASS DELETE
@@ -1509,7 +1626,7 @@
                     $scope.{{ cParent.objectModule }}{{ cParent.objectName }}CPSelect = {
                         data: {{ cParent.objectModule }}{{ cParent.objectName }}Store.data.cparentselect,
                         store: {{ cParent.objectModule }}{{ cParent.objectName }}Store,
-                        filter: {{ cParent.objectModule }}{{ cParent.objectName }}Store.filter.cparentselect,
+                        filter: {{ cParent.objectModule }}{{ cParent.objectName }}Store.filter.cparentselect.global,
                         currentPage: {{ cParent.objectModule }}{{ cParent.objectName }}Store.currentPage.cparentselect,
                         itemsPerPage: {{ cParent.objectModule }}{{ cParent.objectName }}Store.itemsPerPage,
                         selected: {

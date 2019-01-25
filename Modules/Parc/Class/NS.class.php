@@ -12,7 +12,7 @@ class NS extends genericClass {
 	public function Save( $synchro = true ) {
 		parent::Save();
 		// Forcer la vérification
-		if(!$this->_isVerified) $this->Verify( $synchro );
+		$this->Verify( $synchro );
 		// Enregistrement si pas d'erreur
 		if($this->_isVerified) {
 			// Dans le cas du déplacer on doit connaitre les nouveaux parents donc 2 Save()
@@ -27,7 +27,7 @@ class NS extends genericClass {
 	 * @param	boolean	Verifie aussi sur LDAP
 	 * @return	Verification OK ou NON
 	 */
-	public function Verify( $synchro = true ) {
+	public function Verify( $synchro = false ) {
         // Outils
         $KEServer = $this->getKEServer();
         $KEDomain = $this->getKEDomain();

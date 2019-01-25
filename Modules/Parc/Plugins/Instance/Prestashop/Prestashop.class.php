@@ -35,7 +35,7 @@ class ParcInstancePrestashop extends Plugin implements ParcInstancePlugin {
      * Fonction d'installation ou de mise à jour de secib web
      * @param Object Tache
      */
-    public function installSoftware($task = null){
+    public function installSoftware($task){
     }
     /**
      * createUpdateTask
@@ -49,13 +49,13 @@ class ParcInstancePrestashop extends Plugin implements ParcInstancePlugin {
      * Fonction de mise à jour de l'applicatif
      * @param Object Tache
      */
-    public function updateSoftware($task = null){
+    public function updateSoftware($task){
 
     }
     /**
      * checkState
      */
-    public function checkState(){
+    public function checkState($task){
 
     }
     /**

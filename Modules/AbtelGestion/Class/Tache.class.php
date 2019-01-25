@@ -1,6 +1,6 @@
 <?php
 
-class Tache extends AbtelGestionBase {
+class AbtelTache extends AbtelGestionBase {
 	/*
 	 * nombre d'enregistrements
 	 */

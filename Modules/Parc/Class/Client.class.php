@@ -16,7 +16,7 @@ class Parc_Client extends genericClass {
         }
 
 		// Forcer la vérification
-		if(!$this->_isVerified) $this->Verify( $synchro );
+		$this->Verify( $synchro );
         parent::Save();
 
 		// Enregistrement si pas d'erreur
@@ -40,7 +40,7 @@ class Parc_Client extends genericClass {
 	 * @param	boolean	Verifie aussi sur LDAP
 	 * @return	Verification OK ou NON
 	 */
-	public function Verify( $synchro = true ) {
+	public function Verify( $synchro = false ) {
         if (empty($this->NomLDAP)) {
             $this->NomLDAP = Utils::CheckSyntaxe($this->Nom);
         }
@@ -261,6 +261,9 @@ class Parc_Client extends genericClass {
 	public function getDomain() {
 		return $this->getChildren('Domain');
 	}
+    public function getRevendeur() {
+        return $this->getOneParent('Revendeur');
+    }
 	public function getHost() {
 		return $this->getChildren('Host');
 	}

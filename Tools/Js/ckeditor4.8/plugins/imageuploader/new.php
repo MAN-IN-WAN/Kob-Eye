@@ -6,8 +6,8 @@
 <title>Image Browser for CKEditor :: Fujana Solutions</title>
 
 <!-- Jquery -->
-<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 
 <script>
 </script>
@@ -144,7 +144,7 @@
 	<div class="login">
     <h1>Welcome!</h1>
     <h2>Please create a new (local) account to prevent others to view and manage your images.</h2>
-    <h3 class="disable" onclick="window.open('http://imageuploaderforckeditor.altervista.org/disable_pw.html','about:blank', 'toolbar=no, scrollbars=yes, resizable=no, width=900, height=600');">How can I disable the password protection? (external link)</h3>
+    <h3 class="disable" onclick="window.open('https://imageuploaderforckeditor.altervista.org/disable_pw.html','about:blank', 'toolbar=no, scrollbars=yes, resizable=no, width=900, height=600');">How can I disable the password protection? (external link)</h3>
 	<form name="form2" action="create.php" method="post">
     <p class="nameOfInput">Username</p>
     <input type="text" name="username" class="login_form">

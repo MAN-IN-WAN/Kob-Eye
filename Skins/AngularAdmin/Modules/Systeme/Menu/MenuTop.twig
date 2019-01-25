@@ -21,8 +21,8 @@
                     </span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="" role="menu">
-                    <a class="dropdown-item" href="#/Profile"><i class="dropdown-icon icmn-user"></i> Profil</a>
-                    <div class="dropdown-divider"></div>
+                   <!-- <a class="dropdown-item" href="#/Profile"><i class="dropdown-icon icmn-user"></i> Profil</a>
+                    <div class="dropdown-divider"></div>-->
                     <a class="dropdown-item" href="/Systeme/Deconnexion"><i class="dropdown-icon icmn-exit"></i> Déconnexion</a>
                 </ul>
             </div>
@@ -128,7 +128,7 @@
                     </div>
                 </div>-->
                 {#<h5 style="line-height:2em;">Bienvenue sur l'espace client  {{ displayName }}</h5>#}
-                <h5 style="line-height:2em;">Bienvenue sur l'espace {{ RoleSpace }} {{ User.Nom }} {{ User.Prenom }} </h5>
+                <h5 style="line-height:2em;">Bienvenue sur l'espace {{ RoleSpace }} {{ User.Nom }} {{ User.Prenom }} {{ GroupName }} </h5>
             </div>
         </div>
     </div>

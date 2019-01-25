@@ -46,6 +46,8 @@ class Tache extends genericClass{
                     //execution objet
                     $obj = Sys::getOneData($this->TaskModule,$this->TaskObject.'/'.$this->TaskId);
                     try {
+                        $act = $this->createActivity('Démarrage de la tache');
+                        $act->Terminate(true);
                         $out = $obj->{$this->TaskFunction}($this);
                         $this->addRetour($out);
                         $this->Termine = true;
@@ -60,6 +62,9 @@ class Tache extends genericClass{
                     try {
                         call_user_func($this->TaskObject.'::'.$this->TaskFunction,$this);
                     }catch (Exception $e){
+                        $this->addRetour('ERROR: '.$e->getMessage());
+                        $this->Erreur = true;
+                    }catch (Error $e){
                         $this->addRetour('ERROR: '.$e->getMessage());
                         $this->Erreur = true;
                     }
@@ -84,6 +89,13 @@ class Tache extends genericClass{
             $this->_apache = $ap;
         }
         return $this->_apache;
+    }
+    public function Delete(){
+        $acts = $this->getChildren('Activity');
+        foreach ($acts as $act) {
+            $act->Delete();
+        }
+        return parent::Delete();
     }
     /**
      * createActivity

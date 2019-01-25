@@ -31,7 +31,7 @@ class ParcInstanceWordpress extends Plugin implements ParcInstancePlugin {
     public function createInstallTask(){
 //gestion depuis le plugin
         $version = VersionLogiciel::getLastVersion('Wordpress',$this->_obj->Type);
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Installation de la version '.$version->Version.' de Wordpress sur l\'instance ' . $this->_obj->Nom;
         $task->TaskModule = 'Parc';
@@ -44,14 +44,14 @@ class ParcInstanceWordpress extends Plugin implements ParcInstancePlugin {
         $task->addParent($host);
         $task->addParent($host->getOneParent('Server'));
         $task->Save();
-        return true;
+        return array('task'=>$task);
     }
     /**
      * installSecibWeb
      * Fonction d'installation ou de mise à jour de secib web
      * @param Object Tache
      */
-    public function installSoftware($task = null){
+    public function installSoftware($task){
         $host = $this->_obj->getOneParent('Host');
         $bdd = $host->getOneChild('Bdd');
         $mysqlsrv = $bdd->getOneParent('Server');
@@ -60,26 +60,32 @@ class ParcInstanceWordpress extends Plugin implements ParcInstancePlugin {
 //        if (!is_object($version))throw new Exception('Pas de version disponible pour l\'app Wordpress Type '.$this->_obj->Type);
         try {
             //Installation des fichiers
-            $act = $this->_obj->createActivity('Suppression du dossier www', 'Info', $task);
+            $act = $task->createActivity('Suppression du dossier www', 'Info', $task);
             $out = $apachesrv->remoteExec('rm -Rf /home/' . $host->NomLDAP . '/www');
             $act->addDetails($out);
             $act->Terminate(true);
             //Installation des fichiers
-            $act = $this->_obj->createActivity('Initialisation de la synchronisation', 'Info', $task);
+            $act = $task->createActivity('Initialisation de la synchronisation', 'Info', $task);
             $cmd = 'cd /home/' . $host->NomLDAP . '/ && rsync -avz root@ws1.maninwan.fr:/home/modele-wordpress/www/ www';
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails($out);
             $act->Terminate(true);
-            $act = $this->_obj->createActivity('Modification des droits', 'Info', $task);
+            $act = $task->createActivity('Modification des droits', 'Info', $task);
             $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . '/www -R';
             $act->addDetails($cmd);
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($out);
             $act->Terminate(true);
             //Dump de la base
-            $act = $this->_obj->createActivity('Dump de la base Mysql', 'Info', $task);
+            $act = $task->createActivity('Dump de la base Mysql', 'Info', $task);
             $cmd = 'mysqldump -h db.maninwan.fr -u modele-wordpress -pb57f9fda5b3d748ec61b3687 modele-wordpress | mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom;
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($cmd);
+            $act->addDetails($out);
+            $act->Terminate(true);
+            $act = $task->createActivity('Mot de passe administrateur', 'Info');
+            $cmd = 'mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom.' -e "UPDATE wp_users SET user_pass=\''.md5($host->Password).'\' WHERE ID=1"';
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails($out);
@@ -94,7 +100,7 @@ class ParcInstanceWordpress extends Plugin implements ParcInstancePlugin {
             throw new Exception($e->getMessage());
         }
         //execution de la configuration
-        $act = $this->_obj->createActivity('Création de la config', 'Info', $task);
+        $act = $task->createActivity('Création de la config', 'Info', $task);
         $act->Terminate($this->rewriteConfig());
         return true;
     }
@@ -105,7 +111,7 @@ class ParcInstanceWordpress extends Plugin implements ParcInstancePlugin {
     public function createUpdateTask($orig = null){
 //gestion depuis le plugin
         $version = VersionLogiciel::getLastVersion('Wordpress',$this->_obj->Type);
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Mise à jour en version '.$version->Version.' d\'Wordpress sur l\'instance ' . $this->_obj->Nom;
         $task->TaskModule = 'Parc';
@@ -121,13 +127,14 @@ class ParcInstanceWordpress extends Plugin implements ParcInstancePlugin {
         $task->Save();
         //changement du statut de l'instance
         $this->_obj->setStatus(3);
+        return array('task'=>$task);
     }
     /**
      * updateSoftware
      * Fonction de mise à jour de l'applicatif
      * @param Object Tache
      */
-    public function updateSoftware($task = null){
+    public function updateSoftware($task){
         $host = $this->_obj->getOneParent('Host');
         $bdd = $host->getOneChild('Bdd');
         $mysqlsrv = $bdd->getOneParent('Server');
@@ -136,13 +143,13 @@ class ParcInstanceWordpress extends Plugin implements ParcInstancePlugin {
         //if (!is_object($version))throw new Exception('Pas de version disponible pour l\'app Wordpress Type '.$this->_obj->Type);
         try {
             //Installation des fichiers
-            $act = $this->_obj->createActivity('Initialisation de la synchronisation', 'Info', $task);
+            $act = $task->createActivity('Initialisation de la synchronisation', 'Info', $task);
             $cmd = 'cd /home/' . $host->NomLDAP . '/ && rsync -avz root@ws1.maninwan.fr:/home/modele-wordpress/www/ www';
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails($out);
             $act->Terminate(true);
-            $act = $this->_obj->createActivity('Modification des droits', 'Info', $task);
+            $act = $task->createActivity('Modification des droits', 'Info', $task);
             $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . '/www -R';
             $act->addDetails($cmd);
             $out = $apachesrv->remoteExec($cmd);
@@ -162,7 +169,7 @@ class ParcInstanceWordpress extends Plugin implements ParcInstancePlugin {
     /**
      * checkState
      */
-    public function checkState(){
+    public function checkState($task){
 
     }
     /**
@@ -172,44 +179,41 @@ class ParcInstanceWordpress extends Plugin implements ParcInstancePlugin {
         $hos = $this->_obj->getOneParent('Host');
         $srv = $hos->getOneParent('Server');
         $bdd = $hos->getOneChild('Bdd');
-        $mysqlsrv = $bdd->getOneParent('Server');
+        if (!$bdd){
+            $this->_obj->addError(array('Message'=>'Base de donnée introuvable'));
+            //return false;
+        }else $mysqlsrv = $bdd->getOneParent('Server');
         $conf = $srv->getFileContent('/home/'.$hos->NomLDAP.'/www/wp-config.php');
         if (!empty($conf)){
             $conf = preg_replace('#define\(\'DB_NAME\', \'(.*)\'\);#','define(\'DB_NAME\', \''.$bdd->Nom.'\');',$conf);
             $conf = preg_replace('#define\(\'DB_USER\', \'(.*)\'\);#','define(\'DB_USER\', \''.$hos->NomLDAP.'\');',$conf);
             $conf = preg_replace('#define\(\'DB_PASSWORD\', \'(.*)\'\);#','define(\'DB_PASSWORD\', \''.$hos->Password.'\');',$conf);
-            $conf = preg_replace('#define\(\'DB_HOST\', \'(.*)\'\);#','define(\'DB_HOST\', \'db.maninwan.fr'.'\');',$conf);
+            $conf = preg_replace('#define\(\'DB_HOST\', \'(.*)\'\);#',"define('DB_HOST', 'db.maninwan.fr');\nif(\$_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'){\n \$_SERVER['HTTPS'] = 'on';\n\$_SERVER['SERVER_PORT'] = 443;\n}\nif (isset(\$_SERVER['HTTP_X_FORWARDED_HOST'])) {\n\$_SERVER['HTTP_HOST'] = \$_SERVER['HTTP_X_FORWARDED_HOST'];\n}\n",$conf);
             $srv->putFileContent('/home/'.$hos->NomLDAP.'/www/wp-config.php',$conf);
 
-            //récupération de l'index
-            $index = $srv->getFileContent('/home/'.$hos->NomLDAP.'/www/index.php');
-            $index = preg_replace('#define\(\'WP_USE_THEMES\', true\);#',"define('WP_USE_THEMES', true);\nif(\$_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'){\n \$_SERVER['HTTPS'] = 'on';\n\$_SERVER['SERVER_PORT'] = 443;\n}\n",$index);
-            $srv->putFileContent('/home/'.$hos->NomLDAP.'/www/index.php',$index);
-
-            //récupération de wp-login
-            $index = $srv->getFileContent('/home/'.$hos->NomLDAP.'/www/wp-login.php');
-            $index = preg_replace('#<\?php#',"<?php\nif(\$_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'){\n \$_SERVER['HTTPS'] = 'on';\n\$_SERVER['SERVER_PORT'] = 443;\n}\n",$index);
-            $srv->putFileContent('/home/'.$hos->NomLDAP.'/www/wp-login.php',$index);
-
-            //récupération de l'admin
-            $index = $srv->getFileContent('/home/'.$hos->NomLDAP.'/www/wp-admin/admin.php');
-            $index = preg_replace('#nocache_headers\(\);#',"nocache_headers();\nif(\$_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'){\n \$_SERVER['HTTPS'] = 'on';\n\$_SERVER['SERVER_PORT'] = 443;\n}\n",$index);
-            $srv->putFileContent('/home/'.$hos->NomLDAP.'/www/wp-admin/admin.php',$index);
-
-            $htaccess = $srv->getFileContent('/home/'.$hos->NomLDAP.'/www/.htaccess');
-            $htaccess = preg_replace('#RewriteCond %\{HTTPS\} off#','RewriteCond %{HTTP:X-Forwarded-Proto} !https',$htaccess);
-            $srv->putFileContent('/home/'.$hos->NomLDAP.'/www/.htaccess',$htaccess);
-
             //reconfiguration de la base de donnée
-            $cmd = 'mysqldump -h db.maninwan.fr -u '.$hos->NomLDAP.' -p'.$hos->Password.' '.$bdd->Nom.' | sed -e "s/modele-wordpress.maninwan.fr/'.$hos->NomLDAP.'.maninwan.fr/g" > /home/'.$hos->NomLDAP.'/'.$bdd->Nom.'-rewiteconfig.sql && cat /home/'.$hos->NomLDAP.'/'.$bdd->Nom.'-rewiteconfig.sql | mysql -u '.$hos->NomLDAP.' -h db.maninwan.fr -p'.$hos->Password.' '.$bdd->Nom;
-            //echo $cmd;
-            $srv->remoteExec($cmd);
+            if ($bdd) {
+                $cmd = 'mysqldump -h db.maninwan.fr -u ' . $hos->NomLDAP . ' -p' . $hos->Password . ' ' . $bdd->Nom . ' | sed -e "s/modele-wordpress.maninwan.fr/' . $hos->NomLDAP . '.maninwan.fr/g" > /home/' . $hos->NomLDAP . '/' . $bdd->Nom . '-rewiteconfig.sql && cat /home/' . $hos->NomLDAP . '/' . $bdd->Nom . '-rewiteconfig.sql | mysql -u ' . $hos->NomLDAP . ' -h db.maninwan.fr -p' . $hos->Password . ' ' . $bdd->Nom;
+                //echo $cmd;
+                $srv->remoteExec($cmd);
+            }
+
+            //correction du .htaccess
+            $conf = $srv->getFileContent('/home/'.$hos->NomLDAP.'/www/.htaccess');
+            $conf = str_replace('RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]','#RewriteEngine On
+#RewriteCond %{HTTPS} off
+#RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]',$conf);
+            $srv->putFileContent('/home/'.$hos->NomLDAP.'/www/.htaccess',$conf);
+
+
 
             //modification du mot de passe
-            $db = new PDO('mysql:host=' . $mysqlsrv->InternalIP . ';dbname=' . $bdd->Nom, $mysqlsrv->SshUser, $mysqlsrv->SshPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+/*            $db = new PDO('mysql:host=' . $mysqlsrv->InternalIP . ';dbname=' . $bdd->Nom, $mysqlsrv->SshUser, $mysqlsrv->SshPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
             $db->query("SET AUTOCOMMIT=1");
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $db->query("GRANT SELECT ON `azkocms_common`.* TO `".$hos->Nom."` @'%';");
+            $db->query("GRANT SELECT ON `azkocms_common`.* TO `".$hos->Nom."` @'%';");*/
         }
         return true;
     }

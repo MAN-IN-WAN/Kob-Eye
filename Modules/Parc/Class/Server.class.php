@@ -38,7 +38,7 @@ class Server extends genericClass {
             parent::Save();
         }
         // Forcer la vérification
-        if(!$this->_isVerified) $this->Verify( $synchro );
+        $this->Verify( $synchro );
         // Enregistrement si pas d'erreur
         if($this->_isVerified) {
             parent::Save();
@@ -50,7 +50,7 @@ class Server extends genericClass {
      * @param	boolean	Verifie aussi sur LDAP
      * @return	Verification OK ou NON
      */
-    public function Verify( $synchro = true ) {
+    public function Verify( $synchro = false ) {
         $this->Connect();
         if(parent::Verify()) {
 
@@ -1134,6 +1134,32 @@ class Server extends genericClass {
                         $KEObj->LdapDN = $res[0]['dn'];
                     }
                     break;
+                case "MX":
+                    $search = ldap_search(Server::$_LDAP, $dn, 'cn=' . $KEObj->Nom, array('modifytimestamp', 'entryuuid'));
+                    $res = ldap_get_entries(Server::$_LDAP, $search);
+                    //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
+                    if (!$res['count']) {
+                        $e['exists'] = false;
+                        return $e;
+                    }else{
+                        $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                        $KEObj->LdapID = $res[0]['entryuuid'][0];
+                        $KEObj->LdapDN = $res[0]['dn'];
+                    }
+                    break;
+                case "TXT":
+                    $search = ldap_search(Server::$_LDAP, $dn, 'cn=' . $KEObj->Nom, array('modifytimestamp', 'entryuuid'));
+                    $res = ldap_get_entries(Server::$_LDAP, $search);
+                    //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
+                    if (!$res['count']) {
+                        $e['exists'] = false;
+                        return $e;
+                    }else{
+                        $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                        $KEObj->LdapID = $res[0]['entryuuid'][0];
+                        $KEObj->LdapDN = $res[0]['dn'];
+                    }
+                    break;
             }
         }else {
 		    if ($KEServer){
@@ -1264,17 +1290,17 @@ class Server extends genericClass {
             //Test de connectivité pour ne pas bloquer l'appli
             $connection = false;
             if(!empty($this->InternalIP)) {
-                $tc = @fsockopen($this->InternalIP, 22, $errno, $errstr, 0.5);
+                $tc = @fsockopen($this->InternalIP, $this->Port, $errno, $errstr, 0.5);
                 if ($tc !== false) {
                     fclose($tc);
-                    $connection = ssh2_connect($this->InternalIP, 22);
+                    $connection = ssh2_connect($this->InternalIP, $this->Port);
                 }
             }
             if(!$connection && !empty($this->IP)) {
-                $tc = @fsockopen($this->IP, 22, $errno, $errstr, 0.5);
+                $tc = @fsockopen($this->IP, $this->Port, $errno, $errstr, 0.5);
                 if ($tc !== false) {
                     fclose($tc);
-                    $connection = ssh2_connect($this->IP, 22);
+                    $connection = ssh2_connect($this->IP, $this->Port);
                 }
             }
 
@@ -1450,31 +1476,22 @@ class Server extends genericClass {
         fclose( $error_stream );
         return array( $output, $error_output,$exit_output);
     }
-    /**
-     * createActivity
-     * créé une activité en liaison avec l'esx
-     * @param $title
-     * @param null $obj
-     * @param int $jPSpan
-     * @param string $Type
-     * @return genericClass
-     */
-    public function createActivity($title,$Type='Exec') {
-        $act = genericClass::createInstance('Parc','Activity');
-        $act->addParent($this);
-        $act->Titre = $this->tag.date('d/m/Y H:i:s').' > '.$this->Titre.' > '.$title;
-        $act->Started = true;
-        $act->Type= $Type;
-        $act->Progression = 0;
-        $act->Save();
-        return $act;
-    }
+
     /**
      * callLdap2Service
      * execute remotely ldap2service
      */
-    public function callLdap2Service($task = null,$retry=false) {
-        $act = $this->createActivity('Execution de synchronisation','Exec');
+    public function callLdap2Service($retry=false) {
+        $task = genericClass::createInstance('Systeme', 'Tache');
+        $task->Type = 'Fonction';
+        $task->Nom = 'Raifraichissement des configuration (ldap2service) ' . $this->Nom;
+        $task->TaskModule = 'Parc';
+        $task->TaskObject = 'Server';
+        $task->TaskId = $this->Id;
+        $task->TaskFunction = 'callLdap2service';
+        $task->Demarre = true;
+        $task->Save();
+        $act = $task->createActivity('Execution de synchronisation');
         try {
             $out = $this->remoteExec('/usr/bin/ldap2service', $act);
         }catch (Exception $e){
@@ -1489,19 +1506,21 @@ class Server extends genericClass {
         if (empty($ct)&&!$retry){
             //alors on pousse une valeur
             $this->putFileContent('/etc/ldap2service/ldap2service.time',date('YmdHis',time()-60));
-            $this->callLdap2Service($task,true);
+            $this->callLdap2Service(true);
         }
 
         $act->addDetails($out);
         $act->Terminate($out);
+        $task->Termine = true;
+        $task->Save();
         return true;
     }
     /**
      * clearCache
      * clear Nginx cache
      */
-    public function clearCache() {
-        $act = $this->createActivity('Vidage du cache','Exec');
+    public function clearCache($task) {
+        $act = $task->createActivity('Vidage du cache');
         try {
             $out = $this->remoteExec('rm /tmp/nginx -Rf', $act);
         }catch (Exception $e){
@@ -1509,18 +1528,17 @@ class Server extends genericClass {
             $act->Terminate(false);
             return;
         }
-        $this->
         $act->addDetails($out);
         $act->Terminate(true);
-        $this->restartServiceNginx();
+        $this->restartServiceNginx($task);
         return true;
     }
     /**
      * clearCache
      * clear Nginx cache
      */
-    public function restartServiceNginx() {
-        $act = $this->createActivity('Redemarrage du service Proxy (NGINX)','Exec');
+    public function restartServiceNginx($task) {
+        $act = $task->createActivity('Redemarrage du service Proxy (NGINX)');
         try {
             $out = $this->remoteExec('/usr/sbin/nginx -s reload', $act);
         }catch (Exception $e){
@@ -1537,22 +1555,14 @@ class Server extends genericClass {
      * Check if a folder exists
      */
     public function folderExists($path){
-        $act = $this->createActivity('Test existence dossier '.$path,'Exec');
         try {
             $out = $this->remoteExec('if [ -d '.$path.' ]; then echo 1; else echo 0; fi');
-            $act->addDetails('if [ -d '.$path.' ]; then echo 1; else echo 0; fi');
             if (intval($out)>0){
-                $act->addDetails('retour => true ');
-                $act->Terminate(true);
                 return true;
             }else{
-                $act->addDetails('retour => false ');
-                $act->Terminate(true);
                 return false;
             }
         }catch (Exception $e){
-            $act->addDetails($e->getMessage());
-            $act->Terminate(false);
             return false;
         }
     }
@@ -1561,22 +1571,14 @@ class Server extends genericClass {
      * Check if a file exists
      */
     public function fileExists($path){
-        $act = $this->createActivity('Test existence fichier '.$path,'Exec');
         try {
             $out = $this->remoteExec('if [ -f '.$path.' ]; then echo 1; else echo 0; fi');
-            $act->addDetails('if [ -f '.$path.' ]; then echo 1; else echo 0; fi');
             if (intval($out)>0){
-                $act->addDetails('retour => true ');
-                $act->Terminate(true);
                 return true;
             }else{
-                $act->addDetails('retour => false ');
-                $act->Terminate(true);
                 return false;
             }
         }catch (Exception $e){
-            $act->addDetails($e->getMessage());
-            $act->Terminate(false);
             return false;
         }
     }
@@ -1585,26 +1587,18 @@ class Server extends genericClass {
      * create a folder
      */
     public function createFolder($path,$usr = null,$rights='705'){
-        $act = $this->createActivity('Création du dossier '.$path,'Exec');
         try {
             $cmd = 'mkdir -p '.$path.' && chmod '.$rights.' '.$path;
             if ($usr){
                 $cmd.=' && chown '.$usr.':users '.$path;
             }
             $out = $this->remoteExec($cmd);
-            $act->addDetails($cmd);
             if (intval($out)>0){
-                $act->addDetails('retour => true ');
-                $act->Terminate(true);
                 return true;
             }else{
-                $act->addDetails('retour => false ');
-                $act->Terminate(true);
                 return false;
             }
         }catch (Exception $e){
-            $act->addDetails($e->getMessage());
-            $act->Terminate(false);
             return false;
         }
     }
@@ -1660,13 +1654,17 @@ class Server extends genericClass {
      * createRestartTask
      * Creation de la tache de redemarrage des services
      */
-    public static function createRestartProxyTask() {
-        $pxs = Sys::getData('Parc','Server/Proxy=1');
+    public static function createRestartProxyTask($infra = null) {
+        $pref = '';
+        if($infra)
+            $pref = 'Infra/'.$infra->Id.'/';
+
+        $pxs = Sys::getData('Parc',$pref.'Server/Proxy=1');
         foreach ($pxs as $px){
             //on vérifie d'abord qu'il n'y en a pas une à venir.
-            $nb = Sys::getCount('Parc','Tache/TaskModule=Parc&TaskObject=Server&TaskId='.$px->Id.'&TaskFunction=restartServiceNginx&Demarre=0');
+            $nb = Sys::getCount('Systeme','Tache/TaskModule=Parc&TaskObject=Server&TaskId='.$px->Id.'&TaskFunction=restartServiceNginx&Demarre=0');
             if (!$nb) {
-                $task = genericClass::createInstance('Parc', 'Tache');
+                $task = genericClass::createInstance('Systeme', 'Tache');
                 $task->Type = 'Fonction';
                 $task->Nom = 'Redemarrage des service du proxy ' . $px->Nom;
                 $task->TaskModule = 'Parc';

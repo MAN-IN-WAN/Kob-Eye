@@ -5,120 +5,48 @@ $bc = new BashColors();
 //connexion ancien serveur mysql
 $db = new PDO('mysql:host=192.168.100.50;dbname=parc', 'root', 'zH34Y6u5', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$serveur='ws2.eng.systems';
+$serveur='ws1.eng.systems';
 /*$csv = "
-acei;acei;acei
-acrotaille;acrotaille;acrotaille
-ah-avocats;ah-avocats;ah-avocats
 aimetti-auteur;aimetti-auteur;aimetti-auteur
 ama;rgsystem;ama+wp_amaassurances+wp_amaassurancesblog
-amisdufondsmedar;amisdufondsmedar;amisdufondsmedar
-appartementcabourg;appartementcabourg;appartement-cabo
-aqualiss;aqualiss;aqualiss
-aquazurservices;aquazurservi;aquazurservices
-atelier-corps;atelier-corps-et-mouvemen;atelier-corps
 autoecole;autoecoledef;autoecole
 autoecoleamd;autoecoleamd;autoecoleamd
-autoecole-easy;autoecole-ea;autoecole-easy
 autoecoleinris;autoecoleinr;autoecoleinris
-automotoecole;automotoecol;automotoecole
-bacotec;bacotec;bacotec
-barocante;barocante;barocante
-bertrand;bertrandimmo;bertrand+bertrand2017
-bgelr;bgelr;bgelr
 boxsete;pescatore;boxsete_boxlocation+boxsete_chezpescatore
-byvirginie;byvirginie;byvirginie
-camarguevtc;camargue-vtc;camarguevtc
-camassel;camassel;camassel
-cap-ocean;cap-ocean;cap-ocean;sql2.eng.systems
-carrosserie-reis;carrosserie-;carrosserie-reis
-cdefi;cdefi;cdefi
-ce3d;ce3d;ce3d
-ceciledesserle;ceciledesserle;ceciledesserle
 permis-bateau;permis-batea;cercle-nautique
-chape-liquide;chape-liquide;chape-liquide
-chefsdoc;chefsdoc;chefsdoc
-citeoingenierie;citeo;citeo-ingenierie
-clamousemetaller;clamousemeta;clamousemetaller
 code23;code23;code23
-collectif-saint;collectif-sa;collectif-saint
-dagobafilms;dagobafilms;dagobafilms
-dm-detect;dm-detect;dm-detect
-dronerealisation;dronerealisa;dronerealisation
 dumartinetj;dumartinet;dumartinetj
-easypanneau;easypanneau;easypanneau
-ecolederaseteurs;ecolederaset;ecolederaseteurs
-ecopub;ecopub;ecopub
-editionsmo;editions-monemvassia;editionsmo
 epconsulting;ep.consultin;epconsulting
-espace-proprete;espace-propr;espace-proprete
-ethique-perfusi;ethique-perf;ethique-perfusi
-expert-comptable;expert-compt;expert-comptable
 geodev;geodev;geodev
 grandcreme;grandcreme;grandcreme+grandcreme_pydio
-groupevet;groupevet;groupevet
-hconsulting;hconsulting;hconsulting
-hhealth-group;hhealth-grou;hhealth-group
-hydrosol;hydrosol;hydrosol
-idh-montpellier;idh-montpell;idh-montpellier
 insightcom;insightcom;insightcom
-intrasens;intrasens;intrasens
-iplusmedia.eu;iplusmedia.eu;iplusmedia.eu
-jsaavocats;jsaavocats;jsaavocats
-labanane;labanane;labanane
-laboratoire-val;laboratoire-;laboratoire-val
 lace-restaurant;lace-restaurant.fr;lace-restaurant
 laprimavera;laprimavera-;laprimavera
-lemasdemestre;lemasdemestr;lemasdemestre
-lepasseurdemots;lepasseurdem;lepasseurdemots
 maf82;montaubanath;maf82
-maformation;maformation;maformation
-mara-pro;mara-pro;mara-pro
-mcsini;mcsini;mcsini
-mediation-consommation;mediationmon;mediationconso
-mediationmontpellier;mediationmon;mediationmontpel
-mldurand;mldurand;mldurand
-mobilygo;mobilygo;mobilygo+mobilygo_2014
-montpellierfans;montpellierf;montpellierfans
-murviel;murviel;murviel
-nino-robotics;nino-robotic;nino-robotics+nino-robotics-dev+nino-robotics-sup
-nutrition-expert;nutrition-ex;nutrition-expert
-permis-bateau;permis-batea;permis-bateau
-perseides-courta;perseides-co;perseides-courta
 pianoconcertino;pianoconcert;pianoconcertino
-pizzajerome;pizzajerome;pizzajerome
-privilegeberricar;privilegeber;privilegeberrica
-psychotherapieintegrative;psychotherap;psychotherapiein
 psychotherapiesatm;christinebuo;psychotherapiesat
-pushrdv;pushrdv;pushrdv
-quentinmultiservices;quentinmultiservices;quentinmultiserv
 racinespubliques;racinespubliques;racinespubliques
-rdksolutions;rdksolutions;rdksolutions
-residencelehome;residenceleh;residencelehome
-rws-relocation;rws-relocati;rws-relocation
-safetygreen;safetygreen;safetygreen
-secreteam;secreteam;secreteam
-selfcopy;selfcopy;selfcopy
 serenity-services;serenity-services;serenity-service
-sexologue;sexologue;sexologue
-sinergiasud;sinergiasud;sinergiasud
-snap-pole-emploi;snap-pole-em;snap-pole-emploi
-spiruline;spirulineala;spiruline
-sudmarquage;sudmarquage;sudmarquage
-sudvtc;sudvtc;sudvtc
-technifer;technifer;technifer
+
+
+
 tennisforever;tennisforeve;tennisforever+tennisforever_reservation
-tisseyre-avocats;tisseyre-avo;tisseyre-avocats
-travaux-speciaux;travaux-spec;travaux-speciaux
-veterinaire-lang;veterinaire-languedocia;veterinaire-lang
-veterinaire-veto;veterinaire-vetocia;veterinaire-veto
 vmid;vmid;vmid";
+
+
+REFAIRE
+laboratoire-val;laboratoire-;laboratoire-val
+
 */
 $csv= "
-distillerie;distillerie;distillerie
+murviel;murviel;murviel
+privilegeberricar;privilegeber;privilegeberrica
+nino-robotics;nino-robotic;nino-robotics+nino-robotics-dev+nino-robotics-sup
+spiruline;spirulineala;spiruline
+travaux-speciaux;travaux-spec;travaux-speciaux
 ";
 $result = explode(PHP_EOL,$csv);
-$total = sizeof($result);
+$total = sizeof($result)-2;
 $i=0;
 foreach ($result as $org){
     if (empty(trim($org)))continue;
@@ -128,7 +56,7 @@ foreach ($result as $org){
     $fields[2] = explode('+',$fields[2]);
     list($host,$cli,$bdds,$mysqlsrv) = $fields;
     //test existence
-    $nb = Sys::getOneData('Parc','Instance/InstanceNom=instance-'.$host);
+    $nb = Sys::getOneData('Parc','Instance/InstanceNom='.substr('instance-'.$host,0,32));
     echo $bc->getColoredString("-> [$i / $total] ".$host."\n",'green');
 
     if (!$nb){
@@ -160,7 +88,6 @@ foreach ($result as $org){
         if ($client) $inst->addParent($client);
         $inst->softSave();
     }
-
     //récupération de l'host
     $hos = $inst->getOneParent('Host');
     //récupération du serveur
@@ -186,9 +113,14 @@ foreach ($result as $org){
             unset($apache->LdapDN);
             unset($apache->LdapTms);
             $apache->Save();
+        }else{
+            $apache->SslCertificate = $ap['SslCertificate'];
+            $apache->SslCertificateKey = $ap['SslCertificateKey'];
+            $apache->SslExpiration = $ap['SslExpiration'];
+            $apache->Save();
+            echo 'instance ok ';
         }
     }
-
     //récupération des accès ftps
     $query = "SELECT * FROM `parc-Parc-Host` as hs LEFT JOIN `parc-Parc-Ftpuser` as fu ON hs.Id = fu.HostId WHERE hs.Nom='".$host."';";
     $q = $db->query($query);
@@ -225,8 +157,9 @@ foreach ($result as $org){
             echo $bc->getColoredString("      -> SQL DUMP ... ", 'red');
             //importation de la base de donnée
             if ($mysqlsrv=='sql2.eng.systems'){
-                $cmd = 'mysqldump -h 192.168.100.53 -u root -p"zH34Y6u5;" ' . $bdd . ' | sed -e "s/MyISAM/InnoDB/i"  |  mysql -h 192.168.160.5 -u root -pzH34Y6u5 ' . $bdd;
-            }else $cmd = 'mysqldump -h 192.168.100.50 -u root -pzH34Y6u5 ' . $bdd . ' | sed -e "s/MyISAM/InnoDB/i"  |  mysql -h 192.168.160.5 -u root -pzH34Y6u5 ' . $bdd;
+                $cmd = 'mysqldump -h 192.168.100.53 -u root -p"zH34Y6u5;" ' . $bdd . ' | sed -e "s/^UNLOCK.*\$//"   | sed -e "s/^LOCK TABLE.*\$//"  | sed -e "s/MyISAM/InnoDB/i"  |  mysql -h 192.168.160.5 -u root -pzH34Y6u5 ' . $bdd;
+            }else $cmd = 'mysqldump -h 192.168.100.50 -u root -pzH34Y6u5 ' . $bdd . '  | sed -e "s/^UNLOCK.*\$//"   | sed -e "s/^LOCK TABLE.*\$//" | sed -e "s/MyISAM/InnoDB/i"  |  mysql -h 192.168.160.5 -u root -pzH34Y6u5 ' . $bdd;
+            echo $cmd."\n";
             exec($cmd);
             echo $bc->getColoredString(" OK " . "\n", 'green');
             $base->Save();
@@ -245,7 +178,6 @@ foreach ($result as $org){
         echo $bc->getColoredString(" OK "."\n", 'green');
     }catch(Exception $e){
         echo $bc->getColoredString(" ERREUR" . "\n".$e->getMessage()."\n".$cmd."\n", 'red');
-        die();
     }
 
     //détection du cms

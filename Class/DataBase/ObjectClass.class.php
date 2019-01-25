@@ -320,7 +320,9 @@ class ObjectClass extends Root{
 						$t = new StdClass();
 						$t->filter = $temp[$j]['#'];
 						$t->name = $temp[$j]['@']['name'];
-						if (isset($temp[$j]['@']['color'])) $t->color = $temp[$j]['@']['color'];
+                        if (isset($temp[$j]['@']['color'])) $t->color = $temp[$j]['@']['color'];
+                        if (isset($temp[$j]['@']['code'])) $t->code = $temp[$j]['@']['code'];
+                        else $t->code = Utils::strToCode($t->name);
 						if (isset($temp[$j]['@']['view'])) $t->view = $temp[$j]['@']['view'];
 						$new = true;
 						foreach($this->Filters as $k=>$f){

@@ -202,6 +202,7 @@
     <!-- KobEye -->
     <script src="Skins/AngularAdmin/assets/common/js/KEPoll.js"></script>
 	
+<<<<<<< HEAD
     <script src="Skins/AngularAdmin/assets/vendors/ngMask/ngMask.min.js"></script>
 
 	<!-- pdf viewer -->
@@ -216,6 +217,9 @@
 	<!-- Cadref -->
 	<link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/Modules/Cadref/Css/style.css">
 	
+=======
+
+>>>>>>> 15ea5eb574ea5f5fa4f13294238e4b61efd6184d
 
 
 

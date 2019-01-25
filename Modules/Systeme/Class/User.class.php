@@ -245,6 +245,10 @@ class User extends genericClass{
         $this -> {$Prop} = $newValue;
         return true;
     }
+    function Save() {
 
+        return parent::Save();
+
+    }
 }
 ?>

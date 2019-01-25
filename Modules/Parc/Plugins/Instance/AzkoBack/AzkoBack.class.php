@@ -45,7 +45,7 @@ class ParcInstanceAzkoBack extends Plugin implements ParcInstancePlugin {
     public function createUpdateTask($orig=null){
         //gestion depuis le plugin
         $version = VersionLogiciel::getLastVersion('AzkoBack',$this->_obj->Type);
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Mise à jour en version '.$version->Version.' d\'AzkoBack sur l\'instance ' . $this->_obj->Nom;
         $task->TaskModule = 'Parc';
@@ -60,6 +60,8 @@ class ParcInstanceAzkoBack extends Plugin implements ParcInstancePlugin {
         $task->Save();
         //changement du statut de l'instance
         $this->_obj->setStatus(3);
+        return array('task'=>$task);
+
     }
     /**
      * updateSoftware
@@ -67,16 +69,29 @@ class ParcInstanceAzkoBack extends Plugin implements ParcInstancePlugin {
      * @param Object Tache
      * @return bool
      */
-    public function updateSoftware($task = null){
-        $apachesrv = Sys::getOneData('Parc', 'Server/Web=1&defaultWebServer=1');
-        $mysqlsrv = Sys::getOneData('Parc', 'Server/Sql=1&defaultSqlServer=1');
+    public function updateSoftware($task){
         $host = $this->_obj->getOneParent('Host');
+
+        $pref ='';
+        if($infra = $this->getOneParent('Infra')){
+            $pref = 'Infra/'.$infra->Id.'/';
+        } else {
+            if($inst = $this->getOneChild('Instance')){
+                if($infra = $inst->getOneParent('Infra')){
+                    $pref = 'Infra/'.$infra->Id.'/';
+                }
+            }
+        }
+
+        $apachesrv = Sys::getOneData('Parc', $pref.'Server/Web=1&defaultWebServer=1');
+        $mysqlsrv = Sys::getOneData('Parc', $pref.'Server/Sql=1&defaultSqlServer=1');
+
         $bdd = $host->getOneChild('Bdd');
         $apache = $host->getOneChild('Apache');
         $version = VersionLogiciel::getLastVersion('AzkoBack',$this->_obj->Type);
         if (!is_object($version))throw new Exception('Pas de version disponible pour l\'app AzkoBack Type '.$this->_obj->Type);
         try {
-            $act = $this->_obj->createActivity('Initialisation du git clone', 'Info', $task);
+            $act = $task->createActivity('Initialisation du git clone', 'Info');
             $cmd = 'cd /home/' . $host->NomLDAP . '/www && git remote -v';
             $act->addDetails($cmd);
             $out = $apachesrv->remoteExec($cmd);
@@ -102,7 +117,7 @@ class ParcInstanceAzkoBack extends Plugin implements ParcInstancePlugin {
             $out .= $apachesrv->remoteExec($cmd);
             $act->addDetails($out);
             $act->Terminate(true);
-            $act = $this->_obj->createActivity('Modification des droits', 'Info', $task);
+            $act = $task->createActivity('Modification des droits', 'Info');
             $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . '/www -R';
             $act->addDetails($cmd);
             $out = $apachesrv->remoteExec($cmd);

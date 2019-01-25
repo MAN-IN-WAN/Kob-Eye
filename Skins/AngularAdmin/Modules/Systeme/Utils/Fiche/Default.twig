@@ -12,7 +12,7 @@
     </ul>
 
     <!-- Default Panel -->
-    <section class="panel">
+    <section class="panel" ng-if="displayFiche">
         <div class="panel-heading">
             <div class="pull-right">
                 {% if functions|length > 1 %}
@@ -62,7 +62,7 @@
                                 <img class="img-responsive" src="{[{ obj.{{ field.name }} }]}.limit.250x40.jpg" {{ field.listDescr }} ng-if="obj.{{ field.name }} "/>
                                 <img class="img-responsive" src="/Tools/Images/NoPhoto.jpg.limit.250x40.jpg" {{ field.listDescr }} ng-if="!obj.{{ field.name }} "/>
                             {% elseif field.type == "file" %}
-                                <a  class="fileLink" href="{[{ obj.{{ field.name }} }]}" title="{[{ obj.{{ field.name }} }]}" target="_blank" >Voir le fichier</a>
+                                <a  class="fileLink btn btn-small btn-danger" href="{[{ obj.{{ field.name }} }]}" title="{[{ obj.{{ field.name }} }]}" target="_blank" >Voir le fichier</a>
                             {% elseif field.type == "plugin" %}
                                 <span  class="label label-danger" ng-bind-html="obj.{{ field.name }}"></span>
                             {% elseif field.type == "float" %}
@@ -93,13 +93,13 @@
                                 {% if field.link %}
                                     <a class="btn btn-primary btn-xs" href="#/{{ field.link }}/{[{ obj.{{ field.objectName }}{{ field.name }} }]}">{[{ obj.{{ field.objectName }}{{ field.name }}label }]}</a>
                                 {% else  %}
-                                    <span class="btn btn-primary btn-xs" ng-if="obj.{{ field.objectName }}{{ field.name }}">{[{ obj.{{ field.objectName }}{{ field.name }}label }]}</span>
+                                    <span ng-if="obj.{{ field.objectName }}{{ field.name }}">{[{ obj.{{ field.objectName }}{{ field.name }}label }]}</span>
                                 {% endif %}
                             {% else %}
                                 {% if field.Values %}
                                 <select class="form-control" ng-model="obj.{{ field.name }}" disabled="disabled">
                                     {% for v,k in field.Values %}
-                                        <option value="{{ v }}">{{ k }}</option>
+                                        <option value="{{ v }}" >{{ k }}</option>
                                     {% endfor %}
                                 </select>
                                 {% elseif field.query %}
@@ -153,8 +153,9 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            {%  if field.subtype %}{% set subtype = field.subtype %}{% else %}{% set subtype = 'text' %}{% endif %}
-                            <div ui-ace="{useWrapMode : true,mode: '{{ subtype }}',onLoad: aceLoaded}" ng-model="obj.{{ field.name }}" class="ace_editor" readonly="true"></div>
+                            <pre ng-bind-html="obj.{{ field.name }}"></pre>
+<!--                            {%  if field.subtype %}{% set subtype = field.subtype %}{% else %}{% set subtype = 'text' %}{% endif %}
+                            <div ui-ace="{useWrapMode : true,mode: '{{ subtype }}',onLoad: aceLoaded}" ng-model="obj.{{ field.name }}" class="ace_editor" readonly="true"></div>-->
                         </div>
                     </div>
                 {% elseif field.type == "html" or field.type == "bbcode" %}
@@ -165,16 +166,17 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
+                        <!--<div class="col-md-12">
                             <div ui-ace="{useWrapMode : true,mode: '{{ field.subtype }}',onLoad: aceLoaded}" ng-model="obj.{{ field.name }}" class="ace_editor"  readonly="true"></div>
-                        </div>
+                        </div>-->
+                        <div ng-bind-html="obj.{{ field.name }}"></div>
                     </div>
                 {% endif %}
             {% endfor %}
         </div>
     </section>
     <!-- End Default Panel -->
-    <div class="nav-tabs-horizontal">
+    <div class="nav-tabs-horizontal" ng-if="displayFiche">
         <ul class="nav nav-tabs" role="tablist">
             {% for child in ChildrenElements %}
                 <li class="nav-item">
@@ -229,6 +231,22 @@
     </div>
 {% endif %}
 
+
+<section class="panel" ng-if="!displayFiche">
+    <div class="panel-heading">
+        <h3>Oups, j'ai glissé chef !</h3>
+    </div>
+    <div class="panel-body panel-empty">
+            <p>
+                On aurait volontiers mis une jolie image bien design pour signaler qu'il n'y a rien ici, mais on a oublié de charger le module "Talent graphique" sur nos Devs...<br/>
+                La seule chose dont ils sont capable c'est d'écrire ce genre de choses:
+            </p>
+            <div class="lostBgCode"></div>
+            <p>
+                Enfin bref, nous sommes désolés mais vous ne trouverez rien d'intéressant ici.
+            </p>
+    </div>
+</section>
 
 <div class="modal fade modal-size-large" id="modalfiche-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -303,3 +321,4 @@
         </div>
     </div>
 {% endif %}
+

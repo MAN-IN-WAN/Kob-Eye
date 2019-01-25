@@ -147,7 +147,7 @@ class InstanceSecib extends genericClass
      */
     public function createInstallTask()
     {
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Installation du logiciel Secib Web sur l\'instance ' . $this->Nom;
         $task->TaskModule = 'Parc';
@@ -169,46 +169,20 @@ class InstanceSecib extends genericClass
 
     }
 
-    /**
-     * createActivity
-     * créé une activité en liaison avec l'esx
-     * @param $title
-     * @param null $obj
-     * @param int $jPSpan
-     * @param string $Type
-     * @return genericClass
-     */
-    public function createActivity($title, $Type = 'Exec', $Task = null)
-    {
-        $act = genericClass::createInstance('Parc', 'Activity');
-        $host = $this->getOneParent('Host');
-        $srv = $host->getOneParent('Server');
-        $act->addParent($this);
-        $act->addParent($host);
-        $act->addParent($srv);
-        if ($Task) $act->addParent($Task);
-        $act->Titre = $this->tag . date('d/m/Y H:i:s') . ' > ' . $this->Titre . ' > ' . $title;
-        $act->Started = true;
-        $act->Type = $Type;
-        $act->Progression = 0;
-        $act->Save();
-        return $act;
-    }
-
 
     /**
      * installSecibWeb
      * Fonction d'installation ou de mise à jour de secib web
      * @param Object Tache
      */
-    public function installSecibWeb($task = null)
+    public function installSecibWeb($task )
     {
         $apachesrv = Sys::getOneData('Parc', 'Server/Web=1&defaultWebServer=1');
         $mysqlsrv = Sys::getOneData('Parc', 'Server/Sql=1&defaultSqlServer=1');
         $host = $this->getOneParent('Host');
         $version = $this->getOneParent('VersionLogiciel');
         if (!$version) {
-            $act = $this->createActivity('Erreur pas de version correpsondante', 'Info');
+            $act = $task->createActivity('Erreur pas de version correpsondante', 'Info');
             $act->Terminate(false);
             return false;
         }
@@ -221,7 +195,7 @@ class InstanceSecib extends genericClass
         $db->query("GRANT USAGE ON *.* TO `".$host->Nom."` @'%';");
         $db->query("GRANT ALL PRIVILEGES ON `Analytics`.* TO `".$host->Nom."` @'%';");
 
-        $act = $this->createActivity('Modification du dump', 'Info', $task);
+        $act = $task->createActivity('Modification du dump', 'Info');
         try {
             //test de l'existence de certains champs
             $SQLInit = preg_replace_callback('/#IF_COLUMN_NOT_EXISTS\|(.*?)\|(.*?)#(.*?)#END_IF_COLUMN_NOT_EXISTS#/', function ($matches) use ($db, $bdd,$act) {
@@ -246,7 +220,7 @@ class InstanceSecib extends genericClass
         $act->Terminate(true);
 
         //Connexion à la base de donnée
-        $act = $this->createActivity('Initialisation de la base de donnée', 'Info', $task);
+        $act = $task->createActivity('Initialisation de la base de donnée', 'Info');
         $db = new PDO('mysql:host=' . $mysqlsrv->InternalIP . ';dbname=' . $bdd->Nom, $host->Nom, $host->Password, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
         $db->query("SET AUTOCOMMIT=1");
         $db->query("SET FOREIGN_KEY_CHECKS=0");
@@ -276,16 +250,16 @@ class InstanceSecib extends genericClass
         $db->query($sql);
         $act->Terminate(true);
         //Installation des fichiers
-        $act = $this->createActivity('Téléchargement des fichiers', 'Info', $task);
+        $act = $task->createActivity('Téléchargement des fichiers', 'Info');
         $out = $apachesrv->remoteExec('wget -v http://management.secib.fr/' . $version->Fichier . ' -O /home/' . $host->Nom . '/version.zip');
         $act->addDetails('wget -v http://management.secib.fr/' . $version->Fichier . ' -O /home/' . $host->Nom . '/version.zip');
         $act->Terminate(true);
-        $act = $this->createActivity('Extraction des fichiers', 'Info', $task);
+        $act = $task->createActivity('Extraction des fichiers', 'Info');
         $out = $apachesrv->remoteExec('cd /home/' . $host->Nom . '/ && unzip -o version.zip && chown ' . $this->Nom . ':users * -R');
         $act->addDetails($out);
         $act->Terminate(true);
         //Saisie du fichier de configuration
-        $act = $this->createActivity('Modification du fichier de config', 'Info', $task);
+        $act = $task->createActivity('Modification du fichier de config','Info');
         //db host
         $cmd = 'cat /home/' . $host->Nom . '/www/lib/init.php | sed -e \'s/oConfig->DB_PARAMS_ONLINE.*$/oConfig->DB_PARAMS_ONLINE = array("db_host" => "' . $mysqlsrv->IP . '" , "db_user" => "' . $host->Nom . '", "db_pass" => "' . $host->Password . '"  , "db_name" => "' . $bdd->Nom . '"); /\' > /home/' . $host->Nom . '/www/lib/init.php.tmp';
         $act->addDetails($cmd);
@@ -295,7 +269,7 @@ class InstanceSecib extends genericClass
         $apachesrv->remoteExec('chmod 705 /home/' . $host->Nom . '/* -R');
         $act->addDetails($out);
         $act->Terminate(true);
-        $act = $this->createActivity('Installation terminée', 'Info', $task);
+        $act = $task->createActivity('Installation terminée', 'Info');
         $act->Terminate(true);
         $this->Enabled = true;
         parent::Save();

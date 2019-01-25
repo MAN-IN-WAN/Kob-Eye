@@ -7,6 +7,9 @@
  */
 class Parc extends Module{
     public $classLoader=null;
+    private $_ParcRevendeur = null;
+    private $_ParcClient = null;
+    private $_ParcTechnicien = null;
     /**
 	 * Surcharge de la fonction init
 	 * Avant l'authentification de l'utilisateur
@@ -214,6 +217,18 @@ class Parc extends Module{
                     $n->Save();
                 }
             }*/
+
+            //teste le role technicien
+            $r = Sys::getCount('Systeme','Tache/Nom=ActivityDump');
+            if (!$r){
+                //il faut tout créer
+                //création du role
+                $r = genericClass::createInstance('Systeme','Tache');
+                $r->Nom = "ActivityDump";
+                $r->Type = "Collecteur";
+                $r->Save();
+            }
+
         }
         /**
          * Creation du groupe et de tout ses menus
@@ -274,17 +289,23 @@ class Parc extends Module{
                 $this->_ParcClient = $Cls;
                 $GLOBALS["Systeme"]->registerVar("ParcClient",$this->_ParcClient);
             }else{
-                //test si revendeur
-                $Rvs = Sys::$User->getOneChild('Revendeur');
-                if ($Rvs){
-                    $this->_ParcRevendeur = $Rvs;
-                    $GLOBALS["Systeme"]->registerVar("ParcRevendeur",$this->_ParcRevendeur);
-                } else {
-                    //test si contact
-                    $ct = Sys::$User->getOneChild('Contact');
-                    if ($ct){
-                        $this->_ParcClient = $ct;
-                        $GLOBALS["Systeme"]->registerVar("ParcContact",$this->_ParcClient);
+                $Tcs = Sys::$User->getOneChild('Technicien');
+                if ($Tcs) {
+                    $this->_ParcRevendeur = $Tcs;
+                    $GLOBALS["Systeme"]->registerVar("ParcTechnicien", $this->_ParcTechnicien);
+                }else {
+                    //test si revendeur
+                    $Rvs = Sys::$User->getOneChild('Revendeur');
+                    if ($Rvs) {
+                        $this->_ParcRevendeur = $Rvs;
+                        $GLOBALS["Systeme"]->registerVar("ParcRevendeur", $this->_ParcRevendeur);
+                    } else {
+                        //test si contact
+                        $ct = Sys::$User->getOneChild('Contact');
+                        if ($ct) {
+                            $this->_ParcClient = $ct;
+                            $GLOBALS["Systeme"]->registerVar("ParcContact", $this->_ParcClient);
+                        }
                     }
                 }
             }
@@ -295,11 +316,13 @@ class Parc extends Module{
      * Renouvellement des certificats
      */
 	public function renewCertificates () {
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Mise à jour des certificats expirés';
         $task->TaskModule = 'Parc';
         $task->TaskObject = 'Parc';
+        $task->TaskType = 'update';
+        $task->TaskCode = 'CERTIFICATE_UPDATE';
         $task->Demarre = true;
         $task->TaskFunction = 'Renew';
         $task->Save();
@@ -322,27 +345,7 @@ class Parc extends Module{
         $parc = Sys::getModule('Parc');
         $parc->renewCertificates();
     }
-    /**
-     * Execution des taches
-     */
-    public  function executeTasks() {
-        $start = time();
-        Sys::autocommitTransaction();
-        while(time()<$start+240){
-            //empty query cache
-            Sys::$Modules['Parc']->Db->clearLiteCache();
-            $t = Sys::getOneData('Parc','Tache/Demarre=0&DateDebut<'.time(),0,1);
-            //execution de la tache
-            if ($t)
-                $t->Execute($t);
-            else sleep(1);
-        }
-        return true;
-    }
-    public static function Execute(){
-        $parc = Sys::getModule('Parc');
-        $parc->executeTasks();
-    }
+
     /**
      * checkState
      * Vérification des instances
@@ -371,12 +374,14 @@ class Parc extends Module{
         return $parc->createCheckState($task);
     }
     public static function createCheckStateTask(){
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Lancement d\'une vérification globale des instances';
         $task->TaskModule = 'Parc';
         $task->TaskObject = 'Parc';
         $task->TaskFunction = 'checkState';
+        $task->TaskType = 'check';
+        $task->TaskCode = 'CHECK_STATE_INIT';
         $task->Save();
     }
 
@@ -408,12 +413,14 @@ class Parc extends Module{
         return $parc->createBackup($task);
     }
     public static function createBackupTask(){
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Lancement de la création des taches de backup';
         $task->TaskModule = 'Parc';
         $task->TaskObject = 'Parc';
         $task->TaskFunction = 'backup';
+        $task->TaskType = 'maintenance';
+        $task->TaskCode = 'BACKUP_CREATE';
         $task->Save();
     }
     /**
@@ -532,12 +539,14 @@ class Parc extends Module{
      * Créatio de la tache qui crééera toutes les taches de vérification
      */
     public static function createCheckSslStateTask(){
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Lancement d\'une vérification globale des certificats';
         $task->TaskModule = 'Parc';
         $task->TaskObject = 'Parc';
         $task->TaskFunction = 'createAllCheckSslTask';
+        $task->TaskType = 'check';
+        $task->TaskCode = 'CHECK_SSL_INIT';
         $task->Save();
     }
     /**
@@ -548,12 +557,14 @@ class Parc extends Module{
         $pxs = Sys::getData('Parc','Apache/Ssl=1',0,100000);
         $i=1;
         foreach ($pxs as $px){
-            $t = genericClass::createInstance('Parc', 'Tache');
+            $t = genericClass::createInstance('Systeme', 'Tache');
             $t->Type = 'Fonction';
             $t->Nom = 'Vérification du certificat SSL ' . $px->ApacheServerName;
             $t->TaskModule = 'Parc';
             $t->TaskObject = 'Apache';
             $t->TaskId = $px->Id;
+            $task->TaskType = 'check';
+            $task->TaskCode = 'CHECK_SSL';
             $t->TaskFunction = 'checkCertificate';
             $t->Save();
             $task->addRetour('- ('.$i.')' . $px->ApacheServerName);
@@ -573,11 +584,11 @@ class Parc extends Module{
      */
     public static function startMaintenanceTask($task = null){
         //suppression des taches vielle de plsu d'une heure
-        $GLOBALS['Systeme']->Db[0]->query('DELETE FROM `'.MAIN_DB_PREFIX.'Parc-Tache` WHERE tmsCreate<'.(time()-(3600*12)).' AND Erreur=0 AND TaskType="Vérification";');
+        $GLOBALS['Systeme']->Db[0]->query('DELETE FROM `'.MAIN_DB_PREFIX.'Systeme-Tache` WHERE tmsCreate<'.(time()-(3600*12)).' AND Erreur=0 AND TaskType="check";');
         $GLOBALS['Systeme']->Db[0]->query('REPAIR TABLE `'.MAIN_DB_PREFIX.'Parc-Tache`;');
         $GLOBALS['Systeme']->Db[0]->query('OPTIMIZE TABLE `'.MAIN_DB_PREFIX.'Parc-Tache`;');
         //suppression des activités vielle de plsu d'une heure
-        $GLOBALS['Systeme']->Db[0]->query('DELETE FROM `'.MAIN_DB_PREFIX.'Parc-Activity` WHERE tmsCreate<'.(time()-(3600*12)).';');
+        $GLOBALS['Systeme']->Db[0]->query('DELETE FROM `'.MAIN_DB_PREFIX.'Systeme-Activity` WHERE tmsCreate<'.(time()-(3600*12)).';');
         $GLOBALS['Systeme']->Db[0]->query('REPAIR TABLE `'.MAIN_DB_PREFIX.'Parc-Activity`;');
         $GLOBALS['Systeme']->Db[0]->query('OPTIMIZE TABLE `'.MAIN_DB_PREFIX.'Parc-Activity`;');
     }

@@ -3,6 +3,7 @@
 class Apache extends genericClass {
 	var $_KEHost;
 	var $_KEServer;
+	var $_KEInfra;
 	var $_isVerified = false;
 	/**
 	 * Force la vérification avant enregistrement
@@ -26,20 +27,24 @@ class Apache extends genericClass {
             $this->enableSsl();
         }
 		// Forcer la vérification
-		if(!$this->_isVerified) $this->Verify( $synchro );
+		$this->Verify( $synchro );
 		// Enregistrement si pas d'erreur
 		if($this->_isVerified) parent::Save();
 
 		//mise à jour des serveurs
         try {
             $srvs = $this->getKEServer();
-            foreach ($srvs as $srv)
+            $infra = $this->getInfra();
+
+            foreach ($srvs as $srv) {
                 $srv->callLdap2Service();
-            $pxs = Sys::getData('Parc','Server/Proxy=1');
+            }
+
+            $pxs = $this->getProxy();
             foreach ($pxs as $px) {
                 $px->callLdap2Service();
-                $px->createRestartProxyTask();
             }
+            Server::createRestartProxyTask($infra);
 
         }catch (Exception $e){
             $this->addError(array("Message"=>"Impossible de mettre le serveur à jour. Serveur injoignable.".$e->getMessage()));
@@ -99,11 +104,21 @@ class Apache extends genericClass {
                 //définition de la date d'expiration
                 $this->Ssl = true;
                 //recherche du serveur proxy
-                $serv = Sys::getOneData('Parc','Server/Proxy=1',0,1,'ASC','Id');
+                //$serv = Sys::getOneData('Parc','Server/Proxy=1',0,1,'ASC','Id',null,null,true);
+                $serv = $this->getProxy();
+                if(sizeof($serv)){
+                    $servP = $serv[0];
+                    $infra = $servP->getOneParent('Infra');
+                    if( ($infra && !$this->_KEInfra) || ($infra && ($infra->Id != $this->_KEInfra->Id)) ){
+                        $serv=array();
+                    }
+                }
                 if (!sizeof($serv)) {
                     $serv = $this->getKEServer();
-                    $serv = $serv[0];
                 }
+                $serv = $serv[0];
+
+
                 $sa = explode(" ",$this->getDomains());
 
                 //test des entrées dns
@@ -137,7 +152,7 @@ class Apache extends genericClass {
                 if ($err)return false;
 
                 //pour activer ssl il faut déclencher une tache
-                $task  = genericClass::createInstance('Parc','Tache');
+                $task  = genericClass::createInstance('Systeme','Tache');
                 $task->Nom = "Activation SSL pour la configuration Apache ".$this->getDomains()." ( ".$this->Id." )";
                 $task->Type = "Fonction";
                 $task->TaskModule = "Parc";
@@ -153,7 +168,7 @@ class Apache extends genericClass {
                 $instance = $host->getOneChild('Instance');
                 $task->addParent($instance);
                 //recherch de la prochaine d'execution pour eviter les collision de letsencrypt
-                $nb = Sys::getCount('Parc','Tache/DateDebut>'.time());
+                $nb = Sys::getCount('Systeme','Tache/DateDebut>'.time());
                 $task->DateDebut = time()+(60*($nb+1));
                 $task->Save();
                 parent::Save();
@@ -250,7 +265,7 @@ class Apache extends genericClass {
 	 * @param	boolean	Verifie aussi sur LDAP
 	 * @return	Verification OK ou NON
 	 */
-	public function Verify( $synchro = true ) {
+	public function Verify( $synchro = false ) {
         if ($this->Ssl&&$this->SslMethod=='Letsencrypt') {
             $this->addWarning(array("Message" => "Veuillez bien vérifier que les ServerName soit bien configuré et pointe bien vers le serveur. Les ServerAlias doivent également bien pointer sur le serveur, sinon l'activation SSL échouera."));
         }
@@ -385,7 +400,8 @@ class Apache extends genericClass {
 	private function buildEntry($KEServer, $new = true ) {
 	    //recherche multiple web servers
         $host= $this->getOneParent('Host');
-        $webs= $host->getParents('Server');
+        $webs= $this->getKEServer();
+            //$host->getParents('Server');
 
 		$entry = array();
 		if(!empty($this->ApacheServerAlias)) {
@@ -465,10 +481,10 @@ class Apache extends genericClass {
             Server::ldapDelete($this->LdapID);
         }
         //suppresion de la config sur les serveurs proxy
-        $pxs = Sys::getData('Parc','Proxy=1');
+        $pxs = $this->getProxy();
         foreach ($pxs as $px){
             try {
-                $KEServer->remoteExec('rm /etc/nginx/conf.d/' . $this->ApacheServerName . '* -f && systemctl reload nginx');
+                $px->remoteExec('rm /etc/nginx/conf.d/' . $this->ApacheServerName . '* -f && systemctl reload nginx');
             } catch (Exception $e) {
                 $this->addError(Array("Message" => "Impossible d'effectuer la commande de suppression sur le serveur ".$px->Nom));
             }
@@ -493,6 +509,38 @@ class Apache extends genericClass {
 		}
 		return $this->_KEServer;
 	}
+
+    /**
+     * Récupère les proxy qui ont un impact sur cet apache
+     * @return	Array d'objet Kob-Eye
+     */
+    private function getProxy() {
+        $pref = '';
+        if($this->getInfra())
+            $pref='Infra/'.$this->_KEInfra->Id.'/';
+
+        $pxs = Sys::getData('Parc',$pref.'Server/Proxy=1',null,null,null,null,null,null,true);
+        return $pxs;
+    }
+
+    /**
+     * Récupère une référence vers l'objet KE "Infra"
+     * pour effectuer des requetes LDAP
+     * On conserve une référence vers le serveur
+     * pour le cas d'une utilisation ultérieure
+     * @return	L'objet Kob-Eye
+     */
+    private function getInfra() {
+        if(!is_object($this->_KEInfra)) {
+            $srv = $this->getKEServer();
+            if(is_array($srv)) {
+                $srv = $srv[0];
+                $this->_KEInfra = $srv->getOneParent('Infra');
+            }
+        }
+        return $this->_KEInfra;
+    }
+
 
 	/**
 	 * Retrouve les parents lors d'une synchronisation
@@ -587,8 +635,19 @@ class Apache extends genericClass {
      */
     public function executeLetsencrypt($task) {
         $first=$this->SslMainDomain;
-        //récupératio ndu serveur
-        $srv = $task->getOneParent('Server');
+        //récupération du serveur apache
+        $host = $this->getOneParent('Host');
+        $srv = $host->getOneParent('Server');
+        //récupération de l'infrastructure
+        $infra = $srv->getOneParent('Infra');
+        //sélection du proxy par défaut
+        if ($infra) {
+            $pxsrv = $infra->getOneChild('Server/Proxy=1');
+            if ($pxsrv) $srv = $pxsrv;
+        }else {
+            $act = $task->createActivity('Pas d\'infrastructure détectée');
+            $act->Terminate(false);
+        }
 
         //Vérification du dépot letsencrypt
         $act = $task->createActivity('Vérification du dépot letsencrypt');
@@ -597,6 +656,7 @@ class Apache extends genericClass {
         $cert = $srv->getFileContent("/etc/letsencrypt/live/".$first."/fullchain.pem");
         $exceptionDomains = Sys::getData('Parc','Domain/NoSSL=1');
         $incompleteDomain = false;
+        $act->Terminate(true);
         if (!empty($cert)) {
             $certinfo = openssl_x509_parse($cert);
             //on compare la liste des domaines à certifier et les domaines dans le certificat
@@ -670,7 +730,7 @@ class Apache extends genericClass {
             return true;
         }
         $cmd = $prefixe.$cmd;
-        $act = $task->createActivity('Execution de la commande certbot');
+        $act = $task->createActivity('Execution de la commande certbot sur le serveur '.$srv->Nom);
         $act->addDetails($cmd);
         try {
             $out = $srv->remoteExec($cmd);
@@ -721,7 +781,9 @@ class Apache extends genericClass {
             $certdomains = array();
             preg_match_all('#DNS:([^\ ,]*)#',$certinfo['extensions']['subjectAltName'],$othersdomains);
             $certdomains=array_merge($certdomains,$othersdomains[1]);
+            $domainstocert = array();
             foreach ($domains as $d){
+                if (empty($d))continue;
                 $exception = false;
                 foreach ($exceptionDomains as $ed){
                     //test des exceptions
@@ -733,7 +795,16 @@ class Apache extends genericClass {
                 if (!in_array($d,$certdomains)&&!$exception){
                     $this->addError(array('Message'=>'Le domaine '.$d.' n\' est pas compris dans le certificat en production. Il serait nécessaire de le regénérer.'));
                 }
+                if (!$exception)array_push($domainstocert,$d);
             }
+            //si pas de domaine à certifier , on désactive ssl
+            if (!sizeof($domainstocert)){
+                $this->Ssl = 0;
+                $this->softSave();
+                $this->addError(array('Message'=>'Aucun domaine à certifier. Désactivation du ssl.'));
+                return false;
+            }
+
             //on sauvegarde
             $this->softSave();
 
@@ -750,7 +821,44 @@ class Apache extends genericClass {
                 return false;
             }
         }
+        $this->addError(array('Message'=>'Aucun domaine à certifier.'));
+        return false;
+    }
+
+    /**
+     * addDomain
+     * Ajoute un sous domaine au vhost si il n'est pas déjà présent
+     * @param string $domain  Url du sous-domaine a ajouter
+     * @return boolean
+     */
+    public function addDomain($domain){
+        $subs = $this->getDomains();
+        $subs = explode(' ',$subs);
+        if (!in_array($domain, $subs)) {
+            $this->ApacheServerAlias .= ' ' . $domain;
+            $this->Save();
+        }
         return true;
     }
+
+    /**
+     * addDomain
+     * Ajoute un sous domaine au vhost si il n'est pas déjà présent
+     * @param string $domain  Url du sous-domaine a retirer
+     * @return boolean
+     */
+    public function delDomain($domain){
+        $subs = $this->getDomains();
+        $subs = explode(' ',$subs);
+        if (in_array($domain, $subs) && $domain != $this->ApacheServerName) {
+            $this->ApacheServerAlias = str_replace($domain,'',$this->ApacheServerAlias);
+            $this->Save();
+        } else{
+            return false;
+        }
+        return true;
+    }
+
+
 
 }

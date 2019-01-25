@@ -8,7 +8,9 @@ $context = (isset($_GET['context']))?$_GET['context']:'default';
 
 //requete
 $vars['row'] = Sys::getOneData($info['Module'],$vars['Query']);
-if (!$vars['row'])return;
+if (!$vars['row']){
+    die("{}");
+}
 Event::registerPush($info['Module'],$info['ObjectType'],$info['ObjectType'],'~',0,1,$context,$vars['row']->Id);
 
 
@@ -72,7 +74,7 @@ foreach ($vars['fields'] as $f){
         //recherche de sa valeur
         $str = explode('::',$f['query']);
         $qry = explode('/',$str[0],2);
-        $val = Sys::getOneData($qry[0],$qry[1].'/'.$vars['row']->{$f['name']});
+        $val = Sys::getOneData($qry[0],$qry[1].'/'.$str[1].'='.$vars['row']->{$f['name']});
         $vars['row']->{$f['name'].'Label'} = $val->getFirstSearchOrder();
     }else $vars['row']->{$f['name'].'Label'} = '';
 }

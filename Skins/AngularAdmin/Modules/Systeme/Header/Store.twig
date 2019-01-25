@@ -22,6 +22,7 @@
         initContext('form');
         initContext('parentselect');
         initContext('link');
+        initContext('fiche');
 
         return {
             getOneData: getOneData,
@@ -29,6 +30,7 @@
             updateOneData: updateOneData,
             deleteOneData: deleteOneData,
             getData: getData,
+            getCount: getCount,
             getNewData: getNewData,
             saveData: saveData,
             getTotal: getTotal,
@@ -68,6 +70,7 @@
 
         //Gestion des erreurs pour le cas ou on ne travaille pas dans un modal.
         function getErrors(){
+            if (errors==undefined) return [];
             return errors;
         }
         function clearErrors(){
@@ -550,6 +553,25 @@
                         }
                     });
         }
+        /**
+        * getCount
+        * retourne le nombre d'éléments pour la requete donnée
+        **/
+        function getCount(filter){
+            return $q(function(resolve, reject) {
+                var canceler = $q.defer();
+                $http.get('/{{ st.module }}/{{ st.objecttype }}/getCount.json', {
+                        params: {
+                            filters: filter
+                        },
+                        timeout: canceler.promise
+                    }).success(function(data) {
+                        console.log('store > {{ st.module }}/{{ st.objecttype }} > getCount '+filter, data.count);
+                        resolve(data.count);
+                });
+            });
+        }
+
         /**
         * Get data for combo component
         */
