@@ -122,6 +122,19 @@
 									</section>
 								</div>
 							</div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Départ") }}
+								</div>
+								<div class="col-md-10">
+									<div custom-select="a.id as a.HeureDepart+' - '+a.Libelle for a in getSelectData('CadrefDepartStore',$searchTerm)" 
+										 custom-select-options="{ 'async': true, 'filter':'VisiteId='+{{ o }}.VisiteVisiteId}" 
+										 ng-model="{{ o }}.DepartDepartId"
+										 class="form-control" 
+										 ng-title="{{ o }}.DepartDepartId">
+									</div>
+								</div>
+							</div>
 						</div>
 						{# block right #}                    
 						<div class="col-md-3">

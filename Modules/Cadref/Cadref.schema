@@ -416,7 +416,7 @@
 	<OBJECTCLASS title="Depart" driver="mysql" order="HeureDepart" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Depart" Operations="add,edit" Dico="0" Class="Modules/Cadref/Class/Depart.class.php">
 		<FKEY card="1,1" module="Cadref" data="Visite,Id" category="Description" form="1" fiche="1" description="Visite" >VisiteId</FKEY>
 		<FKEY card="1,1" module="Cadref" data="Lieu,Id" category="Description" form="1" fiche="1" description="Lieu" >LieuId</FKEY>
-		<PROPERTIES type="varchar" length="5" category="Description" list="1" form="1" fiche="1" description="Heure départ">HeureDepart</PROPERTIES>
+		<PROPERTIES type="varchar" length="5" searchOrder="2" category="Description" list="1" form="1" fiche="1" description="Heure départ">HeureDepart</PROPERTIES>
 
 		<VIEW title="DepartList" default="1">
 			<OBJECTCLASS title="Depart">
@@ -436,13 +436,12 @@
 		<PROPERTIES type="varchar" length="4" obligatoire="0" category="Description" list="1" form="1" fiche="1" description="Année scolaire">Annee</PROPERTIES>
 		<PROPERTIES type="date" category="Description" list="1" form="1" fiche="1" description="Date inscription">DateInscription</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" list="1" form="1" fiche="1" description="En attente">Attente</PROPERTIES>
-		<PROPERTIES type="datetime" category="Description" list="1" form="1" fiche="1" description="Date attente">DateInscription</PROPERTIES>
 		<PROPERTIES type="datetime" category="Description" list="1" form="1" fiche="1" description="Date attente">DateAttente</PROPERTIES>
-		<PROPERTIES type="date" category="Description" list="1" form="1" fiche="1" description="Date attente">DateReglement</PROPERTIES>
+<!--		<PROPERTIES type="date" category="Description" list="1" form="1" fiche="1" description="Date attente">DateReglement</PROPERTIES>-->
 		<PROPERTIES type="float" default="0" category="Description" list="1" form="1" fiche="1" description="Prix">Prix</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Description" list="1" form="1" fiche="1" description="Reduction">Reduction</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Description" list="1" form="1" fiche="1" description="Assurance annulation">Assurance</PROPERTIES>
-		<FKEY card="0,1" module="Cadref" data="Lieu,Id" category="Description" description="Lieu">LieuId</FKEY>
+		<FKEY card="0,1" module="Cadref" data="Depart,Id" category="Description" description="Départ">DepartId</FKEY>
 		<PROPERTIES type="int" default="0" category="Description" list="1" form="1" fiche="1" description="Supprimé">Supprime</PROPERTIES>
 		<PROPERTIES type="date" category="Description" list="1" form="1" fiche="1" description="Date suppression">DateSupprime</PROPERTIES>
 		<PROPERTIES type="varchar" length="3" category="Description" list="7" description="Utilisateur">Utilisateur</PROPERTIES>
