@@ -49,6 +49,7 @@ if (is_object(Sys::$CurrentMenu)) {
         $vars['CurrentUrl'] = Sys::$CurrentMenu->Url;
     }
 }else $vars['CurrentUrl'] = $Path;
+
 if (!$vars['ObjectClass']->AccessPoint) $vars['Type'] = "Tail";
 
 $vars["Interfaces"] = $vars["ObjectClass"]->getInterfaces();
@@ -80,5 +81,15 @@ foreach ($childs as $child){
         }
     }
 }
+
+$t = isset($_GET['hideBtn']) ? $_GET['hideBtn'] : '';
+$vars['hideBtn'] = array(
+	'selection' => strpos($t, 'selection') !== false,
+	'add' => strpos($t, 'add') !== false,
+	'delete' => strpos($t, 'delete') !== false,
+	'export' => strpos($t, 'export') !== false,
+	'functions' => strpos($t, 'functions') !== false
+);
+$vars['showCheckboxes'] = false;
 
 ?>

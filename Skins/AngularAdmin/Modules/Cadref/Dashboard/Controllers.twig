@@ -38,7 +38,8 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 				text: 'Visites',
 				click: function() {
 					$scope.visites = ! $scope.visites;
-					$('.fc-visites-button').toggleClass('fc-event-success');
+					if($scope.visites) $('.fc-visites-button').addClass('btn-success');
+					else $('.fc-visites-button').removeClass('btn-success');
 					$('.example-calendar-block').fullCalendar('refetchEvents');
 				}
 			}
@@ -47,9 +48,9 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 		maxTime: "19:00",
 		//defaultView: 'agendaMonth',
 		//allDayDefault: false,
-		hiddenDays: [0,6],
+		hiddenDays: [0],
 		//allDaySlot: true,
-		editable: true,
+		editable: false,
 		eventLimit: true, // allow "more" link when too many events
 		viewRender: function(view, element) {
 			if (!cleanUI.hasTouch) {
@@ -59,7 +60,7 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 				});
 			}
 		},
-		defaultDate: '2017-12-05',
+		defaultDate: '{{ "now"|date("Y-m-d") }}',
 		events: function(start, end, timezone, callback) {
 			var args = {start: start, end: end, visites: $scope.visites};
 			$http.post('/Cadref/Dashboard/getCalendar.json',{"args":JSON.stringify(args)})
@@ -72,7 +73,17 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 				$('.fc-event').removeClass('event-clicked');
 				$(this).addClass('event-clicked');
 			}
-		}
+		},
+		eventRender: function(eventObj, $el) {
+        $el.popover({
+          title: eventObj.title,
+          content: eventObj.description,
+          trigger: 'hover',
+          placement: 'top',
+          container: 'body'
+        });
+      }
+
 	});
 
 });

@@ -24,16 +24,6 @@
 					<div class="row">
 						<div class="col-md-7" >
 							<div class="row">
-								<div class="col-md-10">
-									<div custom-select="a.id as a.label+'  -  '+a.Libelle for a in getSelectData('CadrefSectionStore',$searchTerm)" 
-										 custom-select-options="{ 'async': true, 'filter':''}" 
-										 ng-model="{{ o }}.SectionSectionId" 
-										 class="form-control" 
-										 ng-title="{{ o }}.SectionSectionIdlabel+'  -  '+obj.LibelleS">
-									</div>
-								</div>
-							</div>
-							<div class="row">
 								<div class="col-md-2">
 									{{ label("Section") }}
 								</div>
@@ -47,10 +37,10 @@
 								</div>
 								<div class="col-md-10" ng-if="{{ o }}.SectionSectionId">
 									<div class="row">
-										<div class="col-md-1">
+										<div class="col-md-2">
 											{{ fkey(f.SectionId, o) }}
 										</div>
-										<div class="col-md-11">
+										<div class="col-md-10">
 											{{ finput(f.LibelleS, 'obj', true) }}
 										</div>
 									</div>
@@ -95,14 +85,14 @@
 						<div class="col-md-12">
 							<section class="panel">
 								<div class="panel-body">
-									<ng-include src="'/{{ CurrentUrl }}/0/Niveau/ListChildren.htm'" ng-if="show"></ng-include>
+									<ng-include src="'/{{ CurrentUrl }}/0/Niveau/ListChildren.htm?hideBtn=delete,selection,export'" ng-if="show"></ng-include>
 								</div>
 							</section>
 						</div>
 					</div>
 				</div>
 				<div {% if Create %}class="col-md-2"{% else %}class="col-md-1"{% endif %}>
-					<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="saveFicheCadref()">Sauver</button>
+					<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="{% if Create %}{{ identifier }}modalSave(){% else %}saveFicheCadref({{ o }}.id){% endif %}">Sauver</button>
 					<button type="button" class="btn btn-danger margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="delete(obj)">Supprimer</button>
 					<a type="button" class="btn btn-warning margin-inline cadref-btn-100" {% if Create %}data-dismiss="modal"{% else %}href="#/{{ CurrentMenu.Url }}"{% endif %}>Annuler</a>
 				</div>

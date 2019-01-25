@@ -37,10 +37,10 @@
 								</div>
 								<div class="col-md-10" ng-if="{{ o }}.id">
 									<div class="row">
-										<div class="col-md-1">
+										<div class="col-md-2">
 											{{ fkey(f.AntenneId, o) }}
 										</div>
-										<div class="col-md-11">
+										<div class="col-md-10">
 											{{ finput(f.LibelleA, 'obj', true) }}
 										</div>
 									</div>
@@ -52,10 +52,10 @@
 								</div>
 								<div class="col-md-10">
 									<div class="row">
-										<div class="col-md-1">
+										<div class="col-md-2">
 											{{ fkey(f.SectionId, 'obj') }}
 										</div>
-										<div class="col-md-11">
+										<div class="col-md-10">
 											{{ finput(f.LibelleS, 'obj', true) }}
 										</div>
 									</div>
@@ -75,10 +75,10 @@
 								</div>
 								<div class="col-md-10" ng-if="{{ o }}.DisciplineDisciplineId">
 									<div class="row">
-										<div class="col-md-1">
+										<div class="col-md-2">
 											{{ fkey(f.DisciplineId, o) }}
 										</div>
-										<div class="col-md-11">
+										<div class="col-md-10">
 											{{ finput(f.LibelleD, 'obj', true) }}
 										</div>
 									</div>
@@ -107,14 +107,14 @@
 						<div class="col-md-12">
 							<section class="panel">
 								<div class="panel-body">
-									<ng-include src="'/{{ CurrentUrl }}/0/Classe/ListChildren.htm'" ng-if="show"></ng-include>
+									<ng-include src="'/{{ CurrentUrl }}/0/Classe/ListChildren.htm?hideBtn=delete,selection,export'" ng-if="show"></ng-include>
 								</div>
 							</section>
 						</div>
 					</div>
 				</div>
 				<div {% if Create %}class="col-md-2"{% else %}class="col-md-1"{% endif %}>
-					<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="saveFicheCadref()">Sauver</button>
+					<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="{% if Create %}{{ identifier }}modalSave(){% else %}saveFicheCadref({{ o }}.id){% endif %}">Sauver</button>
 					<button type="button" class="btn btn-danger margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="delete(obj)">Supprimer</button>
 					<a type="button" class="btn btn-warning margin-inline cadref-btn-100" {% if Create %}data-dismiss="modal"{% else %}href="#/{{ CurrentMenu.Url }}"{% endif %}>Annuler</a>
 				</div>

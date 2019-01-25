@@ -85,9 +85,16 @@
 						{# block right #}                    
 						<div class="col-md-5" ng-if="obj.id">
 							<section class="panel">
-								{{ label('Absences') }}
+								<div class="row">
+									<div class="col-md-2">
+										{{ label('Absences') }}
+									</div>
+									<div class="col-md-1">
+										<a class="btn-abt cadref-btn-add btn-success" href="javascript: void(0);" ng-click="CadrefAbsenceadd()" title="Ajouter"></a>
+									</div>
+								</div>
 								<div class="panel-body cadref-no-padding">
-									<ng-include src="'/{{ CurrentUrl }}/0/Absence/Annee={{ Annee }}/ListAbsence.htm'" ng-if="show"></ng-include>
+									<ng-include src="'/{{ CurrentUrl }}/0/Absence/ListAbsence.htm'"></ng-include>
 								</div>
 							</section>
 						</div>
@@ -97,7 +104,7 @@
 						<div class="col-md-12">
 							<section class="panel">
 								<div class="panel-body">
-									<ng-include src="'/{{ CurrentUrl }}/0/Classe/Annee={{ Annee }}/ListClasse.htm'" ng-if="show"></ng-include>
+									<ng-include src="'/{{ CurrentUrl }}/0/Classe/ListChildren.htm?hideBtn=add,delete,selection,export'" ng-if="show"></ng-include>
 								</div>
 							</section>
 						</div>
@@ -105,7 +112,7 @@
 				</div>
 				<div {% if Create %}class="col-md-2"{% else %}class="col-md-1"{% endif %}>
 					<button type="button" class="btn btn-default margin-inline cadref-btn-100" accsskey="g" title="Alt G" ng-click="CadrefEnseignantcallFunction(obj,'SendMessage','Envoi mail','')">Message</button>
-					<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="saveFicheCadref()">Sauver</button>
+					<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="saveFicheCadref({{ o }}.id)">Sauver</button>
 					<button type="button" class="btn btn-danger margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="delete(obj)">Supprimer</button>
 					<a type="button" class="btn btn-warning margin-inline cadref-btn-100" {% if Create %}data-dismiss="modal"{% else %}href="#/{{ CurrentMenu.Url }}"{% endif %}>Annuler</a>
 				</div>

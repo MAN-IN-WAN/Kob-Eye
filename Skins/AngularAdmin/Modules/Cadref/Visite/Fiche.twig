@@ -30,10 +30,10 @@
 								<div class="col-md-2">
 									{{ finput(f.Visite, o, true, '', 'width:80px', true) }}
 								</div>
-								<div class="col-md-1">
+								<div class="col-md-2">
 									{{ label("Année") }}
 								</div>
-								<div class="col-md-1">
+								<div class="col-md-2">
 									{{ finput(f.Annee, o, true, '', 'width:50px') }}
 								</div>
 							</div>
@@ -47,13 +47,7 @@
 									{{ fdate(f.DateVisite, o) }}
 								</div>
 								<div class="col-md-1">
-									{{ label("Heure") }}
-								</div>
-								<div class="col-md-1">
-									{{ finput(f.HeureVisite, o, false, 'dd:dd', 'width:50px') }}
-								</div>
-								<div class="col-md-1">
-									{{ label("Date limite") }}
+									{{ label("Limite inscription") }}
 								</div>
 								<div class="col-md-2">
 									{{ fdate(f.DateLimite, o) }}
@@ -72,9 +66,8 @@
 													<th>Places</th>
 													<th>Inscrits</th>
 													<th>Attentes</th>
-													<th>Prix 1</th>
-													<th>Prix 2</th>
-													<th>Prix 3</th>
+													<th>Prix</th>
+													<th>Assurance</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -82,9 +75,8 @@
 													<td class="cadref-td-inscr">{{ finput(f.Places, o, false, 'dddd', 'width:80px') }}</td>
 													<td class="cadref-td-inscr">{{ finput(f.Inscrits, o, true, 'dddd', 'width:80px') }}</td>
 													<td class="cadref-td-inscr">{{ finput(f.Attentes, o, true, 'dddd', 'width:80px') }}</td>
-													<td class="cadref-td-inscr">{{ finput(f.Prix1, o, false, 'dddd', 'width:80px') }}</td>
-													<td class="cadref-td-inscr">{{ finput(f.Prix2, o, false, 'dddd', 'width:80px') }}</td>
-													<td class="cadref-td-inscr">{{ finput(f.Prix3, o, false, 'dddd', 'width:80px') }}</td>
+													<td class="cadref-td-inscr">{{ finput(f.Prix, o, false, 'dddd', 'width:80px') }}</td>
+													<td class="cadref-td-inscr">{{ finput(f.Assurance, o, false, 'dddd', 'width:80px') }}</td>
 												</tr>
 											</tbody>
 										</table>
@@ -99,20 +91,9 @@
 									{{ ftext(f.Description, o) }}
 								</div>
 							</div>
+							<div class="row" style="height:10px"></div>
 							{{ flinput(f.GPS, o) }}
-							<div class="row">
-								<div class="col-md-2">
-									{{ label("Points de rencontres") }}
-								</div>
-								<div class="col-md-10">
-									<multiple-autocomplete class="form-control cadref-no-padding" 
-										ng-model="obj.LieuLieux"
-										object-property="label"
-										model-labels="obj.LieuLieuxlabel"
-										suggestions-arr="optionsList">
-									</multiple-autocomplete>
-								</div>
-							</div>
+							<div class="row" style="height:10px"></div>
 							<div class="row">
 								<div class="col-md-2">
 									{{ label("Inactif") }}
@@ -124,22 +105,34 @@
 						</div>
 						{# block right #}                    
 						<div class="col-md-4">
+							<section class="panel">
+								<div class="row">
+									<div class="col-md-2">
+										{{ label('Départs') }}
+									</div>
+									<div class="col-md-1">
+										<a class="btn-abt cadref-btn-add btn-success" href="javascript: void(0);" ng-click="CadrefDepartadd()" title="Ajouter"></a>
+									</div>
+								</div>
+								<div class="panel-body cadref-no-padding">
+									<ng-include src="'/{{ CurrentUrl }}/0/Depart/ListDepart.htm'"></ng-include>
+								</div>
+							</section>
 						</div>
 					</div>
-					<div class="row" style="height:10px"></div>
-					<div class="row">
+					<div class="row" ng-if="{{ o }}.id"}>
 						{# reservations #}
 						<div class="col-md-12">
-							<section class="panel" ng-if="{{ o }}.id">
+							<section class="panel">
 								<div class="panel-body">
-									<ng-include src="'/{{ CurrentUrl }}/0/Reservation/ListChildren.htm'" ng-if="show"></ng-include>
+									<ng-include src="'/{{ CurrentUrl }}/0/Reservation/ListReservation.htm'" ng-if="show"></ng-include>
 								</div>
 							</section>
 						</div>
 					</div>
 				</div>
 				<div {% if Create %}class="col-md-2"{% else %}class="col-md-1"{% endif %}>
-					<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="saveFicheCadref()">Sauver</button>
+					<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="saveFicheCadref({{ o }}.id)">Sauver</button>
 					<button type="button" class="btn btn-danger margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="delete(obj)">Supprimer</button>
 					<a type="button" class="btn btn-warning margin-inline cadref-btn-100" {% if Create %}data-dismiss="modal"{% else %}href="#/{{ CurrentMenu.Url }}"{% endif %}>Annuler</a>
 				</div>
@@ -148,3 +141,64 @@
     </section>
 </div>
 
+<script>
+	$('.datepicker-only-init').datetimepicker({
+		widgetPositioning: {
+			horizontal: 'left'
+		},
+		locale: 'fr',
+		format: 'DD/MM/YYYY',
+		icons: {
+			time: "fa fa-clock-o",
+			date: "fa fa-calendar",
+			up: "fa fa-arrow-up",
+			down: "fa fa-arrow-down"
+		}
+	});
+	$('.timepicker-only-init').datetimepicker({
+		widgetPositioning: {
+			horizontal: 'left'
+		},
+		locale: 'fr',
+		format: 'HH:mm',
+		icons: {
+			time: "fa fa-clock-o",
+			date: "fa fa-calendar",
+			up: "fa fa-arrow-up",
+			down: "fa fa-arrow-down"
+		}
+	});
+	$('.datetimepicker-init').datetimepicker({
+		widgetPositioning: {
+			horizontal: 'left'
+		},
+		locale: 'fr',
+		icons: {
+			time: "fa fa-clock-o",
+			date: "fa fa-calendar",
+			up: "fa fa-arrow-up",
+			down: "fa fa-arrow-down"
+		}
+	});
+
+
+	$('.urlInput').on('keyup', function () {
+		$(this).val($(this).val().replace(/[^A-Za-z0-9_\-\.]*\s*/g, ''));
+	});
+	//Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
+	$(".datepicker-only-init").on("dp.change", function () {
+		var input = $(this).children('input').eq(0);
+		input.trigger('change');
+		input.trigger('input');
+	});
+	$(".timepicker-only-init").on("dp.change", function () {
+		var input = $(this).children('input').eq(0);
+		input.trigger('change');
+		input.trigger('input');
+	});
+	$(".datetimepicker-init").on("dp.change", function () {
+		var input = $(this).children('input').eq(0);
+		input.trigger('change');
+		input.trigger('input');
+	});
+</script>

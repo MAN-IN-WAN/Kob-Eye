@@ -1,5 +1,5 @@
 {% if not noExtend %}
-	app.controller('{{ identifier }}CtrlExtends', function($interval, $location, $compile, $timeout, $sce, $scope, $filter, $window, $rootScope, $routeParams, $http, 
+	app.controller('{{ identifier }}CtrlExtends', function($interval, $location, $compile, $timeout, $sce, $scope, $filter, $window, $rootScope, $routeParams, $http, $log,
 		{{ ident }}Store) {
 
 		// hook sur modalSave pour afficher la fiche crée
@@ -12,18 +12,34 @@
 		$scope.{{ ident }}modalSave = function() {
 			$scope.{{ ident }}saveExt($scope.{{ ident }}callbakSave);
 		}
+		$scope.saveFicheCadref = function(id) {
+			$scope.{{ ident }}saveExt($scope.{{ ident }}callbakSave);
+		}
 		
 		// efface le contenu du filtre
 		$scope.clearFilter = function() {
 			$scope.{{ ident }}.filter = '';
 			$('#search{{ ident }}').focus();
 		}
+
+		{% if objecttype == 'Adherent' %}
+		// hook sur CadrefAdherentadd pour fixer l'année
+		$scope.CadrefAdherentaddExt = $scope.CadrefAdherentadd;
+		$scope.CadrefAdherentcallbackAdd = function(obj) {
+			obj.AnneeSelect = '{{ Annee }}';
+		}
+		$scope.CadrefAdherentadd = function() {
+			$scope.CadrefAdherentaddExt($scope.CadrefAdherentcallbackAdd);
+		}
+		{% endif %}
+		
 	});
 
-
+//***********************
 	
-	app.controller('{{ identifier }}FicheCtrlExtends', function($interval, $location, $compile, $timeout, $sce, $scope, $filter, $window, $rootScope, $routeParams, $http, 
-		CadrefInscriptionStore, CadrefClasseStore, CadrefAdherentStore, CadrefReglementStore, CadrefEnseignantStore) {
+	app.controller('{{ identifier }}FicheCtrlExtends', function($interval, $location, $compile, $timeout, $sce, $scope, $filter, $window, $rootScope, $routeParams, $http, $log,
+		CadrefInscriptionStore, CadrefClasseStore, CadrefAdherentStore, CadrefReglementStore, CadrefEnseignantStore, CadrefAbsenceStore,
+		CadrefVisiteStore, CadrefReservationStore, CadrefClasseDateStore) {
 
 		var getObj = $interval(function(){
             if($scope.obj){
@@ -40,6 +56,7 @@
             }
         },100,50);
 
+		
 		
 		// efface le contenu du filtre
 		$scope.clearFilter = function(child) {
@@ -62,6 +79,114 @@
 			return $http.post('/{{ url }}/'+obj.id+'/Method.json',{"Func":JSON.stringify({{ identifier }}method)});
 		}
 
+		{% if objecttype == 'Visite' %}
+		//--------------------------------------
+		// VISITE RESERVATION
+		//--------------------------------------
+		// hook sur CadrefReservationadd
+		$scope.CadrefReservationaddExt = $scope.CadrefReservationadd;
+		$scope.CadrefReservationcallbackAdd = function(obj) {
+			$scope.resObj = {};
+            angular.copy(obj, $scope.resObj);
+			$scope.resObj.Total = $scope.resObj.Prix = $scope.obj.Prix1;
+		}
+		$scope.CadrefReservationadd = function() {
+			$scope.CadrefReservationaddExt($scope.CadrefReservationcallbackAdd);
+		}
+
+		// modification reservation
+		$scope.reservationOpenCallback = function(item, obj) {
+			$scope.resObj = {};
+            angular.copy(obj, $scope.resObj);
+			$scope.resObj.isAssur = Number($scope.resObj.Assurance) != 0;
+			$scope.reservationCalcul();
+		}
+		$scope.reservationOpen = function(item) {
+			$scope.CadrefReservationmodify(item, $scope.reservationOpenCallback);
+		}
+		
+		// sauve reservation
+		$scope.reservationSave = function() {
+			$scope.modalObj = $scope.resObj;
+			$scope.CadrefReservationmodalSave();
+		}
+		
+		// suppression d'une reservation ferme le modal
+		$scope.reservationDelete = function(obj) {
+			obj.DateSupprime = $filter('date')(new Date(), "dd/MM/yyyy");
+			obj.Supprime = 1;
+			$scope.CadrefReservationdelete(obj);
+			$("#modal-CadrefReservation").modal('toggle');
+		}
+		
+		$scope.reservationInscrire = function() {
+			var o = $scope.resObj;
+			if(o.Supprime == 0 && o.Attente == 0) return;
+			o.Supprime = 0;
+			o.Attente = 0;
+			o.DateSupprime = '';
+			o.DateAttente = '';
+			o.DateInscription = $filter('date')(new Date(), "dd/MM/yyyy");
+			$scope.reservationCalcul();
+		}
+		
+		$scope.reservationAttente = function() {
+			var o = $scope.resObj;
+			if(o.Supprime != 0 || o.Attente != 0) return;
+			o.Attente = 1;
+			o.DateAttente = $filter('date')(new Date(), "dd/MM/yyyy hh:mm:ss");
+			o.DateInscription = '';
+			$scope.reservationCalcul();
+		}
+
+		// calcul montant reservation
+		$scope.reservationCalcul = function() {
+			var o = $scope.resObj;
+			o.Total = (o.Supprime != 0 || o.Attente != 0) ? 0 : Number(o.Prix)+Number(o.Assurance);
+		}
+		
+		// switch assurance
+		$scope.reservationAssurance = function() {
+			var o = $scope.resObj;
+			var a = Number($scope.obj.Assurance);
+			if(!a) {
+				o.isAssur = false;
+				return;
+			}
+			o.Assurance = o.isAssur ? a : 0;
+			$scope.reservationCalcul();
+		}
+		
+		// modification depart
+		$scope.departOpenCallback = function(item, obj) {
+			$scope.resObj = {};
+            angular.copy(obj, $scope.resObj);
+		}
+		$scope.departOpen = function(item) {
+			$scope.CadrefDepartmodify(item, $scope.departOpenCallback);
+		}
+
+		// suppression d'un depart ferme le modal
+		$scope.departDelete = function(obj) {
+			$scope.CadrefDepartdelete(obj);
+			$("#modal-CadrefDepart").modal('toggle');
+		}
+		
+		{% endif %}
+		
+		{% if objecttype == 'Enseignant' %}
+		//--------------------------------------
+		// ENSEIGNANT ABSENCE
+		//--------------------------------------
+
+		// suppression d'une absence ferme le modal
+		$scope.absenceSupprime = function(obj) {
+			$scope.CadrefAbsencedelete(obj);
+			$("#modal-CadrefAbsence").modal('toggle');
+		}
+		{% endif %}
+		
+		
 		// save fiche 
 		// callback sur modalSave pour ré-afficher la fiche sauvée
 		var currentUrl = $window.location.href;
@@ -72,8 +197,8 @@
 				$scope.checkCertificat();
 			{% endif %}
 		}
-		$scope.saveFicheCadref = function() {
-            $scope.modalObj = $scope.obj;
+		$scope.saveFicheCadref = function(id) {
+            if(id) $scope.modalObj = $scope.obj;
 			$scope.modalSave($scope.{{ identifier }}callbakSaveFiche);
 		}
 		
@@ -81,6 +206,7 @@
 
 		
 		{% if objecttype == 'Adherent' %}
+		
 		// info annuelles et cotisation
 		$scope.obj.nonSolde = false;
 		$scope.CotisationAnnuelle = 0;
@@ -92,6 +218,7 @@
 				function(data) {
 					$scope.obj.Cotisation = data.data.Cotisation;
 					$scope.obj.Cours = data.data.Cours;
+					$scope.obj.Visites = data.data.Visites;
 					$scope.obj.Reglement = data.data.Reglement;
 					$scope.obj.Differe = data.data.Differe;
 					$scope.obj.Regularisation = data.data.Regularisation;
@@ -335,7 +462,7 @@
 		}
 		
 		// switch cotisation
-		$scope.switchCotisation = function() {
+		$scope.adherentCotisation = function() {
 			var cad = $scope.CadrefClasse.Inscr;
 			cad.cotis = ! cad.isCotis ? $scope.CotisationAnnuelle : 0;
 			cad.updated = true;
@@ -354,7 +481,7 @@
 			}
 			cad.paye = Number(cad.cotis)+Number(cad.cours)-Number(cad.regle)-Number(cad.diff)+Number(cad.regul);
 			cad.solde = 0;
-			cad.nonSolde = faux;
+			cad.nonSolde = false;
 			$scope.nextControle();
 		}
 		$scope.classePaye = function() {
@@ -458,7 +585,6 @@
 		// mode = 1 : supprime
 		// mode = 2 : attente
 		$scope.classeSupprime = function(item, mode) {
-			console.log('supprime',item);
 			if(item.Supprime > 0) return;
 			
 			// insciption non enregistrée : suppression de la liste
@@ -476,7 +602,6 @@
 				return;
 			}
 			// flag supperssion
-			var dt = new Date();
 			item.DateSupprime = $filter('date')(new Date(), "dd/MM/yyyy");
 			item.Supprime = mode;
 			item.updated = 1;
@@ -485,7 +610,6 @@
 		}
 
 		$scope.classeInscrire = function(item) {
-			console.log('inscrire',item);
 			if(item.Supprime == 0 && item.Attente == 0) return;
 			item.Supprime = 0;
 			item.Attente = 0;
@@ -499,7 +623,6 @@
 		}
 		
 		$scope.classeAttente = function(item) {
-			console.log('attente',item);
 			if(item.Supprime > 0 || item.Attente > 1) return;
 			item.Attente = 1;
 			item.DateAttente = $filter('date')(new Date(), "dd/MM/yyyy hh:mm:ss");
@@ -629,6 +752,7 @@
 					$scope.obj.LibelleS = data.data.LibelleS;
 					$scope.obj.LibelleD = data.data.LibelleD;
 					$scope.obj.LibelleN = data.data.LibelleN;
+					$scope.obj.LibelleL = data.data.LibelleL;
 				}
 			).error(
 				function() {
@@ -639,9 +763,24 @@
 		
 		$scope.Enseignants = JSON.parse('{{ enseignants|raw }}');
 
+		// modification date cours
+		$scope.classeDateOpenCallback = function(item, obj) {
+			$scope.resObj = {};
+            angular.copy(obj, $scope.resObj);
+		}
+		$scope.classeDateOpen = function(item) {
+			$scope.CadrefClasseDatemodify(item, $scope.classeDateOpenCallback);
+		}
+
+		// suppression d'une date ferme le modal
+		$scope.classeDateDelete = function(obj) {
+			$scope.CadrefClasseDatedelete(obj);
+			$("#modal-CadrefClasseDate").modal('toggle');
+		}
 		{% endif %}
 		
-    });
+
+	});
     
 
 {% endif %}

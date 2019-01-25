@@ -1,6 +1,6 @@
 <?php
 session_write_close();
-$vars['Annee'] = $GLOBALS['Systeme']->getRegVars('AnneeEnCours');
+$vars['Annee'] = Cadref::$Annee;
 
 $info = Info::getInfos($vars['Query']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);

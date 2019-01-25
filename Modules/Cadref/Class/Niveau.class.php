@@ -12,8 +12,6 @@ class Niveau extends genericClass {
 		$this->addParent($p);
 		$this->CodeNiveau = "$this->Antenne.$this->Section.$this->Discipline.$this->Niveau";
 		return parent::Save();
-//		$sts[] = array($id ? 'edit' : 'add', 1, $this->Id, $this->Module, $this->ObjectType, '', '', null, null);
-//		return $sts;
 	}
 	
 	function Delete() {

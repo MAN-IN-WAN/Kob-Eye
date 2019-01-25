@@ -1,0 +1,133 @@
+app.controller('{{ Url }}Ctrl', function($location, $anchorScroll , $scope, $rootScope, $http, CadrefAdherentStore, CadrefReglementStore ) {
+
+    //Gestion du store
+    $scope.store = CadrefAdherentStore;
+    $scope.store.resetQuery('Profile');
+    $scope.store.currentPage['Profile'] = 1;
+    $scope.store.setFilters('Id={{ adher.Id }}', 'Profile');
+
+    $scope.obj;
+
+	//test du store
+	$scope.CadrefReglement = {
+		data: CadrefReglementStore.data.children,
+		store: CadrefReglementStore,
+		filter: CadrefReglementStore.getFilters('children',true).global,
+		filterPanel: false,
+		filters: (function(){
+			var opts = CadrefReglementStore.getFilters('children',true).options;
+			var out = {};
+			for (var o in opts){
+				out[opts[o].name] = opts[o];
+			}
+			return out;
+		})(),
+		filterQuery: CadrefReglementStore.getQueryFilter('children'),
+		currentPage: CadrefReglementStore.currentPage.children,
+		pageLength: CadrefReglementStore.getPageLength(),
+		itemsPerPage: CadrefReglementStore.itemsPerPage,
+		selected: {
+			selectall: false
+		}
+	}
+	$scope.CadrefReglement.store.setFilters("Annee={{ Annee }}", 'children');
+
+    $scope.gotoAnchor = function(x) {
+        var newHash =  x;
+        if ($location.hash() !== newHash) {
+            // set the $location.hash to `newHash` and
+            // $anchorScroll will automatically scroll to it
+            $location.hash(x);
+        } else {
+            // call $anchorScroll() explicitly,
+            // since $location.hash hasn't changed
+            $anchorScroll();
+        }
+    };
+
+
+
+    $scope.initAdh = function(){
+        $scope.store.getOneData({{ adher.Id }}, 'Profile').then(function(data){
+            $scope.obj = data;
+			$scope.obj.AnneeSelect = '{{ Annee }}';
+			$scope.adherentInfo();
+        });
+    }
+    $scope.initAdh();
+
+	// appel de function kobeye avec retour objet
+	$scope.{{ identifier }}callMethod = function(obj, name, args, explodeArgs) {
+		if (args == undefined) args = [];
+		if (explodeArgs == undefined) explodeArgs = true;
+
+		var {{ identifier }}method = {
+			name: name,
+			query: '{{ module }}/{{ objecttype }}/'+obj.id,
+			args : args,
+			explodeArgs:explodeArgs,
+			tms : Date.now(),
+		};
+		return $http.post('/{{ url }}/'+obj.id+'/Method.json',{"Func":JSON.stringify({{ identifier }}method)});
+	}
+	
+	$scope.adherentInfo = function() {
+		var annee = $scope.obj.AnneeSelect;
+		if(annee == undefined) annee = '{{ Annee }}';
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo',[annee]);
+		ajax.success(
+			function(data) {
+				$scope.obj.Cotisation = data.data.Cotisation;
+				$scope.obj.Cours = data.data.Cours;
+				$scope.obj.Visites = data.data.Visites;
+				$scope.obj.Reglement = data.data.Reglement;
+				$scope.obj.Differe = data.data.Differe;
+				$scope.obj.Regularisation = data.data.Regularisation;
+				$scope.obj.Solde = data.data.Solde;
+				$scope.obj.NotesAnnuelles = data.data.NotesAnnuelles;
+				$scope.obj.Adherent = data.data.Adherent;
+				$scope.obj.ClasseId = data.data.ClasseId;
+				$scope.obj.AntenneId = data.data.AntenneId;
+				$scope.obj.certifInvalide = data.data.certifInvalide;				
+				$scope.objnonSolde = Number($scope.obj.Solde) != 0;
+
+				$scope.CotisationAnnuelle = data.data.CotisationAnnuelle;
+			}
+		).error(
+			function() {
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			}
+		);
+	}
+	
+
+    $scope.infoSave = function (){
+        //affichage spinner
+        $('#settings').spin();
+        $scope.store.saveData($scope.obj).then(function (data) {
+            $('#settings').spin(false);
+            if (data.success){
+                $scope.obj = data.data;
+                $scope.obj.success = data.success;
+                $scope.obj.warning = data.warning;
+                $scope.obj.errors = data.errors;
+                $scope.obj.infos = data.infos;
+            }else {
+                //gestion des erreurs
+                $scope.obj.errors = data.errors;
+                $scope.obj.success = data.success;
+                $scope.obj.warning = data.warning;
+                $scope.obj.errors = data.errors;
+                $scope.obj.infos = data.infos;
+                $scope.obj.fieldErrors = [];
+                for (var e in data.errors) {
+                    $scope.obj.fieldErrors.push(data.errors[e].Prop);
+                }
+                console.log('tab field error',$scope.obj.fieldErrors);
+            }
+            console.log('save obj',data);
+        });
+    }
+
+
+});

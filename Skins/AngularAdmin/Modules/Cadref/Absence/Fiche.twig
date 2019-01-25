@@ -1,0 +1,143 @@
+{# fiche Absence #}
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean,fkey %} 
+{% set f=fields %}
+{% set o='modalObj' %}
+<div class="page-content-inner">
+    <!-- Default Panel -->
+    <section class="panel">
+        <div class="panel-body cadref-panel-body">
+            <div class="row no-gutters">
+                <div class="col-md-10">
+					<div class="row">
+						<div class="col-md-9" >
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Enseignant") }}
+								</div>
+								<div class="col-md-10">
+									<div class="row">
+										<div class="col-md-2">
+											{{ fkey(f.EnseignantId, o) }}
+										</div>
+										<div class="col-md-10">
+											<div class="control-group">
+												<input type="text" class="form-control cadref-input" ng-model="obj.Nom" readonly/>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row" style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Date de début") }}
+								</div>
+								<div class="col-md-4">
+									<label class="input-group datetimepicker-init cadref-no-margin">
+										<input id="input-modalObjDateDebut" type="text" class="form-control cadref-input" placeholder="Date" mask="dd/dd/dddd dd:dd" ng-model="modalObj.DateDebut"/>
+										<span class="input-group-addon">
+											<i class="icmn-calendar"></i>
+										</span>
+									</label>
+								</div>
+							</div>
+							<div class="row" style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Date de fin") }}
+								</div>
+								<div class="col-md-4">
+									<label class="input-group datetimepicker-init cadref-no-margin">
+										<input id="input-modalObjDateFin" type="text" class="form-control cadref-input" placeholder="Date" mask="dd/dd/dddd dd:dd" ng-model="modalObj.DateFin"/>
+										<span class="input-group-addon">
+											<i class="icmn-calendar"></i>
+										</span>
+									</label>
+								</div>
+							</div>
+							<div class="row" style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Description") }}
+								</div>
+								<div class="col-md-10">
+									<input type="text" class="form-control cadref-input" ng-model="modalObj.Description"/>
+								</div>
+							</div>
+						</div>
+						{# block right #}                    
+						<div class="col-md-3">
+						</div>
+					</div>
+				</div>
+				<div {% if Create %}class="col-md-2"{% else %}class="col-md-1"{% endif %}>
+					<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="{{ identifier }}modalSave()">Sauver</button>
+					<button type="button" class="btn btn-danger margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="absenceSupprime(modalObj)">Supprimer</button>
+					<a type="button" class="btn btn-warning margin-inline cadref-btn-100" {% if Create %}data-dismiss="modal"{% else %}href="#/{{ CurrentMenu.Url }}"{% endif %}>Annuler</a>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+<script>
+	$('.datepicker-only-init').datetimepicker({
+		widgetPositioning: {
+			horizontal: 'left'
+		},
+		locale: 'fr',
+		format: 'DD/MM/YYYY',
+		icons: {
+			time: "fa fa-clock-o",
+			date: "fa fa-calendar",
+			up: "fa fa-arrow-up",
+			down: "fa fa-arrow-down"
+		}
+	});
+	$('.timepicker-only-init').datetimepicker({
+		widgetPositioning: {
+			horizontal: 'left'
+		},
+		locale: 'fr',
+		format: 'HH:mm',
+		icons: {
+			time: "fa fa-clock-o",
+			date: "fa fa-calendar",
+			up: "fa fa-arrow-up",
+			down: "fa fa-arrow-down"
+		}
+	});
+	$('.datetimepicker-init').datetimepicker({
+		widgetPositioning: {
+			horizontal: 'left'
+		},
+		locale: 'fr',
+		icons: {
+			time: "fa fa-clock-o",
+			date: "fa fa-calendar",
+			up: "fa fa-arrow-up",
+			down: "fa fa-arrow-down"
+		}
+	});
+
+
+	$('.urlInput').on('keyup', function () {
+		$(this).val($(this).val().replace(/[^A-Za-z0-9_\-\.]*\s*/g, ''));
+	});
+	//Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
+	$(".datepicker-only-init").on("dp.change", function () {
+		var input = $(this).children('input').eq(0);
+		input.trigger('change');
+		input.trigger('input');
+	});
+	$(".timepicker-only-init").on("dp.change", function () {
+		var input = $(this).children('input').eq(0);
+		input.trigger('change');
+		input.trigger('input');
+	});
+	$(".datetimepicker-init").on("dp.change", function () {
+		var input = $(this).children('input').eq(0);
+		input.trigger('change');
+		input.trigger('input');
+	});
+</script>
