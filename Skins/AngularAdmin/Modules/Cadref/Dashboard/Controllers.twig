@@ -19,7 +19,7 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 	var intv = $interval($scope.getStat, 60000);
 	
 	$scope.visites = true;
-	$('.example-calendar-block').fullCalendar({
+	$('.cadref-calendar-block').fullCalendar({
 		//aspectRatio: 2,
 		height: 650,
 		header: {
@@ -40,7 +40,7 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 					$scope.visites = ! $scope.visites;
 					if($scope.visites) $('.fc-visites-button').addClass('btn-success');
 					else $('.fc-visites-button').removeClass('btn-success');
-					$('.example-calendar-block').fullCalendar('refetchEvents');
+					$('.cadref-calendar-block').fullCalendar('refetchEvents');
 				}
 			}
 		},
@@ -78,6 +78,7 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
         $el.popover({
           title: eventObj.title,
           content: eventObj.description,
+		  html: true,
           trigger: 'hover',
           placement: 'top',
           container: 'body'

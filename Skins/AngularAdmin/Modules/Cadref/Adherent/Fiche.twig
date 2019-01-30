@@ -285,6 +285,7 @@
 										</tr>
 									</tbody>
 								</table>
+								<div class="row" style="height:10px"></div>
 								<div class="row">
 									<div class="col-md-2">
 										{{ label("Notes annuelles") }}
@@ -320,7 +321,7 @@
 					<a type="button" class="btn btn-warning margin-inline cadref-btn-100" {% if Create %}data-dismiss="modal"{% else %}href="#/{{ CurrentMenu.Url }}"{% endif %}>Annuler</a>
 					<button type="button" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" accesskey="t" title="Alt T" ng-click="CadrefAdherentcallFunction(obj,'PrintAttestation','Attestation fiscale','')">Attestation</button>
 					<button type="button" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" accesskey="h" title="Alt H" ng-click="CadrefAdherentcallFunction(obj,'PrintCheque','Chèque','')">Chèque</button>
-					<button type="button" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" accesskey="g" title="Alt G" ng-click="CadrefAdherentcallFunction(obj,'SendMessage','Envoi mail','')">Message</button>
+					<button type="button" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" accesskey="g" title="Alt G" ng-click="CadrefAdherentcallFunction(obj,'SendMessage','Envoi de message','')">Message</button>
 				</div>
 			</div>
 		</div>

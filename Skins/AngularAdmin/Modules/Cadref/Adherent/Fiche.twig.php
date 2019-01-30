@@ -3,7 +3,6 @@ session_write_close();
 $vars['Annee'] = $annee = Cadref::$Annee;
 $info = Info::getInfos($vars['Query']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
-
 $temp = $o->getElementsByAttribute('','',true);
 $fields = Array();
 foreach ($temp as $k=>$field){

@@ -1,5 +1,5 @@
 <?php
-// fiche printAttestation adherent
+// fiche printCheque adherent
 $vars['Annee'] = Cadref::$Annee;
 $vars['CurrentMenu'] = Sys::$CurrentMenu;
 if(Sys::$User->Admin && !$vars['CurrentMenu']){

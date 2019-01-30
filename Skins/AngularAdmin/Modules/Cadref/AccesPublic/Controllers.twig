@@ -1,0 +1,380 @@
+app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $rootScope, $http, $rootScope, 
+	CadrefAdherentStore, CadrefReglementStore, CadrefInscriptionStore, CadrefEnseignantStore, CadrefAbsenceStore, CadrefClasseStore, 
+	CadrefVisiteStore, CadrefReservationStore, CadrefAttachementStore) {
+
+    $scope.obj;
+	$scope.localObj = {};
+
+	$rootScope.$on('CadrefAbsenceStore',function (ev,data){
+		$('.absence-calendar-block').fullCalendar('refetchEvents');
+	});
+
+	$scope.{{ identifier }}InfoSave = function (){
+        //affichage spinner
+        $('#settings').spin();
+        $scope.store.saveData($scope.obj).then(function (data) {
+            $('#settings').spin(false);
+            if (data.success){
+                $scope.obj = data.data;
+                $scope.obj.success = data.success;
+                $scope.obj.warning = data.warning;
+                $scope.obj.errors = data.errors;
+                $scope.obj.infos = data.infos;
+            }else {
+                //gestion des erreurs
+                $scope.obj.errors = data.errors;
+                $scope.obj.success = data.success;
+                $scope.obj.warning = data.warning;
+                $scope.obj.errors = data.errors;
+                $scope.obj.infos = data.infos;
+                $scope.obj.fieldErrors = [];
+                for (var e in data.errors) {
+                    $scope.obj.fieldErrors.push(data.errors[e].Prop);
+                }
+                console.log('tab field error',$scope.obj.fieldErrors);
+            }
+            console.log('save obj',data);
+        });
+    }
+
+	// appel de function kobeye avec retour objet
+	$scope.{{ identifier }}callMethod = function(obj, name, args, explodeArgs) {
+		if (args == undefined) args = [];
+		if (explodeArgs == undefined) explodeArgs = true;
+
+		var {{ identifier }}method = {
+			name: name,
+			query: '{{ module }}/{{ objecttype }}/'+obj.id,
+			args : args,
+			explodeArgs:explodeArgs,
+			tms : Date.now(),
+		};
+		return $http.post('/{{ url }}/'+obj.id+'/Method.json',{"Func":JSON.stringify({{ identifier }}method)});
+	}
+
+	// creation de stores
+	$scope.createStore = function(store, context) {
+		var s = {
+			data: store.data[context],
+			store: store,
+			filter: store.getFilters(context,true).global,
+			filterPanel: false,
+			filters: (function(){
+				var opts = store.getFilters(context,true).options;
+				var out = {};
+				for (var o in opts){
+					out[opts[o].name] = opts[o];
+				}
+				return out;
+			})(),
+			filterQuery: store.getQueryFilter(context),
+			currentPage: store.currentPage[context],
+			pageLength: store.getPageLength(),
+			itemsPerPage: store.itemsPerPage,
+			selected: {
+				selectall: false
+			}
+		}
+		return s;
+	}
+	
+	// store Attachement
+	$scope.CadrefAttachement = $scope.createStore(CadrefAttachementStore, 'children');
+
+	// ouverture fenetre attachements
+	$scope.attachObj;
+	$scope.attachInfo;
+	$scope.attachementsOpen = function(item, origine) {
+		if(item.Attachements == 0 && (origine == 'inscription' || origine == 'reservation')) return;
+		var o = $scope.attachInfo = {origine: origine, mode: '', classeId: 0, visiteId: 0, code: '', libelle: ''};
+		switch(origine){
+			case 'classe':
+				o.classeId = item.id;
+				o.code = item.CodeClasse;
+				o.libelle = item.LibelleD+' '+item.LibelleN;
+				$scope.CadrefAttachement.store.setQuery('Cadref/Classe/'+o.classeId+'/Attachement', 'children');
+				break;
+			case 'inscription':
+				o.classeId = item.ClasseClasseId;
+				o.code = item.CodeClasse;
+				o.libelle = item.LibelleS+' / '+item.LibelleD+' '+item.LibelleN;
+				$scope.CadrefAttachement.store.setQuery('Cadref/Classe/'+o.classeId+'/Attachement', 'children');
+				break;
+			case 'visite':
+				o.visiteId = item.id;
+				o.code = item.Visite;
+				o.libelle = item.Libelle;
+				$scope.CadrefAttachement.store.setQuery('Cadref/Visite/'+o.visiteId+'/Attachement', 'children');
+				break;
+			case 'reservation':
+				o.visiteId = item.VisiteVisiteId;
+				o.code = item.Visite;
+				o.libelle = item.Libelle;
+				$scope.CadrefAttachement.store.setQuery('Cadref/Visite/'+o.visiteId+'/Attachement', 'children');
+				break;
+		}
+		$scope.CadrefAttachement.store.getData(1, 'children');
+		$("#modal-Attachements").modal();
+	}
+	
+	// ferme attachement edit section
+	$scope.attachementCloseEdit = function() {
+		$scope.attachInfo.mode = '';
+	}
+	
+	// ajout attachement
+	$scope.attachementAdd = function() {
+		var i = $scope.attachInfo;
+		var o = $scope.attachObj = CadrefAttachementStore.getNewData();
+		o.ClasseClasseId = i.classeId;
+		o.VisiteVisiteId = i.visiteId;
+		i.mode = 'add';
+	}
+	
+	{% if objecttype == 'Enseignant' %}
+	// ajout attachement
+	$scope.attachementModify = function(item) {
+		var i = $scope.attachInfo;
+		var o = $scope.attachObj = {};
+		angular.copy(item, o);
+		o.ClasseClasseId = i.classeId;
+		o.VisiteVisiteId = i.visiteId;
+		i.mode = 'edit';
+	}
+
+	// sauve attachement
+	$scope.attachementSave = function() {
+        $('#settings').spin();
+        CadrefAttachementStore.saveData($scope.attachObj).then(function (data) {
+            $('#settings').spin(false);
+			$scope.attachInfo.mode = '';
+		});
+	}
+
+	// suppression attachement
+	$scope.attachementDelete = function(item) {
+		swal({
+				title: "Effacer l'attachement",
+				text: "Cette suppression sera définitive. ",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonClass: "btn-danger",
+				cancelButtonText: "Annuler",
+				confirmButtonText: "Oui, supprimer !",
+				closeOnConfirm: true
+			},
+			function(){
+				CadrefAttachementStore.deleteOneData(item.id,'all');
+				$scope.attachInfo.mode = '';
+			}
+		);
+	}
+	{% endif %}
+	
+		
+	{% if objecttype == 'Enseignant' %}
+	//Gestion du store
+    $scope.store = CadrefEnseignantStore;
+//    $scope.store.resetQuery('default');
+//    $scope.store.currentPage['default'] = 1;
+//    $scope.store.setFilters('Id={{ entite.Id }}', 'default');
+
+	// store children
+	$scope.CadrefAbsence = $scope.createStore(CadrefAbsenceStore, 'children');
+	$scope.CadrefAbsence.store.setFilters("Annee={{ Annee }}", 'children');
+	$scope.CadrefClasse = $scope.createStore(CadrefClasseStore, 'children');
+	$scope.CadrefClasse.store.setFilters("Annee={{ Annee }}", 'children');
+	$scope.CadrefVisite = $scope.createStore(CadrefVisiteStore, 'children');
+	$scope.CadrefVisite.store.setFilters("Annee={{ Annee }}", 'children');
+
+    $scope.initEns = function(){
+        $scope.store.getOneData({{ entite.Id }}, 'default').then(function(data){
+            $scope.obj = data;
+        });
+    }
+    $scope.initEns();
+	
+	// modification absence
+	$scope.absenceOpenCallback = function(item, obj) {
+		var o = $scope.localObj = {};
+		angular.copy(obj, o);
+	}
+	$scope.absenceOpen = function(obj) {
+		CadrefAbsenceStore.getOneData(obj.id,'children',false).then(function (data) {
+			$scope.modalObj = data;
+			$scope.modalObj.success = false;
+			$scope.modalObj.CadrefAbsence = $scope.obj.id;
+			$scope.modalObj.CadrefAbsencelabel = $scope.obj.label;
+			$scope.modalObj.title = 'Modifier une absence';
+//			angular.copy($scope.modalObj, $scope.localObj);
+		});
+		$("#modal-CadrefAbsence").modal();
+	}
+	
+	$scope.absenceAdd = function(){
+		$scope.modalObj = CadrefAbsenceStore.getNewData();
+		$scope.modalObj.success = false;
+		$scope.modalObj.EnseignantEnseignantId = $scope.obj.id;
+		$scope.modalObj.EnseignantEnseignantIdlabel = $scope.obj.label;
+		$scope.modalObj.title = 'Ajouter une absence';
+//			var o = $scope.localObj = {};
+//			angular.copy($scope.modalObj, o);
+		$("#modal-CadrefAbsence").modal();
+	}
+
+	// sauve absence
+	$scope.absenceSave = function() {
+//		$scope.modalObj = $scope.localObj;
+        $('#settings').spin();
+        CadrefAbsenceStore.saveData($scope.modalObj).then(function (data) {
+            $('#settings').spin(false);
+			$("#modal-CadrefAbsence").modal('toggle');
+		});
+	}
+
+	// suppression d'une absence ferme le modal
+	$scope.absenceSupprime = function(obj) {
+		swal({
+				title: "Êtes vous sûr de vouloir supprimer cette absence ?",
+				text: "Cette suppression sera définitive. ",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonClass: "btn-danger",
+				cancelButtonText: "Annuler",
+				confirmButtonText: "Oui, supprimer !",
+				closeOnConfirm: true
+			},
+			function(){
+				CadrefAbsenceStore.deleteOneData(obj.id,'all');
+				$("#modal-CadrefAbsence").modal('toggle');
+			}
+		);
+	}
+
+	
+	$scope.visites = true;
+	$('.absence-calendar-block').fullCalendar({
+		//aspectRatio: 2,
+		height: 650,
+		header: {
+			left: 'prev, next',
+			center: 'title',
+			right: 'visites, month, agendaWeek, agendaDay'
+		},
+		buttonIcons: {
+			prev: 'none fa fa-arrow-left',
+			next: 'none fa fa-arrow-right',
+			prevYear: 'none fa fa-arrow-left',
+			nextYear: 'none fa fa-arrow-right'
+		},
+		customButtons: {
+			visites: {
+				text: 'Visites',
+				click: function() {
+					$scope.visites = ! $scope.visites;
+					if($scope.visites) $('.fc-visites-button').addClass('btn-info');
+					else $('.fc-visites-button').removeClass('btn-info');
+					$('.absence-calendar-block').fullCalendar('refetchEvents');
+				}
+			}
+		},
+		minTime: "08:00",
+		maxTime: "19:00",
+		//defaultView: 'agendaMonth',
+		//allDayDefault: false,
+		hiddenDays: [0],
+		//allDaySlot: true,
+		editable: false,
+		eventLimit: true, // allow "more" link when too many events
+		viewRender: function(view, element) {
+			if (!cleanUI.hasTouch) {
+				$('.fc-scroller').jScrollPane({
+					autoReinitialise: true,
+					autoReinitialiseDelay: 100
+				});
+			}
+		},
+		defaultDate: '{{ "now"|date("Y-m-d") }}',
+		events: function(start, end, timezone, callback) {
+			var args = {start: start, end: end, visites: $scope.visites};
+			$http.post('/Cadref/Dashboard/getCalendar.json',{"args":JSON.stringify(args)})
+			.success(function(data) {
+				callback(data.events);
+			});
+		},
+		eventClick: function(calEvent, jsEvent, view) {
+			if (!$(this).hasClass('event-clicked')) {
+				$('.fc-event').removeClass('event-clicked');
+				$(this).addClass('event-clicked');
+			}
+		},
+		eventRender: function(eventObj, $el) {
+        $el.popover({
+          title: eventObj.title,
+          content: eventObj.description,
+		  html: true,
+          trigger: 'hover',
+          placement: 'top',
+          container: 'body'
+        });
+      }
+
+	});
+	{% endif %}
+
+
+	{% if objecttype == 'Adherent' %}
+    //Gestion du store
+    $scope.store = CadrefAdherentStore;  
+
+	// store children
+	$scope.CadrefReglement = $scope.createStore(CadrefReglementStore, 'children');
+	$scope.CadrefReglement.store.setFilters('Annee={{ Annee }}', 'children');
+	$scope.CadrefInscription = $scope.createStore(CadrefInscriptionStore, 'children');
+	$scope.CadrefInscription.store.setFilters('Annee={{ Annee }}', 'children');
+	$scope.CadrefReservation = $scope.createStore(CadrefReservationStore, 'children');
+	$scope.CadrefReservation.store.setFilters('Annee={{ Annee }}', 'children');
+
+
+    $scope.initAdh = function(){
+        $scope.store.getOneData({{ entite.Id }}, 'default').then(function(data){
+            $scope.obj = data;
+			$scope.obj.AnneeSelect = '{{ Annee }}';
+			$scope.adherentInfo();
+        });
+    }
+    $scope.initAdh();
+	
+	// informations annuelles adherent
+	$scope.adherentInfo = function() {
+		var annee = $scope.obj.AnneeSelect;
+		if(annee == undefined) annee = '{{ Annee }}';
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo',[annee]);
+		ajax.success(
+			function(data) {
+				$scope.obj.Cotisation = data.data.Cotisation;
+				$scope.obj.Cours = data.data.Cours;
+				$scope.obj.Visites = data.data.Visites;
+				$scope.obj.Reglement = data.data.Reglement;
+				$scope.obj.Differe = data.data.Differe;
+				$scope.obj.Regularisation = data.data.Regularisation;
+				$scope.obj.Solde = data.data.Solde;
+				$scope.obj.NotesAnnuelles = data.data.NotesAnnuelles;
+				$scope.obj.Adherent = data.data.Adherent;
+				$scope.obj.ClasseId = data.data.ClasseId;
+				$scope.obj.AntenneId = data.data.AntenneId;
+				$scope.obj.certifInvalide = data.data.certifInvalide;				
+				$scope.objnonSolde = Number($scope.obj.Solde) != 0;
+
+				$scope.CotisationAnnuelle = data.data.CotisationAnnuelle;
+			}
+		).error(
+			function() {
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			}
+		);
+	}
+	{% endif %}
+
+
+});

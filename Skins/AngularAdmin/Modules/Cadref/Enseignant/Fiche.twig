@@ -47,10 +47,10 @@
 								<div class="col-md-10">
 									<div class="row">
 										<div class="col-md-6">
-											{{ finput(f.Telephone1, o) }}
+											{{ finput(f.Telephone1, o, false, 'dd.dd.dd.dd.dd') }}
 										</div>
 										<div class="col-md-6">
-											{{ finput(f.Telephone2, o) }}
+											{{ finput(f.Telephone2, o, false, 'dd.dd.dd.dd.dd') }}
 										</div>
 									</div>
 								</div>
@@ -83,14 +83,14 @@
 							</div>
 						</div>
 						{# block right #}                    
-						<div class="col-md-5" ng-if="obj.id">
-							<section class="panel">
+						<div class="col-md-5">
+							<section class="panel" ng-if="obj.id">
 								<div class="row">
 									<div class="col-md-2">
 										{{ label('Absences') }}
 									</div>
 									<div class="col-md-1">
-										<a class="btn-abt cadref-btn-add btn-success" href="javascript: void(0);" ng-click="CadrefAbsenceadd()" title="Ajouter"></a>
+										<a class="btn-abt cadref-btn-add btn-success" href="" ng-click="CadrefAbsenceadd()" title="Ajouter"></a>
 									</div>
 								</div>
 								<div class="panel-body cadref-no-padding">
@@ -104,7 +104,7 @@
 						<div class="col-md-12">
 							<section class="panel">
 								<div class="panel-body">
-									<ng-include src="'/{{ CurrentUrl }}/0/Classe/ListChildren.htm?hideBtn=add,delete,selection,export'" ng-if="show"></ng-include>
+									<ng-include src="'/{{ CurrentUrl }}/0/Classe/ListChildren.htm?hideBtn=add,delete,selection,export&hideModal=1'" ng-if="show"></ng-include>
 								</div>
 							</section>
 						</div>
@@ -120,5 +120,5 @@
 		</div>
     </section>
 </div>
-{{ include(template_from_string(module('Systeme/Utils/Modal/Function?identifier='~identifier))) }}
+
 

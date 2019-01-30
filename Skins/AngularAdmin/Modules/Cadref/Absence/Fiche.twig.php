@@ -1,7 +1,6 @@
 <?php
 session_write_close();
-$vars['Annee'] = Cadref::$Annee;
-
+$vars['Annee'] = $annee = Cadref::$Annee;
 $info = Info::getInfos($vars['Query']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $temp = $o->getElementsByAttribute('','',true);
