@@ -175,3 +175,10 @@ table tr td.cadref-td-diff {
     max-width: 900px;
     width: auto;
 }
+
+.cadref-widget {
+	padding: 3px;
+}
+.cadref-page-content {
+	padding: 5px;
+}
