@@ -1,0 +1,89 @@
+<div class="form-group row">
+	<div class="col-lg-5 col-md-12">
+		<div class="input-group list-search">
+			<input type="text" id="search{{ identifier }}" class="form-control" name="{{ identifier }}query" ng-model="{{ identifier }}.filter" placeholder="Recherche..." >
+			<span class="input-group-btn">
+				<a href="javascript: void(0);" class="btn btn-default cadref-btn-erase" accesskey="x" title="Alt X" ng-click="clearFilter('{{ identifier }}')"></a>				
+				<a href="javascript: void(0);" class="btn btn-warning" accesskey="r" title="Alt R" ng-click="{{ identifier }}.store.refresh('{{ context }}')">
+					Rafraîchir
+				</a>
+			</span>
+		</div>
+	</div>
+	<div class="col-lg-1 col-md-12">
+		<select class="form-control" ng-model="{{ identifier }}.pageLength" >
+			<option ng-selected="{{ identifier }}.pageLength == 15" value="15">15 </option>
+			<option ng-selected="{{ identifier }}.pageLength == 25" value="25">25 </option>
+			<option ng-selected="{{ identifier }}.pageLength == 50" value="50">50 </option>
+			<option ng-selected="{{ identifier }}.pageLength == 100" value="100">100 </option>
+			<option ng-selected="{{ identifier }}.pageLength ==  9999" value="9999">Tous </option>
+		</select>
+	</div>
+
+	<div class="col-lg-2 col-md-12">
+	</div>
+	<div class="col-lg-4 col-md-12">
+		<dir-pagination-controls boundary-links="true" pagination-context="{{ context }}" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+	</div>
+</div>
+<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%">
+    <thead>
+        <tr>
+            <th title="Id" class="list-col-th-id" hidden>ID</th>
+            <th>Visite</th>
+            <th>Libellé</th>
+            <th>Date</th>
+            <th>P/I/A</th>
+			<th>Doc.</th>
+        </tr>
+    </thead>
+    <tbody ng-if="!{{ identifier }}.store.busy['{{ context }}']">
+		<tr dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination">
+			<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
+			<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Visite }]}</a></td>
+			<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Libelle }]}</a></td>
+			<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.DateVisite }]}</a></td>
+			<td scope="row" class="typefloat"><span>{[{ item.Places }]}/{[{ item.Inscrits }]}/{[{ item.Attentes }]}</span></td>
+			<td scope="row" class="cadref-td typeint">
+				<span class="btn btn-xs cadref-fkey" ng-class="{'btn-primary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
+					  ng-click="attachementsOpen(item, 'visite')">{[{ item.Attachements }]}
+				</span>
+			</td>
+		</tr>
+    </tbody>
+    <tbody ng-if="{{ identifier }}.store.busy['{{ context }}']">
+        <tr>
+            <td colspan="100">
+                <div class="spinner-list"></div>
+            </td>
+        </tr>
+    </tbody>
+
+</table>
+<div class="form-group row">
+    <div class="col-lg-6 col-md-12">
+    </div>
+    <div class="col-lg-6 col-md-12">
+        <dir-pagination-controls boundary-links="true" pagination-context="{{ context }}" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
+    </div>
+</div>
+<div class="modal fade cadref-modal-size-medium" id="modal-Attachements" role="modal" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog cadref-modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Visites guidées : Documents</h4>
+            </div>
+            <div class="modal-body">
+                <div ng-if="attachInfo.classeId>0 || attachInfo.visiteId>0">
+					<ng-include src="'Cadref/Attachement/FicheAttachements.htm'"></ng-include>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+	$('.spinner-list').spin();
+</script>

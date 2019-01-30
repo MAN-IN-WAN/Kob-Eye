@@ -1,0 +1,54 @@
+<table class="table table-hover nowrap straight" id="CadrefClasse-table" width="100%" style="line-height:1" >
+    <thead>
+        <tr>
+            <th title="Id" class="list-col-th-id" hidden>ID</th>
+            <th>Classe</th>
+            <th></th>
+            <th>Jour</th>
+            <th>Heures</th>
+            <th>Cycle</th>
+            <th>Places</th>
+            <th>Inscrits</th>
+            <th>Attentes</th>
+            <th>Prix</th>
+            <th>Réduc</th>
+            <th>Réduc</th>
+			{% if tempContext %}
+				<th></th>
+			{% endif %}
+			{% if children %}
+				<th>M</th>
+			{% endif %}
+        </tr>
+    </thead>
+    <tbody>
+		<tr dir-paginate="item in CadrefClasse.data" >
+			<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
+			<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.CodeClasse }]}</span></td>
+			<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleD }]} {[{ item.LibelleN }]}</span></td>
+			<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Jour }]}</span></td>
+			<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.HeureDebut }]}&nbsp;-&nbsp;{[{ item.HeureFin }]}</span></td>
+			<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.CycleDebut }]}&nbsp;-&nbsp;{[{ item.CycleFin }]}</span></td>
+			<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Places }]}</span></td>
+			<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Inscrits }]}</span></td>
+			<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Attentes }]}</span></td>
+			<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Prix }]}</span></td>
+			<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Reduction1 }]}</span></td>
+			<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Reduction2 }]}</span></td>
+			{% if tempContext  %}
+				<td  class="table-action cadref-td-btn">
+					<div >
+						<a class="btn-abt cadref-btn-add btn-success" href="javascript: void(0);" ng-click="classeAjoute(item)" title="Inscrire"></a>
+					</div>
+				</td>
+			{% endif %}
+			{% if children %}
+				<td  class="table-action cadref-td-btn">
+					<div >
+						<a class="btn-abt btn-abt-mod btn-warning" href="javascript: void(0);" ng-click="{{ identifier }}modify(item)" title="Modifier"></a>
+					</div>
+				</td>
+			{% endif %}
+		</tr>
+    </tbody>
+</table>

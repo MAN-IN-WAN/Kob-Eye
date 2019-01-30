@@ -1,0 +1,71 @@
+{# fiche info personnelles Enseignant #}
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean %} 
+{% set f=fields %}
+{% set o='obj' %}
+<div class="page-content-inner">
+   <h3>Informations personnelles</h3>
+    <!-- Default Panel -->
+    <section class="panel">
+        <div class="panel-body">
+            <div class="row no-gutters">
+                <div class="col-md-12">
+					<div class="row">
+						<div class="col-md-8" >
+							{{ flinput(f.Code, o, false, '@@@@', 'width:100px; text-transform:uppercase;', true) }}
+							{{ flinput(f.Nom, o, false, '', 'text-transform:uppercase;', true) }}
+							{{ flinput(f.Prenom, o) }}
+							{{ flinput(f.Adresse1, o) }}
+							{{ flinput(f.Adresse2, o) }}
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("CP Ville") }}
+								</div>
+								<div class="col-md-2">
+									{{ finput(f.CP, o, false, 'ddddd') }}
+								</div>
+								<div class="col-md-8">
+									{{ finput(f.Ville, o) }}
+								</div>
+							</div>
+							<div class="row" style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Téléphones") }}
+								</div>
+								<div class="col-md-10">
+									<div class="row">
+										<div class="col-md-6">
+											{{ finput(f.Telephone1, o, false, 'dd.dd.dd.dd.dd') }}
+										</div>
+										<div class="col-md-6">
+											{{ finput(f.Telephone2, o, false, 'dd.dd.dd.dd.dd') }}
+										</div>
+									</div>
+								</div>
+							</div>
+							{{ flinput(f.Mail, o) }}
+							<div class="row" style="height:20px"></div>
+{#							<div class="row">
+								<div class="col-md-2">
+									{{ label("Delegué des professeurs") }}
+								</div>
+								<div class="col-md-10">
+									{{ fboolean(f.Delegue, o) }}
+								</div>
+							</div>
+							<div class="row" style="height:10px"></div>
+#}							<div class=row">
+								<div class="col-md-4">
+									<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="{{ identifier }}InfoSave()">Enregistrer les modifications</button>
+								</div>
+							</div>
+						</div>
+						{# block right #}                    
+						<div class="col-md-4">
+					</div>
+				</div>
+			</div>
+		</div>
+    </section>
+</div>
+

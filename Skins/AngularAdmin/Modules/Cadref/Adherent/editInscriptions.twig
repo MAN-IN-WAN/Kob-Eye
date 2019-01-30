@@ -1,0 +1,111 @@
+<div>
+	<span class="cadref-ins-numero" ng-bind="modalObj.Numero"></span> <span class="cadref-ins-nom" ng-bind="modalObj.Nom|uppercase"></span> <span class="cadref-ins-prenom" ng-bind="modalObj.Prenom"></span>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<ng-include src="'/{{ CurrentUrl }}/0/Inscription/ListInscription.htm?tempContext=1'" ></ng-include>
+	</div>
+</div>
+<div class="row cadref-separ"></div>
+<section class="panel">	
+	<table>
+		<thead>
+			<tr>
+				<th>Cotis.</th>
+				<th>Cotis.</th>
+				<th>Cours</th>
+				<th>Règlé</th>
+				<th>Différé</th>
+				<th>Régul.</th>
+				<th>Solde</th>
+				<th>Payé</th>
+				<th>Mode</th>
+				<th>Date</th>
+				<th>Notes</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="cadref-td-inscr">			
+					<switch ng-model="CadrefClasse.Inscr.isCotis" ng-change="adherentCotisation()" class="cadref-switch"></switch>
+				</td>
+				<td class="cadref-td-inscr">
+					<input type="text" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.cotis" readonly style="width:60px"/>
+				</td>
+				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.cours" readonly style="width:60px" /></td>
+				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.regle" readonly style="width:60px" /></td>
+				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.diff" readonly style="width:60px" /></td>
+				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.regul" readonly style="width:60px" /></td>
+				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.solde" ng-class="{'cadref-highlight': CadrefClasse.Inscr.nonSolde}" readonly style="width:60px" /></td>
+				<td class="cadref-td-inscr">
+					<input type="text" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.paye" ng-change="classePaye()" style="width:60px" />
+				</td>
+				<td class="cadref-td-inscr">
+					<select class="form-control cadref-input" ng-model="CadrefClasse.Inscr.mode" ng-change="nextControle()">
+						<option value=""></option>
+						<option value="B">Banque</option>
+						<option value="C">Carte</option>
+						<option value="E">Espèces</option>
+					</select>	
+				</td>
+				<td class="cadref-td-inscr">
+					<label class="input-group datepicker-only-init">
+						<input id="input-CadrefClassedate" type="text" class="form-control cadref-input" mask="dd/dd/dddd" ng-model="CadrefClasse.Inscr.date" style="width:100px" />
+						<span class="input-group-addon">
+							<i class="icmn-calendar"></i>
+						</span>
+					</label>
+				</td>
+				<td class="cadref-td-inscr">
+					<input type="text" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.note"/>
+				</td>
+				<td class="cadref-td-inscr">
+					<button type="button" class="btn btn-info ng-scope" ng-disabled="nextDisabled"  ng-if="CadrefAdherentfunction.callNext" ng-click="CadrefAdherentcallFunction(CadrefAdherentfunction.callNext.item,CadrefAdherentfunction.callNext.nom,CadrefAdherentfunction.callNext.title,CadrefAdherentfunction.callNext.needConfirm,1)">Suivant</button>
+				</td>
+			</tr>
+		</tbody>
+
+	</table>
+</section>
+<div class="row cadref-separ"></div>
+<div class="form-group row">
+    <div class="col-lg-5 col-md-12">
+		<div class="input-group list-search">
+			<input type="text" id="searchCadrefClasse" class="form-control" name="CadrefClassequery" ng-model="CadrefClasse.filter" ng-change="classeControle()" placeholder="Classe..." mask='@.@@.@@.d.d' autofocus style="text-transform:uppercase; max-width:130px;" onkeyup="this.value = this.value.toUpperCase();">
+            <span class="input-group-btn">
+				<a href="javascript: void(0);" class="btn btn-default cadref-btn-erase" accesskey="x" title="Alt X" ng-click="clearFilter('CadrefClasse')"></a>
+                <a  href="javascript: void(0);" class="btn btn-success" accesskey="a" title="Alt A" ng-click="classeAjoute(null)" ng-disabled="addDisabled">
+                    Ajouter
+                </a>
+			</span>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<ng-include src="'/Cadref/Classe/ListClasse.htm?tempContext=1'" ></ng-include>
+	</div>
+</div>
+<input type="hidden" ng-init="CadrefAdherentfunction.args.newInscr=CadrefInscription.store.data.temp"/>
+<input type="hidden" ng-init="CadrefAdherentfunction.args.Inscr=CadrefClasse.Inscr"/>
+<script>
+	$('.datepicker-only-init').datetimepicker({
+		widgetPositioning: {
+			horizontal: 'left'
+		},
+		locale: 'fr',
+		format: 'DD/MM/YYYY',
+		icons: {
+			time: "fa fa-clock-o",
+			date: "fa fa-calendar",
+			up: "fa fa-arrow-up",
+			down: "fa fa-arrow-down"
+		}
+	});
+	$(".datepicker-only-init").on("dp.change", function () {
+		var input = $(this).children('input').eq(0);
+		input.trigger('change');
+		input.trigger('input');
+	});
+</script>

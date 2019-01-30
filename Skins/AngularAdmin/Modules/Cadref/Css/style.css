@@ -1,0 +1,177 @@
+table tr th.cadref-th {
+	padding-top: .1rem;
+	padding-bottom: .1rem;
+	padding-left: .2rem;
+	padding-right: .2rem;
+}
+table tr th.cadref-th-btn {
+	padding-top: .1rem;
+	padding-bottom: .1rem;
+	padding-left: .2rem;
+	padding-right: .2rem;
+	text-align: right;
+}
+table tr td.cadref-td {
+	padding-top: .1rem;
+	padding-bottom: .1rem;
+	padding-left: .2rem;
+	padding-right: .2rem;
+}
+table tr td.cadref-td-btn {
+	padding-top: .1rem;
+	padding-bottom: .1rem;
+	padding-left: .2rem;
+	padding-right: .2rem;
+}
+table tr td.cadref-td-inscr {
+	padding-top: .1rem;
+	padding-bottom: .1rem;
+/*	padding-left: .2rem;
+	padding-right: .2rem;*/
+}
+table tr td.cadref-td-diff {
+	padding-top: .0rem;
+	padding-bottom: .0rem;
+	padding-left: .2rem;
+	padding-right: .2rem;
+}
+.cadref-ins-numero {
+	font-size: 1.25rem;
+	color: blue;
+	padding-right: 1rem;
+}
+.cadref-ins-nom {
+	font-size: 1.25rem;
+	color: darkgreen;
+	padding-right: 1rem;
+}
+.cadref-ins-prenom {
+	font-size: 1.1rem;
+	color: darkgreen;
+}
+.cadref-label {
+	margin-bottom: .1rem;
+	padding: .1rem .7rem;
+}
+.cadref-no-margin {
+	margin: 0px;
+}
+.cadref-no-padding {
+	padding: 0px !important;
+}
+.cadref-input {
+	padding: 6px 6px;
+}
+.cadref-input-diff {
+	padding: 4px 6px;
+}
+
+.cadref-date {
+	padding: 8px 8px;
+	max-width: 6.5rem;
+}
+.cadref-btn-wait:after {
+    content: "\ea4d";
+}
+.cadref-btn-add:after {
+    content: "\ed5f";
+}
+.cadref-btn-del:after {
+    content: "\ed60";
+}
+.cadref-btn-change:after {
+    content: "\eda8";
+}
+.cadref-btn-edit:after {
+    content: "\e910";
+}
+.cadref-btn-erase:after {
+    font-family: 'icomoon-ultimate', serif;
+    content: "\ed66";
+}
+.cadref-btn-download:after {
+    content: "\e9a5";
+}
+.cadref-btn-upload:after {
+    content: "\e9a7";
+}
+
+.cadref-separ {
+	height: 1px;
+	padding: 5px;
+}
+.cadref-btn-100 {
+	width:100%;
+}
+
+.cadref-modal-dialog {
+	max-width:1250px;
+}
+
+.modal.modal-size-large .cadref-modal-dialog {
+	max-width:1250px;
+}
+.panel .cadref-panel-body {
+	padding:8px 15px 15px 15px;
+}
+
+.cadref-highlight {
+	background-color: yellow !important;
+}
+.cadref-switch.checked {
+	background-color: red;
+	border-color: red;
+}
+.cadref-fkey {
+	padding:5px 8px !important;
+	font-size:1rem !important;
+}
+.cadref-annuel {
+	background-color:paleturquoise !important;
+}
+
+.label.cadref-default {
+    background: #acb7bf;
+    color: #ffffff;
+}
+
+.label.cadref-primary {
+    background: #01a8fe;
+    color: #ffffff;
+}
+
+.label.cadref-secondary {
+    background: #6a7a84;
+    color: #ffffff;
+}
+
+.label.cadref-success {
+    background: #46be8a;
+    color: #ffffff;
+}
+
+.label.cadref-info {
+    background: #0190da;
+    color: #ffffff;
+}
+
+.label.cadref-danger {
+    background: #fb434a;
+    color: #ffffff;
+}
+
+.label.cadref-warning {
+    background: #f39834;
+    color: #ffffff;
+}
+
+.modal.modal-size-small {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+
+.modal.cadref-modal-size-medium .modal-dialog {
+    max-width: 900px;
+    width: auto;
+}
