@@ -26,42 +26,44 @@
 		<dir-pagination-controls boundary-links="true" pagination-context="{{ context }}" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
 	</div>
 </div>
-<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%">
-    <thead>
-        <tr>
-            <th title="Id" class="list-col-th-id" hidden>ID</th>
-            <th>Classe</th>
-            <th>Libellé</th>
-            <th>Heures</th>
-            <th>Cycle</th>
-            <th>P/I/A</th>
-			<th>Doc.</th>
-        </tr>
-    </thead>
-    <tbody ng-if="!{{ identifier }}.store.busy['{{ context }}']">
-		<tr dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination">
-			<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
-			<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.CodeClasse }]}</a></td>
-			<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.LibelleD }]} {[{ item.LibelleN }]}</a></td>
-			<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Jour | limitTo : 3 }]}&nbsp;{[{ item.HeureDebut }]}&nbsp;-&nbsp;{[{ item.HeureFin }]}</a></td>
-			<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.CycleDebut }]}&nbsp;-&nbsp;{[{ item.CycleFin }]}</a></td>
-			<td scope="row" class="typefloat"><span>{[{ item.Places }]}/{[{ item.Inscrits }]}/{[{ item.Attentes }]}</span></td>
-			<td scope="row" class="cadref-td typeint">
-				<span class="btn btn-xs cadref-fkey" ng-class="{'btn-primary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
-					  ng-click="attachementsOpen(item, 'classe')">{[{ item.Attachements }]}
-				</span>
-			</td>
-		</tr>
-    </tbody>
-    <tbody ng-if="{{ identifier }}.store.busy['{{ context }}']">
-        <tr>
-            <td colspan="100">
-                <div class="spinner-list"></div>
-            </td>
-        </tr>
-    </tbody>
+<div class="listWrap">
+	<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%">
+		<thead>
+			<tr>
+				<th title="Id" class="list-col-th-id" hidden>ID</th>
+				<th>Classe</th>
+				<th>Libellé</th>
+				<th>Heures</th>
+				<th>Cycle</th>
+				<th>P/I/A</th>
+				<th>Doc.</th>
+			</tr>
+		</thead>
+		<tbody ng-if="!{{ identifier }}.store.busy['{{ context }}']">
+			<tr dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination">
+				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
+				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.CodeClasse }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.LibelleD }]} {[{ item.LibelleN }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Jour | limitTo : 3 }]}&nbsp;{[{ item.HeureDebut }]}&nbsp;-&nbsp;{[{ item.HeureFin }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.CycleDebut }]}&nbsp;-&nbsp;{[{ item.CycleFin }]}</a></td>
+				<td scope="row" class="typefloat"><span>{[{ item.Places }]}/{[{ item.Inscrits }]}/{[{ item.Attentes }]}</span></td>
+				<td scope="row" class="cadref-td typeint">
+					<span class="btn btn-xs cadref-fkey" ng-class="{'btn-primary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
+						  ng-click="attachementsOpen(item, 'classe')">{[{ item.Attachements }]}
+					</span>
+				</td>
+			</tr>
+		</tbody>
+		<tbody ng-if="{{ identifier }}.store.busy['{{ context }}']">
+			<tr>
+				<td colspan="100">
+					<div class="spinner-list"></div>
+				</td>
+			</tr>
+		</tbody>
 
-</table>
+	</table>
+</div>
 <div class="form-group row">
     <div class="col-lg-6 col-md-12">
     </div>

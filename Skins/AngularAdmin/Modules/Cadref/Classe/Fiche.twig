@@ -15,7 +15,6 @@
             <a href="javascript: void(0);" ng-bind-html="'Fiche {{ ObjectClass.getDescription() }} '+(obj.label)"></a>
         </li>
     </ul>
-
     <!-- Default Panel -->
     <section class="panel">
         <div class="panel-body cadref-panel-body">
@@ -141,7 +140,7 @@
 										 custom-select-options="{ 'async': true, 'filter':'AntenneId='+{{ o }}.AntenneAntenneId}" 
 										 ng-model="{{ o }}.LieuLieuId"
 										 class="form-control" 
-										 ng-title="{{ o }}.LieuLieuIdlabel+'  -  '+obj.LibelleL">
+										 ng-title="{{ o }}.LieuLieuIdlabel+'  -  '+{{ o }}.LibelleL">
 									</div>
 								</div>
 							</div>

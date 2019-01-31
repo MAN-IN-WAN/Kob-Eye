@@ -257,7 +257,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		//aspectRatio: 2,
 		height: 650,
 		header: {
-			left: 'prev, next',
+			left: 'prev, next, today',
 			center: 'title',
 			right: 'visites, month, agendaWeek, agendaDay'
 		},
@@ -285,6 +285,8 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		hiddenDays: [0],
 		//allDaySlot: true,
 		editable: false,
+		navLinks: true,
+		nowIndicator: true,
 		eventLimit: true, // allow "more" link when too many events
 		viewRender: function(view, element) {
 			if (!cleanUI.hasTouch) {

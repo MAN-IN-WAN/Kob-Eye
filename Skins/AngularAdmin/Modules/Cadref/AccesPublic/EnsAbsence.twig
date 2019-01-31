@@ -1,28 +1,19 @@
 {# fiche info personnelles Enseignant #}
 <div class="page-content-inner">
 	<h3>Absences</h3>
-    <!-- Default Panel -->
     <section class="panel">
         <div class="panel-body">
             <div class="row no-gutters">
 				<div class="row">
 					<div class="col-md-4">
 						<section class="panel" ng-if="obj.id">
-							<div class="row">
-								<div class="col-md-2">
-									<label class="form-control-label cadref-label" style="line-height:1.1">Absences</label>
-								</div>
-								<div class="col-md-1">
-									<a class="btn-abt cadref-btn-add btn-success" href="" ng-click="absenceAdd()" title="Ajouter"></a>
-								</div>
-							</div>
 							<div class="panel-body cadref-no-padding">
-								<ng-include src="'Cadref/Enseignant/0/Absence/ListAbsence.htm'"></ng-include>
+								<ng-include src="'Cadref/Enseignant/0/Absence/ListAbsence.htm?public=1'"></ng-include>
 							</div>
 						</section>
 					</div>
 					<div class="col-md-8">
-						<div class="widget widget-three">
+						<div style="background-color: white; padding: 3px">
 							<div ui-calendar="uiConfig.calendar" id="calendar" class="absence-calendar-block"></div>
 						</div>
 					</div>

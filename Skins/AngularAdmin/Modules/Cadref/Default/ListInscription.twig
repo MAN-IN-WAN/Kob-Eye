@@ -25,7 +25,7 @@
 			<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleD+' '+item.LibelleN }]}</span></td>
 			<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Jour | limitTo : 3 }]}&nbsp;{[{ item.HeureDebut }]}&nbsp;-&nbsp;{[{ item.HeureFin }]}</span></td>
 			<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.CycleDebut }]}&nbsp;-&nbsp;{[{ item.CycleFin }]}</span></td>
-			<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Prix{% if public %}+parseInt(item.Reduction1)+parseInt(item.Reduction2){% endif %} }]}</span></td>
+			<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Prix{% if public %}+Number(item.Reduction1)+Number(item.Reduction2){% endif %} }]}</span></td>
 			<td scope="row" class="cadref-td typefloat">
 				{% if tempContext %}
 					<input type="text" class="form-control cadref-input-diff" ng-model="item.Reduction1" ng-change="classeReductionChange(item)" mask="dddd" style="max-width:60px"/>
@@ -40,7 +40,7 @@
 					<span class="label">{[{ item.Reduction2 }]}</span>
 				{% endif %}				
 			</td>
-			<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Inscrits }]}/{[{ item.Places }]}</span></td>
+			<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Inscrits+'/'+item.Places+'/'+item.Attentes }]}</span></td>
 			<td scope="row" class="cadref-td typevarchar">
 				<span class="label label-info" ng-if="item.Attente>0 && item.Supprime==0">Attente</span>
 				<span class="label label-success" ng-if="item.Attente==0 && item.Supprime==0">Inscrit</span>

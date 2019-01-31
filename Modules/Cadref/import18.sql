@@ -4,6 +4,17 @@ set @cotis:=40;
 truncate kbabtel.`kob-Cadref-Annee`;
 insert into kbabtel.`kob-Cadref-Annee` (umod,gmod,omod,Annee,Cotisation,EnCours) values (7,7,7,@annee,@cotis,1);
 
+truncate kbabtel.`kob-Cadref-Antenne`;
+insert into kbabtel.`kob-Cadref-Antenne` (umod,gmod,omod,Antenne,Libelle,LibelleCourt,Abrege,Adresse1,Adresse2,CP,Ville,Telephone) values
+(7,7,7,"A","Alès","Alès","ALE","","","","",""),
+(7,7,7,"B","Bagnols sur Cèze","Bagnols","BAG","","","","",""),
+(7,7,7,"G","Le Grau du roi","Le Grau","LGR","","","","",""),
+(7,7,7,"L","Le Vigan","Le Vigan","VIG","","","","",""),
+(7,7,7,"N","Nîmes","Nîmes","NIM","","","","",""),
+(7,7,7,"S","Sommières","Sommières","SOM","","","","",""),
+(7,7,7,"V","Villeneuve Lez Avignon","Villeneuve","VIL","","","","","");
+
+
 truncate kbabtel.`kob-Cadref-Jour`;
 insert into kbabtel.`kob-Cadref-Jour` (umod,gmod,omod,Id,Jour) values 
 (7,7,7,1,'Lundi'),
@@ -28,34 +39,48 @@ insert into kbabtel.`kob-Cadref-Vacance` (umod,gmod,omod,Type,Libelle,DateDebut,
 (7,7,7,'F','Jeudi',unix_timestamp('2019-06-06'),0,4),
 (7,7,7,'F','Vendredi',unix_timestamp('2019-06-07'),0,5),
 (7,7,7,'F','Samedi',unix_timestamp('2019-06-08'),0,6),
-(7,7,7,'V','TOUSSAINT',unix_timestamp('2018-10-20'),unix_timestamp('2018-11-04'),0),
+(7,7,7,'V','VACANCES DE TOUSSAINT',unix_timestamp('2018-10-20'),unix_timestamp('2018-11-04'),0),
 (7,7,7,'V','11 Novembre',unix_timestamp('2018-11-11'),0,0),
-(7,7,7,'V','NOEL',unix_timestamp('2018-12-22'),unix_timestamp('2019-01-06'),0),
-(7,7,7,'V','HIVERT',unix_timestamp('2019-02-23'),unix_timestamp('2019-03-10'),0),
-(7,7,7,'V','PRINTEMPS',unix_timestamp('2019-04-20'),unix_timestamp('2019-05-05'),0),
+(7,7,7,'V','VACANCES DE NOEL',unix_timestamp('2018-12-22'),unix_timestamp('2019-01-06'),0),
+(7,7,7,'V','VACANCES D''HIVERT',unix_timestamp('2019-02-23'),unix_timestamp('2019-03-10'),0),
+(7,7,7,'V','VACANCES DE PRINTEMPS',unix_timestamp('2019-04-20'),unix_timestamp('2019-05-05'),0),
 (7,7,7,'V','8 Mai',unix_timestamp('2019-05-08'),0,0),
-(7,7,7,'V','ASCENSION',unix_timestamp('2019-05-29'),unix_timestamp('2019-06-03'),0);
+(7,7,7,'V','VACANCES DE L''ASCENSION',unix_timestamp('2019-05-29'),unix_timestamp('2019-06-03'),0);
 
 truncate kbabtel.`kob-Cadref-Lieu`;
-insert into kbabtel.`kob-Cadref-Lieu` (umod,gmod,omod,Type,Lieu,Libelle,GPS) values 
-(7,7,7,'L','NIM','Nimes, 249 rue de Bouillagues','43.8335608,4.3692999'),
-(7,7,7,'L','AAC','Alès, Espace André Chamson, 2 place Henri Barbusse','44.1248475,4.0773789'),
-(7,7,7,'L','AEM','Alès, Ecole des Mines, 6 rue de Clavières','44.1248475,4.0773789'),
-(7,7,7,'L','BSG','Bagnols, St Gervais, Salle de la Coquillone',''),
-(7,7,7,'L','BMA','Bagnols, Maison des Associations',''),
-(7,7,7,'L','GRA','Le Grau du roi, 120 Rue des Médards',''),
-(7,7,7,'L','VIG','Le Vigan, Lycée Boulevard Pasteur',''),
-(7,7,7,'L','SOM','Sommières, Salle Alexandrie, Espace Lawrence Durrell',''),
-(7,7,7,'L','VIL','Villeneuve - Les Angles, Salle Frédéric Mistral, Bd des Frères Carpanédo',''),
-(7,7,7,'R','AGD','Alès, Garage Durand','44.0900755,4.0530286'),
-(7,7,7,'R','AGR','Alès, Gare Routière','44.1274921,4.081083'),
-(7,7,7,'R','CALM','La Calmette, Casino',''),
-(7,7,7,'R','NSAUV','Nimes, route de Sauve',''),
-(7,7,7,'R','NSEV','Nimes, place Séverine',''),
-(7,7,7,'R','NCOST','Nimes, Stade des Costières','');
-
-
-
+insert into kbabtel.`kob-Cadref-Lieu` (umod,gmod,omod,Ville,Adresse1,Adresse2,Type,Lieu,GPS,AntenneId) values 
+(7,7,7,"Sommières","Espace Lawrence Durrell","245, bd. Ernest François","L","SLD","43.781674,4.092405999999983",6),
+(7,7,7,"Bagnols","Centre P Mendes France","av. de la Mayre","L","BMF","44.1571286,4.622954299999947",2),
+(7,7,7,"Bagnols","Maison Laure Pailhon","8 rue Léon Alègre","L","BLP","44.1629355,4.621609700000022",2),
+(7,7,7,"Bagnols","Maison des Associations","95 av. François Mitterand","L","BMA","44.1727855,4.619900199999961",2),
+(7,7,7,"St Gervais","Salle la Coquillone","ch. de la Coquillone","L","BSC","44.18632179999999,4.568395600000031",2),
+(7,7,7,"Villeneuve","Salle Frédéric Mistral","19 bd. Frédéric Mistral","L","VFM","43.9713349,4.7955667999999605",7),
+(7,7,7,"Les Angles","Salle Boris Vian","rue de l'école","L","VBV","42.5772819,2.07358499999998",7),
+(7,7,7,"Le Vigan","Lycée","1 av. Pasteur","L","LVL","43.990522,3.6007893999999396",4),
+(7,7,7,"Ganges","Salle de l'Horloge","Mairie Plan de l'Ormeau","L","LVH","43.93581,3.7088587000000643",4),
+(7,7,7,"Alès","Ecole des Mines","6 av. de Clavières","L","AEM","44.1328582,4.088220099999944",1),
+(7,7,7,"Alès","Salle du Capitole","10 Place de l'Hôtel de ville","L","ASC","44.1249942,4.076990600000045",1),
+(7,7,7,"Alès","Pôle Scientifique et Culturel","155 rue du Faubourg de Rochebelle","L","APS","44.1302922,4.068972400000007",1),
+(7,7,7,"Alès","Espace André Chamson","2 bd. Louis Blanc, Place Henry Barbusse","L","AAC","44.126705,4.079328000000032",1),
+(7,7,7,"Nîmes","CADREF","249 rue de Bouillargues","L","N00","43.833561,4.371489",5),
+(7,7,7,"Nîmes","Maison Diocésaine","6 rue Salomon Reinach","L","NMD","43.8340875,4.375364399999967",5),
+(7,7,7,"Nîmes","Archives Départementales","365 rue du Forez","L","NAD","43.8248603,4.367995199999996",5),
+(7,7,7,"Nîmes","Piscine Le Fenouillet","7 rue Léo Lagrange","L","NPF","43.8451777,4.376619300000016",5),
+(7,7,7,"Nîmes","Piscine Nemausa","120 av. de la Bouvine","L","NPN","43.817878,4.359027999999967",5),
+(7,7,7,"Nîmes","Piscine Aquatropic","39 rue de l'Hostellerie","L","NPA","43.8128629,4.3454704000000675",5),
+(7,7,7,"Nîmes","Piscine Bodypur","48 rue Louis Lumière","L","NPB","43.81492679999999,4.31342189999998",5),
+(7,7,7,"Nîmes","Gymnase Gaston Lessut","102 rue de Mascard","L","NGL","43.8155732,4.330290999999988",5),
+(7,7,7,"Nîmes","Cabinet Mazurier","6 rue Cart","L","NCM","43.8325683,4.3595017999999754",5),
+(7,7,7,"Nîmes","Salle du Billard Club Nîmois","123 av. de la Bouvine","L","NBC","43.81652880000001,4.359267300000056",5),
+(7,7,7,"Nîmes","Golf de Vacquerolles","1075 ch. du Golf","L","NGV","43.8502649,4.300112500000068",5),
+(7,7,7,"Nîmes","Golf de Campagne","1360 ch. du Mas de Campagne","L","NGC","43.7624891,4.389048300000013",5),
+(7,7,7,"Alès","Garage Durand","738 av. Frères Lumière","R","AGD","44.1386981,4.0972609000000375",0),
+(7,7,7,"Alès","Gare routière","","R","AGR","44.1274883,4.0832717000000684",0),
+(7,7,7,"La Calmette","Rond point du Casino","av. Charles de Gaulle","R","LCC","43.92476629999999,4.257490599999983",0),
+(7,7,7,"Nîmes","Route de Sauve","148 route de Sauve","R","NRS","43.8407894,4.318510800000013",0),
+(7,7,7,"Nîmes","Arrêt de bus Place Séverine","","R","NBS","43.829858,4.352028",0),
+(7,7,7,"Nîmes","Stade des Costières","123 av. de la Bouvine","R","NSC","43.816025,4.359255599999983",0);
+update kbabtel.`kob-Cadref-Lieu` set Libelle=concat(Ville,', ',Adresse1);
 
 truncate kbabtel.`kob-Cadref-Profession`;
 insert into kbabtel.`kob-Cadref-Profession` (umod,gmod,omod,Profession,Libelle)
@@ -85,10 +110,6 @@ from cadref18.Communes;
 truncate kbabtel.`kob-Cadref-Enseignant`;
 insert into kbabtel.`kob-Cadref-Enseignant` (umod,gmod,omod,Code,Nom,Prenom,Adresse1,Adresse2,CP,Ville,Telephone1,Telephone2,Notes,Mail)
 select 7,7,7,Code,Nom,Prenom,Adr1,Adr2,CP,Ville,Tel1,Tel2,Notes,eMail from cadref18.Enseignants;
-
-truncate kbabtel.`kob-Cadref-Antenne`;
-insert into kbabtel.`kob-Cadref-Antenne` (umod,gmod,omod,Antenne,Libelle,Abrege)
-select 7,7,7,Antenne,Libelle,Abrege from cadref18.Antennes;
 
 truncate kbabtel.`kob-Cadref-Section`;
 insert into kbabtel.`kob-Cadref-Section` (umod,gmod,omod,Section,Libelle)

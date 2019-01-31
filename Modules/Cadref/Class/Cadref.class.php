@@ -151,6 +151,7 @@ group by t.Antenne";
 				$e->title = $p['Libelle'] ?: 'Vacances';
 				$e->start = Date('Y-m-d', $d);
 				$e->end = Date('Y-m-d', $f);
+				$e->description = Date('d/m', $d).' au '.Date('d/m', $f);
 				$e->className = 'fc-event-secondary';
 				$events[] = $e;
 			}
@@ -171,7 +172,7 @@ group by t.Antenne";
 		if($group == 'CADREF_ADMIN') {
 			$adm = true;
 			$sql1 = "
-select a.DateDebut,a.DateFin,a.Description,e.Nom,e.Prenom,0 as cid
+select a.DateDebut,a.DateFin,a.Description,e.Nom,e.Prenom,0 as cid,a.EnseignantId
 from `##_Cadref-Absence` a
 inner join `##_Cadref-Enseignant` e on e.Id=a.EnseignantId
 where ((a.DateDebut>=$start and a.DateDebut<=$end) or (a.DateFin>=$start and a.DateFin<=$end))
@@ -183,7 +184,7 @@ where ((a.DateDebut>=$start and a.DateDebut<=$end) or (a.DateFin>=$start and a.D
 			$id = $a->Id;
 			$sql = "
 select i.ClasseId as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,
-concat(d.Libelle,' ',n.Libelle) as Libelle, l.Libelle as LibelleL
+concat(d.Libelle,' ',n.Libelle) as Libelle, l.Ville, l.Adresse1, l.Adresse2
 from `##_Cadref-Inscription` i
 inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
 inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
@@ -192,7 +193,7 @@ left join `##_Cadref-Lieu` l on l.Id=c.LieuId
 where i.AdherentId=$id and i.Annee='$annee' and c.JourId>0 and c.HeureDebut<>''
 ";
 			$sql1 = "
-select a.DateDebut,a.DateFin,a.Description,e.Nom,e.Prenom,i.ClasseId as cid
+select a.DateDebut,a.DateFin,a.Description,e.Nom,e.Prenom,i.ClasseId as cid,a.EnseignantId
 from `##_Cadref-Inscription` i
 left join `##_Cadref-ClasseEnseignants` ce on ce.Classe=i.ClasseId
 left join `##_Cadref-Absence` a on a.EnseignantId=ce.EnseignantId
@@ -206,7 +207,7 @@ where i.AdherentId=$id and i.Annee='$annee' and ((a.DateDebut>=$start and a.Date
 			$id = $e->Id;
 			$sql = "
 select c.Id as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,
-concat(d.Libelle,' ',n.Libelle) as Libelle, l.Libelle as LibelleL
+concat(d.Libelle,' ',n.Libelle) as Libelle, l.Ville, l.Adresse1, l.Adresse2
 from `##_Cadref-ClasseEnseignants` ce
 inner join `##_Cadref-Classe` c on c.Id=ce.Classe
 inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
@@ -215,7 +216,7 @@ left join `##_Cadref-Lieu` l on l.Id=c.LieuId
 where ce.EnseignantId=$id and c.Annee='$annee' and c.JourId>0 and c.HeureDebut<>''
 ";
 			$sql1 = "
-select a.DateDebut,a.DateFin,a.Description,'','',0 as cid
+select a.DateDebut,a.DateFin,a.Description,'','',0 as cid,a.EnseignantId
 from `##_Cadref-Absence` a
 where a.EnseignantId=$id and ((a.DateDebut>=$start and a.DateDebut<=$end) or (a.DateFin>=$start and a.DateFin<=$end))
 ";
@@ -238,7 +239,7 @@ where a.EnseignantId=$id and ((a.DateDebut>=$start and a.DateDebut<=$end) or (a.
 				$a->title = $adm ? trim($p['Prenom'].' '.$p['Nom']) : $p['Description'] ?: '';
 				$a->start = Date('Y-m-d\TH:i', $d);
 				$a->end = Date('Y-m-d\TH:i', $f);
-				$a->description = Date('d-m H:i', $d).' au '.Date('d-m H:i', $f).'  '.($adm ? $p['Description'] : '');
+				$a->description = Date('d/m H:i', $d).' au '.Date('d/m H:i', $f).'  '.($adm ? $p['Description'] : '');
 				$a->className = 'fc-event-danger';
 				$events[] = $a;
 			}
@@ -287,12 +288,17 @@ where a.EnseignantId=$id and ((a.DateDebut>=$start and a.DateDebut<=$end) or (a.
 						$e->title = $p['Libelle'];
 						$e->start = Date('Y-m-d', $d).'T'.$p['HeureDebut'];
 						$e->end = Date('Y-m-d', $d).'T'.$p['HeureFin'];
+						$e->className = 'fc-event-info';
 						$e->description = $p['HeureDebut'].' à '.$p['HeureFin'].($cd ? '  du '.$p['CycleDebut'].' au '.$p['CycleFin'] : '');
-						$l = $p['LibelleL'];
-						if($l) $e->description .= "\n".$l;
+						if($p['Ville']) {
+							$l = $p['Ville'];
+							if($p['Adresse1']) $l .= ', '.$p['Adresse1'];
+							if($p['Adresse2']) $l .= "\n".$p['Adresse2'];
+							$e->description .= "\n".$l;
+						}
 						$s = '';
 						$sql = "
-select e.Nom,e.Prenom
+select e.Nom,e.Prenom,e.Id
 from `##_Cadref-ClasseEnseignants` ce
 inner join `##_Cadref-Enseignant` e on e.Id=ce.EnseignantId
 where ce.Classe=$cid
@@ -301,24 +307,24 @@ where ce.Classe=$cid
 						$pdo1 = $GLOBALS['Systeme']->Db[0]->query($sql);
 						$s = '';
 						foreach($pdo1 as $p1) {
-							$s .= (!$s ? 'Enseignant : ' : ', ').trim($p1['Prenom'].' '.$p1['Nom']);
-						}
-						if($s) $e->description .= "\n".$s;
-						$e->className = 'fc-event-info';
-						if($adh) {
-							foreach($absences as $a) {
-								if($a->cid == $cid) {
-									$hd = strtotime($e->start);
-									$hf = strtotime($e->end);
-									if(self::between($hd, $a->start, $a->end) || self::between($hf, $a->start, $a->end)) {
-										$e->className = 'fc-event-danger';
-										$e->description .= "\n<p style=\"color:red\">ABSENCE ".$a->nom.'</p>';
-										break;
+							$s .= ($s ? "\n" : '').'Ens. : '.trim($p1['Prenom'].' '.$p1['Nom']);
+							if($adh) {
+								$eid = $p1['EnseignantId'];
+								foreach($absences as $a) {
+									if($a->cid == $cid && $a->eid == $eid) {
+										$hd = strtotime($e->start);
+										$hf = strtotime($e->end);
+										if(self::between($hd, $a->start, $a->end) || self::between($hf, $a->start, $a->end)) {
+											$e->className = 'fc-event-danger';
+											$s .= " <span style=\"color:red\">(Absent)</span>";
+											break;
+										}
 									}
 								}
 							}
 						}
-						$e->description .= "\n".$p['CodeClasse'];
+						if($s) $e->description .= "\n".$s;
+						if(!$adh) $e->description .= "\n".$p['CodeClasse'];
 						$events[] = $e;
 					}
 					$d += 7 * 24 * 60 * 60;

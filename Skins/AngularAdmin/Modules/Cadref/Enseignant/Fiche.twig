@@ -85,13 +85,8 @@
 						{# block right #}                    
 						<div class="col-md-5">
 							<section class="panel" ng-if="obj.id">
-								<div class="row">
-									<div class="col-md-2">
-										{{ label('Absences') }}
-									</div>
-									<div class="col-md-1">
-										<a class="btn-abt cadref-btn-add btn-success" href="" ng-click="CadrefAbsenceadd()" title="Ajouter"></a>
-									</div>
+								<div>
+									{{ label('Absences') }}
 								</div>
 								<div class="panel-body cadref-no-padding">
 									<ng-include src="'/{{ CurrentUrl }}/0/Absence/ListAbsence.htm'"></ng-include>

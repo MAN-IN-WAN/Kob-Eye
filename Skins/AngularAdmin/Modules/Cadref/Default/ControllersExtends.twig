@@ -122,7 +122,7 @@
 					$scope.obj.ClasseId = data.data.ClasseId;
 					$scope.obj.AntenneId = data.data.AntenneId;
 					$scope.objnonSolde = Number($scope.obj.Solde) != 0;
-					
+					$scope.soldeAdherent();
 					$scope.CotisationAnnuelle = data.data.CotisationAnnuelle;
 				}
 			).error(
@@ -141,10 +141,10 @@
 			CadrefReglementStore.getData(1,'children');
 		}
 
-		// regularisation
-		$scope.regularisation = function() {
+		// solde adherent
+		$scope.soldeAdherent = function() {
 			var o = $scope.obj;
-			var s = Number(o.Cotisation)+Number(o.Cours)-Number(o.Reglement)-Number(o.Differe)+Number(o.Regularisation);
+			var s = Number(o.Cotisation)+Number(o.Cours)+Number(o.Visites)-Number(o.Reglement)-Number(o.Differe)+Number(o.Regularisation);
 			o.Solde = s;
 			o.nonSolde = s != 0;
 		}
@@ -215,34 +215,6 @@
 			},0);
 		}
 
-		
-		
-{#		$scope.printAttestation = function(obj) {
-			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintAttestation',['direct'],true);
-			ajax.success(
-				function(data) {
-					$window.open(data.data.pdf,'_blank');
-				}
-			).error(
-				function() {
-					console.error('error > {{ module }}/{{ objecttype }} > Method  ');
-				}
-			);
-		}
-#}		
-		
-{#
-		$scope.carteAdherent = function(pdf) {
-			$window.open(pdf,'_blank');
-			return false;
-		}
-		$scope.displayCard = function() {
-			$timeout(function(){
-				angular.element($('#displayCard')).triggerHandler('click');
-				angular.element($('#modalfunction-{{ ident }}')).modal('hide');
-			},0);
-		}
-#}
 		//---------------------------------------
 		// INSCRIPTIONS
 		//---------------------------------------
@@ -311,6 +283,7 @@
 			cad.Inscr.cotis = $scope.modalObj.Cotisation;
 			cad.Inscr.isCotis = Number($scope.modalObj.Cotisation) == 0;
 			cad.Inscr.cours = $scope.modalObj.Cours;
+			cad.Inscr.visit = $scope.modalObj.Visites;
 			cad.Inscr.regle = $scope.modalObj.Reglement;
 			cad.Inscr.diff = $scope.modalObj.Differe;
 			cad.Inscr.regul = $scope.modalObj.Regularisation;
@@ -371,17 +344,18 @@
 			var t = $scope.CadrefInscription.store.data.temp;
 			var l = t.length;
 			for(var i = 0; i < l; i++) {
-				if(Number(t[i].Attente) || Number(t[i].Supprime)) continue;
+				if(t[i].Attente>0 || t[i].Supprime>0) continue;
 				cad.cours += Number(t[i].Prix)-Number(t[i].Reduction1)-Number(t[i].Reduction2);
 			}
-			cad.paye = Number(cad.cotis)+Number(cad.cours)-Number(cad.regle)-Number(cad.diff)+Number(cad.regul);
+			cad.paye = Number(cad.cotis)+Number(cad.cours)+Number(cad.visit)-Number(cad.regle)-Number(cad.diff)+Number(cad.regul);
+console.error(Number(cad.cotis),Number(cad.cours),Number(cad.visit),Number(cad.regle),Number(cad.diff),Number(cad.regul),cad.paye);
 			cad.solde = 0;
 			cad.nonSolde = false;
 			$scope.nextControle();
 		}
 		$scope.classePaye = function() {
 			var cad = $scope.CadrefClasse.Inscr;
-			cad.solde = Number(cad.cotis)+Number(cad.cours)-Number(cad.regle)-Number(cad.diff)+Number(cad.regul)-Number(cad.paye);
+			cad.solde = Number(cad.cotis)+Number(cad.cours)+Number(cad.visit)-Number(cad.regle)-Number(cad.diff)+Number(cad.regul)-Number(cad.paye);
 			cad.nonSolde = cad.solde != 0;
 			cad.updated = true;
 			$scope.nextControle();
@@ -471,7 +445,7 @@
 			
 			if(cad.Inscr.cotis != $scope.CotisationAnnuelle)
 				cad.Inscr.cotis = $scope.CotisationAnnuelle;
-			
+console.error('xxxxxxxxxxxxxxxxxxxxxxx');
 			$scope.classeCalcul();
 			cad.Inscr.updated = true;
 		}
@@ -562,7 +536,7 @@
 				if(!reg[i].encais) p += Number(reg[i].paye);
 			}
 			var ins = $scope.CadrefAdherentfunction.args.Inscr;
-			var s = Number(ins.cotis) + Number(ins.cours) - Number(ins.regle) - p + Number(ins.regul);
+			var s = Number(ins.cotis)+Number(ins.cours)+Number(ins.visit)-Number(ins.regle)-p+Number(ins.regul);
 			dif.solde = s;
 			dif.nonSolde = s != 0;
 		}

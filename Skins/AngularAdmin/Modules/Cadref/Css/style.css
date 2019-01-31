@@ -26,8 +26,8 @@ table tr td.cadref-td-btn {
 table tr td.cadref-td-inscr {
 	padding-top: .1rem;
 	padding-bottom: .1rem;
-/*	padding-left: .2rem;
-	padding-right: .2rem;*/
+	padding-left: .2rem;
+	padding-right: .2rem;
 }
 table tr td.cadref-td-diff {
 	padding-top: .0rem;

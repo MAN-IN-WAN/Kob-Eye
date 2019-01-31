@@ -43,5 +43,6 @@ if(strpos($blinfo, '/'.$info['Module'].'/')) {
 	$p = strpos($blinfo, 'Modules/') + strlen('Modules/');
 	$vars['formPath'] = substr(trim($blinfo, '.twig'), $p);
 }
+$vars['public'] = isset($_GET['public']) && $_GET['public'];
 
 ?>
