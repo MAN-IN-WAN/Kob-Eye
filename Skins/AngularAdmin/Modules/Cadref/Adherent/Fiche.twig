@@ -81,7 +81,7 @@
 											{{ label("Année de Naissance") }}
 										</div>
 										<div class="col-md-7">
-											{{ finput(f.Naissance, o) }}
+											{{ finput(f.Naissance, o, false, 'dddd') }}
 										</div>
 									</div>
 								</div>
@@ -248,27 +248,27 @@
 										<tr>
 											<td class="cadref-td-inscr">
 												<div class="control-group">
-													<input type="text" class="form-control cadref-input cadref-annuel" ng-model="{{ o }}.Cotisation" readonly/>
+													<input type="text" class="form-control cadref-input-diff cadref-annuel" ng-model="{{ o }}.Cotisation" readonly/>
 												</div>
 											</td>
 											<td class="cadref-td-inscr">
 												<div class="control-group">
-													<input type="text" class="form-control cadref-input cadref-annuel" ng-model="{{ o }}.Cours" readonly/>
+													<input type="text" class="form-control cadref-input-diff cadref-annuel" ng-model="{{ o }}.Cours" readonly/>
 												</div>
 											</td>
 											<td class="cadref-td-inscr">
 												<div class="control-group">
-													<input type="text" class="form-control cadref-input cadref-annuel" ng-model="{{ o }}.Visites" readonly/>
+													<input type="text" class="form-control cadref-input-diff cadref-annuel" ng-model="{{ o }}.Visites" readonly/>
 												</div>
 											</td>
 											<td class="cadref-td-inscr">
 												<div class="control-group">
-													<input type="text" class="form-control cadref-input cadref-annuel" ng-model="{{ o }}.Reglement" readonly/>
+													<input type="text" class="form-control cadref-input-diff cadref-annuel" ng-model="{{ o }}.Reglement" readonly/>
 												</div>
 											</td>
 											<td class="cadref-td-inscr">
 												<div class="control-group">
-													<input type="text" class="form-control cadref-input cadref-annuel" ng-model="{{ o }}.Differe" readonly/>
+													<input type="text" class="form-control cadref-input-diff cadref-annuel" ng-model="{{ o }}.Differe" readonly/>
 												</div>
 											</td>
 											<td class="cadref-td-inscr">

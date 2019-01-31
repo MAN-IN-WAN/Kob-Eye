@@ -374,7 +374,7 @@ where ve.Visite=$vid
 			if($s) $s .= "\n";
 			$s .= $p['Description'] ?: '';
 			$e->description = $s;
-			$e->className = $p['rid'] ? 'fc-event-success' : 'fc-event-default';
+			$e->className = p['rid'] ? 'fc-event-success' : 'fc-event-default';
 			$events[] = $e;
 		}
 

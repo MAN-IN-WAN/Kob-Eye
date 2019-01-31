@@ -60,10 +60,10 @@ table tr td.cadref-td-diff {
 	padding: 0px !important;
 }
 .cadref-input {
-	padding: 6px 6px;
+	padding: .4rem .4rem;
 }
 .cadref-input-diff {
-	padding: 4px 6px;
+	padding: .35rem .35rem;
 }
 
 .cadref-date {
@@ -94,6 +94,10 @@ table tr td.cadref-td-diff {
 }
 .cadref-btn-upload:after {
     content: "\e9a7";
+}
+.cadref-cal-visite:before {
+	font-family: 'icomoon-ultimate';
+	content: "\e93c";
 }
 
 .cadref-separ {
