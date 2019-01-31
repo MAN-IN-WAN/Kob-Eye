@@ -1,25 +1,27 @@
-<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%" style="line-height:1" >
-    <thead>
-        <tr>
-            <th title="Id" class="list-col-th-id" hidden>ID</th>
-            <th class="cadref-th">Début</th>
-            <th class="cadref-th">Fin</th>
-            <th class="cadref-th">Descrition</th>
-			<th class="cadref-th-btn"><a class="btn-abt cadref-btn-add btn-success" href="" ng-click="{% if public %}absenceAdd(){% else %}CadrefAbsenceadd(){% endif %}" title="Ajouter une absence"></a></th>
-        </tr>
-    </thead>
-    <tbody>
-		<tr dir-paginate="item in {{ identifier }}.data" >
-			<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
-			<td scope="row" class="cadref-td typedatetime"><span class="label">{[{ item.DateDebut }]}</span></td>
-			<td scope="row" class="cadref-td typedatetime"><span class="label">{[{ item.DateFin }]}</span></td>
-			<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Description }]}</span></td>
-			<td  class="table-action cadref-td-btn">
-				<a class="btn-abt btn-abt-nfo btn-primary" href="" title="Détails" ng-click="absenceOpen(item)"></a>
-			</td>
-		</tr>
-    </tbody>
-</table>
+<div class="listWrap">
+	<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%" style="line-height:1" >
+		<thead>
+			<tr>
+				<th title="Id" class="list-col-th-id" hidden>ID</th>
+				<th class="cadref-th">Début</th>
+				<th class="cadref-th">Fin</th>
+				<th class="cadref-th">Descrition</th>
+				<th class="cadref-th-btn"><a class="btn-abt cadref-btn-add btn-success" href="" ng-click="{% if public %}absenceAdd(){% else %}CadrefAbsenceadd(){% endif %}" title="Ajouter une absence"></a></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr dir-paginate="item in {{ identifier }}.data" >
+				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
+				<td scope="row" class="cadref-td typedatetime"><span class="label">{[{ item.DateDebut }]}</span></td>
+				<td scope="row" class="cadref-td typedatetime"><span class="label">{[{ item.DateFin }]}</span></td>
+				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Description }]}</span></td>
+				<td  class="table-action cadref-td-btn">
+					<a class="btn-abt btn-abt-nfo btn-primary" href="" title="Détails" ng-click="absenceOpen(item)"></a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
 <div class="modal fade modal-size-large" id="modal-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog cadref-modal-dialog" role="document">
         <div class="modal-content">

@@ -32,51 +32,52 @@
 	</div>
 </div>
 
-<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%" style="line-height:1" >
-    <thead>
-        <tr>
-            <th title="Id" class="list-col-th-id" hidden>ID</th>
-            <th>Numéro</th>
-            <th>Nom</th>
-            <th>Prenom</th>
-            <th>Prix</th>
-            <th>Réduc.</th>
-            <th>Assur.</th>
-			<th>Etat</th>
-            <th>Date</th>
-            <th>U</th>
-			<th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-		<tr dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination">
-			<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
-			<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reservationOpen(item)">{[{ item.Numero }]}</a></td>
-			<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reservationOpen(item)">{[{ item.Nom }]}</a></td>
-			<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reservationOpen(item)">{[{ item.Prenom }]}</a></td>
-			<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reservationOpen(item)">{[{ item.Prix }]}</a></td>
-			<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reservationOpen(item)">{[{ item.Reduction }]}</a></td>
-			<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reservationOpen(item)">{[{ item.Assurance }]}</a></td>
-			<td scope="row" class="cadref-td typevarchar">
-				<span class="label label-info" ng-if="item.Attente>0 && item.Supprime==0">Attente</span>
-				<span class="label label-success" ng-if="item.Attente==0 && item.Supprime==0">Inscrit</span>
-				<span class="label label-danger" ng-if="item.Supprime==1">Supprimé</span>
-			</td>
-			<td scope="row" class="cadref-td typedate">
-				<span class="label" ng-if="item.Supprime>0">{[{ item.DateSupprime }]}</span>
-				<span class="label" ng-if="item.Attente>0 && item.Supprime==0">{[{ item.DateAttente | limitTo : 16 }]}</span>
-				<span class="label" ng-if="item.Attente==0 && item.Supprime==0">{[{ item.DateInscription | limitTo : 11 }]}</span>
-			</td>
-			<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Utilisateur }]}</span></td>
-			<td  class="table-action cadref-td-btn">
-				<div>
-					<a class="btn-abt btn-abt-nfo btn-primary" href="" title="Détails" ng-click="reservationOpen(item)"></a>
-				</div>
-			</td>
-		</tr>
-    </tbody>
-</table>
-
+<div class="listWrap">
+	<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%" style="line-height:1" >
+		<thead>
+			<tr>
+				<th title="Id" class="list-col-th-id" hidden>ID</th>
+				<th>Numéro</th>
+				<th>Nom</th>
+				<th>Prenom</th>
+				<th>Prix</th>
+				<th>Réduc.</th>
+				<th>Assur.</th>
+				<th>Etat</th>
+				<th>Date</th>
+				<th>U</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination">
+				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
+				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reservationOpen(item)">{[{ item.Numero }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reservationOpen(item)">{[{ item.Nom }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reservationOpen(item)">{[{ item.Prenom }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reservationOpen(item)">{[{ item.Prix }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reservationOpen(item)">{[{ item.Reduction }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reservationOpen(item)">{[{ item.Assurance }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar">
+					<span class="label label-info" ng-if="item.Attente>0 && item.Supprime==0">Attente</span>
+					<span class="label label-success" ng-if="item.Attente==0 && item.Supprime==0">Inscrit</span>
+					<span class="label label-danger" ng-if="item.Supprime==1">Supprimé</span>
+				</td>
+				<td scope="row" class="cadref-td typedate">
+					<span class="label" ng-if="item.Supprime>0">{[{ item.DateSupprime }]}</span>
+					<span class="label" ng-if="item.Attente>0 && item.Supprime==0">{[{ item.DateAttente | limitTo : 16 }]}</span>
+					<span class="label" ng-if="item.Attente==0 && item.Supprime==0">{[{ item.DateInscription | limitTo : 11 }]}</span>
+				</td>
+				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Utilisateur }]}</span></td>
+				<td  class="table-action cadref-td-btn">
+					<div>
+						<a class="btn-abt btn-abt-nfo btn-primary" href="" title="Détails" ng-click="reservationOpen(item)"></a>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
 <div class="modal fade modal-size-large" id="modal-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog cadref-modal-dialog" role="document">
         <div class="modal-content">

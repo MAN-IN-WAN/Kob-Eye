@@ -1,23 +1,25 @@
-<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%" style="line-height:1" >
-    <thead>
-        <tr>
-            <th title="Id" class="list-col-th-id" hidden>ID</th>
-			<th class="cadref-th">Date</th>
-			<th class="cadref-th">Note</th>
-			<th class="cadref-th">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-		<tr dir-paginate="item in {{ identifier }}.data" >
-			<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
-			<td scope="row" class="cadref-td typedate"><span class="label">{[{ item.DateCours | limitTo : 5 }]}</span></td>
-			<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Notes }]}</span></td>
-			<td  class="table-action cadref-td-btn" style="width:64px">
-				<a class="btn-abt btn-abt-nfo btn-primary" href="" title="Détails" ng-click="CadrefClasseDatemodify(item)"></a>
-			</td>
-		</tr>
-    </tbody>
-</table>
+<div class="listWrap">
+	<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%" style="line-height:1" >
+		<thead>
+			<tr>
+				<th title="Id" class="list-col-th-id" hidden>ID</th>
+				<th class="cadref-th">Date</th>
+				<th class="cadref-th">Note</th>
+				<th class="cadref-th">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr dir-paginate="item in {{ identifier }}.data" >
+				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
+				<td scope="row" class="cadref-td typedate"><span class="label">{[{ item.DateCours | limitTo : 5 }]}</span></td>
+				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Notes }]}</span></td>
+				<td  class="table-action cadref-td-btn" style="width:64px">
+					<a class="btn-abt btn-abt-nfo btn-primary" href="" title="Détails" ng-click="CadrefClasseDatemodify(item)"></a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
 <div class="modal fade modal-size-large" id="modal-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog cadref-modal-dialog" role="document">
         <div class="modal-content">

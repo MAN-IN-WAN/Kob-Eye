@@ -297,7 +297,9 @@
 							</section>
 							<section class="panel" ng-if="obj.id">
 								<div class="panel-body cadref-no-padding">
-									<ng-include src="'/{{ CurrentUrl }}/0/Reglement/ListReglement.htm'" ng-if="show"></ng-include>
+									<div class="listWrap">
+										<ng-include src="'/{{ CurrentUrl }}/0/Reglement/ListReglement.htm'" ng-if="show"></ng-include>
+									</div>
 								</div>
 							</section>
 						</div>
@@ -307,7 +309,9 @@
 						<div class="col-md-12">
 							<section class="panel">
 								<div class="panel-body cadref-panel-body">
-									<ng-include src="'/{{ CurrentUrl }}/0/Inscription/ListInscription.htm'" ng-if="show"></ng-include>
+									<div class="listWrap">
+										<ng-include src="'/{{ CurrentUrl }}/0/Inscription/ListInscription.htm'" ng-if="show"></ng-include>
+									</div>
 								</div>
 							</section>
 						</div>
@@ -327,7 +331,6 @@
 		</div>
     </section>
 </div>
-{#{{ include(template_from_string(module('Systeme/Utils/Modal/Function?identifier='~identifier))) }}#}
 <div class="modal fade modal-size-large" id="modalfunction-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog cadref-modal-dialog" role="document">
         <div class="modal-content">

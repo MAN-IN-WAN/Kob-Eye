@@ -216,93 +216,74 @@
 		</div>
 	{% endif %}
 {% endif %}
-<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%">
-    <thead>
-        <tr>
-			{% if showCheckboxes %}
-				<th width="30" title="Ch" class="list-col-th-dark">
-					<input type="checkbox" ng-model="{{ identifier }}.selected.selectall"/>&nbsp;
-				</th>
-			{% endif %}
-            <th title="Id" class="list-col-th-id" hidden>ID</th>
-            <th>Année</th>
-            <th titre="Visite" ng-click="triggerSort($event,'{{ identifier }}','Code','{{ context }}')">Code</th>
-            <th>Libellé</th>
-            <th>Date</th>
-            <th>Places</th>
-            <th>Inscrits</th>
-            <th>Attentes</th>
-            <th>Prix</th>
-            <th>Assurance</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody ng-if="!{{ identifier }}.store.busy['{{ context }}']">
-		<tr dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination">
-			{% if showCheckboxes %}
-				<td  class="list-col-td-dark">
-					<input type="checkbox" value="{[{ item.id }]}" ng-model="{{ identifier }}.selected[item.id]" name="{{ identifier }}" id="{[{ item.id }]}" />&nbsp;
-				</td>
-			{% endif %}
-			<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
-			<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Annee }]}</a></td>
-			<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Visite }]}</a></td>
-			<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Libelle }]}</a></td>
-			<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.DateVisite }]}</a></td>
-			<td scope="row" class="typefloat"><span>{[{ item.Places }]}</span></td>
-			<td scope="row" class="typefloat"><span>{[{ item.Inscrits }]}</span></td>
-			<td scope="row" class="typefloat"><span>{[{ item.Attentes }]}</span></td>
-			<td scope="row" class="typefloat"><span>{[{ item.Prix }]}</span></td>
-			<td scope="row" class="typefloat"><span>{[{ item.Assurance }]}</span></td>
-
-			{% for interface in Interfaces %}
-				{% if interface.child  %}
-					<td scope="row" class="type{{ interface.type }}">
-						{% if interface.type == "price" or interface.type == "float" %}
-							<span class="label label-warning" ng-repeat="child in item.{{ interface.child }}">{[{ child.{{ interface.property }}| currency:"" }]}</span>
-						{% elseif interface.type == "extlink" %}
-							<a class="btn-abt btn-primary btn-xs type_{[{ child.{{ interface.title }} }]}" href="https://proxy.abtel.fr/remote/#/client/{[{ child.{{ interface.property }} }]}" target="_blank" ng-repeat="child in item.{{ interface.child }} | limitTo:2">{[{ child.{{ interface.title }} }]}</a>
-						{% endif %}
+<div class="listWrap">
+	<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%">
+		<thead>
+			<tr>
+				{% if showCheckboxes %}
+					<th width="30" title="Ch" class="list-col-th-dark">
+						<input type="checkbox" ng-model="{{ identifier }}.selected.selectall"/>&nbsp;
+					</th>
+				{% endif %}
+				<th title="Id" class="list-col-th-id" hidden>ID</th>
+				<th>Année</th>
+				<th titre="Visite" ng-click="triggerSort($event,'{{ identifier }}','Code','{{ context }}')">Code</th>
+				<th>Libellé</th>
+				<th>Date</th>
+				<th>Places</th>
+				<th>Inscrits</th>
+				<th>Attentes</th>
+				<th>Prix</th>
+				<th>Assurance</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody ng-if="!{{ identifier }}.store.busy['{{ context }}']">
+			<tr dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination">
+				{% if showCheckboxes %}
+					<td  class="list-col-td-dark">
+						<input type="checkbox" value="{[{ item.id }]}" ng-model="{{ identifier }}.selected[item.id]" name="{{ identifier }}" id="{[{ item.id }]}" />&nbsp;
 					</td>
 				{% endif %}
-			{% endfor %}
-			{#<td  class="table-details" ng-bind-html="item._details">{[{ item._details }]}</td>#}
-			<td  class="table-action">
-				<div >
-					<a class="btn-abt btn-abt-nfo btn-primary" href="#/{{ CurrentUrl }}/{[{ item.id }]}" title="Détails"></a>
-					{#
-									{% if operation.edit %}
-										<a class="btn-abt btn-abt-mod btn-warning" href="javascript: void(0);" ng-click="{{ identifier }}modify(item)" title="Modifier"></a>
-									{% endif %}
-									{% if operation.delete %}
-										<a class="btn-abt btn-abt-del btn-danger" href="javascript: void(0);" ng-click="{{ identifier }}delete(item)" title="Supprimer"></a>
-									{% endif %}
-									{% if functions|length >0 %}
-										<div style="vertical-align: top;" uib-dropdown>
-											<button type="button" class="btn-abt btn-abt-func " uib-dropdown-toggle title="Fonctions"></button>
-											<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
-												{% for fu in functions %}
-													{% if attribute(operation,fu.Nom) %}
-														<a class="dropdown-item" href="javascript: void(0);" ng-click='{{ identifier }}callFunction(item,"{{fu.Nom}}","{{fu.title}}",{{ fu.needConfirm }})'>{{ fu.title }}</a>
-													{% endif %}
-												{% endfor %}
-											</ul>
-										</div>
-									{% endif %}
-					#}
-				</div>
-			</td>
-		</tr>
-    </tbody>
-    <tbody ng-if="{{ identifier }}.store.busy['{{ context }}']">
-        <tr>
-            <td colspan="100">
-                <div class="spinner-list"></div>
-            </td>
-        </tr>
-    </tbody>
+				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
+				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Annee }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Visite }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Libelle }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.DateVisite }]}</a></td>
+				<td scope="row" class="typefloat"><span>{[{ item.Places }]}</span></td>
+				<td scope="row" class="typefloat"><span>{[{ item.Inscrits }]}</span></td>
+				<td scope="row" class="typefloat"><span>{[{ item.Attentes }]}</span></td>
+				<td scope="row" class="typefloat"><span>{[{ item.Prix }]}</span></td>
+				<td scope="row" class="typefloat"><span>{[{ item.Assurance }]}</span></td>
 
-</table>
+				{% for interface in Interfaces %}
+					{% if interface.child  %}
+						<td scope="row" class="type{{ interface.type }}">
+							{% if interface.type == "price" or interface.type == "float" %}
+								<span class="label label-warning" ng-repeat="child in item.{{ interface.child }}">{[{ child.{{ interface.property }}| currency:"" }]}</span>
+							{% elseif interface.type == "extlink" %}
+								<a class="btn-abt btn-primary btn-xs type_{[{ child.{{ interface.title }} }]}" href="https://proxy.abtel.fr/remote/#/client/{[{ child.{{ interface.property }} }]}" target="_blank" ng-repeat="child in item.{{ interface.child }} | limitTo:2">{[{ child.{{ interface.title }} }]}</a>
+							{% endif %}
+						</td>
+					{% endif %}
+				{% endfor %}
+				{#<td  class="table-details" ng-bind-html="item._details">{[{ item._details }]}</td>#}
+				<td  class="table-action">
+					<div >
+						<a class="btn-abt btn-abt-nfo btn-primary" href="#/{{ CurrentUrl }}/{[{ item.id }]}" title="Détails"></a>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+		<tbody ng-if="{{ identifier }}.store.busy['{{ context }}']">
+			<tr>
+				<td colspan="100">
+					<div class="spinner-list"></div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
 <div class="form-group row">
     <div class="col-lg-6 col-md-12">
     </div>
