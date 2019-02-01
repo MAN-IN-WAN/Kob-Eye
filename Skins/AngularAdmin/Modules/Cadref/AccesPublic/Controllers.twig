@@ -184,6 +184,12 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	$scope.CadrefAbsence.store.setFilters("Annee={{ Annee }}", 'children');
 	$scope.CadrefClasse = $scope.createStore(CadrefClasseStore, 'children');
 	$scope.CadrefClasse.store.setFilters("Annee={{ Annee }}", 'children');
+	$scope.$watch('CadrefClasse.currentPage', function() {
+		$scope.CadrefClasse.store.setPage($scope.CadrefClasse.currentPage, 'children');
+	});
+	$scope.$watch('CadrefClasse.pageLength', function() {
+		$scope.CadrefClasse.store.setPageLength($scope.CadrefClasse.currentPage, 'children');
+	});
 	$scope.CadrefVisite = $scope.createStore(CadrefVisiteStore, 'children');
 	$scope.CadrefVisite.store.setFilters("Annee={{ Annee }}", 'children');
 

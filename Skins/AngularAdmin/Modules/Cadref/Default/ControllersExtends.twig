@@ -348,7 +348,6 @@
 				cad.cours += Number(t[i].Prix)-Number(t[i].Reduction1)-Number(t[i].Reduction2);
 			}
 			cad.paye = Number(cad.cotis)+Number(cad.cours)+Number(cad.visit)-Number(cad.regle)-Number(cad.diff)+Number(cad.regul);
-console.error(Number(cad.cotis),Number(cad.cours),Number(cad.visit),Number(cad.regle),Number(cad.diff),Number(cad.regul),cad.paye);
 			cad.solde = 0;
 			cad.nonSolde = false;
 			$scope.nextControle();

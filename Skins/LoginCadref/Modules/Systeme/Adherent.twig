@@ -30,6 +30,14 @@
 					<input type="text" class="form-control cadref-input" id="Prenom" name="Prenom" readonly/>
 				</div>
 			</div>
+			<div class="row">
+				<div class="col-md-4">
+					<label class="form-control-label cadref-label" style="line-height:1.1">Code postal</label>
+				</div>
+				<div class="col-md-8">
+					<input type="text" class="form-control cadref-input" id="CP" name="CP" readonly/>
+				</div>
+			</div>
 			<div class="row" style="height:10px"></div>
 			<div class="row">
 				<div class="col-md-4">
@@ -44,7 +52,7 @@
 					<label class="form-control-label cadref-label" style="line-height:1.1">Téléphone</label>
 				</div>
 				<div class="col-md-8">
-					<input type="text" class="form-control cadref-input" placeholder="Téléphone" name="Tel"/>
+					<input type="text" class="form-control cadref-input" placeholder="Téléphone" id="Tel" name="Tel"/>
 				</div>
 			</div>
 			<div class="row" style="height:10px"></div>
@@ -79,8 +87,10 @@
 					$('#Numero').val(resp.data.Numero);
 					$('#Nom').val(resp.data.Nom);
 					$('#Prenom').val(resp.data.Prenom);
+					$('#CP').val(resp.data.CP);
 					$('#Mail').val(resp.data.Mail);
-					$('#Valider').attr('value','Continuer');
+					$('#Tel').val(resp.data.Tel);
+					$('#Valider').attr('value', 'Continuer');
 					$('#ValidForm').val("2");
 				} else {
 					$('#msg').html(resp.message);

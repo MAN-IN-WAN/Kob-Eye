@@ -83,6 +83,21 @@
 									</section>
 								</div>
 							</div>
+							<div class="row" style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Animateurs") }}
+								</div>
+								<div class="col-md-10">
+									<multiple-autocomplete class="form-control cadref-no-padding" 
+														   ng-model="obj.EnseignantEnseignants"
+														   object-property="label"
+														   model-labels="obj.EnseignantEnseignantslabel"
+														   suggestions-arr="Enseignants">
+									</multiple-autocomplete>
+								</div>
+							</div>
+							<div class="row" style="height:10px"></div>
 							<div class="row">
 								<div class="col-md-2">
 									{{ label("Description") }}

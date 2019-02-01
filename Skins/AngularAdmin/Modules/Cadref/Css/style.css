@@ -98,6 +98,8 @@ table tr td.cadref-td-diff {
 .cadref-cal-visite:before {
 	font-family: 'icomoon-ultimate';
 	content: "\e93c";
+	float: left;
+	margin-right: 2%;
 }
 
 .cadref-separ {
