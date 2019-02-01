@@ -1,5 +1,16 @@
 <?php
-
+/**
+ * TUTO !!!
+ *
+ *
+ * Pour envoyer au step 2
+ * return array('template'=>"Clone",'step'=>1,'callNext'=>array('nom'=>'cloneHost','title'=>'Progression'));
+ *
+ * Pour envoyer une barre de progression
+ * return array('task'=>$task,'title'=>'Progression du clonage');
+ *
+ *
+ */
     $data = json_decode(file_get_contents('php://input'),true);
     $funcCall =  json_decode($data['Func'],true);
     $path = $funcCall['query'];

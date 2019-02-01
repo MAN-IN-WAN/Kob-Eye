@@ -139,6 +139,20 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
         return true;
     }
     /**
+     * createDefaultApache
+     * Crée une configuratio apache par défaut avec u sous domaine
+     */
+    public function createDefaultApache() {
+
+    }
+    /**
+     * createDefaultFtp
+     * Crée une configuratio apache par défaut avec u sous domaine
+     */
+    public function createDefaultFtp() {
+
+    }
+    /**
      * getLdapID
      * récupère le ldapId d'une entrée pour un serveur spécifique
      */
@@ -686,24 +700,77 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
     }
 
     /**
-     * backup
-     * Fonction de clonage
-     * @param Int Etape
-     * @param String Nouveau Nom Facultatif
-     * @param String Nouveau Serveur Facultatif
+     * cloneHost
+     * Fonction de creation de la tache de clonage
+     * @param Array params
      *
      * @return Mixed
      */
-    public function cloneHost($step = 0 ,$newName = null, $server = null){
-
-        switch($step){
+    public function cloneHost($params = null){
+        if (!$params) $params =array('step'=>0);
+        if (!isset($params['step'])) $params['step']=0;
+        switch($params['step']){
             case 1:
-                return 'pouet';
+                $task = genericClass::createInstance('Systeme','Tache');
+                $task->Type = 'Fonction';
+                $task->Nom = 'Clonage de l\'hébergement ' . $this->Nom.' vers l\'hébergement '. $params['targetHost'];
+                $task->TaskModule = 'Parc';
+                $task->TaskObject = 'Host';
+                $task->TaskId = $this->Id;
+                $task->TaskFunction = 'exeClone';
+                $task->TaskType = 'install';
+                $task->TaskCode = 'HOST_CLONE';
+                $task->TaskArgs = serialize($params);
+                $task->addParent($this);
+                $task->Save();
+                return array('task'=>$task,'title'=>'Progression du clonage');
                 break;
             default:
-                return array('template'=>"Clone",'step'=>1);
+                return array('template'=>"Clone",'step'=>1,'callNext'=>array('nom'=>'cloneHost','title'=>'Progression'));
         }
 
+    }
+
+    /**
+     * clone
+     * Fonction de clonage
+     * @param task Task Object
+     */
+    public function exeClone($task){
+        //desérialisation des paramètres
+        $params = unserialize($task->TaskArgs);
+        //création de l'hébergement
+        $host = Sys::getOneData('Parc','Host/'.$this->Id);
+        //suppression des champs indesirables
+        unset($host->Id);
+        unset($host->tmsCreate);
+        unset($host->userCreate);
+        unset($host->tmsEdit);
+        unset($host->userEdit);
+        unset($host->LdapID);
+        unset($host->LdapTms);
+        unset($host->LdapGid);
+        unset($host->LdapUid);
+        unset($host->NomLDAP);
+        $host->Nom.=' (Copie)';
+        $host->Save();
+        //Apache - default apache
+        $host->createDefaultApache();
+        //FTP - default ftp
+        $host->createDefaultFtp();
+        //BDD
+        $bdds = $this->getChildren('Bdd');
+        foreach ($bdds as $bdd){
+            unset($bdd->Id);
+            unset($bdd->tmsCreate);
+            unset($bdd->userCreate);
+            unset($bdd->tmsEdit);
+            unset($bdd->userEdit);
+            $bdd->Nom.='-copy';
+            $bdd->resetParents('Server');
+            $bdd->resetParents('Host');
+            $bdd->addParent($host);
+        }
     }
 }
 /**

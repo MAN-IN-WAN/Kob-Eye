@@ -205,8 +205,9 @@ class RestorePoint extends genericClass{
             $act->addDetails($out);
             //Sauvegarde base des donnée
             foreach ($bdds as $bdd) {
+                $bddsrv = $bdd->getOneParent('Server');
                 $act = $task->createActivity('Sauvegarde base de donnée '.$bdd->Nom, 'Info', $task);
-                $cmd = 'cd /home/' . $host->NomLDAP . '/ && mysqldump -h '.PARC_BDD_DOMAIN.' -u ' . $host->NomLDAP . ' -p' . $host->Password . ' ' . $bdd->Nom . ' > sql/'.$bdd->Nom.'-'.$restopoint.'.sql';
+                $cmd = 'cd /home/' . $host->NomLDAP . '/ && mysqldump -h '.$bddsrv->InternalIP.' -u ' . $host->NomLDAP . ' -p' . $host->Password . ' ' . $bdd->Nom . ' > sql/'.$bdd->Nom.'-'.$restopoint.'.sql';
                 $out = $apachesrv->remoteExec($cmd);
                 $act->addDetails($cmd);
                 $act->addDetails($out);
@@ -229,7 +230,7 @@ class RestorePoint extends genericClass{
             parent::Save();
             return true;
         }catch (Exception $e){
-            $act->addDetails(print_r($this,false));
+            $act->addDetails(print_r($this,true));
             $act->addDetails('Erreur: '.$e->getMessage());
             $act->Terminate(false);
             $this->Success = false;

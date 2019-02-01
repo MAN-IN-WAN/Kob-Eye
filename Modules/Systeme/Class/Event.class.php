@@ -248,7 +248,8 @@ class Event extends genericClass {
                                     $flag = false;
                                     foreach ($ps as $p){
                                         //Vérification du lien parent
-                                        if ($p['objectName']==$query[0]&&$o->{$p['name']}==$query[1]) $flag=true;
+
+                                        if ($p['objectName']==$query[0]&&isset($o->{$p['name']})&&$o->{$p['name']}==$query[1]) $flag=true;
                                     }
                                     if (!$flag) continue;
                                 }
@@ -258,7 +259,14 @@ class Event extends genericClass {
                                     if(! is_array($context->sort)){
                                         $context->sort = array('Id','ASC');
                                     }
-                                    $list = Sys::getData($ev['EventModule'], $ev['EventObjectClass'] . '/' . $context->filters, $context->offset, $context->limit, $context->sort[1], $context->sort[0]);
+                                    if (isset($context->sort[1])&&isset($context->sort[0])){
+                                        $orderType = $context->sort[1];
+                                        $orderVar = $context->sort[0];
+                                    }else {
+                                        $orderType = '';
+                                        $orderVar = "";
+                                    }
+                                    $list = Sys::getData($ev['EventModule'], $ev['EventObjectClass'] . '/' . $context->filters, $context->offset, $context->limit, $orderType, $orderVar);
                                     $flag = false;
                                     foreach($list as $item){
                                         if($item->Id == $o->Id) $flag = true;

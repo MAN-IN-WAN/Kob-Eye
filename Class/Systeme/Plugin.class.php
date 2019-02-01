@@ -49,13 +49,14 @@ class Plugin extends Root{
 	 * initialisation de la configuration à partir du fichier xml
 	 * @void
 	 */
-	public function setConfig($Config,$obj) {
+	public function setConfig($Config,$obj=null) {
 		$x = new xml2array($Config);
 		$this->Config = $x->Tableau["PLUGIN"]["#"];
 		if (isset($this->Config["PARAMS"][0]["#"]['PARAM']))foreach ($this->Config["PARAMS"][0]["#"]['PARAM'] as $P){
 			$this->Params[$P["@"]["name"]] = $P["#"];
 		}
-		$this->_obj = $obj;
+		if ($obj)
+		    $this->_obj = $obj;
 	}
 	/**
 	* Return a template initialized from a genericClass object

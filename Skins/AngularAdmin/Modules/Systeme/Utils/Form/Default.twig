@@ -216,7 +216,7 @@
 
 
     $('.urlInput').on('keyup',function(){
-       $(this).val($(this).val().replace(/[^A-Za-z0-9_\-\.]*\s*/g,''));
+       $(this).val($(this).val().replace(/[^A-Za-z0-9_\-\.\*]*\s*/g,''));
     });
     //Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
     $(".datepicker-only-init").on("dp.change", function() {
