@@ -24,6 +24,7 @@ else $vars['row']->userCreateName = 'inconnu';
 if (is_object($ue))
     $vars['row']->userEditName = $ue->Login;
 else $vars['row']->userEditName = 'inconnu';
+
 foreach ($vars['fields'] as $f){
     if ($f['type']=='date'){
         //transformation des timestamps en format js

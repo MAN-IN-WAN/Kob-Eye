@@ -18,10 +18,12 @@ foreach (Sys::$User->Menus as $m){
                 //surcharge de controller
                 if (!isset($info['ObjectType'])) {
                     $tmp['overload'] = $info['Query'] . '/Controllers?Chemin=' . $info['Query'] . '/Controllers&Url=' . $m->Url . $menu->Url;
+					$tmp['identifier'] = $m->Url . $menu->Url;
                 } else {
                     $tmp['overload'] = $info['Module'] . '/' . $info['ObjectType'] . '/Controllers?Chemin=' . $info['Module'] . '/' . $info['ObjectType'] . '/Controllers&Url=' . $m->Url . $menu->Url;
-                }
-                $tmp['identifier'] = $info['Module'] . $info['ObjectType'];
+					$tmp['identifier'] = $info['Module'] . $info['ObjectType'];
+				}
+                
                 $vars["controllers"][$tmp['identifier']] = $tmp;
             } else if ($info['TypeSearch'] == "Child") {
                 $tmp['identifier'] = $info['Module'] . $info['ObjectType'];

@@ -11,8 +11,19 @@ foreach (Sys::$Modules as $k=>$mod){
         $formfields = $o->getElementsByAttribute('form','',true);
         $out = array();
         if (is_array($formfields))foreach ($formfields as $f){
-            if (isset( $o->{$f['name']}))
-                $out[$f['name']] = $o->{$f['name']};
+            if (isset( $o->{$f['name']})) {
+				// PGF 20181115 type cast
+				$v = $o->{$f['name']};
+				switch($f['type']) {
+					case 'int':
+					case 'bigint':
+					case 'boolean':
+						$v = (int)$v; break;
+					case 'float':
+						$v = (double)$v; break;
+				}
+                $out[$f['name']] = $v;
+			}
         }
         $tmp['newData'] = json_encode($out);
         $tmp['logEvent'] = $obj->logEvent;

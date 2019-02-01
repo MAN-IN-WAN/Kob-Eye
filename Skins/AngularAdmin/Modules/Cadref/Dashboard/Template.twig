@@ -1,0 +1,86 @@
+<div class="page-content-inner">
+    <div class="dashboard-container">
+		{% if group == 'CADREF_ADMIN' %}
+			<div class="row">
+				<a class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12" href="#/gestion/adherents">
+					<div class="widget widget-seven background-info">
+						<div class="widget-body">
+							<div href="javascript: void(0);" class="widget-body-inner">
+								<h5 class="text-uppercase">Adhérents</h5>
+								<i class="counter-icon icmn-users"></i>
+								<span class="counter-count">
+									<i class="icmn-arrow-up5"></i>
+									<span>{[{ NbAdherents }]}</span>
+								</span>
+							</div>
+						</div>
+					</div>
+				</a>
+				<div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-12">
+					<div class="widget widget-seven background-success">
+						<div class="widget-body">
+							<div href="javascript: void(0);" class="widget-body-inner">
+								<h5 class="text-uppercase">Inscriptions</h5>
+								<i class="counter-icon icmn-books"></i>
+								<span class="counter-count">
+									<i class="icmn-arrow-up5"></i>
+									<span >{[{ NbInscriptions }]}</span>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			{#        <div class="row">
+						<div class="col-xl-9 col-lg-9 col-md-9 col-sm-6 col-xs-12">
+							<div class="margin-bottom-50">
+								<div id="bargraph" class="chart-stacked-bar height-300 chartist"></div>
+							</div>
+						</div>
+					</div>
+			#}		
+		{% endif %}
+		<div style="background-color: white; padding: 3px">
+			<div ui-calendar="uiConfig.calendar" id="calendar" class="cadref-calendar-block"></div>
+		</div>
+	</div>
+</div>
+
+
+<!-- Page Scripts -->
+<script>
+	$(function () {
+		var colors = {
+			_primary: '#01a8fe',
+			_default: '#acb7bf',
+			_success: '#46be8a',
+			_danger: '#fb434a'
+		};
+
+		///////////////////////////////////////////////////////////
+		// ADJUSTABLE TEXTAREA
+		autosize($('#textarea'));
+
+		///////////////////////////////////////////////////////////
+		// CUSTOM SCROLL
+		if (!cleanUI.hasTouch) {
+			$('.custom-scroll').each(function () {
+				$(this).jScrollPane({
+					autoReinitialise: true,
+					autoReinitialiseDelay: 100
+				});
+				var api = $(this).data('jsp'),
+						throttleTimeout;
+				$(window).bind('resize', function () {
+					if (!throttleTimeout) {
+						throttleTimeout = setTimeout(function () {
+							api.reinitialise();
+							throttleTimeout = null;
+						}, 50);
+					}
+				});
+			});
+		}
+	});
+</script>
+<!-- End Page Scripts -->

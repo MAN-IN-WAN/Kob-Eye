@@ -669,12 +669,13 @@
             {{ c.identifier }}Store.refresh(context);
             $scope.{{ c.identifier }}updateCustomFilters();
         }
-        $scope.{{ c.identifier }}add = function (){
+        $scope.{{ c.identifier }}add = function (callback){
             console.log('add {{ c.objecttype }}');
             $scope.modalObj = {{ c.identifier }}Store.getNewData();
             $scope.modalObj.success = false;
             $scope.modalObj.title = 'Ajouter un nouveau {{ c.description }}';
             $("#modal-{{ c.identifier }}").modal();
+			if(callback != undefined) callback($scope.modalObj);
         }
         $scope.{{ c.identifier }}modify = function (obj){
             {{ c.identifier }}Store.getOneData(obj.id,'default',false).then(function (data) {
@@ -688,7 +689,7 @@
         $scope.{{ c.identifier }}export = function (obj){
             {{ c.identifier }}Store.export('default');
         }
-        $scope.{{ c.identifier }}modalSave = function (){
+        $scope.{{ c.identifier }}modalSave = function (callback){
             $('#modal-{{ c.identifier }} .modal-dialog').spin();
 
             console.log('save ',$scope.modalObj);
@@ -700,8 +701,15 @@
                     $scope.modalObj.warning = data.warning;
                     $scope.modalObj.errors = data.errors;
                     $scope.modalObj.infos = data.infos;
-                    if (!data.warning.length&&!data.success.length)
-                        $("#modal-{{ c.identifier }}").modal('toggle');
+                    if (!data.warning.length&&!data.success.length) {
+						var modfic = $("#modal-{{ c.identifier }}");
+						modfic.modal('toggle');
+						if(callback != undefined) {
+							modfic.on('hidden.bs.modal', function(e) {
+								callback(data);
+							});
+						}
+					}
                 }else {
                     //gestion des erreurs
                     $scope.modalObj.errors = data.errors;
@@ -1069,7 +1077,7 @@
                 });
                 $("#modalfiche-{{ c.identifier }}").modal();
             }
-            $scope.modalSave = function (){
+            $scope.modalSave = function (callback){
                 console.log('save ',$scope.modalObj);
                 //affichage spinner
                 $('#modalfiche-{{ c.identifier }} .modal-dialog').spin();
@@ -1082,8 +1090,15 @@
                         $scope.modalObj.errors = data.errors;
                         $scope.modalObj.infos = data.infos;
                         $scope.modalObj = $scope.obj
-                        if (!data.warning.length&&!data.success.length)
-                            $("#modalfiche-{{ c.identifier }}").modal('toggle');
+                        if (!data.warning.length&&!data.success.length) {
+							var modfic = $("#modalfiche-{{ c.identifier }}");
+                            modfic.modal('toggle');
+							if(callback != undefined) {
+								modfic.on('hidden.bs.modal', function(e) {
+									callback(data);
+								});
+							}
+						}
                         {{ c.identifier }}Store.refresh();
                     }else {
                         //gestion des erreurs
@@ -1488,7 +1503,7 @@
                 });
 
                 //ADD
-                $scope.{{ child.objectModule }}{{ child.objectName }}add = function (){
+                $scope.{{ child.objectModule }}{{ child.objectName }}add = function (callback){
                     console.log('child add {{ child.objectName }}');
                     $scope.modalObj = {{ child.objectModule }}{{ child.objectName }}Store.getNewData();
                     $scope.modalObj.success = false;
@@ -1496,10 +1511,11 @@
                     $scope.modalObj.{{ c.objecttype }}{{ child.name }}label = $scope.obj.label;
                     $scope.modalObj.title = 'Ajouter un nouveau {{ child.objectDescription }}';
                     $("#modal-{{ child.objectModule }}{{ child.objectName }}").modal();
+					if(callback != undefined) callback($scope.modalObj);
                 }
 
                 //MODIFY
-                $scope.{{ child.objectModule }}{{ child.objectName }}modify = function (obj){
+                $scope.{{ child.objectModule }}{{ child.objectName }}modify = function (obj, callback){
                     console.log('edit ',obj.id);
                     {{ child.objectModule }}{{ child.objectName }}Store.getOneData(obj.id,'children',false).then(function (data) {
                         $scope.modalObj = data;
@@ -1508,6 +1524,7 @@
                         $scope.modalObj.{{ c.objecttype }}{{ child.name }}label = $scope.obj.label;
                         $scope.modalObj.title = 'Modifier {{ child.objectDescription }} '+data.label;
                         console.log('edit obj',$scope.modalObj);
+						if(callback != undefined) callback(obj, $scope.modalObj);
                     });
                     $("#modal-{{ child.objectModule }}{{ child.objectName }}").modal();
                 }

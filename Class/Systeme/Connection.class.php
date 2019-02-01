@@ -327,7 +327,8 @@ class Connection extends Root{
 		//On enregistre le numero de session
 		Sys::$Session->Session = $this->SessId;
 		session_id($this->SessId);
-		session_start();
+		if(!isset($_SESSION))
+			session_start();
 	}
 	//Chargement des variables de la session prive
 	function ChargementAuthVars() {
