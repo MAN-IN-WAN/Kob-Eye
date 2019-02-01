@@ -1,0 +1,204 @@
+{# fiche Visite #}
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean %} 
+{% set f=fields %}
+{% set o=Create ? 'modalObj' : 'obj' %}
+
+<div class="page-content-inner">
+    <ul class="list-unstyled breadcrumb" ng-if="{{ o }}.id">
+        <li>
+            <a href="#/TableauDeBord">Tableau de bord</a>
+        </li>
+        <li>
+            <a href="#/{{ CurrentMenu.Url }}">Liste des {{ ObjectClass.getDescription() }}</a>
+        </li>
+        <li>
+            <a href="javascript: void(0);" ng-bind-html="'Fiche {{ ObjectClass.getDescription() }} '+(obj.label)"></a>
+        </li>
+    </ul>
+
+    <!-- Default Panel -->
+    <section class="panel">
+        <div class="panel-body cadref-panel-body">
+            <div class="row no-gutters">
+                <div {% if Create %}class="col-md-10"{% else %}class="col-md-11"{% endif %}>
+					<div class="row">
+						<div class="col-md-8" >
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Visite") }}
+								</div>
+								<div class="col-md-2">
+									{{ finput(f.Visite, o, true, '', 'width:80px', true) }}
+								</div>
+								<div class="col-md-2">
+									{{ label("Année") }}
+								</div>
+								<div class="col-md-2">
+									{{ finput(f.Annee, o, true, '', 'width:50px') }}
+								</div>
+							</div>
+							{{ flinput(f.Libelle, o) }}
+							<div class="row" style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Date") }}
+								</div>
+								<div class="col-md-2">
+									{{ fdate(f.DateVisite, o) }}
+								</div>
+								<div class="col-md-1">
+									{{ label("Limite inscription") }}
+								</div>
+								<div class="col-md-2">
+									{{ fdate(f.DateLimite, o) }}
+								</div>
+							</div>
+							<div class="row" style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Places et tarif") }}
+								</div>
+								<div class="col-md-10">
+									<section class="panel">
+										<table>
+											<thead>
+												<tr>
+													<th>Places</th>
+													<th>Inscrits</th>
+													<th>Attentes</th>
+													<th>Prix</th>
+													<th>Assurance</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td class="cadref-td-inscr">{{ finput(f.Places, o, false, 'dddd', 'width:80px') }}</td>
+													<td class="cadref-td-inscr">{{ finput(f.Inscrits, o, true, 'dddd', 'width:80px') }}</td>
+													<td class="cadref-td-inscr">{{ finput(f.Attentes, o, true, 'dddd', 'width:80px') }}</td>
+													<td class="cadref-td-inscr">{{ finput(f.Prix, o, false, 'dddd', 'width:80px') }}</td>
+													<td class="cadref-td-inscr">{{ finput(f.Assurance, o, false, 'dddd', 'width:80px') }}</td>
+												</tr>
+											</tbody>
+										</table>
+									</section>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Description") }}
+								</div>
+								<div class="col-md-10">
+									{{ ftext(f.Description, o) }}
+								</div>
+							</div>
+							<div class="row" style="height:10px"></div>
+							{{ flinput(f.GPS, o) }}
+							<div class="row" style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Inactif") }}
+								</div>
+								<div class="col-md-10">
+									{{ fboolean(f.Inactif, o, true) }}
+								</div>
+							</div>
+						</div>
+						{# block right #}                    
+						<div class="col-md-4">
+							<section class="panel">
+								<div class="row">
+									<div class="col-md-2">
+										{{ label('Départs') }}
+									</div>
+									<div class="col-md-1">
+										<a class="btn-abt cadref-btn-add btn-success" href="javascript: void(0);" ng-click="CadrefDepartadd()" title="Ajouter"></a>
+									</div>
+								</div>
+								<div class="panel-body cadref-no-padding">
+									<ng-include src="'/{{ CurrentUrl }}/0/Depart/ListDepart.htm'"></ng-include>
+								</div>
+							</section>
+						</div>
+					</div>
+					<div class="row" ng-if="{{ o }}.id"}>
+						{# reservations #}
+						<div class="col-md-12">
+							<section class="panel">
+								<div class="panel-body">
+									<ng-include src="'/{{ CurrentUrl }}/0/Reservation/ListReservation.htm'" ng-if="show"></ng-include>
+								</div>
+							</section>
+						</div>
+					</div>
+				</div>
+				<div {% if Create %}class="col-md-2"{% else %}class="col-md-1"{% endif %}>
+					<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="saveFicheCadref({{ o }}.id)">Sauver</button>
+					<button type="button" class="btn btn-danger margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="delete(obj)">Supprimer</button>
+					<a type="button" class="btn btn-warning margin-inline cadref-btn-100" {% if Create %}data-dismiss="modal"{% else %}href="#/{{ CurrentMenu.Url }}"{% endif %}>Annuler</a>
+				</div>
+			</div>
+		</div>
+    </section>
+</div>
+
+<script>
+	$('.datepicker-only-init').datetimepicker({
+		widgetPositioning: {
+			horizontal: 'left'
+		},
+		locale: 'fr',
+		format: 'DD/MM/YYYY',
+		icons: {
+			time: "fa fa-clock-o",
+			date: "fa fa-calendar",
+			up: "fa fa-arrow-up",
+			down: "fa fa-arrow-down"
+		}
+	});
+	$('.timepicker-only-init').datetimepicker({
+		widgetPositioning: {
+			horizontal: 'left'
+		},
+		locale: 'fr',
+		format: 'HH:mm',
+		icons: {
+			time: "fa fa-clock-o",
+			date: "fa fa-calendar",
+			up: "fa fa-arrow-up",
+			down: "fa fa-arrow-down"
+		}
+	});
+	$('.datetimepicker-init').datetimepicker({
+		widgetPositioning: {
+			horizontal: 'left'
+		},
+		locale: 'fr',
+		icons: {
+			time: "fa fa-clock-o",
+			date: "fa fa-calendar",
+			up: "fa fa-arrow-up",
+			down: "fa fa-arrow-down"
+		}
+	});
+
+
+	$('.urlInput').on('keyup', function () {
+		$(this).val($(this).val().replace(/[^A-Za-z0-9_\-\.]*\s*/g, ''));
+	});
+	//Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
+	$(".datepicker-only-init").on("dp.change", function () {
+		var input = $(this).children('input').eq(0);
+		input.trigger('change');
+		input.trigger('input');
+	});
+	$(".timepicker-only-init").on("dp.change", function () {
+		var input = $(this).children('input').eq(0);
+		input.trigger('change');
+		input.trigger('input');
+	});
+	$(".datetimepicker-init").on("dp.change", function () {
+		var input = $(this).children('input').eq(0);
+		input.trigger('change');
+		input.trigger('input');
+	});
+</script>

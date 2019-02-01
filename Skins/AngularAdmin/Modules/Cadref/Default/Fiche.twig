@@ -179,7 +179,7 @@
             {% endfor %}
             {% if browseable %}
             <li class="nav-item">
-                <a class="nav-link {% if not ChildrenElements|length %}active{% endif %}" href="javascript: void(0);" data-toggle="tab" data-target="#tabPagesSite" role="tab"><b>Pages correspondantes</b> {# ({[{ {{ child.objectModule }}{{ child.objectName }}.store.total.children }]}) #}</a>
+                <a class="nav-link {% if not ChildrenElements|length %}active{% endif %}" href="javascript: void(0);" data-toggle="tab" data-target="#tabPagesSite" role="tab"><b>Pages correspondantes</b></a>
             </li>
             {% endif %}
         </ul>
@@ -187,7 +187,6 @@
             {% for child in ChildrenElements %}
                 <div class="tab-pane {% if loop.first %}active{% endif %}" id="tab{{ child.objectName }}" role="tabpanel">
                     {% if child.recursive %}
-                        {#{{ include(template_from_string(module(Query~'/0/'~child.objectName~'/TreeChildren'))) }}#}
                         <section class="panel">
                             <div class="panel-body">
                                 <div id="ajaxwrapper"
@@ -286,7 +285,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-warning" ng-show="function.controls.cancel" data-dismiss="modal">Annuler</button>
-                <button type="button" class="btn btn-success" ng-show="function.controls.save" ng-click="callFunctionSave(function)">Enregistrer</button>
+                <button type="button" class="btn btn-success" ng-show="function.controls.save" accesskey="s" ng-click="callFunctionSave(function)">Sauver</button>
                 <button type="button" class="btn btn-info" ng-show="function.controls.close" data-dismiss="modal">Fermer</button>
             </div>
         </div>

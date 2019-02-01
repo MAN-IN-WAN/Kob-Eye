@@ -92,6 +92,7 @@
             contexts.push(context);
         }
         function cloneContext(src, dst) {
+			initContext(dst);
 			{{ st.identifier }}Store[dst]=angular.copy({{ st.identifier }}Store[src] );
             total[dst]=angular.copy(total[src]);
             timer[dst]=angular.copy(timer[src]);
@@ -102,7 +103,6 @@
             pageLoaded[dst]=angular.copy(pageLoaded[src]);
 			query[dst]=angular.copy(query[src]);
 			angular.copy(filters[src],filters[dst]);
-            contexts.push(dst);
          }
 
         function resetQuery(context = 'default') {

@@ -1,10 +1,12 @@
 <?php
+$vars['Annee'] = $GLOBALS['Systeme']->getRegVars('AnneeEnCours');
 if (isset($vars['Path']))
     $Path = $vars['Path'];
 else
     $vars['Path'] = $Path = $vars['Query'];
 $info = Info::getInfos($Path);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
+$o->setView();
 $vars['identifier'] = $info['Module'].$info['ObjectType'];
 if(!isset($vars['context']))
     $vars['context'] = $info['NbHisto'] > 1 ? 'children':'default';
@@ -47,6 +49,7 @@ if (is_object(Sys::$CurrentMenu)) {
         $vars['CurrentUrl'] = Sys::$CurrentMenu->Url;
     }
 }else $vars['CurrentUrl'] = $Path;
+
 if (!$vars['ObjectClass']->AccessPoint) $vars['Type'] = "Tail";
 
 $vars["Interfaces"] = $vars["ObjectClass"]->getInterfaces();
@@ -60,7 +63,7 @@ if (!isset($info['ObjectType'])) {
 $tab = explode('/', $info['Query']);
 	array_push($tab, 'Form');
 } else {
-	$tab = array($info['Module'], $info['ObjectType'], 'Form');
+	$tab = array($info['Module'], $info['ObjectType'], 'Fiche');
 }
 $blinfo = Bloc::lookForInterface($tab, 'Skins/AngularAdmin/Modules', true);
 if(strpos($blinfo, '/'.$info['Module'].'/')) {
@@ -78,4 +81,15 @@ foreach ($childs as $child){
         }
     }
 }
+
+$t = isset($_GET['hideBtn']) ? $_GET['hideBtn'] : '';
+$vars['hideBtn'] = array(
+	'selection' => strpos($t, 'selection') !== false,
+	'add' => strpos($t, 'add') !== false,
+	'delete' => strpos($t, 'delete') !== false,
+	'export' => strpos($t, 'export') !== false,
+	'functions' => strpos($t, 'functions') !== false
+);
+$vars['showCheckboxes'] = false;
+
 ?>

@@ -1,0 +1,40 @@
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label %} 
+<div class="page-content-inner">
+    <section class="panel">
+        <div class="panel-heading" style="padding-bottom:10px; padding-top:10px">
+			<div>
+				<span class="cadref-ins-numero" ng-bind="obj.Numero"></span> <span class="cadref-ins-nom" ng-bind="obj.Nom|uppercase"></span> <span class="cadref-ins-prenom" ng-bind="obj.Prenom"></span>
+			</div>
+        </div>
+        <div class="row" style="height:20px"></div>
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-md-2">
+					{{ label('Mail') }}
+				</div>
+				<div class="col-md-10">
+					<input type="text" class="form-control cadref-input" ng-init="msgObj.Mail=obj.Mail" ng-model="msgObj.Mail" readonly/>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-2">
+					{{ label('Sujet') }}
+				</div>
+				<div class="col-md-10">
+					<input type="text" class="form-control cadref-input" placeholder="Sujet du message" ng-model="msgObj.Subject"/>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-2">
+					{{ label('Message') }}
+				</div>
+				<div class="col-md-10">
+					<div ui-ace="{useWrapMode : true,mode: '',onLoad: aceLoaded,onChange: aceChanged}" ng-model="msgObj.Body" class="ace_editor"></div>
+				</div>
+			</div>
+		</div>
+		<button type="button" class="btn btn-info ng-scope" ng-if="CadrefAdherentfunction.callNext" ng-click="CadrefAdherentcallFunction(CadrefAdherentfunction.callNext.item,CadrefAdherentfunction.callNext.nom,CadrefAdherentfunction.callNext.title,CadrefAdherentfunction.callNext.needConfirm,1)">Suivant</button>
+	</section>
+</div>
+<input type="hidden" ng-init="CadrefAdherentfunction.args.Msg=msgObj"/>
+

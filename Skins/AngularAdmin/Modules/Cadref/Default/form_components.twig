@@ -1,0 +1,106 @@
+{% macro fhidden(field, obj) %}
+	<input type="hidden" ng-model="{{ obj }}.{{ field.name }}"/>
+{% endmacro %}
+
+{% macro label(text) %}
+    <label class="form-control-label cadref-label" style="line-height:1.1">{{ text }}</label>
+{% endmacro %}
+
+{% macro flabel(field) %}
+    <label class="form-control-label cadref-label" style="line-height:1.1">{{ field.description }}</label>
+    {% if field.help %}
+        <small>
+            <i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.helpLang }}</span></i>
+        </small>
+    {% endif %}
+{% endmacro %}
+
+{% macro finput(field, obj, readonly=false, mask='', style='', cap=false) %}
+    <div class="control-group">
+        <input type="text" class="form-control cadref-input" placeholder="" ng-model="{{ obj }}.{{ field.name }}"
+			{% if readonly %} readonly{% endif %}{% if mask!='' %} mask="{{ mask }}" {% endif %}{% if style!='' %} style="{{ style }}"{% endif %}
+			{% if cap %} onkeyup="this.value = this.value.toUpperCase();"{% endif %}
+		/>
+    </div>
+{% endmacro %}
+
+{% macro flinput(field, obj, readonly=false, mask='', style='', cap=false) %}
+    <div class="row">
+        <div class="col-md-2">
+            <label class="form-control-label cadref-label" style="line-height:1.1" for="{{ obj }}.{{ field.name }}">{{ field.description }}</label>
+            {% if field.help %}
+                <small>
+                    <i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.helpLang }}</span></i>
+                </small>
+            {% endif %}
+        </div>
+        <div class="col-md-10">
+            <input id="{{ obj }}.{{ field.name }}" type="text" class="form-control cadref-input" placeholder="" ng-model="{{ obj }}.{{ field.name }}"
+				{% if readonly %} readonly{% endif %}{% if mask!='' %} mask="{{ mask }}" {% endif %}{% if style!='' %} style="{{ style }}"{% endif %}
+	  			{% if cap %} onkeyup="this.value = this.value.toUpperCase();"{% endif %}
+			/>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro fvalues(field, obj, style='') %}
+    <select class="form-control cadref-input" ng-model="{{ obj }}.{{ field.name }}"{% if style!='' %} style="{{ style }}"{% endif %}>
+		<option value=""></option>
+        {% for v,k in field.Values %}
+            <option value="{{ v }}">{{ k }}</option>
+        {% endfor %}
+    </select>
+{% endmacro %}
+
+{% macro fquery(field, obj, style='') %}
+    <select class="form-control cadref-input" ng-model="{{ obj }}.{{ field.name }}"{% if style!='' %} style="{{ style }}"{% endif %}>
+		<option value="0"></option>
+        {% for v,k in field.query %}
+            <option value="{{ v }}">{{ k }}</option>
+        {% endfor %}
+    </select>
+{% endmacro %}
+
+{% macro flquery(field, obj) %}
+    <div class="row">
+        <div class="col-md-2">
+            <label class="form-control-label cadref-label" style="line-height:1.1" for="{{ obj }}.{{ field.name }}">{{ field.description }}</label>
+            {% if field.help %}
+                <small>
+                    <i class="icmn-question3 help-wrapper"><span class="fieldHelp">{{ field.helpLang }}</span></i>
+                </small>
+            {% endif %}
+        </div>
+        <div class="col-md-10">
+			<select class="form-control cadref-input" ng-model="{{ obj }}.{{ field.name }}">
+				<option value="0"></option>
+				{% for v,k in field.query %}
+					<option value="{{ v }}">{{ k }}</option>
+				{% endfor %}
+			</select>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro fdate(field, obj) %}
+    <label class="input-group datepicker-only-init cadref-no-margin">
+        <input id="input-{{ obj }}{{ field.name }}" type="text" class="form-control cadref-input" placeholder="Date" mask="dd/dd/dddd" ng-model="{{ obj }}.{{ field.name }}" {% if field.now %}ng-init="{{ obj }}.{{ field.name }} = '{{ "now"|date("d/m/Y") }}'"{% endif %}/>
+        <span class="input-group-addon">
+            <i class="icmn-calendar"></i>
+        </span>
+    </label>
+{% endmacro %}
+
+{% macro ftext(field, obj) %}
+    <div ui-ace="{useWrapMode : true,mode: '{{ field.subtype }}',onLoad: aceLoaded,onChange: aceChanged}" ng-model="{{ obj }}.{{ field.name }}" class="ace_editor" style="height:60px"></div>
+{% endmacro %}
+
+{% macro fboolean(field, obj, invert=false) %}
+    <switch ng-model="{{ obj }}.{{ field.name }}" {% if invert %}class="cadref-switch"{% endif %}></switch>
+{% endmacro %}
+
+{% macro fkey(field, obj) %}
+	<a class="btn btn-primary btn-xs cadref-fkey" href="#/{{ field.link }}/{[{ {{ obj }}.{{ field.objectName }}{{ field.name }} }]}">{[{ {{ obj }}.{{ field.objectName }}{{ field.name }}label }]}</a>
+{% endmacro %}
+
+

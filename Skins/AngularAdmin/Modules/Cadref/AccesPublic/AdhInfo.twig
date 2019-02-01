@@ -1,0 +1,267 @@
+{# fiche info personnelles Adherent #}
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean %} 
+{% set f=fields %}
+{% set o='obj' %}
+<div class="page-content-inner">
+    <h3>Informations personnelles</h3>
+    <!-- Default Panel -->
+    <section class="panel">
+        <div class="panel-body cadref-panel-body">
+            <div class="row no-gutters">
+                <div class="col-md-12">
+					<div class="row">
+						<div class="col-md-8" >
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Numéro") }}
+								</div>
+								<div class="col-md-2">
+									{{ finput(f.Numero, o, true, '', 'width:80px') }}
+								</div>
+							</div>
+							{{ flinput(f.Nom, o, false, '', 'text-transform:uppercase;', true) }}
+							{{ flinput(f.Prenom, o) }}
+							{{ flinput(f.Adresse1, o) }}
+							{{ flinput(f.Adresse2, o) }}
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("CP Ville") }}
+								</div>
+								<div class="col-md-2">
+									{{ finput(f.CP, o, false, 'ddddd') }}
+								</div>
+								<div class="col-md-8">
+									{{ finput(f.Ville, o, false, '', 'text-transform:uppercase;', true) }}
+								</div>
+							</div>
+							<div class="row" style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Téléphones") }}
+								</div>
+								<div class="col-md-10">
+									<div class="row">
+										<div class="col-md-6">
+											{{ finput(f.Telephone1, o, false, 'dd.dd.dd.dd.dd') }}
+										</div>
+										<div class="col-md-6">
+											{{ finput(f.Telephone2, o, false, 'dd.dd.dd.dd.dd') }}
+										</div>
+									</div>
+								</div>
+							</div>
+							{{ flinput(f.Mail, o) }}
+							<div class="row" style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Année de Naissance") }}
+										</div>
+										<div class="col-md-7">
+											{{ finput(f.Naissance, o) }}
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Sexe") }}
+										</div>
+										<div class="col-md-7">
+											{{ fvalues(f.Sexe, o) }}
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Certificat médical") }}
+										</div>
+										<div class="col-md-7">
+											<input type="text" ng-if="!obj.certifInvalide" class="form-control cadref-input" ng-model="obj.Certificat" readonly/>
+											<input type="text" ng-if="obj.certifInvalide" class="form-control cadref-input cadref-highlight" ng-model="obj.Certificat" 
+												   title="Certificat médical absent ou obsolète" onmouseenter="$(this).tooltip('show')"readonly/>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Situation") }}
+										</div>
+										<div class="col-md-7">
+											{{ fquery(f.SituationId, o) }}
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Profession") }}
+										</div>
+										<div class="col-md-7">
+											{{ fquery(f.ProfessionId, o) }}
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Connaissance du CADREF") }}
+										</div>
+										<div class="col-md-7">
+											{{ fvalues(f.Origine, o) }}
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Année d'inscription") }}
+										</div>
+										<div class="col-md-7">
+											{{ finput(f.Inscription, o, true) }}
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
+											{{ label("Dernière inscription") }}
+										</div>
+										<div class="col-md-7">
+											{{ finput(f.Annee, o, true) }}
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row" style="height:10px"></div>
+							<div class=row">
+								<div class="col-md-4">
+									<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="{{ identifier }}InfoSave()">Enregistrer les modifications</button>
+								</div>
+							</div>
+						</div>
+						{# block right #}                    
+						<div class="col-md-4">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </section>
+</div>
+{#{{ include(template_from_string(module('Systeme/Utils/Modal/Function?identifier='~identifier))) }}#}
+<div class="modal fade modal-size-large" id="modalfunction-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog cadref-modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">{[{ {{ identifier }}function.title }]}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" ng-if="{{ identifier }}function.errors.length">
+                    <ul>
+                        <li ng-repeat="e in {{ identifier }}function.errors">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-warning" ng-if="{{ identifier }}function.warning.length">
+                    <ul>
+                        <li ng-repeat="e in f{{ identifier }}function.warning">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-success" ng-if="{{ identifier }}function.infos.length">
+                    <ul>
+                        <li ng-repeat="e in {{ identifier }}function.infos">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="text-center"
+                     ng-hide="{{ identifier }}function.loaded">
+                    <br />
+                    Chargement ...
+                    <br />
+                    <div class="spinload"></div>
+                </div>
+                <div id="ajaxwrapperFunc"
+                     ng-show="{{ identifier }}function.loaded"
+                     compile="{{ identifier }}function.data" >
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal" ng-if="!{{ identifier }}function.callNext">Fermer</button>
+                <button type="button" class="btn" ng-if="{{ identifier }}function.callNext" ng-click="{{ identifier }}callFunction({{ identifier }}function.callNext.item,{{ identifier }}function.callNext.nom,{{ identifier }}function.callNext.title,{{ identifier }}function.callNext.needConfirm,1)">Suivant</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+	$('.datepicker-only-init').datetimepicker({
+		widgetPositioning: {
+			horizontal: 'left'
+		},
+		locale: 'fr',
+		format: 'DD/MM/YYYY',
+		icons: {
+			time: "fa fa-clock-o",
+			date: "fa fa-calendar",
+			up: "fa fa-arrow-up",
+			down: "fa fa-arrow-down"
+		}
+	});
+	$('.timepicker-only-init').datetimepicker({
+		widgetPositioning: {
+			horizontal: 'left'
+		},
+		locale: 'fr',
+		format: 'HH:mm',
+		icons: {
+			time: "fa fa-clock-o",
+			date: "fa fa-calendar",
+			up: "fa fa-arrow-up",
+			down: "fa fa-arrow-down"
+		}
+	});
+	$('.datetimepicker-init').datetimepicker({
+		widgetPositioning: {
+			horizontal: 'left'
+		},
+		locale: 'fr',
+		icons: {
+			time: "fa fa-clock-o",
+			date: "fa fa-calendar",
+			up: "fa fa-arrow-up",
+			down: "fa fa-arrow-down"
+		}
+	});
+
+
+	$('.urlInput').on('keyup', function () {
+		$(this).val($(this).val().replace(/[^A-Za-z0-9_\-\.]*\s*/g, ''));
+	});
+	//Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
+	$(".datepicker-only-init").on("dp.change", function () {
+		var input = $(this).children('input').eq(0);
+		input.trigger('change');
+		input.trigger('input');
+	});
+	$(".timepicker-only-init").on("dp.change", function () {
+		var input = $(this).children('input').eq(0);
+		input.trigger('change');
+		input.trigger('input');
+	});
+	$(".datetimepicker-init").on("dp.change", function () {
+		var input = $(this).children('input').eq(0);
+		input.trigger('change');
+		input.trigger('input');
+	});
+</script>
+

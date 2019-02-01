@@ -30,7 +30,7 @@
             foreach($vars['params'] as $key=>$param){
                 $params .= '&'.urlencode($key).'='.urlencode(json_encode($key));
             }
-            $temp = KeTwig::callModule($blinfo.$params);
+            $temp = KeTwig::callModule($blinfo.f);
         } else{
             $params = array('Query'=>$path);
             $params = array_merge($params,$vars['params']);
@@ -85,8 +85,13 @@
                     if(isset($temp['callNext'])){
                         $vars['toReturn']['callNext'] = $temp['callNext'];
                     }
+					if(isset($temp['args'])){
+                        $vars['toReturn']['args'] = $temp['args'];
+                    }
+                    if(isset($temp['data'])){
+                        $vars['toReturn']['data'] = $temp['data'];
+                    }
                     if(isset($temp['task'])){
-
                         $path = $temp['task']->Module.'/'. $temp['task']->ObjectType.'/'. $temp['task']->Id.'/Activity';
                         $loadTemp('Skins/AngularAdmin/Modules/Systeme/Utils/Function/Tasks.twig',$path);
                     }

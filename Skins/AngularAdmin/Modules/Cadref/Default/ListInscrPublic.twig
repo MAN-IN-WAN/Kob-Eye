@@ -1,0 +1,63 @@
+<div class="listWrap">
+	<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%" style="line-height:1" >
+		<thead>
+			<tr>
+				<th title="Id" class="list-col-th-id" hidden>ID</th>
+				<th>Libellé</th>
+				<th>Antenne</th>
+				<th>Horaires</th>
+				<th>Période</th>
+				<th>Prix</th>
+				<th>Etat</th>
+				<th>Date état</th>
+				<th>Doc.</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr dir-paginate="item in {{ identifier }}{% if tempContext %}.store.data.temp{% else %}.data{% endif %}">
+				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
+				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleS+' / '+item.LibelleD+' '+item.LibelleN }]}</span></td>
+				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleA }]}</span></td>
+				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Jour | limitTo : 3 }]} {[{ item.HeureDebut }]}&nbsp;-&nbsp;{[{ item.HeureFin }]}</span></td>
+				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.CycleDebut }]}&nbsp;-&nbsp;{[{ item.CycleFin }]}</span></td>
+				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ (item.Prix*1)+(item.Reduction1*1)+(item.Reduction2*1) }]}</span></td>
+				<td scope="row" class="cadref-td typevarchar">
+					<span class="label label-info" ng-if="item.Attente>0 && item.Supprime==0">Attente</span>
+					<span class="label label-success" ng-if="item.Attente==0 && item.Supprime==0">Inscrit</span>
+					<span class="label label-danger" ng-if="item.Supprime==1">Supprimé</span>
+					<span class="label label-warning" ng-if="item.Supprime==2" style="background-color:orange">Echangé</span>
+				</td>
+				<td scope="row" class="cadref-td typedate">
+					<span class="label" ng-if="item.Supprime>0">{[{ item.DateSupprime }]}</span>
+					<span class="label" ng-if="item.Attente>0 && item.Supprime==0">{[{ item.DateAttente | limitTo : 16 }]}</span>
+					<span class="label" ng-if="item.Attente==0 && item.Supprime==0">{[{ item.DateInscription | limitTo : 11 }]}</span>
+				</td>
+				<td scope="row" class="cadref-td typeint">
+					<span class="btn btn-xs cadref-fkey" ng-class="{'btn-primary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
+						  ng-click="attachementsOpen(item, 'inscription')">{[{ item.Attachements }]}
+					</span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div class="modal fade cadref-modal-size-medium" id="modal-Attachements" role="modal" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog cadref-modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Cours : Documents</h4>
+            </div>
+            <div class="modal-body">
+                <div ng-if="attachInfo.classeId>0 || attachInfo.visiteId>0">
+					<ng-include src="'Cadref/Attachement/FicheAttachements.htm'"></ng-include>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+	$('.spinner-list').spin();
+</script>
