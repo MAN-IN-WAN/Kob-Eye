@@ -21,7 +21,7 @@ class CompteMail extends genericClass {
 		//}
         //vérificatio du client
 
-        if(!$this->Suppression)
+        if(!$this->Suppression || $this->Suppression == '0')
             $this->Suppression = NULL;
 
 

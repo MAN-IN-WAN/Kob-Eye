@@ -164,7 +164,7 @@ class Connection extends Root{
                 $site = Sys::getOneData('Systeme', 'Site/Domaine=' . $domain);
                 if ($site && $site->Api && $_SERVER['REQUEST_URI'] != '/Documentation') {
                     http_response_code (401);
-                    die(json_encode(array('success'=>false,'error'=>'invalid_credentials','error_description'=>'L\'utilisation de cett API nécéssite un utilisateur authentifié')));
+                    die(json_encode(array('success'=>false,'error'=>'invalid_credentials','error_description'=>'L\'utilisation de cette API nécéssite un utilisateur authentifié')));
                 }
 
                 $this->initDefaultUser();
@@ -313,6 +313,13 @@ class Connection extends Root{
                     $this->SessId  = $data["AUTH_TOKEN"];
                     $t=true;
 				}
+		}
+		if(!$t){
+			$data = json_decode(file_get_contents("php://input"),true);
+			if(is_array($data) && isset($data['AUTH_TOKEN'])){
+				$this->SessId  = $data["AUTH_TOKEN"];
+				$t=true;
+			}
 		}
         return $t;
 	}

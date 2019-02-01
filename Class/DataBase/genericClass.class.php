@@ -3057,4 +3057,16 @@ class genericClass extends Root {
         }
         return $o;
     }
+
+    public function getDbCount($module, $query){
+	     return Sys::getCount($module, $query);
+    }
+
+    public function getDbData($module, $query, $offset="", $limit="", $orderType="", $orderVar="", $select="", $groupBy="", $noRights = false){
+        return Sys::getData($module, $query, $offset, $limit, $orderType, $orderVar, $select, $groupBy, $noRights);
+    }
+
+    public function getOneDbData($module, $query, $offset="", $limit="", $orderType="", $orderVar="", $select="", $groupBy="", $noRights = false){
+        return Sys::getOneData($module, $query, $offset, $limit, $orderType, $orderVar, $select, $groupBy, $noRights);
+    }
 }

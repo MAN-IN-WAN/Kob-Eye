@@ -113,8 +113,8 @@ switch($info['TypeSearch']){
                 foreach($data as $k=>$d){
                     $req .= '&'.$k.'='.$d;
                 }
-                $total = Sys::getCount($info['Module'],$req);
-                $items = Sys::getData($info['Module'],$req,$offset,$limit,$orderType,$orderVar);
+                $total = $generic->getDbCount($info['Module'],$req);
+                $items = $generic->getDbData($info['Module'],$req,$offset,$limit,$orderType,$orderVar);
                 //On retourne la liste de ces objets
                 sendResult(206,$items,array('offset'=>$offset,'limit'=>$limit, 'total'=>$total));
                 break;
@@ -128,7 +128,7 @@ switch($info['TypeSearch']){
                 $item = $generic;
                 $tempLegacy = explode('/',$info['LastDirect'],2);
                 if(isset($tempLegacy[1]) && $tempLegacy[1] != ''){
-                    $parent = Sys::getOneData($tempLegacy[0],$tempLegacy[1]);
+                    $parent = $generic->getOneDbData($tempLegacy[0],$tempLegacy[1]);
                     $item->addParent($parent);
                 }
                 foreach ($info['typesParent'] as $tp){
@@ -226,7 +226,7 @@ switch($info['TypeSearch']){
             foreach($data as $k=>$d){
                 $req .= '&'.$k.'='.$d;
             }
-            $item = Sys::getOneData($info['Module'],$req);
+            $item = $generic->getOneDbData($info['Module'],$req);
             if(!$item) {
                 sendResult(404);
                 break;
@@ -255,7 +255,7 @@ switch($info['TypeSearch']){
                 $item = $generic;
                 $tempLegacy = explode('/',$info['LastDirect'],2);
                 if(isset($tempLegacy[1]) && $tempLegacy[1] != ''){
-                    $parent = Sys::getOneData($tempLegacy[0],$tempLegacy[1]);
+                    $parent = $generic->getOneDbData($tempLegacy[0],$tempLegacy[1]);
                     $item->addParent($parent);
                 }
                 foreach ($info['typesParent'] as $tp){
@@ -303,7 +303,7 @@ switch($info['TypeSearch']){
                 $item = $generic;
                 $tempLegacy = explode('/',$info['LastDirect'],2);
                 if(isset($tempLegacy[1]) && $tempLegacy[1] != ''){
-                    $parent = Sys::getOneData($tempLegacy[0],$tempLegacy[1]);
+                    $parent = $generic->getOneDbData($tempLegacy[0],$tempLegacy[1]);
                     $item->addParent($parent);
                 }
                 foreach ($info['typesParent'] as $tp){
