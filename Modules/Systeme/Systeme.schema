@@ -336,6 +336,7 @@
         <PROPERTIES category="Fonction" type="varchar" description="ObjectClass"  searchOrder="3" fiche="6" form="1">TaskObject</PROPERTIES>
         <PROPERTIES category="Fonction" type="int" description="Identifiant"  searchOrder="4" fiche="7" form="1">TaskId</PROPERTIES>
         <PROPERTIES category="Fonction" type="varchar" description="Fonction à éxécuter"  searchOrder="5" fiche="7"  form="1">TaskFunction</PROPERTIES>
+		<PROPERTIES category="Fonction" type="varchar" description="Paramètre de la fonction (tableau sérialisé)"  searchOrder="6" fiche="7"  form="1">TaskArgs</PROPERTIES>
         <PROPERTIES type="varchar"  fiche="1" form="1" description="Identifiant du thread en cours">ThreadId</PROPERTIES>
         <PROPERTIES type="progress" list="1" fiche="1" form="1" listDescr="Progression">Progression</PROPERTIES>
         <!-- Parc -->

@@ -171,8 +171,8 @@ class ParcInstanceDolibarr extends Plugin implements ParcInstancePlugin {
     /**
      * checkState
      */
-    public function checkState(){
-
+    public function checkState($task){
+        return true;
     }
     /**
      * rewriteConfig

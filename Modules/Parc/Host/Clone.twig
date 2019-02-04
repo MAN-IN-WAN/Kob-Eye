@@ -6,18 +6,6 @@
 </div>
 <div class="col-md-6">
     <div class="form-group">
-        <input type="text" class="form-control" name="Nom" placeholder="Nom du nouvel hébergement" ng-model="obj.name">
-    </div>
-</div>
-
-
-<div class="row">
-    <div class="col-md-12">
-        <label class="form-control-label" for="l0">Serveur</label>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <div>{{ include(template_from_string(module('Systeme/Utils/Select?Path=Parc/Server&Field=HostServerId&FieldKey=ServerId&ParentObject=Server'))) }}</div>
+        <input type="text" class="form-control" name="Nom" placeholder="Nom du nouvel hébergement" ng-model="ParcHostfunction.args.targetHost">
     </div>
 </div>
