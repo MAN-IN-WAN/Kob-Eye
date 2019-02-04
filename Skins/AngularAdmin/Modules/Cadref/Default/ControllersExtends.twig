@@ -444,7 +444,6 @@
 			
 			if(cad.Inscr.cotis != $scope.CotisationAnnuelle)
 				cad.Inscr.cotis = $scope.CotisationAnnuelle;
-console.error('xxxxxxxxxxxxxxxxxxxxxxx');
 			$scope.classeCalcul();
 			cad.Inscr.updated = true;
 		}
@@ -618,7 +617,7 @@ console.error('xxxxxxxxxxxxxxxxxxxxxxx');
 		
 		$scope.Enseignants = JSON.parse('{{ enseignants|raw }}');
 
-		// modification date cours
+{#		// modification date cours
 		$scope.classeDateOpenCallback = function(item, obj) {
 			var o = $scope.localObj = {};
             angular.copy(obj, o);
@@ -638,6 +637,62 @@ console.error('xxxxxxxxxxxxxxxxxxxxxxx');
 			$scope.CadrefClasseDatedelete(obj);
 			$("#modal-CadrefClasseDate").modal('toggle');
 		}
+#}
+		//-----------------
+		// CLASSEDATE
+		
+		$scope.classeDateObj;
+		$scope.classeDateInfo = {mode: ''};
+		// ferme classe>Date edit section
+		$scope.classeDateCloseEdit = function() {
+			$scope.classeDateInfo.mode = '';
+		}
+
+		// ajout classeDate
+		$scope.classeDateAdd = function() {
+			var i = $scope.classeDateInfo;
+			var o = $scope.classeDateObj = CadrefClasseDateStore.getNewData();
+			o.ClasseClasseId = $scope.obj.id;
+			i.mode = 'add';
+		}
+
+		// modification classeDate
+		$scope.classeDateModify = function(item) {
+			var i = $scope.classeDateInfo;
+			var o = $scope.classeDateObj = {};
+			angular.copy(item, o);
+			o.ClasseClasseId = $scope.obj.id;
+			i.mode = 'edit';
+		}
+
+		// sauve classeDate
+		$scope.classeDateSave = function() {
+			$('#settings').spin();
+			CadrefClasseDateStore.saveData($scope.classeDateObj).then(function (data) {
+				$('#settings').spin(false);
+				$scope.classeDateInfo.mode = '';
+			});
+		}
+
+		// suppression classeDate
+		$scope.classeDateDelete = function(item) {
+			swal({
+					title: "Effacer la date",
+					text: "Cette suppression sera définitive. ",
+					type: "warning",
+					showCancelButton: true,
+					confirmButtonClass: "btn-danger",
+					cancelButtonText: "Annuler",
+					confirmButtonText: "Oui, supprimer !",
+					closeOnConfirm: true
+				},
+				function(){
+					CadrefClasseDateStore.deleteOneData(item.id,'all');
+					$scope.classeDateInfo.mode = '';
+				}
+			);
+		}
+		
 		{% endif %}
 
 		

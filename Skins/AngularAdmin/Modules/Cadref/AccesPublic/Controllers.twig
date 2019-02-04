@@ -78,15 +78,19 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		return s;
 	}
 	
+	//-----------------------------
+	// ATTACHEMENT
+	//-----------------------------
+	
 	// store Attachement
 	$scope.CadrefAttachement = $scope.createStore(CadrefAttachementStore, 'children');
 
 	// ouverture fenetre attachements
-	$scope.attachObj;
-	$scope.attachInfo;
+	$scope.attachementObj;
+	$scope.attachementInfo;
 	$scope.attachementsOpen = function(item, origine) {
 		if(item.Attachements == 0 && (origine == 'inscription' || origine == 'reservation')) return;
-		var o = $scope.attachInfo = {origine: origine, mode: '', classeId: 0, visiteId: 0, code: '', libelle: ''};
+		var o = $scope.attachementInfo = {origine: origine, mode: '', classeId: 0, visiteId: 0, code: '', libelle: ''};
 		switch(origine){
 			case 'classe':
 				o.classeId = item.id;
@@ -117,25 +121,25 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		$("#modal-Attachements").modal();
 	}
 	
+	{% if objecttype == 'Enseignant' %}
 	// ferme attachement edit section
 	$scope.attachementCloseEdit = function() {
-		$scope.attachInfo.mode = '';
+		$scope.attachementInfo.mode = '';
 	}
 	
 	// ajout attachement
 	$scope.attachementAdd = function() {
-		var i = $scope.attachInfo;
-		var o = $scope.attachObj = CadrefAttachementStore.getNewData();
+		var i = $scope.attachementInfo;
+		var o = $scope.attachementObj = CadrefAttachementStore.getNewData();
 		o.ClasseClasseId = i.classeId;
 		o.VisiteVisiteId = i.visiteId;
 		i.mode = 'add';
 	}
 	
-	{% if objecttype == 'Enseignant' %}
-	// ajout attachement
+	// modification attachement
 	$scope.attachementModify = function(item) {
-		var i = $scope.attachInfo;
-		var o = $scope.attachObj = {};
+		var i = $scope.attachementInfo;
+		var o = $scope.attachementObj = {};
 		angular.copy(item, o);
 		o.ClasseClasseId = i.classeId;
 		o.VisiteVisiteId = i.visiteId;
@@ -145,9 +149,9 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	// sauve attachement
 	$scope.attachementSave = function() {
         $('#settings').spin();
-        CadrefAttachementStore.saveData($scope.attachObj).then(function (data) {
+        CadrefAttachementStore.saveData($scope.attachementObj).then(function (data) {
             $('#settings').spin(false);
-			$scope.attachInfo.mode = '';
+			$scope.attachementInfo.mode = '';
 		});
 	}
 
@@ -165,19 +169,20 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 			},
 			function(){
 				CadrefAttachementStore.deleteOneData(item.id,'all');
-				$scope.attachInfo.mode = '';
+				$scope.attachementInfo.mode = '';
 			}
 		);
 	}
 	{% endif %}
 	
-		
+	
+	//--------------------------------
+	// ENSEIGNANT
+	//--------------------------------	
+	
 	{% if objecttype == 'Enseignant' %}
 	//Gestion du store
     $scope.store = CadrefEnseignantStore;
-//    $scope.store.resetQuery('default');
-//    $scope.store.currentPage['default'] = 1;
-//    $scope.store.setFilters('Id={{ entite.Id }}', 'default');
 
 	// store children
 	$scope.CadrefAbsence = $scope.createStore(CadrefAbsenceStore, 'children');
@@ -330,6 +335,10 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	});
 	{% endif %}
 
+
+	//--------------------------------
+	// ADHERENT
+	//--------------------------------
 
 	{% if objecttype == 'Adherent' %}
     //Gestion du store

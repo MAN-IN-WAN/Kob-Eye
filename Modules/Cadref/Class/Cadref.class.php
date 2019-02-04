@@ -30,6 +30,11 @@ class Cadref extends Module {
 		$data['success'] = 0;
 		$data['message'] = '';
 		$data['controls'] = ['close'=>0, 'save'=>1, 'cancel'=>1];
+		
+		if($_POST['validForm'] == 2) {
+			// create account + password + meail
+			$data['message'] = 'Votre mot de passe vous a été envoyé par email.';
+		}
 
 		$num = isset($_POST['Numero']) ? trim($_POST['Numero']) : '';
 		$nom = isset($_POST['Nom']) ? trim($_POST['Nom']) : '';
@@ -86,9 +91,9 @@ class Cadref extends Module {
 				break;
 			}
 			$data['success'] = 1;
-		} else $data['message'] = 'Adhérent non trouvé';
+			$data['message'] = 'Si les informations suivantes vous correspondent, appuyez sur continuer pour recevoir votre mot de passe par email ou par SMS.';
+		} else $data['message'] = 'Aucun adhérent ne correspond à ces critères.';
 
-	$data['AAA'] = self::GeneratePassword();
 		$data['sql'] = $sql;
 		$data["controls"] = ['close'=>0, 'save'=>1, 'cancel'=>1];
 		return json_encode($data);

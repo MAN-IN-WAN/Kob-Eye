@@ -83,8 +83,8 @@
 {% endmacro %}
 
 {% macro fdate(field, obj) %}
-    <label class="input-group datepicker-only-init cadref-no-margin">
-        <input id="input-{{ obj }}{{ field.name }}" type="text" class="form-control cadref-input" placeholder="Date" mask="dd/dd/dddd" ng-model="{{ obj }}.{{ field.name }}" {% if field.now %}ng-init="{{ obj }}.{{ field.name }} = '{{ "now"|date("d/m/Y") }}'"{% endif %}/>
+    <label class="input-group datepicker-only-init cadref-no-margin cadref-input-date">
+        <input id="input-{{ obj }}{{ field.name }}" type="text" class="form-control cadref-input" placeholder="Date" mask="dd/dd/dddd" ng-model="{{ obj }}.{{ field.name }}" {% if field.now %}ng-init="{{ obj }}.{{ field.name }}='{{ "now"|date("d/m/Y") }}'"{% endif %}"/>
         <span class="input-group-addon">
             <i class="icmn-calendar"></i>
         </span>

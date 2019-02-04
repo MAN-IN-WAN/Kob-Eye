@@ -170,33 +170,6 @@ left join kbabtel.`kob-Cadref-Cursus` u on u.Cursus=e.Cursus
 left join kbabtel.`kob-Cadref-Situation` s on s.Situation=e.Situation;
 
 
-truncate kbabtel.`kob-Cadref-AdherentAnnee`;
-insert into kbabtel.`kob-Cadref-AdherentAnnee` (umod,gmod,omod,AdherentId,Numero,Annee,NotesAnnuelles,Adherent,ClasseId,
-Cotisation,Cours,Reglement,Differe,Regularisation)
-select 7,7,7,a.Id,e.Numero,e.Annee,NotesTemp,e.Adherent,c.Id,
-e.Cotisation,e.Montant,e.Reglement,e.Differe,e.Regul
-from cadref18.Eleves e
-inner join kbabtel.`kob-Cadref-Adherent` a on a.Numero=e.Numero
-left join kbabtel.`kob-Cadref-Classe` c on c.CodeClasse=concat(substr(e.Delegue,1,1),substr(e.Delegue,2,2),substr(e.Delegue,4,2),substr(e.Delegue,6,1),substr(e.Delegue,7,1))
-where e.Annee=@annee;
-
-update `kob-Cadref-AdherentAnnee` a
-set a.Cours=(select ifnull(sum(ifnull(Prix-Reduction1-Reduction2,0)),0) from `kob-Cadref-Inscription` i where i.AdherentId=a.AdherentId and i.Annee=@annee and i.Supprime=0),
-a.Reglement=(select ifnull(sum(ifnull(Montant,0)),0) from `kob-Cadref-Reglement` r where r.AdherentId=a.AdherentId and r.Annee=@annee and r.Supprime=0 and (r.Differe=0 or r.Encaisse=1)),
-a.Differe=(select ifnull(sum(ifnull(Montant,0)),0) from `kob-Cadref-Reglement` r where r.AdherentId=a.AdherentId and r.Annee=@annee and r.Supprime=0 and (r.Differe=1 and r.Encaisse=0))
-where a.Annee=@annee;
-
-update kbabtel.`kob-Cadref-AdherentAnnee` a
-left join (
-select AdherentId,min(DateReglement) as dt
-from kbabtel.`kob-Cadref-Reglement`
-where Annee=@annee
-group by AdherentId
-) t on t.AdherentId=a.AdherentId
-set a.DateCotisation=t.dt
-where a.Annee=@annee;
-
-
 
 truncate kbabtel.`kob-Cadref-Inscription`;
 insert into kbabtel.`kob-Cadref-Inscription` (umod,gmod,omod,Numero,CodeClasse,Antenne,Annee,DateInscription,Attente,DateAttente,Prix,Reduction1,Reduction2,
@@ -229,3 +202,30 @@ from cadref18.Reservations r
 left join kbabtel.`kob-Cadref-Adherent` a on a.Numero=r.Numero
 left join kbabtel.`kob-Cadref-Visite` v on v.Visite=r.Visite
 order by r.Numero,r.Visite;
+
+truncate kbabtel.`kob-Cadref-AdherentAnnee`;
+insert into kbabtel.`kob-Cadref-AdherentAnnee` (umod,gmod,omod,AdherentId,Numero,Annee,NotesAnnuelles,Adherent,ClasseId,
+Cotisation,Cours,Reglement,Differe,Regularisation)
+select 7,7,7,a.Id,e.Numero,e.Annee,NotesTemp,e.Adherent,c.Id,
+e.Cotisation,e.Montant,e.Reglement,e.Differe,e.Regul
+from cadref18.Eleves e
+inner join kbabtel.`kob-Cadref-Adherent` a on a.Numero=e.Numero
+left join kbabtel.`kob-Cadref-Classe` c on c.CodeClasse=concat(substr(e.Delegue,1,1),substr(e.Delegue,2,2),substr(e.Delegue,4,2),substr(e.Delegue,6,1),substr(e.Delegue,7,1))
+where e.Annee=@annee;
+
+update `kob-Cadref-AdherentAnnee` a
+set a.Cours=(select ifnull(sum(ifnull(Prix-Reduction1-Reduction2,0)),0) from `kob-Cadref-Inscription` i where i.AdherentId=a.AdherentId and i.Annee=@annee and i.Supprime=0 and i.Attente=0),
+a.Visites=(select ifnull(sum(ifnull(Prix-Reduction,0)),0) from `kob-Cadref-Reservation` r where r.AdherentId=a.AdherentId and r.Annee=@annee and r.Supprime=0 and r.Attente=0),
+a.Reglement=(select ifnull(sum(ifnull(Montant,0)),0) from `kob-Cadref-Reglement` r where r.AdherentId=a.AdherentId and r.Annee=@annee and r.Supprime=0 and (r.Differe=0 or r.Encaisse=1)),
+a.Differe=(select ifnull(sum(ifnull(Montant,0)),0) from `kob-Cadref-Reglement` r where r.AdherentId=a.AdherentId and r.Annee=@annee and r.Supprime=0 and (r.Differe=1 and r.Encaisse=0))
+where a.Annee=@annee;
+
+update kbabtel.`kob-Cadref-AdherentAnnee` a
+left join (
+select AdherentId,min(DateReglement) as dt
+from kbabtel.`kob-Cadref-Reglement`
+where Annee=@annee
+group by AdherentId
+) t on t.AdherentId=a.AdherentId
+set a.DateCotisation=t.dt
+where a.Annee=@annee;
