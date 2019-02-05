@@ -1230,4 +1230,5 @@ Choix des composants
 /**MODAL**/
 .modal-body {
     overflow: hidden;
+    overflow: -webkit-paged-y !important;
 }

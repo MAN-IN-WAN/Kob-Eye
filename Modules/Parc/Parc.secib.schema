@@ -199,6 +199,10 @@
 			<PROPERTIES type="varchar" description="Admin Guacamole: User BDD" form="1">guacAdminUser</PROPERTIES>
 			<PROPERTIES type="varchar" description="Admin Guacamole: Pass BDD" form="1">guacAdminPassword</PROPERTIES>
 		</CATEGORY>
+		<CATEGORY title="Sql">
+			<PROPERTIES type="varchar" description="User BDD" form="1">SqlUser</PROPERTIES>
+			<PROPERTIES type="varchar" description="Pass BDD" form="1">SqlPass</PROPERTIES>
+		</CATEGORY>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapDN</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapID</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
@@ -655,6 +659,8 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Infra" driver="mysql" Description="Infrastructure / regroupement de serveurs" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" AccessPoint="1">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Titre" list="1" form="1" fiche="1" listDescr="Titre">Nom</PROPERTIES>
+		<PROPERTIES type="boolean" description="Infrastructure par défaut" form="1" hasRole="PARC_TECHNICIEN" list="1">Default</PROPERTIES>
+		<FKEY data="Client,Id" card="0,1" inline="1" description="Client" form="1" hasRole="PARC_TECHNICIEN" list="1">ClientId</FKEY>
 	</OBJECTCLASS>
 </SCHEMA>
 

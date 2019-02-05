@@ -24,14 +24,14 @@ class ParcInstanceSecib extends Plugin implements ParcInstancePlugin {
      */
     public function postInit(){
         $host = $this->_obj->getOneParent('Host');
-        $host->PHPVersion = '7.0.2';
+        $host->PHPVersion = '7.0.10';
         $host->Save();
 
         $infra = Sys::getOneData('Parc', 'Infra/Nom=Secib', null, null, null, null, null, null, true);
         if($infra)
             $this->_obj->addParent($infra);
 
-        $this->_obj->PHPVersion = '7.0.2';
+        $this->_obj->PHPVersion = '7.0.10';
         $this->_obj->softSave();
     }
     /**

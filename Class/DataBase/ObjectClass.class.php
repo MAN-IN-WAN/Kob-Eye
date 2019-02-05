@@ -139,7 +139,7 @@ class ObjectClass extends Root{
 		if (!$this->OperationsDefined){
 			//alors on ajoute aussi toutes les fonctions
             if (is_array($this->Functions))foreach ($this->Functions as $nf=>$f){
-            	if (!array_key_exists($nf))
+            	if (!array_key_exists($nf,$this->Operations))
             		$this->Operations[$nf]=true;
             }
 		}

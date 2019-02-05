@@ -140,6 +140,7 @@ class Sys extends Root{
 		$this->postInitModules();
 	}
 	function moduleOverride() {
+		if (!is_object(Sys::$User)) return;
         $roles = Sys::$User->getRoles();
         foreach ($roles as $r){
             //pour chaque module

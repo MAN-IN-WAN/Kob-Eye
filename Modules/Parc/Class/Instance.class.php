@@ -28,7 +28,7 @@ class Instance extends genericClass{
         $apachesrv = Sys::getOneData('Parc', $pref.'Server/Web=1&defaultWebServer=1', null, null, null, null, null, null, true);
         $proxysrv = Sys::getOneData('Parc', $pref.'Server/Proxy=1', null, null, null, null, null, null, true);
         $mysqlsrv = Sys::getOneData('Parc', $pref.'Server/Sql=1&defaultSqlServer=1', null, null, null, null, null, null, true);
-        $dom = Sys::getOneData('Parc', 'Domain/defaultDomain=1', 0, 1, '', '', '', '', true);
+        $dom = Sys::getOneData('Parc', 'Domain/defaultDomain=1', 0, 100, '', '', '', '', true);
 
         if (!$apachesrv) {
             $GLOBALS["Systeme"]->Db[0]->exec('ROLLBACK');
@@ -52,63 +52,48 @@ class Instance extends genericClass{
             $this->addError(Array("Message" => 'Le sous-domaine de l\'instance ne doit pas contenir de caractère spéciaux. '.$this->SousDomaine.'!='.Instance::checkName($this->SousDomaine)));
             return false;
         }
-        parent::Save();
-
-        //Check du client
-        $client = $this->getOneParent('Client');
-        if (!$client) {
-            /*$GLOBALS["Systeme"]->Db[0]->exec('ROLLBACK');
-            $this->addError(Array("Message" => 'Une instance doit être liée à un client. Si il n\'existe pas , veuillez le créer au préalable.'));
-            return false;*/
-            //création d'un client par défaut
-            //on vérifie que le client n'existe pas déjà
-            $client = Sys::getOneData('Parc','Client/NomLDAP='.Utils::CheckSyntaxe($this->Nom));
-            if (!$client) {
-                $client = genericClass::createInstance('Parc', 'Client');
-                $client->Nom = $this->Nom;
-                if (!$client->Save()) {
-                    $this->Error = array_merge($this->Error,$client->Error);
-                    return false;
-                }
-            }
-            $this->addParent($client);
-        }
 
         //creation du nom temporaire
         if (empty($this->InstanceNom))
-            $this->InstanceNom = substr('instance-'.Instance::checkName($this->Nom),0,32);
+            $this->InstanceNom = substr('inst-'.Instance::checkName($this->Nom),0,32);
         else $this->InstanceNom = substr($this->InstanceNom,0,32);
 
         //Vérification du mot de passe
         if (empty($this->Password)){
             $this->Password = str_shuffle(bin2hex(openssl_random_pseudo_bytes(12)));
         }
+        parent::Save();
+
+        //Check du client
+        $client = $this->getOneParent('Client');
+        if (!$client) {
+            $client = Parc_Client::getClientFromCode($this->InstanceNom,$this->Nom);
+            $this->addParent($client);
+        }
 
         $tmpname = $this->InstanceNom;
 
         //vérification de l'existence du sous domaine par défaut
-        $as = Sys::getOneData('Parc','Domain/'.$dom->Id.'/Subdomain/Url='.$tmpname);
-        if (!$as){
-            $as = genericClass::createInstance('Parc','Subdomain');
-            $as->Url = $tmpname;
-            $as->IP = $proxysrv->IP;
-            $as->addParent($dom);
-            $as->Save();
-        }else{
-            $as->IP = $proxysrv->IP;
-            $as->addParent($dom);
-            $as->Save();
+        if ($dom) {
+            $as = Sys::getOneData('Parc', 'Domain/' . $dom->Id . '/Subdomain/Url=' . $tmpname);
+            if (!$as) {
+                $as = genericClass::createInstance('Parc', 'Subdomain');
+                $as->Url = $tmpname;
+                $as->IP = $proxysrv->IP;
+                $as->addParent($dom);
+                $as->Save();
+            } else {
+                $as->IP = $proxysrv->IP;
+                $as->addParent($dom);
+                $as->Save();
+            }
+            $this->FullDomain = $as->Url . '.' . $dom->Url;
+            parent::Save();
         }
-        $this->FullDomain = $as->Url.'.'.$dom->Url;
-        parent::Save();
 
-        //Check des domaine
+        //Check des domaine (CAS SECIB)
         $dom = $this->getParents('Domain');
-        if (!is_array($dom) || !sizeof($dom)) {
-            /*$GLOBALS["Systeme"]->Db[0]->exec('ROLLBACK');
-            $this->addError(Array("Message" => 'Une instance doit être liée à un ou plusieurs domaines'));
-            return false;*/
-        } else {
+        if (is_array($dom) && sizeof($dom)) {
             $defaulturl = false;
             $otherurls = array();
             foreach ($dom as $d) {
@@ -128,8 +113,9 @@ class Instance extends genericClass{
                 else $otherurls[] = $this->SousDomaine . '.' . $d->Url;
             }
         }
+
+        //Check de l'hébergement
         try {
-            //Check de l'hébergement
             $heb = $this->getOneParent('Host');
             if (!$heb) {
                 //alors création de l'hébergement
@@ -161,82 +147,20 @@ class Instance extends genericClass{
         }catch (Exception $e){
             //impossible de creéer l'hébergement
             $GLOBALS["Systeme"]->Db[0]->exec('ROLLBACK');
-            parent::Delete();
             $this->addError(Array("Message" => 'Impossible de créer l\'hébergement. raison: '.$e->getMessage()));
             return false;
         }
 
-        //check apache
-        $apache = Sys::getOneData('Parc','Host/'.$heb->Id.'/Apache',0,1,'ASC','Id');
-        if (!$apache) {
-            //alors création du apache
-            $apache = $this->createApache();
-        } else {
-            //$apache->ApacheServerName = $this->FullDomain;
-            /*if (empty($this->ServerAlias)){
-                $this->ApacheServerAlias = $apache->ServerAlias;
-            }else $apache->ApacheServerAlias = $this->ServerAlias;*/
-
-            $apache->Actif = true;
-            $apache->addParent($heb);
-        }
-        //Gestion des alias
-        if (is_array($dom) && sizeof($dom)) {
-            foreach ($dom as $d) {
-                if($this->FullDomain != $this->InstanceNom.'.'.$d->Url && strpos($apache->ApacheServerAlias,$this->InstanceNom.'.'.$d->Url) === false)
-                    $apache->ApacheServerAlias .= '\n '.$this->InstanceNom.'.'.$d->Url;
-            }
-        }
-        //Test
-        if ($this->Type=='prod'){
-            $apache->ProxyCache=true;
-        }else{
-            $apache->ProxyCache=false;
-        }
-        $apache->Save();
-
-        //check bdd
-        $bdd = $heb->getOneChild('Bdd');
-        if (!$bdd) {
-            //alors création du apache
-            $bdd = genericClass::createInstance('Parc', 'Bdd');
-            $bdd->Nom = $tmpname;
-            $bdd->addParent($heb);
-            $bdd->addParent($mysqlsrv);
-            $bdd->Save();
-        } else {
-            $bdd->addParent($heb);
-            $bdd->Save();
-        }
-        $this->addParent($bdd);
-
-        //check ftp
-        $ftp = $heb->getOneChild('Ftpuser');
-        if (!$ftp) {
-            //alors création du apache
-            $ftp = genericClass::createInstance('Parc', 'Ftpuser');
-            $ftp->Identifiant = 'admin@'.$tmpname;
-            $ftp->Password = $this->Password;
-            $ftp->addParent($heb);
-            $ftp->Save();
-        } else {
-            $ftp->addParent($heb);
-            $ftp->Save();
-        }
-        parent::Save();
-        //if (!$this->Enabled||$old->VersionId!=$this->VersionId||$old->Type!=$this->Type){
-        //$this->Enabled = false;
+        //installation logicielle
         if (intval($this->Status) <= 1)
             $this->createInstallTask();
+
         parent::Save();
-        //}
-        if ($this->EnableSsl)
-            $apache->enableSsl($force,$this);
-        $this->Error = $apache->Error;
 
         //execution postinit plugin
         $plugin = $this->getPlugin();
         $plugin->postInit();
+
         //redemarrages de proxys
         Server::createRestartProxyTask($infra);
         return true;

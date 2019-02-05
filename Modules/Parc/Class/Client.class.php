@@ -462,4 +462,20 @@ class Parc_Client extends genericClass {
         }
 
     }
+
+    /**
+     * getClient
+     * @param String Code du client
+     */
+    public static function getClientFromCode($code,$name='') {
+        if (empty($name))$name = $code;
+        //on vérifie que le client n'existe pas déjà
+        $client = Sys::getOneData('Parc','Client/NomLDAP='.$code);
+        if (!$client) {
+            $client = genericClass::createInstance('Parc', 'Client');
+            $client->Nom = $name;
+            $client->Save();
+        }
+        return $client;
+    }
 }
