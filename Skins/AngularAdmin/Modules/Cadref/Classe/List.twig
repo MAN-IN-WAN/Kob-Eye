@@ -188,19 +188,13 @@
 				<th>Année</th>
 				<th titre="CodeClasse" ng-click="triggerSort($event,'{{ identifier }}','CodeClasse','{{ context }}')">Classe</th>
 				<th>Libellé</th>
-				<th>Jour</th>
 				<th>Heures</th>
 				<th>Cycle</th>
 				<th>Places</th>
-				<th>Inscrits</th>
-				<th>Attentes</th>
 				<th>Prix</th>
 				<th>Réduc</th>
 				<th>Réduc</th>
-					{% for interface in Interfaces %}
-					<th>{{ interface.name }}</th>
-					{% endfor %}
-					{#<th width="220">Détails</th>#}
+				<th>Doc.</th>
 				<th>Actions</th>
 			</tr>
 		</thead>
@@ -215,15 +209,17 @@
 				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Annee }]}</a></td>
 				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.CodeClasse }]}</a></td>
 				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.LibelleD }]} {[{ item.LibelleN }]}</a></td>
-				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Jour }]}</a></td>
-				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.HeureDebut }]}&nbsp;-&nbsp;{[{ item.HeureFin }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Jour | limitTo : 3 }]} {[{ item.HeureDebut }]}&nbsp;-&nbsp;{[{ item.HeureFin }]}</a></td>
 				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.CycleDebut }]}&nbsp;-&nbsp;{[{ item.CycleFin }]}</a></td>
-				<td scope="row" class="typefloat"><span>{[{ item.Places }]}</span></td>
-				<td scope="row" class="typefloat"><span>{[{ item.Inscrits }]}</span></td>
-				<td scope="row" class="typefloat"><span>{[{ item.Attentes }]}</span></td>
+				<td scope="row" class="typevarchar"><span>{[{ item.Places+' - '+item.Inscrits+' - '+item.Attentes }]}</span></td>
 				<td scope="row" class="typefloat"><span>{[{ item.Prix }]}</span></td>
 				<td scope="row" class="typefloat"><span>{[{ item.Reduction1 }]}</span></td>
 				<td scope="row" class="typefloat"><span>{[{ item.Reduction2 }]}</span></td>
+				<td scope="row" class="cadref-td typeint">
+					<span class="btn btn-xs cadref-fkey" ng-class="{'btn-primary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
+						  ng-click="attachementsOpen(item, 'classe')">{[{ item.Attachements }]}
+					</span>
+				</td>
 
 				{% for interface in Interfaces %}
 					{% if interface.child  %}

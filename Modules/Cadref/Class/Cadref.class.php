@@ -30,6 +30,11 @@ class Cadref extends Module {
 		$data['success'] = 0;
 		$data['message'] = '';
 		$data['controls'] = ['close'=>0, 'save'=>1, 'cancel'=>1];
+		
+		if($_POST['validForm'] == 2) {
+			// create account + password + meail
+			$data['message'] = 'Votre mot de passe vous a été envoyé par email.';
+		}
 
 		$num = isset($_POST['Numero']) ? trim($_POST['Numero']) : '';
 		$nom = isset($_POST['Nom']) ? trim($_POST['Nom']) : '';
@@ -39,22 +44,24 @@ class Cadref extends Module {
 			$data['message'] = "Vous devez spécifier le numéro ou le nom<br /> ainsi que l'adresse mail ou le téléphone";
 			return json_encode($data);
 		}
-
+		
+		$telr = '';
+		$nomr ='';
 		if($num) $num = substr('000000', 0, 6 - strlen($num)).$num;
-		if($tel) $tel = preg_replace('/[^0-9]/', '([^0-9])*', $tel);
-		if($nom) $nom = preg_replace('/([^A-Z]){1,}/', '([^A-N])*', $nom);
+		if($tel) $telr = preg_replace('/[^0-9]/', '([^0-9])*', $tel);
+		if($nom) $nomr = preg_replace('/([^A-Z]){1,}/', '([^A-N])*', $nom);
 
 		if($num) $w .= "Numero='$num'";
-		if($nom) {
+		if($nomr) {
 			if($w) $w .= " or ";
-			$w .= "Nom regexp '$nom'";
+			$w .= "Nom regexp '$nomr'";
 		}
 		if($mail) $w1 .= "Mail='$mail'";
-		if($tel) {
+		if($telr) {
 			if($w1) $w1 .= " or ";
-			$w1 .= "Telephone1 regexp '$tel' or Telephone2 regexp '$tel'";
+			$w1 .= "Telephone1 regexp '$telr' or Telephone2 regexp '$telr'";
 		}
-		$sql = "select Numero,Nom,Prenom,Mail,Telephone1,Telephone2 from `##_Cadref-Adherent` where ($w) and ($w1)";
+		$sql = "select Numero,Nom,Prenom,CP,Mail,Telephone1,Telephone2 from `##_Cadref-Adherent` where ($w) and ($w1) limit 1";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if($pdo && $pdo->rowcount()) {
@@ -63,20 +70,44 @@ class Cadref extends Module {
 				$r['Numero'] = $p['Numero'];
 				$r['Nom'] = $p['Nom'];
 				$r['Prenom'] = $p['Prenom'];
-				$r['Mail'] = $p['Mail'];
-				$r['Telephone1'] = $p['Telephone1'];
-				$r['Telephone2'] = $p['Telephone2'];
+				$r['CP'] = '...'.substr($p['CP'], -2, 2);
+				$s = $p['Mail'];
+				if($mail && $mail == $s) $r['Mail'] = $s;
+				else if($s) {
+					$t = explode('@', $s);
+					$r[Mail] = substr($t[0], 0, 2).'...'.substr($t[0], -1, 1).'@'.substr($t[1], 0, 2).'...'.substr($t[1], -2, 2);
+				}
+				$r['Tel'] = '';
+				if($tel) {
+					$t = preg_replace('/[^0-9]/', '', $tel);
+					if($t == preg_replace('/[^0-9]/', '', $p['Telephone1'])) $r['Tel'] = $p['Telephone1']; 
+					elseif($t == preg_replace('/[^0-9]/', '', $p['Telephone2'])) $r['Tel'] = $p['Telephone2']; 
+				}
+				if(!$r['Tel']) {
+					$t = !$p['Telephone1'] ? $p['Telephone2'] : $p['Telephone1'];
+					if($t) $r['Tel'] = '...'.substr($t, -4, 4);
+				}	
 				$data['data'] = $r;
 				break;
 			}
 			$data['success'] = 1;
-		} else $data['message'] = 'Adhérent non trouvé';
+			$data['message'] = 'Si les informations suivantes vous correspondent, appuyez sur continuer pour recevoir votre mot de passe par email ou par SMS.';
+		} else $data['message'] = 'Aucun adhérent ne correspond à ces critères.';
 
 		$data['sql'] = $sql;
 		$data["controls"] = ['close'=>0, 'save'=>1, 'cancel'=>1];
 		return json_encode($data);
 	}
 
+	public static function GeneratePassword() {	
+		$lc = "abcdefghijklmnopqrstuvwxyz";
+		$uc = strtoupper($lc);
+		$dc = '0123456789';
+		$sc = '!$*+?';
+		return str_shuffle(substr(str_shuffle($lc),0,3).substr(str_shuffle($uc),0,2).substr(str_shuffle($dc),0,2).substr(str_shuffle($sc),0,1));
+	}
+
+	
 	private static function checkAdher($f0, $v0, $f1, $v1) {
 		$qry = "Adherent/$f0=$v0&$f1=$v1";
 		$adh = Sys::getOneData('Cadref', $qry);
@@ -148,7 +179,7 @@ group by t.Antenne";
 			$f = $p['DateFin'] ? $p['DateFin'] : $d;
 			if($t == 'V') {
 				$e = new stdClass();
-				$e->title = $p['Libelle'] ?: 'Vacances';
+				$e->title = $p['Libelle'] ?: 'VACANCES';
 				$e->start = Date('Y-m-d', $d);
 				$e->end = Date('Y-m-d', $f);
 				$e->description = Date('d/m', $d).' au '.Date('d/m', $f);
@@ -374,7 +405,7 @@ where ve.Visite=$vid
 			if($s) $s .= "\n";
 			$s .= $p['Description'] ?: '';
 			$e->description = $s;
-			$e->className = p['rid'] ? 'fc-event-success' : 'fc-event-default';
+			$e->className = (p['rid'] ? 'fc-event-success' : 'fc-event-default').' cadref-cal-visite';
 			$events[] = $e;
 		}
 
@@ -401,5 +432,9 @@ where ve.Visite=$vid
 		$Mail->Send();
 		return true;
 	}
+	
+
+
+
 
 }

@@ -15,7 +15,7 @@
                 {% if m.getSubMenus()|length > 0 %}
                     <li class="left-menu-list-submenu">
                         <a class="left-menu-link" href="javascript: void(0);">
-                            <i class="left-menu-link-icon icmn-files-empty2"><!-- --></i>
+                            <i class="left-menu-link-icon {% if m.ClassCss %}{{ m.ClassCss }}{% else %}icmn-files-empty2{% endif %}"><!-- --></i>
                             {{ m.Titre }}
                         </a>
                         <ul class="left-menu-list list-unstyled">
@@ -33,7 +33,7 @@
                 {% else %}
                     <li>
                         <a class="left-menu-link" href="#/{{ m.Url }}">
-                            <i class="left-menu-link-icon icmn-home2"><!-- --></i>
+                            <i class="left-menu-link-icon {% if m.ClassCss %}{{ m.ClassCss }}{% else %}icmn-home2{% endif %}"><!-- --></i>
                             <span class="menu-top-hidden">{{ m.Titre }}</span>
                         </a>
                     </li>

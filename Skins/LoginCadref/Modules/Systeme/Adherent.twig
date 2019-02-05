@@ -1,54 +1,98 @@
 <section>
-	<h2>Déjà adhérent</h2>
-	<div id="msg"  class="alert alert-danger"></div>
-	<div class="row" style="height:10px"></div>
-	<h3>Entrez votre Numéro d'adhérent ou votre nom ainsi qu'une adresse mail ou un numéro de téléphone</h3>
+	<h2>Adhérent du CADREF</h2>
+	<div id="msg"  class="alert alert-danger" hidden></div>
 	<div class="row" style="height:10px"></div>
 	<form method="POST" id="checkAdherent">
 		<div class="form-group">
-			<div class="row">
-				<div class="col-md-4">
-					<label class="form-control-label cadref-label" style="line-height:1.1">N° adhérent</label>
+			<div id="saisie">
+				<h3>Sasissez d'abord votre numéro d'adhérent ou votre nom de famille :</h3>
+				<div class="row">
+					<div class="col-md-4">
+						<label class="form-control-label cadref-label" style="line-height:1.1">N° adhérent</label>
+					</div>
+					<div class="col-md-8">
+						<input type="text" class="form-control cadref-input" placeholder="Numéro adhérent à 6 chiffres" id="Numero" name="Numero" style="widht: 150px"/>
+					</div>
 				</div>
-				<div class="col-md-8">
-					<input type="text" class="form-control cadref-input" placeholder="Numéro à 6 chiffres" id="Numero" name="Numero" style="widht: 150px"/>
+				<div class="row">
+					<div class="col-md-4">
+						<label class="form-control-label cadref-label" style="line-height:1.1">Nom de famille</label>
+					</div>
+					<div class="col-md-8">
+						<input type="text" class="form-control cadref-input" placeholder="Nom de famille" id="Nom" name="Nom" onkeyup="this.value = this.value.toUpperCase();"/>
+					</div>
 				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-4">
-					<label class="form-control-label cadref-label" style="line-height:1.1">Nom de famille</label>
+				<div class="row" style="height:10px"></div>
+				<h3>Sasissez unsuite votre adresse mail ou votre numéro de téléphone :</h3>
+				<div class="row">
+					<div class="col-md-4">
+						<label class="form-control-label cadref-label" style="line-height:1.1">Adresse mail</label>
+					</div>
+					<div class="col-md-8">
+						<input type="text" class="form-control cadref-input" placeholder="Adresse mail" id="Mail" name="Mail"/>
+					</div>
 				</div>
-				<div class="col-md-8">
-					<input type="text" class="form-control cadref-input" placeholder="Nom" id="Nom" name="Nom" onkeyup="this.value = this.value.toUpperCase();"/>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-4">
-					<label class="form-control-label cadref-label" style="line-height:1.1">Prénom</label>
-				</div>
-				<div class="col-md-8">
-					<input type="text" class="form-control cadref-input" id="Prenom" name="Prenom" readonly/>
-				</div>
-			</div>
-			<div class="row" style="height:10px"></div>
-			<div class="row">
-				<div class="col-md-4">
-					<label class="form-control-label cadref-label" style="line-height:1.1">Adresse mail</label>
-				</div>
-				<div class="col-md-8">
-					<input type="text" class="form-control cadref-input" placeholder="Adresse mail" id="Mail" name="Mail"/>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-4">
-					<label class="form-control-label cadref-label" style="line-height:1.1">Téléphone</label>
-				</div>
-				<div class="col-md-8">
-					<input type="text" class="form-control cadref-input" placeholder="Téléphone" name="Tel"/>
+				<div class="row">
+					<div class="col-md-4">
+						<label class="form-control-label cadref-label" style="line-height:1.1">Téléphone</label>
+					</div>
+					<div class="col-md-8">
+						<input type="text" class="form-control cadref-input" placeholder="Téléphone" id="Tel" name="Tel"/>
+					</div>
 				</div>
 			</div>
-			<div class="row" style="height:10px"></div>
-			<input type="submit" class="btn btn-success btn-block" id="Valider" name="Valider" value="Valider" />
+			<div id="affiche" hidden>
+				<div class="row">
+					<div class="col-md-4">
+						<label class="form-control-label cadref-label" style="line-height:1.1">N° adhérent</label>
+					</div>
+					<div class="col-md-8">
+						<input type="text" class="form-control cadref-input" id="Numero1" name="Numero1" style="widht: 150px" readonly/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<label class="form-control-label cadref-label" style="line-height:1.1">Nom de famille</label>
+					</div>
+					<div class="col-md-8">
+						<input type="text" class="form-control cadref-input" id="Nom1" name="Nom1" readonly/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<label class="form-control-label cadref-label" style="line-height:1.1">Prénom</label>
+					</div>
+					<div class="col-md-8">
+						<input type="text" class="form-control cadref-input" id="Prenom1" name="Prenom1" readonly/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<label class="form-control-label cadref-label" style="line-height:1.1">Code postal</label>
+					</div>
+					<div class="col-md-8">
+						<input type="text" class="form-control cadref-input" id="CP1" name="CP1" readonly/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<label class="form-control-label cadref-label" style="line-height:1.1">Adresse mail</label>
+					</div>
+					<div class="col-md-8">
+						<input type="text" class="form-control cadref-input" id="Mail1" name="Mail1" readonly/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<label class="form-control-label cadref-label" style="line-height:1.1">Téléphone</label>
+					</div>
+					<div class="col-md-8">
+						<input type="text" class="form-control cadref-input" id="Tel1" name="Tel1" readonly/>
+					</div>
+				</div>
+			</div>
+			<div class="row" style="height:20px"></div>
+			<input type="submit" class="btn btn-success btn-block" id="Valider" name="Valider" value="Vérifier mon identité" />
 			<input type="hidden" name="ValidForm" id="ValidForm" value="1"/>
 		</div>
 	</form>
@@ -76,15 +120,20 @@
 				if (resp.success) {
 					//$('#checkAdherent').css('display','none');
 					$('#msg').html(resp.message);
-					$('#Numero').val(resp.data.Numero);
-					$('#Nom').val(resp.data.Nom);
-					$('#Prenom').val(resp.data.Prenom);
-					$('#Mail').val(resp.data.Mail);
-					$('#Valider').attr('value','Continuer');
+					$('#Numero1').val(resp.data.Numero);
+					$('#Nom1').val(resp.data.Nom);
+					$('#Prenom1').val(resp.data.Prenom);
+					$('#CP1').val(resp.data.CP);
+					$('#Mail1').val(resp.data.Mail);
+					$('#Tel1').val(resp.data.Tel);
+					$('#Valider').attr('value', 'Continuer');
 					$('#ValidForm').val("2");
+					$('#saisie').hide();
+					$('#affiche').show();
 				} else {
 					$('#msg').html(resp.message);
 				}
+				$('#msg').show();
 			});
 		});
 	});

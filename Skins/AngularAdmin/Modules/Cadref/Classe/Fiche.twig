@@ -191,9 +191,9 @@
 												<tr>
 													<td class="cadref-td-inscr">{{ finput(f.Prix, o, false, 'dddd', 'width:80px') }}</td>
 													<td class="cadref-td-inscr">{{ finput(f.Reduction1, o, false, 'dddd', 'width:80px') }}</td>
-													<td class="cadref-td-inscr">{{ finput(f.DateReduction1, o, false, 'dd/dd', 'width:80px') }}</td>
+													<td class="cadref-td-inscr">{{ fdate(f.DateReduction1, o) }}</td>
 													<td class="cadref-td-inscr">{{ finput(f.Reduction2, o, false, 'dddd', 'width:80px') }}</td>
-													<td class="cadref-td-inscr">{{ finput(f.DateReduction2, o, false, 'dd/dd', 'width:80px') }}</td>
+													<td class="cadref-td-inscr">{{ fdate(f.DateReduction2, o) }}</td>
 												</tr>
 											</tbody>
 										</table>
@@ -208,7 +208,7 @@
 									<multiple-autocomplete class="form-control cadref-no-padding" 
 														   ng-model="obj.EnseignantEnseignants"
 														   object-property="label"
-														   model-labels="obj.EnseignantEnseignantslabel"
+														   model-labels="obj.EnseignantEnseignantslibelle"
 														   suggestions-arr="Enseignants">
 									</multiple-autocomplete>
 								</div>
@@ -226,23 +226,15 @@
 						</div>
 						{# block right #}                    
 						<div class="col-md-4">
-							<section class="panel">
-								<div class="row">
-									<div class="col-md-4">
-										{{ label('Dates de cours') }}
-									</div>
-									<div class="col-md-1">
-										<a class="btn-abt cadref-btn-add btn-success" href="javascript: void(0);" ng-click="CadrefClasseDateadd()" title="Ajouter"></a>
-									</div>
+							<div class="row">
+								{{ label('Dates de cours') }}
+							</div>
+							<div class="row" style="height:10px"></div>
+							<div class="row">
+								<div class="panel-body cadref-no-padding">
+									<ng-include src="'/{{ CurrentUrl }}/0/ClasseDate/ListClasseDate.htm'"></ng-include>
 								</div>
-								<div class="row">
-									<div class="col-md-10">
-										<div class="panel-body cadref-no-padding">
-											<ng-include src="'/{{ CurrentUrl }}/0/ClasseDate/ListDate.htm'"></ng-include>
-										</div>
-									</div>
-								</div>
-							</section>
+							</div>
 						</div>
 					</div>
 					<div class="row">
@@ -265,4 +257,25 @@
 		</div>
 	</section>
 </div>
+<script>
+	$('.datepicker-only-init').datetimepicker({
+		widgetPositioning: {
+			horizontal: 'left'
+		},
+		locale: 'fr',
+		format: 'DD/MM/YYYY',
+		icons: {
+			time: "fa fa-clock-o",
+			date: "fa fa-calendar",
+			up: "fa fa-arrow-up",
+			down: "fa fa-arrow-down"
+		}
+	});
+	//Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
+	$(".datepicker-only-init").on("dp.change", function () {
+		var input = $(this).children('input').eq(0);
+		input.trigger('change');
+		input.trigger('input');
+	});
+</script>
 
