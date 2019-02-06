@@ -143,6 +143,7 @@ switch($info['TypeSearch']){
                 }
                 $total = $generic->getDbCount($info['Module'],$req);
                 $items = $generic->getDbData($info['Module'],$req,$offset,$limit,$orderType,$orderVar);
+
                 //On retourne la liste de ces objets
                 sendResult(206,$items,array('offset'=>$offset,'limit'=>$limit, 'total'=>$total));
                 break;
@@ -204,7 +205,7 @@ switch($info['TypeSearch']){
     case 'Direct':
         //Verif de la validité des datas envoyés
         $generic = genericClass::createInstance($info['Module'],$info['ObjectType']);
-        $props = $generic->getProperties();
+        $props = $generic->getElementsByAttribute('','',true);
         array_walk($props,function (&$i){
             $i=$i['name'];
         });        $offset = '';

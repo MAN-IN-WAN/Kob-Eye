@@ -46,6 +46,8 @@ class Instance extends genericClass{
             return false;
         }
 
+        if(!$proxysrv) $proxysrv = $apachesrv;
+
         //Verification du nom
         if ($this->SousDomaine != Instance::checkName($this->SousDomaine)) {
             $GLOBALS["Systeme"]->Db[0]->exec('ROLLBACK');

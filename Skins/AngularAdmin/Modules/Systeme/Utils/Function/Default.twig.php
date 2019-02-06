@@ -30,7 +30,7 @@
             foreach($vars['params'] as $key=>$param){
                 $params .= '&'.urlencode($key).'='.urlencode(json_encode($key));
             }
-            $temp = KeTwig::callModule($blinfo.f);
+            $temp = KeTwig::callModule($blinfo.$params);
         } else{
             $params = array('Query'=>$path);
             $params = array_merge($params,$vars['params']);
