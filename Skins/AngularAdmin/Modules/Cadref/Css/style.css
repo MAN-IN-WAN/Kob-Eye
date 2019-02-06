@@ -19,7 +19,7 @@ table tr td.cadref-td {
 }
 table tr td.cadref-td-btn {
 	padding-top: .1rem;
-	padding-bottom: .1rem;
+	padding-bottom: .0rem;
 	padding-left: .2rem;
 	padding-right: .2rem;
 }
@@ -141,7 +141,7 @@ table tr td.cadref-td-diff {
 	border-color: red;
 }
 .cadref-fkey {
-	padding:5px 8px !important;
+	padding:2px 8px !important;
 	font-size:1rem !important;
 }
 .cadref-annuel {

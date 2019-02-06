@@ -1,11 +1,11 @@
 <SCHEMA>
-	<OBJECTCLASS title="Annee" driver="mysql" order="Annee" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Années scolaires" hidden="1" Operations="add,edit" Dico="1">
+	<OBJECTCLASS title="Annee" driver="mysql" order="Annee" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Années scolaire" hidden="1" Operations="add,edit" Dico="1">
 		<PROPERTIES type="varchar" length="4" searchOrder="1" obligatoire="1" unique="1" category="Description" description="Année de début">Annee</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Description" description="Cotisation">Cotisation</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" description="Année en cours">EnCours</PROPERTIES>
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="Antenne" driver="mysql" order="Antenne" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Antennes" Operations="edit" Dico="0">
+	<OBJECTCLASS title="Antenne" driver="mysql" order="Antenne" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Antenne" Operations="edit" Dico="0">
 		<FILTER name="Actives" color="success">Inactif=0</FILTER>
         <FILTER name="Toutes" color="warning"></FILTER>
 		<PROPERTIES type="varchar" length="1" searchOrder="1" obligatoire="1" category="Description" list="1" form="1" fiche="1" description="Antenne">Antenne</PROPERTIES>
@@ -20,12 +20,12 @@
 		<PROPERTIES type="boolean" default="0" special="reverse" category="Description" form="13" fiche="13" description="Inactif">Inactif</PROPERTIES>
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="Section" driver="mysql" order="Section" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Sections" Operations="add,edit,delete" Dico="1" Class="Modules/Cadref/Class/Section.class.php">
+	<OBJECTCLASS title="Section" driver="mysql" order="Section" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Section" Operations="add,edit,delete" Dico="1" Class="Modules/Cadref/Class/Section.class.php">
 		<PROPERTIES type="varchar" length="2" searchOrder="1" unique="1" obligatoire="1" category="Description" list="1" form="1" fiche="1" description="Section">Section</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" obligatoire="1" category="Description" list="2" form="2" fiche="2" description="Libellé">Libelle</PROPERTIES>
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="Discipline" driver="mysql" order="CodeDiscipline" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Disciplines" Operations="addChildren,edit,delete" Dico="1" Class="Modules/Cadref/Class/Discipline.class.php">
+	<OBJECTCLASS title="Discipline" driver="mysql" order="CodeDiscipline" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Discipline" Operations="addChildren,edit,delete" Dico="1" Class="Modules/Cadref/Class/Discipline.class.php">
 		<FKEY card="1,1" module="Cadref" data="Section,Id" category="Description" form="1" fiche="1" listDescr="Section" description="Section">SectionId</FKEY>
 		<PROPERTIES type="varchar" length="2" category="Description" description="Section">Section</PROPERTIES>
 		<PROPERTIES type="varchar" length="2" category="Description" form="2" fiche="2" description="Discipline">Discipline</PROPERTIES>
@@ -36,7 +36,7 @@
 		<PROPERTIES type="text" obligatoire="0" category="Description" form="7" fiche="7" description="Description">Description</PROPERTIES>
 
 		<VIEW title="DisciplineList" default="1">
-			<OBJECTCLASS title="DisciplineTete" select="Id,CodeDiscipline,Libelle,Visite,Certificat,Description,Section,SectionId,Inactif" filters="">
+			<OBJECTCLASS title="Discipline" filters="">
 				<JOIN type="outer" module="Cadref" title="Section" on="SectionId" target="Id">
 					<PROPERTIES type="varchar" list="2" form="4" fiche="4" listDescr="Section" alias="LibelleS">Libelle</PROPERTIES>
 				</JOIN>
@@ -44,10 +44,11 @@
 		</VIEW>
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="Niveau" driver="mysql" order="CodeNiveau" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Niveaux" Operations="addChildren,edit" Dico="1" Class="Modules/Cadref/Class/Niveau.class.php">
+	<OBJECTCLASS title="Niveau" driver="mysql" order="CodeNiveau" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Niveau" Operations="addChildren,edit" Dico="1" Class="Modules/Cadref/Class/Niveau.class.php">
 		<FKEY card="1,1" module="Cadref" data="Antenne,Id"    category="Description" form="1" fiche="1" description="Antenne">AntenneId</FKEY>
 		<FKEY card="0,1" module="Cadref" data="Section,Id"    category="Description" form="2" fiche="2" description="Section">SectionId</FKEY>
 		<FKEY card="1,1" module="Cadref" data="Discipline,Id" category="Description" form="3" fiche="3" description="Discipline">DisciplineId</FKEY>
+		<FKEY card="0,1" module="Cadref" data="WebDiscipline,Id" category="Description" form="3" fiche="3" description="Discipline Web">WebDisciplineId</FKEY>
 		<PROPERTIES type="varchar" length="1" auto="1" category="Description" description="Antenne">Antenne</PROPERTIES>
 		<PROPERTIES type="varchar" length="2" auto="1" category="Description" description="Section">Section</PROPERTIES>
 		<PROPERTIES type="varchar" length="2" auto="1" category="Description" description="Discipline">Discipline</PROPERTIES>
@@ -56,9 +57,11 @@
 		<PROPERTIES type="varchar" length="50" category="Description" list="5" form="5" fiche="5" description="Libellé">Libelle</PROPERTIES>
 		<PROPERTIES type="boolean" default="1" category="Description" form="6" fiche="6" description="Accès Web">AccesWeb</PROPERTIES>
 		<PROPERTIES type="text" obligatoire="0" category="Description" form="7" fiche="6" description="Description">Description</PROPERTIES>
+		<FKEY card="0,1" module="Cadref" data="DisciplineWeb,Id" category="Description" form="3" fiche="3" description="Discipline Web">DisciplineWebId</FKEY>
+		<FKEY card="0,1" module="Cadref" data="Lieu,Id" form="11" fiche="11" category="Description" description="Lieu" >LieuId</FKEY>
 
 		<VIEW title="NiveauList" default="1">
-			<OBJECTCLASS title="NiveauTete" select="Id,CodeNiveau,Libelle,DisciplineId,SectionId,AntenneId" filters="">
+			<OBJECTCLASS title="Niveau" filters="">
 				<JOIN type="outer" module="Cadref" title="Discipline" on="DisciplineId" target="Id">
 					<PROPERTIES type="varchar" list="4" listDescr="Discipline" alias="LibelleD">Libelle</PROPERTIES>
 				</JOIN>
@@ -300,7 +303,6 @@
 		<PROPERTIES type="varchar" length="4" category="Description" list="1" description="Utilisateur">Utilisateur</PROPERTIES>
 
 		<VIEW title="InscriptionList" default="1">
-<!--			<OBJECTCLASS title="InscriptionTete" select="Id,CodeClasse,Annee,Attente,Prix,Reduction1,Reduction2,Supprime,Utilisateur,ClasseId,DateSupprime,DateAttente" filters="">-->
 			<OBJECTCLASS title="Inscription" filters="">
 				<JOIN type="outer" module="Cadref" title="Classe" on="ClasseId" target="Id">
 					<PROPERTIES type="int" list="5" >JourId</PROPERTIES>
@@ -492,5 +494,27 @@
 		<PROPERTIES type="date" category="Description" list="1" form="1" fiche="1" description="Date attente">DateFin</PROPERTIES>
 		<FKEY card="0,1" module="Cadref" data="Jour,Id" category="Description" description="Jour de fin des cours">JourId</FKEY>
 	</OBJECTCLASS>
+
+	<OBJECTCLASS title="WebSection" driver="mysql" order="Section" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Section Web" Operations="add,edit,delete" Dico="1" Class="Modules/Cadref/Class/WebSection.class.php">
+		<PROPERTIES type="varchar" length="2" searchOrder="1" unique="1" obligatoire="1" category="Description" list="1" form="1" fiche="1" description="Section">WebSection</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" obligatoire="1" category="Description" list="2" form="2" fiche="2" description="Libellé">Libelle</PROPERTIES>
+	</OBJECTCLASS>
+
+	<OBJECTCLASS title="WebDiscipline" driver="mysql" order="CodeDiscipline" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Discipline Web" Operations="addChildren,edit,delete" Dico="1" Class="Modules/Cadref/Class/WebDiscipline.class.php">
+		<FKEY card="1,1" module="Cadref" data="WebSection,Id" category="Description" form="1" fiche="1" listDescr="Section" description="Section">WebSectionId</FKEY>
+		<PROPERTIES type="varchar" length="2" category="Description" form="2" fiche="2" description="Discipline">WebDiscipline</PROPERTIES>
+		<PROPERTIES type="varchar" length="4" searchOrder="1" auto="1" unique="1" category="Description" list="1" listDescr="Code">CodeDiscipline</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" obligatoire="1" category="Description" list="4" form="4" fiche="4" description="Libellé">Libelle</PROPERTIES>
+		<PROPERTIES type="text" obligatoire="0" category="Description" form="7" fiche="7" description="Description">Description</PROPERTIES>
+
+		<VIEW title="DisciplineWebList" default="1">
+			<OBJECTCLASS title="WebDiscipline" filters="">
+				<JOIN type="outer" module="Cadref" title="WebSection" on="WebSectionId" target="Id">
+					<PROPERTIES type="varchar" list="2" form="4" fiche="4" listDescr="Section" alias="LibelleS">Libelle</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
+	</OBJECTCLASS>
+
 
 </SCHEMA>

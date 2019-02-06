@@ -82,6 +82,29 @@ insert into kbabtel.`kob-Cadref-Lieu` (umod,gmod,omod,Ville,Adresse1,Adresse2,Ty
 (7,7,7,"Nîmes","Stade des Costières","123 av. de la Bouvine","R","NSC","43.816025,4.359255599999983",0);
 update kbabtel.`kob-Cadref-Lieu` set Libelle=concat(Ville,', ',Adresse1);
 
+truncate kbabtel.`kob-Cadref-WebSection`;
+insert into kbabtel.`kob-Cadref-WebSection` (umod,gmod,omod,Id,WebSection,Libelle) values 
+(7,7,7,1,'LG','Langues'),
+(7,7,7,2,'HI','Histoire'),
+(7,7,7,3,'SH','Sciences humaines et sociales'),
+(7,7,7,4,'AP','Activités Physiques'),
+(7,7,7,5,'IN','Informatique'),
+(7,7,7,6,'AR','Activités artistiques');
+
+truncate kbabtel.`kob-Cadref-WebDiscipline`;
+insert into kbabtel.`kob-Cadref-WebDiscipline` (umod,gmod,omod,Id,WebSectionId,CodeDiscipline,WebDiscipline,Libelle) values 
+(7,7,7,1,1,'LGAN','AN','Anglais'),
+(7,7,7,2,1,'LGES','ES','Espagnol'),
+(7,7,7,3,1,'LGIT','IT','Italien'),
+(7,7,7,4,1,'LGOC','OC','Occitan'),
+(7,7,7,5,2,'HICI','CI','Histoire des civilisations'),
+(7,7,7,6,2,'HICO','CO','Histoire contemporaine'),
+(7,7,7,7,2,'HIRA','RA','Histoire de la Rome antique'),
+(7,7,7,8,2,'HIME','ME','Histoire médiévale'),
+(7,7,7,9,2,'HIMY','MY','Histoire de la mythologie'),
+(7,7,7,10,2,'HIRU','RU','Histoire de la Russie');
+
+
 truncate kbabtel.`kob-Cadref-Profession`;
 insert into kbabtel.`kob-Cadref-Profession` (umod,gmod,omod,Profession,Libelle)
 select 7,7,7,n.Categorie,n.Libelle
@@ -154,6 +177,13 @@ left join kbabtel.`kob-Cadref-Classe` n on n.Antenne=c.Antenne and n.Section=c.S
 left join kbabtel.`kob-Cadref-Enseignant` e on e.Code=c.Ens2
 where c.Ens2<>'';
 
+#update kbabtel.`kob-Cadref-Classe` c
+#set c.Reduction1=38,c.Reduction2=38,c.DateReduction1=unix_timestamp('20190101'),c.DateReduction2=unix_timestamp('20190301')
+#where Prix=115 and CycleDebut=''
+#update kbabtel.`kob-Cadref-Classe` c
+#set c.Reduction1=34,c.Reduction2=34,c.DateReduction1=unix_timestamp('20190101'),c.DateReduction2=unix_timestamp('20190301')
+#where Prix=102 and CycleDebut=''
+
 
 
 truncate kbabtel.`kob-Cadref-Adherent`;
@@ -202,6 +232,8 @@ from cadref18.Reservations r
 left join kbabtel.`kob-Cadref-Adherent` a on a.Numero=r.Numero
 left join kbabtel.`kob-Cadref-Visite` v on v.Visite=r.Visite
 order by r.Numero,r.Visite;
+
+
 
 truncate kbabtel.`kob-Cadref-AdherentAnnee`;
 insert into kbabtel.`kob-Cadref-AdherentAnnee` (umod,gmod,omod,AdherentId,Numero,Annee,NotesAnnuelles,Adherent,ClasseId,
