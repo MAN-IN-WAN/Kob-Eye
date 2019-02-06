@@ -33,7 +33,7 @@ class Server extends genericClass {
         $first = ($this->Id == 0);
         parent::Save();
         //installation de la clef
-        if (!$this->Status){
+        if (!$this->Status&&!$first){
             if (!$this->installSshKey()) return false;
             parent::Save();
         }

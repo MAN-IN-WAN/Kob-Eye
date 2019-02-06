@@ -55,7 +55,7 @@ class Plugin extends Root{
 		if (isset($this->Config["PARAMS"][0]["#"]['PARAM']))foreach ($this->Config["PARAMS"][0]["#"]['PARAM'] as $P){
 			$this->Params[$P["@"]["name"]] = $P["#"];
 		}
-		if ($obj)
+		if (isset($obj))
 		    $this->_obj = $obj;
 	}
 	/**

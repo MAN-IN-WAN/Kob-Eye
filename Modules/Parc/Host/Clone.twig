@@ -1,11 +1,26 @@
-<div class="col-md-6">
-    <label class="form-control-label" for="l0">Nom de l'hébergement</label>
-    <small>
-        <i class="icmn-question3 help-wrapper"><span class="fieldHelp">Si laissé vide un nom sera généré automatiquement</span></i>
-    </small>
+<div class="row">
+    <div class="col-md-6">
+        <label class="form-control-label" for="l0">Nom de l'hébergement</label>
+        <small>
+            <i class="icmn-question3 help-wrapper"><span class="fieldHelp">Si laissé vide un nom sera généré automatiquement</span></i>
+        </small>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <input type="text" class="form-control" name="Nom" placeholder="Nom du nouvel hébergement" ng-model="ParcHostfunction.args.targetHost">
+        </div>
+    </div>
 </div>
-<div class="col-md-6">
-    <div class="form-group">
-        <input type="text" class="form-control" name="Nom" placeholder="Nom du nouvel hébergement" ng-model="ParcHostfunction.args.targetHost">
+<div class="row">
+    <div class="col-md-6">
+        <label class="form-control-label" for="l0">Serveur de destination</label>
+        <small>
+            <i class="icmn-question3 help-wrapper"><span class="fieldHelp">Si laissé vide, le serveur de l'infrastructure par défaut sera séletionné.</span></i>
+        </small>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <div custom-select="a.id as a.label for a in getSelectData('ParcServerStore',$searchTerm)" custom-select-options="{ 'async': true, 'filter':'Web=1'}" ng-model="ParcHostfunction.args.targetServer" class="form-control" ng-title="label"></div>
+        </div>
     </div>
 </div>

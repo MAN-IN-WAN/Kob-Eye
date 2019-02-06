@@ -39,11 +39,7 @@ laboratoire-val;laboratoire-;laboratoire-val
 
 */
 $csv= "
-murviel;murviel;murviel
-privilegeberricar;privilegeber;privilegeberrica
-nino-robotics;nino-robotic;nino-robotics+nino-robotics-dev+nino-robotics-sup
-spiruline;spirulineala;spiruline
-travaux-speciaux;travaux-spec;travaux-speciaux
+clamousemetaller;clamousemetaller;clamousemetaller
 ";
 $result = explode(PHP_EOL,$csv);
 $total = sizeof($result)-2;

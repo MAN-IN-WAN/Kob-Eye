@@ -11,11 +11,10 @@ if ($obj->Proxy){
     $task->TaskId = $obj->Id;
     $task->DateDebut = time();
     $task->Save();
-    $out = $task->Execute();
-
+    $out=true;
 }else{
     $out = false;
-    $out->addError(array("Message"=>"Ce serveur n'est pas un serveur Proxy."));
+    $obj->addError(array("Message"=>"Ce serveur n'est pas un serveur Proxy."));
 }
 $vars['obj'] = $obj;
 $vars['success'] = $out;

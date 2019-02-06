@@ -10,7 +10,7 @@
         app.controller('{{ c.name }}Ctrl', function() {});
     {% else %}
     /**** LIST CONTROLLER  ****/
-    app.controller('{{ c.name }}Ctrl', function($interval,$sce, $window, $templateCache, $controller, $injector, $location, $scope,$timeout, $rootScope,$route,$routeParams,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store{% endfor %}) {
+    app.controller('{{ c.name }}Ctrl', function($interval,$sce, $window, $templateCache, $controller, $injector, $location, $scope,$timeout, $rootScope,$route,$routeParams,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store{% endfor %},SystemeActivityStore,SystemeTacheStore) {
         $scope.log = function(toto){
             console.log(toto);
         }
@@ -817,7 +817,7 @@
     });
 
     /**** FICHE CONTROLLER ****/
-    app.controller('{{ c.name }}FicheCtrl', function($sce, $window, $templateCache,$controller,$injector,NgMap,$location, $scope, $timeout, $interval, $rootScope, $routeParams,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store {% for cParent in child.parentelements %},{{ cParent.objectModule }}{{ cParent.objectName }}Store{% endfor %}{% for cChild in child.childrenelements %},{{ cChild.objectModule }}{{ cChild.objectName }}Store{% endfor %}{% endfor %}{% if c.browseable%},SystemePageStore{% endif %}) {
+    app.controller('{{ c.name }}FicheCtrl', function($sce, $window, $templateCache,$controller,$injector,NgMap,$location, $scope, $timeout, $interval, $rootScope, $routeParams,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store {% for cParent in child.parentelements %},{{ cParent.objectModule }}{{ cParent.objectName }}Store{% endfor %}{% for cChild in child.childrenelements %},{{ cChild.objectModule }}{{ cChild.objectName }}Store{% endfor %}{% endfor %}{% if c.browseable%},SystemePageStore{% endif %},SystemeActivityStore,SystemeTacheStore) {
         $scope.log = function(toto){
             console.log(toto);
         }
@@ -1345,7 +1345,7 @@
 
                              $("#modalfunction-{{ child.objectModule }}{{ child.objectName }}").modal();
 
-                             $http.post('/{{ c.url }}/'+obj.id+'/Function.json',{"Func":JSON.stringify($scope.{{ child.objectModule }}{{ child.objectName }}function)})
+                             $http.post('/{{ child.url }}/'+obj.id+'/Function.json',{"Func":JSON.stringify($scope.{{ child.objectModule }}{{ child.objectName }}function)})
                              .success(function(data) {
                                  console.log('store > {{ child.objectModule }}/{{ child.objectName }} > Function  ', data);
 
