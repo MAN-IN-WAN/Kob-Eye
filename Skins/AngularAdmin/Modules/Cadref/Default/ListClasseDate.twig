@@ -9,9 +9,9 @@
 					<div class="col-md-4">
 						{{ label("Date du cours") }}
 					</div>
-					<div class="col-md-8">
+					<div class="col-md-8" >
 						<label class="input-group datepicker-only-init cadref-no-margin cadref-input-date">
-							<input id="input-dateClasseObjDateCours" type="text" class="form-control cadref-input"
+							<input id="input-dateClasseObjDateCours" type="text" class="form-control cadref-input" ng-init="initDatePickerZob()"
 								   placeholder="Date" mask="dd/dd/dddd" ng-model="classeDateObj.DateCours"/>
 							<span class="input-group-addon">
 								<i class="icmn-calendar"></i>
@@ -38,6 +38,7 @@
 			</div>
 		</div>
 	</div>
+
 </div>
 <div class="listWrap" ng-if="classeDateInfo.mode==''">
 	<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%" style="line-height:1" >
@@ -61,24 +62,3 @@
 		</tbody>
 	</table>
 </div>
-<script>
-	$('.datepicker-only-init').datetimepicker({
-		widgetPositioning: {
-			horizontal: 'left'
-		},
-		locale: 'fr',
-		format: 'DD/MM/YYYY',
-		icons: {
-			time: "fa fa-clock-o",
-			date: "fa fa-calendar",
-			up: "fa fa-arrow-up",
-			down: "fa fa-arrow-down"
-		}
-	});
-	//Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
-	$(".datepicker-only-init").on("dp.change", function () {
-		var input = $(this).children('input').eq(0);
-		input.trigger('change');
-		input.trigger('input');
-	});
-</script>

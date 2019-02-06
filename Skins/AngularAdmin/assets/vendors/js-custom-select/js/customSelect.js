@@ -159,6 +159,7 @@
 						if (newVal !== oldVal) {
 							childScope.matches = [];
 							childScope.select(undefined);
+							getMatches('');
 						}
 					});
 				}

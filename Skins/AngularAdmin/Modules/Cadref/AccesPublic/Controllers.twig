@@ -1,4 +1,4 @@
-app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $rootScope, $http, $rootScope, 
+app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $rootScope, $http, $rootScope, $interval, 
 	CadrefAdherentStore, CadrefReglementStore, CadrefInscriptionStore, CadrefEnseignantStore, CadrefAbsenceStore, CadrefClasseStore, 
 	CadrefVisiteStore, CadrefReservationStore, CadrefAttachementStore) {
 
@@ -341,6 +341,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	//--------------------------------
 
 	{% if objecttype == 'Adherent' %}
+				
     //Gestion du store
     $scope.store = CadrefAdherentStore;  
 
@@ -351,7 +352,6 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	$scope.CadrefInscription.store.setFilters('Annee={{ Annee }}', 'children');
 	$scope.CadrefReservation = $scope.createStore(CadrefReservationStore, 'children');
 	$scope.CadrefReservation.store.setFilters('Annee={{ Annee }}', 'children');
-
 
     $scope.initAdh = function(){
         $scope.store.getOneData({{ entite.Id }}, 'default').then(function(data){
@@ -391,6 +391,38 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 			}
 		);
 	}
+
+	//---------------------------
+	// ajouter une classe
+	
+	//$scope.CadrefAntenne = $scope.createStore(CadrefAntenneStore, 'default');
+	//$scope.CadrefAntenne.store.getData(1, 'default');
+
+	$scope.inscriptionObj = {Select: false, AntenneId: 0, SectionId: 0, DisciplineId: 0, ClasseItems: []};
+	
+	$scope.inscriptionSelect = function(mode) {
+		$scope.inscriptionObj.Select = mode;
+	}
+	
+	$scope.inscriptionGetData = async function(mode, filter='') {
+		var o = $scope.inscriptionObj;
+		o.Filter = filter;
+		var params = [mode, o];
+		var data = await $scope.{{ identifier }}callMethod($scope.obj,'GetListClasses',params);
+		switch(mode) {
+			case 'classe':
+				o.ClasseItems = data.data.data.data;
+				break;
+			case 'antenne': o.AntenneId = 0;
+			case 'section': o.SectionId = 0;
+			case 'discipline': o.DisciplineId = 0; o.ClasseItems = []; 
+		}	
+		return data.data.data.data;
+	}
+
+	$scope.inscriptionAdd = function(mode) {
+	}
+	
 	{% endif %}
 
 

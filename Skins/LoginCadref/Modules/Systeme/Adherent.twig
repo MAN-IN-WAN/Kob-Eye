@@ -11,7 +11,7 @@
 						<label class="form-control-label cadref-label" style="line-height:1.1">N° adhérent</label>
 					</div>
 					<div class="col-md-8">
-						<input type="text" class="form-control cadref-input" placeholder="Numéro adhérent à 6 chiffres" id="Numero" name="Numero" style="widht: 150px"/>
+						<input type="text" class="form-control cadref-input" placeholder="Numéro adhérent à 6 chiffres" id="CadrefNumero" name="CadrefNumero" style="widht: 150px"/>
 					</div>
 				</div>
 				<div class="row">
@@ -19,7 +19,7 @@
 						<label class="form-control-label cadref-label" style="line-height:1.1">Nom de famille</label>
 					</div>
 					<div class="col-md-8">
-						<input type="text" class="form-control cadref-input" placeholder="Nom de famille" id="Nom" name="Nom" onkeyup="this.value = this.value.toUpperCase();"/>
+						<input type="text" class="form-control cadref-input" placeholder="Nom de famille" id="CadrefNom" name="CadrefNom" onkeyup="this.value = this.value.toUpperCase();"/>
 					</div>
 				</div>
 				<div class="row" style="height:10px"></div>
@@ -29,7 +29,7 @@
 						<label class="form-control-label cadref-label" style="line-height:1.1">Adresse mail</label>
 					</div>
 					<div class="col-md-8">
-						<input type="text" class="form-control cadref-input" placeholder="Adresse mail" id="Mail" name="Mail"/>
+						<input type="text" class="form-control cadref-input" placeholder="Adresse mail" id="CadrefMail" name="CadrefMail"/>
 					</div>
 				</div>
 				<div class="row">
@@ -37,7 +37,7 @@
 						<label class="form-control-label cadref-label" style="line-height:1.1">Téléphone</label>
 					</div>
 					<div class="col-md-8">
-						<input type="text" class="form-control cadref-input" placeholder="Téléphone" id="Tel" name="Tel"/>
+						<input type="text" class="form-control cadref-input" placeholder="Téléphone" id="CadrefTel" name="CadrefTel"/>
 					</div>
 				</div>
 			</div>
@@ -47,7 +47,7 @@
 						<label class="form-control-label cadref-label" style="line-height:1.1">N° adhérent</label>
 					</div>
 					<div class="col-md-8">
-						<input type="text" class="form-control cadref-input" id="Numero1" name="Numero1" style="widht: 150px" readonly/>
+						<input type="text" class="form-control cadref-input" id="CadrefNumero1" name="CadrefNumero1" style="widht: 150px" readonly/>
 					</div>
 				</div>
 				<div class="row">
@@ -55,7 +55,7 @@
 						<label class="form-control-label cadref-label" style="line-height:1.1">Nom de famille</label>
 					</div>
 					<div class="col-md-8">
-						<input type="text" class="form-control cadref-input" id="Nom1" name="Nom1" readonly/>
+						<input type="text" class="form-control cadref-input" id="CadrefNom1" name="CadrefNom1" readonly/>
 					</div>
 				</div>
 				<div class="row">
@@ -63,7 +63,7 @@
 						<label class="form-control-label cadref-label" style="line-height:1.1">Prénom</label>
 					</div>
 					<div class="col-md-8">
-						<input type="text" class="form-control cadref-input" id="Prenom1" name="Prenom1" readonly/>
+						<input type="text" class="form-control cadref-input" id="CadrefPrenom1" name="CadrefPrenom1" readonly/>
 					</div>
 				</div>
 				<div class="row">
@@ -71,7 +71,7 @@
 						<label class="form-control-label cadref-label" style="line-height:1.1">Code postal</label>
 					</div>
 					<div class="col-md-8">
-						<input type="text" class="form-control cadref-input" id="CP1" name="CP1" readonly/>
+						<input type="text" class="form-control cadref-input" id="CadrefCP1" name="CadrefCP1" readonly/>
 					</div>
 				</div>
 				<div class="row">
@@ -79,7 +79,7 @@
 						<label class="form-control-label cadref-label" style="line-height:1.1">Adresse mail</label>
 					</div>
 					<div class="col-md-8">
-						<input type="text" class="form-control cadref-input" id="Mail1" name="Mail1" readonly/>
+						<input type="text" class="form-control cadref-input" id="CadrefMail1" name="CadrefMail1" readonly/>
 					</div>
 				</div>
 				<div class="row">
@@ -87,7 +87,7 @@
 						<label class="form-control-label cadref-label" style="line-height:1.1">Téléphone</label>
 					</div>
 					<div class="col-md-8">
-						<input type="text" class="form-control cadref-input" id="Tel1" name="Tel1" readonly/>
+						<input type="text" class="form-control cadref-input" id="CadrefTel1" name="CadrefTel1" readonly/>
 					</div>
 				</div>
 			</div>
@@ -96,7 +96,8 @@
 			<input type="hidden" name="ValidForm" id="ValidForm" value="1"/>
 		</div>
 	</form>
-	<a href="/" class="btn btn-warning btn-block">Annuler</a>
+	<a href="/" class="btn btn-warning btn-block" id="Annuler">Annuler</a>
+	<div class="masque"></div>
 </section>
 <style>
 	@media screen and (min-width: 768px) {
@@ -109,6 +110,7 @@
 	$(document).ready(function (e) {
 		$('#checkAdherent').on('submit', function (e) {
 			e.preventDefault();
+			$('.masque').spin().addClass('actif');
 			$.ajax({
 				dataType: "json",
 				url: "/Systeme/checkAdherent.json",
@@ -118,22 +120,26 @@
 				var resp = JSON.parse(response);
 				console.log(resp);
 				if (resp.success) {
-					//$('#checkAdherent').css('display','none');
-					$('#msg').html(resp.message);
-					$('#Numero1').val(resp.data.Numero);
-					$('#Nom1').val(resp.data.Nom);
-					$('#Prenom1').val(resp.data.Prenom);
-					$('#CP1').val(resp.data.CP);
-					$('#Mail1').val(resp.data.Mail);
-					$('#Tel1').val(resp.data.Tel);
-					$('#Valider').attr('value', 'Continuer');
-					$('#ValidForm').val("2");
-					$('#saisie').hide();
-					$('#affiche').show();
-				} else {
-					$('#msg').html(resp.message);
-				}
+					if(resp.ValidForm == "2") {
+						$('#CadrefNumero1').val(resp.data.Numero);
+						$('#CadrefNom1').val(resp.data.Nom);
+						$('#CadrefPrenom1').val(resp.data.Prenom);
+						$('#CadrefCP1').val(resp.data.CP);
+						$('#CadrefMail1').val(resp.data.Mail);
+						$('#CadrefTel1').val(resp.data.Tel);
+						$('#Valider').attr('value', 'Continuer');
+						$('#saisie').hide();
+						$('#affiche').show();
+					}
+					if(resp.ValidForm == "3") {
+						$('#Valider').hide();
+						$('#Annuler').text('Retour');
+					}
+					$('#ValidForm').val(resp.ValidForm);
+				} 
+				$('#msg').html(resp.message);
 				$('#msg').show();
+				$('.masque').removeClass('actif').spin(false);
 			});
 		});
 	});

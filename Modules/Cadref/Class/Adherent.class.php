@@ -668,4 +668,60 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		}
 	}
 
+	function GetListClasses($mode, $obj) {
+		$annee = Cadref::$Annee;
+		$filter = str_replace('&', '', $obj['Filter']);
+		$antId = $obj['AntenneId'];
+		$secId = $obj['SectionId'];
+		$disId = $obj['DisciplineId'];
+		switch($mode) {
+			case 'antenne':
+				$sql = "
+select Id, Libelle
+from `##_Cadref-Antenne`
+where Libelle like '%$filter%'
+";
+				break;
+			case 'section':
+				$sql = "
+select distinct s.Id, s.Libelle
+from `##_Cadref-Niveau` n
+inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
+inner join `##_Cadref-Section` s on s.Id=d.SectionId
+inner join `##_Cadref-Classe` c on c.NiveauId=n.Id and c.AntenneId=n.AntenneId
+where n.AntenneId=$antId and c.Annee='$annee' and s.Libelle like '%$filter%'
+order by s.Libelle";
+				break;
+			case 'discipline':
+				$sql = "
+select distinct d.Id, d.Libelle
+from `##_Cadref-Discipline` d
+inner join `##_Cadref-Niveau` n on n.DisciplineId=d.Id and n.AntenneId=$antId
+inner join `##_Cadref-Classe` c on c.NiveauId=n.Id and c.AntenneId=n.AntenneId
+where d.SectionId=$secId  and c.Annee='$annee'
+order by d.Libelle";
+				break;
+			case 'classe':
+				$sql = "
+select distinct c.Id, concat(d.Libelle,' ',n.Libelle) as Libelle, 
+j.Jour, c.HeureDebut, c.HeureFin, c.CycleDebut, c.CycleFin,
+c.Places, c.Inscrits, c.Attentes
+from `##_Cadref-Niveau` n
+inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
+inner join `##_Cadref-Classe` c on c.NiveauId=n.Id
+left join `##_Cadref-Jour` j on j.Id=c.JourId
+where n.DisciplineId=$disId and n.AntenneId=$antId and c.Annee='$annee'
+order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
+				break;
+		}
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		$data = array();
+		foreach($pdo as $p) {
+			$data[] = $p;
+		}
+		return array('data'=>$data, 'sql'=>$sql);
+	}
+
+
 }

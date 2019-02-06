@@ -24,22 +24,26 @@ class Cadref extends Module {
 		$GLOBALS["Systeme"]->registerVar("AnneeEnCours", $annee->Annee);
 		$GLOBALS["Systeme"]->registerVar("Cotisation", $annee->Annee);
 	}
-
+	
 	public static function CheckAdherent() {
 		$data = array();
 		$data['success'] = 0;
 		$data['message'] = '';
 		$data['controls'] = ['close'=>0, 'save'=>1, 'cancel'=>1];
 		
-		if($_POST['validForm'] == 2) {
-			// create account + password + meail
+		// create user
+		if($_POST['ValidForm'] == 2) {
+			self::CreateUser();
+			$data['success'] = 1;
 			$data['message'] = 'Votre mot de passe vous a été envoyé par email.';
+			$data['ValidForm'] = "3";
+			return json_encode($data);
 		}
 
-		$num = isset($_POST['Numero']) ? trim($_POST['Numero']) : '';
-		$nom = isset($_POST['Nom']) ? trim($_POST['Nom']) : '';
-		$mail = isset($_POST['Mail']) ? trim($_POST['Mail']) : '';
-		$tel = isset($_POST['Tel']) ? $_POST['Tel'] : '';
+		$num = isset($_POST['CadrefNumero']) ? trim($_POST['CadrefNumero']) : '';
+		$nom = isset($_POST['CadrefNom']) ? trim($_POST['CadrefNom']) : '';
+		$mail = isset($_POST['CadrefMail']) ? trim($_POST['CadrefMail']) : '';
+		$tel = isset($_POST['CadrefTel']) ? $_POST['CadrefTel'] : '';
 		if((empty($num) && empty($nom)) || (empty($mail) && empty($tel))) {
 			$data['message'] = "Vous devez spécifier le numéro ou le nom<br /> ainsi que l'adresse mail ou le téléphone";
 			return json_encode($data);
@@ -87,11 +91,14 @@ class Cadref extends Module {
 					$t = !$p['Telephone1'] ? $p['Telephone2'] : $p['Telephone1'];
 					if($t) $r['Tel'] = '...'.substr($t, -4, 4);
 				}	
+				$data['ValidForm'] = "2";
 				$data['data'] = $r;
 				break;
 			}
 			$data['success'] = 1;
-			$data['message'] = 'Si les informations suivantes vous correspondent, appuyez sur continuer pour recevoir votre mot de passe par email ou par SMS.';
+			$u = Sys::getOneData('Systeme', 'User/Login='.$p['Numero']);
+			if($u) $data['message'] = 'Votre espace CADREF existe déjà. Si vous avez perdu votre mot de passe appuyez sur continuer pour en recevoir un nouveau par email ou par SMS.';
+			else $data['message'] = 'Si les informations suivantes vous correspondent, appuyez sur continuer pour recevoir votre mot de passe par email ou par SMS.';
 		} else $data['message'] = 'Aucun adhérent ne correspond à ces critères.';
 
 		$data['sql'] = $sql;
@@ -99,6 +106,32 @@ class Cadref extends Module {
 		return json_encode($data);
 	}
 
+	private static function CreateUser() {
+		$num = $_POST['CadrefNumero1'];
+		$a = Sys::getOneData('Cadref', 'Adherent/Numero='.$num);
+		$u = Sys::getOneData('Systeme', 'User/Login='.$num);
+		$new = false;
+		if(! $u) {
+			$new = true;
+			$u = genericClass::createInstance('Systeme', 'User');
+			$u->Login = $num;
+			$u->Mail = $a->Mail ?: $num.'@cadref.com';
+			$u->Nom = $a->Nom;
+			$u->Prenom = $a->Prenom;
+		}
+		$u->Pass = $p = self::GeneratePassword();
+		$u->Save();
+		
+		$s = "Bonjour ".($a->Sexe == "F" ? "Madame " : ($a->Sexe == "H" ? "Monsieur " : "")).$a->Prenom.' '.$a->Nom."<br /><br /><br />";
+		$s .= $new ? "Votre espace CADREF vient d'être activé.<br /><br />" : "Votre mot de passe a été modifié.<br /><br />";
+		$s .= "Vos paramètres de connection sont :<br /><br />Code utilisateur (N° adhérent) : $num<br />Mot de Passe : $p<br /><br /><br />";
+		$s .= "A bientôt,<br /><br />L'équipe du CADREF<br />";
+		$params = array('Subject'=>($new ? 'CADREF : Bienvenu dans votre nouvel espace.' : 'CADREF : Nouveau mot de passe.'),
+			'Mail'=>$u->Mail,
+			'Body'=>$s);
+		self::SendMessage($params);
+	}
+	
 	public static function GeneratePassword() {	
 		$lc = "abcdefghijklmnopqrstuvwxyz";
 		$uc = strtoupper($lc);
@@ -409,10 +442,7 @@ where ve.Visite=$vid
 			$events[] = $e;
 		}
 
-
 		$data['events'] = $events;
-		$data['aa'] = $aa;
-
 		return $data;
 	}
 
@@ -429,8 +459,7 @@ where ve.Visite=$vid
 		$bloc->init($Pr);
 		$bloc->generate($Pr);
 		$Mail->Body($bloc->Affich());
-		$Mail->Send();
-		return true;
+		return $Mail->Send();
 	}
 	
 
