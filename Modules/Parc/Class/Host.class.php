@@ -38,25 +38,39 @@ class Host extends genericClass
             $this->Password = str_shuffle(bin2hex(openssl_random_pseudo_bytes(12)));
         }
         // Enregistrement si pas d'erreur + Récupération GID CLIENT
-        if ($this->_isVerified) {
-            //$this->getGidFromClient($synchro);
-            parent::Save();
+        if (!$this->_isVerified) return false;
 
-            //application des configurations
-            $this->configHost();
+        parent::Save();
 
-            //affectation des clefs ssh
-            $this->sshKeysCheck();
+        //application des configurations
+        $this->configHost();
 
-            //configuration des clefs
-            $this->refreshSshKeys();
+        //creation apachedefault
+        $aps = Sys::getCount('Parc','Host/'.$this->Id.'/Apache');
+        if ($aps<4)
+            $this->createDefaultApache();
 
-            //si le mot de passe a été modifié on répercute sur la base de donnée uniquement si le host existait déjà
-            if ($this->Password!=$old->Password&&$old){
-                $bdd = $this->getOneChild('Bdd');
-                if ($bdd){
-                    $bdd->checkDatabase();
-                }
+        //creation defaultftp
+        $ftps = Sys::getCount('Parc','Host/'.$this->Id.'/FtpUser');
+        if (!$ftps)
+            $this->createDefaultFtp();
+
+        //creation default bdd
+        $bdds = Sys::getCount('Parc','Host/'.$this->Id.'/Bdd');
+        if (!$bdds)
+            $this->createDefaultBdd();
+
+        //affectation des clefs ssh
+        $this->sshKeysCheck();
+
+        //configuration des clefs
+        $this->refreshSshKeys();
+
+        //si le mot de passe a été modifié on répercute sur la base de donnée uniquement si le host existait déjà
+        if ($this->Password!=$old->Password&&$old){
+            $bdd = $this->getOneChild('Bdd');
+            if ($bdd){
+                $bdd->checkDatabase();
             }
         }
         return true;
@@ -138,6 +152,84 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
         }
         return true;
     }
+    /*****************************
+     * INIT
+     ****************************/
+    /**
+     * createDefaultApache
+     * Crée une configuratio apache par défaut avec u sous domaine
+     */
+    public function createDefaultApache($force_domain = '') {
+        //on vérifie l'existence
+        $dom = Sys::getOneData('Parc', 'Domain/defaultDomain=1', 0, 1, '', '', '', '', true);
+        for ($i=0;$i<4;$i++){
+            $exists = Sys::getCount('Parc','Apache/apacheServerName');
+            $apache = genericClass::createInstance('Parc','Apache');
+            $ssl = ($i % 2 == 0) ? true : false;
+            $proxycache = ($i<2)? true : false;
+            $apache->Ssl = $ssl;
+            $apache->ProxyCache = $proxycache;
+
+            $pref = $ssl ? ( $proxycache ? 'ssl-cache-' : 'ssl-') : ( $proxycache ? 'cache-' : '' );
+
+            if (empty($force_domain))
+                $domain = $this->NomLDAP;
+            else $domain = $force_domain;
+
+            //test existence
+            $exists = Sys::getCount('Parc','Host/'.$this->Id.'/Apache/apacheServerName='.$pref.$this->NomLDAP.'.'.$dom->Url);
+            if ($exists) continue;
+
+            $apache->ApacheServerName = $pref.$this->NomLDAP.'.'.$dom->Url;
+            $apache->DocumentRoot = 'www';
+            $apache->Actif = true;
+            $apache->addParent($this);
+            $apache->Save();
+        }
+        return true;
+    }
+    /**
+     * createDefaultFtp
+     * Crée une configuratio apache par défaut avec u sous domaine
+     */
+    public function createDefaultFtp() {
+        //check ftp
+        $ftp = $this->getOneChild('Ftpuser');
+        if (!$ftp) {
+            //alors création du apache
+            $ftp = genericClass::createInstance('Parc', 'Ftpuser');
+            $ftp->Identifiant = 'admin@'.$this->NomLDAP;
+            $ftp->Password = $this->Password;
+            $ftp->addParent($this);
+            $ftp->Save();
+        } else {
+            $ftp->addParent($this);
+            $ftp->Save();
+        }
+        return $ftp;
+    }
+    /**
+     * createDefaultBdd
+     * Crée la base de donnée par défaut
+     */
+    public function createDefaultBdd() {
+        $bdd = $this->getOneChild('Bdd');
+        if (!$bdd) {
+            //alors création du apache
+            $bdd = genericClass::createInstance('Parc', 'Bdd');
+            $bdd->Nom = $this->NomLDAP;
+            $bdd->addParent($this);
+            $bdd->Save();
+        } else {
+            $bdd->addParent($this);
+            $bdd->Save();
+        }
+        $this->addParent($bdd);
+        return $bdd;
+    }
+    /*******************************
+     * LDAP
+     ******************************/
     /**
      * getLdapID
      * récupère le ldapId d'une entrée pour un serveur spécifique
@@ -564,9 +656,16 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
         if(!is_object($this->_KEInfra)) {
             $this->_KEInfra = $this->getOneParent('Infra');
             if(!is_object($this->_KEInfra)) {
+                //si definit dans l'instance
                 if($inst = $this->getOneChild('Instance')){
                     $this->_KEInfra = $inst->getInfra();
                     $this->addParent($this->_KEInfra);
+                }else{
+                    $infra = Sys::getOneData('Parc','Infra/Default=1');
+                    $this->_KEInfra = $infra;
+                    if (!is_object($infra)){
+                        $this->addError(array('Message'=> 'Aucune infrastructure n\'est définie par défaut. Veuillez contacter votre administrateur'));
+                    }
                 }
             }
         }
@@ -686,24 +785,78 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
     }
 
     /**
-     * backup
-     * Fonction de clonage
-     * @param Int Etape
-     * @param String Nouveau Nom Facultatif
-     * @param String Nouveau Serveur Facultatif
+     * cloneHost
+     * Fonction de creation de la tache de clonage
+     * @param Array params
      *
      * @return Mixed
      */
-    public function cloneHost($step = 0 ,$newName = null, $server = null){
-
-        switch($step){
+    public function cloneHost($params = null){
+        if (!$params) $params =array('step'=>0);
+        if (!isset($params['step'])) $params['step']=0;
+        switch($params['step']){
             case 1:
-                return 'pouet';
+                $task = genericClass::createInstance('Systeme','Tache');
+                $task->Type = 'Fonction';
+                $task->Nom = 'Clonage de l\'hébergement ' . $this->Nom.' vers l\'hébergement '. $params['targetHost'];
+                $task->TaskModule = 'Parc';
+                $task->TaskObject = 'Host';
+                $task->TaskId = $this->Id;
+                $task->TaskFunction = 'exeClone';
+                $task->TaskType = 'install';
+                $task->TaskCode = 'HOST_CLONE';
+                $task->TaskArgs = serialize($params);
+                $task->addParent($this);
+                $task->Save();
+                return array('task'=>$task,'title'=>'Progression du clonage');
                 break;
             default:
-                return array('template'=>"Clone",'step'=>1);
+                return array('template'=>"Clone",'step'=>1,'callNext'=>array('nom'=>'cloneHost','title'=>'Progression'));
         }
 
+    }
+
+    /**
+     * clone
+     * Fonction de clonage
+     * @param task Task Object
+     */
+    public function exeClone($task){
+        //desérialisation des paramètres
+        $params = unserialize($task->TaskArgs);
+        $act = $task->createActivity('Création de l\'hébergement ');
+        //création de l'hébergement
+        $host = Sys::getOneData('Parc','Host/'.$this->Id);
+        $name = (isset($params['targetHost'])&&!empty($params['targetHost']))?$params['targetHost']:$host->Nom.' (Copie)';
+        $client = $host->getOneParent('Client');
+        $server = (isset($params['targetServer'])&&$params['targetServer']>0)?Sys::getOneData('Parc','Server/'.$params['targetServer']):$host->getOneParent('Infra');
+        //suppression des champs indesirables
+        unset($host->Id);
+        unset($host->tmsCreate);
+        unset($host->userCreate);
+        unset($host->tmsEdit);
+        unset($host->userEdit);
+        unset($host->LdapID);
+        unset($host->LdapTms);
+        unset($host->LdapGid);
+        unset($host->LdapUid);
+        unset($host->NomLDAP);
+        $host->addParent($client);
+        $host->Nom=$name;
+        try {
+            if (!$host->Save()){
+                foreach ($host->Error as $err){
+                    $actErr = $task->createActivity('Erreur lors de la création de l\'hébergement: '.$err['Message']);
+                    $actErr->Terminate(false);
+                }
+            }
+        }catch (Exception $e) {
+            $act->addDetails($e->getMessage());
+            $act->Terminate(false);
+        }
+
+        $act->Terminate(true);
+        return true;
     }
 }
 /**

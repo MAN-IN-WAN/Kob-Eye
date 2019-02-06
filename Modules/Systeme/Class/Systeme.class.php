@@ -62,8 +62,16 @@ class Systeme extends Module {
             if (!$t)
                 $t = Sys::getOneData('Systeme','Tache/Demarre=0&DateDebut<'.time(),0,1);
             //execution de la tache
-            if ($t)
-                $t->Execute($t);
+            if ($t) {
+                try {
+                    $t->Execute($t);
+                }catch (Exception $e){
+                    $t->Erreur = true;
+                    $t->Save();
+                    $t->createActivity('Erreur Fatale: '.$e->getMessage());
+                    $t->Terminate(false);
+                }
+            }
             else sleep(1);
         }
         return true;

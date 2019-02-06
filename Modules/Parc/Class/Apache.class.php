@@ -163,6 +163,7 @@ class Apache extends genericClass {
                 $task->addParent($serv);
                 //on va charcher l'hébergement
                 $host = $this->getOneParent('Host');
+                if (!$host) return false;
                 $task->addParent($host);
                 //on va chercher l'instance
                 $instance = $host->getOneChild('Instance');
@@ -629,12 +630,56 @@ class Apache extends genericClass {
         }
         return $out;
     }
+    public function getDomainIp($domain){
+        require_once 'Net/DNS2.php';
+        if (!class_exists('Net_DNS2_Resolver')){
+            $this->addError(array("Message"=>"La librairie Net_DNS2 n'est pas disponible. Veuillez l'installer avec la commande suivante: 'pear install NET/DNS2'"));
+            return false;
+        }
+        $resolver = new Net_DNS2_Resolver( array('nameservers' => array('8.8.8.8')) );
+        try {
+            $t = $resolver->query($domain, 'A');
+        }catch (Exception $e){
+            $this->addWarning(array("Message"=>"Timeout DNS : ".$e->getMessage()));
+            return '';
+        }
+        if (sizeof($t->answer))
+            return $t->answer[0]->address;
+        else return false;
+    }
+    /**
+     * getFirstDomain
+     * Retrouve le domaine par défaut
+     *
+     */
+    public function getFirstDomain() {
+        $doms = explode(' ',$this->getDomains());
+        $exceptionDomains = Sys::getData('Parc','Domain/NoSSL=1');
+
+        foreach ($doms as $dom) {
+            if (empty($dom)) continue;
+            $exception = false;
+            foreach ($exceptionDomains as $ed){
+                //test des exceptions
+                if (strpos($dom,$ed->Url) !== false){
+                    $exception = true;
+                }
+
+            }
+            if (!$exception) {
+                return $dom;
+            }
+        }
+    }
     /**
      * executeLetsencrypt
      * Execution de letsencrypt sur le serveur
      */
     public function executeLetsencrypt($task) {
         $first=$this->SslMainDomain;
+        if (empty($first)){
+            $first = $this->getFirstDomain();
+        }
         //récupération du serveur apache
         $host = $this->getOneParent('Host');
         $srv = $host->getOneParent('Server');
@@ -642,12 +687,47 @@ class Apache extends genericClass {
         $infra = $srv->getOneParent('Infra');
         //sélection du proxy par défaut
         if ($infra) {
-            $pxsrv = $infra->getOneChild('Server/Proxy=1');
-            if ($pxsrv) $srv = $pxsrv;
+            $infraPrefixe = 'Infra/'.$infra->Id.'/';
         }else {
+            $infraPrefixe = '';
             $act = $task->createActivity('Pas d\'infrastructure détectée');
             $act->Terminate(false);
         }
+        //on vérifie l'ip du domaine principal
+        $act = $task->createActivity('Recherche de l\'ip pour le domaine '.$first);
+        $ip = $this->getDomainIp($first);
+        $act->addDetails(print_r($ip,true));
+        if ($ip){
+            $act = $task->createActivity('Recherche du proxy pour l\'ip '.$ip);
+
+            //on prends celui qui correspond à l'ip
+            $pxsrv = Sys::getOneData('Parc',$infraPrefixe.'Server/Proxy=1&IP='.$ip,0,1,'ASC','Id');
+            if (!$pxsrv){
+                //on prends le premier par défaut su rl'infra
+                $pxsrv = Sys::getOneData('Parc',$infraPrefixe.'Server/Proxy=1',0,1,'ASC','Id');
+                if (!$pxsrv) {
+                    $act->Terminate(false);
+                    $srv = $pxsrv;
+                }else{
+                    $srv = $pxsrv;
+                    $act->Terminate(true);
+                }
+            }else{
+                $srv = $pxsrv;
+                $act->Terminate(true);
+            }
+        }else{
+            //on prends le premier par défaut su rl'infra
+            $pxsrv = Sys::getOneData('Parc',$infraPrefixe.'Server/Proxy=1',0,1,'ASC','Id');
+            if (!$pxsrv) {
+                $act->Terminate(false);
+                $srv = $pxsrv;
+            }else{
+                $srv = $pxsrv;
+                $act->Terminate(true);
+            }
+        }
+
 
         //Vérification du dépot letsencrypt
         $act = $task->createActivity('Vérification du dépot letsencrypt');
@@ -742,6 +822,7 @@ class Apache extends genericClass {
             return false;
         }
         $act->addDetails($out);
+        $act->Terminate(true);
         if (preg_match('#/etc/letsencrypt/live/(.*?)/fullchain.pem#',$out,$path)) {
             //analyse du retour et récupération du path
             $first = $this->SslMainDomain = $path[1];

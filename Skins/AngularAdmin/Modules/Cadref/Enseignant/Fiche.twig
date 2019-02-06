@@ -106,10 +106,10 @@
 					</div>
 				</div>
 				<div {% if Create %}class="col-md-2"{% else %}class="col-md-1"{% endif %}>
-					<button type="button" class="btn btn-default margin-inline cadref-btn-100" accsskey="g" title="Alt G" ng-click="CadrefEnseignantcallFunction(obj,'SendMessage','Envoi mail','')">Message</button>
 					<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="saveFicheCadref({{ o }}.id)">Sauver</button>
 					<button type="button" class="btn btn-danger margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="delete(obj)">Supprimer</button>
 					<a type="button" class="btn btn-warning margin-inline cadref-btn-100" {% if Create %}data-dismiss="modal"{% else %}href="#/{{ CurrentMenu.Url }}"{% endif %}>Annuler</a>
+					<button type="button" class="btn btn-default margin-inline cadref-btn-100" accsskey="g" title="Alt G" ng-click="CadrefEnseignantcallFunction(obj,'SendMessage','Envoi mail','')">Message</button>
 				</div>
 			</div>
 		</div>

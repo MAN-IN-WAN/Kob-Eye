@@ -1,0 +1,62 @@
+<div class="listWrap">
+	<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%" style="line-height:1" >
+		<thead>
+			<tr>
+				<th title="Id" class="list-col-th-id" hidden>ID</th>
+				<th>Libellé</th>
+				<th>Date visite</th>
+				<th>Départ</th>
+				<th>Prix</th>
+				<th>Assur.</th>
+				<th>Etat</th>
+				<th>Date état</th>
+				<th>Doc.</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr dir-paginate="item in {{ identifier }}{% if tempContext %}.store.data.temp{% else %}.data{% endif %}">
+				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
+				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Libelle }]}</span></td>
+				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.DateVisite }]}</span></td>
+				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.HeureDepart+' '+item.LibelleL }]}</span></td>
+				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ parseInt(item.Prix)+parseInt(item.Reduction) }]}</span></td>
+				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Assurance }]}</span></td>
+				<td scope="row" class="cadref-td typevarchar">
+					<span class="label label-info" ng-if="item.Attente>0 && item.Supprime==0">Attente</span>
+					<span class="label label-success" ng-if="item.Attente==0 && item.Supprime==0">Inscrit</span>
+					<span class="label label-danger" ng-if="item.Supprime>0">Supprimé</span>
+				</td>
+				<td scope="row" class="cadref-td typedate">
+					<span class="label" ng-if="item.Supprime>0">{[{ item.DateSupprime }]}</span>
+					<span class="label" ng-if="item.Attente>0 && item.Supprime==0">{[{ item.DateAttente | limitTo : 16 }]}</span>
+					<span class="label" ng-if="item.Attente==0 && item.Supprime==0">{[{ item.DateInscription | limitTo : 11 }]}</span>
+				</td>
+				<td scope="row" class="cadref-td typeint">
+					<span class="btn btn-xs cadref-fkey" ng-class="{'btn-primary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
+						  ng-click="attachementsOpen(item, 'reservation')">{[{ item.Attachements }]}
+					</span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div class="modal fade cadref-modal-size-medium" id="modal-Attachements" role="modal" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog cadref-modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Visites guidées : Documents</h4>
+            </div>
+            <div class="modal-body">
+                <div ng-if="attachInfo.classeId>0 || attachInfo.visiteId>0">
+					<ng-include src="'Cadref/Attachement/FicheAttachements.htm'"></ng-include>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+	$('.spinner-list').spin();
+</script>

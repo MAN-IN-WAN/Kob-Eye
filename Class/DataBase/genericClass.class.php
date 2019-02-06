@@ -762,7 +762,10 @@ class genericClass extends Root {
 	 * @return Array of property
 	 */
 	public function getFirstSearchOrder() {
-		return $this -> Get("S1");
+		$out = $this -> Get("S1");
+		$out = str_replace("\n",'',$out);
+        $out = str_replace("\r",'',$out);
+        return $out;
 	}
 
 	/**

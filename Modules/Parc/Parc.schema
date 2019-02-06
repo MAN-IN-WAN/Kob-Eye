@@ -212,8 +212,7 @@
 		<FKEY card="0,1" data="Client,Id">ClientId</FKEY>
 		<FKEY card="0,1" data="ServerProfile,Id">ServerProfileId</FKEY>
 		<FKEY data="Infra,Id" card="0,n" description="Infrastructure" form="1" >InfraId</FKEY>
-
-		<RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1" fiche="1" form="1">ServerTacheId</RKEY>
+		<RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1" fiche="1">ServerTacheId</RKEY>
 
 		<FUNCTION title="Test de connexion">Connect</FUNCTION>
 		<FUNCTION title="Installation des clefs SSH">InstallSshKey</FUNCTION>
@@ -254,13 +253,11 @@
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapUid</PROPERTIES>
 		<FKEY card="1,n" data="Server,Id" link="1" form="1" list="1" fiche="1" parentDescription="Serveur" description="Serveur Web" listDescr="Server" filter="Web=1" hasRole="PARC_TECHNICIEN">ServerId</FKEY>
 		<FKEY card="1,1" data="Client,Id" link="1" form="1" list="1" fiche="1" parentDescription="Client" description="Client" listDescr="Client">ClientId</FKEY>
-
+		<FKEY data="Infra,Id" card="0,1" description="Infrastructure" form="1" >InfraId</FKEY>
         <RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">HostTacheId</RKEY>
         <FUNCTION title="Créer un backup">createBackupTask</FUNCTION>
 		<FUNCTION title="Mise à jour des clefs SSH">refreshSshKeys</FUNCTION>
-		<FUNCTION title="Creation d'un clone">cloneHost</FUNCTION>
-
-		<FKEY data="Infra,Id" card="0,1" description="Infrastructure" form="1" >InfraId</FKEY>
+		<FUNCTION title="Cloner cet hébergement">cloneHost</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Apache" driver="mysql" Dico="1" Description="Hôte virtuel" Icon="/Skins/AdminV2/Img/IconAqua/Tasks.png" Class="Modules/Parc/Class/Apache.class.php">
 		<PROPERTIES type="function" searchOrder="2" obligatoire="1" list="1" fiche="1" form="1" description="Racine du site (à partir de la racine du dossier utilisateur)" default="www" function="getRootPath" >DocumentRoot</PROPERTIES>
@@ -609,11 +606,10 @@
 		<PROPERTIES type="int" description="Status" searchOrder="2"  listDescr="Status"  list="1" fiche="1" form="1" values="1::Non installé,2::Installé et configuré,3::Mise à jour en attente" default="1">Status</PROPERTIES>
 		<FKEY card="1,n" data="Domain,Id" description="Domaine(s)" listDescr="Domaine(s)" >DomainId</FKEY>
 		<FKEY card="0,1" data="Host,Id" description="Hébergement" listDescr="Hébergement" fiche="1">HostId</FKEY>
-		<FKEY card="0,1" data="Bdd,Id" description="Base de donnée(s)" hasRole="PARC_TECHNICIEN" listDescr="Base de donnée" fiche="1">BddId</FKEY>
+		<!--<FKEY card="0,1" data="Bdd,Id" description="Base de donnée(s)" hasRole="PARC_TECHNICIEN" listDescr="Base de donnée" fiche="1">BddId</FKEY>-->
 		<FKEY card="0,1" data="Client,Id" description="Client" listDescr="Client" form="1" fiche="1" list="1">ClientId</FKEY>
-
+		<FKEY data="Infra,Id" card="0,1" description="Infrastructure" form="1" fiche="1" >InfraId</FKEY>
         <RKEY card="0,n" data="Tache,Id" module="Systeme" description="Tâche" link="1">InstanceTacheId</RKEY>
-
         <PROPERTIES type="varchar" length="50" obligatoire="1" default="default" description="Version de php" query="Parc/PHPVersion::Valeur::Titre" list="1" fiche="1" form="1" >PHPVersion</PROPERTIES>
 		<PROPERTIES type="plugin" category="Configuration" query="Explorateur/_Dossier/Modules/Parc/Plugins/Instance/_Dossier::Nom" form="1" fiche="1" obligatoire="1" default="Vide" description="Sélection de l'environnement CMS" list="1">Plugin</PROPERTIES>
 		<FUNCTION title="Activer le SSL">enableSsl</FUNCTION>
@@ -622,8 +618,6 @@
 		<FUNCTION title="Reinstaller le logiciel">createInstallTask</FUNCTION>
 		<FUNCTION title="Reconfigurer le CMS">rewriteConfig</FUNCTION>
 		<FUNCTION title="Créer un point de restauration">createBackupTask</FUNCTION>
-
-		<FKEY data="Infra,Id" card="0,1" description="Infrastructure" form="1" fiche="1" >InfraId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="InstanceDomain" driver="mysql" Description="Domaine de l'instance" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/InstanceDomain.class.php" >
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Url du dmoaine" list="1" form="1" fiche="1" listDescr="Nom">Url</PROPERTIES>

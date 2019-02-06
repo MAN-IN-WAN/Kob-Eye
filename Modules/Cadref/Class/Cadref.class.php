@@ -24,37 +24,48 @@ class Cadref extends Module {
 		$GLOBALS["Systeme"]->registerVar("AnneeEnCours", $annee->Annee);
 		$GLOBALS["Systeme"]->registerVar("Cotisation", $annee->Annee);
 	}
-
+	
 	public static function CheckAdherent() {
 		$data = array();
 		$data['success'] = 0;
 		$data['message'] = '';
 		$data['controls'] = ['close'=>0, 'save'=>1, 'cancel'=>1];
+		
+		// create user
+		if($_POST['ValidForm'] == 2) {
+			self::CreateUser();
+			$data['success'] = 1;
+			$data['message'] = 'Votre mot de passe vous a été envoyé par email.';
+			$data['ValidForm'] = "3";
+			return json_encode($data);
+		}
 
-		$num = isset($_POST['Numero']) ? trim($_POST['Numero']) : '';
-		$nom = isset($_POST['Nom']) ? trim($_POST['Nom']) : '';
-		$mail = isset($_POST['Mail']) ? trim($_POST['Mail']) : '';
-		$tel = isset($_POST['Tel']) ? $_POST['Tel'] : '';
+		$num = isset($_POST['CadrefNumero']) ? trim($_POST['CadrefNumero']) : '';
+		$nom = isset($_POST['CadrefNom']) ? trim($_POST['CadrefNom']) : '';
+		$mail = isset($_POST['CadrefMail']) ? trim($_POST['CadrefMail']) : '';
+		$tel = isset($_POST['CadrefTel']) ? $_POST['CadrefTel'] : '';
 		if((empty($num) && empty($nom)) || (empty($mail) && empty($tel))) {
 			$data['message'] = "Vous devez spécifier le numéro ou le nom<br /> ainsi que l'adresse mail ou le téléphone";
 			return json_encode($data);
 		}
-
+		
+		$telr = '';
+		$nomr ='';
 		if($num) $num = substr('000000', 0, 6 - strlen($num)).$num;
-		if($tel) $tel = preg_replace('/[^0-9]/', '([^0-9])*', $tel);
-		if($nom) $nom = preg_replace('/([^A-Z]){1,}/', '([^A-N])*', $nom);
+		if($tel) $telr = preg_replace('/[^0-9]/', '([^0-9])*', $tel);
+		if($nom) $nomr = preg_replace('/([^A-Z]){1,}/', '([^A-N])*', $nom);
 
 		if($num) $w .= "Numero='$num'";
-		if($nom) {
+		if($nomr) {
 			if($w) $w .= " or ";
-			$w .= "Nom regexp '$nom'";
+			$w .= "Nom regexp '$nomr'";
 		}
 		if($mail) $w1 .= "Mail='$mail'";
-		if($tel) {
+		if($telr) {
 			if($w1) $w1 .= " or ";
-			$w1 .= "Telephone1 regexp '$tel' or Telephone2 regexp '$tel'";
+			$w1 .= "Telephone1 regexp '$telr' or Telephone2 regexp '$telr'";
 		}
-		$sql = "select Numero,Nom,Prenom,Mail,Telephone1,Telephone2 from `##_Cadref-Adherent` where ($w) and ($w1)";
+		$sql = "select Numero,Nom,Prenom,CP,Mail,Telephone1,Telephone2 from `##_Cadref-Adherent` where ($w) and ($w1) limit 1";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if($pdo && $pdo->rowcount()) {
@@ -63,20 +74,73 @@ class Cadref extends Module {
 				$r['Numero'] = $p['Numero'];
 				$r['Nom'] = $p['Nom'];
 				$r['Prenom'] = $p['Prenom'];
-				$r['Mail'] = $p['Mail'];
-				$r['Telephone1'] = $p['Telephone1'];
-				$r['Telephone2'] = $p['Telephone2'];
+				$r['CP'] = '...'.substr($p['CP'], -2, 2);
+				$s = $p['Mail'];
+				if($mail && $mail == $s) $r['Mail'] = $s;
+				else if($s) {
+					$t = explode('@', $s);
+					$r[Mail] = substr($t[0], 0, 2).'...'.substr($t[0], -1, 1).'@'.substr($t[1], 0, 2).'...'.substr($t[1], -2, 2);
+				}
+				$r['Tel'] = '';
+				if($tel) {
+					$t = preg_replace('/[^0-9]/', '', $tel);
+					if($t == preg_replace('/[^0-9]/', '', $p['Telephone1'])) $r['Tel'] = $p['Telephone1']; 
+					elseif($t == preg_replace('/[^0-9]/', '', $p['Telephone2'])) $r['Tel'] = $p['Telephone2']; 
+				}
+				if(!$r['Tel']) {
+					$t = !$p['Telephone1'] ? $p['Telephone2'] : $p['Telephone1'];
+					if($t) $r['Tel'] = '...'.substr($t, -4, 4);
+				}	
+				$data['ValidForm'] = "2";
 				$data['data'] = $r;
 				break;
 			}
 			$data['success'] = 1;
-		} else $data['message'] = 'Adhérent non trouvé';
+			$u = Sys::getOneData('Systeme', 'User/Login='.$p['Numero']);
+			if($u) $data['message'] = 'Votre espace CADREF existe déjà. Si vous avez perdu votre mot de passe appuyez sur continuer pour en recevoir un nouveau par email ou par SMS.';
+			else $data['message'] = 'Si les informations suivantes vous correspondent, appuyez sur continuer pour recevoir votre mot de passe par email ou par SMS.';
+		} else $data['message'] = 'Aucun adhérent ne correspond à ces critères.';
 
 		$data['sql'] = $sql;
 		$data["controls"] = ['close'=>0, 'save'=>1, 'cancel'=>1];
 		return json_encode($data);
 	}
 
+	private static function CreateUser() {
+		$num = $_POST['CadrefNumero1'];
+		$a = Sys::getOneData('Cadref', 'Adherent/Numero='.$num);
+		$u = Sys::getOneData('Systeme', 'User/Login='.$num);
+		$new = false;
+		if(! $u) {
+			$new = true;
+			$u = genericClass::createInstance('Systeme', 'User');
+			$u->Login = $num;
+			$u->Mail = $a->Mail ?: $num.'@cadref.com';
+			$u->Nom = $a->Nom;
+			$u->Prenom = $a->Prenom;
+		}
+		$u->Pass = $p = self::GeneratePassword();
+		$u->Save();
+		
+		$s = "Bonjour ".($a->Sexe == "F" ? "Madame " : ($a->Sexe == "H" ? "Monsieur " : "")).$a->Prenom.' '.$a->Nom."<br /><br /><br />";
+		$s .= $new ? "Votre espace CADREF vient d'être activé.<br /><br />" : "Votre mot de passe a été modifié.<br /><br />";
+		$s .= "Vos paramètres de connection sont :<br /><br />Code utilisateur (N° adhérent) : $num<br />Mot de Passe : $p<br /><br /><br />";
+		$s .= "A bientôt,<br /><br />L'équipe du CADREF<br />";
+		$params = array('Subject'=>($new ? 'CADREF : Bienvenu dans votre nouvel espace.' : 'CADREF : Nouveau mot de passe.'),
+			'Mail'=>$u->Mail,
+			'Body'=>$s);
+		self::SendMessage($params);
+	}
+	
+	public static function GeneratePassword() {	
+		$lc = "abcdefghijklmnopqrstuvwxyz";
+		$uc = strtoupper($lc);
+		$dc = '0123456789';
+		$sc = '!$*+?';
+		return str_shuffle(substr(str_shuffle($lc),0,3).substr(str_shuffle($uc),0,2).substr(str_shuffle($dc),0,2).substr(str_shuffle($sc),0,1));
+	}
+
+	
 	private static function checkAdher($f0, $v0, $f1, $v1) {
 		$qry = "Adherent/$f0=$v0&$f1=$v1";
 		$adh = Sys::getOneData('Cadref', $qry);
@@ -148,7 +212,7 @@ group by t.Antenne";
 			$f = $p['DateFin'] ? $p['DateFin'] : $d;
 			if($t == 'V') {
 				$e = new stdClass();
-				$e->title = $p['Libelle'] ?: 'Vacances';
+				$e->title = $p['Libelle'] ?: 'VACANCES';
 				$e->start = Date('Y-m-d', $d);
 				$e->end = Date('Y-m-d', $f);
 				$e->description = Date('d/m', $d).' au '.Date('d/m', $f);
@@ -374,14 +438,11 @@ where ve.Visite=$vid
 			if($s) $s .= "\n";
 			$s .= $p['Description'] ?: '';
 			$e->description = $s;
-			$e->className = p['rid'] ? 'fc-event-success' : 'fc-event-default';
+			$e->className = (p['rid'] ? 'fc-event-success' : 'fc-event-default').' cadref-cal-visite';
 			$events[] = $e;
 		}
 
-
 		$data['events'] = $events;
-		$data['aa'] = $aa;
-
 		return $data;
 	}
 
@@ -398,8 +459,11 @@ where ve.Visite=$vid
 		$bloc->init($Pr);
 		$bloc->generate($Pr);
 		$Mail->Body($bloc->Affich());
-		$Mail->Send();
-		return true;
+		return $Mail->Send();
 	}
+	
+
+
+
 
 }

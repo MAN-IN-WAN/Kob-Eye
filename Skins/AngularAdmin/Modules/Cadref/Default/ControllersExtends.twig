@@ -57,7 +57,27 @@
             }
         },100,50);
 
-		
+	$scope.initDatePickerZob = function() {
+		$('.datepicker-only-init').datetimepicker({
+			widgetPositioning: {
+				horizontal: 'left'
+			},
+			locale: 'fr',
+			format: 'DD/MM/YYYY',
+			icons: {
+				time: "fa fa-clock-o",
+				date: "fa fa-calendar",
+				up: "fa fa-arrow-up",
+				down: "fa fa-arrow-down"
+			}
+		});
+		//Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
+		$(".datepicker-only-init").on("dp.change", function () {
+			var input = $(this).children('input').eq(0);
+			input.trigger('change');
+			input.trigger('input');
+		});
+	}		
 		
 		// efface le contenu du filtre
 		$scope.clearFilter = function(child) {
@@ -348,7 +368,6 @@
 				cad.cours += Number(t[i].Prix)-Number(t[i].Reduction1)-Number(t[i].Reduction2);
 			}
 			cad.paye = Number(cad.cotis)+Number(cad.cours)+Number(cad.visit)-Number(cad.regle)-Number(cad.diff)+Number(cad.regul);
-console.error(Number(cad.cotis),Number(cad.cours),Number(cad.visit),Number(cad.regle),Number(cad.diff),Number(cad.regul),cad.paye);
 			cad.solde = 0;
 			cad.nonSolde = false;
 			$scope.nextControle();
@@ -445,7 +464,6 @@ console.error(Number(cad.cotis),Number(cad.cours),Number(cad.visit),Number(cad.r
 			
 			if(cad.Inscr.cotis != $scope.CotisationAnnuelle)
 				cad.Inscr.cotis = $scope.CotisationAnnuelle;
-console.error('xxxxxxxxxxxxxxxxxxxxxxx');
 			$scope.classeCalcul();
 			cad.Inscr.updated = true;
 		}
@@ -619,7 +637,7 @@ console.error('xxxxxxxxxxxxxxxxxxxxxxx');
 		
 		$scope.Enseignants = JSON.parse('{{ enseignants|raw }}');
 
-		// modification date cours
+{#		// modification date cours
 		$scope.classeDateOpenCallback = function(item, obj) {
 			var o = $scope.localObj = {};
             angular.copy(obj, o);
@@ -639,6 +657,62 @@ console.error('xxxxxxxxxxxxxxxxxxxxxxx');
 			$scope.CadrefClasseDatedelete(obj);
 			$("#modal-CadrefClasseDate").modal('toggle');
 		}
+#}
+		//-----------------
+		// CLASSEDATE
+		
+		$scope.classeDateObj;
+		$scope.classeDateInfo = {mode: ''};
+		// ferme classe>Date edit section
+		$scope.classeDateCloseEdit = function() {
+			$scope.classeDateInfo.mode = '';
+		}
+
+		// ajout classeDate
+		$scope.classeDateAdd = function() {
+			var i = $scope.classeDateInfo;
+			var o = $scope.classeDateObj = CadrefClasseDateStore.getNewData();
+			o.ClasseClasseId = $scope.obj.id;
+			i.mode = 'add';
+		}
+
+		// modification classeDate
+		$scope.classeDateModify = function(item) {
+			var i = $scope.classeDateInfo;
+			var o = $scope.classeDateObj = {};
+			angular.copy(item, o);
+			o.ClasseClasseId = $scope.obj.id;
+			i.mode = 'edit';
+		}
+
+		// sauve classeDate
+		$scope.classeDateSave = function() {
+			$('#settings').spin();
+			CadrefClasseDateStore.saveData($scope.classeDateObj).then(function (data) {
+				$('#settings').spin(false);
+				$scope.classeDateInfo.mode = '';
+			});
+		}
+
+		// suppression classeDate
+		$scope.classeDateDelete = function(item) {
+			swal({
+					title: "Effacer la date",
+					text: "Cette suppression sera définitive. ",
+					type: "warning",
+					showCancelButton: true,
+					confirmButtonClass: "btn-danger",
+					cancelButtonText: "Annuler",
+					confirmButtonText: "Oui, supprimer !",
+					closeOnConfirm: true
+				},
+				function(){
+					CadrefClasseDateStore.deleteOneData(item.id,'all');
+					$scope.classeDateInfo.mode = '';
+				}
+			);
+		}
+		
 		{% endif %}
 
 		

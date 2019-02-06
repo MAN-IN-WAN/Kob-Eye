@@ -1227,3 +1227,8 @@ Choix des composants
     border: 3px solid #2b2b2b;
     margin-bottom: 15px;
 }
+/**MODAL**/
+.modal-body {
+    overflow: hidden;
+    overflow: -webkit-paged-y !important;
+}

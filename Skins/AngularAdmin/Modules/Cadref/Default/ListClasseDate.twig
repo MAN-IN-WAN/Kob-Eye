@@ -1,0 +1,64 @@
+{# liste DateClasse #}
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label %} 
+<div class="cadref-widget" ng-if="classeDateInfo.mode!=''">
+	<div class="row">
+		<div style="height:10px"></div>
+		<div class="col-md-12">
+			<div id="attach-edit">
+				<div class="row">
+					<div class="col-md-4">
+						{{ label("Date du cours") }}
+					</div>
+					<div class="col-md-8" >
+						<label class="input-group datepicker-only-init cadref-no-margin cadref-input-date">
+							<input id="input-dateClasseObjDateCours" type="text" class="form-control cadref-input" ng-init="initDatePickerZob()"
+								   placeholder="Date" mask="dd/dd/dddd" ng-model="classeDateObj.DateCours"/>
+							<span class="input-group-addon">
+								<i class="icmn-calendar"></i>
+							</span>
+						</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						{{ label("Notes") }}
+					</div>
+					<div class="col-md-8">
+						<input type="text" class="form-control cadref-input" ng-model="classeDateObj.Notes"/>
+					</div>
+				</div>
+				<div style="height:10px"></div>
+				<div class="row">
+					<div class="col-md-12">
+						<a class="btn-abt cadref-btn-save btn-success" href="" ng-if="classeDateObj.DateCours!=''" ng-click="classeDateSave()" title="Enregister"></a>
+						<a class="btn-abt cadref-btn-del btn-danger" href="" ng-if="classeDateObj.id" ng-click="classeDateDelete(classeDateObj)" title="Supprimer"></a>
+						<a class="btn-abt cadref-btn-cancel btn-warning" href="" ng-click="classeDateCloseEdit()" title="Annuler"></a>
+					</div>
+				</div>						
+			</div>
+		</div>
+	</div>
+
+</div>
+<div class="listWrap" ng-if="classeDateInfo.mode==''">
+	<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%" style="line-height:1" >
+		<thead>
+			<tr>
+				<th title="Id" class="list-col-th-id" hidden>ID</th>
+				<th class="cadref-th">Date</th>
+				<th class="cadref-th">Note</th>
+				<th class="cadref-th-btn"><a class="btn-abt cadref-btn-add btn-success" href="" ng-click="classeDateAdd()" title="Ajouter une date"></a></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr dir-paginate="item in {{ identifier }}.data" >
+				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
+				<td scope="row" class="cadref-td typedate"><span class="label">{[{ item.DateCours }]}</span></td>
+				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Notes }]}</span></td>
+				<td  class="table-action cadref-td-btn" style="width:64px">
+					<a class="btn-abt btn-abt-nfo btn-primary" href="" title="Détails" ng-click="classeDateModify(item)"></a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

@@ -185,9 +185,12 @@ class Domain extends genericClass {
         $entry['dnsminimum'] = $this->TTLMin ?  $this->TTLMin : 60;
         $entry['dnsttl'] =  $this->TTL ?  $this->TTL : 86400;
 
+        //temp
+        $entry['dnsexpire'] = 1209600;
+
 		if($new) {
 			$entry['dnsclass'] = 'IN';
-			$entry['dnsexpire'] = 604800;
+			$entry['dnsexpire'] = 1209600;
 			$entry['dnsrefresh'] = 21600;
 			$entry['dnsretry'] = 3600;
 			$entry['dnsserial'] = date('Ymd01');
