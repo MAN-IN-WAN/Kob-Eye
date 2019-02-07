@@ -77,6 +77,48 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		}
 		return s;
 	}
+
+	//--------------------------------
+	// UTILISATEUR
+	//--------------------------------
+	
+	// mot de passe
+	$scope.utilisateurInfo = {mode: '', pwdValid: 0, PwdOld: '', PwdNew: '', PwdConf: '', pwdInfo: '', pwdCondInfo: '', returnMsg: ''};
+	$scope.utilisateurChange = function(mode) {
+		$scope.utilisateurInfo.mode = mode; 
+	}
+	$scope.utilisateurPwdChange = function(mode) {
+		var o = $scope.utilisateurInfo;
+		o.pwdValid = 0;
+		o.returnMsg = o.pwdConfInfo = o.pwdInfo = '';
+		if(mode == 'new') o.PwdConf = '';
+		if(o.PwdOld == '') return;
+		var p = o.PwdNew 
+		if(p) {
+			if(p.length < 8) o.pwdInfo = 'Mot de passe trop court';
+			else {
+//				var rgx = new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");
+				var rgx = new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*$", "g");
+				if(! rgx.test(p)) o.pwdInfo = 'Mot de passe non conforme';
+			}
+			if(o.pwdInfo) return;
+		}
+		if(o.PwdConf && p != o.PwdConf) {
+			o.pwdConfInfo = 'Confirmation incorrecte';
+			return;
+		}
+		o.pwdValid = 1;
+	}
+	$scope.utilisateurPwdSave = async function() {
+		$('#password').spin();
+		var o = $scope.utilisateurInfo;
+		var data = await $scope.{{ identifier }}callMethod($scope.obj,'ChangePassword',o,false);
+		data = data.data.data;
+		$('#password').spin(false);
+		if(!data.success) o.returnMsg = data.message;
+		else o.mode = ''; 
+		$scope.$digest();
+	}
 	
 	//-----------------------------
 	// ATTACHEMENT
@@ -483,7 +525,6 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		o.updated = 1;
 		t[t.length] = o;
 		
-console.log('xxxxxxxxxxxxxxxx',t);
 		var i = $scope.inscriptionObj;
 		i.DisciplineId = i.SectionId = i.AntenneId = i.Select = 0;
 	}
@@ -493,6 +534,7 @@ console.log('xxxxxxxxxxxxxxxx',t);
 		var n = t.indexOf(item);
 		if(n >= 0) t.splice(n, 1);
 	}
+	
 	{% endif %}
 
 

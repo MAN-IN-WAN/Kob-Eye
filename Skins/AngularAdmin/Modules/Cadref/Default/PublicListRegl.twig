@@ -14,7 +14,7 @@
 			<tr dir-paginate="item in {{ identifier }}.data" >
 				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
 				<td scope="row" class="cadref-td typedate"><span class="label">{[{ item.DateReglement}]}</span></td>
-				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Montant }]}</span></td>
+				<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ item.Montant }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar">
 					<span class="label" ng-if="item.ModeReglement == 'B'">Chèque</span>
 					<span class="label" ng-if="item.ModeReglement == 'E'">Espèces</span>

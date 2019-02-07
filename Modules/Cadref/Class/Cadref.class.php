@@ -119,17 +119,20 @@ class Cadref extends Module {
 			$u->Nom = $a->Nom;
 			$u->Prenom = $a->Prenom;
 		}
-		$u->Pass = $p = self::GeneratePassword();
+		$p = self::GeneratePassword();
+		$u->Pass = '[md5]'.md5($p);
 		$u->Save();
 		
-		$s = "Bonjour ".($a->Sexe == "F" ? "Madame " : ($a->Sexe == "H" ? "Monsieur " : "")).$a->Prenom.' '.$a->Nom."<br /><br /><br />";
-		$s .= $new ? "Votre espace CADREF vient d'être activé.<br /><br />" : "Votre mot de passe a été modifié.<br /><br />";
-		$s .= "Vos paramètres de connection sont :<br /><br />Code utilisateur (N° adhérent) : $num<br />Mot de Passe : $p<br /><br /><br />";
-		$s .= "A bientôt,<br /><br />L'équipe du CADREF<br />";
-		$params = array('Subject'=>($new ? 'CADREF : Bienvenu dans votre nouvel espace.' : 'CADREF : Nouveau mot de passe.'),
-			'Mail'=>$u->Mail,
-			'Body'=>$s);
-		self::SendMessage($params);
+		if($a->Mail) {
+			$s = "Bonjour ".($a->Sexe == "F" ? "Madame " : ($a->Sexe == "H" ? "Monsieur " : "")).$a->Prenom.' '.$a->Nom.",<br /><br /><br />";
+			$s .= $new ? "Votre espace CADREF vient d'être activé.<br /><br />" : "Votre mot de passe a été modifié.<br /><br />";
+			$s .= "Vos paramètres de connection sont :<br /><br />Code utilisateur (N° adhérent) : $num<br />Mot de Passe : $p<br /><br /><br />";
+			$s .= "A bientôt,<br />L'équipe du CADREF<br />";
+			$params = array('Subject'=>($new ? 'CADREF : Bienvenu dans votre nouvel espace.' : 'CADREF : Nouveau mot de passe.'),
+				'Mail'=>$a->Mail,
+				'Body'=>$s);
+			self::SendMessage($params);
+		}
 	}
 	
 	public static function GeneratePassword() {	

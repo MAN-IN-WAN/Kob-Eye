@@ -26,19 +26,26 @@
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Discipline" driver="mysql" order="CodeDiscipline" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Discipline" Operations="addChildren,edit,delete" Dico="1" Class="Modules/Cadref/Class/Discipline.class.php">
+		<FILTER name="Avec Web" color="success">WebDisciplineId>0</FILTER>
+		<FILTER name="Sans Web" color="success">WebDisciplineId=0</FILTER>
+        <FILTER name="Toutes" color="warning"></FILTER>
 		<FKEY card="1,1" module="Cadref" data="Section,Id" category="Description" form="1" fiche="1" listDescr="Section" description="Section">SectionId</FKEY>
 		<PROPERTIES type="varchar" length="2" category="Description" description="Section">Section</PROPERTIES>
 		<PROPERTIES type="varchar" length="2" category="Description" form="2" fiche="2" description="Discipline">Discipline</PROPERTIES>
 		<PROPERTIES type="varchar" length="5" searchOrder="1" auto="1" unique="1" category="Description" list="1" listDescr="Code">CodeDiscipline</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" obligatoire="1" category="Description" list="4" form="4" fiche="4" description="Libellé">Libelle</PROPERTIES>
-		<PROPERTIES type="boolean" default="0" category="Description" form="5" fiche="5" description="Visite guidée">Visite</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" form="6" fiche="6" description="Certificat médical">Certificat</PROPERTIES>
 		<PROPERTIES type="text" obligatoire="0" category="Description" form="7" fiche="7" description="Description">Description</PROPERTIES>
+		<FKEY card="0,1" module="Cadref" data="WebDiscipline,Id" category="Description" form="5" fiche="5" description="Discipline Web">WebDisciplineId</FKEY>
+		<PROPERTIES type="varchar" length="5" category="Description" list="5" form="2" fiche="2" listDescr="Web" description="Discipline">WebDiscipline</PROPERTIES>
 
 		<VIEW title="DisciplineList" default="1">
 			<OBJECTCLASS title="Discipline" filters="">
 				<JOIN type="outer" module="Cadref" title="Section" on="SectionId" target="Id">
 					<PROPERTIES type="varchar" list="2" form="4" fiche="4" listDescr="Section" alias="LibelleS">Libelle</PROPERTIES>
+				</JOIN>
+				<JOIN type="outer" module="Cadref" title="WebDiscipline" on="WebDisciplineId" target="Id">
+					<PROPERTIES type="varchar" list="6" form="5" fiche="5" listDescr="Libelle web" alias="LibelleW">Libelle</PROPERTIES>
 				</JOIN>
 			</OBJECTCLASS>
 		</VIEW>
@@ -57,7 +64,6 @@
 		<PROPERTIES type="varchar" length="50" category="Description" list="5" form="5" fiche="5" description="Libellé">Libelle</PROPERTIES>
 		<PROPERTIES type="boolean" default="1" category="Description" form="6" fiche="6" description="Accès Web">AccesWeb</PROPERTIES>
 		<PROPERTIES type="text" obligatoire="0" category="Description" form="7" fiche="6" description="Description">Description</PROPERTIES>
-		<FKEY card="0,1" module="Cadref" data="DisciplineWeb,Id" category="Description" form="3" fiche="3" description="Discipline Web">DisciplineWebId</FKEY>
 		<FKEY card="0,1" module="Cadref" data="Lieu,Id" form="11" fiche="11" category="Description" description="Lieu" >LieuId</FKEY>
 
 		<VIEW title="NiveauList" default="1">
@@ -503,6 +509,7 @@
 	<OBJECTCLASS title="WebDiscipline" driver="mysql" order="CodeDiscipline" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Discipline Web" Operations="addChildren,edit,delete" Dico="1" Class="Modules/Cadref/Class/WebDiscipline.class.php">
 		<FKEY card="1,1" module="Cadref" data="WebSection,Id" category="Description" form="1" fiche="1" listDescr="Section" description="Section">WebSectionId</FKEY>
 		<PROPERTIES type="varchar" length="2" category="Description" form="2" fiche="2" description="Discipline">WebDiscipline</PROPERTIES>
+		<PROPERTIES type="varchar" length="2" category="Description" form="2" fiche="2" description="Section">WebSection</PROPERTIES>
 		<PROPERTIES type="varchar" length="4" searchOrder="1" auto="1" unique="1" category="Description" list="1" listDescr="Code">CodeDiscipline</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" obligatoire="1" category="Description" list="4" form="4" fiche="4" description="Libellé">Libelle</PROPERTIES>
 		<PROPERTIES type="text" obligatoire="0" category="Description" form="7" fiche="7" description="Description">Description</PROPERTIES>

@@ -76,7 +76,7 @@
 													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleA }]}</span></td>
 													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Jour.substring(0, 3)+' '+item.HeureDebut+'&nbsp;- '+item.HeureFin }]}</span></td>
 													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.CycleDebut ? item.CycleDebut+'&nbsp;- '+item.CycleFin : "Toute l'année" }]}</span></td>
-													<td scope="row" class="cadref-td typefloat"><span class="label">{[{ (item.Prix*1)-(item.Reduction1*1)-(item.Reduction2*1) }]}</span></td>
+													<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ (item.Prix*1)-(item.Reduction1*1)-(item.Reduction2*1) }]}</span></td>
 													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Disponible+' / '+item.Places }]}</span></td>
 													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Enseignants }]}</span></td>
 													<td  class="table-action cadref-td-btn">
@@ -88,6 +88,7 @@
 									</div>
 								</div>
 							</div>
+							<div style="height:10px"></div>
 							<div class="row">
 								<div class="col-md-2">
 									<button type="button" class="btn btn-warning" ng-click="inscriptionSelect(false)">Annuler</button>

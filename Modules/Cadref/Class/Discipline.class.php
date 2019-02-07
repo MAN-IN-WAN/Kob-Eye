@@ -6,6 +6,8 @@ class Discipline extends genericClass {
 		$p = $this->getOneParent('Section');
 		$this->Section = $p->Section;
 		$this->CodeDiscipline = $this->Section.$this->Discipline;
+		$p = $this->getOneParent('WebDiscipline');
+		$this->WebDiscipline = $p ? $p->CodeDiscipline : '';
 		return parent::Save();
 	}
 	
