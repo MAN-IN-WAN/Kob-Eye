@@ -82,6 +82,137 @@ insert into kbabtel.`kob-Cadref-Lieu` (umod,gmod,omod,Ville,Adresse1,Adresse2,Ty
 (7,7,7,"Nîmes","Stade des Costières","123 av. de la Bouvine","R","NSC","43.816025,4.359255599999983",0);
 update kbabtel.`kob-Cadref-Lieu` set Libelle=concat(Ville,', ',Adresse1);
 
+truncate kbabtel.`kob-Cadref-WebSection`;
+insert into kbabtel.`kob-Cadref-WebSection` (umod,gmod,omod,WebSection,Libelle) values 
+(7,7,7,'AA','Activités artistiques'),
+(7,7,7,'AP','Activités Physiques'),
+(7,7,7,'HI','Histoire'),
+(7,7,7,'IN','Informatique'),
+(7,7,7,'LG','Langues'),
+(7,7,7,'SH','Sciences humaines et sociales');
+truncate kbabtel.`kob-Cadref-WebDiscipline`;
+insert into kbabtel.`kob-Cadref-WebDiscipline` (umod,gmod,omod,WebSection,WebDiscipline,Libelle,CodeDiscipline) values 
+(7,7,7,"IN","DE","Découverte et prise en main de l'ordinateur","INDE"),
+(7,7,7,"IN","IN","Internet","ININ"),
+(7,7,7,"IN","SP","Sites pratiques","INSP"),
+(7,7,7,"IN","SE","Sécuriser son ordinateur sur Internet","INSE"),
+(7,7,7,"IN","GO","Google : nouvelles fonctions et recherches multimédia","INGO"),
+(7,7,7,"IN","JI","Création de site internet ""en ligne"" avec Jimdo","INJI"),
+(7,7,7,"IN","TT","Traitement de texte (Word) ","INTT"),
+(7,7,7,"IN","TB","Tableur (Excel) ","INTB"),
+(7,7,7,"IN","AC","Création d'une base de données avec Access","INAC"),
+(7,7,7,"IN","WI","Windows 7 ou 10 ","INWI"),
+(7,7,7,"IN","PW","Passage à Windows 10 : mise à niveau","INPW"),
+(7,7,7,"IN","MU","Utilisation multimédia de Windows 10","INMU"),
+(7,7,7,"IN","FS","Fonctions secrètes de Windows 10","INFS"),
+(7,7,7,"IN","SK","Skype : messagerie instantanée","INSK"),
+(7,7,7,"IN","FA","Facebook","INFA"),
+(7,7,7,"IN","SI","Bien scanner et imprimer","INSI"),
+(7,7,7,"IN","SR","Sauvegarde et récupération de ses données","INSR"),
+(7,7,7,"IN","PC","Configuration et anomalies PC","INPC"),
+(7,7,7,"IN","GA","Généalogie : ancestrologie et internet","INGA"),
+(7,7,7,"IN","RP","Retouche photos et graphisme : PhotoFiltre","INRP"),
+(7,7,7,"IN","PN","Photos numériques : Stockage et classement","INPN"),
+(7,7,7,"IN","LP","Création d'un ""livre-photo"" sur internet","INLP"),
+(7,7,7,"IN","GP","Google photo","INGP"),
+(7,7,7,"IN","PP","PowerPoint : création de diaporamas","INPP"),
+(7,7,7,"IN","PU","Mise en page avec Publisher","INPU"),
+(7,7,7,"IN","MV","Montage vidéo : Windows (live) Movie Maker","INMV"),
+(7,7,7,"IN","TA","Tablettes android","INTA"),
+(7,7,7,"IN","TI","Tablettes iPad","INTI"),
+(7,7,7,"HI","AR","Histoire de l'art","HIAR"),
+(7,7,7,"HI","CI","Histoire des civilisations","HICI"),
+(7,7,7,"HI","RL","Histoire des religions","HIRL"),
+(7,7,7,"HI","RE","Histoire régionale","HIRE"),
+(7,7,7,"HI","CO","Histoire contemporaine","HICO"),
+(7,7,7,"HI","ME","Histoire médiévale et moderne","HIME"),
+(7,7,7,"HI","RO","Les grandes étapes de la Rome antique","HIRO"),
+(7,7,7,"HI","MY","Histoire des Mythologies","HIMY"),
+(7,7,7,"HI","MC","Histoire des mythes et des civilisations","HIMC"),
+(7,7,7,"HI","MO","Histoire moderne","HIMO"),
+(7,7,7,"HI","CN","Histoire du Cinéma","HICN"),
+(7,7,7,"SH","DP","Découverte de la philosophie","SHDP"),
+(7,7,7,"SH","PH","Philosophie","SHPH"),
+(7,7,7,"SH","AS","Astronomie astrophysique","SHAS"),
+(7,7,7,"SH","PL","De la peinture à la littérature","SHPL"),
+(7,7,7,"SH","PA","Philosophie de l'Art contemporain","SHPA"),
+(7,7,7,"SH","GR","La grande Russie","SHGR"),
+(7,7,7,"SH","PY","Psychologie","SHPY"),
+(7,7,7,"SH","EC","Economie","SHEC"),
+(7,7,7,"SH","GE","Géopolitique","SHGE"),
+(7,7,7,"SH","CJ","Initiation à la culture japonaise","SHCJ"),
+(7,7,7,"SH","PM","Partager la musique","SHPM"),
+(7,7,7,"SH","BO","Botanique","SHBO"),
+(7,7,7,"SH","AR","Archéologie régionale","SHAR"),
+(7,7,7,"SH","LI","Littérature et Cinéma","SHLI"),
+(7,7,7,"LG","AN","Anglais","LGAN"),
+(7,7,7,"LG","ES","Espagnol","LGES"),
+(7,7,7,"LG","IT","Italien","LGIT"),
+(7,7,7,"LG","OC","Occitan","LGOC"),
+(7,7,7,"AA","DP","Dessin-peinture toutes techniques","AADP"),
+(7,7,7,"AA","AQ","Aquarelle","AAAQ"),
+(7,7,7,"AA","PH","Peinture à l'huile","AAPH"),
+(7,7,7,"AA","DE","Dessin d'après nature","AADE"),
+(7,7,7,"AA","SC","Sculpture - modelage","AASC"),
+(7,7,7,"AA","AP","Atelier pluridisciplinaire artistique","AAAP"),
+(7,7,7,"AA","ET","Expression théâtrale","AAET"),
+(7,7,7,"AA","CH","Atelier chant","AACH"),
+(7,7,7,"AP","AQ","Aquagym","APAQ"),
+(7,7,7,"AP","BK","Aquabike","APBK"),
+(7,7,7,"AP","AM","Aquamix","APAM"),
+(7,7,7,"AP","GY","Gym douce","APGY"),
+(7,7,7,"AP","YO","Yoga","APYO"),
+(7,7,7,"AP","YD","Yoga doux","APYD"),
+(7,7,7,"AP","GD","Gym dance","APGD"),
+(7,7,7,"AP","SO","Sophrologie","APSO"),
+(7,7,7,"AP","GC","Gym tonic","APGC"),
+(7,7,7,"AP","GS","Gym tonus","APGS"),
+(7,7,7,"AP","PI","Pilates","APPI"),
+(7,7,7,"AP","BZ","Body zen","APBZ"),
+(7,7,7,"AP","YR","Yoga du rire","APYR"),
+(7,7,7,"AP","BI","Billard français","APBI"),
+(7,7,7,"AP","GO","Golf","APGO");
+update kbabtel.`kob-Cadref-WebDiscipline` d
+inner join kbabtel.`kob-Cadref-WebSection` s on s.WebSection=d.WebSection
+set d.WebSectionId=s.Id;
+
+update kbabtel.`kob-Cadref-Discipline` n
+inner join kbabtel.niveau nn on nn.os=n.Section and nn.od=n.Discipline
+inner join kbabtel.`kob-Cadref-WebDiscipline` d on d.CodeDiscipline=nn.nd
+set n.WebDisciplineId=d.Id, n.WebDiscipline=d.CodeDiscipline;
+/*
+#----- MAJ WEB SECTION
+update kbabtel.`kob-Cadref-Niveau` set WebDisciplineId=0;
+update kbabtel.`kob-Cadref-Niveau` 
+set WebDisciplineId = (select Id from kbabtel.`kob-Cadref-WebDiscipline` where CodeDiscipline='LGAN')
+where Section='AN';
+update kbabtel.`kob-Cadref-Niveau` 
+set WebDisciplineId = (select Id from kbabtel.`kob-Cadref-WebDiscipline` where CodeDiscipline='LGES')
+where Section='ES';
+update kbabtel.`kob-Cadref-Niveau` 
+set WebDisciplineId = (select Id from kbabtel.`kob-Cadref-WebDiscipline` where CodeDiscipline='LGIT')
+where Section='IT';
+update kbabtel.`kob-Cadref-Niveau` 
+set WebDisciplineId = (select Id from kbabtel.`kob-Cadref-WebDiscipline` where CodeDiscipline='LGOC')
+where Section='OC';
+update kbabtel.`kob-Cadref-Niveau` n
+inner join kbabtel.`kob-Cadref-WebDiscipline` d on d.CodeDiscipline=concat(n.Section,n.Discipline)
+inner join kbabtel.`kob-Cadref-Discipline` dd on dd.Id=n.DisciplineId
+set n.WebDisciplineId=d.Id;
+#---
+select distinct n.Section,n.Discipline,s.Libelle,d.Libelle,wd.CodeDiscipline,wd.Libelle
+from `kob-Cadref-Niveau` n
+inner join `kob-Cadref-Discipline` d on d.Id=n.DisciplineId
+inner join `kob-Cadref-Section` s on s.Id=d.SectionId
+inner join `kob-Cadref-Classe` c on c.NiveauId=n.Id
+left join `kob-Cadref-WebDiscipline` wd on wd.Id=n.WebDisciplineId
+order by n.Section,n.Discipline
+*/
+#-----------------
+
+
+
+
 truncate kbabtel.`kob-Cadref-Profession`;
 insert into kbabtel.`kob-Cadref-Profession` (umod,gmod,omod,Profession,Libelle)
 select 7,7,7,n.Categorie,n.Libelle
@@ -154,6 +285,13 @@ left join kbabtel.`kob-Cadref-Classe` n on n.Antenne=c.Antenne and n.Section=c.S
 left join kbabtel.`kob-Cadref-Enseignant` e on e.Code=c.Ens2
 where c.Ens2<>'';
 
+#update kbabtel.`kob-Cadref-Classe` c
+#set c.Reduction1=38,c.Reduction2=38,c.DateReduction1=unix_timestamp('20190101'),c.DateReduction2=unix_timestamp('20190301')
+#where Prix=115 and CycleDebut=''
+#update kbabtel.`kob-Cadref-Classe` c
+#set c.Reduction1=34,c.Reduction2=34,c.DateReduction1=unix_timestamp('20190101'),c.DateReduction2=unix_timestamp('20190301')
+#where Prix=102 and CycleDebut=''
+
 
 
 truncate kbabtel.`kob-Cadref-Adherent`;
@@ -202,6 +340,8 @@ from cadref18.Reservations r
 left join kbabtel.`kob-Cadref-Adherent` a on a.Numero=r.Numero
 left join kbabtel.`kob-Cadref-Visite` v on v.Visite=r.Visite
 order by r.Numero,r.Visite;
+
+
 
 truncate kbabtel.`kob-Cadref-AdherentAnnee`;
 insert into kbabtel.`kob-Cadref-AdherentAnnee` (umod,gmod,omod,AdherentId,Numero,Annee,NotesAnnuelles,Adherent,ClasseId,

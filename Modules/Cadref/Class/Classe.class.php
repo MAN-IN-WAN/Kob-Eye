@@ -20,7 +20,7 @@ class Classe extends genericClass {
 			$this->addParent($p);
 			$p = $n->getOneParent('Discipline');
 			$this->addParent($p);
-			$this->CodeClasse = "$this->Antenne.$this->Section.$this->Discipline.$this->Niveau.$this->Classe";
+			$this->CodeClasse = $this->Antenne.$this->Section.$this->Discipline.$this->Niveau.$this->Classe;
 			$this->Annee = $annee;
 		}
 		$this->Attentes = Sys::getCount('Cadref','Classe/'.$this->Id.'/Inscription/Attente=1&Supprime=0');

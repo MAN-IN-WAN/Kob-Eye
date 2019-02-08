@@ -119,17 +119,20 @@ class Cadref extends Module {
 			$u->Nom = $a->Nom;
 			$u->Prenom = $a->Prenom;
 		}
-		$u->Pass = $p = self::GeneratePassword();
+		$p = self::GeneratePassword();
+		$u->Pass = '[md5]'.md5($p);
 		$u->Save();
 		
-		$s = "Bonjour ".($a->Sexe == "F" ? "Madame " : ($a->Sexe == "H" ? "Monsieur " : "")).$a->Prenom.' '.$a->Nom."<br /><br /><br />";
-		$s .= $new ? "Votre espace CADREF vient d'être activé.<br /><br />" : "Votre mot de passe a été modifié.<br /><br />";
-		$s .= "Vos paramètres de connection sont :<br /><br />Code utilisateur (N° adhérent) : $num<br />Mot de Passe : $p<br /><br /><br />";
-		$s .= "A bientôt,<br /><br />L'équipe du CADREF<br />";
-		$params = array('Subject'=>($new ? 'CADREF : Bienvenu dans votre nouvel espace.' : 'CADREF : Nouveau mot de passe.'),
-			'Mail'=>$u->Mail,
-			'Body'=>$s);
-		self::SendMessage($params);
+		if($a->Mail) {
+			$s = "Bonjour ".($a->Sexe == "F" ? "Madame " : ($a->Sexe == "H" ? "Monsieur " : "")).$a->Prenom.' '.$a->Nom.",<br /><br /><br />";
+			$s .= $new ? "Votre espace CADREF vient d'être activé.<br /><br />" : "Votre mot de passe a été modifié.<br /><br />";
+			$s .= "Vos paramètres de connection sont :<br /><br />Code utilisateur (N° adhérent) : $num<br />Mot de Passe : $p<br /><br /><br />";
+			$s .= "A bientôt,<br />L'équipe du CADREF<br />";
+			$params = array('Subject'=>($new ? 'CADREF : Bienvenu dans votre nouvel espace.' : 'CADREF : Nouveau mot de passe.'),
+				'Mail'=>$a->Mail,
+				'Body'=>$s);
+			self::SendMessage($params);
+		}
 	}
 	
 	public static function GeneratePassword() {	
@@ -203,7 +206,7 @@ group by t.Antenne";
 		$vacances = array();
 
 		// vacances
-		$sql = "select Type,Libelle,DateDebut,DateFin,JourId from `##_Cadref-Vacance` where Annee='$annee'";
+		$sql = "select Type,Libelle,DateDebut,DateFin,JourId,Logo from `##_Cadref-Vacance` where Annee='$annee'";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		foreach($pdo as $p) {
@@ -216,7 +219,7 @@ group by t.Antenne";
 				$e->start = Date('Y-m-d', $d);
 				$e->end = Date('Y-m-d', $f);
 				$e->description = Date('d/m', $d).' au '.Date('d/m', $f);
-				$e->className = 'fc-event-secondary';
+				$e->className = 'fc-event-secondary'.($p['Logo'] ? ' cadref-cal-'.$p['Logo'] : '');
 				$events[] = $e;
 			}
 			$v = new stdClass();
@@ -304,7 +307,7 @@ where a.EnseignantId=$id and ((a.DateDebut>=$start and a.DateDebut<=$end) or (a.
 				$a->start = Date('Y-m-d\TH:i', $d);
 				$a->end = Date('Y-m-d\TH:i', $f);
 				$a->description = Date('d/m H:i', $d).' au '.Date('d/m H:i', $f).'  '.($adm ? $p['Description'] : '');
-				$a->className = 'fc-event-danger';
+				$a->className = 'fc-event-danger'.(!$adm ? ' cadref-cal-absence' : '');
 				$events[] = $a;
 			}
 		}

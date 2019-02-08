@@ -52,12 +52,18 @@
 							<div class="row" style="height:10px"></div>
 							<div class="row">
 								<div class="col-md-2">
-									{{ label("Visites guidées") }}
+									{{ label("Discipline Web") }}
 								</div>
 								<div class="col-md-10">
-									{{ fboolean(f.Visite, o) }}
+									<div custom-select="a.id as a.label+'  -  '+a.Libelle for a in getSelectData('CadrefWebDisciplineStore',$searchTerm)" 
+										 custom-select-options="{ 'async': true, 'filter':''}" 
+										 ng-model="{{ o }}.WebDisciplineWebDisciplineId" 
+										 class="form-control" 
+										 ng-title="{{ o }}.WebDisciplineWebDisciplineIdlabel+'  -  '+obj.LibelleW">
+									</div>
 								</div>
 							</div>
+							<div class="row" style="height:5px"></div>
 							<div class="row">
 								<div class="col-md-2">
 									{{ label("Certificat médical") }}

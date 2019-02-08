@@ -10,90 +10,100 @@
 							<button type="button" class="btn btn-success" ng-click="inscriptionSelect(true)">Ajouter un cours</button>
 						</div>
 					</div>
-					<div ng-if="inscriptionObj.Select">
-						<div class="row">
-							<div class="col-md-1">
-								<label class="form-control-label cadref-label" style="line-height:1.1">Antenne</label>
+					<section class="panel" ng-if="inscriptionObj.Select">
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-1">
+									<label class="form-control-label cadref-label" style="line-height:1.1">Antenne</label>
+								</div>
+								<div class="col-md-4">
+									<div custom-select="a.Id as a.Libelle for a in inscriptionGetData('antenne',$searchTerm)" 
+										 custom-select-options="{'async': true, 'filter':''}" 
+										 ng-model="inscriptionObj.AntenneId" 
+										 class="form-control">
+									</div>
+								</div>
 							</div>
-							<div class="col-md-4">
-								<div custom-select="a.Id as a.Libelle for a in inscriptionGetData('antenne',$searchTerm)" 
-									 custom-select-options="{'async': true, 'filter':''}" 
-									 ng-model="inscriptionObj.AntenneId" 
-									 class="form-control">
+							<div class="row" ng-if="inscriptionObj.AntenneId">
+								<div class="col-md-1">
+									<label class="form-control-label cadref-label" style="line-height:1">Section</label>
+								</div>
+								<div class="col-md-4">
+									<div custom-select="a.Id as a.Libelle for a in inscriptionGetData('section',$searchTerm)" 
+										 custom-select-options="{'async':true, 'filter':''}" 
+										 ng-model="inscriptionObj.SectionId" 
+										 class="form-control" 
+										 cs-depends-on="inscriptionObj.AntenneId">
+									</div>
+								</div>
+							</div>
+							<div class="row" ng-if="inscriptionObj.SectionId">
+								<div class="col-md-1">
+									<label class="form-control-label cadref-label" style="line-height:1">Discipline</label>
+								</div>
+								<div class="col-md-4">
+									<div custom-select="a.Id as a.Libelle for a in inscriptionGetData('discipline',$searchTerm)" 
+										 custom-select-options="{ 'async': true, 'filter':''}" 
+										 ng-model="inscriptionObj.DisciplineId" 
+										 class="form-control" 
+										 cs-depends-on="inscriptionObj.SectionId"
+										 ng-click="inscriptionGetData('classe','')">
+									</div>
+								</div>
+							</div>
+							<div class="row" ng-if="inscriptionObj.DisciplineId">
+								<div style="height:10px"></div>
+								<div class="col-md-12">
+									<div class="listWrap">
+										<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%">
+											<thead>
+												<tr>
+													<th title="Id" class="list-col-th-id" hidden>ID</th>
+													<th class="cadref-th">Libellé</th>
+													<th class="cadref-th">Antenne</th>
+													<th class="cadref-th">Heures</th>
+													<th class="cadref-th">Période</th>
+													<th class="cadref-th">Prix</th>
+													<th class="cadref-th">Places</th>
+													<th class="cadref-th">Enseignant</th>
+													<th class="cadref-th"></th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="item in inscriptionObj.ClasseItems">
+													<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
+													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleD+' '+item.LibelleN }]}</span></td>
+													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleA }]}</span></td>
+													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Jour.substring(0, 3)+' '+item.HeureDebut+'&nbsp;- '+item.HeureFin }]}</span></td>
+													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.CycleDebut ? item.CycleDebut+'&nbsp;- '+item.CycleFin : "Toute l'année" }]}</span></td>
+													<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ (item.Prix*1)-(item.Reduction1*1)-(item.Reduction2*1) }]}</span></td>
+													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Disponible+' / '+item.Places }]}</span></td>
+													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Enseignants }]}</span></td>
+													<td  class="table-action cadref-td-btn">
+														<span class="btn-abt cadref-btn-add btn-success" ng-click="inscriptionAjoute(item)" title="Inscrire"></span>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-2">
+									<button type="button" class="btn btn-warning" ng-click="inscriptionSelect(false)">Annuler</button>
 								</div>
 							</div>
 						</div>
-						<div class="row" ng-if="inscriptionObj.AntenneId">
-							<div class="col-md-1">
-								<label class="form-control-label cadref-label" style="line-height:1">Section</label>
-							</div>
-							<div class="col-md-4">
-								<div custom-select="a.Id as a.Libelle for a in inscriptionGetData('section',$searchTerm)" 
-									 custom-select-options="{'async':true, 'filter':''}" 
-									 ng-model="inscriptionObj.SectionId" 
-									 class="form-control" 
-									 cs-depends-on="inscriptionObj.AntenneId">
-								</div>
-							</div>
-						</div>
-						<div class="row" ng-if="inscriptionObj.SectionId">
-							<div class="col-md-1">
-								<label class="form-control-label cadref-label" style="line-height:1">Discipline</label>
-							</div>
-							<div class="col-md-4">
-								<div custom-select="a.Id as a.Libelle for a in inscriptionGetData('discipline',$searchTerm)" 
-									 custom-select-options="{ 'async': true, 'filter':''}" 
-									 ng-model="inscriptionObj.DisciplineId" 
-									 class="form-control" 
-									 cs-depends-on="inscriptionObj.SectionId"
-									 ng-click="inscriptionGetData('classe','')">
-								</div>
-							</div>
-						</div>
-						<div class="row" ng-if="inscriptionObj.DisciplineId">
-							<div class="col-md-1">
-								<label class="form-control-label cadref-label" style="line-height:1">Cours</label>
-							</div>
-							<div class="col-md-8">
-								<div class="listWrap">
-									<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%">
-										<thead>
-											<tr>
-												<th title="Id" class="list-col-th-id" hidden>ID</th>
-												<th>Libellé</th>
-												<th>Heures</th>
-												<th>Cycle</th>
-												<th>Places</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr data-ng-repeat="item in inscriptionObj.ClasseItems">
-												<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
-												<td scope="row" class="typevarchar"><a href="">{[{ item.Libelle }]}</a></td>
-												<td scope="row" class="typevarchar"><a href="">{[{ item.Jour | limitTo : 3 }]} {[{ item.HeureDebut }]}&nbsp;-&nbsp;{[{ item.HeureFin }]}</a></td>
-												<td scope="row" class="typevarchar"><a href="">{[{ item.CycleDebut }]}&nbsp;- {[{ item.CycleFin }]}</a></td>
-												<td scope="row" class="typevarchar"><span>{[{ item.Places+' - '+item.Inscrits+' - '+item.Attentes }]}</span></td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</div>
-						</div>
+					</section>
 
 
 
 
 
-
-						<div class="row" id="btnAddClasse">
-							<div class="col-md-2">
-								<button type="button" class="btn btn-warning" ng-click="inscriptionSelect(false)">Annuler</button>
-							</div>
-						</div>
-					</div>
 					<section class="panel">
 						<div class="panel-body">
-							<ng-include src="'Cadref/Adherent/0/Inscription/PublicListInscr.htm'"></ng-include>
+							<ng-include src="'Cadref/Adherent/0/Inscription/PublicListInscr.htm?tempContext=1'"></ng-include>
 						</div>
 					</section>
 				</div>

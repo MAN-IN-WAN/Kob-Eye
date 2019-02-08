@@ -1,4 +1,4 @@
-app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $rootScope, $http, $rootScope, $interval, 
+app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $rootScope, $http, $rootScope, $interval, $filter, 
 	CadrefAdherentStore, CadrefReglementStore, CadrefInscriptionStore, CadrefEnseignantStore, CadrefAbsenceStore, CadrefClasseStore, 
 	CadrefVisiteStore, CadrefReservationStore, CadrefAttachementStore) {
 
@@ -76,6 +76,48 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 			}
 		}
 		return s;
+	}
+
+	//--------------------------------
+	// UTILISATEUR
+	//--------------------------------
+	
+	// mot de passe
+	$scope.utilisateurInfo = {mode: '', pwdValid: 0, PwdOld: '', PwdNew: '', PwdConf: '', pwdInfo: '', pwdCondInfo: '', returnMsg: ''};
+	$scope.utilisateurChange = function(mode) {
+		$scope.utilisateurInfo.mode = mode; 
+	}
+	$scope.utilisateurPwdChange = function(mode) {
+		var o = $scope.utilisateurInfo;
+		o.pwdValid = 0;
+		o.returnMsg = o.pwdConfInfo = o.pwdInfo = '';
+		if(mode == 'new') o.PwdConf = '';
+		if(o.PwdOld == '') return;
+		var p = o.PwdNew 
+		if(p) {
+			if(p.length < 8) o.pwdInfo = 'Mot de passe trop court';
+			else {
+//				var rgx = new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");
+				var rgx = new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*$", "g");
+				if(! rgx.test(p)) o.pwdInfo = 'Mot de passe non conforme';
+			}
+			if(o.pwdInfo) return;
+		}
+		if(o.PwdConf && p != o.PwdConf) {
+			o.pwdConfInfo = 'Confirmation incorrecte';
+			return;
+		}
+		o.pwdValid = 1;
+	}
+	$scope.utilisateurPwdSave = async function() {
+		$('#password').spin();
+		var o = $scope.utilisateurInfo;
+		var data = await $scope.{{ identifier }}callMethod($scope.obj,'ChangePassword',o,false);
+		data = data.data.data;
+		$('#password').spin(false);
+		if(!data.success) o.returnMsg = data.message;
+		else o.mode = ''; 
+		$scope.$digest();
 	}
 	
 	//-----------------------------
@@ -353,11 +395,13 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	$scope.CadrefReservation = $scope.createStore(CadrefReservationStore, 'children');
 	$scope.CadrefReservation.store.setFilters('Annee={{ Annee }}', 'children');
 
+	$scope.inscriptionObj = {Select: false, AntenneId: 0, SectionId: 0, DisciplineId: 0, ClasseItems: [], InscriptionItems: []};
     $scope.initAdh = function(){
         $scope.store.getOneData({{ entite.Id }}, 'default').then(function(data){
             $scope.obj = data;
 			$scope.obj.AnneeSelect = '{{ Annee }}';
 			$scope.adherentInfo();
+			$scope.inscriptionGetData('inscription', '');
         });
     }
     $scope.initAdh();
@@ -393,25 +437,27 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	}
 
 	//---------------------------
-	// ajouter une classe
+	// gestion des inscriptions
 	
-	//$scope.CadrefAntenne = $scope.createStore(CadrefAntenneStore, 'default');
-	//$scope.CadrefAntenne.store.getData(1, 'default');
-
-	$scope.inscriptionObj = {Select: false, AntenneId: 0, SectionId: 0, DisciplineId: 0, ClasseItems: []};
-	
+	// affiche / cache le panneau d'inscription
 	$scope.inscriptionSelect = function(mode) {
 		$scope.inscriptionObj.Select = mode;
 	}
 	
+	// charge les données d'inscription
 	$scope.inscriptionGetData = async function(mode, filter='') {
 		var o = $scope.inscriptionObj;
 		o.Filter = filter;
 		var params = [mode, o];
-		var data = await $scope.{{ identifier }}callMethod($scope.obj,'GetListClasses',params);
+		var data = await $scope.{{ identifier }}callMethod($scope.obj,'GetCours',params);
 		switch(mode) {
+			case 'inscription':
+				o.InscriptionItems = data.data.data.data;
+				$scope.$digest();
+				break;
 			case 'classe':
 				o.ClasseItems = data.data.data.data;
+				$scope.$digest();
 				break;
 			case 'antenne': o.AntenneId = 0;
 			case 'section': o.SectionId = 0;
@@ -420,7 +466,73 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		return data.data.data.data;
 	}
 
-	$scope.inscriptionAdd = function(mode) {
+	// renvoi un valeur numerique pour comparaison de dates 
+	function cycleValeur(c, debut) {
+		if(c == '') return debut ? 0 : 19999;
+		var m = parseInt(c.substr(3));
+		return (m < 9 ? 10000 : 0)+m*100+parseInt(c.substr(0, 2)); 
+	}
+	
+	$scope.inscriptionAjoute = function(c) {
+		var t = $scope.inscriptionObj.InscriptionItems;
+		var cid = c.clsId;
+		var jr = c.Jour;
+		var cyd = cycleValeur(c.CycleDebut, true);
+		var cyf = cycleValeur(c.CycleFin, false);
+		var hrd = c.HeureDebut;
+		var hrf = c.HeureFin;
+		var heures = false;
+		for(var ins of t) {
+			if(ins.clsId == cid) {
+				alert('Vous êtes déjà inscrit à ce cours');
+				return;
+			}
+			var cd = cycleValeur(ins.CycleDebut, true);
+			var cf = cycleValeur(ins.CycleFin, false);
+			if(jr == ins.Jour && ((cf >= cyd && cf <= cyf) || (cd >= cyd && cd <= cyf))) {
+				var hd = ins.HeureDebut;
+				var hf = ins.HeureFin;
+				if((hf >= hrd && hf <= hrf) || (hd >= hrd && hd <= hrf)) {
+					alert('Attention, les horaires de ce cours se chevauchent avec un autre');
+					heures = true;
+				}
+			}
+		}
+		var o = {};
+		o.heures = heures;
+		o.insId = 0;
+		o.clsId = cid;
+		//o.ClasseClasseId = cid;
+		o.LibelleA = c.LibelleA;
+		o.LibelleD = c.LibelleD;
+		o.LibelleN = c.LibelleN;
+		o.Jour = c.Jour;
+		o.HeureDebut = c.HeureDebut;
+		o.HeureFin = c.HeureFin;
+		o.CycleDebut = c.CycleDebut;
+		o.CycleFin = c.CycleFin;
+		o.Attente = 1;
+		o.DateAttente = $filter('date')(new Date(), "dd/MM/yyyy hh:mm");
+		o.Supprime = 0;
+		o.DateSupprime = null;
+		o.Utilisateur = '';
+		o.DateInscription = '';
+		o.Prix = c.Prix;
+		o.Reduction1 = c.Reduction1;
+		o.Reduction2 = c.Reduction2;
+		o.Enseignants = c.Enseignants;
+		o.Attachements = c.Attachements;
+		o.updated = 1;
+		t[t.length] = o;
+		
+		var i = $scope.inscriptionObj;
+		i.DisciplineId = i.SectionId = i.AntenneId = i.Select = 0;
+	}
+	
+	$scope.inscriptionSupprime = function(item) {
+		var t = $scope.inscriptionObj.InscriptionItems;
+		var n = t.indexOf(item);
+		if(n >= 0) t.splice(n, 1);
 	}
 	
 	{% endif %}

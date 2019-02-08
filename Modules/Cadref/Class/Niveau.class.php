@@ -10,7 +10,7 @@ class Niveau extends genericClass {
 		$this->Discipline = $p->Discipline;
 		$p = $p->getOneParent('Section');
 		$this->addParent($p);
-		$this->CodeNiveau = "$this->Antenne.$this->Section.$this->Discipline.$this->Niveau";
+		$this->CodeNiveau = $this->Antenne.$this->Section.$this->Discipline.$this->Niveau;
 		return parent::Save();
 	}
 	

@@ -668,9 +668,10 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		}
 	}
 
-	function GetListClasses($mode, $obj) {
+	function GetCours($mode, $obj) {
 		$annee = Cadref::$Annee;
 		$filter = str_replace('&', '', $obj['Filter']);
+		$adhId = $this->Id;
 		$antId = $obj['AntenneId'];
 		$secId = $obj['SectionId'];
 		$disId = $obj['DisciplineId'];
@@ -685,43 +686,124 @@ where Libelle like '%$filter%'
 			case 'section':
 				$sql = "
 select distinct s.Id, s.Libelle
-from `##_Cadref-Niveau` n
-inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
-inner join `##_Cadref-Section` s on s.Id=d.SectionId
-inner join `##_Cadref-Classe` c on c.NiveauId=n.Id and c.AntenneId=n.AntenneId
-where n.AntenneId=$antId and c.Annee='$annee' and s.Libelle like '%$filter%'
+from `##_Cadref-Discipline` d0
+inner join `##_Cadref-Niveau` n on n.DisciplineId=d0.Id and n.AntenneId=$antId
+inner join `##_Cadref-Classe` c on c.NiveauId=n.Id and c.Annee='$annee'
+inner join `##_Cadref-WebDiscipline` d on d.Id=d0.WebDisciplineId
+inner join `##_Cadref-WebSection` s on s.Id=d.WebSectionId
+where d0.WebDisciplineId>0 and s.Libelle like '%$filter%'
 order by s.Libelle";
 				break;
 			case 'discipline':
 				$sql = "
 select distinct d.Id, d.Libelle
-from `##_Cadref-Discipline` d
-inner join `##_Cadref-Niveau` n on n.DisciplineId=d.Id and n.AntenneId=$antId
-inner join `##_Cadref-Classe` c on c.NiveauId=n.Id and c.AntenneId=n.AntenneId
-where d.SectionId=$secId  and c.Annee='$annee'
-order by d.Libelle";
+from `##_Cadref-Discipline` d0
+inner join `##_Cadref-Niveau` n on n.DisciplineId=d0.Id and n.AntenneId=$antId
+inner join `##_Cadref-Classe` c on c.NiveauId=n.Id and c.Annee='$annee'
+inner join `##_Cadref-WebDiscipline` d on d.WebSectionId=$secId and d.Id=d0.WebDisciplineId
+where d0.WebDisciplineId>0 and d.Libelle like '%$filter%'
+order by d.Libelle";				
 				break;
 			case 'classe':
 				$sql = "
-select distinct c.Id, concat(d.Libelle,' ',n.Libelle) as Libelle, 
+select distinct c.Id as clsId, d.Libelle as LibelleD, n.Libelle as LibelleN, 
 j.Jour, c.HeureDebut, c.HeureFin, c.CycleDebut, c.CycleFin,
-c.Places, c.Inscrits, c.Attentes
-from `##_Cadref-Niveau` n
-inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
-inner join `##_Cadref-Classe` c on c.NiveauId=n.Id
+c.Places,if(c.Places<c.Inscrits,0,c.Places-c.Inscrits) as Disponible,
+a.LibelleCourt as LibelleA,c.Prix,c.Attachements,
+if(c.DateReduction1 is not null and c.DateReduction1<=unix_timestamp(Now()),c.Reduction1,0) as Reduction1,
+if(c.DateReduction2 is not null and c.DateReduction2<=unix_timestamp(Now()),c.Reduction2,0) as Reduction2
+from `##_Cadref-Discipline` d0
+inner join `##_Cadref-Niveau` n on n.DisciplineId=d0.Id and n.AntenneId=$antId
+inner join `##_Cadref-Classe` c on c.NiveauId=n.Id and c.Annee='$annee'
+inner join `##_Cadref-WebDiscipline` d on d.Id=d0.WebDisciplineId
+inner join `##_Cadref-Antenne` a on a.Id=n.AntenneId
 left join `##_Cadref-Jour` j on j.Id=c.JourId
-where n.DisciplineId=$disId and n.AntenneId=$antId and c.Annee='$annee'
+where d0.WebDisciplineId=$disId and (d0.Libelle like '%$filter%' or n.Libelle like '%$filter%')
+order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
+				break;
+			case 'inscription':
+				$sql = "
+select i.Id as insId, c.Id as clsId, d.Libelle as LibelleD, n.Libelle as LibelleN, 
+j.Jour, c.HeureDebut, c.HeureFin, c.CycleDebut, c.CycleFin,
+a.LibelleCourt as LibelleA,i.Prix,i.Reduction1,i.Reduction2,c.Attachements,
+i.Attente,i.Supprime,
+from_unixtime(i.DateAttente,'%d/%m/%Y') as DateAttente,
+from_unixtime(i.DateSupprime,'%d/%m/%Y') as DateSupprime,
+from_unixtime(i.DateInscription,'%d/%m/%Y') as DateInscription
+from `##_Cadref-Inscription` i
+inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
+inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
+inner join `##_Cadref-Discipline` d0 on d0.Id=n.DisciplineId
+inner join `##_Cadref-WebDiscipline` d on d.Id=d0.WebDisciplineId
+inner join `##_Cadref-Antenne` a on a.Id=n.AntenneId
+left join `##_Cadref-Jour` j on j.Id=c.JourId
+where i.AdherentId=$adhId and i.Annee='$annee'
 order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 				break;
 		}
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-		$data = array();
-		foreach($pdo as $p) {
-			$data[] = $p;
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql, PDO::FETCH_ASSOC);
+		$data = $pdo->fetchAll();
+		if($mode == 'inscription' || $mode == 'classe') {
+			$sql1 = "
+select e.Nom, e.Prenom 
+from `##_Cadref-ClasseEnseignants` ce
+inner join `##_Cadref-Enseignant` e on e.Id=ce.EnseignantId
+where ce.Classe=:cid";
+			$sql1 = str_replace('##_', MAIN_DB_PREFIX, $sql1);
+			$pdo = $GLOBALS['Systeme']->Db[0]->prepare($sql1);
+			foreach($data as &$d) {
+				$pdo->execute(array(':cid'=>$d['clsId']));
+				$e = '';
+				foreach($pdo as $p) {
+					if($e) $e .= ', ';
+					$e .= trim($p['Prenom'].' '.$p['Nom']);
+				}
+				$d['Enseignants'] = $e;
+				klog::l('$sql1',$d);
+			}
 		}
 		return array('data'=>$data, 'sql'=>$sql);
 	}
-
+	
+	function ChangePassword($params) {
+		$data = array();
+		$data['success'] = 0;
+		$data['error'] = 0;
+		$pwd = '[md5]'.md5($params['PwdOld']);
+		if($pwd != Sys::$User->Pass) {
+			$data['message'] = 'Mot de passe actuel incorrect';
+			$data['error'] = 1;
+			return $data;
+		}
+		$new = $params['PwdNew'];
+		$cnf = $params['PwdConf'];
+		$p = "/^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*$/";
+		if(strlen($new) < 8 || ! preg_match($p, $new)) {
+			$data['message'] = 'Nouveau mot de passe non conforme';
+			$data['error'] = 2;
+			return $data;
+		}
+		if($new != $cnf) {
+			$data['message'] = 'Confirmation incorrecte';
+			$data['error'] = 3;
+			return $data;
+		}
+		Sys::$User->Pass = '[md5]'.md5($new);
+		Sys::$User->Save();
+		
+		if($this->Mail) {
+			$s = "Bonjour ".($this->Sexe == "F" ? "Madame " : ($this->Sexe == "H" ? "Monsieur " : "")).$this->Prenom.' '.$this->Nom.",<br /><br /><br />";
+			$s .= "Votre nouveau mot de passe a été enregistré.<br /><br />";
+			$s .= "A bientôt,<br />L'équipe du CADREF<br />";
+			$params = array('Subject'=>('CADREF : Changement de mot de passe.'),
+				'Mail'=>$this->Mail,
+				'Body'=>$s);
+			Cadref::SendMessage($params);
+		}
+		$data['success'] = 1;
+		$data['message'] = 'Mot de passe enregistré';
+		return $data;
+	}
 
 }

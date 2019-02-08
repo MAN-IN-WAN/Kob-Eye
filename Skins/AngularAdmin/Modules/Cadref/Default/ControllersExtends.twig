@@ -512,7 +512,7 @@
 		$scope.classeAttente = function(item) {
 			if(item.Supprime > 0 || item.Attente > 1) return;
 			item.Attente = 1;
-			item.DateAttente = $filter('date')(new Date(), "dd/MM/yyyy hh:mm:ss");
+			item.DateAttente = $filter('date')(new Date(), "dd/MM/yyyy hh:mm");
 			item.DateInscription = '';
 			item.updated = 1
 			$scope.classeCalcul();
