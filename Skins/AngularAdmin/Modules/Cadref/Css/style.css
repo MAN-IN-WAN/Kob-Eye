@@ -73,7 +73,7 @@ table tr td.cadref-td-diff {
 	max-width: 6.5rem;
 }
 .cadref-btn-wait:after {
-    content: "\ea4d";
+    content: "\eb1f";
 }
 .cadref-btn-add:after {
     content: "\ed5f";
@@ -103,12 +103,76 @@ table tr td.cadref-td-diff {
 .cadref-btn-upload:after {
     content: "\e9a7";
 }
+.cadref-btn-msg:after {
+    content: "\ea32";
+}
 .cadref-cal-visite:before {
 	font-family: 'icomoon-ultimate';
 	content: "\e93c";
 	float: left;
 	margin-right: 2%;
 }
+.cadref-cal-noel:before {
+	font-family: 'icomoon-ultimate';
+	content: "\ebac";
+	float: left;
+	margin-right: 2%;
+}
+.cadref-cal-hiver:before {
+	font-family: 'icomoon-ultimate';
+	content: "\ecbd";
+	float: left;
+	margin-right: 2%;
+}
+.cadref-cal-automne:before {
+	font-family: 'icomoon-ultimate';
+	content: "\ebf0";
+	float: left;
+	margin-right: 2%;
+}
+.cadref-cal-printemps:before {
+	font-family: 'icomoon-ultimate';
+	content: "\eccf";
+	float: left;
+	margin-right: 2%;
+}
+.cadref-cal-ascension:before {
+	font-family: 'icomoon-ultimate';
+	content: "\ecce";
+	float: left;
+	margin-right: 2%;
+}
+.cadref-cal-ete:before {
+	font-family: 'icomoon-ultimate';
+	content: "\ebd6";
+	float: left;
+	margin-right: 2%;
+}
+.cadref-cal-11nov:before {
+	font-family: 'icomoon-ultimate';
+	content: "\ebdb";
+	float: left;
+	margin-right: 2%;
+}
+.cadref-cal-1mai:before {
+	font-family: 'icomoon-ultimate';
+	content: "\eb69";
+	float: left;
+	margin-right: 2%;
+}
+.cadref-cal-8mai:before {
+	font-family: 'icomoon-ultimate';
+	content: "\ebdb";
+	float: left;
+	margin-right: 2%;
+}
+.cadref-cal-absence:before {
+	font-family: 'icomoon-ultimate';
+	content: "\ebde";
+	float: left;
+	margin-right: 2%;
+}
+
 
 .cadref-widget {
 	box-shadow: 0 2px 10px -2px rgba(55, 58, 60, 0.3);

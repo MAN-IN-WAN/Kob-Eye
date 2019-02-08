@@ -206,7 +206,7 @@ group by t.Antenne";
 		$vacances = array();
 
 		// vacances
-		$sql = "select Type,Libelle,DateDebut,DateFin,JourId from `##_Cadref-Vacance` where Annee='$annee'";
+		$sql = "select Type,Libelle,DateDebut,DateFin,JourId,Logo from `##_Cadref-Vacance` where Annee='$annee'";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		foreach($pdo as $p) {
@@ -219,7 +219,7 @@ group by t.Antenne";
 				$e->start = Date('Y-m-d', $d);
 				$e->end = Date('Y-m-d', $f);
 				$e->description = Date('d/m', $d).' au '.Date('d/m', $f);
-				$e->className = 'fc-event-secondary';
+				$e->className = 'fc-event-secondary'.($p['Logo'] ? ' cadref-cal-'.$p['Logo'] : '');
 				$events[] = $e;
 			}
 			$v = new stdClass();
@@ -307,7 +307,7 @@ where a.EnseignantId=$id and ((a.DateDebut>=$start and a.DateDebut<=$end) or (a.
 				$a->start = Date('Y-m-d\TH:i', $d);
 				$a->end = Date('Y-m-d\TH:i', $f);
 				$a->description = Date('d/m H:i', $d).' au '.Date('d/m H:i', $f).'  '.($adm ? $p['Description'] : '');
-				$a->className = 'fc-event-danger';
+				$a->className = 'fc-event-danger'.(!$adm ? ' cadref-cal-absence' : '');
 				$events[] = $a;
 			}
 		}

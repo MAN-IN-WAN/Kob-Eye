@@ -16,6 +16,7 @@
 				<td scope="row" class="cadref-td typedatetime"><span class="label">{[{ item.DateFin }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Description }]}</span></td>
 				<td  class="table-action cadref-td-btn">
+					<a class="btn-abt cadref-btn-msg" ng-classe="{btn-success: item.Message, btn-default: !item.Message}" href="" title="Message" ng-click="absenceMessage(item)"></a>
 					<a class="btn-abt btn-abt-nfo btn-primary" href="" title="Détails" ng-click="absenceOpen(item)"></a>
 				</td>
 			</tr>
