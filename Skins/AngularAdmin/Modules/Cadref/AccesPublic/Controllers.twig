@@ -37,6 +37,47 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
         });
     }
 
+	// init date picker components 
+	$scope.initDatePickerOnly = function() {
+		$('.datepicker-only-init').datetimepicker({
+			widgetPositioning: {
+				horizontal: 'left'
+			},
+			locale: 'fr',
+			format: 'DD/MM/YYYY',
+			icons: {
+				time: "fa fa-clock-o",
+				date: "fa fa-calendar",
+				up: "fa fa-arrow-up",
+				down: "fa fa-arrow-down"
+			}
+		});
+		$(".datepicker-only-init").on("dp.change", function () {
+			var input = $(this).children('input').eq(0);
+			input.trigger('change');
+			input.trigger('input');
+		});
+	}	
+	$scope.initDateTimePicker = function() {
+		$('.datetimepicker-init').datetimepicker({
+			widgetPositioning: {
+				horizontal: 'left'
+			},
+			locale: 'fr',
+			icons: {
+				time: "fa fa-clock-o",
+				date: "fa fa-calendar",
+				up: "fa fa-arrow-up",
+				down: "fa fa-arrow-down"
+			}
+		});
+		$(".datetimepicker-init").on("dp.change", function () {
+			var input = $(this).children('input').eq(0);
+			input.trigger('change');
+			input.trigger('input');
+		});
+	}	
+
 	// appel de function kobeye avec retour objet
 	$scope.{{ identifier }}callMethod = function(obj, name, args, explodeArgs) {
 		if (args == undefined) args = [];
@@ -247,48 +288,47 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
     }
     $scope.initEns();
 	
+	//-----------------
+	// ABSENCE
+	//-----------------
+	$scope.absenceObj;
+	$scope.absenceInfo = {mode: ''};
+	// ferme absence edit section
+	$scope.absenceCloseEdit = function() {
+		$scope.absenceInfo.mode = '';
+	}
+
+	// ajout absence
+	$scope.absenceAdd = function() {
+		var i = $scope.absenceInfo;
+		var o = $scope.absenceObj = CadrefAbsenceStore.getNewData();
+		o.EnseignantEnseignantId = $scope.obj.id;
+		i.mode = 'add';
+	}
+
 	// modification absence
-	$scope.absenceOpenCallback = function(item, obj) {
-		var o = $scope.localObj = {};
-		angular.copy(obj, o);
-	}
-	$scope.absenceOpen = function(obj) {
-		CadrefAbsenceStore.getOneData(obj.id,'children',false).then(function (data) {
-			$scope.modalObj = data;
-			$scope.modalObj.success = false;
-			$scope.modalObj.CadrefAbsence = $scope.obj.id;
-			$scope.modalObj.CadrefAbsencelabel = $scope.obj.label;
-			$scope.modalObj.title = 'Modifier une absence';
-//			angular.copy($scope.modalObj, $scope.localObj);
-		});
-		$("#modal-CadrefAbsence").modal();
-	}
-	
-	$scope.absenceAdd = function(){
-		$scope.modalObj = CadrefAbsenceStore.getNewData();
-		$scope.modalObj.success = false;
-		$scope.modalObj.EnseignantEnseignantId = $scope.obj.id;
-		$scope.modalObj.EnseignantEnseignantIdlabel = $scope.obj.label;
-		$scope.modalObj.title = 'Ajouter une absence';
-//			var o = $scope.localObj = {};
-//			angular.copy($scope.modalObj, o);
-		$("#modal-CadrefAbsence").modal();
+	$scope.absenceModify = function(item) {
+		var i = $scope.absenceInfo;
+		var o = $scope.absenceObj = {};
+		angular.copy(item, o);
+		o.EnseignantEnseignantId = $scope.obj.id;
+		i.mode = 'edit';
 	}
 
 	// sauve absence
 	$scope.absenceSave = function() {
-//		$scope.modalObj = $scope.localObj;
-        $('#settings').spin();
-        CadrefAbsenceStore.saveData($scope.modalObj).then(function (data) {
-            $('#settings').spin(false);
-			$("#modal-CadrefAbsence").modal('toggle');
+		$('#settings').spin();
+		CadrefAbsenceStore.saveData($scope.absenceObj).then(function (data) {
+			$('#settings').spin(false);
+			$scope.absenceInfo.mode = '';
+			$scope.$digest();
 		});
 	}
 
-	// suppression d'une absence ferme le modal
-	$scope.absenceSupprime = function(obj) {
+	// suppression absence
+	$scope.absenceDelete = function(item) {
 		swal({
-				title: "Êtes vous sûr de vouloir supprimer cette absence ?",
+				title: "Effacer l'absence",
 				text: "Cette suppression sera définitive. ",
 				type: "warning",
 				showCancelButton: true,
@@ -298,12 +338,13 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 				closeOnConfirm: true
 			},
 			function(){
-				CadrefAbsenceStore.deleteOneData(obj.id,'all');
-				$("#modal-CadrefAbsence").modal('toggle');
+				CadrefAbsenceStore.deleteOneData(item.id,'all');
+				$scope.absenceInfo.mode = '';
+				$scope.$digest();
 			}
 		);
 	}
-
+	
 	
 	$scope.visites = true;
 	$('.absence-calendar-block').fullCalendar({

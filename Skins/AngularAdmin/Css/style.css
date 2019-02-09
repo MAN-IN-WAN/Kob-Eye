@@ -1179,6 +1179,9 @@ Choix des composants
 .btn-abt-nfo:after{
     content: "\ed63";
 }
+.btn-abt-alert:after{
+    content: "\ed4f";
+}
 
 .btn-abt-func{
     background-color: #6f42c1;

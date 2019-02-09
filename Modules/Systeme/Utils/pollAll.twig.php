@@ -11,3 +11,7 @@
     if ($pr->pollStart=="0")$lastSearch = microtime(true);
     else $lastSearch = $pr->pollStart;
     $vars['Now'] = (sizeof($vars['items']['Ev']))?$vars['items']['Ev'][sizeof($vars['items']['Ev'])-1]['MicroTime']:$lastSearch;
+    $a = genericClass::createInstance('Systeme','AlertUser');
+	$al = $a->getAlerts(0);
+	$vars['AlertCount'] = count($al);
+

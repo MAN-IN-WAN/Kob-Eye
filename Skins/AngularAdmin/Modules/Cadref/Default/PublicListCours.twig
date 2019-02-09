@@ -34,7 +34,7 @@
 				<th>Classe</th>
 				<th>Libellé</th>
 				<th>Heures</th>
-				<th>Cycle</th>
+				<th>Période</th>
 				<th>Places</th>
 				<th>Doc.</th>
 			</tr>
@@ -43,10 +43,10 @@
 			<tr dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination">
 				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
 				<td scope="row" class="typevarchar"><a href="">{[{ item.CodeClasse }]}</a></td>
-				<td scope="row" class="typevarchar"><a href="">{[{ item.LibelleD }]} {[{ item.LibelleN }]}</a></td>
-				<td scope="row" class="typevarchar"><a href="">{[{ item.Jour | limitTo : 3 }]} {[{ item.HeureDebut }]}&nbsp;-&nbsp;{[{ item.HeureFin }]}</a></td>
-				<td scope="row" class="typevarchar"><a href="">{[{ item.CycleDebut }]}&nbsp;- {[{ item.CycleFin }]}</a></td>
-				<td scope="row" class="typefloat"><span>{[{ item.Places+' - '+item.Inscrits+' - '+item.Attentes }]}</span></td>
+				<td scope="row" class="typevarchar"><a href="">{[{ item.LibelleD+' '+item.LibelleN }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="">{[{ item.Jour.substring(0, 3)+' '+item.HeureDebut+'&nbsp;- '+item.HeureFin }]}</a></td>
+				<td scope="row" class="typevarchar"><a href="">{[{ item.CycleDebut ? item.CycleDebut+'&nbsp;- '+item.CycleFin : '' }]}</a></td>
+				<td scope="row" class="typefloat"><span>{[{ (item.Places*1)-(item.Inscrits*1)+'/'+item.Places+(item.Attentes ? ' ('+item.Attentes+')' : '') }]}</span></td>
 				<td scope="row" class="cadref-td typeint">
 					<span class="btn btn-xs cadref-fkey" ng-class="{'btn-primary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
 						  ng-click="attachementsOpen(item, 'classe')" title="{[{ item.Attachements ? item.Attachements+' documents' : 'Aucun documents' }]}">{[{ item.Attachements }]}

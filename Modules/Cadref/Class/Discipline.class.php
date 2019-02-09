@@ -22,7 +22,8 @@ class Discipline extends genericClass {
 
 	function GetFormInfo() {
 		$s = $this->getOneParent('Section');
-		return array('LibelleS'=>$s->Libelle);
+		$w = $this->getOneParent('WebDiscipline');
+		return array('LibelleS'=>$s->Libelle,'LibelleW'=>($w ? $w->Libelle : ''));
 	}
 	
 }

@@ -114,7 +114,7 @@ table tr td.cadref-td-diff {
 }
 .cadref-cal-noel:before {
 	font-family: 'icomoon-ultimate';
-	content: "\ebac";
+	content: "\ebd3";
 	float: left;
 	margin-right: 2%;
 }
@@ -126,7 +126,7 @@ table tr td.cadref-td-diff {
 }
 .cadref-cal-automne:before {
 	font-family: 'icomoon-ultimate';
-	content: "\ebf0";
+	content: "\ecc9";
 	float: left;
 	margin-right: 2%;
 }
@@ -168,7 +168,7 @@ table tr td.cadref-td-diff {
 }
 .cadref-cal-absence:before {
 	font-family: 'icomoon-ultimate';
-	content: "\ebde";
+	content: "\eb71";
 	float: left;
 	margin-right: 2%;
 }

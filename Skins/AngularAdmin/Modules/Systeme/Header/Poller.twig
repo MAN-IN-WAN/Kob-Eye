@@ -45,6 +45,7 @@ app.service('Poller',function($http,$rootScope){
                         $rootScope.$broadcast('BandWidth',{type:'bandwidth',id:ev.ObjectId, data: ev.Data});
                     }
                 }
+				$rootScope.$broadcast('Alertes',{type:'alerts',count:out.data.totalAu, alerts:out.data.alerts});
                 lastPoll = out.data.lastSearch;
                 if(!pollBreak)
                     poll(callback);

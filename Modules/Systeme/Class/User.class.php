@@ -7,9 +7,11 @@ class User extends genericClass{
 		if (is_array($Gr))foreach ($Gr as $g){
 			$G = genericClass::createInstance("Systeme",$g);
 			$Ro = $G->getParents("Role");
-			if (sizeof($Ro)&&is_object($Ro[0])){
-				$ROLE[] = $Ro[0]->Title;
-			}
+// PGF 20190209
+//			if (sizeof($Ro)&&is_object($Ro[0])){
+//				$ROLE[] = $Ro[0]->Title;
+//			}
+			foreach($Ro as $r) $ROLE[] = $r->Title;
 		}
 		return $ROLE;
 	}

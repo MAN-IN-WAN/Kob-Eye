@@ -8,5 +8,9 @@ class Section extends genericClass {
 		return parent::Delete();
 	}
 
+	function testalert() {
+		AlertUser::addAlert('tttttttttttt','CA','','',0,[],'CADREF_ADMIN','');
+		return true;
+	}
 	
 }

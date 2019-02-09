@@ -251,11 +251,12 @@ where ((a.DateDebut>=$start and a.DateDebut<=$end) or (a.DateFin>=$start and a.D
 			$id = $a->Id;
 			$sql = "
 select i.ClasseId as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,
-concat(d.Libelle,' ',n.Libelle) as Libelle, l.Ville, l.Adresse1, l.Adresse2
+concat(ifnull(dw.Libelle,d.Libelle),' ',n.Libelle) as Libelle, l.Ville, l.Adresse1, l.Adresse2
 from `##_Cadref-Inscription` i
 inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
 inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
+left join `##_Cadref-WebDiscipline` dw on dw.Id=d.WebDisciplineId
 left join `##_Cadref-Lieu` l on l.Id=c.LieuId
 where i.AdherentId=$id and i.Annee='$annee' and c.JourId>0 and c.HeureDebut<>''
 ";
@@ -274,11 +275,12 @@ where i.AdherentId=$id and i.Annee='$annee' and ((a.DateDebut>=$start and a.Date
 			$id = $e->Id;
 			$sql = "
 select c.Id as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,
-concat(d.Libelle,' ',n.Libelle) as Libelle, l.Ville, l.Adresse1, l.Adresse2
+concat(ifnull(dw.Libelle,d.Libelle),' ',n.Libelle) as Libelle, l.Ville, l.Adresse1, l.Adresse2
 from `##_Cadref-ClasseEnseignants` ce
 inner join `##_Cadref-Classe` c on c.Id=ce.Classe
 inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
+left join `##_Cadref-WebDiscipline` dw on dw.Id=d.WebDisciplineId
 left join `##_Cadref-Lieu` l on l.Id=c.LieuId
 where ce.EnseignantId=$id and c.Annee='$annee' and c.JourId>0 and c.HeureDebut<>''
 ";

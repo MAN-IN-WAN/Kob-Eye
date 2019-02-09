@@ -420,6 +420,14 @@ var app = angular.module('cleanUI.controllers', []);
 
 app.controller('MainCtrl', function($location, $scope, $rootScope, $timeout, FileUploader) {
 
+	// PGF 20190209
+	$scope.Alerts = {count:0, alerts:[]};
+    $rootScope.$on('Alertes',function(ev,data){
+	    $scope.Alerts.count = data.count;
+	    $scope.Alerts.alerts = data.alerts;
+    });
+	
+
     $scope.uploader = new FileUploader({
         url:'/Systeme/Utils/Upload.json'
     });

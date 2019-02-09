@@ -26,26 +26,26 @@ insert into kbabtel.`kob-Cadref-Jour` (umod,gmod,omod,Id,Jour) values
 (7,7,7,7,'Dimanche');
 
 truncate kbabtel.`kob-Cadref-Vacance`;
-insert into kbabtel.`kob-Cadref-Vacance` (umod,gmod,omod,Annee,Type,Libelle,DateDebut,DateFin,JourId) values 
-(7,7,7,@annee,'D','Lundi',unix_timestamp('2018-09-10'),0,1),
-(7,7,7,@annee,'D','Mardi',unix_timestamp('2018-09-10'),0,2),
-(7,7,7,@annee,'D','Mercredi',unix_timestamp('2018-09-10'),0,3),
-(7,7,7,@annee,'D','Jeudi',unix_timestamp('2018-09-10'),0,4),
-(7,7,7,@annee,'D','Vendredi',unix_timestamp('2018-09-10'),0,5),
-(7,7,7,@annee,'D','Samedi',unix_timestamp('2019-09-10'),0,6),
-(7,7,7,@annee,'F','Lundi',unix_timestamp('2019-05-27'),0,1),
-(7,7,7,@annee,'F','Mardi',unix_timestamp('2019-05-28'),0,2),
-(7,7,7,@annee,'F','Mercredi',unix_timestamp('2019-06-05'),0,3),
-(7,7,7,@annee,'F','Jeudi',unix_timestamp('2019-06-06'),0,4),
-(7,7,7,@annee,'F','Vendredi',unix_timestamp('2019-06-07'),0,5),
-(7,7,7,@annee,'F','Samedi',unix_timestamp('2019-06-08'),0,6),
-(7,7,7,@annee,'V','VACANCES DE TOUSSAINT',unix_timestamp('2018-10-20'),unix_timestamp('2018-11-04'),0),
-(7,7,7,@annee,'V','11 Novembre',unix_timestamp('2018-11-11'),0,0),
-(7,7,7,@annee,'V','VACANCES DE NOEL',unix_timestamp('2018-12-22'),unix_timestamp('2019-01-06'),0),
-(7,7,7,@annee,'V','VACANCES D''HIVERT',unix_timestamp('2019-02-23'),unix_timestamp('2019-03-10'),0),
-(7,7,7,@annee,'V','VACANCES DE PRINTEMPS',unix_timestamp('2019-04-20'),unix_timestamp('2019-05-05'),0),
-(7,7,7,@annee,'V','8 Mai',unix_timestamp('2019-05-08'),0,0),
-(7,7,7,@annee,'V','VACANCES DE L''ASCENSION',unix_timestamp('2019-05-29'),unix_timestamp('2019-06-03'),0);
+insert into kbabtel.`kob-Cadref-Vacance` (umod,gmod,omod,Annee,Type,Libelle,DateDebut,DateFin,JourId,Logo) values 
+(7,7,7,@annee,'D','Lundi',unix_timestamp('2018-09-10'),0,1,''),
+(7,7,7,@annee,'D','Mardi',unix_timestamp('2018-09-10'),0,2,''),
+(7,7,7,@annee,'D','Mercredi',unix_timestamp('2018-09-10'),0,3,''),
+(7,7,7,@annee,'D','Jeudi',unix_timestamp('2018-09-10'),0,4,''),
+(7,7,7,@annee,'D','Vendredi',unix_timestamp('2018-09-10'),0,5,''),
+(7,7,7,@annee,'D','Samedi',unix_timestamp('2019-09-10'),0,6,''),
+(7,7,7,@annee,'F','Lundi',unix_timestamp('2019-05-27'),0,1,''),
+(7,7,7,@annee,'F','Mardi',unix_timestamp('2019-05-28'),0,2,''),
+(7,7,7,@annee,'F','Mercredi',unix_timestamp('2019-06-05'),0,3,''),
+(7,7,7,@annee,'F','Jeudi',unix_timestamp('2019-06-06'),0,4,''),
+(7,7,7,@annee,'F','Vendredi',unix_timestamp('2019-06-07'),0,5,''),
+(7,7,7,@annee,'F','Samedi',unix_timestamp('2019-06-08'),0,6,''),
+(7,7,7,@annee,'V','VACANCES DE TOUSSAINT',unix_timestamp('2018-10-20'),unix_timestamp('2018-11-04'),0,'automne'),
+(7,7,7,@annee,'V','11 Novembre',unix_timestamp('2018-11-11'),0,0,'11nov'),
+(7,7,7,@annee,'V','VACANCES DE NOEL',unix_timestamp('2018-12-22'),unix_timestamp('2019-01-06'),0,'noel'),
+(7,7,7,@annee,'V','VACANCES D''HIVER',unix_timestamp('2019-02-23'),unix_timestamp('2019-03-10'),0,'hiver'),
+(7,7,7,@annee,'V','VACANCES DE PRINTEMPS',unix_timestamp('2019-04-20'),unix_timestamp('2019-05-05'),0,'printemps'),
+(7,7,7,@annee,'V','8 Mai',unix_timestamp('2019-05-08'),0,0,'8mai'),
+(7,7,7,@annee,'V','VACANCES DE L''ASCENSION',unix_timestamp('2019-05-29'),unix_timestamp('2019-06-03'),0,'ascention');
 
 truncate kbabtel.`kob-Cadref-Lieu`;
 insert into kbabtel.`kob-Cadref-Lieu` (umod,gmod,omod,Ville,Adresse1,Adresse2,Type,Lieu,GPS,AntenneId) values 
@@ -369,3 +369,43 @@ group by AdherentId
 ) t on t.AdherentId=a.AdherentId
 set a.DateCotisation=t.dt
 where a.Annee=@annee;
+
+
+# PRENOMS
+DROP FUNCTION IF EXISTS aaprenom; 
+SET GLOBAL  log_bin_trust_function_creators=TRUE; 
+DELIMITER | 
+CREATE FUNCTION aaprenom( str VARCHAR(128) ) 
+RETURNS VARCHAR(128) 
+BEGIN 
+  DECLARE c CHAR(1); 
+  DECLARE s VARCHAR(128); 
+  DECLARE i INT DEFAULT 1; 
+  DECLARE bool INT DEFAULT 1; 
+  DECLARE punct CHAR(18) DEFAULT ' -\'';
+  SET s = LCASE( str ); 
+  WHILE i <= LENGTH( str ) DO 
+    BEGIN 
+      SET c = SUBSTRING( s, i, 1 ); 
+      IF LOCATE( c, punct ) > 0 THEN 
+        SET bool = 1; 
+      ELSEIF bool=1 THEN  
+        BEGIN 
+          IF c >= 'a' AND c <= 'z' THEN  
+            BEGIN 
+              SET s = CONCAT(LEFT(s,i-1),UCASE(c),SUBSTRING(s,i+1)); 
+              SET bool = 0; 
+            END; 
+          ELSEIF c >= '0' AND c <= '9' THEN 
+            SET bool = 0; 
+          END IF; 
+        END; 
+      END IF; 
+      SET i = i+1; 
+    END; 
+  END WHILE; 
+  RETURN s; 
+END; 
+| 
+update `kob-Cadref-Adherent` set Prenom=aaprenom(Prenom);
+
