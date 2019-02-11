@@ -32,22 +32,20 @@
             <div class="menu-user-block menu-notifications">
                 <div class="dropdown dropdown-avatar">
                     <a href="javascript: void(0);" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                        <i class="menu-notification-icon icmn-bubbles7" ng-class="{'filter-danger':Alerts.new>0,'filter-warning':Alerts.new==0 && Alerts.unread>0,'filter-info':Alerts.new==0 && Alerts.unread==0}" ng-click="alertLoad()"></i>
+                        <i class="menu-notification-icon icmn-bubbles7" ng-class="{'filter-danger':Alerts.new>0,'filter-info':Alerts.new==0 && Alerts.unread>0,'filter-default':Alerts.new==0 && Alerts.unread==0}" ng-click="alertLoad()"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="" role="menu">
                         <div class="notification-block">
-                            <div class="item" ng-repeat="(key,item) in Alerts.alerts">
+                            <div class="item" ng-repeat="item in SystemeAlertUser.data">
                                 <i class="notification-icon {[{ item.Icon }]}"></i>
                                 <div class="inner">
                                     <div class="title">
-                                        <span class="pull-right">{[{ item.Time }]}</span>
+                                        <span class="pull-right">{[{ item.create.substr(0, 5)+' '+item.create.substr(11, 5) }]}</span>
                                     </div>
                                     <div class="title">
                                         <strong>{[{ item.Title }]}</strong>
                                     </div>
-                                    <div class="descr">
-                                        {[{ item.Tag }]}
-                                    </div>
+                                    <div class="descr" ng-bind-html="item.Tag"></div>
                                 </div>
                             </div>
                         </div>

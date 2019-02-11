@@ -210,7 +210,7 @@
 		<PROPERTIES category="Alert"	type="varchar" length="50"													>Author</PROPERTIES>
 		<PROPERTIES category="Alert"	type="int" default="0"														>UserId</PROPERTIES>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="AlertUser" driver="mysql" Icon="[None]"  Class="Modules/Systeme/Class/AlertUser.class.php">
+	<OBJECTCLASS title="AlertUser" logEvent="1" driver="mysql" Icon="[None]"  Class="Modules/Systeme/Class/AlertUser.class.php">
 		<PROPERTIES type="int"											>AlertId</PROPERTIES>
 		<PROPERTIES type="double"										>Time</PROPERTIES>
 		<PROPERTIES type="boolean" default="0"							>Read</PROPERTIES>
@@ -221,13 +221,13 @@
 					<PROPERTIES type="boolean" list="2" >Done</PROPERTIES>
 					<PROPERTIES type="date" list="3" >Date</PROPERTIES>
 					<PROPERTIES type="varchar" list="4" >Title</PROPERTIES>
-					<PROPERTIES type="varchar" >Tag</PROPERTIES>
-					<PROPERTIES type="int" >ObjectId</PROPERTIES>
-					<PROPERTIES type="varchar" list="5">Author</PROPERTIES>
-					<PROPERTIES type="int" >UserId</PROPERTIES>
+					<PROPERTIES type="varchar" list="5" >Tag</PROPERTIES>
+					<PROPERTIES type="int" list="7" >ObjectId</PROPERTIES>
+					<PROPERTIES type="varchar" list="6">Author</PROPERTIES>
+					<PROPERTIES type="int" list="8">UserId</PROPERTIES>
 					<JOIN type="outer" title="User" on="UserId" target="Id">
-						<PROPERTIES type="varchar" >Nom</PROPERTIES>
-						<PROPERTIES type="varchar" >Initiales</PROPERTIES>
+						<PROPERTIES type="varchar" list="9">Nom</PROPERTIES>
+						<PROPERTIES type="varchar" list="10">Initiales</PROPERTIES>
 					</JOIN>
 				</JOIN>
 			</OBJECTCLASS>

@@ -124,7 +124,7 @@ class Cadref extends Module {
 		$p = self::GeneratePassword();
 		$u->Pass = '[md5]'.md5($p);
 		$u->Save();
-		AlertUser::addAlert('Adhérent : '.$a->Prenom.' '.$a->Nom,"vient de créer son compte",'','',0,[],'CADREF_ADMIN','icmn-user3');
+		AlertUser::addAlert('Adhérent : '.$a->Prenom.' '.$a->Nom,"Nouvel utilisateur : ".$a->Numero,'','',0,[],'CADREF_ADMIN','icmn-user3');
 
 		
 		if($a->Mail) {

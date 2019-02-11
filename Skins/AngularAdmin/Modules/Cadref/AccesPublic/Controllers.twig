@@ -321,7 +321,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		CadrefAbsenceStore.saveData($scope.absenceObj).then(function (data) {
 			$('#settings').spin(false);
 			$scope.absenceInfo.mode = '';
-			$scope.$digest();
+//			try {$scope.$digest();} finally() {}
 		});
 	}
 
@@ -340,7 +340,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 			function(){
 				CadrefAbsenceStore.deleteOneData(item.id,'all');
 				$scope.absenceInfo.mode = '';
-				$scope.$digest();
+//				try {$scope.$digest();} finally() {}
 			}
 		);
 	}
