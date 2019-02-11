@@ -2327,6 +2327,10 @@ body.theme-blue .cwt__footer {
     font-size: 13px;
 }
 
+.notification-block .item .inner .time > span {
+    font-size: 12px;
+}
+
 .notification-block .item .inner .label {
     font-size: 12px;
 }
