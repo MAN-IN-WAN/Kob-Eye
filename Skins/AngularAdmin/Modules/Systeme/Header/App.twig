@@ -418,14 +418,21 @@ angular.module('cleanUI', [
 
 var app = angular.module('cleanUI.controllers', []);
 
-app.controller('MainCtrl', function($location, $scope, $rootScope, $timeout, FileUploader) {
+app.controller('MainCtrl', function($location, $scope, $rootScope, $timeout, $http, FileUploader) {
 
-	// PGF 20190209
-	$scope.Alerts = {count:0, alerts:[]};
+	// ALERTUSER PGF 20190209
+	$scope.Alerts = {new:0, unread:0, alerts:[]};
     $rootScope.$on('Alertes',function(ev,data){
-	    $scope.Alerts.count = data.count;
-	    $scope.Alerts.alerts = data.alerts;
+	    if(data.count > 0) $scope.Alerts.new = data.new;
+		$scope.Alerts.unread = data.unread;
     });
+	$scope.alertLoad = function() {
+		$http.get('/Systeme/Utils/AlertUser.json')
+		.success(function(data) {
+			$scope.Alerts.alerts = data;
+			$scope.Alerts.new = 0;
+		});
+	}
 	
 
     $scope.uploader = new FileUploader({

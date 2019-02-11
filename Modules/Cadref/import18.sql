@@ -180,35 +180,6 @@ update kbabtel.`kob-Cadref-Discipline` n
 inner join kbabtel.niveau nn on nn.os=n.Section and nn.od=n.Discipline
 inner join kbabtel.`kob-Cadref-WebDiscipline` d on d.CodeDiscipline=nn.nd
 set n.WebDisciplineId=d.Id, n.WebDiscipline=d.CodeDiscipline;
-/*
-#----- MAJ WEB SECTION
-update kbabtel.`kob-Cadref-Niveau` set WebDisciplineId=0;
-update kbabtel.`kob-Cadref-Niveau` 
-set WebDisciplineId = (select Id from kbabtel.`kob-Cadref-WebDiscipline` where CodeDiscipline='LGAN')
-where Section='AN';
-update kbabtel.`kob-Cadref-Niveau` 
-set WebDisciplineId = (select Id from kbabtel.`kob-Cadref-WebDiscipline` where CodeDiscipline='LGES')
-where Section='ES';
-update kbabtel.`kob-Cadref-Niveau` 
-set WebDisciplineId = (select Id from kbabtel.`kob-Cadref-WebDiscipline` where CodeDiscipline='LGIT')
-where Section='IT';
-update kbabtel.`kob-Cadref-Niveau` 
-set WebDisciplineId = (select Id from kbabtel.`kob-Cadref-WebDiscipline` where CodeDiscipline='LGOC')
-where Section='OC';
-update kbabtel.`kob-Cadref-Niveau` n
-inner join kbabtel.`kob-Cadref-WebDiscipline` d on d.CodeDiscipline=concat(n.Section,n.Discipline)
-inner join kbabtel.`kob-Cadref-Discipline` dd on dd.Id=n.DisciplineId
-set n.WebDisciplineId=d.Id;
-#---
-select distinct n.Section,n.Discipline,s.Libelle,d.Libelle,wd.CodeDiscipline,wd.Libelle
-from `kob-Cadref-Niveau` n
-inner join `kob-Cadref-Discipline` d on d.Id=n.DisciplineId
-inner join `kob-Cadref-Section` s on s.Id=d.SectionId
-inner join `kob-Cadref-Classe` c on c.NiveauId=n.Id
-left join `kob-Cadref-WebDiscipline` wd on wd.Id=n.WebDisciplineId
-order by n.Section,n.Discipline
-*/
-#-----------------
 
 
 
@@ -270,6 +241,31 @@ left join kbabtel.`kob-Cadref-Antenne` a on a.Antenne=c.Antenne
 left join kbabtel.`kob-Cadref-Section` s on s.Section=c.Sect
 left join kbabtel.`kob-Cadref-Discipline` d on d.SectionId=s.Id and d.Discipline=c.Discipline
 left join kbabtel.`kob-Cadref-Niveau` n on n.Antenne=c.Antenne and n.Section=c.Sect and n.Discipline=c.Discipline and n.Niveau=c.Niveau;
+
+delete s
+from `kob-Cadref-Section`s
+left join `kob-Cadref-Discipline` d on s.id=d.SectionId
+left join `kob-Cadref-Niveau` n on d.id=n.DisciplineId
+left join `kob-Cadref-Classe` c on n.Id=c.NiveauId
+where d.Id is null;
+delete d
+from `kob-Cadref-Discipline` d
+left join `kob-Cadref-Niveau` n on d.id=n.DisciplineId
+left join `kob-Cadref-Classe` c on n.Id=c.NiveauId
+where d.Id is null;
+delete s
+from `kob-Cadref-Section`s
+left join `kob-Cadref-Discipline` d on s.id=d.SectionId
+where d.Id is null;
+delete d
+from `kob-Cadref-Discipline` d
+left join `kob-Cadref-Niveau` n on d.Id=n.DisciplineId
+where n.Id is null;
+delete n
+from `kob-Cadref-Niveau` n
+left join `kob-Cadref-Classe` c on n.Id=c.NiveauId
+where c.Id is null;
+
 
 truncate kbabtel.`kob-Cadref-ClasseEnseignants`;
 insert into kbabtel.`kob-Cadref-ClasseEnseignants` (umod,gmod,omod,Classe,EnseignantId)
@@ -408,4 +404,5 @@ BEGIN
 END; 
 | 
 update `kob-Cadref-Adherent` set Prenom=aaprenom(Prenom);
+update `kob-Cadref-Enseignant` set Prenom=aaprenom(Prenom);
 

@@ -194,12 +194,12 @@ class Event extends genericClass {
             //$recEv = Sys::$Modules['Systeme']->callData($queryEv, false, 0, 30,'Id','ASC');
             $recEv = $this->cache_get($lastAlert);
             //PGF 20190209  $recAu = Sys::$Modules['Systeme']->callData($queryAu, false, 0, 30);
-			$recAu = Sys::getData('Systeme', 'AlertUser/tmsCreate>'.$lastAlert);
-            Sys::$Modules['Systeme']->Db->clearLiteCache();
             if(is_array($recEv) && count($recEv)) {
                 $res['Ev']=$recEv;
                 $ret =true;
             }
+            Sys::$Modules['Systeme']->Db->clearLiteCache();
+ 			$recAu = Sys::getData('Systeme', 'AlertUser/tmsCreate>'.$lastAlert);
             if(is_array($recAu) && count($recAu)) {
                 $res['Au']=$recAu;
                 $ret =true;

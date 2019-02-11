@@ -113,7 +113,9 @@ class Cadref extends Module {
 		$new = false;
 		if(! $u) {
 			$new = true;
+			$g = Sys::getOneData('Systeme', 'Group/Nom=CADREF_ADH');
 			$u = genericClass::createInstance('Systeme', 'User');
+			$u->addParent($g);
 			$u->Login = $num;
 			$u->Mail = $a->Mail ?: $num.'@cadref.com';
 			$u->Nom = $a->Nom;
@@ -122,6 +124,8 @@ class Cadref extends Module {
 		$p = self::GeneratePassword();
 		$u->Pass = '[md5]'.md5($p);
 		$u->Save();
+		AlertUser::addAlert('Adhérent : '.$a->Prenom.' '.$a->Nom,"vient de créer son compte",'','',0,[],'CADREF_ADMIN','icmn-user3');
+
 		
 		if($a->Mail) {
 			$s = "Bonjour ".($a->Sexe == "F" ? "Madame " : ($a->Sexe == "H" ? "Monsieur " : "")).$a->Prenom.' '.$a->Nom.",<br /><br /><br />";
@@ -155,7 +159,10 @@ class Cadref extends Module {
 		$data = array();
 		$data['NbAdherents'] = Sys::getCount('Cadref', 'Adherent/Annee='.Cadref::$Annee);
 		$data['NbInscriptions'] = Sys::getCount('Cadref', 'Inscription/Annee='.Cadref::$Annee.'&Attente=0&Supprime=0');
-
+		$g = Sys::getOneData('Systeme', 'Group/Nom=CADREF_ADH');
+		$u = $g->getChildren('User');
+		$data['NbUsers'] = count($u);
+/*
 		$sql = "
 select a.Libelle,sum(if(t.Sexe='H',1,0)) as homme,sum(if(t.Sexe='F',1,0)) as femme,sum(if(t.Sexe<>'H' && t.Sexe<>'F',1,0)) as autre,count(*) as total
 from (
@@ -187,7 +194,7 @@ group by t.Antenne";
 		$bars['labels'] = $l;
 		$bars['series'] = array($f, $h, $a);
 		$data['bars'] = $bars;
-
+*/
 		return $data;
 	}
 
