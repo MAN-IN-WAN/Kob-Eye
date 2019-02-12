@@ -403,6 +403,7 @@ BEGIN
   RETURN s; 
 END; 
 | 
+delimiter ;
 update `kob-Cadref-Adherent` set Prenom=aaprenom(Prenom);
 update `kob-Cadref-Enseignant` set Prenom=aaprenom(Prenom);
 

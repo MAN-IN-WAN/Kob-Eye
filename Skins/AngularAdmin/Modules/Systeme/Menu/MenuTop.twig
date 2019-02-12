@@ -14,30 +14,31 @@
                     <a class="btn btn-warning" href="/Systeme/Deconnexion"><i class="dropdown-icon icmn-exit"></i> Déconnexion</a>
                 </div>
             {% else %}
-            <div class="dropdown dropdown-avatar">
-                <a href="javascript: void(0);" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <span class="avatar" href="javascript:void(0);">
-                        <img src="{{ User.Avatar }}" alt="Alternative text to the image">
-                    </span>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="" role="menu">
-                   <!-- <a class="dropdown-item" href="#/Profile"><i class="dropdown-icon icmn-user"></i> Profil</a>
-                    <div class="dropdown-divider"></div>-->
-                    <a class="dropdown-item" href="/Systeme/Deconnexion"><i class="dropdown-icon icmn-exit"></i> Déconnexion</a>
-                </ul>
-            </div>
+				<div class="dropdown dropdown-avatar">
+					<a href="javascript: void(0);" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+						<span class="avatar" href="javascript:void(0);">
+							<img src="{{ User.Avatar }}" alt="Alternative text to the image">
+						</span>
+					</a>
+					<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="" role="menu">
+						<!-- <a class="dropdown-item" href="#/Profile"><i class="dropdown-icon icmn-user"></i> Profil</a>
+						 <div class="dropdown-divider"></div>-->
+						<a class="dropdown-item" href="/Systeme/Deconnexion"><i class="dropdown-icon icmn-exit"></i> Déconnexion</a>
+					</ul>
+				</div>
             {% endif %}
         </div>
         {% if User.isRole('PARC_TECHNICIEN') or User.hasRole('NOTIFICATIONS') %}
             <div class="menu-user-block menu-notifications">
                 <div class="dropdown dropdown-avatar">
                     <a href="javascript: void(0);" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                        <i class="menu-notification-icon icmn-bubbles7" ng-class="{'filter-danger':Alerts.new>0,'filter-info':Alerts.new==0 && Alerts.unread>0,'filter-default':Alerts.new==0 && Alerts.unread==0}" ng-click="alertLoad()"></i>
+                        <i class="menu-notification-icon icmn-bubbles7" ng-class="{'filter-danger':Alerts.new>0,'filter-info':Alerts.new==0 && Alerts.unread>0,'filter-default':Alerts.new==0 && Alerts.unread==0}" ng-click="alertUserDisplay()"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="" role="menu">
-                        <div class="notification-block">
+                        <div class="notification-block" ng-if="SystemeAlertUser.data.length">
                             <div class="item" ng-repeat="item in SystemeAlertUser.data">
-                                <i class="notification-icon {[{ item.Icon }]}"></i>
+								<i class="notification-icon {[{ item.Icon }]}"></i>
+								<a href="" class="notification-button" title="Alerte lue" ng-click="alertUserRead($event, item)"></a>
                                 <div class="inner">
                                     <div class="time">
                                         <span class="pull-right">{[{ item.create.substr(0, 5)+' '+item.create.substr(11, 5) }]}</span>
@@ -49,6 +50,9 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="notification-block" ng-if="SystemeAlertUser.data.length==0">
+							<span>Il n'y a pas de notifications</span>
+						</div>
                     </ul>
                 </div>
             </div>

@@ -212,8 +212,8 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="AlertUser" logEvent="1" driver="mysql" Icon="[None]"  Class="Modules/Systeme/Class/AlertUser.class.php">
 		<PROPERTIES type="int"											>AlertId</PROPERTIES>
-		<PROPERTIES type="double"										>Time</PROPERTIES>
-		<PROPERTIES type="boolean" default="0"							>Read</PROPERTIES>
+		<PROPERTIES type="double" list="31"								>Time</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" list="30" form="30"		>Read</PROPERTIES>
 		<VIEW title="AlertUserList" default="1">
 			<OBJECTCLASS title="AlertUser" select="" filters="">
 				<JOIN type="outer" title="Alert" on="AlertId" target="Id">

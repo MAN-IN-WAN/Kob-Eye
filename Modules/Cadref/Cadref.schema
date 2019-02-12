@@ -284,6 +284,7 @@
 		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Différé">Differe</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Régularisation">Regularisation</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Solde">Solde</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Fond de soutien">Soutien</PROPERTIES>
 		<PROPERTIES type="text" category="Interne" form="23" fiche="23" description="Notes">NotesAnnuelles</PROPERTIES>
 		<PROPERTIES type="varchar" length="2" category="Association" values="B::Bureau,A::Administrateur,D::Délégué" form="14" fiche="14" description="Role associatif">Adherent</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Association" query="Cadref/Classe::Id::CodeClasse" form="15" fiche="15" description="Délégué de classe">ClasseId</PROPERTIES>
@@ -379,15 +380,16 @@
         <FILTER name="Tous" color="success"></FILTER>
 		<FKEY card="1,1" module="Cadref" data="Adherent,Id" category="Description" description="Adhérent" >AdherentId</FKEY>
 		<FKEY card="0,1" module="Cadref" data="Remise,Id" category="Description" description="Remise" >RemiseId</FKEY>
-		<FKEY card="0,1" module="Cadref" data="Visite,Id" category="Description" description="Visite" >VisiteId</FKEY>
+		<FKEY card="0,1" module="Cadref" data="Reservation,Id" category="Description" description="Reservation" >ReservationId</FKEY>
 		<PROPERTIES type="varchar" length="6" searchOrder="1" obligatoire="1" category="Description" description="Numéro">Numero</PROPERTIES>
 		<PROPERTIES type="varchar" length="4" obligatoire="1" category="Description" description="Année scolaire">Annee</PROPERTIES>
 		<PROPERTIES type="date" searchOrder="2" category="Description" list="1" listDescr="Date" description="Date inscription">DateReglement</PROPERTIES>
 		<PROPERTIES type="float" searchOrder="3" default="0" category="Description" list="2" distDescr="Montant" description="Montant">Montant</PROPERTIES>
+		<PROPERTIES type="float" searchOrder="3" default="0" category="Description" list="2" distDescr="Soutien" description="Fond de soutien">Soutien</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Description" description="Cotisation">Cotisation</PROPERTIES>
 		<PROPERTIES type="varchar" length="1" category="Description" values="B::Banque,C::Carte,E::Espèces" list="3" ListDescr="Mode" description="Mode réglement">ModeReglement</PROPERTIES>
 		<PROPERTIES type="text" obligatoire="0" category="Description" description="Notes">Notes</PROPERTIES>
-		<PROPERTIES type="varchar" length="10" category="Description" description="Visite">Visite</PROPERTIES>
+		<PROPERTIES type="varchar" length="10" category="Description" list="1" form="1" description="Visite">Visite</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" description="Régularisation">Regularisation</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" list="4" listDescr="Diff" description="Différé">Differe</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" list="5" listDescr="Enc" description="Encaissé">Encaisse</PROPERTIES>
@@ -420,7 +422,7 @@
 		<PROPERTIES type="varchar" length="4" obligatoire="1" list="1" form="1" fiche="1" category="Description" description="Année scolaire">Annee</PROPERTIES>
 		<PROPERTIES type="text" obligatoire="0" category="Description" description="Description">Description</PROPERTIES>
 		<PROPERTIES type="date" obligatoire="1" category="Description" list="2" form="1" fiche="1" description="Date">DateVisite</PROPERTIES>
-		<PROPERTIES type="date" obligatoire="0" category="Description" description="Limite d'inscription">DateLimite</PROPERTIES>
+		<PROPERTIES type="date" obligatoire="0" category="Description" description="Limite annulation">DateLimite</PROPERTIES>
 		<PROPERTIES type="varchar" length="32" category="Description" list="4" form="1" fiche="1" description="Coordonnées GPS">GPS</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" special="reverse" category="Description" form="13" fiche="13" description="Inactif">Inactif</PROPERTIES>
 
@@ -454,7 +456,7 @@
 		<FKEY card="1,1" module="Cadref" data="Lieu,Id" category="Description" list="1" form="1" fiche="1" description="Lieu" >LieuId</FKEY>
 		<PROPERTIES type="varchar" length="5" searchOrder="2" category="Description" list="1" form="1" fiche="1" description="Heure départ">HeureDepart</PROPERTIES>
 
-		<VIEW title="DepartList" default="1">
+		<VIEW title="DepartList" default="1" order="HeureDepart" orderType="ASC">
 			<OBJECTCLASS title="Depart">
 				<JOIN type="outer" module="Cadref" title="Lieu" on="LieuId" target="Id" order="Lieu" orderType="ASC">
 					<PROPERTIES type="varchar" form="4" fiche="4" list="4" alias="Libelle">Libelle</PROPERTIES>

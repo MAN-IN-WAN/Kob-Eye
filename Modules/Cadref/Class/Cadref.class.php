@@ -159,6 +159,7 @@ class Cadref extends Module {
 		$data = array();
 		$data['NbAdherents'] = Sys::getCount('Cadref', 'Adherent/Annee='.Cadref::$Annee);
 		$data['NbInscriptions'] = Sys::getCount('Cadref', 'Inscription/Annee='.Cadref::$Annee.'&Attente=0&Supprime=0');
+		$data['NbReservations'] = Sys::getCount('Cadref', 'Reservation/Annee='.Cadref::$Annee.'&Attente=0&Supprime=0');
 		$g = Sys::getOneData('Systeme', 'Group/Nom=CADREF_ADH');
 		$u = $g->getChildren('User');
 		$data['NbUsers'] = count($u);

@@ -5,7 +5,6 @@ class AlertUser extends genericClass {
 		genericClass::__construct($Mod,$Tab);
 	}
 
-
 	function Delete() {
 		$id = $this->AlertId;
 		$st = parent::Delete();

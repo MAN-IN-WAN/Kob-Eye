@@ -456,8 +456,13 @@ app.controller('MainCtrl', function($location, $scope, $rootScope, $timeout, $ht
 	$scope.SystemeAlertUser = $rootScope.createStore(SystemeAlertUserStore,'default');
 	$scope.SystemeAlertUser.store.setFilters("Read=0", 'default');
 	$scope.SystemeAlertUser.store.getData(1, 'default');
-	$scope.alertLoad = function() {
+	$scope.alertUserDisplay = function() {
 		$scope.Alerts.new = 0;
+	}
+	$scope.alertUserRead = function(ev, item) {
+		ev.stopPropagation();
+		item.Read = 1;
+		$scope.SystemeAlertUser.store.deleteOneData(item.id,'all'); //saveData(item);
 	}
 	
 
