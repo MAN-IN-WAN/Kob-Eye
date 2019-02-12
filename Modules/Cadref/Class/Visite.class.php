@@ -3,7 +3,7 @@ class Visite extends genericClass {
 
 	function Save($mode = false) {
 		$annee = Cadref::$Annee;
-		if(!empty($this->Annee) && $this->Annee = $annee) {
+		if(!empty($this->Annee) && $this->Annee != $annee) {
 			$this->addError(array("Message" => "Cette fiche ne peut être modifiée ($this->Annee)", "Prop" => ""));
 			return false;			
 		}
@@ -13,7 +13,7 @@ class Visite extends genericClass {
 		}
 		$this->Attentes = Sys::getCount('Cadref','Visite/'.$this->Id.'/Reservation/Attente=1&Supprime=0');
 		$this->Inscrits = Sys::getCount('Cadref','Visite/'.$this->Id.'/Reservation/Attente=0&Supprime=0');
-		
+
 		return parent::Save();
 	}
 

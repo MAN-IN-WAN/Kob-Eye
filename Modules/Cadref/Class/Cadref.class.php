@@ -412,19 +412,19 @@ where ce.Classe=$cid
 		// visites
 		if($group == 'CADREF_ENS')
 				$sql = "
-select v.Id,v.Libelle,v.DateVisite,0 as rid,v.Description
+select v.Id,v.Libelle,v.DateVisite,0 as rid,v.Description,v.Prix,v.Assurance
 from `##_Cadref-Visite` v
 inner join `##_Cadref-VisiteEnseignants` ve on ve.Visite=v.Id
 where v.DateVisite>=$start and v.DateVisite<=$end and ve.EnseignantId=$id";
 		else if($group == 'CADREF_ADH')
 				$sql = "
-select v.Id,v.Libelle,v.DateVisite,r.Id as rid,v.Description
+select v.Id,v.Libelle,v.DateVisite,r.Id as rid,v.Description,v.Prix,v.Assurance
 from `##_Cadref-Visite` v
 left join `##_Cadref-Reservation` r on r.AdherentId=$id and r.VisiteId=v.id
 where v.DateVisite>=$start and v.DateVisite<=$end";
 		else
 				$sql = "
-select v.Id,v.Libelle,v.DateVisite,0 as rid,v.Description
+select v.Id,v.Libelle,v.DateVisite,0 as rid,v.Description,v.Prix,v.Assurance
 from `##_Cadref-Visite` v
 where v.DateVisite>=$start and v.DateVisite<=$end";
 
@@ -450,6 +450,8 @@ where ve.Visite=$vid
 			}
 			if($s) $s .= "\n";
 			$s .= $p['Description'] ?: '';
+			if($s) $s .= "\n";
+			$s .= 'Prix : € '.$p['Prix'].($p['Assurance'] ? ' Ass. facultative : € '.$p['Assurance'] : '');
 			$e->description = $s;
 			$e->className = (p['rid'] ? 'fc-event-success' : 'fc-event-default').' cadref-cal-visite';
 			$events[] = $e;
