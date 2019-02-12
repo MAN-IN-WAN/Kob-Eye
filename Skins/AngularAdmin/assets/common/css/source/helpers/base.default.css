@@ -2323,11 +2323,11 @@ body.theme-blue .cwt__footer {
     height: 21px;
     border-radius: 4px;
 	color: #ffffff;
-    background-color: #F39834;
+    background-color: #fb434a;
 }
 .notification-block .item .notification-button:after{
 	font-family: 'icomoon-ultimate';
-    content: "\ecb2";
+    content: "\ed66";
 }
 
 

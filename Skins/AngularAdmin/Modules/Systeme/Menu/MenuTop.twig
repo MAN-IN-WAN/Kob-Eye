@@ -38,7 +38,7 @@
                         <div class="notification-block" ng-if="SystemeAlertUser.data.length">
                             <div class="item" ng-repeat="item in SystemeAlertUser.data">
 								<i class="notification-icon {[{ item.Icon }]}"></i>
-								<a href="" class="notification-button" title="Alerte lue" ng-click="alertUserRead($event, item)"></a>
+								<a href="" class="notification-button" title="Supprimer" ng-click="alertUserRead($event, item)"></a>
                                 <div class="inner">
                                     <div class="time">
                                         <span class="pull-right">{[{ item.create.substr(0, 5)+' '+item.create.substr(11, 5) }]}</span>
