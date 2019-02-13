@@ -130,8 +130,8 @@
 									<div custom-select="a.id as a.HeureDepart+' - '+a.Libelle for a in getSelectData('CadrefDepartStore',$searchTerm)" 
 										 custom-select-options="{ 'async': true, 'filter':'VisiteId='+{{ o }}.VisiteVisiteId}" 
 										 ng-model="{{ o }}.DepartDepartId"
-										 class="form-control" 
-										 ng-title="{{ o }}.DepartDepartId">
+										 class="form-control cadref-input" 
+										 ng-title="{{ o }}.HeureDepart+' - '+{{ o }}.LibelleL">
 									</div>
 								</div>
 							</div>

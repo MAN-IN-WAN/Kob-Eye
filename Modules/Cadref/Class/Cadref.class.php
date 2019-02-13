@@ -113,7 +113,9 @@ class Cadref extends Module {
 		$new = false;
 		if(! $u) {
 			$new = true;
+			$g = Sys::getOneData('Systeme', 'Group/Nom=CADREF_ADH');
 			$u = genericClass::createInstance('Systeme', 'User');
+			$u->addParent($g);
 			$u->Login = $num;
 			$u->Mail = $a->Mail ?: $num.'@cadref.com';
 			$u->Nom = $a->Nom;
@@ -122,6 +124,8 @@ class Cadref extends Module {
 		$p = self::GeneratePassword();
 		$u->Pass = '[md5]'.md5($p);
 		$u->Save();
+		AlertUser::addAlert('Adhérent : '.$a->Prenom.' '.$a->Nom,"Nouvel utilisateur : ".$a->Numero,'','',0,[],'CADREF_ADMIN','icmn-user3');
+
 		
 		if($a->Mail) {
 			$s = "Bonjour ".($a->Sexe == "F" ? "Madame " : ($a->Sexe == "H" ? "Monsieur " : "")).$a->Prenom.' '.$a->Nom.",<br /><br /><br />";
@@ -155,7 +159,11 @@ class Cadref extends Module {
 		$data = array();
 		$data['NbAdherents'] = Sys::getCount('Cadref', 'Adherent/Annee='.Cadref::$Annee);
 		$data['NbInscriptions'] = Sys::getCount('Cadref', 'Inscription/Annee='.Cadref::$Annee.'&Attente=0&Supprime=0');
-
+		$data['NbReservations'] = Sys::getCount('Cadref', 'Reservation/Annee='.Cadref::$Annee.'&Attente=0&Supprime=0');
+		$g = Sys::getOneData('Systeme', 'Group/Nom=CADREF_ADH');
+		$u = $g->getChildren('User');
+		$data['NbUsers'] = count($u);
+/*
 		$sql = "
 select a.Libelle,sum(if(t.Sexe='H',1,0)) as homme,sum(if(t.Sexe='F',1,0)) as femme,sum(if(t.Sexe<>'H' && t.Sexe<>'F',1,0)) as autre,count(*) as total
 from (
@@ -187,7 +195,7 @@ group by t.Antenne";
 		$bars['labels'] = $l;
 		$bars['series'] = array($f, $h, $a);
 		$data['bars'] = $bars;
-
+*/
 		return $data;
 	}
 
@@ -251,11 +259,12 @@ where ((a.DateDebut>=$start and a.DateDebut<=$end) or (a.DateFin>=$start and a.D
 			$id = $a->Id;
 			$sql = "
 select i.ClasseId as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,
-concat(d.Libelle,' ',n.Libelle) as Libelle, l.Ville, l.Adresse1, l.Adresse2
+concat(ifnull(dw.Libelle,d.Libelle),' ',n.Libelle) as Libelle, l.Ville, l.Adresse1, l.Adresse2
 from `##_Cadref-Inscription` i
 inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
 inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
+left join `##_Cadref-WebDiscipline` dw on dw.Id=d.WebDisciplineId
 left join `##_Cadref-Lieu` l on l.Id=c.LieuId
 where i.AdherentId=$id and i.Annee='$annee' and c.JourId>0 and c.HeureDebut<>''
 ";
@@ -274,11 +283,12 @@ where i.AdherentId=$id and i.Annee='$annee' and ((a.DateDebut>=$start and a.Date
 			$id = $e->Id;
 			$sql = "
 select c.Id as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,
-concat(d.Libelle,' ',n.Libelle) as Libelle, l.Ville, l.Adresse1, l.Adresse2
+concat(ifnull(dw.Libelle,d.Libelle),' ',n.Libelle) as Libelle, l.Ville, l.Adresse1, l.Adresse2
 from `##_Cadref-ClasseEnseignants` ce
 inner join `##_Cadref-Classe` c on c.Id=ce.Classe
 inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
+left join `##_Cadref-WebDiscipline` dw on dw.Id=d.WebDisciplineId
 left join `##_Cadref-Lieu` l on l.Id=c.LieuId
 where ce.EnseignantId=$id and c.Annee='$annee' and c.JourId>0 and c.HeureDebut<>''
 ";
@@ -402,19 +412,19 @@ where ce.Classe=$cid
 		// visites
 		if($group == 'CADREF_ENS')
 				$sql = "
-select v.Id,v.Libelle,v.DateVisite,0 as rid,v.Description
+select v.Id,v.Libelle,v.DateVisite,0 as rid,v.Description,v.Prix,v.Assurance
 from `##_Cadref-Visite` v
 inner join `##_Cadref-VisiteEnseignants` ve on ve.Visite=v.Id
 where v.DateVisite>=$start and v.DateVisite<=$end and ve.EnseignantId=$id";
 		else if($group == 'CADREF_ADH')
 				$sql = "
-select v.Id,v.Libelle,v.DateVisite,r.Id as rid,v.Description
+select v.Id,v.Libelle,v.DateVisite,r.Id as rid,v.Description,v.Prix,v.Assurance
 from `##_Cadref-Visite` v
 left join `##_Cadref-Reservation` r on r.AdherentId=$id and r.VisiteId=v.id
 where v.DateVisite>=$start and v.DateVisite<=$end";
 		else
 				$sql = "
-select v.Id,v.Libelle,v.DateVisite,0 as rid,v.Description
+select v.Id,v.Libelle,v.DateVisite,0 as rid,v.Description,v.Prix,v.Assurance
 from `##_Cadref-Visite` v
 where v.DateVisite>=$start and v.DateVisite<=$end";
 
@@ -440,6 +450,8 @@ where ve.Visite=$vid
 			}
 			if($s) $s .= "\n";
 			$s .= $p['Description'] ?: '';
+			if($s) $s .= "\n";
+			$s .= 'Prix : € '.$p['Prix'].($p['Assurance'] ? ' Ass. facultative : € '.$p['Assurance'] : '');
 			$e->description = $s;
 			$e->className = (p['rid'] ? 'fc-event-success' : 'fc-event-default').' cadref-cal-visite';
 			$events[] = $e;

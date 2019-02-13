@@ -52,7 +52,7 @@
 							<div class="row" style="height:10px"></div>
 							<div class="row">
 								<div class="col-md-2">
-									{{ label("Discipline Web") }}
+									{{ label("Discipline Web") }}{{ obj.LibelleW }}
 								</div>
 								<div class="col-md-10">
 									<div custom-select="a.id as a.label+'  -  '+a.Libelle for a in getSelectData('CadrefWebDisciplineStore',$searchTerm)" 

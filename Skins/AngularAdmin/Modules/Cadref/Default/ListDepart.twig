@@ -1,11 +1,54 @@
-<div class="listWrap">
+{# liste Depart #}
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label %} 
+<div class="cadref-widget" ng-if="departInfo.mode!=''">
+	<div class="row">
+		<div style="height:10px"></div>
+		<div class="col-md-12">
+			<div id="depart-edit">
+				<div class="row">
+					<div class="col-md-4">
+						{{ label("Lieu") }}
+					</div>
+					<div class="col-md-8">
+						<div custom-select="a.id as a.label+'  -  '+a.Libelle for a in getSelectData('CadrefLieuStore',$searchTerm)" 
+							 custom-select-options="{ 'async': true, 'filter':'Type=R'}" 
+							 ng-model="departObj.LieuLieuId"
+							 class="form-control" 
+							 ng-title="departObj.LieuLieuIdlabel+'  -  '+departObj.Libelle">
+						</div>
+					</div>
+				</div>
+				<div class="row" style="height:10px"></div>
+				<div class="row">
+					<div class="col-md-4">
+						{{ label("Heure départ") }}
+					</div>
+					<div class="col-md-4">
+						<input type="text" class="form-control cadref-input" ng-model="departObj.HeureDepart" mask="dd:dd"/>
+					</div>
+				</div>
+
+				<div style="height:10px"></div>
+				<div class="row">
+					<div class="col-md-12">
+						<a class="btn-abt cadref-btn-save btn-success" href="" ng-if="departObj.LieuLieuId && departObj.HeureDepart!=''" ng-click="departSave()" title="Enregister"></a>
+						<a class="btn-abt cadref-btn-del btn-danger" href="" ng-if="departObj.id" ng-click="departDelete(departObj)" title="Supprimer"></a>
+						<a class="btn-abt cadref-btn-cancel btn-warning" href="" ng-click="departCloseEdit()" title="Annuler"></a>
+					</div>
+				</div>						
+			</div>
+		</div>
+	</div>
+
+</div>
+<div class="listWrap" ng-if="departInfo.mode==''">
 	<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%" style="line-height:1" >
 		<thead>
 			<tr>
 				<th title="Id" class="list-col-th-id" hidden>ID</th>
 				<th class="cadref-th">Départ</th>
 				<th class="cadref-th">Lieu</th>
-				<th class="cadref-th-btn"><a class="btn-abt cadref-btn-add btn-success" href="" ng-click="{% if public %}departAdd(){% else %}CadrefDepartadd(){% endif %}" title="Ajouter un départ"></a></th>
+				<th class="cadref-th-btn"><a class="btn-abt cadref-btn-add btn-success" href="" ng-click="departAdd()" title="Ajouter un départ"></a></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -14,13 +57,13 @@
 				<td scope="row" class="cadref-td typedate"><span class="label">{[{ item.HeureDepart }]}</span></td>
 				<td scope="row" class="cadref-td typedate"><span class="label">{[{ item.Libelle }]}</span></td>
 				<td  class="table-action cadref-td-btn">
-					<a class="btn-abt btn-abt-nfo btn-primary" href="" title="Détails" ng-click="departOpen(item)"></a>
+					<a class="btn-abt btn-abt-nfo btn-primary" href="" title="Détails" ng-click="departModify(item)"></a>
 				</td>
 			</tr>
 		</tbody>
 	</table>
 </div>
-<div class="modal fade modal-size-large" id="modal-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
+{#<div class="modal fade modal-size-large" id="modal-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog cadref-modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -52,3 +95,4 @@
         </div>
     </div>
 </div>
+#}

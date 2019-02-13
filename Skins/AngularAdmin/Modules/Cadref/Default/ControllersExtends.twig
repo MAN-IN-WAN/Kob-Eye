@@ -40,7 +40,7 @@
 	app.controller('{{ identifier }}FicheCtrlExtends', function($interval, $location, $compile, $timeout, $sce, $scope, $filter, $window, 
 		$rootScope, $routeParams, $http, $log,
 		CadrefInscriptionStore, CadrefClasseStore, CadrefAdherentStore, CadrefReglementStore, CadrefEnseignantStore, 
-		CadrefVisiteStore, CadrefReservationStore, CadrefClasseDateStore, CadrefAbsenceStore) {
+		CadrefVisiteStore, CadrefReservationStore, CadrefClasseDateStore, CadrefAbsenceStore, CadrefDepartStore) {
 
 		var getObj = $interval(function(){
             if($scope.obj){
@@ -57,27 +57,47 @@
             }
         },100,50);
 
-	$scope.initDatePickerZob = function() {
-		$('.datepicker-only-init').datetimepicker({
-			widgetPositioning: {
-				horizontal: 'left'
-			},
-			locale: 'fr',
-			format: 'DD/MM/YYYY',
-			icons: {
-				time: "fa fa-clock-o",
-				date: "fa fa-calendar",
-				up: "fa fa-arrow-up",
-				down: "fa fa-arrow-down"
-			}
-		});
-		//Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
-		$(".datepicker-only-init").on("dp.change", function () {
-			var input = $(this).children('input').eq(0);
-			input.trigger('change');
-			input.trigger('input');
-		});
-	}		
+		// init date picker components 
+		$scope.initDatePickerOnly = function() {
+			$('.datepicker-only-init').datetimepicker({
+				widgetPositioning: {
+					horizontal: 'left'
+				},
+				locale: 'fr',
+				format: 'DD/MM/YYYY',
+				icons: {
+					time: "fa fa-clock-o",
+					date: "fa fa-calendar",
+					up: "fa fa-arrow-up",
+					down: "fa fa-arrow-down"
+				}
+			});
+			$(".datepicker-only-init").on("dp.change", function () {
+				var input = $(this).children('input').eq(0);
+				input.trigger('change');
+				input.trigger('input');
+			});
+		}	
+		$scope.initDateTimePicker = function() {
+			$('.datetimepicker-init').datetimepicker({
+				widgetPositioning: {
+					horizontal: 'left'
+				},
+				locale: 'fr',
+				icons: {
+					time: "fa fa-clock-o",
+					date: "fa fa-calendar",
+					up: "fa fa-arrow-up",
+					down: "fa fa-arrow-down"
+				}
+			});
+			$(".datetimepicker-init").on("dp.change", function () {
+				var input = $(this).children('input').eq(0);
+				input.trigger('change');
+				input.trigger('input');
+			});
+		}	
+		
 		
 		// efface le contenu du filtre
 		$scope.clearFilter = function(child) {
@@ -569,6 +589,20 @@
 		$scope.sectionInfo = function() {
 			$scope.obj.LibelleS = $scope.obj.Libelle;
 		}
+		
+		$scope.testalert = function() {
+			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'testalert');
+			ajax.success(
+				function(data) {
+					console.log('store > {{ module }}/{{ objecttype }} > Method  ', data);
+				}
+			).error(
+				function() {
+					console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+				}
+			);
+		}
+
 		{% endif %}
 		
 		
@@ -582,6 +616,7 @@
 			ajax.success(
 				function(data) {
 					$scope.obj.LibelleS = data.data.LibelleS;
+					$scope.obj.LibelleW = data.data.LibelleW;
 				}
 			).error(
 				function() {
@@ -637,30 +672,9 @@
 		
 		$scope.Enseignants = JSON.parse('{{ enseignants|raw }}');
 
-{#		// modification date cours
-		$scope.classeDateOpenCallback = function(item, obj) {
-			var o = $scope.localObj = {};
-            angular.copy(obj, o);
-		}
-		$scope.classeDateOpen = function(item) {
-			$scope.CadrefClasseDatemodify(item, $scope.classeDateOpenCallback);
-		}
-
-		// sauve date cours
-		$scope.classeDateSave = function() {
-			$scope.modalObj = $scope.localObj;
-			$scope.CadrefClasseDatemodalSave();
-		}
-		
-		// suppression d'une date ferme le modal
-		$scope.classeDateDelete = function(obj) {
-			$scope.CadrefClasseDatedelete(obj);
-			$("#modal-CadrefClasseDate").modal('toggle');
-		}
-#}
 		//-----------------
 		// CLASSEDATE
-		
+		//-----------------
 		$scope.classeDateObj;
 		$scope.classeDateInfo = {mode: ''};
 		// ferme classe>Date edit section
@@ -691,6 +705,7 @@
 			CadrefClasseDateStore.saveData($scope.classeDateObj).then(function (data) {
 				$('#settings').spin(false);
 				$scope.classeDateInfo.mode = '';
+				$scope.$digest();
 			});
 		}
 
@@ -709,6 +724,7 @@
 				function(){
 					CadrefClasseDateStore.deleteOneData(item.id,'all');
 					$scope.classeDateInfo.mode = '';
+					$scope.$digest();
 				}
 			);
 		}
@@ -794,53 +810,115 @@
 			$scope.reservationCalcul();
 		}
 		
-		// modification depart
-		$scope.departOpenCallback = function(item, obj) {
-			var o = $scope.localObj = {};
-            angular.copy(obj, o);
+		//-----------------
+		// DEPART
+		//-----------------
+		$scope.departObj;
+		$scope.departInfo = {mode: ''};
+		// ferme depart edit section
+		$scope.departCloseEdit = function() {
+			$scope.departInfo.mode = '';
 		}
-		$scope.departOpen = function(item) {
-			$scope.CadrefDepartmodify(item); //, $scope.departOpenCallback);
+
+		// ajout depart
+		$scope.departAdd = function() {
+			var i = $scope.departInfo;
+			var o = $scope.departObj = CadrefDepartStore.getNewData();
+			o.VisiteVisiteId = $scope.obj.id;
+			i.mode = 'add';
+		}
+
+		// modification depart
+		$scope.departModify = function(item) {
+			var i = $scope.departInfo;
+			var o = $scope.departObj = {};
+			angular.copy(item, o);
+			o.VisiteVisiteId = $scope.obj.id;
+			i.mode = 'edit';
 		}
 
 		// sauve depart
 		$scope.departSave = function() {
-//			$scope.modalObj = $scope.localObj;
-			$scope.CadrefDepartmodalSave();
+			CadrefDepartStore.saveData($scope.departObj).then(function(data) {
+				$scope.departInfo.mode = '';
+				$scope.$digest();
+			});
 		}
 
-		// suppression d'un depart ferme le modal
-		$scope.departDelete = function(obj) {
-			$scope.CadrefDepartdelete(obj);
-			$("#modal-CadrefDepart").modal('toggle');
+		// suppression depart
+		$scope.departDelete = function(item) {
+			swal({
+				title: "Effacer le depart",
+				text: "Cette suppression sera définitive. ",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonClass: "btn-danger",
+				cancelButtonText: "Annuler",
+				confirmButtonText: "Oui, supprimer !",
+				closeOnConfirm: true
+			},
+			function(){
+				CadrefDepartStore.deleteOneData(item.id,'all');
+				$scope.departInfo.mode = '';
+				$scope.$digest();
+			});
 		}
 		{% endif %}
 	
 		
 		{% if objecttype == 'Enseignant' %}
-		//--------------------------------------
-		// ENSEIGNANT ABSENCE
-		//--------------------------------------
+		//-----------------
+		// ABSENCE
+		//-----------------
+		$scope.absenceObj;
+		$scope.absenceInfo = {mode: ''};
+		// ferme absence edit section
+		$scope.absenceCloseEdit = function() {
+			$scope.absenceInfo.mode = '';
+		}
+
+		// ajout absence
+		$scope.absenceAdd = function() {
+			var i = $scope.absenceInfo;
+			var o = $scope.absenceObj = CadrefAbsenceStore.getNewData();
+			o.EnseignantEnseignantId = $scope.obj.id;
+			i.mode = 'add';
+		}
 
 		// modification absence
-		$scope.absenceOpenCallback = function(item, obj) {
-			var o = $scope.localObj = {};
-            angular.copy(obj, o);
-		}
-		$scope.absenceOpen = function(item) {
-			$scope.CadrefAbsencemodify(item); //, $scope.absenceOpenCallback);
+		$scope.absenceModify = function(item) {
+			var i = $scope.absenceInfo;
+			var o = $scope.absenceObj = {};
+			angular.copy(item, o);
+			o.EnseignantEnseignantId = $scope.obj.id;
+			i.mode = 'edit';
 		}
 
 		// sauve absence
 		$scope.absenceSave = function() {
-	//		$scope.modalObj = $scope.localObj;
-			$scope.CadrefAbsencemodalSave();
+			CadrefAbsenceStore.saveData($scope.absenceObj).then(function(data) {
+				$scope.absenceInfo.mode = '';
+				$scope.$digest();
+			});
 		}
 
-		// suppression d'une absence ferme le modal
-		$scope.absenceSupprime = function(obj) {
-			$scope.CadrefAbsencedelete(obj);
-			$("#modal-CadrefAbsence").modal('toggle');
+		// suppression absence
+		$scope.absenceDelete = function(item) {
+			swal({
+				title: "Effacer l'absence",
+				text: "Cette suppression sera définitive. ",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonClass: "btn-danger",
+				cancelButtonText: "Annuler",
+				confirmButtonText: "Oui, supprimer !",
+				closeOnConfirm: true
+			},
+			function(){
+				CadrefAbsenceStore.deleteOneData(item.id,'all');
+				$scope.absenceInfo.mode = '';
+				$scope.$digest();
+			});
 		}
 		{% endif %}
 		

@@ -418,7 +418,53 @@ angular.module('cleanUI', [
 
 var app = angular.module('cleanUI.controllers', []);
 
-app.controller('MainCtrl', function($location, $scope, $rootScope, $timeout, FileUploader) {
+app.controller('MainCtrl', function($location, $scope, $rootScope, $timeout, $http, FileUploader, SystemeAlertUserStore) {
+
+
+// PGF 20190211 creation de stores
+	$rootScope.createStore = function(store, context) {
+		var s = {
+			data: store.data[context],
+			store: store,
+			filter: store.getFilters(context,true).global,
+			filterPanel: false,
+			filters: (function(){
+				var opts = store.getFilters(context,true).options;
+				var out = {};
+				for (var o in opts){
+					out[opts[o].name] = opts[o];
+				}
+				return out;
+			})(),
+			filterQuery: store.getQueryFilter(context),
+			currentPage: store.currentPage[context],
+			pageLength: store.getPageLength(),
+			itemsPerPage: store.itemsPerPage,
+			selected: {
+				selectall: false
+			}
+		}
+		return s;
+	}
+
+// ALERTUSER PGF 20190209
+	$scope.Alerts = {new:0, unread:0, alerts:[]};
+    $rootScope.$on('Alertes',function(ev,data){
+	    if(data.new > 0) $scope.Alerts.new = data.new;
+		$scope.Alerts.unread = data.unread;
+    });
+	$scope.SystemeAlertUser = $rootScope.createStore(SystemeAlertUserStore,'default');
+	$scope.SystemeAlertUser.store.setFilters("Read=0", 'default');
+	$scope.SystemeAlertUser.store.getData(1, 'default');
+	$scope.alertUserDisplay = function() {
+		$scope.Alerts.new = 0;
+	}
+	$scope.alertUserRead = function(ev, item) {
+		ev.stopPropagation();
+		item.Read = 1;
+		$scope.SystemeAlertUser.store.deleteOneData(item.id,'all'); //saveData(item);
+	}
+	
 
     $scope.uploader = new FileUploader({
         url:'/Systeme/Utils/Upload.json'
