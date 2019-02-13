@@ -329,7 +329,7 @@ switch($info['TypeSearch']){
                     die();
                 }
                 $parent = false;
-                $item = $generic;
+                //$item = $generic;
                 $tempLegacy = explode('/',$info['LastDirect'],2);
                 if(isset($tempLegacy[1]) && $tempLegacy[1] != ''){
                     $parent = $generic->getOneDbData($tempLegacy[0],$tempLegacy[1]);
