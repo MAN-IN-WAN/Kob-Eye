@@ -1034,144 +1034,143 @@ class Server extends genericClass {
 
         $e = array('exists' => true, 'OK' => true);
 		Server::ldapConnect();
-		if (empty($KEObj -> LdapID)) {
-		    switch (get_class($KEObj)) {
-                case "Server":
-                    $search = ldap_search(Server::$_LDAP, 'ou=servers,'.PARC_LDAP_BASE, 'ou=' . $KEObj->LDAPNom, array('modifytimestamp', 'entryuuid'));
-                    $res = ldap_get_entries(Server::$_LDAP, $search);
-                    //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
-                    $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
-                    $KEObj->LdapID = $res[0]['entryuuid'][0];
-                    $KEObj->LdapDN = $res[0]['dn'];
-                    $search2 = ldap_search(Server::$_LDAP, PARC_LDAP_BASE, 'cn=' . $KEObj->LDAPNom, array('modifytimestamp', 'entryuuid'));
-                    $res2 = ldap_get_entries(Server::$_LDAP, $search2);
-                    $KEObj->LdapUserTms = intval($res2[0]['modifytimestamp'][0])-10000;
-                    $KEObj->LdapUserID = $res2[0]['entryuuid'][0];
-                    $KEObj->LdapUserDN = $res2[0]['dn'];
-                    if (!$res['count']) {
-                        $e['exists'] = false;
-                        return $e;
-                    }
+        switch (get_class($KEObj)) {
+            case "Server":
+                $search = ldap_search(Server::$_LDAP, 'ou=servers,'.PARC_LDAP_BASE, 'ou=' . $KEObj->LDAPNom, array('modifytimestamp', 'entryuuid'));
+                $res = ldap_get_entries(Server::$_LDAP, $search);
+                //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
+                $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                $KEObj->LdapID = $res[0]['entryuuid'][0];
+                $KEObj->LdapDN = $res[0]['dn'];
+                $search2 = ldap_search(Server::$_LDAP, PARC_LDAP_BASE, 'cn=' . $KEObj->LDAPNom, array('modifytimestamp', 'entryuuid'));
+                $res2 = ldap_get_entries(Server::$_LDAP, $search2);
+                $KEObj->LdapUserTms = intval($res2[0]['modifytimestamp'][0])-10000;
+                $KEObj->LdapUserID = $res2[0]['entryuuid'][0];
+                $KEObj->LdapUserDN = $res2[0]['dn'];
+                if (!$res['count']) {
+                    $e['exists'] = false;
+                    return $e;
+                }
+            break;
+            case "Apache":
+                $search = ldap_search(Server::$_LDAP, $dn,$filter, array('modifytimestamp', 'entryuuid'));
+                $res = ldap_get_entries(Server::$_LDAP, $search);
+                //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
+                //$KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                $KEObj->setLdapTms($KEServer,intval($res[0]['modifytimestamp'][0])-10000);
+                //$KEObj->LdapID = $res[0]['entryuuid'][0];
+                $KEObj->setLdapID($KEServer,$res[0]['entryuuid'][0]);
+                //$KEObj->LdapDN = $res[0]['dn'];
+                $KEObj->setLdapDN($KEServer,$res[0]['dn']);
+                if (!$res['count']) {
+                    $e['exists'] = false;
+                    return $e;
+                }else{
+                    $e['exists'] = true;
+                }
                 break;
-                case "Apache":
-                    $search = ldap_search(Server::$_LDAP, $dn,$filter, array('modifytimestamp', 'entryuuid'));
-                    $res = ldap_get_entries(Server::$_LDAP, $search);
-                    //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
-                    //$KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
-                    $KEObj->setLdapTms($KEServer,intval($res[0]['modifytimestamp'][0])-10000);
-                    //$KEObj->LdapID = $res[0]['entryuuid'][0];
-                    $KEObj->setLdapID($KEServer,$res[0]['entryuuid'][0]);
-                    //$KEObj->LdapDN = $res[0]['dn'];
-                    $KEObj->setLdapDN($KEServer,$res[0]['dn']);
-                    if (!$res['count']) {
-                        $e['exists'] = false;
-                        return $e;
-                    }else{
-                        $e['exists'] = true;
-                    }
-                    break;
-                case "Parc_Technicien":
-                    $search = ldap_search(Server::$_LDAP, 'ou=users,'.PARC_LDAP_BASE, 'cn=' . $KEObj->AccesUser, array('modifytimestamp', 'entryuuid'));
-                    $res = ldap_get_entries(Server::$_LDAP, $search);
-                    //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
+            case "Parc_Technicien":
+                $search = ldap_search(Server::$_LDAP, 'ou=users,'.PARC_LDAP_BASE, 'cn=' . $KEObj->AccesUser, array('modifytimestamp', 'entryuuid'));
+                $res = ldap_get_entries(Server::$_LDAP, $search);
+                //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
+                $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                $KEObj->LdapID = $res[0]['entryuuid'][0];
+                $KEObj->LdapDN = $res[0]['dn'];
+                if (!$res['count']) {
+                    $e['exists'] = false;
+                    return $e;
+                }
+                break;
+            case "Client":
+                $search = ldap_search(Server::$_LDAP, 'ou=users,'.PARC_LDAP_BASE, 'cn=' . $KEObj->AccesUser, array('modifytimestamp', 'entryuuid'));
+                $res = ldap_get_entries(Server::$_LDAP, $search);
+                //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
+                if (!$res['count']) {
+                    $e['exists'] = false;
+                    return $e;
+                }else{
                     $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
                     $KEObj->LdapID = $res[0]['entryuuid'][0];
                     $KEObj->LdapDN = $res[0]['dn'];
-                    if (!$res['count']) {
-                        $e['exists'] = false;
-                        return $e;
-                    }
-                    break;
-                case "Client":
-                    $search = ldap_search(Server::$_LDAP, 'ou=users,'.PARC_LDAP_BASE, 'cn=' . $KEObj->AccesUser, array('modifytimestamp', 'entryuuid'));
-                    $res = ldap_get_entries(Server::$_LDAP, $search);
-                    //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
-                    if (!$res['count']) {
-                        $e['exists'] = false;
-                        return $e;
-                    }else{
-                        $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
-                        $KEObj->LdapID = $res[0]['entryuuid'][0];
-                        $KEObj->LdapDN = $res[0]['dn'];
-                    }
-                    break;
-                case "Contact":
-                    $search = ldap_search(Server::$_LDAP, 'ou=users,'.PARC_LDAP_BASE, 'cn=' . $KEObj->AccesUser, array('modifytimestamp', 'entryuuid'));
-                    $res = ldap_get_entries(Server::$_LDAP, $search);
-                    //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
-                    if (!$res['count']) {
-                        $e['exists'] = false;
-                        return $e;
-                    }else{
-                        $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
-                        $KEObj->LdapID = $res[0]['entryuuid'][0];
-                        $KEObj->LdapDN = $res[0]['dn'];
-                    }
-                    break;
-                case "Domain":
-                    $search = ldap_search(Server::$_LDAP, 'ou=domains,'.PARC_LDAP_BASE, 'cn=' . $KEObj->Url, array('modifytimestamp', 'entryuuid'));
-                    $res = ldap_get_entries(Server::$_LDAP, $search);
-                    //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
-                    if (!$res['count']) {
-                        $e['exists'] = false;
-                        return $e;
-                    }else{
-                        $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
-                        $KEObj->LdapID = $res[0]['entryuuid'][0];
-                        $KEObj->LdapDN = $res[0]['dn'];
-                    }
-                    break;
-                case "Subdomain":
-                    $search = ldap_search(Server::$_LDAP, $dn, 'cn=' . $KEObj->Nom, array('modifytimestamp', 'entryuuid'));
-                    $res = ldap_get_entries(Server::$_LDAP, $search);
-                    //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
-                    if (!$res['count']) {
-                        $e['exists'] = false;
-                        return $e;
-                    }else{
-                        $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
-                        $KEObj->LdapID = $res[0]['entryuuid'][0];
-                        $KEObj->LdapDN = $res[0]['dn'];
-                    }
-                    break;
-                case "MX":
-                    $search = ldap_search(Server::$_LDAP, $dn, 'cn=' . $KEObj->Nom, array('modifytimestamp', 'entryuuid'));
-                    $res = ldap_get_entries(Server::$_LDAP, $search);
-                    //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
-                    if (!$res['count']) {
-                        $e['exists'] = false;
-                        return $e;
-                    }else{
-                        $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
-                        $KEObj->LdapID = $res[0]['entryuuid'][0];
-                        $KEObj->LdapDN = $res[0]['dn'];
-                    }
-                    break;
-                case "TXT":
-                    $search = ldap_search(Server::$_LDAP, $dn, 'cn=' . $KEObj->Nom, array('modifytimestamp', 'entryuuid'));
-                    $res = ldap_get_entries(Server::$_LDAP, $search);
-                    //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
-                    if (!$res['count']) {
-                        $e['exists'] = false;
-                        return $e;
-                    }else{
-                        $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
-                        $KEObj->LdapID = $res[0]['entryuuid'][0];
-                        $KEObj->LdapDN = $res[0]['dn'];
-                    }
-                    break;
-            }
-        }else {
-		    if ($KEServer){
-                $search = ldap_search(Server::$_LDAP, PARC_LDAP_BASE, 'entryuuid=' . $KEObj->getLdapID($KEServer), array('modifytimestamp'));
-            }else {
-                $search = ldap_search(Server::$_LDAP, PARC_LDAP_BASE, 'entryuuid=' . $KEObj->LdapID, array('modifytimestamp'));
-            }
-            $res = ldap_get_entries(Server::$_LDAP, $search);
-            if (!$res['count']) {
-                $e = array('exists' => false, 'OK' => true);
-                return $e;
-            }
+                }
+                break;
+            case "Contact":
+                $search = ldap_search(Server::$_LDAP, 'ou=users,'.PARC_LDAP_BASE, 'cn=' . $KEObj->AccesUser, array('modifytimestamp', 'entryuuid'));
+                $res = ldap_get_entries(Server::$_LDAP, $search);
+                //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
+                if (!$res['count']) {
+                    $e['exists'] = false;
+                    return $e;
+                }else{
+                    $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                    $KEObj->LdapID = $res[0]['entryuuid'][0];
+                    $KEObj->LdapDN = $res[0]['dn'];
+                }
+                break;
+            case "Domain":
+                $search = ldap_search(Server::$_LDAP, 'ou=domains,'.PARC_LDAP_BASE, 'cn=' . $KEObj->Url, array('modifytimestamp', 'entryuuid'));
+                $res = ldap_get_entries(Server::$_LDAP, $search);
+                //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
+                if (!$res['count']) {
+                    $e['exists'] = false;
+                    return $e;
+                }else{
+                    $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                    $KEObj->LdapID = $res[0]['entryuuid'][0];
+                    $KEObj->LdapDN = $res[0]['dn'];
+                }
+                break;
+            case "Subdomain":
+                $search = ldap_search(Server::$_LDAP, $dn, 'cn=' . $KEObj->Nom, array('modifytimestamp', 'entryuuid'));
+                $res = ldap_get_entries(Server::$_LDAP, $search);
+                //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
+                if (!$res['count']) {
+                    $e['exists'] = false;
+                    return $e;
+                }else{
+                    $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                    $KEObj->LdapID = $res[0]['entryuuid'][0];
+                    $KEObj->LdapDN = $res[0]['dn'];
+                }
+                break;
+            case "MX":
+                $search = ldap_search(Server::$_LDAP, $dn, 'cn=' . $KEObj->Nom, array('modifytimestamp', 'entryuuid'));
+                $res = ldap_get_entries(Server::$_LDAP, $search);
+                //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
+                if (!$res['count']) {
+                    $e['exists'] = false;
+                    return $e;
+                }else{
+                    $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                    $KEObj->LdapID = $res[0]['entryuuid'][0];
+                    $KEObj->LdapDN = $res[0]['dn'];
+                }
+                break;
+            case "TXT":
+                $search = ldap_search(Server::$_LDAP, $dn, 'cn=' . $KEObj->Nom, array('modifytimestamp', 'entryuuid'));
+                $res = ldap_get_entries(Server::$_LDAP, $search);
+                //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
+                if (!$res['count']) {
+                    $e['exists'] = false;
+                    return $e;
+                }else{
+                    $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                    $KEObj->LdapID = $res[0]['entryuuid'][0];
+                    $KEObj->LdapDN = $res[0]['dn'];
+                }
+                break;
+            default:
+                if ($KEServer){
+                    $search = ldap_search(Server::$_LDAP, PARC_LDAP_BASE, 'entryuuid=' . $KEObj->getLdapID($KEServer), array('modifytimestamp'));
+                }else {
+                    $search = ldap_search(Server::$_LDAP, PARC_LDAP_BASE, 'entryuuid=' . $KEObj->LdapID, array('modifytimestamp'));
+                }
+                $res = ldap_get_entries(Server::$_LDAP, $search);
+                if (!$res['count']) {
+                    $e = array('exists' => false, 'OK' => true);
+                    return $e;
+                }
+                break;
         }
 		/*if (!empty($KEObj -> LdapTms) && intval($res[0]['modifytimestamp'][0])-10000 > intval($KEObj -> LdapTms )) {
 			$e['OK'] = false;
