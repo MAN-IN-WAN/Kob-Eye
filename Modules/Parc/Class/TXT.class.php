@@ -86,6 +86,22 @@ class TXT extends genericClass {
         if (!$this->Type) {
             $this->Type = 'TXT';
         }
+        //Vérification de la longueur du champ texte
+        if (strlen($this->Dnstxt)>255&&!preg_match('#\(.*\)#',$this->Dnstxt)){
+            $pos=0;
+            $out='(';
+            while (strlen($this->Dnstxt)>$pos) {
+                $length=255;
+                //recherche de l'espace, sauf si dernier troncon
+                $last=strlen($this->Dnstxt)<$pos+$length;
+                for ($j=$pos+$length;$this->Dnstxt[$j]!=' '&&$j>$pos;$j--) {}
+                if ($j>$pos&&!$last)$length=$j-$pos; else $length=255;
+                $out .= (!$pos?'':'" "'). substr($this->Dnstxt, $pos, $length);
+                $pos += $length;
+            }
+            $out.=')';
+            $this->Dnstxt = $out;
+        }
 		if(parent::Verify()) {
 
 			$this->_isVerified = true;

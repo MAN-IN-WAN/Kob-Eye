@@ -34,7 +34,7 @@ class Server extends genericClass {
         parent::Save();
         //installation de la clef
         if (!$this->Status&&!$first){
-            if (!$this->installSshKey()) return false;
+            //if (!$this->installSshKey()) return false;
             parent::Save();
         }
         // Forcer la vérification

@@ -1,0 +1,27 @@
+
+
+{% if funcTempVars.success%}
+    Boites mail créées avec succès.
+{% elseif funcTempVars.errors | length %}
+        Oups un erreur est survenue :
+        <ul>
+        {% for e in funcTempVars.errors %}
+            <li>{{ e.Message }}</li>
+        {% endfor %}
+        </ul>
+{% else %}
+    <div class="row">
+        <div class="col-md-12">
+            <label class="form-control-label" for="l0">Comptes emails</label>
+            <small>A soumettre avec le format suivant: email;pass;COS;Nom;quota (Par defaut 1024Mo)</small>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group" ng-class="{'has-danger': function.fieldErrors.length &amp;&amp; function.fieldErrors.indexOf('emails') !== -1}">
+                <textarea class="form-control ng-pristine ng-untouched ng-valid ng-not-empty" placeholder="" id="input-emails" ng-model="ParcClientfunction.args.emails"></textarea>
+            </div>
+        </div>
+    </div>
+
+{% endif %}
