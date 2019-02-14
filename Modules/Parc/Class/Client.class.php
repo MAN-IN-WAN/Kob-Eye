@@ -367,7 +367,7 @@ class Parc_Client extends genericClass {
             $quota = ($e[3]>1000)?$e[3]*1024:1024;
             if (empty($email)||empty($pass)||empty($cos)) {
                 $error = true;
-                $this->addError(Array('Message' => 'Compte email incomplet -> ' . $email . ' ; ' . $pass . ' ; ' . $cos . ' ; ' . $quota));
+                $this->addError(Array('Message' => 'Compte email incomplet ' . $email . ' ' . $pass . ' ' . $cos . ' ' . $quota));
             }
             $domain = explode('@',$email);
             //verification du domaine
@@ -390,8 +390,7 @@ class Parc_Client extends genericClass {
             $email = $e[0];
             $pass = $e[1];
             $cos = $e[2];
-            $nom = $e[3];
-            $quota = ($e[4])?$e[4]*1024:1024;
+            $quota = ($e[3])?$e[3]*1024:1024;
             if (Sys::getCount('Parc','CompteMail/Adresse='.$email)){
                 $compte = Sys::getOneData('Parc','CompteMail/Adresse='.$email);
             }else {
@@ -403,7 +402,6 @@ class Parc_Client extends genericClass {
             $compte->Quota = $quota;
             $compte->addParent($this);
             $compte->addParent($srv);
-            $compte->Nom = $nom;
             if ($compte->Verify()){
                 if (!$compte->Save()){
                     $this->Error = array_merge($this->Error,$compte->Error);
@@ -418,21 +416,49 @@ class Parc_Client extends genericClass {
         return true;
     }
 
-    public function ImporterPlusieursEmails($params = null){
-        if (!$params) $params =array('step'=>0);
-        if (!isset($params['step'])) $params['step']=0;
-        switch($params['step']) {
-            case 1:
-                if (isset($params['emails'])){
-                    $vars['success'] = ($this->ImportEmails($params['emails']))?1:0;
-                    $vars['errors'] = $this->Error;
-                }
-                return array('template' => "multiCreateEmails","funcTempVars"=>$vars);
+    public function Test($params){
+        sleep(1);
+        return 'toto'. rand(500 , 7985321);
 
-                break;
 
-            default:
-                return array('template' => "multiCreateEmails", 'step' => 1, 'callNext' => array('nom' => 'ImporterPlusieursEmails', 'title' => 'Resultat'));
+
+        if($params['MAILSEND']){
+            require_once ("Class/Lib/Mail.class.php");
+            $Mail = new Mail();
+            $Mail -> Subject($params['SUBJECT']);
+            $Mail -> From( 'no-reply@abtel.fr');
+            $Mail -> ReplyTo('contact@abtel.fr');
+            //$Mail -> To($this -> Email);
+            $Mail -> To('gcandella@abtel.fr');
+
+            //$Mail -> To('enguer@enguer.com');
+            $Mail -> Bcc('gcandella@abtel.fr');
+            //$Mail -> Cc($GLOBALS['Systeme'] -> Conf -> get('MODULE::RESERVATIONS::CONTACT'));
+            $bloc = new Bloc();
+
+            $mailContent = $params['CONTENT'];
+
+
+
+            $bloc -> setFromVar("Mail", $mailContent, array("BEACON" => "BLOC"));
+            $Pr = new Process();
+            $bloc -> init($Pr);
+            $bloc -> generate($Pr);
+            $Mail -> Body($bloc -> Affich());
+
+            //klog::l('$Mail',print_r($Mail,true));
+
+            $Mail -> Send();
+            return 'Mail envoyé avec succès';
+        } else{
+            return array(
+                'template'=>'SendRecap',
+                'callNext' => array(
+                    'nom'=>'Test',
+                    'title' => 'Envoi du mail',
+                    'needConfirm' => false
+                )
+            );
         }
 
     }
@@ -444,7 +470,7 @@ class Parc_Client extends genericClass {
     public static function getClientFromCode($code,$name='') {
         if (empty($name))$name = $code;
         //on vérifie que le client n'existe pas déjà
-        $client = Sys::getOneData('Parc','Client/NomLDAP='.$code);
+        $client = Sys::getOneData('Parc','Client/NomLDAP='.$code,0,1,'','','','',true);
         if (!$client) {
             $client = genericClass::createInstance('Parc', 'Client');
             $client->Nom = $name;

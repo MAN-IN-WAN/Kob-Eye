@@ -20,10 +20,6 @@ class EmailRessource extends genericClass {
 		//}
         //vérificatio du client
 
-        if(!$this->Suppression || $this->Suppression == '0') {
-            $this->Suppression = NULL;
-        }
-
 
         if($this->Suppression > 0  && $this->Suppression < time()){
             $this->finalDelete();

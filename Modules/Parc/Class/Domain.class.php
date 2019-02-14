@@ -185,9 +185,6 @@ class Domain extends genericClass {
         $entry['dnsminimum'] = $this->TTLMin ?  $this->TTLMin : 60;
         $entry['dnsttl'] =  $this->TTL ?  $this->TTL : 86400;
 
-        //temp
-        $entry['dnsexpire'] = 1209600;
-
 		if($new) {
 			$entry['dnsclass'] = 'IN';
 			$entry['dnsexpire'] = 1209600;
@@ -338,7 +335,7 @@ class Domain extends genericClass {
 		if (is_array($conf['MAIL_SERVER'])) {
 		    if(isset($conf['MAIL_SERVER']['TYPE'])){
                 //test existence
-                $e = Sys::$Modules['Parc']->callData('Domain/'.$this->Id.'/'.$conf['MAIL_SERVER']['TYPE'].'/Dnscname='.$conf['MAIL_SERVER']['DNSCNAME'],false,0,1,'DESC','Id','COUNT(*)');
+                $e = Sys::$Modules['Parc']->callData('Domain/'.$this->Id.'/'.$conf['MAIL_SERVER']['TYPE'].'/Nom='.$conf['MAIL_SERVER']['CN'],false,0,1,'DESC','Id','COUNT(*)');
                 if (!$e[0]['COUNT(*)']){
                     $KEObj = genericClass::createInstance('Parc', $conf['MAIL_SERVER']['TYPE']);
                     $KEObj->Nom = $conf['MAIL_SERVER']['CN'];
@@ -350,7 +347,7 @@ class Domain extends genericClass {
                 }
             } else{
 		        foreach($conf['MAIL_SERVER'] as $ms){
-                    $e = Sys::$Modules['Parc']->callData('Domain/'.$this->Id.'/'.$ms['TYPE'].'/Dnscname='.$ms['DNSCNAME'],false,0,1,'DESC','Id','COUNT(*)');
+                    $e = Sys::$Modules['Parc']->callData('Domain/'.$this->Id.'/'.$ms['TYPE'].'/Nom='.$ms['CN'],false,0,1,'DESC','Id','COUNT(*)');
                     if (!$e[0]['COUNT(*)']){
                         $KEObj = genericClass::createInstance('Parc', $ms['TYPE']);
                         $KEObj->Nom = $ms['CN'];

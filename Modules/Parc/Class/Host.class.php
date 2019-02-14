@@ -27,6 +27,8 @@ class Host extends genericClass
             return false;
         }
 
+        parent::Save();
+
         // Forcer la vérification
         $this->Verify($synchro);
         if (!$this->_isVerified) {
@@ -41,9 +43,6 @@ class Host extends genericClass
         if (!$this->_isVerified) return false;
 
         parent::Save();
-
-        //application des configurations
-        $this->configHost();
 
         //creation apachedefault
         $aps = Sys::getCount('Parc','Host/'.$this->Id.'/Apache');
@@ -60,11 +59,8 @@ class Host extends genericClass
         if (!$bdds)
             $this->createDefaultBdd();
 
-        //affectation des clefs ssh
-        $this->sshKeysCheck();
-
-        //configuration des clefs
-        $this->refreshSshKeys();
+        //application des configurations
+        $this->createTaskConfigHost();
 
         //si le mot de passe a été modifié on répercute sur la base de donnée uniquement si le host existait déjà
         if ($this->Password!=$old->Password&&$old){
@@ -76,13 +72,36 @@ class Host extends genericClass
         return true;
     }
     /**
+     * createTaskConfigHost
+     * Creation de la tache pour configurer l'host
+     */
+    private function createTaskConfigHost(){
+        $task = genericClass::createInstance('Systeme', 'Tache');
+        $task->Type = 'Fonction';
+        $task->Nom = 'Configuration de l\'hébergement ' . $this->Nom;
+        $task->TaskModule = 'Parc';
+        $task->TaskObject = 'Host';
+        $task->TaskId = $this->Id;
+        $task->TaskFunction = 'configHost';
+        $task->TaskType = 'installation';
+        $task->TaskCode = 'HOST_CONFIG';
+        $task->addParent($this);
+        $inst = $this->getOneChild('Instance');
+        if ($inst)
+            $task->addParent($inst);
+        $task->addParent($this->getOneParent('Server'));
+        $task->Save();
+        return array('task' => $task);
+    }
+    /**
      * configHost
      * Configuration supplémentairte de l'hébergemen t
      */
-    private function configHost() {
+    public function configHost($task) {
         //execution du ldap2service
         $servs = $this->getKEServer();
         foreach ($servs as $serv) {
+            $act = $task->createActivity('Configuration de l\'hébergement '.$this->Nom.' sur le serveur '.$serv->Nom);
             $serv->callLdap2Service();
             //création du fichier .bashrc
             $f = '# .bashrc
@@ -101,8 +120,14 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
 ';
             $serv->putFileContent('/home/'.$this->NomLDAP.'/.bashrc',$f);
             $serv->remoteExec('chown ' . $this->NomLDAP . ':users /home/' . $this->NomLDAP . '/.bashrc');
+            $act->Terminate(true);
 
         }
+        //affectation des clefs ssh
+        $this->sshKeysCheck();
+
+        //configuration des clefs
+        $this->refreshSshKeys();
     }
     /**
      * sshKeyCheck
@@ -818,45 +843,111 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
 
     /**
      * clone
-     * Fonction de clonage
+     * Fonction de clonage d'hébergement
      * @param task Task Object
      */
     public function exeClone($task){
         //desérialisation des paramètres
         $params = unserialize($task->TaskArgs);
-        $act = $task->createActivity('Création de l\'hébergement ');
-        //création de l'hébergement
-        $host = Sys::getOneData('Parc','Host/'.$this->Id);
-        $name = (isset($params['targetHost'])&&!empty($params['targetHost']))?$params['targetHost']:$host->Nom.' (Copie)';
-        $client = $host->getOneParent('Client');
-        $server = (isset($params['targetServer'])&&$params['targetServer']>0)?Sys::getOneData('Parc','Server/'.$params['targetServer']):$host->getOneParent('Infra');
-        //suppression des champs indesirables
-        unset($host->Id);
-        unset($host->tmsCreate);
-        unset($host->userCreate);
-        unset($host->tmsEdit);
-        unset($host->userEdit);
-        unset($host->LdapID);
-        unset($host->LdapTms);
-        unset($host->LdapGid);
-        unset($host->LdapUid);
-        unset($host->NomLDAP);
-        $host->addParent($client);
-        $host->Nom=$name;
-        try {
-            if (!$host->Save()){
-                foreach ($host->Error as $err){
-                    $actErr = $task->createActivity('Erreur lors de la création de l\'hébergement: '.$err['Message']);
-                    $actErr->Terminate(false);
+        if (!isset($params['fromHost'])) {
+            //création de l'hébergement
+            $host = Sys::getOneData('Parc', 'Host/' . $this->Id);
+            $name = (isset($params['targetHost']) && !empty($params['targetHost'])) ? $params['targetHost'] : $host->Nom . ' (Copie)';
+            $client = $host->getOneParent('Client');
+            $server = (isset($params['targetServer']) && $params['targetServer'] > 0) ? Sys::getOneData('Parc', 'Server/' . $params['targetServer']) : $host->getOneParent('Server');
+            $act = $task->createActivity('Création de l\'hébergement ' . $params['targetHost'] . ' sur le serveur ' . $server->Nom);
+            //suppression des champs indesirables
+            unset($host->Id);
+            unset($host->tmsCreate);
+            unset($host->userCreate);
+            unset($host->tmsEdit);
+            unset($host->userEdit);
+            unset($host->LdapID);
+            unset($host->LdapTms);
+            unset($host->LdapGid);
+            unset($host->LdapUid);
+            unset($host->NomLDAP);
+            $host->addParent($client);
+            $host->addParent($server);
+            $host->Nom = $name;
+            try {
+                if (!$host->Save()) {
+                    foreach ($host->Error as $err) {
+                        $actErr = $task->createActivity('Erreur lors de la création de l\'hébergement: ' . $err['Message']);
+                        $actErr->Terminate(false);
+                    }
+                    throw new Exception('Impossible de créer l\'hébergement');
                 }
+            } catch (Exception $e) {
+                $act->addDetails($e->getMessage());
+                $act->addDetails(print_r($host, true));
+                $act->Terminate(false);
+                return false;
             }
-        }catch (Exception $e) {
-            $act->addDetails($e->getMessage());
-            $act->Terminate(false);
-        }
 
-        $act->Terminate(true);
-        return true;
+            $act->Terminate(true);
+            $params['fromHost'] = $this->Id;
+            $params['toHost'] = $host->Id;
+            $task->TaskArgs = serialize($params);
+            $task->Save();
+        }
+        //lancement de la synchronisation
+        return $this->syncHost($task);;
+    }
+    /**
+     * syncHost
+     * Fonction de synchronisartion des hébergements
+     * @param task Task Object
+     */
+    public function syncHost($task){
+        $params = unserialize($task->TaskArgs);
+        if (!isset($params['fromHost'])||!isset($params['toHost'])){
+            $act = $task->createActivity('Les paramètres fromHost toHost ston introuvables');
+            $act->Terminate(false);
+            return false;
+        }
+        //target
+        $host = Sys::getOneData('Parc','Host/'.$params['toHost']);
+        $bdd = $host->getOneChild('Bdd');
+        $mysqlsrv = $bdd->getOneParent('Server');
+        $apachesrv = $host->getOneParent('Server');
+        //source
+        $srchost = Sys::getOneData('Parc','Host/'.$params['fromHost']);
+        $srcbdd = $srchost->getOneChild('Bdd');
+        $srcmysqlsrv = $srcbdd->getOneParent('Server');
+        $srcapachesrv = $srchost->getOneParent('Server');
+        try {
+            //Installation des fichiers
+            $act = $task->createActivity('Suppression du dossier www', 'Info');
+            $out = $apachesrv->remoteExec('rm -Rf /home/' . $host->NomLDAP . '/www');
+            $act->addDetails($out);
+            $act->Terminate(true);
+            //Installation des fichiers
+            $act = $task->createActivity('Initialisation de la synchronisation', 'Info');
+            $cmd = 'cd /home/' . $host->NomLDAP . '/ && rsync -e "ssh -o StrictHostKeyChecking=no" -avz root@'.$srcapachesrv->InternalIP.':/home/'.$srchost->NomLDAP.'/www/ www';
+            $act->addDetails($cmd);
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($out);
+            $act->Terminate(true);
+            $act = $task->createActivity('Modification des droits', 'Info');
+            $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . '/www -R';
+            $act->addDetails($cmd);
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($out);
+            $act->Terminate(true);
+            //Dump de la base
+            $act = $task->createActivity('Dump de la base Mysql', 'Info');
+            $cmd = 'mysqldump -h db.maninwan.fr -u '.$srchost->NomLDAP.' -p'.$srchost->Password.' '.$srcbdd->Nom.' | mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom;
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($cmd);
+            $act->addDetails($out);
+            $act->Terminate(true);
+            return true;
+        }catch (Exception $e){
+            $act->addDetails('Erreur: '.$e->getMessage());
+            $act->Terminate(false);
+            throw new Exception($e->getMessage());
+        }
     }
 }
 /**

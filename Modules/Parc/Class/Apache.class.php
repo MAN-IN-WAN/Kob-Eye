@@ -163,7 +163,6 @@ class Apache extends genericClass {
                 $task->addParent($serv);
                 //on va charcher l'hébergement
                 $host = $this->getOneParent('Host');
-                if (!$host) return false;
                 $task->addParent($host);
                 //on va chercher l'instance
                 $instance = $host->getOneChild('Instance');
