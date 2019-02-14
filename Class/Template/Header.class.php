@@ -215,6 +215,10 @@ class Header extends Root{
         $code2  = md5('https://'.Sys::$domain.'/'.$GLOBALS["Systeme"]->Lien);
         $page = Sys::getOneData('Systeme','Page/MD5='.$code.'+MD5='.$code2);
         if ($page){
+            if(!empty($page->Redirect)) {
+                header('Location: ' . $page->Redirect, true, 301);
+                exit();
+            }
             //if (!$this->ForceTitle)
             $this->Title = $page->Title;
             if (!$this->ForceDescription)

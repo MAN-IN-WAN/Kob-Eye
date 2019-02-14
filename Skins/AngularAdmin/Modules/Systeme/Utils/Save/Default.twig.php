@@ -51,7 +51,7 @@ $parentelements = $obj->getParentElements();
 foreach ($parentelements as $f){
     if ($f['type']=='fkey' && $f['card']=='short'){
         $o->AddParent($f['objectModule'].'/'.$f['objectName'].'/'.$values->{$f["objectName"].$f["name"]});
-    }elseif ($f['type']=='fkey' && $f['card']=='long'){
+    }elseif ($f['type']=='fkey' && $f['card']=='long' && isset($values->{$f["objectName"].$f["name"]})){
         $o->resetParents($f['objectName']);
         foreach ($values->{$f["objectName"].$f["name"]} as $v)
             $o->AddParent($f['objectModule'].'/'.$f['objectName'].'/'.$v);
@@ -63,9 +63,13 @@ if ($o->Verify()) {
 
     foreach ($formfields as $f){
         $values->{$f["name"]} = $o->{$f["name"]};
-        if ($f['type']=='date'){
+        if ($f['type']=='datetime'){
             //transformation des timestamps en format js
             $values->{$f['name']} = date('d/m/Y H:i',$o->{$f['name']});
+		}
+        elseif ($f['type']=='date'){
+            //transformation des timestamps en format js
+            $values->{$f['name']} = date('d/m/Y',$o->{$f['name']});
         }elseif ($f['type']=='rkey') {
             $o->resetChilds($f['objectName']);
             if (is_array($values->{$f["objectName"].$f["name"]})) foreach ($values->{$f["objectName"].$f["name"]} as $v){
@@ -74,6 +78,7 @@ if ($o->Verify()) {
         }
     }
     $vars['retour'] = '{
+		"id": '.($o->Id ? $o->Id : 0).',
         "data": '.json_encode($values).',
         "errors": '.json_encode($o->Error).',
         "warning": '.json_encode($o->Warning).',
@@ -82,6 +87,7 @@ if ($o->Verify()) {
     }';
 }else{
     $vars['retour'] = '{
+		"id": '.($o->Id ? $o->Id : 0).',
         "data": '.json_encode($values).',
         "errors": '.json_encode($o->Error).',
         "warning": '.json_encode($o->Warning).',

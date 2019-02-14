@@ -13,11 +13,20 @@ class Ftpuser extends genericClass {
 	public function Save( $synchro = true ) {
 		parent::Save();
 		// Forcer la vérification
-		if(!$this->_isVerified) $this->Verify( $synchro );
+		$this->Verify( $synchro );
 		// Enregistrement si pas d'erreur + Récupération GID & UID HOST
 		if($this->_isVerified) {
 			parent::Save();
 			$this->getUidGidFromHost( $synchro );
+			//vérification de l'existence du dossier
+            $srvs = $this->getKEServer();
+            $host = $this->getKEHost();
+            foreach ($srvs as $srv){
+                //die('creatio du dossier '.'/home/'.$host->NomLDAP.'/'.$this->DocumentRoot);
+                if (!$srv->folderExists('/home/'.$host->NomLDAP.'/'.$this->DocumentRoot)){
+                    $srv->createFolder('/home/'.$host->NomLDAP.'/'.$this->DocumentRoot,$host->NomLDAP);
+                }
+            }
 		}
 		return true;
 	}
@@ -118,7 +127,7 @@ class Ftpuser extends genericClass {
 	 * @param	boolean	Verifie aussi sur LDAP
 	 * @return	Verification OK ou NON
 	 */
-	public function Verify( $synchro = true ) {
+	public function Verify( $synchro = false ) {
 		if (substr($this->DocumentRoot,strlen($this->DocumentRoot)-1,1)=='/') $this->DocumentRoot = substr($this->DocumentRoot,0,-1);
         //check host
         if (!$this->getOneParent('Host')) return false;
@@ -134,7 +143,7 @@ class Ftpuser extends genericClass {
 				$KEServers = $this->getKEServer();
 				foreach ($KEServers as $KEServer) {
                     if (!$KEServer) return false;
-                    $dn = 'uid=' . $this->Identifiant . ',ou=users,cn=' . $KEHost->Nom . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE;
+                    $dn = 'uid=' . $this->Identifiant . ',ou=users,cn=' . $KEHost->NomLDAP . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE;
                     // Verification à jour
                     $res = Server::checkTms($this,$KEServer);
                     if ($res['exists']) {
@@ -264,7 +273,7 @@ class Ftpuser extends genericClass {
 	public function Delete() {
 	    $KEServers = $this->getKEServer();
 	    foreach ($KEServers as $KEServer) {
-            Server::ldapDelete($this->LdapID);
+            Server::ldapDelete($this->getLdapID($KEServer));
         }
         parent::Delete();
 	}

@@ -17,12 +17,18 @@ class SambaJob extends Job {
      */
     public function stop()
     {
+        $task = genericClass::createInstance('Systeme', 'Tache');
+        $task->Type = 'Collecteur';
+        $task->Nom = 'Stop :' . $this->Titre;
+        $task->addParent($this);
+        $task->Save();
+
         $v = Sys::getOneData('AbtelBackup', 'SambaShare/'.$this->CurrentShare);
         if($v){
-            $act = $this->createActivity($v->Titre . ' > Arret Utilisateur: Step ' . $this->Step, $v,0,'Info');
+            $act = $task->createActivity($v->Titre . ' > Arret Utilisateur: Step ' . $this->Step,'Info');
             $act->addDetails($v->Titre . "Arret Utilisateur", 'red', true);
         } else{
-            $act = $this->createActivity('Share non défini > Arret Utilisateur: Step ' . $this->Step, null,0,'Info');
+            $act = $task->createActivity('Share non défini > Arret Utilisateur: Step ' . $this->Step,'Info');
             $act->addDetails("Arret Utilisateur", 'red', true);
         }
 
@@ -89,10 +95,10 @@ class SambaJob extends Job {
      * run
      * Demarre ou resume un job de backup de vm
      */
-    public function run() {
+    public function run($task) {
         //test running
         if ($this->Running) {
-            $act = $this->createActivity(' > Impossible de démarrer, le job est déjà en cours d\'éxécution',null,0,'Info');
+            $act = $task->createActivity(' > Impossible de démarrer, le job est déjà en cours d\'éxécution','Info');
             $act->Terminate(false);
             return;
         }
@@ -101,7 +107,7 @@ class SambaJob extends Job {
         parent::Save();
         //init
         Klog::l('DEBUG demarrage samba');
-        $act = $this->createActivity(' > Demarrage du Job Samba : '.$this->Titre.' ('.$this->Id.')',null,0,'Info');
+        $act = $task->createActivity(' > Demarrage du Job Samba : '.$this->Titre.' ('.$this->Id.')','Info');
         $act->Terminate();
 
         $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=1");
@@ -117,7 +123,7 @@ class SambaJob extends Job {
 
         foreach ($sss as $ss){
             Klog::l('DEBUG share ==> '.$ss->Id.' STEP: '.$this->Step);
-            $act = $this->createActivity(' > Demarrage du partage : '.$ss->Titre.' ('.$ss->Id.')',$ss,0,'Info');
+            $act = $task->createActivity(' > Demarrage du partage : '.$ss->Titre.' ('.$ss->Id.')','Info');
             $act->Terminate();
 
             //définition de la vm en cours
@@ -129,29 +135,29 @@ class SambaJob extends Job {
                 //initialisation
                 if (intval($this->Step)<=1){
                     unset($act);
-                    $act = $this->createActivity($ss->Titre.' > Initialisation du job Samba',$ss,$pSpan[0]);
+                    $act = $task->createActivity($ss->Titre.' > Initialisation du job Samba','Exec',$pSpan[0]);
                     $this->initJob($ss,$dev,$act);
                 }
 
                 //montage
                 if (intval($this->Step)<=2){
                     unset($act);
-                    $act = $this->createActivity($ss->Titre.' > Montage du partage Samba',$ss,$pSpan[1]);
+                    $act = $task->createActivity($ss->Titre.' > Montage du partage Samba','Exec',$pSpan[1]);
                     $act = $this->mountJob($ss,$dev,$act);
                 }
 
                 //déduplication
                 if (intval($this->Step)<=3){
                     unset($act);
-                    $act = $this->createActivity($ss->Titre.' > Déduplication Sambajob',$ss,$pSpan[2]);
+                    $act = $task->createActivity($ss->Titre.' > Déduplication Sambajob','Exec',$pSpan[2]);
                     $act = $this->deduplicateJob($ss,$dev,$borg,$act);
                 }
 
-                $act = $this->createActivity(' > Fin du partage : '.$ss->Titre.' ('.$ss->Id.')',$ss,0,'Info');
+                $act = $task->createActivity(' > Fin du partage : '.$ss->Titre.' ('.$ss->Id.')','Info');
                 $act->Terminate();
 
             }catch (Exception $e){
-                if(!$act) $act = $this->createActivity($ss->Titre.' > Exception: Step '.$this->Step,$ss);
+                if(!$act) $act = $task->createActivity($ss->Titre.' > Exception: Step '.$this->Step);
                 $act->addDetails($ss->Titre." ERROR => ".$e->getMessage(),'red');
                 $act->Terminated = true;
                 $act->Errors = true;

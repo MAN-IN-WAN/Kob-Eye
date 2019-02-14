@@ -16,7 +16,7 @@ class Parc_Client extends genericClass {
         }
 
 		// Forcer la vérification
-		if(!$this->_isVerified) $this->Verify( $synchro );
+		$this->Verify( $synchro );
         parent::Save();
 
 		// Enregistrement si pas d'erreur
@@ -40,7 +40,7 @@ class Parc_Client extends genericClass {
 	 * @param	boolean	Verifie aussi sur LDAP
 	 * @return	Verification OK ou NON
 	 */
-	public function Verify( $synchro = true ) {
+	public function Verify( $synchro = false ) {
         if (empty($this->NomLDAP)) {
             $this->NomLDAP = Utils::CheckSyntaxe($this->Nom);
         }
@@ -261,6 +261,9 @@ class Parc_Client extends genericClass {
 	public function getDomain() {
 		return $this->getChildren('Domain');
 	}
+    public function getRevendeur() {
+        return $this->getOneParent('Revendeur');
+    }
 	public function getHost() {
 		return $this->getChildren('Host');
 	}
@@ -364,7 +367,7 @@ class Parc_Client extends genericClass {
             $quota = ($e[3]>1000)?$e[3]*1024:1024;
             if (empty($email)||empty($pass)||empty($cos)) {
                 $error = true;
-                $this->addError(Array('Message' => 'Compte email incomplet ' . $email . ' ' . $pass . ' ' . $cos . ' ' . $quota));
+                $this->addError(Array('Message' => 'Compte email incomplet -> ' . $email . ' ; ' . $pass . ' ; ' . $cos . ' ; ' . $quota));
             }
             $domain = explode('@',$email);
             //verification du domaine
@@ -387,7 +390,8 @@ class Parc_Client extends genericClass {
             $email = $e[0];
             $pass = $e[1];
             $cos = $e[2];
-            $quota = ($e[3])?$e[3]*1024:1024;
+            $nom = $e[3];
+            $quota = ($e[4])?$e[4]*1024:1024;
             if (Sys::getCount('Parc','CompteMail/Adresse='.$email)){
                 $compte = Sys::getOneData('Parc','CompteMail/Adresse='.$email);
             }else {
@@ -399,6 +403,7 @@ class Parc_Client extends genericClass {
             $compte->Quota = $quota;
             $compte->addParent($this);
             $compte->addParent($srv);
+            $compte->Nom = $nom;
             if ($compte->Verify()){
                 if (!$compte->Save()){
                     $this->Error = array_merge($this->Error,$compte->Error);
@@ -411,5 +416,40 @@ class Parc_Client extends genericClass {
         }
 
         return true;
+    }
+
+    public function ImporterPlusieursEmails($params = null){
+        if (!$params) $params =array('step'=>0);
+        if (!isset($params['step'])) $params['step']=0;
+        switch($params['step']) {
+            case 1:
+                if (isset($params['emails'])){
+                    $vars['success'] = ($this->ImportEmails($params['emails']))?1:0;
+                    $vars['errors'] = $this->Error;
+                }
+                return array('template' => "multiCreateEmails","funcTempVars"=>$vars);
+
+                break;
+
+            default:
+                return array('template' => "multiCreateEmails", 'step' => 1, 'callNext' => array('nom' => 'ImporterPlusieursEmails', 'title' => 'Resultat'));
+        }
+
+    }
+
+    /**
+     * getClient
+     * @param String Code du client
+     */
+    public static function getClientFromCode($code,$name='') {
+        if (empty($name))$name = $code;
+        //on vérifie que le client n'existe pas déjà
+        $client = Sys::getOneData('Parc','Client/NomLDAP='.$code);
+        if (!$client) {
+            $client = genericClass::createInstance('Parc', 'Client');
+            $client->Nom = $name;
+            $client->Save();
+        }
+        return $client;
     }
 }

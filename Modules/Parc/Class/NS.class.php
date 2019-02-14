@@ -12,7 +12,7 @@ class NS extends genericClass {
 	public function Save( $synchro = true ) {
 		parent::Save();
 		// Forcer la vérification
-		if(!$this->_isVerified) $this->Verify( $synchro );
+		$this->Verify( $synchro );
 		// Enregistrement si pas d'erreur
 		if($this->_isVerified) {
 			// Dans le cas du déplacer on doit connaitre les nouveaux parents donc 2 Save()
@@ -27,17 +27,27 @@ class NS extends genericClass {
 	 * @param	boolean	Verifie aussi sur LDAP
 	 * @return	Verification OK ou NON
 	 */
-	public function Verify( $synchro = true ) {
-
+	public function Verify( $synchro = false ) {
+        // Outils
+        $KEServer = $this->getKEServer();
+        $KEDomain = $this->getKEDomain();
+        //création du nom
+        if (empty($this->Nom)){
+            //génératio automatique du nom
+            for ($i=1;$i<100;$i++){
+                $nb = Sys::getCount('Parc','Domain/'.$KEDomain->Id.'/NS/Nom=NS:'.$i);
+                if (!$nb){
+                    $this->Nom = 'NS:'.$i;
+                    break;
+                }
+            }
+        }
 		if(parent::Verify()) {
 
 			$this->_isVerified = true;
 
 			if($synchro) {
 
-				// Outils
-				$KEDomain = $this->getKEDomain();
-				$KEServer = $this->getKEServer();
 				$dn = 'cn='.$this->Nom.',cn='.$KEDomain->Url.',ou=domains,'.PARC_LDAP_BASE;
 				// Verification à jour
 				$res = Server::checkTms($this);

@@ -3,17 +3,32 @@
 class Instance extends genericClass{
     private $_plugin = null;
     public function Save($force=false){
-        $old = Sys::getOneData('Parc', 'Instance/' . $this->Id);
+        Sys::startTransaction();
+        if ($this->Id)
+            $old = Sys::getOneData('Parc', 'Instance/' . $this->Id);
+        else $old=false;
         if (!$old) $new = true; else $new = false;
         if (!$new&&$old->SousDomaine!=$this->SousDomaine){
-            $this->addError(Array("Message" => 'Impossible de modifier le sous domaine d\'une instance. Veuillez dupliquer ou créer une nouvelle instance.'));
+            $this->addError(Array("Message" => 'Impossible de modifier le sous domaine d\'une instance. Veuillez créer une nouvelle instance.'));
             return false;
         }
+        if (!$new&&$old->InstanceNom!=$this->InstanceNom){
+            $this->addError(Array("Message" => 'Impossible de modifier le nom technique d\'une instance. Veuillez créer une nouvelle instance.'));
+            return false;
+        }
+
+
+        $pref='';
+        $infra = $this->getInfra();
+        if($infra){
+            $pref= 'Infra/'.$infra->Id.'/';
+        }
+
         //serveurs par défaut
-        $apachesrv = Sys::getOneData('Parc', 'Server/Web=1&defaultWebServer=1');
-        $proxysrv = Sys::getOneData('Parc', 'Server/Proxy=1');
-        $mysqlsrv = Sys::getOneData('Parc', 'Server/Sql=1&defaultSqlServer=1');
-        $dom = Sys::getOneData('Parc','Domain/defaultDomain=1',0,1,'','','','',true);
+        $apachesrv = Sys::getOneData('Parc', $pref.'Server/Web=1&defaultWebServer=1', null, null, null, null, null, null, true);
+        $proxysrv = Sys::getOneData('Parc', $pref.'Server/Proxy=1', null, null, null, null, null, null, true);
+        $mysqlsrv = Sys::getOneData('Parc', $pref.'Server/Sql=1&defaultSqlServer=1', null, null, null, null, null, null, true);
+        $dom = Sys::getOneData('Parc', 'Domain/defaultDomain=1', 0, 100, '', '', '', '', true);
 
         if (!$apachesrv) {
             $GLOBALS["Systeme"]->Db[0]->exec('ROLLBACK');
@@ -31,73 +46,61 @@ class Instance extends genericClass{
             return false;
         }
 
+        if(!$proxysrv) $proxysrv = $apachesrv;
+
         //Verification du nom
         if ($this->SousDomaine != Instance::checkName($this->SousDomaine)) {
             $GLOBALS["Systeme"]->Db[0]->exec('ROLLBACK');
             $this->addError(Array("Message" => 'Le sous-domaine de l\'instance ne doit pas contenir de caractère spéciaux. '.$this->SousDomaine.'!='.Instance::checkName($this->SousDomaine)));
             return false;
         }
-        parent::Save();
-        //Check du client
-        $client = $this->getOneParent('Client');
-        if (!$client) {
-            /*$GLOBALS["Systeme"]->Db[0]->exec('ROLLBACK');
-            $this->addError(Array("Message" => 'Une instance doit être liée à un client. Si il n\'existe pas , veuillez le créer au préalable.'));
-            return false;*/
-            //création d'un client par défaut
-            //on vérifie que le client n'existe pas déjà
-            $client = Sys::getOneData('Parc','Client/NomLdap='.Utils::CheckSyntaxe($this->Nom));
-            if (!$client) {
-                $client = genericClass::createInstance('Parc', 'Client');
-                $client->Nom = $this->Nom;
-                if (!$client->Save()) {
-                    $this->Delete();
-                    $this->Error = array_merge($this->Error,$client->Error);
-                    return false;
-                }
-            }
-            $this->addParent($client);
-        }
 
         //creation du nom temporaire
         if (empty($this->InstanceNom))
-            $this->InstanceNom = 'instance-'.$client->NomLDAP;
+            $this->InstanceNom = substr('inst-'.Instance::checkName($this->Nom),0,32);
+        else $this->InstanceNom = substr($this->InstanceNom,0,32);
 
         //Vérification du mot de passe
         if (empty($this->Password)){
             $this->Password = str_shuffle(bin2hex(openssl_random_pseudo_bytes(12)));
         }
+        parent::Save();
+
+        //Check du client
+        $client = $this->getOneParent('Client');
+        if (!$client) {
+            $client = Parc_Client::getClientFromCode($this->InstanceNom,$this->Nom);
+            $this->addParent($client);
+        }
 
         $tmpname = $this->InstanceNom;
 
-        //vérification de l'existence
-        $as = Sys::getOneData('Parc','Domain/'.$dom->Id.'/Subdomain/Url='.$tmpname);
-        if (!$as){
-            $as = genericClass::createInstance('Parc','Subdomain');
-            $as->Url = $tmpname;
-            $as->IP = $proxysrv->IP;
-            $as->addParent($dom);
-            $as->Save();
-        }else{
-            $as->IP = $proxysrv->IP;
-            $as->addParent($dom);
-            $as->Save();
+        //vérification de l'existence du sous domaine par défaut
+        if ($dom) {
+            $as = Sys::getOneData('Parc', 'Domain/' . $dom->Id . '/Subdomain/Url=' . $tmpname);
+            if (!$as) {
+                $as = genericClass::createInstance('Parc', 'Subdomain');
+                $as->Url = $tmpname;
+                $as->IP = $proxysrv->IP;
+                $as->addParent($dom);
+                $as->Save();
+            } else {
+                $as->IP = $proxysrv->IP;
+                $as->addParent($dom);
+                $as->Save();
+            }
+            $this->FullDomain = $as->Url . '.' . $dom->Url;
+            parent::Save();
         }
-        $this->FullDomain = $as->Url.'.'.$dom->Url;
-        parent::Save();
 
-        //Check des domaine
+        //Check des domaine (CAS SECIB)
         $dom = $this->getParents('Domain');
-        if (!is_array($dom) || !sizeof($dom)) {
-            /*$GLOBALS["Systeme"]->Db[0]->exec('ROLLBACK');
-            $this->addError(Array("Message" => 'Une instance doit être liée à un ou plusieurs domaines'));
-            return false;*/
-        } else {
+        if (is_array($dom) && sizeof($dom)) {
             $defaulturl = false;
             $otherurls = array();
             foreach ($dom as $d) {
                 //vérification des sous domaines
-                $www = $d->getOneChild('Subdomain/Url=A:' . $this->InstanceNom);
+                $www = $d->getOneChild('Subdomain/Url=' . $this->InstanceNom);
                 if (!$www) {
                     //création du A
                     $www = genericClass::createInstance('Parc', 'Subdomain');
@@ -114,105 +117,93 @@ class Instance extends genericClass{
         }
 
         //Check de l'hébergement
-        $heb = $this->getOneParent('Host');
-        if (!$heb) {
-            //alors création de l'hébergement
-            $heb = genericClass::createInstance('Parc', 'Host');
-            $heb->Nom = $tmpname;
-            $heb->Password = $this->Password;
-            $heb->Production = true;
-            $heb->PHPVersion = $this->PHPVersion;
-            $heb->addParent($apachesrv);
-            $heb->addParent($client);
-            if (!$heb->Save()) {
-                $this->Delete();
-                $this->Error = array_merge($this->Error,$heb->Error);
-                return false;
+        try {
+            $heb = $this->getOneParent('Host');
+            if (!$heb) {
+                //alors création de l'hébergement
+                $heb = genericClass::createInstance('Parc', 'Host');
+                $heb->Nom = $tmpname;
+                $heb->Password = $this->Password;
+                $heb->Production = true;
+
+                $heb->PHPVersion = $this->PHPVersion;
+                $heb->BackupEnabled = $this->BackupEnabled;
+                $heb->addParent($apachesrv);
+                $heb->addParent($client);
+                $heb->addParent($infra);
+                if (!$heb->Save()) {
+                    $GLOBALS["Systeme"]->Db[0]->exec('ROLLBACK');
+                    $this->Error = array_merge($this->Error, $heb->Error);
+                    return false;
+                }
+                $this->addParent($heb);
+            } else {
+                $heb->Production = true;
+                $heb->Password = $this->Password;
+                $heb->PHPVersion = $this->PHPVersion;
+                $heb->BackupEnabled = $this->BackupEnabled;
+                $heb->addParent($infra);
+                $heb->addParent($client);
+                $heb->Save();
             }
-            $this->addParent($heb);
-        } else {
-            $heb->Production = true;
-            $heb->Password = $this->Password;
-            $heb->PHPVersion = $this->PHPVersion;
-            $heb->Save();
+        }catch (Exception $e){
+            //impossible de creéer l'hébergement
+            $GLOBALS["Systeme"]->Db[0]->exec('ROLLBACK');
+            $this->addError(Array("Message" => 'Impossible de créer l\'hébergement. raison: '.$e->getMessage()));
+            return false;
         }
 
-        //check apache
-        $apache = Sys::getOneData('Parc','Host/'.$heb->Id.'/Apache',0,1,'ASC','Id');
-        if (!$apache) {
-            //alors création du apache
-            $apache = genericClass::createInstance('Parc', 'Apache');
-            $apache->DocumentRoot = $this->SousDomaine;
-            $apache->ApacheServerName = $this->FullDomain;
-            $apache->ApacheServerAlias = $this->ServerAlias;
-            $apache->Actif = true;
-            $apache->addParent($heb);
-        } else {
-            $apache->ApacheServerName = $this->FullDomain;
-            if (empty($this->ServerAlias)){
-                $this->ApacheServerAlias = $apache->ServerAlias;
-            }else $apache->ApacheServerAlias = $this->ServerAlias;
-
-            $apache->Actif = true;
-            $apache->addParent($heb);
-        }
-        //Test
-        if ($this->Type=='prod'){
-            $apache->ProxyCache=true;
-        }else{
-            $apache->ProxyCache=false;
-        }
-        $apache->Save();
-
-        //check bdd
-        $bdd = $heb->getOneChild('Bdd');
-        if (!$bdd) {
-            //alors création du apache
-            $bdd = genericClass::createInstance('Parc', 'Bdd');
-            $bdd->Nom = $tmpname;
-            $bdd->addParent($heb);
-            $bdd->addParent($mysqlsrv);
-            $bdd->Save();
-        } else {
-            $bdd->addParent($heb);
-            $bdd->Save();
-        }
-        $this->addParent($bdd);
-
-        //check ftp
-        $bdd = $heb->getOneChild('Ftpuser');
-        if (!$bdd) {
-            //alors création du apache
-            $bdd = genericClass::createInstance('Parc', 'Ftpuser');
-            $bdd->Nom = $tmpname;
-            $bdd->addParent($heb);
-            $bdd->addParent($mysqlsrv);
-            $bdd->Save();
-        } else {
-            $bdd->addParent($heb);
-            $bdd->Save();
-        }
-        $this->addParent($bdd);
-        parent::Save();
-        //if (!$this->Enabled||$old->VersionId!=$this->VersionId||$old->Type!=$this->Type){
-        //$this->Enabled = false;
-        $apachesrv->callLdap2Service();
+        //installation logicielle
         if (intval($this->Status) <= 1)
             $this->createInstallTask();
+
         parent::Save();
-        //}
-        if ($this->EnableSsl)
-            $apache->enableSsl($force,$this);
-        $this->Error = $apache->Error;
 
         //execution postinit plugin
         $plugin = $this->getPlugin();
         $plugin->postInit();
+
+        //redemarrages de proxys
+        Server::createRestartProxyTask($infra);
         return true;
     }
     public function softSave(){
         return parent::Save();
     }
+
+    /**
+     * Retourne l'infra à laquelle est attachée l'instance
+     * @return	mixed Object Infra - false
+     */
+    public function getInfra()
+    {
+        if(empty($this->Id)){
+            $infra = false;
+            foreach ($this->Parents as $p){
+                if($p['Titre'] == 'Infra'){
+                    $infra = Sys::getOneData('Parc','Infra/'.$p['Id'],0,1,null,null,null,null,true);
+                    break;
+                }
+            }
+            if (!$infra){
+                //affectation à l'infra par défaut
+                $infra = Sys::getOneData('Parc','Infra/Default=1',0,100,null,null,null,null,true);
+                $this->addParent($infra);
+            }
+            return $infra;
+        }
+
+        $infra = Sys::getOneData('Parc','Infra/Instance/'.$this->Id,0,100,null,null,null,null,true);
+        if (!$infra){
+            //affectation à l'infra par défaut
+            $infra = Sys::getOneData('Parc','Infra/Default=1');
+            $this->addParent($infra);
+            return $infra;
+        }
+        else return $infra;
+    }
+
+
     /**
      * Retourne un plugin Parc / Instance
      * @return	Implémentation d'interface
@@ -232,8 +223,11 @@ class Instance extends genericClass{
      */
     public function createInstallTask(){
         //on vérifie que la tache n'est pas déjà crée
-        $nb = Sys::getCount('Parc','Instance/'.$this->Id.'/Tache/Termine=0&Erreur=0');
-        if ($nb) return true;
+        $nb = Sys::getCount('Parc','Instance/'.$this->Id.'/Tache/Termine=0&Erreur=0&TaskType=install');
+        if ($nb){
+            $this->addError(array('Message'=>'Une tache d\'installation est déjà en cours'));
+            return true;
+        }
         $plugin = $this->getPlugin();
         $this->Status=1;
         parent::Save();
@@ -253,19 +247,23 @@ class Instance extends genericClass{
      */
     public function createCheckStateTask($orig=null){
         //gestion depuis le plugin
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Vérification de l\'instance ' . $this->Nom;
         $task->TaskModule = 'Parc';
         $task->TaskObject = 'Instance';
+        $task->TaskType = 'check';
+        $task->TaskCode = 'INSTANCE_CHECKSTATE';
         $task->TaskId = $this->Id;
         $task->TaskFunction = 'checkState';
         $task->addParent($this);
         $host = $this->getOneParent('Host');
+        if (!$host) return false;
         $task->addParent($host);
         $task->addParent($host->getOneParent('Server'));
         if (is_object($orig)) $task->addParent($orig);
         $task->Save();
+        return $task;
     }
 
     /**
@@ -280,32 +278,6 @@ class Instance extends genericClass{
             $host->Delete();
         parent::Delete();
         return true;
-    }
-
-    /**
-     * createActivity
-     * créé une activité en liaison avec l'esx
-     * @param $title
-     * @param null $obj
-     * @param int $jPSpan
-     * @param string $Type
-     * @return genericClass
-     */
-    public function createActivity($title, $Type = 'Exec', $Task = null)
-    {
-        $act = genericClass::createInstance('Parc', 'Activity');
-        $host = $this->getOneParent('Host');
-        $srv = $host->getOneParent('Server');
-        $act->addParent($this);
-        $act->addParent($host);
-        $act->addParent($srv);
-        if ($Task) $act->addParent($Task);
-        $act->Titre = $this->tag . date('d/m/Y H:i:s') . ' > ' . $this->Titre . ' > ' . $title;
-        $act->Started = true;
-        $act->Type = $Type;
-        $act->Progression = 0;
-        $act->Save();
-        return $act;
     }
 
     /**
@@ -363,8 +335,8 @@ class Instance extends genericClass{
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,$https);
         curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 20);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 20);
         $rt = curl_exec($ch);
         $info = curl_getinfo($ch);
         return $info;
@@ -377,6 +349,7 @@ class Instance extends genericClass{
      * @return mixed|string
      */
     static function checkName($chaine) {
+        $chaine = strtolower($chaine);
         $chaine=utf8_decode($chaine);
         $chaine=stripslashes($chaine);
         $chaine = preg_replace('`\s+`', '-', trim($chaine));
@@ -421,27 +394,94 @@ class Instance extends genericClass{
                 if (empty($domain)) continue;
                 if (preg_match('#azko.site#',$domain)) continue;
                 //test http
-                $code = self::getHttpCode('http://'.$domain);
-                if (!in_array($code["http_code"],array(200,301,302))){
-                    //alors incident
-                    $incident = Incident::createIncident('Le domaine '.$domain.' ne répond pas correctement en http.','Le code de retour est '.print_r($code,true),$this,'HTTP_CODE',4,false);
-                }else Incident::createIncident('Le domaine '.$domain.' ne répond pas correctement en http.','Le code de retour est '.print_r($code,true),$this,'HTTP_CODE',4,true);
-                //si ssl vérifie l'état du certificat et le code retour
-                if ($ap->Ssl){
-                    $code = self::getHttpCode('https://'.$domain,true);
-                    if (!in_array($code["http_code"],array(200,301,302))){
+                try {
+                    $act = $task->createActivity('Vérification des domaines '.$ap->getDomains());
+                    $code = self::getHttpCode('http://' . $domain);
+                    if (!in_array($code["http_code"], array(200, 301, 302, 0))) {
                         //alors incident
-                        $incident = Incident::createIncident('Le domaine '.$domain.' ne répond pas correctement en https.','Le code de retour est '.print_r($code,true),$this,'HTTPS_CODE',4,false);
-                    }else $incident = Incident::createIncident('Le domaine '.$domain.' ne répond pas correctement en https.','Le code de retour est '.print_r($code,true),$this,'HTTPS_CODE',4,true);
-                    if ($code["ssl_verify_result"]!==0){
-                        //alors incident
-                        $incident = Incident::createIncident('Le certificat du domaine '.$domain.' n\'est pas valide.','Le code de retour est '.print_r($code,true),$this,'SSL_ERROR',4,false);
-                    }else $incident = Incident::createIncident('Le certificat du domaine '.$domain.' n\'est pas valide.','Le code de retour est '.print_r($code,true),$this,'SSL_ERROR',4,true);
+                        Incident::createIncident('Le domaine ' . $domain . ' ne répond pas correctement en http.', 'Le code de retour est ' . print_r($code, true), $this, 'HTTP_CODE', $domain, 4, false);
+                    } else Incident::createIncident('Le domaine ' . $domain . ' ne répond pas correctement en http.', 'Le code de retour est ' . print_r($code, true), $this, 'HTTP_CODE', $domain, 4, true);
+                    //si ssl vérifie l'état du certificat et le code retour
+                    if ($ap->Ssl) {
+                        $code = self::getHttpCode('https://' . $domain, true);
+                        if (!in_array($code["http_code"], array(200, 301, 302, 0))) {
+                            //alors incident
+                            Incident::createIncident('Le domaine ' . $domain . ' ne répond pas correctement en https.', 'Le code de retour est ' . print_r($code, true), $this, 'HTTPS_CODE', $domain, 4, false);
+                        } else Incident::createIncident('Le domaine ' . $domain . ' ne répond pas correctement en https.', 'Le code de retour est ' . print_r($code, true), $this, 'HTTPS_CODE', $domain, 4, true);
+
+                        //vérification du certificat
+                        $certinfo = Instance::checkSsl('https://' . $domain);
+                        if (!$certinfo) continue;
+                        //test de la date d'expiration
+                        if ($certinfo['validTo_time_t'] < time()) {
+                            Incident::createIncident('Le certificat du domaine ' . $domain . ' a expirté le ' . date('d/m/Y H:i:s', $certinfo['validTo_time_t']), 'Le code de retour est ' . print_r($certinfo, true), $this, 'SSL_ERROR', $domain, 4, false);
+                        } else Incident::createIncident('Le certificat du domaine ' . $domain . ' a expirté le ' . date('d/m/Y H:i:s', $certinfo['validTo_time_t']), 'Le code de retour est ' . print_r($certinfo, true), $this, 'SSL_ERROR', $domain, 4, true);
+
+                        //on compare la liste des domaines à certifier et les domaines dans le certificat
+                        $certdomains = array();
+                        preg_match_all('#DNS:([^\ ,]*)#', $certinfo['extensions']['subjectAltName'], $othersdomains);
+                        $certdomains = array_merge($certdomains, $othersdomains[1]);
+                        if (!in_array($domain, $certdomains)) {
+                            Incident::createIncident('Le certificat ne gère pas le domaine ' . $domain . '.', 'Le code de retour est ' . print_r($certinfo, true), $this, 'SSL_ERROR', $domain, 4, false);
+                        } else Incident::createIncident('Le certificat ne gère pas le domaine ' . $domain . '.', 'Le code de retour est ' . print_r($certinfo, true), $this, 'SSL_ERROR', $domain, 4, true);
+                    }
+                    $act->Terminate(true);
+                }catch (Exception $e){
+                    $act->Terminate(false);
                 }
             }
         }
+        $act = $task->createActivity('Execution de la tache plugin');
         $plugin = $this->getPlugin();
+        $act->Terminate(true);
         //appel checkState du plugin
         return $plugin->checkState($task);
     }
+    /**
+     * rewriteConfig
+     * Réécrire Configuration
+     */
+    public function rewriteConfig(){
+        $plugin = $this->getPlugin();
+        return $plugin->rewriteConfig();
+    }
+    /**
+     * createBackupTask
+     * création d'un point de restauration
+     */
+    public function createBackupTask() {
+        $host = $this->getOneParent('Host');
+        return $host->createBackupTask();
+    }
+
+    public function createApache($ssl=0,$proxycache=0){
+        $host = $this->getOneParent('Host');
+        if(!$host){
+            $pars = array();
+            foreach ($this->Parents as $p){
+                if($p['Titre'] == 'Host'){
+                    $pa = Sys::getOneData('Parc','Host/'.$p['Id'],0,1,null,null,null,null,true);
+                    $pars[] = $pa;
+                }
+
+            }
+            $host = $pars[0];
+        }
+
+
+        $apache = genericClass::createInstance('Parc','Apache');
+        $apache->Ssl = $ssl;
+        $apache->Proxycache = $proxycache;
+
+        $pref = $ssl ? ( $proxycache ? 'ssl-cache-' : 'ssl-') : ( $proxycache ? 'cache-' : '' );
+
+        $apache->ApacheServerName = $pref.$this->FullDomain;
+        $apache->DocumentRoot = $this->SousDomaine;
+        $apache->Actif = true;
+        $apache->addParent($host);
+        $apache->Save();
+
+        return $apache;
+    }
+
 }

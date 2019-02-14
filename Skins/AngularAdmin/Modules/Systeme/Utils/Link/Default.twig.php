@@ -1,5 +1,5 @@
 <?php
-
+session_write_close();
 $Path = $GLOBALS["Systeme"]->getGetVars("Module").'/'.$GLOBALS["Systeme"]->getGetVars("ObjectName");
 
 $info = Info::getInfos($Path);
@@ -50,5 +50,15 @@ $vars["Interfaces"] = $vars["ObjectClass"]->getInterfaces();
 if (isset($vars["Interfaces"]['list']))
     $vars["Interfaces"] = $vars["Interfaces"]['list'];
 
+
+$childs = $vars["ObjectClass"]->getChildElements();
+foreach ($childs as $child){
+    //test role                                                             //test hidden                                               //test admin
+    if (((!isset($child['hasRole'])||Sys::$User->hasRole($child['hasRole'])) && !isset($child['childrenHidden'])&&!isset($child['hidden'])) || (!is_object(Sys::$CurrentMenu) && Sys::$User->Admin)){
+        if($child['listParent']){
+            array_push($vars['fields'],$child);
+        }
+    }
+}
 
 ?>

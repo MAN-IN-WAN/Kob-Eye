@@ -5,8 +5,11 @@
     $vars['items'] = $e->pollAll($pr->pollStart,$pr->pollInterval,$pr->pollDuration);
     $vars['EvCount'] = sizeof($vars['items']['Ev']);
     $vars['AlCount'] = sizeof($vars['items']['Au']);
+	$vars['AlUnread'] = Sys::getCount('Systeme', 'AlertUser::NOVIEW/Read=0');  // PGF 20190210
+    $vars['stats'] = json_encode($vars['items']['stats']);
     if (!is_array($vars['items']['Ev']))$vars['items']['Ev'] = array();
     if (!isset($vars['items']['Au']))$vars['items']['Ev'] = array();
     if ($pr->pollStart=="0")$lastSearch = microtime(true);
     else $lastSearch = $pr->pollStart;
     $vars['Now'] = (sizeof($vars['items']['Ev']))?$vars['items']['Ev'][sizeof($vars['items']['Ev'])-1]['MicroTime']:$lastSearch;
+

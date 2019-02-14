@@ -3,17 +3,17 @@
     <ul class="nav nav-tabs" role="tablist">
         {% for filter in filters %}
         <li class="nav-item">
-            <a class="nav-link {% if loop.index0 == 0 %}active{% endif %} list-filter {% if filter.color %}filter-{{ filter.color }}{% endif %}" ng-click="{{ identifier }}setOptionsFilters('{{ filter.filter }}')" data-toggle="tab" data-target="#h1" role="tab">{{ filter.name }}</a>
+            <a class="nav-link {% if loop.index0 == 0 %}active{% endif %} list-filter {% if filter.color %}filter-{{ filter.color }}{% endif %}" ng-click="{{ identifier }}setOptionsFilters('{{ filter.filter }}','{{ context }}');" id="{{ identifier }}-{{ filter.code }}" data-toggle="tab" data-target="#h1" role="tab">{{ filter.name }}</a>
         </li>
         {% endfor %}
     </ul>
 </div>
 <div class="form-group row">
-    <div class="col-lg-5 col-md-12">
+    <div class="col-lg-7 col-md-12">
         <div class="input-group list-search">
             <input type="text" class="form-control" name="{{ identifier }}query" ng-model="{{ identifier }}.filter" placeholder="Recherche..." >
             <span class="input-group-btn">
-                <a href="javascript: void(0);" class="btn btn-success" ng-click="{{ identifier }}.store.refresh('{{ context }}')">
+                <a href="javascript: void(0);" class="btn btn-success" ng-click="{{ identifier }}refresh('{{ context }}')">
                     Rafraîchir
                 </a>
                 {% if operation.add %}
@@ -27,16 +27,42 @@
                 </a>
                 {% endif %}
                 {% if operation.delete %}
-                <a  href="javascript: void(0);" ng-show="keys({{ identifier }}.selected).length > 1" class="btn btn-danger" ng-click="{{ identifier }}selectDelete()">
+                <a  href="javascript: void(0);" ng-if="displaySelect();" class="btn btn-danger" ng-click="{{ identifier }}selectDelete()">
                 Supprimer la sélection
                 </a>
+                {% endif %}
+                {% if functions|length >0 %}
+                    {% set  fs = false %}
+                    {% for fu in functions %}
+                        {% if attribute(operation,fu.Nom) and fu.group%}
+                            {% set  fs = true %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if fs %}
+                    <div class="btn-group " ng-if="displaySelect();"  uib-dropdown>
+                        <span id="function-button" type="button" class="btn btn-func">Fonctions</span>
+                        <button type="button" class="btn btn-func" uib-dropdown-toggle>
+                            <span class="caret"></span>
+                            <span class="sr-only">Split button!</span>
+                        </button>
+                        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="function-button">
+                            {% for fu in functions %}
+                                {% if attribute(operation,fu.Nom) and fu.group%}
+                                <li >
+                                    <a class="dropdown-item" href="javascript: void(0);" ng-click='{{ identifier }}callGroupFunction("{{fu.Nom}}","{{fu.title}}",{{ fu.needConfirm }})'>{{fu.title}}</a>
+                                </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
                 {% endif %}
                 {% if context != 'children' and ObjectClass.searchFilters %}
                 <a  href="javascript: void(0);" class="btn btn-info" ng-click="{{ identifier }}switchPanelFilters();">
                     Filtres
                 </a>
                 {% endif %}
-                {% if context == 'children' %}
+                {% if context == 'children' and not ObjectClass.hideSelect %}
                     <a  href="javascript: void(0);" class="btn btn-info" ng-click="{{ identifier }}linkSelect();">
                     Selection
                 </a>
@@ -54,8 +80,8 @@
         </select>
     </div>
 
-    <div class="col-lg-2 col-md-12">
-    </div>
+{#    <div class="col-lg-2 col-md-12">
+    </div>#}
     <div class="col-lg-4 col-md-12">
         <dir-pagination-controls boundary-links="true" pagination-context="{{ context }}" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
     </div>
@@ -215,244 +241,154 @@
 </div>
 {% endif %}
 {% endif %}
-<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%">
-    <thead>
-        <tr>
-            <th width="30" title="Ch" class="list-col-th-dark">
-                <input type="checkbox" ng-model="{{ identifier }}.selected.selectall"/>&nbsp;
-            </th>
-            <th title="Id" class="list-col-th-id">ID</th>
+<div class="listWrap">
+    <table class="table table-hover nowrap" id="{{ identifier }}-table">
+        <thead>
+            <tr>
+                <th width="30" title="Ch" class="list-col-th-dark">
+                    <input type="checkbox" ng-model="{{ identifier }}.selected.selectall"/>&nbsp;
+                </th>
+                <th title="Id" ng-click="triggerSort($event,'{{ identifier }}','Id','{{ context }}')" class="sortable list-col-th-id">ID</th>
+                {% for field in fields %}
+                    <th title="{{ field.name }}" {% if field.type != "fkey" and field.type != "rkey" %}ng-click="triggerSort($event,'{{ identifier }}','{{ field.name }}','{{ context }}')" class="sortable"{% endif %}>{% if field.listDescr %}{{ field.listDescr }}{% else %}{{ field.name }}{% endif %}</th>
+                {% endfor %}
+                {% for interface in Interfaces %}
+                    <th>{{ interface.name }}</th>
+                {% endfor %}
+                {#<th width="220">Détails</th>#}
+                <th width="160">Actions</th>
+            </tr>
+        </thead>
+        <tbody ng-if="!{{ identifier }}.store.busy['{{ context }}']">
+        <tr dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination">
+            <td  class="list-col-td-dark">
+                <input type="checkbox" value="{[{ item.id }]}" ng-model="{{ identifier }}.selected[item.id]" name="{{ identifier }}" id="{[{ item.id }]}" />&nbsp;
+            </td>
+            <td class="list-col-td-id">
+                <!--<span class="label label-warning">{[{ item.id }]}</span>-->
+                {[{ item.id }]}
+            </td>
             {% for field in fields %}
-                <th title="{{ field.name }}">{% if field.listDescr %}{{ field.listDescr }}{% else %}{{ field.name }}{% endif %}</th>
-            {% endfor %}
-            {% for interface in Interfaces %}
-                <th>{{ interface.name }}</th>
-            {% endfor %}
-            {#<th width="220">Détails</th>#}
-            <th width="170">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-    <tr dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination">
-        <td  class="list-col-td-dark">
-            <input type="checkbox" value="{[{ item.id }]}" ng-model="{{ identifier }}.selected[item.id]" name="{{ identifier }}" id="{[{ item.id }]}" />&nbsp;
-        </td>
-        <td class="list-col-td-id">
-            <!--<span class="label label-warning">{[{ item.id }]}</span>-->
-            {[{ item.id }]}
-        </td>
-        {% for field in fields %}
-        <td scope="row" class="type{{ field.type }}" {% if field.type == "fkey" and field.card == "short" %}ng-style="item.{{ field.objectName }}{{ field.name }}color ? {'background-color':  item.{{ field.objectName }}{{ field.name }}color} : {'background-color':'transparent' } "{% endif %}>
-            {% if field.type == "price" or field.type == "float" %}
-                <span class="label label-warning">{[{ item.{{ field.name }}| currency:"" }]}</span>
-            {% elseif field.type == "image" %}
-                    <img class="img-responsive" src="{[{ item.{{ field.name }} }]}.limit.250x40.jpg" {{ field.listDescr }} ng-if="item.{{ field.name }} "/>
-                    <img class="img-responsive" src="/Tools/Images/NoPhoto.jpg.limit.250x40.jpg" {{ field.listDescr }} ng-if="!item.{{ field.name }} "/>
-            {% elseif field.type == "extlink" %}
-                <a class="btn btn-info btn-xs" href="/{{ Module }}/{{ ObjectType }}/{[{ item.id }]}/callback{{ field.name }}.htm" target="_blank">{{ field.listDescr }}</a>
-            {% elseif field.type == "file" %}
-                <a  class="fileLink" href="{[{ item.{{ field.name }} }]}" target="_blank" >Voir le fichier</a>
-            {% elseif field.type == "date" %}
-                <span class="label">{[{ item.{{ field.name }} | date:'dd/MM/yyyy' }]}</span>
-            {% elseif field.type == "datetime" %}
-                <span class="label">{[{ item.{{ field.name }} | date:'dd/MM/yyyy HH:mm' }]}</span>
-            {% elseif field.type == "int" %}
-                {% if  field.query %}
-                <span class="label label-primary">{[{ item.{{ field.name }}Label }]}</span>
-                {% else %}
-                <span class="label label-primary">{[{ item.{{ field.name }} }]}</span>
-                {% endif %}
-            {% elseif field.type == "fkey" and field.card == "short" %}
-                {% if field.link %}
-                    <a class="btn btn-secondary btn-xs" href="#/{{ field.link }}/{[{ item.{{ field.objectName }}{{ field.name }} }]}" ng-if="item.{{ field.objectName }}{{ field.name }}">{[{ item.{{ field.objectName }}{{ field.name }}label }]}</a>
-                {% else  %}
-                    <span class="btn btn-secondary btn-xs" ng-if="item.{{ field.objectName }}{{ field.name }}">{[{ item.{{ field.objectName }}{{ field.name }}label }]}</span>
-                {% endif %}
-                <span ng-if="!item.{{ field.objectName }}{{ field.name }}"> - </span>
-            {% elseif field.type == "rkey" and field.card == "short" %}
-                <a href="#/{{ CurrentUrl }}/{[{ item.id }]}" ng-bind-html="item.{{ field.name }}{{ field.objectName }}CLabel" ng-if="item.{{ field.name }}{{ field.objectName }}CLabel"></a>
-                <span ng-if="!item.{{ field.name }}{{ field.objectName }}CLabel"> - </span>
-            {% elseif field.type == "progress" %}
-                <!--<progress class="progress progress-danger progress-striped progress-animated" ng-if="item.{{ field.name }} < 100" value="{[{ item.{{ field.name }} }]}" max="100">{[{ item.{{ field.name }} }]}</progress>
-                <progress class="progress progress-success progress-striped progress-animated" ng-if="item.{{ field.name }} == 100" value="{[{ item.{{ field.name }} }]}" max="100">{[{ item.{{ field.name }} }]}</progress>-->
-                <uib-progress ng-if="item.{{ field.name }} < 100">
-                    <uib-bar value="item.{{ field.name }}" type="warning" class=" progress-bar-striped progress-bar-animated"><span ng-hide="item.{{ field.name }} < 5">{[{ item.{{ field.name }} }]}%</span></uib-bar>
-                </uib-progress>
-                <uib-progress ng-if="item.{{ field.name }} >= 100">
-                    <uib-bar value="item.{{ field.name }}" type="success" class=" progress-bar-striped progress-bar-animated"><span ng-hide="item.{{ field.name }} < 5">{[{ item.{{ field.name }} }]}%</span></uib-bar>
-                </uib-progress>
+            <td scope="row" class="type{{ field.type }}" {% if field.type == "fkey" and field.card == "short" %}ng-style="item.{{ field.objectName }}{{ field.name }}color ? {'background-color':  item.{{ field.objectName }}{{ field.name }}color} : {'background-color':'transparent' } "{% endif %}>
+                {% if field.type == "price" or field.type == "float" %}
+                    <span class="label label-warning">{[{ item.{{ field.name }}| currency:"" }]}</span>
+                {% elseif field.type == "image" %}
+                        <img class="img-responsive" src="{[{ item.{{ field.name }} }]}.limit.250x40.jpg" {{ field.listDescr }} ng-if="item.{{ field.name }} "/>
+                        <img class="img-responsive" src="/Tools/Images/NoPhoto.jpg.limit.250x40.jpg" {{ field.listDescr }} ng-if="!item.{{ field.name }} "/>
+                {% elseif field.type == "extlink" %}
+                    <a class="btn btn-info btn-xs" href="/{{ Module }}/{{ ObjectType }}/{[{ item.id }]}/callback{{ field.name }}.htm" target="_blank">{{ field.listDescr }}</a>
+                {% elseif field.type == "file" %}
+                    <a  class="fileLink btn btn-danger btn-small" href="{[{ item.{{ field.name }} }]}" target="_blank" >Voir le fichier</a>
+                {% elseif field.type == "date" %}
+                    <span class="label">{[{ item.{{ field.name }} | date:'dd/MM/yyyy' }]}</span>
+                {% elseif field.type == "datetime" %}
+                    <span class="label">{[{ item.{{ field.name }} | date:'dd/MM/yyyy HH:mm' }]}</span>
+                {% elseif field.type == "int" %}
+                    {% if  field.query %}
+                    <span class="label label-primary">{[{ item.{{ field.name }}Label }]}</span>
+                    {% else %}
+                    <span class="label label-primary">{[{ item.{{ field.name }} }]}</span>
+                    {% endif %}
+                {% elseif field.type == "fkey" and field.card == "short" %}
+                    {% if field.link %}
+                        <a class="btn btn-secondary btn-xs" href="#/{{ field.link }}/{[{ item.{{ field.objectName }}{{ field.name }} }]}" ng-if="item.{{ field.objectName }}{{ field.name }}">{[{ item.{{ field.objectName }}{{ field.name }}label }]}</a>
+                    {% else  %}
+                        <span ng-if="item.{{ field.objectName }}{{ field.name }}">{[{ item.{{ field.objectName }}{{ field.name }}label }]}</span>
+                    {% endif %}
+                    <span ng-if="!item.{{ field.objectName }}{{ field.name }}"> - </span>
+                {% elseif field.type == "rkey" and field.card == "short" %}
+                    <a href="#/{{ CurrentUrl }}/{[{ item.id }]}" ng-bind-html="item.{{ field.name }}{{ field.objectName }}CLabel" ng-if="item.{{ field.name }}{{ field.objectName }}CLabel"></a>
+                    <span ng-if="!item.{{ field.name }}{{ field.objectName }}CLabel"> - </span>
+                {% elseif field.type == "progress" %}
+                    <!--<progress class="progress progress-danger progress-striped progress-animated" ng-if="item.{{ field.name }} < 100" value="{[{ item.{{ field.name }} }]}" max="100">{[{ item.{{ field.name }} }]}</progress>
+                    <progress class="progress progress-success progress-striped progress-animated" ng-if="item.{{ field.name }} == 100" value="{[{ item.{{ field.name }} }]}" max="100">{[{ item.{{ field.name }} }]}</progress>-->
+                    <uib-progress ng-if="item.{{ field.name }} < 100">
+                        <uib-bar value="item.{{ field.name }}" type="warning" class=" progress-bar-striped progress-bar-animated"><span ng-hide="item.{{ field.name }} < 5">{[{ item.{{ field.name }} }]}%</span></uib-bar>
+                    </uib-progress>
+                    <uib-progress ng-if="item.{{ field.name }} >= 100">
+                        <uib-bar value="item.{{ field.name }}" type="success" class=" progress-bar-striped progress-bar-animated"><span ng-hide="item.{{ field.name }} < 5">{[{ item.{{ field.name }} }]}%</span></uib-bar>
+                    </uib-progress>
 
-            {% elseif field.type == "boolean" %}
-                {% if field.special == "reverse" %}
-                    <span class="label label-success" ng-if="!item.{{ field.name }}"><i class="fa fa-check"></i></span>
-                    <span class="label label-danger" ng-if="item.{{ field.name }}"><i class="fa fa-times"></i></span>
+                {% elseif field.type == "boolean" %}
+                    {% if field.special == "reverse" %}
+                        <span class="label label-success" ng-if="!item.{{ field.name }}"><i class="fa fa-check"></i></span>
+                        <span class="label label-danger" ng-if="item.{{ field.name }}"><i class="fa fa-times"></i></span>
+                    {% else %}
+                        <span class="label label-success" ng-if="item.{{ field.name }}"><i class="fa fa-check"></i></span>
+                        <span class="label label-danger" ng-if="!item.{{ field.name }}"><i class="fa fa-times"></i></span>
+                    {% endif %}
+                {% elseif field.type == "text" %}
+                    <span ng-bind-html="item.{{ field.name }} | nl2br"></span>
+                {% elseif field.Values | length > 0 %}
+                    <span ng-bind-html="item.{{ field.name }}Label "></span>
+                {% elseif field.type == "color" %}
+                    <span class="colorBlock" style="background-color: {[{ item.{{ field.name }} }]}"></span>
                 {% else %}
-                    <span class="label label-success" ng-if="item.{{ field.name }}"><i class="fa fa-check"></i></span>
-                    <span class="label label-danger" ng-if="!item.{{ field.name }}"><i class="fa fa-times"></i></span>
-                {% endif %}
-            {% elseif field.type == "text" %}
-                <span ng-bind-html="item.{{ field.name }} | nl2br"></span>
-            {% elseif field.Values | length > 0 %}
-                <span ng-bind-html="item.{{ field.name }}Label "></span>
-            {% elseif field.type == "color" %}
-                <span class="colorBlock" style="background-color: {[{ item.{{ field.name }} }]}"></span>
-            {% else %}
-                {% if  Type == "Tail" %}
-                    <span ng-bind-html="item.{{ field.name }}"></span>
-                {% else %}
-                    <a href="#/{{ CurrentUrl }}/{[{ item.id }]}" ng-bind-html="item.{{ field.name }}"></a>
-                {% endif %}
-            {% endif %}
-        </td>
-        {% endfor %}
-        {% for interface in Interfaces %}
-            {% if interface.child  %}
-            <td scope="row" class="type{{ interface.type }}">
-                {% if interface.type == "price" or interface.type == "float" %}
-                    <span class="label label-warning" ng-repeat="child in item.{{ interface.child }}">{[{ child.{{ interface.property }}| currency:"" }]}</span>
-                {% elseif interface.type == "extlink" %}
-                    <a class="btn btn-info btn-xs type_{[{ child.{{ interface.title }} }]}" href="https://proxy.abtel.fr/remote/#/client/{[{ child.{{ interface.property }} }]}" target="_blank" ng-repeat="child in item.{{ interface.child }} | limitTo:2">{[{ child.{{ interface.title }} }]}</a>
+                    {% if  Type == "Tail" %}
+                        <span ng-bind-html="item.{{ field.name }}"></span>
+                    {% else %}
+                        <a href="#/{{ CurrentUrl }}/{[{ item.id }]}" ng-bind-html="item.{{ field.name }}"></a>
+                    {% endif %}
                 {% endif %}
             </td>
-            {% endif %}
-        {% endfor %}
-        {#<td  class="table-details" ng-bind-html="item._details">{[{ item._details }]}</td>#}
-        <td  class="table-action">
-            {% if Type == "Tail" %}
-                <span class="input-group-btn">
-                    {% if operation.edit %}<a  class="btn btn-warning" href="javascript: void(0);" ng-click="{{ identifier }}modify(item)">Modifier</a>{% endif %}
-                    {% if operation.delete %}<a  class="btn btn-danger" href="javascript: void(0);" ng-click="{{ identifier }}delete(item)">Supprimer</a>{% endif %}
-                    {% for fu in functions %}{{ fu.Nom }}
-                        {% if attribute(operation,fu.Nom) %}
-                            <a  class="btn btn-primary"  href="javascript: void(0);" ng-click='{{ identifier }}callFunction(item,"{{fu.Nom}}","{{fu.title}}")'>{{ fu.title }}</a>
-                        {% endif %}
-                    {% endfor %}
-                </span>
-            {% else %}
-            <!-- Split button -->
-            <div class="btn-group" uib-dropdown>
-                {% if functions|length > 0 or operation.edit or operation.delete %}
-                    <a id="split-button" type="button" class="btn btn-danger  btn-sm" href="#/{{ CurrentUrl }}/{[{ item.id }]}">Détails</a>
-                    <button type="button" class="btn btn-danger btn-sm " uib-dropdown-toggle>
-                        <span class="caret"></span>
-                        <span class="sr-only">Split button!</span>
-                    </button>
-                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
-                        {% if operation.edit %}<li ><a class="dropdown-item" href="javascript: void(0);" ng-click="{{ identifier }}modify(item)">Modifier</a></li>{% endif %}
-                        {% if operation.delete %}<li ><a class="dropdown-item" href="javascript: void(0);" ng-click="{{ identifier }}delete(item)">Supprimer</a></li>{% endif %}
-                        <li class="divider"></li>
-                        {% for fu in functions %}
-                            <li ><a class="dropdown-item" href="javascript: void(0);" ng-click='{{ identifier }}callFunction(item,"{{fu.Nom}}","{{fu.title}}")'>{{ fu.title }}</a></li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <a class="btn btn-danger" href="#/{{ CurrentUrl }}/{[{ item.id }]}">Détails</a>
+            {% endfor %}
+            {% for interface in Interfaces %}
+                {% if interface.child  %}
+                <td scope="row" class="type{{ interface.type }}">
+                    {% if interface.type == "price" or interface.type == "float" %}
+                        <span class="label label-warning" ng-repeat="child in item.{{ interface.child }}">{[{ child.{{ interface.property }}| currency:"" }]}</span>
+                    {% elseif interface.type == "extlink" %}
+                        <a class="btn-abt btn-primary btn-xs type_{[{ child.{{ interface.title }} }]}" href="https://proxy.abtel.fr/remote/#/client/{[{ child.{{ interface.property }} }]}" target="_blank" ng-repeat="child in item.{{ interface.child }} | limitTo:2">{[{ child.{{ interface.title }} }]}</a>
+                    {% endif %}
+                </td>
                 {% endif %}
-            </div>
-            {% endif %}
-        </td>
-    </tr>
-    </tbody>
-</table>
-<!--
-<div class="invert-wrap">
-    <table class="table table-hover nowrap margin-bottom-0 inverted" id="{{ identifier }}" width="100%">
-    {#<colgroup>
-        <col class="thead">
-        <col dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination" class="tdcontent">
-    </colgroup>#}
-    <tbody>
-        <tr>
-            <th ng-show="{{ identifier }}.data.length > 0">ID</th><td dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination"><div class="col-width-fixer"><span class="label label-warning">{[{ item.id }]}</span></div></td>
-        </tr>
-        <tr>
-            <th  ng-show="{{ identifier }}.data.length > 0" width="50">Actions</th>
-            <td dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination">
-                <div class="col-width-fixer">
-                    {% if Type == "Tail" %}
-                        <span class="input-group-btn">
-                        {% if operation.edit %}<a  class="btn btn-warning" href="javascript: void(0);" ng-click="{{ identifier }}modify(item)">Modifier</a>{% endif %}
-                        {% if operation.delete %}<a  class="btn btn-danger" href="javascript: void(0);" ng-click="{{ identifier }}delete(item)">Supprimer</a>{% endif %}
+            {% endfor %}
+            {#<td  class="table-details" ng-bind-html="item._details">{[{ item._details }]}</td>#}
+            <td  class="table-action">
+                <div style="height: 32px;">
+                    {% if not Type == "Tail" %}
+                        <a class="btn-abt btn-abt-nfo btn-primary" href="#/{{ CurrentUrl }}/{[{ item.id }]}" title="Détails"></a>
+                    {% endif %}
+                    {% if operation.edit %}
+                        <a class="btn-abt btn-abt-mod btn-warning" href="javascript: void(0);" ng-click="{{ identifier }}modify(item)" title="Modifier"></a>
+                    {% endif %}
+                    {% if operation.delete %}
+                        <a class="btn-abt btn-abt-del btn-danger" href="javascript: void(0);" ng-click="{{ identifier }}delete(item)" title="Supprimer"></a>
+                    {% endif %}
+                    {% if functions|length >0 %}
+                        {% set  fs = false %}
                         {% for fu in functions %}
                             {% if attribute(operation,fu.Nom) %}
-                                <a  class="btn btn-primary" href="javascript: void(0);" ng-click='{{ identifier }}callFunction(item,"{{fu.Nom}}","{{fu.title}}")'>{{ fu.title }}</a>
+                                {% set  fs = true %}
                             {% endif %}
                         {% endfor %}
-                        </span>
-                    {% else %}
-                        <div class="btn-group" uib-dropdown>
-                            <a id="split-button" type="button" class="btn btn-danger  btn-sm" href="#/{{ CurrentUrl }}/{[{ item.id }]}">détails</a>
-                            <button type="button" class="btn btn-danger  btn-sm" uib-dropdown-toggle>
-                                <span class="caret"></span>
-                                <span class="sr-only">Split button!</span>
-                            </button>
+                        {% if fs %}
+                        <div style="vertical-align: top;" uib-dropdown>
+                            <button type="button" class="btn-abt btn-abt-func " uib-dropdown-toggle title="Fonctions"></button>
                             <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
-                                {% if operation.edit %}<li ><a class="dropdown-item" href="javascript: void(0);" ng-click="{{ identifier }}modify(item)">Modifier</a></li>{% endif %}
-                                {% if operation.delete %}<li ><a class="dropdown-item" href="javascript: void(0);" ng-click="{{ identifier }}delete(item)">Supprimer</a></li>{% endif %}
-                                <li class="divider"></li>
                                 {% for fu in functions %}
-                                    <li ><a class="dropdown-item" href="javascript: void(0);" ng-click='{{ identifier }}callFunction(item,"{{fu.Nom}}","{{fu.title}}")'>{{ fu.title }}</a></li>
+                                    {% if attribute(operation,fu.Nom) %}
+                                        <a class="dropdown-item" href="javascript: void(0);" ng-click='{{ identifier }}callFunction(item,"{{fu.Nom}}","{{fu.title}}",{{ fu.needConfirm }})'>{{ fu.title }}</a>
+                                    {% endif %}
                                 {% endfor %}
                             </ul>
                         </div>
+                        {% endif %}
                     {% endif %}
                 </div>
             </td>
         </tr>
-            {% for field in fields %}
-                <tr>
-                    <th  ng-show="{{ identifier }}.data.length > 0">{{ field.listDescr }}</th>
-                    <td dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination" scope="row">
-                        <div class="col-width-fixer">
-                        {% if field.type == "price" or field.type == "float" %}
-                            <span class="label label-warning">{[{ item.{{ field.name }}| currency:"" }]}</span>
-                        {% elseif field.type == "extlink" %}
-                            <a class="btn btn-info btn-xs" href="https://zabbix.abtel.fr/guacamole/#/client/{[{ item.{{ field.name }} }]}" target="_blank">{{ field.listDescr }}</a>
-                        {% elseif field.type == "date" %}
-                            <span class="label label-secondary">{[{ item.{{ field.name }} | date:'dd/MM/yyyy' }]}</span>
-                        {% elseif field.type == "int" %}
-                            <span class="label label-primary">{[{ item.{{ field.name }} }]}</span>
-                        {% elseif field.type == "boolean" %}
-                            <span class="label label-success" ng-if="item.{{ field.name }}"><i class="fa fa-check"></i></span>
-                            <span class="label label-danger" ng-if="!item.{{ field.name }}"><i class="fa fa-times"></i></span>
-                        {% elseif field.type == "text" %}
-                            <span ng-bind-html="item.{{ field.name }} | nl2br"></span>
-                        {% elseif field.Values | length > 0 %}
-                            <span ng-bind-html="item.{{ field.name }}Label "></span>
-                        {% else %}
-                            <span ng-bind-html="item.{{ field.name }}"></span>
-                        {% endif %}
-                        </div>
-                    </td>
-                </tr>
-            {% endfor %}
-        <tr>
-            <th width="50"  ng-show="{{ identifier }}.data.length > 0">Détails</th><td dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination" class="table-details" ng-bind-html="item.Details"><div class="col-width-fixer">{[{ item.Details }]}</div></td>
-        </tr>
-    </tbody>
+        </tbody>
+        <tbody ng-if="{{ identifier }}.store.busy['{{ context }}']">
+            <tr>
+                <td colspan="100">
+                    <div class="spinner-list"></div>
+                </td>
+            </tr>
+        </tbody>
+
     </table>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            var ok = 0;
-            var tmp = 0;
-            var interval = setInterval(function(){
-                tmp++;
-                ok++;
-                $('.inverted th').each(function(){
-                    var h = $(this).parent('tr').height();
-                    if($(this).css('height') != h+'px') {
-                        ok =0;
-                        $(this).css('height', h);
-                    }
-                });
-                if(ok >= 20 || tmp >= 100) clearInterval(interval);
-            },25);
-
-        });
-
-    </script>
 </div>
--->
 <div class="form-group row">
     <div class="col-lg-6 col-md-12">
     </div>
@@ -498,30 +434,21 @@
         </div>
     </div>
 </div>
-<div class="modal fade modal-size-large" id="modalfunction-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
+{{ include(template_from_string(module('Systeme/Utils/Modal/Function?identifier='~identifier))) }}
+<div class="modal fade modal-size-large" id="modalcomm-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title">{[{ function.title }]}</h4>
+                <h4 class="modal-title">{[{ comm.title }]}</h4>
             </div>
             <div class="modal-body">
                 <div id="ajaxwrapper"
-                     ng-show="{{ identifier }}function.loaded"
-                     ng-include="{{ identifier }}function.url" onload="{{ identifier }}function.loaded = true">
+                     ng-bind-html="comm.html">
                 </div>
 
-                <div class="text-center"
-                     ng-hide="{{ identifier }}function.loaded">
-                    <br />
-                    Chargement ...
-                    <br />
-                    <div class="spinload"></div>
-                </div>
-
-                <!--<ng-include src="function.url"></ng-include>-->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn" data-dismiss="modal">Fermer</button>
@@ -529,3 +456,8 @@
         </div>
     </div>
 </div>
+
+
+<script type="text/javascript">
+    $('.spinner-list').spin();
+</script>

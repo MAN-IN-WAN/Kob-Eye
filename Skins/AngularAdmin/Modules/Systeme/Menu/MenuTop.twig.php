@@ -23,8 +23,16 @@ if (is_object($vars['Client']) && isset($vars['Client']->Nom) && $vars['Client']
         $vars['displayName'] =  'de '.$login;
     }
 }
-if (Sys::$User->isRole('PARC_TECHNICIEN'))
+if(Sys::$User->isRole('PARC_TECHNICIEN'))
     $vars['RoleSpace'] = 'technicien';
+else if(Sys::$User->isRole('CADREF_ADMIN')) $vars['RoleSpace'] = 'administrateur';
+else if(Sys::$User->isRole('CADREF_ENS')) $vars['RoleSpace'] = 'enseignant';
+else if(Sys::$User->isRole('CADREF_ADH')) $vars['RoleSpace'] = 'adhérent';
 else $vars['RoleSpace'] = 'client';
+
+if (Sys::$User->isRole('INCIDENT_CLIENT') && !Sys::$User->Admin){
+    $vars['GroupName'] = 'SOCIETE '.IncidentClient::$CurrentClient->Societe;
+}
+
 
 

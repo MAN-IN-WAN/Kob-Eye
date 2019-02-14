@@ -15,7 +15,9 @@ class Subdomain extends genericClass {
         $pa = $this->getOneParent('Domain');
         if ($pa) {
             $cnames = $pa->getChildren('CNAME');
-            $pref = explode(':', $this->Url)[1];
+            $pref = explode(':', $this->Url);
+            if (isset($pref[1]))$pref = $pref[1];
+            else $pref = $pref[0];
             foreach ($cnames as $cname) {
                 if ($pref == $cname->Dnsdomainname) {
                     $this->addError(array('Message' => "Une entrée CNAME existe déjà pour ce prefixe.", 'Prop' => ''));
@@ -27,7 +29,7 @@ class Subdomain extends genericClass {
 
 		parent::Save();
 		// Forcer la vérification
-		if(!$this->_isVerified) $this->Verify( $synchro );
+		$this->Verify( $synchro );
 		// Enregistrement si pas d'erreur
 		if($this->_isVerified) {
 			parent::Save();
@@ -97,16 +99,18 @@ class Subdomain extends genericClass {
 	 * @param	boolean	Verifie aussi sur LDAP
 	 * @return	Verification OK ou NON
 	 */
-	public function Verify( $synchro = true ) {
+	public function Verify( $synchro = false ) {
         $this->Url = Subdomain::checkName($this->Url);
         $this->Nom = 'A:'.$this->Url;
         $pa = $this->getOneParent('Domain');
         if ($pa) {
             $cnames = $pa->getChildren('CNAME');
-            $pref = explode(':', $this->Url)[1];
+            $pref = explode(':', $this->Url);
+            if (isset($pref[1]))$pref = $pref[1];
+            else $pref = $pref[0];
 
             //check name
-            if ($pref != substr(Subdomain::checkName($pref),2)) {
+            if ($pref != Subdomain::checkName($pref)) {
                 $this->addError(array('Message' => "Un sous domaine ne doit pas contenir de caractères spéciaux.", 'Prop' => 'Url'));
                 $this->_isVerified = false;
                 return false;
@@ -261,7 +265,7 @@ class Subdomain extends genericClass {
 	 */
 	private function getKEServer() {
 		if(!isset($this->_KEServer)||!is_object($this->_KEServer)) {
-			$Tab = Sys::$Modules["Parc"]->callData('Parc/Server/1', "", 0, 1);
+			$Tab = Sys::$Modules["Parc"]->callData('Parc/Server/1', "", 0, 1,null,null,null,null,true);
 			$this->_KEServer = genericClass::createInstance('Parc', $Tab[0]);
 		}
 		return $this->_KEServer;

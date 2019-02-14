@@ -9,5 +9,5 @@ if(count(Sys::$User->Menus))
     $vars['menus'] = Sys::$User->Menus[0]->getMainMenus();
 //print_r(Sys::$User->Menus);
 $vars['user'] = Sys::$User;
-
+$vars['group'] = Sys::$User->Groups[0];
 ?>

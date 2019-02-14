@@ -159,6 +159,7 @@
 						if (newVal !== oldVal) {
 							childScope.matches = [];
 							childScope.select(undefined);
+							getMatches('');
 						}
 					});
 				}
@@ -269,6 +270,7 @@
 
 					if (text === undefined) {
 						text = options.displayText;
+                        childScope.displayText = text;
 					}
 
 					needsDisplayText = !text;

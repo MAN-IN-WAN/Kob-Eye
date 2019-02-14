@@ -1,0 +1,36 @@
+<div class="listWrap">
+	<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%" style="line-height:1" >
+		<thead>
+			<tr>
+				<th title="Id" class="list-col-th-id" hidden>ID</th>
+				<th class="cadref-th">Date</th>
+				<th class="cadref-th">Règlé</th>
+				<th class="cadref-th">M</th>
+				<th class="cadref-th">D</th>
+				<th class="cadref-th">E</th>
+				<th class="cadref-th">V</th>
+				<th class="cadref-th">Notes</th>
+				<th class="cadref-th">U</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr dir-paginate="item in {{ identifier }}.data" >
+				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
+				<td scope="row" class="cadref-td typedate"><span class="label">{[{ item.DateReglement | limitTo : 5 }]}</span></td>
+				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Montant }]}</span></td>
+				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.ModeReglement }]}</span></td>
+				<td scope="row" class="cadref-td typeboolean">                    
+					<span class="label cadref-warning" ng-if="item.Differe">D</span>
+					<span class="label cadref-warning" ng-if="!item.Differe"></span>
+				</td>
+				<td scope="row" class="cadref-td typeboolean">                    
+					<span class="label cadref-success" ng-if="!item.Differe || item.Encaisse">E</span>
+					<span class="label cadref-danger" ng-if="item.Differe && !item.Encaisse">N</span>
+				</td>
+				<td scope="row" class="cadref-td typeboolean"><span class="label">{[{ item.Visite }]}</span></td>
+				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Notes }]}</span></td>
+				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Utilisateur }]}</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>

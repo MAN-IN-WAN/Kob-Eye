@@ -1,4 +1,4 @@
-app.controller('{{ controller }}Ctrl', function ($location, $scope, $rootScope,$http,AbtelBackupEsxStore,AbtelBackupActivityStore) {
+app.controller('{{ controller }}Ctrl', function ($location, $scope, $rootScope,$http,AbtelBackupEsxStore,SystemeActivityStore) {
     AbtelBackupEsxStore.getData(1,'deploiement');
     $scope.esxs = AbtelBackupEsxStore.data['deploiement'];
 
@@ -17,17 +17,17 @@ app.controller('{{ controller }}Ctrl', function ($location, $scope, $rootScope,$
             },
             function () {
 
-                AbtelBackupActivityStore.initContext('deploiement');
+                SystemeActivityStore.initContext('deploiement');
                 var d = new Date();
-                AbtelBackupActivityStore.setQuery('/AbtelBackup/Esx/'+id+'/Activity','deploiement');
-                //AbtelBackupActivityStore.setFilters('tmsCreate>='+parseInt(d.getTime()/1000),'deploiement');
-                AbtelBackupActivityStore.getData(1,'deploiement');
+                SystemeActivityStore.setQuery('/AbtelBackup/Esx/'+id+'/Activity','deploiement');
+                //SystemeActivityStore.setFilters('tmsCreate>='+parseInt(d.getTime()/1000),'deploiement');
+                SystemeActivityStore.getData(1,'deploiement');
                 $scope.AbtelBackupActivity = {
-                    data: AbtelBackupActivityStore.data.deploiement,
-                    store: AbtelBackupActivityStore,
-                    filter: AbtelBackupActivityStore.filter.deploiement,
-                    currentPage: AbtelBackupActivityStore.currentPage.deploiement,
-                    itemsPerPage: AbtelBackupActivityStore.itemsPerPage.deploiement,
+                    data: SystemeActivityStore.data.deploiement,
+                    store: SystemeActivityStore,
+                    filter: SystemeActivityStore.filter.deploiement,
+                    currentPage: SystemeActivityStore.currentPage.deploiement,
+                    itemsPerPage: SystemeActivityStore.itemsPerPage.deploiement,
                     selected: {
                         selectall: false
                     }

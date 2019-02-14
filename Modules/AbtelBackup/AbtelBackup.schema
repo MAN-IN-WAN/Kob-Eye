@@ -16,6 +16,8 @@
 		<PROPERTIES type="varchar" form="1" fiche="1" obligatoire="1" description="Mot de passe">Password</PROPERTIES>
 		<PROPERTIES type="text" description="Clef privée Ssh">PrivateKey</PROPERTIES>
 		<PROPERTIES type="text" description="Clef publique Ssh">PublicKey</PROPERTIES>
+
+		<RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">EsxTacheId</RKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="EsxVm" logEvent="1" AccessPoint="1" driver="mysql" Description="Machine virtuelle"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Operations="delete,edit" Class="Modules/AbtelBackup/Class/EsxVm.class.php">
 		<FILTER name="Toutes les vms" color="warning" ></FILTER>
@@ -32,28 +34,9 @@
 		<PROPERTIES type="boolean" form="1" fiche="1" listDescr="Vm Source pour déploiement" description="Vm Source pour déploiement">SrcVm</PROPERTIES>
 		<FKEY data="Esx,Id" card="1,1" form="1" fiche="1" list="1" listDescr="ESX" description="ESX">EsxId</FKEY>
 		<FKEY data="BorgRepo,Id" card="0,1" form="1" fiche="1" list="1" listDescr="Dépôt" description="Dépôt BORG">BorgRepoId</FKEY>
+
 		<RKEY data="RestorePoint,Id" card="0,n">RestorePointId</RKEY>
-	</OBJECTCLASS>
-	<OBJECTCLASS title="Activity" logEvent="1"  AccessPoint="1" driver="mysql" Description="Activité des jobs"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelBackup/Class/Activity.class.php" Operations="">
-		<FILTER name="Toutes les activités" color="warning" ></FILTER>
-		<FILTER name="Activités en cours" color="success" ><![CDATA[Started=1&Errors=0&Success=0]]></FILTER>
-		<FILTER name="Activités en erreur" ><![CDATA[Started=1&Errors=1]]></FILTER>
-		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1" listDescr="Titre">Titre</PROPERTIES>
-		<PROPERTIES type="varchar" form="1" fiche="1" listDescr="Type d'activité" obligatoire="1" values="Exec,Info" default="Exec">Type</PROPERTIES>
-		<PROPERTIES type="progress" list="1" fiche="1" form="1" listDescr="Progression">Progression</PROPERTIES>
-		<PROPERTIES type="boolean" form="1" fiche="1" list="1" description="Démarré" listDescr="Demarré">Started</PROPERTIES>
-		<PROPERTIES type="boolean" form="1" fiche="1" list="1" description="Succés" listDescr="Succès">Success</PROPERTIES>
-		<PROPERTIES type="boolean" form="1" fiche="1" list="1" special="reverse" description="Erreur" listDescr="Erreur">Errors</PROPERTIES>
-		<PROPERTIES type="boolean" form="1" description="Acknowledge" listDescr="Vue" default="0">Acknowledge</PROPERTIES>
-		<PROPERTIES type="raw" form="1" fiche="1" subtype="text">Details</PROPERTIES>
-		<FKEY data="Esx,Id" form="1" fiche="1" card="0,1" popup="1" >EsxId</FKEY>
-		<FKEY data="EsxVm,Id" form="1" fiche="1" card="0,1" popup="1" >EsxVmId</FKEY>
-		<FKEY data="VmJob,Id" form="1" fiche="1" card="0,1" popup="1" >VmJobId</FKEY>
-		<FKEY data="Hyperv,Id" form="1" fiche="1" card="0,1"  popup="1" >HypervId</FKEY>
-		<FKEY data="HypervVm,Id" form="1" fiche="1" card="0,1"  popup="1" >HypervVmId</FKEY>
-		<FKEY data="HyperJob,Id" form="1" fiche="1" card="0,1"  popup="1" >HyperJobId</FKEY>
-		<FKEY data="SambaJob,Id" form="1" fiche="1" card="0,1"  popup="1" >SambaJobId</FKEY>
-		<FKEY data="RemoteJob,Id" form="1" fiche="1" card="0,1"  popup="1" >RemoteJobId</FKEY>
+		<RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">EsxVmTacheId</RKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="BackupStore" logEvent="1" AccessPoint="1" driver="mysql" Description="Stockage Sauvegarde"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelBackup/Class/BackupStore.class.php">
 		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1">Titre</PROPERTIES>
@@ -84,24 +67,22 @@
 		<FUNCTION title="Arrêter maintenant">stop</FUNCTION>
 		<PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1"  obligatoire="1" listDescr="Titre">Titre</PROPERTIES>
 		<PROPERTIES type="boolean" searchOrder="2" list="1" form="1" fiche="1"  listDescr="Actif" description="Actif">Enabled</PROPERTIES>
-		<PROPERTIES type="boolean" searchOrder="3" list="1" fiche="1"  listDescr="En cours" description="En cours">Running</PROPERTIES>
-		<PROPERTIES type="boolean" form="1" fiche="1" list="1" special="reverse" description="Erreur" listDescr="Erreur">Errors</PROPERTIES>
-		<PROPERTIES type="progress"  list="1" fiche="1"  listDescr="Progression">Progression</PROPERTIES>
-		<PROPERTIES type="varchar"  list="1" fiche="1" form="1" listDescr="Etape" description="Etape" default="0" values="0::Attente,1::Initialisation,2::Configuration,3::Clonage,4::Compression,5::Déduplication">Step</PROPERTIES>
-		<PROPERTIES type="varchar"  fiche="1" form="1" listDescr="Vm en cours" description="Vm en cours" query="AbtelBackup/EsxVm::Id::Titre">CurrentVm</PROPERTIES>
+		<PROPERTIES type="boolean" searchOrder="2" list="1" form="1" fiche="1"  listDescr="Comp" description="Compression active" help="La compression permet de réduire l'espace disque lors du clonage. A n'utiliser seulement si la vm dispose d'une grande capacité libre.(ex Espace libre sur le disque supérieure à 1 To.)">Compression</PROPERTIES>
+		<PROPERTIES type="int" searchOrder="2" list="1" form="1" fiche="1"  listDescr="Rétention" description="Durée de rétention"  values="1::1 jour,2::2 jours,3::3 jours,5::5 jours,7::7 jours,15::15 jours,30::30 jours" help="Durée de rétention en jour.">Retention</PROPERTIES>
 		<PROPERTIES type="varchar" listDescr="Minute" default="*" values="*,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59" list="1" form="1" fiche="1">Minute</PROPERTIES>
 		<PROPERTIES type="varchar" listDescr="Heure" default="*" values="*,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24" list="1" form="1" fiche="1">Heure</PROPERTIES>
 		<PROPERTIES type="varchar" listDescr="Jour Mois" default="*" values="*,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31" list="1" form="1" fiche="1">Jour</PROPERTIES>
 		<PROPERTIES type="varchar" listDescr="Mois" default="*" values="*,1,2,3,4,5,6,7,8,9,10,11,12" list="1" form="1" fiche="1">Mois</PROPERTIES>
-		<PROPERTIES type="boolean" form="1" fiche="1">Lundi</PROPERTIES>
-		<PROPERTIES type="boolean" form="1" fiche="1">Mardi</PROPERTIES>
-		<PROPERTIES type="boolean" form="1" fiche="1">Mercredi</PROPERTIES>
-		<PROPERTIES type="boolean" form="1" fiche="1">Jeudi</PROPERTIES>
-		<PROPERTIES type="boolean" form="1" fiche="1">Vendredi</PROPERTIES>
-		<PROPERTIES type="boolean" form="1" fiche="1">Samedi</PROPERTIES>
-		<PROPERTIES type="boolean" form="1" fiche="1">Dimanche</PROPERTIES>
-		<PROPERTIES type="varchar" form="1" fiche="1">VdiskExclusion</PROPERTIES>
-		<RKEY data="EsxVm,Id" card="0,n" inline="1" form="1" description="Sélection des vms">EsxVmJobId</RKEY>
+		<PROPERTIES type="boolean" form="1" >Lundi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" >Mardi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" >Mercredi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" >Jeudi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" >Vendredi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" >Samedi</PROPERTIES>
+		<PROPERTIES type="boolean" form="1" >Dimanche</PROPERTIES>
+		<PROPERTIES type="varchar" >VdiskExclusion</PROPERTIES>
+		<RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">VmJobTacheId</RKEY>
+		<RKEY data="EsxVm,Id" card="0,n" form="1" inline="1" description="Machines à sauvegarder">EsxVmJobId</RKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="SambaDevice" AccessPoint="1" driver="mysql" Description="Machines à sauvegarder"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelBackup/Class/SambaDevice.class.php">
 		<FILTER name="Toutes les machines" color="warning" ></FILTER>
@@ -145,6 +126,7 @@
 		<PROPERTIES type="boolean" form="1" fiche="1">Samedi</PROPERTIES>
 		<PROPERTIES type="boolean" form="1" fiche="1">Dimanche</PROPERTIES>
 		<RKEY data="SambaShare,Id" card="0,n" inline="1" form="1" description="Sélection des partages">SambaShareId</RKEY>
+		<RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">SambaJobTacheId</RKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="RemoteJob" logEvent="1" AccessPoint="1" driver="mysql" Description="Job synchronisation distante"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelBackup/Class/RemoteJob.class.php">
 		<FUNCTION title="Démarrer maintenant">runNow</FUNCTION>
@@ -169,6 +151,7 @@
 		<PROPERTIES type="boolean" form="1" fiche="1">Samedi</PROPERTIES>
 		<PROPERTIES type="boolean" form="1" fiche="1">Dimanche</PROPERTIES>
 		<RKEY data="BorgRepo,Id" card="0,n" inline="1" form="1" description="Sélection des dépots à synchroniser">BorgRepoId</RKEY>
+		<RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">RemoteJobTacheId</RKEY>
         <FKEY data="RemoteServer,Id" card="1,1" inline="1" form="1" fiche="1" list="1" description="Sélection du serveur distant">RemoteServerId</FKEY>
 <!--		<FKEY data="VmJob,Id" card="0,1" inline="1" form="1" description="Démarrer après que le job de machine virtuelle soit terminé">VmJobEndId</FKEY>
 		<FKEY data="RemoteJob,Id" card="0,1" inline="1" form="1" description="Démarrer après que le job de synchronisation distante soit terminé">RemoteJobEndId</FKEY>-->
@@ -201,6 +184,7 @@
 		<PROPERTIES type="varchar" length="50" form="1" fiche="1" obligatoire="0" description="Domaine">Domain</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" form="1" fiche="1" obligatoire="1" description="Nom d'utilisateur">Login</PROPERTIES>
 		<PROPERTIES type="varchar" form="1" fiche="1" obligatoire="1" description="Mot de passe">Password</PROPERTIES>
+		<RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">HypervTacheId</RKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="HypervVm" logEvent="1" AccessPoint="1" driver="mysql" Description="Machine virtuelle HyperV"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Operations="delete,edit" Class="Modules/AbtelBackup/Class/HypervVm.class.php">
 		<FILTER name="Toutes les vms" color="warning" ></FILTER>
@@ -216,6 +200,7 @@
 		<FKEY data="Hyperv,Id" card="1,1" form="1" fiche="1" list="1" listDescr="Hyperv" description="Hyperv">HypervId</FKEY>
 		<FKEY data="BorgRepo,Id" card="0,1" form="1" fiche="1" list="1" listDescr="Dépôt" description="Dépôt BORG">BorgRepoId</FKEY>
 		<RKEY data="RestorePoint,Id" card="0,n">RestorePointId</RKEY>
+		<RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">HypervVmTacheId</RKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="HyperJob" logEvent="1"  AccessPoint="1" driver="mysql" Description="Job VM HyperV"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelBackup/Class/HyperJob.class.php">
 		<FUNCTION title="Démarrer maintenant">runNow</FUNCTION>
@@ -240,5 +225,6 @@
 		<PROPERTIES type="boolean" form="1" fiche="1">Dimanche</PROPERTIES>
 		<PROPERTIES type="varchar" form="1" fiche="1">VdiskExclusion</PROPERTIES>
 		<RKEY data="HypervVm,Id" card="0,n" inline="1" form="1" description="Sélection des vms">HypervVmJobId</RKEY>
+		<RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">HyperJobTacheId</RKEY>
 	</OBJECTCLASS>
 </SCHEMA>

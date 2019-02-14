@@ -2,6 +2,7 @@
     "lastSearch": "{{ Now }}",
     "totalEv": {{ EvCount }},
     "totalAu": {{ AlCount }},
+    "unreadAu": {{ AlUnread }},
     "events":
     [
         {% for Ev in items.Ev %}
@@ -31,5 +32,6 @@
             "Tag":"{{ Au.Tag }}"
             }{% if not loop.last %},{% endif %}
         {% endfor %}
-    ]
+    ],
+    "stats": {{ stats | raw }}
 }

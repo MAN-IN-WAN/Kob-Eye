@@ -66,7 +66,8 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Page" driver="mysql" Icon="/Skins/AdminV2/Img/IconAqua/Wiki2.png" generateUrl="0" Class="Modules/Systeme/Class/Page.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé" list="2" form="1" listDescr="Url">Url</PROPERTIES>
-      		<PROPERTIES type="varchar" auto="1">FromUrl</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="5"  category="Intitulé" list="3" form="2" listDescr="Redirection">Redirect</PROPERTIES>
+		<PROPERTIES type="varchar" auto="1">FromUrl</PROPERTIES>
 		<PROPERTIES type="varchar" auto="1">MD5</PROPERTIES>
 		<PROPERTIES type="varchar">LastMod</PROPERTIES>
 		<PROPERTIES type="metat" special="multi" list="4" ListDescr="Title" form="1">Title</PROPERTIES>
@@ -121,8 +122,8 @@
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Access" Dico="1" driver="mysql" Icon="/Skins/AdminV2/Img/brick.png" Description="Access">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" category="Intitulé">Titre</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="2" values="Parc,Systeme,Abtel" category="Definition" description="Module">ObjectModule</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="3" values="Client,Device,Ticket,Facture,Contrat,Domain,CompteMail,Host,Server,Contact,DeviceConnexion,MiniSite" category="Definition">ObjectClass</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" values="Parc,Systeme,Abtel,IncidentClient" category="Definition" description="Module">ObjectModule</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="3" values="Client,Device,Ticket,Facture,Contrat,Domain,CompteMail,Host,Server,Contact,DeviceConnexion,MiniSite,ListeDiffusion,EmailRessource,Instance,DocumentClient" category="Definition">ObjectClass</PROPERTIES>
 		<PROPERTIES type="varchar" category="Definition">Alias</PROPERTIES>
 		<PROPERTIES type="varchar" category="Definition">Filters</PROPERTIES>
 		<PROPERTIES type="order" category="Definition">Ordre</PROPERTIES>
@@ -209,10 +210,10 @@
 		<PROPERTIES category="Alert"	type="varchar" length="50"													>Author</PROPERTIES>
 		<PROPERTIES category="Alert"	type="int" default="0"														>UserId</PROPERTIES>
 	</OBJECTCLASS>
-	<OBJECTCLASS title="AlertUser" driver="mysql" Icon="[None]"  Class="Modules/Systeme/Class/AlertUser.class.php">
+	<OBJECTCLASS title="AlertUser" logEvent="1" driver="mysql" Icon="[None]"  Class="Modules/Systeme/Class/AlertUser.class.php">
 		<PROPERTIES type="int"											>AlertId</PROPERTIES>
-		<PROPERTIES type="double"										>Time</PROPERTIES>
-		<PROPERTIES type="boolean" default="0"							>Read</PROPERTIES>
+		<PROPERTIES type="double" list="31"								>Time</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" list="30" form="30"		>Read</PROPERTIES>
 		<VIEW title="AlertUserList" default="1">
 			<OBJECTCLASS title="AlertUser" select="" filters="">
 				<JOIN type="outer" title="Alert" on="AlertId" target="Id">
@@ -220,13 +221,13 @@
 					<PROPERTIES type="boolean" list="2" >Done</PROPERTIES>
 					<PROPERTIES type="date" list="3" >Date</PROPERTIES>
 					<PROPERTIES type="varchar" list="4" >Title</PROPERTIES>
-					<PROPERTIES type="varchar" >Tag</PROPERTIES>
-					<PROPERTIES type="int" >ObjectId</PROPERTIES>
-					<PROPERTIES type="varchar" list="5">Author</PROPERTIES>
-					<PROPERTIES type="int" >UserId</PROPERTIES>
+					<PROPERTIES type="varchar" list="5" >Tag</PROPERTIES>
+					<PROPERTIES type="int" list="7" >ObjectId</PROPERTIES>
+					<PROPERTIES type="varchar" list="6">Author</PROPERTIES>
+					<PROPERTIES type="int" list="8">UserId</PROPERTIES>
 					<JOIN type="outer" title="User" on="UserId" target="Id">
-						<PROPERTIES type="varchar" >Nom</PROPERTIES>
-						<PROPERTIES type="varchar" >Initiales</PROPERTIES>
+						<PROPERTIES type="varchar" list="9">Nom</PROPERTIES>
+						<PROPERTIES type="varchar" list="10">Initiales</PROPERTIES>
 					</JOIN>
 				</JOIN>
 			</OBJECTCLASS>
@@ -292,8 +293,12 @@
 	</OBJECTCLASS>
 	<!--Taches planifiées -->
 	<OBJECTCLASS title="ScheduledTask" driver="mysql" AccessPoint="1" Icon="[None]" Description="Tâches planifiées">
-        <PROPERTIES category="Description" type="varchar" searchOrder="1">Titre</PROPERTIES>
-        <PROPERTIES category="Description" type="boolean" searchOrder="2" description="Activé">Enabled</PROPERTIES>
+        <FUNCTION title="Démarrer maintenant">runNow</FUNCTION>
+        <FUNCTION title="Arrêter maintenant">stop</FUNCTION>
+        <PROPERTIES category="Description" type="varchar" searchOrder="1" form="1" fiche="1" list="1">Titre</PROPERTIES>
+        <PROPERTIES category="Description" type="boolean" searchOrder="2" description="Activé" form="1" fiche="1" list="2">Enabled</PROPERTIES>
+        <PROPERTIES type="boolean" searchOrder="3" list="1" fiche="1"  listDescr="En cours" description="En cours">Running</PROPERTIES>
+        <PROPERTIES type="boolean" form="1" fiche="1" list="1" special="reverse" description="Erreur" listDescr="Erreur">Errors</PROPERTIES>
 		<PROPERTIES type="varchar" listDescr="Minute" default="*" values="*,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59" list="1" form="1" fiche="1">Minute</PROPERTIES>
 		<PROPERTIES type="varchar" listDescr="Heure" default="*" values="*,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24" list="1" form="1" fiche="1">Heure</PROPERTIES>
 		<PROPERTIES type="varchar" listDescr="Jour Mois" default="*" values="*,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31" list="1" form="1" fiche="1">Jour</PROPERTIES>
@@ -305,10 +310,67 @@
 		<PROPERTIES type="boolean" form="1" fiche="1">Vendredi</PROPERTIES>
 		<PROPERTIES type="boolean" form="1" fiche="1">Samedi</PROPERTIES>
 		<PROPERTIES type="boolean" form="1" fiche="1">Dimanche</PROPERTIES>
-        <PROPERTIES category="Clef" type="varchar" description="Module"  searchOrder="2" list="5">TaskModule</PROPERTIES>
-        <PROPERTIES category="Clef" type="varchar" description="ObjectClass"  searchOrder="3" list="6">TaskObject</PROPERTIES>
-        <PROPERTIES category="Clef" type="int" description="Identifiant"  searchOrder="4" list="7">TaskId</PROPERTIES>
-        <PROPERTIES category="Clef" type="varchar" description="Fonction à éxécuter"  searchOrder="5" list="7">TaskFunction</PROPERTIES>
+        <PROPERTIES category="Clef" type="varchar" description="Module"  searchOrder="2" list="5" form="1" fiche="1">TaskModule</PROPERTIES>
+        <PROPERTIES category="Clef" type="varchar" description="ObjectClass"  searchOrder="3" list="6" form="1" fiche="1">TaskObject</PROPERTIES>
+        <PROPERTIES category="Clef" type="int" description="Identifiant"  searchOrder="4" list="7" form="1" fiche="1">TaskId</PROPERTIES>
+        <PROPERTIES category="Clef" type="varchar" description="Fonction à éxécuter"  searchOrder="5" list="7" form="1" fiche="1">TaskFunction</PROPERTIES>
 	</OBJECTCLASS>
+    <!-- Taches -->
+    <OBJECTCLASS title="Tache" driver="mysql" Dico="0" logEvent="1" AccessPoint="1" Description="Tache" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Systeme/Class/Tache.class.php" >
+        <FILTER name="Toutes les taches" color="primary" ></FILTER>
+        <FILTER name="En erreur" color="warning"><![CDATA[Erreur=1]]></FILTER>
+        <FILTER name="En cours" color="warning"><![CDATA[Erreur=0&Demarre=1&Termine=0]]></FILTER>
+        <FILTER name="Pas encore démarrée" color="secondary"><![CDATA[Demarre=0]]></FILTER>
+        <FILTER name="Terminés" color="primary"><![CDATA[Termine=1]]></FILTER>
+        <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" list="1" fiche="1" form="1" description="Nom de la tache">Nom</PROPERTIES>
+        <PROPERTIES type="varchar" searchOrder="2" obligatoire="1" list="1" values="Ssh,Auto,Manuel,Fonction" fiche="1" form="1" description="Type de tache">Type</PROPERTIES>
+        <PROPERTIES type="boolean" searchOrder="3" fiche="1" list="1" form="1" description="Tache terminé">Termine</PROPERTIES>
+        <PROPERTIES type="boolean" searchOrder="4" fiche="1" list="1" form="1" description="Tache démarrée">Demarre</PROPERTIES>
+        <PROPERTIES type="boolean" searchOrder="5" fiche="1" list="1" form="1"  special="reverse" description="Erreur">Erreur</PROPERTIES>
+        <PROPERTIES type="raw" fiche="1" form="1">Contenu</PROPERTIES>
+        <PROPERTIES type="html" fiche="1" form="1">Retour</PROPERTIES>
+        <PROPERTIES type="datetime" list="1" fiche="1" form="1" description="Date de déclenchement" listDescr="Date" default="[!TMS::Now!]">DateDebut</PROPERTIES>
+        <PROPERTIES type="varchar" list="1" fiche="1" form="1" values="maintenance::Maintenance,install::Installation,edit::Modification,check::Vérification,update::Mise à jour" description="Type de tache" listDescr="Type" default="check">TaskType</PROPERTIES>
+        <PROPERTIES type="varchar" list="1" fiche="1" form="1" description="Code de la tache" listDescr="Code">TaskCode</PROPERTIES>
+        <PROPERTIES category="Fonction" type="varchar" description="Module"  searchOrder="2" fiche="5" form="1">TaskModule</PROPERTIES>
+        <PROPERTIES category="Fonction" type="varchar" description="ObjectClass"  searchOrder="3" fiche="6" form="1">TaskObject</PROPERTIES>
+        <PROPERTIES category="Fonction" type="int" description="Identifiant"  searchOrder="4" fiche="7" form="1">TaskId</PROPERTIES>
+        <PROPERTIES category="Fonction" type="varchar" description="Fonction à éxécuter"  searchOrder="5" fiche="7"  form="1">TaskFunction</PROPERTIES>
+		<PROPERTIES category="Fonction" type="varchar" description="Paramètre de la fonction (tableau sérialisé)"  searchOrder="6" fiche="7"  form="1">TaskArgs</PROPERTIES>
+        <PROPERTIES type="varchar"  fiche="1" form="1" description="Identifiant du thread en cours">ThreadId</PROPERTIES>
+        <PROPERTIES type="progress" list="1" fiche="1" form="1" listDescr="Progression">Progression</PROPERTIES>
+        <!-- Parc -->
+        <!--<FKEY card="0,1" data="Instance,Id" fiche="1" form="1" module="Parc" parentDescription="Instance" link="1">InstanceId</FKEY>
+        <FKEY card="0,1" data="Host,Id" fiche="1" module="Parc" form="1" parentDescription="Hébergement" link="1">HostId</FKEY>
+        <FKEY card="0,1" data="Server,Id" fiche="1" module="Parc" form="1" parentDescription="Serveur" link="1">ServerId</FKEY>
+        <FKEY card="0,1" data="Apache,Id" fiche="1" module="Parc" form="1" parentDescription="Hôte virtuel" link="1">ApacheId</FKEY>
+        <FKEY card="0,1" data="VersionLogiciel,Id" module="Parc" fiche="1" form="1" parentDescription="Version d'pplication" link="1">VersionLogicielId</FKEY>-->
+        <!-- AbtelBackup -->
+        <!--<FKEY data="Esx,Id" module="AbtelBackup" form="1" fiche="1" card="0,1" popup="1" >EsxId</FKEY>
+        <FKEY data="EsxVm,Id" form="1" fiche="1" card="0,1" popup="1" >EsxVmId</FKEY>
+        <FKEY data="VmJob,Id" form="1" fiche="1" card="0,1" popup="1" >VmJobId</FKEY>
+        <FKEY data="Hyperv,Id" form="1" fiche="1" card="0,1"  popup="1" >HypervId</FKEY>
+        <FKEY data="HypervVm,Id" form="1" fiche="1" card="0,1"  popup="1" >HypervVmId</FKEY>
+        <FKEY data="HyperJob,Id" form="1" fiche="1" card="0,1"  popup="1" >HyperJobId</FKEY>
+        <FKEY data="SambaJob,Id" form="1" fiche="1" card="0,1"  popup="1" >SambaJobId</FKEY>
+        <FKEY data="RemoteJob,Id" form="1" fiche="1" card="0,1"  popup="1" >RemoteJobId</FKEY>-->
+
+        <FUNCTION title="Executer maintenant">Executer</FUNCTION>
+    </OBJECTCLASS>
+    <!-- Activités de taches-->
+    <OBJECTCLASS title="Activity" logEvent="1"  AccessPoint="1" driver="mysql" Description="Activité des taches"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/Systeme/Class/Activity.class.php" Operations="">
+        <FILTER name="Toutes les activités" color="warning" ></FILTER>
+        <FILTER name="Activités en cours" color="success" ><![CDATA[Started=1&Errors=0&Success=0]]></FILTER>
+        <FILTER name="Activités en erreur" ><![CDATA[Started=1&Errors=1]]></FILTER>
+        <PROPERTIES type="titre" searchOrder="1" list="1" form="1" fiche="1" listDescr="Titre">Titre</PROPERTIES>
+        <PROPERTIES type="varchar" form="1" fiche="1" list="1" listDescr="Type d'activité" obligatoire="1" values="Exec,Info" default="Exec">Type</PROPERTIES>
+        <PROPERTIES type="progress" list="1" fiche="1" form="1" listDescr="Progression">Progression</PROPERTIES>
+        <PROPERTIES type="boolean" form="1" fiche="1" list="1" description="Démarré" listDescr="Demarré">Started</PROPERTIES>
+        <PROPERTIES type="boolean" form="1" fiche="1" list="1" description="Succés" listDescr="Succès">Success</PROPERTIES>
+        <PROPERTIES type="boolean" form="1" fiche="1" list="1" special="reverse" description="Erreur" listDescr="Erreur">Errors</PROPERTIES>
+        <PROPERTIES type="boolean" form="1" description="Acknowledge" listDescr="Vue" default="0">Acknowledge</PROPERTIES>
+        <PROPERTIES type="raw" form="1" fiche="1" list="1">Details</PROPERTIES>
+        <FKEY data="Tache,Id" form="1" fiche="1" card="0,1" popup="1" >TacheId</FKEY>
+    </OBJECTCLASS>
 
 </SCHEMA>

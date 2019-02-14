@@ -5,6 +5,7 @@ else
     $vars['Path'] = $Path = $vars['Query'];
 $info = Info::getInfos($Path);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
+$o->setView();
 $vars['identifier'] = $info['Module'].$info['ObjectType'];
 if(!isset($vars['context']))
     $vars['context'] = $info['NbHisto'] > 1 ? 'children':'default';
@@ -53,7 +54,7 @@ $vars["Interfaces"] = $vars["ObjectClass"]->getInterfaces();
 if (isset($vars["Interfaces"]['list']))
     $vars["Interfaces"] = $vars["Interfaces"]['list'];
 
-$vars['attributes'] = $vars['ObjectClass']->getAttributes();  //PGF 20180809
+
 $vars['formPath'] = 'Systeme/Utils/Form';
 
 if (!isset($info['ObjectType'])) {
@@ -73,10 +74,9 @@ $childs = $vars["ObjectClass"]->getChildElements();
 foreach ($childs as $child){
         //test role                                                             //test hidden                                               //test admin
     if (((!isset($child['hasRole'])||Sys::$User->hasRole($child['hasRole'])) && !isset($child['childrenHidden'])&&!isset($child['hidden'])) || (!is_object(Sys::$CurrentMenu) && Sys::$User->Admin)){
-        if($child['listParent']){
+        if(isset($child['listParent']) && $child['listParent']){
             array_push($vars['fields'],$child);
         }
     }
 }
-
 ?>

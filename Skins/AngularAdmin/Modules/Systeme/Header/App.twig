@@ -22,9 +22,45 @@ angular.module('cleanUI', [
     'ckeditor',
     'colorpicker.module',
     'ngDraggable',
-    'ui.tree'
-]).config(function($interpolateProvider){
+    'ui.tree',
+	'ngMask',
+	'multipleSelect'
+]).config(function($interpolateProvider,$provide){
     $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
+
+    //Utile pour ngInclude plusieurs fois le meme template sans garder de cache.
+    $provide.decorator('$templateCache', [
+            '$delegate', function($delegate) {
+
+                var keys = [], origPut = $delegate.put, origRemove = $delegate.remove;
+
+                $delegate.put = function(key, value) {
+                    origPut(key, value);
+                    var yet = false;
+                    angular.forEach(keys, function(kvalue, kkey) {
+                        if(key == kvalue) yet = true;
+                    });
+                    if(!yet)
+                        keys.push(key);
+                };
+                $delegate.remove = function(key) {
+                    origRemove(key);
+                    angular.forEach(keys, function(kvalue, kkey) {
+                        if(key == kvalue) delete keys[kkey];
+                    });
+                };
+
+                // we would need cache.peek() to get all keys from $templateCache, but this features was never
+                // integrated into Angular: https://github.com/angular/angular.js/pull/3760
+                // please note: this is not feature complete, removing templates is NOT considered
+                $delegate.getKeys = function() {
+                    return keys;
+                };
+
+                return $delegate;
+            }
+        ]);
+
 })
 
 
@@ -355,7 +391,7 @@ angular.module('cleanUI', [
                     $routeProvider.when('/{{ m.Url }}/{{ m2.Url }}/:id', {
                         //templateUrl: '{{ m.Url }}/{{ m2.Url }}/FicheTemplate.htm?CurrentObjId=2',
                         templateUrl:function(params) {
-                            return '{{ m.Url }}/{{ m2.Url }}/FicheTemplate.htm?CurrentObjId='+params.id;
+                            return '{{ m.Url }}/{{ m2.Url }}/FicheTemplate.htm';
                         },
                         controller: '{{ m.Url }}{{ m2.Url }}FicheCtrl'
                     });
@@ -382,7 +418,53 @@ angular.module('cleanUI', [
 
 var app = angular.module('cleanUI.controllers', []);
 
-app.controller('MainCtrl', function($location, $scope, $rootScope, $timeout, FileUploader) {
+app.controller('MainCtrl', function($location, $scope, $rootScope, $timeout, $http, FileUploader, SystemeAlertUserStore) {
+
+
+// PGF 20190211 creation de stores
+	$rootScope.createStore = function(store, context) {
+		var s = {
+			data: store.data[context],
+			store: store,
+			filter: store.getFilters(context,true).global,
+			filterPanel: false,
+			filters: (function(){
+				var opts = store.getFilters(context,true).options;
+				var out = {};
+				for (var o in opts){
+					out[opts[o].name] = opts[o];
+				}
+				return out;
+			})(),
+			filterQuery: store.getQueryFilter(context),
+			currentPage: store.currentPage[context],
+			pageLength: store.getPageLength(),
+			itemsPerPage: store.itemsPerPage,
+			selected: {
+				selectall: false
+			}
+		}
+		return s;
+	}
+
+// ALERTUSER PGF 20190209
+	$scope.Alerts = {new:0, unread:0, alerts:[]};
+    $rootScope.$on('Alertes',function(ev,data){
+	    if(data.new > 0) $scope.Alerts.new = data.new;
+		$scope.Alerts.unread = data.unread;
+    });
+	$scope.SystemeAlertUser = $rootScope.createStore(SystemeAlertUserStore,'default');
+	$scope.SystemeAlertUser.store.setFilters("Read=0", 'default');
+	$scope.SystemeAlertUser.store.getData(1, 'default');
+	$scope.alertUserDisplay = function() {
+		$scope.Alerts.new = 0;
+	}
+	$scope.alertUserRead = function(ev, item) {
+		ev.stopPropagation();
+		item.Read = 1;
+		$scope.SystemeAlertUser.store.deleteOneData(item.id,'all'); //saveData(item);
+	}
+	
 
     $scope.uploader = new FileUploader({
         url:'/Systeme/Utils/Upload.json'
@@ -527,4 +609,18 @@ app.filter('unescape', function() {
             return input.replace(/\\n/g, "\n");
         else return '';
     };
-})
+});
+
+app.directive('compile', ['$compile', function ($compile) {
+    return function(scope, element, attrs) {
+        scope.$watch(
+            function(scope) {
+                return scope.$eval(attrs.compile);
+            },
+            function(value) {
+                element.html(value);
+                $compile(element.contents())(scope);
+            }
+        )
+    };
+}]);

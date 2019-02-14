@@ -1,0 +1,26 @@
+<!-- LoginCADREF -->
+[HEADER CSS]/Tools/Css/Bootstrap/3.0/css/bootstrap.min.css[/HEADER]
+[HEADER CSS]/Tools/Css/Bootstrap/3.0/css/bootstrap-theme.min.css[/HEADER]
+[HEADER JS]/Tools/Js/Jquery/1.9.2/jquery.min.js[/HEADER]
+[HEADER JS]/Tools/Css/Bootstrap/3.0/js/bootstrap.min.js[/HEADER]
+[HEADER]
+<link href='https://fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css'>
+<script src="/Skins/AngularAdmin/assets/vendors/spin.js/spin.js"></script>
+<script src="/Skins/AngularAdmin/assets/vendors/spin.js/jquery.spin.js"></script>
+[/HEADER]
+
+<!--login modal-->
+<div id="loginModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-header-inner">
+                    <div class="modal-header-logo"></div>
+                </div>
+            </div>
+            <div class="modal-body">
+                [DATA]
+            </div>
+        </div>
+    </div>
+</div>

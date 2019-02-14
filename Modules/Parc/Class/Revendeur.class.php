@@ -8,7 +8,7 @@ class Parc_Revendeur extends Parc_Client {
             $this->setUser();
         return true;
     }
-    public function Verify($synchro = true) {
+    public function Verify($synchro = false) {
         return genericClass::Verify($synchro);
     }
     public function Delete() {

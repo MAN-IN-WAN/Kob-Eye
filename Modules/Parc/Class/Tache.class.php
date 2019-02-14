@@ -3,8 +3,8 @@ class Tache extends genericClass{
     var $_apache = null;
     public function Execute($force=false) {
         //on rafraichit les infos
-        $t = Sys::getOneData('Parc','Tache/'.$this->Id);
-        if ($t->Demarre&&!$force) return true;
+        if ($this->Demarre&&!$force) return true;
+        Sys::autocommitTransaction();
         switch ($this->Type) {
             default:
                 try {
@@ -46,6 +46,8 @@ class Tache extends genericClass{
                     //execution objet
                     $obj = Sys::getOneData($this->TaskModule,$this->TaskObject.'/'.$this->TaskId);
                     try {
+                        $act = $this->createActivity('Démarrage de la tache');
+                        $act->Terminate(true);
                         $out = $obj->{$this->TaskFunction}($this);
                         $this->addRetour($out);
                         $this->Termine = true;
@@ -58,11 +60,16 @@ class Tache extends genericClass{
                 }else{
                     //execution statique
                     try {
-                        call_user_func($this->TaskObject.'::'.$this->TaskFunction);
+                        call_user_func($this->TaskObject.'::'.$this->TaskFunction,$this);
                     }catch (Exception $e){
                         $this->addRetour('ERROR: '.$e->getMessage());
                         $this->Erreur = true;
+                    }catch (Error $e){
+                        $this->addRetour('ERROR: '.$e->getMessage());
+                        $this->Erreur = true;
                     }
+                    $this->Termine = true;
+                    parent::Save();
                 }
             break;
         }
@@ -83,4 +90,31 @@ class Tache extends genericClass{
         }
         return $this->_apache;
     }
+    public function Delete(){
+        $acts = $this->getChildren('Activity');
+        foreach ($acts as $act) {
+            $act->Delete();
+        }
+        return parent::Delete();
+    }
+    /**
+     * createActivity
+     * créé une activité
+     * @param $title
+     * @param null $obj
+     * @param int $jPSpan
+     * @param string $Type
+     * @return genericClass
+     */
+    public function createActivity($title, $Type = 'Exec'){
+        $act = genericClass::createInstance('Parc', 'Activity');
+        $act->addParent($this);
+        $act->Titre = $this->tag . date('d/m/Y H:i:s') . ' > ' . $this->Titre . ' > ' . $title;
+        $act->Started = true;
+        $act->Type = $Type;
+        $act->Progression = 0;
+        $act->Save();
+        return $act;
+    }
+
 }

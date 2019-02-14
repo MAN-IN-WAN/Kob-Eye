@@ -15,7 +15,7 @@ class MX extends genericClass {
 	    parent::Save();
 
 		// Forcer la vérification
-		if(!$this->_isVerified) $this->Verify( $synchro );
+		$this->Verify( $synchro );
 		// Enregistrement si pas d'erreur
 		if($this->_isVerified){
 			parent::Save();
@@ -24,15 +24,86 @@ class MX extends genericClass {
 		return true;
 	}
 
+    /**
+     * getLdapID
+     * récupère le ldapId d'une entrée pour un serveur spécifique
+     */
+    public function getLdapID() {
+        return $this->LdapID;
+    }
+    /**
+     * setLdapID
+     * défniit le ldapId d'une entrée pour un serveur spécifique
+     */
+    public function setLdapID($ldapId) {
+        $this->LdapID = $ldapId;
+    }
+    /**
+     * getLdapDN
+     * récupère le ldapDN d'une entrée pour un serveur spécifique
+     */
+    public function getLdapDN() {
+        if (empty($this->LdapDN)) {
+            //on construit le dn si il n'existe pas.
+            $KEDomain = $this->getKEDomain();
+            $this->LdapDN = 'cn='.$this->Nom.',cn='.$KEDomain->Url.',ou=domains,'.PARC_LDAP_BASE;
+        }
+        return $this->LdapDN;
+    }
+    /**
+     * getLdapDN
+     * récupère le ldapDN d'une entrée pour un serveur spécifique
+     */
+    public function getLdapBaseDN() {
+        $KEDomain = $this->getKEDomain();
+        return 'cn='.$KEDomain->Url.',ou=domains,'.PARC_LDAP_BASE;
+
+    }
+    /**
+     * setLdapDN
+     * définit le ldapDN d'une entrée pour un serveur spécifique
+     */
+    public function setLdapDN($ldapDn) {
+        $this->LdapDN = $ldapDn;
+    }
+    /**
+     * getLdapTms
+     * récupère le ldapTms d'une entrée pour un serveur spécifique
+     */
+    public function getLdapTms() {
+        return $this->LdapTms;
+    }
+    /**
+     * setLdapTms
+     * définit le ldapTms d'une entrée pour un serveur spécifique
+     */
+    public function setLdapTms($ldapTms) {
+        $this->LdapTms = $ldapTms;
+    }
 	/**
 	 * Verification des erreurs possibles
 	 * @param	boolean	Verifie aussi sur LDAP
 	 * @return	Verification OK ou NON
 	 */
-	public function Verify( $synchro = true ) {
+	public function Verify( $synchro = false ) {
+        // Outils
+        $KEDomain = $this->getKEDomain();
+        $KEServer = $this->getKEServer();
 		if (!$this->Poids) $this->Poids = 10;
+        //création du nom
+        if (empty($this->Nom)){
+            //génératio automatique du nom
+            for ($i=1;$i<100;$i++){
+                $nb = Sys::getCount('Parc','Domain/'.$KEDomain->Id.'/MX/Nom=MX:'.$i);
+                if (!$nb){
+                    $this->Nom = 'MX:'.$i;
+                    break;
+                }
+            }
+        }
 
 		$sibs = false;
+        $updateSibsTTL = false;
         $l = Server::ldapGet($this->LdapID);
         if(is_array($l) && isset($l[0]['dnsttl'])){
             $ttl = $l[0]['dnsttl'][0];
@@ -47,12 +118,9 @@ class MX extends genericClass {
 
 			if($synchro) {
 
-				// Outils
-				$KEDomain = $this->getKEDomain();
-				$KEServer = $this->getKEServer();
 				$dn = 'cn='.$this->Nom.',cn='.$KEDomain->Url.',ou=domains,'.PARC_LDAP_BASE;
 				// Verification à jour
-				$res = Server::checkTms($this);
+				$res = Server::checkTms($this,$this->getKEServer(),$dn);
 				if($res['exists']) {
 					if(!$res['OK']) {
 						$this->AddError($res);
@@ -176,12 +244,12 @@ class MX extends genericClass {
 			$this->Nom='MX:'.$nb;
 		}
 		$entry['cn'] = $this->Nom;
-		$entry['dnscname'] = $this->Dnscname;
 
         //Recup le parent par defaut
         $pa = $this->getOneParent('Domain');
         $default = $pa->Url.'.';
 
+        $entry['dnscname'] = $this->Dnscname ? $this->Dnscname: $default;
 		$entry['dnsdomainname'] = $this->Dnsdomainname ? $this->Dnsdomainname : $default;
 
         $entry['dnsttl'] = $this->TTL ?  $this->TTL : 86400;
@@ -218,7 +286,7 @@ class MX extends genericClass {
 	 */
 	private function getKEServer() {
 		if(!is_object($this->_KEServer)) {
-			$Tab = Sys::$Modules["Parc"]->callData('Parc/Server/1', "", 0, 1);
+			$Tab = Sys::$Modules["Parc"]->callData('Parc/Server/1', "", 0, 1,null,null,null,null,true);
 			$this->_KEServer = genericClass::createInstance('Parc', $Tab[0]);
 		}
 		return $this->_KEServer;

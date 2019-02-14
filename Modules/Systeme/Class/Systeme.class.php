@@ -49,6 +49,38 @@ class Systeme extends Module {
         return false;
     }
     /**
+     * Execution des taches
+     */
+    public  function executeTasks() {
+        $start = time();
+        Sys::autocommitTransaction();
+        while(time()<$start+240){
+            //empty query cache
+            Sys::$Modules['Systeme']->Db->clearLiteCache();
+            //gestion des priorités
+            $t = Sys::getOneData('Systeme','Tache/Demarre=0&DateDebut<'.time().'&TaskType!=check',0,1);
+            if (!$t)
+                $t = Sys::getOneData('Systeme','Tache/Demarre=0&DateDebut<'.time(),0,1);
+            //execution de la tache
+            if ($t) {
+                try {
+                    $t->Execute($t);
+                }catch (Exception $e){
+                    $t->Erreur = true;
+                    $t->Save();
+                    $t->createActivity('Erreur Fatale: '.$e->getMessage());
+                    $t->Terminate(false);
+                }
+            }
+            else sleep(1);
+        }
+        return true;
+    }
+    public static function Execute(){
+        $systeme = Sys::getModule('Systeme');
+        $systeme->executeTasks();
+    }
+    /**
      * Keyword generation
      *
      */
@@ -188,7 +220,18 @@ class Systeme extends Module {
             $t->TaskFunction = 'clearEvents';
             $t->Save();
         }
-
+        //execution des taches
+        $t = Sys::getCount('Systeme','ScheduledTask/Titre=SYSTEME:Execute tasks');
+        if (!$t) {
+            //creation du groupe public
+            $t = genericClass::createInstance('Systeme', 'ScheduledTask');
+            $t->Titre = 'SYSTEME:Execute tasks';
+            $t->Enabled = 1;
+            $t->TaskModule = 'Systeme';
+            $t->TaskObject = 'Systeme';
+            $t->TaskFunction = 'Execute';
+            $t->Save();
+        }
     }
 
     static function retrievePassword($email){

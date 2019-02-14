@@ -31,7 +31,7 @@ interface ParcInstancePlugin {
      * Fonction d'installation ou de mise à jour de l'applicatif
      * @param Object Tache
      */
-    public function installSoftware($task = null);
+    public function installSoftware($task);
     /**
      * createUpdateTask
      * Creation de la tache de mise à jour du logiciel
@@ -42,10 +42,15 @@ interface ParcInstancePlugin {
      * Fonction de mise à jour de l'applicatif
      * @param Object Tache
      */
-    public function updateSoftware($task = null);
+    public function updateSoftware($task);
     /**
      * checkState
      * Vérifie l'état d'une instance
      */
-    public function checkState();
+    public function checkState($task);
+    /**
+     * rewriteConfig
+     * Réécrire la configuration
+     */
+    public function rewriteConfig();
 }

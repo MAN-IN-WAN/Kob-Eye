@@ -1,0 +1,4 @@
+
+<div  ng-init="injectStore('ParcActivity','children','{{ Path }}')">
+    {{ include(template_from_string(module('Systeme/Utils/List/ChildActivity?Path='~Path))) }}
+</div>

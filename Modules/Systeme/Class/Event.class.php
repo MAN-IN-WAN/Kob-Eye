@@ -80,7 +80,7 @@ class Event extends genericClass {
                         @include "Data/Events/$t/$f";
                         $var = 'mt'.$t.$f;
                         //echo '--> BINGO file '.$f." \r\n";
-                        if (is_array(${$var})) {
+                        if (isset(${$var}) && is_array(${$var})) {
                             //print_r(${$var});
                             array_push($out, ${$var});
                         }
@@ -180,31 +180,37 @@ class Event extends genericClass {
         $nbIt = ceil($maxDuration*1000 /$interval);
         $delay = $interval*1000;
         $queryEv = 'Event/MicroTime>'.$lastAlert;
-        $queryAu = 'AlertUser::AlertUserList/tmsCreate>'.$lastAlert;
+        $queryAu = 'AlertUser/tmsCreate>'.$lastAlert;
+        $countAu = 'AlertUser::AlertUserList/tmsCreate>'.$lastAlert;
 
-        $res=array('Ev' => Array(),'Au' => Array());
+        $res=array('Ev' => Array(),'Au' => Array(),'Stats' => Array('cycles'=>0,'duration'=>0,'cd'=>array()));
         $ret =false;
 
         //recherche des enregistrements push
         $push = Event::getRegisteredPush();
 
-        while($i<$nbIt){
+        $tmsStart = microtime(true);
+        $elapsed = 0;
+        while($i<$nbIt && $elapsed < $maxDuration){
             //$recEv = Sys::$Modules['Systeme']->callData($queryEv, false, 0, 30,'Id','ASC');
             $recEv = $this->cache_get($lastAlert);
-            $recAu = Sys::$Modules['Systeme']->callData($queryAu, false, 0, 30);
-            Sys::$Modules['Systeme']->Db->clearLiteCache();
             if(is_array($recEv) && count($recEv)) {
                 $res['Ev']=$recEv;
                 $ret =true;
             }
-            if(is_array($recAu) && count($recAu)) {
-                $res['Au']=$recAu;
+            Sys::$Modules['Systeme']->Db->clearLiteCache();
+			$res['Au'] = array();
+ 			$nbAu = Sys::getCount('Systeme', $countAu);
+            if($nbAu) {
+                $res['Au'] = Sys::getData('Systeme', $queryAu);
                 $ret =true;
             }
 
             if($ret) {
                 $out = array();
+
                 foreach ($res['Ev'] as $k=>$ev){
+
                     try {
                         $obj = unserialize($res['Ev'][$k]['Data']);
                     }catch (Exception $e){
@@ -226,7 +232,7 @@ class Event extends genericClass {
                             foreach ($contexts as $name=>$context){
                                 $query = explode('/',$context->query);
                                 //si on est pas en page une on ne dispatch pas l'evenement
-                                if ($context->offset>0) {
+                                if ($context->offset>0 && (!isset($context->sort) || empty($context->sort) )) {
                                     continue;
                                 }
 
@@ -244,7 +250,28 @@ class Event extends genericClass {
                                     $flag = false;
                                     foreach ($ps as $p){
                                         //Vérification du lien parent
-                                        if ($p['objectName']==$query[0]&&$o->{$p['name']}==$query[1]) $flag=true;
+
+                                        if ($p['objectName']==$query[0]&&isset($o->{$p['name']})&&$o->{$p['name']}==$query[1]) $flag=true;
+                                    }
+                                    if (!$flag) continue;
+                                }
+
+                                //cas du sort
+                                if(isset($context->sort) || !empty($context->sort)){
+                                    if(! is_array($context->sort)){
+                                        $context->sort = array('Id','ASC');
+                                    }
+                                    if (isset($context->sort[1])&&isset($context->sort[0])){
+                                        $orderType = $context->sort[1];
+                                        $orderVar = $context->sort[0];
+                                    }else {
+                                        $orderType = '';
+                                        $orderVar = "";
+                                    }
+                                    $list = Sys::getData($ev['EventModule'], $ev['EventObjectClass'] . '/' . $context->filters, $context->offset, $context->limit, $orderType, $orderVar);
+                                    $flag = false;
+                                    foreach($list as $item){
+                                        if($item->Id == $o->Id) $flag = true;
                                     }
                                     if (!$flag) continue;
                                 }
@@ -257,18 +284,41 @@ class Event extends genericClass {
                         }else{
                             //TODO Gérer les déplacement et modifiacation de clefs.
                             //on publie les évenements
-                            array_push($out,$ev);
+                            foreach($push->{$ev['EventModule'].$ev['EventObjectClass']} as $context){
+                                if(isset($context->ids) && is_array($context->ids) && in_array($ev['EventId'],$context->ids)){
+                                    array_push($out,$ev);
+                                }
+                                if(isset($context->ids) && !is_array($context->ids) && $ev['EventId'] == $context->ids){
+                                    array_push($out,$ev);
+                                }
+                            }
                         }
                     }
                 }
+                //$tmp = $elapsed;
+                $elapsed = microtime(true) - $tmsStart;
                 $res['Ev'] = $out;
-                if (sizeof($out))
+
+                //$res['stats']['cd'][] = $elapsed-$tmp;
+
+                if (sizeof($out)){
+                    $res['stats']['cycles'] = $i;
+                    $res['stats']['duration'] = $elapsed;
                     return $res;
+                }
+
             }
+
+
 
             $i++;
             usleep($delay);
         }
+
+        $elapsed = microtime(true) - $tmsStart;
+        $res['stats']['cycles'] = $i;
+        $res['stats']['duration'] = $elapsed;
+        return $res;
     }
 
     /**
@@ -277,16 +327,18 @@ class Event extends genericClass {
     public static function clearEvents () {
         $limit = time();
         //toutes les 60 secondes
-        $now = $limit -= 60;
+        $now = $limit - 60;
         $evs = Sys::getData('Systeme','Event/tmsEdit<='.$limit,0,10000);
         foreach ($evs as $ev){
             $ev->Delete();
         }
-        for ($t = $limit-60;$t<$now;$t++){
-            try{
-                Utils::deleteDir('Data/Events/'.$t);
-            }catch (Exception $e){
-
+        for ($t = $now-120;$t<$now;$t++){
+            if(is_dir('Data/Events/' . $t)) {
+                try {
+                    Utils::deleteDir('Data/Events/' . $t);
+                } catch (Exception $e) {
+                    file_put_contents('/tmp/ClearEvent.log', print_r($e, true), 8);
+                }
             }
         }
     }
@@ -314,24 +366,35 @@ class Event extends genericClass {
      * @param $limit
      * @param $context
      */
-    public static function registerPush($module,$objectclass,$query,$filters,$offset,$limit,$context){
+    public static function registerPush($module,$objectclass,$query,$filters,$offset,$limit,$context,$ids,$sort=array()){
         $obj = self::getRegisteredPush();
         //ajout de la requete et des paramètres
-        if (!isset($obj->{$module.$objectclass}))
-            $obj->{$module.$objectclass} = array(
-                $context => (object) array(
+        if (!isset($obj->{$module.$objectclass})) {
+            if (!is_array($ids)) {
+                $ids = array($ids);
+            }
+            $obj->{$module . $objectclass} = array(
+                $context => (object)array(
                     'query' => $query,
                     'filters' => $filters,
                     'offset' => $offset,
-                    'limit' => $limit
+                    'limit' => $limit,
+                    'sort' => $sort,
+                    'ids' => $ids
                 )
             );
-        else $obj->{$module.$objectclass}[$context] = (object) array(
+        } else {
+
+
+            $obj->{$module.$objectclass}[$context] = (object) array(
                 'query' => $query,
                 'filters' => $filters,
                 'offset' => $offset,
-                'limit' => $limit
-        );
+                'limit' => $limit,
+                'sort' => $sort,
+                'ids' => $ids
+            );
+        }
         //mis à jour du fichier
         $obj = var_export($obj, true);
         $obj = str_replace('stdClass::__set_state', '(object)', $obj);
@@ -352,6 +415,10 @@ class Event extends genericClass {
     public static function filterCheck($filters,$data) {
         $filters=explode('&',$filters);
         foreach ($filters as $f){
+            if(preg_match('#(<|>|=)#',$f)){
+                $f=trim($f,'~');
+            }
+
             //cas supérieur
             if (preg_match('#^(.*)?>([^=]+)$#',$f,$fi)){
                 if (floatval($data->{$fi[1]}) <= floatval($fi[2])){
@@ -361,23 +428,28 @@ class Event extends genericClass {
             //cas supérieur ou égal
             if (preg_match('#^(.*)?>=(.+)$#',$f,$fi)){
                 if (floatval($data->{$fi[1]}) < floatval($fi[2])){
-                    echo floatval($data->{$fi[1]}).' < '.floatval($fi[2]);
-                    print_r($fi);
                     return false;
                 }
             }
-            /*//cas inférieur
+            //cas inférieur
             if (preg_match('#^(.*)?<([^\=]+)$#',$f,$fi)){
-                if (floatval($data->{$fi[1]}) >= floatval($fi[2])) return false;
+                if (floatval($data->{$fi[1]}) >= floatval($fi[2])) {
+                    return false;
+                }
             }
             //cas inférieur ou égal
             if (preg_match('#^(.*)?<=(.+)$#',$f,$fi)){
-                if (floatval($data->{$fi[1]}) > floatval($fi[2])) return false;
+                if (floatval($data->{$fi[1]}) > floatval($fi[2])) {
+                    return false;
+                }
             }
             //cas égalité
             if (preg_match('#^(.*)?[\=](.+)$#',$f,$fi)){
-                if ($data->{$fi[1]} != $fi[2]) return false;
+                if ($data->{$fi[1]} != $fi[2]) {
+                    return false;
+                }
             }
+
             //cas flou
             if (preg_match('#~(.+)#',$f,$fi)){
                 $flag=false;
@@ -389,8 +461,18 @@ class Event extends genericClass {
                 if (!$flag){
                     return false;
                 }
-            }*/
+            }
         }
         return true;
+    }
+
+
+    public static function clearPush(){
+        if(is_dir("Data/Push")){
+            $files = glob('Data/Push/*.push');
+            foreach($files as $file){
+                if(is_file($file)) unlink($file);
+            }
+        }
     }
 }

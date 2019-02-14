@@ -7,8 +7,9 @@ class User extends genericClass{
 		if (is_array($Gr))foreach ($Gr as $g){
 			$G = genericClass::createInstance("Systeme",$g);
 			$Ro = $G->getParents("Role");
-			if (sizeof($Ro)&&is_object($Ro[0])){
-				$ROLE[] = $Ro[0]->Title;
+			if (sizeof($Ro)){
+				foreach($Ro as $r) 
+					if(is_object($r)) $ROLE[] = $r->Title;
 			}
 		}
 		return $ROLE;
@@ -245,6 +246,10 @@ class User extends genericClass{
         $this -> {$Prop} = $newValue;
         return true;
     }
+    function Save() {
 
+        return parent::Save();
+
+    }
 }
 ?>

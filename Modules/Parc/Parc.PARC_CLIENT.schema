@@ -1,0 +1,29 @@
+<SCHEMA>
+    <OBJECTCLASS title="CompteMail" driver="mysql" AccessPoint="1" Description="Comptes Mail" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/CompteMail.class.php">
+        <FILTER name="Tous les comptes" color="warning" ><![CDATA[Suppression!!]]></FILTER>
+        <FILTER name="Compte en PRO" color="success"><![CDATA[Suppression!!&COS=MAIL_PRO]]></FILTER>
+        <FILTER name="Compte en BUS" color="primary"><![CDATA[Suppression!!&COS=MAIL_BUS]]></FILTER>
+        <FILTER name="Compte en POP" color="secondary"><![CDATA[Suppression!!&COS=MAIL_POP]]></FILTER>
+        <FILTER name="Compte en attente de suppression" color="danger"><![CDATA[Suppression=!]]></FILTER>
+        <FUNCTION title="Se connecter au webmail">connectWebmail</FUNCTION>
+        <FUNCTION title="Rétablir / Re-activer">unDel</FUNCTION>
+        <PROPERTIES type="varchar" unique="1" fiche="1" description="Id sur le serveur mail" >IdMail</PROPERTIES>
+        <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Adresse eMail" list="1" form="1" fiche="1" listDescr="Adresse">Adresse</PROPERTIES>
+        <PROPERTIES type="password" description="Mot de passe"  form="1" fiche="1">Pass</PROPERTIES>
+        <PROPERTIES type="varchar" searchOrder="2" obligatoire="1" values="NULL,MAIL_BUS,MAIL_POP,MAIL_PRO" default="MAIL_POP" description="Classe de service" list="1" form="1" fiche="1" listDescr="COS">COS</PROPERTIES>
+        <PROPERTIES type="int" subtype="sliderGo" description="Quota en Go" list="1" form="1" fiche="1" listDescr="Quota">Quota</PROPERTIES>
+        <PROPERTIES type="int" description="Espace utilisé en Mo" list="1" fiche="1" listDescr="Utilisé">EspaceUtilise</PROPERTIES>
+        <PROPERTIES type="varchar" searchOrder="3" description="Status de l'adresse" values="active,maintenance,locked,closed,lockout,pending" default="active" list="1" form="1" fiche="1" listDescr="Etat">Status</PROPERTIES>
+        <PROPERTIES type="varchar" searchOrder="4" description="Nom du contact" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
+        <PROPERTIES type="varchar" description="Prenom du contact" list="1" form="1" fiche="1" listDescr="Prénom">Prenom</PROPERTIES>
+        <FKEY card="0,1" data="Client,Id" description="Client" >ClientId</FKEY>
+        <FKEY card="0,1" data="Server,Id" filter="Mail=1" description="Serveur Mail">ServerId</FKEY>
+    </OBJECTCLASS>
+    <OBJECTCLASS title="ListeDiffusion" driver="mysql" AccessPoint="1" Description="Liste de diffusion" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/ListeDiffusion.class.php">
+        <PROPERTIES type="varchar" unique="1" fiche="1" description="Id sur le serveur mail" >IdDiffusion</PROPERTIES>
+        <PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom" list="1" form="1" fiche="1" listDescr="Nom">Nom</PROPERTIES>
+        <FKEY card="0,1" data="Client,Id" fiche="1" description="Client">ClientId</FKEY>
+        <FKEY card="0,1" data="Server,Id" fiche="1" filter="Mail=1" description="Serveur Mail">ServerId</FKEY>
+        <RKEY card="0,n" data="CompteMail,Id" fiche="1" description="CompteMail" >CompteMailId</RKEY>
+    </OBJECTCLASS>
+</SCHEMA>

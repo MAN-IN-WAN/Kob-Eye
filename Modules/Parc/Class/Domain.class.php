@@ -7,19 +7,24 @@ class Domain extends genericClass {
 	/**
 	 * Force la vérification avant enregistrement
 	 * @param	boolean	Enregistrer aussi sur LDAP
-	 * @return	void
+	 * @return	bool void
 	 */
 	public function Save( $synchro = true ) {
 		$first = ($this->Id == 0);
 		parent::Save();
 		// Forcer la vérification
-		if(!$this->_isVerified) $this->Verify( $synchro );
+		$this->Verify( $synchro );
 		// Enregistrement si pas d'erreur
 		if($this->_isVerified) {
 			parent::Save();
 			if ($this->updateOnSave)
 				$this->AutoGenSubDomains();
-		}
+			//mise à jour des serveur dns
+            $pxs = Sys::getData('Parc','Server/Dns=1');
+            foreach ($pxs as $px) {
+                $px->callLdap2Service();
+            }
+        }
 		return true;
 	}
 
@@ -51,9 +56,9 @@ class Domain extends genericClass {
 	/**
 	 * Verification des erreurs possibles
 	 * @param	boolean	Verifie aussi sur LDAP
-	 * @return	Verification OK ou NON
+	 * @return	bool Verification OK ou NON
 	 */
-	public function Verify( $synchro = true ) {
+	public function Verify( $synchro = false ) {
 
 		if(parent::Verify()) {
 
@@ -166,7 +171,7 @@ class Domain extends genericClass {
 		$entry['dnsadminmailbox'] = 'postmaster.' . $this->Url . '.';
 		if (!$new){
 			$sd = Sys::$Modules["Parc"]->callData("Domain/".$this->Id."/NS/Nom=NS:1",false,0,1);
-			if (is_array($sd[0])){
+			if (isset($sd[0])&&is_array($sd[0])){
 				$sd[0] = genericClass::createInstance("Parc",$sd[0]);
 				$ns = $sd[0]->getParents("Server");
 				if (isset($ns[0])&&is_object($ns[0]))
@@ -180,9 +185,12 @@ class Domain extends genericClass {
         $entry['dnsminimum'] = $this->TTLMin ?  $this->TTLMin : 60;
         $entry['dnsttl'] =  $this->TTL ?  $this->TTL : 86400;
 
+        //temp
+        $entry['dnsexpire'] = 1209600;
+
 		if($new) {
 			$entry['dnsclass'] = 'IN';
-			$entry['dnsexpire'] = 604800;
+			$entry['dnsexpire'] = 1209600;
 			$entry['dnsrefresh'] = 21600;
 			$entry['dnsretry'] = 3600;
 			$entry['dnsserial'] = date('Ymd01');
@@ -233,7 +241,7 @@ class Domain extends genericClass {
 	 */
 	private function getKEServer() {
 		if(!isset($this->_KEServer)||!is_object($this->_KEServer)) {
-			$Tab = Sys::$Modules["Parc"]->callData('Parc/Server/1', "", 0, 1);
+			$Tab = Sys::$Modules["Parc"]->callData('Parc/Server/1', "", 0, 1,null,null,null,null,true);
 			$this->_KEServer = genericClass::createInstance('Parc', $Tab[0]);
 		}
 		return $this->_KEServer;
@@ -330,7 +338,7 @@ class Domain extends genericClass {
 		if (is_array($conf['MAIL_SERVER'])) {
 		    if(isset($conf['MAIL_SERVER']['TYPE'])){
                 //test existence
-                $e = Sys::$Modules['Parc']->callData('Domain/'.$this->Id.'/'.$conf['MAIL_SERVER']['TYPE'].'/Nom='.$conf['MAIL_SERVER']['CN'],false,0,1,'DESC','Id','COUNT(*)');
+                $e = Sys::$Modules['Parc']->callData('Domain/'.$this->Id.'/'.$conf['MAIL_SERVER']['TYPE'].'/Dnscname='.$conf['MAIL_SERVER']['DNSCNAME'],false,0,1,'DESC','Id','COUNT(*)');
                 if (!$e[0]['COUNT(*)']){
                     $KEObj = genericClass::createInstance('Parc', $conf['MAIL_SERVER']['TYPE']);
                     $KEObj->Nom = $conf['MAIL_SERVER']['CN'];
@@ -342,7 +350,7 @@ class Domain extends genericClass {
                 }
             } else{
 		        foreach($conf['MAIL_SERVER'] as $ms){
-                    $e = Sys::$Modules['Parc']->callData('Domain/'.$this->Id.'/'.$ms['TYPE'].'/Nom='.$ms['CN'],false,0,1,'DESC','Id','COUNT(*)');
+                    $e = Sys::$Modules['Parc']->callData('Domain/'.$this->Id.'/'.$ms['TYPE'].'/Dnscname='.$ms['DNSCNAME'],false,0,1,'DESC','Id','COUNT(*)');
                     if (!$e[0]['COUNT(*)']){
                         $KEObj = genericClass::createInstance('Parc', $ms['TYPE']);
                         $KEObj->Nom = $ms['CN'];

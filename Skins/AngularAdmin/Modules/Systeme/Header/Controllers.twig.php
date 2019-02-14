@@ -18,10 +18,12 @@ foreach (Sys::$User->Menus as $m){
                 //surcharge de controller
                 if (!isset($info['ObjectType'])) {
                     $tmp['overload'] = $info['Query'] . '/Controllers?Chemin=' . $info['Query'] . '/Controllers&Url=' . $m->Url . $menu->Url;
+					$tmp['identifier'] = $m->Url . $menu->Url;
                 } else {
                     $tmp['overload'] = $info['Module'] . '/' . $info['ObjectType'] . '/Controllers?Chemin=' . $info['Module'] . '/' . $info['ObjectType'] . '/Controllers&Url=' . $m->Url . $menu->Url;
-                }
-                $tmp['identifier'] = $info['Module'] . $info['ObjectType'];
+					$tmp['identifier'] = $info['Module'] . $info['ObjectType'];
+				}
+                
                 $vars["controllers"][$tmp['identifier']] = $tmp;
             } else if ($info['TypeSearch'] == "Child") {
                 $tmp['identifier'] = $info['Module'] . $info['ObjectType'];
@@ -34,7 +36,17 @@ foreach (Sys::$User->Menus as $m){
                 $obj = $o->getObjectClass();
                 $tmp['description'] = $o->getDescription();
                 $tmp['Interfaces'] = $obj->getInterfaces();
+                $tmp['filters'] = $o->getCustomFilters();
                 $tmp['childrenelements'] = $obj->getChildElements();
+                $tmp['searchOrders'] = $o->getSearchOrder();
+                foreach($tmp['searchOrders'] as $so){
+                    if(isset($so['list']) && $so['list'] == 1) {
+                        $tmp['listSO'] = $so;
+                        break;
+                    }
+                }
+                if(!isset($tmp['listSO'])) $tmp['listSO'] = $tmp['searchOrders'][0];
+
 
                 for ($i = 0; $i < sizeof($tmp['childrenelements']); $i++) {
                     $child = $tmp['childrenelements'][$i];

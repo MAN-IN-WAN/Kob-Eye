@@ -3,7 +3,7 @@
     <!-- Dashboard -->
     <div class="dashboard-container">
         <div class="row">
-            <a class="col-xl-3 col-lg-6 col-sm-6 col-xs-12" href="#/Documents/Contrats">
+            {#<a class="col-xl-3 col-lg-6 col-sm-6 col-xs-12" href="#/Documents/Contrats">
                 <div class="widget widget-seven background-success">
                     <div class="widget-body">
                         <div href="javascript: void(0);" class="widget-body-inner">
@@ -15,7 +15,25 @@
                         </div>
                     </div>
                 </div>
-            </a>
+            </a>#}
+            <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
+                <div class="widget widget-seven background-primary">
+                    <div class="carousel-widget-2 carousel slide" data-ride="carousel">
+                        <div class="carousel-inner" role="listbox">
+                            <div class="carousel-item active">
+                                <a href="http://proxy.abtel.fr/mautic/" class="widget-body" target="_blank">
+                                    <h2>
+                                        <i class="icmn-mail"></i> Mautic
+                                    </h2>
+                                    <p>
+                                        Gestionnaire de newsletter.
+                                    </p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <a class="col-xl-3 col-lg-6 col-sm-6 col-xs-12" href="#/Cloud/Domaines">
                 <div class="widget widget-seven background-default">
                     <div class="widget-body">
@@ -433,9 +451,11 @@
 
             ///////////////////////////////////////////////////////////
             // CALENDAR
+            var date = new Date();
+            var now = date.toISOString();
             $('.example-calendar-block').fullCalendar({
                 //aspectRatio: 2,
-                height: 450,
+                locale: 'fr',
                 header: {
                     left: 'prev, next',
                     center: 'title',
@@ -447,7 +467,24 @@
                     prevYear: 'none fa fa-arrow-left',
                     nextYear: 'none fa fa-arrow-right'
                 },
-                editable: true,
+                buttonText: {
+                    today:    'Aujourdh\'ui',
+                    month:    'Mois',
+                    week:     'Semaine',
+                    day:      'Jour',
+                    list:     'Liste'
+                },
+                businessHours: {
+                    // days of week. an array of zero-based day of week integers (0=Sunday)
+                    dow: [  1, 2, 3, 4, 5  ], // Monday - Thursday
+
+                    start: '08:00', // a start time (10am in this example)
+                    end: '18:00', // an end time (6pm in this example)
+                },
+                nowIndicator: true,
+                weekNumbers: true,
+                weekNumbersWithinDays:true,
+                Actionable: true,
                 eventLimit: true, // allow "more" link when too many events
                 viewRender: function(view, element) {
                     if (!cleanUI.hasTouch) {
@@ -457,15 +494,13 @@
                         });
                     }
                 },
-                defaultDate: '2017-04-26',
-                events: [
-                ],
                 eventClick: function(calEvent, jsEvent, view) {
                     if (!$(this).hasClass('event-clicked')) {
                         $('.fc-event').removeClass('event-clicked');
                         $(this).addClass('event-clicked');
                     }
-                }
+                },
+                defaultDate: now
             });
 
             ///////////////////////////////////////////////////////////

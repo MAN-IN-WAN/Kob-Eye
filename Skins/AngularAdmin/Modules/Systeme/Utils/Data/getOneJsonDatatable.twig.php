@@ -5,10 +5,16 @@ $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $vars['fields'] = $o->getElementsByAttribute('fiche|form','',true);
 $context = (isset($_GET['context']))?$_GET['context']:'default';
 //souscription au push
-Event::registerPush($info['Module'],$info['ObjectType'],$info['ObjectType'],'~',0,1,$context);
+
 //requete
 $vars['row'] = Sys::getOneData($info['Module'],$vars['Query']);
-if (!$vars['row'])return;
+if (!$vars['row']){
+    die("{}");
+}
+Event::registerPush($info['Module'],$info['ObjectType'],$info['ObjectType'],'~',0,1,$context,$vars['row']->Id);
+
+
+
 $vars['row']->label = $vars['row']->getFirstSearchOrder();
 $uc = Sys::getOneData('Systeme','User/'.$vars['row']->userCreate);
 $ue = Sys::getOneData('Systeme','User/'.$vars['row']->userEdit);
@@ -18,6 +24,7 @@ else $vars['row']->userCreateName = 'inconnu';
 if (is_object($ue))
     $vars['row']->userEditName = $ue->Login;
 else $vars['row']->userEditName = 'inconnu';
+
 foreach ($vars['fields'] as $f){
     if ($f['type']=='date'){
         //transformation des timestamps en format js
@@ -67,7 +74,7 @@ foreach ($vars['fields'] as $f){
         //recherche de sa valeur
         $str = explode('::',$f['query']);
         $qry = explode('/',$str[0],2);
-        $val = Sys::getOneData($qry[0],$qry[1].'/'.$vars['row']->{$f['name']});
+        $val = Sys::getOneData($qry[0],$qry[1].'/'.$str[1].'='.$vars['row']->{$f['name']});
         $vars['row']->{$f['name'].'Label'} = $val->getFirstSearchOrder();
     }else $vars['row']->{$f['name'].'Label'} = '';
 }

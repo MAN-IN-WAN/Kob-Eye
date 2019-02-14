@@ -1,0 +1,21 @@
+
+{% if not MAILSEND %}
+<script type="text/javascript">
+    window.content = '{{ CONTENT | escape('js') }}';
+</script>
+
+<div class="Propriete">
+    <div class="ProprieteTitre">Sujet</div>
+    <div class="ProprieteValeur">&nbsp;
+        <input name="SUBJECT" size="100" ng-init="{{ identifier }}function.args.SUBJECT='{{ SUBJECT }}'" ng-model="{{ identifier }}function.args.SUBJECT"/>
+    </div>
+</div>
+<div class="Propriete">
+    <div class="ProprieteTitre">Message : </div>
+    <div class="ProprieteValeur">&nbsp;
+        <textarea name="CONTENT" cols="30" lines="15" style="width:95%;height:200px;" ng-init="{{ identifier }}function.args.CONTENT = getExternal('content');" ng-model="{{ identifier }}function.args.CONTENT">
+        </textarea>
+    </div>
+</div>
+<input type="hidden" name="MAILSEND" ng-init="{{ identifier }}function.args.MAILSEND = 'Envoyer'" ng-model="{{ identifier }}function.args.MAILSEND"/>
+{% endif %}

@@ -420,7 +420,7 @@ class mysqlDriver extends ObjectClass{
 	//Execution d une requete SQL
 	static function executeSql($O,$sql,$type='SELECT',$GroupBy=""){
 		if (empty($sql))return;
-//if(strpos($sql,'Classe') !== false) klog::l(">>>>>>>>>>>>>>>>>".$sql);
+//if(strpos($sql,'Reservation') !== false) klog::l(">>>>>>>>>>>>>>>>>".$sql);
 		$GLOBALS["Systeme"]->connectSQL();
 		$i=false;
         $GLOBALS["Chrono"]->start("SQL");
@@ -439,7 +439,7 @@ class mysqlDriver extends ObjectClass{
 			elseif (DEBUG_MYSQL>=KError::$INFO) KError::Set('SQL INFO '.Module::$LAST_QUERY,$sql,KError::$INFO);
 		}
 		if (DEBUG_ALL_BDD&&$Er[0]!="00000")echo "\r\nSQL ERROR ".Module::$LAST_QUERY."<br />\r\n".$sql."<br />\r\n".$Er[2]."<br />\r\n-------------------------------<br />\r\n";
-		//if ($O->Module=="Products"&&$O->titre=="Produit")echo "\r\nMYSQL DEBUG <br />\r\n".$sql."<br />\r\n".$Er[2]."<br />\r\n-------------------------------<br />\r\n";
+		//if ($O->Module=="Parc"&&$O->titre=="Tache")echo "\r\nMYSQL DEBUG <br />\r\n".$sql."<br />\r\n".$Er[2]."<br />\r\n-------------------------------<br />\r\n";
         //if ($O->Module=="Systeme"&&$O->titre=="Group")echo "\r\nSQL ERROR ".Module::$LAST_QUERY."<br />\r\n".$sql."<br />\r\n".$Er[2]."<br />\r\n-------------------------------<br />\r\n";
 		//if (DEBUG_ALL_BDD&&$Er[0]!="00000") Klog::l("\r\nMYSQL DEBUG <br />\r\n".Module::$LAST_QUERY."<br />\r\n-------------------------------<br />\r\n");
 		if (AUTO_COMPLETE_LANG&&$GLOBALS["Systeme"]->CurrentLanguage!=$GLOBALS["Systeme"]->DefaultLanguage&&!Sys::$User->Admin){

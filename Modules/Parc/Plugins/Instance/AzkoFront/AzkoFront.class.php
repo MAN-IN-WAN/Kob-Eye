@@ -35,6 +35,10 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
         <Directory /home/'.$host->NomLDAP.'/azkocms_medias/>
             require all granted
         </Directory>';
+        $ftps = $host->getChildren('Ftpuser');
+        foreach ($ftps as $ftp){
+            $ftp->Delete();
+        }
         $apache->Save();
     }
 
@@ -45,7 +49,7 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
     public function createInstallTask(){
         //gestion depuis le plugin
         $version = VersionLogiciel::getLastVersion('AzkoFront',$this->_obj->Type);
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Installation de la version '.$version->Version.' d\'AzkoFront sur l\'instance ' . $this->_obj->Nom;
         $task->TaskModule = 'Parc';
@@ -57,14 +61,14 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
         $task->addParent($host);
         $task->addParent($host->getOneParent('Server'));
         $task->Save();
-        return true;
+        return array('task'=>$task);
     }
     /**
      * installAzkoBack
      * Fonction d'installation ou de mise à jour de secib web
      * @param Object Tache
      */
-    public function installSoftware($task = null){
+    public function installSoftware($task){
         $host = $this->_obj->getOneParent('Host');
         $bdd = $host->getOneChild('Bdd');
         $mysqlsrv = $bdd->getOneParent('Server');
@@ -73,18 +77,18 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
         if (!is_object($version))throw new Exception('Pas de version disponible pour l\'app AzkoFront Type '.$this->_obj->Type);
         try {
             //définition des droits sur la base
-            $act = $this->_obj->createActivity('Définition des droits spécifiques sql', 'Info', $task);
+            $act = $task->createActivity('Définition des droits spécifiques sql', 'Info');
             $db = new PDO('mysql:host=' . $mysqlsrv->InternalIP . ';dbname=' . $bdd->Nom, $mysqlsrv->SshUser, $mysqlsrv->SshPassword, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
             $db->query("SET AUTOCOMMIT=1");
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $db->query("GRANT SELECT ON `azkocms_common`.* TO `".$host->Nom."` @'%';");
             $act->Terminate(true);
             //Installation des fichiers
-            $act = $this->_obj->createActivity('Suppression du dossier www', 'Info', $task);
+            $act = $task->createActivity('Suppression du dossier www', 'Info');
             $out = $apachesrv->remoteExec('rm -Rf /home/' . $host->NomLDAP . '/www');
             $act->addDetails($out);
             $act->Terminate(true);
-            $act = $this->_obj->createActivity('Initialisation du git clone', 'Info', $task);
+            $act = $task->createActivity('Initialisation du git clone', 'Info');
             $cmd = 'cd /home/' . $host->NomLDAP . '/ && git clone '.$version->GitUrl.' www';
             if (!empty($version->GitBranche))
                 $cmd.=' -b '.$version->GitBranche;
@@ -92,7 +96,7 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
             $act->addDetails('cd /home/' . $host->NomLDAP . '/ && git clone '.$version->GitUrl.' www');
             $act->addDetails($out);
             $act->Terminate(true);
-            $act = $this->_obj->createActivity('Création du fichier de config', 'Info', $task);
+            $act = $task->createActivity('Création du fichier de config', 'Info');
             $cmd = 'echo "[' . $host->NomLDAP . ']" > /home/' . $host->NomLDAP . '/www/config.ini';
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
@@ -106,14 +110,14 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($out);
             $act->Terminate(true);
-            $act = $this->_obj->createActivity('Modification des droits', 'Info', $task);
+            $act = $task->createActivity('Modification des droits', 'Info');
             $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . '/www -R';
             $act->addDetails($cmd);
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($out);
             $act->Terminate(true);
             //creation et montage des dossier
-            $this->createAndMountFolders($apachesrv,$host);
+            $this->createAndMountFolders($apachesrv,$host,$task);
             //changement du statut de l'instance
             $this->_obj->setStatus(2);
             $this->_obj->CurrentVersion = $version;
@@ -129,9 +133,9 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
      * createAndMountFolders
      * creation et montage des dossiers skins et medias
      */
-    public function createAndMountFolders($apachesrv,$host,$task=null) {
+    public function createAndMountFolders($apachesrv,$host,$task) {
         try {
-            $act = $this->_obj->createActivity('Creation des dossiers skins et media et montage nfs sur '.$apachesrv->Nom, 'Info', $task);
+            $act = $task->createActivity('Creation des dossiers skins et media et montage nfs sur '.$apachesrv->Nom, 'Info');
             if (!$apachesrv->folderExists('/home/' . $host->NomLDAP . '/azkocms_medias')) {
                 $cmd = 'mkdir /home/' . $host->NomLDAP . '/azkocms_medias';
                 $act->addDetails($cmd);
@@ -155,19 +159,33 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
                 $act->addDetails($out);
                 $act->Terminate(true);
             }// else $apachesrv->remoteExec('for file in $(ls /home/' . $host->NomLDAP . '/); do mountpoint -q /home/' . $host->NomLDAP . '/$file && umount -l /home/' . $host->NomLDAP . '/$file; done ');
-            $cmd = 'mount -t nfs 192.168.200.4:/home/azkoback/azkocms_skins /home/' . $host->NomLDAP . '/azkocms_skins';
+            $cmd = 'mountpoint -q /home/'.$host->NomLDAP.'/azkocms_skins';
             $act->addDetails($cmd);
-            $out = $apachesrv->remoteExec($cmd);
-            $act->addDetails($out);
-            $act->Terminate(true);
-            $cmd = 'mount -t nfs 192.168.200.4:/home/azkoback/azkocms_medias /home/' . $host->NomLDAP . '/azkocms_medias';
+            try {
+                $apachesrv->remoteExec($cmd);
+            }catch (Exception $e){
+                $cmd = 'mount -t nfs 192.168.200.4:/home/azkoback/azkocms_skins /home/' . $host->NomLDAP . '/azkocms_skins';
+                $act->addDetails($cmd);
+                $out = $apachesrv->remoteExec($cmd);
+                $act->addDetails($out);
+                $act->Terminate(true);
+            }
+            $cmd = 'mountpoint -q /home/'.$host->NomLDAP.'/azkocms_medias && echo 1';
             $act->addDetails($cmd);
-            $out = $apachesrv->remoteExec($cmd);
-            $act->addDetails($out);
-            $act->Terminate(true);
+            try {
+                $apachesrv->remoteExec($cmd);
+            }catch (Exception $e){
+                $cmd = 'mount -t nfs 192.168.200.4:/home/azkoback/azkocms_medias /home/' . $host->NomLDAP . '/azkocms_medias';
+                $act->addDetails($cmd);
+                $out = $apachesrv->remoteExec($cmd);
+                $act->addDetails($out);
+                $act->Terminate(true);
+            }
+            return true;
         }catch (Exception $e){
             $act->addDetails('ERREUR: '.$e->getMessage());
             $act->Terminate(false);
+            return false;
         }
     }
     /**
@@ -177,7 +195,7 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
     public function createUpdateTask($orig=null){
         //gestion depuis le plugin
         $version = VersionLogiciel::getLastVersion('AzkoFront',$this->_obj->Type);
-        $task = genericClass::createInstance('Parc', 'Tache');
+        $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Mise à jour en version '.$version->Version.' d\'AzkoFront sur l\'instance ' . $this->_obj->Nom;
         $task->TaskModule = 'Parc';
@@ -192,6 +210,7 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
         $task->Save();
         //changement du statut de l'instance
         $this->_obj->setStatus(3);
+        return array('task'=>$task);
     }
 
     /**
@@ -200,59 +219,76 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
      * @param Object Tache
      * @return bool
      */
-    public function updateSoftware($task = null){
+    public function updateSoftware($task){
         $host = $this->_obj->getOneParent('Host');
         $apachesrv = $host->getOneParent('Server');
         $version = VersionLogiciel::getLastVersion('AzkoFront',$this->_obj->Type);
         if (!is_object($version))throw new Exception('Pas de version disponible pour l\'app AzkoFront Type '.$this->_obj->Type);
         try {
-            $GLOBALS['Chrono']->start('AZKOFRONT: git init');
-            $act = $this->_obj->createActivity('Initialisation du git clone et connexion à '.$apachesrv->Nom, 'Info', $task);
-            $cmd = 'cd /home/' . $host->NomLDAP . '/www && git remote -v';
-            $act->addDetails($cmd);
-            $out = $apachesrv->remoteExec($cmd);
-            $act->addDetails($out);
-            if (!empty($out)) {
-                $cmd = 'cd /home/' . $host->NomLDAP . '/www && git remote rm origin';
+            if ($version->GitReset) {
+                $GLOBALS['Chrono']->start('AZKOFRONT: git init');
+                $act = $task->createActivity('Initialisation du git clone et connexion à ' . $apachesrv->Nom, 'Info');
+                $cmd = 'cd /home/' . $host->NomLDAP . '/www && git remote -v';
                 $act->addDetails($cmd);
                 $out = $apachesrv->remoteExec($cmd);
                 $act->addDetails($out);
+                if (!empty($out)) {
+                    $cmd = 'cd /home/' . $host->NomLDAP . '/www && git remote rm origin';
+                    $act->addDetails($cmd);
+                    $out = $apachesrv->remoteExec($cmd);
+                    $act->addDetails($out);
+                }
+                $cmd = 'cd /home/' . $host->NomLDAP . '/www && git remote add origin ' . $version->GitUrl;
+                $act->addDetails($cmd);
+                $out .= $apachesrv->remoteExec($cmd);
+                $act->addDetails($out);
+                $GLOBALS['Chrono']->stop('AZKOFRONT: git init');
+                $GLOBALS['Chrono']->start('AZKOFRONT: git fetch');
+                $cmd = 'cd /home/' . $host->NomLDAP . '/www && git fetch';
+                $act->addDetails($cmd);
+                $out = $apachesrv->remoteExec($cmd);
+                $act->addDetails($out);
+                if (!empty($version->GitBranche))
+                    $cmd = 'cd /home/' . $host->NomLDAP . '/www && git reset --hard origin/' . $version->GitBranche;
+                else $cmd = 'cd /home/' . $host->NomLDAP . '/www && git reset --hard origin/master';
+                $act->addDetails($cmd);
+                $out .= $apachesrv->remoteExec($cmd);
+                $act->addDetails($out);
+                $act->Terminate(true);
+                $GLOBALS['Chrono']->stop('AZKOFRONT: git fetch');
+                $GLOBALS['Chrono']->start('AZKOFRONT: edit rights');
+                $act = $task->createActivity('Modification des droits', 'Info');
+                $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . '/www -R';
+                $act->addDetails($cmd);
+                $out = $apachesrv->remoteExec($cmd);
+                $act->addDetails($out);
+                $act->Terminate(true);
+                $GLOBALS['Chrono']->stop('AZKOFRONT: edit rights');
+                $GLOBALS['Chrono']->start('AZKOFRONT: save instance changes');
+                //changement du statut de l'instance
+                $this->_obj->CurrentVersion = $version->Version;
+                $this->_obj->setStatus(2);
+                if ($task) {
+                    $task->addRetour($GLOBALS['Chrono']->total());
+                }
+                $GLOBALS['Chrono']->stop('AZKOFRONT: save instance changes');
+                return true;
+            }else{
+                $GLOBALS['Chrono']->start('AZKOFRONT: git pull');
+                $act = $task->createActivity('Execution du git pull et connexion à ' . $apachesrv->Nom, 'Info');
+                $cmd = 'cd /home/' . $host->NomLDAP . '/www && git pull ' . $version->GitUrl.' '.$version->GitBranche;
+                $act->addDetails($cmd);
+                $out = $apachesrv->remoteExec($cmd);
+                $act->addDetails($out);
+                $act->Terminate(true);
+                $GLOBALS['Chrono']->stop('AZKOFRONT: git pull');
+                //changement du statut de l'instance
+                $this->_obj->CurrentVersion = $version->Version;
+                $this->_obj->setStatus(2);
+                if ($task) {
+                    $task->addRetour($GLOBALS['Chrono']->total());
+                }
             }
-            $cmd = 'cd /home/' . $host->NomLDAP . '/www && git remote add origin '.$version->GitUrl;
-            $act->addDetails($cmd);
-            $out .= $apachesrv->remoteExec($cmd);
-            $act->addDetails($out);
-            $GLOBALS['Chrono']->stop('AZKOFRONT: git init');
-            $GLOBALS['Chrono']->start('AZKOFRONT: git fetch');
-            $cmd = 'cd /home/' . $host->NomLDAP . '/www && git fetch';
-            $act->addDetails($cmd);
-            $out = $apachesrv->remoteExec($cmd);
-            $act->addDetails($out);
-            if (!empty($version->GitBranche))
-                $cmd = 'cd /home/' . $host->NomLDAP . '/www && git reset --hard origin/'.$version->GitBranche;
-            else $cmd = 'cd /home/' . $host->NomLDAP . '/www && git reset --hard origin/master';
-            $act->addDetails($cmd);
-            $out .= $apachesrv->remoteExec($cmd);
-            $act->addDetails($out);
-            $act->Terminate(true);
-            $GLOBALS['Chrono']->stop('AZKOFRONT: git fetch');
-            $GLOBALS['Chrono']->start('AZKOFRONT: edit rights');
-            $act = $this->_obj->createActivity('Modification des droits', 'Info', $task);
-            $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . '/www -R';
-            $act->addDetails($cmd);
-            $out = $apachesrv->remoteExec($cmd);
-            $act->addDetails($out);
-            $act->Terminate(true);
-            $GLOBALS['Chrono']->stop('AZKOFRONT: edit rights');
-            $GLOBALS['Chrono']->start('AZKOFRONT: save instance changes');
-            //changement du statut de l'instance
-            $this->_obj->CurrentVersion = $version->Version;
-            $this->_obj->setStatus(2);
-            if ($task){
-                $task->addRetour($GLOBALS['Chrono']->total());
-            }
-            $GLOBALS['Chrono']->stop('AZKOFRONT: save instance changes');
-            return true;
         }catch (Exception $e){
             $act->addDetails('Erreur: '.$e->getMessage());
             $act->Terminate(false);
@@ -262,13 +298,13 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
     /**
      * checkState
      */
-    public function checkState($task = null){
+    public function checkState($task){
         $host = $this->_obj->getOneParent('Host');
         $apachesrv = $host->getOneParent('Server');
         try {
             $GLOBALS['Chrono']->start('AZKOFRONT: checkState check mount');
-            $act = $this->_obj->createActivity('Vérification des points de montage '.$apachesrv->Nom, 'Info', $task);
-            $cmd = 'df -h | grep ' . $host->NomLDAP . '/azkocms_ | wc -l';
+            $act = $task->createActivity('Vérification des points de montage '.$apachesrv->Nom.' PID:'.getmypid(), 'Info');
+            $cmd = 'mountpoint -q /home/' . $host->NomLDAP . '/azkocms_medias && mountpoint -q /home/' . $host->NomLDAP . '/azkocms_skins && echo 2';
             $act->addDetails($cmd);
             try {
                 $out = $apachesrv->remoteExec($cmd);
@@ -281,17 +317,21 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
                 $out=0;
             }
             if (intval($out)<2){
-                $act = $this->_obj->createActivity('Montage des dossiers skins et médias sur le serveur '.$apachesrv->Nom, 'Info', $task);
+                $act = $task->createActivity('Montage des dossiers skins et médias sur le serveur '.$apachesrv->Nom.' PID:'.getmypid(), 'Info');
                 try {
-                    $this->createAndMountFolders($apachesrv, $host,$task);
+                    $incident = Incident::createIncident('Les dossiers médias et skins de l\'instance '.$this->_obj->Nom.' ne sont pas montés.','Le code de retour est ',$this->_obj,'FOLDER_MOUNT',$this->_obj->NomInstance,3,false);
+                    if ($this->createAndMountFolders($apachesrv, $host,$task)) {
+                        $incident = Incident::createIncident('Les dossiers médias et skins de l\'instance '.$this->_obj->Nom.' ne sont pas montés.','Le code de retour est ',$this->_obj,'FOLDER_MOUNT',$this->_obj->NomInstance,3,true);
+                    }
                 }catch (Exception $e){
                     $act->addDetails('ERREUR DE MONTAGE : '.$e->getMessage());
                 }
-            }
+            }else $incident = Incident::createIncident('Les dossiers médias et skins de l\'instance '.$this->_obj->Nom.' ne sont pas montés.','Le code de retour est ',$this->_obj,'FOLDER_MOUNT',$this->_obj->InstanceNom,3,true);
+
 
             $GLOBALS['Chrono']->stop('AZKOFRONT: checkState check mount');
             $GLOBALS['Chrono']->start('AZKOFRONT: checkState check software');
-            $act = $this->_obj->createActivity('Vérification de l\'installation du logciel' , 'Info', $task);
+            $act = $task->createActivity('Vérification de l\'installation du logciel' , 'Info');
             $cmd = 'ls -lah /home/'.$host->NomLDAP.'/www/azkocms | wc -l';
             $act->addDetails($cmd);
             $out = $apachesrv->remoteExec($cmd);
@@ -314,6 +354,13 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
             $act->Terminate(false);
             throw new Exception($e->getMessage());
         }
+    }
+    /**
+     * rewriteConfig
+     */
+    public function rewriteConfig() {
+        return true;
+
     }
 
 }

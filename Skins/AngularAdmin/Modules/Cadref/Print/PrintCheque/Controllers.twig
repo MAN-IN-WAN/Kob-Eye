@@ -1,0 +1,32 @@
+{# printCheque #}
+app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $http, $interval, $routeParams, $http, $window) {
+
+	$scope.obj = {};
+	$scope.obj.CurrentUrl = '{{ Url }}';
+	
+	// appel de function kobeye avec retour objet
+	$scope.{{ identifier }}callMethod = function(obj, name) {
+
+	var {{ identifier }}method = {
+			name: name,
+			query: '{{ module }}/{{ objecttype }}',
+			args : obj,
+			explodeArgs: false,
+			tms : Date.now(),
+		};
+		return $http.post('/{{ url }}/Method.json',{"Func":JSON.stringify({{ identifier }}method)});
+	}
+	
+	$scope.printFunction = function(obj) {
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'{{ function }}');
+		ajax.success(
+			function(data) {
+				$window.open(data.data.pdf,'_blank');
+			}
+		).error(
+			function() {
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			}
+		);
+	}
+});

@@ -1,0 +1,68 @@
+{# fiche printPresence #}
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean %} 
+<div class="page-content-inner">
+    <section class="panel">
+        <div class="panel-heading" style="padding-bottom:10px; padding-top:10px">
+            <h4>
+                {{ CurrentMenu.Titre }}
+            </h4>
+        </div>
+        <div class="row" style="height:20px"></div>
+		<div class="panel-body">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="panel panel-with-borders m-b-0">
+                        <div class="panel-body cadref-no-padding">
+							<div class="row">
+								<div class="col-xl-8">
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Première classe") }}
+										</div>
+										<div class="col-md-2">
+											<div class="control-group">
+												<input type="text" class="form-control cadref-input" placeholder="" ng-model="obj.Debut" mask="@.@@.@@.d.d" onkeyup="this.value = this.value.toUpperCase();"/>
+											</div>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Dernière classe") }}
+										</div>
+										<div class="col-md-2">
+											<div class="control-group">
+												<input type="text" class="form-control cadref-input" placeholder="" ng-model="obj.Fin" mask="@.@@.@@.d.d" onkeyup="this.value = this.value.toUpperCase();"/>
+											</div>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Mois") }}
+										</div>
+										<div class="col-md-2">
+											<select class="form-control cadref-input" ng-model="obj.Mois">
+												{% for v in mois %}
+													<option value="{{ v }}">{{ v }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
+									<div class="row">
+										<div class="col-md-2">
+										</div>
+										<div class="col-md-2">
+											<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="printFunction()">Imprimer</button>
+										</div>
+									</div>
+								</div>                            
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+    </section>
+</div>
+

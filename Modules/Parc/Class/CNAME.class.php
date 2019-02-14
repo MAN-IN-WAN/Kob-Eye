@@ -13,14 +13,14 @@ class CNAME extends genericClass {
 	    $as = $pa->getChildren('Subdomain');
 	    $aaas = $pa->getChildren('AAA');
 	    foreach ($as as $a){
-            $pref = explode(':',$a->Url)[1];
+            $pref = $a->Url;
             if($pref == $this->Dnsdomainname){
                 $this->addError(array('Message' => "Une entrée A existe déjà pour ce prefixe.", 'Prop' => ''));
                 return false;
             }
         }
         foreach ($aaas as $aaa){
-            $pref = explode(':',$aaa->Url)[1];
+            $pref = $aaa->Url;
             if($pref == $this->Dnsdomainname){
                 $this->addError(array('Message' => "Une entrée AAAA existe déjà pour ce prefixe.", 'Prop' => ''));
                 return false;
@@ -29,7 +29,7 @@ class CNAME extends genericClass {
 
 		parent::Save();
 		// Forcer la vérification
-		if(!$this->_isVerified) $this->Verify( $synchro );
+		$this->Verify( $synchro );
 		// Enregistrement si pas d'erreur
         if($this->_isVerified) {
             parent::Save();
@@ -43,12 +43,14 @@ class CNAME extends genericClass {
 	 * @param	boolean	Verifie aussi sur LDAP
 	 * @return	Verification OK ou NON
 	 */
-	public function Verify( $synchro = true ) {
+	public function Verify( $synchro = false ) {
         $pa = $this->getOneParent('Domain');
         $as = $pa->getChildren('Subdomain');
         $aaas = $pa->getChildren('AAA');
         foreach ($as as $a){
-            $pref = explode(':',$a->Url)[1];
+            $pref = explode(':',$a->Url);
+            if (isset($pref[1]))$pref = $pref[1];
+            else $pref = $pref[0];
             if($pref == $this->Dnsdomainname){
                 $this->addError(array('Message' => "Une entrée A existe déjà pour ce prefixe.", 'Prop' => ''));
                 $this->_isVerified = false;
@@ -63,7 +65,7 @@ class CNAME extends genericClass {
                 return false;
             }
         }
-
+        $this->Nom = 'CNAME:'.$this->Dnsdomainname;
 
 		if(parent::Verify()) {
 
@@ -211,7 +213,7 @@ class CNAME extends genericClass {
 	 */
 	private function getKEServer() {
 		if(!isset($this->_KEServer)||!is_object($this->_KEServer)) {
-			$Tab = Sys::$Modules["Parc"]->callData('Parc/Server/1', "", 0, 1);
+			$Tab = Sys::$Modules["Parc"]->callData('Parc/Server/1', "", 0, 1,null,null,null,null,true);
 			$this->_KEServer = genericClass::createInstance('Parc', $Tab[0]);
 		}
 		return $this->_KEServer;

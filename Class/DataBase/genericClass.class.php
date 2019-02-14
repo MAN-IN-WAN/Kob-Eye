@@ -98,7 +98,7 @@ class genericClass extends Root {
 			return (!$Nom && isset($this -> {$Key})) ? $this -> {$Key} : $Key;
 		}
 		//On verifie si c est un mot reserve
-		if ($Data == "Id")
+		if ($Data == "Id" && isset($this->Id))
 			return $this -> Id;
 		//Sinon, on recherche le type: si c'est une clef etrangere, on recherche les enfants
 		/*		echo "---------------$Data--------------\r\n";
@@ -762,7 +762,10 @@ class genericClass extends Root {
 	 * @return Array of property
 	 */
 	public function getFirstSearchOrder() {
-		return $this -> Get("S1");
+		$out = $this -> Get("S1");
+		$out = str_replace("\n",'',$out);
+        $out = str_replace("\r",'',$out);
+        return $out;
 	}
 
 	/**
@@ -952,6 +955,9 @@ class genericClass extends Root {
 			foreach ($Funcs as $Name => $F) {
 				$Temp = $F;
 				$Temp["Nom"] = $Name;
+				if (isset($Temp['confirm']))
+                    $Temp["needConfirm"] = $Temp["confirm"];
+                $Temp["needConfirm"] = isset($Temp["needConfirm"]) ? $Temp["needConfirm"]:0;
 				$Functions[] = $Temp;
 			}
 		return $Functions;
@@ -1367,7 +1373,7 @@ class genericClass extends Root {
 		$Ie = explode('/', $Q, 2);
         if (!is_object(Sys::$Modules[$Ie[0]])){
             print_r($Q);
-            die("AddParent: Mauvais format ");
+            throw new Exception("AddParent: Mauvais format ");
         }
         $I = Sys::$Modules[$Ie[0]]->splitQuery($Q);
 		if ($I[0]["Type"] == "Child" && sizeof($I) > 1)
@@ -1379,6 +1385,7 @@ class genericClass extends Root {
 			return false;
 		$NbQ = sizeof($ExplQ) - 1;
 		$this -> addFkey($ExplQ[$NbQ - 2], $ExplQ[$NbQ - 1], $ExplQ[$NbQ], 2, $SpeFKey);
+        return $ExplQ;
 	}
 
 	/**
@@ -1408,6 +1415,7 @@ class genericClass extends Root {
 			return false;
 		$NbQ = sizeof($ExplQ) - 1;
 		$this -> addFkey($ExplQ[$NbQ - 2], $ExplQ[$NbQ - 1], $ExplQ[$NbQ], 0,$SpeFKey);
+		return $ExplQ;
 	}
 
 	/**
@@ -1426,6 +1434,7 @@ class genericClass extends Root {
 					$this -> addFKey($Parents[$i] -> Module, $Class, $Parents[$i] -> Id, 0, $SpeFKey);
 				}
 		}
+		return $Class;
 	}
 
 	/**
@@ -1440,6 +1449,8 @@ class genericClass extends Root {
 		$Enfant -> initFromId($Id, $Type);
 		$Enfant -> addFkey($Enfant -> Module, $this -> ObjectType, $this -> Id);
 		$Enfant -> Save();
+
+		return $Enfant;
 	}
 
 	/**
@@ -1454,6 +1465,8 @@ class genericClass extends Root {
 		$Enfant -> initFromId($Id, $Type);
 		$Enfant -> addFkey($this -> Module, $this -> ObjectType, $this -> Id, 0);
 		$Enfant -> Save();
+
+        return $Enfant;
 	}
 
 	/**
@@ -1470,6 +1483,8 @@ class genericClass extends Root {
 				$Childs[$i] -> addFKey($this -> Module, $this -> ObjectType, $this -> Id, 0);
 				$Childs[$i] -> Save();
 			}
+
+        return $Class;
 	}
 
 	/**
@@ -2401,7 +2416,7 @@ class genericClass extends Root {
 	 * getALerts
 	 * recupere les alertes pour l'objet
 	 */
-	 public function getAlerts($lastAlert, $time) {
+	 public function getAlerts($lastAlert, $time=0) {
 	 	return null;
 	 }
 	 
@@ -2685,7 +2700,8 @@ class genericClass extends Root {
 	 * @return	void
 	 */
 	function SaveKeywords($secondpass = false) {
-
+	    //On vide le cache du module systeme pour avoir les dernières données de page et non pas celles en cache
+        Sys::$Modules['Systeme'] -> Db -> clearLiteCache();
 		//On recherche les pages
 		$tls = $this->getPages();
 
@@ -2968,7 +2984,8 @@ class genericClass extends Root {
         $this->label = $this->getFirstSearchOrder();
         $o = new stdClass();
         $o->id = $this->Id;
-        $uc = Sys::getOneData('Systeme','User/'.$this->userCreate);
+        $o->Id = $this->Id;
+        /*$uc = Sys::getOneData('Systeme','User/'.$this->userCreate);
         $ue = Sys::getOneData('Systeme','User/'.$this->userEdit);
         if (is_object($uc))
             $o->userCreateName = $uc->Login;
@@ -2976,7 +2993,7 @@ class genericClass extends Root {
         if (is_object($ue))
             $o->userEditName = $ue->Login;
         else $o->userEditName = 'inconnu';
-        $o->_details = "créé le ".date('d/m/Y H:i',$this->tmsCreate )." par ".$o->userCreateName."\nmodifié le ".date('d/m/Y H:i',$this->tmsEdit)." par ".$o->userEditName."";
+        $o->_details = "créé le ".date('d/m/Y H:i',$this->tmsCreate )." par ".$o->userCreateName."\nmodifié le ".date('d/m/Y H:i',$this->tmsEdit)." par ".$o->userEditName."";*/
         $o->create= date('d/m/Y H:i',$this->tmsCreate );
         $o->tmsCreate= $this->tmsCreate;
         $o->tmsEdit= $this->tmsEdit;
@@ -2990,7 +3007,11 @@ class genericClass extends Root {
             switch ($f['type']){
                 case 'date':
                     //transformation des timestamps en format js
-                    $o->{$f['name']} = date('d/m/Y H:i',$this->{$f['name']});
+                    $o->{$f['name']} = date('d/m/Y',isset($this->{$f['name']})&&$this->{$f['name']}>0?$this->{$f['name']}:time());
+                    break;
+                case 'datetime':
+                    //transformation des timestamps en format js
+                    $o->{$f['name']} = date('d/m/Y H:i',isset($this->{$f['name']})&&$this->{$f['name']}>0?$this->{$f['name']}:time());
                     break;
                 case 'boolean':
                     //transformation des timestamps en format js
@@ -3042,5 +3063,17 @@ class genericClass extends Root {
             }
         }
         return $o;
+    }
+
+    public function getDbCount($module, $query){
+	     return Sys::getCount($module, $query);
+    }
+
+    public function getDbData($module, $query, $offset="", $limit="", $orderType="", $orderVar="", $select="", $groupBy="", $noRights = false){
+        return Sys::getData($module, $query, $offset, $limit, $orderType, $orderVar, $select, $groupBy, $noRights);
+    }
+
+    public function getOneDbData($module, $query, $offset="", $limit="", $orderType="", $orderVar="", $select="", $groupBy="", $noRights = false){
+        return Sys::getOneData($module, $query, $offset, $limit, $orderType, $orderVar, $select, $groupBy, $noRights);
     }
 }

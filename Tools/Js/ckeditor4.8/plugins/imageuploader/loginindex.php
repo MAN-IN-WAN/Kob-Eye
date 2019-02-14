@@ -32,8 +32,8 @@ if(isset($_COOKIE['KE_SESSID'])) {
 <title><?php echo $imagebrowser1; ?> :: Fujana Solutions</title>
 
 <!-- Jquery -->
-<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 
 <script>
 </script>
@@ -162,7 +162,7 @@ if(isset($_COOKIE['KE_SESSID'])) {
     <div class="hrNews"></div>
     <p style="text-align:left; font-size:13px; font-family:Verdana, Geneva, sans-serif;">
     <a href="https://twitter.com/fujanasolutions" style="font-weight:bolder; color:#1862A8; text-decoration:none; font-family:Georgia, 'Times New Roman', Times, serif; font-size:14px;">2015 Image Uploader for CKEditor</a><br />
-    <a href="http://imageuploaderforckeditor.altervista.org/" style="text-decoration:underline; color:#484947;">Documentation</a>  <a href="http://imageuploaderforckeditor.altervista.org/support/" style="text-decoration:underline; color:#484947;">FAQ</a></p> 
+    <a href="https://imageuploaderforckeditor.altervista.org/" style="text-decoration:underline; color:#484947;">Documentation</a>  <a href="https://imageuploaderforckeditor.altervista.org/support/" style="text-decoration:underline; color:#484947;">FAQ</a></p>
     <div class="hrNews hrNews2"></div>
 </div>
 </body>

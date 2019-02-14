@@ -12,24 +12,24 @@
     </ul>
 
     <!-- Default Panel -->
-    <section class="panel">
+    <section class="panel" ng-if="displayFiche">
         <div class="panel-heading">
             <div class="pull-right">
                 {% if functions|length > 1 %}
-                    <div class="btn-group  margin-inline" uib-dropdown>
-                        <span id="function-button" type="button" class="btn btn-info  btn-default">Fonctions</span>
-                        <button type="button" class="btn btn-info  btn-default" uib-dropdown-toggle>
+                    <div class="btn-group " uib-dropdown>
+                        <span id="function-button" type="button" class="btn btn-func">Fonctions</span>
+                        <button type="button" class="btn btn-func" uib-dropdown-toggle>
                             <span class="caret"></span>
                             <span class="sr-only">Split button!</span>
                         </button>
                         <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="function-button">
                             {% for fu in functions %}
-                                <li ><a class="dropdown-item" href="javascript: void(0);" ng-click='callFunction(obj,"{{fu.Nom}}","{{fu.title}}","{{fu.type}}")'>{{fu.title}}</a></li>
+                                <li ><a class="dropdown-item" href="javascript: void(0);" ng-click='{{ identifier }}callFunction(obj,"{{fu.Nom}}","{{fu.title}}",{{ fu.needConfirm }})'>{{fu.title}}</a></li>
                             {% endfor %}
                         </ul>
                     </div>
                 {% elseif functions|length == 1 %}
-                    <a href="javascript: void(0);" class="btn btn-primary" ng-click='callFunction(obj,"{{functions.0.Nom}}","{{functions.0.title}}","{{functions.0.type}}")'>{{functions.0.title}}</a>
+                    <a href="javascript: void(0);" class="btn btn-primary" ng-click='{{ identifier }}callFunction(obj,"{{functions.0.Nom}}","{{functions.0.title}}",{{functions.0.needConfirm}})'>{{functions.0.title}}</a>
                 {% endif %}
 
                 {% if operation.edit %}<button type="button" class="btn btn-default btn-warning margin-inline" ng-click="modify(obj)">Modifier</button>{% endif %}
@@ -44,82 +44,86 @@
                     <ng-map center="41,-87" zoom="6"></ng-map>
                 </div>
                 <div class="col-md-12 col-lg-4">
+                {% else %}
+                <div class="col-md-12 col-lg-6">
+                {% endif %}
+                {% for field in fichefields %}
+                    {% if field.type == "progress" or field.type == "pluginconfig" or field.type == "raw" or field.type == "html" or field.type == "text" or field.type == "bbcode" %}
+                    <!-- NE RIEN FAIRE-->
                     {% else %}
-                    <div class="col-md-12 col-lg-6">
-                    {% endif %}
-                    {% for field in fichefields %}
-                        {% if field.type == "progress" or field.type == "pluginconfig" or field.type == "raw" or field.type == "html" or field.type == "text" or field.type == "bbcode" %}
-                        <!-- NE RIEN FAIRE-->
-                        {% else %}
-                        <div class="row  ficheField">
-                            <div class="col-md-5 detail-label">
-                                <label class="form-control-label" for="l0">{% if field.parentDescription is not empty %}{{ field.parentDescription }}{% else %}{{ field.description }}{% endif %}</label>
-                            </div>
-                            <div class="col-md-7 detail-value">
-                                {% if field.type == "price" %}
-                                <span class="label label-warning">{[{ obj.{{ field.name }} | currency:"" }]} €</span>
-                                {% elseif field.type == "image" %}
-                                    <img class="img-responsive" src="{[{ obj.{{ field.name }} }]}.limit.250x40.jpg" {{ field.listDescr }} ng-if="obj.{{ field.name }} "/>
-                                    <img class="img-responsive" src="/Tools/Images/NoPhoto.jpg.limit.250x40.jpg" {{ field.listDescr }} ng-if="!obj.{{ field.name }} "/>
-                                {% elseif field.type == "file" %}
-                                    <a  class="fileLink" href="{[{ obj.{{ field.name }} }]}" title="{[{ obj.{{ field.name }} }]}" target="_blank" >Voir le fichier</a>
-                                {% elseif field.type == "plugin" %}
-                                    <span  class="label label-danger" ng-bind-html="obj.{{ field.name }}"></span>
-                                {% elseif field.type == "float" %}
-                                    <span class="label label-warning">{[{ obj.{{ field.name }}| currency:"" }]}</span>
-                                {% elseif field.type == "extlink" %}
-                                    <a class="btn btn-success btn-xs" href="https://zabbix.abtel.fr/guacamole/#/client/{[{ obj.{{ field.name }} }]}" target="_blank">{{ field.listDescr }}</a>
-                                {% elseif field.type == "int" %}
-                                    {% if field.Values %}
-                                        <select class="form-control" ng-model="obj.{{ field.name }}" disabled="disabled">
-                                            {% for v,k in field.Values %}
-                                                <option value="{{ v }}">{{ k }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    {% else %}
-                                        <span class="label label-primary">{[{ obj.{{ field.name }} }]}</span>
-                                    {% endif %}
-                                {% elseif field.type == "boolean" %}
-                                    {% if field.special == "reverse" %}
-                                        <span class="label label-success" ng-if="!obj.{{ field.name }}"><i class="fa fa-check"></i></span>
-                                        <span class="label label-danger" ng-if="obj.{{ field.name }}"><i class="fa fa-times"></i></span>
-                                    {% else %}
-                                        <span class="label label-success" ng-if="obj.{{ field.name }}"><i class="fa fa-check"></i></span>
-                                        <span class="label label-danger" ng-if="!obj.{{ field.name }}"><i class="fa fa-times"></i></span>
-                                    {% endif %}
-                                {% elseif field.type == "fkey" and field.card == "long" %}
-                                    <a class="btn btn-secondary btn-xs" ng-repeat="(key, value) in obj.{{ field.objectName }}{{ field.name }}label">{[{ value }]}</a>
-                                {% elseif field.type == "fkey" and field.card == "short" %}
-                                    <a class="btn btn-primary btn-xs" href="#/{{ field.link }}/{[{ obj.{{ field.objectName }}{{ field.name }} }]}">{[{ obj.{{ field.objectName }}{{ field.name }}label }]}</a>
-                                {% else %}
-                                    {% if field.Values %}
+                    <div class="row  ficheField  type_{{ field.type }}{{ field.card }}">
+                        <div class="col-md-5 detail-label">
+                            <label class="form-control-label" for="l0">{% if field.parentDescription is not empty %}{{ field.parentDescription }}{% else %}{{ field.description }}{% endif %}</label>
+                        </div>
+                        <div class="col-md-7 detail-value">
+                            {% if field.type == "price" %}
+                            <span class="label label-warning">{[{ obj.{{ field.name }} | currency:"" }]} €</span>
+                            {% elseif field.type == "image" %}
+                                <img class="img-responsive" src="{[{ obj.{{ field.name }} }]}.limit.250x40.jpg" {{ field.listDescr }} ng-if="obj.{{ field.name }} "/>
+                                <img class="img-responsive" src="/Tools/Images/NoPhoto.jpg.limit.250x40.jpg" {{ field.listDescr }} ng-if="!obj.{{ field.name }} "/>
+                            {% elseif field.type == "file" %}
+                                <a  class="fileLink btn btn-small btn-danger" href="{[{ obj.{{ field.name }} }]}" title="{[{ obj.{{ field.name }} }]}" target="_blank" >Voir le fichier</a>
+                            {% elseif field.type == "plugin" %}
+                                <span  class="label label-danger" ng-bind-html="obj.{{ field.name }}"></span>
+                            {% elseif field.type == "float" %}
+                                <span class="label label-warning">{[{ obj.{{ field.name }}| currency:"" }]}</span>
+                            {% elseif field.type == "extlink" %}
+                                <a class="btn btn-success btn-xs" href="https://zabbix.abtel.fr/guacamole/#/client/{[{ obj.{{ field.name }} }]}" target="_blank">{{ field.listDescr }}</a>
+                            {% elseif field.type == "int" %}
+                                {% if field.Values %}
                                     <select class="form-control" ng-model="obj.{{ field.name }}" disabled="disabled">
                                         {% for v,k in field.Values %}
                                             <option value="{{ v }}">{{ k }}</option>
                                         {% endfor %}
                                     </select>
-                                    {% elseif field.query %}
-                                        <span class="btn btn-warning btn-xs" >{[{ obj.{{ field.name }}Label }]}</span>
-                                    {% else %}
-                                        <span  ng-bind-html="obj.{{ field.name }}"></span>
-                                    {% endif %}
+                                {% else %}
+                                    <span class="label label-primary">{[{ obj.{{ field.name }} }]}</span>
                                 {% endif %}
-                            </div>
-                        </div>
-                        {% endif %}
-                        {% if loop.index - loop.revindex0 == 1 or loop.index - loop.revindex0 == 0 %}
-                                </div>
-                            {% if Interfaces.top %}
-                                <div class="col-md-8 col-lg-6">
+                            {% elseif field.type == "boolean" %}
+                                {% if field.special == "reverse" %}
+                                    <span class="label label-success" ng-if="!obj.{{ field.name }}"><i class="fa fa-check"></i></span>
+                                    <span class="label label-danger" ng-if="obj.{{ field.name }}"><i class="fa fa-times"></i></span>
+                                {% else %}
+                                    <span class="label label-success" ng-if="obj.{{ field.name }}"><i class="fa fa-check"></i></span>
+                                    <span class="label label-danger" ng-if="!obj.{{ field.name }}"><i class="fa fa-times"></i></span>
+                                {% endif %}
+                            {% elseif field.type == "fkey" and field.card == "long" %}
+                                <a class="btn btn-secondary btn-xs" ng-repeat="(key, value) in obj.{{ field.objectName }}{{ field.name }}label">{[{ value }]}</a>
+                            {% elseif field.type == "fkey" and field.card == "short" %}
+                                {% if field.link %}
+                                    <a class="btn btn-primary btn-xs" href="#/{{ field.link }}/{[{ obj.{{ field.objectName }}{{ field.name }} }]}">{[{ obj.{{ field.objectName }}{{ field.name }}label }]}</a>
+                                {% else  %}
+                                    <span ng-if="obj.{{ field.objectName }}{{ field.name }}">{[{ obj.{{ field.objectName }}{{ field.name }}label }]}</span>
+                                {% endif %}
                             {% else %}
-                                <div class="col-md-8 col-lg-6">
+                                {% if field.Values %}
+                                <select class="form-control" ng-model="obj.{{ field.name }}" disabled="disabled">
+                                    {% for v,k in field.Values %}
+                                        <option value="{{ v }}" >{{ k }}</option>
+                                    {% endfor %}
+                                </select>
+                                {% elseif field.query %}
+                                    <span class="btn btn-warning btn-xs" >{[{ obj.{{ field.name }}Label }]}</span>
+                                {% else %}
+                                    <span  ng-bind-html="obj.{{ field.name }}"></span>
+                                {% endif %}
                             {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if loop.index - loop.revindex0 == 1 or loop.index - loop.revindex0 == 0 %}
+                            </div>
+                        {% if Interfaces.top %}
+                            <div class="col-md-12 col-lg-4">
+                        {% else %}
+                            <div class="col-md-12 col-lg-6">
                         {% endif %}
-                    {% endfor %}
-                                    <div class="row  ficheField">
-                                        <div class="col-md-5 detail-label"> <label class="form-control-label" for="l0">Détails</label></div>
-                                        <div class="col-md-7 detail-value" ng-bind-html="obj._details" ng-inti="log(obj)"></div>
-                                    </div>
+                    {% endif %}
+                {% endfor %}
+                    <div class="row  ficheField">
+                        <div class="col-md-5 detail-label"> <label class="form-control-label" for="l0">Détails</label></div>
+                        <div class="col-md-7 detail-value" ng-bind-html="obj._details"></div>
+                    </div>
                 </div>
             </div>
             {% for field in fichefields %}
@@ -149,8 +153,9 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            {%  if field.subtype %}{% set subtype = field.subtype %}{% else %}{% set subtype = 'text' %}{% endif %}
-                            <div ui-ace="{useWrapMode : true,mode: '{{ subtype }}',onLoad: aceLoaded}" ng-model="obj.{{ field.name }}" class="ace_editor" readonly="true"></div>
+                            <pre ng-bind-html="obj.{{ field.name }}"></pre>
+<!--                            {%  if field.subtype %}{% set subtype = field.subtype %}{% else %}{% set subtype = 'text' %}{% endif %}
+                            <div ui-ace="{useWrapMode : true,mode: '{{ subtype }}',onLoad: aceLoaded}" ng-model="obj.{{ field.name }}" class="ace_editor" readonly="true"></div>-->
                         </div>
                     </div>
                 {% elseif field.type == "html" or field.type == "bbcode" %}
@@ -161,16 +166,17 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
+                        <!--<div class="col-md-12">
                             <div ui-ace="{useWrapMode : true,mode: '{{ field.subtype }}',onLoad: aceLoaded}" ng-model="obj.{{ field.name }}" class="ace_editor"  readonly="true"></div>
-                        </div>
+                        </div>-->
+                        <div ng-bind-html="obj.{{ field.name }}"></div>
                     </div>
                 {% endif %}
             {% endfor %}
         </div>
     </section>
     <!-- End Default Panel -->
-    <div class="nav-tabs-horizontal">
+    <div class="nav-tabs-horizontal" ng-if="displayFiche">
         <ul class="nav nav-tabs" role="tablist">
             {% for child in ChildrenElements %}
                 <li class="nav-item">
@@ -226,6 +232,22 @@
 {% endif %}
 
 
+<section class="panel" ng-if="!displayFiche">
+    <div class="panel-heading">
+        <h3>Oups, j'ai glissé chef !</h3>
+    </div>
+    <div class="panel-body panel-empty">
+            <p>
+                On aurait volontiers mis une jolie image bien design pour signaler qu'il n'y a rien ici, mais on a oublié de charger le module "Talent graphique" sur nos Devs...<br/>
+                La seule chose dont ils sont capable c'est d'écrire ce genre de choses:
+            </p>
+            <div class="lostBgCode"></div>
+            <p>
+                Enfin bref, nous sommes désolés mais vous ne trouverez rien d'intéressant ici.
+            </p>
+    </div>
+</section>
+
 <div class="modal fade modal-size-large" id="modalfiche-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -263,35 +285,8 @@
         </div>
     </div>
 </div>
-<div class="modal fade modal-size-large" id="modalfunction-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">{[{ function.title }]}</h4>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-success" ng-show="function.success">{[{ function.message }]}</div>
-                <div class="alert alert-danger" ng-show="function.errors.length > 0">
-                    <ul>
-                        <li ng-repeat="err in function.errors">{[{ err }]}</li>
-                    </ul>
-                </div>
-                <div id="ajaxwrapper"
-                     ng-show="function.loaded"
-                     ng-include="function.url" onload="function.loaded = true">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-warning" ng-show="function.controls.cancel" data-dismiss="modal">Annuler</button>
-                <button type="button" class="btn btn-success" ng-show="function.controls.save" ng-click="callFunctionSave(function)">Enregistrer</button>
-                <button type="button" class="btn btn-info" ng-show="function.controls.close" data-dismiss="modal">Fermer</button>
-            </div>
-        </div>
-    </div>
-</div>
+
+{{ include(template_from_string(module('Systeme/Utils/Modal/Function?identifier='~identifier))) }}
 
 {% if ChildrenElements|length %}
     <div class="modal fade modal-size-large" id="modallink-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
@@ -326,3 +321,4 @@
         </div>
     </div>
 {% endif %}
+

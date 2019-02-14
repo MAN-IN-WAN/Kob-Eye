@@ -20,7 +20,7 @@
 			<RKEY module="Portfolio" description="Categorie de Portfolio liées à l'entité"  data="Categorie,Id" card="0,n">PFolioCatId</RKEY>
 		</CATEGORY>
 		<CATEGORY title="Contact" type="large">
-			<PROPERTIES type="mail" length="255"  searchOrder="4" category="Contact" list="4">Mail</PROPERTIES>
+			<PROPERTIES type="mail" length="255"  obligatoire="1" searchOrder="4" category="Contact" list="4">Mail</PROPERTIES>
 			<PROPERTIES type="varchar"  length="255" obligatoire="0" category="Contact">Adresse</PROPERTIES>
 			<PROPERTIES type="int" obligatoire="0" category="Contact">CodPos</PROPERTIES>
 			<PROPERTIES type="varchar"  length="100" obligatoire="0" category="Contact">Ville</PROPERTIES>

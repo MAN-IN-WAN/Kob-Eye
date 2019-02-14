@@ -169,27 +169,27 @@ class LightBoxApnCanon extends Plugin implements LightBoxApnPlugin {
      * Vérifie si le proxy est bien lancé.
      */
     function checkLiveViewProxy(){
-        try {
+        /*try {
             $out = $this->callApi('capture?action=autofocus');
         } catch (Exception $e) {
             $act = $this->_apn->addLog('Check LiveView Proxy');
             $act->Terminate(false);
             return false;
-        }
-        if (is_object($out) && $out->cca_response->state == "success") {
+        }*/
+        /*if (is_object($out) && $out->cca_response->state == "success") {*/
             if (!$this->_apn->LiveViewProxy){
                 $this->_apn->LiveViewProxy = true;
                 $this->_apn->RawSave();
             }
             return true;
-        }else{
+        /*}else{
             if (is_object($out) && $out->cca_response->message == "Camera not found"){
                 $this->resetUsb();
                 return false;
             }else{
                 return false;
             }
-        }
+        }*/
     }
     /**
      * resetUsb

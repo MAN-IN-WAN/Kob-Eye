@@ -4,11 +4,13 @@ class CompteMail extends genericClass {
 	//var $_isVerified = false;
 	var $_KEServer = false;
 	var $_KEClient = false;
+	private $dirtyList = false;
+	private $delaiSuppression = 28*84600;  //(4 semaines)
 
 	/**
 	 * Force la vérification avant enregistrement
 	 * @param	boolean	Enregistrer aussi sur LDAP
-	 * @return	void
+	 * @return	boolean
 	 */
 	public function Save( $synchro = true ) {
 		// Forcer la vérification
@@ -17,15 +19,37 @@ class CompteMail extends genericClass {
 		//if($this->_isVerified) {
 		//	parent::Save();
 		//}
+        //vérificatio du client
+
+        if(!$this->Suppression || $this->Suppression == '0')
+            $this->Suppression = NULL;
+
+
+        if($this->Suppression> 0 && $this->Suppression < time()){
+            $this->finalDelete();
+            return true;
+        }
+
+
+
+
+        $client = $this->getKEClient();
+        if (!$client){
+            $this->addError(array('Message'=>'Compte client introuvable.'));
+            return false;
+        }
 
         if(!$synchro){
             parent::Save();
             return true;
         }
 
+
+
 		if((!isset($this->IdMail) || $this->IdMail=='') && $this->getKEServer()){
 		    if(!$this->createMail()){
-		        $this->Delete();
+		        //$this->Delete();
+                $this->addError(array('Message'=>'Impossible de créer le compte email...'));
                 return false;
             }
         } elseif ($this->getKEServer()){
@@ -34,11 +58,22 @@ class CompteMail extends genericClass {
             }
 
         } else{
-            $this->Delete();
+            $this->addError(array('Message'=>'Impossible de trouver le serveur.'));
+            //$this->Delete();
             return false;
         }
 
         parent::Save();
+
+        if($this->dirtyList){
+            $pars = $this->getParents('ListeDiffiusion');
+            foreach($pars as $par){
+                $par->checkListMember($this);
+            }
+
+            $this->dirtyList = false;
+        }
+
         return true;
 	}
 
@@ -142,46 +177,53 @@ class CompteMail extends genericClass {
 //
 //	}
 
-	/**
-	 * Configuration d'une nouvelle entrée type
-	 * Utilisé lors du test dans Verify
-	 * puis lors du vrai ajout dans Save
-	 * @param	boolean		Si FALSE c'est simplement une mise à jour
-	 * @return	Array
-	 */
-	private function buildEntry( $new = true ) {
-		$entry = array();
-                //$entry['dn'] = 'cn='.$this->Adresse.',ou='.$this->_KEServer->LDAPNom.',ou=servers,dc=abtel,dc=fr';
-                $entry['cn'] = $this->Adresse;
-                $entry['description'] = json_encode(array("Quota" => $this->Quota));
-                $entry['givenname'] = $this->Prenom;
-                $entry['mail'] = $this->Adresse;
-                $entry['mailaccess'] = $this->Status;
-                $entry['sn'] =  $this->Nom;
-                $entry['uid'] =  $this->Adresse;
-                $entry['userpassword'] = $this->Pass;
-                $entry['gidnumber'] = $this->_KEClient->LdapGid;
-                $entry['uidnumber'] = $this->_KEServer->getNextUid();
-                $entry['homedirectory'] = '/home/Parc2';
-                if($new){
-                        $entry["objectclass"] = Array("top","inetOrgPerson","twAccount","posixAccount");
-                }
-                
-		return $entry;
-	}
+//	/**
+//	 * Configuration d'une nouvelle entrée type
+//	 * Utilisé lors du test dans Verify
+//	 * puis lors du vrai ajout dans Save
+//	 * @param	boolean		Si FALSE c'est simplement une mise à jour
+//	 * @return	Array
+//	 */
+//	private function buildEntry( $new = true ) {
+//		$entry = array();
+//                //$entry['dn'] = 'cn='.$this->Adresse.',ou='.$this->_KEServer->LDAPNom.',ou=servers,dc=abtel,dc=fr';
+//                $entry['cn'] = $this->Adresse;
+//                $entry['description'] = json_encode(array("Quota" => $this->Quota));
+//                $entry['givenname'] = $this->Prenom;
+//                $entry['mail'] = $this->Adresse;
+//                $entry['mailaccess'] = $this->Status;
+//                $entry['sn'] =  $this->Nom;
+//                $entry['uid'] =  $this->Adresse;
+//                $entry['userpassword'] = $this->Pass;
+//                $entry['gidnumber'] = $this->_KEClient->LdapGid;
+//                $entry['uidnumber'] = $this->_KEServer->getNextUid();
+//                $entry['homedirectory'] = '/home/Parc2';
+//                if($new){
+//                        $entry["objectclass"] = Array("top","inetOrgPerson","twAccount","posixAccount");
+//                }
+//
+//		return $entry;
+//	}
 
 
 
 	/**
-	 * Suppression de la BDD
-	 * Relai de cette suppression à LDAP
+	 * Suppression de la BDD apres un temps donné. Juseqle la boite sera simplement fermée
 	 * On utilise aussi la fonction de la superclasse
 	 * @return	void
 	 */
 	public function Delete() {
-		if (!empty($this->LdapID)) Server::ldapDelete($this->LdapID,true);
-		parent::Delete();
+		$this->Suppression = time() + $this->delaiSuppression;
+		$this->Status = 'closed';
+		$this->Save();
 	}
+
+    public function unDelete() {
+        $this->Suppression = NULL;
+        $this->Status = 'active';
+        $this->Save();
+
+    }
 
 
 	/**
@@ -192,11 +234,27 @@ class CompteMail extends genericClass {
 	 * @return	L'objet Kob-Eye
 	 */
 	public function getKEServer() {
+        if(empty($this->Id)){
+            $pars = array();
+            foreach ($this->Parents as $p){
+                if($p['Titre'] == 'Server'){
+                    $pa = Sys::getOneData('Parc','Server/'.$p['Id'],0,1,null,null,null,null,true);
+                    $pars[] = $pa;
+                }
+
+            }
+            $this->_KEServer = $pars;
+        }
 		if(!is_object($this->_KEServer)) {
-			$tab = $this->getParents('Server');
-			if(empty($tab)) return false;
-			else $this->_KEServer = $tab[0];
+			$this->_KEServer = Sys::getOneData('Parc','Server/CompteMail/'.$this->Id,0,1,'','','','',true);
 		}
+		if (!is_object($this->_KEServer)){
+		    //retroune le serveur de mail par defaut
+            $this->_KEServer = Sys::getOneData('Parc','Server/defaultMailServer=1',0,1,'','','','',true);
+        }
+        if (!is_object($this->_KEServer)){
+		    return false;
+        }
 		return $this->_KEServer;
 	}
 
@@ -209,10 +267,15 @@ class CompteMail extends genericClass {
 	 */
 	public function getKEClient() {
 		if(!is_object($this->_KEClient)) {
-			$tab = $this->getParents('Client');
-			if(empty($tab)) return false;
-			else $this->_KEClient = $tab[0];
+			$this->_KEClient = $this->getOneParent('Client');
 		}
+        if(!is_object($this->_KEClient)&&Sys::$User->hasRole('PARC_CLIENT')) {
+		    //donc i ls'agit d'un client connecté, on récupère l'objet client
+            $this->_KEClient = Sys::$User->getOneChild('Client');
+        }
+        if(!is_object($this->_KEClient)) {
+		    return false;
+        }
 		return $this->_KEClient;
 	}
 
@@ -242,7 +305,7 @@ class CompteMail extends genericClass {
      * @return	false
      */
     public function updateMail(){
-        $srv = $this->getOneParent('Server');
+        $srv = $this->getKEServer();
 
         if(!is_object($srv) || $srv->ObjectType != 'Server'){
             $this->AddError(array('Message'=>'Un compte mail doit être lié a un serveur.'));
@@ -269,8 +332,10 @@ class CompteMail extends genericClass {
 
         //Check que le compte existe déjà
         try{
-            $temp = $zimbra->getAccount('abtel.fr', 'id', $this->IdMail);
+            $temp = $zimbra->getAccount($dom, 'id', $this->IdMail);
             $actuName = $temp->get('name');
+            $transp = $temp->get('zimbraMailTransport');
+            $isTrans = strpos($transp,$srv->DNSNom) === false;
         } catch (Exception $e) {
             $this->AddError(array('Message' => 'Erreur, ce compte mail n\'existe plus', 'Object' => $e));
             return false;
@@ -327,7 +392,8 @@ class CompteMail extends genericClass {
             $values['sn'] = $this->Nom;
             $values['givenName'] = $this->Prenom;
             $values['displayName'] = ucfirst($this->Prenom) .' '. ucfirst($this->Nom);
-            $values['zimbraMailHost'] = $srv->DNSNom;
+            if(!$isTrans)
+                $values['zimbraMailHost'] = $srv->DNSNom;
             $values['id'] = $this->IdMail;
             $values['zimbraMailQuota'] = $this->Quota*1024*1024;
 
@@ -335,7 +401,7 @@ class CompteMail extends genericClass {
 
 
         } catch (Exception $e){
-            $this->AddError(array('Message'=>'Erreur lors de la liaison avec le serveur de mail','Object'=>$e));
+            $this->AddError(array('Message'=>'Erreur lors l\'enregistrement : '.$e->getErrorCode(),'Object'=>''));
             //print_r($e);
             return false;
         }
@@ -350,8 +416,7 @@ class CompteMail extends genericClass {
      */
 	public function createMail(){
 
-	    $srv = $this->getOneParent('Server');
-
+	    $srv = $this->getKEServer();
 	    if(!is_object($srv) || $srv->ObjectType != 'Server'){
             $this->AddError(array('Message'=>'Un compte mail doit être lié a un serveur.'));
 	        return false;
@@ -370,12 +435,27 @@ class CompteMail extends genericClass {
         try{
             $domaine = $zimbra->getDomain($dom);
         } catch (Exception $e){
+
+            $values['name'] = $dom;
+            $values['zimbraDomainCOSMaxAccounts'] = array(
+                '631a8837-830a-4d1d-87be-f5172781a94e:100',
+                '1f940798-8cd7-4ebe-ba83-ef5326336523:100',
+                'ea710a54-8d3e-4226-a4d3-aac949cb3609:100',
+                '695c3a56-2e01-46dc-86a4-ecdd2dd3107d:100'
+            );
+
+            try{
+                $domaine = $zimbra->createDomain($values);
+            } catch (Exception $e){
+                print_r($e);
+            }
             //if($e->getMessage() == 'no such domain'){
-                $this->AddError(array('Message' => 'Erreur lors de la liaison avec le serveur de mail, le domaine renseigné n\'existe pas', 'Object' => $e));
-                return false;
-                //TODO : Creation du domaine ?
+//                $this->AddError(array('Message' => 'Erreur lors de la liaison avec le serveur de mail, le domaine renseigné n\'existe pas', 'Object' => $e));
+//                return false;
             //}
         }
+        //print_r($domaine);
+
 
         //Check que l'adresse ne soit pas déjà prise par un autre compte/Alias/Liste de diffusion
         try{
@@ -388,7 +468,7 @@ class CompteMail extends genericClass {
         try{
             $temp = $zimbra->getDistributionList( $this->Adresse,'name');
 
-            $this->AddError(array('Message' => 'Erreur lors de la liaiison avec le serveur de mail, cette adresse mail correspond à une liste de diffusion', 'Object' => $temp));
+            $this->AddError(array('Message' => 'Erreur lors de la liaison avec le serveur de mail, cette adresse mail correspond à une liste de diffusion', 'Object' => $temp));
             return false;
         } catch (Exception $e) {
             //print_r($e);
@@ -426,7 +506,7 @@ class CompteMail extends genericClass {
             $this->IdMail = $res->get('id');
 
         } catch (Exception $e){
-            $this->AddError(array('Message'=>'Erreur lors de la liaison avec le serveur de mail','Object'=>$e));
+            $this->AddError(array('Message'=>'Erreur lors l\'enregistrement : '.$e->getErrorCode(),'Object'=>''));
            return false;
         }
 
@@ -435,7 +515,7 @@ class CompteMail extends genericClass {
     }
 
     public function deletegateAccess() {
-        $srv = $this->getOneParent('Server');
+        $srv = $this->getKEServer();
 
         if(!is_object($srv) || $srv->ObjectType != 'Server'){
             $this->AddError(array('Message'=>'Un compte mail doit être lié a un serveur.'));
@@ -449,7 +529,87 @@ class CompteMail extends genericClass {
         //$expires = 0;
         //$preauth = hash_hmac('sha1',$this->Adresse.'|name|0|'.$timestamp,$token);
         //$url = 'https://'.$srv->DNSNom.'/service/preauth?account='.$this->Adresse.'&by=name&timestamp='.$timestamp.'&expires='.$expires.'&preauth='.$preauth;
-        $url = 'https://'.$srv->DNSNom.'/mail?auth=qp&zauthtoken='.$datoken;
+        //$url = 'https://'.$srv->DNSNom.'/mail?auth=qp&zauthtoken='.$datoken;
+        $url = 'https://mx1.abtel.link/mail?auth=qp&zauthtoken='.$datoken;
         return $url;
+    }
+
+
+
+
+    /**
+     * addParent
+     * Add a parent link
+     * @param String Object Type name
+     * @param Int Id of the parent object
+     */
+    #DEPRECATED
+    public function addParent($Q = "", $SpeFKey = "") {
+        $ret = parent::addParent($Q, $SpeFKey );
+        if($ret) {
+            $NbQ = sizeof($ret) - 1;
+            if ($ret[$NbQ - 1] == "ListDiffusion")
+                $this->dirtyList = true;
+        }
+    }
+
+    /**
+     * delParent
+     * Delete a parent link
+     * @param String Object Type name
+     * @param Int Id of the parent object
+     */
+    #DEPRECATED
+    public function delParent($Q = "", $SpeFKey = "") {
+        $ret = parent::delParent($Q , $SpeFKey );
+        if($ret) {
+            $NbQ = sizeof($ret) - 1;
+            if ($ret[$NbQ - 1] == "ListDiffusion")
+                $this->dirtyList = true;
+        }
+    }
+
+    /**
+     * resetParents
+     * delete all parent link from an object Type
+     * @param String Object Type name
+     */
+    public function resetParents($Class,$SpeFKey = "") {
+        $ret = parent::resetParents($Class , $SpeFKey );
+        if($ret == "ListDiffusion")
+            $this->dirtyList = true;
+    }
+
+
+
+    public function finalDelete(){
+        $srv = $this->getKEServer();
+
+        if(!is_object($srv) || $srv->ObjectType != 'Server'){
+            $this->AddError(array('Message'=>'Un compte mail doit être lié a un serveur.'));
+            return false;
+        }
+
+        $zimbra = new \Zimbra\ZCS\Admin($srv->IP, $srv->mailAdminPort);
+        $zimbra->auth($srv->mailAdminUser, $srv->mailAdminPassword);
+
+        try{
+            $zimbra->deleteAccount($this->IdMail);
+        } catch (Exception $e){
+            $this->AddError(array('Message'=>'Erreur lors l\'effacement : '.$e->getErrorCode(),'Object'=>''));
+            return false;
+        }
+
+        $childs = $this->getChildren('EmailAlias');
+        foreach($childs as $ch){
+            $ch->Delete(false);
+        }
+
+        parent::Delete();
+    }
+
+
+    public function forceDelete(){
+        parent::Delete();
     }
 }

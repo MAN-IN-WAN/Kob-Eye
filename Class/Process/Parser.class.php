@@ -632,7 +632,11 @@ class Parser {
 		if (is_array($TabObj)) {
 			for ($i=0;$i<count($TabObj);$i++) {
 				if (is_object($TabObj[$i])) {
-					if (method_exists($TabObj[$i],"Affich"))$Data .= $TabObj[$i]->Affich();
+				    if(is_a($TabObj[$i],'Bloc')){
+                        $Data .= $TabObj[$i]->Data;
+                    } else{
+                        if (method_exists($TabObj[$i],"Affich"))$Data .= $TabObj[$i]->Affich();
+                    }
 				}elseif (is_string($TabObj[$i])){
 					$Data .= (string)$TabObj[$i];
 				}

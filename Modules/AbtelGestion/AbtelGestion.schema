@@ -1,12 +1,33 @@
 <SCHEMA>
         <OBJECTCLASS title="Contrat" driver="mysql" AccessPoint="1" Description="Contrat"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelGestion/Class/Contrat.class.php">
-            <PROPERTIES type="titre" searchOrder="1">Nom</PROPERTIES>
         </OBJECTCLASS>
-        <OBJECTCLASS title="Tache" driver="mysql" AccessPoint="1" Description="Ticket"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelGestion/Class/Tache.class.php">
-            <PROPERTIES type="titre" searchOrder="1">Nom</PROPERTIES>
+        <OBJECTCLASS title="Tache" driver="mysql" AccessPoint="1" Description="Ticket"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelGestion/Class/Tache.class.php" className="AbtelTache">
         </OBJECTCLASS>
         <OBJECTCLASS title="Action" driver="mysql" AccessPoint="1" Description="Ticket"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/AbtelGestion/Class/Action.class.php">
-            <PROPERTIES type="titre" searchOrder="1">Nom</PROPERTIES>
             <FKEY card="1,n" data="Tache,NumeroTicket">TacheNumeroTicket</FKEY>
+        </OBJECTCLASS>
+        <OBJECTCLASS title="Entite" driver="mysql" AccessPoint="1" Description="Entité"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
+            <PROPERTIES type="varchar" searchOrder="1" form="1" list="1" fiche="1">Nom</PROPERTIES>
+        </OBJECTCLASS>
+        <OBJECTCLASS title="TypeChamp" driver="mysql" AccessPoint="1" Description="Type de champs"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
+            <PROPERTIES type="varchar" searchOrder="1" form="1" list="1" fiche="1">Nom</PROPERTIES>
+        </OBJECTCLASS>
+        <OBJECTCLASS title="Champ" driver="mysql" AccessPoint="1" Description="Champ"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
+            <PROPERTIES type="varchar" searchOrder="1" form="1" list="1" fiche="1">Nom</PROPERTIES>
+            <PROPERTIES type="varchar" searchOrder="1" query="AbtelGestion/TypeChamp::Nom" form="1" list="1" fiche="1">Type</PROPERTIES>
+            <PROPERTIES type="boolean" form="1" fiche="1">Obligatoire</PROPERTIES>
+            <PROPERTIES type="boolean" form="1" fiche="1">Auto</PROPERTIES>
+            <PROPERTIES type="varchar" form="1" fiche="1">DefaultValue</PROPERTIES>
+            <PROPERTIES type="int" form="1" fiche="1">Longueur</PROPERTIES>
+            <PROPERTIES type="text" form="1" list="1" fiche="1">Designation</PROPERTIES>
+            <PROPERTIES type="varchar" searchOrder="1" list="1"  form="1" fiche="1">NomDistant</PROPERTIES>
+            <PROPERTIES type="text" searchOrder="1" list="1"  form="1" fiche="1">Note</PROPERTIES>
+            <FKEY card="1,1" data="Entite,Id">EntiteId</FKEY>
+        </OBJECTCLASS>
+        <OBJECTCLASS title="Option" driver="mysql" AccessPoint="1" Description="Option"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" >
+            <PROPERTIES type="varchar" searchOrder="1" form="1" list="1" fiche="1">Libelle</PROPERTIES>
+            <PROPERTIES type="varchar" searchOrder="1" form="1" list="1" fiche="1">Valeur</PROPERTIES>
+            <PROPERTIES type="int" searchOrder="1" form="1" list="1" fiche="1">Position</PROPERTIES>
+            <FKEY card="1,1" data="Champ,Id">ChampId</FKEY>
         </OBJECTCLASS>
 </SCHEMA>

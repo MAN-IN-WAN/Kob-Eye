@@ -1,0 +1,215 @@
+{# fiche info personnelles Adherent #}
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label %} 
+{% set o='obj' %}
+<div class="page-content-inner">
+    <h3>Situation financières</h3>
+    <!-- Default Panel -->
+    <section class="panel">
+        <div class="panel-body cadref-panel-body">
+            <div class="row no-gutters">
+                <div class="col-md-12">
+					<div class="row">
+						<div class="col-md-8 col-sm-12 col-xs-12" >
+							<div class="row">
+								<div class="col-md-3 col-sm-6">
+									{{ label('Cotisation annuelle') }}
+								</div>
+								<div class="col-md-1 col-sm-2">
+									<div class="control-group">
+										<input type="text" class="form-control cadref-input" ng-model="{{ o }}.Cotisation" readonly/>
+									</div>
+								</div>
+							</div>
+							<div class="row" ng-if="obj.Cours != 0">
+								<div class="col-md-3 col-sm-6">
+									{{ label('Montant des cours') }}
+								</div>
+								<div class="col-md-1">
+									<div class="control-group">
+										<input type="text" class="form-control cadref-input" ng-model="{{ o }}.Cours" readonly/>
+									</div>
+								</div>
+							</div>
+							<div class="row" ng-if="obj.Visites != 0">
+								<div class="col-md-3 col-sm-6">
+									{{ label('Montant des visites guidées') }}
+								</div>
+								<div class="col-md-1">
+									<div class="control-group">
+										<input type="text" class="form-control cadref-input" ng-model="{{ o }}.Visites" readonly/>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-3 col-sm-6">
+									{{ label('Total des règlements encaissés') }}
+								</div>
+								<div class="col-md-1">
+									<div class="control-group">
+										<input type="text" class="form-control cadref-input" ng-model="{{ o }}.Reglement" readonly/>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-3 col-sm-6">
+									{{ label('Total des règlements différés') }}
+								</div>
+								<div class="col-md-1">
+									<div class="control-group">
+										<input type="text" class="form-control cadref-input" ng-model="{{ o }}.Differe" readonly/>
+									</div>
+								</div>
+							</div>
+							<div class="row" ng-if="obj.Regularisation != 0">
+								<div class="col-md-3 col-sm-6">
+									{{ label('Régularisation') }}
+								</div>
+								<div class="col-md-1">
+									<div class="control-group">
+										<input type="text" class="form-control cadref-input" ng-model="{{ o }}.Regularisation" readonly/>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-3 col-sm-6">
+									{{ label('Solde') }}
+								</div>
+								<div class="col-md-1">
+									<div class="control-group">
+										<input type="text" class="form-control cadref-input" ng-model="{{ o }}.Solde" readonly/>
+									</div>
+								</div>
+							</div>
+							<div class="row" style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-6 col-sm-12 col-xs-12" >
+									{{ label("Liste des règlements") }}
+{#									<section class="panel">
+#}										<div class=" cadref-no-padding">
+											<ng-include src="'Cadref/Adherent/0/Reglement/PublicListRegl.htm'"></ng-include>
+{#										</div>
+#}									</section>
+								</div>
+							</div>
+						</div>
+
+
+					</div>
+					{# block right #}                    
+					<div class="col-md-4 col-sm-0">
+					</div>
+				</div>
+			</div>
+		</div>
+</div>
+</section>
+</div>
+{#{{ include(template_from_string(module('Systeme/Utils/Modal/Function?identifier='~identifier))) }}#}
+<div class="modal fade modal-size-large" id="modalfunction-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog cadref-modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">{[{ {{ identifier }}function.title }]}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" ng-if="{{ identifier }}function.errors.length">
+                    <ul>
+                        <li ng-repeat="e in {{ identifier }}function.errors">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-warning" ng-if="{{ identifier }}function.warning.length">
+                    <ul>
+                        <li ng-repeat="e in f{{ identifier }}function.warning">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-success" ng-if="{{ identifier }}function.infos.length">
+                    <ul>
+                        <li ng-repeat="e in {{ identifier }}function.infos">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="text-center"
+                     ng-hide="{{ identifier }}function.loaded">
+                    <br />
+                    Chargement ...
+                    <br />
+                    <div class="spinload"></div>
+                </div>
+                <div id="ajaxwrapperFunc"
+                     ng-show="{{ identifier }}function.loaded"
+                     compile="{{ identifier }}function.data" >
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal" ng-if="!{{ identifier }}function.callNext">Fermer</button>
+                <button type="button" class="btn" ng-if="{{ identifier }}function.callNext" ng-click="{{ identifier }}callFunction({{ identifier }}function.callNext.item,{{ identifier }}function.callNext.nom,{{ identifier }}function.callNext.title,{{ identifier }}function.callNext.needConfirm,1)">Suivant</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+	$('.datepicker-only-init').datetimepicker({
+		widgetPositioning: {
+			horizontal: 'left'
+		},
+		locale: 'fr',
+		format: 'DD/MM/YYYY',
+		icons: {
+			time: "fa fa-clock-o",
+			date: "fa fa-calendar",
+			up: "fa fa-arrow-up",
+			down: "fa fa-arrow-down"
+		}
+	});
+	$('.timepicker-only-init').datetimepicker({
+		widgetPositioning: {
+			horizontal: 'left'
+		},
+		locale: 'fr',
+		format: 'HH:mm',
+		icons: {
+			time: "fa fa-clock-o",
+			date: "fa fa-calendar",
+			up: "fa fa-arrow-up",
+			down: "fa fa-arrow-down"
+		}
+	});
+	$('.datetimepicker-init').datetimepicker({
+		widgetPositioning: {
+			horizontal: 'left'
+		},
+		locale: 'fr',
+		icons: {
+			time: "fa fa-clock-o",
+			date: "fa fa-calendar",
+			up: "fa fa-arrow-up",
+			down: "fa fa-arrow-down"
+		}
+	});
+
+
+	$('.urlInput').on('keyup', function () {
+		$(this).val($(this).val().replace(/[^A-Za-z0-9_\-\.]*\s*/g, ''));
+	});
+	//Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
+	$(".datepicker-only-init").on("dp.change", function () {
+		var input = $(this).children('input').eq(0);
+		input.trigger('change');
+		input.trigger('input');
+	});
+	$(".timepicker-only-init").on("dp.change", function () {
+		var input = $(this).children('input').eq(0);
+		input.trigger('change');
+		input.trigger('input');
+	});
+	$(".datetimepicker-init").on("dp.change", function () {
+		var input = $(this).children('input').eq(0);
+		input.trigger('change');
+		input.trigger('input');
+	});
+</script>
+

@@ -2,15 +2,16 @@
 class Niveau extends genericClass {
 	
 	function Save() {
-		$ps = $this->getParents('Antenne');
-		$this->Antenne = $p[0]->Antenne;
-		$ps = $this->getParents('Discipline');
-		$this->Section = $p[0]->Section;
-		$this->Discipline = $p[0]->Discipline;
-		$this->CodeNiveau = "$this->Antenne.$this->Section.$this->Discipline.$this->Niveau";
-		parent::Save();
-		$sts[] = array($id ? 'edit' : 'add', 1, $this->Id, $this->Module, $this->ObjectType, '', '', null, null);
-		return $sts;
+		$id = $this->Id;
+		$p = $this->getOneParent('Antenne');
+		$this->Antenne = $p->Antenne;
+		$p = $this->getOneParent('Discipline');
+		$this->Section = $p->Section;
+		$this->Discipline = $p->Discipline;
+		$p = $p->getOneParent('Section');
+		$this->addParent($p);
+		$this->CodeNiveau = $this->Antenne.$this->Section.$this->Discipline.$this->Niveau;
+		return parent::Save();
 	}
 	
 	function Delete() {
@@ -19,9 +20,15 @@ class Niveau extends genericClass {
 			$this->addError(array("Message"=>"Cette fiche ne peut être supprimée", "Prop"=>""));
 			return false;
 		}
-
 		return parent::Delete();
 	}
 
+	function GetFormInfo() {
+		$a = $this->getOneParent('Antenne');
+		$s = $this->getOneParent('Section');
+		$d = $this->getOneParent('Discipline');
+		return array('LibelleA'=>$a->Libelle, 'LibelleS'=>$s->Libelle, 'LibelleD'=>$d->Libelle);
+	}
 	
+
 }

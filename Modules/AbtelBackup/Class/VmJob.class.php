@@ -14,18 +14,49 @@ class VmJob extends Job {
                         );
 
 
+    public static function execute() {
+        //intialisation des dates
+        $d = time();
+        $week = array('Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche');
+        $weekday = $week[date('w',$d)];
+        $hour = date('H',$d);
+        $minute = intval(date('i',$d));
+        $month = intval(date('m',$d));
+        $monthday = date('j',$d);
+        $jobs = Sys::getData('AbtelBackup',static::$KEObj.'/Enabled=1&(!Minute=*+Minute='.$minute.'!)&(!Heure=*+Heure='.$hour.'!)&(!Jour=*+Jour='.$monthday.'!)&(!Mois=*+Mois='.$month.'!)&(!(!Lundi=0&Mardi=0&Mercredi=0&Jeudi=0&Vendredi=0&Samedi=0&Dimanche=0!)+(!'.$weekday.'=1!)!)');
+
+        foreach ($jobs as $j) {
+            $task = genericClass::createInstance('Systeme', 'Tache');
+            $task->Type = 'Fonction';
+            $task->Nom = 'Job machine virtuelle :' . $j->Titre.'. éxécution du '.date('d/m/Y H:i:s');
+            $task->TaskModule = 'AbtelBackup';
+            $task->TaskObject = 'VmJob';
+            $task->Type = 'backup';
+            $task->TaskId = $j->Id;
+            $task->TaskFunction = 'run';
+            $task->addParent($j);
+            $task->Save();
+        }
+    }
+
     /**
      * stop
      * Stoppe un job de backup
      */
     public function stop()
     {
+        $task = genericClass::createInstance('Systeme', 'Tache');
+        $task->Type = 'Collecteur';
+        $task->Nom = 'Stop :' . $this->Titre;
+        $task->addParent($this);
+        $task->Save();
+
         $v = Sys::getOneData('AbtelBackup', 'EsxVm/' . $this->CurrentVm);
         if ($v) {
-            $act = $this->createActivity($v->Titre . ' > Arret Utilisateur: Step ' . $this->Step, $v, 0, 'Info');
+            $act = $task->createActivity($v->Titre . ' > Arret Utilisateur: Step ' . $this->Step,'Info');
             $act->addDetails($v->Titre . " > Arret Utilisateur", 'red', true);
         } else{
-            $act = $this->createActivity(' > Vm non définie > Arret Utilisateur: Step ' . $this->Step, null, 0, 'Info');
+            $act = $task->createActivity(' > Vm non définie > Arret Utilisateur: Step ' . $this->Step, 'Info');
             $act->addDetails(" Arret Utilisateur", 'red', true);
         }
 
@@ -113,10 +144,10 @@ class VmJob extends Job {
      * run
      * Demarre ou resume un job de backup de vm
      */
-    public function run() {
+    public function run($task) {
         //test running
         if ($this->Running) {
-            $act = $this->createActivity(' > Impossible de démarrer, le job est déjà en cours d\'éxécution');
+            $act = $task->createActivity(' > Impossible de démarrer, le job est déjà en cours d\'éxécution');
             $act->Terminate(false);
             return;
         }
@@ -125,7 +156,7 @@ class VmJob extends Job {
         parent::Save();
         //init
         Klog::l('DEBUG demarrage vm');
-        $act = $this->createActivity(' > Demarrage du Job Vm : '.$this->Titre.' ('.$this->Id.')',null,0,'Info');
+        $act = $task->createActivity(' > Demarrage du Job Vm : '.$this->Titre.' ('.$this->Id.')','Info');
         $act->Terminate();
         $GLOBALS['Systeme']->Db[0]->query("SET AUTOCOMMIT=1");
 
@@ -142,7 +173,7 @@ class VmJob extends Job {
 
         foreach ($vms as $v){
             Klog::l('DEBUG vm ==> '.$v->Id.' STEP: '.$this->Step);
-            $act = $this->createActivity(' > Demarrage de la VM : '.$v->Titre.' ('.$v->Id.')',$v,0,'Info');
+            $act = $task->createActivity(' > Demarrage de la VM : '.$v->Titre.' ('.$v->Id.')','Info');
             $act->Terminate();
             //définition de la vm en cours
             $this->setStep(1);
@@ -153,43 +184,43 @@ class VmJob extends Job {
                 //nettoyage
                 if (intval($this->Step)<=1){
                     unset($act);
-                    $act = $this->createActivity($v->Titre.' > Nettoyage des archives',$v,$pSpan[0]);
+                    $act = $task->createActivity($v->Titre.' > Nettoyage des archives','Exec',$pSpan[0]);
                     $this->initJob($v,$esx,$act);
                 }
 
                 //configuration
                 if (intval($this->Step)<=2){
                     unset($act);
-                    $act = $this->createActivity($v->Titre.' > Configuration vmjob',$v,$pSpan[1]);
+                    $act = $task->createActivity($v->Titre.' > Configuration vmjob','Exec',$pSpan[1]);
                     $act = $this->configJob($v,$esx,$act);
                 }
 
                 //clonage
                 if (intval($this->Step)<=3){
                     unset($act);
-                    $act = $this->createActivity($v->Titre.' > Clonage vmjob',$v,$pSpan[2]);
+                    $act = $task->createActivity($v->Titre.' > Clonage vmjob','Exec',$pSpan[2]);
                     $act = $this->cloneJob($v,$esx,$act);
                 }
 
                 //compression
                 if (intval($this->Step)<=4){
                     unset($act);
-                    $act = $this->createActivity($v->Titre.' > Compression vmjob',$v,$pSpan[3]);
+                    $act = $task->createActivity($v->Titre.' > Compression vmjob','Exec',$pSpan[3]);
                     $act = $this->compressJob($v,$act);
                 }
 
                 //déduplication
                 if (intval($this->Step)<=5){
                     unset($act);
-                    $act = $this->createActivity($v->Titre.' > Déduplication vmjob',$v,$pSpan[4]);
+                    $act = $task->createActivity($v->Titre.' > Déduplication vmjob','Exec',$pSpan[4]);
                     $act = $this->deduplicateJob($v,$borg,$act);
                 }
 
-                $act = $this->createActivity(' > Fin de la VM : '.$v->Titre.' ('.$v->Id.')',$v,0,'Info');
+                $act = $task->createActivity(' > Fin de la VM : '.$v->Titre.' ('.$v->Id.')','Info');
                 $act->Terminate();
 
             }catch (Exception $e){
-                if(!$act) $act = $this->createActivity($v->Titre.' > Exception: Step '.$this->Step,$v,0,'Info');
+                if(!$act) $act = $task->createActivity($v->Titre.' > Exception: Step '.$this->Step,'Info');
                 $act->addDetails($v->Titre." ERROR => ".$e->getMessage(),'red');
                 $act->Terminate(false);
                 //opération terminée
@@ -270,7 +301,7 @@ VM_SNAPSHOT_QUIESCE=0
 ALLOW_VMS_WITH_SNAPSHOTS_TO_BE_BACKEDUP=0
 ENABLE_NON_PERSISTENT_NFS=0
 UNMOUNT_NFS=0
-NFS_SERVER='.AbtelBackup::getMyIp().'
+NFS_SERVER='.AbtelBackup::getMyIp(true).'
 NFS_VERSION=nfs
 NFS_MOUNT=/backup/nfs
 NFS_LOCAL_NAME=ABTEL_BACKUP
@@ -298,7 +329,7 @@ VM_STARTUP_ORDER=
         $act->addProgression(40);
         parent::Save();
         $act->addDetails($v->Titre.' ---> montage du NFS');
-        $esx->remoteExec("esxcfg-nas -a ABTEL_BACKUP -o ".AbtelBackup::getMyIp()." -s /backup/nfs",null,true);
+        $esx->remoteExec("esxcfg-nas -a ABTEL_BACKUP -o ".AbtelBackup::getMyIp(true)." -s /backup/nfs",null,true);
         $act->addProgression(10);
         parent::Save();
         return $act;

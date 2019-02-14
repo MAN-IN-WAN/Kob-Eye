@@ -2,197 +2,195 @@
 //décoration
 $bc = new BashColors();
 
-echo $bc->getColoredString("DUMP AZKOCMS_COMMON\n",'green');
-$cmd = 'mysqldump -h 192.168.100.2 -u root -p125iAS34470 azkocms_common |  mysql -h 192.168.200.5 -u root -pwCENJbD9DUz76Ty4 azkocms_common';
-exec($cmd);
-die();
 //connexion ancien serveur mysql
-$db = new PDO('mysql:host=192.168.100.2;dbname=azkocms_common', 'root', '125iAS34470', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+$db = new PDO('mysql:host=192.168.100.50;dbname=parc', 'root', 'zH34Y6u5', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$dbke = new PDO('mysql:host=192.168.100.2;dbname=parc', 'root', '125iAS34470', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-$dbke->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$dbnp = new PDO('mysql:host=192.168.200.5;dbname=azkocms_common', 'root', 'wCENJbD9DUz76Ty4', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-$dbnp->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$serveur='ws1.eng.systems';
+/*$csv = "
+aimetti-auteur;aimetti-auteur;aimetti-auteur
+ama;rgsystem;ama+wp_amaassurances+wp_amaassurancesblog
+autoecole;autoecoledef;autoecole
+autoecoleamd;autoecoleamd;autoecoleamd
+autoecoleinris;autoecoleinr;autoecoleinris
+boxsete;pescatore;boxsete_boxlocation+boxsete_chezpescatore
+permis-bateau;permis-batea;cercle-nautique
+code23;code23;code23
+dumartinetj;dumartinet;dumartinetj
+epconsulting;ep.consultin;epconsulting
+geodev;geodev;geodev
+grandcreme;grandcreme;grandcreme+grandcreme_pydio
+insightcom;insightcom;insightcom
+lace-restaurant;lace-restaurant.fr;lace-restaurant
+laprimavera;laprimavera-;laprimavera
+maf82;montaubanath;maf82
+pianoconcertino;pianoconcert;pianoconcertino
+psychotherapiesatm;christinebuo;psychotherapiesat
+racinespubliques;racinespubliques;racinespubliques
+serenity-services;serenity-services;serenity-service
 
-//On boucle sur les orgas contenant des sites
-//$query = "SELECT o.*,COUNT(s.site_id) as NBSITE FROM organisation as o LEFT JOIN site as s ON o.org_id = s.site_org_id GROUP BY o.org_id HAVING NBSITE>0;";
-$query = "SELECT o.* FROM organisation as o LIMIT 0,1000";
-$q = $db->query($query);
 
-$servs = array(7,8,9);
-//on remet le premier serveur en serveur web par défaut
-/*$s = Sys::getOneData('Parc','Server/defaultWebServer=1');
-$s->defaultWebServer = false;
-$s->Save();
-$srv = Sys::getOneData('Parc','Server/'.$servs[0]);
-$srv->defaultWebServer = true;
-$srv->Save();*/
 
-$result = $q->fetchALL(PDO::FETCH_ASSOC);
+tennisforever;tennisforeve;tennisforever+tennisforever_reservation
+vmid;vmid;vmid";
+
+
+REFAIRE
+laboratoire-val;laboratoire-;laboratoire-val
+
+*/
+$csv= "
+clamousemetaller;clamousemetaller;clamousemetaller
+";
+$result = explode(PHP_EOL,$csv);
+$total = sizeof($result)-2;
 $i=0;
 foreach ($result as $org){
+    if (empty(trim($org)))continue;
     $i++;
-    //if ($org["org_id"]!=474) continue;
-    //gestion server web par defaut
-    /*if ($i==250||$i==500) {
-        echo $bc->getColoredString("***** CHANGEMENT SERVEUR WEB PAR DEFAUT *****"."\n",'green');
-
-        //on remet le premier serveur en serveur web par défaut
-        $s = Sys::getOneData('Parc', 'Server/defaultWebServer=1');
-        $s->defaultWebServer = false;
-        $s->Save();
-        $srv = Sys::getOneData('Parc', 'Server/' . $servs[($i==250)?1:2]);
-        $srv->defaultWebServer = true;
-        $srv->Save();
-    }*/
-
+    //if ($i!=45)continue;
+    $fields = explode(';',$org);
+    $fields[2] = explode('+',$fields[2]);
+    list($host,$cli,$bdds,$mysqlsrv) = $fields;
     //test existence
-    /*$nb = Sys::getOneData('Parc','Instance/InstanceNom=azkocms_org_'.$org['org_id']);
-    //if ($nb) continue;
-    echo $bc->getColoredString("-> [$i] ".$org["org_nom"]."\n",'green');
-    //récupération des sites et domaines
-//    $query = "SELECT *,COUNT(s.site_id) as NBDOM FROM site as s LEFT JOIN domaine as d ON s.site_id = d.dom_site_id WHERE s.site_org_id = '".$org['org_id']."' GROUP BY s.site_id HAVING NBDOM>1;";
-    $query = "grant select on azkocms_common.* to 'azkocms_org_".$org['org_id']."'@'%'  ;";
-    try {
-        $q = $dbnp->query($query);
-    }catch (Exception $e){
+    $nb = Sys::getOneData('Parc','Instance/InstanceNom='.substr('instance-'.$host,0,32));
+    echo $bc->getColoredString("-> [$i / $total] ".$host."\n",'green');
 
-    }
-
-
-    $query = "SELECT * FROM site as s LEFT JOIN domaine as d ON s.site_id = d.dom_site_id WHERE s.site_org_id = '".$org['org_id']."';";
-    $q = $db->query($query);
-
-    $resu = $q->fetchALL(PDO::FETCH_ASSOC);
-    $doms = "";
-    $search_doms = '';
-    $sodom = '';
-    $secibonline = '';
-    foreach ($resu as $dom){
-        if (empty($dom["dom_name"]))continue;
-        if (preg_match('#secibonline#',$dom["dom_name"])){
-            echo $bc->getColoredString("  -> SECIBONLINE ".$dom["dom_name"]."\n",'blue');
-            $secibonline .=  (!empty($secibonline)?" OR ":" ")."`ApacheServerAlias` LIKE '%".$dom['dom_name']."%' OR `ApacheServerName` = '".$dom['dom_name']."'";
-            $sodom.=$dom['dom_name'];
-        }else{
-            echo $bc->getColoredString("  -> ".$dom["dom_name"]."\n",'blue');
-            $doms.=$dom['dom_name']."\r\n";
-            $search_doms .=  (!empty($search_doms)?" OR ":" ")."`ApacheServerAlias` LIKE '%".$dom['dom_name']."%' OR `ApacheServerName` = '".$dom['dom_name']."'";
-        }
-    }
-    $doms = trim($doms);
-    $ssl = false;
-    //recherche du vhost et des certifs
-    echo $bc->getColoredString("    -> LOOKING FOR SSL CONFIG " . "\n", 'yellow');
-    if (!empty($search_doms)) {
-        $query = "SELECT *  FROM `parc-Parc-Apache` WHERE " . $search_doms . ";";
-        //echo $bc->getColoredString("    -> SSL " . $query . "\n", 'yellow');
-        $q = $dbke->query($query);
-        $apaches = $q->fetchALL(PDO::FETCH_ASSOC);
-        foreach ($apaches as $apache) {
-            if ($apache["Ssl"] == 1) {
-                echo $bc->getColoredString("    -> SSL FOUND " . $apache["ApacheServerName"] . "\n", 'yellow');
-                $ssl = true;
-                $cert = $apache["SslCertificate"];
-                $key = $apache["SslCertificateKey"];
-                $expire = $apache["SslExpiration"];
-            }
-        }
-    }
-    $sossl = false;
-    echo $bc->getColoredString("    -> LOOKING FOR SECIBONLINE SSL CONFIG " . "\n", 'yellow');
-    if (!empty($secibonline)) {
-        $query = "SELECT *  FROM `parc-Parc-Apache` WHERE " . $secibonline . ";";
-        //echo $bc->getColoredString("    -> SSL " . $query . "\n", 'yellow');
-        $q = $dbke->query($query);
-        $apaches = $q->fetchALL(PDO::FETCH_ASSOC);
-        foreach ($apaches as $apache) {
-            if ($apache["Ssl"] == 1) {
-                echo $bc->getColoredString("    -> SECIBONLINE SSL FOUND " . $apache["ApacheServerName"] . "\n", 'yellow');
-                $sossl = true;
-                $socert = $apache["SslCertificate"];
-                $sokey = $apache["SslCertificateKey"];
-                $soexpire = $apache["SslExpiration"];
-            }
-        }
-    }
-    if (!$nb) {
-        echo $bc->getColoredString("    -> CREATING INSTANCE ".$org['org_id'], 'red');
+    if (!$nb){
+        echo $bc->getColoredString("    -> CREATING INSTANCE ".$host, 'red');
+        //recherche server Web par defaut
+        $srv = Sys::getOneData('Parc','Server/defaultWebServer=1');
         //création de l'instance
         $inst = genericClass::createInstance('Parc', 'Instance');
-        $inst->Nom = $org["org_nom"];
-        $inst->InstanceNom = 'azkocms_org_' . $org['org_id'];
-        $inst->ServerAlias = $doms;
+        //définition du client
+        $client = Sys::getOneData('Parc','Client/NomLDAP='.$cli);
+        if ($client) $inst->addParent($client);
+        $inst->Nom = $host;
+        $inst->InstanceNom = 'instance-' . $host;
         $inst->Type = 'prod';
-        $inst->Password = $org['org_db_pass'];
         $inst->Actif = true;
         //$inst->Ssl = ($ssl)?true:false;
         $inst->PHPVersion = '7.0.29';
-        $inst->Plugin = 'AzkoFront';
+        $inst->Plugin = 'Vide';
         if (!$inst->Save()) {
             //continue;
-            print_r($inst->Error);
+            print_r($inst);
             die('Erreur de création instance');
         }
         echo $bc->getColoredString(" OK \n", 'green');
-    }else if ($sossl){
+    }else {
         $inst = $nb;
-        $inst->ServerAlias = $doms;
-        $inst->Save();
-    }else        $inst = $nb;
+        //définition du client
+        $client = Sys::getOneData('Parc','Client/NomLDAP='.$cli);
+        if ($client) $inst->addParent($client);
+        $inst->softSave();
+    }
+    //récupération de l'host
+    $hos = $inst->getOneParent('Host');
+    //récupération du serveur
+    $srv = $hos->getOneParent('Server');
 
-
-    //TEST SSL ORGA
-    if ($ssl) {
+    //récupération des vhosts et certifs
+    $query = "SELECT * FROM `parc-Parc-Host` as hs LEFT JOIN `parc-Parc-Apache` as ap ON hs.Id = ap.HostId WHERE ap.Actif = 1 and hs.Nom='".$host."';";
+    $q = $db->query($query);
+    $aps = $q->fetchALL(PDO::FETCH_ASSOC);
+    foreach ($aps as $ap){
         //recuperation du vhost
-        $host = $inst->getOneParent('Host');
-        $apache = Sys::getOneData('Parc','Host/'.$host->Id.'/Apache',0,1,'ASC','Id');
-        //injection du certif
-        $apache->Ssl = true;
-        $apache->SslCertificate = $cert;
-        $apache->SslCertificateKey = $key;
-        $apache->SslExpiration = $expire;
-        $apache->SslMethod = 'Letsencrypt';
-        $apache->Save(false,true);
-        $inst->EnableSsl = true;
-        echo $bc->getColoredString("    -> SSL ENABLED ". "\n", 'green');
-    }*//*else echo $bc->getColoredString("    -> SSL NOT DETECTED ". "\n", 'pink');*/
-/*
-    //TEST SSL SECIBONLINE
-    if ($sossl) {
+        $apache = Sys::getOneData('Parc','Host/'.$hos->Id.'/Apache/ApacheServerName='.$ap['ApacheServerName'],0,1,'ASC','Id');
+        if (!$apache){
+            echo $bc->getColoredString("    -> CREATION VHOST ".$ap['ApacheServerName']."\n", 'green');
+            $apache = genericClass::createInstance('Parc','Apache');
+            $apache->initFromArray($ap);
+            $apache->DocumentRoot = str_replace('/home/'.$host.'/','',$apache->DocumentRoot);
+            $apache->DocumentRoot = str_replace('/home/'.$host,'',$apache->DocumentRoot);
+            $apache->ProxyCache = true;
+            $apache->addParent($hos);
+            unset($apache->Id);
+            unset($apache->LdapID);
+            unset($apache->LdapDN);
+            unset($apache->LdapTms);
+            $apache->Save();
+        }else{
+            $apache->SslCertificate = $ap['SslCertificate'];
+            $apache->SslCertificateKey = $ap['SslCertificateKey'];
+            $apache->SslExpiration = $ap['SslExpiration'];
+            $apache->Save();
+            echo 'instance ok ';
+        }
+    }
+    //récupération des accès ftps
+    $query = "SELECT * FROM `parc-Parc-Host` as hs LEFT JOIN `parc-Parc-Ftpuser` as fu ON hs.Id = fu.HostId WHERE hs.Nom='".$host."';";
+    $q = $db->query($query);
+    $ftps = $q->fetchALL(PDO::FETCH_ASSOC);
+    foreach ($ftps as $ftp){
         //recuperation du vhost
-        $host = $inst->getOneParent('Host');
-        $apache = Sys::getOneData('Parc','Host/'.$host->Id.'/Apache',1,1,'ASC','Id');
-        if ($apache) $apache->Delete();
-        $apache = genericClass::createInstance('Parc','Apache');
-        $apache->addParent($host);
-        //injection du certif
-        $apache->ApacheServerName = $sodom;
-        $apache->DocumentRoot = 'www/azkocms/front';
-        $apache->Actif = true;
-        $apache->Ssl = true;
-        $apache->ProxyCache = true;
-        $apache->SslCertificate = $socert;
-        $apache->SslCertificateKey = $sokey;
-        $apache->SslExpiration = $soexpire;
-        $apache->SslMethod = 'Letsencrypt';
-        $apache->Save();
-        $inst->EnableSsl = true;
-        $inst->Save();
-        echo $bc->getColoredString("    -> SECIBONLINE SSL ENABLED ". "\n", 'green');
-    }else echo $bc->getColoredString("    -> SECIBONLINE SSL NOT DETECTED ". "\n", 'pink');
+        $ftpuser = Sys::getOneData('Parc','Host/'.$hos->Id.'/Ftpuser/Identifiant='.$ftp['Identifiant'],0,1,'ASC','Id');
+        if (!$ftpuser){
+            echo $bc->getColoredString("    -> CREATION FTPUSER ".$ftp['Identifiant']."\n", 'green');
+            $ftpuser = genericClass::createInstance('Parc','Ftpuser');
+            $ftpuser->initFromArray($ftp);
+            $ftpuser->addParent($hos);
+            $ftpuser->DocumentRoot = str_replace('/home/'.$host.'/','',$ftpuser->DocumentRoot);
+            $ftpuser->DocumentRoot = str_replace('/home/'.$host,'',$ftpuser->DocumentRoot);
+            unset($ftpuser->Id);
+            unset($ftpuser->LdapID);
+            unset($ftpuser->LdapDN);
+            unset($ftpuser->LdapTms);
+            $ftpuser->Save();
+        }
+    }
 
-*/
-    //if ($inst->tmsEdit<time()-86400) {
-        echo $bc->getColoredString("  -> SQL DUMP ... ", 'red');
-        //importation de la base de donnée
-        $cmd = 'mysqldump -h 192.168.100.2 -u root -p125iAS34470 azkocms_org_' . $org['org_id'] . ' |  mysql -h 192.168.200.5 -u root -pwCENJbD9DUz76Ty4 azkocms_org_' . $org['org_id'];
-        exec($cmd);
-        echo $bc->getColoredString(" OK " . "\n", 'green');
-    //}
+    //creation des bdds
+    foreach ($bdds as $bdd){
+        $base = Sys::getOneData('Parc','Host/'.$hos->Id.'/Bdd/Nom='.$bdd,0,1,'ASC','Id');
+        if (!$base){
+            echo $bc->getColoredString("    -> BDD ".$bdd."\n", 'green');
+            $base = genericClass::createInstance('Parc','Bdd');
+            $base->Nom = $bdd;
+            $base->addParent($hos);
+            $base->Save();
+        }
+        //if ($base->tmsEdit<time()-3600) {
+            echo $bc->getColoredString("      -> SQL DUMP ... ", 'red');
+            //importation de la base de donnée
+            if ($mysqlsrv=='sql2.eng.systems'){
+                $cmd = 'mysqldump -h 192.168.100.53 -u root -p"zH34Y6u5;" ' . $bdd . ' | sed -e "s/^UNLOCK.*\$//"   | sed -e "s/^LOCK TABLE.*\$//"  | sed -e "s/MyISAM/InnoDB/i"  |  mysql -h 192.168.160.5 -u root -pzH34Y6u5 ' . $bdd;
+            }else $cmd = 'mysqldump -h 192.168.100.50 -u root -pzH34Y6u5 ' . $bdd . '  | sed -e "s/^UNLOCK.*\$//"   | sed -e "s/^LOCK TABLE.*\$//" | sed -e "s/MyISAM/InnoDB/i"  |  mysql -h 192.168.160.5 -u root -pzH34Y6u5 ' . $bdd;
+            echo $cmd."\n";
+            exec($cmd);
+            echo $bc->getColoredString(" OK " . "\n", 'green');
+            $base->Save();
+        //}
+    }
 
-    /*if (!$inst->Save()) {
-        print_r($inst->Error);
-        die('Erreur de création instance');
-    }*/
+    //excution rsync
+    //importation de la base de donnée
+    try {
+        $cmd = 'rsync -avz -e \'ssh -i /root/.ssh/id_rsa\' root@'.$serveur.':/home/'.$host.'/ /home/'.$hos->NomLDAP.'/ --exclude backups --exclude logs --exclude cgi-bin';
+        echo $bc->getColoredString("       -> RUN RSYNC " , 'yellow');
+        $out = $srv->remoteExec($cmd);
+        echo $bc->getColoredString(" OK "."\n", 'green');
+        echo $bc->getColoredString("       -> SETTING RIGHTS " , 'yellow');
+        $out = $srv->remoteExec('chown '.$hos->NomLDAP.':users /home/'.$hos->NomLDAP.' -R');
+        echo $bc->getColoredString(" OK "."\n", 'green');
+    }catch(Exception $e){
+        echo $bc->getColoredString(" ERREUR" . "\n".$e->getMessage()."\n".$cmd."\n", 'red');
+    }
+
+    //détection du cms
+    if ($srv->fileExists('/home/'.$hos->NomLDAP.'/www/wp-config.php')){
+        //c'est un wordpress
+        $inst->Plugin = 'Wordpress';
+        echo $bc->getColoredString("    -> Wordpress\n",'green');
+    }else if ($srv->fileExists('/home/'.$hos->NomLDAP.'/www/Conf/General.conf')){
+        //c'est un kobeye
+        $inst->Plugin = 'KobEye';
+        echo $bc->getColoredString("    -> KobEye\n",'green');
+    }else if ($srv->fileExists('/home/'.$hos->NomLDAP.'/www/config/settings.inc.php')){
+        //c'est un prestashop
+        $inst->Plugin = 'Prestashop';
+        echo $bc->getColoredString("    -> Prestashop\n",'green');
+    }
+
+    $inst->softSave();
+    $inst->rewriteConfig();
 }

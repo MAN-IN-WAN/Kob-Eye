@@ -1,5 +1,5 @@
 <div class="page-content-inner">
-    {#{% if filters|length >0 %}
+    {% if filters|length >0 %}
     <div class="widget widget-four background-transparent" >
         <div class="row">
             {% for filter in filters | slice(0,4) %}
@@ -11,7 +11,7 @@
                     <div class="step-desc">
                         <span class="step-title">{{ filter.name }}</span>
                         <p>
-                            Total: {{ filter.count }}
+                            Total: {[{ filter{{ filter.code }} }]}
                         </p>
                     </div>
                 </div>
@@ -19,7 +19,7 @@
             {% endfor %}
         </div>
     </div>
-    {% endif %}#}
+    {% endif %}
 
     <section class="panel">
         <div class="panel-heading">
@@ -37,11 +37,7 @@
                 <div class="col-xl-12">
                     <div class="panel panel-with-borders m-b-0">
                         <div class="panel-body">
-                            {% if recursiv %}
-                                {{ include(template_from_string(module('Systeme/Utils/Tree'))) }}
-                            {% else %}
-                                {{ include(template_from_string(module('Systeme/Utils/List'))) }}
-                            {% endif %}
+                            {{ include(template_from_string(module(listPath~'?Query='~Path))) }}
                         </div>
                     </div>
                 </div>

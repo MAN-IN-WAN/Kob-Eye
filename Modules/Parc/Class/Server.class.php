@@ -33,12 +33,12 @@ class Server extends genericClass {
         $first = ($this->Id == 0);
         parent::Save();
         //installation de la clef
-        if (!$this->Status){
+        if (!$this->Status&&!$first){
             if (!$this->installSshKey()) return false;
             parent::Save();
         }
         // Forcer la vérification
-        if(!$this->_isVerified) $this->Verify( $synchro );
+        $this->Verify( $synchro );
         // Enregistrement si pas d'erreur
         if($this->_isVerified) {
             parent::Save();
@@ -50,7 +50,7 @@ class Server extends genericClass {
      * @param	boolean	Verifie aussi sur LDAP
      * @return	Verification OK ou NON
      */
-    public function Verify( $synchro = true ) {
+    public function Verify( $synchro = false ) {
         $this->Connect();
         if(parent::Verify()) {
 
@@ -273,6 +273,7 @@ class Server extends genericClass {
                     $userUsed = $quotas[$accId]['used'];
                     $accStatus = $account->get('zimbraAccountStatus');
                     $cosId = $account->get('zimbraCOSId');
+                    $externe = $account->get('zimbraIsExternalVirtualAccount');
                     $cos ='NULL';
                     if(isset($cosId) && $cosId != '')
                         $cos = $coses[$cosId];
@@ -290,6 +291,216 @@ class Server extends genericClass {
                     $o->Quota = floor($userQuota/1048576); //En Mo
                     $o->EspaceUtilise =floor($userUsed/1048576); //En Mo
                     $o->Status = $accStatus;
+                    $o->Externe = $externe;
+
+
+                    $o->addParent($this);
+                    $o->addParent($kCli);
+
+                    if(!$dryrun){
+                        $o->Save(false);
+                        $mAliases = $account->get('zimbraMailAlias');
+                        if(!is_array($mAliases))
+                            $mAliases = array($mAliases);
+
+                        $pAliases = $o->getChildren('EmailAlias');
+
+                        foreach($pAliases as $pAlias){
+                            if(!in_array($pAlias->TargetMail,$mAliases)){
+                                echo '**************************************** Suppression Alias :'.$pAlias->TargetMail.PHP_EOL;
+                                $pAlias->Delete(false);
+                            }
+                        }
+                        foreach($mAliases as $mAlias){
+                            foreach($pAliases as $pAlias){
+                                if($mAlias == $pAlias->TargetMail){
+                                    continue 2;
+                                }
+                            }
+                            echo '**************************************** Ajout Alias :'.$mAlias.PHP_EOL;
+                            $a = genericClass::createInstance('Parc','EmailAlias');
+                            $a->TargetMail = $mAlias;
+                            $a->addParent($o);
+                            $a->Save(false);
+                        }
+                    }
+                }
+            }
+        } catch (Exception $e){
+            $report .= print_r ($e,true);
+        }
+
+         return $report;
+    }
+
+    public function getDiffs($dryrun=false) {
+        //TODO: Vérifier que les comptes admin sont bien actifs avant !!!
+        $report = '';
+
+        if(!isset($this->IP) || $this->IP =='' || !isset($this->mailAdminPort) || $this->mailAdminPort == '' || !isset($this->mailAdminUser) || $this->mailAdminUser == '' || !isset($this->mailAdminPassword) || $this->mailAdminPassword == ''){
+            $report = 'Veuillez vérifier la configuration du serveur. En l\'état il nous est impossible de nous connecter a l\'administration du serveur de mail';
+            return $report;
+        }
+
+        // Create a new Admin class and authenticate
+        $zimbra = new \Zimbra\ZCS\Admin($this->IP, $this->mailAdminPort);
+        $zimbra->auth($this->mailAdminUser, $this->mailAdminPassword);
+
+        try{
+            $domaines = $zimbra->getDomains();
+
+
+
+            foreach($domaines as $domain){
+                //echo '<pre>';
+                //print_r($domain);
+                //echo '</pre>';
+
+                $dname = $domain->get('name');
+                //print_r($dname.'<br/>');
+                $kDom = Sys::getOneData('Parc','Domain/Url='.$dname);
+                if(!is_object($kDom)){
+                    $report .= '<b>Domaine</b> "'.$dname.'" absent du Parc. Les adresses appartenant à ce domaine seront ignorées car impossible à relier à un client.<br>'.PHP_EOL;
+                    continue;
+                }
+                $kCli = $kDom->getOneParent('Client');
+                if(!is_object($kCli)){
+                    $report .= '<b>Client</b> introuvable pour le domaine "'.$dname.'". Les adresses appartenant à ce domaine seront ignorées car impossible à relier à un client.<br>'.PHP_EOL;
+                    continue;
+                }
+
+                $report .= '<b>Domaine</b> "'.$dname.': .<br>'.PHP_EOL;
+
+                $diffList = $zimbra->getDistributionLists($dname);
+                foreach($diffList as $diff){
+
+
+                    $diffId = $diff->get('id');
+                    $diffName = $diff->get('name');
+
+                    $o = Sys::getOneData('Parc','ListeDiffusion/IdDiffusion='.$diffId);
+                    if(!is_object($o)){
+                        $o = genericClass::createInstance('Parc','ListeDiffusion');
+                        $o->IdDiffusion = $diffId;
+                        $report .= '<b>Nouvelle liste de diffusion trouvée</b> : '.$diffName.'.<br>'.PHP_EOL;
+                    }
+
+                    $o->Nom = $diffName;
+
+                    $o->addParent($this);
+                    $o->addParent($kCli);
+
+                    if(!$dryrun){
+                        $o->Save(false);
+
+                        foreach($diff->getMembers() as $memb) {
+                            $report .= '------- synchronisation du membre : "'.$memb.': .<br>'.PHP_EOL;
+                            try {
+                                $temp = $zimbra->getAccount($dname, 'name', $memb);
+                                $id = $temp->get('id');
+                                $compte = Sys::getOneData('Parc', 'CompteMail/IdMail=' . $id);
+                                if ($compte) {
+                                    $compte->addParent($o);
+                                    $compte->Save(false);
+                                } else{
+                                    $report .= 'ERREUR :  Compte introuvable sur le proxy ( Tentez un synchronisation des comptes mails et réessayez. )'.PHP_EOL;
+                                }
+                            }catch (Exception $e){
+                                $report .= 'ERREUR :  Compte introuvable sur le serveur de mail ( Probablement une liste de diffusion. )'.PHP_EOL;
+                                //$report .= print_r ($e,true);
+                            }
+                        }
+                    }
+
+                    if(count($o->Error)){
+                        $report .= '************************* ERRORS ********************************';
+                        $report .= print_r($o->Error, true);
+                        $report .= '*****************************************************************';
+                    }
+
+
+                }
+            }
+        } catch (Exception $e){
+            $report .= print_r ($e,true);
+        }
+
+        return $report;
+    }
+
+    public function getRessources($dryrun=false) {
+        //TODO: Vérifier que les comptes admin sont bien actifs avant !!!
+        $report = '';
+
+        if(!isset($this->IP) || $this->IP =='' || !isset($this->mailAdminPort) || $this->mailAdminPort == '' || !isset($this->mailAdminUser) || $this->mailAdminUser == '' || !isset($this->mailAdminPassword) || $this->mailAdminPassword == ''){
+            $report = 'Veuillez vérifier la configuration du serveur. En l\'état il nous est impossible de nous connecter a l\'administration du serveur de mail';
+            return $report;
+        }
+
+        // Create a new Admin class and authenticate
+        $zimbra = new \Zimbra\ZCS\Admin($this->IP, $this->mailAdminPort);
+        $zimbra->auth($this->mailAdminUser, $this->mailAdminPassword);
+
+        try{
+            $domaines = $zimbra->getDomains();
+
+//            $cosesTemp = $zimbra->getAllCos();
+//            $coses = array();
+//            foreach ($cosesTemp as $cosTemp){
+//                $coses[$cosTemp->get('id')]=$cosTemp->get('name');
+//            }
+
+
+
+            foreach($domaines as $domain){
+                //echo '<pre>';
+                //print_r($domain);
+                //echo '</pre>';
+
+                $dname = $domain->get('name');
+                //print_r($dname.'<br/>');
+                $kDom = Sys::getOneData('Parc','Domain/Url='.$dname);
+                if(!is_object($kDom)){
+                    $report .= '<b>Domaine</b> "'.$dname.'" absent du Parc. Les adresses appartenant à ce domaine seront ignorées car impossible à relier à un client.<br>'.PHP_EOL;
+                    continue;
+                }
+                $kCli = $kDom->getOneParent('Client');
+                if(!is_object($kCli)){
+                    $report .= '<b>Client</b> introuvable pour le domaine "'.$dname.'". Les adresses appartenant à ce domaine seront ignorées car impossible à relier à un client.<br>'.PHP_EOL;
+                    continue;
+                }
+
+                $report .= '<b>Domaine</b> "'.$dname.': .<br>'.PHP_EOL;
+
+                $ressList = $zimbra->getAllRessources($dname);
+                foreach($ressList as $ress){
+
+
+                    $accHost = $ress->get('zimbraMailHost');
+                    if($accHost != $this->DNSNom){
+                        continue;
+                    }
+                    $accId = $ress->get('id');
+                    $accName = $ress->get('name');
+                    $accStatus = $ress->get('zimbraAccountStatus');
+                    $accType = $ress->get('zimbraCalResType');
+                    $accDisplay = $ress->get('displayName');
+//                    $cosId = $ress->get('zimbraCOSId');
+//                    $cos ='NULL';
+//                    if(isset($cosId) && $cosId != '')
+//                        $cos = $coses[$cosId];
+
+                    $o = Sys::getOneData('Parc','EmailRessource/IdMail='.$accId);
+                    if(!is_object($o)){
+                        $o = genericClass::createInstance('Parc','EmailRessource');
+                        $o->IdMail = $accId;
+                        $report .= '<b>Nouvelle ressource trouvée</b> : '.$accName.'.<br>'.PHP_EOL;
+                    }
+                    $o->Adresse = $accName;
+                    //$o->COS = $cos;
+                    $o->Status = $accStatus;
+                    $o->Type = $accType;
+                    $o->Nom = $accDisplay;
 
 
                     $o->addParent($this);
@@ -304,7 +515,7 @@ class Server extends genericClass {
             $report .= print_r ($e,true);
         }
 
-         return $report;
+        return $report;
     }
 
 
@@ -794,6 +1005,7 @@ class Server extends genericClass {
 		$res = Server::ldapGet($ldapID);
 		$GLOBALS["Systeme"]->Log->log("DELETE HOST: $ldapID RECURSIVE: $recursive");
 		if ($recursive == false) {
+		    if (!isset($res[0]))return false;
 			$req = ldap_delete(Server::$_LDAP, $res[0]['dn']);
 		} else {
 			//searching for sub entries
@@ -898,6 +1110,45 @@ class Server extends genericClass {
                     break;
                 case "Domain":
                     $search = ldap_search(Server::$_LDAP, 'ou=domains,'.PARC_LDAP_BASE, 'cn=' . $KEObj->Url, array('modifytimestamp', 'entryuuid'));
+                    $res = ldap_get_entries(Server::$_LDAP, $search);
+                    //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
+                    if (!$res['count']) {
+                        $e['exists'] = false;
+                        return $e;
+                    }else{
+                        $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                        $KEObj->LdapID = $res[0]['entryuuid'][0];
+                        $KEObj->LdapDN = $res[0]['dn'];
+                    }
+                    break;
+                case "Subdomain":
+                    $search = ldap_search(Server::$_LDAP, $dn, 'cn=' . $KEObj->Nom, array('modifytimestamp', 'entryuuid'));
+                    $res = ldap_get_entries(Server::$_LDAP, $search);
+                    //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
+                    if (!$res['count']) {
+                        $e['exists'] = false;
+                        return $e;
+                    }else{
+                        $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                        $KEObj->LdapID = $res[0]['entryuuid'][0];
+                        $KEObj->LdapDN = $res[0]['dn'];
+                    }
+                    break;
+                case "MX":
+                    $search = ldap_search(Server::$_LDAP, $dn, 'cn=' . $KEObj->Nom, array('modifytimestamp', 'entryuuid'));
+                    $res = ldap_get_entries(Server::$_LDAP, $search);
+                    //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
+                    if (!$res['count']) {
+                        $e['exists'] = false;
+                        return $e;
+                    }else{
+                        $KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                        $KEObj->LdapID = $res[0]['entryuuid'][0];
+                        $KEObj->LdapDN = $res[0]['dn'];
+                    }
+                    break;
+                case "TXT":
+                    $search = ldap_search(Server::$_LDAP, $dn, 'cn=' . $KEObj->Nom, array('modifytimestamp', 'entryuuid'));
                     $res = ldap_get_entries(Server::$_LDAP, $search);
                     //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
                     if (!$res['count']) {
@@ -1036,7 +1287,23 @@ class Server extends genericClass {
         }
         //test connectivite ssh
         try {
-            $connection = ssh2_connect($this->InternalIP, 22);
+            //Test de connectivité pour ne pas bloquer l'appli
+            $connection = false;
+            if(!empty($this->InternalIP)) {
+                $tc = @fsockopen($this->InternalIP, $this->Port, $errno, $errstr, 0.5);
+                if ($tc !== false) {
+                    fclose($tc);
+                    $connection = ssh2_connect($this->InternalIP, $this->Port);
+                }
+            }
+            if(!$connection && !empty($this->IP)) {
+                $tc = @fsockopen($this->IP, $this->Port, $errno, $errstr, 0.5);
+                if ($tc !== false) {
+                    fclose($tc);
+                    $connection = ssh2_connect($this->IP, $this->Port);
+                }
+            }
+
             if (!$connection){
                 $this->addError(array("Message"=>"Impossible de contacter l'hôte ".$this->InternalIP));
                 $this->Status = false;
@@ -1209,35 +1476,24 @@ class Server extends genericClass {
         fclose( $error_stream );
         return array( $output, $error_output,$exit_output);
     }
-    /**
-     * createActivity
-     * créé une activité en liaison avec l'esx
-     * @param $title
-     * @param null $obj
-     * @param int $jPSpan
-     * @param string $Type
-     * @return genericClass
-     */
-    public function createActivity($title,$Type='Exec') {
-        $act = genericClass::createInstance('Parc','Activity');
-        $act->addParent($this);
-        $act->Titre = $this->tag.date('d/m/Y H:i:s').' > '.$this->Titre.' > '.$title;
-        $act->Started = true;
-        $act->Type= $Type;
-        $act->Progression = 0;
-        $act->Save();
-        return $act;
-    }
+
     /**
      * callLdap2Service
      * execute remotely ldap2service
      */
-    public function callLdap2Service($task = null,$retry=false) {
-        $act = $this->createActivity('Execution de synchronisation','Exec');
+    public function callLdap2Service($retry=false) {
+        $task = genericClass::createInstance('Systeme', 'Tache');
+        $task->Type = 'Fonction';
+        $task->Nom = 'Raifraichissement des configuration (ldap2service) ' . $this->Nom;
+        $task->TaskModule = 'Parc';
+        $task->TaskObject = 'Server';
+        $task->TaskId = $this->Id;
+        $task->TaskFunction = 'callLdap2service';
+        $task->Demarre = true;
+        $task->Save();
+        $act = $task->createActivity('Execution de synchronisation');
         try {
             $out = $this->remoteExec('/usr/bin/ldap2service', $act);
-            /*if ($this->Proxy)
-                $out = $this->remoteExec('/usr/bin/systemctl restart nginx', $act);*/
         }catch (Exception $e){
             $act->addDetails($e->getMessage());
             //si erreur il faut vérfiier le fichier de date
@@ -1250,19 +1506,21 @@ class Server extends genericClass {
         if (empty($ct)&&!$retry){
             //alors on pousse une valeur
             $this->putFileContent('/etc/ldap2service/ldap2service.time',date('YmdHis',time()-60));
-            $this->callLdap2Service($task,true);
+            $this->callLdap2Service(true);
         }
 
         $act->addDetails($out);
         $act->Terminate($out);
+        $task->Termine = true;
+        $task->Save();
         return true;
     }
     /**
      * clearCache
      * clear Nginx cache
      */
-    public function clearCache() {
-        $act = $this->createActivity('Vidage du cache','Exec');
+    public function clearCache($task) {
+        $act = $task->createActivity('Vidage du cache');
         try {
             $out = $this->remoteExec('rm /tmp/nginx -Rf', $act);
         }catch (Exception $e){
@@ -1270,20 +1528,19 @@ class Server extends genericClass {
             $act->Terminate(false);
             return;
         }
-        $this->
         $act->addDetails($out);
         $act->Terminate(true);
-        $this->restartServiceNginx();
+        $this->restartServiceNginx($task);
         return true;
     }
     /**
      * clearCache
      * clear Nginx cache
      */
-    public function restartServiceNginx() {
-        $act = $this->createActivity('Redemarrage du service Proxy (NGINX)','Exec');
+    public function restartServiceNginx($task) {
+        $act = $task->createActivity('Redemarrage du service Proxy (NGINX)');
         try {
-            $out = $this->remoteExec('systemctl restart nginx', $act);
+            $out = $this->remoteExec('/usr/sbin/nginx -s reload', $act);
         }catch (Exception $e){
             $act->addDetails($e->getMessage());
             $act->Terminate(false);
@@ -1298,22 +1555,50 @@ class Server extends genericClass {
      * Check if a folder exists
      */
     public function folderExists($path){
-        $act = $this->createActivity('Test existence dossier '.$path,'Exec');
         try {
             $out = $this->remoteExec('if [ -d '.$path.' ]; then echo 1; else echo 0; fi');
-            $act->addDetails('if [ -d '.$path.' ]; then echo 1; else echo 0; fi');
             if (intval($out)>0){
-                $act->addDetails('retour => true ');
-                $act->Terminate(true);
                 return true;
             }else{
-                $act->addDetails('retour => false ');
-                $act->Terminate(true);
                 return false;
             }
         }catch (Exception $e){
-            $act->addDetails($e->getMessage());
-            $act->Terminate(false);
+            return false;
+        }
+    }
+    /**
+     * fileExists
+     * Check if a file exists
+     */
+    public function fileExists($path){
+        try {
+            $out = $this->remoteExec('if [ -f '.$path.' ]; then echo 1; else echo 0; fi');
+            if (intval($out)>0){
+                return true;
+            }else{
+                return false;
+            }
+        }catch (Exception $e){
+            return false;
+        }
+    }
+    /**
+     * createFolder
+     * create a folder
+     */
+    public function createFolder($path,$usr = null,$rights='705'){
+        try {
+            $cmd = 'mkdir -p '.$path.' && chmod '.$rights.' '.$path;
+            if ($usr){
+                $cmd.=' && chown '.$usr.':users '.$path;
+            }
+            $out = $this->remoteExec($cmd);
+            if (intval($out)>0){
+                return true;
+            }else{
+                return false;
+            }
+        }catch (Exception $e){
             return false;
         }
     }
@@ -1323,7 +1608,15 @@ class Server extends genericClass {
      */
     public function getFileContent($path){
         try {
-            $out = $this->remoteExec('cat '.$path.' ');
+//            $out = $this->remoteExec('cat '.$path.' ');
+            if (!$this->_connection)$this->Connect();
+            //créatio nd'un fichier temporaire
+            $tmpfile = 'Data/'.microtime().'.tmp';
+            //$cmd = 'echo  \''.base64_encode($content).'\' > | base64 --decode '.$path;
+            //$out = $this->remoteExec($cmd);
+            $out = ssh2_scp_recv($this->_connection,$path,$tmpfile);
+            $out = file_get_contents($tmpfile);
+            unlink($tmpfile);
             if (!empty($out)){
                 return $out;
             }else{
@@ -1340,7 +1633,14 @@ class Server extends genericClass {
      */
     public function putFileContent($path,$content){
         try {
-            $out = $this->remoteExec('echo \''.$content.'\' > '.$path);
+            if (!$this->_connection)$this->Connect();
+            //créatio nd'un fichier temporaire
+            $tmpfile = 'Data/'.microtime().'.tmp';
+            file_put_contents($tmpfile,$content);
+            //$cmd = 'echo  \''.base64_encode($content).'\' > | base64 --decode '.$path;
+            //$out = $this->remoteExec($cmd);
+            $out = ssh2_scp_send($this->_connection,$tmpfile,$path);
+            unlink($tmpfile);
             if (!empty($out)){
                 return $out;
             }else{
@@ -1350,4 +1650,30 @@ class Server extends genericClass {
             return false;
         }
     }
+    /**
+     * createRestartTask
+     * Creation de la tache de redemarrage des services
+     */
+    public static function createRestartProxyTask($infra = null) {
+        $pref = '';
+        if($infra)
+            $pref = 'Infra/'.$infra->Id.'/';
+
+        $pxs = Sys::getData('Parc',$pref.'Server/Proxy=1');
+        foreach ($pxs as $px){
+            //on vérifie d'abord qu'il n'y en a pas une à venir.
+            $nb = Sys::getCount('Systeme','Tache/TaskModule=Parc&TaskObject=Server&TaskId='.$px->Id.'&TaskFunction=restartServiceNginx&Demarre=0');
+            if (!$nb) {
+                $task = genericClass::createInstance('Systeme', 'Tache');
+                $task->Type = 'Fonction';
+                $task->Nom = 'Redemarrage des service du proxy ' . $px->Nom;
+                $task->TaskModule = 'Parc';
+                $task->TaskObject = 'Server';
+                $task->TaskId = $px->Id;
+                $task->TaskFunction = 'restartServiceNginx';
+                $task->Save();
+            }
+        }
+    }
+
 }
