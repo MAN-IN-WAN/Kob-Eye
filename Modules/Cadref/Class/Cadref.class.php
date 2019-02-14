@@ -127,16 +127,20 @@ class Cadref extends Module {
 		AlertUser::addAlert('Adhérent : '.$a->Prenom.' '.$a->Nom,"Nouvel utilisateur : ".$a->Numero,'','',0,[],'CADREF_ADMIN','icmn-user3');
 
 		
-		if($a->Mail) {
+		if(strpos($a->Mail, '@') > 0) {
 			$s = "Bonjour ".($a->Sexe == "F" ? "Madame " : ($a->Sexe == "H" ? "Monsieur " : "")).$a->Prenom.' '.$a->Nom.",<br /><br /><br />";
 			$s .= $new ? "Votre espace CADREF vient d'être activé.<br /><br />" : "Votre mot de passe a été modifié.<br /><br />";
-			$s .= "Vos paramètres de connection sont :<br /><br />Code utilisateur (N° adhérent) : $num<br />Mot de Passe : $p<br /><br /><br />";
+			$s .= "Vos paramètres de connection sont les suivants :<br /><br />Code utilisateur (N° adhérent) : $num<br />Mot de Passe : $p<br /><br /><br />";
 			$s .= "A bientôt,<br />L'équipe du CADREF<br />";
-			$params = array('Subject'=>($new ? 'CADREF : Bienvenu dans votre nouvel espace.' : 'CADREF : Nouveau mot de passe.'),
+			$params = array('Subject'=>($new ? 'CADREF : Bienvenu dans votre nouvel espace utilisateur.' : 'CADREF : Nouveau mot de passe.'),
 				'Mail'=>$a->Mail,
 				'Body'=>$s);
 			self::SendMessage($params);
 		}
+		$msg = "Code utilisateur: $num\nMote de passe: $p\n";
+		$params = array('Telephone1'=>$a->Telephone1,'Telephone2'=>$a->Telephone2,'Message'=>$msg);
+//			self::SendSms($params);
+		return true;
 	}
 	
 	public static function GeneratePassword() {	
@@ -199,7 +203,7 @@ group by t.Antenne";
 		return $data;
 	}
 
-	static function between($t, $start, $end) {
+	public static function between($t, $start, $end) {
 		return $start <= $t && $t <= $end;
 	}
 
@@ -462,7 +466,7 @@ where ve.Visite=$vid
 	}
 
 	public static function SendMessage($params) {
-		@include_once('Class/Lib/Mail.class.php');
+		require_once('Class/Lib/Mail.class.php');
 
 		$Mail = new Mail();
 		$Mail->Subject($params['Subject']);
@@ -474,10 +478,58 @@ where ve.Visite=$vid
 		$bloc->init($Pr);
 		$bloc->generate($Pr);
 		$Mail->Body($bloc->Affich());
-		return $Mail->Send();
+		$ret = $Mail->Send();
+		return $ret;
+	}
+
+    public static function SendSms($params) {
+	return;
+		$tel = preg_replace('/[^0-9]/', '', $params['Telephone1']);
+		if(substr($tel, 0, 2) != '06' && substr($tel, 0, 2) != '07') {
+			$tel = preg_replace('/[^0-9]/', '', $params['Telephone2']);
+			if(substr($tel, 0, 2) != '06' && substr($tel, 0, 2) != '07')
+				$tel = ''; 
+		}
+		if(strlen($tel) == 10) {
+			require_once("Class/Lib/Isendpro/autoload.php");
+
+			$api_instance = new Isendpro\Api\SmsApi();
+			$smsrequest = new Isendpro\Model\SmsUniqueRequest();
+			$smsrequest["keyid"] = SMS_API;
+			$smsrequest["emetteur"] = 'CADREF';
+			$smsrequest["num"] = $tel;
+			$smsrequest["sms"] = $params['Message'];
+			
+			try {
+				$ret = $api_instance->sendSms($smsrequest);
+			} catch (Exception $e) {
+				klog::l('CADREF ISendPro Exception :',print_r($e->getResponseObject(),1));
+			}
+		}
+
+    }
+
+	public static function SendMessageAdmin($params) {
+		$us = Sys::getData('Systeme', 'Group/Nom=CADREF_ADMIN/User');
+		foreach($us as $u) {
+			if($u->Mail) {
+				$params['Mail'] = $u->Mail;
+				self::SendMessage($params);
+			}
+		}
+	}
+
+	public static function SendSmsAdmin($params) {
+		$us = Sys::getData('Systeme', 'Group/Nom=CADREF_ADMIN/User');
+		foreach($us as $u) {
+			if($u->Tel) {
+				$params['Telephone1'] = $u->Tel;
+				$params['Telephone2'] = '';
+				self::SendSms($params);
+			}
+		}
 	}
 	
-
 
 
 

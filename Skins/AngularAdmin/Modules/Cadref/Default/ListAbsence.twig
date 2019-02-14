@@ -73,9 +73,9 @@
 				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
 				<td scope="row" class="cadref-td typedatetime"><span class="label">{[{ item.DateDebut }]}</span></td>
 				<td scope="row" class="cadref-td typedatetime"><span class="label">{[{ item.DateFin }]}</span></td>
-				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Description }]}</span></td>
+				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Description+':'+item.Message }]}</span></td>
 				<td  class="table-action cadref-td-btn">
-					<a class="btn-abt cadref-btn-msg" ng-classe="{btn-success: item.Message, btn-info: !item.Message}" href="" title="Message" ng-click="absenceMessage(item)"></a>
+					<a class="btn-abt cadref-btn-msg" ng-class="{'btn-success': item.Message==1, 'btn-warning': item.Message==0}" href="" title="Message aux élèves" ng-click="absenceMessage(item)"></a>
 					<a class="btn-abt btn-abt-nfo btn-primary" href="" title="Détails" ng-click="absenceModify(item)"></a>
 				</td>
 			</tr>

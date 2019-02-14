@@ -793,7 +793,7 @@ where ce.Classe=:cid";
 		Sys::$User->Pass = '[md5]'.md5($new);
 		Sys::$User->Save();
 		
-		if($this->Mail) {
+		if(strpos($this->Mail, '@') > 0) {
 			$s = "Bonjour ".($this->Sexe == "F" ? "Madame " : ($this->Sexe == "H" ? "Monsieur " : "")).$this->Prenom.' '.$this->Nom.",<br /><br /><br />";
 			$s .= "Votre nouveau mot de passe a été enregistré.<br /><br />";
 			$s .= "A bientôt,<br />L'équipe du CADREF<br />";
@@ -802,6 +802,10 @@ where ce.Classe=:cid";
 				'Body'=>$s);
 			Cadref::SendMessage($params);
 		}
+		$msg = "CADREF : Changement de mot de passe.\nCode utilisateur: $this->Numero\nMote de passe: $new\n";
+		$params = array('Telephone1'=>$this->Telephone1,'Telephone2'=>$this->Telephone2,'Message'=>$msg);
+		Cadref::SendSms($params);
+
 		$data['success'] = 1;
 		$data['message'] = 'Mot de passe enregistré';
 		return $data;

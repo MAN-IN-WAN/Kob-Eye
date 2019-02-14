@@ -6,24 +6,27 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 	$scope.NbReservations = 0;
 	$scope.NbUsers = 0;
 	$scope.getStat = function() {
+		{% if group == 'CADREF_ADMIN' %}
 		$http.get('/Cadref/Dashboard/getStat.json')
 		.success(function(data) {
 			$scope.NbAdherents = Number(data.NbAdherents);
 			$scope.NbInscriptions = Number(data.NbInscriptions);
 			$scope.NbReservations = Number(data.NbReservations);
 			$scope.NbUsers = Number(data.NbUsers);
-			// repartition
-{#			var bar = $('#bargraph')
+{#			// repartition
+			var bar = $('#bargraph')
 			if(bar == undefined || bar.get(0) == undefined) {
 				$interval.cancel(intv);
 				return;
 			}
 			bar.get(0).__chartist__.update(data.bars);
-#}		});
+#}
+		});
+		{% endif %}
 		$('.cadref-calendar-block').fullCalendar('refetchEvents');
 	}
 	$scope.getStat();
-	var intv = $interval($scope.getStat, 60000);
+	var intv = $interval($scope.getStat, {% if group == 'CADREF_ADMIN' %}60000{% else %}180000{% endif %});
 	
 	// calendrier
 	$scope.visites = true;
