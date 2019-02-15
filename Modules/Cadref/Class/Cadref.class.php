@@ -280,6 +280,18 @@ left join `##_Cadref-Absence` a on a.EnseignantId=ce.EnseignantId
 left join `##_Cadref-Enseignant` e on e.Id=ce.EnseignantId
 where i.AdherentId=$id and i.Annee='$annee' and ((a.DateDebut>=$start and a.DateDebut<=$end) or (a.DateFin>=$start and a.DateFin<=$end))
 ";
+			$sql2 = "
+select cd.DateCours,i.ClasseId as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,
+concat(ifnull(dw.Libelle,d.Libelle),' ',n.Libelle) as Libelle, l.Ville, l.Adresse1, l.Adresse2
+from `##_Cadref-Inscription` i
+inner join `##_Cadref-ClasseDate` cd on cd.ClasseId=i.ClasseId
+inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
+inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
+inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
+left join `##_Cadref-WebDiscipline` dw on dw.Id=d.WebDisciplineId
+left join `##_Cadref-Lieu` l on l.Id=c.LieuId
+where i.AdherentId=$id and cd.DateCours>=$start and cd.DateCours<=$end
+";
 		} else if($group == 'CADREF_ENS') {
 			$adh = false;
 			$n = substr(Sys::$User->Login, 3, 3);
@@ -300,6 +312,18 @@ where ce.EnseignantId=$id and c.Annee='$annee' and c.JourId>0 and c.HeureDebut<>
 select a.DateDebut,a.DateFin,a.Description,'','',0 as cid,a.EnseignantId
 from `##_Cadref-Absence` a
 where a.EnseignantId=$id and ((a.DateDebut>=$start and a.DateDebut<=$end) or (a.DateFin>=$start and a.DateFin<=$end))
+";
+			$sql2 = "			
+select c.Id as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,
+concat(ifnull(dw.Libelle,d.Libelle),' ',n.Libelle) as Libelle, l.Ville, l.Adresse1, l.Adresse2
+from `##_Cadref-ClasseEnseignants` ce
+inner join `##_Cadref-ClasseDate` cd on cd.ClasseId=ce.Classe
+inner join `##_Cadref-Classe` c on c.Id=ce.Classe
+inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
+inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
+left join `##_Cadref-WebDiscipline` dw on dw.Id=d.WebDisciplineId
+left join `##_Cadref-Lieu` l on l.Id=c.LieuId
+where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 ";
 		}
 		// absences
@@ -410,6 +434,54 @@ where ce.Classe=$cid
 					}
 					$d += 7 * 24 * 60 * 60;
 				}
+			}
+			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql2);
+			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+			foreach($pdo as $p) {
+				$cid = $p['cid'];
+				$d = $p['DateCours'];
+				$e = new stdClass();
+				$e->title = $p['Libelle'];
+				$e->start = Date('Y-m-d', $d).'T'.$p['HeureDebut'];
+				$e->end = Date('Y-m-d', $d).'T'.$p['HeureFin'];
+				$e->className = 'fc-event-info';
+				$e->description = $p['HeureDebut'].' à '.$p['HeureFin'].($cd ? '  du '.$p['CycleDebut'].' au '.$p['CycleFin'] : '');
+				if($p['Ville']) {
+					$l = $p['Ville'];
+					if($p['Adresse1']) $l .= ', '.$p['Adresse1'];
+					if($p['Adresse2']) $l .= "\n".$p['Adresse2'];
+					$e->description .= "\n".$l;
+				}
+				$s = '';
+				$sql = "
+select e.Nom,e.Prenom,e.Id
+from `##_Cadref-ClasseEnseignants` ce
+inner join `##_Cadref-Enseignant` e on e.Id=ce.EnseignantId
+where ce.Classe=$cid
+";
+				$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+				$pdo1 = $GLOBALS['Systeme']->Db[0]->query($sql);
+				$s = '';
+				foreach($pdo1 as $p1) {
+					$s .= ($s ? "\n" : '').'Ens. : '.trim($p1['Prenom'].' '.$p1['Nom']);
+					if($adh) {
+						$eid = $p1['EnseignantId'];
+						foreach($absences as $a) {
+							if($a->cid == $cid && $a->eid == $eid) {
+								$hd = strtotime($e->start);
+								$hf = strtotime($e->end);
+								if(self::between($hd, $a->start, $a->end) || self::between($hf, $a->start, $a->end)) {
+									$e->className = 'fc-event-danger';
+									$s .= " <span style=\"color:red\">(Absent)</span>";
+									break;
+								}
+							}
+						}
+					}
+				}
+				if($s) $e->description .= "\n".$s;
+				if(!$adh) $e->description .= "\n".$p['CodeClasse'];
+				$events[] = $e;
 			}
 		}
 

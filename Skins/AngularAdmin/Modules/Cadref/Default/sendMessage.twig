@@ -1,12 +1,12 @@
 {% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label %} 
 <div class="page-content-inner">
     <section class="panel">
-        <div class="panel-heading" style="padding-bottom:10px; padding-top:10px">
+        <div class="panel-heading" style="padding-bottom:5px; padding-top:5px">
 			<div>
 				<span class="cadref-ins-numero" ng-bind="obj.Numero"></span> <span class="cadref-ins-nom" ng-bind="obj.Nom|uppercase"></span> <span class="cadref-ins-prenom" ng-bind="obj.Prenom"></span>
 			</div>
         </div>
-        <div class="row" style="height:20px"></div>
+        <div class="row" style="height:10px"></div>
 		<div class="panel-body">
 			<div class="row">
 				<div class="col-md-2">
@@ -31,7 +31,7 @@
 					{{ label('Message') }}
 				</div>
 				<div class="col-md-10">
-					<div ui-ace="{useWrapMode : true,mode: '',onLoad: aceLoaded,onChange: aceChanged}" ng-model="msgObj.Body" class="ace_editor"></div>
+			        <textarea ckeditor="options" contenteditable="false"  style="width:100%;min-height:300px;white-space: pre-wrap;" ng-model="msgObj.Body" ng-trim="false"></textarea>
 				</div>
 			</div>
 		</div>

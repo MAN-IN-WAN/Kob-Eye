@@ -106,6 +106,22 @@ table tr td.cadref-td-diff {
 .cadref-btn-msg:after {
     content: "\ea32";
 }
+.cadref-btn-close {
+	float: right;
+	color: #fff;
+    background-color: #f0ad4e;
+    border-color: #f0ad4e;
+}
+.cadref-btn-close:after {
+    content: "\ed66";
+}
+/*
+cadref-btn-close:hover {
+    color: #fff;
+    background-color: #ec971f;
+    border-color: #eb9316;
+}
+*/
 .cadref-cal-visite:before {
 	font-family: 'icomoon-ultimate';
 	content: "\e93c";
@@ -260,3 +276,4 @@ table tr td.cadref-td-diff {
 .cadref-page-content {
 	padding: 5px;
 }
+

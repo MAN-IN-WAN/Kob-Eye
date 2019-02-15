@@ -291,7 +291,7 @@
 										{{ label("Notes annuelles") }}
 									</div>
 									<div class="col-md-10">
-										<div ui-ace="{useWrapMode : true,mode: '{{ field.subtype }}',onLoad: aceLoaded,onChange: aceChanged}" ng-model="{{ o }}.NotesAnnuelles" class="ace_editor cadref-annuel" style="height:60px"></div>
+										<textarea class="form-control cadref-input cadref-annuel" style="width:100%;min-height:55px;white-space:pre-wrap;" ng-model="{{ o }}.NotesAnnuelles"></textarea>
 									</div>
 								</div>
 							</section>
@@ -335,9 +335,7 @@
     <div class="modal-dialog cadref-modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+				<a class="btn-abt cadref-btn-close" href="" data-dismiss="modal" title="Annuler"></a>
                 <h4 class="modal-title">{[{ {{ identifier }}function.title }]}</h4>
             </div>
             <div class="modal-body">

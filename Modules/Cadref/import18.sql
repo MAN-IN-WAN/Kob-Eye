@@ -245,28 +245,48 @@ left join kbabtel.`kob-Cadref-Section` s on s.Section=c.Sect
 left join kbabtel.`kob-Cadref-Discipline` d on d.SectionId=s.Id and d.Discipline=c.Discipline
 left join kbabtel.`kob-Cadref-Niveau` n on n.Antenne=c.Antenne and n.Section=c.Sect and n.Discipline=c.Discipline and n.Niveau=c.Niveau;
 
+truncate kbabtel.`kob-Cadref-ClasseDate`;
+insert into kbabtel.`kob-Cadref-ClasseDate`(umod,gmod,omod,ClasseId,Annee,DateCours)
+select 7,7,7,c.Id,'2018',unix_timestamp(d0) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d0>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d1) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d1>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d2) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d2>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d3) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d3>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d4) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d4>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d5) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d5>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d6) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d6>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d7) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d7>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d8) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d8>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d9) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d9>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d10) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d10>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d11) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d11>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d12) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d12>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d13) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d13>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d14) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d14>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d15) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d15>'0000-00-00';
+
+
 delete s
-from `kob-Cadref-Section`s
-left join `kob-Cadref-Discipline` d on s.id=d.SectionId
-left join `kob-Cadref-Niveau` n on d.id=n.DisciplineId
-left join `kob-Cadref-Classe` c on n.Id=c.NiveauId
+from kbabtel.`kob-Cadref-Section`s
+left join kbabtel.`kob-Cadref-Discipline` d on s.id=d.SectionId
+left join kbabtel.`kob-Cadref-Niveau` n on d.id=n.DisciplineId
+left join kbabtel.`kob-Cadref-Classe` c on n.Id=c.NiveauId
 where d.Id is null;
 delete d
 from `kob-Cadref-Discipline` d
-left join `kob-Cadref-Niveau` n on d.id=n.DisciplineId
-left join `kob-Cadref-Classe` c on n.Id=c.NiveauId
+left join kbabtel.`kob-Cadref-Niveau` n on d.id=n.DisciplineId
+left join kbabtel.`kob-Cadref-Classe` c on n.Id=c.NiveauId
 where d.Id is null;
 delete s
-from `kob-Cadref-Section`s
-left join `kob-Cadref-Discipline` d on s.id=d.SectionId
+from kbabtel.`kob-Cadref-Section`s
+left join kbabtel.`kob-Cadref-Discipline` d on s.id=d.SectionId
 where d.Id is null;
 delete d
-from `kob-Cadref-Discipline` d
-left join `kob-Cadref-Niveau` n on d.Id=n.DisciplineId
+from kbabtel.`kob-Cadref-Discipline` d
+left join kbabtel.`kob-Cadref-Niveau` n on d.Id=n.DisciplineId
 where n.Id is null;
 delete n
-from `kob-Cadref-Niveau` n
-left join `kob-Cadref-Classe` c on n.Id=c.NiveauId
+from kbabtel.`kob-Cadref-Niveau` n
+left join kbabtel.`kob-Cadref-Classe` c on n.Id=c.NiveauId
 where c.Id is null;
 
 

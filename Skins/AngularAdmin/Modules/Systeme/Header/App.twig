@@ -568,6 +568,27 @@ app.controller('MainCtrl', function($location, $scope, $rootScope, $timeout, $ht
             tab_size: '4'
         }
     };
+    $scope.ckHtml = {
+        language: 'fr',
+        allowedContent: true,
+        entities: false,
+        toolbarGroups : [
+			{ name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
+			{ name: 'editing',     groups: [ 'find', 'selection', 'spellchecker' ] },
+			{ name: 'links' },
+			{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+			{ name: 'paragraph',   groups: [ 'list', 'indent', 'align' ] },
+			{ name: 'styles' },
+			{ name: 'colors' },
+		]
+    };
+    $scope.ckNotes = {
+        language: 'fr',
+        allowedContent: true,
+        entities: false,
+        toolbarGroups : [
+		]
+    };
     //Diverses config differents pour differents options
     $scope.ckFull = {
         language: 'fr',

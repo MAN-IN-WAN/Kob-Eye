@@ -82,7 +82,7 @@
 		<PROPERTIES type="varchar" length="2" auto="1" category="Description" description="Discipline">Discipline</PROPERTIES>
 		<PROPERTIES type="varchar" length="1" obligatoire="1" category="Description" form="4" fiche="4" description="Niveau">Niveau</PROPERTIES>
 		<PROPERTIES type="varchar" length="9" searchOrder="1" auto="1" unique="1" category="Description" list="1" listDescr="Code">CodeNiveau</PROPERTIES>
-		<PROPERTIES type="varchar" length="50" category="Description" list="5" form="5" fiche="5" description="Libellé">Libelle</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" category="Description" list="6" form="5" fiche="5" description="Libellé">Libelle</PROPERTIES>
 		<PROPERTIES type="boolean" default="1" category="Description" form="6" fiche="6" description="Accès Web">AccesWeb</PROPERTIES>
 		<PROPERTIES type="text" obligatoire="0" category="Description" form="7" fiche="6" description="Description">Description</PROPERTIES>
 <!--		<FKEY card="0,1" module="Cadref" data="Lieu,Id" form="11" fiche="11" category="Description" description="Lieu" >LieuId</FKEY>-->
@@ -91,10 +91,15 @@
 			<OBJECTCLASS title="Niveau" filters="">
 				<JOIN type="outer" module="Cadref" title="Discipline" on="DisciplineId" target="Id">
 					<PROPERTIES type="varchar" list="4" listDescr="Discipline" alias="LibelleD">Libelle</PROPERTIES>
+					<JOIN type="outer" module="Cadref" title="WebDiscipline" on="WebDisciplineId" target="Id">
+						<PROPERTIES type="varchar" list="5" form="4" fiche="4" listDescr="Libelle web" alias="LibelleW">Libelle</PROPERTIES>
+					</JOIN>
 				</JOIN>
+<!--
 				<JOIN type="outer" module="Cadref" title="Section" on="SectionId" target="Id">
 					<PROPERTIES type="varchar" list="3" form="4" fiche="4" listDescr="Section" alias="LibelleS">Libelle</PROPERTIES>
 				</JOIN>
+-->
 				<JOIN type="outer" module="Cadref" title="Antenne" on="AntenneId" target="Id">
 					<PROPERTIES type="varchar" alias="LibelleA">Libelle</PROPERTIES>
 				</JOIN>
@@ -154,9 +159,11 @@
 						<PROPERTIES type="varchar" list="4" listDescr="Web" alias="LibelleW">Libelle</PROPERTIES>
 					</JOIN>
 				</JOIN>
+<!--
 				<JOIN type="outer" module="Cadref" title="Section" on="SectionId" target="Id">
 					<PROPERTIES type="varchar" list="3" form="4" fiche="4" listDescr="Section" alias="LibelleS">Libelle</PROPERTIES>
 				</JOIN>
+-->
 				<JOIN type="outer" module="Cadref" title="Antenne" on="AntenneId" target="Id">
 					<PROPERTIES type="varchar" alias="LibelleA">Libelle</PROPERTIES>
 				</JOIN>
