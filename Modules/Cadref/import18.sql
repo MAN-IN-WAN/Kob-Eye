@@ -90,6 +90,7 @@ insert into kbabtel.`kob-Cadref-WebSection` (umod,gmod,omod,WebSection,Libelle) 
 (7,7,7,'IN','Informatique'),
 (7,7,7,'LG','Langues'),
 (7,7,7,'SH','Sciences humaines et sociales');
+
 truncate kbabtel.`kob-Cadref-WebDiscipline`;
 insert into kbabtel.`kob-Cadref-WebDiscipline` (umod,gmod,omod,WebSection,WebDiscipline,Libelle,CodeDiscipline) values 
 (7,7,7,"IN","DE","Découverte et prise en main de l'ordinateur","INDE"),
@@ -176,10 +177,6 @@ update kbabtel.`kob-Cadref-WebDiscipline` d
 inner join kbabtel.`kob-Cadref-WebSection` s on s.WebSection=d.WebSection
 set d.WebSectionId=s.Id;
 
-update kbabtel.`kob-Cadref-Discipline` n
-inner join kbabtel.niveau nn on nn.os=n.Section and nn.od=n.Discipline
-inner join kbabtel.`kob-Cadref-WebDiscipline` d on d.CodeDiscipline=nn.nd
-set n.WebDisciplineId=d.Id, n.WebDiscipline=d.CodeDiscipline;
 
 
 
@@ -222,6 +219,12 @@ insert into kbabtel.`kob-Cadref-Discipline` (umod,gmod,omod,Section,Discipline,C
 select 7,7,7,d.Sect,d.Discipline,concat(d.Sect,d.Discipline),d.Libelle,ifnull(d.Visites='O',0),d.Certificat<>0,s.id
 from cadref18.Disciplines d
 left join kbabtel.`kob-Cadref-Section` s on s.Section=d.Sect;
+
+update kbabtel.`kob-Cadref-Discipline` n
+inner join kbabtel.niveau nn on nn.os=n.Section and nn.od=n.Discipline
+inner join kbabtel.`kob-Cadref-WebDiscipline` d on d.CodeDiscipline=nn.nd
+set n.WebDisciplineId=d.Id, n.WebDiscipline=d.CodeDiscipline;
+
 
 truncate kbabtel.`kob-Cadref-Niveau`;
 insert into kbabtel.`kob-Cadref-Niveau` (umod,gmod,omod,Antenne,Section,Discipline,Niveau,CodeNiveau,Libelle,AntenneId,SectionId,DisciplineId)

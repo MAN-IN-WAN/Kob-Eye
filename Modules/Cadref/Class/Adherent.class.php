@@ -647,12 +647,15 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		if(!isset($params['step'])) $params['step'] = 0;
 		switch($params['step']) {
 			case 0:
+				$s = "Bonjour ".($a->Sexe == "F" ? "Madame " : ($a->Sexe == "H" ? "Monsieur " : "")).$a->Prenom.' '.$a->Nom.",\n\n";
 				return array(
 					'step'=>1,
 					'template'=>'sendMessage',
+					'args'=>array('civilite'=>$s),
 					'callNext'=>array(
 						'nom'=>'SendMessage',
 						'title'=>'Message suite',
+						'args'=>array('civilite'=>$s),
 						'needConfirm'=>false
 					)
 				);

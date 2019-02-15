@@ -139,7 +139,7 @@ class Cadref extends Module {
 		}
 		$msg = "Code utilisateur: $num\nMote de passe: $p\n";
 		$params = array('Telephone1'=>$a->Telephone1,'Telephone2'=>$a->Telephone2,'Message'=>$msg);
-//			self::SendSms($params);
+		self::SendSms($params);
 		return true;
 	}
 	
@@ -483,7 +483,6 @@ where ve.Visite=$vid
 	}
 
     public static function SendSms($params) {
-	return;
 		$tel = preg_replace('/[^0-9]/', '', $params['Telephone1']);
 		if(substr($tel, 0, 2) != '06' && substr($tel, 0, 2) != '07') {
 			$tel = preg_replace('/[^0-9]/', '', $params['Telephone2']);
@@ -510,6 +509,7 @@ where ve.Visite=$vid
     }
 
 	public static function SendMessageAdmin($params) {
+		if(! MSG_ADMIN) return;
 		$us = Sys::getData('Systeme', 'Group/Nom=CADREF_ADMIN/User');
 		foreach($us as $u) {
 			if($u->Mail) {
@@ -520,6 +520,7 @@ where ve.Visite=$vid
 	}
 
 	public static function SendSmsAdmin($params) {
+		if(! MSG_ADMIN) return;
 		$us = Sys::getData('Systeme', 'Group/Nom=CADREF_ADMIN/User');
 		foreach($us as $u) {
 			if($u->Tel) {

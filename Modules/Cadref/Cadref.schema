@@ -176,7 +176,9 @@
 		<PROPERTIES type="varchar" length="4" auto="1" category="Description" list="2" form="2" description="Année scolaire">Annee</PROPERTIES>
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="Enseignant" driver="mysql" searchType="plaintext" order="Nom" orderType="ASC" master="1" AccessPoint="1" Icon="[None]" Description="Enseignants" Operations="add,edit" Class="Modules/Cadref/Class/Enseignant.class.php">
+	<OBJECTCLASS title="Enseignant" driver="mysql" searchType="plaintext" order="Nom" orderType="ASC" master="1" AccessPoint="1" Icon="[None]" Description="Enseignants" Operations="add,edit,SendMessage" Class="Modules/Cadref/Class/Enseignant.class.php">
+		<FUNCTION title="Carte">SendMessage</FUNCTION>
+
         <FILTER name="Actifs" color="success">Inactif=0</FILTER>
         <FILTER name="Tous" color="warning"></FILTER>
 

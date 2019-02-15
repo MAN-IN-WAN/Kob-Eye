@@ -922,7 +922,7 @@
 		}
 		
 		// message absence
-		$scope.absenceMessage = function(item) {
+		$scope.absenceMessage = async function(item) {
 			var params = {
 				name: 'SendMessage',
 				query: 'Cadref/Absence/'+item.id,
@@ -930,7 +930,10 @@
 				explodeArgs: false,
 				tms : Date.now(),
 			};
-			return $http.post('/Cadref/Absence/'+item.id+'/Method.json',{"Func":JSON.stringify(params)});
+			var data = await $http.post('/Cadref/Absence/'+item.id+'/Method.json',{"Func":JSON.stringify(params)});
+			console.log(data);
+			if(data.data.data) swal("Messages envoyés", "", "success");
+			else swal("Messages non envoyés", "L'absence ne coïncide pas avec un cours à venir", "warning");
 		}
 		{% endif %}
 		

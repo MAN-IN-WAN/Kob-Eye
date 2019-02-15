@@ -214,7 +214,7 @@
 	<link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/assets/vendors/angularMultipleSelect/multiple-select.css">
 
 	<!-- Cadref -->
-	<!--<link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/Modules/Cadref/Css/style.css">-->
+	<link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/Modules/Cadref/Css/style.css">
 	
 
 
