@@ -14,8 +14,11 @@ class Host extends genericClass
      */
     public function Save($synchro = true)
     {
-        if ($this->Id)
-            $old = Sys::getOneData('Parc','Host/'.$this->Id);
+        $oldsrvs = array();
+        if ($this->Id) {
+            $old = Sys::getOneData('Parc', 'Host/' . $this->Id);
+            $oldsrvs = $this->getKEServer();
+        }
         else $old = false;
         //test de modification du ApacheServerName
         if ($old&&$old->Nom!=$this->Nom){
@@ -26,9 +29,10 @@ class Host extends genericClass
             $this->addError(array("Message"=>"Impossible de modifier le nom technique de l'hébergement. Si c'est nécessaire, veuillez supprimer et recréer cet hébergement en réimportant vos données."));
             return false;
         }
-
         parent::Save();
-
+        $this->_KEServer = false;
+        Sys::$Modules['Parc']->Db->clearLiteCache();
+        $srvs = $this->getKEServer();
         // Forcer la vérification
         $this->Verify($synchro);
         if (!$this->_isVerified) {
@@ -69,6 +73,282 @@ class Host extends genericClass
                 $bdd->checkDatabase();
             }
         }
+
+        //vérification des changements serveurs
+        if (sizeof($oldsrvs)&&(sizeof($srvs)!=sizeof($oldsrvs)||$srvs[0]->Id!=$oldsrvs[0]->Id)){
+            if (sizeof($srvs)>1&&sizeof($srvs)>sizeof($oldsrvs)) {
+                $mainsrv = $oldsrvs[0];
+                $this->HA = true;
+                if ($this->HAMode=='standard')
+                    $this->HAMode = 'loadbalancing';
+                parent::Save();
+                $this->MasterServer = $mainsrv->Id;
+            }elseif (sizeof($srvs)==1&&sizeof($srvs)<sizeof($oldsrvs)){
+                $mainsrv = array_pop($srvs);
+                $this->HA = false;
+                if ($this->HAMode=='loadbalancing'||$this->HAMode=='master')
+                    $this->HAMode = 'standard';
+                $this->MasterServer = $mainsrv->Id;
+                parent::Save();
+            }
+        }
+        if (!$this->MasterServer&&sizeof($srvs)==1)
+            $this->MasterServer = $srvs[0]->Id;
+        return true;
+    }
+    /**
+     * getMasterServer
+     * Recupere le serveur maître
+     */
+    public function getMasterServer(){
+        if (!$this->MasterServer){
+            $srvs = $this->getKEServer();
+            $this->MasterServer = $srvs[0]->Id;
+        }
+        return $this->MasterServer;
+    }
+    /**
+     * moveHostTask
+     * Deplace un ehébergement d'un serveur à l'autre
+     */
+    public function moveHostTask($params=null){
+        if (!$params) $params =array('step'=>0);
+        if (!isset($params['step'])) $params['step']=0;
+        switch($params['step']){
+            case 1:
+                $srv=Sys::getOneData('Parc','Server/'.$params['selectedServer'],0,1,'','','','',true);
+                if (!$srv) return false;
+                $task = genericClass::createInstance('Systeme','Tache');
+                $task->Type = 'Fonction';
+                $task->Nom = 'Déplacement de l\'hébergement ' . $this->Nom.' vers le serveur "'.$srv->Nom.'"';
+                $task->TaskModule = 'Parc';
+                $task->TaskObject = 'Host';
+                $task->TaskId = $this->Id;
+                $task->TaskFunction = 'moveHost';
+                $task->TaskType = 'install';
+                $task->TaskCode = 'HOST_SERVER_MOVE';
+                $task->TaskArgs = serialize($params);
+                $task->addParent($this);
+                $task->Save();
+                return array('task'=>$task,'title'=>'Progression du déplacement de l\'hébergement');
+                break;
+            default:
+                return array('template'=>"listSrv",'step'=>1,'callNext'=>array('nom'=>'moveHostTask','title'=>'Progression'));
+        }
+    }
+    /**
+     * moveHost
+     * Déplace un hébergement
+     */
+    public function moveHost($task){
+        $srv = $this->getMasterServer();
+        $task->createActivity('Ajout du serveur ');
+        //ajoute le serveur
+        $this->addServerHost($task);
+
+        $task->createActivity('Suppression du serveur ID:'.$srv);
+        $params = unserialize($task->TaskArgs);
+        $params['selectedServer'] = $srv;
+        $task->TaskArgs = serialize($params);
+        $this->delServerHost($task);
+        return true;
+    }
+    /**
+     * addServerHostTask
+     * Ajoute un serveur
+     * @params $param array()
+     */
+    public function addServerHostTask($params=null){
+        if (!$params) $params =array('step'=>0);
+        if (!isset($params['step'])) $params['step']=0;
+        switch($params['step']){
+            case 1:
+                $srv=Sys::getOneData('Parc','Server/'.$params['selectedServer'],0,1,'','','','',true);
+                if (!$srv) return false;
+                $task = genericClass::createInstance('Systeme','Tache');
+                $task->Type = 'Fonction';
+                $task->Nom = 'Ajout du serveur "'.$srv->Nom.'" à l\'hébergement ' . $this->Nom;
+                $task->TaskModule = 'Parc';
+                $task->TaskObject = 'Host';
+                $task->TaskId = $this->Id;
+                $task->TaskFunction = 'addServerHost';
+                $task->TaskType = 'install';
+                $task->TaskCode = 'HOST_SERVER_ADD';
+                $task->TaskArgs = serialize($params);
+                $task->addParent($this);
+                $task->Save();
+                return array('task'=>$task,'title'=>'Progression de l\'ajout de server à l\'hébergement');
+                break;
+            default:
+                return array('template'=>"listSrv",'step'=>1,'callNext'=>array('nom'=>'addServerHostTask','title'=>'Progression'));
+        }
+    }
+    /**
+     * delServerHost
+     * Fonction de suppression d'un serveur d'un hébergement
+     */
+    public function addServerHost($task){
+        //on teste les paramètres
+        $params = unserialize($task->TaskArgs);
+        if (!is_array($params)||!isset($params['selectedServer'])){
+            $act = $task->createActivity('Le paramètre selectedServer est introuvable');
+            $act->Terminate(false);
+            return false;
+        }
+        $addsrv = Sys::getOneData('Parc','Server/'.$params['selectedServer'],0,1,'','','','',true);
+        $act = $task->createActivity('Reconfiguration de l\'hébergement '.$this->Nom.' du serveur '.$addsrv->Nom);
+        $this->addParent($addsrv);
+        $this->Save();
+        $act->Terminate(true);
+        foreach ($this->Success as $err){
+            $act = $task->createActivity('Success: '.$err['Message']);
+            $act->Terminate(true);
+        }
+        foreach ($this->Warning as $err){
+            $act = $task->createActivity('Warning: '.$err['Message']);
+        }
+        foreach ($this->Error as $err){
+            $act = $task->createActivity('Erreur: '.$err['Message']);
+            $act->Terminate(false);
+        }
+        $this->_KEServer[] =  $addsrv;
+        return $this->syncHostSelf($task);
+    }
+    /**
+     * delServerHostTask
+     * Supprime u nserveur du mode HA
+     * @params $param array()
+     */
+    public function delServerHostTask($params=null){
+        if (!$params) $params =array('step'=>0);
+        if (!isset($params['step'])) $params['step']=0;
+        switch($params['step']){
+            case 1:
+                $srv=Sys::getOneData('Parc','Server/'.$params['selectedServer'],0,1,'','','','',true);
+                if (!$srv) return false;
+                $task = genericClass::createInstance('Systeme','Tache');
+                $task->Type = 'Fonction';
+                $task->Nom = 'Suppression du serveur "'.$srv->Nom.'"" de l\'hébergement ' . $this->Nom;
+                $task->TaskModule = 'Parc';
+                $task->TaskObject = 'Host';
+                $task->TaskId = $this->Id;
+                $task->TaskFunction = 'delServerHost';
+                $task->TaskType = 'install';
+                $task->TaskCode = 'HOST_SERVER_DEL';
+                $task->TaskArgs = serialize($params);
+                $task->addParent($this);
+                $task->Save();
+                return array('task'=>$task,'title'=>'Progression de la suppression du serveur à l\'hébergement');
+                break;
+            default:
+                return array('template'=>"listSrv",'step'=>1,'callNext'=>array('nom'=>'delServerHostTask','title'=>'Progression'));
+        }
+    }
+    /**
+     * delServerHost
+     * Fonction de suppression d'un serveur d'un hébergement
+     */
+    public function delServerHost($task){
+        //on teste les paramètres
+        $params = unserialize($task->TaskArgs);
+        if (!is_array($params)||!isset($params['selectedServer'])){
+            $act = $task->createActivity('Le paramètre selectedServer est introuvable');
+            $act->Terminate(false);
+            return false;
+        }
+        $delsrv = Sys::getOneData('Parc','Server/'.$params['selectedServer'],0,1,'','','','',true);
+        $act = $task->createActivity('Reconfiguration de l\'hébergement '.$this->Nom.' du serveur '.$delsrv->Nom);
+        $this->delParent($delsrv);
+        $this->Save();
+        $act->Terminate(true);
+
+        $act = $task->createActivity('Suppression de l\'hébergement '.$this->Nom.' du serveur '.$delsrv->Nom);
+        $this->deleteFromServer($delsrv,$act);
+        $act->Terminate(true);
+
+        //suppression des configuration apache
+        $aps = $this->getChildren('Apache');
+        $act = $task->createActivity('Suppression des hôtes virtuels de l\'hébergement '.$this->Nom.' du serveur '.$delsrv->Nom);
+        foreach ($aps as $ap){
+            if ($ap->deleteFromServer($delsrv)) {
+                $act->addDetails('-> Suppression de de l\'hôte virtuel '.$ap->getFirstSearchOrder().' OK');
+            }else  $act->addDetails('-> Suppression de de l\'hôte virtuel '.$ap->getFirstSearchOrder().' NOK');
+        }
+        $act->Terminate(true);
+
+
+        $act = $task->createActivity('Suppression de l\'hébergement '.$this->Nom.' du serveur '.$delsrv->Nom.' terminé');
+        $act->Terminate(true);
+
+        //on relance une configuration serveur
+        $this->createTaskConfigHost();
+        return true;
+    }
+    /**
+     * syncHostTask
+     * Synchroniser les hébergements
+     * @params Task
+     */
+    public function syncHostTask(){
+        $task = genericClass::createInstance('Systeme', 'Tache');
+        $task->Type = 'Fonction';
+        $task->Nom = 'Synchronisation des occurences de l \'hébergement ' . $this->Nom;
+        $task->TaskModule = 'Parc';
+        $task->TaskObject = 'Host';
+        $task->TaskId = $this->Id;
+        $task->TaskFunction = 'syncHostSelf';
+        $task->TaskType = 'installation';
+        $task->TaskCode = 'HOST_SYNC';
+        $task->addParent($this);
+        $srvs = $this->getKEServer();
+        foreach ($srvs as $srv){
+            $task->addParent($srv);
+        }
+        $task->Save();
+        return array('task' => $task);
+    }
+    /**
+     * syncHostSelf
+     * Syncrhoniser les occurence d'un meme host
+     */
+    public function syncHostSelf($task) {
+        $srvs = $this->getKEServer();
+        //recherche du erveur prioncipal
+        $mainsrv=false;
+        foreach ($srvs as $k=>$srv){
+            if ($srv->Id==$this->MasterServer){
+                $mainsrv = $srv;
+                break;
+            }
+        }
+        if (!$mainsrv)
+            $mainsrv = array_pop($srvs);
+        $host = $this;
+        try {
+            foreach ($srvs as $dstsrv) {
+                if ($dstsrv->Id!=$mainsrv->Id) {
+                    //Installation des fichiers
+                    $act = $task->createActivity('Initialisation de la synchronisation sur le serveur ' . $dstsrv->Nom, 'Info');
+                    $cmd = 'rsync -e "ssh -o StrictHostKeyChecking=no" -avz root@' . $mainsrv->InternalIP . ':/home/' . $host->NomLDAP . ' /home/' ;
+                    $act->addDetails($cmd);
+                    $out = $dstsrv->remoteExec($cmd);
+                    $act->addDetails($out);
+                    $act->Terminate(true);
+                    /*$act = $task->createActivity('Modification des droit ssur le serveur ' . $dstsrv->Nom, 'Info');
+                    $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . '/ -R';
+                    $act->addDetails($cmd);
+                    $out = $dstsrv->remoteExec($cmd);
+                    $act->addDetails($out);
+                    $act->Terminate(true);*/
+                }
+            }
+        }catch (Exception $e){
+            $act->addDetails('Erreur: '.$e->getMessage());
+            $act->Terminate(false);
+            throw new Exception($e->getMessage());
+        }
+        $act = $task->createActivity('Synchronisation terminée.', 'Info');
+        $act->Terminate(true);
         return true;
     }
     /**
@@ -128,6 +408,19 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
 
         //configuration des clefs
         $this->refreshSshKeys();
+
+        //on force le renouvellement des hôtes virtuels
+        $aps = $this->getChildren('Apache');
+        foreach ($aps as $ap){
+            $act = $task->createActivity('Enregistrement forcé de l\'hôte virtuel :'.$ap->ApacheServerName.' et domaines '.$ap->ApacheServerAlias);
+            $act->Terminate($ap->Save());
+        }
+        $pxs = Sys::getData('Parc','Server/Proxy=1',0,100,'','','','',true);
+        foreach ($pxs as $px){
+            $act = $task->createActivity('Appel des configuration proxys '.$px->Nom);
+            $px->callLdap2Service();
+            $act->Terminate();
+        }
     }
     /**
      * sshKeyCheck
@@ -425,20 +718,26 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
                 // On boucle sur tous les serveurs
                 $KEServers = $this->getKEServer();
                 foreach ($KEServers as $KEServer) {
+                    $this->addSuccess(array('Message'=>'Enregistrement de la configuration du serveur '.$KEServer->Nom));
                     $dn = 'cn=' . $this->NomLDAP . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE;
+                    $base = 'ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE;
+                    $filter = 'cn=' . $this->NomLDAP;
                     // Verification à jour
-                    $res = Server::checkTms($this,$KEServer);
+                    $res = Server::checkTms($this,$KEServer,$base,$filter);
+                    $this->addSuccess(array('Message'=>'Test existence ldap du serveur '.$KEServer->Nom.' '.print_r($res,true)));
                     if ($res['exists']) {
                         if (!$res['OK']) {
                             $this->AddError($res);
                             $this->_isVerified = false;
                         } else {
                             // Déplacement
-                            if ($this->getLdapDN($KEServer) != 'cn=' . $this->NomLDAP . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE) $res = Server::ldapRename($this->getLdapDN($KEServer), 'cn=' . $this->NomLDAP, 'ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE);
+                            if ($this->getLdapDN($KEServer) != 'cn=' . $this->NomLDAP . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE)
+                                $res = Server::ldapRename($this->getLdapDN($KEServer), 'cn=' . $this->NomLDAP, 'ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE);
                             else $res = array('OK' => true);
                             if ($res['OK']) {
                                 // Modification
                                 $entry = $this->buildEntry($KEServer,false);
+                                $this->addSuccess(array('Message'=>'Modificatio netréée ldap '.$dn.' '.print_r($entry,true)));
                                 $res = Server::ldapModify($this->getLdapID($KEServer), $entry);
                                 if ($res['OK']) {
                                     // Tout s'est passé correctement
@@ -464,6 +763,7 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
                         ////////// Nouvel élément
                         if ($KEServer) {
                             $entry = $this->buildEntry($KEServer);
+                            $this->addSuccess(array('Message'=>'Ajout entrée ldap '.$dn.' '.print_r($entry,true)));
                             $res = Server::ldapAdd($dn, $entry);
                             if ($res['OK']) {
                                 $res2 = Server::ldapAdd('ou=users,' . $dn, array('objectclass' => array('organizationalUnit', 'top'), 'ou' => 'users'));
@@ -589,33 +889,41 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
         //suppression ldap
         $KEServers = $this->getKEServer();
         foreach ($KEServers as $KEServer) {
-            try {
-                if (!empty($this->NomLDAP)) {
-                    if ($KEServer->folderExists('/home/'.$this->NomLDAP)) {
-                        $cmd = 'for file in $(ls /home/' . $this->NomLDAP . '/); do mountpoint -q /home/' . $this->NomLDAP . '/$file && umount /home/' . $this->NomLDAP . '/$file; done';
-                        $act->addDetails($cmd);
-                        try{
-                            $KEServer->remoteExec($cmd);
-                        }catch (Exception $e){}
-                        $KEServer->remoteExec('rm -Rf /home/'.$this->NomLDAP);
-                        $act->addDetails('-> Suppression des fichiers  OK');
-                    }else $act->addDetails('-> Le dossier '."/home/".$this->NomLDAP.' n\'existe pas.'.$KEServer->folderExists('/home/'.$this->NomLDAP));
-                }else $act->addDetails('-> Suppression des fichiers  NOK, pas de nom LDAP');
-            } catch (Exception $e) {
-                $act->addDetails('-> Suppression des fichiers  NOK. Détails: '.$e->getMessage());
-                $act->Terminate(false);
-                $this->addError(Array("Message" => "Impossible d'effectuer la commande de suppression sur le serveur"));
-                return false;
-            }
-            //suppression définitive
-            if ($this->getLdapID($KEServer)) Server::ldapDelete($this->getLdapID($KEServer), true);
-            else $act->addDetails('-> Suppression des entrées LDAP NOK');
+            $this->deleteFromServer($KEServer,$act);
         }
         parent::Delete();
         $act->addDetails('Suppression terminée avec succès');
         $act->Terminate(true);
         $task->Termine = true;
         $task->Save();
+        return true;
+    }
+    /**
+     * deleteFromServer
+     * @params Server
+     */
+    private function deleteFromServer($KEServer,$act){
+        try {
+            if (!empty($this->NomLDAP)) {
+                if ($KEServer->folderExists('/home/'.$this->NomLDAP)) {
+                    $cmd = 'for file in $(ls /home/' . $this->NomLDAP . '/); do mountpoint -q /home/' . $this->NomLDAP . '/$file && umount /home/' . $this->NomLDAP . '/$file; done';
+                    $act->addDetails($cmd);
+                    try{
+                        $KEServer->remoteExec($cmd);
+                    }catch (Exception $e){}
+                    $KEServer->remoteExec('rm -Rf /home/'.$this->NomLDAP);
+                    $act->addDetails('-> Suppression des fichiers  OK');
+                }else $act->addDetails('-> Le dossier '."/home/".$this->NomLDAP.' n\'existe pas.'.$KEServer->folderExists('/home/'.$this->NomLDAP));
+            }else $act->addDetails('-> Suppression des fichiers  NOK, pas de nom LDAP');
+        } catch (Exception $e) {
+            $act->addDetails('-> Suppression des fichiers  NOK. Détails: '.$e->getMessage());
+            $act->Terminate(false);
+            $this->addError(Array("Message" => "Impossible d'effectuer la commande de suppression sur le serveur"));
+            return false;
+        }
+        //suppression définitive
+        if ($this->getLdapID($KEServer)) Server::ldapDelete($this->getLdapID($KEServer), true);
+        else $act->addDetails('-> Suppression des entrées LDAP NOK');
         return true;
     }
 
@@ -902,7 +1210,7 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
     public function syncHost($task){
         $params = unserialize($task->TaskArgs);
         if (!isset($params['fromHost'])||!isset($params['toHost'])){
-            $act = $task->createActivity('Les paramètres fromHost toHost ston introuvables');
+            $act = $task->createActivity('Les paramètres fromHost toHost sont introuvables');
             $act->Terminate(false);
             return false;
         }

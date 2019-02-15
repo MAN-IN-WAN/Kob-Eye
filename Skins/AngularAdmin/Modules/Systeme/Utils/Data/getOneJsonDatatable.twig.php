@@ -73,7 +73,7 @@ foreach ($vars['fields'] as $f){
     }else if (isset($f['query'])&&$vars['row']->{$f['name']}>0){
         //recherche de sa valeur
         $str = explode('::',$f['query']);
-        $qry = explode('/',$str[0],2);
+        $qry = explode('/',$str[0],3);
         $val = Sys::getOneData($qry[0],$qry[1].'/'.$str[1].'='.$vars['row']->{$f['name']});
         $vars['row']->{$f['name'].'Label'} = $val->getFirstSearchOrder();
     }else $vars['row']->{$f['name'].'Label'} = '';
