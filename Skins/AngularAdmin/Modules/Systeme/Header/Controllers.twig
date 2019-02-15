@@ -212,7 +212,6 @@
                     if( $scope.{{ c.identifier }}function != undefined &&  $scope.{{ c.identifier }}function.callNext && follow){
                         args = angular.extend({},$scope.{{ c.identifier }}function.args);
                     }
-                    //console.error('ccccccccccccccccccccc',args);
 
                     $scope.{{ c.identifier }}function = {
                         title: title,
@@ -242,7 +241,7 @@
                         $templateCache.remove(present);
 #}
 
-                    $http.post('/{{ c.url }}/'+obj.id+'/Function.json',{"Func":JSON.stringify($scope.{{ c.identifier }}function)})
+                    $http.post('/{{ c.module }}/{{ c.objecttype }}/'+obj.id+'/Function.json',{"Func":JSON.stringify($scope.{{ c.identifier }}function)})
                     .success(function(data) {
                         console.log('store > {{ c.module }}/{{ c.objecttype }} > Function  ', data);
 
@@ -285,7 +284,6 @@
                 if( $scope.{{ c.identifier }}function != undefined &&  $scope.{{ c.identifier }}function.callNext && follow){
                     args = angular.extend({},$scope.{{ c.identifier }}function.args);
                 }
-                //console.error('ccccccccccccccccccccc',args);
 
                 $scope.{{ c.identifier }}function = {
                     title: title,
@@ -932,7 +930,6 @@
                         if( $scope.{{ c.identifier }}function != undefined &&  $scope.{{ c.identifier }}function.callNext && follow){
                             args = angular.extend({},$scope.{{ c.identifier }}function.args);
                         }
-                        //console.error('ccccccccccccccccccccc',args);
 
                         $scope.{{ c.identifier }}function = {
                             title: title,
@@ -995,7 +992,6 @@
                     if( $scope.{{ c.identifier }}function != undefined &&  $scope.{{ c.identifier }}function.callNext && follow){
                         args = angular.extend({},$scope.{{ c.identifier }}function.args);
                     }
-                    //console.error('ccccccccccccccccccccc',args);
 
                     $scope.{{ c.identifier }}function = {
                         title: title,
@@ -1324,7 +1320,6 @@
                              if( $scope.{{ child.objectModule }}{{ child.objectName }}function != undefined &&  $scope.{{ child.objectModule }}{{ child.objectName }}function.callNext && follow){
                                  args = angular.extend({},$scope.{{ child.objectModule }}{{ child.objectName }}function.args);
                              }
-                             console.error('ccccccccccccccccccccc',args);
 
                              $scope.{{ child.objectModule }}{{ child.objectName }}function = {
                                  title: title,
@@ -1345,7 +1340,7 @@
 
                              $("#modalfunction-{{ child.objectModule }}{{ child.objectName }}").modal();
 
-                             $http.post('/{{ child.url }}/'+obj.id+'/Function.json',{"Func":JSON.stringify($scope.{{ child.objectModule }}{{ child.objectName }}function)})
+                             $http.post('/{{ child.objectModule }}/{{ child.objectName }}/'+obj.id+'/Function.json',{"Func":JSON.stringify($scope.{{ child.objectModule }}{{ child.objectName }}function)})
                              .success(function(data) {
                                  console.log('store > {{ child.objectModule }}/{{ child.objectName }} > Function  ', data);
 

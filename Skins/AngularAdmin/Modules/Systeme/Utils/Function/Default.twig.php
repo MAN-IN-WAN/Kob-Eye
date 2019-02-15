@@ -52,7 +52,7 @@
         $vars['toReturn']['success'] = true;
     };
 
-    if(!isset($info['Functions'][$name]) || !is_object(Sys::$CurrentMenu)){
+    if(!isset($info['Functions'][$name]) /*|| !is_object(Sys::$CurrentMenu)*/){
         $error = "La fonction que vous essayez d'exectuer n'est pas accessible pour l'objet souhaité";
         $vars['toReturn']['errors'][] = array("Message"=>$error);
     } else{
