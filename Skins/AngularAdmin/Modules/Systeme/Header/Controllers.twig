@@ -1149,7 +1149,9 @@
                         selectall: false
                     }
                 }
-
+                $scope.{{ child.objectModule }}{{ child.objectName }}refresh = function (context){
+                    {{ child.objectModule }}{{ child.objectName }}Store.refresh(context);
+                }
                 //FORMULAIRE SELECT
                 $scope.{{ child.objectModule }}{{ child.objectName }}Select = {
                     data : {{ child.objectModule }}{{ child.objectName }}Store.data.select,

@@ -1,8 +1,6 @@
 <?php
 
 $info= Info::getInfos($vars['Query']);
-//$obj = Sys::getOneData($info['Module'],$vars['Query']);
-
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $temp = $o->getElementsByAttribute('','',true);
 $fields = Array();

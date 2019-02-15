@@ -41,7 +41,7 @@
             foreach($vars['params'] as $key=>$param){
                 $params .= '&'.urlencode($key).'='.urlencode(json_encode($key));
             }
-            $temp = KeTwig::callModule($blinfo.f);
+            $temp = KeTwig::callModule($blinfo.$params);
         } else{
             $params = array('Query'=>$path);
             $params = array_merge($params,$vars['params']);
@@ -79,6 +79,9 @@
                 $temp = $obj->{$name}($vars['params']);
                 if(is_array($temp)){
                     if(isset($temp['template'])){
+                        if(isset($temp['funcTempVars'])) {
+                            $vars['params']['funcTempVars'] = $temp['funcTempVars']; //Si on souhaite passer des variables retournées pas la fonction au template.
+                        }
                         $tabNext = $tab;
                         $tabNext[2] = $temp['template'];
                         $blinfoNext = Bloc::getInterface($tabNext[0], $tabNext[1], $tabNext[2]);

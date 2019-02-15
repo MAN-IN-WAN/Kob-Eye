@@ -113,23 +113,34 @@ class Cadref extends Module {
 		$new = false;
 		if(! $u) {
 			$new = true;
+			$g = Sys::getOneData('Systeme', 'Group/Nom=CADREF_ADH');
 			$u = genericClass::createInstance('Systeme', 'User');
+			$u->addParent($g);
 			$u->Login = $num;
 			$u->Mail = $a->Mail ?: $num.'@cadref.com';
 			$u->Nom = $a->Nom;
 			$u->Prenom = $a->Prenom;
 		}
-		$u->Pass = $p = self::GeneratePassword();
+		$p = self::GeneratePassword();
+		$u->Pass = '[md5]'.md5($p);
 		$u->Save();
+		AlertUser::addAlert('Adhérent : '.$a->Prenom.' '.$a->Nom,"Nouvel utilisateur : ".$a->Numero,'','',0,[],'CADREF_ADMIN','icmn-user3');
+
 		
-		$s = "Bonjour ".($a->Sexe == "F" ? "Madame " : ($a->Sexe == "H" ? "Monsieur " : "")).$a->Prenom.' '.$a->Nom."<br /><br /><br />";
-		$s .= $new ? "Votre espace CADREF vient d'être activé.<br /><br />" : "Votre mot de passe a été modifié.<br /><br />";
-		$s .= "Vos paramètres de connection sont :<br /><br />Code utilisateur (N° adhérent) : $num<br />Mot de Passe : $p<br /><br /><br />";
-		$s .= "A bientôt,<br /><br />L'équipe du CADREF<br />";
-		$params = array('Subject'=>($new ? 'CADREF : Bienvenu dans votre nouvel espace.' : 'CADREF : Nouveau mot de passe.'),
-			'Mail'=>$u->Mail,
-			'Body'=>$s);
-		self::SendMessage($params);
+		if(strpos($a->Mail, '@') > 0) {
+			$s = "Bonjour ".($a->Sexe == "F" ? "Madame " : ($a->Sexe == "H" ? "Monsieur " : "")).$a->Prenom.' '.$a->Nom.",<br /><br /><br />";
+			$s .= $new ? "Votre espace CADREF vient d'être activé.<br /><br />" : "Votre mot de passe a été modifié.<br /><br />";
+			$s .= "Vos paramètres de connection sont les suivants :<br /><br />Code utilisateur (N° adhérent) : $num<br />Mot de Passe : $p<br /><br /><br />";
+			$s .= "A bientôt,<br />L'équipe du CADREF<br />";
+			$params = array('Subject'=>($new ? 'CADREF : Bienvenu dans votre nouvel espace utilisateur.' : 'CADREF : Nouveau mot de passe.'),
+				'Mail'=>$a->Mail,
+				'Body'=>$s);
+			self::SendMessage($params);
+		}
+		$msg = "Code utilisateur: $num\nMote de passe: $p\n";
+		$params = array('Telephone1'=>$a->Telephone1,'Telephone2'=>$a->Telephone2,'Message'=>$msg);
+		self::SendSms($params);
+		return true;
 	}
 	
 	public static function GeneratePassword() {	
@@ -152,7 +163,11 @@ class Cadref extends Module {
 		$data = array();
 		$data['NbAdherents'] = Sys::getCount('Cadref', 'Adherent/Annee='.Cadref::$Annee);
 		$data['NbInscriptions'] = Sys::getCount('Cadref', 'Inscription/Annee='.Cadref::$Annee.'&Attente=0&Supprime=0');
-
+		$data['NbReservations'] = Sys::getCount('Cadref', 'Reservation/Annee='.Cadref::$Annee.'&Attente=0&Supprime=0');
+		$g = Sys::getOneData('Systeme', 'Group/Nom=CADREF_ADH');
+		$u = $g->getChildren('User');
+		$data['NbUsers'] = count($u);
+/*
 		$sql = "
 select a.Libelle,sum(if(t.Sexe='H',1,0)) as homme,sum(if(t.Sexe='F',1,0)) as femme,sum(if(t.Sexe<>'H' && t.Sexe<>'F',1,0)) as autre,count(*) as total
 from (
@@ -184,11 +199,11 @@ group by t.Antenne";
 		$bars['labels'] = $l;
 		$bars['series'] = array($f, $h, $a);
 		$data['bars'] = $bars;
-
+*/
 		return $data;
 	}
 
-	static function between($t, $start, $end) {
+	public static function between($t, $start, $end) {
 		return $start <= $t && $t <= $end;
 	}
 
@@ -203,7 +218,7 @@ group by t.Antenne";
 		$vacances = array();
 
 		// vacances
-		$sql = "select Type,Libelle,DateDebut,DateFin,JourId from `##_Cadref-Vacance` where Annee='$annee'";
+		$sql = "select Type,Libelle,DateDebut,DateFin,JourId,Logo from `##_Cadref-Vacance` where Annee='$annee'";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		foreach($pdo as $p) {
@@ -216,7 +231,7 @@ group by t.Antenne";
 				$e->start = Date('Y-m-d', $d);
 				$e->end = Date('Y-m-d', $f);
 				$e->description = Date('d/m', $d).' au '.Date('d/m', $f);
-				$e->className = 'fc-event-secondary';
+				$e->className = 'fc-event-secondary'.($p['Logo'] ? ' cadref-cal-'.$p['Logo'] : '');
 				$events[] = $e;
 			}
 			$v = new stdClass();
@@ -248,11 +263,12 @@ where ((a.DateDebut>=$start and a.DateDebut<=$end) or (a.DateFin>=$start and a.D
 			$id = $a->Id;
 			$sql = "
 select i.ClasseId as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,
-concat(d.Libelle,' ',n.Libelle) as Libelle, l.Ville, l.Adresse1, l.Adresse2
+concat(ifnull(dw.Libelle,d.Libelle),' ',n.Libelle) as Libelle, l.Ville, l.Adresse1, l.Adresse2
 from `##_Cadref-Inscription` i
 inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
 inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
+left join `##_Cadref-WebDiscipline` dw on dw.Id=d.WebDisciplineId
 left join `##_Cadref-Lieu` l on l.Id=c.LieuId
 where i.AdherentId=$id and i.Annee='$annee' and c.JourId>0 and c.HeureDebut<>''
 ";
@@ -271,11 +287,12 @@ where i.AdherentId=$id and i.Annee='$annee' and ((a.DateDebut>=$start and a.Date
 			$id = $e->Id;
 			$sql = "
 select c.Id as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,
-concat(d.Libelle,' ',n.Libelle) as Libelle, l.Ville, l.Adresse1, l.Adresse2
+concat(ifnull(dw.Libelle,d.Libelle),' ',n.Libelle) as Libelle, l.Ville, l.Adresse1, l.Adresse2
 from `##_Cadref-ClasseEnseignants` ce
 inner join `##_Cadref-Classe` c on c.Id=ce.Classe
 inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
+left join `##_Cadref-WebDiscipline` dw on dw.Id=d.WebDisciplineId
 left join `##_Cadref-Lieu` l on l.Id=c.LieuId
 where ce.EnseignantId=$id and c.Annee='$annee' and c.JourId>0 and c.HeureDebut<>''
 ";
@@ -304,7 +321,7 @@ where a.EnseignantId=$id and ((a.DateDebut>=$start and a.DateDebut<=$end) or (a.
 				$a->start = Date('Y-m-d\TH:i', $d);
 				$a->end = Date('Y-m-d\TH:i', $f);
 				$a->description = Date('d/m H:i', $d).' au '.Date('d/m H:i', $f).'  '.($adm ? $p['Description'] : '');
-				$a->className = 'fc-event-danger';
+				$a->className = 'fc-event-danger'.(!$adm ? ' cadref-cal-absence' : '');
 				$events[] = $a;
 			}
 		}
@@ -399,19 +416,19 @@ where ce.Classe=$cid
 		// visites
 		if($group == 'CADREF_ENS')
 				$sql = "
-select v.Id,v.Libelle,v.DateVisite,0 as rid,v.Description
+select v.Id,v.Libelle,v.DateVisite,0 as rid,v.Description,v.Prix,v.Assurance
 from `##_Cadref-Visite` v
 inner join `##_Cadref-VisiteEnseignants` ve on ve.Visite=v.Id
 where v.DateVisite>=$start and v.DateVisite<=$end and ve.EnseignantId=$id";
 		else if($group == 'CADREF_ADH')
 				$sql = "
-select v.Id,v.Libelle,v.DateVisite,r.Id as rid,v.Description
+select v.Id,v.Libelle,v.DateVisite,r.Id as rid,v.Description,v.Prix,v.Assurance
 from `##_Cadref-Visite` v
 left join `##_Cadref-Reservation` r on r.AdherentId=$id and r.VisiteId=v.id
 where v.DateVisite>=$start and v.DateVisite<=$end";
 		else
 				$sql = "
-select v.Id,v.Libelle,v.DateVisite,0 as rid,v.Description
+select v.Id,v.Libelle,v.DateVisite,0 as rid,v.Description,v.Prix,v.Assurance
 from `##_Cadref-Visite` v
 where v.DateVisite>=$start and v.DateVisite<=$end";
 
@@ -437,6 +454,8 @@ where ve.Visite=$vid
 			}
 			if($s) $s .= "\n";
 			$s .= $p['Description'] ?: '';
+			if($s) $s .= "\n";
+			$s .= 'Prix : € '.$p['Prix'].($p['Assurance'] ? ' Ass. facultative : € '.$p['Assurance'] : '');
 			$e->description = $s;
 			$e->className = (p['rid'] ? 'fc-event-success' : 'fc-event-default').' cadref-cal-visite';
 			$events[] = $e;
@@ -447,7 +466,7 @@ where ve.Visite=$vid
 	}
 
 	public static function SendMessage($params) {
-		@include_once('Class/Lib/Mail.class.php');
+		require_once('Class/Lib/Mail.class.php');
 
 		$Mail = new Mail();
 		$Mail->Subject($params['Subject']);
@@ -459,10 +478,59 @@ where ve.Visite=$vid
 		$bloc->init($Pr);
 		$bloc->generate($Pr);
 		$Mail->Body($bloc->Affich());
-		return $Mail->Send();
+		$ret = $Mail->Send();
+		return $ret;
+	}
+
+    public static function SendSms($params) {
+		$tel = preg_replace('/[^0-9]/', '', $params['Telephone1']);
+		if(substr($tel, 0, 2) != '06' && substr($tel, 0, 2) != '07') {
+			$tel = preg_replace('/[^0-9]/', '', $params['Telephone2']);
+			if(substr($tel, 0, 2) != '06' && substr($tel, 0, 2) != '07')
+				$tel = ''; 
+		}
+		if(strlen($tel) == 10) {
+			require_once("Class/Lib/Isendpro/autoload.php");
+
+			$api_instance = new Isendpro\Api\SmsApi();
+			$smsrequest = new Isendpro\Model\SmsUniqueRequest();
+			$smsrequest["keyid"] = SMS_API;
+			$smsrequest["emetteur"] = 'CADREF';
+			$smsrequest["num"] = $tel;
+			$smsrequest["sms"] = $params['Message'];
+			
+			try {
+				$ret = $api_instance->sendSms($smsrequest);
+			} catch (Exception $e) {
+				klog::l('CADREF ISendPro Exception :',print_r($e->getResponseObject(),1));
+			}
+		}
+
+    }
+
+	public static function SendMessageAdmin($params) {
+		if(! MSG_ADMIN) return;
+		$us = Sys::getData('Systeme', 'Group/Nom=CADREF_ADMIN/User');
+		foreach($us as $u) {
+			if($u->Mail) {
+				$params['Mail'] = $u->Mail;
+				self::SendMessage($params);
+			}
+		}
+	}
+
+	public static function SendSmsAdmin($params) {
+		if(! MSG_ADMIN) return;
+		$us = Sys::getData('Systeme', 'Group/Nom=CADREF_ADMIN/User');
+		foreach($us as $u) {
+			if($u->Tel) {
+				$params['Telephone1'] = $u->Tel;
+				$params['Telephone2'] = '';
+				self::SendSms($params);
+			}
+		}
 	}
 	
-
 
 
 

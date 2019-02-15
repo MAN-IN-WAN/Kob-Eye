@@ -21,25 +21,47 @@ if(strpos( $query,$lien) === 0 || $info['NbHisto'] > 2){
 
 //Recup des données
 $data = array();
-switch ($method){
+/*switch ($method){
     case 'GET':
         $data = json_decode($_GET['params'],true);
         break;
     default:
-        if (isset($_POST['params'])){
-            $data = json_decode($_POST['params'],true);
-        }else {
-            $request = file_get_contents("php://input");
-            $data = json_decode($request, true);
-            $data = $data["params"];
-        }
+        $request = array();
+//        $request = file_get_contents("php://input");
+//        $data = json_decode($request,true);
+        parse_str(file_get_contents("php://input"),$request);
+        $data = json_decode($request['params'],true);
         break;
+}*/
+
+//Cas ou on envoie les paramètres dans l'url
+if(isset($_GET['params'])) {
+    $data = json_decode($_GET['params'], true);
 }
-/*echo $method."\r\n";
-var_dump($_POST['params']);
-echo "-------------\r\n";
-var_dump(json_decode($_POST['params'],true));
-die();*/
+//Cas des forms multipart
+if(empty($data)){
+    $request = array();
+    parse_str(file_get_contents("php://input"),$request);
+    if(isset($request['params']))
+        $data = json_decode($request['params'],true);
+}
+//cas du json pur
+if(empty($data)){
+    $inc = file_get_contents("php://input");
+    $request = json_decode($inc,true);
+    if(isset($request['params']))
+        $data = $request['params'];
+}
+if(isset($data['API_KEY']))
+    unset($data['API_KEY']);
+if(isset($data['AUTH_TOKEN']))
+    unset($data['AUTH_TOKEN']);
+
+if(!is_array($data))
+    $data = array();
+
+
+
 switch($info['TypeSearch']){
     case 'Interface':
         switch($method){
@@ -71,6 +93,7 @@ switch($info['TypeSearch']){
         });
         $offset = '';
 
+
         if(isset($data['offset'])){
             $offset = $data['offset'];
             unset($data['offset']);
@@ -95,6 +118,7 @@ switch($info['TypeSearch']){
             $orderType = $data['order'];
             unset($data['order']);
         }
+
         foreach ($data as $k=>$d){
             if(!in_array($k,$props)){
                 sendResult(400,null,'Paramètre invalide : '.$k);
@@ -117,8 +141,9 @@ switch($info['TypeSearch']){
                 foreach($data as $k=>$d){
                     $req .= '&'.$k.'='.$d;
                 }
-                $total = Sys::getCount($info['Module'],$req);
-                $items = Sys::getData($info['Module'],$req,$offset,$limit,$orderType,$orderVar);
+                $total = $generic->getDbCount($info['Module'],$req);
+                $items = $generic->getDbData($info['Module'],$req,$offset,$limit,$orderType,$orderVar);
+
                 //On retourne la liste de ces objets
                 sendResult(206,$items,array('offset'=>$offset,'limit'=>$limit, 'total'=>$total));
                 break;
@@ -132,7 +157,7 @@ switch($info['TypeSearch']){
                 $item = $generic;
                 $tempLegacy = explode('/',$info['LastDirect'],2);
                 if(isset($tempLegacy[1]) && $tempLegacy[1] != ''){
-                    $parent = Sys::getOneData($tempLegacy[0],$tempLegacy[1]);
+                    $parent = $generic->getOneDbData($tempLegacy[0],$tempLegacy[1]);
                     $item->addParent($parent);
                 }
                 foreach ($info['typesParent'] as $tp){
@@ -183,11 +208,7 @@ switch($info['TypeSearch']){
         $props = $generic->getElementsByAttribute('','',true);
         array_walk($props,function (&$i){
             $i=$i['name'];
-        });
-
-
-
-        $offset = '';
+        });        $offset = '';
         if(isset($data['offset'])){
             $offset = $data['offset'];
             unset($data['offset']);
@@ -234,7 +255,7 @@ switch($info['TypeSearch']){
             foreach($data as $k=>$d){
                 $req .= '&'.$k.'='.$d;
             }
-            $item = Sys::getOneData($info['Module'],$req);
+            $item = $generic->getOneDbData($info['Module'],$req);
             if(!$item) {
                 sendResult(404);
                 break;
@@ -263,7 +284,7 @@ switch($info['TypeSearch']){
                 $item = $generic;
                 $tempLegacy = explode('/',$info['LastDirect'],2);
                 if(isset($tempLegacy[1]) && $tempLegacy[1] != ''){
-                    $parent = Sys::getOneData($tempLegacy[0],$tempLegacy[1]);
+                    $parent = $generic->getOneDbData($tempLegacy[0],$tempLegacy[1]);
                     $item->addParent($parent);
                 }
                 foreach ($info['typesParent'] as $tp){
@@ -308,14 +329,14 @@ switch($info['TypeSearch']){
                     die();
                 }
                 $parent = false;
+                //$item = $generic;
                 $tempLegacy = explode('/',$info['LastDirect'],2);
                 if(isset($tempLegacy[1]) && $tempLegacy[1] != ''){
-                    $parent = Sys::getOneData($tempLegacy[0],$tempLegacy[1]);
+                    $parent = $generic->getOneDbData($tempLegacy[0],$tempLegacy[1]);
                     $item->addParent($parent);
                 }
                 foreach ($info['typesParent'] as $tp){
                     if(isset($newProps[$tp['Nom']])){
-                        $item->resetParents($tp['Titre']);
                         if(!is_array($newProps[$tp['Nom']]))
                             $newProps[$tp['Nom']] = array($newProps[$tp['Nom']]);
 
@@ -327,6 +348,7 @@ switch($info['TypeSearch']){
                         }
                     }
                 }
+                $item->Set('Id',$info['LastId']);
                 foreach($newProps as $k=>$n){
                     $item->Set($k,$n);
                 }
@@ -485,9 +507,13 @@ function sendResult($code,$obj=null,$more=null){
             );
             break;
     }
-    //systeme anti plugin recursion
-    $tmp = json_encode($return);
-    Klog::l('RETOUR API',$tmp);
-    if (empty($tmp)) echo json_last_error_msg();
-    else echo $tmp;
+
+    echo json_encode($return);
 }
+
+//function flatten($arrayIn, &$arrayOut){
+//    foreach($arrayIn as $ki=>$ai){
+//        if(!is_array($ai))$arrayOut[$ki] = $ai;
+//        flatten($ai,$arrayOut);
+//    }
+//}

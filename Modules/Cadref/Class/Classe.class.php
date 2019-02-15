@@ -20,7 +20,7 @@ class Classe extends genericClass {
 			$this->addParent($p);
 			$p = $n->getOneParent('Discipline');
 			$this->addParent($p);
-			$this->CodeClasse = "$this->Antenne.$this->Section.$this->Discipline.$this->Niveau.$this->Classe";
+			$this->CodeClasse = $this->Antenne.$this->Section.$this->Discipline.$this->Niveau.$this->Classe;
 			$this->Annee = $annee;
 		}
 		$this->Attentes = Sys::getCount('Cadref','Classe/'.$this->Id.'/Inscription/Attente=1&Supprime=0');
@@ -85,4 +85,69 @@ where i.Annee=$annee and i.Supprime=0 and i.Attente=0 ";
 		return array('pdf'=>$file, 'sql'=>$sql);
 	}
 
+	
+	function CheckAbsence($start, $end) {
+		$annee = Cadref::$Annee;
+
+		// vacances
+		$vacances = array();
+		$sql = "select DateDebut,DateFin,JourId from `##_Cadref-Vacance` where Annee='$annee'";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		foreach($pdo as $p) {
+			$t = $p['Type'];
+			$d = $p['DateDebut'];
+			$f = $p['DateFin'] ? $p['DateFin'] : $d;
+			$v = new stdClass();
+			$v->type = $t;
+			$v->start = $d;
+			$v->end = $f;
+			$v->day = $p['JourId'];
+			$vacances[] = $v;
+		}
+		// horaires
+		$cd = 0;
+		$cy = $this->CycleDebut;
+		if($cy != '') {
+			$m = substr($cy, 3, 2);
+			$cd = strtotime(str_replace('/', '-', $cy).'-'.($m > 8 ? $annee : $annee + 1));
+			$cy = $this->CycleFin;
+			$m = substr($cy, 3, 2);
+			$cf = strtotime(str_replace('/', '-', $cy).'-'.($m > 8 ? $annee : $annee + 1));
+			$cf += (24 * 60 * 60) - 1;
+		}
+		$j = $this->JourId - 1;
+		$d = $start + ($j * 24 * 60 * 60);
+		while($d < $end) {
+			$ok = !($cd && ($d < $cd || $d > $cf));
+			if($ok) {
+				foreach($vacances as $v) {
+					switch($v->type) {
+						case 'D':
+							$w = date('N', $d);
+							$ok = !($v->day == $w && $d < $v->start);
+							break;
+						case 'F':
+							$w = date('N', $d);
+							$ok = !($v->day == $w && $d > $v->start);
+							break;
+						case 'V':
+							$ok = !($d >= $v->start && $d <= $v->end);
+							break;
+					}
+					if(!$ok) break;
+				}
+			}
+			if($ok) {
+				$cstart = Date('Y-m-d', $d).'T'.$this->HeureDebut;
+				$cend = Date('Y-m-d', $d).'T'.$this->HeureFin;
+				$hd = strtotime($cstart);
+				$hf = strtotime($cend);
+				if(Cadref::between($hd, $start, $end) || Cadref::between($hf, $start, $end))
+					return true;
+			}
+			$d += 7 * 24 * 60 * 60;
+		}
+		return false;
+	}
 }

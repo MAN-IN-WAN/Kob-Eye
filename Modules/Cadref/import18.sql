@@ -26,26 +26,26 @@ insert into kbabtel.`kob-Cadref-Jour` (umod,gmod,omod,Id,Jour) values
 (7,7,7,7,'Dimanche');
 
 truncate kbabtel.`kob-Cadref-Vacance`;
-insert into kbabtel.`kob-Cadref-Vacance` (umod,gmod,omod,Annee,Type,Libelle,DateDebut,DateFin,JourId) values 
-(7,7,7,@annee,'D','Lundi',unix_timestamp('2018-09-10'),0,1),
-(7,7,7,@annee,'D','Mardi',unix_timestamp('2018-09-10'),0,2),
-(7,7,7,@annee,'D','Mercredi',unix_timestamp('2018-09-10'),0,3),
-(7,7,7,@annee,'D','Jeudi',unix_timestamp('2018-09-10'),0,4),
-(7,7,7,@annee,'D','Vendredi',unix_timestamp('2018-09-10'),0,5),
-(7,7,7,@annee,'D','Samedi',unix_timestamp('2019-09-10'),0,6),
-(7,7,7,@annee,'F','Lundi',unix_timestamp('2019-05-27'),0,1),
-(7,7,7,@annee,'F','Mardi',unix_timestamp('2019-05-28'),0,2),
-(7,7,7,@annee,'F','Mercredi',unix_timestamp('2019-06-05'),0,3),
-(7,7,7,@annee,'F','Jeudi',unix_timestamp('2019-06-06'),0,4),
-(7,7,7,@annee,'F','Vendredi',unix_timestamp('2019-06-07'),0,5),
-(7,7,7,@annee,'F','Samedi',unix_timestamp('2019-06-08'),0,6),
-(7,7,7,@annee,'V','VACANCES DE TOUSSAINT',unix_timestamp('2018-10-20'),unix_timestamp('2018-11-04'),0),
-(7,7,7,@annee,'V','11 Novembre',unix_timestamp('2018-11-11'),0,0),
-(7,7,7,@annee,'V','VACANCES DE NOEL',unix_timestamp('2018-12-22'),unix_timestamp('2019-01-06'),0),
-(7,7,7,@annee,'V','VACANCES D''HIVERT',unix_timestamp('2019-02-23'),unix_timestamp('2019-03-10'),0),
-(7,7,7,@annee,'V','VACANCES DE PRINTEMPS',unix_timestamp('2019-04-20'),unix_timestamp('2019-05-05'),0),
-(7,7,7,@annee,'V','8 Mai',unix_timestamp('2019-05-08'),0,0),
-(7,7,7,@annee,'V','VACANCES DE L''ASCENSION',unix_timestamp('2019-05-29'),unix_timestamp('2019-06-03'),0);
+insert into kbabtel.`kob-Cadref-Vacance` (umod,gmod,omod,Annee,Type,Libelle,DateDebut,DateFin,JourId,Logo) values 
+(7,7,7,@annee,'D','Lundi',unix_timestamp('2018-09-10'),0,1,''),
+(7,7,7,@annee,'D','Mardi',unix_timestamp('2018-09-10'),0,2,''),
+(7,7,7,@annee,'D','Mercredi',unix_timestamp('2018-09-10'),0,3,''),
+(7,7,7,@annee,'D','Jeudi',unix_timestamp('2018-09-10'),0,4,''),
+(7,7,7,@annee,'D','Vendredi',unix_timestamp('2018-09-10'),0,5,''),
+(7,7,7,@annee,'D','Samedi',unix_timestamp('2019-09-10'),0,6,''),
+(7,7,7,@annee,'F','Lundi',unix_timestamp('2019-05-27'),0,1,''),
+(7,7,7,@annee,'F','Mardi',unix_timestamp('2019-05-28'),0,2,''),
+(7,7,7,@annee,'F','Mercredi',unix_timestamp('2019-06-05'),0,3,''),
+(7,7,7,@annee,'F','Jeudi',unix_timestamp('2019-06-06'),0,4,''),
+(7,7,7,@annee,'F','Vendredi',unix_timestamp('2019-06-07'),0,5,''),
+(7,7,7,@annee,'F','Samedi',unix_timestamp('2019-06-08'),0,6,''),
+(7,7,7,@annee,'V','VACANCES DE TOUSSAINT',unix_timestamp('2018-10-20'),unix_timestamp('2018-11-04'),0,'automne'),
+(7,7,7,@annee,'V','11 Novembre',unix_timestamp('2018-11-11'),0,0,'11nov'),
+(7,7,7,@annee,'V','VACANCES DE NOEL',unix_timestamp('2018-12-22'),unix_timestamp('2019-01-06'),0,'noel'),
+(7,7,7,@annee,'V','VACANCES D''HIVER',unix_timestamp('2019-02-23'),unix_timestamp('2019-03-10'),0,'hiver'),
+(7,7,7,@annee,'V','VACANCES DE PRINTEMPS',unix_timestamp('2019-04-20'),unix_timestamp('2019-05-05'),0,'printemps'),
+(7,7,7,@annee,'V','8 Mai',unix_timestamp('2019-05-08'),0,0,'8mai'),
+(7,7,7,@annee,'V','VACANCES DE L''ASCENSION',unix_timestamp('2019-05-29'),unix_timestamp('2019-06-03'),0,'ascention');
 
 truncate kbabtel.`kob-Cadref-Lieu`;
 insert into kbabtel.`kob-Cadref-Lieu` (umod,gmod,omod,Ville,Adresse1,Adresse2,Type,Lieu,GPS,AntenneId) values 
@@ -81,6 +81,105 @@ insert into kbabtel.`kob-Cadref-Lieu` (umod,gmod,omod,Ville,Adresse1,Adresse2,Ty
 (7,7,7,"Nîmes","Arrêt de bus Place Séverine","","R","NBS","43.829858,4.352028",0),
 (7,7,7,"Nîmes","Stade des Costières","123 av. de la Bouvine","R","NSC","43.816025,4.359255599999983",0);
 update kbabtel.`kob-Cadref-Lieu` set Libelle=concat(Ville,', ',Adresse1);
+
+truncate kbabtel.`kob-Cadref-WebSection`;
+insert into kbabtel.`kob-Cadref-WebSection` (umod,gmod,omod,WebSection,Libelle) values 
+(7,7,7,'AA','Activités artistiques'),
+(7,7,7,'AP','Activités Physiques'),
+(7,7,7,'HI','Histoire'),
+(7,7,7,'IN','Informatique'),
+(7,7,7,'LG','Langues'),
+(7,7,7,'SH','Sciences humaines et sociales');
+
+truncate kbabtel.`kob-Cadref-WebDiscipline`;
+insert into kbabtel.`kob-Cadref-WebDiscipline` (umod,gmod,omod,WebSection,WebDiscipline,Libelle,CodeDiscipline) values 
+(7,7,7,"IN","DE","Découverte et prise en main de l'ordinateur","INDE"),
+(7,7,7,"IN","IN","Internet","ININ"),
+(7,7,7,"IN","SP","Sites pratiques","INSP"),
+(7,7,7,"IN","SE","Sécuriser son ordinateur sur Internet","INSE"),
+(7,7,7,"IN","GO","Google : nouvelles fonctions et recherches multimédia","INGO"),
+(7,7,7,"IN","JI","Création de site internet ""en ligne"" avec Jimdo","INJI"),
+(7,7,7,"IN","TT","Traitement de texte (Word) ","INTT"),
+(7,7,7,"IN","TB","Tableur (Excel) ","INTB"),
+(7,7,7,"IN","AC","Création d'une base de données avec Access","INAC"),
+(7,7,7,"IN","WI","Windows 7 ou 10 ","INWI"),
+(7,7,7,"IN","PW","Passage à Windows 10 : mise à niveau","INPW"),
+(7,7,7,"IN","MU","Utilisation multimédia de Windows 10","INMU"),
+(7,7,7,"IN","FS","Fonctions secrètes de Windows 10","INFS"),
+(7,7,7,"IN","SK","Skype : messagerie instantanée","INSK"),
+(7,7,7,"IN","FA","Facebook","INFA"),
+(7,7,7,"IN","SI","Bien scanner et imprimer","INSI"),
+(7,7,7,"IN","SR","Sauvegarde et récupération de ses données","INSR"),
+(7,7,7,"IN","PC","Configuration et anomalies PC","INPC"),
+(7,7,7,"IN","GA","Généalogie : ancestrologie et internet","INGA"),
+(7,7,7,"IN","RP","Retouche photos et graphisme : PhotoFiltre","INRP"),
+(7,7,7,"IN","PN","Photos numériques : Stockage et classement","INPN"),
+(7,7,7,"IN","LP","Création d'un ""livre-photo"" sur internet","INLP"),
+(7,7,7,"IN","GP","Google photo","INGP"),
+(7,7,7,"IN","PP","PowerPoint : création de diaporamas","INPP"),
+(7,7,7,"IN","PU","Mise en page avec Publisher","INPU"),
+(7,7,7,"IN","MV","Montage vidéo : Windows (live) Movie Maker","INMV"),
+(7,7,7,"IN","TA","Tablettes android","INTA"),
+(7,7,7,"IN","TI","Tablettes iPad","INTI"),
+(7,7,7,"HI","AR","Histoire de l'art","HIAR"),
+(7,7,7,"HI","CI","Histoire des civilisations","HICI"),
+(7,7,7,"HI","RL","Histoire des religions","HIRL"),
+(7,7,7,"HI","RE","Histoire régionale","HIRE"),
+(7,7,7,"HI","CO","Histoire contemporaine","HICO"),
+(7,7,7,"HI","ME","Histoire médiévale et moderne","HIME"),
+(7,7,7,"HI","RO","Les grandes étapes de la Rome antique","HIRO"),
+(7,7,7,"HI","MY","Histoire des Mythologies","HIMY"),
+(7,7,7,"HI","MC","Histoire des mythes et des civilisations","HIMC"),
+(7,7,7,"HI","MO","Histoire moderne","HIMO"),
+(7,7,7,"HI","CN","Histoire du Cinéma","HICN"),
+(7,7,7,"SH","DP","Découverte de la philosophie","SHDP"),
+(7,7,7,"SH","PH","Philosophie","SHPH"),
+(7,7,7,"SH","AS","Astronomie astrophysique","SHAS"),
+(7,7,7,"SH","PL","De la peinture à la littérature","SHPL"),
+(7,7,7,"SH","PA","Philosophie de l'Art contemporain","SHPA"),
+(7,7,7,"SH","GR","La grande Russie","SHGR"),
+(7,7,7,"SH","PY","Psychologie","SHPY"),
+(7,7,7,"SH","EC","Economie","SHEC"),
+(7,7,7,"SH","GE","Géopolitique","SHGE"),
+(7,7,7,"SH","CJ","Initiation à la culture japonaise","SHCJ"),
+(7,7,7,"SH","PM","Partager la musique","SHPM"),
+(7,7,7,"SH","BO","Botanique","SHBO"),
+(7,7,7,"SH","AR","Archéologie régionale","SHAR"),
+(7,7,7,"SH","LI","Littérature et Cinéma","SHLI"),
+(7,7,7,"LG","AN","Anglais","LGAN"),
+(7,7,7,"LG","ES","Espagnol","LGES"),
+(7,7,7,"LG","IT","Italien","LGIT"),
+(7,7,7,"LG","OC","Occitan","LGOC"),
+(7,7,7,"AA","DP","Dessin-peinture toutes techniques","AADP"),
+(7,7,7,"AA","AQ","Aquarelle","AAAQ"),
+(7,7,7,"AA","PH","Peinture à l'huile","AAPH"),
+(7,7,7,"AA","DE","Dessin d'après nature","AADE"),
+(7,7,7,"AA","SC","Sculpture - modelage","AASC"),
+(7,7,7,"AA","AP","Atelier pluridisciplinaire artistique","AAAP"),
+(7,7,7,"AA","ET","Expression théâtrale","AAET"),
+(7,7,7,"AA","CH","Atelier chant","AACH"),
+(7,7,7,"AP","AQ","Aquagym","APAQ"),
+(7,7,7,"AP","BK","Aquabike","APBK"),
+(7,7,7,"AP","AM","Aquamix","APAM"),
+(7,7,7,"AP","GY","Gym douce","APGY"),
+(7,7,7,"AP","YO","Yoga","APYO"),
+(7,7,7,"AP","YD","Yoga doux","APYD"),
+(7,7,7,"AP","GD","Gym dance","APGD"),
+(7,7,7,"AP","SO","Sophrologie","APSO"),
+(7,7,7,"AP","GC","Gym tonic","APGC"),
+(7,7,7,"AP","GS","Gym tonus","APGS"),
+(7,7,7,"AP","PI","Pilates","APPI"),
+(7,7,7,"AP","BZ","Body zen","APBZ"),
+(7,7,7,"AP","YR","Yoga du rire","APYR"),
+(7,7,7,"AP","BI","Billard français","APBI"),
+(7,7,7,"AP","GO","Golf","APGO");
+update kbabtel.`kob-Cadref-WebDiscipline` d
+inner join kbabtel.`kob-Cadref-WebSection` s on s.WebSection=d.WebSection
+set d.WebSectionId=s.Id;
+
+
+
+
 
 truncate kbabtel.`kob-Cadref-Profession`;
 insert into kbabtel.`kob-Cadref-Profession` (umod,gmod,omod,Profession,Libelle)
@@ -121,6 +220,12 @@ select 7,7,7,d.Sect,d.Discipline,concat(d.Sect,d.Discipline),d.Libelle,ifnull(d.
 from cadref18.Disciplines d
 left join kbabtel.`kob-Cadref-Section` s on s.Section=d.Sect;
 
+update kbabtel.`kob-Cadref-Discipline` n
+inner join kbabtel.niveau nn on nn.os=n.Section and nn.od=n.Discipline
+inner join kbabtel.`kob-Cadref-WebDiscipline` d on d.CodeDiscipline=nn.nd
+set n.WebDisciplineId=d.Id, n.WebDiscipline=d.CodeDiscipline;
+
+
 truncate kbabtel.`kob-Cadref-Niveau`;
 insert into kbabtel.`kob-Cadref-Niveau` (umod,gmod,omod,Antenne,Section,Discipline,Niveau,CodeNiveau,Libelle,AntenneId,SectionId,DisciplineId)
 select 7,7,7,n.Antenne,n.Sect,n.Discipline,n.Niveau,concat(n.Antenne,n.Sect,n.Discipline,n.Niveau),n.Libelle,a.id,s.id,d.id
@@ -140,6 +245,31 @@ left join kbabtel.`kob-Cadref-Section` s on s.Section=c.Sect
 left join kbabtel.`kob-Cadref-Discipline` d on d.SectionId=s.Id and d.Discipline=c.Discipline
 left join kbabtel.`kob-Cadref-Niveau` n on n.Antenne=c.Antenne and n.Section=c.Sect and n.Discipline=c.Discipline and n.Niveau=c.Niveau;
 
+delete s
+from `kob-Cadref-Section`s
+left join `kob-Cadref-Discipline` d on s.id=d.SectionId
+left join `kob-Cadref-Niveau` n on d.id=n.DisciplineId
+left join `kob-Cadref-Classe` c on n.Id=c.NiveauId
+where d.Id is null;
+delete d
+from `kob-Cadref-Discipline` d
+left join `kob-Cadref-Niveau` n on d.id=n.DisciplineId
+left join `kob-Cadref-Classe` c on n.Id=c.NiveauId
+where d.Id is null;
+delete s
+from `kob-Cadref-Section`s
+left join `kob-Cadref-Discipline` d on s.id=d.SectionId
+where d.Id is null;
+delete d
+from `kob-Cadref-Discipline` d
+left join `kob-Cadref-Niveau` n on d.Id=n.DisciplineId
+where n.Id is null;
+delete n
+from `kob-Cadref-Niveau` n
+left join `kob-Cadref-Classe` c on n.Id=c.NiveauId
+where c.Id is null;
+
+
 truncate kbabtel.`kob-Cadref-ClasseEnseignants`;
 insert into kbabtel.`kob-Cadref-ClasseEnseignants` (umod,gmod,omod,Classe,EnseignantId)
 select 7,7,7,n.Id,e.Id
@@ -153,6 +283,13 @@ from cadref18.Classes c
 left join kbabtel.`kob-Cadref-Classe` n on n.Antenne=c.Antenne and n.Section=c.Sect and n.Discipline=c.Discipline and n.Niveau=c.Niveau and n.Classe=c.Classe
 left join kbabtel.`kob-Cadref-Enseignant` e on e.Code=c.Ens2
 where c.Ens2<>'';
+
+#update kbabtel.`kob-Cadref-Classe` c
+#set c.Reduction1=38,c.Reduction2=38,c.DateReduction1=unix_timestamp('20190101'),c.DateReduction2=unix_timestamp('20190301')
+#where Prix=115 and CycleDebut=''
+#update kbabtel.`kob-Cadref-Classe` c
+#set c.Reduction1=34,c.Reduction2=34,c.DateReduction1=unix_timestamp('20190101'),c.DateReduction2=unix_timestamp('20190301')
+#where Prix=102 and CycleDebut=''
 
 
 
@@ -203,6 +340,8 @@ left join kbabtel.`kob-Cadref-Adherent` a on a.Numero=r.Numero
 left join kbabtel.`kob-Cadref-Visite` v on v.Visite=r.Visite
 order by r.Numero,r.Visite;
 
+
+
 truncate kbabtel.`kob-Cadref-AdherentAnnee`;
 insert into kbabtel.`kob-Cadref-AdherentAnnee` (umod,gmod,omod,AdherentId,Numero,Annee,NotesAnnuelles,Adherent,ClasseId,
 Cotisation,Cours,Reglement,Differe,Regularisation)
@@ -229,3 +368,45 @@ group by AdherentId
 ) t on t.AdherentId=a.AdherentId
 set a.DateCotisation=t.dt
 where a.Annee=@annee;
+
+
+# PRENOMS
+DROP FUNCTION IF EXISTS aaprenom; 
+SET GLOBAL  log_bin_trust_function_creators=TRUE; 
+DELIMITER | 
+CREATE FUNCTION aaprenom( str VARCHAR(128) ) 
+RETURNS VARCHAR(128) 
+BEGIN 
+  DECLARE c CHAR(1); 
+  DECLARE s VARCHAR(128); 
+  DECLARE i INT DEFAULT 1; 
+  DECLARE bool INT DEFAULT 1; 
+  DECLARE punct CHAR(18) DEFAULT ' -\'';
+  SET s = LCASE( str ); 
+  WHILE i <= LENGTH( str ) DO 
+    BEGIN 
+      SET c = SUBSTRING( s, i, 1 ); 
+      IF LOCATE( c, punct ) > 0 THEN 
+        SET bool = 1; 
+      ELSEIF bool=1 THEN  
+        BEGIN 
+          IF c >= 'a' AND c <= 'z' THEN  
+            BEGIN 
+              SET s = CONCAT(LEFT(s,i-1),UCASE(c),SUBSTRING(s,i+1)); 
+              SET bool = 0; 
+            END; 
+          ELSEIF c >= '0' AND c <= '9' THEN 
+            SET bool = 0; 
+          END IF; 
+        END; 
+      END IF; 
+      SET i = i+1; 
+    END; 
+  END WHILE; 
+  RETURN s; 
+END; 
+| 
+delimiter ;
+update `kob-Cadref-Adherent` set Prenom=aaprenom(Prenom);
+update `kob-Cadref-Enseignant` set Prenom=aaprenom(Prenom);
+

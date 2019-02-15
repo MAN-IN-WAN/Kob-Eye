@@ -5,7 +5,9 @@ class Discipline extends genericClass {
 		$id = $this->Id;
 		$p = $this->getOneParent('Section');
 		$this->Section = $p->Section;
-		$this->CodeDiscipline = "$this->Section.$this->Discipline";
+		$this->CodeDiscipline = $this->Section.$this->Discipline;
+		$p = $this->getOneParent('WebDiscipline');
+		$this->WebDiscipline = $p ? $p->CodeDiscipline : '';
 		return parent::Save();
 	}
 	
@@ -20,7 +22,8 @@ class Discipline extends genericClass {
 
 	function GetFormInfo() {
 		$s = $this->getOneParent('Section');
-		return array('LibelleS'=>$s->Libelle);
+		$w = $this->getOneParent('WebDiscipline');
+		return array('LibelleS'=>$s->Libelle,'LibelleW'=>($w ? $w->Libelle : ''));
 	}
 	
 }

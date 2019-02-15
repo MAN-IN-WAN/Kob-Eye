@@ -180,7 +180,8 @@ class Event extends genericClass {
         $nbIt = ceil($maxDuration*1000 /$interval);
         $delay = $interval*1000;
         $queryEv = 'Event/MicroTime>'.$lastAlert;
-        $queryAu = 'AlertUser::AlertUserList/tmsCreate>'.$lastAlert;
+        $queryAu = 'AlertUser/tmsCreate>'.$lastAlert;
+        $countAu = 'AlertUser::AlertUserList/tmsCreate>'.$lastAlert;
 
         $res=array('Ev' => Array(),'Au' => Array(),'Stats' => Array('cycles'=>0,'duration'=>0,'cd'=>array()));
         $ret =false;
@@ -193,14 +194,15 @@ class Event extends genericClass {
         while($i<$nbIt && $elapsed < $maxDuration){
             //$recEv = Sys::$Modules['Systeme']->callData($queryEv, false, 0, 30,'Id','ASC');
             $recEv = $this->cache_get($lastAlert);
-            $recAu = Sys::$Modules['Systeme']->callData($queryAu, false, 0, 30);
-            Sys::$Modules['Systeme']->Db->clearLiteCache();
             if(is_array($recEv) && count($recEv)) {
                 $res['Ev']=$recEv;
                 $ret =true;
             }
-            if(is_array($recAu) && count($recAu)) {
-                $res['Au']=$recAu;
+            Sys::$Modules['Systeme']->Db->clearLiteCache();
+			$res['Au'] = array();
+ 			$nbAu = Sys::getCount('Systeme', $countAu);
+            if($nbAu) {
+                $res['Au'] = Sys::getData('Systeme', $queryAu);
                 $ret =true;
             }
 

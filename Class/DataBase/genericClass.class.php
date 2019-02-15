@@ -2416,7 +2416,7 @@ class genericClass extends Root {
 	 * getALerts
 	 * recupere les alertes pour l'objet
 	 */
-	 public function getAlerts($lastAlert, $time) {
+	 public function getAlerts($lastAlert, $time=0) {
 	 	return null;
 	 }
 	 
@@ -3007,6 +3007,10 @@ class genericClass extends Root {
             switch ($f['type']){
                 case 'date':
                     //transformation des timestamps en format js
+                    $o->{$f['name']} = date('d/m/Y',isset($this->{$f['name']})&&$this->{$f['name']}>0?$this->{$f['name']}:time());
+                    break;
+                case 'datetime':
+                    //transformation des timestamps en format js
                     $o->{$f['name']} = date('d/m/Y H:i',isset($this->{$f['name']})&&$this->{$f['name']}>0?$this->{$f['name']}:time());
                     break;
                 case 'boolean':
@@ -3059,5 +3063,17 @@ class genericClass extends Root {
             }
         }
         return $o;
+    }
+
+    public function getDbCount($module, $query){
+	     return Sys::getCount($module, $query);
+    }
+
+    public function getDbData($module, $query, $offset="", $limit="", $orderType="", $orderVar="", $select="", $groupBy="", $noRights = false){
+        return Sys::getData($module, $query, $offset, $limit, $orderType, $orderVar, $select, $groupBy, $noRights);
+    }
+
+    public function getOneDbData($module, $query, $offset="", $limit="", $orderType="", $orderVar="", $select="", $groupBy="", $noRights = false){
+        return Sys::getOneData($module, $query, $offset, $limit, $orderType, $orderVar, $select, $groupBy, $noRights);
     }
 }

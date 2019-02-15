@@ -1,4 +1,4 @@
-app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $rootScope, $http, $rootScope, $interval, 
+app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $rootScope, $http, $rootScope, $interval, $filter, 
 	CadrefAdherentStore, CadrefReglementStore, CadrefInscriptionStore, CadrefEnseignantStore, CadrefAbsenceStore, CadrefClasseStore, 
 	CadrefVisiteStore, CadrefReservationStore, CadrefAttachementStore) {
 
@@ -36,6 +36,47 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
             console.log('save obj',data);
         });
     }
+
+	// init date picker components 
+	$scope.initDatePickerOnly = function() {
+		$('.datepicker-only-init').datetimepicker({
+			widgetPositioning: {
+				horizontal: 'left'
+			},
+			locale: 'fr',
+			format: 'DD/MM/YYYY',
+			icons: {
+				time: "fa fa-clock-o",
+				date: "fa fa-calendar",
+				up: "fa fa-arrow-up",
+				down: "fa fa-arrow-down"
+			}
+		});
+		$(".datepicker-only-init").on("dp.change", function () {
+			var input = $(this).children('input').eq(0);
+			input.trigger('change');
+			input.trigger('input');
+		});
+	}	
+	$scope.initDateTimePicker = function() {
+		$('.datetimepicker-init').datetimepicker({
+			widgetPositioning: {
+				horizontal: 'left'
+			},
+			locale: 'fr',
+			icons: {
+				time: "fa fa-clock-o",
+				date: "fa fa-calendar",
+				up: "fa fa-arrow-up",
+				down: "fa fa-arrow-down"
+			}
+		});
+		$(".datetimepicker-init").on("dp.change", function () {
+			var input = $(this).children('input').eq(0);
+			input.trigger('change');
+			input.trigger('input');
+		});
+	}	
 
 	// appel de function kobeye avec retour objet
 	$scope.{{ identifier }}callMethod = function(obj, name, args, explodeArgs) {
@@ -76,6 +117,48 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 			}
 		}
 		return s;
+	}
+
+	//--------------------------------
+	// UTILISATEUR
+	//--------------------------------
+	
+	// mot de passe
+	$scope.utilisateurInfo = {mode: '', pwdValid: 0, PwdOld: '', PwdNew: '', PwdConf: '', pwdInfo: '', pwdCondInfo: '', returnMsg: ''};
+	$scope.utilisateurChange = function(mode) {
+		$scope.utilisateurInfo.mode = mode; 
+	}
+	$scope.utilisateurPwdChange = function(mode) {
+		var o = $scope.utilisateurInfo;
+		o.pwdValid = 0;
+		o.returnMsg = o.pwdConfInfo = o.pwdInfo = '';
+		if(mode == 'new') o.PwdConf = '';
+		if(o.PwdOld == '') return;
+		var p = o.PwdNew 
+		if(p) {
+			if(p.length < 8) o.pwdInfo = 'Mot de passe trop court';
+			else {
+//				var rgx = new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");
+				var rgx = new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*$", "g");
+				if(! rgx.test(p)) o.pwdInfo = 'Mot de passe non conforme';
+			}
+			if(o.pwdInfo) return;
+		}
+		if(o.PwdConf && p != o.PwdConf) {
+			o.pwdConfInfo = 'Confirmation incorrecte';
+			return;
+		}
+		o.pwdValid = 1;
+	}
+	$scope.utilisateurPwdSave = async function() {
+		$('#password').spin();
+		var o = $scope.utilisateurInfo;
+		var data = await $scope.{{ identifier }}callMethod($scope.obj,'ChangePassword',o,false);
+		data = data.data.data;
+		$('#password').spin(false);
+		if(!data.success) o.returnMsg = data.message;
+		else o.mode = ''; 
+		$scope.$digest();
 	}
 	
 	//-----------------------------
@@ -205,48 +288,47 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
     }
     $scope.initEns();
 	
+	//-----------------
+	// ABSENCE
+	//-----------------
+	$scope.absenceObj;
+	$scope.absenceInfo = {mode: ''};
+	// ferme absence edit section
+	$scope.absenceCloseEdit = function() {
+		$scope.absenceInfo.mode = '';
+	}
+
+	// ajout absence
+	$scope.absenceAdd = function() {
+		var i = $scope.absenceInfo;
+		var o = $scope.absenceObj = CadrefAbsenceStore.getNewData();
+		o.EnseignantEnseignantId = $scope.obj.id;
+		i.mode = 'add';
+	}
+
 	// modification absence
-	$scope.absenceOpenCallback = function(item, obj) {
-		var o = $scope.localObj = {};
-		angular.copy(obj, o);
-	}
-	$scope.absenceOpen = function(obj) {
-		CadrefAbsenceStore.getOneData(obj.id,'children',false).then(function (data) {
-			$scope.modalObj = data;
-			$scope.modalObj.success = false;
-			$scope.modalObj.CadrefAbsence = $scope.obj.id;
-			$scope.modalObj.CadrefAbsencelabel = $scope.obj.label;
-			$scope.modalObj.title = 'Modifier une absence';
-//			angular.copy($scope.modalObj, $scope.localObj);
-		});
-		$("#modal-CadrefAbsence").modal();
-	}
-	
-	$scope.absenceAdd = function(){
-		$scope.modalObj = CadrefAbsenceStore.getNewData();
-		$scope.modalObj.success = false;
-		$scope.modalObj.EnseignantEnseignantId = $scope.obj.id;
-		$scope.modalObj.EnseignantEnseignantIdlabel = $scope.obj.label;
-		$scope.modalObj.title = 'Ajouter une absence';
-//			var o = $scope.localObj = {};
-//			angular.copy($scope.modalObj, o);
-		$("#modal-CadrefAbsence").modal();
+	$scope.absenceModify = function(item) {
+		var i = $scope.absenceInfo;
+		var o = $scope.absenceObj = {};
+		angular.copy(item, o);
+		o.EnseignantEnseignantId = $scope.obj.id;
+		i.mode = 'edit';
 	}
 
 	// sauve absence
 	$scope.absenceSave = function() {
-//		$scope.modalObj = $scope.localObj;
-        $('#settings').spin();
-        CadrefAbsenceStore.saveData($scope.modalObj).then(function (data) {
-            $('#settings').spin(false);
-			$("#modal-CadrefAbsence").modal('toggle');
+		$('#settings').spin();
+		CadrefAbsenceStore.saveData($scope.absenceObj).then(function (data) {
+			$('#settings').spin(false);
+			$scope.absenceInfo.mode = '';
+//			try {$scope.$digest();} finally() {}
 		});
 	}
 
-	// suppression d'une absence ferme le modal
-	$scope.absenceSupprime = function(obj) {
+	// suppression absence
+	$scope.absenceDelete = function(item) {
 		swal({
-				title: "Êtes vous sûr de vouloir supprimer cette absence ?",
+				title: "Effacer l'absence",
 				text: "Cette suppression sera définitive. ",
 				type: "warning",
 				showCancelButton: true,
@@ -256,12 +338,28 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 				closeOnConfirm: true
 			},
 			function(){
-				CadrefAbsenceStore.deleteOneData(obj.id,'all');
-				$("#modal-CadrefAbsence").modal('toggle');
+				CadrefAbsenceStore.deleteOneData(item.id,'all');
+				$scope.absenceInfo.mode = '';
+//				try {$scope.$digest();} finally() {}
 			}
 		);
 	}
 
+	// message absence
+	$scope.absenceMessage = async function(item) {
+		var params = {
+			name: 'SendMessage',
+			query: 'Cadref/Absence/'+item.id,
+			args : [],
+			explodeArgs: false,
+			tms : Date.now(),
+		};
+		var data = await $http.post('/Cadref/Absence/'+item.id+'/Method.json',{"Func":JSON.stringify(params)});
+		console.log(data);
+		if(data.data.data) swal("Messages envoyés", "", "success");
+		else swal("Messages non envoyés", "L'absence ne coïncide pas avec un cours à venir", "warning");
+	}
+	
 	
 	$scope.visites = true;
 	$('.absence-calendar-block').fullCalendar({
@@ -353,11 +451,13 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	$scope.CadrefReservation = $scope.createStore(CadrefReservationStore, 'children');
 	$scope.CadrefReservation.store.setFilters('Annee={{ Annee }}', 'children');
 
+	$scope.inscriptionObj = {Select: false, AntenneId: 0, SectionId: 0, DisciplineId: 0, ClasseItems: [], InscriptionItems: []};
     $scope.initAdh = function(){
         $scope.store.getOneData({{ entite.Id }}, 'default').then(function(data){
             $scope.obj = data;
 			$scope.obj.AnneeSelect = '{{ Annee }}';
 			$scope.adherentInfo();
+			$scope.inscriptionGetData('inscription', '');
         });
     }
     $scope.initAdh();
@@ -393,25 +493,27 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	}
 
 	//---------------------------
-	// ajouter une classe
+	// gestion des inscriptions
 	
-	//$scope.CadrefAntenne = $scope.createStore(CadrefAntenneStore, 'default');
-	//$scope.CadrefAntenne.store.getData(1, 'default');
-
-	$scope.inscriptionObj = {Select: false, AntenneId: 0, SectionId: 0, DisciplineId: 0, ClasseItems: []};
-	
+	// affiche / cache le panneau d'inscription
 	$scope.inscriptionSelect = function(mode) {
 		$scope.inscriptionObj.Select = mode;
 	}
 	
+	// charge les données d'inscription
 	$scope.inscriptionGetData = async function(mode, filter='') {
 		var o = $scope.inscriptionObj;
 		o.Filter = filter;
 		var params = [mode, o];
-		var data = await $scope.{{ identifier }}callMethod($scope.obj,'GetListClasses',params);
+		var data = await $scope.{{ identifier }}callMethod($scope.obj,'GetCours',params);
 		switch(mode) {
+			case 'inscription':
+				o.InscriptionItems = data.data.data.data;
+				$scope.$digest();
+				break;
 			case 'classe':
 				o.ClasseItems = data.data.data.data;
+				$scope.$digest();
 				break;
 			case 'antenne': o.AntenneId = 0;
 			case 'section': o.SectionId = 0;
@@ -420,7 +522,73 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		return data.data.data.data;
 	}
 
-	$scope.inscriptionAdd = function(mode) {
+	// renvoi un valeur numerique pour comparaison de dates 
+	function cycleValeur(c, debut) {
+		if(c == '') return debut ? 0 : 19999;
+		var m = parseInt(c.substr(3));
+		return (m < 9 ? 10000 : 0)+m*100+parseInt(c.substr(0, 2)); 
+	}
+	
+	$scope.inscriptionAjoute = function(c) {
+		var t = $scope.inscriptionObj.InscriptionItems;
+		var cid = c.clsId;
+		var jr = c.Jour;
+		var cyd = cycleValeur(c.CycleDebut, true);
+		var cyf = cycleValeur(c.CycleFin, false);
+		var hrd = c.HeureDebut;
+		var hrf = c.HeureFin;
+		var heures = false;
+		for(var ins of t) {
+			if(ins.clsId == cid) {
+				alert('Vous êtes déjà inscrit à ce cours');
+				return;
+			}
+			var cd = cycleValeur(ins.CycleDebut, true);
+			var cf = cycleValeur(ins.CycleFin, false);
+			if(jr == ins.Jour && ((cf >= cyd && cf <= cyf) || (cd >= cyd && cd <= cyf))) {
+				var hd = ins.HeureDebut;
+				var hf = ins.HeureFin;
+				if((hf >= hrd && hf <= hrf) || (hd >= hrd && hd <= hrf)) {
+					alert('Attention, les horaires de ce cours se chevauchent avec un autre');
+					heures = true;
+				}
+			}
+		}
+		var o = {};
+		o.heures = heures;
+		o.insId = 0;
+		o.clsId = cid;
+		//o.ClasseClasseId = cid;
+		o.LibelleA = c.LibelleA;
+		o.LibelleD = c.LibelleD;
+		o.LibelleN = c.LibelleN;
+		o.Jour = c.Jour;
+		o.HeureDebut = c.HeureDebut;
+		o.HeureFin = c.HeureFin;
+		o.CycleDebut = c.CycleDebut;
+		o.CycleFin = c.CycleFin;
+		o.Attente = 1;
+		o.DateAttente = $filter('date')(new Date(), "dd/MM/yyyy hh:mm");
+		o.Supprime = 0;
+		o.DateSupprime = null;
+		o.Utilisateur = '';
+		o.DateInscription = '';
+		o.Prix = c.Prix;
+		o.Reduction1 = c.Reduction1;
+		o.Reduction2 = c.Reduction2;
+		o.Enseignants = c.Enseignants;
+		o.Attachements = c.Attachements;
+		o.updated = 1;
+		t[t.length] = o;
+		
+		var i = $scope.inscriptionObj;
+		i.DisciplineId = i.SectionId = i.AntenneId = i.Select = 0;
+	}
+	
+	$scope.inscriptionSupprime = function(item) {
+		var t = $scope.inscriptionObj.InscriptionItems;
+		var n = t.indexOf(item);
+		if(n >= 0) t.splice(n, 1);
 	}
 	
 	{% endif %}

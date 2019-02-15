@@ -163,7 +163,6 @@ class Apache extends genericClass {
                 $task->addParent($serv);
                 //on va charcher l'hébergement
                 $host = $this->getOneParent('Host');
-                if (!$host) return false;
                 $task->addParent($host);
                 //on va chercher l'instance
                 $instance = $host->getOneChild('Instance');
@@ -311,8 +310,9 @@ class Apache extends genericClass {
                 }
                 foreach ($KEServers as $KEServer) {
                     $dn = 'apacheServerName=' . $this->ApacheServerName.',cn=' . $KEHost->NomLDAP . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE;
+                    $base = 'cn=' . $KEHost->NomLDAP . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE;
                     // Verification à jour
-                    $res = Server::checkTms($this,$KEServer,'cn=' . $KEHost->NomLDAP . ',ou=' . $KEServer->LDAPNom . ',ou=servers,' . PARC_LDAP_BASE,'apacheServerName=' . $this->ApacheServerName);
+                    $res = Server::checkTms($this,$KEServer,$base,'apacheServerName=' . $this->ApacheServerName);
                     if ($res['exists']) {
                         if (!$res['OK']) {
                             $this->AddError($res);
@@ -474,11 +474,7 @@ class Apache extends genericClass {
 	public function Delete() {
 		$KEServers = $this->getKEServer();
 		foreach ($KEServers as $KEServer) {
-            try {
-                $KEServer->remoteExec('rm /etc/httpd/sites-enabled/' . $this->ApacheServerName . '* -f && systemctl reload httpd');
-            } catch (Exception $e) {
-                $this->addError(Array("Message" => "Impossible d'effectuer la commande de suppression sur le serveur ".$KEServer->Nom));
-            }
+		    $this->deleteFromServer($KEServer);
             Server::ldapDelete($this->LdapID);
         }
         //suppresion de la config sur les serveurs proxy
@@ -495,6 +491,18 @@ class Apache extends genericClass {
         return true;
 	}
 
+    /**
+     * deleteFromServer
+     * Supprime les configuratio uniquement depuis un seul server
+     */
+    public function deleteFromServer($KEServer){
+        try {
+            $KEServer->remoteExec('rm /etc/httpd/sites-enabled/' . $this->ApacheServerName . '* -f && systemctl reload httpd');
+        } catch (Exception $e) {
+            $this->addError(Array("Message" => "Impossible d'effectuer la commande de suppression sur le serveur ".$KEServer->Nom));
+        }
+        return true;
+    }
 	/**
 	 * Récupère une référence vers l'objet KE "Server"
 	 * pour effectuer des requetes LDAP

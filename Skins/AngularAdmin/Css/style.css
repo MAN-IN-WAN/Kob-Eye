@@ -987,6 +987,15 @@ Choix des composants
 .filter-success{
     color: #46BE8A;
 }
+.filter-primary{
+    color: #01a8fe;
+}
+.filter-secondary{
+    color: #6a7a84;
+}
+.filter-default{
+    color: #acb7bf;
+}
 .nav-tabs-horizontal .nav-tabs .nav-item .nav-link.filter-danger.active,
 .nav-tabs-horizontal .nav-tabs .nav-item .nav-link.filter-danger:focus{
     border-bottom-color: #FB434A !important;
@@ -1178,6 +1187,9 @@ Choix des composants
 }
 .btn-abt-nfo:after{
     content: "\ed63";
+}
+.btn-abt-alert:after{
+    content: "\ed4f";
 }
 
 .btn-abt-func{

@@ -19,8 +19,8 @@
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Libelle }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.DateVisite }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.HeureDepart+' '+item.LibelleL }]}</span></td>
-				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ parseInt(item.Prix)+parseInt(item.Reduction) }]}</span></td>
-				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Assurance }]}</span></td>
+				<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ (item.Prix*1)+(item.Reduction*1) }]}</span></td>
+				<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ item.Assurance }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar">
 					<span class="label label-info" ng-if="item.Attente>0 && item.Supprime==0">Attente</span>
 					<span class="label label-success" ng-if="item.Attente==0 && item.Supprime==0">Inscrit</span>

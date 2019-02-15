@@ -3,7 +3,7 @@ $info= Info::getInfos($vars['Query']);
 $obj = Sys::getOneData($info['Module'],$vars['Query']);
 
 $task = genericClass::createInstance('Systeme','Tache');
-$task->Type = 'Log';
+$task->Type = 'Fonction';
 $task->Nom = 'Deploiement ';
 $task->TaskModule = 'AbtelBackup';
 $task->TaskObject = 'Esx';

@@ -27,10 +27,7 @@
 					<span class="label cadref-success" ng-if="!item.Differe || item.Encaisse">E</span>
 					<span class="label cadref-danger" ng-if="item.Differe && !item.Encaisse">N</span>
 				</td>
-				<td scope="row" class="cadref-td typeboolean">                    
-					<span class="label cadref-info" ng-if="item.Visite">V</span>
-					<span class="label cadref-info" ng-if="!item.Visite"></span>
-				</td>
+				<td scope="row" class="cadref-td typeboolean"><span class="label">{[{ item.Visite }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Notes }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Utilisateur }]}</span></td>
 			</tr>

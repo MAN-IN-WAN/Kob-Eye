@@ -14,8 +14,31 @@ class Enseignant extends genericClass {
 		return parent::Delete();
 	}
 
-	function SendMessage() {
-		return true;
+	function SendMessage($params) {
+		if(!isset($params['step'])) $params['step'] = 0;
+		switch($params['step']) {
+			case 0:
+				return array(
+					'step'=>1,
+					'template'=>'sendMessage',
+					'callNext'=>array(
+						'nom'=>'SendMessage',
+						'title'=>'Message suite',
+						'needConfirm'=>false,
+						'args'=>array('identifier'=>'CadrefEnseignant')
+					)
+				);
+				break;
+			case 1:
+				$ret = Cadref::SendMessage($params['Msg']);
+				return array(
+					'data'=>'Message envoyé',
+					'params'=>$params['Msg'],
+					'success'=>true,
+					'callNext'=>false
+				);
+				break;
+		}
 	}
 
 	function PrintEtiquettes($obj) {

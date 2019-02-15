@@ -92,7 +92,7 @@ class PrintAttestation extends FPDF {
 		
 		$this->SetFont('Arial','B',10);
 		$this->SetXY(20,140);
-		$s = $this->cv("DONATAIRE");
+		$s = $this->cv("DONATEUR");
 		$this->Cell(170,8,$s,0,0,'C',1);
 		
 		$this->SetFont('Arial','',12);

@@ -35,10 +35,6 @@ class ParcInstanceAzkoFront extends Plugin implements ParcInstancePlugin {
         <Directory /home/'.$host->NomLDAP.'/azkocms_medias/>
             require all granted
         </Directory>';
-        $ftps = $host->getChildren('Ftpuser');
-        foreach ($ftps as $ftp){
-            $ftp->Delete();
-        }
         $apache->Save();
     }
 

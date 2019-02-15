@@ -35,11 +35,11 @@ vmid;vmid;vmid";
 
 
 REFAIRE
-laboratoire-val;laboratoire-;laboratoire-val
+selfcopy;selfcopy;selfcopy
 
 */
 $csv= "
-clamousemetaller;clamousemetaller;clamousemetaller
+selfcopy;selfcopy;selfcopy
 ";
 $result = explode(PHP_EOL,$csv);
 $total = sizeof($result)-2;
