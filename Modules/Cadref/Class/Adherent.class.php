@@ -309,10 +309,11 @@ class Adherent extends genericClass {
 		$whr = '';
 
 		switch($mode) {
-			case o:
+			case 0:
 				$typAdh = isset($obj['typeAdherent']) ? $obj['typeAdherent'] : '';
 				$contenu = isset($obj['Contenu']) ? $obj['Contenu'] : '';
 				$rupture = isset($obj['Rupture']) ? $obj['Rupture'] : '';
+				$enseignant = isset($obj['Enseignant']) ? $obj['Enseignant'] : '';
 				$adherent = false;
 
 
@@ -337,6 +338,10 @@ inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
 inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
 inner join `##_Cadref-Adherent` e on e.Id=i.AdherentId ";
+					if($enseignant) {
+						$sql .= "inner join `##_Cadref-ClasseEnseignants` ce on ce.Classe=i.ClasseId ";
+						$whr .= "and ce.EnseignantId=$enseignant ";
+					}
 				}
 
 				$mail = (isset($obj['Mail']) && $obj['Mail'] != '') ? $obj['Mail'] : '';

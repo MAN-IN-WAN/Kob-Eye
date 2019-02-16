@@ -50,7 +50,7 @@
 				<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ item.Assurance }]}</span></td>
 				<td scope="row" class="cadref-td typefloat"><span>{[{ item.Places }]}/{[{ item.Inscrits }]}/{[{ item.Attentes }]}</span></td>
 				<td scope="row" class="cadref-td typeint">
-					<span class="btn btn-xs cadref-fkey" ng-class="{'btn-primary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
+					<span class="btn btn-xs cadref-fkey" ng-class="{'btn-secondary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
 						  ng-click="attachementsOpen(item, 'visite')">{[{ item.Attachements }]}
 					</span>
 				</td>

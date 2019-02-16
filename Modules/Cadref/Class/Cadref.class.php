@@ -270,7 +270,7 @@ inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
 left join `##_Cadref-WebDiscipline` dw on dw.Id=d.WebDisciplineId
 left join `##_Cadref-Lieu` l on l.Id=c.LieuId
-where i.AdherentId=$id and i.Annee='$annee' and c.JourId>0 and c.HeureDebut<>''
+where i.AdherentId=$id and i.Annee='$annee' and c.JourId>0 and c.HeureDebut<>'' and c.Programmation=0
 ";
 			$sql1 = "
 select a.DateDebut,a.DateFin,a.Description,e.Nom,e.Prenom,i.ClasseId as cid,a.EnseignantId
@@ -306,7 +306,7 @@ inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
 left join `##_Cadref-WebDiscipline` dw on dw.Id=d.WebDisciplineId
 left join `##_Cadref-Lieu` l on l.Id=c.LieuId
-where ce.EnseignantId=$id and c.Annee='$annee' and c.JourId>0 and c.HeureDebut<>''
+where ce.EnseignantId=$id and c.Annee='$annee' and c.JourId>0 and c.HeureDebut<>'' and c.Programmation=0
 ";
 			$sql1 = "
 select a.DateDebut,a.DateFin,a.Description,'','',0 as cid,a.EnseignantId

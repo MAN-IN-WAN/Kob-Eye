@@ -235,6 +235,7 @@
 				<th>Attentes</th>
 				<th>Prix</th>
 				<th>Assurance</th>
+				<th>Doc.</th>
 				<th>Actions</th>
 			</tr>
 		</thead>
@@ -246,29 +247,21 @@
 					</td>
 				{% endif %}
 				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
-				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Annee }]}</a></td>
-				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Visite }]}</a></td>
-				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Libelle }]}</a></td>
-				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.DateVisite }]}</a></td>
-				<td scope="row" class="typefloat"><span>{[{ item.Places }]}</span></td>
-				<td scope="row" class="typefloat"><span>{[{ item.Inscrits }]}</span></td>
-				<td scope="row" class="typefloat"><span>{[{ item.Attentes }]}</span></td>
-				<td scope="row" class="typefloat"><span>{[{ item.Prix }]}</span></td>
-				<td scope="row" class="typefloat"><span>{[{ item.Assurance }]}</span></td>
-
-				{% for interface in Interfaces %}
-					{% if interface.child  %}
-						<td scope="row" class="type{{ interface.type }}">
-							{% if interface.type == "price" or interface.type == "float" %}
-								<span class="label label-warning" ng-repeat="child in item.{{ interface.child }}">{[{ child.{{ interface.property }}| currency:"" }]}</span>
-							{% elseif interface.type == "extlink" %}
-								<a class="btn-abt btn-primary btn-xs type_{[{ child.{{ interface.title }} }]}" href="https://proxy.abtel.fr/remote/#/client/{[{ child.{{ interface.property }} }]}" target="_blank" ng-repeat="child in item.{{ interface.child }} | limitTo:2">{[{ child.{{ interface.title }} }]}</a>
-							{% endif %}
-						</td>
-					{% endif %}
-				{% endfor %}
-				{#<td  class="table-details" ng-bind-html="item._details">{[{ item._details }]}</td>#}
-				<td  class="table-action">
+				<td scope="row" class="cadref-td typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Annee }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Visite }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Libelle }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.DateVisite }]}</a></td>
+				<td scope="row" class="cadref-td typefloat"><span>{[{ item.Places }]}</span></td>
+				<td scope="row" class="cadref-td typefloat"><span>{[{ item.Inscrits }]}</span></td>
+				<td scope="row" class="cadref-td typefloat"><span>{[{ item.Attentes }]}</span></td>
+				<td scope="row" class="cadref-td typefloat"><span>{[{ item.Prix }]}</span></td>
+				<td scope="row" class="cadref-td typefloat"><span>{[{ item.Assurance }]}</span></td>
+				<td scope="row" class="cadref-td typeint">
+					<span class="btn btn-xs cadref-fkey" ng-class="{'btn-secondary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
+						  ng-click="attachementsOpen(item, 'visite')">{[{ item.Attachements }]}
+					</span>
+				</td>
+				<td  class="table-action cadref-td-btn">
 					<div >
 						<a class="btn-abt btn-abt-nfo btn-primary" href="#/{{ CurrentUrl }}/{[{ item.id }]}" title="Détails"></a>
 					</div>

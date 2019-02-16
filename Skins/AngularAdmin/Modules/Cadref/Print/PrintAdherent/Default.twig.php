@@ -29,6 +29,18 @@ if($vars['mode'] == 0) {
 		$tmp[$a->Id] = $a->Libelle;
 	$vars['antennes'] = $tmp;
 
+	$tmp = array('' => '');
+	$as = Sys::getData('Cadref', 'Enseignant');
+	foreach($as as $a)
+		$tmp[$a->Id] = trim($a->Nom.' '.$a->Prenom);
+	$vars['enseignants'] = $tmp;
+
+	$tmp = array();
+	$as = Sys::getData('Cadref', 'Lieu');
+	foreach($as as $a)
+		$tmp[$a->Id] = $a->Lieu.' '.$a->Libelle;
+	$vars['lieux'] = $tmp;
+
 	$tmp = array();
 	$as = Sys::getData('Cadref', 'Jour');
 	foreach($as as $a)

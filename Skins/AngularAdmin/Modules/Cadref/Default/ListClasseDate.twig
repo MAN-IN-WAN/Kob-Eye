@@ -53,11 +53,11 @@
 		<tbody>
 			<tr dir-paginate="item in {{ identifier }}.data" >
 				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
-				<td scope="row" class="cadref-td typedate"><span class="label">{[{ item.DateCours }]}</span></td>
-				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Notes }]}</span></td>
+				<td scope="row" class="cadref-td typedate"><a href="" ng-click="classeDateModify(item)">{[{ item.DateCours }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="classeDateModify(item)">{[{ item.Notes }]}</a></td>
 				<td  class="table-action cadref-td-btn" style="width:64px">
-					<a class="btn-abt btn-abt-nfo btn-primary" href="" title="Détails" ng-click="classeDateModify(item)"></a>
-				</td>
+{#					<a class="btn-abt btn-abt-nfo btn-primary" href="" title="Détails" ></a>
+#}				</td>
 			</tr>
 		</tbody>
 	</table>

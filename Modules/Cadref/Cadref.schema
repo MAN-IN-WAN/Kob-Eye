@@ -176,7 +176,7 @@
 		<PROPERTIES type="varchar" searchOrder="1" length="8" obligatoire="1" category="Description" description="Jour">Jour</PROPERTIES>
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="ClasseDate" driver="mysql" order="ClasseId,DateClasse" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Date de cours" hidden="0" Operations="add,edit" Dico="0" Class="Modules/Cadref/Class/ClasseDate.class.php">
+	<OBJECTCLASS title="ClasseDate" driver="mysql" order="DateCours" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Date de cours" hidden="0" Operations="add,edit" Dico="0" Class="Modules/Cadref/Class/ClasseDate.class.php">
 		<FKEY card="1,1" module="Cadref" data="Classe,Id" category="Description" list="2" form="2" description="Classe" >ClasseId</FKEY>
 		<PROPERTIES type="date" searchOrder="1" category="Description" list="2" form="2" description="Date du cours">DateCours</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" category="Description" list="2" form="2" description="Notes">Notes</PROPERTIES>
@@ -281,7 +281,7 @@
 -->
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="AdherentAnnee" driver="mysql" order="AdherentId,Annee" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Professions" Operations="add,edit" Dico="1">
+	<OBJECTCLASS title="AdherentAnnee" driver="mysql" order="AdherentId" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Professions" Operations="add,edit" Dico="1">
 		<FKEY card="1,1" module="Cadref" data="Adherent,Id" category="Description" description="Adhérent">AdherentId</FKEY>
 		<PROPERTIES type="varchar" length="6" searchOrder="1" obligatoire="1" category="Description" description="Numéro">Numero</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" length="4" obligatoire="1" category="Description" description="Annee">Annee</PROPERTIES>
@@ -475,7 +475,7 @@
 	</OBJECTCLASS>
 
 
-	<OBJECTCLASS title="Reservation" driver="mysql" order="Visite,Numero" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Réservation" hidden="0" Operations="add,edit" Dico="0" Class="Modules/Cadref/Class/Reservation.class.php">
+	<OBJECTCLASS title="Reservation" driver="mysql" order="Visite,Numero" orderType="ASC,ASC" master="0" AccessPoint="0" Icon="[None]" Description="Réservation" hidden="0" Operations="add,edit" Dico="0" Class="Modules/Cadref/Class/Reservation.class.php">
 		<FKEY card="1,1" module="Cadref" data="Adherent,Id" category="Description" list="1" form="1" fiche="1" description="Adhérent" >AdherentId</FKEY>
 		<FKEY card="1,1" module="Cadref" data="Visite,Id" category="Description" list="1" form="1" fiche="1" description="Visite" >VisiteId</FKEY>
 		<PROPERTIES type="varchar" length="6" searchOrder="1" obligatoire="0" category="Description" list="1" form="1" fiche="1" description="Numéro">Numero</PROPERTIES>
@@ -494,14 +494,14 @@
 		<PROPERTIES type="varchar" length="3" category="Description" list="7" description="Utilisateur">Utilisateur</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" list="1" form="1" fiche="1" description="Inscription web">Web</PROPERTIES>
 
-		<VIEW title="ReservationList" default="1">
+		<VIEW title="ReservationList" default="1" order="Nom,Prenom" orderType="ASC,ASC">
 			<OBJECTCLASS title="Reservation">
 				<JOIN type="outer" module="Cadref" title="Visite" on="VisiteId" target="Id">
 					<PROPERTIES type="int" form="4" fiche="4" list="4" alias="Libelle">Libelle</PROPERTIES>
 					<PROPERTIES type="date" form="4" fiche="4" list="4" >DateVisite</PROPERTIES>
 					<PROPERTIES type="int" list="4" >Attachements</PROPERTIES>
 				</JOIN>
-				<JOIN type="outer" module="Cadref" title="Adherent" on="AdherentId" target="Id" order="Nom,Prenom" orderType="ASC,ASC">
+				<JOIN type="outer" module="Cadref" title="Adherent" on="AdherentId" target="Id"">
 					<PROPERTIES type="varchar" form="4" fiche="4" list="4" alias="Nom">Nom</PROPERTIES>
 					<PROPERTIES type="varchar" form="4" fiche="4" list="4" alias="Prenom">Prenom</PROPERTIES>
 				</JOIN>
