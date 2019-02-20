@@ -21,7 +21,9 @@
 										</div>
 										<div class="col-md-2">
 											<label class="input-group datepicker-only-init cadref-no-margin">
-												<input id="input-objDateCheque" type="text" class="form-control cadref-input" mask="dd/dd/dddd" ng-model="obj.DateCheque" ng-init="obj.DateCheque='{{ "now"|date("d/m/Y") }}'"/>
+												<input id="input-objDateCheque" type="text" class="form-control cadref-input" mask="dd/dd/dddd" 
+													   ng-model="obj.DateCheque" ng-init="obj.DateCheque='{{ "now"|date("d/m/Y") }}'"
+													   ng-init="initDatePickerOnly()"/>
 												<span class="input-group-addon">
 													<i class="icmn-calendar"></i>
 												</span>

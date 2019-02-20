@@ -315,7 +315,7 @@ where c.Ens2<>'';
 
 truncate kbabtel.`kob-Cadref-Adherent`;
 insert into kbabtel.`kob-Cadref-Adherent` (umod,gmod,omod,Numero,Nom,Prenom,Adresse1,Adresse2,CP,Ville,Telephone1,Telephone2,Notes,Mail,
-NotesAnnuelles,Naissance,Inscription,Sexe,ProfessionId,CursusId,SituationId,Adherent,Annee,Etoiles,Origine,Certificat,ClasseId,
+NotesAnnuelles,Naissance,Inscription,Sexe,ProfessionId,CursusId,SituationId,Adherent,Annee,Etoiles,Origine,DateCertificat,ClasseId,
 Cotisation,Cours,Reglement,Differe,Regularisation)
 select 7,7,7,Numero,Nom,Prenom,Adr1,Adr2,CP,Ville,Tel1,Tel2,e.Notes,eMail,
 NotesTemp,Naissance,Inscription,Sexe,p.Id,u.Id,s.Id,Adherent,e.Annee,Etoiles,Origine,if(Certificat<@annee,null,unix_timestamp(Certificat)),c.Id,
@@ -326,6 +326,9 @@ left join kbabtel.`kob-Cadref-Profession` p on p.Profession=e.Profession
 left join kbabtel.`kob-Cadref-Cursus` u on u.Cursus=e.Cursus
 left join kbabtel.`kob-Cadref-Situation` s on s.Situation=e.Situation;
 
+update kbabtel.`kob-Cadref-Adherent` a
+inner join kbabtel.aaname p on p.old=a.Prenom
+set a.Prenom=p.name;
 
 
 truncate kbabtel.`kob-Cadref-Inscription`;
@@ -360,7 +363,10 @@ left join kbabtel.`kob-Cadref-Adherent` a on a.Numero=r.Numero
 left join kbabtel.`kob-Cadref-Visite` v on v.Visite=r.Visite
 order by r.Numero,r.Visite;
 
-
+insert into kbabtel.`kob-Cadref-Reglement` (umod,gmod,omod,Numero,AdherentId,ReservationId,Visite,Montant,Utilisateur,DateReglement,Encaisse,ModeReglement,Annee)
+select 7,7,7,r.Numero,r.AdherentId,r.Id,r.Visite,r.Prix,r.Utilisateur,v.DateVisite,1,'B',@annee
+from kbabtel.`kob-Cadref-Reservation` r
+inner join kbabtel.`kob-Cadref-Visite` v on v.Id=r.VisiteId;
 
 truncate kbabtel.`kob-Cadref-AdherentAnnee`;
 insert into kbabtel.`kob-Cadref-AdherentAnnee` (umod,gmod,omod,AdherentId,Numero,Annee,NotesAnnuelles,Adherent,ClasseId,
@@ -389,7 +395,7 @@ group by AdherentId
 set a.DateCotisation=t.dt
 where a.Annee=@annee;
 
-
+/*
 # PRENOMS
 DROP FUNCTION IF EXISTS aaprenom; 
 SET GLOBAL  log_bin_trust_function_creators=TRUE; 
@@ -429,4 +435,4 @@ END;
 delimiter ;
 update `kob-Cadref-Adherent` set Prenom=aaprenom(Prenom);
 update `kob-Cadref-Enseignant` set Prenom=aaprenom(Prenom);
-
+*/

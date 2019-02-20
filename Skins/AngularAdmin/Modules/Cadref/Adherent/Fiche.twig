@@ -40,6 +40,12 @@
 										{% endfor %}
 									</select>
 								</div>
+								<div class="col-md-2">
+									{{ label("Etoiles") }}
+								</div>
+								<div class="col-md-2">
+									{#{{ fvalues(f.Etoile, o) }}#}
+								</div>
 							</div>
 							{{ flinput(f.Nom, o, false, '', 'text-transform:uppercase;', true) }}
 							{{ flinput(f.Prenom, o) }}
@@ -102,7 +108,9 @@
 										</div>
 										<div class="col-md-7">
 											<label class="input-group datepicker-only-init cadref-no-margin">
-												<input id="input-objCertificat" type="text" class="form-control cadref-input" placeholder="Date" mask="dd/dd/dddd" ng-model="obj.Certificat" ng-class="{'cadref-highlight': {{ o }}.certifInvalide}"/>
+												<input id="input-objCertificat" type="text" class="form-control cadref-input" placeholder="Date" 
+													   mask="dd/dd/dddd" ng-model="obj.Certificat" ng-class="{'cadref-highlight': {{ o }}.certifInvalide}" 
+													   ng-init="initDatePickerOnly()"/>
 												<span class="input-group-addon">
 													<i class="icmn-calendar"></i>
 												</span>
@@ -373,66 +381,3 @@
         </div>
     </div>
 </div>
-
-
-<script>
-	$('.datepicker-only-init').datetimepicker({
-		widgetPositioning: {
-			horizontal: 'left'
-		},
-		locale: 'fr',
-		format: 'DD/MM/YYYY',
-		icons: {
-			time: "fa fa-clock-o",
-			date: "fa fa-calendar",
-			up: "fa fa-arrow-up",
-			down: "fa fa-arrow-down"
-		}
-	});
-	$('.timepicker-only-init').datetimepicker({
-		widgetPositioning: {
-			horizontal: 'left'
-		},
-		locale: 'fr',
-		format: 'HH:mm',
-		icons: {
-			time: "fa fa-clock-o",
-			date: "fa fa-calendar",
-			up: "fa fa-arrow-up",
-			down: "fa fa-arrow-down"
-		}
-	});
-	$('.datetimepicker-init').datetimepicker({
-		widgetPositioning: {
-			horizontal: 'left'
-		},
-		locale: 'fr',
-		icons: {
-			time: "fa fa-clock-o",
-			date: "fa fa-calendar",
-			up: "fa fa-arrow-up",
-			down: "fa fa-arrow-down"
-		}
-	});
-
-
-	$('.urlInput').on('keyup', function () {
-		$(this).val($(this).val().replace(/[^A-Za-z0-9_\-\.]*\s*/g, ''));
-	});
-	//Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
-	$(".datepicker-only-init").on("dp.change", function () {
-		var input = $(this).children('input').eq(0);
-		input.trigger('change');
-		input.trigger('input');
-	});
-	$(".timepicker-only-init").on("dp.change", function () {
-		var input = $(this).children('input').eq(0);
-		input.trigger('change');
-		input.trigger('input');
-	});
-	$(".datetimepicker-init").on("dp.change", function () {
-		var input = $(this).children('input').eq(0);
-		input.trigger('change');
-		input.trigger('input');
-	});
-</script>

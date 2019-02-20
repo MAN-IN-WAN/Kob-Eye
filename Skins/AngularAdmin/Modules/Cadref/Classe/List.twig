@@ -88,51 +88,6 @@
 											<div custom-select="a.id as a.label for a in getSelectData('{{ field.objectModule }}{{ field.objectName }}Store',$searchTerm)" custom-select-options="{ 'async': true, 'filter':'{{ field.filter }}'}"  ng-model="{{ identifier }}.filters.{{ field.name }}.value" ng-change="{{ identifier }}applyFilters()" class="form-control form-control-sm"></div>
 										{% elseif field.type == "boolean" %}
 											<switch id="enabled" name="enabled" ng-model="{{ identifier }}.filters.{{ field.name }}.value" class="green" ng-change="{{ identifier }}applyFilters()"></switch>
-										{% elseif field.type == "date" %}
-											<p>Après le :</p>
-											<label class="input-group datepicker-only-init">
-												<input type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="{{ identifier }}.filters.{{ field.name }}.value[0]" ng-init="{{ identifier }}.filters.{{ field.name }}.value=['','']" ng-change="{{ identifier }}applyFilters()"/>
-												<span class="input-group-addon">
-													<i class="icmn-calendar"></i>
-												</span>
-											</label>
-											<p>Avant le :</p>
-											<label class="input-group datepicker-only-init">
-												<input type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="{{ identifier }}.filters.{{ field.name }}.value[1]" ng-change="{{ identifier }}applyFilters()"/>
-												<span class="input-group-addon">
-													<i class="icmn-calendar"></i>
-												</span>
-											</label>
-										{% elseif field.type == "time" %}
-											<p>Après le :</p>
-											<label class="input-group timepicker-only-init">
-												<input type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="{{ identifier }}.filters.{{ field.name }}.value[0]" ng-init="{{ identifier }}.filters.{{ field.name }}.value=['','']" ng-change="{{ identifier }}applyFilters()"/>
-												<span class="input-group-addon">
-													<i class="icmn-clock"></i>
-												</span>
-											</label>
-											<p>Avant le :</p>
-											<label class="input-group timepicker-only-init">
-												<input type="text" class="form-control" placeholder="Sélectionnez une date"  ng-model="{{ identifier }}.filters.{{ field.name }}.value[1]" ng-change="{{ identifier }}applyFilters()"/>
-												<span class="input-group-addon">
-													<i class="icmn-clock"></i>
-												</span>
-											</label>
-										{% elseif field.type == "datetime" %}
-											<p>Après le :</p>
-											<label class="input-group datetimepicker-init">
-												<input type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="{{ identifier }}.filters.{{ field.name }}.value[0]" ng-init="{{ identifier }}.filters.{{ field.name }}.value=['','']" ng-change="{{ identifier }}applyFilters()"/>
-												<span class="input-group-addon">
-													<i class="icmn-calendar"></i>
-												</span>
-											</label>
-											<p>Avant le :</p>
-											<label class="input-group timepicker-only-init">
-												<input type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="{{ identifier }}.filters.{{ field.name }}.value[1]" ng-change="{{ identifier }}applyFilters()"/>
-												<span class="input-group-addon">
-													<i class="icmn-clock"></i>
-												</span>
-											</label>
 										{% else %}
 											{% if field.query %}
 												<select class="form-control form-control-sm" ng-model="{{ identifier }}.filters.{{ field.name }}.value" ng-change="{{ identifier }}applyFilters()">

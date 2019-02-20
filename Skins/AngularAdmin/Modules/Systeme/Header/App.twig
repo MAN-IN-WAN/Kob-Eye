@@ -420,8 +420,12 @@ var app = angular.module('cleanUI.controllers', []);
 
 app.controller('MainCtrl', function($location, $scope, $rootScope, $timeout, $http, FileUploader, SystemeAlertUserStore) {
 
+	$scope.log = function(toto){
+		console.log(toto);
+	}
 
-// PGF 20190211 creation de stores
+
+	// PGF 20190211 creation de stores
 	$rootScope.createStore = function(store, context) {
 		var s = {
 			data: store.data[context],
@@ -447,7 +451,7 @@ app.controller('MainCtrl', function($location, $scope, $rootScope, $timeout, $ht
 		return s;
 	}
 
-// ALERTUSER PGF 20190209
+	// ALERTUSER PGF 20190209
 	$scope.Alerts = {new:0, unread:0, alerts:[]};
     $rootScope.$on('Alertes',function(ev,data){
 	    if(data.new > 0) $scope.Alerts.new = data.new;
@@ -465,7 +469,50 @@ app.controller('MainCtrl', function($location, $scope, $rootScope, $timeout, $ht
 		$scope.SystemeAlertUser.store.deleteOneData(item.id,'all'); //saveData(item);
 	}
 	
+	// PGF 20190219
+	// init date picker components 
+	$scope.initDatePickerOnly = function() {
+		$('.datepicker-only-init').datetimepicker({
+			widgetPositioning: {
+				horizontal: 'left'
+			},
+			locale: 'fr',
+			format: 'DD/MM/YYYY',
+			icons: {
+				time: "fa fa-clock-o",
+				date: "fa fa-calendar",
+				up: "fa fa-arrow-up",
+				down: "fa fa-arrow-down"
+			}
+		});
+		$(".datepicker-only-init").on("dp.change", function () {
+			var input = $(this).children('input').eq(0);
+			input.trigger('change');
+			input.trigger('input');
+		});
+	}	
+	$scope.initDateTimePicker = function() {
+		$('.datetimepicker-init').datetimepicker({
+			widgetPositioning: {
+				horizontal: 'left'
+			},
+			locale: 'fr',
+			icons: {
+				time: "fa fa-clock-o",
+				date: "fa fa-calendar",
+				up: "fa fa-arrow-up",
+				down: "fa fa-arrow-down"
+			}
+		});
+		$(".datetimepicker-init").on("dp.change", function () {
+			var input = $(this).children('input').eq(0);
+			input.trigger('change');
+			input.trigger('input');
+		});
+	}	
 
+	
+	
     $scope.uploader = new FileUploader({
         url:'/Systeme/Utils/Upload.json'
     });
@@ -483,9 +530,11 @@ app.controller('MainCtrl', function($location, $scope, $rootScope, $timeout, $ht
             case 2:
                 scope[props[0]][props[1]] = response.url;
                 break;
+            case 3:
+                scope[props[0]][props[1]][props[2]] = response.url;
+                break;
             default:
-                console.log('Input Model Error (App.twig -> $scope.uploader.onSuccessItem)');
-                ;
+                console.error('Input Model Error (App.twig -> $scope.uploader.onSuccessItem)');
         }
         console.log(angular.element(document.getElementById(item.inputId)));
     }
@@ -499,9 +548,11 @@ app.controller('MainCtrl', function($location, $scope, $rootScope, $timeout, $ht
                 case 2:
                     scope[props[0]][props[1]] = response.url;
                     break;
+				case 3:
+					scope[props[0]][props[1]][props[2]] = response.url;
+					break;
                 default:
-                    console.log('Input Model Error (App.twig -> $scope.uploader.onSuccessItem)');
-                    ;
+                    console.error('Input Model Error (App.twig -> $scope.uploader.onSuccessItem)');
             }
             console.log(angular.element(document.getElementById(item.inputId)));
         }

@@ -4,12 +4,11 @@
 			<tr>
 				<th title="Id" class="list-col-th-id" hidden>ID</th>
 				<th>Classe</th>
-				<th></th>
+				<th>Libellé</th>
+				<th>Web</th>
 				<th>Heures</th>
 				<th>Cycle</th>
 				<th>Places</th>
-				<th>Inscrits</th>
-				<th>Attentes</th>
 				<th>Prix</th>
 				<th>Réduc</th>
 				<th>Réduc</th>
@@ -26,11 +25,10 @@
 				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.CodeClasse }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleD }]} {[{ item.LibelleN }]}</span></td>
+				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleW }]} {[{ item.LibelleN }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Jour | limitTo : 3}]} {[{ item.HeureDebut }]}&nbsp;-&nbsp;{[{ item.HeureFin }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.CycleDebut }]}&nbsp;-&nbsp;{[{ item.CycleFin }]}</span></td>
-				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Places }]}</span></td>
-				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Inscrits }]}</span></td>
-				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Attentes }]}</span></td>
+				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Places+' - '+item.Inscrits+' - '+item.Attentes }]}</span></td>
 				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Prix }]}</span></td>
 				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Reduction1 }]}</span></td>
 				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Reduction2 }]}</span></td>

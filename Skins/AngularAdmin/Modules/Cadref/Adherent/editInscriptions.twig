@@ -29,7 +29,7 @@
 		<tbody>
 			<tr>
 				<td class="cadref-td-inscr">			
-					<switch ng-model="CadrefClasse.Inscr.isCotis" ng-change="adherentCotisation()" class="cadref-switch"></switch>
+					<switch ng-model="CadrefClasse.Inscr.noCotis" ng-change="adherentCotisation()" class="cadref-switch-green"></switch>
 				</td>
 				<td class="cadref-td-inscr">
 					<input type="text" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.cotis" readonly style="width:60px"/>
@@ -53,7 +53,8 @@
 				</td>
 				<td class="cadref-td-inscr">
 					<label class="input-group datepicker-only-init">
-						<input id="input-CadrefClassedate" type="text" class="form-control cadref-input" mask="dd/dd/dddd" ng-model="CadrefClasse.Inscr.date" style="width:100px" />
+						<input id="input-CadrefClassedate" type="text" class="form-control cadref-input" mask="dd/dd/dddd" 
+							   ng-model="CadrefClasse.Inscr.date" style="width:100px" ng-init="initDatePickerOnly()"/>
 						<span class="input-group-addon">
 							<i class="icmn-calendar"></i>
 						</span>
@@ -74,7 +75,8 @@
 <div class="form-group row">
     <div class="col-lg-5 col-md-12">
 		<div class="input-group list-search">
-			<input type="text" id="searchCadrefClasse" class="form-control" name="CadrefClassequery" ng-model="CadrefClasse.filter" ng-change="classeControle()" placeholder="Classe..." mask='@@@@@dd' autofocus style="text-transform:uppercase; max-width:130px;" onkeyup="this.value = this.value.toUpperCase();">
+			<input type="text" id="searchCadrefClasse" class="form-control" name="CadrefClassequery" ng-model="CadrefClasse.filter" ng-change="classeControle()" 
+				   placeholder="Classe..." mask='@@@@@dd' autofocus style="text-transform:uppercase; max-width:130px;" onkeyup="this.value = this.value.toUpperCase();">
             <span class="input-group-btn">
 				<a href="javascript: void(0);" class="btn btn-default cadref-btn-erase" accesskey="x" title="Alt X" ng-click="clearFilter('CadrefClasse')"></a>
                 <a  href="javascript: void(0);" class="btn btn-success" accesskey="a" title="Alt A" ng-click="classeAjoute(null)" ng-disabled="addDisabled">
@@ -91,23 +93,3 @@
 </div>
 <input type="hidden" ng-init="CadrefAdherentfunction.args.newInscr=CadrefInscription.store.data.temp"/>
 <input type="hidden" ng-init="CadrefAdherentfunction.args.Inscr=CadrefClasse.Inscr"/>
-<script>
-	$('.datepicker-only-init').datetimepicker({
-		widgetPositioning: {
-			horizontal: 'left'
-		},
-		locale: 'fr',
-		format: 'DD/MM/YYYY',
-		icons: {
-			time: "fa fa-clock-o",
-			date: "fa fa-calendar",
-			up: "fa fa-arrow-up",
-			down: "fa fa-arrow-down"
-		}
-	});
-	$(".datepicker-only-init").on("dp.change", function () {
-		var input = $(this).children('input').eq(0);
-		input.trigger('change');
-		input.trigger('input');
-	});
-</script>

@@ -133,7 +133,7 @@ class Cadref extends Module {
 			$s .= "Vos paramètres de connection sont les suivants :<br /><br />Code utilisateur (N° adhérent) : $num<br />Mot de Passe : $p<br /><br /><br />";
 			$s .= "A bientôt,<br />L'équipe du CADREF<br />";
 			$params = array('Subject'=>($new ? 'CADREF : Bienvenu dans votre nouvel espace utilisateur.' : 'CADREF : Nouveau mot de passe.'),
-				'Mail'=>$a->Mail,
+				'To'=>array($a->Mail),
 				'Body'=>$s);
 			self::SendMessage($params);
 		}
@@ -354,7 +354,6 @@ where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 			foreach($pdo as $p) {
-				$cid = $p['cid'];
 				$cd = 0;
 				$cy = $p['CycleDebut'];
 				if($cy != '') {
@@ -389,48 +388,7 @@ where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 						}
 					}
 					if($ok) {
-						$e = new stdClass();
-						$e->title = $p['Libelle'];
-						$e->start = Date('Y-m-d', $d).'T'.$p['HeureDebut'];
-						$e->end = Date('Y-m-d', $d).'T'.$p['HeureFin'];
-						$e->className = 'fc-event-info';
-						$e->description = $p['HeureDebut'].' à '.$p['HeureFin'].($cd ? '  du '.$p['CycleDebut'].' au '.$p['CycleFin'] : '');
-						if($p['Ville']) {
-							$l = $p['Ville'];
-							if($p['Adresse1']) $l .= ', '.$p['Adresse1'];
-							if($p['Adresse2']) $l .= "\n".$p['Adresse2'];
-							$e->description .= "\n".$l;
-						}
-						$s = '';
-						$sql = "
-select e.Nom,e.Prenom,e.Id
-from `##_Cadref-ClasseEnseignants` ce
-inner join `##_Cadref-Enseignant` e on e.Id=ce.EnseignantId
-where ce.Classe=$cid
-";
-						$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-						$pdo1 = $GLOBALS['Systeme']->Db[0]->query($sql);
-						$s = '';
-						foreach($pdo1 as $p1) {
-							$s .= ($s ? "\n" : '').'Ens. : '.trim($p1['Prenom'].' '.$p1['Nom']);
-							if($adh) {
-								$eid = $p1['EnseignantId'];
-								foreach($absences as $a) {
-									if($a->cid == $cid && $a->eid == $eid) {
-										$hd = strtotime($e->start);
-										$hf = strtotime($e->end);
-										if(self::between($hd, $a->start, $a->end) || self::between($hf, $a->start, $a->end)) {
-											$e->className = 'fc-event-danger';
-											$s .= " <span style=\"color:red\">(Absent)</span>";
-											break;
-										}
-									}
-								}
-							}
-						}
-						if($s) $e->description .= "\n".$s;
-						if(!$adh) $e->description .= "\n".$p['CodeClasse'];
-						$events[] = $e;
+						$events[] = self::calEvent($adh, $d, $p, $absences);
 					}
 					$d += 7 * 24 * 60 * 60;
 				}
@@ -438,50 +396,8 @@ where ce.Classe=$cid
 			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql2);
 			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 			foreach($pdo as $p) {
-				$cid = $p['cid'];
 				$d = $p['DateCours'];
-				$e = new stdClass();
-				$e->title = $p['Libelle'];
-				$e->start = Date('Y-m-d', $d).'T'.$p['HeureDebut'];
-				$e->end = Date('Y-m-d', $d).'T'.$p['HeureFin'];
-				$e->className = 'fc-event-info';
-				$e->description = $p['HeureDebut'].' à '.$p['HeureFin'].($cd ? '  du '.$p['CycleDebut'].' au '.$p['CycleFin'] : '');
-				if($p['Ville']) {
-					$l = $p['Ville'];
-					if($p['Adresse1']) $l .= ', '.$p['Adresse1'];
-					if($p['Adresse2']) $l .= "\n".$p['Adresse2'];
-					$e->description .= "\n".$l;
-				}
-				$s = '';
-				$sql = "
-select e.Nom,e.Prenom,e.Id
-from `##_Cadref-ClasseEnseignants` ce
-inner join `##_Cadref-Enseignant` e on e.Id=ce.EnseignantId
-where ce.Classe=$cid
-";
-				$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-				$pdo1 = $GLOBALS['Systeme']->Db[0]->query($sql);
-				$s = '';
-				foreach($pdo1 as $p1) {
-					$s .= ($s ? "\n" : '').'Ens. : '.trim($p1['Prenom'].' '.$p1['Nom']);
-					if($adh) {
-						$eid = $p1['EnseignantId'];
-						foreach($absences as $a) {
-							if($a->cid == $cid && $a->eid == $eid) {
-								$hd = strtotime($e->start);
-								$hf = strtotime($e->end);
-								if(self::between($hd, $a->start, $a->end) || self::between($hf, $a->start, $a->end)) {
-									$e->className = 'fc-event-danger';
-									$s .= " <span style=\"color:red\">(Absent)</span>";
-									break;
-								}
-							}
-						}
-					}
-				}
-				if($s) $e->description .= "\n".$s;
-				if(!$adh) $e->description .= "\n".$p['CodeClasse'];
-				$events[] = $e;
+				$events[] = self::calEvent($adh, $d, $p, $absences);
 			}
 		}
 
@@ -536,20 +452,80 @@ where ve.Visite=$vid
 		$data['events'] = $events;
 		return $data;
 	}
-
+	
+	private static function calEvent($adh, $d, $p, $absences) {
+		$cid = $p['cid'];
+		$e = new stdClass();
+		$e->title = $p['Libelle'];
+		$e->start = Date('Y-m-d', $d).'T'.$p['HeureDebut'];
+		$e->end = Date('Y-m-d', $d).'T'.$p['HeureFin'];
+		$e->className = 'fc-event-info';
+		$e->description = $p['HeureDebut'].' à '.$p['HeureFin'].($p['CycleDebut'] ? '  du '.$p['CycleDebut'].' au '.$p['CycleFin'] : '');
+		if($p['Ville']) {
+			$l = $p['Ville'];
+			if($p['Adresse1']) $l .= ', '.$p['Adresse1'];
+			if($p['Adresse2']) $l .= "\n".$p['Adresse2'];
+			$e->description .= "\n".$l;
+		}
+		$s = '';
+		$sql = "
+select e.Nom,e.Prenom,e.Id
+from `##_Cadref-ClasseEnseignants` ce
+inner join `##_Cadref-Enseignant` e on e.Id=ce.EnseignantId
+where ce.Classe=$cid
+";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo1 = $GLOBALS['Systeme']->Db[0]->query($sql);
+		$s = '';
+		foreach($pdo1 as $p1) {
+			$s .= ($s ? "\n" : '').'Ens. : '.trim($p1['Prenom'].' '.$p1['Nom']);
+			if($adh) {
+				$eid = $p1['EnseignantId'];
+				foreach($absences as $a) {
+					if($a->cid == $cid && $a->eid == $eid) {
+						$hd = strtotime($e->start);
+						$hf = strtotime($e->end);
+						if(self::between($hd, $a->start, $a->end) || self::between($hf, $a->start, $a->end)) {
+							$e->className = 'fc-event-danger';
+							$s .= " <span style=\"color:red\">(Absent)</span>";
+							break;
+						}
+					}
+				}
+			}
+		}
+		if($s) $e->description .= "\n".$s;
+		if(!$adh) $e->description .= "\n".$p['CodeClasse'];
+		return $e;
+	}
+		
 	public static function SendMessage($params) {
 		require_once('Class/Lib/Mail.class.php');
 
 		$Mail = new Mail();
 		$Mail->Subject($params['Subject']);
 		$Mail->From("noreply@cadref.com");
-		$Mail->To($params['Mail']);
+		if(isset($params['To'])) {
+			foreach($params['To'] as $to)
+				$Mail->To($to);
+		}
+		if(isset($params['CC'])) {
+			foreach($params['CC'] as $cc)
+				$Mail->Bcc($cc);
+		}
 		$bloc = new Bloc();
 		$bloc->setFromVar("Mail", $params['Body'], array("BEACON"=>"BLOC"));
 		$Pr = new Process();
 		$bloc->init($Pr);
 		$bloc->generate($Pr);
 		$Mail->Body($bloc->Affich());
+		
+		if(isset($params['Attachments'])) {
+			foreach($params['Attachments'] as $a) {
+				$Mail->Attach($a);
+			}
+		}
+		
 		$ret = $Mail->Send();
 		return $ret;
 	}
@@ -561,6 +537,7 @@ where ve.Visite=$vid
 			if(substr($tel, 0, 2) != '06' && substr($tel, 0, 2) != '07')
 				$tel = ''; 
 		}
+var_dump($tel);
 		if(strlen($tel) == 10) {
 			require_once("Class/Lib/Isendpro/autoload.php");
 
@@ -583,12 +560,11 @@ where ve.Visite=$vid
 	public static function SendMessageAdmin($params) {
 		if(! MSG_ADMIN) return;
 		$us = Sys::getData('Systeme', 'Group/Nom=CADREF_ADMIN/User');
-		foreach($us as $u) {
-			if($u->Mail) {
-				$params['Mail'] = $u->Mail;
-				self::SendMessage($params);
-			}
-		}
+		$to = array();
+		foreach($us as $u)
+			 $to[] = $u->Mail;
+		$params['To'] = $to;
+		self::SendMessage($params);
 	}
 
 	public static function SendSmsAdmin($params) {

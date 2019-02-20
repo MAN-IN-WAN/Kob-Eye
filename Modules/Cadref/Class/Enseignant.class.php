@@ -30,6 +30,7 @@ class Enseignant extends genericClass {
 				);
 				break;
 			case 1:
+				$params['Msg']['To'] = array($params['Msg']['Mail']);
 				$ret = Cadref::SendMessage($params['Msg']);
 				return array(
 					'data'=>'Message envoyé',

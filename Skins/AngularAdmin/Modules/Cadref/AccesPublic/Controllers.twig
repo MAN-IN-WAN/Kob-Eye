@@ -93,7 +93,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		return $http.post('/{{ url }}/'+obj.id+'/Method.json',{"Func":JSON.stringify({{ identifier }}method)});
 	}
 
-	// creation de stores
+	// creation de stores TODO use rootscope
 	$scope.createStore = function(store, context) {
 		var s = {
 			data: store.data[context],
@@ -321,7 +321,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		CadrefAbsenceStore.saveData($scope.absenceObj).then(function (data) {
 			$('#settings').spin(false);
 			$scope.absenceInfo.mode = '';
-//			try {$scope.$digest();} finally() {}
+			try {$scope.$digest();} catch(ex) {}
 		});
 	}
 
@@ -340,7 +340,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 			function(){
 				CadrefAbsenceStore.deleteOneData(item.id,'all');
 				$scope.absenceInfo.mode = '';
-//				try {$scope.$digest();} finally() {}
+				try {$scope.$digest();} catch(ex) {}
 			}
 		);
 	}

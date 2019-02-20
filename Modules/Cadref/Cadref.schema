@@ -260,10 +260,10 @@
 		<PROPERTIES type="int" category="Personnel" query="Cadref/Profession::Id::Libelle" form="18" fiche="18" description="Profession">ProfessionId</PROPERTIES>
 		<PROPERTIES type="int" category="Personnel" query="Cadref/Cursus::Id::Libelle" form="19" fiche="19" description="Cursus">CursusId</PROPERTIES>
 		<PROPERTIES type="int" category="Personnel" query="Cadref/Situation::Id::Libelle" form="20" fiche="20" description="Situation">SituationId</PROPERTIES>
-		<PROPERTIES type="date" category="Personnel" form="21" fiche="21" description="Certificat médical">Certificat</PROPERTIES>
+		<PROPERTIES type="date" category="Personnel" form="21" fiche="21" description="Certificat médical">DateCertificat</PROPERTIES>
 
 		<PROPERTIES type="text" obligatoire="0" category="Interne" form="22" fiche="22" description="Notes">Notes</PROPERTIES>
-		<PROPERTIES type="int" default="0" category="Interne" form="24" fiche="24" description="Etoiles">Etoiles</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Interne" values="0::0,1::1,2::2,3::3" form="24" fiche="24" description="Etoiles">Etoiles</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" special="reverse" category="Interne" form="25" fiche="25" description="Inactif">Inactif</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Interne" form="26" fiche="26" description="Inscription Web">Web</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Interne" form="27" fiche="27" description="Téléphone confirmé">TelephoneOk</PROPERTIES>
@@ -369,6 +369,9 @@
 					</JOIN>
 					<JOIN type="outer" module="Cadref" title="Discipline" on="DisciplineId" target="Id">
 						<PROPERTIES type="int" list="4" alias="LibelleD">Libelle</PROPERTIES>
+						<JOIN type="outer" module="Cadref" title="WebDiscipline" on="WebDisciplineId" target="Id">
+							<PROPERTIES type="varchar" list="4" listDescr="Web" alias="LibelleW">Libelle</PROPERTIES>
+						</JOIN>
 					</JOIN>
 					<JOIN type="outer" module="Cadref" title="Niveau" on="NiveauId" target="Id">
 						<PROPERTIES type="int" list="4" alias="LibelleN">Libelle</PROPERTIES>
@@ -397,14 +400,14 @@
 		<PROPERTIES type="float" searchOrder="3" default="0" category="Description" list="2" distDescr="Soutien" description="Fond de soutien">Soutien</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Description" description="Cotisation">Cotisation</PROPERTIES>
 		<PROPERTIES type="varchar" length="1" category="Description" values="B::Banque,C::Carte,E::Espèces" list="3" ListDescr="Mode" description="Mode réglement">ModeReglement</PROPERTIES>
-		<PROPERTIES type="text" obligatoire="0" category="Description" description="Notes">Notes</PROPERTIES>
+		<PROPERTIES type="text" obligatoire="0" category="Description" list="1" form="1" description="Notes">Notes</PROPERTIES>
 		<PROPERTIES type="varchar" length="10" category="Description" list="1" form="1" description="Visite">Visite</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" description="Régularisation">Regularisation</PROPERTIES>
-		<PROPERTIES type="boolean" default="0" category="Description" list="4" listDescr="Diff" description="Différé">Differe</PROPERTIES>
-		<PROPERTIES type="boolean" default="0" category="Description" list="5" listDescr="Enc" description="Encaissé">Encaisse</PROPERTIES>
-		<PROPERTIES type="boolean" default="0" category="Description" list="6" description="Supprimé">Supprime</PROPERTIES>
-		<PROPERTIES type="varchar" length="3" category="Description" list="7" description="Utilisateur">Utilisateur</PROPERTIES>
-		<PROPERTIES type="boolean" default="0" category="Description" description="Réglement web">Web</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Description" list="4" form="1" listDescr="Diff" description="Différé">Differe</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Description" list="5" form="1" listDescr="Enc" description="Encaissé">Encaisse</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Description" list="6" form="1" description="Supprimé">Supprime</PROPERTIES>
+		<PROPERTIES type="varchar" length="3" category="Description" list="7" form="1" description="Utilisateur">Utilisateur</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="Description" list="1" form="1" description="Réglement web">Web</PROPERTIES>
 
 		<VIEW title="DiffereList" default="0">
 			<OBJECTCLASS title="Reglement" filters="">
@@ -488,20 +491,20 @@
 		<PROPERTIES type="float" default="0" category="Description" list="1" form="1" fiche="1" description="Prix">Prix</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Description" list="1" form="1" fiche="1" description="Reduction">Reduction</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Description" list="1" form="1" fiche="1" description="Assurance annulation">Assurance</PROPERTIES>
-		<FKEY card="0,1" module="Cadref" data="Depart,Id" category="Description" description="Départ">DepartId</FKEY>
+		<FKEY card="0,1" module="Cadref" data="Depart,Id" category="Description" form="1" fiche="1" description="Départ">DepartId</FKEY>
 		<PROPERTIES type="int" default="0" category="Description" list="1" form="1" fiche="1" description="Supprimé">Supprime</PROPERTIES>
 		<PROPERTIES type="date" category="Description" list="1" form="1" fiche="1" description="Date suppression">DateSupprime</PROPERTIES>
 		<PROPERTIES type="varchar" length="3" category="Description" list="7" description="Utilisateur">Utilisateur</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" list="1" form="1" fiche="1" description="Inscription web">Web</PROPERTIES>
 
-		<VIEW title="ReservationList" default="1" order="Nom,Prenom" orderType="ASC,ASC">
+		<VIEW title="ReservationList" default="1" order="Nom" orderType="ASC">
 			<OBJECTCLASS title="Reservation">
 				<JOIN type="outer" module="Cadref" title="Visite" on="VisiteId" target="Id">
 					<PROPERTIES type="int" form="4" fiche="4" list="4" alias="Libelle">Libelle</PROPERTIES>
 					<PROPERTIES type="date" form="4" fiche="4" list="4" >DateVisite</PROPERTIES>
 					<PROPERTIES type="int" list="4" >Attachements</PROPERTIES>
 				</JOIN>
-				<JOIN type="outer" module="Cadref" title="Adherent" on="AdherentId" target="Id"">
+				<JOIN type="outer" module="Cadref" title="Adherent" on="AdherentId" target="Id">
 					<PROPERTIES type="varchar" form="4" fiche="4" list="4" alias="Nom">Nom</PROPERTIES>
 					<PROPERTIES type="varchar" form="4" fiche="4" list="4" alias="Prenom">Prenom</PROPERTIES>
 				</JOIN>

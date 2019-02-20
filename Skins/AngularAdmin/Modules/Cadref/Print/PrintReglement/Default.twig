@@ -36,7 +36,8 @@
 											</div>
 											<div class="col-md-2">
 												<label class="input-group datepicker-only-init cadref-no-margin">
-													<input id="input-objDateDebut" type="text" class="form-control cadref-input" mask="dd/dd/dddd" ng-model="obj.DateDebut" ng-init="obj.DateDebut='{{ "now"|date("d/m/Y") }}'"/>
+													<input id="input-objDateDebut" type="text" class="form-control cadref-input" mask="dd/dd/dddd" 
+														   ng-model="obj.DateDebut" ng-init="initDatePickerOnly(); obj.DateDebut='{{ "now"|date("d/m/Y") }}'"/>
 													<span class="input-group-addon">
 														<i class="icmn-calendar"></i>
 													</span>
@@ -85,27 +86,3 @@
 			</div>
     </section>
 </div>
-
-
-<script>
-	$('.datepicker-only-init').datetimepicker({
-		widgetPositioning: {
-			horizontal: 'left'
-		},
-		locale: 'fr',
-		format: 'DD/MM/YYYY',
-		icons: {
-			time: "fa fa-clock-o",
-			date: "fa fa-calendar",
-			up: "fa fa-arrow-up",
-			down: "fa fa-arrow-down"
-		}
-	});
-
-	//Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
-	$(".datepicker-only-init").on("dp.change", function () {
-		var input = $(this).children('input').eq(0);
-		input.trigger('change');
-		input.trigger('input');
-	});
-</script>

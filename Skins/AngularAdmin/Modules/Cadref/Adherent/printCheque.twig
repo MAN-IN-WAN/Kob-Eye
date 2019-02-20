@@ -21,7 +21,8 @@
 										</div>
 										<div class="col-md-4">
 											<label class="input-group datepicker-only-init cadref-no-margin">
-												<input id="input-objDateCheque" type="text" class="form-control cadref-input" mask="dd/dd/dddd" ng-model="CadrefClasse.Cheque.DateCheque" ng-init="CadrefClasse.Cheque.DateCheque='{{ "now"|date("d/m/Y") }}'"/>
+												<input id="input-objDateCheque" type="text" class="form-control cadref-input" mask="dd/dd/dddd" 
+													   ng-model="CadrefClasse.Cheque.DateCheque" ng-init="initDatePickerOnly(); CadrefClasse.Cheque.DateCheque='{{ "now"|date("d/m/Y") }}'"/>
 												<span class="input-group-addon">
 													<i class="icmn-calendar"></i>
 												</span>
@@ -53,7 +54,7 @@
 											{{ label("Description") }}
 										</div>
 										<div class="col-md-10">
-											<div ui-ace="{useWrapMode : true,mode: '',onLoad: aceLoaded,onChange: aceChanged}" ng-model="CadrefClasse.Cheque.Description" class="ace_editor" style="height:60px"></div>
+											<textarea class="form-control cadref-input" style="width:100%;min-height:55px;white-space:pre-wrap;" ng-model="CadrefClasse.Cheque.Description"></textarea>
 										</div>
 									</div>
 									<div class="row" style="height:10px"></div>

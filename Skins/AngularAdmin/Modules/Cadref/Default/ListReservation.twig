@@ -42,7 +42,6 @@
 				<th>Prenom</th>
 				<th>Départ</th>
 				<th>Prix</th>
-				<th>Réduc.</th>
 				<th>Assur.</th>
 				<th>Etat</th>
 				<th>Date</th>
@@ -58,17 +57,16 @@
 				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reservationOpen(item)">{[{ item.Prenom }]}</a></td>
 				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reservationOpen(item)">{[{ item.Lieu }]}</a></td>
 				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reservationOpen(item)">{[{ item.Prix }]}</a></td>
-				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reservationOpen(item)">{[{ item.Reduction }]}</a></td>
 				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reservationOpen(item)">{[{ item.Assurance }]}</a></td>
 				<td scope="row" class="cadref-td typevarchar">
-					<span class="label label-info" ng-if="item.Attente>0 && item.Supprime==0">Attente</span>
-					<span class="label label-success" ng-if="item.Attente==0 && item.Supprime==0">Inscrit</span>
-					<span class="label label-danger" ng-if="item.Supprime==1">Supprimé</span>
+					<span class="label label-info" ng-if="item.Attente>0 && item.Supprime==0">Att</span>
+					<span class="label label-success" ng-if="item.Attente==0 && item.Supprime==0">Ins</span>
+					<span class="label label-danger" ng-if="item.Supprime==1">Sup</span>
 				</td>
 				<td scope="row" class="cadref-td typedate">
-					<span class="label" ng-if="item.Supprime>0">{[{ item.DateSupprime }]}</span>
-					<span class="label" ng-if="item.Attente>0 && item.Supprime==0">{[{ item.DateAttente | limitTo : 16 }]}</span>
-					<span class="label" ng-if="item.Attente==0 && item.Supprime==0">{[{ item.DateInscription | limitTo : 11 }]}</span>
+					<span class="label" ng-if="item.Supprime>0">{[{ item.DateSupprime.substr(0, 5) }]}</span>
+					<span class="label" ng-if="item.Attente>0 && item.Supprime==0">{[{ item.DateAttente.substr(0, 5)+item.DateAttente.substr(10, 6) }]}</span>
+					<span class="label" ng-if="item.Attente==0 && item.Supprime==0">{[{ item.DateInscription.substr(0, 5) }]}</span>
 				</td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Utilisateur }]}</span></td>
 				<td  class="table-action cadref-td-btn">

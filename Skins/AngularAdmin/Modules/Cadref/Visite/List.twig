@@ -91,14 +91,20 @@
 										{% elseif field.type == "date" %}
 											<p>Après le :</p>
 											<label class="input-group datepicker-only-init">
-												<input type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="{{ identifier }}.filters.{{ field.name }}.value[0]" ng-init="{{ identifier }}.filters.{{ field.name }}.value=['','']" ng-change="{{ identifier }}applyFilters()"/>
+												<input type="text" class="form-control" placeholder="Sélectionnez une date" 
+													   ng-model="{{ identifier }}.filters.{{ field.name }}.value[0]" 
+													   ng-init="initDatePicketOnly(); {{ identifier }}.filters.{{ field.name }}.value=['','']" 
+													   ng-change="{{ identifier }}applyFilters()"/>
 												<span class="input-group-addon">
 													<i class="icmn-calendar"></i>
 												</span>
 											</label>
 											<p>Avant le :</p>
 											<label class="input-group datepicker-only-init">
-												<input type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="{{ identifier }}.filters.{{ field.name }}.value[1]" ng-change="{{ identifier }}applyFilters()"/>
+												<input type="text" class="form-control" placeholder="Sélectionnez une date" 
+													   ng-model="{{ identifier }}.filters.{{ field.name }}.value[1]" 
+													   ng-change="{{ identifier }}applyFilters()"
+													   ng-init="initDatePicketOnly()"/>
 												<span class="input-group-addon">
 													<i class="icmn-calendar"></i>
 												</span>

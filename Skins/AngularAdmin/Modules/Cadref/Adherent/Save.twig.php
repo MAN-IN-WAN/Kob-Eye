@@ -77,7 +77,7 @@ foreach ($parentelements as $f){
 if ($o->Verify()) {
     $success = $o->Save();
 	
-	$o->SaveAnnee($values, true);
+	$o->SaveAnnee($values, 0);
 
     foreach ($formfields as $f){
         $values->{$f["name"]} = $o->{$f["name"]};

@@ -70,7 +70,7 @@
 												<div class="row">
 													<div class="raw">
 														<div class="col-md-6">
-															<input type="text" class="form-control cadref-input" ng-model="obj.Disc[0]" mask="@.@@.@@.d.d" style="width:130px" onkeyup="this.value = this.value.toUpperCase()"/>
+															<input type="text" class="form-control cadref-input" ng-model="obj.Disc[0]" mask="@@@@@dd" style="width:130px" onkeyup="this.value = this.value.toUpperCase()"/>
 														</div>
 														<div class="col-md-6">
 															<div class="raw">
@@ -86,7 +86,7 @@
 
 													<div class="raw">
 														<div class="col-md-6">
-															<input type="text" class="form-control cadref-input" ng-model="obj.Disc[1]" mask="@.@@.@@.d.d" style="width:130px" onkeyup="this.value = this.value.toUpperCase()"/>
+															<input type="text" class="form-control cadref-input" ng-model="obj.Disc[1]" mask="@@@@@dd" style="width:130px" onkeyup="this.value = this.value.toUpperCase()"/>
 														</div>
 														<div class="col-md-6">
 															<div class="raw">
@@ -101,7 +101,7 @@
 
 													<div class="raw">
 														<div class="col-md-6">
-															<input type="text" class="form-control cadref-input" ng-model="obj.Disc[2]" mask="@.@@.@@.d.d" style="width:130px" onkeyup="this.value = this.value.toUpperCase()"/>
+															<input type="text" class="form-control cadref-input" ng-model="obj.Disc[2]" mask="@@@@@dd" style="width:130px" onkeyup="this.value = this.value.toUpperCase()"/>
 														</div>
 														<div class="col-md-6">
 															<div class="raw">
@@ -115,7 +115,7 @@
 													</div>
 													<div class="raw">
 														<div class="col-md-6">
-															<input type="text" class="form-control cadref-input" ng-model="obj.Disc[3]" mask="@.@@.@@.d.d" style="width:130px" onkeyup="this.value = this.value.toUpperCase()"/>
+															<input type="text" class="form-control cadref-input" ng-model="obj.Disc[3]" mask="@@@@@dd" style="width:130px" onkeyup="this.value = this.value.toUpperCase()"/>
 														</div>
 														<div class="col-md-6">
 															<div class="raw">
@@ -129,7 +129,7 @@
 													</div>
 													<div class="raw">
 														<div class="col-md-6">
-															<input type="text" class="form-control cadref-input" ng-model="obj.Disc[4]" mask="@.@@.@@.d.d" style="width:130px" onkeyup="this.value = this.value.toUpperCase()"/>
+															<input type="text" class="form-control cadref-input" ng-model="obj.Disc[4]" mask="@@@@@dd" style="width:130px" onkeyup="this.value = this.value.toUpperCase()"/>
 														</div>
 														<div class="col-md-6">
 															<div class="raw">
@@ -238,7 +238,7 @@
 											<div class="col-md-2">
 											</div>
 											<div class="col-md-2">
-												<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="printFunction()">Imprimer</button>
+												<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="printFunction('print')">Imprimer</button>
 											</div>
 										</div>
 									</div>
@@ -261,16 +261,83 @@
 												<textarea ckeditor="ckHtml" contenteditable="false" class="form-control cadref-input" style="width:100%;height:80px;min-height:400px;white-space: pre-wrap;" ng-model="obj.Corps" ng-trim="false"></textarea>
 											</div>
 										</div>
+										<div class="row" style="height:5px"></div>
+										<div class="row">
+											<div class="col-md-1">
+												{{ label("Pièces jointes") }}
+											</div>
+											<div class="col-md-11">
+												<div class="cadref-widget" ng-if="obj.Pieces.mode!=''">
+													<div class="row">
+														<div class="col-md-12">
+															<div class="row">
+																<div class="col-md-2">
+																	{{ label('Documents') }}
+																</div>
+																<div class="col-md-10">
+																	<input type="text" class="form-control" placeholder="" id="input-pieceFilePath" ng-model="obj.Pieces.filePath">
+																	<label for="input-pieceFilePath-file" class="clickable">Choisissez un fichier</label>
+																	<input id="input-pieceFilePath-file" type="file" class="form-control cadref-input" nv-file-select 
+																		   options="{ alias:'FileData',formData:[],
+																		   removeAfterUpload: true, inputId: 'input-pieceFilePath', model:'obj.Pieces.filePath' }" 
+																		   ng-init="up_pieceFilePath = angular.copy(autoUploader)" uploader="up_pieceFilePath" style="display:none;"
+																		   />
+																</div>
+															</div>
+															<div class="row">
+																<div class="col-md-12">
+																	<a class="btn-abt cadref-btn-save btn-success" href="" ng-if="obj.Pieces.filePath!=''" ng-click="pieceSave()" title="Ajouter"></a>
+																	<a class="btn-abt cadref-btn-cancel btn-warning" href="" ng-click="pieceCloseEdit()" title="Annuler"></a>
+																</div>
+															</div>						
+														</div>
+													</div>
+												</div>
+												<div  ng-if="obj.Pieces.mode==''">
+													<div class="listWrap">
+														<table class="table table-hover nowrap straight" id="Pieces-table" width="100%" style="line-height:1">
+															<thead>
+																<tr>
+																	<th class="cadref-th">Fichier</th>
+																	<th class="cadref-th-btn">
+																		<a class="btn-abt cadref-btn-add btn-success" href="" ng-click="pieceAdd()" title="Ajouter un document"></a>
+																	</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr ng-repeat="item in obj.Pieces.data" >
+																	<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item }]}</span></td>
+																	<td  class="table-action cadref-td-btn">
+																		<a class="btn-abt cadref-btn-download btn-info" href="{[{ item.FilePath }]}" target="_blank" ng-click="pieceCloseEdit()" title="Télécharger"></a>
+																		<a class="btn-abt cadref-btn-del btn-danger" href="" ng-click="pieceDelete(item)" title="Supprimer"></a>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-1">
+											</div>
+											<div class="col-md-2">
+												<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="printFunction('mail')">Mail</button>
+											</div>
+											<div class="col-md-2">
+												<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="printFunction('sms')">SMS</button>
+											</div>
+										</div>
 									</div>
-
-								{% endif %}
-							</div>                            
-						</div>
+								</div>
+							{% endif %}
+						</div>                            
 					</div>
 				</div>
 			</div>
 		</div>
-	</section>
+</div>
+</section>
 </div>
 
 
