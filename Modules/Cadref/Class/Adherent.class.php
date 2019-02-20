@@ -366,7 +366,7 @@ inner join `##_Cadref-Adherent` e on e.Id=i.AdherentId ";
 						}
 					}
 
-					if(isset($obj['Nouveaux']) && $obj['Nouveaux']) $whr .= "and e.Inscription='$annee' ";
+					if(isset($obj['Nouveaux']) && $obj['Nouveaux'] == 1) $whr .= "and e.Inscription='$annee' ";
 
 					$antenne = (isset($obj['Antenne']) && $obj['Antenne'] != '') ? $obj['Antenne'] : '';
 					if($antenne != '') $whr .= "and n.AntenneId='$antenne' ";
