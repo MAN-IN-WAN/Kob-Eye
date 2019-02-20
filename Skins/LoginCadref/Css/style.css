@@ -41,12 +41,12 @@ body{
     margin-bottom: 15px;
     overflow: hidden;
 }
-h1 { font: normal 50px/50px Arial, Helvetica, sans-serif;  color:#ffffff; }
-h2 { font: normal 40px/34px Arial, Helvetica, sans-serif;  color:#ffffff; }
-h3 { font: normal 19px/26px "Trebuchet MS", Arial, Helvetica, sans-serif;  color:#ffffff; }
-h4 { font: normal 14px/20px Arial, Helvetica, sans-serif;  color:#333333; }
-h5 { font: normal 19px/26px "Trebuchet MS", Arial, Helvetica, sans-serif;  color:#ffffff; }
-h6 { font: italic 12px/18px Ubuntu;  color:#ffffff; }
+h1 { font: normal 50px/50px Arial, Helvetica, sans-serif;  color:#ffffff; margin-top:10px; margin-bottom:5px;}
+h2 { font: normal 34px/34px Arial, Helvetica, sans-serif;  color:#ffffff; margin-top:10px; margin-bottom:5px;}
+h3 { font: normal 16px/16px "Trebuchet MS", Arial, Helvetica, sans-serif;  color:#ffffff; margin-top:10px; margin-bottom:5px;}
+h4 { font: normal 12px/12px Arial, Helvetica, sans-serif;  color:#333333; margin-top:10px; margin-bottom:5px;}
+h5 { font: normal 19px/26px "Trebuchet MS", Arial, Helvetica, sans-serif;  color:#ffffff; margin-top:10px; margin-bottom:5px;}
+h6 { font: italic 12px/18px Ubuntu;  color:#ffffff; margin-top:10px; margin-bottom:5px;}
 body { font-weight: normal;}
 
 .masque {
@@ -62,3 +62,17 @@ body { font-weight: normal;}
 	background-color: rgba(255,255,255,0.5);
 }
 
+.input-cadref {
+	height: 35px;
+    padding: 5px 8px;
+    font-size: 16px;
+    line-height: 1.33;
+    border-radius: 6px;
+}
+
+.btn-cadref {
+    padding: 5px 8px;
+    font-size: 16px;
+    line-height: 1.33;
+    border-radius: 6px;
+}
