@@ -312,6 +312,7 @@ class Adherent extends genericClass {
 
 		switch($mode) {
 			case 0: // liste edherents
+				$file = 'ListeAdherent';
 				$typAdh = isset($obj['typeAdherent']) ? $obj['typeAdherent'] : '';
 				$contenu = isset($obj['Contenu']) ? $obj['Contenu'] : '';
 				$rupture = isset($obj['Rupture']) ? $obj['Rupture'] : '';
@@ -415,6 +416,7 @@ inner join `##_Cadref-Adherent` e on e.Id=i.AdherentId ";
 				}
 				break;
 			case 1: // certificats medicaux
+				$file = 'ListeCertificat';
 				$contenu = 'N';
 				$rupture = 'E'; // enseignant
 				$antenne = 0;
@@ -433,6 +435,7 @@ where a.Annee='$annee' and i.Supprime=0 and i.Attente=0 and d.Certificat<>0 and 
 order by e.Nom,i.CodeClasse,a.Nom,a.Prenom";
 				break;
 			case 2: // fiches incomplètes
+				$file = 'ListeIncomplet';
 				$contenu = 'N';
 				$rupture = 'S';
 				$antenne = 0;
@@ -479,7 +482,7 @@ order by a.Nom, a.Prenom";
 			$pdf->AddPage();
 			$pdf->PrintLines($pdo);
 
-			$file = 'Home/tmp/ListeAdherent_'.date('YmdHi').'.pdf';
+			$file = 'Home/tmp/'.$file.'_'.date('YmdHis').'.pdf';
 			$pdf->Output(getcwd().'/'.$file);
 			$pdf->Close();
 		} else {
@@ -506,7 +509,7 @@ order by a.Nom, a.Prenom";
 				$pdf->Add_Label($s);
 			}
 
-			$file = 'Home/tmp/EtiquetteAdherent_'.date('YmdHi').'.pdf';
+			$file = 'Home/tmp/EtiquetteAdherent_'.date('YmdHis').'.pdf';
 			$pdf->Output(getcwd().'/'.$file);
 			$pdf->Close();
 		}
