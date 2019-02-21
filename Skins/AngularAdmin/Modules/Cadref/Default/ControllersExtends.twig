@@ -303,8 +303,8 @@
                 lasttimeout = false;
             }
             lasttimeout = $timeout(function () {
-	            CadrefClasseStore.setFilters('CodeClasse~'+$scope.CadrefClasse.filter+'%&Annee={{ Annee }}','temp');
-//	            CadrefClasseStore.setFilters($scope.CadrefClasse.filter+'%&Annee={{ Annee }}','temp');
+//	            CadrefClasseStore.setFilters('CodeClasse~'+$scope.CadrefClasse.filter+'%&Annee={{ Annee }}','temp');
+	            CadrefClasseStore.setFilters($scope.CadrefClasse.filter+'%&Annee={{ Annee }}','temp');
                 CadrefClasseStore.getData(1,'temp');
             },400);
 			noEvent = false;
