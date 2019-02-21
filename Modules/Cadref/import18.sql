@@ -221,7 +221,7 @@ from cadref18.Disciplines d
 left join kbabtel.`kob-Cadref-Section` s on s.Section=d.Sect;
 
 update kbabtel.`kob-Cadref-Discipline` n
-inner join kbabtel.niveau nn on nn.os=n.Section and nn.od=n.Discipline
+inner join kbabtel.aaniveau nn on nn.os=n.Section and nn.od=n.Discipline
 inner join kbabtel.`kob-Cadref-WebDiscipline` d on d.CodeDiscipline=nn.nd
 set n.WebDisciplineId=d.Id, n.WebDiscipline=d.CodeDiscipline;
 
@@ -445,7 +445,7 @@ BEGIN
 	update kbabtel.`kob-Cadref-Classe` c
 	inner join kbabtel.`kob-Cadref-Niveau` n on n.Id=c.NiveauId
 	inner join kbabtel.`kob-Cadref-Discipline` d on d.Id=n.DisciplineId
-	set c.Reduction1=(p0-p1),c.Reduction2=(p0-p2),c.DateReduction1=unix_timestamp('20190101'),c.DateReduction2=unix_timestamp('20190301')
+	set c.Reduction1=(p0-p1),c.Reduction2=(p0-p2),c.DateReduction1=unix_timestamp('2019-01-01'),c.DateReduction2=unix_timestamp('2019-03-01')
 	where c.Prix=p0 and d.WebDiscipline not like 'IN%'; 
 END; 
 | 

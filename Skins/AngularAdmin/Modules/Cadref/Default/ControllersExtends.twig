@@ -410,10 +410,15 @@
 		// reduction sur la date
 		$scope.classeReduction = function(obj) {
 			var now = Date.now();
-			
 			if(Number(obj.Reduction) == 0) {
-				if(obj.CDateReduction2 != "" && now > Date.parse(obj.CDateReduction2)) obj.Reduction = obj.CReduction2;
-				else if(obj.CDateReduction1 != "" && now > Date.parse(obj.CDateReduction1)) obj.Reduction = obj.CReduction1;
+				d = obj.CDateReduction2;
+				d = d.substr(3 ,3)+d.substr(0, 3)+d.substr(6, 4);
+				if(obj.CDateReduction2 != "" && now > Date.parse(d)) obj.Reduction = obj.CReduction2;
+				else {
+					d = obj.CDateReduction1;
+					d = d.substr(3 ,3)+d.substr(0, 3)+d.substr(6, 4);
+					if(obj.CDateReduction1 != "" && now > Date.parse(d)) obj.Reduction = obj.CReduction1;
+				}
 			}
 		}
 		
