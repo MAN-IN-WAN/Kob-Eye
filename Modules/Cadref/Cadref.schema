@@ -337,8 +337,8 @@
 		<PROPERTIES type="boolean" default="0" category="Description" list="3" description="En attente">Attente</PROPERTIES>
 		<PROPERTIES type="datetime" category="Description" list="1" description="Date attente">DateAttente</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Description" list="4" description="Prix">Prix</PROPERTIES>
-		<PROPERTIES type="float" default="0" category="Description" list="1" description="Réduction 1">Reduction1</PROPERTIES>
-		<PROPERTIES type="float" default="0" category="Description" list="1" description="Réduction 2">Reduction2</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Description" list="1" description="Réduction">Reduction</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Description" list="1" description="Soutien">Soutien</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Description" list="1" description="Supprimé">Supprime</PROPERTIES>
 		<PROPERTIES type="date" category="Description" list="1" description="Date suppression">DateSupprime</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" list="1" description="Inscription web">Web</PROPERTIES>

@@ -332,9 +332,10 @@ set a.Prenom=p.name;
 
 
 truncate kbabtel.`kob-Cadref-Inscription`;
-insert into kbabtel.`kob-Cadref-Inscription` (umod,gmod,omod,Numero,CodeClasse,Antenne,Annee,DateInscription,Attente,DateAttente,Prix,Reduction1,Reduction2,
+insert into kbabtel.`kob-Cadref-Inscription` (umod,gmod,omod,Numero,CodeClasse,Antenne,Annee,DateInscription,Attente,DateAttente,Prix,Soutien,Reduction,
 Supprime,DateSupprime,AdherentId,ClasseId,Utilisateur)
-select 7,7,7,i.Numero,concat(i.Antenne,i.Sect,i.Discipline,i.Niveau,i.Classe),i.Antenne,@annee,if(Creation<@annee,null,unix_timestamp(Creation)),Attente,if(DateAtte<@annee,null,unix_timestamp(DateAtte)),i.Prix,i.Reduction,i.Reduc2,
+select 7,7,7,i.Numero,concat(i.Antenne,i.Sect,i.Discipline,i.Niveau,i.Classe),i.Antenne,@annee,if(Creation<@annee,null,unix_timestamp(Creation)),
+Attente,if(DateAtte<@annee,null,unix_timestamp(DateAtte)),i.Prix,i.Reduction,i.Reduc2,
 Supprime,if(DateSuppr<@annee,null,unix_timestamp(DateSuppr)),a.Id,c.Id,i.Utilisateur
 from cadref18.Inscriptions i
 left join kbabtel.`kob-Cadref-Adherent` a on a.Numero=i.Numero
@@ -379,7 +380,7 @@ left join kbabtel.`kob-Cadref-Classe` c on c.CodeClasse=concat(substr(e.Delegue,
 where e.Annee=@annee;
 
 update `kob-Cadref-AdherentAnnee` a
-set a.Cours=(select ifnull(sum(ifnull(Prix-Reduction1-Reduction2,0)),0) from `kob-Cadref-Inscription` i where i.AdherentId=a.AdherentId and i.Annee=@annee and i.Supprime=0 and i.Attente=0),
+set a.Cours=(select ifnull(sum(ifnull(Prix-Reduction-Soutien,0)),0) from `kob-Cadref-Inscription` i where i.AdherentId=a.AdherentId and i.Annee=@annee and i.Supprime=0 and i.Attente=0),
 a.Visites=(select ifnull(sum(ifnull(Prix-Reduction,0)),0) from `kob-Cadref-Reservation` r where r.AdherentId=a.AdherentId and r.Annee=@annee and r.Supprime=0 and r.Attente=0),
 a.Reglement=(select ifnull(sum(ifnull(Montant,0)),0) from `kob-Cadref-Reglement` r where r.AdherentId=a.AdherentId and r.Annee=@annee and r.Supprime=0 and (r.Differe=0 or r.Encaisse=1)),
 a.Differe=(select ifnull(sum(ifnull(Montant,0)),0) from `kob-Cadref-Reglement` r where r.AdherentId=a.AdherentId and r.Annee=@annee and r.Supprime=0 and (r.Differe=1 and r.Encaisse=0))
@@ -436,3 +437,34 @@ delimiter ;
 update `kob-Cadref-Adherent` set Prenom=aaprenom(Prenom);
 update `kob-Cadref-Enseignant` set Prenom=aaprenom(Prenom);
 */
+
+DROP procedure IF EXISTS aareduc; 
+DELIMITER | 
+CREATE procedure aareduc(p0 double,p1 double,p2 double) 
+BEGIN 
+	update kbabtel.`kob-Cadref-Classe` c
+	inner join kbabtel.`kob-Cadref-Niveau` n on n.Id=c.NiveauId
+	inner join kbabtel.`kob-Cadref-Discipline` d on d.Id=n.DisciplineId
+	set c.Reduction1=(p0-p1),c.Reduction2=(p0-p2),c.DateReduction1=unix_timestamp('20190101'),c.DateReduction2=unix_timestamp('20190301')
+	where c.Prix=p0 and d.WebDiscipline not like 'IN%'; 
+END; 
+| 
+delimiter ;
+call kbabtel.aareduc(51,34,17);
+call kbabtel.aareduc(102,68,34);
+call kbabtel.aareduc(80,52,26);
+call kbabtel.aareduc(122,80,40);
+call kbabtel.aareduc(75,50,25);
+call kbabtel.aareduc(115,76,38);
+call kbabtel.aareduc(217,144,72);
+call kbabtel.aareduc(120,80,40);
+call kbabtel.aareduc(135,90,45);
+call kbabtel.aareduc(185,122,61);
+call kbabtel.aareduc(160,106,53);
+call kbabtel.aareduc(162,108,54);
+call kbabtel.aareduc(87,58,29);
+
+
+
+
+

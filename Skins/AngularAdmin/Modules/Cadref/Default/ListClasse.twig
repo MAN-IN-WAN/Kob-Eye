@@ -10,9 +10,9 @@
 				<th>Cycle</th>
 				<th>Places</th>
 				<th>Prix</th>
+		{#		<th>Réduc</th>
 				<th>Réduc</th>
-				<th>Réduc</th>
-					{% if tempContext %}
+		#}			{% if tempContext %}
 					<th></th>
 					{% endif %}
 					{% if children %}
@@ -29,10 +29,10 @@
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Jour | limitTo : 3}]} {[{ item.HeureDebut }]}&nbsp;-&nbsp;{[{ item.HeureFin }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.CycleDebut }]}&nbsp;-&nbsp;{[{ item.CycleFin }]}</span></td>
 				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Places+' - '+item.Inscrits+' - '+item.Attentes }]}</span></td>
-				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Prix }]}</span></td>
-				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Reduction1 }]}</span></td>
+				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Prix+' - '+((item.Prix*1)-(item.Reduction1*1))+' - '+((item.Prix*1)-(item.Reduction2*1)) }]}</span></td>
+		{#		<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Reduction1 }]}</span></td>
 				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Reduction2 }]}</span></td>
-				{% if tempContext  %}
+		#}		{% if tempContext  %}
 					<td  class="table-action cadref-td-btn">
 						<div >
 							<a class="btn-abt cadref-btn-add btn-success" href="javascript: void(0);" ng-click="classeAjoute(item)" title="Inscrire"></a>

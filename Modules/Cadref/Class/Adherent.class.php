@@ -35,7 +35,7 @@ class Adherent extends genericClass {
 		$diffe = 0;
 		$ins = $this->getChildren('Inscription/Annee='.$annee);
 		foreach($ins as $in) {
-			if(!$in->Attente && !$in->Supprime) $cours += $in->Prix - $in->Reduction1 - $in->Reduction2;
+			if(!$in->Attente && !$in->Supprime) $cours += $in->Prix - $in->Reduction - $in->Soutien;
 		}
 		$vis = $this->getChildren('Reservation/Annee='.$annee);
 		foreach($vis as $vi) {
@@ -199,8 +199,8 @@ class Adherent extends genericClass {
 			$o->DateAttente = $ins['DateAttente'];
 			$o->DateSupprime = $ins['DateSupprime'];
 			$o->Prix = $ins['Prix'];
-			$o->Reduction1 = $ins['Reduction1'];
-			$o->Redcution2 = $ins['Reduction2'];
+			$o->Reduction = $ins['Reduction'];
+			$o->Soutien = $ins['Soutien'];
 			$o->Utilisateur = Sys::$User->Initiales;
 			$o->Save();
 
@@ -367,7 +367,7 @@ inner join `##_Cadref-Adherent` e on e.Id=i.AdherentId ";
 						}
 					}
 
-					if(isset($obj['Nouveaux']) && $obj['Nouveaux'] == 1) $whr .= "and e.Inscription='$annee' ";
+					if(isset($obj['Nouveaux']) && $obj['Nouveaux']) $whr .= "and e.Inscription='$annee' ";
 
 					$antenne = (isset($obj['Antenne']) && $obj['Antenne'] != '') ? $obj['Antenne'] : '';
 					if($antenne != '') $whr .= "and n.AntenneId='$antenne' ";
@@ -760,7 +760,7 @@ order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 				$sql = "
 select i.Id as insId, c.Id as clsId, d.Libelle as LibelleD, n.Libelle as LibelleN, 
 j.Jour, c.HeureDebut, c.HeureFin, c.CycleDebut, c.CycleFin,
-a.LibelleCourt as LibelleA,i.Prix,i.Reduction1,i.Reduction2,c.Attachements,
+a.LibelleCourt as LibelleA,i.Prix,i.Reduction,i.Soutien,c.Attachements,
 i.Attente,i.Supprime,
 from_unixtime(i.DateAttente,'%d/%m/%Y') as DateAttente,
 from_unixtime(i.DateSupprime,'%d/%m/%Y') as DateSupprime,

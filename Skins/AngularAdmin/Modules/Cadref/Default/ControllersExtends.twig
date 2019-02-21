@@ -304,6 +304,7 @@
             }
             lasttimeout = $timeout(function () {
 	            CadrefClasseStore.setFilters('CodeClasse~'+$scope.CadrefClasse.filter+'%&Annee={{ Annee }}','temp');
+//	            CadrefClasseStore.setFilters($scope.CadrefClasse.filter+'%&Annee={{ Annee }}','temp');
                 CadrefClasseStore.getData(1,'temp');
             },400);
 			noEvent = false;
@@ -390,7 +391,7 @@
 			var l = t.length;
 			for(var i = 0; i < l; i++) {
 				if(t[i].Attente>0 || t[i].Supprime>0) continue;
-				cad.cours += Number(t[i].Prix)-Number(t[i].Reduction1)-Number(t[i].Reduction2);
+				cad.cours += Number(t[i].Prix)-Number(t[i].Reduction)-Number(t[i].Soutien);
 			}
 			cad.paye = Number(cad.cotis)+Number(cad.cours)+Number(cad.visit)-Number(cad.regle)-Number(cad.diff)+Number(cad.regul);
 			cad.solde = 0;
@@ -408,10 +409,11 @@
 		
 		// reduction sur la date
 		$scope.classeReduction = function(obj) {
-			var now = Date.now() / 1000;
-			if(Number(obj.Reduction1) == 0) {
-				if(now > obj.CDateReduction1) obj.Reduction1 = obj.CReduction1*1;
-				if(now > obj.CDateReduction2) obj.Reduction1 = obj.CReduction1*1+obj.CReduction2*1;
+			var now = Date.now();
+			
+			if(Number(obj.Reduction) == 0) {
+				if(obj.CDateReduction2 != "" && now > Date.parse(obj.CDateReduction2)) obj.Reduction = obj.CReduction2;
+				else if(obj.CDateReduction1 != "" && now > Date.parse(obj.CDateReduction1)) obj.Reduction = obj.CReduction1;
 			}
 		}
 		
@@ -459,8 +461,8 @@
 			o.Utilisateur = '';
 			o.DateInscription = $filter('date')(new Date(), "dd/MM/yyyy");
 			o.Prix = c.Prix;
-			o.Reduction1 = 0;
-			o.Reduction2 = 0;
+			o.Reduction = 0;
+			o.Soutien = 0;
 			o.CReduction1 = c.Reduction1;
 			o.CReduction2 = c.Reduction2;
 			o.CDateReduction1 = c.DateReduction1;

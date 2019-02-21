@@ -10,7 +10,7 @@
 				<th class="cadref-th">Cycle</th>
 				<th class="cadref-th">Prix</th>
 				<th class="cadref-th">Réduc</th>
-				<th class="cadref-th">Réduc</th>
+				<th class="cadref-th">Soutien</th>
 				<th class="cadref-th">Places</th>
 				<th class="cadref-th">Etat</th>
 				<th class="cadref-th">Date</th>
@@ -28,19 +28,19 @@
 				<td scope="row" class="cadref-td typevarchar"><span>{[{ item.LibelleW }]} {[{ item.LibelleN }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Jour | limitTo : 3 }]} {[{ item.HeureDebut }]}&nbsp;-&nbsp;{[{ item.HeureFin }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.CycleDebut }]}&nbsp;-&nbsp;{[{ item.CycleFin }]}</span></td>
-				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ (item.Prix*1){% if public %}+(item.Reduction1*1)+(item.Reduction2*1){% endif %} }]}</span></td>
+				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ (item.Prix*1){% if public %}-(item.Reduction*1)-(item.Soutien*1){% endif %} }]}</span></td>
 				<td scope="row" class="cadref-td typefloat">
 					{% if tempContext %}
-						<input type="text" class="form-control cadref-input-diff" ng-model="item.Reduction1" ng-change="classeReductionChange(item)" mask="dddd" style="max-width:60px"/>
+						<input type="text" class="form-control cadref-input-diff" ng-model="item.Reduction" ng-change="classeReductionChange(item)" mask="dddd" style="max-width:60px"/>
 					{% else %}
-						<span class="label">{[{ item.Reduction1 }]}</span>
+						<span class="label">{[{ item.Reduction }]}</span>
 					{% endif %}
 				</td>
 				<td scope="row" class="cadref-td typefloat">
 					{% if tempContext %}
-						<input type="text" class="form-control cadref-input-diff" ng-model="item.Reduction2" ng-change="classeReductionChange(item)" mask="dddd" style="max-width:60px"/>
+						<input type="text" class="form-control cadref-input-diff" ng-model="item.Soutien" ng-change="classeReductionChange(item)" mask="dddd" style="max-width:60px"/>
 					{% else %}
-						<span class="label">{[{ item.Reduction2 }]}</span>
+						<span class="label">{[{ item.Soutien }]}</span>
 					{% endif %}				
 				</td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Places+' - '+item.Inscrits+' - '+item.Attentes }]}</span></td>
