@@ -263,7 +263,7 @@ where ((a.DateDebut>=$start and a.DateDebut<=$end) or (a.DateFin>=$start and a.D
 			$id = $a->Id;
 			$sql = "
 select i.ClasseId as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,
-concat(ifnull(dw.Libelle,d.Libelle),' ',n.Libelle) as Libelle, l.Ville, l.Adresse1, l.Adresse2
+concat(ifnull(dw.Libelle,d.Libelle),' ',ifnull(n.Libelle,'')) as Libelle, l.Ville, l.Adresse1, l.Adresse2
 from `##_Cadref-Inscription` i
 inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
 inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
@@ -282,7 +282,7 @@ where i.AdherentId=$id and i.Annee='$annee' and ((a.DateDebut>=$start and a.Date
 ";
 			$sql2 = "
 select cd.DateCours,i.ClasseId as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,
-concat(ifnull(dw.Libelle,d.Libelle),' ',n.Libelle) as Libelle, l.Ville, l.Adresse1, l.Adresse2
+concat(ifnull(dw.Libelle,d.Libelle),' ',ifnull(n.Libelle,'')) as Libelle, l.Ville, l.Adresse1, l.Adresse2
 from `##_Cadref-Inscription` i
 inner join `##_Cadref-ClasseDate` cd on cd.ClasseId=i.ClasseId
 inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
@@ -299,7 +299,7 @@ where i.AdherentId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 			$id = $e->Id;
 			$sql = "
 select c.Id as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,
-concat(ifnull(dw.Libelle,d.Libelle),' ',n.Libelle) as Libelle, l.Ville, l.Adresse1, l.Adresse2
+concat(ifnull(dw.Libelle,d.Libelle),' ',ifnull(n.Libelle,'')) as Libelle, l.Ville, l.Adresse1, l.Adresse2
 from `##_Cadref-ClasseEnseignants` ce
 inner join `##_Cadref-Classe` c on c.Id=ce.Classe
 inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
@@ -315,7 +315,7 @@ where a.EnseignantId=$id and ((a.DateDebut>=$start and a.DateDebut<=$end) or (a.
 ";
 			$sql2 = "			
 select c.Id as cid,c.CodeClasse,c.JourId,c.HeureDebut,c.HeureFin,c.CycleDebut,c.CycleFin,
-concat(ifnull(dw.Libelle,d.Libelle),' ',n.Libelle) as Libelle, l.Ville, l.Adresse1, l.Adresse2
+concat(ifnull(dw.Libelle,d.Libelle),' ',ifnull(n.Libelle,'')) as Libelle, l.Ville, l.Adresse1, l.Adresse2
 from `##_Cadref-ClasseEnseignants` ce
 inner join `##_Cadref-ClasseDate` cd on cd.ClasseId=ce.Classe
 inner join `##_Cadref-Classe` c on c.Id=ce.Classe
@@ -345,7 +345,7 @@ where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 				$a->start = Date('Y-m-d\TH:i', $d);
 				$a->end = Date('Y-m-d\TH:i', $f);
 				$a->description = Date('d/m H:i', $d).' au '.Date('d/m H:i', $f).'  '.($adm ? $p['Description'] : '');
-				$a->className = 'fc-event-danger'.(!$adm ? ' cadref-cal-absence' : '');
+				$a->className = 'fc-event-danger cadref-cal-absence';
 				$events[] = $a;
 			}
 		}
@@ -537,7 +537,6 @@ where ce.Classe=$cid
 			if(substr($tel, 0, 2) != '06' && substr($tel, 0, 2) != '07')
 				$tel = ''; 
 		}
-var_dump($tel);
 		if(strlen($tel) == 10) {
 			require_once("Class/Lib/Isendpro/autoload.php");
 
