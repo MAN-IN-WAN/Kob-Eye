@@ -142,13 +142,13 @@ cadref-btn-close:hover {
 }
 .cadref-cal-automne:before {
 	font-family: 'icomoon-ultimate';
-	content: "\ecc9";
+	content: "\ed13";
 	float: left;
 	margin-right: 2%;
 }
 .cadref-cal-printemps:before {
 	font-family: 'icomoon-ultimate';
-	content: "\eccf";
+	content: "\ecc9";
 	float: left;
 	margin-right: 2%;
 }

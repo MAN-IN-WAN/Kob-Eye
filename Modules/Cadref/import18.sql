@@ -45,7 +45,7 @@ insert into kbabtel.`kob-Cadref-Vacance` (umod,gmod,omod,Annee,Type,Libelle,Date
 (7,7,7,@annee,'V','VACANCES D''HIVER',unix_timestamp('2019-02-23'),unix_timestamp('2019-03-10'),0,'hiver'),
 (7,7,7,@annee,'V','VACANCES DE PRINTEMPS',unix_timestamp('2019-04-20'),unix_timestamp('2019-05-05'),0,'printemps'),
 (7,7,7,@annee,'V','8 Mai',unix_timestamp('2019-05-08'),0,0,'8mai'),
-(7,7,7,@annee,'V','VACANCES DE L''ASCENSION',unix_timestamp('2019-05-29'),unix_timestamp('2019-06-03'),0,'ascention');
+(7,7,7,@annee,'V','VACANCES DE L''ASCENSION',unix_timestamp('2019-05-29'),unix_timestamp('2019-06-03'),0,'ascension');
 
 truncate kbabtel.`kob-Cadref-Lieu`;
 insert into kbabtel.`kob-Cadref-Lieu` (umod,gmod,omod,Ville,Adresse1,Adresse2,Type,Lieu,GPS,AntenneId) values 
