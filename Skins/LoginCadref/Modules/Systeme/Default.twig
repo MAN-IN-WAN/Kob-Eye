@@ -1,27 +1,27 @@
 {% if logform == 'valider' %}
 	<div class="alert alert-danger">
-		Une erreur est survenue... Veuillez vérifier vos identifiants.
+		<h2>Une erreur est survenue... Veuillez vérifier vos identifiants.</h2>
 	</div>
 {% endif %}
 
 <form class="form col-md-12 center-block" method="POST">
     <div class="form-group">
-		<h3>Je suis déjà enregistré : Je rentre mon code utilisateur et mon mot de passse</h3> 
+		<h3>J'ai déjà un compte : Je rentre mon code utilisateur et mon mot de passse</h3> 
         <input type="text" name="login" class="form-control input-cadref" placeholder="Code utilisateur">
         <input type="password" name="pass" class="form-control input-cadref" placeholder="Mot de passe">
 		<div style="height:5px"></div>
         <input type="submit" class="btn btn-success btn-cadref btn-block" name="logform" value="valider">
     </div>
     <div class="form-group">
-		<h3>Je suis adhérent du CADREF mais je ne suis pas encore enregistré</h3> 
-        <a href="/Systeme/Adherent" class="btn btn-info btn-cadref btn-block">Je clique ici pour obtenir mes identifiants</a>
+		<h3>Je suis <strong>déjà adhérent</strong> du CADREF mais je n'ai encore ouvert mon compte</h3> 
+        <a href="/Systeme/Adherent" class="btn btn-info btn-cadref btn-block">Je clique ici pour ouvrir mon compte</a>
     </div>
     <div class="form-group">
-		<h3>Je ne suis encore adhérent du CADREF, je souhaite m'enregistrer</h3> 
+		<h3>Je ne suis <strong>pas encore adhérent</strong> du CADREF, je souhaite m'enregistrer</h3> 
         <a href="/Systeme/Register" class="btn btn-info btn-cadref btn-block">Je clique ici pour créer mon compte</a>
     </div>
    <div class="form-group">
-		<h3>Je suis déjà enregistré mais j'ai oublié mon mot de passe</h3> 
+		<h3>J'ai déjà un compte mais j'ai oublié mon mot de passe</h3> 
         <a href="/Systeme/Adherent" class="btn btn-warning btn-cadref btn-block">Je clique ici pour changer de mot de passe</a>
     </div>
  </form>

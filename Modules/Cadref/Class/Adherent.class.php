@@ -286,9 +286,10 @@ class Adherent extends genericClass {
 		require_once ('PrintCarte.class.php');
 
 		$annee = Cadref::$Annee;
+		$aan = $this->getOneChild('AdherentAnnee/Annee='.$annee);
 		$ins = $this->getChildren('Inscription/Annee='.$annee);
 
-		$pdf = new PrintCarte($this, $recto);
+		$pdf = new PrintCarte($this, $aan, $recto);
 		$pdf->SetAuthor("Cadref");
 		$pdf->SetTitle('Carte'.$this->Numero);
 
@@ -423,15 +424,15 @@ inner join `##_Cadref-Adherent` e on e.Id=i.AdherentId ";
 				$an = $annee + 1;
 				$sql = "
 select distinct a.Sexe, a.Numero, a.Nom, a.Prenom, a.Telephone1, a.Telephone2, a.Mail, 
-a.Certificat, i.CodeClasse, i.ClasseId, d.Libelle as LibelleD, n.Libelle as LibelleN
+a.DateCertificat, i.CodeClasse, i.ClasseId, d.Libelle as LibelleD, n.Libelle as LibelleN
 from `##_Cadref-Adherent` a
-inner join `##_Cadref-Inscription` i on i.AdherentId=a.Id and i.Annee='2017'
+inner join `##_Cadref-Inscription` i on i.AdherentId=a.Id and i.Annee='$annee'
 inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
 inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
 left join `##_Cadref-ClasseEnseignants` ce on ce.Classe=c.Id
 left join `##_Cadref-Enseignant` e on e.Id=ce.EnseignantId
-where a.Annee='$annee' and i.Supprime=0 and i.Attente=0 and d.Certificat<>0 and (a.Certificat is null or a.Certificat<unix_timestamp('$an-07-01'))
+where a.Annee='$annee' and i.Supprime=0 and i.Attente=0 and d.Certificat<>0 and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$an-07-01'))
 order by e.Nom,i.CodeClasse,a.Nom,a.Prenom";
 				break;
 			case 2: // fiches incomplètes
@@ -450,7 +451,7 @@ order by a.Nom, a.Prenom";
 
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-		if(!$pdo) return false;
+		if(!$pdo) return array('success'=>false, 'sql'=>$sql);;
 
 		if($obj['mode'] == 'mail') {
 			$cc = array();

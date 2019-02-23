@@ -7,6 +7,7 @@ class PrintCarte extends FPDF {
 	
 	private $recto;
 	private $adh;
+	private $aan;
 	private $width;
 	private $align;
 	private $head;
@@ -14,13 +15,14 @@ class PrintCarte extends FPDF {
 	private $left = 5;
 	
 	
-	function PrintCarte($adherent, $recto=false) {
+	function PrintCarte($adherent, $adhAnnee, $recto=false) {
 		parent::__construct('P', 'mm', 'A4');
 		$this->adh = $adherent;
+		$this->aan = $adhAnnee;
 		$this->recto = $recto;
-		$this->head = array('Cours','Ant','Discipline','Enseignant','Horaires','Tarif');
-		$this->width = array(18.5,8,84,60,22,8);
-		$this->align = array('L','L','L','L','L','R');
+		$this->head = array('Cours','Discipline','Horaires','Enseignant','Tarif');
+		$this->width = array(16,76,41,60,8);
+		$this->align = array('L','L','L','L','R');
 	}
 	
 	private function cv($txt) {
@@ -61,7 +63,7 @@ class PrintCarte extends FPDF {
 		$this->Cell(150, 5, $this->cv($adh->CP.' '.$adh->Ville));
 		
 		$this->SetXY(-34, $y);
-		$this->Cell(30, 5, $this->cv('* Cotisation : '.$adh->Cotisation), 0, 0, 'R');
+		$this->Cell(30, 5, $this->cv('* Cotisation : '.$this->aan->Cotisation), 0, 0, 'R');
 		$y += 5;
 		
 		$this->SetXY($this->left, $y);
@@ -74,12 +76,10 @@ class PrintCarte extends FPDF {
 	}
 	
 	function Footer() {
-		if(! $this->recto) return;
-		
 		$this->SetFont('Arial','',8);
 		$this->SetXY($this->letf, 90);
 		$this->Cell(200, 5, $this->cv('* Le reçu fiscal pour la cotisation vous sera délivré courant février.'), 0, 0, 'C');
-		if(! $this->recto) retun;
+		if(! $this->recto) return;
 		
 		$t = 99;  // tiers de page
 		$this->SetLineWidth(0.1);
@@ -127,18 +127,22 @@ class PrintCarte extends FPDF {
 	private function printLine($l) {
 		$cls = $l->getOneParent('Classe');
 		$ens = $cls->getParents('Enseignant');
+		$lieu = $cls->getOneParent('Lieu');
 		$n = '';
 		foreach($ens as $e) {
 			if($n != '') $n .= ', ';
-			$n .= $e->Nom;
+			$n .= trim($e->Prenom.' '.$e->Nom);
 		}
 		$this->SetXY($this->left, $this->posy);
 		$this->Cell($this->width[0], 5, $l->CodeClasse, 0, 0, $this->align[0]);
-		$this->Cell($this->width[1], 5, $l->Abrege, 0, 0, $this->align[1]);
-		$this->Cell($this->width[2], 5, $this->cv($l->LibelleD.' '.$l->LibelleN), 0, 0, $this->align[2]);
+		$s = $l->LibelleW.' '.$l->LibelleN;
+		if($lieu && $lieu->Libelle) $s .= ' ('.$lieu->Libelle.')';
+		$this->Cell($this->width[1], 5, $this->cv($s), 0, 0, $this->align[1]);
+		$s = substr($l->Jour, 0, 3).' '.$l->HeureDebut.' '.$l->HeureFin;
+		if($l->CycleDebut) $s .= ' ('.$l->CycleDebut.' '.$l->CycleFin.')';
+		$this->Cell($this->width[2], 5, $this->cv($s), 0, 0, $this->align[2]);
 		$this->Cell($this->width[3], 5, $this->cv($n), 0, 0, $this->align[3]);
-		$this->Cell($this->width[4], 5, substr($l->Jour, 0, 3).' '.$l->HeureDebut.' '.$l->HeureFin, 0, 0, $this->align[4]);
-		$this->Cell($this->width[5], 5, $l->Prix-$l->Remise1-$l->Remise2, 0, 0, $this->align[5]);
+		$this->Cell($this->width[4], 5, $l->Prix-$l->Remise1-$l->Remise2, 0, 0, $this->align[4]);
 		$this->posy += 4;
 	} 
 

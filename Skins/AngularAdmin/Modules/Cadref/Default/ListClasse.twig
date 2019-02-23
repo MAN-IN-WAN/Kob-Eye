@@ -3,40 +3,42 @@
 		<thead>
 			<tr>
 				<th title="Id" class="list-col-th-id" hidden>ID</th>
-				<th>Classe</th>
-				<th>Libellé</th>
-				<th>Web</th>
-				<th>Heures</th>
-				<th>Cycle</th>
-				<th>Places</th>
-				<th>Prix</th>
-		{#		<th>Réduc</th>
-				<th>Réduc</th>
-		#}			{% if tempContext %}
-					<th></th>
-					{% endif %}
-					{% if children %}
-					<th>M</th>
-					{% endif %}
+				{% if tempContext %}
+					<th class="cadref-th-btn"></th>
+				{% endif %}
+				<th class="cadref-th">Classe</th>
+				<th class="cadref-th">Libellé</th>
+{#				<th class="cadref-th">Web</th>
+#}				<th class="cadref-th">Heures</th>
+				<th class="cadref-th">Cycle</th>
+				<th class="cadref-th">Places</th>
+				<th class="cadref-th">Prix</th>
+				{% if tempContext %}
+					<th class="cadref-th-btn"></th>
+				{% endif %}
+				{% if children %}
+					<th class="cadref-th">M</th>
+				{% endif %}
 			</tr>
 		</thead>
 		<tbody>
 			<tr dir-paginate="item in CadrefClasse.data" >
 				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
+				{% if tempContext  %}
+					<td  class="table-action cadref-td-btn">
+						<a class="btn-abt cadref-btn-add btn-success" href="javascript: void(0);" ng-click="classeAjoute(item)" title="Inscrire"></a>
+					</td>
+				{% endif %}
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.CodeClasse }]}</span></td>
-				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleD }]} {[{ item.LibelleN }]}</span></td>
-				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleW }]} {[{ item.LibelleN }]}</span></td>
+{#				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleD }]} {[{ item.LibelleN }]}</span></td>
+#}				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleW }]} {[{ item.LibelleN }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Jour | limitTo : 3}]} {[{ item.HeureDebut }]}&nbsp;-&nbsp;{[{ item.HeureFin }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.CycleDebut }]}&nbsp;-&nbsp;{[{ item.CycleFin }]}</span></td>
 				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Places+' - '+item.Inscrits+' - '+item.Attentes }]}</span></td>
 				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Prix+' - '+((item.Prix*1)-(item.Reduction1*1))+' - '+((item.Prix*1)-(item.Reduction2*1)) }]}</span></td>
-		{#		<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Reduction1 }]}</span></td>
-				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Reduction2 }]}</span></td>
-		#}		{% if tempContext  %}
+				{% if tempContext  %}
 					<td  class="table-action cadref-td-btn">
-						<div >
-							<a class="btn-abt cadref-btn-add btn-success" href="javascript: void(0);" ng-click="classeAjoute(item)" title="Inscrire"></a>
-						</div>
+						<a class="btn-abt cadref-btn-add btn-success" href="javascript: void(0);" ng-click="classeAjoute(item)" title="Inscrire"></a>
 					</td>
 				{% endif %}
 				{% if children %}

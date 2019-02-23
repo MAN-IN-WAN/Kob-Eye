@@ -288,28 +288,83 @@
             itemsPerPage: CadrefClasseStore.itemsPerPage,
             selected: {
                 selectall: false
-            }
+            },
+			filter2: '',
+			lasttimeout: false,
+			noEvent: false,
+			lastEvent: -1
         }
 		
 		// recherche sur le store de Classe
-        var lasttimeout = false;
-		var noEvent = false;
-        $scope.$watch('CadrefClasse.filter', function() {
-			if(noEvent) return;
-			noEvent = true;
-			
-            if (lasttimeout){
-                $timeout.cancel(lasttimeout);
-                lasttimeout = false;
-            }
-            lasttimeout = $timeout(function () {
-	            CadrefClasseStore.setFilters('CodeClasse~'+$scope.CadrefClasse.filter+'%&Annee={{ Annee }}','temp');
-//	            CadrefClasseStore.setFilters($scope.CadrefClasse.filter+'%&Annee={{ Annee }}','temp');
-                CadrefClasseStore.getData(1,'temp');
-            },400);
-			noEvent = false;
-        });
+		var classeFilter = function(mode) {
+			var c = $scope.CadrefClasse;
+			if(c.noEvent) return;
+			if(c.lastEvent == mode) {
+				c.lastEvent = -1;
+				return;
+			}
+			c.noEvent = true;
 
+            if(c.lasttimeout){
+                $timeout.cancel(c.lasttimeout);
+                c.lasttimeout = false;
+            }
+            c.lasttimeout = $timeout(function () {
+				var f = '';
+				if(mode == 0) {
+					if(c.filter2 != '') {
+						c.filter2 = '';
+						c.lastEvent = 1;
+					}
+					f = 'CodeClasse~'+c.filter+'%&Annee={{ Annee }}'
+				}
+				else {
+					if(c.filter !== '') {
+						c.filter = '';
+						c.lastEvent = 0;
+					}
+					f = c.filter2+'%&Annee={{ Annee }}'
+				}
+				CadrefClasseStore.setFilters(f,'temp');
+                CadrefClasseStore.getData(1,'temp');
+            },300);
+			c.noEvent = false;
+		}
+        $scope.$watch('CadrefClasse.filter', function() { classeFilter(0); });
+        $scope.$watch('CadrefClasse.filter2', function() { classeFilter(1); });
+
+		// efface le contenu du filtre
+		$scope.classeClearFilters = function() {
+			$scope.CadrefClasse.filter = '';
+			$scope.CadrefClasse.filter2 = '';
+			$('#searchCadrefClasse').focus();
+		}
+
+		// efface le contenu du filtre
+//		$scope.clearSearch = function() {
+//			$scope.CadrefClasse.filter = '';
+//			$('#searchClasse').focus();
+//		}
+		
+		// controle le bontoun ajouter
+		$scope.classeControle = function(mode) {
+			var enb = false;
+			var s = mode==0 ? $scope.CadrefClasse.filter : $scope.CadrefClasse.filter2;
+			if(s.length == 7) {
+				enb = true;
+				var t = $scope.CadrefInscription.store.data.temp;
+				var l = t.length;
+				for(var i = 0; i < l; i++) {
+					if(t[i].CodeClasse == s) {
+						enb = false;
+						break;
+					}
+				}
+			}
+			$scope.addDisabled = !enb;
+		}
+		
+		
 		// ouverture popup inscriptions
 		$scope.addDisabled = true;
 		$scope.nextDisabled = false;
@@ -341,30 +396,6 @@
 			cad.Inscr.updated = cad.Inscr.paye != 0;
 			$('#searchClasse').focus();
         }
-		
-		// efface le contenu du filtre
-		$scope.clearSearch = function() {
-			$scope.CadrefClasse.filter = '';
-			$('#searchClasse').focus();
-		}
-		
-		// controle le bontoun ajouter
-		$scope.classeControle = function() {
-			var enb = false;
-			var s = $scope.CadrefClasse.filter;
-			if(s.length == 7) {
-				enb = true;
-				var t = $scope.CadrefInscription.store.data.temp;
-				var l = t.length;
-				for(var i = 0; i < l; i++) {
-					if(t[i].CodeClasse == s) {
-						enb = false;
-						break;
-					}
-				}
-			}
-			$scope.addDisabled = !enb;
-		}
 		
 		// controle le bontoun next
 		$scope.nextControle = function() {
@@ -451,6 +482,7 @@
 			o.CodeClasse = c.CodeClasse;
 			o.LibelleD = c.LibelleD;
 			o.LibelleN = c.LibelleN;
+			o.LibelleW = c.LibelleW;
 			o.Jour = c.Jour;
 			o.HeureDebut = c.HeureDebut;
 			o.HeureFin = c.HeureFin;
@@ -486,6 +518,7 @@
 			}
 			$scope.classeCalcul();
 			cad.Inscr.updated = true;
+			$('#inscrPaye').focus();
 		}
 		
 	

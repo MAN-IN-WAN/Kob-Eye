@@ -90,10 +90,10 @@
 								</div>
 								<div class="col-md-10">
 									<multiple-autocomplete class="form-control cadref-no-padding" 
-														   ng-model="obj.EnseignantEnseignants"
-														   object-property="label"
-														   model-labels="obj.EnseignantEnseignantslabel"
-														   suggestions-arr="Enseignants">
+										ng-model="obj.EnseignantEnseignants"
+										object-property="label"
+										model-labels="obj.EnseignantEnseignantslabel"
+										suggestions-arr="Enseignants">
 									</multiple-autocomplete>
 								</div>
 							</div>
@@ -103,7 +103,7 @@
 									{{ label("Description") }}
 								</div>
 								<div class="col-md-10">
-									{{ ftext(f.Description, o, 'ckHtml') }}
+									{{ ftext(f.Description, o, 'html') }}
 								</div>
 							</div>
 							<div class="row" style="height:10px"></div>

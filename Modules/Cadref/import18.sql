@@ -264,6 +264,9 @@ union all select 7,7,7,c.Id,'2018',unix_timestamp(d13) from kbabtel.`kob-Cadref-
 union all select 7,7,7,c.Id,'2018',unix_timestamp(d14) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d14>'0000-00-00'
 union all select 7,7,7,c.Id,'2018',unix_timestamp(d15) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d15>'0000-00-00';
 
+update kbabtel.`kob-Cadref-Classe` c
+inner join kbabtel.`kob-Cadref-ClasseDate` cd on cd.ClasseId=c.id
+set c.Programmation=1;
 
 delete s
 from kbabtel.`kob-Cadref-Section`s
@@ -327,6 +330,9 @@ left join kbabtel.`kob-Cadref-Cursus` u on u.Cursus=e.Cursus
 left join kbabtel.`kob-Cadref-Situation` s on s.Situation=e.Situation;
 
 update kbabtel.`kob-Cadref-Adherent` a
+inner join kbabtel.aaname p on p.old=a.Prenom
+set a.Prenom=p.name;
+update kbabtel.`kob-Cadref-Enseignant` a
 inner join kbabtel.aaname p on p.old=a.Prenom
 set a.Prenom=p.name;
 

@@ -5,8 +5,8 @@
 				<th title="Id" class="list-col-th-id" hidden>ID</th>
 				<th class="cadref-th">Classe</th>
 				<th class="cadref-th">Libellé</th>
-				<th class="cadref-th">Web</th>
-				<th class="cadref-th">Horaires</th>
+{#				<th class="cadref-th">Web</th>
+#}				<th class="cadref-th">Horaires</th>
 				<th class="cadref-th">Cycle</th>
 				<th class="cadref-th">Prix</th>
 				<th class="cadref-th">Réduc</th>
@@ -24,8 +24,8 @@
 			<tr dir-paginate="item in {{ identifier }}{% if tempContext %}.store.data.temp{% else %}.data{% endif %}">
 				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.CodeClasse }]}</span></td>
-				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleD+' '+item.LibelleN }]}</span></td>
-				<td scope="row" class="cadref-td typevarchar"><span>{[{ item.LibelleW }]} {[{ item.LibelleN }]}</span></td>
+{#				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleD+' '+item.LibelleN }]}</span></td>
+#}				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleW }]} {[{ item.LibelleN }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Jour | limitTo : 3 }]} {[{ item.HeureDebut }]}&nbsp;-&nbsp;{[{ item.HeureFin }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.CycleDebut }]}&nbsp;-&nbsp;{[{ item.CycleFin }]}</span></td>
 				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ (item.Prix*1){% if public %}-(item.Reduction*1)-(item.Soutien*1){% endif %} }]}</span></td>

@@ -18,7 +18,7 @@
 {% macro finput(field, obj, readonly=false, mask='', style='', cap=false) %}
     <div class="control-group">
         <input type="text" class="form-control cadref-input" placeholder="" ng-model="{{ obj }}.{{ field.name }}"
-			{% if readonly %} readonly{% endif %}{% if mask!='' %} mask="{{ mask }}" {% endif %}{% if style!='' %} style="{{ style }}"{% endif %}
+			{% if readonly %} readonly tabindex="-1"{% endif %}{% if mask!='' %} mask="{{ mask }}" {% endif %}{% if style!='' %} style="{{ style }}"{% endif %}
 			{% if cap %} onkeyup="this.value = this.value.toUpperCase();"{% endif %}
 		/>
     </div>
@@ -36,7 +36,7 @@
         </div>
         <div class="col-md-10">
             <input id="{{ obj }}.{{ field.name }}" type="text" class="form-control cadref-input" placeholder="" ng-model="{{ obj }}.{{ field.name }}"
-				{% if readonly %} readonly{% endif %}{% if mask!='' %} mask="{{ mask }}" {% endif %}{% if style!='' %} style="{{ style }}"{% endif %}
+				{% if readonly %} readonly tabindex="-1"{% endif %}{% if mask!='' %} mask="{{ mask }}" {% endif %}{% if style!='' %} style="{{ style }}"{% endif %}
 	  			{% if cap %} onkeyup="this.value = this.value.toUpperCase();"{% endif %}
 			/>
         </div>
