@@ -49,6 +49,11 @@ table tr td.cadref-td-diff {
 	font-size: 1.1rem;
 	color: darkgreen;
 }
+.cadref-ins-mail {
+	font-size: 1rem;
+	font-style: italic;
+	color: darkgrey;
+}
 .cadref-label {
 	margin-bottom: .1rem;
 	padding: .1rem .7rem;

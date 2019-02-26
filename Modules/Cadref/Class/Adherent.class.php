@@ -263,9 +263,9 @@ class Adherent extends genericClass {
 
 	function CheckCertificat() {
 		$annee = Cadref::$Annee;
-		$max = ($annee + 1).'0630';
+		$min = ($annee).'0630';
 		$dat = $this->DateCertificat;
-		if(!empty($dat) && date('Ymd', $dat) >= $max) return true;
+		if(!empty($dat) && date('Ymd', $dat) < $min) return true;
 
 		$cert = false;
 		$ins = $this->getChildren('Inscription/Annee='.$annee);
@@ -277,7 +277,7 @@ class Adherent extends genericClass {
 				break;
 			}
 		}
-		if($cert && (empty($dat) || date('Ymd', $dat) < $max)) return false;
+		if($cert && (empty($dat) || date('Ymd', $dat) < $min)) return false;
 		return true;
 	}
 
@@ -420,7 +420,6 @@ inner join `##_Cadref-Adherent` e on e.Id=i.AdherentId ";
 				$contenu = 'N';
 				$rupture = 'E'; // enseignant
 				$antenne = 0;
-				$an = $annee + 1;
 				$sql = "
 select distinct a.Sexe, a.Numero, a.Nom, a.Prenom, a.Telephone1, a.Telephone2, a.Mail, 
 a.DateCertificat, i.CodeClasse, i.ClasseId, d.Libelle as LibelleD, n.Libelle as LibelleN
@@ -431,7 +430,7 @@ inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
 left join `##_Cadref-ClasseEnseignants` ce on ce.Classe=c.Id
 left join `##_Cadref-Enseignant` e on e.Id=ce.EnseignantId
-where a.Annee='$annee' and i.Supprime=0 and i.Attente=0 and d.Certificat<>0 and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$an-07-01'))
+where a.Annee='$annee' and i.Supprime=0 and i.Attente=0 and d.Certificat<>0 and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$annee-07-01'))
 order by e.Nom,i.CodeClasse,a.Nom,a.Prenom";
 				break;
 			case 2: // fiches incomplètes
@@ -518,9 +517,9 @@ order by a.Nom, a.Prenom";
 	}
 
 	function PrintAttestation($params) {
-		$mode = $params['mode'];
+		$mode = isset($params['mode']) ? $params['mode'] : 'print';
 		$sql = "
-select distinct h.Numero,h.Nom,h.Prenom,h.Adresse1,h.Adresse2,h.CP,h.Ville,a.Cotisation
+select distinct h.Sexe,h.Mail,h.Numero,h.Nom,h.Prenom,h.Adresse1,h.Adresse2,h.CP,h.Ville,a.Cotisation
 from `##_Cadref-AdherentAnnee` a
 inner join `##_Cadref-Adherent` h on h.Id=a.AdherentId";
 
@@ -538,12 +537,33 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 ";
 				$where .= " and n.AntenneId=$antenne";
 			}
+			if($mode == 'print' && isset($params['NoMail']) && $params['NoMail'])
+				$where .= " and h.Mail not like '%@%'";
+			if($mode == 'mail')
+				$where .= " and h.Mail like '%@%'";
+
 			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql.$where);
 			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 			if(!$pdo) return false;
 
-			$file = $this->imprimeAttestation($pdo, $annee, $fisc, $mode);
-			return array('pdf'=>$file);
+			if($mode == 'mail') {
+				$an = $annee.'-'.($annee+1);
+				$sub = "CADREF : Attestation fiscale $fisc. Cotisation $an";
+				$bod = "Veuillez trouvez en pièce jointe votre attestation fiscale pour l'année $fisc,<br />";
+				$bod .= "concernant la cotisation du CADREF pour $an.<br /></br /><br />";
+				$bod .= Cadref::MailSignature();
+				foreach($pdo as $p) {
+					$file = $this->imprimeAttestation(array($p), $annee, $fisc, $p['Numero']);
+					$b = Cadref::MailCivility($p).$bod;
+					$args = array('To'=>array($p['Mail']), 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
+					if(MAIL_ADH) Cadref::SendMessage($arg);
+				}
+				return array('sql'=>$sql);
+			}
+			else {
+				$file = $this->imprimeAttestation($pdo, $annee, $fisc, '');
+				return array('pdf'=>$file, 'sql'=>$sql);
+			}
 		}
 		else {
 			if(!isset($params['step'])) $params['step'] = 0;
@@ -569,6 +589,7 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 
 					$file = $this->imprimeAttestation($pdo, $annee, $fisc, $mode);
 					return array(
+						'step'=>2,
 						'data'=>'<a id="displayAttestation" href="'.$file.'" target="_blank" ng-click="attestationAdherent(\''.$file.'\')">Attestation imprimée</a>',
 						'callBack'=>array(
 							'nom'=>'displayAttestation',
@@ -585,7 +606,7 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 		);
 	}
 
-	private function imprimeAttestation($list, $annee, $fisc, $mode) {
+	private function imprimeAttestation($list, $annee, $fisc, $num) {
 		require_once ('PrintAttestation.class.php');
 
 		$pdf = new PrintAttestation($annee, $fisc);
@@ -595,7 +616,7 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 		foreach($list as $l)
 			$pdf->PrintPage($l);
 
-		$file = 'Home/tmp/Attestation'.$mode.date('YmdHi').'.pdf';
+		$file = 'Home/tmp/Attestation'.$num.'_'.date('YmdHis').'.pdf';
 		$pdf->Output(getcwd().'/'.$file);
 		$pdf->Close();
 
@@ -806,6 +827,7 @@ where ce.Classe=:cid";
 		return array('data'=>$data, 'sql'=>$sql);
 	}
 	
+	
 	function ChangePassword($params) {
 		$data = array();
 		$data['success'] = 0;
@@ -833,9 +855,9 @@ where ce.Classe=:cid";
 		Sys::$User->Save();
 		
 		if(strpos($this->Mail, '@') > 0) {
-			$s = "Bonjour ".($this->Sexe == "F" ? "Madame " : ($this->Sexe == "H" ? "Monsieur " : "")).$this->Prenom.' '.$this->Nom.",<br /><br /><br />";
+			$s = Cadref::MailCivility($this);
 			$s .= "Votre nouveau mot de passe a été enregistré.<br /><br />";
-			$s .= "A bientôt,<br />L'équipe du CADREF<br />";
+			$s .= Cadref::MailSignature();
 			$params = array('Subject'=>('CADREF : Changement de mot de passe.'),
 				'To'=>array($this->Mail),
 				'Body'=>$s);

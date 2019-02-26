@@ -34,7 +34,7 @@ class Absence extends genericClass {
 		$b = "<br /><br />Nous somme au regret de vous informons  de l'absence de votre enseignant ".$e->Prenom.' '.$e->Nom;
 		$h = "<br />du $jd ".date('d/m/Y H:i', $this->DateDebut);
 		$h .= "<br />au $jf ".date('d/m/Y H:i', $this->DateFin);
-		$d .= "<br /><br/>A bientot,<br />L'Equipe du CADREF";
+		$d .= Cadref::MailSignature();
 
 		$sent = false;
 		$cs = $e->getChildren('Classe');
@@ -43,7 +43,7 @@ class Absence extends genericClass {
 				$as = Sys::getData('Cadref', "Classe/".$c->Id.'/Adherent');
 				foreach($as as $a) {
 					if($a->Mail) {
-						$b0 = "Bonjour ".($a->Sexe == "F" ? "Madame " : ($a->Sexe == "H" ? "Monsieur " : "")).$a->Prenom.' '.$a->Nom.",";
+						$b0 = Cadref::MailCivility($a);
 						$params = array('Subject'=>$s, 'To'=>array($a->Mail), 'Body'=>$b0.$b.$h.$d);
 						if(MSG_ADH) Cadref::SendMessage($params);
 					}

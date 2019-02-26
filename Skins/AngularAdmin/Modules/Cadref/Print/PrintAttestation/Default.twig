@@ -1,5 +1,5 @@
 {# fiche printAttestation #}
-{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,fdate,ftext,fboolean %} 
+{% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label %} 
 <div class="page-content-inner">
     <section class="panel">
         <div class="panel-heading" style="padding-bottom:10px; padding-top:10px">
@@ -53,15 +53,21 @@
 									<div class="row" style="height:10px"></div>
 									<div class="row">
 										<div class="col-md-2">
+											{{ label("Sans mail") }}
+										</div>
+										<div class="col-md-4">
+											<switch ng-model="obj.NoMail" class="cadref-switch"></switch>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
+									<div class="row">
+										<div class="col-md-2">
 										</div>
 										<div class="col-md-2">
 											<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="printFunction('print')">Imprimer</button>
 										</div>
 										<div class="col-md-2">
-											<button type="button" class="btn btn-info margin-inline cadref-btn-100" ng-click="printFunction('no-mail')">Sans mail</button>
-										</div>
-										<div class="col-md-2">
-											<button type="button" class="btn btn-primary margin-inline cadref-btn-100" ng-click="printFunction('mail')">Avec mail</button>
+											<button type="button" class="btn btn-primary margin-inline cadref-btn-100" ng-click="printFunction('mail')">Message</button>
 										</div>
 									</div>
 								</div>                            

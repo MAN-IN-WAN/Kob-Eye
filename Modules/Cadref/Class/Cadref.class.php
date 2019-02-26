@@ -128,10 +128,10 @@ class Cadref extends Module {
 
 		
 		if(strpos($a->Mail, '@') > 0) {
-			$s = "Bonjour ".($a->Sexe == "F" ? "Madame " : ($a->Sexe == "H" ? "Monsieur " : "")).$a->Prenom.' '.$a->Nom.",<br /><br /><br />";
+			$s = self::MailCivility($a);
 			$s .= $new ? "Votre espace CADREF vient d'être activé.<br /><br />" : "Votre mot de passe a été modifié.<br /><br />";
 			$s .= "Vos paramètres de connection sont les suivants :<br /><br />Code utilisateur (N° adhérent) : $num<br />Mot de Passe : $p<br /><br /><br />";
-			$s .= "A bientôt,<br />L'équipe du CADREF<br />";
+			$s .= self::MailSignature();
 			$params = array('Subject'=>($new ? 'CADREF : Bienvenu dans votre nouvel espace utilisateur.' : 'CADREF : Nouveau mot de passe.'),
 				'To'=>array($a->Mail),
 				'Body'=>$s);
@@ -167,39 +167,6 @@ class Cadref extends Module {
 		$g = Sys::getOneData('Systeme', 'Group/Nom=CADREF_ADH');
 		$u = $g->getChildren('User');
 		$data['NbUsers'] = count($u);
-/*
-		$sql = "
-select a.Libelle,sum(if(t.Sexe='H',1,0)) as homme,sum(if(t.Sexe='F',1,0)) as femme,sum(if(t.Sexe<>'H' && t.Sexe<>'F',1,0)) as autre,count(*) as total
-from (
-select distinct h.Id,i.Antenne,h.Sexe
-from `##_Cadref-Inscription` i 
-inner join `##_Cadref-Adherent` h on h.Id=i.AdherentId
-where i.Annee='$annee' and i.Supprime=0 and i.Attente=0
-) t 
-inner join `##_Cadref-Antenne` a on a.Antenne=t.Antenne
-group by t.Antenne";
-		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-		if(!$pdo) return $sql;
-
-		$rec = $pdo->fetchALL(PDO::FETCH_ASSOC);
-		$l = array();
-		$h = array();
-		$f = array();
-		$a = array();
-		$t = array();
-		foreach($rec as $r) {
-			$l[] = $r['Libelle'];
-			$h[] = $r['homme'];
-			$f[] = $r['femme'];
-			$a[] = $r['autre'];
-			$t[] = $r['total'];
-		}
-		$bars = array();
-		$bars['labels'] = $l;
-		$bars['series'] = array($f, $h, $a);
-		$data['bars'] = $bars;
-*/
 		return $data;
 	}
 
@@ -528,6 +495,17 @@ where ce.Classe=$cid
 		
 		$ret = $Mail->Send();
 		return $ret;
+	}
+	
+	public static function MailCivility($a) {
+		$c = 'Bonjour';
+		if(is_object($a)) $c = ($a->Sexe == "F" ? " Madame " : ($a->Sexe == "H" ? " Monsieur " : " ")).trim($a->Prenom.' '.$a->Nom);
+		elseif(is_array($a)) $c = ($a['Sexe'] == "F" ? " Madame " : ($a['Sexe'] == "H" ? " Monsieur " : " ")).trim($a['Prenom'].' '.$a['Nom']);
+		return $c.",<br /><br /><br />";
+	}
+
+	public static function MailSignature() {
+		return "A bientôt,<br />L'équipe du CADREF<br />";
 	}
 
     public static function SendSms($params) {

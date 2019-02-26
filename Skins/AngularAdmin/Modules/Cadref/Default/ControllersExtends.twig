@@ -539,7 +539,7 @@
 			var enb = false;
 			var cad = $scope.CadrefClasse.Inscr;
 			var p = Number(cad.paye)
-			enb = p == 0 || cad.paye == '' || (p != 0 && cad.mode != ''); 
+			enb = p == 0 || cad.paye == '' || (p != 0 && cad.mode != '');
 			$scope.nextDisabled = !enb;
 		}
 		
@@ -833,14 +833,12 @@
 		$scope.niveauInfo = function() {
 			$scope.obj.LibelleN = $scope.obj.Libelle;
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo');
-			ajax.success(
-				function(data) {
+			ajax.success(function(data) {
 					$scope.obj.LibelleA = data.data.LibelleA;
 					$scope.obj.LibelleS = data.data.LibelleS;
 					$scope.obj.LibelleD = data.data.LibelleD;
 				}
-			).error(
-				function() {
+			).error(function() {
 					console.error('error > {{ module }}/{{ objecttype }} > Method  ');
 				}
 			);
@@ -854,16 +852,14 @@
 		//--------------------------------------		
 		$scope.classeInfo = function() {
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo');
-			ajax.success(
-				function(data) {
+			ajax.success(function(data) {
 					$scope.obj.LibelleA = data.data.LibelleA;
 					$scope.obj.LibelleS = data.data.LibelleS;
 					$scope.obj.LibelleD = data.data.LibelleD;
 					$scope.obj.LibelleN = data.data.LibelleN;
 					$scope.obj.LibelleL = data.data.LibelleL;
 				}
-			).error(
-				function() {
+			).error(function() {
 					console.error('error > {{ module }}/{{ objecttype }} > Method  ');
 				}
 			);
@@ -872,7 +868,8 @@
 				CadrefClasseDateStore.refresh('children');
 			}, 500);
 		}
-		
+
+		// pour multi-select
 		$scope.Enseignants = JSON.parse('{{ enseignants|raw }}');
 
 		//-----------------
@@ -940,6 +937,10 @@
 		//--------------------------------------
 		// VISITE RESERVATION
 		//--------------------------------------
+
+		// pour multi-select
+		$scope.Enseignants = JSON.parse('{{ enseignants|raw }}');
+		
 		$scope.localObj = {};
 		// hook sur CadrefReservationadd
 		$scope.CadrefReservationaddExt = $scope.CadrefReservationadd;
