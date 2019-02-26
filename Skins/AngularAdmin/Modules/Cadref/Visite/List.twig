@@ -290,8 +290,23 @@
         <dir-pagination-controls boundary-links="true" pagination-context="{{ context }}" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
     </div>
 </div>
+<div class="modal fade cadref-modal-size-medium" id="modal-Attachements" role="modal" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog cadref-modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+				<a class="btn-abt cadref-btn-close" href="" data-dismiss="modal" title="Annuler"></a>
+                <h4 class="modal-title" id="myModalLabel">Cours : Documents</h4>
+            </div>
+            <div class="modal-body">
+                <div ng-if="attachementInfo.classeId>0 || attachementInfo.visiteId>0">
+					<ng-include src="'Cadref/Attachement/FicheAttachements.htm'"></ng-include>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<div class="modal fade modal-size-large" id="modal-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
+{#<div class="modal fade modal-size-large" id="modal-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog cadref-modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -318,12 +333,12 @@
                     {{ include(template_from_string(module(formPath~'?Path='~Path~'&Create=1'))) }}
                 </div>
             </div>
-			{#            <div class="modal-footer">
+			            <div class="modal-footer">
 							<button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == true">Fermer</button>
 							<button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == false">Annuler</button>
 							<button type="button" class="btn btn-primary" ng-click="{{ identifier }}modalSave()" ng-if="modalObj.success == false">__SAVE_MODAL_OBJ__</button>
 						</div>
-			#}        </div>
+			        </div>
     </div>
 </div>
 <div class="modal fade modal-size-large" id="modalfunction-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
@@ -375,7 +390,7 @@
     </div>
 </div>
 
-
+#}
 <script type="text/javascript">
 	$('.spinner-list').spin();
 </script>

@@ -135,12 +135,11 @@ class Adherent extends genericClass {
 					);
 				$ret = $this->saveInscriptions($params, true);
 				$this->saveAnneeInscr($params);
-				if($ret) return true;
-						return array(
+				if($ret) return array(
 						'data'=>'Inscription enregistrée',
 						'callBack'=>array(
 							'nom'=>'refreshAdherent',
-							'args'=>array()
+							'args'=>array(true)
 						)
 					);
 				return false;
@@ -153,7 +152,7 @@ class Adherent extends genericClass {
 					'data'=>'Inscription enregistrée',
 					'callBack'=>array(
 						'nom'=>'refreshAdherent',
-						'args'=>array()
+						'args'=>array(true)
 					)
 				);
 				break;
@@ -467,7 +466,7 @@ order by a.Nom, a.Prenom";
 		}
 		if($obj['mode'] == 'sms') {
 			foreach($pdo as $a) {
-				$params = array('Telephone1'=>$a['Telephone1'],'Telephone2'=>$a['Telephone2'],'Message'=>$obj['Sujet']);
+				$params = array('Telephone1'=>$a['Telephone1'],'Telephone2'=>$a['Telephone2'],'Message'=>$obj['SMS']);
 				Cadref::SendSms($params);
 			}
 			return true;
@@ -678,11 +677,10 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		if(!isset($params['step'])) $params['step'] = 0;
 		switch($params['step']) {
 			case 0:
-				$s = "Bonjour ".($a->Sexe == "F" ? "Madame " : ($a->Sexe == "H" ? "Monsieur " : "")).$a->Prenom.' '.$a->Nom.",\n\n";
 				return array(
 					'step'=>1,
 					'template'=>'sendMessage',
-					'args'=>array('civilite'=>$s),
+					'args'=>array(),
 					'callNext'=>array(
 						'nom'=>'SendMessage',
 						'title'=>'Message suite',
@@ -692,8 +690,14 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 				);
 				break;
 			case 1:
-				$params['Msg']['To'] = array($params['Msg']['Mail']);
-				$ret = Cadref::SendMessage($params['Msg']);
+				if($params['Msg']['sendMode'] == 'mail') {
+					$params['Msg']['To'] = array($params['Msg']['Mail']);
+					$params['Msg']['Attachments'] = $params['Msg']['Pieces']['data'];
+					$ret = Cadref::SendMessage($params['Msg']);
+				}
+				else {
+					$ret = Cadref::SendSms(array('Telephone1'=>$this->Telephone1,'Telephone2'=>$this->Telephone2,'Message'=>$params['Msg']['SMS']));
+				}
 				return array(
 					'data'=>'Message envoyé',
 					'params'=>$params['Msg'],

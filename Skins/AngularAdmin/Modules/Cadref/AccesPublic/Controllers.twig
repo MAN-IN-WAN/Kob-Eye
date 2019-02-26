@@ -37,7 +37,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
         });
     }
 
-	// init date picker components 
+{#	// init date picker components 
 	$scope.initDatePickerOnly = function() {
 		$('.datepicker-only-init').datetimepicker({
 			widgetPositioning: {
@@ -77,7 +77,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 			input.trigger('input');
 		});
 	}	
-
+#}
 	// appel de function kobeye avec retour objet
 	$scope.{{ identifier }}callMethod = function(obj, name, args, explodeArgs) {
 		if (args == undefined) args = [];
