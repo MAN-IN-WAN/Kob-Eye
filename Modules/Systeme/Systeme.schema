@@ -330,7 +330,7 @@
         <PROPERTIES type="raw" fiche="1" form="1">Contenu</PROPERTIES>
         <PROPERTIES type="html" fiche="1" form="1">Retour</PROPERTIES>
         <PROPERTIES type="datetime" list="1" fiche="1" form="1" description="Date de déclenchement" listDescr="Date" default="[!TMS::Now!]">DateDebut</PROPERTIES>
-        <PROPERTIES type="varchar" list="1" fiche="1" form="1" values="maintenance::Maintenance,install::Installation,edit::Modification,check::Vérification,update::Mise à jour" description="Type de tache" listDescr="Type" default="check">TaskType</PROPERTIES>
+        <PROPERTIES type="varchar" list="1" fiche="1" form="1" values="maintenance::Maintenance,install::Installation,edit::Modification,check::Vérification,update::Mise à jour,backup::Sauvegarde" description="Type de tache" listDescr="Type" default="check">TaskType</PROPERTIES>
         <PROPERTIES type="varchar" list="1" fiche="1" form="1" description="Code de la tache" listDescr="Code">TaskCode</PROPERTIES>
         <PROPERTIES category="Fonction" type="varchar" description="Module"  searchOrder="2" fiche="5" form="1">TaskModule</PROPERTIES>
         <PROPERTIES category="Fonction" type="varchar" description="ObjectClass"  searchOrder="3" fiche="6" form="1">TaskObject</PROPERTIES>

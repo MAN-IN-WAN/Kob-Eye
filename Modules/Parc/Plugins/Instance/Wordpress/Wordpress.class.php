@@ -66,7 +66,7 @@ class ParcInstanceWordpress extends Plugin implements ParcInstancePlugin {
             $act->Terminate(true);
             //Installation des fichiers
             $act = $task->createActivity('Initialisation de la synchronisation', 'Info', $task);
-            $cmd = 'cd /home/' . $host->NomLDAP . '/ && rsync -avz root@ws1.maninwan.fr:/home/modele-wordpress/www/ www';
+            $cmd = 'cd /home/' . $host->NomLDAP . '/ && rsync -avz root@ws2.maninwan.fr:/home/modele-wordpress/www/ www';
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails($out);
@@ -144,7 +144,7 @@ class ParcInstanceWordpress extends Plugin implements ParcInstancePlugin {
         try {
             //Installation des fichiers
             $act = $task->createActivity('Initialisation de la synchronisation', 'Info', $task);
-            $cmd = 'cd /home/' . $host->NomLDAP . '/ && rsync -avz root@ws1.maninwan.fr:/home/modele-wordpress/www/ www';
+            $cmd = 'cd /home/' . $host->NomLDAP . '/ && rsync -avz root@ws2.maninwan.fr:/home/modele-wordpress/www/ www';
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails($out);

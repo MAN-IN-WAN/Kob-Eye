@@ -1,11 +1,29 @@
 [HTML]ng-app="cleanUI"[/HTML]
 [HEADER]
-    <link href="Skins/AngularAdmin/assets/common/img/favicon.144x144.png" rel="apple-touch-icon" type="image/png" sizes="144x144">
+<link rel="apple-touch-icon" sizes="57x57" href="Skins/AngularAdmin/assets/common/img/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="Skins/AngularAdmin/assets/common/img/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="Skins/AngularAdmin/assets/common/img/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="Skins/AngularAdmin/assets/common/img/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="Skins/AngularAdmin/assets/common/img/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="Skins/AngularAdmin/assets/common/img/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="Skins/AngularAdmin/assets/common/img/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="Skins/AngularAdmin/assets/common/img/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="Skins/AngularAdmin/assets/common/img/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"  href="Skins/AngularAdmin/assets/common/img/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="Skins/AngularAdmin/assets/common/img/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="Skins/AngularAdmin/assets/common/img/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="Skins/AngularAdmin/assets/common/img/favicon-16x16.png">
+<link rel="manifest" href="Skins/AngularAdmin/assets/common/img/manifest.json">
+<link href="Skins/AngularAdmin/assets/common/img/favicon.png" rel="icon" type="image/png">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="Skins/AngularAdmin/assets/common/img/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+    <!--<link href="Skins/AngularAdmin/assets/common/img/favicon.144x144.png" rel="apple-touch-icon" type="image/png" sizes="144x144">
     <link href="Skins/AngularAdmin/assets/common/img/favicon.114x114.png" rel="apple-touch-icon" type="image/png" sizes="114x114">
     <link href="Skins/AngularAdmin/assets/common/img/favicon.72x72.png" rel="apple-touch-icon" type="image/png" sizes="72x72">
     <link href="Skins/AngularAdmin/assets/common/img/favicon.57x57.png" rel="apple-touch-icon" type="image/png">
     <link href="Skins/AngularAdmin/assets/common/img/favicon.png" rel="icon" type="image/png">
-    <link href="../favicon.ico" rel="shortcut icon">
+    <link href="../favicon.ico" rel="shortcut icon">-->
 
     <!-- HTML5 shim and Respond.js for < IE9 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
