@@ -90,10 +90,10 @@
 								</div>
 								<div class="col-md-10">
 									<multiple-autocomplete class="form-control cadref-no-padding" 
-														   ng-model="obj.EnseignantEnseignants"
-														   object-property="label"
-														   model-labels="obj.EnseignantEnseignantslabel"
-														   suggestions-arr="Enseignants">
+										ng-model="obj.EnseignantEnseignants"
+										object-property="label"
+										model-labels="obj.EnseignantEnseignantslabel"
+										suggestions-arr="Enseignants">
 									</multiple-autocomplete>
 								</div>
 							</div>
@@ -103,7 +103,7 @@
 									{{ label("Description") }}
 								</div>
 								<div class="col-md-10">
-									{{ ftext(f.Description, o) }}
+									{{ ftext(f.Description, o, 'html') }}
 								</div>
 							</div>
 							<div class="row" style="height:10px"></div>
@@ -150,24 +150,3 @@
 		</div>
     </section>
 </div>
-
-<script>
-	$('.datepicker-only-init').datetimepicker({
-		widgetPositioning: {
-			horizontal: 'left'
-		},
-		locale: 'fr',
-		format: 'DD/MM/YYYY',
-		icons: {
-			time: "fa fa-clock-o",
-			date: "fa fa-calendar",
-			up: "fa fa-arrow-up",
-			down: "fa fa-arrow-down"
-		}
-	});
-	$(".datepicker-only-init").on("dp.change", function () {
-		var input = $(this).children('input').eq(0);
-		input.trigger('change');
-		input.trigger('input');
-	});
-</script>

@@ -44,7 +44,7 @@ class Absence extends genericClass {
 				foreach($as as $a) {
 					if($a->Mail) {
 						$b0 = "Bonjour ".($a->Sexe == "F" ? "Madame " : ($a->Sexe == "H" ? "Monsieur " : "")).$a->Prenom.' '.$a->Nom.",";
-						$params = array('Subject'=>$s, 'Mail'=>$a->Mail, 'Body'=>$b0.$b.$h.$d);
+						$params = array('Subject'=>$s, 'To'=>array($a->Mail), 'Body'=>$b0.$b.$h.$d);
 						if(MSG_ADH) Cadref::SendMessage($params);
 					}
 					$params = array('Telephone1'=>$a->Telephone1,'Telephone2'=>$a->Telephone2,'Message'=>$s.str_replace('<br />',"\n",$h));

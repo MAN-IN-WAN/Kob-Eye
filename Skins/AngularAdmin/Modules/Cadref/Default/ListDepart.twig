@@ -32,8 +32,8 @@
 				<div class="row">
 					<div class="col-md-12">
 						<a class="btn-abt cadref-btn-save btn-success" href="" ng-if="departObj.LieuLieuId && departObj.HeureDepart!=''" ng-click="departSave()" title="Enregister"></a>
-						<a class="btn-abt cadref-btn-del btn-danger" href="" ng-if="departObj.id" ng-click="departDelete(departObj)" title="Supprimer"></a>
 						<a class="btn-abt cadref-btn-cancel btn-warning" href="" ng-click="departCloseEdit()" title="Annuler"></a>
+						<a class="btn-abt cadref-btn-del btn-danger" href="" ng-if="departObj.id" ng-click="departDelete(departObj)" style="float:right" title="Supprimer"></a>
 					</div>
 				</div>						
 			</div>
@@ -54,45 +54,11 @@
 		<tbody>
 			<tr dir-paginate="item in {{ identifier }}.data" >
 				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
-				<td scope="row" class="cadref-td typedate"><span class="label">{[{ item.HeureDepart }]}</span></td>
-				<td scope="row" class="cadref-td typedate"><span class="label">{[{ item.Libelle }]}</span></td>
+				<td scope="row" class="cadref-td typedate"><a href="" ng-click="departModify(item)">{[{ item.HeureDepart }]}</a></td>
+				<td scope="row" class="cadref-td typedate"><a href="" ng-click="departModify(item)">{[{ item.Libelle }]}</a></td>
 				<td  class="table-action cadref-td-btn">
-					<a class="btn-abt btn-abt-nfo btn-primary" href="" title="Détails" ng-click="departModify(item)"></a>
 				</td>
 			</tr>
 		</tbody>
 	</table>
 </div>
-{#<div class="modal fade modal-size-large" id="modal-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
-    <div class="modal-dialog cadref-modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title" id="myModalLabel">{[{ modalObj.title }]}</h4>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-danger" ng-if="modalObj.errors.length">
-                    <ul>
-                        <li ng-repeat="e in modalObj.errors">{[{ e.Message }]}</li>
-                    </ul>
-                </div>
-                <div class="alert alert-warning" ng-if="modalObj.warning.length">
-                    <ul>
-                        <li ng-repeat="e in modalObj.warning">{[{ e.Message }]}</li>
-                    </ul>
-                </div>
-                <div class="alert alert-success" ng-if="modalObj.infos.length">
-                    <ul>
-                        <li ng-repeat="e in modalObj.infos">{[{ e.Message }]}</li>
-                    </ul>
-                </div>
-                <div ng-if="modalObj.success == false">
-                    {{ include(template_from_string(module(formPath~'?Path='~Path))) }}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-#}

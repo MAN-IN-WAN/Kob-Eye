@@ -50,7 +50,7 @@
 				<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ item.Assurance }]}</span></td>
 				<td scope="row" class="cadref-td typefloat"><span>{[{ item.Places }]}/{[{ item.Inscrits }]}/{[{ item.Attentes }]}</span></td>
 				<td scope="row" class="cadref-td typeint">
-					<span class="btn btn-xs cadref-fkey" ng-class="{'btn-primary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
+					<span class="btn btn-xs cadref-fkey" ng-class="{'btn-secondary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
 						  ng-click="attachementsOpen(item, 'visite')">{[{ item.Attachements }]}
 					</span>
 				</td>
@@ -76,9 +76,7 @@
     <div class="modal-dialog cadref-modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+				<a class="btn-abt cadref-btn-close" href="" data-dismiss="modal" title="Annuler"></a>
                 <h4 class="modal-title" id="myModalLabel">Visites guidées : Documents</h4>
             </div>
             <div class="modal-body">

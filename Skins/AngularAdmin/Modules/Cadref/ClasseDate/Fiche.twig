@@ -60,23 +60,3 @@
 	</section>
 </div>
 
-<script>
-	$('.datepicker-only-init').datetimepicker({
-		widgetPositioning: {
-			horizontal: 'left'
-		},
-		locale: 'fr',
-		format: 'DD/MM/YYYY',
-		icons: {
-			time: "fa fa-clock-o",
-			date: "fa fa-calendar",
-			up: "fa fa-arrow-up",
-			down: "fa fa-arrow-down"
-		}
-	});
-	$(".datepicker-only-init").on("dp.change", function () {
-		var input = $(this).children('input').eq(0);
-		input.trigger('change');
-		input.trigger('input');
-	});
-</script>

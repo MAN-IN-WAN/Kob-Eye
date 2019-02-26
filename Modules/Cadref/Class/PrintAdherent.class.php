@@ -126,8 +126,8 @@ class PrintAdherent extends FPDF {
 		if($this->rupture != 'S' && $this->rupture != 'E') {
 			if($this->rupVal != '') $this->footRupture();
 			if($this->rupAnt != 0) $this->footAntenne();
-			$this->footTotal();
 		}
+		$this->footTotal();
 	}
 
 
@@ -161,7 +161,7 @@ class PrintAdherent extends FPDF {
 				else $s = 'C:' . substr($l['CodeClasse'], 10, 1);
 				break;
 			case 1:
-				$s = $l['Certificat'] ? date('d/m/Y', $l['Cdertificat']) : 'N.D.';
+				$s = $l['DateCertificat'] ? date('d/m/Y', $l['DateCertificat']) : 'N.D.';
 				break;
 			case 2:
 				$s = '';
@@ -276,10 +276,11 @@ class PrintAdherent extends FPDF {
 		$this->SetFont('Arial', 'B', 10);
 		$this->Cell(80, 4, $this->cv('TOTAL GENERAL'), 0, 0, 'L');
 
+		$col = ($this->rupture == 'S' || $this->rupture == 'E') ? 0 : 2;
 		$this->SetXY($this->width[0], $this->posy);
-		$this->Cell($this->width[1], 4, $this->totaux[2][0], 0, 0, $this->align[1]);
-		$this->Cell($this->width[2], 4, $this->totaux[2][1], 0, 0, $this->align[2]);
-		$this->Cell($this->width[3], 4, $this->totaux[2][2], 0, 0, $this->align[3]);
+		$this->Cell($this->width[1], 4, $this->totaux[$col][0], 0, 0, $this->align[1]);
+		$this->Cell($this->width[2], 4, $this->totaux[$col][1], 0, 0, $this->align[2]);
+		$this->Cell($this->width[3], 4, $this->totaux[$col][2], 0, 0, $this->align[3]);
 	}
 
 }

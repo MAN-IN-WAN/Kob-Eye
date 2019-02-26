@@ -88,51 +88,6 @@
 											<div custom-select="a.id as a.label for a in getSelectData('{{ field.objectModule }}{{ field.objectName }}Store',$searchTerm)" custom-select-options="{ 'async': true, 'filter':'{{ field.filter }}'}"  ng-model="{{ identifier }}.filters.{{ field.name }}.value" ng-change="{{ identifier }}applyFilters()" class="form-control form-control-sm"></div>
 										{% elseif field.type == "boolean" %}
 											<switch id="enabled" name="enabled" ng-model="{{ identifier }}.filters.{{ field.name }}.value" class="green" ng-change="{{ identifier }}applyFilters()"></switch>
-										{% elseif field.type == "date" %}
-											<p>Après le :</p>
-											<label class="input-group datepicker-only-init">
-												<input type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="{{ identifier }}.filters.{{ field.name }}.value[0]" ng-init="{{ identifier }}.filters.{{ field.name }}.value=['','']" ng-change="{{ identifier }}applyFilters()"/>
-												<span class="input-group-addon">
-													<i class="icmn-calendar"></i>
-												</span>
-											</label>
-											<p>Avant le :</p>
-											<label class="input-group datepicker-only-init">
-												<input type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="{{ identifier }}.filters.{{ field.name }}.value[1]" ng-change="{{ identifier }}applyFilters()"/>
-												<span class="input-group-addon">
-													<i class="icmn-calendar"></i>
-												</span>
-											</label>
-										{% elseif field.type == "time" %}
-											<p>Après le :</p>
-											<label class="input-group timepicker-only-init">
-												<input type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="{{ identifier }}.filters.{{ field.name }}.value[0]" ng-init="{{ identifier }}.filters.{{ field.name }}.value=['','']" ng-change="{{ identifier }}applyFilters()"/>
-												<span class="input-group-addon">
-													<i class="icmn-clock"></i>
-												</span>
-											</label>
-											<p>Avant le :</p>
-											<label class="input-group timepicker-only-init">
-												<input type="text" class="form-control" placeholder="Sélectionnez une date"  ng-model="{{ identifier }}.filters.{{ field.name }}.value[1]" ng-change="{{ identifier }}applyFilters()"/>
-												<span class="input-group-addon">
-													<i class="icmn-clock"></i>
-												</span>
-											</label>
-										{% elseif field.type == "datetime" %}
-											<p>Après le :</p>
-											<label class="input-group datetimepicker-init">
-												<input type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="{{ identifier }}.filters.{{ field.name }}.value[0]" ng-init="{{ identifier }}.filters.{{ field.name }}.value=['','']" ng-change="{{ identifier }}applyFilters()"/>
-												<span class="input-group-addon">
-													<i class="icmn-calendar"></i>
-												</span>
-											</label>
-											<p>Avant le :</p>
-											<label class="input-group timepicker-only-init">
-												<input type="text" class="form-control" placeholder="Sélectionnez une date" ng-model="{{ identifier }}.filters.{{ field.name }}.value[1]" ng-change="{{ identifier }}applyFilters()"/>
-												<span class="input-group-addon">
-													<i class="icmn-clock"></i>
-												</span>
-											</label>
 										{% else %}
 											{% if field.query %}
 												<select class="form-control form-control-sm" ng-model="{{ identifier }}.filters.{{ field.name }}.value" ng-change="{{ identifier }}applyFilters()">
@@ -188,12 +143,11 @@
 				<th>Année</th>
 				<th titre="CodeClasse" ng-click="triggerSort($event,'{{ identifier }}','CodeClasse','{{ context }}')">Classe</th>
 				<th>Libellé</th>
+				<th>Web</th>
 				<th>Heures</th>
 				<th>Cycle</th>
 				<th>Places</th>
 				<th>Prix</th>
-				<th>Réduc</th>
-				<th>Réduc</th>
 				<th>Doc.</th>
 				<th>Actions</th>
 			</tr>
@@ -201,24 +155,23 @@
 		<tbody ng-if="!{{ identifier }}.store.busy['{{ context }}']">
 			<tr dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination">
 				{% if showCheckboxes %}
-					<td  class="list-col-td-dark">
+					<td  class="list-col-td-dark cadref-td">
 						<input type="checkbox" value="{[{ item.id }]}" ng-model="{{ identifier }}.selected[item.id]" name="{{ identifier }}" id="{[{ item.id }]}" />&nbsp;
 					</td>
 				{% endif %}
-				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
-				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Annee }]}</a></td>
-				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.CodeClasse }]}</a></td>
-				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.LibelleD }]} {[{ item.LibelleN }]}</a></td>
-				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Jour | limitTo : 3 }]} {[{ item.HeureDebut }]}&nbsp;-&nbsp;{[{ item.HeureFin }]}</a></td>
-				<td scope="row" class="typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.CycleDebut }]}&nbsp;-&nbsp;{[{ item.CycleFin }]}</a></td>
-				<td scope="row" class="typevarchar"><span>{[{ item.Places+' - '+item.Inscrits+' - '+item.Attentes }]}</span></td>
-				<td scope="row" class="typefloat"><span>{[{ item.Prix }]}</span></td>
-				<td scope="row" class="typefloat"><span>{[{ item.Reduction1 }]}</span></td>
-				<td scope="row" class="typefloat"><span>{[{ item.Reduction2 }]}</span></td>
+				<td class="list-col-td-id cadref-td" hidden>{[{ item.id }]}</td>
+				<td scope="row" class="cadref-td typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Annee }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.CodeClasse }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.LibelleD }]} {[{ item.LibelleN }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.LibelleW }]} {[{ item.LibelleN }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Jour | limitTo : 3 }]} {[{ item.HeureDebut }]}&nbsp;-&nbsp;{[{ item.HeureFin }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.CycleDebut }]}&nbsp;-&nbsp;{[{ item.CycleFin }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><span>{[{ item.Places+' - '+item.Inscrits+' - '+item.Attentes }]}</span></td>
+				<td scope="row" class="cadref-td typefloat"><span>{[{ item.Prix+' - '+((item.Prix*1)-(item.Reduction1*1))+' - '+((item.Prix*1)-(item.Reduction2*1)) }]}</span></td>
 				<td scope="row" class="cadref-td typeint">
-					<span class="btn btn-xs cadref-fkey" ng-class="{'btn-primary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
+					<button class="btn btn-abt" ng-class="{'btn-secondary': item.Attachements==0, 'btn-success': item.Attachements!=0}" title="Pièces jointes" 
 						  ng-click="attachementsOpen(item, 'classe')">{[{ item.Attachements }]}
-					</span>
+					</button>
 				</td>
 
 				{% for interface in Interfaces %}
@@ -232,12 +185,8 @@
 						</td>
 					{% endif %}
 				{% endfor %}
-				<td  class="table-action">
-					<div >
-						{% if not Type == "Tail" %}
-							<a class="btn-abt btn-abt-nfo btn-primary" href="#/{{ CurrentUrl }}/{[{ item.id }]}" title="Détails"></a>
-						{% endif %}
-					</div>
+				<td  class="table-action cadref-td-btn">
+					<a class="btn-abt btn-abt-nfo btn-primary" href="#/{{ CurrentUrl }}/{[{ item.id }]}" title="Détails"></a>
 				</td>
 			</tr>
 		</tbody>
@@ -263,9 +212,7 @@
 		<div class="modal-dialog cadref-modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
+					<a class="btn-abt cadref-btn-close" href="" data-dismiss="modal" title="Annuler"></a>
 					<h4 class="modal-title" id="myModalLabel">{[{ modalObj.title }]}</h4>
 				</div>
 				<div class="modal-body">

@@ -106,6 +106,22 @@ table tr td.cadref-td-diff {
 .cadref-btn-msg:after {
     content: "\ea32";
 }
+.cadref-btn-close {
+	float: right;
+	color: #fff;
+    background-color: #f0ad4e;
+    border-color: #f0ad4e;
+}
+.cadref-btn-close:after {
+    content: "\ed66";
+}
+/*
+cadref-btn-close:hover {
+    color: #fff;
+    background-color: #ec971f;
+    border-color: #eb9316;
+}
+*/
 .cadref-cal-visite:before {
 	font-family: 'icomoon-ultimate';
 	content: "\e93c";
@@ -126,13 +142,13 @@ table tr td.cadref-td-diff {
 }
 .cadref-cal-automne:before {
 	font-family: 'icomoon-ultimate';
-	content: "\ecc9";
+	content: "\ed13";
 	float: left;
 	margin-right: 2%;
 }
 .cadref-cal-printemps:before {
 	font-family: 'icomoon-ultimate';
-	content: "\eccf";
+	content: "\ecc9";
 	float: left;
 	margin-right: 2%;
 }
@@ -203,6 +219,23 @@ table tr td.cadref-td-diff {
 	background-color: red;
 	border-color: red;
 }
+.cadref-switch-red {
+	background-color: red;
+	border-color: red;
+}
+.cadref-switch-red.checked {
+	background-color: rgb(100, 189, 99);
+	border-color: rgb(100, 189, 99);
+}
+.cadref-switch-green {
+	background-color: rgb(100, 189, 99);
+	border-color: rgb(100, 189, 99);
+}
+.cadref-switch-green.checked {
+	background-color: red;
+	border-color: red;
+}
+
 .cadref-fkey {
 	padding:2px 8px !important;
 	font-size:1rem !important;
@@ -260,3 +293,4 @@ table tr td.cadref-td-diff {
 .cadref-page-content {
 	padding: 5px;
 }
+

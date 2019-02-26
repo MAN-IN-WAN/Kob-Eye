@@ -19,13 +19,14 @@ if(isset($info['ObjectType'])){
 		$t = array();
 		$ens = Sys::getData('Cadref','Enseignant'); 
 		foreach($ens as $e) $t[] = array('id'=>$e->Id, 'label'=>$e->Nom.' '.$e->Prenom);
-		
 		$vars['enseignants'] = json_encode($t);
 	}
 } else {
 	$vars['noExtend'] = true;
 }
 $vars['Annee'] = Cadref::$Annee;
-$vars['Cotisation'] = Cadref::$Annee;
+$vars['Cotisation'] = Cadref::$Cotisation;
+$vars['Initiales'] = Sys::$User->Initiales;
+//$vars['Utilisateur'] = "XXX";
 
 ?>

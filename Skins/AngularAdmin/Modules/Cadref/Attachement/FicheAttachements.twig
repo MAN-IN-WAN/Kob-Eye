@@ -7,36 +7,35 @@
 	<div class="cadref-widget" ng-if="attachementInfo.mode!=''">
 		<div class="row">
 			<div class="col-md-12">
-				<div ng-if="attachementInfo.mode != ''">
-					<div class="row">
-						<div class="col-md-2">
-							{{ label('Titre') }}
-						</div>
-						<div class="col-md-10">
-							<input type="text" class="form-control cadref-input" ng-model="attachementObj.Titre"/>
-						</div>
+				<div class="row">
+					<div class="col-md-2">
+						{{ label('Titre') }}
 					</div>
-					<div class="row">
-						<div class="col-md-2">
-							{{ label('Documents') }}
-						</div>
-						<div class="col-md-10">
-							<input type="text" class="form-control" placeholder="" id="input-AttachementFilePath" ng-model="attachementObj.FilePath">
-							<label for="input-AttachementFilePath-file" class="clickable"> Choisissez un fichier </label>
-							<input id="input-AttachementFilePath-file" type="file" class="form-control cadref-input" nv-file-select 
-								   options="{ alias:'FileData',formData:[{ 'Module':'Cadref' }, { 'Obj' : 'Attechement' }],removeAfterUpload: true, inputId: 'input-AttachementFilePath', model:'attachementObj.FilePath' }" 
-								   ng-init="up_AttachementFilePath = angular.copy(autoUploader)" uploader="up_AttachementFilePath" style="display:none;"
-								   />
-						</div>
+					<div class="col-md-10">
+						<input type="text" class="form-control cadref-input" ng-model="attachementObj.Titre"/>
 					</div>
-					<div class="row">
-						<div class="col-md-12">
-							<a class="btn-abt cadref-btn-save btn-success" href="" ng-if="attachementObj.Titre!='' && attachementObj.FilePath!=''" ng-click="attachementSave()"" title="Enregister"></a>
-							<a class="btn-abt cadref-btn-del btn-danger" href="" ng-if="attachementObj.id" ng-click="attachementDelete(attachementObj)" title="Supprimer"></a>
-							<a class="btn-abt cadref-btn-cancel btn-warning" href="" ng-click="attachementCloseEdit()" title="Annuler"></a>
-						</div>
-					</div>						
 				</div>
+				<div class="row">
+					<div class="col-md-2">
+						{{ label('Documents') }}
+					</div>
+					<div class="col-md-10">
+						<input type="text" class="form-control" placeholder="" id="input-AttachementFilePath" ng-model="attachementObj.FilePath">
+						<label for="input-AttachementFilePath-file" class="clickable"> Choisissez un fichier </label>
+						<input id="input-AttachementFilePath-file" type="file" class="form-control cadref-input" nv-file-select 
+							   options="{ alias:'FileData',formData:[{ 'Module':'Cadref' }, { 'Obj' : 'Attachement' }],
+							   removeAfterUpload: true, inputId: 'input-AttachementFilePath', model:'attachementObj.FilePath' }" 
+							   ng-init="up_AttachementFilePath = angular.copy(autoUploader)" uploader="up_AttachementFilePath" style="display:none;"
+							   />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<a class="btn-abt cadref-btn-save btn-success" href="" ng-if="attachementObj.Titre!='' && attachementObj.FilePath!=''" ng-click="attachementSave()"" title="Enregister"></a>
+						<a class="btn-abt cadref-btn-del btn-danger" href="" ng-if="attachementObj.id" ng-click="attachementDelete(attachementObj)" style="float:right" title="Supprimer"></a>
+						<a class="btn-abt cadref-btn-cancel btn-warning" href="" ng-click="attachementCloseEdit()" title="Annuler"></a>
+					</div>
+				</div>						
 			</div>
 		</div>
 	</div>
@@ -59,7 +58,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr dir-paginate="item in CadrefAttachement.data" >
+				<tr ng-repeat="item in CadrefAttachement.data" >
 					<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
 					<td class="cadref-td typedatetime"><span class="label">{[{ item.DateModification }]}</span></td>
 					<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Titre }]}</span></td>

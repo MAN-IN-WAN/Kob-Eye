@@ -45,7 +45,7 @@ insert into kbabtel.`kob-Cadref-Vacance` (umod,gmod,omod,Annee,Type,Libelle,Date
 (7,7,7,@annee,'V','VACANCES D''HIVER',unix_timestamp('2019-02-23'),unix_timestamp('2019-03-10'),0,'hiver'),
 (7,7,7,@annee,'V','VACANCES DE PRINTEMPS',unix_timestamp('2019-04-20'),unix_timestamp('2019-05-05'),0,'printemps'),
 (7,7,7,@annee,'V','8 Mai',unix_timestamp('2019-05-08'),0,0,'8mai'),
-(7,7,7,@annee,'V','VACANCES DE L''ASCENSION',unix_timestamp('2019-05-29'),unix_timestamp('2019-06-03'),0,'ascention');
+(7,7,7,@annee,'V','VACANCES DE L''ASCENSION',unix_timestamp('2019-05-29'),unix_timestamp('2019-06-03'),0,'ascension');
 
 truncate kbabtel.`kob-Cadref-Lieu`;
 insert into kbabtel.`kob-Cadref-Lieu` (umod,gmod,omod,Ville,Adresse1,Adresse2,Type,Lieu,GPS,AntenneId) values 
@@ -221,7 +221,7 @@ from cadref18.Disciplines d
 left join kbabtel.`kob-Cadref-Section` s on s.Section=d.Sect;
 
 update kbabtel.`kob-Cadref-Discipline` n
-inner join kbabtel.niveau nn on nn.os=n.Section and nn.od=n.Discipline
+inner join kbabtel.aaniveau nn on nn.os=n.Section and nn.od=n.Discipline
 inner join kbabtel.`kob-Cadref-WebDiscipline` d on d.CodeDiscipline=nn.nd
 set n.WebDisciplineId=d.Id, n.WebDiscipline=d.CodeDiscipline;
 
@@ -245,28 +245,51 @@ left join kbabtel.`kob-Cadref-Section` s on s.Section=c.Sect
 left join kbabtel.`kob-Cadref-Discipline` d on d.SectionId=s.Id and d.Discipline=c.Discipline
 left join kbabtel.`kob-Cadref-Niveau` n on n.Antenne=c.Antenne and n.Section=c.Sect and n.Discipline=c.Discipline and n.Niveau=c.Niveau;
 
+truncate kbabtel.`kob-Cadref-ClasseDate`;
+insert into kbabtel.`kob-Cadref-ClasseDate`(umod,gmod,omod,ClasseId,Annee,DateCours)
+select 7,7,7,c.Id,'2018',unix_timestamp(d0) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d0>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d1) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d1>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d2) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d2>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d3) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d3>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d4) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d4>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d5) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d5>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d6) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d6>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d7) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d7>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d8) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d8>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d9) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d9>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d10) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d10>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d11) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d11>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d12) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d12>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d13) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d13>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d14) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d14>'0000-00-00'
+union all select 7,7,7,c.Id,'2018',unix_timestamp(d15) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d15>'0000-00-00';
+
+update kbabtel.`kob-Cadref-Classe` c
+inner join kbabtel.`kob-Cadref-ClasseDate` cd on cd.ClasseId=c.id
+set c.Programmation=1;
+
 delete s
-from `kob-Cadref-Section`s
-left join `kob-Cadref-Discipline` d on s.id=d.SectionId
-left join `kob-Cadref-Niveau` n on d.id=n.DisciplineId
-left join `kob-Cadref-Classe` c on n.Id=c.NiveauId
+from kbabtel.`kob-Cadref-Section`s
+left join kbabtel.`kob-Cadref-Discipline` d on s.id=d.SectionId
+left join kbabtel.`kob-Cadref-Niveau` n on d.id=n.DisciplineId
+left join kbabtel.`kob-Cadref-Classe` c on n.Id=c.NiveauId
 where d.Id is null;
 delete d
 from `kob-Cadref-Discipline` d
-left join `kob-Cadref-Niveau` n on d.id=n.DisciplineId
-left join `kob-Cadref-Classe` c on n.Id=c.NiveauId
+left join kbabtel.`kob-Cadref-Niveau` n on d.id=n.DisciplineId
+left join kbabtel.`kob-Cadref-Classe` c on n.Id=c.NiveauId
 where d.Id is null;
 delete s
-from `kob-Cadref-Section`s
-left join `kob-Cadref-Discipline` d on s.id=d.SectionId
+from kbabtel.`kob-Cadref-Section`s
+left join kbabtel.`kob-Cadref-Discipline` d on s.id=d.SectionId
 where d.Id is null;
 delete d
-from `kob-Cadref-Discipline` d
-left join `kob-Cadref-Niveau` n on d.Id=n.DisciplineId
+from kbabtel.`kob-Cadref-Discipline` d
+left join kbabtel.`kob-Cadref-Niveau` n on d.Id=n.DisciplineId
 where n.Id is null;
 delete n
-from `kob-Cadref-Niveau` n
-left join `kob-Cadref-Classe` c on n.Id=c.NiveauId
+from kbabtel.`kob-Cadref-Niveau` n
+left join kbabtel.`kob-Cadref-Classe` c on n.Id=c.NiveauId
 where c.Id is null;
 
 
@@ -295,7 +318,7 @@ where c.Ens2<>'';
 
 truncate kbabtel.`kob-Cadref-Adherent`;
 insert into kbabtel.`kob-Cadref-Adherent` (umod,gmod,omod,Numero,Nom,Prenom,Adresse1,Adresse2,CP,Ville,Telephone1,Telephone2,Notes,Mail,
-NotesAnnuelles,Naissance,Inscription,Sexe,ProfessionId,CursusId,SituationId,Adherent,Annee,Etoiles,Origine,Certificat,ClasseId,
+NotesAnnuelles,Naissance,Inscription,Sexe,ProfessionId,CursusId,SituationId,Adherent,Annee,Etoiles,Origine,DateCertificat,ClasseId,
 Cotisation,Cours,Reglement,Differe,Regularisation)
 select 7,7,7,Numero,Nom,Prenom,Adr1,Adr2,CP,Ville,Tel1,Tel2,e.Notes,eMail,
 NotesTemp,Naissance,Inscription,Sexe,p.Id,u.Id,s.Id,Adherent,e.Annee,Etoiles,Origine,if(Certificat<@annee,null,unix_timestamp(Certificat)),c.Id,
@@ -306,12 +329,19 @@ left join kbabtel.`kob-Cadref-Profession` p on p.Profession=e.Profession
 left join kbabtel.`kob-Cadref-Cursus` u on u.Cursus=e.Cursus
 left join kbabtel.`kob-Cadref-Situation` s on s.Situation=e.Situation;
 
+update kbabtel.`kob-Cadref-Adherent` a
+inner join kbabtel.aaname p on p.old=a.Prenom
+set a.Prenom=p.name;
+update kbabtel.`kob-Cadref-Enseignant` a
+inner join kbabtel.aaname p on p.old=a.Prenom
+set a.Prenom=p.name;
 
 
 truncate kbabtel.`kob-Cadref-Inscription`;
-insert into kbabtel.`kob-Cadref-Inscription` (umod,gmod,omod,Numero,CodeClasse,Antenne,Annee,DateInscription,Attente,DateAttente,Prix,Reduction1,Reduction2,
+insert into kbabtel.`kob-Cadref-Inscription` (umod,gmod,omod,Numero,CodeClasse,Antenne,Annee,DateInscription,Attente,DateAttente,Prix,Soutien,Reduction,
 Supprime,DateSupprime,AdherentId,ClasseId,Utilisateur)
-select 7,7,7,i.Numero,concat(i.Antenne,i.Sect,i.Discipline,i.Niveau,i.Classe),i.Antenne,@annee,if(Creation<@annee,null,unix_timestamp(Creation)),Attente,if(DateAtte<@annee,null,unix_timestamp(DateAtte)),i.Prix,i.Reduction,i.Reduc2,
+select 7,7,7,i.Numero,concat(i.Antenne,i.Sect,i.Discipline,i.Niveau,i.Classe),i.Antenne,@annee,if(Creation<@annee,null,unix_timestamp(Creation)),
+Attente,if(DateAtte<@annee,null,unix_timestamp(DateAtte)),i.Prix,i.Reduction,i.Reduc2,
 Supprime,if(DateSuppr<@annee,null,unix_timestamp(DateSuppr)),a.Id,c.Id,i.Utilisateur
 from cadref18.Inscriptions i
 left join kbabtel.`kob-Cadref-Adherent` a on a.Numero=i.Numero
@@ -340,7 +370,10 @@ left join kbabtel.`kob-Cadref-Adherent` a on a.Numero=r.Numero
 left join kbabtel.`kob-Cadref-Visite` v on v.Visite=r.Visite
 order by r.Numero,r.Visite;
 
-
+insert into kbabtel.`kob-Cadref-Reglement` (umod,gmod,omod,Numero,AdherentId,ReservationId,Visite,Montant,Utilisateur,DateReglement,Encaisse,ModeReglement,Annee)
+select 7,7,7,r.Numero,r.AdherentId,r.Id,r.Visite,r.Prix,r.Utilisateur,v.DateVisite,1,'B',@annee
+from kbabtel.`kob-Cadref-Reservation` r
+inner join kbabtel.`kob-Cadref-Visite` v on v.Id=r.VisiteId;
 
 truncate kbabtel.`kob-Cadref-AdherentAnnee`;
 insert into kbabtel.`kob-Cadref-AdherentAnnee` (umod,gmod,omod,AdherentId,Numero,Annee,NotesAnnuelles,Adherent,ClasseId,
@@ -353,7 +386,7 @@ left join kbabtel.`kob-Cadref-Classe` c on c.CodeClasse=concat(substr(e.Delegue,
 where e.Annee=@annee;
 
 update `kob-Cadref-AdherentAnnee` a
-set a.Cours=(select ifnull(sum(ifnull(Prix-Reduction1-Reduction2,0)),0) from `kob-Cadref-Inscription` i where i.AdherentId=a.AdherentId and i.Annee=@annee and i.Supprime=0 and i.Attente=0),
+set a.Cours=(select ifnull(sum(ifnull(Prix-Reduction-Soutien,0)),0) from `kob-Cadref-Inscription` i where i.AdherentId=a.AdherentId and i.Annee=@annee and i.Supprime=0 and i.Attente=0),
 a.Visites=(select ifnull(sum(ifnull(Prix-Reduction,0)),0) from `kob-Cadref-Reservation` r where r.AdherentId=a.AdherentId and r.Annee=@annee and r.Supprime=0 and r.Attente=0),
 a.Reglement=(select ifnull(sum(ifnull(Montant,0)),0) from `kob-Cadref-Reglement` r where r.AdherentId=a.AdherentId and r.Annee=@annee and r.Supprime=0 and (r.Differe=0 or r.Encaisse=1)),
 a.Differe=(select ifnull(sum(ifnull(Montant,0)),0) from `kob-Cadref-Reglement` r where r.AdherentId=a.AdherentId and r.Annee=@annee and r.Supprime=0 and (r.Differe=1 and r.Encaisse=0))
@@ -369,7 +402,7 @@ group by AdherentId
 set a.DateCotisation=t.dt
 where a.Annee=@annee;
 
-
+/*
 # PRENOMS
 DROP FUNCTION IF EXISTS aaprenom; 
 SET GLOBAL  log_bin_trust_function_creators=TRUE; 
@@ -409,4 +442,35 @@ END;
 delimiter ;
 update `kob-Cadref-Adherent` set Prenom=aaprenom(Prenom);
 update `kob-Cadref-Enseignant` set Prenom=aaprenom(Prenom);
+*/
+
+DROP procedure IF EXISTS aareduc; 
+DELIMITER | 
+CREATE procedure aareduc(p0 double,p1 double,p2 double) 
+BEGIN 
+	update kbabtel.`kob-Cadref-Classe` c
+	inner join kbabtel.`kob-Cadref-Niveau` n on n.Id=c.NiveauId
+	inner join kbabtel.`kob-Cadref-Discipline` d on d.Id=n.DisciplineId
+	set c.Reduction1=(p0-p1),c.Reduction2=(p0-p2),c.DateReduction1=unix_timestamp('2019-01-01'),c.DateReduction2=unix_timestamp('2019-03-01')
+	where c.Prix=p0 and d.WebDiscipline not like 'IN%'; 
+END; 
+| 
+delimiter ;
+call kbabtel.aareduc(51,34,17);
+call kbabtel.aareduc(102,68,34);
+call kbabtel.aareduc(80,52,26);
+call kbabtel.aareduc(122,80,40);
+call kbabtel.aareduc(75,50,25);
+call kbabtel.aareduc(115,76,38);
+call kbabtel.aareduc(217,144,72);
+call kbabtel.aareduc(120,80,40);
+call kbabtel.aareduc(135,90,45);
+call kbabtel.aareduc(185,122,61);
+call kbabtel.aareduc(160,106,53);
+call kbabtel.aareduc(162,108,54);
+call kbabtel.aareduc(87,58,29);
+
+
+
+
 

@@ -31,7 +31,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<a class="btn-abt cadref-btn-save btn-success" href="" ng-if="classeDateObj.DateCours!=''" ng-click="classeDateSave()" title="Enregister"></a>
-						<a class="btn-abt cadref-btn-del btn-danger" href="" ng-if="classeDateObj.id" ng-click="classeDateDelete(classeDateObj)" title="Supprimer"></a>
+						<a class="btn-abt cadref-btn-del btn-danger" href="" ng-if="classeDateObj.id" ng-click="classeDateDelete(classeDateObj)" style="float:right" title="Supprimer"></a>
 						<a class="btn-abt cadref-btn-cancel btn-warning" href="" ng-click="classeDateCloseEdit()" title="Annuler"></a>
 					</div>
 				</div>						
@@ -53,11 +53,11 @@
 		<tbody>
 			<tr dir-paginate="item in {{ identifier }}.data" >
 				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
-				<td scope="row" class="cadref-td typedate"><span class="label">{[{ item.DateCours }]}</span></td>
-				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Notes }]}</span></td>
+				<td scope="row" class="cadref-td typedate"><a href="" ng-click="classeDateModify(item)">{[{ item.DateCours }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="classeDateModify(item)">{[{ item.Notes }]}</a></td>
 				<td  class="table-action cadref-td-btn" style="width:64px">
-					<a class="btn-abt btn-abt-nfo btn-primary" href="" title="Détails" ng-click="classeDateModify(item)"></a>
-				</td>
+{#					<a class="btn-abt btn-abt-nfo btn-primary" href="" title="Détails" ></a>
+#}				</td>
 			</tr>
 		</tbody>
 	</table>

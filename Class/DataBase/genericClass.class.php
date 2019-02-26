@@ -2416,7 +2416,7 @@ class genericClass extends Root {
 	 * getALerts
 	 * recupere les alertes pour l'objet
 	 */
-	 public function getAlerts($lastAlert, $time=0) {
+	 public function getAlerts($lastAlert, $time) {
 	 	return null;
 	 }
 	 

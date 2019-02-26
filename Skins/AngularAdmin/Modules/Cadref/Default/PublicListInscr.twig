@@ -19,7 +19,7 @@
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleA }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label" ng-class="{'label-danger': item.heures}">{[{ item.Jour.substring(0, 3)+' '+item.HeureDebut+'&nbsp;- '+item.HeureFin }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.CycleDebut ? item.CycleDebut+'&nbsp;- '+item.CycleFin : '' }]}</span></td>
-				<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ (item.Prix*1)-(item.Reduction1*1)-(item.Reduction2*1) }]}</span></td>
+				<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ (item.Prix*1)-(item.Reduction*1)-(item.Soutien*1) }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Enseignants }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar">
 					<span class="label label-info" ng-if="item.Attente>0 && item.Supprime==0">Attente</span>
@@ -46,9 +46,7 @@
     <div class="modal-dialog cadref-modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+				<a class="btn-abt cadref-btn-close" href="" data-dismiss="modal" title="Annuler"></a>
                 <h4 class="modal-title" id="myModalLabel">Cours : Documents</h4>
             </div>
             <div class="modal-body">

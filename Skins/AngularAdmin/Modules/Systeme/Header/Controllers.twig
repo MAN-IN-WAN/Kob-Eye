@@ -11,10 +11,6 @@
     {% else %}
     /**** LIST CONTROLLER  ****/
     app.controller('{{ c.name }}Ctrl', function($interval,$sce, $window, $templateCache, $controller, $injector, $location, $scope,$timeout, $rootScope,$route,$routeParams,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store{% endfor %},SystemeActivityStore,SystemeTacheStore) {
-        $scope.log = function(toto){
-            console.log(toto);
-        }
-
         $scope.getExternal = function(toto){
             return $window[toto];
         }
@@ -703,7 +699,8 @@
 						var modfic = $("#modal-{{ c.identifier }}");
 						modfic.modal('toggle');
 						if(callback != undefined) {
-							modfic.on('hidden.bs.modal', function(e) {
+								if(modfic[0] == undefined) callback(data);
+								else modfic.on('hidden.bs.modal', function(e) {
 								callback(data);
 							});
 						}
@@ -816,10 +813,6 @@
 
     /**** FICHE CONTROLLER ****/
     app.controller('{{ c.name }}FicheCtrl', function($sce, $window, $templateCache,$controller,$injector,NgMap,$location, $scope, $timeout, $interval, $rootScope, $routeParams,$http,{{ c.identifier }}Store{% for parent in c.parentelements %},{{ parent.objectModule }}{{ parent.objectName }}Store{% endfor %}{% for child in c.childrenelements %},{{ child.objectModule }}{{ child.objectName }}Store {% for cParent in child.parentelements %},{{ cParent.objectModule }}{{ cParent.objectName }}Store{% endfor %}{% for cChild in child.childrenelements %},{{ cChild.objectModule }}{{ cChild.objectName }}Store{% endfor %}{% endfor %}{% if c.browseable%},SystemePageStore{% endif %},SystemeActivityStore,SystemeTacheStore) {
-        $scope.log = function(toto){
-            console.log(toto);
-        }
-
         $scope.getExternal = function(toto){
             return $window[toto];
         }
@@ -1090,7 +1083,8 @@
 							var modfic = $("#modalfiche-{{ c.identifier }}");
                             modfic.modal('toggle');
 							if(callback != undefined) {
-								modfic.on('hidden.bs.modal', function(e) {
+								if(modfic[0] == undefined) callback(data);
+								else modfic.on('hidden.bs.modal', function(e) {
 									callback(data);
 								});
 							}

@@ -7,7 +7,7 @@ class Visite extends genericClass {
 			$this->addError(array("Message" => "Cette fiche ne peut être modifiée ($this->Annee)", "Prop" => ""));
 			return false;			
 		}
-		if($mode) {
+		if(! $this->Id) { //if($mode) {
 			$this->Annee = $annee;
 			$this->Utilisateur = Sys::$User->Initiales;
 		}

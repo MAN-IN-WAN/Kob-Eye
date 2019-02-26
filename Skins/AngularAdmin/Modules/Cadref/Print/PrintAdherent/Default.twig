@@ -7,7 +7,7 @@
                 {{ CurrentMenu.Titre }}
             </h4>
         </div>
-        <div class="row" style="height:20px"></div>
+        <div class="row" style="height:10px"></div>
 		<div class="panel-body">
             <div class="row">
                 <div class="col-xl-12">
@@ -15,32 +15,32 @@
                         <div class="panel-body cadref-no-padding">
 							<div class="row">
 								{% if mode==0 %}
-									<div class="col-xl-8">
+									<div class="col-xl-6">
 
 										<div class="row">
 											<div class="col-md-2">
 												{{ label("Type adhérent") }}
 											</div>
-											<div class="col-md-4">
+											<div class="col-md-5">
 												<select class="form-control cadref-input" ng-model="obj.TypeAdherent" ng-init="obj.TypeAdherent=''">
 													{% for a,b in typeAdh %}
 														<option value="{{ a }}">{{ b }}</option>
 													{% endfor %}
 												</select>
 											</div>
-											<div class="col-md-1">
+											<div class="col-md-2">
 												{{ label("Nouveaux inscrits") }}
 											</div>
-											<div class="col-md-4">
+											<div class="col-md-3">
 												<switch ng-model="obj.Nouveaux"></switch>
 											</div>
 										</div>
-										<div class="row" style="height:10px"></div>
+										<div class="row" style="height:5px"></div>
 										<div class="row">
 											<div class="col-md-2">
 												{{ label("Antenne") }}
 											</div>
-											<div class="col-md-4">
+											<div class="col-md-5">
 												<select class="form-control cadref-input" ng-model="obj.Antenne" ng-init="obj.Antenne=''">
 													{% for a,b in antennes %}
 														<option value="{{ a }}">{{ b }}</option>
@@ -48,97 +48,109 @@
 												</select>
 											</div>
 										</div>
-										<div class="row" style="height:10px"></div>
+										<div class="row" style="height:5px"></div>
+										<div class="row">
+											<div class="col-md-2">
+												{{ label("Enseignant") }}
+											</div>
+											<div class="col-md-5">
+												<select class="form-control cadref-input" ng-model="obj.Enseignant" ng-init="obj.Enseignant=''">
+													{% for a,b in enseignants %}
+														<option value="{{ a }}">{{ b }}</option>
+													{% endfor %}
+												</select>
+											</div>
+										</div>
+										<div class="row" style="height:5px"></div>
 										<div class="row">
 											<div class="col-md-2">
 												{{ label("Disciplines") }}
 											</div>
-											<div class="col-md-4">
+											<div class="col-md-5">
 												<div class="row">
-													<div class="col-md-12">
-														<div class="raw">
-															<div class="col-md-6">
-																<input type="text" class="form-control cadref-input" ng-model="obj.Disc[0]" mask="@.@@.@@.d.d" style="width:130px" onkeyup="this.value = this.value.toUpperCase()"/>
+													<div class="raw">
+														<div class="col-md-6">
+															<input type="text" class="form-control cadref-input" ng-model="obj.Disc[0]" mask="@@@@@dd" style="width:130px" onkeyup="this.value = this.value.toUpperCase()"/>
+														</div>
+														<div class="col-md-6">
+															<div class="raw">
+																<div class="col-md-6">
+																	{{ label('Exclure') }}
+																</div>
+																<div class="col-md-6">
+																	<switch ng-model="obj.Excl[0]" class="cadref-switch"></switch>
+																</div>
 															</div>
-															<div class="col-md-6">
-																<div class="raw">
-																	<div class="col-md-6">
-																		{{ label('Exclure') }}
-																	</div>
-																	<div class="col-md-6">
-																		<switch ng-model="obj.Excl[0]" class="cadref-switch"></switch>
-																	</div>
+														</div>
+													</div>
+
+													<div class="raw">
+														<div class="col-md-6">
+															<input type="text" class="form-control cadref-input" ng-model="obj.Disc[1]" mask="@@@@@dd" style="width:130px" onkeyup="this.value = this.value.toUpperCase()"/>
+														</div>
+														<div class="col-md-6">
+															<div class="raw">
+																<div class="col-md-6">
+																</div>
+																<div class="col-md-6">
+																	<switch ng-model="obj.Excl[1]" class="cadref-switch"></switch>
+																</div>
+															</div>
+														</div>
+													</div>
+
+													<div class="raw">
+														<div class="col-md-6">
+															<input type="text" class="form-control cadref-input" ng-model="obj.Disc[2]" mask="@@@@@dd" style="width:130px" onkeyup="this.value = this.value.toUpperCase()"/>
+														</div>
+														<div class="col-md-6">
+															<div class="raw">
+																<div class="col-md-6">
+																</div>
+																<div class="col-md-6">
+																	<switch ng-model="obj.Excl[2]" class="cadref-switch"></switch>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="raw">
+														<div class="col-md-6">
+															<input type="text" class="form-control cadref-input" ng-model="obj.Disc[3]" mask="@@@@@dd" style="width:130px" onkeyup="this.value = this.value.toUpperCase()"/>
+														</div>
+														<div class="col-md-6">
+															<div class="raw">
+																<div class="col-md-6">
+																</div>
+																<div class="col-md-6">
+																	<switch ng-model="obj.Excl[3]" class="cadref-switch"></switch>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="raw">
+														<div class="col-md-6">
+															<input type="text" class="form-control cadref-input" ng-model="obj.Disc[4]" mask="@@@@@dd" style="width:130px" onkeyup="this.value = this.value.toUpperCase()"/>
+														</div>
+														<div class="col-md-6">
+															<div class="raw">
+																<div class="col-md-6">
+																</div>
+																<div class="col-md-6">
+																	<switch ng-model="obj.Excl[4]" class="cadref-switch"></switch>
 																</div>
 															</div>
 														</div>
 
-														<div class="raw">
-															<div class="col-md-6">
-																<input type="text" class="form-control cadref-input" ng-model="obj.Disc[1]" mask="@.@@.@@.d.d" style="width:130px" onkeyup="this.value = this.value.toUpperCase()"/>
-															</div>
-															<div class="col-md-6">
-																<div class="raw">
-																	<div class="col-md-6">
-																	</div>
-																	<div class="col-md-6">
-																		<switch ng-model="obj.Excl[1]" class="cadref-switch"></switch>
-																	</div>
-																</div>
-															</div>
-														</div>
-
-														<div class="raw">
-															<div class="col-md-6">
-																<input type="text" class="form-control cadref-input" ng-model="obj.Disc[2]" mask="@.@@.@@.d.d" style="width:130px" onkeyup="this.value = this.value.toUpperCase()"/>
-															</div>
-															<div class="col-md-6">
-																<div class="raw">
-																	<div class="col-md-6">
-																	</div>
-																	<div class="col-md-6">
-																		<switch ng-model="obj.Excl[2]" class="cadref-switch"></switch>
-																	</div>
-																</div>
-															</div>
-														</div>
-														<div class="raw">
-															<div class="col-md-6">
-																<input type="text" class="form-control cadref-input" ng-model="obj.Disc[3]" mask="@.@@.@@.d.d" style="width:130px" onkeyup="this.value = this.value.toUpperCase()"/>
-															</div>
-															<div class="col-md-6">
-																<div class="raw">
-																	<div class="col-md-6">
-																	</div>
-																	<div class="col-md-6">
-																		<switch ng-model="obj.Excl[3]" class="cadref-switch"></switch>
-																	</div>
-																</div>
-															</div>
-														</div>
-														<div class="raw">
-															<div class="col-md-6">
-																<input type="text" class="form-control cadref-input" ng-model="obj.Disc[4]" mask="@.@@.@@.d.d" style="width:130px" onkeyup="this.value = this.value.toUpperCase()"/>
-															</div>
-															<div class="col-md-6">
-																<div class="raw">
-																	<div class="col-md-6">
-																	</div>
-																	<div class="col-md-6">
-																		<switch ng-model="obj.Excl[4]" class="cadref-switch"></switch>
-																	</div>
-																</div>
-															</div>
-														</div>
 													</div>
 												</div>
 											</div>
 
-											<div class="col-md-4">
+											<div class="col-md-5">
 												<div class="row">
-													<div class="col-md-4">
+													<div class="col-md-5">
 														{{ label("Inscrits Attentes") }}
 													</div>
-													<div class="col-md-4">
+													<div class="col-md-5">
 														<select class="form-control cadref-input" ng-model="obj.Attente" ng-init="obj.Attente=''">
 															{% for a,b in attentes %}
 																<option value="{{ a }}">{{ b }}</option>
@@ -147,18 +159,18 @@
 													</div>
 												</div>
 												<div class="row">
-													<div class="col-md-4">
+													<div class="col-md-5">
 														{{ label("Odre d'attente") }}
 													</div>
-													<div class="col-md-8">
+													<div class="col-md-5">
 														<switch ng-model="obj.OrdreAtt"></switch>
 													</div>
 												</div>
 												<div class="row">
-													<div class="col-md-4">
+													<div class="col-md-5">
 														{{ label("Mail") }}
 													</div>
-													<div class="col-md-4">
+													<div class="col-md-5">
 														<select class="form-control cadref-input" ng-model="obj.Mail" ng-init="obj.Mail=''">
 															{% for a,b in mails %}
 																<option value="{{ a }}">{{ b }}</option>
@@ -168,32 +180,39 @@
 												</div>
 											</div>
 										</div>
-										<div class="row" style="height:10px"></div>
+										<div class="row" style="height:5px"></div>
 
 										<div class="row">
 											<div class="col-md-2">
 												{{ label("Jour de la semaine") }}
 											</div>
-											<div class="col-md-4">
+											<div class="col-md-5">
 												<select class="form-control cadref-input" ng-model="obj.Jour" ng-init="obj.Jour=''">
 													{% for a,b in jours %}
 														<option value="{{ a }}">{{ b }}</option>
 													{% endfor %}
 												</select>
 											</div>
-											<div class="col-md-1">
+										</div>
+										<div class="row" style="height:5px"></div>
+										<div class="row">
+											<div class="col-md-2">
 												{{ label("Lieu") }}
 											</div>
-											<div class="col-md-2">
-												<input type="text" class="form-control cadref-input" ng-model="obj.Lieu"/>
+											<div class="col-md-5">
+												<select class="form-control cadref-input" ng-model="obj.Lieu" ng-init="obj.Lieu=''">
+													{% for a,b in lieux %}
+														<option value="{{ a }}">{{ b }}</option>
+													{% endfor %}
+												</select>
 											</div>
 										</div>
-										<div class="row" style="height:10px"></div>
+										<div class="row" style="height:5px"></div>
 										<div class="row">
 											<div class="col-md-2">
 												{{ label("Rupture") }}
 											</div>
-											<div class="col-md-4">
+											<div class="col-md-5">
 												<select class="form-control cadref-input" ng-model="obj.Rupture" ng-init="obj.Rupture='N'">
 													{% for a,b in ruptures %}
 														<option value="{{ a }}">{{ b }}</option>
@@ -201,12 +220,12 @@
 												</select>
 											</div>
 										</div>
-										<div class="row" style="height:10px"></div>
+										<div class="row" style="height:5px"></div>
 										<div class="row">
 											<div class="col-md-2">
 												{{ label("Mode d'impression") }}
 											</div>
-											<div class="col-md-4">
+											<div class="col-md-5">
 												<select class="form-control cadref-input" ng-model="obj.Contenu" ng-init="obj.Contenu=''">
 													{% for a,b in contenu %}
 														<option value="{{ a }}">{{ b }}</option>
@@ -214,52 +233,117 @@
 												</select>
 											</div>
 										</div>
-										<div class="row" style="height:10px"></div>
-									</div>
-
-									<div class="col-xl-4">
-									</div>
-								{% endif %}
-								<div class="row" style="height:10px"></div>
-
-								<div class="row">
-									<div class="col-xl-8">
-										<div class="col-md-2">
+										<div class="row" style="height:5px"></div>
+										<div class="row">
+											<div class="col-md-2">
+											</div>
+											<div class="col-md-2">
+												<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="printFunction('print')">Imprimer</button>
+											</div>
 										</div>
-										<div class="col-md-2">
-											<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="printFunction()">Imprimer</button>
+									</div>
+									{# mail #}
+									<div class="col-xl-6">
+										<div class="row">
+											<div class="col-md-1">
+												{{ label("Sujet") }}
+											</div>
+											<div class="col-md-11">
+												<input type="text" class="form-control cadref-input" ng-model="obj.Sujet"/>
+											</div>
+										</div>
+										<div class="row" style="height:5px"></div>
+										<div class="row">
+											<div class="col-md-1">
+												{{ label("Corps") }}
+											</div>
+											<div class="col-md-11">
+												<textarea ckeditor="ckHtml" contenteditable="false" class="form-control cadref-input" style="width:100%;height:80px;min-height:400px;white-space: pre-wrap;" ng-model="obj.Corps" ng-trim="false"></textarea>
+											</div>
+										</div>
+										<div class="row" style="height:5px"></div>
+										<div class="row">
+											<div class="col-md-1">
+												{{ label("Pièces jointes") }}
+											</div>
+											<div class="col-md-11">
+												<div class="cadref-widget" ng-if="obj.Pieces.mode!=''">
+													<div class="row">
+														<div class="col-md-12">
+															<div class="row">
+																<div class="col-md-2">
+																	{{ label('Documents') }}
+																</div>
+																<div class="col-md-10">
+																	<input type="text" class="form-control" placeholder="" id="input-pieceFilePath" ng-model="obj.Pieces.filePath">
+																	<label for="input-pieceFilePath-file" class="clickable">Choisissez un fichier</label>
+																	<input id="input-pieceFilePath-file" type="file" class="form-control cadref-input" nv-file-select 
+																		   options="{ alias:'FileData',formData:[],
+																		   removeAfterUpload: true, inputId: 'input-pieceFilePath', model:'obj.Pieces.filePath' }" 
+																		   ng-init="up_pieceFilePath = angular.copy(autoUploader)" uploader="up_pieceFilePath" style="display:none;"
+																		   />
+																</div>
+															</div>
+															<div class="row">
+																<div class="col-md-12">
+																	<a class="btn-abt cadref-btn-save btn-success" href="" ng-if="obj.Pieces.filePath!=''" ng-click="pieceSave()" title="Ajouter"></a>
+																	<a class="btn-abt cadref-btn-cancel btn-warning" href="" ng-click="pieceCloseEdit()" title="Annuler"></a>
+																</div>
+															</div>						
+														</div>
+													</div>
+												</div>
+												<div  ng-if="obj.Pieces.mode==''">
+													<div class="listWrap">
+														<table class="table table-hover nowrap straight" id="Pieces-table" width="100%" style="line-height:1">
+															<thead>
+																<tr>
+																	<th class="cadref-th">Fichier</th>
+																	<th class="cadref-th-btn">
+																		<a class="btn-abt cadref-btn-add btn-success" href="" ng-click="pieceAdd()" title="Ajouter un document"></a>
+																	</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr ng-repeat="item in obj.Pieces.data" >
+																	<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item }]}</span></td>
+																	<td  class="table-action cadref-td-btn">
+																		<a class="btn-abt cadref-btn-download btn-info" href="{[{ item.FilePath }]}" target="_blank" ng-click="pieceCloseEdit()" title="Télécharger"></a>
+																		<a class="btn-abt cadref-btn-del btn-danger" href="" ng-click="pieceDelete(item)" title="Supprimer"></a>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-1">
+											</div>
+											<div class="col-md-2">
+												<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="printFunction('mail')">Mail</button>
+											</div>
+											<div class="col-md-2">
+												<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="printFunction('sms')">SMS</button>
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>                            
-
-						</div>
+							{% else %}
+								<div class="row">
+									<div class="col-md-1">
+										<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-click="printFunction('print')">Imprimer</button>
+									</div>
+								</div>
+							{% endif %}
+						</div>                            
 					</div>
 				</div>
 			</div>
-	</section>
+		</div>
+</div>
+</section>
 </div>
 
 
-<script>
-	$('.datepicker-only-init').datetimepicker({
-		widgetPositioning: {
-			horizontal: 'left'
-		},
-		locale: 'fr',
-		format: 'DD/MM/YYYY',
-		icons: {
-			time: "fa fa-clock-o",
-			date: "fa fa-calendar",
-			up: "fa fa-arrow-up",
-			down: "fa fa-arrow-down"
-		}
-	});
-
-	//Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
-	$(".datepicker-only-init").on("dp.change", function () {
-		var input = $(this).children('input').eq(0);
-		input.trigger('change');
-		input.trigger('input');
-	});
-</script>

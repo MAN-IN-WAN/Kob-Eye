@@ -24,9 +24,10 @@ class Adherent extends genericClass {
 	}
 
 	// $mode :
-	// true => save adherent
-	// false => save inscription ou reservation	
-	function SaveAnnee($data, $mode = true) {
+	// 0 => save adherent (appel par Adherent/Save.twig.php)
+	// 1 => save inscription ou reservation	
+	// 2 => save reglement (appel direct)
+	function SaveAnnee($data, $mode) {
 		$annee = Cadref::$Annee;
 		$cours = 0;
 		$visit = 0;
@@ -34,7 +35,7 @@ class Adherent extends genericClass {
 		$diffe = 0;
 		$ins = $this->getChildren('Inscription/Annee='.$annee);
 		foreach($ins as $in) {
-			if(!$in->Attente && !$in->Supprime) $cours += $in->Prix - $in->Reduction1 - $in->Reduction2;
+			if(!$in->Attente && !$in->Supprime) $cours += $in->Prix - $in->Reduction - $in->Soutien;
 		}
 		$vis = $this->getChildren('Reservation/Annee='.$annee);
 		foreach($vis as $vi) {
@@ -56,15 +57,16 @@ class Adherent extends genericClass {
 			$a->Numero = $this->Numero;
 		}
 
-		if($mode) {
+		if($mode == 0) {
 			$a->Adhrent = $data->Adherent;
-			$a->CalsseId = $data->ClasseId;
+			$a->ClasseId = $data->ClasseId;
 			$a->AntenneId = $data->AntenneId;
 			$a->NotesAnnuelles = $data->NotesAnnuelles;
 		}
-
-		if(!$a->Cotisation && $data->Cotisation) $a->DateCotisation = time();
-		$a->Cotisation = $data->Cotisation ? $data->Cotisation : 0;
+		else if($mode == 1) {
+			if(!$a->Cotisation && $data->Cotisation) $a->DateCotisation = time();
+			$a->Cotisation = $data->Cotisation ? $data->Cotisation : 0;
+		}
 		$a->Regularisation = $data->Regularisation ? $data->Regularisation : 0;
 		$a->Cours = $cours;
 		$a->Visites = $visit;
@@ -81,7 +83,7 @@ class Adherent extends genericClass {
 		$inscr = $params['Inscr'];
 		$data->Cotisation = $inscr['cotis'];
 		$data->Regularisation = $inscr['regul'];
-		$this->SaveAnnee($data, false);
+		$this->SaveAnnee($data, 1);
 	}
 
 	function Delete() {
@@ -133,7 +135,7 @@ class Adherent extends genericClass {
 					);
 				$ret = $this->saveInscriptions($params, true);
 				$this->saveAnneeInscr($params);
-				if($ret)
+				if($ret) return true;
 						return array(
 						'data'=>'Inscription enregistrée',
 						'callBack'=>array(
@@ -197,8 +199,8 @@ class Adherent extends genericClass {
 			$o->DateAttente = $ins['DateAttente'];
 			$o->DateSupprime = $ins['DateSupprime'];
 			$o->Prix = $ins['Prix'];
-			$o->Reduction1 = $ins['Reduction1'];
-			$o->Redcution2 = $ins['Reduction2'];
+			$o->Reduction = $ins['Reduction'];
+			$o->Soutien = $ins['Soutien'];
 			$o->Utilisateur = Sys::$User->Initiales;
 			$o->Save();
 
@@ -220,9 +222,9 @@ class Adherent extends genericClass {
 //			$r->Cotisation = $inscr['cotis'];
 			$r->Notes = $inscr['note'];
 			$r->Differe = 0;
-			$r->Encaisse = 0;
+			$r->Encaisse = 1;
 			$r->Utilisateur = Sys::$User->Initiales;
-			$r->Save();
+			$r->Save(true);
 		}
 
 		// adherent
@@ -254,7 +256,7 @@ class Adherent extends genericClass {
 			$o->Differe = 1;
 			$o->Encaisse = 0;
 			$o->Utilisateur = Sys::$User->Initiales;
-			$o->Save();
+			$o->Save(true);
 		}
 		$this->Save();
 		return true;
@@ -263,7 +265,7 @@ class Adherent extends genericClass {
 	function CheckCertificat() {
 		$annee = Cadref::$Annee;
 		$max = ($annee + 1).'0630';
-		$dat = $this->Certificat;
+		$dat = $this->DateCertificat;
 		if(!empty($dat) && date('Ymd', $dat) >= $max) return true;
 
 		$cert = false;
@@ -284,9 +286,10 @@ class Adherent extends genericClass {
 		require_once ('PrintCarte.class.php');
 
 		$annee = Cadref::$Annee;
+		$aan = $this->getOneChild('AdherentAnnee/Annee='.$annee);
 		$ins = $this->getChildren('Inscription/Annee='.$annee);
 
-		$pdf = new PrintCarte($this, $recto);
+		$pdf = new PrintCarte($this, $aan, $recto);
 		$pdf->SetAuthor("Cadref");
 		$pdf->SetTitle('Carte'.$this->Numero);
 
@@ -309,10 +312,12 @@ class Adherent extends genericClass {
 		$whr = '';
 
 		switch($mode) {
-			case o:
+			case 0: // liste edherents
+				$file = 'ListeAdherent';
 				$typAdh = isset($obj['typeAdherent']) ? $obj['typeAdherent'] : '';
 				$contenu = isset($obj['Contenu']) ? $obj['Contenu'] : '';
 				$rupture = isset($obj['Rupture']) ? $obj['Rupture'] : '';
+				$enseignant = isset($obj['Enseignant']) ? $obj['Enseignant'] : '';
 				$adherent = false;
 
 
@@ -320,10 +325,10 @@ class Adherent extends genericClass {
 					$sql = "select distinct ";
 					$adherent = true;
 					$rupture = 'S';
-				} else
-						$sql = "select i.CodeClasse, i.ClasseId, n.AntenneId, i.Attente, i.DateAttente, d.Libelle as LibelleD, n.Libelle as LibelleN, ";
+				}
+				else $sql = "select i.CodeClasse, i.ClasseId, n.AntenneId, i.Attente, i.DateAttente, d.Libelle as LibelleD, n.Libelle as LibelleN, ";
 
-				$sql .= "e.Numero, e.Nom, e.Prenom, e.Adresse1, e.Adresse2, e.CP, e.Ville, e.Telephone1, e.Telephone2, e.Mail, e.ClasseId as Delegue";
+				$sql .= "e.Sexe, e.Numero, e.Nom, e.Prenom, e.Adresse1, e.Adresse2, e.CP, e.Ville, e.Telephone1, e.Telephone2, e.Mail, e.ClasseId as Delegue";
 
 				if($typAdh == 'S') {
 					// adhérents sans inscription
@@ -337,6 +342,10 @@ inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
 inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
 inner join `##_Cadref-Adherent` e on e.Id=i.AdherentId ";
+					if($enseignant) {
+						$sql .= "inner join `##_Cadref-ClasseEnseignants` ce on ce.Classe=i.ClasseId ";
+						$whr .= "and ce.EnseignantId=$enseignant ";
+					}
 				}
 
 				$mail = (isset($obj['Mail']) && $obj['Mail'] != '') ? $obj['Mail'] : '';
@@ -407,30 +416,32 @@ inner join `##_Cadref-Adherent` e on e.Id=i.AdherentId ";
 					else $sql .= "order by i.CodeClasse, e.Nom, e.Prenom ";
 				}
 				break;
-			case 1:
+			case 1: // certificats medicaux
+				$file = 'ListeCertificat';
 				$contenu = 'N';
 				$rupture = 'E'; // enseignant
 				$antenne = 0;
 				$an = $annee + 1;
 				$sql = "
-select distinct a.Numero, a.Nom, a.Prenom, a.Telephone1, a.Telephone2, a.Mail, 
-a.Certificat, i.CodeClasse, i.ClasseId, d.Libelle as LibelleD, n.Libelle as LibelleN
+select distinct a.Sexe, a.Numero, a.Nom, a.Prenom, a.Telephone1, a.Telephone2, a.Mail, 
+a.DateCertificat, i.CodeClasse, i.ClasseId, d.Libelle as LibelleD, n.Libelle as LibelleN
 from `##_Cadref-Adherent` a
-inner join `##_Cadref-Inscription` i on i.AdherentId=a.Id and i.Annee='2017'
+inner join `##_Cadref-Inscription` i on i.AdherentId=a.Id and i.Annee='$annee'
 inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
 inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
 left join `##_Cadref-ClasseEnseignants` ce on ce.Classe=c.Id
 left join `##_Cadref-Enseignant` e on e.Id=ce.EnseignantId
-where a.Annee='$annee' and i.Supprime=0 and i.Attente=0 and d.Certificat<>0 and (a.Certificat is null or a.Certificat<unix_timestamp('$an-07-01'))
+where a.Annee='$annee' and i.Supprime=0 and i.Attente=0 and d.Certificat<>0 and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$an-07-01'))
 order by e.Nom,i.CodeClasse,a.Nom,a.Prenom";
 				break;
-			case 2:
+			case 2: // fiches incomplètes
+				$file = 'ListeIncomplet';
 				$contenu = 'N';
 				$rupture = 'S';
 				$antenne = 0;
 				$sql = "
-select a.Numero, a.Nom, a.Prenom, a.Telephone1, a.Telephone2, a.Mail
+select a.Sexe, a.Numero, a.Nom, a.Prenom, a.Telephone1, a.Telephone2, a.Mail
 from `##_Cadref-Adherent` a
 where a.Annee='$annee' and (a.Origine='' or a.SituationId='' or a.ProfessionId='' or a.Sexe='' or a.Naissance='')
 order by a.Nom, a.Prenom";
@@ -440,8 +451,28 @@ order by a.Nom, a.Prenom";
 
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-		if(!$pdo) return false;
+		if(!$pdo) return array('success'=>false, 'sql'=>$sql);;
 
+		if($obj['mode'] == 'mail') {
+			$cc = array();
+			foreach($pdo as $a) {
+				if(strpos($a['Mail'], '@') > 0)
+					$cc[] = $a['Mail'];
+			}
+			if(count($cc)) {
+				$args = array('Subject'=>$obj['Sujet'], 'To'=>array('contact@cadref.fr'), 'CC'=>$cc, 'Body'=>$obj['Corps'], 'Attachments'=>$obj['Pieces']['data']);
+				Cadref::SendMessage($args);
+			}
+			return true;
+		}
+		if($obj['mode'] == 'sms') {
+			foreach($pdo as $a) {
+				$params = array('Telephone1'=>$a['Telephone1'],'Telephone2'=>$a['Telephone2'],'Message'=>$obj['Sujet']);
+				Cadref::SendSms($params);
+			}
+			return true;
+		}
+		
 		if($contenu != 'Q') {
 			require_once ('PrintAdherent.class.php');
 
@@ -452,7 +483,7 @@ order by a.Nom, a.Prenom";
 			$pdf->AddPage();
 			$pdf->PrintLines($pdo);
 
-			$file = 'Home/tmp/ListeAdherent_'.date('YmdHi').'.pdf';
+			$file = 'Home/tmp/'.$file.'_'.date('YmdHis').'.pdf';
 			$pdf->Output(getcwd().'/'.$file);
 			$pdf->Close();
 		} else {
@@ -479,7 +510,7 @@ order by a.Nom, a.Prenom";
 				$pdf->Add_Label($s);
 			}
 
-			$file = 'Home/tmp/EtiquetteAdherent_'.date('YmdHi').'.pdf';
+			$file = 'Home/tmp/EtiquetteAdherent_'.date('YmdHis').'.pdf';
 			$pdf->Output(getcwd().'/'.$file);
 			$pdf->Close();
 		}
@@ -488,6 +519,7 @@ order by a.Nom, a.Prenom";
 	}
 
 	function PrintAttestation($params) {
+		$mode = $params['mode'];
 		$sql = "
 select distinct h.Numero,h.Nom,h.Prenom,h.Adresse1,h.Adresse2,h.CP,h.Ville,a.Cotisation
 from `##_Cadref-AdherentAnnee` a
@@ -511,8 +543,8 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 			if(!$pdo) return false;
 
-			$file = $this->imprimeAttestation($pdo, $annee, $fisc);
-			return array('pdf'=>$file, 'sql'=>$sql);
+			$file = $this->imprimeAttestation($pdo, $annee, $fisc, $mode);
+			return array('pdf'=>$file);
 		}
 		else {
 			if(!isset($params['step'])) $params['step'] = 0;
@@ -536,14 +568,13 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 					$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 					if(!$pdo) return false;
 
-					$file = $this->imprimeAttestation($pdo, $annee, $fisc);
+					$file = $this->imprimeAttestation($pdo, $annee, $fisc, $mode);
 					return array(
 						'data'=>'<a id="displayAttestation" href="'.$file.'" target="_blank" ng-click="attestationAdherent(\''.$file.'\')">Attestation imprimée</a>',
 						'callBack'=>array(
 							'nom'=>'displayAttestation',
 							'title'=>'Attestation 3',
-							'args'=>array(),
-							'sql'=>$sql
+							'args'=>array()
 						)
 					);
 					break;
@@ -555,7 +586,7 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 		);
 	}
 
-	private function imprimeAttestation($list, $annee, $fisc) {
+	private function imprimeAttestation($list, $annee, $fisc, $mode) {
 		require_once ('PrintAttestation.class.php');
 
 		$pdf = new PrintAttestation($annee, $fisc);
@@ -565,7 +596,7 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 		foreach($list as $l)
 			$pdf->PrintPage($l);
 
-		$file = 'Home/tmp/Attestation'.date('YmdHi').'.pdf';
+		$file = 'Home/tmp/Attestation'.$mode.date('YmdHi').'.pdf';
 		$pdf->Output(getcwd().'/'.$file);
 		$pdf->Close();
 
@@ -661,6 +692,7 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 				);
 				break;
 			case 1:
+				$params['Msg']['To'] = array($params['Msg']['Mail']);
 				$ret = Cadref::SendMessage($params['Msg']);
 				return array(
 					'data'=>'Message envoyé',
@@ -729,7 +761,7 @@ order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 				$sql = "
 select i.Id as insId, c.Id as clsId, d.Libelle as LibelleD, n.Libelle as LibelleN, 
 j.Jour, c.HeureDebut, c.HeureFin, c.CycleDebut, c.CycleFin,
-a.LibelleCourt as LibelleA,i.Prix,i.Reduction1,i.Reduction2,c.Attachements,
+a.LibelleCourt as LibelleA,i.Prix,i.Reduction,i.Soutien,c.Attachements,
 i.Attente,i.Supprime,
 from_unixtime(i.DateAttente,'%d/%m/%Y') as DateAttente,
 from_unixtime(i.DateSupprime,'%d/%m/%Y') as DateSupprime,
@@ -801,7 +833,7 @@ where ce.Classe=:cid";
 			$s .= "Votre nouveau mot de passe a été enregistré.<br /><br />";
 			$s .= "A bientôt,<br />L'équipe du CADREF<br />";
 			$params = array('Subject'=>('CADREF : Changement de mot de passe.'),
-				'Mail'=>$this->Mail,
+				'To'=>array($this->Mail),
 				'Body'=>$s);
 			Cadref::SendMessage($params);
 		}

@@ -1,6 +1,15 @@
 <?php
 
 class Reglement extends genericClass {
+	
+	function Save($mode = false) {
+		$ret = parent::Save();
+		if(! $mode) {
+			$adh = $this->getOneParent('Adherent');
+			$adh->SaveAnnee(new stdClass(), 2);	
+		}
+		return $ret;
+	}
 
 	function PrintReglement($obj) {
 		require_once ('PrintReglement.class.php');
