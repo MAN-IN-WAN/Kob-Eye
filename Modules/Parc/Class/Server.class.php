@@ -1521,7 +1521,7 @@ class Server extends genericClass {
     public function clearCache($task) {
         $act = $task->createActivity('Vidage du cache');
         try {
-            $out = $this->remoteExec('rm /tmp/nginx -Rf', $act);
+            $out = $this->remoteExec('rm /tmp/nginx/* -Rf', $act);
         }catch (Exception $e){
             $act->addDetails($e->getMessage());
             $act->Terminate(false);
@@ -1670,6 +1670,7 @@ class Server extends genericClass {
                 $task->TaskObject = 'Server';
                 $task->TaskId = $px->Id;
                 $task->TaskFunction = 'restartServiceNginx';
+                $task->DateDebut = time()+60;
                 $task->Save();
             }
         }

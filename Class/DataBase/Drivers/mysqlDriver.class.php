@@ -421,11 +421,20 @@ class mysqlDriver extends ObjectClass{
 	static function executeSql($O,$sql,$type='SELECT',$GroupBy=""){
 		if (empty($sql))return;
 //if(strpos($sql,'Reservation') !== false) klog::l(">>>>>>>>>>>>>>>>>".$sql);
-		$GLOBALS["Systeme"]->connectSQL();
-		$i=false;
+
+        //test connection toujours active
+        if (!is_object($GLOBALS["Systeme"]->Db[$O->Bdd])){
+            $GLOBALS["Systeme"]->connectSQL();
+        }elseif (!$GLOBALS["Systeme"]->Db[$O->Bdd]->getAttribute(PDO::ATTR_CONNECTION_STATUS)){
+            $GLOBALS["Systeme"]->connectSQL(true);
+        }
         $GLOBALS["Chrono"]->start("SQL");
 		$GLOBALS["Chrono"]->start("SQL ".Module::$LAST_QUERY);
-		$Result = $GLOBALS["Systeme"]->Db[$O->Bdd]->query ( $sql );
+		try {
+            $Result = $GLOBALS["Systeme"]->Db[$O->Bdd]->query($sql);
+        }catch (Exception $e){
+            throw new Exception($e->getMessage());
+        }
 		if ($Result)$Result = $Result->fetchALL ( PDO::FETCH_ASSOC );
         $GLOBALS["Chrono"]->stop("SQL");
 		$GLOBALS["Chrono"]->stop("SQL ".Module::$LAST_QUERY);

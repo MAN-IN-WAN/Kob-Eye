@@ -73,8 +73,14 @@ class RestorePoint extends genericClass{
 
             //Restauration des bases des données
             foreach ($bdds as $bdd) {
+                $act = $task->createActivity('Modification du moteur de la base '.$bdd->Nom, 'Info', $task);
+                $cmd = 'cd /home/' . $host->NomLDAP . '/sql && cat '.$bdd->Nom.'-'.$this->Identifiant.".sql | sed -e 's/MyISAM/InnoDB/g' > ".$bdd->Nom.'-'.$this->Identifiant.".innodb.sql";
+                $act->addDetails($cmd);
+                $out = $apachesrv->remoteExec($cmd);
+                $act->addDetails($out);
+                $act->Terminate(true);
                 $act = $task->createActivity('Restauration base de donnée '.$bdd->Nom, 'Info', $task);
-                $cmd = 'cd /home/' . $host->NomLDAP . '/ && mysql -h '.PARC_BDD_DOMAIN.' -u ' . $host->NomLDAP . ' -p' . $host->Password . ' -e "DROP DATABASE \`' . $bdd->Nom . '\`;" && mysql -h '.PARC_BDD_DOMAIN.' -u ' . $host->NomLDAP . ' -p' . $host->Password . ' -e "CREATE DATABASE \`' . $bdd->Nom . '\`;" && mysql -h '.PARC_BDD_DOMAIN.' -u ' . $host->NomLDAP . ' -p' . $host->Password . ' ' . $bdd->Nom . ' < sql/'.$bdd->Nom.'-'.$this->Identifiant.'.sql';
+                $cmd = 'cd /home/' . $host->NomLDAP . '/ && mysql -h '.PARC_BDD_DOMAIN.' -u ' . $host->NomLDAP . ' -p' . $host->Password . ' -e "DROP DATABASE \`' . $bdd->Nom . '\`;" && mysql -h '.PARC_BDD_DOMAIN.' -u ' . $host->NomLDAP . ' -p' . $host->Password . ' -e "CREATE DATABASE \`' . $bdd->Nom . '\`;" && mysql -h '.PARC_BDD_DOMAIN.' -u ' . $host->NomLDAP . ' -p' . $host->Password . ' ' . $bdd->Nom . ' < sql/'.$bdd->Nom.'-'.$this->Identifiant.'.innodb.sql';
                 $act->addDetails($cmd);
                 $out = $apachesrv->remoteExec($cmd);
                 $act->addDetails($out);

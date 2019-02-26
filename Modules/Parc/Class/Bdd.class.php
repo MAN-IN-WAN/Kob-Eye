@@ -61,10 +61,13 @@ class Bdd extends genericClass {
             $result = $q->fetchALL(PDO::FETCH_ASSOC);
             if (!$result[0]["COUNT(*)"]) {
                 $query = "CREATE USER '" . $host->NomLDAP . "'@'%' IDENTIFIED BY '" . $host->Password . "';";
+                //$this->addWarning(array('Message'=>'sql: '.$query));
                 $dbGuac->query($query);
             }else{
                 //sinon modification du mot de passe.
-                $query = "ALTER USER '" . $host->NomLDAP . "'@'%' IDENTIFIED BY '" . $host->Password . "';";
+                //$query = "ALTER USER '" . $host->NomLDAP . "'@'%' IDENTIFIED BY '" . $host->Password . "';";
+                $query = "SET PASSWORD FOR '" . $host->NomLDAP . "'@'%' = PASSWORD('" . $host->Password . "');";
+                //$this->addWarning(array('Message'=>'sql: '.$query));
                 $dbGuac->query($query);
             }
 

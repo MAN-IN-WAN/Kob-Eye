@@ -99,7 +99,7 @@ foreach ($vars['rows'] as $k=>$v){
         }else if (isset($f['query'])&&$v->{$f['name']}>0){
             //recherche de sa valeur
             $str = explode('::',$f['query']);
-            $qry = explode('/',$str[0],2);
+            $qry = explode('/',$str[0],3);
 			$val = Sys::getOneData($qry[0],$qry[1].'/'.$v->{$f['name']});
 			if ($val){
 	            $v->{$f['name'].'Label'} = $val->getFirstSearchOrder();

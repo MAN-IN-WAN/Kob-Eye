@@ -155,6 +155,7 @@ class Apache extends genericClass {
                 $task  = genericClass::createInstance('Systeme','Tache');
                 $task->Nom = "Activation SSL pour la configuration Apache ".$this->getDomains()." ( ".$this->Id." )";
                 $task->Type = "Fonction";
+                $task->TaskType = "installation";
                 $task->TaskModule = "Parc";
                 $task->TaskObject = "Apache";
                 $task->TaskFunction = "executeLetsencrypt";
@@ -165,6 +166,7 @@ class Apache extends genericClass {
                 $host = $this->getOneParent('Host');
                 $task->addParent($host);
                 //on va chercher l'instance
+                if (!$host) return false;
                 $instance = $host->getOneChild('Instance');
                 $task->addParent($instance);
                 //recherch de la prochaine d'execution pour eviter les collision de letsencrypt
@@ -450,8 +452,8 @@ class Apache extends genericClass {
 
         //Proxy config
 		if ($this->ProxyCache){
-            $entry['apacheProxyCacheConfig'] = "proxy_cache            STATIC;\n    proxy_cache_valid      200  1h;\n    proxy_cache_use_stale  error timeout invalid_header updating http_500 http_502 http_503 http_504;\n";
-            $entry['apacheProxyCacheConfigSsl'] = "    proxy_cache STATIC;\n    proxy_cache_valid      200  1h;\n    proxy_cache_use_stale  error timeout invalid_header updating http_500 http_502 http_503 http_504;\n";
+            $entry['apacheProxyCacheConfig'] = "proxy_cache            ".$this->ApacheServerName.";\n  proxy_cache_valid      200  1h;\n  proxy_cache_use_stale  error timeout invalid_header updating http_500 http_502 http_503 http_504;\n  proxy_cache_key    \$uri\$is_args\$args;\n  proxy_cache_valid 200 10m;\n  proxy_cache_background_update on;\n  if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_no_cache|no_cache|wordpress_logged_in\") { set \$arg_nocache 1; }\n";
+            $entry['apacheProxyCacheConfigSsl'] = "proxy_cache ".$this->ApacheServerName.".ssl;\n  proxy_cache_valid      200  1h;\n  proxy_cache_use_stale  error timeout invalid_header updating http_500 http_502 http_503 http_504;\n  proxy_cache_key    \$uri\$is_args\$args;\n  proxy_cache_valid 200 10m;\n  proxy_cache_background_update on;\n  if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_no_cache|no_cache|wordpress_logged_in\") { set \$arg_nocache 1; }\n";
         }else if (!$new) {
 		    $entry['apacheProxyCacheConfig'] = Array();
             $entry['apacheProxyCacheConfigSsl'] = Array();
@@ -542,7 +544,7 @@ class Apache extends genericClass {
     private function getInfra() {
         if(!is_object($this->_KEInfra)) {
             $srv = $this->getKEServer();
-            if(is_array($srv)) {
+            if(is_array($srv)&&sizeof($srv)) {
                 $srv = $srv[0];
                 $this->_KEInfra = $srv->getOneParent('Infra');
             }
