@@ -13,7 +13,7 @@
 <div id="loginModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header cadref-modal-header">
 				<div class="row">
 					<div class="col-md-6 cadref-header">
 						<img class="cadref-logo" src="/Skins/LoginCadref/Img/cadref_logo_bleu.png" alt="CADREF UCP">

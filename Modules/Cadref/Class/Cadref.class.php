@@ -65,7 +65,7 @@ class Cadref extends Module {
 			if($w1) $w1 .= " or ";
 			$w1 .= "Telephone1 regexp '$telr' or Telephone2 regexp '$telr'";
 		}
-		$sql = "select Numero,Nom,Prenom,CP,Mail,Telephone1,Telephone2 from `##_Cadref-Adherent` where ($w) and ($w1) limit 1";
+		$sql = "select Numero,Nom,Prenom,Ville,Mail,Telephone1,Telephone2 from `##_Cadref-Adherent` where ($w) and ($w1) limit 1";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if($pdo && $pdo->rowcount()) {
@@ -74,7 +74,7 @@ class Cadref extends Module {
 				$r['Numero'] = $p['Numero'];
 				$r['Nom'] = $p['Nom'];
 				$r['Prenom'] = $p['Prenom'];
-				$r['CP'] = '...'.substr($p['CP'], -2, 2);
+				$r['Ville'] = $p['Ville'];
 				$s = $p['Mail'];
 				if($mail && $mail == $s) $r['Mail'] = $s;
 				else if($s) {
@@ -105,7 +105,7 @@ class Cadref extends Module {
 		$data["controls"] = ['close'=>0, 'save'=>1, 'cancel'=>1];
 		return json_encode($data);
 	}
-
+	
 	private static function CreateUser() {
 		$num = $_POST['CadrefNumero1'];
 		$a = Sys::getOneData('Cadref', 'Adherent/Numero='.$num);
@@ -151,6 +151,56 @@ class Cadref extends Module {
 		return str_shuffle(substr(str_shuffle($lc),0,3).substr(str_shuffle($uc),0,2).substr(str_shuffle($dc),0,2).substr(str_shuffle($sc),0,1));
 	}
 
+	public static function ChangePassword() {
+		$data = array('success'=>0);
+		$login = isset($_POST['CadrefLogin']) ? trim($_POST['CadrefLogin']) : '';
+		$mail = isset($_POST['CadrefMail']) ? trim($_POST['CadrefMail']) : '';
+		if(! $mail || !$login) {
+			$data['message'] = 'Vous devez saisir votre code utilisateur et votre mot de passe.';
+			return json_encode($data);			
+		}
+		
+		$adh = Sys::getOneData('Cadref', "Adherent/Numero=$login&Mail=$mail");
+		if(!count($adh)) {
+			$usr = Sys::getOneData('Systeme', "User/Login=$login&Mail=$mail");
+			if(!count($usr)) {
+				$data['message'] = 'UTILISATEUR NON TROUVÉ.';
+				return json_encode($data);							
+			}
+			$tel1 = $usr->Tel;
+			$tel2 = '';
+			$s = Cadref::MailCivility($usr);
+		}
+		else {
+			$usr = Sys::getOneData('Systeme', 'User/Login='.$adh->Numero);
+			$tel1 = $adh->Telephone1;
+			$tel2 = $adh->Telephone2;
+			$s = Cadref::MailCivility($adh);
+		}
+			
+		$new = Cadref::GeneratePassword();
+		//Sys::$User->Pass = '[md5]'.md5($new);
+		//Sys::$User->Save();
+
+		$s .= "Votre nouveau mot de passe est : $new<br /><br />";
+		$s .= 'Vous pourrez le modifier dans la rubrique "Utilisateur".<br /><br />';
+		$s .= Cadref::MailSignature();
+		$params = array('Subject'=>('CADREF : Changement de mot de passe.'),
+			'To'=>array($mail),
+			'Body'=>$s);
+		Cadref::SendMessage($params);
+
+		$msg = "CADREF : Changement de mot de passe.\nMot de passe: $new\n";
+		$params = array('Telephone1'=>$tel1,'Telephone2'=>$tel2,'Message'=>$msg);
+		Cadref::SendSms($params);
+		
+		$data['success'] = 1;
+		$data['message'] = 'Votre nouveau mot de passe vous a été envoyé par email.';
+		return json_encode($data);
+		
+	}
+
+	
 	
 	private static function checkAdher($f0, $v0, $f1, $v1) {
 		$qry = "Adherent/$f0=$v0&$f1=$v1";
@@ -498,14 +548,16 @@ where ce.Classe=$cid
 	}
 	
 	public static function MailCivility($a) {
-		$c = 'Bonjour';
-		if(is_object($a)) $c = ($a->Sexe == "F" ? " Madame " : ($a->Sexe == "H" ? " Monsieur " : " ")).trim($a->Prenom.' '.$a->Nom);
-		elseif(is_array($a)) $c = ($a['Sexe'] == "F" ? " Madame " : ($a['Sexe'] == "H" ? " Monsieur " : " ")).trim($a['Prenom'].' '.$a['Nom']);
+		$c = 'Bonjour ';
+		if(is_object($a)) $c .= ($a->Sexe == "F" ? "Madame " : ($a->Sexe == "H" ? "Monsieur " : "")).trim($a->Prenom.' '.$a->Nom);
+		elseif(is_array($a)) $c .= ($a['Sexe'] == "F" ? "Madame " : ($a['Sexe'] == "H" ? "Monsieur " : "")).trim($a['Prenom'].' '.$a['Nom']);
 		return $c.",<br /><br /><br />";
 	}
 
 	public static function MailSignature() {
-		return "A bientôt,<br />L'équipe du CADREF<br />";
+		$s = "A bientôt,<br />L'équipe du CADREF<br />";
+		$s .= '<img src="https://gestion.cadref.com/Skins/LoginCadref/Img/cadref_logo_bleu_100.png"/>';
+		return $s;
 	}
 
     public static function SendSms($params) {
