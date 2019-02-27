@@ -179,8 +179,8 @@ class Cadref extends Module {
 		}
 			
 		$new = Cadref::GeneratePassword();
-		//Sys::$User->Pass = '[md5]'.md5($new);
-		//Sys::$User->Save();
+		Sys::$User->Pass = '[md5]'.md5($new);
+		Sys::$User->Save();
 
 		$s .= "Votre nouveau mot de passe est : $new<br /><br />";
 		$s .= 'Vous pourrez le modifier dans la rubrique "Utilisateur".<br /><br />';
