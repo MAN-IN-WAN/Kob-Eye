@@ -304,3 +304,12 @@ label.cadref-clickable {
     margin-top: 3px;
     padding: 0px;
 }
+span.cadref-default {
+	color: #acb7bf;
+}
+span.cadref-success {
+	color: #46be8a;
+}
+span.cadref-info {
+	color: #0190da;
+}

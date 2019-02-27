@@ -2,8 +2,8 @@
 class Classe extends genericClass {
 	
 	function Save() {
-		Cadref::$Annee;
-		if(!empty($this->Annee) && $this->Annee = $annee) {
+		$annee = Cadref::$Annee;
+		if(!empty($this->Annee) && $this->Annee != $annee) {
 			$this->addError(array("Message" => "Cette fiche ne peut être modifiée ($this->Annee)", "Prop" => ""));
 			return false;			
 		}

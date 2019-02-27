@@ -34,8 +34,8 @@ class PrintAttestation extends FPDF {
 		$this->AddPage();
 		$this->SetFillColor(192,192,192);
 		
-		$img = getcwd().'/Skins/AngularAdmin/Modules/Cadref/assets/img/cadref_logo.jpg';
-		$this->Image($img,20,21,37,30);
+		$img = getcwd().'/Skins/AngularAdmin/Modules/Cadref/assets/img/cadref_logo_gris.png';
+		$this->Image($img,20,21,26,30);
 		
 		$this->SetFont('Arial','B',12);
 		$this->SetXY(-120,21);

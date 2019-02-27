@@ -530,7 +530,10 @@
 			cad.Inscr.updated = cad.Inscr.paye != 0;
 			$('#searchClasse').focus();
 			$('#modalfunction-CadrefAdherent').on('keyup', function(event) {
-				if(event.keyCode == 13) $('#btnNext').click();
+				if(event.keyCode == 13) {
+					if($('#inscriptionNext').length) $('#inscriptionNext').click();
+					else if($('#differeNext').length) $('#differeNext').click();
+				}
 			});
         }
 		
@@ -541,6 +544,11 @@
 			var p = Number(cad.paye)
 			enb = p == 0 || cad.paye == '' || (p != 0 && cad.mode != '');
 			$scope.nextDisabled = !enb;
+			if(enb) {
+				if(Number(cad.solde) != 0) $('#inscriptionNext').html('Différé');
+				else $('#inscriptionNext').html('Valider');
+			}
+			else $('#inscriptionNext').html('-----');
 		}
 		
 		// switch cotisation

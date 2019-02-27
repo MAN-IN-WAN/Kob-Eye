@@ -29,7 +29,7 @@ body{
 @media screen and (min-width: 768px) {
     .modal-dialog {
         width: 500px;
-        padding-top: 200px;
+        padding-top: 100px;
         padding-bottom: 30px;
     }
 }
@@ -41,11 +41,11 @@ body{
     margin-bottom: 15px;
     overflow: hidden;
 }
-h1 { font: normal 50px/50px Arial, Helvetica, sans-serif;  color:#ffffff; margin-top:8px; margin-bottom:5px;}
-h2 { font: normal 34px/34px Arial, Helvetica, sans-serif;  color:#ffffff; margin-top:8px; margin-bottom:5px;}
+h1 { font: normal 50px/50px Arial, Helvetica, sans-serif;  color:#ffffff; margin-top:8px; margin-bottom:8px;}
+h2 { font: normal 34px/34px Arial, Helvetica, sans-serif;  color:#ffffff; margin-top:1px; margin-bottom:5px;}
 h3 { font: normal 16px/16px "Trebuchet MS", Arial, Helvetica, sans-serif;  color:#ffffff; margin-top:8px; margin-bottom:5px;}
 h4 { font: normal 12px/12px Arial, Helvetica, sans-serif;  color:#333333; margin-top:8px; margin-bottom:5px;}
-h5 { font: normal 19px/26px "Trebuchet MS", Arial, Helvetica, sans-serif;  color:#ffffff; margin-top:8px; margin-bottom:5px;}
+h5 { font: normal 19px/19px "Trebuchet MS", Arial, Helvetica, sans-serif;  color:#ffffff; margin-top:8px; margin-bottom:5px;}
 h6 { font: italic 12px/18px Ubuntu;  color:#ffffff; margin-top:8px; margin-bottom:5px;}
 body { font-weight: normal;}
 
@@ -80,4 +80,40 @@ body { font-weight: normal;}
 .cadref-body {
 	position: relative;
     padding: 10px;
+}
+
+.cadref-logo {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: auto;
+	height: 100%;
+}
+.cadref-header {
+	height: 100px;
+}
+.cadref-name {
+	height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.cadref-title {
+	font-family: Arial;
+	font-size: 34px;
+	line-height: 34px;
+	color: white;
+}
+.cadref-modal-body {
+	padding-top: 0;
+}
+
+@media screen and (max-width: 991px) {
+	.cadref-name {
+		text-align: center;
+	}
+	.cadref-header-name {
+		height: 45px;
+	}
 }

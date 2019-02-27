@@ -30,8 +30,8 @@ class PrintCheque extends FPDF {
 	function PrintPage($l, $params) {
 		$this->AddPage();
 		
-		$img = getcwd().'/Skins/AngularAdmin/Modules/Cadref/assets/img/cadref_logo.jpg';
-		$this->Image($img,20,21,37,30);
+		$img = getcwd().'/Skins/AngularAdmin/Modules/Cadref/assets/img/cadref_logo_gris.png';
+		$this->Image($img,20,21,26,30);
 		$this->SetFont('Arial','',10);
 		$this->SetXY(20, 51);
 		$this->Cell(37, 4, 'www.cadref.com', 0, 1, 'C');

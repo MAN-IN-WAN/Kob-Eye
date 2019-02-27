@@ -179,7 +179,7 @@ class Adherent extends genericClass {
 			$cls = genericClass::createInstance('Cadref', 'Classe');
 			$cls->initFromId($ins['ClasseClasseId']);
 
-			if($id == 0) {
+			if(!$id) {
 				$o->addParent($this);
 				$o->addParent($cls);
 				$o->Annee = $annee;
@@ -204,7 +204,7 @@ class Adherent extends genericClass {
 			$o->Save();
 
 			// classe : inscrits/attentes/suppmime
-			if($supprime != $o->Supprime || $attente != $o->Attente) {
+			if(!$id || $supprime != $o->Supprime || $attente != $o->Attente) {
 				$cls->Save();
 			}
 		}

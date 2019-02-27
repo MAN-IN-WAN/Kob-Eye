@@ -45,7 +45,7 @@ class Cadref extends Module {
 		$mail = isset($_POST['CadrefMail']) ? trim($_POST['CadrefMail']) : '';
 		$tel = isset($_POST['CadrefTel']) ? $_POST['CadrefTel'] : '';
 		if((empty($num) && empty($nom)) || (empty($mail) && empty($tel))) {
-			$data['message'] = "Vous devez spécifier le numéro ou le nom<br /> ainsi que l'adresse mail ou le téléphone";
+			$data['message'] = "Vous devez spécifier le numéro ou le nom<br />puis l'adresse mail ou le téléphone";
 			return json_encode($data);
 		}
 		
