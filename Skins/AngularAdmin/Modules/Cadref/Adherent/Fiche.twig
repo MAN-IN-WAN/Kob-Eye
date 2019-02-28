@@ -56,10 +56,22 @@
 									{{ label("CP Ville") }}
 								</div>
 								<div class="col-md-2">
-									{{ finput(f.CP, o, false, 'ddddd') }}
+{#									<div custom-select="a.CP as a.CP+'  -  '+a.Commune for a in getSelectData('CadrefCommuneStore',$searchTerm)" 
+										 custom-select-options="{ 'async': true, 'filter':''}" 
+										 ng-model="{{ o }}.CP"
+										 class="form-control cadref-input" 
+										 ng-title="{{ o }}.CP">
+									</div>
+#}									{{ finput(f.CP, o, false, 'ddddd') }}
 								</div>
 								<div class="col-md-8">
-									{{ finput(f.Ville, o, false, '', 'text-transform:uppercase;', true) }}
+{#									<div custom-select="a.Commune as a.CP+'  -  '+a.Commune for a in getSelectData('CadrefCommuneStore',$searchTerm)" 
+										 custom-select-options="{ 'async': true, 'filter':''}" 
+										 ng-model="{{ o }}.Ville"
+										 class="form-control cadref-input" 
+										 ng-title="{{ o }}.Ville">
+									</div>
+#}									{{ finput(f.Ville, o, false, '', 'text-transform:uppercase;', true) }}
 								</div>
 							</div>
 							<div class="row" style="height:10px"></div>

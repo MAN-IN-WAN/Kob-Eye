@@ -316,9 +316,9 @@
 	</OBJECTCLASS>
 
 	<OBJECTCLASS title="Commune" driver="mysql" order="Commune" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Communes" Operations="add,edit" Dico="1">
-		<PROPERTIES type="varchar" searchOrder="1" length="50" obligatoire="1" category="Description" description="Commune">Commune</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="2" length="5" obligatoire="1" category="Description" description="Code postal">CP</PROPERTIES>
-		<PROPERTIES type="varchar" length="5" obligatoire="1" category="Description" description="Agglomération">Agglomeration</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" length="50" obligatoire="1" category="Description" list="1" description="Commune">Commune</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" length="5" obligatoire="1" category="Description" list="2" description="Code postal">CP</PROPERTIES>
+		<PROPERTIES type="varchar" length="5" obligatoire="1" category="Description" list="3" description="Agglomération">Agglomeration</PROPERTIES>
 	</OBJECTCLASS>
 
 
@@ -450,16 +450,24 @@
 		<PROPERTIES type="int" default="0" auto="1" category="Autre" list="24" form="24" description="Attachements">Attachements</PROPERTIES>
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="Lieu" driver="mysql" order="Lieu" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Lieu" Operations="add,edit" Dico="1">
-		<FKEY card="0,1" module="Cadref" data="Antenne,Id" category="Description" list="1" form="1" fiche="1" description="Antenne">AntenneId</FKEY>
+	<OBJECTCLASS title="Lieu" driver="mysql" order="Lieu" orderType="ASC" master="0" AccessPoint="1" Icon="[None]" Description="Lieu" Operations="add,edit" Dico="0" Class="Modules/Cadref/Class/Lieu.class.php">
+		<FKEY card="0,1" module="Cadref" data="Antenne,Id" category="Description" form="1" fiche="1" description="Antenne">AntenneId</FKEY>
 		<PROPERTIES type="varchar" length="16" searchOrder="1" obligatoire="1" category="Description" list="1" form="1" fiche="1" description="Lieu">Lieu</PROPERTIES>
 		<PROPERTIES type="varchar" length="255" searchOrder="2" auto="1" category="Description" list="2" form="1" fiche="1" description="Libelle">Libelle</PROPERTIES>
-		<PROPERTIES type="varchar" length="50" category="Description" list="2" form="1" fiche="1" description="Adresse">Adresse1</PROPERTIES>
-		<PROPERTIES type="varchar" length="50" category="Description" list="2" form="1" fiche="1" description="Adresse">Adresse2</PROPERTIES>
-		<PROPERTIES type="varchar" length="50" category="Description" list="2" form="1" fiche="1" description="Ville">Ville</PROPERTIES>
-		<PROPERTIES type="varchar" length="1" category="Description" values="L::Lieu,R::Regroument" list="3" form="1" fiche="1" description="Type">Type</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" category="Description" form="1" fiche="1" description="Adresse">Adresse1</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" category="Description" form="1" fiche="1" description="Adresse">Adresse2</PROPERTIES>
+		<PROPERTIES type="varchar" length="50" category="Description" form="1" fiche="1" description="Ville">Ville</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" category="Description" values="L::Lieu,R::Regroument" list="6" form="1" fiche="1" description="Type">Type</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" category="Description" form="1" fiche="1" description="Coordonnées GPS">GPS</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" special="reverse" category="Description"  form="1" fiche="1" description="Inactif">Inactif</PROPERTIES>
+
+		<VIEW title="LieuList" default="1" order="Lieu" orderType="ASC">
+			<OBJECTCLASS title="Lieu">
+				<JOIN type="outer" module="Cadref" title="Antenne" on="AntenneId" target="Id">
+					<PROPERTIES type="varchar" list="4" form="4" fiche="4" ListDescr="Antenne">LibelleCourt</PROPERTIES>
+				</JOIN>
+			</OBJECTCLASS>
+		</VIEW>
 	</OBJECTCLASS>
 
 
@@ -470,7 +478,7 @@
 
 		<VIEW title="DepartList" default="1" order="HeureDepart" orderType="ASC">
 			<OBJECTCLASS title="Depart">
-				<JOIN type="outer" module="Cadref" title="Lieu" on="LieuId" target="Id" order="Lieu" orderType="ASC">
+				<JOIN type="outer" module="Cadref" title="Lieu" on="LieuId" target="Id">
 					<PROPERTIES type="varchar" form="4" fiche="4" list="4" alias="Libelle">Libelle</PROPERTIES>
 				</JOIN>
 			</OBJECTCLASS>

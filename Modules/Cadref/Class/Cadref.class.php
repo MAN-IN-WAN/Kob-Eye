@@ -105,7 +105,13 @@ class Cadref extends Module {
 		$data["controls"] = ['close'=>0, 'save'=>1, 'cancel'=>1];
 		return json_encode($data);
 	}
-	
+
+	private static function checkAdher($f0, $v0, $f1, $v1) {
+		$qry = "Adherent/$f0=$v0&$f1=$v1";
+		$adh = Sys::getOneData('Cadref', $qry);
+		return $adh;
+	}
+		
 	private static function CreateUser() {
 		$num = $_POST['CadrefNumero1'];
 		$a = Sys::getOneData('Cadref', 'Adherent/Numero='.$num);
@@ -202,11 +208,66 @@ class Cadref extends Module {
 
 	
 	
-	private static function checkAdher($f0, $v0, $f1, $v1) {
-		$qry = "Adherent/$f0=$v0&$f1=$v1";
-		$adh = Sys::getOneData('Cadref', $qry);
-		return $adh;
+	public static function RegisterUser() {
+		$data = array('success'=>0);
+		$nom = isset($_POST['Nom']) ? trim($_POST['Nom']) : '';
+		$pre = isset($_POST['Prenom']) ? trim($_POST['Prenom']) : '';
+		$tel = isset($_POST['Telephone']) ? trim($_POST['Telephone']) : '';
+		$mail = isset($_POST['Mail']) ? trim($_POST['Mail']) : '';
+		$conf = isset($_POST['MailConfirm']) ? trim($_POST['MailConfirm']) : '';
+		
+		if(!$mail || !$conf || !$tel || !$nom || !$pre) {
+			$data['message'] = 'Tous les champs sont obligatoires.';
+			return json_encode($data);			
+		}		
+		if(! filter_var($mail, FILTER_VALIDATE_EMAIL)) {
+			$data['message'] = "Le format de l'adresse mail est incorrect.";
+			return json_encode($data);			
+		}
+		$adh = Sys::getOneData('Cadref', "Adherent/Mail=$mail");
+		if(count($adh)) {
+			$data['message'] = 'Il existe déjà un adhérent avec cette adresse mail.';
+			return json_encode($data);			
+		}
+		if($mail != $conf) {
+			$data['message'] = "L'adresse mail et la confirmation sont différentes.";
+			return json_encode($data);			
+		}
+		$telr = preg_replace('/[^0-9]/', '([^0-9])*', $tel);
+		$sql = "select Id from `##_Cadref-Adherent` where Telephone1 regexp '$telr' or Telephone2 regexp '$telr'";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		if($pdo && $pdo->rowcount()) {
+			$data['message'] = 'Il existe déjà un adhérent avec ce numéro de téléphone.';
+			return json_encode($data);			
+		}
+		
+		$nom = strtoupper($nom);
+		$pre = strtoupper(substr($pre, 0, 1)).strtolower(substr($pre, 1));
+		$adh = genericClass::createInstance('Cadref', 'Adherent');
+		$adh->Nom = $nom;
+		$adh->Prenom = $pre;
+		$adh->Telephone1 = $tel;
+		$adh->Mail = $mail;
+		$adh->Save();
+		
+		$id = base64_encode($adh->Id);
+		$s = "Bonjour $pre $nom,<br /><br /><br />";
+		$s .= 'Appuyez sur le lien ci-dessous pour confirmer votre inscription.<br /><br />';
+		$s .= "<a href=\"https://gestion.cadref.com/confirmRegistration?id=$id\">Confirmer mon inscription</a><br /><br />";
+		$s .= Cadref::MailSignature();
+		$params = array('Subject'=>('CADREF : Confirmation d\'enregistrement.'),
+			'To'=>array($mail),
+			'Body'=>$s);
+		Cadref::SendMessage($params);
+
+		
+		$data['success'] = 1;
+		$data['message'] = "Nous vous avons envoyé un mail de confirmation.<br />Veulliez l'ouvrir et cliquer sur le lien \"Confirmer mon inscription\".";
+		return json_encode($data);
+		
 	}
+
 
 	public static function GetStat() {
 		$annee = Cadref::$Annee;
