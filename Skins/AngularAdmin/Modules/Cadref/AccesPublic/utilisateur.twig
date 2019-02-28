@@ -1,0 +1,91 @@
+<div class="row">
+	<div class="col-md-4">
+		<label class="form-control-label cadref-label">Code utilisateur</label>
+	</div>
+	<div class="col-md-8">
+		<label class="form-control-label cadref-ins-numero">{{ login }}</label>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-4">
+		<label class="form-control-label cadref-label">Dernière connexion</label>
+	</div>
+	<div class="col-md-8">
+		<span>{{ LastConnection }}</span>
+	</div>
+</div>
+<div class="row" style="height:10px"></div>
+
+
+<div class="row" ng-if="utilisateurInfo.mode==''">
+	<div class="col-md-4">
+		<label class="form-control-label cadref-label">Mot de passe</label>
+	</div>
+	<div class="col-md-8">
+		<button type="button" class="btn btn-info margin-inline" ng-click="utilisateurChange('password')">Changer de mot de passe</button>
+	</div>
+</div>
+<div id="password" class="cadref-widget" ng-if="utilisateurInfo.mode=='password'">
+	<div class="row" ng-if="utilisateurInfo.returnMsg">
+		<div class="col-md-4">
+		</div>
+		<div class="col-md-8">
+			<div class="alert alert-danger" ng-bind="utilisateurInfo.returnMsg"></div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4">
+			<label class="form-control-label cadref-label">Mot de passe actuel</label>
+		</div>
+		<div class="col-md-8">
+			<input type="password" name="passOld" class="form-control input-lg" ng-model="utilisateurInfo.PwdOld" ng-change="utilisateurPwdChange('old')" placeholder="Mot de passe actuel">
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4">
+		</div>
+		<div class="col-md-8">
+			<label class="cadref-label">8 caractères minimum, au moins 1 majuscule, 1 minuscule et 1 chiffre</label>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4">
+			<label class="form-control-label cadref-label">Nouveau mot de passe</label>
+		</div>
+		<div class="col-md-8">
+			<input type="password" name="passNew" class="form-control input-lg" ng-model="utilisateurInfo.PwdNew" ng-change="utilisateurPwdChange('new')" placeholder="nouveau mot de passe">
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4">
+		</div>
+		<div class="col-md-8">
+			<span style="color: red" ng-bind="utilisateurInfo.pwdInfo"></span>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4">
+			<label class="form-control-label cadref-label">Confirmez le mot de passe</label>
+		</div>
+		<div class="col-md-8">
+			<input type="password" name="passConf" class="form-control input-lg" ng-model="utilisateurInfo.PwdConf" ng-change="utilisateurPwdChange('conf')" placeholder="nouveau mot de passe">
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4">
+		</div>
+		<div class="col-md-8">
+			<span style="color: red" ng-bind="utilisateurInfo.pwdConfInfo"></span>
+		</div>
+	</div>
+	<div class="row" style="height:10px"></div>
+	<div class="row">
+		<div class="col-md-4">
+		</div>
+		<div class="col-md-8">
+			<button type="button" class="btn btn-success margin-inline" ng-click="utilisateurPwdSave()" ng-disabled="!utilisateurInfo.pwdValid">Enregistrer</button>
+			<button type="button" class="btn btn-warning margin-inline" ng-click="utilisateurChange('')">Annuler</button>
+		</div>
+	</div>
+</div>
+

@@ -5,11 +5,10 @@ class Adherent extends genericClass {
 		$id = $this->Id;
 		$annee = Cadref::$Annee;
 
-		if(empty($this->Inscription)) $this->Inscription = $annee;
-		if(empty($this->Annee)) $this->Annee = $annee;
 		if(!$id) {
 			$a = Sys::getOneData('Cadref', 'Adherent', 0, 1, 'DESC', 'Numero');
 			$this->Numero = sprintf('%06d', intval($a->Numero) + 1);
+			$this->Inscription = $annee;
 		}
 		return parent::Save();
 	}
@@ -821,7 +820,6 @@ where ce.Classe=:cid";
 					$e .= trim($p['Prenom'].' '.$p['Nom']);
 				}
 				$d['Enseignants'] = $e;
-				klog::l('$sql1',$d);
 			}
 		}
 		return array('data'=>$data, 'sql'=>$sql);

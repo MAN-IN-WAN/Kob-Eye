@@ -1,2 +1,2 @@
 <?php
-$vars['data'] = json_encode(Cadref::RegisterUser($_POST),1);
+$vars['data'] = json_encode(Cadref::RegisterAdherent(), 1);

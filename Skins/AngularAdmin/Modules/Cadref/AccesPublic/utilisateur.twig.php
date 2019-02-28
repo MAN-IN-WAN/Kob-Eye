@@ -9,7 +9,5 @@ else if($group == 'CADREF_ENS') {
 	$n = substr(Sys::$User->Login, 3, 3);
 	$a = Sys::getOneData('Cadref', 'Enseignant/Code='.$n);
 }
-$vars['Nom'] = $a->Nom;
-$vars['Prenom'] = $a->Prenom;
 $vars['LastConnection'] = date('d/m/Y H:m:s', Sys::$User->LastConnection);
 

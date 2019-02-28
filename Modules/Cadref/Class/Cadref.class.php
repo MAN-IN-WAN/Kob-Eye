@@ -33,7 +33,7 @@ class Cadref extends Module {
 		
 		// create user
 		if($_POST['ValidForm'] == 2) {
-			self::CreateUser();
+			self::CreateUser($_POST['CadrefNumero1'], false);
 			$data['success'] = 1;
 			$data['message'] = 'Votre mot de passe vous a été envoyé par email.';
 			$data['ValidForm'] = "3";
@@ -106,14 +106,8 @@ class Cadref extends Module {
 		return json_encode($data);
 	}
 
-	private static function checkAdher($f0, $v0, $f1, $v1) {
-		$qry = "Adherent/$f0=$v0&$f1=$v1";
-		$adh = Sys::getOneData('Cadref', $qry);
-		return $adh;
-	}
 		
-	private static function CreateUser() {
-		$num = $_POST['CadrefNumero1'];
+	private static function CreateUser($num, $confirm=false) {
 		$a = Sys::getOneData('Cadref', 'Adherent/Numero='.$num);
 		$u = Sys::getOneData('Systeme', 'User/Login='.$num);
 		$new = false;
@@ -130,13 +124,19 @@ class Cadref extends Module {
 		$p = self::GeneratePassword();
 		$u->Pass = '[md5]'.md5($p);
 		$u->Save();
-		AlertUser::addAlert('Adhérent : '.$a->Prenom.' '.$a->Nom,"Nouvel utilisateur : ".$a->Numero,'','',0,[],'CADREF_ADMIN','icmn-user3');
 
+		$s = $confirm ? 'Confirmation d\'inscription web : ' : 'Création compte utilisateur : ';
+		AlertUser::addAlert('Adhérent : '.$a->Prenom.' '.$a->Nom,$s.$a->Numero,'','',0,[],'CADREF_ADMIN','icmn-user3');
 		
 		if(strpos($a->Mail, '@') > 0) {
 			$s = self::MailCivility($a);
 			$s .= $new ? "Votre espace CADREF vient d'être activé.<br /><br />" : "Votre mot de passe a été modifié.<br /><br />";
-			$s .= "Vos paramètres de connection sont les suivants :<br /><br />Code utilisateur (N° adhérent) : $num<br />Mot de Passe : $p<br /><br /><br />";
+			$s .= "Vos paramètres de connection sont les suivants :<br /><br />";
+			$s .= "Code utilisateur (N° adhérent) : <strong>$num</strong><br />Mot de Passe : <strong>$p</strong><br /><br />";
+			if($confirm) {
+				$s .= 'Avant de pouvoir vous inscrire à des cours ou à des visites guidées,<br />';
+				$s .= 'vous devrez compléter les information dans la rubrique "Info personnelles".<br /><br />';
+			}
 			$s .= self::MailSignature();
 			$params = array('Subject'=>($new ? 'CADREF : Bienvenu dans votre nouvel espace utilisateur.' : 'CADREF : Nouveau mot de passe.'),
 				'To'=>array($a->Mail),
@@ -153,7 +153,7 @@ class Cadref extends Module {
 		$lc = "abcdefghijklmnopqrstuvwxyz";
 		$uc = strtoupper($lc);
 		$dc = '0123456789';
-		$sc = '!$*+?';
+		$sc = '$*+?-=';
 		return str_shuffle(substr(str_shuffle($lc),0,3).substr(str_shuffle($uc),0,2).substr(str_shuffle($dc),0,2).substr(str_shuffle($sc),0,1));
 	}
 
@@ -175,40 +175,38 @@ class Cadref extends Module {
 			}
 			$tel1 = $usr->Tel;
 			$tel2 = '';
-			$s = Cadref::MailCivility($usr);
+			$s = self::MailCivility($usr);
 		}
 		else {
 			$usr = Sys::getOneData('Systeme', 'User/Login='.$adh->Numero);
 			$tel1 = $adh->Telephone1;
 			$tel2 = $adh->Telephone2;
-			$s = Cadref::MailCivility($adh);
+			$s = self::MailCivility($adh);
 		}
 			
-		$new = Cadref::GeneratePassword();
+		$new = self::GeneratePassword();
 		Sys::$User->Pass = '[md5]'.md5($new);
 		Sys::$User->Save();
 
-		$s .= "Votre nouveau mot de passe est : $new<br /><br />";
+		$s .= "Votre nouveau mot de passe est : <strong>$new</strong><br /><br />";
 		$s .= 'Vous pourrez le modifier dans la rubrique "Utilisateur".<br /><br />';
-		$s .= Cadref::MailSignature();
+		$s .= self::MailSignature();
 		$params = array('Subject'=>('CADREF : Changement de mot de passe.'),
 			'To'=>array($mail),
 			'Body'=>$s);
-		Cadref::SendMessage($params);
+		self::SendMessage($params);
 
 		$msg = "CADREF : Changement de mot de passe.\nMot de passe: $new\n";
 		$params = array('Telephone1'=>$tel1,'Telephone2'=>$tel2,'Message'=>$msg);
-		Cadref::SendSms($params);
+		self::SendSms($params);
 		
 		$data['success'] = 1;
 		$data['message'] = 'Votre nouveau mot de passe vous a été envoyé par email.';
 		return json_encode($data);
-		
 	}
 
 	
-	
-	public static function RegisterUser() {
+	public static function RegisterAdherent() {
 		$data = array('success'=>0);
 		$nom = isset($_POST['Nom']) ? trim($_POST['Nom']) : '';
 		$pre = isset($_POST['Prenom']) ? trim($_POST['Prenom']) : '';
@@ -249,32 +247,59 @@ class Cadref extends Module {
 		$adh->Prenom = $pre;
 		$adh->Telephone1 = $tel;
 		$adh->Mail = $mail;
+		$adh->Web = 1;
 		$adh->Save();
+		AlertUser::addAlert('Adhérent : '.$pre.' '.$nom,"Nouvelle inscription web : ".$adh->Numero,'','',0,[],'CADREF_ADMIN','icmn-user3');
 		
-		$id = base64_encode($adh->Id);
+		$info = base64_encode($adh->Id.','.$mail.','.time());
 		$s = "Bonjour $pre $nom,<br /><br /><br />";
-		$s .= 'Appuyez sur le lien ci-dessous pour confirmer votre inscription.<br /><br />';
-		$s .= "<a href=\"https://gestion.cadref.com/confirmRegistration?id=$id\">Confirmer mon inscription</a><br /><br />";
-		$s .= Cadref::MailSignature();
+		$s .= 'Appuyez sur le lien ci-dessous pour confirmer votre inscription :<br /><br />';
+		$s .= "<strong><a href=\"https://gestion.cadref.com/Cadref/Adherent/confirmRegistration?info=$info\">Confirmer mon inscription</a></strong><br /><br />";
+		$s .= "Ce lien sera actif pendant 48 heures.<br /><br />";
+		$s .= self::MailSignature();
 		$params = array('Subject'=>('CADREF : Confirmation d\'enregistrement.'),
 			'To'=>array($mail),
 			'Body'=>$s);
-		Cadref::SendMessage($params);
+		self::SendMessage($params);
 
-		
 		$data['success'] = 1;
-		$data['message'] = "Nous vous avons envoyé un mail de confirmation.<br />Veulliez l'ouvrir et cliquer sur le lien \"Confirmer mon inscription\".";
+		$data['message'] = "Nous vous avons envoyé un email de confirmation.\nVeuillez l'ouvrir et cliquer sur le lien \"Confirmer mon inscription\".";
+		return json_encode($data);		
+	}
+	
+	public static function RegisterConfirmation() {
+		$data = array('success'=>0,'message'=>"Une erreur c'est produite :\nLe lien est incorrect.");
+
+		$info = isset($_GET['info']) ? trim($_GET['info']) : '';
+		if($info == '') return json_encode($data);
+		$info = explode(',', base64_decode($info));
+		if(count($info) != 3) return json_encode($data);	
+		if(($info[2]+2*86400) < time()) {
+			$data['message'] = "Une erreur c'est produite :\nLe lien est expiré.";
+			return json_encode($data);
+		}
+		$a = Sys::getOneData('Cadref', 'Adherent/'.$info[0]);
+		if(!count($a) || $a->Mail != $info[1]) {
+			$data['message'] = "Une erreur c'est produite :\nVeuillez contacter le CADREF au 04.66.36.99.44.";
+			return json_encode($data);
+		}
+
+		$a->Web = 2;
+		$a->Save();
+		self::CreateUser($a->Numero, true);
+		$data['success'] = 1;
+		$data['message'] = 'Votre code utilisateur et votre mot de passe vous ont été envoyés par email.';
 		return json_encode($data);
-		
 	}
 
 
+
 	public static function GetStat() {
-		$annee = Cadref::$Annee;
+		$annee = self::$Annee;
 		$data = array();
-		$data['NbAdherents'] = Sys::getCount('Cadref', 'Adherent/Annee='.Cadref::$Annee);
-		$data['NbInscriptions'] = Sys::getCount('Cadref', 'Inscription/Annee='.Cadref::$Annee.'&Attente=0&Supprime=0');
-		$data['NbReservations'] = Sys::getCount('Cadref', 'Reservation/Annee='.Cadref::$Annee.'&Attente=0&Supprime=0');
+		$data['NbAdherents'] = Sys::getCount('Cadref', 'Adherent/Annee='.self::$Annee);
+		$data['NbInscriptions'] = Sys::getCount('Cadref', 'Inscription/Annee='.self::$Annee.'&Attente=0&Supprime=0');
+		$data['NbReservations'] = Sys::getCount('Cadref', 'Reservation/Annee='.self::$Annee.'&Attente=0&Supprime=0');
 		$g = Sys::getOneData('Systeme', 'Group/Nom=CADREF_ADH');
 		$u = $g->getChildren('User');
 		$data['NbUsers'] = count($u);
@@ -290,7 +315,7 @@ class Cadref extends Module {
 		$start = strtotime(str_replace('T', ' ', $args->start));
 		$end = strtotime(str_replace('T', ' ', $args->end));
 
-		$annee = Cadref::$Annee;
+		$annee = self::$Annee;
 		$data = array();
 		$events = array();
 		$vacances = array();

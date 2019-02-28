@@ -250,11 +250,7 @@
 		<PROPERTIES type="varchar" length="4" category="Association" form="11" fiche="11" description="Année d'inscription">Inscription</PROPERTIES>
 		<PROPERTIES type="varchar" length="1" category="Association" values="P::Publicité,R::Recommandation,I::Internet" form="12" fiche="12" description="Origine">Origine</PROPERTIES>
 		<PROPERTIES type="varchar" length="4" category="Association" auto="1" readOnly="1" list="8" form="13" fiche="13" listDescr="Année" description="Dernière inscription">Annee</PROPERTIES>
-<!--
-		<PROPERTIES type="varchar" length="2" category="Association" values="B::Bureau,A::Administrateur,D::Délégué" form="14" fiche="14" description="Role associatif">Adherent</PROPERTIES>
-		<PROPERTIES type="int" default="0" category="Association" query="Cadref/Classe::Id::CodeClasse" form="15" fiche="15" description="Délégué de classe">ClasseId</PROPERTIES>
-		<PROPERTIES type="int" default="0" category="Association" query="Cadref/Antenne::Id::Libelle" form="16" fiche="16" description="Responsable d'antenne">AntenneId</PROPERTIES>
--->
+
 		<PROPERTIES type="varchar" length="1" category="Personnel" values="H::Homme,F::Femme" form="16" fiche="16" description="Sexe">Sexe</PROPERTIES>
 		<PROPERTIES type="varchar" length="4" category="Personnel" form="17" fiche="17" description="Année de naissance">Naissance</PROPERTIES>
 		<PROPERTIES type="int" category="Personnel" query="Cadref/Profession::Id::Libelle" form="18" fiche="18" description="Profession">ProfessionId</PROPERTIES>
@@ -265,11 +261,15 @@
 		<PROPERTIES type="text" obligatoire="0" category="Interne" form="22" fiche="22" description="Notes">Notes</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Interne" values="0::0,1::1,2::2,3::3" form="24" fiche="24" description="Etoiles">Etoiles</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" special="reverse" category="Interne" form="25" fiche="25" description="Inactif">Inactif</PROPERTIES>
-		<PROPERTIES type="boolean" default="0" category="Interne" form="26" fiche="26" description="Inscription Web">Web</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Interne" values="0::,1::En cours,2::Confirmé" form="26" fiche="26" description="Inscription Web">Web</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Interne" form="27" fiche="27" description="Téléphone confirmé">TelephoneOk</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Interne" form="28" fiche="28" description="Mail confirmé">MailOk</PROPERTIES>
 		<PROPERTIES type="varchar" length="8" category="Interne" form="29" fiche="29" description="Newsletters">Newletters</PROPERTIES>
 <!--
+		<PROPERTIES type="varchar" length="2" category="Association" values="B::Bureau,A::Administrateur,D::Délégué" form="14" fiche="14" description="Role associatif">Adherent</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Association" query="Cadref/Classe::Id::CodeClasse" form="15" fiche="15" description="Délégué de classe">ClasseId</PROPERTIES>
+		<PROPERTIES type="int" default="0" category="Association" query="Cadref/Antenne::Id::Libelle" form="16" fiche="16" description="Responsable d'antenne">AntenneId</PROPERTIES>
+
 		<PROPERTIES type="text" obligatoire="0" category="Interne" form="23" fiche="23" description="Notes">NotesAnnuelles</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Cotisation">Cotisation</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Cours">Cours</PROPERTIES>

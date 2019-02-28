@@ -1,4 +1,4 @@
-app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $rootScope, $http, $rootScope, $interval, $filter, 
+app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $rootScope, $http, $rootScope, $interval, $filter, $window,
 	CadrefAdherentStore, CadrefReglementStore, CadrefInscriptionStore, CadrefEnseignantStore, CadrefAbsenceStore, CadrefClasseStore, 
 	CadrefVisiteStore, CadrefReservationStore, CadrefAttachementStore) {
 
@@ -484,6 +484,21 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 				$scope.objnonSolde = Number($scope.obj.Solde) != 0;
 
 				$scope.CotisationAnnuelle = data.data.CotisationAnnuelle;
+			}
+		).error(
+			function() {
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			}
+		);
+	}
+
+	// carte adherent
+	$scope.adherentCarte = function(obj) {
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintCarte',[true]);
+		ajax.success(
+			function(data) {
+console.log('xxxxxxxxxxxxxxxxxxxxxxx',data);
+				$window.open(data.data.pdf,'_blank');
 			}
 		).error(
 			function() {

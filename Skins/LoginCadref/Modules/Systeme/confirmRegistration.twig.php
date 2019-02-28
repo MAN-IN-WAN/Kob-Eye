@@ -1,3 +1,3 @@
 <?php
-$vars['data'] = json_encode($_POST);
-//klog::l('xxxxxxxxxxxxxxxxxxxxxxxxxxxxx',$_POST);
+$vars['data'] = json_encode(Cadref::RegisterConfirmation(), 1);
+

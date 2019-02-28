@@ -13,19 +13,21 @@ table tr th.cadref-th-btn {
 }
 table tr td.cadref-td {
 	padding-top: .1rem;
-	padding-bottom: .1rem;
+	padding-bottom: 0;
 	padding-left: .2rem;
 	padding-right: .2rem;
+	line-height: 1;
 }
 table tr td.cadref-td-btn {
 	padding-top: .1rem;
-	padding-bottom: .0rem;
+	padding-bottom: 0;
 	padding-left: .2rem;
 	padding-right: .2rem;
+	line-height: 1;
 }
 table tr td.cadref-td-inscr {
 	padding-top: .1rem;
-	padding-bottom: .1rem;
+	padding-bottom: 0;
 	padding-left: .2rem;
 	padding-right: .2rem;
 }
