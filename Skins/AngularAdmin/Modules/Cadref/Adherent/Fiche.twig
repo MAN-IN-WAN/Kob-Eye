@@ -9,7 +9,7 @@
             <a href="#/TableauDeBord">Tableau de bord</a>
         </li>
         <li>
-            <a href="#/{{ CurrentMenu.Url }}">Liste des {{ ObjectClass.getDescription() }}</a>
+            <a href="#/{{ CurrentMenu.Url }}" accesskey="l" title="Alt L">Liste des {{ ObjectClass.getDescription() }}</a>
         </li>
         <li>
             <a href="javascript: void(0);" ng-bind-html="'Fiche {{ ObjectClass.getDescription() }} '+(obj.label)"></a>
