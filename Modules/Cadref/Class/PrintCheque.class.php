@@ -106,7 +106,7 @@ class PrintCheque extends FPDF {
 		$this->Cell(170-$w, $h, $nbre, 0, 1);
 		$this->SetFont('Arial','',12);
 		$this->SetX(20);
-		$s = "étabi à votre ordre sur le Crédit Agricole à Nîmes, en remboursement de :\n\n";
+		$s = "établi à votre ordre sur le Crédit Agricole à Nîmes, en remboursement de :\n\n";
 		$this->MultiCell(170, $h, $this->cv($s));
 		$this->SetFont('Arial','B',12);
 		$this->SetX(20);
