@@ -294,7 +294,7 @@ class Adherent extends genericClass {
 		$pdf->AddPage();
 		$pdf->PrintLines($ins);
 
-		$file = 'Home/tmp/Carte'.$this->Numero.'.pdf';
+		$file = 'Home/tmp/Carte'.$this->Numero.'_'.date('YmdHis').'.pdf';
 		$pdf->Output(getcwd().'/'.$file);
 		$pdf->Close();
 
@@ -686,7 +686,7 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 				$pdf->PrintPage($l, $params);
 		} else $pdf->PrintPage(null, $params);
 
-		$file = 'Home/tmp/Cheque'.date('YmdHi').'.pdf';
+		$file = 'Home/tmp/Cheque_'.date('YmdHis').'.pdf';
 		$pdf->Output(getcwd().'/'.$file);
 		$pdf->Close();
 

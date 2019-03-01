@@ -13,7 +13,6 @@ class Absence extends genericClass {
 		if(!$id || $this->DateDebut != $o->DateDebut || $this->DateFin != $o->DateFin || $this->Description != $o->Description) {
 			$a = $this->getOneParent('Enseignant');
 			$t = date('d/m H:i', $this->DateDebut).' - '.date('d/m H:i', $this->DateFin).($this->Description ? "<br />".$this->Description : '');
-			if($this->Message)
 			$m = 'Absence : '.$a->Prenom.' '.$a->Nom;
 			AlertUser::addAlert($m,$t,'','',0,[],'CADREF_ADMIN','icmn-aid-kit');
 			$params = array('Message'=>$m."\n".str_replace('<br />', "\n", $t));

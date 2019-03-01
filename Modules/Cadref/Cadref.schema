@@ -239,12 +239,12 @@
 		<PROPERTIES type="varchar" length="6" searchOrder="1" displayOrder="1" filterMode="generic" auto="1" category="Description" list="1" form="1" fiche="1" listDescr="Numéro" description="Numéro">Numero</PROPERTIES>
 		<PROPERTIES type="varchar" length="100" searchOrder="2" displayOrder="2" filterMode="generic" obligatoire="1" category="Description" list="2" form="2" fiche="2" listDescr="Nom" description="Nom">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" length="100" searchOrder="3" displayOrder="3" obligatoire="1" category="Description" list="3" form="3" fiche="3" listDescr="Prénom" description="Prénom">Prenom</PROPERTIES>
-		<PROPERTIES type="varchar" length="255" obligatoire="0" category="Description" form="4" fiche="4" description="Adresse">Adresse1</PROPERTIES>
+		<PROPERTIES type="varchar" length="255" obligatoire="0" category="Description" list="5" form="4" fiche="4" description="Adresse">Adresse1</PROPERTIES>
 		<PROPERTIES type="varchar" length="255" obligatoire="0" category="Description" form="5" fiche="5" description="Adresse">Adresse2</PROPERTIES>
 		<PROPERTIES type="varchar" length="6"  obligatoire="0" category="Description" form="6" fiche="6" description="Code postal" listDescr="CP">CP</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" filterMode="generic" obligatoire="0" category="Description" list="4" form="7" fiche="7" description="Ville">Ville</PROPERTIES>
-		<PROPERTIES type="varchar" length="20"  obligatoire="0" category="Contact" list="5" form="8" fiche="8" listDescr="Téléphone" description="Téléphone 1">Telephone1</PROPERTIES>
-		<PROPERTIES type="varchar" length="20"  obligatoire="0" category="Contact" list="6" form="9" fiche="9" listDescr="Téléphone" description="Téléphone 2">Telephone2</PROPERTIES>
+		<PROPERTIES type="varchar" length="20"  obligatoire="0" category="Contact" form="8" fiche="8" listDescr="Téléphone" description="Téléphone 1">Telephone1</PROPERTIES>
+		<PROPERTIES type="varchar" length="20"  obligatoire="0" category="Contact" form="9" fiche="9" listDescr="Téléphone" description="Téléphone 2">Telephone2</PROPERTIES>
 		<PROPERTIES type="mail" length="50"     obligatoire="0" searchOrder="6" category="Contact" list="7" form="10" fiche="10" listDescr="Mail">Mail</PROPERTIES>
 
 		<PROPERTIES type="varchar" length="4" category="Association" form="11" fiche="11" description="Année d'inscription">Inscription</PROPERTIES>

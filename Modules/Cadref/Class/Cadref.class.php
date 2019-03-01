@@ -607,7 +607,7 @@ where ce.Classe=$cid
 
 		$Mail = new Mail();
 		$Mail->Subject($params['Subject']);
-		$Mail->From("noreply@cadref.com");
+		$Mail->From("contact@cadref.com");
 		if(isset($params['To'])) {
 			foreach($params['To'] as $to)
 				$Mail->To($to);
