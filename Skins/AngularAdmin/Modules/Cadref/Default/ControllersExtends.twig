@@ -443,7 +443,7 @@
 		
 		// controleur du store de Classe
         CadrefClasseStore.cloneContext('default','temp');
-		CadrefClasseStore.setPageLength(10);
+		CadrefClasseStore.setPageLength(15);
 		CadrefClasseStore.setFilters('Annee={{ Annee }}', 'temp');
 		CadrefClasseStore.getData(1, 'temp');
         $scope.CadrefClasse = {

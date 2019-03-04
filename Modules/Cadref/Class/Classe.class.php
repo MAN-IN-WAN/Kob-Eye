@@ -52,6 +52,7 @@ class Classe extends genericClass {
 		$annee = Cadref::$Annee;
 		$debut = $obj['Debut'];
 		$fin = $obj['Fin'];
+		$fin .= substr('ZZZZZZZ', 0, 7-strlen($fin));
 		
 		$sql = "
 select i.CodeClasse, i.ClasseId, d.Libelle as LibelleD, n.Libelle as LibelleN, e.Numero, e.Nom, e.Prenom, 

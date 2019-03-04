@@ -3,9 +3,6 @@
 		<thead>
 			<tr>
 				<th title="Id" class="list-col-th-id" hidden>ID</th>
-				{% if tempContext %}
-					<th class="cadref-th-btn"></th>
-				{% endif %}
 				<th class="cadref-th">Classe</th>
 				<th class="cadref-th">Libellé</th>
 {#				<th class="cadref-th">Web</th>
@@ -13,9 +10,6 @@
 				<th class="cadref-th">Cycle</th>
 				<th class="cadref-th">Places</th>
 				<th class="cadref-th">Prix</th>
-				{% if tempContext %}
-					<th class="cadref-th-btn"></th>
-				{% endif %}
 				{% if children %}
 					<th class="cadref-th">M</th>
 				{% endif %}
@@ -24,30 +18,13 @@
 		<tbody>
 			<tr dir-paginate="item in CadrefClasse.data" >
 				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
-				{% if tempContext  %}
-					<td  class="table-action cadref-td-btn">
-						<a class="btn-abt cadref-btn-add btn-success" href="javascript: void(0);" ng-click="classeAjoute(item)" title="Inscrire"></a>
-					</td>
-				{% endif %}
-				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.CodeClasse }]}</span></td>
-{#				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleD }]} {[{ item.LibelleN }]}</span></td>
-#}				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleW }]} {[{ item.LibelleN }]}</span></td>
-				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Jour | limitTo : 3}]} {[{ item.HeureDebut }]}&nbsp;-&nbsp;{[{ item.HeureFin }]}</span></td>
-				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.CycleDebut }]}&nbsp;-&nbsp;{[{ item.CycleFin }]}</span></td>
-				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Places+' - '+item.Inscrits+' - '+item.Attentes }]}</span></td>
-				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Prix+' - '+((item.Prix*1)-(item.Reduction1*1))+' - '+((item.Prix*1)-(item.Reduction2*1)) }]}</span></td>
-				{% if tempContext  %}
-					<td  class="table-action cadref-td-btn">
-						<a class="btn-abt cadref-btn-add btn-success" href="javascript: void(0);" ng-click="classeAjoute(item)" title="Inscrire"></a>
-					</td>
-				{% endif %}
-				{% if children %}
-					<td  class="table-action cadref-td-btn">
-						<div >
-							<a class="btn-abt btn-abt-mod btn-warning" href="javascript: void(0);" ng-click="{{ identifier }}modify(item)" title="Modifier"></a>
-						</div>
-					</td>
-				{% endif %}
+				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="classeAjoute(item)">{[{ item.CodeClasse }]}</a></td>
+{#				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="classeAjoute(item)">{[{ item.LibelleD }]} {[{ item.LibelleN }]}</a></td>
+#}				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="classeAjoute(item)">{[{ item.LibelleW }]} {[{ item.LibelleN }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="classeAjoute(item)">{[{ item.Jour | limitTo : 3}]} {[{ item.HeureDebut }]}&nbsp;-&nbsp;{[{ item.HeureFin }]}</span></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="classeAjoute(item)">{[{ item.CycleDebut }]}&nbsp;-&nbsp;{[{ item.CycleFin }]}</a></td>
+				<td scope="row" class="cadref-td typefloat"><a href="" ng-click="classeAjoute(item)">{[{ item.Places+' - '+item.Inscrits+' - '+item.Attentes }]}</a></td>
+				<td scope="row" class="cadref-td typefloat"><a href="" ng-click="classeAjoute(item)">{[{ item.Prix+' - '+((item.Prix*1)-(item.Reduction1*1))+' - '+((item.Prix*1)-(item.Reduction2*1)) }]}</a></td>
 			</tr>
 		</tbody>
 	</table>
