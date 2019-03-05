@@ -329,6 +329,7 @@ left join kbabtel.`kob-Cadref-Profession` p on p.Profession=e.Profession
 left join kbabtel.`kob-Cadref-Cursus` u on u.Cursus=e.Cursus
 left join kbabtel.`kob-Cadref-Situation` s on s.Situation=e.Situation;
 
+update kbabtel.`kob-Cadref-Adherent` set NomPrenom=concat(Nom,' ',Prenom);
 update kbabtel.`kob-Cadref-Adherent` a
 inner join kbabtel.aaname p on p.old=a.Prenom
 set a.Prenom=p.name;
@@ -361,6 +362,12 @@ truncate kbabtel.`kob-Cadref-Visite`;
 insert into kbabtel.`kob-Cadref-Visite` (umod,gmod,omod,Visite,Libelle,Annee,DateVisite,Places,Inscrits,Attentes,Prix,Utilisateur)
 select 7,7,7,Visite,Libelle,@annee,unix_timestamp(DateVis),Places,Inscrits,Attentes,Prix1,Utilisateur
 from cadref18.Visites;
+
+truncate kbabtel.`kob-Cadref-Depart`;
+insert into kbabtel.`kob-Cadref-Depart` (umod,gmod,omod,VisiteId,LieuId)
+select 7,7,7,v.Id,l.Id
+from kbabtel.`kob-Cadref-Visite` v
+left join kbabtel.`kob-Cadref-Lieu` l on l.`Type`='R';
 
 truncate kbabtel.`kob-Cadref-Reservation`;
 insert into kbabtel.`kob-Cadref-Reservation` (umod,gmod,omod,Numero,Visite,Annee,Prix,Reduction,Attente,DateAttente,DateInscription,AdherentId,VisiteId,Utilisateur)

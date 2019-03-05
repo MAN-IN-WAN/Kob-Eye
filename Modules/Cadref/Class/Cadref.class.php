@@ -465,7 +465,7 @@ where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 					$cy = $p['CycleFin'];
 					$m = substr($cy, 3, 2);
 					$cf = strtotime(str_replace('/', '-', $cy).'-'.($m > 8 ? $annee : $annee + 1));
-					$cf += (24 * 60 * 60) - 1;
+					$cf += 86400 - 1;
 				}
 				$j = $p['JourId'] - 1;
 				$d = $start + ($j * 24 * 60 * 60);
@@ -548,7 +548,7 @@ where ve.Visite=$vid
 			if($s) $s .= "\n";
 			$s .= 'Prix : <strong>€ '.$p['Prix'].'</strong>'.($p['Assurance'] ? ' Ass. facultative : € '.$p['Assurance'] : '');
 			$e->description = $s;
-			$e->className = (p['rid'] ? 'fc-event-success' : 'fc-event-default').' cadref-cal-visite';
+			$e->className = ($p['rid'] ? 'fc-event-success' : 'fc-event-default').' cadref-cal-visite';
 			$events[] = $e;
 		}
 
@@ -603,34 +603,20 @@ where ce.Classe=$cid
 	}
 		
 	public static function SendMessage($params) {
-		require_once('Class/Lib/Mail.class.php');
-
-		$Mail = new Mail();
-		$Mail->Subject($params['Subject']);
-		$Mail->From("contact@cadref.com");
-		if(isset($params['To'])) {
-			foreach($params['To'] as $to)
-				$Mail->To($to);
-		}
-		if(isset($params['CC'])) {
-			foreach($params['CC'] as $cc)
-				$Mail->Bcc($cc);
-		}
-		$bloc = new Bloc();
-		$bloc->setFromVar("Mail", $params['Body'], array("BEACON"=>"BLOC"));
-		$Pr = new Process();
-		$bloc->init($Pr);
-		$bloc->generate($Pr);
-		$Mail->Body($bloc->Affich());
-		
-		if(isset($params['Attachments'])) {
-			foreach($params['Attachments'] as $a) {
-				$Mail->Attach($a);
-			}
-		}
-		
-		$ret = $Mail->Send();
-		return $ret;
+		$m = genericClass::createInstance('Systeme', 'MailQueue');
+		$m->From = "contact@cadref.com";
+		if(isset($params['To']))
+			$m->To = implode(',', $params['To']);
+		if(isset($params['Cc']))
+			$m->Cc = implode(',', $params['Cc']);
+		if(isset($params['Bcc']))
+			$m->Bcc = implode(',', $params['Bcc']);	
+		$m->Subject = $params['Subject'];
+		$m->Body = $params['Body'];
+		if(isset($params['Attachments']))
+			$m->Attachments = implode(',', $params['Attachments']);
+		$m->EmbeddedImages = "Skins/LoginCadref/Img/cadref_logo_bleu_100.png|cadref_logo";
+		$m->Save();
 	}
 	
 	public static function MailCivility($a) {
@@ -641,8 +627,9 @@ where ce.Classe=$cid
 	}
 
 	public static function MailSignature() {
-		$s = "A bientôt,<br />L'équipe du CADREF<br />";
-		$s .= '<img src="https://gestion.cadref.com/Skins/LoginCadref/Img/cadref_logo_bleu_100.png"/>';
+		$s = "<br /><br />A bientôt,<br />L'équipe du CADREF<br /><br />";
+		$s .= '<img alt="CADREF" src="cid:cadref_logo">';
+		//$s .= '<img src="https://gestion.cadref.com/Skins/LoginCadref/Img/cadref_logo_bleu_100.png"/>';
 		return $s;
 	}
 

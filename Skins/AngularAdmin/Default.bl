@@ -231,8 +231,9 @@
     <script src="Skins/AngularAdmin/assets/vendors/angularMultipleSelect/multiple-select.js"></script>
 	<link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/assets/vendors/angularMultipleSelect/multiple-select.css">
 
-	<!-- Cadref -->
-	<link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/Modules/Cadref/Css/style.css">
+	[IF [!Sys::User::hasRole(CADREF_ADMIN)!]||[!Sys::User::hasRole(CADREF_ADH)!]||[!Sys::User::hasRole(CADREF_ENS)!]]
+	<link rel="stylesheet" type="text/css" href="Skins/AngularAdmin/Css/cadref.css">
+	[/IF]
 	
 
 

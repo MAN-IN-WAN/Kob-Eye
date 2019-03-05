@@ -246,6 +246,7 @@
 		<PROPERTIES type="varchar" length="20"  obligatoire="0" category="Contact" form="8" fiche="8" listDescr="Téléphone" description="Téléphone 1">Telephone1</PROPERTIES>
 		<PROPERTIES type="varchar" length="20"  obligatoire="0" category="Contact" form="9" fiche="9" listDescr="Téléphone" description="Téléphone 2">Telephone2</PROPERTIES>
 		<PROPERTIES type="mail" length="50"     obligatoire="0" searchOrder="6" category="Contact" list="7" form="10" fiche="10" listDescr="Mail">Mail</PROPERTIES>
+		<PROPERTIES type="varchar" length="100"  auto="1" category="Contact" >NomPrenom</PROPERTIES>
 
 		<PROPERTIES type="varchar" length="4" category="Association" form="11" fiche="11" description="Année d'inscription">Inscription</PROPERTIES>
 		<PROPERTIES type="varchar" length="1" category="Association" values="P::Publicité,R::Recommandation,I::Internet" form="12" fiche="12" description="Origine">Origine</PROPERTIES>
@@ -265,13 +266,14 @@
 		<PROPERTIES type="boolean" default="0" category="Interne" form="27" fiche="27" description="Téléphone confirmé">TelephoneOk</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Interne" form="28" fiche="28" description="Mail confirmé">MailOk</PROPERTIES>
 		<PROPERTIES type="varchar" length="8" category="Interne" form="29" fiche="29" description="Newsletters">Newletters</PROPERTIES>
+
+		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Cotisation">Cotisation</PROPERTIES>
 <!--
 		<PROPERTIES type="varchar" length="2" category="Association" values="B::Bureau,A::Administrateur,D::Délégué" form="14" fiche="14" description="Role associatif">Adherent</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Association" query="Cadref/Classe::Id::CodeClasse" form="15" fiche="15" description="Délégué de classe">ClasseId</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Association" query="Cadref/Antenne::Id::Libelle" form="16" fiche="16" description="Responsable d'antenne">AntenneId</PROPERTIES>
 
 		<PROPERTIES type="text" obligatoire="0" category="Interne" form="23" fiche="23" description="Notes">NotesAnnuelles</PROPERTIES>
-		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Cotisation">Cotisation</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Cours">Cours</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Visites">Visites</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Règlement">Reglement</PROPERTIES>

@@ -46,6 +46,51 @@ class Classe extends genericClass {
 		return array('LibelleA'=>$a->Libelle, 'LibelleS'=>$s->Libelle, 'LibelleD'=>$d->Libelle, 'LibelleN'=>$n->Libelle, 'LibelleL'=>$l ? $l->Libelle : '');
 	}
 	
+	function NextDate() {
+		$annee = Cadref::$Annee;
+		$t = time();
+		if($this->Programmation == 0) {
+			$cy = $this->CycleDebut;
+			if($cy) {
+				$m = substr($cy, 3, 2);
+				$cd = strtotime(str_replace('/', '-', $cy).'-'.($m > 8 ? $annee : $annee + 1));
+				if($t < $cd) return array('Date'=>$cd);
+				$cy = $p['CycleFin'];
+				$m = substr($cy, 3, 2);
+				$cf = strtotime(str_replace('/', '-', $cy).'-'.($m > 8 ? $annee : $annee + 1));
+				$cf += 86400 - 1;
+				if($t > $cf) return array('Date'=>0);
+			}
+			$j = date('w', $t);
+			if($j <= $this->JourId) $t += ($this->JourId-$j)*86400;
+			else $t += (7-($j-$this->JourId));
+			$sql = "select DateDebut from `##_Cadref-Vacance` where Annee='$annee' and Type='D' and DateDebut>$t and JourId=".$this->JourId;
+			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+			if($pdo->rowCount()) {
+				$d = $pdo->fetch(PDO::FETCH_ASSOC);
+				return array('Date'=>$d['DateDebut'],'sql'=>$sql);
+			}
+			while(true) {
+				$sql = "select DateDebut,DateFin from `##_Cadref-Vacance` where Annee='$annee' and Type='V' and DateDebut<=$t and DateFin>=$t";
+				$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+				$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+				if($pdo->rowCount()) $t += 7*86400;
+				else return array('Date'=>$t,'sql'=>$sql);
+			}
+		}
+		else {
+			$sql = "select DateCours from `##_Cadref-ClasseDate` where Annee='$annee' and DateCours>=$t";
+			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+			if($pdo->rowCount()) {
+				$d = $pdo->fetch(PDO::FETCH_ASSOC);
+				return array('Date'=>$d['DateCours'],'sql'=>$sql);
+			}
+		}
+		return array('Date'=>0);
+	}
+	
 	function PrintPresence($obj) {
 		require_once ('PrintPresence.class.php');
 

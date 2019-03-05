@@ -56,22 +56,15 @@
 									{{ label("CP Ville") }}
 								</div>
 								<div class="col-md-2">
-{#									<div custom-select="a.CP as a.CP+'  -  '+a.Commune for a in getSelectData('CadrefCommuneStore',$searchTerm)" 
-										 custom-select-options="{ 'async': true, 'filter':''}" 
-										 ng-model="{{ o }}.CP"
-										 class="form-control cadref-input" 
-										 ng-title="{{ o }}.CP">
-									</div>
-#}									{{ finput(f.CP, o, false, 'ddddd') }}
+									{{ finput(f.CP, o, false, 'ddddd') }}
 								</div>
 								<div class="col-md-8">
-{#									<div custom-select="a.Commune as a.CP+'  -  '+a.Commune for a in getSelectData('CadrefCommuneStore',$searchTerm)" 
-										 custom-select-options="{ 'async': true, 'filter':''}" 
-										 ng-model="{{ o }}.Ville"
-										 class="form-control cadref-input" 
-										 ng-title="{{ o }}.Ville">
-									</div>
-#}									{{ finput(f.Ville, o, false, '', 'text-transform:uppercase;', true) }}
+									<input type="text" list="Ville-list" ng-change="villeChange()" class="form-control cadref-input ng-pristine ng-valid ng-not-empty ng-touched" placeholder="" ng-model="obj.Ville" style="text-transform:uppercase;" onkeyup="this.value = this.value.toUpperCase();">
+									<datalist id="Ville-list">
+										{% for item in communes %}
+										<option>{{ item.Commune~' ('~item.CP~')' }}<option>
+										{% endfor %}
+									</datalist>
 								</div>
 							</div>
 							<div class="row" style="height:10px"></div>
@@ -155,10 +148,10 @@
 								<div class="col-md-4">
 									<div class="row">
 										<div class="col-md-5">
-											{{ label("Inactif") }}
+											{{ label("Origine") }}
 										</div>
 										<div class="col-md-7">
-											{{ fboolean(f.Inactif, o, true) }}
+											{{ fvalues(f.Origine, o) }}
 										</div>
 									</div>
 								</div>
@@ -167,10 +160,10 @@
 								<div class="col-md-4">
 									<div class="row">
 										<div class="col-md-5">
-											{{ label("Connaissance du CADREF") }}
+											{{ label("Inactif") }}
 										</div>
 										<div class="col-md-7">
-											{{ fvalues(f.Origine, o) }}
+											{{ fboolean(f.Inactif, o, true) }}
 										</div>
 									</div>
 								</div>

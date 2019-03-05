@@ -10,6 +10,7 @@ class Adherent extends genericClass {
 			$this->Numero = sprintf('%06d', intval($a->Numero) + 1);
 			$this->Inscription = $annee;
 		}
+		$this->NomPrenom = $this->Nom.' '.$this->Prenom;
 		return parent::Save();
 	}
 
@@ -65,6 +66,8 @@ class Adherent extends genericClass {
 		else if($mode == 1) {
 			if(!$a->Cotisation && $data->Cotisation) $a->DateCotisation = time();
 			$a->Cotisation = $data->Cotisation ? $data->Cotisation : 0;
+			$this->Cotisation = $data->Cotisation;
+			$this->Save();
 		}
 		$a->Regularisation = $data->Regularisation ? $data->Regularisation : 0;
 		$a->Cours = $cours;
@@ -451,14 +454,11 @@ order by a.Nom, a.Prenom";
 		if(!$pdo) return array('success'=>false, 'sql'=>$sql);;
 
 		if($obj['mode'] == 'mail') {
-			$cc = array();
 			foreach($pdo as $a) {
-				if(strpos($a['Mail'], '@') > 0)
-					$cc[] = $a['Mail'];
-			}
-			if(count($cc)) {
-				$args = array('Subject'=>$obj['Sujet'], 'To'=>array('contact@cadref.fr'), 'CC'=>$cc, 'Body'=>$obj['Corps'], 'Attachments'=>$obj['Pieces']['data']);
-				Cadref::SendMessage($args);
+				if(strpos($a['Mail'], '@') > 0) {
+					$args = array('Subject'=>$obj['Sujet'], 'To'=>array($a['Mail']), 'Body'=>$obj['Corps'], 'Attachments'=>$obj['Pieces']['data']);
+					if(MAIL_ADH) Cadref::SendMessage($args);
+				}
 			}
 			return true;
 		}

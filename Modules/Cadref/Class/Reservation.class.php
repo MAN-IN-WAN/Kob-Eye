@@ -44,7 +44,7 @@ class Reservation extends genericClass {
 	
 	function Delete() {
 		$vis = $this->getOneParent('Visite');
-		if(time() > $vis->DateVisite-3*86400) {
+		if(! checkLimite()) {
 			$this->addError(array("Message" => "Cette réservation ne peut être supprimée", "Prop" => ""));
 			return false;
 		}
@@ -55,6 +55,17 @@ class Reservation extends genericClass {
 		return parent::Delete();
 	}
 
+	private function checkLimite() {
+		$t = time();
+		if($this->DateLimite) return $t < $this->DateLimite;
+		$l = $this->DateVisite;
+		for($i = 0; $i < 3;) {
+			$l -= 86400;
+			$d = date('w', $l);
+			if($d != 0 && $d != 6) $i++;
+		}
+		return $l < $l;
+	}
 	
 
 }

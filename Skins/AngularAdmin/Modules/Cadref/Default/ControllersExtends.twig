@@ -46,7 +46,7 @@
 							$timeout.cancel(lasttimeout);
 							lasttimeout = false;
 						}
-						CadrefAdherentStore.setGlobalFilter('Nom~'+$scope.CadrefAdherent.filter2,'default');
+						CadrefAdherentStore.setGlobalFilter('NomPrenom~'+$scope.CadrefAdherent.filter2,'default');
 						lasttimeout = $timeout(function () {
 							CadrefAdherentStore.getData(1,'default');
 						},400);
@@ -271,7 +271,16 @@
 		
 		{% if objecttype == 'Adherent' %}
 			
-		$scope.CadrefCommune = $rootScope.createStore(CadrefCommuneStore, 'default');
+		//$scope.CadrefCommune = $rootScope.createStore(CadrefCommuneStore, 'default');
+		$scope.villeChange = function() {
+			var v = $scope.obj.Ville;
+			var p = v.indexOf(')');
+			if(p > 0) {
+				$scope.obj.CP = v.substr(p-5, 5);
+				$scope.obj.Ville = v.substr(0, p-7);
+			}
+		}
+		
 		
 		// info annuelles et cotisation
 		$scope.obj.nonSolde = false;
@@ -628,16 +637,28 @@
 
 		
 		// reduction sur la date
-		$scope.classeReduction = function(obj) {
-			var now = Date.now();
+		$scope.classeReduction = async function(obj) {
+			var params = {
+				name: 'NextDate',
+				query: 'Cadref/Classe/'+obj.ClasseClasseId,
+				args : [],
+				explodeArgs: false,
+				tms : Date.now(),
+			};
+			var data = await $http.post('/Cadref/Absence/'+obj.ClasseClasseId+'/Method.json',{"Func":JSON.stringify(params)});
+			var next = data.data.data.Date;
+			if(next == 0) {
+				swal("Attention", "Il n'y à plus de cours à venir.", "warning");
+				return;
+			}
 			if(Number(obj.Reduction) == 0) {
 				d = obj.CDateReduction2;
 				d = d.substr(3 ,3)+d.substr(0, 3)+d.substr(6, 4);
-				if(obj.CDateReduction2 != "" && now > Date.parse(d)) obj.Reduction = obj.CReduction2;
+				if(obj.CDateReduction2 != "" && next >= Date.parse(d)) obj.Reduction = obj.CReduction2;
 				else {
 					d = obj.CDateReduction1;
 					d = d.substr(3 ,3)+d.substr(0, 3)+d.substr(6, 4);
-					if(obj.CDateReduction1 != "" && now > Date.parse(d)) obj.Reduction = obj.CReduction1;
+					if(obj.CDateReduction1 != "" && next >= Date.parse(d)) obj.Reduction = obj.CReduction1;
 				}
 			}
 		}
@@ -660,7 +681,7 @@
 			var l = t.length;
 			for(var i = 0; i < l; i++) {
 				if(t[i].CodeClasse == s) {
-					alert('Cours déjà sélectionné');
+					swal("Attention", "Cours déjà sélectionné.", "warning");
 					return;
 				}
 			}
