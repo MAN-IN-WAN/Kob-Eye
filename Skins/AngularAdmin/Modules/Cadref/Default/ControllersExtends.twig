@@ -1032,6 +1032,7 @@
 		$scope.reservationOpenCallback = function(item, obj) {
 			var o = $scope.localObj = {};
             angular.copy(obj, o);
+console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>',o,obj);
 			o.isAssur = Number(o.Assurance) != 0;
 			$scope.reservationCalcul();
 		}

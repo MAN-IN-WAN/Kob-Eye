@@ -41,13 +41,10 @@
 				</div>
 				<div class="row">
 					<div class="col-md-4">
-						{{ label("Type") }}
+						{{ label("Différé") }}
 					</div>
 					<div class="col-md-4">
-						<select class="form-control cadref-input" ng-model="reglementObj.Differe">
-							<option value="0">Comptant</option>
-							<option value="1">Différé</option>
-						</select>	
+						<switch class="cadref-switch" ng-model="reglementObj.Differe"></switch>
 					</div>
 				</div>
 				<div class="row">
