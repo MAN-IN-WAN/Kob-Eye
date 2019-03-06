@@ -466,7 +466,7 @@
 		<VIEW title="LieuList" default="1" order="Lieu" orderType="ASC">
 			<OBJECTCLASS title="Lieu">
 				<JOIN type="outer" module="Cadref" title="Antenne" on="AntenneId" target="Id">
-					<PROPERTIES type="varchar" list="4" form="4" fiche="4" ListDescr="Antenne">LibelleCourt</PROPERTIES>
+					<PROPERTIES type="varchar" list="4" form="4" fiche="4" listDescr="Antenne" description="Antenne">LibelleCourt</PROPERTIES>
 				</JOIN>
 			</OBJECTCLASS>
 		</VIEW>

@@ -53,6 +53,7 @@ insert into kbabtel.`kob-Cadref-Lieu` (umod,gmod,omod,Ville,Adresse1,Adresse2,Ty
 (7,7,7,"Bagnols","Centre P Mendes France","av. de la Mayre","L","BMF","44.1571286,4.622954299999947",2),
 (7,7,7,"Bagnols","Maison Laure Pailhon","8 rue Léon Alègre","L","BLP","44.1629355,4.621609700000022",2),
 (7,7,7,"Bagnols","Maison des Associations","95 av. François Mitterand","L","BMA","44.1727855,4.619900199999961",2),
+(7,7,7,"Uzès","Golf club d'Uzès","Pont des Charettes","L","BGU","",2),
 (7,7,7,"St Gervais","Salle la Coquillone","ch. de la Coquillone","L","BSC","44.18632179999999,4.568395600000031",2),
 (7,7,7,"Villeneuve","Salle Frédéric Mistral","19 bd. Frédéric Mistral","L","VFM","43.9713349,4.7955667999999605",7),
 (7,7,7,"Les Angles","Salle Boris Vian","rue de l'école","L","VBV","42.5772819,2.07358499999998",7),
@@ -62,6 +63,9 @@ insert into kbabtel.`kob-Cadref-Lieu` (umod,gmod,omod,Ville,Adresse1,Adresse2,Ty
 (7,7,7,"Alès","Salle du Capitole","10 Place de l'Hôtel de ville","L","ASC","44.1249942,4.076990600000045",1),
 (7,7,7,"Alès","Pôle Scientifique et Culturel","155 rue du Faubourg de Rochebelle","L","APS","44.1302922,4.068972400000007",1),
 (7,7,7,"Alès","Espace André Chamson","2 bd. Louis Blanc, Place Henry Barbusse","L","AAC","44.126705,4.079328000000032",1),
+(7,7,7,"Alès","Golf club Alès Ribaute","Puech Serrier, Ghemin du Golf","L","AGR","",1),
+(7,7,7,"Grau du Roi","Salle Christophe Colomb","14 bis rue de l'Egalité","L","GCC","",3),
+(7,7,7,"Grau du Roi","Salle de réunion du Centre Technique","rue des Médards","L","GCT","",3),
 (7,7,7,"Nîmes","CADREF","249 rue de Bouillargues","L","N00","43.833561,4.371489",5),
 (7,7,7,"Nîmes","Maison Diocésaine","6 rue Salomon Reinach","L","NMD","43.8340875,4.375364399999967",5),
 (7,7,7,"Nîmes","Archives Départementales","365 rue du Forez","L","NAD","43.8248603,4.367995199999996",5),
@@ -244,6 +248,12 @@ left join kbabtel.`kob-Cadref-Antenne` a on a.Antenne=c.Antenne
 left join kbabtel.`kob-Cadref-Section` s on s.Section=c.Sect
 left join kbabtel.`kob-Cadref-Discipline` d on d.SectionId=s.Id and d.Discipline=c.Discipline
 left join kbabtel.`kob-Cadref-Niveau` n on n.Antenne=c.Antenne and n.Section=c.Sect and n.Discipline=c.Discipline and n.Niveau=c.Niveau;
+
+update kbabtel.`kob-Cadref-Classe` c
+left join kbabtel.aaclasse cl on cl.classe=c.CodeClasse
+left join kbabtel.`kob-Cadref-Lieu` l on l.Lieu=cl.lieu
+set c.LieuId=l.Id
+where l.Id is not null;
 
 truncate kbabtel.`kob-Cadref-ClasseDate`;
 insert into kbabtel.`kob-Cadref-ClasseDate`(umod,gmod,omod,ClasseId,Annee,DateCours)
