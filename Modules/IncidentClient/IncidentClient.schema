@@ -11,6 +11,10 @@
         <PROPERTIES Order="14" description="Fax" type="varchar" length="20" obligatoire="0" listDescr="Fax" form="11" fiche="14">Fax</PROPERTIES>
         <PROPERTIES Order="17" type="Int">GroupId</PROPERTIES>
     </OBJECTCLASS>
+    <OBJECTCLASS title="Contrat" driver="mysql" Description="Marché" Dico="1">
+        <PROPERTIES type="varchar" searchOrder="1" listDescr="Titre Fichier" list="1" form="1" fiche="1">Titre</PROPERTIES>
+        <FKEY card="0,1" data="Client,Id">ClientId</FKEY>
+    </OBJECTCLASS>
     <OBJECTCLASS title="Contact" driver="mysql" AccessPoint="1" Description="Contact" Icon="/Skins/AdminV2/Img/IconAqua/Chat2.png" Class="Modules/IncidentClient/Class/Contact.class.php">
         <PROPERTIES Order="1" searchOrder="3" description="Email et login" type="varchar" length="200" obligatoire="0" listDescr="Mail du client" form="1" list="3" fiche="5">Mail</PROPERTIES>
         <PROPERTIES Order="6" description="Mot de passe" type="varchar" length="100" obligatoire="1" listDescr="Mot de passe" form="1" fiche="6">Pass</PROPERTIES>
@@ -48,17 +52,18 @@
         <PROPERTIES type="varchar" description="Titre" listDescr="Titre Incident" list="5" form="1" fiche="1">Titre</PROPERTIES>
         <PROPERTIES type="varchar" description="Lieu Incident" listDescr="Lieu Incident" form="5" fiche="6">LieuIncident</PROPERTIES>
         <PROPERTIES type="varchar" searchOrder="2" length="150" obligatoire="1" description="Commune" listDescr="Commune" list="6" form="6" fiche="7">Commune</PROPERTIES>
-        <PROPERTIES type="html" description="Observations" listDescr="Observations" form="7" fiche="8">Observations</PROPERTIES>
+        <PROPERTIES type="html" description="Observations" listDescr="Observations" fiche="8">Observations</PROPERTIES>
         <PROPERTIES type="html" description="Observations Technicien" listDescr="Observations Technicien" form="9" fiche="9">ObservationsTech</PROPERTIES>
-        <PROPERTIES type="date" description="Date de clôture" listDescr="Date de clôture" list="12" form="13" fiche="13">DateCloture</PROPERTIES>
-        <PROPERTIES type="date" description="Date de résolution souhaitée" listDescr="Résolution souhaitée" list="8" form="8" fiche="8">DateSouhait</PROPERTIES>
-        <FKEY card="0,1" data="ParametresDelai,Id" description="Délai souhaité" listDescr="Délai souhaité" list="3" form="3" fiche="4">DelaiVoulu</FKEY>
-        <FKEY card="1,1" data="ParametresTypo,Id" description="Typologie de la demande" listDescr="Typologie" list="4" form="4" fiche="5">ParametresTypoId</FKEY>
+        <PROPERTIES type="date" description="Date de clôture" listDescr="Date de clôture" form="13" fiche="13">DateCloture</PROPERTIES>
+        <PROPERTIES type="date" description="Date de résolution souhaitée" listDescr="Résolution souhaitée" form="8" fiche="8">DateSouhait</PROPERTIES>
+        <FKEY card="0,1" data="ParametresDelai,Id" description="Délai souhaité" listDescr="Délai souhaité" form="3" fiche="4">DelaiVoulu</FKEY>
+        <FKEY card="1,1" data="ParametresTypo,Id" description="Typologie de la demande" listDescr="Typologie" list="4" form="4" search="1" fiche="5">ParametresTypoId</FKEY>
         <FKEY card="0,1" data="Client,Id" searchOrder="3" description="Client" search="1" listDescr="Client" list="7" form="8" fiche="9">ClientId</FKEY>
         <FKEY card="0,1" data="Technicien,Id" description="Technicien" listDescr="Technicien" list="8" form="9" fiche="10">TechnicienId</FKEY>
-        <FKEY card="0,1" data="ParametresDemande,Id" description="Origine de la demande" listDescr="Type" list="9" form="10" fiche="11">ParametresDemandeId</FKEY>
-        <FKEY card="0,1" data="ParametresDelai,Id" description="Délai Océan" listDescr="Délai Océan" list="10" form="11" fiche="12" hasRole="INCIDENT_TECHNICIEN, INCIDENT_ADMINISTRATEUR">ParametresDelaiId</FKEY>
+        <FKEY card="0,1" data="ParametresDemande,Id" description="Origine de la demande" listDescr="Type" form="10" fiche="11">ParametresDemandeId</FKEY>
+        <FKEY card="0,1" data="ParametresDelai,Id" description="Délai Océan" listDescr="Délai Océan" form="11" fiche="12" hasRole="INCIDENT_TECHNICIEN, INCIDENT_ADMINISTRATEUR">ParametresDelaiId</FKEY>
         <FKEY card="0,1" data="ParametresEtat,Id" description="Etat demande" listDescr="Etat" list="11" form="12" fiche="13">ParametresEtatId</FKEY>
+        <FKEY card="0,1" data="Contrat,Id" description="Marché" listDescr="Marché" form="12" fiche="13" search="1">ContratId</FKEY>
     </OBJECTCLASS>
     <!--<OBJECTCLASS title="Rapport" driver="mysql" order="Ordre" orderType="ASC" AccessPoint="1" Description="Rapport Intervention"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png"  >
         <PROPERTIES type="varchar" searchOrder="1" 							description="Titre"  					listDescr="Titre Rapport" 		list="2" form="2" fiche="2"	>Titre</PROPERTIES>
