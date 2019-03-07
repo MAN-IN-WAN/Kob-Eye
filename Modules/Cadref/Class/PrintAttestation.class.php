@@ -148,9 +148,11 @@ class PrintAttestation extends FPDF {
 
 		$this->SetXY(110,234);
 		$this->Cell(90,6,$this->dateText,0,0,'L');
-		$s = $this->cv("Le président du Conseil d'Administration");
+
 		$this->SetXY(110,240);
-		$this->Cell(90,6,$s,0,0,'L');	
+		//$s = $this->cv("Le président du Conseil d'Administration");
+		$p = Cadref::GetParametre('DOCUMENT', 'ATTESTATION', 'SIGNATURE');
+		$this->MultiCell(90, 6, $this->cv($p->Texte));
 	}
 	
 }

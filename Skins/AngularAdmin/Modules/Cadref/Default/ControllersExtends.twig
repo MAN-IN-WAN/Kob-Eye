@@ -360,7 +360,7 @@
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintCarte',[false]);
 			ajax.success(
 				function(data) {
-					$window.open(data.data.pdf,'_blank');
+					if(data.data.pdf) $window.open(data.data.pdf,'_blank');
 				}
 			).error(
 				function() {
@@ -1032,7 +1032,6 @@
 		$scope.reservationOpenCallback = function(item, obj) {
 			var o = $scope.localObj = {};
             angular.copy(obj, o);
-console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>',o,obj);
 			o.isAssur = Number(o.Assurance) != 0;
 			$scope.reservationCalcul();
 		}

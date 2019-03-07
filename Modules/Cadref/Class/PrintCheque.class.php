@@ -117,8 +117,9 @@ class PrintCheque extends FPDF {
 		$this->MultiCell(170, $h, $this->cv($s));
 		
 		$this->SetXY(125,180);
-		$s = "Nathalie FAUCHER\nDirectrice du CADREF";
-		$this->MultiCell(45, 6, $this->cv($s));
+		//$s = "Nathalie FAUCHER\nDirectrice du CADREF";
+		$p = Cadref::GetParametre('DOCUMENT', 'CHEQUE', 'SIGNATURE');
+		$this->MultiCell(45, 6, $this->cv($p->Texte));
 		
 		$this->SetFont('Arial','',10);
 		$this->SetXY(65,234.5);

@@ -300,6 +300,13 @@ class Adherent extends genericClass {
 		$file = 'Home/tmp/Carte'.$this->Numero.'_'.date('YmdHis').'.pdf';
 		$pdf->Output(getcwd().'/'.$file);
 		$pdf->Close();
+		
+		$p = Cadref::GetParametre('IMPRIMANTE', 'CARTE', Sys::$User->Login);
+		if($p && $p->Valeur) {
+			$s = "lp -d ".$p->Valeur." $file";
+			shell_exec($s);
+			return array('pdf'=>false);
+		}
 
 		return array('pdf'=>$file);
 	}
@@ -585,6 +592,11 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 					$sql = str_replace('##_', MAIN_DB_PREFIX, $sql.$where);
 					$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 					if(!$pdo) return false;
+					
+					if(!$pdo->rowCount()) return array(
+						'step'=>2,
+						'data'=>'Pas de cotisation pour cette année'
+					);
 
 					$file = $this->imprimeAttestation($pdo, $annee, $fisc, $mode);
 					return array(
@@ -603,6 +615,15 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 			'params'=>$params,
 			'template'=>'printAttestation',
 		);
+	}
+	
+	function CotisationList($id) {
+		$sql = "select Cotisation,Annee,substr(from_unixtime(DateCotisation),1,4) as Fisc from `##_Cadref-AdherentAnnee` where AdherentId=$id and Cotisation>0";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql.$where);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		$cot = array();
+		foreach($pdo as $p) $cot[] = array('Cotisation'=>$p['Cotisation'],'Annee'=>$p['Annee'].'-'.($p['Annee']+1),'Fisc'=>$p['Fisc']);
+		return array('cotisations'=>$cot);
 	}
 
 	private function imprimeAttestation($list, $annee, $fisc, $num) {
@@ -661,8 +682,7 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 						'callBack'=>array(
 							'nom'=>'displayCheque',
 							'title'=>'Cheque 3',
-							'args'=>array(),
-							'sql'=>$sql
+							'args'=>array()
 						)
 					);
 					break;

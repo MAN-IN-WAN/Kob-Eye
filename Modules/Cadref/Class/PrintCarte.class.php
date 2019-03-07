@@ -95,7 +95,7 @@ class PrintCarte extends FPDF {
 		$s = $this->cv("Secrétariat :");
 		$this->MultiCell(70, 4, $s, 0, 'C');
 		$this->SetXY(70, $t+47);
-		$this->SetFont('Arial','U',11);
+		$this->SetFont('Arial','',11);
 		$s = $this->cv("249, rue de Bouillargues\n30000 NÎMES");
 		$this->MultiCell(70, 4, $s, 0, 'C');
 		$this->SetXY(70, $t+64);
@@ -103,7 +103,7 @@ class PrintCarte extends FPDF {
 		$s = $this->cv("Tél. : 04 66 36 99 44\nFax. : 04 66 36 99 45");
 		$this->MultiCell(70, 4, $s, 0, 'C');
 		$this->SetXY(70, $t+78);
-		$this->SetFont('Arial','U',11);
+		$this->SetFont('Arial','',11);
 		$s = $this->cv("www.cadref.com\ncontact@cadref.com");
 		$this->MultiCell(70, 4, $s, 0, 'C');
 

@@ -24,6 +24,10 @@ class Cadref extends Module {
 		$GLOBALS["Systeme"]->registerVar("AnneeEnCours", $annee->Annee);
 		$GLOBALS["Systeme"]->registerVar("Cotisation", $annee->Annee);
 	}
+
+	public static function GetParametre($dom, $sdom, $par) {
+		return Sys::getOneData('Cadref', "Parametre/Domaine=$dom&SousDomaine=$sdom&Parametre=$par");
+	}
 	
 	public static function CheckAdherent() {
 		$data = array();
@@ -615,7 +619,8 @@ where ce.Classe=$cid
 		$m->Body = $params['Body'];
 		if(isset($params['Attachments']))
 			$m->Attachments = implode(',', $params['Attachments']);
-		$m->EmbeddedImages = "Skins/LoginCadref/Img/cadref_logo_bleu_100.png|cadref_logo";
+		$p = self::GetParametre('MAIL', 'STANDARD', 'SIGNATURE');
+		$m->EmbeddedImages = $p->Valeur; //"Skins/LoginCadref/Img/cadref_logo_bleu_100.png|cadref_logo";
 		$m->Save();
 	}
 	
@@ -627,10 +632,12 @@ where ce.Classe=$cid
 	}
 
 	public static function MailSignature() {
-		$s = "<br /><br />A bientôt,<br />L'équipe du CADREF<br /><br />";
-		$s .= '<img alt="CADREF" src="cid:cadref_logo">';
-		//$s .= '<img src="https://gestion.cadref.com/Skins/LoginCadref/Img/cadref_logo_bleu_100.png"/>';
-		return $s;
+		$p = self::GetParametre('MAIL', 'STANDARD', 'SIGNATURE');
+		return $p->Texte;
+		self::$MailLogo = $p->Valeur;
+//		$s = "<br /><br />A bientôt,<br />L'équipe du CADREF<br /><br />";
+//		$s .= '<img alt="CADREF" src="cid:cadref_logo">';
+//		return $s;
 	}
 
     public static function SendSms($params) {
@@ -681,7 +688,6 @@ where ce.Classe=$cid
 		}
 	}
 	
-
 
 
 }
