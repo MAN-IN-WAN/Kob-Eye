@@ -11,7 +11,10 @@ $serveur='ws2.eng.systems';
  * aurelphotographe;aurelphotographe;aurelphotographe
  * classequine-expert:classequine-expert:classequine2017
  * courtepointe;courtepointe;courtepointe
-
+ * ffpm;ffpm;ffpm+ffpm_dev+ffpm_intranet
+ * gedales;gedales;gedales+thebestprice ///a voir avec alex ... 2 boutiques sur un mutu
+ * protemporis;protemporis;protemporis
+ *
  * DOMAINE A MODIFIER
  * brumizeo;brumizeo;brumizeo_dev
  * cimenterie2;cimenterie2;cimenterie2
@@ -24,8 +27,9 @@ $serveur='ws2.eng.systems';
  * dev-keole;dev-keole;dev-keole
  * distillerie;distillerie;distillerie
  */
+//syntaxe NOM_HEB;NOM_CLIENT;BDD1[+BDD2...][;SRV_SQL]
 $csv= "
-ffpm;ffpm;ffpm+ffpm_dev+ffpm_intranet
+pescatore.fr;boxsete;pescatore_updated+pescatore+pescatore_dev
 ";
 $result = explode(PHP_EOL,$csv);
 $total = sizeof($result)-2;

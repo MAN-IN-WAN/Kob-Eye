@@ -252,7 +252,7 @@
                 {% for field in fields %}
                     <th title="{{ field.name }}" {% if field.type != "fkey" and field.type != "rkey" %}ng-click="triggerSort($event,'{{ identifier }}','{{ field.name }}','{{ context }}')" class="sortable"{% endif %}>{% if field.listDescr %}{{ field.listDescr }}{% else %}{{ field.name }}{% endif %}</th>
                 {% endfor %}
-                {% for interface in Interfaces %}
+                {% for interface in Interfaces.column %}
                     <th>{{ interface.name }}</th>
                 {% endfor %}
                 {#<th width="220">Détails</th>#}
