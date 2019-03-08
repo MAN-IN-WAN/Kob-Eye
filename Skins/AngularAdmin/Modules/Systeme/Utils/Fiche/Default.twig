@@ -178,20 +178,34 @@
     <!-- End Default Panel -->
     <div class="nav-tabs-horizontal" ng-if="displayFiche">
         <ul class="nav nav-tabs" role="tablist">
+            {% if Interfaces.fiche_tab %}
+                <li class="nav-item">
+                    <a class="nav-link active " href="javascript: void(0);" data-toggle="tab" data-target="#tabInfosSite" role="tab"><b>{{ Interfaces.fiche_tab.Infos.title }}</b></a>
+                </li>
+            {% endif %}
             {% for child in ChildrenElements %}
                 <li class="nav-item">
-                    <a class="nav-link {% if loop.first %}active{% endif %}" href="javascript: void(0);" data-toggle="tab" data-target="#tab{{ child.objectName }}" role="tab"><b>{% if child.objectDescription %}{{ child.objectDescription }}{% else %}{{ child.objectName }}{% endif %}</b> ({[{ {{ child.objectModule }}{{ child.objectName }}.store.total.children }]})</a>
+                    <a class="nav-link {% if loop.first and not Interfaces.fiche_tab  %}active{% endif %}" href="javascript: void(0);" data-toggle="tab" data-target="#tab{{ child.objectName }}" role="tab"><b>{% if child.objectDescription %}{{ child.objectDescription }}{% else %}{{ child.objectName }}{% endif %}</b> ({[{ {{ child.objectModule }}{{ child.objectName }}.store.total.children }]})</a>
                 </li>
             {% endfor %}
             {% if browseable %}
             <li class="nav-item">
-                <a class="nav-link {% if not ChildrenElements|length %}active{% endif %}" href="javascript: void(0);" data-toggle="tab" data-target="#tabPagesSite" role="tab"><b>Pages correspondantes</b> {# ({[{ {{ child.objectModule }}{{ child.objectName }}.store.total.children }]}) #}</a>
+                <a class="nav-link {% if not ChildrenElements|length and not Interfaces.fiche_tab %}active{% endif %}" href="javascript: void(0);" data-toggle="tab" data-target="#tabPagesSite" role="tab"><b>Pages correspondantes</b> {# ({[{ {{ child.objectModule }}{{ child.objectName }}.store.total.children }]}) #}</a>
             </li>
             {% endif %}
         </ul>
         <div class="tab-content">
+            {% if Interfaces.fiche_tab %}
+                <div class="tab-pane active" id="tabInfosSite" role="tabpanel">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div ng-include="'{{ Interfaces.fiche_tab.Infos.urlPrefix }}'+ obj.id +'{{ Interfaces.fiche_tab.Infos.urlSuffix }}'"></div>
+                        </div>
+                    </section>
+                </div>
+            {% endif %}
             {% for child in ChildrenElements %}
-                <div class="tab-pane {% if loop.first %}active{% endif %}" id="tab{{ child.objectName }}" role="tabpanel">
+                <div class="tab-pane {% if loop.first and not Interfaces.fiche_tab  %}active{% endif %}" id="tab{{ child.objectName }}" role="tabpanel">
                     {% if child.recursive %}
                         {#{{ include(template_from_string(module(Query~'/0/'~child.objectName~'/TreeChildren'))) }}#}
                         <section class="panel">

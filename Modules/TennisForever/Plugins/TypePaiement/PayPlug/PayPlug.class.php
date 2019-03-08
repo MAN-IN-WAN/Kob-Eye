@@ -55,9 +55,9 @@ class TennisForeverTypePaiementPayPlug extends Plugin implements TennisForeverTy
 			 'order' => $fact->Reference,
 			 'customer' => $client->Id,
 			 'origin' => $_SERVER['HTTP_HOST'],
-			 'ipnUrl' => "http://".$_SERVER['HTTP_HOST']."/TennisForever/Facture/IPN",
-			 'cancelUrl' => "http://".$_SERVER['HTTP_HOST']."/TennisForever/Facture/".$fact->Id."/Annulation",
-			 'returnUrl' => "http://".$_SERVER['HTTP_HOST']."/TennisForever/Facture/".$fact->Id."/Confirmation",
+			 'ipnUrl' => "https://".$_SERVER['HTTP_HOST']."/TennisForever/Facture/IPN",
+			 'cancelUrl' => "https://".$_SERVER['HTTP_HOST']."/TennisForever/Facture/".$fact->Id."/Annulation",
+			 'returnUrl' => "https://".$_SERVER['HTTP_HOST']."/TennisForever/Facture/".$fact->Id."/Confirmation",
 			 'customData' => $paiement->Id
 		 ));
 

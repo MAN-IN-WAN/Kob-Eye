@@ -58,7 +58,7 @@ class RestorePoint extends genericClass{
             $act->Terminate(true);
 
             $act = $task->createActivity('Restauration '.$this->Titre, 'Info', $task);
-            $cmd = 'cd /home/' . $host->NomLDAP . '/ && borg extract backup::'.$this->Identifiant.'';
+            $cmd = 'cd /home/' . $host->NomLDAP . '/ && export BORG_UNKNOWN_UNENCRYPTED_REPO_ACCESS_IS_OK=yes && borg extract -p backup::'.$this->Identifiant.'';
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails($out);
@@ -220,7 +220,7 @@ class RestorePoint extends genericClass{
                 $act->Terminate(true);
             }
             $act = $task->createActivity('Backup fichier', 'Info', $task);
-            $cmd = 'cd /home/' . $host->NomLDAP . ' && borg create backup::'.$restopoint.' * --exclude "backup" --exclude "cgi-bin" --exclude "logs" --exclude "azkocms_medias" --exclude "azkocms_skins"';
+            $cmd = 'cd /home/' . $host->NomLDAP . ' && export BORG_UNKNOWN_UNENCRYPTED_REPO_ACCESS_IS_OK=yes && borg create backup::'.$restopoint.' * --exclude "backup" --exclude "cgi-bin" --exclude "logs" --exclude "azkocms_medias" --exclude "azkocms_skins"';
             $act->addDetails($cmd);
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($out);

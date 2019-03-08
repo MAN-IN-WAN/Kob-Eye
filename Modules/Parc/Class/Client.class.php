@@ -474,6 +474,7 @@ class Parc_Client extends genericClass {
         if (!$client) {
             $client = genericClass::createInstance('Parc', 'Client');
             $client->Nom = $name;
+            $client->NomLDAP = $code;
             $client->Save();
         }
         return $client;

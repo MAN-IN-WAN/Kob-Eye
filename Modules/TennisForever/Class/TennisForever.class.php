@@ -22,6 +22,7 @@ class TennisForever extends Module {
     function initGlobalVars(){
         define('TENNISFOREVER_CLIENT_GROUP',4);
         $GLOBALS["Systeme"]->registerVar("CurrentClient",TennisForever::getCurrentClient());
+        $GLOBALS["Systeme"]->registerVar("CurrentYear",date('Y'));
     }
     /**
      * Modification des données de la skin dans le cas ou un utilisateur se connecte sur un magasin
@@ -135,5 +136,96 @@ class TennisForever extends Module {
             }
         }
         return $out;
+    }
+
+    /**
+     * getTotalCA
+     * Retourne la somme des factures pour une année donnée.
+     * @param $year
+     * @return string
+     */
+    static function getTotalCA($year){
+        //calcul du CA pour l'année courante.
+        $sql = 'SELECT SUM(MontantHT) as total FROM  `kob-TennisForever-Facture` where tmsCreate>='.mktime(0,0,0,1,1,$year).' and tmsCreate<'.mktime(0,0,0,1,1,intval($year)+1).' LIMIT 0 , 30';
+        $result = $GLOBALS['Systeme']->Db[0]->query($sql);
+        $result = $result->fetchALL ( PDO::FETCH_ASSOC );
+        return number_format($result[0]['total'],2);
+    }
+    /**
+     * getTotalCAByMonth
+     * Retourne la somme des factures pour une année et un mois donnés.
+     * @param $year
+     * @param $month
+     * @return string
+     */
+    static function getTotalCAByMonth($year,$month){
+        //calcul du CA pour l'année courante.
+        $sql = 'SELECT SUM(MontantHT) as total FROM  `kob-TennisForever-Facture` where tmsCreate>='.mktime(0,0,0,$month,1,$year).' and tmsCreate<'.mktime(0,0,0,intval($month)+1,1,$year).' LIMIT 0 , 30';
+        $result = $GLOBALS['Systeme']->Db[0]->query($sql);
+        $result = $result->fetchALL ( PDO::FETCH_ASSOC );
+        return number_format($result[0]['total'],2,'.','');
+    }
+    /**
+     * getnbFacture
+     * Retourne le nombre de factures pour une année donnée.
+     * @param $year
+     * @return string
+     */
+    static function getNbFacture($year){
+        //calcul du CA pour l'année courante.
+        $sql = 'SELECT COUNT(*) as total FROM  `kob-TennisForever-Facture` where tmsCreate>='.mktime(0,0,0,1,1,$year).' and tmsCreate<'.mktime(0,0,0,1,1,intval($year)+1).' LIMIT 0 , 30';
+        $result = $GLOBALS['Systeme']->Db[0]->query($sql);
+        $result = $result->fetchALL ( PDO::FETCH_ASSOC );
+        return number_format($result[0]['total'],0);
+    }
+
+    /**
+     * getnbClient
+     * Retourne le nombre de clients pour une année donnée.
+     * @param $year
+     * @return string
+     */
+    static function getNbClient($year){
+        //calcul du CA pour l'année courante.
+        $sql = 'SELECT COUNT(*) as total FROM  `kob-TennisForever-Client` where tmsCreate>='.mktime(0,0,0,1,1,$year).' and tmsCreate<'.mktime(0,0,0,1,1,intval($year)+1).' LIMIT 0 , 30';
+        $result = $GLOBALS['Systeme']->Db[0]->query($sql);
+        $result = $result->fetchALL ( PDO::FETCH_ASSOC );
+        return number_format($result[0]['total'],0);
+    }
+    /**
+     * getnbResas
+     * Retourne le nombre de réservations pour une année donnée.
+     * @param $year
+     * @return string
+     */
+    static function getNbResas($year){
+        $sql = 'SELECT COUNT(*) as total FROM  `kob-TennisForever-Reservation` where tmsCreate>='.mktime(0,0,0,1,1,$year).' and tmsCreate<'.mktime(0,0,0,1,1,intval($year)+1).' LIMIT 0 , 30';
+        $result = $GLOBALS['Systeme']->Db[0]->query($sql);
+        $result = $result->fetchALL ( PDO::FETCH_ASSOC );
+        return number_format($result[0]['total'],0);
+    }
+    /**
+     * getnbResasByMonth
+     * Retourne le nombre de réservations pour une année et un mois donnée.
+     * @param $year
+     * @param $month
+     * @return string
+     */
+    static function getResasByMonth($year,$month){
+        $sql = 'SELECT COUNT(*) as total FROM  `kob-TennisForever-Reservation` where tmsCreate>='.mktime(0,0,0,$month,1,$year).' and tmsCreate<'.mktime(0,0,0,intval($month)+1,1,$year).' LIMIT 0 , 30';
+        $result = $GLOBALS['Systeme']->Db[0]->query($sql);
+        $result = $result->fetchALL ( PDO::FETCH_ASSOC );
+        return number_format($result[0]['total'],0);
+    }
+    /**
+     * getResasByCourt
+     * Retourne le nombre de resa pour une année et un court
+     */
+    static function getResasByCourt($year,$court){
+        $sql = 'SELECT COUNT(*) as total FROM  `kob-TennisForever-Reservation` where tmsCreate>='.mktime(0,0,0,1,1,$year).' and tmsCreate<'.mktime(0,0,0,1,1,intval($year)+1).' AND CourtId = '.$court.' LIMIT 0 , 30';
+        $result = $GLOBALS['Systeme']->Db[0]->query($sql);
+        $result = $result->fetchALL ( PDO::FETCH_ASSOC );
+        //echo $year." -> ".$sql." -> ".$result[0]['total']."\n";
+        return number_format($result[0]['total'],0);
     }
 }

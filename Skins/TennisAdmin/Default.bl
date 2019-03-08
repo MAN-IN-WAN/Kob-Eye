@@ -18,6 +18,7 @@
 [HEADER JS]/Tools/Css/Bootstrap/3.0/js/bootstrap.min.js[/HEADER]
 [HEADER CSS]Tools/Css/Bootstrap/bootstrap-switch-master/dist/css/bootstrap3/bootstrap-switch.min.css[/HEADER]
 [HEADER JS]Tools/Css/Bootstrap/bootstrap-switch-master/dist/js/bootstrap-switch.min.js[/HEADER]
+[HEADER JS]Tools/Js/ChartJs/Chart.min.js[/HEADER]
 [HEADER JS]Tools/Js/CkEditor/ckeditor.js[/HEADER]
 [HEADER]
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
