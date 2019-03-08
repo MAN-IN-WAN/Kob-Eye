@@ -55,22 +55,6 @@
 				unwatch();
 			}
 		});
-/*		
-		var lasttimeout = false;
-		$scope.CadrefAdherent.filter2 = '';
-		$scope.$watch('CadrefAdherent.filter2', function() {
-            if ($scope.CadrefAdherent.filter2 != CadrefAdherentStore.getFilters('default',true).global){
-                if (lasttimeout){
-                    $timeout.cancel(lasttimeout);
-                    lasttimeout = false;
-                }
-                CadrefAdherentStore.setGlobalFilter('Nom~'+$scope.CadrefAdherent.filter2,'default');
-                lasttimeout = $timeout(function () {
-                    CadrefAdherentStore.getData(1,'default');
-                },400);
-            }
-        });
-*/
 		{% endif %}
 		
 	});
@@ -97,7 +81,16 @@
 				{% if objecttype == 'Classe' %}$scope.classeInfo();{% endif %}
 				{% if objecttype == 'Lieu' %}$scope.lieuInfo();{% endif %}
             }
-        },100,50);		
+        },100,50);	
+		
+		
+		// donne le focus
+		$scope.takeFocus = function(id) {
+			$timeout(function(){
+				$(id).focus();
+			},100);
+//			console.error('<<<<<<<<<<<<<<<<<<<<<<<<<<<<',id);
+		}
 		
 		// efface le contenu du filtre
 		$scope.clearFilter = function(child) {
@@ -581,13 +574,15 @@
 			cad.Inscr.date = '{{ "now"|date("d/m/Y") }}';
 			cad.Inscr.note = '';	
 			cad.Inscr.updated = cad.Inscr.paye != 0;
-			$('#searchClasse').focus();
 			$('#modalfunction-CadrefAdherent').on('keyup', function(event) {
 				if(event.keyCode == 13) {
 					if($('#inscriptionNext').length) $('#inscriptionNext').click();
 					else if($('#differeNext').length) $('#differeNext').click();
 				}
 			});
+			$timeout(function() {
+				$('#searchCadrefClasse').focus();
+			}, 300);
         }
 		
 		// controle le bontoun next
@@ -619,8 +614,9 @@
 			var t = $scope.CadrefInscription.store.data.temp;
 			var l = t.length;
 			for(var i = 0; i < l; i++) {
-				if(t[i].Attente>0 || t[i].Supprime>0) continue;
-				cad.cours += Number(t[i].Prix)-Number(t[i].Reduction)-Number(t[i].Soutien);
+				var c = t[i];
+				if(c.Attente>0 || c.Supprime>0) continue;
+				cad.cours += Number(c.Prix)-Number(c.Reduction)-Number(c.Soutien);
 			}
 			cad.paye = Number(cad.cotis)+Number(cad.cours)+Number(cad.visit)-Number(cad.regle)-Number(cad.diff)+Number(cad.regul);
 			cad.solde = 0;
@@ -645,8 +641,8 @@
 				explodeArgs: false,
 				tms : Date.now(),
 			};
-			var data = await $http.post('/Cadref/Absence/'+obj.ClasseClasseId+'/Method.json',{"Func":JSON.stringify(params)});
-			var next = data.data.data.Date;
+			var data = await $http.post('/Cadref/Classe/'+obj.ClasseClasseId+'/Method.json',{"Func":JSON.stringify(params)});
+			var next = Number(data.data.data.Date);
 			if(next == 0) {
 				swal("Attention", "Il n'y à plus de cours à venir.", "warning");
 				return;
@@ -654,11 +650,11 @@
 			if(Number(obj.Reduction) == 0) {
 				d = obj.CDateReduction2;
 				d = d.substr(3 ,3)+d.substr(0, 3)+d.substr(6, 4);
-				if(obj.CDateReduction2 != "" && next >= Date.parse(d)) obj.Reduction = obj.CReduction2;
+				if(obj.CDateReduction2 != "" && next >= Date.parse(d)/1000) obj.Reduction = obj.CReduction2;
 				else {
 					d = obj.CDateReduction1;
 					d = d.substr(3 ,3)+d.substr(0, 3)+d.substr(6, 4);
-					if(obj.CDateReduction1 != "" && next >= Date.parse(d)) obj.Reduction = obj.CReduction1;
+					if(obj.CDateReduction1 != "" && next >= Date.parse(d)/1000) obj.Reduction = obj.CReduction1;
 				}
 			}
 		}
@@ -671,7 +667,7 @@
 		}
 				
 		// ajoute une classe
-		$scope.classeAjoute = function(item) {
+		$scope.classeAjoute = async function(item) {
 			var cad = $scope.CadrefClasse;
 			var c = item == null ? cad.data[0] : item;
 			
@@ -714,7 +710,7 @@
 			o.CReduction2 = c.Reduction2;
 			o.CDateReduction1 = c.DateReduction1;
 			o.CDateReduction2 = c.DateReduction2;
-			$scope.classeReduction(o);
+			await $scope.classeReduction(o);
 			o.updated = 1;
 			var t = $scope.CadrefInscription.store.data.temp;
 			t[t.length] = o;
@@ -771,7 +767,7 @@
 			}
 		}
 
-		$scope.classeInscrire = function(item) {
+		$scope.classeInscrire = async function(item) {
 			if(item.Supprime == 0 && item.Attente == 0) return;
 			item.Supprime = 0;
 			item.Attente = 0;
@@ -779,7 +775,7 @@
 			item.DateAttente = '';
 			if(item.DateInscription == '') item.DateInscription = $filter('date')(new Date(), "dd/MM/yyyy");
 			item.updated = 1
-			$scope.classeReduction(item);
+			await $scope.classeReduction(item);
 			$scope.classeCalcul();
 			$scope.CadrefClasse.Inscr.updated = true;
 		}
@@ -937,7 +933,7 @@
 				}
 			);
 			CadrefClasseDateStore.setPageLength(25, 'children');
-			var tm = $timeout(function() {
+			$timeout(function() {
 				CadrefClasseDateStore.refresh('children');
 			}, 500);
 		}

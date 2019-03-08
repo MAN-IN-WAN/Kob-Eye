@@ -34,7 +34,7 @@
 											<div class="col-md-2">
 												{{ label("Date de début") }}
 											</div>
-											<div class="col-md-2">
+											<div class="col-md-3">
 												<label class="input-group datepicker-only-init cadref-no-margin">
 													<input id="input-objDateDebut" type="text" class="form-control cadref-input" mask="dd/dd/dddd" 
 														   ng-model="obj.DateDebut" ng-init="initDatePickerOnly(); obj.DateDebut='{{ "now"|date("d/m/Y") }}'"/>
@@ -49,7 +49,7 @@
 											<div class="col-md-2">
 												{{ label("Date de fin") }}
 											</div>
-											<div class="col-md-2">
+											<div class="col-md-3">
 												<label class="input-group datepicker-only-init cadref-no-margin">
 													<input id="input-objDateFin" type="text" class="form-control cadref-input" mask="dd/dd/dddd" ng-model="obj.DateFin" ng-init="obj.DateFin='{{ "now"|date("d/m/Y") }}'"/>
 													<span class="input-group-addon">

@@ -139,7 +139,7 @@ class Cadref extends Module {
 			$s .= "Code utilisateur (N° adhérent) : <strong>$num</strong><br />Mot de Passe : <strong>$p</strong><br /><br />";
 			if($confirm) {
 				$s .= 'Avant de pouvoir vous inscrire à des cours ou à des visites guidées,<br />';
-				$s .= 'vous devrez compléter les information dans la rubrique "Info personnelles".<br /><br />';
+				$s .= 'vous devrez compléter les informations dans la rubrique "Info personnelles".<br /><br />';
 			}
 			$s .= self::MailSignature();
 			$params = array('Subject'=>($new ? 'CADREF : Bienvenu dans votre nouvel espace utilisateur.' : 'CADREF : Nouveau mot de passe.'),

@@ -497,7 +497,7 @@ call kbabtel.aareduc(185,122,61);
 call kbabtel.aareduc(160,106,53);
 call kbabtel.aareduc(162,108,54);
 call kbabtel.aareduc(87,58,29);
-
+update kbabtel.`kob-Cadref-Classe` set Reduction1=0, DateReduction1=null where CodeClasse='NHIRE11';
 
 
 

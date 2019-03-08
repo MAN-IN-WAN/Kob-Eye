@@ -73,7 +73,7 @@ class PrintAttestation extends FPDF {
 		$this->Cell(170,4,$s,0,1,'L');
 		$this->SetFont('Arial','',10);
 		$this->SetX(20);
-		$s = "Activité intellectuelles, physiques, ludiques... au travers de cours, pour favoriser l'entretien des ";
+		$s = "Activités intellectuelles, physiques, ludiques... au travers de cours, pour favoriser l'entretien des ";
 		$s .= "capacités physiques et intellectuelles des adhérents, favoriser le lien social entre générations, ";
 		$s .= "et lutter contre l'isolement social...";
 		$s = $this->cv($s);
