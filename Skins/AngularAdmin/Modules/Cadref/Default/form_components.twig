@@ -15,16 +15,16 @@
     {% endif %}
 {% endmacro %}
 
-{% macro finput(field, obj, readonly=false, mask='', style='', cap=false) %}
+{% macro finput(field, obj, readonly=false, mask='', style='', cap=false, focus=false) %}
     <div class="control-group">
-        <input type="text" class="form-control cadref-input" placeholder="" ng-model="{{ obj }}.{{ field.name }}"
+        <input type="text" class="form-control cadref-input" ng-model="{{ obj }}.{{ field.name }}"
 			{% if readonly %} readonly tabindex="-1"{% endif %}{% if mask!='' %} mask="{{ mask }}" {% endif %}{% if style!='' %} style="{{ style }}"{% endif %}
-			{% if cap %} onkeyup="this.value = this.value.toUpperCase();"{% endif %}
+			{% if cap %} onkeyup="this.value = this.value.toUpperCase();"{% endif %}{% if focus %} tabindex="0"{% endif %}
 		/>
     </div>
 {% endmacro %}
 
-{% macro flinput(field, obj, readonly=false, mask='', style='', cap=false) %}
+{% macro flinput(field, obj, readonly=false, mask='', style='', cap=false, focus=false) %}
     <div class="row">
         <div class="col-md-2">
             <label class="form-control-label cadref-label" style="line-height:1.1" for="{{ obj }}.{{ field.name }}">{{ field.description }}</label>
@@ -35,9 +35,9 @@
             {% endif %}
         </div>
         <div class="col-md-10">
-            <input id="{{ obj }}.{{ field.name }}" type="text" class="form-control cadref-input" placeholder="" ng-model="{{ obj }}.{{ field.name }}"
+            <input type="text" class="form-control cadref-input" ng-model="{{ obj }}.{{ field.name }}"
 				{% if readonly %} readonly tabindex="-1"{% endif %}{% if mask!='' %} mask="{{ mask }}" {% endif %}{% if style!='' %} style="{{ style }}"{% endif %}
-	  			{% if cap %} onkeyup="this.value = this.value.toUpperCase();"{% endif %}
+	  			{% if cap %} onkeyup="this.value = this.value.toUpperCase();"{% endif %}{% if focus %} tabindex="0"{% endif %}
 			/>
         </div>
     </div>

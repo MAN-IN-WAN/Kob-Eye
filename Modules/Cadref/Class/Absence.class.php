@@ -33,7 +33,7 @@ class Absence extends genericClass {
 		$w = date("w", $this->DateFin);
 		$jf = Sys::getOneData('Cadref', "Jour/".($w > 0 ? $w : 7))->Jour;
 		$s = "CADREF : Absence ".$e->Prenom.' '.$e->Nom;
-		$b = "<br /><br />Nous somme au regret de vous informons  de l'absence de votre enseignant ".$e->Prenom.' '.$e->Nom;
+		$b = "<br /><br />Nous somme au regret de vous informoner de l'absence de votre enseignant ".$e->Prenom.' '.$e->Nom;
 		$h = "<br />du $jd ".date('d/m/Y H:i', $this->DateDebut);
 		$h .= "<br />au $jf ".date('d/m/Y H:i', $this->DateFin);
 		$d .= Cadref::MailSignature();

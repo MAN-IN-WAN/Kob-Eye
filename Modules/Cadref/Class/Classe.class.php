@@ -47,6 +47,7 @@ class Classe extends genericClass {
 	}
 	
 	function NextDate() {
+		$id = $this->Id;
 		$annee = Cadref::$Annee;
 		$t = time();
 		if($this->Programmation == 0) {
@@ -64,7 +65,7 @@ class Classe extends genericClass {
 			$j = date('w', $t);
 			if($j <= $this->JourId) $t += ($this->JourId-$j)*86400;
 			else $t += (7-($j-$this->JourId));
-			$sql = "select DateDebut from `##_Cadref-Vacance` where Annee='$annee' and Type='D' and DateDebut>$t and JourId=".$this->JourId;
+			$sql = "select DateDebut from `##_Cadref-Vacance` where Annee='$annee' and Type='D' and DateDebut>$t and JourId=".$this->JourId." limit 1";
 			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 			if($pdo->rowCount()) {
@@ -72,7 +73,7 @@ class Classe extends genericClass {
 				return array('Date'=>$d['DateDebut'],'sql'=>$sql);
 			}
 			while(true) {
-				$sql = "select DateDebut,DateFin from `##_Cadref-Vacance` where Annee='$annee' and Type='V' and DateDebut<=$t and DateFin>=$t";
+				$sql = "select DateDebut,DateFin from `##_Cadref-Vacance` where Annee='$annee' and Type='V' and DateDebut<=$t and DateFin>=$t limit 1";
 				$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 				$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 				if($pdo->rowCount()) $t += 7*86400;
@@ -80,7 +81,7 @@ class Classe extends genericClass {
 			}
 		}
 		else {
-			$sql = "select DateCours from `##_Cadref-ClasseDate` where Annee='$annee' and DateCours>=$t";
+			$sql = "select DateCours from `##_Cadref-ClasseDate` where Annee='$annee' and ClasseId=$id and DateCours>=$t order by DateCours limit 1";
 			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 			if($pdo->rowCount()) {
