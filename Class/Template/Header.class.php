@@ -24,7 +24,7 @@ class Header extends Root{
 
 
     function Header ($Type="") {
-		$proto = (Sys::$port == '443')?"https":"http";
+		$proto = $_SERVER['HTTP_X_FORWARDED_PROTO'];
 		$this->Url=$proto.'://'.Sys::$domain.'/';
 		$this->Title = $GLOBALS["Systeme"]->Titre;
 		$this->Description = $GLOBALS["Systeme"]->Description;

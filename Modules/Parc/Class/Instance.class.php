@@ -62,14 +62,14 @@ class Instance extends genericClass{
         if (empty($this->Password)){
             $this->Password = str_shuffle(bin2hex(openssl_random_pseudo_bytes(12)));
         }
-        parent::Save();
 
         //Check du client
         $client = $this->getOneParent('Client');
         if (!$client) {
-            $client = Parc_Client::getClientFromCode($this->InstanceNom,$this->Nom);
+            $client = Parc_Client::getClientFromCode(Instance::checkName($this->Nom),$this->Nom);
             $this->addParent($client);
         }
+        parent::Save();
 
         $tmpname = $this->InstanceNom;
 
@@ -382,20 +382,22 @@ class Instance extends genericClass{
      * Vérifie l'état d'une instance
      */
     public function checkState($task=null) {
+        $task->DateDebut =time();
         $host = $this->getOneParent('Host');
-        $aps = $host->getChildren('Apache');
+        $aps = $host->getChildren('Apache/Actif=1');
+        $start = microtime(true);
         //vérifie le retour http sur page accueil
         foreach ($aps as $ap){
-            $domains = explode(' ',$ap->getDomains());
+            $domains = explode(' ',$ap->getDomainsToCheck());
             foreach ($domains as $domain){
                 $domain = trim($domain);
                 if (empty($domain)) continue;
-                if (preg_match('#azko.site#',$domain)) continue;
                 //test http
                 try {
-                    $act = $task->createActivity('Vérification des domaines '.$ap->getDomains());
+                    $act = $task->createActivity('Vérification du domaine '.$domain);
+                    $time = microtime(true);
                     $code = self::getHttpCode('http://' . $domain);
-                    if (!in_array($code["http_code"], array(200, 301, 302, 0))) {
+                    if (!in_array($code["http_code"], array(200, 301, 302, 303, 0))) {
                         //alors incident
                         Incident::createIncident('Le domaine ' . $domain . ' ne répond pas correctement en http.', 'Le code de retour est ' . print_r($code, true), $this, 'HTTP_CODE', $domain, 4, false);
                     } else Incident::createIncident('Le domaine ' . $domain . ' ne répond pas correctement en http.', 'Le code de retour est ' . print_r($code, true), $this, 'HTTP_CODE', $domain, 4, true);
@@ -423,6 +425,7 @@ class Instance extends genericClass{
                             Incident::createIncident('Le certificat ne gère pas le domaine ' . $domain . '.', 'Le code de retour est ' . print_r($certinfo, true), $this, 'SSL_ERROR', $domain, 4, false);
                         } else Incident::createIncident('Le certificat ne gère pas le domaine ' . $domain . '.', 'Le code de retour est ' . print_r($certinfo, true), $this, 'SSL_ERROR', $domain, 4, true);
                     }
+                    $act->addDetails('Exécution en '.floatval((microtime(true)-$time)).' secondes');
                     $act->Terminate(true);
                 }catch (Exception $e){
                     $act->Terminate(false);
@@ -430,10 +433,15 @@ class Instance extends genericClass{
             }
         }
         $act = $task->createActivity('Execution de la tache plugin');
+        $time = microtime(true);
         $plugin = $this->getPlugin();
-        $act->Terminate(true);
         //appel checkState du plugin
-        return $plugin->checkState($task);
+        $plugin->checkState($task);
+        $act->addDetails('Exécution en '.floatval((microtime(true)-$time)).' secondes');
+        $act->Terminate(true);
+        $act = $task->createActivity('Vérification terminée en '.floatval(microtime(true)-$start).' secondes');
+        $act->Terminate(true);
+        return true;
     }
     /**
      * rewriteConfig
@@ -480,6 +488,16 @@ class Instance extends genericClass{
         $apache->Save();
 
         return $apache;
+    }
+    /**
+     * emptyProxyCacheTask
+     * Supprime le cache des serveurs proxy pour cet hébergement
+     */
+    public function emptyProxyCacheTask(){
+        $hosts = $this->getParents('Host');
+        foreach ($hosts as $host)
+            $host->emptyProxyCacheTask();
+        return true;
     }
 
 }

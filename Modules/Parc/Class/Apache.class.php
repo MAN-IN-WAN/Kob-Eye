@@ -302,11 +302,12 @@ class Apache extends genericClass {
             $this->_isVerified = true;
 
 			if($synchro) {
-
 				// Outils
 				$KEHost = $this->getKEHost();
 				$KEServers = $this->getKEServer();
                 if (empty($KEHost->NomLDAP)) {
+                    print_r($KEHost);
+                    echo  "L'hébergement n'est pas à jour... Enregistrement forcé... \n";
                     $this->addWarning(array("Message" => "L'hébergement n'est pas à jour... Enregistrement forcé..."));
                     $KEHost->Save();
                 }
@@ -628,6 +629,27 @@ class Apache extends genericClass {
 	    return $this->ApacheServerName.' '.(implode(" ",explode("\n",str_replace("\r","",$this->ApacheServerAlias))));
     }
     /**
+     * getDomainsToCheck
+     * renvoie la liste séparée pâr des esapces de tous les domaines à vérifier
+     *
+     */
+    public function getDomainsToCheck() {
+        $exceptionDomains = Sys::getData('Parc','Domain/NoSSL=1');
+        $domains = explode("\n",str_replace("\r","",$this->ApacheServerAlias));
+        $domains[] = $this->ApacheServerName;
+        $out = array();
+        foreach ($domains as $domain) {
+            if (empty(trim($domain))) continue;
+            foreach ($exceptionDomains as $ed){
+                //test des exceptions
+                if (strpos($domain,$ed->Url) === false){
+                    array_push($out,$domain);
+                }
+            }
+        }
+        return implode(' ',$out);
+    }
+    /**
      * getDomains
      * renvoie la slite séparée pâr des esapces de tous les domaines
      *
@@ -757,6 +779,7 @@ class Apache extends genericClass {
             //récupérations des exception de domaine
             foreach ($domains as $d){
                 $exception = false;
+                if (empty(trim($d))) continue;
                 foreach ($exceptionDomains as $ed){
                     //test des exceptions
                     if (strpos($d,$ed->Url) !== false){
@@ -767,7 +790,7 @@ class Apache extends genericClass {
                 if (!in_array($d,$certdomains)&&!$exception){
                     $this->addError(array('Message'=>'Le domaine '.$d.' n\' est pas compris dans le certificat en production. Il serait nécessaire de le regénérer.'));
                     $incompleteDomain = true;
-                    $act = $task->createActivity('Domaines incomplets - extension du domaine...');
+                    $act = $task->createActivity('Domaines incomplets - extension du domaine ('.$d.')... sauf si le certif est expiré');
                 }
             }
 
@@ -787,7 +810,15 @@ class Apache extends genericClass {
                     $act->Terminate(true);
                     $this->Save();
                     return true;
+                }else {
+                    //certificat non valide donc on le regénère peu importe qi les domaines sont incomplets
+                    $act = $task->createActivity('Date du certificat valide. Mais des domaines sont manquants. Donc extension du certificat');
+                    $act->Terminate(true);
                 }
+            }else {
+                //certificat non valide donc on le regénère peu importe qi les domaines sont incomplets
+                $valid=$incompleteDomain=false;
+                $act = $task->createActivity('Certificat expiré donc regénération totale du certificat.');
             }
         }
 
@@ -950,6 +981,13 @@ class Apache extends genericClass {
         return true;
     }
 
-
-
+    /**
+     * emptyProxyCacheTask
+     * Supprime le chache des serveurs proxy pour cet hote virtuel
+     */
+    public function emptyProxyCacheTask(){
+        $infra=$this->getInfra();
+        Server::emptyProxyCacheTask($this,$infra);
+        return true;
+    }
 }

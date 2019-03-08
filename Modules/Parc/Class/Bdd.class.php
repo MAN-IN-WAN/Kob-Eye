@@ -82,7 +82,7 @@ class Bdd extends genericClass {
             $dbGuac->query($query);
         }catch (Exception $e){
             $this->addError(Array("Message"=>"Erreur de base de donnée: ".$e->getMessage()));
-            $this->Delete(true);
+            //$this->Delete(true);
             return false;
         }
         return true;
