@@ -81,6 +81,22 @@ foreach($as as $a) $tmp[$a->Id] = $a->Libelle;
 $vars['antennes'] = $tmp;
 // type adhérent
 $vars['typeAdh'] = array(''=>'','B'=>'Bureau','A'=>'Administrateur','D'=>'Délégué');
+// situation
+//$tmp = array();
+//$as = Sys::getData('Cadref','Situation');
+//foreach($as as $a) {
+//	$tmp[] = (object) array('id'=>$a->Id, 'code'=>$a->Situation, 'label'=>$a->Libelle);
+//}
+//$vars['situations'] = $tmp;
+
+// communes
+$tmp = array();
+$as = Sys::getData('Cadref','Commune');
+foreach($as as $a) {
+	$tmp[] = (object) array('CP'=>$a->CP, 'Commune'=>$a->Commune);
+}
+$vars['communes'] = $tmp;
+
 
 
 ?>

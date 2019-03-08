@@ -1,0 +1,322 @@
+table tr th.cadref-th {
+	padding-top: .1rem;
+	padding-bottom: .1rem;
+	padding-left: .2rem;
+	padding-right: .2rem;
+}
+table tr th.cadref-th-btn {
+	padding-top: .1rem;
+	padding-bottom: .1rem;
+	padding-left: .2rem;
+	padding-right: .2rem;
+	text-align: right;
+}
+table tr td.cadref-td {
+	padding-top: .1rem;
+	padding-bottom: 0;
+	padding-left: .2rem;
+	padding-right: .2rem;
+	line-height: 1.8;
+}
+table tr td.cadref-td-btn {
+	padding-top: .1rem;
+	padding-bottom: 0;
+	padding-left: .2rem;
+	padding-right: .2rem;
+	line-height: 1;
+}
+table tr td.cadref-td-inscr {
+	padding-top: .1rem;
+	padding-bottom: 0;
+	padding-left: .2rem;
+	padding-right: .2rem;
+}
+table tr td.cadref-td-diff {
+	padding-top: .0rem;
+	padding-bottom: .0rem;
+	padding-left: .2rem;
+	padding-right: .2rem;
+}
+.cadref-ins-numero {
+	font-size: 1.25rem;
+	color: blue;
+	padding-right: 1rem;
+}
+.cadref-ins-nom {
+	font-size: 1.25rem;
+	color: darkgreen;
+	padding-right: 1rem;
+}
+.cadref-ins-prenom {
+	font-size: 1.1rem;
+	color: darkgreen;
+}
+.cadref-ins-mail {
+	font-size: 1rem;
+	font-style: italic;
+	color: darkgrey;
+}
+.cadref-label {
+	margin-bottom: .1rem;
+	padding: .1rem .7rem;
+}
+.cadref-no-margin {
+	margin: 0px;
+}
+.cadref-no-padding {
+	padding: 0px !important;
+}
+.cadref-input {
+	padding: .4rem .4rem;
+}
+.cadref-input-diff {
+	padding: .35rem .35rem;
+}
+.cadref-input-date {
+	width: 130px;
+}
+.cadref-date {
+	padding: 8px 8px;
+	max-width: 6.5rem;
+}
+.cadref-btn-wait:after {
+    content: "\eb1f";
+}
+.cadref-btn-add:after {
+    content: "\ed5f";
+}
+.cadref-btn-del:after {
+    content: "\ed60";
+}
+.cadref-btn-change:after {
+    content: "\eda8";
+}
+.cadref-btn-edit:after {
+    content: "\e910";
+}
+.cadref-btn-save:after {
+    content: "\ed6f";
+}
+.cadref-btn-cancel:after {
+    content: "\ed66";
+}
+.cadref-btn-erase:after {
+    font-family: 'icomoon-ultimate', serif;
+    content: "\ed66";
+}
+.cadref-btn-download:after {
+    content: "\e9a5";
+}
+.cadref-btn-upload:after {
+    content: "\e9a7";
+}
+.cadref-btn-msg:after {
+    content: "\ea32";
+}
+.cadref-btn-close {
+	float: right;
+	color: #fff;
+    background-color: #f0ad4e;
+    border-color: #f0ad4e;
+}
+.cadref-btn-close:after {
+    content: "\ed66";
+}
+/*
+cadref-btn-close:hover {
+    color: #fff;
+    background-color: #ec971f;
+    border-color: #eb9316;
+}
+*/
+.cadref-cal-visite:before {
+	font-family: 'icomoon-ultimate';
+	content: "\e93c";
+	float: left;
+	margin-right: 2%;
+}
+.cadref-cal-noel:before {
+	font-family: 'icomoon-ultimate';
+	content: "\ebd3";
+	float: left;
+	margin-right: 2%;
+}
+.cadref-cal-hiver:before {
+	font-family: 'icomoon-ultimate';
+	content: "\ecbd";
+	float: left;
+	margin-right: 2%;
+}
+.cadref-cal-automne:before {
+	font-family: 'icomoon-ultimate';
+	content: "\ed13";
+	float: left;
+	margin-right: 2%;
+}
+.cadref-cal-printemps:before {
+	font-family: 'icomoon-ultimate';
+	content: "\ecc9";
+	float: left;
+	margin-right: 2%;
+}
+.cadref-cal-ascension:before {
+	font-family: 'icomoon-ultimate';
+	content: "\ecce";
+	float: left;
+	margin-right: 2%;
+}
+.cadref-cal-ete:before {
+	font-family: 'icomoon-ultimate';
+	content: "\ebd6";
+	float: left;
+	margin-right: 2%;
+}
+.cadref-cal-11nov:before {
+	font-family: 'icomoon-ultimate';
+	content: "\ebdb";
+	float: left;
+	margin-right: 2%;
+}
+.cadref-cal-1mai:before {
+	font-family: 'icomoon-ultimate';
+	content: "\eb69";
+	float: left;
+	margin-right: 2%;
+}
+.cadref-cal-8mai:before {
+	font-family: 'icomoon-ultimate';
+	content: "\ebdb";
+	float: left;
+	margin-right: 2%;
+}
+.cadref-cal-absence:before {
+	font-family: 'icomoon-ultimate';
+	content: "\eb71";
+	float: left;
+	margin-right: 2%;
+}
+
+.cadref-widget {
+	box-shadow: 0 2px 10px -2px rgba(55, 58, 60, 0.3);
+	padding: 6px 6px 6px 6px;
+}
+.cadref-separ {
+	height: 1px;
+	padding: 5px;
+}
+.cadref-btn-100 {
+	width:100%;
+}
+
+.cadref-modal-dialog {
+	max-width:1250px;
+}
+
+.modal.modal-size-large .cadref-modal-dialog {
+	max-width:1250px;
+}
+.panel .cadref-panel-body {
+	padding:8px 15px 15px 15px;
+}
+
+.cadref-highlight {
+	background-color: yellow !important;
+}
+.cadref-switch {
+	top: 2px;
+}
+.cadref-switch.checked {
+	background-color: red;
+	border-color: red;
+}
+.cadref-switch-red {
+	background-color: red;
+	border-color: red;
+	top: 2px;
+}
+.cadref-switch-red.checked {
+	background-color: rgb(100, 189, 99);
+	border-color: rgb(100, 189, 99);
+}
+.cadref-switch-green {
+	background-color: rgb(100, 189, 99);
+	border-color: rgb(100, 189, 99);
+	top: 2px;
+}
+.cadref-switch-green.checked {
+	background-color: red;
+	border-color: red;
+}
+
+.cadref-fkey {
+	padding:2px 8px !important;
+	font-size:1rem !important;
+}
+.cadref-annuel {
+	background-color:paleturquoise !important;
+}
+
+.label.cadref-default {
+    background: #acb7bf;
+    color: #ffffff;
+}
+
+.label.cadref-primary {
+    background: #01a8fe;
+    color: #ffffff;
+}
+
+.label.cadref-secondary {
+    background: #6a7a84;
+    color: #ffffff;
+}
+
+.label.cadref-success {
+    background: #46be8a;
+    color: #ffffff;
+}
+
+.label.cadref-info {
+    background: #0190da;
+    color: #ffffff;
+}
+
+.label.cadref-danger {
+    background: #fb434a;
+    color: #ffffff;
+}
+
+.label.cadref-warning {
+    background: #f39834;
+    color: #ffffff;
+}
+
+.modal.modal-size-small {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+
+.modal.cadref-modal-size-medium .modal-dialog {
+    max-width: 900px;
+    width: auto;
+}
+
+.cadref-page-content {
+	padding: 5px;
+}
+
+label.cadref-clickable {
+    cursor: pointer;
+    margin-top: 3px;
+    padding: 0px;
+}
+span.cadref-default {
+	color: #acb7bf;
+}
+span.cadref-success {
+	color: #46be8a;
+}
+span.cadref-info {
+	color: #0190da;
+}

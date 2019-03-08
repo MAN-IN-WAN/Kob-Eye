@@ -30,8 +30,8 @@ class PrintCheque extends FPDF {
 	function PrintPage($l, $params) {
 		$this->AddPage();
 		
-		$img = getcwd().'/Skins/AngularAdmin/Modules/Cadref/assets/img/cadref_logo.jpg';
-		$this->Image($img,20,21,37,30);
+		$img = getcwd().'/Skins/AngularAdmin/Modules/Cadref/assets/img/cadref_logo_noir.png';
+		$this->Image($img,25,19,26,30);
 		$this->SetFont('Arial','',10);
 		$this->SetXY(20, 51);
 		$this->Cell(37, 4, 'www.cadref.com', 0, 1, 'C');
@@ -95,7 +95,7 @@ class PrintCheque extends FPDF {
 		$nbre = $nuts->getFormated(" ", ",", "fr-FR");
 		
 		$h = 4.8;
-		$this->SetXY(20, 122);
+		$this->SetXY(20, 112);
 		$this->MultiCell(170, $h, "Madame, Monsieur,\n\n");
 		$this->SetX(20);
 		$s = $this->cv('Je vous prie de trouver ci-joint un chèque barré de');
@@ -106,7 +106,7 @@ class PrintCheque extends FPDF {
 		$this->Cell(170-$w, $h, $nbre, 0, 1);
 		$this->SetFont('Arial','',12);
 		$this->SetX(20);
-		$s = "étabi à votre ordre sur le Crédit Agricole à Nîmes, en remboursement de :\n\n";
+		$s = "établi à votre ordre sur le Crédit Agricole à Nîmes, en remboursement de :\n\n";
 		$this->MultiCell(170, $h, $this->cv($s));
 		$this->SetFont('Arial','B',12);
 		$this->SetX(20);
@@ -116,9 +116,10 @@ class PrintCheque extends FPDF {
 		$s = "Vous en souhaitant bonne réception, je vous prie d'agréer, Madame, Monsieur, l'expression de mes sentiments distingués";
 		$this->MultiCell(170, $h, $this->cv($s));
 		
-		$this->SetXY(125,190);
-		$s = "Nathalie FAUCHER\nDirectrice du CADREF";
-		$this->MultiCell(45, 6, $this->cv($s));
+		$this->SetXY(125,180);
+		//$s = "Nathalie FAUCHER\nDirectrice du CADREF";
+		$p = Cadref::GetParametre('DOCUMENT', 'CHEQUE', 'SIGNATURE');
+		$this->MultiCell(45, 6, $this->cv($p->Texte));
 		
 		$this->SetFont('Arial','',10);
 		$this->SetXY(65,234.5);

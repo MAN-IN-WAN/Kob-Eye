@@ -1245,3 +1245,6 @@ Choix des composants
     overflow: -webkit-paged-y !important;
 }
 
+.logo-centre {
+	margin: auto;
+}

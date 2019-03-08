@@ -4,6 +4,17 @@
 {% set o=Create ? 'modalObj' : 'obj' %}
 
 <div class="page-content-inner">
+    <ul class="list-unstyled breadcrumb" ng-if="{{ o }}.id">
+        <li>
+            <a href="#/TableauDeBord">Tableau de bord</a>
+        </li>
+        <li>
+            <a href="#/{{ CurrentMenu.Url }}">Liste des {{ ObjectClass.getDescription() }}</a>
+        </li>
+        <li>
+            <a href="javascript: void(0);" ng-bind-html="'Fiche {{ ObjectClass.getDescription() }} '+(obj.label)"></a>
+        </li>
+    </ul>
     <!-- Default Panel -->
     <section class="panel">
         <div class="panel-body cadref-panel-body">
@@ -11,6 +22,7 @@
                 <div {% if Create %}class="col-md-10"{% else %}class="col-md-11"{% endif %}>
 					<div class="row">
 						<div class="col-md-8" >
+							{{ flinput(f.Lieu, o, false, '', 'width:60px; text-transform:uppercase;', true) }}
 							<div class="row">
 								<div class="col-md-2">
 									{{ label("Type") }}
@@ -27,30 +39,22 @@
 									<div custom-select="a.id as a.label+'  -  '+a.Libelle for a in getSelectData('CadrefAntenneStore',$searchTerm)" 
 										 custom-select-options="{ 'async': true, 'filter':''}" 
 										 ng-model="{{ o }}.AntenneAntenneId"
-										 class="form-control" 
+										 class="form-control cadref-input" 
 										 ng-title="{{ o }}.AntenneAntenneIdlabel+'  -  '+obj.LibelleA">
 									</div>
 								</div>
 							</div>
 							<div class="row" style="height:10px"></div>
-							{{ flinput(f.Lieu, o, false, '', 'width:60px; text-transform:uppercase;', true) }}
-							{{ flinput(f.Libelle, o) }}
+							{{ flinput(f.Libelle, o, true) }}
+							<div class="row" style="height:10px"></div>
+							{{ flinput(f.Adresse1, o, false) }}
+							{{ flinput(f.Adresse2, o, false) }}
+							{{ flinput(f.Ville, o, false) }}
 							<div class="row" style="height:10px"></div>
 							{{ flinput(f.GPS, o) }}
 						</div>
 						{# block right #}                    
 						<div class="col-md-4">
-						</div>
-					</div>
-					<div class="row" style="height:10px"></div>
-					<div class="row">
-						{# disciplines #}
-						<div class="col-md-12">
-							<section class="panel" ng-if="{{ o }}.id">
-								<div class="panel-body">
-									<ng-include src="'/{{ CurrentUrl }}/0/Discipline/ListChildren.htm'" ng-if="show"></ng-include>
-								</div>
-							</section>
 						</div>
 					</div>
 				</div>

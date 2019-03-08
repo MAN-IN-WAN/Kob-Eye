@@ -21,17 +21,24 @@ class Enseignant extends genericClass {
 				return array(
 					'step'=>1,
 					'template'=>'sendMessage',
+					'args'=>array('civilite'=>$s),
 					'callNext'=>array(
 						'nom'=>'SendMessage',
 						'title'=>'Message suite',
-						'needConfirm'=>false,
-						'args'=>array('identifier'=>'CadrefEnseignant')
+						'args'=>array(),
+						'needConfirm'=>false
 					)
 				);
 				break;
 			case 1:
-				$params['Msg']['To'] = array($params['Msg']['Mail']);
-				$ret = Cadref::SendMessage($params['Msg']);
+				if($params['Msg']['sendMode'] == 'mail') {
+					$params['Msg']['To'] = array($params['Msg']['Mail']);
+					$params['Msg']['Attachments'] = $params['Msg']['Pieces']['data'];
+					$ret = Cadref::SendMessage($params['Msg']);
+				}
+				else {
+					$ret = Cadref::SendSms(array('Telephone1'=>$this->Telephone1,'Telephone2'=>$this->Telephone2,'Message'=>$params['Msg']['SMS']));
+				}
 				return array(
 					'data'=>'Message envoyé',
 					'params'=>$params['Msg'],

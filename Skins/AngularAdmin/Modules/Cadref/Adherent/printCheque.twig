@@ -17,6 +17,16 @@
 								<div class="col-xl-8">
 									<div class="row">
 										<div class="col-md-2">
+											{{ label("Montant") }}
+										</div>
+										<div class="col-md-4">
+											<div class="control-group">
+												<input type="text" id="chequeMontant" class="form-control cadref-input" autofocus ng-model="CadrefClasse.Cheque.Montant"/>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-2">
 											{{ label("Date") }}
 										</div>
 										<div class="col-md-4">
@@ -29,16 +39,7 @@
 											</label>
 										</div>
 									</div>
-									<div class="row">
-										<div class="col-md-2">
-											{{ label("Montant") }}
-										</div>
-										<div class="col-md-4">
-											<div class="control-group">
-												<input type="text" class="form-control cadref-input" placeholder="" ng-model="CadrefClasse.Cheque.Montant"/>
-											</div>
-										</div>
-									</div>
+									<div class="row" style="height:10px"></div>
 									<div class="row">
 										<div class="col-md-2">
 											{{ label("Objet") }}
@@ -134,27 +135,3 @@
     </section>
 </div>
 <input type="hidden" ng-init="CadrefAdherentfunction.args.Cheque=CadrefClasse.Cheque"/>
-
-<script>
-	$('.datepicker-only-init').datetimepicker({
-		widgetPositioning: {
-			horizontal: 'left'
-		},
-		locale: 'fr',
-		format: 'DD/MM/YYYY',
-		icons: {
-			time: "fa fa-clock-o",
-			date: "fa fa-calendar",
-			up: "fa fa-arrow-up",
-			down: "fa fa-arrow-down"
-		}
-	});
-
-	//Tweak moche a voir si on peut pas faire plus propre depuis le controller :x
-	$(".datepicker-only-init").on("dp.change", function () {
-		var input = $(this).children('input').eq(0);
-		input.trigger('change');
-		input.trigger('input');
-	});
-</script>
-

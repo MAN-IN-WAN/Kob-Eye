@@ -7,14 +7,25 @@ class Visite extends genericClass {
 			$this->addError(array("Message" => "Cette fiche ne peut être modifiée ($this->Annee)", "Prop" => ""));
 			return false;			
 		}
-		if(! $this->Id) { //if($mode) {
+		$id = $this->Id;
+		if(! $id) { //if($mode) {
 			$this->Annee = $annee;
 			$this->Utilisateur = Sys::$User->Initiales;
 		}
 		$this->Attentes = Sys::getCount('Cadref','Visite/'.$this->Id.'/Reservation/Attente=1&Supprime=0');
 		$this->Inscrits = Sys::getCount('Cadref','Visite/'.$this->Id.'/Reservation/Attente=0&Supprime=0');
 
-		return parent::Save();
+		$ret = parent::Save();
+		if(! $id) {
+			$lx = Sys::getData('Cadref','Lieu/Type=R');
+			foreach($lx as $l) {
+				$d = genericClass::createInstance('Cadref', 'Depart');
+				$d->addParent($this);
+				$d->addParent($l);
+				$d->Save();
+			}
+		}
+		return $ret;
 	}
 
 	function Delete() {

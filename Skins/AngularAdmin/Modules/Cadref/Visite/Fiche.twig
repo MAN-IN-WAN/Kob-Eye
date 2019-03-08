@@ -47,7 +47,7 @@
 									{{ fdate(f.DateVisite, o) }}
 								</div>
 								<div class="col-md-2">
-									{{ label("Limite inscription") }}
+									{{ label("Limite annulation") }}
 								</div>
 								<div class="col-md-3">
 									{{ fdate(f.DateLimite, o) }}
@@ -92,7 +92,7 @@
 									<multiple-autocomplete class="form-control cadref-no-padding" 
 										ng-model="obj.EnseignantEnseignants"
 										object-property="label"
-										model-labels="obj.EnseignantEnseignantslabel"
+										model-labels="obj.EnseignantEnseignantslibelle"
 										suggestions-arr="Enseignants">
 									</multiple-autocomplete>
 								</div>

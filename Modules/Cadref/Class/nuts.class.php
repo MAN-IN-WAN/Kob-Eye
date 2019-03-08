@@ -315,7 +315,7 @@ class nuts {
    * @param string $tSep Séparateur des milliers, en sortie.
    * @param string $dSep Séparateur décimal, en sortie.
    */
-  function getFormated($tSep = '', $dSep = '.', $language){
+  function getFormated($tSep = '', $dSep = '.', $language = ''){
     if ($tSep == $dSep) {
       // Les 2 séparateurs ne peuvent être identiques > valeurs par défaut.
       $tSep = '';
@@ -323,7 +323,7 @@ class nuts {
     }
     
 	$unit = $this->unit;
-	if(isset($language)) $unit = $this->units[$this->unit][$language][$this->nb > 1 ? 1 : 0]; 
+	if($language != '') $unit = $this->units[$this->unit][$language][$this->nb > 1 ? 1 : 0]; 
 		
     $return = $this->format($this->parts[0], $tSep);
     if ($this->decSep == '') {

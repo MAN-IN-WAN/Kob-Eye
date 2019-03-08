@@ -373,4 +373,19 @@
         <FKEY data="Tache,Id" form="1" fiche="1" card="0,1" popup="1" >TacheId</FKEY>
     </OBJECTCLASS>
 
+	<OBJECTCLASS title="MailQueue" driver="mysql" order="Title" orderType="ASC" AccessPoint="1" Description="Rôles" Icon="/Skins/AdminV2/Img/brick.png" Dico="1" Class="Modules/Systeme/Class/MailQueue.class.php">
+		<PROPERTIES type="varchar" searchOrder="1">From</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2">To</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2">Cc</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2">Bcc</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="3">Subject</PROPERTIES>
+		<PROPERTIES type="Text">Body</PROPERTIES>
+		<PROPERTIES type="varchar" length="1024">Attachments</PROPERTIES>
+		<PROPERTIES type="varchar" length="1024">EmbeddedImages</PROPERTIES>
+		<PROPERTIES type="datetime">CreationTime</PROPERTIES>
+		<PROPERTIES type="datetime">SendTime</PROPERTIES>
+		<PROPERTIES type="int">Status</PROPERTIES>
+		<PROPERTIES type="varchar">Error</PROPERTIES>
+	</OBJECTCLASS>
+
 </SCHEMA>

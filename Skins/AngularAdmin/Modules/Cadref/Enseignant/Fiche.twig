@@ -59,7 +59,7 @@
 							<div class="row" style="height:10px"></div>
 							<div class="row">
 								<div class="col-md-2">
-									{{ label("Delegué des professeurs") }}
+									{{ label("Delegué des prof.") }}
 								</div>
 								<div class="col-md-10">
 									{{ fboolean(f.Delegue, o) }}
@@ -67,10 +67,10 @@
 							</div>
 							<div class="row">
 								<div class="col-md-2">
-									{{ label("Inactif") }}
+									{{ label("Prestataire") }}
 								</div>
 								<div class="col-md-10">
-									{{ fboolean(f.Inactif, o, true) }}
+									{{ fboolean(f.Prestataire, o) }}
 								</div>
 							</div>
 							<div class="row">
@@ -79,6 +79,14 @@
 								</div>
 								<div class="col-md-10">
 									{{ ftext(f.Notes, o) }}
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Inactif") }}
+								</div>
+								<div class="col-md-10">
+									{{ fboolean(f.Inactif, o, true) }}
 								</div>
 							</div>
 						</div>
@@ -114,6 +122,48 @@
 			</div>
 		</div>
     </section>
+</div>
+<div class="modal fade modal-size-large" id="modalfunction-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog cadref-modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+				<a class="btn-abt cadref-btn-close" href="" data-dismiss="modal" title="Annuler"></a>
+                <h4 class="modal-title">{[{ {{ identifier }}function.title }]}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" ng-if="{{ identifier }}function.errors.length">
+                    <ul>
+                        <li ng-repeat="e in {{ identifier }}function.errors">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-warning" ng-if="{{ identifier }}function.warning.length">
+                    <ul>
+                        <li ng-repeat="e in f{{ identifier }}function.warning">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-success" ng-if="{{ identifier }}function.infos.length">
+                    <ul>
+                        <li ng-repeat="e in {{ identifier }}function.infos">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="text-center"
+                     ng-hide="{{ identifier }}function.loaded">
+                    <br />
+                    Chargement ...
+                    <br />
+                    <div class="spinload"></div>
+                </div>
+                <div id="ajaxwrapperFunc"
+                     ng-show="{{ identifier }}function.loaded"
+                     compile="{{ identifier }}function.data" >
+                </div>
+            </div>
+{#            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal" ng-if="!{{ identifier }}function.callNext">Fermer</button>
+                <button type="button" class="btn" ng-if="{{ identifier }}function.callNext" ng-click="{{ identifier }}callFunction({{ identifier }}function.callNext.item,{{ identifier }}function.callNext.nom,{{ identifier }}function.callNext.title,{{ identifier }}function.callNext.needConfirm,1)">Suivant</button>
+            </div>
+#}        </div>
+    </div>
 </div>
 
 

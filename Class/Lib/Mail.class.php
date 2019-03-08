@@ -51,6 +51,9 @@ class Mail extends PHPMailer{
 	function Attach( $filename, $nomclair="", $filetype = "", $disposition = "attachment" ){
 		$this->AddAttachment($filename,$nomclair);
 	}
+	function EmbeddedImage($filename, $cid) {
+		$this->AddEmbeddedImage($filename, $cid);
+	}
     function BuildMail(){}
     function Priority(){}
 }

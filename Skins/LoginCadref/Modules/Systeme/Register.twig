@@ -1,1 +1,81 @@
-
+<section class="center-block">
+	<h5>Nouvel Adhérent : Tous les champs sont obligatoire.</h5>
+	<div id="msg"  class="alert alert-danger" hidden></div>
+	<div class="row" style="height:10px"></div>
+	<form method="POST" id="registerUser">
+		<div class="form-group">
+			<div class="row">
+				<div class="col-md-3">
+					<label class="form-control-label cadref-label" style="line-height:1.1">Nom</label>
+				</div>
+				<div class="col-md-9">
+					<input type="text" class="form-control cadref-input " placeholder="Nom" id="CadrefNom" name="Nom" style="text-transform:uppercase;"/>
+				</div>
+			</div>
+			<div class="row" style="height:2px"></div>
+			<div class="row">
+				<div class="col-md-3">
+					<label class="form-control-label cadref-label" style="line-height:1.1">Prenom</label>
+				</div>
+				<div class="col-md-9">
+					<input type="text" class="form-control cadref-input" placeholder="Prénom" id="CadrefMail" name="Prenom"/>
+				</div>
+			</div>
+			<div class="row" style="height:2px"></div>
+			<div class="row">
+				<div class="col-md-3">
+					<label class="form-control-label cadref-label" style="line-height:1.1">Telephone</label>
+				</div>
+				<div class="col-md-9">
+					<input type="text" class="form-control cadref-input" placeholder="Téléphone" id="CadrefMail" name="Telephone"/>
+				</div>
+			</div>
+			<div class="row" style="height:2px"></div>
+			<div class="row">
+				<div class="col-md-3">
+					<label class="form-control-label cadref-label" style="line-height:1.1">Adresse mail</label>
+				</div>
+				<div class="col-md-9">
+					<input type="text" class="form-control cadref-input" placeholder="Adresse mail" id="CadrefMail" name="Mail"/>
+				</div>
+			</div>
+			<div class="row" style="height:2px"></div>
+			<div class="row">
+				<div class="col-md-3">
+					<label class="form-control-label cadref-label" style="line-height:1.1">Confirmation mail</label>
+				</div>
+				<div class="col-md-9">
+					<input type="text" class="form-control cadref-input" placeholder="Adresse mail" id="CadrefMail" name="MailConfirm"/>
+				</div>
+			</div>
+			<div class="row" style="height:20px"></div>
+			<input type="submit" class="btn btn-success btn-block" id="Valider" name="Valider" value="Valider" />
+		</div>
+	</form>
+	<a href="/" class="btn btn-warning btn-block" id="Annuler">Annuler</a>
+	<div class="spin-mask"></div>
+</section>
+<script>
+	$(document).ready(function (e) {
+		$('#registerUser').on('submit', function (e) {
+			e.preventDefault();
+			$('.spin-mask').spin().addClass('actif');
+			$.ajax({
+				dataType: "json",
+				url: "/Systeme/registerUser.json",
+				data: $('#registerUser').serialize(),
+				method: 'POST'
+			}).done(function (response) {
+				var resp = JSON.parse(response);
+				console.log(resp);
+				if (resp.success) {
+					$('#Valider').hide();
+					$('#Annuler').text('Retour');
+				} 
+				$('#msg').html(resp.message);
+				$('#msg').show();
+				$('.spin-mask').removeClass('actif').spin(false);
+			});
+		});
+	});
+</script>
