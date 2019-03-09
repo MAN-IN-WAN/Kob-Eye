@@ -27,8 +27,6 @@ if(!isset($info['ObjectType'])) {
 } else {
 	$tab = array($info['Module'], $info['ObjectType'], 'Form');
 }
-$vars['tempContext'] = isset($_GET['tempContext']) ? $_GET['tempContext'] : 0;
-$vars['public'] = isset($_GET['public']) && $_GET['public'];
 $vars['Annee'] = Cadref::$Annee;
 
 ?>
