@@ -14,6 +14,8 @@ $serveur='ws2.eng.systems';
  * ffpm;ffpm;ffpm+ffpm_dev+ffpm_intranet
  * gedales;gedales;gedales+thebestprice ///a voir avec alex ... 2 boutiques sur un mutu
  * protemporis;protemporis;protemporis
+ * pescatore.fr;boxsete;pescatore_updated+pescatore+pescatore_dev
+ * magickart;magickart;magickart;sql2.eng.systems
  *
  * DOMAINE A MODIFIER
  * brumizeo;brumizeo;brumizeo_dev
@@ -29,7 +31,7 @@ $serveur='ws2.eng.systems';
  */
 //syntaxe NOM_HEB;NOM_CLIENT;BDD1[+BDD2...][;SRV_SQL]
 $csv= "
-pescatore.fr;boxsete;pescatore_updated+pescatore+pescatore_dev
+keole2;keole;keole+blogkeole+keole_support
 ";
 $result = explode(PHP_EOL,$csv);
 $total = sizeof($result)-2;
@@ -141,15 +143,27 @@ foreach ($result as $org){
             $base->Save();
         }
         //if ($base->tmsEdit<time()-3600) {
-            echo $bc->getColoredString("      -> SQL DUMP ... ", 'red');
+            echo $bc->getColoredString("      -> SQL DUMP ".$bdd." ... ", 'red');
             //importation de la base de donnée
             if ($mysqlsrv=='sql2.eng.systems'){
-                $cmd = 'mysqldump -h 192.168.100.53 -u root -p"zH34Y6u5;" ' . $bdd . ' | sed -e "s/^UNLOCK.*\$//"   | sed -e "s/^LOCK TABLE.*\$//"  | sed -e "s/MyISAM/InnoDB/i"  |  mysql -h 192.168.160.5 -u root -pzH34Y6u5 ' . $bdd;
-            }else $cmd = 'mysqldump -h 192.168.100.50 -u root -pzH34Y6u5 ' . $bdd . '  | sed -e "s/^UNLOCK.*\$//"   | sed -e "s/^LOCK TABLE.*\$//" | sed -e "s/MyISAM/InnoDB/i"  |  mysql -h 10.100.210.5 -u root -pzH34Y6u5 ' . $bdd;
-            //echo $cmd."\n";
-            exec($cmd);
-            echo $bc->getColoredString(" OK " . "\n", 'green');
-            $base->Save();
+                $cmd = 'mysqldump -h 192.168.100.53 -u root -p"zH34Y6u5;" ' . $bdd . ' | sed -e "s/^UNLOCK.*\$//"   | sed -e "s/^LOCK TABLE.*\$//"  | sed -e "s/MyISAM/InnoDB/i"  > /tmp/' . $bdd.'.sql';
+                echo $bc->getColoredString(" DUMP ... ", 'red');
+                exec($cmd);
+                $cmd = 'cat /tmp/'.$bdd.'.sql  |  mysql -h 10.100.210.5 -u root -pzH34Y6u5 ' . $bdd;
+                //echo $cmd."\n";
+                exec($cmd);
+                echo $bc->getColoredString(" INSERT OK " . "\n", 'green');
+                $base->Save();
+            }else {
+                $cmd = 'mysqldump -h 192.168.100.50 -u root -pzH34Y6u5 ' . $bdd . '  | sed -e "s/^UNLOCK.*\$//"   | sed -e "s/^LOCK TABLE.*\$//" | sed -e "s/MyISAM/InnoDB/i" > /tmp/'.$bdd.'.sql';
+                echo $bc->getColoredString(" DUMP ... ", 'red');
+                exec($cmd);
+                $cmd = 'cat /tmp/'.$bdd.'.sql  |  mysql -h 10.100.210.5 -u root -pzH34Y6u5 ' . $bdd;
+                //echo $cmd."\n";
+                exec($cmd);
+                echo $bc->getColoredString(" INSERT OK " . "\n", 'green');
+                $base->Save();
+            }
         //}
     }
 

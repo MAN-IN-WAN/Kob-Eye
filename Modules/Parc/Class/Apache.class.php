@@ -26,6 +26,36 @@ class Apache extends genericClass {
 		    parent::Save();
             $this->enableSsl();
         }
+        //config proxy
+        if (empty($this->ProxyConfig)){
+		    $this->ProxyConfig = "
+proxy_cache            ".$this->ApacheServerName.";
+proxy_cache_valid      200  1h;
+proxy_cache_use_stale  error timeout updating http_500 http_502 http_503 http_504;
+proxy_cache_key    \$uri\$is_args\$args;
+proxy_cache_valid 200 10m;
+proxy_cache_background_update on;
+proxy_cache_revalidate on;
+proxy_cache_min_uses 3;
+proxy_cache_lock on;
+if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_no_cache|no_cache|wordpress_logged_in\") { set \$arg_nocache 1; }
+";
+        }
+        if (empty($this->ProxyConfigSsl)){
+            $this->ProxyConfigSsl = "
+proxy_cache            ".$this->ApacheServerName.".ssl;
+proxy_cache_valid      200  1h;
+proxy_cache_use_stale  error timeout updating http_500 http_502 http_503 http_504;
+proxy_cache_key    \$uri\$is_args\$args;
+proxy_cache_valid 200 10m;
+proxy_cache_background_update on;
+proxy_cache_revalidate on;
+proxy_cache_min_uses 3;
+proxy_cache_lock on;
+if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_no_cache|no_cache|wordpress_logged_in\") { set \$arg_nocache 1; }
+";
+        }
+
 		// Forcer la vérification
 		$this->Verify( $synchro );
 		// Enregistrement si pas d'erreur
@@ -453,8 +483,10 @@ class Apache extends genericClass {
 
         //Proxy config
 		if ($this->ProxyCache){
-            $entry['apacheProxyCacheConfig'] = "proxy_cache            ".$this->ApacheServerName.";\n  proxy_cache_valid      200  1h;\n  proxy_cache_use_stale  error timeout invalid_header updating http_500 http_502 http_503 http_504;\n  proxy_cache_key    \$uri\$is_args\$args;\n  proxy_cache_valid 200 10m;\n  proxy_cache_background_update on;\n  if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_no_cache|no_cache|wordpress_logged_in\") { set \$arg_nocache 1; }\n";
-            $entry['apacheProxyCacheConfigSsl'] = "proxy_cache ".$this->ApacheServerName.".ssl;\n  proxy_cache_valid      200  1h;\n  proxy_cache_use_stale  error timeout invalid_header updating http_500 http_502 http_503 http_504;\n  proxy_cache_key    \$uri\$is_args\$args;\n  proxy_cache_valid 200 10m;\n  proxy_cache_background_update on;\n  if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_no_cache|no_cache|wordpress_logged_in\") { set \$arg_nocache 1; }\n";
+            //$entry['apacheProxyCacheConfig'] = "proxy_cache            ".$this->ApacheServerName.";\n  proxy_cache_valid      200  1h;\n  proxy_cache_use_stale  error timeout invalid_header updating http_500 http_502 http_503 http_504;\n  proxy_cache_key    \$uri\$is_args\$args;\n  proxy_cache_valid 200 10m;\n  proxy_cache_background_update on;\n  if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_no_cache|no_cache|wordpress_logged_in\") { set \$arg_nocache 1; }\n";
+            //$entry['apacheProxyCacheConfigSsl'] = "proxy_cache ".$this->ApacheServerName.".ssl;\n  proxy_cache_valid      200  1h;\n  proxy_cache_use_stale  error timeout invalid_header updating http_500 http_502 http_503 http_504;\n  proxy_cache_key    \$uri\$is_args\$args;\n  proxy_cache_valid 200 10m;\n  proxy_cache_background_update on;\n  if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_no_cache|no_cache|wordpress_logged_in\") { set \$arg_nocache 1; }\n";
+            $entry['apacheProxyCacheConfig'] = $this->ProxyConfig;
+            $entry['apacheProxyCacheConfigSsl'] = $this->ProxyConfigSsl;
         }else if (!$new) {
 		    $entry['apacheProxyCacheConfig'] = Array();
             $entry['apacheProxyCacheConfigSsl'] = Array();

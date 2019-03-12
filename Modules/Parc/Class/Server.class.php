@@ -1498,6 +1498,9 @@ class Server extends genericClass {
      * execute remotely ldap2service
      */
     public function callLdap2Service($retry=false) {
+        $nb = Sys::getCount('Systeme','Tache/TaskModule=Parc&TaskObject=Server&TaskId='.$this->Id.'&TaskFunction=callLdap2service&Termine=0&Erreur=0');
+        if ($nb) return true;
+
         $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Raifraichissement des configuration (ldap2service) ' . $this->Nom;

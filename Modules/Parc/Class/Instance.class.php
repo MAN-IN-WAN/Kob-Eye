@@ -244,6 +244,12 @@ class Instance extends genericClass{
      * Creation de la tache de vérification
      */
     public function createCheckStateTask($orig=null){
+        //on vérifie que la tache n'est pas déjà crée
+        $nb = Sys::getCount('Parc','Instance/'.$this->Id.'/Tache/Termine=0&Erreur=0&TaskCode=INSTANCE_CHECKSTATE&TaskFunction=checkState');
+        if ($nb){
+            $this->addError(array('Message'=>'Une tache de vérification est déjà en cours'));
+            return true;
+        }
         //gestion depuis le plugin
         $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
@@ -333,8 +339,8 @@ class Instance extends genericClass{
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,$https);
         curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 20);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 20);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
         $rt = curl_exec($ch);
         $info = curl_getinfo($ch);
         return $info;
@@ -386,8 +392,14 @@ class Instance extends genericClass{
         $host = $this->getOneParent('Host');
         $aps = $host->getChildren('Apache/Actif=1');
         $start = microtime(true);
+
+        //TODO Delete this dirty workaround
+        $toCheck = false;
+
         //vérifie le retour http sur page accueil
         foreach ($aps as $ap){
+
+
             $domains = explode(' ',$ap->getDomainsToCheck());
             foreach ($domains as $domain){
                 $domain = trim($domain);
@@ -397,17 +409,48 @@ class Instance extends genericClass{
                     $act = $task->createActivity('Vérification du domaine '.$domain);
                     $time = microtime(true);
                     $code = self::getHttpCode('http://' . $domain);
-                    if (!in_array($code["http_code"], array(200, 301, 302, 303, 0))) {
+                    $act->addDetails('HTTP: '.print_r($code,true));
+                    if (!in_array(intval($code["http_code"]), array(200, 301, 302, 303, 0))) {
                         //alors incident
                         Incident::createIncident('Le domaine ' . $domain . ' ne répond pas correctement en http.', 'Le code de retour est ' . print_r($code, true), $this, 'HTTP_CODE', $domain, 4, false);
-                    } else Incident::createIncident('Le domaine ' . $domain . ' ne répond pas correctement en http.', 'Le code de retour est ' . print_r($code, true), $this, 'HTTP_CODE', $domain, 4, true);
+                    } else {
+                        Incident::createIncident('Le domaine ' . $domain . ' ne répond pas correctement en http.', 'Le code de retour est ' . print_r($code, true), $this, 'HTTP_CODE', $domain, 4, true);
+                    }
+
+                    if (in_array(intval($code["http_code"]), array(200))&&intval($code["size_download"]) == 0) {
+                        //teste la taille de la page si =0 alors incident page blanche
+                        //alors incident
+                        Incident::createIncident('Le domaine ' . $domain . ' retourne une page vide.', 'Le détail du retour: ' . print_r($code, true), $this, 'HTTP_EMPTY', $domain, 4, false);
+
+                        //TODO DELETE THIS DIRTY WORKAROUND
+                        if (!$toCheck) {
+                            $this->emptyProxyCacheTask();
+                            $toCheck = true;
+                        }
+
+                    } else Incident::createIncident('Le domaine ' . $domain . ' retourne une page vide.', 'Le détail du retour: ' . print_r($code, true), $this, 'HTTP_EMPTY', $domain, 4, true);
+
                     //si ssl vérifie l'état du certificat et le code retour
                     if ($ap->Ssl) {
                         $code = self::getHttpCode('https://' . $domain, true);
-                        if (!in_array($code["http_code"], array(200, 301, 302, 0))) {
+                        $act->addDetails('HTTPS: '.print_r($code,true));
+                        if (!in_array(intval($code["http_code"]), array(200, 301, 302, 0))) {
                             //alors incident
                             Incident::createIncident('Le domaine ' . $domain . ' ne répond pas correctement en https.', 'Le code de retour est ' . print_r($code, true), $this, 'HTTPS_CODE', $domain, 4, false);
-                        } else Incident::createIncident('Le domaine ' . $domain . ' ne répond pas correctement en https.', 'Le code de retour est ' . print_r($code, true), $this, 'HTTPS_CODE', $domain, 4, true);
+                        } else{
+                            Incident::createIncident('Le domaine ' . $domain . ' ne répond pas correctement en https.', 'Le code de retour est ' . print_r($code, true), $this, 'HTTPS_CODE', $domain, 4, true);
+                        }
+                        if (in_array(intval($code["http_code"]), array(200))&&intval($code["size_download"]) == 0) {
+                            //teste la taille de la page si =0 alors incident page blanche
+                            Incident::createIncident('Le domaine ' . $domain . ' retourne une page vide.', 'Le détail du retour: ' . print_r($code, true), $this, 'HTTPS_EMPTY', $domain, 4, false);
+
+                            //TODO DELETE THIS DIRTY WORKAROUND
+                            if (!$toCheck) {
+                                $this->emptyProxyCacheTask();
+                                $toCheck = true;
+                            }
+
+                        } else Incident::createIncident('Le domaine ' . $domain . ' retourne une page vide.', 'Le détail du retour: ' . print_r($code, true), $this, 'HTTPS_EMPTY', $domain, 4, true);
 
                         //vérification du certificat
                         $certinfo = Instance::checkSsl('https://' . $domain);
@@ -497,6 +540,10 @@ class Instance extends genericClass{
         $hosts = $this->getParents('Host');
         foreach ($hosts as $host)
             $host->emptyProxyCacheTask();
+
+        //vérifier l'instance après
+        //TODO DElete this dirty workaround
+        $this->createCheckStateTask();
         return true;
     }
 

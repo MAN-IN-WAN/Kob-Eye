@@ -199,7 +199,7 @@ class Parc_Client extends genericClass {
 			return;
 		}else $grp = $grp[0];
 
-		//vérification de l'existence de l'utilisateur
+        //vérification de l'existence de l'utilisateur
 		$u = $this->getParents('User');
 		if ($this->AccesActif){
 

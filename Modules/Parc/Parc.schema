@@ -286,6 +286,8 @@
 		<PROPERTIES category="Configuration" type="varchar" fiche="1" form="1" description="Domaine principal">SslMainDomain</PROPERTIES>
 		<PROPERTIES category="Configuration" type="raw" fiche="1" form="1" description="Configuration apache spécifique">ApacheConfig</PROPERTIES>
 		<PROPERTIES category="Configuration" type="boolean" fiche="1" form="1" list="1" description="Activiation du cache de proxy">ProxyCache</PROPERTIES>
+		<PROPERTIES category="Configuration" type="raw" fiche="1" form="1" description="Configuration proxy spécifique HTTP">ProxyConfig</PROPERTIES>
+		<PROPERTIES category="Configuration" type="raw" fiche="1" form="1" description="Configuration proxy spécifique HTTPS">ProxyConfigSsl</PROPERTIES>
 		<PROPERTIES category="Protection" type="boolean" description="Protéger avec un mot de passe" listDescr="Protection" list="1" fiche="1" form="1">PasswordProtected</PROPERTIES>
 		<PROPERTIES category="Protection" type="varchar" description="Nom d'utilisateur" fiche="1" form="1">HtaccessUser</PROPERTIES>
 		<PROPERTIES category="Protection" type="varchar" description="Mot de passe" fiche="1" form="1">HtaccessPassword</PROPERTIES>
@@ -651,6 +653,7 @@
 		<FILTER name="Tous les incidents" color="warning" ></FILTER>
 		<FILTER name="Les incidents résolus" color="success" >Solved=1</FILTER>
 		<FILTER name="Les incidents reconnus" color="primary" ><![CDATA[Solved=0&Acknowledge=1]]></FILTER>
+		<FILTER name="Les pages blanches" color="dark" ><![CDATA[Code=HTTP_EMPTY]]></FILTER>
 		<PROPERTIES type="varchar" searchOrder="1" list="1" form="1" fiche="1" listDescr="Titre">Titre</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" list="1" form="1" fiche="1" listDescr="Code">Code</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" list="1" form="1" fiche="1" listDescr="Identifiant">Identifiant</PROPERTIES>
