@@ -29,6 +29,22 @@ class ParcInstancePrestashop extends Plugin implements ParcInstancePlugin {
      * Creation de la tach d'installation du secib web
      */
     public function createInstallTask(){
+        //gestion depuis le plugin
+        $version = VersionLogiciel::getLastVersion('Prestashop',$this->_obj->Type);
+        $task = genericClass::createInstance('Systeme', 'Tache');
+        $task->Type = 'Fonction';
+        $task->Nom = 'Installation de la version '.$version->Version.' de Prestashop sur l\'instance ' . $this->_obj->Nom;
+        $task->TaskModule = 'Parc';
+        $task->TaskObject = 'Instance';
+        $task->TaskId = $this->_obj->Id;
+        $task->TaskType = 'install';
+        $task->TaskFunction = 'installSoftware';
+        $task->addParent($this->_obj);
+        $host = $this->_obj->getOneParent('Host');
+        $task->addParent($host);
+        $task->addParent($host->getOneParent('Server'));
+        $task->Save();
+        return array('task'=>$task);
     }
     /**
      * installSecibWeb
@@ -36,12 +52,86 @@ class ParcInstancePrestashop extends Plugin implements ParcInstancePlugin {
      * @param Object Tache
      */
     public function installSoftware($task){
+        $host = $this->_obj->getOneParent('Host');
+        $bdd = $host->getOneChild('Bdd');
+        $mysqlsrv = $bdd->getOneParent('Server');
+        $apachesrv = $host->getOneParent('Server');
+
+        try {
+            //Installation des fichiers
+            $act = $task->createActivity('Suppression du dossier www', 'Info', $task);
+            $out = $apachesrv->remoteExec('rm -Rf /home/' . $host->NomLDAP . '/www');
+            $act->addDetails($out);
+            $act->Terminate(true);
+            //Installation des fichiers
+            $act = $task->createActivity('Initialisation de la synchronisation', 'Info', $task);
+
+            $modele = Sys::getOneData('Parc','Host/Nom=modele-prestashop');
+            $srv = $modele->getOneParent('Server');
+            $url = $srv->DNSNom;
+
+            $cmd = 'cd /home/' . $host->NomLDAP . '/ && rsync -avz root@'.$url.':/home/modele-prestashop/www/ www';
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($cmd);
+            $act->addDetails($out);
+            $act->Terminate(true);
+            $act = $task->createActivity('Modification des droits', 'Info', $task);
+            $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . '/www -R';
+            $act->addDetails($cmd);
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($out);
+            $act->Terminate(true);
+//            //Dump de la base
+//            $act = $task->createActivity('Dump de la base Mysql', 'Info', $task);
+//            $cmd = 'mysqldump -h db.maninwan.fr -u '.$modele->Nom.' -p'.$modele->Password.' '.$modele->Nom.' | mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom;
+//            $out = $apachesrv->remoteExec($cmd);
+//            $act->addDetails($cmd);
+//            $act->addDetails($out);
+//            $act->Terminate(true);
+//            $act = $task->createActivity('Mot de passe administrateur', 'Info');
+//            $cmd = 'mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom.' -e "UPDATE wp_users SET user_pass=\''.md5($host->Password).'\' WHERE ID=1"';
+//            $out = $apachesrv->remoteExec($cmd);
+//            $act->addDetails($cmd);
+//            $act->addDetails($out);
+//            $act->Terminate(true);
+            //changement du statut de l'instance
+            $this->_obj->setStatus(2);
+            $this->_obj->CurrentVersion = date('Ymd');
+            $this->_obj->Save();
+        }catch (Exception $e){
+            $act->addDetails('Erreur: '.$e->getMessage());
+            $act->Terminate(false);
+            throw new Exception($e->getMessage());
+        }
+        //execution de la configuration
+        $act = $task->createActivity('Création de la config', 'Info', $task);
+        $act->Terminate($this->rewriteConfig());
+        return true;
     }
     /**
      * createUpdateTask
      * Creation de la tache de mise à jour du logiciel
      */
-    public function createUpdateTask(){
+    public function createUpdateTask($orig = null){
+        //gestion depuis le plugin
+        $version = VersionLogiciel::getLastVersion('Prestashop',$this->_obj->Type);
+        $task = genericClass::createInstance('Systeme', 'Tache');
+        $task->Type = 'Fonction';
+        $task->Nom = 'Mise à jour en version '.$version->Version.' de Prestashop sur l\'instance ' . $this->_obj->Nom;
+        $task->TaskModule = 'Parc';
+        $task->TaskObject = 'Instance';
+        $task->TaskId = $this->_obj->Id;
+        $task->TaskFunction = 'updateSoftware';
+        $task->TaskType = 'update';
+        $task->addParent($this->_obj);
+        $host = $this->_obj->getOneParent('Host');
+        $task->addParent($host);
+        $task->addParent($host->getOneParent('Server'));
+        if (is_object($orig)) $task->addParent($orig);
+        $task->Save();
+        //changement du statut de l'instance
+        $this->_obj->setStatus(3);
+        return array('task'=>$task);
 
     }
     /**
@@ -50,7 +140,39 @@ class ParcInstancePrestashop extends Plugin implements ParcInstancePlugin {
      * @param Object Tache
      */
     public function updateSoftware($task){
+        $host = $this->_obj->getOneParent('Host');
+        $bdd = $host->getOneChild('Bdd');
+        $mysqlsrv = $bdd->getOneParent('Server');
+        $apachesrv = $host->getOneParent('Server');
 
+        try {
+            //Installation des fichiers
+            $modele = Sys::getOneData('Parc','Host/Nom=modele-prestashop');
+            $srv = $modele->getOneParent('Server');
+            $url = $srv->DNSNom;
+
+            $act = $task->createActivity('Initialisation de la synchronisation', 'Info', $task);
+            $cmd = 'cd /home/' . $host->NomLDAP . '/ && rsync -avz root@'.$url.':/home/modele-wordpress/www/ www';
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($cmd);
+            $act->addDetails($out);
+            $act->Terminate(true);
+            $act = $task->createActivity('Modification des droits', 'Info', $task);
+            $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . '/www -R';
+            $act->addDetails($cmd);
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($out);
+            $act->Terminate(true);
+            //changement du statut de l'instance
+            $this->_obj->setStatus(2);
+            $this->_obj->CurrentVersion = date('Ymd');
+            $this->_obj->Save();
+            return true;
+        }catch (Exception $e){
+            $act->addDetails('Erreur: '.$e->getMessage());
+            $act->Terminate(false);
+            throw new Exception($e->getMessage());
+        }
     }
     /**
      * checkState
