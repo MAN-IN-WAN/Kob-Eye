@@ -267,7 +267,13 @@
 		<PROPERTIES type="boolean" default="0" category="Interne" form="28" fiche="28" description="Mail confirmé">MailOk</PROPERTIES>
 		<PROPERTIES type="varchar" length="8" category="Interne" form="29" fiche="29" description="Newsletters">Newletters</PROPERTIES>
 
+		<PROPERTIES type="varchar" length="35" category="RIB" form="29" fiche="29" description="Titulaire">Titulaire</PROPERTIES>
+		<PROPERTIES type="varchar" length="35" category="RIB" form="29" fiche="29" description="Domiciliation">Domiciliation</PROPERTIES>
+		<PROPERTIES type="varchar" length="35" category="RIB" form="29" fiche="29" description="IBAN">IBAN</PROPERTIES>
+		<PROPERTIES type="varchar" length="8" category="RIB" form="29" fiche="29" description="BIC">BIC</PROPERTIES>
+
 		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Cotisation">Cotisation</PROPERTIES>
+
 <!--
 		<PROPERTIES type="varchar" length="2" category="Association" values="B::Bureau,A::Administrateur,D::Délégué" form="14" fiche="14" description="Role associatif">Adherent</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Association" query="Cadref/Classe::Id::CodeClasse" form="15" fiche="15" description="Délégué de classe">ClasseId</PROPERTIES>
