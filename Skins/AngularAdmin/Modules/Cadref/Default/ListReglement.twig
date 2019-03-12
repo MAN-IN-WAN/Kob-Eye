@@ -41,21 +41,10 @@
 				</div>
 				<div class="row">
 					<div class="col-md-4">
-						{{ label("Type") }}
+						{{ label("Différé") }}
 					</div>
 					<div class="col-md-4">
-						<select class="form-control cadref-input" ng-model="reglementObj.Differe">
-							<option value="0">Comptant</option>
-							<option value="1">Différé</option>
-						</select>	
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-4">
-						{{ label("Visite") }}
-					</div>
-					<div class="col-md-8">
-						<input type="text" class="form-control cadref-input" ng-model="reglementObj.Visite"/>
+						<switch class="cadref-switch" ng-model="reglementObj.Differe"></switch>
 					</div>
 				</div>
 				<div class="row">
@@ -64,6 +53,22 @@
 					</div>
 					<div class="col-md-4">
 						<switch class="cadref-switch-red" ng-model="reglementObj.Encaisse"></switch>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						{{ label("Supprimé") }}
+					</div>
+					<div class="col-md-4">
+						<switch class="cadref-switch" ng-model="reglementObj.Supprime"></switch>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						{{ label("Visite") }}
+					</div>
+					<div class="col-md-8">
+						<input type="text" class="form-control cadref-input" readonly tabindex="-1" ng-model="reglementObj.Visite"/>
 					</div>
 				</div>
 				<div class="row">
@@ -96,10 +101,10 @@
 				<th title="Id" class="list-col-th-id" hidden>ID</th>
 				<th class="cadref-th">Date</th>
 				<th class="cadref-th">Règlé</th>
-				<th class="cadref-th">M</th>
-				<th class="cadref-th">D</th>
-				<th class="cadref-th">E</th>
-				<th class="cadref-th">V</th>
+				<th class="cadref-th" title="Mode règlement">M</th>
+				<th class="cadref-th" title="Différé">D</th>
+				<th class="cadref-th" title="Encaissé">E</th>
+				<th class="cadref-th" title="Visite">V</th>
 				<th class="cadref-th">Notes</th>
 				<th class="cadref-th">U</th>
 			</tr>
@@ -108,15 +113,16 @@
 			<tr dir-paginate="item in {{ identifier }}.data" >
 				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
 				<td scope="row" class="cadref-td typedate"><a href="" ng-click="reglementModify(item)">{[{ item.DateReglement | limitTo : 5 }]}</a></td>
-				<td scope="row" class="cadref-td typefloat"><a href="" ng-click="reglementModify(item)">{[{ item.Montant }]}</a></td>
+				<td scope="row" class="cadref-td typefloat"><a href="" ng-click="reglementModify(item)">€ {[{ item.Montant }]}</a></td>
 				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reglementModify(item)">{[{ item.ModeReglement }]}</a></td>
 				<td scope="row" class="cadref-td typeboolean">                    
-					<a href="" ng-click="reglementModify(item)" class="label cadref-warning" ng-if="item.Differe">D</a>
-					<a href="" ng-click="reglementModify(item)" class="label cadref-warning" ng-if="!item.Differe"></a>
+					<a href="" ng-click="reglementModify(item)" class="label cadref-info" ng-if="item.Differe">D</a>
+					<a href="" ng-click="reglementModify(item)" class="label cadref-success" ng-if="!item.Differe"></a>
 				</td>
 				<td scope="row" class="cadref-td typeboolean">                    
-					<a href="" ng-click="reglementModify(item)" class="label cadref-success" ng-if="!item.Differe || item.Encaisse">E</a>
-					<a href="" ng-click="reglementModify(item)" class="label cadref-danger" ng-if="item.Differe && !item.Encaisse">N</a>
+					<a href="" ng-click="reglementModify(item)" class="label cadref-success" ng-if="item.Encaisse">E</a>
+					<a href="" ng-click="reglementModify(item)" class="label cadref-warning" ng-if="!item.Encaisse && !item.Supprime">N</a>
+					<a href="" ng-click="reglementModify(item)" class="label cadref-danger" ng-if="item.Supprime">S</a>
 				</td>
 				<td scope="row" class="cadref-td typeboolean"><a href="" ng-click="reglementModify(item)">{[{ item.Visite }]}</a></td>
 				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reglementModify(item)">{[{ item.Notes }]}</a></td>

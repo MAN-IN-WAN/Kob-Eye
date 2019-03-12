@@ -15,7 +15,7 @@ if(isset($info['ObjectType'])){
 
 	$vars['url'] = Sys::getMenu($info['Module'].'/'.$info['ObjectType']);
 
-	if($info['ObjectType'] == 'Classe') {
+	if($info['ObjectType'] == 'Classe' || $info['ObjectType'] == 'Visite') {
 		$t = array();
 		$ens = Sys::getData('Cadref','Enseignant'); 
 		foreach($ens as $e) $t[] = array('id'=>$e->Id, 'label'=>$e->Nom.' '.$e->Prenom);

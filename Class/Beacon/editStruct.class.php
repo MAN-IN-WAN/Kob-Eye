@@ -95,7 +95,7 @@ class editStruct extends Beacon {
                             $p = $pt."?";
                         }
                     }
-                    header("Location: http://".$_SERVER["HTTP_HOST"]."/".$p);
+                    header("Location: ".$_SERVER['HTTP_X_FORWARDED_PROTO']."://".$_SERVER["HTTP_HOST"]."/".$p);
                 }
 				$GLOBALS["Systeme"]->Close();
 				die();

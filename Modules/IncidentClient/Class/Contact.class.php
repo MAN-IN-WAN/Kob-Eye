@@ -208,11 +208,12 @@ class Contact extends genericClass {
             $Mail -> Send();
 
             //confirmation
+            // 20181116 - Vu avec Guillaume Murcia on n'envoie rien au contact
             $Mail = new Mail();
-            $Mail->Subject("[OCEAN-NIMES.COM] Nouvel contact ".$this->Nom.' '.$this->Prenom.' de la societe '.$cli->Societe);
+            $Mail->Subject("[OCEAN-NIMES.COM] Nouveau contact ".$this->Nom.' '.$this->Prenom.' de la societe '.$cli->Societe);
             $Mail -> From("noreply@ocean-nimes.com");
             $Mail -> ReplyTo("noreply@ocean-nimes.com");
-            $Mail -> Bcc("enguerrand@abtel.fr;myriam790@gmail.com");
+            $Mail -> Bcc("enguerrand@abtel.fr;pierratdo@free.fr");
             $Mail -> To($this->Mail);
             $bloc = new Bloc();
             $mailContent = "Bonjour un nouveau contact du client '.$cli->Societe.' viens d'être créé :".$this->Nom.' '.$this->Prenom.''.$this->CodeClient ;
@@ -221,7 +222,7 @@ class Contact extends genericClass {
             $bloc -> init($Pr);
             $bloc -> generate($Pr);
             $Mail -> Body($bloc -> Affich());
-            $Mail -> Send();
+           // $Mail -> Send();
 
         }
         parent::Save();

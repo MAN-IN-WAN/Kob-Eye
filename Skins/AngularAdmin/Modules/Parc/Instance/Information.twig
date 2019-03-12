@@ -1,0 +1,234 @@
+    <section class="panel documentation">
+        <div id="Auth" class="panel-heading">
+            <h3><i class="icmn-user-check"></i> Utilisation des différents services de l'instance {{ instance.Nom }}</h3>
+        </div>
+        <div class="panel-body  auth">
+            Veuillez sélectionner ci-dessous le protocole que vous souhaitez utiliser<br/>
+            <ol>
+                <li>Le protocole FTP permet d'administrer les fichiers de votre hébergement.</li>
+                <li>Le protocole SSH permet d'administrer votre hébergement en ligne de commande.</li>
+                <li>Le language SQL est utilisé pour administrer votre base de donnée et sa configuration ci-dessous vous sera demandée par votre site web ou votre logiciel</li>
+                <li>Le logiciel PHPMYADMIN, vous permet de gérer vos bases de données.</li>
+                <li>Le protocole HTTP ou HTTPS est le protocole d'échange de vos pages web. Munissez-vous de votre navigateur et saisissez votre nom de domaine ou le nom de domaine qui vous a été attribué.</li>
+            </ol>
+        </div>
+        <div id="Methods" class="panel-heading">
+            <h3><i class="icmn-cog2"></i> Les services</h3>
+        </div>
+        <div class="panel-body  methods accordion">
+            <div class="panel panel-default get">
+                <div class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" data-target="#get_method" aria-expanded="true" aria-controls="get_method">
+                    <div class="panel-title">
+                        <span class="accordion-indicator pull-right">
+                            <i class="plus fa fa-plus"></i>
+                            <i class="minus fa fa-minus"></i>
+                        </span>
+                        <a>
+                            <h4>FTP</h4>
+                        </a>
+                    </div>
+                </div>
+                <div id="get_method" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="true" style="">
+                    <div class="panel-body">
+                        <div class="get">
+                            Le protocole FTP est le plus courant. Munissez-vous d'un client FTP qui permet la connexion aux FTP sécurisés (FTPS) de préférence en mode PASSIF.<br />Utilisez les informations de connexion ci-dessous:<br/>
+                            <br/>
+                            {% for host in hosts %}
+                                <b>Utilisateurs ftp de l'hébergement {{ host.Nom }}: </b><br/>
+                                {% for ftp in host.ftps %}
+                                <div class="accordion exemple">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" data-target="#ftp{{ ftp.Id }}" aria-expanded="true" aria-controls="ftp{{ ftp.Id }}">
+                                            <div class="panel-title">
+                                                <span class="accordion-indicator pull-right">
+                                                    <i class="plus fa fa-plus"></i>
+                                                    <i class="minus fa fa-minus"></i>
+                                                </span>
+                                                <a>
+                                                    <h5>Utilisateur {{ ftp.Identifiant }}</h5>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div id="ftp{{ ftp.Id }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="true" style="">
+                                            <div class="panel-body">
+                                                <ul>
+                                                    <li>Serveur : {{ host.apacheServer.DNSNom }}</li>
+                                                    <li>Port: 21</li>
+                                                    <li>Utilisateur: {{ ftp.Identifiant }}</li>
+                                                    <li>Mot de passe: {{ ftp.Password }} </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default post">
+                <div class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" data-target="#post_method" aria-expanded="true" aria-controls="post_method">
+                    <div class="panel-title">
+                        <span class="accordion-indicator pull-right">
+                            <i class="plus fa fa-plus"></i>
+                            <i class="minus fa fa-minus"></i>
+                        </span>
+                        <a>
+                            <h4>SSH</h4>
+                        </a>
+                    </div>
+                </div>
+                <div id="post_method" class="panel-collapse collapse " role="tabpanel" aria-labelledby="headingOne" aria-expanded="true" style="">
+                    <div class="panel-body">
+                        <div class="post">
+                            Si vous souhaitez vous connecter en SSH, vous posséder qu'un seul utilisateur par hébergement.<br/>
+                            Voici votre syntaxe de connexion si vous souhaitez vous connecter en ligne de commande:
+                            {% for host in hosts %}
+                            <b>Connexion ssh pour l'hébergement {{ host.Nom }}: </b><br/>
+                            <div class="accordion exemple">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" data-target="#ssh{{ host.Id }}" aria-expanded="true" aria-controls="ssh{{ host.Id }}">
+                                        <div class="panel-title">
+                                            <span class="accordion-indicator pull-right">
+                                                <i class="plus fa fa-plus"></i>
+                                                <i class="minus fa fa-minus"></i>
+                                            </span>
+                                            <a>
+                                                <h5>Syntaxe connexion SSH</h5>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div id="ssh{{ host.Id }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="true" style="">
+                                        <div class="panel-body">
+                                            <div id="example_get_tidy" class="exemple collapse in">
+
+
+<pre><div>Ouvrez une console et saisissez:</div><code>
+    $ ssh {{ host.NomLDAP }}@{{ host.apacheServer.DNSNom }}
+</code>
+<div>Password: </div><code>
+    {{ host.Password }}
+</code></pre>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default put">
+                <div class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" data-target="#put_method" aria-expanded="true" aria-controls="put_method">
+                    <div class="panel-title">
+                        <span class="accordion-indicator pull-right">
+                            <i class="plus fa fa-plus"></i>
+                            <i class="minus fa fa-minus"></i>
+                        </span>
+                        <a>
+                            <h4>SQL</h4>
+                        </a>
+                    </div>
+                </div>
+                <div id="put_method" class="panel-collapse collapse " role="tabpanel" aria-labelledby="headingOne" aria-expanded="true" style="">
+                    <div class="panel-body">
+                        <div class="put">
+                            Par défaut une base de donnée est crée automatiquement avec votre instance.<br/>
+                            Consultez les configurations pour vos différentes bases de données:<br/><br/>
+                            {% for host in hosts %}
+                            <b>Bases de données de l'hébergement {{ host.Nom }}: </b><br/>
+                                {% for bdd in host.bdds %}
+                                <div class="accordion exemple">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" data-target="#bdd{{ bdd.Id }}" aria-expanded="true" aria-controls="bdd{{ bdd.Id }}">
+                                            <div class="panel-title">
+                                                <span class="accordion-indicator pull-right">
+                                                    <i class="plus fa fa-plus"></i>
+                                                    <i class="minus fa fa-minus"></i>
+                                                </span>
+                                                <a>
+                                                    <h5>Base de donnée {{ bdd.Nom }} </h5>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div id="bdd{{ bdd.Id }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="true" style="">
+                                            <div class="panel-body">
+                                                <div id="example_get_tidy" class="exemple collapse in">
+                                                    <ul>
+                                                        <li>Nom de la base de donnée: {{ bdd.Nom }}</li>
+                                                        <li>Serveur: db.maninwan.fr</li>
+                                                        <li>Port: 3306</li>
+                                                        <li>Utilisateur: {{ host.NomLDAP }}</li>
+                                                        <li>Mot de passe: {{ host.Password }}</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default patch">
+                <div class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" data-target="#patch_method" aria-expanded="true" aria-controls="patch_method">
+                    <div class="panel-title">
+                        <span class="accordion-indicator pull-right">
+                            <i class="plus fa fa-plus"></i>
+                            <i class="minus fa fa-minus"></i>
+                        </span>
+                        <a>
+                            <h4>PHPMYADMIN</h4>
+                        </a>
+                    </div>
+                </div>
+                <div id="patch_method" class="panel-collapse collapse " role="tabpanel" aria-labelledby="headingOne" aria-expanded="true" style="">
+                    <div class="panel-body">
+                        <div class="patch">
+                            Vous pouvez accéder à la gestion de vos bases de données en utilisant le logiciel phpmyadmin, disponible en utilisant le bouton ci-dessous:<br/>
+                            <a href="http://admin.maninwan.fr/phpmyadmin" target="_blank" class="btn btn-warning">PHPMYAMDIN</a><br/><br/>
+                            Pour vous connectez utilisez les identifiants suivants:<br/><br/>
+                            {% for host in hosts %}
+                            <b>Bases de données de l'hébergement {{ host.Nom }}: </b><br/>
+                            <ul>
+                                <li>Utilisateur: {{ host.NomLDAP }}</li>
+                                <li>Mot de passe: {{ host.Password }}</li>
+                                <li>Serveur: CLUSTER</li>
+                            </ul>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default delete">
+                <div class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" data-target="#delete_method" aria-expanded="true" aria-controls="delete_method">
+                    <div class="panel-title">
+                        <span class="accordion-indicator pull-right">
+                            <i class="plus fa fa-plus"></i>
+                            <i class="minus fa fa-minus"></i>
+                        </span>
+                        <a>
+                            <h4>HTTP / HTTPS</h4>
+                        </a>
+                    </div>
+                </div>
+                <div id="delete_method" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="true" style="">
+                    <div class="panel-body">
+                        <div class="delete">
+                            Pour consulter votre site internet, utilisez un des noms de domaines ci-dessous:
+                            <ul>
+                                {% for domain in domains %}
+                                <li>Domaine: {{ domain }} <a href="http://{{ domain }}" class="btn btn-danger btn-xs">HTTP</a><a href="https://{{ domain }}" class="btn btn-danger btn-xs">HTTPS</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>

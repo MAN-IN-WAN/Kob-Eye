@@ -1052,6 +1052,23 @@ class Server extends genericClass {
                     return $e;
                 }
             break;
+            case "Host":
+                $search = ldap_search(Server::$_LDAP, $dn,$filter, array('modifytimestamp', 'entryuuid'));
+                $res = ldap_get_entries(Server::$_LDAP, $search);
+                //cette entrée existe bien dans ldap mais les informations ne sont pas correcte en bdd
+                //$KEObj->LdapTms = intval($res[0]['modifytimestamp'][0])-10000;
+                $KEObj->setLdapTms($KEServer,intval($res[0]['modifytimestamp'][0])-10000);
+                //$KEObj->LdapID = $res[0]['entryuuid'][0];
+                $KEObj->setLdapID($KEServer,$res[0]['entryuuid'][0]);
+                //$KEObj->LdapDN = $res[0]['dn'];
+                $KEObj->setLdapDN($KEServer,$res[0]['dn']);
+                if (!$res['count']) {
+                    $e['exists'] = false;
+                    return $e;
+                }else{
+                    $e['exists'] = true;
+                }
+                break;
             case "Apache":
                 $search = ldap_search(Server::$_LDAP, $dn,$filter, array('modifytimestamp', 'entryuuid'));
                 $res = ldap_get_entries(Server::$_LDAP, $search);
@@ -1481,6 +1498,9 @@ class Server extends genericClass {
      * execute remotely ldap2service
      */
     public function callLdap2Service($retry=false) {
+        $nb = Sys::getCount('Systeme','Tache/TaskModule=Parc&TaskObject=Server&TaskId='.$this->Id.'&TaskFunction=callLdap2service&Termine=0&Erreur=0');
+        if ($nb) return true;
+
         $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
         $task->Nom = 'Raifraichissement des configuration (ldap2service) ' . $this->Nom;
@@ -1675,5 +1695,133 @@ class Server extends genericClass {
             }
         }
     }
+    /**
+     * emptyProxyCacheTask
+     * Creation de la tache pour vider le cache d'un hote virtuel
+     * @params $apache
+     * @params $infra
+     */
+    public static function emptyProxyCacheTask($apache, $infra = null) {
+        $pref = '';
+        if($infra)
+            $pref = 'Infra/'.$infra->Id.'/';
 
+        $pxs = Sys::getData('Parc',$pref.'Server/Proxy=1',0,100,'','','','',true);
+        foreach ($pxs as $px){
+            $task = genericClass::createInstance('Systeme', 'Tache');
+            $task->Type = 'Fonction';
+            $task->Nom = 'Suppression du cache proxy ' . $px->Nom.' pour l\'hote virtuel ' . $apache->ApacheServerName;
+            $task->TaskModule = 'Parc';
+            $task->TaskObject = 'Server';
+            $task->TaskId = $px->Id;
+            $task->TaskType = 'maintenance';
+            $task->TaskArgs = serialize(array('Apache'=>$apache->ApacheServerName,'ApacheSsl'=>$apache->Ssl));
+            $task->TaskFunction = 'emptyProxyCache';
+            $task->addParent($apache);
+            if ($host = $apache->getOneParent('Host')) {
+                $task->addParent($host);
+                if ($inst = $host->getOneChild('Instance')){
+                    $task->addParent($inst);
+                }
+            }
+            $task->DateDebut = time();
+            $task->Save();
+        }
+    }
+
+    /**
+     * emptyProxyCache
+     * Vider le cache d'un hote virtuel
+     * @params $apache
+     * @params $infra
+     */
+    public function emptyProxyCache($task) {
+        $params = unserialize($task->TaskArgs);
+        $act = $task->createActivity('Suppression du dossier cache du proxy '.$this->Nom.' pour le\'hote virtuel '.$params['Apache']);
+        if (!isset($params['Apache'])||empty($params['Apache'])){
+            $act->addDetails('Paramètre Apache introuvable.');
+            $act->Terminate(false);
+            return false;
+        }
+        try {
+            $act->addDetails('rm -Rf /tmp/nginx/'.$params['Apache']);
+            $out = $this->remoteExec('rm -Rf /tmp/nginx/'.$params['Apache'], $act);
+            $act->addDetails($out);
+            $act->Terminate(true);
+            if ($params['ApacheSsl']){
+                $act = $task->createActivity('Suppression du dossier cache du proxy '.$this->Nom.' pour le\'hote virtuel '.$params['Apache'].'.ssl');
+                $act->addDetails('rm -Rf /tmp/nginx/'.$params['Apache'].'.ssl');
+                $out = $this->remoteExec('rm -Rf /tmp/nginx/'.$params['Apache'].'.ssl', $act);
+                $act->addDetails($out);
+                $act->Terminate(true);
+            }
+        }catch (Exception $e){
+            $act->addDetails($e->getMessage());
+            $act->Terminate(false);
+            return false;
+        }
+        return true;
+    }
+    /**
+     * getServer
+     * Retourne un serveur depuis son id
+     * @param Id
+     */
+    public static function getServer($id){
+        return Sys::getOneData('Parc','Server/'.$id,0,1,'','','','',true);
+    }
+    /**
+     * createConfigTask
+     * Création d'une tache de configuration du serveur
+     */
+    public function createConfigTask(){
+        $task = genericClass::createInstance('Systeme', 'Tache');
+        $task->Type = 'Fonction';
+        $task->Nom = 'Configuratio du serveur ' . $this->Nom;
+        $task->TaskModule = 'Parc';
+        $task->TaskObject = 'Server';
+        $task->TaskId = $this->Id;
+        $task->TaskType = 'installation';
+        $task->TaskFunction = 'config';
+        $task->addParent($this);
+        $task->DateDebut = time();
+        $task->Save();
+        return array('task'=> $task);
+    }
+    /**
+     * config
+     * Configure un serveur
+     */
+    public function config($task) {
+        //récupératio du modèle
+        $modele = $this->getOneParent('ServerProfile');
+        $act = $task->createActivity('Lancement de la configuratio du serveur à partir du modele '.$modele->Nom);
+        $act->Terminate(true);
+        //chargement des variables twig
+        $vars = array();
+        $vars['server'] = $this;
+        $twig = clone KeTwig::$Twig;
+        $twig->setLoader(new \Twig_Loader_String());
+        try{
+            //Execution de chaque tache du profil
+            $servertasks = $modele->getChildren('ServerTask');
+            foreach ($servertasks as $st){
+                $act = $task->createActivity('Exécution de la commande:  '.$st->Nom);
+                $command = $st->Command;
+                $act->addDetails($command);
+                //execution twig
+                $rendered = $twig->render($command,$vars);
+                $act->addDetails($command);
+                $out = $this->remoteExec($command);
+                $act->addDetails($out);
+                $act->Terminate(true);
+            }
+        }catch (Exception $e){
+            $act->addDetails($e->getMessage());
+            $act->Terminate(false);
+            throw new Exception ($e->getMessage());
+            return false;
+        }
+        return true;
+    }
 }

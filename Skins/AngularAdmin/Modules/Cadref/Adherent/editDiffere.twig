@@ -2,91 +2,100 @@
 	<span class="cadref-ins-numero" ng-bind="modalObj.Numero"></span> <span class="cadref-ins-nom" ng-bind="modalObj.Nom|uppercase"></span> <span class="cadref-ins-prenom" ng-bind="modalObj.Prenom"></span>
 </div>
 <div class="row cadref-separ"></div>
-<div class="input-group">
-	<span><label class="form-control-label cadref-label" style="line-height:1.1">Solde</label></span>
-	<span><input id="solde" type="text" class="form-control cadref-input-diff" ng-model="CadrefClasse.Diff.solde" ng-init="CadrefClasse.Diff.solde=CadrefAdherentfunction.args.Inscr.solde" ng-class="{'cadref-highlight': CadrefClasse.Diff.nonSolde}" readonly style="width:60px"/></span>
+<div class="row">
+	<div class="col-md-1">
+		<label class="form-control-label cadref-label" style="line-height:1.1">Solde</label>
+	</div>
+	<div class="col-md-1">
+		<input id="solde" type="text" class="form-control cadref-input-diff" ng-model="CadrefClasse.Diff.solde" ng-init="CadrefClasse.Diff.solde=CadrefAdherentfunction.args.Inscr.solde" ng-class="{'cadref-highlight': CadrefClasse.Diff.nonSolde}" readonly tabindex="-1" style="width:60px"/>
+	</div>
+	<div class="col-md-1">
+	</div>
+	<div class="col-md-1">
+		<button id="differeNext" type="button" class="btn btn-info" ng-if="{{ identifier }}function.callNext" ng-click="{{ identifier }}callFunction({{ identifier }}function.callNext.item,{{ identifier }}function.callNext.nom,{{ identifier }}function.callNext.title,{{ identifier }}function.callNext.needConfirm,1)">Valider</button>
+	</div>
 </div>
-<section class="panel">	
-	<table>
-		<thead>
+<div style="height:10px"></div>
+<table>
+	<thead>
+		<tr>
+			<th hidden>ID</th>
+			<th>Montant</th>
+			<th>Mode</th>
+			<th>Mois</th>
+			<th>Notes</th>
+			<th>U.</th>
+			<th hidden>Enc</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% set lig = 0 %}
+		{% for item in diff %}
 			<tr>
-				<th hidden>ID</th>
-				<th>Montant</th>
-				<th>Mode</th>
-				<th>Mois</th>
-				<th>Notes</th>
-				<th>U.</th>
-				<th hidden>Enc</th>
+				<td hidden>
+					<input type="text" ng-model="CadrefClasse.Diff.regl[{{ lig }}].id" ng-init="CadrefClasse.Diff.regl[{{ lig }}].id={{ item.Id }}"/>
+				</td>
+				<td class="cadref-td-diff">
+					<input type="text" class="form-control cadref-input-diff" mask="dddd" ng-model="CadrefClasse.Diff.regl[{{ lig }}].paye" ng-init="CadrefClasse.Diff.regl[{{ lig }}].paye={{ item.Montant }}" {% if item.Encaisse %}readonly tabindex="-1"{% else %}ng-change="diffPaye({{ lig }})"{% endif %} style="width:60px" />
+				</td>
+				<td class="cadref-td-diff">
+					<select class="form-control cadref-input-diff" ng-model="CadrefClasse.Diff.regl[{{ lig }}].mode" ng-init="CadrefClasse.Diff.regl[{{ lig }}].mode='{{ item.ModeReglement }}'" ng-readonly="{{ item.Encaisse }}" {% if item.Encaisse %}tabindex="-1"{% endif %}>
+						<option value="B">Banque</option>
+						<option value="C">Carte</option>
+						<option value="E">Espèces</option>
+					</select>	
+				</td>
+				<td class="cadref-td-diff">
+					<input type="text" class="form-control cadref-input-diff" mask="dd" ng-model="CadrefClasse.Diff.regl[{{ lig }}].mois" ng-init="CadrefClasse.Diff.regl[{{ lig }}].mois='{{ item.Mois }}'" ng-readonly="{{ item.Encaisse }}" {% if item.Encaisse %}tabindex="-1"{% endif %} style="width:42px"/>
+				</td>
+				<td class="cadref-td-diff">
+					<input type="text" class="form-control cadref-input-diff" ng-model="CadrefClasse.Diff.regl[{{ lig }}].note" ng-init="CadrefClasse.Diff.regl[{{ lig }}].note='{{ item.Notes }}'" ng-readonly="{{ item.Encaisse }}" {% if item.Encaisse %}tabindex="-1"{% endif %} style="width:150px"/>
+				</td>
+				<td class="cadref-td-diff">
+					<input type="text" class="form-control cadref-input-diff" readonly tabindex="-1" ng-model="CadrefClasse.Diff.regl[{{ lig }}].user" ng-init="CadrefClasse.Diff.regl[{{ lig }}].user='{{ item.Utilisateur }}'" style="width:40px"/>
+				</td>
+				<td hidden>
+					<input type="text" ng-model="CadrefClasse.Diff.regl[{{ lig }}].encais" ng-init="CadrefClasse.Diff.regl[{{ lig }}].encais={{ item.Encaisse }}"/>
+				</td>
 			</tr>
-		</thead>
-		<tbody>
-			{% set lig = 0 %}
-			{% for item in diff %}
-				<tr>
-					<td hidden>
-						<input type="text" ng-model="CadrefClasse.Diff.regl[{{ lig }}].id" ng-init="CadrefClasse.Diff.regl[{{ lig }}].id={{ item.Id }}"/>
-					</td>
-					<td class="cadref-td-diff">
-						<input type="text" class="form-control cadref-input-diff" mask="dddd" ng-model="CadrefClasse.Diff.regl[{{ lig }}].paye" ng-init="CadrefClasse.Diff.regl[{{ lig }}].paye={{ item.Montant }}" {% if item.Encaisse %}readonly{% else %}ng-change="diffPaye({{ lig }})"{% endif %} style="width:60px" />
-					</td>
-					<td class="cadref-td-diff">
-						<select class="form-control cadref-input-diff" ng-model="CadrefClasse.Diff.regl[{{ lig }}].mode" ng-init="CadrefClasse.Diff.regl[{{ lig }}].mode='{{ item.ModeReglement }}'" ng-readonly="{{ item.Encaisse }}">
-							<option value="B">Banque</option>
-							<option value="C">Carte</option>
-							<option value="E">Espèces</option>
-						</select>	
-					</td>
-					<td class="cadref-td-diff">
-						<input type="text" class="form-control cadref-input-diff" mask="dd" ng-model="CadrefClasse.Diff.regl[{{ lig }}].mois" ng-init="CadrefClasse.Diff.regl[{{ lig }}].mois='{{ item.Mois }}'" ng-readonly="{{ item.Encaisse }}" style="width:42px"/>
-					</td>
-					<td class="cadref-td-diff">
-						<input type="text" class="form-control cadref-input-diff" ng-model="CadrefClasse.Diff.regl[{{ lig }}].note" ng-init="CadrefClasse.Diff.regl[{{ lig }}].note='{{ item.Notes }}'" ng-readonly="{{ item.Encaisse }}" style="width:150px"/>
-					</td>
-					<td class="cadref-td-diff">
-						<input type="text" class="form-control cadref-input-diff" readonly tabindex="-1" ng-model="CadrefClasse.Diff.regl[{{ lig }}].user" ng-init="CadrefClasse.Diff.regl[{{ lig }}].user='{{ item.Utilisateur }}'" style="width:40px"/>
-					</td>
-					<td hidden>
-						<input type="text" ng-model="CadrefClasse.Diff.regl[{{ lig }}].encais" ng-init="CadrefClasse.Diff.regl[{{ lig }}].encais={{ item.Encaisse }}"/>
-					</td>
-				</tr>
-				{% set lig = lig + 1 %}
-			{% endfor %}
-			{% set focus = 1 %}
-			{% for i in lig..11 %}
-				<tr>
-					<td hidden>
-						<input type="text" ng-model="CadrefClasse.Diff.regl[{{ i }}].id" ng-init="CadrefClasse.Diff.regl[{{ i }}].id=0;"/>
-					</td>
-					<td class="cadref-td-diff">
-						<input type="text" class="form-control cadref-input-diff" mask="dddd" ng-change="diffPaye({{ i }})" ng-model="CadrefClasse.Diff.regl[{{ i }}].paye" ng-init="CadrefClasse.Diff.regl[{{ i }}].paye=''" {% if i==lig %}id="premier"{% endif %} style="width:60px" />
-					</td>
-					<td class="cadref-td-diff">
-						<select class="form-control cadref-input-diff" ng-model="CadrefClasse.Diff.regl[{{ i }}].mode" ng-init="CadrefClasse.Diff.regl[{{ i }}].mode=''">
-							<option value="B">Banque</option>
-							<option value="C">Carte</option>
-							<option value="E">Espèces</option>
-						</select>	
-					</td>
-					<td class="cadref-td-diff">
-						<input type="text" class="form-control cadref-input-diff" mask="dd" ng-model="CadrefClasse.Diff.regl[{{ i }}].mois" ng-init="CadrefClasse.Diff.regl[{{ i }}].mois=''" style="width:42px" />
-					</td>
-					<td class="cadref-td-diff">
-						<input type="text" class="form-control cadref-input-diff" ng-model="CadrefClasse.Diff.regl[{{ i }}].note" ng-init="CadrefClasse.Diff.regl[{{ i }}].note=''" style="width:150px"/>
-					</td>
-					<td class="cadref-td-diff">
-						<input type="text" class="form-control cadref-input-diff" readonly tabindex="-1" ng-model="CadrefClasse.Diff.regl[{{ i }}].user" ng-init="CadrefClasse.Diff.regl[{{ i }}].user=''" style="width:40px" />
-					</td>
-					<td hidden>
-						<input type="text" ng-model="CadrefClasse.Diff.regl[{{ lig }}].encais" ng-init="CadrefClasse.Diff.regl[{{ lig }}].encais=0"/>
-					</td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-</section>
+			{% set lig = lig + 1 %}
+		{% endfor %}
+		{% set focus = 1 %}
+		{% for i in lig..11 %}
+			<tr>
+				<td hidden>
+					<input type="text" ng-model="CadrefClasse.Diff.regl[{{ i }}].id" ng-init="CadrefClasse.Diff.regl[{{ i }}].id=0;"/>
+				</td>
+				<td class="cadref-td-diff">
+					<input type="text" {% if i==lig %}id="premier" autofocus tabindex="0"{% endif %} class="form-control cadref-input-diff" mask="dddd" ng-change="diffPaye({{ i }})" ng-model="CadrefClasse.Diff.regl[{{ i }}].paye" ng-init="CadrefClasse.Diff.regl[{{ i }}].paye=''" style="width:60px" />
+				</td>
+				<td class="cadref-td-diff">
+					<select class="form-control cadref-input-diff" ng-model="CadrefClasse.Diff.regl[{{ i }}].mode" ng-init="CadrefClasse.Diff.regl[{{ i }}].mode=''">
+						<option value="B">Banque</option>
+						<option value="C">Carte</option>
+						<option value="E">Espèces</option>
+					</select>	
+				</td>
+				<td class="cadref-td-diff">
+					<input type="text" class="form-control cadref-input-diff" mask="dd" ng-model="CadrefClasse.Diff.regl[{{ i }}].mois" ng-init="CadrefClasse.Diff.regl[{{ i }}].mois=''" style="width:42px" />
+				</td>
+				<td class="cadref-td-diff">
+					<input type="text" class="form-control cadref-input-diff" ng-model="CadrefClasse.Diff.regl[{{ i }}].note" ng-init="CadrefClasse.Diff.regl[{{ i }}].note=''" style="width:150px"/>
+				</td>
+				<td class="cadref-td-diff">
+					<input type="text" class="form-control cadref-input-diff" readonly tabindex="-1" ng-model="CadrefClasse.Diff.regl[{{ i }}].user" ng-init="CadrefClasse.Diff.regl[{{ i }}].user=''" style="width:40px" />
+				</td>
+				<td hidden>
+					<input type="text" ng-model="CadrefClasse.Diff.regl[{{ lig }}].encais" ng-init="CadrefClasse.Diff.regl[{{ lig }}].encais=0"/>
+				</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+<div style="height:20px"></div>
 <input type="hidden" ng-init="CadrefAdherentfunction.args.Diff=CadrefClasse.Diff"/>
 <script>
-angular.element($('#premier')).focus();
-//$('#premier').focus();
+	angular.element($('#premier')).focus();
+	$('#premier').focus();
 </script>
 

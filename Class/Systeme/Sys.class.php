@@ -1096,7 +1096,7 @@ class Sys extends Root{
          $RestQuery = $obj[1];
          //on vérfiie la surchagre de getData
          if (method_exists($obj, "getData")){
-             return call_user_func($obj .'::getData',array($RestQuery, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy));
+             return call_user_func($obj .'::getData',array($RestQuery, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy, $NoRights));
          }
 	 	$o= Sys::getData($Module, $Query, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy, $NoRights);
 		if (is_array($o)&&sizeof($o))foreach ($o as $k=>$t)
@@ -1115,7 +1115,7 @@ class Sys extends Root{
 	 	$obj = $obj[0];
 	 	//on vérfiie la surchagre de getData
 		 if (method_exists($obj, "getData")){
-			 return call_user_func($obj .'::getData',array($RestQuery, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy));
+			 return call_user_func($obj .'::getData',array($RestQuery, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy, $NoRights));
 		 }
 	 	$o= Sys::$Modules[$Module]->callData($Query, false, $Ofst, $Limit, $OrderType, $OrderVar, $Selection, $GroupBy, $NoRights);
 		if (is_array($o)&&sizeof($o))foreach ($o as $k=>$t)

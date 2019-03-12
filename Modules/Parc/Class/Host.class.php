@@ -39,6 +39,7 @@ class Host extends genericClass
             $this->addError(array("Message"=>"Impossible de valider l'enregistrement Contactez votre administrateur préféré."));
             return false;
         }
+        Sys::$Modules['Parc']->Db->clearLiteCache();
         //Vérification du mot de passe
         if (empty($this->Password)){
             $this->Password = str_shuffle(bin2hex(openssl_random_pseudo_bytes(12)));
@@ -50,6 +51,7 @@ class Host extends genericClass
 
         //creation apachedefault
         $aps = Sys::getCount('Parc','Host/'.$this->Id.'/Apache');
+
         if ($aps<4)
             $this->createDefaultApache();
 
@@ -110,6 +112,7 @@ class Host extends genericClass
         }
         return $this->MasterServer;
     }
+
     /**
      * moveHostTask
      * Deplace un ehébergement d'un serveur à l'autre
@@ -490,7 +493,6 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
         //on vérifie l'existence
         $dom = Sys::getOneData('Parc', 'Domain/defaultDomain=1', 0, 1, '', '', '', '', true);
         for ($i=0;$i<4;$i++){
-            $exists = Sys::getCount('Parc','Apache/apacheServerName');
             $apache = genericClass::createInstance('Parc','Apache');
             $ssl = ($i % 2 == 0) ? true : false;
             $proxycache = ($i<2)? true : false;
@@ -1069,6 +1071,11 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
      * Creation de la tache de backup
      */
     public function createBackupTask($orig=null){
+        $nbt = Sys::getCount('Parc','Host/'.$this->Id.'/Tache/TaskCode=BACKUP_CREATE&Termine=0&Erreur=0');
+        if ($nbt){
+            $this->addError(array('Message'=>'Une tache de sauvegarde est déjà en cours.'));
+            return false;
+        }
         if (!$this->BackupEnabled) return false;
         $task = genericClass::createInstance('Systeme', 'Tache');
         $task->Type = 'Fonction';
@@ -1101,6 +1108,8 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
         $inst = $host->getOneChild('Instance');
         $restopoint = date('YmdHis');
         $restodate = date('d/m/Y à H:i:s');
+        $task->DateDebut = time();
+        $task->Save();
         //création du point de restauration
         $rp = genericClass::createInstance('Parc','RestorePoint');
         $rp->Titre = 'Sauvegarde date: '.$restodate;
@@ -1111,6 +1120,12 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
         $rp->Save();
         try {
             $result = $rp->backup($task);
+            //reinitialisation des incidents de backup
+            $incidents = Sys::getData('Parc','Host/'.$this->Id.'/Incident/Code=BACKUP_ERROR');
+            foreach ($incidents as $incident){
+                $incident->Solved = true;
+                $incident->Save();
+            }
             return $result;
         }catch (Exception $e){
             //création d'un incident
@@ -1267,6 +1282,18 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
             throw new Exception($e->getMessage());
         }
     }
+    /**
+     * emptyProxyCacheTask
+     * Supprime le cache des serveurs proxy pour cet hébergement
+     */
+    public function emptyProxyCacheTask(){
+        $infra=$this->getInfra();
+        $aps = $this->getChildren('Apache');
+        foreach ($aps as $ap)
+            $ap->emptyProxyCacheTask();
+        return true;
+    }
+
 }
 /**
  * Terminal

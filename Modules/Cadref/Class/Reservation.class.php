@@ -42,6 +42,31 @@ class Reservation extends genericClass {
 		return $ret;
 	}
 	
+	function Delete() {
+		$vis = $this->getOneParent('Visite');
+		if(! checkLimite()) {
+			$this->addError(array("Message" => "Cette réservation ne peut être supprimée", "Prop" => ""));
+			return false;
+		}
+		$rec = $this->getChildren('Reglement');
+		foreach($rec as $r)
+			$r->Delete();
+		
+		return parent::Delete();
+	}
+
+	private function checkLimite() {
+		$t = time();
+		if($this->DateLimite) return $t < $this->DateLimite;
+		$l = $this->DateVisite;
+		for($i = 0; $i < 3;) {
+			$l -= 86400;
+			$d = date('w', $l);
+			if($d != 0 && $d != 6) $i++;
+		}
+		return $l < $l;
+	}
+	
 
 }
 

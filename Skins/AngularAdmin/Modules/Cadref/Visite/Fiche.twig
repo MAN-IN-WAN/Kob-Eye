@@ -47,7 +47,7 @@
 									{{ fdate(f.DateVisite, o) }}
 								</div>
 								<div class="col-md-2">
-									{{ label("Limite inscription") }}
+									{{ label("Limite annulation") }}
 								</div>
 								<div class="col-md-3">
 									{{ fdate(f.DateLimite, o) }}
@@ -92,7 +92,7 @@
 									<multiple-autocomplete class="form-control cadref-no-padding" 
 										ng-model="obj.EnseignantEnseignants"
 										object-property="label"
-										model-labels="obj.EnseignantEnseignantslabel"
+										model-labels="obj.EnseignantEnseignantslibelle"
 										suggestions-arr="Enseignants">
 									</multiple-autocomplete>
 								</div>
@@ -145,7 +145,8 @@
 					<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="saveFicheCadref({{ o }}.id)">Sauver</button>
 					<button type="button" class="btn btn-danger margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="delete(obj)">Supprimer</button>
 					<a type="button" class="btn btn-warning margin-inline cadref-btn-100" {% if Create %}data-dismiss="modal"{% else %}href="#/{{ CurrentMenu.Url }}"{% endif %}>Annuler</a>
-				</div>
+{#					<button type="button" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="printVisite(obj)">Imprimer</button>
+#}				</div>
 			</div>
 		</div>
     </section>

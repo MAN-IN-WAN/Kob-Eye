@@ -9,7 +9,7 @@
             <a href="#/TableauDeBord">Tableau de bord</a>
         </li>
         <li>
-            <a href="#/{{ CurrentMenu.Url }}">Liste des {{ ObjectClass.getDescription() }}</a>
+            <a href="#/{{ CurrentMenu.Url }}" accesskey="l" title="Alt L">Liste des {{ ObjectClass.getDescription() }}</a>
         </li>
         <li>
             <a href="javascript: void(0);" ng-bind-html="'Fiche {{ ObjectClass.getDescription() }} '+(obj.label)"></a>
@@ -47,7 +47,17 @@
 									{#{{ fvalues(f.Etoile, o) }}#}
 								</div>
 							</div>
-							{{ flinput(f.Nom, o, false, '', 'text-transform:uppercase;', true) }}
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Nom") }}
+								</div>
+								<div class="col-md-10">
+            <input id="adhNom" type="text" class="form-control cadref-input" ng-model="{{ o }}.Nom"
+				style="text-transform:uppercase;" onkeyup="this.value = this.value.toUpperCase();"
+			/>
+								</div>
+							</div>
+							{#{{ flinput(f.Nom, o, false, '', 'text-transform:uppercase;', true, true) }}#}
 							{{ flinput(f.Prenom, o) }}
 							{{ flinput(f.Adresse1, o) }}
 							{{ flinput(f.Adresse2, o) }}
@@ -59,7 +69,12 @@
 									{{ finput(f.CP, o, false, 'ddddd') }}
 								</div>
 								<div class="col-md-8">
-									{{ finput(f.Ville, o, false, '', 'text-transform:uppercase;', true) }}
+									<input type="text" list="Ville-list" ng-change="villeChange()" class="form-control cadref-input ng-pristine ng-valid ng-not-empty ng-touched" placeholder="" ng-model="obj.Ville" style="text-transform:uppercase;" onkeyup="this.value = this.value.toUpperCase();">
+									<datalist id="Ville-list">
+										{% for item in communes %}
+										<option>{{ item.Commune~' ('~item.CP~')' }}<option>
+										{% endfor %}
+									</datalist>
 								</div>
 							</div>
 							<div class="row" style="height:10px"></div>
@@ -123,6 +138,16 @@
 								<div class="col-md-4">
 									<div class="row">
 										<div class="col-md-5">
+											{{ label("Origine") }}
+										</div>
+										<div class="col-md-7">
+											{{ fvalues(f.Origine, o) }}
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-5">
 											{{ label("Situation") }}
 										</div>
 										<div class="col-md-7">
@@ -140,6 +165,8 @@
 										</div>
 									</div>
 								</div>
+							</div>
+							<div class="row">
 								<div class="col-md-4">
 									<div class="row">
 										<div class="col-md-5">
@@ -147,18 +174,6 @@
 										</div>
 										<div class="col-md-7">
 											{{ fboolean(f.Inactif, o, true) }}
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-4">
-									<div class="row">
-										<div class="col-md-5">
-											{{ label("Connaissance du CADREF") }}
-										</div>
-										<div class="col-md-7">
-											{{ fvalues(f.Origine, o) }}
 										</div>
 									</div>
 								</div>
@@ -374,10 +389,10 @@
                      compile="{{ identifier }}function.data" >
                 </div>
             </div>
-            <div class="modal-footer">
+{#            <div class="modal-footer">
                 <button type="button" class="btn" data-dismiss="modal" ng-if="!{{ identifier }}function.callNext">Fermer</button>
                 <button type="button" class="btn" ng-if="{{ identifier }}function.callNext" ng-click="{{ identifier }}callFunction({{ identifier }}function.callNext.item,{{ identifier }}function.callNext.nom,{{ identifier }}function.callNext.title,{{ identifier }}function.callNext.needConfirm,1)">Suivant</button>
             </div>
-        </div>
+#}        </div>
     </div>
 </div>

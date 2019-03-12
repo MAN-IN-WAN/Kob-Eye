@@ -199,7 +199,7 @@ class Parc_Client extends genericClass {
 			return;
 		}else $grp = $grp[0];
 
-		//vérification de l'existence de l'utilisateur
+        //vérification de l'existence de l'utilisateur
 		$u = $this->getParents('User');
 		if ($this->AccesActif){
 
@@ -474,6 +474,7 @@ class Parc_Client extends genericClass {
         if (!$client) {
             $client = genericClass::createInstance('Parc', 'Client');
             $client->Nom = $name;
+            $client->NomLDAP = $code;
             $client->Save();
         }
         return $client;

@@ -64,7 +64,7 @@
 					<input type="text" class="form-control cadref-input" ng-model="CadrefClasse.Inscr.note"/>
 				</td>
 				<td class="cadref-td-inscr">
-					<button id="btnNext" type="button" class="btn btn-info ng-scope" ng-disabled="nextDisabled" ng-if="CadrefAdherentfunction.callNext" ng-click="CadrefAdherentcallFunction(CadrefAdherentfunction.callNext.item,CadrefAdherentfunction.callNext.nom,CadrefAdherentfunction.callNext.title,CadrefAdherentfunction.callNext.needConfirm,1)">Suivant</button>
+					<a href="" id="inscriptionNext" type="button" class="btn btn-info ng-scope" ng-disabled="nextDisabled" ng-if="CadrefAdherentfunction.callNext" ng-click="CadrefAdherentcallFunction(CadrefAdherentfunction.callNext.item,CadrefAdherentfunction.callNext.nom,CadrefAdherentfunction.callNext.title,CadrefAdherentfunction.callNext.needConfirm,1)">Valider</a>
 				</td>
 			</tr>
 		</tbody>
@@ -99,3 +99,6 @@
 </div>
 <input type="hidden" ng-init="CadrefAdherentfunction.args.newInscr=CadrefInscription.store.data.temp"/>
 <input type="hidden" ng-init="CadrefAdherentfunction.args.Inscr=CadrefClasse.Inscr"/>
+{#<script>
+	$(document).ready(function(){ $('#searchCadrefClasse').focus(); });
+</script>#}

@@ -45,7 +45,10 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'{{ function }}');
 		ajax.success(
 			function(data) {
-				if(mode == 'print') $window.open(data.data.pdf,'_blank');
+				if(mode == 'print') {
+					if(data.data.pdf) $window.open(data.data.pdf,'_blank');
+					else swall('Adhérents','Rien à imprimer');
+				}
 			}
 		).error(
 			function() {

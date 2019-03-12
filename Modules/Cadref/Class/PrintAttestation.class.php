@@ -34,8 +34,8 @@ class PrintAttestation extends FPDF {
 		$this->AddPage();
 		$this->SetFillColor(192,192,192);
 		
-		$img = getcwd().'/Skins/AngularAdmin/Modules/Cadref/assets/img/cadref_logo.jpg';
-		$this->Image($img,20,21,37,30);
+		$img = getcwd().'/Skins/AngularAdmin/Modules/Cadref/assets/img/cadref_logo_noir.png';
+		$this->Image($img,25,19,26,30);
 		
 		$this->SetFont('Arial','B',12);
 		$this->SetXY(-120,21);
@@ -73,7 +73,7 @@ class PrintAttestation extends FPDF {
 		$this->Cell(170,4,$s,0,1,'L');
 		$this->SetFont('Arial','',10);
 		$this->SetX(20);
-		$s = "Activité intellectuelles, physiques, ludiques... au travers de cours, pour favoriser l'entretien des ";
+		$s = "Activités intellectuelles, physiques, ludiques... au travers de cours, pour favoriser l'entretien des ";
 		$s .= "capacités physiques et intellectuelles des adhérents, favoriser le lien social entre générations, ";
 		$s .= "et lutter contre l'isolement social...";
 		$s = $this->cv($s);
@@ -148,9 +148,11 @@ class PrintAttestation extends FPDF {
 
 		$this->SetXY(110,234);
 		$this->Cell(90,6,$this->dateText,0,0,'L');
-		$s = $this->cv("Le président du Conseil d'Administration");
+
 		$this->SetXY(110,240);
-		$this->Cell(90,6,$s,0,0,'L');	
+		//$s = $this->cv("Le président du Conseil d'Administration");
+		$p = Cadref::GetParametre('DOCUMENT', 'ATTESTATION', 'SIGNATURE');
+		$this->MultiCell(90, 6, $this->cv($p->Texte));
 	}
 	
 }

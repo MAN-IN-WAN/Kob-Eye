@@ -17,6 +17,16 @@
 								<div class="col-xl-8">
 									<div class="row">
 										<div class="col-md-2">
+											{{ label("Montant") }}
+										</div>
+										<div class="col-md-2">
+											<div class="control-group">
+												<input type="text" id="chequeMontant" class="form-control cadref-input" autofocus ng-model="obj.Montant"/>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-2">
 											{{ label("Date") }}
 										</div>
 										<div class="col-md-2">
@@ -28,16 +38,6 @@
 													<i class="icmn-calendar"></i>
 												</span>
 											</label>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-2">
-											{{ label("Montant") }}
-										</div>
-										<div class="col-md-2">
-											<div class="control-group">
-												<input type="text" class="form-control cadref-input" placeholder="" ng-model="obj.Montant"/>
-											</div>
 										</div>
 									</div>
 									<div class="row">
@@ -76,4 +76,3 @@
 			</div>
     </section>
 </div>
-

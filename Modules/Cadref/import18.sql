@@ -48,38 +48,42 @@ insert into kbabtel.`kob-Cadref-Vacance` (umod,gmod,omod,Annee,Type,Libelle,Date
 (7,7,7,@annee,'V','VACANCES DE L''ASCENSION',unix_timestamp('2019-05-29'),unix_timestamp('2019-06-03'),0,'ascension');
 
 truncate kbabtel.`kob-Cadref-Lieu`;
-insert into kbabtel.`kob-Cadref-Lieu` (umod,gmod,omod,Ville,Adresse1,Adresse2,Type,Lieu,GPS,AntenneId) values 
-(7,7,7,"Sommières","Espace Lawrence Durrell","245, bd. Ernest François","L","SLD","43.781674,4.092405999999983",6),
-(7,7,7,"Bagnols","Centre P Mendes France","av. de la Mayre","L","BMF","44.1571286,4.622954299999947",2),
-(7,7,7,"Bagnols","Maison Laure Pailhon","8 rue Léon Alègre","L","BLP","44.1629355,4.621609700000022",2),
-(7,7,7,"Bagnols","Maison des Associations","95 av. François Mitterand","L","BMA","44.1727855,4.619900199999961",2),
-(7,7,7,"St Gervais","Salle la Coquillone","ch. de la Coquillone","L","BSC","44.18632179999999,4.568395600000031",2),
-(7,7,7,"Villeneuve","Salle Frédéric Mistral","19 bd. Frédéric Mistral","L","VFM","43.9713349,4.7955667999999605",7),
-(7,7,7,"Les Angles","Salle Boris Vian","rue de l'école","L","VBV","42.5772819,2.07358499999998",7),
-(7,7,7,"Le Vigan","Lycée","1 av. Pasteur","L","LVL","43.990522,3.6007893999999396",4),
-(7,7,7,"Ganges","Salle de l'Horloge","Mairie Plan de l'Ormeau","L","LVH","43.93581,3.7088587000000643",4),
-(7,7,7,"Alès","Ecole des Mines","6 av. de Clavières","L","AEM","44.1328582,4.088220099999944",1),
-(7,7,7,"Alès","Salle du Capitole","10 Place de l'Hôtel de ville","L","ASC","44.1249942,4.076990600000045",1),
-(7,7,7,"Alès","Pôle Scientifique et Culturel","155 rue du Faubourg de Rochebelle","L","APS","44.1302922,4.068972400000007",1),
-(7,7,7,"Alès","Espace André Chamson","2 bd. Louis Blanc, Place Henry Barbusse","L","AAC","44.126705,4.079328000000032",1),
-(7,7,7,"Nîmes","CADREF","249 rue de Bouillargues","L","N00","43.833561,4.371489",5),
-(7,7,7,"Nîmes","Maison Diocésaine","6 rue Salomon Reinach","L","NMD","43.8340875,4.375364399999967",5),
-(7,7,7,"Nîmes","Archives Départementales","365 rue du Forez","L","NAD","43.8248603,4.367995199999996",5),
-(7,7,7,"Nîmes","Piscine Le Fenouillet","7 rue Léo Lagrange","L","NPF","43.8451777,4.376619300000016",5),
-(7,7,7,"Nîmes","Piscine Nemausa","120 av. de la Bouvine","L","NPN","43.817878,4.359027999999967",5),
-(7,7,7,"Nîmes","Piscine Aquatropic","39 rue de l'Hostellerie","L","NPA","43.8128629,4.3454704000000675",5),
-(7,7,7,"Nîmes","Piscine Bodypur","48 rue Louis Lumière","L","NPB","43.81492679999999,4.31342189999998",5),
-(7,7,7,"Nîmes","Gymnase Gaston Lessut","102 rue de Mascard","L","NGL","43.8155732,4.330290999999988",5),
-(7,7,7,"Nîmes","Cabinet Mazurier","6 rue Cart","L","NCM","43.8325683,4.3595017999999754",5),
-(7,7,7,"Nîmes","Salle du Billard Club Nîmois","123 av. de la Bouvine","L","NBC","43.81652880000001,4.359267300000056",5),
-(7,7,7,"Nîmes","Golf de Vacquerolles","1075 ch. du Golf","L","NGV","43.8502649,4.300112500000068",5),
-(7,7,7,"Nîmes","Golf de Campagne","1360 ch. du Mas de Campagne","L","NGC","43.7624891,4.389048300000013",5),
-(7,7,7,"Alès","Garage Durand","738 av. Frères Lumière","R","AGD","44.1386981,4.0972609000000375",0),
-(7,7,7,"Alès","Gare routière","","R","AGR","44.1274883,4.0832717000000684",0),
-(7,7,7,"La Calmette","Rond point du Casino","av. Charles de Gaulle","R","LCC","43.92476629999999,4.257490599999983",0),
-(7,7,7,"Nîmes","Route de Sauve","148 route de Sauve","R","NRS","43.8407894,4.318510800000013",0),
-(7,7,7,"Nîmes","Arrêt de bus Place Séverine","","R","NBS","43.829858,4.352028",0),
-(7,7,7,"Nîmes","Stade des Costières","123 av. de la Bouvine","R","NSC","43.816025,4.359255599999983",0);
+insert into kbabtel.`kob-Cadref-Lieu` (umod,gmod,omod,Ville,Adresse1,Adresse2,Type,Lieu,GPS,AntenneId,OldNotes) values 
+(7,7,7,"Sommières","Espace Lawrence Durrell","245, bd. Ernest François","L","SLD","43.781674,4.092405999999983",6,""),
+(7,7,7,"Bagnols","Centre P Mendes France","av. de la Mayre","L","BMF","44.1571286,4.622954299999947",2,""),
+(7,7,7,"Bagnols","Maison Laure Pailhon","8 rue Léon Alègre","L","BLP","44.1629355,4.621609700000022",2,""),
+(7,7,7,"Bagnols","Maison des Associations","95 av. François Mitterand","L","BMA","44.1727855,4.619900199999961",2,""),
+(7,7,7,"Uzès","Golf club d'Uzès","Pont des Charettes","L","BGU","",2,""),
+(7,7,7,"St Gervais","Salle la Coquillone","ch. de la Coquillone","L","BSC","44.18632179999999,4.568395600000031",2,""),
+(7,7,7,"Villeneuve","Salle Frédéric Mistral","19 bd. Frédéric Mistral","L","VFM","43.9713349,4.7955667999999605",7,""),
+(7,7,7,"Les Angles","Salle Boris Vian","rue de l'école","L","VBV","42.5772819,2.07358499999998",7,""),
+(7,7,7,"Le Vigan","Lycée","1 av. Pasteur","L","LVL","43.990522,3.6007893999999396",4,""),
+(7,7,7,"Ganges","Salle de l'Horloge","Mairie Plan de l'Ormeau","L","LVH","43.93581,3.7088587000000643",4,""),
+(7,7,7,"Alès","Ecole des Mines","6 av. de Clavières","L","AEM","44.1328582,4.088220099999944",1,""),
+(7,7,7,"Alès","Salle du Capitole","10 Place de l'Hôtel de ville","L","ASC","44.1249942,4.076990600000045",1,""),
+(7,7,7,"Alès","Pôle Scientifique et Culturel","155 rue du Faubourg de Rochebelle","L","APS","44.1302922,4.068972400000007",1,""),
+(7,7,7,"Alès","Espace André Chamson","2 bd. Louis Blanc, Place Henry Barbusse","L","AAC","44.126705,4.079328000000032",1,""),
+(7,7,7,"Alès","Golf club Alès Ribaute","Puech Serrier, Ghemin du Golf","L","AGR","",1,""),
+(7,7,7,"Grau du Roi","Salle Christophe Colomb","14 bis rue de l'Egalité","L","GCC","",3,""),
+(7,7,7,"Grau du Roi","Salle de réunion du Centre Technique","rue des Médards","L","GCT","",3,""),
+(7,7,7,"Nîmes","CADREF","249 rue de Bouillargues","L","N00","43.833561,4.371489",5,""),
+(7,7,7,"Nîmes","Maison Diocésaine","6 rue Salomon Reinach","L","NMD","43.8340875,4.375364399999967",5,""),
+(7,7,7,"Nîmes","Archives Départementales","365 rue du Forez","L","NAD","43.8248603,4.367995199999996",5,""),
+(7,7,7,"Nîmes","Piscine Le Fenouillet","7 rue Léo Lagrange","L","NPF","43.8451777,4.376619300000016",5,""),
+(7,7,7,"Nîmes","Piscine Nemausa","120 av. de la Bouvine","L","NPN","43.817878,4.359027999999967",5,""),
+(7,7,7,"Nîmes","Piscine Aquatropic","39 rue de l'Hostellerie","L","NPA","43.8128629,4.3454704000000675",5,""),
+(7,7,7,"Nîmes","Piscine Bodypur","48 rue Louis Lumière","L","NPB","43.81492679999999,4.31342189999998",5,""),
+(7,7,7,"Nîmes","Gymnase Gaston Lessut","102 rue de Mascard","L","NGL","43.8155732,4.330290999999988",5,""),
+(7,7,7,"Nîmes","Cabinet Mazurier","6 rue Cart","L","NCM","43.8325683,4.3595017999999754",5,""),
+(7,7,7,"Nîmes","Salle du Billard Club Nîmois","123 av. de la Bouvine","L","NBC","43.81652880000001,4.359267300000056",5,""),
+(7,7,7,"Nîmes","Golf de Vacquerolles","1075 ch. du Golf","L","NGV","43.8502649,4.300112500000068",5,""),
+(7,7,7,"Nîmes","Golf de Campagne","1360 ch. du Mas de Campagne","L","NGC","43.7624891,4.389048300000013",5,""),
+(7,7,7,"Alès","Garage Durand","738 av. Frères Lumière","R","AGD","44.1386981,4.0972609000000375",0,"GARAGE DURAND"),
+(7,7,7,"Alès","Gare routière","","R","AGR","44.1274883,4.0832717000000684",0,"GARE ROUTIERE"),
+(7,7,7,"La Calmette","Rond point du Casino","av. Charles de Gaulle","R","LCC","43.92476629999999,4.257490599999983",0,"LA CALMETTE"),
+(7,7,7,"Nîmes","Route de Sauve","148 route de Sauve","R","NRS","43.8407894,4.318510800000013",0,"ROUTE DE SAUVE"),
+(7,7,7,"Nîmes","Arrêt de bus Place Séverine","","R","NBS","43.829858,4.352028",0,"SEVERINE"),
+(7,7,7,"Nîmes","Stade des Costières","123 av. de la Bouvine","R","NSC","43.816025,4.359255599999983",0,"COSTIERES");
 update kbabtel.`kob-Cadref-Lieu` set Libelle=concat(Ville,', ',Adresse1);
 
 truncate kbabtel.`kob-Cadref-WebSection`;
@@ -245,6 +249,12 @@ left join kbabtel.`kob-Cadref-Section` s on s.Section=c.Sect
 left join kbabtel.`kob-Cadref-Discipline` d on d.SectionId=s.Id and d.Discipline=c.Discipline
 left join kbabtel.`kob-Cadref-Niveau` n on n.Antenne=c.Antenne and n.Section=c.Sect and n.Discipline=c.Discipline and n.Niveau=c.Niveau;
 
+update kbabtel.`kob-Cadref-Classe` c
+left join kbabtel.aaclasse cl on cl.classe=c.CodeClasse
+left join kbabtel.`kob-Cadref-Lieu` l on l.Lieu=cl.lieu
+set c.LieuId=l.Id
+where l.Id is not null;
+
 truncate kbabtel.`kob-Cadref-ClasseDate`;
 insert into kbabtel.`kob-Cadref-ClasseDate`(umod,gmod,omod,ClasseId,Annee,DateCours)
 select 7,7,7,c.Id,'2018',unix_timestamp(d0) from kbabtel.`kob-Cadref-Classe` c left join kbabtel.aadates d on d.cod=c.CodeClasse where d0>'0000-00-00'
@@ -329,6 +339,7 @@ left join kbabtel.`kob-Cadref-Profession` p on p.Profession=e.Profession
 left join kbabtel.`kob-Cadref-Cursus` u on u.Cursus=e.Cursus
 left join kbabtel.`kob-Cadref-Situation` s on s.Situation=e.Situation;
 
+update kbabtel.`kob-Cadref-Adherent` set NomPrenom=concat(Nom,' ',Prenom);
 update kbabtel.`kob-Cadref-Adherent` a
 inner join kbabtel.aaname p on p.old=a.Prenom
 set a.Prenom=p.name;
@@ -348,13 +359,6 @@ left join kbabtel.`kob-Cadref-Adherent` a on a.Numero=i.Numero
 left join kbabtel.`kob-Cadref-Classe` c on c.CodeClasse=concat(i.Antenne,i.Sect,i.Discipline,i.Niveau,i.Classe)
 order by i.Numero,i.Code;
 
-truncate kbabtel.`kob-Cadref-Reglement`;
-insert into kbabtel.`kob-Cadref-Reglement` (umod,gmod,omod,Numero,Annee,DateReglement,Montant,ModeReglement,Notes,Differe,Encaisse,Supprime,Utilisateur,AdherentId)
-select 7,7,7,r.Numero,@annee,unix_timestamp(r.DateRegl),Somme,`Mode`,r.Notes,r.Differe,if(r.Differe,r.Encaisse,1),r.Supprime,r.Utilisateur,a.Id
-from cadref18.Reglements r
-left join kbabtel.`kob-Cadref-Adherent` a on a.Numero=r.Numero
-order by r.Numero,r.DateRegl;
-
 
 
 truncate kbabtel.`kob-Cadref-Visite`;
@@ -362,18 +366,46 @@ insert into kbabtel.`kob-Cadref-Visite` (umod,gmod,omod,Visite,Libelle,Annee,Dat
 select 7,7,7,Visite,Libelle,@annee,unix_timestamp(DateVis),Places,Inscrits,Attentes,Prix1,Utilisateur
 from cadref18.Visites;
 
+update  kbabtel.`kob-Cadref-Visite` v
+inner join kbabtel.aavisite l on l.c=v.Visite
+set v.Description = l.l;
+
+truncate kbabtel.`kob-Cadref-Depart`;
+insert into kbabtel.`kob-Cadref-Depart` (umod,gmod,omod,VisiteId,LieuId)
+select 7,7,7,v.Id,l.Id
+from kbabtel.`kob-Cadref-Visite` v
+left join kbabtel.`kob-Cadref-Lieu` l on l.`Type`='R';
+
 truncate kbabtel.`kob-Cadref-Reservation`;
-insert into kbabtel.`kob-Cadref-Reservation` (umod,gmod,omod,Numero,Visite,Annee,Prix,Reduction,Attente,DateAttente,DateInscription,AdherentId,VisiteId,Utilisateur)
-select 7,7,7,r.Numero,r.Visite,@annee,r.Prix,r.Reduction,r.Attente,if(r.DateAtte<@annee,null,unix_timestamp(r.DateAtte)),unix_timestamp(r.Creation),a.Id,v.Id,r.Utilisateur
+insert into kbabtel.`kob-Cadref-Reservation` (umod,gmod,omod,Numero,Visite,Annee,Prix,Reduction,Attente,DateAttente,DateInscription,AdherentId,VisiteId,Utilisateur,Notes)
+select 7,7,7,r.Numero,r.Visite,@annee,r.Prix,r.Reduction,r.Attente,if(r.DateAtte<@annee,null,unix_timestamp(r.DateAtte)),unix_timestamp(r.Creation),a.Id,v.Id,r.Utilisateur,r.Notes
 from cadref18.Reservations r
 left join kbabtel.`kob-Cadref-Adherent` a on a.Numero=r.Numero
 left join kbabtel.`kob-Cadref-Visite` v on v.Visite=r.Visite
 order by r.Numero,r.Visite;
 
-insert into kbabtel.`kob-Cadref-Reglement` (umod,gmod,omod,Numero,AdherentId,ReservationId,Visite,Montant,Utilisateur,DateReglement,Encaisse,ModeReglement,Annee)
-select 7,7,7,r.Numero,r.AdherentId,r.Id,r.Visite,r.Prix,r.Utilisateur,v.DateVisite,1,'B',@annee
+update `kob-Cadref-Reservation` set Notes='ROUTE DE SAUVE' where Notes='CASTANET';
+update `kob-Cadref-Reservation` set Notes='GARAGE DURAND' where Notes like 'GAARA%' or Notes like 'GARAR%';
+#select r.Notes,l.Id,l.OldNotes,d.Id from
+update `kob-Cadref-Reservation` r
+inner join `kob-Cadref-Lieu` l on l.OldNotes=r.Notes
+inner join `kob-Cadref-Depart` d on d.LieuId=l.Id and d.VisiteId=r.VisiteId
+set r.DepartId=d.Id
+where r.Notes<>'';
+
+
+truncate kbabtel.`kob-Cadref-Reglement`;
+insert into kbabtel.`kob-Cadref-Reglement` (umod,gmod,omod,Numero,Annee,DateReglement,Montant,ModeReglement,Notes,Differe,Encaisse,Supprime,Utilisateur,AdherentId)
+select 7,7,7,r.Numero,@annee,unix_timestamp(r.DateRegl),Somme,`Mode`,r.Notes,r.Differe,if(r.Differe,r.Encaisse,1),r.Supprime,r.Utilisateur,a.Id
+from cadref18.Reglements r
+left join kbabtel.`kob-Cadref-Adherent` a on a.Numero=r.Numero
+order by r.Numero,r.DateRegl;
+
+insert into kbabtel.`kob-Cadref-Reglement` (umod,gmod,omod,Numero,AdherentId,ReservationId,Visite,Montant,Utilisateur,DateReglement,Differe,Encaisse,ModeReglement,Annee)
+select 7,7,7,r.Numero,r.AdherentId,r.Id,r.Visite,r.Prix,r.Utilisateur,v.DateVisite,1,from_unixtime(v.DateVisite)<now(),'B',@annee
 from kbabtel.`kob-Cadref-Reservation` r
 inner join kbabtel.`kob-Cadref-Visite` v on v.Id=r.VisiteId;
+
 
 truncate kbabtel.`kob-Cadref-AdherentAnnee`;
 insert into kbabtel.`kob-Cadref-AdherentAnnee` (umod,gmod,omod,AdherentId,Numero,Annee,NotesAnnuelles,Adherent,ClasseId,
@@ -469,7 +501,7 @@ call kbabtel.aareduc(185,122,61);
 call kbabtel.aareduc(160,106,53);
 call kbabtel.aareduc(162,108,54);
 call kbabtel.aareduc(87,58,29);
-
+update kbabtel.`kob-Cadref-Classe` set Reduction1=0, DateReduction1=null where CodeClasse='NHIRE11';
 
 
 

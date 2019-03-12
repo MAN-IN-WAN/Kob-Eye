@@ -12,7 +12,6 @@
         </ul>
     </div>
 [/IF]
-
 [IF [!Valider!]=Valider la réservation]
     <div class="alert alert-success">
         La réservation a été validée avec succès.
@@ -54,19 +53,18 @@
             [/STORPROC]
             </ul></h3>
             <h3><b>Total à payer:</b><span class="label label-success" >[!Utils::getPrice([!R::getTotal()!])!] €</span></h3>
-
             [IF [!CHECK!]&&[!R::Valide!]=]
                 [IF [!R::getTotal()!]>0]
                     <input type="submit" class="btn btn-success btn-large btn-block" name="Valider" value="Payer en carte bleue" />
                 [ELSE]
                     <input type="submit" class="btn btn-success btn-large btn-block" name="Valider" value="Valider la réservation">
                 [/IF]
-                [ELSE]
-                    <div class="alert alert-success">
-                        Cette réservation est validée.
-                    </div>
-                [/IF]
+            [ELSE]
+                <div class="alert alert-success">
+                    Cette réservation est validée.
+                </div>
             [/IF]
+        [/IF]
             <br />
             <a href="/" class="btn btn-danger btn-large btn-block">Retour à l'accueil</a>
         </form>

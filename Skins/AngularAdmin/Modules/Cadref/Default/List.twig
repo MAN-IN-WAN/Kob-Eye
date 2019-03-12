@@ -303,12 +303,12 @@
 			{% elseif field.type == "color" %}
 				<span class="colorBlock" style="background-color: {[{ item.{{ field.name }} }]}"></span>
 			{% else %}
-				{% if  Type == "Tail" %}
+{#				{% if  Type == "Tail" %}
 					<span ng-bind-html="item.{{ field.name }}"></span>
 				{% else %}
-					<a href="#/{{ CurrentUrl }}/{[{ item.id }]}" ng-bind-html="item.{{ field.name }}"></a>
-				{% endif %}
-			{% endif %}
+#}					<a href="#/{{ CurrentUrl }}/{[{ item.id }]}" ng-bind-html="item.{{ field.name }}"></a>
+{#				{% endif %}
+#}			{% endif %}
 			</td>
 		{% endfor %}
 		{% for interface in Interfaces %}

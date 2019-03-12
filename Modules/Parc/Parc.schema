@@ -158,6 +158,16 @@
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
 		<FKEY card="1,1" data="Domain,Id" popup="1">DomainId</FKEY>
 	</OBJECTCLASS>
+	<OBJECTCLASS title="ServerProfile" driver="mysql" AccessPoint="1" Description="Profil Serveur" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Class="Modules/Parc/Class/ServerProfile.class.php">
+		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" description="Nom" listDescr="Nom">Nom</PROPERTIES>
+		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" description="Version" listDescr="Version" default="1.0.0.0">Version</PROPERTIES>
+	</OBJECTCLASS>
+	<OBJECTCLASS title="ServerTask" driver="mysql" AccessPoint="0" Description="Tache Serveur" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Class="Modules/Parc/Class/ServerTask.class.php">
+		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" description="Nom" listDescr="Nom">Nom</PROPERTIES>
+		<PROPERTIES type="raw" obligatoire="1" fiche="1" form="1" description="Commande" listDescr="Commande">Command</PROPERTIES>
+		<PROPERTIES type="order" obligatoire="1" fiche="1" form="1" list="1" description="Ordre" listDescr="Ordre">Order</PROPERTIES>
+		<FKEY card="0,1" data="ServerProfile,Id">ServerProfileId</FKEY>
+	</OBJECTCLASS>
 	<OBJECTCLASS title="Server" driver="mysql" AccessPoint="1" master="0" Description="Serveurs" Icon="/Skins/AdminV2/Img/IconAqua/App1.png" Class="Modules/Parc/Class/Server.class.php">
 		<FILTER name="Tous les serveurs" color="warning" ></FILTER>
 		<FILTER name="Serveurs Proxy" color="success">Proxy=1</FILTER>
@@ -210,7 +220,7 @@
         <PROPERTIES category="LDAP" type="varchar" auto="1">LdapUserID</PROPERTIES>
         <PROPERTIES category="LDAP" type="varchar" auto="1">LdapUserTms</PROPERTIES>
 		<FKEY card="0,1" data="Client,Id">ClientId</FKEY>
-		<FKEY card="0,1" data="ServerProfile,Id">ServerProfileId</FKEY>
+		<FKEY card="0,1" data="ServerProfile,Id" fiche="1" form="1" description="Modèle de configuration du serveur">ServerProfileId</FKEY>
 		<FKEY data="Infra,Id" card="0,n" description="Infrastructure" form="1" >InfraId</FKEY>
 
 		<RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1" fiche="1">ServerTacheId</RKEY>
@@ -224,15 +234,7 @@
 		<FUNCTION title="Lancer une vérification des certificats">checkSslState</FUNCTION>
 		<FUNCTION title="Lancer une mise à jour des certificats">renewSSL</FUNCTION>
 		<FUNCTION title="Lancer une sauvegarde globale">backup</FUNCTION>
-	</OBJECTCLASS>
-	<OBJECTCLASS title="ServerProfile" driver="mysql" AccessPoint="1" Description="Profil Serveur" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Class="Modules/Parc/Class/ServerProfile.class.php">
-		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" description="Nom" listDescr="Nom">Nom</PROPERTIES>
-		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" description="Version" listDescr="Version" default="1.0.0.0">Version</PROPERTIES>
-	</OBJECTCLASS>
-	<OBJECTCLASS title="ServerTask" driver="mysql" AccessPoint="0" Description="Tache Serveur" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Class="Modules/Parc/Class/ServerTask.class.php">
-		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" description="Nom" listDescr="Nom">Nom</PROPERTIES>
-		<PROPERTIES type="varchar" obligatoire="1" searchOrder="1" list="1" fiche="1" form="1" description="Version" listDescr="Version" default="1.0.0.0">Version</PROPERTIES>
-		<FKEY card="0,1" data="ServerProfile,Id">ServerProfileId</FKEY>
+		<FUNCTION title="Configuration du serveur">createConfigTask</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Host" driver="mysql" AccessPoint="1" Description="Hébergement" Icon="/Skins/AdminV2/Img/IconAqua/App2.png" Class="Modules/Parc/Class/Host.class.php">
 		<FILTER name="Tous les hébergements" color="success" ></FILTER>
@@ -255,7 +257,7 @@
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapTms</PROPERTIES>
 		<PROPERTIES category="LDAP" type="int" auto="1">LdapGid</PROPERTIES>
 		<PROPERTIES category="LDAP" type="varchar" auto="1">LdapUid</PROPERTIES>
-		<FKEY card="1,n" data="Server,Id" link="1" fiche="1" parentDescription="Serveur" description="Serveur Web" listDescr="Server" filter="Web=1" hasRole="PARC_TECHNICIEN">ServerId</FKEY>
+		<FKEY card="1,n" data="Server,Id" link="1" fiche="1" parentDescription="Serveur" description="Serveur Web" listDescr="Server" filter="Web=1" >ServerId</FKEY>
 		<FKEY card="1,1" data="Client,Id" link="1" form="1" list="1" fiche="1" parentDescription="Client" description="Client" listDescr="Client">ClientId</FKEY>
 		<FKEY data="Infra,Id" card="0,1" description="Infrastructure" form="1" >InfraId</FKEY>
         <RKEY card="0,1" data="Tache,Id" module="Systeme" description="Tâche" link="1">HostTacheId</RKEY>
@@ -266,6 +268,7 @@
 		<FUNCTION title="Synchroniser les hébergements (dans le cas ou il y plusieurs serveurs)">syncHostTask</FUNCTION>
 		<FUNCTION title="Ajouter un serveur (active la haute-disponibilité)">addServerHostTask</FUNCTION>
 		<FUNCTION title="Supprimer un serveur (désactive la haute-disponibilité)">delServerHostTask</FUNCTION>
+		<FUNCTION title="Supprimer le cache proxy">emptyProxyCacheTask</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Apache" driver="mysql" Dico="1" Description="Hôte virtuel" Icon="/Skins/AdminV2/Img/IconAqua/Tasks.png" Class="Modules/Parc/Class/Apache.class.php">
 		<PROPERTIES type="function" searchOrder="2" obligatoire="1" list="1" fiche="1" form="1" description="Racine du site (à partir de la racine du dossier utilisateur)" default="www" function="getRootPath" >DocumentRoot</PROPERTIES>
@@ -283,6 +286,8 @@
 		<PROPERTIES category="Configuration" type="varchar" fiche="1" form="1" description="Domaine principal">SslMainDomain</PROPERTIES>
 		<PROPERTIES category="Configuration" type="raw" fiche="1" form="1" description="Configuration apache spécifique">ApacheConfig</PROPERTIES>
 		<PROPERTIES category="Configuration" type="boolean" fiche="1" form="1" list="1" description="Activiation du cache de proxy">ProxyCache</PROPERTIES>
+		<PROPERTIES category="Configuration" type="raw" fiche="1" form="1" description="Configuration proxy spécifique HTTP">ProxyConfig</PROPERTIES>
+		<PROPERTIES category="Configuration" type="raw" fiche="1" form="1" description="Configuration proxy spécifique HTTPS">ProxyConfigSsl</PROPERTIES>
 		<PROPERTIES category="Protection" type="boolean" description="Protéger avec un mot de passe" listDescr="Protection" list="1" fiche="1" form="1">PasswordProtected</PROPERTIES>
 		<PROPERTIES category="Protection" type="varchar" description="Nom d'utilisateur" fiche="1" form="1">HtaccessUser</PROPERTIES>
 		<PROPERTIES category="Protection" type="varchar" description="Mot de passe" fiche="1" form="1">HtaccessPassword</PROPERTIES>
@@ -293,6 +298,8 @@
         <FUNCTION title="Activer SSL">ActiverSSL</FUNCTION>
 		<FUNCTION title="Vérifier le certificat SSL">checkSSL</FUNCTION>
 		<FUNCTION title="Forcer la mise à jour du certificat">RenewSSL</FUNCTION>
+		<FUNCTION title="Supprimer le cache proxy">emptyProxyCacheTask</FUNCTION>
+
 	</OBJECTCLASS>
 	<OBJECTCLASS title="Ftpuser" driver="mysql" Dico="1" Description="Accès FTP" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Ftpuser.class.php">
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Identifiant" list="1" fiche="1" form="1">Identifiant</PROPERTIES>
@@ -600,6 +607,9 @@
 		<FILTER name="Instances de type Wordpress" color="success" >Plugin=Wordpress</FILTER>
 		<FILTER name="Instances de type Prestashop" color="primary" ><![CDATA[Plugin=Prestashop]]></FILTER>
 		<FILTER name="Instances de type Symfony" color="primary" ><![CDATA[Plugin=Symfony]]></FILTER>
+		<INTERFACES name="fiche_tab">
+			<FORM type="Template" urlPrefix="/Parc/Instance/" urlSuffix="/Information.htm" title="Informations de configuration">Infos</FORM>
+		</INTERFACES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Nom de l'instance" list="1" form="1" fiche="1" unique="1" listDescr="Nom" default="">Nom</PROPERTIES>
 		<PROPERTIES type="varchar" description="Nom technique de l'instance (génération automatique si vide)" form="1" fiche="1" unique="1" listDescr="Nom technique" default="">InstanceNom</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Sous domaine (le sous domaine ex: [sous-domaine].mondomaine.ext)" listDescr="Sous-Domaine" default="www" hasRole="PARC_TECHNICIEN" >SousDomaine</PROPERTIES>
@@ -628,6 +638,7 @@
 		<FUNCTION title="Créer un point de restauration">createBackupTask</FUNCTION>
 		<FUNCTION title="Déplacer l'instance vers un autre serveur">moveInstanceTask</FUNCTION>
 		<FUNCTION title="Synchroniser les hébergements (dans le cas ou il y plusieurs serveurs)">syncInstanceTask</FUNCTION>
+		<FUNCTION title="Supprimer le cache proxy">emptyProxyCacheTask</FUNCTION>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="InstanceDomain" driver="mysql" Description="Domaine de l'instance" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/InstanceDomain.class.php" >
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Url du dmoaine" list="1" form="1" fiche="1" listDescr="Nom">Url</PROPERTIES>
@@ -642,6 +653,7 @@
 		<FILTER name="Tous les incidents" color="warning" ></FILTER>
 		<FILTER name="Les incidents résolus" color="success" >Solved=1</FILTER>
 		<FILTER name="Les incidents reconnus" color="primary" ><![CDATA[Solved=0&Acknowledge=1]]></FILTER>
+		<FILTER name="Les pages blanches" color="dark" ><![CDATA[Code=HTTP_EMPTY]]></FILTER>
 		<PROPERTIES type="varchar" searchOrder="1" list="1" form="1" fiche="1" listDescr="Titre">Titre</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" list="1" form="1" fiche="1" listDescr="Code">Code</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="2" list="1" form="1" fiche="1" listDescr="Identifiant">Identifiant</PROPERTIES>

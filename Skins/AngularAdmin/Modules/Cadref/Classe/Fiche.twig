@@ -2,7 +2,6 @@
 {% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label,flabel,finput,flinput,fvalues,fquery,flquery,fdate,ftext,fboolean,fkey %} 
 {% set f=fields %}
 {% set o=Create ? 'modalObj' : 'obj' %}
-
 <div class="page-content-inner">
     <ul class="list-unstyled breadcrumb" ng-if="{{ o }}.id">
         <li>
@@ -139,7 +138,7 @@
 									<div custom-select="a.id as a.label+'  -  '+a.Libelle for a in getSelectData('CadrefLieuStore',$searchTerm)" 
 										 custom-select-options="{ 'async': true, 'filter':'AntenneId='+{{ o }}.AntenneAntenneId}" 
 										 ng-model="{{ o }}.LieuLieuId"
-										 class="form-control" 
+										 class="form-control cadref-input" 
 										 ng-title="{{ o }}.LieuLieuIdlabel+'  -  '+{{ o }}.LibelleL">
 									</div>
 								</div>

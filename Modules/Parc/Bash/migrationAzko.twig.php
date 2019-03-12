@@ -5,41 +5,33 @@ $bc = new BashColors();
 //connexion ancien serveur mysql
 $db = new PDO('mysql:host=192.168.100.50;dbname=parc', 'root', 'zH34Y6u5', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$serveur='ws1.eng.systems';
-/*$csv = "
-aimetti-auteur;aimetti-auteur;aimetti-auteur
-ama;rgsystem;ama+wp_amaassurances+wp_amaassurancesblog
-autoecole;autoecoledef;autoecole
-autoecoleamd;autoecoleamd;autoecoleamd
-autoecoleinris;autoecoleinr;autoecoleinris
-boxsete;pescatore;boxsete_boxlocation+boxsete_chezpescatore
-permis-bateau;permis-batea;cercle-nautique
-code23;code23;code23
-dumartinetj;dumartinet;dumartinetj
-epconsulting;ep.consultin;epconsulting
-geodev;geodev;geodev
-grandcreme;grandcreme;grandcreme+grandcreme_pydio
-insightcom;insightcom;insightcom
-lace-restaurant;lace-restaurant.fr;lace-restaurant
-laprimavera;laprimavera-;laprimavera
-maf82;montaubanath;maf82
-pianoconcertino;pianoconcert;pianoconcertino
-psychotherapiesatm;christinebuo;psychotherapiesat
-racinespubliques;racinespubliques;racinespubliques
-serenity-services;serenity-services;serenity-service
-
-
-
-tennisforever;tennisforeve;tennisforever+tennisforever_reservation
-vmid;vmid;vmid";
-
-
-REFAIRE
-selfcopy;selfcopy;selfcopy
-
-*/
+$serveur='ws2.eng.systems';
+/**
+ * MIGRE
+ * aurelphotographe;aurelphotographe;aurelphotographe
+ * classequine-expert:classequine-expert:classequine2017
+ * courtepointe;courtepointe;courtepointe
+ * ffpm;ffpm;ffpm+ffpm_dev+ffpm_intranet
+ * gedales;gedales;gedales+thebestprice ///a voir avec alex ... 2 boutiques sur un mutu
+ * protemporis;protemporis;protemporis
+ * pescatore.fr;boxsete;pescatore_updated+pescatore+pescatore_dev
+ * magickart;magickart;magickart;sql2.eng.systems
+ *
+ * DOMAINE A MODIFIER
+ * brumizeo;brumizeo;brumizeo_dev
+ * cimenterie2;cimenterie2;cimenterie2
+ * descapsules;descapsules;descapsules
+ *
+ * TO DELETE
+ * bioccinelle;bioccinelle;bioccinelle
+ * cimenterie;cimenterie;cimenterie
+ * coursicab;coursicab;coursicab
+ * dev-keole;dev-keole;dev-keole
+ * distillerie;distillerie;distillerie
+ */
+//syntaxe NOM_HEB;NOM_CLIENT;BDD1[+BDD2...][;SRV_SQL]
 $csv= "
-selfcopy;selfcopy;selfcopy
+keole2;keole;keole+blogkeole+keole_support
 ";
 $result = explode(PHP_EOL,$csv);
 $total = sizeof($result)-2;
@@ -52,7 +44,7 @@ foreach ($result as $org){
     $fields[2] = explode('+',$fields[2]);
     list($host,$cli,$bdds,$mysqlsrv) = $fields;
     //test existence
-    $nb = Sys::getOneData('Parc','Instance/InstanceNom='.substr('instance-'.$host,0,32));
+    $nb = Sys::getOneData('Parc','Instance/InstanceNom='.substr('inst-'.$host,0,32));
     echo $bc->getColoredString("-> [$i / $total] ".$host."\n",'green');
 
     if (!$nb){
@@ -65,12 +57,13 @@ foreach ($result as $org){
         $client = Sys::getOneData('Parc','Client/NomLDAP='.$cli);
         if ($client) $inst->addParent($client);
         $inst->Nom = $host;
-        $inst->InstanceNom = 'instance-' . $host;
+        $inst->InstanceNom = 'inst-' . $host;
         $inst->Type = 'prod';
         $inst->Actif = true;
         //$inst->Ssl = ($ssl)?true:false;
         $inst->PHPVersion = '7.0.29';
         $inst->Plugin = 'Vide';
+        echo $bc->getColoredString("    -> SAVING ... ", 'red');
         if (!$inst->Save()) {
             //continue;
             print_r($inst);
@@ -114,7 +107,7 @@ foreach ($result as $org){
             $apache->SslCertificateKey = $ap['SslCertificateKey'];
             $apache->SslExpiration = $ap['SslExpiration'];
             $apache->Save();
-            echo 'instance ok ';
+            //echo 'instance ok ';
         }
     }
     //récupération des accès ftps
@@ -150,15 +143,27 @@ foreach ($result as $org){
             $base->Save();
         }
         //if ($base->tmsEdit<time()-3600) {
-            echo $bc->getColoredString("      -> SQL DUMP ... ", 'red');
+            echo $bc->getColoredString("      -> SQL DUMP ".$bdd." ... ", 'red');
             //importation de la base de donnée
             if ($mysqlsrv=='sql2.eng.systems'){
-                $cmd = 'mysqldump -h 192.168.100.53 -u root -p"zH34Y6u5;" ' . $bdd . ' | sed -e "s/^UNLOCK.*\$//"   | sed -e "s/^LOCK TABLE.*\$//"  | sed -e "s/MyISAM/InnoDB/i"  |  mysql -h 192.168.160.5 -u root -pzH34Y6u5 ' . $bdd;
-            }else $cmd = 'mysqldump -h 192.168.100.50 -u root -pzH34Y6u5 ' . $bdd . '  | sed -e "s/^UNLOCK.*\$//"   | sed -e "s/^LOCK TABLE.*\$//" | sed -e "s/MyISAM/InnoDB/i"  |  mysql -h 192.168.160.5 -u root -pzH34Y6u5 ' . $bdd;
-            echo $cmd."\n";
-            exec($cmd);
-            echo $bc->getColoredString(" OK " . "\n", 'green');
-            $base->Save();
+                $cmd = 'mysqldump -h 192.168.100.53 -u root -p"zH34Y6u5;" ' . $bdd . ' | sed -e "s/^UNLOCK.*\$//"   | sed -e "s/^LOCK TABLE.*\$//"  | sed -e "s/MyISAM/InnoDB/i"  > /tmp/' . $bdd.'.sql';
+                echo $bc->getColoredString(" DUMP ... ", 'red');
+                exec($cmd);
+                $cmd = 'cat /tmp/'.$bdd.'.sql  |  mysql -h 10.100.210.5 -u root -pzH34Y6u5 ' . $bdd;
+                //echo $cmd."\n";
+                exec($cmd);
+                echo $bc->getColoredString(" INSERT OK " . "\n", 'green');
+                $base->Save();
+            }else {
+                $cmd = 'mysqldump -h 192.168.100.50 -u root -pzH34Y6u5 ' . $bdd . '  | sed -e "s/^UNLOCK.*\$//"   | sed -e "s/^LOCK TABLE.*\$//" | sed -e "s/MyISAM/InnoDB/i" > /tmp/'.$bdd.'.sql';
+                echo $bc->getColoredString(" DUMP ... ", 'red');
+                exec($cmd);
+                $cmd = 'cat /tmp/'.$bdd.'.sql  |  mysql -h 10.100.210.5 -u root -pzH34Y6u5 ' . $bdd;
+                //echo $cmd."\n";
+                exec($cmd);
+                echo $bc->getColoredString(" INSERT OK " . "\n", 'green');
+                $base->Save();
+            }
         //}
     }
 

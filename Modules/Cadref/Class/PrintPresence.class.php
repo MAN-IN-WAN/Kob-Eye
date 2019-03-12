@@ -17,6 +17,7 @@ class PrintPresence extends FPDF {
 	private $enseignants;
 	private $record;
 	private $compteur;
+	private $lpage = 0;
 	
 	
 	function PrintPresence($debut, $fin, $mois) {
@@ -56,7 +57,8 @@ class PrintPresence extends FPDF {
 		$y += 6.5;
 		$this->SetXY($this->left, $y);
 		$this->Cell(45, 6.5, 'Code : '.$this->record['CodeClasse'], 'LTB', 0, 'L');
-		$this->Cell(155, 6.5, 'Page '.$this->PageNo(), 'RTB', 0, 'R');
+		$this->lpage++;
+		$this->Cell(155, 6.5, 'Page '.$this->lpage, 'RTB', 0, 'R');
 		$y += 10.5;
 		
 		$this->SetXY($this->left, $y);
@@ -101,6 +103,7 @@ class PrintPresence extends FPDF {
 				$this->record = $l;
 				$this->compteur = 0;
 				$this->rupture = $c;
+				$this->lpage = 0;
 
 				$this->AddPage();
 			}

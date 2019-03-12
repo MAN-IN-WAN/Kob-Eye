@@ -114,6 +114,8 @@ class ParcInstanceSecib extends Plugin implements ParcInstancePlugin {
 
         $act->addDetails($SQLInit);
         $db->query($SQLInit);
+        $act->addDetails(print_r($db->errorInfo(),true));
+
         $db->query('TRUNCATE secibweb_webservice');
         $act->addDetails('TRUNCATE secibweb_webservice');
         $db->query('TRUNCATE secibweb_domaine');

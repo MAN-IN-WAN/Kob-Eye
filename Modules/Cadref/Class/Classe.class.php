@@ -2,8 +2,8 @@
 class Classe extends genericClass {
 	
 	function Save() {
-		Cadref::$Annee;
-		if(!empty($this->Annee) && $this->Annee = $annee) {
+		$annee = Cadref::$Annee;
+		if(!empty($this->Annee) && $this->Annee != $annee) {
 			$this->addError(array("Message" => "Cette fiche ne peut être modifiée ($this->Annee)", "Prop" => ""));
 			return false;			
 		}
@@ -46,12 +46,59 @@ class Classe extends genericClass {
 		return array('LibelleA'=>$a->Libelle, 'LibelleS'=>$s->Libelle, 'LibelleD'=>$d->Libelle, 'LibelleN'=>$n->Libelle, 'LibelleL'=>$l ? $l->Libelle : '');
 	}
 	
+	function NextDate() {
+		$id = $this->Id;
+		$annee = Cadref::$Annee;
+		$t = time();
+		if($this->Programmation == 0) {
+			$cy = $this->CycleDebut;
+			if($cy) {
+				$m = substr($cy, 3, 2);
+				$cd = strtotime(str_replace('/', '-', $cy).'-'.($m > 8 ? $annee : $annee + 1));
+				if($t < $cd) return array('Date'=>$cd);
+				$cy = $p['CycleFin'];
+				$m = substr($cy, 3, 2);
+				$cf = strtotime(str_replace('/', '-', $cy).'-'.($m > 8 ? $annee : $annee + 1));
+				$cf += 86400 - 1;
+				if($t > $cf) return array('Date'=>0);
+			}
+			$j = date('w', $t);
+			if($j <= $this->JourId) $t += ($this->JourId-$j)*86400;
+			else $t += (7-($j-$this->JourId));
+			$sql = "select DateDebut from `##_Cadref-Vacance` where Annee='$annee' and Type='D' and DateDebut>$t and JourId=".$this->JourId." limit 1";
+			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+			if($pdo->rowCount()) {
+				$d = $pdo->fetch(PDO::FETCH_ASSOC);
+				return array('Date'=>$d['DateDebut'],'sql'=>$sql);
+			}
+			while(true) {
+				$sql = "select DateDebut,DateFin from `##_Cadref-Vacance` where Annee='$annee' and Type='V' and DateDebut<=$t and DateFin>=$t limit 1";
+				$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+				$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+				if($pdo->rowCount()) $t += 7*86400;
+				else return array('Date'=>$t,'sql'=>$sql);
+			}
+		}
+		else {
+			$sql = "select DateCours from `##_Cadref-ClasseDate` where Annee='$annee' and ClasseId=$id and DateCours>=$t order by DateCours limit 1";
+			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+			if($pdo->rowCount()) {
+				$d = $pdo->fetch(PDO::FETCH_ASSOC);
+				return array('Date'=>$d['DateCours'],'sql'=>$sql);
+			}
+		}
+		return array('Date'=>0);
+	}
+	
 	function PrintPresence($obj) {
 		require_once ('PrintPresence.class.php');
 
 		$annee = Cadref::$Annee;
 		$debut = $obj['Debut'];
 		$fin = $obj['Fin'];
+		$fin .= substr('ZZZZZZZ', 0, 7-strlen($fin));
 		
 		$sql = "
 select i.CodeClasse, i.ClasseId, d.Libelle as LibelleD, n.Libelle as LibelleN, e.Numero, e.Nom, e.Prenom, 

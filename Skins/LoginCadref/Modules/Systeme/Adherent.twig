@@ -1,11 +1,11 @@
-<section>
-	<h2>Adhérent du CADREF</h2>
+<section class="col-md-12 center-block">
+	<h5>Je suis déjà adhérent du CADREF.</h5>
 	<div id="msg"  class="alert alert-danger" hidden></div>
 	<div class="row" style="height:10px"></div>
 	<form method="POST" id="checkAdherent">
 		<div class="form-group">
 			<div id="saisie">
-				<h3>Sasissez d'abord votre numéro d'adhérent ou votre nom de famille.</h3>
+				<h3>Je saisis d'abord mon numéro d'adhérent ou mon nom de famille :</h3>
 				<div class="row">
 					<div class="col-md-4">
 						<label class="form-control-label cadref-label" style="line-height:1.1">N° adhérent</label>
@@ -23,7 +23,7 @@
 					</div>
 				</div>
 				<div class="row" style="height:10px"></div>
-				<h3>Sasissez ensuite votre adresse mail ou votre numéro de téléphone.</h3>
+				<h3>Je saisis ensuite mon adresse mail ou mon numéro de téléphone :</h3>
 				<div class="row">
 					<div class="col-md-4">
 						<label class="form-control-label cadref-label" style="line-height:1.1">Adresse mail</label>
@@ -66,13 +66,13 @@
 						<input type="text" class="form-control cadref-input" id="CadrefPrenom1" name="CadrefPrenom1" readonly/>
 					</div>
 				</div>
-				<h3>Les informations suivante sont incomplètes pour des raisons de confidentialité.</h3>
+				<h3>Certaines informations peuvent être tronquées pour des raisons de confidentialité.</h3>
 				<div class="row">
 					<div class="col-md-4">
-						<label class="form-control-label cadref-label" style="line-height:1.1">Code postal</label>
+						<label class="form-control-label cadref-label" style="line-height:1.1">Ville</label>
 					</div>
 					<div class="col-md-8">
-						<input type="text" class="form-control cadref-input" id="CadrefCP1" name="CadrefCP1" readonly/>
+						<input type="text" class="form-control cadref-input" id="CadrefVille1" name="CadrefVille1" readonly/>
 					</div>
 				</div>
 				<div class="row">
@@ -98,20 +98,13 @@
 		</div>
 	</form>
 	<a href="/" class="btn btn-warning btn-block" id="Annuler">Annuler</a>
-	<div class="masque"></div>
+	<div class="spin-mask"></div>
 </section>
-<style>
-	@media screen and (min-width: 768px) {
-		.modal-dialog {
-			padding-top: 50px !important;
-		}
-	}
-</style>
 <script>
 	$(document).ready(function (e) {
 		$('#checkAdherent').on('submit', function (e) {
 			e.preventDefault();
-			$('.masque').spin().addClass('actif');
+			$('.spin-mask').spin().addClass('actif');
 			$.ajax({
 				dataType: "json",
 				url: "/Systeme/checkAdherent.json",
@@ -125,7 +118,7 @@
 						$('#CadrefNumero1').val(resp.data.Numero);
 						$('#CadrefNom1').val(resp.data.Nom);
 						$('#CadrefPrenom1').val(resp.data.Prenom);
-						$('#CadrefCP1').val(resp.data.CP);
+						$('#CadrefVille1').val(resp.data.Ville);
 						$('#CadrefMail1').val(resp.data.Mail);
 						$('#CadrefTel1').val(resp.data.Tel);
 						$('#Valider').attr('value', 'Continuer');
@@ -140,7 +133,7 @@
 				} 
 				$('#msg').html(resp.message);
 				$('#msg').show();
-				$('.masque').removeClass('actif').spin(false);
+				$('.spin-mask').removeClass('actif').spin(false);
 			});
 		});
 	});
