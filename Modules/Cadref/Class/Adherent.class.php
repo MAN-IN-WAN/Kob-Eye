@@ -562,13 +562,13 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 					$file = $this->imprimeAttestation(array($p), $annee, $fisc, $p['Numero']);
 					$b = Cadref::MailCivility($p).$bod;
 					$args = array('To'=>array($p['Mail']), 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
-					if(MAIL_ADH) Cadref::SendMessage($arg);
+					if(MAIL_ADH) Cadref::SendMessage($args);
 				}
-				return array('sql'=>$sql);
+				return array('mailCount'=>$pdo->rowCount());
 			}
 			else {
 				$file = $this->imprimeAttestation($pdo, $annee, $fisc, '');
-				return array('pdf'=>$file, 'sql'=>$sql);
+				return array('pdf'=>$file);
 			}
 		}
 		else {
