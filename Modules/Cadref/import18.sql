@@ -366,6 +366,10 @@ insert into kbabtel.`kob-Cadref-Visite` (umod,gmod,omod,Visite,Libelle,Annee,Dat
 select 7,7,7,Visite,Libelle,@annee,unix_timestamp(DateVis),Places,Inscrits,Attentes,Prix1,Utilisateur
 from cadref18.Visites;
 
+update  kbabtel.`kob-Cadref-Visite` v
+inner join kbabtel.aavisite l on l.c=v.Visite
+set v.Description = l.l;
+
 truncate kbabtel.`kob-Cadref-Depart`;
 insert into kbabtel.`kob-Cadref-Depart` (umod,gmod,omod,VisiteId,LieuId)
 select 7,7,7,v.Id,l.Id

@@ -89,7 +89,6 @@
 			$timeout(function(){
 				$(id).focus();
 			},100);
-//			console.error('<<<<<<<<<<<<<<<<<<<<<<<<<<<<',id);
 		}
 		
 		// efface le contenu du filtre
@@ -1009,7 +1008,7 @@
 
 		// pour multi-select
 		$scope.Enseignants = JSON.parse('{{ enseignants|raw }}');
-		
+
 		$scope.localObj = {};
 		// hook sur CadrefReservationadd
 		$scope.CadrefReservationaddExt = $scope.CadrefReservationadd;

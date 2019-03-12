@@ -554,21 +554,21 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 
 			if($mode == 'mail') {
 				$an = $annee.'-'.($annee+1);
-				$sub = "CADREF : Attestation fiscale $fisc. Cotisation $an";
-				$bod = "Veuillez trouvez en pièce jointe votre attestation fiscale pour l'année $fisc,<br />";
-				$bod .= "concernant la cotisation du CADREF pour $an.<br /></br /><br />";
+				$sub = "CADREF : Attestation fiscale";
+				$bod = "Veuillez trouver en pièce jointe l’attestation fiscale correspondant à votre cotisation $an pour l’année fiscale $fisc.<br/><br />";
+				$bod .= "Cette somme est à noter à la ligne 7UF de la déclaration 2042 RICI, case intitulée : \"Dons versés à d’autres organismes d’intérêt général\".";
 				$bod .= Cadref::MailSignature();
 				foreach($pdo as $p) {
 					$file = $this->imprimeAttestation(array($p), $annee, $fisc, $p['Numero']);
 					$b = Cadref::MailCivility($p).$bod;
 					$args = array('To'=>array($p['Mail']), 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
-					if(MAIL_ADH) Cadref::SendMessage($arg);
+					if(MAIL_ADH) Cadref::SendMessage($args);
 				}
-				return array('sql'=>$sql);
+				return array('mailCount'=>$pdo->rowCount());
 			}
 			else {
 				$file = $this->imprimeAttestation($pdo, $annee, $fisc, '');
-				return array('pdf'=>$file, 'sql'=>$sql);
+				return array('pdf'=>$file);
 			}
 		}
 		else {
@@ -732,6 +732,7 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 			case 1:
 				if($params['Msg']['sendMode'] == 'mail') {
 					$params['Msg']['To'] = array($params['Msg']['Mail']);
+					$params['Msg']['Body'] .= Cadref::MailSignature();
 					$params['Msg']['Attachments'] = $params['Msg']['Pieces']['data'];
 					$ret = Cadref::SendMessage($params['Msg']);
 				}
