@@ -81,19 +81,26 @@ class ParcInstancePrestashop extends Plugin implements ParcInstancePlugin {
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($out);
             $act->Terminate(true);
-//            //Dump de la base
-//            $act = $task->createActivity('Dump de la base Mysql', 'Info', $task);
-//            $cmd = 'mysqldump -h db.maninwan.fr -u '.$modele->Nom.' -p'.$modele->Password.' '.$modele->Nom.' | mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom;
-//            $out = $apachesrv->remoteExec($cmd);
-//            $act->addDetails($cmd);
-//            $act->addDetails($out);
-//            $act->Terminate(true);
-//            $act = $task->createActivity('Mot de passe administrateur', 'Info');
-//            $cmd = 'mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom.' -e "UPDATE wp_users SET user_pass=\''.md5($host->Password).'\' WHERE ID=1"';
-//            $out = $apachesrv->remoteExec($cmd);
-//            $act->addDetails($cmd);
-//            $act->addDetails($out);
-//            $act->Terminate(true);
+            //Dump de la base
+            $act = $task->createActivity('Dump de la base Mysql', 'Info', $task);
+            $cmd = 'mysqldump -h db.maninwan.fr -u '.$modele->Nom.' -p'.$modele->Password.' '.$modele->Nom.' | mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom;
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($cmd);
+            $act->addDetails($out);
+            $act->Terminate(true);
+            $act = $task->createActivity('Mot de passe administrateur', 'Info');
+
+            $sets = $conf = $srv->getFileContent('/home/'.$host->NomLDAP.'/www/app/config/parameters.php');
+            $salt = array();
+            $temp = preg_match('#\'cookie_key\' => \'(.*)\',#',$sets,$salt);
+            $salt = $salt[1];
+            $act->addDetails('Salt : '.$salt);
+
+            $cmd = 'mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom.' -e "UPDATE ps_employee SET passwd = md5(\''.$salt.$host->Password.'\'),email=\'admin@'.$this->_obj->FullDomain.'\' WHERE Id_employee=1"';
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($cmd);
+            $act->addDetails($out);
+            $act->Terminate(true);
             //changement du statut de l'instance
             $this->_obj->setStatus(2);
             $this->_obj->CurrentVersion = date('Ymd');
