@@ -554,9 +554,9 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 
 			if($mode == 'mail') {
 				$an = $annee.'-'.($annee+1);
-				$sub = "CADREF : Attestation fiscale $fisc. Cotisation $an";
-				$bod = "Veuillez trouvez en pièce jointe votre attestation fiscale pour l'année $fisc,<br />";
-				$bod .= "concernant la cotisation du CADREF pour $an.<br /></br /><br />";
+				$sub = "CADREF : Attestation fiscale";
+				$bod = "Veuillez trouver en pièce jointe l’attestation fiscale correspondant à votre cotisation $an pour l’année fiscale $fisc.<br/><br />";
+				$bod .= "Cette somme est à noter à la ligne 7UF de la déclaration 2042 RICI, case intitulée : \"Dons versés à d’autres organismes d’intérêt général\".";
 				$bod .= Cadref::MailSignature();
 				foreach($pdo as $p) {
 					$file = $this->imprimeAttestation(array($p), $annee, $fisc, $p['Numero']);
