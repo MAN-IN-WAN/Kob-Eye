@@ -31,6 +31,7 @@ class VmJob extends Job {
             $task->Nom = 'Job machine virtuelle :' . $j->Titre.'. éxécution du '.date('d/m/Y H:i:s');
             $task->TaskModule = 'AbtelBackup';
             $task->TaskObject = 'VmJob';
+            $task->Type = 'backup';
             $task->TaskId = $j->Id;
             $task->TaskFunction = 'run';
             $task->addParent($j);

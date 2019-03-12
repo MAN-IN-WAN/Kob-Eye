@@ -55,6 +55,7 @@ class AbtelGestionBase extends genericClass {
         echo 'toto'; //Seulement pour le jaune de phpstrom apres die();
 
 
+
         if($module != $this->Module)
             return parent::Save();
 

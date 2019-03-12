@@ -92,8 +92,11 @@ class Host extends genericClass
                 parent::Save();
             }
         }
-        if (!$this->MasterServer&&sizeof($srvs)==1)
+        if ($this->MasterServer<1&&sizeof($srvs)==1){
             $this->MasterServer = $srvs[0]->Id;
+            parent::Save();
+        }
+
         return true;
     }
     /**
@@ -145,7 +148,14 @@ class Host extends genericClass
         $task->createActivity('Ajout du serveur ');
         //ajoute le serveur
         $this->addServerHost($task);
-
+        $act = $task->createActivity('Test d\'intégrité');
+        $srvs = $this->getKEServer();
+        $out=array();
+        $cmd = 'du -sh /home/'.$this->NomLDAP;
+        foreach ($srvs as $k=>$srvt){
+            $act->addDetails($cmd);
+            $out[$k] = $srvt->remoteExec($cmd);
+        }
         $task->createActivity('Suppression du serveur ID:'.$srv);
         $params = unserialize($task->TaskArgs);
         $params['selectedServer'] = $srv;
@@ -211,7 +221,6 @@ class Host extends genericClass
             $act = $task->createActivity('Erreur: '.$err['Message']);
             $act->Terminate(false);
         }
-        $this->_KEServer[] =  $addsrv;
         return $this->syncHostSelf($task);
     }
     /**
@@ -316,7 +325,7 @@ class Host extends genericClass
         //recherche du erveur prioncipal
         $mainsrv=false;
         foreach ($srvs as $k=>$srv){
-            if ($srv->Id==$this->MasterServer){
+            if ($srv->Id==$this->getMasterServer()){
                 $mainsrv = $srv;
                 break;
             }
@@ -334,12 +343,12 @@ class Host extends genericClass
                     $out = $dstsrv->remoteExec($cmd);
                     $act->addDetails($out);
                     $act->Terminate(true);
-                    /*$act = $task->createActivity('Modification des droit ssur le serveur ' . $dstsrv->Nom, 'Info');
+                    $act = $task->createActivity('Modification des droit ssur le serveur ' . $dstsrv->Nom, 'Info');
                     $cmd = 'chown ' . $host->NomLDAP . ':users /home/' . $host->NomLDAP . '/ -R';
                     $act->addDetails($cmd);
                     $out = $dstsrv->remoteExec($cmd);
                     $act->addDetails($out);
-                    $act->Terminate(true);*/
+                    $act->Terminate(true);
                 }
             }
         }catch (Exception $e){
@@ -911,7 +920,8 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
                     try{
                         $KEServer->remoteExec($cmd);
                     }catch (Exception $e){}
-                    $KEServer->remoteExec('rm -Rf /home/'.$this->NomLDAP);
+                    //$KEServer->remoteExec('rm -Rf /home/'.$this->NomLDAP);
+                    $KEServer->remoteExec('mv /home/'.$this->NomLDAP.' /home/ws/'.$this->NomLDAP);
                     $act->addDetails('-> Suppression des fichiers  OK');
                 }else $act->addDetails('-> Le dossier '."/home/".$this->NomLDAP.' n\'existe pas.'.$KEServer->folderExists('/home/'.$this->NomLDAP));
             }else $act->addDetails('-> Suppression des fichiers  NOK, pas de nom LDAP');

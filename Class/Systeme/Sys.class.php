@@ -164,8 +164,8 @@ class Sys extends Root{
 		$this->Conf = new Conf("Conf/General.conf");
 	}
 
-	function connectSQL() {
-		if (!isset($this->Db[0])||!is_object($this->Db[0])){
+	function connectSQL($force=false) {
+		if (!isset($this->Db[0])||!is_object($this->Db[0])||$force){
 			preg_match('#^(.*?)\:\/\/(.*?)\:(.*)\@(.*?)/(.*)$#',$this->Conf->get("GENERAL::BDD::MYSQL_DSN"),$Out);
 			try {
 				$this->Db[0] = new PDO($Out[1].':host='.$Out[4].';dbname='.$Out[5],$Out[2],$Out[3],array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));

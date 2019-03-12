@@ -22,7 +22,7 @@ class VersionLogiciel extends genericClass {
     public function lookForUpdate($task) {
         //vérifie d'abord qu'il s'agisse de la version la plus haute pour ce type
         $nb = Sys::getCount('Parc','VersionLogiciel/Version>'.$this->Version.'&Type='.$this->Type);
-        if ($nb) throw new Exception('Ce n\'est aps la versio la plus récente');
+        if ($nb) throw new Exception('Ce n\'est pas la version la plus récente');
         //détecte les instances à mettre à jour et génère les taches de mise à jour
         $nb = Sys::getCount('Parc','Instance/CurrentVersion<'.$this->Version.'&Type='.$this->Type,0,100000);
         $act = $task->createActivity('Inventaire des instances à mettre à jour : '.$nb, 'Info');

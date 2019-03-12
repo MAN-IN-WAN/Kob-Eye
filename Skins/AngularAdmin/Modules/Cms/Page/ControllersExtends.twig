@@ -102,7 +102,12 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
         var div = document.createElement('div');
         div.innerHTML = newDiv;
         newDiv = div.firstChild;
-        var current = $scope.tempHtml.querySelectorAll('[data-order="'+order+'"]');
+
+        var current = new Array();
+        if(order != undefined){
+            current = $scope.tempHtml.querySelectorAll('[data-order="'+order+'"]');
+        }
+
         if(!parent){
             var parent = $scope.tempHtml.querySelectorAll('[data-dv]')[0];
         } else {
@@ -406,11 +411,13 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
         }else{
             var dvContainers = $scope.tempHtml.querySelectorAll('[data-dv]');
             for(var n=0; n < dvContainers.length; n++){
+                console.log('> Reorder dv : '+n);
                 var rows = dvContainers[n].querySelectorAll('[data-row]');
                 var rowOrder = 1;
-                for(var n in rows){
-                    if(rows[n] instanceof HTMLDivElement){
-                        rows[n].setAttribute('data-order',rowOrder);
+                for(var m=0; m < rows.length; m++){
+                    console.log('>> Reorder row : '+m);
+                    if(rows[m] instanceof HTMLDivElement){
+                        rows[m].setAttribute('data-order',rowOrder);
                         rowOrder++;
                     }
                 }
@@ -714,7 +721,7 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
 
         dropedOn.insertBefore(droped,next);
         tempDropedOn.insertBefore(tempDroped,tempNext);
-
+        $scope.reorder();
 
         $scope.obj.HtmlConfig = $scope.tempHtml.querySelectorAll('body')[0].innerHTML;
         //console.log('dropRow',data,evt,target,source);
@@ -723,6 +730,7 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
         var droped = evt.element[0];
         var dropedOn = source.node[0];
 
+        var rowId = source.node[0].getAttribute('data-row');
         var tempDroped = $scope.tempHtml.querySelectorAll('[data-col="'+evt.element[0].getAttribute('data-col')+'"]')[0];
         var tempDropedOn = $scope.tempHtml.querySelectorAll('[data-row="'+source.node[0].getAttribute('data-row')+'"]')[0];
 
@@ -763,6 +771,8 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
 
 
         if(dropedOn !== droped.parentNode){
+            //TODO reorder parent
+
             var bSib = nextByAttribute(droped,'data-col');
             if(!bSib) bSib = nextByAttribute(droped,'data-col',true);
 
@@ -792,6 +802,7 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$location,
         dropedOn.insertBefore(droped,next);
         tempDropedOn.insertBefore(tempDroped,tempNext);
 
+        $scope.reorder(rowId);
 
         $scope.obj.HtmlConfig = $scope.tempHtml.querySelectorAll('body')[0].innerHTML;
         //console.log('dropRow',data,evt,target,source);
