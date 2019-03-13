@@ -88,19 +88,55 @@ class ParcInstancePrestashop extends Plugin implements ParcInstancePlugin {
             $act->addDetails($cmd);
             $act->addDetails($out);
             $act->Terminate(true);
-            $act = $task->createActivity('Mot de passe administrateur', 'Info');
 
-            $sets = $conf = $srv->getFileContent('/home/'.$host->NomLDAP.'/www/app/config/parameters.php');
-            $salt = array();
-            $temp = preg_match('#\'cookie_key\' => \'(.*)\',#',$sets,$salt);
-            $salt = $salt[1];
-            $act->addDetails('Salt : '.$salt);
-
-            $cmd = 'mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom.' -e "UPDATE ps_employee SET passwd = md5(\''.$salt.$host->Password.'\'),email=\'admin@'.$this->_obj->FullDomain.'\' WHERE Id_employee=1"';
+            //Conf en base
+            $act = $task->createActivity('Configuration magasin', 'Info');
+            $cmd = 'mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom.' -e "UPDATE ps_configuration SET value =\''.$this->_obj->FullDomain.'\' WHERE name=\'PS_SHOP_DOMAIN\'"';
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($cmd);
+            $act->addDetails($out);
+            $cmd = 'mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom.' -e "UPDATE ps_configuration SET value =\''.$this->_obj->FullDomain.'\' WHERE name=\'PS_SHOP_DOMAIN_SSL\'"';
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($cmd);
+            $act->addDetails($out);
+            $cmd = 'mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom.' -e "UPDATE ps_configuration SET value =\''.$this->_obj->Nom.'\' WHERE name=\'PS_SHOP_NAME\'"';
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($cmd);
+            $act->addDetails($out);
+            $cmd = 'mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom.' -e "UPDATE ps_shop SET name =\''.$this->_obj->Nom.'\' WHERE id_shop=1"';
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($cmd);
+            $act->addDetails($out);
+            $cmd = 'mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom.' -e "UPDATE ps_shop_url SET domain =\''.$this->_obj->FullDomain.'\', domain_ssl =\''.$this->_obj->FullDomain.'\' WHERE id_shop=1"';
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails($out);
             $act->Terminate(true);
+            $act = $task->createActivity('Mot de passe administrateur', 'Info');
+            /*$sets = $conf = $srv->getFileContent('/home/'.$host->NomLDAP.'/www/app/config/parameters.php');
+            $salt = array();
+            $temp = preg_match('#\'cookie_key\' => \'(.*)\',#',$sets,$salt);
+            $salt = $salt[1];
+            $act->addDetails('Salt : '.$salt);*/
+            $pass = addcslashes(password_hash($host->Password, PASSWORD_BCRYPT),'$');
+            $cmd = 'mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom.' -e "UPDATE ps_employee SET passwd =\''.$pass.'\',email=\'admin@'.$this->_obj->FullDomain.'\' WHERE Id_employee=1"';
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($cmd);
+            $act->addDetails($out);
+            $act->Terminate(true);
+
+            /* clear cache*/
+            $act = $task->createActivity('Nettoyage des caches', 'Info');
+            $cmd = 'rm -rf /home/' . $host->NomLDAP . '/www/var/cache/prod/smarty/cache/*';
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($cmd);
+            $act->addDetails($out);
+            $cmd = 'rm -rf /home/' . $host->NomLDAP . '/www/var/cache/prod/smarty/compile/*';
+            $out = $apachesrv->remoteExec($cmd);
+            $act->addDetails($cmd);
+            $act->addDetails($out);
+            $act->Terminate(true);
+
             //changement du statut de l'instance
             $this->_obj->setStatus(2);
             $this->_obj->CurrentVersion = date('Ymd');
@@ -159,7 +195,7 @@ class ParcInstancePrestashop extends Plugin implements ParcInstancePlugin {
             $url = $srv->DNSNom;
 
             $act = $task->createActivity('Initialisation de la synchronisation', 'Info', $task);
-            $cmd = 'cd /home/' . $host->NomLDAP . '/ && rsync -avz root@'.$url.':/home/modele-wordpress/www/ www';
+            $cmd = 'cd /home/' . $host->NomLDAP . '/ && rsync -avz root@'.$url.':/home/modele-prestashop/www/ www';
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails($out);
@@ -193,12 +229,13 @@ class ParcInstancePrestashop extends Plugin implements ParcInstancePlugin {
     public function rewriteConfig() {
         $hos = $this->_obj->getOneParent('Host');
         $srv = $hos->getOneParent('Server');
-        $conf = $srv->getFileContent('/home/'.$hos->NomLDAP.'/www/config/settings.inc.php');
+        $conf = $srv->getFileContent('/home/'.$hos->NomLDAP.'/www/app/config/parameters.php');
         if (!empty($conf)){
-            $conf = preg_replace('#define\(\'_DB_USER_\', \'(.*)\'\);#','define(\'_DB_USER_\', \''.$hos->NomLDAP.'\');',$conf);
-            $conf = preg_replace('#define\(\'_DB_PASSWD_\', \'(.*)\'\);#','define(\'_DB_PASSWD_\', \''.$hos->Password.'\');',$conf);
-            $conf = preg_replace('#define\(\'_DB_SERVER_\', \'(.*)\'\);#','define(\'_DB_SERVER_\', \'db.maninwan.fr'.'\');',$conf);
-            $srv->putFileContent('/home/'.$hos->NomLDAP.'/www/config/settings.inc.php',$conf);
+            $conf = preg_replace('#\'database_name\' => \'(.*)\',#','\'database_name\' => \''.$hos->NomLDAP.'\',',$conf);
+            $conf = preg_replace('#\'database_user\' => \'(.*)\',#','\'database_user\' => \''.$hos->NomLDAP.'\',',$conf);
+            $conf = preg_replace('#\'database_password\' => \'(.*)\',#','\'database_password\' => \''.$hos->Password.'\',',$conf);
+            $conf = preg_replace('#\'database_host\' => \'(.*)\',#','\'database_host\' => \'db.maninwan.fr'.'\',',$conf);
+            $srv->putFileContent('/home/'.$hos->NomLDAP.'/www/app/config/parameters.php',$conf);
         }
         return true;
     }
