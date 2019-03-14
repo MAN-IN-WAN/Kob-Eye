@@ -535,6 +535,7 @@ order by a.Nom, a.Prenom";
 select distinct h.Sexe,h.Mail,h.Numero,h.Nom,h.Prenom,h.Adresse1,h.Adresse2,h.CP,h.Ville,a.Cotisation
 from `##_Cadref-AdherentAnnee` a
 inner join `##_Cadref-Adherent` h on h.Id=a.AdherentId";
+klog::l("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",$params);
 
 		$id = $this->Id;
 		if(!$id) {
