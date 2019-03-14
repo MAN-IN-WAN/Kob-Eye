@@ -30,7 +30,7 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 		ajax.success(
 			function(data) {
 				if(mode != 'mail') $window.open(data.data.pdf,'_blank');
-				else if(mode == 'mail') swal("Attestations", data.data.mailCount+" Mails envoyés.", "success");
+				else if(mode == 'mail') swal("Attestations", data.data.message, "success");
 			}
 		).error(
 			function() {

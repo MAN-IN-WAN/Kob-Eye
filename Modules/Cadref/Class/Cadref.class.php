@@ -46,10 +46,11 @@ class Cadref extends Module {
 
 		$num = isset($_POST['CadrefNumero']) ? trim($_POST['CadrefNumero']) : '';
 		$nom = isset($_POST['CadrefNom']) ? trim($_POST['CadrefNom']) : '';
+		$pnom = isset($_POST['CadrefPrenom']) ? trim($_POST['CadrefPrenom']) : '';
 		$mail = isset($_POST['CadrefMail']) ? trim($_POST['CadrefMail']) : '';
 		$tel = isset($_POST['CadrefTel']) ? $_POST['CadrefTel'] : '';
-		if((empty($num) && empty($nom)) || (empty($mail) && empty($tel))) {
-			$data['message'] = "Vous devez spécifier le numéro ou le nom<br />puis l'adresse mail ou le téléphone";
+		if((empty($num) && (empty($nom)) || empty($pnom)) || (empty($mail) && empty($tel))) {
+			$data['message'] = "Vous devez spécifier soit le numéro soit les nom et prénom<br />puis l'adresse mail ou le téléphone";
 			return json_encode($data);
 		}
 		
@@ -58,12 +59,11 @@ class Cadref extends Module {
 		if($num) $num = substr('000000', 0, 6 - strlen($num)).$num;
 		if($tel) $telr = preg_replace('/[^0-9]/', '([^0-9])*', $tel);
 		if($nom) $nomr = preg_replace('/([^A-Z]){1,}/', '([^A-N])*', $nom);
+		if($pnom) $pnomr = preg_replace('/([^A-Z]){1,}/', '([^A-N])*', $pnom);
 
-		if($num) $w .= "Numero='$num'";
-		if($nomr) {
-			if($w) $w .= " or ";
-			$w .= "Nom regexp '$nomr'";
-		}
+		if($num) $w = "Numero='$num'";
+		else $w = "(Nom regexp '$nomr' and Prenom regexp '$pnomr')";
+
 		if($mail) $w1 .= "Mail='$mail'";
 		if($telr) {
 			if($w1) $w1 .= " or ";

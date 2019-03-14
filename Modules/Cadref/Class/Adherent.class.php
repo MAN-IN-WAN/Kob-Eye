@@ -521,6 +521,13 @@ order by a.Nom, a.Prenom";
 
 		return array('pdf'=>$file, 'sql'=>$sql);
 	}
+	
+	public static function TacheAttestation($params) {
+		$args = unserialize($params->TaskArgs);
+		$args['ExecTask'] = 1;
+		$adh = genericClass::createInstance('Cadref', 'Adherent');
+		return $adh->PrintAttestation($args);
+	}
 
 	function PrintAttestation($params) {
 		$mode = isset($params['mode']) ? $params['mode'] : 'print';
@@ -531,6 +538,19 @@ inner join `##_Cadref-Adherent` h on h.Id=a.AdherentId";
 
 		$id = $this->Id;
 		if(!$id) {
+			if($mode == 'mail' && (!isset($params['ExecTask']) || !$params['ExecTask'])) {
+				$t = genericClass::createInstance('Systeme', 'Tache');
+				$t->Nom = 'PrintAttestation';
+				$t->Type = 'Fonction';
+				$t->TaskType = '';
+				$t->TaskModule = 'Cadref';
+				$t->TaskObject = 'Adherent';
+				$t->TaskFunction = 'TacheAttestation';
+				$t->TaskArgs = serialize($params);
+				$t->Save();
+				return array('message'=>'Tache lancée en arrière plan.');
+			}
+			
 			$annee = $params['AttestAnnee'];
 			$fisc = $params['AttestFiscale'];
 			$where = " where a.Annee='$annee' and a.Cotisation>0 and substr(from_unixtime(a.DateCotisation),1,4)='$fisc'";
@@ -564,7 +584,7 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 					$args = array('To'=>array($p['Mail']), 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
 					if(MAIL_ADH) Cadref::SendMessage($args);
 				}
-				return array('mailCount'=>$pdo->rowCount());
+				return array('message'=>$pdo->rowCount().' mails envoyés.');
 			}
 			else {
 				$file = $this->imprimeAttestation($pdo, $annee, $fisc, '');
