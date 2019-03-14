@@ -543,6 +543,7 @@ inner join `##_Cadref-Adherent` h on h.Id=a.AdherentId";
 				$t->Nom = 'PrintAttestation';
 				$t->Type = 'Fonction';
 				$t->TaskType = '';
+				$t->TaskCode = time();
 				$t->TaskModule = 'Cadref';
 				$t->TaskObject = 'Adherent';
 				$t->TaskFunction = 'TacheAttestation';
