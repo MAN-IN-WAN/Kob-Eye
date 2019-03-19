@@ -55,6 +55,22 @@
 				unwatch();
 			}
 		});
+		
+		// focus sur lez nom
+		$('#modal-CadrefAdherent').on('shown.bs.modal', function() {
+			$('#adhNom').focus();
+		});
+		
+		// affectation CP sur changement Ville
+		$scope.villeChange = function() {
+			var v = $scope.modalObj.Ville;
+			var p = v.indexOf(')');
+			if(p > 0) {
+				$scope.modalObj.CP = v.substr(p-5, 5);
+				$scope.modalObj.Ville = v.substr(0, p-7);
+			}
+		}
+
 		{% endif %}
 		
 	});
@@ -361,6 +377,19 @@
 			);
 		}
 
+		$scope.printCertificat = function(obj) {
+			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintCertificat',[false]);
+			ajax.success(
+				function(data) {
+					if(data.data.pdf) $window.open(data.data.pdf,'_blank');
+				}
+			).error(
+				function() {
+					console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+				}
+			);
+		}
+		
 		// attestation fiscale
 		$scope.selectAttestAnnee = function(obj) {
 			var annee = $scope.CadrefClasse.Attest.AttestAnnee;
@@ -1117,7 +1146,12 @@
 			angular.copy(item, o);
 			o.VisiteVisiteId = $scope.obj.id;
 			i.mode = 'edit';
+			$('#heureDepart').focus();
 		}
+
+		$('#departFiche').on('shown', function() {
+			$('#heureDepart').focus();
+		});
 
 		// sauve depart
 		$scope.departSave = function() {

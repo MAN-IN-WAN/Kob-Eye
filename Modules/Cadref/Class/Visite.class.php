@@ -77,7 +77,7 @@ where r.Annee=$annee and r.Supprime=0 and r.Attente=0 ";
 
 		$pdf->PrintLines($pdo);
 
-		$file = 'Home/tmp/VisiteGuidee'.date('YmdHi').'.pdf';
+		$file = 'Home/tmp/VisiteGuidee'.date('YmdHis').'.pdf';
 		$pdf->Output(getcwd() . '/' . $file);
 		$pdf->Close();
 

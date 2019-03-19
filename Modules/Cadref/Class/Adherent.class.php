@@ -439,8 +439,14 @@ inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
 left join `##_Cadref-ClasseEnseignants` ce on ce.Classe=c.Id
 left join `##_Cadref-Enseignant` e on e.Id=ce.EnseignantId
-where a.Annee='$annee' and i.Supprime=0 and i.Attente=0 and d.Certificat<>0 and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$annee-07-01'))
-order by e.Nom,i.CodeClasse,a.Nom,a.Prenom";
+where a.Annee='$annee' and i.Supprime=0 and i.Attente=0 and d.Certificat<>0 
+and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$annee-07-01')) ";
+				if($obj['mode'] == 'print' && isset($obj['NoMail']) && $obj['NoMail'])
+					$sql .= " and a.Mail not like '%@%' ";
+				if($obj['mode'] == 'mail')
+					$sql .= " and a.Mail like '%@%' ";
+
+				$sql .= "order by e.Nom,i.CodeClasse,a.Nom,a.Prenom";
 				break;
 			case 2: // fiches incomplètes
 				$file = 'ListeIncomplet';
@@ -460,11 +466,23 @@ order by a.Nom, a.Prenom";
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if(!$pdo) return array('success'=>false, 'sql'=>$sql);;
 
+		if($mode == 1) {
+			$body = "À ce jour nous ne sommes toujours pas en possession de votre certificat médical.<br /><br />";
+			$body .= "Merci de bien vouloir nous renvoyer l’attestation sur l’hooneur ci-jointe.";
+			$body .= Cadref::MailSignature();
+		}
+		
 		if($obj['mode'] == 'mail') {
 			foreach($pdo as $a) {
 				if(strpos($a['Mail'], '@') > 0) {
-					$args = array('Subject'=>$obj['Sujet'], 'To'=>array($a['Mail']), 'Body'=>$obj['Corps'], 'Attachments'=>$obj['Pieces']['data']);
-					if(MAIL_ADH) Cadref::SendMessage($args);
+					if($mode == 1) {
+						$file = $this->imprimeCertificat(array($a));
+						$b = Cadref::MailCivility($a).$body;
+						$args = array('Subject'=>'CADREF : Certificat médical', 'To'=>array($a['Mail']), 'Body'=>$body, 'Attachments'=>array($file));
+					}
+					else $args = array('Subject'=>$obj['Sujet'], 'To'=>array($a['Mail']), 'Body'=>$obj['Corps'], 'Attachments'=>$obj['Pieces']['data']);
+					//if(MAIL_ADH) Cadref::SendMessage($args);
+					
 				}
 			}
 			return true;
@@ -521,12 +539,108 @@ order by a.Nom, a.Prenom";
 
 		return array('pdf'=>$file, 'sql'=>$sql);
 	}
+
+	function PrintCertificat($params) {
+		$mode = isset($params['mode']) ? $params['mode'] : 'print';
+		$annee = Cadref::$Annee;
+		$sql = "
+select distinct a.Id, a.Sexe, a.Numero, a.Nom, a.Prenom, a.Mail
+from `##_Cadref-Adherent` a
+inner join `##_Cadref-Inscription` i on i.AdherentId=a.Id and i.Annee='$annee'
+inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
+inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
+inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
+left join `##_Cadref-ClasseEnseignants` ce on ce.Classe=c.Id
+left join `##_Cadref-Enseignant` e on e.Id=ce.EnseignantId";
+		$where = "a.Annee='$annee' and i.Supprime=0 and i.Attente=0 and d.Certificat<>0 
+and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$annee-07-01')) ";
+		if($params['mode'] == 'print' && isset($params['NoMail']) && $params['NoMail'])
+			$sql .= " and a.Mail not like '%@%' ";
+		if($params['mode'] == 'mail')
+			$sql .= " and a.Mail like '%@%' ";
+		$antenne = isset($params['Antenne']) ? $params['Antenne'] : '';
+		if($antenne) $sql .= " and n.AntenneId=$antenne";
+
+		$id = $this->Id;
+		if(!$id) {
+			if($mode == 'mail' && (!isset($params['ExecTask']) || !$params['ExecTask'])) {
+				$t = genericClass::createInstance('Systeme', 'Tache');
+				$t->Nom = 'PrintCertificat';
+				$t->Type = 'Fonction';
+				$t->TaskType = '';
+				$t->TaskModule = 'Cadref';
+				$t->TaskObject = 'Adherent';
+				$t->TaskFunction = 'TacheAdherent';
+				$t->TaskArgs = serialize($params);
+				$t->Save();
+				return array('message'=>'Tache lancée en arrière plan.');
+			}
+			
+			$sql .= " where $where order by a.Nom,a.Prenom";
+			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+			if(!$pdo) return false;
+
+			if($mode == 'mail') {
+				$sub = "CADREF : Certificat médical";
+				$bod = "À ce jour nous ne sommes toujours pas en possession de votre certificat médical.<br /><br />";
+				$bod .= "Merci de bien vouloir nous renvoyer l’attestation sur l’hooneur ci-jointe.";
+				$bod .= Cadref::MailSignature();
+				foreach($pdo as $p) {
+					$file = $this->imprimeCertificat(array($p), $p['Numero']);
+					$b = Cadref::MailCivility($p).$bod;
+					$args = array('To'=>array($p['Mail']), 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
+					//if(MAIL_ADH) Cadref::SendMessage($args);
+				}
+				return array('message'=>$pdo->rowCount().' mails envoyés.');
+			}
+			else {
+				$file = $this->imprimeCertificat($pdo, '');
+				return array('pdf'=>$file);
+			}
+		}
+		else {
+			$sql .= " where a.Id=$id and $where";
+			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
+			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+			if(!$pdo) return array('sql'=>$sql);
+
+			if(!$pdo->rowCount()) return array(
+				'step'=>2,
+				'data'=>'Pas de certificat demandé.'
+			);
+
+			$file = $this->imprimeCertificat($pdo, $mode);
+			return array('pdf'=>$file);
+		}
+	}
 	
-	public static function TacheAttestation($params) {
+	private function imprimeCertificat($list, $num) {
+		require_once ('PrintCertificat.class.php');
+
+		$pdf = new PrintCertificat();
+		$pdf->SetAuthor("Cadref");
+		$pdf->SetTitle('Certificat medical');
+
+		foreach($list as $l)
+			$pdf->PrintPage($l);
+
+		$file = 'Home/tmp/Certificat'.$num.'_'.date('YmdHis').'.pdf';
+		$pdf->Output(getcwd().'/'.$file);
+		$pdf->Close();
+
+		return $file;
+	}
+
+	
+	public static function TacheAdherent($params) {
 		$args = unserialize($params->TaskArgs);
 		$args['ExecTask'] = 1;
 		$adh = genericClass::createInstance('Cadref', 'Adherent');
-		return $adh->PrintAttestation($args);
+		switch($args['Nom']) {
+			case 'PrintAttestation': return $adh->PrintAttestation($args);
+			case 'PrintCertificat': return $adh->PrintCertificat($args);
+		}
 	}
 
 	function PrintAttestation($params) {
@@ -545,7 +659,7 @@ inner join `##_Cadref-Adherent` h on h.Id=a.AdherentId";
 				$t->TaskType = '';
 				$t->TaskModule = 'Cadref';
 				$t->TaskObject = 'Adherent';
-				$t->TaskFunction = 'TacheAttestation';
+				$t->TaskFunction = 'TacheAdherent';
 				$t->TaskArgs = serialize($params);
 				$t->Save();
 				return array('message'=>'Tache lancée en arrière plan.');
@@ -567,8 +681,9 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 				$where .= " and h.Mail not like '%@%'";
 			if($mode == 'mail')
 				$where .= " and h.Mail like '%@%'";
+			$sql .= $where.' order by h.Nom, h.Prenom';
 
-			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql.$where);
+			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 			if(!$pdo) return false;
 

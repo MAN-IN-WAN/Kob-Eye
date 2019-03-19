@@ -2,7 +2,14 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 
 	$scope.obj = {};
 	$scope.obj.CurrentUrl = '{{ Url }}';
-	$scope.obj.Pieces = {data: [], mode: '', filePath: ''};
+	
+	$scope.obj.AttestAnnee = '{{ Annee }}';	
+	$scope.selectAttestAnnee = function(obj) {
+		obj.fiscales = [obj.AttestAnnee];
+		obj.fiscales.push((Number(obj.AttestAnnee)+1).toString());
+		obj.AttestFiscale = obj.AttestAnnee;
+	}
+	$scope.selectAttestAnnee($scope.obj);
 	
 	// appel de function kobeye avec retour objet
 	$scope.{{ identifier }}callMethod = function(obj, name) {
@@ -16,39 +23,14 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 		};
 		return $http.post('/{{ url }}/Method.json',{"Func":JSON.stringify({{ identifier }}method)});
 	}
-
-	$scope.pieceAdd = function() {
-		var p = $scope.obj.Pieces;
-		p.mode = 'add';
-		p.filePath = '';
-	}
-
-	$scope.pieceSave = function() {
-		var p = $scope.obj.Pieces;
-		p.data.push(p.filePath);
-		p.mode = '';
-		p.filePath = '';
-	}
-
-	$scope.pieceDelete = function(item) {
-		var p = $scope.obj.Pieces;
-		n = p.data.indexOf(item);
-		if(n >= 0) p.data.splice(n, 1);
-	}
-	
-	$scope.pieceCloseEdit = function() {
-		$scope.obj.Pieces.mode = '';
-	}
 	
 	$scope.printFunction = function(mode) {
 		$scope.obj.mode = mode;
 		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'{{ function }}');
 		ajax.success(
 			function(data) {
-				if(mode == 'print') {
-					if(data.data.pdf) $window.open(data.data.pdf,'_blank');
-					//else swall('Adhérents','Rien à imprimer');
-				}
+				if(mode != 'mail') $window.open(data.data.pdf,'_blank');
+				else if(mode == 'mail') swal("Attestations", data.data.message, "success");
 			}
 		).error(
 			function() {
