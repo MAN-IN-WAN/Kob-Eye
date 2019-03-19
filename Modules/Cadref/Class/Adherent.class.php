@@ -41,7 +41,7 @@ class Adherent extends genericClass {
 		foreach($vis as $vi) {
 			if(!$vi->Attente && !$vi->Supprime) $visit += $vi->Prix - $vi->Reduction + $vi->Assurance;
 		}
-		$rgs = $this->getChildren('Reglement/Annee='.$annee);
+		$rgs = $this->getChildren('Reglement/Annee='.$annee.'/Supprime=0');
 		foreach($rgs as $rg) {
 			if($rg->Differe) {
 				if($rg->Encaisse) $regle += $rg->Montant;
