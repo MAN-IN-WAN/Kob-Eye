@@ -482,8 +482,7 @@ order by a.Nom, a.Prenom";
 						$args = array('Subject'=>'CADREF : Certificat médical', 'To'=>array($a['Mail']), 'Body'=>$body, 'Attachments'=>array($file));
 					}
 					else $args = array('Subject'=>$obj['Sujet'], 'To'=>array($a['Mail']), 'Body'=>$obj['Corps'], 'Attachments'=>$obj['Pieces']['data']);
-					//if(MAIL_ADH) Cadref::SendMessage($args);
-					
+					if(MAIL_ADH) Cadref::SendMessage($args);				
 				}
 			}
 			return true;
@@ -591,7 +590,7 @@ and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$annee-07-01')
 					$file = $this->imprimeCertificat(array($p), $p['Numero']);
 					$b = Cadref::MailCivility($p).$bod;
 					$args = array('To'=>array($p['Mail']), 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
-					//if(MAIL_ADH) Cadref::SendMessage($args);
+					if(MAIL_ADH) Cadref::SendMessage($args);
 				}
 				return array('message'=>$pdo->rowCount().' mails envoyés.');
 			}

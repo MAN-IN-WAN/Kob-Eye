@@ -613,8 +613,8 @@ where ce.Classe=$cid
 			$m->To = implode(',', $params['To']);
 		if(isset($params['Cc']))
 			$m->Cc = implode(',', $params['Cc']);
-		if(isset($params['Bcc']))
-			$m->Bcc = implode(',', $params['Bcc']);	
+		//if(isset($params['Bcc']))
+			$m->Bcc = "contact@cadref.com"; //implode(',', $params['Bcc']);	
 		$m->Subject = $params['Subject'];
 		$m->Body = $params['Body'];
 		if(isset($params['Attachments']))
