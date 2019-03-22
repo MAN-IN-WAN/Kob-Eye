@@ -7,6 +7,7 @@ class Reservation extends genericClass {
 			$this->addError(array("Message" => "Cette fiche ne peut être modifiée ($this->Annee)", "Prop" => ""));
 			return false;			
 		}
+		$id = $this->Id;
 		$vis = $this->getOneParent('Visite');
 		$this->Visite = $vis->Visite;
 		$adh = $this->getOneParent('Adherent');
@@ -35,7 +36,11 @@ class Reservation extends genericClass {
 			$r->DateReglement = $vis->DateVisite;
 			$r->Differe = 1;
 			$r->Encaisse = 0;
-			$r->Supprime = 0;
+			if($this->Supprime) {
+				$r->Supprime = 1;
+				$r->DateSupprime = $this->DateSupprime;
+			}
+			else $r->Supprime = 0;
 			$r->Utilisateur = Sys::$User->Initiales;
 			$r->Save();
 		}

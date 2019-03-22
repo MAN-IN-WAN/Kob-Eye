@@ -1,4 +1,5 @@
 <?php
+$vars['Annee'] = Cadref::$Annee;
 $vars['module'] = 'Cadref';
 $vars['objecttype'] = 'Visite';
 $vars['controller'] = $vars['Url'];
