@@ -127,8 +127,7 @@ class Conf extends Root{
 				}
 			}
 			//On analyse les elements
-			if(!is_array($Tab["#"])) $Tab["#"] = array();
-			if (sizeof($Tab["#"])==1){
+			if (@sizeof($Tab["#"])==1){
 				if (is_string($Tab["#"])) {
 					//Le cas ou il y a directement une valeur
 					//->Enregistrement dans le tableau
@@ -143,7 +142,7 @@ class Conf extends Root{
 					$Result[$Keys[0]]=$this->Parse($Tab["#"][$Keys[0]],$option,$Keys[0]);
 
 				}
-			}elseif(sizeof($Tab["#"])>1){
+			}elseif(@sizeof($Tab["#"])>1){
 				//Le cas ou il y plusieurs elements du meme type
 				//->Lancement du parse en mode recursif
                 if (!is_array($Result)) $Result = array();
