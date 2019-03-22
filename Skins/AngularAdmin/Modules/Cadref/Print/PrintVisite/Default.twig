@@ -20,10 +20,17 @@
 											{{ label("Première visite") }}
 										</div>
 										<div class="col-md-2">
-											<div class="control-group">
+									<div custom-select="a.id as a.label+'  -  '+a.Libelle for a in getSelectData('CadrefVisiteStore',$searchTerm)" 
+										 custom-select-options="{ 'async': true, 'filter':''}" 
+										 ng-model="obj.Debut" 
+										 class="form-control" 
+										 {#ng-title="{{ o }}.VisiteVisiteIdlabel+'  -  '+obj.LibelleS"#}>
+									</div>
+
+{#											<div class="control-group">
 												<input type="text" class="form-control cadref-input" placeholder="" ng-model="obj.Debut" onkeyup="this.value = this.value.toUpperCase();"/>
 											</div>
-										</div>
+#}										</div>
 									</div>
 									<div class="row" style="height:10px"></div>
 									<div class="row">
