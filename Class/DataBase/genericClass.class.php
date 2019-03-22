@@ -1523,6 +1523,7 @@ class genericClass extends Root {
 		if (empty($Prop)) return;
 		$this -> launchTriggers(__FUNCTION__);
 		$Props = $this -> Proprietes(false, true);
+		if(!$Props) $Props = array();
 		for ($i = 0; $i < sizeof($Props); $i++) {
 			if ($Props[$i]["Nom"] == $Prop) {
 				switch ($Props[$i]["Type"]) {

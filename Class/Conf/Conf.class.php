@@ -127,6 +127,7 @@ class Conf extends Root{
 				}
 			}
 			//On analyse les elements
+			if(!is_array($Tab["#"])) $Tab["#"] = array();
 			if (sizeof($Tab["#"])==1){
 				if (is_string($Tab["#"])) {
 					//Le cas ou il y a directement une valeur

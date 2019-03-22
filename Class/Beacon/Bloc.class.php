@@ -385,6 +385,7 @@ class Bloc extends Beacon {
 	}
 
 	function addHeader() {
+		if(!is_array($this->ObjVars)) $this->ObjVars = array();
 		if (sizeof($this->ObjVars)&&is_object($GLOBALS["Systeme"]->Header)) {
 			foreach ($this->ObjVars as $Key){
 				switch ($Key["Type"]) {
