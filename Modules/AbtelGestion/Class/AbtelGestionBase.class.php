@@ -12,9 +12,14 @@ class AbtelGestionBase extends genericClass {
     const APIPASS = '21wyisey';
 
 
-    public function Set($prop,$newValue){
+    /**
+     * @param $prop
+     * @param $newValue
+     * @return bool
+     */
+    public function Set($prop, $newValue){
         if($prop == 'Id'){
-            if($this->getOrigin()){
+            if(!$this->getOrigin()){
                 $this->props['NumeroTicket'] = $newValue;
             }else{
                 $this->props['Numero'] = $newValue;
@@ -24,7 +29,7 @@ class AbtelGestionBase extends genericClass {
         if(isset($this->{$prop}) || $prop == 'Interface') {
             parent::Set($prop,$newValue);
         } else {
-            $fields = $this->getQueryFields($this->getOrigin());
+            $fields = $this->getQueryFields(!$this->getOrigin());
             if(array_key_exists($prop,$fields) ) {
                 $this->props[$prop] = $newValue;
             } else {
@@ -34,32 +39,28 @@ class AbtelGestionBase extends genericClass {
                 }
             }
         }
-
+        return true;
     }
 
+    /**
+     * @return bool|int
+     */
     public function Verify(){
-
         return true;
     }
 
     public function addParent($par='',$null='') {
-        $this->props[] = $par;
+        $this->parents[] = $par;
+
+        return true;
     }
 
-    public function Save(){
-        var_dump($this->getOrigin());
-
-
-        print_r($this);
-        die("save");
-        echo 'toto'; //Seulement pour le jaune de phpstrom apres die();
-
-
-
-        if($module != $this->Module)
-            return parent::Save();
-
-        $inf = $this->reworkQuery($module.'/'.$query);
+    /**
+     * @return bool
+     */
+    public function makeRequest(){
+        $query = $GLOBALS['Systeme']->getRegVars('Query');
+        $inf = $this->reworkQuery($query);
 
         if($this->getOrigin()){
             //Gestion donc on appelle l'api du parc
@@ -70,8 +71,26 @@ class AbtelGestionBase extends genericClass {
                     $params[$w[0]] = $w[1];
                 }
             }
-            $params['data'] = $this->props;
+            if(count($this->parents)){
+                foreach($this->parents as $p){
+                    if(is_object($p)) {
+                        if(isset($this->props[$p->ObjectType])){
+                            $this->props[$p->ObjectType][] =  $p->Id;
+                        } else {
+                            $this->props[$p->ObjectType] =  array($p->Id);
+                        }
+                    } else{
+                        $i = Info::getInfos($p);
+                        if(isset($this->props[$i->ObjectType])){
+                            $this->props[$i->ObjectType][] =  $i->LastId;
+                        } else {
+                            $this->props[$i->ObjectType] =  array($i->LastId);
+                        }
+                    }
+                }
+            }
 
+            $params['data'] = $this->props;
             curl_setopt($this->con_handle,CURLOPT_URL,$url);
             curl_setopt($this->con_handle, CURLOPT_CUSTOMREQUEST, $_SERVER['REQUEST_METHOD']);
             $data =json_encode(array('API_KEY'=>self::APIKEY,'AUTH_TOKEN'=>$this->api_token,"params"=>$params));
@@ -82,35 +101,78 @@ class AbtelGestionBase extends genericClass {
             );
 
             $ret = json_decode(curl_exec($this->con_handle),true);
+
+            if(!$ret['success']) {
+                $fields = $this->getQueryFields($this->getOrigin());
+                foreach ($ret['error_description'] as &$d){
+                    if(!empty($d['Prop'])){
+                        if(array_key_exists($d['Prop'],$fields) ) {
+                            continue;
+                        } else {
+                            $key = array_search($d['Prop'],$fields);
+                            if( $key !== false ){
+                                $d['Prop'] = $key;
+                            } else {
+                                $d['Prop'] = ' *** ' . $d['Prop'] . '( Propriété uniquement pour le parc ) ***';
+                            }
+                        }
+                    }
+                }
+
+                die (json_encode($ret));
+            }
+
             $res = $ret['pagination']['total'];
         } else{
             //Parc donc on requete la base de la gestion
-            $where ='1';
-            if(!empty($inf['Where'])){
-                foreach($inf['Where'] as $w){
-                    $where .= ' AND `'.$w[0].'` = \''.$w[1].'\'';
+            $req = $this->buildRequest($inf);
+            print_r($req);
+            $q = $this->con_handle->query($req);
+
+            if(count($this->parents)){
+                foreach($this->parents as $p){
+                    if(is_object($p)) {
+                        $this->sqlAddParent($p->ObjectType,$p->Id);
+                    } else{
+                        $i = Info::getInfos($p);
+                        $this->sqlAddParent($i->ObjectType,$i->LastId);
+                    }
                 }
             }
 
-            $req = "SELECT COUNT(*) FROM ".$inf['Table']." WHERE ".$where.";";
-            $q = $this->con_handle->query($req);
-            $res = $q->fetchColumn();
-
         }
 
-
-
-        return 1;
+        return true;
     }
+
+    protected function sqlAddParent($type ,$id){
+        return true;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function Save(){
+        return $this->makeRequest();
+    }
+
+    /**
+     * @return bool
+     */
     public function Delete(){
-
+        return $this->makeRequest();
     }
 
 
-
-
-
-    public function getElementsByAttribute($At,$v='',$flat=false,$L=''){
+    /**
+     * @param $At
+     * @param string $v
+     * @param bool $flat
+     * @param string $L
+     * @return array|bool
+     */
+    public function getElementsByAttribute($At, $v='', $flat=false, $L=''){
         $entity = Sys::getOneData('AbtelGestion',"Entite/Nom=".$this->entity);
         if(!is_object($entity)) return false;
         $fields = $entity->getChildren('Champ');
@@ -126,9 +188,12 @@ class AbtelGestionBase extends genericClass {
     }
 
 
-
-
-    public function getDbCount($module,$query){
+    /**
+     * @param $module
+     * @param $query
+     * @return int|mixed|null
+     */
+    public function getDbCount($module, $query){
 	    if($module != $this->Module)
 	        return parent::getDbCount($module,$query);
 
@@ -172,7 +237,19 @@ class AbtelGestionBase extends genericClass {
 	    return $res;
     }
 
-    public function getDbData($module,$query, $offset="", $limit="", $orderType="", $orderVar="", $select="", $groupBy="", $noRights = false){
+    /**
+     * @param $module
+     * @param $query
+     * @param string $offset
+     * @param string $limit
+     * @param string $orderType
+     * @param string $orderVar
+     * @param string $select
+     * @param string $groupBy
+     * @param bool $noRights
+     * @return array|mixed|null
+     */
+    public function getDbData($module, $query, $offset="", $limit="", $orderType="", $orderVar="", $select="", $groupBy="", $noRights = false){
         if($module != $this->Module)
             return parent::getDbData($module,$query, $offset, $limit, $orderType, $orderVar, $select, $groupBy, $noRights);
 
@@ -268,7 +345,19 @@ class AbtelGestionBase extends genericClass {
         return $res;
     }
 
-    public function getOneDbData($module,$query, $offset="", $limit="", $orderType="", $orderVar="", $select="", $groupBy="", $noRights = false){
+    /**
+     * @param $module
+     * @param $query
+     * @param string $offset
+     * @param string $limit
+     * @param string $orderType
+     * @param string $orderVar
+     * @param string $select
+     * @param string $groupBy
+     * @param bool $noRights
+     * @return genericClass|Object
+     */
+    public function getOneDbData($module, $query, $offset="", $limit="", $orderType="", $orderVar="", $select="", $groupBy="", $noRights = false){
         if($module != $this->Module)
             return parent::getOneDbData($module,$query, $offset, $limit, $orderType, $orderVar, $select, $groupBy, $noRights);
 
@@ -426,13 +515,14 @@ class AbtelGestionBase extends genericClass {
 	    return array_unique($res);
     }
 
-    /*
+
+    /**
      * On traite la requete pour pouvoir générer correctement la query sql ou l'appel rest selon l'origine
-     *
+     * @param $query
+     * @return array|bool
      */
     public function reworkQuery($query){
         $info = Info::getInfos($query);
-
         $where = array();
         if(!empty($info['LastId'])) {
             $entity = Sys::getOneData('AbtelGestion', "Entite/Nom=" . $this->entity);
@@ -537,7 +627,72 @@ class AbtelGestionBase extends genericClass {
                 break;
         }
 
+        return true;
+    }
 
+
+
+    /**
+     * On construit la requete pour la base gestion
+     * @param $infos
+     * @return string
+     */
+    private function buildRequest($infos){
+        $req = '';
+        $cols = array_keys($this->props);
+        array_walk($cols,function(&$a){
+            $a = '`'.$a.'`';
+        });
+        $vals = array_values($this->props);
+        array_walk($vals,function(&$a){
+            if(is_string($a))
+                $a = '\''.$a.'\'';
+            if(is_null($a))
+                $a = 'NULL';
+        });
+
+        $where ='1';
+        if(!empty($infos['Where'])){
+            foreach($infos['Where'] as $w){
+                $where .= ' AND `'.$w[0].'` = \''.$w[1].'\'';
+            }
+        }
+
+
+        switch($_SERVER['REQUEST_METHOD']){
+            case 'POST':
+                $req = 'INSERT INTO '.$infos['Table'].' ( '.implode(',',$cols).' ) VALUES ( '.implode(',',$vals).' ); ';
+                break;
+            case 'PATCH':
+                $couples = array_map(function($col,$val){
+                    return $col.' = '.$val;
+                },$cols,$vals);
+                $req = 'UPDATE '.$infos['Table'].' SET '.implode(',',$couples).' WHERE '.$where;
+                break;
+            case 'PUT':
+                $entity = Sys::getOneData('AbtelGestion',"Entite/Nom=".$this->entity);
+                $fields = $entity->getChildren('Champ');
+
+                $baseObj = array();
+                foreach ($fields as $f){
+                    if(in_array('`'.$f->Nom.'`',$cols)) continue;
+
+                    $baseObj[] = '`'.$f->Nom.'` = '.(!empty($f->DefaultValue) ? (is_string($f->DefaultValue) ? '\''.$f->DefaultValue.'\'' : $f->DefaultValue): 'NULL');
+                }
+                $couples = array_map(function($col,$val){
+                    return $col.' = '.$val;
+                },$cols,$vals);
+                $couples = array_merge($couples,$baseObj);
+
+                $req = 'UPDATE '.$infos['Table'].' SET '.implode(',',$couples).' WHERE '.$where;
+                break;
+            case 'DELETE':
+                $req = 'DELETE FROM '.$infos['Table'].' WHERE '.$where;
+
+                break;
+        }
+
+        return $req;
     }
 
 }
