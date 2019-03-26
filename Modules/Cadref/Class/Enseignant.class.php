@@ -78,7 +78,7 @@ class Enseignant extends genericClass {
 			$pdf->Add_Label($s);
 		}
 
-		$file = 'Home/tmp/EtiquetteEnseignant_'.date('YmdHi').'.pdf';
+		$file = 'Home/tmp/EtiquetteEnseignant_'.date('YmdHis').'.pdf';
 		$pdf->Output(getcwd() . '/' . $file);
 		$pdf->Close();
 

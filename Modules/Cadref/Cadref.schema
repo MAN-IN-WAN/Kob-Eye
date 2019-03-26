@@ -272,7 +272,7 @@
 		<PROPERTIES type="varchar" length="35" category="RIB" form="29" fiche="29" description="IBAN">IBAN</PROPERTIES>
 		<PROPERTIES type="varchar" length="8" category="RIB" form="29" fiche="29" description="BIC">BIC</PROPERTIES>
 
-		<PROPERTIES type="float" default="0" category="Finance" form="30" fiche="30" description="Cotisation">Cotisation</PROPERTIES>
+		<PROPERTIES type="float" default="0" auto="1" category="Finance" form="30" fiche="30" description="Cotisation">Cotisation</PROPERTIES>
 
 <!--
 		<PROPERTIES type="varchar" length="2" category="Association" values="B::Bureau,A::Administrateur,D::Délégué" form="14" fiche="14" description="Role associatif">Adherent</PROPERTIES>
@@ -507,7 +507,7 @@
 <!--		<PROPERTIES type="date" category="Description" list="1" form="1" fiche="1" description="Date attente">DateReglement</PROPERTIES>-->
 		<PROPERTIES type="float" default="0" category="Description" list="1" form="1" fiche="1" description="Prix">Prix</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Description" list="1" form="1" fiche="1" description="Reduction">Reduction</PROPERTIES>
-		<PROPERTIES type="float" default="0" category="Description" list="1" form="1" fiche="1" description="Assurance annulation">Assurance</PROPERTIES>
+		<PROPERTIES type="float" default="0" category="Description" list="0" form="0" fiche="0" description="Assurance annulation">Assurance</PROPERTIES>
 		<PROPERTIES type="varchar" length="50" category="Description" form="6" fiche="6" list="6" description="Notes">Notes</PROPERTIES>
 		<FKEY card="0,1" module="Cadref" data="Depart,Id" category="Description" form="1" fiche="1" description="Départ">DepartId</FKEY>
 		<PROPERTIES type="int" default="0" category="Description" list="1" form="1" fiche="1" description="Supprimé">Supprime</PROPERTIES>

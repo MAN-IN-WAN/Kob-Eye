@@ -1,7 +1,12 @@
-app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $http, $interval, $routeParams, $http, $window) {
+app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $http, $interval, $routeParams, $http, $window, CadrefVisiteStore) {
 
 	$scope.obj = {};
 	$scope.obj.CurrentUrl = '{{ Url }}';
+	
+	$scope.CadrefVisite = $rootScope.createStore(CadrefVisiteStore, 'form');
+	$scope.CadrefVisite.store.setFilters("Annee={{ Annee }}", 'form');
+	$scope.CadrefVisite.store.setPageLength(99, 'form');
+	$scope.CadrefVisite.store.getData(1, 'form');
 	
 	// appel de function kobeye avec retour objet
 	$scope.{{ identifier }}callMethod = function(obj, name) {

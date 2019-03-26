@@ -942,7 +942,7 @@ class sqlFunctions{
 			}
 		}
 		//GESTION ORDER
-		if (isset($Data['Order']) && sizeof($Data['Order'])) {
+		if (isset($Data['Order']) && is_array($Data['Order']) && sizeof($Data['Order'])) {
 //			Klog::l('DATA ORDER',$Data['Order']);
 			$sql .= ' ORDER BY ' . $Data['Order'];
 		} else {

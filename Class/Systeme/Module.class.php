@@ -622,6 +622,7 @@ class Module extends Root{
             if (isset($Tab[0]['Query'])) $GLOBALS['Systeme']->setQuery($Tab[0]['Query']);
             //Definition des variables
             $T = $Bloc->Conf;
+			if(!is_array($T)) $T = array();
             if (sizeof($T)) foreach ($T as $K => $V) {
                 $V = Process::processingVars($V);
                 Process::RegisterTempVar($K, $V);

@@ -49,13 +49,13 @@ select r.Utilisateur,r.DateReglement,r.Montant,r.ModeReglement,h.Numero,h.Nom,h.
 from `##_Cadref-Reglement` r 
 inner join `##_Cadref-Adherent` h on h.Id=r.AdherentId
 where ".$where;
-		$sql .= "and r.Supprime=0 ";	
-		if($user != '') $sql .= " and r.Utilisateur='$user'";
-		$sql .= "order by r.DateReglement, h.Nom, h.Prenom";
+		$sql .= " and r.Supprime=0 ";	
+		if($user != '') $sql .= " and r.Utilisateur='$user' ";
+		$sql .= " order by r.DateReglement, h.Nom, h.Prenom";
 		
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-		if(! $pdo) return false;
+		if(! $pdo) return array('sql'=>$sql);
 
 		$pdf = new PrintReglement($mode, $user, $obj['DateDebut'], $obj['DateFin']);
 		$pdf->SetAuthor("Cadref");

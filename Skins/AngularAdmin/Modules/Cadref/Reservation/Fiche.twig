@@ -71,9 +71,9 @@
 											<thead>
 												<tr>
 													<th>Prix</th>
+													{#<th>Assur.</th>
 													<th>Assur.</th>
-													<th>Assur.</th>
-													<th>Total</th>
+													<th>Total</th>#}
 													<th>Etat</th>
 													<th>Date</th>
 													<th>U</th>
@@ -85,7 +85,7 @@
 													<td>
 														<input type="text" class="form-control cadref-input" ng-model="{{ o }}.Prix" readonly style="width:60px"/>
 													</td>
-													<td>
+													{#<td>
 														<input type="text" class="form-control cadref-input" ng-model="{{ o }}.Assurance" readonly style="width:60px"/>
 													</td>
 													<td>			
@@ -93,7 +93,7 @@
 													</td>
 													<td>
 														<input type="text" class="form-control cadref-input" ng-model="{{ o }}.Total" readonly style="width:60px"/>
-													</td>
+													</td>#}
 													<td>
 														<span class="label label-success" readonly ng-if="{{ o }}.Attente==0 && {{ o }}.Supprime==0">Ins</span>
 														<span class="label label-info" ng-if="{{ o }}.Attente>0 && {{ o }}.Supprime==0">Att</span>
@@ -140,9 +140,8 @@
 					</div>
 				</div>
 				<div class="col-md-2">
-					{#					<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="{% if Create %}{{ identifier }}modalSave(){% else %}saveFicheCadref({{ o }}.id){% endif %}">Sauver</button>
-					#}					<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="reservationSave()">Sauver</button>
-					<button type="button" class="btn btn-danger margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="reservationDelete({{ o }})">Supprimer</button>
+					<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="reservationSave()">Sauver</button>
+					{#<button type="button" class="btn btn-danger margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="reservationDelete({{ o }})">Supprimer</button>#}
 					<a type="button" class="btn btn-warning margin-inline cadref-btn-100" data-dismiss="modal">Annuler</a>
 				</div>
 			</div>

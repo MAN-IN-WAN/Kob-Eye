@@ -35,18 +35,18 @@ body{
 }
 
 .modal-content {
-    background-color: #302e33;
+    background-color: #eeeeee;
 }
 .form-group {
     margin-bottom: 15px;
     overflow: hidden;
 }
-h1 { font: normal 50px/50px Arial, Helvetica, sans-serif;  color:#ffffff; margin-top:8px; margin-bottom:8px;}
-h2 { font: normal 34px/34px Arial, Helvetica, sans-serif;  color:#ffffff; margin-top:1px; margin-bottom:5px;}
-h3 { font: normal 16px/16px "Trebuchet MS", Arial, Helvetica, sans-serif;  color:#ffffff; margin-top:8px; margin-bottom:5px;}
+h1 { font: normal 50px/50px Arial, Helvetica, sans-serif;  color:#005a84; margin-top:8px; margin-bottom:8px;}
+h2 { font: normal 34px/34px Arial, Helvetica, sans-serif;  color:#005a84; margin-top:1px; margin-bottom:5px;}
+h3 { font: normal 16px/16px "Trebuchet MS", Arial, Helvetica, sans-serif;  color:#005a84; margin-top:8px; margin-bottom:5px;}
 h4 { font: normal 12px/12px Arial, Helvetica, sans-serif;  color:#333333; margin-top:8px; margin-bottom:5px;}
-h5 { font: normal 19px/19px "Trebuchet MS", Arial, Helvetica, sans-serif;  color:#ffffff; margin-top:8px; margin-bottom:5px;}
-h6 { font: italic 12px/18px Ubuntu;  color:#ffffff; margin-top:8px; margin-bottom:5px;}
+h5 { font: normal 19px/19px "Trebuchet MS", Arial, Helvetica, sans-serif;  color:#005a84; margin-top:8px; margin-bottom:5px;}
+h6 { font: italic 12px/18px Ubuntu;  color:#005a84; margin-top:8px; margin-bottom:5px;}
 body { font-weight: normal;}
 
 .masque {

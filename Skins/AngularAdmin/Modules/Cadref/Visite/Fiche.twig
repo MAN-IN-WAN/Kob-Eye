@@ -67,16 +67,22 @@
 													<th>Inscrits</th>
 													<th>Attentes</th>
 													<th>Prix</th>
-													<th>Assurance</th>
+													{#<th>Assurance</th>#}
 												</tr>
 											</thead>
 											<tbody>
 												<tr>
 													<td class="cadref-td-inscr">{{ finput(f.Places, o, false, 'dddd', 'width:80px') }}</td>
-													<td class="cadref-td-inscr">{{ finput(f.Inscrits, o, true, 'dddd', 'width:80px') }}</td>
+													<td class="cadref-td-inscr">
+														<div class="control-group">
+															<input type="text" class="form-control cadref-input" ng-class="{'cadref-highlight': {{ o }}.Inscrits>={{ o }}.Places}" ng-model="{{ o }}.Inscrits"
+																readonly tabindex="-1" mask="dddd" style="width:80px"
+															/>
+														</div>
+													</td>
 													<td class="cadref-td-inscr">{{ finput(f.Attentes, o, true, 'dddd', 'width:80px') }}</td>
 													<td class="cadref-td-inscr">{{ finput(f.Prix, o, false, 'dddd', 'width:80px') }}</td>
-													<td class="cadref-td-inscr">{{ finput(f.Assurance, o, false, 'dddd', 'width:80px') }}</td>
+													{#<td class="cadref-td-inscr">{{ finput(f.Assurance, o, false, 'dddd', 'width:80px') }}</td>#}
 												</tr>
 											</tbody>
 										</table>

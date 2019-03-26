@@ -47,7 +47,7 @@ app.controller('{{ controller }}Ctrl', function($location, $scope, $rootScope, $
 			function(data) {
 				if(mode == 'print') {
 					if(data.data.pdf) $window.open(data.data.pdf,'_blank');
-					else swall('Adhérents','Rien à imprimer');
+					//else swall('Adhérents','Rien à imprimer');
 				}
 			}
 		).error(
