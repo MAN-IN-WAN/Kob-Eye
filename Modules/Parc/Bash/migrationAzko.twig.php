@@ -16,11 +16,14 @@ $serveur='ws2.eng.systems';
  * protemporis;protemporis;protemporis
  * pescatore.fr;boxsete;pescatore_updated+pescatore+pescatore_dev
  * magickart;magickart;magickart;sql2.eng.systems
- *
+ * keole2;keole;keole+blogkeole+keole_support *
  * DOMAINE A MODIFIER
  * brumizeo;brumizeo;brumizeo_dev
  * cimenterie2;cimenterie2;cimenterie2
  * descapsules;descapsules;descapsules
+ * greenkub;greenkub;greenkub+greenkub_app+greenkub_callc+greenkub_dev+greenkub_logeen+greenkub_vivasof
+ * trouvetonvigneron.com;trouvetonvigneron;trouvetonv_wordpress+trouvetonvignero
+ * supersoignant;supersoignant;supersoignant
  *
  * TO DELETE
  * bioccinelle;bioccinelle;bioccinelle
@@ -31,7 +34,7 @@ $serveur='ws2.eng.systems';
  */
 //syntaxe NOM_HEB;NOM_CLIENT;BDD1[+BDD2...][;SRV_SQL]
 $csv= "
-keole2;keole;keole+blogkeole+keole_support
+rayonnage-prive.com;rayonnageprive;rayonnage-prive
 ";
 $result = explode(PHP_EOL,$csv);
 $total = sizeof($result)-2;

@@ -33,7 +33,6 @@ proxy_cache            ".$this->ApacheServerName.";
 proxy_cache_valid      200  1h;
 proxy_cache_use_stale  error timeout updating http_500 http_502 http_503 http_504;
 proxy_cache_key    \$uri\$is_args\$args;
-proxy_cache_valid 200 10m;
 proxy_cache_background_update on;
 proxy_cache_revalidate on;
 proxy_cache_min_uses 3;
@@ -47,7 +46,6 @@ proxy_cache            ".$this->ApacheServerName.".ssl;
 proxy_cache_valid      200  1h;
 proxy_cache_use_stale  error timeout updating http_500 http_502 http_503 http_504;
 proxy_cache_key    \$uri\$is_args\$args;
-proxy_cache_valid 200 10m;
 proxy_cache_background_update on;
 proxy_cache_revalidate on;
 proxy_cache_min_uses 3;
@@ -435,7 +433,9 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
 	    //recherche multiple web servers
         $host= $this->getOneParent('Host');
         $webs= $this->getKEServer();
-            //$host->getParents('Server');
+        $infra= $this->getInfra();
+        //certificat par défaut si incomplet
+        $defaultCert = Sys::getOneData('Parc','Certificate/Default=1');
 
 		$entry = array();
 		if(!empty($this->ApacheServerAlias)) {
@@ -464,7 +464,7 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
 			$entry['apacheHtPasswordUser'] = $this->HtaccessUser;
 			$entry['apacheHtPasswordPassword'] = $this->HtaccessPassword;
 		}elseif (!$new){
-			$entry['apacheOptions'] = Array();
+			$entry['apacheOptions'] = Array('Require all granted');
 		}
 		if ($this->Ssl&&!empty($this->SslCertificate)&&!empty($this->SslCertificateKey)){
 			$entry['apacheSslEnabled'] = 'yes';
@@ -472,9 +472,12 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
 			$entry['apacheCertificateKey'] = base64_encode($this->SslCertificateKey);
 			$entry['apacheCertificateExpiration'] = $this->SslExpiration;
 		}else{
-			$entry['apacheSslEnabled'] = 'no';
+			//$entry['apacheSslEnabled'] = 'no';
+            $entry['apacheSslEnabled'] = 'yes';
+            $entry['apacheCertificate'] = base64_encode($defaultCert->SslCertificate);
+            $entry['apacheCertificateKey'] = base64_encode($defaultCert->SslCertificateKey);
+            $entry['apacheCertificateExpiration'] = $defaultCert->SslExpiration;
 		}
-        $entry['apacheProxy'] = '';
 
 		//ALias Config
         if (!empty($this->ApacheConfig))
@@ -491,11 +494,38 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
 		    $entry['apacheProxyCacheConfig'] = Array();
             $entry['apacheProxyCacheConfigSsl'] = Array();
         }
-    	foreach ($webs as $web){
-    	    if (!empty($web->InternalIP))
-              $entry['apacheProxy'] .= 'server '.$web->InternalIP.";\n";
+
+        //ROUTAGE PROXY
+        $entry['apacheProxy'] = '';
+        $entry['apacheProxyPagespeed'] = '';
+        if (!$this->ProxyPageSpeed) {
+            foreach ($webs as $web) {
+                if (!empty($web->InternalIP)) {
+                    $entry['apacheProxy'] .= 'server ' . $web->InternalIP . ";\n";
+                    $entry['apacheProxyPagespeed'] .= 'server ' . $web->InternalIP . ";\n";
+                }
+            }
+        }else{
+            foreach ($webs as $web) {
+                if (!empty($web->InternalIP))
+                    $entry['apacheProxyPagespeed'] .= 'server ' . $web->InternalIP . ";\n";
+            }
+
+            $pref = '';
+            if($infra)
+                $pref = 'Infra/'.$infra->Id.'/';
+
+            $pxs = Sys::getData('Parc',$pref.'Server/PageSpeed=1',0,100,'','','','',true);
+            foreach ($pxs as $px) {
+                if (!empty($px->InternalIP))
+                    $entry['apacheProxy'] .= 'server ' . $px->InternalIP . ";\n";
+            }
+
         }
+        $entry['apacheProxyPagespeedConfig'] = trim($this->ProxyPageSpeedConfig);
+        if($entry['apacheProxyPagespeedConfig'] == '') unset($entry['apacheProxyPagespeedConfig']);
         if($entry['apacheProxy'] == '') unset($entry['apacheProxy']);
+        if($entry['apacheProxyPagespeed'] == '') unset($entry['apacheProxyPagespeed']);
 		return $entry;
 	}
 
@@ -564,6 +594,9 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
             $pref='Infra/'.$this->_KEInfra->Id.'/';
 
         $pxs = Sys::getData('Parc',$pref.'Server/Proxy=1',null,null,null,null,null,null,true);
+        //if ($this->ProxyPageSpeed){
+            $pxs = array_merge($pxs,Sys::getData('Parc',$pref.'Server/PageSpeed=1',null,null,null,null,null,null,true));
+        //}
         return $pxs;
     }
 

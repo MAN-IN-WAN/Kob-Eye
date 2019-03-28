@@ -328,12 +328,13 @@ class Parc extends Module{
         $task->Save();
         $task->createActivity('Recherche des certificats à mettre à jour');
 	    //recherche des hébergements à renouveller avec une expiration dans les prochaines 24 heures
-        $aps = Sys::getData('Parc','Apache/Ssl=1&&SslMethod=Letsencrypt&SslExpiration<'.(time()+86400));
+        $aps = Sys::getData('Parc','Apache/Ssl=1&Actif=1&&SslMethod=Letsencrypt&SslExpiration<'.(time()+86400),0,10000);
         //pour chaque apache on crée une tache pour renouveller le certificat
         foreach ($aps as $a){
             $dtc = trim($a->getDomainsToCheck());
             if (empty($dtc))continue;
             $act = $task->createActivity('Mise à jour du certificat des domaines '.$a->getDomains());
+            $act->addDetails('domaines conernées => '.$dtc);
             if ($a->enableSsl()) $act->Terminate(true);
             else{
                 $act->addDetails(print_r($a->Error,true));

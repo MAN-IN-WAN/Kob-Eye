@@ -152,7 +152,7 @@ class Instance extends genericClass{
         }
 
         //installation logicielle
-        if (intval($this->Status) <= 1)
+        if (intval($this->Status) <= 1 && $new)
             $this->createInstallTask();
 
         parent::Save();

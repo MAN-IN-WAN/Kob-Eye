@@ -118,13 +118,13 @@ class Bdd extends genericClass {
                 $this->addError(Array('Message'=>'Impossible de supprimer une base de donnée inexistante'));
         }
         //flush privileges
-        $query = "DROP USER `" . $this->Nom."`@'%';";
+        /*$query = "DROP USER `" . $this->Nom."`@'%';";
         try {
             $dbGuac->query($query);
         }catch (Exception $e){
             if (!$silent)
                 $this->addError(Array('Message'=>'Impossible de supprimer un utilisateur inexistante'));
-        }
+        }*/
         return true;
     }
     /**

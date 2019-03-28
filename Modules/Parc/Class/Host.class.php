@@ -492,10 +492,10 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
     public function createDefaultApache($force_domain = '') {
         //on vérifie l'existence
         $dom = Sys::getOneData('Parc', 'Domain/defaultDomain=1', 0, 1, '', '', '', '', true);
-        for ($i=0;$i<4;$i++){
+//        for ($i=0;$i<4;$i++){
             $apache = genericClass::createInstance('Parc','Apache');
-            $ssl = ($i % 2 == 0) ? true : false;
-            $proxycache = ($i<2)? true : false;
+            $ssl = false;//($i % 2 == 0) ? true : false;
+            $proxycache = false;//($i<2)? true : false;
             $apache->Ssl = $ssl;
             $apache->ProxyCache = $proxycache;
 
@@ -507,14 +507,15 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
 
             //test existence
             $exists = Sys::getCount('Parc','Host/'.$this->Id.'/Apache/apacheServerName='.$pref.$this->NomLDAP.'.'.$dom->Url);
-            if ($exists) continue;
+            //if ($exists) continue;
+            if ($exists) return false;
 
             $apache->ApacheServerName = $pref.$this->NomLDAP.'.'.$dom->Url;
             $apache->DocumentRoot = 'www';
             $apache->Actif = true;
             $apache->addParent($this);
             $apache->Save();
-        }
+//        }
         return true;
     }
     /**
@@ -1270,7 +1271,7 @@ export PATH=/usr/local/php-'.$this->PHPVersion.'/bin:$PATH
             $act->Terminate(true);
             //Dump de la base
             $act = $task->createActivity('Dump de la base Mysql', 'Info');
-            $cmd = 'mysqldump -h db.maninwan.fr -u '.$srchost->NomLDAP.' -p'.$srchost->Password.' '.$srcbdd->Nom.' | mysql -u '.$host->NomLDAP.' -h db.maninwan.fr -p'.$host->Password.' '.$bdd->Nom;
+            $cmd = 'mysqldump -h '.$srcmysqlsrv->InternalIP.' -u '.$srchost->NomLDAP.' -p'.$srchost->Password.' '.$srcbdd->Nom.' | mysql -u '.$host->NomLDAP.' -h '.$mysqlsrv->InternalIP.' -p'.$host->Password.' '.$bdd->Nom;
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($cmd);
             $act->addDetails($out);
