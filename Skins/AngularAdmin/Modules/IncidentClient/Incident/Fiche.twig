@@ -1,0 +1,366 @@
+<div class="page-content-inner">
+    <ul class="list-unstyled breadcrumb">
+        <li>
+            <a href="#/TableauDeBord">Tableau de bord</a>
+        </li>
+        <li>
+            <a href="#/{{ CurrentMenu.Url }}">Liste des {{ ObjectClass.getDescription() }}</a>
+        </li>
+        <li>
+            <a href="javascript: void(0);" ng-bind-html="'Fiche {{ ObjectClass.getDescription() }} '+(obj.label)"></a>
+        </li>
+    </ul>
+
+    <!-- Default Panel -->
+    <section class="panel">
+        <div class="panel-heading">
+            <div class="pull-right">
+                {% if functions|length > 1 %}
+                    <div class="btn-group " uib-dropdown>
+                        <span id="function-button" type="button" class="btn btn-func">Fonctions</span>
+                        <button type="button" class="btn btn-func" uib-dropdown-toggle>
+                            <span class="caret"></span>
+                            <span class="sr-only">Split button!</span>
+                        </button>
+                        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="function-button">
+                            {% for fu in functions %}
+                                <li ><a class="dropdown-item" href="javascript: void(0);" ng-click='{{ identifier }}callFunction(obj,"{{fu.Nom}}","{{fu.title}}",{{ fu.needConfirm }})'>{{fu.title}}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% elseif functions|length == 1 %}
+                    <a href="javascript: void(0);" class="btn btn-primary" ng-click='{{ identifier }}callFunction(obj,"{{functions.0.Nom}}","{{functions.0.title}}",{{functions.0.needConfirm}})'>{{functions.0.title}}</a>
+                {% endif %}
+
+                {% if operation.edit %}<button type="button" class="btn btn-default btn-warning margin-inline" ng-click="modify(obj)">Modifier</button>{% endif %}
+                {% if operation.delete %}<button type="button" class="btn btn-default btn-danger margin-inline" ng-click="delete(obj)">Supprimer</button>{% endif %}
+            </div>
+            <h3 ng-bind-html="'Fiche {{ ObjectClass.getDescription() }} '+(obj.label)"></h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                {% if Interfaces.top %}
+                <div class="col-md-12 col-lg-4">
+                    <ng-map center="41,-87" zoom="6"></ng-map>
+                </div>
+                <div class="col-md-12 col-lg-4">
+                    {% else %}
+                    <div class="col-md-12 col-lg-6">
+                        {% endif %}
+                        {% for field in fichefields %}
+                        {% if field.type == "progress" or field.type == "pluginconfig" or field.type == "raw" or field.type == "html" or field.type == "text" or field.type == "bbcode" %}
+                            <!-- NE RIEN FAIRE-->
+                        {% else %}
+                            <div class="row  ficheField  type_{{ field.type }}{{ field.card }}">
+                                <div class="col-md-5 detail-label">
+                                    <label class="form-control-label" for="l0">{% if field.parentDescription is not empty %}{{ field.parentDescription }}{% else %}{{ field.description }}{% endif %}</label>
+                                </div>
+                                <div class="col-md-7 detail-value">
+                                    {% if field.type == "price" %}
+                                        <span class="label label-warning">{[{ obj.{{ field.name }} | currency:"" }]} €</span>
+                                    {% elseif field.type == "image" %}
+                                        <img class="img-responsive" src="{[{ obj.{{ field.name }} }]}.limit.250x40.jpg" {{ field.listDescr }} ng-if="obj.{{ field.name }} "/>
+                                        <img class="img-responsive" src="/Tools/Images/NoPhoto.jpg.limit.250x40.jpg" {{ field.listDescr }} ng-if="!obj.{{ field.name }} "/>
+                                    {% elseif field.type == "file" %}
+                                        <a  class="fileLink btn btn-small btn-danger" href="{[{ obj.{{ field.name }} }]}" title="{[{ obj.{{ field.name }} }]}" target="_blank" >Voir le fichier</a>
+                                    {% elseif field.type == "plugin" %}
+                                        <span  class="label label-danger" ng-bind-html="obj.{{ field.name }}"></span>
+                                    {% elseif field.type == "float" %}
+                                        <span class="label label-warning">{[{ obj.{{ field.name }}| currency:"" }]}</span>
+                                    {% elseif field.type == "extlink" %}
+                                        <a class="btn btn-success btn-xs" href="https://zabbix.abtel.fr/guacamole/#/client/{[{ obj.{{ field.name }} }]}" target="_blank">{{ field.listDescr }}</a>
+                                    {% elseif field.type == "int" %}
+                                        {% if field.Values %}
+                                            <select class="form-control" ng-model="obj.{{ field.name }}" disabled="disabled">
+                                                {% for v,k in field.Values %}
+                                                    <option value="{{ v }}">{{ k }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        {% else %}
+                                            <span class="label label-primary">{[{ obj.{{ field.name }} }]}</span>
+                                        {% endif %}
+                                    {% elseif field.type == "boolean" %}
+                                        {% if field.special == "reverse" %}
+                                            <span class="label label-success" ng-if="!obj.{{ field.name }}"><i class="fa fa-check"></i></span>
+                                            <span class="label label-danger" ng-if="obj.{{ field.name }}"><i class="fa fa-times"></i></span>
+                                        {% else %}
+                                            <span class="label label-success" ng-if="obj.{{ field.name }}"><i class="fa fa-check"></i></span>
+                                            <span class="label label-danger" ng-if="!obj.{{ field.name }}"><i class="fa fa-times"></i></span>
+                                        {% endif %}
+                                    {% elseif field.type == "fkey" and field.card == "long" %}
+                                        <a class="btn btn-secondary btn-xs" ng-repeat="(key, value) in obj.{{ field.objectName }}{{ field.name }}label">{[{ value }]}</a>
+                                    {% elseif field.type == "fkey" and field.card == "short" %}
+                                        {% if field.link %}
+                                            <a class="btn btn-primary btn-xs" href="#/{{ field.link }}/{[{ obj.{{ field.objectName }}{{ field.name }} }]}">{[{ obj.{{ field.objectName }}{{ field.name }}label }]}</a>
+                                        {% else  %}
+                                            <span ng-if="obj.{{ field.objectName }}{{ field.name }}">{[{ obj.{{ field.objectName }}{{ field.name }}label }]}</span>
+                                        {% endif %}
+                                    {% else %}
+                                        {% if field.Values %}
+                                            <select class="form-control" ng-model="obj.{{ field.name }}" disabled="disabled">
+                                                {% for v,k in field.Values %}
+                                                    <option value="{{ v }}" >{{ k }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        {% elseif field.query %}
+                                            <span class="btn btn-warning btn-xs" >{[{ obj.{{ field.name }}Label }]}</span>
+                                        {% else %}
+                                            <span  ng-bind-html="obj.{{ field.name }}"></span>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if loop.index - loop.revindex0 == 1 or loop.index - loop.revindex0 == 0 %}
+                    </div>
+                    {% if Interfaces.top %}
+                    <div class="col-md-12 col-lg-4">
+                        {% else %}
+                        <div class="col-md-12 col-lg-6">
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                            <div class="row  ficheField">
+                                <div class="col-md-5 detail-label"> <label class="form-control-label" for="l0">Détails</label></div>
+                                <div class="col-md-7 detail-value" ng-bind-html="obj._details"></div>
+                            </div>
+                        </div>
+                    </div>
+                    {% for field in fichefields %}
+                        {% if field.type == "progress" %}
+                            <div class="row">
+                                <div class="col-md-2 detail-label">
+                                    <label class="form-control-label" for="l0">{% if field.parentDescription is not empty %}{{ field.parentDescription }}{% else %}{{ field.description }}{% endif %}</label>
+                                </div>
+                                <div class="col-md-10 detail-value">
+                                    <uib-progress class="big" ng-if="obj.{{ field.name }} >= 100">
+                                        <uib-bar value="obj.{{ field.name }}" type="success" class=" progress-bar-striped progress-bar-animated"><span ng-hide="obj.{{ field.name }} < 5">{[{ obj.{{ field.name }} }]}%</span></uib-bar>
+                                    </uib-progress>
+                                    <uib-progress class="big" ng-if="obj.{{ field.name }} < 100">
+                                        <uib-bar value="obj.{{ field.name }}" type="warning" class=" progress-bar-striped progress-bar-animated"><span ng-hide="obj.{{ field.name }} < 5">{[{ obj.{{ field.name }} }]}%</span></uib-bar>
+                                    </uib-progress>
+                                    <!--
+                            <progress class="progress progress-danger progress-striped progress-animated big" ng-if="obj.{{ field.name }} < 100" value="{[{ obj.{{ field.name }} }]}" max="100">{[{ obj.{{ field.name }} }]}</progress>
+                            <progress class="progress progress-success progress-striped progress-animated big" ng-if="obj.{{ field.name }} == 100" value="{[{ obj.{{ field.name }} }]}" max="100">{[{ obj.{{ field.name }} }]}</progress>-->
+                                </div>
+                            </div>
+                        {% elseif field.type == "raw" or field.type == "text" %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label class="form-control-label" for="l0">{{ field.description }}</label>
+                                    <small>{{ field.help }}</small>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {%  if field.subtype %}{% set subtype = field.subtype %}{% else %}{% set subtype = 'text' %}{% endif %}
+                                    <div ui-ace="{useWrapMode : true,mode: '{{ subtype }}',onLoad: aceLoaded}" ng-model="obj.{{ field.name }}" class="ace_editor" readonly="true"></div>
+                                </div>
+                            </div>
+                        {% elseif field.type == "html" or field.type == "bbcode" %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label class="form-control-label" for="l0">{{ field.description }}</label>
+                                    <small>{{ field.help }}</small>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <!--<div ui-ace="{useWrapMode : true,mode: '{{ field.subtype }}',onLoad: aceLoaded}" ng-model="obj.{{ field.name }}" class="ace_editor"  readonly="true"></div>-->
+                                    <div ng-bind-html="obj.{{ field.name }}"></div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="form-control-label">Commentaires</label>
+                            <div>
+                                {{ include(template_from_string(module(formPath~'?Path=IncidentClient/Commentaire'))) }}
+                                <p style="text-align: center;    margin: 15px;">
+                                    <button type="button" class="btn btn-primary" ng-if="modalObj.Texte.length > 0" ng-click="IncidentClientCommentairemodalSaveBis(obj.id)">__SAVE_MODAL_OBJ__</button>
+                                </p>
+                            </div>
+                            <div>
+                                <div abt-timeline="IncidentClientCommentaire" abt-tl-context="children" abt-tl-filter="" id="commentaires" abt-template="timelineCommentaire.html" abt-side="getSide" abt-custom="editable"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+    </section>
+    <!-- End Default Panel -->
+    <div class="nav-tabs-horizontal">
+        <ul class="nav nav-tabs" role="tablist">
+            {% for child in ChildrenElements %}
+                {% if not child.childrenHiddenSoft %}
+                <li class="nav-item">
+                    <a class="nav-link {% if loop.first %}active{% endif %}" href="javascript: void(0);" data-toggle="tab" data-target="#tab{{ child.objectName }}" role="tab"><b>{% if child.objectDescription %}{{ child.objectDescription }}{% else %}{{ child.objectName }}{% endif %}</b> ({[{ {{ child.objectModule }}{{ child.objectName }}.store.total.children }]})</a>
+                </li>
+                {% endif %}
+            {% endfor %}
+            {% if browseable %}
+                <li class="nav-item">
+                    <a class="nav-link {% if not ChildrenElements|length %}active{% endif %}" href="javascript: void(0);" data-toggle="tab" data-target="#tabPagesSite" role="tab"><b>Pages correspondantes</b> {# ({[{ {{ child.objectModule }}{{ child.objectName }}.store.total.children }]}) #}</a>
+                </li>
+            {% endif %}
+        </ul>
+        <div class="tab-content">
+            {% for child in ChildrenElements %}
+                {% if not child.childrenHiddenSoft %}
+                <div class="tab-pane {% if loop.first %}active{% endif %}" id="tab{{ child.objectName }}" role="tabpanel">
+                    {% if child.recursive %}
+                        {#{{ include(template_from_string(module(Query~'/0/'~child.objectName~'/TreeChildren'))) }}#}
+                        <section class="panel">
+                            <div class="panel-body">
+                                <div id="ajaxwrapper"
+                                     ng-include="'/{{ CurrentUrl }}/'+obj.id+'/{{ child.objectName }}/TreeChildren.htm'" >
+                                </div>
+                            </div>
+                        </section>
+                    {% else %}
+                        <section class="panel">
+                            <div class="panel-body">
+                                <ng-include src="'/{{ CurrentUrl }}/0/{{ child.objectName }}/ListChildren.htm'" ng-if="show"></ng-include>
+                            </div>
+                        </section>
+                        <!-- End Default Panel -->
+                    {% endif %}
+                </div>
+                {% endif %}
+            {% endfor %}
+            {% if browseable %}
+                <div class="tab-pane {% if not ChildrenElements|length %}active{% endif %}" id="tabPagesSite" role="tabpanel">
+                    <section class="panel">
+                        <div class="panel-body">
+                            {{ include(template_from_string(module('Systeme/Utils/List/PageList?headless=1'))) }}
+                        </div>
+                    </section>
+                    <!-- End Default Panel -->
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+{% if Interfaces.bottom %}
+    <div class="widget widget-three">
+        <iframe style="border:0;" ng-src="{[{ '{{ Interfaces.bottom.Grafana.url }}'+obj.CodeClient+'%20'+obj.Nom }]}" width="100%" height="1100"></iframe>
+    </div>
+{% endif %}
+
+
+<div class="modal fade modal-size-large" id="modalfiche-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">{[{ modalObj.title }]}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" ng-if="modalObj.errors">
+                    <ul>
+                        <li ng-repeat="e in modalObj.errors">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-warning" ng-if="modalObj.warning">
+                    <ul>
+                        <li ng-repeat="e in modalObj.warning">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-success" ng-if="modalObj.infos">
+                    <ul>
+                        <li ng-repeat="e in modalObj.infos">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div  ng-if="modalObj.success == false">
+                    {{ include(template_from_string(module('Systeme/Utils/Form?Path='~CurrentObjQuery))) }}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == true">Fermer</button>
+                <button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == false">Annuler</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ include(template_from_string(module('Systeme/Utils/Modal/Function?identifier='~identifier))) }}
+
+{% if ChildrenElements|length %}
+    <div class="modal fade modal-size-large" id="modallink-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">{[{ link.title }]}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-success" ng-show="link.success">{[{ link.message }]}</div>
+                    <div class="alert alert-danger" ng-show="link.errors.length > 0">
+                        <ul>
+                            <li ng-repeat="err in link.errors">{[{ err }]}</li>
+                        </ul>
+                    </div>
+                    <div  ng-if="link.success == false">
+                        <div id="ajaxwrapper"
+                             ng-include="link.url" >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal" ng-if="link.success == true">Fermer</button>
+                    <button type="button" class="btn" data-dismiss="modal" ng-if="link.success == false">Annuler</button>
+                    <button type="button" class="btn btn-primary" ng-if="link.success == false" ng-click="link.Save()">__SAVE_MODAL_OBJ__</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+
+<div class="modal fade modal-size-large" id="modal-IncidentClientCommentaire" role="modal" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">{[{ modalObj.title }]}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" ng-if="modalObj.errors.length">
+                    <ul>
+                        <li ng-repeat="e in modalObj.errors">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-warning" ng-if="modalObj.warning.length">
+                    <ul>
+                        <li ng-repeat="e in modalObj.warning">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-success" ng-if="modalObj.infos.length">
+                    <ul>
+                        <li ng-repeat="e in modalObj.infos">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div ng-if="modalObj.success == false">
+                    {{ include(template_from_string(module(formPath~'?Path=IncidentClient/Commentaire'))) }}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == true">Fermer</button>
+                <button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == false">Annuler</button>
+                <button type="button" class="btn btn-primary" ng-click="{{ identifier }}modalSave()" ng-if="modalObj.success == false">__SAVE_MODAL_OBJ__</button>
+            </div>
+        </div>
+    </div>
+</div>

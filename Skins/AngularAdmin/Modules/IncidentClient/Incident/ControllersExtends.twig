@@ -1,0 +1,25 @@
+app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$timeout,$location, $compile, $sce, $scope, $rootScope, $routeParams,$http,IncidentClientCommentaireStore) {
+
+    $scope.getSide = function(item){
+        if ( item.ContactContactId ) return 'leftSide';
+
+        return 'rightSide';
+    }
+
+    $scope.editable = function(item){
+        item.customized = true;
+        if(item.creator == {{ uid }}) item.Editable = true;
+
+        item.Auteur ='';
+        if(item.ContactContactIdlabel != '') item.Auteur = item.ContactContactIdlabel;
+        if(item.TechnicienTechnicienIdlabel != '') item.Auteur = item.TechnicienTechnicienIdlabel;
+        if(item.Auteur == '') item.Auteur = 'Administrateur';
+
+        return item;
+    }
+
+    $scope.IncidentClientCommentairemodalSaveBis = function(itm){
+        $scope.modalObj.IncidentIncidentId = itm;
+        $scope.IncidentClientCommentairemodalSave(true);
+    }
+});

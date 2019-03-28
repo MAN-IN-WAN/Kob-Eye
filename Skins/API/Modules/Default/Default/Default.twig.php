@@ -304,9 +304,12 @@ switch($info['TypeSearch']){
                 foreach($newProps as $k=>$n){
                     $item->Set($k,$n);
                 }
+
+
+                if($parent) $item->addParent($parent);
                 //On crée l'objet
                 if($item->Verify()){
-                    if($parent) $item->addParent($parent);
+
                     $item->Save();
                     sendResult(201,$item);
                 } else{
@@ -352,9 +355,10 @@ switch($info['TypeSearch']){
                 foreach($newProps as $k=>$n){
                     $item->Set($k,$n);
                 }
+
+                if($parent) $item->addParent($parent);
                 //On crée l'objet
                 if($item->Verify()){
-                    if($parent) $item->addParent($parent);
                     $item->Save();
                     sendResult(201,$item);
                 } else{

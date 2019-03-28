@@ -18,29 +18,45 @@ class AbtelGestionBase extends genericClass {
      * @return bool
      */
     public function Set($prop, $newValue){
-        if($prop == 'Id'){
-            if(!$this->getOrigin()){
-                $this->props['NumeroTicket'] = $newValue;
-            }else{
-                $this->props['Numero'] = $newValue;
-            }
-            return true;
-        }
         if(isset($this->{$prop}) || $prop == 'Interface') {
             parent::Set($prop,$newValue);
         } else {
             $fields = $this->getQueryFields(!$this->getOrigin());
+
             if(array_key_exists($prop,$fields) ) {
-                $this->props[$prop] = $newValue;
+                $index = $prop;
             } else {
-                $key = array_search($prop,$fields);
-                if( $key !== false ){
-                    $this->props[$key] = $newValue;
-                }
+                $index = array_search($prop,$fields);
+            }
+            if($index){
+                $this->props[$index] = $newValue;
             }
         }
         return true;
     }
+
+    /**
+     * @param $prop
+     * @return bool|mixed
+     */
+    public function Get($prop, $Nom = false){
+        if(isset($this->{$prop}) || $prop == 'Interface') {
+            return parent::Get($prop);
+        } else {
+            $fields = $this->getQueryFields(!$this->getOrigin());
+            if(array_key_exists($prop,$fields) ) {
+                return $this->props[$prop];
+            } else {
+                $key = array_search($prop,$fields);
+                if( $key !== false ){
+                    return $this->props[$key];
+                }
+            }
+        }
+
+        return false;
+    }
+
 
     /**
      * @return bool|int
@@ -60,7 +76,7 @@ class AbtelGestionBase extends genericClass {
      */
     public function makeRequest(){
         $query = $GLOBALS['Systeme']->getRegVars('Query');
-        $inf = $this->reworkQuery($query);
+        $inf = $this->reworkQuery($query,1);
 
         if($this->getOrigin()){
             //Gestion donc on appelle l'api du parc
@@ -101,7 +117,6 @@ class AbtelGestionBase extends genericClass {
             );
 
             $ret = json_decode(curl_exec($this->con_handle),true);
-
             if(!$ret['success']) {
                 $fields = $this->getQueryFields($this->getOrigin());
                 foreach ($ret['error_description'] as &$d){
@@ -194,7 +209,7 @@ class AbtelGestionBase extends genericClass {
      * @return int|mixed|null
      */
     public function getDbCount($module, $query){
-	    if($module != $this->Module)
+	    if($module != 'AbtelGestion')
 	        return parent::getDbCount($module,$query);
 
 	    $inf = $this->reworkQuery($module.'/'.$query);
@@ -250,7 +265,7 @@ class AbtelGestionBase extends genericClass {
      * @return array|mixed|null
      */
     public function getDbData($module, $query, $offset="", $limit="", $orderType="", $orderVar="", $select="", $groupBy="", $noRights = false){
-        if($module != $this->Module)
+        if($module != 'AbtelGestion')
             return parent::getDbData($module,$query, $offset, $limit, $orderType, $orderVar, $select, $groupBy, $noRights);
 
         $inf = $this->reworkQuery($module.'/'.$query);
@@ -358,7 +373,7 @@ class AbtelGestionBase extends genericClass {
      * @return genericClass|Object
      */
     public function getOneDbData($module, $query, $offset="", $limit="", $orderType="", $orderVar="", $select="", $groupBy="", $noRights = false){
-        if($module != $this->Module)
+        if($module != 'AbtelGestion')
             return parent::getOneDbData($module,$query, $offset, $limit, $orderType, $orderVar, $select, $groupBy, $noRights);
 
         $inf = $this->reworkQuery($module.'/'.$query);
@@ -377,7 +392,6 @@ class AbtelGestionBase extends genericClass {
             $params['limit'] = 1;
             if(!empty($orderType))$params['order'] = $orderType;
             if(!empty($orderVar))$params['orderBy'] = $orderVar;
-
 
             curl_setopt($this->con_handle,CURLOPT_URL,$url);
             curl_setopt($this->con_handle, CURLOPT_CUSTOMREQUEST, "GET");
@@ -521,7 +535,7 @@ class AbtelGestionBase extends genericClass {
      * @param $query
      * @return array|bool
      */
-    public function reworkQuery($query){
+    public function reworkQuery($query,$getId=false){
         $info = Info::getInfos($query);
         $where = array();
         if(!empty($info['LastId'])) {
@@ -567,12 +581,21 @@ class AbtelGestionBase extends genericClass {
             case 'Tache' :
                 if($this->getOrigin()){
                     //Gestion donc on appelle l'api du parc
+                    $id='';
+                    if ($info['TypeSearch'] == 'Direct' && $getId) {
+                        $q = explode('/',$query,2);
+                        $obj = $this->getOneDbData($q[0],$q[1]);
+                        if($obj) {
+                            $id = '/'.$obj->Id;
+                        }
+                    }
+
                     return array(
                         'M'=>'AbtelGestion',
                         'O'=>'Tache',
                         'Module' => 'Parc',
                         'ObjectType' => 'Ticket',
-                        'Route' => 'gestion/ticket',
+                        'Route' => 'gestion/ticket'.$id,
                         'Where' => $where
                     );
                 } else{
@@ -588,12 +611,18 @@ class AbtelGestionBase extends genericClass {
             case 'Action':
                 if($this->getOrigin()){
                     //Gestion donc on appelle l'api du parc
+                    $id='';
+                    /*if ($info['TypeSearch'] == 'Direct') {
+                        $obj = $this->getOneDbData('Parc', 'Ticket/NumeroTicket='.$info['LastId']);
+                        if($obj) $id = '/'.$obj->Id;
+                    }*/
+
                     return array(
                         'M'=>'AbtelGestion',
                         'O'=>'Action',
                         'Module' => 'Parc',
                         'ObjectType' => 'Action',
-                        'Route' => 'gestion/action',
+                        'Route' => 'gestion/action'.$id,
                         'Where' => $where
                     );
                 } else{
@@ -607,12 +636,18 @@ class AbtelGestionBase extends genericClass {
             case 'Entite':
                 if($this->getOrigin()){
                     //Gestion donc on appelle l'api du parc
+                    $id='';
+                    /*if ($info['TypeSearch'] == 'Direct') {
+                        $obj = $this->getOneDbData('Parc', 'Ticket/NumeroTicket='.$info['LastId']);
+                        if($obj) $id = '/'.$obj->Id;
+                    }*/
+
                     return array(
                         'M'=>'AbtelGestion',
                         'O'=>'Entite',
                         'Module' => 'Abtel',
                         'ObjectType' => 'Entite',
-                        'Route' => 'gestion/entite',
+                        'Route' => 'gestion/entite'.$id,
                         'Where' => $where
                     );
                 } else{

@@ -1527,7 +1527,7 @@
                 }
 
                 //MODALSAVE
-                $scope.{{ child.objectModule }}{{ child.objectName }}modalSave = function (){
+                $scope.{{ child.objectModule }}{{ child.objectName }}modalSave = function (silent){
                     console.log('children > save {{ child.objectModule }}{{ child.objectName }}',$scope.modalObj);
                     $('#modal-{{ child.objectModule }}{{ child.objectName }} .modal-dialog').spin();
 
@@ -1540,8 +1540,12 @@
                             $scope.modalObj.warning = data.warning;
                             $scope.modalObj.errors = data.errors;
                             $scope.modalObj.infos = data.infos;
-                            if (!data.warning.length&&!data.success.length)
+                            if (!data.warning.length&&!data.success.length && !silent){
                                 $("#modal-{{ child.objectModule }}{{ child.objectName }}").modal('toggle');
+                            }
+                            if(silent){
+                                $scope.modalObj = {{ child.objectModule }}{{ child.objectName }}Store.getNewData();
+                            }
                             {{ child.objectModule }}{{ child.objectName }}Store.refresh('children');
                         }else {
                             //gestion des erreurs
