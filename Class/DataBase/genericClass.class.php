@@ -1523,6 +1523,7 @@ class genericClass extends Root {
 		if (empty($Prop)) return;
 		$this -> launchTriggers(__FUNCTION__);
 		$Props = $this -> Proprietes(false, true);
+		if(!$Props) $Props = array();
 		for ($i = 0; $i < sizeof($Props); $i++) {
 			if ($Props[$i]["Nom"] == $Prop) {
 				switch ($Props[$i]["Type"]) {
@@ -1617,6 +1618,7 @@ class genericClass extends Root {
 		 Declenchement des evenements associes dans Modules/Module.Name/Module.Name.Actions
 		 */
 		$this->Triggers = Sys::$Modules[$this -> Module] ->getTriggers();
+		if(!$this->Triggers) $this->Triggers = array();
 		//Copie du tableau des triggers
 		$KnownEvents = Array();
 		for ($i = 0; $i < count($this -> Triggers); $i++) {

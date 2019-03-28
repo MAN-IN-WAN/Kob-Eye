@@ -116,4 +116,13 @@
         <PROPERTIES type="boolean" description="Etat par Défaut" listDescr="Etat par Défaut" list="3" form="3" fiche="3">Defaut</PROPERTIES>
         <PROPERTIES type="boolean" description="Maj Date de fin" listDescr="Maj Date de fin" list="4" form="4" fiche="4">Cloture</PROPERTIES>
     </OBJECTCLASS>
+
+
+    <OBJECTCLASS title="Commentaire" AccessPoint="1" driver="mysql" Description="Commentaires" Operations="add,edit,delete"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/IncidentClient/Class/Commentaire.class.php" >
+        <PROPERTIES type="html" searchOrder="1" listDescr="Titre Fichier" list="1" form="1" fiche="1">Texte</PROPERTIES>
+        <FKEY card="1,1" data="Incident,Id" list="2" fiche="2" childrenHiddenSoft="1">IncidentId</FKEY>
+        <FKEY card="0,1" data="Contact,Id" searchOrder="3" description="Contact" search="1" listDescr="Contact" list="3" fiche="3" >ContactId</FKEY>
+        <FKEY card="0,1" data="Technicien,Id" searchOrder="3" description="Technicien" search="1" listDescr="Technicien" list="4" fiche="4" >TechnicienId</FKEY>
+    </OBJECTCLASS>
+
 </SCHEMA>

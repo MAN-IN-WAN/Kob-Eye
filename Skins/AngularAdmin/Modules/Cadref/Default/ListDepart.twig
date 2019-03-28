@@ -1,6 +1,6 @@
 {# liste Depart #}
 {% from "Skins/AngularAdmin/Modules/Cadref/Default/form_components.twig" import label %} 
-<div class="cadref-widget" ng-if="departInfo.mode!=''">
+<div id="departFiche" class="cadref-widget" ng-if="departInfo.mode!=''">
 	<div class="row">
 		<div style="height:10px"></div>
 		<div class="col-md-12">
@@ -24,7 +24,7 @@
 						{{ label("Heure départ") }}
 					</div>
 					<div class="col-md-4">
-						<input type="text" class="form-control cadref-input" ng-model="departObj.HeureDepart" mask="dd:dd"/>
+						<input id="heureDepart" type="text" class="form-control cadref-input" ng-model="departObj.HeureDepart" mask="dd:dd"/>
 					</div>
 				</div>
 

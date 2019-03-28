@@ -116,15 +116,18 @@ header h1 {
   margin-left: -12px;
   margin-top: -12px;
 }
+
 .cd-timeline-img.default {
   background: #AAB4BF;
 }
 .cd-timeline-img.info {
   background: #01a8fe;
 }
+.cd-timeline-img.leftSide,
 .cd-timeline-img.info_error {
   background: #fba8fe;
 }
+.cd-timeline-img.rightSide,
 .cd-timeline-img.success {
   background: #46be8a;
 }
@@ -140,11 +143,11 @@ header h1 {
 
 .cd-timeline-img:before{
   content :"\f02e";
-  width: 30px;
+  width: 15px;
   position: absolute;
-  top: 8px;
-  left: 15px;
-  font-size: 30px;
+  top: 5px;
+  left: 7px;
+  font-size: 15px;
   color: #fff;
   text-align: center;
   font-family: FontAwesome;
@@ -158,14 +161,17 @@ header h1 {
 .cd-timeline-img.Remote:before{
   content :"\f0ec";
 }
-
+.cd-auteur{
+  font-size: 0.8em;
+  font-style: italic;
+}
 
 @media only screen and (min-width: 1170px) {
   .cd-timeline-img {
-    width: 60px;
-    height: 60px;
+    width: 30px;
+    height: 30px;
     left: 50%;
-    margin-left: -30px;
+    margin-left: -15px;
     /* Force Hardware Acceleration in WebKit */
     -webkit-transform: translateZ(0);
     -webkit-backface-visibility: hidden;
@@ -237,7 +243,7 @@ header h1 {
   margin-left: 60px;
   background: #ffffff;
   border-radius: 0.25em;
-  padding: 1em;
+  /*padding: 1em;*/
   box-shadow: 0 3px 0 #d7e4ed;
 }
 .cd-timeline-content::after {
@@ -301,7 +307,7 @@ header h1 {
 @media only screen and (min-width: 1170px) {
   .cd-timeline-content {
     margin-left: 0;
-    padding: 1.6em;
+    /*padding: 1.6em;*/
     width: 45%;
   }
   .cd-timeline-content::before {
@@ -321,20 +327,24 @@ header h1 {
     font-size: 16px;
     font-size: 1rem;
   }
-  .cd-timeline-block:nth-child(even) .cd-timeline-content {
+  .cd-timeline-block:nth-child(even) .cd-timeline-content:not(.leftSide),
+  .cd-timeline-block .cd-timeline-content.rightSide{
     float: right;
   }
-  .cd-timeline-block:nth-child(even) .cd-timeline-content::before {
+  .cd-timeline-block:nth-child(even) .cd-timeline-content:not(.leftSide)::before,
+  .cd-timeline-block .cd-timeline-content.rightSide::before{
     top: 24px;
     left: auto;
     right: 100%;
     border-color: transparent;
     border-right-color: #ffffff;
   }
-  .cd-timeline-block:nth-child(even) .cd-timeline-content .cd-read-more {
+  .cd-timeline-block:nth-child(even) .cd-timeline-content:not(.leftSide) .cd-read-more,
+  .cd-timeline-block .cd-timeline-content.rightSide .cd-read-more{
     float: right;
   }
-  .cd-timeline-block:nth-child(even) .cd-timeline-content .cd-date {
+  .cd-timeline-block:nth-child(even) .cd-timeline-content:not(.leftSide) .cd-date,
+  .cd-timeline-block .cd-timeline-content.rightSide .cd-date{
     left: auto;
     right: 122%;
     text-align: right;
@@ -352,7 +362,8 @@ header h1 {
 
 @media only screen and (min-width: 1170px) {
   /* inverse bounce effect on even content blocks */
-  .cssanimations .cd-timeline-block:nth-child(even) .cd-timeline-content.bounce-in {
+  .cssanimations .cd-timeline-block:nth-child(even):not(.leftSide) .cd-timeline-content.bounce-in,
+  .cssanimations .cd-timeline-block .cd-timeline-content.rightSide.bounce-in{
     -webkit-animation: cd-bounce-2-inverse 0.6s;
     -moz-animation: cd-bounce-2-inverse 0.6s;
     animation: cd-bounce-2-inverse 0.6s;

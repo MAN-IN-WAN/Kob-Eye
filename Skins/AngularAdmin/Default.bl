@@ -1,5 +1,8 @@
 [HTML]ng-app="cleanUI"[/HTML]
 [HEADER]
+[IF [!Systeme::isModule(Cadref)!]]
+<link href="Skins/AngularAdmin/Modules/Cadref/assets/img/cadref_logo_bleu64.png" rel="icon" type="image/png">
+[ELSE]
 <link rel="apple-touch-icon" sizes="57x57" href="Skins/AngularAdmin/assets/common/img/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="Skins/AngularAdmin/assets/common/img/apple-icon-60x60.png">
 <link rel="apple-touch-icon" sizes="72x72" href="Skins/AngularAdmin/assets/common/img/apple-icon-72x72.png">
@@ -13,8 +16,12 @@
 <link rel="icon" type="image/png" sizes="32x32" href="Skins/AngularAdmin/assets/common/img/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="96x96" href="Skins/AngularAdmin/assets/common/img/favicon-96x96.png">
 <link rel="icon" type="image/png" sizes="16x16" href="Skins/AngularAdmin/assets/common/img/favicon-16x16.png">
-<link rel="manifest" href="Skins/AngularAdmin/assets/common/img/manifest.json">
 <link href="Skins/AngularAdmin/assets/common/img/favicon.png" rel="icon" type="image/png">
+[/IF]
+
+
+
+<link rel="manifest" href="Skins/AngularAdmin/assets/common/img/manifest.json">
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-TileImage" content="Skins/AngularAdmin/assets/common/img/ms-icon-144x144.png">
 <meta name="theme-color" content="#ffffff">

@@ -1,0 +1,17 @@
+<section id="cd-timeline" class="cd-container">
+    <div class="cd-timeline-block" ng-repeat="item in itemList">
+        <div class="cd-timeline-img cd-picture">
+            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/cd-icon-picture.svg" alt="Picture">
+        </div> <!-- cd-timeline-img -->
+
+        <div class="cd-timeline-content">
+            <h2 ng-bind-html="item.Title"></h2>
+            <p ng-bind-html="item.Content"></p>
+            <a href="item.Url" class="cd-read-more" ng-if="item.Url">
+                <span ng-if="!item.Link">En savoir plus</span>
+                <span ng-if="item.Link" ng-bind-html="item.Link"></span>
+            </a>
+            <span class="cd-date" ng-bind-html="item.Date"></span>
+        </div> <!-- cd-timeline-content -->
+    </div> <!-- cd-timeline-block -->
+</section> <!-- cd-timeline -->

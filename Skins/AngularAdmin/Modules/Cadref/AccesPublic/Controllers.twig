@@ -166,7 +166,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	//-----------------------------
 	
 	// store Attachement
-	$scope.CadrefAttachement = $scope.createStore(CadrefAttachementStore, 'children');
+	$scope.CadrefAttachement = $rootScope.createStore(CadrefAttachementStore, 'children');
 
 	// ouverture fenetre attachements
 	$scope.attachementObj;
@@ -268,9 +268,9 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
     $scope.store = CadrefEnseignantStore;
 
 	// store children
-	$scope.CadrefAbsence = $scope.createStore(CadrefAbsenceStore, 'children');
+	$scope.CadrefAbsence = $rootScope.createStore(CadrefAbsenceStore, 'children');
 	$scope.CadrefAbsence.store.setFilters("Annee={{ Annee }}", 'children');
-	$scope.CadrefClasse = $scope.createStore(CadrefClasseStore, 'children');
+	$scope.CadrefClasse = $rootScope.createStore(CadrefClasseStore, 'children');
 	$scope.CadrefClasse.store.setFilters("Annee={{ Annee }}", 'children');
 	$scope.$watch('CadrefClasse.currentPage', function() {
 		$scope.CadrefClasse.store.setPage($scope.CadrefClasse.currentPage, 'children');
@@ -278,7 +278,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	$scope.$watch('CadrefClasse.pageLength', function() {
 		$scope.CadrefClasse.store.setPageLength($scope.CadrefClasse.currentPage, 'children');
 	});
-	$scope.CadrefVisite = $scope.createStore(CadrefVisiteStore, 'children');
+	$scope.CadrefVisite = $rootScope.createStore(CadrefVisiteStore, 'children');
 	$scope.CadrefVisite.store.setFilters("Annee={{ Annee }}", 'children');
 
     $scope.initEns = function(){
@@ -444,11 +444,11 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
     $scope.store = CadrefAdherentStore;  
 
 	// store children
-	$scope.CadrefReglement = $scope.createStore(CadrefReglementStore, 'children');
+	$scope.CadrefReglement = $rootScope.createStore(CadrefReglementStore, 'children');
 	$scope.CadrefReglement.store.setFilters('Annee={{ Annee }}', 'children');
-	$scope.CadrefInscription = $scope.createStore(CadrefInscriptionStore, 'children');
+	$scope.CadrefInscription = $rootScope.createStore(CadrefInscriptionStore, 'children');
 	$scope.CadrefInscription.store.setFilters('Annee={{ Annee }}', 'children');
-	$scope.CadrefReservation = $scope.createStore(CadrefReservationStore, 'children');
+	$scope.CadrefReservation = $rootScope.createStore(CadrefReservationStore, 'children');
 	$scope.CadrefReservation.store.setFilters('Annee={{ Annee }}', 'children');
 
 	$scope.inscriptionObj = {Select: false, AntenneId: 0, SectionId: 0, DisciplineId: 0, ClasseItems: [], InscriptionItems: []};

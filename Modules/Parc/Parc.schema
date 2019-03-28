@@ -453,12 +453,13 @@
 		<FKEY card="0,1" data="Server,Id" fiche="1" form="1" filter="Mail=1" description="Serveur Mail">ServerId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="EmailAlias" driver="mysql" Dico="1" Description="Alias de comptes Mail" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/EmailAlias.class.php" hideSelect="1">
+		<FUNCTION title="Forcer suppression locale" needConfirm="1">forceDel</FUNCTION>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Adresse alias" list="1" form="1" fiche="1" listDescr="Adresse alias">TargetMail</PROPERTIES>
 		<PROPERTIES type="boolean" description="Status" list="1" fiche="1" listDescr="Status">Status</PROPERTIES>
 		<FKEY card="1,1" data="CompteMail,Id" fiche="1" description="CompteMail" >CompteMailId</FKEY>
 	</OBJECTCLASS>
 	<OBJECTCLASS title="EmailRessource" driver="mysql" AccessPoint="1" Description="Ressource mail" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/EmailRessource.class.php">
-        <FUNCTION title="Forcer suppression locale">forceDel</FUNCTION>
+        <FUNCTION title="Forcer suppression locale">forceDelete</FUNCTION>
 		<FUNCTION title="Retablir ">unDel</FUNCTION>
         <FILTER name="Toutes les ressources" color="warning" ><![CDATA[Suppression!!]]></FILTER>
         <FILTER name="En attente de suppression" color="danger"><![CDATA[Suppression=!]]></FILTER>
@@ -481,7 +482,7 @@
 		<FKEY card="1,1" data="CompteMail,Id" fiche="1" description="CompteMail" >CompteMailId</FKEY>
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="Ticket" driver="mysql" AccessPoint="1" Description="Tickets Clients" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" >
+	<OBJECTCLASS title="Ticket" driver="mysql" AccessPoint="1" Description="Tickets Clients" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" Class="Modules/Parc/Class/Ticket.class.php">
 		<FILTER name="Bloquant" color="secondary"><![CDATA[Etat=10&Priorite=4]]></FILTER>
 		<FILTER name="En cours" color="secondary">Etat=10</FILTER>
 		<FILTER name="Terminés" color="warning">Etat=20</FILTER>
@@ -524,7 +525,7 @@
 		<!--PROPERTIES type="varchar" description="Lecteur original" list="0" form="1" fiche="1" listDescr="Lecteur">UserLecture</PROPERTIES-->
 	</OBJECTCLASS>
 
-	<OBJECTCLASS title="Action" driver="mysql" AccessPoint="1" Description="Action des tickets" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png" >
+	<OBJECTCLASS title="Action" driver="mysql" AccessPoint="1" Description="Action des tickets" Icon="/Skins/AdminV2/Img/IconAqua/Chat.png"  Class="Modules/Parc/Class/Action.class.php">
 		<PROPERTIES type="int" unique="1" description="Id dans la gestion" >IdGestion</PROPERTIES>
 		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Numero du ticket" list="1" form="1" fiche="1" listDescr="N° Ticket">NumeroTicket</PROPERTIES>
 		<PROPERTIES type="varchar" length="10" obligatoire="1" description="Code entité Abtel" list="1" form="1" fiche="1" listDescr="Entité Abtel" values="AI::Informatique,AW::Web,AN::Network" default="AI" hasRole="PARC_TECHNICIEN">CodeEntite</PROPERTIES>

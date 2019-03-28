@@ -5,7 +5,7 @@
 	<form method="POST" id="checkAdherent">
 		<div class="form-group">
 			<div id="saisie">
-				<h3>Je saisis d'abord mon numéro d'adhérent ou mon nom de famille :</h3>
+				<h3>Je connais mon numéro d'adhérent (N° de carte) :</h3>
 				<div class="row">
 					<div class="col-md-4">
 						<label class="form-control-label cadref-label" style="line-height:1.1">N° adhérent</label>
@@ -14,12 +14,21 @@
 						<input type="text" class="form-control cadref-input" placeholder="Numéro adhérent à 6 chiffres" id="CadrefNumero" name="CadrefNumero" style="widht: 150px"/>
 					</div>
 				</div>
+				<h3>Sinon je renseigne mon nom et prénom :</h3>
 				<div class="row">
 					<div class="col-md-4">
 						<label class="form-control-label cadref-label" style="line-height:1.1">Nom de famille</label>
 					</div>
 					<div class="col-md-8">
 						<input type="text" class="form-control cadref-input" placeholder="Nom de famille" id="CadrefNom" name="CadrefNom" onkeyup="this.value = this.value.toUpperCase();"/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<label class="form-control-label cadref-label" style="line-height:1.1">Prénom</label>
+					</div>
+					<div class="col-md-8">
+						<input type="text" class="form-control cadref-input" placeholder="Prénom" id="CadrefNom" name="CadrefPrenom" onkeyup="this.value = this.value.toUpperCase();"/>
 					</div>
 				</div>
 				<div class="row" style="height:10px"></div>

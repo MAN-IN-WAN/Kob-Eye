@@ -147,4 +147,8 @@ class EmailAlias extends genericClass {
         //teste l'existence du domaine
         return parent::Verify();
     }*/
+
+    public function forceDelete(){
+        parent::Delete();
+    }
 }

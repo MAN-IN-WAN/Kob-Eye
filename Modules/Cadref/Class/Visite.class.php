@@ -59,8 +59,8 @@ d.HeureDepart, l.Libelle as LibelleL, r.Notes
 from `##_Cadref-Reservation` r
 inner join `##_Cadref-Visite` v on v.Id=r.VisiteId
 inner join `##_Cadref-Adherent` e on e.Id=r.AdherentId 
-inner join `##_Cadref-Depart` d on d.Id=r.DepartId
-inner join `##_Cadref-Lieu` l on l.Id=d.LieuId
+left join `##_Cadref-Depart` d on d.Id=r.DepartId
+left join `##_Cadref-Lieu` l on l.Id=d.LieuId
 where r.Annee=$annee and r.Supprime=0 and r.Attente=0 ";
 		if($debut != '') $sql .= "and r.Visite>='$debut' ";
 		if($fin != '') $sql .= "and r.Visite<='$fin' ";
@@ -77,7 +77,7 @@ where r.Annee=$annee and r.Supprime=0 and r.Attente=0 ";
 
 		$pdf->PrintLines($pdo);
 
-		$file = 'Home/tmp/VisiteGuidee'.date('YmdHi').'.pdf';
+		$file = 'Home/tmp/VisiteGuidee'.date('YmdHis').'.pdf';
 		$pdf->Output(getcwd() . '/' . $file);
 		$pdf->Close();
 
