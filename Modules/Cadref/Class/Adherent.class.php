@@ -323,7 +323,7 @@ class Adherent extends genericClass {
 		switch($mode) {
 			case 0: // liste edherents
 				$file = 'ListeAdherent';
-				$typAdh = isset($obj['typeAdherent']) ? $obj['typeAdherent'] : '';
+				$typAdh = isset($obj['TypeAdherent']) ? $obj['TypeAdherent'] : '';
 				$contenu = isset($obj['Contenu']) ? $obj['Contenu'] : '';
 				$rupture = isset($obj['Rupture']) ? $obj['Rupture'] : '';
 				$enseignant = isset($obj['Enseignant']) ? $obj['Enseignant'] : '';
@@ -366,7 +366,7 @@ inner join `##_Cadref-Adherent` e on e.Id=i.AdherentId ";
 
 					// type adherent
 					if($typAdh != '') {
-						$whr .= "and TypeAdherent in (";
+						$whr .= "and e.Adherent in (";
 						switch($typAdh) {
 							case 'B': $whr .= "'B') ";
 								break;

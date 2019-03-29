@@ -623,6 +623,7 @@
 			if(enb) {
 				if(Number(cad.solde) != 0) $('#inscriptionNext').html('Différé');
 				else $('#inscriptionNext').html('Valider');
+				$('#inscriptionNext').focus();
 			}
 			else $('#inscriptionNext').html('-----');
 		}
@@ -1140,18 +1141,23 @@
 		}
 
 		// modification depart
+		var departTm
 		$scope.departModify = function(item) {
 			var i = $scope.departInfo;
 			var o = $scope.departObj = {};
 			angular.copy(item, o);
 			o.VisiteVisiteId = $scope.obj.id;
 			i.mode = 'edit';
-			$('#heureDepart').focus();
+			departTm = $timeout(function () {
+				$('#heureDepart').focus();
+			},100);
 		}
+		
+		
 
-		$('#departFiche').on('shown', function() {
-			$('#heureDepart').focus();
-		});
+//		$('#departFiche').on('shown', function() {
+//			$('#heureDepart').focus();
+//		});
 
 		// sauve depart
 		$scope.departSave = function() {
@@ -1179,6 +1185,8 @@
 				try { $scope.$digest(); } catch(ex) {}
 			});
 		}
+		
+		
 		{% endif %}
 	
 		

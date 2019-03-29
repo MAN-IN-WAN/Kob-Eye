@@ -146,11 +146,11 @@ class PrintAdherent extends FPDF {
 		$this->Cell(129 - $x, 4, $l['Mail']);
 
 		$this->SetFont('Arial', '', 10);
-		if($this->mode == 0 && $l['Delegue']) {
-			$cls = Sys::getOneData('Cadref', 'Classe/' . $l['Delegue']);
-			$this->SetXY($this->left + 129, $this->posy);
-			$this->Cell(15, 4, $cls->CodeClasse, 0, 0, 'L');
-		}
+//		if($this->mode == 0 && $l['Delegue']) {
+//			$cls = Sys::getOneData('Cadref', 'Classe/' . $l['Delegue']);
+//			$this->SetXY($this->left + 129, $this->posy);
+//			$this->Cell(15, 4, $cls->CodeClasse, 0, 0, 'L');
+//		}
 		$this->SetXY($this->left + 124, $this->posy);
 		$this->Cell(26, 4, $l['Telephone1'], 0, 0, 'L');
 		$this->Cell(26, 4, $l['Telephone2'], 0, 0, 'L');
@@ -158,7 +158,7 @@ class PrintAdherent extends FPDF {
 		switch($this->mode) {
 			case 0:
 				if($this->attente) $s = date('d/m/Y H:i', $l['DateAttente']);
-				else $s = 'C:' . substr($l['CodeClasse'], 10, 1);
+				else $s = 'C:'.substr($l['CodeClasse'], 10, 1);
 				break;
 			case 1:
 				$s = $l['DateCertificat'] ? date('d/m/Y', $l['DateCertificat']) : 'N.D.';
