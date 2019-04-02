@@ -23,7 +23,7 @@ class Reglement extends genericClass {
 			case 0:
 				$ddeb = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateDebut'].' 00:00:00')->getTimestamp(); 
 				$dfin = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateFin'].' 23:59:59')->getTimestamp();
-				$where = "r.DateReglement>=$ddeb and DateReglement<=$dfin and r.Differe=0 and r.ReservationId=0";
+				$where = "r.DateReglement>=$ddeb and r.DateReglement<=$dfin and (r.Differe=0 or r.Encaisse=1) and r.ReservationId=0";
 				$title = 'Règlements '.$user.' '.$obj['DateDebut'].'-'.$obj['DateFin'];
 				$file .= 'Reglements_'.$user.'_'.date('Ymd', $ddeb).'_'.date('Ymd', $dfin).'.pdf';
 				break;
@@ -33,7 +33,7 @@ class Reglement extends genericClass {
 				$dfin->add(DateInterval::createFromDateString('1 month'));
 				$dfin->add(DateInterval::createFromDateString('1 second'));
 				$dfin = $dfin->getTimestamp();
-				$where = "r.DateReglement>=$ddeb and DateReglement<=$dfin and r.Differe=1 and r.Encaisse=0  and r.ReservationId=0";
+				$where = "r.DateReglement>=$ddeb and r.DateReglement<$dfin and r.Differe=1 and r.ReservationId=0";
 				$title = 'Différés '.$obj['DateDebut'];
 				$file .= 'Differes_'.substr($obj['DateDebut'], 3).substr($obj['DateDebut'], 0, 2).'.pdf';
 				break;
@@ -45,9 +45,11 @@ class Reglement extends genericClass {
 		}
 
 		$sql = "
-select r.Utilisateur,r.DateReglement,r.Montant,r.ModeReglement,h.Numero,h.Nom,h.Prenom
+select r.Utilisateur,r.DateReglement,r.Montant,r.ModeReglement,h.Numero,h.Nom,h.Prenom,r.Differe,r.Encaisse,v.Visite
 from `##_Cadref-Reglement` r 
 inner join `##_Cadref-Adherent` h on h.Id=r.AdherentId
+left join `##_Cadref-Reservation` s on s.Id=r.ReservationId
+left join `##_Cadref-Visite` v on v.Id=s.VisiteId
 where ".$where;
 		$sql .= " and r.Supprime=0 ";	
 		if($user != '') $sql .= " and r.Utilisateur='$user' ";
@@ -68,7 +70,7 @@ where ".$where;
 		$pdf->Output(getcwd().'/'.$file);
 		$pdf->Close();
 		
-		return array('pdf'=>$file);
+		return array('pdf'=>$file, 'sql'=>$sql);
 	}
 
 	

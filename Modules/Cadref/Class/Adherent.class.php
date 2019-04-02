@@ -11,6 +11,8 @@ class Adherent extends genericClass {
 			$this->Inscription = $annee;
 		}
 		$this->NomPrenom = $this->Nom.' '.$this->Prenom;
+		$this->Utilisateur = Sys::$User->Initiales;
+		$this->DateModification = time();
 		return parent::Save();
 	}
 
@@ -75,7 +77,7 @@ class Adherent extends genericClass {
 		$a->Visites = $visit;
 		$a->Reglement = $regle;
 		$a->Differe = $diffe;
-		$a->Solde = $a->Cotisation + $cours + $visit - $regle - $diffe + $a->Regularisation;
+		$a->Solde = $a->Cotisation + $cours /*+ $visit*/ - $regle - $diffe + $a->Regularisation;
 		$a->Save();
 
 		return true;
@@ -498,7 +500,7 @@ order by a.Nom, a.Prenom";
 		if($contenu != 'Q') {
 			require_once ('PrintAdherent.class.php');
 
-			$pdf = new PrintAdherent($mode, $contenu, $rupture, $antenne, $attente);
+			$pdf = new PrintAdherent($mode, $contenu, $rupture, $antenne, $attente, $typAdh);
 			$pdf->SetAuthor("Cadref");
 			$pdf->SetTitle('Liste adherents');
 
@@ -529,7 +531,7 @@ order by a.Nom, a.Prenom";
 			$pdf->AddPage();
 			foreach($pdo as $l) {
 				$s = $l['Nom'].'  '.$l['Prenom']."\n".$l['Adresse1']."\n".$l['Adresse2']."\n".$l['CP']."  ".$l['Ville'];
-				$pdf->Add_Label($s);
+				$pdf->Add_Label(iconv('UTF-8', 'ISO-8859-15//TRANSLIT', $s));
 			}
 
 			$file = 'Home/tmp/EtiquetteAdherent_'.date('YmdHis').'.pdf';
@@ -1025,5 +1027,115 @@ where ce.Classe=:cid";
 		$data['message'] = 'Mot de passe enregistré';
 		return $data;
 	}
+
+
+	function EditReservations($params) {
+		$annee = Cadref::$Annee;
+		if(!isset($params['Numero'])) if(!isset($params['step'])) $params['step'] = 0;
+		switch($params['step']) {
+			case 0:
+				return array(
+					'step'=>1,
+					'template'=>'editReservation',
+					'callNext'=>array(
+						'nom'=>'EditReservations',
+						'title'=>'Réglement',
+						'needConfirm'=>false
+					)
+				);
+				break;
+			case 1:
+				unset($params['step']);
+				$ret = $this->saveReservations($params, true);
+				$this->saveAnneeReserv($params);
+				if($ret) return array(
+						'data'=>'Reservation enregistrée',
+						'callBack'=>array(
+							'nom'=>'refreshAdherent',
+							'args'=>array(true)
+						)
+					);
+				return false;
+				break;
+		}
+	}
+
+	private function saveReservations($params, $saveAdh) {
+		$annee = Cadref::$Annee;
+		$inscr = $params['Visit'];
+		if(!$inscr['updated']) return true;
+
+		// reservations
+		foreach($params['newReserv'] as $ins) {
+			if(!$ins['updated']) continue;
+			$id = $ins['id'];
+			$attente = 0;
+			$supprime = 0;
+
+			$o = genericClass::createInstance('Cadref', 'Reservation');
+			$cls = genericClass::createInstance('Cadref', 'Visite');
+			$cls->initFromId($ins['VisiteVisiteId']);
+
+			if(!$id) {
+				$o->addParent($this);
+				$o->addParent($cls);
+				$o->Annee = $annee;
+				$o->Numero = $this->Numero;
+				$o->Visite = $ins['Visite'];
+			} else {
+				$o->initFromId($id);
+				$attente = $o->Attente;
+				$supprime = $o->Supprime;
+			}
+
+			$o->Attente = $ins['Attente'];
+			$o->Supprime = $ins['Supprime'];
+			$o->DateInscription = $ins['DateInscription'];
+			$o->DateAttente = $ins['DateAttente'];
+			$o->DateSupprime = $ins['DateSupprime'];
+			$o->Prix = $ins['Prix'];
+			//$o->Assurance = $ins['Assurance'];
+			$o->ModeReglement = $ins['ModeReglement'];
+			$o->Utilisateur = Sys::$User->Initiales;
+			$o->Save();
+
+			// visite : inscrits/attentes/suppmime
+			if(!$id || $supprime != $o->Supprime || $attente != $o->Attente) {
+				$cls->Save();
+			}
+		}
+
+//		// reglement
+//		if($inscr['paye']) {
+//			$r = genericClass::createInstance('Cadref', 'Reglement');
+//			$r->addParent($this);
+//			$r->Numero = $this->Numero;
+//			$r->Annee = $annee;
+//			$r->DateReglement = $inscr['date'];
+//			$r->Montant = $inscr['paye'];
+//			$r->ModeReglement = $inscr['mode'];
+////			$r->Cotisation = $inscr['cotis'];
+//			$r->Notes = $inscr['note'];
+//			$r->Differe = 1;
+//			$r->Encaisse = 0;
+//			$r->Utilisateur = Sys::$User->Initiales;
+//			$r->Save(true);
+//		}
+
+		// adherent
+		$this->Annee = $annee;
+		if($saveAdh) $this->Save();
+
+		return true;
+	}
+	
+	private function saveAnneeReserv($params) {
+		$data = new stdClass();
+		$inscr = $params['Visit'];
+		$data->Cotisation = $inscr['cotis'];
+		$data->Regularisation = $inscr['regul'];
+		$this->SaveAnnee($data, 1);
+	}
+	
 
 }

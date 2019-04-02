@@ -15,17 +15,22 @@ class PrintVisite extends FPDF {
 	private $record;
 	private $compteur;
 	private $lpage = 0;
-	private $chauffeur;
+	private $mode;
 	
 	
-	function PrintVisite($chauffeur) {
+	function PrintVisite($mode) {
 		parent::__construct('L', 'mm', 'A4');
 		$this->AcceptPageBreak(true, 12);
 		
-		$this->chauffeur = $chauffeur;
-		$this->head = array('','N° Carte','Nom','Réglé','Départ','Présent','Observations');
-		$this->width = array(9,22,83,15,72,18,48);
-		$this->align = array('C','C','C','C','C','C','C');
+		$this->mode = $mode;
+		$this->head = array(
+			array('','N° Carte','Nom','Réglé','Départ','Présent','Observations'),
+			array('','N° Carte','Nom','Départ','Présent','Observations'),
+			array('','N° Carte','Nom','Réglé','Dép.','Téléphone','Téléphone','Mail'));
+		$this->width = array(
+			array(9,22,83,15,72,18,48),
+			array(9,22,98,72,18,48),
+			array(9,22,83,15,10,28,28,72));
 
 		$this->titre = "Visites Guidées CADREF";
 	}
@@ -56,14 +61,9 @@ class PrintVisite extends FPDF {
 		
 		$this->SetFont('Arial','',12);
 		$this->SetXY($this->left, $y);
-		$n = count($this->width);
+		$n = count($this->width[$this->mode]);
 		for($i = 0; $i < $n; $i++) {
-			if($this->chauffeur) {
-				$w = $this->width[$i];
-				if($i == 2) $w += $this->width[3];
-				if($i != 3) $this->Cell($w, 6.5, $this->cv($this->head[$i]), 'RT'.($i == 0 ? 'L' : ''), 0, $this->align[$i]);
-			}
-			else $this->Cell($this->width[$i], 6.5, ($i == 3 && $this->chauffeur) ? '' : $this->cv($this->head[$i]), 'RT'.($i == 0 ? 'L' : ''), 0, $this->align[$i]);
+			$this->Cell($this->width[$this->mode][$i], 6.5, $this->cv($this->head[$this->mode][$i]), 'RT'.($i == 0 ? 'L' : ''), 0, 'C');
 		}
 		$y += 6.5;
 		
@@ -100,17 +100,27 @@ class PrintVisite extends FPDF {
 	}
 
 	private function printLine($l) {
+		$mode = $this->mode;
 		$this->SetXY($this->left, $this->posy);
 		$this->compteur++;
 		$this->SetFont('Arial','',12);
-		$this->Cell($this->width[0], 6.5, $this->compteur, 'LRT', 0, 'C');
-		$this->Cell($this->width[1], 6.5, $l['Numero'], 'RT', 0, 'C');
-		$this->Cell($this->width[2]+($this->chauffeur ? $this->width[3] : 0), 6.5, $this->cv($l['Nom'].' '.$l['Prenom']), 'RT', 0, 'L');
-		if(! $this->chauffeur) $this->Cell($this->width[3], 6.5, $l['Montant'], 'RT', 0, 'C');
+		$this->Cell($this->width[$mode][0], 6.5, $this->compteur, 'LRT', 0, 'C');
+		$this->Cell($this->width[$mode][1], 6.5, $l['Numero'], 'RT', 0, 'C');
+		$this->Cell($this->width[$mode][2], 6.5, $this->cv($l['Nom'].' '.$l['Prenom']), 'RT', 0, 'L');
+		$n = 3;
+		if($this->mode != 1) $this->Cell($this->width[$mode][$n++], 6.5, $l['Montant'], 'RT', 0, 'C');
 		$this->SetFont('Arial','',10);
-		$this->Cell($this->width[4], 6.5, $this->cv(trim($l['HeureDepart'].'  '.$l['LibelleL'])), 'RT', 0, 'L');
-		$this->Cell($this->width[5], 6.5, '', 'RT', 0, 'L');
-		$this->Cell($this->width[6], 6.5, $l->Notes, 'RT', 0, 'L');
+		if($this->mode == 2) {
+			$this->Cell($this->width[$mode][$n++], 6.5, $l['Lieu'], 'RT', 0, 'L');
+			$this->Cell($this->width[$mode][$n++], 6.5, $l['Telephone1'], 'RT', 0, 'L');
+			$this->Cell($this->width[$mode][$n++], 6.5, $l['Telephone2'], 'RT', 0, 'L');
+			$this->Cell($this->width[$mode][$n++], 6.5, $l['Mail'], 'RT', 0, 'L');			
+		}
+		else {
+			$this->Cell($this->width[$mode][$n++], 6.5, $this->cv(trim($l['HeureDepart'].'  '.$l['LibelleL'])), 'RT', 0, 'L');
+			$this->Cell($this->width[$mode][$n++], 6.5, '', 'RT', 0, 'L');
+			$this->Cell($this->width[$mode][$n], 6.5, $l->Notes, 'RT', 0, 'L');
+		}
 		$this->posy += 6.5;
 	} 
 

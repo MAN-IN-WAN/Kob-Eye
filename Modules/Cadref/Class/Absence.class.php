@@ -37,6 +37,8 @@ class Absence extends genericClass {
 		$h = "<br />du $jd ".date('d/m/Y H:i', $this->DateDebut);
 		$h .= "<br />au $jf ".date('d/m/Y H:i', $this->DateFin);
 		$d .= Cadref::MailSignature();
+		$m = 'Absence enseignant : '.$e->Prenom.' '.$e->Nom."\n";
+		$m .= str_replace('<br />',"\n",$h);
 
 		$sent = false;
 		$cs = $e->getChildren('Classe');
@@ -47,25 +49,19 @@ class Absence extends genericClass {
 					if($a->Mail) {
 						$b0 = Cadref::MailCivility($a);
 						$params = array('Subject'=>$s, 'To'=>array($a->Mail), 'Body'=>$b0.$b.$h.$d);
-						//if(MSG_ADH) Cadref::SendMessage($params);
+						if(MSG_ADH) Cadref::SendMessage($params);
 					}
-					$params = array('Telephone1'=>$a->Telephone1,'Telephone2'=>$a->Telephone2,'Message'=>$s.str_replace('<br />',"\n",$h));
-					//if(SMS_ADH) Cadref::SendSms($params);
+					$params = array('Telephone1'=>$a->Telephone1,'Telephone2'=>$a->Telephone2,'Message'=>$m);
+					if(SMS_ADH) Cadref::SendSms($params);
 				}				
 				$sent = true;
 			}
 		}
 		
-		//if($sent) {
-			$params = array('Subject'=>$s, 'Body'=>'Bonjour...'.$b.$h.$d);
-			if(MSG_ADMIN) Cadref::SendMessageAdmin($params);
-			if($this->Message == 0) {
-				$this->Message = 1;
-				$this->Save();
-			}
+		if($sent) {
 			$params = array('Message'=>"Message envoyé aux élèves :\n".$s.str_replace('<br />',"\n",$h));
 			if(SMS_ADMIN) Cadref::SendSmsAdmin($params);
-		//}
+		}
 		return $sent;
 	}
 

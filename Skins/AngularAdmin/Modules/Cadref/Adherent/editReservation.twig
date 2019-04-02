@@ -1,0 +1,100 @@
+<div>
+	<span class="cadref-ins-numero" ng-bind="modalObj.Numero"></span> <span class="cadref-ins-nom" ng-bind="modalObj.Nom|uppercase"></span> <span class="cadref-ins-prenom" ng-bind="modalObj.Prenom"></span>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<ng-include src="'/{{ CurrentUrl }}/0/Reservation/ListReservation.htm'" ></ng-include>
+	</div>
+</div>
+<div class="row cadref-separ"></div>
+<section class="panel">	
+	<table>
+		<thead>
+			<tr>
+				<th>Cotis.</th>
+				<th>Cotis.</th>
+				<th>Cours</th>
+				<th>Visites</th>
+				<th>Règlé</th>
+				<th>Différé</th>
+				<th>Régul.</th>
+				<th>Solde</th>
+				<th>Payé</th>
+				<th>Mode</th>
+				<th>Date</th>
+				<th>Notes</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="cadref-td-inscr">			
+					<switch ng-model="CadrefVisite.Visit.noCotis" ng-change="adherentVisiteCotisation()" class="cadref-switch-green"></switch>
+				</td>
+				<td class="cadref-td-inscr">
+					<input type="text" class="form-control cadref-input" ng-model="CadrefVisite.Visit.cotis" readonly tabindex="-1" style="width:60px"/>
+				</td>
+				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefVisite.Visit.cours" readonly tabindex="-1" style="width:60px" /></td>
+				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefVisite.Visit.visit" readonly tabindex="-1" style="width:60px" /></td>
+				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefVisite.Visit.regle" readonly tabindex="-1" style="width:60px" /></td>
+				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefVisite.Visit.diff" readonly tabindex="-1" style="width:60px" /></td>
+				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefVisite.Visit.regul" readonly tabindex="-1" style="width:60px" /></td>
+				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefVisite.Visit.solde" ng-class="{'cadref-highlight': CadrefVisite.Visit.nonSolde}" readonly tabindex="-1" style="width:60px" /></td>
+				<td class="cadref-td-inscr">
+					<input type="text" id="reservPaye" class="form-control cadref-input" ng-model="CadrefVisite.Visit.paye" ng-change="visitePaye()" style="width:60px" />
+				</td>
+				<td class="cadref-td-inscr">
+					<select class="form-control cadref-input" ng-model="CadrefVisite.Visit.mode" ng-change="nextVisiteControle()">
+						<option value=""></option>
+						<option value="B">Banque</option>
+						<option value="C">Carte</option>
+						<option value="E">Espèces</option>
+						<option value="P">Prélèvement</option>
+						<option value="V">Vacances</option>
+					</select>	
+				</td>
+				<td class="cadref-td-inscr">
+					<label class="input-group datepicker-only-init">
+						<input id="input-CadrefVisitedate" type="text" class="form-control cadref-input" mask="dd/dd/dddd" 
+							   ng-model="CadrefVisite.Visit.date" style="width:100px" ng-init="initDatePickerOnly()"/>
+						<span class="input-group-addon">
+							<i class="icmn-calendar"></i>
+						</span>
+					</label>
+				</td>
+				<td class="cadref-td-inscr">
+					<input type="text" class="form-control cadref-input" ng-model="CadrefVisite.Visit.note"/>
+				</td>
+				<td class="cadref-td-inscr">
+					<a href="" id="reservationNext" type="button" class="btn btn-info ng-scope" ng-disabled="nextVisiteDisabled" ng-if="CadrefAdherentfunction.callNext" ng-click="CadrefAdherentcallFunction(CadrefAdherentfunction.callNext.item,CadrefAdherentfunction.callNext.nom,CadrefAdherentfunction.callNext.title,CadrefAdherentfunction.callNext.needConfirm,1)">Valider</a>
+				</td>
+			</tr>
+		</tbody>
+
+	</table>
+</section>
+<div class="row cadref-separ"></div>
+<div class="form-group row">
+    <div class="col-lg-5 col-md-12">
+		<div class="input-group list-search">
+			<div class="row">
+				<div class="col-md-6" {#style="padding-right:0"#}>
+					<input type="text" id="searchCadrefVisite" class="form-control" name="CadrefVisitequery" ng-model="CadrefVisite.filter" ng-change="visiteControle()" 
+						   placeholder="Visite" mask="wwwwwwwwww" autofocus style="text-transform:uppercase;" onkeyup="this.value = this.value.toUpperCase();">
+				</div>
+			</div>
+			<span class="input-group-btn">
+				<a href="javascript: void(0);" class="btn btn-default cadref-btn-erase" accesskey="x" title="Alt X" ng-click="visiteClearFilters()"></a>
+                <a  href="javascript: void(0);" class="btn btn-success" accesskey="a" title="Alt A" ng-click="visiteAjoute(null)" ng-disabled="addVisiteDisabled">Ajouter</a>
+			</span>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<ng-include src="'/Cadref/Visite/ListVisite.htm?tempContext=1'" ></ng-include>
+	</div>
+</div>
+<input type="hidden" ng-init="CadrefAdherentfunction.args.newReserv=CadrefReservation.store.data.temp"/>
+<input type="hidden" ng-init="CadrefAdherentfunction.args.Visit=CadrefVisite.Visit"/>
+

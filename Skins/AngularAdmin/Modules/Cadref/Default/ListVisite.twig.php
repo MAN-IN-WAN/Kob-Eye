@@ -1,8 +1,6 @@
 <?php
-
-if(isset($vars['Path'])) $Path = $vars['Path'];
-else $vars['Path'] = $Path = $vars['Query'];
-$info = Info::getInfos($Path);
+$vars['Annee'] = $GLOBALS['Systeme']->getRegVars('AnneeEnCours');
+$info = Array('Module'=>'Cadref', 'ObjectType'=>'Classe');
 $o = genericClass::createInstance($info['Module'], $info['ObjectType']);
 $o->setView();
 $vars['identifier'] = $info['Module'] . $info['ObjectType'];
@@ -27,6 +25,17 @@ if(!isset($info['ObjectType'])) {
 } else {
 	$tab = array($info['Module'], $info['ObjectType'], 'Form');
 }
-$vars['Annee'] = Cadref::$Annee;
+$vars['tempContext'] = isset($_GET['tempContext']) && $_GET['tempContext'];
+$vars['children'] = isset($_GET['children']) && $_GET['children'];
+
+$t = isset($_GET['hideBtn']) ? $_GET['hideBtn'] : '';
+$vars['hideBtn'] = array(
+	'selection' => strpos($t, 'selection') !== false,
+	'add' => strpos($t, 'add') !== false,
+	'delete' => strpos($t, 'delete') !== false,
+	'export' => strpos($t, 'export') !== false,
+	'functions' => strpos($t, 'functions') !== false
+);
+$vars['showCheckboxes'] = false;
 
 ?>

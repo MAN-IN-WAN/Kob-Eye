@@ -212,7 +212,7 @@ from cadref18.Communes;
 
 truncate kbabtel.`kob-Cadref-Enseignant`;
 insert into kbabtel.`kob-Cadref-Enseignant` (umod,gmod,omod,Code,Nom,Prenom,Adresse1,Adresse2,CP,Ville,Telephone1,Telephone2,Notes,Mail)
-select 7,7,7,Code,Nom,Prenom,Adr1,Adr2,CP,Ville,Tel1,Tel2,Notes,eMail from cadref18.Enseignants;
+select 7,7,7,Code,Nom,Prenom,Adr1,Adr2,CP,Ville,aatel(Tel1),aatel(Tel2),Notes,eMail from cadref18.Enseignants;
 
 truncate kbabtel.`kob-Cadref-Section`;
 insert into kbabtel.`kob-Cadref-Section` (umod,gmod,omod,Section,Libelle)
@@ -285,7 +285,7 @@ left join kbabtel.`kob-Cadref-Niveau` n on d.id=n.DisciplineId
 left join kbabtel.`kob-Cadref-Classe` c on n.Id=c.NiveauId
 where d.Id is null;
 delete d
-from `kob-Cadref-Discipline` d
+from kbabtel.`kob-Cadref-Discipline` d
 left join kbabtel.`kob-Cadref-Niveau` n on d.id=n.DisciplineId
 left join kbabtel.`kob-Cadref-Classe` c on n.Id=c.NiveauId
 where d.Id is null;
@@ -325,7 +325,7 @@ where c.Ens2<>'';
 #where Prix=102 and CycleDebut=''
 
 
-
+/*
 truncate kbabtel.`kob-Cadref-Adherent`;
 insert into kbabtel.`kob-Cadref-Adherent` (umod,gmod,omod,Numero,Nom,Prenom,Adresse1,Adresse2,CP,Ville,Telephone1,Telephone2,Notes,Mail,
 NotesAnnuelles,Naissance,Inscription,Sexe,ProfessionId,CursusId,SituationId,Adherent,Annee,Etoiles,Origine,DateCertificat,ClasseId,
@@ -333,6 +333,20 @@ Cotisation,Cours,Reglement,Differe,Regularisation)
 select 7,7,7,Numero,Nom,Prenom,Adr1,Adr2,CP,Ville,Tel1,Tel2,e.Notes,eMail,
 NotesTemp,Naissance,Inscription,Sexe,p.Id,u.Id,s.Id,Adherent,e.Annee,Etoiles,Origine,if(Certificat<@annee,null,unix_timestamp(Certificat)),c.Id,
 Cotisation,Montant,Reglement,Differe,Regul
+from cadref18.Eleves e
+left join kbabtel.`kob-Cadref-Classe` c on c.CodeClasse=concat(substr(e.Delegue,1,1),substr(e.Delegue,2,2),substr(e.Delegue,4,2),substr(e.Delegue,6,1),substr(e.Delegue,7,1))
+left join kbabtel.`kob-Cadref-Profession` p on p.Profession=e.Profession
+left join kbabtel.`kob-Cadref-Cursus` u on u.Cursus=e.Cursus
+left join kbabtel.`kob-Cadref-Situation` s on s.Situation=e.Situation;
+*/
+
+truncate kbabtel.`kob-Cadref-Adherent`;
+insert into kbabtel.`kob-Cadref-Adherent` (umod,gmod,omod,Numero,Nom,Prenom,Adresse1,Adresse2,CP,Ville,Telephone1,Telephone2,Notes,Mail,
+NotesAnnuelles,Naissance,Inscription,Sexe,ProfessionId,CursusId,SituationId,Adherent,Annee,Etoiles,Origine,DateCertificat,ClasseId,
+Cotisation,Cours,Reglement,Differe,Regularisation,Utilisateur,DateModification)
+select 7,7,7,e.Numero,e.Nom,e.Prenom,e.Adr1,e.Adr2,e.CP,e.Ville,aatel(e.Tel1),aatel(e.Tel2),e.Notes,eMail,
+e.NotesTemp,e.Naissance,e.Inscription,e.Sexe,p.Id,u.Id,s.Id,Adherent,e.Annee,e.Etoiles,e.Origine,if(e.Certificat<@annee,null,unix_timestamp(e.Certificat)),c.Id,
+e.Cotisation,e.Montant,e.Reglement,e.Differe,e.Regul,e.Utilisateur,unix_timestamp(DateModif)
 from cadref18.Eleves e
 left join kbabtel.`kob-Cadref-Classe` c on c.CodeClasse=concat(substr(e.Delegue,1,1),substr(e.Delegue,2,2),substr(e.Delegue,4,2),substr(e.Delegue,6,1),substr(e.Delegue,7,1))
 left join kbabtel.`kob-Cadref-Profession` p on p.Profession=e.Profession
@@ -377,8 +391,8 @@ from kbabtel.`kob-Cadref-Visite` v
 left join kbabtel.`kob-Cadref-Lieu` l on l.`Type`='R';
 
 truncate kbabtel.`kob-Cadref-Reservation`;
-insert into kbabtel.`kob-Cadref-Reservation` (umod,gmod,omod,Numero,Visite,Annee,Prix,Reduction,Attente,DateAttente,DateInscription,AdherentId,VisiteId,Utilisateur,Notes)
-select 7,7,7,r.Numero,r.Visite,@annee,r.Prix,r.Reduction,r.Attente,if(r.DateAtte<@annee,null,unix_timestamp(r.DateAtte)),unix_timestamp(r.Creation),a.Id,v.Id,r.Utilisateur,r.Notes
+insert into kbabtel.`kob-Cadref-Reservation` (umod,gmod,omod,Numero,Visite,Annee,Prix,Reduction,Attente,DateAttente,DateInscription,AdherentId,VisiteId,Utilisateur,Notes,ModeReglement)
+select 7,7,7,r.Numero,r.Visite,@annee,r.Prix,r.Reduction,r.Attente,if(r.DateAtte<@annee,null,unix_timestamp(r.DateAtte)),unix_timestamp(r.Creation),a.Id,v.Id,r.Utilisateur,r.Notes,'B'
 from cadref18.Reservations r
 left join kbabtel.`kob-Cadref-Adherent` a on a.Numero=r.Numero
 left join kbabtel.`kob-Cadref-Visite` v on v.Visite=r.Visite
@@ -401,11 +415,12 @@ from cadref18.Reglements r
 left join kbabtel.`kob-Cadref-Adherent` a on a.Numero=r.Numero
 order by r.Numero,r.DateRegl;
 
+/*
 insert into kbabtel.`kob-Cadref-Reglement` (umod,gmod,omod,Numero,AdherentId,ReservationId,Visite,Montant,Utilisateur,DateReglement,Differe,Encaisse,ModeReglement,Annee)
 select 7,7,7,r.Numero,r.AdherentId,r.Id,r.Visite,r.Prix,r.Utilisateur,v.DateVisite,1,from_unixtime(v.DateVisite)<now(),'B',@annee
 from kbabtel.`kob-Cadref-Reservation` r
 inner join kbabtel.`kob-Cadref-Visite` v on v.Id=r.VisiteId;
-
+*/
 
 truncate kbabtel.`kob-Cadref-AdherentAnnee`;
 insert into kbabtel.`kob-Cadref-AdherentAnnee` (umod,gmod,omod,AdherentId,Numero,Annee,NotesAnnuelles,Adherent,ClasseId,

@@ -104,7 +104,6 @@
 				<th class="cadref-th" title="Mode règlement">M</th>
 				<th class="cadref-th" title="Différé">D</th>
 				<th class="cadref-th" title="Encaissé">E</th>
-				<th class="cadref-th" title="Visite">V</th>
 				<th class="cadref-th">Notes</th>
 				<th class="cadref-th">U</th>
 			</tr>
@@ -124,7 +123,6 @@
 					<a href="" ng-click="reglementModify(item)" class="label cadref-warning" ng-if="!item.Encaisse && !item.Supprime">N</a>
 					<a href="" ng-click="reglementModify(item)" class="label cadref-danger" ng-if="item.Supprime">S</a>
 				</td>
-				<td scope="row" class="cadref-td typeboolean"><a href="" ng-click="reglementModify(item)">{[{ item.Visite }]}</a></td>
 				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reglementModify(item)">{[{ item.Notes }]}</a></td>
 				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reglementModify(item)">{[{ item.Utilisateur }]}</a></td>
 			</tr>

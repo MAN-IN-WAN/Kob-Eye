@@ -226,8 +226,9 @@
 
 
 
-	<OBJECTCLASS title="Adherent" driver="mysql" searchType="plaintext" order="Nom" orderType="ASC" logEvent="1" master="1" AccessPoint="1" Icon="[None]" Description="Adhérents" Operations="add,edit,EditInscriptions,PrintCarte,PrintAttestation,PrintCheque,SendMessage" Class="Modules/Cadref/Class/Adherent.class.php">
+	<OBJECTCLASS title="Adherent" driver="mysql" searchType="plaintext" order="Nom" orderType="ASC" logEvent="1" master="1" AccessPoint="1" Icon="[None]" Description="Adhérents" Operations="add,edit,EditInscriptions,EditReservations,PrintCarte,PrintAttestation,PrintCheque,SendMessage" Class="Modules/Cadref/Class/Adherent.class.php">
 		<FUNCTION title="Inscription">EditInscriptions</FUNCTION>
+		<FUNCTION title="Visite">EditReservations</FUNCTION>
 		<FUNCTION title="Carte">PrintCarte</FUNCTION>
 		<FUNCTION title="Attestation">PrintAttestation</FUNCTION>
 		<FUNCTION title="Cheque">PrintCheque</FUNCTION>
@@ -273,6 +274,9 @@
 		<PROPERTIES type="varchar" length="8" category="RIB" form="29" fiche="29" description="BIC">BIC</PROPERTIES>
 
 		<PROPERTIES type="float" default="0" auto="1" category="Finance" form="30" fiche="30" description="Cotisation">Cotisation</PROPERTIES>
+
+		<PROPERTIES type="varchar" length="4" auto="1" category="Description" form="90" description="Utilisateur">Utilisateur</PROPERTIES>
+		<PROPERTIES type="datetime" auto="1" category="Description" form="91" description="Date de modification">DateModification</PROPERTIES>
 
 <!--
 		<PROPERTIES type="varchar" length="2" category="Association" values="B::Bureau,A::Administrateur,D::Délégué" form="14" fiche="14" description="Role associatif">Adherent</PROPERTIES>
@@ -407,7 +411,7 @@
 		<PROPERTIES type="float" searchOrder="3" default="0" category="Description" list="2" distDescr="Montant" description="Montant">Montant</PROPERTIES>
 		<PROPERTIES type="float" searchOrder="3" default="0" category="Description" list="2" distDescr="Soutien" description="Fond de soutien">Soutien</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Description" description="Cotisation">Cotisation</PROPERTIES>
-		<PROPERTIES type="varchar" length="1" category="Description" values="B::Banque,C::Carte,E::Espèces" list="3" ListDescr="Mode" description="Mode réglement">ModeReglement</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" category="Description" values="B::Banque,C::Carte,E::Espèces,V::Vacances,P::Prélèvement" list="3" ListDescr="Mode" description="Mode réglement">ModeReglement</PROPERTIES>
 		<PROPERTIES type="text" obligatoire="0" category="Description" list="1" form="1" description="Notes">Notes</PROPERTIES>
 		<PROPERTIES type="varchar" length="10" category="Description" list="1" form="1" description="Visite">Visite</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" description="Régularisation">Regularisation</PROPERTIES>
@@ -488,6 +492,7 @@
 		<VIEW title="DepartList" default="1" order="HeureDepart" orderType="ASC">
 			<OBJECTCLASS title="Depart">
 				<JOIN type="outer" module="Cadref" title="Lieu" on="LieuId" target="Id">
+					<PROPERTIES type="varchar" form="4" fiche="4" list="4" alias="Lieu">Lieu</PROPERTIES>
 					<PROPERTIES type="varchar" form="4" fiche="4" list="4" alias="Libelle">Libelle</PROPERTIES>
 				</JOIN>
 			</OBJECTCLASS>
@@ -504,6 +509,7 @@
 		<PROPERTIES type="date" category="Description" list="1" form="1" fiche="1" description="Date inscription">DateInscription</PROPERTIES>
 		<PROPERTIES type="boolean" default="0" category="Description" list="1" form="1" fiche="1" description="En attente">Attente</PROPERTIES>
 		<PROPERTIES type="datetime" category="Description" list="1" form="1" fiche="1" description="Date attente">DateAttente</PROPERTIES>
+		<PROPERTIES type="varchar" length="1" category="Description" values="B::Banque,C::Carte,E::Espèces,V::Vacances,P::Prélèvement" list="3" ListDescr="Mode" description="Mode réglement">ModeReglement</PROPERTIES>
 <!--		<PROPERTIES type="date" category="Description" list="1" form="1" fiche="1" description="Date attente">DateReglement</PROPERTIES>-->
 		<PROPERTIES type="float" default="0" category="Description" list="1" form="1" fiche="1" description="Prix">Prix</PROPERTIES>
 		<PROPERTIES type="float" default="0" category="Description" list="1" form="1" fiche="1" description="Reduction">Reduction</PROPERTIES>
