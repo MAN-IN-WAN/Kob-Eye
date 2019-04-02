@@ -6,8 +6,8 @@
 				<th class="cadref-th">Visite</th>
 				<th class="cadref-th">Libellé</th>
 				<th class="cadref-th">Date</th>
-				<th class="cadref-th">Places</th>
 				<th class="cadref-th">Prix</th>
+				<th class="cadref-th">Places</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -15,9 +15,9 @@
 				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
 				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="visiteAjoute(item)">{[{ item.Visite }]}</a></td>
 				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="visiteAjoute(item)">{[{ item.Libelle }]}</a></td>
-				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="visiteAjoute(item)">{[{ item.DateVisite }]}</a></td>
-				<td scope="row" class="cadref-td typefloat"><a href="" ng-click="visiteAjoute(item)">{[{ item.Places+' - '+item.Inscrits+' - '+item.Attentes }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="visiteAjoute(item)">{[{ item.DateVisite | limitTo: 5 }]}</a></td>
 				<td scope="row" class="cadref-td typefloat"><a href="" ng-click="visiteAjoute(item)">{[{ item.Prix }]}</a></td>
+				<td scope="row" class="cadref-td typefloat"><a href="" ng-click="visiteAjoute(item)" ng-class="{'cadref-highlight': item.Inscrits>=item.Places}">{[{ item.Places+' - '+item.Inscrits+' - '+item.Attentes }]}</a></td>
 			</tr>
 		</tbody>
 	</table>

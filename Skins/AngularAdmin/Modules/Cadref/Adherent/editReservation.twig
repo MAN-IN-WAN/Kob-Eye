@@ -29,7 +29,7 @@
 		<tbody>
 			<tr>
 				<td class="cadref-td-inscr">			
-					<switch ng-model="CadrefVisite.Visit.noCotis" ng-change="adherentVisiteCotisation()" class="cadref-switch-green"></switch>
+					<switch ng-model="CadrefVisite.Visit.noCotis" ng-change="visiteCotisation()" class="cadref-switch-green"></switch>
 				</td>
 				<td class="cadref-td-inscr">
 					<input type="text" class="form-control cadref-input" ng-model="CadrefVisite.Visit.cotis" readonly tabindex="-1" style="width:60px"/>
@@ -41,7 +41,7 @@
 				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefVisite.Visit.regul" readonly tabindex="-1" style="width:60px" /></td>
 				<td class="cadref-td-inscr"><input type="text" class="form-control cadref-input" ng-model="CadrefVisite.Visit.solde" ng-class="{'cadref-highlight': CadrefVisite.Visit.nonSolde}" readonly tabindex="-1" style="width:60px" /></td>
 				<td class="cadref-td-inscr">
-					<input type="text" id="reservPaye" class="form-control cadref-input" ng-model="CadrefVisite.Visit.paye" ng-change="visitePaye()" style="width:60px" />
+					<input type="text" id="reservationPaye" class="form-control cadref-input" ng-model="CadrefVisite.Visit.paye" ng-change="visitePaye()" style="width:60px" />
 				</td>
 				<td class="cadref-td-inscr">
 					<select class="form-control cadref-input" ng-model="CadrefVisite.Visit.mode" ng-change="nextVisiteControle()">
@@ -78,7 +78,7 @@
     <div class="col-lg-5 col-md-12">
 		<div class="input-group list-search">
 			<div class="row">
-				<div class="col-md-6" {#style="padding-right:0"#}>
+				<div class="col-md-6" style="padding-right:0">
 					<input type="text" id="searchCadrefVisite" class="form-control" name="CadrefVisitequery" ng-model="CadrefVisite.filter" ng-change="visiteControle()" 
 						   placeholder="Visite" mask="wwwwwwwwww" autofocus style="text-transform:uppercase;" onkeyup="this.value = this.value.toUpperCase();">
 				</div>

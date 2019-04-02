@@ -67,7 +67,7 @@
 					<input type="text" ng-model="CadrefClasse.Diff.regl[{{ i }}].id" ng-init="CadrefClasse.Diff.regl[{{ i }}].id=0;"/>
 				</td>
 				<td class="cadref-td-diff">
-					<input type="text" {% if i==lig %}id="diffPremier" autofocus tabindex="0"{% endif %} class="form-control cadref-input-diff" mask="dddd" ng-change="diffPaye({{ i }})" ng-model="CadrefClasse.Diff.regl[{{ i }}].paye" ng-init="CadrefClasse.Diff.regl[{{ i }}].paye=''" style="width:60px" />
+					<input type="text" {% if i==lig %}id="diffPremier"{% endif %} class="form-control cadref-input-diff" mask="dddd" ng-change="diffPaye({{ i }})" ng-model="CadrefClasse.Diff.regl[{{ i }}].paye" ng-init="CadrefClasse.Diff.regl[{{ i }}].paye=''; {% if i==lig %}takeFocus('diffPremier');"{% endif %}" style="width:60px" />
 				</td>
 				<td class="cadref-td-diff">
 					<select class="form-control cadref-input-diff" ng-model="CadrefClasse.Diff.regl[{{ i }}].mode" ng-init="CadrefClasse.Diff.regl[{{ i }}].mode=''">
@@ -94,7 +94,4 @@
 </table>
 <div style="height:20px"></div>
 <input type="hidden" ng-init="CadrefAdherentfunction.args.Diff=CadrefClasse.Diff"/>
-<script>
-//	$('document').ready(function(){ $('#diffPremier').focus(); console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')});
-</script>
 

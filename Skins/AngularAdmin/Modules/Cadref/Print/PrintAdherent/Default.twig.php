@@ -35,6 +35,12 @@ if($vars['mode'] == 0) {
 		$tmp[$a->Id] = trim($a->Nom.' '.$a->Prenom);
 	$vars['enseignants'] = $tmp;
 
+	$tmp = array('' => '');
+	$as = Sys::getData('Cadref', 'Visite');
+	foreach($as as $a)
+		$tmp[$a->Id] = trim($a->Viste.' '.$a->Libelle);
+	$vars['visites'] = $tmp;
+	
 	$tmp = array();
 	$as = Sys::getData('Cadref', 'Lieu');
 	foreach($as as $a)

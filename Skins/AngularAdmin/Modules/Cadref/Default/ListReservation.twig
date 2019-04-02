@@ -22,7 +22,9 @@
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Visite }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Libelle }]}</span></td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.DateVisite | limitTo : 5 }]}</span></td>
-				<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Prix }]}</span></td>
+				<td scope="row" class="cadref-td typefloat">{#<span class="label">{[{ item.Prix }]}</span></td>#}
+					<input type="text" class="form-control cadref-input-diff" ng-model="item.Prix" ng-change="visiteCalcul()" mask="dddd" style="max-width:60px"/>
+				</td>
 				<td class="cadref-td">
 					<select class="form-control cadref-input-diff" ng-model="item.ModeReglement">
 						<option value=""></option>

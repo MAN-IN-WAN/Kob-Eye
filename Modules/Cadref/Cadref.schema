@@ -500,7 +500,7 @@
 	</OBJECTCLASS>
 
 
-	<OBJECTCLASS title="Reservation" driver="mysql" order="Visite,Numero" orderType="ASC,ASC" master="0" AccessPoint="0" Icon="[None]" Description="Réservation" hidden="0" Operations="add,edit" Dico="0" Class="Modules/Cadref/Class/Reservation.class.php">
+	<OBJECTCLASS title="Reservation" driver="mysql" order="Numero" orderType="ASC" master="0" AccessPoint="0" Icon="[None]" Description="Réservation" hidden="0" Operations="add,edit" Dico="0" Class="Modules/Cadref/Class/Reservation.class.php">
 		<FKEY card="1,1" module="Cadref" data="Adherent,Id" category="Description" list="1" form="1" fiche="1" description="Adhérent" >AdherentId</FKEY>
 		<FKEY card="1,1" module="Cadref" data="Visite,Id" category="Description" list="1" form="1" fiche="1" description="Visite" >VisiteId</FKEY>
 		<PROPERTIES type="varchar" length="6" searchOrder="1" obligatoire="0" category="Description" list="1" form="1" fiche="1" description="Numéro">Numero</PROPERTIES>

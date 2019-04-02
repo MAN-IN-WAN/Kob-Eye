@@ -314,7 +314,15 @@ class Adherent extends genericClass {
 		return array('pdf'=>$file);
 	}
 
+	function PrintAdherentSession($obj) {
+		if(isset($_SESSION['PrintAdherent'])) $obj = $_SESSION['PrintAdherent'];
+		else $obj = false;
+		return $obj;
+	}
+	
 	function PrintAdherent($obj) {
+		$_SESSION['PrintAdherent'] = $obj;
+		
 		$menus = ['impressionslisteadherents', 'impressionscertificatesmedicaux', 'impressionsfichesincompletes'];
 		$mode = array_search($obj['CurrentUrl'], $menus);
 
@@ -329,30 +337,41 @@ class Adherent extends genericClass {
 				$contenu = isset($obj['Contenu']) ? $obj['Contenu'] : '';
 				$rupture = isset($obj['Rupture']) ? $obj['Rupture'] : '';
 				$enseignant = isset($obj['Enseignant']) ? $obj['Enseignant'] : '';
+				$visite = isset($obj['Visite']) ? $obj['Visite'] : '';
 				$adherent = false;
 
 
-				if($typAdh != '' || $contenu == 'Q' || $rupture == 'S') {
+				if($typAdh != '' || $contenu == 'Q' || $rupture == 'S' || $visite != '') {
 					$sql = "select distinct ";
 					$adherent = true;
 					$rupture = 'S';
 				}
-				else $sql = "select i.CodeClasse, i.ClasseId, n.AntenneId, i.Attente, i.DateAttente, d.Libelle as LibelleD, n.Libelle as LibelleN, ";
+				else $sql = "select i.CodeClasse, i.ClasseId, n.AntenneId, i.Attente, i.DateAttente, d.Libelle as LibelleD, n.Libelle as LibelleN, c0.CodeClasse as Delegue, ";
 
-				$sql .= "e.Sexe, e.Numero, e.Nom, e.Prenom, e.Adresse1, e.Adresse2, e.CP, e.Ville, e.Telephone1, e.Telephone2, e.Mail, e.ClasseId as Delegue";
+				$sql .= "e.Sexe, e.Numero, e.Nom, e.Prenom, e.Adresse1, e.Adresse2, e.CP, e.Ville, e.Telephone1, e.Telephone2, e.Mail";
 
 				if($typAdh == 'S') {
 					// adhérents sans inscription
-					$sql .= "from Adherent e ";
+					$sql .= "from `##_Cadref-Adherent` e ";
 					$whr = "and e.Cotisation>0 and e.Reglement=e.Cotisation and e.Differe=0 and e.Montant=0 ";
-				} else {
+				}
+				elseif($visite != '') {
+					$sql .= "
+from `##_Cadref-Adherent` e
+inner join `##_Cadref-Reservation` r on r.AdherentId=e.Id and r.VisiteId=$visite ";
+					$rupture = 'S';
+					$contenu = 'A';
+				}
+				else {
 					// adhérents inscrits
 					$sql .= "
 from `##_Cadref-Inscription` i
 inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
 inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId
 inner join `##_Cadref-Discipline` d on d.Id=n.DisciplineId
-inner join `##_Cadref-Adherent` e on e.Id=i.AdherentId ";
+inner join `##_Cadref-Adherent` e on e.Id=i.AdherentId
+left join `##_Cadref-AdherentAnnee` aa on aa.AdherentId=e.Id and aa.Annee='$annee'
+left join `##_Cadref-Classe` c0 on c0.Id=aa.ClasseId ";
 					if($enseignant) {
 						$sql .= "inner join `##_Cadref-ClasseEnseignants` ce on ce.Classe=i.ClasseId ";
 						$whr .= "and ce.EnseignantId=$enseignant ";
@@ -363,7 +382,7 @@ inner join `##_Cadref-Adherent` e on e.Id=i.AdherentId ";
 				if($mail == 'A') $whr .= "and e.Mail<>'' ";
 				elseif($mail == 'S') $whr .= "and e.Mail='' ";
 
-				if($typAdh != 'S') {
+				if($typAdh != 'S' && $visite == '') {
 					$whr .= "and i.Annee='$annee' and i.Supprime=0 ";
 
 					// type adherent
@@ -433,7 +452,7 @@ inner join `##_Cadref-Adherent` e on e.Id=i.AdherentId ";
 				$rupture = 'E'; // enseignant
 				$antenne = 0;
 				$sql = "
-select distinct a.Sexe, a.Numero, a.Nom, a.Prenom, a.Telephone1, a.Telephone2, a.Mail, 
+select distinct a.Sexe, a.Numero, a.Nom, a.Prenom, a.Telephone1, a.Telephone2, a.Mail,
 a.DateCertificat, i.CodeClasse, i.ClasseId, d.Libelle as LibelleD, n.Libelle as LibelleN
 from `##_Cadref-Adherent` a
 inner join `##_Cadref-Inscription` i on i.AdherentId=a.Id and i.Annee='$annee'
@@ -495,6 +514,39 @@ order by a.Nom, a.Prenom";
 				Cadref::SendSms($params);
 			}
 			return true;
+		}
+		if($obj['mode'] == 'export') {
+			$file = 'Home/tmp/ListeAdherent_'.date('YmdHis').'.csv';
+			$f = fopen($file, 'w');
+			$s = '"Numéro";"Nom";"Prénom";"Adresse1";"Adresse2";"CP";"Ville";"Téléphone1";"Téléphone2";"Mail";"Délégué"';
+			if($obj['Rupture'] != 'S') $s .= ';"Classe";"Discipline";"Niveau";"Attente";"Date attente"';
+			$s .= "\n";
+			fwrite($f, $s);
+			foreach($pdo as $a) {
+				$s = '"'.$a['Numero'].'";';
+				$s .= '"'.$a['Nom'].'";';
+				$s .= '"'.$a['Prenom'].'";';
+				$s .= '"'.$a['Adresse1'].'";';
+				$s .= '"'.$a['Adresse2'].'";';
+				$s .= '"'.$a['CP'].'";';
+				$s .= '"'.$a['Ville'].'";';
+				$s .= '"'.$a['Telephone1'].'";';
+				$s .= '"'.$a['Telephone2'].'";';
+				$s .= '"'.$a['Mail'].'";';
+				$s .= '"'.$a['Delegue'].'"';
+				if($obj['Rupture'] != 'S') {
+					$s .= ';';
+					$s .= '"'.$a['CodeClasse'].'";';
+					$s .= '"'.$a['LibelleD'].'";';
+					$s .= '"'.$a['LibelleN'].'";';
+					$s .= '"'.($a['Attente'] ? 'O' : 'N').'";';
+					$s .= '"'.($a['Attente'] ? date('d/m/Y H:i',$a['DateAttente']) : '').'"';
+				}
+				$s .= "\n";
+				fwrite($f, $s);
+			}
+			fclose($f);
+			return array('csv'=>$file, 'sql'=>$sql);
 		}
 		
 		if($contenu != 'Q') {

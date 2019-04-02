@@ -16,7 +16,7 @@
 						<input type="text" id="search{{ identifier }}2" autofocus class="form-control" name="{{ identifier }}query2" ng-model="{{ identifier }}.filter2" placeholder="Nom..." >
 					</div>
 					<div class="col-md-6" style="padding-left:0">
-						<input type="text" id="search{{ identifier }}" class="form-control" name="{{ identifier }}query" ng-model="{{ identifier }}.filter" placeholder="Recherche..." >
+						<input type="text" id="search{{ identifier }}1" class="form-control" name="{{ identifier }}query1" ng-model="{{ identifier }}.filter1" placeholder="Recherche..." >
 					</div>
 				</div>
 				<span class="input-group-btn">
@@ -463,5 +463,5 @@
 
 <script type="text/javascript">
 	$('.spinner-list').spin();
-	$('document').ready(function(){ $('#search{{ identifier }}2').focus(); });
+	$('document').ready(function(){	$('#search{{ identifier }}2').focus(); });
 </script>

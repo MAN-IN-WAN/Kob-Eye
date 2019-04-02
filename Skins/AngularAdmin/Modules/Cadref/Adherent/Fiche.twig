@@ -305,7 +305,7 @@
 										<tr>
 											<td class="cadref-td-inscr">
 												<div class="control-group">
-													<input type="text" class="form-control cadref-input-diff cadref-annuel" ng-model="{{ o }}.Cotisation" readonly/>
+													<input type="text" class="form-control cadref-input-diff cadref-annuel" ng-model="{{ o }}.Cotisation" readonly ng-class="{'cadref-highlight': {{ o }}.nonCotis}"/>
 												</div>
 											</td>
 											<td class="cadref-td-inscr">

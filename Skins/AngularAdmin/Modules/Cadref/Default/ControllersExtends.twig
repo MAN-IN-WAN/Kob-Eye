@@ -20,6 +20,7 @@
 		$scope.clearFilter = function(id) {
 			$scope.{{ ident }}.filter = '';
 			if(id == 'CadrefAdherent') {
+				$scope.{{ ident }}.filter1 = '';
 				$scope.{{ ident }}.filter2 = '';
 				$('#search{{ ident }}2').focus();
 			}
@@ -37,9 +38,28 @@
 		}
 		
 		var lasttimeout = false;
+		// wait for CadrefAdherent to be defined before setting a watch on filters
 		var unwatch = $scope.$watch('CadrefAdherent', function() {
 			if($scope.CadrefAdherent != undefined && $scope.CadrefAdherent.filter2 == undefined) {
+				$scope.CadrefAdherent.filter1 = '';
 				$scope.CadrefAdherent.filter2 = '';
+				var f = CadrefAdherentStore.getFilters('default',true).global;
+				if(f != '') {
+					if(f.substring(0, 10) == 'NomPrenom~') $scope.CadrefAdherent.filter2 = f.substring(10);
+					else $scope.CadrefAdherent.filter1 = f
+				}
+				$scope.$watch('CadrefAdherent.filter1', function() {
+					if ($scope.CadrefAdherent.filter1 != CadrefAdherentStore.getFilters('default',true).global){
+						if (lasttimeout){
+							$timeout.cancel(lasttimeout);
+							lasttimeout = false;
+						}
+						CadrefAdherentStore.setGlobalFilter($scope.CadrefAdherent.filter1,'default');
+						lasttimeout = $timeout(function () {
+							CadrefAdherentStore.getData(1,'default');
+						},400);
+					}
+				});
 				$scope.$watch('CadrefAdherent.filter2', function() {
 					if ($scope.CadrefAdherent.filter2 != CadrefAdherentStore.getFilters('default',true).global){
 						if (lasttimeout){
@@ -56,7 +76,7 @@
 			}
 		});
 		
-		// focus sur lez nom
+		// focus sur le nom
 		$('#modal-CadrefAdherent').on('shown.bs.modal', function() {
 			$('#adhNom').focus();
 		});
@@ -103,7 +123,7 @@
 		// donne le focus
 		$scope.takeFocus = function(id) {
 			$timeout(function(){
-				$(id).focus();
+				$('#'+id).focus();
 			},100);
 		}
 		
@@ -291,6 +311,7 @@
 		
 		
 		// info annuelles et cotisation
+		$scope.obj.nonCotis = false;
 		$scope.obj.nonSolde = false;
 		$scope.CotisationAnnuelle = 0;
 		$scope.adherentInfo = function() {
@@ -299,21 +320,22 @@
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo',[annee]);
 			ajax.success(
 				function(data) {
-					$scope.obj.Cotisation = data.data.Cotisation;
-					$scope.obj.Cours = data.data.Cours;
-					$scope.obj.Visites = data.data.Visites;
-					$scope.obj.Reglement = data.data.Reglement;
-					$scope.obj.Differe = data.data.Differe;
-					$scope.obj.Regularisation = data.data.Regularisation;
-					$scope.obj.Solde = data.data.Solde;
-					$scope.obj.NotesAnnuelles = data.data.NotesAnnuelles;
-					$scope.obj.Adherent = data.data.Adherent;
-					$scope.obj.ClasseId = data.data.ClasseId;
-					$scope.obj.AntenneId = data.data.AntenneId;
-					$scope.objnonSolde = Number($scope.obj.Solde) != 0;
+					var o = $scope.obj;
+					o.Cotisation = data.data.Cotisation;
+					o.Cours = data.data.Cours;
+					o.Visites = data.data.Visites;
+					o.Reglement = data.data.Reglement;
+					o.Differe = data.data.Differe;
+					o.Regularisation = data.data.Regularisation;
+					o.Solde = data.data.Solde;
+					o.NotesAnnuelles = data.data.NotesAnnuelles;
+					o.Adherent = data.data.Adherent;
+					o.ClasseId = data.data.ClasseId;
+					o.AntenneId = data.data.AntenneId;
+					o.nonSolde = Number($scope.obj.Solde) != 0;
+					o.nonCotis = Number($scope.obj.Cotisation) == 0;
 					$scope.soldeAdherent();
 					$scope.CotisationAnnuelle = data.data.CotisationAnnuelle;
-					console.log('adherentInfo',data.data);
 				}
 			).error(
 				function() {
@@ -499,19 +521,16 @@
             },
 			filter2: '',
 			lasttimeout: false,
-//			noEvent: false,
 			lastEvent: -1
         }
 		
 		// recherche sur le store de Classe
 		var classeFilter = function(mode) {
 			var c = $scope.CadrefClasse;
-//			if(c.noEvent) return;
 			if(c.lastEvent == mode) {
 				c.lastEvent = -1;
 				return;
 			}
-//			c.noEvent = true;
 
             if(c.lasttimeout){
                 $timeout.cancel(c.lasttimeout);
@@ -538,8 +557,8 @@
             },300);
 //			c.noEvent = false;
 		}
-        $scope.$watch('CadrefClasse.filter', function() { classeFilter(0); });
-        $scope.$watch('CadrefClasse.filter2', function() { classeFilter(1); });
+        $scope.$watch('CadrefClasse.filter', function() { console.log('aaaaa'); classeFilter(0); });
+        $scope.$watch('CadrefClasse.filter2', function() { console.log('aaaaabb'); classeFilter(1); });
 
 		// efface le contenu du filtre
 		$scope.classeClearFilters = function() {
@@ -547,12 +566,6 @@
 			$scope.CadrefClasse.filter2 = '';
 			$('#searchCadrefClasse').focus();
 		}
-
-		// efface le contenu du filtre
-//		$scope.clearSearch = function() {
-//			$scope.CadrefClasse.filter = '';
-//			$('#searchClasse').focus();
-//		}
 		
 		// controle le bontoun ajouter
 		$scope.classeControle = function(mode) {
@@ -630,7 +643,7 @@
 		}
 		
 		// switch cotisation
-		$scope.adherentCotisation = function() {
+		$scope.classeCotisation = function() {
 			var cad = $scope.CadrefClasse.Inscr;
 			cad.cotis = ! cad.noCotis ? $scope.CotisationAnnuelle : 0;
 			cad.updated = true;
@@ -757,6 +770,7 @@
 			$scope.classeCalcul();
 			cad.Inscr.updated = true;
 			$('#inscrPaye').focus();
+			try {$scope.$digest();} catch(ex) {}
 		}
 		
 	
@@ -1008,32 +1022,37 @@
 		}
 		
 		// switch cotisation
-		$scope.adherentVisiteCotisation = function() {
+		$scope.visiteCotisation = function() {
 			var cad = $scope.CadrefVisite.Visit;
 			cad.cotis = ! cad.noCotis ? $scope.CotisationAnnuelle : 0;
 			cad.updated = true;
 			$scope.visiteCalcul();
 		}
 		
+		// prix modifié
+		$scope.visitePrix = function() {
+		}
+		
 		// calcul du solde
 		$scope.visiteCalcul = function() {
 			var cad = $scope.CadrefVisite.Visit;
 			cad.visit = 0;
+			cad.paye = 0;
 			var t = $scope.CadrefReservation.store.data.temp;
 			var l = t.length;
 			for(var i = 0; i < l; i++) {
 				var c = t[i];
 				if(c.Attente>0 || c.Supprime>0) continue;
 				cad.visit += Number(c.Prix);
+				if(c.id == 0) cad.paye += Number(c.Prix);
 			}
-			cad.paye = Number(cad.cotis)+Number(cad.cours)+Number(cad.visit)-Number(cad.regle)-Number(cad.diff)+Number(cad.regul);
-			cad.solde = 0;
-			cad.nonSolde = false;
+			cad.solde = Number(cad.cotis)+Number(cad.cours){#+Number(cad.visit)#}-Number(cad.regle)-Number(cad.diff)+Number(cad.regul);
+			cad.nonSolde = cad.Solde == 0;
 			$scope.nextVisiteControle(false);
 		}
 		$scope.visitePaye = function() {
 			var cad = $scope.CadrefVisite.Visit;
-			cad.solde = Number(cad.cotis)+Number(cad.cours)+Number(cad.visit)-Number(cad.regle)-Number(cad.diff)+Number(cad.regul)-Number(cad.paye);
+			cad.solde = Number(cad.cotis)+Number(cad.cours){#+Number(cad.visit)#}-Number(cad.regle)-Number(cad.diff)+Number(cad.regul)-Number(cad.paye);
 			cad.nonSolde = cad.solde != 0;
 			cad.updated = true;
 			$scope.nextVisiteControle(false);
