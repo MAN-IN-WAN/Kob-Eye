@@ -1125,12 +1125,12 @@ where ce.Classe=:cid";
 			$supprime = 0;
 
 			$o = genericClass::createInstance('Cadref', 'Reservation');
-			$cls = genericClass::createInstance('Cadref', 'Visite');
-			$cls->initFromId($ins['VisiteVisiteId']);
 
 			if(!$id) {
 				$o->addParent($this);
-				$o->addParent($cls);
+				$vis = genericClass::createInstance('Cadref', 'Visite');
+				$vis->initFromId($ins['VisiteVisiteId']);
+				$o->addParent($vis);
 				$o->Annee = $annee;
 				$o->Numero = $this->Numero;
 				$o->Visite = $ins['Visite'];
@@ -1138,6 +1138,11 @@ where ce.Classe=:cid";
 				$o->initFromId($id);
 				$attente = $o->Attente;
 				$supprime = $o->Supprime;
+			}
+			if($ins['DepartDepartId']) {
+				$dep = genericClass::createInstance('Cadref', 'Depart');
+				$dep->initFromId($ins['DepartDepartId']);
+				$o->addParent($dep);
 			}
 
 			$o->Attente = $ins['Attente'];
@@ -1153,7 +1158,7 @@ where ce.Classe=:cid";
 
 			// visite : inscrits/attentes/suppmime
 			if(!$id || $supprime != $o->Supprime || $attente != $o->Attente) {
-				$cls->Save();
+				$vis->Save();
 			}
 		}
 

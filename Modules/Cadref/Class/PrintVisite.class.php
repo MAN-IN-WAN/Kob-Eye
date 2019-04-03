@@ -6,7 +6,6 @@ class PrintVisite extends FPDF {
 	
 	private $left = 20;
 	private $head;
-	private $align;
 	private $width;
 	private $posy;
 	private $titre;
@@ -16,6 +15,7 @@ class PrintVisite extends FPDF {
 	private $compteur;
 	private $lpage = 0;
 	private $mode;
+	private $total = 0;
 	
 	
 	function PrintVisite($mode) {
@@ -80,6 +80,8 @@ class PrintVisite extends FPDF {
 		foreach($list as $l) {
 			$c = $l['VisiteId'];
 			if($this->rupture != $c) {
+				$this->printTotal();
+				$this->total = 0;
 				$cls = Sys::getOneData('Cadref', 'Visite/'.$c);
 				$es = $cls->getParents('Enseignant');
 				$s = '';
@@ -96,7 +98,18 @@ class PrintVisite extends FPDF {
 				$this->AddPage();
 			}
 			$this->printLine($l);
+			$this->total += $l['Montant'];
 		}
+		if($this->rupture) $this->printTotal();
+	}
+	
+	private function printTotal() {
+		if($this->rupture && $this->mode != 1) {
+			$this->SetXY($this->left, $this->posy);
+			$this->SetFont('Arial','B',12);
+			$this->Cell(267, 6.5, $this->cv('Total général : ').$this->total, 'LRT');
+			$this->posy += 6.5;
+		}		
 	}
 
 	private function printLine($l) {

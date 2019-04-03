@@ -11,5 +11,5 @@ $vars['identifier'] = 'CadrefVisite';
 
 $vis = Sys::getData("Cadref","Visite/Annee=$annee");
 $tmp = array();
-foreach($vis as $v) $tmp[$v->Visite] = $v->Visite.' - '.$v->Libelle;
+foreach($vis as $v) $tmp[$v->DateVisite] = date('d/m', $v->DateVisite).' - '.$v->Libelle;
 $vars['visites'] = $tmp;

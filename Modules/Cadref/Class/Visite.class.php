@@ -48,9 +48,8 @@ class Visite extends genericClass {
 		require_once ('PrintVisite.class.php');
 
 		$annee = Cadref::$Annee;
-		$debut = isset($obj['Debut']) ? $obj['Debut'] : '';
-		$fin = isset($obj['Fin']) ? $obj['Fin'] : '';
-		$fin .= substr('ZZZZZZZZZZ', 0, 10-strlen($fin));
+		$debut = isset($obj['Debut']) ? $obj['Debut'] : '0';
+		$fin = isset($obj['Fin']) ? $obj['Fin'] : '99999999999';
 		if(isset($obj['Guide']) && $obj['Guide']) $mode = 0;
 		elseif(isset($obj['Chauffeur']) && $obj['Chauffeur']) $mode = 1;
 		else $mode = 2;
@@ -64,8 +63,8 @@ inner join `##_Cadref-Adherent` e on e.Id=r.AdherentId
 left join `##_Cadref-Depart` d on d.Id=r.DepartId
 left join `##_Cadref-Lieu` l on l.Id=d.LieuId
 where r.Annee=$annee and r.Supprime=0 and r.Attente=0 ";
-		if($debut != '') $sql .= "and r.Visite>='$debut' ";
-		if($fin != '') $sql .= "and r.Visite<='$fin' ";
+		$sql .= "and v.DateVisite>='$debut' ";
+		$sql .= "and v.DateVisite<='$fin' ";
 		if($mode == 1) $sql .= "order by r.Visite, d.HeureDepart, e.Nom, e.Prenom";
 		else $sql .= "order by r.Visite, e.Nom, e.Prenom";
 

@@ -166,7 +166,7 @@
 				<td scope="row" class="cadref-td typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.LibelleW }]} {[{ item.LibelleN }]}</a></td>
 				<td scope="row" class="cadref-td typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Jour | limitTo : 3 }]} {[{ item.HeureDebut }]}&nbsp;-&nbsp;{[{ item.HeureFin }]}</a></td>
 				<td scope="row" class="cadref-td typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.CycleDebut }]}&nbsp;-&nbsp;{[{ item.CycleFin }]}</a></td>
-				<td scope="row" class="cadref-td typevarchar"><span>{[{ item.Places+' - '+item.Inscrits+' - '+item.Attentes }]}</span></td>
+				<td scope="row" class="cadref-td typevarchar"><span ng-class="{'cadref-highlight': item.Inscrits>=item.Places}">{[{ item.Places+' - '+item.Inscrits+' - '+item.Attentes }]}</span></td>
 				<td scope="row" class="cadref-td typefloat"><span>{[{ item.Prix+' - '+((item.Prix*1)-(item.Reduction1*1))+' - '+((item.Prix*1)-(item.Reduction2*1)) }]}</span></td>
 				<td scope="row" class="cadref-td typeint">
 					<button class="btn btn-abt" ng-class="{'btn-secondary': item.Attachements==0, 'btn-success': item.Attachements!=0}" title="Pièces jointes" 

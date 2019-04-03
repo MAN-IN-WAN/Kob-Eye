@@ -1030,35 +1030,10 @@
 		}
 		
 		// prix modifié
-		$scope.visitePrix = function() {
+		$scope.visiteUpdate = function(item) {
+			item.updated = true;
 		}
 		
-		// calcul du solde
-		$scope.visiteCalcul = function() {
-			var cad = $scope.CadrefVisite.Visit;
-			cad.visit = 0;
-			cad.paye = 0;
-			var t = $scope.CadrefReservation.store.data.temp;
-			var l = t.length;
-			for(var i = 0; i < l; i++) {
-				var c = t[i];
-				if(c.Attente>0 || c.Supprime>0) continue;
-				cad.visit += Number(c.Prix);
-				if(c.id == 0) cad.paye += Number(c.Prix);
-			}
-			cad.solde = Number(cad.cotis)+Number(cad.cours){#+Number(cad.visit)#}-Number(cad.regle)-Number(cad.diff)+Number(cad.regul);
-			cad.nonSolde = cad.Solde == 0;
-			$scope.nextVisiteControle(false);
-		}
-		$scope.visitePaye = function() {
-			var cad = $scope.CadrefVisite.Visit;
-			cad.solde = Number(cad.cotis)+Number(cad.cours){#+Number(cad.visit)#}-Number(cad.regle)-Number(cad.diff)+Number(cad.regul)-Number(cad.paye);
-			cad.nonSolde = cad.solde != 0;
-			cad.updated = true;
-			$scope.nextVisiteControle(false);
-		}
-
-					
 		// ajoute une visite
 		$scope.visiteAjoute = async function(item) {
 			var cad = $scope.CadrefVisite;
@@ -1091,10 +1066,11 @@
 			o.Utilisateur = '';
 			o.DateInscription = $filter('date')(new Date(), "dd/MM/yyyy");
 			o.Prix = c.Prix;
+			o.ModeReglement = 'B';
 			o.updated = 1;
 			var t = $scope.CadrefReservation.store.data.temp;
 			t[t.length] = o;
-			
+			o.line = t.length
 			//cad.filter = '';
 			$scope.addVisiteDisabled = true;
 			
@@ -1104,7 +1080,10 @@
 			}
 			$scope.visiteCalcul();
 			cad.Visit.updated = true;
-			$('#reservationPaye').focus();
+			try {$scope.$digest();} catch(ex) {}
+			$timeout(function() {
+				$('#visiteDepart'+t.length).focus();
+			}, 100);
 		}
 		
 	

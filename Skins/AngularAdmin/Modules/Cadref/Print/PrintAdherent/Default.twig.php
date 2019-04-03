@@ -1,7 +1,7 @@
 <?php
 
 // fiche printAdherent
-$vars['Annee'] = Cadref::$Annee;
+$vars['Annee'] = $annee = Cadref::$Annee;
 $vars['CurrentMenu'] = Sys::$CurrentMenu;
 if(Sys::$User->Admin && !$vars['CurrentMenu']) {
 	$oc = $o->getObjectClass();
@@ -36,9 +36,9 @@ if($vars['mode'] == 0) {
 	$vars['enseignants'] = $tmp;
 
 	$tmp = array('' => '');
-	$as = Sys::getData('Cadref', 'Visite');
+	$as = Sys::getData('Cadref', 'Visite/Annee='.$annee);
 	foreach($as as $a)
-		$tmp[$a->Id] = trim($a->Viste.' '.$a->Libelle);
+		$tmp[$a->Id] = date('d/m', $a->DateVisite).' - '.$a->Libelle;
 	$vars['visites'] = $tmp;
 	
 	$tmp = array();

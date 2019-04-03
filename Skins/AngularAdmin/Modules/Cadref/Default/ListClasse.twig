@@ -23,7 +23,7 @@
 #}				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="classeAjoute(item)">{[{ item.LibelleW }]} {[{ item.LibelleN }]}</a></td>
 				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="classeAjoute(item)">{[{ item.Jour | limitTo : 3}]} {[{ item.HeureDebut }]}&nbsp;-&nbsp;{[{ item.HeureFin }]}</a></td>
 				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="classeAjoute(item)">{[{ item.CycleDebut }]}&nbsp;-&nbsp;{[{ item.CycleFin }]}</a></td>
-				<td scope="row" class="cadref-td typefloat"><a href="" ng-click="classeAjoute(item)">{[{ item.Places+' - '+item.Inscrits+' - '+item.Attentes }]}</a></td>
+				<td scope="row" class="cadref-td typefloat"><a href="" ng-click="classeAjoute(item)" ng-class="{'cadref-highlight': item.Inscrits>=item.Places}">{[{ item.Places+' - '+item.Inscrits+' - '+item.Attentes }]}</a></td>
 				<td scope="row" class="cadref-td typefloat"><a href="" ng-click="classeAjoute(item)">{[{ item.Prix+' - '+((item.Prix*1)-(item.Reduction1*1))+' - '+((item.Prix*1)-(item.Reduction2*1)) }]}</a></td>
 			</tr>
 		</tbody>
