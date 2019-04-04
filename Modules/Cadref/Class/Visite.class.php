@@ -64,7 +64,8 @@ inner join `##_Cadref-Adherent` e on e.Id=r.AdherentId
 left join `##_Cadref-Depart` d on d.Id=r.DepartId
 left join `##_Cadref-Lieu` l on l.Id=d.LieuId
 where r.Annee=$annee and v.DateVisite>='$debut' and v.DateVisite<='$fin' ";
-		if($mode == 1) $sql .= "order by r.Visite, d.HeureDepart, e.Nom, e.Prenom";
+
+		if($mode == 1) $sql .= " and r.Supprime=0 and r.Attente=0 order by r.Visite, d.HeureDepart, e.Nom, e.Prenom";
 		else $sql .= "order by r.Visite, e.Nom, e.Prenom";
 
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
