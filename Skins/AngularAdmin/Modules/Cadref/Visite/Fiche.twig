@@ -117,10 +117,10 @@
 							<div class="row" style="height:10px"></div>
 							<div class="row">
 								<div class="col-md-2">
-									{{ label("Inactif") }}
+									{{ label("Visible web") }}
 								</div>
 								<div class="col-md-10">
-									{{ fboolean(f.Inactif, o, true) }}
+									<switch class="cadref-switch-red" ng-model="{{ o }}.Web"></switch>
 								</div>
 							</div>
 						</div>

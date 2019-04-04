@@ -31,11 +31,11 @@
 		<thead>
 			<tr>
 				<th title="Id" class="list-col-th-id" hidden>ID</th>
-				<th>Visite</th>
-				<th>Libellé</th>
+				{#<th>Visite</th>#}
 				<th>Date</th>
+				<th>Libellé</th>
 				<th>Prix</th>
-				<th>Assur.</th>
+				{#<th>Assur.</th>#}
 				<th>Places</th>
 				<th>Doc.</th>
 			</tr>
@@ -43,12 +43,12 @@
 		<tbody ng-if="!{{ identifier }}.store.busy['{{ context }}']">
 			<tr dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination">
 				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
-				<td scope="row" class="cadref-td typevarchar"><a href="">{[{ item.Visite }]}</a></td>
-				<td scope="row" class="cadref-td typevarchar"><a href="">{[{ item.Libelle }]}</a></td>
+				{#<td scope="row" class="cadref-td typevarchar"><a href="">{[{ item.Visite }]}</a></td>#}
 				<td scope="row" class="cadref-td typevarchar"><a href="">{[{ item.DateVisite }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><a href="">{[{ item.Libelle }]}</a></td>
 				<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ item.Prix }]}</span></td>
-				<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ item.Assurance }]}</span></td>
-				<td scope="row" class="cadref-td typefloat"><span>{[{ item.Places }]}/{[{ item.Inscrits }]}/{[{ item.Attentes }]}</span></td>
+				{#<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ item.Assurance }]}</span></td>#}
+				<td scope="row" class="cadref-td typefloat"><span ng-class="{'cadref-highlight': item.Inscrits>=item.Places}">{[{ item.Places }]}/{[{ item.Inscrits }]}/{[{ item.Attentes }]}</span></td>
 				<td scope="row" class="cadref-td typeint">
 					<span class="btn btn-xs cadref-fkey" ng-class="{'btn-secondary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
 						  ng-click="attachementsOpen(item, 'visite')">{[{ item.Attachements }]}

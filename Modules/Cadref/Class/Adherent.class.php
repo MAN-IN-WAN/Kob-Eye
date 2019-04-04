@@ -980,8 +980,9 @@ select distinct c.Id as clsId, d.Libelle as LibelleD, n.Libelle as LibelleN,
 j.Jour, c.HeureDebut, c.HeureFin, c.CycleDebut, c.CycleFin,
 c.Places,if(c.Places<c.Inscrits,0,c.Places-c.Inscrits) as Disponible,
 a.LibelleCourt as LibelleA,c.Prix,c.Attachements,
-if(c.DateReduction1 is not null and c.DateReduction1<=unix_timestamp(Now()),c.Reduction1,0) as Reduction1,
-if(c.DateReduction2 is not null and c.DateReduction2<=unix_timestamp(Now()),c.Reduction2,0) as Reduction2
+if(c.DateReduction2 is not null and c.DateReduction2<=CURRENT_TIMESTAMP(),c.Reduction2,
+if(c.DateReduction1 is not null and c.DateReduction1<=CURRENT_TIMESTAMP(),c.Reduction2,0)) as Reduction,
+0 as Soutien
 from `##_Cadref-Discipline` d0
 inner join `##_Cadref-Niveau` n on n.DisciplineId=d0.Id and n.AntenneId=$antId
 inner join `##_Cadref-Classe` c on c.NiveauId=n.Id and c.Annee='$annee'
@@ -997,7 +998,7 @@ select i.Id as insId, c.Id as clsId, d.Libelle as LibelleD, n.Libelle as Libelle
 j.Jour, c.HeureDebut, c.HeureFin, c.CycleDebut, c.CycleFin,
 a.LibelleCourt as LibelleA,i.Prix,i.Reduction,i.Soutien,c.Attachements,
 i.Attente,i.Supprime,
-from_unixtime(i.DateAttente,'%d/%m/%Y') as DateAttente,
+from_unixtime(i.DateAttente,'%d/%m/%Y %H:%i') as DateAttente,
 from_unixtime(i.DateSupprime,'%d/%m/%Y') as DateSupprime,
 from_unixtime(i.DateInscription,'%d/%m/%Y') as DateInscription
 from `##_Cadref-Inscription` i
@@ -1010,16 +1011,52 @@ left join `##_Cadref-Jour` j on j.Id=c.JourId
 where i.AdherentId=$adhId and i.Annee='$annee'
 order by d.Libelle, n.Libelle, c.JourId, c.HeureDebut";
 				break;
+			case 'visite':
+				$dat = time();
+				$sql = "
+select Id as clsId, Visite, Libelle, DateVisite, from_unixtime(DateVisite,'%d/%m/%Y') as DateText, Prix, Places, Inscrits, Attentes, Description,
+if(Places<Inscrits,0,Places-Inscrits) as Disponible, Attachements
+from `##_Cadref-Visite`
+where Annee='$annee' and DateVisite>=$dat and Web=1 and Libelle like '%$filter%'
+order by DateVisite
+";
+				break;
+			case 'reservation':
+				$sql = "
+select r.Id as resId, v.Id as clsId, v.Visite, v.Libelle, v.DateVisite, from_unixtime(v.DateVisite,'%d/%m/%Y') as DateText, r.Prix, v.Places, 
+v.Inscrits, v.Attentes, v.Description,v.Attachements,r.Attente,r.Supprime,
+from_unixtime(r.DateAttente,'%d/%m/%Y %H:%i') as DateAttente,
+from_unixtime(r.DateInscription,'%d/%m/%Y') as DateInscription,
+from_unixtime(r.DateSupprime,'%d/%m/%Y') as DateSupprime,
+if(v.Places<v.Inscrits,0,v.Places-v.Inscrits) as Disponible, ifnull(d.HeureDepart,'') as HeureDepart, ifnull(l.Libelle,'') as LibelleL
+from `##_Cadref-Reservation` r
+inner join `##_Cadref-Visite` v on v.Id=r.VisiteId
+left join `##_Cadref-Depart` d on d.Id=r.DepartId
+left join `##_Cadref-Lieu` l on l.Id=d.LieuId
+where r.AdherentId=$adhId and r.Annee='$annee'
+order by DateVisite
+";
+				break;
 		}
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql, PDO::FETCH_ASSOC);
+if(!$pdo) return array('sql'=>$sql);
 		$data = $pdo->fetchAll();
-		if($mode == 'inscription' || $mode == 'classe') {
-			$sql1 = "
+		
+		if($mode == 'inscription' || $mode == 'classe' || $mode == 'reservation' || $mode == 'visite') {
+			if($mode == 'inscription' || $mode == 'classe')
+				$sql1 = "
 select e.Nom, e.Prenom 
 from `##_Cadref-ClasseEnseignants` ce
 inner join `##_Cadref-Enseignant` e on e.Id=ce.EnseignantId
 where ce.Classe=:cid";
+			else
+				$sql1 = "
+select e.Nom, e.Prenom 
+from `##_Cadref-VisiteEnseignants` ce
+inner join `##_Cadref-Enseignant` e on e.Id=ce.EnseignantId
+where ce.Visite=:cid";
+			
 			$sql1 = str_replace('##_', MAIN_DB_PREFIX, $sql1);
 			$pdo = $GLOBALS['Systeme']->Db[0]->prepare($sql1);
 			foreach($data as &$d) {

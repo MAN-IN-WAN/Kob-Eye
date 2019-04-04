@@ -376,8 +376,8 @@ order by i.Numero,i.Code;
 
 
 truncate kbabtel.`kob-Cadref-Visite`;
-insert into kbabtel.`kob-Cadref-Visite` (umod,gmod,omod,Visite,Libelle,Annee,DateVisite,Places,Inscrits,Attentes,Prix,Utilisateur)
-select 7,7,7,Visite,Libelle,@annee,unix_timestamp(DateVis),Places,Inscrits,Attentes,Prix1,Utilisateur
+insert into kbabtel.`kob-Cadref-Visite` (umod,gmod,omod,Visite,Libelle,Annee,DateVisite,Places,Inscrits,Attentes,Prix,Utilisateur,Web)
+select 7,7,7,Visite,Libelle,@annee,unix_timestamp(DateVis),Places,Inscrits,Attentes,Prix1,Utilisateur,1
 from cadref18.Visites;
 
 update  kbabtel.`kob-Cadref-Visite` v

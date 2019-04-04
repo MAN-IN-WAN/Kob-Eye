@@ -446,7 +446,7 @@
 		<PROPERTIES type="date" obligatoire="1" category="Description" list="2" form="1" fiche="1" description="Date">DateVisite</PROPERTIES>
 		<PROPERTIES type="date" obligatoire="0" category="Description" list="2" form="1" fiche="1" description="Limite annulation">DateLimite</PROPERTIES>
 		<PROPERTIES type="varchar" length="32" category="Description" list="4" form="1" fiche="1" description="Coordonnées GPS">GPS</PROPERTIES>
-		<PROPERTIES type="boolean" default="0" special="reverse" category="Description" form="13" fiche="13" description="Inactif">Inactif</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" special="reverse" category="Description" form="13" fiche="13" description="Web">Web</PROPERTIES>
 
 		<PROPERTIES type="int" default="0" category="Inscriptions" list="1" form="1" fiche="1" description="Places">Places</PROPERTIES>
 		<PROPERTIES type="int" default="0" category="Inscriptions" list="1" form="1" fiche="1" description="Inscrits">Inscrits</PROPERTIES>

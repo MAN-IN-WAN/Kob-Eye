@@ -76,8 +76,8 @@
 													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.LibelleA }]}</span></td>
 													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Jour.substring(0, 3)+' '+item.HeureDebut+'&nbsp;- '+item.HeureFin }]}</span></td>
 													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.CycleDebut ? item.CycleDebut+'&nbsp;- '+item.CycleFin : "Toute l'année" }]}</span></td>
-													<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ (item.Prix*1)-(item.Reduction1*1)-(item.Reduction2*1) }]}</span></td>
-													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Disponible+' / '+item.Places }]}</span></td>
+													<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ (item.Prix*1)-(item.Reduction*1)-(item.Soutien*1) }]}</span></td>
+													<td scope="row" class="cadref-td typevarchar"><span class="label" ng-class="{'cadref-highlight': item.Disponible==0}">{[{ item.Disponible+' / '+item.Places }]}</span></td>
 													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Enseignants }]}</span></td>
 													<td  class="table-action cadref-td-btn">
 														<span class="btn-abt cadref-btn-add btn-success" ng-click="inscriptionAjoute(item)" title="Inscrire"></span>
@@ -96,14 +96,17 @@
 							</div>
 						</div>
 					</section>
-
-
-
-
-
 					<section class="panel">
 						<div class="panel-body">
 							<ng-include src="'Cadref/Adherent/0/Inscription/PublicListInscr.htm?tempContext=1'"></ng-include>
+						</div>
+						<div class="row" ng-if="inscriptionObj.Updated">
+							<div class="col-md-2">
+								<label class="form-control-label cadref-label" style="line-height:1">Montant à payer : € {[{ inscriptionObj.Montant }]}</label>
+							</div>
+							<div class="col-md-2">
+								<button type="button" class="btn btn-info" ng-click="inscriptionConfirm()">Confirmer l'inscription</button>
+							</div>
 						</div>
 					</section>
 				</div>
