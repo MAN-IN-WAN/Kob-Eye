@@ -490,7 +490,7 @@ order by a.Nom, a.Prenom";
 
 		if($mode == 1) {
 			$body = "À ce jour nous ne sommes toujours pas en possession de votre certificat médical.<br /><br />";
-			$body .= "Merci de bien vouloir nous renvoyer l’attestation sur l’hooneur ci-jointe.";
+			$body .= "Merci de bien vouloir nous renvoyer l’attestation sur l’honeur ci-jointe.";
 			$body .= Cadref::MailSignature();
 		}
 		
@@ -638,7 +638,7 @@ and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$annee-07-01')
 			if($mode == 'mail') {
 				$sub = "CADREF : Certificat médical";
 				$bod = "À ce jour nous ne sommes toujours pas en possession de votre certificat médical.<br /><br />";
-				$bod .= "Merci de bien vouloir nous renvoyer l’attestation sur l’hooneur ci-jointe.";
+				$bod .= "Merci de bien vouloir nous renvoyer l’attestation sur l’honeur ci-jointe.";
 				$bod .= Cadref::MailSignature();
 				foreach($pdo as $p) {
 					$file = $this->imprimeCertificat(array($p), $p['Numero']);
@@ -698,7 +698,6 @@ and (a.DateCertificat is null or a.DateCertificat<unix_timestamp('$annee-07-01')
 	}
 
 	function PrintAttestation($params) {
-		$mode = isset($params['mode']) ? $params['mode'] : 'print';
 		$sql = "
 select distinct h.Sexe,h.Mail,h.Numero,h.Nom,h.Prenom,h.Adresse1,h.Adresse2,h.CP,h.Ville,a.Cotisation
 from `##_Cadref-AdherentAnnee` a
@@ -706,6 +705,7 @@ inner join `##_Cadref-Adherent` h on h.Id=a.AdherentId";
 
 		$id = $this->Id;
 		if(!$id) {
+			$mode = isset($params['mode']) ? $params['mode'] : 'print';
 			if($mode == 'mail' && (!isset($params['ExecTask']) || !$params['ExecTask'])) {
 				$t = genericClass::createInstance('Systeme', 'Tache');
 				$t->Nom = 'PrintAttestation';
@@ -740,19 +740,19 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 			if(!$pdo) return false;
-
 			if($mode == 'mail') {
-				$an = $annee.'-'.($annee+1);
-				$sub = "CADREF : Attestation fiscale";
-				$bod = "Veuillez trouver en pièce jointe l’attestation fiscale correspondant à votre cotisation $an pour l’année fiscale $fisc.<br/><br />";
-				$bod .= "Cette somme est à noter à la ligne 7UF de la déclaration 2042 RICI, case intitulée : \"Dons versés à d’autres organismes d’intérêt général\".";
-				$bod .= Cadref::MailSignature();
-				foreach($pdo as $p) {
-					$file = $this->imprimeAttestation(array($p), $annee, $fisc, $p['Numero']);
-					$b = Cadref::MailCivility($p).$bod;
-					$args = array('To'=>array($p['Mail']), 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
-					if(MAIL_ADH) Cadref::SendMessage($args);
-				}
+				$this->sendAttestation($pdo, $annee, $fisc);
+//				$an = $annee.'-'.($annee+1);
+//				$sub = "CADREF : Attestation fiscale";
+//				$bod = "Veuillez trouver en pièce jointe l’attestation fiscale correspondant à votre cotisation $an pour l’année fiscale $fisc.<br/><br />";
+//				$bod .= "Cette somme est à noter à la ligne 7UF de la déclaration 2042 RICI, case intitulée : \"Dons versés à d’autres organismes d’intérêt général\".";
+//				$bod .= Cadref::MailSignature();
+//				foreach($pdo as $p) {
+//					$file = $this->imprimeAttestation(array($p), $annee, $fisc, $p['Numero']);
+//					$b = Cadref::MailCivility($p).$bod;
+//					$args = array('To'=>array($p['Mail']), 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
+//					if(MAIL_ADH) Cadref::SendMessage($args);
+//				}
 				return array('message'=>$pdo->rowCount().' mails envoyés.');
 			}
 			else {
@@ -777,16 +777,19 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 				case 1:
 					$annee = $params['Attest']['AttestAnnee'];
 					$fisc = $params['Attest']['AttestFiscale'];
+					$mode = $params['Attest']['mode'];
 					$where = " where a.AdherentId=$id and a.Annee='$annee' and a.Cotisation>0 and substr(from_unixtime(a.DateCotisation),1,4)='$fisc'";
 					$sql = str_replace('##_', MAIN_DB_PREFIX, $sql.$where);
 					$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 					if(!$pdo) return false;
 					
-					if(!$pdo->rowCount()) return array(
-						'step'=>2,
-						'data'=>'Pas de cotisation pour cette année'
-					);
+					if(!$pdo->rowCount()) return array('step'=>2, 'data'=>'Pas de cotisation pour cette année.');
 
+					if($mode == 'mail') {
+						$this->sendAttestation($pdo, $annee, $fisc);
+						return array('step'=>2, 'data'=>'Message envoyé.');
+					}
+					
 					$file = $this->imprimeAttestation($pdo, $annee, $fisc, $mode);
 					return array(
 						'step'=>2,
@@ -806,15 +809,6 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 		);
 	}
 	
-	function CotisationList($id) {
-		$sql = "select Cotisation,Annee,substr(from_unixtime(DateCotisation),1,4) as Fisc from `##_Cadref-AdherentAnnee` where AdherentId=$id and Cotisation>0";
-		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql.$where);
-		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
-		$cot = array();
-		foreach($pdo as $p) $cot[] = array('Cotisation'=>$p['Cotisation'],'Annee'=>$p['Annee'].'-'.($p['Annee']+1),'Fisc'=>$p['Fisc']);
-		return array('cotisations'=>$cot);
-	}
-
 	private function imprimeAttestation($list, $annee, $fisc, $num) {
 		require_once ('PrintAttestation.class.php');
 
@@ -830,6 +824,29 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 		$pdf->Close();
 
 		return $file;
+	}
+
+	private function sendAttestation($pdo, $annee, $fisc) {
+		$an = $annee.'-'.($annee+1);
+		$sub = "CADREF : Attestation fiscale";
+		$bod = "Veuillez trouver en pièce jointe l’attestation fiscale correspondant à votre cotisation $an pour l’année fiscale $fisc.<br/><br />";
+		$bod .= "Cette somme est à noter à la ligne 7UF de la déclaration 2042 RICI, case intitulée : \"Dons versés à d’autres organismes d’intérêt général\".";
+		$bod .= Cadref::MailSignature();
+		foreach($pdo as $p) {
+			$file = $this->imprimeAttestation(array($p), $annee, $fisc, $p['Numero']);
+			$b = Cadref::MailCivility($p).$bod;
+			$args = array('To'=>array($p['Mail']), 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
+			if(MAIL_ADH) Cadref::SendMessage($args);
+		}
+	}
+	
+	function CotisationList($id) {
+		$sql = "select Cotisation,Annee,substr(from_unixtime(DateCotisation),1,4) as Fisc from `##_Cadref-AdherentAnnee` where AdherentId=$id and Cotisation>0";
+		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql.$where);
+		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
+		$cot = array();
+		foreach($pdo as $p) $cot[] = array('Cotisation'=>$p['Cotisation'],'Annee'=>$p['Annee'].'-'.($p['Annee']+1),'Fisc'=>$p['Fisc']);
+		return array('cotisations'=>$cot);
 	}
 
 	function PrintCheque($params) {
@@ -1161,12 +1178,12 @@ where ce.Visite=:cid";
 			$attente = 0;
 			$supprime = 0;
 
+			$vis = genericClass::createInstance('Cadref', 'Visite');
+			$vis->initFromId($ins['VisiteVisiteId']);
 			$o = genericClass::createInstance('Cadref', 'Reservation');
 
 			if(!$id) {
 				$o->addParent($this);
-				$vis = genericClass::createInstance('Cadref', 'Visite');
-				$vis->initFromId($ins['VisiteVisiteId']);
 				$o->addParent($vis);
 				$o->Annee = $annee;
 				$o->Numero = $this->Numero;

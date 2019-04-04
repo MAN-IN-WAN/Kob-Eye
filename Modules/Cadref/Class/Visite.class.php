@@ -56,15 +56,14 @@ class Visite extends genericClass {
 		
 		$sql = "
 select r.VisiteId, r.Prix+r.Assurance-r.Reduction as Montant, v.Visite, v.Libelle, v.DateVisite, e.Numero, e.Nom, e.Prenom, 
-d.HeureDepart, l.Libelle as LibelleL, l.Lieu, r.Notes, e.Mail, e.Telephone1, e.Telephone2
+d.HeureDepart, l.Libelle as LibelleL, l.Lieu, r.Notes, e.Mail, e.Telephone1, e.Telephone2, r.Attente, r.Supprime,
+r.DateAttente, r.DateSupprime
 from `##_Cadref-Reservation` r
 inner join `##_Cadref-Visite` v on v.Id=r.VisiteId
 inner join `##_Cadref-Adherent` e on e.Id=r.AdherentId 
 left join `##_Cadref-Depart` d on d.Id=r.DepartId
 left join `##_Cadref-Lieu` l on l.Id=d.LieuId
-where r.Annee=$annee and r.Supprime=0 and r.Attente=0 ";
-		$sql .= "and v.DateVisite>='$debut' ";
-		$sql .= "and v.DateVisite<='$fin' ";
+where r.Annee=$annee and v.DateVisite>='$debut' and v.DateVisite<='$fin' ";
 		if($mode == 1) $sql .= "order by r.Visite, d.HeureDepart, e.Nom, e.Prenom";
 		else $sql .= "order by r.Visite, e.Nom, e.Prenom";
 

@@ -5,6 +5,8 @@ require_once('Class/Lib/pdfb/fpdf_fpdi/fpdf.php');
 class PrintVisite extends FPDF {
 	
 	private $left = 20;
+	private $pageWidth;
+	private $lineHeight = 6.5;
 	private $head;
 	private $width;
 	private $posy;
@@ -26,11 +28,17 @@ class PrintVisite extends FPDF {
 		$this->head = array(
 			array('','N° Carte','Nom','Réglé','Départ','Présent','Observations'),
 			array('','N° Carte','Nom','Départ','Présent','Observations'),
-			array('','N° Carte','Nom','Réglé','Dép.','Téléphone','Téléphone','Mail'));
+			array('','N° Carte','Nom','Prix','Dép.','Téléphone','Téléphone','Mail'));
 		$this->width = array(
 			array(9,22,83,15,72,18,48),
 			array(9,22,98,72,18,48),
-			array(9,22,83,15,10,28,28,72));
+			array(9,17,83,11,10,26,26,72,33));
+		if($mode == 2) {
+			$this->left = 5; 
+			$this->lineHeight = 5.5;
+		}
+		$this->pageWidth = 0;
+		foreach($this->width[$mode] as $w) $this->pageWidth += $w;
 
 		$this->titre = "Visites Guidées CADREF";
 	}
@@ -43,29 +51,29 @@ class PrintVisite extends FPDF {
 		$y = 5;
 		$this->SetFont('Arial','B',14);
 		$this->SetXY($this->left, $y);
-		$this->Cell(267, 8, $this->cv($this->titre), 0, 0, 'C');
+		$this->Cell($this->pageWidth, 8, $this->cv($this->titre), 0, 0, 'C');
 		$y += 8;
 		
 		$this->SetFont('Arial','B',12);
 		$this->SetXY($this->left, $y);
-		$this->Cell(237, 6.5, $this->cv($this->record['Libelle']), 'LT', 0, 'L');
-		$this->Cell(30, 6.5, date('d/m/Y', $this->record['DateVisite']), 'LRT', 0, 'R');
-		$y += 6.5;
+		$this->Cell($this->pageWidth-30, $this->lineHeight, $this->cv($this->record['Libelle']), 'LT', 0, 'L');
+		$this->Cell(30, $this->lineHeight, date('d/m/Y', $this->record['DateVisite']), 'LRT', 0, 'R');
+		$y += $this->lineHeight;
 		$this->SetFont('Arial','',12);
 		$this->SetXY($this->left, $y);
-		$this->Cell(30, 6.5, $this->record['Visite'], 'LTB', 0, 'L');
-		$this->Cell(207, 6.5, $this->cv($this->enseignants), 'LTB', 0, 'L');
+		$this->Cell(30, $this->lineHeight, $this->record['Visite'], 'LTB', 0, 'L');
+		$this->Cell($this->pageWidth-60, $this->lineHeight, $this->cv($this->enseignants), 'LTB', 0, 'L');
 		$this->lpage++;
-		$this->Cell(30, 6.5, 'Page '.$this->lpage, 'LRTB', 0, 'R');
+		$this->Cell(30, $this->lineHeight, 'Page '.$this->lpage, 'LRTB', 0, 'R');
 		$y += 10;
 		
-		$this->SetFont('Arial','',12);
+		$this->SetFont('Arial','',$this->mode == 2 ? 10 : 12);
 		$this->SetXY($this->left, $y);
 		$n = count($this->width[$this->mode]);
 		for($i = 0; $i < $n; $i++) {
-			$this->Cell($this->width[$this->mode][$i], 6.5, $this->cv($this->head[$this->mode][$i]), 'RT'.($i == 0 ? 'L' : ''), 0, 'C');
+			$this->Cell($this->width[$this->mode][$i], $this->lineHeight, $this->cv($this->head[$this->mode][$i]), 'RT'.($i == 0 ? 'L' : ''), 0, 'C');
 		}
-		$y += 6.5;
+		$y += $this->lineHeight;
 		
 		$this->posy = $y;
 		$this->SetXY($this->left, $this->posy);
@@ -73,7 +81,7 @@ class PrintVisite extends FPDF {
 
 	function Footer() {
 		$this->SetXY($this->left, $this->posy);
-		$this->Cell(267, 0.01, '', 'T');
+		$this->Cell($this->pageWidth, 0.01, '', 'T');
 	}
 	
 	function PrintLines($list) {
@@ -106,35 +114,41 @@ class PrintVisite extends FPDF {
 	private function printTotal() {
 		if($this->rupture && $this->mode != 1) {
 			$this->SetXY($this->left, $this->posy);
-			$this->SetFont('Arial','B',12);
-			$this->Cell(267, 6.5, $this->cv('Total général : ').$this->total, 'LRT');
-			$this->posy += 6.5;
+			$this->SetFont('Arial','B',$mode == 2 ? 10 :12);
+			$this->Cell($this->pageWidth, $this->lineHeight, $this->cv('Total général : ').$this->total, 'LRT');
+			$this->posy += $this->lineHeight;
 		}		
 	}
 
 	private function printLine($l) {
 		$mode = $this->mode;
+		if($mode == 1 && ($l['Attente'] || $l['Supprime'])) return;
+		
 		$this->SetXY($this->left, $this->posy);
 		$this->compteur++;
-		$this->SetFont('Arial','',12);
-		$this->Cell($this->width[$mode][0], 6.5, $this->compteur, 'LRT', 0, 'C');
-		$this->Cell($this->width[$mode][1], 6.5, $l['Numero'], 'RT', 0, 'C');
-		$this->Cell($this->width[$mode][2], 6.5, $this->cv($l['Nom'].' '.$l['Prenom']), 'RT', 0, 'L');
+		$this->SetFont('Arial','',$mode == 2 ? 10 : 12);
+		$this->Cell($this->width[$mode][0], $this->lineHeight, $this->compteur, 'LRT', 0, 'C');
+		$this->Cell($this->width[$mode][1], $this->lineHeight, $l['Numero'], 'RT', 0, 'C');
+		$this->Cell($this->width[$mode][2], $this->lineHeight, $this->cv($l['Nom'].' '.$l['Prenom']), 'RT', 0, 'L');
 		$n = 3;
-		if($this->mode != 1) $this->Cell($this->width[$mode][$n++], 6.5, $l['Montant'], 'RT', 0, 'C');
+		if($this->mode != 1) $this->Cell($this->width[$mode][$n++], $this->lineHeight, $l['Montant'], 'RT', 0, 'C');
 		$this->SetFont('Arial','',10);
 		if($this->mode == 2) {
-			$this->Cell($this->width[$mode][$n++], 6.5, $l['Lieu'], 'RT', 0, 'L');
-			$this->Cell($this->width[$mode][$n++], 6.5, $l['Telephone1'], 'RT', 0, 'L');
-			$this->Cell($this->width[$mode][$n++], 6.5, $l['Telephone2'], 'RT', 0, 'L');
-			$this->Cell($this->width[$mode][$n++], 6.5, $l['Mail'], 'RT', 0, 'L');			
+			$this->Cell($this->width[$mode][$n++], $this->lineHeight, $l['Lieu'], 'RT', 0, 'L');
+			$this->Cell($this->width[$mode][$n++], $this->lineHeight, $l['Telephone1'], 'RT', 0, 'L');
+			$this->Cell($this->width[$mode][$n++], $this->lineHeight, $l['Telephone2'], 'RT', 0, 'L');
+			$this->Cell($this->width[$mode][$n++], $this->lineHeight, $l['Mail'], 'RT', 0, 'L');			
 		}
 		else {
-			$this->Cell($this->width[$mode][$n++], 6.5, $this->cv(trim($l['HeureDepart'].'  '.$l['LibelleL'])), 'RT', 0, 'L');
-			$this->Cell($this->width[$mode][$n++], 6.5, '', 'RT', 0, 'L');
-			$this->Cell($this->width[$mode][$n], 6.5, $l->Notes, 'RT', 0, 'L');
+			$this->Cell($this->width[$mode][$n++], $this->lineHeight, $this->cv(trim($l['HeureDepart'].'  '.$l['LibelleL'])), 'RT', 0, 'L');
+			$this->Cell($this->width[$mode][$n++], $this->lineHeight, '', 'RT', 0, 'L');
 		}
-		$this->posy += 6.5;
+		$s = $l['Notes'];
+		if($l['Supprime'] == 1) $s = ($mode == 2 ? 'Supp ' : 'Supprimé ').date('d/m', $l['DateSupprime']);
+		else if($l['Supprime'] == 2) $s = ($mode == 2 ? 'Echg ' : 'Echangé ').date('d/m', $l['DateSupprime']);
+		else if($l['Attente'] == 1) $s = ($mode == 2 ? 'Atte ' : 'Attente ').date('d/m H:i', $l['DateAttente']);
+		$this->Cell($this->width[$mode][$n], $this->lineHeight, $this->cv($s), 'RT', 0, 'L');
+		$this->posy += $this->lineHeight;
 	} 
 
 }

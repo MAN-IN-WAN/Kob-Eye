@@ -406,6 +406,9 @@ inner join `kob-Cadref-Lieu` l on l.OldNotes=r.Notes
 inner join `kob-Cadref-Depart` d on d.LieuId=l.Id and d.VisiteId=r.VisiteId
 set r.DepartId=d.Id
 where r.Notes<>'';
+update `kob-Cadref-Reservation` set Notes='';
+
+
 
 
 truncate kbabtel.`kob-Cadref-Reglement`;

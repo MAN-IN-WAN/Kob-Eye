@@ -1021,14 +1021,6 @@
 			else $('#reservationNext').html('-----');
 		}
 		
-		// switch cotisation
-		$scope.visiteCotisation = function() {
-			var cad = $scope.CadrefVisite.Visit;
-			cad.cotis = ! cad.noCotis ? $scope.CotisationAnnuelle : 0;
-			cad.updated = true;
-			$scope.visiteCalcul();
-		}
-		
 		// prix modifié
 		$scope.visiteUpdate = function(item) {
 			item.updated = true;
@@ -1078,7 +1070,6 @@
 				cad.Visit.cotis = $scope.CotisationAnnuelle;
 				cad.Visit.noCotis = false;
 			}
-			$scope.visiteCalcul();
 			cad.Visit.updated = true;
 			try {$scope.$digest();} catch(ex) {}
 			$timeout(function() {
@@ -1103,11 +1094,10 @@
 						break;
 					}
 				}
-				$scope.visiteCalcul();			
 			}
 			else {
 				swal({
-					title: "Supression / Echange",
+					title: mode == 1 ? "Supression" : "Echange",
 					type: "warning",
 					showCancelButton: true,
 					cancelButtonText: "Annuler",
@@ -1119,7 +1109,6 @@
 					item.DateSupprime = $filter('date')(new Date(), "dd/MM/yyyy");
 					item.Supprime = mode;
 					item.updated = 1;
-					$scope.visiteCalcul();			
 					$scope.CadrefVisite.Visit.updated = true;
 					try {$scope.$digest();} catch(ex) {}
 				});
@@ -1134,7 +1123,6 @@
 			item.DateAttente = '';
 			if(item.DateInscription == '') item.DateInscription = $filter('date')(new Date(), "dd/MM/yyyy");
 			item.updated = 1
-			$scope.visiteCalcul();
 			$scope.CadrefVisite.Visit.updated = true;
 		}
 		
@@ -1160,7 +1148,6 @@
 			item.Attente = 1;
 			item.DateAttente = $filter('date')(new Date(), "dd/MM/yyyy HH:mm");
 			item.updated = 1
-			$scope.visiteCalcul();
 			$scope.CadrefVisite.Visit.updated = true;
 		}
 
