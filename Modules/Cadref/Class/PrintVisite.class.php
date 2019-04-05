@@ -106,7 +106,7 @@ class PrintVisite extends FPDF {
 				$this->AddPage();
 			}
 			$this->printLine($l);
-			$this->total += $l['Montant'];
+			if(!$l['Supprime'] && !$l['Attente']) $this->total += $l['Montant'];
 		}
 		if($this->rupture) $this->printTotal();
 	}

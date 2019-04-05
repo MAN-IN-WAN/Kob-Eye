@@ -259,7 +259,7 @@
 				<td scope="row" class="cadref-td typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.Libelle }]}</a></td>
 				<td scope="row" class="cadref-td typevarchar"><a href="#/{{ CurrentUrl }}/{[{ item.id }]}">{[{ item.DateVisite }]}</a></td>
 				<td scope="row" class="cadref-td typefloat"><span>{[{ item.Places }]}</span></td>
-				<td scope="row" class="cadref-td typefloat" ng-class="{'cadref-highlight': item.Inscrits>=item.Places}"><span>{[{ item.Inscrits }]}</span></td>
+				<td scope="row" class="cadref-td typefloat" ng-class="{'cadref-highlight': Number(item.Inscrits)>=Number(item.Places)}"><span>{[{ item.Inscrits }]}</span></td>
 				<td scope="row" class="cadref-td typefloat"><span>{[{ item.Attentes }]}</span></td>
 				<td scope="row" class="cadref-td typefloat"><span>{[{ item.Prix }]}</span></td>
 				{#<td scope="row" class="cadref-td typefloat"><span>{[{ item.Assurance }]}</span></td>#}
