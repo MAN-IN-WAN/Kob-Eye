@@ -905,7 +905,7 @@
 		// controleur du store de Visite
         CadrefVisiteStore.cloneContext('default','temp');
 		CadrefVisiteStore.setPageLength(15);
-		CadrefVisiteStore.setFilters('Annee={{ Annee }}', 'temp');
+		CadrefVisiteStore.setFilters('Annee={{ Annee }}&Inactif=0', 'temp');
 		CadrefVisiteStore.getData(1, 'temp');
         $scope.CadrefVisite = {
             data: CadrefVisiteStore.data.temp,
@@ -939,7 +939,7 @@
                 c.lasttimeout = false;
             }
             c.lasttimeout = $timeout(function () {
-				CadrefVisiteStore.setFilters(c.filter+'%&Annee={{ Annee }}','temp');
+				CadrefVisiteStore.setFilters(c.filter+'%&Annee={{ Annee }}&Inactif=0','temp');
                 CadrefVisiteStore.getData(1,'temp');
             },300);
 		}
@@ -947,7 +947,7 @@
 
 		// efface le contenu du filtre
 		$scope.visiteClearFilters = function() {
-			$scope.CadrefClasse.filter = '';
+			$scope.CadrefVisite.filter = '';
 			$('#searchCadrefVisite').focus();
 		}
 
