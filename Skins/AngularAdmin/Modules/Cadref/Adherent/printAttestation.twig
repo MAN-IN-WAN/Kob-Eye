@@ -41,7 +41,10 @@
 										<div class="col-md-2">
 										</div>
 										<div class="col-md-2">
-											<button type="button" class="btn ng-scope btn-success margin-inline cadref-btn-100" ng-if="CadrefAdherentfunction.callNext" ng-click="CadrefAdherentcallFunction(CadrefAdherentfunction.callNext.item,CadrefAdherentfunction.callNext.nom,CadrefAdherentfunction.callNext.title,CadrefAdherentfunction.callNext.needConfirm,1)">Imprimer</button>
+											<button type="button" class="btn ng-scope btn-success margin-inline cadref-btn-100" ng-if="CadrefAdherentfunction.callNext" ng-click="CadrefClasse.Attest.mode='print'; CadrefAdherentcallFunction(CadrefAdherentfunction.callNext.item,CadrefAdherentfunction.callNext.nom,CadrefAdherentfunction.callNext.title,CadrefAdherentfunction.callNext.needConfirm,1)">Imprimer</button>
+										</div>
+										<div class="col-md-2">
+											<button type="button" class="btn ng-scope btn-primary margin-inline cadref-btn-100" ng-disabled="obj.Mail==''" ng-if="CadrefAdherentfunction.callNext" ng-click="CadrefClasse.Attest.mode='mail'; CadrefAdherentcallFunction(CadrefAdherentfunction.callNext.item,CadrefAdherentfunction.callNext.nom,CadrefAdherentfunction.callNext.title,CadrefAdherentfunction.callNext.needConfirm,1)">Message</button>
 										</div>
 									</div>
 								</div>                            

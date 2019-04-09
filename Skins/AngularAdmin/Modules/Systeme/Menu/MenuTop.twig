@@ -34,16 +34,16 @@
                     <a href="javascript: void(0);" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                         <i class="menu-notification-icon icmn-bubbles7" ng-class="{'filter-danger':Alerts.new>0,'filter-info':Alerts.new==0 && Alerts.unread>0,'filter-default':Alerts.new==0 && Alerts.unread==0}" ng-click="alertUserDisplay()"></i>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="" role="menu">
+                    <ul id="dropdown-alert-auto" class="dropdown-menu dropdown-menu-right" aria-labelledby="" role="menu">
                         <div class="notification-block" ng-if="SystemeAlertUser.data.length">
-                            <div class="item" ng-repeat="item in SystemeAlertUser.data">
+                            <div class="item" style="min-height:70px" ng-repeat="item in SystemeAlertUser.data">
 								<i class="notification-icon {[{ item.Icon }]}"></i>
 								<a href="" class="notification-button" title="Supprimer" ng-click="alertUserRead($event, item)"></a>
                                 <div class="inner">
                                     <div class="time">
                                         <span class="pull-right">{[{ item.create.substr(0, 5)+' '+item.create.substr(11, 5) }]}</span>
                                     </div>
-                                    <div class="title">
+                                    <div class="title" style="margin-top:5px">
                                         <strong>{[{ item.Title }]}</strong>
                                     </div>
                                     <div class="descr" ng-bind-html="item.Tag"></div>

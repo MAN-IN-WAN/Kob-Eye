@@ -102,7 +102,7 @@ class Classe extends genericClass {
 		
 		$sql = "
 select i.CodeClasse, i.ClasseId, d.Libelle as LibelleD, n.Libelle as LibelleN, e.Numero, e.Nom, e.Prenom, 
-a.Libelle as LibelleA, c.HeureDebut, c.HeureFin, j.Jour
+a.Libelle as LibelleA, c.HeureDebut, c.HeureFin, j.Jour, c.CycleDebut, c.CycleFin, c.Seances
 from `##_Cadref-Inscription` i
 inner join `##_Cadref-Classe` c on c.Id=i.ClasseId
 inner join `##_Cadref-Niveau` n on n.Id=c.NiveauId

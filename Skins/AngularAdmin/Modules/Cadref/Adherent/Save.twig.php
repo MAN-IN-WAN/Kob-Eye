@@ -81,10 +81,11 @@ if ($o->Verify()) {
 
     foreach ($formfields as $f){
         $values->{$f["name"]} = $o->{$f["name"]};
-        if ($f['type']=='date'){
-            //transformation des timestamps en format js
+        if ($f['type']=='date')
+            $values->{$f['name']} = date('d/m/Y',$o->{$f['name']});
+        elseif($f['type']=='datetime')
             $values->{$f['name']} = date('d/m/Y H:i',$o->{$f['name']});
-        }elseif ($f['type']=='rkey') {
+        elseif ($f['type']=='rkey') {
             $o->resetChilds($f['objectName']);
             if (is_array($values->{$f["objectName"].$f["name"]})) foreach ($values->{$f["objectName"].$f["name"]} as $v){
                 $o->AddChild($f['objectName'], $v);

@@ -6,7 +6,7 @@ require_once('nuts.class.php');
 class PrintCertificat extends FPDF {
 		
 	
-	function PrintAttestation($anneeCotis, $anneeFisc) {
+	function PrintCertificat($anneeCotis, $anneeFisc) {
 		parent::__construct('P', 'mm', 'A5');
 	}
 	

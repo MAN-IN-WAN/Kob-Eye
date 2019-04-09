@@ -46,7 +46,7 @@
 				<td scope="row" class="typevarchar"><a href="">{[{ item.LibelleW+' '+item.LibelleN }]}</a></td>
 				<td scope="row" class="typevarchar"><a href="">{[{ item.Jour.substring(0, 3)+' '+item.HeureDebut+'&nbsp;- '+item.HeureFin }]}</a></td>
 				<td scope="row" class="typevarchar"><a href="">{[{ item.CycleDebut ? item.CycleDebut+'&nbsp;- '+item.CycleFin : '' }]}</a></td>
-				<td scope="row" class="typefloat"><span>{[{ (item.Places*1)-(item.Inscrits*1)+'/'+item.Places+(item.Attentes>0 ? ' ('+item.Attentes+')' : '') }]}</span></td>
+				<td scope="row" class="typefloat"><span ng-class="{'cadref-highlight': Number(item.Inscrits)>=Number(item.Places)}">{[{ item.Places+' - '+item.Inscrits+' - '+item.Attentes }]}</span></td>
 				<td scope="row" class="cadref-td typeint">
 					<span class="btn btn-xs cadref-fkey" ng-class="{'btn-primary': item.Attachements==0, 'btn-success': item.Attachements!=0}" 
 						  ng-click="attachementsOpen(item, 'classe')" title="{[{ item.Attachements>0 ? item.Attachements+' documents joints' : 'Aucun document joint' }]}">{[{ item.Attachements }]}

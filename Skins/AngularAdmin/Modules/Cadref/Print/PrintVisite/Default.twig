@@ -19,17 +19,13 @@
 										<div class="col-md-2">
 											{{ label("Première visite") }}
 										</div>
-										<div class="col-md-2">
-{#									<div custom-select="a.id as a.label+'  -  '+a.Libelle for a in getSelectData('CadrefVisiteStore',$searchTerm)" 
-										 custom-select-options="{ 'async': true, 'filter':''}" 
-										 ng-model="obj.Debut" 
-										 class="form-control" 
-										 ng-title="obj.VisiteVisiteIdlabel">
-									</div>
-#}
-											<div class="control-group">
-												<input type="text" class="form-control cadref-input" placeholder="" ng-model="obj.Debut" onkeyup="this.value = this.value.toUpperCase();"/>
-											</div>
+										<div class="col-md-4">
+											<select class="form-control cadref-input" ng-model="obj.Debut" ng-change="debutSelect()">
+												<option value=""></option>
+												{% for v,k in visites %}
+													<option value="{{ v }}">{{ k }}</option>
+												{% endfor %}
+											</select>
 										</div>
 									</div>
 									<div class="row" style="height:10px"></div>
@@ -37,10 +33,22 @@
 										<div class="col-md-2">
 											{{ label("Dernière visite") }}
 										</div>
+										<div class="col-md-4">
+											<select class="form-control cadref-input" ng-model="obj.Fin">
+												<option value=""></option>
+												{% for v,k in visites %}
+													<option value="{{ v }}">{{ k }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
+									<div class="row">
 										<div class="col-md-2">
-											<div class="control-group">
-												<input type="text" class="form-control cadref-input" placeholder="" ng-model="obj.Fin" onkeyup="this.value = this.value.toUpperCase();"/>
-											</div>
+											{{ label("Guide") }}
+										</div>
+										<div class="col-md-2">
+											<switch ng-model="obj.Guide" ng-change="selectMode(0)"></switch>
 										</div>
 									</div>
 									<div class="row" style="height:10px"></div>
@@ -49,7 +57,16 @@
 											{{ label("Chauffeur") }}
 										</div>
 										<div class="col-md-2">
-											<switch ng-model="obj.Chauffeur"></switch>
+											<switch ng-model="obj.Chauffeur" ng-change="selectMode(1)"></switch>
+										</div>
+									</div>
+									<div class="row" style="height:10px"></div>
+									<div class="row">
+										<div class="col-md-2">
+											{{ label("Interne") }}
+										</div>
+										<div class="col-md-2">
+											<switch ng-model="obj.Interne" ng-change="selectMode(2)"></switch>
 										</div>
 									</div>
 									<div class="row" style="height:10px"></div>

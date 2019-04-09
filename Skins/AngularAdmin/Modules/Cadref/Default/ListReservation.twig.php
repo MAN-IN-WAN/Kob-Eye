@@ -28,20 +28,5 @@ if(!isset($info['ObjectType'])) {
 	$tab = array($info['Module'], $info['ObjectType'], 'Form');
 }
 $vars['Annee'] = Cadref::$Annee;
-$vars['context'] = 'children';
-
-$vars['formPath'] = 'Systeme/Utils/Form';
-
-if (!isset($info['ObjectType'])) {
-$tab = explode('/', $info['Query']);
-	array_push($tab, 'Form');
-} else {
-	$tab = array($info['Module'], $info['ObjectType'], 'Fiche');
-}
-$blinfo = Bloc::lookForInterface($tab, 'Skins/AngularAdmin/Modules', true);
-if(strpos($blinfo, '/'.$info['Module'].'/')) {
-	$p = strpos($blinfo, 'Modules/') + strlen('Modules/');
-	$vars['formPath'] = substr(trim($blinfo, '.twig'), $p);
-}
 
 ?>

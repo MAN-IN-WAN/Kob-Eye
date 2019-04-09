@@ -20,6 +20,7 @@
 		$scope.clearFilter = function(id) {
 			$scope.{{ ident }}.filter = '';
 			if(id == 'CadrefAdherent') {
+				$scope.{{ ident }}.filter1 = '';
 				$scope.{{ ident }}.filter2 = '';
 				$('#search{{ ident }}2').focus();
 			}
@@ -37,9 +38,28 @@
 		}
 		
 		var lasttimeout = false;
+		// wait for CadrefAdherent to be defined before setting a watch on filters
 		var unwatch = $scope.$watch('CadrefAdherent', function() {
 			if($scope.CadrefAdherent != undefined && $scope.CadrefAdherent.filter2 == undefined) {
+				$scope.CadrefAdherent.filter1 = '';
 				$scope.CadrefAdherent.filter2 = '';
+				var f = CadrefAdherentStore.getFilters('default',true).global;
+				if(f != '') {
+					if(f.substring(0, 10) == 'NomPrenom~') $scope.CadrefAdherent.filter2 = f.substring(10);
+					else $scope.CadrefAdherent.filter1 = f
+				}
+				$scope.$watch('CadrefAdherent.filter1', function() {
+					if ($scope.CadrefAdherent.filter1 != CadrefAdherentStore.getFilters('default',true).global){
+						if (lasttimeout){
+							$timeout.cancel(lasttimeout);
+							lasttimeout = false;
+						}
+						CadrefAdherentStore.setGlobalFilter($scope.CadrefAdherent.filter1,'default');
+						lasttimeout = $timeout(function () {
+							CadrefAdherentStore.getData(1,'default');
+						},400);
+					}
+				});
 				$scope.$watch('CadrefAdherent.filter2', function() {
 					if ($scope.CadrefAdherent.filter2 != CadrefAdherentStore.getFilters('default',true).global){
 						if (lasttimeout){
@@ -56,7 +76,7 @@
 			}
 		});
 		
-		// focus sur lez nom
+		// focus sur le nom
 		$('#modal-CadrefAdherent').on('shown.bs.modal', function() {
 			$('#adhNom').focus();
 		});
@@ -103,7 +123,7 @@
 		// donne le focus
 		$scope.takeFocus = function(id) {
 			$timeout(function(){
-				$(id).focus();
+				$('#'+id).focus();
 			},100);
 		}
 		
@@ -291,6 +311,7 @@
 		
 		
 		// info annuelles et cotisation
+		$scope.obj.nonCotis = false;
 		$scope.obj.nonSolde = false;
 		$scope.CotisationAnnuelle = 0;
 		$scope.adherentInfo = function() {
@@ -299,21 +320,22 @@
 			var ajax = $scope.{{ identifier }}callMethod($scope.obj,'GetFormInfo',[annee]);
 			ajax.success(
 				function(data) {
-					$scope.obj.Cotisation = data.data.Cotisation;
-					$scope.obj.Cours = data.data.Cours;
-					$scope.obj.Visites = data.data.Visites;
-					$scope.obj.Reglement = data.data.Reglement;
-					$scope.obj.Differe = data.data.Differe;
-					$scope.obj.Regularisation = data.data.Regularisation;
-					$scope.obj.Solde = data.data.Solde;
-					$scope.obj.NotesAnnuelles = data.data.NotesAnnuelles;
-					$scope.obj.Adherent = data.data.Adherent;
-					$scope.obj.ClasseId = data.data.ClasseId;
-					$scope.obj.AntenneId = data.data.AntenneId;
-					$scope.objnonSolde = Number($scope.obj.Solde) != 0;
+					var o = $scope.obj;
+					o.Cotisation = data.data.Cotisation;
+					o.Cours = data.data.Cours;
+					o.Visites = data.data.Visites;
+					o.Reglement = data.data.Reglement;
+					o.Differe = data.data.Differe;
+					o.Regularisation = data.data.Regularisation;
+					o.Solde = data.data.Solde;
+					o.NotesAnnuelles = data.data.NotesAnnuelles;
+					o.Adherent = data.data.Adherent;
+					o.ClasseId = data.data.ClasseId;
+					o.AntenneId = data.data.AntenneId;
+					o.nonSolde = Number($scope.obj.Solde) != 0;
+					o.nonCotis = Number($scope.obj.Cotisation) == 0;
 					$scope.soldeAdherent();
 					$scope.CotisationAnnuelle = data.data.CotisationAnnuelle;
-					console.log('adherentInfo',data.data);
 				}
 			).error(
 				function() {
@@ -334,7 +356,8 @@
 		// solde adherent
 		$scope.soldeAdherent = function() {
 			var o = $scope.obj;
-			var s = Number(o.Cotisation)+Number(o.Cours)+Number(o.Visites)-Number(o.Reglement)-Number(o.Differe)+Number(o.Regularisation);
+			var s = Number(o.Cotisation)+Number(o.Cours)-Number(o.Reglement)-Number(o.Differe)+Number(o.Regularisation);
+			//var s = Number(o.Cotisation)+Number(o.Cours)+Number(o.Visites)-Number(o.Reglement)-Number(o.Differe)+Number(o.Regularisation);
 			o.Solde = s;
 			o.nonSolde = s != 0;
 		}
@@ -498,19 +521,16 @@
             },
 			filter2: '',
 			lasttimeout: false,
-//			noEvent: false,
 			lastEvent: -1
         }
 		
 		// recherche sur le store de Classe
 		var classeFilter = function(mode) {
 			var c = $scope.CadrefClasse;
-//			if(c.noEvent) return;
 			if(c.lastEvent == mode) {
 				c.lastEvent = -1;
 				return;
 			}
-//			c.noEvent = true;
 
             if(c.lasttimeout){
                 $timeout.cancel(c.lasttimeout);
@@ -537,8 +557,8 @@
             },300);
 //			c.noEvent = false;
 		}
-        $scope.$watch('CadrefClasse.filter', function() { classeFilter(0); });
-        $scope.$watch('CadrefClasse.filter2', function() { classeFilter(1); });
+        $scope.$watch('CadrefClasse.filter', function() { console.log('aaaaa'); classeFilter(0); });
+        $scope.$watch('CadrefClasse.filter2', function() { console.log('aaaaabb'); classeFilter(1); });
 
 		// efface le contenu du filtre
 		$scope.classeClearFilters = function() {
@@ -546,12 +566,6 @@
 			$scope.CadrefClasse.filter2 = '';
 			$('#searchCadrefClasse').focus();
 		}
-
-		// efface le contenu du filtre
-//		$scope.clearSearch = function() {
-//			$scope.CadrefClasse.filter = '';
-//			$('#searchClasse').focus();
-//		}
 		
 		// controle le bontoun ajouter
 		$scope.classeControle = function(mode) {
@@ -614,7 +628,7 @@
         }
 		
 		// controle le bontoun next
-		$scope.nextControle = function() {
+		$scope.nextControle = function(mode) {
 			var enb = false;
 			var cad = $scope.CadrefClasse.Inscr;
 			var p = Number(cad.paye)
@@ -623,12 +637,13 @@
 			if(enb) {
 				if(Number(cad.solde) != 0) $('#inscriptionNext').html('Différé');
 				else $('#inscriptionNext').html('Valider');
+				if(mode) $('#inscriptionNext').focus();
 			}
 			else $('#inscriptionNext').html('-----');
 		}
 		
 		// switch cotisation
-		$scope.adherentCotisation = function() {
+		$scope.classeCotisation = function() {
 			var cad = $scope.CadrefClasse.Inscr;
 			cad.cotis = ! cad.noCotis ? $scope.CotisationAnnuelle : 0;
 			cad.updated = true;
@@ -646,17 +661,19 @@
 				if(c.Attente>0 || c.Supprime>0) continue;
 				cad.cours += Number(c.Prix)-Number(c.Reduction)-Number(c.Soutien);
 			}
-			cad.paye = Number(cad.cotis)+Number(cad.cours)+Number(cad.visit)-Number(cad.regle)-Number(cad.diff)+Number(cad.regul);
+			cad.paye = Number(cad.cotis)+Number(cad.cours)-Number(cad.regle)-Number(cad.diff)+Number(cad.regul);
+			//cad.paye = Number(cad.cotis)+Number(cad.cours)+Number(cad.visit)-Number(cad.regle)-Number(cad.diff)+Number(cad.regul);
 			cad.solde = 0;
 			cad.nonSolde = false;
-			$scope.nextControle();
+			$scope.nextControle(false);
 		}
 		$scope.classePaye = function() {
 			var cad = $scope.CadrefClasse.Inscr;
-			cad.solde = Number(cad.cotis)+Number(cad.cours)+Number(cad.visit)-Number(cad.regle)-Number(cad.diff)+Number(cad.regul)-Number(cad.paye);
+			cad.solde = Number(cad.cotis)+Number(cad.cours)-Number(cad.regle)-Number(cad.diff)+Number(cad.regul)-Number(cad.paye);
+			//cad.solde = Number(cad.cotis)+Number(cad.cours)+Number(cad.visit)-Number(cad.regle)-Number(cad.diff)+Number(cad.regul)-Number(cad.paye);
 			cad.nonSolde = cad.solde != 0;
 			cad.updated = true;
-			$scope.nextControle();
+			$scope.nextControle(false);
 		}
 
 		
@@ -753,6 +770,7 @@
 			$scope.classeCalcul();
 			cad.Inscr.updated = true;
 			$('#inscrPaye').focus();
+			try {$scope.$digest();} catch(ex) {}
 		}
 		
 	
@@ -849,7 +867,10 @@
 			var r = reg[lig];
 			if(Number(r.paye) != 0) {
 				if(r.mois == '' && r.user == '') {
-					if(lig == 0) r.mois = $filter('date')(new Date(), "MM");
+					if(lig == 0) {
+						r.mois = $filter('date')(new Date(), "MM");
+						if($filter('date')(new Date(), "DD") >= "15") r.mois = (r.mois*1)+1;
+					}
 					else {
 						var n = parseInt(lig)-1;
 						r.mode = reg[n].mode;
@@ -870,12 +891,265 @@
 				if(!reg[i].encais) p += Number(reg[i].paye);
 			}
 			var ins = $scope.CadrefAdherentfunction.args.Inscr;
-			var s = Number(ins.cotis)+Number(ins.cours)+Number(ins.visit)-Number(ins.regle)-p+Number(ins.regul);
+			var s = Number(ins.cotis)+Number(ins.cours)-Number(ins.regle)-p+Number(ins.regul);
+			//var s = Number(ins.cotis)+Number(ins.cours)+Number(ins.visit)-Number(ins.regle)-p+Number(ins.regul);
 			dif.solde = s;
 			dif.nonSolde = s != 0;
 		}
 
 
+		//---------------------------------------
+		// RESERVATIONS
+		//---------------------------------------
+		
+		// controleur du store de Visite
+        CadrefVisiteStore.cloneContext('default','temp');
+		CadrefVisiteStore.setPageLength(15);
+		CadrefVisiteStore.setFilters('Annee={{ Annee }}&Inactif=0', 'temp');
+		CadrefVisiteStore.getData(1, 'temp');
+        $scope.CadrefVisite = {
+            data: CadrefVisiteStore.data.temp,
+            store: CadrefVisiteStore,
+            filter: CadrefVisiteStore.getFilters('temp',true).global,
+            filterPanel: false,
+            filters: (function(){
+                var opts = CadrefVisiteStore.getFilters('temp',true).options;
+                var out = {};
+                for (var o in opts){
+                    out[opts[o].name] = opts[o];
+                }
+                return out;
+            })(),
+            filterQuery: CadrefVisiteStore.getQueryFilter('temp'),
+            currentPage: CadrefVisiteStore.currentPage.temp,
+            pageLength: CadrefVisiteStore.getPageLength(),
+            itemsPerPage: CadrefVisiteStore.itemsPerPage,
+            selected: {
+                selectall: false
+            },
+			lasttimeout: false
+        }
+
+		// recherche sur le store de Visite
+		var visiteFilter = function() {
+			var c = $scope.CadrefVisite;
+
+            if(c.lasttimeout){
+                $timeout.cancel(c.lasttimeout);
+                c.lasttimeout = false;
+            }
+            c.lasttimeout = $timeout(function () {
+				CadrefVisiteStore.setFilters(c.filter+'%&Annee={{ Annee }}&Inactif=0','temp');
+                CadrefVisiteStore.getData(1,'temp');
+            },300);
+		}
+        $scope.$watch('CadrefVisite.filter', function() { visiteFilter(); });
+
+		// efface le contenu du filtre
+		$scope.visiteClearFilters = function() {
+			$scope.CadrefVisite.filter = '';
+			$('#searchCadrefVisite').focus();
+		}
+
+		// controle le bouton ajouter
+		$scope.visiteControle = function() {
+			var enb = true;
+			var s = $scope.CadrefVisite.filter;
+			var t = $scope.CadrefReservation.store.data.temp;
+			var l = t.length;
+			for(var i = 0; i < l; i++) {
+				if(t[i].CodeClasse == s) {
+					enb = false;
+					break;
+				}
+			}
+			$scope.addVisiteDisabled = !enb;
+		}
+		
+		// ouverture popup reservations
+		$scope.addVisiteDisabled = true;
+		$scope.nextVisiteDisabled = false;
+		$scope.CadrefVisite.Visit = {};
+		$scope.CadrefVisite.Visit.updated = false;
+		$scope.CadrefVisite.Visit.nonSolde = false;
+
+        $scope.openReservation = function(obj) {
+			$scope.modalObj = {};
+            angular.copy(obj, $scope.modalObj);
+            CadrefReservationStore.cloneContext('children','temp');
+	 		CadrefReservationStore.setFilters('Annee={{ Annee }}', 'temp');
+			CadrefReservationStore.getData(1, 'temp');
+			$scope.{{ ident }}callFunction(obj,'EditReservations','Reservations','');
+			
+			var cad = $scope.CadrefVisite;
+			cad.filter = '';
+			cad.Visit.cotis = $scope.modalObj.Cotisation;
+			cad.Visit.noCotis = Number($scope.modalObj.Cotisation) == 0;
+			cad.Visit.cours = $scope.modalObj.Cours;
+			cad.Visit.visit = $scope.modalObj.Visites;
+			cad.Visit.regle = $scope.modalObj.Reglement;
+			cad.Visit.diff = $scope.modalObj.Differe;
+			cad.Visit.regul = $scope.modalObj.Regularisation;
+			cad.Visit.solde = 0;
+			cad.Visit.paye = $scope.modalObj.Solde;
+			cad.Visit.mode = '';
+			cad.Visit.date = '{{ "now"|date("d/m/Y") }}';
+			cad.Visit.note = '';	
+			cad.Visit.updated = cad.Visit.paye != 0;
+			$('#modalfunction-CadrefAdherent').on('keyup', function(event) {
+				if(event.keyCode == 13) {
+					$('#reservationNext').click();
+					//if($('#reservationNext').length) $('#reservationNext').click();
+					//else if($('#differeNext').length) $('#differeNext').click();
+				}
+			});
+			$timeout(function() {
+				$('#searchCadrefVisite').focus();
+			}, 300);
+        }
+		
+		// controle le bontoun next
+		$scope.nextVisiteControle = function(mode) {
+			var enb = false;
+			var cad = $scope.CadrefVisite.Visit;
+			var p = Number(cad.paye)
+			enb = p == 0 || cad.paye == '' || (p != 0 && cad.mode != '');
+			$scope.nextDisabled = !enb;
+			if(enb) {
+				if(mode) $('#reservationNext').focus();
+			}
+			else $('#reservationNext').html('-----');
+		}
+		
+		// prix modifié
+		$scope.visiteUpdate = function(item) {
+			item.updated = true;
+		}
+		
+		// ajoute une visite
+		$scope.visiteAjoute = async function(item) {
+			var cad = $scope.CadrefVisite;
+			var c = item == null ? cad.data[0] : item;
+			
+			// controle si existe deja
+			var s = c.Visite;
+			var t = $scope.CadrefReservation.store.data.temp;
+			var l = t.length;
+			for(var i = 0; i < l; i++) {
+				if(t[i].Visite == s) {
+					swal("Attention", "Visite déjà sélectionnée.", "warning");
+					return;
+				}
+			}
+			
+			var o = {};
+			o.id = 0;
+			o.VisiteVisiteId = c.id;
+			o.Visite = c.Visite;
+			o.Libelle = c.Libelle;
+			o.DateVisite = c.DateVisite;
+			o.Places = c.Places;
+			o.Inscrits = c.Inscrits;
+			o.Attentes = c.Attentes;
+			o.Attente = 0;
+			o.DateAttente = '';
+			o.Supprime = 0;
+			o.DateSupprime = null;
+			o.Utilisateur = '';
+			o.DateInscription = $filter('date')(new Date(), "dd/MM/yyyy");
+			o.Prix = c.Prix;
+			o.ModeReglement = 'B';
+			o.updated = 1;
+			var t = $scope.CadrefReservation.store.data.temp;
+			t[t.length] = o;
+			o.line = t.length
+			//cad.filter = '';
+			$scope.addVisiteDisabled = true;
+			
+			if(cad.Visit.cotis != $scope.CotisationAnnuelle) {
+				cad.Visit.cotis = $scope.CotisationAnnuelle;
+				cad.Visit.noCotis = false;
+			}
+			cad.Visit.updated = true;
+			try {$scope.$digest();} catch(ex) {}
+			$timeout(function() {
+				$('#visiteDepart'+t.length).focus();
+			}, 100);
+		}
+		
+	
+		// mode = 1 : supprime
+		// mode = 2 : attente
+		$scope.visiteSupprime = function(item, mode) {
+			if(item.Supprime > 0) return;
+			
+			// insciption non enregistrée : suppression de la liste
+			if(item.id == 0) {
+				var t = $scope.CadrefReservation.store.data.temp;
+				var l = t.length;
+				var s = item.Visite;
+				for(var i = 0; i < l; i++) {
+					if(t[i].Visite == s) {
+						t.splice(i, 1);
+						break;
+					}
+				}
+			}
+			else {
+				swal({
+					title: mode == 1 ? "Supression" : "Echange",
+					type: "warning",
+					showCancelButton: true,
+					cancelButtonText: "Annuler",
+					confirmButtonText: "Confirmer",
+					closeOnConfirm: true
+				},
+				function() {
+					// flag suppression
+					item.DateSupprime = $filter('date')(new Date(), "dd/MM/yyyy");
+					item.Supprime = mode;
+					item.updated = 1;
+					$scope.CadrefVisite.Visit.updated = true;
+					try {$scope.$digest();} catch(ex) {}
+				});
+			}
+		}
+
+		$scope.visiteInscrire = async function(item) {
+			if(item.Supprime == 0 && item.Attente == 0) return;
+			item.Supprime = 0;
+			item.Attente = 0;
+			item.DateSupprime = '';
+			item.DateAttente = '';
+			if(item.DateInscription == '') item.DateInscription = $filter('date')(new Date(), "dd/MM/yyyy");
+			item.updated = 1
+			$scope.CadrefVisite.Visit.updated = true;
+		}
+		
+		$scope.visiteAttente = function(item) {
+			if(item.Supprime > 0 || item.Attente > 1) return;
+			if(item.id > 0) {
+				swal({
+					title: "Mise en attente",
+					type: "warning",
+					showCancelButton: true,
+					cancelButtonText: "Annuler",
+					confirmButtonText: "Confirmer",
+					closeOnConfirm: true
+				},
+				function() {
+					$scope.visiteAttente2(item);
+					try {$scope.$digest();} catch(ex) {}
+				});
+			}
+			else $scope.visiteAttente2(item);
+		}
+		$scope.visiteAttente2 = function(item) {
+			item.Attente = 1;
+			item.DateAttente = $filter('date')(new Date(), "dd/MM/yyyy HH:mm");
+			item.updated = 1
+			$scope.CadrefVisite.Visit.updated = true;
+		}
 
 
 
@@ -1140,18 +1414,23 @@
 		}
 
 		// modification depart
+		var departTm
 		$scope.departModify = function(item) {
 			var i = $scope.departInfo;
 			var o = $scope.departObj = {};
 			angular.copy(item, o);
 			o.VisiteVisiteId = $scope.obj.id;
 			i.mode = 'edit';
-			$('#heureDepart').focus();
+			departTm = $timeout(function () {
+				$('#heureDepart').focus();
+			},100);
 		}
+		
+		
 
-		$('#departFiche').on('shown', function() {
-			$('#heureDepart').focus();
-		});
+//		$('#departFiche').on('shown', function() {
+//			$('#heureDepart').focus();
+//		});
 
 		// sauve depart
 		$scope.departSave = function() {
@@ -1179,6 +1458,8 @@
 				try { $scope.$digest(); } catch(ex) {}
 			});
 		}
+		
+		
 		{% endif %}
 	
 		

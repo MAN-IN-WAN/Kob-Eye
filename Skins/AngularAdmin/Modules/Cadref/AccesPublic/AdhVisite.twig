@@ -1,17 +1,74 @@
-{# fiche inscriptions adherent #}
+{# fiche reservations adherent #}
 <div class="page-content-inner">
 	<h3>Visites guidées</h3>
     <section class="panel">
         <div class="panel-body">
             <div class="row no-gutters">
                 <div class="col-md-12">
+					<div class="row" ng-if="!reservationObj.Select">
+						<div class="col-md-2">
+							<button type="button" class="btn btn-success" ng-click="reservationSelect(true)">Ajouter une visite</button>
+						</div>
+					</div>
+					<section class="panel" ng-if="reservationObj.Select">
+						<div class="panel-body">
+							<div class="row">
+								<div style="height:10px"></div>
+								<div class="col-md-12">
+									<div class="listWrap">
+										<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%">
+											<thead>
+												<tr>
+													<th title="Id" class="list-col-th-id" hidden>ID</th>
+													<th class="cadref-th">Date</th>
+													<th class="cadref-th">Visite</th>
+													<th class="cadref-th">Animateur</th>
+													<th class="cadref-th">Prix</th>
+													<th class="cadref-th">Places</th>
+													<th class="cadref-th"></th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="item in reservationObj.VisiteItems">
+													<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
+													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.DateText }]}</span></td>
+													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Libelle }]}</span></td>
+													<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Enseignants }]}</span></td>
+													<td scope="row" class="cadref-td typefloat"><span class="label">€ {[{ item.Prix }]}</span></td>
+													<td scope="row" class="cadref-td typevarchar"><span class="label" ng-class="{'cadref-highlight': item.Disponible==0}">{[{ item.Disponible+' / '+item.Places }]}</span></td>
+													<td  class="table-action cadref-td-btn">
+														<span class="btn-abt cadref-btn-add btn-success" ng-click="reservationAjoute(item)" title="Inscrire"></span>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div style="height:10px"></div>
+							<div class="row">
+								<div class="col-md-2">
+									<button type="button" class="btn btn-warning" ng-click="reservationSelect(false)">Annuler</button>
+								</div>
+							</div>
+						</div>
+					</section>
 					<section class="panel">
 						<div class="panel-body">
-							<ng-include src="'Cadref/Adherent/0/Reservation/PublicListReserv.htm'"></ng-include>
+							<ng-include src="'Cadref/Adherent/0/Reservation/PublicListReserv.htm?tempContext=1'"></ng-include>
+						</div>
+						<div class="row" ng-if="reservationObj.Updated">
+							<div class="col-md-2">
+								<label class="form-control-label cadref-label" style="line-height:1">Montant à payer : € {[{ reservationObj.Montant }]}</label>
+							</div>
+							<div class="col-md-2">
+								<button type="button" class="btn btn-info" ng-click="reservationConfirm()">Confirmer l'inscription</button>
+							</div>
 						</div>
 					</section>
 				</div>
 			</div>
+		</div>
     </section>
 </div>
 
