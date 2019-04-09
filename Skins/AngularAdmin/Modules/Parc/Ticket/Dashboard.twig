@@ -1,0 +1,76 @@
+<div style="position:relative;">
+    <table id="activity_list">
+        <tr id="tableFixedHeader" class="activity-item" >
+            <th class="activity_start">Créé le</th>
+            <th class="activity_title">Titre</th>
+            <th class="activity_progress">Etat</th>
+            <th class="activity_link">Lien</th>
+        </tr>
+        <tr class="activity-item" dir-paginate="act in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination" ng-init="hover = false" ng-class="{showDetail:hover}">
+            <td class="actWrap" colspan="4">
+                <table class="actSub">
+                    <tr class="actInfo" >
+                        <td class="activity_start">
+                            {[{ act.create }]}
+                        </td>
+                        <td class="activity_title" ng-class="{info: act.Priorite == 1 ,info_error: act.Priorite == 2 ,running: act.Priorite == 3 ,error: act.Priorite == 4, cursor:act.Note}" ng-click="act.Errors ? null : (hover = !hover)"><span ng-bind-html="act.Titre"></span></td>
+                        <td class="activity_progress" style="text-align: center;"><span class="etatTicket" ng-class="'etat_'+act.Etat" ng-bind-html="act.EtatLabel"></span></td>
+                        <td class="activity_link">
+                            <a href="/#/{{ link }}/{[{ act.id }]}" class="btn-abt btn-abt-nfo btn-primary" ></a>
+                        </td>
+                    </tr>
+                    <tr class="actDetail" ng-if="act.Note">
+                        <td colspan="4" >
+                            <pre ng-bind-html="act.Note"></pre>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<div class="modal fade modal-size-large" id="modal-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">{[{ modalObj.title }]}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" ng-if="modalObj.errors.length">
+                    <ul>
+                        <li ng-repeat="e in modalObj.errors">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-warning" ng-if="modalObj.warning.length">
+                    <ul>
+                        <li ng-repeat="e in modalObj.warning">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-success" ng-if="modalObj.infos.length">
+                    <ul>
+                        <li ng-repeat="e in modalObj.infos">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div ng-if="modalObj.success == false">
+                    {{ include(template_from_string(module('Systeme/Utils/Form?Path='~Path))) }}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == true">Fermer</button>
+                <button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == false">Annuler</button>
+                <button type="button" class="btn btn-primary" ng-click="{{ identifier }}modalSave()" ng-if="modalObj.success == false">Enregistrer les modifications</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ include(template_from_string(module('Systeme/Utils/Modal/Function?identifier='~identifier))) }}
+
+<script type="text/javascript">
+    $('.spinner-list').spin();
+</script>

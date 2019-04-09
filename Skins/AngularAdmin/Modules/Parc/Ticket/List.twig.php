@@ -5,10 +5,14 @@ else
     $vars['Path'] = $Path = $vars['Query'];
 $info = Info::getInfos($Path);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
-$o->setView();
 $vars['identifier'] = $info['Module'].$info['ObjectType'];
-if(!isset($vars['context']))
-    $vars['context'] = $info['NbHisto'] > 1 ? 'children':'default';
+
+$vars['context'] = $info['NbHisto'] > 1 ? 'children':'default';
+$vars['context'] = isset($vars['templateContext']) ? $vars['templateContext']: $vars['context'];
+
+
+$vars['link'] = Sys::getMenu($info['Module'].'/'.$info['ObjectType']);
+
 $vars['ObjectClass'] = $o->getObjectClass();
 $vars['ObjectType'] = $info['ObjectType'];
 $vars['Module'] = $info['Module'];
@@ -60,6 +64,8 @@ foreach ($vars['filters'] as $k=>$f){
         }
     }
 }
+
+
 if (is_object(Sys::$CurrentMenu)) {
     if (isset($vars['Type'])&&$vars['Type']=='Children') {
         $vars['CurrentUrl'] = Sys::getMenu($info['Module'] . '/' . $info['ObjectType']);
@@ -77,25 +83,24 @@ if (isset($vars["Interfaces"]['list']))
 $vars['formPath'] = 'Systeme/Utils/Form';
 
 if (!isset($info['ObjectType'])) {
-$tab = explode('/', $info['Query']);
-	array_push($tab, 'Form');
+    $tab = explode('/', $info['Query']);
+    array_push($tab, 'Form');
 } else {
-	$tab = array($info['Module'], $info['ObjectType'], 'Form');
+    $tab = array($info['Module'], $info['ObjectType'], 'Form');
 }
 $blinfo = Bloc::lookForInterface($tab, 'Skins/AngularAdmin/Modules', true);
 if(strpos($blinfo, '/'.$info['Module'].'/')) {
-	$p = strpos($blinfo, 'Modules/') + strlen('Modules/');
-	$vars['formPath'] = substr(trim($blinfo, '.twig'), $p);
+    $p = strpos($blinfo, 'Modules/') + strlen('Modules/');
+    $vars['formPath'] = substr(trim($blinfo, '.twig'), $p);
 }
 
 
 $childs = $vars["ObjectClass"]->getChildElements();
 foreach ($childs as $child){
-        //test role                                                             //test hidden                                               //test admin
+    //test role                                                             //test hidden                                               //test admin
     if (((!isset($child['hasRole'])||Sys::$User->hasRole($child['hasRole'])) && !isset($child['childrenHidden'])&&!isset($child['hidden'])) || (!is_object(Sys::$CurrentMenu) && Sys::$User->Admin)){
         if(isset($child['listParent']) && $child['listParent']){
             array_push($vars['fields'],$child);
         }
     }
 }
-?>

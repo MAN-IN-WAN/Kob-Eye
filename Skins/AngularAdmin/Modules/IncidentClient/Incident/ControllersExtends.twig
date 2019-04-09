@@ -11,8 +11,14 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval,$timeout,$
         if(item.creator == {{ uid }}) item.Editable = true;
 
         item.Auteur ='';
-        if(item.ContactContactIdlabel != '') item.Auteur = item.ContactContactIdlabel;
-        if(item.TechnicienTechnicienIdlabel != '') item.Auteur = item.TechnicienTechnicienIdlabel;
+        if(item.ContactContactId != 0) {
+
+            item.Auteur = item.ContactContactIdlabel;
+        }
+        if(item.TechnicienTechnicienId != 0) {
+
+            item.Auteur = item.TechnicienTechnicienIdlabel;
+        }
         if(item.Auteur == '') item.Auteur = 'Administrateur';
 
         return item;

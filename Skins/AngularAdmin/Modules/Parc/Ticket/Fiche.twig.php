@@ -1,10 +1,8 @@
 <?php
 session_write_close();
-$vars['Annee'] = $GLOBALS['Systeme']->getRegVars('AnneeEnCours');
 $info = Info::getInfos($vars['Query']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
-$vars['fields'] = $o->getElementsByAttribute('list','',true);
-$vars['functions'] = $o->getFunctions();
+//$vars['fields'] = $o->getElementsByAttribute('list','',true);
 $vars['fichefields'] = $o->getElementsByAttribute('fiche','',true);
 if (!is_object(Sys::$CurrentMenu) && Sys::$User->Admin){
     $vars['fichefields'] = $o->getElementsByAttribute('','',true);
@@ -13,8 +11,19 @@ if (!is_object(Sys::$CurrentMenu) && Sys::$User->Admin){
 foreach ($vars['fichefields'] as $k=>$f){
     if ($f['type']=='fkey'&&$f['card']=='short'){
         $vars['fichefields'][$k]['link'] = Sys::getMenu($f['objectModule'].'/'.$f['objectName']);
+
+        if ($vars['fichefields'][$k]['link']==$f['objectModule'].'/'.$f['objectName'])
+            $vars['fichefields'][$k]['link'] = false;
+
+        if($f['objectName'] == 'Contact')
+            $vars['contactLink'] = $vars['fichefields'][$k]['link'];
+        if($f['objectName'] == 'Contrat')
+            $vars['contratLink'] = $vars['fichefields'][$k]['link'];
     }
 }
+$vars['fields'] = $vars['fichefields'];
+
+
 $vars['formfields'] = $o->getElementsByAttribute('form','',true);
 $vars['CurrentMenu'] = Sys::$CurrentMenu;
 $vars["CurrentObj"] = genericClass::createInstance($info['Module'],$info['ObjectType']);
@@ -32,6 +41,13 @@ foreach($vars['operation'] as $k=>$op){
         $vars['operation'][$k] = $ok;
     }
 }
+$vars['functions'] = $o->getFunctions();
+foreach($vars['functions'] as $k=>$f){
+    if(empty($vars['operation'][$f['Nom']]))
+        unset($vars['functions'][$k]);
+}
+$vars['functions'] = array_values($vars['functions']);
+
 $childs = $vars["ObjectClass"]->getChildElements();
 $vars["ChildrenElements"] = array();
 
@@ -55,4 +71,7 @@ else $vars['CurrentUrl'] = $vars['Query'];
 $vars['browseable'] = $vars["ObjectClass"]->browseable;
 $vars['CurrentObjQuery'] = $vars['Path'];
 
-?>
+$vars['User'] = Sys::$User;
+
+
+$vars['Abtel'] = array_key_exists('Abtel',Sys::$Modules);

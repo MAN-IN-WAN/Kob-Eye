@@ -31,148 +31,95 @@
                 {% elseif functions|length == 1 %}
                     <a href="javascript: void(0);" class="btn btn-primary" ng-click='{{ identifier }}callFunction(obj,"{{functions.0.Nom}}","{{functions.0.title}}",{{functions.0.needConfirm}})'>{{functions.0.title}}</a>
                 {% endif %}
-
                 {% if operation.edit %}<button type="button" class="btn btn-default btn-warning margin-inline" ng-click="modify(obj)">Modifier</button>{% endif %}
                 {% if operation.delete %}<button type="button" class="btn btn-default btn-danger margin-inline" ng-click="delete(obj)">Supprimer</button>{% endif %}
             </div>
             <h3 ng-bind-html="'Fiche {{ ObjectClass.getDescription() }} '+(obj.label)"></h3>
+            <h4 ng-if="obj.Titre != undefined && obj.Titre != ''" ng-bind-html="obj.Titre"></h4>
         </div>
         <div class="panel-body">
             <div class="row">
-                {% if Interfaces.top %}
-                <div class="col-md-12 col-lg-4">
-                    <ng-map center="41,-87" zoom="6"></ng-map>
-                </div>
-                <div class="col-md-12 col-lg-4">
-                {% else %}
-                <div class="col-md-12 col-lg-6">
-                {% endif %}
-                {% for field in fichefields %}
-                    {% if field.type == "progress" or field.type == "pluginconfig" or field.type == "raw" or field.type == "html" or field.type == "text" or field.type == "bbcode" %}
-                    <!-- NE RIEN FAIRE-->
-                    {% else %}
-                    <div class="row  ficheField  type_{{ field.type }}{{ field.card }}">
+                <div class="col-md-6">
+                    <!-- Urgence -->
+                    <div class="row  ficheField">
                         <div class="col-md-5 detail-label">
-                            <label class="form-control-label" for="l0">{% if field.parentDescription is not empty %}{{ field.parentDescription }}{% else %}{{ field.description }}{% endif %}</label>
+                            <label class="form-control-label" for="l0">Urgence</label>
                         </div>
                         <div class="col-md-7 detail-value">
-                            {% if field.type == "price" %}
-                            <span class="label label-warning">{[{ obj.{{ field.name }} | currency:"" }]} €</span>
-                            {% elseif field.type == "image" %}
-                                <img class="img-responsive" src="{[{ obj.{{ field.name }} }]}.limit.250x40.jpg" {{ field.listDescr }} ng-if="obj.{{ field.name }} "/>
-                                <img class="img-responsive" src="/Tools/Images/NoPhoto.jpg.limit.250x40.jpg" {{ field.listDescr }} ng-if="!obj.{{ field.name }} "/>
-                            {% elseif field.type == "file" %}
-                                <a  class="fileLink btn btn-small btn-danger" href="{[{ obj.{{ field.name }} }]}" title="{[{ obj.{{ field.name }} }]}" target="_blank" >Voir le fichier</a>
-                            {% elseif field.type == "plugin" %}
-                                <span  class="label label-danger" ng-bind-html="obj.{{ field.name }}"></span>
-                            {% elseif field.type == "float" %}
-                                <span class="label label-warning">{[{ obj.{{ field.name }}| currency:"" }]}</span>
-                            {% elseif field.type == "extlink" %}
-                                <a class="btn btn-success btn-xs" href="https://zabbix.abtel.fr/guacamole/#/client/{[{ obj.{{ field.name }} }]}" target="_blank">{{ field.listDescr }}</a>
-                            {% elseif field.type == "int" %}
-                                {% if field.Values %}
-                                    <select class="form-control" ng-model="obj.{{ field.name }}" disabled="disabled">
-                                        {% for v,k in field.Values %}
-                                            <option value="{{ v }}">{{ k }}</option>
-                                        {% endfor %}
-                                    </select>
-                                {% else %}
-                                    <span class="label label-primary">{[{ obj.{{ field.name }} }]}</span>
-                                {% endif %}
-                            {% elseif field.type == "boolean" %}
-                                {% if field.special == "reverse" %}
-                                    <span class="label label-success" ng-if="!obj.{{ field.name }}"><i class="fa fa-check"></i></span>
-                                    <span class="label label-danger" ng-if="obj.{{ field.name }}"><i class="fa fa-times"></i></span>
-                                {% else %}
-                                    <span class="label label-success" ng-if="obj.{{ field.name }}"><i class="fa fa-check"></i></span>
-                                    <span class="label label-danger" ng-if="!obj.{{ field.name }}"><i class="fa fa-times"></i></span>
-                                {% endif %}
-                            {% elseif field.type == "fkey" and field.card == "long" %}
-                                <a class="btn btn-secondary btn-xs" ng-repeat="(key, value) in obj.{{ field.objectName }}{{ field.name }}label">{[{ value }]}</a>
-                            {% elseif field.type == "fkey" and field.card == "short" %}
-                                {% if field.link %}
-                                    <a class="btn btn-primary btn-xs" href="#/{{ field.link }}/{[{ obj.{{ field.objectName }}{{ field.name }} }]}">{[{ obj.{{ field.objectName }}{{ field.name }}label }]}</a>
-                                {% else  %}
-                                    <span ng-if="obj.{{ field.objectName }}{{ field.name }}">{[{ obj.{{ field.objectName }}{{ field.name }}label }]}</span>
-                                {% endif %}
+                            <span ng-class="{'prio_Info':obj.Priorite == 1 ,'prio_Warning':obj.Priorite == 2,'prio_Moyenne':obj.Priorite == 3,'prio_Haute':obj.Priorite == 4}" ng-bind-html="obj.PrioriteLabel"></span>
+                        </div>
+                    </div>
+                    <div class="row  ficheField">
+                        <div class="col-md-5 detail-label">
+                            <label class="form-control-label" for="l0">Etat</label>
+                        </div>
+                        <div class="col-md-7 detail-value">
+                            <span class="etatTicket" ng-class="'etat_'+obj.Etat" ng-bind-html="obj.EtatLabel"></span>
+                        </div>
+                    </div>
+                    <!-- Contact -->
+                    <div class="row  ficheField">
+                        <div class="col-md-5 detail-label">
+                            <label class="form-control-label" for="l0">Contact</label>
+                        </div>
+                        <div class="col-md-7 detail-value">
+                            {% if User.isRole('PARC_TECHNICIEN') %}
+                                <a ng-if="obj.ContactContactIdlabel != undefined && obj.ContactContactIdlabel != ''" class="btn btn-primary btn-xs" href="#/{{ contactLink }}/{[{ obj.ContactContactId }]}">obj.ContactContactIdlabel</a>
+                                <span ng-if="obj.ContactContactIdlabel == undefined || obj.ContactContactIdlabel == ''" >Aucun contact renseigné</span>
                             {% else %}
-                                {% if field.Values %}
-                                <select class="form-control" ng-model="obj.{{ field.name }}" disabled="disabled">
-                                    {% for v,k in field.Values %}
-                                        <option value="{{ v }}" >{{ k }}</option>
-                                    {% endfor %}
-                                </select>
-                                {% elseif field.query %}
-                                    <span class="btn btn-warning btn-xs" >{[{ obj.{{ field.name }}Label }]}</span>
-                                {% else %}
-                                    <span  ng-bind-html="obj.{{ field.name }}"></span>
-                                {% endif %}
+                            <span ng-if="obj.ContactContactIdlabel != undefined && obj.ContactContactIdlabel != ''" ng-bind-html="obj.ContactContactIdlabel"></span>
+                            <span ng-if="obj.ContactContactIdlabel == undefined || obj.ContactContactIdlabel == ''" >Aucun contact renseigné</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!-- Contrat -->
+                    {% if Abtel %}
+                    <div class="row  ficheField">
+                        <div class="col-md-5 detail-label">
+                            <label class="form-control-label" for="l0">Contrat</label>
+                        </div>
+                        <div class="col-md-7 detail-value">
+                            {% if User.isRole('PARC_TECHNICIEN') %}
+                                <a ng-if="obj.ContratContratIdlabel != undefined && obj.ContratContratIdlabel != ''" class="btn btn-primary btn-xs" href="#/{{ contratLink }}/{[{ obj.ContratContratId }]}">obj.ContratContratIdlabel</a>
+                                <span ng-if="obj.ContratContratIdlabel == undefined || obj.ContratContratIdlabel == ''" >Aucun contact renseigné</span>
+                            {% else %}
+                            <span ng-if="obj.ContratContratIdlabel != undefined && obj.ContratContratIdlabel != ''" ng-bind-html="obj.ContratContratIdlabel"></span>
+                            <span ng-if="obj.ContratContratIdlabel == undefined || obj.ContratContratIdlabel == ''" >Hors contrat</span>
                             {% endif %}
                         </div>
                     </div>
                     {% endif %}
-                    {% if loop.index - loop.revindex0 == 1 or loop.index - loop.revindex0 == 0 %}
-                            </div>
-                        {% if Interfaces.top %}
-                            <div class="col-md-12 col-lg-4">
-                        {% else %}
-                            <div class="col-md-12 col-lg-6">
-                        {% endif %}
-                    {% endif %}
-                {% endfor %}
+                    <!-- Service concerné -->
                     <div class="row  ficheField">
-                        <div class="col-md-5 detail-label"> <label class="form-control-label" for="l0">Détails</label></div>
-                        <div class="col-md-7 detail-value" ng-bind-html="obj._details"></div>
+                        <div class="col-md-5 detail-label">
+                            <label class="form-control-label" for="l0">Service concerné</label>
+                        </div>
+                        <div class="col-md-7 detail-value">
+                            <span ng-bind-html="getService()"></span>
+                        </div>
                     </div>
                 </div>
             </div>
-            {% for field in fichefields %}
-                {% if field.type == "progress" %}
-                    <div class="row">
-                        <div class="col-md-2 detail-label">
-                            <label class="form-control-label" for="l0">{% if field.parentDescription is not empty %}{{ field.parentDescription }}{% else %}{{ field.description }}{% endif %}</label>
-                        </div>
-                        <div class="col-md-10 detail-value">
-                            <uib-progress class="big" ng-if="obj.{{ field.name }} >= 100">
-                                <uib-bar value="obj.{{ field.name }}" type="success" class=" progress-bar-striped progress-bar-animated"><span ng-hide="obj.{{ field.name }} < 5">{[{ obj.{{ field.name }} }]}%</span></uib-bar>
-                            </uib-progress>
-                            <uib-progress class="big" ng-if="obj.{{ field.name }} < 100">
-                                <uib-bar value="obj.{{ field.name }}" type="warning" class=" progress-bar-striped progress-bar-animated"><span ng-hide="obj.{{ field.name }} < 5">{[{ obj.{{ field.name }} }]}%</span></uib-bar>
-                            </uib-progress>
-                            <!--
-                            <progress class="progress progress-danger progress-striped progress-animated big" ng-if="obj.{{ field.name }} < 100" value="{[{ obj.{{ field.name }} }]}" max="100">{[{ obj.{{ field.name }} }]}</progress>
-                            <progress class="progress progress-success progress-striped progress-animated big" ng-if="obj.{{ field.name }} == 100" value="{[{ obj.{{ field.name }} }]}" max="100">{[{ obj.{{ field.name }} }]}</progress>-->
-                        </div>
-                    </div>
-                {% elseif field.type == "raw" or field.type == "text" %}
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label class="form-control-label" for="l0">{{ field.description }}</label>
-                            <small>{{ field.help }}</small>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <pre ng-bind-html="obj.{{ field.name }}"></pre>
-<!--                            {%  if field.subtype %}{% set subtype = field.subtype %}{% else %}{% set subtype = 'text' %}{% endif %}
-                            <div ui-ace="{useWrapMode : true,mode: '{{ subtype }}',onLoad: aceLoaded}" ng-model="obj.{{ field.name }}" class="ace_editor" readonly="true"></div>-->
-                        </div>
-                    </div>
-                {% elseif field.type == "html" or field.type == "bbcode" %}
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label class="form-control-label" for="l0">{{ field.description }}</label>
-                            <small>{{ field.help }}</small>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <!--<div class="col-md-12">
-                            <div ui-ace="{useWrapMode : true,mode: '{{ field.subtype }}',onLoad: aceLoaded}" ng-model="obj.{{ field.name }}" class="ace_editor"  readonly="true"></div>
-                        </div>-->
-                        <div ng-bind-html="obj.{{ field.name }}"></div>
-                    </div>
-                {% endif %}
-            {% endfor %}
+            <!-- Desc Ticket -->
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="form-control-label" for="l0">Description</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <pre ng-bind-html="obj.Note"></pre>
+                </div>
+            </div>
+            <!-- Infos special techos -->
+            {% if User.isRole('PARC_TECHNICIEN') %}
+            <div class="row  ficheField">
+                <div class="col-md-5 detail-label"> <label class="form-control-label" for="l0">Détails</label></div>
+                <div class="col-md-7 detail-value" ng-bind-html="obj._details"></div>
+            </div>
+            {% endif %}
         </div>
     </section>
     <!-- End Default Panel -->

@@ -4,7 +4,10 @@ class Commentaire extends genericClass {
 
  public function Save(){
 
+     parent::Save();
+
      $uid = $this->userCreate;
+
      $cli = Sys::getOneData('IncidentClient','Contact/UserId='.$uid);
      if($cli) $this->addParent($cli);
 

@@ -47,7 +47,7 @@ angular.module("abt.Timeline").directive('abtTimeline', function(){
 
         },*/
         templateUrl: function(element,attrs){
-            if (attrs.abtTemplate) return '/Skins/AngularAdmin/Modules/Systeme/Utils/Timeline/'+attrs.abtTemplate;
+            if (attrs.abtTemplate) return '/Skins/AngularAdmin/Modules/Systeme/Utils/Timeline/'+attrs.abtTemplate+'?tms='+Date.now();
             return '/Skins/AngularAdmin/Modules/Systeme/Utils/Timeline/timeline.html';
         },
         link: function(scope, element, attrs){

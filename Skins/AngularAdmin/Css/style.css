@@ -78,7 +78,9 @@ progress.progress.progress-danger:after{
 .prio_Desastre{
     color: #fb434a;
 }
-
+.disabled{
+    pointer-events: none;
+}
 
 .form-control-label{
     font-weight:600;
@@ -128,6 +130,31 @@ progress.progress.progress-danger:after{
 
 }
 
+.fileLabel{
+    position: absolute;
+    right: 8px;
+    top: 0px;
+    width: 40px;
+    height: 39px;
+    overflow: hidden;
+    border-radius: 0 .25rem .25rem 0;
+    cursor: pointer;
+    margin: 0;
+}
+.fileLabelIcon{
+    position: absolute;
+    font-size: 1.5em;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    justify-content: center;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+}
+
 
 #activity_list{
     width:100%;
@@ -158,6 +185,9 @@ progress.progress.progress-danger:after{
 }
 #activity_list .activity_title{
 }
+#activity_list .activity_link{
+    width: 70px;
+}
 #activity_list .activity_progress{
     width: 150px;
 }
@@ -174,7 +204,7 @@ progress.progress.progress-danger:after{
 #activity_list > tbody > tr{
     border-bottom:1px solid #eee;
 }
-#activity_list tr.cursor{
+#activity_list .cursor{
     cursor: cell;
 }
 
@@ -217,15 +247,17 @@ progress.progress.progress-danger:after{
 #activity_list .actInfo .activity_title{
     position: relative;
 }
-#activity_list .actInfo.cursor .activity_title:before{
+#activity_list .actInfo.cursor .activity_title:before,
+#activity_list .actInfo .activity_title.cursor:before{
     content: "\f0fe";
     position: absolute;
-    top: 7px;
+    top: 14px;
     left: -27px;
     color: #fff;
     font-family: FontAwesome;
 }
-#activity_list .showDetail .actInfo.cursor .activity_title:before{
+#activity_list .showDetail .actInfo.cursor .activity_title:before,
+#activity_list .showDetail .actInfo .activity_title.cursor:before{
     content: "\f146";
 }
 #activity_list .showDetail pre{
@@ -293,6 +325,18 @@ table tr td.table-action{
 table tr td.typetext span.ng-binding,
 table tr td.typeraw span.ng-binding{
     word-break: break-word;
+}
+.listWrap{
+    position: relative;
+    width: 100%;
+    overflow: auto;
+}
+.listWrap table {
+    width: auto;
+    min-width: 100%;
+}
+.listWrap .table-action{
+    min-width: 170px;
 }
 
 
@@ -1081,6 +1125,9 @@ Choix des composants
     color: #0a6aa1;
     font-weight: 600;
 }
+.charCount span.danger {
+    color: #a10a6a;
+}
 
 
 /* Profile */
@@ -1248,3 +1295,48 @@ Choix des composants
 .logo-centre {
 	margin: auto;
 }
+
+/** FileUpload **/
+.multiUploadDisplay{
+    list-style-type: none;
+}
+.multiUploadDisplay .uploadItemThumb {
+    height: 40px;
+    font-size: 30px;
+    text-align: center;
+    overflow: hidden;
+}
+.multiUploadDisplay .uploadItemLink{
+    text-align: left;
+    line-height: 40px;
+}
+.multiUploadDisplay .uploadItemDel{
+    padding-top: 3px;
+}
+
+/* Ticket */
+.etatTicket:before{
+    content: ' ';
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    background-color: #aaa;
+    margin-right: 5px;
+}
+.etatTicket.etat_10:before{
+    background-color: #01a8fe;
+}
+.etatTicket.etat_20:before{
+    background-color: #46BE8A;
+}
+.etatTicket.etat_30:before{
+    background-color: #6f42c1;
+}
+.etatTicket.etat_40:before{
+    background-color: #aaa;
+}
+.etatTicket.etat_41:before{
+    background-color: #FB434A;
+}
+
+

@@ -274,7 +274,7 @@ class Connection extends Root{
 
 
 		$apiKey = isset($_COOKIE["API_KEY"]) ? $_COOKIE["API_KEY"] : ( isset($_GET["API_KEY"]) ? $_GET["API_KEY"] : ( isset($_POST["API_KEY"]) ? $_POST["API_KEY"] : false));
-        if(!$apiKey){
+	            if(!$apiKey){
             $data = json_decode(file_get_contents("php://input"));
             if(isset($data->API_KEY)) $apiKey = $data->API_KEY;
         }

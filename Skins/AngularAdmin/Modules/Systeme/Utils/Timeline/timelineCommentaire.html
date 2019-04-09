@@ -7,7 +7,7 @@
         <div class="cd-timeline-content" ng-class="item.Side">
             <p ng-bind-html="item.Texte"></p>
 
-            <span class="cd-auteur">- </span><span class="cd-auteur" ng-bind-html="item.Auteur"></span>
+            <span class="cd-auteur" ng-bind-html="item.Auteur"></span>
             <span style="height: 32px; float: right;" ng-if="item.Editable">
                 <!--<a class="btn-abt btn-abt-mod btn-warning" href="javascript: void(0);" ng-click="IncidentClientCommentairemodify(item)" title="Modifier"></a>-->
                 <a class="btn-abt btn-abt-del btn-danger" href="javascript: void(0);" ng-click="IncidentClientCommentairedelete(item)" title="Supprimer"></a>

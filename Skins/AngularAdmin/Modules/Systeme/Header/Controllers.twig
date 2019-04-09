@@ -189,6 +189,10 @@
 
         //call function
         $scope.{{ c.identifier }}callFunction = function (obj,name,title,needConfirm,follow){
+            //Cas des appels de fonctions statiques
+            if( obj == null || obj == undefined ){
+                obj = { id: 0 };
+            }
 
             if(needConfirm != undefined && needConfirm){
                 swal({
@@ -816,6 +820,7 @@
         $scope.getExternal = function(toto){
             return $window[toto];
         }
+        $scope.modalObj = {};
 
         $scope.displayFiche =true;
        $scope.injectStore = function(toto,context, query){
