@@ -4,6 +4,7 @@ require_once 'Modules/AbtelBackup/Class/Job.class.php';
 class SambaJob extends Job {
     protected $tag = '[SAMBAJOB]';
     protected static $KEObj = 'SambaJob';
+    protected static $desc = 'Job Samba';
     protected $pStarts = array(
         0,
         10,

@@ -8,15 +8,28 @@ class Instance extends genericClass{
             $old = Sys::getOneData('Parc', 'Instance/' . $this->Id);
         else $old=false;
         if (!$old) $new = true; else $new = false;
+
+        //test de changement de sous domaine
         if (!$new&&$old->SousDomaine!=$this->SousDomaine){
             $this->addError(Array("Message" => 'Impossible de modifier le sous domaine d\'une instance. Veuillez créer une nouvelle instance.'));
             return false;
         }
+
+        //tyest du changement de nom technique
         if (!$new&&$old->InstanceNom!=$this->InstanceNom){
             $this->addError(Array("Message" => 'Impossible de modifier le nom technique d\'une instance. Veuillez créer une nouvelle instance.'));
             return false;
         }
 
+        //test de changement de mode
+        if (!$new&&$old->Type!=$this->Type){
+            if ($this->Type='prod'){
+                //activation du cache proxy pour tous les vhosts
+                $this->enableProxyCache();
+            }else{
+                $this->disableProxyCache();
+            }
+        }
 
         $pref='';
         $infra = $this->getInfra();
@@ -169,6 +182,28 @@ class Instance extends genericClass{
         return parent::Save();
     }
 
+    /**
+     * Activation du proxycache
+     */
+    private function enableProxyCache() {
+        $host = $this->getOneParent('Host');
+        $aps = $host->getChildren('Apache');
+        foreach ($aps as $ap){
+            $ap->ProxyCache = true;
+            $ap->Save();
+        }
+    }
+    /**
+     * Désactivation du proxycache
+     */
+    private function disableProxyCache() {
+        $host = $this->getOneParent('Host');
+        $aps = $host->getChildren('Apache');
+        foreach ($aps as $ap){
+            $ap->ProxyCache = false;
+            $ap->Save();
+        }
+    }
     /**
      * Retourne l'infra à laquelle est attachée l'instance
      * @return	mixed Object Infra - false

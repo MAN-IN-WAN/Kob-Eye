@@ -150,7 +150,7 @@ class RestorePoint extends genericClass{
             $act->Terminate(true);
 
             $act = $task->createActivity('Montage du point de restauration en lecture seule', 'Info');
-            $cmd = 'cd /home/' . $host->NomLDAP . '/ && sudo -u '.$host->NomLDAP.' borg mount backup::'.$this->Identifiant.' backup-'.$this->Identifiant;
+            $cmd = 'cd /home/' . $host->NomLDAP . '/ && export BORG_UNKNOWN_UNENCRYPTED_REPO_ACCESS_IS_OK=yes && sudo -u '.$host->NomLDAP.' borg mount backup::'.$this->Identifiant.' backup-'.$this->Identifiant;
             $act->addDetails($cmd);
             $out = $apachesrv->remoteExec($cmd);
             $act->addDetails($out);

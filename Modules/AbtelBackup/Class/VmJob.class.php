@@ -4,6 +4,7 @@ require_once 'Modules/AbtelBackup/Class/Job.class.php';
 class VmJob extends Job {
     protected $tag = '[VMJOB]';
     protected static $KEObj = 'VmJob';
+    protected static $desc = 'Job Machine virtuelle';
     protected $pStarts = array(
                             0,
                             10,
@@ -31,7 +32,7 @@ class VmJob extends Job {
             $task->Nom = 'Job machine virtuelle :' . $j->Titre.'. éxécution du '.date('d/m/Y H:i:s');
             $task->TaskModule = 'AbtelBackup';
             $task->TaskObject = 'VmJob';
-            $task->Type = 'backup';
+            $task->TaskType = 'backup';
             $task->TaskId = $j->Id;
             $task->TaskFunction = 'run';
             $task->addParent($j);
