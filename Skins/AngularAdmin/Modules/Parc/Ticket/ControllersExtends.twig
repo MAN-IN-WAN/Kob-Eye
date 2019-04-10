@@ -19,18 +19,11 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval, $timeout,
             item.Auteur = $scope.ParcTicketStore.data['fiche'][0].ClientClientIdlabel;
         }
         if(item.UserCrea != 'ZZ' && item.UserCrea != '' && item.UserCrea != undefined && item.UserCrea != null) {
-            $scope.SystemeUserStore.initContext('timeline');
-            $scope.SystemeUserStore.setFilters('Initiales='+item.UserCrea,'timeline');
-            $scope.SystemeUserStore.getData(1,'timeline').then(function(){
-                if($scope.SystemeUserStore.data['timeline'].length > 0){
-                    var user = $scope.SystemeUserStore.data['timeline'][0];
-                    $scope.ParcTechnicienStore.initContext('timeline');
-                    $scope.ParcTechnicienStore.setFilters('UserId='+user.id,'timeline');
-                    $scope.ParcTechnicienStore.getData(1,'timeline').then(function(){
-                        if($scope.ParcTechnicienStore.data['timeline'].length > 0){
-                            item.Auteur = $scope.ParcTechnicienStore.data['timeline'][0].Nom+' '+$scope.ParcTechnicienStore.data['timeline'][0].Prenom;
-                        }
-                    });
+            $scope.ParcTechnicienStore.initContext('timeline');
+            $scope.ParcTechnicienStore.setFilters('IdGestion='+item.UserCrea,'timeline');
+            $scope.ParcTechnicienStore.getData(1,'timeline').then(function(){
+                if($scope.ParcTechnicienStore.data['timeline'].length > 0){
+                    item.Auteur = $scope.ParcTechnicienStore.data['timeline'][0].Nom+' '+$scope.ParcTechnicienStore.data['timeline'][0].Prenom;
                 }
             });
         }
@@ -42,14 +35,12 @@ app.controller('{{ identifier }}FicheCtrlExtends', function($interval, $timeout,
     $scope.ParcActionmodalSaveBis = function(itm){
         $scope.modalObj.UserCrea = '{{ initiales }}';
         $scope.modalObj.TicketTicketId = itm;
-console.log($scope.modalObj);
         if($scope.modalObj.pj != undefined && $scope.modalObj.pj != '')
             $scope.modalObj.pj = {'force':true,'pj':$scope.modalObj.pj}
-console.log($scope.modalObj);
         $scope.ParcActionmodalSave(true);
     }
 
-    $scope.attachListener = function(){
+    {#$scope.attachListener = function(){
         $('.unfold').off('click');
         $('.unfold').on('click',function(e){
             e.stopPropagation();
@@ -57,7 +48,29 @@ console.log($scope.modalObj);
             var target = $(this).closest('.row').siblings('.fold');
             target.toggleClass('open');
         });
-    };
+    };#}
+
+    $scope.checkFile = function(item){
+        var url = item;
+        var splat = url.split('.');
+        var ext = splat[splat.length-1];
+        var images = ['jpg','jpeg','png','gif','JPG','JPEG','PNG','GIF'];
+        if(images.indexOf(ext) != -1){
+            return '<div class="uploadItemThumb"> \
+                        <img src="'+url+'.limit.500x500.'+ext+'"> \
+                    </div> \
+                    <div class="uploadItemLink"> \
+                        <a href="'+url+'" target="_blank" title="Voir l\'image">Voir l\'image</a> \
+                    </div>';
+        } else {
+            return '<div class="uploadItemThumb"> \
+                        <i class="icmn-file-empty2"></i> \
+                    </div> \
+                    <div class="uploadItemLink"> \
+                        <a href="'+url+'" target="_blank" title="Voir l\'image">Voir le fichier</a> \
+                    </div>';
+        }
+    }
 
     $scope.getService = function(){
         var serv = 'Autre';

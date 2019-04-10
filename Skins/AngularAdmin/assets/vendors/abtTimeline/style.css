@@ -298,7 +298,7 @@ header h1 {
   border: 17px solid transparent;
   /*border-right: 7px solid #e6e6e6;*/
 }
-.cd-timeline-content pre.fold{
+/*.cd-timeline-content pre.fold{
   height: 0px;
   margin: 0px;
   overflow: hidden;
@@ -309,7 +309,7 @@ header h1 {
   height: auto;
   margin: 1em 0;
   padding: 10px;
-}
+}*/
 
 
 @media only screen and (min-width: 768px) {

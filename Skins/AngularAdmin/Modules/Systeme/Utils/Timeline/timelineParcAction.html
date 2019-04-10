@@ -5,12 +5,13 @@
 
         <div class="cd-timeline-content" ng-class="item.Side">
             <div class="row">
-                <p class="col-md-10" ng-bind-html="item.Titre"></p>
-                <p class="col-md-2">
+                <p class="col-md-12" ng-bind-html="item.Titre"></p>
+                <!--<p class="col-md-2">
                     <a href="" class="unfold" ng-init="attachListener();">Detail</a>
-                </p>
+                </p>-->
             </div>
-            <pre class="fold" ng-bind-html="item.Note"></pre>
+            <pre class="fold" ng-if="item.Note != undefined && item.Note != ''" ng-bind-html="item.Note"></pre>
+            <div class="fileContainer" ng-if="item.Fichier != undefined && item.Fichier != ''" ng-bind-html="checkFile(item.Fichier);"></div>
 
             <span class="cd-auteur" ng-bind-html="item.Auteur"></span>
             <span style="height: 32px; float: right;" ng-if="item.Editable">

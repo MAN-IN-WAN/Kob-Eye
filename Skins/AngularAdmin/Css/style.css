@@ -1338,5 +1338,14 @@ Choix des composants
 .etatTicket.etat_41:before{
     background-color: #FB434A;
 }
-
-
+/* Actions */
+.fileContainer .uploadItemThumb{
+    text-align: center;
+    font-size: 40px;
+}
+.fileContainer .uploadItemThumb img{
+    max-width: 100%;
+}
+.fileContainer .uploadItemLink{
+    text-align: center;
+}

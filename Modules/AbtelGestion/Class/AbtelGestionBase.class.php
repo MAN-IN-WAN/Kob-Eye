@@ -115,8 +115,9 @@ class AbtelGestionBase extends genericClass {
                     'Content-Type: application/json',
                     'Content-Length: ' . strlen($data))
             );
-
-            $ret = json_decode(curl_exec($this->con_handle),true);
+            $ret = curl_exec($this->con_handle);
+            //var_dump($ret);
+            $ret = json_decode($ret,true);
             if(!$ret['success']) {
                 $fields = $this->getQueryFields($this->getOrigin());
                 foreach ($ret['error_description'] as &$d){
@@ -141,7 +142,6 @@ class AbtelGestionBase extends genericClass {
         } else{
             //Parc donc on requete la base de la gestion
             $req = $this->buildRequest($inf);
-            print_r($req);
             $q = $this->con_handle->query($req);
 
             if(count($this->parents)){
@@ -474,9 +474,8 @@ class AbtelGestionBase extends genericClass {
     public function getOrigin(){
         $user = Sys::$User;
 
-        //TODO :  verif plutot en fonction du user utilisé
-        //if($user->Id == 7){
-        if($user->Id != 7){
+        if($user->Id == 7){
+        //if($user->Id != 7){
             //Ouverture connection pdo si besoin
             if(empty($this->con_handle)){
                 $this->con_handle = new PDO('mysql:host=127.0.0.1;dbname=gestion', 'root', '', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));

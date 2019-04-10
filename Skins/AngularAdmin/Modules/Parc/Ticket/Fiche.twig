@@ -63,13 +63,13 @@
                             <label class="form-control-label" for="l0">Contact</label>
                         </div>
                         <div class="col-md-7 detail-value">
-                            {% if User.isRole('PARC_TECHNICIEN') %}
-                                <a ng-if="obj.ContactContactIdlabel != undefined && obj.ContactContactIdlabel != ''" class="btn btn-primary btn-xs" href="#/{{ contactLink }}/{[{ obj.ContactContactId }]}">obj.ContactContactIdlabel</a>
+                           {# {% if User.isRole('PARC_TECHNICIEN') %}
+                                <a ng-if="obj.ContactContactIdlabel != undefined && obj.ContactContactIdlabel != ''" class="btn btn-primary btn-xs" href="#/{{ contactLink }}/{[{ obj.ContactContactId }]}" ng-bind-html="obj.ContactContactIdlabel"></a>
                                 <span ng-if="obj.ContactContactIdlabel == undefined || obj.ContactContactIdlabel == ''" >Aucun contact renseigné</span>
-                            {% else %}
+                            {% else %}#}
                             <span ng-if="obj.ContactContactIdlabel != undefined && obj.ContactContactIdlabel != ''" ng-bind-html="obj.ContactContactIdlabel"></span>
                             <span ng-if="obj.ContactContactIdlabel == undefined || obj.ContactContactIdlabel == ''" >Aucun contact renseigné</span>
-                            {% endif %}
+{#                            {% endif %}#}
                         </div>
                     </div>
                 </div>

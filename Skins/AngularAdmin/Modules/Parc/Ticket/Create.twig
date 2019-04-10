@@ -15,8 +15,24 @@
             </select>
         </div>
     </div>
-
-
+    <!-- Client -->
+    {% if user.hasRole('PARC_TECHNICIEN,PARC_REVENDEUR') %}
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-control-label" for="l0">Client</label>
+                <small>
+                    <i class="icmn-question3 help-wrapper"><span class="fieldHelp">Pour affecter directement un ticket choisissez un client.</span></i>
+                </small>
+            </div>
+            <div class="col-md-6 form-group">
+                <div custom-select="a.id as a.Nom for a in getSelectData('ParcClientStore',$searchTerm)"
+                     custom-select-options="{ 'async': true, 'filter':'{{ field.filter }}'}"
+                     ng-model="ParcTicketfunction.args.client"
+                     class="form-control"
+                     ng-title="tutu"></div>
+            </div>
+        </div>
+    {% endif %}
     <!-- Contrat -->
     {% if Abtel %}
     <div class="row">
@@ -27,10 +43,11 @@
             </small>
         </div>
         <div class="col-md-6 form-group">
-            <select class="form-control" ng-model="ParcTicketfunction.args.contrat" ng-init="ParcTicketfunction.args.contrat='0';">
-                <option value="0" selected="selected">Hors contrat</option>
-                <option ng-repeat="item in AbtelContratSelect.data" value="{[{ item.id }]}">{[{ item.Libelle }]} ({[{ item.Code }]})</option>
-            </select>
+            <div custom-select="a.id as a.Libelle+' ('+a.Code+')' for a in getSelectData('AbtelContratStore',$searchTerm)"
+                 custom-select-options="{ 'async': true, 'filter':'{{ field.filter }}'}"
+                 ng-model="ParcTicketfunction.args.contrat"
+                 class="form-control"
+                 ng-title="tutu"></div>
         </div>
     </div>
     {% endif %}
@@ -97,28 +114,31 @@
             </small>
         </div>
         <div class="col-md-6 form-group">
-            <select class="form-control" ng-model="ParcTicketfunction.args.contact" ng-init="ParcTicketfunction.args.contact='0';">
-                <option value="0"> -- Veuillez choisir un contact -- </option>
-                <option ng-repeat="item in ParcContactSelect.data" value="{[{ item.id }]}">{[{ item.Nom }]} {[{ item.Prenom }]} ( {[{ item.Tel }]} )</option>
-            </select>
+            <div custom-select="a.id as a.label+' '+a.description for a in getSelectData('ParcContactStore',$searchTerm)"
+                 custom-select-options="{ 'async': true, 'filter':'{{ field.filter }}'}"
+                 ng-model="ParcTicketfunction.args.contact"
+                 class="form-control"
+                 ng-title="tutu"></div>
         </div>
     </div>
 
     <!-- Contact Abtel -->
-    {% if user.isRole('PARC_TECHNICIEN') or user.admin == 1 %}
+    {% if user.isRole('PARC_TECHNICIEN') %}
     <div class="row">
         <div class="col-md-6">
-            <label class="form-control-label" for="l0">Contact Abtel</label>
+            <label class="form-control-label" for="l0">Technicien</label>
             <small>
                 <i class="icmn-question3 help-wrapper"><span class="fieldHelp">Pour affecter directement un ticket choisissez un personnel d'Abtel sinon laissez vide.</span></i>
             </small>
         </div>
         <div class="col-md-6 form-group">
-            <select class="form-control" ng-model="ParcTicketfunction.args.contactAbtel" ng-init="ParcTicketfunction.args.contactAbtel='0';">
-                <option value="0"> ---- </option>
-                <option ng-repeat="item in ParcTechnicien.data" value="{[{ item.id }]}">{[{ item.Nom }]} {[{ item.Prenom }]} ({[{ item.Tel }]})</option>
-            </select>
+            <div custom-select="a.id as a.label+' '+a.description for a in getSelectData('ParcTechnicienStore',$searchTerm)"
+                 custom-select-options="{ 'async': true, 'filter':'{{ field.filter }}'}"
+                 ng-model="ParcTicketfunction.args.tech"
+                 class="form-control"
+                 ng-title="tutu"></div>
         </div>
     </div>
     {% endif %}
+
 </div>
