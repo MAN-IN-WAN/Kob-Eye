@@ -36,6 +36,11 @@ class AlertUser extends genericClass {
 		return array(array('type'=>'alert_alert', 'subtype'=>'Unread', 'alertCount'=>$cnt, 'alertArray'=>$als));;
 	}
 	
+	function SendAlert($args) {
+		self::addAlert($args['title'],$args['tag'],$args['module'],$args['object'],$args['id'],$args['users'],$args['role'],$args['icon']);
+		return true;
+	}
+	
 	static public function addAlert($title,$tag,$module,$object,$id,$users,$role,$icon=null) {
 		$a = genericClass::createInstance('Systeme', 'Alert');
 		$a->Title = $title;

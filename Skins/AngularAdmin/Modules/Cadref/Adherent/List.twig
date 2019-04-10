@@ -16,7 +16,7 @@
 						<input type="text" id="search{{ identifier }}2" autofocus class="form-control" name="{{ identifier }}query2" ng-model="{{ identifier }}.filter2" placeholder="Nom..." >
 					</div>
 					<div class="col-md-6" style="padding-left:0">
-						<input type="text" id="search{{ identifier }}" class="form-control" name="{{ identifier }}query" ng-model="{{ identifier }}.filter" placeholder="Recherche..." >
+						<input type="text" id="search{{ identifier }}1" class="form-control" name="{{ identifier }}query1" ng-model="{{ identifier }}.filter1" placeholder="Recherche..." >
 					</div>
 				</div>
 				<span class="input-group-btn">
@@ -26,7 +26,7 @@
 					</a>
 					{% if (operation.add or (context == 'children' and operation.addChildren)) and not hideBtn.add %}
 						<a  href="javascript: void(0);" class="btn btn-success" accesskey="n" title="Alt N" ng-click="{{ identifier }}add()">
-							Ajouter
+							Nouveau
 						</a>
 					{% endif %}
 					{% if operation.export and not hideBtn.export %}
@@ -463,4 +463,5 @@
 
 <script type="text/javascript">
 	$('.spinner-list').spin();
+	$('document').ready(function(){	$('#search{{ identifier }}2').focus(); });
 </script>

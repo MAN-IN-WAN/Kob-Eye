@@ -179,7 +179,7 @@
                             <div>
                                 {{ include(template_from_string(module(formPath~'?Path=IncidentClient/Commentaire'))) }}
                                 <p style="text-align: center;    margin: 15px;">
-                                    <button type="button" class="btn btn-primary" ng-if="modalObj.Texte.length > 0" ng-click="IncidentClientCommentairemodalSaveBis(obj.id)">__SAVE_MODAL_OBJ__</button>
+                                    <button type="button" class="btn btn-primary" ng-class="{'disabled' : modalObj.Texte == undefined || modalObj.Texte.length == 0 }" ng-click="IncidentClientCommentairemodalSaveBis(obj.id)" style="width: 100%;">__SAVE_MODAL_OBJ__</button>
                                 </p>
                             </div>
                             <div>
@@ -284,7 +284,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == true">Fermer</button>
                 <button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == false">Annuler</button>
-
+                <button type="button" class="btn btn-primary" ng-if="modalObj.success == false" ng-click="modalSave()">__SAVE_MODAL_OBJ__</button>
             </div>
         </div>
     </div>

@@ -48,30 +48,31 @@ class Visite extends genericClass {
 		require_once ('PrintVisite.class.php');
 
 		$annee = Cadref::$Annee;
-		$debut = isset($obj['Debut']) ? $obj['Debut'] : '';
-		$fin = isset($obj['Fin']) ? $obj['Fin'] : '';
-		$fin .= substr('ZZZZZZZZZZ', 0, 10-strlen($fin));
-		$chauffeur = isset($obj['Chauffeur']) ? $obj['Chauffeur'] : false;
+		$debut = isset($obj['Debut']) ? $obj['Debut'] : '0';
+		$fin = isset($obj['Fin']) ? $obj['Fin'] : '99999999999';
+		if(isset($obj['Guide']) && $obj['Guide']) $mode = 0;
+		elseif(isset($obj['Chauffeur']) && $obj['Chauffeur']) $mode = 1;
+		else $mode = 2;
 		
 		$sql = "
 select r.VisiteId, r.Prix+r.Assurance-r.Reduction as Montant, v.Visite, v.Libelle, v.DateVisite, e.Numero, e.Nom, e.Prenom, 
-d.HeureDepart, l.Libelle as LibelleL, r.Notes
+d.HeureDepart, l.Libelle as LibelleL, l.Lieu, r.Notes, e.Mail, e.Telephone1, e.Telephone2, r.Attente, r.Supprime,
+r.DateAttente, r.DateSupprime
 from `##_Cadref-Reservation` r
 inner join `##_Cadref-Visite` v on v.Id=r.VisiteId
 inner join `##_Cadref-Adherent` e on e.Id=r.AdherentId 
 left join `##_Cadref-Depart` d on d.Id=r.DepartId
 left join `##_Cadref-Lieu` l on l.Id=d.LieuId
-where r.Annee=$annee and r.Supprime=0 and r.Attente=0 ";
-		if($debut != '') $sql .= "and r.Visite>='$debut' ";
-		if($fin != '') $sql .= "and r.Visite<='$fin' ";
-		if($chauffeur) $sql .= "order by r.Visite, d.HeureDepart, l.Libelle, e.Nom, e.Prenom";
-		else $sql .= "order by r.Visite, e.Nom, e.Prenom";
+where r.Annee=$annee and v.DateVisite>='$debut' and v.DateVisite<='$fin' ";
+
+		if($mode == 1) $sql .= " and r.Supprime=0 and r.Attente=0 order by r.Visite, d.HeureDepart, e.Nom, e.Prenom";
+		else $sql .= "order by r.Visite, r.Attente, r.DateAttente, r.Supprime, e.Nom, e.Prenom";
 
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if(! $pdo) return array('pdf'=>'', 'sql'=>$sql);;
 		
-		$pdf = new PrintVisite($chauffeur);
+		$pdf = new PrintVisite($mode);
 		$pdf->SetAuthor("Cadref");
 		$pdf->SetTitle(iconv('UTF-8','ISO-8859-15//TRANSLIT','Visites guidées'));
 

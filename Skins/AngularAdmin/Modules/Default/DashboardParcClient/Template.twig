@@ -1,0 +1,355 @@
+<div class="page-content-inner">
+
+    <!-- Dashboard -->
+    <div class="dashboard-container">
+        <div class="row">
+
+            <a class="col-xl-6 col-lg-6 col-sm-6 col-xs-12" href="#/Cloud/Domaines">
+                <div class="widget widget-seven background-warning">
+                    <div class="widget-body">
+                        <div href="javascript: void(0);" class="widget-body-inner">
+                            <h5 class="text-uppercase">Alertes</h5>
+                            <i class="counter-icon icmn-bullhorn"></i>
+                            <span class="counter-count">
+                                <i class="icmn-arrow-right5"></i>
+                                <span class="counter-init" data-from="0" data-to="0"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <a class="col-xl-6 col-lg-6 col-sm-6 col-xs-12" href="#/Cloud/Domaines">
+                <div class="widget widget-seven background-default">
+                    <div class="widget-body">
+                        <div href="javascript: void(0);" class="widget-body-inner">
+                            <h5 class="text-uppercase">Tickets</h5>
+                            <i class="counter-icon icmn-bubbles"></i>
+                            <span class="counter-count">
+                                <i class="icmn-arrow-right5"></i>
+                                <span count-to="{[{ ParcTicketCount }]}" duration="1" count-from="{[{ ParcTicketCountBase }]}"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- Liste Tickets-->
+        <div class="row">
+            <div class="col-md-12">
+                <section class="widget widget-three">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3>Tickets courants</h3>
+                        </div>
+                        <div class="col-md-6">
+                            <a  href="javascript: void(0);" class="btn btn-warning pull-right" ng-click="ParcTicketcallFunction(null,'createTicket','Creation d\'un Ticket')">
+                                Ajouter
+                            </a>
+                        </div>
+                    </div>
+                    <div class="widget-body">
+                        <hr/>
+                        {{ include(template_from_string(module('Parc/Ticket/Dashboard?Path=Parc/Ticket&templateContext=dash'))) }}
+                    </div>
+                </section>
+            </div>
+        </div>
+        <!-- Monitoring-->
+        {#<div class="row">
+            <div class="col-md-12">
+                <section class="widget widget-three">
+                    <h3>Monitoring</h3>
+                    <div class="widget-body">
+                        ++
+                    </div>
+                </section>
+            </div>
+        </div>#}
+
+        {#<div class="row">
+            <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
+                <div class="widget widget-seven">
+                    <div class="carousel-widget carousel slide" data-ride="carousel">
+                        <div class="carousel-inner" role="listbox">
+                            <div class="carousel-item active">
+                                <div class="widget-body">
+                                    <div class="widget-body-icon">
+                                        <i class="icmn-accessibility"></i>
+                                    </div>
+                                    <a href="javascript: void(0);" class="widget-body-inner">
+                                        <h2>Sales Growth</h2>
+                                        <p>View Report</p>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="widget-body">
+                                    <div class="widget-body-icon">
+                                        <i class="icmn-download"></i>
+                                    </div>
+                                    <a href="javascript: void(0);" class="widget-body-inner">
+                                        <h2>All Reports</h2>
+                                        <p>Pdf Download</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
+                <div class="widget widget-seven">
+                    <div class="carousel-widget-2 carousel slide" data-ride="carousel">
+                        <div class="carousel-inner" role="listbox">
+                            <div class="carousel-item active">
+                                <a href="javascript: void(0);" class="widget-body">
+                                    <h2>
+                                        <i class="icmn-database"></i> Databases
+                                    </h2>
+                                    <p>
+                                        Total: 765
+                                        <br />
+                                        New: 36
+                                    </p>
+                                </a>
+                            </div>
+                            <div class="carousel-item">
+                                <a href="javascript: void(0);" class="widget-body">
+                                    <h2>
+                                        <i class="icmn-users"></i> Users
+                                    </h2>
+                                    <p>
+                                        Total: 24 467
+                                        <br />
+                                        New: 456
+                                    </p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
+                <div class="widget widget-seven background-danger">
+                    <div class="carousel-widget carousel slide" data-ride="carousel">
+                        <div class="carousel-inner" role="listbox">
+                            <div class="carousel-item active">
+                                <a href="javascript: void(0);" class="widget-body">
+                                    <h2>
+                                        <i class="icmn-books"></i> Todo
+                                    </h2>
+                                    <p>
+                                        1. Upgrade
+                                        <br />
+                                        2. Finish
+                                    </p>
+                                </a>
+                            </div>
+                            <div class="carousel-item">
+                                <a href="javascript: void(0);" class="widget-body">
+                                    <h2>
+                                        <i class="icmn-download"></i> Finish
+                                    </h2>
+                                    <p>
+                                        1. Upgrade
+                                        <br />
+                                        2. Prepare
+                                    </p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-sm-6 col-xs-12">
+                <div class="widget widget-seven background-info" style="background-image: url(/Skins/AngularAdmin/assets/common/img/temp/photos/9.jpeg)">
+                    <div class="carousel-widget-2 carousel slide" data-ride="carousel">
+                        <div class="carousel-inner" role="listbox">
+                            <div class="carousel-item active">
+                                <a href="javascript: void(0);" class="widget-body">
+                                    <h2>Clean</h2>
+                                    <p>
+                                        Simple
+                                        <br />
+                                        Responsive
+                                    </p>
+                                </a>
+                            </div>
+                            <div class="carousel-item">
+                                <a href="javascript: void(0);" class="widget-body">
+                                    <h2>Clean</h2>
+                                    <p>
+                                        Simple
+                                        <br />
+                                        Responsive
+                                    </p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>#}
+
+        <!-- End Dashboard -->
+
+    </div>
+
+
+    <!-- Page Scripts -->
+    <script>
+        $(function() {
+
+            ///////////////////////////////////////////////////////////
+            // COUNTERS
+            $('.counter-init').countTo({
+                speed: 1500
+            });
+
+            ///////////////////////////////////////////////////////////
+            // ADJUSTABLE TEXTAREA
+            autosize($('#textarea'));
+
+            ///////////////////////////////////////////////////////////
+            // CUSTOM SCROLL
+            if (!cleanUI.hasTouch) {
+                $('.custom-scroll').each(function() {
+                    $(this).jScrollPane({
+                        autoReinitialise: true,
+                        autoReinitialiseDelay: 100
+                    });
+                    var api = $(this).data('jsp'),
+                        throttleTimeout;
+                    $(window).bind('resize', function() {
+                        if (!throttleTimeout) {
+                            throttleTimeout = setTimeout(function() {
+                                api.reinitialise();
+                                throttleTimeout = null;
+                            }, 50);
+                        }
+                    });
+                });
+            }
+
+            ///////////////////////////////////////////////////////////
+            // CALENDAR
+            var date = new Date();
+            var now = date.toISOString();
+            $('.example-calendar-block').fullCalendar({
+                //aspectRatio: 2,
+                locale: 'fr',
+                header: {
+                    left: 'prev, next',
+                    center: 'title',
+                    right: 'month, agendaWeek, agendaDay'
+                },
+                buttonIcons: {
+                    prev: 'none fa fa-arrow-left',
+                    next: 'none fa fa-arrow-right',
+                    prevYear: 'none fa fa-arrow-left',
+                    nextYear: 'none fa fa-arrow-right'
+                },
+                buttonText: {
+                    today:    'Aujourdh\'ui',
+                    month:    'Mois',
+                    week:     'Semaine',
+                    day:      'Jour',
+                    list:     'Liste'
+                },
+                businessHours: {
+                    // days of week. an array of zero-based day of week integers (0=Sunday)
+                    dow: [  1, 2, 3, 4, 5  ], // Monday - Thursday
+
+                    start: '08:00', // a start time (10am in this example)
+                    end: '18:00', // an end time (6pm in this example)
+                },
+                nowIndicator: true,
+                weekNumbers: true,
+                weekNumbersWithinDays:true,
+                Actionable: true,
+                eventLimit: true, // allow "more" link when too many events
+                viewRender: function(view, element) {
+                    if (!cleanUI.hasTouch) {
+                        $('.fc-scroller').jScrollPane({
+                            autoReinitialise: true,
+                            autoReinitialiseDelay: 100
+                        });
+                    }
+                },
+                eventClick: function(calEvent, jsEvent, view) {
+                    if (!$(this).hasClass('event-clicked')) {
+                        $('.fc-event').removeClass('event-clicked');
+                        $(this).addClass('event-clicked');
+                    }
+                },
+                defaultDate: now
+            });
+
+            ///////////////////////////////////////////////////////////
+            // CAROUSEL WIDGET
+            $('.carousel-widget').carousel({
+                interval: 4000
+            });
+
+            $('.carousel-widget-2').carousel({
+                interval: 6000
+            });
+
+            ///////////////////////////////////////////////////////////
+            // DATATABLES
+            $('#example1').DataTable({
+                responsive: true,
+                "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]]
+            });
+
+//            ///////////////////////////////////////////////////////////
+//            // CHART 1
+//            new Chartist.Line(".chart-line", {
+//                labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+//                series: [
+//                    [12, 9, 7, 8, 5],
+//                    [2, 1, 3.5, 7, 3],
+//                    [1, 3, 4, 5, 6]
+//                ]
+//            }, {
+//                fullWidth: !0,
+//                chartPadding: {
+//                    right: 40
+//                },
+//                plugins: [
+//                    Chartist.plugins.tooltip()
+//                ]
+//            });
+//
+//            ///////////////////////////////////////////////////////////
+//            // CHART 2
+//            var overlappingData = {
+//                    labels: ["Jan", "Feb", "Mar", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+//                    series: [
+//                        [5, 4, 3, 7, 5, 10, 3, 4, 8, 10, 6, 8],
+//                        [3, 2, 9, 5, 4, 6, 4, 6, 7, 8, 7, 4]
+//                    ]
+//                },
+//                overlappingOptions = {
+//                    seriesBarDistance: 10,
+//                    plugins: [
+//                        Chartist.plugins.tooltip()
+//                    ]
+//                },
+//                overlappingResponsiveOptions = [
+//                    ["", {
+//                        seriesBarDistance: 5,
+//                        axisX: {
+//                            labelInterpolationFnc: function(value) {
+//                                return value[0]
+//                            }
+//                        }
+//                    }]
+//                ];
+//
+//            new Chartist.Bar(".chart-overlapping-bar", overlappingData, overlappingOptions, overlappingResponsiveOptions);
+//
+
+        });
+    </script>
+    <!-- End Page Scripts -->

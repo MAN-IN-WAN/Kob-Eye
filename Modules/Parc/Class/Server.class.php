@@ -989,7 +989,8 @@ class Server extends genericClass {
 		} else {
 			// L'enregistrement a échoué - on récupère l'erreur
 			$e['OK'] = false;
-			$e['Message'] = "Erreur LDAP lors de la modification - " . @ldap_error(Server::$_LDAP);
+			@ldap_get_option(Server::$_LDAP, LDAP_OPT_DIAGNOSTIC_MESSAGE, $err);
+			$e['Message'] = "Erreur LDAP lors de la modification - " . @ldap_error(Server::$_LDAP) .' - '.$err;
 			$e['Prop'] = '';
 		}
 		return $e;

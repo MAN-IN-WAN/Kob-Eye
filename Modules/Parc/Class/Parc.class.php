@@ -9,6 +9,7 @@ class Parc extends Module{
     public $classLoader=null;
     private $_ParcRevendeur = null;
     private $_ParcClient = null;
+    private $_ParcContact = null;
     private $_ParcTechnicien = null;
     /**
 	 * Surcharge de la fonction init
@@ -303,8 +304,13 @@ class Parc extends Module{
                         //test si contact
                         $ct = Sys::$User->getOneChild('Contact');
                         if ($ct) {
-                            $this->_ParcClient = $ct;
-                            $GLOBALS["Systeme"]->registerVar("ParcContact", $this->_ParcClient);
+                            $cli = $ct->getOneParent('Client');
+                            if($cli){
+                                $this->_ParcClient = $cli;
+                                $GLOBALS["Systeme"]->registerVar("ParcClient",$this->_ParcClient);
+                            }
+                            $this->_ParcContact = $ct;
+                            $GLOBALS["Systeme"]->registerVar("ParcContact", $this->_ParcContact);
                         }
                     }
                 }

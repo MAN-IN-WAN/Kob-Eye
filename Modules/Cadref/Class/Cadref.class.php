@@ -511,19 +511,19 @@ where ce.EnseignantId=$id and cd.DateCours>=$start and cd.DateCours<=$end
 		// visites
 		if($group == 'CADREF_ENS')
 				$sql = "
-select v.Id,v.Libelle,v.DateVisite,0 as rid,v.Description,v.Prix,v.Assurance
+select v.Id,v.Libelle,v.DateVisite,0 as rid,v.Description,v.Prix,v.Assurance,v.Web,v.Places,v.Inscrits,v.Attentes
 from `##_Cadref-Visite` v
 inner join `##_Cadref-VisiteEnseignants` ve on ve.Visite=v.Id
 where v.DateVisite>=$start and v.DateVisite<=$end and ve.EnseignantId=$id";
 		else if($group == 'CADREF_ADH')
 				$sql = "
-select v.Id,v.Libelle,v.DateVisite,r.Id as rid,v.Description,v.Prix,v.Assurance
+select v.Id,v.Libelle,v.DateVisite,r.Id as rid,v.Description,v.Prix,v.Assurance,r.Supprime,r.Attente,v.Places,v.Inscrits,v.Attentes
 from `##_Cadref-Visite` v
 left join `##_Cadref-Reservation` r on r.AdherentId=$id and r.VisiteId=v.id
-where v.DateVisite>=$start and v.DateVisite<=$end";
+where v.DateVisite>=$start and v.DateVisite<=$end and v.Web=1";
 		else
 				$sql = "
-select v.Id,v.Libelle,v.DateVisite,0 as rid,v.Description,v.Prix,v.Assurance
+select v.Id,v.Libelle,v.DateVisite,0 as rid,v.Description,v.Prix,v.Assurance,v.Web,v.Places,v.Inscrits,v.Attentes
 from `##_Cadref-Visite` v
 where v.DateVisite>=$start and v.DateVisite<=$end";
 
@@ -545,14 +545,35 @@ where ve.Visite=$vid
 			$pdo1 = $GLOBALS['Systeme']->Db[0]->query($sql);
 			$s = '';
 			foreach($pdo1 as $p1) {
-				$s .= (!$s ? 'Animation : ' : ', ').trim($p1['Prenom'].' '.$p1['Nom']);
+				$s .= (!$s ? 'Guide : ' : ', ').trim($p1['Prenom'].' '.$p1['Nom']);
 			}
 			if($s) $s .= "\n";
 			$s .= $p['Description'] ?: '';
 			if($s) $s .= "\n";
-			$s .= 'Prix : <strong>€ '.$p['Prix'].'</strong>'.($p['Assurance'] ? ' Ass. facultative : € '.$p['Assurance'] : '');
+			$s .= 'Prix : <strong>€ '.$p['Prix'].'</strong>'; //.($p['Assurance'] ? ' Ass. facultative : € '.$p['Assurance'] : '');
+			if($group == 'CADREF_ADH') {
+				$s .= "\nPlaces disponibles : <strong>".($p['Places']<=$p['Inscrits'] ? '0' : $p['Places']-$p['Inscrits']).'</strong> / '.$p['Places'];
+				if($p['rid']) {
+					$s .= "\n<strong>";
+					if($p['Supprime']) $s .= 'Réservation annulée';
+					else if($p['Attente']) $s .= 'Réservation en attente';
+					else $s .= 'Inscrit à la visite';
+					$s .= '</strong>';
+				}
+			}
+			else $s .= "\nPlaces : ".$p['Places'].' - '.$p['Inscrits'].' - '.$p['Attentes'];
 			$e->description = $s;
-			$e->className = ($p['rid'] ? 'fc-event-success' : 'fc-event-default').' cadref-cal-visite';
+			
+			if($group == 'CADREF_ADH') {
+				if($p['rid']) {
+					if($p['Supprime']) $c = 'fc-event-danger';
+					else if($p['Attente']) $c = 'fc-event-warning';
+					else $c = 'fc-event-success';
+				}
+				else $c = 'fc-event-default';
+			}
+			else $c = $p['Web'] ? ($c = $p['Places']<=$p['Inscrits'] ? 'fc-event-danger' : 'fc-event-success') : 'fc-event-default';
+			$e->className = $c.' cadref-cal-visite';
 			$events[] = $e;
 		}
 

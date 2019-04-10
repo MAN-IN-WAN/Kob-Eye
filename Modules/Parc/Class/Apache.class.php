@@ -464,7 +464,7 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
 			$entry['apacheHtPasswordUser'] = $this->HtaccessUser;
 			$entry['apacheHtPasswordPassword'] = $this->HtaccessPassword;
 		}elseif (!$new){
-			$entry['apacheOptions'] = Array('Require all granted');
+			//$entry['apacheOptions'] = Array('Require all granted');
 		}
 		if ($this->Ssl&&!empty($this->SslCertificate)&&!empty($this->SslCertificateKey)){
 			$entry['apacheSslEnabled'] = 'yes';
@@ -472,11 +472,15 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
 			$entry['apacheCertificateKey'] = base64_encode($this->SslCertificateKey);
 			$entry['apacheCertificateExpiration'] = $this->SslExpiration;
 		}else{
-			//$entry['apacheSslEnabled'] = 'no';
-            $entry['apacheSslEnabled'] = 'yes';
-            $entry['apacheCertificate'] = base64_encode($defaultCert->SslCertificate);
-            $entry['apacheCertificateKey'] = base64_encode($defaultCert->SslCertificateKey);
-            $entry['apacheCertificateExpiration'] = $defaultCert->SslExpiration;
+            if($defaultCert){
+                $entry['apacheSslEnabled'] = 'yes';
+                $entry['apacheCertificate'] = base64_encode($defaultCert->SslCertificate);
+                $entry['apacheCertificateKey'] = base64_encode($defaultCert->SslCertificateKey);
+                $entry['apacheCertificateExpiration'] = $defaultCert->SslExpiration;
+            } else {
+                $entry['apacheSslEnabled'] = 'no';
+            }
+
 		}
 
 		//ALias Config

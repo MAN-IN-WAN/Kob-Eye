@@ -13,7 +13,7 @@ class PrintReglement extends FPDF {
 	private $align;
 	private $width;
 	private $posy;
-	private $totaux = [0, 0, 0];
+	private $totaux = [0, 0, 0, 0];
 	private $total = faux;
 	private $mode = 0;  // 0:reglement, 1:differes, 2:non encaisses
 	private $titre;
@@ -23,19 +23,19 @@ class PrintReglement extends FPDF {
 		parent::__construct('P', 'mm', 'A4');
 		$this->AcceptPageBreak(true, 12);
 
-		$this->head = array('','Util','Date','Chèque','Espèces','Carte','','Adhérent');
-		$this->width = array(10,10,25,19,19,19,3,110);
-		$this->align = array('L','L','L','R','R','R','L','L');
+		$this->head = array('Util','Date','Chèque','Espèces','Carte','Prélèv','','Adhérent');
+		$this->width = array(10,20,19,19,19,19,3,110);
+		$this->align = array('L','L','R','R','R','R','L','L');
 
 		$this->mode = $mode;
 		$this->user = $user;
 		$this->debut = $debut;
 		$this->fin = $fin;
 
-		if($this->mode) {  // masque la colonne espèces
-			$this->head[4] = '';
-			$this->width[4] = 0.01;
-		}
+//		if($this->mode) {  // masque la colonne espèces
+//			$this->head[4] = '';
+//			$this->width[4] = 0.01;
+//		}
 		$titre = "CADREF : Règlements ";
 		switch($this->mode) {
 			case 0: $titre .= "du ".$this->debut." au ".$this->fin."  Utilisateur : ".$this->user; break;
@@ -52,13 +52,13 @@ class PrintReglement extends FPDF {
 		$y = 5;
 		$this->SetFont('Arial','B',10);
 		$this->SetXY($this->left, $y);
-		$this->Cell(30, 4, date('d/m/Y H:i'));
+		$this->Cell(30, 4.5, date('d/m/Y H:i'));
 		$this->SetXY(-40, $y);
-		$this->Cell(35, 4, 'Page '.$this->PageNo(), 0, 0, 'R');
+		$this->Cell(35, 4.5, 'Page '.$this->PageNo(), 0, 0, 'R');
 		$y += 5;
 		$this->SetFont('Arial','B',12);
 		$this->SetXY($this->left, $y);
-		$this->Cell(200, 4, $this->cv($this->titre), 0, 0, 'C');
+		$this->Cell(200, 4.5, $this->cv($this->titre), 0, 0, 'C');
 		$y += 8;
 		
 		$this->SetXY($this->left, $y);
@@ -78,15 +78,15 @@ class PrintReglement extends FPDF {
 	function PrintTotal() {
 		$this->SetFont('Arial','B',10);
 		$this->SetXY($this->left, $this->posy+4);
-		$this->Cell($this->width[0], 4, '');
-		$this->Cell($this->width[1], 4, '');
-		$this->Cell($this->width[2], 4, '');
-		$this->Cell($this->width[3], 4, $this->totaux[0], 0, 0, $this->align[3]);
-		$this->Cell($this->width[4], 4, $this->totaux[1], 0, 0, $this->align[4]);
-		$this->Cell($this->width[5], 4, $this->totaux[2], 0, 0, $this->align[5]);
-		$this->Cell($this->width[6], 4, '');
-		$t = "Total Général : ".($this->totaux[0]+$this->totaux[1]+$this->totaux[2]);
-		$this->Cell($this->width[7], 4, $this->cv($t), 0, 0, 'L');
+		$this->Cell($this->width[0], 4.5, '');
+		$this->Cell($this->width[1], 4.5, '');
+		$this->Cell($this->width[2], 4.5, $this->totaux[0], 0, 0, 'R');
+		$this->Cell($this->width[3], 4.5, $this->totaux[1], 0, 0, 'R');
+		$this->Cell($this->width[4], 4.5, $this->totaux[2], 0, 0, 'R');
+		$this->Cell($this->width[5], 4.5, $this->totaux[3], 0, 0, 'R');
+		$this->Cell($this->width[6], 4.5, '');
+		$t = "Total Général : ".($this->totaux[0]+$this->totaux[1]+$this->totaux[2]+$this->totaux[3]);
+		$this->Cell($this->width[7], 4.5, $this->cv($t));
 		$this->total = true;
 	}
 	
@@ -99,22 +99,24 @@ class PrintReglement extends FPDF {
 		$b = '';
 		$e = '';
 		$c = '';
+		$p = '';
 		$m = (float)$l['Montant'];
 		switch($l['ModeReglement']) {
 			case 'B': $b = $m; $this->totaux[0] += $m; break;
 			case 'E': $e = $m; $this->totaux[1] += $m; break;
 			case 'C': $c = $m; $this->totaux[2] += $m; break;
+			case 'P': $p = $m; $this->totaux[3] += $m; break;
 		}
 		$this->SetXY($this->left, $this->posy);
-		$this->Cell($this->width[0], 4, '');
-		$this->Cell($this->width[1], 4, $l['Utilisateur'], 0, 0, $this->align[1]);
-		$this->Cell($this->width[2], 4, date('d/m/Y', $l['DateReglement']), 0, 0, $this->align[2]);
-		$this->Cell($this->width[3], 4, $b, 0, 0, $this->align[3]);
-		$this->Cell($this->width[4], 4, $e, 0, 0, $this->align[4]);
-		$this->Cell($this->width[5], 4, $c, 0, 0, $this->align[5]);
-		$this->Cell($this->width[6], 4, '');
-		$this->Cell($this->width[7], 4, $l['Numero'].'   '.$this->cv($l['Nom'].'  '.$l['Prenom']), 0, 0, $this->align[6]);
-		$this->posy += 4;
+		$this->Cell($this->width[0], 4.5, $l['Utilisateur']);
+		$this->Cell($this->width[1], 4.5, date('d/m/Y', $l['DateReglement']));
+		$this->Cell($this->width[2], 4.5, $b, 0, 0, 'R');
+		$this->Cell($this->width[3], 4.5, $e, 0, 0, 'R');
+		$this->Cell($this->width[4], 4.5, $c, 0, 0, 'R');
+		$this->Cell($this->width[5], 4.5, $p, 0, 0, 'R');
+		$this->Cell($this->width[6], 4.5, '');
+		$this->Cell($this->width[7], 4.5, $l['Numero'].'   '.$this->cv($l['Nom'].'  '.$l['Prenom']));
+		$this->posy += 4.5;
 	} 
 
 }

@@ -8,6 +8,7 @@ class PrintAdherent extends FPDF {
 	private $rupture;
 	private $antenne;
 	private $attente;
+	private $adherent;
 	private $head;
 	private $align;
 	private $width;
@@ -22,17 +23,23 @@ class PrintAdherent extends FPDF {
 	private $mode;
 	private $rupEns = "\t";  // valeur initiale non vide
 
-	function PrintAdherent($mode, $contenu, $rupture, $antenne, $attente) {
+	function PrintAdherent($mode, $contenu, $rupture, $antenne, $attente, $adherent) {
 		parent::__construct('P', 'mm', 'A4');
 		$this->AcceptPageBreak(true, 12);
 
 		$this->contenu = $contenu;
 		$this->rupture = $rupture;
+		$this->adherent = $adherent;
 
 		$this->mode = $mode;
 		switch($mode) {
 			case 0:
 				$this->titre = "CADREF : Liste des adhérents ";
+				switch($adherent) {
+					case 'B': $this->titre .= '(Bureau) '; break;
+					case 'A': $this->titre .= '(Administrateurs) '; break;
+					case 'D': $this->titre .= '(Délégués) '; break;
+				}
 				if($antenne) {
 					$this->antenne = Sys::getOneData('Cadref', 'Antenne/' . $antenne);
 					$this->titre .= ": " . $this->antenne->Libelle;
@@ -146,19 +153,18 @@ class PrintAdherent extends FPDF {
 		$this->Cell(129 - $x, 4, $l['Mail']);
 
 		$this->SetFont('Arial', '', 10);
-		if($this->mode == 0 && $l['Delegue']) {
-			$cls = Sys::getOneData('Cadref', 'Classe/' . $l['Delegue']);
-			$this->SetXY($this->left + 129, $this->posy);
-			$this->Cell(15, 4, $cls->CodeClasse, 0, 0, 'L');
-		}
 		$this->SetXY($this->left + 124, $this->posy);
 		$this->Cell(26, 4, $l['Telephone1'], 0, 0, 'L');
 		$this->Cell(26, 4, $l['Telephone2'], 0, 0, 'L');
 
 		switch($this->mode) {
 			case 0:
-				if($this->attente) $s = date('d/m/Y H:i', $l['DateAttente']);
-				else $s = 'C:' . substr($l['CodeClasse'], 10, 1);
+				if($this->adherent) {
+					$cls = Sys::getOneData('Cadref', 'Classe/' . $l['Delegue']);
+					$s = $cls->CodeClasse;
+				}
+				else if($this->attente) $s = date('d/m/Y H:i', $l['DateAttente']);
+				else $s = 'C:'.substr($l['CodeClasse'], 10, 1);
 				break;
 			case 1:
 				$s = $l['DateCertificat'] ? date('d/m/Y', $l['DateCertificat']) : 'N.D.';

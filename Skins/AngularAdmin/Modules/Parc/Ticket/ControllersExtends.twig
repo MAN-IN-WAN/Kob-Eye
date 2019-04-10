@@ -1,0 +1,91 @@
+app.controller('{{ identifier }}FicheCtrlExtends', function($interval, $timeout,$location, $compile, $sce, $scope, $rootScope, $routeParams,$http,ParcActionStore, ParcTechnicienStore, SystemeUserStore, ParcTicketStore) {
+
+    $scope.getSide = function(item){
+        if ( item.UserCrea == 'ZZ' ) return 'leftSide';
+
+        return 'rightSide';
+    }
+
+    $scope.ParcTicketStore = ParcTicketStore;
+    $scope.ParcTechnicienStore = ParcTechnicienStore;
+    $scope.SystemeUserStore = SystemeUserStore;
+
+    $scope.editable = function(item){
+        item.customized = true;
+        if(item.creator == {{ uid }}) item.Editable = true;
+
+        item.Auteur ='';
+        if(item.UserCrea == 'ZZ' ) {
+            item.Auteur = $scope.ParcTicketStore.data['fiche'][0].ClientClientIdlabel;
+        }
+        if(item.UserCrea != 'ZZ' && item.UserCrea != '' && item.UserCrea != undefined && item.UserCrea != null) {
+            $scope.SystemeUserStore.initContext('timeline');
+            $scope.SystemeUserStore.setFilters('Initiales='+item.UserCrea,'timeline');
+            $scope.SystemeUserStore.getData(1,'timeline').then(function(){
+                if($scope.SystemeUserStore.data['timeline'].length > 0){
+                    var user = $scope.SystemeUserStore.data['timeline'][0];
+                    $scope.ParcTechnicienStore.initContext('timeline');
+                    $scope.ParcTechnicienStore.setFilters('UserId='+user.id,'timeline');
+                    $scope.ParcTechnicienStore.getData(1,'timeline').then(function(){
+                        if($scope.ParcTechnicienStore.data['timeline'].length > 0){
+                            item.Auteur = $scope.ParcTechnicienStore.data['timeline'][0].Nom+' '+$scope.ParcTechnicienStore.data['timeline'][0].Prenom;
+                        }
+                    });
+                }
+            });
+        }
+        if(item.Auteur == '') item.Auteur = 'Abtel';
+
+        return item;
+    }
+
+    $scope.ParcActionmodalSaveBis = function(itm){
+        $scope.modalObj.UserCrea = '{{ initiales }}';
+        $scope.modalObj.TicketTicketId = itm;
+console.log($scope.modalObj);
+        if($scope.modalObj.pj != undefined && $scope.modalObj.pj != '')
+            $scope.modalObj.pj = {'force':true,'pj':$scope.modalObj.pj}
+console.log($scope.modalObj);
+        $scope.ParcActionmodalSave(true);
+    }
+
+    $scope.attachListener = function(){
+        $('.unfold').off('click');
+        $('.unfold').on('click',function(e){
+            e.stopPropagation();
+            e.preventDefault();
+            var target = $(this).closest('.row').siblings('.fold');
+            target.toggleClass('open');
+        });
+    };
+
+    $scope.getService = function(){
+        var serv = 'Autre';
+
+        if($scope.obj == undefined) return serv;
+
+        switch($scope.obj.Titre){
+            case 'Demande client Commerciale':
+                    serv = 'Commercial';
+                break;
+            case 'Demande client Administrative':
+                    serv = 'Admisitratif';
+                break;
+            case 'Demande client Téléphonie':
+                    serv = 'Telephonie';
+                break;
+            case 'Demande client Poste':
+                    serv = 'Poste';
+                break;
+            case 'Demande client Serveur':
+                    serv = 'Serveur';
+                break;
+            case 'Demande client Web':
+                    serv = 'Web';
+                break;
+        }
+
+        return serv;
+    }
+
+});

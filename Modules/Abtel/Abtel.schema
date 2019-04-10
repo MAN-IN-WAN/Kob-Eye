@@ -65,9 +65,9 @@
         <FILTER name="Tous les contrats" color="secondary" ></FILTER>
 
 		<PROPERTIES type="int" unique="1" description="Id dans la gestion" >IdGestion</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1" description="Code du contrat" list="1" form="1" fiche="1" listDescr="Code">Code</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="2" obligatoire="1" description="Code du contrat" list="1" form="1" fiche="1" listDescr="Code">Code</PROPERTIES>
 		<PROPERTIES type="varchar" description="Type de contrat"  form="1" fiche="1" listDescr="Type">Type</PROPERTIES>
-		<PROPERTIES type="varchar" searchOrder="2" obligatoire="1"  description="Libellé" list="1" form="1" fiche="1" listDescr="Libellé">Libelle</PROPERTIES>
+		<PROPERTIES type="varchar" searchOrder="1" obligatoire="1"  description="Libellé" list="1" form="1" fiche="1" listDescr="Libellé">Libelle</PROPERTIES>
 		<PROPERTIES type="date" description="Date de début" list="1" form="1" fiche="1" listDescr="Date de début">DateDebut</PROPERTIES>
 		<PROPERTIES type="date" description="Date de fin" list="1" form="1" fiche="1" listDescr="Date de fin">ContratFin</PROPERTIES>
 		<PROPERTIES type="int" description="Durée" list="1" form="1" fiche="1" listDescr="Durée (mois)">Duree</PROPERTIES>

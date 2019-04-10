@@ -1,0 +1,295 @@
+<div class="page-content-inner">
+    <ul class="list-unstyled breadcrumb">
+        <li>
+            <a href="#/TableauDeBord">Tableau de bord</a>
+        </li>
+        <li>
+            <a href="#/{{ CurrentMenu.Url }}">Liste des {{ ObjectClass.getDescription() }}</a>
+        </li>
+        <li>
+            <a href="javascript: void(0);" ng-bind-html="'Fiche {{ ObjectClass.getDescription() }} '+(obj.label)"></a>
+        </li>
+    </ul>
+
+    <!-- Default Panel -->
+    <section class="panel" ng-if="displayFiche">
+        <div class="panel-heading">
+            <div class="pull-right">
+                {% if functions|length > 1 %}
+                    <div class="btn-group " uib-dropdown>
+                        <span id="function-button" type="button" class="btn btn-func">Fonctions</span>
+                        <button type="button" class="btn btn-func" uib-dropdown-toggle>
+                            <span class="caret"></span>
+                            <span class="sr-only">Split button!</span>
+                        </button>
+                        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="function-button">
+                            {% for fu in functions %}
+                                <li ><a class="dropdown-item" href="javascript: void(0);" ng-click='{{ identifier }}callFunction(obj,"{{fu.Nom}}","{{fu.title}}",{{ fu.needConfirm }})'>{{fu.title}}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% elseif functions|length == 1 %}
+                    <a href="javascript: void(0);" class="btn btn-primary" ng-click='{{ identifier }}callFunction(obj,"{{functions.0.Nom}}","{{functions.0.title}}",{{functions.0.needConfirm}})'>{{functions.0.title}}</a>
+                {% endif %}
+                {% if operation.edit %}<button type="button" class="btn btn-default btn-warning margin-inline" ng-click="modify(obj)">Modifier</button>{% endif %}
+                {% if operation.delete %}<button type="button" class="btn btn-default btn-danger margin-inline" ng-click="delete(obj)">Supprimer</button>{% endif %}
+            </div>
+            <h3 ng-bind-html="'Fiche {{ ObjectClass.getDescription() }} '+(obj.label)"></h3>
+            <h4 ng-if="obj.Titre != undefined && obj.Titre != ''" ng-bind-html="obj.Titre"></h4>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- Urgence -->
+                    <div class="row  ficheField">
+                        <div class="col-md-5 detail-label">
+                            <label class="form-control-label" for="l0">Urgence</label>
+                        </div>
+                        <div class="col-md-7 detail-value">
+                            <span ng-class="{'prio_Info':obj.Priorite == 1 ,'prio_Warning':obj.Priorite == 2,'prio_Moyenne':obj.Priorite == 3,'prio_Haute':obj.Priorite == 4}" ng-bind-html="obj.PrioriteLabel"></span>
+                        </div>
+                    </div>
+                    <div class="row  ficheField">
+                        <div class="col-md-5 detail-label">
+                            <label class="form-control-label" for="l0">Etat</label>
+                        </div>
+                        <div class="col-md-7 detail-value">
+                            <span class="etatTicket" ng-class="'etat_'+obj.Etat" ng-bind-html="obj.EtatLabel"></span>
+                        </div>
+                    </div>
+                    <!-- Contact -->
+                    <div class="row  ficheField">
+                        <div class="col-md-5 detail-label">
+                            <label class="form-control-label" for="l0">Contact</label>
+                        </div>
+                        <div class="col-md-7 detail-value">
+                            {% if User.isRole('PARC_TECHNICIEN') %}
+                                <a ng-if="obj.ContactContactIdlabel != undefined && obj.ContactContactIdlabel != ''" class="btn btn-primary btn-xs" href="#/{{ contactLink }}/{[{ obj.ContactContactId }]}">obj.ContactContactIdlabel</a>
+                                <span ng-if="obj.ContactContactIdlabel == undefined || obj.ContactContactIdlabel == ''" >Aucun contact renseigné</span>
+                            {% else %}
+                            <span ng-if="obj.ContactContactIdlabel != undefined && obj.ContactContactIdlabel != ''" ng-bind-html="obj.ContactContactIdlabel"></span>
+                            <span ng-if="obj.ContactContactIdlabel == undefined || obj.ContactContactIdlabel == ''" >Aucun contact renseigné</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!-- Contrat -->
+                    {% if Abtel %}
+                    <div class="row  ficheField">
+                        <div class="col-md-5 detail-label">
+                            <label class="form-control-label" for="l0">Contrat</label>
+                        </div>
+                        <div class="col-md-7 detail-value">
+                            {% if User.isRole('PARC_TECHNICIEN') %}
+                                <a ng-if="obj.ContratContratIdlabel != undefined && obj.ContratContratIdlabel != ''" class="btn btn-primary btn-xs" href="#/{{ contratLink }}/{[{ obj.ContratContratId }]}">obj.ContratContratIdlabel</a>
+                                <span ng-if="obj.ContratContratIdlabel == undefined || obj.ContratContratIdlabel == ''" >Aucun contact renseigné</span>
+                            {% else %}
+                            <span ng-if="obj.ContratContratIdlabel != undefined && obj.ContratContratIdlabel != ''" ng-bind-html="obj.ContratContratIdlabel"></span>
+                            <span ng-if="obj.ContratContratIdlabel == undefined || obj.ContratContratIdlabel == ''" >Hors contrat</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    <!-- Service concerné -->
+                    <div class="row  ficheField">
+                        <div class="col-md-5 detail-label">
+                            <label class="form-control-label" for="l0">Service concerné</label>
+                        </div>
+                        <div class="col-md-7 detail-value">
+                            <span ng-bind-html="getService()"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Desc Ticket -->
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="form-control-label" for="l0">Description</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <pre ng-bind-html="obj.Note"></pre>
+                </div>
+            </div>
+            <!-- Infos special techos -->
+            {% if User.isRole('PARC_TECHNICIEN') %}
+            <div class="row  ficheField">
+                <div class="col-md-5 detail-label"> <label class="form-control-label" for="l0">Détails</label></div>
+                <div class="col-md-7 detail-value" ng-bind-html="obj._details"></div>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+    <!-- End Default Panel -->
+
+    {% if Interfaces.fiche_middle %}
+        {{ include(template_from_string(module(Interfaces.fiche_middle.Template.url))) }}
+    {% endif %}
+
+    <!-- Child Panel -->
+    <div class="nav-tabs-horizontal" ng-if="displayFiche">
+        <ul class="nav nav-tabs" role="tablist">
+            {% if Interfaces.fiche_tab %}
+                <li class="nav-item">
+                    <a class="nav-link active " href="javascript: void(0);" data-toggle="tab" data-target="#tabInfosSite" role="tab"><b>{{ Interfaces.fiche_tab.Infos.title }}</b></a>
+                </li>
+            {% endif %}
+            {% for child in ChildrenElements %}
+                {% if not child.childrenHiddenSoft %}
+                <li class="nav-item">
+                    <a class="nav-link {% if loop.first and not Interfaces.fiche_tab  %}active{% endif %}" href="javascript: void(0);" data-toggle="tab" data-target="#tab{{ child.objectName }}" role="tab"><b>{% if child.objectDescription %}{{ child.objectDescription }}{% else %}{{ child.objectName }}{% endif %}</b> ({[{ {{ child.objectModule }}{{ child.objectName }}.store.total.children }]})</a>
+                </li>
+                {% endif %}
+            {% endfor %}
+            {% if browseable %}
+            <li class="nav-item">
+                <a class="nav-link {% if not ChildrenElements|length and not Interfaces.fiche_tab %}active{% endif %}" href="javascript: void(0);" data-toggle="tab" data-target="#tabPagesSite" role="tab"><b>Pages correspondantes</b> {# ({[{ {{ child.objectModule }}{{ child.objectName }}.store.total.children }]}) #}</a>
+            </li>
+            {% endif %}
+        </ul>
+        <div class="tab-content">
+            {% if Interfaces.fiche_tab %}
+                <div class="tab-pane active" id="tabInfosSite" role="tabpanel">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div ng-include="'{{ Interfaces.fiche_tab.Infos.urlPrefix }}'+ obj.id +'{{ Interfaces.fiche_tab.Infos.urlSuffix }}'"></div>
+                        </div>
+                    </section>
+                </div>
+            {% endif %}
+            {% for child in ChildrenElements %}
+                {% if not child.childrenHiddenSoft %}
+                <div class="tab-pane {% if loop.first and not Interfaces.fiche_tab  %}active{% endif %}" id="tab{{ child.objectName }}" role="tabpanel">
+                    {% if child.recursive %}
+                        {#{{ include(template_from_string(module(Query~'/0/'~child.objectName~'/TreeChildren'))) }}#}
+                        <section class="panel">
+                            <div class="panel-body">
+                                <div id="ajaxwrapper"
+                                     ng-include="'/{{ CurrentUrl }}/'+obj.id+'/{{ child.objectName }}/TreeChildren.htm'" >
+                                </div>
+                            </div>
+                        </section>
+                    {% else %}
+                        <section class="panel">
+                            <div class="panel-body">
+                                <ng-include src="'/{{ CurrentUrl }}/0/{{ child.objectName }}/ListChildren.htm'" ng-if="show"></ng-include>
+                            </div>
+                        </section>
+                    {% endif %}
+                </div>
+                {% endif %}
+            {% endfor %}
+            {% if browseable %}
+                <div class="tab-pane {% if not ChildrenElements|length %}active{% endif %}" id="tabPagesSite" role="tabpanel">
+                        <section class="panel">
+                            <div class="panel-body">
+                                {{ include(template_from_string(module('Systeme/Utils/List/PageList?headless=1'))) }}
+                            </div>
+                        </section>
+
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <!-- End child Panel -->
+
+</div>
+{% if Interfaces.bottom %}
+    <div class="widget widget-three">
+        <iframe style="border:0;" ng-src="{[{ '{{ Interfaces.bottom.Grafana.url }}'+obj.CodeClient+'%20'+obj.Nom }]}" width="100%" height="1100"></iframe>
+    </div>
+{% endif %}
+
+
+<section class="panel" ng-if="!displayFiche">
+    <div class="panel-heading">
+        <h3>Oups, j'ai glissé chef !</h3>
+    </div>
+    <div class="panel-body panel-empty">
+            <p>
+                On aurait volontiers mis une jolie image bien design pour signaler qu'il n'y a rien ici, mais on a oublié de charger le module "Talent graphique" sur nos Devs...<br/>
+                La seule chose dont ils sont capable c'est d'écrire ce genre de choses:
+            </p>
+            <div class="lostBgCode"></div>
+            <p>
+                Enfin bref, nous sommes désolés mais vous ne trouverez rien d'intéressant ici.
+            </p>
+    </div>
+</section>
+
+<div class="modal fade modal-size-large" id="modalfiche-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">{[{ modalObj.title }]}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" ng-if="modalObj.errors">
+                    <ul>
+                        <li ng-repeat="e in modalObj.errors">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-warning" ng-if="modalObj.warning">
+                    <ul>
+                        <li ng-repeat="e in modalObj.warning">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-success" ng-if="modalObj.infos">
+                    <ul>
+                        <li ng-repeat="e in modalObj.infos">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div  ng-if="modalObj.success == false">
+                    {{ include(template_from_string(module('Systeme/Utils/Form?Path='~CurrentObjQuery))) }}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == true">Fermer</button>
+                <button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == false">Annuler</button>
+                <button type="button" class="btn btn-primary" ng-if="modalObj.success == false" ng-click="modalSave()">__SAVE_MODAL_OBJ__</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ include(template_from_string(module('Systeme/Utils/Modal/Function?identifier='~identifier))) }}
+
+{% if ChildrenElements|length %}
+    <div class="modal fade modal-size-large" id="modallink-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">{[{ link.title }]}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-success" ng-show="link.success">{[{ link.message }]}</div>
+                    <div class="alert alert-danger" ng-show="link.errors.length > 0">
+                        <ul>
+                            <li ng-repeat="err in link.errors">{[{ err }]}</li>
+                        </ul>
+                    </div>
+                    <div  ng-if="link.success == false">
+                        <div id="ajaxwrapper"
+                             ng-include="link.url" >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal" ng-if="link.success == true">Fermer</button>
+                    <button type="button" class="btn" data-dismiss="modal" ng-if="link.success == false">Annuler</button>
+                    <button type="button" class="btn btn-primary" ng-if="link.success == false" ng-click="link.Save()">__SAVE_MODAL_OBJ__</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+

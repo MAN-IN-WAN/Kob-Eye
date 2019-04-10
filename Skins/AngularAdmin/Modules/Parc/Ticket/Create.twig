@@ -1,0 +1,124 @@
+<div>
+    <!-- Service -->
+    <div class="row">
+        <div class="col-md-6">
+            <label class="form-control-label" for="l0">Service concerné</label>
+            <small>
+                <i class="icmn-question3 help-wrapper"><span class="fieldHelp">Afin de traiter le plus rapidement possible votre ticket, veuillez sélectionner le service qui  correspond à votre problématique.</span></i>
+            </small>
+        </div>
+        <div class="col-md-6 form-group">
+            <select class="form-control" ng-model="ParcTicketfunction.args.service" required="true" ng-init="ParcTicketfunction.args.service='Autre';">
+                {% for v in services %}
+                    <option value="{{ v }}">{{ v }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+
+    <!-- Contrat -->
+    {% if Abtel %}
+    <div class="row">
+        <div class="col-md-6">
+            <label class="form-control-label" for="l0">Contrat</label>
+            <small>
+                <i class="icmn-question3 help-wrapper"><span class="fieldHelp">Veuillez sélectionner le contrat auquel est lié ce ticket. Si jamais votre ticket n'a pas de rapport avec l'un de vos contrats, veuillez laisser l'option par défaut.</span></i>
+            </small>
+        </div>
+        <div class="col-md-6 form-group">
+            <select class="form-control" ng-model="ParcTicketfunction.args.contrat" ng-init="ParcTicketfunction.args.contrat='0';">
+                <option value="0" selected="selected">Hors contrat</option>
+                <option ng-repeat="item in AbtelContratSelect.data" value="{[{ item.id }]}">{[{ item.Libelle }]} ({[{ item.Code }]})</option>
+            </select>
+        </div>
+    </div>
+    {% endif %}
+
+
+    <!-- Probleme -->
+    <div class="row">
+        <div class="col-md-12">
+            <label class="form-control-label" for="l0">Description du problème</label>
+            <small>
+                <i class="icmn-question3 help-wrapper"><span class="fieldHelp">Veuillez décrire le plus précisément possible la nature de votre problème / demande afin que nos équipes puisse satisfaire votre requête de la manière la plus efficace qui soit.</span></i>
+            </small>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 form-group">
+            <div ui-ace="{useWrapMode : true,mode: 'html',onLoad: aceLoaded,onChange: aceChanged}" ng-model="ParcTicketfunction.args.description" class="ace_editor"></div>
+        </div>
+    </div>
+
+    <!-- Urgence -->
+    <div class="row">
+        <div class="col-md-6">
+            <label class="form-control-label" for="l0">Urgence</label>
+            <small>
+                <i class="icmn-question3 help-wrapper"><span class="fieldHelp">Veuillez sélectionner le niveau d'urgence correspondant à votre demande allant de 1 ( Peu urgent ) à 4 ( Prioritaire ).</span></i>
+            </small>
+        </div>
+        <div class="col-md-6 form-group">
+            <select class="form-control" ng-model="ParcTicketfunction.args.urgence" ng-init="ParcTicketfunction.args.urgence='1';">
+                {% for k,v in urgences %}
+                    <option value="{{ k }}" >{{ k }} - {{ v }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <!-- Piece Jointe -->
+    <div class="row">
+        <div class="col-md-6">
+            <label class="form-control-label" for="l0">Pièce(s) jointe(s)</label>
+            <small>
+                <i class="icmn-question3 help-wrapper"><span class="fieldHelp">Dans le cas où vous auriez besoin de nous faire parvenir des fichiers.</span></i>
+            </small>
+        </div>
+        <div class="col-md-6 form-group" style="text-align: center;">
+            <input type="hidden" class="form-control" placeholder="" id="input-ParcTicketpj" ng-model="ParcTicketfunction.args.pj">
+            <label for="input-ParcTicketpj-file" class="btn-warning file-btn btn" title=" Choisissez un fichier " style="width: 100%; margin: 0;"><i class="icmn-folder-upload2 "></i></label>
+            <input id="input-ParcTicketpj-file" type="file" nv-file-select options="{ alias:'FileData',formData:[{ 'Module':'Parc' }, { 'Obj' : 'Ticket' }],removeAfterUpload: true, inputId: 'input-ParcTicketpj', model:'ParcTicketfunction.args.pj' }" ng-init="up_ParcTicketpj = angular.copy(multiAutoUploader)" uploader="up_ParcTicketpj" style="display:none;" multiple/>
+            <ul ng-if="ParcTicketfunction.args.pj != undefined && ParcTicketfunction.args.pj.length > 0" class="multiUploadDisplay">
+                <li ng-repeat="(key,item) in ParcTicketfunction.args.pj">
+                    <div compile="fileUploadDisplay(item,'ParcTicketfunction.args.pj',key)"></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Contact Client -->
+    <div class="row">
+        <div class="col-md-6">
+            <label class="form-control-label" for="l0">Contact</label>
+            <small>
+                <i class="icmn-question3 help-wrapper"><span class="fieldHelp">Veuillez sélectionner la personne à contacter le cas échéant.</span></i>
+            </small>
+        </div>
+        <div class="col-md-6 form-group">
+            <select class="form-control" ng-model="ParcTicketfunction.args.contact" ng-init="ParcTicketfunction.args.contact='0';">
+                <option value="0"> -- Veuillez choisir un contact -- </option>
+                <option ng-repeat="item in ParcContactSelect.data" value="{[{ item.id }]}">{[{ item.Nom }]} {[{ item.Prenom }]} ( {[{ item.Tel }]} )</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Contact Abtel -->
+    {% if user.isRole('PARC_TECHNICIEN') or user.admin == 1 %}
+    <div class="row">
+        <div class="col-md-6">
+            <label class="form-control-label" for="l0">Contact Abtel</label>
+            <small>
+                <i class="icmn-question3 help-wrapper"><span class="fieldHelp">Pour affecter directement un ticket choisissez un personnel d'Abtel sinon laissez vide.</span></i>
+            </small>
+        </div>
+        <div class="col-md-6 form-group">
+            <select class="form-control" ng-model="ParcTicketfunction.args.contactAbtel" ng-init="ParcTicketfunction.args.contactAbtel='0';">
+                <option value="0"> ---- </option>
+                <option ng-repeat="item in ParcTechnicien.data" value="{[{ item.id }]}">{[{ item.Nom }]} {[{ item.Prenom }]} ({[{ item.Tel }]})</option>
+            </select>
+        </div>
+    </div>
+    {% endif %}
+</div>

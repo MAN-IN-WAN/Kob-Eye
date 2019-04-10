@@ -161,7 +161,11 @@
 											<tbody>
 												<tr>
 													<td class="cadref-td-inscr">{{ finput(f.Places, o, false, 'dddd', 'width:80px') }}</td>
-													<td class="cadref-td-inscr">{{ finput(f.Inscrits, o, true, 'dddd', 'width:80px') }}</td>
+													<td class="cadref-td-inscr">
+														<input type="text" class="form-control cadref-input" ng-class="{'cadref-highlight': Number({{ o }}.Inscrits)>=Number({{ o }}.Places)}" ng-model="{{ o }}.Inscrits"
+															readonly tabindex="-1" mask="dddd" style="width:80px"
+														/>
+													</td>
 													<td class="cadref-td-inscr">{{ finput(f.Attentes, o, true, 'dddd', 'width:80px') }}</td>
 												</tr>
 											</tbody>

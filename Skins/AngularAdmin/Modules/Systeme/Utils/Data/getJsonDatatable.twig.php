@@ -111,7 +111,7 @@ foreach ($vars['rows'] as $k=>$v){
             if ($v->{$f['name']} > 0) {
                 $kk = Sys::getOneData($f['objectModule'], $f['objectName'] . '/' . $v->{$f['name']});
                 if ($kk) {
-                    $v->{$f['name'] . 'label'} = $kk->getFirstSearchOrder();
+                    $v->{$f['name'] . 'label'} = $kk->getFirstSearchOrder() .' '. $kk->getSecondSearchOrder();
                     if(isset($kk->Couleur))
                         $v->{$f['name'].'color'} = $kk->Couleur;
                 }

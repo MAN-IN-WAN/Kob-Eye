@@ -4,18 +4,19 @@
 {% set o=Create ? 'modalObj' : 'obj' %}
 
 <div class="page-content-inner">
-    <ul class="list-unstyled breadcrumb" ng-if="{{ o }}.id">
-        <li>
-            <a href="#/TableauDeBord">Tableau de bord</a>
-        </li>
-        <li>
-            <a href="#/{{ CurrentMenu.Url }}" accesskey="l" title="Alt L">Liste des {{ ObjectClass.getDescription() }}</a>
-        </li>
-        <li>
-            <a href="javascript: void(0);" ng-bind-html="'Fiche {{ ObjectClass.getDescription() }} '+(obj.label)"></a>
-        </li>
-    </ul>
-
+	<div>
+		<ul class="list-unstyled breadcrumb" ng-if="{{ o }}.id">
+			<li>
+				<a href="#/TableauDeBord">Tableau de bord</a>
+			</li>
+			<li>
+				<a href="#/{{ CurrentMenu.Url }}" accesskey="l" title="Alt L">Liste des {{ ObjectClass.getDescription() }}</a>
+			</li>
+			<li>
+				<a href="javascript: void(0);" ng-bind-html="'Fiche {{ ObjectClass.getDescription() }} '+(obj.label)"></a>
+			</li>
+		</ul>
+	</div>
     <!-- Default Panel -->
     <section class="panel">
         <div class="panel-body cadref-panel-body">
@@ -30,21 +31,24 @@
 								<div class="col-md-2">
 									{{ finput(f.Numero, o, true, '', 'width:80px') }}
 								</div>
-								<div class="col-md-2">
-									{{ label("Année sélectionnée") }}
+								<div class="col-md-1">
+									{{ label("Année") }}
 								</div>
-								<div class="col-md-2">
+								<div class="col-md-1">
 									<select id="AnneeSelect" class="form-control cadref-input cadref-annuel" ng-model="{{ o }}.AnneeSelect" style="width:64px" ng-change="changeAnnee()">
 										{% for v in annees %}
 											<option value="{{ v }}">{{ v }}</option>
 										{% endfor %}
 									</select>
 								</div>
-								<div class="col-md-2">
+								<div class="col-md-1">
 									{{ label("Etoiles") }}
 								</div>
 								<div class="col-md-2">
 									{#{{ fvalues(f.Etoile, o) }}#}
+								</div>
+								<div class="col-md-3">
+									<label class="form-control-label cadref-label">{[{ {{ o }}.Utilisateur+'&nbsp;&nbsp;'+{{ o }}.DateModification }]}</label>
 								</div>
 							</div>
 							<div class="row">
@@ -57,7 +61,6 @@
 									/>
 								</div>
 							</div>
-							{#{{ flinput(f.Nom, o, false, '', 'text-transform:uppercase;', true, true) }}#}
 							{{ flinput(f.Prenom, o) }}
 							{{ flinput(f.Adresse1, o) }}
 							{{ flinput(f.Adresse2, o) }}
@@ -66,7 +69,7 @@
 									{{ label("CP Ville") }}
 								</div>
 								<div class="col-md-2">
-									{{ finput(f.CP, o, false, 'ddddd') }}
+									<input type="text" class="form-control cadref-input" ng-model="{{ o }}.CP" mask="ddddd" tabindex="-1"/>
 								</div>
 								<div class="col-md-8">
 									<input type="text" list="Ville-list" ng-change="villeChange()" class="form-control cadref-input ng-pristine ng-valid ng-not-empty ng-touched" placeholder="" ng-model="{{ o }}.Ville" style="text-transform:uppercase;" onkeyup="this.value = this.value.toUpperCase();">
@@ -302,7 +305,7 @@
 										<tr>
 											<td class="cadref-td-inscr">
 												<div class="control-group">
-													<input type="text" class="form-control cadref-input-diff cadref-annuel" ng-model="{{ o }}.Cotisation" readonly/>
+													<input type="text" class="form-control cadref-input-diff cadref-annuel" ng-model="{{ o }}.Cotisation" readonly ng-class="{'cadref-highlight': {{ o }}.nonCotis}"/>
 												</div>
 											</td>
 											<td class="cadref-td-inscr">
@@ -377,6 +380,7 @@
 					<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="saveFicheCadref({{ o }}.id)">Sauver</button>
 					<button type="button" class="btn btn-danger margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="delete(obj)">Supprimer</button>
 					<a type="button" class="btn btn-warning margin-inline cadref-btn-100" {% if Create %}data-dismiss="modal"{% else %}href="#/{{ CurrentMenu.Url }}"{% endif %}>Annuler</a>
+					<button type="button" class="btn btn-info margin-inline cadref-btn-100" ng-if="{{ o }}.id" accesskey="v" title="Alt V" ng-click="openReservation(obj)">Visites</button>
 					<button type="button" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" accesskey="g" title="Alt G" ng-click="CadrefAdherentcallFunction(obj,'SendMessage','Envoi de message','')">Message</button>
 					<button type="button" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" accesskey="t" title="Alt T" ng-click="CadrefAdherentcallFunction(obj,'PrintAttestation','Attestation fiscale','')">Attestation</button>
 					<button type="button" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" accesskey="h" title="Alt H" ng-click="CadrefAdherentcallFunction(obj,'PrintCheque','Chèque','')">Chèque</button>

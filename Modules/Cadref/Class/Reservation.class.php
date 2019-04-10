@@ -18,32 +18,32 @@ class Reservation extends genericClass {
 		if(!$this->Supprime) $this->DateSupprime = 0;
 		
 		$ret = parent::Save();
-		if($ret) {
-			$vis->Save(true);
-			
-			// réglement
-			$r = $this->getOneChild('Reglement');
-			if(! $r) {
-				$r = genericClass::createInstance('Cadref', 'Reglement');
-				$r->addParent($adh);
-				$r->addParent($this);
-				$r->Numero = $adh->Numero;
-				$r->Visite = $vis->Visite;
-				$r->Annee = $annee;
-			}
-			$r->Montant = $this->Prix+$this->Assurance;
-			$r->ModeReglement = 'B';
-			$r->DateReglement = $vis->DateVisite;
-			$r->Differe = 1;
-			$r->Encaisse = 0;
-			if($this->Supprime) {
-				$r->Supprime = 1;
-				$r->DateSupprime = $this->DateSupprime;
-			}
-			else $r->Supprime = 0;
-			$r->Utilisateur = Sys::$User->Initiales;
-			$r->Save();
-		}
+//		if($ret) {
+//			$vis->Save(true);
+//			
+//			// réglement
+//			$r = $this->getOneChild('Reglement');
+//			if(! $r) {
+//				$r = genericClass::createInstance('Cadref', 'Reglement');
+//				$r->addParent($adh);
+//				$r->addParent($this);
+//				$r->Numero = $adh->Numero;
+//				$r->Visite = $vis->Visite;
+//				$r->Annee = $annee;
+//			}
+//			$r->Montant = $this->Prix+$this->Assurance;
+//			$r->ModeReglement = 'B';
+//			$r->DateReglement = $vis->DateVisite;
+//			$r->Differe = 1;
+//			$r->Encaisse = 0;
+//			if($this->Supprime) {
+//				$r->Supprime = 1;
+//				$r->DateSupprime = $this->DateSupprime;
+//			}
+//			else $r->Supprime = 0;
+//			$r->Utilisateur = Sys::$User->Initiales;
+//			$r->Save();
+//		}
 		return $ret;
 	}
 	
@@ -53,9 +53,9 @@ class Reservation extends genericClass {
 			$this->addError(array("Message" => "Cette réservation ne peut être supprimée", "Prop" => ""));
 			return false;
 		}
-		$rec = $this->getChildren('Reglement');
-		foreach($rec as $r)
-			$r->Delete();
+//		$rec = $this->getChildren('Reglement');
+//		foreach($rec as $r)
+//			$r->Delete();
 		
 		return parent::Delete();
 	}

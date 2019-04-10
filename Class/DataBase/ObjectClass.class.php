@@ -131,7 +131,14 @@ class ObjectClass extends Root{
 		$this->Operations  = Array("add"=>false,"edit"=>false,"delete"=>false,"export"=>false);
 		$str = explode(',',$str);
 		if (sizeof($str))foreach ($str as $s){
-			$this->Operations[$s] = true;
+			$r = true;
+			if(strpos($s,'::')){
+				$tmp = explode('::',$s);
+				$s = $tmp[0];
+				$r = explode('|',$tmp[1]);
+			}
+
+			$this->Operations[$s] = $r;
 			$this->OperationsDefined = true;
 		}
 	}
@@ -321,6 +328,7 @@ class ObjectClass extends Root{
 						$t->filter = $temp[$j]['#'];
 						$t->name = $temp[$j]['@']['name'];
                         if (isset($temp[$j]['@']['color'])) $t->color = $temp[$j]['@']['color'];
+						if (isset($temp[$j]['@']['hasRole'])) $t->hasRole = $temp[$j]['@']['hasRole'];
                         if (isset($temp[$j]['@']['code'])) $t->code = $temp[$j]['@']['code'];
                         else $t->code = Utils::strToCode($t->name);
 						if (isset($temp[$j]['@']['view'])) $t->view = $temp[$j]['@']['view'];

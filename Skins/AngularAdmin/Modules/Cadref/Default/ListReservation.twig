@@ -1,162 +1,74 @@
-{# ListReservation #}
-<div class="form-group row">
-	<div class="col-lg-5 col-md-12">
-		<div class="input-group list-search">
-			<input type="text" id="search{{ identifier }}" class="form-control" name="{{ identifier }}query" ng-model="{{ identifier }}.filter" placeholder="Recherche..." >
-			<span class="input-group-btn">
-				<a href="javascript: void(0);" class="btn btn-default cadref-btn-erase" accesskey="x" title="Alt X" ng-click="clearFilter('{{ identifier }}')"></a>				
-				<a href="javascript: void(0);" class="btn btn-warning" accesskey="r" title="Alt R" ng-click="{{ identifier }}.store.refresh('{{ context }}')">
-					Rafraîchir
-				</a>
-				<a  href="javascript: void(0);" class="btn btn-success" accesskey="n"  title="Alt N" ng-click="{{ identifier }}add()">
-					Ajouter
-				</a>
-				{% if operation.export and not hideBtn.export %}
-					<a href="javascript: void(0);" class="btn btn-primary" ng-click="{{ identifier }}export()">
-						Exporter
-					</a>
-				{% endif %}
-			</span>
-		</div>
-	</div>
-	<div class="col-lg-1 col-md-12">
-		<select class="form-control" ng-model="{{ identifier }}.pageLength" >
-			<option ng-selected="{{ identifier }}.pageLength == 15" value="15">15 </option>
-			<option ng-selected="{{ identifier }}.pageLength == 25" value="25">25 </option>
-			<option ng-selected="{{ identifier }}.pageLength == 50" value="50">50 </option>
-			<option ng-selected="{{ identifier }}.pageLength == 100" value="100">100 </option>
-			<option ng-selected="{{ identifier }}.pageLength ==  9999" value="9999">Tous </option>
-		</select>
-	</div>
-	<div class="col-lg-4 col-md-12">
-		<dir-pagination-controls boundary-links="true" pagination-context="{{ context }}" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
-	</div>
-</div>
-
+{# ListVisite #}
 <div class="listWrap">
 	<table class="table table-hover nowrap straight" id="{{ identifier }}-table" width="100%" style="line-height:1" >
 		<thead>
 			<tr>
 				<th title="Id" class="list-col-th-id" hidden>ID</th>
-				<th>Numéro</th>
-				<th>Nom</th>
-				<th>Prenom</th>
-				<th>Départ</th>
-				<th>Prix</th>
-				<th>Assur.</th>
-				<th>Etat</th>
-				<th>Date</th>
-				<th>U</th>
-				<th>Actions</th>
+				<th class="cadref-th">Date</th>
+				<th class="cadref-th">Visite</th>
+				<th class="cadref-th">Libellé</th>
+				<th class="cadref-th">Places</th>
+				<th class="cadref-th">Prix</th>
+				<th class="cadref-th">Mode</th>
+				{#<th class="cadref-th">Assur</th>#}
+				<th class="cadref-th">Départ</th>
+				<th class="cadref-th">Etat</th>
+				<th class="cadref-th">Date</th>
+				<th class="cadref-th">U</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr dir-paginate="item in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.pageLength" pagination-id="{{ identifier }}-pagination">
+			<tr dir-paginate="item in {{ identifier }}.store.data.temp">
 				<td class="list-col-td-id" hidden>{[{ item.id }]}</td>
-				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reservationOpen(item)">{[{ item.Numero }]}</a></td>
-				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reservationOpen(item)">{[{ item.Nom }]}</a></td>
-				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reservationOpen(item)">{[{ item.Prenom }]}</a></td>
-				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reservationOpen(item)">{[{ item.Lieu }]}</a></td>
-				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reservationOpen(item)">{[{ item.Prix }]}</a></td>
-				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reservationOpen(item)">{[{ item.Assurance }]}</a></td>
+				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.DateVisite | limitTo : 5 }]}</span></td>
+				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Visite }]}</span></td>
+				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Libelle }]}</span></td>
+				<td scope="row" class="cadref-td typefloat"><a href="" ng-click="visiteAjoute(item)" ng-class="{'cadref-highlight': (item.Inscrits*1+item.Attentes*1)>=item.Places}">{[{ item.Places+' - '+item.Inscrits+' - '+item.Attentes }]}</a></td>
+				<td scope="row" class="cadref-td typefloat">
+					<input type="text" class="form-control cadref-input-diff" ng-model="item.Prix" ng-change="visiteUpdate(item)" mask="dddd" style="max-width:60px"/>
+				</td>
+				<td class="cadref-td">
+					<select class="form-control cadref-input-diff" ng-model="item.ModeReglement" ng-change="visiteUpdate(item)">
+						<option value=""></option>
+						<option value="B">Banque</option>
+						<option value="C">Carte</option>
+						<option value="E">Espèces</option>
+						<option value="P">Prélèv</option>
+						<option value="V">Vacances</option>
+					</select>	
+				</td>
+				{#<td scope="row" class="cadref-td typefloat"><span class="label">{[{ item.Assurance }]}</span></td>#}
+				<td scope="row" class="cadref-td typevarchar" style="width:60px">
+					<div custom-select="a.id as a.Lieu+' - '+a.HeureDepart for a in getSelectData('CadrefDepartStore',$searchTerm)" 
+						 custom-select-options="{'async':true, 'filter':'VisiteId='+item.VisiteVisiteId, 'displayText':' '}" 
+						 ng-model="item.DepartDepartId"
+						 class="form-control cadref-input-diff" 
+						 ng-title="item.Lieu+' - '+item.HeureDepart"
+						 id="visiteDepart{[{ item.line }]}"
+						 ng-change="visiteUpdate(item)">
+					</div>
+				</td>
 				<td scope="row" class="cadref-td typevarchar">
 					<span class="label label-info" ng-if="item.Attente>0 && item.Supprime==0">Att</span>
 					<span class="label label-success" ng-if="item.Attente==0 && item.Supprime==0">Ins</span>
 					<span class="label label-danger" ng-if="item.Supprime==1">Sup</span>
+					<span class="label label-warning" ng-if="item.Supprime==2" style="background-color:orange">Ech</span>
 				</td>
 				<td scope="row" class="cadref-td typedate">
-					<span class="label" ng-if="item.Supprime>0">{[{ item.DateSupprime.substr(0, 5) }]}</span>
-					<span class="label" ng-if="item.Attente>0 && item.Supprime==0">{[{ item.DateAttente.substr(0, 5)+item.DateAttente.substr(10, 6) }]}</span>
-					<span class="label" ng-if="item.Attente==0 && item.Supprime==0">{[{ item.DateInscription.substr(0, 5) }]}</span>
+					<span class="label" ng-if="item.Supprime>0">{[{ item.DateSupprime | limitTo : 5 }]}</span>
+					<span class="label" ng-if="item.Attente>0 && item.Supprime==0">{[{ item.DateAttente.substr(0, 5)+' '+item.DateAttente.substr(10, 6) }]}</span>
+					<span class="label" ng-if="item.Attente==0 && item.Supprime==0">{[{ item.DateInscription | limitTo : 5 }]}</span>
 				</td>
 				<td scope="row" class="cadref-td typevarchar"><span class="label">{[{ item.Utilisateur }]}</span></td>
 				<td  class="table-action cadref-td-btn">
-						<a class="btn-abt btn-abt-nfo btn-primary" href="" title="Détails" ng-click="reservationOpen(item)"></a>
+					<div  style="width:120px">
+						<a class="btn-abt cadref-btn-add btn-success" href="javascript: void(0);" ng-click="visiteInscrire(item)" title="Inscrire" ng-if="item.Supprime>0 || item.Attente>0"></a>
+						<a class="btn-abt cadref-btn-wait btn-primary" href="javascript: void(0);" ng-click="visiteAttente(item)" title="Attente" ng-if="item.Supprime==0 && item.Attente==0"></a>
+						<a class="btn-abt cadref-btn-change btn-warning" href="javascript: void(0);" ng-click="visiteSupprime(item,2)" title="Echanger" ng-if="item.id>0 && item.Supprime==0 && item.Attente==0"></a>
+						<a class="btn-abt cadref-btn-del btn-danger" href="javascript: void(0);" ng-click="visiteSupprime(item,1)" title="Supprimer" ng-if="item.Supprime==0"></a>
+					</div>
 				</td>
 			</tr>
 		</tbody>
 	</table>
-</div>
-<div class="modal fade modal-size-large" id="modal-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
-    <div class="modal-dialog cadref-modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-				<a class="btn-abt cadref-btn-close" href="" data-dismiss="modal" title="Annuler"></a>
-                <h4 class="modal-title" id="myModalLabel">{[{ modalObj.title }]}</h4>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-danger" ng-if="modalObj.errors.length">
-                    <ul>
-                        <li ng-repeat="e in modalObj.errors">{[{ e.Message }]}</li>
-                    </ul>
-                </div>
-                <div class="alert alert-warning" ng-if="modalObj.warning.length">
-                    <ul>
-                        <li ng-repeat="e in modalObj.warning">{[{ e.Message }]}</li>
-                    </ul>
-                </div>
-                <div class="alert alert-success" ng-if="modalObj.infos.length">
-                    <ul>
-                        <li ng-repeat="e in modalObj.infos">{[{ e.Message }]}</li>
-                    </ul>
-                </div>
-                <div ng-if="modalObj.success == false">
-                    {{ include(template_from_string(module(formPath~'?Path='~Path~'&Create=1'))) }}
-                </div>
-            </div>
-			{#            <div class="modal-footer">
-							<button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == true">Fermer</button>
-							<button type="button" class="btn" data-dismiss="modal" ng-if="modalObj.success == false">Annuler</button>
-							<button type="button" class="btn btn-primary" ng-click="{{ identifier }}modalSave()" ng-if="modalObj.success == false">__SAVE_MODAL_OBJ__</button>
-						</div>
-			#}        </div>
-    </div>
-</div>
-<div class="modal fade modal-size-large" id="modalfunction-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-				<a class="btn-abt cadref-btn-close" href="" data-dismiss="modal" title="Annuler"></a>
-                <h4 class="modal-title">{[{ function.title }]}</h4>
-            </div>
-            <div class="modal-body">
-                <div id="ajaxwrapper"
-                     ng-show="{{ identifier }}function.loaded"
-                     ng-include="{{ identifier }}function.url" onload="{{ identifier }}function.loaded = true">
-                </div>
-
-                <div class="text-center"
-                     ng-hide="{{ identifier }}function.loaded">
-                    <br />
-                    Chargement ...
-                    <br />
-                    <div class="spinload"></div>
-                </div>
-
-                <!--<ng-include src="function.url"></ng-include>-->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn" data-dismiss="modal">Fermer</button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade modal-size-large" id="modalcomm-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-				<a class="btn-abt cadref-btn-close" href="" data-dismiss="modal" title="Annuler"></a>
-                <h4 class="modal-title">{[{ comm.title }]}</h4>
-            </div>
-            <div class="modal-body">
-                <div id="ajaxwrapper"
-                     ng-bind-html="comm.html">
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn" data-dismiss="modal">Fermer</button>
-            </div>
-        </div>
-    </div>
 </div>

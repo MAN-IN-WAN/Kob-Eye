@@ -74,11 +74,9 @@
 												<tr>
 													<td class="cadref-td-inscr">{{ finput(f.Places, o, false, 'dddd', 'width:80px') }}</td>
 													<td class="cadref-td-inscr">
-														<div class="control-group">
-															<input type="text" class="form-control cadref-input" ng-class="{'cadref-highlight': {{ o }}.Inscrits>={{ o }}.Places}" ng-model="{{ o }}.Inscrits"
-																readonly tabindex="-1" mask="dddd" style="width:80px"
-															/>
-														</div>
+														<input type="text" class="form-control cadref-input" ng-class="{'cadref-highlight': Number({{ o }}.Inscrits)>=Number({{ o }}.Places)}" ng-model="{{ o }}.Inscrits"
+															readonly tabindex="-1" mask="dddd" style="width:80px"
+														/>
 													</td>
 													<td class="cadref-td-inscr">{{ finput(f.Attentes, o, true, 'dddd', 'width:80px') }}</td>
 													<td class="cadref-td-inscr">{{ finput(f.Prix, o, false, 'dddd', 'width:80px') }}</td>
@@ -117,10 +115,18 @@
 							<div class="row" style="height:10px"></div>
 							<div class="row">
 								<div class="col-md-2">
-									{{ label("Inactif") }}
+									{{ label("Visible web") }}
 								</div>
 								<div class="col-md-10">
-									{{ fboolean(f.Inactif, o, true) }}
+									<switch class="cadref-switch-red" ng-model="{{ o }}.Web"></switch>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2">
+									{{ label("Visible Terminée") }}
+								</div>
+								<div class="col-md-10">
+									<switch class="cadref-switch" ng-model="{{ o }}.Inactif"></switch>
 								</div>
 							</div>
 						</div>
@@ -141,7 +147,7 @@
 						<div class="col-md-12">
 							<section class="panel">
 								<div class="panel-body">
-									<ng-include src="'/{{ CurrentUrl }}/0/Reservation/ListReservation.htm'" ng-if="show"></ng-include>
+									<ng-include src="'/{{ CurrentUrl }}/0/Reservation/List.htm'" ng-if="show"></ng-include>
 								</div>
 							</section>
 						</div>

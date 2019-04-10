@@ -52,7 +52,7 @@ class Enseignant extends genericClass {
 	function PrintEtiquettes($obj) {
 		require_once('Class/Lib/pdfb/fpdf_fpdi/PDF_label.php');
 
-		$sql .= "select Nom, Prenom, Adresse1, Adresse2, CP, Ville from `##_Cadref-Enseignant` order by CP, Ville, Nom, Prenom";
+		$sql .= "select Nom, Prenom, Adresse1, Adresse2, CP, Ville from `##_Cadref-Enseignant` order by Nom, Prenom";
 		$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
 		$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 		if(! $pdo) return false;
@@ -75,7 +75,7 @@ class Enseignant extends genericClass {
 		$pdf->AddPage();
 		foreach($pdo as $l) {
 			$s = $l['Nom'].'  '.$l['Prenom']."\n".$l['Adresse1']."\n".$l['Adresse2']."\n".$l['CP']."  ".$l['Ville'];
-			$pdf->Add_Label($s);
+			$pdf->Add_Label(iconv('UTF-8', 'ISO-8859-15//TRANSLIT', $s));
 		}
 
 		$file = 'Home/tmp/EtiquetteEnseignant_'.date('YmdHis').'.pdf';

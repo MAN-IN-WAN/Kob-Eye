@@ -219,9 +219,6 @@ cadref-btn-close:hover {
 	padding:8px 15px 15px 15px;
 }
 
-.cadref-highlight {
-	background-color: yellow !important;
-}
 .cadref-switch {
 	top: 2px;
 }
@@ -254,6 +251,12 @@ cadref-btn-close:hover {
 }
 .cadref-annuel {
 	background-color:paleturquoise !important;
+}
+.cadref-highlight {
+	background-color: yellow !important;
+}
+.cadref-highlight.cadref-annuel {
+	background-color: yellow !important;
 }
 
 .label.cadref-default {

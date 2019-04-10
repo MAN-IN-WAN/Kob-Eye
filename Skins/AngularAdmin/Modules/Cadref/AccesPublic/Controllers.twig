@@ -37,47 +37,6 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
         });
     }
 
-{#	// init date picker components 
-	$scope.initDatePickerOnly = function() {
-		$('.datepicker-only-init').datetimepicker({
-			widgetPositioning: {
-				horizontal: 'left'
-			},
-			locale: 'fr',
-			format: 'DD/MM/YYYY',
-			icons: {
-				time: "fa fa-clock-o",
-				date: "fa fa-calendar",
-				up: "fa fa-arrow-up",
-				down: "fa fa-arrow-down"
-			}
-		});
-		$(".datepicker-only-init").on("dp.change", function () {
-			var input = $(this).children('input').eq(0);
-			input.trigger('change');
-			input.trigger('input');
-		});
-	}	
-	$scope.initDateTimePicker = function() {
-		$('.datetimepicker-init').datetimepicker({
-			widgetPositioning: {
-				horizontal: 'left'
-			},
-			locale: 'fr',
-			icons: {
-				time: "fa fa-clock-o",
-				date: "fa fa-calendar",
-				up: "fa fa-arrow-up",
-				down: "fa fa-arrow-down"
-			}
-		});
-		$(".datetimepicker-init").on("dp.change", function () {
-			var input = $(this).children('input').eq(0);
-			input.trigger('change');
-			input.trigger('input');
-		});
-	}	
-#}
 	// appel de function kobeye avec retour objet
 	$scope.{{ identifier }}callMethod = function(obj, name, args, explodeArgs) {
 		if (args == undefined) args = [];
@@ -94,7 +53,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	}
 
 	// creation de stores TODO use rootscope
-	$scope.createStore = function(store, context) {
+{#	$scope.createStore = function(store, context) {
 		var s = {
 			data: store.data[context],
 			store: store,
@@ -118,7 +77,7 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		}
 		return s;
 	}
-
+#}
 	//--------------------------------
 	// UTILISATEUR
 	//--------------------------------
@@ -451,13 +410,15 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 	$scope.CadrefReservation = $rootScope.createStore(CadrefReservationStore, 'children');
 	$scope.CadrefReservation.store.setFilters('Annee={{ Annee }}', 'children');
 
-	$scope.inscriptionObj = {Select: false, AntenneId: 0, SectionId: 0, DisciplineId: 0, ClasseItems: [], InscriptionItems: []};
-    $scope.initAdh = function(){
+	$scope.inscriptionObj = {Select:false, Updated:false, Montant:0, AntenneId:0, SectionId:0, DisciplineId:0, ClasseItems:[], InscriptionItems:[]};
+ 	$scope.reservationObj = {Select:false, Updated:false, Montant:0, VisiteItems:[], ReservationItems:[]};
+	$scope.initAdh = function(){
         $scope.store.getOneData({{ entite.Id }}, 'default').then(function(data){
             $scope.obj = data;
 			$scope.obj.AnneeSelect = '{{ Annee }}';
 			$scope.adherentInfo();
 			$scope.inscriptionGetData('inscription', '');
+			$scope.reservationGetData('reservation', '');
         });
     }
     $scope.initAdh();
@@ -497,11 +458,11 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		var ajax = $scope.{{ identifier }}callMethod($scope.obj,'PrintCarte',[true]);
 		ajax.success(
 			function(data) {
-console.log('xxxxxxxxxxxxxxxxxxxxxxx',data);
 				$window.open(data.data.pdf,'_blank');
 			}
 		).error(
 			function() {
+				swal('Erreur',"Une erreur c'est produite",'error');
 				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
 			}
 		);
@@ -530,9 +491,9 @@ console.log('xxxxxxxxxxxxxxxxxxxxxxx',data);
 				o.ClasseItems = data.data.data.data;
 				$scope.$digest();
 				break;
-			case 'antenne': o.AntenneId = 0;
-			case 'section': o.SectionId = 0;
-			case 'discipline': o.DisciplineId = 0; o.ClasseItems = []; 
+			case 'antenne': o.AntenneId = 0;  // pas de break
+			case 'section': o.SectionId = 0;  // pas de break
+			case 'discipline': o.DisciplineId = 0; o.ClasseItems = [];
 		}	
 		return data.data.data.data;
 	}
@@ -545,7 +506,8 @@ console.log('xxxxxxxxxxxxxxxxxxxxxxx',data);
 	}
 	
 	$scope.inscriptionAjoute = function(c) {
-		var t = $scope.inscriptionObj.InscriptionItems;
+		var i = $scope.inscriptionObj;
+		var t = i.InscriptionItems;
 		var cid = c.clsId;
 		var jr = c.Jour;
 		var cyd = cycleValeur(c.CycleDebut, true);
@@ -555,7 +517,7 @@ console.log('xxxxxxxxxxxxxxxxxxxxxxx',data);
 		var heures = false;
 		for(var ins of t) {
 			if(ins.clsId == cid) {
-				alert('Vous êtes déjà inscrit à ce cours');
+				swal('Attention','Vous êtes déjà inscrit à ce cours','warning');
 				return;
 			}
 			var cd = cycleValeur(ins.CycleDebut, true);
@@ -583,27 +545,116 @@ console.log('xxxxxxxxxxxxxxxxxxxxxxx',data);
 		o.CycleDebut = c.CycleDebut;
 		o.CycleFin = c.CycleFin;
 		o.Attente = 1;
-		o.DateAttente = $filter('date')(new Date(), "dd/MM/yyyy hh:mm");
+		o.DateAttente = $filter('date')(new Date(), "dd/MM/yyyy HH:mm");
 		o.Supprime = 0;
 		o.DateSupprime = null;
 		o.Utilisateur = '';
 		o.DateInscription = '';
 		o.Prix = c.Prix;
-		o.Reduction1 = c.Reduction1;   // TODO CALCUL RECDUCTION
-		o.Reduction2 = c.Reduction2;
+		o.Reduction = c.Reduction;
+		o.Soutien = c.Soutien;
 		o.Enseignants = c.Enseignants;
 		o.Attachements = c.Attachements;
 		o.updated = 1;
 		t[t.length] = o;
 		
-		var i = $scope.inscriptionObj;
+		i.Montant = i.Montant*1+(o.Prix*1-o.Reduction*1);
 		i.DisciplineId = i.SectionId = i.AntenneId = i.Select = 0;
+		i.Updated = true;
 	}
 	
 	$scope.inscriptionSupprime = function(item) {
-		var t = $scope.inscriptionObj.InscriptionItems;
+		var i = $scope.inscriptionObj;
+		var t = i.InscriptionItems;
 		var n = t.indexOf(item);
 		if(n >= 0) t.splice(n, 1);
+		
+		i.Updated = false;
+		i.Montant = i.Montant*1-(item.Prix*1-item.Reduction*1);
+		for(var ins of t) {
+			if(ins.updated) {
+				i.Updated = true;
+				break;
+			}
+		}
+	}
+
+
+	//---------------------------
+	// gestion des reservations
+	
+	// affiche / cache le panneau d'e reservation
+	$scope.reservationSelect = function(mode) {
+		$scope.reservationGetData('visite','');
+		$scope.reservationObj.Select = mode;
+	}
+	
+	// charge les données de reservation
+	$scope.reservationGetData = async function(mode, filter='') {
+		var o = $scope.reservationObj;
+		o.Filter = filter;
+		var params = [mode, o];
+		var data = await $scope.{{ identifier }}callMethod($scope.obj,'GetCours',params);
+		switch(mode) {
+			case 'reservation':
+				o.ReservationItems = data.data.data.data;
+				$scope.$digest();
+				break;
+			case 'visite':
+				o.VisiteItems = data.data.data.data;
+				$scope.$digest();
+				break;
+		}	
+		return data.data.data.data;
+	}
+
+	
+	$scope.reservationAjoute = function(c) {
+		var r = $scope.reservationObj;
+		var t = r.ReservationItems;
+		var vid = c.clsId;
+		for(var ins of t) {
+			if(ins.clsId ==vid) {
+				swal('Attention','Vous êtes déjà inscrit à cette visite','warning');
+				return;
+			}
+		}
+		var o = {};
+		o.resId = 0;
+		o.visId = vid;
+		o.Libelle = c.Libelle;
+		o.DateVisite = c.DateVisite;
+		o.DateText = c.DateText;
+		o.Attente = 1;
+		o.DateAttente = $filter('date')(new Date(), "dd/MM/yyyy HH:mm");
+		o.Supprime = 0;
+		o.DateSupprime = null;
+		o.Utilisateur = '';
+		o.DateInscription = '';
+		o.Prix = c.Prix;
+		o.Enseignants = c.Enseignants;
+		o.Attachements = c.Attachements;
+		o.updated = 1;
+		t[t.length] = o;
+		
+		r.Montant = r.Montant*1+o.Prix*1;
+		r.Select = 0;
+		r.Updated = true;
+	}
+	
+	$scope.reservationSupprime = function(item) {
+		var r = $scope.reservationObj;
+		var t = r.ReservationItems;
+		var n = t.indexOf(item);
+		if(n >= 0) t.splice(n, 1);
+		r.Montant = r.Montant*1-item.Prix*1;
+		r.Updated = false;
+		for(var ins of t) {
+			if(ins.updated) {
+				r.Updated = true;
+				break;
+			}
+		}
 	}
 	
 	{% endif %}
