@@ -1630,7 +1630,7 @@ class Server extends genericClass {
 //            $out = $this->remoteExec('cat '.$path.' ');
             if (!$this->_connection)$this->Connect();
             //créatio nd'un fichier temporaire
-            $tmpfile = 'Data/'.microtime().'.tmp';
+            $tmpfile = 'Data/'.microtime(true).'.tmp';
             //$cmd = 'echo  \''.base64_encode($content).'\' > | base64 --decode '.$path;
             //$out = $this->remoteExec($cmd);
             $out = ssh2_scp_recv($this->_connection,$path,$tmpfile);

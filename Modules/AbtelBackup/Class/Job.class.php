@@ -2,6 +2,7 @@
 class Job extends genericClass {
     protected $tag = '[BASEJOB]';
     protected static $KEObj = 'BaseJob';
+    protected static $desc = 'Job de base';
 
     public static function execute() {
         //intialisation des dates
@@ -17,9 +18,9 @@ class Job extends genericClass {
         foreach ($jobs as $j) {
             $task = genericClass::createInstance('Systeme', 'Tache');
             $task->Type = 'Fonction';
-            $task->Nom = 'Job Remote :' . $j->Titre;
+            $task->Nom = static::$desc.' :' . $j->Titre;
             $task->TaskModule = 'AbtelBackup';
-            $task->TaskObject = 'RemoteJob';
+            $task->TaskObject = static::$KEObj;
             $task->TaskId = $j->Id;
             $task->TaskFunction = 'run';
             $task->addParent($j);
