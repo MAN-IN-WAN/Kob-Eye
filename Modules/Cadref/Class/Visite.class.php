@@ -14,6 +14,7 @@ class Visite extends genericClass {
 		}
 		$this->Attentes = Sys::getCount('Cadref','Visite/'.$this->Id.'/Reservation/Attente=1&Supprime=0');
 		$this->Inscrits = Sys::getCount('Cadref','Visite/'.$this->Id.'/Reservation/Attente=0&Supprime=0');
+		$this->Attachements = Sys::getCount('Cadref','Visite/'.$this->Id.'/Attachement');
 
 		$ret = parent::Save();
 		if(! $id) {

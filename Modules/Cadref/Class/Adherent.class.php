@@ -955,6 +955,32 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 		}
 	}
 
+		function SendMessage2($params) {
+		$annee = Cadref::$Annee;
+		$id = $this->Id;
+		$mode = $params['sendMode'];
+		$args = array();
+		$args['Subject'] = $params['Subject'];
+		$args['Body'] = $params['Body'];
+		$args['Attachments'] = $params['Msg']['Pieces']['data'];
+		
+		$to = $params['Mail'];
+
+		if($to == 'C') {
+			$us = Sys::getData('Systeme', 'Group/Nom=CADREF_ADMIN/User');
+			$to = array();
+			foreach($us as $u) {
+				$args['To'] = array($u->Mail);
+				Cadref::SendMessage($args);
+			}
+			return array('data'=>'Message envoyé');
+		}
+
+		$args['To'] = array($p['Mail']);
+		$ret = Cadref::SendMessage($args);
+		return array('data'=>'Message envoyé','sql'=>$sql);
+	}
+
 	function GetCours($mode, $obj) {
 		$annee = Cadref::$Annee;
 		$filter = str_replace('&', '', $obj['Filter']);

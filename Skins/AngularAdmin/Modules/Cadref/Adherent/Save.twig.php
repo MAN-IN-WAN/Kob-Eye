@@ -82,9 +82,9 @@ if ($o->Verify()) {
     foreach ($formfields as $f){
         $values->{$f["name"]} = $o->{$f["name"]};
         if ($f['type']=='date')
-            $values->{$f['name']} = date('d/m/Y',$o->{$f['name']});
+            $values->{$f['name']} = $o->{$f['name']}>0 ? date('d/m/Y',$o->{$f['name']}) : '';
         elseif($f['type']=='datetime')
-            $values->{$f['name']} = date('d/m/Y H:i',$o->{$f['name']});
+            $values->{$f['name']} = $o->{$f['name']}>0 ? date('d/m/Y H:i',$o->{$f['name']}) : '';
         elseif ($f['type']=='rkey') {
             $o->resetChilds($f['objectName']);
             if (is_array($values->{$f["objectName"].$f["name"]})) foreach ($values->{$f["objectName"].$f["name"]} as $v){

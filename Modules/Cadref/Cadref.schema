@@ -226,7 +226,7 @@
 
 
 
-	<OBJECTCLASS title="Adherent" driver="mysql" searchType="plaintext" order="Nom" orderType="ASC" logEvent="1" master="1" AccessPoint="1" Icon="[None]" Description="Adhérents" Operations="add,edit,EditInscriptions,EditReservations,PrintCarte,PrintAttestation,PrintCheque,SendMessage" Class="Modules/Cadref/Class/Adherent.class.php">
+	<OBJECTCLASS title="Adherent" driver="mysql" searchType="plaintext" order="NomPrenom" orderType="ASC" logEvent="1" master="1" AccessPoint="1" Icon="[None]" Description="Adhérents" Operations="add,edit,EditInscriptions,EditReservations,PrintCarte,PrintAttestation,PrintCheque,SendMessage" Class="Modules/Cadref/Class/Adherent.class.php">
 		<FUNCTION title="Inscription">EditInscriptions</FUNCTION>
 		<FUNCTION title="Visite">EditReservations</FUNCTION>
 		<FUNCTION title="Carte">PrintCarte</FUNCTION>
@@ -268,10 +268,11 @@
 		<PROPERTIES type="boolean" default="0" category="Interne" form="28" fiche="28" description="Mail confirmé">MailOk</PROPERTIES>
 		<PROPERTIES type="varchar" length="8" category="Interne" form="29" fiche="29" description="Newsletters">Newletters</PROPERTIES>
 
-		<PROPERTIES type="varchar" length="35" category="RIB" form="29" fiche="29" description="Titulaire">Titulaire</PROPERTIES>
-		<PROPERTIES type="varchar" length="35" category="RIB" form="29" fiche="29" description="Domiciliation">Domiciliation</PROPERTIES>
+		<PROPERTIES type="varchar" length="16" category="RIB" form="29" fiche="29" description="RUM">RUM</PROPERTIES>
+		<PROPERTIES type="date" category="RIB" form="29" fiche="29" description="Date signature">DateRUM</PROPERTIES>
+		<PROPERTIES type="boolean" default="0" category="RIB" form="29" fiche="29" description="Etat RUM">EtatRUM</PROPERTIES>
 		<PROPERTIES type="varchar" length="35" category="RIB" form="29" fiche="29" description="IBAN">IBAN</PROPERTIES>
-		<PROPERTIES type="varchar" length="8" category="RIB" form="29" fiche="29" description="BIC">BIC</PROPERTIES>
+		<PROPERTIES type="varchar" length="11" category="RIB" form="29" fiche="29" description="BIC">BIC</PROPERTIES>
 
 		<PROPERTIES type="float" default="0" auto="1" category="Finance" form="30" fiche="30" description="Cotisation">Cotisation</PROPERTIES>
 

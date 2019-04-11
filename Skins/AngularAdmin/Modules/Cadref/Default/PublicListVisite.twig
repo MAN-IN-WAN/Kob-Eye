@@ -72,21 +72,7 @@
         <dir-pagination-controls boundary-links="true" pagination-context="{{ context }}" pagination-id="{{ identifier }}-pagination" template-url="/Skins/AngularAdmin/assets/vendors/dirPagination/dirPagination.tpl.html"></dir-pagination-controls>
     </div>
 </div>
-<div class="modal fade cadref-modal-size-medium" id="modal-Attachements" role="modal" aria-labelledby="" aria-hidden="true">
-    <div class="modal-dialog cadref-modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-				<a class="btn-abt cadref-btn-close" href="" data-dismiss="modal" title="Annuler"></a>
-                <h4 class="modal-title" id="myModalLabel">Visites guidées : Documents</h4>
-            </div>
-            <div class="modal-body">
-                <div ng-if="attachInfo.classeId>0 || attachInfo.visiteId>0">
-					<ng-include src="'Cadref/Attachement/FicheAttachements.htm'"></ng-include>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+{{ include(template_from_string(module('Cadref/Default/attachementModal'))) }}
 <script type="text/javascript">
 	$('.spinner-list').spin();
 </script>

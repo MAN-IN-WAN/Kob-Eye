@@ -154,7 +154,19 @@
 											{{ label("Situation") }}
 										</div>
 										<div class="col-md-7">
-											{{ fquery(f.SituationId, o) }}
+											<div class="row">
+												<div class="col-md-3" style="padding-right:0">
+													<input type="text" class="form-control cadref-input" ng-model="{{ o }}.SituationIdLabel" ng-change="situationChange({{ o }},'Situation')" onkeyup="this.value = this.value.toUpperCase();"/>
+												</div>
+												<div class="col-md-9" style="padding-left:0">
+													<select class="form-control cadref-input" ng-model="{{ o }}.SituationId" tabindex="-1" ng-change="situationSelect({{ o }},'Situation')">
+														<option value="0"></option>
+														{% for v,k in fields.SituationId.query %}
+															<option value="{{ v }}">{{ k }}</option>
+														{% endfor %}
+													</select>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -164,7 +176,19 @@
 											{{ label("Profession") }}
 										</div>
 										<div class="col-md-7">
-											{{ fquery(f.ProfessionId, o) }}
+											<div class="row">
+												<div class="col-md-3" style="padding-right:0">
+													<input type="text" class="form-control cadref-input" ng-model="{{ o }}.ProfessionIdLabel" ng-change="situationChange({{ o }},'Profession')" onkeyup="this.value = this.value.toUpperCase();"/>
+												</div>
+												<div class="col-md-9" style="padding-left:0">
+													<select class="form-control cadref-input" ng-model="{{ o }}.ProfessionId" tabindex="-1" ng-change="situationSelect({{ o }},'Profession')">
+														<option value="0"></option>
+														{% for v,k in fields.ProfessionId.query %}
+															<option value="{{ v }}">{{ k }}</option>
+														{% endfor %}
+													</select>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -247,36 +271,33 @@
 									</div>
 								</div>
 							</div>
-{#							<div class="row" style="height:5px"></div>
+
+							<div class="row" style="height:8px"></div>
 							<div class="row">
 								<div class="col-md-2">
 									{{ label("IBAN") }}
 								</div>
 								<div class="col-md-4">
-									{{ finput(f.IBAN, o, false, 'AAdd dddd dddd dddd dddd dddd ddd', '', true) }}
+									<input id="adhIban" type="text" class="form-control cadref-input" ng-model="{{ o }}.IBAN"
+										style="text-transform:uppercase;" onkeyup="this.value = this.value.toUpperCase();"
+										mask="wwww wwww wwww wwww wwww wwww www"
+										ng-class="{'cadref-highlight': {{ o }}.ibanInvalide}" ng-change="checkIBAN({{ o }}.IBAN)"
+									/>
 								</div>
-								<div class="col-md-2">
+								<div class="col-md-1">
 									{{ label("BIC") }}
 								</div>
-								<div class="col-md-4">
-									{{ finput(f.BIC, o, false, '', '', true) }}
+								<div class="col-md-2">
+									{{ finput(f.BIC, o, false, 'wwwwwwwwwww', '', true) }}
+								</div>
+								<div class="col-md-1">
+									{{ label("Signature mandat") }}
+								</div>
+								<div class="col-md-1">
+									{{ fdate(f.DateRUM, o) }}
 								</div>
 							</div>
-							<div class="row">
-								<div class="col-md-2">
-									{{ label("Domiciliation") }}
-								</div>
-								<div class="col-md-4">
-									{{ finput(f.Domiciliation, o, false, '', '', true) }}
-								</div>
-								<div class="col-md-2">
-									{{ label("Titulaire") }}
-								</div>
-								<div class="col-md-4">
-									{{ finput(f.Titulaire, o, false, '', '', true) }}
-								</div>
-							</div>
-#}							<div class="row" style="height:5px"></div>
+							<div class="row" style="height:5px"></div>
 							<div class="row">
 								<div class="col-md-2">
 									{{ label("Notes") }}

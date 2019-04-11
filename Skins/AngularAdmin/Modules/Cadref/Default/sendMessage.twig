@@ -13,7 +13,12 @@
 					{{ label('Mail') }}
 				</div>
 				<div class="col-md-10">
-					<input type="text" class="form-control cadref-input" ng-init="msgObj.Mail=obj.Mail" ng-model="msgObj.Mail" readonly/>
+					<select class="form-control cadref-input" ng-model="msgObj.Mail">
+						<option value=""></option>
+						{% for v,k in destinataires %}
+							<option value="{{ v }}">{{ k }}</option>
+						{% endfor %}
+					</select>
 				</div>
 			</div>
 			<div style="height: 5px"></div>
@@ -35,7 +40,7 @@
 				</div>
 			</div>
 			<div style="height: 5px"></div>
-			<div class="row">
+{#			<div class="row">
 				<div class="col-md-1">
 					{{ label('SMS') }}
 				</div>
@@ -43,7 +48,7 @@
 					<textarea class="form-control cadref-input" style="width:100%;min-height:55px;white-space:pre-wrap;" ng-model="msgObj.SMS"></textarea>
 				</div>
 			</div>
-
+#}
 			<div class="row" style="height:5px"></div>
 			<div class="row">
 				<div class="col-md-1">
@@ -108,14 +113,14 @@
 				<div class="col-md-2">
 					<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-disabled="msgObj.Mail == '' || msgObj.Subject == ''" ng-click="messageSend('mail')">Mail</button>
 				</div>
-				<div class="col-md-2">
+{#				<div class="col-md-2">
 					<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-disabled="msgObj.SMS == ''" ng-click="messageSend('sms')">SMS</button>
 				</div>
-			</div>
+#}			</div>
 		</div>
 		{#		<button type="button" class="btn btn-info ng-scope" ng-if="CadrefAdherentfunction.callNext" ng-click="CadrefAdherentcallFunction(CadrefAdherentfunction.callNext.item,CadrefAdherentfunction.callNext.nom,CadrefAdherentfunction.callNext.title,CadrefAdherentfunction.callNext.needConfirm,1)">Suivant</button>
 		#}
 	</section>
 </div>
-<input type="hidden" ng-init="CadrefAdherentfunction.args.Msg=msgObj"/>
-
+{#<input type="hidden" ng-init="CadrefAdherentfunction.args.Msg=msgObj"/>
+#}

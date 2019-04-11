@@ -65,11 +65,11 @@ if ($o->Verify()) {
         $values->{$f["name"]} = $o->{$f["name"]};
         if ($f['type']=='datetime'){
             //transformation des timestamps en format js
-            $values->{$f['name']} = date('d/m/Y H:i',$o->{$f['name']});
+            $values->{$f['name']} = $o->{$f['name']}>0 ? date('d/m/Y H:i',$o->{$f['name']}) : '';
 		}
         elseif ($f['type']=='date'){
             //transformation des timestamps en format js
-            $values->{$f['name']} = date('d/m/Y',$o->{$f['name']});
+            $values->{$f['name']} = $o->{$f['name']}>0 ? date('d/m/Y',$o->{$f['name']}) : '';
         }elseif ($f['type']=='rkey') {
             $o->resetChilds($f['objectName']);
             if (is_array($values->{$f["objectName"].$f["name"]})) foreach ($values->{$f["objectName"].$f["name"]} as $v){
