@@ -34,7 +34,7 @@ $serveur='ws2.eng.systems';
  */
 //syntaxe NOM_HEB;NOM_CLIENT;BDD1[+BDD2...][;SRV_SQL]
 $csv= "
-rayonnage-prive.com;rayonnageprive;rayonnage-prive
+inrisonline;autoecoleinris;inris-online+inris-online-dev
 ";
 $result = explode(PHP_EOL,$csv);
 $total = sizeof($result)-2;

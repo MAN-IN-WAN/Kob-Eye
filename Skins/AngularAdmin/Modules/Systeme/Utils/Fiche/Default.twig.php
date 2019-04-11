@@ -3,7 +3,6 @@ session_write_close();
 $info = Info::getInfos($vars['Query']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
 //$vars['fields'] = $o->getElementsByAttribute('list','',true);
-$vars['functions'] = $o->getFunctions();
 $vars['fichefields'] = $o->getElementsByAttribute('fiche','',true);
 if (!is_object(Sys::$CurrentMenu) && Sys::$User->Admin){
     $vars['fichefields'] = $o->getElementsByAttribute('','',true);
@@ -25,6 +24,25 @@ $vars['CurrentMenu'] = Sys::$CurrentMenu;
 $vars["CurrentObj"] = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $vars["ObjectClass"] = $vars["CurrentObj"]->getObjectClass();
 $vars['operation'] = $vars['ObjectClass']->getOperations();
+foreach($vars['operation'] as $k=>$op){
+    if(is_array($op)){
+        $ok = false;
+        foreach ($op as $r){
+            if(Sys::$User->isRole($r)){
+                $ok = true;
+                break;
+            }
+        }
+        $vars['operation'][$k] = $ok;
+    }
+}
+$vars['functions'] = $o->getFunctions();
+foreach($vars['functions'] as $k=>$f){
+    if(empty($vars['operation'][$f['Nom']]))
+        unset($vars['functions'][$k]);
+}
+$vars['functions'] = array_values($vars['functions']);
+
 $childs = $vars["ObjectClass"]->getChildElements();
 $vars["ChildrenElements"] = array();
 

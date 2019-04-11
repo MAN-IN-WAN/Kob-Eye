@@ -48,7 +48,7 @@ foreach ($vars['fields'] as $f){
         if ($vars['row']->{$f['name']} > 0) {
             $kk = Sys::getOneData($f['objectModule'], $f['objectName'] . '/' . $vars['row']->{$f['name']});
             if ($kk)
-                $vars['row']->{$f['name'].'label'} = $kk->getFirstSearchOrder();
+                $vars['row']->{$f['name'].'label'} = $kk->getFirstSearchOrder().' '.$kk->getSecondSearchOrder();
         }else{
             $vars['row']->{$f['name'].'label'} = '';
         }

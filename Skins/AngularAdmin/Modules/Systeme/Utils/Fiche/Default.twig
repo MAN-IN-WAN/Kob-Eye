@@ -176,6 +176,12 @@
         </div>
     </section>
     <!-- End Default Panel -->
+
+    {% if Interfaces.fiche_middle %}
+        {{ include(template_from_string(module(Interfaces.fiche_middle.Template.url))) }}
+    {% endif %}
+
+    <!-- Child Panel -->
     <div class="nav-tabs-horizontal" ng-if="displayFiche">
         <ul class="nav nav-tabs" role="tablist">
             {% if Interfaces.fiche_tab %}
@@ -184,9 +190,11 @@
                 </li>
             {% endif %}
             {% for child in ChildrenElements %}
+                {% if not child.childrenHiddenSoft %}
                 <li class="nav-item">
                     <a class="nav-link {% if loop.first and not Interfaces.fiche_tab  %}active{% endif %}" href="javascript: void(0);" data-toggle="tab" data-target="#tab{{ child.objectName }}" role="tab"><b>{% if child.objectDescription %}{{ child.objectDescription }}{% else %}{{ child.objectName }}{% endif %}</b> ({[{ {{ child.objectModule }}{{ child.objectName }}.store.total.children }]})</a>
                 </li>
+                {% endif %}
             {% endfor %}
             {% if browseable %}
             <li class="nav-item">
@@ -205,6 +213,7 @@
                 </div>
             {% endif %}
             {% for child in ChildrenElements %}
+                {% if not child.childrenHiddenSoft %}
                 <div class="tab-pane {% if loop.first and not Interfaces.fiche_tab  %}active{% endif %}" id="tab{{ child.objectName }}" role="tabpanel">
                     {% if child.recursive %}
                         {#{{ include(template_from_string(module(Query~'/0/'~child.objectName~'/TreeChildren'))) }}#}
@@ -221,9 +230,9 @@
                                 <ng-include src="'/{{ CurrentUrl }}/0/{{ child.objectName }}/ListChildren.htm'" ng-if="show"></ng-include>
                             </div>
                         </section>
-                        <!-- End Default Panel -->
                     {% endif %}
                 </div>
+                {% endif %}
             {% endfor %}
             {% if browseable %}
                 <div class="tab-pane {% if not ChildrenElements|length %}active{% endif %}" id="tabPagesSite" role="tabpanel">
@@ -232,11 +241,12 @@
                                 {{ include(template_from_string(module('Systeme/Utils/List/PageList?headless=1'))) }}
                             </div>
                         </section>
-                        <!-- End Default Panel -->
+
                 </div>
             {% endif %}
         </div>
     </div>
+    <!-- End child Panel -->
 
 </div>
 {% if Interfaces.bottom %}

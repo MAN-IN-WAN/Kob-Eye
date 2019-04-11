@@ -14,6 +14,18 @@ $vars['ObjectType'] = $info['ObjectType'];
 $vars['Module'] = $info['Module'];
 $vars['functions'] = $o->getFunctions();
 $vars['operation'] = $vars['ObjectClass']->getOperations();
+foreach($vars['operation'] as $k=>$op){
+    if(is_array($op)){
+        $ok = false;
+        foreach ($op as $r){
+            if(Sys::$User->isRole($r)){
+                $ok = true;
+                break;
+            }
+        }
+        $vars['operation'][$k] = $ok;
+    }
+}
 $vars['fields'] = $o->getElementsByAttribute('list','',true);
 $vars['searchfields'] = $o->getElementsByAttribute('searchOrder|search','',true);
 $vars['ObjectType'] = $info['ObjectType'];
@@ -41,6 +53,13 @@ foreach ($vars['searchfields'] as $k=>$f){
 }
 
 $vars['filters'] = $o->getCustomFilters();
+foreach ($vars['filters'] as $k=>$f){
+    if(!empty($f->hasRole)){
+        if(!Sys::$User->isRole($f->hasRole)){
+            unset($vars['filters'][$k]);
+        }
+    }
+}
 if (is_object(Sys::$CurrentMenu)) {
     if (isset($vars['Type'])&&$vars['Type']=='Children') {
         $vars['CurrentUrl'] = Sys::getMenu($info['Module'] . '/' . $info['ObjectType']);

@@ -244,11 +244,11 @@ class Header extends Root{
 
 		//					<html ' . (empty($browser) ? '': 'class="'.$browser.'"') .'>
 			$this->Content = '<!DOCTYPE HTML>
-							<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7 '.$browser.'" dir="ltr" lang="en-US"> <![endif]-->
-							<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8 '.$browser.'" dir="ltr" lang="en-US"> <![endif]-->
-							<!--[if IE 8]>    <html class="no-js lt-ie9 '.$browser.'" dir="ltr" lang="en-US"> <![endif]-->
-							<!--[if IE 9]>    <html class="no-js lt-ie10 '.$browser.'" dir="ltr" lang="en-US"> <![endif]-->
-							<!--[if gt IE 8]><!--> <html class="no-js '.$browser.'" dir="ltr" lang="en-US" '.$this->Html.'> <!--<![endif]-->
+							<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7 '.$browser.'" dir="ltr" lang="fr-FR"> <![endif]-->
+							<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8 '.$browser.'" dir="ltr" lang="fr-FR"> <![endif]-->
+							<!--[if IE 8]>    <html class="no-js lt-ie9 '.$browser.'" dir="ltr" lang="fr-FR"> <![endif]-->
+							<!--[if IE 9]>    <html class="no-js lt-ie10 '.$browser.'" dir="ltr" lang="fr-FR"> <![endif]-->
+							<!--[if gt IE 8]><!--> <html class="no-js '.$browser.'" dir="ltr" lang="fr-FR" '.$this->Html.'> <!--<![endif]-->
 							<head>
 							<title>'.$this->Title.'</title>
 							<meta http-equiv="Content-Type" content="text/html; charset='.CHARSET_CODE.'" />

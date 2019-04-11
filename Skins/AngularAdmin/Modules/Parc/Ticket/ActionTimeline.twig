@@ -1,0 +1,47 @@
+
+
+<section class="panel" id="actionSection" ng-if="displayFiche">
+    <div class="panel-heading">
+        <h3>Actions</h3>
+    </div>
+    <div class="panel-body">
+        <div>
+            <div class="insertForm">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="form-control-label" for="l0">Description</label>
+                        <small>
+                            <i class="icmn-question3 help-wrapper"><span class="fieldHelp">Si vous avez besoin d'apporter des précision, renseignez les ici.</span></i>
+                        </small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div ui-ace="{useWrapMode : true,mode: 'html',onLoad: aceLoaded,onChange: aceChanged}" ng-model=" modalObj.Note" class="ace_editor" style="height: 150px;"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-control-label" for="l0">Pièce(s) jointe(s)</label>
+                        <small>
+                            <i class="icmn-question3 help-wrapper"><span class="fieldHelp">Dans le cas où vous auriez besoin de nous faire parvenir des fichiers.</span></i>
+                        </small>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <input type="text" class="form-control" placeholder="" id="input-ParcActionpj" ng-model="modalObj.Fichier">
+                        <label for="input-ParcActionpj-file" class="btn-warning fileLabel" title=" Choisissez un fichier "><i class="icmn-folder-upload2 fileLabelIcon"></i></label>
+                        <input id="input-ParcActionpj-file" type="file" nv-file-select options="{ alias:'FileData',formData:[{ 'Module':'Parc' }, { 'Obj' : 'Ticket' }],removeAfterUpload: true, inputId: 'input-ParcActionpj', model:'modalObj.Fichier' }" ng-init="up_ParcActionpj = angular.copy(autoUploader)" uploader="up_ParcActionpj" style="display:none;" />
+                    </div>
+                </div>
+            </div>
+
+
+            <p style="text-align: center;    margin: 15px;">
+                <button type="button" class="btn btn-primary" ng-class="{'disabled' : ( modalObj.Note == undefined || modalObj.Note.length == 0 ) && ( modalObj.Fichier == undefined || modalObj.Fichier.length == 0)}" ng-click="ParcActionmodalSaveBis(obj.id)" style="width: 100%;">__SAVE_MODAL_OBJ__</button>
+            </p>
+        </div>
+        <div>
+            <div abt-timeline="ParcAction" abt-tl-context="children" abt-tl-filter="" id="actions" abt-template="timelineParcAction.html" abt-side="getSide" abt-custom="editable"></div>
+        </div>
+    </div>
+</section>

@@ -989,7 +989,8 @@ class Server extends genericClass {
 		} else {
 			// L'enregistrement a échoué - on récupère l'erreur
 			$e['OK'] = false;
-			$e['Message'] = "Erreur LDAP lors de la modification - " . @ldap_error(Server::$_LDAP);
+			@ldap_get_option(Server::$_LDAP, LDAP_OPT_DIAGNOSTIC_MESSAGE, $err);
+			$e['Message'] = "Erreur LDAP lors de la modification - " . @ldap_error(Server::$_LDAP) .' - '.$err;
 			$e['Prop'] = '';
 		}
 		return $e;
@@ -1630,7 +1631,7 @@ class Server extends genericClass {
 //            $out = $this->remoteExec('cat '.$path.' ');
             if (!$this->_connection)$this->Connect();
             //créatio nd'un fichier temporaire
-            $tmpfile = 'Data/'.microtime().'.tmp';
+            $tmpfile = 'Data/'.microtime(true).'.tmp';
             //$cmd = 'echo  \''.base64_encode($content).'\' > | base64 --decode '.$path;
             //$out = $this->remoteExec($cmd);
             $out = ssh2_scp_recv($this->_connection,$path,$tmpfile);

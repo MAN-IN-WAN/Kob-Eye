@@ -3,6 +3,13 @@ $info = Info::getInfos($vars['Query']);
 $o = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $vars['CurrentObj'] =  $o;
 $vars['filters'] = $o->getCustomFilters();
+foreach ($vars['filters'] as $k=>$f){
+    if(!empty($f->hasRole)){
+        if(!Sys::$User->isRole($f->hasRole)){
+            unset($vars['filters'][$k]);
+        }
+    }
+}
 $vars['recursiv'] = $o->isRecursiv();
 foreach ($vars['filters'] as $k=>$f){
     if (empty($f->icon))$vars['filters'][$k]->icon = 'stats-growth';

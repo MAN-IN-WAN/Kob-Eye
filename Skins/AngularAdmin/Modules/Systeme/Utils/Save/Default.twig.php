@@ -58,6 +58,15 @@ foreach ($parentelements as $f){
     }
 }
 
+foreach ($values as $k=>$v){
+    if(is_object($v) && !empty($v->force) && $v->force){
+        $o->{$k}=$v->{$k};
+    }
+}
+
+
+
+
 if ($o->Verify()) {
     $success = $o->Save();
 

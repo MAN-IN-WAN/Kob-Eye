@@ -93,27 +93,44 @@
                             $vars['toReturn']['data'] = "Template non trouvé";
                         }
                     }
+                    //callbackJs
                     if(isset($temp['callBack'])){
                         $vars['toReturn']['callBack'] = $temp['callBack'];
                     }
+                    //callbackPhp
                     if(isset($temp['callNext'])){
                         $vars['toReturn']['callNext'] = $temp['callNext'];
                     }
+                    //Arguments pour callNext
 					if(isset($temp['args'])){
                         $vars['toReturn']['args'] = $temp['args'];
                     }
+					//Data a afficher (Prioritaire sur un eventuel template)
                     if(isset($temp['data'])){
                         $vars['toReturn']['data'] = $temp['data'];
                     }
+                    //Affichage de task le cas echeant
                     if(isset($temp['task'])){
                         $path = $temp['task']->Module.'/'. $temp['task']->ObjectType.'/'. $temp['task']->Id.'/Activity';
                         $loadTemp('Skins/AngularAdmin/Modules/Systeme/Utils/Function/Tasks.twig',$path);
+                    }
+                    //gestion des erreurs
+                    if(isset($temp['errors'])) {
+                        $vars['toReturn']['errors'] = $temp['errors'];
+                    }
+                    //gestion des erreurs
+                    if(isset($temp['infos'])) {
+                        $vars['toReturn']['infos'] = $temp['infos'];
                     }
                 } else{
                     $vars['toReturn']['data'] = $temp;
                 }
 
-                $vars['toReturn']['success'] = true;
+                if(isset($vars['toReturn']['errors'])){
+                    $vars['toReturn']['success'] = false;
+                } else {
+                    $vars['toReturn']['success'] = true;
+                }
 
             }
         }

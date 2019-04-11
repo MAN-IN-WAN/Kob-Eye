@@ -464,7 +464,7 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
 			$entry['apacheHtPasswordUser'] = $this->HtaccessUser;
 			$entry['apacheHtPasswordPassword'] = $this->HtaccessPassword;
 		}elseif (!$new){
-			$entry['apacheOptions'] = Array('Require all granted');
+			//$entry['apacheOptions'] = Array('Require all granted');
 		}
 		if ($this->Ssl&&!empty($this->SslCertificate)&&!empty($this->SslCertificateKey)){
 			$entry['apacheSslEnabled'] = 'yes';
@@ -472,11 +472,15 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
 			$entry['apacheCertificateKey'] = base64_encode($this->SslCertificateKey);
 			$entry['apacheCertificateExpiration'] = $this->SslExpiration;
 		}else{
-			//$entry['apacheSslEnabled'] = 'no';
-            $entry['apacheSslEnabled'] = 'yes';
-            $entry['apacheCertificate'] = base64_encode($defaultCert->SslCertificate);
-            $entry['apacheCertificateKey'] = base64_encode($defaultCert->SslCertificateKey);
-            $entry['apacheCertificateExpiration'] = $defaultCert->SslExpiration;
+            if($defaultCert){
+                $entry['apacheSslEnabled'] = 'yes';
+                $entry['apacheCertificate'] = base64_encode($defaultCert->SslCertificate);
+                $entry['apacheCertificateKey'] = base64_encode($defaultCert->SslCertificateKey);
+                $entry['apacheCertificateExpiration'] = $defaultCert->SslExpiration;
+            } else {
+                $entry['apacheSslEnabled'] = 'no';
+            }
+
 		}
 
 		//ALias Config
@@ -782,6 +786,7 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
         $srv = $host->getOneParent('Server');
         //récupération de l'infrastructure
         $infra = $srv->getOneParent('Infra');
+
         //sélection du proxy par défaut
         if ($infra) {
             $infraPrefixe = 'Infra/'.$infra->Id.'/';
@@ -804,7 +809,6 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
                 $pxsrv = Sys::getOneData('Parc',$infraPrefixe.'Server/Proxy=1',0,1,'ASC','Id');
                 if (!$pxsrv) {
                     $act->Terminate(false);
-                    $srv = $pxsrv;
                 }else{
                     $srv = $pxsrv;
                     $act->Terminate(true);
@@ -818,12 +822,12 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
             $pxsrv = Sys::getOneData('Parc',$infraPrefixe.'Server/Proxy=1',0,1,'ASC','Id');
             if (!$pxsrv) {
                 $act->Terminate(false);
-                $srv = $pxsrv;
             }else{
                 $srv = $pxsrv;
                 $act->Terminate(true);
             }
         }
+        $act = $task->createActivity('Execution Letsencrypt de l\'hote virtuel '.$this->ApacheServerName.' de l\'hébergement '.$host->getFirstSearchOrder().' du serveur '.$srv->getFirstSearchOrder() );
 
 
         //Vérification du dépot letsencrypt
@@ -835,6 +839,7 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
         $incompleteDomain = false;
         $act->Terminate(true);
         if (!empty($cert)) {
+            $act = $task->createActivity('Vérificatio ndu certificat actuel');
             $certinfo = openssl_x509_parse($cert);
             //on compare la liste des domaines à certifier et les domaines dans le certificat
             $domains=explode(' ',$this->getDomains());
@@ -886,7 +891,7 @@ if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_
                 $act = $task->createActivity('Certificat expiré donc regénération totale du certificat.');
             }
         }
-
+        $act = $task->createActivity('Préparation de la commande certbot');
         //execution de la commande
         if ($valid && $incompleteDomain)
             $prefixe = "/usr/src/certbot/certbot-auto --expand --webroot certonly --webroot-path /var/www/letsencrypt ";

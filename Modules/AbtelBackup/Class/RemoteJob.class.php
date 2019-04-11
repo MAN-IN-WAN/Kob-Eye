@@ -4,6 +4,7 @@ require_once 'Modules/AbtelBackup/Class/Job.class.php';
 class RemoteJob extends Job {
     protected $tag = '[REMOTEJOB]';
     protected static $KEObj = 'RemoteJob';
+    protected static $desc = 'Job externalisation';
     protected $pStarts = array(
         0,
         10,

@@ -20,6 +20,18 @@ $vars['CurrentMenu'] = Sys::$CurrentMenu;
 $vars["CurrentObj"] = genericClass::createInstance($info['Module'],$info['ObjectType']);
 $vars["ObjectClass"] = $vars["CurrentObj"]->getObjectClass();
 $vars['operation'] = $vars['ObjectClass']->getOperations();
+foreach($vars['operation'] as $k=>$op){
+    if(is_array($op)){
+        $ok = false;
+        foreach ($op as $r){
+            if(Sys::$User->isRole($r)){
+                $ok = true;
+                break;
+            }
+        }
+        $vars['operation'][$k] = $ok;
+    }
+}
 $childs = $vars["ObjectClass"]->getChildElements();
 $vars["ChildrenElements"] = array();
 

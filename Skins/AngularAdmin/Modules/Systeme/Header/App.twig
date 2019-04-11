@@ -517,9 +517,13 @@ app.controller('MainCtrl', function($location, $scope, $rootScope, $timeout, $ht
         url:'/Systeme/Utils/Upload.json'
     });
     $scope.autoUploader = new FileUploader({
-            url:'/Systeme/Utils/Upload.json',
-            autoUpload: true
-        });
+        url:'/Systeme/Utils/Upload.json',
+        autoUpload: true
+    });
+    $scope.multiAutoUploader = new FileUploader({
+        url:'/Systeme/Utils/Upload.json',
+        autoUpload: true
+    });
     $scope.uploader.onSuccessItem = function(item, response, status, headers){
         var scope = angular.element(document.getElementById(item.inputId)).scope();
         var props = item.model.split('.');
@@ -539,23 +543,63 @@ app.controller('MainCtrl', function($location, $scope, $rootScope, $timeout, $ht
         console.log(angular.element(document.getElementById(item.inputId)));
     }
     $scope.autoUploader.onSuccessItem = function(item, response, status, headers){
-            var scope = angular.element(document.getElementById(item.inputId)).scope();
-            var props = item.model.split('.');
-            switch(props.length){
-                case 1:
-                    scope[props[0]] = response.url;
-                    break;
-                case 2:
-                    scope[props[0]][props[1]] = response.url;
-                    break;
-				case 3:
-					scope[props[0]][props[1]][props[2]] = response.url;
-					break;
-                default:
-                    console.error('Input Model Error (App.twig -> $scope.uploader.onSuccessItem)');
-            }
-            console.log(angular.element(document.getElementById(item.inputId)));
+        var scope = angular.element(document.getElementById(item.inputId)).scope();
+        var props = item.model.split('.');
+        switch(props.length){
+            case 1:
+                scope[props[0]] = response.url;
+                break;
+            case 2:
+                scope[props[0]][props[1]] = response.url;
+                break;
+            case 3:
+                scope[props[0]][props[1]][props[2]] = response.url;
+                break;
+            default:
+                console.error('Input Model Error (App.twig -> $scope.uploader.onSuccessItem)');
         }
+        console.log(angular.element(document.getElementById(item.inputId)));
+    }
+    $scope.multiAutoUploader.onSuccessItem = function(item, response, status, headers){
+        var scope = angular.element(document.getElementById(item.inputId)).scope();
+        var props = item.model.split('.');
+        switch(props.length){
+            case 1:
+                if(!(scope[props[0]] instanceof Array)) scope[props[0]] = [];
+                scope[props[0]].push(response.url);
+                break;
+            case 2:
+                if(!(scope[props[0]][props[1]] instanceof Array)) scope[props[0]][props[1]] = [];
+                scope[props[0]][props[1]].push(response.url);
+                break;
+            case 3:
+                if(!(scope[props[0]][props[1]][props[2]] instanceof Array)) scope[props[0]][props[1]][props[2]] = [];
+                scope[props[0]][props[1]][props[2]].push(response.url);
+                break;
+            default:
+                console.error('Input Model Error (App.twig -> $scope.uploader.onSuccessItem)');
+        }
+
+
+        console.log(angular.element(document.getElementById(item.inputId)));
+    }
+    $scope.fileUploadDisplay = function(item,scopobj,key){
+        var url = item;
+        var splat = url.split('.');
+        var ext = splat[splat.length-1];
+        var images = ['jpg','jpeg','png','gif','JPG','JPEG','PNG','GIF'];
+        if(images.indexOf(ext) != -1){
+            return '<div class="row uploadItem"><div class="col-md-4 uploadItemThumb"><img src="'+url+'.limit.250x40.'+ext+'"></div><div class="col-md-6 uploadItemLink"><a href="'+url+'" target="_blank" title="Voir l\'image">Voir l\'image</a></div><div class="col-md-2 uploadItemDel"><a href="javascript: void(0);" class="btn-abt btn-abt-del btn-danger" ng-click="clearUploadedFile('+scopobj+','+key+');"></a></div></div>';
+        } else {
+            return '<div class="row uploadItem"><div class="col-md-4 uploadItemThumb"><i class="icmn-file-empty2"></i></div><div class="col-md-6 uploadItemLink"><a href="'+url+'" target="_blank" title="Voir le fichier">Voir le fichier</a></div><div class="col-md-2 uploadItemDel"><a href="javascript: void(0);" class="btn-abt btn-abt-del btn-danger"  ng-click="clearUploadedFile('+scopobj+','+key+');"></a></div></div>';
+        }
+
+    }
+    $rootScope.clearUploadedFile = function(obj,key){
+        obj.splice(key,1);
+        //TODO Call Ajax suppression fichier
+    }
+
 
 
     NProgress.configure({

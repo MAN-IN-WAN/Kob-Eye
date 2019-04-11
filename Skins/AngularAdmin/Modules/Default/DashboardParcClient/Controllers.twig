@@ -1,0 +1,114 @@
+
+app.controller('{{ Url }}Ctrl', function($anchorScroll, $interval, $location, $scope, $rootScope, $controller,  ParcTicketStore, ParcTechnicienStore) {
+
+    var isExtended = false;
+    if(typeof window['ServicesTicketsCtrl'] == 'function') {
+        isExtended = true;
+    }
+    try {
+        $controller('ServicesTicketsCtrl',{$scope: $rootScope.$new()});
+        isExtended = true;
+    } catch (error) {
+        console.log('No extends',error);
+    }
+    if(isExtended)
+        angular.extend(this, $controller('ServicesTicketsCtrl', {$scope: $scope}));
+
+
+
+    //------------------------------------------//
+    //                 ANCHORS
+    //------------------------------------------//
+    $anchorScroll.yOffset = 50;
+    $anchorScroll();
+
+    $scope.gotoAnchor = function(x) {
+        var newHash = x;
+        if ($location.hash() !== newHash) {
+            // set the $location.hash to `newHash` and
+            // $anchorScroll will automatically scroll to it
+            $location.hash(x);
+        } else {
+            // call $anchorScroll() explicitly,
+            // since $location.hash hasn't changed
+            $anchorScroll();
+        }
+    };
+
+
+    //------------------------------------------//
+    //                 STORES                   //
+    //------------------------------------------//
+    //
+    //      Incident
+    //
+
+    //Init du store
+    $scope.ParcTicketStore = ParcTicketStore;
+    // Utile seulement a cause de la template d'affichage commun avec la listchildren
+    var now = Math.floor(Date.now()/1000);
+    var seuil = now - 86400;
+
+
+
+    $scope.ParcTicketStore.setFilters('','dash');
+    $scope.ParcTicketStore.getData(1,'dash');
+
+{#
+    $scope.ParcTicketStore.setFilters('','counters');
+    $scope.ParcTicketStore.getData(1,'counters');
+    var getCountState = function(stateId){
+        var count = 0;
+        for(var n = 0; n < IncidentClientIncidentStore.data.counters.length; n++ ){
+            if((stateId != 5 && ParcTicketStore.data.counters[n].ParametresEtatParametresEtatId >= stateId && ParcTicketStore.data.counters[n].ParametresEtatParametresEtatId < 5) ||
+                (stateId == 5 && ParcTicketStore.data.counters[n].ParametresEtatParametresEtatId >= stateId) )
+                count++;
+        }
+
+        return count;
+    }
+#}
+
+    $scope.ParcTicketCountBase = 0;
+    $scope.ParcTicketCount = 0;
+    ParcTicketStore.getCount().then(function(count){
+        $scope.ParcTicketCount = count;
+    });
+    $scope.int = $interval(function(){
+        $scope.ParcTicketCountBase = $scope.ParcTicketCount;
+        ParcTicketStore.getCount().then(function(count){
+            $scope.ParcTicketCount = count;
+        });
+    },30000);
+
+
+    $scope.ParcTicket = {
+        data: ParcTicketStore.data.dash,
+        store: ParcTicketStore,
+        filter: ParcTicketStore.filter.dash,
+        currentPage: ParcTicketStore.currentPage.dash,
+        itemsPerPage: ParcTicketStore.itemsPerPage,
+{#        getCountState: getCountState,#}
+        selected: {
+            selectall: false
+        }
+    }
+
+    {% if user.isRole('PARC_TECHNICIEN') or user.admin == 1 %}
+    $scope.ParcTechnicienStore = ParcTechnicienStore;
+    $scope.ParcTechnicienStore.setFilters('','dash');
+    $scope.ParcTechnicienStore.setPageLength(200,'dash');
+    $scope.ParcTechnicienStore.getData(1,'dash');
+
+    $scope.ParcTechnicien = {
+        data: ParcTechnicienStore.data.dash,
+        store: ParcTechnicienStore,
+        filter: ParcTechnicienStore.filter.dash,
+        currentPage: ParcTechnicienStore.currentPage.dash,
+        itemsPerPage: ParcTechnicienStore.itemsPerPage,
+        selected: {
+            selectall: false
+        }
+    }
+    {% endif %}
+});

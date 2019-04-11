@@ -19,11 +19,11 @@
         <PROPERTIES Order="1" searchOrder="3" description="Email et login" type="varchar" length="200" obligatoire="0" listDescr="Mail du client" form="1" list="3" fiche="5">Mail</PROPERTIES>
         <PROPERTIES Order="6" description="Mot de passe" type="varchar" length="100" obligatoire="1" listDescr="Mot de passe" form="1" fiche="6">Pass</PROPERTIES>
         <PROPERTIES Order="7" values="Madame,Monsieur" description="Civilite" type="varchar" obligatoire="0" listDescr="Civilite" form="4" fiche="7">Civilite</PROPERTIES>
-        <PROPERTIES Order="8" searchOrder="4" description="Nom" type="varchar" length="100" obligatoire="0" listDescr="Nom" form="5" fiche="8">Nom</PROPERTIES>
-        <PROPERTIES Order="9" description="Prénom" type="varchar" length="100" obligatoire="0" listDescr="Prenom" form="6" fiche="9">Prenom</PROPERTIES>
+        <PROPERTIES Order="8" searchOrder="1" description="Nom" type="varchar" length="100" obligatoire="0" listDescr="Nom" form="5" fiche="8">Nom</PROPERTIES>
+        <PROPERTIES Order="9" searchOrder="2" description="Prénom" type="varchar" length="100" obligatoire="0" listDescr="Prenom" form="6" fiche="9">Prenom</PROPERTIES>
         <PROPERTIES Order="15" description="Portable" type="varchar" length="20" obligatoire="0" listDescr="Mobile" form="1" list="11" fiche="15">Portable</PROPERTIES>
         <PROPERTIES Order="16" description="Date de dernière connexion" type="date" obligatoire="0" listDescr="Derniere Connexion" hidden="1" fiche="16">ConnexionLe</PROPERTIES>
-        <PROPERTIES Order="1" searchOrder="2" description="Ce contact est Actif" type="boolean" listDescr="Actif" form="1" list="6" fiche="1">Actif</PROPERTIES>
+        <PROPERTIES Order="1"  searchOrder="4" description="Ce contact est Actif" type="boolean" listDescr="Actif" form="1" list="6" fiche="1">Actif</PROPERTIES>
         <PROPERTIES Order="17" type="Int">UserId</PROPERTIES>
         <FKEY card="0,1" data="Client,Id" description="Client" list="1" fiche="1">ClientId</FKEY>
     </OBJECTCLASS>
@@ -33,7 +33,7 @@
         <PROPERTIES Order="5" description="Nom" searchOrder="1" type="varchar" length="100" obligatoire="1" listDescr="Nom" form="1" fiche="1">Nom</PROPERTIES>
         <PROPERTIES Order="1" searchOrder="3" description="Email et login" type="varchar" length="200" obligatoire="1" unique="1" listDescr="Mail du client" form="1" list="3" fiche="5">Mail</PROPERTIES>
         <PROPERTIES Order="6" description="Mot de passe" type="varchar" length="100" obligatoire="1" listDescr="Mot de passe" form="1" fiche="6">Pass</PROPERTIES>
-        <PROPERTIES Order="6" description="Prénom" type="varchar" length="100" obligatoire="1" listDescr="Prenom" form="1" fiche="1">Prenom</PROPERTIES>
+        <PROPERTIES Order="6" searchOrder="2" description="Prénom" type="varchar" length="100" obligatoire="1" listDescr="Prenom" form="1" fiche="1">Prenom</PROPERTIES>
         <PROPERTIES Order="11" description="Téléphone" type="varchar" length="20" obligatoire="1" listDescr="Téléphone" form="1" list="1" fiche="1">Tel</PROPERTIES>
         <PROPERTIES Order="12" description="Portable" type="varchar" length="20" listDescr="Mobile" form="1" list="1" fiche="1">Portable</PROPERTIES>
         <PROPERTIES Order="16" description="Ce technicien est Actif" type="boolean" listDescr="Actif" form="1" list="1" fiche="1">Actif</PROPERTIES>
@@ -118,8 +118,8 @@
     </OBJECTCLASS>
 
 
-    <OBJECTCLASS title="Commentaire" AccessPoint="1" driver="mysql" Description="Commentaires" Operations="add,edit,delete"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/IncidentClient/Class/Commentaire.class.php" >
-        <PROPERTIES type="html" searchOrder="1" listDescr="Titre Fichier" list="1" form="1" fiche="1">Texte</PROPERTIES>
+    <OBJECTCLASS title="Commentaire" AccessPoint="1" driver="mysql" Description="Commentaires" Operations="add,edit,delete"  Icon="/Skins/AdminV2/Img/IconAqua/Document.png" Class="Modules/IncidentClient/Class/Commentaire.class.php"  logEvent="1">
+        <PROPERTIES type="text" searchOrder="1" listDescr="Titre Fichier" list="1" form="1" fiche="1">Texte</PROPERTIES>
         <FKEY card="1,1" data="Incident,Id" list="2" fiche="2" childrenHiddenSoft="1">IncidentId</FKEY>
         <FKEY card="0,1" data="Contact,Id" searchOrder="3" description="Contact" search="1" listDescr="Contact" list="3" fiche="3" >ContactId</FKEY>
         <FKEY card="0,1" data="Technicien,Id" searchOrder="3" description="Technicien" search="1" listDescr="Technicien" list="4" fiche="4" >TechnicienId</FKEY>

@@ -64,6 +64,7 @@ class Systeme extends Module {
             //execution de la tache
             if ($t) {
                 try {
+                    echo "Execute task ".$t->getFirstSearchOrder()." - ".$t->Id."\r\n";
                     $t->Execute($t);
                 }catch (Exception $e){
                     $t->Erreur = true;
@@ -72,7 +73,7 @@ class Systeme extends Module {
                     $t->Terminate(false);
                 }
             }
-            else sleep(1);
+            sleep(1);
         }
         return true;
     }
