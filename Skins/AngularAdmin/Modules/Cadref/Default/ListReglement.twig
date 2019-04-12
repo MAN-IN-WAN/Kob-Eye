@@ -115,7 +115,8 @@
 				<td scope="row" class="cadref-td typefloat"><a href="" ng-click="reglementModify(item)">€ {[{ item.Montant }]}</a></td>
 				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reglementModify(item)">{[{ item.ModeReglement }]}</a></td>
 				<td scope="row" class="cadref-td typeboolean">                    
-					<a href="" ng-click="reglementModify(item)" class="label cadref-info" ng-if="item.Differe">D</a>
+					<a href="" ng-click="reglementModify(item)" class="label cadref-success" ng-if="item.Differe && item.Encaisse">D</a>
+					<a href="" ng-click="reglementModify(item)" class="label cadref-danger" ng-if="item.Differe && !item.Encaisse">D</a>
 					<a href="" ng-click="reglementModify(item)" class="label cadref-success" ng-if="!item.Differe"></a>
 				</td>
 				<td scope="row" class="cadref-td typeboolean">                    

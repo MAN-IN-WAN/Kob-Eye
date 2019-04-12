@@ -111,7 +111,10 @@ class PrintReglement extends FPDF {
 		$this->SetXY($this->left, $this->posy);
 		$this->Cell($this->width[0], 4.5, $l['Utilisateur']);
 		$this->Cell($this->width[1], 4.5, date('d/m/Y', $l['DateReglement']));
-		if($mode && $l['Differe'] && !$l['Encaisse']) $this->SetFont('Arial','B',10);
+		if($l['Differe']) {
+			if($l['Encaisse']) $this->SetFont('Arial','I',10);
+			else $this->SetFont('Arial','B',10);
+		}
 		$this->Cell($this->width[2], 4.5, $b, 0, 0, 'R');
 		$this->Cell($this->width[3], 4.5, $e, 0, 0, 'R');
 		$this->Cell($this->width[4], 4.5, $c, 0, 0, 'R');
