@@ -27,7 +27,7 @@ where ce.EnseignantId=$id and c.Annee='$annee'
 		$to[$p['Id']] = $s;
 	}
 }
-else {
+elseif($menu == 'adh_message') {
 	$n = Sys::$User->Login;
 	$a = Sys::getOneData('Cadref', 'Adherent/Numero='.$n);
 	$id = $a->Id;
