@@ -936,7 +936,6 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 				);
 				break;
 			case 1:
-klog::l("<<<<<<<<<<<<<<<<<<<<",$params);
 				if($params['Msg']['sendMode'] == 'mail') {
 					$params['Msg']['To'] = array($params['Msg']['Mail']);
 					$params['Msg']['Body'] .= Cadref::MailSignature();
@@ -944,7 +943,6 @@ klog::l("<<<<<<<<<<<<<<<<<<<<",$params);
 					$ret = Cadref::SendMessage($params['Msg']);
 				}
 				else {
-klog::l("xxxxxxxxxxxxxxxxxxxxxx");
 					$ret = Cadref::SendSms(array('Telephone1'=>$this->Telephone1,'Telephone2'=>$this->Telephone2,'Message'=>$params['Msg']['SMS']));
 				}
 				return array(
