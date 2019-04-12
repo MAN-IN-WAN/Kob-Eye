@@ -876,6 +876,7 @@
 					$scope.classeCalcul();			
 					$scope.CadrefClasse.Inscr.updated = true;
 					try {$scope.$digest();} catch(ex) {}
+					$('#searchCadrefClasse').focus();
 				});
 			}
 		}
@@ -1562,6 +1563,7 @@
 		$scope.absenceSave = function() {
 			CadrefAbsenceStore.saveData($scope.absenceObj).then(function(data) {
 				$scope.absenceInfo.mode = '';
+				CadrefAbsenceStore.getData(1, 'children');
 				try { $scope.$digest(); } catch(ex) {}
 			});
 		}

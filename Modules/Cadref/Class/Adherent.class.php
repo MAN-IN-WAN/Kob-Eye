@@ -346,9 +346,9 @@ class Adherent extends genericClass {
 					$adherent = true;
 					$rupture = 'S';
 				}
-				else $sql = "select i.CodeClasse, i.ClasseId, n.AntenneId, i.Attente, i.DateAttente, d.Libelle as LibelleD, n.Libelle as LibelleN, c0.CodeClasse as Delegue, ";
+				else $sql = "select i.CodeClasse, i.ClasseId, n.AntenneId, i.Attente, i.DateAttente, d.Libelle as LibelleD, n.Libelle as LibelleN, ";
 
-				$sql .= "e.Sexe, e.Numero, e.Nom, e.Prenom, e.Adresse1, e.Adresse2, e.CP, e.Ville, e.Telephone1, e.Telephone2, e.Mail";
+				$sql .= "e.Sexe, e.Numero, e.Nom, e.Prenom, e.Adresse1, e.Adresse2, e.CP, e.Ville, e.Telephone1, e.Telephone2, e.Mail, c0.CodeClasse as Delegue";
 
 				if($typAdh == 'S') {
 					// adhérents sans inscription
@@ -387,7 +387,7 @@ left join `##_Cadref-Classe` c0 on c0.Id=aa.ClasseId ";
 
 					// type adherent
 					if($typAdh != '') {
-						$whr .= "and e.Adherent in (";
+						$whr .= "and aa.Adherent in (";
 						switch($typAdh) {
 							case 'B': $whr .= "'B') ";
 								break;
