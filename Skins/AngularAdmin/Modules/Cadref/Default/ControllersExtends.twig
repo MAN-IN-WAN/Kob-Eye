@@ -527,7 +527,6 @@
 			var o = $scope.reglementObj = {};
 			angular.copy(item, o);
 			i.mode = 'edit';
-//			console.log('REGLEMENT',o);
 		}
 
 		// sauve reglement
@@ -698,7 +697,7 @@
 		$scope.nextControle = function(mode) {
 			var enb = false;
 			var cad = $scope.CadrefClasse.Inscr;
-			var p = Number(cad.paye)
+			var p = Number(cad.paye);
 			enb = p == 0 || cad.paye == '' || (p != 0 && cad.mode != '');
 			$scope.nextDisabled = !enb;
 			if(enb) {
@@ -707,6 +706,13 @@
 				if(mode) $('#inscriptionNext').focus();
 			}
 			else $('#inscriptionNext').html('-----');
+		}
+		
+		// enregistre ou différé
+		$scope.classeValider = function() {
+			if($('#inscriptionNext').html() == '-----') return;
+			var cn = $scope.CadrefAdherentfunction.callNext;
+			$scope.CadrefAdherentcallFunction(cn.item,cn.nom,cn.title,cn.needConfirm,1);
 		}
 		
 		// switch cotisation
@@ -1382,6 +1388,28 @@
 		// VISITE RESERVATION
 		//--------------------------------------
 
+		// impression
+		$scope.visitObj = {Guide:true, Chauffeur:false, Interne:false};
+		
+		$scope.visitePrintMode = function(mode) {
+			var o = $scope.visitObj;
+			switch(mode) {
+				case 0: o.Chauffeur = o.Interne = false; break;
+				case 1: o.Guide = o.Interne = false; break;
+				case 2: o.Guide = o.Chauffeur = false; break;
+			}
+		}
+		$scope.visiteImpression = function(pdf) {
+			$window.open(pdf,'_blank');
+			return false;
+		}
+		$scope.displayVisite = function() {
+			$timeout(function(){
+				angular.element($('#displayVisite')).triggerHandler('click');
+				angular.element($('#modalfunction-{{ ident }}')).modal('hide');
+			},0);
+		}
+		
 		// pour multi-select
 		$scope.Enseignants = JSON.parse('{{ enseignants|raw }}');
 

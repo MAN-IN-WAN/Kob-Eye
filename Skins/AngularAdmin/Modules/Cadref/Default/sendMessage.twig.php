@@ -1,6 +1,7 @@
 <?php
 $annee = Cadref::$Annee;
 
+$vars['mode'] = 'public';
 $menu = Sys::$CurrentMenu->Url;
 if($menu == 'ens_message') {
 	$n = substr(Sys::$User->Login, 3, 3);
@@ -46,5 +47,5 @@ where i.AdherentId=$id and e.Mail<>''";
 		$to[$p['Mail']] = $s;
 	}
 }
-
+else $vars['mode'] = 'admin';
 $vars['destinataires'] = $to;

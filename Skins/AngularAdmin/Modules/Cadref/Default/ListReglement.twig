@@ -11,7 +11,7 @@
 					</div>
 					<div class="col-md-4">
 						<label class="input-group datepicker-only-init" style="margin-bottom:0">
-							<input id="input-CadrefClassedate" type="text" class="form-control cadref-input" mask="dd/dd/dddd" 
+							<input id="input-CadrefClassedate" type="text" class="form-control cadref-input" {#mask="dd/dd/dddd" #}
 								   ng-model="reglementObj.DateReglement" ng-init="initDatePickerOnly()"/>
 							<span class="input-group-addon">
 								<i class="icmn-calendar"></i>
@@ -61,14 +61,6 @@
 					</div>
 					<div class="col-md-4">
 						<switch class="cadref-switch" ng-model="reglementObj.Supprime"></switch>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-4">
-						{{ label("Visite") }}
-					</div>
-					<div class="col-md-8">
-						<input type="text" class="form-control cadref-input" readonly tabindex="-1" ng-model="reglementObj.Visite"/>
 					</div>
 				</div>
 				<div class="row">

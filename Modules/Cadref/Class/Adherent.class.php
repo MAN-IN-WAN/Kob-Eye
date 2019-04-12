@@ -803,10 +803,6 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 					break;
 			}
 		}
-		return array(
-			'params'=>$params,
-			'template'=>'printAttestation',
-		);
 	}
 	
 	private function imprimeAttestation($list, $annee, $fisc, $num) {
