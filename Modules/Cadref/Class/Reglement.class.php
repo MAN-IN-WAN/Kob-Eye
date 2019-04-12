@@ -25,7 +25,7 @@ class Reglement extends genericClass {
 				$dfin = DateTime::createFromFormat('d/m/Y H:i:s', $obj['DateFin'].' 23:59:59')->getTimestamp();
 				$where = "r.DateReglement>=$ddeb and r.DateReglement<=$dfin and (r.Differe=0 or r.Encaisse=1)";
 				$title = 'Règlements '.$user.' '.$obj['DateDebut'].'-'.$obj['DateFin'];
-				$file .= 'Reglements_'.$user.'_'.date('Ymd', $ddeb).'_'.date('Ymd', $dfin).'.pdf';
+				$file .= 'Reglements_'.$user.'_'.date('Ymd', $ddeb).'_'.date('Ymd', $dfin).'_'.date('YmdHis').'.pdf';
 				break;
 			case 1:
 				$ddeb = DateTime::createFromFormat('d/m/Y H:i:s', '01/'.$obj['DateDebut'].' 00:00:00')->getTimestamp();
@@ -35,13 +35,13 @@ class Reglement extends genericClass {
 				$dfin = $dfin->getTimestamp();
 				$where = "r.DateReglement>=$ddeb and r.DateReglement<$dfin and r.Differe=1";
 				$title = 'Différés '.$obj['DateDebut'];
-				$file .= 'Differes_'.substr($obj['DateDebut'], 3).substr($obj['DateDebut'], 0, 2).'.pdf';
+				$file .= 'Differes_'.substr($obj['DateDebut'], 3).substr($obj['DateDebut'], 0, 2).'_'.date('YmdHis').'.pdf';
 				break;
 			case 2:
 				$ddeb = DateTime::createFromFormat('d/m/Y H:i:s', '01/'.$obj['DateDebut'].' 00:00:00')->getTimestamp(); 
 				$where = "r.DateReglement<$ddeb and r.Differe=1 and r.Encaisse=0";
 				$title = 'Différés non encaissés '.$obj['DateDebut'];
-				$file .= 'Differes_non_encaisses_'.substr($obj['DateDebut'], 3).substr($obj['DateDebut'], 0, 2).'.pdf';
+				$file .= 'Differes_non_encaisses_'.substr($obj['DateDebut'], 3).substr($obj['DateDebut'], 0, 2).'_'.date('YmdHis').'.pdf';
 		}
 
 		$sql = "
