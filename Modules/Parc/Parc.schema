@@ -552,7 +552,7 @@
 		<PROPERTIES type="varchar" description="Appel" form="1" fiche="1" values="1::Pas d'appel,2::Reçu,3::Emis" default="1">Appel</PROPERTIES>
 		<PROPERTIES type="file" description="Fichier" list="1" form="1" fiche="1" listDescr="Fichier">Fichier</PROPERTIES>
 
-		<FKEY card="1,1" data="Ticket,Id" childrenHiddenSoft="1">TicketId</FKEY>
+		<FKEY card="1,1" data="Ticket,Id" fiche="1" form="1" list="1" childrenHiddenSoft="1">TicketId</FKEY>
 		<FKEY card="0,1" module="Abtel" data="Contrat,Id" hasRole="PARC_TECHNICIEN">ContratId</FKEY>
 
 		<!--PROPERTIES type="varchar" description="Cadre" list="1" form="1" fiche="1" listDescr="Cadre contractuel" values="1::Sous contrat,2::Hors contrat,3::Gratuit" hasRole="PARC_TECHNICIEN">Cadre</PROPERTIES-->
