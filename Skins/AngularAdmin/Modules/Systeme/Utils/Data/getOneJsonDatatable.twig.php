@@ -7,6 +7,10 @@ $context = (isset($_GET['context']))?$_GET['context']:'default';
 //souscription au push
 
 //requete
+if($info['TypeSearch'] == 'Indirect' || ($info['TypeSearch'] = 'Direct' && empty($info['LastId']))){
+    die("{}");
+}
+
 $vars['row'] = Sys::getOneData($info['Module'],$vars['Query']);
 if (!$vars['row']){
     die("{}");
