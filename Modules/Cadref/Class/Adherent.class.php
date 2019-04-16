@@ -346,9 +346,9 @@ class Adherent extends genericClass {
 					$adherent = true;
 					$rupture = 'S';
 				}
-				else $sql = "select i.CodeClasse, i.ClasseId, n.AntenneId, i.Attente, i.DateAttente, d.Libelle as LibelleD, n.Libelle as LibelleN, c0.CodeClasse as Delegue, ";
+				else $sql = "select i.CodeClasse, i.ClasseId, n.AntenneId, i.Attente, i.DateAttente, d.Libelle as LibelleD, n.Libelle as LibelleN, ";
 
-				$sql .= "e.Sexe, e.Numero, e.Nom, e.Prenom, e.Adresse1, e.Adresse2, e.CP, e.Ville, e.Telephone1, e.Telephone2, e.Mail";
+				$sql .= "e.Sexe, e.Numero, e.Nom, e.Prenom, e.Adresse1, e.Adresse2, e.CP, e.Ville, e.Telephone1, e.Telephone2, e.Mail, c0.CodeClasse as Delegue";
 
 				if($typAdh == 'S') {
 					// adhérents sans inscription
@@ -387,7 +387,7 @@ left join `##_Cadref-Classe` c0 on c0.Id=aa.ClasseId ";
 
 					// type adherent
 					if($typAdh != '') {
-						$whr .= "and e.Adherent in (";
+						$whr .= "and aa.Adherent in (";
 						switch($typAdh) {
 							case 'B': $whr .= "'B') ";
 								break;
@@ -803,10 +803,6 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 					break;
 			}
 		}
-		return array(
-			'params'=>$params,
-			'template'=>'printAttestation',
-		);
 	}
 	
 	private function imprimeAttestation($list, $annee, $fisc, $num) {
@@ -953,6 +949,32 @@ where i.CodeClasse='$classe' and i.Annee='$annee'";
 				);
 				break;
 		}
+	}
+
+	function SendMessage2($params) {
+		$annee = Cadref::$Annee;
+		$id = $this->Id;
+		$mode = $params['sendMode'];
+		$args = array();
+		$args['Subject'] = $params['Subject'];
+		$args['Body'] = $params['Body'];
+		$args['Attachments'] = $params['Msg']['Pieces']['data'];
+		
+		$to = $params['Mail'];
+
+		if($to == 'C') {
+			$us = Sys::getData('Systeme', 'Group/Nom=CADREF_ADMIN/User');
+			$to = array();
+			foreach($us as $u) {
+				$args['To'] = array($u->Mail);
+				Cadref::SendMessage($args);
+			}
+			return array('data'=>'Message envoyé');
+		}
+
+		$args['To'] = array($p['Mail']);
+		$ret = Cadref::SendMessage($args);
+		return array('data'=>'Message envoyé','sql'=>$sql);
 	}
 
 	function GetCours($mode, $obj) {

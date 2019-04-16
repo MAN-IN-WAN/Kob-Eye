@@ -13,7 +13,16 @@
 					{{ label('Mail') }}
 				</div>
 				<div class="col-md-10">
-					<input type="text" class="form-control cadref-input" ng-init="msgObj.Mail=obj.Mail" ng-model="msgObj.Mail" readonly/>
+					{% if mode == 'public' %}
+					<select class="form-control cadref-input" ng-model="msgObj.Mail">
+						<option value=""></option>
+						{% for v,k in destinataires %}
+							<option value="{{ v }}">{{ k }}</option>
+						{% endfor %}
+					</select>
+					{% else %}
+					<input type="text" class="form-control cadref-input" readonly ng-init="msgObj.Mail=obj.Mail" ng-model="msgObj.Mail"/>
+					{% endif %}
 				</div>
 			</div>
 			<div style="height: 5px"></div>
@@ -34,6 +43,7 @@
 					<textarea ckeditor="ckHtml" contenteditable="false"  style="width:100%;min-height:300px;white-space: pre-wrap;" ng-model="msgObj.Body" ng-trim="false"></textarea>
 				</div>
 			</div>
+			{% if mode == 'admin' %}
 			<div style="height: 5px"></div>
 			<div class="row">
 				<div class="col-md-1">
@@ -43,6 +53,7 @@
 					<textarea class="form-control cadref-input" style="width:100%;min-height:55px;white-space:pre-wrap;" ng-model="msgObj.SMS"></textarea>
 				</div>
 			</div>
+			{% endif %}
 
 			<div class="row" style="height:5px"></div>
 			<div class="row">
@@ -108,9 +119,11 @@
 				<div class="col-md-2">
 					<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-disabled="msgObj.Mail == '' || msgObj.Subject == ''" ng-click="messageSend('mail')">Mail</button>
 				</div>
+				{% if mode == 'admin' %}
 				<div class="col-md-2">
 					<button type="button" class="btn btn-success margin-inline cadref-btn-100" ng-disabled="msgObj.SMS == ''" ng-click="messageSend('sms')">SMS</button>
 				</div>
+				{% endif %}
 			</div>
 		</div>
 		{#		<button type="button" class="btn btn-info ng-scope" ng-if="CadrefAdherentfunction.callNext" ng-click="CadrefAdherentcallFunction(CadrefAdherentfunction.callNext.item,CadrefAdherentfunction.callNext.nom,CadrefAdherentfunction.callNext.title,CadrefAdherentfunction.callNext.needConfirm,1)">Suivant</button>

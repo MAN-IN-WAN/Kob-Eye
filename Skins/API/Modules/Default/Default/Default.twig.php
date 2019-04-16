@@ -178,6 +178,7 @@ switch($info['TypeSearch']){
                 foreach($newProps as $k=>$n){
                     $item->Set($k,$n);
                 }
+                $item->kb_api = true;
                 //On crée l'objet
                 if($item->Verify()){
                     $item->Save();
@@ -304,6 +305,7 @@ switch($info['TypeSearch']){
                 foreach($newProps as $k=>$n){
                     $item->Set($k,$n);
                 }
+                $item->kb_api = true;
 
 
                 if($parent) $item->addParent($parent);
@@ -322,6 +324,7 @@ switch($info['TypeSearch']){
                     sendResult(403,null,'Vous n\'avez pas le droit de modifier cette entité depuis cette route.');
                     die();
                 }
+                $item->kb_api = true;
                 $item->Delete();
                 sendResult(204);
                 break;
@@ -355,7 +358,7 @@ switch($info['TypeSearch']){
                 foreach($newProps as $k=>$n){
                     $item->Set($k,$n);
                 }
-
+                $item->kb_api = true;
                 if($parent) $item->addParent($parent);
                 //On crée l'objet
                 if($item->Verify()){

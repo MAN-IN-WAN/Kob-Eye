@@ -1,22 +1,81 @@
 <?php
 
-class Ticket extends genericClass
-{
+class Ticket extends genericClass{
     protected $con_handle = null;
     protected $api_token = null;
-    const GESTIONURL = 'http://api.gestion.abtel.fr';
+    //TODO : Passer en CONF ?
+    const GESTIONURL = 'http://api.gestion.abtel.fr/gestion/';
     const APIKEY = 'd5d485cbd6-5c4590da81d05';
     const APIUSER = 'api_parc';
     const APIPASS = '21wyisey';
 
 
     public function Save($syncGestion = false){
-        if($syncGestion){
-            //TODO
+
+        if(($syncGestion || !$this->kb_api) && array_key_exists('Abtel',Sys::$Modules)){ // Si ca ne viens pas de l'api on synchro gestion
+
+            $props = $this->getElementsByAttribute('gestion',1);
+            $params = array("data"=>array());
+            foreach($props as $cat){
+                foreach ($cat['elements'] as $p){
+                    $params["data"][$p['name']] = $this->{$p['name']};
+                }
+            }
+
+            $url = self::GESTIONURL.'tache';
+            $method = "POST";
+            if(!empty($this->Numero)){
+                $url .= '/'.$this->Numero;
+                $method = "PATCH";
+            }
+
+            $res = $this->requestGestion($url,$params,$method);
+            $gok = !!$res['success'];
+            if(!$gok) return false;
+
+            $propsRet = $res['data']['props'];
+
+            if(empty($this->Numero)){
+                $this->Numero = $propsRet['NumeroTicket'];
+            }
+
         }
 
+        $new = empty($this->Id);
+        $ok = parent::Save();
+        if( $ok  && $new){
+            AlertUser::addAlert('Ticket créé : '.$this->Titre,"Nouveau Ticket : ".$this->Numero,'','',0,[],'PARC_TECHNICIEN','icmn-user3');
+            return true;
+        }
+        return $ok;
+    }
 
-        return parent::Save();
+    public function Delete($syncGestion = false){
+        $acts = $this->getChildren('Action');
+        foreach($acts as $act){
+            $res = $act->Delete();
+
+            if(!$res){
+                $this->addError(array('Message'=>'Erreur lors de la suppression de l\'action enfant : '.$act->Id));
+                return false;
+            }
+        }
+
+        if(($syncGestion || !$this->kb_api) && array_key_exists('Abtel',Sys::$Modules)){ // Si ca ne viens pas de l'api on synchro gestion
+
+           $url = self::GESTIONURL.'tache/'.$this->Numero;
+            $method = "DELETE";
+
+            $res = $this->requestGestion($url,array(),$method);
+            if(!$res['success']){
+                $this->addError(array('Message'=>'Erreur lors de la suppression dans la base gestion '));
+                return false;
+            }
+
+
+        }
+
+        return parent::Delete();
     }
 
     public function Set($Prop, $newValue) {
@@ -79,22 +138,38 @@ class Ticket extends genericClass
                 'Content-Length: ' . strlen($data))
         );
 
-        $ret = json_decode(curl_exec($this->con_handle),true);
+        $temp = curl_exec($this->con_handle);
+        $ret = json_decode($temp,true);
         if(!$ret['success']) {
-            foreach ($ret['error_description'] as $err){
-                $this->addError(array('Message'=>$err));
+            if(!empty($ret['error_description'] )) {
+                if(!is_array($ret['error_description']))
+                    $ret['error_description'] = array($ret['error_description']);
+
+                foreach ($ret['error_description'] as $err) {
+                    $this->addError(array('Message' => $err));
+                }
+            } elseif (!empty(curl_error($this->con_handle))){
+                $this->addError(array('Message' => curl_error($this->con_handle)));
+            } else {
+                $code = curl_getinfo($this->con_handle, CURLINFO_HTTP_CODE);
+                if($code == 500) {
+                    $this->addError(array('Message' => 'Erreur mystère, une erreur 500 coté Catalina'));
+                } elseif ($code == 204) {
+                    $ret['success'] = true;
+                } else {
+                    $this->addError(array('Message' => 'Erreur mystère'));
+                }
             }
         }
 
-        $res = $ret['pagination']['total'];
-
-        return !!$ret['success'];
+        return $ret;
     }
 
     private function authGestion(){
         //Ouverture connection curl si besoin
         if(empty($this->con_handle)){
             $this->con_handle = curl_init(self::GESTIONURL);
+
             curl_setopt($this->con_handle, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($this->con_handle, CURLOPT_CUSTOMREQUEST, "POST");
             $data =json_encode(array('API_KEY'=>self::APIKEY,'login'=>self::APIUSER,'pass'=>self::APIPASS));
@@ -135,7 +210,7 @@ class Ticket extends genericClass
             $cli = null;
 
             if(!empty($args['client'])){
-                $cli = Sys::getOneData('Abtel','Contrat/'.$args['contrat']);
+                $cli = Sys::getOneData('Abtel','Client/'.$args['client']);
             }else {
                 $cli = Process::GetTempVar('ParcClient');
             }
@@ -175,7 +250,13 @@ class Ticket extends genericClass
             $tick->DateEcheance = Utils::getTodayEvening(null);
             $tick->Etat = 10;
             $tick->DateCrea = time();
+
             $tick->UserCrea = 'ZZ';
+            $tech = Sys::getOneData('Parc','Technicien/UserId='.Sys::$User->Id);
+            if($tech)
+                $tick->UserCrea = $tech->IdGestion;
+
+
             $tick->Priorite = $args['urgence'];
             $tick->Note = $args['description'];
 
@@ -229,18 +310,23 @@ class Ticket extends genericClass
                 foreach($args['pj'] as $pj){
                     $act = genericClass::createInstance('Parc','Action');
                     $act->Titre = 'Ajout d\'une pièce jointe';
-                    $ext = pathinfo($pj,PATHINFO_EXTENSION);
+                    /*$ext = pathinfo($pj,PATHINFO_EXTENSION);
                     $img = array('jpg','jpeg','png','gif','JPG','JPEG','PNG','GIF');
                     if(in_array($ext,$img)){
                         $act->Note = '<div class="row uploadItem"><div class="col-md-5 uploadItemThumb"><img src="'.$pj.'.limit.250x40.'.$ext.'"></div><div class="col-md-7 uploadItemLink"><a href="'.$pj.'" target="_blank" title="Voir l\'image">Voir l\'image</a></div></div>';
                     } else{
                         $act->Note = '<div class="row uploadItem"><div class="col-md-5 uploadItemThumb"><i class="icmn-file-empty2"></i></div><div class="col-md-7 uploadItemLink"><a href="'.$pj.'" target="_blank" title="Voir le fichier">Voir le fichier</a></div></div>';
-                    }
+                    }*/
+                    $act->Fichier = $pj;
                     $act->UserCrea = 'ZZ';
 
                     $acts[] = $act;
 
                 }
+            }
+            if(!empty($args['tech'])){
+                $tech = Sys::getOneData('Parc','Technicien/'.$args['tech']);
+                $tick->UserNext = $tech->IdGestion;
             }
 
             if($tick->Verify() && $tick->Save()){

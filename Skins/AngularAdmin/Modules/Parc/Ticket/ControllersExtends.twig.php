@@ -9,11 +9,11 @@ $vars["ObjectClass"] = $vars["CurrentObj"]->getObjectClass();
 //$vars['Interfaces'] = $vars["ObjectClass"]->getInterfaces();
 
 $vars["uid"] = Sys::$User->Id;
-$tech = Sys::getOneData('Parc','Technicien/UserId='.$vars["uid"]);
-$isTech = is_object($tech);
+
 $vars["initiales"] = "ZZ";
-if($$isTech){
-    $vars["initiales"] = Sys::$User->Initiales;
-}
+$tech = Sys::getOneData('Parc','Technicien/UserId='.Sys::$User->Id);
+$isTech = is_object($tech);
+if($tech)
+    $vars["initiales"] = $tech->IdGestion;
 
 ?>

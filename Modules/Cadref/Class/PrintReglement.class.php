@@ -36,12 +36,13 @@ class PrintReglement extends FPDF {
 //			$this->head[4] = '';
 //			$this->width[4] = 0.01;
 //		}
-		$titre = "CADREF : Règlements ";
+		$this->titre = "CADREF : Règlements ";
 		switch($this->mode) {
-			case 0: $titre .= "du ".$this->debut." au ".$this->fin."  Utilisateur : ".$this->user; break;
-			case 1: $titre .= "différés au ".$this->debut; break;
-			case 2: $titre .= "différés non encaissés au ".$this->debut; break;
+			case 0: $this->titre .= "du ".$this->debut." au ".$this->fin; break;
+			case 1: $this->titre .= "différés au ".$this->debut; break;
+			case 2: $this->titre .= "différés non encaissés au ".$this->debut; break;
 		}
+		$this->titre .= "  Utilisateur : ".$this->user;
 	}
 	
 	private function cv($txt) {
@@ -110,10 +111,15 @@ class PrintReglement extends FPDF {
 		$this->SetXY($this->left, $this->posy);
 		$this->Cell($this->width[0], 4.5, $l['Utilisateur']);
 		$this->Cell($this->width[1], 4.5, date('d/m/Y', $l['DateReglement']));
+		if($l['Differe']) {
+			if($l['Encaisse']) $this->SetFont('Arial','I',10);
+			else $this->SetFont('Arial','B',10);
+		}
 		$this->Cell($this->width[2], 4.5, $b, 0, 0, 'R');
 		$this->Cell($this->width[3], 4.5, $e, 0, 0, 'R');
 		$this->Cell($this->width[4], 4.5, $c, 0, 0, 'R');
 		$this->Cell($this->width[5], 4.5, $p, 0, 0, 'R');
+		$this->SetFont('Arial','',10);
 		$this->Cell($this->width[6], 4.5, '');
 		$this->Cell($this->width[7], 4.5, $l['Numero'].'   '.$this->cv($l['Nom'].'  '.$l['Prenom']));
 		$this->posy += 4.5;

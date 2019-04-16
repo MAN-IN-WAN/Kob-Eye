@@ -69,9 +69,12 @@
             $loadTemp($blinfo,$path);
         } else {
             //Si pas de retro compat on vérifie que l'objet ai une method portant ce nom
-            $obj = Sys::getOneData($info['Module'],explode('/',$path,2)[1]);
-            if (!$obj)
-                $obj = genericClass::createInstance($info['Module'],explode('/',$path)[1]);
+            if($info['TypeSearch'] == 'Indirect' || ($info['TypeSearch'] = 'Direct' && empty($info['LastId']))){
+                $obj = genericClass::createInstance($info['Module'],$info['ObjectType']);
+            } else{
+                $obj = Sys::getOneData($info['Module'],explode('/',$path,2)[1]);
+            }
+
             $methods = get_class_methods($obj);
 
             if(!in_array($name,$methods)){

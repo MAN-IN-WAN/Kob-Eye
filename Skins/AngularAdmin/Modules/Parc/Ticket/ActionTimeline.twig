@@ -28,16 +28,16 @@
                         </small>
                     </div>
                     <div class="col-md-6 form-group">
-                        <input type="text" class="form-control" placeholder="" id="input-ParcActionpj" ng-model="modalObj.pj">
+                        <input type="text" class="form-control" placeholder="" id="input-ParcActionpj" ng-model="modalObj.Fichier">
                         <label for="input-ParcActionpj-file" class="btn-warning fileLabel" title=" Choisissez un fichier "><i class="icmn-folder-upload2 fileLabelIcon"></i></label>
-                        <input id="input-ParcActionpj-file" type="file" nv-file-select options="{ alias:'FileData',formData:[{ 'Module':'Parc' }, { 'Obj' : 'Ticket' }],removeAfterUpload: true, inputId: 'input-ParcActionpj', model:'modalObj.pj' }" ng-init="up_ParcActionpj = angular.copy(autoUploader)" uploader="up_ParcActionpj" style="display:none;" />
+                        <input id="input-ParcActionpj-file" type="file" nv-file-select options="{ alias:'FileData',formData:[{ 'Module':'Parc' }, { 'Obj' : 'Ticket' }],removeAfterUpload: true, inputId: 'input-ParcActionpj', model:'modalObj.Fichier' }" ng-init="up_ParcActionpj = angular.copy(autoUploader)" uploader="up_ParcActionpj" style="display:none;" />
                     </div>
                 </div>
             </div>
 
 
             <p style="text-align: center;    margin: 15px;">
-                <button type="button" class="btn btn-primary" ng-class="{'disabled' : ( modalObj.Note == undefined || modalObj.Note.length == 0 ) && ( modalObj.pj == undefined || modalObj.pj.length == 0)}" ng-click="ParcActionmodalSaveBis(obj.id)" style="width: 100%;">__SAVE_MODAL_OBJ__</button>
+                <button type="button" class="btn btn-primary" ng-class="{'disabled' : ( modalObj.Note == undefined || modalObj.Note.length == 0 ) && ( modalObj.Fichier == undefined || modalObj.Fichier.length == 0)}" ng-click="ParcActionmodalSaveBis(obj.id)" style="width: 100%;">__SAVE_MODAL_OBJ__</button>
             </p>
         </div>
         <div>

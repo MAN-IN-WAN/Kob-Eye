@@ -1065,12 +1065,19 @@
                 console.log('edit ',obj.id);
                 {{ c.identifier }}Store.getOneData(obj.id,'fiche',false).then(function (data) {
                     data.success = false;
-                    $scope.obj = $scope.modalObj = data;
+                    $scope.obj =  angular.copy(data);
+                    $scope.modalObj = angular.copy(data);
                     $scope.modalObj.title = 'Modifier {{ c.description }} '+data.label;
-                    console.log('edit obj',$scope.modalObj);
+                    console.log('edit obj copy',$scope.modalObj);
                 });
                 $("#modalfiche-{{ c.identifier }}").modal();
             }
+
+            $('.modal').on('hidden.bs.modal', function (e) {
+                console.log('reset modalobj',$scope.modalObj);
+                $scope.modalObj = {};
+                $scope.$digest();
+            })
             $scope.modalSave = function (callback){
                 console.log('save ',$scope.modalObj);
                 //affichage spinner

@@ -11,7 +11,7 @@
 					</div>
 					<div class="col-md-4">
 						<label class="input-group datepicker-only-init" style="margin-bottom:0">
-							<input id="input-CadrefClassedate" type="text" class="form-control cadref-input" mask="dd/dd/dddd" 
+							<input id="input-CadrefClassedate" type="text" class="form-control cadref-input" {#mask="dd/dd/dddd" #}
 								   ng-model="reglementObj.DateReglement" ng-init="initDatePickerOnly()"/>
 							<span class="input-group-addon">
 								<i class="icmn-calendar"></i>
@@ -65,14 +65,6 @@
 				</div>
 				<div class="row">
 					<div class="col-md-4">
-						{{ label("Visite") }}
-					</div>
-					<div class="col-md-8">
-						<input type="text" class="form-control cadref-input" readonly tabindex="-1" ng-model="reglementObj.Visite"/>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-4">
 						{{ label("Notes") }}
 					</div>
 					<div class="col-md-8">
@@ -115,7 +107,8 @@
 				<td scope="row" class="cadref-td typefloat"><a href="" ng-click="reglementModify(item)">€ {[{ item.Montant }]}</a></td>
 				<td scope="row" class="cadref-td typevarchar"><a href="" ng-click="reglementModify(item)">{[{ item.ModeReglement }]}</a></td>
 				<td scope="row" class="cadref-td typeboolean">                    
-					<a href="" ng-click="reglementModify(item)" class="label cadref-info" ng-if="item.Differe">D</a>
+					<a href="" ng-click="reglementModify(item)" class="label cadref-success" ng-if="item.Differe && item.Encaisse">D</a>
+					<a href="" ng-click="reglementModify(item)" class="label cadref-danger" ng-if="item.Differe && !item.Encaisse">D</a>
 					<a href="" ng-click="reglementModify(item)" class="label cadref-success" ng-if="!item.Differe"></a>
 				</td>
 				<td scope="row" class="cadref-td typeboolean">                    

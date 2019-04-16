@@ -97,6 +97,4 @@ foreach($as as $a) {
 }
 $vars['communes'] = $tmp;
 
-
-
 ?>

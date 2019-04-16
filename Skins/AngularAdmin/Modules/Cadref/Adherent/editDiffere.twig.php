@@ -16,7 +16,7 @@ else $vars['CurrentUrl'] = $vars['Query'];
 
 $vars['scopeObj'] = 'modalObj';
 $vars['Annee'] = $GLOBALS['Systeme']->getRegVars('AnneeEnCours');
-$diff = $obj->getChildren('Reglement/Differe=1&Annee='.$vars['Annee']);
+$diff = $obj->getChildren('Reglement/Differe=1&Supprime=0&Annee='.$vars['Annee']);
 foreach($diff as $d) {
 	$d->Mois = date('m', $d->DateReglement);
 }

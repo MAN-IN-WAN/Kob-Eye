@@ -1,6 +1,6 @@
 {% if not noExtend %}
 	app.controller('{{ identifier }}CtrlExtends', function($interval, $location, $compile, $timeout, $sce, $scope, $filter, $window, $rootScope, $routeParams, $http, $log,
-		{{ ident }}Store) {
+		{{ ident }}Store, CadrefAttachementStore) {
 
 		// hook sur modalSave pour afficher la fiche crée
 		var currentUrl = $window.location.href;
@@ -90,115 +90,6 @@
 				$scope.modalObj.Ville = v.substr(0, p-7);
 			}
 		}
-
-		{% endif %}
-		
-	});
-
-//***********************
-	
-	app.controller('{{ identifier }}FicheCtrlExtends', function($interval, $location, $compile, $timeout, $sce, $scope, $filter, $window, 
-		$rootScope, $routeParams, $http, $log,
-		CadrefInscriptionStore, CadrefClasseStore, CadrefAdherentStore, CadrefReglementStore, CadrefEnseignantStore, 
-		CadrefVisiteStore, CadrefReservationStore, CadrefClasseDateStore, CadrefAbsenceStore, CadrefDepartStore, CadrefAttachementStore,
-		CadrefCommuneStore) {
-
-		var getObj = $interval(function(){
-            if($scope.obj){
-                $interval.cancel(getObj);
-				{% if objecttype == 'Adherent' %}
-					$scope.adherentInfo(); 
-					$scope.checkCertificat();
-					$scope.obj.AnneeSelect = '{{ Annee }}';
-				{% endif %}
-				{% if objecttype == 'Section' %}$scope.sectionInfo();{% endif %}
-				{% if objecttype == 'Discipline' %}$scope.disciplineInfo();{% endif %}
-				{% if objecttype == 'Niveau' %}$scope.niveauInfo();{% endif %}
-				{% if objecttype == 'Classe' %}$scope.classeInfo();{% endif %}
-				{% if objecttype == 'Lieu' %}$scope.lieuInfo();{% endif %}
-            }
-        },100,50);	
-		
-		
-		// donne le focus
-		$scope.takeFocus = function(id) {
-			$timeout(function(){
-				$('#'+id).focus();
-			},100);
-		}
-		
-		// efface le contenu du filtre
-		$scope.clearFilter = function(child) {
-			$scope[child].filter = '';
-			$('#search'+child).focus();
-		}
-
-		// appel de function kobeye avec retour objet
-		$scope.{{ identifier }}callMethod = function(obj, name, args, explodeArgs) {
-			if (args == undefined) args = [];
-			if (explodeArgs == undefined) explodeArgs = true;
-				
-			var {{ identifier }}method = {
-				name: name,
-				query: '{{ module }}/{{ objecttype }}/'+obj.id,
-				args : args,
-				explodeArgs:explodeArgs,
-				tms : Date.now(),
-			};
-			return $http.post('/{{ url }}/'+obj.id+'/Method.json',{"Func":JSON.stringify({{ identifier }}method)});
-		}
-
-		
-		// save fiche 
-		// callback sur modalSave pour ré-afficher la fiche sauvée
-		var currentUrl = $window.location.href;
-		$scope.{{ identifier }}callbakSaveFiche = function(data) {
-            $scope.obj = data.data;
-			{% if objecttype == 'Adherent' %}
-				$scope.adherentInfo(); 
-				$scope.checkCertificat();
-			{% endif %}
-		}
-		$scope.saveFicheCadref = function(id) {
-            if(id) $scope.modalObj = $scope.obj;
-			$scope.modalSave($scope.{{ identifier }}callbakSaveFiche);
-		}
-		
-
-		{% if objecttype == 'Adherent' or objecttype == 'Enseignant' %}
-		//-----------------------------
-		// MESSAGE
-		//-----------------------------
-		$scope.msgObj = {Mail: '', Subject: '', Body: '', SMS: ''};
-		$scope.msgObj.Pieces = {data: [], mode: '', filePath: ''};
-		$scope.pieceAdd = function() {
-			var p = $scope.msgObj.Pieces;
-			p.mode = 'add';
-			p.filePath = '';
-		}
-
-		$scope.pieceSave = function() {
-			var p = $scope.msgObj.Pieces;
-			p.data.push(p.filePath);
-			p.mode = '';
-			p.filePath = '';
-		}
-
-		$scope.pieceDelete = function(item) {
-			var p = $scope.msgObj.Pieces;
-			n = p.data.indexOf(item);
-			if(n >= 0) p.data.splice(n, 1);
-		}
-
-		$scope.pieceCloseEdit = function() {
-			$scope.msgObj.Pieces.mode = '';
-		}
-
-		$scope.messageSend = function(mode) {
-			$scope.msgObj.sendMode = mode;
-			var cf = $scope.Cadref{{ objecttype }}function.callNext;
-			$scope.Cadref{{ objecttype }}callFunction(cf.item,cf.nom,cf.title,cf.needConfirm,1);
-		}
 		{% endif %}
 
 		{% if objecttype == 'Classe' or objecttype == 'Visite' or objecttype == 'Enseignant' %}
@@ -206,7 +97,7 @@
 		// ATTACHEMENT
 		//-----------------------------
 		// store Attachement
-		$scope.CadrefAttachement = $scope.createStore(CadrefAttachementStore, 'children');
+		$scope.CadrefAttachement = $rootScope.createStore(CadrefAttachementStore, 'children');
 
 		// ouverture fenetre attachements
 		$scope.attachementObj;
@@ -297,9 +188,119 @@
 		}
 		{% endif %}
 		
-		{% if objecttype == 'Adherent' %}
-			
-		//$scope.CadrefCommune = $rootScope.createStore(CadrefCommuneStore, 'default');
+		
+	});
+
+//***********************
+	
+	app.controller('{{ identifier }}FicheCtrlExtends', function($interval, $location, $compile, $timeout, $sce, $scope, $filter, $window, 
+		$rootScope, $routeParams, $http, $log,
+		CadrefInscriptionStore, CadrefClasseStore, CadrefAdherentStore, CadrefReglementStore, CadrefEnseignantStore, 
+		CadrefVisiteStore, CadrefReservationStore, CadrefClasseDateStore, CadrefAbsenceStore, CadrefDepartStore, CadrefAttachementStore,
+		CadrefSituationStore, CadrefProfessionStore) {
+
+		var getObj = $interval(function(){
+            if($scope.obj){
+                $interval.cancel(getObj);
+				{% if objecttype == 'Adherent' %}
+					$scope.adherentInfo(); 
+					$scope.checkCertificat();
+					$scope.checkIBAN();
+					$scope.obj.AnneeSelect = '{{ Annee }}';
+				{% endif %}
+				{% if objecttype == 'Section' %}$scope.sectionInfo();{% endif %}
+				{% if objecttype == 'Discipline' %}$scope.disciplineInfo();{% endif %}
+				{% if objecttype == 'Niveau' %}$scope.niveauInfo();{% endif %}
+				{% if objecttype == 'Classe' %}$scope.classeInfo();{% endif %}
+				{% if objecttype == 'Lieu' %}$scope.lieuInfo();{% endif %}
+            }
+        },100,50);	
+		
+		
+		// donne le focus
+		$scope.takeFocus = function(id) {
+			$timeout(function(){
+				$('#'+id).focus();
+			},100);
+		}
+		
+		// efface le contenu du filtre
+		$scope.clearFilter = function(child) {
+			$scope[child].filter = '';
+			$('#search'+child).focus();
+		}
+
+		// appel de function kobeye avec retour objet
+		$scope.{{ identifier }}callMethod = function(obj, name, args, explodeArgs) {
+			if (args == undefined) args = [];
+			if (explodeArgs == undefined) explodeArgs = true;
+				
+			var {{ identifier }}method = {
+				name: name,
+				query: '{{ module }}/{{ objecttype }}/'+obj.id,
+				args : args,
+				explodeArgs:explodeArgs,
+				tms : Date.now(),
+			};
+			return $http.post('/{{ url }}/'+obj.id+'/Method.json',{"Func":JSON.stringify({{ identifier }}method)});
+		}
+
+		
+		// save fiche 
+		// callback sur modalSave pour ré-afficher la fiche sauvée
+		var currentUrl = $window.location.href;
+		$scope.{{ identifier }}callbakSaveFiche = function(data) {
+            $scope.obj = data.data;
+			{% if objecttype == 'Adherent' %}
+				$scope.adherentInfo(); 
+				$scope.checkCertificat();
+				$scope.checkIBAN();
+			{% endif %}
+		}
+		$scope.saveFicheCadref = function(id) {
+            if(id) $scope.modalObj = $scope.obj;
+			$scope.modalSave($scope.{{ identifier }}callbakSaveFiche);
+		}
+		
+
+		{% if objecttype == 'Adherent' or objecttype == 'Enseignant' %}
+		//-----------------------------
+		// MESSAGE
+		//-----------------------------
+		$scope.msgObj = {Mail: '', Subject: '', Body: '', SMS: ''};
+		$scope.msgObj.Pieces = {data: [], mode: '', filePath: ''};
+		$scope.pieceAdd = function() {
+			var p = $scope.msgObj.Pieces;
+			p.mode = 'add';
+			p.filePath = '';
+		}
+
+		$scope.pieceSave = function() {
+			var p = $scope.msgObj.Pieces;
+			p.data.push(p.filePath);
+			p.mode = '';
+			p.filePath = '';
+		}
+
+		$scope.pieceDelete = function(item) {
+			var p = $scope.msgObj.Pieces;
+			n = p.data.indexOf(item);
+			if(n >= 0) p.data.splice(n, 1);
+		}
+
+		$scope.pieceCloseEdit = function() {
+			$scope.msgObj.Pieces.mode = '';
+		}
+
+		$scope.messageSend = function(mode) {
+			$scope.msgObj.sendMode = mode;
+			var cf = $scope.Cadref{{ objecttype }}function.callNext;
+			$scope.Cadref{{ objecttype }}callFunction(cf.item,cf.nom,cf.title,cf.needConfirm,1);
+		}
+		{% endif %}
+
+		
+		{% if objecttype == 'Adherent' %}			
 		$scope.villeChange = function() {
 			var v = $scope.obj.Ville;
 			var p = v.indexOf(')');
@@ -309,6 +310,72 @@
 			}
 		}
 		
+		// situation & profession
+		$scope.CadrefSituation = $rootScope.createStore(CadrefSituationStore, 'default');
+		CadrefSituationStore.getData(1, 'default');
+		$scope.CadrefProfession = $rootScope.createStore(CadrefProfessionStore, 'default');
+		CadrefProfessionStore.getData(1, 'default');
+		$scope.situationChange = function(obj, field) {
+			var data = $scope['Cadref'+field].data;
+			for(var n in data) {
+				if(data[n].label == obj[field+'IdLabel']) {
+					obj[field+'Id'] = data[n].id;
+					return;
+				}
+			}
+			obj[field+'Id'] = 0;
+		}
+		$scope.situationSelect = function(obj, field) {
+			var data = $scope['Cadref'+field].data;
+			for(var n in data) {
+				if(data[n].id == obj[field+'Id']) {
+					obj[field+'IdLabel'] = data[n].label;
+					return;
+				}
+			}
+			obj[field+'IdLabel'] = '';
+		}
+
+		$scope.checkIBAN = function(input) {
+			if(input == undefined || input == '') {
+				$scope.obj.ibanInvalide = false;
+				return;
+			}
+			var CODE_LENGTHS = {
+				AD: 24, AE: 23, AT: 20, AZ: 28, BA: 20, BE: 16, BG: 22, BH: 22, BR: 29,
+				CH: 21, CR: 21, CY: 28, CZ: 24, DE: 22, DK: 18, DO: 28, EE: 20, ES: 24,
+				FI: 18, FO: 18, FR: 27, GB: 22, GI: 23, GL: 18, GR: 27, GT: 28, HR: 21,
+				HU: 28, IE: 22, IL: 23, IS: 26, IT: 27, JO: 30, KW: 30, KZ: 20, LB: 28,
+				LI: 21, LT: 20, LU: 20, LV: 21, MC: 27, MD: 24, ME: 22, MK: 19, MR: 27,
+				MT: 31, MU: 30, NL: 18, NO: 15, PK: 24, PL: 28, PS: 29, PT: 25, QA: 29,
+				RO: 24, RS: 22, SA: 24, SE: 24, SI: 19, SK: 24, SM: 27, TN: 24, TR: 26
+			};
+			var iban = String(input).toUpperCase().replace(/[^A-Z0-9]/g, ''), // keep only alphanumeric characters
+			code = iban.match(/^([A-Z]{2})(\d{2})([A-Z\d]+)$/), // match and capture (1) the country code, (2) the check digits, and (3) the rest
+			digits;
+			// check syntax and length
+			if (!code || iban.length !== CODE_LENGTHS[code[1]]) {
+				$scope.obj.ibanInvalide = true;
+				return;
+			}
+			
+			// rearrange country code and check digits, and convert chars to ints
+			digits = (code[3] + code[1] + code[2]).replace(/[A-Z]/g, function (letter) {
+				return letter.charCodeAt(0) - 55;
+			});
+			// final check
+			$scope.obj.ibanInvalide = ! $scope.mod97(digits);
+		}
+		$scope.mod97 = function(string) {
+			var checksum = string.slice(0, 2), fragment;
+			for (var offset = 2; offset < string.length; offset += 7) {
+				fragment = String(checksum) + string.substring(offset, offset + 7);
+				checksum = parseInt(fragment, 10) % 97;
+			}
+			return checksum;
+		}
+
+
 		
 		// info annuelles et cotisation
 		$scope.obj.nonCotis = false;
@@ -460,7 +527,6 @@
 			var o = $scope.reglementObj = {};
 			angular.copy(item, o);
 			i.mode = 'edit';
-//			console.log('REGLEMENT',o);
 		}
 
 		// sauve reglement
@@ -631,7 +697,7 @@
 		$scope.nextControle = function(mode) {
 			var enb = false;
 			var cad = $scope.CadrefClasse.Inscr;
-			var p = Number(cad.paye)
+			var p = Number(cad.paye);
 			enb = p == 0 || cad.paye == '' || (p != 0 && cad.mode != '');
 			$scope.nextDisabled = !enb;
 			if(enb) {
@@ -640,6 +706,13 @@
 				if(mode) $('#inscriptionNext').focus();
 			}
 			else $('#inscriptionNext').html('-----');
+		}
+		
+		// enregistre ou différé
+		$scope.classeValider = function() {
+			if($('#inscriptionNext').html() == '-----') return;
+			var cn = $scope.CadrefAdherentfunction.callNext;
+			$scope.CadrefAdherentcallFunction(cn.item,cn.nom,cn.title,cn.needConfirm,1);
 		}
 		
 		// switch cotisation
@@ -809,6 +882,7 @@
 					$scope.classeCalcul();			
 					$scope.CadrefClasse.Inscr.updated = true;
 					try {$scope.$digest();} catch(ex) {}
+					$('#searchCadrefClasse').focus();
 				});
 			}
 		}
@@ -1314,6 +1388,28 @@
 		// VISITE RESERVATION
 		//--------------------------------------
 
+		// impression
+		$scope.visitObj = {Guide:true, Chauffeur:false, Interne:false};
+		
+		$scope.visitePrintMode = function(mode) {
+			var o = $scope.visitObj;
+			switch(mode) {
+				case 0: o.Chauffeur = o.Interne = false; break;
+				case 1: o.Guide = o.Interne = false; break;
+				case 2: o.Guide = o.Chauffeur = false; break;
+			}
+		}
+		$scope.visiteImpression = function(pdf) {
+			$window.open(pdf,'_blank');
+			return false;
+		}
+		$scope.displayVisite = function() {
+			$timeout(function(){
+				angular.element($('#displayVisite')).triggerHandler('click');
+				angular.element($('#modalfunction-{{ ident }}')).modal('hide');
+			},0);
+		}
+		
 		// pour multi-select
 		$scope.Enseignants = JSON.parse('{{ enseignants|raw }}');
 
@@ -1495,6 +1591,7 @@
 		$scope.absenceSave = function() {
 			CadrefAbsenceStore.saveData($scope.absenceObj).then(function(data) {
 				$scope.absenceInfo.mode = '';
+				CadrefAbsenceStore.getData(1, 'children');
 				try { $scope.$digest(); } catch(ex) {}
 			});
 		}

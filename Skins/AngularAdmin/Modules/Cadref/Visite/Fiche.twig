@@ -157,9 +157,47 @@
 					<button type="button" class="btn btn-success margin-inline cadref-btn-100" accesskey="s" title="Alt S" ng-click="saveFicheCadref({{ o }}.id)">Sauver</button>
 					<button type="button" class="btn btn-danger margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="delete(obj)">Supprimer</button>
 					<a type="button" class="btn btn-warning margin-inline cadref-btn-100" {% if Create %}data-dismiss="modal"{% else %}href="#/{{ CurrentMenu.Url }}"{% endif %}>Annuler</a>
-{#					<button type="button" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="printVisite(obj)">Imprimer</button>
-#}				</div>
+					<button type="button" class="btn btn-default margin-inline cadref-btn-100" ng-if="{{ o }}.id" ng-click="CadrefVisitecallFunction(obj,'PrintVisite','Impression','')">Imprimer</button>
+				</div>
 			</div>
 		</div>
     </section>
+</div>
+<div class="modal fade modal-size-large" id="modalfunction-{{ identifier }}" role="modal" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog cadref-modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+				<a class="btn-abt cadref-btn-close" href="" data-dismiss="modal" title="Annuler"></a>
+                <h4 class="modal-title">{[{ {{ identifier }}function.title }]}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" ng-if="{{ identifier }}function.errors.length">
+                    <ul>
+                        <li ng-repeat="e in {{ identifier }}function.errors">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-warning" ng-if="{{ identifier }}function.warning.length">
+                    <ul>
+                        <li ng-repeat="e in f{{ identifier }}function.warning">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="alert alert-success" ng-if="{{ identifier }}function.infos.length">
+                    <ul>
+                        <li ng-repeat="e in {{ identifier }}function.infos">{[{ e.Message }]}</li>
+                    </ul>
+                </div>
+                <div class="text-center"
+                     ng-hide="{{ identifier }}function.loaded">
+                    <br />
+                    Chargement ...
+                    <br />
+                    <div class="spinload"></div>
+                </div>
+                <div id="ajaxwrapperFunc"
+                     ng-show="{{ identifier }}function.loaded"
+                     compile="{{ identifier }}function.data" >
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

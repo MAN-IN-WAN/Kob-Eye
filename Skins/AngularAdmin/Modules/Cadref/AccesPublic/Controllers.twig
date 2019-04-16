@@ -52,32 +52,6 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		return $http.post('/{{ url }}/'+obj.id+'/Method.json',{"Func":JSON.stringify({{ identifier }}method)});
 	}
 
-	// creation de stores TODO use rootscope
-{#	$scope.createStore = function(store, context) {
-		var s = {
-			data: store.data[context],
-			store: store,
-			filter: store.getFilters(context,true).global,
-			filterPanel: false,
-			filters: (function(){
-				var opts = store.getFilters(context,true).options;
-				var out = {};
-				for (var o in opts){
-					out[opts[o].name] = opts[o];
-				}
-				return out;
-			})(),
-			filterQuery: store.getQueryFilter(context),
-			currentPage: store.currentPage[context],
-			pageLength: store.getPageLength(),
-			itemsPerPage: store.itemsPerPage,
-			selected: {
-				selectall: false
-			}
-		}
-		return s;
-	}
-#}
 	//--------------------------------
 	// UTILISATEUR
 	//--------------------------------
@@ -162,6 +136,50 @@ app.controller('{{ Url }}Ctrl', function($location, $anchorScroll, $scope, $root
 		$scope.CadrefAttachement.store.getData(1, 'children');
 		$("#modal-Attachements").modal();
 	}
+
+	//-----------------------------
+	// MESSAGE
+	//-----------------------------
+	$scope.msgObj = {Mail: '', Subject: '', Body: '', SMS: ''};
+	$scope.msgObj.Pieces = {data: [], mode: '', filePath: ''};
+	$scope.pieceAdd = function() {
+		var p = $scope.msgObj.Pieces;
+		p.mode = 'add';
+		p.filePath = '';
+	}
+
+	$scope.pieceSave = function() {
+		var p = $scope.msgObj.Pieces;
+		p.data.push(p.filePath);
+		p.mode = '';
+		p.filePath = '';
+	}
+
+	$scope.pieceDelete = function(item) {
+		var p = $scope.msgObj.Pieces;
+		n = p.data.indexOf(item);
+		if(n >= 0) p.data.splice(n, 1);
+	}
+
+	$scope.pieceCloseEdit = function() {
+		$scope.msgObj.Pieces.mode = '';
+	}
+
+	$scope.messageSend = function(mode) {
+		$scope.msgObj.sendMode = mode;
+		var ajax = $scope.{{ identifier }}callMethod($scope.obj,{% if objecttype == 'Enseignant' %}'SendMessage'{% else %}'SendMessage2'{% endif %},{Msg:$scope.msgObj});
+		ajax.success(
+			function(data) {
+				swal(mode == 'sms' ? 'SMS' : 'Message',"Message envoyé",'info');
+			}
+		).error(
+			function() {
+				swal('Erreur',"Une erreur c'est produite",'error');
+				console.error('error > {{ module }}/{{ objecttype }} > Method  ');
+			}
+		);
+	}
+
 	
 	{% if objecttype == 'Enseignant' %}
 	// ferme attachement edit section

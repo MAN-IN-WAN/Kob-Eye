@@ -6,6 +6,7 @@ class AbtelGestionBase extends genericClass {
 	protected $parents = array();
     protected $con_handle = null;
     protected $api_token = null;
+    protected $identifier = 'Id';
 	const PARCURL = 'https://parcapi.abtel.fr';
 	const APIKEY = 'b06b9cfc31-5c5855df69dad';
 	const APIUSER = 'api_gestion';
@@ -115,8 +116,9 @@ class AbtelGestionBase extends genericClass {
                     'Content-Type: application/json',
                     'Content-Length: ' . strlen($data))
             );
-
-            $ret = json_decode(curl_exec($this->con_handle),true);
+            $ret = curl_exec($this->con_handle);
+            //var_dump($ret);
+            $ret = json_decode($ret,true);
             if(!$ret['success']) {
                 $fields = $this->getQueryFields($this->getOrigin());
                 foreach ($ret['error_description'] as &$d){
@@ -141,7 +143,7 @@ class AbtelGestionBase extends genericClass {
         } else{
             //Parc donc on requete la base de la gestion
             $req = $this->buildRequest($inf);
-            print_r($req);
+            file_put_contents('/tmp/testsql',$req.PHP_EOL,8);
             $q = $this->con_handle->query($req);
 
             if(count($this->parents)){
@@ -463,7 +465,6 @@ class AbtelGestionBase extends genericClass {
             $o->{$prop} = $val;
         }
 
-
         return $o;
     }
 
@@ -474,9 +475,8 @@ class AbtelGestionBase extends genericClass {
     public function getOrigin(){
         $user = Sys::$User;
 
-        //TODO :  verif plutot en fonction du user utilisé
-        //if($user->Id == 7){
-        if($user->Id != 7){
+        if($user->Id == 7){
+        //if($user->Id != 7){
             //Ouverture connection pdo si besoin
             if(empty($this->con_handle)){
                 $this->con_handle = new PDO('mysql:host=127.0.0.1;dbname=gestion', 'root', '', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
@@ -551,7 +551,7 @@ class AbtelGestionBase extends genericClass {
                 }
 
             } else{
-                    $where[] = 'NumeroTicket=' . $info['LastId'];
+                    $where[] = $this->identifier. '=' . $info['LastId'];
             }
 
             if($this->getOrigin()){
@@ -567,7 +567,7 @@ class AbtelGestionBase extends genericClass {
                 //Parc donc on requete la base de la gestion
                 array_walk($where,function(&$a) use ($entity){
                     $a =  explode('=',$a);
-                    if($a[0] == 'NumeroTicket') return;
+                    if($a[0] == 'NumeroTicket' || $a[0] == $this->identifier) return;
 
                     $field = $entity->getOneChild('Champ/NomDistant='.$a[0]);
                     $a[0] = $field->Nom;
@@ -628,6 +628,8 @@ class AbtelGestionBase extends genericClass {
                 } else{
                     //Parc donc on requete la base de la gestion
                     return  array(
+                        'M'=>'AbtelGestion',
+                        'O'=>'Action',
                         'Table' => 'actions',
                         'Where' => $where
                     );
@@ -681,9 +683,13 @@ class AbtelGestionBase extends genericClass {
         $vals = array_values($this->props);
         array_walk($vals,function(&$a){
             if(is_string($a))
-                $a = '\''.$a.'\'';
+                $a = $this->con_handle->quote($a);
             if(is_null($a))
                 $a = 'NULL';
+            if($a === false)
+                $a = 0;
+            if($a === true)
+                $a = 1;
         });
 
         $where ='1';
@@ -722,6 +728,7 @@ class AbtelGestionBase extends genericClass {
                 $req = 'UPDATE '.$infos['Table'].' SET '.implode(',',$couples).' WHERE '.$where;
                 break;
             case 'DELETE':
+                if($where === '1') return false; // secu pour eviter de vider la table
                 $req = 'DELETE FROM '.$infos['Table'].' WHERE '.$where;
 
                 break;

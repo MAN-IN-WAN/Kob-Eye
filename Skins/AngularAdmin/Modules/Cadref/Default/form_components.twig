@@ -52,8 +52,8 @@
     </select>
 {% endmacro %}
 
-{% macro fquery(field, obj, style='') %}
-    <select class="form-control cadref-input" ng-model="{{ obj }}.{{ field.name }}"{% if style!='' %} style="{{ style }}"{% endif %}>
+{% macro fquery(field, obj, style='', notab='') %}
+    <select class="form-control cadref-input" ng-model="{{ obj }}.{{ field.name }}"{% if style!='' %} style="{{ style }}"{% endif %}{% if notab!='' %} tabindex="-1"{% endif %}>
 		<option value="0"></option>
         {% for v,k in field.query %}
             <option value="{{ v }}">{{ k }}</option>
