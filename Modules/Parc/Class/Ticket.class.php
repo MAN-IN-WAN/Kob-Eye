@@ -140,7 +140,18 @@ class Ticket extends genericClass
                 $cli = Process::GetTempVar('ParcClient');
             }
             if(!$cli)
-                return array('errors'=>array(array('Message'=>'Impossible de créer un ticket sans client')));
+                //return array('errors'=>array(array('Message'=>'Impossible de créer un ticket sans client')));
+                return array(
+                    'template' => 'Create',
+                    'step' => 1,
+                    'errors' => array(array('Message'=>'Impossible de créer un ticket sans client')),
+                    'callNext' => array(
+                        'nom'=> 'createTicket',
+                        'title'=> 'Creation d\'un Ticket',
+                        'needConfirm' => false,
+                        'item' => null
+                    )
+                );
             if(!empty($args['contrat']))
                 $contrat = Sys::getOneData('Abtel','Contrat/'.$args['contrat']);
             if(!empty($args['contact'])) {
@@ -248,6 +259,17 @@ class Ticket extends genericClass
                     'infos' => $info
                 );
             } else{
+                return array(
+                    'template' => 'Create',
+                    'step' => 1,
+                    'errors' => $tick->Error,
+                    'callNext' => array(
+                        'nom'=> 'createTicket',
+                        'title'=> 'Creation d\'un Ticket',
+                        'needConfirm' => false,
+                        'item' => null
+                    )
+                );
                 return array(
                     'data' => 'Oups, une erreur s\'est produite !',
                     'errors' => $tick->Error,

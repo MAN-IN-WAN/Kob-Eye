@@ -1,8 +1,8 @@
 <?php
 
-$proxies = Sys::getData('Parc','Server/Proxy=1');
-$apaches = Sys::getData('Parc','Server/Web=1');
-$sqls = Sys::getData('Parc','Server/Sql=1');
+$proxies = Sys::getData('Parc','Server/Proxy=1',0,1000,'','','','',true);
+$apaches = Sys::getData('Parc','Server/Web=1',0,1000,'','','','',true);
+$sqls = Sys::getData('Parc','Server/Sql=1',0,1000,'','','','',true);
 
 $proxList =array();
 foreach($proxies as $proxy){

@@ -37,7 +37,7 @@ proxy_cache_background_update on;
 proxy_cache_revalidate on;
 proxy_cache_min_uses 3;
 proxy_cache_lock on;
-if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_no_cache|no_cache|wordpress_logged_in\") { set \$arg_nocache 1; }
+if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_no_cache|no_cache|wordpress_logged_in|PHPSESSID\") { set \$arg_nocache 1; }
 ";
         }
         if (empty($this->ProxyConfigSsl)){
@@ -50,7 +50,7 @@ proxy_cache_background_update on;
 proxy_cache_revalidate on;
 proxy_cache_min_uses 3;
 proxy_cache_lock on;
-if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_no_cache|no_cache|wordpress_logged_in\") { set \$arg_nocache 1; }
+if (\$http_cookie ~* \"comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_no_cache|no_cache|wordpress_logged_in|PHPSESSID\") { set \$arg_nocache 1; }
 ";
         }
 

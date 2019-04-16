@@ -48,16 +48,7 @@
             {% elseif field.type == "password" %}
                 <input type="password" class="form-control" id="input-{{ field.name }}" ng-model="{{ scopeObj }}.{{ field.name }}" data-toggle="input-{{ field.name }}">
             {% elseif field.type == "progress" %}
-                <input type="text" id="slider-{{ field.name }}" name="example_name" ng-model="{{ scopeObj }}.{{ field.name }}" ng-value="{{ scopeObj }}.{{ field.name }}"/>
-                <script>
-                    $("#slider-{{ field.name }}").ionRangeSlider({
-                        from: 0,
-                        to: 100,
-                        step: 1,
-                        grid: true,
-                        grid_num: 10
-                    });
-                </script>
+                <input type="text" ion-range-slider stype="single" min="0" max="100" from="{{ scopeObj }}.{{ field.name }}" from_min="0" step="5" grid="true" grid_num="10" postfix=" %" class="form-control" placeholder="" id="input-{{ field.name }}" ng-model="{{ scopeObj }}.{{ field.name }}" >
             {% elseif field.type == "file" %}
                 <input type="text" class="form-control" placeholder="" id="input-{{ ObjectType }}{{ field.name }}" ng-model="{{ scopeObj }}.{{ field.name }}">
                 <label for="input-{{ ObjectType }}{{ field.name }}-file" class="clickable"> Choisissez un fichier </label>

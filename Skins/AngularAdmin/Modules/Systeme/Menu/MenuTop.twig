@@ -28,7 +28,7 @@
 				</div>
             {% endif %}
         </div>
-        {% if User.isRole('PARC_TECHNICIEN') or User.hasRole('NOTIFICATIONS') %}
+        {% if User.hasRole('PARC_TECHNICIEN') or User.hasRole('NOTIFICATIONS') %}
             <div class="menu-user-block menu-notifications">
                 <div class="dropdown dropdown-avatar">
                     <a href="javascript: void(0);" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
