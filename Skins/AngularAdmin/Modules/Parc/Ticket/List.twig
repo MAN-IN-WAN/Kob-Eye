@@ -246,21 +246,27 @@
                 <input type="checkbox" ng-model="{{ identifier }}.selected.selectall"/>&nbsp;
             </th>
             <th class="activity_start">Créé le</th>
+            <th class="activity_plus" width="45"></th>
+            <th class="activity_client" width="450">Client</th>
             <th class="activity_title">Titre</th>
             <th class="activity_progress">Etat</th>
             <th width="160">Actions</th>
         </tr>
         <tr class="activity-item" dir-paginate="act in {{ identifier }}.data" pagination-context="{{ context }}" current-page="{{ identifier }}.currentPage" items-per-page="{{ identifier }}.itemsPerPage" pagination-id="{{ identifier }}-pagination" ng-init="hover = false" ng-class="{showDetail:hover}">
-            <td class="actWrap" colspan="5">
+            <td class="actWrap" colspan="7">
                 <table class="actSub">
-                    <tr class="actInfo" >
+                    <tr class="actInfo">
                         <td  class="list-col-td-dark" width="30">
                             <input type="checkbox" value="{[{ item.id }]}" ng-model="{{ identifier }}.selected[act.id]" name="{{ identifier }}" id="{[{ act.id }]}" />&nbsp;
                         </td>
                         <td class="activity_start">
                             {[{ act.create }]}
                         </td>
-                        <td class="activity_title" ng-class="{info: act.Priorite == 1 ,info_error: act.Priorite == 2 ,running: act.Priorite == 3 ,error: act.Priorite == 4, cursor:act.Note}" ng-click="act.Errors ? null : (hover = !hover)"><span ng-bind-html="act.Titre"></span></td>
+                        <td class="activity_title"  ng-class="{info: act.Priorite == 1 ,info_error: act.Priorite == 2 ,running: act.Priorite == 3 ,error: act.Priorite == 4, cursor:act.Note}" ng-click="act.Errors ? null : (hover = !hover)" width="45"></td>
+                        <td class="activity_client" width="450"><a href="#/{{ CurrentUrl }}/{[{ act.id }]}">
+                            <b>{[{ act.ClientClientIdlabel }]}</b></a>
+                        </td>
+                        <td class="activity_title" ><a href="#/{{ CurrentUrl }}/{[{ act.id }]}"><span ng-bind-html="act.Titre"></span></a></td>
                         <td class="activity_progress" style="text-align: center;"><span class="etatTicket" ng-class="'etat_'+act.Etat" ng-bind-html="act.EtatLabel"></span></td>
                         <td  class="table-action " width="160">
                             <div style="height: 32px;">
@@ -297,7 +303,7 @@
                         </td>
                     </tr>
                     <tr class="actDetail" ng-if="act.Note">
-                        <td colspan="5" >
+                        <td colspan="7" >
                             <pre ng-bind-html="act.Note"></pre>
                         </td>
                     </tr>

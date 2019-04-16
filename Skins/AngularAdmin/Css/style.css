@@ -251,8 +251,8 @@ progress.progress.progress-danger:after{
 #activity_list .actInfo .activity_title.cursor:before{
     content: "\f0fe";
     position: absolute;
-    top: 14px;
-    left: -27px;
+    top: 12px;
+    left: -28px;
     color: #fff;
     font-family: FontAwesome;
 }
