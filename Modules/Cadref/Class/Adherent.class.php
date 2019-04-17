@@ -739,22 +739,10 @@ left join `kob-Cadref-Niveau` n on n.Id=c.NiveauId
 			$sql .= $where.' order by h.Nom, h.Prenom';
 
 			$sql = str_replace('##_', MAIN_DB_PREFIX, $sql);
-klog::l($sql);
 			$pdo = $GLOBALS['Systeme']->Db[0]->query($sql);
 			if(!$pdo) return false;
 			if($mode == 'mail') {
 				$this->sendAttestation($pdo, $annee, $fisc);
-//				$an = $annee.'-'.($annee+1);
-//				$sub = "CADREF : Attestation fiscale";
-//				$bod = "Veuillez trouver en pièce jointe l’attestation fiscale correspondant à votre cotisation $an pour l’année fiscale $fisc.<br/><br />";
-//				$bod .= "Cette somme est à noter à la ligne 7UF de la déclaration 2042 RICI, case intitulée : \"Dons versés à d’autres organismes d’intérêt général\".";
-//				$bod .= Cadref::MailSignature();
-//				foreach($pdo as $p) {
-//					$file = $this->imprimeAttestation(array($p), $annee, $fisc, $p['Numero']);
-//					$b = Cadref::MailCivility($p).$bod;
-//					$args = array('To'=>array($p['Mail']), 'Subject'=>$sub, 'Body'=>$b, 'Attachments'=>array($file));
-//					if(MSG_ADH) Cadref::SendMessage($args);
-//				}
 				return array('message'=>$pdo->rowCount().' mails envoyés.');
 			}
 			else {
