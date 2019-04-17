@@ -158,7 +158,8 @@ class Cadref extends Module {
 		$uc = strtoupper($lc);
 		$dc = '0123456789';
 		$sc = '$*+?-=';
-		return str_shuffle(substr(str_shuffle($lc),0,3).substr(str_shuffle($uc),0,2).substr(str_shuffle($dc),0,2).substr(str_shuffle($sc),0,1));
+		return str_shuffle(substr(str_shuffle($lc),0,6).substr(str_shuffle($uc),0,1).substr(str_shuffle($dc),0,1));
+		//return str_shuffle(substr(str_shuffle($lc),0,3).substr(str_shuffle($uc),0,2).substr(str_shuffle($dc),0,2).substr(str_shuffle($sc),0,1));
 	}
 
 	public static function ChangePassword() {
